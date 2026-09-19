@@ -82,4 +82,27 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("IconPath", contracts, StringComparison.Ordinal);
         Assert.Contains("ResolveIconPath(game.Icon)", adapter, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void MediaDetailNavigationKeepsLoadedListAnchorAndPreviewFallback()
+    {
+        var root = TestRepositoryContext.Root;
+        var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+        var dashboardViewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var viewCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs"));
+        var thumbnail = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Controls", "AsyncThumbnailImage.cs"));
+
+        Assert.Contains("PreviousMediaCommand", dashboardViewModel, StringComparison.Ordinal);
+        Assert.Contains("NextMediaCommand", dashboardViewModel, StringComparison.Ordinal);
+        Assert.Contains("SelectAdjacentMedia", viewModel, StringComparison.Ordinal);
+        Assert.Contains("MediaDetailNavigationDisplay", viewModel, StringComparison.Ordinal);
+        Assert.Contains("ScrollIntoView(selected)", viewCode, StringComparison.Ordinal);
+        Assert.Contains("FocusSelectedMediaRow", viewCode, StringComparison.Ordinal);
+        Assert.Contains("MediaFailed=\"OnSelectedMediaVideoFailed\"", view, StringComparison.Ordinal);
+        Assert.Contains("MediaSelectedVideoFallback", view, StringComparison.Ordinal);
+        Assert.Contains("PreviewDimensions", view, StringComparison.Ordinal);
+        Assert.Contains("PixelWidth", thumbnail, StringComparison.Ordinal);
+        Assert.Contains("PixelHeight", thumbnail, StringComparison.Ordinal);
+    }
 }

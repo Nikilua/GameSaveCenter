@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -128,6 +129,12 @@ namespace GameSaveCenter.Playnite.Views
                 || string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaInboxMode), StringComparison.Ordinal))
             {
                 InvalidatePendingAnchorRestore();
+            }
+
+            if (string.Equals(e.PropertyName, nameof(DashboardViewModel.SelectedMedia), StringComparison.Ordinal))
+            {
+                ResetSelectedVideoPreview();
+                QueueSelectedMediaIntoView();
             }
         }
 
@@ -616,8 +623,62 @@ namespace GameSaveCenter.Playnite.Views
             if (!restoringSelection && !selectionRestoreQueued)
                 UpdateSelectionDelta(selectedMediaIds, e);
             mediaInspectorOpen = false;
+            ResetSelectedVideoPreview();
+            QueueSelectedMediaIntoView();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void QueueSelectedMediaIntoView()
+        {
+            if (!IsLoaded || MediaGrid == null)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                var selected = attachedViewModel?.SelectedMedia;
+                if (selected == null || MediaGrid.Items.IndexOf(selected) < 0)
+                    return;
+
+                MediaGrid.ScrollIntoView(selected);
+                MediaGrid.UpdateLayout();
+                (MediaGrid.ItemContainerGenerator.ContainerFromItem(selected) as FrameworkElement)?.BringIntoView();
+            }));
+        }
+
+        private void ResetSelectedVideoPreview()
+        {
+            if (MediaSelectedVideoFallback == null)
+                return;
+
+            MediaSelectedVideoFallback.Visibility = Visibility.Collapsed;
+            MediaSelectedVideo?.ClearValue(UIElement.VisibilityProperty);
+            var selected = attachedViewModel?.SelectedMedia;
+            if (selected?.Kind != MediaKind.VideoClip)
+                return;
+
+            var path = selected.ArchivePath;
+            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsSupportedVideoPath(path))
+            {
+                MediaSelectedVideoFallback.Visibility = Visibility.Visible;
+                MediaSelectedVideo.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void OnSelectedMediaVideoFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            MediaSelectedVideo.Visibility = Visibility.Collapsed;
+            MediaSelectedVideoFallback.Visibility = Visibility.Visible;
+        }
+
+        private static bool IsSupportedVideoPath(string path)
+        {
+            var extension = Path.GetExtension(path);
+            return string.Equals(extension, ".mp4", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".m4v", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".wmv", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".avi", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".mov", StringComparison.OrdinalIgnoreCase);
         }
 
         private void OnReloadMediaWindowClick(object sender, RoutedEventArgs e)
@@ -968,10 +1029,13 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaCompactDetailsClick(object sender, RoutedEventArgs e)
         {
-            if (MediaGrid.SelectedItem == null) return;
-            mediaInspectorOpen = !mediaInspectorOpen;
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(mediaInspectorOpen ? MediaInspectorScrollViewer : MediaCompactDetailsButton);
+             if (MediaGrid.SelectedItem == null) return;
+             mediaInspectorOpen = !mediaInspectorOpen;
+             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            if (mediaInspectorOpen)
+                FocusElement(MediaInspectorScrollViewer);
+            else
+                FocusSelectedMediaRow();
         }
 
         private void OnMediaInboxCompactDetailsClick(object sender, RoutedEventArgs e)
@@ -990,11 +1054,26 @@ namespace GameSaveCenter.Playnite.Views
                 return;
 
             mediaInspectorOpen = false;
-            ApplyResponsiveLayout(
-                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
-                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(MediaCompactDetailsButton);
-            e.Handled = true;
+             ApplyResponsiveLayout(
+                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusSelectedMediaRow();
+             e.Handled = true;
+         }
+
+        private void FocusSelectedMediaRow()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                var selected = attachedViewModel?.SelectedMedia;
+                if (selected == null || MediaGrid.Items.IndexOf(selected) < 0)
+                    return;
+
+                MediaGrid.ScrollIntoView(selected);
+                MediaGrid.UpdateLayout();
+                if (MediaGrid.ItemContainerGenerator.ContainerFromItem(selected) is UIElement row)
+                    FocusElement(row);
+            }));
         }
 
         private void OnMediaInboxInspectorPreviewKeyDown(object sender, KeyEventArgs e)

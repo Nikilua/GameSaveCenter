@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-07 媒体详情浏览
+
+- 在现有媒体分页/稳定选择链上增加当前已加载窗口的上一项/下一项、位置摘要和列表行回滚；没有新增跨页假数据或替换滚动系统。
+- 详情摘要复用现有媒体 DTO；异步截图显示真实解码尺寸，视频路径缺失/格式不支持/MediaFailed 使用回退，现有取消与失败状态不变。
+- `validate-source.py`、XAML `24/24`、`git diff --check` 通过；新增行为/源码契约夹具。Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断，未宣称构建或 testhost 通过。
+- 仅用合成/fake/隔离路径；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并；无新增需保留的 artifacts/.tmp。
+- 证据：[R14-07 媒体详情浏览](../design/reviews/ui-finesse-round3-20260915/evidence/R14-07-MEDIA-DETAIL-20260920.md)。下一可执行任务：补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08。
+
 ## 2026-09-20 R14-06 批量目标防误选
 
 - 复用现有 Playnite 描述/状态 DTO 与游戏选框，不改变过滤语义；沿描述快照传递本地 IconPath，增加稳定 IdentityDisplay。

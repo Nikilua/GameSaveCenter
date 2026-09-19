@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-07 媒体详情浏览（代码完成，环境待验）
+
+- 本批在现有 `Media` 分页窗口、`SelectedMedia` 和 `SelectionAnchorResolver` 上增加上一项/下一项；导航只跨当前已加载窗口，并按稳定 `MediaId` 将选中项滚回 `MediaGrid` 可见行。
+- 详情复用 `MediaItemDto` 显示类型、来源、大小和采集时间；`AsyncThumbnailImage` 显示实际解码的 `PixelWidth × PixelHeight`。视频缺失、不支持格式或 `MediaFailed` 显示统一回退，截图加载继续保留 generation、取消和失败状态。
+- 已验证：`validate-source.py`、XAML 24/24、`git diff --check`；新增尺寸行为断言和 R14-07 源码契约夹具。Playnite Tests Release 构建退出 1，仅有 0 警告/0 错误且无诊断，未写成构建或 testhost 通过。
+- 未验跨页导航、真实视频编解码、Playnite/RenderHarness、Release/net462、宿主呈现、DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动、src.zip 未碰、未合并。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-07-MEDIA-DETAIL-20260920.md`。下一可执行任务：在可用 SDK/Workload 环境补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08。
+
 ## 当前第三轮 R14-06 批量目标防误选（代码完成，环境待验）
 
 - cfbb1279 已推送。复用现有 GameDescriptorDto/GameStatusDto、Playnite 适配和 Games/SelectedItem 目标绑定，沿描述快照增加只读本地 IconPath 与 IdentityDisplay；归类目标下拉及全局选框现在显示图标（无图标回退平台占位/首字母）、平台和稳定 PlayniteId。

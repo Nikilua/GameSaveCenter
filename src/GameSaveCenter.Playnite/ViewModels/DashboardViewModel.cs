@@ -359,6 +359,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             CommentSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, null, true)), _ => !IsBusy);
             OpenSelectedMediaCommand = new RelayCommand(_ => RunLocal(OpenSelectedMedia), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
             RevealSelectedMediaCommand = new RelayCommand(_ => RunLocal(() => OpenPath(SelectedMedia.ArchivePath)), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
+            PreviousMediaCommand = new RelayCommand(_ => SelectAdjacentMedia(-1), _ => CanNavigatePreviousMedia);
+            NextMediaCommand = new RelayCommand(_ => SelectAdjacentMedia(1), _ => CanNavigateNextMedia);
             AssignInboxMediaCommand = new RelayCommand(_ => Run(AssignInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null && InboxTargetGame != null);
             IgnoreInboxMediaCommand = new RelayCommand(_ => Run(IgnoreInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null);
             AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
@@ -1278,6 +1280,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     OnPropertyChanged(nameof(SelectedMedia));
                 }
                 SyncMediaEditor(value, sameMedia);
+                OnPropertyChanged(nameof(CanNavigatePreviousMedia));
+                OnPropertyChanged(nameof(CanNavigateNextMedia));
+                OnPropertyChanged(nameof(MediaDetailNavigationDisplay));
                 RaiseCommandStates();
             }
         }
@@ -1567,6 +1572,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand CommentSelectedMediaCommand { get; }
         public ICommand OpenSelectedMediaCommand { get; }
         public ICommand RevealSelectedMediaCommand { get; }
+        public ICommand PreviousMediaCommand { get; }
+        public ICommand NextMediaCommand { get; }
         public ICommand AssignInboxMediaCommand { get; }
         public ICommand IgnoreInboxMediaCommand { get; }
         public ICommand AssignInboxMediaBatchCommand { get; }
@@ -5583,7 +5590,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
-                UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
+                UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,

@@ -26,6 +26,10 @@ namespace GameSaveCenter.Playnite.Controls
             nameof(PreviewWidth), typeof(int), typeof(AsyncThumbnailImage),
             new PropertyMetadata(480, OnPreviewWidthChanged));
 
+        public static readonly DependencyProperty PreviewDimensionsProperty = DependencyProperty.Register(
+            nameof(PreviewDimensions), typeof(string), typeof(AsyncThumbnailImage),
+            new PropertyMetadata(string.Empty));
+
         private int generation;
         private CancellationTokenSource? pending;
 
@@ -46,6 +50,12 @@ namespace GameSaveCenter.Playnite.Controls
         {
             get => (int)GetValue(PreviewWidthProperty);
             set => SetValue(PreviewWidthProperty, value);
+        }
+
+        public string PreviewDimensions
+        {
+            get => (string)GetValue(PreviewDimensionsProperty);
+            private set => SetValue(PreviewDimensionsProperty, value);
         }
 
         public string PreviewState
@@ -97,6 +107,7 @@ namespace GameSaveCenter.Playnite.Controls
             if (string.IsNullOrWhiteSpace(path))
             {
                 Source = null;
+                PreviewDimensions = string.Empty;
                 PreviewState = "NoImage";
                 return;
             }
@@ -104,11 +115,13 @@ namespace GameSaveCenter.Playnite.Controls
             if (!IsLoaded || !IsVisible)
             {
                 Source = null;
+                PreviewDimensions = string.Empty;
                 PreviewState = "Unavailable";
                 return;
             }
 
             Source = null;
+            PreviewDimensions = string.Empty;
             PreviewState = "Loading";
             var width = Math.Max(48, Math.Min(PreviewWidth, 480));
             var cancellation = new CancellationTokenSource();
@@ -138,9 +151,12 @@ namespace GameSaveCenter.Playnite.Controls
                 if (token.IsCancellationRequested || expected != Volatile.Read(ref generation)) return;
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;
-                    Source = image;
-                    PreviewState = image == null ? ClassifyUnavailable(path) : "Ready";
+                     if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;
+                     Source = image;
+                     PreviewDimensions = image == null
+                         ? string.Empty
+                         : $"{image.PixelWidth} × {image.PixelHeight} px";
+                     PreviewState = image == null ? ClassifyUnavailable(path) : "Ready";
                 }, DispatcherPriority.Background);
             }
             catch (OperationCanceledException)
@@ -151,7 +167,11 @@ namespace GameSaveCenter.Playnite.Controls
             {
                 // Keep the placeholder; missing/corrupt media never tears down the list.
                 if (expected == Volatile.Read(ref generation))
-                    await Dispatcher.InvokeAsync(() => PreviewState = "Failed", DispatcherPriority.Background);
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        PreviewDimensions = string.Empty;
+                        PreviewState = "Failed";
+                    }, DispatcherPriority.Background);
             }
         }
 

@@ -425,7 +425,37 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaLoadedSummary));
             SelectedMedia = SelectionAnchorResolver.Restore(Media, selectedId, previousSelectedIndex, item => item.MediaId)!;
             MediaView.Refresh();
+            OnPropertyChanged(nameof(CanNavigatePreviousMedia));
+            OnPropertyChanged(nameof(CanNavigateNextMedia));
+            OnPropertyChanged(nameof(MediaDetailNavigationDisplay));
             RaiseCommandStates();
+        }
+
+        public bool CanNavigatePreviousMedia => GetSelectedMediaIndex() > 0;
+
+        public bool CanNavigateNextMedia
+            => GetSelectedMediaIndex() >= 0 && GetSelectedMediaIndex() < Media.Count - 1;
+
+        public string MediaDetailNavigationDisplay
+        {
+            get
+            {
+                var index = GetSelectedMediaIndex();
+                return index < 0 ? "未选择媒体" : $"{index + 1} / {Media.Count}";
+            }
+        }
+
+        private int GetSelectedMediaIndex()
+            => SelectedMedia == null ? -1 : Media.IndexOf(SelectedMedia);
+
+        private void SelectAdjacentMedia(int delta)
+        {
+            var index = GetSelectedMediaIndex();
+            var targetIndex = index + delta;
+            if (index < 0 || targetIndex < 0 || targetIndex >= Media.Count)
+                return;
+
+            SelectedMedia = Media[targetIndex];
         }
 
         private MediaQueryDto BuildMediaQuery(string playniteId, string cursor)

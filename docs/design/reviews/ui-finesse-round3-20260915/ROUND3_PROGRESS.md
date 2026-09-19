@@ -124,7 +124,7 @@
 | R14-04 | 撤销边界说明 | 已满足 | 1c0c5a37、a7c39922、03521991 | `validate-source.py`；XAML `24/24`；diff check；既有正常撤销隔离夹具；新增应用后人工修改的撤销冲突负例已加入但当前 testhost 未产出汇总 | 现有历史页提供上次/所选可回退入口；确认文案和 Tooltip 说明不可撤销边界；撤销前重新核对批次目标与当前媒体，冲突项保留当前状态且不覆盖后来决定 | 定向 Worker 测试已尝试但当前 dotnet 长时间无输出，未写成运行时通过；未验 Release/net462、Playnite/RenderHarness、真实宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R14-04 撤销边界说明](evidence/R14-04-UNDO-BOUNDARY-20260920.md)；下一项 R14-05 重复媒体识别视图 |
 | R14-05 | 重复媒体识别视图 | 已实现，待环境验证 | 136285d5 | validate-source.py；XAML 24/24；diff check；Worker 疑似组隔离夹具和 Playnite 只读契约已加入但当前构建/testhost 未产出结果 | 复用现有 SHA-256 入库去重能力；当前游戏范围内区分确定哈希组与同类型/文件名/大小疑似组；只读选择查看；扫描上限 5000、组上限 100、组内展示上限 24，列表有限/Recycling | Worker/Contracts 构建受 linked obj Access denied 与 SDK/Workload 环境阻塞；未验 Worker/Playnite 运行时、Release/net462、RenderHarness、真实 Playnite/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-05 重复媒体识别视图（evidence/R14-05-DUPLICATE-INSPECTION-20260920.md）；先补跑 R14-04/R14-05 定向验证，再推进 R14-06 |
 | R14-06 | 批量目标防误选 | 已实现，待环境验证 | cfbb1279 | validate-source.py；XAML 24/24；diff check；新增 GamePicker 图标/稳定身份行为夹具和归类目标模板契约，但当前 Playnite testhost 未产出结果 | 复用现有游戏描述/状态 DTO 与选框筛选/选择；本地 Playnite 图标缺失安全回退；归类目标显示名称、平台、图标和稳定 Playnite ID；重名按对象/ID区分；过滤不改写已选目标，不使用 SelectedIndex | 未验构建/testhost、Release/net462、真实 Playnite/RenderHarness/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；IconPath 只读本地已有引用；main 用户改动和 src.zip 未碰、未合并 | R14-06 批量目标防误选（evidence/R14-06-TARGET-GUARD-20260920.md）；先补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 |
-| R14-07 | 媒体详情浏览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-07 | 媒体详情浏览 | 已实现，待环境验证 | 待本阶段提交 | validate-source.py；XAML 24/24；diff check；新增截图尺寸行为断言和详情导航/视频回退源码契约夹具；Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断 | 当前已加载媒体窗口内上一项/下一项；按 MediaId 保持列表行锚点；类型、来源、大小、采集时间和截图 PixelWidth/PixelHeight 可见；视频缺失/格式不支持/MediaFailed 有回退；异步截图继续可取消 | 未验跨页导航、Release/net462、真实 Playnite/RenderHarness/宿主呈现、真实视频编解码、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-07 媒体详情浏览（evidence/R14-07-MEDIA-DETAIL-20260920.md）；先补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08 |
 | R14-08 | 来源规则试运行 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-01 | 任务阶段可读 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-02 | 取消过程展示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -373,6 +373,14 @@
 - 新增 PickerItemsExposeStableIdentityAndOptionalPlayniteIcon 及 R14 目标显示/绑定契约夹具。validate-source.py、XAML 24/24、diff check 通过；定向 Playnite testhost 长时间无输出后终止当前会话，未产出可签收运行时结果。
 - 只用合成/fake/隔离源码，不下载图标，不读写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。证据见 R14-06 批量目标防误选（evidence/R14-06-TARGET-GUARD-20260920.md）。
 - 下一可执行小批量：在可用 SDK/Workload 环境补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 媒体详情浏览。
+
+## 2026-09-20 Round3 R14-07 媒体详情浏览
+
+- 先查到现有 `Media` 已有稳定分页窗口、`SelectedMedia` 和选择/滚动锚点，`AsyncThumbnailImage` 已有取消、不可见/卸载取消以及 Missing/Unavailable/Failed 状态；本批只补详情导航、可见行回滚、视频失败回退和截图尺寸证据。
+- 上一项/下一项命令只在当前已加载 `Media` 集合内按索引相邻移动，导航后由 `MediaGrid.ScrollIntoView`/容器 `BringIntoView` 恢复列表位置；不把“可加载更多”伪装成已实现的跨页详情导航。
+- 详情显示已有媒体 DTO 的类型、来源、大小、采集时间；异步截图把解码位图的 PixelWidth/PixelHeight 显示为尺寸。视频本地路径/扩展名先验失败或 `MediaFailed` 时显示回退，不让详情错误撕裂列表。
+- `validate-source.py`、XAML `24/24`、diff check 通过；Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断，未写成构建/testhost 通过。只用合成/fake/隔离路径，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。证据见 R14-07 媒体详情浏览（evidence/R14-07-MEDIA-DETAIL-20260920.md）。
+- 下一可执行小批量：在可用 SDK/Workload 环境补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08 的既有实现与依赖。
 
 
 ## 2026-09-19 R00/R01 当前提交复核

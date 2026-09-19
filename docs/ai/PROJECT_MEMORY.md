@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 2026-09-20 R14-07 媒体详情浏览（代码完成，环境待验）
+
+- 先复用现有媒体分页、稳定 `MediaId` 选择和滚动锚点；上一项/下一项只在当前已加载窗口内移动，选中项变化后显式 `ScrollIntoView`/`BringIntoView`，不虚构跨页数据。
+- 详情沿用 `MediaItemDto` 的类型/来源/大小/采集时间；`AsyncThumbnailImage` 通过 `BitmapSource.PixelWidth/PixelHeight` 暴露截图尺寸。视频本地路径缺失、不支持格式或 `MediaFailed` 统一进入只读回退，异步截图仍由 generation、取消令牌和卸载取消保护。
+- `validate-source.py`、XAML `24/24`、diff check 通过；新增尺寸行为断言和 R14-07 源码契约夹具。Playnite Tests Release build 退出 1，仅输出 0 警告/0 错误、无诊断，不写成构建或运行时通过。
+- 只使用合成/fake/隔离路径；未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动、src.zip 未碰、未合并。
+- 证据为 `R14-07-MEDIA-DETAIL-20260920.md`；下一步补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08 的既有实现与依赖。
+
 ## 2026-09-20 R14-06 批量目标防误选（代码完成，环境待验）
 
 - 先查到现有目标均来自 Games，当前全局选框已按 PlayniteId 保留被筛选隐藏的选择，媒体目标也已有 SelectedItem/TargetPlayniteId 绑定；本阶段没有重建选框、过滤或命令链。
