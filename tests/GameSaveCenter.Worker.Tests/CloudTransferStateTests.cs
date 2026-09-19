@@ -160,6 +160,70 @@ public sealed class CloudTransferStateTests : IDisposable
     }
 
     [Fact]
+    public async Task CloudStatusFiltersGameDeviceAndTimeWhileKeepingGlobalCount()
+    {
+        var now = DateTime.UtcNow;
+        foreach (var item in new[]
+        {
+            new CloudTransferQueueEntry
+            {
+                TransferKey = "Backup:game-alpha",
+                Kind = CloudTransferKind.Backup,
+                PlayniteId = "game-alpha",
+                State = "Uploaded",
+                CreatedUtc = now.AddDays(-3),
+                UpdatedUtc = now.AddDays(-2)
+            },
+            new CloudTransferQueueEntry
+            {
+                TransferKey = "Backup:game-beta",
+                Kind = CloudTransferKind.Backup,
+                PlayniteId = "game-beta",
+                State = "RetryScheduled",
+                CreatedUtc = now.AddDays(-1),
+                UpdatedUtc = now.AddHours(-2)
+            },
+            new CloudTransferQueueEntry
+            {
+                TransferKey = "Media:game-beta",
+                Kind = CloudTransferKind.Media,
+                PlayniteId = "game-beta",
+                State = "Uploaded",
+                CreatedUtc = now.AddDays(-1),
+                UpdatedUtc = now.AddHours(-1)
+            }
+        })
+        {
+            await store.UpsertCloudTransferAsync(item, CancellationToken.None);
+        }
+
+        var filtered = await CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance))
+            .GetStatusAsync(new CloudTransferStatusRequestDto
+            {
+                GameName = "beta",
+                SourceDevice = options.DeviceStorageKey,
+                UpdatedAfterUtc = now.AddHours(-12),
+                PageSize = 10
+            }, CancellationToken.None);
+
+        Assert.Equal(1, filtered.TotalCount);
+        Assert.Equal(3, filtered.GlobalTotalCount);
+        Assert.Single(filtered.Items);
+        Assert.Equal("Backup:game-beta", filtered.Items[0].TransferKey);
+
+        var wrongDevice = await CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance))
+            .GetStatusAsync(new CloudTransferStatusRequestDto
+            {
+                GameName = "beta",
+                SourceDevice = "unknown-device",
+                PageSize = 10
+            }, CancellationToken.None);
+        Assert.Equal(0, wrongDevice.TotalCount);
+        Assert.Equal(3, wrongDevice.GlobalTotalCount);
+        Assert.Empty(wrongDevice.Items);
+    }
+
+    [Fact]
     public async Task CloudPagingRejectsStaleConsistencyTokenAfterQueueChanges()
     {
         var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);

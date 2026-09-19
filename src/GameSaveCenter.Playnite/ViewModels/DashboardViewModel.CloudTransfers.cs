@@ -30,6 +30,7 @@ public sealed partial class DashboardViewModel
         var generation = Interlocked.Increment(ref cloudTransferLoadGeneration);
         var page = reset ? 0 : cloudTransferPage + 1;
         var requestCancellation = BeginCloudTransferRequest();
+        var timeWindow = GetCloudTransferTimeWindow();
         try
         {
             var request = new CloudTransferStatusRequestDto
@@ -38,6 +39,10 @@ public sealed partial class DashboardViewModel
                 PageSize = 100,
                 State = CloudTransferStateFilter,
                 Kind = ParseCloudTransferKind(CloudTransferKindFilter),
+                GameName = CloudTransferGameFilter,
+                SourceDevice = CloudTransferSourceDeviceFilter,
+                UpdatedAfterUtc = timeWindow.AfterUtc,
+                UpdatedBeforeUtc = timeWindow.BeforeUtc,
                 ConsistencyToken = reset ? string.Empty : cloudTransferConsistencyToken
             };
             var response = await plugin.RequestAsync<CloudTransferSummaryDto>(
@@ -215,6 +220,18 @@ public sealed partial class DashboardViewModel
             "Media" => CloudTransferKind.Media,
             _ => null
         };
+
+    private (DateTime? AfterUtc, DateTime? BeforeUtc) GetCloudTransferTimeWindow()
+    {
+        var now = DateTime.UtcNow;
+        return CloudTransferTimeFilter switch
+        {
+            "24h" => (now.AddHours(-24), now),
+            "7d" => (now.AddDays(-7), now),
+            "30d" => (now.AddDays(-30), now),
+            _ => (null, null)
+        };
+    }
 
     private static bool AreSameCloudTransfer(CloudTransferStatusDto left, CloudTransferStatusDto right)
         => string.Equals(left.TransferKey, right.TransferKey, StringComparison.OrdinalIgnoreCase)

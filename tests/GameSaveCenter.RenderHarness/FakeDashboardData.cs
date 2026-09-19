@@ -966,11 +966,27 @@ public sealed class FakeDashboardData
     {
         new CloudTransferFilterOption(string.Empty, "全部类型"), new CloudTransferFilterOption("Backup", "备份"), new CloudTransferFilterOption("Media", "媒体")
     };
+    public ObservableCollection<CloudTransferFilterOption> CloudTransferTimeFilterOptions { get; } = new ObservableCollection<CloudTransferFilterOption>
+    {
+        new CloudTransferFilterOption(string.Empty, "全部时间"), new CloudTransferFilterOption("24h", "最近 24 小时"), new CloudTransferFilterOption("7d", "最近 7 天"), new CloudTransferFilterOption("30d", "最近 30 天")
+    };
     public string CloudTransferStateFilter { get; set; } = string.Empty;
     public string CloudTransferKindFilter { get; set; } = string.Empty;
+    public string CloudTransferGameFilter { get; set; } = string.Empty;
+    public string CloudTransferSourceDeviceFilter { get; set; } = string.Empty;
+    public string CloudTransferTimeFilter { get; set; } = string.Empty;
     public string CloudTransferAvailabilityHint => ActionAvailabilityHints.CloudTransfer(Snapshot.WorkerHealthy, EffectiveSettings.EnableCloudUpload, Snapshot.RcloneAvailable, SelectedCloudTransfer, IsBusy);
     public bool CloudTransferNeedsMaintenance => ActionAvailabilityHints.CloudTransferNeedsMaintenance(Snapshot.WorkerHealthy, EffectiveSettings.EnableCloudUpload, Snapshot.RcloneAvailable, SelectedCloudTransfer, IsBusy);
     public bool CloudTransferHasMore => CloudTransferViewSummary.HasMore;
+    public int CloudTransferGlobalCount => Math.Max(CloudTransferViewSummary.GlobalTotalCount, CloudTransferViewSummary.TotalCount);
+    public bool CloudTransferHasActiveFilters => !string.IsNullOrWhiteSpace(CloudTransferStateFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferKindFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferGameFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferSourceDeviceFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferTimeFilter);
+    public string CloudTransferScopeSummary => CloudTransferHasActiveFilters
+        ? $"当前筛选 {CloudTransferViewSummary.TotalCount}/{CloudTransferGlobalCount} 项"
+        : $"全局 {CloudTransferGlobalCount} 项";
     public string CloudTransferLoadedSummary => $"已加载全部 {CloudTransferItems.Count} 项";
     public int MediaTabIndex { get; set; }
     public int MaintenanceTabIndex { get; set; }

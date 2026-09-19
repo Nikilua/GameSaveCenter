@@ -310,6 +310,17 @@ public sealed class CloudTransferStateService
         var page = Math.Clamp(request.Page, 0, int.MaxValue / pageSize);
         var offset = page * pageSize;
         var kindFilter = request.Kind;
+        var filter = new CloudTransferQueryFilter
+        {
+            State = stateFilter,
+            Kind = kindFilter,
+            GameName = request.GameName?.Trim() ?? string.Empty,
+            SourceDevice = request.SourceDevice?.Trim() ?? string.Empty,
+            BackupSourceDevice = _options.DeviceStorageKey,
+            MediaSourceDevice = Environment.MachineName,
+            UpdatedAfterUtc = request.UpdatedAfterUtc,
+            UpdatedBeforeUtc = request.UpdatedBeforeUtc
+        };
         var consistencyToken = await _store.GetQueryRevisionAsync(
             SqliteStateStore.CloudTransferQueryRevision, token).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(request.ConsistencyToken)
@@ -319,8 +330,15 @@ public sealed class CloudTransferStateService
                 "云端队列已发生变化，请从第一页刷新后继续。");
         }
 
-        var aggregate = await _store.GetCloudTransferSummaryAsync(stateFilter, kindFilter, token).ConfigureAwait(false);
-        var entries = await _store.GetCloudTransferPageAsync(offset, pageSize, stateFilter, kindFilter, token).ConfigureAwait(false);
+        var aggregate = await _store.GetCloudTransferSummaryAsync(filter, token).ConfigureAwait(false);
+        var globalAggregate = filter.HasAnyFilter
+            ? await _store.GetCloudTransferSummaryAsync(new CloudTransferQueryFilter
+            {
+                BackupSourceDevice = _options.DeviceStorageKey,
+                MediaSourceDevice = Environment.MachineName
+            }, token).ConfigureAwait(false)
+            : aggregate;
+        var entries = await _store.GetCloudTransferPageAsync(offset, pageSize, filter, token).ConfigureAwait(false);
         var games = await _store.GetCloudGameStatesAsync(token).ConfigureAwait(false);
         var media = await _store.GetCloudMediaStatesAsync(token).ConfigureAwait(false);
         var names = games.Concat<CloudGameStateRecord>(media)
@@ -345,6 +363,7 @@ public sealed class CloudTransferStateService
         var summary = new CloudTransferSummaryDto
         {
             TotalCount = aggregate.TotalCount,
+            GlobalTotalCount = globalAggregate.TotalCount,
             PendingCount = aggregate.PendingCount,
             TransferringCount = aggregate.TransferringCount,
             VerifyingCount = aggregate.VerifyingCount,
@@ -363,6 +382,10 @@ public sealed class CloudTransferStateService
             HasMore = offset + items.Count < aggregate.TotalCount,
             StateFilter = stateFilter,
             KindFilter = kindFilter,
+            GameNameFilter = filter.GameName,
+            SourceDeviceFilter = filter.SourceDevice,
+            UpdatedAfterUtc = filter.UpdatedAfterUtc,
+            UpdatedBeforeUtc = filter.UpdatedBeforeUtc,
             QueuePaused = _options.CloudUploadQueuePaused,
             OutsideAllowedWindow = _options.EnableCloudUpload
                 && !_options.CloudUploadQueuePaused
@@ -387,6 +410,7 @@ public sealed class CloudTransferStateService
         {
             Page = page,
             PageSize = pageSize,
+            GlobalTotalCount = 0,
             StateFilter = stateFilter,
             KindFilter = kindFilter,
             ConsistencyToken = consistencyToken,

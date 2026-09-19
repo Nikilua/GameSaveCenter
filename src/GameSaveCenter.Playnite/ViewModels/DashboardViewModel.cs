@@ -77,6 +77,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly DebouncedRefresh taskHistoryQueryRefresh;
         private readonly DebouncedRefresh mediaSearchRefresh;
         private readonly DebouncedRefresh mediaPageQueryRefresh;
+        private readonly DebouncedRefresh cloudTransferFilterRefresh;
         private readonly DebouncedRefresh uiStateSave;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
         private string? selectedGamePolicyId;
@@ -245,6 +246,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool cloudTransferNeedsManualRefresh;
         private string cloudTransferStateFilter = string.Empty;
         private string cloudTransferKindFilter = string.Empty;
+        private string cloudTransferGameFilter = string.Empty;
+        private string cloudTransferSourceDeviceFilter = string.Empty;
+        private string cloudTransferTimeFilter = string.Empty;
         private int maintenanceTabIndex;
         private int mediaTabIndex = 1;
         private int saveTabIndex;
@@ -287,6 +291,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             taskHistoryQueryRefresh = new DebouncedRefresh(() => ApplyOnUi(StartQueuedTaskHistoryQuery), TimeSpan.FromMilliseconds(240));
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             mediaPageQueryRefresh = new DebouncedRefresh(() => Run(LoadFilteredMediaPageAsync), TimeSpan.FromMilliseconds(240));
+            cloudTransferFilterRefresh = new DebouncedRefresh(() => Run(() => LoadCloudTransferPageAsync(true)), TimeSpan.FromMilliseconds(240));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
             InitializeFilterPresets();
             taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
@@ -581,21 +586,104 @@ namespace GameSaveCenter.Playnite.ViewModels
                || !string.Equals(MediaFilter, "全部", StringComparison.Ordinal);
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
-        public CloudTransferSummaryDto CloudTransferViewSummary { get => cloudTransferViewSummary; private set => SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto()); }
+        public CloudTransferSummaryDto CloudTransferViewSummary
+        {
+            get => cloudTransferViewSummary;
+            private set
+            {
+                SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto());
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferScopeSummary));
+                OnPropertyChanged(nameof(CloudTransferGlobalCount));
+            }
+        }
         public CloudTransferStatusDto SelectedCloudTransfer { get { return selectedCloudTransfer; } set { SetValue(ref selectedCloudTransfer, value); OnPropertyChanged(nameof(CloudTransferAvailabilityHint)); OnPropertyChanged(nameof(CloudTransferNeedsMaintenance)); RaiseCommandStates(); } }
         public bool CloudTransferHasMore => cloudTransferHasMore;
         public bool CloudTransferNeedsManualRefresh => cloudTransferNeedsManualRefresh;
         public string CloudTransferLoadedSummary => CloudTransferViewSummary.TotalCount <= 0
             ? cloudTransferNeedsManualRefresh
                 ? "数据仍在变化，请点击“刷新队列”后继续"
-                : "暂无云端传输记录"
-            : cloudTransferHasMore
-                ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项"
-                : cloudTransferNeedsManualRefresh
-                    ? $"数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续"
-                    : $"已加载全部 {CloudTransferItems.Count} 项";
-        public string CloudTransferStateFilter { get => cloudTransferStateFilter; set { SetValue(ref cloudTransferStateFilter, value ?? string.Empty); } }
-        public string CloudTransferKindFilter { get => cloudTransferKindFilter; set { SetValue(ref cloudTransferKindFilter, value ?? string.Empty); } }
+                : CloudTransferHasActiveFilters
+                    ? $"当前筛选 0/{CloudTransferGlobalCount} 项 · 暂无匹配记录"
+                    : "暂无云端传输记录"
+            : $"{CloudTransferScopeSummary} · {(cloudTransferHasMore ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项" : cloudTransferNeedsManualRefresh ? "数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续" : $"已加载全部 {CloudTransferItems.Count} 项")}";
+        public string CloudTransferStateFilter
+        {
+            get => cloudTransferStateFilter;
+            set
+            {
+                SetValue(ref cloudTransferStateFilter, value ?? string.Empty);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+            }
+        }
+        public string CloudTransferKindFilter
+        {
+            get => cloudTransferKindFilter;
+            set
+            {
+                SetValue(ref cloudTransferKindFilter, value ?? string.Empty);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+            }
+        }
+        public IReadOnlyList<CloudTransferFilterOption> CloudTransferTimeFilterOptions { get; } = new[]
+        {
+            new CloudTransferFilterOption(string.Empty, "全部时间"),
+            new CloudTransferFilterOption("24h", "最近 24 小时"),
+            new CloudTransferFilterOption("7d", "最近 7 天"),
+            new CloudTransferFilterOption("30d", "最近 30 天")
+        };
+        public bool CloudTransferHasActiveFilters
+            => !string.IsNullOrWhiteSpace(CloudTransferStateFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferKindFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferGameFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferSourceDeviceFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferTimeFilter);
+        public int CloudTransferGlobalCount
+            => Math.Max(CloudTransferViewSummary.GlobalTotalCount, CloudTransferViewSummary.TotalCount);
+        public string CloudTransferScopeSummary
+            => CloudTransferHasActiveFilters
+                ? $"当前筛选 {CloudTransferViewSummary.TotalCount}/{CloudTransferGlobalCount} 项"
+                : $"全局 {CloudTransferGlobalCount} 项";
+        public string CloudTransferGameFilter
+        {
+            get => cloudTransferGameFilter;
+            set
+            {
+                var next = value ?? string.Empty;
+                if (string.Equals(cloudTransferGameFilter, next, StringComparison.Ordinal)) return;
+                SetValue(ref cloudTransferGameFilter, next);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                cloudTransferFilterRefresh.Schedule();
+            }
+        }
+        public string CloudTransferSourceDeviceFilter
+        {
+            get => cloudTransferSourceDeviceFilter;
+            set
+            {
+                var next = value ?? string.Empty;
+                if (string.Equals(cloudTransferSourceDeviceFilter, next, StringComparison.Ordinal)) return;
+                SetValue(ref cloudTransferSourceDeviceFilter, next);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                cloudTransferFilterRefresh.Schedule();
+            }
+        }
+        public string CloudTransferTimeFilter
+        {
+            get => cloudTransferTimeFilter;
+            set
+            {
+                var next = value ?? string.Empty;
+                if (string.Equals(cloudTransferTimeFilter, next, StringComparison.Ordinal)) return;
+                SetValue(ref cloudTransferTimeFilter, next);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+            }
+        }
 
         public DashboardSnapshotDto Snapshot
         {
@@ -1918,6 +2006,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             taskHistoryQueryRefresh.Cancel();
             mediaSearchRefresh.Cancel();
             mediaPageQueryRefresh.Cancel();
+            cloudTransferFilterRefresh.Cancel();
             Interlocked.Increment(ref mediaPageGeneration);
             Interlocked.Increment(ref mediaInboxLoadGeneration);
             Interlocked.Increment(ref taskPageGeneration);

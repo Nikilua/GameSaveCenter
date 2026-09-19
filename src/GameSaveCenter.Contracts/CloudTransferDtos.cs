@@ -60,6 +60,12 @@ public sealed class CloudTransferStatusRequestDto
     public int PageSize { get; set; } = 100;
     public string State { get; set; } = string.Empty;
     public CloudTransferKind? Kind { get; set; }
+    /// <summary>Case-insensitive game-name or Playnite-id fragment.</summary>
+    public string GameName { get; set; } = string.Empty;
+    /// <summary>Exact current source-device key/name; empty means all devices.</summary>
+    public string SourceDevice { get; set; } = string.Empty;
+    public DateTime? UpdatedAfterUtc { get; set; }
+    public DateTime? UpdatedBeforeUtc { get; set; }
     /// <summary>Opaque Worker-owned revision returned by the preceding page.</summary>
     public string ConsistencyToken { get; set; } = string.Empty;
 }
@@ -204,6 +210,8 @@ public sealed class CloudTransferStatusDto
 public sealed class CloudTransferSummaryDto
 {
     public int TotalCount { get; set; }
+    /// <summary>Total queue rows before the current state/kind/game/device/time filters.</summary>
+    public int GlobalTotalCount { get; set; }
     public int PendingCount { get; set; }
     public int TransferringCount { get; set; }
     public int VerifyingCount { get; set; }
@@ -225,6 +233,10 @@ public sealed class CloudTransferSummaryDto
     public string PageResetReason { get; set; } = string.Empty;
     public string StateFilter { get; set; } = string.Empty;
     public CloudTransferKind? KindFilter { get; set; }
+    public string GameNameFilter { get; set; } = string.Empty;
+    public string SourceDeviceFilter { get; set; } = string.Empty;
+    public DateTime? UpdatedAfterUtc { get; set; }
+    public DateTime? UpdatedBeforeUtc { get; set; }
     public DateTime? NextAttemptUtc { get; set; }
     public List<CloudTransferStatusDto> Items { get; set; } = new List<CloudTransferStatusDto>();
 

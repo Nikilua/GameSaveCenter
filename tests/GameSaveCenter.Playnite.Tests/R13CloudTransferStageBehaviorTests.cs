@@ -63,6 +63,23 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.DoesNotContain("ShowTaskNotification", retry, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void MaintenanceQueueKeepsFilterScopeAndPagingSelectionContracts()
+    {
+        var root = TestRepositoryContext.Root;
+        var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var transfers = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.CloudTransfers.cs"));
+        var worker = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "CloudTransferStateService.cs"));
+
+        Assert.Contains("CloudTransferGameFilter", view, StringComparison.Ordinal);
+        Assert.Contains("CloudTransferSourceDeviceFilter", view, StringComparison.Ordinal);
+        Assert.Contains("CloudTransferTimeFilterOptions", view, StringComparison.Ordinal);
+        Assert.Contains("当前筛选", viewModel, StringComparison.Ordinal);
+        Assert.Contains("existingKeys", transfers, StringComparison.Ordinal);
+        Assert.Contains("GlobalTotalCount = globalAggregate.TotalCount", worker, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData("Failed", true)]
     [InlineData("RetryScheduled", true)]

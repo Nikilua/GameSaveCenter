@@ -110,7 +110,7 @@ WHERE transfer_key=$key AND operation_id=$expected_operation_id;";
     }
 
     public async Task<CloudTransferSummaryAggregate> GetCloudTransferSummaryAsync(
-        string? stateFilter, CloudTransferKind? kindFilter, CancellationToken token)
+        CloudTransferQueryFilter filter, CancellationToken token)
     {
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
@@ -131,8 +131,14 @@ SELECT COUNT(*),
 FROM ({CurrentCloudTransferRows}) AS current
 WHERE current.state <> 'NotApplicable'
   AND ($state='' OR current.state=$state)
-  AND ($kind='' OR current.transfer_kind=$kind);";
-        AddCloudTransferFilters(command, stateFilter, kindFilter);
+  AND ($kind='' OR current.transfer_kind=$kind)
+  AND ($game='' OR lower(COALESCE(current.game_name,'')) LIKE '%' || lower($game) || '%'
+       OR lower(current.playnite_id) LIKE '%' || lower($game) || '%')
+  AND ($device='' OR (current.transfer_kind='Backup' AND $device=$backup_device)
+       OR (current.transfer_kind='Media' AND $device=$media_device))
+  AND ($updated_after='' OR current.updated_utc >= $updated_after)
+  AND ($updated_before='' OR current.updated_utc < $updated_before);";
+        AddCloudTransferFilters(command, filter);
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         if (!await reader.ReadAsync(token).ConfigureAwait(false)) return new CloudTransferSummaryAggregate();
         return new CloudTransferSummaryAggregate
@@ -153,7 +159,7 @@ WHERE current.state <> 'NotApplicable'
     }
 
     public async Task<List<CloudTransferQueueEntry>> GetCloudTransferPageAsync(
-        int offset, int limit, string? stateFilter, CloudTransferKind? kindFilter, CancellationToken token)
+        int offset, int limit, CloudTransferQueryFilter filter, CancellationToken token)
     {
         var result = new List<CloudTransferQueueEntry>();
         await using var connection = Open();
@@ -162,11 +168,17 @@ WHERE current.state <> 'NotApplicable'
         command.CommandText = $@"
 SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,
        prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,
-       last_error_code,last_error,created_utc,updated_utc
+       last_error_code,last_error,created_utc,updated_utc,game_name
 FROM ({CurrentCloudTransferRows}) AS current
 WHERE current.state <> 'NotApplicable'
   AND ($state='' OR current.state=$state)
   AND ($kind='' OR current.transfer_kind=$kind)
+  AND ($game='' OR lower(COALESCE(current.game_name,'')) LIKE '%' || lower($game) || '%'
+       OR lower(current.playnite_id) LIKE '%' || lower($game) || '%')
+  AND ($device='' OR (current.transfer_kind='Backup' AND $device=$backup_device)
+       OR (current.transfer_kind='Media' AND $device=$media_device))
+  AND ($updated_after='' OR current.updated_utc >= $updated_after)
+  AND ($updated_before='' OR current.updated_utc < $updated_before)
 ORDER BY CASE current.state
     WHEN 'AuthenticationRequired' THEN 7
     WHEN 'CheckFailed' THEN 6
@@ -181,11 +193,11 @@ ORDER BY CASE current.state
     current.updated_utc DESC,
     current.transfer_key COLLATE NOCASE
 LIMIT $limit OFFSET $offset;";
-        AddCloudTransferFilters(command, stateFilter, kindFilter);
+        AddCloudTransferFilters(command, filter);
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 100));
         command.Parameters.AddWithValue("$offset", Math.Max(0, offset));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
-        while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadCloudTransfer(reader));
+        while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(ReadCloudTransfer(reader, true));
         return result;
     }
 
@@ -280,10 +292,16 @@ GROUP BY m.playnite_id,g.name;";
         return result;
     }
 
-    private static void AddCloudTransferFilters(SqliteCommand command, string? stateFilter, CloudTransferKind? kindFilter)
+    private static void AddCloudTransferFilters(SqliteCommand command, CloudTransferQueryFilter filter)
     {
-        command.Parameters.AddWithValue("$state", stateFilter?.Trim() ?? string.Empty);
-        command.Parameters.AddWithValue("$kind", kindFilter?.ToString() ?? string.Empty);
+        command.Parameters.AddWithValue("$state", filter.State?.Trim() ?? string.Empty);
+        command.Parameters.AddWithValue("$kind", filter.Kind?.ToString() ?? string.Empty);
+        command.Parameters.AddWithValue("$game", filter.GameName?.Trim() ?? string.Empty);
+        command.Parameters.AddWithValue("$device", filter.SourceDevice?.Trim() ?? string.Empty);
+        command.Parameters.AddWithValue("$backup_device", filter.BackupSourceDevice?.Trim() ?? string.Empty);
+        command.Parameters.AddWithValue("$media_device", filter.MediaSourceDevice?.Trim() ?? string.Empty);
+        command.Parameters.AddWithValue("$updated_after", filter.UpdatedAfterUtc?.ToUniversalTime().ToString("O") ?? string.Empty);
+        command.Parameters.AddWithValue("$updated_before", filter.UpdatedBeforeUtc?.ToUniversalTime().ToString("O") ?? string.Empty);
     }
 
     private const string SelectCloudTransfers = @"SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,last_error_code,last_error,created_utc,updated_utc FROM cloud_transfer_queue";
@@ -305,7 +323,8 @@ WITH media_base AS (
 ), candidates AS (
     SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,
            prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,
-           last_error_code,last_error,created_utc,updated_utc,0 AS source_priority
+           last_error_code,last_error,created_utc,updated_utc,0 AS source_priority,
+           COALESCE((SELECT g.name FROM games g WHERE g.playnite_id=cloud_transfer_queue.playnite_id LIMIT 1),'') AS game_name
     FROM cloud_transfer_queue
     UNION ALL
     SELECT 'Backup:'||r.playnite_id,'Backup',r.playnite_id,
@@ -333,19 +352,20 @@ WITH media_base AS (
                      OR lower(COALESCE(r.last_error,'')) LIKE '%incomplete%'
                      OR (lower(COALESCE(r.last_error,'')) LIKE '%transferred%' AND lower(COALESCE(r.last_error,'')) LIKE '%error%') THEN 'RCLONE_TRANSFER_INCOMPLETE'
                 ELSE 'RCLONE_COPY_FAILED' END,
-           r.last_error,r.created_utc,r.updated_utc,1
+           r.last_error,r.created_utc,r.updated_utc,1,
+           COALESCE((SELECT g.name FROM games g WHERE g.playnite_id=r.playnite_id LIMIT 1),'')
     FROM cloud_retry_queue r
     UNION ALL
     SELECT 'Backup:'||g.playnite_id,'Backup',g.playnite_id,
            CASE WHEN g.cloud_state='Synced' THEN 'Uploaded' ELSE COALESCE(g.cloud_state,'Disabled') END,
            'Upload','', '', 'Upload','', NULL, NULL, '', '', 0, NULL, NULL, '', '',
-           strftime('%Y-%m-%dT%H:%M:%fZ','now'),strftime('%Y-%m-%dT%H:%M:%fZ','now'),2
+           strftime('%Y-%m-%dT%H:%M:%fZ','now'),strftime('%Y-%m-%dT%H:%M:%fZ','now'),2,g.name
     FROM games g
     WHERE COALESCE(g.cloud_state,'Disabled')<>'Disabled'
     UNION ALL
     SELECT 'Media:'||m.playnite_id,'Media',m.playnite_id,m.state,
            'Upload','', '', 'Upload','', NULL, NULL, '', '', 0, NULL, NULL, '', '',
-           strftime('%Y-%m-%dT%H:%M:%fZ','now'),strftime('%Y-%m-%dT%H:%M:%fZ','now'),2
+           strftime('%Y-%m-%dT%H:%M:%fZ','now'),strftime('%Y-%m-%dT%H:%M:%fZ','now'),2,m.game_name
     FROM media_base m
 ), ranked AS (
     SELECT candidates.*,
@@ -354,11 +374,11 @@ WITH media_base AS (
 )
 SELECT transfer_key,transfer_kind,playnite_id,state,operation_kind,operation_id,prior_state,prior_operation_kind,prior_operation_id,
        prior_next_attempt_utc,prior_last_attempt_utc,prior_error_code,prior_error,attempt_count,next_attempt_utc,last_attempt_utc,
-       last_error_code,last_error,created_utc,updated_utc
+       last_error_code,last_error,created_utc,updated_utc,game_name
 FROM ranked
 WHERE duplicate_rank=1";
 
-    private static CloudTransferQueueEntry ReadCloudTransfer(SqliteDataReader reader)
+    private static CloudTransferQueueEntry ReadCloudTransfer(SqliteDataReader reader, bool hasGameName = false)
         => new()
         {
             TransferKey = reader.GetString(0),
@@ -380,7 +400,8 @@ WHERE duplicate_rank=1";
             LastErrorCode = reader.IsDBNull(16) ? string.Empty : reader.GetString(16),
             LastError = reader.IsDBNull(17) ? string.Empty : reader.GetString(17),
             CreatedUtc = DateTime.Parse(reader.GetString(18)).ToUniversalTime(),
-            UpdatedUtc = DateTime.Parse(reader.GetString(19)).ToUniversalTime()
+            UpdatedUtc = DateTime.Parse(reader.GetString(19)).ToUniversalTime(),
+            GameName = hasGameName && !reader.IsDBNull(20) ? reader.GetString(20) : string.Empty
         };
 
     private static DateTime? ParseNullableUtc(SqliteDataReader reader, int ordinal)
@@ -412,6 +433,26 @@ public sealed class CloudTransferQueueEntry
     public string LastError { get; set; } = string.Empty;
     public DateTime CreatedUtc { get; set; }
     public DateTime UpdatedUtc { get; set; }
+    public string GameName { get; set; } = string.Empty;
+}
+
+public sealed class CloudTransferQueryFilter
+{
+    public string State { get; set; } = string.Empty;
+    public CloudTransferKind? Kind { get; set; }
+    public string GameName { get; set; } = string.Empty;
+    public string SourceDevice { get; set; } = string.Empty;
+    public string BackupSourceDevice { get; set; } = string.Empty;
+    public string MediaSourceDevice { get; set; } = string.Empty;
+    public DateTime? UpdatedAfterUtc { get; set; }
+    public DateTime? UpdatedBeforeUtc { get; set; }
+    public bool HasAnyFilter
+        => !string.IsNullOrWhiteSpace(State)
+           || Kind.HasValue
+           || !string.IsNullOrWhiteSpace(GameName)
+           || !string.IsNullOrWhiteSpace(SourceDevice)
+           || UpdatedAfterUtc.HasValue
+           || UpdatedBeforeUtc.HasValue;
 }
 
 public sealed class CloudTransferSummaryAggregate
