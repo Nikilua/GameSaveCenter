@@ -18,7 +18,7 @@ public sealed class MaintenanceReportSourceTests
         Assert.Contains("ExportMaintenanceReportCommand", maintenance);
         Assert.Contains("MessageTypes.GetMaintenanceReport", viewModel);
         Assert.Contains("CopyTextWithRetryAsync(report.ReportText", viewModel);
-        Assert.Contains("Clipboard.SetText(text)", viewModel);
+        Assert.Contains("ClipboardRetry.TrySetTextAsync(text, Clipboard.SetText)", viewModel);
         Assert.Contains("File.WriteAllText(dialog.FileName, report.ReportText)", viewModel);
         Assert.Contains("GetMaintenanceReport = \"maintenance.report.get\"", messages);
     }
@@ -49,6 +49,28 @@ public sealed class MaintenanceReportSourceTests
         Assert.Contains("LIMIT $limit OFFSET $offset", store);
         Assert.Contains("RecoverRetentionQuarantine", dispatcher);
         Assert.Contains("Confirmed = true", actions);
+    }
+
+    [Fact]
+    public void RetentionPreviewShowsDateReasonAndSafetyImpactBeforeApply()
+    {
+        var root = FindRepositoryRoot();
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var service = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "RetentionSimulationService.cs"));
+        var dto = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "RetentionSimulationDtos.cs"));
+
+        Assert.Contains("Text=\"{Binding CreatedDisplay}\"", maintenance);
+        Assert.Contains("Text=\"{Binding Reason}\"", maintenance);
+        Assert.Contains("Text=\"{Binding RetentionSimulation.Summary}\"", maintenance);
+        Assert.Contains("Command=\"{Binding ApplyRetentionSimulationCommand}\"", maintenance);
+        Assert.Contains("MaxHeight=\"240\"", maintenance);
+        Assert.Contains("PendingQuarantineCount", service);
+        Assert.Contains("SkippedBusyCount", service);
+        Assert.Contains("RecoveryRequiredCount", service);
+        Assert.Contains("CreatedDisplay", dto);
+        Assert.Contains("IsHealthProtected", dto);
+        Assert.Contains("RETENTION_PREVIEW_STALE", service);
+        Assert.Contains("GameOperationKind.Retention", service);
     }
 
     private static string FindRepositoryRoot()
