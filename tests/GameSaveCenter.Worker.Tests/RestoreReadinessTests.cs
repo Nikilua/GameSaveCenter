@@ -139,6 +139,28 @@ public sealed class RestoreReadinessTests : IDisposable
     }
 
     [Fact]
+    public async Task SameSizeArchiveMutation_IsRejectedWhenReadinessIsRevalidated()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        var manifest = JsonSerializer.Serialize(new[]
+        {
+            new FileManifestEntry { RelativePath = "profile.dat", SizeBytes = 4, Sha256 = Sha256("save") }
+        });
+
+        var first = await service.ValidateAsync(Version(archive, 1, 4), manifest, Path.Combine(root, "staging-first"), CancellationToken.None);
+        Assert.Equal(RestoreReadinessStatus.Ready, first.Status);
+        Assert.Equal(4, first.ActualTotalSize);
+
+        CreateArchiveAt(archive, ("profile.dat", "data"));
+        var second = await service.ValidateAsync(Version(archive, 1, 4), manifest, Path.Combine(root, "staging-second"), CancellationToken.None);
+
+        Assert.Equal(RestoreReadinessStatus.Corrupted, second.Status);
+        Assert.Equal(4, second.ActualTotalSize);
+        Assert.Equal("Failed", second.HashValidation);
+        Assert.Contains("校验失败", second.Summary);
+    }
+
+    [Fact]
     public async Task InvalidManifest_IsFailed_AndDoesNotExtract()
     {
         var archive = CreateArchive(("profile.dat", "save"));
@@ -225,6 +247,12 @@ public sealed class RestoreReadinessTests : IDisposable
     private string CreateArchive(params (string Name, string Content)[] entries)
     {
         var path = Path.Combine(root, Guid.NewGuid().ToString("N") + ".zip");
+        return CreateArchiveAt(path, entries);
+    }
+
+    private static string CreateArchiveAt(string path, params (string Name, string Content)[] entries)
+    {
+        if (File.Exists(path)) File.Delete(path);
         using var archive = ZipFile.Open(path, ZipArchiveMode.Create);
         foreach (var (name, content) in entries)
         {

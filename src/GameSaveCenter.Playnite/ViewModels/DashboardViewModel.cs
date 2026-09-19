@@ -4312,6 +4312,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                     confirmation,
                     "开始安全恢复",
                     "取消")) return;
+            if (!RestoreConfirmationGuard.IsCurrent(
+                    gameId,
+                    backupId,
+                    SelectedGame?.PlayniteId,
+                    SelectedBackup?.BackupId))
+            {
+                ResetRestoreWorkflow();
+                StatusMessage = "确认期间游戏或版本已变化，未执行旧确认；请重新检查并确认当前版本。";
+                return;
+            }
             BeginRestoreExecution();
             TaskStatusDto? task = null;
             try

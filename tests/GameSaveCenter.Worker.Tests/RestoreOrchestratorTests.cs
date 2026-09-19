@@ -84,6 +84,21 @@ public sealed class RestoreOrchestratorTests : IDisposable
     }
 
     [Fact]
+    public async Task RestoreRevalidatesTargetWithPreviewImmediatelyBeforeWrite()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Succeeded, result.State);
+        Assert.Equal(3, client.RestoreOperations.Count);
+        Assert.Equal(("B", true), client.RestoreOperations[0]);
+        Assert.Equal(("B", false), client.RestoreOperations[1]);
+        Assert.Equal(("B", true), client.RestoreOperations[2]);
+    }
+
+    [Fact]
     public async Task RestoreA_FromCurrentB_CompletesAtoBackupBtoRestoreASequence()
     {
         await SeedGameAsync();
@@ -323,6 +338,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public HashSet<string> ThrowReadOnlyFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> FailPostValidationFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public List<string> RestoreCalls { get; } = new();
+        public List<(string BackupId, bool Preview)> RestoreOperations { get; } = new();
         public List<(string BackupId, bool? Locked)> EditedBackups { get; } = new();
         public int FailPreRestoreCount { get; set; }
         public bool FailRollback { get; set; }
@@ -361,6 +377,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public Task<LudusaviCommandResult> RestoreAsync(string game, string backupId, bool preview, CancellationToken token)
         {
             RestoreCalls.Add(backupId);
+            RestoreOperations.Add((backupId, preview));
             if (preview)
             {
                 var postValidation = string.Equals(CurrentSave, Backups.TryGetValue(backupId, out var expected) ? expected : backupId, StringComparison.Ordinal);
