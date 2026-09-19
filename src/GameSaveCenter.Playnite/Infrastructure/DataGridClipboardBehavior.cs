@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -301,18 +300,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     internal static class ClipboardValueSanitizer
     {
-        private static readonly Regex KeyValueSecret = new Regex(
-            @"(?ix)\b(password|passwd|pwd|token|secret|client_secret|access_token|refresh_token|api[_-]?key|authorization|credential|private_key)\b\s*([=:])\s*(""[^""]*""|'[^']*'|Bearer\s+[^\s,;&]+|[^\s,;&]+)",
-            RegexOptions.Compiled);
-        private static readonly Regex BearerSecret = new Regex(@"(?i)\bBearer\s+[^\s,;]+", RegexOptions.Compiled);
-        private static readonly Regex UriCredential = new Regex(@"(?i)(https?://)[^\s/@]+:[^\s/@]+@", RegexOptions.Compiled);
-
         internal static string Sanitize(string value)
-        {
-            if (string.IsNullOrEmpty(value)) return string.Empty;
-            var sanitized = UriCredential.Replace(value, "$1[已隐藏]@");
-            sanitized = KeyValueSecret.Replace(sanitized, match => match.Groups[1].Value + match.Groups[2].Value + "[已隐藏]");
-            return BearerSecret.Replace(sanitized, "Bearer [已隐藏]");
-        }
+            => ClipboardTextSanitizer.Sanitize(value);
     }
 }

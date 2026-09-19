@@ -363,12 +363,31 @@ namespace GameSaveCenter.Contracts
         public string DetailMessage => State == TaskState.Failed && !string.IsNullOrWhiteSpace(ErrorMessage)
             ? FormatFailureDetail(ErrorCode, ErrorMessage)
             : Message;
+        /// <summary>
+        /// Short, first-line failure text for a scan-friendly task inspector. The
+        /// complete diagnostic remains available through DetailMessage.
+        /// </summary>
+        public string FailureSummary => SummarizeFailure(
+            State == TaskState.Failed && !string.IsNullOrWhiteSpace(ErrorMessage)
+                ? ErrorMessage
+                : Message);
+        public string SafeDetailMessage => ClipboardTextSanitizer.Sanitize(DetailMessage);
         public bool HasPartialSuccess => BackupResult?.IsPartialSuccess == true;
 
         private static string FormatFailureDetail(string errorCode, string errorMessage)
             => string.IsNullOrWhiteSpace(errorCode)
                 ? errorMessage
                 : $"错误码：{errorCode}；{errorMessage}";
+        private static string SummarizeFailure(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+            var lines = ClipboardTextSanitizer.Sanitize(value).Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var summary = (lines.Length == 0 ? value : lines[0]).Trim();
+            const int maxLength = 240;
+            return summary.Length <= maxLength
+                ? summary
+                : summary.Substring(0, maxLength - 1).TrimEnd() + "…";
+        }
         public bool IsCancellationPending => State == TaskState.Queued || State == TaskState.Running
             ? string.Equals(CancellationState, TaskCancellationStates.Requested, StringComparison.Ordinal)
                 || string.Equals(CancellationState, TaskCancellationStates.Finalizing, StringComparison.Ordinal)

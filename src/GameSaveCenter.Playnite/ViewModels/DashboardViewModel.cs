@@ -4776,11 +4776,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "已复制不含路径和诊断凭据的恢复结果报告。");
                 return;
             }
-            var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n"
-                       + $"失败原因：{SelectedTask.ErrorMessage}\r\n"
-                       + $"错误码：{SelectedTask.ErrorCode}\r\n"
-                       + $"技术详情：{SelectedTask.DetailMessage}\r\n"
-                       + $"任务 ID：{SelectedTask.TaskId}";
+            var text = TaskFailureClipboardFormatter.Format(SelectedTask);
             await CopyTextWithRetryAsync(text, "任务详情已复制", "任务详情已复制到剪贴板。");
         }
 
@@ -4797,26 +4793,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             // credential redaction used by DataGrid rows. Local paths and normal
             // diagnostic values remain byte-for-byte unchanged.
             text = ClipboardValueSanitizer.Sanitize(text ?? string.Empty);
-            for (var attempt = 0; attempt < 4; attempt++)
+            if (await ClipboardRetry.TrySetTextAsync(text, Clipboard.SetText).ConfigureAwait(true))
             {
-                try
-                {
-                    Clipboard.SetText(text);
-                    StatusMessage = statusMessage;
-                    plugin.ShowInfo(infoMessage);
-                    return;
-                }
-                catch (COMException) when (attempt < 3)
-                {
-                    // CLIPBRD_E_CANT_OPEN / COM exceptions mean another process owns the
-                    // clipboard at this instant. A short asynchronous retry usually succeeds
-                    // without blocking the Playnite dispatcher between attempts.
-                    await Task.Delay(150 + attempt * 100).ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    break;
-                }
+                StatusMessage = statusMessage;
+                plugin.ShowInfo(infoMessage);
+                return;
             }
             StatusMessage = "复制失败：剪贴板暂时被其他程序占用，请稍后重试";
             plugin.ShowError("无法复制到剪贴板：剪贴板暂时被其他程序占用。请稍后重试。");

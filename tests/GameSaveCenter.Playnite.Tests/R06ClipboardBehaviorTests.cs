@@ -23,7 +23,7 @@ public sealed class R06ClipboardBehaviorTests
             var first = Task("same-id", "第一条", "password=do-not-copy");
             var duplicate = Task("same-id", "重复对象", "token=also-do-not-copy");
             var last = Task("last-id", "最后一条", "路径 D:\\GameSaveCenter\\保存");
-            var grid = CreateGrid(new[] { "本地时间", "任务", "游戏", "状态", "进度", "详情" });
+            var grid = CreateGrid(new[] { "本地时间", "任务", "阶段", "游戏", "状态", "进度", "详情" });
             DataGridClipboardBehavior.SetProfile(grid, "Task");
             grid.ItemsSource = new ObservableCollection<TaskStatusDto> { first, duplicate, last };
             grid.SelectedItems.Add(last);
@@ -34,7 +34,7 @@ public sealed class R06ClipboardBehaviorTests
             var rows = text.Split(new[] { "\r\n" }, StringSplitOptions.None);
 
             Assert.Equal(2, rows.Length);
-            Assert.StartsWith(first.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss") + "\t存档备份\t第一条", rows[0], StringComparison.Ordinal);
+            Assert.StartsWith(first.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss") + "\t存档备份\t阶段未知\t第一条", rows[0], StringComparison.Ordinal);
             Assert.Contains("\t最后一条\t", rows[1], StringComparison.Ordinal);
             Assert.DoesNotContain("重复对象", text, StringComparison.Ordinal);
             Assert.DoesNotContain("do-not-copy", text, StringComparison.Ordinal);
