@@ -366,6 +366,44 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ClassificationUndoLeavesLaterManualDecisionAndArchiveUntouched()
+    {
+        var prepared = await PrepareClassificationAsync("undo-conflict-media");
+        var service = CreateService();
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { prepared.Media.MediaId }
+        }, CancellationToken.None);
+        var applied = await service.ApplyClassificationPreviewAsync(new MediaClassificationApplyRequestDto
+        {
+            BatchId = preview.BatchId
+        }, CancellationToken.None);
+
+        Assert.Equal("Applied", applied.State);
+        await store.UpdateMediaMetadataAsync(new MediaMetadataUpdateDto
+        {
+            MediaId = prepared.Media.MediaId,
+            IsFavorite = true,
+            Comment = "用户后来补充的决定"
+        }, CancellationToken.None);
+
+        var undone = await service.UndoClassificationBatchAsync(new MediaClassificationUndoRequestDto
+        {
+            BatchId = preview.BatchId
+        }, CancellationToken.None);
+
+        Assert.Equal("UndoneWithConflicts", undone.State);
+        Assert.Equal(1, undone.ConflictCount);
+        var current = await store.GetMediaByIdAsync(prepared.Media.MediaId, CancellationToken.None);
+        Assert.Equal("Assigned", current!.ClassificationState);
+        Assert.True(current.IsFavorite);
+        Assert.Equal("用户后来补充的决定", current.Comment);
+        Assert.Equal(prepared.AppliedPath, current.ArchivePath);
+        Assert.True(File.Exists(prepared.AppliedPath));
+        Assert.False(File.Exists(prepared.InboxPath));
+    }
+
+    [Fact]
     public async Task ClassificationApplyLeavesChangedItemAndArchiveUntouched()
     {
         await store.UpsertGamesAsync(new[]
