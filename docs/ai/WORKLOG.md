@@ -4,16 +4,16 @@
 
 - 先复用 `RcloneFailureClassifier` 和稳定错误码，新增无空间/限流；共享 DTO 只为已识别认证、空间、远端不存在、校验差异、限流提供下一步，未知错误不猜测。维护页把帮助和折叠原始诊断分开，限流沿用有限退避。
 - Core 正例/未知负例、Worker 分类和 Playnite 绑定夹具已加入；源码校验、XAML `24/24`、diff check 通过，但由于 SDK `9.0.302` 缺少 Workload resolver，定向 build/test 未执行。
-- `96a4c6a9` 已推送。没有运行真实 rclone/远端配额/Playnite/package-host/RenderHarness/最终呈现，未写真实云端、存档、媒体或诊断；main 用户改动未碰。R13-07 隔离源 Contracts 子目录仍被外部进程占用，未强杀。
-- 证据：[R13-08 失败分类帮助](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)。下一可执行任务：清理隔离源目录后，在可用 SDK/Workload 环境同时验证 R13-07/R13-08，再进入 R14-01。
+- `96a4c6a9` 已推送。没有运行真实 rclone/远端配额/Playnite/package-host/RenderHarness/最终呈现，未写真实云端、存档、媒体或诊断；main 用户改动未碰。R13-07 隔离源目录首次清理时短暂被占用，阶段末已精确删除，未强杀。
+- 证据：[R13-08 失败分类帮助](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)。下一可执行任务：在可用 SDK/Workload 环境同时验证 R13-07/R13-08，再进入 R14-01。
 
 ## 2026-09-19 R13-07 队列筛选与汇总
 
 - 先核对并复用现有状态/类型筛选、分页一致性 token、`existingKeys` 去重和选中项恢复；实现游戏/Playnite ID、来源设备、24 小时/7 天/30 天筛选，摘要新增未筛选 `GlobalTotalCount`，维护页明确当前筛选与全局计数。筛选栏改为可收缩列，RenderHarness 合成绑定同步。
 - 新增 Worker 合成 SQLite 正负例和 Playnite 源行为夹具；只覆盖合成/fake/隔离数据，没有写真实云端、存档、媒体或诊断。WPF 质量检查按 Demo-first 只检查共享样式、绑定、最小宽度和既有滚动容器，没有宣称离屏或真实呈现。
 - `python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过。Worker/Playnite 定向测试未执行：唯一 SDK `9.0.302` 缺少 Workload resolver 目录，`global.json` 的 `8.0.100` restore 退出 `1` 且无 assets；linked `obj` 另有 Access denied。
-- 代码提交 `d6c2af90` 已推送。`r13-07-build` 已清理，`r13-07-source` Contracts 子目录被外部进程占用暂留，未强杀。证据：[R13-07 队列筛选与汇总](../design/reviews/ui-finesse-round3-20260915/evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)。
-- 下一可执行任务：释放并清理锁定源目录，在可用 SDK/Workload 的隔离目录补跑 Worker/Playnite 定向夹具与回归；通过后再进入 R13-08。
+- 代码提交 `d6c2af90` 已推送。`r13-07-build` 已清理；`r13-07-source` 首次清理时短暂被占用，阶段末已精确删除，未强杀。证据：[R13-07 队列筛选与汇总](../design/reviews/ui-finesse-round3-20260915/evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)。
+- 下一可执行任务：在可用 SDK/Workload 的隔离目录补跑 R13-07/R13-08 定向夹具与回归；通过后再进入 R14-01。
 
 ## 2026-09-19 R13-06 离线恢复反馈
 

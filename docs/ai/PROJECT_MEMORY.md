@@ -7,14 +7,14 @@
 - `96a4c6a9` 已推送。复用 Rclone 稳定错误码，新增无空间与限流分类；`CloudFailureExplanation` 只为认证、空间、远端不存在、校验差异、限流提供下一步，未知错误保持空解释，原始错误码/详情折叠保留。
 - 限流纳入既有有限退避，未改变上传、取消、恢复保护、本地副本保留或通知语义。Core/Worker/Playnite 夹具已加入但未执行；源码校验、XAML `24/24`、diff check 通过。
 - 当前只有 SDK `9.0.302`，`global.json` 的 `8.0.100` 向上滚动命中缺失 Workload resolver 目录，Worker restore 退出 `1`；不把 build/test、Release/net462 或真实 rclone 写成通过。Demo 原目录不可用，继续用恢复生产基线。
-- 下一步先精确清理被占用的 `r13-07-source`，在可用 SDK/Workload 环境同时补跑 R13-07/R13-08 定向测试；验证后推进 R14-01。
+- 下一步在可用 SDK/Workload 环境同时补跑 R13-07/R13-08 定向测试；`r13-07-source` 已在阶段末精确删除，验证后推进 R14-01。
 
 ## 2026-09-19 R13-07 队列筛选与汇总（代码已提交，环境待验）
 
 - `d6c2af90` 已推送。先复用云端队列现有状态/类型筛选、查询一致性 token、分页追加、去重和选中项恢复；新增游戏/Playnite ID、来源设备、时间窗口筛选与全局总数，不另建队列或改变上传/校验/取消/错误/恢复语义。
 - Worker 用同一候选集合计算筛选 `TotalCount` 与未筛选 `GlobalTotalCount`；维护页和合成 RenderHarness ViewModel 的摘要、筛选绑定已同步，筛选栏改用可收缩列。新增 Worker SQLite 和 Playnite 源行为夹具覆盖正例与错误设备负例，但测试未执行。
 - 源码校验、XAML `24/24`、diff check 已通过。主机只有 .NET SDK `9.0.302`，`global.json` 要求 `8.0.100`，缺少 Workload resolver 目录导致 Worker restore 退出 `1`；不把 Worker/Playnite build/test、Release/net462 或 RenderHarness 写成通过。Demo 原目录不可用，仍沿用恢复生产基线。
-- 隔离 `r13-07-build` 已清理；`D:\workplace\github\GameSaveCenter\.tmp\r13-07-source` Contracts 子目录被外部进程占用，不能强杀未知进程。下一步先精确清理并在可用 SDK/Workload 环境补跑新增定向测试与相关回归，验证后再做 R13-08。
+- 隔离 `r13-07-build` 已清理；`r13-07-source` 首次清理时短暂被 Contracts 子目录占用，阶段末已精确删除，未强杀未知进程。下一步在可用 SDK/Workload 环境补跑新增定向测试与相关回归，验证后再做 R14-01。
 
 ## 2026-09-19 R13-06 离线恢复反馈
 

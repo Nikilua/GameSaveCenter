@@ -22,11 +22,10 @@
 
 - 本阶段 Worker/Playnite 定向测试尚未执行，不能把新增夹具写成通过；Release solution、Playnite `net462`、RenderHarness 和真实宿主也未宣称通过。
 - 当前主机只有 .NET SDK `9.0.302`，`global.json` 要求 `8.0.100` 并允许向上滚动；SDK 下缺少 `Microsoft.NET.SDK.WorkloadAutoImportPropsLocator` 和 `Microsoft.NET.SDK.WorkloadManifestTargetsLocator` 目录。干净 Worker restore 退出 `1` 且没有生成 `project.assets.json`，属于本机 SDK/Workload 环境阻塞，不是代码测试结果。
-- linked worktree 直接构建仍有 `obj` 的 Access denied。为隔离构建创建的 `D:\workplace\github\GameSaveCenter\.tmp\r13-07-build` 已清理；`D:\workplace\github\GameSaveCenter\.tmp\r13-07-source` 的 Contracts 子目录仍被外部进程占用，未强杀未知进程，需下一启动先精确清理。
+- linked worktree 直接构建仍有 `obj` 的 Access denied。为隔离构建创建的 `D:\workplace\github\GameSaveCenter\.tmp\r13-07-build` 已清理；`r13-07-source` 首次清理时短暂被 Contracts 子目录占用，阶段末重试已精确删除，未强杀未知进程。
 - Demo 原目录不可用，本阶段按已恢复的生产基线和 Demo-first 规则做共享资源/绑定质量检查；未运行真实 Playnite/package-host、真实网络/rclone、最终呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。未写真实存档、媒体、云端或诊断，也未触碰 main 的用户改动和 `src.zip`。
 
 ## 下一步
 
-1. 释放并精确清理上述 `r13-07-source` 锁定目录。
-2. 在具备可用 SDK/Workload 的隔离输出目录重新 restore/build，执行新增 Worker 与 Playnite 定向夹具及相关回归；通过后再把 R13-07 状态从“已实现，待环境验证”改为“已满足”。
-3. R13-07 验证收口后，再核对依赖并推进 `R13-08 失败分类帮助`。
+1. 在具备可用 SDK/Workload 的隔离输出目录重新 restore/build，执行新增 Worker 与 Playnite 定向夹具及相关回归；通过后再把 R13-07 状态从“已实现，待环境验证”改为“已满足”。
+2. R13-07 验证收口后，执行 R13-08 定向回归，再核对依赖并推进 `R14-01 归类建议解释`。

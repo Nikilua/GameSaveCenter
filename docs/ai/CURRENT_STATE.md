@@ -5,16 +5,16 @@
 - `96a4c6a9` 已推送到 `codex/ui-finesse-round2`。复用稳定 Rclone 错误码，新增无空间 `RCLONE_NO_SPACE`、限流 `RCLONE_RATE_LIMITED`；认证、空间、远端不存在、校验差异、限流各有 display-only 下一步，未知错误不生成建议。
 - 维护详情沿用共享样式，已识别帮助与默认折叠的“原始诊断”分开；原始错误码/详情保留，可访问名称保留。限流进入既有有界退避，不改上传、取消、恢复保护和本地副本语义。已加入 Core/Worker/Playnite 定向夹具但未执行。
 - 已验证：源码校验、XAML `24/24`、diff check。未验证：Core/Worker/Playnite 测试、Release/net462、RenderHarness、真实 rclone/远端配额和宿主。主机只有 SDK `9.0.302`，`global.json` 的 `8.0.100` 向上滚动命中缺失 Workload resolver 目录，Worker restore 退出 `1`；不写成 build/test 通过。
-- 只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。R13-07 隔离源目录仍有 Contracts 子目录被外部进程占用，未强杀。
-- 下一可执行任务：释放并清理隔离源目录，在可用 SDK/Workload 环境同时重跑 R13-07/R13-08 定向测试和相关回归，通过后推进 `R14-01 归类建议解释`。
+- 只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。R13-07 隔离源目录首次清理时短暂被占用，阶段末已精确删除，未强杀未知进程。
+- 下一可执行任务：在可用 SDK/Workload 环境同时重跑 R13-07/R13-08 定向测试和相关回归，通过后推进 `R14-01 归类建议解释`。
 
 ## 当前第三轮 R13-07 队列筛选与汇总（代码已提交，环境待验）
 
 - `d6c2af90` 已推送到 `codex/ui-finesse-round2`。复用既有状态/类型筛选、查询一致性 token、分页追加、`existingKeys` 去重和选中项恢复；新增游戏/Playnite ID 片段、来源设备、24 小时/7 天/30 天时间窗口以及未筛选 `GlobalTotalCount`。维护页摘要区分当前筛选与全局计数，筛选栏使用可收缩列；RenderHarness 合成 ViewModel 同步新绑定。
 - 已加入 Worker 合成 SQLite 行为夹具和 Playnite 源行为夹具，覆盖游戏/设备/时间正例、错误设备负例、全局计数、筛选绑定、分页去重和摘要。但新增 Worker/Playnite 定向测试尚未执行，不把夹具写成通过。
 - 已验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check`。未验证：Worker/Playnite 编译测试、Release/net462、RenderHarness、真实 Playnite/package-host。当前主机只有 SDK `9.0.302`，`global.json` 的 `8.0.100` 向上滚动命中缺失 Workload resolver 目录，Worker restore 退出 `1` 且没有 `project.assets.json`；linked `obj` 另有 Access denied。
-- 只用合成/fake/隔离数据，未写真实网络、云端、存档、媒体或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-build` 已清理，`D:\workplace\github\GameSaveCenter\.tmp\r13-07-source` Contracts 子目录被外部进程占用暂留，未强杀。
-- 下一可执行任务：先释放并精确清理 `r13-07-source`，在可用 SDK/Workload 的隔离目录重跑 Worker/Playnite 定向夹具和相关回归；通过后再推进 `R13-08 失败分类帮助`。
+- 只用合成/fake/隔离数据，未写真实网络、云端、存档、媒体或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-build` 已清理；`r13-07-source` 首次清理时短暂被占用，阶段末已精确删除，未强杀未知进程。
+- 下一可执行任务：在可用 SDK/Workload 的隔离目录同时重跑 R13-07/R13-08 定向夹具和相关回归；通过后推进 `R14-01 归类建议解释`。
 
 ## 当前第三轮 R13-06 离线恢复反馈
 

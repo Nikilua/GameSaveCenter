@@ -116,7 +116,7 @@
 | R13-04 | 暂停与允许时段 | 已满足 | cca3f052 | Core 定向队列状态 `1/1`；Worker 允许时段/暂停持久化 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`、既有 `PortableSettingsTests 10/10`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 摘要明确区分用户暂停、允许时段外、队列空闲和运行中；设置页明确恢复入口、下一轮 Worker 检查生效且不取消已开始上传 | 合成 DTO、现有 Worker 策略/fake 设置和 net462 Playnite 程序集；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能 | [R13-04 暂停与允许时段证据](evidence/R13-04-PAUSE-WINDOW-20260919.md)；当前分支已推送，下一项 R13-05 远端证据详情 |
 | R13-05 | 远端证据详情 | 已满足 | e280cf1c | Core 定向 `2/2`；Worker 云状态映射 `1/1`；Playnite `R13CloudTransferStageBehaviorTests 10/10`；Release 隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；source validation、diff check 通过 | 维护页现有详情滚动容器/共享卡片样式接入远端对象、来源设备、最后尝试和最后成功校验；实际 DTO/Worker 映射和认证参数负例通过；未运行 RenderHarness/真实呈现 | 只使用合成 DTO、fake/隔离 SQLite、外部源码/输出；远端路径只生成脱敏显示值；历史成功校验没有持久化时保持未知；未验真实 Playnite/package-host、真实云端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；main 用户改动和 `src.zip` 未触碰 | [R13-05 远端证据详情](evidence/R13-05-REMOTE-EVIDENCE-20260919.md)；当前分支已推送，下一项 R13-06 离线恢复反馈 |
 | R13-06 | 离线恢复反馈 | 已满足 | e4244329 | Core 定向 `1/1`；Worker `CloudRetryPersistenceTests 10/10`；Playnite `R13CloudTransferStageBehaviorTests 11/11`；Release 隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；source validation、diff check 通过 | 维护页现有详情滚动容器/共享卡片样式显示“等待网络恢复/按退避时间重试”和“网络已恢复/按批次上传中”；未运行 RenderHarness/真实呈现 | 合成 DTO/fake/隔离 SQLite；复用现有 Worker 30 秒轮询、每轮最多 10 项、顺序处理和最多 6 次退避重试；无真实网络/Playnite/package-host/宿主性能证明 | [R13-06 离线恢复反馈](evidence/R13-06-OFFLINE-RECOVERY-20260919.md)；当前分支已推送，下一项 R13-07 队列筛选与汇总 |
-| R13-07 | 队列筛选与汇总 | 已实现，待环境验证 | d6c2af90 | 源码校验 `0`；XAML `24/24`；diff check `0`；Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用状态/类型筛选、分页一致性 token、`existingKeys` 去重和选中项恢复；新增游戏、设备、时间筛选及 `GlobalTotalCount`，维护页摘要区分当前筛选与全局计数；筛选栏使用可收缩列，RenderHarness 合成绑定同步 | 未验 Worker/Playnite 编译测试、Release/net462、RenderHarness/真实 Playnite；Demo 原目录不可用，沿用恢复生产基线；未验真实网络、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；`.tmp/r13-07-source` Contracts 子目录被外部进程占用暂留，未强杀 | [R13-07 队列筛选与汇总](evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)；与 R13-08 一起补跑定向夹具和相关回归，再决定 R14-01 |
+| R13-07 | 队列筛选与汇总 | 已实现，待环境验证 | d6c2af90 | 源码校验 `0`；XAML `24/24`；diff check `0`；Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用状态/类型筛选、分页一致性 token、`existingKeys` 去重和选中项恢复；新增游戏、设备、时间筛选及 `GlobalTotalCount`，维护页摘要区分当前筛选与全局计数；筛选栏使用可收缩列，RenderHarness 合成绑定同步 | 未验 Worker/Playnite 编译测试、Release/net462、RenderHarness/真实 Playnite；Demo 原目录不可用，沿用恢复生产基线；未验真实网络、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；`r13-07-source` 首次清理时短暂被占用，阶段末已删除 | [R13-07 队列筛选与汇总](evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)；与 R13-08 一起补跑定向夹具和相关回归，再决定 R14-01 |
 | R13-08 | 失败分类帮助 | 已实现，待环境验证 | 96a4c6a9 | 源码校验 `0`；XAML `24/24`；diff check `0`；Core/Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用稳定错误码；新增无空间/限流分类，认证、空间、远端不存在、校验差异、限流各有下一步；未知错误不猜测；原始错误码/详情默认折叠保留 | 未验定向测试、Release/net462、真实 rclone/远端配额、RenderHarness/真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R13-08 失败分类帮助](evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)；与 R13-07 一起补跑定向测试，再决定 R14-01 |
 | R14-01 | 归类建议解释 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-02 | 预览选择编辑 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -314,16 +314,16 @@
 - 维护页摘要明确“当前筛选 X/Y 项”与“全局 Y 项”，文本筛选使用既有 debounce，时间/状态/类型仍走既有选择变更入口；筛选栏改为可收缩列并给文本框保留最小宽度。RenderHarness 合成 ViewModel 同步新绑定，避免夹具缺属性。
 - 已加入 Worker 合成 SQLite 行为夹具（游戏/设备/时间、错误设备负例、全局计数）和 Playnite 源行为夹具（绑定、摘要、分页去重、全局计数），但本阶段尚未执行这些新增定向测试。
 - 验证：`python scripts/validate-source.py` 通过；XAML `24/24`；`git diff --check` 通过。尝试隔离 restore 时，本机仅有 .NET SDK `9.0.302`，`global.json` 的 `8.0.100` 向上滚动命中缺失的 Workload resolver 目录，Worker restore 退出 `1` 且没有 `project.assets.json`；linked `obj` 另有 Access denied。因此不把 Worker/Playnite build/test 或 Release/net462 写成通过。
-- 证据只来自源码、XAML 结构门禁和新增合成夹具；未运行真实网络/rclone、Playnite/package-host、RenderHarness、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；未写真实云端/存档/媒体/诊断；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-build` 已清理，`r13-07-source` Contracts 子目录被外部进程占用暂留。
-- 下一可执行小批量仍为 R13-07/R13-08 验证收口：释放并精确清理锁定源目录，在可用 SDK/Workload 的隔离输出目录重跑两项 Worker/Core/Playnite 定向夹具与相关回归；通过后再推进 `R14-01 归类建议解释`。
+- 证据只来自源码、XAML 结构门禁和新增合成夹具；未运行真实网络/rclone、Playnite/package-host、RenderHarness、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；未写真实云端/存档/媒体/诊断；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-build` 已清理，`r13-07-source` 首次清理时短暂被占用，阶段末已删除。
+- 下一可执行小批量仍为 R13-07/R13-08 验证收口：在可用 SDK/Workload 的隔离输出目录重跑两项 Worker/Core/Playnite 定向夹具与相关回归；通过后再推进 `R14-01 归类建议解释`。
 
 ## 2026-09-19 Round3 R13-08 失败分类帮助
 
 - `96a4c6a9` 复用现有 `RcloneFailureClassifier` 和稳定错误码，新增无空间与限流分类；限流仍走既有有界退避，未改变上传、取消、恢复保护、本地副本保留或通知语义。
 - `CloudFailureExplanation` 只为已识别的认证、空间不足、远端不存在、校验差异和限流提供不同下一步；未知错误保持空解释。维护页把已识别帮助放入共享诊断提示，把原始错误码/详情放进默认折叠的“原始诊断”，保留可访问名称和审计信息。
 - 已加入 Core 正例/未知错误负例、Worker 无空间/限流分类和 Playnite 详情绑定源行为夹具；验证：源码校验通过、XAML `24/24`、diff check 通过。受当前唯一 SDK `9.0.302` 缺失 Workload resolver 目录影响，Core/Worker/Playnite 定向测试、Release/net462、RenderHarness 尚未执行，不写成通过。
-- 证据只来自源码、XAML 结构门禁和新增合成夹具；未运行真实 rclone/网络限流/远端配额、Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-source` Contracts 子目录仍被外部进程占用暂留。
-- 下一可执行小批量：先释放并精确清理隔离源目录，在可用 SDK/Workload 环境同时补跑 R13-07/R13-08 定向测试和相关回归；通过后推进 `R14-01 归类建议解释`。
+- 证据只来自源码、XAML 结构门禁和新增合成夹具；未运行真实 rclone/网络限流/远端配额、Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-source` 首次清理时短暂被占用，阶段末已删除。
+- 下一可执行小批量：在可用 SDK/Workload 环境同时补跑 R13-07/R13-08 定向测试和相关回归；通过后推进 `R14-01 归类建议解释`。
 
 ## 2026-09-19 R00/R01 当前提交复核
 
