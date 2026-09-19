@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R12-02 恢复校验结果解释
+
+- 在 codex/ui-finesse-round2 先复用现有 readiness DTO/service/SQLite JSON 与 SaveCenter 详情卡。6cc3a618 增加哈希覆盖/可覆盖计数、未提供/部分/通过/失败文案和旧结果提示；有效 Manifest 无哈希不再返回 Ready。健康检查成功夹具补入正确 SHA-256，损坏、缺失、取消和隔离目录负例未放宽。
+- 定向证据：Worker RestoreReadinessTests 13/13，Core UiDisplayMappingTests 19/19。真实隔离 scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r12-02-full-build-v2 为 XAML 24/24、Release 0/0、Core 85/85、Worker 324/324；Playnite source 组和 84 个 WPF 类隔离进程全部返回 0。WpfUiResourceDictionaryTests 为 137 passed / 39 skipped / 0 failed。
+- validate-source.py、XAML、git diff --check 通过；WPF 技能静态检查 0 error / 24 warning / 177 info。未把离屏/STA/隔离测试写成真实 Playnite、物理 DPI、跨屏、presented frame、UIA/IME、ETW 或宿主性能通过。Demo 原目录不可用，沿用恢复生产基线。
+- 代码提交已推送 origin/codex/ui-finesse-round2；main 用户文件未触碰，main 的 73/588/57 安装失败基线仍单列。下一可执行小批量为 R12-03 目标路径核对；当前分支尚未合并 main。
+
 ## 2026-09-19 R12-01 恢复流程分步摘要
 
 - 在 `codex/ui-finesse-round2` 先核对已有 `RestoreReadiness`、`TaskStatusDto`、确认/取消/错误入口；`e1a8da0c` 只新增四阶段状态投影、失败保留详情和 Save 页面分步摘要，保留 PreRestore 保护、命令绑定、游戏选框、滚动条、net462 兼容和有限列表策略。

@@ -103,7 +103,7 @@
 | R11-07 | 备份结果分层 | 已满足 | 02860571 | `R11BackupPreviewBehaviorTests 3/3`；Worker 分层/终态/实时事件 `9/9`，云状态相邻组合 `20/20`；完整 R11 Playnite 定向 `14/14`；D 盘隔离 Release `0 warning / 0 error`；XAML `24/24`；source/XAML/diff check 通过 | 真实 `SaveCenterView`/隔离 STA 夹具验证本地成功+云端排队显示和单独重试按钮；`Uploaded` 显示待远端校验且负例不显示上传重试；不因云端失败隐藏本地历史 | 合成 DTO/fake TaskCoordinator/隔离 WPF；未验真实 Ludusavi/rclone/Worker IPC、Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用；main DEV-INSTALL-008 `73/588/57`/退出 1 仍独立记录 | [R11-07 备份结果分层证据](evidence/R11-07-BACKUP-RESULT-LAYERS-20260919.md)；当前分支已推送；下一项按用户顺序先做 R00/R01 问题修复与证据校正，再回到 R11-08 |
 | R11-08 | 历史时间导航 | 已满足 | 8cc329e4 | `R11HistoryTimeNavigationBehaviorTests 3/3`；R06 `4/4`；R11 版本摘要/保护相邻回归 `4/4`；资源字典类 `137 passed / 39 skipped / 0 failed`；定向组合 `148 passed / 39 skipped / 0 failed`；D 盘隔离 Release `0 warning / 0 error`；XAML `24/24`；source/XAML/diff check 通过 | 历史页提供全部/今天/昨天/近 7 天/近 30 天本地日历范围、清除范围、最近/更早跳转；活动范围排除未知时间、全部范围恢复全部；同秒版本按 UTC 后接 BackupId 稳定排序；历史使用独立过滤视图，不破坏 `Backups` 来源、A/B 选择和现有滚动/命令绑定 | 合成 DTO、fake/隔离 STA WPF 和隔离输出；未验真实 Playnite/package-host、最终 presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main DEV-INSTALL-008 `73/588/57`、安装器退出 1 仍独立记录 | [R11-08 历史时间导航证据](evidence/R11-08-HISTORY-TIME-NAVIGATION-20260919.md)；下一项 R12-01 恢复分步摘要 |
 | R12-01 | 恢复分步摘要 | 已满足 | e1a8da0c | R12 行为 `6/6`；相邻 R11/R06 回归合计 `17/17`；资源字典类 `137 passed / 39 skipped / 0 failed`；隔离 Release solution `0/0`；XAML `24/24`；source/XAML/diff check 和 WPF 静态审查通过 | 恢复摘要分为选择版本、可恢复性检查、目标核对、执行结果四阶段；真实 readiness/task/error/rollback 状态驱动，失败保留阶段详情；保留原确认、取消、错误、恢复保护、命令绑定和页面滚动系统 | 合成 DTO/fake、隔离 STA WPF、隔离 `.tmp` 源副本；render-qa 当前提交绑定但真实退出 `1`，只命中既有 Overview/Task/Save/Settings/Shell/Media 离屏基线；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能 | [R12-01 恢复流程证据](evidence/R12-01-RESTORE-WORKFLOW-20260919.md)；Demo 原目录不可用，沿用恢复生产基线；下一项 R12-02 校验结果解释 |
-| R12-02 | 校验结果解释 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R12-02 | 校验结果解释 | 已满足 | 6cc3a618 | Worker RestoreReadinessTests 13/13；Core UiDisplayMappingTests 19/19；隔离 Release solution 0/0、Core 85/85、Worker 324/324；Playnite source 类组及 WPF 84 个隔离类全部返回 0；WpfUiResourceDictionaryTests 137/39/0；XAML 24/24、source/diff check 通过 | SaveCenter 恢复可用性卡片明确未提供哈希、部分覆盖、已通过、失败和旧结果；有效 Manifest 无哈希不再显示 Ready；保留原验证命令、页面滚动、选框和状态语义 | 合成 ZIP/Manifest、fake/隔离 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；main DEV-INSTALL-008 73/588/57 与安装器退出 1 仍独立记录 | [R12-02 校验结果解释证据](evidence/R12-02-RESTORE-READINESS-EXPLANATION-20260919.md)；下一项 R12-03 目标路径核对 |
 | R12-03 | 目标路径核对 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R12-04 | 恢复保护备份 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R12-05 | 远端下载进度 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -205,6 +205,13 @@
 - 当前提交隔离 Release solution `0 warning / 0 error`、XAML `24/24`；R12 行为 `6/6`；R11/R06 相邻回归合计 `17/17`；资源字典类 `137/39/0`；WPF 静态审查 `0/24/177`。阶段负例检查目标未进入执行、失败详情和回滚文本，不是字符串存在性签收。
 - 当前提交绑定的 render-qa 真实退出 `1`，报告只命中既有 Overview 空列表/Task/Save 可读行/Settings 状态/Shell header/Media 几何基线；不把离屏 harness 写成 Playnite 实机或安装通过。Demo 原目录不可用，继续沿用恢复生产基线。
 - main 的 DEV-INSTALL-008 失败事实仍为 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`；main 用户改动未触碰。下一可执行小批量：R12-02 校验结果解释。
+
+## 2026-09-19 Round3 R12-02 校验结果解释
+
+- 6cc3a618 复用已有 readiness DTO/service/SQLite JSON 持久化和 SaveCenter 卡片，补齐哈希覆盖数、可覆盖总数、状态文案和旧结果提示。有效 Manifest 无哈希现在是 Warning，不再把“未提供哈希”显示成校验成功；部分覆盖显示比例并说明未覆盖文件不能视为已校验。
+- 合成恢复校验 13/13、Core 显示 19/19；隔离 build/test 全流程为 XAML 24/24、Release 0/0、Core 85/85、Worker 324/324、Playnite source 组和 84 个 WPF 隔离类全部返回 0；资源字典类 137/39/0。
+- WPF 静态审查 0 error / 24 warning / 177 info；warning/info 为既有外层布局、Canvas、颜色令牌提示。没有真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能证据。Demo 原目录不可用，沿用恢复生产基线；main 用户改动未触碰。
+- 下一可执行小批量：R12-03 目标路径核对；当前分支代码已推送，main 尚未合并。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

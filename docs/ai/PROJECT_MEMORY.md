@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R12-02 恢复校验结果解释
+
+- 6cc3a618 先核对现有 readiness/SQLite/SaveCenter 能力，再补 HashCoveredFileCount、HashEligibleFileCount 和稳定中文显示。有效 Manifest 没有任何文件哈希时服务返回 Warning，NotAvailable 不再被当作成功；部分覆盖返回 Partial，失败仍为 Failed。
+- 详情卡显示哈希状态、覆盖量和检查时间；超过一天的历史结果提示“结果较旧，建议重新验证”。命令绑定、页面滚动、游戏选框、取消/错误、PreRestore 和恢复回滚未改。成功健康检查夹具使用正确 SHA-256，负例保持隔离/损坏/取消语义。
+- 证据：RestoreReadinessTests 13/13、UiDisplayMappingTests 19/19；隔离全流程 Release 0/0、Core 85/85、Worker 324/324，Playnite source 组和 84 个 WPF 隔离类返回 0；资源字典类 137/39/0；XAML 24/24；WPF 静态 0/24/177。
+- 证据边界仍是合成 ZIP/Manifest、fake/隔离 SQLite、STA WPF/offscreen logical DIP；Demo 原目录不可用，沿用恢复生产基线。没有真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能证据。main 用户改动未触碰，main 安装失败事实不改写。下一项 R12-03。
+
 ## 2026-09-19 R12-01 恢复流程分步摘要
 
 - 当前分支 `e1a8da0c` 复用已有恢复 readiness/task/command 能力，新增固定四阶段状态投影和 Save 页面摘要卡；没有重建服务、DTO、Worker IPC、游戏选框或滚动条系统。

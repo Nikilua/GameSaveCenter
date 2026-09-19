@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R12-02 恢复校验结果解释
+
+- 6cc3a618 复用已有 RestoreReadinessDto、Worker 校验服务、SQLite JSON 持久化和 SaveCenter 详情卡，补齐哈希覆盖数/可覆盖总数、NotAvailable/Partial/Validated/Failed 显示及旧结果提示；没有新增服务、IPC、游戏选框或滚动条系统。
+- 有效 Manifest 但未提供哈希现在返回 Warning，摘要明确“这不等于校验成功”；部分覆盖显示 x/y 并说明未覆盖文件不能视为已校验。超过一天的历史检查显示结果较旧并建议重新验证。原命令、取消/错误、PreRestore/回滚和页面滚动语义保持。
+- 隔离 scripts/build.ps1 全流程：XAML 24/24；Release solution 0 warning / 0 error；Core 85/85、Worker 324/324；Playnite source 组和 84 个 WPF 类隔离进程全部返回 0。用户失败类 WpfUiResourceDictionaryTests 在 commit 身份下为 137/39/0，总计 176。
+- validate-source.py、XAML、diff check 通过；WPF 静态审查 0 error / 24 warning / 177 info，warning 是既有外层滚动/布局提示。证据使用合成 ZIP/Manifest、fake/隔离 SQLite、STA WPF 和 .tmp，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线。
+- main 的用户文件未触碰；main 的 DEV-INSTALL-008 73 failed / 588 passed / 57 skipped 与安装器退出 1 仍独立保留，当前分支代码已推送但尚未合并 main。下一可执行小批量为 R12-03 目标路径核对。
+
 ## 当前第三轮 R12-01 恢复流程分步摘要
 
 - `e1a8da0c` 先复用 `BackupVersionDto.RestoreReadiness`、`TaskStatusDto` 与现有恢复命令，把 Save 页面恢复过程分成选择版本、可恢复性检查、目标核对、执行结果四个固定阶段；没有新增恢复服务/DTO/IPC，也没有改变 `PreRestore` 保护、确认、取消、错误传播或回滚语义。
