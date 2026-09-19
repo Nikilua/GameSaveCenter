@@ -51,10 +51,14 @@ public sealed class UiDisplayMappingTests
     [Fact]
     public void CloudSummarySeparatesWaitingWindowFromRunningQueue()
     {
+        var paused = new CloudTransferSummaryDto { QueuePaused = true, TotalCount = 1 };
         var outsideWindow = new CloudTransferSummaryDto { OutsideAllowedWindow = true };
-        var running = new CloudTransferSummaryDto();
+        var idle = new CloudTransferSummaryDto();
+        var running = new CloudTransferSummaryDto { TotalCount = 1 };
 
+        Assert.Equal("自动队列已暂停", paused.QueueControlDisplay);
         Assert.Equal("当前不在允许时段", outsideWindow.QueueControlDisplay);
+        Assert.Equal("队列空闲", idle.QueueControlDisplay);
         Assert.Equal("自动队列运行中", running.QueueControlDisplay);
     }
 

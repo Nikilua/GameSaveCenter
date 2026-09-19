@@ -243,7 +243,7 @@
                                 </StackPanel>
                             </ui:ToggleSwitch>
                             <TextBlock Text="自动上传允许时段（本地时间）" FontWeight="SemiBold" Margin="0,10,0,0"/>
-                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。更改后在下一轮 Worker 检查时生效；已开始的上传不会被取消。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,7"/>
                             <UniformGrid Columns="2">
                                 <StackPanel Margin="0,0,10,0">
                                     <TextBlock Text="起始分钟" Margin="0,0,0,4"/>

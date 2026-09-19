@@ -238,7 +238,9 @@ public sealed class CloudTransferSummaryDto
         ? "自动队列已暂停"
         : OutsideAllowedWindow
             ? "当前不在允许时段"
-            : "自动队列运行中";
+            : TotalCount <= 0
+                ? "队列空闲"
+                : "自动队列运行中";
 
     /// <summary>
     /// Keeps a successful upload distinct from a remote verification. A remote

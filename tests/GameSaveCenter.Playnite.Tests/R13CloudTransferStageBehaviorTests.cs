@@ -70,4 +70,21 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.False(command.CanExecute(null));
         Assert.Equal(1, submissions);
     }
+
+    [Fact]
+    public void SettingsExplainPauseRecoveryAndWindowChangeBoundary()
+    {
+        var root = TestRepositoryContext.Root;
+        var source = File.ReadAllText(Path.Combine(
+            root,
+            "src",
+            "GameSaveCenter.Playnite",
+            "Settings",
+            "GameSaveCenterSettingsView.xaml"));
+
+        Assert.Contains("暂停云端自动重试队列", source);
+        Assert.Contains("恢复开关后会继续处理已保存队列", source);
+        Assert.Contains("下一轮 Worker 检查时生效", source);
+        Assert.Contains("已开始的上传不会被取消", source);
+    }
 }
