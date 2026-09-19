@@ -7455,3 +7455,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - SaveCenter 三组路径项使用真实只读 TextBox + 既有 `CopyPathCommand`，复制参数来自原始完整路径；同时修正 R11-02 行位扩展遗留的比较卡片重叠。`R11SaveWpf` 夹具集合禁并行，避免隔离 STA WPF 全局资源竞争造成假失败。
 - `R11DiffListSearchBehaviorTests 2/2`，R11 三项 WPF 组合 `6/6`，R06 存档页相邻回归 `11/11`；Release/net462 编译无 warning/error；XAML `24/24`；source/XAML/diff check 通过。证据：`evidence/R11-03-DIFF-LIST-20260919.md`，账本已改为“已满足”。
 - 本阶段未读取/写入真实存档、媒体、云端或诊断；未覆盖 dirty main。main 用户安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1。未验真实 Worker IPC/归档读取、大型清单呈现、Playnite/package-host、DPI/跨屏、UIA/IME、ETW、宿主性能。下一可执行任务：R11-04 版本说明编辑。
+
+## 2026-09-19 Round3 R11-04 版本说明编辑
+
+- 复核既有能力后确认备注/锁定编辑链路已存在：`BackupMetadataUpdateDto`、`EditBackupAsync`、历史刷新和 SQLite upsert 均复用；归档路径未作为编辑字段。仅补真实缺口：版本详情的本地取消草稿入口。
+- 实现 `CancelBackupMetadataCommand`、`HasBackupMetadataChanges` 和 SaveCenter “取消修改”按钮。取消复用当前 `SelectedBackup` 原值，不请求 Worker、不改变归档文件/文件名；保存命令和锁定/恢复保护语义不变。
+- 定向结果：`R11VersionNoteBehaviorTests 3/3`；R11-01/02/03/04 串行 `9/9`；Worker SQLite 重建 `1/1`；R06 相邻 `11/11`。D 盘隔离 Release solution `0 warning / 0 error`，XAML `24/24`，source validation、XAML check、diff check 通过。
+- 真实阻塞事实：continuation worktree 在 C 盘且 C 可用空间为 0，旧路径构建/测试宿主报 `MSB3491`/`0x80070070`；按项目既有 `GscBuildOutputRoot` 改用 D 盘临时输出完成验证，未强杀未知进程。D 盘阶段输出已清理；本轮为恢复记忆又清理了 continuation 可再生 bin/obj，不动源码和用户文件。
+- 证据文件：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-04-VERSION-NOTE-20260919.md`；账本 R11-04 已标记“已满足”。未验真实 Ludusavi/Worker 重启、Playnite/package-host 呈现和系统级边界；main 用户文件与 DEV-INSTALL-008 安装失败事实未覆盖。
+- 下一可执行任务：R11-05 保护操作解释。

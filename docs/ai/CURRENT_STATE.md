@@ -1643,3 +1643,12 @@
 - `R11DiffListSearchBehaviorTests` `2/2`；R11-01/R11-02/R11-03 WPF 夹具串行 `6/6`；R06 存档相邻回归 `11/11`。定向 Release 编译无 warning/error，XAML `24/24`、source/XAML/diff check 通过。专用 `R11SaveWpf` 集合禁并行，避免 STA 全局资源竞争污染结果。证据：`evidence/R11-03-DIFF-LIST-20260919.md`。
 - 未验真实 Worker IPC/归档读取、大型真实清单呈现、Playnite/package-host 安装呈现、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能。Demo 原目录不可用，继续沿用恢复生产基线；main DEV-INSTALL-008 `73/588/57`/安装器退出 1 和 main 用户文件仍独立未覆盖。
 - 下一可执行任务：R11-04 版本说明编辑；继续保持稳定 BackupId 不受显示备注影响。
+
+## 2026-09-19 Round3 R11-04 版本说明编辑
+
+- 先核对既有元数据链路：`BackupMetadataUpdateDto`、`LudusaviClient.EditBackupAsync`、Worker `RefreshBackupHistoryAsync` 和 SQLite `backup_versions` upsert 已支持备注/锁定持久化；请求不含 `ArchivePath`，没有重建服务或 DTO。
+- 补齐明确交互缺口：`DashboardViewModel` 增加本地 `CancelBackupMetadataCommand`/`HasBackupMetadataChanges`，复用 `SyncBackupEditor` 回滚当前版本原值，不发 IPC；SaveCenter 版本备注编辑区增加可访问的“取消修改”入口。
+- `R11VersionNoteBehaviorTests 3/3`：真实 SaveCenterView/STA ICommand 绑定探针验证草稿取消、重复说明仍按 `BackupId` 选择；Worker 隔离 SQLite 重建夹具 `1/1` 验证备注/锁定/BackupId/归档路径；R11 串行 `9/9`、R06 相邻 `11/11`。
+- D 盘隔离 Release solution `0 warning / 0 error`，Playnite `net462`、Worker 和测试从同一输出生成；XAML `24/24`、source validation、diff check 通过。C 盘构建曾因可用空间 `0` 失败，未强杀未知 dotnet/VBCSCompiler。
+- 证据：`evidence/R11-04-VERSION-NOTE-20260919.md`；未验真实 Ludusavi IPC/归档读取和真实 Worker 进程重启、Playnite/package-host、最终呈现、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 和 main 用户文件仍独立未覆盖。
+- 下一可执行任务：R11-05 保护操作解释；继续保持真实存档/媒体/云端/诊断隔离边界。

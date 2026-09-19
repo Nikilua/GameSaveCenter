@@ -285,9 +285,12 @@
                                 </ui:Button>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
-                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap"/>
+                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap" AutomationProperties.Name="版本备注"/>
                                 <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="保留策略不会清理锁定版本" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center"/></Grid>
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" Margin="0,16,0,0"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" AutomationProperties.Name="保存版本备注与锁定"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CancelBackupMetadataCommand}" Content="取消修改" AutomationProperties.Name="取消版本备注修改" Margin="8,0,0,0"/>
+                                </StackPanel>
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="比较 A/B 版本" ToolTip="使用比较与保留页选择的 A/B 版本；默认是上一版本与当前版本" AutomationProperties.Name="在历史详情中比较 A 与 B 版本" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复操作" FontWeight="SemiBold"/>

@@ -3907,3 +3907,11 @@
 - 本阶段还修正了 R11-02 行位扩展遗漏：比较标题、A/B、筛选、计数、差异列表现在是独立 Grid 行。`R11SaveWpf` xUnit 集合禁并行，专门保护真实 SaveCenterView STA 夹具不受 WPF 全局资源竞争影响。
 - `R11DiffListSearchBehaviorTests 2/2`，R11-01/R11-02/R11-03 串行 `6/6`，R06 存档页相邻 `11/11`；Release/net462 无 warning/error，XAML `24/24`，source/XAML/diff check 通过。证据：`evidence/R11-03-DIFF-LIST-20260919.md`。
 - 仍不可把合成 DTO/隔离 STA/逻辑 DIP写成真实 Worker IPC、归档读取、大型清单物理呈现、Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW或宿主性能通过；Demo 原目录不可用。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 独立保留，main 用户改动未触碰。下一可执行任务：R11-04 版本说明编辑。
+
+## 2026-09-19 Round3 R11-04 版本说明编辑
+
+- 版本备注能力必须继续复用 `BackupMetadataUpdateDto` → `EditBackupAsync` → `RefreshBackupHistoryAsync` → SQLite upsert；编辑字段只允许备注/锁定，不能引入归档路径或文件名编辑。
+- `CancelBackupMetadataCommand` 是本地草稿回滚，不得调用 Worker IPC；dirty 状态通过 `HasBackupMetadataChanges` 驱动 CanExecute，回滚复用 `SyncBackupEditor` 并保留稳定 `BackupId`。
+- 已验证：真实 SaveCenterView/STA 绑定探针 `R11VersionNoteBehaviorTests 3/3`；同说明重复版本由 `SelectionAnchorResolver` 按 `BackupId` 选择；隔离 SQLite Store 重建 `1/1`；R11 串行 `9/9`；R06 相邻 `11/11`；D 盘 Release solution `0/0`、XAML `24/24`、source validation/diff check 通过。
+- 证据边界：SQLite 重建不等价真实 Worker/Ludusavi 进程重启和归档 IPC；未验 Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。C 盘空间为 0 时必须使用 D 盘 `GscBuildOutputRoot`，不要覆盖 main 或用户文件；main DEV-INSTALL-008 `73/588/57`/退出 1 继续独立记录。
+- 下一可执行任务：R11-05 保护操作解释；先核对现有锁定/保留预览/解除条件文案和真实状态，再决定只补证据还是做最小缺口修复。

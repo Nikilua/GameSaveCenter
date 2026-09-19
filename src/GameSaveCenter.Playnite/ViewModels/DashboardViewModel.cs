@@ -314,6 +314,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
             DeletePolicyTemplateCommand = new RelayCommand(_ => Run(DeletePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateDraft.TemplateId));
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
+            CancelBackupMetadataCommand = new RelayCommand(_ => CancelBackupMetadataEdit(), _ => !IsBusy && SelectedBackup != null && HasBackupMetadataChanges);
             CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups);
             SwapCompareBackupCommand = new RelayCommand(_ => Run(SwapAndCompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups && LastBackupDiff != null);
             LoadMoreDiffPathsCommand = new RelayCommand(_ => LoadMoreDiffPaths(), _ => !IsBusy && DiffPathHasMore);
@@ -1098,6 +1099,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!applyingEditorSelection && !string.Equals(backupComment, normalized, StringComparison.Ordinal))
                     backupCommentDirty = true;
                 SetValue(ref backupComment, normalized);
+                OnPropertyChanged(nameof(HasBackupMetadataChanges));
+                RaiseCommandStates();
             }
         }
         public bool LockSelectedBackup
@@ -1108,8 +1111,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!applyingEditorSelection && lockSelectedBackup != value)
                     backupLockDirty = true;
                 SetValue(ref lockSelectedBackup, value);
+                OnPropertyChanged(nameof(HasBackupMetadataChanges));
+                RaiseCommandStates();
             }
         }
+        public bool HasBackupMetadataChanges => backupCommentDirty || backupLockDirty;
         public MediaItemDto SelectedMedia
         {
             get => selectedMedia;
@@ -1384,6 +1390,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ApplyPolicyTemplateCommand { get; }
         public ICommand DeletePolicyTemplateCommand { get; }
         public ICommand UpdateBackupMetadataCommand { get; }
+        public ICommand CancelBackupMetadataCommand { get; }
         public ICommand CompareBackupCommand { get; }
         public ICommand SwapCompareBackupCommand { get; }
         public ICommand LoadMoreDiffPathsCommand { get; }
@@ -3928,6 +3935,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             ConfirmSuccess("备份备注与锁定状态已保存");
         }
 
+        private void CancelBackupMetadataEdit()
+        {
+            if (SelectedBackup == null || !HasBackupMetadataChanges) return;
+
+            // Cancellation is a local draft rollback. It must not invoke Worker IPC or alter
+            // the archive file/metadata on disk.
+            SyncBackupEditor(SelectedBackup, preserveDirtyFields: false);
+            OnPropertyChanged(nameof(HasBackupMetadataChanges));
+            RaiseCommandStates();
+            StatusMessage = "已取消版本备注修改，恢复为原值。";
+        }
+
         private async Task CompareBackupAsync()
         {
             if (!TryGetComparisonSelection(out var leftBackup, out var rightBackup, out var selectionMessage))
@@ -5235,7 +5254,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
-                UpdateBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
+                UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
