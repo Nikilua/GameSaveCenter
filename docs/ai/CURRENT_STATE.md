@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-06 离线恢复反馈
+
+- `e4244329` 已推送到 `codex/ui-finesse-round2`。复用现有 `CloudRetryPolicy`/`CloudRetryService`，只新增 `CloudTransferStatusDto.NetworkRecoveryDisplay` 和维护页绑定，没有改变上传、校验、取消、错误、恢复保护或队列调度语义。
+- 网络失败的 `RetryScheduled` 显示等待网络恢复、退避次数和本轮最多 10 项；进入 `Transferring` 显示网络已恢复、按批次上传中；认证失败不套用网络恢复文案。现有 Worker 30 秒轮询、每轮最多 10 项、顺序处理、最多 6 次退避重试且无逐条旧失败通知。
+- 验证：Release 外部隔离 solution `0 warning / 0 error`、Playnite `net462`；Core `1/1`、Worker `CloudRetryPersistenceTests 10/10`、Playnite R13 `11/11`、XAML `24/24`、source validation/diff check 通过。证据见 [R13-06 离线恢复反馈](../design/reviews/ui-finesse-round3-20260915/evidence/R13-06-OFFLINE-RECOVERY-20260919.md)。
+- 只用合成 DTO、fake/隔离 SQLite 和外部构建；未运行真实网络/rclone、真实 Playnite/package-host、RenderHarness、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并；`.tmp/r13-06-*` 已清理，旧 `.tmp/r12-07-build-final` 因 Access denied 暂留。
+- 下一可执行任务：`R13-07 队列筛选与汇总`，先查现有状态筛选、全局计数、分页和选中项联动，再补筛选负例与汇总证据。
+
 ## 当前第三轮 R13-05 远端证据详情
 
 - `e280cf1c` 已推送到 `codex/ui-finesse-round2`。复用现有云端队列、远端路径布局、`CloudTransferStatusDto`、`CloudTransferStateService` 和维护页详情入口，新增 display-only 远端对象/来源设备/最后尝试/最后成功校验字段；没有改变上传、校验、取消、错误或恢复语义。

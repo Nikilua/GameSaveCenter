@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R13-06 离线恢复反馈
+
+- `e4244329` 已推送。先复用 `CloudRetryPolicy` 与 `CloudRetryService` 的退避、轮询、限流和顺序处理；新增共享 DTO 的网络恢复 display-only 文案，不另建队列或改变传输语义。
+- `RetryScheduled` 的网络/不完整传输错误显示等待网络恢复、`N/6` 自动重试和本轮最多 10 项；`Transferring` 显示网络已恢复、按批次上传中；认证失败保持空文案。既有策略为 1/5/15/60/240/720 分钟退避、最多 6 次，Worker 30 秒轮询、每轮最多 10 项、无逐条旧失败通知。
+- Core `1/1`、Worker `10/10`、Playnite R13 `11/11`、Release `0/0`、XAML `24/24`、source/diff check 通过。证据见 [R13-06 离线恢复反馈](../design/reviews/ui-finesse-round3-20260915/evidence/R13-06-OFFLINE-RECOVERY-20260919.md)。WPF 只做 Demo-first 共享详情容器/绑定质量检查，未运行真实宿主或 RenderHarness。
+- 边界：合成/fake/隔离数据，未写真实网络、云端、存档、媒体或诊断；Demo 原目录不可用，沿用恢复生产基线；main 未合并且用户改动未触碰；本批临时目录已清理，旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一项 `R13-07 队列筛选与汇总`：先查现有状态筛选、全局计数、分页和选中项联动。
+
 ## 2026-09-19 R13-05 远端证据详情
 
 - `e280cf1c` 已推送。复用现有 `CloudTransferStatusDto`、`CloudTransferStateService`、队列/远端布局与维护页详情，不另建上传服务；新增 `CloudRemoteDisplay` 和四项 display-only 证据字段。

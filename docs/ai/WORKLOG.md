@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R13-06 离线恢复反馈
+
+- 先查明现有 `CloudRetryPolicy`/`CloudRetryService` 已有 1/5/15/60/240/720 分钟退避、最多 6 次、30 秒轮询、每轮最多 10 项顺序处理和无逐条 `ShowTaskNotification`；没有重建队列或改变上传/校验/取消/恢复语义。
+- 新增 `CloudTransferStatusDto.NetworkRecoveryDisplay` 与维护页绑定：网络失败等待态说明退避次数/批次边界，传输态说明网络已恢复并按批次上传，认证失败不误报。游戏选框、滚动条、命令绑定、有限列表和 net462 路径保持。
+- 验证：Core `1/1`；Worker `CloudRetryPersistenceTests 10/10`；Playnite `R13CloudTransferStageBehaviorTests 11/11`；Release 外部隔离 solution `0 warning / 0 error`、Playnite `net462`；XAML `24/24`；source validation/diff check 通过。WPF 仅按 Demo-first 检查共享详情容器、样式和绑定，未把静态/离屏结果写成真实视觉通过。
+- 代码提交 `e4244329` 已推送；证据：[R13-06 离线恢复反馈](../design/reviews/ui-finesse-round3-20260915/evidence/R13-06-OFFLINE-RECOVERY-20260919.md)。合成/fake/隔离临时目录已清理；未写真实网络、云端、存档、媒体或诊断；main 用户改动和 `src.zip` 未碰、未合并；旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一可执行任务：`R13-07 队列筛选与汇总`，先查现有状态筛选、全局计数、分页和选中项联动。
+
 ## 2026-09-19 R13-05 远端证据详情
 
 - 先查并复用现有云端 DTO、队列状态、远端布局、维护页详情和复制诊断链；新增共享 display-only 脱敏投影，没有改变上传/校验/取消语义。远端对象按现有备份/媒体相对路径生成，来源设备、最后尝试和最后成功校验进入详情。

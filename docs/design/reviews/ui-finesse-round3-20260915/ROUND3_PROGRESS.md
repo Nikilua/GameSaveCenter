@@ -115,7 +115,7 @@
 | R13-03 | 手动重试范围 | 已满足 | 680ea83a | Playnite `R13CloudTransferStageBehaviorTests 8/8`；Core `UiDisplayMappingTests 29/29`；Worker `CloudTransferStateTests|BackupResultLayerTests 19/19`；Worker `IpcRequestLedgerTests 6/6`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过 | 维护页手动重试明确限定当前选中且失败/排队的单项；传输中、已上传、已校验负例不可重试；忙态第二次点击不增加提交；任务中心既有批量入口只处理当前筛选结果并按任务类型/游戏去重；云端重试复用已成功本地副本，不重新执行本地备份；RetryCloudUpload/RetryMediaCloudUpload 保持同一 RequestId 的 replay protection | 合成 DTO、真实 RelayCommand 门控、fake/隔离 SQLite 和外部 Debug 构建；Playnite IPC 客户端 named-pipe 时序 `1 passed / 6 skipped / 0 failed`，跳过项未计为真实 IPC 通过；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R13-03 手动重试范围证据](evidence/R13-03-MANUAL-RETRY-SCOPE-20260919.md)；当前分支已推送，下一项 R13-04 暂停与允许时段 |
 | R13-04 | 暂停与允许时段 | 已满足 | cca3f052 | Core 定向队列状态 `1/1`；Worker 允许时段/暂停持久化 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`、既有 `PortableSettingsTests 10/10`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 摘要明确区分用户暂停、允许时段外、队列空闲和运行中；设置页明确恢复入口、下一轮 Worker 检查生效且不取消已开始上传 | 合成 DTO、现有 Worker 策略/fake 设置和 net462 Playnite 程序集；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能 | [R13-04 暂停与允许时段证据](evidence/R13-04-PAUSE-WINDOW-20260919.md)；当前分支已推送，下一项 R13-05 远端证据详情 |
 | R13-05 | 远端证据详情 | 已满足 | e280cf1c | Core 定向 `2/2`；Worker 云状态映射 `1/1`；Playnite `R13CloudTransferStageBehaviorTests 10/10`；Release 隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；source validation、diff check 通过 | 维护页现有详情滚动容器/共享卡片样式接入远端对象、来源设备、最后尝试和最后成功校验；实际 DTO/Worker 映射和认证参数负例通过；未运行 RenderHarness/真实呈现 | 只使用合成 DTO、fake/隔离 SQLite、外部源码/输出；远端路径只生成脱敏显示值；历史成功校验没有持久化时保持未知；未验真实 Playnite/package-host、真实云端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；main 用户改动和 `src.zip` 未触碰 | [R13-05 远端证据详情](evidence/R13-05-REMOTE-EVIDENCE-20260919.md)；当前分支已推送，下一项 R13-06 离线恢复反馈 |
-| R13-06 | 离线恢复反馈 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R13-06 | 离线恢复反馈 | 已满足 | e4244329 | Core 定向 `1/1`；Worker `CloudRetryPersistenceTests 10/10`；Playnite `R13CloudTransferStageBehaviorTests 11/11`；Release 隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；source validation、diff check 通过 | 维护页现有详情滚动容器/共享卡片样式显示“等待网络恢复/按退避时间重试”和“网络已恢复/按批次上传中”；未运行 RenderHarness/真实呈现 | 合成 DTO/fake/隔离 SQLite；复用现有 Worker 30 秒轮询、每轮最多 10 项、顺序处理和最多 6 次退避重试；无真实网络/Playnite/package-host/宿主性能证明 | [R13-06 离线恢复反馈](evidence/R13-06-OFFLINE-RECOVERY-20260919.md)；当前分支已推送，下一项 R13-07 队列筛选与汇总 |
 | R13-07 | 队列筛选与汇总 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-08 | 失败分类帮助 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-01 | 归类建议解释 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -298,6 +298,15 @@
 - 验证：Core `2/2`；Worker 云状态映射 `1/1`；Playnite `R13CloudTransferStageBehaviorTests 10/10`；Release 隔离 solution `0 warning / 0 error`、Playnite `net462`；XAML `24/24`；`python scripts/validate-source.py`、`git diff --check` 通过。代码提交已推送 `origin/codex/ui-finesse-round2`。
 - 证据仅来自合成 DTO、fake/隔离 SQLite、脱敏负例和外部隔离构建；未写真实云端、存档、媒体或诊断，未运行真实 Playnite/package-host、RenderHarness、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并；本批 `.tmp/r13-05-*` 已清理，旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留且未扩大清理范围。
 - 下一可执行小批量为 `R13-06 离线恢复反馈`：先查现有 Worker/维护页离线状态、恢复入口和错误分类，再补网络恢复前后状态变化与真实未验边界。
+
+## 2026-09-19 Round3 R13-06 离线恢复反馈
+
+- `e4244329` 复用现有 `CloudRetryPolicy` 与 `CloudRetryService`，没有重建队列或改变上传、校验、取消、错误和恢复语义；`CloudTransferStatusDto` 增加 display-only `NetworkRecoveryDisplay`，维护页沿用原有详情滚动容器和共享卡片样式。
+- 网络失败且处于 `RetryScheduled` 时显示“等待网络恢复；按退避时间重试”，同时展示已用自动重试次数和本轮最多 10 项；进入 `Transferring` 时显示“网络已恢复；按批次上传中”。认证失败不套用网络恢复文案，避免把不可恢复错误误报成在线恢复。
+- 源码与既有 Worker 测试确认：`CloudRetryPolicy` 的退避为 1/5/15/60/240/720 分钟、最多 6 次；`CloudRetryService` 每 30 秒检查、每轮最多取 10 项并顺序处理，且没有逐条 `ShowTaskNotification`。因此本阶段没有把恢复写成瞬时并发冲击，也没有新增旧失败逐条通知。
+- 验证：Core 定向 `1/1`；Worker `CloudRetryPersistenceTests 10/10`；Playnite `R13CloudTransferStageBehaviorTests 11/11`；Release 外部隔离 solution `0 warning / 0 error`、Playnite `net462`；XAML `24/24`；`python scripts/validate-source.py`、`git diff --check` 通过。代码提交已推送 `origin/codex/ui-finesse-round2`。
+- 证据只来自合成 DTO、fake/隔离 SQLite、源码边界测试和外部隔离构建；未运行真实网络/rclone/Playnite/package-host、RenderHarness、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并；本批 `.tmp/r13-06-*` 已清理，旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留且未扩大清理范围。
+- 下一可执行小批量为 `R13-07 队列筛选与汇总`：先核对现有状态筛选、全局计数、分页和选中项联动，再补筛选负例与汇总证据。
 
 ## 2026-09-19 R00/R01 当前提交复核
 
