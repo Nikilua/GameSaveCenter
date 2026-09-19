@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-05 任务来源定位
+
+- 在 `0d1ff346` 中先核对并复用现有 TaskStatusDto、TaskCoordinator、Worker 广播、SQLite 任务查询、云队列入口和媒体历史精确 BatchId 恢复；新增稳定来源引用 DTO/迁移列。恢复/远端暂存记录版本来源，云重试记录云队列来源，普通任务保留稳定游戏来源。
+- Task Center 详情新增有限来源卡片；游戏继续用原入口，其他对象按 BackupId、BatchId 或稳定队列键精确查找。对象删除时保留任务诊断并清除待选目标，不跳同名游戏或邻近版本。已有分类操作不创建独立任务，因此没有虚构媒体批次任务。
+- 验证：当前提交身份外部源码副本 solution Release `0 errors/2 条既有 warning`；Playnite R15 `10/10`、Worker 来源/任务回归 `18/18`；`validate-source.py`、XAML `24/24`、diff check；WPF 静态 `0/28/162`。首次未注入身份的直接 vstest 被测试门禁拒绝，随后按 `GSC_BUILD_COMMIT=0d1ff346` 重建并通过，不计入产品失败。
+- linked worktree 直接 WPF 临时工程仍有 Access denied 边界；未宣称真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME、ETW 或宿主性能。只用合成/fake/隔离 SQLite，Demo 原目录不可用，main 用户改动和 `src.zip` 未碰。
+- 证据：[R15-05 任务来源定位](../design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-20260920.md)。下一可执行任务：`R15-06 耗时与吞吐`，先核对可靠采样和未知总量语义。
+
 ## 2026-09-20 R15-04 重复通知归并
 
 - 在 `a67d371e` 中先核对并复用 `BoundedTaskIdSet`、`SessionNotificationAccumulator`、`NotificationLevelPolicy`、Dashboard Toast 和 Task Center 历史；新增任务终态通知指纹。进度事件不领取通知键，相同失败证据只提示一次，不同失败证据保留；摘要后新失败/取消不静音。

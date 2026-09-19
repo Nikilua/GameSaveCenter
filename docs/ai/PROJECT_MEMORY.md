@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R15-05 任务来源定位（2026-09-20）
+
+- `0d1ff346` 复用现有任务 DTO、TaskCoordinator、Worker 广播、SQLite 任务查询、云队列入口和媒体历史分页；新增 `TaskSourceReferenceDto`/稳定来源类型及 `source_references_json` 迁移列。稳定 ID 与显示诊断分离，事件 clone 和旧库读取均保持兼容。
+- 任务详情来源卡片只对版本、媒体批次、云队列显示附加入口；游戏保留原关联游戏按钮。版本、批次和队列均按稳定身份精确查找；删除对象显示无法定位且不跳同名游戏/邻近版本。当前现有分类操作没有独立 TaskCenter 任务，因此不伪造媒体批次任务来源。
+- 验证：当前分支外部源码副本 solution Release `0 errors/2 条既有 warning`；Playnite R15 `10/10`，Worker 来源/任务回归 `18/18`；`validate-source.py`、XAML `24/24`、diff check；WPF 静态 `0/28/162`。测试身份绑定 `GSC_BUILD_COMMIT=0d1ff346`。
+- 未验真实 Playnite/package-host、来源对象删除/重命名后的呈现、UIA/IME、物理 DPI/跨屏、presented frame、ETW 和宿主性能；只用合成/fake/隔离 SQLite，Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据：`R15-05-TASK-SOURCE-LOCATION-20260920.md`。
+- 下一项：`R15-06 耗时与吞吐`；先核对已有可靠采样字段和未知总量边界。
+
 ## 第三轮 R15-04 重复通知归并（2026-09-20）
 
 - `a67d371e` 先复用现有通知门禁、会话摘要、通知级别策略和 Task Center 历史；`TaskNotificationDeduper` 按任务 ID、终态和失败证据去重。进度不通知；同一失败证据不刷屏；不同失败证据和摘要后的新失败/取消保留；历史错误不丢。

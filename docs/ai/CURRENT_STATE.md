@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-05 任务来源定位（代码已提交，隔离验证完成；真实宿主待验）
+
+- `0d1ff346` 复用现有 `TaskStatusDto`、`TaskCoordinator`、Worker 广播、SQLite 任务查询、`OpenCloudQueue` 和媒体历史 `BatchId` 恢复；新增稳定来源引用 DTO/持久化列。恢复/远端暂存记录 `BackupVersion`，备份/媒体云重试记录 `CloudTransfer`，有游戏 ID 的任务保留 `Game`；没有把普通媒体同步任务冒充媒体批次任务。
+- Task Center 详情新增来源卡片，游戏继续使用原关联游戏入口；版本、媒体批次和云队列按 `BackupId`/`BatchId`/稳定队列键精确恢复。来源对象不存在时清除待选目标并保留诊断，不跳同名游戏或邻近版本。
+- 已验证：源码门禁、XAML `24/24`、`git diff --check`；当前分支外部源码副本 solution Release `0 errors/2 条既有 nullable warning`；Playnite R15 `10/10`、Worker 来源/任务回归 `18/18`；WPF 静态 `0/28/162`。
+- 未验真实 Playnite/package-host、删除/重命名后的来源卡片呈现、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能。只用合成/fake/隔离 SQLite；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-20260920.md`。
+- 下一可执行任务：`R15-06 耗时与吞吐`，先核对可靠耗时/进度采样和未知总量语义。
+
 ## 当前第三轮 R15-04 重复通知归并（代码已提交，隔离验证完成；真实宿主待验）
 
 - `a67d371e` 复用既有 `BoundedTaskIdSet`、`SessionNotificationAccumulator`、`NotificationLevelPolicy`、Dashboard Toast 和 Task Center 历史，新增按任务/终态/失败证据归并的 `TaskNotificationDeduper`。进度事件不领取通知键；相同失败证据只通知一次，不同失败保留；摘要后的新失败/取消不静音；完整错误仍可从 Task Center 历史读取。
