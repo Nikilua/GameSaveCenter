@@ -71,6 +71,14 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("CurrentSettings?.CancelEdit();", code);
         Assert.Contains("RestoreDraftFocus", code);
         Assert.Contains("GetEditBaselineFingerprint", code);
+        Assert.Contains("x:Name=\"SettingsSearchTextBox\"", view);
+        Assert.Contains("AutomationProperties.Name=\"搜索设置\"", view);
+        Assert.Contains("TextChanged=\"OnSettingsSearchTextChanged\"", view);
+        Assert.Contains("SearchTermsProperty", code);
+        Assert.Contains("RegisterSettingsSearchTargets", code);
+        Assert.Contains("搜索只改变可见字段，不会修改设置值", view);
+        Assert.Contains("settingsSearchOriginCategory", code);
+        Assert.Contains("SettingsSearchSummary", code);
     }
 
     private static string FindRepositoryRoot()

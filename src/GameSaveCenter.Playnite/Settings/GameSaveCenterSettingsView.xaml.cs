@@ -23,6 +23,18 @@ namespace GameSaveCenter.Playnite.Settings
 {
     public partial class GameSaveCenterSettingsView : UserControl
     {
+        public static readonly DependencyProperty SearchTermsProperty = DependencyProperty.RegisterAttached(
+            "SearchTerms",
+            typeof(string),
+            typeof(GameSaveCenterSettingsView),
+            new PropertyMetadata(string.Empty));
+
+        public static void SetSearchTerms(DependencyObject element, string value)
+            => element.SetValue(SearchTermsProperty, value ?? string.Empty);
+
+        public static string GetSearchTerms(DependencyObject element)
+            => (string)element.GetValue(SearchTermsProperty);
+
         private static readonly ILogger Logger = LogManager.GetLogger();
         private bool entrancePlayed;
         private bool settingsTransferInProgress;
@@ -47,7 +59,11 @@ namespace GameSaveCenter.Playnite.Settings
         private readonly SettingsSaveFeedbackState saveFeedback = new();
         private readonly LatestAsyncValidationCoordinator<SettingsPathValidationSnapshot, IReadOnlyList<string>> pathValidationCoordinator = new();
         private readonly List<ValidationFieldTarget> validationFieldTargets = new();
+        private readonly List<SettingsSearchTarget> settingsSearchTargets = new();
         private ValidationFieldTarget? firstValidationTarget;
+        private bool settingsSearchApplying;
+        private int settingsSearchOriginCategory = -1;
+        private string appliedSettingsSearchQuery = string.Empty;
 
         private sealed class ValidationFieldTarget
         {
@@ -77,9 +93,24 @@ namespace GameSaveCenter.Playnite.Settings
             public ValidationFieldTarget? Target { get; }
         }
 
+        private sealed class SettingsSearchTarget
+        {
+            public SettingsSearchTarget(int categoryIndex, FrameworkElement element, string terms)
+            {
+                CategoryIndex = categoryIndex;
+                Element = element;
+                Terms = terms;
+            }
+
+            public int CategoryIndex { get; }
+            public FrameworkElement Element { get; }
+            public string Terms { get; }
+        }
+
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
+            RegisterSettingsSearchTargets();
             RegisterValidationFieldTargets();
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -92,6 +123,124 @@ namespace GameSaveCenter.Playnite.Settings
             AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
             AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
             AddHandler(Validation.ErrorEvent, new RoutedEventHandler(OnSettingsValidationErrorChanged));
+        }
+
+        private void RegisterSettingsSearchTargets()
+        {
+            settingsSearchTargets.Clear();
+            var panels = new FrameworkElement[]
+            {
+                SettingsGeneralPanel,
+                SettingsBackupPanel,
+                SettingsAppearancePanel,
+                SettingsAutomationPanel,
+                SettingsMigrationPanel
+            };
+            for (var categoryIndex = 0; categoryIndex < panels.Length; categoryIndex++)
+            {
+                foreach (var node in EnumerateLogicalTree(panels[categoryIndex]))
+                {
+                    if (node is not FrameworkElement element) continue;
+                    var terms = GetSearchTerms(element);
+                    if (!string.IsNullOrWhiteSpace(terms))
+                        settingsSearchTargets.Add(new SettingsSearchTarget(categoryIndex, element, terms));
+                }
+            }
+        }
+
+        private static IEnumerable<DependencyObject> EnumerateLogicalTree(DependencyObject root)
+        {
+            yield return root;
+            foreach (var child in LogicalTreeHelper.GetChildren(root).OfType<DependencyObject>())
+            {
+                foreach (var descendant in EnumerateLogicalTree(child))
+                    yield return descendant;
+            }
+        }
+
+        private void OnSettingsSearchTextChanged(object sender, TextChangedEventArgs e)
+            => ApplySettingsSearch();
+
+        private bool HasSettingsSearch
+            => !string.IsNullOrWhiteSpace(SettingsSearchTextBox?.Text);
+
+        private void ApplySettingsSearch()
+        {
+            if (settingsSearchApplying) return;
+            settingsSearchApplying = true;
+            try
+            {
+                var tabs = SettingsSectionTabs;
+                var summary = SettingsSearchSummary;
+                if (tabs == null || summary == null) return;
+                var query = SettingsSearchTextBox?.Text?.Trim() ?? string.Empty;
+                var wasSearching = appliedSettingsSearchQuery.Length > 0;
+                var panels = new FrameworkElement[]
+                {
+                    SettingsGeneralPanel,
+                    SettingsBackupPanel,
+                    SettingsAppearancePanel,
+                    SettingsAutomationPanel,
+                    SettingsMigrationPanel
+                };
+                if (query.Length > 0 && !wasSearching)
+                    settingsSearchOriginCategory = Math.Max(0, Math.Min(panels.Length - 1, SettingsSectionTabs?.SelectedIndex ?? 0));
+                if (query.Length == 0)
+                {
+                    foreach (var target in settingsSearchTargets)
+                        target.Element.Visibility = Visibility.Visible;
+                    var selectedIndex = wasSearching && settingsSearchOriginCategory >= 0
+                        ? settingsSearchOriginCategory
+                        : tabs.SelectedIndex;
+                    for (var index = 0; index < panels.Length; index++)
+                        SetCategoryVisibility(panels[index], index == selectedIndex);
+                    summary.Visibility = Visibility.Collapsed;
+                    appliedSettingsSearchQuery = string.Empty;
+                    settingsSearchOriginCategory = -1;
+                    if (wasSearching && tabs.SelectedIndex != selectedIndex)
+                        tabs.SelectedIndex = selectedIndex;
+                    return;
+                }
+
+                var matchingCategories = new HashSet<int>();
+                var matchCount = 0;
+                foreach (var target in settingsSearchTargets)
+                {
+                    var matches = ContainsSearchTerm(target.Terms, query);
+                    target.Element.Visibility = matches ? Visibility.Visible : Visibility.Collapsed;
+                    if (matches)
+                    {
+                        matchCount++;
+                        matchingCategories.Add(target.CategoryIndex);
+                    }
+                }
+
+                for (var index = 0; index < panels.Length; index++)
+                    SetCategoryVisibility(panels[index], matchingCategories.Contains(index));
+
+                summary.Text = matchCount == 0
+                    ? $"没有找到“{query}”匹配的设置；清空搜索恢复原分类。"
+                    : $"找到 {matchCount} 个匹配设置，涉及 {matchingCategories.Count} 个分类；搜索只改变可见字段，不会修改配置。";
+                summary.Visibility = Visibility.Visible;
+                var firstCategory = matchingCategories.OrderBy(index => index).DefaultIfEmpty(-1).First();
+                if (firstCategory >= 0 && tabs.SelectedIndex != firstCategory)
+                    tabs.SelectedIndex = firstCategory;
+                appliedSettingsSearchQuery = query;
+            }
+            finally
+            {
+                settingsSearchApplying = false;
+            }
+        }
+
+        private static bool ContainsSearchTerm(string value, string query)
+        {
+            var compactValue = value.Replace(" ", string.Empty);
+            var compactQuery = query.Replace(" ", string.Empty);
+            if (compactValue.IndexOf(compactQuery, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                return true;
+            return query.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .All(token => value.IndexOf(token, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
         private void RegisterValidationFieldTargets()
@@ -513,6 +662,8 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void FocusValidationTarget(ValidationFieldTarget? target)
         {
+            if (HasSettingsSearch && SettingsSearchTextBox != null)
+                SettingsSearchTextBox.Clear();
             if (SettingsSectionTabs == null) return;
             if (target == null)
             {
@@ -805,6 +956,11 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSettingsTabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (HasSettingsSearch)
+            {
+                ApplySettingsSearch();
+                return;
+            }
             var selectedIndex = SettingsSectionTabs?.SelectedIndex ?? 0;
             SetCategoryVisibility(SettingsGeneralPanel, selectedIndex == 0);
             SetCategoryVisibility(SettingsBackupPanel, selectedIndex == 1);
