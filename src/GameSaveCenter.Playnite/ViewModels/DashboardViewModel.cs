@@ -425,6 +425,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             SaveDeviceDecisionCommand = new RelayCommand(_ => Run(SaveDeviceDecisionAsync), _ => !IsBusy && SelectedDeviceComparison != null);
             StageRemoteBackupCommand = new RelayCommand(_ => Run(StageRemoteBackupAsync), _ => !IsBusy && SelectedDeviceComparison != null && !string.IsNullOrWhiteSpace(SelectedDeviceComparison.RemoteBackupId));
             RestoreStagedRemoteBackupCommand = new RelayCommand(_ => Run(RestoreStagedRemoteBackupAsync), _ => !IsBusy && StagedRemoteBackup != null && StagedRemoteBackup.Verified);
+            CancelRemoteBackupStageCommand = new RelayCommand(_ => CancelRemoteBackupStage(), _ => IsRemoteBackupStageActive);
             SaveProcessMappingCommand = new RelayCommand(_ => Run(SaveProcessMappingAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(ProcessMappingExecutable) && ProcessMappingTargetGame != null);
             DeleteProcessMappingCommand = new RelayCommand(_ => Run(DeleteProcessMappingAsync), _ => !IsBusy && SelectedProcessMapping != null);
             CopyDiagnosticsCommand = new RelayCommand(_ => Run(CopyDiagnosticsAsync), _ => !string.IsNullOrWhiteSpace(DiagnosticSummary));
@@ -1511,6 +1512,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand SaveDeviceDecisionCommand { get; }
         public ICommand StageRemoteBackupCommand { get; }
         public ICommand RestoreStagedRemoteBackupCommand { get; }
+        public ICommand CancelRemoteBackupStageCommand { get; }
         public ICommand SaveProcessMappingCommand { get; }
         public ICommand DeleteProcessMappingCommand { get; }
         public ICommand CopyDiagnosticsCommand { get; }
@@ -1963,6 +1965,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 knownTaskStates[change.Task.TaskId] = change.Task.State;
                 taskSnapshotInitialized = true;
                 ApplyTrainerDownloadTaskUpdate(change.Task);
+                ApplyRemoteBackupStageTaskUpdate(change.Task);
                 if (SelectedTask == null || string.Equals(SelectedTask.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase))
                     SelectedTask = Tasks.FirstOrDefault(x => string.Equals(x.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase));
                 RaiseCommandStates();
@@ -3102,14 +3105,29 @@ namespace GameSaveCenter.Playnite.ViewModels
                    $"将从设备“{selected.RemoteDevice}”下载完整 Ludusavi 备份库，并在本机隔离区校验版本“{selected.RemoteBackupId}”。\n\n此步骤不会恢复或覆盖当前存档，但下载量可能较大。是否继续？",
                    "下载到隔离区并校验",
                    "取消"))return;
-            var staged=await plugin.RequestAsync<RemoteBackupStageResultDto>(MessageTypes.StageRemoteBackup,
-                new RemoteBackupStageRequestDto
-                {
-                    PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,
-                    RemoteDeviceId=selected.RemoteDeviceId,BackupId=selected.RemoteBackupId
-                },TimeSpan.FromHours(3));
-            StagedRemoteBackup=staged;
-            ConfirmSuccess(staged.StatusMessage);
+            BeginRemoteBackupStage();
+            try
+            {
+                var cancellation=remoteStageCancellation?.Token??CancellationToken.None;
+                var staged=await plugin.RequestAsync<RemoteBackupStageResultDto>(MessageTypes.StageRemoteBackup,
+                    new RemoteBackupStageRequestDto
+                    {
+                        PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,
+                        RemoteDeviceId=selected.RemoteDeviceId,BackupId=selected.RemoteBackupId
+                    },TimeSpan.FromHours(3),cancellation);
+                StagedRemoteBackup=staged;
+                ConfirmSuccess(staged.StatusMessage);
+            }
+            catch(Exception ex)
+            {
+                if(remoteStageCancellation?.IsCancellationRequested==true)
+                    StagedRemoteBackupStatus="远端备份下载已取消；请以任务事件中的隔离区清理结果为准。";
+                else
+                    StagedRemoteBackupStatus="远端备份未完成；"+ex.Message;
+                OnPropertyChanged(nameof(StagedRemoteBackupStatus));
+                throw;
+            }
+            finally { EndRemoteBackupStage(); }
         }
 
         private async Task RestoreStagedRemoteBackupAsync()
@@ -5424,7 +5442,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

@@ -48,13 +48,14 @@ public sealed class TaskCoordinator
         using var linked=CancellationTokenSource.CreateLinkedTokenSource(outerToken);
         _taskTokens[task.TaskId]=linked;
         var gateEntered=false;
+        TaskProgress? progress=null;
         try
         {
             await gate.WaitAsync(linked.Token).ConfigureAwait(false);
             gateEntered=true;
             task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.Message="正在执行";
             await PersistAndPublishAsync(task,linked.Token).ConfigureAwait(false);
-            var progress=new TaskProgress(async (percent,message)=>
+            progress=new TaskProgress(async (percent,message)=>
             {
                 task.ProgressPercent=Math.Clamp(percent,0,100);task.Message=message;
                 await PersistAndPublishAsync(task,CancellationToken.None).ConfigureAwait(false);
@@ -67,7 +68,9 @@ public sealed class TaskCoordinator
         }
         catch(OperationCanceledException)
         {
-            task.State=TaskState.Cancelled;task.Message="已取消";task.FinishedUtc=DateTime.UtcNow;
+            task.State=TaskState.Cancelled;
+            task.Message=string.IsNullOrWhiteSpace(progress?.CancellationMessage)?"已取消":progress.CancellationMessage;
+            task.FinishedUtc=DateTime.UtcNow;
         }
         catch(WorkerOperationException ex)
         {
@@ -196,4 +199,6 @@ public sealed class TaskProgress
     }
     public Task ReportAsync(int percent,string message)=>_report(percent,message);
     public void SetBackupResult(BackupResultDto result)=>_setBackupResult?.Invoke(result);
+    public string CancellationMessage { get; private set; } = string.Empty;
+    public void SetCancellationMessage(string message)=>CancellationMessage=message??string.Empty;
 }

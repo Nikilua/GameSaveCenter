@@ -139,7 +139,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.VerifyCloudTransfer=>await _cloudState.VerifyAsync(Read<CloudTransferVerifyRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.SyncDeviceStates=>await _deviceStates.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveDeviceConflictDecision=>await SaveDeviceConflictDecisionAsync(Read<DeviceConflictDecisionDto>(request),token).ConfigureAwait(false),
-                MessageTypes.StageRemoteBackup=>await _remoteBackups.StageAsync(Read<RemoteBackupStageRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.StageRemoteBackup=>await _remoteBackups.StageAsync(Read<RemoteBackupStageRequestDto>(request),token,request.RequestId).ConfigureAwait(false),
                 MessageTypes.RestoreRemoteBackup=>await _restore.ExecuteRemoteAsync(ReadCorrelated<RemoteRestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListProcessMappings=>await _store.GetProcessMappingsAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveProcessMapping=>await SaveProcessMappingAsync(Read<ProcessMappingDto>(request),token).ConfigureAwait(false),

@@ -219,6 +219,7 @@ namespace GameSaveCenter.Contracts
             "MediaInbox" => "媒体归类",
             "BackupAll" => "整库备份",
             "TrainerDownload" => "修改器下载",
+            "RemoteStage" => "远端备份下载",
             "CloudUpload" => "云端上传",
             "Validation" => "存档校验",
             _ => string.IsNullOrWhiteSpace(TaskType) ? "后台任务" : TaskType
