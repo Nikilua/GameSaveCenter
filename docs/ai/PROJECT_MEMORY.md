@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R13-07 队列筛选与汇总（代码已提交，环境待验）
+
+- `d6c2af90` 已推送。先复用云端队列现有状态/类型筛选、查询一致性 token、分页追加、去重和选中项恢复；新增游戏/Playnite ID、来源设备、时间窗口筛选与全局总数，不另建队列或改变上传/校验/取消/错误/恢复语义。
+- Worker 用同一候选集合计算筛选 `TotalCount` 与未筛选 `GlobalTotalCount`；维护页和合成 RenderHarness ViewModel 的摘要、筛选绑定已同步，筛选栏改用可收缩列。新增 Worker SQLite 和 Playnite 源行为夹具覆盖正例与错误设备负例，但测试未执行。
+- 源码校验、XAML `24/24`、diff check 已通过。主机只有 .NET SDK `9.0.302`，`global.json` 要求 `8.0.100`，缺少 Workload resolver 目录导致 Worker restore 退出 `1`；不把 Worker/Playnite build/test、Release/net462 或 RenderHarness 写成通过。Demo 原目录不可用，仍沿用恢复生产基线。
+- 隔离 `r13-07-build` 已清理；`D:\workplace\github\GameSaveCenter\.tmp\r13-07-source` Contracts 子目录被外部进程占用，不能强杀未知进程。下一步先精确清理并在可用 SDK/Workload 环境补跑新增定向测试与相关回归，验证后再做 R13-08。
+
 ## 2026-09-19 R13-06 离线恢复反馈
 
 - `e4244329` 已推送。先复用 `CloudRetryPolicy` 与 `CloudRetryService` 的退避、轮询、限流和顺序处理；新增共享 DTO 的网络恢复 display-only 文案，不另建队列或改变传输语义。

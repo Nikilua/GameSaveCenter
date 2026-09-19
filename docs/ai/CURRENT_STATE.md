@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-07 队列筛选与汇总（代码已提交，环境待验）
+
+- `d6c2af90` 已推送到 `codex/ui-finesse-round2`。复用既有状态/类型筛选、查询一致性 token、分页追加、`existingKeys` 去重和选中项恢复；新增游戏/Playnite ID 片段、来源设备、24 小时/7 天/30 天时间窗口以及未筛选 `GlobalTotalCount`。维护页摘要区分当前筛选与全局计数，筛选栏使用可收缩列；RenderHarness 合成 ViewModel 同步新绑定。
+- 已加入 Worker 合成 SQLite 行为夹具和 Playnite 源行为夹具，覆盖游戏/设备/时间正例、错误设备负例、全局计数、筛选绑定、分页去重和摘要。但新增 Worker/Playnite 定向测试尚未执行，不把夹具写成通过。
+- 已验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check`。未验证：Worker/Playnite 编译测试、Release/net462、RenderHarness、真实 Playnite/package-host。当前主机只有 SDK `9.0.302`，`global.json` 的 `8.0.100` 向上滚动命中缺失 Workload resolver 目录，Worker restore 退出 `1` 且没有 `project.assets.json`；linked `obj` 另有 Access denied。
+- 只用合成/fake/隔离数据，未写真实网络、云端、存档、媒体或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-build` 已清理，`D:\workplace\github\GameSaveCenter\.tmp\r13-07-source` Contracts 子目录被外部进程占用暂留，未强杀。
+- 下一可执行任务：先释放并精确清理 `r13-07-source`，在可用 SDK/Workload 的隔离目录重跑 Worker/Playnite 定向夹具和相关回归；通过后再推进 `R13-08 失败分类帮助`。
+
 ## 当前第三轮 R13-06 离线恢复反馈
 
 - `e4244329` 已推送到 `codex/ui-finesse-round2`。复用现有 `CloudRetryPolicy`/`CloudRetryService`，只新增 `CloudTransferStatusDto.NetworkRecoveryDisplay` 和维护页绑定，没有改变上传、校验、取消、错误、恢复保护或队列调度语义。
