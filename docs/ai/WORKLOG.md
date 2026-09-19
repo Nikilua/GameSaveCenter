@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R12-05 远端下载进度
+
+- 复用现有 `TaskCoordinator`、任务事件流、`RemoteBackupStagingService`、rclone 安全允许列表和 Maintenance 远端恢复入口；StageRemote 现在发布准备、下载到隔离区、完整性校验、Ludusavi 版本确认、写入隔离清单和等待恢复确认进度。
+- 下载结果明确“隔离区已校验、当前存档尚未恢复”；取消/失败清理本次隔离目录，取消终态保留隔离区已清理或清理失败的实际消息，清理失败不再静默吞掉。Playnite 进度条和取消按钮仅由 RemoteStage 事件驱动，非远端任务不会污染状态。
+- 验证：最终 D 盘隔离 Debug solution 构建 `0 warning / 0 error`、XAML `24/24`；`R12RemoteStageProgressBehaviorTests 3/3`、`RemoteBackupStagingSafetyTests 22/22`；source validation、XAML check、diff check 通过。全量隔离 WPF 在既有 R07 resize/focus 用例失败处停止，事实保留，未改写为 skip/通过。
+- 提交 `23e5b9d4` 已推送 `origin/codex/ui-finesse-round2`。证据：[R12-05 远端下载进度](../design/reviews/ui-finesse-round3-20260915/evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)。Demo 原目录不可用，沿用恢复生产基线；main 用户文件和 `src.zip` 未触碰。
+- 未验真实 Playnite/package-host、rclone/Ludusavi 远端、最终呈现帧、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；未写真实存档/媒体/云端/诊断。下一可执行任务：R12-06 恢复冲突说明。
+
 ## 2026-09-19 R12-04 恢复保护备份
 
 - 在 `codex/ui-finesse-round2` 先核对 RestoreOrchestrator、TaskCoordinator、GameOperationLock 和已有 PreRestore 回滚测试；`e4e42f40` 将保护备份失败、版本无法确认、锁定失败和索引保存失败统一为 `RESTORE_PRERESTORE_FAILED`，目标恢复调用不会提前发生。

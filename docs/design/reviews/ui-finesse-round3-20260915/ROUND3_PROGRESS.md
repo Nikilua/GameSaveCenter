@@ -106,7 +106,7 @@
 | R12-02 | 校验结果解释 | 已满足 | 6cc3a618 | Worker RestoreReadinessTests 13/13；Core UiDisplayMappingTests 19/19；隔离 Release solution 0/0、Core 85/85、Worker 324/324；Playnite source 类组及 WPF 84 个隔离类全部返回 0；WpfUiResourceDictionaryTests 137/39/0；XAML 24/24、source/diff check 通过 | SaveCenter 恢复可用性卡片明确未提供哈希、部分覆盖、已通过、失败和旧结果；有效 Manifest 无哈希不再显示 Ready；保留原验证命令、页面滚动、选框和状态语义 | 合成 ZIP/Manifest、fake/隔离 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；main DEV-INSTALL-008 73/588/57 与安装器退出 1 仍独立记录 | [R12-02 校验结果解释证据](evidence/R12-02-RESTORE-READINESS-EXPLANATION-20260919.md)；下一项 R12-03 目标路径核对 |
 | R12-03 | 目标路径核对 | 已满足 | c0adb1b7 | Worker `PathRemapServiceTests 4/4`；Playnite `R12PathRemapBehaviorTests 2/2`；source `24/24`；资源字典 `137/39/0`；隔离 Release `0/0`、Core `85/85`、Worker `325/325`、XAML `24/24`；source `68` 类/WPF `84` 类全返回 0 | 原路径/重映射路径完整可复制、目标状态可读；`260 DIP` 有限高度、Recycling 虚拟化；长路径、不同盘符、相似根负例通过；预览不写用户目录 | 合成路径/fake/隔离 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；最新 main 一键安装前源测试仍 `273/18/1`，未修改 dirty main | [R12-03 路径核对证据](evidence/R12-03-PATH-REMAP-PREVIEW-20260919.md)；当前分支已推送，下一项 R12-04 |
 | R12-04 | 恢复保护备份 | 已满足 | e4e42f40 | Worker `RestoreOrchestratorTests 12/12`；Playnite `R12RestoreWorkflowBehaviorTests 7/7`；资源字典 `137/39/0`；隔离 Release `0/0`、Core `85/85`、Worker `326/326`、XAML `24/24`；source `68` 类/WPF `84` 类全返回 0 | 保护备份作为执行阶段当前子阶段；失败统一显示中止原因，成功显示已创建并锁定；首次失败不进入目标写入，重试使用最新当前状态 | 合成/fake/隔离目录与 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 最新安装前源测试仍 `273/18/1`，未修改 dirty main | [R12-04 恢复保护备份证据](evidence/R12-04-RESTORE-PROTECTION-20260919.md)；当前分支已推送，下一项 R12-05 |
-| R12-05 | 远端下载进度 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R12-05 | 远端下载进度 | 已满足 | 23e5b9d4 | Playnite `R12RemoteStageProgressBehaviorTests 3/3`；Worker `RemoteBackupStagingSafetyTests 22/22`；最终 Debug 隔离 solution 构建 `0 warning / 0 error`；XAML `24/24`、source validation、diff check 通过 | 维护页绑定现有 TaskCoordinator 事件流，区分准备/下载到隔离区/一致性校验/版本确认/等待恢复；取消按钮只在活动态出现；成功不写成恢复完成；取消、失败和隔离清理结果分别投影，保留原选框、滚动条、命令/绑定和恢复保护 | 合成 DTO/fake/隔离目录、net462 Playnite 测试程序集；全量隔离 WPF 测试在既有 `R07ResizeStressBehaviorTests` 处失败并按门禁停止，未改写为通过；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R12-05 远端下载进度证据](evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)；当前分支已推送，下一项 R12-06 恢复冲突说明 |
 | R12-06 | 恢复冲突说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R12-07 | 预览失效重验 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R12-08 | 恢复结果报告 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -228,6 +228,14 @@
 - fake Worker 负例先让保护备份失败并确认没有目标恢复调用，再把当前状态改成 `A-latest` 重试，确认重试重新取得同游戏操作门、用最新状态建立锁定快照并完成目标恢复；Worker `12/12`，Playnite `7/7`。
 - 完整隔离构建 XAML `24/24`、Release `0/0`、Core `85/85`、Worker `326/326`，source `68` 类/WPF `84` 类隔离进程全返回 0；资源字典类 `137/39/0`。证据使用合成/fake/隔离目录和 STA WPF/offscreen logical DIP，不代表真实 Playnite/package-host、呈现帧、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用。
 - 最新 main 一键命令仍在安装前因 `DangerousConfirmationKeepsCancelAsTheInitialFocusTarget` 失败（`273/18/1`）；本分支未覆盖 main dirty R08 文件。下一可执行小批量：R12-05 远端下载进度。
+
+## 2026-09-19 Round3 R12-05 远端下载进度
+
+- `23e5b9d4` 先复用现有 `TaskCoordinator`、任务事件流、remote staging/校验服务和维护页状态 DTO；StageRemote 任务按准备、下载到隔离区、哈希一致性校验、Ludusavi 版本确认、写入隔离清单和等待恢复确认发布进度。下载完成只代表隔离区已校验，当前存档仍未恢复。
+- 取消时 Worker 先删除本次隔离目录并保留“已清理”或“清理失败仍有残留”的终态消息；普通失败同样报告清理失败，不再静默吞掉残留。维护页取消按钮与进度条只在活动任务显示，非远端任务事件不会改变其状态。
+- 最终 D 盘隔离 Debug 构建 `0 warning / 0 error`、XAML `24/24`；Playnite `R12RemoteStageProgressBehaviorTests 3/3`、Worker `RemoteBackupStagingSafetyTests 22/22`；`validate-source.py`、XAML、`git diff --check` 通过。
+- 全量隔离 Playnite 门禁在同一轮既有 `R07ResizeStressBehaviorTests.ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable` 处返回失败并按脚本停止；该失败不属于 R12-05，未被改写为 skip 或通过，也未声称全量 WPF 绿色。未运行真实 Playnite/package-host、远端 rclone/Ludusavi、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；未写真实存档、媒体、用户云端或外发诊断。
+- Demo 原目录不可用，继续沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并。下一可执行小批量为 `R12-06 恢复冲突说明`，先复用现有恢复冲突/任务结果投影，再补成功与负例行为证据。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

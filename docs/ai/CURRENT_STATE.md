@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R12-05 远端下载进度
+
+- `23e5b9d4` 已推送到 `codex/ui-finesse-round2`。远端下载复用现有 `RemoteBackupStagingService`、`TaskCoordinator`、任务事件流和 Maintenance 绑定，阶段区分准备、下载到隔离区、校验、版本确认、清单写入和等待恢复确认。
+- 取消/失败只清理本次隔离目录；取消消息保留“已清理/清理失败仍有残留”，清理失败不再静默。成功状态写明当前存档尚未恢复；非 RemoteStage 事件不会改变远端进度。
+- 最终 Debug 隔离构建 `0 warning / 0 error`、XAML `24/24`；R12-05 Playnite `3/3`、Worker `22/22`；source/XAML/diff check 通过。全量隔离 WPF 在既有 R07 resize/focus 用例失败处停止，未改写为通过。
+- 证据见 [R12-05 远端下载进度](../design/reviews/ui-finesse-round3-20260915/evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰。下一可执行任务：R12-06 恢复冲突说明。
+
 ## 当前第三轮 R12-04 恢复保护备份
 
 - `e4e42f40` 复用已有 `RestoreOrchestrator`、`TaskCoordinator`、`GameOperationLock` 和 `RestoreWorkflowProgress`，将 PreRestore 失败统一为 `RESTORE_PRERESTORE_FAILED`；保护备份未成功、未锁定或本地保护索引未保存时，危险恢复在写入前中止。

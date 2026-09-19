@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R12-05 远端下载进度
+
+- R12-05 已由 `23e5b9d4` 推送：`RemoteBackupStagingService` 复用 `TaskCoordinator` 和任务事件流，把下载到隔离区、哈希校验、Ludusavi 版本确认、清单写入和等待恢复确认投影为真实任务阶段；不把下载完成显示为恢复完成。
+- `TaskProgress` 保留取消终态解释；远端 staging 在取消/失败时清理本次隔离目录，清理失败提升为可见错误，避免残留被当作已清理。Playnite 只订阅 `RemoteStage` 投影，取消按钮只在活动态可见，原远端两步命令和恢复保护不变。
+- 证据使用合成 DTO、fake/隔离目录和 net462/Worker 定向测试：Playnite `3/3`、Worker `22/22`、最终 Debug 隔离构建 `0/0`、XAML `24/24`。全量 WPF 测试在既有 R07 resize/focus 失败处按门禁停止，不记录为绿色。
+- Demo 原目录不可用，继续以恢复生产基线为视觉依据；真实 Playnite/package-host、rclone/Ludusavi、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能仍未验。main dirty 用户文件和 `src.zip` 未改，下一任务为 R12-06。
+
 ## 2026-09-19 R12-04 恢复保护备份
 
 - `e4e42f40` 复用 RestoreOrchestrator 的 PreRestore、TaskCoordinator 的同游戏串行门和 GameOperationLock；保护备份失败、无法识别、无法锁定或本地索引保存失败统一返回 `RESTORE_PRERESTORE_FAILED`，不会调用目标版本写入。
