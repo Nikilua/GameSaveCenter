@@ -121,7 +121,7 @@
 | R14-01 | 归类建议解释 | 已实现，待环境验证 | 7735cd7c | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0/0`；Core 定向测试未进入 testhost，Worker restore 退出 `1`，Playnite 定向测试未执行 | 复用现有建议预览、来源规则/会话/进程映射和文件名匹配；预览卡逐条显示候选依据，多候选保留各候选证据；无依据显示“待判断”且不生成目标 | 未验 Worker/Playnite 定向测试、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-01 归类建议解释](evidence/R14-01-CLASSIFICATION-EVIDENCE-20260919.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试，再推进 R14-02 |
 | R14-02 | 预览选择编辑 | 已实现，待环境验证 | 69cf2a72 | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0 warning / 0 error`；Core 测试宿主未产出可签收结果，Worker/Playnite 未执行 | 预览卡支持按稳定 MediaId 排除条目；高置信建议可在当前游戏目录中调整目标，汇总显示纳入/排除/可应用数量；排除项不提交，全部排除时命令门禁同步禁用 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；本批临时构建目录已清理 | [R14-02 预览选择编辑](evidence/R14-02-CLASSIFICATION-SELECTION-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试，再推进 R14-03 |
 | R14-03 | 部分成功处理 | 已实现，待环境验证 | aef251b1 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker 逐项失败夹具已加入但未执行 | 批量归类/忽略/恢复保留逐项失败 ID 与原因；失败列表为有限高度/Recycling，重试确认只提交上次失败项，成功项不会再次执行 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-03 部分成功处理](evidence/R14-03-PARTIAL-RETRY-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03，再推进 R14-04 |
-| R14-04 | 撤销边界说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-04 | 撤销边界说明 | 已满足 | 1c0c5a37、a7c39922、03521991 | `validate-source.py`；XAML `24/24`；diff check；既有正常撤销隔离夹具；新增应用后人工修改的撤销冲突负例已加入但当前 testhost 未产出汇总 | 现有历史页提供上次/所选可回退入口；确认文案和 Tooltip 说明不可撤销边界；撤销前重新核对批次目标与当前媒体，冲突项保留当前状态且不覆盖后来决定 | 定向 Worker 测试已尝试但当前 dotnet 长时间无输出，未写成运行时通过；未验 Release/net462、Playnite/RenderHarness、真实宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R14-04 撤销边界说明](evidence/R14-04-UNDO-BOUNDARY-20260920.md)；下一项 R14-05 重复媒体识别视图 |
 | R14-05 | 重复媒体识别视图 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-06 | 批量目标防误选 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-07 | 媒体详情浏览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -348,6 +348,14 @@
 - 已加入 Worker 合成 SQLite/fake 夹具，验证一个有效忽略项成功、一个缺失稳定 ID 项保留失败原因且成功项状态已更新；Playnite 源契约夹具覆盖失败集合、命令绑定和有限列表。源码校验、XAML `24/24`、diff check 通过；Worker/Playnite 测试未执行。
 - 本批只使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；游戏选框、滚动条、取消/错误、恢复保护、有限列表性能和 net462 路径保持；main 用户改动和 `src.zip` 未碰、未合并。
 - 下一可执行小批量：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03 定向夹具和相关回归，确认真实 Worker/Playnite 行为后推进 `R14-04 撤销边界说明`。
+
+## 2026-09-20 Round3 R14-04 撤销边界说明
+
+- R14-04 先核对既有媒体归类批次历史和撤销链，确认实现已具备，因此只补边界行为证据，没有重建服务。历史页已有“撤销上次建议批次”和“撤销所选可回退批次”，`IsUndoable` 只允许仍有已应用项的 Applied/AppliedWithConflicts 批次。
+- Worker 撤销逐项重新读取当前媒体并匹配应用后快照；目标、分类状态、归档路径或元数据变化即记录 Conflict，不执行恢复移动。持久层撤销提交还用当前目标、Assigned 状态、应用后归档路径和 Applied 批次项做条件更新，覆盖竞态失败进入冲突/恢复分支。
+- 既有隔离夹具覆盖应用后重启 Store 的正常撤销。本阶段 `03521991` 增加“应用后人工修改收藏/备注再撤销”的负例，断言 `UndoneWithConflicts`、人工决定和应用后归档路径均保留。`validate-source.py`、XAML `24/24`、diff check 通过；定向 Worker testhost 当前长时间无输出，未获得运行时汇总，不冒充通过。
+- 只用合成/fake/隔离目录，未触碰真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R14-04 撤销边界说明](evidence/R14-04-UNDO-BOUNDARY-20260920.md)。
+- 下一可执行小批量：先核对重复检测已有 hash/元数据能力，再推进 `R14-05 重复媒体识别视图`；R14-04 Worker/Playnite 运行时复跑仍待可用 SDK/Workload 环境。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-04 撤销边界说明
+
+- 先核对既有媒体归类历史和撤销链，确认 `1c0c5a37`/`a7c39922` 已具备入口、批次选择和安全回退条件；本阶段只补边界行为证据。
+- Worker 撤销前重新匹配应用后快照，持久层以当前目标、Assigned、应用后归档路径和 Applied 批次项做条件更新；冲突项目不会恢复移动，也不会覆盖后来人工决定。
+- 新增 `ClassificationUndoLeavesLaterManualDecisionAndArchiveUntouched` 隔离负例，既有正常撤销夹具继续覆盖 Store 重启和归档副本恢复。代码提交 `03521991` 已推送。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过；定向 Worker dotnet testhost 长时间无输出，未产出可签收运行时结果。
+- 仅使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：[R14-04 撤销边界说明](../design/reviews/ui-finesse-round3-20260915/evidence/R14-04-UNDO-BOUNDARY-20260920.md)。
+- 下一可执行任务：`R14-05 重复媒体识别视图`，先核对已有 hash/元数据重复检测并保持只读、不删除真实媒体；R14-04 运行时复跑待可用 SDK/Workload。
+
 ## 2026-09-20 R14-03 部分成功处理
 
 - 先核对最新 MediaSyncService：批量归类、忽略、恢复本来已逐项捕获失败，但 UI 只提示首条原因；本阶段复用 `MediaInboxBatchResultDto`，新增失败集合、稳定 ID 和原操作/目标留存。
