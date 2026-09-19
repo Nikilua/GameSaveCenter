@@ -66,7 +66,28 @@ public sealed class UiDisplayMappingTests
         Assert.Equal("未知设备", backup.SourceDisplay);
         Assert.Equal("未知系统", backup.OperatingSystemDisplay);
         Assert.Equal("未验证", backup.RestoreReadinessStatusDisplay);
+        Assert.Equal("未提供哈希（不等于校验成功）", backup.RestoreReadinessHashValidationDisplay);
+        Assert.Equal("哈希覆盖：未提供", backup.RestoreReadinessHashCoverageDisplay);
         Assert.Equal("尚未检查", backup.RestoreReadinessCheckedDisplay);
+    }
+
+    [Fact]
+    public void RestoreReadinessDisplaySeparatesPartialHashesAndOldResults()
+    {
+        var backup = new BackupVersionDto
+        {
+            RestoreReadiness = new RestoreReadinessDto
+            {
+                HashValidation = "Partial",
+                HashCoveredFileCount = 1,
+                HashEligibleFileCount = 2,
+                CheckedUtc = DateTime.UtcNow.AddDays(-2)
+            }
+        };
+
+        Assert.Equal("哈希部分覆盖", backup.RestoreReadinessHashValidationDisplay);
+        Assert.Equal("哈希覆盖：1/2 个文件", backup.RestoreReadinessHashCoverageDisplay);
+        Assert.Contains("结果较旧", backup.RestoreReadinessCheckedDisplay);
     }
 
     [Theory]

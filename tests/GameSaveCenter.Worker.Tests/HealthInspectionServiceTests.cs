@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text.Json;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Models;
@@ -342,7 +343,21 @@ BEGIN SELECT RAISE(ABORT, 'injected candidate state failure'); END;");
     }
 
     private static string Manifest(string path, long bytes)
-        => JsonSerializer.Serialize(new[] { new FileManifestEntry { RelativePath = path, SizeBytes = bytes } });
+        => JsonSerializer.Serialize(new[]
+        {
+            new FileManifestEntry
+            {
+                RelativePath = path,
+                SizeBytes = bytes,
+                Sha256 = Sha256("save")
+            }
+        });
+
+    private static string Sha256(string content)
+    {
+        using var sha = SHA256.Create();
+        return BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(content))).Replace("-", string.Empty);
+    }
 
     private async Task ExecuteSqlAsync(string sql)
     {

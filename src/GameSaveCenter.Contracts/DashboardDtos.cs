@@ -138,12 +138,25 @@ namespace GameSaveCenter.Contracts
                     ? "健康恢复点：作为恢复安全底线，保留预览始终跳过。"
                     : "未受保护：保留预览会按当前策略评估；如需长期保留，请锁定并保存。";
         public string RestoreReadinessSummaryDisplay => RestoreReadiness?.Summary ?? "尚未验证该版本的可恢复性。";
+        public string RestoreReadinessHashValidationDisplay => RestoreReadiness?.HashValidationDisplay ?? "未提供哈希（不等于校验成功）";
+        public string RestoreReadinessHashCoverageDisplay => RestoreReadiness?.HashCoverageDisplay ?? "哈希覆盖：未提供";
         public string RestoreReadinessMetricsDisplay => RestoreReadiness == null
             ? string.Empty
             : $"文件 {RestoreReadiness.ActualFileCount}/{RestoreReadiness.ExpectedFileCount} · 大小 {FormatBytes(RestoreReadiness.ActualTotalSize)}/{FormatBytes(RestoreReadiness.ExpectedTotalSize)}";
-        public string RestoreReadinessCheckedDisplay => RestoreReadiness?.CheckedUtc is DateTime checkedUtc
-            ? $"检查于 {checkedUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss}"
-            : "尚未检查";
+        public string RestoreReadinessCheckedDisplay
+        {
+            get
+            {
+                if (RestoreReadiness?.CheckedUtc is not DateTime checkedUtc)
+                    return "尚未检查";
+
+                var localChecked = checkedUtc.ToLocalTime();
+                var age = DateTime.UtcNow - checkedUtc.ToUniversalTime();
+                return age >= TimeSpan.FromDays(1)
+                    ? $"检查于 {localChecked:yyyy-MM-dd HH:mm:ss}（结果较旧，建议重新验证）"
+                    : $"检查于 {localChecked:yyyy-MM-dd HH:mm:ss}";
+            }
+        }
 
         private static string FormatBytes(long bytes)
         {
@@ -167,6 +180,10 @@ namespace GameSaveCenter.Contracts
         public long ExpectedTotalSize { get; set; }
         public long ActualTotalSize { get; set; }
         public string HashValidation { get; set; } = "NotAvailable";
+        /// <summary>Number of manifest entries that contain a SHA-256 value.</summary>
+        public int HashCoveredFileCount { get; set; }
+        /// <summary>Total number of manifest entries eligible for hash coverage.</summary>
+        public int HashEligibleFileCount { get; set; }
         public int WarningCount { get; set; }
         public int ErrorCount { get; set; }
         /// <summary>Whether the Worker-owned temporary extraction directory was removed.</summary>
@@ -184,6 +201,18 @@ namespace GameSaveCenter.Contracts
             RestoreReadinessStatus.Failed => "检查失败",
             _ => Status.ToString()
         };
+
+        public string HashValidationDisplay => HashValidation switch
+        {
+            "Validated" => "哈希已覆盖并通过",
+            "Partial" => "哈希部分覆盖",
+            "Failed" => "哈希校验失败",
+            _ => "未提供哈希（不等于校验成功）"
+        };
+
+        public string HashCoverageDisplay => HashEligibleFileCount > 0
+            ? $"哈希覆盖：{HashCoveredFileCount}/{HashEligibleFileCount} 个文件"
+            : "哈希覆盖：未提供";
     }
 
     /// <summary>Human-readable manifest difference between two backups.</summary>
