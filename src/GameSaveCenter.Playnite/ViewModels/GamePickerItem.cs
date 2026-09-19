@@ -34,7 +34,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         public string PlayniteId => Game.PlayniteId;
         public string Name => Game.Name ?? string.Empty;
+        public string IconPath => Game.IconPath ?? string.Empty;
         public string PlatformDisplay => Game.PlatformDisplay;
+        public string IdentityDisplay => Game.IdentityDisplay;
         public string InstallStateDisplay => Game.InstallStateDisplay;
         public string MatchStateDisplay => Game.MatchStateDisplay;
         public string HealthState => Game.HealthState ?? string.Empty;

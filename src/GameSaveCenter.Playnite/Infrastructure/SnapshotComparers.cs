@@ -15,6 +15,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public static readonly Func<GameStatusDto, GameStatusDto, bool> Game = (a, b) =>
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
             && string.Equals(a.Name, b.Name, StringComparison.Ordinal)
+            && string.Equals(a.IconPath, b.IconPath, StringComparison.Ordinal)
             && a.Platform == b.Platform
             && a.IsInstalled == b.IsInstalled
             && a.LastPlayedUtc == b.LastPlayedUtc

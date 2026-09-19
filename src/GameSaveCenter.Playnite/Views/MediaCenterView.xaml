@@ -38,6 +38,22 @@
             </Style>
             <converters:MediaThumbnailConverter x:Key="MediaThumbnailConverter"/>
             <converters:MediaVideoSourceConverter x:Key="MediaVideoSourceConverter"/>
+            <DataTemplate x:Key="MediaGameTargetTemplate">
+                <Grid MinWidth="224" Margin="0,2" ToolTip="{Binding IdentityDisplay}">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Width="30" Height="30" CornerRadius="7" Background="{DynamicResource GscAccentIconFillBrush}" ClipToBounds="True" VerticalAlignment="Top">
+                        <Grid>
+                            <TextBlock Text="{Binding PlatformDisplay}" FontSize="9" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                            <Image Source="{Binding IconPath}" Stretch="UniformToFill"/>
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding PlatformDisplay}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding IdentityDisplay}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
             <Style x:Key="MediaDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
                 <Setter Property="RowStyle" Value="{StaticResource MediaInboxStableRowStyle}"/>
                 <Setter Property="Background" Value="Transparent"/>
@@ -213,9 +229,7 @@
                                             <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <ComboBox Width="160" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏" AutomationProperties.Name="批量归类目标游戏" Margin="0,0,8,4">
-                                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
-                                    </ComboBox>
+                                    <ComboBox Width="220" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" AutomationProperties.Name="批量归类目标游戏" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,8,4"/>
                                     <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" AutomationProperties.Name="归类所选媒体">
                                         <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="归类所选" VerticalAlignment="Center"/></StackPanel>
                                     </ui:Button>
@@ -454,7 +468,7 @@
                                                                           MinWidth="150"
                                                                           Style="{DynamicResource GscWpfUiComboBox}"
                                                                           AutomationProperties.Name="调整归类建议目标">
-                                                                    <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
+                                                                    <ComboBox.ItemTemplate><DataTemplate><ContentControl Content="{Binding}" ContentTemplate="{StaticResource MediaGameTargetTemplate}"/></DataTemplate></ComboBox.ItemTemplate>
                                                                 </ComboBox>
                                                             </StackPanel>
                                                             <TextBlock Text="{Binding TargetSelectionDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
@@ -517,7 +531,7 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
-                                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="180" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="220" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,0,8"/>
                                     <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" AutomationProperties.Name="确认归类" HorizontalAlignment="Left">
                                         <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="确认归类" VerticalAlignment="Center"/></StackPanel>
                                     </ui:Button>
@@ -747,7 +761,7 @@
                                 <!-- File actions identify different destinations, so retain explicit text. -->
                                 <WrapPanel Margin="0,12,0,0"><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding OpenSelectedMediaCommand}" Content="打开媒体" ToolTip="打开所选媒体" AutomationProperties.Name="打开所选媒体" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding RevealSelectedMediaCommand}" Content="打开所在目录" ToolTip="打开所选媒体所在目录" AutomationProperties.Name="打开所选媒体目录" Margin="0,0,8,8"/></WrapPanel>
                                 <TextBlock Text="重新归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,8,0,5"/>
-                                <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding MediaTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                                <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding MediaTargetGame}" ToolTip="重新归类目标；显示名称、平台和 Playnite ID" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,0,8"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding ReassignMediaCommand}" Content="移动并归类" HorizontalAlignment="Left"/>
                                 <Separator Margin="0,14,0,12"/>
                                 <TextBlock Text="批量操作" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,7"/>

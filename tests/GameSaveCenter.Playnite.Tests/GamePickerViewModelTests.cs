@@ -249,6 +249,19 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void PickerItemsExposeStableIdentityAndOptionalPlayniteIcon()
+        {
+            var game = Game("same-name-id-b");
+            game.Name = "同名游戏";
+            game.IconPath = "C:\\isolated\\playnite-icon.png";
+            var item = new GamePickerItem(game);
+
+            Assert.Equal(game.IconPath, item.IconPath);
+            Assert.Contains("same-name-id-b", item.IdentityDisplay);
+            Assert.Contains("Playnite ID", item.IdentityDisplay);
+        }
+
+        [Fact]
         public void LargeSetReplacementEmitsOneResetNotification()
         {
             using var picker = new GamePickerViewModel();

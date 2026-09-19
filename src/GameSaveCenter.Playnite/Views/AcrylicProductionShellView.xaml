@@ -414,8 +414,23 @@
                                     <DataTemplate>
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource GscAccentIconFillBrush}"><TextBlock Text="{Binding Initials}" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/></Border>
-                                            <StackPanel Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding MetaDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                                            <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource GscAccentIconFillBrush}" ClipToBounds="True">
+                                                <Grid>
+                                                    <Image Source="{Binding IconPath}" Stretch="UniformToFill"/>
+                                                    <TextBlock Text="{Binding Initials}" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IconPath}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IconPath}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </Border>
+                                            <StackPanel Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding MetaDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding IdentityDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis"/></StackPanel>
                                             <TextBlock Grid.Column="2" Text="{Binding HealthStateDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/>
                                         </Grid>
                                     </DataTemplate>

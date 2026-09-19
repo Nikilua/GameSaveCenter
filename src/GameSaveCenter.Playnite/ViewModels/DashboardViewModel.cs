@@ -2544,6 +2544,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 PlayniteId = source.PlayniteId,
                 Name = source.Name,
+                IconPath = source.IconPath,
                 Platform = source.Platform,
                 IsInstalled = source.IsInstalled,
                 LastPlayedUtc = source.LastPlayedUtc,

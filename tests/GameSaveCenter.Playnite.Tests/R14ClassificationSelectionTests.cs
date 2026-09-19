@@ -60,4 +60,26 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("SHA-256 完全一致", worker, StringComparison.Ordinal);
         Assert.Contains("同类型、文件名和大小一致", worker, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void ClassificationTargetsShowVisualAndStableIdentityWithoutIndexSelection()
+    {
+        var root = TestRepositoryContext.Root;
+        var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var picker = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+        var contracts = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "GameDtos.cs"));
+        var adapter = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "PlayniteGameAdapter.cs"));
+
+        Assert.Contains("MediaGameTargetTemplate", media, StringComparison.Ordinal);
+        Assert.Contains("{Binding IconPath}", media, StringComparison.Ordinal);
+        Assert.Contains("{Binding PlatformDisplay}", media, StringComparison.Ordinal);
+        Assert.Contains("{Binding IdentityDisplay}", media, StringComparison.Ordinal);
+        Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\"", media, StringComparison.Ordinal);
+        Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\"", media, StringComparison.Ordinal);
+        Assert.DoesNotContain("SelectedIndex=", media, StringComparison.Ordinal);
+        Assert.Contains("{Binding IconPath}", picker, StringComparison.Ordinal);
+        Assert.Contains("{Binding IdentityDisplay}", picker, StringComparison.Ordinal);
+        Assert.Contains("IconPath", contracts, StringComparison.Ordinal);
+        Assert.Contains("ResolveIconPath(game.Icon)", adapter, StringComparison.Ordinal);
+    }
 }
