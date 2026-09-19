@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R12-01 恢复流程分步摘要
+
+- 在 `codex/ui-finesse-round2` 先核对已有 `RestoreReadiness`、`TaskStatusDto`、确认/取消/错误入口；`e1a8da0c` 只新增四阶段状态投影、失败保留详情和 Save 页面分步摘要，保留 PreRestore 保护、命令绑定、游戏选框、滚动条、net462 兼容和有限列表策略。
+- 新增 `R12RestoreWorkflowBehaviorTests`，覆盖成功、warning、游戏运行阻断、恢复后失败和 XAML 命令可达，R12 `6/6`；相邻回归合计 `17/17`；资源字典类 `137/39/0`；隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source/XAML/diff check 和 WPF 静态审查 `0/24/177`。
+- 当前提交绑定的 render-qa 完成但退出 `1`，日志保留既有离屏基线问题，不改写成通过；真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能仍未验。Demo 原目录不可用，沿用恢复生产基线；main 用户文件未触碰。
+- 代码已提交并推送 `origin/codex/ui-finesse-round2`。文档同步后清理 `.tmp\\r12-01-*`，下一可执行小批量为 R12-02 校验结果解释；安装/合并 main 仍需在不覆盖用户改动的前提下另行处理。
+
 ## 2026-09-18 R08-06 数字变化动效
 
 - 先核对已有 Overview 计数、进度条和技术文本；实现只覆盖六个摘要计数。`acbfe7e0` 复用 `GscMotion` 增加 render-only `ScaleTransform` pulse（`1.04`、`420ms` 节流），`96 DIP` 固定槽位防止 `99→100` 推挤；减动效和系统动画关闭时即时落字，进度/技术文本不动画。

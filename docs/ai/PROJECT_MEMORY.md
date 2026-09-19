@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-18
+> 维护时间：2026-09-19
+
+## 2026-09-19 R12-01 恢复流程分步摘要
+
+- 当前分支 `e1a8da0c` 复用已有恢复 readiness/task/command 能力，新增固定四阶段状态投影和 Save 页面摘要卡；没有重建服务、DTO、Worker IPC、游戏选框或滚动条系统。
+- 行为证据：R12 `6/6`，相邻 R11/R06 `17/17`，WPF 资源字典 `137/39/0`；隔离 Release solution `0/0`、XAML `24/24`、source/XAML/diff check 通过。失败夹具检查目标阶段未进入执行、状态/回滚详情保留，不是 Assert.Contains-only。
+- `render-qa` 绑定 `e1a8da0c`、WorkingTreeClean=True，但真实退出 `1`，保留既有 Overview/Task/Save/Settings/Shell/Media 离屏基线问题；不宣称 Playnite/package-host、物理呈现、ETW 或宿主性能通过。Demo 原目录不可用，沿用恢复生产基线。
+- 证据只使用合成 DTO/fake、隔离 STA WPF 和 `.tmp` 源副本；没有真实存档/媒体/云端/诊断写入。main 的 DEV-INSTALL-008 失败事实仍是 `73/588/57`、安装器退出 `1`，main 用户改动未触碰。下一可执行任务为 R12-02 校验结果解释。
 
 ## 2026-09-18 R08-06 数字变化动效
 

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R12-01 恢复流程分步摘要
+
+- `e1a8da0c` 先复用 `BackupVersionDto.RestoreReadiness`、`TaskStatusDto` 与现有恢复命令，把 Save 页面恢复过程分成选择版本、可恢复性检查、目标核对、执行结果四个固定阶段；没有新增恢复服务/DTO/IPC，也没有改变 `PreRestore` 保护、确认、取消、错误传播或回滚语义。
+- `R12RestoreWorkflowBehaviorTests` `6/6`：覆盖 warning、目标核对阻断、执行失败保留回滚详情、成功四阶段收口和原命令保持可达；相邻 R11/R06 合计 `17/17`。资源字典类 `137 passed / 39 skipped / 0 failed`，隔离 Release solution `0 warning / 0 error`，XAML `24/24`，源校验/XAML/diff check 通过。
+- WPF 静态审查为 `0 error / 24 warning / 177 info`，warning 是既有外层滚动/布局提醒；当前提交绑定的 render-qa 完成双主题、多尺寸和滚动探针但真实退出 `1`，只命中既有 Overview 空列表 2 DIP、Task/Save 可读行、Settings 状态、Shell header/Media 几何基线。离屏结果不代表 Playnite 实机、物理 DPI、跨屏或安装通过。
+- 证据使用合成 DTO/fake、隔离 STA WPF、隔离 `.tmp` 源副本，没有读写真实存档、媒体、云端或外发诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动未触碰。main DEV-INSTALL-008 的 `73 failed / 588 passed / 57 skipped`、安装器退出 `1` 事实保持独立。下一可执行小批量为 R12-02 校验结果解释。
+
 ## 当前第三轮 R08-06 数字变化动效
 
 - 先核对已有能力：概览页原有六个摘要计数、进度条和技术文本均已存在；本阶段只为六个摘要计数增加 `NumericChangeFeedback`，不改变服务/DTO/命令、游戏选框、滚动条、取消/错误/恢复保护或有限列表策略。`OverviewTaskProgressBar` 与技术时间文本明确排除。
