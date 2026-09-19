@@ -109,6 +109,7 @@ public sealed class TaskQueryPersistenceTests : IDisposable
             State = TaskState.Failed,
             ProgressPercent = 60,
             Message = "执行失败",
+            StageMessage = "正在执行恢复后校验",
             CreatedUtc = DateTime.UtcNow,
             ErrorCode = "RESTORE_FAILED_ROLLED_BACK",
             ErrorMessage = "已回滚",
@@ -135,6 +136,8 @@ public sealed class TaskQueryPersistenceTests : IDisposable
         Assert.Equal("backup-b", recent.RestoreReport?.BackupId);
         Assert.Equal("pre-1", page.RestoreReport?.PreRestoreBackupId);
         Assert.Equal("RolledBack", page.RestoreReport?.OutcomeKind);
+        Assert.Equal("正在执行恢复后校验", recent.StageMessage);
+        Assert.Equal("校验中", page.StageDisplay);
     }
 
     [Fact]

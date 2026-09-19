@@ -62,6 +62,7 @@ public sealed partial class SqliteStateStore : ITaskStatusStore
         await EnsureColumnAsync(connection, "tasks", "worker_session_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "request_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "restore_report_json", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "tasks", "stage_message", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "ipc_request_ledger", "protocol_version", "INTEGER NOT NULL DEFAULT 1", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "ipc_request_ledger", "payload_hash", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "cloud_transfer_queue", "operation_kind", "TEXT NOT NULL DEFAULT 'Upload'", token).ConfigureAwait(false);
@@ -773,14 +774,14 @@ WHERE state IN ($queued,$running) AND (worker_session_id='' OR worker_session_id
     }
 
     public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token) => ExecuteAsync(@"
-INSERT INTO tasks(task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json)
-VALUES($id,$request,$session,$worker,$type,$game,$name,$state,$progress,$message,$created,$started,$finished,$errorCode,$errorMessage,$restoreReport)
-ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progress,message=excluded.message,worker_session_id=excluded.worker_session_id,
+INSERT INTO tasks(task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json)
+VALUES($id,$request,$session,$worker,$type,$game,$name,$state,$progress,$message,$stageMessage,$created,$started,$finished,$errorCode,$errorMessage,$restoreReport)
+ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progress,message=excluded.message,stage_message=excluded.stage_message,worker_session_id=excluded.worker_session_id,
  request_id=excluded.request_id,started_utc=excluded.started_utc,finished_utc=excluded.finished_utc,error_code=excluded.error_code,error_message=excluded.error_message,restore_report_json=excluded.restore_report_json;",
         new Dictionary<string, object?>
         {
             ["$id"] = task.TaskId, ["$request"] = task.RequestId, ["$session"] = task.SessionId, ["$worker"] = task.WorkerSessionId, ["$type"] = task.TaskType, ["$game"] = task.GameId, ["$name"] = task.GameName,
-            ["$state"] = (int)task.State, ["$progress"] = task.ProgressPercent, ["$message"] = task.Message,
+            ["$state"] = (int)task.State, ["$progress"] = task.ProgressPercent, ["$message"] = task.Message, ["$stageMessage"] = string.IsNullOrWhiteSpace(task.StageMessage) ? task.Message : task.StageMessage,
             ["$created"] = task.CreatedUtc.ToString("O"), ["$started"] = task.StartedUtc?.ToString("O"), ["$finished"] = task.FinishedUtc?.ToString("O"),
             ["$errorCode"] = task.ErrorCode, ["$errorMessage"] = task.ErrorMessage,
             ["$restoreReport"] = task.RestoreReport == null ? string.Empty : JsonSerializer.Serialize(task.RestoreReport, _json)
@@ -792,7 +793,7 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json FROM tasks ORDER BY created_utc DESC, task_id DESC LIMIT $limit;";
+        command.CommandText = "SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json FROM tasks ORDER BY created_utc DESC, task_id DESC LIMIT $limit;";
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 500));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
@@ -803,11 +804,11 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
                 SessionId=reader.IsDBNull(2)?string.Empty:reader.GetString(2), WorkerSessionId=reader.IsDBNull(3)?string.Empty:reader.GetString(3),
                 TaskType=reader.GetString(4), GameId=reader.IsDBNull(5)?string.Empty:reader.GetString(5),
                 GameName=reader.IsDBNull(6)?string.Empty:reader.GetString(6), State=(TaskState)reader.GetInt32(7), ProgressPercent=reader.GetInt32(8),
-                Message=reader.IsDBNull(9)?string.Empty:reader.GetString(9), CreatedUtc=DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
-                StartedUtc=reader.IsDBNull(11)?null:DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
-                FinishedUtc=reader.IsDBNull(12)?null:DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
-                ErrorCode=reader.IsDBNull(13)?string.Empty:reader.GetString(13), ErrorMessage=reader.IsDBNull(14)?string.Empty:reader.GetString(14),
-                RestoreReport=reader.IsDBNull(15) || string.IsNullOrWhiteSpace(reader.GetString(15)) ? null : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(15), _json)
+                Message=reader.IsDBNull(9)?string.Empty:reader.GetString(9), StageMessage=reader.IsDBNull(10)?string.Empty:reader.GetString(10), CreatedUtc=DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
+                StartedUtc=reader.IsDBNull(12)?null:DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
+                FinishedUtc=reader.IsDBNull(13)?null:DateTime.Parse(reader.GetString(13)).ToUniversalTime(),
+                ErrorCode=reader.IsDBNull(14)?string.Empty:reader.GetString(14), ErrorMessage=reader.IsDBNull(15)?string.Empty:reader.GetString(15),
+                RestoreReport=reader.IsDBNull(16) || string.IsNullOrWhiteSpace(reader.GetString(16)) ? null : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(16), _json)
             });
         }
         return result;
@@ -1200,7 +1201,7 @@ CREATE TABLE IF NOT EXISTS games(playnite_id TEXT PRIMARY KEY,name TEXT NOT NULL
 CREATE TABLE IF NOT EXISTS game_policies(playnite_id TEXT PRIMARY KEY,policy_json TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS backup_policy_templates(template_id TEXT PRIMARY KEY,name TEXT NOT NULL,is_built_in INTEGER NOT NULL,policy_json TEXT NOT NULL,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sessions(session_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,source INTEGER NOT NULL,process_id INTEGER,process_name TEXT,launch_profile TEXT,started_utc TEXT NOT NULL,stopped_utc TEXT,elapsed_seconds INTEGER DEFAULT 0);
-CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,request_id TEXT NOT NULL DEFAULT '',session_id TEXT NOT NULL DEFAULT '',worker_session_id TEXT NOT NULL DEFAULT '',task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT,restore_report_json TEXT NOT NULL DEFAULT '');
+CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,request_id TEXT NOT NULL DEFAULT '',session_id TEXT NOT NULL DEFAULT '',worker_session_id TEXT NOT NULL DEFAULT '',task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,stage_message TEXT NOT NULL DEFAULT '',created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT,restore_report_json TEXT NOT NULL DEFAULT '');
 CREATE TABLE IF NOT EXISTS ipc_request_ledger(request_id TEXT PRIMARY KEY,type TEXT NOT NULL,protocol_version INTEGER NOT NULL DEFAULT 1,payload_hash TEXT NOT NULL DEFAULT '',state INTEGER NOT NULL,response_json TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS findings(finding_id TEXT PRIMARY KEY,playnite_id TEXT,severity INTEGER NOT NULL,code TEXT NOT NULL,title TEXT NOT NULL,detail TEXT,suggested_action TEXT,created_utc TEXT NOT NULL,resolved INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS backup_versions(backup_id TEXT NOT NULL,playnite_id TEXT NOT NULL,ludusavi_name TEXT NOT NULL,created_utc TEXT NOT NULL,total_bytes INTEGER NOT NULL,file_count INTEGER NOT NULL,is_locked INTEGER NOT NULL DEFAULT 0,comment TEXT,source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,parent_backup_id TEXT,PRIMARY KEY(playnite_id,backup_id));

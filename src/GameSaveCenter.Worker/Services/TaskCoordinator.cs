@@ -41,7 +41,7 @@ public sealed class TaskCoordinator
             TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
             RequestId=requestId ?? string.Empty,
             SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
-            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", CreatedUtc=createdUtc ?? DateTime.UtcNow
+            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CreatedUtc=createdUtc ?? DateTime.UtcNow
         };
         await PersistAndPublishAsync(task, outerToken).ConfigureAwait(false);
         var gate=_gameLocks.GetOrAdd(string.IsNullOrWhiteSpace(gameId)?"__global__":gameId,_=>new SemaphoreSlim(1,1));
@@ -53,11 +53,11 @@ public sealed class TaskCoordinator
         {
             await gate.WaitAsync(linked.Token).ConfigureAwait(false);
             gateEntered=true;
-            task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.Message="正在执行";
+            task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.Message="正在执行";task.StageMessage="正在执行";
             await PersistAndPublishAsync(task,linked.Token).ConfigureAwait(false);
             progress=new TaskProgress(async (percent,message)=>
             {
-                task.ProgressPercent=Math.Clamp(percent,0,100);task.Message=message;
+                task.ProgressPercent=Math.Clamp(percent,0,100);task.Message=message;task.StageMessage=message ?? string.Empty;
                 await PersistAndPublishAsync(task,CancellationToken.None).ConfigureAwait(false);
             }, result => task.BackupResult = result, report =>
             {
@@ -67,7 +67,11 @@ public sealed class TaskCoordinator
             await operation(progress,linked.Token).ConfigureAwait(false);
             task.State=TaskState.Succeeded;
             task.ProgressPercent=100;
-            if(string.IsNullOrWhiteSpace(task.Message) || string.Equals(task.Message,"正在执行",StringComparison.Ordinal)) task.Message="已完成";
+            if(string.IsNullOrWhiteSpace(task.Message) || string.Equals(task.Message,"正在执行",StringComparison.Ordinal))
+            {
+                task.Message="已完成";
+                task.StageMessage="已完成";
+            }
             task.FinishedUtc=DateTime.UtcNow;
         }
         catch(OperationCanceledException)
@@ -194,7 +198,7 @@ public sealed class TaskCoordinator
     {
             TaskId=task.TaskId,SessionId=task.SessionId,WorkerSessionId=task.WorkerSessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
             RequestId=task.RequestId,
-            ProgressPercent=task.ProgressPercent,Message=task.Message,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
+            ProgressPercent=task.ProgressPercent,Message=task.Message,StageMessage=task.StageMessage,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
             FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
             BackupResult=task.BackupResult == null ? null : new BackupResultDto
             {

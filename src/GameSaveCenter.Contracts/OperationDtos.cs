@@ -273,6 +273,8 @@ namespace GameSaveCenter.Contracts
         public TaskState State { get; set; }
         public int ProgressPercent { get; set; }
         public string Message { get; set; } = string.Empty;
+        /// <summary>Last real stage event; terminal error text must not erase it.</summary>
+        public string StageMessage { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; }
         public DateTime? StartedUtc { get; set; }
         public DateTime? FinishedUtc { get; set; }
@@ -283,9 +285,14 @@ namespace GameSaveCenter.Contracts
         public bool HasRestoreReport => RestoreReport != null;
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
         public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));
-        public string ProgressDisplay => ProgressPercent < 0 || (State == TaskState.Queued && ProgressPercent == 0)
+        public string ProgressDisplay => ProgressPercent < 0
+            || (State == TaskState.Queued && ProgressPercent == 0)
+            || (State == TaskState.Running && ProgressPercent == 0 && string.Equals(StageMessage, "正在执行", StringComparison.Ordinal))
             ? "—"
             : $"{ProgressValue}%";
+        public string StageKey => TaskStageResolver.ResolveKey(TaskType, string.IsNullOrWhiteSpace(StageMessage) ? Message : StageMessage);
+        public string StageDisplay => TaskStageResolver.GetDisplay(StageKey);
+        public bool HasKnownStage => !string.Equals(StageKey, TaskStageResolver.Unknown, StringComparison.Ordinal);
         public string StateDisplay => State switch
         {
             TaskState.Queued => "等待中",

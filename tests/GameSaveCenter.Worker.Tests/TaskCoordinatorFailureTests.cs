@@ -74,6 +74,31 @@ public sealed class TaskCoordinatorFailureTests
         Assert.True(terminalEvent.Task.HasPartialSuccess);
     }
 
+    [Fact]
+    public async Task TerminalFailureKeepsTheLastReportedStageSeparateFromErrorMessage()
+    {
+        var store = new RecordingTaskStatusStore();
+        var coordinator = new TaskCoordinator(store, new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
+
+        var result = await coordinator.RunAsync(
+            "Backup",
+            "game-under-test",
+            "Synthetic Game",
+            async (progress, _) =>
+            {
+                await progress.ReportAsync(10, "正在扫描存档");
+                throw new WorkerOperationException("LUDUSAVI_FAILED", "合成失败");
+            },
+            CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("执行失败", result.Message);
+        Assert.Equal("正在扫描存档", result.StageMessage);
+        Assert.Equal("扫描中", result.StageDisplay);
+        Assert.Contains("合成失败", result.DetailMessage, StringComparison.Ordinal);
+        Assert.Same(result, store.TerminalTask);
+    }
+
     private static async Task AssertTerminalPersistenceFailureDoesNotLeakAsync(
         Func<TaskProgress, CancellationToken, Task> operation,
         TaskState expectedState,

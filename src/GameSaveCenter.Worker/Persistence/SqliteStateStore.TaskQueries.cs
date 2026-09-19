@@ -19,7 +19,7 @@ public sealed partial class SqliteStateStore
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json
 FROM tasks
 WHERE state IN ($queued,$running,$waiting)
 ORDER BY created_utc DESC,task_id DESC;";
@@ -43,7 +43,7 @@ ORDER BY created_utc DESC,task_id DESC;";
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = $@"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,created_utc,started_utc,finished_utc,error_code,error_message,restore_report_json
 FROM tasks
 WHERE {filter.Sql}
 ORDER BY created_utc DESC,task_id DESC
@@ -200,14 +200,15 @@ WHERE state=$state AND finished_utc IS NOT NULL
             State = (TaskState)reader.GetInt32(7),
             ProgressPercent = reader.GetInt32(8),
             Message = reader.IsDBNull(9) ? string.Empty : reader.GetString(9),
-            CreatedUtc = DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
-            StartedUtc = reader.IsDBNull(11) ? null : DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
-            FinishedUtc = reader.IsDBNull(12) ? null : DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
-            ErrorCode = reader.IsDBNull(13) ? string.Empty : reader.GetString(13),
-            ErrorMessage = reader.IsDBNull(14) ? string.Empty : reader.GetString(14),
-            RestoreReport = reader.IsDBNull(15) || string.IsNullOrWhiteSpace(reader.GetString(15))
+            StageMessage = reader.IsDBNull(10) ? string.Empty : reader.GetString(10),
+            CreatedUtc = DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
+            StartedUtc = reader.IsDBNull(12) ? null : DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
+            FinishedUtc = reader.IsDBNull(13) ? null : DateTime.Parse(reader.GetString(13)).ToUniversalTime(),
+            ErrorCode = reader.IsDBNull(14) ? string.Empty : reader.GetString(14),
+            ErrorMessage = reader.IsDBNull(15) ? string.Empty : reader.GetString(15),
+            RestoreReport = reader.IsDBNull(16) || string.IsNullOrWhiteSpace(reader.GetString(16))
                 ? null
-                : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(15), _json)
+                : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(16), _json)
         };
 
     private static string EncodeTaskCursor(DateTime createdUtc, string taskId)
