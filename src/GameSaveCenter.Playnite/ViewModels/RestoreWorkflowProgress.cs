@@ -100,7 +100,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             var active = First(steps, RestoreWorkflowStepStatus.Active);
             if (active != null)
-                return $"恢复流程正在“{active.Title}”；执行阶段会先创建并锁定 PreRestore，再写入当前存档目录。";
+                return $"恢复流程正在“{active.Title}”；执行阶段先完成保护备份并锁定 PreRestore，再写入当前存档目录。";
 
             var pending = steps[0].IsCompleted ? FirstPending(steps) : null;
             return pending == null
@@ -181,14 +181,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (!string.IsNullOrWhiteSpace(error))
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, error);
             if (executing || task?.State == TaskState.Queued || task?.State == TaskState.Running || task?.State == TaskState.WaitingForUser)
-                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Active, "Worker 会先创建并锁定当前状态的 PreRestore；随后才预览、写入并执行恢复后校验。");
+                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Active, "当前阶段：保护备份。Worker 会先创建并锁定当前状态的 PreRestore；随后才预览、写入并执行恢复后校验。");
             if (task?.State == TaskState.Succeeded)
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Complete, string.IsNullOrWhiteSpace(task.DetailMessage) ? "安全恢复完成。" : task.DetailMessage);
             if (task?.State == TaskState.Cancelled)
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Cancelled, string.IsNullOrWhiteSpace(task.DetailMessage) ? "恢复任务已取消；请查看任务详情确认当前状态。" : task.DetailMessage);
             if (task?.State == TaskState.Failed)
-                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, string.IsNullOrWhiteSpace(task.DetailMessage) ? "恢复任务失败；请查看任务详情中的回滚状态。" : task.DetailMessage);
+                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, BuildExecutionFailureDetail(task));
             return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Pending, "尚未开始写入当前存档。");
+        }
+
+        private static string BuildExecutionFailureDetail(TaskStatusDto task)
+        {
+            var detail = string.IsNullOrWhiteSpace(task.DetailMessage)
+                ? "恢复任务失败；请查看任务详情中的回滚状态。"
+                : task.DetailMessage;
+            return string.Equals(task.ErrorCode, "RESTORE_PRERESTORE_FAILED", StringComparison.OrdinalIgnoreCase)
+                ? $"保护备份阶段失败，危险恢复已中止。{detail}"
+                : detail;
         }
 
         private static bool IsTargetFailure(string? errorCode)

@@ -367,7 +367,7 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </Border>
-                                <TextBlock Text="执行阶段才会写入当前存档目录；在此之前 Worker 会创建并锁定 PreRestore。失败时当前步骤和任务详情会保留。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复执行会先建立 PreRestore 保护；失败时保留当前阶段与任务详情。"/>
+                                <TextBlock Text="执行结果会先显示保护备份阶段；只有 PreRestore 创建并锁定后才会写入当前存档目录。保护备份失败会中止危险恢复，失败时当前步骤和任务详情会保留。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复执行会先建立并锁定 PreRestore 保护；保护备份失败会中止危险恢复并保留当前阶段与任务详情。"/>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap" AutomationProperties.Name="版本备注"/>

@@ -66,6 +66,20 @@ public sealed class R12RestoreWorkflowBehaviorTests
     }
 
     [Fact]
+    public void PreRestoreFailureStopsDangerousExecutionAndExplainsProtectionStage()
+    {
+        var task = Task(TaskState.Failed, "RESTORE_PRERESTORE_FAILED", "恢复前保护快照失败，已中止危险恢复");
+        var steps = RestoreWorkflowProgress.Build(Version("pre-restore-failed", RestoreReadinessStatus.Ready), false, false, false, task, string.Empty, string.Empty);
+
+        var execution = Step(steps, "execution");
+        Assert.Equal(RestoreWorkflowStepStatus.Failed, execution.Status);
+        Assert.False(execution.IsCompleted);
+        Assert.Contains("保护备份阶段失败", execution.Detail);
+        Assert.Contains("危险恢复已中止", execution.Detail);
+        Assert.Contains("执行结果", RestoreWorkflowProgress.BuildSummary(steps));
+    }
+
+    [Fact]
     public void SuccessfulTaskCompletesAllStages()
     {
         var task = Task(TaskState.Succeeded, string.Empty, "恢复后校验通过");

@@ -73,15 +73,38 @@ public sealed class RestoreOrchestrator
             var beforeIds=before.Success&&before.Json.HasValue?LudusaviResultParser.ParseBackupList(before.Json.Value,game.PlayniteId,match).Select(x=>x.BackupId).ToHashSet(StringComparer.OrdinalIgnoreCase):new HashSet<string>();
             await progress.ReportAsync(15,"正在创建 PreRestore 安全快照").ConfigureAwait(false);
             var pre=await _ludusavi.BackupAsync(new[]{match},true,false,ct).ConfigureAwait(false);
-            if(!pre.Success||!pre.Json.HasValue||LudusaviResultParser.SomeGamesFailed(pre.Json.Value)) throw new InvalidOperationException("PreRestore backup failed; restore was not started.");
+            if(!pre.Success||!pre.Json.HasValue||LudusaviResultParser.SomeGamesFailed(pre.Json.Value))
+                throw new WorkerOperationException(
+                    "RESTORE_PRERESTORE_FAILED",
+                    "恢复前保护快照失败，已中止危险恢复；当前存档尚未进入写入阶段。",
+                    pre.ErrorMessage);
             var after=await _ludusavi.ListBackupsAsync(new[]{match},ct).ConfigureAwait(false);
             var versions=after.Success&&after.Json.HasValue?LudusaviResultParser.ParseBackupList(after.Json.Value,game.PlayniteId,match):new List<BackupVersionDto>();
             var preVersion=versions.FirstOrDefault(x=>!beforeIds.Contains(x.BackupId))??versions.OrderByDescending(x=>x.CreatedUtc).FirstOrDefault();
-            if(preVersion==null) throw new InvalidOperationException("Could not identify the PreRestore backup version.");
+            if(preVersion==null)
+                throw new WorkerOperationException(
+                    "RESTORE_PRERESTORE_FAILED",
+                    "恢复前保护快照已返回，但无法确认其版本，已中止危险恢复；当前存档尚未进入写入阶段。",
+                    "PreRestore version was not identified after the backup operation.");
             preVersion.IsPreRestore=true;preVersion.IsLocked=true;preVersion.Comment=$"PreRestore {DateTime.Now:yyyy-MM-dd HH:mm:ss} {request.UserComment}".Trim();
             var edit=await _ludusavi.EditBackupAsync(match,preVersion.BackupId,preVersion.Comment,true,ct).ConfigureAwait(false);
-            if(!edit.Success) throw new InvalidOperationException("PreRestore was created, but it could not be locked in Ludusavi: "+edit.ErrorMessage);
-            await _store.AddBackupVersionAsync(preVersion,"{}",ct).ConfigureAwait(false);
+            if(!edit.Success)
+                throw new WorkerOperationException(
+                    "RESTORE_PRERESTORE_FAILED",
+                    "恢复前保护快照已创建，但锁定失败，已中止危险恢复；当前存档尚未进入写入阶段。",
+                    edit.ErrorMessage);
+            try
+            {
+                await _store.AddBackupVersionAsync(preVersion,"{}",ct).ConfigureAwait(false);
+            }
+            catch(Exception ex) when(ex is not OperationCanceledException)
+            {
+                throw new WorkerOperationException(
+                    "RESTORE_PRERESTORE_FAILED",
+                    "恢复前保护快照已创建并锁定，但本地保护索引保存失败，已中止危险恢复。",
+                    ex.Message,
+                    ex);
+            }
             state=RestoreState.PreRestoreBackupCreated;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
 
             await progress.ReportAsync(40,"正在预览目标版本").ConfigureAwait(false);
@@ -138,7 +161,7 @@ public sealed class RestoreOrchestrator
                 }
             }
             state=RestoreState.Completed;await AuditAsync(game.PlayniteId,state,new{request,preVersion.BackupId},ct).ConfigureAwait(false);
-            await progress.ReportAsync(100,"安全恢复完成").ConfigureAwait(false);
+            await progress.ReportAsync(100,"安全恢复完成；执行前保护快照已创建并锁定").ConfigureAwait(false);
         },token, requestId: request.RequestId).ConfigureAwait(false);
     }
 

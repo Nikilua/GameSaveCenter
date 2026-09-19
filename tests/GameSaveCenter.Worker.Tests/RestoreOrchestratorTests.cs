@@ -235,6 +235,31 @@ public sealed class RestoreOrchestratorTests : IDisposable
         Assert.Empty(client.RestoreCalls);
     }
 
+    [Fact]
+    public async Task PreRestoreFailure_BlocksDangerousRestore_AndRetryUsesFreshCurrentState()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+        client.FailPreRestoreCount = 1;
+
+        var first = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, first.State);
+        Assert.Equal("RESTORE_PRERESTORE_FAILED", first.ErrorCode);
+        Assert.Equal("A", client.CurrentSave);
+        Assert.Empty(client.RestoreCalls);
+        Assert.Empty(client.EditedBackups);
+
+        client.SetCurrentSave("A-latest");
+        var retry = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Succeeded, retry.State);
+        Assert.Contains("B", client.RestoreCalls);
+        Assert.Contains(client.EditedBackups, x => x.BackupId.StartsWith("pre-", StringComparison.OrdinalIgnoreCase) && x.Locked == true);
+        Assert.Contains(client.Backups, x => x.Key.StartsWith("pre-", StringComparison.OrdinalIgnoreCase) && x.Value == "A-latest");
+        Assert.Equal("B", client.CurrentSave);
+    }
+
     private RestoreOrchestrator CreateOrchestrator()
         => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider(), new GameOperationLock());
 
@@ -299,6 +324,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public HashSet<string> FailPostValidationFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public List<string> RestoreCalls { get; } = new();
         public List<(string BackupId, bool? Locked)> EditedBackups { get; } = new();
+        public int FailPreRestoreCount { get; set; }
         public bool FailRollback { get; set; }
         public string LiveDirectory { get; }
         public string LiveSavePath => Path.Combine(LiveDirectory, "profile.dat");
@@ -319,6 +345,11 @@ public sealed class RestoreOrchestratorTests : IDisposable
 
         public Task<LudusaviCommandResult> BackupAsync(IEnumerable<string> games, bool force, bool preview, CancellationToken token)
         {
+            if (FailPreRestoreCount > 0)
+            {
+                FailPreRestoreCount--;
+                return Task.FromResult(Failure("pre-restore failed"));
+            }
             var id = "pre-" + DateTime.UtcNow.Ticks;
             Backups[id] = CurrentSave;
             return Task.FromResult(Success(BackupJson(id)));
