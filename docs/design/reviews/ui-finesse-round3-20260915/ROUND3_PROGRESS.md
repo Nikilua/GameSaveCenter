@@ -109,7 +109,7 @@
 | R12-05 | 远端下载进度 | 已满足 | 23e5b9d4 | Playnite `R12RemoteStageProgressBehaviorTests 3/3`；Worker `RemoteBackupStagingSafetyTests 22/22`；最终 Debug 隔离 solution 构建 `0 warning / 0 error`；XAML `24/24`、source validation、diff check 通过 | 维护页绑定现有 TaskCoordinator 事件流，区分准备/下载到隔离区/一致性校验/版本确认/等待恢复；取消按钮只在活动态出现；成功不写成恢复完成；取消、失败和隔离清理结果分别投影，保留原选框、滚动条、命令/绑定和恢复保护 | 合成 DTO/fake/隔离目录、net462 Playnite 测试程序集；全量隔离 WPF 测试在既有 `R07ResizeStressBehaviorTests` 处失败并按门禁停止，未改写为通过；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R12-05 远端下载进度证据](evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)；当前分支已推送，下一项 R12-06 恢复冲突说明 |
 | R12-06 | 恢复冲突说明 | 已满足 | 423856b2 | Playnite R12 恢复流程/冲突说明 `11/11`；Worker `RestoreOrchestratorTests 12/12`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 游戏运行、操作锁、磁盘空间、目标权限和未知写入失败分别给出处理步骤；行为测试验证阶段状态、前置失败不越过执行、权限负例与 XAML HelpText 绑定；不建议无依据关闭安全机制 | 合成 DTO/fake、隔离目录、net462 Playnite 测试程序集；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰 | [R12-06 恢复冲突说明证据](evidence/R12-06-RESTORE-CONFLICT-EXPLANATION-20260919.md)；当前分支已推送，下一项 R12-07 预览失效重验 |
 | R12-07 | 预览失效重验 | 已满足 | 00724e62 | Playnite R12 `13/13`；Worker 恢复就绪/编排合计 `27/27`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 确认返回后重新比较游戏/版本身份，切换对象不提交旧确认；Worker 按最新映射和精确 BackupId 重验目标，实际写入前后保留预览；同大小不同内容的归档按 SHA-256 识别失效 | 合成 Manifest/归档、fake Worker、隔离目录和 net462 Playnite 测试程序集；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰 | [R12-07 预览失效重验证据](evidence/R12-07-RESTORE-REVALIDATION-20260919.md)；当前分支已推送，下一项 R12-08 恢复结果报告 |
-| R12-08 | 恢复结果报告 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R12-08 | 恢复结果报告 | 已满足 | fd4756ea | Playnite R12 `15/15`；Worker `RestoreReadinessTests|RestoreOrchestratorTests|TaskQueryPersistenceTests 34/34`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 复用既有 RestoreOrchestrator/TaskCoordinator/任务详情滚动容器；报告展示目标版本、任务 ID、预览文件范围、PreRestore 保护、失败阶段与完成/回滚/人工介入/取消/失败结果；任务最近/活动/分页查询持久化回读；复制命令只复制脱敏报告 | 合成 DTO/fake Worker/隔离 SQLite 与 net462 Playnite 测试程序集；当前 linked worktree WPF 临时项目仍 Access denied，最终构建使用当前分支外部源码副本和独立输出根；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R12-08 恢复结果报告证据](evidence/R12-08-RESTORE-RESULT-REPORT-20260919.md)；当前分支已推送，下一项 R13-01 队列阶段展示 |
 | R13-01 | 队列阶段展示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-02 | 下次重试时间 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-03 | 手动重试范围 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -251,6 +251,14 @@
 - 新增行为证据覆盖确认守卫正负例、同大小归档内容变化和恢复调用顺序。隔离 Worker 记录 `preview → write → post-validation` 为 `true → false → true`；Manifest SHA-256 变化返回 `Corrupted/Failed`，不以大小相同视为有效。
 - 最终隔离 Debug solution `0 warning / 0 error`、XAML `24/24`、Playnite `13/13`、Worker `27/27`；`python scripts/validate-source.py` 与 `git diff --check` 通过。无 XAML/视觉资源改动，选框、滚动条、命令绑定、取消/错误和恢复保护保持。
 - 证据只来自合成 Manifest/归档、fake Worker、隔离目录和 net462 程序集；未运行真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能，未写真实存档/媒体/云端/诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并。下一可执行小批量为 `R12-08 恢复结果报告`。
+
+## 2026-09-19 Round3 R12-08 恢复结果报告
+
+- `fd4756ea` 复用既有 `RestoreOrchestrator`、`TaskCoordinator`、`TaskStatusDto`、PreRestore 和任务详情滚动容器，新增无凭据 `RestoreReportDto`。报告记录执行目标、目标版本、执行前预览确认的文件范围、保护快照、当前阶段、稳定任务 ID 和完成/回滚/人工介入/取消/失败结果。
+- Worker 把报告写入任务 SQLite，并让最近任务、活动任务和分页查询回读；TaskCenter 在既有详情滚动区显示目标版本、任务 ID、文件范围、保护备份和失败阶段。复制命令在有报告时只复制脱敏摘要，不包含路径、诊断详情或凭据。
+- 行为证据为 Playnite R12 `15/15`、Worker 定向 `34/34`；最终隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py`、XAML check、`git diff --check` 通过。测试曾捕获分页 JSON 选项缺口，修复后才签收，未用 Assert.Contains 代替行为验证。
+- 当前 linked worktree 直接构建 WPF 临时项目仍有 Access denied，最终构建使用当前分支外部隔离源码副本和独立输出根；没有运行真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能，也未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并。`.tmp/r12-07-build-final` 仍待后续启动重试精确清理。
+- 下一可执行小批量为 `R13-01 队列阶段展示`：先核对现有 `CloudTransferCoordinator`/维护页阶段投影及 Q22 依赖，再补上传成功不冒充远端校验的负例。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R12-08 恢复结果报告
+
+- `fd4756ea` 已推送到 `codex/ui-finesse-round2`。复用既有 `RestoreOrchestrator`、`TaskCoordinator`、`TaskStatusDto`、PreRestore 和任务详情滚动容器，新增持久化的无凭据 `RestoreReportDto`；报告展示目标版本、预览文件范围、保护备份、失败阶段、完成/回滚/人工介入/取消/失败结果和任务 ID。
+- TaskCenter 结果卡沿用现有 ScrollViewer，复制命令在有报告时只复制脱敏文本；SQLite 最近、活动和分页任务查询均回读报告。成功与部分完成/回滚/人工介入/失败分开投影，未改变游戏选框、滚动条、命令绑定、取消/错误、恢复保护、有限列表性能或 net462。
+- 证据：Playnite R12 `15/15`，Worker `RestoreReadinessTests|RestoreOrchestratorTests|TaskQueryPersistenceTests 34/34`，隔离 Debug `0 warning / 0 error`，XAML `24/24`，source validation/diff check 通过。证据见 [R12-08 恢复结果报告](../design/reviews/ui-finesse-round3-20260915/evidence/R12-08-RESTORE-RESULT-REPORT-20260919.md)。
+- 仍未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。当前 linked worktree WPF 临时项目仍 Access denied，最终构建使用当前分支外部隔离源码副本；main 用户改动和 `src.zip` 未碰。关闭 MSBuild/VB/C# 编译器服务器后，`.tmp/r12-07-build-final` 仍逐项 Access denied，待下一启动重试精确清理。
+- 下一可执行任务：`R13-01 队列阶段展示`，先核对 `CloudTransferCoordinator`/维护页现有阶段投影和 Q22 依赖。
+
 ## 当前第三轮 R12-07 预览失效重验
 
 - `00724e62` 复用既有恢复确认、映射解析、readiness 校验和 PreRestore；`DashboardViewModel.RestoreAsync` 在确认返回后重新比较游戏 ID/版本 ID，确认期间切换对象不会提交旧确认。

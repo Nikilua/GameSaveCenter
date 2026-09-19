@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R12-08 恢复结果报告
+
+- 先核对已有 `RestoreOrchestrator`、`TaskCoordinator`、`TaskStatusDto`、PreRestore 和任务详情滚动容器，再以 `RestoreReportDto` 补齐报告；没有重建恢复流程，也没有改变选框、滚动、命令/绑定、取消/错误、保护或 net462。
+- 报告贯穿 Worker 运行、SQLite 任务持久化、最近/活动/分页查询和 TaskCenter 结果卡；显示目标版本、任务 ID、预览文件数/大小、保护快照、失败阶段及完成/回滚/人工介入/取消/失败。复制使用脱敏文本，不包含路径、诊断详情或凭据。
+- 行为验证：Playnite R12 `15/15`；Worker `RestoreReadinessTests|RestoreOrchestratorTests|TaskQueryPersistenceTests 34/34`；最终外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；`validate-source.py`、`git diff --check` 通过。分页查询曾因默认 JSON 选项丢失 `PreRestoreBackupId`，修复后才签收。
+- 当前 linked worktree WPF `_wpftmp.csproj` 直接构建仍 Access denied，最终使用当前分支外部隔离源码副本和输出根；不代表真实 Playnite/package-host 或最终呈现。未验物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。未写真实存档/媒体/云端/诊断；main dirty R08 文件和 `src.zip` 未碰、未合并。
+- `.tmp/r12-07-build-final` 在关闭 MSBuild/VB/C# 编译器服务器后精确清理仍逐项 Access denied，未强杀未知进程；本阶段外部隔离源码/输出已清理且不作为证据引用。证据：[R12-08 恢复结果报告](../design/reviews/ui-finesse-round3-20260915/evidence/R12-08-RESTORE-RESULT-REPORT-20260919.md)。下一可执行任务：`R13-01 队列阶段展示`。
+
 ## 2026-09-19 R12-07 预览失效重验
 
 - 先核对并复用现有 `DashboardViewModel`、`RestoreOrchestrator`、`RestoreReadinessService`、版本/映射 DTO 和 PreRestore 链路；`00724e62` 只补确认返回后的游戏/版本身份守卫。确认期间切换对象会清空流程并拒绝旧确认，不改变命令、取消/错误、选框、滚动或 net462。

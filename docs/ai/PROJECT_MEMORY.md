@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R12-08 恢复结果报告
+
+- `fd4756ea` 复用既有恢复编排、任务状态和 PreRestore 能力，新增 `RestoreReportDto`，用稳定 PlayniteId/BackupId/TaskId 记录执行目标、预览文件范围、保护快照、失败阶段和完成/回滚/人工介入/取消/失败结果；没有新建 IPC 或另一套恢复流程。
+- Worker 任务状态持久化报告到 SQLite，最近/活动/分页查询都能回读；TaskCenter 结果卡沿用现有详情 ScrollViewer；复制命令输出不含路径、诊断详情或凭据。测试覆盖成功、回滚、人工介入/失败投影和持久化回读，先捕获并修复了分页查询使用错误 JSON 选项导致 `PreRestoreBackupId` 丢失的问题。
+- 证据：Playnite R12 `15/15`，Worker 定向 `34/34`，隔离 Debug `0/0`，XAML `24/24`，source/diff check 通过；已推送 `fd4756ea`。证据文件为 [R12-08 恢复结果报告](../design/reviews/ui-finesse-round3-20260915/evidence/R12-08-RESTORE-RESULT-REPORT-20260919.md)。
+- 仍只覆盖合成 DTO/fake/隔离 SQLite/目录和外部构建副本，不代表真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 尚未合并且用户改动未触碰；关闭 MSBuild/VB/C# 编译器服务器后，`.tmp/r12-07-build-final` 精确删除仍逐项 Access denied，未强杀未知进程。
+- 下一项 `R13-01 队列阶段展示`：先复用 `CloudTransferCoordinator` 和维护页现有阶段/GuaranteeDisplay，再补状态一致性和上传成功不冒充远端校验的负例。
+
 ## 2026-09-19 R12-07 预览失效重验
 
 - `00724e62` 复用 `DashboardViewModel` 的确认流程和 Worker 既有映射/readiness/PreRestore 能力，只增加确认返回后的游戏/版本身份守卫；变化时重置流程并拒绝过期确认。
