@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R12-06 恢复冲突说明
+
+- `423856b2` 复用已有恢复 readiness/task/error 结果，在 `RestoreWorkflowProgress` 中按游戏运行、操作锁、磁盘空间、目标权限和未知原因给出处理步骤；泛化写入失败不冒充权限问题，所有说明均保留安全检查，不建议无依据关闭安全机制。
+- SaveCenter 只在原四步流程卡片新增 `ResolutionDisplay` 和 Automation HelpText；命令/绑定、取消/错误传播、PreRestore/回滚、游戏选框、滚动条、有限列表与 net462 保持。
+- 隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；Playnite R12 `11/11`，Worker `RestoreOrchestratorTests 12/12`；源码门禁与 diff check 通过。新增冲突说明行为 `4/4`，覆盖四类原因和泛化写入失败负例。
+- 证据见 [R12-06 恢复冲突说明](../design/reviews/ui-finesse-round3-20260915/evidence/R12-06-RESTORE-CONFLICT-EXPLANATION-20260919.md)。未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户改动和 `src.zip` 未碰。下一可执行任务：R12-07 预览失效重验。
+
 ## 当前第三轮 R12-05 远端下载进度
 
 - `23e5b9d4` 已推送到 `codex/ui-finesse-round2`。远端下载复用现有 `RemoteBackupStagingService`、`TaskCoordinator`、任务事件流和 Maintenance 绑定，阶段区分准备、下载到隔离区、校验、版本确认、清单写入和等待恢复确认。

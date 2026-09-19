@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R12-06 恢复冲突说明
+
+- 现有恢复链已经提供 `RestoreReadinessDto`、`TaskStatusDto`、稳定错误码和四阶段 `RestoreWorkflowProgress`；本阶段提交 `423856b2` 复用这些能力，用 `RestoreFailureExplanation` 将游戏运行、操作锁、磁盘空间、目标权限与未知原因映射为处理步骤，不新建服务或 DTO。
+- 失败阶段仍保留错误码/任务详情和原状态；目标失败不会进入执行，readiness 失败不会写入当前存档。权限只在详情出现权限证据时分类，普通 `RESTORE_WRITE_FAILED` 保持未知，避免错误指导。所有建议都明确不关闭安全机制。
+- 通过隔离 Debug 构建 `0/0`、XAML `24/24`、Playnite R12 `11/11`、Worker 恢复编排 `12/12`、源码校验和 diff check。当前未运行全量 WPF，也未宣称真实 Playnite/最终屏幕呈现或宿主性能。
+- 下一项 `R12-07 预览失效重验`：优先核对 readiness/preview 缓存失效、目标路径或版本变化后的重验入口，再补过期结果和取消/失败负例；不要把重新读取写成真实恢复演练。
+
 ## 2026-09-19 R12-05 远端下载进度
 
 - R12-05 已由 `23e5b9d4` 推送：`RemoteBackupStagingService` 复用 `TaskCoordinator` 和任务事件流，把下载到隔离区、哈希校验、Ludusavi 版本确认、清单写入和等待恢复确认投影为真实任务阶段；不把下载完成显示为恢复完成。

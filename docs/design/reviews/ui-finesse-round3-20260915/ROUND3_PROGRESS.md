@@ -107,7 +107,7 @@
 | R12-03 | 目标路径核对 | 已满足 | c0adb1b7 | Worker `PathRemapServiceTests 4/4`；Playnite `R12PathRemapBehaviorTests 2/2`；source `24/24`；资源字典 `137/39/0`；隔离 Release `0/0`、Core `85/85`、Worker `325/325`、XAML `24/24`；source `68` 类/WPF `84` 类全返回 0 | 原路径/重映射路径完整可复制、目标状态可读；`260 DIP` 有限高度、Recycling 虚拟化；长路径、不同盘符、相似根负例通过；预览不写用户目录 | 合成路径/fake/隔离 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；最新 main 一键安装前源测试仍 `273/18/1`，未修改 dirty main | [R12-03 路径核对证据](evidence/R12-03-PATH-REMAP-PREVIEW-20260919.md)；当前分支已推送，下一项 R12-04 |
 | R12-04 | 恢复保护备份 | 已满足 | e4e42f40 | Worker `RestoreOrchestratorTests 12/12`；Playnite `R12RestoreWorkflowBehaviorTests 7/7`；资源字典 `137/39/0`；隔离 Release `0/0`、Core `85/85`、Worker `326/326`、XAML `24/24`；source `68` 类/WPF `84` 类全返回 0 | 保护备份作为执行阶段当前子阶段；失败统一显示中止原因，成功显示已创建并锁定；首次失败不进入目标写入，重试使用最新当前状态 | 合成/fake/隔离目录与 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 最新安装前源测试仍 `273/18/1`，未修改 dirty main | [R12-04 恢复保护备份证据](evidence/R12-04-RESTORE-PROTECTION-20260919.md)；当前分支已推送，下一项 R12-05 |
 | R12-05 | 远端下载进度 | 已满足 | 23e5b9d4 | Playnite `R12RemoteStageProgressBehaviorTests 3/3`；Worker `RemoteBackupStagingSafetyTests 22/22`；最终 Debug 隔离 solution 构建 `0 warning / 0 error`；XAML `24/24`、source validation、diff check 通过 | 维护页绑定现有 TaskCoordinator 事件流，区分准备/下载到隔离区/一致性校验/版本确认/等待恢复；取消按钮只在活动态出现；成功不写成恢复完成；取消、失败和隔离清理结果分别投影，保留原选框、滚动条、命令/绑定和恢复保护 | 合成 DTO/fake/隔离目录、net462 Playnite 测试程序集；全量隔离 WPF 测试在既有 `R07ResizeStressBehaviorTests` 处失败并按门禁停止，未改写为通过；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R12-05 远端下载进度证据](evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)；当前分支已推送，下一项 R12-06 恢复冲突说明 |
-| R12-06 | 恢复冲突说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R12-06 | 恢复冲突说明 | 已满足 | 423856b2 | Playnite R12 恢复流程/冲突说明 `11/11`；Worker `RestoreOrchestratorTests 12/12`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 游戏运行、操作锁、磁盘空间、目标权限和未知写入失败分别给出处理步骤；行为测试验证阶段状态、前置失败不越过执行、权限负例与 XAML HelpText 绑定；不建议无依据关闭安全机制 | 合成 DTO/fake、隔离目录、net462 Playnite 测试程序集；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰 | [R12-06 恢复冲突说明证据](evidence/R12-06-RESTORE-CONFLICT-EXPLANATION-20260919.md)；当前分支已推送，下一项 R12-07 预览失效重验 |
 | R12-07 | 预览失效重验 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R12-08 | 恢复结果报告 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-01 | 队列阶段展示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -236,6 +236,14 @@
 - 最终 D 盘隔离 Debug 构建 `0 warning / 0 error`、XAML `24/24`；Playnite `R12RemoteStageProgressBehaviorTests 3/3`、Worker `RemoteBackupStagingSafetyTests 22/22`；`validate-source.py`、XAML、`git diff --check` 通过。
 - 全量隔离 Playnite 门禁在同一轮既有 `R07ResizeStressBehaviorTests.ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable` 处返回失败并按脚本停止；该失败不属于 R12-05，未被改写为 skip 或通过，也未声称全量 WPF 绿色。未运行真实 Playnite/package-host、远端 rclone/Ludusavi、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；未写真实存档、媒体、用户云端或外发诊断。
 - Demo 原目录不可用，继续沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并。下一可执行小批量为 `R12-06 恢复冲突说明`，先复用现有恢复冲突/任务结果投影，再补成功与负例行为证据。
+
+## 2026-09-19 Round3 R12-06 恢复冲突说明
+
+- `423856b2` 复用现有 `RestoreReadinessDto`、`TaskStatusDto`、错误码和四阶段 `RestoreWorkflowProgress`，新增原因分类：游戏运行、操作锁、磁盘空间、目标权限和未知原因。SaveCenter 只在原流程卡片中显示“处理步骤”，没有新增恢复服务/DTO/IPC，也没有改变写入、取消、回滚或 PreRestore 保护。
+- 游戏运行提示退出游戏/启动器/MOD 管理器；操作锁提示等待任务中心并禁止并发重试；磁盘空间提示清理或迁移后重新验证；权限提示核对 Playnite/Worker 账户 ACL。无明确依据的泛化写入失败保持未知原因，所有分类都明确不通过关闭安全机制解决。
+- 新增行为测试 `R12RestoreConflictExplanationBehaviorTests 4/4`，并与既有 `R12RestoreWorkflowBehaviorTests 7/7` 合并为 Playnite `11/11`；包含游戏运行、操作锁、磁盘空间、权限正例与泛化写入失败负例，另验证 `ResolutionDisplay`/Automation HelpText 绑定。
+- 最终隔离 Debug 构建 XAML `24/24`、solution `0 warning / 0 error`；Worker `RestoreOrchestratorTests 12/12`；`python scripts/validate-source.py` 与 `git diff --check` 通过。未运行全量 WPF，未把既有 R07 resize/focus 边界改写为通过。
+- 证据只来自合成 DTO/fake、隔离输出、net462 Playnite 测试程序集；未运行真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能，未写真实存档/媒体/云端/诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并。下一可执行小批量为 `R12-07 预览失效重验`。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

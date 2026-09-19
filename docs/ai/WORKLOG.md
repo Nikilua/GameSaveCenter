@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R12-06 恢复冲突说明
+
+- 先复用现有 `RestoreReadinessDto`、`TaskStatusDto`、恢复错误码和 `RestoreWorkflowProgress`；`423856b2` 只新增原因分类与步骤级处理建议，覆盖游戏运行、操作锁、磁盘空间、目标权限和未知写入失败。没有新增恢复服务/DTO/IPC，也没有改变命令、取消、错误传播、PreRestore、回滚、游戏选框、滚动条或 net462。
+- SaveCenter 原四步流程新增一行 `ResolutionDisplay`，并绑定 Automation HelpText。游戏运行要求退出游戏/启动器/MOD；操作锁要求等待任务中心且不并发重试；空间不足要求清理/迁移后重验；权限问题要求核对 Playnite/Worker 账户 ACL；没有明确依据时保持未知原因，不建议关闭安全机制。
+- 验证：隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；Playnite R12 `11/11`（新增冲突说明 `4/4` + 既有恢复流程 `7/7`）；Worker `RestoreOrchestratorTests 12/12`；`validate-source.py`、`git diff --check` 通过。
+- 已提交并推送 `423856b2`。证据：[R12-06 恢复冲突说明](../design/reviews/ui-finesse-round3-20260915/evidence/R12-06-RESTORE-CONFLICT-EXPLANATION-20260919.md)。全量 WPF 未运行，真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能仍未验；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R12-07 预览失效重验。
+
 ## 2026-09-19 R12-05 远端下载进度
 
 - 复用现有 `TaskCoordinator`、任务事件流、`RemoteBackupStagingService`、rclone 安全允许列表和 Maintenance 远端恢复入口；StageRemote 现在发布准备、下载到隔离区、完整性校验、Ludusavi 版本确认、写入隔离清单和等待恢复确认进度。
