@@ -464,7 +464,7 @@
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Style="{DynamicResource GscReadingCardStyle}" Padding="18,14">
                             <Grid>
-                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <Grid MinWidth="0">
@@ -490,19 +490,30 @@
                                 </Grid>
                                 <TextBlock Grid.Row="2" Text="{Binding CompareSelectionSummary, TargetNullValue=请选择两个不同版本。, FallbackValue=请选择两个不同版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0"/>
                                 <TextBlock Grid.Row="3" Text="{Binding DiffComparedSummary, TargetNullValue=尚未选择可比较的版本。, FallbackValue=尚未选择可比较的版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                <Grid Grid.Row="4" Margin="0,12,0,0">
+                                <Grid Grid.Row="4" Margin="0,10,0,0">
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding DiffPathSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="按完整相对路径筛选新增、修改和删除条目" AutomationProperties.Name="筛选差异路径"/>
+                                    <ComboBox Grid.Column="1" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding DiffPathKindOptions}" SelectedItem="{Binding DiffPathKindFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="只显示新增、修改或删除路径" AutomationProperties.Name="差异路径类型筛选" Margin="10,0,0,0"/>
+                                    <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ClearDiffPathFiltersCommand}" Content="清除筛选" AutomationProperties.Name="清除差异路径筛选" Margin="10,0,0,0"/>
+                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,6,0,0">
+                                        <TextBlock Text="{Binding DiffPathFilterSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding DiffUnknownSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="5" Margin="0,12,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="{Binding LastBackupDiff.Added.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscSuccessBrush}"/>
-                                        <TextBlock Text="新增文件" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <TextBlock Text="{Binding DiffAddedMatchCount, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscSuccessBrush}"/>
+                                        <TextBlock Text="新增文件（匹配）" Style="{DynamicResource GscCaptionStyle}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock Text="{Binding LastBackupDiff.Modified.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold"/>
-                                        <TextBlock Text="内容变化" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <TextBlock Text="{Binding DiffModifiedMatchCount, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold"/>
+                                        <TextBlock Text="内容变化（匹配）" Style="{DynamicResource GscCaptionStyle}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="{Binding LastBackupDiff.Removed.Count, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscErrorBrush}"/>
-                                        <TextBlock Text="删除文件" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <TextBlock Text="{Binding DiffRemovedMatchCount, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource GscErrorBrush}"/>
+                                        <TextBlock Text="删除文件（匹配）" Style="{DynamicResource GscCaptionStyle}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="3">
                                         <TextBlock Text="{Binding LastBackupDiff.UnchangedCount, TargetNullValue=—}" FontSize="24" FontWeight="SemiBold"/>
@@ -513,24 +524,25 @@
                                         <TextBlock Text="大小变化" Style="{DynamicResource GscCaptionStyle}"/>
                                     </StackPanel>
                                 </Grid>
-                                <Border Grid.Row="3" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,12,0,0">
+                                <Border Grid.Row="6" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,12,0,0">
                                     <ScrollViewer x:Name="SaveCompareMainScrollViewer"
                                                   Style="{DynamicResource GscInspectorScrollViewer}"
                                                   VerticalScrollBarVisibility="Auto"
                                                   HorizontalScrollBarVisibility="Disabled">
                                         <StackPanel>
-                                            <TextBlock Text="新增文件" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
-                                            <ItemsControl ItemsSource="{Binding LastBackupDiff.Added}">
-                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSuccessBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
+                                            <TextBlock Text="新增文件（匹配路径）" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
+                                            <ItemsControl ItemsSource="{Binding DiffAddedPaths}">
+                                                <ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding ., Mode=OneWay}" IsReadOnly="True" ToolTip="{Binding}" Foreground="{DynamicResource GscSuccessBrush}"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.CopyPathCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Content="复制" AutomationProperties.Name="复制完整新增路径" Margin="8,0,0,0"/></Grid></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <TextBlock Text="内容变化" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,8,0,0"/>
-                                            <ItemsControl ItemsSource="{Binding LastBackupDiff.Modified}" Margin="0,3,0,0">
-                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="{DynamicResource GscCaptionFontSize}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
+                                            <TextBlock Text="内容变化（匹配路径）" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                                            <ItemsControl ItemsSource="{Binding DiffModifiedPaths}" Margin="0,3,0,0">
+                                                <ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding ., Mode=OneWay}" IsReadOnly="True" ToolTip="{Binding}"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.CopyPathCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Content="复制" AutomationProperties.Name="复制完整变化路径" Margin="8,0,0,0"/></Grid></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <TextBlock Text="删除文件" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,8,0,0"/>
-                                            <ItemsControl ItemsSource="{Binding LastBackupDiff.Removed}" Margin="0,3,0,0">
-                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontFamily="{DynamicResource GscCodeFontFamily}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscErrorBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}" Margin="0,0,0,5"/></DataTemplate></ItemsControl.ItemTemplate>
+                                            <TextBlock Text="删除文件（匹配路径）" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                                            <ItemsControl ItemsSource="{Binding DiffRemovedPaths}" Margin="0,3,0,0">
+                                                <ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding ., Mode=OneWay}" IsReadOnly="True" ToolTip="{Binding}" Foreground="{DynamicResource GscErrorBrush}"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.CopyPathCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Content="复制" AutomationProperties.Name="复制完整删除路径" Margin="8,0,0,0"/></Grid></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                            <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding LoadMoreDiffPathsCommand}" Content="加载更多差异路径" ToolTip="每次只增加有限数量的路径，避免大清单一次性展开" AutomationProperties.Name="加载更多差异路径" Margin="0,10,0,0" HorizontalAlignment="Left"/>
                                             <TextBlock Text="{Binding DiffSummary, TargetNullValue=选择两个版本后，比较结果会显示在这里。, FallbackValue=选择两个版本后，比较结果会显示在这里。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                         </StackPanel>
                                     </ScrollViewer>

@@ -1634,3 +1634,12 @@
 - `R11VersionComparisonBehaviorTests` `2/2`：真实 SaveCenterView/STA 绑定和同版本禁用，加上 Core manifest 反向方向反例；R11-02 与 R11-01、Save R06 相邻回归 `15/15`。定向 Release 编译无 warning/error，XAML `24/24`、source/XAML/diff check 通过。证据：`evidence/R11-02-VERSION-COMPARISON-20260919.md`。
 - 证据仍只覆盖 synthetic manifest、隔离 STA WPF、真实生产视图和逻辑 DIP；未证明真实 Worker IPC/归档读取、Playnite/package-host 安装呈现、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能。Demo 原目录不可用，继续沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57`、安装器退出 1 和 main 用户文件仍独立未覆盖。
 - 下一可执行任务：R11-03 差异列表搜索；保持有限加载、完整路径复制和零变化/未知差异的既有边界。
+
+## 2026-09-19 Round3 R11-03 差异列表搜索
+
+- 先复用 `BackupDiffDto`、既有 `CopyPathCommand` 和 `GscInspectorScrollViewer`；新增 `BackupDiffPathFilter` 只对当前比较结果做内存投影，不新增存储、IPC 或恢复请求。
+- 比较页新增全部/新增/修改/删除类型筛选、路径片段搜索、清除入口和匹配摘要。每类初始最多显示 120 条，`LoadMoreDiffPathsCommand` 每次再增加有限窗口；匹配计数不被显示窗口截断。
+- 每条新增/修改/删除路径改为只读原始 TextBox，保持完整相对路径可选，并绑定现有 `CopyPathCommand`；未变化数量和非 Exact 的未知差异质量独立显示。同步修正 R11-02 新增行位造成的比较卡片摘要/列表重叠。
+- `R11DiffListSearchBehaviorTests` `2/2`；R11-01/R11-02/R11-03 WPF 夹具串行 `6/6`；R06 存档相邻回归 `11/11`。定向 Release 编译无 warning/error，XAML `24/24`、source/XAML/diff check 通过。专用 `R11SaveWpf` 集合禁并行，避免 STA 全局资源竞争污染结果。证据：`evidence/R11-03-DIFF-LIST-20260919.md`。
+- 未验真实 Worker IPC/归档读取、大型真实清单呈现、Playnite/package-host 安装呈现、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能。Demo 原目录不可用，继续沿用恢复生产基线；main DEV-INSTALL-008 `73/588/57`/安装器退出 1 和 main 用户文件仍独立未覆盖。
+- 下一可执行任务：R11-04 版本说明编辑；继续保持稳定 BackupId 不受显示备注影响。

@@ -7447,3 +7447,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `R11VersionComparisonBehaviorTests` 通过 `2/2`：Core 真实差异服务验证正反方向新增/删除/修改/大小增量，真实 SaveCenterView STA Window 验证 A/B 选择绑定、方向提示、交换入口和同版本禁用。R11-02 + R11-01 + Save R06 相邻回归 `15/15`；Release/net462 编译无 warning/error；XAML `24/24`；source/XAML/diff check 通过。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-02-VERSION-COMPARISON-20260919.md`；Round3 进度账本已改为“已满足”。本阶段没有读取/写入真实存档、媒体、云端或诊断，也未覆盖 dirty main；用户 main 安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1。
 - 未验真实 Worker IPC/归档读取、Playnite/package-host 安装与呈现、physical DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R11-03 差异列表搜索。
+
+## 2026-09-19 Round3 R11-03 差异列表搜索
+
+- 现有差异页只有三组无限 `ItemsControl` 和摘要，没有路径搜索、类型筛选、完整路径复制或有限加载；按任务要求复用 `BackupDiffDto`、`CopyPathCommand` 和现有 280 DIP inspector 滚动边界。
+- 新增 `BackupDiffPathFilter` 和 Dashboard 状态：全部/新增/修改/删除筛选，路径片段不区分大小写匹配，每类初始最多 120 条，匹配计数与显示窗口分开，逐步加载更多；`UnchangedCount` 与非 Exact 未知差异单独摘要。
+- SaveCenter 三组路径项使用真实只读 TextBox + 既有 `CopyPathCommand`，复制参数来自原始完整路径；同时修正 R11-02 行位扩展遗留的比较卡片重叠。`R11SaveWpf` 夹具集合禁并行，避免隔离 STA WPF 全局资源竞争造成假失败。
+- `R11DiffListSearchBehaviorTests 2/2`，R11 三项 WPF 组合 `6/6`，R06 存档页相邻回归 `11/11`；Release/net462 编译无 warning/error；XAML `24/24`；source/XAML/diff check 通过。证据：`evidence/R11-03-DIFF-LIST-20260919.md`，账本已改为“已满足”。
+- 本阶段未读取/写入真实存档、媒体、云端或诊断；未覆盖 dirty main。main 用户安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1。未验真实 Worker IPC/归档读取、大型清单呈现、Playnite/package-host、DPI/跨屏、UIA/IME、ETW、宿主性能。下一可执行任务：R11-04 版本说明编辑。

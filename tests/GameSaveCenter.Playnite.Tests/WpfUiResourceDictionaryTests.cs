@@ -2545,7 +2545,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveCompareLayout\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareRetentionScrollViewer\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareMainScrollViewer\"", saveText);
-        Assert.Contains("{Binding LastBackupDiff.Added.Count", saveText);
+        Assert.Contains("{Binding DiffAddedMatchCount", saveText);
+        Assert.Contains("{Binding DiffModifiedMatchCount", saveText);
+        Assert.Contains("{Binding DiffRemovedMatchCount", saveText);
+        Assert.Contains("ItemsSource=\"{Binding DiffAddedPaths}\"", saveText);
+        Assert.Contains("ItemsSource=\"{Binding DiffModifiedPaths}\"", saveText);
+        Assert.Contains("ItemsSource=\"{Binding DiffRemovedPaths}\"", saveText);
         Assert.Contains("{Binding LastBackupDiff.UnchangedCount", saveText);
         Assert.Contains("{Binding LastBackupDiff.TotalBytesDeltaDisplay", saveText);
         Assert.Contains("{Binding DiffComparedSummary", saveText);

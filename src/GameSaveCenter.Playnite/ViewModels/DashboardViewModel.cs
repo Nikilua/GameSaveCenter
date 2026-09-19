@@ -157,6 +157,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         private BackupVersionDto? compareRightBackup;
         private string compareSelectionSummary = "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
         private bool suppressComparisonSelectionRefresh;
+        private string diffPathSearchText = string.Empty;
+        private string diffPathKindFilter = "全部";
+        private int diffPathVisibleLimit = 120;
+        private int diffAddedMatchCount;
+        private int diffModifiedMatchCount;
+        private int diffRemovedMatchCount;
+        private int diffPathVisibleCount;
+        private bool diffPathHasMore;
+        private string diffPathFilterSummary = "比较两个版本后，可按类型和路径筛选。";
+        private string diffUnknownSummary = "差异质量和未变化数量会在比较后单独显示。";
         private RetentionPreviewDto? lastRetentionPreview;
         private bool suppressSelectionLoad;
         private string gameSearchText = string.Empty;
@@ -306,6 +316,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
             CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups);
             SwapCompareBackupCommand = new RelayCommand(_ => Run(SwapAndCompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups && LastBackupDiff != null);
+            LoadMoreDiffPathsCommand = new RelayCommand(_ => LoadMoreDiffPaths(), _ => !IsBusy && DiffPathHasMore);
+            ClearDiffPathFiltersCommand = new RelayCommand(_ => ClearDiffPathFilters(), _ => !IsBusy && (!string.IsNullOrWhiteSpace(DiffPathSearchText) || !string.Equals(DiffPathKindFilter, "全部", StringComparison.Ordinal)));
             PreviewRetentionCommand = new RelayCommand(_ => Run(PreviewRetentionAsync), _ => !IsBusy && SelectedGame != null && Backups.Count > 0);
             AddMediaSourceCommand = new RelayCommand(_ => Run(AddMediaSourceAsync), _ => !IsBusy && SelectedGame != null);
             UpdateMediaSourceCommand = new RelayCommand(value => Run(() => UpdateMediaSourceAsync(value as MediaSourceRuleDto)), _ => !IsBusy);
@@ -452,6 +464,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> DeviceDecisionOptions { get; } = new[] { "稍后处理", "保留两者", "以本机为准", "以远端为准" };
         public BatchObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new BatchObservableCollection<ProcessMappingDto>();
         public BatchObservableCollection<BackupVersionDto> Backups { get; } = new BatchObservableCollection<BackupVersionDto>();
+        public BatchObservableCollection<string> DiffAddedPaths { get; } = new BatchObservableCollection<string>();
+        public BatchObservableCollection<string> DiffModifiedPaths { get; } = new BatchObservableCollection<string>();
+        public BatchObservableCollection<string> DiffRemovedPaths { get; } = new BatchObservableCollection<string>();
+        public IReadOnlyList<string> DiffPathKindOptions { get; } = new[] { "全部", "新增", "修改", "删除" };
         public BatchObservableCollection<BackupPolicyTemplateDto> PolicyTemplates { get; } = new BatchObservableCollection<BackupPolicyTemplateDto>();
         public IReadOnlyList<BackupAnomalyProtectionOption> BackupAnomalyProtectionOptions { get; } = new[]
         {
@@ -1259,8 +1275,47 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string DiffSummary { get => diffSummary; private set => SetValue(ref diffSummary, value); }
         public string DiffComparedSummary { get => diffComparedSummary; private set => SetValue(ref diffComparedSummary, value); }
         public string CompareSelectionSummary { get => compareSelectionSummary; private set => SetValue(ref compareSelectionSummary, value); }
+        public string DiffPathSearchText
+        {
+            get => diffPathSearchText;
+            set
+            {
+                SetValue(ref diffPathSearchText, value ?? string.Empty);
+                diffPathVisibleLimit = 120;
+                RefreshDiffPathResults();
+                RaiseCommandStates();
+            }
+        }
+        public string DiffPathKindFilter
+        {
+            get => diffPathKindFilter;
+            set
+            {
+                var normalized = DiffPathKindOptions.Contains(value) ? value : "全部";
+                SetValue(ref diffPathKindFilter, normalized);
+                diffPathVisibleLimit = 120;
+                RefreshDiffPathResults();
+                RaiseCommandStates();
+            }
+        }
+        public int DiffAddedMatchCount { get => diffAddedMatchCount; private set => SetValue(ref diffAddedMatchCount, value); }
+        public int DiffModifiedMatchCount { get => diffModifiedMatchCount; private set => SetValue(ref diffModifiedMatchCount, value); }
+        public int DiffRemovedMatchCount { get => diffRemovedMatchCount; private set => SetValue(ref diffRemovedMatchCount, value); }
+        public int DiffPathVisibleCount { get => diffPathVisibleCount; private set => SetValue(ref diffPathVisibleCount, value); }
+        public bool DiffPathHasMore { get => diffPathHasMore; private set => SetValue(ref diffPathHasMore, value); }
+        public string DiffPathFilterSummary { get => diffPathFilterSummary; private set => SetValue(ref diffPathFilterSummary, value); }
+        public string DiffUnknownSummary { get => diffUnknownSummary; private set => SetValue(ref diffUnknownSummary, value); }
         public string RetentionSummary { get => retentionSummary; private set => SetValue(ref retentionSummary, value); }
-        public BackupDiffDto? LastBackupDiff { get => lastBackupDiff; private set => SetValue(ref lastBackupDiff, value); }
+        public BackupDiffDto? LastBackupDiff
+        {
+            get => lastBackupDiff;
+            private set
+            {
+                SetValue(ref lastBackupDiff, value);
+                diffPathVisibleLimit = 120;
+                RefreshDiffPathResults();
+            }
+        }
         public BackupVersionDto? CompareLeftBackup
         {
             get => compareLeftBackup;
@@ -1331,6 +1386,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand UpdateBackupMetadataCommand { get; }
         public ICommand CompareBackupCommand { get; }
         public ICommand SwapCompareBackupCommand { get; }
+        public ICommand LoadMoreDiffPathsCommand { get; }
+        public ICommand ClearDiffPathFiltersCommand { get; }
         public ICommand PreviewRetentionCommand { get; }
         public ICommand AddMediaSourceCommand { get; }
         public ICommand UpdateMediaSourceCommand { get; }
@@ -3987,6 +4044,45 @@ namespace GameSaveCenter.Playnite.ViewModels
             return $"A：{left.ComparisonDisplay} → B：{right.ComparisonDisplay}；新增属于 B，删除属于 A。";
         }
 
+        private void LoadMoreDiffPaths()
+        {
+            if (!DiffPathHasMore) return;
+            diffPathVisibleLimit += 120;
+            RefreshDiffPathResults();
+            RaiseCommandStates();
+        }
+
+        private void ClearDiffPathFilters()
+        {
+            diffPathVisibleLimit = 120;
+            DiffPathSearchText = string.Empty;
+            DiffPathKindFilter = "全部";
+        }
+
+        private void RefreshDiffPathResults()
+        {
+            var projection = BackupDiffPathFilter.Apply(LastBackupDiff, DiffPathSearchText, DiffPathKindFilter, diffPathVisibleLimit);
+            DiffAddedPaths.ReplaceAll(projection.VisibleAdded);
+            DiffModifiedPaths.ReplaceAll(projection.VisibleModified);
+            DiffRemovedPaths.ReplaceAll(projection.VisibleRemoved);
+            DiffAddedMatchCount = projection.Added.Count;
+            DiffModifiedMatchCount = projection.Modified.Count;
+            DiffRemovedMatchCount = projection.Removed.Count;
+            DiffPathVisibleCount = projection.VisibleCount;
+            DiffPathHasMore = projection.HasMore;
+            var totalMatches = projection.MatchCount;
+            var filterDescription = string.IsNullOrWhiteSpace(DiffPathSearchText) ? "全部路径" : $"路径包含“{DiffPathSearchText.Trim()}”";
+            if (!string.Equals(DiffPathKindFilter, "全部", StringComparison.Ordinal)) filterDescription += $" · 类型：{DiffPathKindFilter}";
+            DiffPathFilterSummary = LastBackupDiff == null
+                ? "比较两个版本后，可按类型和路径筛选。"
+                : $"{filterDescription}：匹配 {totalMatches} 条，当前显示 {DiffPathVisibleCount} 条" + (DiffPathHasMore ? "，还可加载更多。" : "。");
+            DiffUnknownSummary = LastBackupDiff == null
+                ? "差异质量和未变化数量会在比较后单独显示。"
+                : string.Equals(LastBackupDiff.ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase)
+                    ? $"差异质量：精确比较；零变化：{LastBackupDiff.UnchangedCount} 条（不混入路径差异列表）。"
+                    : $"未知差异：{LastBackupDiff.ComparisonQualityDisplay}；零变化：{LastBackupDiff.UnchangedCount} 条（不混入路径差异列表）。";
+        }
+
         private void ClearBackupComparison()
         {
             LastBackupDiff = null;
@@ -5139,7 +5235,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
-                UpdateBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, PreviewRetentionCommand,
+                UpdateBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,

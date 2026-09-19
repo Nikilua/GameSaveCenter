@@ -15,6 +15,7 @@ using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
 
+[Collection("R11SaveWpf")]
 public sealed class R11VersionSummaryBehaviorTests
 {
     [Fact]

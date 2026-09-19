@@ -3899,3 +3899,11 @@
 - 同一 BackupId（忽略大小写）、空选择或缺少稳定 ID均拒绝比较；同版本界面提示“不发起比较或恢复”，交换按钮只在已有比较结果且选择有效时可用。恢复命令、取消/错误语义、游戏选框、滚动系统、有限列表和 net462 兼容没有变更。
 - `R11VersionComparisonBehaviorTests 2/2` 和相邻 `15/15` 通过；前后方向反例使用真实 Core diff service，视图证据使用真实 SaveCenterView/STA Window，不以字符串断言作为唯一交互证据。Release/net462 无 warning/error，XAML `24/24`，source/XAML/diff check 通过。证据：`evidence/R11-02-VERSION-COMPARISON-20260919.md`。
 - 仍不可把隔离 STA/合成 manifest/逻辑 DIP扩写成真实 Worker IPC、归档读取、Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW或宿主性能通过；Demo 原目录不可用。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 仍独立记录，main 用户改动未触碰。下一可执行任务：R11-03 差异列表搜索。
+
+## 2026-09-19 Round3 R11-03 差异列表搜索
+
+- 差异页面已有 `BackupDiffDto` 的新增/修改/删除/未变化和 `CopyPathCommand`，但原三组 ItemsControl 没有筛选和有限窗口。新增 `BackupDiffPathFilter` 作为内存投影：按类型、路径片段匹配后各类最多显示 120 条，计数保留完整匹配数，`LoadMoreDiffPathsCommand` 逐步增加窗口。
+- SaveCenter 比较页增加路径搜索、类型 ComboBox、清除筛选、匹配/显示摘要；每条路径用生产只读 TextBox 保持完整相对路径选择，并将原始值传给现有复制命令。`UnchangedCount` 始终作为零变化独立计数；非 Exact 状态显示未知差异提示，不混成安全或零变化。
+- 本阶段还修正了 R11-02 行位扩展遗漏：比较标题、A/B、筛选、计数、差异列表现在是独立 Grid 行。`R11SaveWpf` xUnit 集合禁并行，专门保护真实 SaveCenterView STA 夹具不受 WPF 全局资源竞争影响。
+- `R11DiffListSearchBehaviorTests 2/2`，R11-01/R11-02/R11-03 串行 `6/6`，R06 存档页相邻 `11/11`；Release/net462 无 warning/error，XAML `24/24`，source/XAML/diff check 通过。证据：`evidence/R11-03-DIFF-LIST-20260919.md`。
+- 仍不可把合成 DTO/隔离 STA/逻辑 DIP写成真实 Worker IPC、归档读取、大型清单物理呈现、Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW或宿主性能通过；Demo 原目录不可用。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 独立保留，main 用户改动未触碰。下一可执行任务：R11-04 版本说明编辑。
