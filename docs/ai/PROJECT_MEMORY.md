@@ -2,13 +2,13 @@
 
 > 维护时间：2026-09-19
 
-## 2026-09-19 R12-03 目标路径核对
+## 2026-09-19 R12-04 恢复保护备份
 
-- `c0adb1b7` 复用 `PathRemapService.PreviewAsync`、现有 DTO/IPC 和设置写回链路；UI 显示原路径与新路径的完整文本、目标存在状态，并在根路径变化时清除旧预览，避免把过期目标误当成当前预览。
-- 路径预览 DataGrid 使用 `FiniteViewport`、`MaxHeight=260`、Recycling 虚拟化和只读 TextBox；服务仍只改索引/Worker 设置，不移动或删除文件。长路径、不同盘符和相似路径负例在隔离 SQLite/文件夹中验证。
-- 证据：Worker `PathRemapServiceTests 4/4`、Playnite `R12PathRemapBehaviorTests 2/2`、`UiFinesseRound2ControlSourceTests 24/24`、资源字典类 `137/39/0`；隔离全流程 Release `0/0`、Core `85/85`、Worker `325/325`，source `68` 类/WPF `84` 类全返回 0，XAML `24/24`；WPF 静态 `0/25/177`。
-- 边界仍是合成路径/fake/隔离 SQLite、STA WPF/offscreen logical DIP；没有真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能证据。Demo 原目录不可用，沿用恢复生产基线。最新 main 一键安装前失败为 `273 passed / 18 skipped / 1 failed`，失败类是 `DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`：main dirty R08 实现与跟踪源断言不同步；本分支测试已通过，未修改 main。
-- 当前分支已推送，main 尚未合并。下一项 R12-04 恢复保护备份。
+- `e4e42f40` 复用 RestoreOrchestrator 的 PreRestore、TaskCoordinator 的同游戏串行门和 GameOperationLock；保护备份失败、无法识别、无法锁定或本地索引保存失败统一返回 `RESTORE_PRERESTORE_FAILED`，不会调用目标版本写入。
+- 失败投影明确“保护备份阶段失败，危险恢复已中止”；成功任务消息明确执行前保护快照已创建并锁定。fake 测试先让保护备份失败，再重试并将当前状态改为 `A-latest`，确认首次没有危险恢复调用，重试用最新状态建立保护快照并完成目标恢复。
+- 证据：Worker `RestoreOrchestratorTests 12/12`、Playnite `R12RestoreWorkflowBehaviorTests 7/7`、资源字典 `137/39/0`；完整隔离 Release `0/0`、Core `85/85`、Worker `326/326`，source `68` 类/WPF `84` 类全部返回 0，XAML `24/24`。
+- 边界仍是合成/fake、隔离目录、隔离 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线。main 最新安装前源测试失败 `273/18/1` 未被本分支证据覆盖。
+- 当前分支已推送，main 尚未合并。下一项 R12-05 远端下载进度。
 
 ## 2026-09-19 R12-01 恢复流程分步摘要
 

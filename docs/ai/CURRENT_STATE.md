@@ -1,13 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-## 当前第三轮 R12-03 目标路径核对
+## 当前第三轮 R12-04 恢复保护备份
 
-- `c0adb1b7` 先复用已有 `PathRemapService.PreviewAsync`、DTO、IPC 和设置写回链路，补齐原路径/重映射路径的完整可复制对照、目标存在状态和路径变化后的预览失效；没有新增文件移动或用户目录写入。
-- Maintenance 预览表使用有限高度 `260 DIP`、`FiniteViewport`、Recycling 虚拟化和只读完整路径单元格；合成长路径、不同盘符和相似旧根负例均保持可区分，预览不改变隔离 SQLite 或目标文件。
-- 隔离 `scripts/build.ps1` 全流程：XAML `24/24`；Release solution `0 warning / 0 error`；Core `85/85`、Worker `325/325`；Playnite source `68` 类与 WPF `84` 类隔离进程全部返回 0；资源字典类 `137/39/0`。
-- `validate-source.py`、XAML、diff check 通过；WPF 静态审查 `0 error / 25 warning / 177 info`，warning/info 为既有外层布局、Canvas 和颜色令牌提示。证据见 [R12-03 路径核对](../design/reviews/ui-finesse-round3-20260915/evidence/R12-03-PATH-REMAP-PREVIEW-20260919.md)。Demo 原目录不可用，沿用恢复生产基线。
-- 最新 main 一键命令 `GameSaveCenter-一键构建安装运行.cmd` 的 `DEV-INSTALL-008` 在安装前仍失败：Playnite 源码组 `273 passed / 18 skipped / 1 failed / 292 total`，失败为 `UiFinesseRound2ControlSourceTests.DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`。main 的 dirty R08 对话框实现已经加入 `!dialogLifecycle.IsClosing`，但 main 跟踪测试仍期待旧字符串；本分支 `UiFinesseRound2ControlSourceTests` 已为 `24/24`，未覆盖或修改 main 用户文件。
-- 当前分支已推送，main 尚未合并。下一可执行小批量为 R12-04 恢复保护备份；真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 和宿主性能仍未验。
+- `e4e42f40` 复用已有 `RestoreOrchestrator`、`TaskCoordinator`、`GameOperationLock` 和 `RestoreWorkflowProgress`，将 PreRestore 失败统一为 `RESTORE_PRERESTORE_FAILED`；保护备份未成功、未锁定或本地保护索引未保存时，危险恢复在写入前中止。
+- 执行阶段明确显示保护备份子阶段；成功任务会记录保护快照已创建并锁定，失败任务保留错误码、阶段和中止原因。重试仍重新获取同游戏锁、读取最新索引，并用重试时的当前状态创建新保护快照。
+- 隔离 `scripts/build.ps1` 全流程：XAML `24/24`；Release solution `0 warning / 0 error`；Core `85/85`、Worker `326/326`；Playnite source `68` 类与 WPF `84` 类隔离进程全部返回 0；资源字典类定向 `137/39/0`。
+- `RestoreOrchestratorTests` `12/12`、`R12RestoreWorkflowBehaviorTests` `7/7`；`validate-source.py`、XAML、diff check 通过。证据见 [R12-04 恢复保护备份](../design/reviews/ui-finesse-round3-20260915/evidence/R12-04-RESTORE-PROTECTION-20260919.md)。本轮只使用 fake、隔离目录和 STA/WPF 测试，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线。
+- 最新 main 一键命令 `GameSaveCenter-一键构建安装运行.cmd` 的 `DEV-INSTALL-008` 仍在安装前失败：源码组 `273 passed / 18 skipped / 1 failed / 292 total`，失败为 `DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`。main dirty R08 实现与跟踪测试源断言尚未安全集成；本分支已推送，main 用户文件未触碰。下一可执行小批量为 R12-05 远端下载进度。
 
 ## 当前第三轮 R12-01 恢复流程分步摘要
 

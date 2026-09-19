@@ -1,13 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
-## 2026-09-19 R12-03 目标路径核对
+## 2026-09-19 R12-04 恢复保护备份
 
-- 在 `codex/ui-finesse-round2` 先核对已有 `PathRemapService`、预览 DTO、IPC 和设置更新；`c0adb1b7` 只补路径预览对照、目标状态、完整复制文本和旧预览失效，不新增移动/删除文件链路。
-- `MaintenanceView` 的路径预览表限定 `260 DIP`，声明 `FiniteViewport` 与 Recycling 虚拟化，路径单元格用只读 TextBox 保留完整字符串；Worker 行为夹具使用长路径、不同盘符、相似旧根和隔离 SQLite，确认预览不写目标目录。
-- 定向证据：Worker `PathRemapServiceTests 4/4`，Playnite `R12PathRemapBehaviorTests 2/2`，源代码契约 `UiFinesseRound2ControlSourceTests 24/24`，资源字典类 `137/39/0`。完整隔离构建 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r12-03-full-build` 为 XAML `24/24`、Release `0/0`、Core `85/85`、Worker `325/325`，source `68` 类/WPF `84` 类隔离进程全返回 0。
-- `validate-source.py`、XAML、`git diff --check` 通过；WPF 静态审查 `0 error / 25 warning / 177 info`。警告/info 为既有布局和颜色令牌提示。证据使用合成数据/fake、隔离目录/SQLite、STA WPF/offscreen logical DIP，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线。
-- 最新 main 一键命令 `GameSaveCenter-一键构建安装运行.cmd` 在安装前失败于 `UiFinesseRound2ControlSourceTests.DangerousConfirmationKeepsCancelAsTheInitialFocusTarget`：`273 passed / 18 skipped / 1 failed / 292 total`。main dirty R08 实现已包含 `!dialogLifecycle.IsClosing`，main 跟踪测试仍期待旧字符串；续接分支对应测试已通过，main 用户文件未触碰，未宣称安装成功。
-- 代码提交已推送 `origin/codex/ui-finesse-round2`；文档将在本阶段同步后再推送。main 尚未合并。下一可执行小批量为 R12-04 恢复保护备份。
+- 在 `codex/ui-finesse-round2` 先核对 RestoreOrchestrator、TaskCoordinator、GameOperationLock 和已有 PreRestore 回滚测试；`e4e42f40` 将保护备份失败、版本无法确认、锁定失败和索引保存失败统一为 `RESTORE_PRERESTORE_FAILED`，目标恢复调用不会提前发生。
+- `RestoreWorkflowProgress` 把执行阶段当前状态明确为“保护备份”，失败投影保留错误码与中止原因；成功消息补充保护快照已创建并锁定。SaveCenter 原命令、取消/错误传播、滚动和四阶段入口未改。
+- 定向证据：Worker `RestoreOrchestratorTests 12/12`，Playnite `R12RestoreWorkflowBehaviorTests 7/7`，资源字典 `137/39/0`；完整 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r12-04-full-build` 为 XAML `24/24`、Release `0/0`、Core `85/85`、Worker `326/326`，source `68` 类/WPF `84` 类隔离进程全返回 0，脚本最终报告全部成功。
+- `validate-source.py`、XAML、`git diff --check` 通过。证据使用 fake/合成状态、隔离目录/SQLite、STA WPF/offscreen logical DIP，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线。
+- main 最新一键命令在安装前仍因 `DangerousConfirmationKeepsCancelAsTheInitialFocusTarget` 失败（`273 passed / 18 skipped / 1 failed / 292 total`）；main dirty R08 对话框实现与跟踪测试源断言尚未安全集成。代码已推送，文档将在本阶段同步后推送，main 尚未合并。下一可执行小批量为 R12-05 远端下载进度。
 
 ## 2026-09-19 R12-01 恢复流程分步摘要
 
