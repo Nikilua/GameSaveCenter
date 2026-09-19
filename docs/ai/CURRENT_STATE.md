@@ -1690,3 +1690,11 @@
 - D 盘隔离 `build3`：XAML `24/24`、Release solution `0 warning / 0 error`；Playnite source `65` 类组 + WPF `84` 类进程全通过；资源字典 `137 passed / 39 skipped / 0 failed`；Core `84/84`，Worker `322 passed / 1 skipped / 0 failed`。当前 worktree 的 source/XAML/diff check 均通过。
 - 这只是当前分支的测试与边界校正，不反写 dirty main 为已修复或已安装。未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；未触碰真实存档/媒体/云端/诊断。Demo 原目录不可用，继续以恢复生产基线为视觉依据。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-TEST-GATE-CORRECTION-20260919.md`。下一可执行任务：R11-08 历史时间导航，先核对已有能力与依赖。
+
+## 2026-09-19 Round3 R11-08 历史时间导航
+
+- 复用 `BackupVersionDto.CreatedUtc`、`CreatedLocal`、`BackupId` 和现有历史排序；`BackupHistoryDateRange` 按本地日历日期提供全部/今天/昨天/近 7 天/近 30 天范围，活动范围排除未知时间，全部范围恢复未知与已知版本。
+- `DashboardViewModel`/`SaveCenterView` 增加范围摘要、清除范围、最近/更早跳转和摘要；历史表使用独立 `CollectionViewSource`，`Backups` 仍是 A/B 选择和既有绑定的来源。未改变游戏选框、滚动条、命令绑定、取消/错误、恢复保护和有限列表约束。
+- 同秒排序固定为 `CreatedUtc` 后 `BackupId`；`R11HistoryTimeNavigationBehaviorTests 3/3` 覆盖本地日历、未知时间、清除和稳定顺序。R06 `4/4`、R11 版本摘要/保护 `4/4`、资源字典 `137/39/0`；组合 `148/39/0`；Release `0/0`、XAML `24/24`。
+- 实现提交 `8cc329e4` 已推送；证据为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-08-HISTORY-TIME-NAVIGATION-20260919.md`。隔离合成验证不等价真实 Playnite/package-host、呈现帧、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用。main DEV-INSTALL-008 仍为 Playnite `73/588/57`、安装器退出 `1`，未被改写。
+- 下一可执行任务：R12-01 恢复分步摘要；先核对已有恢复 DTO、任务状态及取消/错误语义。

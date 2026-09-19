@@ -7500,3 +7500,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 新增 WPF 类级 testhost 隔离脚本并接入 `scripts/build.ps1`。D 盘隔离 `build3` 构建 XAML `24/24`、Release `0 warning / 0 error`；source `65` 类组 + WPF `84` 类进程全通过；资源字典 `137/39/0`，Core `84/84`，Worker `322/1/0`。`validate-source.py`、XAML check、diff check 通过。
 - 提交 `c975e16d`（`收口Playnite测试隔离与断言漂移`）已推送到 `origin/codex/ui-finesse-round2`。证据：[R00/R01 门禁纠偏](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-TEST-GATE-CORRECTION-20260919.md)。
 - 未验证真实 package/Playnite host 安装、物理呈现/DPI/跨屏、UIA/IME、ETW、宿主性能；未触碰 main 用户文件或真实存档/媒体/云端/诊断。下一可执行任务：R11-08 历史时间导航。
+
+## 2026-09-19 Round3 R11-08 历史时间导航
+
+- 先核对已有 `BackupVersionDto` 时间字段和历史集合：不新增 DTO、存储、Worker IPC 或归档读取。补充 `BackupHistoryDateRange`，用 `CreatedLocal.Date` 做本地日历范围，并用 `CreatedUtc` + `BackupId` 固定同秒顺序。
+- `DashboardViewModel` 增加范围摘要、清除范围、最近/更早跳转；`SaveCenterView` 用独立 `CollectionViewSource` 绑定历史表，继续以 `Backups` 支撑 A/B 选择和既有绑定，保留滚动条、命令、取消/错误、恢复保护和有限列表行为。
+- 测试覆盖今天/昨天/近 7 天、未知时间活动范围负例与全部范围正例、清除恢复、同秒稳定顺序和 UI 契约：R11History `3/3`；R06 `4/4`；R11 版本摘要/保护 `4/4`；资源字典 `137 passed / 39 skipped / 0 failed`；组合 `148 passed / 39 skipped / 0 failed`。
+- D 盘隔离源码副本构建 Release solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py`、XAML check、diff check 通过。阶段临时目录为 `.tmp/r11-08-source`，完成文档提交后清理，不纳入 Git。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-08-HISTORY-TIME-NAVIGATION-20260919.md`；提交 `8cc329e4` 已推送 `codex/ui-finesse-round2`。main 的 DEV-INSTALL-008 `73/588/57`/退出 `1` 仍单列，未触碰 main 用户文件、真实存档/媒体/云端/诊断。
+- 未验真实 Playnite/package-host 安装与呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，继续沿用恢复生产基线。下一可执行任务：R12-01 恢复分步摘要。

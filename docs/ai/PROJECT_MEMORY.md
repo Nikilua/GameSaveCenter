@@ -3951,3 +3951,12 @@
 - 断言修复必须优先解析 XAML 元素/属性关系并保留行为/负例；不要用更宽的字符串包含把交互、焦点、动画或性能签收掉。R08 动效使用有界 Dispatcher 状态等待，固定睡眠不能作为完成证据。
 - 本批提交 `c975e16d` 已推送；D 盘 `build3` Release `0/0`、XAML `24/24`，source `65` 类组 + WPF `84` 类进程通过，Core `84/84`，Worker `322/1/0`，资源字典 `137/39/0`。新脚本需要 UTF-8 BOM 以通过 Windows PowerShell 5.1 source validation。
 - 真正未验边界仍包括 Playnite/package-host 安装与呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；不得读取/写入真实存档、媒体、云端或外发诊断。Demo 原目录不可用；下一任务为 R11-08 历史时间导航。
+
+## 2026-09-19 Round3 R11-08 历史时间导航
+
+- 历史时间导航的事实源是 `BackupVersionDto.CreatedUtc`、`CreatedLocal`、`BackupId`；不要新增时间 DTO、存储或 IPC。范围按本地日历日期而非固定 24 小时窗口，避免夏令时边界漂移。
+- `BackupHistoryDateRange` 的活动范围排除未知时间，“全部时间”保留未知时间；同秒版本用 `CreatedUtc` 后接 `BackupId` 稳定排序。清除范围必须恢复完整历史。
+- 历史表使用独立 `CollectionViewSource`，不能把 `Backups` 本身改成过滤视图，否则会污染 A/B 比较选择器和其他绑定。最近/更早跳转只在当前可见范围内选择，并复用现有 `SelectedBackup`/状态通知。
+- 已验证：R11History `3/3`，R06 `4/4`，R11 版本摘要/保护 `4/4`，资源字典 `137/39/0`，组合 `148 passed / 39 skipped / 0 failed`；Release `0/0`，XAML `24/24`，source/XAML/diff check 通过。提交 `8cc329e4` 已推送。
+- 证据边界不变：合成 DTO/fake/隔离 STA/隔离目录不等价真实 Playnite/package-host 安装呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用；main DEV-INSTALL-008 `73/588/57`、安装器退出 `1` 独立保留，不能写成 main 已安装。
+- 下一可执行任务：R12-01 恢复分步摘要；先复用已有恢复任务/状态 DTO 和取消、错误、保护语义。
