@@ -389,6 +389,24 @@
                                                         <StackPanel>
                                                             <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/>
                                                             <TextBlock Text="{Binding SummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding EvidenceSummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0"/>
+                                                            <ItemsControl ItemsSource="{Binding Evidence}" Margin="0,3,0,0">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding SummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding SummaryDisplay}" AutomationProperties.Name="{Binding SummaryDisplay}" Margin="0,2,0,0"/>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                            <TextBlock Text="待判断：没有可核实的来源规则、游戏会话、进程映射或文件名依据。" TextWrapping="Wrap" Margin="0,3,0,0">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding HasEvidence}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>

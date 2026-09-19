@@ -178,6 +178,22 @@ public sealed class UiDisplayMappingTests
     }
 
     [Fact]
+    public void ClassificationEvidenceNamesItsSignalAndKeepsNoEvidencePending()
+    {
+        var evidence = new MediaClassificationEvidenceDto
+        {
+            Kind = "ProcessMapping",
+            CandidateGameName = "Alpha Quest",
+            Detail = "alpha.exe → Alpha Quest"
+        };
+        var unknown = new MediaClassificationSuggestionDto();
+
+        Assert.Equal("Alpha Quest · 进程映射 · alpha.exe → Alpha Quest", evidence.SummaryDisplay);
+        Assert.True(unknown.HasEvidence == false);
+        Assert.Equal("待判断 · 尚无可核实依据", unknown.EvidenceSummaryDisplay);
+    }
+
+    [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {
         var transfer = new CloudTransferStatusDto { State = "FutureProviderState" };

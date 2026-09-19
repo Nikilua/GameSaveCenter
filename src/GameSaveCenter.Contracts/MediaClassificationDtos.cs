@@ -12,6 +12,35 @@ public sealed class MediaClassificationPreviewRequestDto
     public int Limit { get; set; } = 200;
 }
 
+/// <summary>One concrete local signal used to explain a classification suggestion.</summary>
+public sealed class MediaClassificationEvidenceDto
+{
+    public string Kind { get; set; } = string.Empty;
+    public string CandidatePlayniteId { get; set; } = string.Empty;
+    public string CandidateGameName { get; set; } = string.Empty;
+    public string Detail { get; set; } = string.Empty;
+
+    public string KindDisplay => Kind switch
+    {
+        "SourceRule" => "来源规则",
+        "GameSession" => "游戏会话",
+        "ProcessMapping" => "进程映射",
+        "FileName" => "文件名",
+        _ => "其他本地依据"
+    };
+
+    public string SummaryDisplay
+    {
+        get
+        {
+            var detail = string.IsNullOrWhiteSpace(Detail) ? "已命中" : Detail;
+            return string.IsNullOrWhiteSpace(CandidateGameName)
+                ? $"{KindDisplay} · {detail}"
+                : $"{CandidateGameName} · {KindDisplay} · {detail}";
+        }
+    }
+}
+
 /// <summary>One explainable game suggestion. Low-confidence items have no target.</summary>
 public sealed class MediaClassificationSuggestionDto
 {
@@ -23,6 +52,7 @@ public sealed class MediaClassificationSuggestionDto
     public string Reason { get; set; } = string.Empty;
     public string Confidence { get; set; } = "Low";
     public string State { get; set; } = "Suggested";
+    public List<MediaClassificationEvidenceDto> Evidence { get; set; } = new List<MediaClassificationEvidenceDto>();
 
     public DateTime CapturedLocal => CapturedUtc.ToLocalTime();
     public bool CanApply => !string.IsNullOrWhiteSpace(SuggestedPlayniteId) && Confidence == "High";
@@ -42,6 +72,10 @@ public sealed class MediaClassificationSuggestionDto
     public string SummaryDisplay => string.IsNullOrWhiteSpace(SuggestedGameName)
         ? $"{ConfidenceDisplay} · {Reason}"
         : $"{ConfidenceDisplay} · {SuggestedGameName} · {Reason}";
+    public bool HasEvidence => Evidence != null && Evidence.Count > 0;
+    public string EvidenceSummaryDisplay => HasEvidence
+        ? $"依据 {Evidence.Count} 条"
+        : "待判断 · 尚无可核实依据";
 }
 
 /// <summary>Worker-owned, expiring preview that must be explicitly confirmed.</summary>

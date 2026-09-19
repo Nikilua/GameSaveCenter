@@ -711,18 +711,27 @@ public sealed class MediaSyncService
         IReadOnlyList<GameSessionEventDto> sessions,
         IReadOnlyList<ProcessMappingDto> mappings)
     {
-        var candidates = new Dictionary<string, (int Rank, List<string> Reasons)>(StringComparer.OrdinalIgnoreCase);
+        var candidates = new Dictionary<string, (int Rank, List<string> Reasons, List<MediaClassificationEvidenceDto> Evidence)>(StringComparer.OrdinalIgnoreCase);
 
-        void AddCandidate(string playniteId, int rank, string reason)
+        void AddCandidate(string playniteId, int rank, string reason, string evidenceKind, string evidenceDetail)
         {
             if (!gameById.ContainsKey(playniteId)) return;
+            var evidence = new MediaClassificationEvidenceDto
+            {
+                Kind = evidenceKind,
+                CandidatePlayniteId = playniteId,
+                CandidateGameName = gameById[playniteId].Name,
+                Detail = evidenceDetail
+            };
             if (candidates.TryGetValue(playniteId, out var candidate))
             {
                 if (!candidate.Reasons.Contains(reason, StringComparer.Ordinal)) candidate.Reasons.Add(reason);
-                candidates[playniteId] = (Math.Max(candidate.Rank, rank), candidate.Reasons);
+                if (!candidate.Evidence.Any(x => x.Kind == evidence.Kind && x.Detail == evidence.Detail))
+                    candidate.Evidence.Add(evidence);
+                candidates[playniteId] = (Math.Max(candidate.Rank, rank), candidate.Reasons, candidate.Evidence);
                 return;
             }
-            candidates[playniteId] = (rank, new List<string> { reason });
+            candidates[playniteId] = (rank, new List<string> { reason }, new List<MediaClassificationEvidenceDto> { evidence });
         }
 
         foreach (var source in sources.Where(x => x.Enabled && !string.IsNullOrWhiteSpace(x.PlayniteId)))
@@ -730,7 +739,8 @@ public sealed class MediaSyncService
             if (IsPathWithin(item.OriginalPath, source.RootPath)
                 && MatchesIncludePattern(item.OriginalPath, source.IncludePattern))
             {
-                AddCandidate(source.PlayniteId, 3, "命中游戏媒体来源规则");
+                AddCandidate(source.PlayniteId, 3, "命中游戏媒体来源规则", "SourceRule",
+                    $"目录 {source.RootPath}，模式 {source.IncludePattern}");
             }
         }
 
@@ -741,9 +751,18 @@ public sealed class MediaSyncService
         foreach (var sessionGame in matchingSessions.Select(x => x.PlayniteId)
                      .Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase))
         {
-            AddCandidate(sessionGame, 2, matchingSessions.Count(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase)) > 1
-                ? "媒体时间命中重叠的同一游戏会话"
-                : "媒体时间位于游戏会话窗口");
+            var matchingSessionCount = matchingSessions.Count(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase));
+            foreach (var session in matchingSessions.Where(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase)))
+            {
+                var process = string.IsNullOrWhiteSpace(session.ProcessName) ? string.Empty : $"，进程 {session.ProcessName}";
+                var sessionWindow = session.StoppedUtc.HasValue
+                    ? $"{session.StartedUtc.ToLocalTime():yyyy-MM-dd HH:mm}–{session.StoppedUtc.Value.ToLocalTime():HH:mm}"
+                    : $"{session.StartedUtc.ToLocalTime():yyyy-MM-dd HH:mm} 起（未记录结束）";
+                AddCandidate(sessionGame, 2, matchingSessionCount > 1
+                    ? "媒体时间命中重叠的同一游戏会话"
+                    : "媒体时间位于游戏会话窗口", "GameSession",
+                    $"{sessionWindow}{process}");
+            }
         }
 
         foreach (var session in matchingSessions)
@@ -753,7 +772,8 @@ public sealed class MediaSyncService
             foreach (var mapping in mappings.Where(x => x.Enabled && !string.IsNullOrWhiteSpace(x.PlayniteId)
                                                          && string.Equals(NormalizeProcessName(x.ExecutableName), processName, StringComparison.OrdinalIgnoreCase)))
             {
-                AddCandidate(mapping.PlayniteId, 3, "会话进程映射与媒体时间一致");
+                AddCandidate(mapping.PlayniteId, 3, "会话进程映射与媒体时间一致", "ProcessMapping",
+                    $"{mapping.ExecutableName} → {string.IsNullOrWhiteSpace(mapping.GameName) ? gameById[mapping.PlayniteId].Name : mapping.GameName}");
             }
         }
 
@@ -761,7 +781,8 @@ public sealed class MediaSyncService
                                            && SharedFileMatchesGame(item.OriginalPath, x.Name)).ToList();
         foreach (var game in nameMatches)
         {
-            AddCandidate(game.PlayniteId, 2, nameMatches.Count == 1 ? "文件名唯一匹配游戏" : "文件名匹配多个候选游戏");
+            AddCandidate(game.PlayniteId, 2, nameMatches.Count == 1 ? "文件名唯一匹配游戏" : "文件名匹配多个候选游戏",
+                "FileName", nameMatches.Count == 1 ? "文件名唯一匹配" : "文件名匹配多个候选");
         }
 
         var suggestion = new MediaClassificationSuggestionDto
@@ -781,10 +802,12 @@ public sealed class MediaSyncService
             suggestion.SuggestedGameName = game.Name;
             suggestion.Confidence = candidate.Value.Rank >= 3 ? "High" : "Medium";
             suggestion.Reason = string.Join("；", candidate.Value.Reasons);
+            suggestion.Evidence = candidate.Value.Evidence;
         }
         else if (candidates.Count > 1)
         {
             suggestion.Reason = "来源规则、会话或文件名产生多个候选，保持未归类";
+            suggestion.Evidence = candidates.Values.SelectMany(x => x.Evidence).ToList();
         }
         else
         {

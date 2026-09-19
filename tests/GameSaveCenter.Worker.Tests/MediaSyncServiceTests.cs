@@ -259,17 +259,26 @@ public sealed class MediaSyncServiceTests : IDisposable
         Assert.Equal("game-1", sourceSuggestion.SuggestedPlayniteId);
         Assert.Equal("High", sourceSuggestion.Confidence);
         Assert.Contains("媒体来源规则", sourceSuggestion.Reason);
+        var sourceEvidence = Assert.Single(sourceSuggestion.Evidence, x => x.Kind == "SourceRule");
+        Assert.Contains(sourceRoot, sourceEvidence.Detail, StringComparison.Ordinal);
+        Assert.Contains("Alpha Quest · 来源规则", sourceEvidence.SummaryDisplay, StringComparison.Ordinal);
         var sharedSuggestion = Assert.Single(preview.Items, x => x.MediaId == sharedMedia.MediaId);
         Assert.Equal("Low", sharedSuggestion.Confidence);
         Assert.Empty(sharedSuggestion.SuggestedPlayniteId);
         Assert.Contains("多个候选", sharedSuggestion.Reason);
+        Assert.True(sharedSuggestion.Evidence.Count >= 2);
+        Assert.Contains(sharedSuggestion.Evidence, x => x.Kind == "GameSession" && x.CandidateGameName == "Alpha Quest");
+        Assert.Contains(sharedSuggestion.Evidence, x => x.Kind == "GameSession" && x.CandidateGameName == "Beta Quest");
         var mappedSuggestion = Assert.Single(preview.Items, x => x.MediaId == mappedMedia.MediaId);
         Assert.Equal("game-2", mappedSuggestion.SuggestedPlayniteId);
         Assert.Equal("High", mappedSuggestion.Confidence);
         Assert.Contains("进程映射", mappedSuggestion.Reason);
+        Assert.Contains(mappedSuggestion.Evidence, x => x.Kind == "ProcessMapping" && x.CandidateGameName == "Beta Quest");
         var unknownSuggestion = Assert.Single(preview.Items, x => x.MediaId == unknownMedia.MediaId);
         Assert.Equal("Low", unknownSuggestion.Confidence);
         Assert.Contains("时间未知", unknownSuggestion.Reason);
+        Assert.False(unknownSuggestion.HasEvidence);
+        Assert.Equal("待判断 · 尚无可核实依据", unknownSuggestion.EvidenceSummaryDisplay);
     }
 
     [Fact]

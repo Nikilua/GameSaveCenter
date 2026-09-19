@@ -344,7 +344,7 @@ public sealed class FakeDashboardData
             ExpiresUtc = classificationNow.AddMinutes(6),
             Items = new System.Collections.Generic.List<MediaClassificationSuggestionDto>
             {
-                new MediaClassificationSuggestionDto { MediaId = "IN-1", FileName = "shared-1.png", SuggestedGameName = "Baldur's Gate 3", SuggestedPlayniteId = "game-1", Confidence = "High", Reason = "媒体来源规则" },
+                new MediaClassificationSuggestionDto { MediaId = "IN-1", FileName = "shared-1.png", SuggestedGameName = "Baldur's Gate 3", SuggestedPlayniteId = "game-1", Confidence = "High", Reason = "媒体来源规则", Evidence = new System.Collections.Generic.List<MediaClassificationEvidenceDto> { new MediaClassificationEvidenceDto { Kind = "SourceRule", CandidateGameName = "Baldur's Gate 3", Detail = "目录 D:\\Captures\\BG3，模式 *.png" }, new MediaClassificationEvidenceDto { Kind = "GameSession", CandidateGameName = "Baldur's Gate 3", Detail = "2026-09-19 09:10–09:54" } } },
                 new MediaClassificationSuggestionDto { MediaId = "IN-2", FileName = "shared-2.png", Confidence = "Low", Reason = "多个候选游戏，保持未归类" }
             },
             HighConfidenceCount = 1,
