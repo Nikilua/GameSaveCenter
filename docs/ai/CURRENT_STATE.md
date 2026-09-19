@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-02 预览选择编辑（代码已提交，环境待验）
+
+- `69cf2a72` 已推送到 `codex/ui-finesse-round2`。复用现有媒体归类预览批次、稳定 `MediaId`、Worker 重验和应用/撤销链；预览项现在可排除，且高置信建议可在当前游戏目录中调整目标。
+- 应用请求只提交当前纳入项的稳定 ID；`TargetPlayniteId` 覆盖通过 `MediaClassificationTargetOverrideDto` 传递。Worker 校验当前游戏目录和批次 `Pending` 状态，合法目标写回批次原因后重新进入既有冲突、取消、恢复保护语义，非法目标跳过并保持未归类。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0/0`。未验证：当前 Core testhost 可运行结果、Worker/Playnite 测试、Release/net462、RenderHarness、真实 Playnite/呈现/DPI/UIA/IME/ETW/性能。
+- 只用合成/fake/隔离数据；`.tmp/r14-02-build` 已清理。Demo 原目录不可用，沿用恢复生产基线；main 用户改动、`src.zip` 未碰、未合并。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试与相关回归，再推进 `R14-03 部分成功处理`。
+
 ## 当前第三轮 R14-01 归类建议解释（代码已提交，环境待验）
 
 - `7735cd7c` 已推送到 `codex/ui-finesse-round2`。复用现有 `MediaSyncService` 建议算法与来源规则、游戏会话、进程映射、文件名匹配，新增 `MediaClassificationEvidenceDto` 结构化依据；多候选保留各候选依据，无依据显示“待判断”，不伪造目标或置信事实。

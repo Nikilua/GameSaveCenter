@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-02 预览选择编辑
+
+- 复用现有媒体归类预览批次和稳定 `MediaId`，补齐预览排除、纳入数量汇总和高置信目标编辑；应用命令现在以 `SelectedHighConfidenceCount` 为门禁，排除全部可应用项时不可执行。
+- 新增 `MediaClassificationTargetOverrideDto` 与批次目标更新存储；Worker 只接受当前游戏目录中存在且批次仍为 `Pending` 的目标，写回用户调整原因后重读记录，非法目标跳过并保持未归类。原有冲突、取消、恢复保护和撤销链没有重建或放宽。
+- 新增 Core 选择状态、Worker 隔离 SQLite 行为和 Playnite 源契约夹具。代码提交 `69cf2a72` 已推送到 `codex/ui-finesse-round2`。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0 warning / 0 error`。当前 Core 测试宿主未产出可运行结果；Worker/Playnite/RenderHarness 未执行。
+- 使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；`.tmp/r14-02-build` 已清理，main 用户改动未碰、未合并。证据：[R14-02 预览选择编辑](../design/reviews/ui-finesse-round3-20260915/evidence/R14-02-CLASSIFICATION-SELECTION-20260920.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试与相关回归，再推进 `R14-03 部分成功处理`；真实宿主呈现与性能仍未验。
+
 ## 2026-09-19 R14-01 归类建议解释
 
 - 先核对现有 `MediaSyncService` 建议算法已复用来源规则、游戏会话、进程映射和文件名证据；新增共享 DTO 的结构化依据显示，不重建服务或改变应用/撤销、取消、恢复保护、媒体移动语义。

@@ -119,7 +119,7 @@
 | R13-07 | 队列筛选与汇总 | 已实现，待环境验证 | d6c2af90 | 源码校验 `0`；XAML `24/24`；diff check `0`；Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用状态/类型筛选、分页一致性 token、`existingKeys` 去重和选中项恢复；新增游戏、设备、时间筛选及 `GlobalTotalCount`，维护页摘要区分当前筛选与全局计数；筛选栏使用可收缩列，RenderHarness 合成绑定同步 | 未验 Worker/Playnite 编译测试、Release/net462、RenderHarness/真实 Playnite；Demo 原目录不可用，沿用恢复生产基线；未验真实网络、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；`r13-07-source` 首次清理时短暂被占用，阶段末已删除 | [R13-07 队列筛选与汇总](evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)；与 R13-08 一起补跑定向夹具和相关回归，再决定 R14-01 |
 | R13-08 | 失败分类帮助 | 已实现，待环境验证 | 96a4c6a9 | 源码校验 `0`；XAML `24/24`；diff check `0`；Core/Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用稳定错误码；新增无空间/限流分类，认证、空间、远端不存在、校验差异、限流各有下一步；未知错误不猜测；原始错误码/详情默认折叠保留 | 未验定向测试、Release/net462、真实 rclone/远端配额、RenderHarness/真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R13-08 失败分类帮助](evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)；与 R13-07 一起补跑定向测试，再决定 R14-01 |
 | R14-01 | 归类建议解释 | 已实现，待环境验证 | 7735cd7c | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0/0`；Core 定向测试未进入 testhost，Worker restore 退出 `1`，Playnite 定向测试未执行 | 复用现有建议预览、来源规则/会话/进程映射和文件名匹配；预览卡逐条显示候选依据，多候选保留各候选证据；无依据显示“待判断”且不生成目标 | 未验 Worker/Playnite 定向测试、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-01 归类建议解释](evidence/R14-01-CLASSIFICATION-EVIDENCE-20260919.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试，再推进 R14-02 |
-| R14-02 | 预览选择编辑 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-02 | 预览选择编辑 | 已实现，待环境验证 | 69cf2a72 | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0 warning / 0 error`；Core 测试宿主未产出可签收结果，Worker/Playnite 未执行 | 预览卡支持按稳定 MediaId 排除条目；高置信建议可在当前游戏目录中调整目标，汇总显示纳入/排除/可应用数量；排除项不提交，全部排除时命令门禁同步禁用 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；本批临时构建目录已清理 | [R14-02 预览选择编辑](evidence/R14-02-CLASSIFICATION-SELECTION-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试，再推进 R14-03 |
 | R14-03 | 部分成功处理 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-04 | 撤销边界说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-05 | 重复媒体识别视图 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -332,6 +332,14 @@
 - 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0 warning / 0 error`。Core 定向测试未进入 testhost（项目引用目标框架评估退出 `1`），Worker restore 退出 `1`，Playnite/RenderHarness 未执行。
 - 证据只来自合成/fake/隔离数据；未验真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；R14 隔离构建目录已清理，此前 `.tmp/r13-verify-source` 曾短暂被占用，阶段末已精确删除，未强杀未知进程；main 用户改动未触碰、未合并。
 - 下一可执行小批量：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向夹具与相关回归，通过后推进 `R14-02 预览选择编辑`。
+
+## 2026-09-20 Round3 R14-02 预览选择编辑
+
+- `69cf2a72` 复用现有预览批次、稳定 `MediaId`、Worker 重验、冲突/取消/恢复和撤销链；新增 `IsIncluded`、高置信目标编辑和 `MediaClassificationTargetOverrideDto`。应用请求只携带当前纳入项的稳定 ID，排除项不会执行。
+- 目标编辑只对已有高置信建议开放，并通过当前游戏目录的 `PlayniteId` 解析；Worker 仅在批次项目仍为 `Pending` 时写入覆盖目标和原因，非法目标跳过并保持未归类。目标原因写入批次记录后再进入原应用链，撤销仍可读取同一批次。
+- 已加入 Core 选择状态、Worker 选中稳定 ID/合法目标行为和 Playnite XAML/命令绑定源契约夹具。`validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0 warning / 0 error` 通过；Core 测试项目在当前 SDK 下未产出可运行结果，Worker/Playnite/RenderHarness 未执行。
+- 本批只用合成 DTO、fake 服务和隔离目录；没有写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护、有限列表和 net462 路径保持。`.tmp/r14-02-build` 已精确清理，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一可执行小批量：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向夹具和相关回归，确认目标覆盖与排除项的运行时行为后推进 `R14-03 部分成功处理`。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

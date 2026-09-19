@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-20 R14-02 预览选择编辑（代码已提交，环境待验）
+
+- `69cf2a72` 已推送。先复用现有媒体归类预览批次、稳定 `MediaId`、Worker 重验和撤销链；`IsIncluded` 控制排除，`TargetPlayniteId` 只允许高置信建议在当前游戏目录中做目标覆盖。
+- 应用 DTO 只传当前纳入项的稳定媒体 ID 和覆盖目标；Worker 按当前目录、批次和 `Pending` 状态校验，合法覆盖写回目标/原因再应用，非法目标跳过并保持未归类。没有放宽低/中置信门禁。
+- `validate-source.py`、XAML `24/24`、diff check、Contracts/Core Release 隔离 `0/0` 通过；当前 Core testhost 未产出可签收结果，Worker/Playnite/RenderHarness 未执行，不写成通过。
+- 本批只用合成/fake/隔离目录；媒体预览有限高度/Recycling/滚动、命令绑定、取消/错误/恢复保护、游戏选框和 net462 保持。`.tmp/r14-02-build` 已清理，main 未碰、未合并，Demo 原目录不可用。
+- 下一步在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向夹具与回归，再做 `R14-03 部分成功处理`。
+
 ## 2026-09-19 R14-01 归类建议解释（代码已提交，环境待验）
 
 - `7735cd7c` 已推送。先核对确认现有归类预览已读取来源规则、游戏会话、进程映射和文件名证据，再将现有算法结果结构化到共享 `MediaClassificationEvidenceDto`；没有新增服务、IPC、移动、删除或存储表。
