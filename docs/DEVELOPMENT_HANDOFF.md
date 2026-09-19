@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-20 第三轮 R15-04 重复通知归并已由 `a67d371e` 完成代码提交：复用既有 `BoundedTaskIdSet`、会话摘要、通知级别策略、Dashboard Toast 和 Task Center 历史，新增按任务/终态/失败证据归并；进度不领取通知键，相同失败证据只通知一次，不同失败保留，摘要后的新失败/取消不静音，完整错误仍可从历史读取。source/XAML/diff 门禁通过；Playnite Release `net462` 外部源码副本项目构建 0 errors、2 条 `MediaCenterView.xaml.cs:664` 既有 nullable warning；通知/会话/R15 时间线/R13 相邻夹具 `28/28`；WPF 静态 `0/28/177`。linked WPF 临时项目仍 `Access denied`，未宣称完整 solution/RenderHarness/真实宿主；未验 Toast/OS 通知、最终呈现、DPI/UIA/IME、ETW 或性能。只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md`。下一可执行任务：`R15-05 任务来源定位`，先核对稳定对象身份、已删除对象诊断和同名对象误跳负例。
+
 > 2026-09-20 第三轮 R15-03 任务详情时间线已由 `fe0c05a9` 完成代码提交：复用现有任务变更 DTO、TaskCoordinator、Worker 广播和 Task Center，事件带 Worker 观察到的 `OccurredUtc`；`TaskTimelineBuilder` 按 UTC/序号稳定整理创建、开始、阶段、取消和结束记录，同时显示本地时间与 UTC，缺失事件/时间显示未知，不猜测重试。Dashboard 运行期窗口最多 64 条/任务、200 个任务，详情时间线卡有限高 220 DIP，广播 clone 保留阶段与取消状态。Worker Release 隔离定向 `11/11`，Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15-01/R15-02/R15-03 `11/11`，XAML `24/24`、源码/diff 门禁通过，WPF 静态检查 `0/28/162`；Playnite 保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。未宣称完整 solution、RenderHarness、真实 Worker 重启持久时间线、真实 Playnite/最终呈现、DPI/UIA/IME、ETW 或宿主性能；只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线。main 用户改动和 `src.zip` 未碰、未合并。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TASK-TIMELINE-20260920.md`。下一可执行任务：`R15-04 重复通知归并`，先核对通知、会话摘要和失败历史入口。
 
 

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R15-04 重复通知归并（2026-09-20）
+
+- `a67d371e` 先复用现有通知门禁、会话摘要、通知级别策略和 Task Center 历史；`TaskNotificationDeduper` 按任务 ID、终态和失败证据去重。进度不通知；同一失败证据不刷屏；不同失败证据和摘要后的新失败/取消保留；历史错误不丢。
+- 验证为 source/XAML/diff 门禁通过，Playnite Release `net462` 外部源码副本 0 errors/2 条既有 warning，相关定向夹具 `28/28`，WPF 静态 `0/28/177`。不把 linked WPF `Access denied`、真实宿主 Toast、最终呈现或性能写成通过。
+- 仅使用合成/fake/隔离数据和本地构建，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md`。
+- 下一项：`R15-05 任务来源定位`，核对稳定对象身份、已删除对象诊断和同名对象误跳负例。
+
 ## 2026-09-20 R15-03 任务详情时间线（代码已提交，隔离验证完成；真实宿主待验）
 
 - `fe0c05a9` 先复用现有任务变更 DTO、协调器、Worker 广播和 Task Center；增加 Worker 观察到的 `OccurredUtc`，广播 clone 同步阶段与取消字段。`TaskTimelineBuilder` 只整理已知创建/开始/阶段/取消/结束记录，按 UTC 和序号稳定排序，同时显示本地时间与 UTC。

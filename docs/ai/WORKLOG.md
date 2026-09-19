@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-04 重复通知归并
+
+- 在 `a67d371e` 中先核对并复用 `BoundedTaskIdSet`、`SessionNotificationAccumulator`、`NotificationLevelPolicy`、Dashboard Toast 和 Task Center 历史；新增任务终态通知指纹。进度事件不领取通知键，相同失败证据只提示一次，不同失败证据保留；摘要后新失败/取消不静音。
+- 验证：`validate-source.py`、XAML `24/24`、diff check；Playnite Release `net462` 外部源码副本项目构建 0 errors/2 条既有 nullable warning；通知、会话摘要、R15 时间线、R13 相邻夹具 `28/28`；WPF 静态 `0/28/177`。
+- linked WPF 临时项目仍 `Access denied`，未宣称完整 solution/RenderHarness/真实宿主；未验真实 Toast/OS 通知、最终呈现、DPI/UIA/IME、ETW/性能。只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰。
+- 证据：[R15-04 重复通知归并](../design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md)。下一可执行任务：`R15-05 任务来源定位`，先核对稳定对象身份和删除对象负例。
+
 ## 2026-09-20 R15-03 任务详情时间线
 
 - 在 `fe0c05a9` 中先核对并复用 `TaskChangeEventDto`、`TaskCoordinator`、Worker 广播和 Task Center；新增 `OccurredUtc`，没有另建历史服务，也没有把任务刷新快照冒充重试记录。

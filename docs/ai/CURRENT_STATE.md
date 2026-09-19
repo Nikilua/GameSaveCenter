@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-04 重复通知归并（代码已提交，隔离验证完成；真实宿主待验）
+
+- `a67d371e` 复用既有 `BoundedTaskIdSet`、`SessionNotificationAccumulator`、`NotificationLevelPolicy`、Dashboard Toast 和 Task Center 历史，新增按任务/终态/失败证据归并的 `TaskNotificationDeduper`。进度事件不领取通知键；相同失败证据只通知一次，不同失败保留；摘要后的新失败/取消不静音；完整错误仍可从 Task Center 历史读取。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Playnite Release `net462` 外部源码副本项目构建 0 errors、2 条既有 nullable warning；通知/会话/R15 时间线/R13 相邻定向夹具 `28/28`；WPF 静态 `0/28/177`。
+- linked WPF 临时项目直接构建仍 `Access denied`，未写成完整 solution/RenderHarness/真实宿主通过；未验 Toast/OS 通知、真实 Playnite、最终呈现、DPI/UIA/IME、ETW/性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md`。
+- 下一可执行任务：`R15-05 任务来源定位`，先核对稳定对象身份和删除对象负例。
+
 ## 当前第三轮 R15-03 任务详情时间线（代码已提交，隔离验证完成；真实宿主待验）
 
 - `fe0c05a9` 复用现有 `TaskChangeEventDto`、`TaskCoordinator`、Worker 事件广播和 `TaskCenterView`；变更事件增加 Worker 观察到的 `OccurredUtc`，广播 clone 保留 `StageMessage` 与 `CancellationState`。
