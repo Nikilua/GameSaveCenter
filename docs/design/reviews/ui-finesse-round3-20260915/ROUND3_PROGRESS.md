@@ -123,7 +123,7 @@
 | R14-03 | 部分成功处理 | 已实现，待环境验证 | aef251b1 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker 逐项失败夹具已加入但未执行 | 批量归类/忽略/恢复保留逐项失败 ID 与原因；失败列表为有限高度/Recycling，重试确认只提交上次失败项，成功项不会再次执行 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-03 部分成功处理](evidence/R14-03-PARTIAL-RETRY-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03，再推进 R14-04 |
 | R14-04 | 撤销边界说明 | 已满足 | 1c0c5a37、a7c39922、03521991 | `validate-source.py`；XAML `24/24`；diff check；既有正常撤销隔离夹具；新增应用后人工修改的撤销冲突负例已加入但当前 testhost 未产出汇总 | 现有历史页提供上次/所选可回退入口；确认文案和 Tooltip 说明不可撤销边界；撤销前重新核对批次目标与当前媒体，冲突项保留当前状态且不覆盖后来决定 | 定向 Worker 测试已尝试但当前 dotnet 长时间无输出，未写成运行时通过；未验 Release/net462、Playnite/RenderHarness、真实宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R14-04 撤销边界说明](evidence/R14-04-UNDO-BOUNDARY-20260920.md)；下一项 R14-05 重复媒体识别视图 |
 | R14-05 | 重复媒体识别视图 | 已实现，待环境验证 | 136285d5 | validate-source.py；XAML 24/24；diff check；Worker 疑似组隔离夹具和 Playnite 只读契约已加入但当前构建/testhost 未产出结果 | 复用现有 SHA-256 入库去重能力；当前游戏范围内区分确定哈希组与同类型/文件名/大小疑似组；只读选择查看；扫描上限 5000、组上限 100、组内展示上限 24，列表有限/Recycling | Worker/Contracts 构建受 linked obj Access denied 与 SDK/Workload 环境阻塞；未验 Worker/Playnite 运行时、Release/net462、RenderHarness、真实 Playnite/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-05 重复媒体识别视图（evidence/R14-05-DUPLICATE-INSPECTION-20260920.md）；先补跑 R14-04/R14-05 定向验证，再推进 R14-06 |
-| R14-06 | 批量目标防误选 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-06 | 批量目标防误选 | 已实现，待环境验证 | cfbb1279 | validate-source.py；XAML 24/24；diff check；新增 GamePicker 图标/稳定身份行为夹具和归类目标模板契约，但当前 Playnite testhost 未产出结果 | 复用现有游戏描述/状态 DTO 与选框筛选/选择；本地 Playnite 图标缺失安全回退；归类目标显示名称、平台、图标和稳定 Playnite ID；重名按对象/ID区分；过滤不改写已选目标，不使用 SelectedIndex | 未验构建/testhost、Release/net462、真实 Playnite/RenderHarness/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；IconPath 只读本地已有引用；main 用户改动和 src.zip 未碰、未合并 | R14-06 批量目标防误选（evidence/R14-06-TARGET-GUARD-20260920.md）；先补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 |
 | R14-07 | 媒体详情浏览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-08 | 来源规则试运行 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-01 | 任务阶段可读 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -364,6 +364,15 @@
 - Media 中心新增“重复识别”Tab，组与组内媒体均使用有限高度、FiniteViewport、Recycling；请求使用取消/generation 和重载命令，失败不阻塞主媒体详情。Worker/Playnite 隔离夹具已加入，源码校验、XAML 24/24、diff check 通过；linked obj Access denied/SDK-Workload 阻塞构建和运行时测试。
 - 只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；未触碰真实存档、媒体、云端或诊断，main 用户改动和 src.zip 未碰、未合并。证据见 R14-05 重复媒体识别视图（evidence/R14-05-DUPLICATE-INSPECTION-20260920.md）。
 - 下一可执行小批量：先在可用 SDK/Workload 环境补跑 R14-04/R14-05 定向验证，再推进 R14-06 批量目标防误选。
+
+## 2026-09-20 Round3 R14-06 批量目标防误选
+
+- 先核对现有能力：全局 GamePickerViewModel 已按 PlayniteId 保留被搜索/筛选隐藏的选择并提供恢复入口；媒体归类目标已使用 Games、SelectedItem 和预览项的 TargetPlayniteId，没有重建选框或命令链。
+- GameDescriptorDto/GameStatusDto 增加只读本地 IconPath 和 IdentityDisplay。Playnite 适配器复用现有 Database.GetFullFilePath(game.Icon) 解析存在的本地图标，Worker Dashboard、策略克隆和快照比较同步该字段；路径缺失或异常为空。
+- 全局选框显示图标，缺失时回退首字母；媒体批量归类、预览目标覆盖和单项重新归类共用名称/平台/Playnite ID 模板，仍按对象/稳定 ID 选择，未使用索引选择。
+- 新增 PickerItemsExposeStableIdentityAndOptionalPlayniteIcon 及 R14 目标显示/绑定契约夹具。validate-source.py、XAML 24/24、diff check 通过；定向 Playnite testhost 长时间无输出后终止当前会话，未产出可签收运行时结果。
+- 只用合成/fake/隔离源码，不下载图标，不读写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。证据见 R14-06 批量目标防误选（evidence/R14-06-TARGET-GUARD-20260920.md）。
+- 下一可执行小批量：在可用 SDK/Workload 环境补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 媒体详情浏览。
 
 
 ## 2026-09-19 R00/R01 当前提交复核

@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-06 批量目标防误选
+
+- 复用现有 Playnite 描述/状态 DTO 与游戏选框，不改变过滤语义；沿描述快照传递本地 IconPath，增加稳定 IdentityDisplay。
+- 全局选框以图标/首字母回退、平台和 Playnite ID 辨识游戏；媒体批量归类、预览目标覆盖、重新归类目标显示同一组名称/平台/ID，保持 SelectedItem/稳定 ID 绑定，重名游戏不靠名称或索引区分。
+- 代码提交 cfbb1279 已推送。验证：validate-source.py、XAML 24/24、git diff --check 通过；新增 GamePicker 显示行为和 R14 目标模板契约夹具。
+- 定向 Playnite testhost 连续无输出，已终止当前会话，未产出运行时通过；Release/net462、真实 Playnite 呈现、DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能仍未验。
+- 仅用合成/fake/隔离数据，不下载图标、不写真实存档/媒体/云端/诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。
+- 证据：[R14-06 批量目标防误选](../design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGET-GUARD-20260920.md)。下一可执行任务：补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 媒体详情浏览。
+
 ## 2026-09-20 R14-05 重复媒体识别视图
 
 - 先核对现有扫描入库已通过 SHA-256 去重，但没有用户回看入口；复用现有 MediaItemDto/GetMediaAsync，新增当前游戏范围的只读确定/疑似重复组查询。

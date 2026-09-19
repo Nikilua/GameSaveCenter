@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-20
 
+## 2026-09-20 R14-06 批量目标防误选（代码完成，环境待验）
+
+- 先查到现有目标均来自 Games，当前全局选框已按 PlayniteId 保留被筛选隐藏的选择，媒体目标也已有 SelectedItem/TargetPlayniteId 绑定；本阶段没有重建选框、过滤或命令链。
+- GameDescriptorDto/GameStatusDto 增加只读 IconPath 和 IdentityDisplay。Playnite 适配器通过现有 Database.GetFullFilePath(game.Icon) 解析本地图标，文件不存在或异常则为空；Worker Dashboard 和策略克隆/快照比较同步该字段。
+- 全局选框图标缺失回退首字母；媒体批量归类、预览目标覆盖和重新归类目标共用名称/平台/Playnite ID 模板，仍按 SelectedItem 或稳定 TargetPlayniteId 选择，不以首项/索引替代目标。新增夹具覆盖图标/唯一身份展示及目标绑定静态契约。
+- cfbb1279 已推送；源码校验、XAML 24/24、diff check 通过。定向 Playnite testhost 无输出，构建/运行时未签收；不把静态契约写成真实呈现或性能证据。
+- 只使用合成 DTO、fake/隔离源码；不下载图标，不碰真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。
+- 证据为 R14-06-TARGET-GUARD-20260920.md；下一步先补跑 R14-04/R14-05/R14-06，再推进 R14-07 媒体详情浏览。
+
 ## 2026-09-20 R14-05 重复媒体识别视图（代码完成，环境待验）
 
 - 先核对现有重复能力：扫描入库已按 `MediaHashExistsAsync` 和 `media.sha256` 唯一约束阻止相同哈希再次入库，但没有回看视图。本阶段复用现有媒体 DTO/查询，新增当前游戏范围的有界只读重复检查。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-06 批量目标防误选（代码完成，环境待验）
+
+- cfbb1279 已推送。复用现有 GameDescriptorDto/GameStatusDto、Playnite 适配和 Games/SelectedItem 目标绑定，沿描述快照增加只读本地 IconPath 与 IdentityDisplay；归类目标下拉及全局选框现在显示图标（无图标回退平台占位/首字母）、平台和稳定 PlayniteId。
+- 全局 GamePickerViewModel 原有搜索/平台/状态筛选、被筛选隐藏目标保留和“显示当前游戏”恢复未改；目标控件没有改成 SelectedIndex，重名游戏按对象绑定和稳定 ID 区分。媒体批量归类、预览目标覆盖、单项重新归类共用目标展示模板。
+- 已验证：python scripts/validate-source.py、XAML 24/24、git diff --check；新增选择展示行为/源码契约夹具。定向 Playnite testhost 长时间无输出后仅终止当前会话，未产出可签收构建或测试结果，未写成通过。
+- IconPath 只从 Playnite 现有本地图标引用解析，不下载、不写入、不读取真实存档或媒体；Demo 原目录不可用，沿用恢复生产基线。main 用户改动、src.zip 未碰、未合并；没有新增 artifacts/.tmp。
+- 证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGET-GUARD-20260920.md。下一可执行任务：在可用 SDK/Workload 环境补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 媒体详情浏览。
+
 ## 当前第三轮 R14-05 重复媒体识别视图（代码完成，环境待验）
 
 - `136285d5` 已推送。先复用既有 SHA-256 入库去重、`MediaItemDto` 和当前游戏媒体查询，新增当前游戏范围的确定/疑似重复组只读视图；确定组为相同非空哈希，疑似组为同类型、文件名和大小一致且排除确定组。
