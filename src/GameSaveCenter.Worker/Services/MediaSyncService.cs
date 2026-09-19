@@ -277,6 +277,26 @@ public sealed class MediaSyncService
         var records = await _store.GetMediaClassificationBatchItemsAsync(batch.BatchId, token).ConfigureAwait(false);
         var selected = NormalizeInboxBatchIds(request.MediaIds);
         var games = (await _catalog.GetGamesAsync(token).ConfigureAwait(false)).ToDictionary(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase);
+        var invalidTargetOverrides = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var targetOverride in request.TargetOverrides ?? new List<MediaClassificationTargetOverrideDto>())
+        {
+            if (string.IsNullOrWhiteSpace(targetOverride.MediaId)
+                || (selected.Count > 0 && !selected.Contains(targetOverride.MediaId, StringComparer.OrdinalIgnoreCase))) continue;
+            var record = records.FirstOrDefault(x => string.Equals(x.MediaId, targetOverride.MediaId, StringComparison.OrdinalIgnoreCase));
+            if (record == null || record.ItemState != "Pending") continue;
+            if (string.IsNullOrWhiteSpace(targetOverride.TargetPlayniteId)
+                || !games.TryGetValue(targetOverride.TargetPlayniteId, out var overrideGame))
+            {
+                invalidTargetOverrides.Add(record.MediaId);
+                continue;
+            }
+
+            var targetReason = $"用户在预览中调整目标：{overrideGame.Name}；原建议：{record.TargetReason}";
+            await _store.UpdateMediaClassificationBatchItemTargetAsync(
+                batch.BatchId, record.MediaId, overrideGame.PlayniteId, targetReason, token).ConfigureAwait(false);
+        }
+        if (request.TargetOverrides?.Count > 0)
+            records = await _store.GetMediaClassificationBatchItemsAsync(batch.BatchId, token).ConfigureAwait(false);
         var result = new MediaClassificationBatchResultDto { BatchId = batch.BatchId };
 
         foreach (var record in records)
@@ -285,6 +305,12 @@ public sealed class MediaSyncService
             if (record.ItemState == "Applied")
             {
                 AddClassificationResult(result, record.MediaId, "Skipped", "该建议批次项目已经应用。", skipped: true);
+                continue;
+            }
+            if (invalidTargetOverrides.Contains(record.MediaId))
+            {
+                AddClassificationResult(result, record.MediaId, "Skipped", "预览中选择的目标游戏不存在于当前游戏库，保持未归类。", skipped: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Skipped", string.Empty, token).ConfigureAwait(false);
                 continue;
             }
             if (request.HighConfidenceOnly && record.Confidence != "High")

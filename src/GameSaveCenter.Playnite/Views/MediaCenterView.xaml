@@ -306,7 +306,7 @@
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionIgnore}"/><TextBlock Text="忽略所选" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>
                                 <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewMediaClassificationCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="生成归类建议" ToolTip="根据来源规则、游戏会话和进程映射生成可解释预览" Margin="0,0,8,4"/>
-                                <ui:Button Command="{Binding ApplyMediaClassificationCommand}" Content="应用高置信建议" ToolTip="只应用预览中唯一且高置信的建议" Margin="0,0,8,4">
+                                <ui:Button Command="{Binding ApplyMediaClassificationCommand}" Content="应用所选高置信建议" ToolTip="只提交当前预览中纳入的高置信建议；排除项不会执行" Margin="0,0,8,4">
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -368,7 +368,7 @@
                                 <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,14,0,0">
                                     <StackPanel>
                                         <TextBlock Text="归类建议预览" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="媒体归类建议选择汇总"/>
                                         <ListBox x:Name="MediaClassificationPreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationPreview.Items}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                                             <ListBox.Style>
                                                 <Style TargetType="ListBox">
@@ -388,6 +388,11 @@
                                                     <Border Background="{DynamicResource GscGlassStrongBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
                                                         <StackPanel>
                                                             <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/>
+                                                            <Grid Margin="0,3,0,0">
+                                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                <CheckBox Style="{DynamicResource GscCheckBox}" Content="纳入应用" IsChecked="{Binding IsIncluded, Mode=TwoWay}" AutomationProperties.Name="纳入此媒体归类建议"/>
+                                                                <TextBlock Grid.Column="1" Text="{Binding ConfidenceDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                                            </Grid>
                                                             <TextBlock Text="{Binding SummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                             <TextBlock Text="{Binding EvidenceSummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0"/>
                                                             <ItemsControl ItemsSource="{Binding Evidence}" Margin="0,3,0,0">
@@ -407,6 +412,19 @@
                                                                     </Style>
                                                                 </TextBlock.Style>
                                                             </TextBlock>
+                                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                                <TextBlock Text="目标" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                                <ComboBox ItemsSource="{Binding DataContext.Games, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                          SelectedValuePath="PlayniteId"
+                                                                          SelectedValue="{Binding TargetPlayniteId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                          IsEnabled="{Binding CanEditTarget}"
+                                                                          MinWidth="150"
+                                                                          Style="{DynamicResource GscWpfUiComboBox}"
+                                                                          AutomationProperties.Name="调整归类建议目标">
+                                                                    <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
+                                                                </ComboBox>
+                                                            </StackPanel>
+                                                            <TextBlock Text="{Binding TargetSelectionDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>

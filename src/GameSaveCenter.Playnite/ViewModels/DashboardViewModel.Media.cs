@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -47,7 +48,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => mediaClassificationPreview;
             private set
             {
+                if (mediaClassificationPreview != null)
+                    foreach (var item in mediaClassificationPreview.Items)
+                        item.PropertyChanged -= OnMediaClassificationSuggestionChanged;
                 SetValue(ref mediaClassificationPreview, value);
+                if (mediaClassificationPreview != null)
+                    foreach (var item in mediaClassificationPreview.Items)
+                        item.PropertyChanged += OnMediaClassificationSuggestionChanged;
+                OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+                RaiseCommandStates();
+            }
+        }
+
+        private void OnMediaClassificationSuggestionChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(MediaClassificationSuggestionDto.IsIncluded)
+                or nameof(MediaClassificationSuggestionDto.TargetPlayniteId)
+                or nameof(MediaClassificationSuggestionDto.CanApply))
+            {
                 OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
                 RaiseCommandStates();
             }
@@ -55,7 +73,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public string MediaClassificationPreviewSummary => MediaClassificationPreview == null
             ? mediaClassificationStatus
-            : $"{MediaClassificationPreview.SummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresUtc.ToLocalTime():MM-dd HH:mm}。低/中置信项目保持未归类。";
+            : $"{MediaClassificationPreview.SummaryDisplay} {MediaClassificationPreview.SelectionSummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresUtc.ToLocalTime():MM-dd HH:mm}。低/中置信项目保持未归类。";
 
         public string LastMediaClassificationBatchId
         {
@@ -669,10 +687,18 @@ namespace GameSaveCenter.Playnite.ViewModels
                 .Select(x => x.MediaId)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
-            if (preview.HighConfidenceCount <= 0 || previewIds.Count == 0) throw new InvalidOperationException("当前预览没有可安全确认的高置信建议。");
+            var targetOverrides = preview.Items
+                .Where(x => x.CanApply && x.IsTargetOverridden && !string.IsNullOrWhiteSpace(x.MediaId))
+                .Select(x => new MediaClassificationTargetOverrideDto
+                {
+                    MediaId = x.MediaId,
+                    TargetPlayniteId = x.TargetPlayniteId
+                })
+                .ToList();
+            if (preview.SelectedHighConfidenceCount <= 0 || previewIds.Count == 0) throw new InvalidOperationException("当前预览没有可安全确认的高置信建议。");
             if (!await plugin.ConfirmAsync(
                     "应用媒体归类建议",
-                    $"操作：应用归类建议\n预览批次 {previewBatchId}，高置信建议 {preview.HighConfidenceCount} 项，实际提交 {previewIds.Count} 项；中/低置信 {preview.MediumConfidenceCount + preview.LowConfidenceCount} 项跳过。\n确认后将按本次捕获的批次 ID 和媒体 ID 执行，即使收件箱选择随后变化也不会改用新选择。\n\n只会处理预览后未发生变化的项目；冲突项目会继续留在待归类收件箱。原始截图/录像不会被删除。",
+                    $"操作：应用归类建议\n预览批次 {previewBatchId}，纳入 {preview.SelectedCount} 项，可提交高置信 {preview.SelectedHighConfidenceCount} 项，实际提交 {previewIds.Count} 项；排除 {preview.ExcludedCount} 项，中/低置信 {preview.MediumConfidenceCount + preview.LowConfidenceCount} 项跳过。\n确认后将按本次捕获的批次 ID、媒体 ID 和目标覆盖执行，即使收件箱选择随后变化也不会改用新选择。\n\n只会处理预览后未发生变化的项目；冲突项目会继续留在待归类收件箱。原始截图/录像不会被删除。",
                     "应用高置信建议",
                     "取消")) return;
 
@@ -681,6 +707,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     BatchId = previewBatchId,
                     MediaIds = previewIds,
+                    TargetOverrides = targetOverrides,
                     HighConfidenceOnly = true
             }, TimeSpan.FromMinutes(10));
             MediaClassificationPreview = null;

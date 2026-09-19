@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace GameSaveCenter.Contracts;
 
@@ -42,8 +44,12 @@ public sealed class MediaClassificationEvidenceDto
 }
 
 /// <summary>One explainable game suggestion. Low-confidence items have no target.</summary>
-public sealed class MediaClassificationSuggestionDto
+public sealed class MediaClassificationSuggestionDto : INotifyPropertyChanged
 {
+    private bool isIncluded = true;
+    private string targetPlayniteIdOverride = string.Empty;
+    private bool targetOverrideSet;
+
     public string MediaId { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
     public DateTime CapturedUtc { get; set; }
@@ -53,9 +59,43 @@ public sealed class MediaClassificationSuggestionDto
     public string Confidence { get; set; } = "Low";
     public string State { get; set; } = "Suggested";
     public List<MediaClassificationEvidenceDto> Evidence { get; set; } = new List<MediaClassificationEvidenceDto>();
+    public bool IsIncluded
+    {
+        get => isIncluded;
+        set
+        {
+            if (isIncluded == value) return;
+            isIncluded = value;
+            OnPropertyChanged(nameof(IsIncluded));
+            OnPropertyChanged(nameof(CanApply));
+            OnPropertyChanged(nameof(StateDisplay));
+        }
+    }
+
+    /// <summary>Effective target selected in the still-local preview.</summary>
+    public string TargetPlayniteId
+    {
+        get => targetOverrideSet ? targetPlayniteIdOverride : SuggestedPlayniteId;
+        set
+        {
+            var normalized = value ?? string.Empty;
+            var nextOverride = !string.Equals(normalized, SuggestedPlayniteId, StringComparison.OrdinalIgnoreCase);
+            if (targetOverrideSet == nextOverride
+                && string.Equals(targetPlayniteIdOverride, normalized, StringComparison.OrdinalIgnoreCase)) return;
+            targetOverrideSet = nextOverride;
+            targetPlayniteIdOverride = normalized;
+            OnPropertyChanged(nameof(TargetPlayniteId));
+            OnPropertyChanged(nameof(IsTargetOverridden));
+            OnPropertyChanged(nameof(TargetSelectionDisplay));
+            OnPropertyChanged(nameof(CanApply));
+        }
+    }
+
+    public bool IsTargetOverridden => targetOverrideSet;
+    public bool CanEditTarget => Confidence == "High" && !string.IsNullOrWhiteSpace(SuggestedPlayniteId);
 
     public DateTime CapturedLocal => CapturedUtc.ToLocalTime();
-    public bool CanApply => !string.IsNullOrWhiteSpace(SuggestedPlayniteId) && Confidence == "High";
+    public bool CanApply => IsIncluded && !string.IsNullOrWhiteSpace(TargetPlayniteId) && Confidence == "High";
     public string ConfidenceDisplay => Confidence switch
     {
         "High" => "高置信",
@@ -76,6 +116,14 @@ public sealed class MediaClassificationSuggestionDto
     public string EvidenceSummaryDisplay => HasEvidence
         ? $"依据 {Evidence.Count} 条"
         : "待判断 · 尚无可核实依据";
+    public string TargetSelectionDisplay => string.IsNullOrWhiteSpace(TargetPlayniteId)
+        ? "未选择目标"
+        : IsTargetOverridden ? $"已调整目标 · {TargetPlayniteId}" : "使用建议目标";
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged(string propertyName)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 /// <summary>Worker-owned, expiring preview that must be explicitly confirmed.</summary>
@@ -89,8 +137,20 @@ public sealed class MediaClassificationPreviewDto
     public int HighConfidenceCount { get; set; }
     public int MediumConfidenceCount { get; set; }
     public int LowConfidenceCount { get; set; }
+    public int SelectedCount => Items?.Count(x => x.IsIncluded) ?? 0;
+    public int ExcludedCount => Items?.Count(x => !x.IsIncluded) ?? 0;
+    public int SelectedHighConfidenceCount => Items?.Count(x => x.CanApply) ?? 0;
     public string SummaryDisplay =>
         $"建议 {Items.Count} 项：高置信 {HighConfidenceCount}，中置信 {MediumConfidenceCount}，低置信 {LowConfidenceCount}；仅高置信可批量确认。";
+    public string SelectionSummaryDisplay =>
+        $"本次纳入 {SelectedCount} 项，可应用高置信 {SelectedHighConfidenceCount} 项，排除 {ExcludedCount} 项。";
+}
+
+/// <summary>Explicit per-item target selected in the still-valid preview.</summary>
+public sealed class MediaClassificationTargetOverrideDto
+{
+    public string MediaId { get; set; } = string.Empty;
+    public string TargetPlayniteId { get; set; } = string.Empty;
 }
 
 /// <summary>Confirms selected suggestions from one still-valid preview.</summary>
@@ -99,6 +159,7 @@ public sealed class MediaClassificationApplyRequestDto
     public string RequestId { get; set; } = string.Empty;
     public string BatchId { get; set; } = string.Empty;
     public List<string> MediaIds { get; set; } = new List<string>();
+    public List<MediaClassificationTargetOverrideDto> TargetOverrides { get; set; } = new List<MediaClassificationTargetOverrideDto>();
     public bool HighConfidenceOnly { get; set; } = true;
 }
 

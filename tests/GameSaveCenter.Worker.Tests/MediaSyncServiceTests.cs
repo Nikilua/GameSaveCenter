@@ -385,6 +385,44 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ClassificationApplyUsesSelectedStableIdsAndValidatedTargetOverride()
+    {
+        var captured = new DateTime(2026, 9, 5, 10, 20, 30, DateTimeKind.Utc);
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "game-1", Name = "Alpha Quest", Platform = GamePlatformKind.Steam },
+            new GameDescriptorDto { PlayniteId = "game-2", Name = "Beta Quest", Platform = GamePlatformKind.Steam }
+        }, CancellationToken.None);
+        var sourceRoot = Path.Combine(root, "Captures");
+        var first = await AddInboxMediaAsync("selection-media-1", Path.Combine(sourceRoot, "one.png"), captured);
+        var second = await AddInboxMediaAsync("selection-media-2", Path.Combine(sourceRoot, "two.png"), captured.AddMinutes(1));
+        await AddCustomSourceAsync("game-1", sourceRoot, "*.png");
+
+        var service = CreateService();
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { first.MediaId, second.MediaId }
+        }, CancellationToken.None);
+        Assert.All(preview.Items, item => Assert.Equal("game-1", item.SuggestedPlayniteId));
+
+        var result = await service.ApplyClassificationPreviewAsync(new MediaClassificationApplyRequestDto
+        {
+            BatchId = preview.BatchId,
+            MediaIds = new List<string> { first.MediaId },
+            TargetOverrides = new List<MediaClassificationTargetOverrideDto>
+            {
+                new MediaClassificationTargetOverrideDto { MediaId = first.MediaId, TargetPlayniteId = "game-2" }
+            }
+        }, CancellationToken.None);
+
+        Assert.Equal(1, result.AppliedCount);
+        var applied = await store.GetMediaByIdAsync(first.MediaId, CancellationToken.None);
+        Assert.Equal("game-2", applied!.PlayniteId);
+        Assert.Contains("用户在预览中调整目标", applied.ClassificationReason, StringComparison.Ordinal);
+        Assert.Equal("Inbox", (await store.GetMediaByIdAsync(second.MediaId, CancellationToken.None))!.ClassificationState);
+    }
+
+    [Fact]
     public async Task ClassificationCommitFailureLeavesRecoveryLedgerAndStartupRestoresArchiveCopy()
     {
         var prepared = await PrepareClassificationAsync("commit-failure-media");

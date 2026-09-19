@@ -357,7 +357,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
             PreviewMediaClassificationCommand = new RelayCommand(value => Run(() => PreviewMediaClassificationAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
-            ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.HighConfidenceCount > 0);
+            ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.SelectedHighConfidenceCount > 0);
             UndoMediaClassificationCommand = new RelayCommand(_ => Run(UndoMediaClassificationAsync), _ => !IsBusy && CanUndoMediaClassification());
             RefreshMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(true)), _ => !IsBusy);
             LoadMoreMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(false)), _ => !IsBusy && MediaClassificationHistoryHasMore);

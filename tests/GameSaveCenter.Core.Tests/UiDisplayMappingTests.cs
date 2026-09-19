@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameSaveCenter.Contracts;
 using Xunit;
 
@@ -191,6 +192,36 @@ public sealed class UiDisplayMappingTests
         Assert.Equal("Alpha Quest · 进程映射 · alpha.exe → Alpha Quest", evidence.SummaryDisplay);
         Assert.True(unknown.HasEvidence == false);
         Assert.Equal("待判断 · 尚无可核实依据", unknown.EvidenceSummaryDisplay);
+    }
+
+    [Fact]
+    public void ClassificationPreviewSelectionKeepsStableIdsAndHighConfidenceGate()
+    {
+        var suggestion = new MediaClassificationSuggestionDto
+        {
+            MediaId = "media-1",
+            SuggestedPlayniteId = "game-1",
+            SuggestedGameName = "Alpha Quest",
+            Confidence = "High"
+        };
+        var preview = new MediaClassificationPreviewDto
+        {
+            Items = new List<MediaClassificationSuggestionDto>
+            {
+                suggestion,
+                new MediaClassificationSuggestionDto { MediaId = "media-2", Confidence = "Low" }
+            }
+        };
+
+        Assert.True(suggestion.CanApply);
+        suggestion.TargetPlayniteId = "game-2";
+        Assert.True(suggestion.IsTargetOverridden);
+        Assert.True(suggestion.CanApply);
+        suggestion.IsIncluded = false;
+        Assert.False(suggestion.CanApply);
+        Assert.Equal("本次纳入 1 项，可应用高置信 0 项，排除 1 项。", preview.SelectionSummaryDisplay);
+        Assert.Equal("media-1", suggestion.MediaId);
+        Assert.Equal("game-2", suggestion.TargetPlayniteId);
     }
 
     [Fact]

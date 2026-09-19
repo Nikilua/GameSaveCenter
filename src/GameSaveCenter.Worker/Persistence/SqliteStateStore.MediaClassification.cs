@@ -178,6 +178,16 @@ WHERE batch_id=$batch AND media_id=$media;",
                 ["$applied"] = appliedArchivePath, ["$updated"] = DateTime.UtcNow.ToString("O")
             }, token);
 
+    public Task UpdateMediaClassificationBatchItemTargetAsync(string batchId, string mediaId, string targetPlayniteId, string targetReason, CancellationToken token)
+        => ExecuteAsync(@"UPDATE media_classification_batch_items
+SET target_playnite_id=$target,target_reason=$target_reason,updated_utc=$updated
+WHERE batch_id=$batch AND media_id=$media AND item_state='Pending';",
+            new Dictionary<string, object?>
+            {
+                ["$batch"] = batchId, ["$media"] = mediaId, ["$target"] = targetPlayniteId,
+                ["$target_reason"] = targetReason, ["$updated"] = DateTime.UtcNow.ToString("O")
+            }, token);
+
     public async Task CreateMediaClassificationOperationAsync(MediaClassificationOperationRecord operation, CancellationToken token)
     {
         await _writeGate.WaitAsync(token).ConfigureAwait(false);
