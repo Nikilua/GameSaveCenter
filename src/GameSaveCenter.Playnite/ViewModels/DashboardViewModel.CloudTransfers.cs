@@ -205,9 +205,7 @@ public sealed partial class DashboardViewModel
 
     private bool CanRetrySelectedCloudUpload()
     {
-        var state = SelectedCloudTransfer?.State;
-        return string.Equals(state, "Failed", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(state, "RetryScheduled", StringComparison.OrdinalIgnoreCase);
+        return SelectedCloudTransfer?.CanManuallyRetry == true;
     }
 
     private static CloudTransferKind? ParseCloudTransferKind(string value)

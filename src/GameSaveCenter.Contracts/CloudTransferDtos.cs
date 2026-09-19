@@ -125,6 +125,18 @@ public sealed class CloudTransferStatusDto
         _ => StateDisplay
     };
 
+    /// <summary>Whether the selected row is an eligible target for a user retry.</summary>
+    public bool CanManuallyRetry => string.Equals(State, "Failed", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Explains the selected-row scope. A retry copies the already preserved local source;
+    /// it does not recreate a local backup or reprocess a successful transfer.
+    /// </summary>
+    public string ManualRetryScopeDisplay => CanManuallyRetry
+        ? "手动范围：仅当前选中项；只重试云端上传，不重新执行本地备份。"
+        : "当前状态不可手动重试；传输中或已完成项不会重复提交。";
+
     private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
         && (string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
             || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase));
