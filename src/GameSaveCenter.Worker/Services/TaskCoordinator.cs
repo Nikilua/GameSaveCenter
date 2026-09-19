@@ -292,7 +292,7 @@ public sealed class TaskCoordinator
     {
         await _store.AddOrUpdateTaskAsync(task,token).ConfigureAwait(false);
         var sequence=Interlocked.Increment(ref _changeSequence);
-        var change = new TaskChangeEventDto { Sequence = sequence, Task = Clone(task) };
+        var change = new TaskChangeEventDto { Sequence = sequence, OccurredUtc = DateTime.UtcNow, Task = Clone(task) };
         _changes.Enqueue(change);
         while(_changes.Count>ChangeRetention && _changes.TryDequeue(out _)) { }
         _events.Publish(change);

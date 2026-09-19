@@ -41,7 +41,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly PlayniteGameBackgroundProvider gameBackgroundProvider;
         private readonly SynchronizationContext? uiSynchronizationContext = SynchronizationContext.Current;
         private readonly Dictionary<string, TaskState> knownTaskStates = new Dictionary<string, TaskState>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, List<TaskChangeEventDto>> taskTimelineChanges = new Dictionary<string, List<TaskChangeEventDto>>(StringComparer.OrdinalIgnoreCase);
         private readonly TaskIndexedCollection taskIndex = new TaskIndexedCollection();
+        private const int MaxTaskTimelineEventsPerTask = 64;
+        private const int MaxTaskTimelineTasks = 200;
         private readonly BusyOperationCoordinator busyOperationCoordinator = new BusyOperationCoordinator();
         private readonly DateTime dashboardOpenedUtc = DateTime.UtcNow;
         private bool isBusy;
@@ -480,6 +483,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         /// <summary>Shared global picker state. The dashboard keeps the legacy bindings below for compatibility.</summary>
         public GamePickerViewModel GamePicker => gamePicker;
         public BatchObservableCollection<TaskStatusDto> Tasks { get; } = new BatchObservableCollection<TaskStatusDto>();
+        public BatchObservableCollection<TaskTimelineEntryDto> SelectedTaskTimeline { get; } = new BatchObservableCollection<TaskTimelineEntryDto>();
+        public bool HasSelectedTaskTimeline => SelectedTaskTimeline.Count > 0;
         public BatchObservableCollection<TaskStatusDto> OverviewTasks { get; } = new BatchObservableCollection<TaskStatusDto>();
         public BatchObservableCollection<ActivityEntryDto> Activities { get; } = new BatchObservableCollection<ActivityEntryDto>();
         public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
@@ -1219,6 +1224,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref selectedTask, value);
+                RebuildSelectedTaskTimeline();
                 RaiseCommandStates();
             }
         }
@@ -2089,11 +2095,54 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
+        private void RememberTaskTimelineChange(TaskChangeEventDto change)
+        {
+            if (change?.Task == null || string.IsNullOrWhiteSpace(change.Task.TaskId)) return;
+            if (!taskTimelineChanges.TryGetValue(change.Task.TaskId, out var changes))
+            {
+                changes = new List<TaskChangeEventDto>();
+                taskTimelineChanges[change.Task.TaskId] = changes;
+            }
+
+            if (change.Sequence > 0 && changes.Any(existing => existing.Sequence == change.Sequence)) return;
+            changes.Add(change);
+            if (changes.Count > MaxTaskTimelineEventsPerTask)
+                changes.RemoveRange(0, changes.Count - MaxTaskTimelineEventsPerTask);
+
+            while (taskTimelineChanges.Count > MaxTaskTimelineTasks)
+            {
+                var oldest = taskTimelineChanges
+                    .OrderBy(pair => pair.Value.Count == 0 ? long.MaxValue : pair.Value[pair.Value.Count - 1].Sequence)
+                    .FirstOrDefault();
+                if (oldest.Key == null) break;
+                taskTimelineChanges.Remove(oldest.Key);
+            }
+        }
+
+        private void RebuildSelectedTaskTimeline()
+        {
+            var task = SelectedTask;
+            IEnumerable<TaskChangeEventDto> changes = task == null || !taskTimelineChanges.TryGetValue(task.TaskId, out var observed)
+                ? Array.Empty<TaskChangeEventDto>()
+                : observed;
+            var timeline = task == null
+                ? Array.Empty<TaskTimelineEntryDto>()
+                : TaskTimelineBuilder.Build(task, changes);
+            SelectedTaskTimeline.ReplaceAll(timeline, (left, right) =>
+                left.Sequence == right.Sequence
+                && string.Equals(left.Kind, right.Kind, StringComparison.Ordinal)
+                && string.Equals(left.Title, right.Title, StringComparison.Ordinal)
+                && string.Equals(left.Detail, right.Detail, StringComparison.Ordinal)
+                && left.OccurredUtc == right.OccurredUtc);
+            OnPropertyChanged(nameof(HasSelectedTaskTimeline));
+        }
+
         private async Task ApplyTaskEventAsync(TaskChangeEventDto change)
         {
             if (change == null || change.Task == null) return;
             ApplyOnUi(() =>
             {
+                RememberTaskTimelineChange(change);
                 taskIndex.Merge(Tasks, change.Task);
                 Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
                 knownTaskStates[change.Task.TaskId] = change.Task.State;

@@ -48,6 +48,7 @@ public sealed class TaskEventBroadcaster
     private static TaskChangeEventDto Clone(TaskChangeEventDto change) => new()
     {
         Sequence = change.Sequence,
+        OccurredUtc = change.OccurredUtc,
         Task = new TaskStatusDto
         {
             TaskId = change.Task.TaskId,
@@ -60,6 +61,8 @@ public sealed class TaskEventBroadcaster
             State = change.Task.State,
             ProgressPercent = change.Task.ProgressPercent,
             Message = change.Task.Message,
+            StageMessage = change.Task.StageMessage,
+            CancellationState = change.Task.CancellationState,
             CreatedUtc = change.Task.CreatedUtc,
             StartedUtc = change.Task.StartedUtc,
             FinishedUtc = change.Task.FinishedUtc,

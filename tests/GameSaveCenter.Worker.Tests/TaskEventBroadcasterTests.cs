@@ -15,8 +15,11 @@ public sealed class TaskEventBroadcasterTests
         var change = new TaskChangeEventDto
         {
             Sequence = 42,
+            OccurredUtc = new DateTime(2026, 9, 20, 1, 2, 3, DateTimeKind.Utc),
             Task = new TaskStatusDto { TaskId = "task", TaskType = "Backup", State = TaskState.Running, ProgressPercent = 30 }
         };
+        change.Task.StageMessage = "正在扫描存档";
+        change.Task.CancellationState = TaskCancellationStates.Finalizing;
 
         broadcaster.Publish(change);
         change.Task.ProgressPercent = 99;
@@ -24,7 +27,10 @@ public sealed class TaskEventBroadcasterTests
         var firstEvent = await first.Reader.ReadAsync();
         var secondEvent = await second.Reader.ReadAsync();
         Assert.Equal(42, firstEvent.Sequence);
+        Assert.Equal(change.OccurredUtc, firstEvent.OccurredUtc);
         Assert.Equal(30, firstEvent.Task.ProgressPercent);
+        Assert.Equal("正在扫描存档", firstEvent.Task.StageMessage);
+        Assert.Equal(TaskCancellationStates.Finalizing, firstEvent.Task.CancellationState);
         Assert.Equal(30, secondEvent.Task.ProgressPercent);
         Assert.NotSame(firstEvent.Task, secondEvent.Task);
     }

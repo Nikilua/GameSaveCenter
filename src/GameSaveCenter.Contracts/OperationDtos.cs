@@ -376,6 +376,8 @@ namespace GameSaveCenter.Contracts
     public sealed class TaskChangeEventDto
     {
         public long Sequence { get; set; }
+        /// <summary>Worker-observed UTC time for this change; legacy events may leave it unknown.</summary>
+        public DateTime OccurredUtc { get; set; }
         public TaskStatusDto Task { get; set; } = new TaskStatusDto();
     }
 
