@@ -1682,3 +1682,11 @@
 - main DEV-INSTALL-008 仍独立记录为 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，没有进入打包/安装；main 的 `DashboardView.xaml.cs`、`src.zip`、Dialog/R08 用户文件未触碰。
 - 提交并推送：`02860571`，证据为 `evidence/R11-07-BACKUP-RESULT-LAYERS-20260919.md`。
 - 下一可执行任务：按用户顺序先处理 R00/R01 小批量问题修复与证据校正，再推进依赖已满足的 R11-08。
+
+## 2026-09-19 Round3 R00/R01 合并后门禁纠偏
+
+- 用户 main 的 DEV-INSTALL-008 失败事实独立保留：Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，未打包/安装。首个 SaveWorkspace 失败是 XAML 列帮助属性插入后，旧连续字符串断言漂移，不是命令不可达的充分证据。
+- continuation 分支已提交 `c975e16d` 并推送 `codex/ui-finesse-round2`。本批修正 XAML 关系断言、最新状态/字体/布局测试契约、R08 行为的有界 Dispatcher 等待；增加 WPF 类级 testhost 隔离和输出目录 TEMP/TMP；生产代码仅增加导航返回按钮早期空引用保护。
+- D 盘隔离 `build3`：XAML `24/24`、Release solution `0 warning / 0 error`；Playnite source `65` 类组 + WPF `84` 类进程全通过；资源字典 `137 passed / 39 skipped / 0 failed`；Core `84/84`，Worker `322 passed / 1 skipped / 0 failed`。当前 worktree 的 source/XAML/diff check 均通过。
+- 这只是当前分支的测试与边界校正，不反写 dirty main 为已修复或已安装。未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；未触碰真实存档/媒体/云端/诊断。Demo 原目录不可用，继续以恢复生产基线为视觉依据。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-TEST-GATE-CORRECTION-20260919.md`。下一可执行任务：R11-08 历史时间导航，先核对已有能力与依赖。

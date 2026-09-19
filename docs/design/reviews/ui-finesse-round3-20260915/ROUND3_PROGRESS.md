@@ -206,3 +206,11 @@
 - 本阶段实际验证包含当前提交的 Release/XAML、受影响源码行为、浅/深主题合成探针、审计索引和 freshness 负例；R00-07、R01-01、R01-07 原本已 fresh，未为了统一时间而重复构建。
 - 真实 Playnite、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能和 package-host 仍未验；Demo 原目录仍不可用，继续以恢复生产资源基线为视觉依据。main 工作树现有用户改动未合并、未覆盖。
 - 下一可执行小批量：R08-08，检查并收口 `GscMotion` 的变换所有权与 Freezable 生命周期。
+
+## 2026-09-19 R00/R01 合并后门禁纠偏
+
+- main DEV-INSTALL-008 的真实结果仍是 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，未进入打包/安装。首个 `SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi` 失败来自列帮助属性插入后过期的连续字符串断言，不把它写成命令实际不可达。
+- 当前 continuation 分支提交 `c975e16d` 只收口测试门禁、断言漂移和一个导航 namescope 早期空值保护：XAML 元素关系断言、最新状态源/字体/布局契约、Dispatcher 有界行为等待，以及按 WPF 类独立 testhost 的隔离脚本；未切换设计体系或覆盖 main。
+- D 盘隔离 Release 构建 `0 warning / 0 error`、XAML `24/24`；source `65` 类组和 WPF `84` 类进程全部通过；资源字典类 `137/39/0`，Core `84/0/0`，Worker `322/1/0`；source validation、XAML check、diff check 通过。证据：[R00/R01 门禁纠偏](evidence/R00-R01-TEST-GATE-CORRECTION-20260919.md)。
+- R00/R01 账面状态不因这次校正自动改写；本阶段只补真实失败原因、当前分支证据与隔离门禁结果。仍未验 Playnite/package-host 安装、物理 DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能；Demo 原目录不可用，继续沿用恢复生产基线。
+- 提交已推送 `origin/codex/ui-finesse-round2`；main 用户文件未触碰。下一可执行任务：R11-08 历史时间导航，先查已有实现和 Q 依赖后再做小批量。

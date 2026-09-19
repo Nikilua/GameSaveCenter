@@ -3943,3 +3943,11 @@
 - main DEV-INSTALL-008 事实独立保留：构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、退出 `1`，尚未打包/安装。首个 SaveWorkspace 失败是属性插入导致的过期连续字符串断言；当前分支改为 XAML 元素关系验证，不把断言校正写成命令实际可达的全量证明。
 - 证据边界：合成 DTO/fake/隔离 STA 和 D 盘可写副本不等于真实 Ludusavi/rclone/Worker IPC、云端/存档、Playnite 宿主/安装呈现、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；不得修改 dirty main。
 - 提交 `02860571` 已推送 `codex/ui-finesse-round2`；下一可执行任务按用户顺序为 R00/R01 小批量问题修复与证据校正，然后才回到 R11-08。
+
+## 2026-09-19 Round3 R00/R01 合并后门禁纠偏
+
+- 启动时继续把 main 失败日志与 continuation 分支证据分账：main DEV-INSTALL-008 为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`；首个 SaveWorkspace 失败是 XAML 属性插入造成的过期连续字符串断言，不能扩大成命令不可达结论。
+- 采用 `scripts/run-playnite-tests-isolated.ps1`：先发现测试类，source 类合组，WPF 类每类独立 testhost；`OutputRoot` 提供时必须将 `TEMP/TMP` 指向该输出下的 `test-temp`。任何类返回非零即失败，不用 skip 掩盖失败。`scripts/build.ps1` 的 Playnite 门禁必须调用它。
+- 断言修复必须优先解析 XAML 元素/属性关系并保留行为/负例；不要用更宽的字符串包含把交互、焦点、动画或性能签收掉。R08 动效使用有界 Dispatcher 状态等待，固定睡眠不能作为完成证据。
+- 本批提交 `c975e16d` 已推送；D 盘 `build3` Release `0/0`、XAML `24/24`，source `65` 类组 + WPF `84` 类进程通过，Core `84/84`，Worker `322/1/0`，资源字典 `137/39/0`。新脚本需要 UTF-8 BOM 以通过 Windows PowerShell 5.1 source validation。
+- 真正未验边界仍包括 Playnite/package-host 安装与呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；不得读取/写入真实存档、媒体、云端或外发诊断。Demo 原目录不可用；下一任务为 R11-08 历史时间导航。

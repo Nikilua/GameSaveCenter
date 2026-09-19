@@ -7492,3 +7492,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - main 新日志仍独立为 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，未进入打包/安装。main 用户未提交文件保持不动。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-07-BACKUP-RESULT-LAYERS-20260919.md`；提交 `02860571` 已推送 `codex/ui-finesse-round2`。
 - 边界：合成 DTO/fake/隔离 STA/隔离目录，不等价真实 Ludusavi/rclone/Worker IPC、云端、存档、Playnite package-host、呈现帧、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；WPF C 盘 worktree `wpftmp` 权限问题使用 D 盘副本，未绕过系统权限。下一可执行任务：R00/R01 小批量问题修复与证据校正。
+
+## 2026-09-19 Round3 R00/R01 合并后门禁纠偏
+
+- 用户回报 main 合并后一次构建安装仍失败；复核附件日志确认首个失败是 `SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi` 的过期连续字符串断言，整体 Playnite 为 `73 failed / 588 passed / 57 skipped`，安装器退出 `1`，未进入打包/安装。
+- 在 `codex/ui-finesse-round2` 先收口已有修改：XAML 关系断言、R02 文本/图标负例、状态源、字体白名单、布局计数、R08 动效有界等待和页面切换夹具；产品代码只补 `AcrylicProductionShellView` 导航返回按钮早期空引用保护。
+- 新增 WPF 类级 testhost 隔离脚本并接入 `scripts/build.ps1`。D 盘隔离 `build3` 构建 XAML `24/24`、Release `0 warning / 0 error`；source `65` 类组 + WPF `84` 类进程全通过；资源字典 `137/39/0`，Core `84/84`，Worker `322/1/0`。`validate-source.py`、XAML check、diff check 通过。
+- 提交 `c975e16d`（`收口Playnite测试隔离与断言漂移`）已推送到 `origin/codex/ui-finesse-round2`。证据：[R00/R01 门禁纠偏](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-TEST-GATE-CORRECTION-20260919.md)。
+- 未验证真实 package/Playnite host 安装、物理呈现/DPI/跨屏、UIA/IME、ETW、宿主性能；未触碰 main 用户文件或真实存档/媒体/云端/诊断。下一可执行任务：R11-08 历史时间导航。
