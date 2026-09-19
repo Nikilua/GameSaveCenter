@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-08 来源规则试运行
+
+- 在 `89141528` 中复用现有来源规则 DTO、媒体匹配器和 Worker IPC，增加只读草稿试运行。UI 样本显示命中/排除、大小、路径和原因；保存规则、媒体入库、移动和归类链均不被试运行调用。
+- Worker 以 linked cancellation token 限制时间、扫描项和样本数；UI 列表使用 `MaxHeight=240`、`FiniteViewport`、Recycling，保留当前选框、滚动、命令绑定、错误/取消语义和 net462 路径。另修复重复组 `Border` 的单子级 XAML 结构，未改变其列表行为。
+- 验证：源码验证通过，XAML `24/24`，diff check 通过；Worker Release 隔离构建 `0/0`、行为测试 `1/1`；Playnite Release `net462` 契约测试 `1/1`，构建有既有 nullable warning 2 条；WPF 静态检查 `0/28/177`。render-qa linked `obj` 权限阻塞，未宣称呈现通过。
+- 只使用合成/fake/隔离目录和 SQLite；未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main dirty 改动和 `src.zip` 未碰、未合并。证据：[R14-08 来源规则试运行](../design/reviews/ui-finesse-round3-20260915/evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md)。
+- 下一可执行任务：`R15-01 任务阶段可读`；先核对 TaskCoordinator/任务事件阶段 DTO。R14-08 的真实 Playnite、权限拒绝目录、超大目录和最终呈现仍待验。
+
 ## 2026-09-20 R14-07 媒体详情浏览
 
 - 在现有媒体分页/稳定选择链上增加当前已加载窗口的上一项/下一项、位置摘要和列表行回滚；没有新增跨页假数据或替换滚动系统。

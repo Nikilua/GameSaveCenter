@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 2026-09-20 R14-08 来源规则试运行（代码已提交，隔离验证完成；真实宿主待验）
+
+- `89141528` 先复用 `MediaSourceRuleDto`、Worker 已有媒体扩展名和 `MatchesIncludePattern`，新增来源规则草稿的只读预览 DTO、IPC dispatcher、ViewModel 命令和来源设置样本列表。样本带确定的命中/排除原因、大小和路径，试运行不调用保存、入库、移动或归类。
+- Worker 使用 linked cancellation token；时间预算限制为 `100–5000ms`，扫描项为 `1–5000`，样本为 `1–200`。UI 默认 120 样本/2000 扫描项/1500ms；数量或时间耗尽时返回 `Partial`，不把部分目录冒充完整结果。
+- 来源页保留当前滚动、命令绑定、主题、选框和 net462 路径，新增 `MaxHeight=240`、Recycling 的有限列表。同步修复重复组卡片 Border 双子级 XAML 编译问题，原有虚拟化和滚动属性未改。
+- `validate-source.py`、XAML `24/24`、diff check、Worker Release 隔离构建 `0/0`、Worker 行为 `1/1`、Playnite Release `net462` 契约 `1/1` 已通过；Playnite 构建有 `MediaCenterView.xaml.cs:664` 的既有 nullable warning 2 条；WPF 静态审查 `0/28/177`。render-qa 的 linked `obj` Access denied 仍未形成呈现证据。
+- 只用合成/fake/隔离目录和 SQLite；未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动与 `src.zip` 未碰、未合并。证据为 `R14-08-SOURCE-RULE-PREVIEW-20260920.md`；下一项为 `R15-01 任务阶段可读`，真实宿主/权限拒绝/大目录/呈现边界待验。
+
 ## 2026-09-20 R14-07 媒体详情浏览（代码完成，环境待验）
 
 - 先复用现有媒体分页、稳定 `MediaId` 选择和滚动锚点；上一项/下一项只在当前已加载窗口内移动，选中项变化后显式 `ScrollIntoView`/`BringIntoView`，不虚构跨页数据。

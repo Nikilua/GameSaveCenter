@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-08 来源规则试运行（代码已提交，隔离验证完成；真实宿主待验）
+
+- `89141528` 复用现有来源规则 DTO、媒体扩展名和文件模式匹配，增加来源规则草稿的只读试运行 IPC/Worker/UI 链。每个样本显示命中/排除、文件名、大小、路径和确定原因；试运行不保存规则、不写媒体记录、不移动文件。
+- Worker 的 linked cancellation token 同时受时间预算、扫描数量预算和样本数量预算保护；请求值分别收敛到 `100–5000ms`、`1–5000`、`1–200`。UI 默认 `120/2000/1500ms`，部分扫描显示 `Partial`/预算原因。来源规则列表保持有限高度、Recycling 和当前滚动/命令绑定。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离构建 `0 warning / 0 error`、新增行为测试 `1/1`；Playnite Release `net462` 构建与 R14-08 契约测试 `1/1`，构建有既有 `MediaCenterView.xaml.cs:664` nullable warning 2 条；WPF 静态检查 `0 errors / 28 warnings / 177 info`。
+- 未验：真实 Playnite 来源页和 RenderHarness/最终呈现、权限拒绝/超大目录、DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能。render-qa 的 linked `obj` 权限阻塞没有被写成呈现通过。Demo 原目录不可用，沿用恢复生产基线；main 用户改动与 `src.zip` 未碰、未合并。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md`。下一可执行任务：`R15-01 任务阶段可读`，先核对现有 TaskCoordinator/任务事件阶段 DTO。
+
 ## 当前第三轮 R14-07 媒体详情浏览（代码完成，环境待验）
 
 - 本批在现有 `Media` 分页窗口、`SelectedMedia` 和 `SelectionAnchorResolver` 上增加上一项/下一项；导航只跨当前已加载窗口，并按稳定 `MediaId` 将选中项滚回 `MediaGrid` 可见行。

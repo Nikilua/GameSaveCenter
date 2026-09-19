@@ -125,7 +125,7 @@
 | R14-05 | 重复媒体识别视图 | 已实现，待环境验证 | 136285d5 | validate-source.py；XAML 24/24；diff check；Worker 疑似组隔离夹具和 Playnite 只读契约已加入但当前构建/testhost 未产出结果 | 复用现有 SHA-256 入库去重能力；当前游戏范围内区分确定哈希组与同类型/文件名/大小疑似组；只读选择查看；扫描上限 5000、组上限 100、组内展示上限 24，列表有限/Recycling | Worker/Contracts 构建受 linked obj Access denied 与 SDK/Workload 环境阻塞；未验 Worker/Playnite 运行时、Release/net462、RenderHarness、真实 Playnite/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-05 重复媒体识别视图（evidence/R14-05-DUPLICATE-INSPECTION-20260920.md）；先补跑 R14-04/R14-05 定向验证，再推进 R14-06 |
 | R14-06 | 批量目标防误选 | 已实现，待环境验证 | cfbb1279 | validate-source.py；XAML 24/24；diff check；新增 GamePicker 图标/稳定身份行为夹具和归类目标模板契约，但当前 Playnite testhost 未产出结果 | 复用现有游戏描述/状态 DTO 与选框筛选/选择；本地 Playnite 图标缺失安全回退；归类目标显示名称、平台、图标和稳定 Playnite ID；重名按对象/ID区分；过滤不改写已选目标，不使用 SelectedIndex | 未验构建/testhost、Release/net462、真实 Playnite/RenderHarness/宿主呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；IconPath 只读本地已有引用；main 用户改动和 src.zip 未碰、未合并 | R14-06 批量目标防误选（evidence/R14-06-TARGET-GUARD-20260920.md）；先补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 |
 | R14-07 | 媒体详情浏览 | 已实现，待环境验证 | c17d9bc7 | validate-source.py；XAML 24/24；diff check；新增截图尺寸行为断言和详情导航/视频回退源码契约夹具；Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断 | 当前已加载媒体窗口内上一项/下一项；按 MediaId 保持列表行锚点；类型、来源、大小、采集时间和截图 PixelWidth/PixelHeight 可见；视频缺失/格式不支持/MediaFailed 有回退；异步截图继续可取消 | 未验跨页导航、Release/net462、真实 Playnite/RenderHarness/宿主呈现、真实视频编解码、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-07 媒体详情浏览（evidence/R14-07-MEDIA-DETAIL-20260920.md）；先补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08 |
-| R14-08 | 来源规则试运行 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-08 | 来源规则试运行 | 已实现，待环境验证 | 89141528 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离构建 `0 warning / 0 error`，来源预览行为 `1/1`；Playnite Release `net462` 与 R14-08 契约 `1/1`（2 条既有 nullable warning） | 复用现有来源 DTO、媒体扩展名和文件模式匹配；样本显示命中/排除、大小、路径和原因；试运行只读，不保存规则、移动文件或写媒体记录；列表 `MaxHeight=240`、Recycling、有限 viewport | Worker 时间预算 100–5000ms、扫描预算 1–5000、样本预算 1–200，并保留取消语义；未验真实来源权限/超大目录、真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME/presented frame/ETW/宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-08 来源规则试运行](evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md)；下一项 `R15-01 任务阶段可读`，真实宿主复跑仍待验 |
 | R15-01 | 任务阶段可读 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-02 | 取消过程展示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-03 | 任务详情时间线 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -382,6 +382,15 @@
 - `validate-source.py`、XAML `24/24`、diff check 通过；Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断，未写成构建/testhost 通过。只用合成/fake/隔离路径，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。证据见 R14-07 媒体详情浏览（evidence/R14-07-MEDIA-DETAIL-20260920.md）。
 - 下一可执行小批量：在可用 SDK/Workload 环境补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08 的既有实现与依赖。
 
+
+## 2026-09-20 Round3 R14-08 来源规则试运行
+
+- `89141528` 复用现有 `MediaSourceRuleDto`、媒体扩展名和 `MatchesIncludePattern`，新增只读来源规则草稿试运行 DTO、IPC 入口和 Worker 扫描。样本逐项给出命中/排除、大小、路径和原因；试运行不调用来源保存、媒体入库、移动或归类链。
+- Worker 使用 linked cancellation token、100–5000ms 时间预算、1–5000 扫描项预算和 1–200 样本预算；数量截断/超时返回 `Partial`，不会把部分结果伪装成完整扫描。UI 试运行按钮只提交当前草稿，保存仍由原“添加来源”命令完成。
+- 来源规则页沿用当前滚动、命令绑定、主题和选框系统，新增 `MaxHeight=240`、Recycling 的有限样本列表；同时把重复组卡片的两个 Border 子级收进单一 Grid，修复 WPF Border 单子级编译门禁。
+- `validate-source.py`、XAML `24/24`、diff check 通过；Worker Release 隔离构建 `0/0`，Worker 行为测试 `1/1`，Playnite Release `net462` 契约测试 `1/1`。Playnite 构建仍有 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。WPF 静态检查为 `0/28/177`；render-qa 的 linked `obj` 权限阻塞未写成呈现通过。
+- 只用合成/fake/隔离目录和 SQLite，没有写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main dirty 改动和 `src.zip` 未碰、未合并。证据见 [R14-08 来源规则试运行](evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md)。
+- 下一可执行小批量：`R15-01 任务阶段可读`，先查现有 TaskCoordinator/任务事件阶段 DTO；R14-08 的真实 Playnite/RenderHarness、权限拒绝目录、超大目录和呈现边界仍待验。
 
 ## 2026-09-19 R00/R01 当前提交复核
 
