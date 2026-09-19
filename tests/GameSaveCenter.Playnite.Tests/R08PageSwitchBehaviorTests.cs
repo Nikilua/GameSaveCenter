@@ -45,6 +45,9 @@ public sealed class R08PageSwitchBehaviorTests
                 typeof(DashboardViewModel)
                     .GetField("gamePicker", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .SetValue(viewModel, new GamePickerViewModel());
+                typeof(DashboardViewModel)
+                    .GetField("navigationHistory", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(viewModel, new WorkspaceNavigationStack());
                 typeof(AcrylicProductionShellView)
                     .GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .SetValue(shell, viewModel);

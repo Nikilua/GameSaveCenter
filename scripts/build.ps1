@@ -108,12 +108,14 @@ try {
             '-c', $Configuration,
             '--no-build'
         ) + $msbuildArguments)
-        Invoke-DotNet -StepName '运行 Playnite 设置迁移测试' -Arguments (@(
-            'test',
-            '.\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj',
-            '-c', $Configuration,
-            '--no-build'
-        ) + $msbuildArguments)
+        Write-Host "`n==> 运行 Playnite 测试（WPF 类隔离）" -ForegroundColor Cyan
+        & (Join-Path $PSScriptRoot 'run-playnite-tests-isolated.ps1') `
+            -Configuration $Configuration `
+            -OutputRoot $OutputRoot `
+            -ProjectRoot $root
+        if ($LASTEXITCODE -ne 0) {
+            throw "运行 Playnite 测试失败，dotnet 退出码：$LASTEXITCODE"
+        }
     }
 
     Write-Host "`n构建与测试全部成功。下一步可运行 scripts/package.ps1" -ForegroundColor Green

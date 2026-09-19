@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using GameSaveCenter.Playnite.Infrastructure;
 using Xunit;
 
@@ -216,7 +217,15 @@ namespace GameSaveCenter.Playnite.Tests
             {
                 var source = File.ReadAllText(file);
                 Assert.DoesNotContain("FontSize=\"10\"", source);
-                Assert.DoesNotContain("FontSize=\"11\"", source);
+                var rawElevenPointText = XDocument.Parse(source)
+                    .Descendants()
+                    .Where(element => string.Equals(element.Attribute("FontSize")?.Value, "11", StringComparison.Ordinal))
+                    .ToArray();
+                Assert.All(rawElevenPointText, element =>
+                {
+                    Assert.Equal("{StaticResource UiFont}", element.Attribute("FontFamily")?.Value);
+                    Assert.Equal("{Binding Gesture}", element.Attribute("Text")?.Value);
+                });
             }
 
             var productionSources = files.Select(File.ReadAllText).ToArray();

@@ -19,13 +19,14 @@ public sealed class R02ActionCopyTests
         var save = Load(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml");
 
         var dashboardValidation = SingleCommand(dashboard, "ValidateCommand");
-        Assert.Equal("重新校验", dashboardValidation.Attribute("Content")?.Value);
+        Assert.Equal("重新校验", TextContent(dashboardValidation));
         Assert.Contains("重新校验", dashboardValidation.Attribute("ToolTip")?.Value);
 
         var reloadButtons = dashboard
             .Concat(overview)
             .Concat(save)
-            .Where(element => string.Equals(element.Attribute("Command")?.Value, "{Binding LoadDetailsCommand}", StringComparison.Ordinal))
+            .Where(element => string.Equals(element.Attribute("Command")?.Value, "{Binding LoadDetailsCommand}", StringComparison.Ordinal)
+                && !string.Equals(element.Attribute("Content")?.Value, "重试", StringComparison.Ordinal))
             .ToList();
         Assert.Equal(4, reloadButtons.Count);
         Assert.All(reloadButtons, button =>
@@ -33,13 +34,27 @@ public sealed class R02ActionCopyTests
             var label = button.Attribute("Content")?.Value;
             var toolTip = button.Attribute("ToolTip")?.Value;
             var name = button.Attribute("AutomationProperties.Name")?.Value;
+            var text = TextContent(button);
             if (label != null)
                 Assert.Equal("重新加载详情", label);
+            else if (text != null)
+                Assert.Equal("重新加载详情", text);
+            else
+                Assert.Contains("重新加载", name ?? string.Empty);
             if (toolTip != null)
                 Assert.Contains("重新加载", toolTip);
             if (name != null)
                 Assert.Contains("重新加载", name);
         });
+
+        var retryButtons = dashboard
+            .Concat(overview)
+            .Concat(save)
+            .Where(element => string.Equals(element.Attribute("Command")?.Value, "{Binding LoadDetailsCommand}", StringComparison.Ordinal)
+                && string.Equals(element.Attribute("Content")?.Value, "重试", StringComparison.Ordinal))
+            .ToList();
+        Assert.Single(retryButtons);
+        Assert.Contains("重试", retryButtons[0].Attribute("AutomationProperties.Name")?.Value);
     }
 
     [Fact]
@@ -71,10 +86,10 @@ public sealed class R02ActionCopyTests
         var verify = SingleCommand(maintenance, "VerifyCloudTransferCommand");
         var retry = SingleCommand(maintenance, "RetryCloudUploadCommand");
 
-        Assert.Equal("校验远端内容", verify.Attribute("Content")?.Value);
+        Assert.Equal("校验远端内容", TextContent(verify));
         Assert.Contains("只读校验", verify.Attribute("ToolTip")?.Value);
         Assert.Contains("远端内容", verify.Attribute("AutomationProperties.Name")?.Value);
-        Assert.Equal("重试上传", retry.Attribute("Content")?.Value);
+        Assert.Equal("重试上传", TextContent(retry));
         Assert.Contains("上传", retry.Attribute("ToolTip")?.Value);
         Assert.DoesNotContain("校验", retry.Attribute("Content")?.Value);
 
@@ -108,4 +123,16 @@ public sealed class R02ActionCopyTests
             element.Attribute("Command")?.Value,
             "{Binding " + command + "}",
             StringComparison.Ordinal));
+
+    private static string? TextContent(XElement element)
+    {
+        var directContent = element.Attribute("Content")?.Value;
+        if (!string.IsNullOrWhiteSpace(directContent))
+            return directContent;
+
+        return element.DescendantsAndSelf()
+            .Where(candidate => string.Equals(candidate.Name.LocalName, "TextBlock", StringComparison.Ordinal))
+            .Select(candidate => candidate.Attribute("Text")?.Value)
+            .FirstOrDefault(value => !string.IsNullOrWhiteSpace(value));
+    }
 }

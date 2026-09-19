@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests
@@ -83,10 +85,17 @@ namespace GameSaveCenter.Playnite.Tests
         public void SaveCandidateScoreUsesVisualProgressBar()
         {
             var save = Read("Views", "SaveCenterView.xaml");
-            Assert.Contains("Header=\"可信度\" Width=\"130\"", save);
-            Assert.Contains("<ProgressBar Height=\"8\"", save);
-            Assert.Contains("Value=\"{Binding Score, Mode=OneWay}\"", save);
-            Assert.Contains("StringFormat=P0", save);
+            var document = XDocument.Parse(save);
+            var scoreColumn = document.Descendants()
+                .Single(element => string.Equals(element.Name.LocalName, "DataGridTemplateColumn", StringComparison.Ordinal)
+                    && string.Equals(element.Attribute("Header")?.Value, "可信度", StringComparison.Ordinal));
+
+            Assert.Equal("130", scoreColumn.Attribute("Width")?.Value);
+            var progressBar = scoreColumn.Descendants()
+                .Single(element => string.Equals(element.Name.LocalName, "ProgressBar", StringComparison.Ordinal));
+            Assert.Equal("8", progressBar.Attribute("Height")?.Value);
+            Assert.Equal("{Binding Score, Mode=OneWay}", progressBar.Attribute("Value")?.Value);
+            Assert.Contains("StringFormat=P0", scoreColumn.ToString(SaveOptions.DisableFormatting));
         }
 
         private static string Read(string folder, string file)

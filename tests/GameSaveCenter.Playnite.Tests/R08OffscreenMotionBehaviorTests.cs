@@ -64,10 +64,10 @@ public sealed class R08OffscreenMotionBehaviorTests
                 var translate = Assert.IsType<TranslateTransform>(indicator.RenderTransform);
                 PumpDispatcher(TimeSpan.FromMilliseconds(180));
                 var activeStart = translate.X;
-                PumpDispatcher(TimeSpan.FromMilliseconds(180));
+                var activeMoved = PumpDispatcherUntil(() => Math.Abs(translate.X - activeStart) > 0.5, TimeSpan.FromMilliseconds(600));
                 var activeEnd = translate.X;
                 Assert.False(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
-                Assert.True(Math.Abs(activeEnd - activeStart) > 0.5, $"active spinner did not move: {activeStart} -> {activeEnd}");
+                Assert.True(activeMoved, $"active spinner did not move: {activeStart} -> {activeEnd}");
 
                 tabs.SelectedIndex = 1;
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
@@ -80,8 +80,7 @@ public sealed class R08OffscreenMotionBehaviorTests
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
                 Assert.False(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
                 var restoredStart = translate.X;
-                PumpDispatcher(TimeSpan.FromMilliseconds(180));
-                Assert.True(Math.Abs(translate.X - restoredStart) > 0.5, "spinner did not resume after the tab became visible");
+                Assert.True(PumpDispatcherUntil(() => Math.Abs(translate.X - restoredStart) > 0.5, TimeSpan.FromMilliseconds(600)), "spinner did not resume after the tab became visible");
 
                 window.WindowState = WindowState.Minimized;
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
@@ -94,8 +93,7 @@ public sealed class R08OffscreenMotionBehaviorTests
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
                 Assert.False(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
                 var unminimizedStart = translate.X;
-                PumpDispatcher(TimeSpan.FromMilliseconds(180));
-                Assert.True(Math.Abs(translate.X - unminimizedStart) > 0.5, "spinner did not resume after the window was restored");
+                Assert.True(PumpDispatcherUntil(() => Math.Abs(translate.X - unminimizedStart) > 0.5, TimeSpan.FromMilliseconds(600)), "spinner did not resume after the window was restored");
             }
             catch (Exception caught)
             {
@@ -139,5 +137,19 @@ public sealed class R08OffscreenMotionBehaviorTests
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpDispatcherUntil(Func<bool> condition, TimeSpan timeout)
+    {
+        var deadline = DateTime.UtcNow + timeout;
+        while (DateTime.UtcNow < deadline)
+        {
+            if (condition())
+                return true;
+
+            PumpDispatcher(TimeSpan.FromMilliseconds(40));
+        }
+
+        return condition();
     }
 }

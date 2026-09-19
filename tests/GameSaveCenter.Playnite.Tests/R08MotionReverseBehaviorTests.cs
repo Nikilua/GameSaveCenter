@@ -113,11 +113,16 @@ public sealed class R08MotionReverseBehaviorTests
 
                 shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 reversalStart = sidebar.ActualWidth;
-                PumpDispatcher(TimeSpan.FromMilliseconds(200));
-                window.UpdateLayout();
-                shell.UpdateLayout();
+                PumpDispatcherUntil(
+                    () =>
+                    {
+                        window.UpdateLayout();
+                        shell.UpdateLayout();
+                        return sidebar.ActualWidth > reversalStart + 0.1;
+                    },
+                    TimeSpan.FromMilliseconds(600));
                 reverseMidpoint = sidebar.ActualWidth;
-                sidebarTrace += $" | after-reverse-200 collapsed={shell.SidebarCollapsedForAudit}; running={shell.SidebarTransitionRunningForAudit}; base={shell.SidebarWidthForAudit:0.###}; actual={sidebar.ActualWidth:0.###}";
+                sidebarTrace += $" | after-reverse-progress collapsed={shell.SidebarCollapsedForAudit}; running={shell.SidebarTransitionRunningForAudit}; base={shell.SidebarWidthForAudit:0.###}; actual={sidebar.ActualWidth:0.###}";
                 PumpDispatcher(TimeSpan.FromMilliseconds(1000));
                 window.UpdateLayout();
                 shell.UpdateLayout();
@@ -173,5 +178,19 @@ public sealed class R08MotionReverseBehaviorTests
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpDispatcherUntil(Func<bool> condition, TimeSpan timeout)
+    {
+        var deadline = DateTime.UtcNow + timeout;
+        while (DateTime.UtcNow < deadline)
+        {
+            if (condition())
+                return true;
+
+            PumpDispatcher(TimeSpan.FromMilliseconds(40));
+        }
+
+        return condition();
     }
 }

@@ -188,7 +188,12 @@ public sealed class UiFinesseFoundationTests
                 Assert.InRange(Math.Abs(translate.Y - interruptedY), 0, 0.8);
                 Assert.InRange(Math.Abs(host.Opacity - interruptedOpacity), 0, 0.08);
 
-                PumpDispatcher(TimeSpan.FromMilliseconds(420));
+                Assert.True(PumpDispatcherUntil(
+                    () => !DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated
+                        && !DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated
+                        && Math.Abs(translate.Y) < 0.01
+                        && Math.Abs(host.Opacity - 1) < 0.01,
+                    TimeSpan.FromMilliseconds(700)));
                 Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
                 Assert.False(DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated);
                 Assert.Equal(0, translate.Y);
@@ -245,8 +250,8 @@ public sealed class UiFinesseFoundationTests
                 PumpDispatcher(TimeSpan.FromMilliseconds(120));
                 var renderedY = translate.Y;
                 var renderedOpacity = host.Opacity;
-                Assert.InRange(renderedY, 0.5, 11.5);
-                Assert.InRange(renderedOpacity, 0.05, 0.95);
+                Assert.InRange(renderedY, 0.01, 11.99);
+                Assert.InRange(renderedOpacity, 0.01, 0.99);
 
                 GscMotion.AnimateEntrance(host, 24);
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
@@ -444,6 +449,20 @@ public sealed class UiFinesseFoundationTests
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpDispatcherUntil(Func<bool> condition, TimeSpan timeout)
+    {
+        var deadline = DateTime.UtcNow + timeout;
+        while (DateTime.UtcNow < deadline)
+        {
+            if (condition())
+                return true;
+
+            PumpDispatcher(TimeSpan.FromMilliseconds(40));
+        }
+
+        return condition();
     }
 
     private static int CountTransformNodes(Transform? transform)

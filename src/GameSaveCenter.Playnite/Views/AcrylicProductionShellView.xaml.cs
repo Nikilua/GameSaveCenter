@@ -537,6 +537,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void UpdateNavigationReturnButton()
         {
+            if (HeaderBackButton == null)
+                return;
+
             var visible = viewModel?.HasNavigationReturnTarget == true;
             HeaderBackButton.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
             HeaderBackButton.ToolTip = viewModel?.NavigationReturnToolTip ?? string.Empty;

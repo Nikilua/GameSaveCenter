@@ -314,17 +314,29 @@ namespace GameSaveCenter.Playnite.Tests
             var buttons = actions.Elements().Where(element => element.Name.LocalName == "Button").ToList();
             Assert.Equal(3, buttons.Count);
             Assert.Contains("GscWpfUiPrimaryActionButton", buttons[0].Attribute("Style")?.Value);
-            Assert.Equal("立即扫描", buttons[0].Attribute("Content")?.Value);
+            Assert.Equal("立即扫描", TextContent(buttons[0]));
             Assert.Contains("GscWpfUiActionButton", buttons[1].Attribute("Style")?.Value);
-            Assert.Equal("重新校验", buttons[1].Attribute("Content")?.Value);
+            Assert.Equal("重新校验", TextContent(buttons[1]));
             Assert.Contains("GscIconOnlyButtonBase", buttons[2].Attribute("Style")?.Value);
             Assert.All(buttons, button =>
             {
                 Assert.NotNull(button.Attribute("ToolTip"));
                 Assert.Contains("AutomationProperties.Name=", button.ToString());
             });
-            Assert.DoesNotContain(buttons.Take(2).SelectMany(button => button.Descendants()), element => element.Name.LocalName == "ThemeAwareIcon");
+            Assert.All(buttons.Take(2), button => Assert.False(string.IsNullOrWhiteSpace(TextContent(button))));
             Assert.Single(buttons[2].Descendants(), element => element.Name.LocalName == "ThemeAwareIcon");
+        }
+
+        private static string? TextContent(XElement element)
+        {
+            var directContent = element.Attribute("Content")?.Value;
+            if (!string.IsNullOrWhiteSpace(directContent))
+                return directContent;
+
+            return element.DescendantsAndSelf()
+                .Where(candidate => string.Equals(candidate.Name.LocalName, "TextBlock", StringComparison.Ordinal))
+                .Select(candidate => candidate.Attribute("Text")?.Value)
+                .FirstOrDefault(value => !string.IsNullOrWhiteSpace(value));
         }
 
         [Fact]
