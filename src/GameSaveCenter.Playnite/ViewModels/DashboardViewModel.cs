@@ -126,6 +126,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string mediaClassificationStatus = "尚未生成归类建议。建议只会使用来源规则、会话和进程映射等本地证据。";
         private string lastMediaClassificationBatchId = string.Empty;
         private MediaClassificationBatchSummaryDto? selectedMediaClassificationBatch;
+        private string mediaInboxBatchMessageType = string.Empty;
+        private string mediaInboxBatchOperation = string.Empty;
+        private string mediaInboxBatchTargetPlayniteId = string.Empty;
+        private string mediaInboxBatchTargetName = string.Empty;
         private string mediaClassificationHistoryStateFilter = string.Empty;
         private int mediaClassificationHistoryPage;
         private bool mediaClassificationHistoryHasMore;
@@ -356,6 +360,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
             IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
+            RetryFailedMediaInboxBatchCommand = new RelayCommand(_ => Run(RetryFailedMediaInboxBatchAsync), _ => !IsBusy && MediaInboxBatchFailures.Count > 0 && !string.IsNullOrWhiteSpace(mediaInboxBatchMessageType));
             PreviewMediaClassificationCommand = new RelayCommand(value => Run(() => PreviewMediaClassificationAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.SelectedHighConfidenceCount > 0);
             UndoMediaClassificationCommand = new RelayCommand(_ => Run(UndoMediaClassificationAsync), _ => !IsBusy && CanUndoMediaClassification());
@@ -518,6 +523,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new BatchObservableCollection<TrainerReleaseDto>();
         public BatchObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; } = new BatchObservableCollection<CloudTransferStatusDto>();
         public BatchObservableCollection<MediaClassificationBatchSummaryDto> MediaClassificationHistoryItems { get; } = new BatchObservableCollection<MediaClassificationBatchSummaryDto>();
+        public ObservableCollection<MediaInboxBatchFailureDto> MediaInboxBatchFailures { get; } = new ObservableCollection<MediaInboxBatchFailureDto>();
         public IReadOnlyList<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new[]
         {
             new CloudTransferFilterOption(string.Empty, "全部状态"),
@@ -1539,6 +1545,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand AssignInboxMediaBatchCommand { get; }
         public ICommand IgnoreInboxMediaBatchCommand { get; }
         public ICommand RestoreIgnoredMediaBatchCommand { get; }
+        public ICommand RetryFailedMediaInboxBatchCommand { get; }
         public ICommand PreviewMediaClassificationCommand { get; }
         public ICommand ApplyMediaClassificationCommand { get; }
         public ICommand UndoMediaClassificationCommand { get; }

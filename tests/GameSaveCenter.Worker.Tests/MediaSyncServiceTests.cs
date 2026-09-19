@@ -75,6 +75,24 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task InboxBatchKeepsPerItemFailureAndDoesNotRepeatSuccessfulItem()
+    {
+        var media = await AddInboxMediaAsync("partial-ignore-media", Path.Combine(root, "Captures", "partial.png"), DateTime.UtcNow);
+
+        var result = await CreateService().IgnoreBatchAsync(new MediaInboxBatchRequestDto
+        {
+            MediaIds = new List<string> { media.MediaId, "missing-ignore-media" }
+        }, CancellationToken.None);
+
+        Assert.Single(result.UpdatedItems);
+        Assert.Equal(media.MediaId, result.UpdatedItems[0].MediaId);
+        var failure = Assert.Single(result.Failures);
+        Assert.Equal("missing-ignore-media", failure.MediaId);
+        Assert.NotEqual(string.Empty, failure.ErrorMessage);
+        Assert.Equal("Ignored", (await store.GetMediaByIdAsync(media.MediaId, CancellationToken.None))!.ClassificationState);
+    }
+
+    [Fact]
     public async Task UserMediaRetryReportsPolicyPauseWithoutStartingMediaSync()
     {
         await store.UpsertGamesAsync(new[]

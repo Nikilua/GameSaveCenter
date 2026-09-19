@@ -284,7 +284,7 @@
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
                         <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="0,10,0,0" VerticalAlignment="Center">
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <WrapPanel Grid.Row="0" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
                                 <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
@@ -325,6 +325,39 @@
                                 </ui:Button>
                                 <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding UndoMediaClassificationCommand}" Content="撤销上次建议批次" ToolTip="只撤销未被后续修改的建议项目" Margin="0,0,0,4"/>
                             </WrapPanel>
+                            <Border Grid.Row="2" Padding="10,8" Margin="0,4,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource GscRedesignInfoBand}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers><DataTrigger Binding="{Binding HasMediaInboxBatchFailures}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding MediaInboxBatchFailureSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" VerticalAlignment="Center" AutomationProperties.Name="媒体批量失败汇总"/>
+                                        <ui:Button Grid.Column="1" Command="{Binding RetryFailedMediaInboxBatchCommand}" Content="仅重试失败项" Style="{DynamicResource GscWpfUiSecondaryButton}" Margin="8,0,0,0" ToolTip="只提交上次失败的稳定媒体 ID，成功项不会再次执行" AutomationProperties.Name="仅重试媒体失败项"/>
+                                    </Grid>
+                                    <ListBox Tag="FiniteViewport" ItemsSource="{Binding MediaInboxBatchFailures}" MaxHeight="128" Margin="0,6,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体批量失败逐项原因">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0,0,0,3"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding MediaId}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding MediaId}"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding ErrorMessage}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding ErrorMessage}" Margin="6,0,0,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </Border>
                         </Grid>
                         </Grid>
                     </Border>

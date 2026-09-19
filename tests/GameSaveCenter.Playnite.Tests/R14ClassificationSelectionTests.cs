@@ -24,5 +24,9 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("MediaClassificationTargetOverrideDto", contracts, StringComparison.Ordinal);
         Assert.Contains("UpdateMediaClassificationBatchItemTargetAsync", worker, StringComparison.Ordinal);
         Assert.Contains("invalidTargetOverrides", worker, StringComparison.Ordinal);
+        Assert.Contains("MediaInboxBatchFailures", dashboardViewModel, StringComparison.Ordinal);
+        Assert.Contains("RetryFailedMediaInboxBatchCommand", dashboardViewModel, StringComparison.Ordinal);
+        Assert.Contains("仅重试失败项", view, StringComparison.Ordinal);
+        Assert.Contains("成功项不会再次执行", viewModel, StringComparison.Ordinal);
     }
 }
