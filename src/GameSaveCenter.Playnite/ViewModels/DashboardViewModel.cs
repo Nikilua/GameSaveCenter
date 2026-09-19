@@ -1112,10 +1112,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     backupLockDirty = true;
                 SetValue(ref lockSelectedBackup, value);
                 OnPropertyChanged(nameof(HasBackupMetadataChanges));
+                OnPropertyChanged(nameof(BackupProtectionExplanationDisplay));
                 RaiseCommandStates();
             }
         }
         public bool HasBackupMetadataChanges => backupCommentDirty || backupLockDirty;
+        public string BackupProtectionExplanationDisplay => LockSelectedBackup
+            ? "当前草稿已锁定：保留预览会始终跳过此版本；取消锁定并保存后，下一次预览才会按策略重新评估。"
+            : "当前草稿未锁定：保留预览会按当前策略评估；如需长期保留，请勾选锁定并保存。";
         public MediaItemDto SelectedMedia
         {
             get => selectedMedia;

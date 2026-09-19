@@ -3915,3 +3915,12 @@
 - 已验证：真实 SaveCenterView/STA 绑定探针 `R11VersionNoteBehaviorTests 3/3`；同说明重复版本由 `SelectionAnchorResolver` 按 `BackupId` 选择；隔离 SQLite Store 重建 `1/1`；R11 串行 `9/9`；R06 相邻 `11/11`；D 盘 Release solution `0/0`、XAML `24/24`、source validation/diff check 通过。
 - 证据边界：SQLite 重建不等价真实 Worker/Ludusavi 进程重启和归档 IPC；未验 Playnite/package-host、presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。C 盘空间为 0 时必须使用 D 盘 `GscBuildOutputRoot`，不要覆盖 main 或用户文件；main DEV-INSTALL-008 `73/588/57`/退出 1 继续独立记录。
 - 下一可执行任务：R11-05 保护操作解释；先核对现有锁定/保留预览/解除条件文案和真实状态，再决定只补证据还是做最小缺口修复。
+
+## 2026-09-19 Round3 R11-05 保护操作解释
+
+- 保护规则的单一事实源仍是 Core `RetentionPlanner` 和 Worker `RetentionSimulationService`：`IsLocked`、`IsPreRestore`、健康恢复点在保留预览与应用重检中跳过。UI 只能解释该规则，不能另造删除判断。
+- `BackupVersionDto.IsHealthProtected` 必须同时满足 Ready、正文件数、正总字节；这样与 Worker 的 `FileCount == 0 || TotalBytes <= 0` 严重异常判定一致。`IsRetentionProtected`、`RetentionProtectionGlyphDisplay`、`RetentionProtectionDisplay`、`RetentionProtectionExplanationDisplay` 复用 DTO 状态给历史行绑定。
+- 详情锁定草稿的解释必须明确：锁定并保存后跳过；取消锁定并保存后下一次预览才按策略重新评估。取消仅是本阶段 R11-04 已验证的本地草稿语义，不能把未保存的 CheckBox 改动写成持久化事实。
+- 已验证：`R11ProtectionBehaviorTests 2/2`（正例、Ready 空内容负例、SaveCenter 行绑定契约）、Core `RetentionPlannerTests 3/3`（解锁重新成为候选且其他保护仍跳过）、Worker 保护夹具 `2/2`（预览/应用保护行为）；R11 串行 `11/11`，R06 `11/11`，Release `0/0`，XAML `24/24`。
+- 证据边界：真实 SaveCenterView STA 夹具只证明绑定契约，不证明 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能；Worker 夹具是隔离合成目录，不证明真实 Ludusavi IPC。Demo 原目录不可用；WPF 非提升 `wpftmp` Access denied 时使用 D 盘 `GscBuildOutputRoot`，禁止覆盖 main。
+- 下一可执行任务：R11-06 备份前变更摘要；先查已有变更摘要、快照/dirty 状态和取消/错误语义，再补最小缺口与证据。

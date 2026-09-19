@@ -185,7 +185,10 @@
                                                         </Style.Triggers>
                                                     </Style>
                                                 </Border.Style>
-                                                <TextBlock Text="{Binding ProtectionAndReadinessDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding RestoreReadinessSummaryDisplay, Mode=OneWay}"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding RetentionProtectionGlyphDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold" Margin="0,0,4,0" AutomationProperties.Name="版本保护状态"/>
+                                                    <TextBlock Text="{Binding ProtectionAndReadinessDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding RetentionProtectionExplanationDisplay, Mode=OneWay}"/>
+                                                </StackPanel>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -286,7 +289,7 @@
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap" AutomationProperties.Name="版本备注"/>
-                                <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="保留策略不会清理锁定版本" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center"/></Grid>
+                                <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="{Binding BackupProtectionExplanationDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center" ToolTip="锁定并保存后，保留预览会跳过此版本；取消锁定并保存后才会重新按策略评估。"/></Grid>
                                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                                     <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateBackupMetadataCommand}" Content="保存备注与锁定" AutomationProperties.Name="保存版本备注与锁定"/>
                                     <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CancelBackupMetadataCommand}" Content="取消修改" AutomationProperties.Name="取消版本备注修改" Margin="8,0,0,0"/>

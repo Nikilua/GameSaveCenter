@@ -33,4 +33,41 @@ public sealed class RetentionPlannerTests
         Assert.Contains(plan.Keep, x => x.BackupId == "healthy");
         Assert.DoesNotContain(plan.DeleteCandidates, x => x.BackupId == "healthy");
     }
+
+    [Fact]
+    public void UnlockingAnOldVersionMakesItCandidateAgainWhileOtherProtectionStaysOut()
+    {
+        var now = DateTime.UtcNow;
+        var locked = new BackupSnapshot { BackupId = "locked", CreatedUtc = now.AddYears(-3), IsLocked = true };
+        var preRestore = new BackupSnapshot { BackupId = "pre", CreatedUtc = now.AddYears(-2), IsPreRestore = true };
+        var healthy = new BackupSnapshot
+        {
+            BackupId = "healthy",
+            CreatedUtc = now.AddYears(-1),
+            FileCount = 4,
+            TotalBytes = 4096,
+            ReadinessStatus = RestoreReadinessStatus.Ready
+        };
+        var ordinary = new BackupSnapshot { BackupId = "ordinary", CreatedUtc = now.AddYears(-4) };
+        var policy = new RetentionPolicy
+        {
+            KeepAllFor = TimeSpan.Zero,
+            KeepDailyDays = 0,
+            KeepWeeklyWeeks = 0,
+            KeepMonthlyMonths = 0
+        };
+        var planner = new RetentionPlanner();
+
+        var protectedPlan = planner.CreatePlan(new[] { locked, preRestore, healthy, ordinary }, policy, now);
+
+        Assert.Equal(new[] { "healthy", "locked", "pre" }, protectedPlan.Keep.Select(x => x.BackupId).OrderBy(x => x).ToArray());
+        Assert.Equal(new[] { "ordinary" }, protectedPlan.DeleteCandidates.Select(x => x.BackupId).ToArray());
+
+        locked.IsLocked = false;
+        var unlockedPlan = planner.CreatePlan(new[] { locked, preRestore, healthy, ordinary }, policy, now);
+
+        Assert.Contains(unlockedPlan.DeleteCandidates, x => x.BackupId == "locked");
+        Assert.DoesNotContain(unlockedPlan.DeleteCandidates, x => x.BackupId == "pre");
+        Assert.DoesNotContain(unlockedPlan.DeleteCandidates, x => x.BackupId == "healthy");
+    }
 }

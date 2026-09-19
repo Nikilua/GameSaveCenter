@@ -105,7 +105,11 @@ namespace GameSaveCenter.Contracts
         public string SourceDevice { get; set; } = string.Empty;
         public string OperatingSystem { get; set; } = string.Empty;
         public bool IsPreRestore { get; set; }
-        public bool IsHealthProtected => RestoreReadiness?.Status == RestoreReadinessStatus.Ready;
+        /// <summary>Matches the retention planner's healthy restore-point safety floor.</summary>
+        public bool IsHealthProtected => RestoreReadiness?.Status == RestoreReadinessStatus.Ready
+            && FileCount > 0
+            && TotalBytes > 0;
+        public bool IsRetentionProtected => IsLocked || IsPreRestore || IsHealthProtected;
         /// <summary>Resolved Ludusavi game backup directory plus this version's file name.</summary>
         public string ArchivePath { get; set; } = string.Empty;
         public RestoreReadinessDto? RestoreReadiness { get; set; }
@@ -118,6 +122,21 @@ namespace GameSaveCenter.Contracts
         public string OperatingSystemDisplay => string.IsNullOrWhiteSpace(OperatingSystem) ? "未知系统" : OperatingSystem;
         public string RestoreReadinessStatusDisplay => RestoreReadiness?.StatusDisplay ?? "未验证";
         public string ProtectionAndReadinessDisplay => $"{LockStateDisplay} · {RestoreReadinessStatusDisplay}";
+        public string RetentionProtectionGlyphDisplay => IsRetentionProtected ? "✓" : "⚠";
+        public string RetentionProtectionDisplay => IsLocked
+            ? "已锁定保护"
+            : IsPreRestore
+                ? "PreRestore 保护"
+                : IsHealthProtected
+                    ? "健康恢复点保护"
+                    : "未受保护";
+        public string RetentionProtectionExplanationDisplay => IsLocked
+            ? "用户锁定：保留预览始终跳过；取消锁定并保存后，下一次预览才会按策略重新评估。"
+            : IsPreRestore
+                ? "PreRestore 快照：由恢复保护流程保留，保留预览始终跳过。"
+                : IsHealthProtected
+                    ? "健康恢复点：作为恢复安全底线，保留预览始终跳过。"
+                    : "未受保护：保留预览会按当前策略评估；如需长期保留，请锁定并保存。";
         public string RestoreReadinessSummaryDisplay => RestoreReadiness?.Summary ?? "尚未验证该版本的可恢复性。";
         public string RestoreReadinessMetricsDisplay => RestoreReadiness == null
             ? string.Empty

@@ -7464,3 +7464,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 真实阻塞事实：continuation worktree 在 C 盘且 C 可用空间为 0，旧路径构建/测试宿主报 `MSB3491`/`0x80070070`；按项目既有 `GscBuildOutputRoot` 改用 D 盘临时输出完成验证，未强杀未知进程。D 盘阶段输出已清理；本轮为恢复记忆又清理了 continuation 可再生 bin/obj，不动源码和用户文件。
 - 证据文件：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-04-VERSION-NOTE-20260919.md`；账本 R11-04 已标记“已满足”。未验真实 Ludusavi/Worker 重启、Playnite/package-host 呈现和系统级边界；main 用户文件与 DEV-INSTALL-008 安装失败事实未覆盖。
 - 下一可执行任务：R11-05 保护操作解释。
+
+## 2026-09-19 Round3 R11-05 保护操作解释
+
+- 先核对现有实现，确认 `RetentionPlanner`、`RetentionSimulationService` 已有锁定/PreRestore/健康恢复点跳过规则和应用前重检；没有重建服务。补充 `BackupVersionDto` 保护状态 glyph、类型、解释和 `IsRetentionProtected`，并将健康保护判定与 Worker 严重异常边界对齐。
+- SaveCenter 历史行绑定 `✓`/`⚠` 和保护解释 ToolTip；详情锁定区显示锁定草稿的预览关系、解除条件和保存边界。保留游戏选框、滚动条、命令绑定、取消/错误语义、net462 和有限列表行为。
+- 验证：`R11ProtectionBehaviorTests 2/2`；Core `RetentionPlannerTests 3/3`；Worker 保护夹具 `2/2`；R11-01/02/03/04/05 串行 `11/11`；R06 相邻 `11/11`；D 盘隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source validation、XAML check、diff check 通过。
+- 真实边界：SaveCenter 夹具只证明合成 DTO 在真实生产视图中的行绑定/解释契约，不证明最终像素；Worker 使用隔离合成归档。未验真实 Ludusavi IPC/归档读取、Playnite/package-host、presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能。Demo 原目录不可用。WPF 非提升临时工程曾 Access denied，D 盘隔离输出完成验证；未绕过系统跟踪权限。
+- main 安装失败事实仍为 `0 warning / 0 error`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1；未触碰 main 用户文件。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-05-PROTECTION-EXPLANATION-20260919.md`；账本 R11-05 已标记“已满足”。
+- 下一可执行任务：R11-06 备份前变更摘要。

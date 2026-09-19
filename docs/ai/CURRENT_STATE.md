@@ -1652,3 +1652,12 @@
 - D 盘隔离 Release solution `0 warning / 0 error`，Playnite `net462`、Worker 和测试从同一输出生成；XAML `24/24`、source validation、diff check 通过。C 盘构建曾因可用空间 `0` 失败，未强杀未知 dotnet/VBCSCompiler。
 - 证据：`evidence/R11-04-VERSION-NOTE-20260919.md`；未验真实 Ludusavi IPC/归档读取和真实 Worker 进程重启、Playnite/package-host、最终呈现、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57`/安装器退出 1 和 main 用户文件仍独立未覆盖。
 - 下一可执行任务：R11-05 保护操作解释；继续保持真实存档/媒体/云端/诊断隔离边界。
+
+## 2026-09-19 Round3 R11-05 保护操作解释
+
+- 先核对既有能力：Core `RetentionPlanner` 与 Worker `RetentionSimulationService` 已对锁定、PreRestore、健康恢复点执行保留预览/应用跳过和应用前重检；本阶段复用该链路，没有重建服务或引入真实数据写入。
+- `BackupVersionDto` 新增 `IsRetentionProtected`、保护 glyph、保护类型和解除条件说明；健康保护判断与 Worker 的严重异常边界对齐为 `Ready` 且 `FileCount > 0`、`TotalBytes > 0`。`SaveCenterView` 历史行绑定 `✓`/`⚠` 与解释 ToolTip，详情锁定区说明取消锁定并保存后下一次预览才重新评估；锁定草稿说明由 `DashboardViewModel` 动态通知。
+- `R11ProtectionBehaviorTests 2/2`、Core `RetentionPlannerTests 3/3`、Worker 保护夹具 `2/2`；R11-01/02/03/04/05 串行 `11/11`；R06 相邻 `11/11`。Release solution `0/0`，XAML `24/24`，source validation/diff check 通过。
+- 证据：`evidence/R11-05-PROTECTION-EXPLANATION-20260919.md`；真实 SaveCenterView 夹具验证行绑定状态/解释契约，不宣称最终像素呈现。WPF 非提升临时 `wpftmp` 构建曾 Access denied，改用 D 盘 `GscBuildOutputRoot` 完成同一验证；未绕过 ETW/系统跟踪权限。
+- 未验真实 Ludusavi/Worker IPC/归档读取、Playnite/package-host 安装呈现、presented frame、物理 DPI/跨屏、UIA/读屏、真实键盘/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57`、安装器退出 1 和 main 用户文件仍独立未覆盖。
+- 下一可执行任务：R11-06 备份前变更摘要；继续保持真实存档、媒体、云端和诊断隔离边界。
