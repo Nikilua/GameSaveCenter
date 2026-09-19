@@ -111,7 +111,7 @@
 | R12-07 | 预览失效重验 | 已满足 | 00724e62 | Playnite R12 `13/13`；Worker 恢复就绪/编排合计 `27/27`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 确认返回后重新比较游戏/版本身份，切换对象不提交旧确认；Worker 按最新映射和精确 BackupId 重验目标，实际写入前后保留预览；同大小不同内容的归档按 SHA-256 识别失效 | 合成 Manifest/归档、fake Worker、隔离目录和 net462 Playnite 测试程序集；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰 | [R12-07 预览失效重验证据](evidence/R12-07-RESTORE-REVALIDATION-20260919.md)；当前分支已推送，下一项 R12-08 恢复结果报告 |
 | R12-08 | 恢复结果报告 | 已满足 | fd4756ea | Playnite R12 `15/15`；Worker `RestoreReadinessTests|RestoreOrchestratorTests|TaskQueryPersistenceTests 34/34`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 复用既有 RestoreOrchestrator/TaskCoordinator/任务详情滚动容器；报告展示目标版本、任务 ID、预览文件范围、PreRestore 保护、失败阶段与完成/回滚/人工介入/取消/失败结果；任务最近/活动/分页查询持久化回读；复制命令只复制脱敏报告 | 合成 DTO/fake Worker/隔离 SQLite 与 net462 Playnite 测试程序集；当前 linked worktree WPF 临时项目仍 Access denied，最终构建使用当前分支外部源码副本和独立输出根；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R12-08 恢复结果报告证据](evidence/R12-08-RESTORE-RESULT-REPORT-20260919.md)；当前分支已推送，下一项 R13-01 队列阶段展示 |
 | R13-01 | 队列阶段展示 | 已满足 | 803470b8 | Core 阶段映射 `27/27`；Playnite `R13CloudTransferStageBehaviorTests|MaintenanceCloudTransferResolverTests 7/7`；Worker `CloudTransferStateTests 11/11`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 复用既有云端状态机和队列摘要；维护页显示等待队列/等待网络/等待重试/上传中/验证中/等待验证/已验证；认证失败不冒充网络等待；详情保留 GuaranteeDisplay，上传成功不冒充远端校验 | 合成 DTO/fake/隔离 Worker 与 net462 Playnite 程序集；通过显式 GIT_DIR 绑定当前 linked worktree 身份；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R13-01 队列阶段展示证据](evidence/R13-01-CLOUD-QUEUE-STAGES-20260919.md)；当前分支已推送，下一项 R13-02 下次重试时间 |
-| R13-02 | 下次重试时间 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R13-02 | 下次重试时间 | 已满足 | 6fd22892 | Core `UiDisplayMappingTests 29/29`；Playnite `R13CloudTransferStageBehaviorTests 2/2`；Worker `CloudTransferStateTests 11/11`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 复用 NextAttemptUtc/Local；详情同时显示绝对时间和有界相对提示；未来/已到期/无重试分别可读，已到期不显示负倒计时；没有新增每行常驻计时器 | 合成 DTO/fake/隔离 Worker 与 net462 Playnite 程序集；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰、未合并 | [R13-02 下次重试时间证据](evidence/R13-02-RETRY-TIMING-20260919.md)；当前分支已推送，下一项 R13-03 手动重试范围 |
 | R13-03 | 手动重试范围 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-04 | 暂停与允许时段 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-05 | 远端证据详情 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -266,6 +266,13 @@
 - Core 阶段映射 `27/27`、Playnite `7/7`、Worker `CloudTransferStateTests 11/11`；隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py` 与 `git diff --check` 通过。认证失败重试的负例保持“等待重试”，未写成“等待网络”。
 - 证据使用合成 DTO/fake/隔离 Worker 和 net462 程序集；通过显式 `GIT_DIR` 绑定当前 linked worktree 身份，外部副本已清理。未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
 - 下一可执行小批量为 `R13-02 下次重试时间`：先核对既有 `NextAttemptUtc/NextAttemptLocal`、系统时钟变化和页面生命周期，再补负倒计时与常驻计时器负例。
+
+## 2026-09-19 Round3 R13-02 下次重试时间
+
+- `6fd22892` 复用 `NextAttemptUtc/NextAttemptLocal`，新增 `RetryTimingDisplay`，在维护页详情同时显示本地绝对时间和有界相对提示；未来时间显示约 N 分钟/小时/天后，到期显示可立即重试，无时间显示无自动重试。
+- Core `29/29`、Playnite `2/2`、Worker `CloudTransferStateTests 11/11`；最终隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py` 与 `git diff --check` 通过。没有新增常驻计时器，因此没有关闭页面后的计时器生命周期问题。
+- 证据使用合成 DTO/fake/隔离 Worker 和 net462 程序集；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能，未写真实云端/存档/媒体/诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
+- 下一可执行小批量为 `R13-03 手动重试范围`：先核对单项/媒体入口、幂等 requestId 和部分成功后的重试范围，再补重复点击负例。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

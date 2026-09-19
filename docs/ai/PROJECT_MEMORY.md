@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R13-02 下次重试时间
+
+- `6fd22892` 复用 `NextAttemptUtc/NextAttemptLocal`，用 `RetryTimingDisplay` 同时表达本地绝对时间和有界相对提示；过期时间钳制为“可立即重试”，不产生负倒计时；空值保持“无自动重试”。详情绑定是被动派生值，没有新增常驻计时器。
+- Core `29/29`、Playnite `2/2`、Worker `11/11`，隔离 Debug `0/0`、XAML `24/24`、source/diff check 通过。证据见 [R13-02 下次重试时间](../design/reviews/ui-finesse-round3-20260915/evidence/R13-02-RETRY-TIMING-20260919.md)。
+- 仍只覆盖合成/fake/隔离测试，不代表真实 Playnite/package-host、真实远端、最终呈现或宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 尚未合并且用户改动未触碰。
+- 下一项 `R13-03 手动重试范围`：先查单项/媒体重试 requestId、幂等和部分成功后的处理范围。
+
 ## 2026-09-19 R13-01 队列阶段展示
 
 - `803470b8` 复用 `CloudTransferStatusDto.State`、`CloudTransferSummaryDto.QueueControlDisplay` 和维护页现有队列；新增 `QueuePhaseDisplay`，网络/不完整传输退避与普通重试分开显示，上传中、验证中、等待验证和远端已验证分别可读。没有改变 Worker 状态机、重试调度、远端校验或命令语义。

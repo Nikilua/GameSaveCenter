@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R13-02 下次重试时间
+
+- 先复用现有 `NextAttemptUtc/NextAttemptLocal` 和维护页详情；`RetryTimingDisplay` 同时输出本地绝对时间与约 N 分钟/小时/天后，到期输出可立即重试，空值输出无自动重试。没有添加 Dispatcher/Timer 或每行常驻计时器。
+- 验证：Core `UiDisplayMappingTests 29/29`；Playnite `R13CloudTransferStageBehaviorTests 2/2`；Worker `CloudTransferStateTests 11/11`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。首轮 nullable 警告已修复后才签收。
+- 外部源码/输出已清理；未验真实 Playnite/package-host、真实远端、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未碰、未合并。证据：[R13-02 下次重试时间](../design/reviews/ui-finesse-round3-20260915/evidence/R13-02-RETRY-TIMING-20260919.md)。下一可执行任务：`R13-03 手动重试范围`。
+
 ## 2026-09-19 R13-01 队列阶段展示
 
 - 先核对并复用现有 `CloudTransferStatusDto.State`、`CloudTransferSummaryDto.QueueControlDisplay`、Worker `CloudTransferStateService` 和维护页队列；只增加派生 `QueuePhaseDisplay` 与绑定，不改状态机、重试、验证、选框、滚动或命令语义。

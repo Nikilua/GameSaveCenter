@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-02 下次重试时间
+
+- `6fd22892` 已推送到 `codex/ui-finesse-round2`。复用 `NextAttemptUtc/NextAttemptLocal`，维护页详情显示 `RetryTimingDisplay`：未来给绝对时间和约 N 分钟/小时/天后，到期给“可立即重试”，无时间给“无自动重试”；没有新增每行常驻计时器。
+- 证据：Core `29/29`、Playnite `2/2`、Worker `CloudTransferStateTests 11/11`，隔离 Debug `0 warning / 0 error`，XAML `24/24`，source validation/diff check 通过。证据见 [R13-02 下次重试时间](../design/reviews/ui-finesse-round3-20260915/evidence/R13-02-RETRY-TIMING-20260919.md)。
+- 构建和测试只使用当前分支外部隔离副本、fake/合成数据；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰。
+- 下一可执行任务：`R13-03 手动重试范围`，先核对单项/媒体重试入口、幂等 requestId 和部分成功语义。
+
 ## 当前第三轮 R13-01 队列阶段展示
 
 - `803470b8` 已推送到 `codex/ui-finesse-round2`。复用现有云端状态机、队列摘要和维护页，新增 `CloudTransferStatusDto.QueuePhaseDisplay`，区分等待队列、等待网络、等待重试、上传中、验证中、等待验证和已验证；认证失败负例仍是等待重试。
