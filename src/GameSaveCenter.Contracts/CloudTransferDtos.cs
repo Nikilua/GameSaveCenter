@@ -79,8 +79,27 @@ public sealed class CloudTransferStatusDto
     public string LastErrorCode { get; set; } = string.Empty;
     public string LastError { get; set; } = string.Empty;
     public DateTime UpdatedUtc { get; set; }
+    /// <summary>Display-only full remote object path; credentials are already redacted.</summary>
+    public string RemoteObject { get; set; } = string.Empty;
+    /// <summary>Stable device key or display name used by the remote object layout.</summary>
+    public string SourceDevice { get; set; } = string.Empty;
+    /// <summary>
+    /// The current durable row can prove this timestamp only while it is RemoteVerified.
+    /// Historical verification timestamps are unknown because the queue does not retain them.
+    /// </summary>
+    public DateTime? LastSuccessfulVerificationUtc { get; set; }
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
+    public string RemoteObjectDisplay => string.IsNullOrWhiteSpace(RemoteObject)
+        ? "未知"
+        : CloudRemoteDisplay.Redact(RemoteObject);
+    public string SourceDeviceDisplay => string.IsNullOrWhiteSpace(SourceDevice) ? "未知设备" : SourceDevice;
+    public string LastAttemptDisplay => LastAttemptUtc.HasValue
+        ? LastAttemptUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+        : "未知";
+    public string LastSuccessfulVerificationDisplay => LastSuccessfulVerificationUtc.HasValue
+        ? LastSuccessfulVerificationUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+        : "未知";
     public string RetryTimingDisplay
     {
         get

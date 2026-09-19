@@ -83,6 +83,45 @@ public sealed class UiDisplayMappingTests
     }
 
     [Fact]
+    public void CloudRemoteEvidenceKeepsUnknownFieldsUnknownAndRedactsCredentials()
+    {
+        var unknown = new CloudTransferStatusDto();
+
+        Assert.Equal("未知", unknown.RemoteObjectDisplay);
+        Assert.Equal("未知设备", unknown.SourceDeviceDisplay);
+        Assert.Equal("未知", unknown.LastAttemptDisplay);
+        Assert.Equal("未知", unknown.LastSuccessfulVerificationDisplay);
+
+        var verifiedAt = new DateTime(2026, 9, 19, 1, 2, 3, DateTimeKind.Utc);
+        var verified = new CloudTransferStatusDto
+        {
+            RemoteObject = "https://user:secret@example.invalid/root/Saves",
+            SourceDevice = "device-01",
+            LastAttemptUtc = verifiedAt,
+            LastSuccessfulVerificationUtc = verifiedAt
+        };
+
+        Assert.DoesNotContain("secret", verified.RemoteObjectDisplay, StringComparison.Ordinal);
+        Assert.Contains("[已隐藏]", verified.RemoteObjectDisplay, StringComparison.Ordinal);
+        Assert.Equal("device-01", verified.SourceDeviceDisplay);
+        var expectedLocal = verifiedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
+        Assert.Equal(expectedLocal, verified.LastAttemptDisplay);
+        Assert.Equal(expectedLocal, verified.LastSuccessfulVerificationDisplay);
+    }
+
+    [Fact]
+    public void CloudRemoteDisplayCombinesRelativePathWithoutExposingQueryCredentials()
+    {
+        var display = CloudRemoteDisplay.Combine(
+            "https://user:secret@example.invalid/root?token=query-secret",
+            "device\\Saves");
+
+        Assert.Contains("/root?token=[已隐藏]/device/Saves", display, StringComparison.Ordinal);
+        Assert.DoesNotContain("secret", display, StringComparison.Ordinal);
+        Assert.DoesNotContain("query-secret", display, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {
         var transfer = new CloudTransferStatusDto { State = "FutureProviderState" };

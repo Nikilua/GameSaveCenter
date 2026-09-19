@@ -65,6 +65,27 @@ public sealed class CloudTransferStateTests : IDisposable
     }
 
     [Fact]
+    public async Task CloudStatusProjectsRemoteEvidenceAndKeepsHistoricalVerificationUnknown()
+    {
+        var state = CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance));
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-evidence", CancellationToken.None);
+        await state.MarkRemoteVerifiedAsync(CloudTransferKind.Backup, "game-evidence", CancellationToken.None);
+
+        var verified = Assert.Single((await state.GetStatusAsync(CancellationToken.None)).Items);
+
+        Assert.Equal($"{options.RcloneDestination}{options.DeviceStorageKey}/Saves", verified.RemoteObject);
+        Assert.Equal(options.DeviceStorageKey, verified.SourceDevice);
+        Assert.Equal(verified.UpdatedUtc, verified.LastSuccessfulVerificationUtc);
+        Assert.NotEqual("未知", verified.RemoteObjectDisplay);
+        Assert.NotEqual("未知", verified.LastSuccessfulVerificationDisplay);
+
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "game-evidence", CancellationToken.None);
+        var uploaded = Assert.Single((await state.GetStatusAsync(CancellationToken.None)).Items);
+
+        Assert.Equal("未知", uploaded.LastSuccessfulVerificationDisplay);
+    }
+
+    [Fact]
     public async Task QueueStateSurvivesStoreRecreation()
     {
         var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);

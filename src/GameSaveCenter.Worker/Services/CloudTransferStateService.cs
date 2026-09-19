@@ -435,14 +435,28 @@ public sealed class CloudTransferStateService
             ? _store.UpdateGameCloudStateAsync(playniteId, state, token)
             : _store.UpdateMediaCloudStateAsync(playniteId, state, token);
 
-    private static CloudTransferStatusDto ToDto(CloudTransferQueueEntry entry, string gameName)
+    private CloudTransferStatusDto ToDto(CloudTransferQueueEntry entry, string gameName)
         => new()
         {
             TransferKey = entry.TransferKey, Kind = entry.Kind, OperationKind = entry.OperationKind, PlayniteId = entry.PlayniteId, GameName = gameName,
             State = entry.State, AttemptCount = entry.AttemptCount, NextAttemptUtc = entry.NextAttemptUtc,
             LastAttemptUtc = entry.LastAttemptUtc, LastErrorCode = entry.LastErrorCode, LastError = entry.LastError,
-            UpdatedUtc = entry.UpdatedUtc
+            UpdatedUtc = entry.UpdatedUtc,
+            RemoteObject = CloudRemoteDisplay.Combine(_options.RcloneDestination, GetRemoteRelativePath(entry.Kind, gameName)),
+            SourceDevice = GetSourceDevice(entry.Kind),
+            LastSuccessfulVerificationUtc = string.Equals(entry.State, "RemoteVerified", StringComparison.OrdinalIgnoreCase)
+                && entry.UpdatedUtc != default
+                ? entry.UpdatedUtc
+                : null
         };
+
+    private string GetRemoteRelativePath(CloudTransferKind kind, string gameName)
+        => kind == CloudTransferKind.Backup
+            ? Path.Combine(_options.DeviceStorageKey, "Saves")
+            : Path.Combine(Environment.MachineName, "Media", Sanitize(gameName));
+
+    private string GetSourceDevice(CloudTransferKind kind)
+        => kind == CloudTransferKind.Backup ? _options.DeviceStorageKey : Environment.MachineName;
 
     private static string Sanitize(string value)
     {

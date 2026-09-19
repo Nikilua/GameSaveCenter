@@ -568,6 +568,14 @@
                                             <TextBlock Text="{Binding SelectedCloudTransfer.DetailDisplay, TargetNullValue=暂无状态详情}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,5,0,0"/>
                                         </StackPanel>
                                     </Border>
+                                    <TextBlock Text="远端对象" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.RemoteObjectDisplay, TargetNullValue=未知}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.RemoteObjectDisplay, TargetNullValue=未知}"/>
+                                    <TextBlock Text="来源设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.SourceDeviceDisplay, TargetNullValue=未知设备}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.SourceDeviceDisplay, TargetNullValue=未知设备}"/>
+                                    <TextBlock Text="最后尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastAttemptDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="最后成功校验" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastSuccessfulVerificationDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
                                     <TextBlock Text="错误码" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>
                                     <TextBlock Text="{Binding SelectedCloudTransfer.LastErrorCode, TargetNullValue=无}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.LastErrorCode}"/>
                                     <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>

@@ -28,6 +28,28 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.DoesNotContain("SelectedCloudTransfer.NextAttemptLocal, StringFormat", source);
     }
 
+    [Fact]
+    public void MaintenanceInspectorShowsRemoteEvidenceAndKeepsDiagnosticCopyRedacted()
+    {
+        var root = TestRepositoryContext.Root;
+        var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+
+        Assert.Contains("SelectedCloudTransfer.RemoteObjectDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.SourceDeviceDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastAttemptDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastSuccessfulVerificationDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("CopyTextWithRetryAsync(DiagnosticSummary", viewModel, StringComparison.Ordinal);
+        Assert.Contains("text = ClipboardValueSanitizer.Sanitize", viewModel, StringComparison.Ordinal);
+
+        var copied = GameSaveCenter.Playnite.Infrastructure.ClipboardValueSanitizer.Sanitize(
+            "remote=https://user:secret@example.invalid/root?token=query-secret Authorization: Bearer bearer-secret");
+        Assert.DoesNotContain("secret", copied, StringComparison.Ordinal);
+        Assert.DoesNotContain("query-secret", copied, StringComparison.Ordinal);
+        Assert.DoesNotContain("bearer-secret", copied, StringComparison.Ordinal);
+        Assert.Contains("[已隐藏]", copied, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData("Failed", true)]
     [InlineData("RetryScheduled", true)]
