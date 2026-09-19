@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R13-01 队列阶段展示
+
+- `803470b8` 复用 `CloudTransferStatusDto.State`、`CloudTransferSummaryDto.QueueControlDisplay` 和维护页现有队列；新增 `QueuePhaseDisplay`，网络/不完整传输退避与普通重试分开显示，上传中、验证中、等待验证和远端已验证分别可读。没有改变 Worker 状态机、重试调度、远端校验或命令语义。
+- 认证失败重试负例保持“等待重试”，不归类成网络等待；详情仍同时显示 `GuaranteeLevelDisplay`，所以已上传不会变成已校验。Core `27/27`、Playnite `7/7`、Worker `11/11`，隔离 Debug `0/0`、XAML `24/24`、source/diff check 通过。
+- 证据见 [R13-01 队列阶段展示](../design/reviews/ui-finesse-round3-20260915/evidence/R13-01-CLOUD-QUEUE-STAGES-20260919.md)，代码已推送。只使用合成/fake/隔离测试，没有写真实远端、存档、媒体或诊断；Demo 原目录不可用，沿用恢复生产基线。main 尚未合并且用户改动未触碰。
+- 下一项 `R13-02 下次重试时间`：先检查 `NextAttemptUtc/NextAttemptLocal` 的既有投影、系统时钟变化和页面关闭后的计时器生命周期。
+
 ## 2026-09-19 R12-08 恢复结果报告
 
 - `fd4756ea` 复用既有恢复编排、任务状态和 PreRestore 能力，新增 `RestoreReportDto`，用稳定 PlayniteId/BackupId/TaskId 记录执行目标、预览文件范围、保护快照、失败阶段和完成/回滚/人工介入/取消/失败结果；没有新建 IPC 或另一套恢复流程。

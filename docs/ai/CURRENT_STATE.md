@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-01 队列阶段展示
+
+- `803470b8` 已推送到 `codex/ui-finesse-round2`。复用现有云端状态机、队列摘要和维护页，新增 `CloudTransferStatusDto.QueuePhaseDisplay`，区分等待队列、等待网络、等待重试、上传中、验证中、等待验证和已验证；认证失败负例仍是等待重试。
+- 维护页表格与详情使用同一阶段显示，同时保留 `GuaranteeLevelDisplay`，上传成功不冒充远端校验；`QueueControlDisplay` 继续表达暂停、允许时段外和运行中。
+- 证据：Core `27/27`、Playnite `7/7`、Worker `CloudTransferStateTests 11/11`，隔离 Debug `0 warning / 0 error`，XAML `24/24`，source validation/diff check 通过。证据见 [R13-01 队列阶段展示](../design/reviews/ui-finesse-round3-20260915/evidence/R13-01-CLOUD-QUEUE-STAGES-20260919.md)。
+- 构建使用当前 linked worktree 身份的外部隔离副本，已清理外部源码/输出；未验真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰。
+- 下一可执行任务：`R13-02 下次重试时间`，先核对既有 `NextAttemptUtc/NextAttemptLocal`、系统时钟变化和页面生命周期。
+
 ## 当前第三轮 R12-08 恢复结果报告
 
 - `fd4756ea` 已推送到 `codex/ui-finesse-round2`。复用既有 `RestoreOrchestrator`、`TaskCoordinator`、`TaskStatusDto`、PreRestore 和任务详情滚动容器，新增持久化的无凭据 `RestoreReportDto`；报告展示目标版本、预览文件范围、保护备份、失败阶段、完成/回滚/人工介入/取消/失败结果和任务 ID。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R13-01 队列阶段展示
+
+- 先核对并复用现有 `CloudTransferStatusDto.State`、`CloudTransferSummaryDto.QueueControlDisplay`、Worker `CloudTransferStateService` 和维护页队列；只增加派生 `QueuePhaseDisplay` 与绑定，不改状态机、重试、验证、选框、滚动或命令语义。
+- 阶段显示覆盖等待队列、网络/不完整传输退避、普通重试、上传中、验证中、等待验证和已验证；维护页详情继续保留 Guarantee 级别。认证失败重试负例为普通等待重试，不冒充网络等待。
+- 验证：Core `UiDisplayMappingTests 27/27`；Playnite `R13CloudTransferStageBehaviorTests|MaintenanceCloudTransferResolverTests 7/7`；Worker `CloudTransferStateTests 11/11`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。源码型测试用显式 `GIT_DIR` 绑定当前 linked worktree `e516a3d1`，外部输出已清理。
+- 未验真实 Playnite/package-host、真实远端、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未碰、未合并。证据：[R13-01 队列阶段展示](../design/reviews/ui-finesse-round3-20260915/evidence/R13-01-CLOUD-QUEUE-STAGES-20260919.md)。下一可执行任务：`R13-02 下次重试时间`。
+
 ## 2026-09-19 R12-08 恢复结果报告
 
 - 先核对已有 `RestoreOrchestrator`、`TaskCoordinator`、`TaskStatusDto`、PreRestore 和任务详情滚动容器，再以 `RestoreReportDto` 补齐报告；没有重建恢复流程，也没有改变选框、滚动、命令/绑定、取消/错误、保护或 net462。
