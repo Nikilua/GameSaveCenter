@@ -127,7 +127,7 @@
 | R14-07 | 媒体详情浏览 | 已实现，待环境验证 | c17d9bc7 | validate-source.py；XAML 24/24；diff check；新增截图尺寸行为断言和详情导航/视频回退源码契约夹具；Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断 | 当前已加载媒体窗口内上一项/下一项；按 MediaId 保持列表行锚点；类型、来源、大小、采集时间和截图 PixelWidth/PixelHeight 可见；视频缺失/格式不支持/MediaFailed 有回退；异步截图继续可取消 | 未验跨页导航、Release/net462、真实 Playnite/RenderHarness/宿主呈现、真实视频编解码、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | R14-07 媒体详情浏览（evidence/R14-07-MEDIA-DETAIL-20260920.md）；先补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08 |
 | R14-08 | 来源规则试运行 | 已实现，待环境验证 | 89141528 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离构建 `0 warning / 0 error`，来源预览行为 `1/1`；Playnite Release `net462` 与 R14-08 契约 `1/1`（2 条既有 nullable warning） | 复用现有来源 DTO、媒体扩展名和文件模式匹配；样本显示命中/排除、大小、路径和原因；试运行只读，不保存规则、移动文件或写媒体记录；列表 `MaxHeight=240`、Recycling、有限 viewport | Worker 时间预算 100–5000ms、扫描预算 1–5000、样本预算 1–200，并保留取消语义；未验真实来源权限/超大目录、真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME/presented frame/ETW/宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-08 来源规则试运行](evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md)；下一项 `R15-01 任务阶段可读`，真实宿主复跑仍待验 |
 | R15-01 | 任务阶段可读 | 已实现，待环境验证 | 4e7ac33a | `validate-source.py`；XAML `24/24`；`git diff --check`；Worker Release 隔离定向测试 `12/12`；Playnite Release `net462` 定向测试 `2/2` | 复用已有 TaskCoordinator/任务事件；新增共享阶段解析和 `StageMessage`，备份、下载、校验、恢复、清理等已有事件显示可读阶段；未知进度显示 `—`；终态错误与最后阶段分离；SQLite 迁移保留旧库读取 | 未验真实 Playnite/RenderHarness/最终呈现、各类真实宿主阶段事件全覆盖、DPI/UIA/IME、presented frame、ETW 或宿主性能；Playnite 构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-01 任务阶段可读](evidence/R15-01-TASK-STAGES-20260920.md)；下一项 `R15-02 取消过程展示` |
-| R15-02 | 取消过程展示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R15-02 | 取消过程展示 | 已实现，待环境验证 | 9c8241fb | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离项目定向测试 `14/14`；Playnite Release `net462` 定向测试 `8/8` | 复用现有 TaskCoordinator、取消 IPC、TaskStatusDto 和 Task Center；新增持久化取消阶段，重复取消只发一次令牌，`Requested → Finalizing → Cancelled` 收敛；成功/取消竞争和取消后失败分别落到稳定终态；SQLite 旧库通过迁移默认空值兼容 | 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时被 `Access denied` 阻断，未写成全 solution 通过；Worker/Playnite 项目分别实际构建。未验真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-02 取消过程展示](evidence/R15-02-TASK-CANCELLATION-20260920.md)；下一项 `R15-03 任务详情时间线`，先核对任务事件缓存、阶段字段和详情滚动容器 |
 | R15-03 | 任务详情时间线 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-04 | 重复通知归并 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-05 | 任务来源定位 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -400,6 +400,14 @@
 - `validate-source.py`、XAML `24/24`、diff check 通过；Worker Release 隔离定向测试 `12/12`，Playnite Release `net462` 定向测试 `2/2`。Playnite 构建仍有 `MediaCenterView.xaml.cs:664` 的既有 nullable warning 2 条；WPF 静态检查 `0/28/177`。
 - 只使用合成 DTO、fake/隔离持久层和隔离构建输出，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；未宣称真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、ETW 或宿主性能通过；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-01 任务阶段可读](evidence/R15-01-TASK-STAGES-20260920.md)。
 - 下一可执行小批量：`R15-02 取消过程展示`，先核对取消请求、取消中状态和成功/取消竞争的现有终态收敛；真实宿主阶段事件全覆盖仍待验。
+
+## 2026-09-20 Round3 R15-02 取消过程展示
+
+- `9c8241fb` 先核对现有 `TaskCoordinator.Cancel`、取消 IPC、`TaskStatusDto` 和 Task Center 取消提示；保留原有 `TaskState`、命令绑定、取消入口、滚动系统、恢复/错误语义和 `net462` 路径。
+- Contracts 增加共享取消阶段。运行时以任务闸门串行化取消请求和终态：第一次请求持久化/发布 `Requested` 后只调用一次令牌取消，再发布 `Finalizing`；已接受的成功/取消竞争收敛为 `Cancelled`，取消后业务失败收敛为 `NotInterruptible`，终态不会保留取消中状态。Task Center 详情增加取消状态卡，SQLite 查询、快照比较和任务复制列同步取消/阶段字段。
+- `validate-source.py`、XAML `24/24`、diff check 通过；Worker Release 隔离项目定向测试 `14/14`；Playnite Release `net462` 构建 0 错误、定向测试 `8/8`。Playnite 构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning；WPF 静态检查为 `0/28/162`。
+- 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时遇到 `Access denied`，不记为完整 solution 通过；Worker 与 Playnite 项目已分别实际构建，四个本批隔离输出目录已清理。只用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线。main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-02 取消过程展示](evidence/R15-02-TASK-CANCELLATION-20260920.md)。
+- 下一可执行小批量：`R15-03 任务详情时间线`，先核对已有任务事件缓存、阶段字段和详情滚动容器；真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 和宿主性能仍待验。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-02 取消过程展示（代码已提交，隔离验证完成；真实宿主待验）
+
+- `9c8241fb` 先复用现有 `TaskCoordinator`、取消 IPC、任务 DTO、SQLite 查询和 `TaskCenterView`，新增共享取消阶段 `Requested`、`Finalizing`、`Cancelled`、`NotInterruptible`。任务运行时闸门保证连点取消只调用一次令牌取消；成功/取消竞争、取消后失败和终态晚到取消分别收敛，不永久停在取消中。
+- `TaskStatusDto` 提供取消显示和可取消/取消中判定；Task Center 详情新增取消状态卡。`tasks.cancellation_state` 通过现有迁移入口接入新增、最近、活动和分页查询，快照比较和任务复制列同步阶段字段，旧库默认空值兼容。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离项目定向测试 `14/14`；Playnite Release `net462` 构建 0 错误、R06 取消回归与 R15-01/R15-02 定向测试 `8/8`；WPF 静态检查 `0/28/162`。构建保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。
+- 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时遇到 `Access denied`，没有写成完整 solution 通过；Worker 与 Playnite 已分别实际构建。只用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动与 `src.zip` 未碰、未合并。
+- 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-02-TASK-CANCELLATION-20260920.md`。下一可执行任务：`R15-03 任务详情时间线`，先核对已有任务事件缓存、阶段字段和详情滚动容器；真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 和宿主性能仍待验。
+
 ## 当前第三轮 R15-01 任务阶段可读（代码已提交，隔离验证完成；真实宿主待验）
 
 - `4e7ac33a` 复用现有 `TaskCoordinator`、任务 DTO、SQLite 查询和 `TaskCenterView`，新增 Contracts 层 `TaskStageResolver` 与 `TaskStatusDto.StageMessage`。已有 Worker 阶段事件可显示为扫描、校验、索引、上传、下载、恢复、清理等可读阶段；失败/取消保留最后真实阶段，错误和技术详情独立显示。

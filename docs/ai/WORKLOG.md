@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-02 取消过程展示
+
+- 在 `9c8241fb` 中先核对并复用现有 TaskCoordinator、取消 IPC、任务 DTO、SQLite 查询和 Task Center；增加持久化取消阶段与详情状态卡。运行时闸门保证连点取消只调用一次令牌取消，`Requested → Finalizing → Cancelled` 以及取消后失败/晚到请求均有稳定终态。
+- 快照比较器、最近/活动/分页查询和任务复制列同步取消/阶段字段；保留原有 TaskState、命令绑定、滚动、恢复/错误语义和 net462 兼容。
+- 当前提交身份验证：`validate-source.py`、XAML `24/24`、diff check；Worker Release 隔离定向 `14/14`；Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15 阶段/取消 `8/8`；WPF 静态检查 `0/28/162`。Playnite 构建仅保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。
+- 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时被 `Access denied` 阻断，未记为全 solution 通过；Worker 与 Playnite 项目已分别实际构建。测试只用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据：[R15-02 取消过程展示](../design/reviews/ui-finesse-round3-20260915/evidence/R15-02-TASK-CANCELLATION-20260920.md)。下一可执行任务：`R15-03 任务详情时间线`，先核对任务事件缓存、阶段字段和详情滚动容器；真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW、宿主性能未验。
+
 ## 2026-09-20 R15-01 任务阶段可读
 
 - 在 `4e7ac33a` 中先核对并复用现有任务协调、阶段事件、任务 DTO 和 SQLite 查询；新增共享阶段解析、最后真实阶段字段和 Task Center 阶段列/详情。未知进度显示 `—`，失败/取消不覆盖最后阶段，错误继续单独可见。

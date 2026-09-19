@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 2026-09-20 R15-02 取消过程展示（代码已提交，隔离验证完成；真实宿主待验）
+
+- `9c8241fb` 复用现有 `TaskCoordinator`、取消 IPC、任务 DTO、SQLite 查询和 Task Center；共享 `TaskCancellationStates` 区分可取消、正在取消、安全收尾、已取消和无法中断的已结束任务。运行时闸门保证连点取消只发一次令牌取消，成功/取消竞争按已接受取消收敛为 `Cancelled`，取消后真实失败为 `NotInterruptible`，终态不保留取消中状态。
+- `tasks.cancellation_state` 通过既有迁移入口接入新增/更新/最近/活动/分页读取；`TaskStatusDto` 提供可取消、取消中和人类可读显示；Task Center 增加取消状态卡；快照比较器和任务复制列同步阶段字段。原有 TaskState、命令绑定、取消入口、滚动、恢复/错误语义和 net462 路径保持。
+- 当前提交身份的 Worker 定向测试 `14/14`，Playnite Release `net462` 构建 0 错误且 R06 取消回归、R15-01 阶段、R15-02 夹具 `8/8`；源码校验、XAML `24/24`、diff check 通过；WPF 静态审查 `0/28/162`。Playnite 仍有 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。
+- 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时遇到 `Access denied`，不写成全 solution 通过；Worker/Playnite 项目分别实际构建。只用合成/fake/隔离目录，Demo 原目录不可用，沿用恢复生产基线；未写真实存档、媒体、云端或诊断；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据为 `R15-02-TASK-CANCELLATION-20260920.md`；下一项为 `R15-03 任务详情时间线`，先核对任务事件缓存、阶段字段和详情滚动容器。真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 和宿主性能仍待验。
+
 ## 2026-09-20 R15-01 任务阶段可读（代码已提交，隔离验证完成；真实宿主待验）
 
 - `4e7ac33a` 先复用 `TaskCoordinator`、任务 DTO、SQLite 查询和任务中心视图。`TaskStageResolver` 将已有后端事件映射为真实可读阶段，`StageMessage` 保留最后阶段；终态错误/取消仍在 `Message` 和详情中单独显示，未知进度显示 `—`。
