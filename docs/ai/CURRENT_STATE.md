@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-06 耗时与吞吐（代码已提交，隔离验证完成；真实宿主待验）
+
+- `6f65638e` 复用现有 `TaskProgress`、`TaskStatusDto`、SQLite 任务查询和 Task Center 详情，新增可选可靠工作量采样。明确总量的整库游戏数、媒体专属候选文件数和已知下载总字节才展示速率/ETA；普通阶段、未知总量和恢复/远端无实际进度的任务不推算。
+- 采样器最多保留 5 个推进样本，至少两个推进样本才给速率；15 秒无推进重置窗口，10 秒无新推进隐藏速率和 ETA。SQLite 追加列并自动迁移旧库，广播/快照比较器/最近、活动和分页查询均保留采样字段；普通 `ReportAsync` 清除旧采样。
+- Task Center 详情增加按可靠性折叠的“可靠进度采样”卡片；已有开始/结束耗时、游戏选框、滚动条、命令绑定、取消/错误/恢复保护和 net462 保持。
+- 证据：最终外部隔离 Release solution 到达 Playnite `net462`，`0 errors/2` 条既有 warning；Core `106/106`；Worker 定向 `20/20`；Playnite R15 `11/11`；XAML `24/24`、source/diff 通过；WPF 静态 `0/28/162`。Worker 全量门禁为 `342 passed/1 skipped/1 failed/344 total`，失败是既有 `tests/GameSaveCenter.Worker.Tests/MediaSyncServiceTests.cs:570`，未写成全量通过。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；linked worktree 的 `obj` 直接写入仍 `Access denied`，最终使用外部源码副本。只用合成/fake/隔离 SQLite/目录，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-20260920.md`。
+- 下一可执行任务：`R15-07 失败结果复制`，先核对现有任务摘要、错误码、脱敏详情和剪贴板失败语义；同时保留 Worker 全量既有失败和真实宿主呈现边界。
+
 ## 当前第三轮 R15-05 任务来源定位（代码已提交，隔离验证完成；真实宿主待验）
 
 - `0d1ff346` 复用现有 `TaskStatusDto`、`TaskCoordinator`、Worker 广播、SQLite 任务查询、`OpenCloudQueue` 和媒体历史 `BatchId` 恢复；新增稳定来源引用 DTO/持久化列。恢复/远端暂存记录 `BackupVersion`，备份/媒体云重试记录 `CloudTransfer`，有游戏 ID 的任务保留 `Game`；没有把普通媒体同步任务冒充媒体批次任务。

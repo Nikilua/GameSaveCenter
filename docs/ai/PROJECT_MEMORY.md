@@ -2,6 +2,15 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R15-06 耗时与吞吐（2026-09-20）
+
+- `6f65638e` 在现有 `TaskProgress`/`TaskStatusDto`/SQLite 任务链上增加可选工作量采样。只有明确总量的整库游戏数、媒体专属候选文件数和已知下载字节接入；未知总量、远端 rclone 和恢复写入不显示推算速率或 ETA。
+- 采样使用单调时钟和最多 5 个推进样本；两个推进样本后才出速率，15 秒无推进重置，10 秒无新推进隐藏速率/ETA。普通阶段报告清空采样，SQLite 旧库默认未知；广播 clone、快照比较器和最近/活动/分页查询保留字段。
+- Task Center 新增可靠采样卡片，已有耗时/进度/选框/滚动/命令、取消错误语义和 net462 不变。行为证据为 Worker 定向 `20/20`、Playnite R15 `11/11`，含未知总量、等待确认、停顿和采样变化负例。
+- 最终外部隔离 Release solution 到达 Playnite `net462`，`0 errors/2` 条既有 warning，Core `106/106`；Worker 全量 `342/1 skipped/1 failed/344` 的唯一失败是既有 `MediaSyncServiceTests.cs:570`，没有将其改写为通过。source/XAML/diff 和 WPF `0/28/162` 通过。
+- 仍未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW、宿主性能；linked `obj` 仍 `Access denied`，使用外部源码副本。只用合成/fake/隔离 SQLite/目录，Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据：`R15-06-TASK-THROUGHPUT-20260920.md`。
+- 下一项：`R15-07 失败结果复制`，先查现有任务摘要、错误码、脱敏和剪贴板失败重试语义；R15-06 的真实宿主和全量 Worker 失败边界保留。
+
 ## 第三轮 R15-05 任务来源定位（2026-09-20）
 
 - `0d1ff346` 复用现有任务 DTO、TaskCoordinator、Worker 广播、SQLite 任务查询、云队列入口和媒体历史分页；新增 `TaskSourceReferenceDto`/稳定来源类型及 `source_references_json` 迁移列。稳定 ID 与显示诊断分离，事件 clone 和旧库读取均保持兼容。

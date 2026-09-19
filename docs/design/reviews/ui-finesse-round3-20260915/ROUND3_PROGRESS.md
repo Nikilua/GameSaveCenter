@@ -131,7 +131,7 @@
 | R15-03 | 任务详情时间线 | 已实现，待环境验证 | fe0c05a9 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker Release 隔离项目定向测试 `11/11`；Playnite Release `net462` 定向测试 `11/11` | 复用现有 TaskChangeEventDto/TaskCoordinator/TaskEventBroadcaster/Task Center；新增真实 OccurredUtc、UTC/本地双显示和稳定排序；事件窗口最多 64 条/任务、200 个任务；缺失事件/时间显示未知，不推断重试；广播 clone 保留阶段与取消状态 | 本批按 Worker/Playnite 项目级隔离构建，未宣称完整 solution/RenderHarness/真实宿主；Playnite 构建保留既有 MediaCenterView.xaml.cs:664 2 条 nullable warning；未验重启后持久时间线、真实呈现/DPI/UIA/IME/ETW/性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R15-03 任务详情时间线](evidence/R15-03-TASK-TIMELINE-20260920.md)；下一项 R15-04 重复通知归并，先核对现有通知/会话摘要和失败历史入口 |
 | R15-04 | 重复通知归并 | 已实现，待环境验证 | a67d371e | `validate-source.py`、XAML `24/24`、`git diff --check`；Playnite Release `net462` 外部源码副本项目构建 0 errors/2 条既有 nullable warning；通知/会话/R15 时间线/R13 相邻定向夹具 `28/28` | 复用既有 BoundedTaskIdSet、SessionNotificationAccumulator、NotificationLevelPolicy、Task Center 历史和 Dashboard Toast；进度不领取通知键；相同任务/终态/失败证据只通知一次；不同失败证据保留；摘要后新失败/取消不静音；Task Center 历史继续保留完整错误 | 本批未改 Worker；linked WPF `_wpftmp.csproj` 直接构建仍 Access denied，按外部源码副本项目级构建，未宣称完整 solution/RenderHarness/真实宿主；WPF 静态检查 `0/28/177`；warning 为 `MediaCenterView.xaml.cs:664` 既有 2 条；未验真实 Playnite/最终呈现/DPI/UIA/IME/ETW/性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-04 重复通知归并](evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md)；下一项 R15-05 任务来源定位，先查稳定对象身份和删除对象负例 |
 | R15-05 | 任务来源定位 | 已实现，待环境验证 | 0d1ff346 | `validate-source.py`、XAML `24/24`、`git diff --check`；当前分支外部源码副本 solution Release `0 errors/2 条既有 warning`；Playnite R15 `10/10`、Worker 来源/任务回归 `18/18`；WPF 静态 `0/28/162` | 任务详情来源卡片复用共享上下文按钮；游戏维持原入口，版本/媒体批次/云队列按稳定 ID 精确定位；删除或缺失对象保留诊断且不跳同名/邻近对象 | 未验真实 Playnite/package-host、删除/重命名后的宿主呈现、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-05 任务来源定位](evidence/R15-05-TASK-SOURCE-LOCATION-20260920.md)；下一项 `R15-06 耗时与吞吐`，先核对可靠采样和未知总量语义 |
-| R15-06 | 耗时与吞吐 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R15-06 | 耗时与吞吐 | 已实现，待环境验证 | 6f65638e | `validate-source.py`、XAML `24/24`、`git diff --check`；最终提交外部隔离 Release solution `0 errors/2 条既有 warning`；Core `106/106`；Worker 定向 `20/20`；Playnite R15 `11/11`；WPF 静态 `0/28/162` | 复用现有 `StartedUtc/FinishedUtc` 耗时和 `TaskProgress`；新增明确总量的平滑采样、速率/ETA 条件显示、10 秒停顿隐藏和 15 秒采样重置；整库游戏数、媒体专属候选文件数、已知下载总字节才接入，未知总量不猜 | Worker 全量门禁保留真实失败：`342 passed/1 skipped/1 failed/344 total`，失败为既有 `MediaSyncServiceTests.cs:570`；未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；linked `obj` 仍 Access denied，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-06 耗时与吞吐](evidence/R15-06-TASK-THROUGHPUT-20260920.md)；下一项 `R15-07 失败结果复制`，先核对现有任务摘要、错误码和脱敏复制入口 |
 | R15-07 | 失败结果复制 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R15-08 | 清理历史范围 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-01 | 设置搜索定位 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -425,6 +425,14 @@
 - `validate-source.py`、XAML `24/24`、diff check 通过；Playnite Release `net462` 外部源码副本项目构建 0 errors、2 条 `MediaCenterView.xaml.cs:664` 既有 nullable warning；通知/会话/R15 时间线/R13 相邻夹具 `28/28`；WPF 静态检查 `0/28/177`。
 - 本批未改 Worker；linked WPF 临时项目仍因 `Access denied` 未能直接构建，未宣称完整 solution/RenderHarness/真实宿主；未验真实 Toast/OS 通知、最终呈现、DPI/UIA/IME、ETW 或宿主性能。只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-04 重复通知归并](evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md)。
 - 下一可执行小批量：`R15-06 耗时与吞吐`，先查已有可靠耗时/进度采样字段和未知总量语义；R15-05 仍待真实 Playnite 宿主验证来源卡片布局、键盘/UIA 焦点和删除对象提示。
+
+## 2026-09-20 Round3 R15-06 耗时与吞吐
+
+- `6f65638e` 复用现有 `TaskProgress`、`TaskStatusDto`、SQLite 任务查询和 Task Center 详情；新增明确工作量总量的可选采样。最多保留 5 个推进样本，至少两个推进样本才显示速率/ETA；15 秒没有推进重置窗口，10 秒没有新推进隐藏速率/ETA。普通阶段报告会清除旧采样，避免跨阶段推算。
+- 只给整库备份的游戏数、游戏专属媒体候选文件数和已知总字节下载接入采样；远端 rclone、恢复写入和未知总量保持未知。详情中的“可靠进度采样”卡片按 DTO 条件折叠，已有耗时继续基于开始/结束时间显示；刷新比较器、广播 clone、SQLite 旧库迁移均保留新增字段。
+- 最终提交外部隔离 Release solution 到达 Playnite `net462`，`0 errors/2` 条既有 nullable warning；Core `106/106`；Worker 定向 `20/20`；Playnite R15 `11/11`；source/XAML/diff 门禁通过；WPF 静态 `0/28/162`。Worker 全量门禁仍为 `342 passed/1 skipped/1 failed/344 total`，失败为既有 `MediaSyncServiceTests.cs:570`，未改写为通过。
+- 只使用合成/fake/隔离 SQLite/目录；未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；linked `obj` 仍有 `Access denied`，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-06 耗时与吞吐](evidence/R15-06-TASK-THROUGHPUT-20260920.md)。
+- 下一可执行小批量：`R15-07 失败结果复制`，先核对现有任务摘要、错误码、脱敏详情和剪贴板失败语义；R15-06 保留真实宿主呈现与 Worker 全量既有失败边界。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

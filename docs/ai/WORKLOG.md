@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-06 耗时与吞吐
+
+- 在 `6f65638e` 中先核对现有 `StartedUtc/FinishedUtc`、TaskProgress 百分比和各操作总量；没有把阶段百分比误当吞吐。新增可选工作量采样与平滑速率/ETA，只接入整库游戏数、媒体专属候选文件数和已知下载总字节。
+- 采样器最多保留 5 个推进样本，至少两次推进才显示速率；15 秒无推进重置样本，10 秒无新推进隐藏速率/ETA；普通阶段报告清空旧采样。SQLite 追加列自动迁移，广播、快照比较器、最近/活动/分页查询均同步字段。Task Center 只在可靠条件满足时显示采样卡片。
+- 行为回归：Worker 任务查询/采样/广播/失败定向 `20/20`；Playnite R15 `11/11`；source validation、XAML `24/24`、diff check；WPF 静态 `0/28/162`。最终外部隔离 Release solution 到达 Playnite `net462`，`0 errors/2` 条既有 warning，Core `106/106`。
+- 全量 Worker 脚本真实结果为 `342 passed / 1 skipped / 1 failed / 344 total`，既有失败 `MediaSyncServiceTests.ClassificationApplyUsesSelectedStableIdsAndValidatedTargetOverride`（`MediaSyncServiceTests.cs:570`）；按门禁停止，未写成全量通过。直接 linked `obj` 仍有 `Access denied`，未强杀未知进程。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；只用合成/fake/隔离 SQLite/目录，Demo 原目录不可用，main 用户改动和 `src.zip` 未碰。证据：[R15-06 耗时与吞吐](../design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-20260920.md)。下一可执行任务：`R15-07 失败结果复制`。
+
 ## 2026-09-20 R15-05 任务来源定位
 
 - 在 `0d1ff346` 中先核对并复用现有 TaskStatusDto、TaskCoordinator、Worker 广播、SQLite 任务查询、云队列入口和媒体历史精确 BatchId 恢复；新增稳定来源引用 DTO/迁移列。恢复/远端暂存记录版本来源，云重试记录云队列来源，普通任务保留稳定游戏来源。
