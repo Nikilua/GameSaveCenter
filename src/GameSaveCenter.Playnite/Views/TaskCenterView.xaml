@@ -422,6 +422,23 @@
                     <TextBlock Text="{Binding SelectedTask.StageMessage, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" ToolTip="{Binding SelectedTask.StageMessage, Mode=OneWay}"/>
                 </StackPanel>
             </Border>
+            <Border x:Name="TaskCancellationStateCard" Padding="10" Margin="0,10,0,0">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedTask.IsCancellationPending}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedTask.State}" Value="Cancelled"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedTask.CancellationState}" Value="NotInterruptible"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel>
+                    <TextBlock Text="取消状态" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding SelectedTask.CancellationDisplay, Mode=OneWay}" Margin="0,4,0,0"/>
+                    <TextBlock Text="取消只发起一次；Worker 会在安全边界收尾，最终状态以任务事件为准。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
         </ScrollViewer>
     </Grid>

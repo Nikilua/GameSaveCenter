@@ -106,13 +106,12 @@ public sealed class TaskQueryPersistenceTests : IDisposable
             TaskType = "Restore",
             GameId = "game-1",
             GameName = "测试游戏",
-            State = TaskState.Failed,
+            State = TaskState.Running,
             ProgressPercent = 60,
-            Message = "执行失败",
+            Message = "正在安全收尾",
             StageMessage = "正在执行恢复后校验",
+            CancellationState = TaskCancellationStates.Finalizing,
             CreatedUtc = DateTime.UtcNow,
-            ErrorCode = "RESTORE_FAILED_ROLLED_BACK",
-            ErrorMessage = "已回滚",
             RestoreReport = new RestoreReportDto
             {
                 PlayniteId = "game-1",
@@ -138,6 +137,8 @@ public sealed class TaskQueryPersistenceTests : IDisposable
         Assert.Equal("RolledBack", page.RestoreReport?.OutcomeKind);
         Assert.Equal("正在执行恢复后校验", recent.StageMessage);
         Assert.Equal("校验中", page.StageDisplay);
+        Assert.Equal(TaskCancellationStates.Finalizing, recent.CancellationState);
+        Assert.Equal("无法立即中断 · 正在安全收尾", page.CancellationDisplay);
     }
 
     [Fact]

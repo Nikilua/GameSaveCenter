@@ -99,6 +99,60 @@ public sealed class TaskCoordinatorFailureTests
         Assert.Same(result, store.TerminalTask);
     }
 
+    [Fact]
+    public async Task CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled()
+    {
+        var store = new RecordingTaskStatusStore();
+        var coordinator = new TaskCoordinator(store, new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
+        var started = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var callbackCount = 0;
+
+        var run = coordinator.RunAsync(
+            "Backup",
+            "cancel-game",
+            "Synthetic Game",
+            async (_, token) =>
+            {
+                started.TrySetResult(true);
+                using var callback = token.Register(() => Interlocked.Increment(ref callbackCount));
+                await Task.Delay(Timeout.InfiniteTimeSpan, token);
+            },
+            CancellationToken.None,
+            taskId: "cancel-once");
+
+        await started.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        var responses = await Task.WhenAll(coordinator.CancelAsync("cancel-once"), coordinator.CancelAsync("cancel-once"));
+        var result = await run.WaitAsync(TimeSpan.FromSeconds(2));
+
+        Assert.All(responses, response => Assert.True(response));
+        Assert.Equal(1, Volatile.Read(ref callbackCount));
+        Assert.Equal(TaskState.Cancelled, result.State);
+        Assert.Equal(TaskCancellationStates.Cancelled, result.CancellationState);
+        Assert.Equal("已取消", result.CancellationDisplay);
+        Assert.Contains(store.Writes, task => task.CancellationState == TaskCancellationStates.Requested);
+        Assert.Contains(store.Writes, task => task.CancellationState == TaskCancellationStates.Finalizing);
+        Assert.Contains(store.Writes, task => task.State == TaskState.Cancelled && task.CancellationState == TaskCancellationStates.Cancelled);
+    }
+
+    [Fact]
+    public async Task CompletedTaskRejectsLateCancellationWithoutLeavingPendingState()
+    {
+        var coordinator = new TaskCoordinator(new RecordingTaskStatusStore(), new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
+        var result = await coordinator.RunAsync(
+            "Backup",
+            "completed-game",
+            "Synthetic Game",
+            (_, _) => Task.CompletedTask,
+            CancellationToken.None,
+            taskId: "already-completed");
+
+        Assert.Equal(TaskState.Succeeded, result.State);
+        Assert.False(await coordinator.CancelAsync(result.TaskId));
+        Assert.Equal(TaskCancellationStates.None, result.CancellationState);
+        Assert.False(result.IsCancellationPending);
+        Assert.Equal("不可取消", result.CancellationDisplay);
+    }
+
     private static async Task AssertTerminalPersistenceFailureDoesNotLeakAsync(
         Func<TaskProgress, CancellationToken, Task> operation,
         TaskState expectedState,
@@ -170,10 +224,23 @@ public sealed class TaskCoordinatorFailureTests
     private sealed class RecordingTaskStatusStore : ITaskStatusStore
     {
         public TaskStatusDto? TerminalTask { get; private set; }
+        public List<TaskStatusDto> Writes { get; } = new();
 
         public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
+            lock (Writes)
+            {
+                Writes.Add(new TaskStatusDto
+                {
+                    TaskId = task.TaskId,
+                    State = task.State,
+                    Message = task.Message,
+                    StageMessage = task.StageMessage,
+                    CancellationState = task.CancellationState,
+                    ProgressPercent = task.ProgressPercent
+                });
+            }
             if (task.State is TaskState.Succeeded or TaskState.Failed or TaskState.Cancelled)
                 TerminalTask = task;
             return Task.CompletedTask;

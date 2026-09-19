@@ -275,6 +275,8 @@ namespace GameSaveCenter.Contracts
         public string Message { get; set; } = string.Empty;
         /// <summary>Last real stage event; terminal error text must not erase it.</summary>
         public string StageMessage { get; set; } = string.Empty;
+        /// <summary>Durable cancellation phase; an empty value means no cancellation was requested.</summary>
+        public string CancellationState { get; set; } = TaskCancellationStates.None;
         public DateTime CreatedUtc { get; set; }
         public DateTime? StartedUtc { get; set; }
         public DateTime? FinishedUtc { get; set; }
@@ -325,7 +327,23 @@ namespace GameSaveCenter.Contracts
             => string.IsNullOrWhiteSpace(errorCode)
                 ? errorMessage
                 : $"错误码：{errorCode}；{errorMessage}";
-        public bool CanCancel => State == TaskState.Queued || State == TaskState.Running;
+        public bool IsCancellationPending => State == TaskState.Queued || State == TaskState.Running
+            ? string.Equals(CancellationState, TaskCancellationStates.Requested, StringComparison.Ordinal)
+                || string.Equals(CancellationState, TaskCancellationStates.Finalizing, StringComparison.Ordinal)
+            : false;
+        public string CancellationDisplay
+        {
+            get
+            {
+                if (State == TaskState.Cancelled || string.Equals(CancellationState, TaskCancellationStates.Cancelled, StringComparison.Ordinal)) return "已取消";
+                if (string.Equals(CancellationState, TaskCancellationStates.Finalizing, StringComparison.Ordinal)) return "无法立即中断 · 正在安全收尾";
+                if (string.Equals(CancellationState, TaskCancellationStates.Requested, StringComparison.Ordinal)) return "正在取消";
+                if (string.Equals(CancellationState, TaskCancellationStates.NotInterruptible, StringComparison.Ordinal)) return "无法中断 · 任务已结束";
+                return CanCancel ? "可取消" : "不可取消";
+            }
+        }
+        public bool CanCancel => (State == TaskState.Queued || State == TaskState.Running)
+            && string.IsNullOrWhiteSpace(CancellationState);
         public DateTime? StartedLocal => StartedUtc?.ToLocalTime();
         public DateTime? FinishedLocal => FinishedUtc?.ToLocalTime();
         public string DurationDisplay

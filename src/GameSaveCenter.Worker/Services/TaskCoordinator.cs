@@ -15,12 +15,27 @@ public sealed class TaskCoordinator
     private readonly TaskEventBroadcaster _events;
     private readonly string workerSessionId;
     private readonly ConcurrentDictionary<string, SemaphoreSlim> _gameLocks = new(StringComparer.OrdinalIgnoreCase);
-    private readonly ConcurrentDictionary<string, CancellationTokenSource> _taskTokens = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, TaskRuntime> _taskRuntimes = new(StringComparer.OrdinalIgnoreCase);
     private readonly ConcurrentQueue<TaskChangeEventDto> _changes = new();
     private readonly object _changeSignalGate = new();
     private TaskCompletionSource<bool> _changeSignal = NewChangeSignal();
     private long _changeSequence;
     private const int ChangeRetention = 500;
+
+    private sealed class TaskRuntime
+    {
+        public TaskRuntime(TaskStatusDto task, CancellationTokenSource token)
+        {
+            Task = task;
+            Token = token;
+        }
+
+        public TaskStatusDto Task { get; }
+        public CancellationTokenSource Token { get; }
+        public SemaphoreSlim Gate { get; } = new SemaphoreSlim(1, 1);
+        public bool CancellationRequested { get; set; }
+        public bool Terminal { get; set; }
+    }
 
     public TaskCoordinator(ITaskStatusStore store, TaskEventBroadcaster events, ILogger<TaskCoordinator> logger, WorkerOptions? options = null)
     { _store=store; _events=events; _logger=logger; workerSessionId=options?.WorkerSessionId ?? Guid.NewGuid().ToString("N"); }
@@ -41,19 +56,29 @@ public sealed class TaskCoordinator
             TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
             RequestId=requestId ?? string.Empty,
             SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName,
-            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CreatedUtc=createdUtc ?? DateTime.UtcNow
+            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CancellationState=TaskCancellationStates.None, CreatedUtc=createdUtc ?? DateTime.UtcNow
         };
-        await PersistAndPublishAsync(task, outerToken).ConfigureAwait(false);
         var gate=_gameLocks.GetOrAdd(string.IsNullOrWhiteSpace(gameId)?"__global__":gameId,_=>new SemaphoreSlim(1,1));
         using var linked=CancellationTokenSource.CreateLinkedTokenSource(outerToken);
-        _taskTokens[task.TaskId]=linked;
+        var runtime = new TaskRuntime(task, linked);
+        _taskRuntimes[task.TaskId] = runtime;
+        try
+        {
+            await PersistAndPublishAsync(task, outerToken).ConfigureAwait(false);
+        }
+        catch
+        {
+            _taskRuntimes.TryRemove(task.TaskId, out _);
+            runtime.Gate.Dispose();
+            throw;
+        }
         var gateEntered=false;
         TaskProgress? progress=null;
         try
         {
             await gate.WaitAsync(linked.Token).ConfigureAwait(false);
             gateEntered=true;
-            task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.Message="正在执行";task.StageMessage="正在执行";
+            task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.Message="正在执行";task.StageMessage="正在执行";task.CancellationState=TaskCancellationStates.None;
             await PersistAndPublishAsync(task,linked.Token).ConfigureAwait(false);
             progress=new TaskProgress(async (percent,message)=>
             {
@@ -65,41 +90,24 @@ public sealed class TaskCoordinator
                 task.RestoreReport = report;
             });
             await operation(progress,linked.Token).ConfigureAwait(false);
-            task.State=TaskState.Succeeded;
-            task.ProgressPercent=100;
-            if(string.IsNullOrWhiteSpace(task.Message) || string.Equals(task.Message,"正在执行",StringComparison.Ordinal))
-            {
-                task.Message="已完成";
-                task.StageMessage="已完成";
-            }
-            task.FinishedUtc=DateTime.UtcNow;
+            await CompleteSuccessAsync(runtime, progress).ConfigureAwait(false);
         }
         catch(OperationCanceledException)
         {
-            task.State=TaskState.Cancelled;
-            task.Message=string.IsNullOrWhiteSpace(progress?.CancellationMessage)?"已取消":progress.CancellationMessage;
-            if (progress?.RestoreReport != null)
-            {
-                progress.RestoreReport.OutcomeKind = "Cancelled";
-                progress.RestoreReport.FailureCode = string.Empty;
-            }
-            task.FinishedUtc=DateTime.UtcNow;
+            await CompleteCancelledAsync(runtime, progress).ConfigureAwait(false);
         }
         catch(WorkerOperationException ex)
         {
             _logger.LogError(ex,"Task {TaskType} failed for {Game}: {Code}",taskType,gameName,ex.Code);
-            task.State=TaskState.Failed;
-            task.ErrorCode=ex.Code;
-            task.ErrorMessage=string.IsNullOrWhiteSpace(ex.DiagnosticDetail)?ex.Message:$"{ex.Message} | {ex.DiagnosticDetail}";
-            task.Message="执行失败";
             MarkRestoreFailure(progress, ex.Code);
-            task.FinishedUtc=DateTime.UtcNow;
+            await CompleteFailureAsync(runtime, ex.Code, string.IsNullOrWhiteSpace(ex.DiagnosticDetail)?ex.Message:$"{ex.Message} | {ex.DiagnosticDetail}").ConfigureAwait(false);
         }
         catch(Exception ex)
         {
             _logger.LogError(ex,"Task {TaskType} failed for {Game}",taskType,gameName);
-            task.State=TaskState.Failed;task.ErrorCode=ex.GetType().Name;task.ErrorMessage=ex.Message;task.Message="执行失败";
-            MarkRestoreFailure(progress, task.ErrorCode);task.FinishedUtc=DateTime.UtcNow;
+            var errorCode = ex.GetType().Name;
+            MarkRestoreFailure(progress, errorCode);
+            await CompleteFailureAsync(runtime, errorCode, ex.Message).ConfigureAwait(false);
         }
         finally
         {
@@ -111,14 +119,15 @@ public sealed class TaskCoordinator
             {
                 // The operation result and its durable terminal record are separate
                 // outcomes.  Never let a storage outage strand the per-game gate or
-                // keep a completed cancellation source reachable from Cancel().
+                // keep a completed task runtime reachable from Cancel() only until terminal persistence is attempted.
                 _logger.LogError(ex,
                     "Task {TaskId} terminal state persistence failed for game {GameId}. Business result: {BusinessState}; task type: {TaskType}.",
                     task.TaskId, task.GameId, task.State, task.TaskType);
             }
             finally
             {
-                _taskTokens.TryRemove(task.TaskId,out _);
+                _taskRuntimes.TryRemove(task.TaskId,out _);
+                runtime.Gate.Dispose();
                 if(gateEntered)gate.Release();
             }
         }
@@ -133,11 +142,116 @@ public sealed class TaskCoordinator
             progress.RestoreReport.OutcomeKind = "Failed";
     }
 
-    public bool Cancel(string taskId)
+    private static async Task CompleteSuccessAsync(TaskRuntime runtime, TaskProgress? progress)
     {
-        if(!_taskTokens.TryGetValue(taskId,out var token)) return false;
-        try{token.Cancel();return true;}
-        catch(ObjectDisposedException){return false;}
+        await runtime.Gate.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try
+        {
+            if (runtime.Terminal) return;
+            if (runtime.CancellationRequested)
+            {
+                runtime.Task.State = TaskState.Cancelled;
+                runtime.Task.CancellationState = TaskCancellationStates.Cancelled;
+                runtime.Task.Message = string.IsNullOrWhiteSpace(progress?.CancellationMessage) ? "已取消" : progress.CancellationMessage;
+                if (progress?.RestoreReport != null)
+                {
+                    progress.RestoreReport.OutcomeKind = "Cancelled";
+                    progress.RestoreReport.FailureCode = string.Empty;
+                }
+            }
+            else
+            {
+                runtime.Task.State = TaskState.Succeeded;
+                runtime.Task.CancellationState = TaskCancellationStates.None;
+                runtime.Task.ProgressPercent = 100;
+                if (string.IsNullOrWhiteSpace(runtime.Task.Message) || string.Equals(runtime.Task.Message,"正在执行",StringComparison.Ordinal))
+                {
+                    runtime.Task.Message="已完成";
+                    runtime.Task.StageMessage="已完成";
+                }
+            }
+            runtime.Task.FinishedUtc = DateTime.UtcNow;
+            runtime.Terminal = true;
+        }
+        finally { runtime.Gate.Release(); }
+    }
+
+    private static async Task CompleteCancelledAsync(TaskRuntime runtime, TaskProgress? progress)
+    {
+        await runtime.Gate.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try
+        {
+            if (runtime.Terminal) return;
+            runtime.Task.State = TaskState.Cancelled;
+            runtime.Task.CancellationState = TaskCancellationStates.Cancelled;
+            runtime.Task.Message = string.IsNullOrWhiteSpace(progress?.CancellationMessage) ? "已取消" : progress.CancellationMessage;
+            if (progress?.RestoreReport != null)
+            {
+                progress.RestoreReport.OutcomeKind = "Cancelled";
+                progress.RestoreReport.FailureCode = string.Empty;
+            }
+            runtime.Task.FinishedUtc = DateTime.UtcNow;
+            runtime.Terminal = true;
+        }
+        finally { runtime.Gate.Release(); }
+    }
+
+    private static async Task CompleteFailureAsync(TaskRuntime runtime, string errorCode, string errorMessage)
+    {
+        await runtime.Gate.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try
+        {
+            if (runtime.Terminal) return;
+            runtime.Task.State = TaskState.Failed;
+            runtime.Task.CancellationState = runtime.CancellationRequested
+                ? TaskCancellationStates.NotInterruptible
+                : TaskCancellationStates.None;
+            runtime.Task.ErrorCode = errorCode;
+            runtime.Task.ErrorMessage = errorMessage;
+            runtime.Task.Message = "执行失败";
+            runtime.Task.FinishedUtc = DateTime.UtcNow;
+            runtime.Terminal = true;
+        }
+        finally { runtime.Gate.Release(); }
+    }
+
+    public bool Cancel(string taskId)
+        => CancelAsync(taskId).GetAwaiter().GetResult();
+
+    public async Task<bool> CancelAsync(string taskId)
+    {
+        if(!_taskRuntimes.TryGetValue(taskId,out var runtime)) return false;
+        await runtime.Gate.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try
+        {
+            if (runtime.Terminal || (runtime.Task.State != TaskState.Queued && runtime.Task.State != TaskState.Running)) return false;
+            if (runtime.CancellationRequested) return true;
+            runtime.CancellationRequested = true;
+            runtime.Task.CancellationState = TaskCancellationStates.Requested;
+            runtime.Task.Message = "正在取消";
+            try
+            {
+                await PersistAndPublishAsync(runtime.Task, CancellationToken.None).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Task {TaskId} cancellation request persistence failed; cancellation remains accepted.", taskId);
+            }
+            try { runtime.Token.Cancel(); }
+            catch (ObjectDisposedException) { runtime.CancellationRequested = false; runtime.Task.CancellationState = TaskCancellationStates.None; return false; }
+            runtime.Task.CancellationState = TaskCancellationStates.Finalizing;
+            runtime.Task.Message = "正在安全收尾";
+            try
+            {
+                await PersistAndPublishAsync(runtime.Task, CancellationToken.None).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Task {TaskId} cancellation state persistence failed; cancellation remains accepted.", taskId);
+            }
+            return true;
+        }
+        finally { runtime.Gate.Release(); }
     }
 
     public TaskChangeFeedDto GetChanges(long afterSequence,int limit)
@@ -198,7 +312,7 @@ public sealed class TaskCoordinator
     {
             TaskId=task.TaskId,SessionId=task.SessionId,WorkerSessionId=task.WorkerSessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
             RequestId=task.RequestId,
-            ProgressPercent=task.ProgressPercent,Message=task.Message,StageMessage=task.StageMessage,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
+            ProgressPercent=task.ProgressPercent,Message=task.Message,StageMessage=task.StageMessage,CancellationState=task.CancellationState,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
             FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
             BackupResult=task.BackupResult == null ? null : new BackupResultDto
             {

@@ -171,7 +171,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.MirrorLocalStatus=>await _localMirror.StatusAsync(token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalSync=>await _localMirror.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.GetMaintenanceReport=>await _maintenanceReport.GetAsync(token).ConfigureAwait(false),
-                MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=_tasks.Cancel(Read<CancelTaskRequestDto>(request).TaskId)},
+                MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=await _tasks.CancelAsync(Read<CancelTaskRequestDto>(request).TaskId).ConfigureAwait(false)},
                 MessageTypes.ListGameTools=>await _gameTools.ListAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.InspectGameToolImport=>await _gameTools.InspectImportAsync(Read<InspectGameToolImportRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ImportGameTool=>await _gameTools.ImportAsync(Read<ImportGameToolRequestDto>(request),token).ConfigureAwait(false),

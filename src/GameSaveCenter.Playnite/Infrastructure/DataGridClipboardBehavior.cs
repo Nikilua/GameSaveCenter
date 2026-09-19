@@ -181,6 +181,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 {
                     task.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                     task.TaskTypeDisplay,
+                    task.StageDisplay,
                     task.GameName,
                     task.StateDisplay,
                     task.ProgressDisplay,
@@ -236,6 +237,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 {
                     "本地时间" => task.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                     "任务" => task.TaskTypeDisplay,
+                    "阶段" => task.StageDisplay,
                     "游戏" => task.GameName,
                     "状态" => task.StateDisplay,
                     "进度" => task.ProgressDisplay,
