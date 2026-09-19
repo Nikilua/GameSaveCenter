@@ -12,6 +12,7 @@ namespace GameSaveCenter.Worker.Services;
 /// <summary>Coordinates safe Ludusavi backups, validation, history indexing and optional upload.</summary>
 public sealed class BackupOrchestrator : IBackupHistoryRebuilder
 {
+    private const int PreviewPathLimit = 120;
     private readonly GameCatalogService _catalog;
     private readonly SqliteStateStore _store;
     private readonly LudusaviClient _ludusavi;
@@ -54,6 +55,85 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
 
     public Task<List<TaskStatusDto>> BackupAsync(BackupRequestDto request, CancellationToken token)
         => BackupAsync(request, token, null, null);
+
+    /// <summary>Runs Ludusavi's non-destructive backup preview without creating an archive or task.</summary>
+    public async Task<BackupPreviewDto> PreviewAsync(BackupRequestDto request, CancellationToken token)
+    {
+        var requestedId = request.PlayniteIds.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x)) ?? string.Empty;
+        var preview = new BackupPreviewDto { PlayniteId = requestedId };
+        if (string.IsNullOrWhiteSpace(requestedId))
+        {
+            preview.State = "Unavailable";
+            preview.Summary = "请先选择一个游戏，再预览本次备份范围。";
+            return preview;
+        }
+
+        var games = await _catalog.GetGamesAsync(token).ConfigureAwait(false);
+        var game = games.FirstOrDefault(x => string.Equals(x.PlayniteId, requestedId, StringComparison.OrdinalIgnoreCase));
+        if (game == null)
+        {
+            preview.State = "Unavailable";
+            preview.Summary = "当前游戏已不在 Playnite 清单中，无法预览备份范围。";
+            return preview;
+        }
+
+        preview.GameName = game.Name;
+        if (!_ludusavi.IsAvailable)
+        {
+            preview.State = "Unavailable";
+            preview.Summary = "Ludusavi 尚未配置或可执行文件不可用，暂时无法扫描备份路径。";
+            return preview;
+        }
+
+        var matches = await _catalog.GetMatchesAsync(token).ConfigureAwait(false);
+        if (!matches.TryGetValue(game.PlayniteId, out var match) || string.IsNullOrWhiteSpace(match.Name))
+        {
+            preview.State = "Unavailable";
+            preview.Summary = "当前游戏尚未匹配 Ludusavi 存档规则，无法识别本次备份路径。";
+            return preview;
+        }
+
+        var operation = await _ludusavi.BackupAsync(new[] { match.Name }, request.Force, true, token).ConfigureAwait(false);
+        if (!operation.Success)
+        {
+            preview.State = "Error";
+            preview.Summary = "备份范围预览失败，未创建归档。";
+            preview.Detail = operation.ErrorMessage;
+            return preview;
+        }
+        if (!operation.Json.HasValue)
+        {
+            preview.State = "Error";
+            preview.Summary = "Ludusavi 没有返回可解析的预览数据，未创建归档。";
+            return preview;
+        }
+        if (LudusaviResultParser.SomeGamesFailed(operation.Json.Value))
+        {
+            preview.State = "Error";
+            preview.Summary = "Ludusavi 未能完成本次范围扫描，未创建归档。";
+            preview.Detail = operation.RawOutput;
+            return preview;
+        }
+
+        var snapshot = LudusaviResultParser.ParseOperationSnapshot(
+            operation.Json.Value,
+            match.Name,
+            "preview",
+            DateTime.UtcNow);
+        preview.GeneratedUtc = DateTime.UtcNow;
+        preview.PathCount = snapshot.FileCount;
+        preview.TotalBytes = snapshot.TotalBytes;
+        preview.Paths = snapshot.Files
+            .Take(PreviewPathLimit)
+            .Select(file => new BackupPreviewPathDto { Path = file.RelativePath, SizeBytes = file.SizeBytes })
+            .ToList();
+        preview.State = preview.PathCount > 0 ? "Ready" : "NoData";
+        preview.Summary = preview.PathCount > 0
+            ? $"本次备份将扫描 {preview.PathCount} 个路径，预计纳入 {FormatBytes(preview.TotalBytes)}。"
+            : "扫描已完成，但当前没有识别到可纳入备份的路径。";
+        preview.Detail = operation.WarningText;
+        return preview;
+    }
 
     private async Task<List<TaskStatusDto>> BackupAsync(
         BackupRequestDto request,
@@ -307,6 +387,14 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         }
 
         return results;
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
+        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
+        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
     }
 
     /// <summary>Creates a durable full-library backup job and returns its queued status immediately.

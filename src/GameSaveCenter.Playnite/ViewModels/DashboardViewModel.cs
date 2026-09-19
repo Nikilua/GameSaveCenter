@@ -92,6 +92,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool lockSelectedBackup;
         private bool backupCommentDirty;
         private bool backupLockDirty;
+        private BackupPreviewDto backupPreview = new BackupPreviewDto();
         private MediaItemDto selectedMedia = null!;
         private MediaStorageSummaryDto mediaSummary = new MediaStorageSummaryDto();
         private string mediaComment = string.Empty;
@@ -300,6 +301,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyGameSort();
             RefreshCommand = new RelayCommand(_ => Run(RefreshAsync), _ => !IsBusy);
             BackupSelectedCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
+            PreviewBackupCommand = new RelayCommand(_ => Run(PreviewBackupAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
             BackupAllCommand = new RelayCommand(_ => Run(BackupAllAsync), _ => !IsBusy && Snapshot.LudusaviAvailable && Games.Any(x => x.LudusaviMatched));
             SyncMediaCommand = new RelayCommand(_ => Run(SyncMediaAsync), _ => !IsBusy);
             DetectPathsCommand = new RelayCommand(_ => Run(DetectPathsAsync), _ => !IsBusy && SelectedGame != null);
@@ -670,6 +672,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public string StatusMessage { get => statusMessage; private set => SetValue(ref statusMessage, value); }
+        public BackupPreviewDto BackupPreview { get => backupPreview; private set => SetValue(ref backupPreview, value ?? new BackupPreviewDto()); }
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }
         public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
         public string MetadataBackupSummary { get => metadataBackupSummary; private set => SetValue(ref metadataBackupSummary, value); }
@@ -1380,6 +1383,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public ICommand RefreshCommand { get; }
         public ICommand BackupSelectedCommand { get; }
+        public ICommand PreviewBackupCommand { get; }
         public ICommand BackupAllCommand { get; }
         public ICommand SyncMediaCommand { get; }
         public ICommand DetectPathsCommand { get; }
@@ -3259,8 +3263,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
             var gameId = game.PlayniteId;
             var gameName = game.Name;
+            ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+            {
+                PlayniteId = gameId,
+                GameName = gameName,
+                State = "Loading",
+                Summary = "立即备份会重新扫描当前范围；不会使用旧预览作为安全依据。"
+            });
             var tasks = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.BackupGame, new BackupRequestDto { PlayniteIds = { gameId }, Force = true, Reason = "Manual" }, TimeSpan.FromMinutes(15));
             NotifyTaskResults(tasks);
+            ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+            {
+                PlayniteId = gameId,
+                GameName = gameName,
+                Summary = "本次执行已结束；如需确认最新范围，请重新预览备份。"
+            });
             await RefreshCoreAsync(false);
             if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
             {
@@ -3272,6 +3289,49 @@ namespace GameSaveCenter.Playnite.ViewModels
             else
             {
                 StatusMessage = $"“{gameName}”的备份已完成，请返回存档中心查看历史版本。";
+            }
+        }
+
+        private async Task PreviewBackupAsync()
+        {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var gameId = game.PlayniteId;
+            ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+            {
+                PlayniteId = gameId,
+                GameName = game.Name,
+                State = "Loading",
+                Summary = "正在扫描本次备份范围；不会创建归档。"
+            });
+            try
+            {
+                var result = await plugin.RequestAsync<BackupPreviewDto>(
+                    MessageTypes.PreviewBackup,
+                    new BackupRequestDto { PlayniteIds = { gameId }, Force = true, Reason = "Preview" },
+                    TimeSpan.FromMinutes(15));
+                if (!IsSelectedGame(gameId)) return;
+                ApplyOnUi(() => BackupPreview = result ?? new BackupPreviewDto
+                {
+                    PlayniteId = gameId,
+                    GameName = game.Name,
+                    State = "Error",
+                    Summary = "预览没有返回有效摘要，未创建归档。"
+                });
+                StatusMessage = result?.Summary ?? "预览没有返回有效摘要，未创建归档。";
+            }
+            catch
+            {
+                if (IsSelectedGame(gameId))
+                {
+                    ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+                    {
+                        PlayniteId = gameId,
+                        GameName = game.Name,
+                        State = "Error",
+                        Summary = "备份范围预览失败，未创建归档。"
+                    });
+                }
+                throw;
             }
         }
 
@@ -5224,6 +5284,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SelectedGameToolVersion = null!;
                 SelectedBackup = null!;
                 SelectedCandidate = null!;
+                BackupPreview = new BackupPreviewDto();
                 SelectedMedia = null!;
                 MediaSummary = new MediaStorageSummaryDto();
                 ResetMediaPageState();
@@ -5255,6 +5316,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             foreach (var command in new[]
             {
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
+                PreviewBackupCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,

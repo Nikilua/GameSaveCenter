@@ -3924,3 +3924,12 @@
 - 已验证：`R11ProtectionBehaviorTests 2/2`（正例、Ready 空内容负例、SaveCenter 行绑定契约）、Core `RetentionPlannerTests 3/3`（解锁重新成为候选且其他保护仍跳过）、Worker 保护夹具 `2/2`（预览/应用保护行为）；R11 串行 `11/11`，R06 `11/11`，Release `0/0`，XAML `24/24`。
 - 证据边界：真实 SaveCenterView STA 夹具只证明绑定契约，不证明 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能；Worker 夹具是隔离合成目录，不证明真实 Ludusavi IPC。Demo 原目录不可用；WPF 非提升 `wpftmp` Access denied 时使用 D 盘 `GscBuildOutputRoot`，禁止覆盖 main。
 - 下一可执行任务：R11-06 备份前变更摘要；先查已有变更摘要、快照/dirty 状态和取消/错误语义，再补最小缺口与证据。
+
+## 2026-09-19 Round3 R11-06 备份前变更摘要
+
+- 备份前预览必须调用 Ludusavi 的 `--preview`，不应把 `SavePathCandidateDto`（路径发现候选）当成此次实际备份范围。预览 DTO 只读，不生成 BackupId，不创建任务/历史/云端状态。
+- `BackupOrchestrator.PreviewAsync` 复用现有游戏匹配和 `LudusaviResultParser.ParseOperationSnapshot`；`LudusaviClient` preview 路径跳过备份目录创建。路径列表最多 120 条，`PathCount`/`TotalBytes` 保留完整摘要，避免大清单无限呈现。
+- Ready、NoData、Unavailable、Error 必须分开；空数据不能冒充成功，工具错误不能冒充“没有变化”。真实 `BackupSelectedAsync` 仍发 `backup.game`，执行前重新扫描，不使用旧预览作安全保证。
+- 已验证：Worker `BackupPreviewBehaviorTests 2/2`；真实 SaveCenterView/STA `R11BackupPreviewBehaviorTests 1/1`；R11 串行 `12/12`；R06 `11/11`；Release `0/0`；XAML `24/24`。
+- 证据边界：合成 JSON/隔离 STA/测试宿主不等价真实 Ludusavi 版本输出、真实归档变化、Worker IPC、Playnite presented frame、DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。Demo 原目录不可用；继续禁止触碰 main 和真实存档/媒体/云端/诊断。
+- 下一可执行任务：R11-07 备份结果分层；先查现有 `TaskStatusDto`、`CloudTransferStatusDto`、本地成功/云端失败链路和 UI 状态，再补最小缺口。

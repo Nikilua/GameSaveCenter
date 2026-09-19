@@ -83,6 +83,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GameSessionStarted=>await _sessions.StartAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStopped=>await StopAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.BackupGame=>await _backup.BackupAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.PreviewBackup=>await _backup.PreviewAsync(Read<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.BackupAll=>await _backup.SubmitAllAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackups=>await ListBackupsAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),

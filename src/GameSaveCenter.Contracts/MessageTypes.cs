@@ -16,6 +16,7 @@ namespace GameSaveCenter.Contracts
         public const string GameSessionStarted = "session.started";
         public const string GameSessionStopped = "session.stopped";
         public const string BackupGame = "backup.game";
+        public const string PreviewBackup = "backup.preview";
         public const string BackupAll = "backup.all";
         public const string ListBackups = "backup.list";
         public const string CompareBackups = "backup.compare";

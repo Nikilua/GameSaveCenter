@@ -1661,3 +1661,12 @@
 - 证据：`evidence/R11-05-PROTECTION-EXPLANATION-20260919.md`；真实 SaveCenterView 夹具验证行绑定状态/解释契约，不宣称最终像素呈现。WPF 非提升临时 `wpftmp` 构建曾 Access denied，改用 D 盘 `GscBuildOutputRoot` 完成同一验证；未绕过 ETW/系统跟踪权限。
 - 未验真实 Ludusavi/Worker IPC/归档读取、Playnite/package-host 安装呈现、presented frame、物理 DPI/跨屏、UIA/读屏、真实键盘/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57`、安装器退出 1 和 main 用户文件仍独立未覆盖。
 - 下一可执行任务：R11-06 备份前变更摘要；继续保持真实存档、媒体、云端和诊断隔离边界。
+
+## 2026-09-19 Round3 R11-06 备份前变更摘要
+
+- 先核对既有能力：`LudusaviClient.BackupAsync` 已支持 `preview` 参数，原生产入口只走真实执行；本阶段复用 `BackupRequestDto` 和 `LudusaviResultParser`，新增只读 `backup.preview` IPC，不重建备份服务。
+- `BackupPreviewDto` 区分 Loading/Ready/NoData/Unavailable/Error，展示扫描时间、路径数、预计大小和最多 120 条已识别路径。Worker preview 不创建备份目录、不创建任务、不写历史/SQLite、不上传云端；`LudusaviClient` 仅在真实执行模式创建备份目录。
+- SaveCenter 历史摘要增加“预览备份”按钮、非破坏提示和已识别路径；立即备份执行前仍由原 Worker 真实链路重新扫描，不使用旧预览保证安全；切换游戏或执行结束清理旧摘要。
+- `BackupPreviewBehaviorTests 2/2`、`R11BackupPreviewBehaviorTests 1/1`；R11 串行 `12/12`；R06 相邻 `11/11`。Release solution `0/0`，XAML `24/24`，source validation/diff check 通过。
+- 证据：`evidence/R11-06-BACKUP-PREVIEW-20260919.md`。合成 Ludusavi JSON/隔离 STA 只证明解析、状态区分和生产视图绑定；未验真实 Ludusavi 输出、Worker IPC、归档文件系统变化、Playnite/package-host、最终 presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。
+- main DEV-INSTALL-008 `73/588/57`、安装器退出 1 和 main 用户文件仍独立未覆盖；下一可执行任务：R11-07 备份结果分层。

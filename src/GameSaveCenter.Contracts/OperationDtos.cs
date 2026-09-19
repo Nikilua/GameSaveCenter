@@ -39,6 +39,51 @@ namespace GameSaveCenter.Contracts
         public string NotificationSessionId { get; set; } = string.Empty;
     }
 
+    /// <summary>Read-only summary from Ludusavi's backup preview; it never represents an archive.</summary>
+    public sealed class BackupPreviewDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public string State { get; set; } = "Empty";
+        public DateTime GeneratedUtc { get; set; }
+        public int PathCount { get; set; }
+        public long TotalBytes { get; set; }
+        public List<BackupPreviewPathDto> Paths { get; set; } = new List<BackupPreviewPathDto>();
+        public string Summary { get; set; } = "点击“预览备份”后，这里会显示本次扫描范围。";
+        public string Detail { get; set; } = string.Empty;
+        public bool HasData => string.Equals(State, "Ready", StringComparison.OrdinalIgnoreCase) && PathCount > 0;
+        public string GeneratedDisplay => GeneratedUtc == default(DateTime) ? "尚未生成" : $"扫描于 {GeneratedUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss}";
+        public string PathSummaryDisplay => PathCount <= 0
+            ? "尚未识别到可纳入备份的路径。"
+            : $"已识别 {PathCount} 个路径 · {FormatBytes(TotalBytes)}{(Paths.Count < PathCount ? $" · 展示前 {Paths.Count} 个" : string.Empty)}";
+        public string IdentifiedPathsDisplay => Paths.Count == 0
+            ? "路径：尚未识别"
+            : "路径：" + string.Join("；", Paths.ConvertAll(x => x.Path));
+        public string StateDisplay => State switch
+        {
+            "Ready" => "已生成预览",
+            "Loading" => "扫描中",
+            "NoData" => "没有可纳入路径",
+            "Unavailable" => "暂不可预览",
+            "Error" => "预览失败",
+            _ => "尚未预览"
+        };
+
+        private static string FormatBytes(long bytes)
+        {
+            if (bytes < 1024) return $"{bytes} B";
+            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
+            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
+            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
+        }
+    }
+
+    public sealed class BackupPreviewPathDto
+    {
+        public string Path { get; set; } = string.Empty;
+        public long SizeBytes { get; set; }
+    }
+
     /// <summary>Request to synchronize screenshot and video sources.</summary>
     public sealed class MediaSyncRequestDto
     {

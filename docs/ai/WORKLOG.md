@@ -7473,3 +7473,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 真实边界：SaveCenter 夹具只证明合成 DTO 在真实生产视图中的行绑定/解释契约，不证明最终像素；Worker 使用隔离合成归档。未验真实 Ludusavi IPC/归档读取、Playnite/package-host、presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能。Demo 原目录不可用。WPF 非提升临时工程曾 Access denied，D 盘隔离输出完成验证；未绕过系统跟踪权限。
 - main 安装失败事实仍为 `0 warning / 0 error`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1；未触碰 main 用户文件。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-05-PROTECTION-EXPLANATION-20260919.md`；账本 R11-05 已标记“已满足”。
 - 下一可执行任务：R11-06 备份前变更摘要。
+
+## 2026-09-19 Round3 R11-06 备份前变更摘要
+
+- 先核对已有 Ludusavi preview 参数和现有路径发现候选，确认候选表不能代表本次备份范围。新增 `backup.preview` 只读 IPC、`BackupPreviewDto`/路径 DTO 和 Worker 预览解析，复用游戏匹配与 `ParseOperationSnapshot`。
+- preview 调用跳过备份目录创建，不建任务、不写历史/SQLite、不上传；路径返回最多 120 条，完整数量/大小单独摘要。SaveCenter 增加预览按钮、摘要卡、已识别路径和“预览不产生归档/执行前重新扫描”提示；立即备份仍走原真实链路。
+- 验证：Worker `BackupPreviewBehaviorTests 2/2`；SaveCenter STA `R11BackupPreviewBehaviorTests 1/1`；R11-01/02/03/04/05/06 串行 `12/12`；R06 `11/11`；D 盘隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source validation、XAML check、diff check 通过。
+- 边界：只使用合成 Ludusavi JSON、隔离 STA 和测试宿主，未验真实 Ludusavi 输出/Worker IPC/归档变化、Playnite/package-host、presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用。main 安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1，未触碰 main 用户文件。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-06-BACKUP-PREVIEW-20260919.md`；账本 R11-06 已标记“已满足”。下一可执行任务：R11-07 备份结果分层。

@@ -122,8 +122,32 @@
                                                 <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding LoadDetailsCommand}" Content="重试" Margin="8,0,0,0" AutomationProperties.Name="重试读取存档列表"/>
                                             </Grid>
                                         </Border>
+                                        <Border x:Name="SaveBackupPreviewCard" Padding="8" Margin="0,8,0,0">
+                                            <Border.Style>
+                                                <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding BackupPreview.State}" Value="Loading"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                        <DataTrigger Binding="{Binding BackupPreview.State}" Value="Ready"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                        <DataTrigger Binding="{Binding BackupPreview.State}" Value="NoData"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                        <DataTrigger Binding="{Binding BackupPreview.State}" Value="Unavailable"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                        <DataTrigger Binding="{Binding BackupPreview.State}" Value="Error"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel>
+                                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="备份前变更摘要" FontWeight="SemiBold"/><TextBlock Grid.Column="1" Text="{Binding BackupPreview.StateDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}"/></Grid>
+                                                <TextBlock Text="{Binding BackupPreview.Summary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding BackupPreview.PathSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                <TextBlock Text="{Binding BackupPreview.IdentifiedPathsDisplay, Mode=OneWay}" Style="{StaticResource GscPathText}" Margin="0,3,0,0" TextWrapping="Wrap" ToolTip="{Binding BackupPreview.IdentifiedPathsDisplay, Mode=OneWay}"/>
+                                                <TextBlock Text="预览不产生归档；“立即备份”执行前会重新扫描，不使用过期预览保证安全。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
                                     </StackPanel>
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewBackupCommand}" MinWidth="100" Margin="0,0,8,0" ToolTip="只扫描当前游戏本次备份范围，不创建归档" AutomationProperties.Name="预览当前游戏备份范围">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="预览备份" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="立即扫描存档路径">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="立即扫描" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>
