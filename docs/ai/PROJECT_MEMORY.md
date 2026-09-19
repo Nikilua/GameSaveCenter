@@ -3933,3 +3933,13 @@
 - 已验证：Worker `BackupPreviewBehaviorTests 2/2`；真实 SaveCenterView/STA `R11BackupPreviewBehaviorTests 1/1`；R11 串行 `12/12`；R06 `11/11`；Release `0/0`；XAML `24/24`。
 - 证据边界：合成 JSON/隔离 STA/测试宿主不等价真实 Ludusavi 版本输出、真实归档变化、Worker IPC、Playnite presented frame、DPI/跨屏、UIA/读屏、IME、ETW、宿主性能。Demo 原目录不可用；继续禁止触碰 main 和真实存档/媒体/云端/诊断。
 - 下一可执行任务：R11-07 备份结果分层；先查现有 `TaskStatusDto`、`CloudTransferStatusDto`、本地成功/云端失败链路和 UI 状态，再补最小缺口。
+
+## 2026-09-19 Round3 R11-07 备份结果分层
+
+- 结果分层必须把本地版本与云端后续复制分开：本地成功后即保留历史版本；云端排队、镜像失败、认证待处理、传输中、已上传待远端校验、远端已校验不能覆盖本地成功。
+- 复用 `CloudTransferStatusDto`/状态服务、现有 `RetryCloudUpload` IPC 和重试队列。`BackupResultDto` 是任务结果解释 DTO，不是第二套云端状态源；`TaskCoordinator` 与实时事件克隆必须复制它，否则 UI 事件会丢失补救状态。
+- `BackupOrchestrator` 在本地历史持久化后设置本地成功；云端失败时保持任务 Failed 以保留错误语义，同时携带 `HasPartialSuccess`。Playnite 只豁免这种已确认本地成功的云失败，普通失败/取消仍抛出原通知；云端重试不再创建新的本地归档。
+- WPF 门禁必须验证行为负例：排队状态结果卡片可见且“单独重试云端上传”可见；`Uploaded` 只显示待远端校验并隐藏上传重试；真实 SaveCenterView/STA 夹具 `3/3`，R11 `14/14`，Worker 分层/事件 `9/9`，云状态相邻 `20/20`。
+- main DEV-INSTALL-008 事实独立保留：构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、退出 `1`，尚未打包/安装。首个 SaveWorkspace 失败是属性插入导致的过期连续字符串断言；当前分支改为 XAML 元素关系验证，不把断言校正写成命令实际可达的全量证明。
+- 证据边界：合成 DTO/fake/隔离 STA 和 D 盘可写副本不等于真实 Ludusavi/rclone/Worker IPC、云端/存档、Playnite 宿主/安装呈现、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；不得修改 dirty main。
+- 提交 `02860571` 已推送 `codex/ui-finesse-round2`；下一可执行任务按用户顺序为 R00/R01 小批量问题修复与证据校正，然后才回到 R11-08。

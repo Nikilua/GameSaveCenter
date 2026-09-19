@@ -7481,3 +7481,14 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 验证：Worker `BackupPreviewBehaviorTests 2/2`；SaveCenter STA `R11BackupPreviewBehaviorTests 1/1`；R11-01/02/03/04/05/06 串行 `12/12`；R06 `11/11`；D 盘隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source validation、XAML check、diff check 通过。
 - 边界：只使用合成 Ludusavi JSON、隔离 STA 和测试宿主，未验真实 Ludusavi 输出/Worker IPC/归档变化、Playnite/package-host、presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用。main 安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1，未触碰 main 用户文件。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-06-BACKUP-PREVIEW-20260919.md`；账本 R11-06 已标记“已满足”。下一可执行任务：R11-07 备份结果分层。
+
+## 2026-09-19 Round3 R11-07 备份结果分层
+
+- 核对现有 `CloudTransferStatusDto`、云端状态服务、`RetryCloudUpload` IPC 和重试队列后，补充 `BackupResultDto` 的本地/云端分层；没有重建上传服务或引入新的状态源。
+- `BackupOrchestrator` 在本地历史索引/持久化后先记录本地成功；云端失败设置 RetryScheduled/AuthenticationRequired/Failed 并继续抛出失败任务，`TaskStatusDto.HasPartialSuccess` 保留错误语义而不隐藏本地历史。重试只复制本地已保留版本，不重建 Ludusavi 归档。
+- `TaskCoordinator`、`TaskEventBroadcaster` 的克隆和终态保留分层 DTO；SaveCenter 结果卡片用真实 `SaveCenterView` 显示本地成功、云端状态、补救解释和单独云端重试。Uploaded 负例显示待远端校验并隐藏上传重试。
+- 验证：D 盘可写源码副本执行仓库 `scripts/build.ps1 -SkipTests`，XAML `24/24`，Release solution `0 warning / 0 error`；Worker 分层/终态/事件 `9/9`、云状态相邻 `20/20`；Playnite R11 定向 `14/14`，相关 main 源码门禁校正 `6/6`；`validate-source.py`、XAML、diff check 通过。
+- 中途发现并修复真实 WPF 加载错误：`Style.BasedOn` 不接受 `DynamicResource`，改为 `StaticResource` 后 3 条 SaveCenter STA 夹具通过；记录为本阶段实际行为验证发现，不宣称只靠编译可以覆盖。
+- main 新日志仍独立为 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，未进入打包/安装。main 用户未提交文件保持不动。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-07-BACKUP-RESULT-LAYERS-20260919.md`；提交 `02860571` 已推送 `codex/ui-finesse-round2`。
+- 边界：合成 DTO/fake/隔离 STA/隔离目录，不等价真实 Ludusavi/rclone/Worker IPC、云端、存档、Playnite package-host、呈现帧、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；WPF C 盘 worktree `wpftmp` 权限问题使用 D 盘副本，未绕过系统权限。下一可执行任务：R00/R01 小批量问题修复与证据校正。

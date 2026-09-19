@@ -1670,3 +1670,15 @@
 - `BackupPreviewBehaviorTests 2/2`、`R11BackupPreviewBehaviorTests 1/1`；R11 串行 `12/12`；R06 相邻 `11/11`。Release solution `0/0`，XAML `24/24`，source validation/diff check 通过。
 - 证据：`evidence/R11-06-BACKUP-PREVIEW-20260919.md`。合成 Ludusavi JSON/隔离 STA 只证明解析、状态区分和生产视图绑定；未验真实 Ludusavi 输出、Worker IPC、归档文件系统变化、Playnite/package-host、最终 presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。
 - main DEV-INSTALL-008 `73/588/57`、安装器退出 1 和 main 用户文件仍独立未覆盖；下一可执行任务：R11-07 备份结果分层。
+
+## 2026-09-19 Round3 R11-07 备份结果分层
+
+- 先复用已有 `CloudTransferStatusDto`、云端状态服务、`RetryCloudUpload` IPC 和重试队列；新增 `BackupResultDto` 只表达本地成功与云端后续状态，不新增第二套上传服务。
+- 本地历史版本已索引并持久化后发布本地成功结果；云端排队、镜像失败、认证待处理、传输中、已上传待远端校验、远端已校验分别显示。云端失败仍保留失败任务语义，但 `HasPartialSuccess` 使 Playnite 不隐藏已成功本地历史；单独重试只执行云端复制，不重新创建本地版本。
+- `TaskCoordinator`、实时 `TaskEventBroadcaster` 和终态复制均保留 DTO。SaveCenter 结果卡片和补救按钮使用真实生产视图绑定；`Uploaded` 负例不会显示“单独重试云端上传”，也不会显示“远端已校验”。
+- 验证：Worker 分层/终态/实时事件 `9/9`，云状态相邻组合 `20/20`；R11 Playnite 定向 `14/14`；D 盘隔离 Release `0 warning / 0 error`；XAML `24/24`；source validation、XAML、diff check 通过。
+- 同步校正 main 日志中确认的两条过期 XAML 连续字符串门禁，改为元素/属性关系检查；校正后相关 Playnite `6/6`。这不等于 dirty main 已修复或全量门禁已绿。
+- 真实边界：只用合成 DTO、fake TaskCoordinator、隔离 STA WPF 和隔离输出；未验真实 Ludusavi/rclone/Worker IPC、云端/存档、Playnite package-host/安装呈现、presented frame、物理 DPI/跨屏、UIA/IME、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；WPF C 盘 worktree 的 `wpftmp` 写入权限阻塞，改用 D 盘可写副本验证，未绕过系统权限。
+- main DEV-INSTALL-008 仍独立记录为 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，没有进入打包/安装；main 的 `DashboardView.xaml.cs`、`src.zip`、Dialog/R08 用户文件未触碰。
+- 提交并推送：`02860571`，证据为 `evidence/R11-07-BACKUP-RESULT-LAYERS-20260919.md`。
+- 下一可执行任务：按用户顺序先处理 R00/R01 小批量问题修复与证据校正，再推进依赖已满足的 R11-08。
