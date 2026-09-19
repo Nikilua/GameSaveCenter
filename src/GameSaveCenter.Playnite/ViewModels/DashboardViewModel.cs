@@ -144,6 +144,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string pathRemapOldRoot = string.Empty;
         private string pathRemapNewRoot = string.Empty;
         private string pathRemapSummary = "尚未执行路径迁移。";
+        private PathRemapPreviewDto pathRemapPreview = new PathRemapPreviewDto();
         private string taskReconcileSummary = "尚未协调中断任务。";
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
@@ -688,7 +689,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => pathRemapOldRoot;
             set
             {
-                SetValue(ref pathRemapOldRoot, value ?? string.Empty);
+                var next = value ?? string.Empty;
+                if (!string.Equals(pathRemapOldRoot, next, StringComparison.Ordinal))
+                {
+                    SetValue(ref pathRemapOldRoot, next);
+                    PathRemapPreview = new PathRemapPreviewDto();
+                    PathRemapSummary = "路径已变化，请重新生成预览。";
+                }
                 RaiseCommandStates();
             }
         }
@@ -697,11 +704,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => pathRemapNewRoot;
             set
             {
-                SetValue(ref pathRemapNewRoot, value ?? string.Empty);
+                var next = value ?? string.Empty;
+                if (!string.Equals(pathRemapNewRoot, next, StringComparison.Ordinal))
+                {
+                    SetValue(ref pathRemapNewRoot, next);
+                    PathRemapPreview = new PathRemapPreviewDto();
+                    PathRemapSummary = "路径已变化，请重新生成预览。";
+                }
                 RaiseCommandStates();
             }
         }
         public string PathRemapSummary { get => pathRemapSummary; private set => SetValue(ref pathRemapSummary, value); }
+        public PathRemapPreviewDto PathRemapPreview { get => pathRemapPreview; private set => SetValue(ref pathRemapPreview, value ?? new PathRemapPreviewDto()); }
         public string TaskReconcileSummary { get => taskReconcileSummary; private set => SetValue(ref taskReconcileSummary, value); }
         public StorageAnalysisDto StorageAnalysis { get => storageAnalysis; private set => SetValue(ref storageAnalysis, value ?? new StorageAnalysisDto()); }
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
@@ -2591,7 +2605,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     NewRoot = PathRemapNewRoot
                 },
                 TimeSpan.FromMinutes(2));
-            ApplyOnUi(() => PathRemapSummary = preview.Summary);
+            ApplyOnUi(() =>
+            {
+                PathRemapPreview = preview;
+                PathRemapSummary = preview.Summary;
+            });
             var message = $"预览到 {preview.AffectedRowCount} 条路径需要迁移。\n\n此操作会更新数据库与 Worker 设置，但不会移动任何文件。";
             if (preview.MissingTargetCount > 0)
                 message += $"\n\n其中 {preview.MissingTargetCount} 条目标路径当前不存在；继续将仍应用迁移，取消则按默认策略跳过本次迁移。";

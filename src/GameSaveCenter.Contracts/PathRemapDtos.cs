@@ -17,6 +17,14 @@ namespace GameSaveCenter.Contracts
         public string OldPath { get; set; } = string.Empty;
         public string NewPath { get; set; } = string.Empty;
         public bool TargetExists { get; set; }
+
+        /// <summary>Full path retained for copyable read-only preview cells.</summary>
+        public string OldPathDisplay => OldPath;
+
+        /// <summary>Full remapped path retained for copyable read-only preview cells.</summary>
+        public string NewPathDisplay => NewPath;
+
+        public string TargetStateDisplay => TargetExists ? "目标已存在" : "目标不存在（需明确确认）";
     }
 
     public sealed class PathRemapPreviewDto

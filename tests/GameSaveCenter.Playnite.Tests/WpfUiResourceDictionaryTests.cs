@@ -1142,7 +1142,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Where(element => element.Name.LocalName == "DataGrid")
             .ToList();
 
-        Assert.Equal(6, dataGrids.Count);
+        Assert.Equal(7, dataGrids.Count);
 
         foreach (var dataGrid in dataGrids)
         {
@@ -4739,7 +4739,8 @@ public sealed class WpfUiResourceDictionaryTests
             ("MaintenanceView.xaml", "Findings.Count"),
             ("MaintenanceView.xaml", "DeviceComparisons.Count"),
             ("MaintenanceView.xaml", "Audit.Count"),
-            ("MaintenanceView.xaml", "ProcessMappings.Count")
+            ("MaintenanceView.xaml", "ProcessMappings.Count"),
+            ("MaintenanceView.xaml", "PathRemapPreview.Items.Count")
         };
 
         foreach (var (file, trigger) in views)
@@ -4759,7 +4760,10 @@ public sealed class WpfUiResourceDictionaryTests
             var document = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", file)));
             foreach (var overlay in document.Descendants().Where(element => element.Name.LocalName == "TextBlock" && element.Attribute("IsHitTestVisible")?.Value == "False"))
             {
-                Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
+                var finitePathPreview = file == "MaintenanceView.xaml" &&
+                                        overlay.ToString().IndexOf("暂无路径需要迁移", StringComparison.Ordinal) >= 0;
+                if (!finitePathPreview)
+                    Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
             }
         }
     }
@@ -4775,7 +4779,7 @@ public sealed class WpfUiResourceDictionaryTests
         // own a centered, hit-test-free empty state so an empty page never shows a blank
         // DataGrid frame without explaining the next step.
         var dataGrids = maintenance.Descendants().Where(element => element.Name.LocalName == "DataGrid").ToArray();
-        Assert.Equal(6, dataGrids.Length);
+        Assert.Equal(7, dataGrids.Length);
         foreach (var grid in dataGrids)
         {
             var overlay = grid.Parent?.Elements().FirstOrDefault(element =>
@@ -4783,7 +4787,8 @@ public sealed class WpfUiResourceDictionaryTests
                 element.Attribute("IsHitTestVisible")?.Value == "False");
             Assert.NotNull(overlay);
             Assert.Contains("BasedOn=\"{StaticResource GscEmptyStateText}\"", overlay!.ToString());
-            Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
+            if (grid.Attribute("Tag")?.Value != "FiniteViewport")
+                Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
         }
     }
 

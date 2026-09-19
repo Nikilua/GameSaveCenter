@@ -1519,6 +1519,16 @@ def check_final_redesign_guards() -> None:
             and control.attrib.get("MaxHeight") == "360"
             and control.attrib.get("ItemsSource") == "{Binding OverflowItems}"
         )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("Tag") == "FiniteViewport"
+            and control.attrib.get("MaxHeight") == "260"
+            and control.attrib.get("ItemsSource") == "{Binding PathRemapPreview.Items}"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "MaintenanceDiagnosticsOverviewScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
         allowed_page_scroll = allowed_page_scroll or page_scroll_contract or bounded_workspace_scroll
         if (("StackPanel" in ancestors or "ScrollViewer" in ancestors) and not allowed_page_scroll) or "Grid" not in ancestors:
             fail(

@@ -416,6 +416,38 @@
                                                             <TextBox Style="{StaticResource GscWpfUiTextBox}" Text="{Binding PathRemapNewRoot, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,10"/>
                                                             <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding RunPathRemapCommand}" Content="执行路径迁移" HorizontalAlignment="Left"/>
                                                             <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding PathRemapSummary, TargetNullValue=尚未执行路径迁移。}" Margin="0,10,0,0"/>
+                                                            <TextBlock Text="路径对照预览" FontWeight="SemiBold" Margin="0,12,0,0"/>
+                                                            <TextBlock Text="迁移后路径会写入索引与 Worker 设置；确认前不会写入用户目录，也不会移动文件。点击路径单元格后可 Ctrl+A/C 复制完整路径。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,8"/>
+                                                            <DataGrid x:Name="PathRemapPreviewGrid" Tag="FiniteViewport" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding PathRemapPreview.Items}" MaxHeight="260" MinHeight="60" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True" CanUserAddRows="False" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" SelectionMode="Single" SelectionUnit="CellOrRowHeader" ToolTip="点击路径单元格后可 Ctrl+A/C 复制完整路径" AutomationProperties.Name="路径迁移预览" AutomationProperties.HelpText="显示原路径与迁移后路径；预览不会写入用户目录。">
+                                                                <DataGrid.Columns>
+                                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="类别" Binding="{Binding Category}" Width="90" MinWidth="78"/>
+                                                                    <DataGridTemplateColumn Header="原路径" Width="1.15*" MinWidth="180">
+                                                                        <DataGridTemplateColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBox Text="{Binding OldPathDisplay, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0" TextWrapping="NoWrap" ToolTip="{Binding OldPathDisplay}"/>
+                                                                            </DataTemplate>
+                                                                        </DataGridTemplateColumn.CellTemplate>
+                                                                    </DataGridTemplateColumn>
+                                                                    <DataGridTemplateColumn Header="将写入路径（仅预览）" Width="1.15*" MinWidth="180">
+                                                                        <DataGridTemplateColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBox Text="{Binding NewPathDisplay, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0" TextWrapping="NoWrap" Foreground="{DynamicResource GscAccentBrush}" ToolTip="{Binding NewPathDisplay}"/>
+                                                                            </DataTemplate>
+                                                                        </DataGridTemplateColumn.CellTemplate>
+                                                                    </DataGridTemplateColumn>
+                                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="目标状态" Binding="{Binding TargetStateDisplay}" Width="140" MinWidth="130"/>
+                                                                </DataGrid.Columns>
+                                                            </DataGrid>
+                                                            <TextBlock Text="暂无路径需要迁移。" IsHitTestVisible="False" Margin="0,8,0,0">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding PathRemapPreview.Items.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
                                                         </StackPanel>
                                                     </Border>
                                                     <Border Grid.Row="10" Grid.ColumnSpan="2" Style="{DynamicResource GscDiagnosticHintBubble}" Padding="12" Margin="0,8,0,0">
