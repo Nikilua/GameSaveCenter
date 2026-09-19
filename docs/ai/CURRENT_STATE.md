@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R13-03 手动重试范围
+
+- `680ea83a` 已推送到 `codex/ui-finesse-round2`。先复用现有单项/媒体重试入口、任务中心批量入口和 IPC ledger；新增 `CloudTransferStatusDto.CanManuallyRetry` 与 `ManualRetryScopeDisplay`，维护页明确仅重试当前选中的失败/排队项，只复制已保留的云端源，不重新执行本地备份。
+- 实际状态行为验证：失败/排队可重试，传输中/已上传/已校验不可重试；真实 `RelayCommand.CanExecute` 忙态门控下第二次点击提交数保持 `1`。任务中心既有批量入口仍只处理当前筛选结果并按任务类型/游戏去重；`RetryCloudUpload`/`RetryMediaCloudUpload` 保持同一 RequestId 的 replay protection。
+- 证据：Playnite `8/8`、Core `29/29`、Worker 云状态/部分成功 `19/19`、Worker IPC ledger `6/6`，隔离 Debug `0 warning / 0 error`，XAML `24/24`，source validation/diff check 通过。Playnite named-pipe 类为 `1 passed / 6 skipped / 0 failed`，跳过未计为真实 IPC 通过。证据见 [R13-03 手动重试范围](../design/reviews/ui-finesse-round3-20260915/evidence/R13-03-MANUAL-RETRY-SCOPE-20260919.md)。
+- 只使用合成 DTO、fake/隔离 SQLite、外部隔离构建，未触碰真实云端、存档、媒体或诊断；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
+- 下一可执行任务：`R13-04 暂停与允许时段`，先核对 `CloudUploadQueuePaused`、允许时段、持久化队列状态和进行中上传边界。
+
 ## 当前第三轮 R13-02 下次重试时间
 
 - `6fd22892` 已推送到 `codex/ui-finesse-round2`。复用 `NextAttemptUtc/NextAttemptLocal`，维护页详情显示 `RetryTimingDisplay`：未来给绝对时间和约 N 分钟/小时/天后，到期给“可立即重试”，无时间给“无自动重试”；没有新增每行常驻计时器。

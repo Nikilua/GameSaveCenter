@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R13-03 手动重试范围
+
+- 先查并复用现有维护页单项/媒体重试、任务中心选中/批量重试、`CloudTransferStateService`、`TaskCoordinator` 和 IPC ledger；没有重建云端服务或另造 RequestId 系统。`CanManuallyRetry` 仅允许 `Failed`/`RetryScheduled`，详情明确只重试当前选中云端项，不重新执行本地备份。
+- 新增行为验证覆盖 DTO 状态正负例、真实 `RelayCommand.CanExecute` 忙态门控；传输中/已上传/已校验负例不可重试，第二次点击提交数为 `1`。任务中心批量现有代码按当前筛选结果及稳定任务 ID、任务类型/游戏去重；云端路径保留本地成功与失败分层。
+- 验证：Playnite `R13CloudTransferStageBehaviorTests 8/8`；Core `UiDisplayMappingTests 29/29`；Worker `CloudTransferStateTests|BackupResultLayerTests 19/19`、`IpcRequestLedgerTests 6/6`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。Playnite IPC 客户端类 `1 passed / 6 skipped / 0 failed`，跳过项未算真实 named-pipe 通过。
+- 代码提交 `680ea83a` 已推送；证据：[R13-03 手动重试范围](../design/reviews/ui-finesse-round3-20260915/evidence/R13-03-MANUAL-RETRY-SCOPE-20260919.md)。外部副本/输出已清理；未验真实 Playnite/package-host、真实远端、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未碰、未合并。下一可执行任务：`R13-04 暂停与允许时段`。
+
 ## 2026-09-19 R13-02 下次重试时间
 
 - 先复用现有 `NextAttemptUtc/NextAttemptLocal` 和维护页详情；`RetryTimingDisplay` 同时输出本地绝对时间与约 N 分钟/小时/天后，到期输出可立即重试，空值输出无自动重试。没有添加 Dispatcher/Timer 或每行常驻计时器。

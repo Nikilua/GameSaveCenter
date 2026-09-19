@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R13-03 手动重试范围
+
+- `680ea83a` 已推送。复用现有维护页单项、任务中心单项/批量和 IPC replay ledger；新增 DTO 派生的手动范围说明与可重试状态，失败/排队才允许当前选中项重试，传输中/已上传/已校验不重复提交。云端 retry 只复制已有本地备份/媒体归档，不重建本地版本。
+- `RelayCommand` 忙态负例实际保持第二次提交数为 `1`；任务中心批量入口既有按当前筛选、稳定任务 ID、任务类型/游戏去重语义保持。`RetryCloudUpload` 与 `RetryMediaCloudUpload` 的 replay protection 仍由 `IpcRequestSemantics`、`WorkerIpcClient` 和 SQLite ledger 提供。
+- 证据：Playnite `8/8`、Core `29/29`、Worker 云状态/部分成功 `19/19`、Worker `IpcRequestLedgerTests 6/6`，隔离 Debug `0/0`、XAML `24/24`、source/diff check 通过；named-pipe 客户端行为 `1 passed / 6 skipped / 0 failed`，未将跳过写成通过。证据见 [R13-03 手动重试范围](../design/reviews/ui-finesse-round3-20260915/evidence/R13-03-MANUAL-RETRY-SCOPE-20260919.md)。
+- 边界保持：只用合成/fake/隔离数据和外部构建，不代表真实 Playnite/package-host、真实远端、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动未触碰、未合并。
+- 下一项 `R13-04 暂停与允许时段`：先核对 `CloudUploadQueuePaused`、允许时段策略、持久化状态和进行中上传不被意外取消。
+
 ## 2026-09-19 R13-02 下次重试时间
 
 - `6fd22892` 复用 `NextAttemptUtc/NextAttemptLocal`，用 `RetryTimingDisplay` 同时表达本地绝对时间和有界相对提示；过期时间钳制为“可立即重试”，不产生负倒计时；空值保持“无自动重试”。详情绑定是被动派生值，没有新增常驻计时器。
