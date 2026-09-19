@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-01 归类建议解释（代码已提交，环境待验）
+
+- `7735cd7c` 已推送到 `codex/ui-finesse-round2`。复用现有 `MediaSyncService` 建议算法与来源规则、游戏会话、进程映射、文件名匹配，新增 `MediaClassificationEvidenceDto` 结构化依据；多候选保留各候选依据，无依据显示“待判断”，不伪造目标或置信事实。
+- Media 预览卡继续使用既有有限高度/Recycling/Inspector 滚动与命令链；本批只展示合成证据，不新增服务、IPC、移动、删除或真实数据写入。Worker/Core/Playnite/RenderHarness 夹具已补齐。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0/0`。未验证：Core testhost（项目引用目标框架评估退出 `1`）、Worker restore/测试、Playnite `net462`、RenderHarness、真实宿主/呈现/DPI/UIA/IME/ETW/性能。
+- R14 新隔离构建目录已清理；此前 `.tmp/r13-verify-source` 曾短暂被占用，阶段末已精确删除，未强杀未知进程。main 用户改动、`src.zip` 未碰、未合并；Demo 原目录不可用，沿用恢复生产基线。
+- 下一可执行任务：先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试与相关回归，再推进 `R14-02 预览选择编辑`。
+
 ## 当前第三轮 R13-08 失败分类帮助（代码已提交，环境待验）
 
 - `96a4c6a9` 已推送到 `codex/ui-finesse-round2`。复用稳定 Rclone 错误码，新增无空间 `RCLONE_NO_SPACE`、限流 `RCLONE_RATE_LIMITED`；认证、空间、远端不存在、校验差异、限流各有 display-only 下一步，未知错误不生成建议。

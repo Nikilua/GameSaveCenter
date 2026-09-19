@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R14-01 归类建议解释
+
+- 先核对现有 `MediaSyncService` 建议算法已复用来源规则、游戏会话、进程映射和文件名证据；新增共享 DTO 的结构化依据显示，不重建服务或改变应用/撤销、取消、恢复保护、媒体移动语义。
+- Media 预览卡逐条显示候选游戏的依据；多候选仍无目标，无任何依据显示“待判断”。保留预览列表有限高度、Recycling、Inspector 滚动和原命令绑定。Worker/Core/Playnite/RenderHarness 均使用合成/fake/隔离夹具。
+- 验证：`validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离 `0 warning / 0 error`。Core 定向测试因项目引用目标框架评估退出 `1` 未进入 testhost；Worker restore 退出 `1`，Playnite/RenderHarness 未执行。
+- 代码提交 `7735cd7c` 已推送；R14 隔离构建目录已清理。此前 `.tmp/r13-verify-source` 曾被未知 `dotnet` 进程短暂占用，阶段末已精确删除，未强杀。证据：[R14-01 归类建议解释](../design/reviews/ui-finesse-round3-20260915/evidence/R14-01-CLASSIFICATION-EVIDENCE-20260919.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试，再进入 R14-02。
+
 ## 2026-09-19 R13-08 失败分类帮助
 
 - 先复用 `RcloneFailureClassifier` 和稳定错误码，新增无空间/限流；共享 DTO 只为已识别认证、空间、远端不存在、校验差异、限流提供下一步，未知错误不猜测。维护页把帮助和折叠原始诊断分开，限流沿用有限退避。

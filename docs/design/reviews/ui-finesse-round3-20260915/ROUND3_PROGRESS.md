@@ -118,7 +118,7 @@
 | R13-06 | 离线恢复反馈 | 已满足 | e4244329 | Core 定向 `1/1`；Worker `CloudRetryPersistenceTests 10/10`；Playnite `R13CloudTransferStageBehaviorTests 11/11`；Release 隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`；source validation、diff check 通过 | 维护页现有详情滚动容器/共享卡片样式显示“等待网络恢复/按退避时间重试”和“网络已恢复/按批次上传中”；未运行 RenderHarness/真实呈现 | 合成 DTO/fake/隔离 SQLite；复用现有 Worker 30 秒轮询、每轮最多 10 项、顺序处理和最多 6 次退避重试；无真实网络/Playnite/package-host/宿主性能证明 | [R13-06 离线恢复反馈](evidence/R13-06-OFFLINE-RECOVERY-20260919.md)；当前分支已推送，下一项 R13-07 队列筛选与汇总 |
 | R13-07 | 队列筛选与汇总 | 已实现，待环境验证 | d6c2af90 | 源码校验 `0`；XAML `24/24`；diff check `0`；Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用状态/类型筛选、分页一致性 token、`existingKeys` 去重和选中项恢复；新增游戏、设备、时间筛选及 `GlobalTotalCount`，维护页摘要区分当前筛选与全局计数；筛选栏使用可收缩列，RenderHarness 合成绑定同步 | 未验 Worker/Playnite 编译测试、Release/net462、RenderHarness/真实 Playnite；Demo 原目录不可用，沿用恢复生产基线；未验真实网络、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；`r13-07-source` 首次清理时短暂被占用，阶段末已删除 | [R13-07 队列筛选与汇总](evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)；与 R13-08 一起补跑定向夹具和相关回归，再决定 R14-01 |
 | R13-08 | 失败分类帮助 | 已实现，待环境验证 | 96a4c6a9 | 源码校验 `0`；XAML `24/24`；diff check `0`；Core/Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用稳定错误码；新增无空间/限流分类，认证、空间、远端不存在、校验差异、限流各有下一步；未知错误不猜测；原始错误码/详情默认折叠保留 | 未验定向测试、Release/net462、真实 rclone/远端配额、RenderHarness/真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R13-08 失败分类帮助](evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)；与 R13-07 一起补跑定向测试，再决定 R14-01 |
-| R14-01 | 归类建议解释 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-01 | 归类建议解释 | 已实现，待环境验证 | 7735cd7c | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0/0`；Core 定向测试未进入 testhost，Worker restore 退出 `1`，Playnite 定向测试未执行 | 复用现有建议预览、来源规则/会话/进程映射和文件名匹配；预览卡逐条显示候选依据，多候选保留各候选证据；无依据显示“待判断”且不生成目标 | 未验 Worker/Playnite 定向测试、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-01 归类建议解释](evidence/R14-01-CLASSIFICATION-EVIDENCE-20260919.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试，再推进 R14-02 |
 | R14-02 | 预览选择编辑 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-03 | 部分成功处理 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-04 | 撤销边界说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -324,6 +324,14 @@
 - 已加入 Core 正例/未知错误负例、Worker 无空间/限流分类和 Playnite 详情绑定源行为夹具；验证：源码校验通过、XAML `24/24`、diff check 通过。受当前唯一 SDK `9.0.302` 缺失 Workload resolver 目录影响，Core/Worker/Playnite 定向测试、Release/net462、RenderHarness 尚未执行，不写成通过。
 - 证据只来自源码、XAML 结构门禁和新增合成夹具；未运行真实 rclone/网络限流/远端配额、Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`r13-07-source` 首次清理时短暂被占用，阶段末已删除。
 - 下一可执行小批量：在可用 SDK/Workload 环境同时补跑 R13-07/R13-08 定向测试和相关回归；通过后推进 `R14-01 归类建议解释`。
+
+## 2026-09-19 Round3 R14-01 归类建议解释
+
+- `7735cd7c` 先复用现有 `MediaSyncService.BuildClassificationSuggestion` 和本地证据源，新增 `MediaClassificationEvidenceDto`；来源规则、游戏会话、进程映射和文件名匹配都保留具体依据，多候选保留候选游戏，不生成目标；无依据显示“待判断”。
+- Media 预览沿用既有 Inspector、有限高度、Recycling 虚拟化、滚动和命令确认/应用/撤销链。RenderHarness 合成数据加入有依据/无依据样本；Worker/Core/Playnite 源行为夹具覆盖正例与负例。本批没有移动、删除媒体或写真实存档/云端。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0 warning / 0 error`。Core 定向测试未进入 testhost（项目引用目标框架评估退出 `1`），Worker restore 退出 `1`，Playnite/RenderHarness 未执行。
+- 证据只来自合成/fake/隔离数据；未验真实 Playnite/package-host、最终呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。Demo 原目录不可用，沿用恢复生产基线；R14 隔离构建目录已清理，此前 `.tmp/r13-verify-source` 曾短暂被占用，阶段末已精确删除，未强杀未知进程；main 用户改动未触碰、未合并。
+- 下一可执行小批量：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向夹具与相关回归，通过后推进 `R14-02 预览选择编辑`。
 
 ## 2026-09-19 R00/R01 当前提交复核
 
