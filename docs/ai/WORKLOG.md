@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R14-03 部分成功处理
+
+- 先核对最新 MediaSyncService：批量归类、忽略、恢复本来已逐项捕获失败，但 UI 只提示首条原因；本阶段复用 `MediaInboxBatchResultDto`，新增失败集合、稳定 ID 和原操作/目标留存。
+- Media 收件箱新增有限高度/Recycling 失败列表与“仅重试失败项”命令；重试请求只来自上次失败集合，成功项不会再次执行，重试后的失败集合按新结果替换。
+- Worker 新增真实隔离 SQLite/fake 部分失败夹具；Playnite 新增失败集合、命令和列表源契约。代码提交 `aef251b1` 已推送到 `codex/ui-finesse-round2`。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过；Worker/Playnite 定向运行、Release/net462、RenderHarness 未执行。
+- 使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，main 用户改动未碰、未合并，没有新 artifacts/.tmp。证据：[R14-03 部分成功处理](../design/reviews/ui-finesse-round3-20260915/evidence/R14-03-PARTIAL-RETRY-20260920.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03 定向测试与回归，再推进 `R14-04 撤销边界说明`。
+
 ## 2026-09-20 R14-02 预览选择编辑
 
 - 复用现有媒体归类预览批次和稳定 `MediaId`，补齐预览排除、纳入数量汇总和高置信目标编辑；应用命令现在以 `SelectedHighConfidenceCount` 为门禁，排除全部可应用项时不可执行。

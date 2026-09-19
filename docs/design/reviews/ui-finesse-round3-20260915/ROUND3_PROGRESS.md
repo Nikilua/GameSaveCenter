@@ -120,7 +120,7 @@
 | R13-08 | 失败分类帮助 | 已实现，待环境验证 | 96a4c6a9 | 源码校验 `0`；XAML `24/24`；diff check `0`；Core/Worker/Playnite 定向夹具已加入但因主机 SDK/Workload restore 阻塞未执行 | 复用稳定错误码；新增无空间/限流分类，认证、空间、远端不存在、校验差异、限流各有下一步；未知错误不猜测；原始错误码/详情默认折叠保留 | 未验定向测试、Release/net462、真实 rclone/远端配额、RenderHarness/真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R13-08 失败分类帮助](evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)；与 R13-07 一起补跑定向测试，再决定 R14-01 |
 | R14-01 | 归类建议解释 | 已实现，待环境验证 | 7735cd7c | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0/0`；Core 定向测试未进入 testhost，Worker restore 退出 `1`，Playnite 定向测试未执行 | 复用现有建议预览、来源规则/会话/进程映射和文件名匹配；预览卡逐条显示候选依据，多候选保留各候选证据；无依据显示“待判断”且不生成目标 | 未验 Worker/Playnite 定向测试、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-01 归类建议解释](evidence/R14-01-CLASSIFICATION-EVIDENCE-20260919.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试，再推进 R14-02 |
 | R14-02 | 预览选择编辑 | 已实现，待环境验证 | 69cf2a72 | `validate-source.py`、XAML `24/24`、`git diff --check`；Contracts/Core Release 隔离构建 `0 warning / 0 error`；Core 测试宿主未产出可签收结果，Worker/Playnite 未执行 | 预览卡支持按稳定 MediaId 排除条目；高置信建议可在当前游戏目录中调整目标，汇总显示纳入/排除/可应用数量；排除项不提交，全部排除时命令门禁同步禁用 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；本批临时构建目录已清理 | [R14-02 预览选择编辑](evidence/R14-02-CLASSIFICATION-SELECTION-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试，再推进 R14-03 |
-| R14-03 | 部分成功处理 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R14-03 | 部分成功处理 | 已实现，待环境验证 | aef251b1 | `validate-source.py`、XAML `24/24`、`git diff --check`；Worker 逐项失败夹具已加入但未执行 | 批量归类/忽略/恢复保留逐项失败 ID 与原因；失败列表为有限高度/Recycling，重试确认只提交上次失败项，成功项不会再次执行 | 未验 Worker/Playnite 定向运行、Release/net462、RenderHarness、真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R14-03 部分成功处理](evidence/R14-03-PARTIAL-RETRY-20260920.md)；先在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03，再推进 R14-04 |
 | R14-04 | 撤销边界说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-05 | 重复媒体识别视图 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R14-06 | 批量目标防误选 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -340,6 +340,14 @@
 - 已加入 Core 选择状态、Worker 选中稳定 ID/合法目标行为和 Playnite XAML/命令绑定源契约夹具。`validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0 warning / 0 error` 通过；Core 测试项目在当前 SDK 下未产出可运行结果，Worker/Playnite/RenderHarness 未执行。
 - 本批只用合成 DTO、fake 服务和隔离目录；没有写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护、有限列表和 net462 路径保持。`.tmp/r14-02-build` 已精确清理，main 用户改动和 `src.zip` 未碰、未合并。
 - 下一可执行小批量：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向夹具和相关回归，确认目标覆盖与排除项的运行时行为后推进 `R14-03 部分成功处理`。
+
+## 2026-09-20 Round3 R14-03 部分成功处理
+
+- `aef251b1` 复用现有 `MediaSyncService.ReassignBatchAsync`、`IgnoreBatchAsync`、`RestoreIgnoredBatchAsync` 的逐项 best-effort 结果，不改变成功项的归类/忽略/恢复或媒体副本语义。ViewModel 保存失败项的稳定 `MediaId` 和逐项错误原因。
+- Media 收件箱新增有限高度、Recycling 的失败明细列表和“仅重试失败项”命令；重试使用上次失败集合与原归类目标，不读取当前列表选择，不把已成功项重新提交。当前批次失败为零时提示区隐藏，避免伪造待处理状态。
+- 已加入 Worker 合成 SQLite/fake 夹具，验证一个有效忽略项成功、一个缺失稳定 ID 项保留失败原因且成功项状态已更新；Playnite 源契约夹具覆盖失败集合、命令绑定和有限列表。源码校验、XAML `24/24`、diff check 通过；Worker/Playnite 测试未执行。
+- 本批只使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；游戏选框、滚动条、取消/错误、恢复保护、有限列表性能和 net462 路径保持；main 用户改动和 `src.zip` 未碰、未合并。
+- 下一可执行小批量：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03 定向夹具和相关回归，确认真实 Worker/Playnite 行为后推进 `R14-04 撤销边界说明`。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

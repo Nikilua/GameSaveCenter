@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R14-03 部分成功处理（代码已提交，环境待验）
+
+- `aef251b1` 已推送到 `codex/ui-finesse-round2`。复用现有媒体批量归类/忽略/恢复的逐项 best-effort 结果，UI 保存失败稳定 MediaId 和逐项原因，并提供只重试失败集合的命令。
+- 失败列表使用有限高度和 Recycling；重试沿用原批次操作与归类目标，不读取新的列表选择，成功项不会再次提交。Worker 成功项/失败项和媒体归档副本语义保持。
+- 已验证：`validate-source.py`、XAML `24/24`、`git diff --check`；Worker 隔离行为夹具和 Playnite 源契约夹具已加入但未执行。未验证 Worker/Playnite 运行时、Release/net462、RenderHarness、真实宿主/呈现/DPI/UIA/IME/ETW/性能。
+- 只用合成/fake/隔离数据；没有新的 artifacts/.tmp 产物。Demo 原目录不可用，沿用恢复生产基线；main 用户改动、`src.zip` 未碰、未合并。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03 定向测试与相关回归，再推进 `R14-04 撤销边界说明`。
+
 ## 当前第三轮 R14-02 预览选择编辑（代码已提交，环境待验）
 
 - `69cf2a72` 已推送到 `codex/ui-finesse-round2`。复用现有媒体归类预览批次、稳定 `MediaId`、Worker 重验和应用/撤销链；预览项现在可排除，且高置信建议可在当前游戏目录中调整目标。
