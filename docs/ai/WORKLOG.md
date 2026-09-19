@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-19 R12-07 预览失效重验
+
+- 先核对并复用现有 `DashboardViewModel`、`RestoreOrchestrator`、`RestoreReadinessService`、版本/映射 DTO 和 PreRestore 链路；`00724e62` 只补确认返回后的游戏/版本身份守卫。确认期间切换对象会清空流程并拒绝旧确认，不改变命令、取消/错误、选框、滚动或 net462。
+- Worker 既有最新映射/精确 `BackupId` 解析和目标重预览已由行为测试钉住：调用顺序为 `preview → write → post-validation`。新增同大小归档替换夹具，Manifest SHA-256 不一致时二次 readiness 返回 `Corrupted/Failed`。
+- 验证：隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；Playnite R12 `13/13`；Worker `RestoreReadinessTests|RestoreOrchestratorTests 27/27`；`validate-source.py`、`git diff --check` 通过。已推送 `00724e62`。
+- 证据：[R12-07 预览失效重验证据](../design/reviews/ui-finesse-round3-20260915/evidence/R12-07-RESTORE-REVALIDATION-20260919.md)。证据仅使用合成 Manifest/归档、fake Worker 和隔离目录；未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户 R08 改动和 `src.zip` 未触碰、未合并。下一可执行任务：R12-08 恢复结果报告。
+
 ## 2026-09-19 R12-06 恢复冲突说明
 
 - 先复用现有 `RestoreReadinessDto`、`TaskStatusDto`、恢复错误码和 `RestoreWorkflowProgress`；`423856b2` 只新增原因分类与步骤级处理建议，覆盖游戏运行、操作锁、磁盘空间、目标权限和未知写入失败。没有新增恢复服务/DTO/IPC，也没有改变命令、取消、错误传播、PreRestore、回滚、游戏选框、滚动条或 net462。

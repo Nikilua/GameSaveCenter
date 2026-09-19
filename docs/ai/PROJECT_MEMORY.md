@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-19
 
+## 2026-09-19 R12-07 预览失效重验
+
+- `00724e62` 复用 `DashboardViewModel` 的确认流程和 Worker 既有映射/readiness/PreRestore 能力，只增加确认返回后的游戏/版本身份守卫；变化时重置流程并拒绝过期确认。
+- 既有 Worker 在写入前重解析目标并执行预览、写入后做结果校验；本阶段用真实 fake 调用记录固定 `preview → write → post-validation`，并用同大小不同内容的归档验证 Manifest SHA-256 能识别失效。
+- 证据与验证：Playnite R12 `13/13`、Worker `27/27`、Debug `0/0`、XAML `24/24`、source/diff check 通过；已推送 `00724e62`。无 XAML/视觉资源改动，未改变命令、取消/错误、选框、滚动、恢复保护或 net462。
+- 仍只覆盖合成/fake/隔离目录；未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能。Demo 原目录不可用，沿用恢复生产基线；main 尚未合并且用户改动未触碰。下一项 R12-08 恢复结果报告。
+
 ## 2026-09-19 R12-06 恢复冲突说明
 
 - 现有恢复链已经提供 `RestoreReadinessDto`、`TaskStatusDto`、稳定错误码和四阶段 `RestoreWorkflowProgress`；本阶段提交 `423856b2` 复用这些能力，用 `RestoreFailureExplanation` 将游戏运行、操作锁、磁盘空间、目标权限与未知原因映射为处理步骤，不新建服务或 DTO。

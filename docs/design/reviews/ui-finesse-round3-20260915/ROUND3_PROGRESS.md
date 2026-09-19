@@ -108,7 +108,7 @@
 | R12-04 | 恢复保护备份 | 已满足 | e4e42f40 | Worker `RestoreOrchestratorTests 12/12`；Playnite `R12RestoreWorkflowBehaviorTests 7/7`；资源字典 `137/39/0`；隔离 Release `0/0`、Core `85/85`、Worker `326/326`、XAML `24/24`；source `68` 类/WPF `84` 类全返回 0 | 保护备份作为执行阶段当前子阶段；失败统一显示中止原因，成功显示已创建并锁定；首次失败不进入目标写入，重试使用最新当前状态 | 合成/fake/隔离目录与 SQLite、STA WPF/offscreen logical DIP；未验真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 最新安装前源测试仍 `273/18/1`，未修改 dirty main | [R12-04 恢复保护备份证据](evidence/R12-04-RESTORE-PROTECTION-20260919.md)；当前分支已推送，下一项 R12-05 |
 | R12-05 | 远端下载进度 | 已满足 | 23e5b9d4 | Playnite `R12RemoteStageProgressBehaviorTests 3/3`；Worker `RemoteBackupStagingSafetyTests 22/22`；最终 Debug 隔离 solution 构建 `0 warning / 0 error`；XAML `24/24`、source validation、diff check 通过 | 维护页绑定现有 TaskCoordinator 事件流，区分准备/下载到隔离区/一致性校验/版本确认/等待恢复；取消按钮只在活动态出现；成功不写成恢复完成；取消、失败和隔离清理结果分别投影，保留原选框、滚动条、命令/绑定和恢复保护 | 合成 DTO/fake/隔离目录、net462 Playnite 测试程序集；全量隔离 WPF 测试在既有 `R07ResizeStressBehaviorTests` 处失败并按门禁停止，未改写为通过；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线 | [R12-05 远端下载进度证据](evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)；当前分支已推送，下一项 R12-06 恢复冲突说明 |
 | R12-06 | 恢复冲突说明 | 已满足 | 423856b2 | Playnite R12 恢复流程/冲突说明 `11/11`；Worker `RestoreOrchestratorTests 12/12`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 游戏运行、操作锁、磁盘空间、目标权限和未知写入失败分别给出处理步骤；行为测试验证阶段状态、前置失败不越过执行、权限负例与 XAML HelpText 绑定；不建议无依据关闭安全机制 | 合成 DTO/fake、隔离目录、net462 Playnite 测试程序集；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰 | [R12-06 恢复冲突说明证据](evidence/R12-06-RESTORE-CONFLICT-EXPLANATION-20260919.md)；当前分支已推送，下一项 R12-07 预览失效重验 |
-| R12-07 | 预览失效重验 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R12-07 | 预览失效重验 | 已满足 | 00724e62 | Playnite R12 `13/13`；Worker 恢复就绪/编排合计 `27/27`；隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation、diff check 通过 | 确认返回后重新比较游戏/版本身份，切换对象不提交旧确认；Worker 按最新映射和精确 BackupId 重验目标，实际写入前后保留预览；同大小不同内容的归档按 SHA-256 识别失效 | 合成 Manifest/归档、fake Worker、隔离目录和 net462 Playnite 测试程序集；未验真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未触碰 | [R12-07 预览失效重验证据](evidence/R12-07-RESTORE-REVALIDATION-20260919.md)；当前分支已推送，下一项 R12-08 恢复结果报告 |
 | R12-08 | 恢复结果报告 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-01 | 队列阶段展示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R13-02 | 下次重试时间 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -244,6 +244,13 @@
 - 新增行为测试 `R12RestoreConflictExplanationBehaviorTests 4/4`，并与既有 `R12RestoreWorkflowBehaviorTests 7/7` 合并为 Playnite `11/11`；包含游戏运行、操作锁、磁盘空间、权限正例与泛化写入失败负例，另验证 `ResolutionDisplay`/Automation HelpText 绑定。
 - 最终隔离 Debug 构建 XAML `24/24`、solution `0 warning / 0 error`；Worker `RestoreOrchestratorTests 12/12`；`python scripts/validate-source.py` 与 `git diff --check` 通过。未运行全量 WPF，未把既有 R07 resize/focus 边界改写为通过。
 - 证据只来自合成 DTO/fake、隔离输出、net462 Playnite 测试程序集；未运行真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能，未写真实存档/媒体/云端/诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并。下一可执行小批量为 `R12-07 预览失效重验`。
+
+## 2026-09-19 Round3 R12-07 预览失效重验
+
+- `00724e62` 先复用现有恢复确认、映射、readiness 和 PreRestore 链路：确认对话框返回后重新比较当前游戏/版本身份，变化时清空流程并拒绝旧确认；Worker 仍按最新映射和精确 `BackupId` 解析目标。
+- 新增行为证据覆盖确认守卫正负例、同大小归档内容变化和恢复调用顺序。隔离 Worker 记录 `preview → write → post-validation` 为 `true → false → true`；Manifest SHA-256 变化返回 `Corrupted/Failed`，不以大小相同视为有效。
+- 最终隔离 Debug solution `0 warning / 0 error`、XAML `24/24`、Playnite `13/13`、Worker `27/27`；`python scripts/validate-source.py` 与 `git diff --check` 通过。无 XAML/视觉资源改动，选框、滚动条、命令绑定、取消/错误和恢复保护保持。
+- 证据只来自合成 Manifest/归档、fake Worker、隔离目录和 net462 程序集；未运行真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能，未写真实存档/媒体/云端/诊断。Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未触碰、未合并。下一可执行小批量为 `R12-08 恢复结果报告`。
 
 ## 2026-09-19 R00/R01 当前提交复核
 
