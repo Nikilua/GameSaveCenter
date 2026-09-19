@@ -33,6 +33,31 @@ public sealed class UiDisplayMappingTests
         Assert.Equal("已上传 2 · 已校验 3", summary.GuaranteeDisplay);
     }
 
+    [Theory]
+    [InlineData("Pending", "", "等待队列")]
+    [InlineData("RetryScheduled", "RCLONE_NETWORK_FAILED", "等待网络")]
+    [InlineData("RetryScheduled", "RCLONE_AUTH_FAILED", "等待重试")]
+    [InlineData("Transferring", "", "上传中")]
+    [InlineData("Verifying", "", "验证中")]
+    [InlineData("RemoteVerified", "", "已验证")]
+    [InlineData("Uploaded", "", "等待验证")]
+    public void CloudTransferExposesTheActualQueuePhase(string state, string errorCode, string expected)
+    {
+        var transfer = new CloudTransferStatusDto { State = state, LastErrorCode = errorCode };
+
+        Assert.Equal(expected, transfer.QueuePhaseDisplay);
+    }
+
+    [Fact]
+    public void CloudSummarySeparatesWaitingWindowFromRunningQueue()
+    {
+        var outsideWindow = new CloudTransferSummaryDto { OutsideAllowedWindow = true };
+        var running = new CloudTransferSummaryDto();
+
+        Assert.Equal("当前不在允许时段", outsideWindow.QueueControlDisplay);
+        Assert.Equal("自动队列运行中", running.QueueControlDisplay);
+    }
+
     [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {

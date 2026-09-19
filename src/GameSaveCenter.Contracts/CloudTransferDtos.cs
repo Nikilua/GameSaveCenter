@@ -98,6 +98,24 @@ public sealed class CloudTransferStatusDto
         _ => string.IsNullOrWhiteSpace(State) ? "未启用" : "未知状态"
     };
 
+    /// <summary>Readable queue phase; network backoff stays distinct from a generic retry.</summary>
+    public string QueuePhaseDisplay => State switch
+    {
+        "Pending" => "等待队列",
+        "RetryScheduled" when IsNetworkWait => "等待网络",
+        "RetryScheduled" => "等待重试",
+        "Transferring" => "上传中",
+        "Verifying" => "验证中",
+        "RemoteVerified" => "已验证",
+        "Uploaded" => "等待验证",
+        "Paused" => "等待策略时段",
+        _ => StateDisplay
+    };
+
+    private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
+        && (string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase));
+
     /// <summary>Explains what has actually been established about the remote copy.</summary>
     public string GuaranteeLevelDisplay => State switch
     {
