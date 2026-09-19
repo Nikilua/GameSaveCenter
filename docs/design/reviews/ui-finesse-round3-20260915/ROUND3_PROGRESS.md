@@ -133,7 +133,7 @@
 | R15-05 | 任务来源定位 | 已实现，待环境验证 | 0d1ff346 | `validate-source.py`、XAML `24/24`、`git diff --check`；当前分支外部源码副本 solution Release `0 errors/2 条既有 warning`；Playnite R15 `10/10`、Worker 来源/任务回归 `18/18`；WPF 静态 `0/28/162` | 任务详情来源卡片复用共享上下文按钮；游戏维持原入口，版本/媒体批次/云队列按稳定 ID 精确定位；删除或缺失对象保留诊断且不跳同名/邻近对象 | 未验真实 Playnite/package-host、删除/重命名后的宿主呈现、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-05 任务来源定位](evidence/R15-05-TASK-SOURCE-LOCATION-20260920.md)；下一项 `R15-06 耗时与吞吐`，先核对可靠采样和未知总量语义 |
 | R15-06 | 耗时与吞吐 | 已实现，待环境验证 | 6f65638e | `validate-source.py`、XAML `24/24`、`git diff --check`；最终提交外部隔离 Release solution `0 errors/2 条既有 warning`；Core `106/106`；Worker 定向 `20/20`；Playnite R15 `11/11`；WPF 静态 `0/28/162` | 复用现有 `StartedUtc/FinishedUtc` 耗时和 `TaskProgress`；新增明确总量的平滑采样、速率/ETA 条件显示、10 秒停顿隐藏和 15 秒采样重置；整库游戏数、媒体专属候选文件数、已知下载总字节才接入，未知总量不猜 | Worker 全量门禁保留真实失败：`342 passed/1 skipped/1 failed/344 total`，失败为既有 `MediaSyncServiceTests.cs:570`；未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；linked `obj` 仍 Access denied，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-06 耗时与吞吐](evidence/R15-06-TASK-THROUGHPUT-20260920.md)；下一项 `R15-07 失败结果复制`，先核对现有任务摘要、错误码和脱敏复制入口 |
 | R15-07 | 失败结果复制 | 已实现，待环境验证 | 37dd4a03 | `validate-source.py`、XAML `24/24`、`git diff --check`；Playnite R15 定向 `6/6`；R06/R12/R15 相邻回归 `14/14`；外部隔离 Release solution `7 warnings/0 errors`；WPF 静态 `0/28/162` | 复用现有任务复制命令和脱敏入口；失败卡显示 240 字符以内脱敏首行摘要与错误码；技术详情默认收起，使用有限高、只读可选择 TextBox；剪贴板 COM/InvalidOperation 瞬时失败最多 4 次，失败不清除当前选中任务 | 未验真实 Playnite/package-host、RenderHarness/最终呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能；linked `obj` 仍 `Access denied`，外部副本构建警告为 `NU1900`；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并 | [R15-07 失败结果复制](evidence/R15-07-TASK-FAILURE-COPY-20260920.md)；下一项 `R15-08 清理历史范围`，先核对运行中任务保护、恢复账本和日期/状态预览 |
-| R15-08 | 清理历史范围 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R15-08 | 清理历史范围 | 已满足 | a07f0518、88bde5de、a841e42c、77d5f346 | Worker 清理/隔离账本回归 `16/16`；Playnite `net462` 维护页契约 `3/3`；XAML `24/24`；source/diff 门禁通过 | 复用已有 Retention Simulation、日期/原因/影响摘要和持久化隔离账本；预览句柄/过期/状态变化校验，运行中备份/恢复/媒体共享锁忙碌跳过，锁定/健康/PreRestore 保护，应用二次确认 | 未验真实 Playnite/package-host、RenderHarness presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R15-08 清理历史范围](evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md)；下一项 `R16-01 设置搜索定位`，先核对现有设置页定位能力 |
 | R16-01 | 设置搜索定位 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-02 | 策略差异预览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-03 | 模板应用范围 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -441,6 +441,14 @@
 - `R15TaskFailureCopyTests` `6/6`，R06/R12/R15 相邻回归 `14/14`；外部隔离 Release solution `7 warnings/0 errors`（均为离线 NuGet `NU1900`），Playnite `net462` 定向构建保留 2 条既有 `MediaCenterView.xaml.cs:664` warning；XAML `24/24`、source/diff、WPF `0/28/162` 通过。R06 旧测试夹具先按旧列顺序失败，已同步当前“阶段”列后重跑通过。
 - 只用合成 DTO、fake 剪贴板 setter、隔离 STA WPF 和外部源码副本，未写真实存档、媒体、云端、诊断或系统剪贴板；Demo 原目录不可用，沿用恢复生产基线。未验真实 Playnite/package-host、RenderHarness presented frame、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；linked `obj` 的 `Access denied` 仍是环境边界。main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-07 失败结果复制](evidence/R15-07-TASK-FAILURE-COPY-20260920.md)。
 - 下一可执行小批量：`R15-08 清理历史范围`，先核对已有历史清理命令、运行中任务保护、恢复账本以及日期/状态预览与真实执行集合的一致性。
+
+## 2026-09-20 Round3 R15-08 清理历史范围
+
+- 先核对既有 `RetentionSimulationService`、预览 DTO、维护页和 SQLite 隔离账本；没有重建清理服务。全局预览已有 `PreviewId`、生成时间、现有/保留/候选数量、预计释放、锁定/健康恢复点/PreRestore 影响统计和隔离账本占用，候选明细保留日期、路径和原因，维护页实际绑定日期/原因/摘要并将列表限制为最多 200 条、有限高 240。
+- 应用要求明确确认且只接受 Worker 持有的预览句柄；预览过期、时间不一致、候选/策略/文件身份变化都会拒绝。执行按游戏取得与备份、恢复、媒体共用的 `GameOperationKind.Retention` 锁，忙碌游戏跳过；清理仅处理备份根目录内 ZIP，保护版本和必要恢复账本不被删除，隔离账本支持重启后逐条协调或人工确认。
+- `RetentionSimulationServiceTests` + `RetentionQuarantineRecoveryTests` 在当前提交外部隔离副本 `16/16`；Playnite `MaintenanceReportSourceTests` `3/3`；`validate-source.py`、XAML `24/24`、diff check 通过。本批没有生产 XAML 改动，沿用上一批 WPF `0/28/162` 静态结果。一次陈旧剪贴板源码断言已按 R15-07 现行重试入口修正并重跑通过。
+- 未验真实 Playnite/package-host、RenderHarness presented frame、DPI/跨屏、UIA/IME、ETW 或宿主性能；隔离副本已清理，未写真实存档/媒体/云端/诊断/系统剪贴板，Demo 原目录不可用；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R15-08 清理历史范围](evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md)。
+- 下一可执行小批量：`R16-01 设置搜索定位`，先查现有设置页筛选/分组/滚动和命令绑定，再决定是否需要实现；R15-08 的真实宿主呈现和性能仍待验。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

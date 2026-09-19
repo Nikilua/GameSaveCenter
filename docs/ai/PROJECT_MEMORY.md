@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R15-08 清理历史范围（2026-09-20）
+
+- 现行清理能力来自 `88bde5de`、`a841e42c`、`77d5f346`；`a07f0518` 只补当前提交下的行为证据与陈旧测试修正，没有重建 Retention Simulation。全局预览提供预览句柄/生成时间、现有/保留/候选数量、预计释放、锁定/健康恢复点/PreRestore 影响和隔离账本占用；候选带日期、路径和“超出保留窗口或桶位”原因，维护页绑定日期/原因/摘要，列表最多 200 条、有限高 240。
+- 应用必须明确确认并匹配 Worker 持有的预览句柄；过期、策略/候选/归档身份变化会拒绝。每个游戏使用与备份、恢复、媒体共用的 `GameOperationKind.Retention` 锁，运行中操作计入忙碌跳过；只处理备份根目录内 ZIP，锁定、健康恢复点、PreRestore 不进入候选，持久化隔离账本先于索引/物理处理，重启后可恢复或人工确认。清理链路不删除任务记录。
+- 当前证据：Worker 清理与隔离账本 `16/16`，Playnite `net462` 维护页契约 `3/3`；source、XAML `24/24`、diff 门禁通过；生产 XAML 未改，WPF 静态沿用上一批 `0/28/162`。首次相邻运行暴露的 R15-07 旧 `Clipboard.SetText` 断言已更新为当前 `ClipboardRetry.TrySetTextAsync` 并重跑通过。
+- 未验真实 Playnite/package-host、RenderHarness presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，linked `obj` 仍 `Access denied`。只用合成/fake/隔离目录，未写真实存档、媒体、云端、诊断或系统剪贴板。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md`；main 用户改动未碰、未合并。
+- 下一项：`R16-01 设置搜索定位`，先检查现有设置页搜索/分组/滚动/命令能力，再决定实现或补“已满足”证据。
+
 ## 第三轮 R15-07 失败结果复制（2026-09-20）
 
 - `37dd4a03` 先复用已有 `CopyTaskErrorCommand`、任务错误字段、恢复报告脱敏文本和剪贴板入口；新增 Contracts 共享 `ClipboardTextSanitizer`、`FailureSummary`、`SafeDetailMessage`、完整复制格式化器和最多 4 次 COM/`InvalidOperationException` 瞬时失败重试。完整 payload 仍含 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID，但 formatter 返回前已脱敏。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R15-08 清理历史范围（既有实现已满足，隔离证据完成；真实宿主待验）
+
+- 既有 `88bde5de`、`a841e42c`、`77d5f346` 已提供全局 Retention Simulation、日期/原因/影响预览、共享游戏锁和持久化隔离账本；`a07f0518` 补齐当前提交下的行为/维护页证据并修正一条 R15-07 后陈旧源码断言。
+- 预览保留 `PreviewId`/生成时间、现有/保留/候选数量、预计释放、锁定/健康恢复点/PreRestore 影响和隔离账本占用；候选行绑定日期、原因、路径，列表最多 200 条且有限高 240。应用要求明确二次确认和 Worker 预览句柄，过期/状态/文件身份变化拒绝；运行中的备份、恢复、媒体操作按共享 `GameOperationKind.Retention` 锁跳过，保护版本与恢复账本不被清理。
+- 当前外部隔离副本验证：`RetentionSimulationServiceTests` + `RetentionQuarantineRecoveryTests` `16/16`；Playnite `net462` `MaintenanceReportSourceTests` `3/3`；`validate-source.py`、XAML `24/24`、diff check 通过。生产 XAML 未改，WPF 静态沿用上一批 `0/28/162`。
+- 未验真实 Playnite/package-host、RenderHarness presented frame、DPI/跨屏、UIA/IME、ETW/宿主性能；Demo 原目录不可用，linked `obj` 的 `Access denied` 仍存在。只用合成/fake/隔离目录，未写真实存档、媒体、云端、诊断或系统剪贴板；main 用户改动和 `src.zip` 未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md`。
+- 下一项：`R16-01 设置搜索定位`，先核对已有设置页定位能力与绑定，再做小批量实现或“已满足”证据。
+
 ## 当前第三轮 R15-07 失败结果复制（代码已提交，隔离验证完成；真实宿主待验）
 
 - `37dd4a03` 复用已有 `CopyTaskErrorCommand`、任务错误字段、恢复报告脱敏文本和剪贴板重试入口；新增 Contracts 共享 `ClipboardTextSanitizer`、短摘要 `FailureSummary`、安全详情 `SafeDetailMessage`、可测试的复制格式化器和最多 4 次 COM/`InvalidOperationException` 瞬时失败重试。完整复制继续保留 `ErrorMessage`、`ErrorCode`、`DetailMessage` 和任务 ID。

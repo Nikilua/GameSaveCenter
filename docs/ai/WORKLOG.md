@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R15-08 清理历史范围
+
+- 先核对既有 Retention Simulation、维护页和 SQLite 隔离账本，确认任务表方向已由现有实现覆盖：预览含日期、候选原因、保留/保护影响、预计释放和隔离账本状态，应用必须二次确认并匹配 Worker 预览句柄。
+- 运行中备份/恢复/媒体操作共享 `GameOperationKind.Retention` 锁，忙碌游戏跳过；候选/策略/归档身份变化拒绝执行；清理仅处理安全范围内 ZIP，隔离账本先记账并支持重启后恢复/人工确认，不删任务记录。
+- `a07f0518` 补充日期/原因/负例和维护页契约夹具，并修正 R15-07 后陈旧的 `Clipboard.SetText` 源码断言。当前外部副本 Worker 清理/隔离账本 `16/16`、Playnite `net462` 维护页 `3/3`；source/XAML `24/24`/diff 通过，NU1900 为离线漏洞源警告，Playnite 保留 `MediaCenterView.xaml.cs:664` 既有 2 条 warning。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、ETW/宿主性能；只用合成/fake/隔离目录，Demo 原目录不可用，未写真实存档/媒体/云端/诊断/系统剪贴板。证据：[R15-08 清理历史范围](../design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md)。下一项：`R16-01 设置搜索定位`。
+
 ## 2026-09-20 R15-07 失败结果复制
 
 - 在 `37dd4a03` 中复用已有 `CopyTaskErrorCommand`、错误字段、恢复报告脱敏文本和剪贴板入口；新增 Contracts 共享 `ClipboardTextSanitizer`、240 字符以内 `FailureSummary`、安全 `SafeDetailMessage`、完整复制格式化器和最多 4 次瞬时失败重试。完整复制仍保留错误摘要、错误码、详情和任务 ID，但返回前统一脱敏。
