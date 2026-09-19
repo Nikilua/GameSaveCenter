@@ -38,6 +38,7 @@ namespace GameSaveCenter.Contracts
         public const string SyncMedia = "media.sync";
         public const string ListMedia = "media.list";
         public const string ListMediaPage = "media.page";
+        public const string ListMediaDuplicateGroups = "media.duplicates.list";
         public const string GetMediaSummary = "media.summary";
         public const string UpdateMediaMetadata = "media.metadata.update";
         public const string UpdateMediaMetadataBatch = "media.metadata.batch.update";

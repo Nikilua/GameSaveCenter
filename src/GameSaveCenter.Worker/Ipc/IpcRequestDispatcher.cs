@@ -96,6 +96,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.SyncMedia=>await _media.SyncAsync(Read<MediaSyncRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMedia=>await ListMediaAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMediaPage=>await _store.GetMediaPageAsync(Read<MediaQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListMediaDuplicateGroups=>await _media.GetDuplicateGroupsAsync(Read<MediaDuplicateQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetMediaSummary=>await _store.GetMediaSummaryAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaMetadata=>await UpdateMediaMetadataAsync(Read<MediaMetadataUpdateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaMetadataBatch=>await UpdateMediaMetadataBatchAsync(Read<MediaMetadataBatchUpdateDto>(request),token).ConfigureAwait(false),

@@ -287,6 +287,58 @@ namespace GameSaveCenter.Playnite.ViewModels
             RaiseCommandStates();
         }
 
+        private Task ReloadMediaDuplicateGroupsAsync()
+            => SelectedGame == null
+                ? Task.CompletedTask
+                : LoadMediaDuplicateGroupsAsync(SelectedGame.PlayniteId, CancellationToken.None);
+
+        private async Task LoadMediaDuplicateGroupsAsync(string playniteId, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(playniteId)) return;
+            var generation = Interlocked.Increment(ref mediaDuplicateLoadGeneration);
+            try
+            {
+                var inspection = await plugin.RequestAsync<MediaDuplicateInspectionDto>(
+                    MessageTypes.ListMediaDuplicateGroups,
+                    new MediaDuplicateQueryDto { PlayniteId = playniteId, MaxGroups = 100, ScanLimit = 5000 },
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                if (generation != Interlocked.Read(ref mediaDuplicateLoadGeneration)
+                    || !IsSelectedGame(playniteId)) return;
+
+                ApplyOnUi(() =>
+                {
+                    if (generation != Interlocked.Read(ref mediaDuplicateLoadGeneration)
+                        || !IsSelectedGame(playniteId)) return;
+                    var selectedId = SelectedMediaDuplicateGroup?.GroupId;
+                    MediaDuplicateInspection = inspection ?? new MediaDuplicateInspectionDto();
+                    SelectedMediaDuplicateGroup = MediaDuplicateInspection.Groups.FirstOrDefault(
+                        group => string.Equals(group.GroupId, selectedId, StringComparison.OrdinalIgnoreCase))
+                        ?? MediaDuplicateInspection.Groups.FirstOrDefault();
+                    RaiseCommandStates();
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Could not load media duplicate groups for " + playniteId);
+                if (generation != Interlocked.Read(ref mediaDuplicateLoadGeneration)
+                    || !IsSelectedGame(playniteId)) return;
+                ApplyOnUi(() =>
+                {
+                    MediaDuplicateInspection = new MediaDuplicateInspectionDto
+                    {
+                        ScannedItemCount = 0,
+                        ScanTruncated = false
+                    };
+                    SelectedMediaDuplicateGroup = null;
+                    OnPropertyChanged(nameof(MediaDuplicateGroupsSummary));
+                });
+            }
+        }
+
         private async Task LoadFilteredMediaPageAsync()
         {
             if (SelectedGame == null || CurrentWorkspace != WorkspaceKind.Media) return;

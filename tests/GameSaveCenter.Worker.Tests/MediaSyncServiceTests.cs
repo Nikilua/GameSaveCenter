@@ -404,6 +404,49 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task DuplicateInspectionSeparatesMetadataSuspectsFromHashEvidence()
+    {
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "duplicate-game", Name = "Duplicate Quest", Platform = GamePlatformKind.Steam }
+        }, CancellationToken.None);
+        var captured = new DateTime(2026, 9, 20, 12, 0, 0, DateTimeKind.Utc);
+        foreach (var item in new[]
+        {
+            new MediaItemDto
+            {
+                MediaId = "suspected-1", PlayniteId = "duplicate-game", Kind = MediaKind.Screenshot,
+                Source = MediaSourceKind.Custom, ArchivePath = Path.Combine(root, "archive", "one.png"),
+                OriginalPath = Path.Combine(root, "captures", "shot.png"), CapturedUtc = captured,
+                SizeBytes = 2048, Sha256 = "unique-suspected-hash-1", ClassificationState = "Assigned"
+            },
+            new MediaItemDto
+            {
+                MediaId = "suspected-2", PlayniteId = "duplicate-game", Kind = MediaKind.Screenshot,
+                Source = MediaSourceKind.Custom, ArchivePath = Path.Combine(root, "archive", "two.png"),
+                OriginalPath = Path.Combine(root, "captures", "shot.png"), CapturedUtc = captured.AddMinutes(-1),
+                SizeBytes = 2048, Sha256 = "unique-suspected-hash-2", ClassificationState = "Assigned"
+            }
+        })
+            await store.AddMediaAsync(item, CancellationToken.None);
+
+        var inspection = await CreateService().GetDuplicateGroupsAsync(new MediaDuplicateQueryDto
+        {
+            PlayniteId = "duplicate-game",
+            MaxGroups = 10,
+            ScanLimit = 100
+        }, CancellationToken.None);
+
+        var group = Assert.Single(inspection.Groups);
+        Assert.Equal("Suspected", group.Confidence);
+        Assert.Equal(2, group.ItemCount);
+        Assert.Equal(0, inspection.CertainGroupCount);
+        Assert.Equal(1, inspection.SuspectedGroupCount);
+        Assert.Contains("文件名和大小一致", group.Reason, StringComparison.Ordinal);
+        Assert.All(group.Items, item => Assert.Equal("Assigned", item.ClassificationState));
+    }
+
+    [Fact]
     public async Task ClassificationApplyLeavesChangedItemAndArchiveUntouched()
     {
         await store.UpsertGamesAsync(new[]

@@ -759,6 +759,91 @@
                 </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="重复识别">
+                <ScrollViewer x:Name="MediaDuplicatePageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
+                    <StackPanel Margin="0,12,0,0">
+                        <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="当前游戏媒体重复识别" FontSize="16" FontWeight="SemiBold"/>
+                                    <TextBlock Text="只检查已归档媒体；确定重复使用相同 SHA-256，疑似重复使用同类型、文件名和大小。这里仅供查看和选择，不会删除或移动真实媒体。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,12,0"/>
+                                </StackPanel>
+                                <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding MediaDuplicateGroupsSummary}" TextWrapping="Wrap" MaxWidth="260" TextAlignment="Right"/></Border>
+                            </Grid>
+                        </Border>
+                        <Grid MinHeight="0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource MediaTableFrame}" Padding="12" MinHeight="0">
+                                <ListBox x:Name="MediaDuplicateGroupsList" Tag="FiniteViewport" ItemsSource="{Binding MediaDuplicateInspection.Groups}" SelectedItem="{Binding SelectedMediaDuplicateGroup, Mode=TwoWay}" MaxHeight="430" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体重复组列表">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0,0,0,8"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                    <Border Background="{DynamicResource GscAccentTintStrongBrush}" CornerRadius="8" Padding="8,5" VerticalAlignment="Top"><TextBlock Text="{Binding ConfidenceDisplay}" FontWeight="SemiBold"/></Border>
+                                                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                                        <TextBlock Text="{Binding SummaryDisplay}" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="{Binding ReasonDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                        <TextBlock Text="{Binding ItemsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <TextBlock Text="当前游戏没有可核实的重复组。" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyText}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding MediaDuplicateInspection.Groups.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="12" VerticalAlignment="Top">
+                                <StackPanel>
+                                    <TextBlock Text="组内媒体" FontSize="15" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding MediaDuplicateSelectionSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,8"/>
+                                    <ListBox x:Name="MediaDuplicateItemsList" Tag="FiniteViewport" ItemsSource="{Binding SelectedMediaDuplicateGroup.Items}" MaxHeight="330" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="重复组媒体列表">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0,0,0,8"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource GscGlassStrongBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}" FontWeight="SemiBold"/>
+                                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                                            <TextBlock Text="{Binding CapturedLocal, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                            <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
+                                                            <TextBlock Text="{Binding SizeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding ArchivePath, Converter={StaticResource GscPathDisplayConverter}}" Style="{StaticResource MediaPathText}" Foreground="{DynamicResource GscMutedTextBrush}" ToolTip="{Binding ArchivePath}" Margin="0,3,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <TextBlock Text="只显示有限数量的组内项目；原始媒体保持不变。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <ui:Button Content="重新识别" Command="{Binding ReloadMediaDuplicateGroupsCommand}" Style="{DynamicResource GscWpfUiSecondaryButton}" HorizontalAlignment="Left" Margin="0,10,0,0" ToolTip="重新读取当前游戏的已归档媒体并计算重复依据" AutomationProperties.Name="重新识别当前游戏媒体重复组"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
             <TabItem Header="来源规则">
                 <Grid x:Name="MediaSourceLayout" Margin="0,12,0,0">
                     <Grid.RowDefinitions><RowDefinition x:Name="MediaSourceFormRow" Height="*"/><RowDefinition x:Name="MediaSourceRulesRow" Height="0"/></Grid.RowDefinitions>

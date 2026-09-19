@@ -449,6 +449,95 @@ public sealed class MediaSyncService
             PageResetReason = reason
         };
 
+    /// <summary>Builds a bounded, read-only duplicate view for one selected game's assigned media.</summary>
+    public async Task<MediaDuplicateInspectionDto> GetDuplicateGroupsAsync(
+        MediaDuplicateQueryDto request, CancellationToken token)
+    {
+        request ??= new MediaDuplicateQueryDto();
+        if (string.IsNullOrWhiteSpace(request.PlayniteId))
+            return new MediaDuplicateInspectionDto();
+
+        var scanLimit = Math.Clamp(request.ScanLimit, 1, 5000);
+        var maxGroups = Math.Clamp(request.MaxGroups, 1, 100);
+        var media = await _store.GetMediaAsync(request.PlayniteId.Trim(), scanLimit, token).ConfigureAwait(false);
+        var certainIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var groups = new List<MediaDuplicateGroupDto>();
+
+        foreach (var group in media
+            .Where(item => !string.IsNullOrWhiteSpace(item.Sha256))
+            .GroupBy(item => item.Sha256.Trim(), StringComparer.OrdinalIgnoreCase)
+            .Where(group => group.Count() > 1)
+            .OrderByDescending(group => group.Count())
+            .ThenByDescending(group => group.Max(item => item.CapturedUtc))
+            .Take(maxGroups))
+        {
+            foreach (var item in group)
+                certainIds.Add(item.MediaId);
+            groups.Add(CreateDuplicateGroup(
+                group,
+                "Certain",
+                "SHA-256 完全一致，属于确定重复；此视图不会删除或移动任何媒体。"));
+        }
+
+        if (groups.Count < maxGroups)
+        {
+            foreach (var group in media
+                .Where(item => !certainIds.Contains(item.MediaId))
+                .Select(item => new { Item = item, Key = BuildMetadataDuplicateKey(item) })
+                .Where(candidate => !string.IsNullOrWhiteSpace(candidate.Key))
+                .GroupBy(candidate => candidate.Key, StringComparer.OrdinalIgnoreCase)
+                .Where(group => group.Count() > 1)
+                .OrderByDescending(group => group.Count())
+                .ThenByDescending(group => group.Max(candidate => candidate.Item.CapturedUtc))
+                .Take(maxGroups - groups.Count))
+            {
+                groups.Add(CreateDuplicateGroup(
+                    group.Select(candidate => candidate.Item),
+                    "Suspected",
+                    "同类型、文件名和大小一致，但没有相同 SHA-256 证据；仅作为疑似重复供查看。"));
+            }
+        }
+
+        return new MediaDuplicateInspectionDto
+        {
+            Groups = groups,
+            ScannedItemCount = media.Count,
+            ScanTruncated = media.Count >= scanLimit
+        };
+    }
+
+    private static string BuildMetadataDuplicateKey(MediaItemDto item)
+    {
+        var fileName = item.FileName?.Trim() ?? string.Empty;
+        return fileName.Length == 0
+            ? string.Empty
+            : $"{(int)item.Kind}|{item.SizeBytes}|{fileName}";
+    }
+
+    private static MediaDuplicateGroupDto CreateDuplicateGroup(
+        IEnumerable<MediaItemDto> items, string confidence, string reason)
+    {
+        var ordered = items
+            .OrderByDescending(item => item.CapturedUtc)
+            .ThenByDescending(item => item.MediaId, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        return new MediaDuplicateGroupDto
+        {
+            GroupId = BuildDuplicateGroupId(confidence, ordered),
+            Confidence = confidence,
+            Reason = reason,
+            ItemCount = ordered.Count,
+            Items = ordered.Take(24).ToList()
+        };
+    }
+
+    private static string BuildDuplicateGroupId(string confidence, IReadOnlyList<MediaItemDto> items)
+    {
+        var key = string.Join("|", items.Select(item => item.MediaId).OrderBy(id => id, StringComparer.OrdinalIgnoreCase));
+        var digest = SHA256.HashData(Encoding.UTF8.GetBytes(confidence + ":" + key));
+        return confidence.ToLowerInvariant() + "-" + Convert.ToHexString(digest).ToLowerInvariant()[..12];
+    }
+
     /// <summary>Undoes only items that still match the applied snapshot; changed items become conflicts.</summary>
     public async Task<MediaClassificationBatchResultDto> UndoClassificationBatchAsync(MediaClassificationUndoRequestDto request, CancellationToken token)
     {
