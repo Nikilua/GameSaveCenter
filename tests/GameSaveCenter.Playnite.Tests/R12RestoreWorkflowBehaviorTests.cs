@@ -105,6 +105,8 @@ public sealed class R12RestoreWorkflowBehaviorTests
         Assert.Contains("RestoreCommand", source);
         Assert.Contains("PreRestore", source);
         Assert.Contains("当前存档目录", source);
+        Assert.Contains("ResolutionDisplay", source);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding ResolutionDisplay}\"", source);
     }
 
     private static RestoreWorkflowStepState Step(

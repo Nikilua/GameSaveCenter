@@ -16,18 +16,21 @@ namespace GameSaveCenter.Playnite.ViewModels
 
     public sealed class RestoreWorkflowStepState
     {
-        public RestoreWorkflowStepState(string key, string title, RestoreWorkflowStepStatus status, string detail)
+        public RestoreWorkflowStepState(string key, string title, RestoreWorkflowStepStatus status, string detail, string resolution = "")
         {
             Key = key;
             Title = title;
             Status = status;
             Detail = detail ?? string.Empty;
+            Resolution = resolution ?? string.Empty;
         }
 
         public string Key { get; }
         public string Title { get; }
         public RestoreWorkflowStepStatus Status { get; }
         public string Detail { get; }
+        public string Resolution { get; }
+        public string ResolutionDisplay => string.IsNullOrWhiteSpace(Resolution) ? string.Empty : $"处理步骤：{Resolution}";
         public bool IsCompleted => Status == RestoreWorkflowStepStatus.Complete || Status == RestoreWorkflowStepStatus.Warning;
         public bool IsCurrent => Status == RestoreWorkflowStepStatus.Active
             || Status == RestoreWorkflowStepStatus.Failed
@@ -128,20 +131,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (checking || backup!.RestoreReadiness?.Status == RestoreReadinessStatus.Checking)
                 return new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Active, "Worker 正在隔离目录读取归档、清点文件并执行可用的完整性检查。");
             if (!string.IsNullOrWhiteSpace(error))
-                return new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Failed, error);
+            {
+                var explanation = RestoreFailureExplanation.ForText(null, error);
+                return new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Failed, error, explanation.Resolution);
+            }
 
             var result = backup.RestoreReadiness;
             if (result == null || result.Status == RestoreReadinessStatus.Unknown)
                 return new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Pending, "尚未检查该版本；验证不会覆盖当前存档。");
 
             var detail = string.IsNullOrWhiteSpace(result.Summary) ? result.StatusDisplay : result.Summary;
+            var explanationForFailure = RestoreFailureExplanation.ForReadiness(result);
             detail += $" 文件 {result.ActualFileCount}/{result.ExpectedFileCount}，大小 {FormatBytes(result.ActualTotalSize)}/{FormatBytes(result.ExpectedTotalSize)}。";
             return result.Status switch
             {
                 RestoreReadinessStatus.Ready => new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Complete, detail),
                 RestoreReadinessStatus.Warning => new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Warning, detail + " 执行前仍会再次预览目标版本。"),
                 RestoreReadinessStatus.Corrupted or RestoreReadinessStatus.Unsupported or RestoreReadinessStatus.Failed
-                    => new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Failed, detail + " 请重新验证或处理归档后再恢复。"),
+                    => new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Failed, detail + " 请重新验证或处理归档后再恢复。", explanationForFailure.Resolution),
                 _ => new RestoreWorkflowStepState("readiness", "可恢复性检查", RestoreWorkflowStepStatus.Warning, detail)
             };
         }
@@ -156,7 +163,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (!selected)
                 return new RestoreWorkflowStepState("target", "目标核对", RestoreWorkflowStepStatus.Pending, "选择版本后确认游戏、启动器和 MOD 管理器均已关闭。");
             if (targetFailure)
-                return new RestoreWorkflowStepState("target", "目标核对", RestoreWorkflowStepStatus.Failed, task!.DetailMessage);
+            {
+                var explanation = RestoreFailureExplanation.ForTask(task);
+                return new RestoreWorkflowStepState("target", "目标核对", RestoreWorkflowStepStatus.Failed, task!.DetailMessage, explanation.Resolution);
+            }
             if (task?.State == TaskState.Succeeded)
                 return new RestoreWorkflowStepState("target", "目标核对", RestoreWorkflowStepStatus.Complete, "Worker 已完成游戏关闭检查，恢复任务进入了安全执行链路。");
             if (task?.State == TaskState.Cancelled)
@@ -179,7 +189,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (readiness.IsFailed || target.IsFailed)
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Pending, "前置阶段未通过，尚未进入写入当前存档的阶段。 ");
             if (!string.IsNullOrWhiteSpace(error))
-                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, error);
+            {
+                var explanation = RestoreFailureExplanation.ForText(null, error);
+                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, error, explanation.Resolution);
+            }
             if (executing || task?.State == TaskState.Queued || task?.State == TaskState.Running || task?.State == TaskState.WaitingForUser)
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Active, "当前阶段：保护备份。Worker 会先创建并锁定当前状态的 PreRestore；随后才预览、写入并执行恢复后校验。");
             if (task?.State == TaskState.Succeeded)
@@ -187,7 +200,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (task?.State == TaskState.Cancelled)
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Cancelled, string.IsNullOrWhiteSpace(task.DetailMessage) ? "恢复任务已取消；请查看任务详情确认当前状态。" : task.DetailMessage);
             if (task?.State == TaskState.Failed)
-                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, BuildExecutionFailureDetail(task));
+            {
+                var explanation = RestoreFailureExplanation.ForTask(task);
+                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, BuildExecutionFailureDetail(task), explanation.Resolution);
+            }
             return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Pending, "尚未开始写入当前存档。");
         }
 
