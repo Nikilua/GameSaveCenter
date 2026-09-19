@@ -860,7 +860,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Command=\"{Binding ValidateCommand}\"", dashboard);
         Assert.Contains("Command=\"{Binding DetectPathsCommand}\"", dashboard);
         Assert.Contains("Click=\"OnTogglePolicy\"", dashboard);
-        Assert.Contains("Header=\"时间\" Binding=\"{Binding CreatedLocal", saves);
+
+        var saveDocument = XDocument.Parse(saves);
+        var timeColumn = saveDocument.Descendants().Single(element =>
+            element.Name.LocalName == "DataGridTextColumn"
+            && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "SaveHistoryTimeColumn");
+        Assert.Equal("时间", timeColumn.Attribute("Header")?.Value);
+        Assert.Contains("CreatedLocal", timeColumn.Attribute("Binding")?.Value ?? string.Empty);
     }
 
     [LegacyProductionUiBaselineFact]

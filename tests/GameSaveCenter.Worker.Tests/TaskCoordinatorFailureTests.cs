@@ -2,6 +2,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Ipc;
 using GameSaveCenter.Worker.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
@@ -33,6 +34,44 @@ public sealed class TaskCoordinatorFailureTests
             (_, token) => Task.FromException(new OperationCanceledException(token)),
             TaskState.Cancelled,
             "Cancelled Game");
+    }
+
+    [Fact]
+    public async Task CloudFailureKeepsLocalBackupResultOnTheFailedTask()
+    {
+        var store = new RecordingTaskStatusStore();
+        var broadcaster = new TaskEventBroadcaster();
+        using var subscription = broadcaster.Subscribe();
+        var coordinator = new TaskCoordinator(store, broadcaster, NullLogger<TaskCoordinator>.Instance);
+
+        var result = await coordinator.RunAsync(
+            "Backup",
+            "game-under-test",
+            "Synthetic Game",
+            (progress, _) =>
+            {
+                progress.SetBackupResult(new BackupResultDto
+                {
+                    LocalState = "Succeeded",
+                    CloudState = "RetryScheduled",
+                    Summary = "本地备份已成功；云端上传已排队等待重试。"
+                });
+                return Task.FromException(new WorkerOperationException("RCLONE_NETWORK_FAILED", "网络不可用"));
+            },
+            CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.True(result.HasPartialSuccess);
+        Assert.Equal("Succeeded", result.BackupResult?.LocalState);
+        Assert.Equal("RetryScheduled", result.BackupResult?.CloudState);
+        Assert.Contains("本地备份已成功", result.BackupResult?.Summary ?? string.Empty);
+        Assert.Same(result, store.TerminalTask);
+
+        var events = new List<TaskChangeEventDto>();
+        while (subscription.Reader.TryRead(out var change)) events.Add(change);
+        var terminalEvent = events.Last(change => change.Task.TaskId == result.TaskId && change.Task.State == TaskState.Failed);
+        Assert.Equal("RetryScheduled", terminalEvent.Task.BackupResult?.CloudState);
+        Assert.True(terminalEvent.Task.HasPartialSuccess);
     }
 
     private static async Task AssertTerminalPersistenceFailureDoesNotLeakAsync(
@@ -99,6 +138,19 @@ public sealed class TaskCoordinatorFailureTests
                 throw new InvalidOperationException("injected terminal persistence failure");
             }
 
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class RecordingTaskStatusStore : ITaskStatusStore
+    {
+        public TaskStatusDto? TerminalTask { get; private set; }
+
+        public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            if (task.State is TaskState.Succeeded or TaskState.Failed or TaskState.Cancelled)
+                TerminalTask = task;
             return Task.CompletedTask;
         }
     }

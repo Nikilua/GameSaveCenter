@@ -84,6 +84,58 @@ namespace GameSaveCenter.Contracts
         public long SizeBytes { get; set; }
     }
 
+    /// <summary>
+    /// Layered outcome for a backup task. A cloud copy is a follow-up to the local
+    /// version, so its failure must not erase or hide an already indexed local backup.
+    /// </summary>
+    public sealed class BackupResultDto
+    {
+        public string LocalState { get; set; } = "Unknown";
+        public string CloudState { get; set; } = "Disabled";
+        public string Summary { get; set; } = string.Empty;
+        public string Remediation { get; set; } = string.Empty;
+
+        public bool HasResult => !string.Equals(LocalState, "Unknown", StringComparison.OrdinalIgnoreCase);
+        public bool LocalBackupSucceeded => string.Equals(LocalState, "Succeeded", StringComparison.OrdinalIgnoreCase);
+        public bool IsPartialSuccess => LocalBackupSucceeded
+            && !string.Equals(CloudState, "Disabled", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(CloudState, "Uploaded", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(CloudState, "RemoteVerified", StringComparison.OrdinalIgnoreCase);
+        public bool CanRetryCloudUpload => LocalBackupSucceeded
+            && (string.Equals(CloudState, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(CloudState, "Failed", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(CloudState, "AuthenticationRequired", StringComparison.OrdinalIgnoreCase));
+        public bool CanVerifyRemote => LocalBackupSucceeded
+            && string.Equals(CloudState, "Uploaded", StringComparison.OrdinalIgnoreCase);
+
+        public string StateDisplay
+        {
+            get
+            {
+                if (!LocalBackupSucceeded) return "本地备份未完成";
+                return CloudState switch
+                {
+                    "Disabled" => "本地备份已成功",
+                    "RetryScheduled" => "本地备份已成功 · 云端上传排队",
+                    "Failed" => "本地备份已成功 · 云端镜像失败",
+                    "AuthenticationRequired" => "本地备份已成功 · 云端认证需处理",
+                    "Transferring" => "本地备份已成功 · 云端传输中",
+                    "Uploaded" => "本地备份已成功 · 云端已上传，待远端校验",
+                    "RemoteVerified" => "本地备份已成功 · 远端已校验",
+                    _ => $"本地备份已成功 · 云端状态：{CloudState}"
+                };
+            }
+        }
+
+        public string RemediationDisplay => string.IsNullOrWhiteSpace(Remediation)
+            ? CanRetryCloudUpload
+                ? "可单独重试云端上传；不会重新创建本地备份。"
+                : CanVerifyRemote
+                    ? "可发起远端校验；不会修改本地副本。"
+                    : string.Empty
+            : Remediation;
+    }
+
     /// <summary>Request to synchronize screenshot and video sources.</summary>
     public sealed class MediaSyncRequestDto
     {
@@ -143,6 +195,7 @@ namespace GameSaveCenter.Contracts
         public DateTime? FinishedUtc { get; set; }
         public string ErrorCode { get; set; } = string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
+        public BackupResultDto? BackupResult { get; set; }
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
         public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));
         public string ProgressDisplay => ProgressPercent < 0 || (State == TaskState.Queued && ProgressPercent == 0)
@@ -173,6 +226,7 @@ namespace GameSaveCenter.Contracts
         public string DetailMessage => State == TaskState.Failed && !string.IsNullOrWhiteSpace(ErrorMessage)
             ? FormatFailureDetail(ErrorCode, ErrorMessage)
             : Message;
+        public bool HasPartialSuccess => BackupResult?.IsPartialSuccess == true;
 
         private static string FormatFailureDetail(string errorCode, string errorMessage)
             => string.IsNullOrWhiteSpace(errorCode)

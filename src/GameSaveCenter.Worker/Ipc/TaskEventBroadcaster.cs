@@ -64,7 +64,14 @@ public sealed class TaskEventBroadcaster
             StartedUtc = change.Task.StartedUtc,
             FinishedUtc = change.Task.FinishedUtc,
             ErrorCode = change.Task.ErrorCode,
-            ErrorMessage = change.Task.ErrorMessage
+            ErrorMessage = change.Task.ErrorMessage,
+            BackupResult = change.Task.BackupResult == null ? null : new BackupResultDto
+            {
+                LocalState = change.Task.BackupResult.LocalState,
+                CloudState = change.Task.BackupResult.CloudState,
+                Summary = change.Task.BackupResult.Summary,
+                Remediation = change.Task.BackupResult.Remediation
+            }
         }
     };
 }

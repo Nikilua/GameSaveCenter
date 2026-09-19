@@ -58,7 +58,7 @@ public sealed class TaskCoordinator
             {
                 task.ProgressPercent=Math.Clamp(percent,0,100);task.Message=message;
                 await PersistAndPublishAsync(task,CancellationToken.None).ConfigureAwait(false);
-            });
+            }, result => task.BackupResult = result);
             await operation(progress,linked.Token).ConfigureAwait(false);
             task.State=TaskState.Succeeded;
             task.ProgressPercent=100;
@@ -173,7 +173,14 @@ public sealed class TaskCoordinator
             TaskId=task.TaskId,SessionId=task.SessionId,WorkerSessionId=task.WorkerSessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
             RequestId=task.RequestId,
             ProgressPercent=task.ProgressPercent,Message=task.Message,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
-        FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage
+            FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
+            BackupResult=task.BackupResult == null ? null : new BackupResultDto
+            {
+                LocalState = task.BackupResult.LocalState,
+                CloudState = task.BackupResult.CloudState,
+                Summary = task.BackupResult.Summary,
+                Remediation = task.BackupResult.Remediation
+            }
     };
 }
 
@@ -181,6 +188,12 @@ public sealed class TaskCoordinator
 public sealed class TaskProgress
 {
     private readonly Func<int,string,Task> _report;
-    public TaskProgress(Func<int,string,Task> report)=>_report=report;
+    private readonly Action<BackupResultDto>? _setBackupResult;
+    public TaskProgress(Func<int,string,Task> report, Action<BackupResultDto>? setBackupResult = null)
+    {
+        _report=report;
+        _setBackupResult=setBackupResult;
+    }
     public Task ReportAsync(int percent,string message)=>_report(percent,message);
+    public void SetBackupResult(BackupResultDto result)=>_setBackupResult?.Invoke(result);
 }

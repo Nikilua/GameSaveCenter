@@ -93,6 +93,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool backupCommentDirty;
         private bool backupLockDirty;
         private BackupPreviewDto backupPreview = new BackupPreviewDto();
+        private BackupResultDto backupResult = new BackupResultDto();
         private MediaItemDto selectedMedia = null!;
         private MediaStorageSummaryDto mediaSummary = new MediaStorageSummaryDto();
         private string mediaComment = string.Empty;
@@ -302,6 +303,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshCommand = new RelayCommand(_ => Run(RefreshAsync), _ => !IsBusy);
             BackupSelectedCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
             PreviewBackupCommand = new RelayCommand(_ => Run(PreviewBackupAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
+            RetrySelectedGameCloudUploadCommand = new RelayCommand(_ => Run(RetrySelectedGameCloudUploadAsync), _ => !IsBusy && CanRetrySelectedGameCloudUpload());
             BackupAllCommand = new RelayCommand(_ => Run(BackupAllAsync), _ => !IsBusy && Snapshot.LudusaviAvailable && Games.Any(x => x.LudusaviMatched));
             SyncMediaCommand = new RelayCommand(_ => Run(SyncMediaAsync), _ => !IsBusy);
             DetectPathsCommand = new RelayCommand(_ => Run(DetectPathsAsync), _ => !IsBusy && SelectedGame != null);
@@ -673,6 +675,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         public string StatusMessage { get => statusMessage; private set => SetValue(ref statusMessage, value); }
         public BackupPreviewDto BackupPreview { get => backupPreview; private set => SetValue(ref backupPreview, value ?? new BackupPreviewDto()); }
+        public BackupResultDto BackupResult { get => backupResult; private set => SetValue(ref backupResult, value ?? new BackupResultDto()); }
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }
         public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
         public string MetadataBackupSummary { get => metadataBackupSummary; private set => SetValue(ref metadataBackupSummary, value); }
@@ -1384,6 +1387,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RefreshCommand { get; }
         public ICommand BackupSelectedCommand { get; }
         public ICommand PreviewBackupCommand { get; }
+        public ICommand RetrySelectedGameCloudUploadCommand { get; }
         public ICommand BackupAllCommand { get; }
         public ICommand SyncMediaCommand { get; }
         public ICommand DetectPathsCommand { get; }
@@ -3279,6 +3283,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Summary = "本次执行已结束；如需确认最新范围，请重新预览备份。"
             });
             await RefreshCoreAsync(false);
+            AlignBackupResultWithSelectedGame();
             if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
             {
                 await LoadDetailsAsync();
@@ -3290,6 +3295,48 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 StatusMessage = $"“{gameName}”的备份已完成，请返回存档中心查看历史版本。";
             }
+        }
+
+        private async Task RetrySelectedGameCloudUploadAsync()
+        {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var task = await plugin.RequestAsync<TaskStatusDto>(
+                MessageTypes.RetryCloudUpload,
+                new GameQueryDto { PlayniteId = game.PlayniteId },
+                TimeSpan.FromHours(2));
+            NotifyTaskResults(task == null ? Array.Empty<TaskStatusDto>() : new[] { task });
+            await RefreshCoreAsync(false);
+            AlignBackupResultWithSelectedGame();
+            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(game.PlayniteId))
+                await LoadDetailsAsync();
+            StatusMessage = task?.State == TaskState.Succeeded
+                ? "云端上传已完成；如需确认远端内容，请在维护中心执行远端校验。"
+                : "云端上传重试已提交；本地历史版本保持可见。";
+        }
+
+        private bool CanRetrySelectedGameCloudUpload()
+        {
+            if (SelectedGame == null) return false;
+            if (BackupResult.CanRetryCloudUpload) return true;
+            var state = SelectedGame.CloudState;
+            return string.Equals(state, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(state, "Failed", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(state, "AuthenticationRequired", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void AlignBackupResultWithSelectedGame()
+        {
+            if (!BackupResult.LocalBackupSucceeded || SelectedGame == null) return;
+            var state = SelectedGame.CloudState;
+            if (string.Equals(state, "RemoteVerified", StringComparison.OrdinalIgnoreCase)
+                || (BackupResult.CloudState != "Disabled"
+                    && !string.IsNullOrWhiteSpace(state)
+                    && !string.Equals(state, "Disabled", StringComparison.OrdinalIgnoreCase)))
+            {
+                BackupResult.CloudState = state;
+                OnPropertyChanged(nameof(BackupResult));
+            }
+            RaiseCommandStates();
         }
 
         private async Task PreviewBackupAsync()
@@ -4670,8 +4717,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void NotifyTaskResults(IEnumerable<TaskStatusDto> tasks)
         {
             var completed = tasks?.ToList() ?? new List<TaskStatusDto>();
+            var backupResultTask = completed.FirstOrDefault(x => x.BackupResult != null);
+            if (backupResultTask?.BackupResult != null)
+                ApplyOnUi(() => BackupResult = backupResultTask.BackupResult);
             foreach (var task in completed) plugin.ShowTaskNotification(task);
-            var failed = completed.FirstOrDefault(x => x.State == TaskState.Failed);
+            var failed = completed.FirstOrDefault(x => x.State == TaskState.Failed && !x.HasPartialSuccess);
             if (failed != null) throw new NotifiedTaskException(failed.DetailMessage);
             var cancelled = completed.FirstOrDefault(x => x.State == TaskState.Cancelled);
             if (cancelled != null) throw new NotifiedTaskException(string.IsNullOrWhiteSpace(cancelled.Message) ? "任务已取消" : cancelled.Message);
@@ -5285,6 +5335,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SelectedBackup = null!;
                 SelectedCandidate = null!;
                 BackupPreview = new BackupPreviewDto();
+                BackupResult = new BackupResultDto();
                 SelectedMedia = null!;
                 MediaSummary = new MediaStorageSummaryDto();
                 ResetMediaPageState();
@@ -5316,7 +5367,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             foreach (var command in new[]
             {
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
-                PreviewBackupCommand,
+                PreviewBackupCommand, RetrySelectedGameCloudUploadCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,

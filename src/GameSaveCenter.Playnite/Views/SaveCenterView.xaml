@@ -143,6 +143,31 @@
                                                 <TextBlock Text="预览不产生归档；“立即备份”执行前会重新扫描，不使用过期预览保证安全。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </Border>
+                                        <Border x:Name="SaveBackupResultCard" Padding="8" Margin="0,8,0,0">
+                                            <Border.Style>
+                                                <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding BackupResult.HasResult}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel>
+                                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="本次备份结果" FontWeight="SemiBold"/><TextBlock Grid.Column="1" Text="{Binding BackupResult.StateDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/></Grid>
+                                                <TextBlock Text="{Binding BackupResult.Summary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding BackupResult.RemediationDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                <ui:Button Margin="0,7,0,0" Content="单独重试云端上传" Command="{Binding RetrySelectedGameCloudUploadCommand}" ToolTip="只重试已保留本地版本的云端上传，不重新创建本地备份" AutomationProperties.Name="单独重试当前游戏云端上传">
+                                                    <ui:Button.Style>
+                                                        <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding BackupResult.CanRetryCloudUpload}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ui:Button.Style>
+                                                </ui:Button>
+                                            </StackPanel>
+                                        </Border>
                                     </StackPanel>
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewBackupCommand}" MinWidth="100" Margin="0,0,8,0" ToolTip="只扫描当前游戏本次备份范围，不创建归档" AutomationProperties.Name="预览当前游戏备份范围">
