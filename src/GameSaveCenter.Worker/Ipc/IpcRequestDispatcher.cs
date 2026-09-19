@@ -117,6 +117,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.UpdateMediaSource=>await UpdateMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeleteMediaSource=>await DeleteMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMediaSources=>await _store.GetMediaSourcesAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
+                MessageTypes.PreviewMediaSource=>await _media.PreviewMediaSourceRuleAsync(Read<MediaSourcePreviewRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DetectSavePaths=>await _detection.DetectAsync(Read<DetectionRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListSaveCandidates=>await _store.GetSaveCandidatesAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.AcceptSavePath=>await _detection.AcceptAsync(Read<AcceptSavePathRequestDto>(request),token).ConfigureAwait(false),

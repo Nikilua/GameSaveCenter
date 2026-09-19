@@ -30,6 +30,55 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task MediaSourcePreviewIsBoundedReadOnlyAndExplainsMatchesAndExclusions()
+    {
+        var sourceRoot = Path.Combine(root, "PreviewSource");
+        Directory.CreateDirectory(Path.Combine(sourceRoot, "nested"));
+        var matchedPath = Path.Combine(sourceRoot, "match.png");
+        var patternExcludedPath = Path.Combine(sourceRoot, "other.jpg");
+        var typeExcludedPath = Path.Combine(sourceRoot, "notes.txt");
+        await File.WriteAllTextAsync(matchedPath, "png sample");
+        await File.WriteAllTextAsync(patternExcludedPath, "jpg sample");
+        await File.WriteAllTextAsync(typeExcludedPath, "not media");
+
+        var service = CreateService();
+        var result = await service.PreviewMediaSourceRuleAsync(new MediaSourcePreviewRequestDto
+        {
+            RootPath = sourceRoot,
+            IncludePattern = "*.png",
+            MaxItems = 10,
+            MaxScannedEntries = 20,
+            TimeoutMs = 1000
+        }, CancellationToken.None);
+
+        Assert.Equal("Completed", result.State);
+        Assert.Equal(3, result.ScannedCount);
+        Assert.Equal(1, result.MatchedCount);
+        Assert.Equal(2, result.ExcludedCount);
+        Assert.Contains(result.Items, item => item.Included && item.FileName == "match.png" && item.Reason.Contains("命中文件模式", StringComparison.Ordinal));
+        Assert.Contains(result.Items, item => !item.Included && item.Reason.Contains("未命中文件模式", StringComparison.Ordinal));
+        Assert.Contains(result.Items, item => !item.Included && item.Reason.Contains("不是支持的截图或录像格式", StringComparison.Ordinal));
+        Assert.Empty(await store.GetMediaSourcesAsync(string.Empty, CancellationToken.None));
+        Assert.True(File.Exists(matchedPath));
+        Assert.True(File.Exists(patternExcludedPath));
+        Assert.True(File.Exists(typeExcludedPath));
+
+        var budgeted = await service.PreviewMediaSourceRuleAsync(new MediaSourcePreviewRequestDto
+        {
+            RootPath = sourceRoot,
+            IncludePattern = "*",
+            MaxItems = 10,
+            MaxScannedEntries = 1,
+            TimeoutMs = 1000
+        }, CancellationToken.None);
+
+        Assert.Equal("Partial", budgeted.State);
+        Assert.True(budgeted.ScanTruncated);
+        Assert.Equal(1, budgeted.ScannedCount);
+        Assert.Single(budgeted.Items);
+    }
+
+    [Fact]
     public async Task RestoreIgnoredBatchMovesArchiveCopyBackToPendingWithoutDeletingOriginal()
     {
         var originalPath=Path.Combine(root,"Captures","capture.png");

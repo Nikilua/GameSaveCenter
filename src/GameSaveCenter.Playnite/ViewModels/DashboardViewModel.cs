@@ -340,6 +340,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ClearDiffPathFiltersCommand = new RelayCommand(_ => ClearDiffPathFilters(), _ => !IsBusy && (!string.IsNullOrWhiteSpace(DiffPathSearchText) || !string.Equals(DiffPathKindFilter, "全部", StringComparison.Ordinal)));
             PreviewRetentionCommand = new RelayCommand(_ => Run(PreviewRetentionAsync), _ => !IsBusy && SelectedGame != null && Backups.Count > 0);
             AddMediaSourceCommand = new RelayCommand(_ => Run(AddMediaSourceAsync), _ => !IsBusy && SelectedGame != null);
+            PreviewMediaSourceCommand = new RelayCommand(_ => Run(PreviewMediaSourceAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(CustomMediaSourcePath));
             UpdateMediaSourceCommand = new RelayCommand(value => Run(() => UpdateMediaSourceAsync(value as MediaSourceRuleDto)), _ => !IsBusy);
             DeleteMediaSourceCommand = new RelayCommand(value => Run(() => DeleteMediaSourceAsync(value as MediaSourceRuleDto)), _ => !IsBusy);
             AcceptCandidateCommand = new RelayCommand(_ => Run(AcceptCandidateAsync), _ => !IsBusy && SelectedGame != null && SelectedCandidate != null && !string.Equals(SelectedCandidate.Status, "Accepted", StringComparison.OrdinalIgnoreCase));
@@ -1553,6 +1554,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ClearDiffPathFiltersCommand { get; }
         public ICommand PreviewRetentionCommand { get; }
         public ICommand AddMediaSourceCommand { get; }
+        public ICommand PreviewMediaSourceCommand { get; }
         public ICommand UpdateMediaSourceCommand { get; }
         public ICommand DeleteMediaSourceCommand { get; }
         public ICommand AcceptCandidateCommand { get; }
@@ -3377,6 +3379,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                             var selectedMediaId = SelectedMedia?.MediaId;
                             ApplyMediaPage(mediaTask.Result ?? new MediaPageDto(), reset: true, selectedId: selectedMediaId);
                             Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
+                            MediaSourcePreview = new MediaSourcePreviewDto();
                             MediaSummary=summaryTask.Result;
                             MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, MediaTargetGame?.PlayniteId, StringComparison.OrdinalIgnoreCase))
                                               ?? SelectedGame
@@ -5589,7 +5592,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
-                AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
+                AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,

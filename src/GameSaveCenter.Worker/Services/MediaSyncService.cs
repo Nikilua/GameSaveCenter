@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using GameSaveCenter.Contracts;
@@ -94,6 +97,151 @@ public sealed class MediaSyncService
         item.ClassificationReason=string.Empty;
         item.CloudState="Pending";
         return item;
+    }
+
+    /// <summary>
+    /// Inspects a source rule draft without adding a rule, moving a file, or writing a media row.
+    /// Both the sample count and the wall-clock budget are bounded so an inaccessible or large
+    /// directory cannot turn the settings page into an unbounded scan.
+    /// </summary>
+    public async Task<MediaSourcePreviewDto> PreviewMediaSourceRuleAsync(MediaSourcePreviewRequestDto request, CancellationToken token)
+    {
+        request ??= new MediaSourcePreviewRequestDto();
+        var root = Environment.ExpandEnvironmentVariables(request.RootPath ?? string.Empty).Trim();
+        var pattern = string.IsNullOrWhiteSpace(request.IncludePattern) ? "*" : request.IncludePattern.Trim();
+        var maxItems = Math.Max(1, Math.Min(request.MaxItems <= 0 ? 120 : request.MaxItems, 200));
+        var maxScanned = Math.Max(1, Math.Min(request.MaxScannedEntries <= 0 ? 2000 : request.MaxScannedEntries, 5000));
+        var timeoutMs = Math.Max(100, Math.Min(request.TimeoutMs <= 0 ? 1500 : request.TimeoutMs, 5000));
+        var result = new MediaSourcePreviewDto
+        {
+            RootPath = root,
+            IncludePattern = pattern,
+            MaxItems = maxItems,
+            MaxScannedEntries = maxScanned,
+            TimeoutMs = timeoutMs
+        };
+
+        if (string.IsNullOrWhiteSpace(root))
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "请先输入来源目录。";
+            return result;
+        }
+
+        if (pattern.Length > 256)
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "文件模式过长，试运行已拒绝。";
+            return result;
+        }
+
+        string fullRoot;
+        try
+        {
+            fullRoot = Path.GetFullPath(root);
+        }
+        catch (Exception ex) when (ex is ArgumentException || ex is NotSupportedException || ex is IOException)
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "来源目录路径无效，未开始扫描。";
+            _logger.LogDebug(ex, "Invalid media source dry-run path {Path}", root);
+            return result;
+        }
+
+        if (!Directory.Exists(fullRoot))
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "来源目录不存在或已移走，未写入任何规则。";
+            return result;
+        }
+
+        using var budget = CancellationTokenSource.CreateLinkedTokenSource(token);
+        budget.CancelAfter(timeoutMs);
+        var stopwatch = Stopwatch.StartNew();
+        IEnumerator<string>? files = null;
+        var completed = false;
+        try
+        {
+            files = Directory.EnumerateFiles(fullRoot, "*", SearchOption.AllDirectories).GetEnumerator();
+            while (result.ScannedCount < maxScanned)
+            {
+                budget.Token.ThrowIfCancellationRequested();
+                if (stopwatch.ElapsedMilliseconds >= timeoutMs)
+                {
+                    result.TimedOut = true;
+                    break;
+                }
+
+                bool hasNext;
+                try
+                {
+                    hasNext = files.MoveNext();
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    result.ErrorDisplay = "部分目录无权读取，已停止继续扫描。";
+                    _logger.LogDebug(ex, "Media source dry-run access denied {Path}", fullRoot);
+                    break;
+                }
+                catch (IOException ex)
+                {
+                    result.ErrorDisplay = "部分目录读取失败，已停止继续扫描。";
+                    _logger.LogDebug(ex, "Media source dry-run IO failure {Path}", fullRoot);
+                    break;
+                }
+
+                if (!hasNext)
+                {
+                    completed = true;
+                    break;
+                }
+
+                var path = files.Current;
+                if (string.IsNullOrWhiteSpace(path)) continue;
+                result.ScannedCount++;
+                var media = IsMedia(path);
+                var matched = media && MatchesIncludePattern(path, pattern);
+                if (matched) result.MatchedCount++;
+                else result.ExcludedCount++;
+
+                if (result.Items.Count < maxItems)
+                {
+                    var size = 0L;
+                    try { size = new FileInfo(path).Length; } catch { }
+                    result.Items.Add(new MediaSourcePreviewItemDto
+                    {
+                        Path = path,
+                        FileName = Path.GetFileName(path),
+                        Included = matched,
+                        SizeBytes = size,
+                        Reason = matched
+                            ? $"命中文件模式 {pattern}"
+                            : media
+                                ? $"未命中文件模式 {pattern}"
+                                : "排除：不是支持的截图或录像格式"
+                    });
+                }
+
+                if (result.ScannedCount % 32 == 0)
+                    await Task.Yield();
+            }
+
+            if (!completed && !result.TimedOut && result.ScannedCount >= maxScanned)
+                result.ScanTruncated = true;
+        }
+        catch (OperationCanceledException) when (!token.IsCancellationRequested)
+        {
+            result.TimedOut = true;
+        }
+        finally
+        {
+            files?.Dispose();
+        }
+
+        result.State = result.TimedOut || result.ScanTruncated || !string.IsNullOrWhiteSpace(result.ErrorDisplay)
+            ? "Partial"
+            : "Completed";
+        return result;
     }
 
     /// <summary>Removes an item from the inbox while retaining a recoverable local copy.</summary>
@@ -888,7 +1036,7 @@ public sealed class MediaSyncService
                                                          && string.Equals(NormalizeProcessName(x.ExecutableName), processName, StringComparison.OrdinalIgnoreCase)))
             {
                 AddCandidate(mapping.PlayniteId, 3, "会话进程映射与媒体时间一致", "ProcessMapping",
-                    $"{mapping.ExecutableName} → {string.IsNullOrWhiteSpace(mapping.GameName) ? gameById[mapping.PlayniteId].Name : mapping.GameName}");
+                    $"{mapping.ExecutableName} → {(string.IsNullOrWhiteSpace(mapping.GameName) ? gameById[mapping.PlayniteId].Name : mapping.GameName)}");
             }
         }
 

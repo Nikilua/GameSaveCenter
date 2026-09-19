@@ -805,38 +805,40 @@
                         <Grid MinHeight="0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Style="{StaticResource MediaTableFrame}" Padding="12" MinHeight="0">
-                                <ListBox x:Name="MediaDuplicateGroupsList" Tag="FiniteViewport" ItemsSource="{Binding MediaDuplicateInspection.Groups}" SelectedItem="{Binding SelectedMediaDuplicateGroup, Mode=TwoWay}" MaxHeight="430" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体重复组列表">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="Margin" Value="0,0,0,8"/>
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                                    <Border Background="{DynamicResource GscAccentTintStrongBrush}" CornerRadius="8" Padding="8,5" VerticalAlignment="Top"><TextBlock Text="{Binding ConfidenceDisplay}" FontWeight="SemiBold"/></Border>
-                                                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                                        <TextBlock Text="{Binding SummaryDisplay}" FontWeight="SemiBold"/>
-                                                        <TextBlock Text="{Binding ReasonDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
-                                                        <TextBlock Text="{Binding ItemsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                                <TextBlock Text="当前游戏没有可核实的重复组。" IsHitTestVisible="False">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyText}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers><DataTrigger Binding="{Binding MediaDuplicateInspection.Groups.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <Grid>
+                                    <ListBox x:Name="MediaDuplicateGroupsList" Tag="FiniteViewport" ItemsSource="{Binding MediaDuplicateInspection.Groups}" SelectedItem="{Binding SelectedMediaDuplicateGroup, Mode=TwoWay}" MaxHeight="430" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体重复组列表">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0,0,0,8"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                        <Border Background="{DynamicResource GscAccentTintStrongBrush}" CornerRadius="8" Padding="8,5" VerticalAlignment="Top"><TextBlock Text="{Binding ConfidenceDisplay}" FontWeight="SemiBold"/></Border>
+                                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                                            <TextBlock Text="{Binding SummaryDisplay}" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding ReasonDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding ItemsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <TextBlock Text="当前游戏没有可核实的重复组。" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyText}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding MediaDuplicateInspection.Groups.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
                             </Border>
                             <Border Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="12" VerticalAlignment="Top">
                                 <StackPanel>
@@ -883,7 +885,32 @@
                             <StackPanel Margin="0,8,0,0">
                                 <TextBlock Text="添加截图或录像来源" Style="{DynamicResource GscRedesignSectionTitle}"/>
                                 <TextBlock Text="共享目录中无法唯一判断所属游戏的文件会进入待归类收件箱。粘贴目录或文件模式时会去除外层空白/引号；包含多个非空行的粘贴会被阻止，Ctrl+Z 可恢复粘贴前的字段值。" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap" AutomationProperties.Name="媒体来源粘贴标准化说明"/>
-                                <UniformGrid x:Name="MediaSourceFields" Columns="2" Margin="0,0,0,4"><StackPanel Margin="0,0,12,10"><TextBlock Text="截图或录像目录" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaSourcePath, UpdateSourceTrigger=PropertyChanged}" ToolTip="公共截图、录像或游戏媒体目录" AutomationProperties.Name="截图或录像目录" infra:PasteNormalization.Kind="Path"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="文件模式" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaPattern, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 *.png 或 *" AutomationProperties.Name="媒体文件模式" infra:PasteNormalization.Kind="ExcludePattern"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="目录类型" Margin="0,0,0,4"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="共享目录" OnContent="开" OffContent="关" IsChecked="{Binding CustomMediaShared}"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="操作" Margin="0,0,0,4"/><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AddMediaSourceCommand}" Content="添加来源" HorizontalAlignment="Left"/></StackPanel></UniformGrid>
+                                <UniformGrid x:Name="MediaSourceFields" Columns="2" Margin="0,0,0,4"><StackPanel Margin="0,0,12,10"><TextBlock Text="截图或录像目录" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaSourcePath, UpdateSourceTrigger=PropertyChanged}" ToolTip="公共截图、录像或游戏媒体目录" AutomationProperties.Name="截图或录像目录" infra:PasteNormalization.Kind="Path"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="文件模式" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaPattern, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 *.png 或 *" AutomationProperties.Name="媒体文件模式" infra:PasteNormalization.Kind="ExcludePattern"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="目录类型" Margin="0,0,0,4"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="共享目录" OnContent="开" OffContent="关" IsChecked="{Binding CustomMediaShared}"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="操作" Margin="0,0,0,4"/><WrapPanel><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding PreviewMediaSourceCommand}" Content="试运行" ToolTip="只读扫描样本，不保存规则、不移动媒体" AutomationProperties.Name="试运行媒体来源规则" Margin="0,0,8,0"/><ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding AddMediaSourceCommand}" Content="添加来源" HorizontalAlignment="Left"/></WrapPanel></StackPanel></UniformGrid>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,4,12,0">
+                                    <StackPanel>
+                                        <TextBlock Text="来源规则试运行（只读）" FontWeight="SemiBold"/>
+                                        <TextBlock Text="先看样本命中与排除原因，再决定是否保存规则。试运行不会写入来源规则、移动文件或创建媒体记录。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,6"/>
+                                        <TextBlock Text="{Binding MediaSourcePreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" AutomationProperties.Name="媒体来源试运行摘要"/>
+                                        <ListBox x:Name="MediaSourcePreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaSourcePreview.Items}" MaxHeight="240" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体来源试运行样本">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem"><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,6"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/></Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                        <Border Background="{DynamicResource GscAccentTintStrongBrush}" CornerRadius="7" Padding="7,3" VerticalAlignment="Top"><TextBlock Text="{Binding DecisionDisplay}" FontWeight="SemiBold"/></Border>
+                                                        <StackPanel Grid.Column="1" Margin="9,0,0,0">
+                                                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding FileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><TextBlock Grid.Column="1" Text="{Binding SizeDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="8,0,0,0"/></Grid>
+                                                            <TextBlock Text="{Binding Reason}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                            <TextBlock Text="{Binding Path}" Style="{StaticResource MediaPathText}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
                     </ScrollViewer>
