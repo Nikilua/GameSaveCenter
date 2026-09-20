@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-07 配置导入预览（代码已提交，受控验证完成；真实宿主待验）
+
+- `451195ad` 复用既有 `ExportPortableJson`、`ImportPortableJson` 和缺失路径报告，新增 detached `PreviewPortableJson` 与确认后的 `ApplyPortableJson`；预览显示架构版本、兼容性、变化字段和未知字段，未知字段忽略且不破坏当前配置。
+- 导出继续清空设备身份，当前 DTO 无凭据字段；预览明确凭据不进入可分享导出。UI 使用原生 Yes/No 预览确认，取消、旧架构、坏值不修改草稿；应用前快照保证复制/报告异常可恢复原配置。
+- 最终 HEAD 定向 R16-07/PortableSettings `15/15`；隔离 Release solution `0 errors/2 existing MediaCenter nullable warnings`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host 文件选择器、MessageBox、保存取消和最终呈现、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。只用合成 JSON/detached settings/隔离目录。
+- 下一项：`R16-08 保存冲突处理`，先核对编辑基线、后台更新和字段级冲突边界。
+
 ## 当前第三轮 R16-06 生效条件说明（代码已提交，受控验证完成；真实宿主待验）
 
 - `83e7c745` 追踪并标注现有 `EndEdit → NotifyVisualSettingsChanged → ApplySettingsAsync → settings.update → WorkerOptions.Apply/SyncPlan` 链路：外观保存后即时重建，工具/目录/备份从下一任务读取，轮询/队列/健康计划按下一轮边界读取，启动类开关只影响下一次 Playnite 启动。

@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-07 配置导入预览
+
+- 现有设置导出已是架构 v1，导入已有缺失路径报告、detached 校验和设备身份保护；当前 DTO 不含凭据。没有重建 DTO 或配置源。
+- `451195ad` 新增非变更 `PreviewPortableJson` 与确认后 `ApplyPortableJson`。预览展示版本、兼容性、字段差异、未知字段和安全说明；未知旧字段忽略，确认取消/旧架构/坏值不改草稿，应用前快照用于异常恢复。设置页保留原文件读取和报告路径，仅在 Yes 后写入当前草稿。
+- 最终 HEAD 定向测试 `15/15`；隔离 Release/net462 solution `0 errors/2 existing MediaCenter nullable warnings`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host 文件对话框、MessageBox、保存取消、最终呈现、DPI/UIA/IME、RenderHarness、ETW、宿主性能；只用合成 JSON/detached settings/隔离目录，未改真实配置、存档、媒体、云端或诊断。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r16-07-*` 为本阶段输出，文档提交前清理。下一可执行任务：`R16-08 保存冲突处理`，先核对编辑基线与后台更新的字段级冲突边界。
+
 ## 2026-09-20 R16-06 生效条件说明
 
 - 追踪确认设置保存链为 `EndEdit` 保存并触发视觉变更，再由插件发送 `settings.update`；Worker 应用运行时选项并重算健康计划。四个设置分类旁补充具体生效条件：外观即时预览/保存后重建、下一任务、下一轮检查和下一次 Playnite 启动。

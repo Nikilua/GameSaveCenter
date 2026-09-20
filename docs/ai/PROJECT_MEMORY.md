@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R16-07 配置导入预览（2026-09-20）
+
+- `451195ad` 在既有设置导入/导出和缺失路径报告上增加非变更预览：解析 detached package，展示架构版本、兼容性、实际变化字段、未知字段和安全说明；未知字段继续忽略，设备身份不被导入。
+- 设置页导入改为“读取 → 预览 → Yes/No 确认 → 应用 → 报告”，取消或不兼容不会复制；应用前 `Clone` 快照，复制或后续报告异常时恢复，旧 `ImportPortableJson` API 走同一安全路径。导出仍不包含凭据并清空 `DeviceId`。
+- 最终 HEAD 定向回归 `15/15`，完整 Release/net462 solution `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff、WPF `0/28/162` 通过。未验真实宿主文件对话框/确认框/保存取消和最终呈现，未写真实配置/存档/媒体/云端；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 证据：`R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md`。下一可执行任务：`R16-08 保存冲突处理`，先核对 Playnite 编辑基线与后台设置更新的冲突/拒绝策略。
+
 ## 第三轮 R16-06 生效条件说明（2026-09-20）
 
 - `83e7c745` 复核 `GameSaveCenterSettings.EndEdit`、插件 `settings.update` 和 Worker `UpdateSettings`/健康计划链路，在四个设置分类标题旁标注即时预览、保存后即时、下一任务/轮询边界和下一次 Playnite 启动。
