@@ -4,9 +4,9 @@
 
 ## 第三轮 R21-02 进度控件名称与值（2026-09-21，续作小批量）
 
-- `efa9614f` 已复用 SaveCenter 策略控件；`74b559e2` 复用 TaskCenter/Maintenance 既有进度值；`c327f92a` 复用 TrainerCenter 导入确认路径；`5d9cb81c` 再复用 TrainerCenter 工具设置 Binding、禁用条件和 ToggleSwitch，为三个选择器和四个开关补稳定 Automation 名称。没有新造服务、DTO、命令或业务值。
-- `R21AutomationValueBehaviorTests` 当前 `6/6`，相关 R21 进度/焦点/键盘/无障碍/生产壳层回归 `54/54`；新增 WPF peer 检查三个选择器、四个 ToggleSwitch、Toggle `Off/On` 和版本值变化，既有 R06/R12 负例继续覆盖未知/排队/零值/越界/取消/成功和远端下载/校验/取消/失败。没有把源码断言冒充成生产行为。
-- 隔离 source-copy Release Playnite `net462` / Tests `net472` `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 和 WPF `0/27/177` 静态检查通过。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R21-02-TRAINER-SETTINGS-AUTOMATION-20260921.md`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。
+- `efa9614f` 已复用 SaveCenter 策略控件；`74b559e2` 复用 TaskCenter/Maintenance 既有进度值；`c327f92a`/`5d9cb81c` 复用 TrainerCenter 导入与工具设置；`da16043d` 再复用 MediaCenter 三个选择器的数据源、Binding 和后续命令，为目标控件补稳定 Automation 名称。没有新造服务、DTO、命令或业务值。
+- `R21AutomationValueBehaviorTests` 当前 `7/7`，相关 R21 进度/焦点/键盘/无障碍/生产壳层回归 `55/55`；新增 WPF peer 检查三个 MediaCenter ComboBox 与选中值变化，既有 R06/R12 负例继续覆盖未知/排队/零值/越界/取消/成功和远端下载/校验/取消/失败。没有把源码断言冒充成生产行为。
+- 隔离 source-copy Release Playnite `net462` / Tests `net472` `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 和 WPF `0/27/177` 静态检查通过。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R21-02-MEDIA-SELECTORS-AUTOMATION-20260921.md`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。
 - R21-02 仍未签收：其他复合选择器及逐控件状态/值负例待继续；之后进入 `R21-03` 验证错误播报。
 
 ## 第三轮 R21-02 控件名称与值（2026-09-21，部分收口）

@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 MediaCenter 选择器名称与值（续作小批量）
+
+- 提交并推送 `da16043d`：复用 MediaCenter 收件箱归类目标、当前游戏媒体类型筛选、所选媒体重新归类目标的现有数据源、Binding 和后续命令，补稳定 Automation 名称；没有改媒体归类、筛选、移动或文件语义。
+- `R21AutomationValueBehaviorTests` `7/7`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `55/55`。新增测试实际检查三个 ComboBox peer 和三个合成选中值变化。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-MEDIA-SELECTORS-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 TrainerCenter 工具设置名称与状态（续作小批量）
 
 - 提交并推送 `5d9cb81c`：复用 TrainerCenter 工具设置的现有 Binding、`CanTrackProcess` 禁用条件和 ToggleSwitch 实现，为版本/已有实例处理方式/风险类别三个选择器及四个工具设置开关补稳定 Automation 名称；没有改工具启动、保存或风险判定。
