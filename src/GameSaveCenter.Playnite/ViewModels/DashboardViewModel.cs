@@ -1079,6 +1079,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => currentWorkspace;
             set
             {
+                if (currentWorkspace != value)
+                    CancelDetailsLoad();
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
                     CancelCloudTransferRequest();
                 if (currentWorkspace == WorkspaceKind.Media && value != WorkspaceKind.Media)
@@ -3664,20 +3666,29 @@ namespace GameSaveCenter.Playnite.ViewModels
             var id = SelectedGame.PlayniteId;
             if (!string.IsNullOrWhiteSpace(expectedGameId)
                 && !string.Equals(expectedGameId, id, StringComparison.OrdinalIgnoreCase)) return;
-            switch (CurrentWorkspace)
+            var requestWorkspace = CurrentWorkspace;
+            var requestGeneration = expectedGeneration != 0
+                ? expectedGeneration
+                : Interlocked.Increment(ref detailsLoadGeneration);
+            if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
+            switch (requestWorkspace)
             {
                 case WorkspaceKind.Saves:
                 {
-                    ApplyOnUi(BeginSaveDetailsLoad);
+                    ApplyOnUi(() =>
+                    {
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            BeginSaveDetailsLoad();
+                    });
                     try
                     {
                         var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory }, cancellationToken: cancellationToken);
                         var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                         await Task.WhenAll(backupsTask, candidatesTask);
-                        if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                         ApplyOnUi(() =>
                         {
-                            if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                             var selectedBackupIndex = SelectedBackup == null ? -1 : Backups.IndexOf(SelectedBackup);
                             var selectedBackupId = SelectedBackup?.BackupId;
                             var selectedCandidateBeforeRefresh = SelectedCandidate;
@@ -3726,13 +3737,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
                     catch (OperationCanceledException)
                     {
-                        if ((expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)) && IsSelectedGame(id))
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
                             ApplyOnUi(CancelSaveDetailsLoad);
                         throw;
                     }
                     catch (Exception ex)
                     {
-                        if ((expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)) && IsSelectedGame(id))
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
                             ApplyOnUi(() => FailSaveDetailsLoad(ex));
                         throw;
                     }
@@ -3741,7 +3752,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case WorkspaceKind.Media:
                 {
                     var mediaRequestGeneration = Interlocked.Increment(ref mediaPageGeneration);
-                    ApplyOnUi(() => BeginMediaDetailsLoad(mediaRequestGeneration));
+                    ApplyOnUi(() =>
+                    {
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            BeginMediaDetailsLoad(mediaRequestGeneration);
+                    });
                     try
                     {
                         var mediaLoadTimer = Stopwatch.StartNew();
@@ -3751,11 +3766,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                         var duplicateTask = LoadMediaDuplicateGroupsAsync(id, cancellationToken);
                         await Task.WhenAll(mediaTask, sourcesTask, summaryTask, duplicateTask);
                         mediaLoadTimer.Stop();
-                        if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                         var mediaApplyTimer = Stopwatch.StartNew();
                         ApplyOnUi(() =>
                         {
-                            if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                             if (mediaRequestGeneration != Interlocked.Read(ref mediaPageGeneration)) return;
                             var selectedMediaId = SelectedMedia?.MediaId;
                             ApplyMediaPage(mediaTask.Result ?? new MediaPageDto(), reset: true, selectedId: selectedMediaId);
@@ -3773,12 +3788,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
                     catch (OperationCanceledException)
                     {
-                        ApplyOnUi(() => CancelMediaDetailsLoad(mediaRequestGeneration));
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            ApplyOnUi(() => CancelMediaDetailsLoad(mediaRequestGeneration));
                         throw;
                     }
                     catch (Exception ex)
                     {
-                        ApplyOnUi(() => FailMediaDetailsLoad(ex, mediaRequestGeneration));
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            ApplyOnUi(() => FailMediaDetailsLoad(ex, mediaRequestGeneration));
                         throw;
                     }
                     break;
@@ -3786,10 +3803,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case WorkspaceKind.Trainers:
                 {
                     var gameTools = await plugin.RequestAsync<GameToolDto[]>(MessageTypes.ListGameTools, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
-                    if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                    if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                     ApplyOnUi(() =>
                     {
-                        if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                         var selectedToolId = SelectedGameTool?.ToolId;
                         Replace(GameTools, gameTools, SnapshotComparers.GameTool);
                         SelectedGameTool = GameTools.FirstOrDefault(x => string.Equals(x.ToolId, selectedToolId, StringComparison.OrdinalIgnoreCase))
@@ -3801,9 +3818,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        private bool IsCurrentDetailsLoad(string playniteId, CancellationToken cancellationToken, long expectedGeneration)
+        private bool IsCurrentDetailsLoad(string playniteId, CancellationToken cancellationToken, long expectedGeneration, WorkspaceKind expectedWorkspace)
             => !cancellationToken.IsCancellationRequested
-               && (expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration))
+               && expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)
+               && CurrentWorkspace == expectedWorkspace
                && IsSelectedGame(playniteId);
 
         public void RequestWorkspaceLoad()
@@ -5896,6 +5914,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void CancelDetailsLoad()
         {
             Interlocked.Increment(ref detailsLoadGeneration);
+            Interlocked.Increment(ref mediaPageGeneration);
             CancelMediaPageRequest();
             var cancellation = Interlocked.Exchange(ref detailsLoadCancellation, null);
             if (cancellation == null) return;
