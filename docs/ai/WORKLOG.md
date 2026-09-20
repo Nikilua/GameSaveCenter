@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 控件名称与值（部分收口）
+
+- 先盘点现有 UIA/Automation 名称；本批补 Dashboard/Overview/Maintenance/Trainer 明确进度条名和 TaskCenter 状态/类型/游戏筛选名，未改变命令、Binding 或数值。提交并推送 `1ca2d01d`。
+- `R21AutomationValueBehaviorTests` 的 AutomationPeer 名称、Toggle `Off/On`、ProgressBar RangeValue 行为 `2/2`；与 R21-01 相关回归 `33/33`。隔离 Release `net462/net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。
+- 不把本批当整项完成：SaveCenter 外置标签开关、更多复合选择器、DataGrid 进度条和状态/值负例待继续。仅使用生产 XAML、合成 WPF 控件、fake/隔离 source-copy/testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-AUTOMATION-VALUE-20260921.md`。
+- 下一可执行任务仍为 `R21-02` 剩余控件；之后进入 `R21-03` 验证错误播报。
+
 ## 2026-09-21 R21-01 八入口纯键盘
 
 - 先核对 Q24、现有 KeyboardFocus/UIA 测试和八个生产入口；已有命令/Binding/导航优先复用。本阶段只给 TrainerCenter 默认工具页四个已有工具栏命令补 Automation 名称，并增加 `R21KeyboardNavigationTraceTests`，没有重建业务能力。提交并推送 `c3459ebd`。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 控件名称与值（实现中，待继续）
+
+- 已复核现有 UIA/Automation 接线并补一组不改变业务值的语义名：Dashboard/Overview/Maintenance/Trainer 明确进度条，TaskCenter 状态/类型/游戏筛选器。提交 `1ca2d01d`；没有新造服务、DTO、命令或 Binding。
+- `R21AutomationValueBehaviorTests` 通过真实 WPF AutomationPeer 验证 glyph 动作名、ComboBox 名称、ToggleSwitch `Off/On` 和 ProgressBar `当前/最小/最大` 值；新增 `2/2`，与 R21-01 相关套件 `33/33`。隔离 Release `net462/net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，source/XAML/diff 通过。
+- 这只是 R21-02 部分收口：SaveCenter 外置标签开关、更多复合选择器、DataGrid 重复进度条和逐控件状态/值负例待继续。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 `evidence/R21-02-AUTOMATION-VALUE-20260921.md`。
+- 下一项仍为 `R21-02` 剩余控件：先处理 SaveCenter 外置标签开关与更多复合选择器，再进入 `R21-03` 验证错误播报。
+
 ## 当前第三轮 R21-01 八入口纯键盘（已满足，待环境验证）
 
 - 复核 Q24 与现有 KeyboardFocus/UIA 能力后，确认八个生产入口已有导航和安全动作；补上 TrainerCenter 默认“已绑定工具”页四个工具栏命令的稳定 Automation 名称，并以 `R21KeyboardNavigationTraceTests` 记录 Shell、Overview、SaveCenter、TrainerCenter、MediaCenter、TaskCenter、Maintenance、Settings 的前/反向实际 WPF 焦点轨迹。提交 `c3459ebd`。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 控件名称与值（2026-09-21，部分收口）
+
+- 先查现有 UIA/Automation 接线；Shell、媒体历史、任务预设多数已有稳定名称。本批 `1ca2d01d` 只补 Dashboard/Overview/Maintenance/Trainer 的明确进度名与 TaskCenter 三个筛选器名，保持业务值、命令和 Binding。
+- `R21AutomationValueBehaviorTests` 用真实 WPF AutomationPeer 验证 glyph 按钮动作名、ComboBox 名称、ToggleSwitch `Off/On` 和 ProgressBar `Value/Minimum/Maximum`，新增 `2/2`；与 R21-01 相关回归 `33/33`。隔离 Release `net462/net472` `0 errors / 2` 条既有 warning，source/XAML/diff 通过。
+- 未签收整项：SaveCenter 外置标签开关、更多复合选择器、DataGrid 内重复进度条和状态/值负例还要继续。真实 Playnite/package-host、UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R21-02-AUTOMATION-VALUE-20260921.md`。
+- 下一项仍是 `R21-02` 剩余控件；之后才进入 `R21-03` 验证错误播报。
+
 ## 第三轮 R21-01 八入口纯键盘（2026-09-21）
 
 - 先查 Q24、`KeyboardFocusSourceTests`、`GamePickerKeyboardBehaviorTests` 和 R05 焦点边界能力；八个生产入口已经有导航/安全动作，没有重建服务、DTO、命令或导航模型。实际缺口是 TrainerCenter 默认工具页四个工具栏按钮缺少稳定 Automation 名称，`c3459ebd` 只补名称并保留原 Command/Binding。
