@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     /// </summary>
     public sealed class GamePickerViewModel : INotifyPropertyChanged, IDisposable
     {
+        private static readonly TimeSpan SearchDebounceDelay = TimeSpan.FromMilliseconds(20);
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly SynchronizationContext? synchronizationContext;
         private CancellationTokenSource? refreshCancellation;
@@ -33,6 +34,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         private int filteredCount;
         private bool disposed;
         private readonly Dictionary<string, GamePickerItem> itemCache = new Dictionary<string, GamePickerItem>(StringComparer.OrdinalIgnoreCase);
+        private int currentFilterEvaluationCount;
+
+        internal GamePickerPerformanceDiagnostics PerformanceDiagnostics { get; } = new GamePickerPerformanceDiagnostics
+        {
+            SearchDebounceDelay = SearchDebounceDelay
+        };
 
         public GamePickerViewModel()
         {
@@ -320,6 +327,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private bool FilterItem(object item)
         {
+            currentFilterEvaluationCount++;
+            PerformanceDiagnostics.TotalFilterEvaluationCount++;
             var game = item as GamePickerItem;
             if (game == null) return false;
 
@@ -412,7 +421,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // The picker filter is local and synchronous once scheduled. Keep the
                 // coalescing window below the 100 ms hot-input budget so typing feels
                 // immediate without refreshing once per key in a large library.
-                await Task.Delay(20, token).ConfigureAwait(false);
+                await Task.Delay(SearchDebounceDelay, token).ConfigureAwait(false);
                 if (token.IsCancellationRequested || disposed) return;
                 if (synchronizationContext == null) ApplyViewRefresh();
                 else synchronizationContext.Post(_ =>
@@ -427,10 +436,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (disposed) return;
             var timer = Stopwatch.StartNew();
+            currentFilterEvaluationCount = 0;
             ItemsView.Refresh();
             FilteredCount = ItemsView.Cast<object>().Count();
             OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
             timer.Stop();
+            PerformanceDiagnostics.RefreshCount++;
+            PerformanceDiagnostics.LastFilterEvaluationCount = currentFilterEvaluationCount;
+            PerformanceDiagnostics.LastFilteredCount = FilteredCount;
+            PerformanceDiagnostics.LastRefreshMilliseconds = timer.Elapsed.TotalMilliseconds;
+            PerformanceDiagnostics.LastSearchText = normalizedSearchText;
             Logger.Debug($"[PERF] GamePicker refresh={timer.ElapsedMilliseconds}ms filtered={FilteredCount} games={Items.Count}");
         }
 
