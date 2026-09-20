@@ -175,7 +175,7 @@
 | R20-07 | 最近活动密度 | 已满足，待环境验证 | ee327e80（复用现有实现） | Core 活动映射 `4/4`；Playnite 定向 `11/11`（批处理 `3/3`、时间线 `3/3`、首页活动 `1/1`、选择/详情 `4/4`）；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML `24/24`/diff 通过 | `TaskEventUiBatcher` 按 TaskId 合并进度、限制批次并让终态即时落地；首页最近任务保留最近 8 项和 Recycling/本地滚动；TaskCenter 失败/完成详情、技术 Expander 与有界时间线可追溯 | 合成/fake/隔离 testhost；组合 WPF host 首次出现既有选择绑定时序失败，R06 详情类单独隔离 `2/2`，未改业务实现；真实 Playnite/package-host、Worker 实时流、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-07 最近活动密度](evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md)；下一项 `R20-08` 状态语气统一，先核对加载/失败/空/完成/需操作文案模板 |
 | R20-08 | 状态语气统一 | 已满足，待环境验证 | 176183ec | 定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`（1 条既有任务详情源断言基线失败）；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML `24/24`/diff 通过 | 复用 `WorkspaceStatePresenter`、`ActionAvailabilityHints`、`OverviewPriorityResolver`；Shell 副标题随优先状态更新；主状态正向/负例覆盖，不以 Worker/Rclone 替代解释 | 合成/fake/隔离 testhost/source-copy；已知任务详情断言漂移与 legacy skip；真实 Playnite/package-host、Worker/工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-08 状态语气统一](evidence/R20-08-STATE-TONE-20260921.md)；下一项 `R21-01` 八入口纯键盘，先核对 Q24/UIA 键盘行为 |
 | R21-01 | 八入口纯键盘 | 已满足，待环境验证 | c3459ebd | R21 新增 `2/2`；相关焦点/键盘/无障碍/生产壳层回归 `31/31`；隔离 Release `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 八个生产入口在 STA WPF host 中有前/反向实际焦点轨迹，全部留在入口范围并命中安全命令/导航名；现有 R05/GamePicker 夹具覆盖方向键、Enter/Esc | 未运行真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏或宿主性能；不以离屏窗口替代呈现 | [R21-01 八入口纯键盘](evidence/R21-01-KEYBOARD-TRACE-20260921.md)；下一项 `R21-02` 控件名称与值 |
-| R21-02 | 控件名称与值 | 实现中，待继续 | 1ca2d01d | 新增 AutomationPeer 行为 `2/2`；相关键盘/无障碍回归 `33/33`；隔离 Release `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 已为 Dashboard/Overview/Maintenance/Trainer 的明确进度条和 TaskCenter 三个筛选器补语义名；受控 WPF 验证 glyph 名称、Toggle Off/On、Range 当前/最小/最大值 | 未验真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏或宿主性能；SaveCenter 外置标签开关、更多复合选择器和 DataGrid 进度条待继续 | [R21-02 控件名称与值](evidence/R21-02-AUTOMATION-VALUE-20260921.md)；下一小批量仍为 R21-02 剩余控件 |
+| R21-02 | 控件名称与值 | 实现中，待继续 | efa9614f（续作） | R21-02 定向 `4/4`；相关键盘/无障碍回归 `35/35`；隔离 Release 无错误、2 条既有 warning（后续 no-restore `0/0`）；source/XAML/diff 通过 | 已为 Dashboard/Overview/Maintenance/Trainer 的明确进度条、TaskCenter 三个筛选器和 SaveCenter 四个策略 ToggleSwitch、两个复合选择器、锁定开关补语义名；受控 WPF 验证名称、Toggle Off/On、ComboBox 选中值和 Range 值 | 未验真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏或宿主性能；TaskCenter DataGrid 进度条、Maintenance 远端备份进度及其余状态/值负例待继续 | [R21-02 控件名称与值](evidence/R21-02-AUTOMATION-VALUE-20260921.md)、[R21-02 SaveCenter 控件名称与值](evidence/R21-02-SAVECENTER-AUTOMATION-20260921.md)；下一小批量仍为 R21-02 剩余控件 |
 | R21-03 | 验证错误播报 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-04 | 异步完成播报 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-05 | 禁用与隐藏区别 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -610,5 +610,13 @@
 - 先查现有 UIA/Automation 接线：Shell、媒体历史、任务预设等多数入口已有语义名称。本阶段只补明确可关联的进度值和任务筛选器名称，不改变数值、命令或 Binding：Dashboard 后台操作进度、Overview 三个进度条、Maintenance 存储占用、Trainer 下载进度，以及 TaskCenter 状态/类型/游戏筛选。
 - `R21AutomationValueBehaviorTests` 以真实 WPF AutomationPeer 验证动作名不退化为 glyph，ToggleSwitch `Off → On` 状态可读，ProgressBar 当前/最小/最大值可读；新增 `2/2`。与 R21-01 相关套件合计 `33/33`。
 - 隔离 Release `net462/net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；`validate-source.py`、XAML `24/24`、diff 通过。证据来自生产 XAML、合成 WPF 控件、隔离 source-copy/testhost；真实宿主/UIA/读屏/OS 输入/IME/物理 DPI/跨屏/呈现/性能仍待验。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R21-02 控件名称与值](evidence/R21-02-AUTOMATION-VALUE-20260921.md)。
-- 当前不签收整项 R21-02：SaveCenter 外置标签开关、更多复合选择器、DataGrid 内重复进度条及其状态/值负例仍待继续。
-- 下一可执行小批量：继续 `R21-02`，先处理 SaveCenter 外置标签开关和更多复合选择器；完成后再进入 `R21-03` 验证错误播报。
+- 当前不签收整项 R21-02：本段记录的初批之后，SaveCenter 外置标签开关和复合选择器已在续作小批量补证；TaskCenter DataGrid 内重复进度条、Maintenance 远端备份进度及其状态/值负例仍待继续。
+- 下一可执行小批量：继续 `R21-02`，先处理 TaskCenter/Maintenance 进度条名称和值与负例；完成后再进入 `R21-03` 验证错误播报。
+
+## 2026-09-21 Round3 R21-02 SaveCenter 控件名称与值（续作小批量）
+
+- `efa9614f` 复用 SaveCenter 现有 ToggleSwitch、ComboBox、CheckBox、命令和 Binding，为四个存档策略开关、异常保护等级、策略模板、锁定所选版本和两个策略动作补稳定 Automation 名称；未新增服务、DTO、命令或数值语义。
+- `R21AutomationValueBehaviorTests` 当前 `4/4`；受控 STA WPF peer 实际检查四个 ToggleSwitch 的名称和 `Off → On`、异常保护 ComboBox 的名称和选中值变化；相关 R21 键盘/焦点/无障碍/生产壳层回归 `35/35`。
+- 隔离 source-copy Release Playnite `net462` / Tests `net472` 无错误；首次编译只出现 `MediaCenterView.xaml.cs:671` 的 2 条既有 `CS8602` warning，后续 no-restore build summary `0/0`。`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`。
+- 证据来自生产 XAML、绑定关联契约、合成控件和隔离 testhost；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、最终呈现和宿主性能仍待验。Demo 原目录不可用，main 用户改动未碰、未合并；source-copy/build 目录已清理。证据见 [R21-02 SaveCenter 控件名称与值](evidence/R21-02-SAVECENTER-AUTOMATION-20260921.md)。
+- 当前不签收整项 R21-02：TaskCenter DataGrid 重复进度条、Maintenance 远端备份进度、其余复合选择器和逐控件状态/值负例仍待继续。下一可执行小批量是这些进度条名称和值与负例，完成后再进入 `R21-03`。

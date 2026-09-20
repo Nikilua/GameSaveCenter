@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 SaveCenter 控件名称与值（2026-09-21，续作小批量）
+
+- `efa9614f` 先查并复用 SaveCenter 现有 ToggleSwitch、ComboBox、CheckBox、命令和 Binding，为四个存档策略开关、异常保护等级、策略模板、锁定所选版本和两个策略动作补稳定 Automation 名称；没有新造服务、DTO、命令或业务值。
+- `R21AutomationValueBehaviorTests` 当前 `4/4`，相关 R21 回归 `35/35`；受控 WPF peer 实际检查四个 Toggle 的名称/`Off → On`、ComboBox 名称/选中值，并保留 glyph 名称与 ProgressBar RangeValue 覆盖。隔离 Release 无错误，首次编译的 2 条 `MediaCenterView.xaml.cs:671 CS8602` 为既有 warning，后续 no-restore 为 `0/0`；source/XAML/diff 与 WPF 静态检查通过。
+- R21-02 未签收：TaskCenter DataGrid 与 Maintenance 远端进度条、其余复合选择器和逐控件状态/值负例待继续。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R21-02-SAVECENTER-AUTOMATION-20260921.md`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一项仍为 `R21-02` 剩余进度条和负例；之后进入 `R21-03` 验证错误播报。
+
 ## 第三轮 R21-02 控件名称与值（2026-09-21，部分收口）
 
 - 先查现有 UIA/Automation 接线；Shell、媒体历史、任务预设多数已有稳定名称。本批 `1ca2d01d` 只补 Dashboard/Overview/Maintenance/Trainer 的明确进度名与 TaskCenter 三个筛选器名，保持业务值、命令和 Binding。

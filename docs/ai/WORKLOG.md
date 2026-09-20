@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 SaveCenter 控件名称与值（续作小批量）
+
+- 提交并推送 `efa9614f`：复用 SaveCenter 现有 ToggleSwitch、ComboBox、CheckBox、命令和 Binding，为四个存档策略开关、异常保护等级、策略模板、锁定所选版本和两个策略动作补语义 Automation 名称；没有新增服务、DTO 或业务值。
+- `R21AutomationValueBehaviorTests` `4/4`；相关 R21 键盘/焦点/无障碍/生产壳层回归 `35/35`。受控 WPF peer 实际覆盖 Toggle 名称与 `Off/On`、ComboBox 选中值，既有 glyph 与 ProgressBar RangeValue 证据继续通过。
+- 隔离 source-copy Release Playnite `net462` / Tests `net472` 无错误；首次编译仅有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，后续 no-restore `0/0`；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`。source-copy/build 已清理。
+- 不把 R21-02 写成完成：TaskCenter DataGrid 进度条、Maintenance 远端备份进度、其余复合选择器和状态/值负例待继续。只使用合成控件、生产源码契约和隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-SAVECENTER-AUTOMATION-20260921.md`。
+- 下一可执行任务仍为 R21-02 剩余进度条名称和值与负例，之后进入 R21-03 错误播报。
+
 ## 2026-09-21 R21-02 控件名称与值（部分收口）
 
 - 先盘点现有 UIA/Automation 名称；本批补 Dashboard/Overview/Maintenance/Trainer 明确进度条名和 TaskCenter 状态/类型/游戏筛选名，未改变命令、Binding 或数值。提交并推送 `1ca2d01d`。
