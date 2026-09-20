@@ -314,6 +314,42 @@ public sealed class RetentionSimulationServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task IndexDeletionFailureRestoresArchiveAndDoesNotCountFreedBytes()
+    {
+        await AddZeroRetentionPolicyAsync("g1");
+        var archive = CreateArchive("g1-delete-failure.zip", 500);
+        await AddVersionAsync("g1", "delete-failure", archive, 500, DateTime.UtcNow.AddDays(-90));
+        await ExecuteSqlAsync(@"CREATE TRIGGER fail_retention_index_delete
+BEFORE DELETE ON backup_versions
+WHEN OLD.backup_id = 'delete-failure'
+BEGIN SELECT RAISE(ABORT, 'injected retention index deletion failure'); END;");
+
+        try
+        {
+            var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+            var preview = await service.PreviewAsync(CancellationToken.None);
+            var result = await service.ApplyAsync(new RetentionSimulationApplyRequestDto
+            {
+                Confirmed = true,
+                PreviewId = preview.PreviewId,
+                PreviewGeneratedUtc = preview.GeneratedUtc
+            }, CancellationToken.None);
+
+            Assert.Equal(0, result.DeletedCount);
+            Assert.Equal(0, result.MovedBytes);
+            Assert.Equal(0, result.FreedBytes);
+            Assert.Equal(1, result.FailedCount);
+            Assert.True(result.RecoveryRequiredCount >= 1);
+            Assert.True(File.Exists(archive));
+            Assert.Contains(await store.GetStorageAnalysisRowsAsync(CancellationToken.None), x => x.BackupId == "delete-failure");
+        }
+        finally
+        {
+            await ExecuteSqlAsync("DROP TRIGGER fail_retention_index_delete;");
+        }
+    }
+
+    [Fact]
     public async Task ApplyRejectsExpiredPreview()
     {
         var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
@@ -349,6 +385,15 @@ public sealed class RetentionSimulationServiceTests : IDisposable
             KeepWeeklyWeeks = 0,
             KeepMonthlyMonths = 0
         }, CancellationToken.None);
+    }
+
+    private async Task ExecuteSqlAsync(string sql)
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        await command.ExecuteNonQueryAsync();
     }
 
     private string CreateArchive(string name, int size)
