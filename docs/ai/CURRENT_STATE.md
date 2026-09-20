@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-03 重复执行幂等（已满足，受控回归完成；真实管道待验）
+
+- 先查到现有 `IpcEnvelope.RequestId`、`IpcRequestSemantics` replay-protected 分类、Worker 持久化 request ledger、`WorkerIpcClient` 同 ID 复核和 `BusyOperationCoordinator` 已覆盖写请求单次执行、响应丢失复核、重复 UI 触发拒绝以及未知结果提示，没有重建写服务。
+- Worker ledger/消息边界定向回归 `16/16`；生产 Busy 原子门与按钮行为 `2/2`；XAML `24/24`、`validate-source.py`、`git diff --check` 通过。
+- 真实 Named Pipe 客户端组因当前环境禁止创建本地 Named Pipe 而跳过；完整 WPF linked 构建受 `_wpftmp.csproj` Access denied 阻塞，外部源码副本 restore 受 `NU1301` 网络策略阻塞，均未绕过或写成通过。证据见 `evidence/R19-03-IDEMPOTENCY-20260920.md`。
+- 仅覆盖合成请求、fake/隔离 testhost 和本地已有产物；真实 Playnite/Worker 断连、presented frame、DPI/UIA/读屏/IME、ETW、宿主性能未验。Demo 原目录不可用。下一项：`R19-04` 取消关闭顺序。
+
 ## 当前第三轮 R19-02 刷新失败保留草稿（已满足，受控回归完成；真实宿主待验）
 
 - 先查到生产 VM 已有 `backupCommentDirty`/`backupLockDirty`/`mediaCommentDirty`/`mediaFavoriteDirty`，稳定 ID 刷新分别走 `SyncBackupEditor(..., preserveDirtyFields)`、`SyncMediaEditor(..., preserveDirtyFields)`；失败状态路径不替换集合或编辑值，因此没有重建第二套草稿模型。

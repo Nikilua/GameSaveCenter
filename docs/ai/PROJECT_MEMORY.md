@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-03 重复执行幂等（2026-09-20）
+
+- 复核确认现有 `RequestId`、replay-protected 语义分类、Worker 持久化 ledger 和 `WorkerIpcClient` 同 envelope 复核已经满足单次执行；响应丢失不会以新 ID 重复写入，`REQUEST_IN_PROGRESS`/`REQUEST_INTERRUPTED`/可能已提交均明确提示未知边界。生产 `BusyOperationCoordinator` 以原子门拒绝重复 UI 触发，并在失败/取消后恢复。
+- `IpcRequestLedgerTests`/IPC 边界 `16/16`，生产 Busy/按钮 `2/2`；XAML `24/24`、source validation、diff check 通过。未新增重复写服务或修改命令绑定、取消/错误/恢复语义、选框和滚动系统。
+- 真实 Named Pipe 客户端测试因环境权限跳过；linked WPF `_wpftmp` 构建 Access denied，外部副本 restore 被 `NU1301` 拒绝，未绕过系统权限；不宣称真实管道或完整 solution 通过。只用合成/fake/隔离数据，Demo 原目录不可用。证据见 `evidence/R19-03-IDEMPOTENCY-20260920.md`。
+- 下一项 `R19-04`：核对取消关闭顺序、Worker 断开后的 deterministic cleanup、重开后的任务恢复和 `IsBusy` 清理。
+
 ## 第三轮 R19-02 刷新失败保留草稿（2026-09-20）
 
 - 核对确认生产 `DashboardViewModel` 已把只读刷新和编辑字段分开：四个备注/锁定/收藏字段各自有 dirty 标记，稳定 ID 替换对象时 `Sync*Editor(..., preserveDirtyFields)` 只更新干净字段；`FailSaveDetailsLoad`/`FailMediaDetailsLoad` 只更新状态/错误，不清集合或编辑值。

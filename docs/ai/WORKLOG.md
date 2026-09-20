@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-03 重复执行幂等
+
+- 先查已有能力：`IpcEnvelope.RequestId`、`IpcRequestSemantics`、Worker `IpcRequestLedger`/`NamedPipeServerService`、`WorkerIpcClient.RequestWithTrackingAsync` 和生产 `BusyOperationCoordinator` 已覆盖同 ID 单次 claim/响应重放、冲突/执行中/Worker 中断状态、丢响应同 ID 复核和 UI 连点门；本阶段没有重建或改变写服务。
+- Worker ledger/消息边界 `16/16`，R02 Busy 原子门与共享生产按钮 `2/2`，XAML `24/24`、`validate-source.py`、`git diff --check` 通过。Named Pipe 客户端组因当前执行环境禁止本地 Named Pipe 客户端而跳过。
+- linked WPF solution 的 `_wpftmp.csproj` 生成遇到 Access denied；外部源码副本 restore 遇 `NU1301`，没有提升权限或伪造构建通过。证据：`evidence/R19-03-IDEMPOTENCY-20260920.md`。
+- 只用合成请求、fake/隔离 testhost 和本地已有产物，未写真实存档、媒体、云端或诊断；真实 Playnite/Worker 断连、呈现、DPI/UIA/IME、ETW、宿主性能仍待验，Demo 原目录不可用。下一可执行任务：`R19-04` 取消关闭顺序。
+
 ## 2026-09-20 R19-02 刷新失败保留草稿
 
 - 先复用现有能力：存档/媒体编辑字段已经有独立 dirty 标记，同稳定 ID 刷新调用 `SyncBackupEditor`/`SyncMediaEditor` 并保留 dirty 字段；失败路径只更新 `WorkspaceDataState`/错误详情，不重置集合或编辑对象。
