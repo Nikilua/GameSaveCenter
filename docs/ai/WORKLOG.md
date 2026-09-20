@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 Dashboard 选框与策略控件名称/状态（续作小批量）
+
+- 提交并推送 `6a8cae16`：复用 Dashboard 游戏状态/平台/排序筛选、同步路径和当前游戏策略编辑器的既有 Binding 与命令，为三个 ComboBox、六个策略 ToggleSwitch 及保存按钮补稳定 Automation 名称；没有改筛选、排序、同步或策略语义。
+- `R21AutomationValueBehaviorTests` `8/8`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `56/56`。新增测试实际检查三个 Dashboard ComboBox、六个 ToggleSwitch 和保存按钮的 peer 名称，验证选项切换与 Toggle `Off→On`。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 0 warnings`；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增诊断。
+- 仅使用生产 Dashboard XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-DASHBOARD-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 MediaCenter 选择器名称与值（续作小批量）
 
 - 提交并推送 `da16043d`：复用 MediaCenter 收件箱归类目标、当前游戏媒体类型筛选、所选媒体重新归类目标的现有数据源、Binding 和后续命令，补稳定 Automation 名称；没有改媒体归类、筛选、移动或文件语义。
