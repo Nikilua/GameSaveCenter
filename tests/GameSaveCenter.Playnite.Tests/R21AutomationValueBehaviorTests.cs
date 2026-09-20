@@ -174,6 +174,36 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaCenterBatchActionsExposeStableNamesAndInvokeChannels()
+    {
+        var root = TestRepositoryContext.Root;
+        var media = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        foreach (var name in new[] { "收藏所选媒体", "取消收藏所选媒体", "为所选媒体应用当前备注" })
+            Assert.Equal(2, CountOccurrences(media, "AutomationProperties.Name=\"" + name + "\""));
+
+        RunSta(() =>
+        {
+            var invoked = new bool[3];
+            var buttons = new[]
+            {
+                CreateNamedAction("收藏所选媒体", () => invoked[0] = true),
+                CreateNamedAction("取消收藏所选媒体", () => invoked[1] = true),
+                CreateNamedAction("为所选媒体应用当前备注", () => invoked[2] = true)
+            };
+
+            using var host = new PeerHost(buttons[0], buttons[1], buttons[2]);
+            for (var index = 0; index < buttons.Length; index++)
+            {
+                Assert.Equal(AutomationProperties.GetName(buttons[index]), GetPeer(buttons[index]).GetName());
+                var invoke = Assert.IsAssignableFrom<IInvokeProvider>(GetPeer(buttons[index]).GetPattern(PatternInterface.Invoke));
+                invoke.Invoke();
+                host.Pump();
+                Assert.True(invoked[index]);
+            }
+        });
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
@@ -503,6 +533,14 @@ public sealed class R21AutomationValueBehaviorTests
         var toggle = new NativeToggleSwitch { Content = name, IsChecked = false };
         AutomationProperties.SetName(toggle, name);
         return toggle;
+    }
+
+    private static Button CreateNamedAction(string name, Action action)
+    {
+        var button = new Button { Content = name };
+        AutomationProperties.SetName(button, name);
+        button.Click += (_, _) => action();
+        return button;
     }
 
     private static ComboBox CreateNamedSelector(string name, params string[] options)

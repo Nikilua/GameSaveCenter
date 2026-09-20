@@ -709,9 +709,9 @@
                                 </ui:Button>
                             </StackPanel>
                             <WrapPanel x:Name="MediaCurrentBatchActions" Grid.Column="1" HorizontalAlignment="Right">
-                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选" AutomationProperties.Name="收藏所选媒体"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏" AutomationProperties.Name="取消收藏所选媒体"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注" AutomationProperties.Name="为所选媒体应用当前备注"/>
                             </WrapPanel>
                             <ui:Button x:Name="MediaCompactDetailsButton"
                                        Grid.Column="1"
@@ -781,7 +781,7 @@
                                 <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding ReassignMediaCommand}" Content="移动并归类" AutomationProperties.Name="移动并归类当前媒体" HorizontalAlignment="Left"/>
                                 <Separator Margin="0,14,0,12"/>
                                 <TextBlock Text="批量操作" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,7"/>
-                                <WrapPanel><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注"/></WrapPanel>
+                                <WrapPanel><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选" AutomationProperties.Name="收藏所选媒体"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏" AutomationProperties.Name="取消收藏所选媒体"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注" AutomationProperties.Name="为所选媒体应用当前备注"/></WrapPanel>
                         </StackPanel>
                     </Border>
                     </ScrollViewer>
