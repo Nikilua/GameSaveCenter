@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R20-02 指标统计范围（2026-09-20）
+
+- `DashboardSnapshotDto` 已有 `GeneratedUtc`、全库计数、云端/媒体计数和当前游戏字段，本项复用这些来源，没有新增 DTO/服务或批量写入入口。`OverviewSnapshotDisplay` 提供全库/当前游戏范围、更新时间、未加载 `—` 与合法零 `0` 的格式化；`DashboardViewModel` 在快照/选择/任务/最近访问变化时补发显示属性通知。
+- Overview 统计条明确“全库 · Playnite 游戏库”，当前游戏卡片明确“当前游戏 · 与全库快照同步”；未加载时隐藏运行状态胶囊和比例条，避免默认对象被读成真实零/异常，现有比例和零分母逻辑保持。
+- 核心定向 `40/40`；概览相关 4 条布局/源码断言 `4 skipped`；更宽筛选 `194 passed / 3 failed / 50 skipped / 247 total`，失败是未修改的设置字段、空态覆盖层、受限下拉模板既有基线。Release 隔离编译 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，source/XAML/diff 通过。
+- 链接工作树 obj/WPF 临时项目写入继续受 `Access denied` 阻塞，未绕过。只使用合成/fake/隔离目录；真实 Playnite/Worker/外部工具、存档/媒体/云端、presented frame、物理 DPI/跨屏、UIA/IME、ETW、宿主性能待验。Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-02-METRIC-SCOPE-20260920.md`。
+- 下一项 `R20-03`：先盘点现有环境检查、外部工具设置入口、已完成标记和返回/取消语义，不能自动更改用户配置。
+
 ## 第三轮 R20-01 概览下一步（2026-09-20）
 
 - 复用 `OverviewPriorityResolver`、`DashboardViewModel`、`GamePickerViewModel` 和生产 Shell：失败任务进入任务中心“失败”，未匹配/可备份进入现有游戏选框；可备份只设置筛选，不从概览直接发起全库写入。空库继续走既有刷新动作。

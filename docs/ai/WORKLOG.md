@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R20-02 指标统计范围
+
+- 先核对已有 `DashboardSnapshotDto.GeneratedUtc`、全库计数、当前游戏 DTO、Overview 绑定和既有来源提示；没有重建服务/DTO，也没有改变游戏选框、滚动条或命令入口。
+- 新增 `OverviewSnapshotDisplay` 和 `DashboardViewModel` 显示投影：全库与当前游戏范围/更新时间可见，快照未加载显示 `—` 且说明不代表 0，合法零仍显示 0；未加载时隐藏依赖快照的比例条与状态胶囊，并保持现有快照来源。
+- 核心定向 `40/40`；概览相关布局断言 `4 skipped`；更宽筛选 `194 passed / 3 failed / 50 skipped / 247 total`，3 条失败为本阶段未修改的设置字段、空态覆盖层和下拉模板基线。隔离 Release `0 errors / 2` 既有 `MediaCenterView.xaml.cs:671` warning；source、XAML `24/24`、diff 通过。
+- 链接工作树 obj/WPF 临时项目 `Access denied` 未绕过；未运行真实宿主、呈现、DPI/UIA/IME、ETW/性能，未写真实存档/媒体/云端；Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-02-METRIC-SCOPE-20260920.md`。
+- 下一可执行任务：`R20-03` 首次配置引导，先查环境检查、设置入口、完成标记和可返回/不自动改配置边界。
+
 ## 2026-09-20 R20-01 概览下一步
 
 - 先核对已有 `OverviewPriorityResolver`、概览快照、`GamePickerViewModel`、生产 Shell 和任务工作区；实现失败任务、空库、未匹配、可备份四种首屏优先级与真实入口。未新增服务/DTO，不使用全库备份命令作为概览动作。

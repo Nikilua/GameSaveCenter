@@ -68,6 +68,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 .Cast<RecentAccessItem>()
                 .ToList();
             Replace(RecentAccessItems, items, AreSameRecentAccessItem);
+            OnPropertyChanged(nameof(OverviewRecentAccessCountDisplay));
         }
 
         private void OpenRecentAccess(RecentAccessItem? item)

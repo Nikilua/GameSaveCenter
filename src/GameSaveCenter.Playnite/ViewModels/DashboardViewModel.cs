@@ -94,6 +94,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string statusMessage = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
+        private bool dashboardSnapshotLoaded;
         private EnvironmentCheckReportDto environmentCheck = new EnvironmentCheckReportDto();
         private bool environmentCheckLoaded;
         private bool safeModePromptShown;
@@ -751,11 +752,39 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => snapshot;
             private set
             {
-                SetValue(ref snapshot, value);
+                var nextSnapshot = value ?? new DashboardSnapshotDto();
+                dashboardSnapshotLoaded = value != null;
+                SetValue(ref snapshot, nextSnapshot);
+                NotifyOverviewSnapshotDisplaysChanged();
                 NotifyOverviewPriorityChanged();
                 OnWorkspaceStateInputsChanged();
             }
         }
+        public bool IsDashboardSnapshotLoaded => dashboardSnapshotLoaded;
+        public string OverviewSnapshotScopeDisplay => OverviewSnapshotDisplay.Scope(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewSnapshotUpdatedDisplay => OverviewSnapshotDisplay.Updated(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewCurrentGameScopeDisplay => OverviewSnapshotDisplay.CurrentGameScope(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewManagedGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.ManagedGames);
+        public string OverviewMatchedGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.MatchedGames);
+        public string OverviewRunningGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.RunningGames);
+        public string OverviewWarningGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.WarningGames);
+        public string OverviewCloudQueueDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.CloudTransfers?.QueueCount ?? 0);
+        public string OverviewCloudAttentionDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.CloudTransfers?.AttentionCount ?? 0);
+        public string OverviewUnassignedMediaDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.UnassignedMediaCount);
+        public string OverviewHealthBreakdownDisplay => IsDashboardSnapshotLoaded
+            ? $"健康 {Snapshot.HealthyGames} · 注意 {Snapshot.AttentionGames} · 风险 {Snapshot.RiskGames} · 未知 {Snapshot.UnknownGames}"
+            : "健康 — · 注意 — · 风险 — · 未知 —";
+        public string OverviewRecentAccessCountDisplay => IsDashboardSnapshotLoaded ? $"全部 {RecentAccessItems.Count} 个" : "全部 —";
+        public string OverviewTasksCountDisplay => IsDashboardSnapshotLoaded ? $"全部 {OverviewTasks.Count} 个" : "全部 —";
+        public string SelectedGameBackupVersionDisplay => IsDashboardSnapshotLoaded && SelectedGame != null ? SelectedGame.BackupVersionCount.ToString() : "—";
+        public string SelectedGameMediaCountDisplay => IsDashboardSnapshotLoaded && SelectedGame != null ? $"{SelectedGame.MediaCount} 项" : "—";
+        public string SelectedGameCloudStateDisplay => IsDashboardSnapshotLoaded && SelectedGame != null ? SelectedGame.CloudStateDisplay : "—";
+        public string SelectedGameLastBackupDisplay
+            => !IsDashboardSnapshotLoaded
+                ? "—"
+                : SelectedGame?.LastBackupUtc is DateTime backupUtc
+                    ? backupUtc.ToLocalTime().ToString("MM-dd HH:mm")
+                    : "暂无";
         public int MaintenanceTabIndex { get => maintenanceTabIndex; set { SetValue(ref maintenanceTabIndex, value); } }
         /// <summary>Remembers the ordinary media tab; purpose actions may override it once.</summary>
         public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(3, value))); } }
@@ -773,7 +802,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string OnboardingDescription => IsOnboardingPending
             ? "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。"
             : "重新运行非破坏性环境检查，确认备份链路仍然可用。";
-        private OverviewPriorityState OverviewPriority => OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
+        private OverviewPriorityState OverviewPriority => !IsDashboardSnapshotLoaded
+            ? new OverviewPriorityState("Loading", "Refresh", "正在读取概览数据", "全库快照尚未成功返回；数字显示为 —，不把未加载当成 0。", "重新读取")
+            : OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
         public string OverviewPriorityKind => OverviewPriority.Kind;
         public string OverviewPriorityTitle => OverviewPriority.Title;
         public string OverviewPriorityDescription => OverviewPriority.Description;
@@ -797,6 +828,33 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(OverviewPriorityActionText));
             OnPropertyChanged(nameof(OverviewPriorityActionToolTip));
             OnPropertyChanged(nameof(OverviewPriorityActionCommand));
+        }
+
+        private void NotifyOverviewSnapshotDisplaysChanged()
+        {
+            OnPropertyChanged(nameof(IsDashboardSnapshotLoaded));
+            OnPropertyChanged(nameof(OverviewSnapshotScopeDisplay));
+            OnPropertyChanged(nameof(OverviewSnapshotUpdatedDisplay));
+            OnPropertyChanged(nameof(OverviewCurrentGameScopeDisplay));
+            OnPropertyChanged(nameof(OverviewManagedGamesDisplay));
+            OnPropertyChanged(nameof(OverviewMatchedGamesDisplay));
+            OnPropertyChanged(nameof(OverviewRunningGamesDisplay));
+            OnPropertyChanged(nameof(OverviewWarningGamesDisplay));
+            OnPropertyChanged(nameof(OverviewCloudQueueDisplay));
+            OnPropertyChanged(nameof(OverviewCloudAttentionDisplay));
+            OnPropertyChanged(nameof(OverviewUnassignedMediaDisplay));
+            OnPropertyChanged(nameof(OverviewHealthBreakdownDisplay));
+            OnPropertyChanged(nameof(OverviewRecentAccessCountDisplay));
+            OnPropertyChanged(nameof(OverviewTasksCountDisplay));
+            NotifyOverviewSelectedGameDisplaysChanged();
+        }
+
+        private void NotifyOverviewSelectedGameDisplaysChanged()
+        {
+            OnPropertyChanged(nameof(SelectedGameBackupVersionDisplay));
+            OnPropertyChanged(nameof(SelectedGameMediaCountDisplay));
+            OnPropertyChanged(nameof(SelectedGameCloudStateDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupDisplay));
         }
         public RecentProtectionSummary RecentProtection { get => recentProtection; private set => SetValue(ref recentProtection, value); }
         public WorkerSettingsSnapshotDto EffectiveSettings
@@ -2340,6 +2398,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             });
 
             Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
+            OnPropertyChanged(nameof(OverviewTasksCountDisplay));
             var selectedTaskId = SelectedTask?.TaskId;
             var selectedEvent = changes.LastOrDefault(change => change?.Task != null
                 && (string.IsNullOrWhiteSpace(selectedTaskId)
@@ -2688,6 +2747,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!taskHistoryActive)
                     CompleteTaskPageLoad();
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
+                OnPropertyChanged(nameof(OverviewTasksCountDisplay));
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
                 RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
@@ -5764,6 +5824,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedGame), StringComparison.Ordinal))
             {
                 OnPropertyChanged(nameof(SelectedGame));
+                NotifyOverviewSelectedGameDisplaysChanged();
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
                 return;
@@ -5778,6 +5839,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 GameDiagnosticPlayniteId = selected.PlayniteId;
             UpdateSelectedGamePolicyBaseline(selected);
             OnPropertyChanged(nameof(SelectedGame));
+            NotifyOverviewSelectedGameDisplaysChanged();
             OnPropertyChanged(nameof(RestoreAvailabilityHint));
             OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
             if (!suppressSelectionLoad)

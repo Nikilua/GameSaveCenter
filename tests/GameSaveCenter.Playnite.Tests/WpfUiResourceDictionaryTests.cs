@@ -3685,8 +3685,8 @@ public sealed class WpfUiResourceDictionaryTests
         // The overview must make the two states that are otherwise easy to miss visible:
         // active games and games requiring attention. Keep these bindings OneWay so a
         // read-only snapshot cannot accidentally be written back from a template.
-        Assert.Contains("Text=\"{Binding Snapshot.RunningGames, Mode=OneWay}\"", overview);
-        Assert.Contains("Text=\"{Binding Snapshot.WarningGames, Mode=OneWay}\"", overview);
+        Assert.Contains("Text=\"{Binding OverviewRunningGamesDisplay, Mode=OneWay}\"", overview);
+        Assert.Contains("Text=\"{Binding OverviewWarningGamesDisplay, Mode=OneWay}\"", overview);
         Assert.Contains("snapshot.HealthyGames = snapshot.Games.Count", dashboardService);
         Assert.Contains("snapshot.AttentionGames = snapshot.Games.Count", dashboardService);
         Assert.Contains("snapshot.RiskGames = snapshot.Games.Count", dashboardService);
@@ -3712,12 +3712,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("查看明细", cloudQueueCard.ToString());
         Assert.Equal("{DynamicResource GscRedesignSectionCard}", strip.Attribute("Style")?.Value);
         Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Rectangle" && element.Attribute("Fill")?.Value == "{DynamicResource GscTableDividerBrush}"));
-        Assert.Contains("Binding Snapshot.ManagedGames, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.MatchedGames, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.RunningGames, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.WarningGames, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewManagedGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewMatchedGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewRunningGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewWarningGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewSnapshotScopeDisplay", strip.ToString());
         Assert.Contains("Binding Snapshot.PendingCloudTasks, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.UnassignedMediaCount, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewUnassignedMediaDisplay, Mode=OneWay", strip.ToString());
 
         // Hover feedback stays render-only and is wired through EventSetters on the card style.
         var overviewText = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));

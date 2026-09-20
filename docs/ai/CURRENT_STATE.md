@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-02 指标统计范围（已满足，待环境验证）
+
+- 复用 `DashboardSnapshotDto` 的 `GeneratedUtc`、全库计数、云端/媒体计数和现有当前游戏 DTO；`OverviewSnapshotDisplay` 与 `DashboardViewModel` 投影为概览指标补充全库/当前游戏范围、更新时间和未加载表达。快照未成功返回时数字为 `—` 并明确“不代表 0”，已加载的合法零仍为 `0`。
+- 概览统计条显示 Playnite 全库来源与生成时间，当前游戏卡片显示同一快照时间；未加载时隐藏依赖快照的状态胶囊/比例条，保留现有零分母规则、选框、滚动条、命令绑定和错误/取消/恢复语义。
+- R20-02 及 R20-01 核心定向 `40/40`；概览相关布局/源码断言 `0 passed / 0 failed / 4 skipped`。更宽筛选 `194 passed / 3 failed / 50 skipped / 247 total`，3 条失败为未改动的设置响应式字段、空态覆盖层和受限下拉模板既有基线。
+- Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` nullable warning；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。链接工作树仍因 obj/WPF 临时项目 `Access denied` 未能直接写入，未绕过。
+- 仅用合成 DTO、fake、隔离 testhost/目录；真实 Playnite/Worker/外部工具/存档/云端写入、呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能未验。Demo 原目录不可用，main 用户改动未碰且未合并。证据见 `evidence/R20-02-METRIC-SCOPE-20260920.md`。
+- 下一项：`R20-03` 首次配置引导，先查现有环境检查、设置入口、已完成标记和可返回/不自动改配置边界。
+
 ## 当前第三轮 R20-01 概览下一步（已满足，待环境验证）
 
 - `OverviewPriorityResolver` 已按失败任务、空库、未匹配、可备份再到既有媒体/通用提醒/健康状态形成稳定优先级；失败任务进入真实任务中心“失败”筛选，未匹配和可备份进入现有游戏选框，后者使用“可备份”筛选，不直接触发全库写入。
