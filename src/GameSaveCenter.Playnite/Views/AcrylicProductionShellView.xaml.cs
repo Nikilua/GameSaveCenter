@@ -78,6 +78,17 @@ namespace GameSaveCenter.Playnite.Views
 
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
 
+        public void OpenGamePicker()
+        {
+            if (viewModel == null || !GameContextButton.IsVisible)
+                return;
+
+            PickerOverlay.Visibility = Visibility.Visible;
+            QueueGamePickerFilterDefaults();
+            GameSearchTextBox.Focus();
+            Keyboard.Focus(GameSearchTextBox);
+        }
+
         public Action? SettingsRequested { get; set; }
 
         /// <summary>
@@ -583,20 +594,15 @@ namespace GameSaveCenter.Playnite.Views
         private void OnGameContextClick(object sender, RoutedEventArgs e)
         {
             var opening = PickerOverlay.Visibility != Visibility.Visible;
-            PickerOverlay.Visibility = opening ? Visibility.Visible : Visibility.Collapsed;
             if (!opening)
             {
+                PickerOverlay.Visibility = Visibility.Collapsed;
                 FocusGameContextButton();
                 e.Handled = true;
                 return;
             }
 
-            if (PickerOverlay.Visibility == Visibility.Visible)
-            {
-                QueueGamePickerFilterDefaults();
-                GameSearchTextBox.Focus();
-                Keyboard.Focus(GameSearchTextBox);
-            }
+            OpenGamePicker();
         }
 
         private void OnPickerScrimMouseDown(object sender, MouseButtonEventArgs e)

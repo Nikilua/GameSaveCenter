@@ -37,6 +37,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(3, picker.FilteredCount);
             picker.StatusFilter = "有备份";
             Assert.Equal(2, picker.FilteredCount);
+            picker.StatusFilter = "可备份";
+            Assert.Equal(1, picker.FilteredCount);
             picker.StatusFilter = "需处理";
             Assert.Equal(1, picker.FilteredCount);
             picker.StatusFilter = "未匹配";

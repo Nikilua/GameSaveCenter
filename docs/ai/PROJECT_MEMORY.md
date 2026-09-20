@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R20-01 概览下一步（2026-09-20）
+
+- 复用 `OverviewPriorityResolver`、`DashboardViewModel`、`GamePickerViewModel` 和生产 Shell：失败任务进入任务中心“失败”，未匹配/可备份进入现有游戏选框；可备份只设置筛选，不从概览直接发起全库写入。空库继续走既有刷新动作。
+- 优先级由快照稳定字段决定，未匹配优先于可备份；新增行为回归覆盖四状态、可备份排除项和无关警告数量变化不跳状态。`OverviewPriorityResolverTests` + `GamePickerViewModelTests` `32/32`，Overview/Shell 交互与源码 `5/5`。
+- Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` 通过，仅有既有 `MediaCenterView.xaml.cs:671` nullable warning；source、XAML `24/24`、diff 通过。链接工作树写 obj/WPF 临时项目受 `Access denied` 阻塞，未绕过权限。
+- 仅使用合成 DTO、fake、隔离 testhost/目录；真实 Playnite/Worker/外部工具/存档/云端写入、呈现、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能未验。Demo 原目录不可用，main 用户改动未碰且未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-20260920.md`。
+- 下一项 `R20-02`：盘点概览数字的统计范围、更新时间及未知/未加载表达，确保点击后的列表能解释数字来源。
+
 ## 第三轮 R19-08 慢调用可取消（2026-09-20）
 
 - 复核确认已有 `ExternalProcessRunner`/Ludusavi/Rclone timeout+token、外部进程树终止和输出上限；`WorkerIpcClient` 取消/宿主退出/超时边界、同 RequestId 复核及可能已接收语义；`BusyOperationCoordinator` finally 解锁；云端上传只在明确成功时记 `Uploaded`。

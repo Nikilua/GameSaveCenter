@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R20-01 概览下一步
+
+- 先核对已有 `OverviewPriorityResolver`、概览快照、`GamePickerViewModel`、生产 Shell 和任务工作区；实现失败任务、空库、未匹配、可备份四种首屏优先级与真实入口。未新增服务/DTO，不使用全库备份命令作为概览动作。
+- 未匹配进入现有游戏选框“未匹配”；工具可用且已匹配但没有本地备份的游戏进入“可备份”筛选；失败任务进入任务中心“失败”筛选并显式刷新；空库沿用已有刷新动作。补了可备份筛选的负例及无关快照变化不跳优先级测试。
+- `OverviewPriorityResolverTests` + `GamePickerViewModelTests` `32/32`；Overview 交互 + Shell 源码 `5/5`；Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` 通过。`validate-source.py`、XAML `24/24`、`git diff --check` 通过；仅有既有 `MediaCenterView.xaml.cs:671` nullable warning。
+- 链接工作树构建因写 `obj/...AssemblyInfoInputs.cache`/WPF 临时项目 `Access denied` 失败，未绕过权限；无真实 Playnite/Worker/外部工具/存档/云端写入或 presented frame/DPI/UIA/IME/ETW/宿主性能验证。Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-01-OVERVIEW-NEXT-ACTION-20260920.md`。
+- 下一可执行任务：`R20-02` 指标统计范围，先盘点概览数字的来源、更新时间以及当前游戏/全库/未知未加载区分。
+
 ## 2026-09-20 R19-08 慢调用可取消
 
 - 先查已有能力：`ExternalProcessRunner` 的 per-call timeout/token、整树 kill、输出上限；Ludusavi/Rclone 所有外部等待均传入边界；`WorkerIpcClient` 取消关闭管道、同 RequestId 复核和可能已接收标记；生产 Busy finally 解锁；云端只有明确成功才写 `Uploaded`。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-01 概览下一步（已满足，待环境验证）
+
+- `OverviewPriorityResolver` 已按失败任务、空库、未匹配、可备份再到既有媒体/通用提醒/健康状态形成稳定优先级；失败任务进入真实任务中心“失败”筛选，未匹配和可备份进入现有游戏选框，后者使用“可备份”筛选，不直接触发全库写入。
+- `OverviewPriorityResolverTests` + `GamePickerViewModelTests` `32/32`，Overview 真实命令交互 + 游戏选框 Shell 源码 `5/5`；覆盖未匹配优先于可备份、可备份负例、失败入口及无关快照变化不跳状态。Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` 通过，仅保留既有 `MediaCenterView.xaml.cs:671` nullable warning。
+- `validate-source.py`、XAML `24/24`、`git diff --check` 通过。链接工作树直接构建受 `obj/...AssemblyInfoInputs.cache`/WPF 临时项目 `Access denied` 阻塞，未绕过；未运行真实 Playnite/Worker/外部工具、呈现、DPI/UIA/IME、ETW 或宿主性能。Demo 原目录不可用，未写真实存档/媒体/云端，main 用户改动未碰、未合并。
+- 证据见 `evidence/R20-01-OVERVIEW-NEXT-ACTION-20260920.md`。下一项：`R20-02` 指标统计范围，先核对概览数字来源、当前游戏/全库范围与更新时间。
+
 ## 当前第三轮 R19-08 慢调用可取消（已满足，受控回归完成；真实管道与外部工具待验）
 
 - `ExternalProcessRunner` 为 Ludusavi/Rclone 使用显式超时、取消 token、进程树终止和有界 stdout/stderr；Playnite IPC 取消区分调用者/宿主退出，写请求可能已接收时保留同一 RequestId 复核，不以新 ID 盲目重试；Busy finally 释放，云端只有命令明确成功才记 `Uploaded`。

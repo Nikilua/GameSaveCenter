@@ -422,6 +422,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
             OpenMediaWorkspaceCommand = new RelayCommand(_ => OpenMediaWorkspace());
+            OpenFailedTasksCommand = new RelayCommand(_ => OpenFailedTasks());
+            OpenOverviewGamePickerCommand = new RelayCommand(_ => OpenOverviewGamePicker());
             OpenActivityCommand = new RelayCommand(value => OpenActivity(value as ActivityEntryDto), value => value is ActivityEntryDto);
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
             OpenSelectedFindingNavigationCommand = new RelayCommand(_ => OpenSelectedFindingNavigation(), _ => SelectedFindingNavigation.IsAvailable && !IsBusy);
@@ -782,6 +784,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             "Maintenance" => OpenMaintenanceCommand,
             "CloudQueue" => OpenCloudQueueCommand,
             "Media" => OpenMediaWorkspaceCommand,
+            "Tasks" => OpenFailedTasksCommand,
+            "GamePicker" => OpenOverviewGamePickerCommand,
             "Attention" => OpenAttentionCenterCommand,
             _ => RefreshCommand
         };
@@ -1715,6 +1719,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenMaintenanceCommand { get; }
         public ICommand OpenCloudQueueCommand { get; }
         public ICommand OpenMediaWorkspaceCommand { get; }
+        public ICommand OpenFailedTasksCommand { get; }
+        public ICommand OpenOverviewGamePickerCommand { get; }
         public ICommand OpenActivityCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
         public ICommand OpenSelectedFindingNavigationCommand { get; }
@@ -1921,6 +1927,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             MediaTabIndex = 0;
             CurrentWorkspace = WorkspaceKind.Media;
             RequestWorkspaceLoad();
+        }
+
+        private void OpenFailedTasks()
+        {
+            TaskStatusFilter = "失败";
+            CurrentWorkspace = WorkspaceKind.Tasks;
+            taskSearchRefresh.Cancel();
+            taskHistoryQueryRefresh.Cancel();
+            Run(() => LoadTaskPageAsync(true));
+        }
+
+        private void OpenOverviewGamePicker()
+        {
+            GamePicker.StatusFilter = OverviewPriority.Kind == "Backupable" ? "可备份" : "未匹配";
+            CurrentWorkspace = WorkspaceKind.Overview;
+            GamePickerRequested?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -2131,6 +2153,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         public event EventHandler? AttentionCenterRequested;
+        public event EventHandler? GamePickerRequested;
 
         /// <summary>Starts the Playnite game-started subscription once for the visible Dashboard.</summary>
         public void StartPlayniteGameStartedSubscription() => playniteGameStartedSubscription.Start();

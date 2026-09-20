@@ -55,7 +55,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public ObservableCollection<GamePickerItem> Items { get; } = new BatchObservableCollection<GamePickerItem>();
         public ICollectionView ItemsView { get; }
-        public IReadOnlyList<string> StatusFilterOptions { get; } = new[] { "全部", "已安装", "已匹配", "有备份", "需处理", "未匹配" };
+        public IReadOnlyList<string> StatusFilterOptions { get; } = new[] { "全部", "已安装", "已匹配", "有备份", "可备份", "需处理", "未匹配" };
         public IReadOnlyList<string> SortOptions { get; } = new[] { "名称", "最近游玩", "最近备份" };
         public ObservableCollection<string> PlatformFilterOptions { get; } = new ObservableCollection<string> { "全部" };
         public ICommand ClearSearchCommand { get; }
@@ -305,6 +305,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case "有备份" when !game.HasBackups:
                     reasons.Add("状态筛选为“有备份”，但当前没有备份版本。");
                     break;
+                case "可备份" when !game.CanBackup:
+                    reasons.Add("状态筛选为“可备份”，但当前没有已匹配且无本地备份的游戏。");
+                    break;
                 case "需处理" when !game.NeedsAttention:
                     reasons.Add("状态筛选为“需处理”，但当前健康状态不属于需处理范围。");
                     break;
@@ -347,6 +350,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case "已安装" when !game.IsInstalled:
                 case "已匹配" when !game.IsMatched:
                 case "有备份" when !game.HasBackups:
+                case "可备份" when !game.CanBackup:
                 case "需处理" when !game.NeedsAttention:
                 case "未匹配" when game.IsMatched:
                     return false;

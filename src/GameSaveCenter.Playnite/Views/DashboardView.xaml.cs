@@ -189,6 +189,7 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModelSubscribed) return;
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.AttentionCenterRequested += OnAttentionCenterRequested;
+            viewModel.GamePickerRequested += OnGamePickerRequested;
             viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
             viewModelSubscribed = true;
         }
@@ -198,6 +199,7 @@ namespace GameSaveCenter.Playnite.Views
             if (!viewModelSubscribed) return;
             viewModel.PropertyChanged -= OnViewModelPropertyChanged;
             viewModel.AttentionCenterRequested -= OnAttentionCenterRequested;
+            viewModel.GamePickerRequested -= OnGamePickerRequested;
             viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
             viewModelSubscribed = false;
         }
@@ -245,6 +247,17 @@ namespace GameSaveCenter.Playnite.Views
                 if (maintenance == null) return;
                 maintenance.FindingsGridElement.ScrollIntoView(viewModel.SelectedFinding);
                 maintenance.FindingsGridElement.Focus();
+                AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
+            }, DispatcherPriority.Background);
+        }
+
+        private void OnGamePickerRequested(object? sender, EventArgs e)
+        {
+            BeginUiSafely(() =>
+            {
+                if (!IsLoaded) return;
+                ProductionShellView.NavigateTo(WorkspaceKind.Overview);
+                ProductionShellView.OpenGamePicker();
                 AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
             }, DispatcherPriority.Background);
         }

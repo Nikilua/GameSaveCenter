@@ -46,6 +46,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsRunning => Game.IsRunning;
         public bool IsMatched => Game.LudusaviMatched;
         public bool HasBackups => Game.BackupVersionCount > 0;
+        public bool CanBackup => IsMatched && Game.BackupVersionCount <= 0 && !Game.LastBackupUtc.HasValue;
         public bool NeedsAttention => IsAttention(Game);
         public int BackupVersionCount => Game.BackupVersionCount;
         public int MediaCount => Game.MediaCount;
