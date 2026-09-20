@@ -19,8 +19,29 @@ public sealed class MaintenanceReportSourceTests
         Assert.Contains("MessageTypes.GetMaintenanceReport", viewModel);
         Assert.Contains("CopyTextWithRetryAsync(report.ReportText", viewModel);
         Assert.Contains("ClipboardRetry.TrySetTextAsync(text, Clipboard.SetText)", viewModel);
+        Assert.Contains("CreateMaintenanceReportRequest()", viewModel);
         Assert.Contains("File.WriteAllText(dialog.FileName, report.ReportText)", viewModel);
         Assert.Contains("GetMaintenanceReport = \"maintenance.report.get\"", messages);
+    }
+
+    [Fact]
+    public void MaintenanceReportKeepsIdentityAndStructuredSectionsAcrossTheIpcBoundary()
+    {
+        var root = FindRepositoryRoot();
+        var service = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "MaintenanceReportService.cs"));
+        var dispatcher = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Ipc", "IpcRequestDispatcher.cs"));
+        var dto = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "MaintenanceReportDtos.cs"));
+
+        Assert.Contains("## 软件身份", service);
+        Assert.Contains("AppendSection(builder, \"待处理\", pending)", service);
+        Assert.Contains("AppendSection(builder, \"已验证\", verified)", service);
+        Assert.Contains("AppendSection(builder, \"未知\", unknown)", service);
+        Assert.Contains("GeneratedUtc = generatedUtc", service);
+        Assert.Contains("MaintenanceReportRedactor.Redact(builder.ToString())", service);
+        Assert.Contains("Read<MaintenanceReportRequestDto>(request)", dispatcher);
+        Assert.Contains("class MaintenanceReportRequestDto", dto);
+        Assert.Contains("UrlParameters", dto);
+        Assert.Contains("WindowsUserPath", dto);
     }
 
     [Fact]

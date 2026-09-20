@@ -3336,13 +3336,13 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task CopyMaintenanceReportAsync()
         {
-            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
+            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, CreateMaintenanceReportRequest(), TimeSpan.FromMinutes(3));
             await CopyTextWithRetryAsync(report.ReportText, "健康报告已复制", "健康报告已复制到剪贴板。");
         }
 
         private async Task ExportMaintenanceReportAsync()
         {
-            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
+            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, CreateMaintenanceReportRequest(), TimeSpan.FromMinutes(3));
             var dialog = new SaveFileDialog
             {
                 Title = "导出健康报告",
@@ -3356,6 +3356,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             StatusMessage = $"健康报告已导出：{dialog.FileName}";
             plugin.ShowInfo(StatusMessage);
         }
+
+        private MaintenanceReportRequestDto CreateMaintenanceReportRequest()
+            => new MaintenanceReportRequestDto
+            {
+                PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
+                PluginBuildIdentity = BuildIdentity.ForAssembly(System.Reflection.Assembly.GetExecutingAssembly()),
+                PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown"
+            };
 
         private void SkipOnboarding()
         {

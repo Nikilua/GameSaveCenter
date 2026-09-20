@@ -172,7 +172,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.RecoverRetentionQuarantine=>await RecoverRetentionQuarantineAsync(Read<RetentionQuarantineRecoveryRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalStatus=>await _localMirror.StatusAsync(token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalSync=>await _localMirror.SyncAsync(token).ConfigureAwait(false),
-                MessageTypes.GetMaintenanceReport=>await _maintenanceReport.GetAsync(token).ConfigureAwait(false),
+                MessageTypes.GetMaintenanceReport=>await _maintenanceReport.GetAsync(Read<MaintenanceReportRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=await _tasks.CancelAsync(Read<CancelTaskRequestDto>(request).TaskId).ConfigureAwait(false)},
                 MessageTypes.ListGameTools=>await _gameTools.ListAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.InspectGameToolImport=>await _gameTools.InspectImportAsync(Read<InspectGameToolImportRequestDto>(request),token).ConfigureAwait(false),

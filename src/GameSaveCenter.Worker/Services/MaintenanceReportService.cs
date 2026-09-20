@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
@@ -61,8 +62,14 @@ public sealed class MaintenanceReportService
         _logger = logger;
     }
 
-    public async Task<MaintenanceReportDto> GetAsync(CancellationToken token)
+    public Task<MaintenanceReportDto> GetAsync(CancellationToken token)
+        => GetAsync(new MaintenanceReportRequestDto(), token);
+
+    public async Task<MaintenanceReportDto> GetAsync(MaintenanceReportRequestDto? request, CancellationToken token)
     {
+        request ??= new MaintenanceReportRequestDto();
+        var generatedUtc = DateTime.UtcNow;
+        var generatedLocal = generatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
         var counts = await _store.GetCountsAsync(token).ConfigureAwait(false);
         var rows = await _store.GetStorageAnalysisRowsAsync(token).ConfigureAwait(false);
         var games = await _store.GetDashboardGameRecordsAsync(token).ConfigureAwait(false);
@@ -83,32 +90,90 @@ public sealed class MaintenanceReportService
             ? storage.VolumeUsedBytes * 100d / storage.VolumeTotalBytes
             : 0;
 
+        var pending = new List<string>();
+        foreach (var finding in integrity.Findings.Where(x => x.Severity is "Warning" or "Error").Take(20))
+        {
+            var detail = string.IsNullOrWhiteSpace(finding.Detail) ? string.Empty : $"：{finding.Detail}";
+            var action = string.IsNullOrWhiteSpace(finding.SuggestedAction) ? string.Empty : $"；建议：{finding.SuggestedAction}";
+            pending.Add($"{finding.Title}{detail}{action}");
+        }
+
+        if (corrupted > 0)
+            pending.Add($"恢复点中有 {corrupted} 个版本状态为 Corrupted/Failed。");
+        if (missingTools > 0)
+            pending.Add($"有 {missingTools} 个外部工具路径失效。");
+        foreach (var item in cloudTransfers.Items.Where(x => x.State is "RetryScheduled" or "AuthenticationRequired" or "CheckFailed" or "Failed").Take(8))
+            pending.Add($"云端：{item.KindDisplay} · {item.GameName} · {item.DetailDisplay}");
+        if (quarantine.PendingCount > 0)
+            pending.Add($"保留清理隔离区有 {quarantine.PendingCount} 个待处理条目，其中 {quarantine.RecoveryRequiredCount} 个需要恢复。");
+        if (storage.MissingIndexedPathCount > 0)
+            pending.Add($"有 {storage.MissingIndexedPathCount} 个索引版本的归档路径失联。");
+
+        var verified = new List<string>
+        {
+            $"数据库完整性结果：{integrity.StateDisplay}（{integrity.ErrorCount} 错误 / {integrity.WarningCount} 警告 / {integrity.SkippedCount} 跳过）。",
+            $"恢复点统计：Ready {ready}，Warning {warning}，Corrupted {corrupted}。",
+            $"最近游戏：已保护 {protectedGames}，需关注 {attention}，已匹配存档 {counts.Matched}。",
+            $"云端快照：{CloudDisplay()}；{cloudTransfers.SummaryDisplay}；{cloudTransfers.QueueControlDisplay}。",
+            $"本地镜像：{mirror.Message}",
+            $"存储卷：{storagePercent:0.#}% used（{storage.VolumeFreeDisplay} 剩余）。",
+            $"上次完整性自检：{integrity.Summary}",
+            $"恢复可用性巡检：{inspection.LastStatusDisplay}；最近成功验证：{inspection.LastSuccessfulLocalDisplay}；下次计划：{inspection.NextDueLocalDisplay}",
+            $"保留清理隔离区：{quarantine.PendingCount} 个条目，占用 {FormatBytes(quarantine.OccupancyBytes)}，待恢复 {quarantine.RecoveryRequiredCount}。"
+        };
+
+        var unknown = new List<string>();
+        if (!storage.BackupDirectoryAvailable)
+            unknown.Add("备份仓库目录不可访问，路径状态未知，不能按 0 解释。");
+        if (storage.MissingIndexedPathCount > 0)
+            unknown.Add(storage.MissingIndexedPathSummary);
+        if (inspection.LastSuccessfulLocalDisplay == "未知")
+            unknown.Add("健康巡检尚无可证明的最近成功验证时间。");
+        if (integrity.SkippedCount > 0)
+            unknown.Add($"完整性自检有 {integrity.SkippedCount} 项跳过，未将其当作健康。");
+
+        var summary = $"摘要：待处理 {pending.Count} 项，已验证 {verified.Count} 项，未知 {unknown.Count} 项。生成时间 {generatedLocal}。";
         var builder = new StringBuilder();
         builder.AppendLine("GameSaveCenter 健康报告");
-        builder.AppendLine($"生成时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        builder.AppendLine($"生成时间：{generatedLocal}");
         builder.AppendLine();
-        builder.AppendLine($"数据库：{integrity.State}（{integrity.ErrorCount} 错误 / {integrity.WarningCount} 警告）");
-        builder.AppendLine($"备份仓库：{(storage.BackupDirectoryAvailable ? "可访问" : "不可访问")}，目录实测 {storage.RepositoryBytesDisplay}");
-        builder.AppendLine($"恢复点：Ready {ready}，Warning {warning}，Corrupted {corrupted}");
-        builder.AppendLine($"最近游戏：已保护 {protectedGames}，需关注 {attention}，已匹配存档 {counts.Matched}");
-        builder.AppendLine($"云端：{CloudDisplay()}；{cloudTransfers.SummaryDisplay}；{cloudTransfers.QueueControlDisplay}");
-        foreach (var item in cloudTransfers.Items.Where(x => x.State is "RetryScheduled" or "AuthenticationRequired" or "CheckFailed" or "Failed").Take(8))
-            builder.AppendLine($"云端详情：{item.Kind} · {item.GameName} · {item.DetailDisplay}");
-        builder.AppendLine($"本地镜像：{mirror.Message}");
-        builder.AppendLine($"工具：{missingTools} 个外部路径失效");
-        builder.AppendLine($"存储：{storagePercent:0.#}% used（{storage.VolumeFreeDisplay} 剩余）");
-        builder.AppendLine($"上次完整性自检：{integrity.Summary}");
-        builder.AppendLine($"恢复可用性巡检：{inspection.LastStatusDisplay}；最近成功验证：{inspection.LastSuccessfulLocalDisplay}；下次计划：{inspection.NextDueLocalDisplay}");
-        builder.AppendLine($"保留清理隔离区：{quarantine.PendingCount} 个条目，占用 {FormatBytes(quarantine.OccupancyBytes)}，待恢复 {quarantine.RecoveryRequiredCount}");
+        builder.AppendLine("## 软件身份");
+        builder.AppendLine($"GameSaveCenter 插件：{DisplayIdentity(request.PluginVersion)} / 构建 {DisplayIdentity(request.PluginBuildIdentity)}");
+        builder.AppendLine($"GameSaveCenter Worker：{typeof(MaintenanceReportService).Assembly.GetName().Version?.ToString() ?? "dev"} / 构建 {BuildIdentity.ForAssembly(typeof(MaintenanceReportService).Assembly)}");
+        builder.AppendLine($"Playnite：{DisplayIdentity(request.PlayniteVersion)}");
+        builder.AppendLine($"IPC 协议：{ProtocolConstants.ProtocolVersion}；Windows：{Environment.OSVersion.VersionString}；.NET：{Environment.Version}");
+        builder.AppendLine();
+        builder.AppendLine("## 摘要");
+        builder.AppendLine(summary);
+        AppendSection(builder, "待处理", pending);
+        AppendSection(builder, "已验证", verified);
+        AppendSection(builder, "未知", unknown);
 
-        var summary = $"健康报告：数据库 {integrity.State}，恢复点 Ready {ready}，巡检 {inspection.LastStatusDisplay}，需关注 {attention}，存储 {storagePercent:0.#}% used，隔离区待处理 {quarantine.PendingCount} 个。";
+        var reportText = MaintenanceReportRedactor.Redact(builder.ToString());
         return new MaintenanceReportDto
         {
-            GeneratedUtc = DateTime.UtcNow,
-            Summary = summary,
-            ReportText = builder.ToString()
+            GeneratedUtc = generatedUtc,
+            Summary = MaintenanceReportRedactor.Redact(summary),
+            ReportText = reportText
         };
     }
+
+    private static void AppendSection(StringBuilder builder, string title, IReadOnlyList<string> items)
+    {
+        builder.AppendLine();
+        builder.AppendLine($"## {title}（{items.Count}）");
+        if (items.Count == 0)
+        {
+            builder.AppendLine("无项目（当前采集范围内）。");
+            return;
+        }
+
+        foreach (var item in items)
+            builder.AppendLine("- " + item);
+    }
+
+    private static string DisplayIdentity(string value)
+        => string.IsNullOrWhiteSpace(value) ? "未知" : value.Trim();
 
     private string CloudDisplay()
     {
