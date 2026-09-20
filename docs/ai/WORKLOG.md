@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-04 取消关闭顺序
+
+- 先核对已有生命周期：Dashboard `Unloaded` 先停 timer/事件订阅再 `CancelDeferredUiWork`，VM 取消分页、详情、媒体、云端、初始同步并推进 generation；插件停止先取消 lifetime/通知轮询，最后停止自己拥有的 Worker；Worker 启动协调旧任务并由任务页读取持久化状态。
+- `LatestRequestCoordinator` + Busy `5/5`；`TaskReconcileService` `1/1`；取消/重启相邻 Worker 组合 `13 passed / 1 skipped / 14 total`。这组结果实际覆盖取消收尾、迟到回写拒绝、busy 恢复、任务终态和重复协调，不只做 `Assert.Contains`。
+- 独立 Worker 硬重启因当前环境禁止本地 Named Pipe 跳过；WPF shutdown 源测试因复用的旧 net472 产物缺 `GscBuildCommit` 被身份校验拦截。没有提升权限或把阻塞写成通过。证据：`evidence/R19-04-CLOSE-CANCEL-ORDER-20260920.md`。
+- 未读写真实存档、媒体、云端或诊断；真实 Playnite/Worker 同时断管、DPI/UIA/IME、呈现、ETW、宿主性能仍待验，Demo 原目录不可用。下一可执行任务：`R19-05` Worker 重启恢复。
+
 ## 2026-09-20 R19-03 重复执行幂等
 
 - 先查已有能力：`IpcEnvelope.RequestId`、`IpcRequestSemantics`、Worker `IpcRequestLedger`/`NamedPipeServerService`、`WorkerIpcClient.RequestWithTrackingAsync` 和生产 `BusyOperationCoordinator` 已覆盖同 ID 单次 claim/响应重放、冲突/执行中/Worker 中断状态、丢响应同 ID 复核和 UI 连点门；本阶段没有重建或改变写服务。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-04 取消关闭顺序（已满足，受控回归完成；真实宿主待验）
+
+- 已有 Dashboard 卸载顺序会停止刷新/事件订阅、取消所有延迟请求和 generation，插件退出会先取消 lifetime、停止通知轮询，再停止本插件拥有的 Worker；Worker 启动会把旧 Queued/Running 任务按真实持久化状态标成可见失败，任务页重开读取 SQLite 快照。
+- `LatestRequestCoordinator` + Busy 原子门相邻行为 `5/5`；`TaskReconcileService` `1/1`；Worker 取消/重启相邻组合 `13 passed / 1 skipped / 14 total`。取消、迟到回写、永久 busy 和协调重复执行边界均有实际夹具，不只依赖源码断言。
+- 独立 Worker 硬重启因当前环境禁止本地 Named Pipe 跳过；一个 WPF shutdown 源测试因复用 net472 产物缺 `GscBuildCommit` 在身份校验处退出，需在可注入构建身份的干净构建中复跑。证据见 `evidence/R19-04-CLOSE-CANCEL-ORDER-20260920.md`。
+- 未验真实 Playnite 关闭/重开、Worker 同时断管、presented frame、DPI/UIA/读屏/IME、ETW、宿主性能；Demo 原目录不可用。下一项：`R19-05` Worker 重启恢复。
+
 ## 当前第三轮 R19-03 重复执行幂等（已满足，受控回归完成；真实管道待验）
 
 - 先查到现有 `IpcEnvelope.RequestId`、`IpcRequestSemantics` replay-protected 分类、Worker 持久化 request ledger、`WorkerIpcClient` 同 ID 复核和 `BusyOperationCoordinator` 已覆盖写请求单次执行、响应丢失复核、重复 UI 触发拒绝以及未知结果提示，没有重建写服务。

@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-04 取消关闭顺序（2026-09-20）
+
+- 复核确认生产 Dashboard 卸载、`CancelDeferredUiWork`、generation/`LatestRequestCoordinator`、任务事件 batcher、插件 lifetime 和 Worker owned-process 停止已经形成确定收尾链；Worker 重开先按 SQLite 把旧 Queued/Running 标为失败，任务页可恢复真实状态，不伪装成功。
+- `LatestRequestCoordinator` + Busy `5/5`，`TaskReconcileService` `1/1`，取消/重启相邻 Worker 组合 `13 passed / 1 skipped / 14 total`。已有行为夹具覆盖取消失效、迟到结果丢弃、busy 恢复、持久化协调幂等和终态保留。
+- Worker 进程硬重启因 Named Pipe 权限跳过；WPF shutdown 源测试被旧 net472 产物缺 `GscBuildCommit` 的身份门阻塞；不宣称真实宿主收尾或全量 Playnite 运行通过。只用合成/fake/隔离 SQLite/testhost，Demo 原目录不可用。证据：`evidence/R19-04-CLOSE-CANCEL-ORDER-20260920.md`。
+- 下一项 `R19-05`：在可用 Named Pipe/Worker 进程环境复跑重启、进度订阅和重连去重。
+
 ## 第三轮 R19-03 重复执行幂等（2026-09-20）
 
 - 复核确认现有 `RequestId`、replay-protected 语义分类、Worker 持久化 ledger 和 `WorkerIpcClient` 同 envelope 复核已经满足单次执行；响应丢失不会以新 ID 重复写入，`REQUEST_IN_PROGRESS`/`REQUEST_INTERRUPTED`/可能已提交均明确提示未知边界。生产 `BusyOperationCoordinator` 以原子门拒绝重复 UI 触发，并在失败/取消后恢复。
