@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-04 保留预览对比
+
+- 审计确认既有预览已显示候选、保护项、按索引体积的预计释放和隔离占用；Apply 已有二次确认、预览时效/句柄、live 重算、策略/候选/归档指纹和共享操作锁门禁。
+- 补充隔离 SQLite trigger 负例，证明索引删除失败时归档恢复原路径、隔离账本保留、`MovedBytes/FreedBytes` 不计释放；本阶段未重建生产服务或修改真实数据。
+- 最终 Worker Retention `12/12`、Playnite R17 `10/10`、维护源码 `3/3`；布局回归 `20 passed/11 skipped`；Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R17-04-RETENTION-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、Explorer/权限、真实锁/文件故障/重启恢复、presented frame、ETW、宿主性能；`.tmp/r17-04-solution` 已清理。Demo 原目录不可用，main 用户改动未碰、未合并。
+- 已提交并推送 `3c73b498` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-05 隔离账本入口`，先查现有隔离列表和受控恢复入口。
+
 ## 2026-09-20 R17-03 检查进度预算
 
 - 审计确认健康巡检已有持久化游标、单次预算、运行中会话/操作锁、延后候选和取消/失败终态；缺口是维护页和最终摘要不能说明本轮索引范围、延后原因、最近完成和未读取归档边界。

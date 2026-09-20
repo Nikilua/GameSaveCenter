@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-04 保留预览对比（2026-09-20）
+
+- 审计确认既有 `RetentionSimulationService`/维护页已经有候选明细、用户锁定/PreRestore/健康保护、预计释放、隔离占用和清理后二次刷新；Apply 会校验预览句柄/十分钟时效并重算 live 候选、策略和归档指纹。
+- `3c73b498` 仅补隔离 SQLite 索引删除失败负例：文件先进入隔离，索引删除失败后恢复原路径，`MovedBytes` 和 `FreedBytes` 为 0，恢复账本保留；因此不把隔离移动、索引删除或失败清理计为真实释放。
+- Worker `12/12`、Playnite R17 `10/10`、维护源码 `3/3`、Release solution `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff、WPF `0/28/162` 通过；布局回归 `20 passed/11 skipped`，skip 为既有条件性夹具。真实宿主/权限/锁/故障/重启时序和最终呈现仍待验。证据：`R17-04-RETENTION-PREVIEW-20260920.md`。
+- 下一可执行任务：`R17-05 隔离账本入口`，先查现有隔离分页 DTO、状态文案、原/隔离路径和受控恢复命令，再决定是否需要代码。
+
 ## 第三轮 R17-03 检查进度预算（2026-09-20）
 
 - `87473bc3` 先核对既有 `HealthInspectionService` 的游标、单次预算、会话/操作锁和延后持久化，再复用 `LastSummary` 写入本轮索引范围：总版本数、需检查数、延后数、候选数及未读取归档边界；没有新增数据库迁移。

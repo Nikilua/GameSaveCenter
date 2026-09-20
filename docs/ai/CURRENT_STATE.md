@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-04 保留预览对比（已满足，受控验证完成；真实宿主待验）
+
+- 复核确认既有 `RetentionSimulationService` 已展示候选、用户锁定/PreRestore/健康保护、预计释放和隔离占用；Apply 已验证预览句柄/十分钟时效、策略/候选/归档指纹并在执行前重读 live 状态。
+- `3c73b498` 只补隔离 SQLite 删除失败负例：归档入隔离后索引删除失败会恢复原路径、保留恢复账本，`MovedBytes/FreedBytes` 均不计入真实释放；没有重建既有服务或修改真实数据。
+- 最终 Worker 保留策略 `12/12`、Playnite R17 `10/10`、维护源码门禁 `3/3`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-04-RETENTION-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、Explorer/权限、真实锁/文件故障/重启恢复时序、presented frame、ETW 或宿主性能；布局回归另有 `20 passed/11 skipped`，未写成全绿。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一项：`R17-05 隔离账本入口`，先核对已有分页隔离列表、原路径/隔离路径/状态和受控恢复入口。
+
 ## 当前第三轮 R17-03 检查进度预算（代码已提交，受控验证完成；真实宿主待验）
 
 - `87473bc3` 复用既有健康巡检游标、单次时间预算、会话/操作锁、延后表和取消/失败终态；在现有 `LastSummary` 持久化通道补充本轮索引范围、需检查/延后/候选数量和未读取归档边界。
