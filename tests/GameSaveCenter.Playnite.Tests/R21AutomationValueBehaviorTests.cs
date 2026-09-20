@@ -90,6 +90,9 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"媒体筛选预设\"", media);
         Assert.Contains("AutomationProperties.Name=\"媒体归类批次状态筛选\"", media);
         Assert.Contains("AutomationProperties.Name=\"调整归类建议目标\"", media);
+        Assert.Contains("AutomationProperties.Name=\"云端队列状态筛选\"", maintenance);
+        Assert.Contains("AutomationProperties.Name=\"云端队列类型筛选\"", maintenance);
+        Assert.Contains("AutomationProperties.Name=\"云端队列时间筛选\"", maintenance);
     }
 
     [Fact]
@@ -133,6 +136,31 @@ public sealed class R21AutomationValueBehaviorTests
             Assert.Equal("最近导入", preset.SelectedItem);
             Assert.Equal("已完成", history.SelectedItem);
             Assert.Equal("游戏 B", suggestion.SelectedItem);
+        });
+    }
+
+    [Fact]
+    public void MaintenanceCloudTransferSelectorsExposeSemanticState()
+    {
+        RunSta(() =>
+        {
+            var state = CreateNamedSelector("云端队列状态筛选", "全部", "待处理");
+            var kind = CreateNamedSelector("云端队列类型筛选", "全部", "媒体");
+            var time = CreateNamedSelector("云端队列时间筛选", "全部时间", "最近一天");
+
+            using var host = new PeerHost(state, kind, time);
+            Assert.Equal("云端队列状态筛选", GetPeer(state).GetName());
+            Assert.Equal("云端队列类型筛选", GetPeer(kind).GetName());
+            Assert.Equal("云端队列时间筛选", GetPeer(time).GetName());
+
+            state.SelectedIndex = 1;
+            kind.SelectedIndex = 1;
+            time.SelectedIndex = 1;
+            host.Pump();
+
+            Assert.Equal("待处理", state.SelectedItem);
+            Assert.Equal("媒体", kind.SelectedItem);
+            Assert.Equal("最近一天", time.SelectedItem);
         });
     }
 
