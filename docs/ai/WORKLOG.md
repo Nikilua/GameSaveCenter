@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R20-08 状态语气统一
+
+- 先核对 `WorkspaceStatePresenter`、`ActionAvailabilityHints`、`OverviewPriorityResolver` 等已有能力；实际修正 Shell 概览副标题陈旧健康语气，以及主状态中的 Worker/Rclone 内部术语，保留命令、Binding、取消/错误、恢复保护、选框/滚动条和有限列表。
+- `OverviewPriorityResolverTests`、R02/R07/Workspace/R06 组合定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，唯一失败为未修改的任务详情旧绑定源断言。Release 隔离构建 Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML/diff 通过。提交并推送 `176183ec`。
+- 仅使用合成/fake/隔离 testhost/source-copy/目录；Demo 原目录不可用，main 用户改动未碰、未合并。真实宿主、工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能待验。证据：`evidence/R20-08-STATE-TONE-20260921.md`。
+- 下一可执行任务：`R21-01` 八入口纯键盘，先核对 Q24/UIA 键盘行为和已有入口实现。
+
 ## 2026-09-21 R20-07 最近活动密度
 
 - 先查已有能力：Worker active/recent 任务按 TaskId 去重，活动审计由 `ActivityTimelineMapper` 输出有限摘要；Playnite `TaskEventUiBatcher` 合并高频进度、限制 `128/32`、终态即时落地，Overview 最近任务保留 8 项并本地滚动。

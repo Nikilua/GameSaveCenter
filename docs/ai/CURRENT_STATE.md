@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-08 状态语气统一（已满足，待环境验证）
+
+- 复用已有 `WorkspaceStatePresenter`、`ActionAvailabilityHints` 和 `OverviewPriorityResolver`；实际修正了 Shell 概览副标题固定“一切运行正常”的陈旧状态，并把加载、失败、空、完成、需要操作的主状态统一为事实加下一步，不以 Worker/Rclone 代替用户解释。提交 `176183ec`。
+- 定向行为套件 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，唯一失败为未修改的任务详情旧绑定源断言。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，source/XAML/diff 通过。
+- 证据来自合成/fake/隔离 testhost/source-copy/目录；Demo 原目录不可用。真实 Playnite/package-host、Worker/工具/云端、最终呈现、DPI/UIA/IME、ETW、宿主性能未验；main 用户改动未碰、未合并。证据见 `evidence/R20-08-STATE-TONE-20260921.md`。
+- 下一项：`R21-01` 八入口纯键盘，先核对 Q24/UIA 键盘行为和现有入口能力。
+
 ## 当前第三轮 R20-07 最近活动密度（已满足，待环境验证）
 
 - 复核确认 Worker 已将 active/recent 同一 `TaskId` 去重并稳定排序，`ActivityTimelineMapper` 输出有限字段活动摘要；Playnite `TaskEventUiBatcher` 按 TaskId 合并高频进度、限制队列/批次，终态即时落地，首页只显示最近 8 项并保留虚拟化与本地滚动。

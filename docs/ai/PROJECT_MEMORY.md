@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R20-08 状态语气统一（2026-09-21）
+
+- 先查已有能力：`WorkspaceStatePresenter` 已有 Loading/Empty/Error/Degraded/Offline 投影，`ActionAvailabilityHints` 已有恢复、媒体、云端、远端恢复动作前置解释，`OverviewPriorityResolver` 已有优先状态；本阶段没有新造服务、DTO 或状态模型。
+- 实际缺口是 Shell 概览副标题静态声称“一切运行正常”，以及少数主状态把 Worker/Rclone 当作解释。`176183ec` 让副标题随优先状态刷新，统一主状态为“发生了什么 + 下一步”，并用实际 WPF presenter 与解析器正/负例验证；内部诊断标识仍只留在需要的技术区域。
+- 定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，失败是未修改的任务详情旧绑定源断言，skip 是 legacy 架构事实。隔离 Release `net462/net472` `0 errors / 2` 既有 warning，source/XAML/diff 通过。
+- 真实 Playnite/package-host、Worker/工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-08-STATE-TONE-20260921.md`。
+- 下一项 `R21-01`：先核对 Q24/UIA 键盘行为与八入口已有实现，再补行为和负例证据。
+
 ## 第三轮 R20-07 最近活动密度（2026-09-21）
 
 - 现有链路已满足本项：Worker Dashboard 将 active/recent 任务按 `TaskId` 去重，活动审计经 `ActivityTimelineMapper` 映射为有限摘要；Playnite `TaskEventUiBatcher` 按 TaskId 合并进度、限制 `128/32`，成功/失败/取消终态即时通过。
