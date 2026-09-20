@@ -204,6 +204,26 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaCenterBatchActionsRejectEmptySelectionBeforeMetadataWrite()
+    {
+        var root = TestRepositoryContext.Root;
+        var implementation = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
+        Assert.Contains("if(selected.Count==0)throw new InvalidOperationException(\"请先在媒体列表中选择一个或多个项目。\");", implementation);
+
+        var viewModelType = typeof(GameSaveCenter.Playnite.ViewModels.DashboardViewModel);
+        var viewModel = (GameSaveCenter.Playnite.ViewModels.DashboardViewModel)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(viewModelType);
+        var method = viewModelType.GetMethod("UpdateMediaMetadataBatchAsync", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+            ?? throw new Xunit.Sdk.XunitException("UpdateMediaMetadataBatchAsync was not found.");
+
+        foreach (var selection in new object?[] { null, new System.Collections.ArrayList() })
+        {
+            var task = (System.Threading.Tasks.Task)method.Invoke(viewModel, new object?[] { selection, true, false })!;
+            var error = Assert.Throws<InvalidOperationException>(() => task.GetAwaiter().GetResult());
+            Assert.Equal("请先在媒体列表中选择一个或多个项目。", error.Message);
+        }
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
