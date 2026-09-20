@@ -109,6 +109,20 @@
                 <StackPanel>
                     <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetGeneralDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复常规与目录安全设置默认值"/></WrapPanel>
                     <TextBlock Text="Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。粘贴路径或云端目标时会去除外层空白/引号；包含多个非空行的粘贴会被阻止，Ctrl+Z 可恢复粘贴前的字段值。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12" AutomationProperties.Name="路径粘贴标准化说明"/>
+                    <Border x:Name="SettingsPathEditorCard" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,12" AutomationProperties.Name="统一路径编辑">
+                        <StackPanel>
+                            <TextBlock Text="统一路径编辑" FontWeight="SemiBold"/>
+                            <TextBlock Text="选择当前字段后，可浏览、单独校验、打开或复制。打开只允许当前路径已存在且可读；缺失、网络不可达和无权限路径会保留在字段中并给出明确反馈。云端目标仍按远端文本编辑，不会被当作本地目录打开。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <WrapPanel>
+                                <ComboBox x:Name="SettingsPathEditorComboBox" Width="260" DisplayMemberPath="DisplayName" SelectedValuePath="Key" SelectionChanged="OnSettingsPathEditorSelectionChanged" ToolTip="选择要操作的当前本地路径字段" AutomationProperties.Name="选择当前路径字段"/>
+                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="浏览" Click="OnSettingsPathBrowseClick" Margin="8,0,0,0" AutomationProperties.Name="浏览并替换当前路径" ToolTip="目录使用文件夹选择器，可执行文件使用文件选择器"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="校验" Click="OnSettingsPathValidateClick" Margin="8,0,0,0" AutomationProperties.Name="校验当前路径"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="打开" Click="OnSettingsPathOpenClick" Margin="8,0,0,0" AutomationProperties.Name="打开当前有效路径" ToolTip="只打开当前字段中已存在且可读的路径"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="复制" Click="OnSettingsPathCopyClick" Margin="8,0,0,0" AutomationProperties.Name="复制当前完整路径"/>
+                            </WrapPanel>
+                            <TextBlock x:Name="SettingsPathEditorStatus" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,7,0,0" AutomationProperties.Name="当前路径编辑反馈"/>
+                        </StackPanel>
+                    </Border>
                     <TextBlock x:Name="SettingsGeneralValidationHint" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" AutomationProperties.Name="常规与目录校验说明"/>
                     <StackPanel x:Name="CoreToolFields">
                     <Grid settings:GameSaveCenterSettingsView.SearchTerms="工具 Worker 可执行文件 路径" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Worker" VerticalAlignment="Center"/><TextBox x:Name="WorkerExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Worker 可执行文件路径" AutomationProperties.Name="Worker 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>

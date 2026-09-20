@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Forms = System.Windows.Forms;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
 using Microsoft.Win32;
@@ -112,6 +115,8 @@ namespace GameSaveCenter.Playnite.Settings
             InitializeComponent();
             SettingsResetFieldComboBox.ItemsSource = SettingsResetCatalog.Fields;
             SettingsResetFieldComboBox.SelectedIndex = 0;
+            SettingsPathEditorComboBox.ItemsSource = SettingsPathEditorCatalog.Options;
+            SettingsPathEditorComboBox.SelectedIndex = 0;
             RegisterSettingsSearchTargets();
             RegisterValidationFieldTargets();
             Loaded += OnLoaded;
@@ -433,7 +438,11 @@ namespace GameSaveCenter.Playnite.Settings
             RefreshSaveState();
         }
 
-        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => QueueValidationSummaryUpdate();
+        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e)
+        {
+            if (ReferenceEquals(sender, SettingsPathEditorComboBox)) return;
+            QueueValidationSummaryUpdate();
+        }
 
         private void OnSettingsValidationErrorChanged(object sender, RoutedEventArgs e)
             => QueueValidationSummaryUpdate();
@@ -580,6 +589,172 @@ namespace GameSaveCenter.Playnite.Settings
         {
             FocusValidationTarget(firstValidationTarget);
             e.Handled = true;
+        }
+
+        private void OnSettingsPathEditorSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshSettingsPathEditorStatus(false);
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathBrowseClick(object sender, RoutedEventArgs e)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            var currentValue = textBox.Text ?? string.Empty;
+            string? selectedPath = null;
+            if (option.Kind == SettingsPathEditorKind.Directory)
+            {
+                using (var dialog = new Forms.FolderBrowserDialog
+                {
+                    Description = $"选择{option.DisplayName}",
+                    ShowNewFolderButton = true,
+                    SelectedPath = GetPathDialogInitialDirectory(currentValue, true)
+                })
+                {
+                    if (dialog.ShowDialog() == Forms.DialogResult.OK)
+                        selectedPath = dialog.SelectedPath;
+                }
+            }
+            else
+            {
+                var dialog = new OpenFileDialog
+                {
+                    Title = $"选择{option.DisplayName}",
+                    Filter = "可执行文件 (*.exe)|*.exe|所有文件 (*.*)|*.*",
+                    CheckFileExists = true,
+                    Multiselect = false,
+                    InitialDirectory = GetPathDialogInitialDirectory(currentValue, false)
+                };
+                if (dialog.ShowDialog() == true)
+                    selectedPath = dialog.FileName;
+            }
+
+            if (string.IsNullOrWhiteSpace(selectedPath)) return;
+            textBox.Text = selectedPath;
+            RefreshSettingsPathEditorStatus(true);
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathValidateClick(object sender, RoutedEventArgs e)
+        {
+            RefreshSettingsPathEditorStatus(true);
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathOpenClick(object sender, RoutedEventArgs e)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            var probe = SettingsPathEditorService.Probe(option, textBox.Text);
+            if (!probe.IsValid)
+            {
+                SetSettingsPathEditorStatus(option, probe.Message);
+                e.Handled = true;
+                return;
+            }
+
+            try
+            {
+                var arguments = option.Kind == SettingsPathEditorKind.Executable
+                    ? "/select,\"" + probe.ExpandedPath + "\""
+                    : "\"" + probe.ExpandedPath + "\"";
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = arguments,
+                    UseShellExecute = false
+                });
+                SetSettingsPathEditorStatus(option, "当前路径已打开。", false);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "GameSaveCenter settings path editor failed to open the current path.");
+                SetSettingsPathEditorStatus(option, "当前路径有效，但打开失败：" + exception.Message);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathCopyClick(object sender, RoutedEventArgs e)
+        {
+            _ = CopySettingsPathAsync();
+            e.Handled = true;
+        }
+
+        private async Task CopySettingsPathAsync()
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            var value = ClipboardValueSanitizer.Sanitize(textBox.Text ?? string.Empty);
+            if (value.Length == 0)
+            {
+                SetSettingsPathEditorStatus(option, "当前字段为空，无法复制。");
+                return;
+            }
+
+            var copied = await ClipboardRetry.TrySetTextAsync(value, Clipboard.SetText).ConfigureAwait(true);
+            SetSettingsPathEditorStatus(option, copied
+                ? "完整路径已复制到剪贴板。"
+                : "复制失败：剪贴板暂时被其他程序占用，请稍后重试。", !copied);
+        }
+
+        private bool TryGetCurrentPathEditor(out SettingsPathEditorOption option, out TextBox textBox)
+        {
+            option = SettingsPathEditorComboBox?.SelectedItem as SettingsPathEditorOption
+                ?? SettingsPathEditorCatalog.Options.First();
+            textBox = ResolvePathEditorTextBox(option)!;
+            return textBox != null;
+        }
+
+        private TextBox? ResolvePathEditorTextBox(SettingsPathEditorOption option)
+        {
+            switch (option.Key)
+            {
+                case "WorkerExecutable": return WorkerExecutableTextBox;
+                case "LudusaviExecutable": return LudusaviExecutableTextBox;
+                case "LudusaviBackupDirectory": return LudusaviBackupDirectoryTextBox;
+                case "RcloneExecutable": return RcloneExecutableTextBox;
+                case "MediaArchiveDirectory": return MediaArchiveDirectoryTextBox;
+                case "LocalMirrorPath": return LocalMirrorPathTextBox;
+                default: return null;
+            }
+        }
+
+        private void RefreshSettingsPathEditorStatus(bool probeCurrent)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            if (!probeCurrent)
+            {
+                SetSettingsPathEditorStatus(option, string.IsNullOrWhiteSpace(textBox.Text)
+                    ? "当前字段尚未填写。"
+                    : "可浏览、校验、打开或复制当前字段。", false);
+                return;
+            }
+
+            var probe = SettingsPathEditorService.Probe(option, textBox.Text);
+            SetSettingsPathEditorStatus(option, probe.Message, !probe.IsValid);
+        }
+
+        private void SetSettingsPathEditorStatus(SettingsPathEditorOption option, string message, bool isError = false)
+        {
+            if (SettingsPathEditorStatus == null) return;
+            SettingsPathEditorStatus.Text = $"{option.DisplayName}：{message}";
+            SettingsPathEditorStatus.Foreground = isError
+                ? (Brush)FindResource("GscErrorBrush")
+                : (Brush)FindResource("GscSecondaryTextBrush");
+        }
+
+        private static string GetPathDialogInitialDirectory(string value, bool allowDirectory)
+        {
+            var expanded = Environment.ExpandEnvironmentVariables(value?.Trim() ?? string.Empty);
+            if (allowDirectory && Directory.Exists(expanded)) return expanded;
+            var parent = string.Empty;
+            try { parent = Path.GetDirectoryName(Path.GetFullPath(expanded)) ?? string.Empty; }
+            catch (Exception exception) when (exception is ArgumentException || exception is NotSupportedException || exception is PathTooLongException || exception is IOException)
+            {
+                parent = string.Empty;
+            }
+            return Directory.Exists(parent)
+                ? parent
+                : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         }
 
         private void OnResetSingleFieldClick(object sender, RoutedEventArgs e)
