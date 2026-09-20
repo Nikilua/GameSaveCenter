@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R20-06 部分可用状态（2026-09-21）
+
+- 最新实现已经有可复用的 `ActionAvailabilityHints` 和 `WorkspaceStatePresenter`：恢复、媒体收件箱、云端和隔离远端恢复分别判断动作前置条件；页面分别保留 Loading/Empty/Error/Degraded/Offline 状态与恢复入口，不能用一个全局故障覆盖整页。
+- R02/R07/Workspace 定向 `17 passed / 0 failed / 1 skipped / 18 total`。初跑的真实 WPF 测试捕获 `MaintenanceView.xaml` 云端过期横幅把 `DynamicResource` 用于 `Style.BasedOn` 的加载异常，已改用 `StaticResource`，提交 `e32ed599`；这次没有新造状态模型。
+- 外部隔离 Release 构建显式绑定 `GscBuildCommit=36dbc3f9`：Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` nullable warning；source/XAML/diff 通过。测试结束阶段的 TextServices COM 清理噪声记录为环境边界，不计为产品失败。
+- 证据只使用合成/fake/隔离 source-copy/testhost；真实宿主、Worker/Named Pipe、Ludusavi/Rclone/云端、最终呈现、DPI/UIA/IME、ETW、宿主性能待验。Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-06-PARTIAL-AVAILABILITY-20260921.md`。
+- 下一项 `R20-07`：先盘点任务事件摘要、重复进度合并、完成/失败详情展开和计数来源，再决定是否需要小批量代码。
+
 ## 第三轮 R20-05 Stale 可理解（2026-09-21）
 
 - 任务中心、存档、媒体和维护页已有 stale 状态路径；云端队列新增最近成功读取时间、错误原因、旧数据保留摘要和重试横幅。失败不清除旧队列记录，不覆盖可用只读详情；无旧记录继续区分失败与零结果。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-06 部分可用状态（已满足，待环境验证）
+
+- 复核确认 `ActionAvailabilityHints` 已按恢复、媒体收件箱、云端队列和隔离远端恢复分别解释 Worker/工具/选择/忙碌/认证前置条件；`WorkspaceStatePresenter` 已提供 Loading、Empty、Error、Degraded、Offline 独立状态，局部失败不会把其他工作区变成整页错误。
+- R02/R07/Workspace 定向 `17 passed / 0 failed / 1 skipped / 18 total`；跳过项是已撤销旧今日工作台架构的 legacy 事实。初跑真实捕获云端过期横幅 `Style.BasedOn` 使用 `DynamicResource` 的 `XamlParseException`，已改为 `StaticResource`，提交 `e32ed599`。
+- 外部隔离 Release source-copy 构建显式绑定当前分支身份：Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` `CS8602`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。testhost 关闭阶段有已知 TextServices COM 清理噪声，但最终统计成功。
+- 仅使用合成/fake/隔离 testhost/目录；真实 Playnite/package-host、Worker/Named Pipe、Ludusavi/Rclone/云端、最终呈现、DPI/UIA/IME、ETW、宿主性能未验。Demo 原目录不可用，main 用户改动未碰且未合并。证据见 `evidence/R20-06-PARTIAL-AVAILABILITY-20260921.md`。
+- 下一项：`R20-07` 最近活动密度，先核对任务事件摘要、重复进度合并、完成/失败详情展开和计数来源。
+
 ## 当前第三轮 R20-05 Stale 可理解（已满足，待环境验证）
 
 - 任务、存档、媒体和维护页沿用已有 stale 状态、最后成功时间、失败原因和重试入口；云端队列补齐最近成功读取时间、刷新失败原因、旧记录保留提示和重试横幅。读取失败不会清除旧队列记录或改变队列数据。

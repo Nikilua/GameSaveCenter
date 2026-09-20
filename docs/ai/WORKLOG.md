@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R20-06 部分可用状态
+
+- 先查已有能力：`ActionAvailabilityHints` 已覆盖恢复、媒体收件箱、云端和隔离远端恢复的禁用前置与解释，`WorkspaceStatePresenter` 已覆盖 Loading/Empty/Error/Degraded/Offline；保留各工作区独立状态，没有重建状态模型。
+- 首次 R07 WPF 回归真实发现 `MaintenanceView.xaml` 云端过期横幅的 `Style.BasedOn` 不能使用 `DynamicResource`，抛出 `XamlParseException`；改为 `StaticResource` 后提交 `e32ed599`。这是本阶段唯一生产修正。
+- 隔离 Release source-copy 构建显式绑定 `GscBuildCommit=36dbc3f9`，Playnite `net462` / Tests `net472`：`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` `CS8602`。R02/R07/Workspace `18 total / 17 passed / 0 failed / 1 skipped`；skip 为已撤销旧架构事实，testhost 关闭有已知 TextServices COM 清理噪声；`validate-source.py`、XAML `24/24`、diff 通过。
+- 仅使用合成/fake/隔离 testhost/source-copy/目录，没有真实存档、媒体、云端或诊断写入；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R20-06-PARTIAL-AVAILABILITY-20260921.md`。
+- 下一可执行任务：`R20-07 最近活动密度`，先核对现有事件摘要、进度合并、展开详情和计数来源；真实 Playnite/package-host、Worker/Named Pipe、外部工具、呈现、DPI/UIA/IME、ETW、宿主性能仍待验。
+
 ## 2026-09-21 R20-05 Stale 可理解
 
 - 先查现有状态：任务、存档、媒体、维护已有 stale/最后成功/错误/重试；只补云端有旧记录读取失败时的可见边界。云端新增最近成功时间、错误原因、旧数据摘要和重试横幅，失败不清空列表。
