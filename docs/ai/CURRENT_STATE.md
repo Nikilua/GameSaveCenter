@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-06 存储分析导航（已满足，受控验证完成；真实宿主待验）
+
+- `51cae6b9` 复用现有 `StorageAnalysisService`、逻辑索引/目录实测统计、TopGames 和稳定 ID 解析；维护页 Demo 卡片明确区分 SQLite 逻辑大小、备份目录文件实测和卷剩余空间。
+- 失联或空归档路径单独统计逻辑体积，显示“未计入磁盘实测，不代表占用为 0”；备份目录不可用时显示路径状态未知，不把失联路径当作零占用。TopGames 补充最新 `BackupId`，“查看游戏/查看版本”只按稳定 `PlayniteId`/`BackupId` 精确定位，缺失时不回退到同名或其他版本。
+- Worker 存储分析 `4/4`、Playnite R17-06 `4/4`、Playnite R17 `15/15`；隔离 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-06-STORAGE-ANALYSIS-NAVIGATION-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、Explorer/实际权限、真实文件系统占用时序、presented frame、ETW 或宿主性能；只用合成/fake/隔离 SQLite/目录。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并；`.tmp/r17-06-solution` 已清理。
+- 下一项：`R17-07 检查项一键定位`，先核对已有 Finding/Health/Task 稳定来源、返回目标和跨工作区入口。
+
 ## 当前第三轮 R17-05 隔离账本入口（已满足，受控验证完成；真实宿主待验）
 
 - `3002a8dc` 在维护行动项中补充隔离账本原路径、隔离路径和状态对应的受控恢复入口；路径行只对隔离账本显示，支持有限宽度换行和完整 Tooltip，不改变现有分页、滚动、命令绑定或 Worker 恢复算法。

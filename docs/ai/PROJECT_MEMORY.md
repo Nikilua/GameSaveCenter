@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-06 存储分析导航（2026-09-20）
+
+- `51cae6b9` 先复用既有 `StorageAnalysisService` 的 SQLite 逻辑索引、备份目录实测、TopGames 和 `TaskSourceNavigationResolver`；没有创建第二套存储统计或导航模型。
+- `StorageAnalysisDto` 现在区分失联索引路径数量/逻辑体积与目录实测；备份目录不可用写明路径未知，失联路径写明未计入磁盘实测且不代表占用为 0。排行记录最新 `BackupId`，游戏/版本入口只按稳定 ID 精确解析，缺失目标不回退。
+- 维护页 Demo 卡片显示“索引体积 / 磁盘实测 / 磁盘剩余”，排行保持现有有限列表；返回维护中心、游戏选框、滚动、命令绑定、取消/错误、恢复保护和 net462 兼容未改。
+- Worker `4/4`、Playnite R17-06 `4/4`、Playnite R17 `15/15`、隔离 Release solution `0 errors/2 existing warnings`、source/XAML/diff、WPF `0/27/162` 通过。未验真实 Playnite/package-host、最终 presented frame、DPI/UIA/IME、Explorer/权限、真实磁盘时序、ETW 和宿主性能；Demo 原目录不可用，继续使用恢复生产基线。
+- 下一可执行任务：`R17-07 检查项一键定位`，先查现有 Finding/Health/Task 的稳定来源与导航返回状态，再做最小范围定位。
+
 ## 第三轮 R17-05 隔离账本入口（2026-09-20）
 
 - `3002a8dc` 复用既有隔离账本 DTO/分页和定向恢复 IPC，在维护行动项中显示原路径、隔离路径与状态；路径只在隔离账本项展开，保留有限列表、滚动、命令绑定和 net462 兼容。

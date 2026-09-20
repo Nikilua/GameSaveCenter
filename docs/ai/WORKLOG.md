@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-06 存储分析导航
+
+- 先核对现有存储分析 DTO、Worker 统计、维护页 Demo 卡片、TopGames 以及稳定游戏/版本解析；确认已有逻辑索引与目录实测能力，未重建服务。
+- `51cae6b9` 补充失联索引路径和逻辑体积说明，区分 SQLite 逻辑大小与备份目录物理实测；排行带最新稳定 `BackupId`，维护页两条入口按 `PlayniteId`/`BackupId` 精确导航，缺失游戏或版本不回退。
+- Worker `StorageAnalysisServiceTests` `4/4`，Playnite R17-06 `4/4`，完整 Playnite R17 `15/15`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-06-STORAGE-ANALYSIS-NAVIGATION-20260920.md`。
+- 仅用合成 DTO、fake 服务、隔离 SQLite/目录；未写真实存档、媒体、云端或诊断数据。Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r17-06-solution` 已清理。
+- 已提交并推送 `51cae6b9` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-07 检查项一键定位`，先核对已有稳定 Finding/Health/Task 来源和工作区入口。
+
 ## 2026-09-20 R17-05 隔离账本入口
 
 - 审计确认既有隔离账本 DTO、分页查询、逐条 `EntryId` 恢复和确认语义已经存在；Worker 隔离 SQLite 夹具覆盖路径冲突/身份不一致保留残留、不默认删除。
