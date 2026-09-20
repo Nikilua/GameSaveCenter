@@ -69,10 +69,10 @@
                 <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource GscSelectedGameIconControl}" Width="36" Height="36" Content="{Binding SelectedGameIcon}" Margin="0,0,10,0"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="当前游戏工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="当前游戏工具"/>
                 <StackPanel x:Name="TrainerToolsToolbar" Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportTrainerCommand}" Content="导入修改器" Margin="0,0,8,0"/>
-                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportToolFolderCommand}" Content="导入目录" Margin="0,0,8,0"/>
-                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportCheatTableCommand}" Content="导入 CT" Margin="0,0,8,0"/>
-                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportCustomLaunchItemCommand}" Content="+ 添加启动项"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportTrainerCommand}" Content="导入修改器" AutomationProperties.Name="导入修改器" Margin="0,0,8,0"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportToolFolderCommand}" Content="导入目录" AutomationProperties.Name="导入工具目录" Margin="0,0,8,0"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportCheatTableCommand}" Content="导入 CT" AutomationProperties.Name="导入 Cheat Table" Margin="0,0,8,0"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportCustomLaunchItemCommand}" Content="+ 添加启动项" AutomationProperties.Name="添加工具启动项"/>
                 </StackPanel>
                 <TextBlock x:Name="TrainerToolsDropHint" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="拖入 EXE / CT / LNK / BAT / CMD / PS1 / ZIP 到此页导入" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" VerticalAlignment="Center" Margin="0,6,0,0" TextTrimming="CharacterEllipsis" ToolTip="拖入 EXE / CT / LNK / BAT / CMD / PS1 / ZIP 到此页导入" AutomationProperties.Name="拖入工具文件到此页导入"/>
             </Grid>
