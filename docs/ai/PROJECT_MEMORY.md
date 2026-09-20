@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-01 健康结果分层（2026-09-20）
+
+- `eb033251` 先复用既有开放 finding 查询和健康巡检解决语义，再补 `CreatedUtc`/证据时间；`resolved=1` 的健康 finding 经过隔离 SQLite 验证不会继续出现在待处理队列。
+- `FindingTriageResolver` 只在维护展示边界合并同游戏、同稳定代码、同问题标题的重复来源；错误/严重归入需立即处理，Warning 归入建议处理，Info 归入信息项。健康巡检不同备份标题不同，不跨备份合并。
+- 维护页保留 `FindingsGrid`、选中详情、复制/导航和原滚动/虚拟化路径，仅增加三档摘要和证据时间。Playnite `5/5`、Worker `2/2`，solution `0 errors/2 existing warnings`，source/XAML/diff/WPF 门禁通过。
+- 只用合成 DTO、fake/隔离 SQLite；真实 Playnite/package-host、多来源生产标题、最终呈现/DPI/UIA/IME/ETW/性能仍未验。Demo 原目录不可用，main 用户改动未碰、未合并。
+- 证据：`R17-01-HEALTH-RESULT-LAYERS-20260920.md`。下一可执行任务：`R17-02 诊断包预览`，先查 DiagnosticsPackage 既有类别、脱敏和生成后结果能力。
+
 ## 第三轮 R16-08 保存冲突处理（2026-09-20）
 
 - `ee6b37c9` 复用 `BeginEdit`/`CancelEdit` 的编辑基线和现有 fingerprint，新增 `SettingsConflictResolver` 三方合并。后台仅改动的字段合入当前草稿；同字段不同值进入冲突，不部分覆盖。

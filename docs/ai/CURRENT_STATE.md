@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-01 健康结果分层（代码已提交，受控验证完成；真实宿主待验）
+
+- `eb033251` 复用既有 `findings.resolved=0` 开放队列、健康巡检稳定 finding 和解决入口；Worker 将 `created_utc` 带入 `ValidationFindingDto`，维护详情保留本地化证据时间。
+- Playnite 展示边界新增真实影响三档：需立即处理、建议处理、信息项；按游戏、稳定代码和问题标题合并跨来源重复，错误/严重优先，同游戏不同健康备份仍分别保留。原问题表、选中详情、命令绑定和滚动系统保留。
+- 最终提交定向 Playnite `5/5`、Worker `2/2`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-01-HEALTH-RESULT-LAYERS-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题、DPI/UIA/IME、真实呈现/焦点/滚动、ETW 或宿主性能；未验证生产多来源标题规范。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一项：`R17-02 诊断包预览`，先核对现有 DiagnosticsPackage 生成入口、类别清单和脱敏范围。
+
 ## 当前第三轮 R16-08 保存冲突处理（代码已提交，受控验证完成；真实宿主待验）
 
 - `ee6b37c9` 在既有 Playnite 编辑基线/fingerprint 上增加 `SettingsConflictResolver` 三方合并：仅后台变化的字段并入草稿；用户和最新持久化同时改动且值不同的字段进入冲突列表，不部分覆盖。

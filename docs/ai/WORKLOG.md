@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-01 健康结果分层
+
+- 审计确认既有 `findings.resolved=0` 查询和健康巡检 stable finding/resolve 已满足“已解决项退出待处理”；缺口是 DTO 未返回证据时间，维护页没有按影响分层，也没有跨来源展示去重。
+- `eb033251` 增加 `ValidationFindingDto.CreatedUtc`/详情证据时间和 SQLite 映射；新增 `FindingTriageResolver`，按游戏、稳定代码、问题标题合并重复来源，按真实影响生成三档摘要，原问题表与滚动/命令/导航保留。
+- 最终提交 Playnite R17 `5/5`、Worker R17 `2/2`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 未验真实 Playnite/package-host、多来源生产标题稳定性、最终主题/DPI/UIA/IME、presented frame、ETW、宿主性能；仅使用合成 DTO、fake/隔离 SQLite。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r17-01-solution` 是本阶段可复现构建输出，文档提交前清理。下一可执行任务：`R17-02 诊断包预览`，先核对现有生成前范围与脱敏语义。
+
 ## 2026-09-20 R16-08 保存冲突处理
 
 - 审计确认设置已有 Playnite 编辑基线但 `EndEdit` 未检查最新持久化快照；后台/另一入口变化可能被草稿静默覆盖。新增 `SettingsConflictResolver` 三方合并和字段显示名。
