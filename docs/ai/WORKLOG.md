@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-07 长时资源曲线
+
+- 先查既有 Q25-04 `RunEnduranceProbe`，确认已经覆盖真实 Dispatcher Window、六工作区、Light/Dark、Media 预览/详情、250ms 动作循环和约 10 秒样本；本阶段只补资源序列字段，没有重建耐久脚本。
+- `56d8e1b7` 增加 managed/private/working set、threads/handles、探针可见 timers、反射可见托管事件委托、`HasAnimatedProperties` 动画持有者代理、thumbnail cache/active decode 字段和原始样本；随后 `c5c33e18` 增加动作目标后的 30 秒静置段，静置期间每约 10 秒继续记录，最后才关闭窗口。
+- 最终报告：1800 秒操作 + 30 秒静置，`1830.2/1830s`、177 samples、2769 cycles、8537 completed actions、0 action failures、`enduranceprobe OK`。1800 秒后 cycle 保持 2769，timers 为 0，private/working set 先回落，最后两点分别稳定在 268,775,424/298,184,704；handles 1170–1547，threads 22–42，subscriptions 1，animated owners 0，thumb cache 0/96。
+- 验证：相关源测试 `31/31`；Release 隔离构建 `0 errors/2 条既有 MediaCenter nullable warning`；`validate-source.py` 与 `git diff --check` 通过。报告原始序列保留在 `.tmp/r18-07-endurance-final/enduranceprobe-report.txt`，未把 `WorkingTreeClean=False` 改写成 clean。
+- 只用合成/fake/隔离 WPF Window，没有真实存档、媒体、云端或诊断写入，也没有绕过 ETW/系统权限。Demo 原目录不可用；真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW、宿主性能未验。下一可执行任务：`R18-08 低性能降级触发`。
+
 ## 2026-09-20 R18-06 页面重访成本
 
 - 先核对生产 `AcrylicProductionShellView` 的页面 registry：六个页面在 Attach 时创建，`NavigateTo` 同页保持同一 `PageHost.Content`；`RequestWorkspaceLoad` 只调用 Media/Maintenance/选中游戏详情读取，没有整库 `RefreshDashboard`/`Synchronize`。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-07 长时资源曲线（已满足，受控验证完成；真实宿主待验）
+
+- `56d8e1b7` 扩展既有 `RunEnduranceProbe`，复用原有合成六工作区/Light-Dark/Media 预览/详情动作，保留每次原始样本，并增加 managed/private/working set、threads/handles、探针可见 timers、反射可见托管事件委托、`HasAnimatedProperties` 代理和 `AsyncThumbnailLoader` 缓存诊断；无强制 GC。
+- 受控 WPF STA Window 运行 `1800s` 操作 + `30s` 停止输入静置，实际 `1830.2s/1830`，`177` 样本、`2769` 周期、`8537` 动作、`0` 失败；静置四点周期保持 `2769`、`timers=0`，private `316,137,472→268,775,424`、working set `345,202,688→298,184,704` 后尾点稳定，最终 `enduranceprobe OK`。
+- 相关源测试 `31/31`，Release 隔离构建 `0 errors/2 existing MediaCenter nullable warnings`，`validate-source.py`、diff 通过。证据见 `evidence/R18-07-LONG-RUN-RESOURCE-CURVE-20260920.md`，原始序列保留在 `.tmp/r18-07-endurance-final/enduranceprobe-report.txt`。
+- `WorkingTreeClean=False` 是报告生成时静置 patch 尚未提交的事实；随后由 `c5c33e18` 固化，未伪造 clean-tree 运行。subscriptions/animated owners/thumbnail cache 是探针限定的代理或本场景未触发值，不能扩大解释为全局 WPF 订阅、精确动画时钟或缩略图解码证据。
+- 只使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；未绕过 ETW/系统跟踪权限。Demo 原目录不可用，真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 和宿主性能仍未验。下一项：`R18-08 低性能降级触发`。
+
 ## 当前第三轮 R18-06 页面重访成本（已满足，受控验证完成；真实宿主待验）
 
 - `1b19fd4c` 保留生产壳层一次创建六个页面并复用 `PageHost.Content` 实例；新增 `[PERF] WorkspacePages`/`WorkspaceActivation` 的首次、重访、attach/reuse 和同步 layout 记录，以及 `[PERF] WorkspaceLoad` 的读取/跳过/成功/取消/失败/晚返回丢弃记录。

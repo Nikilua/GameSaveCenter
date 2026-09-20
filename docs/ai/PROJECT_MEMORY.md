@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-07 长时资源曲线（2026-09-20）
+
+- `56d8e1b7` 复用既有 `RunEnduranceProbe`，保留原始时间序列并记录托管堆、私有字节、工作集、线程、句柄、探针可见计时器、反射可见托管事件委托、`HasAnimatedProperties` 动画持有者代理和缩略图缓存诊断；不强制 GC，不把代理指标扩大解释。
+- 最终隔离 WPF STA 运行 `1800s` 操作 + `30s` 停止输入静置，`1830.2s/1830`、`177` samples、`2769` cycles、`8537` actions、`0` failures、`enduranceprobe OK`。静置样本周期保持 `2769`、`timers=0`；private `316,137,472→268,775,424`、working set `345,202,688→298,184,704` 后最后两点稳定。
+- 静态/行为门禁：相关源测试 `31/31`，Release 隔离构建 `0 errors/2 existing MediaCenter nullable warnings`，source validation/diff 通过。证据：`R18-07-LONG-RUN-RESOURCE-CURVE-20260920.md`；原始序列：`.tmp/r18-07-endurance-final/enduranceprobe-report.txt`。
+- 报告元数据 `WorkingTreeClean=False` 是运行时静置 patch 尚未提交的事实；随后由 `c5c33e18` 固化，未篡改报告。`subscriptions=1`、`animated_owners=0`、`thumb_cache=0/96` 是探针限定或本场景未触发，不能冒充全局 WPF 订阅、精确动画时钟或缩略图解码证据。
+- 仅使用合成/fake/隔离目录，无真实存档、媒体、云端或诊断写入；未绕过 ETW/系统跟踪权限。Demo 原目录不可用，真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 与宿主性能仍未验。下一可执行任务：`R18-08 低性能降级触发`，先盘点无玻璃/无动画回退与渲染 Tier。
+
 ## 第三轮 R18-06 页面重访成本（2026-09-20）
 
 - `1b19fd4c` 先复核生产壳层的六页 registry、同页 `PageHost.Content` 复用、Dashboard 页面级读取、generation/cancellation 和 `WorkspaceDataState` presenter；没有重建页面或整库刷新服务。
