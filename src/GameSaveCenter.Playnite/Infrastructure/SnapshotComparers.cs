@@ -72,6 +72,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
             && a.Severity == b.Severity
+            && a.CreatedUtc == b.CreatedUtc
             && string.Equals(a.Code, b.Code, StringComparison.Ordinal)
             && string.Equals(a.Title, b.Title, StringComparison.Ordinal)
             && string.Equals(a.Detail, b.Detail, StringComparison.Ordinal)

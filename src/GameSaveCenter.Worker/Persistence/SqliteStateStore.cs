@@ -867,12 +867,12 @@ VALUES($id,$game,$severity,$code,$title,$detail,$action,$utc,0);",
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT playnite_id,severity,code,title,detail,suggested_action FROM findings WHERE resolved=0 ORDER BY created_utc DESC LIMIT $limit;";
+        command.CommandText = "SELECT playnite_id,severity,code,title,detail,suggested_action,created_utc FROM findings WHERE resolved=0 ORDER BY created_utc DESC LIMIT $limit;";
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 500));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new ValidationFindingDto
         {
-            PlayniteId=reader.IsDBNull(0)?string.Empty:reader.GetString(0), Severity=(FindingSeverity)reader.GetInt32(1), Code=reader.GetString(2), Title=reader.GetString(3), Detail=reader.IsDBNull(4)?string.Empty:reader.GetString(4), SuggestedAction=reader.IsDBNull(5)?string.Empty:reader.GetString(5)
+            PlayniteId=reader.IsDBNull(0)?string.Empty:reader.GetString(0), Severity=(FindingSeverity)reader.GetInt32(1), Code=reader.GetString(2), Title=reader.GetString(3), Detail=reader.IsDBNull(4)?string.Empty:reader.GetString(4), SuggestedAction=reader.IsDBNull(5)?string.Empty:reader.GetString(5), CreatedUtc=reader.IsDBNull(6)?DateTime.MinValue:DateTime.Parse(reader.GetString(6)).ToUniversalTime()
         });
         return result;
     }

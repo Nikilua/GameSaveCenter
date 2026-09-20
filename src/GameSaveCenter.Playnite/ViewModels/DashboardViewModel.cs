@@ -2600,6 +2600,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
                 RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
+                var findingTriage = FindingTriageResolver.Resolve(data.Findings);
+                data.Findings = findingTriage.Items.ToList();
+                ApplyFindingTriage(findingTriage);
                 var previousFindingIndex = SelectedFinding == null ? -1 : Findings.IndexOf(SelectedFinding);
                 var previousFindingPlayniteId = SelectedFinding?.PlayniteId;
                 var previousFindingCode = SelectedFinding?.Code;

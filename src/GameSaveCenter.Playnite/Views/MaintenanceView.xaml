@@ -119,6 +119,7 @@
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Margin="12,2,12,8">
@@ -135,7 +136,35 @@
                                                 <ui:Button Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" ToolTip="刷新诊断" AutomationProperties.Name="刷新诊断"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                                             </StackPanel>
                                         </Grid>
-                                        <Grid Grid.Row="1">
+                                        <ItemsControl Grid.Row="1" ItemsSource="{Binding FindingTriageGroups}" Margin="12,0,12,8">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate><UniformGrid Columns="3"/></ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border x:Name="FindingTriageCard" Padding="10" Margin="0,0,8,0">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                            <StackPanel MinWidth="0">
+                                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}"/>
+                                                                <TextBlock Text="{Binding Description}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            </StackPanel>
+                                                            <TextBlock Grid.Column="1" Text="{Binding CountDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Top"/>
+                                                        </Grid>
+                                                        <Border.Style>
+                                                            <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Group}" Value="Immediate"><Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Group}" Value="Recommended"><Setter Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Group}" Value="Information"><Setter Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Grid Grid.Row="2">
                                             <DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}" SelectionMode="Extended" SelectionChanged="OnMaintenanceDiagnosticsSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="Finding" ToolTip="Ctrl+C 复制所选诊断行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选诊断行；Ctrl+Shift+C 复制当前单元格">
                                                 <DataGrid.Columns>
                                                     <DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" infra:DataGridColumnHeaderHelpBehavior.Description="诊断严重级别；错误和严重项需要先查看详情再处理。" Width="{StaticResource GscSeverityColumnWidth}">
@@ -196,6 +225,7 @@
                                                 </Grid>
                                                 <TextBlock Text="{Binding SelectedFinding.GameName, TargetNullValue=选择一条诊断项查看详情}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                                 <TextBlock Text="{Binding SelectedFinding.Title, TargetNullValue=暂无标题}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                <TextBlock Text="{Binding SelectedFinding.EvidenceTimeDisplay, TargetNullValue=证据时间未知}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,5,0,0"/>
                                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
                                                     <TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                                 </Border>

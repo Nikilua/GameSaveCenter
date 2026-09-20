@@ -497,6 +497,12 @@ namespace GameSaveCenter.Contracts
         /// <summary>Resolved game title when this finding is sent in a dashboard snapshot.</summary>
         public string GameName { get; set; } = string.Empty;
         public FindingSeverity Severity { get; set; }
+        /// <summary>UTC time when the evidence was recorded; legacy rows may be unknown.</summary>
+        public DateTime CreatedUtc { get; set; }
+        public DateTime CreatedLocal => CreatedUtc == DateTime.MinValue ? DateTime.MinValue : CreatedUtc.ToLocalTime();
+        public string EvidenceTimeDisplay => CreatedUtc == DateTime.MinValue
+            ? "证据时间未知"
+            : $"证据时间：{CreatedLocal:yyyy-MM-dd HH:mm:ss}";
         public string SeverityDisplay => Severity switch
         {
             FindingSeverity.Info => "提示",
