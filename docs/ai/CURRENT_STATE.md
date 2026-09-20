@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 MediaCenter 批量动作忙碌态刷新（实现中，待继续）
+
+- `e0805624` 复用现有 `IsBusy`、三个批量命令和 `RelayCommand`，把 `FavoriteSelectedMediaCommand`、`UnfavoriteSelectedMediaCommand`、`CommentSelectedMediaCommand` 纳入 `RaiseCommandStatesCore`；不改命令执行、选择参数、Binding、取消/错误或媒体写入语义。
+- `R21AutomationValueBehaviorTests 17/17`，相关进度/焦点/键盘/无障碍/生产壳层回归 `65/65`；实际 WPF `Button.Command` 行为验证批量动作 `可用 → 忙碌禁用 → 恢复可用`，并保留空选择两条负例。
+- 提交身份 D 盘源码副本 Release 为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查本次为 `0/27/162`，未见本批新增诊断。
+- 该批不宣称真实 Playnite/package-host、实际媒体 IPC/写入、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能；链接工作树 `_wpftmp` 的 `Access denied` 未绕过。本批 source-copy/build 已清理，Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续其他状态值边界，之后进入 `R21-03`。
+
 ## 当前第三轮 R21-02 MediaCenter 批量动作空选择保护（实现中，待继续）
 
 - `f7b664f1` 先复核现有 `UpdateMediaMetadataBatchAsync` 的空选择保护，不改命令、Binding、取消/错误语义或媒体写入路径；新增测试只覆盖 `null` 与空 `IList` 在 IPC 前抛出既有“请先在媒体列表中选择一个或多个项目。”。
