@@ -224,6 +224,37 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaBatchCommandsRefreshBusyCanExecuteState()
+    {
+        var root = TestRepositoryContext.Root;
+        var implementation = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var refreshStart = implementation.IndexOf("private void RaiseCommandStatesCore()", StringComparison.Ordinal);
+        Assert.True(refreshStart >= 0);
+        var refreshBlock = implementation.Substring(refreshStart, Math.Min(1800, implementation.Length - refreshStart));
+        Assert.Contains("UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand", refreshBlock);
+
+        RunSta(() =>
+        {
+            var busy = false;
+            var command = new GameSaveCenter.Playnite.ViewModels.RelayCommand(_ => { }, _ => !busy);
+            var button = new Button { Content = "批量动作", Command = command };
+
+            using var host = new PeerHost(button);
+            Assert.True(button.IsEnabled);
+
+            busy = true;
+            command.RaiseCanExecuteChanged();
+            host.Pump();
+            Assert.False(button.IsEnabled);
+
+            busy = false;
+            command.RaiseCanExecuteChanged();
+            host.Pump();
+            Assert.True(button.IsEnabled);
+        });
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
