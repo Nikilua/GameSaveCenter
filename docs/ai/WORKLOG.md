@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-05 隔离账本入口
+
+- 审计确认既有隔离账本 DTO、分页查询、逐条 `EntryId` 恢复和确认语义已经存在；Worker 隔离 SQLite 夹具覆盖路径冲突/身份不一致保留残留、不默认删除。
+- `3002a8dc` 在维护行动项中增加原路径/隔离路径的显式可核查行，并将操作文案明确为“受控恢复”；只对隔离账本项显示，保持现有有限列表、滚动、绑定和恢复算法。
+- Worker `RetentionQuarantineRecoveryTests` `5/5`，Playnite 完整 R17 `12/12`（新增 `2/2`、维护报告 `3/3`）；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-05-QUARANTINE-LEDGER-20260920.md`。
+- 本阶段仅用合成/fake/隔离 SQLite/临时目录，未改真实存档、媒体、云端或生产账本；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。`.tmp/r17-05-solution` 已清理。
+- 已提交并推送 `3002a8dc` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-06 存储分析导航`，先核对已有存储统计、来源记录和维护页跳转能力。
+
 ## 2026-09-20 R17-04 保留预览对比
 
 - 审计确认既有预览已显示候选、保护项、按索引体积的预计释放和隔离占用；Apply 已有二次确认、预览时效/句柄、live 重算、策略/候选/归档指纹和共享操作锁门禁。

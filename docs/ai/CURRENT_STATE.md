@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-05 隔离账本入口（已满足，受控验证完成；真实宿主待验）
+
+- `3002a8dc` 在维护行动项中补充隔离账本原路径、隔离路径和状态对应的受控恢复入口；路径行只对隔离账本显示，支持有限宽度换行和完整 Tooltip，不改变现有分页、滚动、命令绑定或 Worker 恢复算法。
+- 复用既有 `RetentionQuarantineEntryDto`、分页 IPC、逐条 `EntryId` 恢复和确认语义；现有 Worker 隔离 SQLite 行为测试继续证明冲突/身份不一致时保留残留、不默认删除。
+- Worker 隔离账本 `5/5`、Playnite 完整 R17 `12/12`（本项新增 `2/2`，维护报告 `3/3`）；隔离 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-05-QUARANTINE-LEDGER-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、Explorer/权限、真实账本重启恢复时序、presented frame、ETW 或宿主性能；只用合成/fake/隔离 SQLite/临时目录。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一项：`R17-06 存储分析导航`，先核对已有存储统计、来源记录和维护页跳转能力，再决定是否需要代码。
+
 ## 当前第三轮 R17-04 保留预览对比（已满足，受控验证完成；真实宿主待验）
 
 - 复核确认既有 `RetentionSimulationService` 已展示候选、用户锁定/PreRestore/健康保护、预计释放和隔离占用；Apply 已验证预览句柄/十分钟时效、策略/候选/归档指纹并在执行前重读 live 状态。

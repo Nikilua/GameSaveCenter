@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-05 隔离账本入口（2026-09-20）
+
+- `3002a8dc` 复用既有隔离账本 DTO/分页和定向恢复 IPC，在维护行动项中显示原路径、隔离路径与状态；路径只在隔离账本项展开，保留有限列表、滚动、命令绑定和 net462 兼容。
+- 操作文案改为“受控恢复”，仍要求逐条确认并发送 `EntryId + Confirmed`；未添加默认删除、批量恢复或路径猜测。Worker 既有隔离 SQLite 夹具覆盖指定项恢复、索引已移除清理、移动中断恢复、分页边界和残留保护。
+- Worker `5/5`、Playnite R17 `12/12`、隔离 Release solution `0 errors/2 existing warnings`、source/XAML/diff、WPF `0/27/162` 通过。证据：`R17-05-QUARANTINE-LEDGER-20260920.md`。
+- 真实宿主、最终 presented frame、DPI/UIA/IME/焦点滚动、Explorer/权限、重启恢复、ETW 和宿主性能仍待验；Demo 原目录不可用，继续恢复生产基线。
+- 下一可执行任务：`R17-06 存储分析导航`，先核对存储统计、来源记录和已有跳转入口。
+
 ## 第三轮 R17-04 保留预览对比（2026-09-20）
 
 - 审计确认既有 `RetentionSimulationService`/维护页已经有候选明细、用户锁定/PreRestore/健康保护、预计释放、隔离占用和清理后二次刷新；Apply 会校验预览句柄/十分钟时效并重算 live 候选、策略和归档指纹。
