@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-08 慢调用可取消（2026-09-20）
+
+- 复核确认已有 `ExternalProcessRunner`/Ludusavi/Rclone timeout+token、外部进程树终止和输出上限；`WorkerIpcClient` 取消/宿主退出/超时边界、同 RequestId 复核及可能已接收语义；`BusyOperationCoordinator` finally 解锁；云端上传只在明确成功时记 `Uploaded`。
+- Worker 取消/超时/云队列/ledger `36/36`，Rclone 安全 runner 源码 `1/1`；Playnite 可执行子集 `7/13` 通过、6 条 Named Pipe 跳过。另 2 条旧 net472 源码测试因 `GscBuildCommit` 身份门退出，不计行为失败。本阶段无生产代码变更，source/XAML/diff 通过。
+- 真实 Named Pipe、Playnite/Worker 管道断连、Ludusavi/Rclone/远端写入和网络延迟未验；超时/取消不得推断远端写入结果，需只读校验或人工确认，不能以新 RequestId 盲目重试。只用合成/fake/隔离数据，Demo 原目录不可用。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md`。
+- 下一项 `R20-01`：核对概览下一步的四类首屏状态与真实导航入口。
+
 ## 第三轮 R19-07 外部文件变化（2026-09-20）
 
 - 复核确认媒体缩略图/录像播放器都有缺失、损坏、不可用占位和迟到结果保护；打开媒体/目录通过统一本地错误回报，目录在目标消失时只回退到真实存在的父目录，刷新/重新加载保留稳定媒体上下文。

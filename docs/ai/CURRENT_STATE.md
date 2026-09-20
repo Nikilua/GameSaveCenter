@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-08 慢调用可取消（已满足，受控回归完成；真实管道与外部工具待验）
+
+- `ExternalProcessRunner` 为 Ludusavi/Rclone 使用显式超时、取消 token、进程树终止和有界 stdout/stderr；Playnite IPC 取消区分调用者/宿主退出，写请求可能已接收时保留同一 RequestId 复核，不以新 ID 盲目重试；Busy finally 释放，云端只有命令明确成功才记 `Uploaded`。
+- Worker 取消/超时/云队列/ledger 定向 `36/36`，Rclone 安全调用源码门 `1/1`；Playnite 可执行子集 `7 passed / 6 skipped / 0 failed / 13 total`。Named Pipe 6 条真实时序测试因当前系统权限跳过；另一组 2 条旧 net472 源码测试因产物缺 `GscBuildCommit` 身份门退出，未写成行为失败。
+- 证据见 `evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md`。未运行真实 Playnite/Worker 管道、真实 Ludusavi/Rclone/远端写入、网络延迟、presented frame、DPI/UIA/IME、ETW 或宿主性能；Demo 原目录不可用。本阶段无生产代码变更。下一项：`R20-01` 概览下一步。
+
 ## 当前第三轮 R19-07 外部文件变化（已满足，受控回归完成；真实宿主待验）
 
 - 媒体预览已有 `Missing/Failed/Loading/Ready` 占位、录像 MediaFailed fallback、generation/取消/卸载迟到保护；打开媒体失败只写状态/通知，打开目录在文件消失时回退到现存父目录，刷新命令按当前上下文重载。

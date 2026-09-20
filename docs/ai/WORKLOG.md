@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-08 慢调用可取消
+
+- 先查已有能力：`ExternalProcessRunner` 的 per-call timeout/token、整树 kill、输出上限；Ludusavi/Rclone 所有外部等待均传入边界；`WorkerIpcClient` 取消关闭管道、同 RequestId 复核和可能已接收标记；生产 Busy finally 解锁；云端只有明确成功才写 `Uploaded`。
+- Worker `ExternalProcessRunner`/云队列/ledger 定向 `36/36`，`RcloneClientSourceTests 1/1`；Playnite 可执行子集 `7 passed/6 skipped/0 failed/13 total`。Named Pipe 6 条因环境权限跳过；另 2 条旧 net472 源码测试因缺 `GscBuildCommit` 身份门退出。
+- `validate-source.py`、XAML `24/24`、`git diff --check` 通过；本阶段无生产代码变更。未宣称真实管道/网络/外部工具/云端写入，未绕过 Named Pipe 权限；只用合成/fake/隔离目录，Demo 原目录不可用。证据：`evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md`。
+- 下一可执行任务：`R20-01` 概览下一步，先盘点 OverviewPriorityResolver、无游戏/未匹配/可备份/失败入口。
+
 ## 2026-09-20 R19-07 外部文件变化
 
 - 先复用现有 `AsyncThumbnailImage`/`MediaThumbnailLoader`、MediaFailed fallback、`OpenPath`、`RestoreReadinessService`、`ValidateRestoreReadinessCommand` 和 `RestoreOrchestrator`；没有增加文件监视器或静默路径迁移。
