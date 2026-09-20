@@ -2,13 +2,21 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-01 八入口纯键盘（2026-09-21）
+
+- 先查 Q24、`KeyboardFocusSourceTests`、`GamePickerKeyboardBehaviorTests` 和 R05 焦点边界能力；八个生产入口已经有导航/安全动作，没有重建服务、DTO、命令或导航模型。实际缺口是 TrainerCenter 默认工具页四个工具栏按钮缺少稳定 Automation 名称，`c3459ebd` 只补名称并保留原 Command/Binding。
+- `R21KeyboardNavigationTraceTests` 用 STA WPF `Window`、独立焦点范围和实际 `TraversalRequest(Next/Previous)` 记录八入口前后向焦点轨迹；新增 `2/2`。相关回归在显式构建身份下 `31/31`，其中既有 R05/GamePicker 夹具覆盖方向键、Enter/Esc、弹层边界和焦点返回。
+- 隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。Settings 独立构造只在 testhost 添加缺失的 `BaseTextBlockStyle`，不是生产资源改动。
+- 真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏、呈现、宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R21-01-KEYBOARD-TRACE-20260921.md`。
+- 下一项 `R21-02`：盘点图标按钮、复合选择器、开关和进度条的 UIA 名称/状态/值，先复用已有命名并补负例。
+
 ## 第三轮 R20-08 状态语气统一（2026-09-21）
 
 - 先查已有能力：`WorkspaceStatePresenter` 已有 Loading/Empty/Error/Degraded/Offline 投影，`ActionAvailabilityHints` 已有恢复、媒体、云端、远端恢复动作前置解释，`OverviewPriorityResolver` 已有优先状态；本阶段没有新造服务、DTO 或状态模型。
 - 实际缺口是 Shell 概览副标题静态声称“一切运行正常”，以及少数主状态把 Worker/Rclone 当作解释。`176183ec` 让副标题随优先状态刷新，统一主状态为“发生了什么 + 下一步”，并用实际 WPF presenter 与解析器正/负例验证；内部诊断标识仍只留在需要的技术区域。
 - 定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，失败是未修改的任务详情旧绑定源断言，skip 是 legacy 架构事实。隔离 Release `net462/net472` `0 errors / 2` 既有 warning，source/XAML/diff 通过。
 - 真实 Playnite/package-host、Worker/工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-08-STATE-TONE-20260921.md`。
-- 下一项 `R21-01`：先核对 Q24/UIA 键盘行为与八入口已有实现，再补行为和负例证据。
+- 上一项已推进到 `R21-01`；当前事实见顶部记录。
 
 ## 第三轮 R20-07 最近活动密度（2026-09-21）
 

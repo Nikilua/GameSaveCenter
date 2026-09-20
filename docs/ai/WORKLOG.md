@@ -1,11 +1,19 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-01 八入口纯键盘
+
+- 先核对 Q24、现有 KeyboardFocus/UIA 测试和八个生产入口；已有命令/Binding/导航优先复用。本阶段只给 TrainerCenter 默认工具页四个已有工具栏命令补 Automation 名称，并增加 `R21KeyboardNavigationTraceTests`，没有重建业务能力。提交并推送 `c3459ebd`。
+- 八入口实际 STA WPF 前/反向焦点轨迹 `2/2`；相关 R05/GamePicker/键盘/无障碍/生产壳层套件显式注入 `GSC_BUILD_COMMIT=82d00b0f` 后 `31/31`。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。
+- 首轮未注入构建身份的 `14` 条统一身份门禁失败未计作产品失败；补齐后全部通过。方向键、Enter/Esc 复用既有 R05/GamePicker 夹具，新增八入口主要记录 Tab/Shift+Tab 等价焦点轨迹。
+- 只用合成宿主资源、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并。真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏、呈现、宿主性能待验。证据：`evidence/R21-01-KEYBOARD-TRACE-20260921.md`。
+- 下一可执行任务：`R21-02` 控件名称与值，先盘点图标按钮、复合选择器、开关和进度条的 UIA 状态/值及负例。
+
 ## 2026-09-21 R20-08 状态语气统一
 
 - 先核对 `WorkspaceStatePresenter`、`ActionAvailabilityHints`、`OverviewPriorityResolver` 等已有能力；实际修正 Shell 概览副标题陈旧健康语气，以及主状态中的 Worker/Rclone 内部术语，保留命令、Binding、取消/错误、恢复保护、选框/滚动条和有限列表。
 - `OverviewPriorityResolverTests`、R02/R07/Workspace/R06 组合定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，唯一失败为未修改的任务详情旧绑定源断言。Release 隔离构建 Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML/diff 通过。提交并推送 `176183ec`。
 - 仅使用合成/fake/隔离 testhost/source-copy/目录；Demo 原目录不可用，main 用户改动未碰、未合并。真实宿主、工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能待验。证据：`evidence/R20-08-STATE-TONE-20260921.md`。
-- 下一可执行任务：`R21-01` 八入口纯键盘，先核对 Q24/UIA 键盘行为和已有入口实现。
+- 上一项已推进到 `R21-01`；当前事实见日志顶部。
 
 ## 2026-09-21 R20-07 最近活动密度
 

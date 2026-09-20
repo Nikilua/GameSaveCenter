@@ -1,11 +1,18 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-01 八入口纯键盘（已满足，待环境验证）
+
+- 复核 Q24 与现有 KeyboardFocus/UIA 能力后，确认八个生产入口已有导航和安全动作；补上 TrainerCenter 默认“已绑定工具”页四个工具栏命令的稳定 Automation 名称，并以 `R21KeyboardNavigationTraceTests` 记录 Shell、Overview、SaveCenter、TrainerCenter、MediaCenter、TaskCenter、Maintenance、Settings 的前/反向实际 WPF 焦点轨迹。提交 `c3459ebd`。
+- R21 新增测试 `2/2`；相关焦点/键盘/无障碍/生产壳层回归在显式 `GSC_BUILD_COMMIT=82d00b0f` 下 `31/31`。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。
+- 方向键、Enter/Esc 证据复用既有 R05/GamePicker 受控夹具；八入口新增轨迹本身聚焦 Tab/Shift+Tab 等价遍历，不宣称逐页真实 OS 输入。真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 `evidence/R21-01-KEYBOARD-TRACE-20260921.md`。
+- 下一项：`R21-02` 控件名称与值，先盘点图标按钮、复合选择器、开关和进度条的 UIA 状态/值及负例。
+
 ## 当前第三轮 R20-08 状态语气统一（已满足，待环境验证）
 
 - 复用已有 `WorkspaceStatePresenter`、`ActionAvailabilityHints` 和 `OverviewPriorityResolver`；实际修正了 Shell 概览副标题固定“一切运行正常”的陈旧状态，并把加载、失败、空、完成、需要操作的主状态统一为事实加下一步，不以 Worker/Rclone 代替用户解释。提交 `176183ec`。
 - 定向行为套件 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，唯一失败为未修改的任务详情旧绑定源断言。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，source/XAML/diff 通过。
 - 证据来自合成/fake/隔离 testhost/source-copy/目录；Demo 原目录不可用。真实 Playnite/package-host、Worker/工具/云端、最终呈现、DPI/UIA/IME、ETW、宿主性能未验；main 用户改动未碰、未合并。证据见 `evidence/R20-08-STATE-TONE-20260921.md`。
-- 下一项：`R21-01` 八入口纯键盘，先核对 Q24/UIA 键盘行为和现有入口能力。
+- 上一项已推进到 `R21-01`；证据见上方当前状态。
 
 ## 当前第三轮 R20-07 最近活动密度（已满足，待环境验证）
 
