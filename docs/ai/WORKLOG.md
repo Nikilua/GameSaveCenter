@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-02 真实 Dispatcher 基准
+
+- 先核对既有 `GamePickerViewModel` 的 Dispatcher 投递、现有 STA 窗口夹具和容器绑定；没有改生产 XAML、页面结构或 `FilteredCount` 契约。
+- `59468b37` 增加 20 次受控窗口回放，`5b28b0c3` 校正输出来源为 `ListBox.ItemContainerGenerator + IsVisible + ActualWidth/Height + UpdateLayout`。VM 完成 p95/最大 `52.272/63.581ms`，VM→可见容器增量 p95/最大 `28.343/49.942ms`；20 次可见计数均为 1，容器 `476×19.24 DIP`。
+- 首轮未安装 `DispatcherSynchronizationContext` 时夹具真实失败，补上后 `R18DispatcherVisibilityBenchmarkTests 1/1`；R18/游戏选框/键盘/IME/防抖合并 `47/47`。source、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`；WPF `0/27/162` 为无 XAML 变更的既有静态基线。
+- 受控窗口和布局可见性不等于 presented frame、物理 DPI、60fps、Playnite 宿主、UIA/读屏或 ETW/性能；未写真实存档/媒体/云端。证据：`evidence/R18-02-DISPATCHER-VISIBILITY-20260920.md`；`.tmp/r18-02-solution` 已清理。
+- 代码已提交并推送 `59468b37`、`5b28b0c3` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R18-03 缩略图滚动预算`。
+
 ## 2026-09-20 R18-01 连续输入基准
 
 - 先核对现有 `GamePickerViewModel` 的本地缓存、20ms 延迟、批量 `SetItems`、取消和 `GamePickerKeyboardBehaviorTests` 的真实 STA WPF IME 路由；没有重建选框或输入体系。

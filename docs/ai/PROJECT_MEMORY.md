@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-02 真实 Dispatcher 基准（2026-09-20）
+
+- `59468b37` 增加实际 STA WPF 受控窗口夹具，`5b28b0c3` 校正来源标签；VM 完成点来自内部刷新计数/查询身份，画面反馈点来自 `ListBox.ItemContainerGenerator` 首容器的可见性和实测布局几何，不再把 `FilteredCount` 当成画面延迟。
+- 20 次原始样本的 VM p95/最大为 `52.272/63.581ms`，VM→可见容器增量 p95/最大为 `28.343/49.942ms`；可见计数始终 `1`，容器 `476×19.24 DIP`。证据：`R18-02-DISPATCHER-VISIBILITY-20260920.md`。
+- 受控窗口显式安装 WPF `DispatcherSynchronizationContext`；未安装的首轮负例暴露了测试宿主与真实 Dispatcher 路径的区别，修正后 R18-02 `1/1`，合并相邻回归 `47/47`。Release solution `0 errors/2 existing warnings`，source/XAML/diff 通过。
+- 这不是 presented frame、DWM、物理 DPI、60fps、Playnite 嵌入、UIA/读屏、真实 OS IME 或 ETW 证据；只用合成 DTO/隔离 STA/受控窗口。下一可执行任务：R18-03 缩略图滚动预算。
+
 ## 第三轮 R18-01 连续输入基准（2026-09-20）
 
 - `10bc5789` 只在 `GamePickerViewModel` 增加内部性能诊断快照和固定 20ms 防抖常量，并新增 R18 合成基准；既有本地缓存、`SetItems` 批量更新、取消和同步 `RefreshNow` 路径保持。

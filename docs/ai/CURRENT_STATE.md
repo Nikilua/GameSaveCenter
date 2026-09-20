@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-02 真实 Dispatcher 基准（已满足，受控验证完成；真实宿主待验）
+
+- `59468b37`/`5b28b0c3` 在真实 STA WPF `Window` 中区分本地 VM 刷新完成和可见列表容器反馈；VM 端用 `GamePickerPerformanceDiagnostics.RefreshCount + LastSearchText`，窗口端用实际 `ListBox.ItemContainerGenerator` 首容器的 `IsVisible`、`ActualWidth/ActualHeight` 和 `UpdateLayout`，没有用 `FilteredCount` 代替画面延迟。
+- 20 次样本：SearchText→VM 完成 p95/最大 `52.272/63.581ms`；VM 完成→可见容器增量 p95/最大 `28.343/49.942ms`；每次可见计数 `1`，容器实测 `476×19.24 DIP`。原始数组见 `evidence/R18-02-DISPATCHER-VISIBILITY-20260920.md`。
+- R18-02 `1/1`；同一实现逻辑的 R18/游戏选框/键盘/IME/防抖合并回归 `47/47`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过；Release 隔离 solution `0 errors/2 existing MediaCenter nullable warnings`。WPF 静态基线沿用 `0/27/162`，无 XAML/主题变更。
+- 受控窗口显式安装 `DispatcherSynchronizationContext`；首轮未安装时夹具真实捕获了 Dispatcher 投递不收敛的负例，修正后才记为通过。该测量是布局/可见容器证据，不是 presented frame、物理 DPI、60fps、UIA/读屏、真实 Playnite 或 ETW 性能证据。Demo 原目录不可用，`.tmp/r18-02-solution` 已清理。
+- 下一项：`R18-03 缩略图滚动预算`，先查 `AsyncThumbnailLoader` 的活动请求、取消、缓存上限和迟到结果保护。
+
 ## 当前第三轮 R18-01 连续输入基准（已满足，受控验证完成；真实宿主待验）
 
 - `10bc5789` 复用现有 `GamePickerViewModel` 本地缓存/同步过滤、取消入口和 20ms 防抖路径，仅增加内部诊断快照与 2,000/10,000 项测试夹具；未改游戏选框、滚动条、命令绑定、取消/错误/恢复保护、虚拟化或 Playnite `net462` 契约。
