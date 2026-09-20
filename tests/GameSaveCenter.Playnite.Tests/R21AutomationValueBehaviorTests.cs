@@ -369,6 +369,53 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("IsChecked=\"{Binding LockSelectedBackup}\" VerticalAlignment=\"Center\" ToolTip=\"锁定并保存后，保留预览会跳过此版本；取消锁定并保存后才会重新按策略评估。\" AutomationProperties.Name=\"锁定所选版本\"", save);
     }
 
+    [Fact]
+    public void SaveCenterPolicyControlsExposeExternalLabelStateThroughWpfPeers()
+    {
+        RunSta(() =>
+        {
+            var toggles = new[]
+            {
+                CreateNamedToggle("启用备份策略"),
+                CreateNamedToggle("游戏退出后自动备份"),
+                CreateNamedToggle("游玩中定期备份"),
+                CreateNamedToggle("备份后自动上传云端")
+            };
+            var anomaly = CreateNamedSelector("异常保护等级", "标准", "严格");
+            var template = CreateNamedSelector("选择策略模板", "默认模板", "仅本地模板");
+            var lockSelected = new CheckBox { Content = "锁定", IsChecked = false };
+            AutomationProperties.SetName(lockSelected, "锁定所选版本");
+
+            using var host = new PeerHost(toggles[0], toggles[1], toggles[2], toggles[3], anomaly, template, lockSelected);
+            foreach (var toggle in toggles)
+            {
+                var peer = GetPeer(toggle);
+                Assert.Equal(AutomationProperties.GetName(toggle), peer.GetName());
+                var pattern = Assert.IsAssignableFrom<IToggleProvider>(peer.GetPattern(PatternInterface.Toggle));
+                Assert.Equal(ToggleState.Off, pattern.ToggleState);
+
+                toggle.IsChecked = true;
+                host.Pump();
+                Assert.Equal(ToggleState.On, pattern.ToggleState);
+            }
+
+            Assert.Equal("异常保护等级", GetPeer(anomaly).GetName());
+            anomaly.SelectedIndex = 1;
+            template.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("严格", anomaly.SelectedItem);
+            Assert.Equal("仅本地模板", template.SelectedItem);
+
+            var lockPeer = GetPeer(lockSelected);
+            Assert.Equal("锁定所选版本", lockPeer.GetName());
+            var lockPattern = Assert.IsAssignableFrom<IToggleProvider>(lockPeer.GetPattern(PatternInterface.Toggle));
+            Assert.Equal(ToggleState.Off, lockPattern.ToggleState);
+            lockSelected.IsChecked = true;
+            host.Pump();
+            Assert.Equal(ToggleState.On, lockPattern.ToggleState);
+        });
+    }
+
     private static AutomationPeer GetPeer(FrameworkElement element)
         => FrameworkElementAutomationPeer.CreatePeerForElement(element)
             ?? throw new Xunit.Sdk.XunitException(element.GetType().Name + " did not create an AutomationPeer.");
