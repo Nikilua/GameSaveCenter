@@ -65,6 +65,9 @@ namespace GameSaveCenter.Playnite.Settings
         /// <summary>Raised when writing settings or applying them to Worker fails.</summary>
         public event EventHandler<SettingsSaveFailedEventArgs>? SettingsSaveFailed;
 
+        /// <summary>Raised when a persisted settings change conflicts with the current draft.</summary>
+        public event EventHandler<SettingsConflictDetectedEventArgs>? SettingsConflictDetected;
+
         public GameSaveCenterSettings() { }
 
         public GameSaveCenterSettings(GameSaveCenterPlugin plugin)
@@ -335,9 +338,9 @@ namespace GameSaveCenter.Playnite.Settings
 
         public void EndEdit()
         {
-            if (plugin == null || editingClone == null
-                || Interlocked.CompareExchange(ref settingsSaveInProgress, 1, 0) != 0)
-                return;
+            if (plugin == null || editingClone == null) return;
+            DetectAndReportSettingsConflict();
+            if (Interlocked.CompareExchange(ref settingsSaveInProgress, 1, 0) != 0) return;
 
             var settingsPersisted = false;
             SettingsSaveStarted?.Invoke(this, EventArgs.Empty);
@@ -370,6 +373,35 @@ namespace GameSaveCenter.Playnite.Settings
                 Volatile.Write(ref settingsSaveInProgress, 0);
                 throw;
             }
+        }
+
+        private void DetectAndReportSettingsConflict()
+        {
+            if (plugin == null || editingClone == null) return;
+
+            var persisted = plugin.LoadPluginSettings<GameSaveCenterSettings>();
+            var currentFingerprint = CreateSettingsFingerprint();
+            var persistedFingerprint = persisted?.CreateSettingsFingerprint();
+            var baselineFingerprint = editingClone.CreateSettingsFingerprint();
+            if (persisted == null
+                || string.Equals(persistedFingerprint, currentFingerprint, StringComparison.Ordinal)
+                || string.Equals(persistedFingerprint, baselineFingerprint, StringComparison.Ordinal))
+                return;
+
+            var resolution = SettingsConflictResolver.Merge(editingClone, this, persisted);
+            if (!resolution.HasConflicts)
+            {
+                if (resolution.HasExternalChanges)
+                    editingClone = persisted.Clone();
+                return;
+            }
+
+            // Move the edit baseline to the latest persisted state so Cancel keeps the
+            // external update. The user's conflicting draft remains visible and dirty.
+            editingClone = persisted.Clone();
+            var args = new SettingsConflictDetectedEventArgs(resolution);
+            SettingsConflictDetected?.Invoke(this, args);
+            throw new SettingsConflictException(args.Summary);
         }
 
         /// <summary>

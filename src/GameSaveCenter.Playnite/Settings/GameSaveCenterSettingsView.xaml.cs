@@ -354,6 +354,7 @@ namespace GameSaveCenter.Playnite.Settings
                 observedSettings.SettingsApplyStarted -= OnSettingsApplyStarted;
                 observedSettings.SettingsApplyCompleted -= OnSettingsApplyCompleted;
                 observedSettings.SettingsSaveFailed -= OnSettingsSaveFailed;
+                observedSettings.SettingsConflictDetected -= OnSettingsConflictDetected;
             }
 
             observedSettings = e.NewValue as GameSaveCenterSettings;
@@ -369,6 +370,7 @@ namespace GameSaveCenter.Playnite.Settings
             observedSettings.SettingsApplyStarted += OnSettingsApplyStarted;
             observedSettings.SettingsApplyCompleted += OnSettingsApplyCompleted;
             observedSettings.SettingsSaveFailed += OnSettingsSaveFailed;
+            observedSettings.SettingsConflictDetected += OnSettingsConflictDetected;
             if (!settingsTransferInProgress || !settingsBaselineInitialized)
             {
                 savedSettingsFingerprint = observedSettings.GetEditBaselineFingerprint();
@@ -423,6 +425,19 @@ namespace GameSaveCenter.Playnite.Settings
                 saveFeedback.Fail(e);
                 RefreshSaveState();
             }, DispatcherPriority.Background);
+        }
+
+        private void OnSettingsConflictDetected(object? sender, SettingsConflictDetectedEventArgs e)
+        {
+            if (sender is GameSaveCenterSettings settings)
+            {
+                savedSettingsFingerprint = settings.GetEditBaselineFingerprint();
+                settingsBaselineInitialized = true;
+            }
+
+            saveFeedback.Reset();
+            RefreshSaveState();
+            ShowSettingsMessage(e.Summary, "设置保存冲突", MessageBoxImage.Warning);
         }
 
         private void OnSettingsReverted(object? sender, EventArgs e)
