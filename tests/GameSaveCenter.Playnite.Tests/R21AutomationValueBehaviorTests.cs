@@ -112,6 +112,57 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void TrainerToolSettingsExposeSemanticSelectorAndToggleState()
+    {
+        var root = TestRepositoryContext.Root;
+        var trainer = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+        foreach (var name in new[]
+        {
+            "工具版本",
+            "已有实例时处理方式",
+            "工具风险类别",
+            "启用所选工具",
+            "随游戏启动所选工具",
+            "退出游戏后关闭所选工具",
+            "管理员权限启动所选工具"
+        })
+        {
+            Assert.Equal(1, CountOccurrences(trainer, "AutomationProperties.Name=\"" + name + "\""));
+        }
+
+        RunSta(() =>
+        {
+            var version = CreateNamedSelector("工具版本", "版本 1", "版本 2");
+            var running = CreateNamedSelector("已有实例时处理方式", "忽略", "重用");
+            var risk = CreateNamedSelector("工具风险类别", "未知", "通用工具");
+            var toggles = new[]
+            {
+                CreateNamedToggle("启用所选工具"),
+                CreateNamedToggle("随游戏启动所选工具"),
+                CreateNamedToggle("退出游戏后关闭所选工具"),
+                CreateNamedToggle("管理员权限启动所选工具")
+            };
+
+            using var host = new PeerHost(version, running, risk, toggles[0], toggles[1], toggles[2], toggles[3]);
+            Assert.Equal("工具版本", GetPeer(version).GetName());
+            Assert.Equal("已有实例时处理方式", GetPeer(running).GetName());
+            Assert.Equal("工具风险类别", GetPeer(risk).GetName());
+            foreach (var toggle in toggles)
+            {
+                var pattern = Assert.IsAssignableFrom<IToggleProvider>(GetPeer(toggle).GetPattern(PatternInterface.Toggle));
+                Assert.Equal(ToggleState.Off, pattern.ToggleState);
+                toggle.IsChecked = true;
+                host.Pump();
+                Assert.Equal(ToggleState.On, pattern.ToggleState);
+            }
+
+            version.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("版本 2", version.SelectedItem);
+        });
+    }
+
+    [Fact]
     public void PolicyToggleAndSelectorPeersExposeSemanticState()
     {
         RunSta(() =>
@@ -173,6 +224,17 @@ public sealed class R21AutomationValueBehaviorTests
         var toggle = new NativeToggleSwitch { Content = name, IsChecked = false };
         AutomationProperties.SetName(toggle, name);
         return toggle;
+    }
+
+    private static ComboBox CreateNamedSelector(string name, params string[] options)
+    {
+        var selector = new ComboBox
+        {
+            ItemsSource = options,
+            SelectedIndex = 0
+        };
+        AutomationProperties.SetName(selector, name);
+        return selector;
     }
 
     private static int CountOccurrences(string text, string token)
