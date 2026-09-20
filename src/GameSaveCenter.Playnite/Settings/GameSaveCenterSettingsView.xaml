@@ -71,6 +71,17 @@
                         <Expander x:Name="SettingsValidationDetails" Header="查看错误详情" Foreground="{DynamicResource GscPrimaryTextBrush}" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误详情">
                             <TextBlock x:Name="SettingsValidationDetailsText" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </Expander>
+                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
+                            <StackPanel>
+                                <TextBlock Text="恢复默认" FontWeight="SemiBold"/>
+                                <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                                <WrapPanel>
+                                    <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" DisplayMemberPath="DisplayName" SelectedValuePath="Key" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" AutomationProperties.Name="恢复全部安全设置默认值"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                     <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
                         <TextBlock x:Name="SettingsSaveHintText" Text="已保存 · 由 Playnite 保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.Name="设置保存状态"/>
@@ -96,7 +107,7 @@
                             <Grid x:Name="SettingsGeneralPanel" Visibility="Visible">
                                 <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                    <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetGeneralDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复常规与目录安全设置默认值"/></WrapPanel>
                     <TextBlock Text="Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。粘贴路径或云端目标时会去除外层空白/引号；包含多个非空行的粘贴会被阻止，Ctrl+Z 可恢复粘贴前的字段值。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12" AutomationProperties.Name="路径粘贴标准化说明"/>
                     <TextBlock x:Name="SettingsGeneralValidationHint" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" AutomationProperties.Name="常规与目录校验说明"/>
                     <StackPanel x:Name="CoreToolFields">
@@ -115,7 +126,7 @@
                     <Grid x:Name="SettingsBackupPanel" Visibility="Collapsed">
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionBackupRestore}" Width="20" Height="20" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="存档格式与历史版本" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                    <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionBackupRestore}" Width="20" Height="20" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="存档格式与历史版本" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetBackupDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复备份与恢复安全设置默认值"/></WrapPanel>
                     <TextBlock Text="推荐 ZIP + Zstandard。Simple 模式只维护一个当前副本，不适合作为多版本恢复历史。" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap"/>
                     <UniformGrid x:Name="StorageFormatFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="备份 格式 ZIP Simple 多版本 单副本" Margin="0,0,12,0">
@@ -153,10 +164,10 @@
                     <Grid x:Name="SettingsAppearancePanel" Visibility="Collapsed">
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <WrapPanel Margin="0,0,0,10">
                         <Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAppearance}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                        <TextBlock Text="外观与动态效果" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    </StackPanel>
+                        <TextBlock Text="外观与动态效果" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAppearanceDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复外观与可访问性安全设置默认值"/>
+                    </WrapPanel>
                     <TextBlock Text="毛玻璃采用主题自适应的半透明表面和模糊环境光，不会修改 Playnite 外层窗口。系统高对比度或关闭动画时会自动降级。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 主题 浅色 深色 Playnite" Margin="0,0,12,10">
@@ -203,7 +214,7 @@
                     <Grid x:Name="SettingsAutomationPanel" Visibility="Collapsed">
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscSuccessIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAutomation}" Width="20" Height="20" Foreground="{DynamicResource GscSuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="自动化与安全" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                    <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscSuccessIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAutomation}" Width="20" Height="20" Foreground="{DynamicResource GscSuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="自动化与安全" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAutomationDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复自动化与媒体安全设置默认值"/></WrapPanel>
                     <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 启动 Worker Playnite" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding AutoStartWorker}" Margin="0,5" AutomationProperties.Name="随 Playnite 启动 Worker">
                         <StackPanel>
                             <TextBlock Text="随 Playnite 启动 Worker" FontWeight="SemiBold"/>

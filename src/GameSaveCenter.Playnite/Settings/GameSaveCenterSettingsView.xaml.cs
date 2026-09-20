@@ -110,6 +110,8 @@ namespace GameSaveCenter.Playnite.Settings
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
+            SettingsResetFieldComboBox.ItemsSource = SettingsResetCatalog.Fields;
+            SettingsResetFieldComboBox.SelectedIndex = 0;
             RegisterSettingsSearchTargets();
             RegisterValidationFieldTargets();
             Loaded += OnLoaded;
@@ -578,6 +580,71 @@ namespace GameSaveCenter.Playnite.Settings
         {
             FocusValidationTarget(firstValidationTarget);
             e.Handled = true;
+        }
+
+        private void OnResetSingleFieldClick(object sender, RoutedEventArgs e)
+        {
+            var settings = CurrentSettings;
+            var option = SettingsResetFieldComboBox.SelectedItem as SettingsResetFieldOption;
+            if (settings == null || option == null) return;
+            if (!ConfirmSettingsReset("确认恢复单字段默认", SettingsResetCatalog.BuildFieldImpact(option))) return;
+
+            SettingsResetCatalog.ResetField(settings, option.Key);
+            RefreshSettingsAfterDraftReset();
+        }
+
+        private void OnResetGeneralDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.General);
+
+        private void OnResetBackupDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.BackupRestore);
+
+        private void OnResetAppearanceDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.Appearance);
+
+        private void OnResetAutomationDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.AutomationMedia);
+
+        private void OnResetAllDefaultsClick(object sender, RoutedEventArgs e)
+        {
+            var settings = CurrentSettings;
+            if (settings == null || !ConfirmSettingsReset("确认恢复全部默认", SettingsResetCatalog.BuildAllImpact())) return;
+
+            SettingsResetCatalog.ResetAll(settings);
+            RefreshSettingsAfterDraftReset();
+        }
+
+        private void ResetSettingsCategory(SettingsResetCategory category)
+        {
+            var settings = CurrentSettings;
+            if (settings == null || !ConfirmSettingsReset($"确认恢复{SettingsResetCatalog.GetCategoryDisplay(category)}默认", SettingsResetCatalog.BuildCategoryImpact(category))) return;
+
+            SettingsResetCatalog.ResetCategory(settings, category);
+            RefreshSettingsAfterDraftReset();
+        }
+
+        private bool ConfirmSettingsReset(string title, string impact)
+        {
+            var host = Window.GetWindow(this);
+            return MessageBox.Show(host, impact, title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+        }
+
+        private void RefreshSettingsAfterDraftReset()
+        {
+            var settings = CurrentSettings;
+            if (settings == null) return;
+
+            // Auto-properties in the Playnite settings DTO intentionally stay lightweight.
+            // Rebinding the same pending-edit instance refreshes every field without ending
+            // the edit session, so Playnite's Cancel button can still restore the prior draft.
+            DataContext = null;
+            DataContext = settings;
+            ApplyAdaptiveTheme();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            InvalidatePathValidation();
+            if (IsLoaded) StartPathValidation(pathValidationGeneration);
+            RefreshValidationSummary();
+            RefreshSaveState();
         }
 
         private ValidationFieldTarget? ResolveValidationTarget(string error)
