@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-02 诊断包预览（代码已提交，受控验证完成；真实宿主待验）
+
+- `2b6e9051` 复用既有 `DiagnosticsPackageService.CreateAsync`、2 MiB/日志上限和 `DiagnosticRedactor`，新增只读预览 IPC，列出将包含的摘要类别、可选日志、脱敏范围、上限和明确排除项。
+- 预览区分 `database.json` 的 schema/大小/完整性探针摘要与真实 SQLite 文件/表内容；明确不含存档、媒体、数据库文件/内容、Rclone 凭据或自动上传。Playnite 先用既有确认语义显示预览，取消不生成；确认后显示完整路径和大小并沿用原打开动作。
+- 最终提交定向 Playnite R17 `7/7`、Worker `3/3`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-02-DIAGNOSTICS-PACKAGE-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host 确认框、最终主题、DPI/UIA/IME、Explorer/权限、真实日志并发、呈现/ETW/宿主性能；只用合成请求、fake/隔离 SQLite/临时目录。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一项：`R17-03 检查进度预算`，先核对巡检范围、延后原因、最近成功和下轮计划。
+
 ## 当前第三轮 R17-01 健康结果分层（代码已提交，受控验证完成；真实宿主待验）
 
 - `eb033251` 复用既有 `findings.resolved=0` 开放队列、健康巡检稳定 finding 和解决入口；Worker 将 `created_utc` 带入 `ValidationFindingDto`，维护详情保留本地化证据时间。

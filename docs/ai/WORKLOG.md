@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-02 诊断包预览
+
+- 审计确认原诊断包服务已有脱敏、有限日志、2 MiB 上限、类别文件和生成结果路径/大小；缺口是点击后直接生成，用户生成前看不到范围。
+- `2b6e9051` 增加只读预览 DTO/IPC，列出类别、可选日志、脱敏方式、上限和排除项；Playnite 先确认，取消不生成，确认后复用原生成服务，结果显示完整位置与大小。
+- 最终 Playnite R17 `7/7`、Worker R17 `3/3`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 未验真实 Playnite/package-host 确认框、真实目录生成/权限/Explorer、日志并发和最终呈现/DPI/UIA/IME/ETW/性能；只用合成请求、fake/隔离 SQLite/临时目录，不上传或改真实数据。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r17-02-solution` 为本阶段构建输出，文档提交前清理。下一可执行任务：`R17-03 检查进度预算`，先查健康巡检范围和延后/取消语义。
+
 ## 2026-09-20 R17-01 健康结果分层
 
 - 审计确认既有 `findings.resolved=0` 查询和健康巡检 stable finding/resolve 已满足“已解决项退出待处理”；缺口是 DTO 未返回证据时间，维护页没有按影响分层，也没有跨来源展示去重。

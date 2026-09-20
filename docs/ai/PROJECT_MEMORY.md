@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-02 诊断包预览（2026-09-20）
+
+- `2b6e9051` 复用既有有限诊断 ZIP、`DiagnosticRedactor`、2 MiB 包上限和日志尾部上限，新增只读 Preview IPC。预览实际列出类别、每类脱敏范围、可选日志及请求上限。
+- 明确 `database.json` 只是 schema/大小/完整性探针摘要；真实 SQLite 文件/表内容、存档/备份归档、媒体、Rclone 配置/凭据和自动上传均排除。Playnite 取消确认不触发生成，确认后结果显示完整位置与大小。
+- 最终 Playnite R17 `7/7`、Worker `3/3`、solution `0 errors/2 existing warnings`，source/XAML/diff/WPF 门禁通过。未验真实 host confirmation/Explorer/权限/日志并发/呈现/DPI/UIA/IME/ETW/性能；只用合成/fake/隔离数据。
+- 证据：`R17-02-DIAGNOSTICS-PACKAGE-PREVIEW-20260920.md`。下一可执行任务：`R17-03 检查进度预算`，先查 HealthInspectionService 的范围、暂停原因、最近成功和下轮计划。
+
 ## 第三轮 R17-01 健康结果分层（2026-09-20）
 
 - `eb033251` 先复用既有开放 finding 查询和健康巡检解决语义，再补 `CreatedUtc`/证据时间；`resolved=1` 的健康 finding 经过隔离 SQLite 验证不会继续出现在待处理队列。
