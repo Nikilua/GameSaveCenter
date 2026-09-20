@@ -175,6 +175,7 @@
 | R20-07 | 最近活动密度 | 已满足，待环境验证 | ee327e80（复用现有实现） | Core 活动映射 `4/4`；Playnite 定向 `11/11`（批处理 `3/3`、时间线 `3/3`、首页活动 `1/1`、选择/详情 `4/4`）；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML `24/24`/diff 通过 | `TaskEventUiBatcher` 按 TaskId 合并进度、限制批次并让终态即时落地；首页最近任务保留最近 8 项和 Recycling/本地滚动；TaskCenter 失败/完成详情、技术 Expander 与有界时间线可追溯 | 合成/fake/隔离 testhost；组合 WPF host 首次出现既有选择绑定时序失败，R06 详情类单独隔离 `2/2`，未改业务实现；真实 Playnite/package-host、Worker 实时流、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-07 最近活动密度](evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md)；下一项 `R20-08` 状态语气统一，先核对加载/失败/空/完成/需操作文案模板 |
 | R20-08 | 状态语气统一 | 已满足，待环境验证 | 176183ec | 定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`（1 条既有任务详情源断言基线失败）；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML `24/24`/diff 通过 | 复用 `WorkspaceStatePresenter`、`ActionAvailabilityHints`、`OverviewPriorityResolver`；Shell 副标题随优先状态更新；主状态正向/负例覆盖，不以 Worker/Rclone 替代解释 | 合成/fake/隔离 testhost/source-copy；已知任务详情断言漂移与 legacy skip；真实 Playnite/package-host、Worker/工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-08 状态语气统一](evidence/R20-08-STATE-TONE-20260921.md)；下一项 `R21-01` 八入口纯键盘，先核对 Q24/UIA 键盘行为 |
 | R21-01 | 八入口纯键盘 | 已满足，待环境验证 | c3459ebd | R21 新增 `2/2`；相关焦点/键盘/无障碍/生产壳层回归 `31/31`；隔离 Release `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 八个生产入口在 STA WPF host 中有前/反向实际焦点轨迹，全部留在入口范围并命中安全命令/导航名；现有 R05/GamePicker 夹具覆盖方向键、Enter/Esc | 未运行真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏或宿主性能；不以离屏窗口替代呈现 | [R21-01 八入口纯键盘](evidence/R21-01-KEYBOARD-TRACE-20260921.md)；下一项 `R21-02` 控件名称与值 |
+| R21-02 | 控件名称与值 | 已满足，待环境验证 | efb42b7b / 6b56a467 / 03f8d33f | `R21AutomationValueBehaviorTests 21/21`；相关定向 `35/35`；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML/diff 通过；WPF `0/27/162` | 图标按钮、复合选择器、开关和进度条均有实际 WPF peer 名称/状态/值证据；覆盖 Invoke、选值、无选中 `null`、Off/On/Indeterminate、正常/未知/越界进度，关联 HelpText 明确 | 未运行真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；不以离屏 peer 替代这些验证 | [R21-02 收口](evidence/R21-02-CLOSEOUT-20260921.md)；下一项 `R21-03` 验证错误播报 |
 | R21-03 | 验证错误播报 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-04 | 异步完成播报 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-05 | 禁用与隐藏区别 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -754,6 +755,13 @@
 - `R21AutomationValueBehaviorTests` 当前 `20/20`；`R21AutomationValueBehaviorTests | R06TaskProgressBehaviorTests | R03NumericAlignmentTests` `34/34`。提交后 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/162` 通过。
 - 证据来自生产 TaskCenter XAML、既有 DTO/投影、合成 WPF `ProgressBar` peer、fake/隔离 testhost/source-copy；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、最终呈现和宿主性能仍待验。链接工作树 `_wpftmp.csproj` 写入遇 `Access denied` 未绕过；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据见 [R21-02 TaskCenter 任务进度 UIA](evidence/R21-02-TASK-PROGRESS-PEER-20260921.md)。
 - 当前不签收整项 R21-02：剩余复合选择器及逐控件状态/值负例仍需逐项核对；下一可执行小批量继续这些边界，公共门禁完成后再进入 `R21-03` 验证错误播报。
+
+## 2026-09-21 Round3 R21-02 控件名称与值收口
+
+- 按 R21-02 完成条件完成控件族核对：图标/动作按钮、复合选择器、开关和进度条均有生产契约与实际 WPF peer 证据；无选中、未知、越界、忙碌、空选择和三态边界均有明确结果。
+- 最新定向回归为 `R21AutomationValueBehaviorTests 21/21`、相关 `35/35`；提交 `efb42b7b` 的隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 warning，source/XAML/diff 与 WPF `0/27/162` 通过。
+- 因真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、最终呈现、ETW 和宿主性能未运行，本项按“已满足，待环境验证”收口，不把离屏 peer 当成宿主签收。Demo 原目录不可用，main 用户改动未碰、未合并。本阶段临时 source-copy/build 已清理。证据见 [R21-02 收口](evidence/R21-02-CLOSEOUT-20260921.md)。
+- 下一可执行小批量：进入 `R21-03` 验证错误播报，先复用现有验证错误 Binding、状态 presenter 和错误摘要，不新造通知体系。
 
 ## 2026-09-21 Round3 R21-02 选择器无选中与开关三态边界（续作小批量）
 

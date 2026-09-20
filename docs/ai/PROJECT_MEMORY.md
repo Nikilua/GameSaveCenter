@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 控件名称与值收口（2026-09-21）
+
+- R21-02 按图标按钮、复合选择器、开关、进度条和负例完成收口，当前账本状态为“已满足，待环境验证”。`R21AutomationValueBehaviorTests 21/21`，相关筛选 `35/35`，最新 Playnite `net462` / Tests `net472` 隔离 Release `0 errors / 2` 条既有 warning，WPF `0/27/162`。
+- 行为证据覆盖 UIA 名称、Invoke、Selection、Toggle、RangeValue、HelpText，以及无选中/未知/越界/忙碌/空选择/三态边界；没有替换真实命令、Binding、取消/错误、安全、选框、滚动条、虚拟化或列表性能语义。
+- 真实 Playnite/package-host、系统 UIA/读屏、OS 输入、IME、DPI/跨屏、最终呈现、ETW 和宿主性能仍未验；Demo 原目录不可用，main 用户改动未碰未合并。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-02-CLOSEOUT-20260921.md`。下一项进入 R21-03 错误播报。
+
 ## 第三轮 R21-02 选择器无选中与开关三态边界（2026-09-21，续作小批量）
 
 - `efb42b7b` 复用生产 ComboBox、`ToggleSwitch` 和共享状态模板，新增实际 peer 证据：无选中 ComboBox 的 `GetSelection()` 为 `null`，选中后为单项；三态开关按 `Indeterminate → Off → On` 读取，没有修改生产 XAML 或业务 Binding。

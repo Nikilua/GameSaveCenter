@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 控件名称与值（已满足，待环境验证）
+
+- R21-02 已按图标/动作按钮、复合选择器、开关和进度条四类控件收口；`R21AutomationValueBehaviorTests 21/21`，相关定向 `35/35`，最新隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 warning，WPF 静态检查 `0/27/162`。
+- 实际 WPF peer 覆盖名称、Invoke、选值、无选中 `GetSelection()==null`、Off/On/Indeterminate、正常/未知/越界进度和关联 HelpText；生产命令、Binding、取消/错误、恢复保护、游戏选框、滚动条、虚拟化和列表性能未替换。收口证据见 [`R21-02 收口`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-02-CLOSEOUT-20260921.md)。
+- 当前仅保留真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、最终呈现、ETW 和宿主性能待验边界；Demo 原目录不可用，main 用户改动未碰、未合并。下一项进入 R21-03 错误播报。
+
 ## 当前第三轮 R21-02 选择器无选中与开关三态边界（实现中，待继续）
 
 - `efb42b7b` 复用既有 ComboBox、`ToggleSwitch` 和共享状态模板，只新增实际 WPF peer 负例：ComboBox 无选中时 `ISelectionProvider.GetSelection()` 为 `null`，选中“失败”后为单项；三态开关 `Indeterminate → Off → On` 可读。

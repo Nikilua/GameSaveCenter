@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 控件名称与值收口
+
+- 按 R21-02 完成条件收口图标/动作按钮、复合选择器、开关和进度条；`R21AutomationValueBehaviorTests 21/21`，相关 `35/35`，最新隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 warning，WPF `0/27/162`。
+- 实际 WPF peer 和既有 R06/R12/媒体行为覆盖名称、Invoke、Selection、Toggle、RangeValue、HelpText 以及无选中/未知/越界/忙碌/空选择/三态边界；没有改生产业务语义。账本已记为“已满足，待环境验证”。
+- 下一可执行任务：进入 R21-03，复用现有验证错误 Binding、状态 presenter 和错误摘要，补错误出现与修复后旧状态消失的实际行为证据。真实宿主 UIA/读屏、呈现、DPI/IME、ETW、性能仍未验。
+
 ## 2026-09-21 R21-02 选择器无选中与开关三态边界（续作小批量）
 
 - `efb42b7b` 已完成：复用 ComboBox、`ToggleSwitch` 和共享状态模板，新增实际 WPF peer 负例，覆盖无选中 `GetSelection()==null`、选中后单项，以及 `Indeterminate → Off → On`；没有修改生产代码。
