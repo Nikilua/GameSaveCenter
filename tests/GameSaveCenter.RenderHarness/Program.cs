@@ -784,14 +784,17 @@ public static class Program
                                 .Where(scroll => scroll.ExtentWidth > scroll.ViewportWidth + 0.5)
                                 .ToArray();
                             var horizontalOverflow = horizontalOverflowScrolls.Length;
+                            var textInputOverflow = horizontalOverflowScrolls.Count(IsTextInputContentHost);
                             var unexpectedHorizontalOverflow = horizontalOverflowScrolls
-                                .Count(scroll => !scroll.Name.StartsWith("DG_", StringComparison.Ordinal));
+                                .Count(scroll => scroll.ComputedHorizontalScrollBarVisibility == Visibility.Visible
+                                    && !scroll.Name.StartsWith("DG_", StringComparison.Ordinal)
+                                    && !IsTextInputContentHost(scroll));
                             if (horizontalOverflow != 0)
                             {
                                 report.AppendLine(
                                     $"  {label} overflow: "
                                     + string.Join(", ", horizontalOverflowScrolls.Select(scroll =>
-                                        $"{(string.IsNullOrWhiteSpace(scroll.Name) ? "unnamed" : scroll.Name)} extent={scroll.ExtentWidth:0} viewport={scroll.ViewportWidth:0} hbar={scroll.ComputedHorizontalScrollBarVisibility}")));
+                                        $"{(string.IsNullOrWhiteSpace(scroll.Name) ? "unnamed" : scroll.Name)} extent={scroll.ExtentWidth:0} viewport={scroll.ViewportWidth:0} hbar={scroll.ComputedHorizontalScrollBarVisibility} textInput={IsTextInputContentHost(scroll)} owner={DescribeScrollOwner(scroll)}")));
                             }
                             if (unexpectedHorizontalOverflow != 0)
                                 problems.Add($"{label} has {unexpectedHorizontalOverflow} unexpected horizontal-overflow ScrollViewer(s) in low-cost mode.");
@@ -801,7 +804,7 @@ public static class Program
                             SavePng(host, outputPath);
                             sw.Stop();
                             report.AppendLine(
-                                $"  {label}: visibleText={visibleText} visibleEffects={visibleEffects} horizontalOverflow={horizontalOverflow} unexpectedOverflow={unexpectedHorizontalOverflow} "
+                                $"  {label}: visibleText={visibleText} visibleEffects={visibleEffects} horizontalOverflow={horizontalOverflow} textInputOverflow={textInputOverflow} unexpectedOverflow={unexpectedHorizontalOverflow} "
                                 + $"size={host.ActualWidth:0}x{host.ActualHeight:0} render_ms={sw.ElapsedMilliseconds} bytes={new FileInfo(outputPath).Length}");
                         }
                         catch (Exception ex)
@@ -882,6 +885,39 @@ public static class Program
             $"  {label} resources: effects=null popupTransparency={allowsTransparency?.ToString() ?? "missing"} "
             + $"popupAnimation={popupAnimation ?? "missing"} shellOpacity={shellOpacity?.ToString("0.###") ?? "missing"} "
             + $"gameOpacity={gameOpacity?.ToString("0.###") ?? "missing"}");
+    }
+
+    private static bool IsTextInputContentHost(ScrollViewer scroll)
+    {
+        DependencyObject? current = scroll;
+        while (current != null)
+        {
+            if (current is TextBoxBase)
+                return true;
+
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        return false;
+    }
+
+    private static string DescribeScrollOwner(ScrollViewer scroll)
+    {
+        var owners = new List<string>();
+        DependencyObject? current = scroll;
+        for (var depth = 0; current != null && depth < 8; depth++)
+        {
+            if (current is FrameworkElement element)
+                owners.Add(string.IsNullOrWhiteSpace(element.Name)
+                    ? element.GetType().Name
+                    : $"{element.GetType().Name}#{element.Name}");
+            else
+                owners.Add(current.GetType().Name);
+
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        return string.Join("<", owners);
     }
 
     private static int RunEnduranceProbe(string outputRoot, int durationSeconds)

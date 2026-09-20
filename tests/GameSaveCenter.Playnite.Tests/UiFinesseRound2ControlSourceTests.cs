@@ -110,6 +110,9 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("Padding=\"14,12,14,12\" MinHeight=\"0\"", view);
         Assert.Contains("x:Name=\"MediaInboxGrid\"", view);
         Assert.Contains("VirtualizingPanel.ScrollUnit=\"Item\"", view);
+        Assert.Contains("x:Name=\"MediaClassificationPreviewItems\"", view);
+        Assert.Contains("x:Name=\"MediaClassificationHistoryList\"", view);
+        Assert.Contains("ScrollViewer.HorizontalScrollBarVisibility=\"Disabled\"", view);
     }
 
     [Fact]
@@ -242,6 +245,8 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("GscPopupAllowsTransparency", harness);
         Assert.Contains("GscPopupAnimation", harness);
         Assert.Contains("visibleEffects", harness);
+        Assert.Contains("ComputedHorizontalScrollBarVisibility", harness);
+        Assert.Contains("IsTextInputContentHost", harness);
         Assert.Contains("unexpectedHorizontalOverflow", harness);
     }
 
