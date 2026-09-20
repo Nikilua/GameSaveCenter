@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-02 刷新失败保留草稿（2026-09-20）
+
+- 核对确认生产 `DashboardViewModel` 已把只读刷新和编辑字段分开：四个备注/锁定/收藏字段各自有 dirty 标记，稳定 ID 替换对象时 `Sync*Editor(..., preserveDirtyFields)` 只更新干净字段；`FailSaveDetailsLoad`/`FailMediaDetailsLoad` 只更新状态/错误，不清集合或编辑值。
+- `7b2d3afa` 只新增直接调用生产 VM 同步/失败边界的合成行为测试，存档和媒体 `2/2` 通过；R11 实际 WPF 备注取消与工作区状态定向合计 `14 passed / 1 skipped / 15 total`。没有引入第二套 Draft 服务。
+- clean-tree Release `0 errors/2 existing warnings`，source/XAML/diff 门禁通过。证据：`evidence/R19-02-DRAFT-REFRESH-20260920.md`。
+- 只用合成/fake/隔离 testhost，真实 Playnite/Worker 断连时序、DPI/UIA/读屏、presented frame、ETW/宿主性能未验，Demo 原目录不可用。下一项 `R19-03` 重复执行幂等。
+
 ## 第三轮 R19-01 旧请求晚返回（2026-09-20）
 
 - `ed107c50` 先核对现有 `LatestRequestCoordinator`、媒体请求代际、`MediaWorkspaceStateCache` 和页面重访门，再修正详情请求的真实跨工作区缺口：`CurrentWorkspace` 变化会推进详情/媒体代际并取消请求，`LoadDetailsAsync` 绑定启动 workspace、generation、game ID，所有成功/取消/失败 UI 回写均需通过同一 `IsCurrentDetailsLoad`。

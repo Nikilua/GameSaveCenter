@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-02 刷新失败保留草稿
+
+- 先复用现有能力：存档/媒体编辑字段已经有独立 dirty 标记，同稳定 ID 刷新调用 `SyncBackupEditor`/`SyncMediaEditor` 并保留 dirty 字段；失败路径只更新 `WorkspaceDataState`/错误详情，不重置集合或编辑对象。
+- 不增加新的 Draft 服务；`7b2d3afa` 新增直接调用生产 VM 同步/失败边界的隔离行为测试，覆盖存档和媒体的失败保留、同 ID 成功不覆盖 dirty 字段、干净字段接受服务端值，`2/2` 通过。
+- R11 版本备注真实 WPF 取消路径与工作区状态相邻回归最终 `14 passed / 1 skipped / 15 total`；clean-tree Release `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff 门禁通过。
+- 只用合成 DTO、隔离 VM/WPF testhost，不读写真实数据。未验真实 Playnite/Worker 断连、慢刷新与草稿呈现时序、presented frame、DPI/UIA/读屏、ETW/宿主性能；Demo 原目录不可用。证据：`evidence/R19-02-DRAFT-REFRESH-20260920.md`。下一可执行任务：`R19-03` 重复执行幂等。
+
 ## 2026-09-20 R19-01 旧请求晚返回
 
 - 先核对已有 `LatestRequestCoordinator`、详情/媒体/收件箱/云端/归类历史代际和 `MediaWorkspaceStateCache`；确认筛选/搜索有媒体代际保护，但普通 `LoadDetailsAsync()` 在工作区切换时没有绑定启动 workspace，Media 旧异常也缺少详情上下文门。

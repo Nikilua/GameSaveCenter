@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-02 刷新失败保留草稿（已满足，受控回归完成；真实宿主待验）
+
+- 先查到生产 VM 已有 `backupCommentDirty`/`backupLockDirty`/`mediaCommentDirty`/`mediaFavoriteDirty`，稳定 ID 刷新分别走 `SyncBackupEditor(..., preserveDirtyFields)`、`SyncMediaEditor(..., preserveDirtyFields)`；失败状态路径不替换集合或编辑值，因此没有重建第二套草稿模型。
+- 新增 `R19DraftRefreshBehaviorTests` 直接回放生产 VM 的存档/媒体失败、同 ID 成功和干净字段更新，`2/2` 通过；叠加 R11 WPF 备注取消和工作区状态回归为 `14 passed / 1 skipped / 15 total`。
+- `7b2d3afa` clean-tree 隔离 Release `0 errors/2 existing MediaCenter nullable warnings`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。证据见 `evidence/R19-02-DRAFT-REFRESH-20260920.md`。
+- 只覆盖合成 DTO、隔离 VM/WPF testhost；未把它写成真实 Playnite/Worker 断连与宿主时序、presented frame、DPI/UIA/读屏、ETW 或宿主性能证据。Demo 原目录不可用。下一项：`R19-03` 重复执行幂等。
+
 ## 当前第三轮 R19-01 旧请求晚返回（已满足，受控回归完成；真实宿主待验）
 
 - `ed107c50` 收紧详情读请求代际：工作区切换立即调用 `CancelDetailsLoad`，`LoadDetailsAsync` 捕获启动时 workspace/generation/game ID，并在开始、成功、取消、失败的 UI 回写边界统一检查；媒体旧异常也不能写入新游戏/筛选上下文。
