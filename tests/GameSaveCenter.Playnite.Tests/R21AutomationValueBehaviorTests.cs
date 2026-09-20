@@ -125,6 +125,55 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaCenterMetadataControlsExposeSemanticValueAndActions()
+    {
+        var root = TestRepositoryContext.Root;
+        var media = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+
+        Assert.Contains("Text=\"{Binding MediaComment, UpdateSourceTrigger=PropertyChanged}\"", media);
+        Assert.Contains("AutomationProperties.Name=\"当前媒体备注\"", media);
+        Assert.Contains("Command=\"{Binding UpdateMediaMetadataCommand}\"", media);
+        Assert.Contains("AutomationProperties.Name=\"保存当前媒体元数据\"", media);
+        Assert.Contains("Command=\"{Binding ReassignMediaCommand}\"", media);
+        Assert.Contains("AutomationProperties.Name=\"移动并归类当前媒体\"", media);
+
+        RunSta(() =>
+        {
+            var comment = new TextBox { Text = "原备注" };
+            AutomationProperties.SetName(comment, "当前媒体备注");
+            var saved = false;
+            var save = new Button { Content = "保存元数据" };
+            AutomationProperties.SetName(save, "保存当前媒体元数据");
+            save.Click += (_, _) => saved = true;
+            var reassigned = false;
+            var reassign = new Button { Content = "移动并归类" };
+            AutomationProperties.SetName(reassign, "移动并归类当前媒体");
+            reassign.Click += (_, _) => reassigned = true;
+
+            using var host = new PeerHost(comment, save, reassign);
+            Assert.Equal("当前媒体备注", GetPeer(comment).GetName());
+            Assert.Equal("保存当前媒体元数据", GetPeer(save).GetName());
+            Assert.Equal("移动并归类当前媒体", GetPeer(reassign).GetName());
+
+            var value = Assert.IsAssignableFrom<IValueProvider>(GetPeer(comment).GetPattern(PatternInterface.Value));
+            Assert.Equal("原备注", value.Value);
+            value.SetValue("更新备注");
+            host.Pump();
+            Assert.Equal("更新备注", comment.Text);
+
+            var savePattern = Assert.IsAssignableFrom<IInvokeProvider>(GetPeer(save).GetPattern(PatternInterface.Invoke));
+            savePattern.Invoke();
+            host.Pump();
+            Assert.True(saved);
+
+            var reassignPattern = Assert.IsAssignableFrom<IInvokeProvider>(GetPeer(reassign).GetPattern(PatternInterface.Invoke));
+            reassignPattern.Invoke();
+            host.Pump();
+            Assert.True(reassigned);
+        });
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
