@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 MediaCenter 列表语义与选择状态（续作小批量）
+
+- `c419fc98` 已完成：复用 MediaCenter 原有扩展选框、虚拟化、滚动条和选择绑定，只补 `MediaGrid` 的列表级 Automation 名称。
+- `R21AutomationValueBehaviorTests 18/18`；相关回归 `66/66`。新增实际 WPF `ListBox` peer 行为证据：名称、可多选、选中项 A→B 变化。
+- D 盘源码副本以提交身份 `GscBuildCommit=c419fc98` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成 WPF peer、fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：继续 R21-02 其他逐控件状态/值负例，公共门禁完成后进入 R21-03 错误播报；真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 MediaCenter 批量动作忙碌态刷新（续作小批量）
 
 - `e0805624` 已完成：修复三个 MediaCenter 批量命令漏列于 `RaiseCommandStatesCore` 的 CanExecute 刷新列表；不改生产命令参数、绑定或媒体写入路径。

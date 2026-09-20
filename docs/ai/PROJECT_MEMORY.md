@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 MediaCenter 列表语义与选择状态（2026-09-21，续作小批量）
+
+- 复核确认 `MediaGrid` 已有扩展选框、`SelectedMedia`/`SelectionChanged`、虚拟化和滚动系统；`c419fc98` 只补列表级 Automation 名称，没有更换控件、滚动模型或选择语义。
+- `MediaCenterListExposesSemanticNameAndSelectionState` 使用实际 WPF `ListBox` peer 验证名称、可多选和选中项 A→B 变化；`R21AutomationValueBehaviorTests 18/18`，相关套件 `66/66`。
+- 显式提交身份 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 nullable warning；source/XAML/diff 与 WPF `0/27/162` 通过，未见本批新增静态诊断。
+- 该批不代表真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能；链接 `_wpftmp` `Access denied` 未绕过，Demo 原目录不可用，main 用户改动未碰未合并。下一步继续 R21-02 其他状态值边界，公共门禁完成后进入 `R21-03`。
+
 ## 第三轮 R21-02 MediaCenter 批量动作忙碌态刷新（2026-09-21，续作小批量）
 
 - 复核确认三个 MediaCenter 批量命令的 `CanExecute` 均依赖 `!IsBusy`，但原 `RaiseCommandStatesCore` 漏列三项；`e0805624` 只把它们加入既有刷新列表，没有改变命令执行、选择集合、错误/取消或媒体写入语义。
