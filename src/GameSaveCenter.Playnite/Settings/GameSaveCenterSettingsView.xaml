@@ -109,6 +109,7 @@
                 <StackPanel>
                     <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetGeneralDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复常规与目录安全设置默认值"/></WrapPanel>
                     <TextBlock Text="Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。粘贴路径或云端目标时会去除外层空白/引号；包含多个非空行的粘贴会被阻止，Ctrl+Z 可恢复粘贴前的字段值。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12" AutomationProperties.Name="路径粘贴标准化说明"/>
+                    <TextBlock x:Name="SettingsGeneralEffectHint" Text="生效：保存后同步当前 Worker；工具和目录从下一次新任务读取，正在执行的任务不切换。Worker 可执行文件在下一次 Worker 启动时使用，不要求重启 Playnite。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="常规与目录设置生效条件"/>
                     <Border x:Name="SettingsPathEditorCard" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,12" AutomationProperties.Name="统一路径编辑">
                         <StackPanel>
                             <TextBlock Text="统一路径编辑" FontWeight="SemiBold"/>
@@ -142,6 +143,7 @@
                 <StackPanel>
                     <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionBackupRestore}" Width="20" Height="20" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="存档格式与历史版本" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetBackupDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复备份与恢复安全设置默认值"/></WrapPanel>
                     <TextBlock Text="推荐 ZIP + Zstandard。Simple 模式只维护一个当前副本，不适合作为多版本恢复历史。" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="SettingsBackupEffectHint" Text="生效：保存后同步 Worker；格式、压缩和保留数量从下一次备份任务读取，已开始的任务继续使用原参数。" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap" AutomationProperties.Name="备份与恢复设置生效条件"/>
                     <UniformGrid x:Name="StorageFormatFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="备份 格式 ZIP Simple 多版本 单副本" Margin="0,0,12,0">
                         <TextBlock Text="备份格式" VerticalAlignment="Center" Margin="0,0,0,4"/>
@@ -183,6 +185,7 @@
                         <TextBlock Text="外观与动态效果" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAppearanceDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复外观与可访问性安全设置默认值"/>
                     </WrapPanel>
                     <TextBlock Text="毛玻璃采用主题自适应的半透明表面和模糊环境光，不会修改 Playnite 外层窗口。系统高对比度或关闭动画时会自动降级。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <TextBlock x:Name="SettingsAppearanceEffectHint" Text="生效：当前设置页即时预览；保存后已打开的 GameSaveCenter 页面立即重建主题、动画和背景偏好，不需要重启 Playnite。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="外观设置生效条件"/>
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 主题 浅色 深色 Playnite" Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
@@ -229,6 +232,7 @@
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
                     <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscSuccessIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAutomation}" Width="20" Height="20" Foreground="{DynamicResource GscSuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="自动化与安全" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAutomationDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复自动化与媒体安全设置默认值"/></WrapPanel>
+                    <TextBlock x:Name="SettingsAutomationEffectHint" Text="生效：保存后同步 Worker/插件；轮询、队列和健康计划在下一轮边界读取，已开始的任务不会被取消。“随 Playnite 启动 Worker”和“下次以安全模式启动”只影响下一次 Playnite 启动；本页没有笼统的需重启项。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="自动化与安全设置生效条件"/>
                     <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 启动 Worker Playnite" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding AutoStartWorker}" Margin="0,5" AutomationProperties.Name="随 Playnite 启动 Worker">
                         <StackPanel>
                             <TextBlock Text="随 Playnite 启动 Worker" FontWeight="SemiBold"/>
