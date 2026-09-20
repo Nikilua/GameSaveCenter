@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 MediaCenter 批量动作空选择保护（续作小批量）
+
+- `f7b664f1` 已提交并推送：不改生产代码，只为既有 `UpdateMediaMetadataBatchAsync` 空选择/null 保护补行为证据；两条路径均在 IPC 前返回相同中文错误。
+- `R21AutomationValueBehaviorTests 16/16`；相关回归 `64/64`。测试反射等待真实生产私有异步方法，未用字符串断言冒充行为。
+- D 盘源码副本以 `GscBuildCommit=f7b664f1` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成参数/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：核对批量动作忙碌态/CanExecute 的真实绑定边界，再继续其他状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 MediaCenter 批量动作名称与 Invoke（续作小批量）
 
 - `9fd7223c` 已提交并推送：复用三个现有批量命令和两处操作条，仅补三类按钮的稳定 Automation 名称，未改命令参数、样式或批量语义。

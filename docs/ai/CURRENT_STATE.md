@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 MediaCenter 批量动作空选择保护（实现中，待继续）
+
+- `f7b664f1` 先复核现有 `UpdateMediaMetadataBatchAsync` 的空选择保护，不改命令、Binding、取消/错误语义或媒体写入路径；新增测试只覆盖 `null` 与空 `IList` 在 IPC 前抛出既有“请先在媒体列表中选择一个或多个项目。”。
+- `R21AutomationValueBehaviorTests 16/16`，相关进度/焦点/键盘/无障碍/生产壳层回归 `64/64`；显式反射等待真实生产私有异步方法的两条负例都通过。提交身份 D 盘源码副本 Release 为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。
+- 该批不宣称真实 `ICommand.CanExecute` 绑定后的 UI Enabled 呈现，也不宣称真实媒体批量写入；链接工作树 `_wpftmp` 的 `Access denied` 未绕过，本批 source-copy/build 已清理。
+- 真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续忙碌态/CanExecute 与其他状态值边界，之后进入 `R21-03`。
+
 ## 当前第三轮 R21-02 MediaCenter 批量动作名称与 Invoke（实现中，待继续）
 
 - `9fd7223c` 复用现有 `FavoriteSelectedMediaCommand`、`UnfavoriteSelectedMediaCommand`、`CommentSelectedMediaCommand` 和两处批量操作条，只补三类按钮的稳定 Automation 名称；保留 Content、Command、CommandParameter、样式和布局，没有新增服务、DTO 或选择/写入语义。
