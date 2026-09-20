@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 TrainerCenter 工具设置名称与状态（续作小批量）
+
+- 提交并推送 `5d9cb81c`：复用 TrainerCenter 工具设置的现有 Binding、`CanTrackProcess` 禁用条件和 ToggleSwitch 实现，为版本/已有实例处理方式/风险类别三个选择器及四个工具设置开关补稳定 Automation 名称；没有改工具启动、保存或风险判定。
+- `R21AutomationValueBehaviorTests` `6/6`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `54/54`。新增测试实际检查三个 ComboBox、四个 ToggleSwitch 的 peer、Toggle `Off→On` 和版本值变化。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-TRAINER-SETTINGS-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 TrainerCenter 导入控件名称（续作小批量）
 
 - 提交并推送 `c327f92a`：复用 TrainerCenter 两个已有导入确认路径、候选 Binding、确认命令和取消命令，为 ComboBox 及确认/取消动作补稳定 Automation 名称；没有改导入或文件语义。
