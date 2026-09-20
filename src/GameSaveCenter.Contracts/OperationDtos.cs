@@ -494,6 +494,8 @@ namespace GameSaveCenter.Contracts
     public sealed class ValidationFindingDto
     {
         public string PlayniteId { get; set; } = string.Empty;
+        /// <summary>Stable backup version identity when the finding is version-specific.</summary>
+        public string BackupId { get; set; } = string.Empty;
         /// <summary>Resolved game title when this finding is sent in a dashboard snapshot.</summary>
         public string GameName { get; set; } = string.Empty;
         public FindingSeverity Severity { get; set; }

@@ -577,7 +577,7 @@ public sealed class IpcRequestDispatcher
         var valid=latest.FileCount>0&&latest.TotalBytes>0;
         if(!valid) await _store.AddFindingAsync(request.PlayniteId,new ValidationFindingDto
         {
-            PlayniteId=request.PlayniteId,Severity=FindingSeverity.Error,Code="LATEST_BACKUP_EMPTY",Title="最新备份摘要为空",
+            PlayniteId=request.PlayniteId,BackupId=latest.BackupId,Severity=FindingSeverity.Error,Code="LATEST_BACKUP_EMPTY",Title="最新备份摘要为空",
             Detail=$"文件数 {latest.FileCount}，体积 {latest.TotalBytes} 字节。",SuggestedAction="重新运行备份并核对 Ludusavi 匹配与存档路径。"
         },token).ConfigureAwait(false);
         return new{valid,latest.BackupId,latest.FileCount,latest.TotalBytes};

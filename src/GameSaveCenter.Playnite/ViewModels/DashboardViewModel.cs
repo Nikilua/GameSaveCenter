@@ -1976,12 +1976,40 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
 
                     PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
+                    pendingFindingBackupId = string.Empty;
+                    pendingStorageBackupId = string.Empty;
                     SelectedGame = Games.First(game => string.Equals(
                         game.PlayniteId,
                         saveTarget.PlayniteId,
                         StringComparison.OrdinalIgnoreCase));
+                    SelectedBackup = null!;
                     SaveTabIndex = 1;
                     CurrentWorkspace = WorkspaceKind.Saves;
+                    RequestWorkspaceLoad();
+                    break;
+                case FindingNavigationKind.BackupVersion:
+                    var versionTarget = FindingNavigationTargetResolver.ResolveExactGame(finding, Games);
+                    var findingBackupId = FindingNavigationTargetResolver.ResolveBackupId(finding);
+                    if (!versionTarget.IsAvailable || string.IsNullOrWhiteSpace(findingBackupId))
+                    {
+                        StatusMessage = !versionTarget.IsAvailable
+                            ? versionTarget.Message
+                            : "该诊断缺少稳定的备份版本标识，保留诊断但未跳转。请先刷新诊断。";
+                        return;
+                    }
+
+                    PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
+                    pendingTaskBackupId = null;
+                    pendingStorageBackupId = string.Empty;
+                    pendingFindingBackupId = findingBackupId;
+                    SaveTabIndex = 0;
+                    CurrentWorkspace = WorkspaceKind.Saves;
+                    SelectedBackup = null!;
+                    SelectedGame = Games.First(game => string.Equals(
+                        game.PlayniteId,
+                        versionTarget.PlayniteId,
+                        StringComparison.OrdinalIgnoreCase));
+                    StatusMessage = $"正在打开诊断对应版本“{findingBackupId}”；仅按稳定游戏/版本 ID 查找。";
                     RequestWorkspaceLoad();
                     break;
                 case FindingNavigationKind.FailedTasks:
@@ -2605,10 +2633,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ApplyFindingTriage(findingTriage);
                 var previousFindingIndex = SelectedFinding == null ? -1 : Findings.IndexOf(SelectedFinding);
                 var previousFindingPlayniteId = SelectedFinding?.PlayniteId;
+                var previousFindingBackupId = SelectedFinding?.BackupId;
                 var previousFindingCode = SelectedFinding?.Code;
                 var previousFindingTitle = SelectedFinding?.Title;
                 Replace(Findings, data.Findings, SnapshotComparers.Finding);
-                var previousFindingKey = BuildFindingSelectionKey(previousFindingPlayniteId, previousFindingCode, previousFindingTitle);
+                var previousFindingKey = BuildFindingSelectionKey(previousFindingPlayniteId, previousFindingBackupId, previousFindingCode, previousFindingTitle);
                 SelectedFinding = previousFindingIndex >= 0 || !string.IsNullOrWhiteSpace(previousFindingKey)
                     ? SelectionAnchorResolver.Restore(Findings, previousFindingKey, previousFindingIndex, BuildFindingSelectionKey)!
                     : null!;
@@ -3610,9 +3639,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                             Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
                             var requestedTaskBackupId = pendingTaskBackupId;
+                            var requestedFindingBackupId = pendingFindingBackupId;
                             var requestedStorageBackupId = pendingStorageBackupId;
                             var taskBackup = !string.IsNullOrWhiteSpace(requestedTaskBackupId)
                                 ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedTaskBackupId, Backups)
+                                : null;
+                            var findingBackup = !string.IsNullOrWhiteSpace(requestedFindingBackupId)
+                                ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedFindingBackupId, Backups)
                                 : null;
                             var storageBackup = !string.IsNullOrWhiteSpace(requestedStorageBackupId)
                                 ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedStorageBackupId, Backups)
@@ -3623,6 +3656,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                                 SelectedBackup = taskBackup!;
                                 if (taskBackup == null)
                                     StatusMessage = $"任务来源版本“{requestedTaskBackupId}”已不存在，未选择其他版本；任务诊断仍可查看。";
+                            }
+                            else if (!string.IsNullOrWhiteSpace(requestedFindingBackupId))
+                            {
+                                pendingFindingBackupId = string.Empty;
+                                SelectedBackup = findingBackup!;
+                                if (findingBackup == null)
+                                    StatusMessage = $"诊断对应版本“{requestedFindingBackupId}”已不存在，未选择其他版本；诊断仍可从维护中心返回查看。";
                             }
                             else if (!string.IsNullOrWhiteSpace(requestedStorageBackupId))
                             {
@@ -5401,15 +5441,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         private static string? BuildFindingSelectionKey(ValidationFindingDto? finding)
-            => finding == null ? null : BuildFindingSelectionKey(finding.PlayniteId, finding.Code, finding.Title);
+            => finding == null ? null : BuildFindingSelectionKey(finding.PlayniteId, finding.BackupId, finding.Code, finding.Title);
 
-        private static string? BuildFindingSelectionKey(string? playniteId, string? code, string? title)
+        private static string? BuildFindingSelectionKey(string? playniteId, string? backupId, string? code, string? title)
         {
             if (string.IsNullOrWhiteSpace(playniteId)
+                && string.IsNullOrWhiteSpace(backupId)
                 && string.IsNullOrWhiteSpace(code)
                 && string.IsNullOrWhiteSpace(title))
                 return null;
-            return $"{playniteId}\u001f{code}\u001f{title}";
+            return $"{playniteId}\u001f{backupId}\u001f{code}\u001f{title}";
         }
 
         private bool MatchesTaskNavigationTarget(TaskStatusDto task)

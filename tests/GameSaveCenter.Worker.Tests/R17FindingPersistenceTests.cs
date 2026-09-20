@@ -49,7 +49,8 @@ public sealed class R17FindingPersistenceTests : IDisposable
             Status = RestoreReadinessStatus.Corrupted,
             Summary = "测试损坏"
         }, CancellationToken.None);
-        Assert.Single(await store.GetOpenFindingsAsync(20, CancellationToken.None));
+        var finding = Assert.Single(await store.GetOpenFindingsAsync(20, CancellationToken.None));
+        Assert.Equal("backup-1", finding.BackupId);
 
         await store.ResolveHealthInspectionFindingAsync("game-1", "backup-1", CancellationToken.None);
 

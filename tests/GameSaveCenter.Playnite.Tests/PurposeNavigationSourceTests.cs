@@ -22,6 +22,21 @@ public sealed class PurposeNavigationSourceTests
     }
 
     [Fact]
+    public void VersionFindingWiringSelectsExactBackupAndKeepsMissingVersionDiagnostic()
+    {
+        var root = FindRepositoryRoot();
+        var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var navigation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Navigation.cs"));
+
+        Assert.Contains("case FindingNavigationKind.BackupVersion:", viewModel);
+        Assert.Contains("pendingFindingBackupId = findingBackupId", viewModel);
+        Assert.Contains("SelectedBackup = findingBackup!", viewModel);
+        Assert.Contains("已不存在，未选择其他版本", viewModel);
+        Assert.Contains("pendingFindingBackupId", navigation);
+        Assert.Contains("previousFindingBackupId", viewModel);
+    }
+
+    [Fact]
     public void WorkspacePagesKeepTheirTabContextWhenSidebarChanges()
     {
         var root = FindRepositoryRoot();

@@ -12,9 +12,9 @@ public sealed class R17FindingTriageSourceTests
         var root = TestRepositoryContext.Root;
         var store = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Persistence", "SqliteStateStore.cs"));
 
-        Assert.Contains("suggested_action,created_utc FROM findings WHERE resolved=0", store, StringComparison.Ordinal);
-        Assert.Contains("CreatedUtc=reader.IsDBNull(6)?DateTime.MinValue", store, StringComparison.Ordinal);
-        Assert.Contains("VALUES($id,$game,$severity,$code,$title,$detail,$action,$utc,0)", store, StringComparison.Ordinal);
+        Assert.Contains("playnite_id,backup_id,severity,code,title,detail,suggested_action,created_utc FROM findings WHERE resolved=0", store, StringComparison.Ordinal);
+        Assert.Contains("BackupId=reader.IsDBNull(1)?string.Empty:reader.GetString(1)", store, StringComparison.Ordinal);
+        Assert.Contains("VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0)", store, StringComparison.Ordinal);
     }
 
     [Fact]

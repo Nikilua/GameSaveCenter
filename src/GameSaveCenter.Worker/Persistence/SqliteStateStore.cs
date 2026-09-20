@@ -73,6 +73,7 @@ public sealed partial class SqliteStateStore : ITaskStatusStore
         await EnsureColumnAsync(connection, "tasks", "progress_updated_utc", "TEXT", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "ipc_request_ledger", "protocol_version", "INTEGER NOT NULL DEFAULT 1", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "ipc_request_ledger", "payload_hash", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "findings", "backup_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "cloud_transfer_queue", "operation_kind", "TEXT NOT NULL DEFAULT 'Upload'", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "cloud_transfer_queue", "operation_id", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "cloud_transfer_queue", "prior_state", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
@@ -856,10 +857,10 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
     }
 
     public Task AddFindingAsync(string playniteId, ValidationFindingDto finding, CancellationToken token) => ExecuteAsync(@"
-INSERT INTO findings(finding_id,playnite_id,severity,code,title,detail,suggested_action,created_utc,resolved)
-VALUES($id,$game,$severity,$code,$title,$detail,$action,$utc,0);",
+INSERT INTO findings(finding_id,playnite_id,backup_id,severity,code,title,detail,suggested_action,created_utc,resolved)
+VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0);",
         new Dictionary<string, object?> { ["$id"] = Guid.NewGuid().ToString("N"), ["$game"] = playniteId, ["$severity"] = (int)finding.Severity,
-            ["$code"] = finding.Code, ["$title"] = finding.Title, ["$detail"] = finding.Detail, ["$action"] = finding.SuggestedAction, ["$utc"] = DateTime.UtcNow.ToString("O") }, token);
+            ["$backup"] = finding.BackupId, ["$code"] = finding.Code, ["$title"] = finding.Title, ["$detail"] = finding.Detail, ["$action"] = finding.SuggestedAction, ["$utc"] = DateTime.UtcNow.ToString("O") }, token);
 
     public async Task<List<ValidationFindingDto>> GetOpenFindingsAsync(int limit, CancellationToken token)
     {
@@ -867,12 +868,12 @@ VALUES($id,$game,$severity,$code,$title,$detail,$action,$utc,0);",
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT playnite_id,severity,code,title,detail,suggested_action,created_utc FROM findings WHERE resolved=0 ORDER BY created_utc DESC LIMIT $limit;";
+        command.CommandText = "SELECT playnite_id,backup_id,severity,code,title,detail,suggested_action,created_utc FROM findings WHERE resolved=0 ORDER BY created_utc DESC LIMIT $limit;";
         command.Parameters.AddWithValue("$limit", Math.Clamp(limit, 1, 500));
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new ValidationFindingDto
         {
-            PlayniteId=reader.IsDBNull(0)?string.Empty:reader.GetString(0), Severity=(FindingSeverity)reader.GetInt32(1), Code=reader.GetString(2), Title=reader.GetString(3), Detail=reader.IsDBNull(4)?string.Empty:reader.GetString(4), SuggestedAction=reader.IsDBNull(5)?string.Empty:reader.GetString(5), CreatedUtc=reader.IsDBNull(6)?DateTime.MinValue:DateTime.Parse(reader.GetString(6)).ToUniversalTime()
+            PlayniteId=reader.IsDBNull(0)?string.Empty:reader.GetString(0), BackupId=reader.IsDBNull(1)?string.Empty:reader.GetString(1), Severity=(FindingSeverity)reader.GetInt32(2), Code=reader.GetString(3), Title=reader.GetString(4), Detail=reader.IsDBNull(5)?string.Empty:reader.GetString(5), SuggestedAction=reader.IsDBNull(6)?string.Empty:reader.GetString(6), CreatedUtc=reader.IsDBNull(7)?DateTime.MinValue:DateTime.Parse(reader.GetString(7)).ToUniversalTime()
         });
         return result;
     }
@@ -1244,7 +1245,7 @@ CREATE TABLE IF NOT EXISTS backup_policy_templates(template_id TEXT PRIMARY KEY,
 CREATE TABLE IF NOT EXISTS sessions(session_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,source INTEGER NOT NULL,process_id INTEGER,process_name TEXT,launch_profile TEXT,started_utc TEXT NOT NULL,stopped_utc TEXT,elapsed_seconds INTEGER DEFAULT 0);
 CREATE TABLE IF NOT EXISTS tasks(task_id TEXT PRIMARY KEY,request_id TEXT NOT NULL DEFAULT '',session_id TEXT NOT NULL DEFAULT '',worker_session_id TEXT NOT NULL DEFAULT '',task_type TEXT NOT NULL,game_id TEXT,game_name TEXT,state INTEGER NOT NULL,progress INTEGER NOT NULL,message TEXT,stage_message TEXT NOT NULL DEFAULT '',cancellation_state TEXT NOT NULL DEFAULT '',created_utc TEXT NOT NULL,started_utc TEXT,finished_utc TEXT,error_code TEXT,error_message TEXT,restore_report_json TEXT NOT NULL DEFAULT '',source_references_json TEXT NOT NULL DEFAULT '',progress_completed_units INTEGER NOT NULL DEFAULT -1,progress_total_units INTEGER NOT NULL DEFAULT -1,progress_unit TEXT NOT NULL DEFAULT '',progress_rate REAL NOT NULL DEFAULT 0,progress_eta_seconds REAL,progress_updated_utc TEXT);
 CREATE TABLE IF NOT EXISTS ipc_request_ledger(request_id TEXT PRIMARY KEY,type TEXT NOT NULL,protocol_version INTEGER NOT NULL DEFAULT 1,payload_hash TEXT NOT NULL DEFAULT '',state INTEGER NOT NULL,response_json TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS findings(finding_id TEXT PRIMARY KEY,playnite_id TEXT,severity INTEGER NOT NULL,code TEXT NOT NULL,title TEXT NOT NULL,detail TEXT,suggested_action TEXT,created_utc TEXT NOT NULL,resolved INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS findings(finding_id TEXT PRIMARY KEY,playnite_id TEXT,backup_id TEXT NOT NULL DEFAULT '',severity INTEGER NOT NULL,code TEXT NOT NULL,title TEXT NOT NULL,detail TEXT,suggested_action TEXT,created_utc TEXT NOT NULL,resolved INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS backup_versions(backup_id TEXT NOT NULL,playnite_id TEXT NOT NULL,ludusavi_name TEXT NOT NULL,created_utc TEXT NOT NULL,total_bytes INTEGER NOT NULL,file_count INTEGER NOT NULL,is_locked INTEGER NOT NULL DEFAULT 0,comment TEXT,source_device TEXT,operating_system TEXT,is_pre_restore INTEGER NOT NULL DEFAULT 0,manifest_json TEXT,archive_path TEXT,restore_readiness_json TEXT,parent_backup_id TEXT,PRIMARY KEY(playnite_id,backup_id));
 CREATE TABLE IF NOT EXISTS media(media_id TEXT PRIMARY KEY,playnite_id TEXT,kind INTEGER NOT NULL,source INTEGER NOT NULL,archive_path TEXT NOT NULL,original_path TEXT NOT NULL,captured_utc TEXT NOT NULL,size_bytes INTEGER NOT NULL,sha256 TEXT NOT NULL UNIQUE,is_favorite INTEGER NOT NULL DEFAULT 0,comment TEXT,cloud_state TEXT NOT NULL DEFAULT 'Pending',classification_state TEXT NOT NULL DEFAULT 'Assigned',classification_reason TEXT);
 CREATE TABLE IF NOT EXISTS media_sources(source_id TEXT PRIMARY KEY,playnite_id TEXT,source_kind INTEGER NOT NULL,root_path TEXT NOT NULL,include_pattern TEXT,enabled INTEGER NOT NULL DEFAULT 1,shared_directory INTEGER NOT NULL DEFAULT 0);

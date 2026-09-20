@@ -70,6 +70,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public static readonly Func<ValidationFindingDto, ValidationFindingDto, bool> Finding = (a, b) =>
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
+            && string.Equals(a.BackupId, b.BackupId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
             && a.Severity == b.Severity
             && a.CreatedUtc == b.CreatedUtc

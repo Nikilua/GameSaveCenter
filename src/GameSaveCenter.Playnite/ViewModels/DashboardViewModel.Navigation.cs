@@ -15,6 +15,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private double? pendingTaskGridScrollRestore;
         private double? pendingMaintenanceFindingsScrollRestore;
         private string pendingNavigationTaskId = string.Empty;
+        private string pendingFindingBackupId = string.Empty;
         private string pendingStorageBackupId = string.Empty;
         private int pendingNavigationTaskIndex = -1;
         private bool restoringNavigationTaskSelection;

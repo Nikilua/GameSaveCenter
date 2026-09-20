@@ -9,6 +9,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         None,
         Save,
+        BackupVersion,
         FailedTasks,
         CloudQueue
     }
@@ -37,6 +38,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             "进入存档路径确认",
             "打开该诊断对应游戏的存档工作区，确认候选路径和当前规则。不会自动修改路径。");
 
+        public static FindingNavigation ForBackupVersion { get; } = new FindingNavigation(
+            FindingNavigationKind.BackupVersion,
+            "查看问题版本",
+            "打开该诊断对应的存档版本并突出显示；版本不存在时保留诊断，不选择其他版本。");
+
         public static FindingNavigation ForFailedTasks { get; } = new FindingNavigation(
             FindingNavigationKind.FailedTasks,
             "查看失败任务",
@@ -58,6 +64,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             var code = finding.Code ?? string.Empty;
             if (ContainsAny(code, "CLOUD", "RCLONE", "REMOTE"))
                 return FindingNavigation.ForCloudQueue;
+
+            if (!string.IsNullOrWhiteSpace(FindingNavigationTargetResolver.ResolveBackupId(finding)))
+                return FindingNavigation.ForBackupVersion;
+
+            if (string.Equals(code, "HEALTH_INSPECTION_FAILED", StringComparison.OrdinalIgnoreCase))
+                return FindingNavigation.None;
 
             if (ContainsAny(code, "TASK", "WORKER", "HEALTH")
                 || ContainsAny(finding.Title, "任务", "Worker")
@@ -140,6 +152,21 @@ namespace GameSaveCenter.Playnite.ViewModels
 
     public static class FindingNavigationTargetResolver
     {
+        public static string ResolveBackupId(ValidationFindingDto? finding)
+        {
+            var direct = finding?.BackupId?.Trim() ?? string.Empty;
+            if (direct.Length > 0)
+                return direct;
+
+            // Health findings created before backup_id was added to the findings
+            // table carried the stable identity in this fixed title prefix.
+            const string legacyPrefix = "备份恢复校验需关注：";
+            var title = finding?.Title?.Trim() ?? string.Empty;
+            return title.StartsWith(legacyPrefix, StringComparison.Ordinal)
+                ? title.Substring(legacyPrefix.Length).Trim()
+                : string.Empty;
+        }
+
         public static FindingGameTarget ResolveExactGame(
             ValidationFindingDto? finding,
             IEnumerable<GameStatusDto>? games)
