@@ -62,7 +62,11 @@ public sealed partial class DashboardViewModel
                     return;
 
                 cloudTransferLoadFailed = false;
+                cloudTransferLastSuccessUtc = DateTime.UtcNow;
+                cloudTransferErrorMessage = string.Empty;
                 OnPropertyChanged(nameof(CloudTransferLoadFailed));
+                OnPropertyChanged(nameof(CloudTransferStateDetail));
+                OnPropertyChanged(nameof(CloudTransferStaleVisible));
 
                 var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
                     ? pendingCloudTransferKey
@@ -147,7 +151,7 @@ public sealed partial class DashboardViewModel
         {
             // A filter refresh or workspace switch superseded this page request.
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             ApplyOnUi(() =>
             {
@@ -156,7 +160,10 @@ public sealed partial class DashboardViewModel
                     return;
 
                 cloudTransferLoadFailed = true;
+                cloudTransferErrorMessage = ex.Message;
                 OnPropertyChanged(nameof(CloudTransferLoadFailed));
+                OnPropertyChanged(nameof(CloudTransferStateDetail));
+                OnPropertyChanged(nameof(CloudTransferStaleVisible));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
                 OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
             });

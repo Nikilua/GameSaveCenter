@@ -269,6 +269,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string cloudTransferSourceDeviceFilter = string.Empty;
         private string cloudTransferTimeFilter = string.Empty;
         private bool cloudTransferLoadFailed;
+        private DateTime? cloudTransferLastSuccessUtc;
+        private string cloudTransferErrorMessage = string.Empty;
         private int maintenanceTabIndex;
         private int mediaTabIndex = 1;
         private int saveTabIndex;
@@ -667,6 +669,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool CloudTransferHasMore => cloudTransferHasMore;
         public bool CloudTransferNeedsManualRefresh => cloudTransferNeedsManualRefresh;
         public bool CloudTransferLoadFailed => cloudTransferLoadFailed;
+        public bool CloudTransferStaleVisible => CloudTransferLoadFailed && CloudTransferItems.Count > 0;
+        public string CloudTransferStateDetail => FilterConditionSummary.StaleStateDetail(cloudTransferLastSuccessUtc, cloudTransferErrorMessage);
         public string CloudTransferActiveFiltersSummary => FilterConditionSummary.Cloud(
             CloudTransferStateFilter,
             CloudTransferKindFilter,
@@ -681,7 +685,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 : CloudTransferHasActiveFilters
                     ? $"当前筛选 0/{CloudTransferGlobalCount} 项 · 暂无匹配记录"
                     : "暂无云端传输记录"
-            : $"{CloudTransferScopeSummary} · {(cloudTransferHasMore ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项" : cloudTransferNeedsManualRefresh ? "数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续" : $"已加载全部 {CloudTransferItems.Count} 项")}";
+            : CloudTransferLoadFailed && CloudTransferItems.Count > 0
+                ? $"{CloudTransferScopeSummary} · 读取失败，已保留旧数据"
+                : $"{CloudTransferScopeSummary} · {(cloudTransferHasMore ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项" : cloudTransferNeedsManualRefresh ? "数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续" : $"已加载全部 {CloudTransferItems.Count} 项")}";
         public string CloudTransferEmptyStateMessage
             => FilterConditionSummary.CloudEmptyState(
                 CloudTransferLoadFailed,

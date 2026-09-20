@@ -321,14 +321,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         private static string FormatStateDetail(DateTime? lastSuccessUtc, string errorMessage)
-        {
-            var lastSuccess = lastSuccessUtc.HasValue
-                ? $"上次成功读取：{lastSuccessUtc.Value.ToLocalTime():yyyy-MM-dd HH:mm}。"
-                : string.Empty;
-            return string.IsNullOrWhiteSpace(errorMessage)
-                ? lastSuccess
-                : lastSuccess + (lastSuccess.Length == 0 ? string.Empty : " ") + "本次刷新失败：" + errorMessage;
-        }
+            => FilterConditionSummary.StaleStateDetail(lastSuccessUtc, errorMessage);
 
         private void NotifyMediaDetailsStateChanged()
         {

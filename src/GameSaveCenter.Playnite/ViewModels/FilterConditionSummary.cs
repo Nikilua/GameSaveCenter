@@ -41,6 +41,16 @@ public static class FilterConditionSummary
                 ? $"暂无符合当前筛选的云端传输记录。\n{activeSummary}"
                 : "暂无云端传输记录。\n刷新队列后会显示已加载的记录。";
 
+    public static string StaleStateDetail(DateTime? lastSuccessUtc, string errorMessage)
+    {
+        var lastSuccess = lastSuccessUtc.HasValue
+            ? $"上次成功读取：{lastSuccessUtc.Value.ToLocalTime():yyyy-MM-dd HH:mm}。"
+            : string.Empty;
+        return string.IsNullOrWhiteSpace(errorMessage)
+            ? lastSuccess
+            : lastSuccess + (lastSuccess.Length == 0 ? string.Empty : " ") + "本次刷新失败：" + errorMessage;
+    }
+
     private static string Format(IReadOnlyList<string> active)
         => active.Count == 0 ? "当前未设置筛选条件" : "当前筛选：" + string.Join(" · ", active);
 

@@ -53,4 +53,15 @@ public sealed class FilterConditionSummaryTests
         Assert.Contains("当前筛选：状态：上传失败", FilterConditionSummary.CloudEmptyState(false, true, filtered));
         Assert.DoesNotContain("不是零结果", FilterConditionSummary.CloudEmptyState(false, true, filtered));
     }
+
+    [Fact]
+    public void StaleDetailKeepsBothLastSuccessAndRefreshFailureReason()
+    {
+        var detail = FilterConditionSummary.StaleStateDetail(
+            new System.DateTime(2026, 9, 20, 8, 30, 0, System.DateTimeKind.Utc),
+            "Worker 当前离线");
+
+        Assert.Contains("上次成功读取：", detail);
+        Assert.Contains("本次刷新失败：Worker 当前离线", detail);
+    }
 }

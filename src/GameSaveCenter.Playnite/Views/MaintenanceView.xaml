@@ -591,16 +591,28 @@
                         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Border x:Name="CloudTransferTableFrame" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignTableFrame}">
                             <Grid>
-                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                                 <Grid Grid.Row="0" Margin="12,2,12,8">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock Text="传输明细" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="10,0,0,0" Padding="8,3" VerticalAlignment="Center"><TextBlock Text="{Binding CloudTransferLoadedSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Border>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="10,0,0,0" Padding="8,3" VerticalAlignment="Center" ToolTip="{Binding CloudTransferStateDetail}"><TextBlock Text="{Binding CloudTransferLoadedSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Border>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1" Text="{Binding CloudTransferViewSummary.QueueControlDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudTransferViewSummary.QueueControlDisplay}"/>
                                 </Grid>
-                                <Grid Grid.Row="1">
+                                <Border x:Name="CloudTransferStaleBanner" Grid.Row="1" Padding="10" Margin="0,0,0,8">
+                                    <Border.Style>
+                                        <Style TargetType="Border" BasedOn="{DynamicResource GscDiagnosticHintBubble}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding CloudTransferStaleVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <StackPanel><TextBlock Text="云端队列显示已过期" FontWeight="SemiBold"/><TextBlock Text="{Binding CloudTransferStateDetail}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,8,0"/></StackPanel>
+                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshCloudTransfersCommand}" Content="重试" AutomationProperties.Name="重试读取云端队列" Margin="8,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                                <Grid Grid.Row="2">
                                     <DataGrid x:Name="CloudTransferGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding CloudTransferItems}" SelectedItem="{Binding SelectedCloudTransfer, Mode=TwoWay}" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" SelectionChanged="OnCloudTransferSelectionChanged">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="阶段" Binding="{Binding QueuePhaseDisplay, Converter={StaticResource GscStatusGlyphConverter}}" Width="112" MinWidth="102"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
@@ -610,7 +622,7 @@
                                             <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="状态详情" Binding="{Binding DetailDisplay}" Width="1.1*" MinWidth="210"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                    <TextBlock Text="暂无符合筛选条件的云端传输记录。&#xA;上传成功不代表远端已校验，请选择记录查看保证级别。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CloudTransferItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    <TextBlock Text="{Binding CloudTransferEmptyStateMessage, Mode=OneWay}" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CloudTransferItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                                 </Grid>
                             </Grid>
                         </Border>
