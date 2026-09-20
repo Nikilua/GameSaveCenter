@@ -75,9 +75,69 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"备份存储占用比例\"", maintenance);
     }
 
+    [Fact]
+    public void PolicyToggleAndSelectorPeersExposeSemanticState()
+    {
+        RunSta(() =>
+        {
+            var toggles = new[]
+            {
+                CreateNamedToggle("启用备份策略"),
+                CreateNamedToggle("游戏退出后自动备份"),
+                CreateNamedToggle("游玩中定期备份"),
+                CreateNamedToggle("备份后自动上传云端")
+            };
+            var selector = new ComboBox
+            {
+                ItemsSource = new[] { "标准", "严格" },
+                SelectedIndex = 0
+            };
+            AutomationProperties.SetName(selector, "异常保护等级");
+
+            using var host = new PeerHost(toggles[0], toggles[1], toggles[2], toggles[3], selector);
+            foreach (var toggle in toggles)
+            {
+                var peer = GetPeer(toggle);
+                Assert.Equal(AutomationProperties.GetName(toggle), peer.GetName());
+                var pattern = Assert.IsAssignableFrom<IToggleProvider>(peer.GetPattern(PatternInterface.Toggle));
+                Assert.Equal(ToggleState.Off, pattern.ToggleState);
+                toggle.IsChecked = true;
+                host.Pump();
+                Assert.Equal(ToggleState.On, pattern.ToggleState);
+            }
+
+            Assert.Equal("异常保护等级", GetPeer(selector).GetName());
+            selector.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("严格", selector.SelectedItem);
+        });
+    }
+
+    [Fact]
+    public void SaveCenterPolicyLabelsRemainAttachedToNamedInteractiveControls()
+    {
+        var root = TestRepositoryContext.Root;
+        var save = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+
+        Assert.Contains("IsChecked=\"{Binding SelectedGame.Policy.Enabled}\" HorizontalAlignment=\"Right\" VerticalAlignment=\"Center\" AutomationProperties.Name=\"启用备份策略\"", save);
+        Assert.Contains("IsChecked=\"{Binding SelectedGame.Policy.BackupOnGameStop}\" HorizontalAlignment=\"Right\" VerticalAlignment=\"Center\" AutomationProperties.Name=\"游戏退出后自动备份\"", save);
+        Assert.Contains("IsChecked=\"{Binding SelectedGame.Policy.BackupDuringPlay}\" HorizontalAlignment=\"Right\" VerticalAlignment=\"Center\" AutomationProperties.Name=\"游玩中定期备份\"", save);
+        Assert.Contains("IsChecked=\"{Binding SelectedGame.Policy.UploadAfterBackup}\" HorizontalAlignment=\"Right\" VerticalAlignment=\"Center\" AutomationProperties.Name=\"备份后自动上传云端\"", save);
+        Assert.Contains("SelectedValue=\"{Binding SelectedGame.Policy.AnomalyProtectionLevel}\" HorizontalAlignment=\"Right\" VerticalAlignment=\"Center\" AutomationProperties.Name=\"异常保护等级\"", save);
+        Assert.Contains("SelectedItem=\"{Binding SelectedPolicyTemplate}\" Margin=\"0,12,0,0\" ToolTip=\"内置模板不可直接修改；新建副本后可编辑\" AutomationProperties.Name=\"选择策略模板\"", save);
+        Assert.Contains("IsChecked=\"{Binding LockSelectedBackup}\" VerticalAlignment=\"Center\" ToolTip=\"锁定并保存后，保留预览会跳过此版本；取消锁定并保存后才会重新按策略评估。\" AutomationProperties.Name=\"锁定所选版本\"", save);
+    }
+
     private static AutomationPeer GetPeer(FrameworkElement element)
         => FrameworkElementAutomationPeer.CreatePeerForElement(element)
             ?? throw new Xunit.Sdk.XunitException(element.GetType().Name + " did not create an AutomationPeer.");
+
+    private static NativeToggleSwitch CreateNamedToggle(string name)
+    {
+        var toggle = new NativeToggleSwitch { Content = name, IsChecked = false };
+        AutomationProperties.SetName(toggle, name);
+        return toggle;
+    }
 
     private static void RunSta(Action action)
     {
