@@ -37,7 +37,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.All(metrics.ContainerWidths, value => Assert.True(value > 0));
 
             output.WriteLine(
-                $"R18-02 dispatcher benchmark: samples={metrics.SampleCount},vm_p95_ms={Percentile(metrics.ViewModelMilliseconds, 0.95):0.###},visible_feedback_p95_ms={Percentile(metrics.VisibleFeedbackMilliseconds, 0.95):0.###},visible_feedback_max_ms={metrics.VisibleFeedbackMilliseconds.Max():0.###},source=ListBox.ItemContainerGenerator+RenderPriority");
+                $"R18-02 dispatcher benchmark: samples={metrics.SampleCount},vm_p95_ms={Percentile(metrics.ViewModelMilliseconds, 0.95):0.###},visible_feedback_p95_ms={Percentile(metrics.VisibleFeedbackMilliseconds, 0.95):0.###},visible_feedback_max_ms={metrics.VisibleFeedbackMilliseconds.Max():0.###},source=ListBox.ItemContainerGenerator+IsVisible+ActualWidthHeight+UpdateLayout");
             output.WriteLine($"R18-02 raw vm_ms={string.Join(",", metrics.ViewModelMilliseconds.Select(value => value.ToString("0.###")))}");
             output.WriteLine($"R18-02 raw visible_feedback_ms={string.Join(",", metrics.VisibleFeedbackMilliseconds.Select(value => value.ToString("0.###")))}");
             output.WriteLine($"R18-02 raw visible_counts={string.Join(",", metrics.VisibleCounts)}");
