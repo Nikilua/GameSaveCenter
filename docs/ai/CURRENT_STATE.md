@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-01 连续输入基准（已满足，受控验证完成；真实宿主待验）
+
+- `10bc5789` 复用现有 `GamePickerViewModel` 本地缓存/同步过滤、取消入口和 20ms 防抖路径，仅增加内部诊断快照与 2,000/10,000 项测试夹具；未改游戏选框、滚动条、命令绑定、取消/错误/恢复保护、虚拟化或 Playnite `net462` 契约。
+- 连续英文输入各 30 次：2,000 项 p95/最大值 `4.908/6.121ms`，10,000 项 `12.115/13.813ms`；每次分别评估 2,000/10,000 项。粘贴/删除/已提交中文 IME 查询及最终单次防抖刷新均在两档通过。原始每次延迟、过滤次数和托管堆增量代理值见 `evidence/R18-01-CONTINUOUS-INPUT-20260920.md`。
+- R18 基准 `1/1`；游戏选框、键盘/IME、防抖相邻回归 `46/46`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过；Release 隔离 solution `0 errors/2 existing MediaCenter nullable warnings`。无 XAML/主题变更，WPF 静态质量基线沿用 `0/27/162`。
+- 托管堆值使用 net472 可用的 `GC.GetTotalMemory(false)` 前后非负差值，仅是可复算代理，不是 ETW/真实分配栈或物理呈现性能；未绕过系统跟踪权限。只用合成/fake/隔离 testhost，Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r18-01-solution` 已清理。
+- 未验真实 Playnite/package-host、Windows IME 候选 UI、最终 presented frame、DPI/UIA/读屏、ETW 或宿主性能。下一项：`R18-02 真实 Dispatcher 基准`，区分 VM 数据完成与受控窗口可见反馈的两段时间戳。
+
 ## 当前第三轮 R17-08 维护报告可读性（已满足，受控验证完成；真实宿主待验）
 
 - `59d4190b` 复用原 `MaintenanceReportService`、DTO、IPC 和维护页复制/导出命令；报告按软件身份、摘要、待处理、已验证、未知组织，摘要与分段使用同一生成时间和条目计数。

@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-01 连续输入基准
+
+- 先核对现有 `GamePickerViewModel` 的本地缓存、20ms 延迟、批量 `SetItems`、取消和 `GamePickerKeyboardBehaviorTests` 的真实 STA WPF IME 路由；没有重建选框或输入体系。
+- `10bc5789` 增加内部 `GamePickerPerformanceDiagnostics` 与 `R18ContinuousInputBenchmarkTests`。2,000/10,000 项各 30 次连续英文输入 p95/最大值为 `4.908/6.121ms`、`12.115/13.813ms`，并保留每次延迟、过滤评估、托管堆增量代理的原始数组；粘贴/删除/已提交中文 IME 查询和单次最终防抖刷新均通过。
+- R18 `1/1`，选框/键盘/IME/防抖相邻回归 `46/46`；source、XAML `24/24`、diff 门禁通过；Release 隔离 solution `0 errors/2 条既有 MediaCenterView.xaml.cs:664 nullable warning`；无 XAML 改动，WPF 静态沿用 `0/27/162`。
+- 分配量使用 net472 可用的 `GC.GetTotalMemory(false)` 前后非负托管堆变化代理，不冒充 ETW 或真实呈现；测试输出与证据保留 30 个原始样本。只用合成/fake/隔离 testhost，未触碰真实数据；Demo 原目录不可用，main 用户改动未碰、未合并；`.tmp/r18-01-solution` 已清理。
+- 代码已提交并推送 `10bc5789` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R18-02 真实 Dispatcher 基准`，区分 VM 数据完成和受控窗口可见反馈。
+
 ## 2026-09-20 R17-08 维护报告可读性
 
 - 审计确认原报告已有统一 Worker 状态采集、复制/导出和 IPC，但正文平铺且没有插件/Playnite 身份，时间来自另一时钟表达；本阶段沿用原链路，只增加请求身份 DTO、分段输出和末端脱敏。
