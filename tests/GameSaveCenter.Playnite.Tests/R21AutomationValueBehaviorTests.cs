@@ -5,7 +5,9 @@ using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
+using GameSaveCenter.Contracts;
 using NativeToggleSwitch = GameSaveCenter.Playnite.Controls.ToggleSwitch;
 using Xunit;
 
@@ -93,6 +95,61 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"云端队列状态筛选\"", maintenance);
         Assert.Contains("AutomationProperties.Name=\"云端队列类型筛选\"", maintenance);
         Assert.Contains("AutomationProperties.Name=\"云端队列时间筛选\"", maintenance);
+    }
+
+    [Fact]
+    public void TaskProgressPeerExposesBoundValueAndUnknownStatus()
+    {
+        RunSta(() =>
+        {
+            var progress = new ProgressBar { Minimum = 0, Maximum = 100 };
+            AutomationProperties.SetName(progress, "任务进度");
+            progress.SetBinding(ProgressBar.ValueProperty, new Binding(nameof(TaskStatusDto.ProgressValue))
+            {
+                Mode = BindingMode.OneWay
+            });
+            progress.SetBinding(AutomationProperties.HelpTextProperty, new Binding(nameof(TaskStatusDto.ProgressDisplay))
+            {
+                Mode = BindingMode.OneWay
+            });
+
+            var running = new TaskStatusDto
+            {
+                State = TaskState.Running,
+                ProgressPercent = 42,
+                StageMessage = "正在扫描"
+            };
+            progress.DataContext = running;
+
+            using var host = new PeerHost(progress);
+            var peer = GetPeer(progress);
+            Assert.Equal("任务进度", peer.GetName());
+            var range = Assert.IsAssignableFrom<IRangeValueProvider>(peer.GetPattern(PatternInterface.RangeValue));
+            Assert.Equal(42, range.Value);
+            Assert.Equal(0, range.Minimum);
+            Assert.Equal(100, range.Maximum);
+            Assert.Equal("42%", peer.GetHelpText());
+
+            progress.DataContext = new TaskStatusDto
+            {
+                State = TaskState.Running,
+                ProgressPercent = -1,
+                StageMessage = "阶段未知"
+            };
+            host.Pump();
+            Assert.Equal(0, range.Value);
+            Assert.Equal("—", peer.GetHelpText());
+
+            progress.DataContext = new TaskStatusDto
+            {
+                State = TaskState.Running,
+                ProgressPercent = 120,
+                StageMessage = "正在收尾"
+            };
+            host.Pump();
+            Assert.Equal(100, range.Value);
+            Assert.Equal("100%", peer.GetHelpText());
+        });
     }
 
     [Fact]
