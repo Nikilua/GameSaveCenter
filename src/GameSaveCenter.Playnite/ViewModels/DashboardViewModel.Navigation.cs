@@ -15,6 +15,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private double? pendingTaskGridScrollRestore;
         private double? pendingMaintenanceFindingsScrollRestore;
         private string pendingNavigationTaskId = string.Empty;
+        private string pendingStorageBackupId = string.Empty;
         private int pendingNavigationTaskIndex = -1;
         private bool restoringNavigationTaskSelection;
 
@@ -22,6 +23,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenSelectedTaskSourceCommand { get; private set; } = null!;
         public ICommand ReturnToNavigationSourceCommand { get; private set; } = null!;
         public ICommand ClearTaskNavigationContextCommand { get; private set; } = null!;
+        public ICommand OpenStorageGameCommand { get; private set; } = null!;
+        public ICommand OpenStorageBackupCommand { get; private set; } = null!;
 
         public bool HasNavigationReturnTarget => navigationHistory.CanReturn;
 
@@ -118,6 +121,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             ClearTaskNavigationContextCommand = new RelayCommand(
                 _ => ClearTaskNavigationContext(),
                 _ => !IsBusy && HasTaskNavigationTarget);
+            OpenStorageGameCommand = new RelayCommand(
+                value => OpenStorageGame(value as StorageGameRankDto),
+                value => !IsBusy && value is StorageGameRankDto rank && !string.IsNullOrWhiteSpace(rank.PlayniteId));
+            OpenStorageBackupCommand = new RelayCommand(
+                value => OpenStorageBackup(value as StorageGameRankDto),
+                value => !IsBusy && value is StorageGameRankDto rank
+                    && !string.IsNullOrWhiteSpace(rank.PlayniteId)
+                    && !string.IsNullOrWhiteSpace(rank.LatestBackupId));
         }
 
         private void ClearTaskNavigationContext()
@@ -233,6 +244,50 @@ namespace GameSaveCenter.Playnite.ViewModels
                     StatusMessage = $"任务来源“{source.IdentityDisplay}”类型未知，已保留任务诊断，未执行跳转。";
                     break;
             }
+        }
+
+        private void OpenStorageGame(StorageGameRankDto? rank)
+        {
+            if (rank == null || string.IsNullOrWhiteSpace(rank.PlayniteId)) return;
+
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new TaskSourceReferenceDto { StableId = rank.PlayniteId, PlayniteId = rank.PlayniteId }, Games);
+            if (game == null)
+            {
+                StatusMessage = $"存储统计中的游戏（{rank.PlayniteId}）已不在当前快照中，未切换到其他游戏。请先刷新游戏库。";
+                return;
+            }
+
+            PushNavigationReturnTarget("返回维护中心", $"来源：维护中心 · 存储分析 · {rank.GameName}");
+            pendingStorageBackupId = string.Empty;
+            SaveTabIndex = 0;
+            CurrentWorkspace = WorkspaceKind.Saves;
+            SelectedBackup = null!;
+            SelectedGame = game;
+            StatusMessage = $"已打开存储占用游戏“{game.Name}”详情。可以使用顶部“{NavigationReturnLabel}”返回维护中心。";
+            RequestWorkspaceLoad();
+        }
+
+        private void OpenStorageBackup(StorageGameRankDto? rank)
+        {
+            if (rank == null || string.IsNullOrWhiteSpace(rank.PlayniteId) || string.IsNullOrWhiteSpace(rank.LatestBackupId)) return;
+
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new TaskSourceReferenceDto { StableId = rank.PlayniteId, PlayniteId = rank.PlayniteId }, Games);
+            if (game == null)
+            {
+                StatusMessage = $"存储统计中的游戏（{rank.PlayniteId}）已不在当前快照中，未跳转到其他游戏或版本。";
+                return;
+            }
+
+            PushNavigationReturnTarget("返回维护中心", $"来源：维护中心 · 存储分析 · {rank.GameName}");
+            pendingStorageBackupId = rank.LatestBackupId;
+            SaveTabIndex = 0;
+            CurrentWorkspace = WorkspaceKind.Saves;
+            SelectedBackup = null!;
+            SelectedGame = game;
+            StatusMessage = $"正在打开存储分析对应版本“{rank.LatestBackupId}”；仅按稳定游戏/版本 ID 查找。";
+            RequestWorkspaceLoad();
         }
 
         private void OpenSelectedTaskGame()

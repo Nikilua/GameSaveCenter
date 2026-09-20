@@ -3610,8 +3610,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                             Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
                             var requestedTaskBackupId = pendingTaskBackupId;
+                            var requestedStorageBackupId = pendingStorageBackupId;
                             var taskBackup = !string.IsNullOrWhiteSpace(requestedTaskBackupId)
                                 ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedTaskBackupId, Backups)
+                                : null;
+                            var storageBackup = !string.IsNullOrWhiteSpace(requestedStorageBackupId)
+                                ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedStorageBackupId, Backups)
                                 : null;
                             if (!string.IsNullOrWhiteSpace(requestedTaskBackupId))
                             {
@@ -3619,6 +3623,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                                 SelectedBackup = taskBackup!;
                                 if (taskBackup == null)
                                     StatusMessage = $"任务来源版本“{requestedTaskBackupId}”已不存在，未选择其他版本；任务诊断仍可查看。";
+                            }
+                            else if (!string.IsNullOrWhiteSpace(requestedStorageBackupId))
+                            {
+                                pendingStorageBackupId = string.Empty;
+                                SelectedBackup = storageBackup!;
+                                if (storageBackup == null)
+                                    StatusMessage = $"存储分析对应版本“{requestedStorageBackupId}”已不存在，未选择其他版本；已打开对应游戏。";
                             }
                             else
                                 SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
@@ -5952,7 +5963,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, OpenSelectedTaskSourceCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, OpenSelectedTaskSourceCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, OpenStorageGameCommand, OpenStorageBackupCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
                 StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand

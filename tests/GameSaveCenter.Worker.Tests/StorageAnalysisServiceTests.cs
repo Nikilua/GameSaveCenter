@@ -63,6 +63,9 @@ public sealed class StorageAnalysisServiceTests : IDisposable
         Assert.Equal(2, result.BackupVersionCount);
         Assert.Equal(5120, result.IndexedBackupBytes);
         Assert.True(result.RepositoryBytes >= 2048);
+        Assert.Equal(1, result.MissingIndexedPathCount);
+        Assert.Equal(4096, result.MissingIndexedBytes);
+        Assert.Contains("失联", result.MissingIndexedPathSummary);
         Assert.Equal(3, result.Trends.Count);
         Assert.Equal(1, result.Trends[0].AddedVersionCount);
         Assert.Equal(2, result.Trends[1].AddedVersionCount);
@@ -70,6 +73,7 @@ public sealed class StorageAnalysisServiceTests : IDisposable
         Assert.Equal("Game One", top.GameName);
         Assert.Equal(5120, top.BackupBytes);
         Assert.Equal(2, top.BackupCount);
+        Assert.Equal("b1", top.LatestBackupId);
         Assert.Contains("估算", result.Summary);
     }
 

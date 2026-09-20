@@ -47,6 +47,8 @@ public sealed class FakeDashboardData
     public ICommand OpenActivityCommand { get; } = new NoopCommand();
     public ICommand OpenMediaWorkspaceCommand { get; } = new NoopCommand();
     public ICommand OpenSelectedFindingNavigationCommand { get; } = new NoopCommand();
+    public ICommand OpenStorageGameCommand { get; } = new NoopCommand();
+    public ICommand OpenStorageBackupCommand { get; } = new NoopCommand();
     public ICommand RefreshCommand { get; } = new NoopCommand();
     public ICommand RefreshCloudTransfersCommand { get; } = new NoopCommand();
     public ICommand LoadMoreCloudTransfersCommand { get; } = new NoopCommand();
