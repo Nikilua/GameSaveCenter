@@ -63,6 +63,7 @@ public sealed class R21AutomationValueBehaviorTests
         var trainer = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
         var dashboard = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var maintenance = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var media = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
         Assert.Contains("AutomationProperties.Name=\"已匹配游戏占比\"", overview);
         Assert.Contains("AutomationProperties.Name=\"需注意游戏占比\"", overview);
@@ -76,6 +77,9 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"当前操作进度\"", dashboard);
         Assert.Contains("AutomationProperties.Name=\"备份存储占用比例\"", maintenance);
         Assert.Contains("Value=\"{Binding RemoteBackupStageProgress, Mode=OneWay}\" Height=\"6\" Margin=\"0,10,0,0\" AutomationProperties.Name=\"远端备份隔离下载进度\" AutomationProperties.HelpText=\"{Binding RemoteBackupStageProgress, StringFormat={}{0}%}\"", maintenance);
+        Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\" ToolTip=\"批量归类目标游戏；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"媒体收件箱归类目标游戏\"", media);
+        Assert.Contains("ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\" ToolTip=\"媒体类型筛选\" AutomationProperties.Name=\"媒体类型筛选\"", media);
+        Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\" ToolTip=\"重新归类目标；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"重新归类目标游戏\"", media);
     }
 
     [Fact]
@@ -159,6 +163,30 @@ public sealed class R21AutomationValueBehaviorTests
             version.SelectedIndex = 1;
             host.Pump();
             Assert.Equal("版本 2", version.SelectedItem);
+        });
+    }
+
+    [Fact]
+    public void MediaCenterSelectorsExposeSemanticState()
+    {
+        RunSta(() =>
+        {
+            var inboxTarget = CreateNamedSelector("媒体收件箱归类目标游戏", "游戏 A", "游戏 B");
+            var mediaFilter = CreateNamedSelector("媒体类型筛选", "全部", "截图");
+            var reassignTarget = CreateNamedSelector("重新归类目标游戏", "游戏 A", "游戏 C");
+
+            using var host = new PeerHost(inboxTarget, mediaFilter, reassignTarget);
+            Assert.Equal("媒体收件箱归类目标游戏", GetPeer(inboxTarget).GetName());
+            Assert.Equal("媒体类型筛选", GetPeer(mediaFilter).GetName());
+            Assert.Equal("重新归类目标游戏", GetPeer(reassignTarget).GetName());
+
+            inboxTarget.SelectedIndex = 1;
+            mediaFilter.SelectedIndex = 1;
+            reassignTarget.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("游戏 B", inboxTarget.SelectedItem);
+            Assert.Equal("截图", mediaFilter.SelectedItem);
+            Assert.Equal("游戏 C", reassignTarget.SelectedItem);
         });
     }
 
