@@ -169,6 +169,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
         private BackupPolicyTemplateDto policyTemplateDraft = new BackupPolicyTemplateDto();
         private string policyTemplateNameDraft = string.Empty;
+        private string policyTemplateBatchSearchText = string.Empty;
         private bool policyTemplatesLoaded;
         private BackupDiffDto? lastBackupDiff;
         private BackupVersionDto? compareLeftBackup;
@@ -292,6 +293,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             gameDiagnosticPlayniteId = plugin.Settings.GamePickerSelectedGameId ?? string.Empty;
             GamesView = CollectionViewSource.GetDefaultView(Games);
             GamesView.Filter = FilterGame;
+            PolicyTemplateBatchTargetsView = CollectionViewSource.GetDefaultView(PolicyTemplateBatchTargets);
+            PolicyTemplateBatchTargetsView.Filter = FilterPolicyTemplateBatchTarget;
             TasksView = CollectionViewSource.GetDefaultView(Tasks);
             TasksView.Filter = FilterTask;
             MediaView = CollectionViewSource.GetDefaultView(Media);
@@ -338,6 +341,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             CreatePolicyTemplateCommand = new RelayCommand(_ => CreatePolicyTemplate(), _ => !IsBusy);
             SavePolicyTemplateCommand = new RelayCommand(_ => Run(SavePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft));
             ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && !HasSelectedGamePolicyChanges && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
+            ApplyPolicyTemplateBatchCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateBatchAsync), _ => !IsBusy && CanApplyPolicyTemplateBatch);
+            RetryPolicyTemplateBatchItemCommand = new RelayCommand(value =>
+            {
+                if (value is PolicyTemplateBatchApplyItemDto item) Run(() => RetryPolicyTemplateBatchItemAsync(item));
+            }, value => !IsBusy && value is PolicyTemplateBatchApplyItemDto item && item.CanRetry && SelectedPolicyTemplate != null && string.Equals(item.TemplateId, SelectedPolicyTemplate.TemplateId, StringComparison.OrdinalIgnoreCase));
             DeletePolicyTemplateCommand = new RelayCommand(_ => Run(DeletePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateDraft.TemplateId));
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
             CancelBackupMetadataCommand = new RelayCommand(_ => CancelBackupMetadataEdit(), _ => !IsBusy && SelectedBackup != null && HasBackupMetadataChanges);
@@ -505,6 +513,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<string> DiffRemovedPaths { get; } = new BatchObservableCollection<string>();
         public IReadOnlyList<string> DiffPathKindOptions { get; } = new[] { "全部", "新增", "修改", "删除" };
         public BatchObservableCollection<BackupPolicyTemplateDto> PolicyTemplates { get; } = new BatchObservableCollection<BackupPolicyTemplateDto>();
+        public BatchObservableCollection<PolicyTemplateBatchTarget> PolicyTemplateBatchTargets { get; } = new BatchObservableCollection<PolicyTemplateBatchTarget>();
+        public ICollectionView PolicyTemplateBatchTargetsView { get; }
+        public ObservableCollection<PolicyTemplateBatchApplyItemDto> PolicyTemplateBatchResults { get; } = new ObservableCollection<PolicyTemplateBatchApplyItemDto>();
         public IReadOnlyList<BackupAnomalyProtectionOption> BackupAnomalyProtectionOptions { get; } = new[]
         {
             new BackupAnomalyProtectionOption(BackupAnomalyProtectionLevel.Off, "关闭比较告警"),
@@ -1503,6 +1514,39 @@ namespace GameSaveCenter.Playnite.ViewModels
                 : HasPolicyTemplateDiff
                 ? $"模板将一次性覆盖 {PolicyTemplateDiffEntries.Count} 项；不会建立继承关系。"
                 : "模板与当前已保存策略一致；应用不会产生策略差异。";
+        public string PolicyTemplateBatchSearchText
+        {
+            get => policyTemplateBatchSearchText;
+            set
+            {
+                SetValue(ref policyTemplateBatchSearchText, value ?? string.Empty);
+                PolicyTemplateBatchTargetsView?.Refresh();
+                OnPropertyChanged(nameof(PolicyTemplateBatchVisibleCount));
+            }
+        }
+        public int PolicyTemplateBatchVisibleCount
+            => PolicyTemplateBatchTargetsView?.Cast<object>().Count() ?? 0;
+        public int PolicyTemplateBatchSelectedCount
+            => PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets).Count;
+        public int PolicyTemplateBatchExcludedCount
+            => Math.Max(0, PolicyTemplateBatchTargets.Count - PolicyTemplateBatchSelectedCount);
+        public int PolicyTemplateBatchChangeCount
+            => PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets).Sum(target => target.ChangeCount);
+        public bool HasPolicyTemplateBatchResults => PolicyTemplateBatchResults.Count > 0;
+        public string PolicyTemplateBatchSummary
+            => SelectedPolicyTemplate == null
+                ? "选择已保存策略模板后，可明确勾选批量应用目标。"
+                : PolicyTemplateBatchSelectedCount == 0
+                ? $"尚未选择目标；当前列表显示 {PolicyTemplateBatchTargets.Count} 个游戏，排除 {PolicyTemplateBatchExcludedCount} 个。筛选不会自动选择全部。"
+                : PolicyTemplateBatchSelectedCount > PolicyTemplateBatchPreview.MaxTargetCount
+                ? $"已选择 {PolicyTemplateBatchSelectedCount} 个目标，超过单次最多 {PolicyTemplateBatchPreview.MaxTargetCount} 个；请减少选择。"
+                : $"目标 {PolicyTemplateBatchSelectedCount} 个 · 排除 {PolicyTemplateBatchExcludedCount} 个 · 预计覆盖 {PolicyTemplateBatchChangeCount} 项字段；筛选隐藏项仍按稳定 ID 保留选择。";
+        public bool CanApplyPolicyTemplateBatch
+            => SelectedPolicyTemplate != null
+                && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId)
+                && !HasSelectedGamePolicyChanges
+                && PolicyTemplateBatchSelectedCount > 0
+                && PolicyTemplateBatchSelectedCount <= PolicyTemplateBatchPreview.MaxTargetCount;
         public BackupDiffDto? LastBackupDiff
         {
             get => lastBackupDiff;
@@ -1550,6 +1594,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
                 OnPropertyChanged(nameof(HasPolicyTemplateDiff));
                 OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+                PolicyTemplateBatchResults.Clear();
+                OnPropertyChanged(nameof(HasPolicyTemplateBatchResults));
+                RefreshPolicyTemplateBatchTargets();
+                OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+                OnPropertyChanged(nameof(CanApplyPolicyTemplateBatch));
                 RaiseCommandStates();
             }
         }
@@ -1599,6 +1648,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand CreatePolicyTemplateCommand { get; }
         public ICommand SavePolicyTemplateCommand { get; }
         public ICommand ApplyPolicyTemplateCommand { get; }
+        public ICommand ApplyPolicyTemplateBatchCommand { get; }
+        public ICommand RetryPolicyTemplateBatchItemCommand { get; }
         public ICommand DeletePolicyTemplateCommand { get; }
         public ICommand UpdateBackupMetadataCommand { get; }
         public ICommand CancelBackupMetadataCommand { get; }
@@ -2522,6 +2573,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                         OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
                         OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
                     }
+                    RefreshPolicyTemplateBatchTargets(data.Games);
                 }
                 finally { suppressSelectionLoad = false; }
                 // Cache-first snapshots can be older than the current wall clock. The protection
@@ -2678,6 +2730,56 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
             OnPropertyChanged(nameof(HasPolicyTemplateDiff));
             OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+            RaiseCommandStates();
+        }
+
+        private bool FilterPolicyTemplateBatchTarget(object item)
+        {
+            if (item is not PolicyTemplateBatchTarget target) return false;
+            var query = PolicyTemplateBatchSearchText.Trim();
+            return query.Length == 0
+                || target.GameName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0
+                || target.PlayniteId.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private void RefreshPolicyTemplateBatchTargets(IEnumerable<GameStatusDto>? source = null)
+        {
+            var selectedIds = new HashSet<string>(
+                PolicyTemplateBatchTargets.Where(target => target.IsSelected).Select(target => target.PlayniteId),
+                StringComparer.OrdinalIgnoreCase);
+            foreach (var target in PolicyTemplateBatchTargets)
+                target.PropertyChanged -= OnPolicyTemplateBatchTargetChanged;
+
+            var next = SelectedPolicyTemplate == null
+                || string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId)
+                ? Array.Empty<PolicyTemplateBatchTarget>()
+                : PolicyTemplateBatchPreview.Build(source ?? Games, SelectedPolicyTemplate.Policy, selectedIds);
+            PolicyTemplateBatchTargets.ReplaceAll(next, (left, right) =>
+                string.Equals(left.PlayniteId, right.PlayniteId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(left.GameName, right.GameName, StringComparison.Ordinal)
+                && left.ChangeCount == right.ChangeCount
+                && left.IsSelected == right.IsSelected);
+            foreach (var target in PolicyTemplateBatchTargets)
+                target.PropertyChanged += OnPolicyTemplateBatchTargetChanged;
+
+            PolicyTemplateBatchTargetsView?.Refresh();
+            OnPropertyChanged(nameof(PolicyTemplateBatchVisibleCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchExcludedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchChangeCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+            OnPropertyChanged(nameof(CanApplyPolicyTemplateBatch));
+            RaiseCommandStates();
+        }
+
+        private void OnPolicyTemplateBatchTargetChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (!string.Equals(e.PropertyName, nameof(PolicyTemplateBatchTarget.IsSelected), StringComparison.Ordinal)) return;
+            OnPropertyChanged(nameof(PolicyTemplateBatchSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchExcludedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchChangeCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+            OnPropertyChanged(nameof(CanApplyPolicyTemplateBatch));
             RaiseCommandStates();
         }
 
@@ -4375,6 +4477,94 @@ namespace GameSaveCenter.Playnite.ViewModels
             ConfirmSuccess($"已将策略模板“{templateName}”复制到 {gameName}；后续修改模板不会影响该游戏");
         }
 
+        private async Task ApplyPolicyTemplateBatchAsync()
+        {
+            var template = SelectedPolicyTemplate ?? throw new InvalidOperationException("请先选择策略模板。");
+            var selected = PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets);
+            if (selected.Count == 0)
+            {
+                StatusMessage = "请先明确勾选至少一个目标游戏；筛选不会自动选择全部游戏。";
+                return;
+            }
+            if (selected.Count > PolicyTemplateBatchPreview.MaxTargetCount)
+            {
+                StatusMessage = $"当前选择超过单次最多 {PolicyTemplateBatchPreview.MaxTargetCount} 个目标，请先减少选择。";
+                return;
+            }
+
+            var confirmed = await plugin.ConfirmAsync(
+                "确认批量应用策略模板",
+                PolicyTemplateBatchPreview.BuildConfirmation(template.Name, PolicyTemplateBatchTargets),
+                "确认应用",
+                "取消").ConfigureAwait(true);
+            if (!confirmed)
+            {
+                StatusMessage = "已取消批量应用策略模板；目标选择和草稿保持不变。";
+                return;
+            }
+
+            var result = await plugin.RequestAsync<ApplyPolicyTemplateBatchResultDto>(
+                MessageTypes.ApplyPolicyTemplateBatch,
+                new ApplyPolicyTemplateBatchDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteIds = selected.Select(target => target.PlayniteId).ToList()
+                });
+            PolicyTemplateBatchResults.Clear();
+            foreach (var item in result?.Items ?? new List<PolicyTemplateBatchApplyItemDto>())
+                PolicyTemplateBatchResults.Add(item);
+            OnPropertyChanged(nameof(HasPolicyTemplateBatchResults));
+            foreach (var item in result?.Items?.Where(item => item.Applied) ?? Enumerable.Empty<PolicyTemplateBatchApplyItemDto>())
+            {
+                var target = PolicyTemplateBatchTargets.FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, item.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                if (target != null) target.IsSelected = false;
+            }
+
+            if (result == null)
+            {
+                StatusMessage = "批量应用没有返回结果，请保留当前选择后重试。";
+                return;
+            }
+            if (result.FailedCount == 0)
+                ConfirmSuccess($"已将策略模板“{template.Name}”应用到 {result.AppliedCount} 个游戏。排除项未改动。");
+            else
+                StatusMessage = $"策略模板已应用 {result.AppliedCount} 个，{result.FailedCount} 个失败；失败项可在下方逐项重试。";
+            await RefreshDashboardAsync(false, false);
+        }
+
+        private async Task RetryPolicyTemplateBatchItemAsync(PolicyTemplateBatchApplyItemDto item)
+        {
+            var template = SelectedPolicyTemplate ?? throw new InvalidOperationException("当前没有可重试的策略模板。");
+            if (!item.CanRetry || !string.Equals(item.TemplateId, template.TemplateId, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("该失败项已经不属于当前选中的策略模板。");
+
+            var result = await plugin.RequestAsync<ApplyPolicyTemplateBatchResultDto>(
+                MessageTypes.ApplyPolicyTemplateBatch,
+                new ApplyPolicyTemplateBatchDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteIds = new List<string> { item.PlayniteId }
+                });
+            var replacement = result?.Items?.FirstOrDefault() ?? new PolicyTemplateBatchApplyItemDto
+            {
+                TemplateId = template.TemplateId,
+                PlayniteId = item.PlayniteId,
+                GameName = item.GameName,
+                Error = "重试没有返回结果。"
+            };
+            var index = PolicyTemplateBatchResults.IndexOf(item);
+            if (index >= 0) PolicyTemplateBatchResults[index] = replacement;
+            if (replacement.Applied)
+            {
+                var target = PolicyTemplateBatchTargets.FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, replacement.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                if (target != null) target.IsSelected = false;
+                StatusMessage = $"已重试并应用 {replacement.GameName} 的策略模板。";
+            }
+            else
+                StatusMessage = $"{replacement.GameName} 重试仍失败；可以稍后再次重试。";
+            await RefreshDashboardAsync(false, false);
+        }
+
         private async Task DeletePolicyTemplateAsync()
         {
             var name = PolicyTemplateDraft.Name;
@@ -5742,7 +5932,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewBackupCommand, RetrySelectedGameCloudUploadCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand, CancelPolicyDraftCommand,
-                CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
+                CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,

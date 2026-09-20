@@ -555,6 +555,33 @@ namespace GameSaveCenter.Contracts
         public string TemplateId { get; set; } = string.Empty;
     }
 
+    /// <summary>Copies one saved template snapshot to an explicit, bounded target set.</summary>
+    public sealed class ApplyPolicyTemplateBatchDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public List<string> PlayniteIds { get; set; } = new List<string>();
+    }
+
+    public sealed class PolicyTemplateBatchApplyItemDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public bool Applied { get; set; }
+        public string Error { get; set; } = string.Empty;
+        public string StatusDisplay => Applied ? "已应用" : "失败";
+        public bool CanRetry => !Applied && !string.IsNullOrWhiteSpace(PlayniteId);
+    }
+
+    public sealed class ApplyPolicyTemplateBatchResultDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public int RequestedCount { get; set; }
+        public int AppliedCount { get; set; }
+        public int FailedCount { get; set; }
+        public List<PolicyTemplateBatchApplyItemDto> Items { get; set; } = new List<PolicyTemplateBatchApplyItemDto>();
+    }
+
     /// <summary>Compares two indexed backup manifests.</summary>
     public sealed class BackupCompareRequestDto
     {

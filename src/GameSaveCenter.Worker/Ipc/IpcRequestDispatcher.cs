@@ -131,6 +131,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.SavePolicyTemplate=>await SavePolicyTemplateAsync(Read<PolicyTemplateSaveDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeletePolicyTemplate=>await DeletePolicyTemplateAsync(Read<PolicyTemplateDeleteDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ApplyPolicyTemplate=>await ApplyPolicyTemplateAsync(Read<ApplyPolicyTemplateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ApplyPolicyTemplateBatch=>await ApplyPolicyTemplateBatchAsync(Read<ApplyPolicyTemplateBatchDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTasks=>await _store.GetRecentTasksAsync(200,token).ConfigureAwait(false),
                 MessageTypes.GetTaskPage=>await _store.GetTaskPageAsync(Read<TaskQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTaskChanges=>GetTaskChanges(Read<TaskChangeRequestDto>(request)),
@@ -445,6 +446,67 @@ public sealed class IpcRequestDispatcher
         await _store.AppendAuditAsync("PolicyTemplate", "Applied policy template to game",
             JsonSerializer.Serialize(new { game.PlayniteId, template.TemplateId, template.Name, policy }), token).ConfigureAwait(false);
         return new { applied = true, template = BackupPolicyTemplateCatalog.Clone(template) };
+    }
+
+    private async Task<object> ApplyPolicyTemplateBatchAsync(ApplyPolicyTemplateBatchDto request, CancellationToken token)
+    {
+        var templateId = (request?.TemplateId ?? string.Empty).Trim();
+        var playniteIds = (request?.PlayniteIds ?? new List<string>())
+            .Where(id => !string.IsNullOrWhiteSpace(id))
+            .Select(id => id.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        if (string.IsNullOrWhiteSpace(templateId)) throw new ArgumentException("策略模板 ID 不能为空。");
+        if (playniteIds.Count == 0) throw new ArgumentException("至少需要一个明确选择的目标游戏。");
+        if (playniteIds.Count > 100) throw new ArgumentException("单次最多应用到 100 个目标游戏。");
+
+        var template = await _store.GetPolicyTemplateAsync(templateId, token).ConfigureAwait(false)
+                       ?? throw new KeyNotFoundException("策略模板不存在。");
+        var items = new List<PolicyTemplateBatchApplyItemDto>(playniteIds.Count);
+        foreach (var playniteId in playniteIds)
+        {
+            try
+            {
+                var game = await _catalog.GetGameAsync(playniteId, token).ConfigureAwait(false)
+                           ?? throw new KeyNotFoundException("目标游戏不存在。");
+                var policy = BackupPolicyTemplateCatalog.ClonePolicy(template.Policy);
+                using var lease = await AcquireGameOperationAsync(game.PlayniteId, token).ConfigureAwait(false);
+                await _store.SetPolicyAsync(game.PlayniteId, policy, token).ConfigureAwait(false);
+                await _store.AppendAuditAsync("PolicyTemplate", "批量应用策略模板",
+                    JsonSerializer.Serialize(new { game.PlayniteId, template.TemplateId, template.Name, policy }), token).ConfigureAwait(false);
+                items.Add(new PolicyTemplateBatchApplyItemDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteId = game.PlayniteId,
+                    GameName = game.Name,
+                    Applied = true
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                items.Add(new PolicyTemplateBatchApplyItemDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteId = playniteId,
+                    GameName = playniteId,
+                    Error = ex.Message
+                });
+            }
+        }
+
+        var appliedCount = items.Count(item => item.Applied);
+        return new ApplyPolicyTemplateBatchResultDto
+        {
+            TemplateId = template.TemplateId,
+            RequestedCount = playniteIds.Count,
+            AppliedCount = appliedCount,
+            FailedCount = items.Count - appliedCount,
+            Items = items
+        };
     }
 
     private async Task<object> AddMediaSourceAsync(MediaSourceRuleDto source,CancellationToken token)

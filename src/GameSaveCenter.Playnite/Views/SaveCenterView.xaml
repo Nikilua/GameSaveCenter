@@ -580,6 +580,74 @@
                                              </ItemsControl>
                                          </StackPanel>
                                      </Border>
+                                     <Expander Style="{StaticResource GscDisclosureCard}" Header="批量应用到游戏" Margin="0,12,0,0">
+                                         <StackPanel>
+                                             <TextBlock Text="只处理明确勾选的目标；当前筛选只影响显示，不会自动选择全部游戏。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                             <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding PolicyTemplateBatchSearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" ToolTip="按游戏名称或稳定 ID 筛选；筛选不会清除已勾选目标" AutomationProperties.Name="筛选模板批量应用目标"/>
+                                             <TextBlock Text="{Binding PolicyTemplateBatchSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="模板批量应用目标摘要"/>
+                                             <WrapPanel Margin="0,6,0,0">
+                                                 <TextBlock Text="{Binding PolicyTemplateBatchSelectedCount, StringFormat=目标：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
+                                                 <TextBlock Text="{Binding PolicyTemplateBatchExcludedCount, StringFormat=排除：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
+                                                 <TextBlock Text="{Binding PolicyTemplateBatchChangeCount, StringFormat=变更字段：{0}}" Style="{DynamicResource GscCaptionStyle}"/>
+                                             </WrapPanel>
+                                             <ScrollViewer MaxHeight="220" Margin="0,10,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True" AutomationProperties.Name="策略模板批量应用目标列表">
+                                                 <ItemsControl ItemsSource="{Binding PolicyTemplateBatchTargetsView}">
+                                                     <ItemsControl.ItemsPanel>
+                                                         <ItemsPanelTemplate><VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"/></ItemsPanelTemplate>
+                                                     </ItemsControl.ItemsPanel>
+                                                 <ItemsControl.ItemTemplate>
+                                                     <DataTemplate>
+                                                         <Grid Margin="0,3,0,3">
+                                                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                             <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" AutomationProperties.Name="{Binding GameName}"/>
+                                                             <StackPanel Grid.Column="1" Margin="8,0,8,0">
+                                                                 <TextBlock Text="{Binding GameName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                                 <TextBlock Text="{Binding ChangeDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0"/>
+                                                             </StackPanel>
+                                                             <TextBlock Grid.Column="2" Text="{Binding SelectionDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                                         </Grid>
+                                                     </DataTemplate>
+                                                 </ItemsControl.ItemTemplate>
+                                                 </ItemsControl>
+                                             </ScrollViewer>
+                                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ApplyPolicyTemplateBatchCommand}" Content="预览并应用选中游戏" Margin="0,10,0,0" HorizontalAlignment="Left" AutomationProperties.Name="预览并应用选中的策略模板目标"/>
+                                             <Border Padding="10" Margin="0,12,0,0">
+                                                 <Border.Style>
+                                                     <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                                                         <Setter Property="Visibility" Value="Collapsed"/>
+                                                         <Style.Triggers><DataTrigger Binding="{Binding HasPolicyTemplateBatchResults}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                     </Style>
+                                                 </Border.Style>
+                                                 <StackPanel>
+                                                     <TextBlock Text="最近批量结果" Style="{DynamicResource GscBodyStyle}"/>
+                                                     <ScrollViewer MaxHeight="180" Margin="0,8,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True" Style="{DynamicResource GscInspectorScrollViewer}" AutomationProperties.Name="策略模板批量结果列表">
+                                                         <ItemsControl ItemsSource="{Binding PolicyTemplateBatchResults}">
+                                                             <ItemsControl.ItemTemplate>
+                                                                 <DataTemplate>
+                                                                     <Grid Margin="0,3,0,3">
+                                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                         <StackPanel>
+                                                                             <TextBlock Text="{Binding GameName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                                             <TextBlock Text="{Binding Error}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                                                         </StackPanel>
+                                                                         <TextBlock Grid.Column="1" Text="{Binding StatusDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="8,0,8,0" VerticalAlignment="Center"/>
+                                                                         <ui:Button Grid.Column="2" Command="{Binding DataContext.RetryPolicyTemplateBatchItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Content="重试" Margin="0,0,0,2" AutomationProperties.Name="{Binding GameName, StringFormat=重试策略模板应用：{0}}">
+                                                                             <ui:Button.Style>
+                                                                                 <Style TargetType="ui:Button" BasedOn="{DynamicResource GscWpfUiActionButton}">
+                                                                                     <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                     <Style.Triggers><DataTrigger Binding="{Binding CanRetry}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                                                 </Style>
+                                                                             </ui:Button.Style>
+                                                                         </ui:Button>
+                                                                     </Grid>
+                                                                 </DataTemplate>
+                                                             </ItemsControl.ItemTemplate>
+                                                         </ItemsControl>
+                                                     </ScrollViewer>
+                                                 </StackPanel>
+                                             </Border>
+                                         </StackPanel>
+                                     </Expander>
                                      <!-- Icon-only: template deletion remains visibly dangerous and accessible. -->
                                     <WrapPanel Margin="0,12,0,0"><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CreatePolicyTemplateCommand}" Content="新建副本" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding SavePolicyTemplateCommand}" Content="保存" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyPolicyTemplateCommand}" Content="应用" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscIconOnlyDangerButton}" Command="{Binding DeletePolicyTemplateCommand}" ToolTip="删除策略模板" AutomationProperties.Name="删除策略模板" Margin="0,0,0,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnDelete}" Width="18" Height="18"/></ui:Button></WrapPanel>
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,6,0,0"><TextBlock Text="内置模板不可修改或删除；恢复操作永远不会被模板自动启用。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/></Border>
