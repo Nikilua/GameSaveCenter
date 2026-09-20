@@ -66,6 +66,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? mediaInboxRequestCancellation;
         private readonly LatestRequestCoordinator taskPageRequests = new LatestRequestCoordinator();
         private readonly LatestRequestCoordinator dashboardRefreshRequests = new LatestRequestCoordinator();
+        private static readonly TimeSpan WorkspaceRevisitFreshness = TimeSpan.FromSeconds(15);
+        private readonly WorkspaceRevisitLoadGate workspaceRevisitLoadGate =
+            new WorkspaceRevisitLoadGate(WorkspaceRevisitFreshness);
         private CancellationTokenSource? cloudTransferRequestCancellation;
         private CancellationTokenSource? mediaClassificationHistoryRequestCancellation;
         private CancellationTokenSource? selectedGameBackgroundCancellation;
@@ -2192,6 +2195,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void CancelDeferredUiWork()
         {
+            workspaceRevisitLoadGate.InvalidateAll();
             gamePicker.CancelPendingRefresh();
             taskSearchRefresh.Cancel();
             taskHistoryQueryRefresh.Cancel();
@@ -3804,9 +3808,80 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void RequestWorkspaceLoad()
         {
-            if (CurrentWorkspace == WorkspaceKind.Media) Run(LoadMediaWorkspaceAsync);
-            else if (CurrentWorkspace == WorkspaceKind.Maintenance) Run(LoadDiagnosticsAsync);
-            else if (IsGameScopedWorkspace(CurrentWorkspace)) Run(() => LoadDetailsAsync());
+            var workspace = CurrentWorkspace;
+            var contextKey = GetWorkspaceLoadContextKey(workspace);
+            if (workspace == WorkspaceKind.Media)
+                RunWorkspaceLoad(workspace, contextKey, LoadMediaWorkspaceAsync);
+            else if (workspace == WorkspaceKind.Maintenance)
+                RunWorkspaceLoad(workspace, contextKey, LoadDiagnosticsAsync);
+            else if (IsGameScopedWorkspace(workspace))
+                RunWorkspaceLoad(workspace, contextKey, () => LoadDetailsAsync());
+        }
+
+        private string GetWorkspaceLoadContextKey(WorkspaceKind workspace)
+        {
+            var gameId = SelectedGame?.PlayniteId ?? string.Empty;
+            switch (workspace)
+            {
+                case WorkspaceKind.Media:
+                    return string.Join("\u001f", new[]
+                    {
+                        workspace.ToString(),
+                        gameId,
+                        MediaFilter ?? string.Empty,
+                        MediaSearchText ?? string.Empty,
+                        MediaInboxMode ?? string.Empty
+                    });
+                case WorkspaceKind.Saves:
+                case WorkspaceKind.Trainers:
+                    return string.Join("\u001f", new[] { workspace.ToString(), gameId });
+                case WorkspaceKind.Maintenance:
+                    return workspace.ToString();
+                default:
+                    return workspace.ToString();
+            }
+        }
+
+        private void RunWorkspaceLoad(WorkspaceKind workspace, string contextKey, Func<Task> action)
+        {
+            Run(async () =>
+            {
+                if (CurrentWorkspace != workspace
+                    || !string.Equals(GetWorkspaceLoadContextKey(workspace), contextKey, StringComparison.Ordinal))
+                    return;
+                if (!workspaceRevisitLoadGate.TryBegin(contextKey, DateTime.UtcNow))
+                {
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=hot-revisit outcome=skipped freshness={WorkspaceRevisitFreshness.TotalSeconds:0}s");
+                    return;
+                }
+
+                var timer = Stopwatch.StartNew();
+                try
+                {
+                    await action();
+                    var currentContext = CurrentWorkspace == workspace
+                        && string.Equals(GetWorkspaceLoadContextKey(workspace), contextKey, StringComparison.Ordinal);
+                    var completed = currentContext && workspaceRevisitLoadGate.Complete(contextKey, DateTime.UtcNow);
+                    if (!currentContext || !completed)
+                        workspaceRevisitLoadGate.Cancel(contextKey);
+                    timer.Stop();
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=read outcome={(completed ? "ready" : "discarded")} load={timer.Elapsed.TotalMilliseconds:F3}ms");
+                }
+                catch (OperationCanceledException)
+                {
+                    workspaceRevisitLoadGate.Cancel(contextKey);
+                    timer.Stop();
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=read outcome=cancelled load={timer.Elapsed.TotalMilliseconds:F3}ms");
+                    throw;
+                }
+                catch
+                {
+                    workspaceRevisitLoadGate.Fail(contextKey);
+                    timer.Stop();
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=read outcome=failed load={timer.Elapsed.TotalMilliseconds:F3}ms");
+                    throw;
+                }
+            });
         }
 
         private bool IsSelectedGame(string playniteId)

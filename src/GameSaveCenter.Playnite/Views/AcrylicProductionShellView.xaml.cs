@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -21,7 +22,9 @@ namespace GameSaveCenter.Playnite.Views
     /// </summary>
     public partial class AcrylicProductionShellView : UserControl
     {
+        private static readonly global::Playnite.SDK.ILogger Logger = global::Playnite.SDK.LogManager.GetLogger();
         private readonly Dictionary<WorkspaceKind, UserControl> pages = new Dictionary<WorkspaceKind, UserControl>();
+        private readonly HashSet<WorkspaceKind> activatedWorkspaces = new HashSet<WorkspaceKind>();
         private DashboardViewModel? viewModel;
         private bool viewModelSubscribed;
         private bool suppressNavigation;
@@ -134,12 +137,15 @@ namespace GameSaveCenter.Playnite.Views
         public void NavigateTo(WorkspaceKind workspace)
         {
             if (viewModel == null) return;
+            var timer = Stopwatch.StartNew();
             var page = GetPage(workspace);
+            var firstActivation = activatedWorkspaces.Add(workspace);
+            var contentChanged = !ReferenceEquals(PageHost.Content, page);
             // Keep a same-page navigation request on the existing visual tree. The
             // workspace command may be raised again while a refresh is completing;
             // reassigning the same cached page would otherwise make the host perform
             // an avoidable content transition and could disturb a nested scroll owner.
-            if (!ReferenceEquals(PageHost.Content, page))
+            if (contentChanged)
                 PageHost.Content = page;
             UpdatePageHeader(workspace);
             var gameScoped = workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance;
@@ -160,6 +166,8 @@ namespace GameSaveCenter.Playnite.Views
                 suppressNavigation = false;
             }
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            timer.Stop();
+            Logger.Debug($"[PERF] WorkspaceActivation workspace={workspace} phase={(firstActivation ? "first" : "revisit")} page={(contentChanged ? "attach" : "reuse")} layout={timer.Elapsed.TotalMilliseconds:F3}ms");
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -264,13 +272,17 @@ namespace GameSaveCenter.Playnite.Views
 
         private void CreatePages()
         {
+            var timer = Stopwatch.StartNew();
             pages.Clear();
+            activatedWorkspaces.Clear();
             pages[WorkspaceKind.Overview] = CreatePage(new OverviewView());
             pages[WorkspaceKind.Saves] = CreatePage(new SaveCenterView());
             pages[WorkspaceKind.Trainers] = CreatePage(new TrainerCenterView());
             pages[WorkspaceKind.Media] = CreatePage(new MediaCenterView());
             pages[WorkspaceKind.Tasks] = CreatePage(new TaskCenterView());
             pages[WorkspaceKind.Maintenance] = CreatePage(new MaintenanceView());
+            timer.Stop();
+            Logger.Debug($"[PERF] WorkspacePages created={pages.Count} binding={timer.Elapsed.TotalMilliseconds:F3}ms");
         }
 
         private UserControl CreatePage(UserControl page)
