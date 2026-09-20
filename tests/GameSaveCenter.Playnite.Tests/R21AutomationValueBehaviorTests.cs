@@ -86,6 +86,10 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\" ToolTip=\"媒体类型筛选\" AutomationProperties.Name=\"媒体类型筛选\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\" ToolTip=\"重新归类目标；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"重新归类目标游戏\"", media);
         Assert.Contains("SelectedItem=\"{Binding ProcessMappingTargetGame}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"进程映射目标游戏\"", maintenance);
+        Assert.Contains("AutomationProperties.Name=\"媒体收件箱视图\"", media);
+        Assert.Contains("AutomationProperties.Name=\"媒体筛选预设\"", media);
+        Assert.Contains("AutomationProperties.Name=\"媒体归类批次状态筛选\"", media);
+        Assert.Contains("AutomationProperties.Name=\"调整归类建议目标\"", media);
     }
 
     [Fact]
@@ -100,6 +104,35 @@ public sealed class R21AutomationValueBehaviorTests
             selector.SelectedIndex = 1;
             host.Pump();
             Assert.Equal("游戏 B", selector.SelectedItem);
+        });
+    }
+
+    [Fact]
+    public void ExistingMediaCenterSelectorsExposeSemanticState()
+    {
+        RunSta(() =>
+        {
+            var mode = CreateNamedSelector("媒体收件箱视图", "待归类", "已忽略");
+            var preset = CreateNamedSelector("媒体筛选预设", "全部媒体", "最近导入");
+            var history = CreateNamedSelector("媒体归类批次状态筛选", "全部", "已完成");
+            var suggestion = CreateNamedSelector("调整归类建议目标", "游戏 A", "游戏 B");
+
+            using var host = new PeerHost(mode, preset, history, suggestion);
+            Assert.Equal("媒体收件箱视图", GetPeer(mode).GetName());
+            Assert.Equal("媒体筛选预设", GetPeer(preset).GetName());
+            Assert.Equal("媒体归类批次状态筛选", GetPeer(history).GetName());
+            Assert.Equal("调整归类建议目标", GetPeer(suggestion).GetName());
+
+            mode.SelectedIndex = 1;
+            preset.SelectedIndex = 1;
+            history.SelectedIndex = 1;
+            suggestion.SelectedIndex = 1;
+            host.Pump();
+
+            Assert.Equal("已忽略", mode.SelectedItem);
+            Assert.Equal("最近导入", preset.SelectedItem);
+            Assert.Equal("已完成", history.SelectedItem);
+            Assert.Equal("游戏 B", suggestion.SelectedItem);
         });
     }
 
