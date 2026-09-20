@@ -9,12 +9,13 @@ namespace GameSaveCenter.Worker.Ipc;
 ///
 /// The task database and the request/response change feed remain the durable source
 /// of truth. A slow or disconnected UI must never block a backup, restore, or media
-/// operation, so each subscriber has a bounded drop-oldest queue.
+/// operation, so each subscriber has a bounded queue that evicts progress before
+/// terminal outcomes.
 /// </summary>
 public sealed class TaskEventBroadcaster
 {
     private const int PerSubscriberCapacity = 128;
-    private readonly ConcurrentDictionary<Guid, Channel<TaskChangeEventDto>> subscribers = new();
+    private readonly ConcurrentDictionary<Guid, TaskEventSubscriber> subscribers = new();
 
     /// <summary>Current live subscriber count, useful for stability probes and diagnostics.</summary>
     public int SubscriberCount => subscribers.Count;
@@ -22,27 +23,21 @@ public sealed class TaskEventBroadcaster
     public TaskEventSubscription Subscribe()
     {
         var id = Guid.NewGuid();
-        var channel = Channel.CreateBounded<TaskChangeEventDto>(new BoundedChannelOptions(PerSubscriberCapacity)
-        {
-            SingleReader = true,
-            SingleWriter = false,
-            FullMode = BoundedChannelFullMode.DropOldest
-        });
-        if (!subscribers.TryAdd(id, channel)) throw new InvalidOperationException("Could not register task event subscriber.");
-        return new TaskEventSubscription(id, channel.Reader, Unsubscribe);
+        var subscriber = new TaskEventSubscriber(PerSubscriberCapacity);
+        if (!subscribers.TryAdd(id, subscriber)) throw new InvalidOperationException("Could not register task event subscriber.");
+        return new TaskEventSubscription(id, subscriber.Reader, Unsubscribe);
     }
 
     public void Publish(TaskChangeEventDto change)
     {
+        if (change?.Task == null) return;
         foreach (var subscriber in subscribers.Values)
-        {
-            subscriber.Writer.TryWrite(Clone(change));
-        }
+            subscriber.Publish(Clone(change));
     }
 
     private void Unsubscribe(Guid id)
     {
-        if (subscribers.TryRemove(id, out var channel)) channel.Writer.TryComplete();
+        if (subscribers.TryRemove(id, out var subscriber)) subscriber.Dispose();
     }
 
     private static TaskChangeEventDto Clone(TaskChangeEventDto change) => new()
@@ -84,6 +79,57 @@ public sealed class TaskEventBroadcaster
             }
         }
     };
+}
+
+/// <summary>
+/// A bounded subscriber queue that evicts progress before terminal outcomes.
+/// The durable TaskChangeFeed remains the recovery path if a subscriber is gone.
+/// </summary>
+internal sealed class TaskEventSubscriber : IDisposable
+{
+    private readonly object gate = new object();
+    private readonly Channel<TaskChangeEventDto> channel;
+
+    public TaskEventSubscriber(int capacity)
+    {
+        channel = Channel.CreateBounded<TaskChangeEventDto>(new BoundedChannelOptions(capacity)
+        {
+            SingleReader = true,
+            SingleWriter = false,
+            FullMode = BoundedChannelFullMode.Wait
+        });
+    }
+
+    public ChannelReader<TaskChangeEventDto> Reader => channel.Reader;
+
+    public void Publish(TaskChangeEventDto change)
+    {
+        lock (gate)
+        {
+            if (channel.Writer.TryWrite(change)) return;
+
+            var queued = new List<TaskChangeEventDto>();
+            while (channel.Reader.TryRead(out var existing))
+                queued.Add(existing);
+
+            var dropIndex = queued.FindIndex(existing => !IsTerminal(existing.Task.State));
+            if (dropIndex < 0) dropIndex = queued.Count == 0 ? -1 : 0;
+            if (dropIndex >= 0 && dropIndex < queued.Count)
+                queued.RemoveAt(dropIndex);
+
+            foreach (var existing in queued)
+                channel.Writer.TryWrite(existing);
+            channel.Writer.TryWrite(change);
+        }
+    }
+
+    public void Dispose()
+    {
+        lock (gate) channel.Writer.TryComplete();
+    }
+
+    private static bool IsTerminal(TaskState state)
+        => state == TaskState.Succeeded || state == TaskState.Failed || state == TaskState.Cancelled;
 }
 
 /// <summary>Owns one transient task-event subscription.</summary>

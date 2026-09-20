@@ -75,6 +75,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long selectedGameBackgroundGeneration;
         private bool selectedGameBackgroundPreferenceApplied;
         private Task? taskEventListener;
+        private TaskEventUiBatcher? taskEventBatcher;
         private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
         private readonly DebouncedRefresh taskHistoryQueryRefresh;
@@ -2140,6 +2141,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void StartTaskEventSubscription()
         {
             if (taskEventSubscription != null) return;
+            taskEventBatcher = new TaskEventUiBatcher(
+                (action, immediate) =>
+                {
+                    var dispatcher = plugin.PlayniteApi.MainView.UIDispatcher;
+                    if (dispatcher.HasShutdownStarted || dispatcher.HasShutdownFinished) return;
+                    if (immediate)
+                        dispatcher.Invoke(action, DispatcherPriority.DataBind);
+                    else
+                        dispatcher.BeginInvoke(action, DispatcherPriority.Background);
+                },
+                ApplyTaskEventBatchOnUi);
             taskEventSubscription = new CancellationTokenSource();
             var token = taskEventSubscription.Token;
             taskEventListener = ListenForTaskEventsWhenReadyAsync(token);
@@ -2167,6 +2179,9 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void StopTaskEventSubscription()
         {
+            var batcher = taskEventBatcher;
+            taskEventBatcher = null;
+            batcher?.Dispose();
             var subscription = taskEventSubscription;
             taskEventSubscription = null;
             if (subscription == null) return;
@@ -2267,26 +2282,45 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task ApplyTaskEventAsync(TaskChangeEventDto change)
         {
             if (change == null || change.Task == null) return;
-            ApplyOnUi(() =>
-            {
-                RememberTaskTimelineChange(change);
-                taskIndex.Merge(Tasks, change.Task);
-                Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
-                knownTaskStates[change.Task.TaskId] = change.Task.State;
-                taskSnapshotInitialized = true;
-                ApplyTrainerDownloadTaskUpdate(change.Task);
-                ApplyRemoteBackupStageTaskUpdate(change.Task);
-                if (SelectedTask == null || string.Equals(SelectedTask.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase))
-                    SelectedTask = Tasks.FirstOrDefault(x => string.Equals(x.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase));
-                RaiseCommandStates();
-            });
+            taskEventBatcher?.Enqueue(change);
 
             if (change.Task.State == TaskState.Succeeded || change.Task.State == TaskState.Failed || change.Task.State == TaskState.Cancelled)
             {
-                // A terminal event can change backup/media counts and findings. Request the normal
-                // cached snapshot refresh; the event itself only updates the task rows immediately.
+                // Terminal states bypass the progress batch and are painted before the
+                // durable follow-up refresh. The refresh remains the source-of-truth repair
+                // path if the transient event pipe reconnects or a page is unloaded.
                 await RequestBackgroundRefreshAsync();
             }
+        }
+
+        private void ApplyTaskEventBatchOnUi(IReadOnlyList<TaskChangeEventDto> changes)
+        {
+            if (changes == null || changes.Count == 0) return;
+            Tasks.ApplyBatch(() =>
+            {
+                foreach (var change in changes)
+                {
+                    if (change == null || change.Task == null) continue;
+                    RememberTaskTimelineChange(change);
+                    taskIndex.Merge(Tasks, change.Task);
+                    knownTaskStates[change.Task.TaskId] = change.Task.State;
+                    taskSnapshotInitialized = true;
+                    ApplyTrainerDownloadTaskUpdate(change.Task);
+                    ApplyRemoteBackupStageTaskUpdate(change.Task);
+                }
+            });
+
+            Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
+            var selectedTaskId = SelectedTask?.TaskId;
+            var selectedEvent = changes.LastOrDefault(change => change?.Task != null
+                && (string.IsNullOrWhiteSpace(selectedTaskId)
+                    || string.Equals(selectedTaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase)));
+            var taskToSelect = selectedTaskId == null
+                ? selectedEvent?.Task?.TaskId
+                : selectedTaskId;
+            if (!string.IsNullOrWhiteSpace(taskToSelect))
+                SelectedTask = Tasks.FirstOrDefault(x => string.Equals(x.TaskId, taskToSelect, StringComparison.OrdinalIgnoreCase));
+            RaiseCommandStates();
         }
 
         private async Task InitializeAsync()

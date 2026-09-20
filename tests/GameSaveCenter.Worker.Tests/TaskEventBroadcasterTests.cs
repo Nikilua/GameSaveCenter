@@ -94,4 +94,32 @@ public sealed class TaskEventBroadcasterTests
         Assert.Equal(199, received[^1].Sequence);
         Assert.Equal(0, broadcaster.SubscriberCount);
     }
+
+    [Fact]
+    public void TerminalOutcomeSurvivesLaterProgressPressure()
+    {
+        var broadcaster = new TaskEventBroadcaster();
+        using var subscription = broadcaster.Subscribe();
+
+        broadcaster.Publish(new TaskChangeEventDto
+        {
+            Sequence = 1,
+            Task = new TaskStatusDto { TaskId = "terminal-first", State = TaskState.Failed }
+        });
+        for (var i = 0; i < 200; i++)
+        {
+            broadcaster.Publish(new TaskChangeEventDto
+            {
+                Sequence = i + 2,
+                Task = new TaskStatusDto { TaskId = $"progress-{i}", State = TaskState.Running }
+            });
+        }
+
+        var received = new List<TaskChangeEventDto>();
+        while (subscription.Reader.TryRead(out var change)) received.Add(change);
+
+        Assert.Equal(128, received.Count);
+        Assert.Contains(received, change => change.Sequence == 1 && change.Task.State == TaskState.Failed);
+        Assert.Equal(201, received[^1].Sequence);
+    }
 }

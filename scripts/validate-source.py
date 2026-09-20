@@ -918,7 +918,7 @@ def check_0618_task_event_guards() -> None:
     for token in ("TaskEventBroadcaster", "_events.Publish(change)"):
         if token not in coordinator:
             fail(f"Task event publish guard missing: {token}")
-    for token in ("BoundedChannelFullMode.DropOldest", "PerSubscriberCapacity", "TaskEventSubscription"):
+    for token in ("FullMode = BoundedChannelFullMode.Wait", "PerSubscriberCapacity", "TaskEventSubscription", "FindIndex(existing => !IsTerminal(existing.Task.State))"):
         if token not in broadcaster:
             fail(f"Task event bounded fan-out guard missing: {token}")
     for token in ("options.EventPipeName", "PipeOptions.CurrentUserOnly", "MessageTypes.TaskEvent"):
