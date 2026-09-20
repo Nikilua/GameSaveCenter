@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R20-04 零结果恢复（2026-09-20）
+
+- 任务中心已有条件摘要、`FilterEmpty` 状态和清除命令，继续复用；游戏选框、媒体中心和云端队列补齐用户可见的条件摘要与清除入口。清除只重置筛选并重新查询，不触碰真实存档、媒体或队列记录。
+- 云端队列用 `CloudTransferLoadFailed` 区分读取异常和真实零结果；媒体仍由 `WorkspaceDataState` 区分 Empty/Offline/Error/Stale，游戏选框保留虚拟化列表和选中项恢复路径。`FilterConditionSummaryTests` 覆盖实际游戏选框清除命令及云端读取失败负例。
+- 定向行为 `26/26`；受影响套件 `171 passed / 3 failed / 50 skipped / 224 total`，3 条失败是未改动的设置字段、空态覆盖层、下拉模板基线；隔离 Playnite/Tests `0 errors / 2` 既有 nullable warning，source/XAML/diff 通过。实现提交 `cf09f3f6`。
+- 只用合成/fake/隔离目录，真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md`。
+- 下一项 `R20-05`：核对 stale 的最后成功时间、失败原因、重试入口与保留的只读数据。
+
 ## 第三轮 R20-03 首次配置引导（2026-09-20）
 
 - 复核确认 `1a90cd06` 已提供 `EnvironmentCheckCard`、`EnvironmentCheckService`、`OnboardingCompleted` 以及运行检查/完成/跳过/测试备份命令；完成只接受最近无失败检查，跳过明确可在维护中心重新运行，检查卡不强制导航。测试备份复用手动 `BackupSelectedAsync`，不会自动执行或改外部工具配置。

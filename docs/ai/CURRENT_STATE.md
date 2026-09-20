@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-04 零结果恢复（已满足，待环境验证）
+
+- 复用任务中心已有 `TaskActiveFiltersSummary`/`ClearTaskFiltersCommand`/`FilterEmpty`；游戏选框新增条件摘要和空结果清除搜索/筛选；媒体空态复用 `WorkspaceDataState` 与既有清除命令；云端队列新增条件摘要、清除命令和读取失败状态。所有清除动作只改筛选字段，不重置用户数据、存档或媒体。
+- 云端读取异常通过 `CloudTransferLoadFailed` 分流，空列表显示“这不是零结果”并保留刷新队列入口；媒体仍保留离线/错误/过期状态语义。现有游戏选框与滚动条、命令绑定、取消/恢复语义和有限列表路径未替换。
+- 定向行为 `26/26`；受影响 UI/源码套件 `171 passed / 3 failed / 50 skipped / 224 total`，3 条是未改动的设置字段、空态覆盖层、下拉模板既有基线。Playnite `net462` / Tests `net472` 隔离构建 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。提交 `cf09f3f6`。
+- 仅用合成/fake/隔离 testhost/目录；真实 Playnite/package-host、媒体/云端、呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能未验。Demo 原目录不可用，main 用户改动未碰且未合并。证据见 `evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md`。
+- 下一项：`R20-05` Stale 可理解，先查各工作区最后成功时间、失败原因、重试入口和 stale 时可用只读数据是否保持。
+
 ## 当前第三轮 R20-03 首次配置引导（已满足，待环境验证；本阶段无生产代码变更）
 
 - 当前分支祖先 `1a90cd06` 已实现首次使用引导：维护页 `EnvironmentCheckCard`、`EnvironmentCheckService` 非破坏性检查、`OnboardingCompleted` 完成标记、跳过/完成/重新检查和复用真实手动备份管道的测试入口。没有强制跳转或自动修改外部工具配置。
