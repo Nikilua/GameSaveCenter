@@ -255,6 +255,39 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaCenterListExposesSemanticNameAndSelectionState()
+    {
+        var root = TestRepositoryContext.Root;
+        var media = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        Assert.Contains("x:Name=\"MediaGrid\"", media);
+        Assert.Contains("SelectionMode=\"Extended\" AutomationProperties.Name=\"当前游戏媒体列表\"", media);
+
+        RunSta(() =>
+        {
+            var list = new ListBox
+            {
+                ItemsSource = new[] { "媒体 A", "媒体 B" },
+                SelectionMode = SelectionMode.Extended,
+                SelectedIndex = 0
+            };
+            AutomationProperties.SetName(list, "当前游戏媒体列表");
+
+            using var host = new PeerHost(list);
+            var peer = GetPeer(list);
+            Assert.Equal("当前游戏媒体列表", peer.GetName());
+
+            var selection = Assert.IsAssignableFrom<ISelectionProvider>(peer.GetPattern(PatternInterface.Selection));
+            Assert.True(selection.CanSelectMultiple);
+            Assert.Single(selection.GetSelection());
+
+            list.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("媒体 B", list.SelectedItem);
+            Assert.Single(selection.GetSelection());
+        });
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
