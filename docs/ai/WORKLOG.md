@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-08 低性能降级触发
+
+- 先复核既有能力：`AdaptiveThemePaletteFactory.ApplyMaterialResources` 在 glass=false 时使用真实 null Effect、关闭 PopupAnimation/环境层；`GscMotion.IsEnabled` 与 `NormalizeAll` 已处理系统/用户无动画回退；已有 `lowcostprobe` 具备双主题、六工作区、两尺寸和文本/溢出门禁。
+- 首次模拟运行保留了实际失败：Media Inspector 的 `MediaClassificationPreviewItems` 在 1600×900 产生 unnamed 可见水平 ScrollViewer；可视树定位到 ListBox，确认不是只应排除的 TextBox `PART_ContentHost`。`3bfe3d3c` 为 preview/history ListBox 增加 Horizontal Disabled，同时让 harness 区分合法输入框内容滚动、DataGrid 横向滚动和真正页面溢出。
+- clean-tree lowcostprobe 最终 `24/24`：Effects null、PopupTransparency=False、PopupAnimation=None、visibleEffects=0、文本 4–147、unexpectedOverflow 全 0，`lowcostprobe OK`；Media/Trainer Light 代表图已查看。Release `0 errors/2 条既有 warning`。
+- 直接相关回归 `37/37`，`validate-source.py`、diff 通过；联合 R14 筛选 40 pass/2 fail/42，失败是旧 R14 源断言（旧 SourceRule 文本、误判 TabControl SelectedIndex），未改动也未冒充通过。
+- 只使用隔离 WPF/offscreen logical DIP 与合成数据，未验真实 Render Tier/GPU、Playnite package-host、DPI/UIA/ETW/屏幕帧，未写真实数据。Demo 原目录不可用。下一可执行任务：`R19-01` 异步竞态与故障恢复入口。
+
 ## 2026-09-20 R18-07 长时资源曲线
 
 - 先查既有 Q25-04 `RunEnduranceProbe`，确认已经覆盖真实 Dispatcher Window、六工作区、Light/Dark、Media 预览/详情、250ms 动作循环和约 10 秒样本；本阶段只补资源序列字段，没有重建耐久脚本。

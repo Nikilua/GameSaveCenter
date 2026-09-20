@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-08 低性能降级触发（已满足，明确模拟完成；真实 Render Tier 待验）
+
+- `3bfe3d3c` 先复用现有 `AdaptiveThemePaletteFactory` 的 null Effect/不透明表面/环境层关闭、`GscMotion.IsEnabled` 与 `NormalizeAll`；lowcostprobe 明确传入 `glassEnabled=false, motionEnabled=false`，没有引入新的主题体系或硬件检测假象。
+- clean-tree Release RenderHarness 在六工作区、Light/Dark、1040×700/1600×900 共 24 组合通过：资源 Effects 全为 null、PopupTransparency=False、PopupAnimation=None、环境层 opacity=0，`visibleEffects=0`，可见文本 `4–147`，非输入框 `unexpectedOverflow=0`，最终 `lowcostprobe OK`。代表 Media/Trainer Light 图已检查。
+- 首轮诊断发现 Media Inspector 的 `MediaClassificationPreviewItems` 在横向 Auto 下造成真实可见水平溢出；生产 XAML 同时为 preview/history ListBox 明确 `HorizontalScrollBarVisibility=Disabled`，保留垂直有限列表、Recycling 和路径 TextBox 的合法内容滚动。证据见 `evidence/R18-08-LOW-PERFORMANCE-FALLBACK-20260920.md`，原始输出在 `.tmp/r18-08-lowcost-final-clean/`。
+- 直接相关回归 `37/37`、Release `0 errors/2 existing MediaCenter nullable warnings`、source/diff 通过。联合 R14 筛选 `40 passed/2 failed/42` 的两条是既有旧源码断言，不归入本项通过。
+- 这只覆盖明确模拟的无玻璃/无动画回退，不是硬件 `RenderCapability.Tier` 或真实低 Tier GPU 证据；真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 和宿主性能仍未验。Demo 原目录不可用。下一项：`R19-01` 异步竞态与故障恢复入口。
+
 ## 当前第三轮 R18-07 长时资源曲线（已满足，受控验证完成；真实宿主待验）
 
 - `56d8e1b7` 扩展既有 `RunEnduranceProbe`，复用原有合成六工作区/Light-Dark/Media 预览/详情动作，保留每次原始样本，并增加 managed/private/working set、threads/handles、探针可见 timers、反射可见托管事件委托、`HasAnimatedProperties` 代理和 `AsyncThumbnailLoader` 缓存诊断；无强制 GC。

@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-08 低性能降级触发（2026-09-20）
+
+- `3bfe3d3c` 复用现有无玻璃/无动画回退：`AdaptiveThemePaletteFactory` 使用真实 null Effect 和不透明表面，`GscMotion` 继续受用户设置、高对比度和 `ClientAreaAnimation` 约束；RenderHarness 只做明确 `glass=false/motion=false` 模拟，不伪造 Render Tier。
+- clean-tree lowcostprobe 覆盖六工作区、双主题、1040×700/1600×900 共 24 组合，资源回退全部符合预期：Effects null、PopupTransparency=False、PopupAnimation=None、环境层 opacity=0、visibleEffects=0、可见文本 4–147、非输入框 unexpectedOverflow=0、`lowcostprobe OK`。
+- 首轮诊断定位 Media Inspector `MediaClassificationPreviewItems` 的真实水平溢出，原因是 ListBox 横向 Auto 让内部 StackPanel 无限宽测量；修复 preview/history 两个列表为 Horizontal Disabled，保留垂直有限列表、Recycling、路径 TextBox 合法内容滚动。证据：`R18-08-LOW-PERFORMANCE-FALLBACK-20260920.md`；原始目录：`.tmp/r18-08-lowcost-final-clean/`。
+- 直接相关测试 `37/37`，Release `0 errors/2 existing MediaCenter nullable warnings`，source/diff 通过；联合 R14 筛选的 2 个旧源码断言失败单独记录，不能写成全量通过。
+- 这不是真实低 Tier GPU、RenderCapability.Tier、Playnite host、物理 DPI/跨屏、UIA/读屏、presented frame 或 ETW 证据。Demo 原目录不可用。下一可执行任务：`R19-01` 异步竞态与故障恢复入口。
+
 ## 第三轮 R18-07 长时资源曲线（2026-09-20）
 
 - `56d8e1b7` 复用既有 `RunEnduranceProbe`，保留原始时间序列并记录托管堆、私有字节、工作集、线程、句柄、探针可见计时器、反射可见托管事件委托、`HasAnimatedProperties` 动画持有者代理和缩略图缓存诊断；不强制 GC，不把代理指标扩大解释。
