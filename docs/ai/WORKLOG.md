@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 MediaCenter 收藏开关名称与状态（续作小批量）
+
+- `42f5744d` 已提交并待推送：复用 MediaCenter 现有 `MediaFavorite` Binding 和 ToggleSwitch，仅补稳定 Automation 名称“收藏当前媒体”，不改命令、服务、DTO 或媒体写入语义。
+- 新增实际 WPF Peer 行为证据：名称、`Off → On → Off` 回切负例；`R21AutomationValueBehaviorTests 13/13`，相关回归 `61/61`。
+- D 盘源码副本以 `GscBuildCommit=42f5744d` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。首次 `working-tree` 身份不一致被测试夹具拒绝，统一提交身份后已重跑通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：继续盘点 MediaCenter 备注/元数据动作和其他逐控件状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 SaveCenter 策略控件外置标签与状态（续作小批量）
 
 - `e1fadaab` 已提交并推送：不改生产 XAML，复用 SaveCenter 四个策略开关、异常保护/策略模板选择器和锁定版本 CheckBox 的标签、Binding 与 Automation 名称，补实际 WPF peer 名称与状态/选值变化证据。

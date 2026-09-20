@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 MediaCenter 收藏开关名称与状态（2026-09-21，续作小批量）
+
+- 先复用现有 MediaCenter 详情 `MediaFavorite` Binding、ToggleSwitch 和共享样式；实际缺口只有收藏开关缺稳定 Automation 名称。`42f5744d` 仅补 `AutomationProperties.Name="收藏当前媒体"`，没有改变 Binding、开/关内容、命令、服务、DTO 或媒体写入语义。
+- `MediaCenterFavoriteToggleExposesSemanticState` 用实际 WPF AutomationPeer 验证名称及 `Off → On → Off` 状态往返，覆盖回切负例；`R21AutomationValueBehaviorTests 13/13`，相关套件 `61/61`。
+- 显式提交身份 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 nullable warning；source/XAML/diff 与 WPF `0/27/177` 通过。未提交身份初跑被源码身份门拒绝，统一提交哈希后重跑通过。
+- 仍只代表合成/fake/隔离 testhost；链接 `_wpftmp` `Access denied`、真实 Playnite/package-host、UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能待验；Demo 原目录不可用，main 用户改动未碰未合并。R21-02 继续做其他逐控件状态/值负例，后续 `R21-03`。
+
 ## 第三轮 R21-02 SaveCenter 策略控件外置标签与状态（2026-09-21，续作小批量）
 
 - `e1fadaab` 不改生产 XAML，复用 SaveCenter 既有策略 ToggleSwitch、异常保护/策略模板 ComboBox、锁定版本 CheckBox 的标签、选项来源、Binding 与 Automation 名称，补 WPF peer 名称和 Off/On、选值变化证据；没有新造服务、DTO、命令或存档写入语义。

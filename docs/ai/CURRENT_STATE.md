@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 MediaCenter 收藏开关名称与状态（实现中，待继续）
+
+- `42f5744d` 先查已有 `MediaFavorite`、ToggleSwitch、样式和绑定，只补 MediaCenter 当前媒体收藏开关缺失的 `AutomationProperties.Name="收藏当前媒体"`；保留原有 Binding、开/关语义、命令体系和布局，没有新增服务、DTO 或写入语义。
+- `R21AutomationValueBehaviorTests 13/13`，相关进度/焦点/键盘/无障碍/生产壳层回归 `61/61`；实际 WPF peer 验证名称与 `Off → On → Off` 回切负例。提交身份 D 盘源码副本 Release 为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。
+- 首次未提交 source-copy 测试因 `working-tree` 与源码根 HEAD 不一致被身份夹具拒绝；提交后统一 `GscBuildCommit=42f5744d` 重建并 `61/61` 通过。链接工作树 `_wpftmp` 的 `Access denied` 未绕过，本批 source-copy/build 已清理。
+- 真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续其他逐控件状态/值负例，之后进入 `R21-03`。
+
 ## 当前第三轮 R21-02 SaveCenter 策略控件外置标签与状态（实现中，待继续）
 
 - `e1fadaab` 不改生产 XAML，复用 SaveCenter 已有四个策略 ToggleSwitch、异常保护/策略模板 ComboBox、锁定版本 CheckBox 的标签、Binding 与 Automation 名称，补实际 WPF peer 名称和状态/值变化证据；没有新增服务、DTO、命令或存档写入。
