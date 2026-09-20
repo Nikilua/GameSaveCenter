@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-06 生效条件说明
+
+- 追踪确认设置保存链为 `EndEdit` 保存并触发视觉变更，再由插件发送 `settings.update`；Worker 应用运行时选项并重算健康计划。四个设置分类旁补充具体生效条件：外观即时预览/保存后重建、下一任务、下一轮检查和下一次 Playnite 启动。
+- 没有发现普通设置必须重启 Playnite 的消费点，未把所有字段标为重启；保留云端时段和安全模式已有边界。命令/Binding、保存取消、Worker 更新和安全语义未改。
+- 验证：提交后当前身份定向链路/负例与 R16-05 路径回归 `8/8`；Release solution `0 errors/2 warnings`（既有 MediaCenter nullable）；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。真实 Playnite/package-host 时序、最终呈现、DPI/UIA/IME、ETW/宿主性能仍待验。
+- 已提交并推送 `83e7c745` 到 `origin/codex/ui-finesse-round2`。Demo 原目录不可用，main 用户改动未碰、未合并。证据：[R16-06 生效条件说明](../design/reviews/ui-finesse-round3-20260915/evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md)。下一可执行任务：`R16-07 配置导入预览`。
+
 ## 2026-09-20 R16-05 路径编辑一致
 
 - 核对确认原设置页只有全量异步路径校验、粘贴标准化和导入/导出，没有统一的路径浏览、单字段校验、严格打开和复制入口；新增统一路径编辑卡片，复用六个本地工具/目录字段的现有 Binding，排除 Rclone 云端目标。

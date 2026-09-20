@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R16-06 生效条件说明（2026-09-20）
+
+- `83e7c745` 复核 `GameSaveCenterSettings.EndEdit`、插件 `settings.update` 和 Worker `UpdateSettings`/健康计划链路，在四个设置分类标题旁标注即时预览、保存后即时、下一任务/轮询边界和下一次 Playnite 启动。
+- 当前没有普通设置必须重启 Playnite 的消费证据；Worker 可执行文件、随 Playnite 启动 Worker 和下次安全模式分别是下一 Worker/Playnite 生命周期判断，不被写成笼统重启。
+- R16-06 链路/负例 + R16-05 路径回归 `8/8`，Release solution `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff、WPF `0/28/162` 通过；真实宿主时序仍待验。证据：`R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md`。
+- 下一项：`R16-07 配置导入预览`，先复用 `ImportPortableJson`/报告能力，核对版本、未知字段、凭据和失败回退。
+
 ## 第三轮 R16-05 路径编辑一致（2026-09-20）
 
 - `955dc52e` 复用设置页现有 Binding、全量 `SettingsPathValidationService`、路径粘贴标准化和 `ClipboardRetry`，新增六个本地工具/目录字段共用的浏览/校验/打开/复制入口；云端目标继续是远端文本，不当作本地目录打开。

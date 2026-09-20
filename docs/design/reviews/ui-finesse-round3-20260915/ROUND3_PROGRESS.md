@@ -139,7 +139,7 @@
 | R16-03 | 模板应用范围 | 已实现，待环境验证 | 52fbf5de | 外部隔离 Release solution `0 errors/2 条既有 warning`；Core 批量预览 `3/3`、Playnite 源契约 `1/1`、Worker 策略持久化 `2/2`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/177` | 复用现有模板/策略 DTO、归一化和 Worker IPC；新增明确勾选目标、排除项、变更字段数、筛选后稳定 ID 保留、100 个上限、逐项失败/重试；单项仍按游戏锁和审计路径处理 | 未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；fresh restore 在外部副本无诊断退出，构建复核使用已授权隔离副本的现有 `obj` 资产和 `--no-restore`；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并 | [R16-03 模板应用范围](evidence/R16-03-POLICY-TEMPLATE-BATCH-20260920.md)；下一项 `R16-04 恢复默认粒度`，先核对现有设置恢复入口与敏感连接字段保护 |
 | R16-04 | 恢复默认粒度 | 已实现，待环境验证 | 2b194461 | 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-04 行为/取消 `2/2`、源码接线 `1/1`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/177` | 新增单字段、单分类、全部默认三个范围；确认文案列出影响；全部默认只重置安全标量/界面偏好，保留 Worker/Ludusavi/Rclone、存档/媒体/镜像路径、云端目标和设备身份；同一 Playnite 草稿重绑不结束编辑，取消仍恢复原草稿 | 未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；构建沿用隔离副本已有 `obj` 的 `--no-restore` 复核，未宣称 fresh restore；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并 | [R16-04 恢复默认粒度](evidence/R16-04-RESET-GRANULARITY-20260920.md)；下一项 `R16-05 路径编辑一致`，先核对路径浏览/校验/打开/复制现有入口 |
 | R16-05 | 路径编辑一致 | 已实现，待环境验证 | 955dc52e | 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-05 定向行为/源码/路径回归 `6/6`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/162` | 六个本地工具/目录字段共用当前字段编辑模式；浏览按类型选择，单字段只读探测区分有效/缺失/网络不可达/无权限；打开只处理当前有效路径，复制复用脱敏与剪贴板重试；远端目标排除；取消浏览不改草稿 | 未验真实 Playnite/package-host、WinForms 文件夹对话框归属、Explorer 动作、最终浅深主题呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；未用真实网络共享/用户 ACL/剪贴板；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R16-05 路径编辑一致](evidence/R16-05-PATH-EDITOR-20260920.md)；下一项 `R16-06 生效条件说明`，先查设置字段实际消费点 |
-| R16-06 | 生效条件说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R16-06 | 生效条件说明 | 已实现，待环境验证 | 83e7c745 | 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-06 链路/负例与 R16-05 路径回归 `8/8`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/162` | 按真实 `EndEdit → NotifyVisualSettingsChanged → settings.update → WorkerOptions.Apply/SyncPlan` 链路标注外观即时预览、下一任务/轮询边界和下一次 Playnite 启动；明确没有笼统的重启要求 | 未验真实 Playnite/package-host 的保存后呈现、Worker 重启/轮询实际时序、最终主题、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R16-06 生效条件说明](evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md)；下一项 `R16-07 配置导入预览`，先查现有导入报告/版本/未知字段/凭据边界 |
 | R16-07 | 配置导入预览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-08 | 保存冲突处理 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R17-01 | 健康结果分层 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -488,6 +488,13 @@
 - 浏览按可执行文件/目录分别使用文件或文件夹选择器；取消选择不改草稿。`SettingsPathEditorService` 先用只读属性探测区分有效、缺失、网络/磁盘不可达、类型错误和无权限，再做只读目录枚举；打开必须通过当前字段有效探测，不回退到父目录；复制复用 `ClipboardValueSanitizer` 与 `ClipboardRetry`，失败保留字段并反馈。
 - 合成隔离行为、既有路径回归和源契约定向 `6/6`；外部隔离 Release solution `0 errors/2 warnings`，warning 为既有 `MediaCenterView.xaml.cs:664` nullable；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。未用真实网络共享、用户 ACL、剪贴板或 Explorer；未验真实 Playnite/package-host、最终呈现、DPI/UIA/IME、RenderHarness、ETW 或宿主性能。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-05 路径编辑一致](evidence/R16-05-PATH-EDITOR-20260920.md)。
 - 下一可执行小批量：`R16-06 生效条件说明`，先查设置字段实际消费点、保存/应用/重启边界，再补不笼统的生效提示和负例证据。
+
+## 2026-09-20 Round3 R16-06 生效条件说明
+
+- `83e7c745` 追踪现有设置消费链：Playnite `GameSaveCenterSettings.EndEdit` 保存后触发视觉变更并调用 `ApplySettingsAsync`，插件通过 `settings.update` 发送 `ToWorkerSettings`，Worker `UpdateSettings` 应用运行时选项并重算健康巡检计划。没有新增另一个配置源或要求重启的泛化规则。
+- 设置页四个分类标题旁标注实际边界：外观当前页即时预览、保存后已打开页面即时重建；工具/目录和备份参数从下一次新任务读取；轮询/队列/健康计划在下一轮边界读取；随 Playnite 启动 Worker、下次安全模式在下一次启动判断。已有云端时段文案继续保留“下一轮 Worker 检查”。
+- 当前提交重新编译后的链路/负例与 R16-05 路径回归 `8/8`；外部隔离 Release solution `0 errors/2 warnings`，warning 为既有 `MediaCenterView.xaml.cs:664` nullable；source/XAML/diff、WPF `0/28/162` 通过。未验真实宿主保存后时序、最终呈现、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-06 生效条件说明](evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md)。
+- 下一可执行小批量：`R16-07 配置导入预览`，先复用现有 `ImportPortableJson`/导入报告能力，核对版本、未知字段、凭据和失败回退边界。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

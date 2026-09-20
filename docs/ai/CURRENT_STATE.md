@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-06 生效条件说明（代码已提交，受控验证完成；真实宿主待验）
+
+- `83e7c745` 追踪并标注现有 `EndEdit → NotifyVisualSettingsChanged → ApplySettingsAsync → settings.update → WorkerOptions.Apply/SyncPlan` 链路：外观保存后即时重建，工具/目录/备份从下一任务读取，轮询/队列/健康计划按下一轮边界读取，启动类开关只影响下一次 Playnite 启动。
+- 设置页四个分类标题旁新增生效条件说明，明确当前页预览与保存后的范围；没有把普通设置笼统写成需要重启 Playnite，继续保留云端时段和安全模式的已有边界说明。
+- 当前提交重新编译后 R16-06 链路/负例 + R16-05 路径回归 `8/8`；外部隔离 Release solution `0 errors/2 warnings`（既有 MediaCenter nullable）；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 未验真实 Playnite/package-host 保存后时序、Worker 重启/轮询呈现、最终主题、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md`。
+- 下一项：`R16-07 配置导入预览`，先核对现有导入报告、版本、未知字段、凭据和失败回退。
+
 ## 当前第三轮 R16-05 路径编辑一致（代码已提交，受控验证完成；真实宿主待验）
 
 - `955dc52e` 在核对既有全量异步路径校验、粘贴标准化和导入/导出后，新增设置页统一“路径编辑”卡片，复用六个本地工具/目录 TextBox Binding；浏览按文件/目录类型选择，Rclone 云端目标不进入本地打开流程。
