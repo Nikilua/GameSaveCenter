@@ -747,3 +747,10 @@
 - 提交身份 `GscBuildCommit=806d5a27` 的 D 盘源码副本 Release 构建为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/162`，未见本批新增诊断。
 - 证据来自生产 MediaCenter XAML、合成 DTO/隔离 ViewModel 和 WPF peer；不代表真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、最终呈现或宿主性能。链接工作树 `_wpftmp.csproj` 写入遇 `Access denied` 未绕过；Demo 原目录不可用，main 用户改动未碰、未合并；本批 source-copy/build 已清理。证据见 [R21-02 MediaCenter 媒体详情位置](evidence/R21-02-MEDIA-NAVIGATION-VALUE-20260921.md)。
 - 当前不签收整项 R21-02：下一可执行小批量是继续其他逐控件状态/值负例；完成公共门禁后进入 `R21-03`。
+
+## 2026-09-21 Round3 R21-02 TaskCenter 任务进度 UIA 值与状态边界（续作小批量）
+
+- `6b56a467` 复用既有 `TaskStatusDto.ProgressValue`、`ProgressDisplay` 和 TaskCenter 生产 Binding，只新增实际 WPF `ProgressBar`/`AutomationPeer` 行为证据；正常 `42`、未知 `-1`、越界 `120` 分别验证 UIA `RangeValue`、`0–100` 范围和 HelpText，未知保持 `—`，没有伪装成有效百分比，也没有修改生产代码。
+- `R21AutomationValueBehaviorTests` 当前 `20/20`；`R21AutomationValueBehaviorTests | R06TaskProgressBehaviorTests | R03NumericAlignmentTests` `34/34`。提交后 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/162` 通过。
+- 证据来自生产 TaskCenter XAML、既有 DTO/投影、合成 WPF `ProgressBar` peer、fake/隔离 testhost/source-copy；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、最终呈现和宿主性能仍待验。链接工作树 `_wpftmp.csproj` 写入遇 `Access denied` 未绕过；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据见 [R21-02 TaskCenter 任务进度 UIA](evidence/R21-02-TASK-PROGRESS-PEER-20260921.md)。
+- 当前不签收整项 R21-02：剩余复合选择器及逐控件状态/值负例仍需逐项核对；下一可执行小批量继续这些边界，公共门禁完成后再进入 `R21-03` 验证错误播报。

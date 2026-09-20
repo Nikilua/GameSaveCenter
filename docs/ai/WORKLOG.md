@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 TaskCenter 任务进度 UIA 值与状态边界（续作小批量）
+
+- `6b56a467` 已完成：复用 TaskCenter 既有 `ProgressValue`/`ProgressDisplay` 与生产 Binding，新增实际 WPF `ProgressBar`/`AutomationPeer` 行为证据，覆盖正常 `42`、未知 `-1`、越界 `120`，没有修改生产代码或业务语义。
+- `R21AutomationValueBehaviorTests 20/20`；`R21AutomationValueBehaviorTests | R06TaskProgressBehaviorTests | R03NumericAlignmentTests` `34/34`。验证了 UIA 名称、`RangeValue` 的 `0–100` 范围、正常值、未知值 `HelpText=—` 和越界钳制。
+- D 盘 source-copy 以 `GscBuildCommit=6b56a467a3143285b680122e82e6cc5d26c2678d` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接工作树 `_wpftmp.csproj` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成 DTO、fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。真实 Playnite host、Windows UIA/读屏、呈现、DPI/IME、性能仍未验。
+- 下一可执行任务：继续 R21-02 剩余复合选择器与逐控件状态/值负例；公共门禁完成后进入 R21-03 错误播报。
+
 ## 2026-09-21 R21-02 MediaCenter 媒体详情位置值与导航边界（续作小批量）
 
 - `806d5a27` 已完成：先复用生产 `MediaDetailNavigationDisplay` 与前后导航状态，新增实际行为证据覆盖未选择、首项 `1 / 2`、末项 `2 / 2` 及两端不可导航负例，没有修改生产媒体业务语义。
