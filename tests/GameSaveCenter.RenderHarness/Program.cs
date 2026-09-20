@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -892,7 +893,7 @@ public static class Program
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine("Host: real WPF STA Window with opacity 0.01; Playnite host and user input are not inferred");
         report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, Light/Dark theme");
-        report.AppendLine("Memory: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64; no forced GC in this probe");
+        report.AppendLine("Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe");
         report.AppendLine($"DurationTargetSeconds: {durationSeconds}");
         AppendRunMetadata(
             report,
@@ -968,6 +969,8 @@ public static class Program
             void RecordSample(bool final)
             {
                 process.Refresh();
+                var resourceRoots = pages.Select(item => item.View).Cast<UserControl>().Concat(new[] { shell }).ToArray();
+                var thumbnailDiagnostics = AsyncThumbnailLoader.CaptureDiagnostics();
                 var sample = new EnduranceSample
                 {
                     ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
@@ -978,14 +981,25 @@ public static class Program
                     PrivateBytes = process.PrivateMemorySize64,
                     WorkingSetBytes = process.WorkingSet64,
                     ThreadCount = process.Threads.Count,
-                    HandleCount = process.HandleCount
+                    HandleCount = process.HandleCount,
+                    ActiveTimerCount = CountEnabledDispatcherTimers(resourceRoots)
+                        + (actionTimer?.IsEnabled == true ? 1 : 0),
+                    ManagedEventHandlerCount = CountManagedEventHandlers(resourceRoots),
+                    AnimatedOwnerCount = CountAnimatedOwners(resourceRoots),
+                    ThumbnailCacheCount = thumbnailDiagnostics.CacheCount,
+                    ThumbnailCacheLimit = thumbnailDiagnostics.CacheLimit,
+                    ActiveThumbnailDecodes = thumbnailDiagnostics.ActiveDecodes
                 };
                 samples.Add(sample);
                 report.AppendLine(
                     $"SAMPLE elapsed_s={sample.ElapsedSeconds:0.0} cycle={sample.Cycle} "
                     + $"page={sample.Page} theme={sample.Theme} managed={sample.ManagedBytes} "
                     + $"private={sample.PrivateBytes} workingSet={sample.WorkingSetBytes} "
-                    + $"threads={sample.ThreadCount} handles={sample.HandleCount} final={final}");
+                    + $"threads={sample.ThreadCount} handles={sample.HandleCount} "
+                    + $"timers={sample.ActiveTimerCount} subscriptions={sample.ManagedEventHandlerCount} "
+                    + $"animated_owners={sample.AnimatedOwnerCount} "
+                    + $"thumb_cache={sample.ThumbnailCacheCount}/{sample.ThumbnailCacheLimit} "
+                    + $"thumb_active={sample.ActiveThumbnailDecodes} final={final}");
                 lastSampleAt = stopwatch.Elapsed;
                 reportFlush();
             }
@@ -1192,7 +1206,11 @@ public static class Program
             + $"managed_slope_bytes_per_min={managedSlope:0.##}");
         report.AppendLine(
             $"SUMMARY resources_first=threads:{first.ThreadCount},handles:{first.HandleCount} "
-            + $"resources_last=threads:{last.ThreadCount},handles:{last.HandleCount}");
+            + $"timers:{first.ActiveTimerCount},subscriptions:{first.ManagedEventHandlerCount},animated_owners:{first.AnimatedOwnerCount},"
+            + $"thumb_cache:{first.ThumbnailCacheCount}/{first.ThumbnailCacheLimit} "
+            + $"resources_last=threads:{last.ThreadCount},handles:{last.HandleCount} "
+            + $"timers:{last.ActiveTimerCount},subscriptions:{last.ManagedEventHandlerCount},animated_owners:{last.AnimatedOwnerCount},"
+            + $"thumb_cache:{last.ThumbnailCacheCount}/{last.ThumbnailCacheLimit}");
         if (actionDurationsMs.Count > 0)
         {
             var actionP95 = CalculatePercentile(actionDurationsMs, 0.95);
@@ -1249,6 +1267,88 @@ public static class Program
         public long WorkingSetBytes { get; set; }
         public int ThreadCount { get; set; }
         public int HandleCount { get; set; }
+        public int ActiveTimerCount { get; set; }
+        public int ManagedEventHandlerCount { get; set; }
+        public int AnimatedOwnerCount { get; set; }
+        public int ThumbnailCacheCount { get; set; }
+        public int ThumbnailCacheLimit { get; set; }
+        public int ActiveThumbnailDecodes { get; set; }
+    }
+
+    private static int CountEnabledDispatcherTimers(IEnumerable<UserControl> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            foreach (var value in ReadInstanceFieldValues(root))
+            {
+                if (value is DispatcherTimer timer && timer.IsEnabled)
+                {
+                    count++;
+                    continue;
+                }
+
+                if (value is IDictionary dictionary)
+                {
+                    foreach (DictionaryEntry entry in dictionary)
+                    {
+                        if (entry.Value is DispatcherTimer dictionaryTimer && dictionaryTimer.IsEnabled)
+                            count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static int CountManagedEventHandlers(IEnumerable<UserControl> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            foreach (var value in ReadInstanceFieldValues(root))
+            {
+                if (value is Delegate handler)
+                    count += handler.GetInvocationList().Length;
+            }
+        }
+
+        return count;
+    }
+
+    private static int CountAnimatedOwners(IEnumerable<UserControl> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            if (root.HasAnimatedProperties)
+                count++;
+            count += FindVisualChildren<UIElement>(root).Count(element => element.HasAnimatedProperties);
+        }
+
+        return count;
+    }
+
+    private static IEnumerable<object?> ReadInstanceFieldValues(object instance)
+    {
+        for (var type = instance.GetType(); type != null && type != typeof(object); type = type.BaseType)
+        {
+            foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly))
+            {
+                object? value;
+                try
+                {
+                    value = field.GetValue(instance);
+                }
+                catch (FieldAccessException)
+                {
+                    continue;
+                }
+
+                yield return value;
+            }
+        }
     }
 
     private static void CaptureOverviewEdgeFixture(

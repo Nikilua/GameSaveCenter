@@ -331,6 +331,13 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("GC.GetTotalMemory(false)", probe);
         Assert.DoesNotContain("GC.Collect", probe);
         Assert.Contains("workspace navigation, Media preview segment", probe);
+        Assert.Contains("HandleCount", probe);
+        Assert.Contains("WorkingSetBytes", probe);
+        Assert.Contains("ActiveTimerCount", probe);
+        Assert.Contains("ManagedEventHandlerCount", probe);
+        Assert.Contains("AnimatedOwnerCount", probe);
+        Assert.Contains("ThumbnailCacheCount", probe);
+        Assert.Contains("thumb_cache=", probe);
     }
 
     [Fact]
