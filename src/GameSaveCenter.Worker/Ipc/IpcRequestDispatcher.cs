@@ -163,6 +163,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.PathRemap=>await _pathRemap.RemapAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewPathRemap=>await _pathRemap.PreviewAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ReconcileTasks=>await _taskReconcile.ReconcileAsync(token).ConfigureAwait(false),
+                MessageTypes.PreviewDiagnosticsPackage=>_diagnostics.Preview(Read<CreateDiagnosticsPackageRequestDto>(request)),
                 MessageTypes.CreateDiagnosticsPackage=>await _diagnostics.CreateAsync(Read<CreateDiagnosticsPackageRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.StorageAnalysis=>await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false),
                 MessageTypes.PreviewRetentionSimulation=>await _retentionSimulation.PreviewAsync(token).ConfigureAwait(false),

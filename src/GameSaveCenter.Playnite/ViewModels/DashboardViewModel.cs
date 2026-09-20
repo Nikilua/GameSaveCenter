@@ -3387,26 +3387,33 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CreateDiagnosticsPackageAsync()
         {
             var windowDip = TryGetMainWindowDipSize();
+            var request = new CreateDiagnosticsPackageRequestDto
+            {
+                PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
+                PluginBuildIdentity = BuildIdentity.ForAssembly(System.Reflection.Assembly.GetExecutingAssembly()),
+                PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown",
+                ThemeMode = plugin.Settings.ThemeMode.ToString(),
+                CurrentWorkspace = CurrentWorkspace.ToString(),
+                Scenario = "manual-diagnostics-package",
+                EvidenceSource = "RealPlaynite",
+                WindowWidthDip = windowDip.Width,
+                WindowHeightDip = windowDip.Height,
+                LoadedItemCount = GetLoadedDiagnosticItemCount(),
+                DpiScale = TryGetDpiScale(),
+                ScreenCount = TryGetScreenCount()
+            };
+            var preview = await plugin.RequestAsync<DiagnosticsPackagePreviewDto>(
+                MessageTypes.PreviewDiagnosticsPackage, request, TimeSpan.FromSeconds(30));
+            if (!await plugin.ConfirmAsync("确认生成诊断包", preview.ConfirmationText, "生成", "取消"))
+            {
+                StatusMessage = "已取消生成诊断包；未写入诊断 ZIP，未上传任何内容。";
+                return;
+            }
+
             var result = await plugin.RequestAsync<DiagnosticsPackageResultDto>(
-                MessageTypes.CreateDiagnosticsPackage,
-                new CreateDiagnosticsPackageRequestDto
-                {
-                    PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
-                    PluginBuildIdentity = BuildIdentity.ForAssembly(System.Reflection.Assembly.GetExecutingAssembly()),
-                    PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown",
-                    ThemeMode = plugin.Settings.ThemeMode.ToString(),
-                    CurrentWorkspace = CurrentWorkspace.ToString(),
-                    Scenario = "manual-diagnostics-package",
-                    EvidenceSource = "RealPlaynite",
-                    WindowWidthDip = windowDip.Width,
-                    WindowHeightDip = windowDip.Height,
-                    LoadedItemCount = GetLoadedDiagnosticItemCount(),
-                    DpiScale = TryGetDpiScale(),
-                    ScreenCount = TryGetScreenCount()
-                },
-                TimeSpan.FromMinutes(3));
-            StatusMessage = result.Summary;
-            plugin.ShowInfo($"诊断包已生成：{Path.GetFileName(result.PackagePath)}");
+                MessageTypes.CreateDiagnosticsPackage, request, TimeSpan.FromMinutes(3));
+            StatusMessage = result.ResultDisplay;
+            plugin.ShowInfo(result.ResultDisplay);
             OpenPath(result.PackagePath);
         }
 

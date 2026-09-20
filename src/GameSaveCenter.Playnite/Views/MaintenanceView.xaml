@@ -382,7 +382,7 @@
                                             <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
                                             <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
-                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="生成不包含存档、媒体和凭据的脱敏 ZIP"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="先预览类别和脱敏范围；确认后生成，不包含存档、媒体和凭据"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyMaintenanceReportCommand}" Content="复制健康报告" Margin="0,0,8,8" ToolTip="生成用户可读健康报告并复制到剪贴板"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExportMaintenanceReportCommand}" Content="导出健康报告" Margin="0,0,8,8" ToolTip="导出为 TXT 或 Markdown 用户可读健康报告"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,8,8"/>

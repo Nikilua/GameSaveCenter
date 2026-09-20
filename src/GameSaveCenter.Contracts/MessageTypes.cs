@@ -96,6 +96,7 @@ namespace GameSaveCenter.Contracts
         public const string PathRemap = "path.remap";
         public const string PreviewPathRemap = "path.remap.preview";
         public const string ReconcileTasks = "tasks.reconcile";
+        public const string PreviewDiagnosticsPackage = "diagnostics.package.preview";
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string StorageAnalysis = "storage.analysis";
         public const string PreviewRetentionSimulation = "retention.simulation.preview";

@@ -31,6 +31,41 @@ public sealed class DiagnosticsPackageService
         _logger = logger;
     }
 
+    public DiagnosticsPackagePreviewDto Preview(CreateDiagnosticsPackageRequestDto? request)
+    {
+        var auditLimit = Math.Clamp(request?.AuditLimit ?? 300, 1, 300);
+        var taskLimit = Math.Clamp(request?.TaskLimit ?? 200, 1, 200);
+        return new DiagnosticsPackagePreviewDto
+        {
+            AuditLimit = auditLimit,
+            TaskLimit = taskLimit,
+            MaxPackageBytes = MaxTotalBytes,
+            MaxLogBytes = MaxLogBytes,
+            IncludedItems = new List<DiagnosticsPackagePreviewItemDto>
+            {
+                new() { EntryName = "README.txt", Category = "范围说明", Description = "生成时间、边界和安全限制", Redaction = "统一脱敏" },
+                new() { EntryName = "system.json", Category = "运行环境", Description = "版本、窗口、主题、规模和查询耗时", Redaction = "路径与敏感文本脱敏" },
+                new() { EntryName = "worker.json", Category = "Worker 状态", Description = "进程、协议和构建身份", Redaction = "不含业务文件内容" },
+                new() { EntryName = "dependencies.json", Category = "依赖状态", Description = "Ludusavi/Rclone 配置状态和版本占位", Redaction = "可执行路径和远端目标脱敏" },
+                new() { EntryName = "database.json", Category = "数据库摘要", Description = "schema、大小和只读完整性探针", Redaction = "不含 SQLite 数据库文件或表内容" },
+                new() { EntryName = "recent-tasks.json", Category = "任务摘要", Description = $"最近 {taskLimit} 项任务", Redaction = "错误正文和路径脱敏" },
+                new() { EntryName = "health.json", Category = "健康摘要", Description = "健康计数和开放诊断摘要", Redaction = "标题、详情和建议脱敏" },
+                new() { EntryName = "settings.json", Category = "Worker 设置摘要", Description = "Worker 设置 DTO", Redaction = "写入 ZIP 前统一脱敏" },
+                new() { EntryName = "audit.txt", Category = "审计摘要", Description = $"最近 {auditLimit} 条审计记录", Redaction = "消息、详情和路径脱敏" },
+                new() { EntryName = "logs/*-worker-launch.log", Category = "日志尾部", Description = $"每个日志最多 {MaxLogBytes / 1024} KiB", Redaction = "逐段脱敏；无文件时不包含", Optional = true }
+            },
+            ExcludedItems = new List<string>
+            {
+                "真实存档和备份归档文件",
+                "真实媒体文件",
+                "SQLite 数据库文件、表内容和原始快照",
+                "Rclone 配置、凭据、令牌和密码",
+                "自动上传、云端写入或对外发送"
+            },
+            Summary = $"生成前只读预览：将创建不超过 {MaxTotalBytes / 1024 / 1024} MiB 的脱敏诊断 ZIP；生成期间不会上传或修改存档、媒体和数据库。"
+        };
+    }
+
     public async Task<DiagnosticsPackageResultDto> CreateAsync(CreateDiagnosticsPackageRequestDto? request, CancellationToken token)
     {
         var createdUtc = DateTime.UtcNow;
