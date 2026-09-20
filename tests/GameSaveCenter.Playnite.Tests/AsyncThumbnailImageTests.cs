@@ -87,7 +87,7 @@ namespace GameSaveCenter.Playnite.Tests
                     image.SourcePath = newPath;
                      PumpUntil(window.Dispatcher, () => image.Source != null, TimeSpan.FromSeconds(3));
                      var source = Assert.IsAssignableFrom<BitmapSource>(image.Source);
-                     Assert.Equal("64 × 64 px", image.PreviewDimensions);
+                     Assert.Equal("96 × 96 px", image.PreviewDimensions);
                      var stride = source.PixelWidth * 4;
                     var pixels = new byte[stride * source.PixelHeight];
                     source.CopyPixels(pixels, stride, 0);
