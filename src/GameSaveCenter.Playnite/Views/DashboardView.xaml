@@ -1264,7 +1264,7 @@
                     </Style>
                 </Border.Style>
                 <StackPanel Orientation="Horizontal">
-                    <ProgressBar Width="38" Height="4" IsIndeterminate="True" ui:IndeterminateProgressBehavior.PauseWhenUnavailable="True" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ProgressBar Width="38" Height="4" IsIndeterminate="True" ui:IndeterminateProgressBehavior.PauseWhenUnavailable="True" AutomationProperties.Name="当前操作进度" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <TextBlock Text="后台更新" Foreground="{DynamicResource GscAccentBrush}" FontWeight="SemiBold"/>
                 </StackPanel>
             </Border>

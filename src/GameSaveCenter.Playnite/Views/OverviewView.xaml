@@ -435,7 +435,7 @@
                     <StackPanel>
                         <TextBlock x:Name="OverviewMatchedGamesValue" infra:NumericChangeFeedback.IsEnabled="True" Text="{Binding OverviewMatchedGamesDisplay, Mode=OneWay}" Width="96" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Foreground="{DynamicResource GscAccentBrush}" FontSize="26" FontWeight="SemiBold"/>
                         <TextBlock Text="已匹配存档" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,2,0,0"/>
-                        <ProgressBar Height="4" Margin="0,6,0,0" Value="{Binding Snapshot.MatchedGames, Mode=OneWay}" Maximum="{Binding Snapshot.ManagedGames, Mode=OneWay}">
+                        <ProgressBar Height="4" Margin="0,6,0,0" AutomationProperties.Name="已匹配游戏占比" Value="{Binding Snapshot.MatchedGames, Mode=OneWay}" Maximum="{Binding Snapshot.ManagedGames, Mode=OneWay}">
                             <ProgressBar.Style>
                                 <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
                                     <Style.Triggers>
@@ -459,7 +459,7 @@
                     <StackPanel>
                         <TextBlock x:Name="OverviewWarningGamesValue" infra:NumericChangeFeedback.IsEnabled="True" Text="{Binding OverviewWarningGamesDisplay, Mode=OneWay}" Width="96" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
                         <TextBlock Text="需要注意" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,2,0,0"/>
-                        <ProgressBar Height="4" Margin="0,6,0,0" Foreground="{DynamicResource GscWarningBrush}" Value="{Binding Snapshot.WarningGames, Mode=OneWay}" Maximum="{Binding Snapshot.ManagedGames, Mode=OneWay}">
+                        <ProgressBar Height="4" Margin="0,6,0,0" Foreground="{DynamicResource GscWarningBrush}" AutomationProperties.Name="需注意游戏占比" Value="{Binding Snapshot.WarningGames, Mode=OneWay}" Maximum="{Binding Snapshot.ManagedGames, Mode=OneWay}">
                             <ProgressBar.Style>
                                 <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
                                     <Style.Triggers>
@@ -602,7 +602,7 @@
                                                 <Grid Margin="0,3,0,0" MinWidth="0">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                     <TextBlock Text="{Binding DetailMessage, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding DetailMessage}" VerticalAlignment="Center"/>
-                                                    <ProgressBar x:Name="OverviewTaskProgressBar" Grid.Column="1" Style="{StaticResource OverviewTaskProgressBar}" Width="150" Margin="10,0,0,0" Minimum="0" Maximum="100" Value="{Binding ProgressPercent, Mode=OneWay}" VerticalAlignment="Center"/>
+                                                    <ProgressBar x:Name="OverviewTaskProgressBar" Grid.Column="1" Style="{StaticResource OverviewTaskProgressBar}" Width="150" Margin="10,0,0,0" Minimum="0" Maximum="100" AutomationProperties.Name="任务完成进度" Value="{Binding ProgressPercent, Mode=OneWay}" VerticalAlignment="Center"/>
                                                 </Grid>
                                             </StackPanel>
                                             <Border x:Name="OverviewTaskResultChip" Grid.Column="3" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="56" HorizontalAlignment="Center" VerticalAlignment="Center">
