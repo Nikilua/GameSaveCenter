@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-03 缩略图滚动预算（已满足，受控验证完成；真实宿主待验）
+
+- `e54d514e`/`18c5073f` 复用现有 `AsyncThumbnailLoader` 的 3 路后台解码、96 项 LRU、取消和 `AsyncThumbnailImage` generation 保护；新增隔离合成滚动预算与迟到失败负例，没有重建加载器或修改生产 UI。
+- 120 个合成 PNG 按 10 个 12 项窗口回放：请求/解码开始/成功 `120/120/120`，峰值活动解码 `3`，每轮结束活动 `0`，缓存序列 `12,24,36,48,60,72,84,96,96,96`，托管堆增量代理最大 `90,072 bytes`，预取消计数 `1`；旧缺失结果未把替换后的新图片行改回 `Missing/Failed`。原始样本见 `evidence/R18-03-THUMBNAIL-BUDGET-20260920.md`。
+- R18-03 `1/1`；AsyncThumbnailLoader/Image 相关回归 `9/9`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过；Release 隔离 solution `0 errors/2 existing MediaCenter nullable warnings`，WPF 静态沿用 `0/27/162`。
+- 本阶段校正 c17 引入的 `PreviewDimensions` 旧断言：当前 `PreviewWidth=96` 的实际解码显示为 `96×96 px`，未修改生产加载器。托管堆值是 `GC.GetTotalMemory(false)` 代理，不是 ETW/显存/物理帧证据；Demo 原目录不可用，`.tmp/r18-03-solution` 已清理。
+- 未验真实 Playnite/package-host 快速滚动、真实媒体分布、DPI/UIA/读屏、presented frame、ETW 或宿主性能。下一项：`R18-04 表格容器预算`，在 2k/10k/20k 数据下记录虚拟化容器上限与滚动更新成本。
+
 ## 当前第三轮 R18-02 真实 Dispatcher 基准（已满足，受控验证完成；真实宿主待验）
 
 - `59468b37`/`5b28b0c3` 在真实 STA WPF `Window` 中区分本地 VM 刷新完成和可见列表容器反馈；VM 端用 `GamePickerPerformanceDiagnostics.RefreshCount + LastSearchText`，窗口端用实际 `ListBox.ItemContainerGenerator` 首容器的 `IsVisible`、`ActualWidth/ActualHeight` 和 `UpdateLayout`，没有用 `FilteredCount` 代替画面延迟。

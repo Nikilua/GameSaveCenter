@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-03 缩略图滚动预算（2026-09-20）
+
+- `e54d514e`/`18c5073f` 先复核现有 `AsyncThumbnailLoader`/`AsyncThumbnailImage`：3 路解码、96 项 LRU、不可见/卸载取消、generation 成功/失败双侧防迟到均已存在；本轮只补证据夹具。
+- 120 个合成 PNG 的 10 个快速窗口实测请求/解码 `120/120`、峰值活动 `3`、缓存封顶 `96/96`、每轮结束活动 `0`；托管堆代理原始最大 `90,072 bytes`；预取消 `1`；替换后旧 Missing 结果没有改写 Ready 新行。证据：`R18-03-THUMBNAIL-BUDGET-20260920.md`。
+- R18-03 `1/1`，AsyncThumbnailLoader/Image 回归 `9/9`，Release solution `0 errors/2 existing warnings`，source/XAML/diff 通过。c17 的 `64×64` 尺寸断言按当前 `PreviewWidth=96` 实测校正为 `96×96`，生产代码未改。
+- 只用合成图片、隔离目录和 STA testhost；`GetTotalMemory(false)` 是托管堆代理，不能替代 ETW/显存/呈现帧/真实 Playnite。下一可执行任务：R18-04 表格容器预算。
+
 ## 第三轮 R18-02 真实 Dispatcher 基准（2026-09-20）
 
 - `59468b37` 增加实际 STA WPF 受控窗口夹具，`5b28b0c3` 校正来源标签；VM 完成点来自内部刷新计数/查询身份，画面反馈点来自 `ListBox.ItemContainerGenerator` 首容器的可见性和实测布局几何，不再把 `FilteredCount` 当成画面延迟。

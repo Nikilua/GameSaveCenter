@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-03 缩略图滚动预算
+
+- 先核对现有 `AsyncThumbnailLoader`/`AsyncThumbnailImage`：3 路后台 decode、96 项 LRU、不可见/卸载取消和 generation 迟到结果保护已经存在，未新增第二套 loader。
+- `e54d514e` 增加隔离合成预算/失败负例，`18c5073f` 把缓存/活动样本改成实际诊断输出。10 个 12 项窗口共 120 请求，峰值活动 `3`，缓存 `96/96`，每轮活动归零，托管堆增量代理最大 `90,072 bytes`，预取消 `1`，替换后最终 `Ready`。
+- R18-03 `1/1`，AsyncThumbnailLoader/Image 回归 `9/9`；source、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`；无生产 XAML 改动，WPF `0/27/162` 沿用。
+- c17 引入的 `64×64` PreviewDimensions 断言与当前 `PreviewWidth=96` 实测不符，按现行 DecodePixelWidth 行为校正为 `96×96`，未改生产 loader。只用合成/fake/隔离目录，未写真实媒体；`.tmp/r18-03-solution` 已清理。
+- 代码/测试已提交并推送 `e54d514e`、`18c5073f`。证据：`evidence/R18-03-THUMBNAIL-BUDGET-20260920.md`。下一可执行任务：`R18-04 表格容器预算`。
+
 ## 2026-09-20 R18-02 真实 Dispatcher 基准
 
 - 先核对既有 `GamePickerViewModel` 的 Dispatcher 投递、现有 STA 窗口夹具和容器绑定；没有改生产 XAML、页面结构或 `FilteredCount` 契约。
