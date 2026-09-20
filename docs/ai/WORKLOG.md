@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 MediaCenter 额外选择器名称与值（续作小批量）
+
+- 提交并推送 `eac4276f`：不改生产 XAML，复用 MediaCenter 已有“媒体收件箱视图”“媒体筛选预设”“媒体归类批次状态筛选”“调整归类建议目标”的名称、选项来源和 Binding，补实际 WPF peer 名称与选值变化证据。
+- `R21AutomationValueBehaviorTests` `10/10`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `58/58`。新增测试实际创建四个 ComboBox peer，验证名称和第一项→第二项选值切换。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增诊断。
+- 仅使用已有生产 MediaCenter XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-MEDIA-EXTRA-SELECTORS-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 Maintenance 进程映射选择器名称与值（续作小批量）
 
 - 提交并推送 `915ac77c`：复用 Maintenance 映射编辑器的 `Games` 数据源、`ProcessMappingTargetGame` `SelectedItem` Binding、游戏名称模板和“绑定”命令，为目标游戏选择器补稳定 Automation 名称；没有改进程映射保存、删除或进程识别语义。

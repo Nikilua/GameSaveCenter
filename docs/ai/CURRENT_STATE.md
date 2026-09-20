@@ -1,10 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-## 当前第三轮 R21-02 Maintenance 进程映射选择器名称与值（实现中，待继续）
+## 当前第三轮 R21-02 MediaCenter 额外选择器名称与值（实现中，待继续）
 
-- `915ac77c` 在复用 Maintenance 映射编辑器的 `Games` 数据源、`ProcessMappingTargetGame` `SelectedItem` Binding、游戏名称模板和“绑定”命令基础上，为“进程映射目标游戏”选择器补稳定 Automation 名称；没有新增服务、DTO、命令或业务语义。
-- `R21AutomationValueBehaviorTests` 当前 `9/9`，相关进度/焦点/键盘/无障碍/生产壳层回归 `57/57`。新增测试实际检查 Maintenance ComboBox peer 名称与合成选项切换；既有 R06/R12 行为夹具继续覆盖未知/排队/零值/越界/取消/成功及远端阶段负例。
-- 当前 source-copy Release Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 `evidence/R21-02-MAINTENANCE-PROCESS-MAPPING-20260921.md`。
+- `eac4276f` 没有修改生产 XAML，复用 MediaCenter 已有 `媒体收件箱视图`、`媒体筛选预设`、`媒体归类批次状态筛选` 和 `调整归类建议目标` 名称、选项来源与 Binding，补实际 WPF peer 名称和选值变化证据；没有新增服务、DTO、命令或业务语义。
+- `R21AutomationValueBehaviorTests` 当前 `10/10`，相关进度/焦点/键盘/无障碍/生产壳层回归 `58/58`。新增测试实际检查四个 MediaCenter ComboBox peer 名称与合成选项切换；既有 R06/R12 行为夹具继续覆盖未知/排队/零值/越界/取消/成功及远端阶段负例。
+- 当前 source-copy Release Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 `evidence/R21-02-MEDIA-EXTRA-SELECTORS-20260921.md`。
 - R21-02 仍未整项签收：其他复合选择器及逐控件状态/值负例待继续；下一项仍为这些 R21-02 小批量，完成公共门禁后进入 `R21-03` 验证错误播报。
 
 ## 当前第三轮 R21-02 控件名称与值（实现中，待继续）
