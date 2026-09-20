@@ -886,6 +886,7 @@ public static class Program
 
     private static int RunEnduranceProbe(string outputRoot, int durationSeconds)
     {
+        const int postActionSettleSeconds = 30;
         Directory.CreateDirectory(outputRoot);
         var reportPath = Path.Combine(outputRoot, "enduranceprobe-report.txt");
         var report = new StringBuilder();
@@ -895,6 +896,7 @@ public static class Program
         report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, Light/Dark theme");
         report.AppendLine("Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe");
         report.AppendLine($"DurationTargetSeconds: {durationSeconds}");
+        report.AppendLine($"PostActionSettleSeconds: {postActionSettleSeconds}");
         AppendRunMetadata(
             report,
             "enduranceprobe",
@@ -965,6 +967,8 @@ public static class Program
             var actionDurationsMs = new List<double>();
             var slowActionStacks = new List<string>();
             DispatcherTimer? actionTimer = null;
+            DispatcherTimer? settleTimer = null;
+            TimeSpan? actionStoppedAt = null;
 
             void RecordSample(bool final)
             {
@@ -1125,9 +1129,27 @@ public static class Program
                 if (elapsed >= TimeSpan.FromSeconds(durationSeconds))
                 {
                     actionTimer!.Stop();
-                    RecordSample(final: true);
-                    window.Close();
-                    app.Shutdown();
+                    actionStoppedAt = elapsed;
+                    settleTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+                    {
+                        Interval = TimeSpan.FromSeconds(1)
+                    };
+                    settleTimer.Tick += (_, _) =>
+                    {
+                        var settledFor = stopwatch.Elapsed - actionStoppedAt.GetValueOrDefault();
+                        if (settledFor >= TimeSpan.FromSeconds(postActionSettleSeconds))
+                        {
+                            settleTimer!.Stop();
+                            RecordSample(final: true);
+                            window.Close();
+                            app.Shutdown();
+                        }
+                        else if (stopwatch.Elapsed - lastSampleAt >= TimeSpan.FromSeconds(10))
+                        {
+                            RecordSample(final: false);
+                        }
+                    };
+                    settleTimer.Start();
                 }
             };
             actionTimer.Start();
@@ -1149,7 +1171,7 @@ public static class Program
                 cycle,
                 completedActions,
                 actionFailureCount,
-                durationSeconds);
+                durationSeconds + postActionSettleSeconds);
             report.AppendLine(problems.Count == 0 ? "enduranceprobe OK" : "enduranceprobe FAILED");
             foreach (var problem in problems)
                 report.AppendLine("  PROBLEM " + problem);

@@ -326,6 +326,8 @@ public sealed class UiFinesseRound2ControlSourceTests
         var probe = harness.Substring(start, end - start);
         Assert.Contains("args[0].Equals(\"enduranceprobe\"", harness);
         Assert.Contains("durationSeconds = 1800", harness);
+        Assert.Contains("postActionSettleSeconds = 30", probe);
+        Assert.Contains("actionStoppedAt", probe);
         Assert.Contains("new Window", probe);
         Assert.Contains("new DispatcherTimer", probe);
         Assert.Contains("GC.GetTotalMemory(false)", probe);
