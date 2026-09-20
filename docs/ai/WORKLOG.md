@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-04 表格容器预算
+
+- 先复核 RenderHarness 已有 L21/L32 滚动探针、生产 DataGrid 模板、MediaPageAccumulator 和 Media `Standard/Item/禁列虚拟化`例外；没有重建表格或改游戏选框/滚动条体系。
+- 真实生产 WPF 探针首轮捕获了外层页级 ScrollViewer 在有限响应式布局生效前让 Media Inbox 生成全部 2,000 行的负例。`64843642` 将正常高度 Media Inbox 改为有限 `Height/MaxHeight`，外层纵向滚动仅短页/stale fallback 开启；同时把 c17 媒体详情 `BasedOn` 动态资源修正为静态资源，避免真实 WPF 解析失败。
+- `R18TableContainerBudgetTests 1/1`：2k/10k/20k 下 Task `9/7`、Media `9/9`（最大容器/最大可视行），Media UI 窗口均 `2,000`；8 次滚动 p95/最大 Task 为 `52.846/52.846`、`28.365/28.365`、`34.807/34.807ms`，Media 为 `0.132/0.132`、`0.289/0.289`、`0.153/0.153ms`。相关媒体分页/锚点/几何/滚动回归 `23/23`，source、XAML `24/24`、diff 通过，Release `0 errors/2 条既有 MediaCenter nullable warning`。
+- 只用合成 DTO、fake 分页、隔离 STA testhost；首轮“先 Show 后布局”的全量容器负例和最终“首次 measure 前应用布局”边界均写入证据。没有把受控逻辑 DIP 写成真实宿主/物理屏幕/ETW 性能，`.tmp/r18-04-solution` 和 TestResults 已清理。证据：`evidence/R18-04-TABLE-CONTAINER-BUDGET-20260920.md`。下一可执行任务：`R18-05 后台事件合并`，先查任务/媒体事件投递、批处理和卸载订阅。
+
 ## 2026-09-20 R18-03 缩略图滚动预算
 
 - 先核对现有 `AsyncThumbnailLoader`/`AsyncThumbnailImage`：3 路后台 decode、96 项 LRU、不可见/卸载取消和 generation 迟到结果保护已经存在，未新增第二套 loader。

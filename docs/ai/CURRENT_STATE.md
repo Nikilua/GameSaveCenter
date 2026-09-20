@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-04 表格容器预算（已满足，受控验证完成；真实宿主待验）
+
+- `64843642` 复用生产 `TaskCenterView`、`MediaCenterView`、`MediaPageAccumulator` 和现有 DataGrid 模板；正常高度下给 Media Inbox 显式有限 `Height/MaxHeight`，外层页级纵向滚动只在短页或 stale fallback 开启，保留 Media `Standard/Item/EnableColumnVirtualization=False` 例外、游戏选框、滚动条、绑定和选择/锚点语义。
+- 实际 STA WPF 2k/10k/20k 合成规模：Task 最大已实现容器均为 `9`、视口 `7` 行；Media Inbox 最大均为 `9`、视口 `9` 行，媒体 UI 窗口由生产分页上限保持 `2,000`。滚动 8 次 p95/最大：Task `52.846/52.846`、`28.365/28.365`、`34.807/34.807ms`；Media `0.132/0.132`、`0.289/0.289`、`0.153/0.153ms`。原始数组见 `evidence/R18-04-TABLE-CONTAINER-BUDGET-20260920.md`。
+- R18-04 `1/1`；媒体分页、锚点、四行几何、细滚动和滚动归属相关回归 `23/23`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过；Release 隔离 solution `0 errors/2 existing MediaCenter nullable warnings`，`.tmp/r18-04-solution` 已清理。
+- 本阶段还修正 c17 引入的媒体详情 `Style.BasedOn` 动态资源解析错误，两个此前失败的媒体锚点 STA 测试恢复通过。首轮夹具曾捕获“先 Show 后布局会全量生成 2,000 行”的真实负例，最终在首次 measure 前应用生产响应式布局；真实 Playnite 首次 Loaded/宿主布局时序仍待验。Demo 原目录不可用；不宣称物理呈现、DPI/UIA/读屏、ETW 或宿主性能。下一项：`R18-05 后台事件合并`。
+
 ## 当前第三轮 R18-03 缩略图滚动预算（已满足，受控验证完成；真实宿主待验）
 
 - `e54d514e`/`18c5073f` 复用现有 `AsyncThumbnailLoader` 的 3 路后台解码、96 项 LRU、取消和 `AsyncThumbnailImage` generation 保护；新增隔离合成滚动预算与迟到失败负例，没有重建加载器或修改生产 UI。

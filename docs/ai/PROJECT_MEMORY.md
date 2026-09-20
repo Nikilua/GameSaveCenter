@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-04 表格容器预算（2026-09-20）
+
+- `64843642` 先复用生产 Task/Media DataGrid、MediaPageAccumulator 和共享模板；实际发现 Media Inbox 在外层页级 ScrollViewer 常态 Auto 且内层未先获得有限布局时，Standard/Item/禁列组合会生成完整 2,000 行。修复为正常高度显式有限 `Height/MaxHeight`、外层纵向滚动仅短页/stale fallback 开启，未改 Standard/Item/禁列例外、命令绑定、选择锚点或游戏选框。
+- 真实 STA WPF 2k/10k/20k 合成规模的 Task/Media 最大容器分别稳定为 `9/9`，视口分别 `7/9` 行；Media UI 窗口始终 `2,000`，Task/Media 滚动 p95 最大分别为 `52.846/52.846`、`28.365/28.365`、`34.807/34.807ms` 与 `0.132/0.132`、`0.289/0.289`、`0.153/0.153ms`。证据：`R18-04-TABLE-CONTAINER-BUDGET-20260920.md`。
+- R18-04 `1/1`，媒体分页/锚点/几何/滚动相关 `23/23`，Release `0 errors/2 existing warnings`，source/XAML/diff 通过。首轮“先 Show 后布局”夹具真实记录了 2,000 全量容器负例；最终夹具首次 measure 前应用响应式布局。c17 的 DynamicResource BasedOn 解析错误也在本阶段改为 StaticResource 并收复两个锚点回归。
+- 证据仅是受控 WPF 逻辑 DIP、容器和滚动更新，不是 Playnite 首次 Loaded/真实宿主、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 或宿主性能；Demo 原目录不可用，真实数据/云端未触碰。下一可执行任务：R18-05 后台事件合并。
+
 ## 第三轮 R18-03 缩略图滚动预算（2026-09-20）
 
 - `e54d514e`/`18c5073f` 先复核现有 `AsyncThumbnailLoader`/`AsyncThumbnailImage`：3 路解码、96 项 LRU、不可见/卸载取消、generation 成功/失败双侧防迟到均已存在；本轮只补证据夹具。
