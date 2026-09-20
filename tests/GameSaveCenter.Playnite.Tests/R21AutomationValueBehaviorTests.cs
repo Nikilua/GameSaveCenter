@@ -85,6 +85,22 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\" ToolTip=\"批量归类目标游戏；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"媒体收件箱归类目标游戏\"", media);
         Assert.Contains("ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\" ToolTip=\"媒体类型筛选\" AutomationProperties.Name=\"媒体类型筛选\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\" ToolTip=\"重新归类目标；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"重新归类目标游戏\"", media);
+        Assert.Contains("SelectedItem=\"{Binding ProcessMappingTargetGame}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"进程映射目标游戏\"", maintenance);
+    }
+
+    [Fact]
+    public void MaintenanceProcessMappingSelectorExposesSemanticState()
+    {
+        RunSta(() =>
+        {
+            var selector = CreateNamedSelector("进程映射目标游戏", "游戏 A", "游戏 B");
+
+            using var host = new PeerHost(selector);
+            Assert.Equal("进程映射目标游戏", GetPeer(selector).GetName());
+            selector.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("游戏 B", selector.SelectedItem);
+        });
     }
 
     [Fact]
