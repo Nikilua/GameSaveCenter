@@ -98,6 +98,8 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                 Assert.Equal(Visibility.Collapsed, banner.Visibility);
                 Assert.Equal(Visibility.Visible, errorPresenter.Visibility);
                 Assert.Same(state.RefreshCommand, errorPresenter.RetryCommand);
+                Assert.Contains("任务记录暂时无法读取", errorPresenter.Message);
+                Assert.DoesNotContain("Worker", errorPresenter.Message);
             }
             finally
             {

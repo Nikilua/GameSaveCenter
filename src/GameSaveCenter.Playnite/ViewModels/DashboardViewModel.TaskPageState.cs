@@ -100,11 +100,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             get
             {
                 if (taskPageIsLoading)
-                    return TaskPageHasItems ? $"正在刷新，已保留 {Tasks.Count} 条旧数据。" : "正在加载任务记录…";
+                    return TaskPageHasItems ? $"正在刷新；已保留 {Tasks.Count} 条旧数据。" : "正在加载任务记录…";
                 if (taskPageLoadFailed)
                     return TaskPageHasItems
-                        ? $"读取失败，已保留旧数据（最近更新：{TaskPageLastUpdatedDisplay}）。"
-                        : "读取任务失败，请重试。";
+                        ? $"任务记录暂时无法更新；已保留旧数据（最近更新：{TaskPageLastUpdatedDisplay}）。可点击“重试”。"
+                        : "任务记录暂时无法读取；可点击“重试”。";
                 if (!taskPageHasLoaded) return "等待读取任务记录…";
                 return $"最近更新：{TaskPageLastUpdatedDisplay}";
             }

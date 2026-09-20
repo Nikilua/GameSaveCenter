@@ -148,7 +148,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Loading => "正在读取当前游戏的历史版本和存档路径候选。",
             WorkspaceDataState.Empty => "完成一次备份后，历史版本会显示在这里；可以点击“立即扫描”重新检测候选目录。",
             WorkspaceDataState.Stale => "仍保留上次成功读取的历史版本和候选路径；本次刷新没有覆盖它。",
-            WorkspaceDataState.Error => "Worker 暂时没有返回存档历史和候选路径；可以重试，现有数据不会被清除。",
+            WorkspaceDataState.Error => "存档列表暂时无法更新；可以重试，现有数据不会被清除。",
             _ => string.Empty
         };
         public string SaveDetailsStateDetail => FormatStateDetail(saveDetailsLastSuccessUtc, saveDetailsErrorMessage);
@@ -173,7 +173,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Empty => "当前筛选条件没有媒体",
             WorkspaceDataState.Stale => "媒体显示已过期",
             WorkspaceDataState.Error => "媒体读取失败",
-            WorkspaceDataState.Offline => "Worker 当前离线",
+            WorkspaceDataState.Offline => "媒体服务当前离线",
             _ => string.Empty
         };
         public string MediaDetailsStateMessage => EffectiveMediaDetailsState switch
@@ -184,7 +184,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 : "导入截图或录像后，它们会显示在这里。",
             WorkspaceDataState.Stale => "仍保留上次成功读取的内容；本次刷新没有覆盖它。",
             WorkspaceDataState.Error => "当前游戏媒体暂时无法读取，请稍后重试。",
-            WorkspaceDataState.Offline => "媒体列表和归类操作暂时不可用，Worker 恢复后可重新读取。",
+            WorkspaceDataState.Offline => "媒体列表和归类操作暂时不可用；恢复连接后可重新读取。",
             _ => string.Empty
         };
         public string MediaDetailsStateDetail => FormatStateDetail(mediaDetailsStateCache.LastSuccessUtc, mediaDetailsStateCache.ErrorMessage);
@@ -223,20 +223,20 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Empty => MediaInboxTitle,
             WorkspaceDataState.Stale => "媒体收件箱显示已过期",
             WorkspaceDataState.Error => "媒体收件箱读取失败",
-            WorkspaceDataState.Offline => "Worker 当前离线",
+            WorkspaceDataState.Offline => "媒体服务当前离线",
             _ => string.Empty
         };
         public string MediaInboxStateMessage => IsWorkerOffline
             ? (mediaInboxStateCache.HasCurrentContextSuccess
-                ? "Worker 当前离线；列表保留上次成功读取的缓存，恢复连接后才能确认最新数量。"
-                : "Worker 当前离线；恢复连接后才能确认列表是否为空。")
+                ? "媒体服务当前离线；列表保留上次成功读取的缓存，恢复连接后才能确认最新数量。"
+                : "媒体服务当前离线；恢复连接后才能确认列表是否为空。")
             : mediaInboxStateCache.State switch
         {
             WorkspaceDataState.Loading => "正在读取待归类和已忽略媒体；已有内容会保留到新结果确认后。",
             WorkspaceDataState.Empty => MediaInboxEmptyText,
             WorkspaceDataState.Stale => "仍保留上次成功读取的列表；本次刷新没有覆盖它。",
             WorkspaceDataState.Error => "当前收件箱暂时无法读取，请稍后重试。",
-            WorkspaceDataState.Offline => "媒体收件箱暂时不可用；Worker 恢复后可重新读取列表。",
+            WorkspaceDataState.Offline => "媒体收件箱暂时不可用；恢复连接后可重新读取列表。",
             _ => string.Empty
         };
         public string MediaInboxStateDetail => FormatStateDetail(mediaInboxStateCache.LastSuccessUtc, mediaInboxStateCache.ErrorMessage);
@@ -270,16 +270,16 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorkspaceDataState.Empty => "暂无需要处理的诊断项",
             WorkspaceDataState.Stale => "维护信息显示已过期",
             WorkspaceDataState.Error => "维护信息读取失败",
-            WorkspaceDataState.Offline => "Worker 当前离线",
+            WorkspaceDataState.Offline => "后台服务当前离线",
             _ => string.Empty
         };
         public string MaintenanceStateMessage => maintenanceState switch
         {
-            WorkspaceDataState.Loading => "正在读取 Worker 设置、进程映射和诊断结果。",
-            WorkspaceDataState.Empty => "Worker、备份和媒体状态正常时，这里会保持为空。",
+            WorkspaceDataState.Loading => "正在读取设置、进程映射和诊断结果。",
+            WorkspaceDataState.Empty => "没有需要处理的诊断项；备份和媒体状态正常时会保持为空。",
             WorkspaceDataState.Stale => "仍保留上次成功读取的诊断信息；本次刷新没有覆盖它。",
             WorkspaceDataState.Error => "维护信息暂时无法读取，请稍后重试。",
-            WorkspaceDataState.Offline => "维护信息暂时不可用；Worker 恢复后可重新读取。",
+            WorkspaceDataState.Offline => "维护信息暂时不可用；恢复连接后可重新读取。",
             _ => string.Empty
         };
         public string MaintenanceStateDetail => FormatStateDetail(maintenanceLastSuccessUtc, maintenanceErrorMessage);

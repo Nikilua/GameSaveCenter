@@ -221,7 +221,7 @@
                         <TextBlock x:Name="PageTitleText" Text="首页"
                                    FontFamily="{DynamicResource GscDisplayFontFamily}"
                                    FontSize="20" FontWeight="SemiBold"/>
-                        <TextBlock x:Name="PageSubtitleText" Text="今日工作台 · 一切运行正常"
+                        <TextBlock x:Name="PageSubtitleText" Text="今日工作台 · 正在读取概览状态"
                                    FontFamily="{StaticResource UiFont}"
                                    FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}"
                                    Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>

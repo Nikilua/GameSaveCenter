@@ -544,6 +544,9 @@ namespace GameSaveCenter.Playnite.Views
                 NavigateTo(viewModel.CurrentWorkspace);
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && viewModel != null)
                 UpdatePageHeader(viewModel.CurrentWorkspace);
+            else if (e.PropertyName == nameof(DashboardViewModel.OverviewPriorityTitle)
+                     && viewModel?.CurrentWorkspace == WorkspaceKind.Overview)
+                UpdatePageHeader(WorkspaceKind.Overview);
             else if ((e.PropertyName == nameof(DashboardViewModel.HasNavigationReturnTarget)
                       || e.PropertyName == nameof(DashboardViewModel.NavigationReturnLabel)
                       || e.PropertyName == nameof(DashboardViewModel.NavigationReturnToolTip))
@@ -580,14 +583,27 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Maintenance => "维护中心",
                 _ => "首页",
             };
-            PageSubtitleText.Text = workspace switch
+            PageSubtitleText.Text = GetPageSubtitle(
+                workspace,
+                viewModel?.SelectedGame?.Name,
+                viewModel?.OverviewPriorityTitle);
+        }
+
+        internal static string GetPageSubtitle(
+            WorkspaceKind workspace,
+            string? selectedGameName,
+            string? overviewPriorityTitle)
+        {
+            return workspace switch
             {
-                WorkspaceKind.Saves => $"{viewModel?.SelectedGame?.Name ?? "未选择游戏"} · 路径与恢复点状态",
+                WorkspaceKind.Saves => $"{selectedGameName ?? "未选择游戏"} · 路径与恢复点状态",
                 WorkspaceKind.Trainers => "修改器 · CT 表 · 自定义启动项",
                 WorkspaceKind.Media => "截图与录像的自动归档",
                 WorkspaceKind.Tasks => "备份 · 云端 · 媒体任务队列",
                 WorkspaceKind.Maintenance => "诊断 · 设备 · 保留策略 · 审计",
-                _ => "今日工作台 · 一切运行正常",
+                _ => string.IsNullOrWhiteSpace(overviewPriorityTitle)
+                    ? "今日工作台 · 正在读取概览状态"
+                    : $"今日工作台 · {overviewPriorityTitle}",
             };
         }
 

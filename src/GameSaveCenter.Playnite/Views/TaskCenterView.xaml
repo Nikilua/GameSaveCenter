@@ -345,7 +345,7 @@
                         </Style>
                     </ui:WorkspaceStatePresenter.Style>
                 </ui:WorkspaceStatePresenter>
-                <ui:WorkspaceStatePresenter State="Loading" Title="正在读取任务记录" Message="正在从 Worker 读取任务；已有记录会在刷新期间保留。" IsHitTestVisible="False">
+                <ui:WorkspaceStatePresenter State="Loading" Title="正在读取任务记录" Message="正在读取任务记录；已有记录会在刷新期间保留。" IsHitTestVisible="False">
                     <ui:WorkspaceStatePresenter.Style>
                         <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -357,7 +357,7 @@
                         </Style>
                     </ui:WorkspaceStatePresenter.Style>
                 </ui:WorkspaceStatePresenter>
-                <ui:WorkspaceStatePresenter State="Error" Title="任务记录读取失败" Message="Worker 暂时没有返回任务列表；可以重试，已有旧数据不会被清除。" Detail="{Binding TaskPageErrorMessage}" RetryCommand="{Binding RefreshCommand}" RetryText="重试">
+                <ui:WorkspaceStatePresenter State="Error" Title="任务记录读取失败" Message="任务记录暂时无法读取；可以重试，已有旧数据不会被清除。" Detail="{Binding TaskPageErrorMessage}" RetryCommand="{Binding RefreshCommand}" RetryText="重试">
                     <ui:WorkspaceStatePresenter.Style>
                         <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                             <Setter Property="Visibility" Value="Collapsed"/>

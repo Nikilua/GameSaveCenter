@@ -39,7 +39,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return new OverviewPriorityState(
                     "Worker",
                     "Maintenance",
-                    "Worker 需要处理",
+                    "后台服务需要处理",
                     "后台服务当前不可用，先打开维护中心检查服务状态。",
                     "打开维护中心");
             }

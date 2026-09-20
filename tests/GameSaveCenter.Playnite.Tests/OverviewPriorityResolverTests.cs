@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
+using GameSaveCenter.Playnite.Views;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -23,7 +24,7 @@ public sealed class OverviewPriorityResolverTests
 
         Assert.Equal("Worker", state.Kind);
         Assert.Equal("Maintenance", state.ActionKind);
-        Assert.Equal("Worker 需要处理", state.Title);
+        Assert.Equal("后台服务需要处理", state.Title);
         Assert.Equal("打开维护中心", state.ActionText);
     }
 
@@ -89,6 +90,58 @@ public sealed class OverviewPriorityResolverTests
         Assert.Equal("Refresh", state.ActionKind);
         Assert.Equal("整体状态安全", state.Title);
         Assert.Equal("刷新概览", state.ActionText);
+    }
+
+    [Theory]
+    [InlineData(WorkspaceKind.Overview, null, null, "今日工作台 · 正在读取概览状态")]
+    [InlineData(WorkspaceKind.Overview, null, "后台服务需要处理", "今日工作台 · 后台服务需要处理")]
+    [InlineData(WorkspaceKind.Saves, "合成游戏", "不应显示", "合成游戏 · 路径与恢复点状态")]
+    public void ShellSubtitleFollowsTheCurrentStateInsteadOfClaimingEverythingIsHealthy(
+        WorkspaceKind workspace,
+        string? selectedGameName,
+        string? overviewPriorityTitle,
+        string expected)
+    {
+        var subtitle = AcrylicProductionShellView.GetPageSubtitle(workspace, selectedGameName, overviewPriorityTitle);
+
+        Assert.Equal(expected, subtitle);
+        Assert.DoesNotContain("一切运行正常", subtitle);
+    }
+
+    [Fact]
+    public void PriorityCopyAlwaysExplainsTheStateAndTheNextAction()
+    {
+        var states = new[]
+        {
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = false }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true }, true),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+            {
+                WorkerHealthy = true,
+                ManagedGames = 4,
+                CloudTransfers = new CloudTransferSummaryDto { FailedCount = 1 }
+            }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+            {
+                WorkerHealthy = true,
+                ManagedGames = 4,
+                TaskSummary = new TaskSummaryDto { FailedCount = 1 }
+            }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 0 }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 4, UnassignedMediaCount = 1 }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 4, WarningGames = 1 }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 4 }, false)
+        };
+
+        foreach (var state in states)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(state.Title));
+            Assert.False(string.IsNullOrWhiteSpace(state.Description));
+            Assert.False(string.IsNullOrWhiteSpace(state.ActionText));
+            Assert.DoesNotContain("Worker", state.Title);
+            Assert.DoesNotContain("Rclone", state.Description);
+            Assert.DoesNotContain("你", state.Description);
+        }
     }
 
     [Fact]
