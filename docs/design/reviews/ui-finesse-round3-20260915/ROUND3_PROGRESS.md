@@ -170,7 +170,7 @@
 | R20-02 | 指标统计范围 | 已满足，待环境验证 | f0c982fe | `40/40` 核心定向；更宽筛选 `194 passed / 3 failed / 50 skipped / 247 total`；Release 隔离编译 `0 errors / 2 既有 warnings`；source/XAML/diff 通过 | 复用 `DashboardSnapshotDto` 的 `GeneratedUtc` 与既有计数；新增概览范围/更新时间/当前游戏显示投影，未加载显示 `—`，合法零仍为 `0`；比例条/运行状态在未加载时隐藏 | 合成 DTO、fake、隔离 source-copy/testhost；3 条更宽筛选失败为未修改的设置/空态/下拉既有基线；真实 Playnite/package-host、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-02 指标统计范围](evidence/R20-02-METRIC-SCOPE-20260920.md)；下一项 `R20-03` 首次配置引导，先核对现有环境检查、设置入口和可返回边界 |
 | R20-03 | 首次配置引导 | 已满足，待环境验证 | 1a90cd06 | Worker 环境检查 `1/1`；Playnite 当前身份定向 `3 passed / 1 skipped / 0 failed / 4 total`；Playnite `net462` / Tests `net472` 隔离编译 `0 errors / 2 既有 warnings`；source/XAML/diff 通过 | 复用既有维护页 `EnvironmentCheckCard`、`EnvironmentCheckService`、`OnboardingCompleted` 和真实手动备份管道；检查、完成、跳过、返回均有明确语义，不自动写用户配置 | 合成/fake/隔离目录；`LegacyProductionUiBaselineFact` 1 条跳过；真实 Playnite/package-host、外部工具、存档/云端、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并；本阶段无生产代码变更 | [R20-03 首次配置引导](evidence/R20-03-FIRST-USE-ONBOARDING-20260920.md)；下一项 `R20-04` 零结果恢复，先核对筛选摘要、清除条件与离线错误边界 |
 | R20-04 | 零结果恢复 | 已满足，待环境验证 | cf09f3f6 | 定向行为 `26 passed / 0 failed / 0 skipped / 26 total`；受影响 UI/源码套件 `171 passed / 3 failed / 50 skipped / 224 total`（3 条既有基线）；隔离 Playnite `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 游戏选框、媒体和云端队列显示当前筛选条件；清除只改筛选并复用现有刷新/滚动；云端读取异常明确显示失败而不是零结果；任务中心复用既有摘要与清除命令 | 合成/fake/隔离 testhost 和目录；3 条更宽套件失败为未修改的设置字段、空态覆盖层、下拉模板基线；真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-04 零结果恢复](evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md)；下一项 `R20-05` Stale 可理解，先核对旧数据时间、失败原因和重试入口 |
-| R20-05 | Stale 可理解 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R20-05 | Stale 可理解 | 已满足，待环境验证 | c492bbc2 | 定向回归 `37 passed / 1 failed / 0 skipped / 38 total`；唯一失败为未修改的任务详情断言漂移；隔离 Playnite `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 任务/存档/媒体/维护页复用已有 stale 时间、错误和重试；云端补最近成功时间、失败原因、旧数据保留提示和重试入口；读取失败不清除旧记录 | 合成/fake/隔离 testhost 和目录；唯一失败 `FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 为既有基线；真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-05 Stale 可理解](evidence/R20-05-STALE-UNDERSTANDABLE-20260921.md)；下一项从 Q/R 依赖清单选择依赖已满足的小批量 |
 | R20-06 | 部分可用状态 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R20-07 | 最近活动密度 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R20-08 | 状态语气统一 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -564,3 +564,11 @@
 - `FilterConditionSummaryTests` + `GamePickerViewModelTests` `26/26`；受影响 UI/源码套件 `171 passed / 3 failed / 50 skipped / 224 total`，3 条失败为未修改的设置字段、空态覆盖层和受限下拉模板既有基线。Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML `24/24`/diff 通过。
 - 只用合成/fake/隔离 testhost 和隔离目录，没有写真实存档、媒体、云端或诊断；未运行真实 Playnite/package-host、呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。Demo 原目录不可用，main 用户改动未碰且未合并。证据见 [R20-04 零结果恢复](evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md)。
 - 下一可执行小批量：`R20-05 Stale 可理解`，先核对任务、媒体、云端和维护页最后成功时间、失败原因、重试入口及 stale 时已有只读数据是否仍可见。
+
+## 2026-09-21 Round3 R20-05 Stale 可理解
+
+- 复核确认任务中心、存档、媒体和维护页已经提供 stale 状态、最后成功时间、失败原因与重试入口；缺口在云端队列：有旧记录时读取异常只保留表格，没有明确旧数据边界。本阶段只补云端状态提示。
+- 云端队列记录最近成功读取时间和错误原因，新增 stale 横幅、失败摘要和重试命令；失败不清除旧记录、不改队列数据，也不遮挡现有只读详情。没有旧记录时继续使用 R20-04 的“不是零结果”失败空态。
+- `FilterConditionSummary.StaleStateDetail` 定向及 R20-04 相关回归 `37 passed / 1 failed / 0 skipped / 38 total`；唯一失败是未改动的 `TaskCenterViewResponsiveTests.FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 断言漂移。Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML `24/24`/diff 通过。
+- 只用合成/fake/隔离 testhost 和隔离目录，没有写真实存档、媒体、云端或诊断；未运行真实 Playnite/package-host、呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能。Demo 原目录不可用，main 用户改动未碰且未合并。证据见 [R20-05 Stale 可理解](evidence/R20-05-STALE-UNDERSTANDABLE-20260921.md)。
+- 下一可执行小批量：从最新 Q/R 依赖账本选择依赖已满足且未被既有基线阻塞的任务，先复用已有服务/DTO，再补行为负例与证据。

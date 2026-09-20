@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-> 维护时间：2026-09-20
+> 维护时间：2026-09-21
+
+## 第三轮 R20-05 Stale 可理解（2026-09-21）
+
+- 任务中心、存档、媒体和维护页已有 stale 状态路径；云端队列新增最近成功读取时间、错误原因、旧数据保留摘要和重试横幅。失败不清除旧队列记录，不覆盖可用只读详情；无旧记录继续区分失败与零结果。
+- `FilterConditionSummary.StaleStateDetail` 统一“上次成功读取/本次刷新失败”表达；定向回归 `37 passed / 1 failed / 0 skipped / 38 total`，唯一失败是未修改的任务详情断言漂移。隔离 Playnite/Tests `0 errors / 2` 既有 warning，source/XAML/diff 通过。实现提交 `c492bbc2`。
+- 只用合成/fake/隔离目录，真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-05-STALE-UNDERSTANDABLE-20260921.md`。
+- 下一项：从 Q/R 依赖账本选择依赖已满足的小批量，保留真实未验边界，不扩大为无关基线重构。
 
 ## 第三轮 R20-04 零结果恢复（2026-09-20）
 
@@ -8,7 +15,7 @@
 - 云端队列用 `CloudTransferLoadFailed` 区分读取异常和真实零结果；媒体仍由 `WorkspaceDataState` 区分 Empty/Offline/Error/Stale，游戏选框保留虚拟化列表和选中项恢复路径。`FilterConditionSummaryTests` 覆盖实际游戏选框清除命令及云端读取失败负例。
 - 定向行为 `26/26`；受影响套件 `171 passed / 3 failed / 50 skipped / 224 total`，3 条失败是未改动的设置字段、空态覆盖层、下拉模板基线；隔离 Playnite/Tests `0 errors / 2` 既有 nullable warning，source/XAML/diff 通过。实现提交 `cf09f3f6`。
 - 只用合成/fake/隔离目录，真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md`。
-- 下一项 `R20-05`：核对 stale 的最后成功时间、失败原因、重试入口与保留的只读数据。
+- 下一项：从 Q/R 依赖账本选择依赖已满足且边界明确的小批量，先查已有实现和负例覆盖。
 
 ## 第三轮 R20-03 首次配置引导（2026-09-20）
 

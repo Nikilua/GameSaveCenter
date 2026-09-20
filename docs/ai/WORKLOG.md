@@ -1,12 +1,19 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R20-05 Stale 可理解
+
+- 先查现有状态：任务、存档、媒体、维护已有 stale/最后成功/错误/重试；只补云端有旧记录读取失败时的可见边界。云端新增最近成功时间、错误原因、旧数据摘要和重试横幅，失败不清空列表。
+- `FilterConditionSummary.StaleStateDetail` 统一 stale 文案；定向 `37 passed / 1 failed / 0 skipped / 38 total`，唯一失败为未修改的 `FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 断言漂移。隔离 Release `0 errors / 2` 既有 warning；source、XAML `24/24`、diff 通过。提交 `c492bbc2`。
+- 只用合成/fake/隔离 testhost 和目录，未写真实存档、媒体、云端或诊断；未宣称真实宿主、呈现、DPI/UIA/IME、ETW、宿主性能。Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-05-STALE-UNDERSTANDABLE-20260921.md`。
+- 下一可执行任务：从 Q/R 依赖账本选择依赖已满足且边界明确的小批量，先查已有实现和负例覆盖。
+
 ## 2026-09-20 R20-04 零结果恢复
 
 - 先查现有能力：任务中心已有摘要/`FilterEmpty`/清除命令；媒体已有 `MediaHasActiveFilters`、清除命令和 `WorkspaceDataState`；云端已有五类筛选、分页和刷新。只补缺失的游戏选框/媒体/云端条件摘要与云端读取失败分流。
 - 新增 `FilterConditionSummary`，游戏选框空结果提供真实条件和清除搜索/筛选；媒体空态绑定状态消息；云端清除只清空筛选后重新加载，读取异常写入失败状态并明确不等于零结果。保留选框、滚动条、命令绑定、取消/恢复和有限列表路径。
 - `FilterConditionSummaryTests` + `GamePickerViewModelTests` `26/26`；受影响套件 `171 passed / 3 failed / 50 skipped / 224 total`，三条是未修改的设置字段、空态覆盖层、下拉模板基线。隔离 Release `0 errors / 2` 既有 `MediaCenterView.xaml.cs:671` warning；source、XAML `24/24`、diff 通过。提交 `cf09f3f6`。
 - 只用合成/fake/隔离 testhost 和目录，未写真实存档、媒体、云端或诊断；未宣称真实 Playnite/package-host、呈现、DPI/UIA/IME、ETW、宿主性能。Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md`。
-- 下一可执行任务：`R20-05` Stale 可理解，先查最后成功时间、失败原因、重试入口和 stale 时可用只读数据。
+- 下一可执行任务：从 Q/R 依赖账本选择依赖已满足且边界明确的小批量，先查已有实现和负例覆盖。
 
 ## 2026-09-20 R20-03 首次配置引导
 
