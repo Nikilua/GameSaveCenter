@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-04 恢复默认粒度（代码已提交，受控验证完成；真实宿主待验）
+
+- `2b194461` 新增设置恢复默认目录，提供单字段、单分类、全部默认三个范围；确认文案列出影响。全部默认只重置安全标量和本地 UI 偏好，明确保留 Worker/Ludusavi/Rclone、存档/媒体/镜像路径、云端目标和设备身份。
+- 重置直接修改现有 Playnite 草稿并重绑同一 settings 对象刷新界面，不结束编辑、不保存、不启动 Worker；Playnite 取消仍恢复重置前草稿。测试实际覆盖连接字段保留、默认值和取消恢复。
+- 外部隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664` nullable）；R16-04 行为 `2/2`、源码接线 `1/1`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。使用隔离副本现有 `obj` 和 `--no-restore`，未宣称 fresh restore 通过。
+- 未验真实 Playnite/package-host、最终浅深主题、DPI/UIA/IME、RenderHarness、ETW 或宿主性能。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并；证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-20260920.md`。
+- 下一项：`R16-05 路径编辑一致`，先核对路径浏览、校验、打开、复制和权限/网络/不存在负例。
+
 ## 当前第三轮 R16-03 模板应用范围（代码已提交，受控验证完成；真实宿主待验）
 
 - `52fbf5de` 复用现有模板/策略 DTO、归一化、单游戏操作锁、持久化和审计路径，新增有界批量模板应用：客户端只发送明确勾选的稳定 Playnite ID，最多 100 个；空选择、超限和筛选隐藏项不会误用全部游戏。

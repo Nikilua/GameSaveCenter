@@ -137,7 +137,7 @@
 | R16-01 | 设置搜索定位 | 已实现，待环境验证 | a4e35578 | 外部隔离 Release solution `0 errors/10 warnings`；R16 搜索行为 `1/1`、源契约 `1/1`；验证导航/草稿各独立 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF `0/28/177` | 受控 STA WPF 实际输入搜索词，匹配字段可见且可编辑；清空恢复进入搜索前分类；搜索不改配置、不产生 pending edit；联合筛选受既有 Application 多实例夹具冲突影响，已拆分 testhost | 未验真实 Playnite/package-host、浅深主题最终呈现、RenderHarness presented frame、DPI/UIA/IME、ETW 或宿主性能；Demo 原目录不可用，外部副本构建，main 用户改动未碰 | [R16-01 设置搜索定位](evidence/R16-01-SETTINGS-SEARCH-20260920.md)；下一项 `R16-02 策略差异预览` |
 | R16-02 | 策略差异预览 | 已实现，待环境验证 | b327d5ef | 外部隔离 Release solution `0 errors/7 warnings`；策略差异核心 `5/5`；Playnite 源契约 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF `0/28/177` | 保存前按 13 个字段展示已保存基线/显式草稿与模板覆盖差异；实际复制回退测试通过；取消不发 Worker 请求，未保存游戏草稿时模板应用禁用 | 未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、ETW、宿主性能和 presented frame；Demo 原目录不可用，外部副本构建，main 用户改动未碰 | [R16-02 策略差异预览](evidence/R16-02-POLICY-DIFF-20260920.md)；下一项 `R16-03 模板应用范围` |
 | R16-03 | 模板应用范围 | 已实现，待环境验证 | 52fbf5de | 外部隔离 Release solution `0 errors/2 条既有 warning`；Core 批量预览 `3/3`、Playnite 源契约 `1/1`、Worker 策略持久化 `2/2`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/177` | 复用现有模板/策略 DTO、归一化和 Worker IPC；新增明确勾选目标、排除项、变更字段数、筛选后稳定 ID 保留、100 个上限、逐项失败/重试；单项仍按游戏锁和审计路径处理 | 未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；fresh restore 在外部副本无诊断退出，构建复核使用已授权隔离副本的现有 `obj` 资产和 `--no-restore`；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并 | [R16-03 模板应用范围](evidence/R16-03-POLICY-TEMPLATE-BATCH-20260920.md)；下一项 `R16-04 恢复默认粒度`，先核对现有设置恢复入口与敏感连接字段保护 |
-| R16-04 | 恢复默认粒度 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R16-04 | 恢复默认粒度 | 已实现，待环境验证 | 2b194461 | 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-04 行为/取消 `2/2`、源码接线 `1/1`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/177` | 新增单字段、单分类、全部默认三个范围；确认文案列出影响；全部默认只重置安全标量/界面偏好，保留 Worker/Ludusavi/Rclone、存档/媒体/镜像路径、云端目标和设备身份；同一 Playnite 草稿重绑不结束编辑，取消仍恢复原草稿 | 未验真实 Playnite/package-host、最终浅深主题呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；构建沿用隔离副本已有 `obj` 的 `--no-restore` 复核，未宣称 fresh restore；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并 | [R16-04 恢复默认粒度](evidence/R16-04-RESET-GRANULARITY-20260920.md)；下一项 `R16-05 路径编辑一致`，先核对路径浏览/校验/打开/复制现有入口 |
 | R16-05 | 路径编辑一致 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-06 | 生效条件说明 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R16-07 | 配置导入预览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -473,6 +473,14 @@
 - 合成核心测试覆盖稳定 ID 去重、排除项、空选择不全选、变更字段计数和超过 100 个不静默截断；Playnite 源契约覆盖绑定、命令、结果/重试入口、显式目标路径与 Worker 逐项失败结构。外部隔离 Release solution `0 errors/2 条既有 warning`；R16-03 Core `3/3`、Playnite `1/1`、Worker `2/2`；`validate-source.py`、XAML `24/24`、diff 通过，WPF 静态 `0/28/177`。
 - 本批保留游戏选框、现有滚动条系统、命令/Binding、取消/错误/恢复保护、有限列表性能、模板一次性复制和 Playnite `net462`。没有把源契约测试写成真实交互或视觉通过；未验真实 Playnite/package-host、最终浅深主题、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能。Demo 原目录不可用，fresh restore 在隔离副本无诊断退出，构建复核使用现有 `obj` 资产和 `--no-restore`；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-03 模板应用范围](evidence/R16-03-POLICY-TEMPLATE-BATCH-20260920.md)。
 - 下一可执行小批量：`R16-04 恢复默认粒度`，先核对设置页/设置服务是否已有单字段、单分类、全部默认入口和敏感连接字段保护，再决定复用、补行为测试或记录“已满足”。
+
+## 2026-09-20 Round3 R16-04 恢复默认粒度
+
+- `2b194461` 核对后确认原设置页只有 Playnite 整体保存/取消和导入校验，没有单字段、单分类或全部默认入口；新增 `SettingsResetCatalog`，把安全标量字段分为常规与目录、备份与恢复、外观与可访问性、自动化与媒体四类。
+- 设置页新增单字段下拉、四个分类级“恢复本类默认”和“恢复全部默认”。确认文案分别列出字段/分类/全部影响；全部默认额外清理筛选预设、列宽、最近访问等本地 UI 偏好。Worker/Ludusavi/Rclone 可执行文件、存档/媒体/镜像路径、Rclone 云端目标和设备身份不在可重置字段中，避免敏感连接或路径被无意清空。
+- 重置直接修改现有 Playnite 编辑草稿，随后重绑同一 settings 实例刷新自动属性，但不调用 `EndEdit`、不保存、不启动 Worker。行为测试验证全部默认保留连接字段且 Playnite 取消恢复原草稿；源码测试验证三个范围的 UI 接线和编辑生命周期保护。
+- 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-04 行为/取消 `2/2`、源码接线 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过，WPF 静态 `0/28/177`。本阶段使用隔离副本已有 `obj` 的 `--no-restore`，未把 fresh restore 写成通过；Demo 原目录不可用，真实 Playnite/package-host、最终呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 和宿主性能仍待验；main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-04 恢复默认粒度](evidence/R16-04-RESET-GRANULARITY-20260920.md)。
+- 下一可执行小批量：`R16-05 路径编辑一致`，先查现有路径浏览、校验、打开、复制事件与 `SettingsPathValidationService`，确认网络/不存在/无权限负例后再决定实现或“已满足”。
 
 ## 2026-09-19 R00/R01 当前提交复核
 

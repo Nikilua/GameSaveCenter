@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-04 恢复默认粒度
+
+- 核对确认现有设置没有分级默认入口；复用 `GameSaveCenterSettings` 的草稿/取消语义，新增 `SettingsResetCatalog` 和单字段、四分类、全部默认的明确 UI 操作。
+- 全部默认只处理安全标量与 UI 偏好，保留 Worker/Ludusavi/Rclone、存档/媒体/镜像路径、云端目标和设备身份；确认文案列出影响。重置后重绑同一草稿对象，不发保存或 Worker 请求，取消可恢复原草稿。
+- 验证：外部隔离 Release `0 errors/2 warnings`（既有 MediaCenter nullable）；行为 `2/2`、源码 `1/1`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。使用隔离 `obj` 的 `--no-restore`，fresh restore 未宣称通过，临时副本已清理。
+- 已提交并推送 `2b194461` 到 `origin/codex/ui-finesse-round2`。只用合成 settings/fake/隔离目录，Demo 原目录不可用；真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW/宿主性能仍待验；main 用户改动未碰、未合并。证据：[R16-04 恢复默认粒度](../design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-20260920.md)。下一可执行任务：`R16-05 路径编辑一致`。
+
 ## 2026-09-20 R16-03 模板应用范围
 
 - 先确认现有实现只有单目标模板应用，没有把单项命令误记成批量能力；随后复用现有模板/策略 DTO、归一化、游戏操作锁、持久化和审计路径，新增有界批量 DTO/IPC、目标预览、结果列表和逐项重试。
