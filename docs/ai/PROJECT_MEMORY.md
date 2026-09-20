@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R16-08 保存冲突处理（2026-09-20）
+
+- `ee6b37c9` 复用 `BeginEdit`/`CancelEdit` 的编辑基线和现有 fingerprint，新增 `SettingsConflictResolver` 三方合并。后台仅改动的字段合入当前草稿；同字段不同值进入冲突，不部分覆盖。
+- `EndEdit` 先加载最新持久化 settings；冲突触发字段级 `SettingsConflictDetected` 提示并抛出 `SettingsConflictException`，保存不继续，取消基线保留最新外部值；无冲突才进入原保存/视觉/Worker 链路。真实共享对象后台竞态仍需宿主验证。
+- 最终 HEAD 定向 `17/17`，完整 Release/net462 solution `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff、WPF `0/28/162` 通过。未写真实配置、存档、媒体、云端；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 证据：`R16-08-SETTINGS-CONFLICT-20260920.md`。下一可执行任务：`R17-01 健康结果分层`，先核对健康检查结果、已解决项和跨来源去重时间。
+
 ## 第三轮 R16-07 配置导入预览（2026-09-20）
 
 - `451195ad` 在既有设置导入/导出和缺失路径报告上增加非变更预览：解析 detached package，展示架构版本、兼容性、实际变化字段、未知字段和安全说明；未知字段继续忽略，设备身份不被导入。

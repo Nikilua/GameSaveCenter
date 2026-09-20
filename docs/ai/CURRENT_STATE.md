@@ -1,12 +1,20 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-08 保存冲突处理（代码已提交，受控验证完成；真实宿主待验）
+
+- `ee6b37c9` 在既有 Playnite 编辑基线/fingerprint 上增加 `SettingsConflictResolver` 三方合并：仅后台变化的字段并入草稿；用户和最新持久化同时改动且值不同的字段进入冲突列表，不部分覆盖。
+- `EndEdit` 保存前读取最新 settings；冲突触发 `SettingsConflictDetected`、设置页字段级提示和 `SettingsConflictException`，当前草稿不写入，取消基线移到最新持久化值；无冲突继续原保存/视觉通知/Worker 应用链。
+- 最终 HEAD 定向设置/PortableSettings 回归 `17/17`；隔离 Release solution `0 errors/2 existing MediaCenter nullable warnings`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-08-SETTINGS-CONFLICT-20260920.md`。
+- 未验真实 Playnite 双设置窗口、后台保存竞态、宿主错误呈现、最终主题、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；共享 settings 对象的真实线程时序仍待验。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一项：`R17-01 健康结果分层`，先查健康检查结果、已解决项和跨来源去重时间证据。
+
 ## 当前第三轮 R16-07 配置导入预览（代码已提交，受控验证完成；真实宿主待验）
 
 - `451195ad` 复用既有 `ExportPortableJson`、`ImportPortableJson` 和缺失路径报告，新增 detached `PreviewPortableJson` 与确认后的 `ApplyPortableJson`；预览显示架构版本、兼容性、变化字段和未知字段，未知字段忽略且不破坏当前配置。
 - 导出继续清空设备身份，当前 DTO 无凭据字段；预览明确凭据不进入可分享导出。UI 使用原生 Yes/No 预览确认，取消、旧架构、坏值不修改草稿；应用前快照保证复制/报告异常可恢复原配置。
 - 最终 HEAD 定向 R16-07/PortableSettings `15/15`；隔离 Release solution `0 errors/2 existing MediaCenter nullable warnings`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md`。
 - 未验真实 Playnite/package-host 文件选择器、MessageBox、保存取消和最终呈现、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。只用合成 JSON/detached settings/隔离目录。
-- 下一项：`R16-08 保存冲突处理`，先核对编辑基线、后台更新和字段级冲突边界。
+- 下一项：`R16-07 配置导入预览`，先核对现有导入报告、版本、未知字段、凭据和失败回退。
 
 ## 当前第三轮 R16-06 生效条件说明（代码已提交，受控验证完成；真实宿主待验）
 

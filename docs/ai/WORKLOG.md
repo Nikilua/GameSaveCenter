@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-08 保存冲突处理
+
+- 审计确认设置已有 Playnite 编辑基线但 `EndEdit` 未检查最新持久化快照；后台/另一入口变化可能被草稿静默覆盖。新增 `SettingsConflictResolver` 三方合并和字段显示名。
+- `EndEdit` 保存前读取最新 settings。非冲突后台字段合入草稿并更新取消基线；同字段冲突不部分合并，触发字段级事件，设置页提示“当前草稿未写入”，抛出 `SettingsConflictException` 阻断保存。原保存/视觉/Worker 应用链保持不变。
+- 最终 HEAD 定向回归 `17/17`；完整 Release/net462 solution `0 errors/2 existing MediaCenter nullable warnings`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R16-08-SETTINGS-CONFLICT-20260920.md`。
+- 未验真实 Playnite 双设置窗口、后台共享对象线程竞态、宿主错误呈现、DPI/UIA/IME、RenderHarness、ETW、宿主性能；只用合成 detached/fake/隔离构建，不改真实配置/存档/媒体/云端。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r16-08-*` 为本阶段输出，文档提交前清理。下一可执行任务：`R17-01 健康结果分层`，先查现有健康检查结果、已解决项和跨来源去重时间证据。
+
 ## 2026-09-20 R16-07 配置导入预览
 
 - 现有设置导出已是架构 v1，导入已有缺失路径报告、detached 校验和设备身份保护；当前 DTO 不含凭据。没有重建 DTO 或配置源。

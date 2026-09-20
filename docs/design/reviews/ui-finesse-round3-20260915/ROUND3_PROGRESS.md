@@ -141,7 +141,7 @@
 | R16-05 | 路径编辑一致 | 已实现，待环境验证 | 955dc52e | 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-05 定向行为/源码/路径回归 `6/6`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/162` | 六个本地工具/目录字段共用当前字段编辑模式；浏览按类型选择，单字段只读探测区分有效/缺失/网络不可达/无权限；打开只处理当前有效路径，复制复用脱敏与剪贴板重试；远端目标排除；取消浏览不改草稿 | 未验真实 Playnite/package-host、WinForms 文件夹对话框归属、Explorer 动作、最终浅深主题呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；未用真实网络共享/用户 ACL/剪贴板；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R16-05 路径编辑一致](evidence/R16-05-PATH-EDITOR-20260920.md)；下一项 `R16-06 生效条件说明`，先查设置字段实际消费点 |
 | R16-06 | 生效条件说明 | 已实现，待环境验证 | 83e7c745 | 外部隔离 Release solution `0 errors/2 条既有 warning`；R16-06 链路/负例与 R16-05 路径回归 `8/8`；`validate-source.py`、XAML `24/24`、`git diff --check`；WPF `0/28/162` | 按真实 `EndEdit → NotifyVisualSettingsChanged → settings.update → WorkerOptions.Apply/SyncPlan` 链路标注外观即时预览、下一任务/轮询边界和下一次 Playnite 启动；明确没有笼统的重启要求 | 未验真实 Playnite/package-host 的保存后呈现、Worker 重启/轮询实际时序、最终主题、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并 | [R16-06 生效条件说明](evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md)；下一项 `R16-07 配置导入预览`，先查现有导入报告/版本/未知字段/凭据边界 |
 | R16-07 | 配置导入预览 | 已实现，待环境验证 | 451195ad | 最终 HEAD 定向 `15/15`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff；WPF `0/28/162` | 设置导入先展示架构版本、兼容性、差异字段和未知字段，再由原生 Yes/No 确认；取消、旧架构、坏值不改草稿；未知字段忽略，设备身份保留 | 未验真实 Playnite/package-host 文件选择器/MessageBox/保存取消、最终呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；合成 JSON/detached settings/隔离目录，不触碰真实配置/存档/媒体/云端；Demo 原目录不可用，main 用户改动未碰、未合并 | [R16-07 配置导入预览](evidence/R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md)；下一项 `R16-08 保存冲突处理`，先核对编辑基线与后台更新的字段级冲突/拒绝边界 |
-| R16-08 | 保存冲突处理 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R16-08 | 保存冲突处理 | 已实现，待环境验证 | ee6b37c9 | 最终 HEAD 定向 `17/17`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff；WPF `0/28/162` | 基线变化先做三方字段合并；非冲突后台字段合入，冲突字段显示明确提示、保留草稿并阻断保存；取消基线转到最新外部值 | 未验真实 Playnite 双设置窗口/后台共享对象竞态/宿主错误呈现、最终呈现、DPI/UIA/IME、RenderHarness presented frame、ETW 或宿主性能；合成 detached/fake/隔离目录，不触碰真实配置/存档/媒体/云端；Demo 原目录不可用，main 用户改动未碰、未合并 | [R16-08 保存冲突处理](evidence/R16-08-SETTINGS-CONFLICT-20260920.md)；下一项 `R17-01 健康结果分层`，先核对健康结果、已解决项与跨来源去重时间证据 |
 | R17-01 | 健康结果分层 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R17-02 | 诊断包预览 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R17-03 | 检查进度预算 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -494,7 +494,7 @@
 - `83e7c745` 追踪现有设置消费链：Playnite `GameSaveCenterSettings.EndEdit` 保存后触发视觉变更并调用 `ApplySettingsAsync`，插件通过 `settings.update` 发送 `ToWorkerSettings`，Worker `UpdateSettings` 应用运行时选项并重算健康巡检计划。没有新增另一个配置源或要求重启的泛化规则。
 - 设置页四个分类标题旁标注实际边界：外观当前页即时预览、保存后已打开页面即时重建；工具/目录和备份参数从下一次新任务读取；轮询/队列/健康计划在下一轮边界读取；随 Playnite 启动 Worker、下次安全模式在下一次启动判断。已有云端时段文案继续保留“下一轮 Worker 检查”。
 - 当前提交重新编译后的链路/负例与 R16-05 路径回归 `8/8`；外部隔离 Release solution `0 errors/2 warnings`，warning 为既有 `MediaCenterView.xaml.cs:664` nullable；source/XAML/diff、WPF `0/28/162` 通过。未验真实宿主保存后时序、最终呈现、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-06 生效条件说明](evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md)。
-- 下一可执行小批量：`R16-08 保存冲突处理`，先核对设置编辑基线、后台更新通知和字段级合并/拒绝边界，禁止静默覆盖用户最后修改。
+- 下一可执行小批量：`R16-07 配置导入预览`，先复用现有 `ImportPortableJson`/导入报告能力，核对版本、未知字段、凭据和失败回退边界。
 
 ## 2026-09-20 Round3 R16-07 配置导入预览
 
@@ -502,6 +502,13 @@
 - 设置页按读取→预览→Yes/No→应用→报告执行；取消、旧架构、坏值不写入当前草稿，应用前快照在复制/报告异常时恢复。导出仍不包含当前 DTO 的凭据字段，测试锁定 `RclonePassword`、Password/Secret/Token 文本不出现在可分享 JSON。
 - 最终 HEAD 定向 `15/15`，隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664` nullable），`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。未验真实宿主文件对话框/确认框/保存取消、最终呈现、DPI/UIA/IME、RenderHarness、ETW/性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-07 配置导入预览](evidence/R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md)。
 - 下一可执行小批量：`R16-08 保存冲突处理`，先查 Playnite 编辑基线、后台设置更新和字段级冲突/拒绝边界。
+
+## 2026-09-20 Round3 R16-08 保存冲突处理
+
+- `ee6b37c9` 复用 Playnite `BeginEdit`/`CancelEdit` 基线和 fingerprint，新增 `SettingsConflictResolver` 三方字段合并；仅最新持久化变化的字段并入草稿，同字段不同值列为冲突，不做部分覆盖。
+- `EndEdit` 保存前读取最新 settings；无冲突继续原保存、视觉通知和 Worker 应用；冲突触发 `SettingsConflictDetected`，设置页显示字段名与“当前草稿未写入”，并抛出 `SettingsConflictException` 阻断保存，取消基线保留最新外部值。
+- 最终 HEAD 定向 `17/17`，隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664` nullable），`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。未验真实双设置窗口、共享对象竞态、宿主错误呈现、最终呈现、DPI/UIA/IME、RenderHarness、ETW/性能；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。证据见 [R16-08 保存冲突处理](evidence/R16-08-SETTINGS-CONFLICT-20260920.md)。
+- 下一可执行小批量：`R17-01 健康结果分层`，先查健康检查结果、已解决项和跨来源去重时间证据。
 
 ## 2026-09-19 R00/R01 当前提交复核
 
