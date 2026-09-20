@@ -1,11 +1,11 @@
 # GameSaveCenter 当前事实入口
 
-## 当前第三轮 R21-02 MediaCenter 列表语义与选择状态（实现中，待继续）
+## 当前第三轮 R21-02 MediaCenter 媒体详情位置值与导航边界（实现中，待继续）
 
-- `c419fc98` 为现有 `MediaGrid` 保留 `SelectionMode="Extended"`、`VirtualizingWrapPanel`、滚动条和 `SelectedMedia`/`SelectionChanged` 绑定，只补列表级 `AutomationProperties.Name="当前游戏媒体列表"`；没有改变选框、滚动或媒体选择语义。
-- `R21AutomationValueBehaviorTests 18/18`，相关进度/焦点/键盘/无障碍/生产壳层回归 `66/66`；实际 WPF `ListBox` peer 验证列表名称、`ISelectionProvider.CanSelectMultiple`、选中项存在和 A→B 选择变化。
+- `806d5a27` 先复用生产 `MediaDetailNavigationDisplay`、`CanNavigatePreviousMedia` 和 `CanNavigateNextMedia`，没有修改服务、DTO、命令、Binding 或媒体写入语义；新增行为证据覆盖未选择、首项 `1 / 2`、末项 `2 / 2` 与前后导航可用性边界。
+- `R21AutomationValueBehaviorTests 19/19`，本批相关组合筛选 `22/22`；实际合成 `MediaItemDto`/ViewModel 验证三态和负例，并用 WPF `TextBlock` peer 验证“媒体详情位置”名称与显示值。
 - 提交身份使用 D 盘源码副本 Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/162`，未见本批新增诊断。
-- 该批不宣称真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能；链接工作树 `_wpftmp` 的 `Access denied` 未绕过。本批 source-copy/build 已清理，Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续其他状态值边界，之后进入 `R21-03`。
+- 该批不宣称真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能；链接工作树 `_wpftmp` 的 `Access denied` 未绕过。本批 source-copy/build 已清理，Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续其他状态值边界，之后进入 `R21-03`。证据见 [`R21-02 MediaCenter 媒体详情位置`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-02-MEDIA-NAVIGATION-VALUE-20260921.md)。
 
 ## 当前第三轮 R21-02 MediaCenter 批量动作忙碌态刷新（实现中，待继续）
 

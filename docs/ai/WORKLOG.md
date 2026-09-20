@@ -1,12 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
-## 2026-09-21 R21-02 MediaCenter 列表语义与选择状态（续作小批量）
+## 2026-09-21 R21-02 MediaCenter 媒体详情位置值与导航边界（续作小批量）
 
-- `c419fc98` 已完成：复用 MediaCenter 原有扩展选框、虚拟化、滚动条和选择绑定，只补 `MediaGrid` 的列表级 Automation 名称。
-- `R21AutomationValueBehaviorTests 18/18`；相关回归 `66/66`。新增实际 WPF `ListBox` peer 行为证据：名称、可多选、选中项 A→B 变化。
-- D 盘源码副本以提交身份 `GscBuildCommit=c419fc98` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/162` 通过。
-- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成 WPF peer、fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
-- 下一可执行任务：继续 R21-02 其他逐控件状态/值负例，公共门禁完成后进入 R21-03 错误播报；真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+- `806d5a27` 已完成：先复用生产 `MediaDetailNavigationDisplay` 与前后导航状态，新增实际行为证据覆盖未选择、首项 `1 / 2`、末项 `2 / 2` 及两端不可导航负例，没有修改生产媒体业务语义。
+- `R21AutomationValueBehaviorTests 19/19`；本批相关组合筛选 `22/22`。测试使用合成 `MediaItemDto`、隔离 ViewModel 字段和实际 WPF `TextBlock` peer，验证“媒体详情位置”名称与值承载，未用字符串断言代替行为。
+- D 盘源码副本以提交身份 `GscBuildCommit=806d5a27` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。Demo 原目录不可用，main 用户改动未碰、未合并；真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+- 下一可执行任务：继续 R21-02 其他逐控件状态/值负例，公共门禁完成后进入 R21-03 错误播报。
 
 ## 2026-09-21 R21-02 MediaCenter 批量动作忙碌态刷新（续作小批量）
 

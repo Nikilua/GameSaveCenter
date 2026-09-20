@@ -2,12 +2,12 @@
 
 > 维护时间：2026-09-21
 
-## 第三轮 R21-02 MediaCenter 列表语义与选择状态（2026-09-21，续作小批量）
+## 第三轮 R21-02 MediaCenter 媒体详情位置值与导航边界（2026-09-21，续作小批量）
 
-- 复核确认 `MediaGrid` 已有扩展选框、`SelectedMedia`/`SelectionChanged`、虚拟化和滚动系统；`c419fc98` 只补列表级 Automation 名称，没有更换控件、滚动模型或选择语义。
-- `MediaCenterListExposesSemanticNameAndSelectionState` 使用实际 WPF `ListBox` peer 验证名称、可多选和选中项 A→B 变化；`R21AutomationValueBehaviorTests 18/18`，相关套件 `66/66`。
+- 复核确认生产 `MediaDetailNavigationDisplay` 已提供“未选择媒体”、`1 / 2`、`2 / 2` 值，导航属性按选中索引给出前后边界；`806d5a27` 只补行为证据，没有改变业务实现或媒体写入语义。
+- `MediaDetailNavigationValueExposesSelectionBoundaries` 使用合成 DTO、隔离 ViewModel 字段和实际 WPF `TextBlock` peer 验证三态、前后导航负例、生产 Binding 与语义名；`R21AutomationValueBehaviorTests 19/19`，本批相关组合筛选 `22/22`。
 - 显式提交身份 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 nullable warning；source/XAML/diff 与 WPF `0/27/162` 通过，未见本批新增静态诊断。
-- 该批不代表真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能；链接 `_wpftmp` `Access denied` 未绕过，Demo 原目录不可用，main 用户改动未碰未合并。下一步继续 R21-02 其他状态值边界，公共门禁完成后进入 `R21-03`。
+- 该批不代表真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能；链接 `_wpftmp` `Access denied` 未绕过，Demo 原目录不可用，main 用户改动未碰未合并。source-copy/build 已清理。下一步继续 R21-02 其他状态值边界，公共门禁完成后进入 `R21-03`。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-02-MEDIA-NAVIGATION-VALUE-20260921.md`。
 
 ## 第三轮 R21-02 MediaCenter 批量动作忙碌态刷新（2026-09-21，续作小批量）
 
