@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-07 检查项一键定位（2026-09-20）
+
+- `e8d581c6` 先复用既有 `FindingNavigationResolver`、精确游戏解析、任务/云队列入口和 `WorkspaceNavigationStack`；没有新增第二套导航栈。健康巡检 Finding 补稳定 `BackupId`，版本页按 `PlayniteId + BackupId` 精确选择。
+- SQLite `findings` 对旧表执行 `backup_id` 增量迁移；旧健康标题前缀可兼容读取。缺失游戏或版本不选择邻居，缺少健康版本身份不伪装成失败任务；返回维护中心继续恢复既有筛选、选中诊断与滚动。
+- Worker 迁移/健康/Finding `18/18`、Playnite R17 `15/15`、隔离 Release solution `0 errors/2 existing warnings`、source/XAML/diff、WPF `0/27/162` 通过。证据：`R17-07-FINDING-NAVIGATION-20260920.md`。
+- 未验真实宿主呈现、主题/DPI/UIA/IME/焦点滚动、Explorer/权限、ETW 和宿主性能；Demo 原目录不可用，继续使用恢复生产基线；main 用户改动未碰、未合并。
+- 下一可执行任务：`R17-08 维护报告可读性`，先查现有报告导出、分组和脱敏器，再补时间/计数一致性与 URL/Windows 路径负例。
+
 ## 第三轮 R17-06 存储分析导航（2026-09-20）
 
 - `51cae6b9` 先复用既有 `StorageAnalysisService` 的 SQLite 逻辑索引、备份目录实测、TopGames 和 `TaskSourceNavigationResolver`；没有创建第二套存储统计或导航模型。

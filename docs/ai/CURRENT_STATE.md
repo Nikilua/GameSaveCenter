@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-07 检查项一键定位（已满足，受控验证完成；真实宿主待验）
+
+- `e8d581c6` 复用既有 Finding/Health/Task 导航与 `WorkspaceNavigationStack`；存档路径、任务、云队列继续走原稳定入口，健康巡检问题新增 `PlayniteId + BackupId` 精确版本路由。
+- `ValidationFindingDto` 与 SQLite `findings` 增加 `BackupId` 兼容迁移；历史标题前缀仍可解析。加载只选择精确版本，目标不存在保留诊断并显示未选择其他版本；缺少版本身份不回落到失败任务。维护选择键纳入版本 ID，返回维护后沿用原筛选、选中项和滚动恢复。
+- Worker 迁移/健康/Finding `18/18`，Playnite R17 `15/15`；隔离 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-07-FINDING-NAVIGATION-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、Explorer/权限、presented frame、ETW 或宿主性能；只用合成/fake/隔离 SQLite/临时目录。Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r17-07-solution` 待清理。
+- 下一项：`R17-08 维护报告可读性`，先核对报告 DTO/导出和脱敏路径。
+
 ## 当前第三轮 R17-06 存储分析导航（已满足，受控验证完成；真实宿主待验）
 
 - `51cae6b9` 复用现有 `StorageAnalysisService`、逻辑索引/目录实测统计、TopGames 和稳定 ID 解析；维护页 Demo 卡片明确区分 SQLite 逻辑大小、备份目录文件实测和卷剩余空间。

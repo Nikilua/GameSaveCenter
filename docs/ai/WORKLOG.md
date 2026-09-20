@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-07 检查项一键定位
+
+- 复核确认存档路径、失败任务、云队列和维护返回栈已有生产实现；本阶段只补健康巡检的稳定版本身份与精确版本定位，没有重建导航服务。
+- `e8d581c6` 为 `ValidationFindingDto`/SQLite `findings` 增加 `BackupId` 及旧表迁移；新旧健康 Finding 均可按稳定 `PlayniteId + BackupId` 定位，目标消失不邻近回退，无版本身份不回落到任务中心；维护选择键和原筛选/滚动返回保持。
+- Worker 迁移/健康/Finding `18/18`，Playnite R17 `15/15`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-07-FINDING-NAVIGATION-20260920.md`。
+- 只用合成 DTO、fake 服务、隔离 SQLite/临时目录，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r17-07-solution` 在文档提交前清理。
+- 代码已提交并推送 `e8d581c6` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-08 维护报告可读性`，先盘点报告 DTO/导出服务、分组和脱敏器。
+
 ## 2026-09-20 R17-06 存储分析导航
 
 - 先核对现有存储分析 DTO、Worker 统计、维护页 Demo 卡片、TopGames 以及稳定游戏/版本解析；确认已有逻辑索引与目录实测能力，未重建服务。
