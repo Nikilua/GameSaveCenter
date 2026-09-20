@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R20-03 首次配置引导（2026-09-20）
+
+- 复核确认 `1a90cd06` 已提供 `EnvironmentCheckCard`、`EnvironmentCheckService`、`OnboardingCompleted` 以及运行检查/完成/跳过/测试备份命令；完成只接受最近无失败检查，跳过明确可在维护中心重新运行，检查卡不强制导航。测试备份复用手动 `BackupSelectedAsync`，不会自动执行或改外部工具配置。
+- Worker 隔离环境检查 `1/1`；Playnite 当前身份定向 `3 passed / 1 skipped / 0 failed / 4 total`，1 条 legacy 宿主事实跳过。Playnite `net462` / Tests `net472` source-copy `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，Worker.Tests `0/0`；source/XAML/diff 通过。
+- 初次旧产物测试被 `GscBuildCommit` 身份门拦截，固定 `31784686` 后复测；未把身份问题写成行为失败。仅使用合成/fake/隔离目录，真实 Playnite/外部工具/存档/云端/呈现/DPI/UIA/IME/ETW/性能待验，Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-03-FIRST-USE-ONBOARDING-20260920.md`。
+- 下一项 `R20-04`：核对无结果筛选、条件摘要、清除动作和离线错误边界。
+
 ## 第三轮 R20-02 指标统计范围（2026-09-20）
 
 - `DashboardSnapshotDto` 已有 `GeneratedUtc`、全库计数、云端/媒体计数和当前游戏字段，本项复用这些来源，没有新增 DTO/服务或批量写入入口。`OverviewSnapshotDisplay` 提供全库/当前游戏范围、更新时间、未加载 `—` 与合法零 `0` 的格式化；`DashboardViewModel` 在快照/选择/任务/最近访问变化时补发显示属性通知。

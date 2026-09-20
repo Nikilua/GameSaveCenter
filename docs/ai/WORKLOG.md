@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R20-03 首次配置引导
+
+- 先查现有 `EnvironmentCheckCard`、`EnvironmentCheckService`、`OnboardingCompleted`、维护工作区入口和测试备份命令，追溯到祖先提交 `1a90cd06`；确认任务已满足，本阶段无生产代码变更。
+- Worker 合成隔离 `EnvironmentCheckServiceTests` `1/1`；Playnite 当前身份定向 `3 passed / 1 skipped / 0 failed / 4 total`，跳过项为 legacy 宿主事实。Playnite/Tests source-copy `0 errors / 2` 条既有 warning，Worker.Tests `0/0`；source、XAML `24/24`、diff 通过。
+- 旧工作树产物因缺 `GscBuildCommit` 拒绝了 3 条源测试，固定 `31784686` 后隔离重建复测；没有把身份门失败计入行为结果。未运行真实宿主、外部工具、真实用户目录/存档/云端、呈现、DPI/UIA/IME、ETW/性能；Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-03-FIRST-USE-ONBOARDING-20260920.md`。
+- 下一可执行任务：`R20-04` 零结果恢复，先盘点筛选模型、条件摘要、清除命令和离线失败呈现。
+
 ## 2026-09-20 R20-02 指标统计范围
 
 - 先核对已有 `DashboardSnapshotDto.GeneratedUtc`、全库计数、当前游戏 DTO、Overview 绑定和既有来源提示；没有重建服务/DTO，也没有改变游戏选框、滚动条或命令入口。

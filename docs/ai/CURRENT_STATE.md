@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-03 首次配置引导（已满足，待环境验证；本阶段无生产代码变更）
+
+- 当前分支祖先 `1a90cd06` 已实现首次使用引导：维护页 `EnvironmentCheckCard`、`EnvironmentCheckService` 非破坏性检查、`OnboardingCompleted` 完成标记、跳过/完成/重新检查和复用真实手动备份管道的测试入口。没有强制跳转或自动修改外部工具配置。
+- Worker 隔离 `EnvironmentCheckServiceTests` `1/1`；Playnite 当前身份定向 `3 passed / 1 skipped / 0 failed / 4 total`，其中 1 条 `LegacyProductionUiBaselineFact` 跳过。Playnite `net462` / Tests `net472` 隔离构建 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；Worker.Tests `0 warnings / 0 errors`；source/XAML `24/24`/diff 通过。
+- 直接复用旧产物曾被 `GscBuildCommit` 身份门拒绝，未计为行为失败；固定当前身份 `31784686` 后重建并复测。只用合成/fake/隔离目录，真实宿主/外部工具/存档/云端写入、呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能未验；Demo 原目录不可用，main 用户改动未碰且未合并。证据见 `evidence/R20-03-FIRST-USE-ONBOARDING-20260920.md`。
+- 下一项：`R20-04` 零结果恢复，先查筛选摘要、清除筛选和离线错误与空结果的区分。
+
 ## 当前第三轮 R20-02 指标统计范围（已满足，待环境验证）
 
 - 复用 `DashboardSnapshotDto` 的 `GeneratedUtc`、全库计数、云端/媒体计数和现有当前游戏 DTO；`OverviewSnapshotDisplay` 与 `DashboardViewModel` 投影为概览指标补充全库/当前游戏范围、更新时间和未加载表达。快照未成功返回时数字为 `—` 并明确“不代表 0”，已加载的合法零仍为 `0`。
