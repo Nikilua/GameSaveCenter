@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 选择器无选中与开关三态边界（2026-09-21，续作小批量）
+
+- `efb42b7b` 复用生产 ComboBox、`ToggleSwitch` 和共享状态模板，新增实际 peer 证据：无选中 ComboBox 的 `GetSelection()` 为 `null`，选中后为单项；三态开关按 `Indeterminate → Off → On` 读取，没有修改生产 XAML 或业务 Binding。
+- `R21AutomationValueBehaviorTests 21/21`；相关筛选 `35/35`。提交后 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 nullable warning；source/XAML/diff 与 WPF `0/27/162` 通过。
+- 三态只证明共享控件的承载能力，不代表当前业务开关会产生 Indeterminate；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-02-SELECTOR-TOGGLE-NEGATIVE-20260921.md`。下一步继续 R21-02 剩余复合选择器/逐控件状态值负例，之后进入 R21-03。
+
 ## 第三轮 R21-02 TaskCenter 任务进度 UIA 值与状态边界（2026-09-21，续作小批量）
 
 - `6b56a467` 复用既有 `TaskStatusDto.ProgressValue`、`ProgressDisplay` 和 TaskCenter 生产 Binding，只新增 `TaskProgressPeerExposesBoundValueAndUnknownStatus` 行为证据；实际 WPF `ProgressBar` peer 验证正常 `42`、未知 `-1`、越界 `120` 的 RangeValue、范围和 HelpText，未知保持 `—`，没有把未知伪装成有效百分比。

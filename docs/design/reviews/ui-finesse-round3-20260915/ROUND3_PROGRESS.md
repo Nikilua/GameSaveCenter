@@ -754,3 +754,10 @@
 - `R21AutomationValueBehaviorTests` 当前 `20/20`；`R21AutomationValueBehaviorTests | R06TaskProgressBehaviorTests | R03NumericAlignmentTests` `34/34`。提交后 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/162` 通过。
 - 证据来自生产 TaskCenter XAML、既有 DTO/投影、合成 WPF `ProgressBar` peer、fake/隔离 testhost/source-copy；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、最终呈现和宿主性能仍待验。链接工作树 `_wpftmp.csproj` 写入遇 `Access denied` 未绕过；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据见 [R21-02 TaskCenter 任务进度 UIA](evidence/R21-02-TASK-PROGRESS-PEER-20260921.md)。
 - 当前不签收整项 R21-02：剩余复合选择器及逐控件状态/值负例仍需逐项核对；下一可执行小批量继续这些边界，公共门禁完成后再进入 `R21-03` 验证错误播报。
+
+## 2026-09-21 Round3 R21-02 选择器无选中与开关三态边界（续作小批量）
+
+- `efb42b7b` 复用生产 ComboBox、`ToggleSwitch` 和共享状态模板，只新增实际 WPF peer 负例：无选中 ComboBox 的 `ISelectionProvider.GetSelection()` 返回 `null`，选中“失败”后为单项；三态开关按 `Indeterminate → Off → On` 可读，没有修改生产 XAML、Binding 或业务设置语义。
+- `R21AutomationValueBehaviorTests` 当前 `21/21`；相关组合筛选 `35/35`。提交后 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/162` 通过。
+- 证据来自生产控件类型/共享模板、合成选项、实际 WPF `ComboBox`/`ToggleSwitch` peer、fake/隔离 testhost/source-copy；三态不代表当前业务 Binding 会产生 Indeterminate。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、最终呈现和宿主性能仍待验。链接工作树 `_wpftmp.csproj` 写入遇 `Access denied` 未绕过；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据见 [R21-02 选择器与开关负例](evidence/R21-02-SELECTOR-TOGGLE-NEGATIVE-20260921.md)。
+- 当前不签收整项 R21-02：剩余复合选择器及逐控件状态/值负例仍需逐项核对；下一可执行小批量继续这些边界，公共门禁完成后再进入 `R21-03` 验证错误播报。

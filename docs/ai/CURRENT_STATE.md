@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 选择器无选中与开关三态边界（实现中，待继续）
+
+- `efb42b7b` 复用既有 ComboBox、`ToggleSwitch` 和共享状态模板，只新增实际 WPF peer 负例：ComboBox 无选中时 `ISelectionProvider.GetSelection()` 为 `null`，选中“失败”后为单项；三态开关 `Indeterminate → Off → On` 可读。
+- `R21AutomationValueBehaviorTests 21/21`；本批相关组合筛选 `35/35`。提交后 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/162`。
+- 本批无生产代码变更，不改变命令、Binding、业务设置、选框、滚动条或列表性能；三态只证明共享控件承载能力，不宣称当前业务 Binding 会产生 Indeterminate。证据见 [`R21-02 选择器与开关负例`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-02-SELECTOR-TOGGLE-NEGATIVE-20260921.md)。真实宿主/UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：继续 R21-02 剩余复合选择器和逐控件状态/值负例，公共门禁完成后进入 R21-03。
+
 ## 当前第三轮 R21-02 TaskCenter 任务进度 UIA 值与状态边界（实现中，待继续）
 
 - `6b56a467` 先复用既有 `TaskStatusDto.ProgressValue`、`ProgressDisplay` 与 TaskCenter 生产绑定，只新增实际 WPF `ProgressBar`/`AutomationPeer` 证据；正常 `42`、未知 `-1`、越界 `120` 分别验证 `RangeValue`、范围和 `HelpText`，未知不会被读成有效百分比。
