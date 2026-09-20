@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R20-07 最近活动密度
+
+- 先查已有能力：Worker active/recent 任务按 TaskId 去重，活动审计由 `ActivityTimelineMapper` 输出有限摘要；Playnite `TaskEventUiBatcher` 合并高频进度、限制 `128/32`、终态即时落地，Overview 最近任务保留 8 项并本地滚动。
+- TaskCenter 选中项已有失败摘要/错误码、技术详情 Expander、复制/重试和有界任务时间线；无新增生产代码。Core 活动映射 `4/4`，Playnite 定向 `11/11`（批处理 `3/3`、时间线 `3/3`、首页活动 `1/1`、选择/详情 `4/4`）。
+- 组合 WPF host 首次出现 R06 详情选择时序失败，单独类进程重跑 `2/2`；按真实边界记录，未绕过或修改产品断言。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，source/XAML/diff 通过。
+- 仅使用合成/fake/隔离 testhost/source-copy/目录，没有真实数据写入；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md`。
+- 下一可执行任务：`R20-08 状态语气统一`，先核对加载、失败、空、完成和需要操作的现有文案来源/模板；真实 Playnite/package-host、Worker 实时流、呈现、DPI/UIA/IME、ETW、宿主性能仍待验。
+
 ## 2026-09-21 R20-06 部分可用状态
 
 - 先查已有能力：`ActionAvailabilityHints` 已覆盖恢复、媒体收件箱、云端和隔离远端恢复的禁用前置与解释，`WorkspaceStatePresenter` 已覆盖 Loading/Empty/Error/Degraded/Offline；保留各工作区独立状态，没有重建状态模型。

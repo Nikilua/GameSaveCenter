@@ -172,7 +172,7 @@
 | R20-04 | 零结果恢复 | 已满足，待环境验证 | cf09f3f6 | 定向行为 `26 passed / 0 failed / 0 skipped / 26 total`；受影响 UI/源码套件 `171 passed / 3 failed / 50 skipped / 224 total`（3 条既有基线）；隔离 Playnite `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 游戏选框、媒体和云端队列显示当前筛选条件；清除只改筛选并复用现有刷新/滚动；云端读取异常明确显示失败而不是零结果；任务中心复用既有摘要与清除命令 | 合成/fake/隔离 testhost 和目录；3 条更宽套件失败为未修改的设置字段、空态覆盖层、下拉模板基线；真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-04 零结果恢复](evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md)；下一项 `R20-05` Stale 可理解，先核对旧数据时间、失败原因和重试入口 |
 | R20-05 | Stale 可理解 | 已满足，待环境验证 | c492bbc2 | 定向回归 `37 passed / 1 failed / 0 skipped / 38 total`；唯一失败为未修改的任务详情断言漂移；隔离 Playnite `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 任务/存档/媒体/维护页复用已有 stale 时间、错误和重试；云端补最近成功时间、失败原因、旧数据保留提示和重试入口；读取失败不清除旧记录 | 合成/fake/隔离 testhost 和目录；唯一失败 `FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 为既有基线；真实 Playnite/package-host、云端/媒体、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-05 Stale 可理解](evidence/R20-05-STALE-UNDERSTANDABLE-20260921.md)；下一项从 Q/R 依赖清单选择依赖已满足的小批量 |
 | R20-06 | 部分可用状态 | 已满足，待环境验证 | e32ed599 | R02/R07/Workspace 定向 `17 passed / 0 failed / 1 skipped / 18 total`；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML `24/24`/diff 通过 | `ActionAvailabilityHints` 按恢复、媒体收件箱、云端和远端恢复分别解释禁用原因；`WorkspaceStatePresenter` 保留 Loading/Empty/Error/Degraded/Offline 独立区域；局部故障不把整页伪装成不可用 | 合成/fake/隔离 testhost 与 source-copy；初跑发现并修正云端过期横幅 `Style.BasedOn` 的真实 WPF `XamlParseException`；1 条旧架构事实跳过，关闭阶段有已知 TextServices COM 噪声但测试成功；真实 Playnite/package-host、Worker/云端/外部工具、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-06 部分可用状态](evidence/R20-06-PARTIAL-AVAILABILITY-20260921.md)；下一项 `R20-07` 最近活动密度，先核对事件摘要、重复进度合并、展开详情和真实计数 |
-| R20-07 | 最近活动密度 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R20-07 | 最近活动密度 | 已满足，待环境验证 | ee327e80（复用现有实现） | Core 活动映射 `4/4`；Playnite 定向 `11/11`（批处理 `3/3`、时间线 `3/3`、首页活动 `1/1`、选择/详情 `4/4`）；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML `24/24`/diff 通过 | `TaskEventUiBatcher` 按 TaskId 合并进度、限制批次并让终态即时落地；首页最近任务保留最近 8 项和 Recycling/本地滚动；TaskCenter 失败/完成详情、技术 Expander 与有界时间线可追溯 | 合成/fake/隔离 testhost；组合 WPF host 首次出现既有选择绑定时序失败，R06 详情类单独隔离 `2/2`，未改业务实现；真实 Playnite/package-host、Worker 实时流、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并 | [R20-07 最近活动密度](evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md)；下一项 `R20-08` 状态语气统一，先核对加载/失败/空/完成/需操作文案模板 |
 | R20-08 | 状态语气统一 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-01 | 八入口纯键盘 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-02 | 控件名称与值 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -580,3 +580,11 @@
 - 外部隔离 Release 构建显式绑定当前分支身份：Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` `CS8602`；source/XAML `24/24`/diff 通过。测试关闭阶段仍有已知 TextServices COM 清理噪声，但 testhost 最终成功退出。
 - 证据来自合成/fake/隔离 testhost/source-copy；真实 Playnite/package-host、Worker/Named Pipe、Ludusavi/Rclone/云端、最终呈现、物理 DPI/跨屏、UIA/IME/ETW/宿主性能仍待验。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R20-06 部分可用状态](evidence/R20-06-PARTIAL-AVAILABILITY-20260921.md)。
 - 下一可执行小批量：`R20-07 最近活动密度`，先核对已有任务事件摘要、重复进度合并、完成/失败详情展开和真实计数来源。
+
+## 2026-09-21 Round3 R20-07 最近活动密度
+
+- 先盘点确认 Worker 已将 active/recent 同一 `TaskId` 去重并稳定排序，`ActivityTimelineMapper` 将审计映射为有限字段摘要；Playnite `TaskEventUiBatcher` 按 TaskId 合并高频进度、限制 128/32 队列与批次，成功/失败/取消终态即时落地。
+- 首页只显示最近 8 个任务，使用 Recycling 和有限本地滚动，计数绑定实际 `OverviewTasks.Count`；TaskCenter 通过 `SelectedTask` 保留失败摘要/错误码、技术详情 Expander、复制/重试和 220 DIP 有界时间线。没有新增状态模型或动画刷屏路径。
+- Core 活动映射 `4/4`；Playnite 定向 `11/11`（TaskEvent `3/3`、TaskTimeline `3/3`、首页活动 `1/1`、详情/选择 `4/4`）。首次组合 WPF testhost 的 R06 详情选择失败在独立类进程复跑 `2/2`，记录为现有 testhost 时序边界，未把它写成产品失败。
+- 隔离 Release 构建显式绑定 `ee327e80`：Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` `CS8602`；source/XAML `24/24`/diff 通过。证据来自合成/fake/隔离 testhost/source-copy，真实宿主、Worker 实时流、最终呈现、DPI/UIA/IME/ETW/宿主性能仍待验。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R20-07 最近活动密度](evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md)。
+- 下一可执行小批量：`R20-08 状态语气统一`，先核对现有加载、失败、空、完成和需要操作文案的来源/模板，补正向与负例证据。

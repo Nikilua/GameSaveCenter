@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R20-07 最近活动密度（2026-09-21）
+
+- 现有链路已满足本项：Worker Dashboard 将 active/recent 任务按 `TaskId` 去重，活动审计经 `ActivityTimelineMapper` 映射为有限摘要；Playnite `TaskEventUiBatcher` 按 TaskId 合并进度、限制 `128/32`，成功/失败/取消终态即时通过。
+- Overview 只投影最近 8 条 `OverviewTasks`，使用 Recycling/本地滚动并绑定实际集合计数；TaskCenter 选中项提供失败摘要/错误码、技术详情 Expander、复制/重试和 220 DIP 时间线。已有 R18-05/R15 时间线实现复用，无生产代码新增。
+- Core 活动映射 `4/4`；Playnite 定向 `11/11`。组合 WPF testhost 首次的 R06 选择时序失败，单独类进程 `2/2`，记录为环境时序边界而非业务修正。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning，source/XAML/diff 通过。
+- 真实 Playnite/Worker 实时流、外部工具、呈现、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md`。
+- 下一项 `R20-08`：盘点加载/失败/空/完成/需要操作的状态文案模板，再决定是否有小批量缺口。
+
 ## 第三轮 R20-06 部分可用状态（2026-09-21）
 
 - 最新实现已经有可复用的 `ActionAvailabilityHints` 和 `WorkspaceStatePresenter`：恢复、媒体收件箱、云端和隔离远端恢复分别判断动作前置条件；页面分别保留 Loading/Empty/Error/Degraded/Offline 状态与恢复入口，不能用一个全局故障覆盖整页。

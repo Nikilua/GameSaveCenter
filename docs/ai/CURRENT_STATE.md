@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R20-07 最近活动密度（已满足，待环境验证）
+
+- 复核确认 Worker 已将 active/recent 同一 `TaskId` 去重并稳定排序，`ActivityTimelineMapper` 输出有限字段活动摘要；Playnite `TaskEventUiBatcher` 按 TaskId 合并高频进度、限制队列/批次，终态即时落地，首页只显示最近 8 项并保留虚拟化与本地滚动。
+- TaskCenter 选中项保留失败摘要、错误码、技术详情 Expander、复制/重试和 220 DIP 有界时间线；时间线只呈现已收到事件，不虚构缺失中间阶段。Core 活动映射 `4/4`，Playnite 定向 `11/11`。
+- 同一当前身份隔离 Release 构建 Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。首次组合 WPF host 的详情选择时序失败在类隔离进程 `2/2`，不改产品实现。
+- 仅使用合成/fake/隔离 testhost/目录；真实 Playnite/package-host、Worker 实时流、最终呈现、DPI/UIA/IME、ETW、宿主性能未验。Demo 原目录不可用，main 用户改动未碰且未合并。证据见 `evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md`。
+- 下一项：`R20-08` 状态语气统一，先核对加载/失败/空/完成/需要操作文案来源与可复用模板。
+
 ## 当前第三轮 R20-06 部分可用状态（已满足，待环境验证）
 
 - 复核确认 `ActionAvailabilityHints` 已按恢复、媒体收件箱、云端队列和隔离远端恢复分别解释 Worker/工具/选择/忙碌/认证前置条件；`WorkspaceStatePresenter` 已提供 Loading、Empty、Error、Degraded、Offline 独立状态，局部失败不会把其他工作区变成整页错误。
