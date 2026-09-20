@@ -35,6 +35,8 @@ namespace GameSaveCenter.Playnite.Tests
                 .Select(index => CreateThumbnail("scroll-" + index, (byte)(index + 1)))
                 .ToArray();
             var managedDeltas = new List<long>(10);
+            var cacheSamples = new List<int>(10);
+            var activeSamples = new List<int>(10);
             AsyncThumbnailLoaderDiagnostics? lastDiagnostics = null;
 
             for (var cycle = 0; cycle < 10; cycle++)
@@ -51,6 +53,8 @@ namespace GameSaveCenter.Playnite.Tests
                 Assert.InRange(lastDiagnostics.CacheCount, 1, lastDiagnostics.CacheLimit);
                 Assert.True(lastDiagnostics.CacheCount <= lastDiagnostics.CacheLimit);
                 managedDeltas.Add(Math.Max(0, afterManaged - beforeManaged));
+                cacheSamples.Add(lastDiagnostics.CacheCount);
+                activeSamples.Add(lastDiagnostics.ActiveDecodes);
             }
 
             Assert.NotNull(lastDiagnostics);
@@ -82,7 +86,7 @@ namespace GameSaveCenter.Playnite.Tests
             output.WriteLine(
                 $"R18-03 thumbnail budget: windows=10,requests={lastDiagnostics.RequestCount},decode_starts={lastDiagnostics.DecodeStartCount},cache={lastDiagnostics.CacheCount}/{lastDiagnostics.CacheLimit},peak_active={lastDiagnostics.PeakConcurrentDecodes},managed_delta_max_bytes={managedDeltas.Max()},cancellations={cancellationDiagnostics.CancellationCount},stale_final=Ready");
             output.WriteLine($"R18-03 raw managed_delta_bytes={string.Join(",", managedDeltas)}");
-            output.WriteLine($"R18-03 raw active_after_windows=0,cache_samples=12,24,36,48,60,72,84,96,96,96");
+            output.WriteLine($"R18-03 raw active_after_windows={string.Join(",", activeSamples)},cache_samples={string.Join(",", cacheSamples)}");
         }
 
         private string CreateThumbnail(string name, byte value)
