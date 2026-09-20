@@ -1350,8 +1350,16 @@ namespace GameSaveCenter.Playnite.Settings
                     if (info.Length > 1024 * 1024) throw new InvalidDataException("设置文件超过 1 MiB 安全上限。");
                     return File.ReadAllText(fileName);
                 });
-                var report = settings.ImportPortableJson(json);
                 if (!CanPresentUiFeedback) return;
+                var preview = settings.PreviewPortableJson(json);
+                if (!preview.IsCompatible)
+                {
+                    ShowSettingsMessage(preview.BuildConfirmationMessage(), "GameSaveCenter 设置导入预览", MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (!ConfirmSettingsImport(preview)) return;
+                var report = settings.ApplyPortableJson(preview);
                 DataContext = null;
                 DataContext = settings;
                 ApplyAdaptiveTheme();
@@ -1367,6 +1375,17 @@ namespace GameSaveCenter.Playnite.Settings
             {
                 settingsTransferInProgress = false;
             }
+        }
+
+        private bool ConfirmSettingsImport(SettingsImportPreview preview)
+        {
+            var host = Window.GetWindow(this);
+            return MessageBox.Show(
+                       host,
+                       preview.BuildConfirmationMessage(),
+                       "确认导入 GameSaveCenter 设置",
+                       MessageBoxButton.YesNo,
+                       MessageBoxImage.Warning) == MessageBoxResult.Yes;
         }
 
         private Task ShowImportReportAsync(string summary, bool hasMissingPaths)
