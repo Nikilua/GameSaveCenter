@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-05 后台事件合并（2026-09-20）
+
+- `91947336` 先复核已有 Worker 事件扇出、durable change feed、TaskId 索引、批量 ObservableCollection 和 Dashboard 卸载取消；没有重建媒体/任务服务。UI 进度按 TaskId 合并，pending 上限 `128`、单批 `32`；终态绕过进度队列立即显示，清理同 TaskId 旧进度。
+- Worker 订阅维持固定 `128` 容量，满载只淘汰非终态；终态压力样本保留 Failed。断线/极端终态超出瞬时容量时，持久化 TaskChangeFeed 和快照仍是事实来源，事件管道不是永久日志。
+- `TaskEventUiBatcherTests 3/3`、Worker 事件 `5/5`、相关 Playnite `19/19`；source、XAML、diff 和 Release `0 errors/2 existing warnings` 通过。证据：`R18-05-BACKGROUND-EVENT-BATCHING-20260920.md`。
+- 只用合成 DTO、fake 调度和隔离目录；不把 Dispatcher/集合证据写成 presented frame、ETW、真实 Playnite、DPI/UIA 或宿主性能。下一可执行任务：R18-06 页面重访成本。
+
 ## 第三轮 R18-04 表格容器预算（2026-09-20）
 
 - `64843642` 先复用生产 Task/Media DataGrid、MediaPageAccumulator 和共享模板；实际发现 Media Inbox 在外层页级 ScrollViewer 常态 Auto 且内层未先获得有限布局时，Standard/Item/禁列组合会生成完整 2,000 行。修复为正常高度显式有限 `Height/MaxHeight`、外层纵向滚动仅短页/stale fallback 开启，未改 Standard/Item/禁列例外、命令绑定、选择锚点或游戏选框。

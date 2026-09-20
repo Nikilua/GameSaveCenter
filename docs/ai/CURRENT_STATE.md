@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-05 后台事件合并（已满足，受控验证完成；真实宿主待验）
+
+- `91947336` 复用现有 `TaskEventBroadcaster`、durable `TaskChangeFeed`、`TaskIndexedCollection`、`BatchObservableCollection` 和 Dashboard 卸载取消路径；Playnite 端按 TaskId 合并进度，最多保留 `128` 个待处理任务、每批最多 `32` 条，完成/失败/取消以 `DataBind` 优先级立即投递，卸载时清空并使已排队回调失效。
+- Worker 每个订阅仍为固定 `128` 容量；满载手动淘汰非终态进度，完成/失败/取消优先保留。实际“先失败、再 200 条进度”仍保留失败终态，队列为 `128`；durable change feed/快照继续承担断线或极端终态压力下的恢复来源。
+- `TaskEventUiBatcherTests 3/3`、`TaskEventBroadcasterTests 5/5`、任务进度/时间线/索引/通知相关 Playnite 回归 `19/19`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过；Release 隔离 solution `0 errors/2 existing MediaCenter nullable warnings`，`.tmp/r18-05-solution` 和 TestResults 已清理。原始样本见 `evidence/R18-05-BACKGROUND-EVENT-BATCHING-20260920.md`。
+- 未改命令绑定、取消/错误/恢复语义、游戏选框或滚动条系统；只用合成 DTO、fake 调度器、隔离 testhost/SQLite。Demo 原目录不可用；未验真实 Playnite 卸载/重载时序、最终呈现、DPI/UIA/读屏、ETW 或宿主性能。下一项：`R18-06 页面重访成本`。
+
 ## 当前第三轮 R18-04 表格容器预算（已满足，受控验证完成；真实宿主待验）
 
 - `64843642` 复用生产 `TaskCenterView`、`MediaCenterView`、`MediaPageAccumulator` 和现有 DataGrid 模板；正常高度下给 Media Inbox 显式有限 `Height/MaxHeight`，外层页级纵向滚动只在短页或 stale fallback 开启，保留 Media `Standard/Item/EnableColumnVirtualization=False` 例外、游戏选框、滚动条、绑定和选择/锚点语义。

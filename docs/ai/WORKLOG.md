@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-05 后台事件合并
+
+- 先盘点现有 `TaskEventBroadcaster` 的 128 容量通道、durable change feed、Playnite 事件监听、`TaskIndexedCollection`、`BatchObservableCollection` 和 Dashboard `Unloaded` 取消；确认缺口是 UI 每事件同步 `Dispatcher.Invoke`，且旧 `DropOldest` 可能淘汰终态。
+- `91947336` 增加 net462 兼容 `TaskEventUiBatcher`：TaskId 合并、pending `128`、每批 `32`；终态优先 `DataBind` 投递并移除旧进度；`StopTaskEventSubscription` 释放队列。Worker 改为固定容量内优先保留终态，durable feed/快照仍是恢复来源。
+- 验证：Playnite `TaskEventUiBatcher 3/3`，Worker `TaskEventBroadcaster 5/5`，相关 Playnite 回归 `19/19`；`validate-source.py`、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`。一次无身份注入的源码测试失败和一次短暂错误序列断言均已按真实原因修正后重跑，不计入产品失败。
+- 只用合成事件、fake 调度、隔离 testhost/SQLite；没有真实存档、媒体、云端写入。没有宣称真实 Playnite 卸载/重载、presented frame、DPI/UIA/读屏、ETW 或宿主性能。`.tmp/r18-05-solution`、本阶段 TestResults 已清理。证据：`evidence/R18-05-BACKGROUND-EVENT-BATCHING-20260920.md`。下一可执行任务：`R18-06 页面重访成本`。
+
 ## 2026-09-20 R18-04 表格容器预算
 
 - 先复核 RenderHarness 已有 L21/L32 滚动探针、生产 DataGrid 模板、MediaPageAccumulator 和 Media `Standard/Item/禁列虚拟化`例外；没有重建表格或改游戏选框/滚动条体系。
