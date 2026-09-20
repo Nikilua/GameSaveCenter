@@ -602,7 +602,7 @@
                                 </Grid>
                                 <Border x:Name="CloudTransferStaleBanner" Grid.Row="1" Padding="10" Margin="0,0,0,8">
                                     <Border.Style>
-                                        <Style TargetType="Border" BasedOn="{DynamicResource GscDiagnosticHintBubble}">
+                                        <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers><DataTrigger Binding="{Binding CloudTransferStaleVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
                                         </Style>
