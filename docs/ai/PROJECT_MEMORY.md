@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 Maintenance 云端队列筛选器名称与值（2026-09-21，续作小批量）
+
+- `f3eecad0` 不改生产 XAML，复用 Maintenance 既有三个云端队列 ComboBox 的名称、选项来源和 `CloudTransfer*Filter` Binding，补 WPF peer 名称与“全部/全部时间”到“待处理/媒体/最近一天”的选值变化证据；没有新造服务、DTO、命令或云端写入语义。
+- `R21AutomationValueBehaviorTests 11/11`，相关 R21 进度/焦点/键盘/无障碍/生产壳层回归 `59/59`；提交身份 D 盘源码副本 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，source/XAML/diff 和 WPF `0/27/177` 静态检查通过。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R21-02-MAINTENANCE-CLOUD-SELECTORS-20260921.md`。
+- 链接工作树 WPF `_wpftmp.csproj` 写入仍是 `Access denied`，按既有流程用 D 盘源码副本验证并清理；未绕过权限。只用合成/fake/隔离 testhost，真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R21-02 仍未签收：其他复合选择器及逐控件状态/值负例待继续；之后进入 `R21-03` 错误播报。
+
 ## 第三轮 R21-02 MediaCenter 额外选择器名称与值（2026-09-21，续作小批量）
 
 - `eac4276f` 没有修改生产 XAML，复用 MediaCenter 已有四个选择器的名称、选项来源与 Binding，补 WPF peer 名称和选值变化证据；没有新造服务、DTO、命令或业务值。

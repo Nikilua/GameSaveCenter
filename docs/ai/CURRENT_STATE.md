@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 Maintenance 云端队列筛选器名称与值（实现中，待继续）
+
+- `f3eecad0` 不改生产 XAML，复用 Maintenance 已有三个云端队列 ComboBox 的名称、`CloudTransfer*Options` 数据源与 `CloudTransfer*Filter` Binding，补 `R21AutomationValueBehaviorTests` 的实际 WPF peer 名称和值切换证据；没有新增服务、DTO、命令或云端写入。
+- 本批 `R21AutomationValueBehaviorTests 11/11`，相关进度/焦点/键盘/无障碍/生产壳层回归 `59/59`。提交身份 D 盘源码副本 Release 为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。
+- 链接工作树 WPF `_wpftmp.csproj` 写入仍遇 `Access denied`，未绕过；本批使用项目既有 D 盘源码副本流程并已清理。只使用合成 WPF peer、fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R21-02 仍未整项签收：其他复合选择器及逐控件状态/值负例待继续；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验。下一项仍为 R21-02 剩余小批量，公共门禁完成后进入 `R21-03` 错误播报。
+
 ## 当前第三轮 R21-02 MediaCenter 额外选择器名称与值（实现中，待继续）
 
 - `eac4276f` 没有修改生产 XAML，复用 MediaCenter 已有 `媒体收件箱视图`、`媒体筛选预设`、`媒体归类批次状态筛选` 和 `调整归类建议目标` 名称、选项来源与 Binding，补实际 WPF peer 名称和选值变化证据；没有新增服务、DTO、命令或业务语义。
