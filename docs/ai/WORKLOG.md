@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R18-06 页面重访成本
+
+- 先核对生产 `AcrylicProductionShellView` 的页面 registry：六个页面在 Attach 时创建，`NavigateTo` 同页保持同一 `PageHost.Content`；`RequestWorkspaceLoad` 只调用 Media/Maintenance/选中游戏详情读取，没有整库 `RefreshDashboard`/`Synchronize`。
+- `1b19fd4c` 新增 `WorkspaceRevisitLoadGate`：15 秒热态窗口按 workspace、稳定游戏 ID 和 Media 筛选/搜索/收件箱模式隔离；成功才记录新鲜度，失败/取消、卸载失效和晚返回不能发布新鲜时间。显式 `LoadDetailsCommand` 仍是强制读取。
+- 壳层增加 `[PERF] WorkspacePages`、`WorkspaceActivation` 的 binding/first-revisit/attach-reuse/layout 日志；VM 增加 `[PERF] WorkspaceLoad` 的 read/skip/outcome/load 日志，未把同步布局或代理耗时写成 presented frame。
+- 验证：`WorkspaceRevisitLoadGate`/source `7/7`，页面生命周期/状态 presenter/请求协调/忙状态相邻回归 `31/31`；`validate-source.py`、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`。本阶段 `.tmp/r18-06-*` 已清理。
+- 只用合成时间/context、fake/source、隔离 net472/WPF testhost；没有真实数据写入。真实 Playnite 首次/重访采样、presented frame、DPI/UIA/读屏、ETW/宿主性能仍待验。证据：`evidence/R18-06-WORKSPACE-REVISIT-20260920.md`。下一可执行任务：`R18-07 长时资源曲线`。
+
 ## 2026-09-20 R18-05 后台事件合并
 
 - 先盘点现有 `TaskEventBroadcaster` 的 128 容量通道、durable change feed、Playnite 事件监听、`TaskIndexedCollection`、`BatchObservableCollection` 和 Dashboard `Unloaded` 取消；确认缺口是 UI 每事件同步 `Dispatcher.Invoke`，且旧 `DropOldest` 可能淘汰终态。

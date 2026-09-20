@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R18-06 页面重访成本（2026-09-20）
+
+- `1b19fd4c` 先复核生产壳层的六页 registry、同页 `PageHost.Content` 复用、Dashboard 页面级读取、generation/cancellation 和 `WorkspaceDataState` presenter；没有重建页面或整库刷新服务。
+- `WorkspaceRevisitLoadGate` 以 15 秒为短时热态门，key 按 workspace、稳定游戏 ID 和 Media 筛选/搜索/收件箱模式隔离。成功才记新鲜度；失败/取消、卸载 `CancelDeferredUiWork`、上下文变化和失效后的晚返回均不能发布成功时间。
+- 壳层记录 `[PERF] WorkspacePages` binding、`WorkspaceActivation` first/revisit attach/reuse/layout，VM 记录 `[PERF] WorkspaceLoad` read/skip/outcome/load；显式 `LoadDetailsCommand` 不经门。`WorkspaceRevisitLoadGate`/source `7/7`、相关回归 `31/31`、Release solution `0 errors/2 existing warnings`、source/XAML/diff 通过。
+- 日志只覆盖生产代码同步委托/布局路径；本轮没有真实 Playnite 首次/重访样本，不将其写成 presented frame、DPI/UIA、ETW 或宿主性能证据。只用合成/fake/隔离 testhost，无真实存档、媒体、云端或诊断写入。下一可执行任务：`R18-07 长时资源曲线`。
+
 ## 第三轮 R18-05 后台事件合并（2026-09-20）
 
 - `91947336` 先复核已有 Worker 事件扇出、durable change feed、TaskId 索引、批量 ObservableCollection 和 Dashboard 卸载取消；没有重建媒体/任务服务。UI 进度按 TaskId 合并，pending 上限 `128`、单批 `32`；终态绕过进度队列立即显示，清理同 TaskId 旧进度。

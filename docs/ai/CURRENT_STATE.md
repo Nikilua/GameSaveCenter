@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R18-06 页面重访成本（已满足，受控验证完成；真实宿主待验）
+
+- `1b19fd4c` 保留生产壳层一次创建六个页面并复用 `PageHost.Content` 实例；新增 `[PERF] WorkspacePages`/`WorkspaceActivation` 的首次、重访、attach/reuse 和同步 layout 记录，以及 `[PERF] WorkspaceLoad` 的读取/跳过/成功/取消/失败/晚返回丢弃记录。
+- `RequestWorkspaceLoad` 继续只走既有页面级读取，不触发整库 `RefreshDashboard`/`Synchronize`；15 秒热态门按 workspace、游戏 ID、媒体筛选/搜索/收件箱模式隔离。失败、取消、上下文变化、卸载失效和晚返回不产生新鲜缓存；显式 `LoadDetailsCommand` 保持强制读取。
+- `WorkspaceRevisitLoadGate`/source `7/7`，页面生命周期/状态 presenter/请求协调/忙状态相邻回归 `31/31`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过；Release 隔离 solution `0 errors/2 existing MediaCenter nullable warnings`；本阶段 `.tmp/r18-06-*` 已清理。原始证据见 `evidence/R18-06-WORKSPACE-REVISIT-20260920.md`。
+- 只用合成时间/context、fake/source 测试和隔离 testhost；没有真实数据写入。未验真实 Playnite 首次打开/重访采样、最终 presented frame、DPI/UIA/读屏、ETW 或宿主性能；Demo 原目录不可用。下一项：`R18-07 长时资源曲线`。
+
 ## 当前第三轮 R18-05 后台事件合并（已满足，受控验证完成；真实宿主待验）
 
 - `91947336` 复用现有 `TaskEventBroadcaster`、durable `TaskChangeFeed`、`TaskIndexedCollection`、`BatchObservableCollection` 和 Dashboard 卸载取消路径；Playnite 端按 TaskId 合并进度，最多保留 `128` 个待处理任务、每批最多 `32` 条，完成/失败/取消以 `DataBind` 优先级立即投递，卸载时清空并使已排队回调失效。
