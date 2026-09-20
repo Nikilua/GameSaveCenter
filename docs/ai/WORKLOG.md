@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-07 外部文件变化
+
+- 先复用现有 `AsyncThumbnailImage`/`MediaThumbnailLoader`、MediaFailed fallback、`OpenPath`、`RestoreReadinessService`、`ValidateRestoreReadinessCommand` 和 `RestoreOrchestrator`；没有增加文件监视器或静默路径迁移。
+- Worker `RestoreReadinessTests 14/14`；Playnite 纯媒体/恢复说明 `7/7`。组合相关 Playnite `17 passed/4 failed/21 total`，4 条均在旧 net472 产物缺 `GscBuildCommit` 的身份门退出，不计行为失败。
+- 缺失/损坏媒体保留详情和路径上下文；备份重新校验隔离 ZIP/Manifest/哈希并阻止失败版本恢复，显式路径检测/设置承担重新定位。source、XAML `24/24`、diff 通过；本阶段无生产代码变更。证据：`evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。
+- 只用合成/fake/隔离目录，未写真实数据；真实 Playnite 外部移动/占用/损坏、Explorer/播放器、呈现、DPI/UIA/IME、ETW、宿主性能待验，Demo 原目录不可用。下一可执行任务：`R19-08` 慢调用可取消。
+
 ## 2026-09-20 R19-06 分页快照变化
 
 - 先核对最新实现：Worker 任务/媒体均用稳定时间+ID 游标和 limit+1 末页判定；Playnite 筛选/刷新 reset、generation 丢弃迟到页、同上下文翻页沿用 cursor；媒体累加器按 ID 去重/更新并限制 2,000，选择按稳定 ID 恢复。

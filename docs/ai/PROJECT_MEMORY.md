@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-07 外部文件变化（2026-09-20）
+
+- 复核确认媒体缩略图/录像播放器都有缺失、损坏、不可用占位和迟到结果保护；打开媒体/目录通过统一本地错误回报，目录在目标消失时只回退到真实存在的父目录，刷新/重新加载保留稳定媒体上下文。
+- `RestoreReadinessService` 对 ZIP/Manifest/哈希/隔离目录错误分层，`RestoreOrchestrator` 阻止最近失败或损坏版本进入真实恢复；Playnite 重新验证后重载详情，归档路径不静默猜测，重新定位需显式路径检测/设置。
+- Worker `14/14`，Playnite 纯行为 `7/7`；组合 WPF `17/21` 的 4 条是旧 net472 `GscBuildCommit` 身份门失败。无生产代码变更，source/XAML/diff 通过。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。
+- 只用合成 ZIP/Manifest、隔离目录、fake/testhost，未写真实存档/媒体/云端；真实移动/占用/损坏宿主时序、Explorer/播放器和呈现待验。下一项 `R19-08`：核对慢调用取消、超时、UI 解锁与未知写结果。
+
 ## 第三轮 R19-06 分页快照变化（2026-09-20）
 
 - 复核确认 Worker 任务/媒体查询使用稳定 `(时间, 稳定 ID)` 游标、严格小于谓词和 limit+1 末页判定；Playnite reset 会推进 generation/清空 cursor，同上下文翻页使用当前 cursor，刷新是快照变化的明确重载策略。

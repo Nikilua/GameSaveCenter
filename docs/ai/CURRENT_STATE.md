@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-07 外部文件变化（已满足，受控回归完成；真实宿主待验）
+
+- 媒体预览已有 `Missing/Failed/Loading/Ready` 占位、录像 MediaFailed fallback、generation/取消/卸载迟到保护；打开媒体失败只写状态/通知，打开目录在文件消失时回退到现存父目录，刷新命令按当前上下文重载。
+- 备份详情通过 `ValidateRestoreReadinessCommand` 在 GameSaveCenter 隔离目录重新读 ZIP、Manifest、大小和哈希；缺失/损坏/权限/不一致有明确状态，Worker 对最近 `Corrupted/Failed` 阻止真实恢复，详情重新加载保留 BackupId/诊断。归档路径不静默改写，重新定位走显式检测/设置。
+- Worker `RestoreReadinessTests 14/14`，Playnite 纯媒体/恢复说明 `7/7`；组合 Playnite `17 passed / 4 failed / 21 total` 的 4 条均是旧 net472 产物缺 `GscBuildCommit` 身份门。`validate-source.py`、XAML `24/24`、diff 通过；本阶段无生产代码变更。
+- 证据见 `evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。真实文件移动/占用/损坏的 Playnite/package-host 时序、Explorer/播放器呈现、presented frame、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用。下一项：`R19-08` 慢调用可取消。
+
 ## 当前第三轮 R19-06 分页快照变化（已满足，受控回归完成；真实宿主待验）
 
 - 已有 Worker 任务/媒体稳定游标：任务按 `(created_utc, task_id)`，媒体按 `(captured_utc, media_id)` 排序和严格游标过滤；多取一条决定 `HasMore`，末页不继续请求。Playnite 筛选/刷新重置游标与 generation，同一上下文翻页只使用当前 cursor。
