@@ -96,6 +96,35 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaCenterFavoriteToggleExposesSemanticState()
+    {
+        var root = TestRepositoryContext.Root;
+        var media = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+
+        Assert.Contains("IsChecked=\"{Binding MediaFavorite}\"", media);
+        Assert.Contains("AutomationProperties.Name=\"收藏当前媒体\"", media);
+
+        RunSta(() =>
+        {
+            var toggle = CreateNamedToggle("收藏当前媒体");
+            using var host = new PeerHost(toggle);
+
+            var peer = GetPeer(toggle);
+            Assert.Equal("收藏当前媒体", peer.GetName());
+            var pattern = Assert.IsAssignableFrom<IToggleProvider>(peer.GetPattern(PatternInterface.Toggle));
+            Assert.Equal(ToggleState.Off, pattern.ToggleState);
+
+            toggle.IsChecked = true;
+            host.Pump();
+            Assert.Equal(ToggleState.On, pattern.ToggleState);
+
+            toggle.IsChecked = false;
+            host.Pump();
+            Assert.Equal(ToggleState.Off, pattern.ToggleState);
+        });
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
