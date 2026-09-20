@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R17-03 检查进度预算（代码已提交，受控验证完成；真实宿主待验）
+
+- `87473bc3` 复用既有健康巡检游标、单次时间预算、会话/操作锁、延后表和取消/失败终态；在现有 `LastSummary` 持久化通道补充本轮索引范围、需检查/延后/候选数量和未读取归档边界。
+- 游戏运行、操作锁占用和全候选延后均显示具体暂停原因；取消、时间预算和异常结束写出准确结束状态，不把延后/取消伪装成整库已检查。维护页健康卡与行动项显示当前/最近候选、最近完成、最近成功和下轮计划/预算。
+- 最终提交 Worker 健康巡检 `12/12`、Playnite R17 `10/10`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R17-03-INSPECTION-PROGRESS-BUDGET-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、presented frame、ETW、宿主性能、真实游戏/锁/超时进程时序；只用合成/fake/隔离 SQLite 和目录。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。
+- 下一项：`R17-04 保留预览对比`，先核对现有 RetentionSimulation/保护项/隔离账本和执行前预览过期条件。
+
 ## 当前第三轮 R17-02 诊断包预览（代码已提交，受控验证完成；真实宿主待验）
 
 - `2b6e9051` 复用既有 `DiagnosticsPackageService.CreateAsync`、2 MiB/日志上限和 `DiagnosticRedactor`，新增只读预览 IPC，列出将包含的摘要类别、可选日志、脱敏范围、上限和明确排除项。

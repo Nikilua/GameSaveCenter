@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-03 检查进度预算（2026-09-20）
+
+- `87473bc3` 先核对既有 `HealthInspectionService` 的游标、单次预算、会话/操作锁和延后持久化，再复用 `LastSummary` 写入本轮索引范围：总版本数、需检查数、延后数、候选数及未读取归档边界；没有新增数据库迁移。
+- 健康巡检 DTO 增加最近完成、当前/最近候选、进度边界和下轮计划显示；维护页健康卡和行动项显示最近成功/完成、间隔与单次预算。游戏运行、锁占用、全候选延后分别给出暂停原因；取消、时间预算和异常结束不伪装为整库已检查。
+- 最终 Worker 健康巡检 `12/12`、Playnite R17 `10/10`，Release solution `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff、WPF `0/28/162` 通过。未验真实宿主、最终呈现、DPI/UIA/IME、ETW、宿主性能和真实进程/锁/超时竞态；只用合成/fake/隔离数据。证据：`R17-03-INSPECTION-PROGRESS-BUDGET-20260920.md`。
+- 下一可执行任务：`R17-04 保留预览对比`，先查 `RetentionSimulationService` 的候选、保护项、隔离账本和预览过期再决定是否改代码。
+
 ## 第三轮 R17-02 诊断包预览（2026-09-20）
 
 - `2b6e9051` 复用既有有限诊断 ZIP、`DiagnosticRedactor`、2 MiB 包上限和日志尾部上限，新增只读 Preview IPC。预览实际列出类别、每类脱敏范围、可选日志及请求上限。

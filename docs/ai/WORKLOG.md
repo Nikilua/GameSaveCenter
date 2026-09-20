@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R17-03 检查进度预算
+
+- 审计确认健康巡检已有持久化游标、单次预算、运行中会话/操作锁、延后候选和取消/失败终态；缺口是维护页和最终摘要不能说明本轮索引范围、延后原因、最近完成和未读取归档边界。
+- `87473bc3` 复用 `LastSummary` 持久化通道，补充索引总数/需检查/延后/候选数和未读取归档说明；DTO 增加当前候选、最近完成、进度边界和下轮计划；游戏运行/锁占用/全候选延后、取消、时间预算和异常结束分别保留准确语义。
+- 最终 Worker 健康巡检 `12/12`、Playnite R17 `10/10`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R17-03-INSPECTION-PROGRESS-BUDGET-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、presented frame、ETW、宿主性能和真实游戏/锁/超时进程时序；只用合成/fake/隔离 SQLite/目录。Demo 原目录不可用，main 用户改动未碰、未合并。`.tmp/r17-03-solution` 已清理。
+- 已提交并推送 `87473bc3` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-04 保留预览对比`，先查保留预览的候选、保护项、隔离账本和执行前过期条件。
+
 ## 2026-09-20 R17-02 诊断包预览
 
 - 审计确认原诊断包服务已有脱敏、有限日志、2 MiB 上限、类别文件和生成结果路径/大小；缺口是点击后直接生成，用户生成前看不到范围。
