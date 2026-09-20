@@ -70,9 +70,12 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"任务状态筛选\"", task);
         Assert.Contains("AutomationProperties.Name=\"任务类型筛选\"", task);
         Assert.Contains("AutomationProperties.Name=\"任务游戏筛选\"", task);
+        Assert.Contains("Value=\"{Binding ProgressValue, Mode=OneWay}\" AutomationProperties.Name=\"任务进度\" AutomationProperties.HelpText=\"{Binding ProgressDisplay, Mode=OneWay}\"", task);
+        Assert.Contains("Value=\"{Binding SelectedTask.ProgressValue, Mode=OneWay}\" AutomationProperties.Name=\"所选任务进度\" AutomationProperties.HelpText=\"{Binding SelectedTask.ProgressDisplay, Mode=OneWay}\"", task);
         Assert.Contains("AutomationProperties.Name=\"修改器下载进度\"", trainer);
         Assert.Contains("AutomationProperties.Name=\"当前操作进度\"", dashboard);
         Assert.Contains("AutomationProperties.Name=\"备份存储占用比例\"", maintenance);
+        Assert.Contains("Value=\"{Binding RemoteBackupStageProgress, Mode=OneWay}\" Height=\"6\" Margin=\"0,10,0,0\" AutomationProperties.Name=\"远端备份隔离下载进度\" AutomationProperties.HelpText=\"{Binding RemoteBackupStageProgress, StringFormat={}{0}%}\"", maintenance);
     }
 
     [Fact]
