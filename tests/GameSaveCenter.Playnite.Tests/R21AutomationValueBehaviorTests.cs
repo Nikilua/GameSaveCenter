@@ -288,6 +288,50 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void MediaDetailNavigationValueExposesSelectionBoundaries()
+    {
+        var root = TestRepositoryContext.Root;
+        var mediaView = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        Assert.Contains("Text=\"{Binding MediaDetailNavigationDisplay}\"", mediaView);
+        Assert.Contains("AutomationProperties.Name=\"媒体详情位置\"", mediaView);
+
+        var viewModelType = typeof(GameSaveCenter.Playnite.ViewModels.DashboardViewModel);
+        var viewModel = (GameSaveCenter.Playnite.ViewModels.DashboardViewModel)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(viewModelType);
+        var media = new GameSaveCenter.Playnite.Infrastructure.BatchObservableCollection<GameSaveCenter.Contracts.MediaItemDto>
+        {
+            new GameSaveCenter.Contracts.MediaItemDto { MediaId = "media-a" },
+            new GameSaveCenter.Contracts.MediaItemDto { MediaId = "media-b" }
+        };
+        viewModelType.GetField("<Media>k__BackingField", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.SetValue(viewModel, media);
+
+        viewModelType.GetField("selectedMedia", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.SetValue(viewModel, media[0]);
+        Assert.Equal("1 / 2", viewModel.MediaDetailNavigationDisplay);
+        Assert.False(viewModel.CanNavigatePreviousMedia);
+        Assert.True(viewModel.CanNavigateNextMedia);
+
+        viewModelType.GetField("selectedMedia", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.SetValue(viewModel, media[1]);
+        Assert.Equal("2 / 2", viewModel.MediaDetailNavigationDisplay);
+        Assert.True(viewModel.CanNavigatePreviousMedia);
+        Assert.False(viewModel.CanNavigateNextMedia);
+
+        viewModelType.GetField("selectedMedia", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.SetValue(viewModel, null);
+        Assert.Equal("未选择媒体", viewModel.MediaDetailNavigationDisplay);
+        Assert.False(viewModel.CanNavigatePreviousMedia);
+        Assert.False(viewModel.CanNavigateNextMedia);
+
+        RunSta(() =>
+        {
+            var position = new TextBlock { Text = "1 / 2" };
+            AutomationProperties.SetName(position, "媒体详情位置");
+
+            using var host = new PeerHost(position);
+            var peer = GetPeer(position);
+            Assert.Equal("媒体详情位置", peer.GetName());
+            Assert.Equal("1 / 2", position.Text);
+        });
+    }
+
+    [Fact]
     public void MaintenanceProcessMappingSelectorExposesSemanticState()
     {
         RunSta(() =>
