@@ -75,6 +75,11 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("Value=\"{Binding SelectedTask.ProgressValue, Mode=OneWay}\" AutomationProperties.Name=\"所选任务进度\" AutomationProperties.HelpText=\"{Binding SelectedTask.ProgressDisplay, Mode=OneWay}\"", task);
         Assert.Contains("AutomationProperties.Name=\"修改器下载进度\"", trainer);
         Assert.Contains("AutomationProperties.Name=\"当前操作进度\"", dashboard);
+        Assert.Contains("AutomationProperties.Name=\"按状态筛选游戏\"", dashboard);
+        Assert.Contains("AutomationProperties.Name=\"按平台筛选游戏\"", dashboard);
+        Assert.Contains("AutomationProperties.Name=\"排序游戏\"", dashboard);
+        Assert.Contains("AutomationProperties.Name=\"启用当前游戏自动任务\"", dashboard);
+        Assert.Contains("AutomationProperties.Name=\"保存当前游戏策略\"", dashboard);
         Assert.Contains("AutomationProperties.Name=\"备份存储占用比例\"", maintenance);
         Assert.Contains("Value=\"{Binding RemoteBackupStageProgress, Mode=OneWay}\" Height=\"6\" Margin=\"0,10,0,0\" AutomationProperties.Name=\"远端备份隔离下载进度\" AutomationProperties.HelpText=\"{Binding RemoteBackupStageProgress, StringFormat={}{0}%}\"", maintenance);
         Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\" ToolTip=\"批量归类目标游戏；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"媒体收件箱归类目标游戏\"", media);
@@ -187,6 +192,50 @@ public sealed class R21AutomationValueBehaviorTests
             Assert.Equal("游戏 B", inboxTarget.SelectedItem);
             Assert.Equal("截图", mediaFilter.SelectedItem);
             Assert.Equal("游戏 C", reassignTarget.SelectedItem);
+        });
+    }
+
+    [Fact]
+    public void DashboardPickerAndPolicyControlsExposeSemanticState()
+    {
+        RunSta(() =>
+        {
+            var status = CreateNamedSelector("按状态筛选游戏", "全部", "需注意");
+            var platform = CreateNamedSelector("按平台筛选游戏", "全部", "PC");
+            var sort = CreateNamedSelector("排序游戏", "名称", "最近游玩");
+            var toggles = new[]
+            {
+                CreateNamedToggle("启用当前游戏自动任务"),
+                CreateNamedToggle("当前游戏退出后备份"),
+                CreateNamedToggle("当前游戏游玩中备份"),
+                CreateNamedToggle("当前游戏退出后归档媒体"),
+                CreateNamedToggle("当前游戏游玩中归档媒体"),
+                CreateNamedToggle("当前游戏上传云端")
+            };
+            var save = new Button { Content = "保存策略" };
+            AutomationProperties.SetName(save, "保存当前游戏策略");
+
+            using var host = new PeerHost(status, platform, sort, toggles[0], toggles[1], toggles[2], toggles[3], toggles[4], toggles[5], save);
+            Assert.Equal("按状态筛选游戏", GetPeer(status).GetName());
+            Assert.Equal("按平台筛选游戏", GetPeer(platform).GetName());
+            Assert.Equal("排序游戏", GetPeer(sort).GetName());
+            Assert.Equal("保存当前游戏策略", GetPeer(save).GetName());
+            foreach (var toggle in toggles)
+            {
+                var pattern = Assert.IsAssignableFrom<IToggleProvider>(GetPeer(toggle).GetPattern(PatternInterface.Toggle));
+                Assert.Equal(ToggleState.Off, pattern.ToggleState);
+                toggle.IsChecked = true;
+                host.Pump();
+                Assert.Equal(ToggleState.On, pattern.ToggleState);
+            }
+
+            status.SelectedIndex = 1;
+            platform.SelectedIndex = 1;
+            sort.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("需注意", status.SelectedItem);
+            Assert.Equal("PC", platform.SelectedItem);
+            Assert.Equal("最近游玩", sort.SelectedItem);
         });
     }
 
