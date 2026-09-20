@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-06 分页快照变化
+
+- 先核对最新实现：Worker 任务/媒体均用稳定时间+ID 游标和 limit+1 末页判定；Playnite 筛选/刷新 reset、generation 丢弃迟到页、同上下文翻页沿用 cursor；媒体累加器按 ID 去重/更新并限制 2,000，选择按稳定 ID 恢复。
+- Worker `TaskQueryPersistenceTests` + `MediaQueryPersistenceTests` `12/12`；Playnite `MediaPageAccumulatorTests` + `TaskIndexedCollectionTests` `10/10`，`R07SelectionAnchorBehaviorTests` `4/4`。合并筛选 `15 passed/1 failed/16 total` 的 1 条为旧 R06 net472 产物缺 `GscBuildCommit` 身份失败，未扩大解释。
+- 本阶段无生产代码变更；`validate-source.py`、XAML `24/24`、`git diff --check` 通过，沿用 `6d1a401b` clean-tree Release `0 errors/2 existing warnings`。证据：`evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。
+- 只用合成 DTO、fake/隔离 SQLite/testhost，未写真实数据；真实并发快照、Playnite/package-host、呈现、DPI/UIA/IME、ETW、宿主性能待验，Demo 原目录不可用。下一可执行任务：`R19-07` 外部文件变化。
+
 ## 2026-09-20 R19-05 Worker 重启恢复
 
 - 先复用已有 `WorkerInitializationService`/`MarkInterruptedTasksAsync`、`BackupOrchestrator.ResumePendingAsync`、`CloudTransferStateService`、`TaskEventBroadcaster` 和 Playnite durable change feed；确认启动恢复、事件断线修复和单连接订阅均已存在。

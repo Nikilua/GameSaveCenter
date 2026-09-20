@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-06 分页快照变化（已满足，受控回归完成；真实宿主待验）
+
+- 已有 Worker 任务/媒体稳定游标：任务按 `(created_utc, task_id)`，媒体按 `(captured_utc, media_id)` 排序和严格游标过滤；多取一条决定 `HasMore`，末页不继续请求。Playnite 筛选/刷新重置游标与 generation，同一上下文翻页只使用当前 cursor。
+- `MediaPageAccumulator` 按稳定 `MediaId` 去重/更新，窗口上限 `2,000`，可保留选中 ID；任务按 `TaskId` 合并，选择锚点按 ID 恢复。Worker 分页 `12/12`，Playnite 媒体累加器/任务索引 `10/10`，选择锚点 `4/4`。
+- 合并 Playnite 筛选 `15 passed / 1 failed / 16 total` 中唯一失败是旧 R06 产物缺 `GscBuildCommit` 的身份门，不归入本项；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。本阶段无生产代码变更，沿用 `6d1a401b` Release `0 errors/2 existing warnings`。
+- 证据见 `evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。只覆盖合成/fake/隔离 SQLite/testhost；真实并发变更、Playnite/package-host、presented frame、DPI/UIA/IME、ETW、宿主性能待验；Demo 原目录不可用。下一项：`R19-07` 外部文件变化。
+
 ## 当前第三轮 R19-05 Worker 重启恢复（已满足，受控回归完成；真实进程待验）
 
 - 已有 Worker 启动 reconcile、整库备份 `ResumePendingAsync`、云传输持久队列和事件 pipe 单连接订阅；事件流是 best-effort，`GetTaskChanges`/SQLite 快照负责断线修复，重连不会无限累积订阅。

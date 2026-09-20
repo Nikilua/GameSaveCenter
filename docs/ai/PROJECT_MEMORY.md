@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-06 分页快照变化（2026-09-20）
+
+- 复核确认 Worker 任务/媒体查询使用稳定 `(时间, 稳定 ID)` 游标、严格小于谓词和 limit+1 末页判定；Playnite reset 会推进 generation/清空 cursor，同上下文翻页使用当前 cursor，刷新是快照变化的明确重载策略。
+- `MediaPageAccumulator` 按 `MediaId` 去重和更新、窗口最多 `2000`，Task 按 `TaskId` 合并，选择按稳定 ID 恢复。Worker `12/12`、Playnite 分页/索引 `10/10`、选择锚点 `4/4`；合并筛选唯一旧 R06 `GscBuildCommit` 身份失败已拆出。
+- 本阶段无生产代码变更；source、XAML `24/24`、diff 通过，沿用 `6d1a401b` clean-tree Release `0 errors/2 existing warnings`。只用合成/fake/隔离 SQLite/testhost，未验真实并发变更和宿主呈现。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。
+- 下一项 `R19-07`：核对外部文件被移动、占用或损坏时的媒体/备份详情回退、诊断上下文和重新定位入口。
+
 ## 第三轮 R19-05 Worker 重启恢复（2026-09-20）
 
 - 复核确认 Worker 初始化先 reconcile durable task，再恢复云传输/整库备份；`TaskEventBroadcaster` 每连接 bounded queue 容量 `128`、终态优先，事件 pipe 每连接单独订阅并在断开释放；Playnite 单事件 token + 指数退避，change feed/SQLite 是重连事实来源。
