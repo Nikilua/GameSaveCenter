@@ -79,6 +79,39 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void TrainerImportSelectionAndActionsExposeSemanticState()
+    {
+        var root = TestRepositoryContext.Root;
+        var trainer = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+
+        Assert.Equal(2, CountOccurrences(trainer, "AutomationProperties.Name=\"选择待导入修改器主程序\""));
+        Assert.Equal(2, CountOccurrences(trainer, "AutomationProperties.Name=\"确认导入游戏工具\""));
+        Assert.Equal(2, CountOccurrences(trainer, "AutomationProperties.Name=\"取消导入游戏工具\""));
+
+        RunSta(() =>
+        {
+            var selector = new ComboBox
+            {
+                ItemsSource = new[] { "工具主程序 A", "工具主程序 B" },
+                SelectedIndex = 0
+            };
+            AutomationProperties.SetName(selector, "选择待导入修改器主程序");
+            var confirm = new Button { Content = "确认导入" };
+            AutomationProperties.SetName(confirm, "确认导入游戏工具");
+            var cancel = new Button { Content = "取消" };
+            AutomationProperties.SetName(cancel, "取消导入游戏工具");
+
+            using var host = new PeerHost(selector, confirm, cancel);
+            Assert.Equal("选择待导入修改器主程序", GetPeer(selector).GetName());
+            Assert.Equal("确认导入游戏工具", GetPeer(confirm).GetName());
+            Assert.Equal("取消导入游戏工具", GetPeer(cancel).GetName());
+            selector.SelectedIndex = 1;
+            host.Pump();
+            Assert.Equal("工具主程序 B", selector.SelectedItem);
+        });
+    }
+
+    [Fact]
     public void PolicyToggleAndSelectorPeersExposeSemanticState()
     {
         RunSta(() =>
@@ -140,6 +173,19 @@ public sealed class R21AutomationValueBehaviorTests
         var toggle = new NativeToggleSwitch { Content = name, IsChecked = false };
         AutomationProperties.SetName(toggle, name);
         return toggle;
+    }
+
+    private static int CountOccurrences(string text, string token)
+    {
+        var count = 0;
+        var offset = 0;
+        while ((offset = text.IndexOf(token, offset, StringComparison.Ordinal)) >= 0)
+        {
+            count++;
+            offset += token.Length;
+        }
+
+        return count;
     }
 
     private static void RunSta(Action action)
