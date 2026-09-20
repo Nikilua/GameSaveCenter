@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-05 路径编辑一致（代码已提交，受控验证完成；真实宿主待验）
+
+- `955dc52e` 在核对既有全量异步路径校验、粘贴标准化和导入/导出后，新增设置页统一“路径编辑”卡片，复用六个本地工具/目录 TextBox Binding；浏览按文件/目录类型选择，Rclone 云端目标不进入本地打开流程。
+- `SettingsPathEditorService` 用只读 `File.GetAttributes` 与目录枚举区分有效、缺失、网络/磁盘不可达、类型错误和无权限；打开只处理当前字段已存在且可读的路径，不回退父目录；复制复用脱敏与 `ClipboardRetry`，浏览取消不改草稿。
+- 外部隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664` nullable）；R16-05 定向行为/源码/路径回归 `6/6`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。源码测试显式绑定当前 commit，未把真实 UI 行为写成通过。
+- 未验真实 Playnite/package-host、文件夹对话框归属、Explorer 动作、最终浅深主题、DPI/UIA/IME、RenderHarness、ETW 或宿主性能；未使用真实网络共享/用户 ACL/剪贴板。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并；证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-05-PATH-EDITOR-20260920.md`。
+- 下一项：`R16-06 生效条件说明`，先核对设置字段实际消费点、保存/应用/重启边界。
+
 ## 当前第三轮 R16-04 恢复默认粒度（代码已提交，受控验证完成；真实宿主待验）
 
 - `2b194461` 新增设置恢复默认目录，提供单字段、单分类、全部默认三个范围；确认文案列出影响。全部默认只重置安全标量和本地 UI 偏好，明确保留 Worker/Ludusavi/Rclone、存档/媒体/镜像路径、云端目标和设备身份。

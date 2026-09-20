@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-05 路径编辑一致
+
+- 核对确认原设置页只有全量异步路径校验、粘贴标准化和导入/导出，没有统一的路径浏览、单字段校验、严格打开和复制入口；新增统一路径编辑卡片，复用六个本地工具/目录字段的现有 Binding，排除 Rclone 云端目标。
+- 只读探测区分有效、缺失、网络/磁盘不可达、类型错误和无权限；打开只处理当前有效路径，不回退父目录；复制复用现有脱敏和剪贴板重试；浏览取消不改草稿。保留保存/取消、滚动条、游戏选框、取消/错误/恢复保护、有限列表和 net462。
+- 验证：定向行为/源码/既有路径回归 `6/6`；外部隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664`）；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。真实网络/ACL/剪贴板/Explorer 未用。
+- 已提交并推送 `955dc52e` 到 `origin/codex/ui-finesse-round2`。Demo 原目录不可用；真实 Playnite/package-host、文件夹对话框归属、最终呈现、DPI/UIA/IME、ETW/宿主性能仍待验；main 用户改动未碰、未合并。证据：[R16-05 路径编辑一致](../design/reviews/ui-finesse-round3-20260915/evidence/R16-05-PATH-EDITOR-20260920.md)。下一可执行任务：`R16-06 生效条件说明`。
+
 ## 2026-09-20 R16-04 恢复默认粒度
 
 - 核对确认现有设置没有分级默认入口；复用 `GameSaveCenterSettings` 的草稿/取消语义，新增 `SettingsResetCatalog` 和单字段、四分类、全部默认的明确 UI 操作。

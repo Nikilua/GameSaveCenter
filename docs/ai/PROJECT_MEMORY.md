@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R16-05 路径编辑一致（2026-09-20）
+
+- `955dc52e` 复用设置页现有 Binding、全量 `SettingsPathValidationService`、路径粘贴标准化和 `ClipboardRetry`，新增六个本地工具/目录字段共用的浏览/校验/打开/复制入口；云端目标继续是远端文本，不当作本地目录打开。
+- `SettingsPathEditorService` 先用只读属性探测，再对目录做只读枚举，区分有效、缺失、网络/磁盘不可达、类型错误和无权限；打开严格要求当前字段有效，不回退父目录；浏览取消不修改草稿。
+- 定向行为/源码/既有路径回归 `6/6`，外部隔离 Release solution `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff、WPF `0/28/162` 通过。未使用真实网络共享、用户 ACL、剪贴板或 Explorer。
+- 真实 Playnite/package-host、文件夹对话框归属、最终呈现、DPI/UIA/IME、ETW/性能仍待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`R16-05-PATH-EDITOR-20260920.md`。
+- 下一项：`R16-06 生效条件说明`，先查设置字段消费点和保存/应用/重启边界。
+
 ## 第三轮 R16-04 恢复默认粒度（2026-09-20）
 
 - `2b194461` 确认原设置只有整体保存/取消、首次路径补全和导入校验，没有分级恢复默认；新增 `SettingsResetCatalog` 与设置页单字段/单分类/全部默认入口。
