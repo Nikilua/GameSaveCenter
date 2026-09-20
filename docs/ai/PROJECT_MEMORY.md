@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R17-08 维护报告可读性（2026-09-20）
+
+- `59d4190b` 复用原维护报告 Worker 服务、DTO、IPC 和 Playnite 导出命令；新增报告请求身份 DTO，输出按“软件身份/摘要/待处理/已验证/未知”固定分组。
+- 报告以一次 `generatedUtc` 同时生成 DTO 时间、正文时间和摘要计数；每个分组标题的条目数与摘要一致。`MaintenanceReportRedactor` 统一移除 URL 参数/片段、URL 凭据和 Windows `Users` 用户名，报告不携带真实敏感值。
+- Worker R17-08 `2/2`、Playnite `4/4`，合并相关回归 `5/5` 与 `19/19`；隔离 Release solution `0 errors/2 existing warnings`、source/XAML/diff、WPF `0/27/162` 通过。证据：`R17-08-MAINTENANCE-REPORT-20260920.md`。
+- 未验真实宿主文件导出/剪贴板、最终呈现、DPI/UIA/IME/读屏、物理跨屏、ETW 和宿主性能；Demo 原目录不可用，继续恢复生产基线，main 用户改动未碰、未合并。
+- 下一可执行任务：`R18-01 连续输入基准`，先查 GamePicker 搜索、DebouncedRefresh、IME 和 2,000+ 项合成基准。
+
 ## 第三轮 R17-07 检查项一键定位（2026-09-20）
 
 - `e8d581c6` 先复用既有 `FindingNavigationResolver`、精确游戏解析、任务/云队列入口和 `WorkspaceNavigationStack`；没有新增第二套导航栈。健康巡检 Finding 补稳定 `BackupId`，版本页按 `PlayniteId + BackupId` 精确选择。
