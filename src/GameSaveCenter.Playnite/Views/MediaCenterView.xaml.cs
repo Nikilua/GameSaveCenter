@@ -355,10 +355,9 @@ namespace GameSaveCenter.Playnite.Views
                     ? Visibility.Collapsed
                     : Visibility.Visible;
                 // The inbox DataGrid and its inspector own the vertical scroll surfaces.
-                // When the page-level fallback is needed for an extremely short host, cap
-                // the DataGrid by the current available height so the outer viewer cannot
-                // hand it an infinite measure and turn thousands of rows into one giant
-                // presenter with ScrollableHeight=0.
+                // Keep the DataGrid finite even when the page-level viewer owns overflow;
+                // an infinite MaxHeight lets the outer ScrollViewer hand Standard WPF's
+                // DataGrid an unbounded measure and instantiate the complete inbox window.
                 // A stale banner is part of the page content, not a bottom overlay.
                 // When it appears at a short-but-not-fallback height, keeping the page
                 // scroller disabled lets the banner, toolbar and footer consume the
@@ -377,16 +376,15 @@ namespace GameSaveCenter.Playnite.Views
                 // Above it, preserve the finite star-sized table viewport so batch actions
                 // and the primary grid stay in the first screen.
                 var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
-                // Keep the page channel available at every size. Auto does not paint a
-                // thumb when the content fits, but it lets the 212 DIP reading floor
-                // escape the compact PageHost instead of being clipped by a disabled
-                // outer viewer.
-                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                // The inner DataGrid owns the normal finite table viewport. Keep the
+                // page-level overflow channel only for the short/stale fallback; a
+                // nested Auto ScrollViewer otherwise measures Standard WPF rows as a
+                // page surface and defeats the retained-row container budget.
+                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
+                    ? ScrollBarVisibility.Auto
+                    : ScrollBarVisibility.Disabled;
                 MediaInboxPageScrollViewer.VerticalContentAlignment = VerticalAlignment.Top;
                 MediaInboxScrollSurface.VerticalAlignment = VerticalAlignment.Top;
-                MediaInboxGrid.MaxHeight = useInboxPageFallbackScroll
-                    ? Math.Max(1d, height)
-                    : double.PositiveInfinity;
                 var sourceStack = width < 900;
                 MediaSourceFields.Columns = sourceStack ? 1 : 2;
                 MediaSourceLayout.ColumnDefinitions[1].Width = sourceStack ? new GridLength(0) : new GridLength(14);
@@ -476,8 +474,17 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxGrid.MinHeight = readableGridHeight;
                 MediaInboxLayout.MinHeight = readableFrameHeight;
                 MediaInboxTableFrame.MinHeight = readableFrameHeight;
-                MediaInboxGrid.Height = double.NaN;
-                MediaInboxGrid.MaxHeight = Math.Max(readableGridHeight, height);
+                // The outer page viewer can measure its content with infinite height.
+                // Give the inner grid an explicit finite viewport in the normal layout;
+                // otherwise Standard row virtualization is defeated and every retained
+                // inbox row becomes a live DataGridRow. The short-host fallback keeps the
+                // existing page overflow route while still respecting the readable floor.
+                var finiteInboxHeight = Math.Max(readableGridHeight, height - 220d);
+                var inboxViewportHeight = useInboxPageFallbackScroll
+                    ? Math.Max(readableGridHeight, Math.Max(1d, height))
+                    : finiteInboxHeight;
+                MediaInboxGrid.Height = inboxViewportHeight;
+                MediaInboxGrid.MaxHeight = inboxViewportHeight;
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
