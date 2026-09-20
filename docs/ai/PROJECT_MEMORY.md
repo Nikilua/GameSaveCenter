@@ -2,6 +2,14 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R16-03 模板应用范围（2026-09-20）
+
+- 当前分支 `52fbf5de` 复用已有模板/策略 DTO、归一化和单目标应用服务，新增明确目标的批量模板应用 DTO、IPC、有限预览和逐项结果。请求只接受稳定 Playnite ID，最多 100 个；空选择、超限、筛选隐藏项都不会回退为全库。
+- UI 展示目标/排除/变更字段数，按稳定 ID 保留跨筛选选择；Worker 每个目标单独取得游戏操作锁、写策略和审计，单项失败继续，失败项可重试，取消不被吞掉。模板保持一次性复制，未引入实时继承。
+- 真实行为证据为 Core 预览 `3/3`；Playnite 源契约 `1/1`；Worker 策略持久化 `2/2`。外部隔离 Release solution `0 errors/2 warnings`，警告为既有 MediaCenter nullable；source/XAML/diff、WPF `0/28/177` 通过。fresh restore 无诊断退出，采用隔离副本现有 `obj` 资产和 `--no-restore` 构建，临时目录已清理。
+- 不能把源契约测试当作真实交互/视觉通过。Demo 原目录不可用；真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW、宿主性能仍待验。main 用户改动和 `src.zip` 未碰、未合并。证据：`R16-03-POLICY-TEMPLATE-BATCH-20260920.md`。
+- 下一项：`R16-04 恢复默认粒度`，先核对设置页/设置服务/Worker 的单字段、单分类、全部默认入口，确认敏感连接字段保护与取消保留草稿。
+
 ## 第三轮 R16-02 策略差异预览（2026-09-20）
 
 - `b327d5ef` 在现有策略/模板能力上新增 `BackupPolicyDiff`，比较 13 个策略字段并复用 `BackupPolicyTemplateCatalog.ClonePolicy` 的归一化；`BackupPolicyDto` 增加字段通知，使 Save 页面差异卡随草稿输入更新。模板依旧是一次性复制，未引入实时继承模型。

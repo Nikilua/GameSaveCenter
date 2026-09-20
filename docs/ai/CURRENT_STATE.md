@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R16-03 模板应用范围（代码已提交，受控验证完成；真实宿主待验）
+
+- `52fbf5de` 复用现有模板/策略 DTO、归一化、单游戏操作锁、持久化和审计路径，新增有界批量模板应用：客户端只发送明确勾选的稳定 Playnite ID，最多 100 个；空选择、超限和筛选隐藏项不会误用全部游戏。
+- Save 页面显示目标、排除、预计变更字段数，筛选保留稳定 ID 选择；Worker 逐项处理并返回逐项成功/失败结果，非取消异常继续后续目标，失败项可单独重试，取消仍传播。模板继续是一次性复制。
+- 外部隔离 Release solution `0 errors/2 warnings`（均为既有 `MediaCenterView.xaml.cs:664` nullable）；Core `3/3`、Playnite 源契约 `1/1`、Worker `2/2`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。fresh restore 无诊断退出，构建复核使用隔离副本现有 `obj` 和 `--no-restore`，未宣称全新还原通过。
+- 保留游戏选框、滚动条、命令/Binding、取消/错误/恢复保护、有限列表性能和 net462；未验真实 Playnite/package-host、最终浅深主题、DPI/UIA/IME、RenderHarness、ETW 或宿主性能。Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并；证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-03-POLICY-TEMPLATE-BATCH-20260920.md`。
+- 下一项：`R16-04 恢复默认粒度`，先核对设置恢复入口、敏感连接字段保护和取消草稿行为。
+
 ## 当前第三轮 R16-02 策略差异预览（代码已提交，受控验证完成；真实宿主待验）
 
 - `b327d5ef` 复用现有策略/模板 DTO、模板目录归一化、Worker IPC 和保存基线，新增 13 字段有界差异服务与 `BackupPolicyDto` 字段通知；Save 页面分开展示当前已保存基线、显式游戏草稿和模板将覆盖值，模板明确为一次性复制而非实时继承。

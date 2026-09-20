@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R16-03 模板应用范围
+
+- 先确认现有实现只有单目标模板应用，没有把单项命令误记成批量能力；随后复用现有模板/策略 DTO、归一化、游戏操作锁、持久化和审计路径，新增有界批量 DTO/IPC、目标预览、结果列表和逐项重试。
+- 批量只提交明确勾选的稳定 Playnite ID，最多 100 个；筛选不清除选择，空选择不全选，超限不静默截断。应用前展示目标、排除和变更字段数；Worker 单项失败继续，取消仍传播。
+- 验证：外部隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664` nullable）；Core `3/3`、Playnite 源契约 `1/1`、Worker `2/2`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。fresh restore 无诊断退出，改用隔离副本现有 `obj` 的 `--no-restore` 构建，临时副本已清理。
+- 已提交并推送 `52fbf5de` 到 `origin/codex/ui-finesse-round2`。只使用合成/fake/隔离目录，Demo 原目录不可用；未验真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW 或宿主性能；main 用户改动未碰、未合并。证据：[R16-03 模板应用范围](../design/reviews/ui-finesse-round3-20260915/evidence/R16-03-POLICY-TEMPLATE-BATCH-20260920.md)。下一可执行任务：`R16-04 恢复默认粒度`。
+
 ## 2026-09-20 R16-02 策略差异预览
 
 - 先核对并复用现有 `BackupPolicyDto`、`BackupPolicyTemplateDto`、模板目录、Worker IPC 和 `DashboardViewModel` 保存/刷新基线；在 `b327d5ef` 中补充 13 字段有界差异、字段通知、游戏策略保存前差异卡和模板应用前差异卡。
