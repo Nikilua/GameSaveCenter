@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-05 Worker 重启恢复（2026-09-20）
+
+- 复核确认 Worker 初始化先 reconcile durable task，再恢复云传输/整库备份；`TaskEventBroadcaster` 每连接 bounded queue 容量 `128`、终态优先，事件 pipe 每连接单独订阅并在断开释放；Playnite 单事件 token + 指数退避，change feed/SQLite 是重连事实来源。
+- Worker event/reconcile/cloud `18/18`，Playnite `TaskEventUiBatcher` `3/3`，XAML/source/diff 门禁通过。没有新增第二套恢复服务或修改游戏选框、滚动、命令绑定、取消/错误语义。
+- 独立 Worker 硬重启因 Named Pipe 权限跳过；相邻 subscription 测试一条被旧 net472 产物缺 `GscBuildCommit` 阻塞，不宣称真实重启/管道通过。只用合成事件、隔离 SQLite/fake/testhost，Demo 原目录不可用。证据：`evidence/R19-05-WORKER-RESTART-RECOVERY-20260920.md`。
+- 下一项 `R19-06`：核对分页 durable cursor、快照变化与末页稳定选择。
+
 ## 第三轮 R19-04 取消关闭顺序（2026-09-20）
 
 - 复核确认生产 Dashboard 卸载、`CancelDeferredUiWork`、generation/`LatestRequestCoordinator`、任务事件 batcher、插件 lifetime 和 Worker owned-process 停止已经形成确定收尾链；Worker 重开先按 SQLite 把旧 Queued/Running 标为失败，任务页可恢复真实状态，不伪装成功。

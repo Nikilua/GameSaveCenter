@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-05 Worker 重启恢复（已满足，受控回归完成；真实进程待验）
+
+- 已有 Worker 启动 reconcile、整库备份 `ResumePendingAsync`、云传输持久队列和事件 pipe 单连接订阅；事件流是 best-effort，`GetTaskChanges`/SQLite 快照负责断线修复，重连不会无限累积订阅。
+- Worker durable/event/cloud 回归 `18/18`；Playnite `TaskEventUiBatcher` `3/3`；XAML `24/24`、`validate-source.py`、`git diff --check` 通过。
+- 独立 Worker 硬重启因当前环境禁止创建本地 Named Pipe 跳过；一条相邻 subscription 测试因旧 net472 产物缺 `GscBuildCommit` 被身份校验拦截，未写成真实重启或完整 Playnite 通过。证据见 `evidence/R19-05-WORKER-RESTART-RECOVERY-20260920.md`。
+- 未验真实 Worker 进程/管道断线、Playnite 重开、presented frame、DPI/UIA/读屏/IME、ETW、宿主性能；Demo 原目录不可用。下一项：`R19-06` 分页快照变化。
+
 ## 当前第三轮 R19-04 取消关闭顺序（已满足，受控回归完成；真实宿主待验）
 
 - 已有 Dashboard 卸载顺序会停止刷新/事件订阅、取消所有延迟请求和 generation，插件退出会先取消 lifetime、停止通知轮询，再停止本插件拥有的 Worker；Worker 启动会把旧 Queued/Running 任务按真实持久化状态标成可见失败，任务页重开读取 SQLite 快照。

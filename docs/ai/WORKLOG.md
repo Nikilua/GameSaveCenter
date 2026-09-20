@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-05 Worker 重启恢复
+
+- 先复用已有 `WorkerInitializationService`/`MarkInterruptedTasksAsync`、`BackupOrchestrator.ResumePendingAsync`、`CloudTransferStateService`、`TaskEventBroadcaster` 和 Playnite durable change feed；确认启动恢复、事件断线修复和单连接订阅均已存在。
+- Worker event/reconcile/cloud `18/18`，Playnite `TaskEventUiBatcher 3/3`，XAML/source/diff 门禁通过；独立进程硬重启因 Named Pipe 权限 `1 skipped`，没有伪造成通过。
+- Playnite 相邻 subscription 组一条测试因旧 net472 产物缺 `GscBuildCommit` 身份门退出；事件 batcher 独立回归通过。证据：`evidence/R19-05-WORKER-RESTART-RECOVERY-20260920.md`。
+- 只用合成事件、隔离 SQLite/fake/testhost，未写真实数据；真实 Worker/Playnite 重启、管道、呈现、DPI/UIA/IME、ETW、宿主性能待验，Demo 原目录不可用。下一可执行任务：`R19-06` 分页快照变化。
+
 ## 2026-09-20 R19-04 取消关闭顺序
 
 - 先核对已有生命周期：Dashboard `Unloaded` 先停 timer/事件订阅再 `CancelDeferredUiWork`，VM 取消分页、详情、媒体、云端、初始同步并推进 generation；插件停止先取消 lifetime/通知轮询，最后停止自己拥有的 Worker；Worker 启动协调旧任务并由任务页读取持久化状态。
