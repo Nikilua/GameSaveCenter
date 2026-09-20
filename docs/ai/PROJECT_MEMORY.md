@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 MediaCenter 备注与元数据动作（2026-09-21，续作小批量）
+
+- 先复用 MediaCenter 现有 `MediaComment`、`UpdateMediaMetadataCommand`、`ReassignMediaCommand` 和共享控件样式；`b20dac99` 仅补“当前媒体备注”“保存当前媒体元数据”“移动并归类当前媒体”三个 Automation 名称，没有改变业务命令、Binding 或媒体写入语义。
+- `MediaCenterMetadataControlsExposeSemanticValueAndActions` 用实际 WPF AutomationPeer 验证名称、`IValueProvider` 的备注更新和两个 `IInvokeProvider` 调用通道；`R21AutomationValueBehaviorTests 14/14`，相关套件 `62/62`。
+- 显式提交身份 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 nullable warning；source/XAML/diff 与 WPF `0/27/177` 通过。Invoke 夹具只代表隔离控件通道，不代表真实 ICommand/Playnite 写入。
+- 链接 `_wpftmp` `Access denied`、真实 Playnite/package-host、UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能待验；Demo 原目录不可用，main 用户改动未碰未合并。R21-02 继续盘点批量动作和状态/值负例，后续 `R21-03`。
+
 ## 第三轮 R21-02 MediaCenter 收藏开关名称与状态（2026-09-21，续作小批量）
 
 - 先复用现有 MediaCenter 详情 `MediaFavorite` Binding、ToggleSwitch 和共享样式；实际缺口只有收藏开关缺稳定 Automation 名称。`42f5744d` 仅补 `AutomationProperties.Name="收藏当前媒体"`，没有改变 Binding、开/关内容、命令、服务、DTO 或媒体写入语义。

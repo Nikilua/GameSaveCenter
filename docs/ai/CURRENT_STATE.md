@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 MediaCenter 备注与元数据动作（实现中，待继续）
+
+- `b20dac99` 先复用现有 `MediaComment` Binding、`UpdateMediaMetadataCommand` 和 `ReassignMediaCommand`，只补备注 TextBox、保存元数据、移动归类三个控件的稳定 Automation 名称；保留原样式、Binding、命令、取消/错误语义和布局，没有新增服务、DTO 或写入语义。
+- `R21AutomationValueBehaviorTests 14/14`，相关进度/焦点/键盘/无障碍/生产壳层回归 `62/62`；实际 WPF peer 验证名称、TextBox Value 从“原备注”到“更新备注”，以及两个 Button 的 Invoke 通道。提交身份 D 盘源码副本 Release 为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。
+- Invoke 只证明隔离 WPF 控件的 UIA 调用通道，不冒充真实 ICommand/Playnite 媒体写入；链接工作树 `_wpftmp` 的 `Access denied` 未绕过，本批 source-copy/build 已清理。
+- 真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续批量媒体动作和其他逐控件状态/值负例，之后进入 `R21-03`。
+
 ## 当前第三轮 R21-02 MediaCenter 收藏开关名称与状态（实现中，待继续）
 
 - `42f5744d` 先查已有 `MediaFavorite`、ToggleSwitch、样式和绑定，只补 MediaCenter 当前媒体收藏开关缺失的 `AutomationProperties.Name="收藏当前媒体"`；保留原有 Binding、开/关语义、命令体系和布局，没有新增服务、DTO 或写入语义。
