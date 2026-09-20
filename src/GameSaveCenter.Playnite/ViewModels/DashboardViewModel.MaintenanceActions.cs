@@ -108,6 +108,8 @@ public sealed class MaintenanceActionItem
     public string Title { get; set; } = string.Empty;
     public string StatusDisplay { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
+    public string OriginalPathDisplay { get; set; } = string.Empty;
+    public string QuarantinePathDisplay { get; set; } = string.Empty;
     public string LastVerifiedDisplay { get; set; } = "尚未验证";
     public string LastAttemptDisplay { get; set; } = "尚未尝试";
     public string LedgerUpdatedDisplay { get; set; } = "尚未更新";
@@ -319,9 +321,11 @@ public sealed partial class DashboardViewModel
                 Title = $"待恢复文件 · {location}",
                 StatusDisplay = GetQuarantineStateDisplay(entry.State),
                 Detail = $"游戏 {DisplayGameName(entry.PlayniteId, entry.PlayniteId)} · {detail}",
+                OriginalPathDisplay = string.IsNullOrWhiteSpace(entry.OriginalPath) ? "未记录" : entry.OriginalPath,
+                QuarantinePathDisplay = string.IsNullOrWhiteSpace(entry.QuarantinePath) ? "未记录" : entry.QuarantinePath,
                 LedgerUpdatedDisplay = entry.UpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"),
                 NextAttemptDisplay = entry.State == RetentionQuarantineState.RecoveryRequired ? "需人工确认" : "Worker 下次启动时协调",
-                ActionText = "再次协调",
+                ActionText = "受控恢复",
                 ActionToolTip = "只针对这条已持久化账本执行安全检查；遇到路径或文件身份冲突会保留并标记人工处理。",
                 ActionKind = MaintenanceActionKind.RetentionQuarantine,
                 EntryId = entry.EntryId
@@ -416,5 +420,7 @@ public sealed partial class DashboardViewModel
         => left.ItemId == right.ItemId
            && left.StatusDisplay == right.StatusDisplay
            && left.Detail == right.Detail
+           && left.OriginalPathDisplay == right.OriginalPathDisplay
+           && left.QuarantinePathDisplay == right.QuarantinePathDisplay
            && left.TimingDisplay == right.TimingDisplay;
 }

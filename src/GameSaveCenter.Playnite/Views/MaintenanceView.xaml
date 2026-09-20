@@ -73,6 +73,18 @@
                             </Grid>
                             <TextBlock Text="{Binding CategoryDisplay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/>
                             <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <StackPanel x:Name="QuarantinePaths" Visibility="Collapsed" Margin="0,3,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="原路径：" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding OriginalPathDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" ToolTip="{Binding OriginalPathDisplay}"/>
+                                </Grid>
+                                <Grid Margin="0,2,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="隔离路径：" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding QuarantinePathDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" ToolTip="{Binding QuarantinePathDisplay}"/>
+                                </Grid>
+                            </StackPanel>
                             <TextBlock Text="{Binding TimingDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </StackPanel>
                         <ui:Button Grid.Column="1"
@@ -86,6 +98,11 @@
                                    VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding ActionKind}" Value="RetentionQuarantine">
+                        <Setter TargetName="QuarantinePaths" Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
