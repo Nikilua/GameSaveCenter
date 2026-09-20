@@ -116,7 +116,7 @@ public sealed class MaintenanceActionItem
     {
         MaintenanceActionKind.CloudTransfer => $"上次尝试：{LastAttemptDisplay} · 下次尝试：{NextAttemptDisplay}",
         MaintenanceActionKind.RetentionQuarantine => $"账本更新：{LedgerUpdatedDisplay} · 下次尝试：{NextAttemptDisplay}",
-        _ => $"上次验证：{LastVerifiedDisplay} · 下次尝试：{NextAttemptDisplay}"
+        _ => $"最近完成：{LastAttemptDisplay} · 最近成功：{LastVerifiedDisplay} · 下轮计划：{NextAttemptDisplay}"
     };
     public string ActionText { get; set; } = string.Empty;
     public string ActionToolTip { get; set; } = string.Empty;
@@ -244,6 +244,7 @@ public sealed partial class DashboardViewModel
             StatusDisplay = inspection.LastStatusDisplay,
             Detail = string.IsNullOrWhiteSpace(inspection.LastSummary) ? "尚未记录巡检摘要。" : inspection.LastSummary,
             LastVerifiedDisplay = inspection.LastSuccessfulLocalDisplay,
+            LastAttemptDisplay = inspection.LastCompletedLocalDisplay,
             NextAttemptDisplay = inspection.NextDueLocalDisplay,
             ActionText = inspection.IsRunning ? "查看巡检状态" : "立即巡检",
             ActionToolTip = "运行现有的非破坏性恢复可用性巡检，不覆盖真实存档。",

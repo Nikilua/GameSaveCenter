@@ -128,7 +128,9 @@ public sealed class HealthInspectionService : BackgroundService
         var startedUtc = DateTime.UtcNow;
         state.LastStartedUtc = startedUtc;
         state.LastStatus = "Running";
-        state.LastSummary = source == "manual" ? "正在运行手动恢复可用性巡检。" : "正在运行周期恢复可用性巡检。";
+        var scopeSummary = "本轮范围：尚未完成备份索引读取；未读取归档。";
+        state.LastSummary = (source == "manual" ? "正在运行手动恢复可用性巡检。" : "正在运行周期恢复可用性巡检。")
+            + " " + scopeSummary;
         await SaveStateBestEffortAsync(state).ConfigureAwait(false);
         await NotifyInspectionStageAsync(HealthInspectionStage.RunningStateSaved).ConfigureAwait(false);
 
@@ -140,19 +142,24 @@ public sealed class HealthInspectionService : BackgroundService
             var versions = await _store.GetAllBackupVersionsForInspectionAsync(token).ConfigureAwait(false);
             var deferred = (await _store.GetHealthInspectionDeferredCandidatesAsync(token).ConfigureAwait(false))
                 .ToDictionary(x => MakeCandidateKey(x.PlayniteId, x.BackupId), x => x.NextAttemptUtc, StringComparer.OrdinalIgnoreCase);
+            scopeSummary = BuildScopeSummary(versions, state, DateTime.UtcNow, deferred, null);
+            state.LastSummary = scopeSummary + " 正在选择候选；尚未读取归档。";
+            await SaveStateBestEffortAsync(state).ConfigureAwait(false);
             var selection = SelectCandidate(versions, state, DateTime.UtcNow, deferred, resumeInFlight);
             if (selection.Candidate == null)
             {
                 return selection.Decision switch
                 {
                     HealthInspectionCandidateDecision.NoBackups
-                        => await CompleteAsync(state, "NoBackups", "当前没有可供巡检的备份版本。", null, null).ConfigureAwait(false),
+                        => await CompleteAsync(state, "NoBackups", "当前没有可供巡检的备份版本。", null, null, scopeSummary: scopeSummary).ConfigureAwait(false),
                     HealthInspectionCandidateDecision.UpToDate
-                        => await CompleteAsync(state, "UpToDate", "所有备份版本的恢复可用性校验仍在有效期内。", null, null).ConfigureAwait(false),
-                    _ => await CompleteAsync(state, "Deferred", "当前候选均在等待下次可检查时间，本轮未重复读取归档。", null, "all-candidates-deferred").ConfigureAwait(false)
+                        => await CompleteAsync(state, "UpToDate", "所有备份版本的恢复可用性校验仍在有效期内。", null, null, scopeSummary: scopeSummary).ConfigureAwait(false),
+                    _ => await CompleteAsync(state, "Deferred", "暂停原因：候选均在等待下次可检查时间；本轮未重复读取归档。", null, "all-candidates-deferred", scopeSummary: scopeSummary).ConfigureAwait(false)
                 };
             }
             candidate = selection.Candidate;
+            scopeSummary = BuildScopeSummary(versions, state, DateTime.UtcNow, deferred, candidate);
+            state.LastSummary = scopeSummary + $" 当前候选 {candidate.PlayniteId} / {candidate.BackupId}；正在检查运行状态。";
 
             var previousLastPlayniteId = state.LastPlayniteId;
             var previousLastBackupId = state.LastBackupId;
@@ -178,7 +185,7 @@ public sealed class HealthInspectionService : BackgroundService
                 _logger.LogError(ex, "Could not persist selected health inspection candidate for {PlayniteId}/{BackupId}",
                     candidate.PlayniteId, candidate.BackupId);
                 await AppendFailureAuditBestEffortAsync(source, candidate, summary, "state-write").ConfigureAwait(false);
-                return await CompleteAsync(state, "Failed", summary, null, "state-write").ConfigureAwait(false);
+                return await CompleteAsync(state, "Failed", summary, null, "state-write", scopeSummary: scopeSummary).ConfigureAwait(false);
             }
             await NotifyInspectionStageAsync(HealthInspectionStage.CandidateStateSaved).ConfigureAwait(false);
 
@@ -186,14 +193,14 @@ public sealed class HealthInspectionService : BackgroundService
             if (active)
             {
                 await DeferCandidateAsync(candidate, "game-running").ConfigureAwait(false);
-                return await CompleteAsync(state, "Deferred", "该游戏正在运行，本轮已推迟高成本恢复校验。", candidate, "game-running").ConfigureAwait(false);
+                return await CompleteAsync(state, "Deferred", "暂停原因：游戏正在运行；本轮已推迟高成本恢复校验。", candidate, "game-running", scopeSummary: scopeSummary).ConfigureAwait(false);
             }
 
             using var lease = await _gameLock.AcquireAsync(candidate.PlayniteId, GameOperationKind.RestoreReadiness, TimeSpan.Zero, token).ConfigureAwait(false);
             if (lease == null)
             {
                 await DeferCandidateAsync(candidate, "game-operation-busy").ConfigureAwait(false);
-                return await CompleteAsync(state, "Deferred", "该游戏已有备份、恢复或媒体操作，本轮已推迟恢复校验。", candidate, "game-operation-busy").ConfigureAwait(false);
+                return await CompleteAsync(state, "Deferred", "暂停原因：该游戏已有备份、恢复或媒体操作；本轮已推迟恢复校验。", candidate, "game-operation-busy", scopeSummary: scopeSummary).ConfigureAwait(false);
             }
 
             await _store.ClearHealthInspectionDeferredCandidateAsync(candidate.PlayniteId, candidate.BackupId, CancellationToken.None).ConfigureAwait(false);
@@ -220,26 +227,26 @@ public sealed class HealthInspectionService : BackgroundService
                 readiness.StagingCleanupStatus
             });
             await _store.AppendAuditAsync("HealthInspection", "恢复可用性巡检完成", detail, CancellationToken.None).ConfigureAwait(false);
-            return await CompleteAsync(state, readiness.Status.ToString(), readiness.Summary, candidate, null, readiness).ConfigureAwait(false);
+            return await CompleteAsync(state, readiness.Status.ToString(), readiness.Summary, candidate, null, readiness, scopeSummary).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested)
         {
-            return await CompleteAsync(state, "Cancelled", "本轮恢复可用性巡检已取消；下次巡检会从当前游标继续。", candidate, "cancelled").ConfigureAwait(false);
+            return await CompleteAsync(state, "Cancelled", "结束状态：已取消；下次巡检会从当前游标继续。", candidate, "cancelled", scopeSummary: scopeSummary).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (!token.IsCancellationRequested)
         {
-            const string summary = "恢复可用性巡检达到单次时间预算，已标记失败；下次巡检会重试。";
+            const string summary = "结束状态：达到单次时间预算，已标记失败；下次巡检会重试。";
             await RecordFailedReadinessBestEffortAsync(candidate, readinessPersisted ? null : summary).ConfigureAwait(false);
             await AppendFailureAuditBestEffortAsync(source, candidate, summary, "TimeBudget").ConfigureAwait(false);
-            return await CompleteAsync(state, "Failed", summary, candidate, "time-budget").ConfigureAwait(false);
+            return await CompleteAsync(state, "Failed", summary, candidate, "time-budget", scopeSummary: scopeSummary).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Health inspection failed for {PlayniteId}/{BackupId}", candidate?.PlayniteId, candidate?.BackupId);
-            var summary = "恢复可用性巡检失败：" + ex.Message;
+            var summary = "结束状态：失败；恢复可用性巡检失败：" + ex.Message;
             await RecordFailedReadinessBestEffortAsync(candidate, readinessPersisted ? null : summary).ConfigureAwait(false);
             await AppendFailureAuditBestEffortAsync(source, candidate, summary, ex.GetType().Name).ConfigureAwait(false);
-            return await CompleteAsync(state, "Failed", summary, candidate, "exception").ConfigureAwait(false);
+            return await CompleteAsync(state, "Failed", summary, candidate, "exception", scopeSummary: scopeSummary).ConfigureAwait(false);
         }
     }
 
@@ -292,12 +299,13 @@ public sealed class HealthInspectionService : BackgroundService
         string summary,
         BackupVersionDto? candidate,
         string? deferredReason,
-        RestoreReadinessDto? readiness = null)
+        RestoreReadinessDto? readiness = null,
+        string? scopeSummary = null)
     {
         var completedUtc = DateTime.UtcNow;
         state.LastCompletedUtc = completedUtc;
         state.LastStatus = status;
-        state.LastSummary = summary;
+        state.LastSummary = string.IsNullOrWhiteSpace(scopeSummary) ? summary : scopeSummary + " " + summary;
         try
         {
             var latestPlan = await _store.GetHealthInspectionStateAsync(CancellationToken.None).ConfigureAwait(false);
@@ -353,6 +361,26 @@ public sealed class HealthInspectionService : BackgroundService
         var retryMinutes = Math.Min(15, Math.Max(1, _options.HealthInspectionIntervalMinutes));
         await _store.SaveHealthInspectionDeferredCandidateAsync(candidate.PlayniteId, candidate.BackupId,
             DateTime.UtcNow.AddMinutes(retryMinutes), reason, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    private static string BuildScopeSummary(IReadOnlyCollection<BackupVersionDto> versions,
+        HealthInspectionStateDto state, DateTime now,
+        IReadOnlyDictionary<string, DateTime> deferred, BackupVersionDto? candidate)
+    {
+        if (versions.Count == 0)
+            return "本轮范围：备份索引为空，未读取归档。";
+
+        var staleBefore = now.AddDays(-state.StaleAfterDays);
+        bool NeedsCheck(BackupVersionDto version)
+            => version.RestoreReadiness == null || !version.RestoreReadiness.CheckedUtc.HasValue
+                || version.RestoreReadiness.CheckedUtc < staleBefore;
+
+        var needsCheckCount = versions.Count(NeedsCheck);
+        var deferredCount = versions.Count(version => NeedsCheck(version)
+            && deferred.TryGetValue(MakeCandidateKey(version.PlayniteId, version.BackupId), out var next)
+            && next > now);
+        var selected = candidate == null ? 0 : 1;
+        return $"本轮范围：读取备份索引 {versions.Count} 项，其中 {needsCheckCount} 项需要检查，{deferredCount} 项因等待而跳过，已选择 {selected} 项候选；仅候选会进入归档读取，未选择的归档未读取。";
     }
 
     private CandidateSelection SelectCandidate(IReadOnlyCollection<BackupVersionDto> versions, HealthInspectionStateDto state,
