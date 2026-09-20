@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 SaveCenter 策略控件外置标签与状态（续作小批量）
+
+- `e1fadaab` 已提交并推送：不改生产 XAML，复用 SaveCenter 四个策略开关、异常保护/策略模板选择器和锁定版本 CheckBox 的标签、Binding 与 Automation 名称，补实际 WPF peer 名称与状态/选值变化证据。
+- `R21AutomationValueBehaviorTests 12/12`；相关进度/焦点/键盘/无障碍/生产壳层 `60/60`。新增测试实际创建四个 ToggleSwitch、两个 ComboBox 和一个 CheckBox peer，验证 Toggle/CheckBox `Off → On`、名称和两个选值切换。
+- 提交身份 D 盘源码副本 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`。
+- 链接工作树 WPF `_wpftmp.csproj` 写入仍遇 `Access denied`，没有提升或绕过；改用项目已有 D 盘源码副本流程，验证后清理 source-copy/build。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-SAVECENTER-POLICY-PEER-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 Maintenance 云端队列筛选器名称与值（续作小批量）
 
 - `f3eecad0` 已提交并推送：不改生产 XAML，复用 Maintenance 已有云端队列状态/类型/时间三个筛选器的名称、选项来源和 Binding，补实际 WPF peer 名称与选值变化证据。
