@@ -268,6 +268,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string cloudTransferGameFilter = string.Empty;
         private string cloudTransferSourceDeviceFilter = string.Empty;
         private string cloudTransferTimeFilter = string.Empty;
+        private bool cloudTransferLoadFailed;
         private int maintenanceTabIndex;
         private int mediaTabIndex = 1;
         private int saveTabIndex;
@@ -436,6 +437,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             LoadMoreRetentionQuarantineCommand = new RelayCommand(_ => Run(LoadMoreRetentionQuarantineAsync), _ => !IsBusy && RetentionQuarantineHasMore);
             RefreshCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(true)), _ => !IsBusy);
             LoadMoreCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(false)), _ => !IsBusy && CloudTransferHasMore);
+            ClearCloudTransferFiltersCommand = new RelayCommand(_ => Run(ClearCloudTransferFiltersAsync), _ => !IsBusy && CloudTransferHasActiveFilters);
             VerifyCloudTransferCommand = new RelayCommand(_ => Run(VerifySelectedCloudTransferAsync), _ => !IsBusy && CanVerifySelectedCloudTransfer());
             RetryCloudUploadCommand = new RelayCommand(_ => Run(RetrySelectedCloudUploadAsync), _ => !IsBusy && CanRetrySelectedCloudUpload());
             DiagnoseGameCommand = new RelayCommand(_ => RunGameDiscoveryDiagnostic(), _ => !IsBusy && !IsGameDiagnosticLoading && !string.IsNullOrWhiteSpace(GameDiagnosticPlayniteId));
@@ -646,6 +648,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool MediaHasActiveFilters
             => !string.IsNullOrWhiteSpace(MediaSearchText)
                || !string.Equals(MediaFilter, "全部", StringComparison.Ordinal);
+        public string MediaActiveFiltersSummary => FilterConditionSummary.Media(MediaSearchText, MediaFilter);
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
         public CloudTransferSummaryDto CloudTransferViewSummary
@@ -657,18 +660,33 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
                 OnPropertyChanged(nameof(CloudTransferScopeSummary));
                 OnPropertyChanged(nameof(CloudTransferGlobalCount));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
             }
         }
         public CloudTransferStatusDto SelectedCloudTransfer { get { return selectedCloudTransfer; } set { SetValue(ref selectedCloudTransfer, value); OnPropertyChanged(nameof(CloudTransferAvailabilityHint)); OnPropertyChanged(nameof(CloudTransferNeedsMaintenance)); RaiseCommandStates(); } }
         public bool CloudTransferHasMore => cloudTransferHasMore;
         public bool CloudTransferNeedsManualRefresh => cloudTransferNeedsManualRefresh;
+        public bool CloudTransferLoadFailed => cloudTransferLoadFailed;
+        public string CloudTransferActiveFiltersSummary => FilterConditionSummary.Cloud(
+            CloudTransferStateFilter,
+            CloudTransferKindFilter,
+            CloudTransferGameFilter,
+            CloudTransferSourceDeviceFilter,
+            CloudTransferTimeFilter);
         public string CloudTransferLoadedSummary => CloudTransferViewSummary.TotalCount <= 0
-            ? cloudTransferNeedsManualRefresh
+            ? CloudTransferLoadFailed
+                ? "读取失败；当前列表不代表没有记录，请点击“刷新队列”重试"
+                : cloudTransferNeedsManualRefresh
                 ? "数据仍在变化，请点击“刷新队列”后继续"
                 : CloudTransferHasActiveFilters
                     ? $"当前筛选 0/{CloudTransferGlobalCount} 项 · 暂无匹配记录"
                     : "暂无云端传输记录"
             : $"{CloudTransferScopeSummary} · {(cloudTransferHasMore ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项" : cloudTransferNeedsManualRefresh ? "数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续" : $"已加载全部 {CloudTransferItems.Count} 项")}";
+        public string CloudTransferEmptyStateMessage
+            => FilterConditionSummary.CloudEmptyState(
+                CloudTransferLoadFailed,
+                CloudTransferHasActiveFilters,
+                CloudTransferActiveFiltersSummary);
         public string CloudTransferStateFilter
         {
             get => cloudTransferStateFilter;
@@ -676,7 +694,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref cloudTransferStateFilter, value ?? string.Empty);
                 OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
             }
         }
         public string CloudTransferKindFilter
@@ -686,7 +706,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref cloudTransferKindFilter, value ?? string.Empty);
                 OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
             }
         }
         public IReadOnlyList<CloudTransferFilterOption> CloudTransferTimeFilterOptions { get; } = new[]
@@ -717,7 +739,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(cloudTransferGameFilter, next, StringComparison.Ordinal)) return;
                 SetValue(ref cloudTransferGameFilter, next);
                 OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
                 cloudTransferFilterRefresh.Schedule();
             }
         }
@@ -730,7 +754,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(cloudTransferSourceDeviceFilter, next, StringComparison.Ordinal)) return;
                 SetValue(ref cloudTransferSourceDeviceFilter, next);
                 OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
                 cloudTransferFilterRefresh.Schedule();
             }
         }
@@ -743,7 +769,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(cloudTransferTimeFilter, next, StringComparison.Ordinal)) return;
                 SetValue(ref cloudTransferTimeFilter, next);
                 OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
                 OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
             }
         }
 
@@ -1453,6 +1481,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(MediaHasActiveFilters));
+                OnPropertyChanged(nameof(MediaActiveFiltersSummary));
+                NotifyMediaDetailsStateChanged();
             }
         }
         public string MediaFilter
@@ -1468,6 +1498,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(MediaHasActiveFilters));
+                OnPropertyChanged(nameof(MediaActiveFiltersSummary));
+                NotifyMediaDetailsStateChanged();
             }
         }
         public IReadOnlyList<string> MediaInboxModeOptions { get; } = new[] { "待归类", "已忽略" };
@@ -1790,6 +1822,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand LoadMoreRetentionQuarantineCommand { get; }
         public ICommand RefreshCloudTransfersCommand { get; }
         public ICommand LoadMoreCloudTransfersCommand { get; }
+        public ICommand ClearCloudTransferFiltersCommand { get; }
         public ICommand VerifyCloudTransferCommand { get; }
         public ICommand RetryCloudUploadCommand { get; }
         public ICommand DiagnoseGameCommand { get; }
@@ -6220,7 +6253,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

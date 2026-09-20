@@ -660,7 +660,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                         <!-- MediaView.IsEmpty remains a filter-level signal; the workspace state decides whether this is a real empty result. -->
-                        <TextBlock Grid.Row="1" Text="当前游戏还没有媒体&#xA;导入截图或录像后，它们会显示在这里。" IsHitTestVisible="False">
+                        <TextBlock Grid.Row="1" Text="{Binding MediaDetailsStateMessage, Mode=OneWay}" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                     <Setter Property="Visibility" Value="Collapsed"/>

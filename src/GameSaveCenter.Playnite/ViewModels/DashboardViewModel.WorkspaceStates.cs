@@ -179,7 +179,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string MediaDetailsStateMessage => EffectiveMediaDetailsState switch
         {
             WorkspaceDataState.Loading => "正在读取媒体、来源规则和归档摘要。",
-            WorkspaceDataState.Empty => "导入截图或录像后，它们会显示在这里。",
+            WorkspaceDataState.Empty => MediaHasActiveFilters
+                ? $"没有媒体符合{MediaActiveFiltersSummary}。点击“清除”只修改筛选条件。"
+                : "导入截图或录像后，它们会显示在这里。",
             WorkspaceDataState.Stale => "仍保留上次成功读取的内容；本次刷新没有覆盖它。",
             WorkspaceDataState.Error => "当前游戏媒体暂时无法读取，请稍后重试。",
             WorkspaceDataState.Offline => "媒体列表和归类操作暂时不可用，Worker 恢复后可重新读取。",

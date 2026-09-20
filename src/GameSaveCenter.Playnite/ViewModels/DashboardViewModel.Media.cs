@@ -494,6 +494,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaSearchText));
             OnPropertyChanged(nameof(MediaFilter));
             OnPropertyChanged(nameof(MediaHasActiveFilters));
+            OnPropertyChanged(nameof(MediaActiveFiltersSummary));
+            NotifyMediaDetailsStateChanged();
             MediaView.Refresh();
             uiStateSave?.Schedule();
             if (changed) ScheduleMediaPageQuery();

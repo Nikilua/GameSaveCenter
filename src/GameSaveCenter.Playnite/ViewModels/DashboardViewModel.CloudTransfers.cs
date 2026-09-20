@@ -61,6 +61,9 @@ public sealed partial class DashboardViewModel
                 if (CurrentWorkspace != WorkspaceKind.Maintenance)
                     return;
 
+                cloudTransferLoadFailed = false;
+                OnPropertyChanged(nameof(CloudTransferLoadFailed));
+
                 var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
                     ? pendingCloudTransferKey
                     : SelectedCloudTransfer?.TransferKey;
@@ -144,10 +147,53 @@ public sealed partial class DashboardViewModel
         {
             // A filter refresh or workspace switch superseded this page request.
         }
+        catch (Exception)
+        {
+            ApplyOnUi(() =>
+            {
+                if (generation != Interlocked.Read(ref cloudTransferLoadGeneration)
+                    || CurrentWorkspace != WorkspaceKind.Maintenance)
+                    return;
+
+                cloudTransferLoadFailed = true;
+                OnPropertyChanged(nameof(CloudTransferLoadFailed));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            });
+            throw;
+        }
         finally
         {
             EndCloudTransferRequest(requestCancellation);
         }
+    }
+
+    private async Task ClearCloudTransferFiltersAsync()
+    {
+        cloudTransferFilterRefresh.Cancel();
+        if (!CloudTransferHasActiveFilters)
+            return;
+
+        ApplyOnUi(() =>
+        {
+            cloudTransferStateFilter = string.Empty;
+            cloudTransferKindFilter = string.Empty;
+            cloudTransferGameFilter = string.Empty;
+            cloudTransferSourceDeviceFilter = string.Empty;
+            cloudTransferTimeFilter = string.Empty;
+            OnPropertyChanged(nameof(CloudTransferStateFilter));
+            OnPropertyChanged(nameof(CloudTransferKindFilter));
+            OnPropertyChanged(nameof(CloudTransferGameFilter));
+            OnPropertyChanged(nameof(CloudTransferSourceDeviceFilter));
+            OnPropertyChanged(nameof(CloudTransferTimeFilter));
+            OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+            OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+            OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+            OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            RaiseCommandStates();
+        });
+
+        await LoadCloudTransferPageAsync(true).ConfigureAwait(false);
     }
 
     private async Task VerifySelectedCloudTransferAsync()

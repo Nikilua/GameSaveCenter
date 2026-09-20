@@ -89,6 +89,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 searchText = value;
                 normalizedSearchText = value.Trim();
                 OnPropertyChanged(nameof(SearchText));
+                OnPropertyChanged(nameof(HasActiveFilters));
+                OnPropertyChanged(nameof(ActiveFiltersSummary));
                 ScheduleRefresh();
                 StateChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -104,6 +106,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(statusFilter, value, StringComparison.Ordinal)) return;
                 statusFilter = value;
                 OnPropertyChanged(nameof(StatusFilter));
+                OnPropertyChanged(nameof(HasActiveFilters));
+                OnPropertyChanged(nameof(ActiveFiltersSummary));
                 RefreshNow();
                 OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
                 StateChanged?.Invoke(this, EventArgs.Empty);
@@ -119,6 +123,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(platformFilter, value, StringComparison.Ordinal)) return;
                 platformFilter = value;
                 OnPropertyChanged(nameof(PlatformFilter));
+                OnPropertyChanged(nameof(HasActiveFilters));
+                OnPropertyChanged(nameof(ActiveFiltersSummary));
                 RefreshNow();
                 OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
                 StateChanged?.Invoke(this, EventArgs.Empty);
@@ -151,6 +157,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
+        public bool HasActiveFilters
+            => !string.IsNullOrWhiteSpace(SearchText)
+               || !string.Equals(StatusFilter, "全部", StringComparison.Ordinal)
+               || !string.Equals(PlatformFilter, "全部", StringComparison.Ordinal);
+
+        public string ActiveFiltersSummary
+            => FilterConditionSummary.GamePicker(SearchText, StatusFilter, PlatformFilter);
+
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? StateChanged;
 
@@ -165,6 +179,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(StatusFilter));
             OnPropertyChanged(nameof(PlatformFilter));
             OnPropertyChanged(nameof(SortMode));
+            OnPropertyChanged(nameof(HasActiveFilters));
+            OnPropertyChanged(nameof(ActiveFiltersSummary));
             RebuildSortDescriptions();
             RefreshNow();
             OnPropertyChanged(nameof(SelectedGameHiddenByFilter));
