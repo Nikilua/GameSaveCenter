@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 MediaCenter 批量动作名称与 Invoke（续作小批量）
+
+- `9fd7223c` 已提交并推送：复用三个现有批量命令和两处操作条，仅补三类按钮的稳定 Automation 名称，未改命令参数、样式或批量语义。
+- 新增实际 WPF Peer 行为证据：三类名称各计数 2，三个隔离按钮均可通过 `IInvokeProvider` 调用；`R21AutomationValueBehaviorTests 15/15`，相关回归 `63/63`。
+- D 盘源码副本以 `GscBuildCommit=9fd7223c` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。Invoke 夹具不替代真实 ICommand/批量写入。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：补批量动作禁用/空选择负例，再盘点其他逐控件状态/值边界；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 MediaCenter 备注与元数据动作（续作小批量）
 
 - `b20dac99` 已提交并推送：复用 `MediaComment` Binding、`UpdateMediaMetadataCommand` 和 `ReassignMediaCommand`，仅补备注、保存元数据、移动归类三个控件的稳定 Automation 名称。

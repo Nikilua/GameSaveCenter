@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-02 MediaCenter 批量动作名称与 Invoke（2026-09-21，续作小批量）
+
+- 先复用现有三个批量命令和两处操作条；`9fd7223c` 仅为“收藏所选媒体”“取消收藏所选媒体”“为所选媒体应用当前备注”补稳定 Automation 名称，未改变 Content、Command、CommandParameter、样式或批量语义。
+- `MediaCenterBatchActionsExposeStableNamesAndInvokeChannels` 用实际 WPF AutomationPeer 验证三类名称各出现两次，并验证三个隔离 `IInvokeProvider` 调用通道；`R21AutomationValueBehaviorTests 15/15`，相关套件 `63/63`。
+- 显式提交身份 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors / 2` 条既有 nullable warning；source/XAML/diff 与 WPF `0/27/177` 通过。Invoke 不代表真实 ICommand、批量选择集合或媒体写入。
+- 链接 `_wpftmp` `Access denied`、真实 Playnite/package-host、UIA/读屏、OS 输入、IME、DPI/跨屏、呈现和性能待验；Demo 原目录不可用，main 用户改动未碰未合并。下一步先补禁用/空选择负例，再继续 R21-02，后续 `R21-03`。
+
 ## 第三轮 R21-02 MediaCenter 备注与元数据动作（2026-09-21，续作小批量）
 
 - 先复用 MediaCenter 现有 `MediaComment`、`UpdateMediaMetadataCommand`、`ReassignMediaCommand` 和共享控件样式；`b20dac99` 仅补“当前媒体备注”“保存当前媒体元数据”“移动并归类当前媒体”三个 Automation 名称，没有改变业务命令、Binding 或媒体写入语义。

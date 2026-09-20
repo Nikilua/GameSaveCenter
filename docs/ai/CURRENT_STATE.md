@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-02 MediaCenter 批量动作名称与 Invoke（实现中，待继续）
+
+- `9fd7223c` 复用现有 `FavoriteSelectedMediaCommand`、`UnfavoriteSelectedMediaCommand`、`CommentSelectedMediaCommand` 和两处批量操作条，只补三类按钮的稳定 Automation 名称；保留 Content、Command、CommandParameter、样式和布局，没有新增服务、DTO 或选择/写入语义。
+- `R21AutomationValueBehaviorTests 15/15`，相关进度/焦点/键盘/无障碍/生产壳层回归 `63/63`；实际 WPF peer 验证三类动作名称及三个隔离 `IInvokeProvider` 通道，来源计数确认两处呈现各一套。
+- 提交身份 D 盘源码副本 Release 为 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。Invoke 只代表隔离控件通道，不代表真实 ICommand/批量写入。
+- 链接工作树 `_wpftmp` 的 `Access denied` 未绕过，本批 source-copy/build 已清理；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验。Demo 原目录不可用，main 用户改动未碰、未合并。R21-02 仍未整项签收，下一项继续禁用/空选择负例和其他状态/值边界，之后进入 `R21-03`。
+
 ## 当前第三轮 R21-02 MediaCenter 备注与元数据动作（实现中，待继续）
 
 - `b20dac99` 先复用现有 `MediaComment` Binding、`UpdateMediaMetadataCommand` 和 `ReassignMediaCommand`，只补备注 TextBox、保存元数据、移动归类三个控件的稳定 Automation 名称；保留原样式、Binding、命令、取消/错误语义和布局，没有新增服务、DTO 或写入语义。
