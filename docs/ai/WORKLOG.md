@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-20 R19-01 旧请求晚返回
+
+- 先核对已有 `LatestRequestCoordinator`、详情/媒体/收件箱/云端/归类历史代际和 `MediaWorkspaceStateCache`；确认筛选/搜索有媒体代际保护，但普通 `LoadDetailsAsync()` 在工作区切换时没有绑定启动 workspace，Media 旧异常也缺少详情上下文门。
+- `ed107c50` 做最小修复：工作区切换立即失效详情和媒体代际；详情加载捕获 workspace/generation/game ID，并在请求开始、成功、取消和失败的 UI 边界复核；媒体失败回写也复核同一门。保留游戏选框、滚动条、命令绑定、取消/错误/恢复、有限列表和 `net462`。
+- 新增 `SlowSuccessFromOldContextCannotReplaceANewContextFailure` 负例，A 的迟到成功无法覆盖 B 的标题、数据、选择、更新时间和失败；已有 `MediaWorkspaceStateCache` A/B 旧完成负例继续通过。
+- 最终 clean-tree 隔离 Release `0 errors/2 existing MediaCenter nullable warnings`；工作区状态、媒体分页锚点、页面重访和请求协调回归 `30 passed / 1 skipped / 31 total`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。代码已推送 `origin/codex/ui-finesse-round2`。
+- 只用合成/fake/隔离 testhost，不写真实存档、媒体、云端或诊断；未验实际 Playnite IPC 延迟注入、宿主跨线程时序、presented frame、DPI/UIA/读屏、ETW 和宿主性能。Demo 原目录不可用。证据：`evidence/R19-01-LATE-REQUEST-CONTEXT-20260920.md`。下一可执行任务：`R19-02` 刷新失败保留草稿。
+
 ## 2026-09-20 R18-08 低性能降级触发
 
 - 先复核既有能力：`AdaptiveThemePaletteFactory.ApplyMaterialResources` 在 glass=false 时使用真实 null Effect、关闭 PopupAnimation/环境层；`GscMotion.IsEnabled` 与 `NormalizeAll` 已处理系统/用户无动画回退；已有 `lowcostprobe` 具备双主题、六工作区、两尺寸和文本/溢出门禁。

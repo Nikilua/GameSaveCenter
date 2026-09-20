@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-20
 
+## 第三轮 R19-01 旧请求晚返回（2026-09-20）
+
+- `ed107c50` 先核对现有 `LatestRequestCoordinator`、媒体请求代际、`MediaWorkspaceStateCache` 和页面重访门，再修正详情请求的真实跨工作区缺口：`CurrentWorkspace` 变化会推进详情/媒体代际并取消请求，`LoadDetailsAsync` 绑定启动 workspace、generation、game ID，所有成功/取消/失败 UI 回写均需通过同一 `IsCurrentDetailsLoad`。
+- Media 详情异常以前只看 media page generation；现在旧游戏/筛选请求的异常也必须通过详情上下文，避免把 A 的失败状态写到 B。筛选/搜索现有 `InvalidateMediaDetailsContext`、选择恢复、取消和 net462 IPC 契约保留。
+- `LatestRequestCoordinator` 的合成 A 慢成功/B 新失败负例通过；媒体缓存 A/B 首失败/旧完成负例和工作区状态/分页/锚点/重访相关回归合计 `30 passed / 1 skipped / 31 total`。clean-tree Release `0 errors/2 existing warnings`，source/XAML/diff 门禁通过。
+- 证据：`evidence/R19-01-LATE-REQUEST-CONTEXT-20260920.md`。验证只覆盖合成/fake/隔离 testhost；真实 Playnite IPC 延迟、跨线程宿主时序、presented frame、DPI/UIA/读屏、ETW/宿主性能未验，Demo 原目录不可用。下一项 `R19-02` 刷新失败保留草稿。
+
 ## 第三轮 R18-08 低性能降级触发（2026-09-20）
 
 - `3bfe3d3c` 复用现有无玻璃/无动画回退：`AdaptiveThemePaletteFactory` 使用真实 null Effect 和不透明表面，`GscMotion` 继续受用户设置、高对比度和 `ClientAreaAnimation` 约束；RenderHarness 只做明确 `glass=false/motion=false` 模拟，不伪造 Render Tier。

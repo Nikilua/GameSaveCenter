@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R19-01 旧请求晚返回（已满足，受控回归完成；真实宿主待验）
+
+- `ed107c50` 收紧详情读请求代际：工作区切换立即调用 `CancelDetailsLoad`，`LoadDetailsAsync` 捕获启动时 workspace/generation/game ID，并在开始、成功、取消、失败的 UI 回写边界统一检查；媒体旧异常也不能写入新游戏/筛选上下文。
+- 新增 A 慢成功/B 新失败负例，证明标题、数据、选择 ID、更新时间和失败信息仍属于 B；已有媒体状态缓存负例继续证明 A 的晚到成功不恢复 B 的旧成功时间。相关工作区状态、媒体分页锚点、页面重访回归最终 `30 passed / 1 skipped / 31 total`。
+- clean-tree 隔离 Release solution `0 errors/2 existing MediaCenter nullable warnings`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。证据见 `evidence/R19-01-LATE-REQUEST-CONTEXT-20260920.md`。
+- 只使用合成/fake/隔离 testhost，不触碰真实存档、媒体、用户云端或外部诊断；未把源契约/离屏测试写成真实 Playnite IPC 延迟、presented frame、物理 DPI/跨屏、UIA/读屏、ETW 或宿主性能证据。Demo 原目录不可用。下一项：`R19-02` 刷新失败保留草稿。
+
 ## 当前第三轮 R18-08 低性能降级触发（已满足，明确模拟完成；真实 Render Tier 待验）
 
 - `3bfe3d3c` 先复用现有 `AdaptiveThemePaletteFactory` 的 null Effect/不透明表面/环境层关闭、`GscMotion.IsEnabled` 与 `NormalizeAll`；lowcostprobe 明确传入 `glassEnabled=false, motionEnabled=false`，没有引入新的主题体系或硬件检测假象。
