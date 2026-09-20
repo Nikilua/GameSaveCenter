@@ -2,10 +2,10 @@
 
 ## 当前第三轮 R21-02 进度控件名称与值（实现中，待继续）
 
-- 先由 `efa9614f` 收口 SaveCenter 策略控件名称，再由 `74b559e2` 复用现有 `ProgressValue`/`ProgressDisplay` 与远端阶段值，为 TaskCenter 列表行、所选任务详情和 Maintenance 远端隔离下载进度补稳定 Automation 名称与 HelpText；没有新增服务、DTO、命令或数值语义。
-- `R21AutomationValueBehaviorTests` 当前 `4/4`，相关进度/焦点/键盘/无障碍/生产壳层回归 `52/52`。既有 R06/R12 行为夹具继续覆盖未知/排队/零值/越界/取消/成功及远端下载、校验、取消/失败边界；本批没有把源码字符串断言写成运行时行为。
-- 当前 source-copy Release Playnite `net462` / Tests `net472` 为 `0 errors`，仅有 `MediaCenterView.xaml.cs:671` 的 2 条既有 `CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 `evidence/R21-02-PROGRESS-AUTOMATION-20260921.md`。
-- R21-02 仍未整项签收：其余复合选择器及逐控件状态/值负例待继续；下一项仍为这些 R21-02 小批量，完成公共门禁后进入 `R21-03` 验证错误播报。
+- 先由 `efa9614f` 收口 SaveCenter 策略控件名称，再由 `74b559e2` 收口任务/远端进度控件，当前 `c327f92a` 复用 TrainerCenter 两个已有导入确认路径、Binding 和命令，为选择器及确认/取消动作补稳定 Automation 名称；没有新增服务、DTO、命令或数值语义。
+- `R21AutomationValueBehaviorTests` 当前 `5/5`，相关进度/焦点/键盘/无障碍/生产壳层回归 `53/53`。新增测试实际检查 Trainer 导入 ComboBox/Button peer 和候选值变化；既有 R06/R12 行为夹具继续覆盖未知/排队/零值/越界/取消/成功及远端下载、校验、取消/失败边界。
+- 当前 source-copy Release Playnite `net462` / Tests `net472` 为 `0 errors`，仅有 `MediaCenterView.xaml.cs:671` 的 2 条既有 `CS8602` warning；source/XAML/diff 通过，WPF 静态检查 `0/27/177`。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、呈现和宿主性能未验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 `evidence/R21-02-TRAINER-IMPORT-AUTOMATION-20260921.md`。
+- R21-02 仍未整项签收：Trainer 工具设置的版本/风险/运行策略选择器与开关、其他复合选择器及逐控件状态/值负例待继续；下一项仍为这些 R21-02 小批量，完成公共门禁后进入 `R21-03` 验证错误播报。
 
 ## 当前第三轮 R21-02 控件名称与值（实现中，待继续）
 

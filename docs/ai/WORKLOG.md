@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-02 TrainerCenter 导入控件名称（续作小批量）
+
+- 提交并推送 `c327f92a`：复用 TrainerCenter 两个已有导入确认路径、候选 Binding、确认命令和取消命令，为 ComboBox 及确认/取消动作补稳定 Automation 名称；没有改导入或文件语义。
+- `R21AutomationValueBehaviorTests` `5/5`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `53/53`。新增测试实际检查 ComboBox/Button peer 和候选值 A→B，生产源码契约确认两处呈现路径各有名称。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-TRAINER-IMPORT-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续 R21-02 Trainer 工具设置版本/风险/运行策略选择器与开关，再补其他逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
 ## 2026-09-21 R21-02 进度控件名称与值（续作小批量）
 
 - 提交并推送 `74b559e2`：复用 TaskCenter `ProgressValue`/`ProgressDisplay` 和 Maintenance 远端阶段值，为 DataGrid 行、所选任务详情、远端隔离下载进度补 Automation 名称与 HelpText；没有改 DTO、命令、取消、恢复保护或滚动/选框系统。
