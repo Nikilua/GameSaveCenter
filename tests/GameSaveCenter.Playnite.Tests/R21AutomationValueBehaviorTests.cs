@@ -153,6 +153,53 @@ public sealed class R21AutomationValueBehaviorTests
     }
 
     [Fact]
+    public void SelectorAndTogglePeersExposeEmptyAndIndeterminateStates()
+    {
+        RunSta(() =>
+        {
+            var selector = new ComboBox
+            {
+                ItemsSource = new[] { "全部", "失败" },
+                SelectedIndex = -1
+            };
+            AutomationProperties.SetName(selector, "任务状态筛选");
+
+            var toggle = new NativeToggleSwitch
+            {
+                IsThreeState = true,
+                IsChecked = null,
+                Content = "启用策略"
+            };
+            AutomationProperties.SetName(toggle, "启用备份策略");
+
+            using var host = new PeerHost(selector, toggle);
+            var selectorPeer = GetPeer(selector);
+            Assert.Equal("任务状态筛选", selectorPeer.GetName());
+            var selection = Assert.IsAssignableFrom<ISelectionProvider>(selectorPeer.GetPattern(PatternInterface.Selection));
+            Assert.False(selection.CanSelectMultiple);
+            Assert.Null(selection.GetSelection());
+
+            selector.SelectedIndex = 1;
+            host.Pump();
+            Assert.Single(selection.GetSelection());
+            Assert.Equal("失败", selector.SelectedItem);
+
+            var togglePeer = GetPeer(toggle);
+            Assert.Equal("启用备份策略", togglePeer.GetName());
+            var togglePattern = Assert.IsAssignableFrom<IToggleProvider>(togglePeer.GetPattern(PatternInterface.Toggle));
+            Assert.Equal(ToggleState.Indeterminate, togglePattern.ToggleState);
+
+            toggle.IsChecked = false;
+            host.Pump();
+            Assert.Equal(ToggleState.Off, togglePattern.ToggleState);
+
+            toggle.IsChecked = true;
+            host.Pump();
+            Assert.Equal(ToggleState.On, togglePattern.ToggleState);
+        });
+    }
+
+    [Fact]
     public void MediaCenterFavoriteToggleExposesSemanticState()
     {
         var root = TestRepositoryContext.Root;
