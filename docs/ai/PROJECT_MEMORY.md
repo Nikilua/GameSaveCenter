@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-04 打开路径失败（2026-09-21）
+
+- 代码基线 `a43a896843d63762ff6473bc664ba6182cb4f8fc` 复用 R16 的 `SettingsPathEditorService`、设置页路径编辑器、完整路径复制和 Dashboard `RunLocal` 错误边界，没有新增服务、权限操作或 Explorer 绕过。
+- 隔离临时目录行为 `R16SettingsPathEditorBehaviorTests` 实际覆盖有效文件、有效目录、缺失目录和文件冒充目录；设置目录选项 6 个且排除远端目标；源码边界合计 `3/3`。Release 测试项目 `0 errors / 2` 条既有 CS8602 warning，source/XAML/diff 通过。
+- 未启动真实 Explorer，未验网络共享/ACL/占用等系统级失败、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能；未写真实存档/媒体/云端/诊断。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-04-OPEN-PATH-FAILURE-20260921.md`。下一步 `R22-01` 时间显示统一或其他依赖满足的 Q/R 小批量。
+
 ## 第三轮 R21-08 单屏与跨屏分账（2026-09-21）
 
 - 代码基线 `8a31421aea3e4ca3d61884a9ff6c035300faf723` 只同步 R21-08 证据，未改生产代码；复用 Q24-03 的 `real-host-audit.ps1`、宿主内游戏选框和共享 ComboBox Popup，没有新增独立窗口、跨屏定位或 DPI 体系。

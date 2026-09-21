@@ -187,7 +187,7 @@
 | R22-01 | 时间显示统一 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R22-02 | 容量单位统一 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R22-03 | 复制反馈轻量 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
-| R22-04 | 打开路径失败 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R22-04 | 打开路径失败 | 已满足，待环境验证 | a43a8968（复用 R16 实现） | `R16SettingsPathEditorBehaviorTests` + 源码边界 `3/3`；Release 测试项目 `0 errors / 2` 条既有 CS8602 warning；source/XAML/diff 通过 | 隔离临时目录实际区分有效文件、有效目录、缺失目录和文件冒充目录；设置页无效 Probe 在打开前显示原因并保留完整路径复制；Dashboard 失效本地路径由 RunLocal/ReportDashboardFailure 捕获 | 未启动真实 Explorer，未验真实 Playnite/package-host、网络共享/ACL/占用导致的系统级打开失败、呈现、UIA/读屏、OS 输入/IME、DPI/跨屏、ETW 或宿主性能；Demo 原目录不可用；main 用户改动未碰、未合并 | [R22-04 打开路径失败](evidence/R22-04-OPEN-PATH-FAILURE-20260921.md)；下一项按依赖选择 R22-01 时间显示统一或其他可独立 Q/R 小批量 |
 | R22-05 | 批量数量防歧义 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R22-06 | 长任务离页提示 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R22-07 | 确认框信息结构 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -816,3 +816,11 @@
 - 现有实际证据：`R05PopupBoundaryBehaviorTests 2/2`、`R09PixelStrokeBehaviorTests 2/2`（1.00–2.00 逻辑尺度模拟）、`R09ThemeSwitchBehaviorTests 1/1`、拓扑/源码契约 `26/26`；当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，real-host 脚本语法通过。
 - R21-08 按“已满足，待环境验证”收口。真实双屏 Playnite/package-host、Popup 跨屏像素位置、字体清晰度、焦点和资源释放、呈现帧、Windows UIA/读屏、OS 输入/IME、ETW、宿主性能仍待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R21-08 单屏与跨屏分账](evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md)。
 - 下一可执行任务：进入后续依赖已满足的 Q/R 小批量；若获得第二个物理显示器，优先按本证据的双屏清单运行隔离 Playnite 宿主回放。
+
+## 2026-09-21 Round3 R22-04 打开路径失败
+
+- 先复用 R16 的 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal` 错误边界；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
+- `R16SettingsPathEditorBehaviorTests` 在隔离临时目录中实际验证有效可执行文件、有效目录、缺失目录、文件冒充目录四种结果；设置目录选项保持 6 个本地字段，远端目标不进入本地打开动作。源码边界测试确认无效 Probe 在打开前返回、打开方法不做父目录兜底；合计 `3/3`。
+- 当前提交身份 Release Playnite `net462` / Tests `net472` 构建 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。
+- R22-04 按“已满足，待环境验证”收口。真实 Explorer/Playnite host 的启动失败、网络共享/ACL/占用、最终呈现、UIA/读屏、OS 输入/IME、DPI/跨屏、ETW 和宿主性能仍待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R22-04 打开路径失败](evidence/R22-04-OPEN-PATH-FAILURE-20260921.md)。
+- 下一可执行任务：按依赖选择 `R22-01` 时间显示统一或其他独立 Q/R 小批量；优先继续查已有时间格式化/任务时长能力，避免只以源码包含断言签收。

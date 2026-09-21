@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-04 打开路径失败
+
+- 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
+- `R16SettingsPathEditorBehaviorTests` 在隔离临时目录实际验证有效文件、有效目录、缺失目录、文件冒充目录；源码边界合计 `3/3`。当前提交身份 Release 构建 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。
+- R22-04 按“已满足，待环境验证”收口。真实 Explorer/Playnite host 启动失败、网络共享/ACL/占用、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW 和宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-04-OPEN-PATH-FAILURE-20260921.md`。下一可执行任务：`R22-01` 时间显示统一或其他依赖满足的 Q/R 小批量。
+
 ## 2026-09-21 R21-08 单屏与跨屏分账
 
 - 先查已有 Q24-03 真实宿主前置、生产宿主内游戏选框和共享 ComboBox Popup；没有新增跨屏定位、独立窗口、DPI 或滚动体系，也没有改变命令、Binding、取消/错误、恢复保护和有限列表性能。
