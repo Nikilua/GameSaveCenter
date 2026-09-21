@@ -43,7 +43,7 @@ namespace GameSaveCenter.Playnite.Views
             columnLayout = new DataGridColumnLayoutController(
                 TaskGrid,
                 "tasks",
-                new[] { "local-time", "task", "game", "state", "progress", "detail" },
+                new[] { "local-time", "task", "stage", "game", "state", "progress", "detail" },
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
             sortController = ProductionDataGridSortProfiles.AttachTasks(TaskGrid);

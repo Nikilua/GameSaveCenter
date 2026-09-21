@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using Xunit;
@@ -218,6 +221,34 @@ public sealed class R06ColumnWidthPersistenceBehaviorTests
         Assert.Contains("BeginLayoutPass", controller);
         Assert.Contains("EndLayoutPass", controller);
         Assert.Contains("DataGridLengthUnitType.Pixel", controller);
+    }
+
+    [Fact]
+    public void TaskColumnPersistenceKeysMatchTheProductionGridColumns()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var taskXamlPath = Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml");
+        var taskCodePath = Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs");
+        var document = XDocument.Load(taskXamlPath);
+        var xName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var taskGrid = document.Descendants().Single(element =>
+            element.Name.LocalName == "DataGrid"
+            && string.Equals((string?)element.Attribute(xName), "TaskGrid", StringComparison.Ordinal));
+        var columns = taskGrid.Elements().Single(element => element.Name.LocalName == "DataGrid.Columns").Elements().Count();
+        var taskCode = File.ReadAllText(taskCodePath);
+        var keyMatch = Regex.Match(
+            taskCode,
+            "\\\"tasks\\\"\\s*,\\s*new\\[\\]\\s*\\{(?<keys>.*?)\\}",
+            RegexOptions.Singleline);
+
+        Assert.True(keyMatch.Success, "TaskCenterView must declare a stable key list for the tasks grid.");
+        var keys = Regex.Matches(keyMatch.Groups["keys"].Value, "\\\"(?<key>[^\\\"]+)\\\"")
+            .Cast<Match>()
+            .Select(match => match.Groups["key"].Value)
+            .ToArray();
+        Assert.Equal(columns, keys.Length);
+        Assert.Equal(new[] { "local-time", "task", "stage", "game", "state", "progress", "detail" }, keys);
     }
 
     private static DataGrid CreateGrid(int columnCount)
