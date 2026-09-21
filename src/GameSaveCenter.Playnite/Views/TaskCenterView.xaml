@@ -138,6 +138,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -216,6 +217,7 @@
                         <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ClearTaskNavigationContextCommand}" Content="清除带入条件" ToolTip="仅清除带入的游戏条件，保留其他任务筛选" AutomationProperties.Name="清除带入的任务筛选" Margin="12,0,0,0"/>
                     </Grid>
                 </Border>
+                <TextBlock x:Name="TaskLeavePageHint" Grid.Row="3" Grid.ColumnSpan="8" Text="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="后台任务离页说明" AutomationProperties.HelpText="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。"/>
             </Grid>
         </Border>
         <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Visibility="Collapsed" Margin="0,0,0,8">
