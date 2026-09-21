@@ -866,7 +866,8 @@ public sealed class WpfUiResourceDictionaryTests
             element.Name.LocalName == "DataGridTextColumn"
             && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "SaveHistoryTimeColumn");
         Assert.Equal("时间", timeColumn.Attribute("Header")?.Value);
-        Assert.Contains("CreatedLocal", timeColumn.Attribute("Binding")?.Value ?? string.Empty);
+        Assert.Equal("{Binding CreatedRelativeDisplay, Mode=OneWay}", timeColumn.Attribute("Binding")?.Value);
+        Assert.Contains("CreatedFullDisplay", saves);
     }
 
     [LegacyProductionUiBaselineFact]
