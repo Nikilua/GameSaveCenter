@@ -421,7 +421,7 @@
                  ratio bars; no demo placeholder numbers. -->
              <Border x:Name="OverviewStatStrip" Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,14" MinHeight="84" Margin="0,0,0,12" ToolTip="{Binding OverviewSnapshotScopeDisplay}">
                 <StackPanel>
-                    <TextBlock Text="{Binding OverviewSnapshotScopeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="8,0,8,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewSnapshotUpdatedDisplay}"/>
+                    <TextBlock Text="{Binding OverviewSnapshotScopeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="8,0,8,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewSnapshotUpdatedDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding OverviewSnapshotUpdatedDisplay, Mode=OneWay}"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/>

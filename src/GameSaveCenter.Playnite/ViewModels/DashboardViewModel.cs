@@ -797,7 +797,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         public bool IsDashboardSnapshotLoaded => dashboardSnapshotLoaded;
         public string OverviewSnapshotScopeDisplay => OverviewSnapshotDisplay.Scope(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
-        public string OverviewSnapshotUpdatedDisplay => OverviewSnapshotDisplay.Updated(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewSnapshotUpdatedDisplay => OverviewSnapshotDisplay.UpdatedFull(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewSnapshotUpdatedRawUtcDisplay => OverviewSnapshotDisplay.UpdatedRawUtc(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
         public string OverviewCurrentGameScopeDisplay => OverviewSnapshotDisplay.CurrentGameScope(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
         public string OverviewManagedGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.ManagedGames);
         public string OverviewMatchedGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.MatchedGames);
@@ -886,6 +887,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(IsDashboardSnapshotLoaded));
             OnPropertyChanged(nameof(OverviewSnapshotScopeDisplay));
             OnPropertyChanged(nameof(OverviewSnapshotUpdatedDisplay));
+            OnPropertyChanged(nameof(OverviewSnapshotUpdatedRawUtcDisplay));
             OnPropertyChanged(nameof(OverviewCurrentGameScopeDisplay));
             OnPropertyChanged(nameof(OverviewManagedGamesDisplay));
             OnPropertyChanged(nameof(OverviewMatchedGamesDisplay));

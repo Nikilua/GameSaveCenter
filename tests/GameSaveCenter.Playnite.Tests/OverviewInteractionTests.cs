@@ -129,6 +129,12 @@ public sealed class OverviewInteractionTests
 
                 Assert.Equal(data.SelectedGameLastBackupFullDisplay, latestBackup.ToolTip);
                 Assert.Equal(data.SelectedGameLastBackupFullDisplay, AutomationProperties.GetHelpText(latestBackup));
+
+                var snapshotScope = FindVisualDescendants<TextBlock>(overview)
+                    .Single(textBlock => textBlock.Text == data.OverviewSnapshotScopeDisplay);
+
+                Assert.Equal(data.OverviewSnapshotUpdatedDisplay, snapshotScope.ToolTip);
+                Assert.Equal(data.OverviewSnapshotUpdatedDisplay, AutomationProperties.GetHelpText(snapshotScope));
             }
             catch (Exception caught)
             {
@@ -196,6 +202,8 @@ public sealed class OverviewInteractionTests
         };
 
         public bool IsDashboardSnapshotLoaded => true;
+        public string OverviewSnapshotScopeDisplay => "全库 · Playnite 游戏库 · 更新于 刚刚";
+        public string OverviewSnapshotUpdatedDisplay => "更新于 2026-09-21 12:34:56 (UTC+08:00) · 2026-09-21T04:34:56.0000000Z";
         public GameStatusDto SelectedGame { get; } = new()
         {
             Name = "时间证据游戏",
