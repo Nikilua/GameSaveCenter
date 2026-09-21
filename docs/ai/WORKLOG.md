@@ -8,6 +8,14 @@
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SELECTED-BACKUP-TIME-20260921.md`。只使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
 - R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为继续盘点其他 Save/恢复入口旧本地时间直显。
 
+## 2026-09-21 R22-01 恢复流程选择版本时间（第二十一子批次）
+
+- 先查 `RestoreWorkflowProgress.BuildSelectionStep` 和 SaveCenter `RestoreWorkflowSteps` 的实际模板，确认 `CreatedLocal` 进入用户可见 Detail；本阶段没有把比较下拉、历史跳转消息或复制列一并签收。
+- `391d28b8` 复用 `BackupVersionDto` 的共享时间投影，第一步 Detail 改为相对时间，`DetailFullDisplay` 保留完整本地时间与 UTC 原值，XAML 将其用于 Tooltip/Automation HelpText；其余步骤回退原 Detail，恢复状态、安全保护、命令和滚动保持。
+- `R22TimeDisplayBehaviorTests 21/21`、`R12RestoreWorkflowBehaviorTests 7/7`，合计 `28/28`；Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESTORE-SELECTION-TIME-20260921.md`。使用合成恢复 DTO、状态夹具和隔离构建目录，未执行真实恢复、PreRestore 或任何用户数据写入；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对 SaveCenter 比较下拉 `ComparisonDisplay` 与历史跳转状态消息。
+
 ## 2026-09-21 R22-01 Storage 分析时间合同（第十七子批次）
 
 - 先查 `StorageAnalysisDto.CheckedUtc`、`StorageGameRankDto.LatestBackupDisplay`、Maintenance 两处存储排行模板和 R17 稳定 ID 导航；确认 `CheckedUtc` 与 `LatestBackupDisplay` 当前都没有生产卡片绑定，不把未呈现属性当作视觉缺陷。

@@ -12,6 +12,13 @@
 - 选框、`LastBackupUtc` 排序、备份/详情命令、页面滚动和 Playnite/net462 兼容保持；验证仅使用合成 DTO/fake DataContext/隔离宿主，没有真实存档、媒体、云端或诊断写入。真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验，main 用户改动未碰、未合并。证据见 [`R22-01 Overview 选中游戏最近备份时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SELECTED-BACKUP-TIME-20260921.md)。
 - 下一可执行任务：继续盘点其他 Save/恢复入口的旧本地时间直显，先查实际绑定、已有 DTO/复制入口和稳定排序。
 
+## 当前第三轮 R22-01 恢复流程选择版本时间（本子批已满足，R22-01 仍部分满足）
+
+- `391d28b8` 复用 `BackupVersionDto` 的相对/完整时间投影，将 SaveCenter 恢复四步流程第一步“选择版本”的正文从旧本地短日期改为相对时间；完整本地时区与 round-trip UTC 进入 Detail Tooltip/Automation HelpText。未选择提示、其他恢复步骤、PreRestore 保护、取消/错误和 Worker 写入顺序保持。
+- `R22TimeDisplayBehaviorTests 21/21`、`R12RestoreWorkflowBehaviorTests 7/7`，定向合计 `28/28`；Release XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；source/diff 与 WPF `0/27/177` 通过。
+- 验证仅使用合成 BackupVersionDto、恢复状态夹具和隔离构建目录，没有真实恢复、PreRestore、存档/媒体/云端或诊断写入。真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验，main 用户改动未碰、未合并。证据见 [`R22-01 恢复流程选择版本时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESTORE-SELECTION-TIME-20260921.md)。
+- 下一可执行任务：核对 SaveCenter 比较下拉 `ComparisonDisplay` 与历史跳转状态消息的真实可见边界。
+
 ## 当前第三轮 R22-01 Storage 分析时间合同（本子批已满足，R22-01 仍部分满足）
 
 - `9d319296` 核对 `StorageAnalysisDto.CheckedUtc` 与 `StorageGameRankDto.LatestBackupDisplay`：前者未绑定到 Maintenance 卡片，后者虽是兼容属性也未绑定到两处存储排行模板；不把未呈现的旧属性写成视觉缺陷。仅为 `LatestBackupUtc` 增加相对/完整/原始 UTC 投影，旧显示、容量口径、失联路径说明、稳定 ID 导航、刷新命令和只读/不删除语义保持。

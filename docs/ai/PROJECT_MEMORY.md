@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 恢复流程选择版本时间（2026-09-21，第二十一子批次）
+
+- `391d28b8` 核对 `RestoreWorkflowProgress.BuildSelectionStep` 与 SaveCenter `RestoreWorkflowSteps` 模板，确认旧 `CreatedLocal` 确实进入用户可见 Detail；复用 `BackupVersionDto.CreatedRelativeDisplay/CreatedFullDisplay`，新增 `DetailFullDisplay`，其他步骤默认回退原 Detail。
+- 恢复四步状态机、可恢复性检查、目标核对、PreRestore 保护、取消/错误、Worker 写入边界、列表滚动和命令绑定未变；第一步使用相对时间，完整本地时区与 round-trip UTC 通过 Tooltip/Automation HelpText 提供。
+- `R22TimeDisplayBehaviorTests 21/21`、`R12RestoreWorkflowBehaviorTests 7/7`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`（仅既有 2 条 MediaCenter CS8602）。证据：`R22-01-RESTORE-SELECTION-TIME-20260921.md`。
+- 仍只证明合成恢复 DTO、状态夹具和隔离构建，不等价真实恢复、Playnite/package-host、UIA/读屏、系统时钟跳变/跨系统启动周期、DPI/跨屏、最终呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰、未合并。R22-01 仍部分满足，下一步核对比较下拉和历史状态消息。
+
 ## 第三轮 R22-01 Overview 选中游戏最近备份时间（2026-09-21，第二十子批次）
 
 - `4e85d665` 先核对实际生产绑定：Overview 当前游戏卡片唯一仍直显旧本地短日期的是 `SelectedGameLastBackupDisplay`；复用 `GameStatusDto.LastBackupUtc` 和 `TimeDisplayFormatter`，保留排序原值、`LastBackupLocal` 及旧 ViewModel 属性，新增相对/完整/原始 UTC 投影。
