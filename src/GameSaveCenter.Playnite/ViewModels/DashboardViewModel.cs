@@ -249,6 +249,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string deviceDecisionComment = string.Empty;
         private RemoteBackupStageResultDto? stagedRemoteBackup;
         private string stagedRemoteBackupStatus = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
+        private string stagedRemoteBackupStatusFullDisplay = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
         private string processMappingExecutable = string.Empty;
         private GameStatusDto processMappingTargetGame = null!;
         private ProcessMappingDto selectedProcessMapping = null!;
@@ -1930,9 +1931,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref stagedRemoteBackup,value);
-                StagedRemoteBackupStatus=value==null
-                    ?"尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。"
-                    :$"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；{value.ExpiresUtc.ToLocalTime():yyyy-MM-dd HH:mm} 前有效。";
+                StagedRemoteBackupStatus=BuildStagedRemoteBackupStatus(value, useFullTime: false);
+                StagedRemoteBackupStatusFullDisplay=BuildStagedRemoteBackupStatus(value, useFullTime: true);
                 OnPropertyChanged(nameof(RemoteRestoreAvailabilityHint));
                 RaiseCommandStates();
             }
@@ -1940,8 +1940,23 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string StagedRemoteBackupStatus
         {
             get=>stagedRemoteBackupStatus;
-            private set=>SetValue(ref stagedRemoteBackupStatus,value);
+            private set
+            {
+                SetValue(ref stagedRemoteBackupStatus,value);
+                StagedRemoteBackupStatusFullDisplay=value;
+            }
         }
+        public string StagedRemoteBackupStatusFullDisplay
+        {
+            get=>stagedRemoteBackupStatusFullDisplay;
+            private set=>SetValue(ref stagedRemoteBackupStatusFullDisplay,value);
+        }
+        internal static string BuildStagedRemoteBackupStatus(RemoteBackupStageResultDto? value, bool useFullTime)
+            => value == null
+                ? "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。"
+                : useFullTime
+                    ? $"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；有效期至：{value.ExpiresFullDisplay}。"
+                    : $"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；有效期：{value.ExpiresRelativeDisplay}。";
         public string DeviceDecision { get=>deviceDecision; set=>SetValue(ref deviceDecision,value??"稍后处理"); }
         public string DeviceDecisionComment { get=>deviceDecisionComment; set=>SetValue(ref deviceDecisionComment,value??string.Empty); }
         public string ProcessMappingExecutable { get => processMappingExecutable; set { SetValue(ref processMappingExecutable,value??string.Empty); RaiseCommandStates(); } }
