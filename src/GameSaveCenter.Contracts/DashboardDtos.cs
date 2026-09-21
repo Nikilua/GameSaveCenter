@@ -302,6 +302,9 @@ namespace GameSaveCenter.Contracts
         public string ClassificationState { get; set; } = "Assigned";
         public string ClassificationReason { get; set; } = string.Empty;
         public DateTime CapturedLocal => CapturedUtc.ToLocalTime();
+        public string CapturedRelativeDisplay => TimeDisplayFormatter.Relative(CapturedUtc, DateTime.UtcNow);
+        public string CapturedFullDisplay => TimeDisplayFormatter.Full(CapturedUtc);
+        public string CapturedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CapturedUtc);
         public string FileName => Path.GetFileName(string.IsNullOrWhiteSpace(OriginalPath) ? ArchivePath ?? string.Empty : OriginalPath);
         public string SizeDisplay => FormatBytes(SizeBytes);
         public string KindDisplay => Kind == MediaKind.VideoClip ? "录像" : Kind == MediaKind.Screenshot ? "截图" : "未知媒体";

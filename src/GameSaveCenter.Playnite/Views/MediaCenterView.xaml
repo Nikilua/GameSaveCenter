@@ -105,7 +105,8 @@
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
             <Style x:Key="MediaTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}">
-                <Setter Property="ToolTip" Value="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                <Setter Property="ToolTip" Value="{Binding CapturedFullDisplay, Mode=OneWay}"/>
+                <Setter Property="AutomationProperties.HelpText" Value="{Binding CapturedFullDisplay, Mode=OneWay}"/>
             </Style>
             <Style x:Key="MediaPathText" TargetType="TextBlock" BasedOn="{StaticResource GscPathText}">
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
@@ -271,7 +272,7 @@
                                       VirtualizingPanel.ScrollUnit="Item"
                                       ClipToBounds="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" infra:DataGridColumnHeaderHelpBehavior.Description="本地拍摄时间；悬停可查看完整时间。" Binding="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                    <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" infra:DataGridColumnHeaderHelpBehavior.Description="相对拍摄时间；悬停可查看本地时区、完整秒级时间和原始 UTC 值。" Binding="{Binding CapturedRelativeDisplay, Mode=OneWay}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="类型" infra:DataGridColumnHeaderHelpBehavior.Description="媒体类型；当前支持截图、录像和未知媒体。" Binding="{Binding KindDisplay, Mode=OneWay}" Width="72"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="来源" infra:DataGridColumnHeaderHelpBehavior.Description="媒体来源；显示来源渠道，不代表归类结果。" Binding="{Binding SourceDisplay, Mode=OneWay}" Width="115"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="文件" infra:DataGridColumnHeaderHelpBehavior.Description="文件名；单元格复制使用完整原始路径。" Binding="{Binding FileName, Mode=OneWay}" Width="*" MinWidth="220"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaPathText}"><Setter Property="ToolTip" Value="{Binding OriginalPath}"/></Style></DataGridTextColumn.ElementStyle></DataGridTextColumn>
@@ -653,7 +654,7 @@
                                             </Grid>
                                         </Border>
                                         <Border Grid.Row="1" Background="{DynamicResource GscControlFillBrush}" Padding="10,7">
-                                            <StackPanel><TextBlock Text="{Binding FileName}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><Grid Margin="0,4,0,0"><TextBlock Text="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscMutedTextBrush}"/><TextBlock Text="{Binding CloudStateDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" HorizontalAlignment="Right" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudStateDisplay}"/></Grid></StackPanel>
+                                            <StackPanel><TextBlock Text="{Binding FileName}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><Grid Margin="0,4,0,0"><TextBlock Text="{Binding CapturedRelativeDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscMutedTextBrush}" ToolTip="{Binding CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CapturedFullDisplay, Mode=OneWay}"/><TextBlock Text="{Binding CloudStateDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" HorizontalAlignment="Right" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudStateDisplay}"/></Grid></StackPanel>
                                         </Border>
                                     </Grid>
                                 </DataTemplate>
@@ -750,7 +751,7 @@
                                      <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
                                      <TextBlock Text="{Binding SelectedMedia.SizeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
                                  </StackPanel>
-                                 <TextBlock Text="{Binding SelectedMedia.CapturedLocal, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                 <TextBlock Text="{Binding SelectedMedia.CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding SelectedMedia.CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedMedia.CapturedFullDisplay, Mode=OneWay}"/>
                                  <Grid Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding SelectedMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径}" AutomationProperties.Name="媒体完整路径（可选择）"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CopyPathCommand}" CommandParameter="{Binding SelectedMedia.ArchivePath}" Content="复制完整路径" ToolTip="复制未省略的媒体归档路径" AutomationProperties.Name="复制媒体完整路径" Margin="8,0,0,0"/></Grid>
                                 <Border x:Name="MediaPreviewPanel" Height="178" CornerRadius="12" ClipToBounds="True" Background="{DynamicResource GscControlFillBrush}" Margin="0,14,0,14">
                                     <Grid>
@@ -858,7 +859,7 @@
                                                     <StackPanel>
                                                         <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}" FontWeight="SemiBold"/>
                                                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                                            <TextBlock Text="{Binding CapturedLocal, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                            <TextBlock Text="{Binding CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" ToolTip="{Binding CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CapturedFullDisplay, Mode=OneWay}"/>
                                                             <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
                                                             <TextBlock Text="{Binding SizeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
                                                         </StackPanel>

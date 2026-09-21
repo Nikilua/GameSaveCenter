@@ -103,6 +103,23 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void MediaEntrypointsUseSharedCaptureTimeBindings()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var item = new MediaItemDto { CapturedUtc = timestamp };
+
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), item.CapturedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), item.CapturedRawUtcDisplay);
+        Assert.NotEqual("时间未知", item.CapturedRelativeDisplay);
+        Assert.Contains("Binding=\"{Binding CapturedRelativeDisplay, Mode=OneWay}\"", media, StringComparison.Ordinal);
+        Assert.Contains("SelectedMedia.CapturedFullDisplay", media, StringComparison.Ordinal);
+        Assert.Contains("CapturedFullDisplay, Mode=OneWay", media, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
