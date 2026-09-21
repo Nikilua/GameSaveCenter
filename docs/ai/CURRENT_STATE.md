@@ -3,7 +3,7 @@
 ## 接续点校正与当前边界（2026-09-21）
 
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
-- 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 的行为证据，最新接续点见下节，下一项为 R21-06。
+- 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05、R21-06，并在当前接续点完成 R21-07 焦点回归证据；下一项为 R21-08。
 
 ## 当前第三轮 R21-05 禁用与隐藏区别（已满足，待环境验证）
 
@@ -17,7 +17,15 @@
 - 复用现有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`，新增共享 `GscWpfUiTechnicalTextBox`，将 Dashboard/AcrylicProductionShell 两条插件版本显示改为只读可选 TextBox；原版本赋值、布局和导航不变。
 - `R03LongPathTests | R11DiffListSearchBehaviorTests | R15TaskFailureCopyTests | R21SelectableTechnicalTextBehaviorTests` 合计 `13/13`：路径、脱敏错误码/技术详情/任务 ID 及两条版本入口均有实际 WPF 选择行为，版本框可聚焦全选并提示 Ctrl+C。证据见 [`R21-06 可选择技术文本`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md)。
 - 提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。真实剪贴板/读屏、选择像素、Playnite host、DPI/跨屏、最终呈现和宿主性能仍未验；Demo 原目录不可用，main 用户改动未碰未合并。
-- 下一项为 R21-07 焦点可视回归。
+- 下一项已推进为 R21-07 焦点可视回归。
+
+## 当前第三轮 R21-07 焦点可视回归（已满足，待环境验证）
+
+- 复用生产 `GscSharedFocusVisual`、AcrylicProductionShell 的 `PickerOverlay`/`PickerList`、既有滚动条和 `ClosePickerAndRestoreFocus`；没有重建焦点、滚动、主题或游戏选框体系，也没有改变命令、Binding、取消/错误和恢复语义。
+- `b20f1a4b` 新增 `R21FocusVisualRegressionBehaviorTests`：真实生产 Shell 加合成 2,000 项，请求 `ListBox.ScrollIntoView` 后末项容器实际实现且保留焦点样式；浅/深运行时主题切换后强调色变化、焦点仍在可见搜索框；关闭选择器后 Overlay 折叠并回焦可见游戏选框。串行 `1/1`，R09 焦点环 `2/2`，R05 主题弹层 `1/1`，合计 `4/4`。
+- 提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。并行隐藏 WPF 窗口的抢焦点失败和旧 R05 手动注入 VM 初始化夹具失败均保留为边界，没有改写为绿色。
+- 证据仅来自合成 DTO、生产资源和隔离 STA WPF；不把隔离宿主的 `VerticalOffset`、像素裁剪或 presented frame 当物理滚动/最终呈现结论。真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、ETW、宿主性能和 Demo 原目录仍待验；main 用户改动未碰、未合并。证据见 [`R21-07 焦点可视回归`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-07-FOCUS-VISUAL-20260921.md)。
+- 下一可执行任务：R21-08 单屏与跨屏分账，先列当前单屏/DPI 可测能力和 Popup/字体/焦点的真实跨屏待验场景。
 
 ## 当前第三轮 R21-04 异步完成播报（已满足，待环境验证）
 

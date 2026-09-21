@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-07 焦点可视回归（2026-09-21）
+
+- `b20f1a4bc1444c4a702fb4d28254a85f249719e9` 只新增 `R21FocusVisualRegressionBehaviorTests` 行为夹具；复用 `GscSharedFocusVisual`、生产游戏选框滚动/虚拟化、运行时主题资源和关闭回焦路径，没有新增服务、DTO、命令或视觉体系。
+- 真实生产 Shell + 合成 2,000 项验证 `ScrollIntoView` 请求后末项容器实现、搜索框焦点保持和共享焦点样式；浅/深主题切换后焦点不漂移；关闭 Overlay 后回焦可见游戏选框。提交后串行 R21 `1/1`、R09 `2/2`、R05 主题弹层 `1/1`，合计 `4/4`。
+- Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过。并行隐藏 WPF 窗口的抢焦点失败和旧 R05 手动注入 VM 初始化夹具失败未改写为绿色；隔离宿主的 `VerticalOffset`、像素裁剪和 presented frame 不作为物理滚动/最终呈现证据。
+- 真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、ETW、宿主性能和 Demo 原目录未验；main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260921/evidence/R21-07-FOCUS-VISUAL-20260921.md`。下一步 R21-08 单屏与跨屏分账。
+
 ## 第三轮 R21-05 禁用与隐藏区别（2026-09-21）
 
 - `380234e20c127277d3655a07a11e1e29ee23f2cd` 只新增行为夹具和证据，先复用 `ActionAvailabilityHints`、SaveCenter 的维护条件、`GscWpfUiContextButton` 及已有 Automation 绑定；没有新增服务、DTO、命令，也没有触碰选框、滚动条、取消/错误、恢复保护或列表性能。

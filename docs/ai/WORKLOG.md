@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-07 焦点可视回归
+
+- 先核对生产 `GscSharedFocusVisual`、AcrylicProductionShell 游戏选框/滚动/关闭回焦和既有 R09/R05 证据；本阶段没有重建焦点、滚动、主题或弹层体系，也没有改命令、Binding、取消/错误、恢复保护和有限列表性能。
+- 提交 `b20f1a4b` 新增 `R21FocusVisualRegressionBehaviorTests`：生产 Shell + 合成 2,000 项请求 `ScrollIntoView` 后末项容器实际实现，搜索框焦点保持并有共享焦点样式；浅/深主题资源切换后强调色变化且焦点不漂移；关闭选择器后回焦可见游戏选框。
+- 已推送提交身份下 Release 项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；串行 R21 `1/1`、R09 `2/2`、R05 主题弹层 `1/1`，合计 `4/4`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。并行隐藏 WPF 窗口抢焦点失败和旧 R05 手动注入 VM 初始化夹具失败保留为真实边界，没有改写为绿色。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-07-FOCUS-VISUAL-20260921.md`。Demo 原目录不可用，main 用户改动未碰未合并；隔离宿主的 `VerticalOffset`/像素裁剪/presented frame、真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、ETW 和宿主性能仍未验。下一可执行任务：R21-08 单屏与跨屏分账。
+
 ## 2026-09-21 R21-06 可选择技术文本
 
 - 先查已有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`；只新增共享 `GscWpfUiTechnicalTextBox`，把 Dashboard/AcrylicProductionShell 两条插件版本显示改成只读可选 TextBox，提交 `866ceecd`，没有新增服务、DTO、命令或导航。
