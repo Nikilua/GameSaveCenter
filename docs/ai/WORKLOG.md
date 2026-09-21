@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 Overview 选中游戏最近备份时间（第二十子批次）
+
+- 先核对 `GameStatusDto.LastBackupUtc`、`LastBackupLocal`、Dashboard 选中游戏属性和 Overview 当前游戏卡片，确认该处确实存在生产绑定的旧本地短日期；没有扩大为未绑定的 Storage 时间字段或其他 Save/恢复入口。
+- `4e85d665` 保留排序原值和旧兼容属性，新增相对/完整/原始 UTC 投影；Overview 正文改用相对时间，Tooltip/Automation HelpText 提供完整证据；加载、未选择、无备份和未知时间边界均保留明确语义。选框、滚动、备份/详情命令和 Playnite/net462 兼容不变。
+- `R22TimeDisplayBehaviorTests 20/20`、`OverviewInteractionTests 2/2`，定向合计 `22/22`；新增 STA WPF 用例实际检查绑定后的文本、Tooltip、HelpText。Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SELECTED-BACKUP-TIME-20260921.md`。只使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为继续盘点其他 Save/恢复入口旧本地时间直显。
+
 ## 2026-09-21 R22-01 Storage 分析时间合同（第十七子批次）
 
 - 先查 `StorageAnalysisDto.CheckedUtc`、`StorageGameRankDto.LatestBackupDisplay`、Maintenance 两处存储排行模板和 R17 稳定 ID 导航；确认 `CheckedUtc` 与 `LatestBackupDisplay` 当前都没有生产卡片绑定，不把未呈现属性当作视觉缺陷。

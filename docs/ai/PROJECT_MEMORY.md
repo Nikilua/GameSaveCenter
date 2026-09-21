@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 Overview 选中游戏最近备份时间（2026-09-21，第二十子批次）
+
+- `4e85d665` 先核对实际生产绑定：Overview 当前游戏卡片唯一仍直显旧本地短日期的是 `SelectedGameLastBackupDisplay`；复用 `GameStatusDto.LastBackupUtc` 和 `TimeDisplayFormatter`，保留排序原值、`LastBackupLocal` 及旧 ViewModel 属性，新增相对/完整/原始 UTC 投影。
+- 选中游戏卡片使用相对正文，完整本地时区与 round-trip UTC 进入 Tooltip/Automation HelpText；未加载、未选中、无备份、未知时间均有明确负例。游戏选框、备份/详情命令、滚动、有限列表和 net462 兼容不变。
+- `R22TimeDisplayBehaviorTests 20/20`、`OverviewInteractionTests 2/2`；隔离 STA WPF 实际读取渲染树上的相对文本、Tooltip 和 HelpText。Release/XAML/source/diff/WPF 为 `0 errors / 27 warnings / 177 info`（仅既有 2 条 MediaCenter CS8602）。证据：`R22-01-OVERVIEW-SELECTED-BACKUP-TIME-20260921.md`。
+- 仍仅证明合成 DTO、fake DataContext、隔离 testhost 和隔离构建，不等价真实 Playnite/package-host、UIA/读屏、系统时钟跳变/跨系统启动周期、DPI/跨屏、最终呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰、未合并。R22-01 仍部分满足，下一步继续盘点其他 Save/恢复旧本地时间直显。
+
 ## 第三轮 R22-01 Storage 分析时间合同（2026-09-21，第十七子批次）
 
 - 先查现有 `StorageAnalysisDto.CheckedUtc`、`StorageGameRankDto.LatestBackupDisplay` 和 Maintenance 存储分析模板，确认当前卡片没有绑定这两个时间入口；因此不新增页面字段或布局，只把已有 `LatestBackupUtc` 的兼容显示合同补齐为相对/完整/原始 UTC，旧属性保留。
