@@ -44,6 +44,32 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void TaskAndActivityModelsExposeTheSameFullAndRawTimeContract()
+    {
+        var timestamp = new DateTime(2026, 9, 20, 12, 34, 56, DateTimeKind.Utc);
+        var task = new TaskStatusDto
+        {
+            TaskId = "time-contract-task",
+            TaskType = "Backup",
+            State = TaskState.Succeeded,
+            CreatedUtc = timestamp,
+            StartedUtc = timestamp.AddSeconds(2)
+        };
+        var activity = new ActivityEntryDto { CreatedUtc = timestamp };
+
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), task.CreatedRawUtcDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), task.CreatedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), activity.CreatedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), activity.CreatedRawUtcDisplay);
+        Assert.NotEqual("时间未知", task.CreatedRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(task.StartedUtc.Value), task.StartedFullDisplay);
+
+        task.StartedUtc = null;
+        Assert.Equal("未开始", task.StartedRelativeDisplay);
+        Assert.Equal("未开始", task.StartedFullDisplay);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

@@ -608,7 +608,7 @@
                                             <Border x:Name="OverviewTaskResultChip" Grid.Column="3" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="56" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <TextBlock x:Name="OverviewTaskResultText" Text="{Binding StateDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding StateDisplay, Mode=OneWay}"/>
                                             </Border>
-                                            <TextBlock Grid.Column="4" Text="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding CreatedRelativeDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}"/>
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding State}" Value="Failed">
@@ -698,7 +698,7 @@
                                                 <TextBlock Text="{Binding Summary, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Summary}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                             <Border x:Name="ActivityResultChip" Grid.Column="2" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="58" VerticalAlignment="Center" HorizontalAlignment="Center"><TextBlock x:Name="ActivityResultChipText" Text="{Binding ResultDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding ResultDisplay, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></Border>
-                                            <TextBlock Grid.Column="3" Text="{Binding CreatedDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,20,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedDisplay, Mode=OneWay}"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding CreatedRelativeDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,20,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}"/>
                                          </Grid>
                                          </Border>
                                          </ui:Button>

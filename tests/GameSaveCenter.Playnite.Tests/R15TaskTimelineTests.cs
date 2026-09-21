@@ -77,6 +77,7 @@ public sealed class R15TaskTimelineTests
         TestRepositoryContext.AssertAssemblyMatchesSource();
         var root = TestRepositoryContext.Root;
         var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
         var viewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
         var coordinator = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "TaskCoordinator.cs"));
         var broadcaster = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Ipc", "TaskEventBroadcaster.cs"));
@@ -86,6 +87,10 @@ public sealed class R15TaskTimelineTests
         Assert.Contains("MaxHeight=\"220\"", view, StringComparison.Ordinal);
         Assert.Contains("RememberTaskTimelineChange", viewModel, StringComparison.Ordinal);
         Assert.Contains("TaskTimelineBuilder.Build", viewModel, StringComparison.Ordinal);
+        Assert.Contains("CreatedRelativeDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("CreatedFullDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("CreatedRelativeDisplay", overview, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding CreatedFullDisplay, Mode=OneWay}\"", overview, StringComparison.Ordinal);
         Assert.Contains("OccurredUtc = DateTime.UtcNow", coordinator, StringComparison.Ordinal);
         Assert.Contains("StageMessage = change.Task.StageMessage", broadcaster, StringComparison.Ordinal);
         Assert.Contains("CancellationState = change.Task.CancellationState", broadcaster, StringComparison.Ordinal);

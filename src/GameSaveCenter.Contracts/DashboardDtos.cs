@@ -74,6 +74,9 @@ namespace GameSaveCenter.Contracts
         };
 
         public string CreatedDisplay => CreatedUtc.ToLocalTime().ToString("MM-dd HH:mm");
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
 
         public string Glyph => Kind switch
         {

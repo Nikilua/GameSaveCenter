@@ -329,6 +329,9 @@ namespace GameSaveCenter.Contracts
         public List<TaskSourceReferenceDto> SourceReferences { get; set; } = new List<TaskSourceReferenceDto>();
         public bool HasRestoreReport => RestoreReport != null;
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));
         public string ProgressDisplay => ProgressPercent < 0
             || (State == TaskState.Queued && ProgressPercent == 0)
@@ -437,6 +440,12 @@ namespace GameSaveCenter.Contracts
             && string.IsNullOrWhiteSpace(CancellationState);
         public DateTime? StartedLocal => StartedUtc?.ToLocalTime();
         public DateTime? FinishedLocal => FinishedUtc?.ToLocalTime();
+        public string StartedRelativeDisplay => StartedUtc.HasValue
+            ? TimeDisplayFormatter.Relative(StartedUtc.Value, DateTime.UtcNow)
+            : "未开始";
+        public string StartedFullDisplay => StartedUtc.HasValue
+            ? TimeDisplayFormatter.Full(StartedUtc.Value)
+            : "未开始";
         public string DurationDisplay
         {
             get
