@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-06 长任务离页提示（2026-09-21，第三十五子批次）
+
+- `ef671288` 复用现有 Worker 后台执行、任务快照/历史恢复、事件订阅与终态通知，只在 TaskCenter 筛选栏补充“离开本页不会取消，返回后恢复阶段和进度”的可见/Automation 说明；Dashboard 卸载仍只停止展示监听，显式 `CancelTaskCommand` 是唯一取消入口。
+- `R22LongTaskLeavePageBehaviorTests 2/2` 实际检查 STA WPF 文案、可见性、Automation 信息及自动取消负例；R21 异步完成 `2/2`；R08 缓存切换第一场景通过。Release/source/diff/WPF 基线保持，既有 MediaCenter CS8602 两条 warning 未改写。
+- 未宣称真实 Playnite/package-host、Worker 长任务、实机离页/返回、UIA/读屏、DPI/跨屏、休眠/重启、呈现、ETW 或宿主性能；Demo 原目录不可用，不改 dirty main、真实存档/媒体/云端/诊断。R08 旧 Shell 文本契约的第二测试失败保留事实。
+- 下一项 `R22-07`：核对危险确认框对象/范围/后果、按钮明确性、取消默认和 Enter 键负例；不改变恢复保护与取消协议。
+
 ## 第三轮 R22-05 批量数量防歧义（2026-09-21，第三十四子批次）
 
 - `501cb715` 在不改变现有 ListBox/DataGrid 选择、分页窗口和命令参数的前提下，补齐当前游戏媒体批量动作的已选/当前结果/隐藏选择摘要；策略模板批量复用 `PolicyTemplateBatchPreview.Select`，新增筛选结果和隐藏已选计数，空选择不隐式全选，100 项上限仍有效。

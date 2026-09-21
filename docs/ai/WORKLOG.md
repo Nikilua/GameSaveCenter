@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-06 长任务离页提示（第三十五子批次）
+
+- 先核对事实：Worker 任务不随工作区切换或 Dashboard 卸载取消；实时事件是可选通道，任务快照/历史轮询和缓存 TaskCenter 是返回后的恢复来源；显式 `CancelTaskCommand` 保持唯一取消入口。
+- `ef671288` 在 TaskCenter 筛选栏增加离页/返回说明与 Automation Name/HelpText，不新建任务状态，不改取消/错误、终态通知、选框、滚动条或 Worker 协议。
+- `R22LongTaskLeavePageBehaviorTests 2/2`；R21 异步完成播报 `2/2`；R08 缓存工作区切换第一场景通过，第二个旧 Shell 文本契约断言失败不改写。提交身份 Release Playnite net462/Tests net472 `0 errors`，既有 MediaCenter CS8602 两条 warning；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-06-LONG-TASK-LEAVE-20260921.md`。仅用合成/fake WPF 和隔离 `.tmp`，未启动真实 Playnite/package-host/Worker 长任务，未读写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- 代码提交已推送 `ef671288` 到 `codex/ui-finesse-round2`；下一可执行任务为 `R22-07` 确认框信息结构，先补危险确认负例。
+
 ## 2026-09-21 R22-05 批量数量防歧义（第三十四子批次）
 
 - 先核对真实适用性：R05-04 已覆盖媒体收件箱跨模式稳定 ID 选择汇总；任务中心批量重试是当前筛选结果模型，已有当前结果/可重试/未纳入说明；缺口是当前游戏媒体动作栏和策略模板批量区没有同时显示当前结果与隐藏选择。

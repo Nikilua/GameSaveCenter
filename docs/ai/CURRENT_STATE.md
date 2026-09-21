@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-06 长任务离页提示（本子批已满足，待环境验证）
+
+- `ef671288` 在任务页筛选栏补充明确的离页语义说明并同步 Automation Name/HelpText；现有 Worker 后台执行、任务快照/历史恢复、实时事件订阅、终态 Toast、显式取消和缓存 TaskCenter 页面均保留，没有新增自动取消或模拟进度。
+- `R22LongTaskLeavePageBehaviorTests 2/2`；R21 异步完成播报 `2/2`；R08 缓存工作区切换第一场景通过。提交身份 Release Playnite `net462` / Tests `net472` 无错误，既有 `MediaCenterView.xaml.cs:699 CS8602` 两条 warning 保留；source/diff 通过，WPF `0/27/177`。
+- 只使用合成/fake WPF 状态、隔离窗口和隔离 `.tmp`；未验真实 Playnite/package-host、Worker 长任务、实机离页/返回、Windows UIA/读屏、DPI/物理跨屏、休眠/重启恢复、呈现帧、ETW 或宿主性能。Demo 原目录不可用，main 用户改动未碰、未合并；未读写真实存档、媒体、云端或外发诊断。R08 另一个旧 Shell 文本契约断言失败未改写。证据：`evidence/R22-06-LONG-TASK-LEAVE-20260921.md`。
+- 下一可执行任务：`R22-07` 确认框信息结构，先核对危险动作确认对象/范围/后果与取消/Enter 负例。
+
 ## 当前第三轮 R22-05 批量数量防歧义（本子批已满足，待环境验证）
 
 - `501cb715` 为当前游戏媒体批量动作增加“已选 / 当前结果 / 当前窗口可操作 / 隐藏选择”摘要；策略模板批量增加筛选结果与隐藏已选计数，仍由稳定 ID 和显式勾选决定；媒体收件箱 R05-04、任务中心当前结果批量语义已核对并复用，未重建。
