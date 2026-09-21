@@ -8549,3 +8549,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前嵌入证据 `artifacts/ui-host-audit-r23-04-rerun-20260922` 的 metadata 明确 `CaptureOrigin=EmbeddedPlaynite`、已由 Playnite 托管、未使用专用审计窗口；精选概览/媒体/存档/工具/滚动面原图已在 R23-04 报告中列出哈希。
 - UIA 未找到 GameSaveCenter 侧栏项，runner 未生成 `summary.json` 或外层 `capture-manifest.json`，等待后中断；因此账本只记“部分满足，待宿主 runner 收口”。单屏、Fusion 未复制、Playnite Desktop 版本 unknown 和专用窗口未验均如实保留。
 - 证据：`evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。本阶段尚未清理被报告引用的当前 artifacts；下一可执行任务是 runner UIA/summary 待验步骤和独立的 R23-05 帧性能证据分账。
+
+## 2026-09-22 Round3 R23-05 帧性能证据闭环
+
+- 先查已有 Q25-02 能力并复用 RenderHarness `shellqa`；当前 commit 单独构建 RenderHarness 成功，Release `0 errors`，保留既有 `MediaCenterView.xaml.cs:699` 两条 warning。
+- 当前代理运行报告绑定 `fef68005d86c5daa801850afa04d01b3eb113209`、`WorkingTreeClean=True`：单次切换 29 Rendering 回调/p95 `74.5ms`/最大 `234.6ms`，快速二次切换 41/p95 `18.5ms`/最大 `35.2ms`，无动画终态 4/p95/最大 `21.4ms`。这些是 offscreen WPF 回调代理，不是屏幕呈现帧。
+- shellqa 最终 `FAILED`，报告实际保留 5 个几何失败（header actions 越界 2 项、Media inbox/batch row 间距 3 项）；本阶段不把它改成性能通过，也不以离屏图替代真实呈现帧。
+- ETW/WPR/xperf 权限拒绝未绕过；没有 ETL/PresentMon/真实 DWM 样本。证据：`evidence/R23-05-FRAME-PERFORMANCE-EVIDENCE-20260922.md`。下一可执行任务：R23-06 安装与回退身份核查，R23-05 几何问题与真实呈现帧仍待验。

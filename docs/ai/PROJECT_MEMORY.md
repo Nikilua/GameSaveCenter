@@ -4808,3 +4808,10 @@
 - `metadata.json` 的 `CaptureOrigin=EmbeddedPlaynite`、`DashboardWasAlreadyHostedByPlaynite=true`、`DedicatedAuditWindowUsed=false` 和当前 commit 证明精选原图来自当前变更的真实嵌入宿主；没有专用窗口证据，也没有旧包替代当前身份。
 - UIA 没找到 GameSaveCenter 侧栏项，runner 未完成收口，缺少 `summary.json` 与外层 `capture-manifest.json`；账本应保持“部分满足，待宿主 runner 收口”，不能把 UIA/manifest/专用窗口/全量宿主验收写成通过。单屏、Fusion 未复制和 Desktop 版本 unknown 继续保留为事实边界。
 - 证据：`evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。下一可执行任务：把 UIA/summary 作为明确待验步骤，继续独立推进 R23-05 帧性能证据闭环；不绕过 ETW/系统跟踪权限。
+
+## 2026-09-22 Round3 R23-05 帧性能证据闭环
+
+- R23-05 复用现有 `RenderHarness shellqa` 的 `CompositionTarget.Rendering` 和 `Stopwatch` 采样；当前提交单独构建成功，报告绑定 `fef68005` 且工作树干净。Rendering 回调、代理耗时与真实 presented frame 必须分账。
+- 当前代理样本为：单次切换 `29` 回调/p95 `74.5ms`/最大 `234.6ms`，快速二次切换 `41` 回调/p95 `18.5ms`/最大 `35.2ms`，无动画终态 `4` 回调/p95/最大 `21.4ms`。这只说明受控 WPF/offscreen logical DIP 的回调间隔，不能写成 DWM/PresentMon/物理掉帧。
+- `shellqa` 同次运行最终失败，5 个几何门禁分别是两项 header actions 越界和三项 Media inbox/batch row 间距异常；保持“部分满足，待几何与宿主性能验收”，不要改报告状态或用字符串断言掩盖。
+- ETW/WPR/xperf 权限拒绝仍是外部边界；没有 ETL、真实呈现帧或停顿期间采样栈。下一可执行任务：R23-06 安装/回退身份核查；同时把 R23-05 几何失败作为独立复核入口。

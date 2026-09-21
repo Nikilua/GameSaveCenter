@@ -2579,3 +2579,10 @@
 - 当前嵌入捕获 `artifacts/ui-host-audit-r23-04-rerun-20260922/metadata.json` 明确 `CaptureOrigin=EmbeddedPlaynite`、`DashboardWasAlreadyHostedByPlaynite=true`、`DedicatedAuditWindowUsed=false`，DPI `1.5`，Dashboard `1313.33×898.0`；保留概览/媒体/存档/工具/概览滚动面精选原图和溢出分类。
 - UIA 未找到 GameSaveCenter 侧栏项，外层 runner 等待后未生成 `summary.json` 或 `embedded-current/dashboard/capture-manifest.json`，随后中断；因此 R23-04 只记“部分满足，待宿主 runner 收口”，不把 UIA、专用窗口、manifest 完整性或全量宿主验收写成通过。单屏的 Q24-03 仍为 `blocked-single-display`，Fusion 未复制到隔离 profile，Playnite Desktop 版本为 `unknown`。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。下一可执行任务：先补 runner UIA/summary 的具体待验步骤；独立推进 R23-05 帧性能证据分账。
+
+## 2026-09-22 Round3 R23-05 帧性能证据闭环
+
+- 先复用现有 RenderHarness `shellqa`、`RunSidebarTransitionProbe`、`CompositionTarget.Rendering` 和 `Stopwatch`，没有新增性能采集体系。当前提交单独构建 RenderHarness 后，`shellqa` 报告绑定 `fef68005d86c5daa801850afa04d01b3eb113209`、`WorkingTreeClean=True`。
+- 代理样本：单次切换 29 回调、p95 `74.5ms`、最大 `234.6ms`、慢帧比例 `0.143`；快速二次切换 41 回调、p95 `18.5ms`、最大 `35.2ms`；无动画终态 4 回调、p95/最大 `21.4ms`。这些是 offscreen logical DIP 下 WPF Rendering 回调间隔，不是真实屏幕呈现帧。
+- 同次 shellqa 最终 `FAILED`，真实报告列出 5 个几何失败：980/1040 header actions 越界各 1 项，Media 1040/1100/1366 inbox grid 与 batch row 顶部间距异常各 1 项；不把性能数字或截图掩盖为通过，也不在本阶段改写几何实现。
+- ETW/WPR/xperf 的系统跟踪权限边界继续有效；没有 ETL、PresentMon 或真实 DWM 帧样本，不报告物理刷新率、真实掉帧率或停顿调用栈。证据：`evidence/R23-05-FRAME-PERFORMANCE-EVIDENCE-20260922.md`。下一可执行任务：R23-06 安装与回退身份核查；R23-05 几何失败和真实呈现帧分别保留待验。
