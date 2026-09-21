@@ -84,8 +84,16 @@ public sealed class R11VersionComparisonBehaviorTests
                     .ToArray();
                 Assert.Contains(combos, combo => AutomationProperties.GetName(combo) == "选择 A 基准版本");
                 Assert.Contains(combos, combo => AutomationProperties.GetName(combo) == "选择 B 对照版本");
-                Assert.Same(a, combos.Single(combo => AutomationProperties.GetName(combo) == "选择 A 基准版本").SelectedItem);
-                Assert.Same(b, combos.Single(combo => AutomationProperties.GetName(combo) == "选择 B 对照版本").SelectedItem);
+                var leftCombo = combos.Single(combo => AutomationProperties.GetName(combo) == "选择 A 基准版本");
+                var rightCombo = combos.Single(combo => AutomationProperties.GetName(combo) == "选择 B 对照版本");
+                Assert.Same(a, leftCombo.SelectedItem);
+                Assert.Same(b, rightCombo.SelectedItem);
+                var leftText = FindVisualChildren<TextBlock>(leftCombo).Single(text => text.Text == a.ComparisonRelativeDisplay);
+                var rightText = FindVisualChildren<TextBlock>(rightCombo).Single(text => text.Text == b.ComparisonRelativeDisplay);
+                Assert.Equal(a.ComparisonFullDisplay, leftText.ToolTip);
+                Assert.Equal(b.ComparisonFullDisplay, rightText.ToolTip);
+                Assert.Equal(a.ComparisonFullDisplay, AutomationProperties.GetHelpText(leftText));
+                Assert.Equal(b.ComparisonFullDisplay, AutomationProperties.GetHelpText(rightText));
 
                 var compareButton = FindVisualChildren<Button>(view).Single(button => AutomationProperties.GetName(button) == "比较 A 与 B 版本");
                 var swapButton = FindVisualChildren<Button>(view).Single(button => AutomationProperties.GetName(button) == "交换 A 和 B 版本");

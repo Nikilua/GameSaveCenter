@@ -688,11 +688,23 @@
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" MinWidth="0">
                                         <TextBlock Text="A · 基准版本" Style="{DynamicResource GscCaptionStyle}"/>
-                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareLeftBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ComparisonDisplay" ToolTip="A 是比较基准；B 中新增的文件会显示为新增。" AutomationProperties.Name="选择 A 基准版本" Margin="0,4,0,0"/>
+                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareLeftBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="A 是比较基准；B 中新增的文件会显示为新增。" AutomationProperties.Name="选择 A 基准版本" Margin="0,4,0,0">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ComparisonRelativeDisplay, Mode=OneWay}" ToolTip="{Binding ComparisonFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding ComparisonFullDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" MinWidth="0">
                                         <TextBlock Text="B · 对照版本" Style="{DynamicResource GscCaptionStyle}"/>
-                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareRightBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ComparisonDisplay" ToolTip="B 是比较对照；A 中有而 B 中没有的文件会显示为删除。" AutomationProperties.Name="选择 B 对照版本" Margin="0,4,0,0"/>
+                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareRightBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="B 是比较对照；A 中有而 B 中没有的文件会显示为删除。" AutomationProperties.Name="选择 B 对照版本" Margin="0,4,0,0">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ComparisonRelativeDisplay, Mode=OneWay}" ToolTip="{Binding ComparisonFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding ComparisonFullDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </StackPanel>
                                     <ui:Button Grid.Column="3" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding SwapCompareBackupCommand}" Content="交换 A/B" ToolTip="交换比较方向并重新计算差异" AutomationProperties.Name="交换 A 和 B 版本" VerticalAlignment="Bottom" Margin="12,0,0,0"/>
                                 </Grid>

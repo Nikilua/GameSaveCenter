@@ -427,6 +427,26 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void ComparisonEntryKeepsLegacyLabelAndExposesRelativeFullAndRawEvidence()
+    {
+        var timestamp = DateTime.UtcNow.AddDays(-2);
+        var backup = new BackupVersionDto
+        {
+            BackupId = "comparison-time-contract",
+            CreatedUtc = timestamp
+        };
+        var unknown = new BackupVersionDto { BackupId = "comparison-unknown" };
+
+        Assert.Equal($"{timestamp.ToLocalTime():yyyy-MM-dd HH:mm} · 普通备份 · comparison-time-contract", backup.ComparisonDisplay);
+        Assert.Contains("前", backup.ComparisonRelativeDisplay, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.Full(timestamp), backup.ComparisonFullDisplay, StringComparison.Ordinal);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), backup.ComparisonRawUtcDisplay);
+        Assert.Equal("时间未知 · 普通备份 · comparison-unknown", unknown.ComparisonRelativeDisplay);
+        Assert.Equal("时间未知 · 普通备份 · comparison-unknown", unknown.ComparisonFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.ComparisonRawUtcDisplay);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

@@ -123,6 +123,9 @@ namespace GameSaveCenter.Contracts
         public string SizeDisplay => FormatBytes(TotalBytes);
         public string BackupTypeDisplay => IsPreRestore ? "恢复前快照" : "普通备份";
         public string ComparisonDisplay => $"{CreatedLocal:yyyy-MM-dd HH:mm} · {BackupTypeDisplay} · {BackupId}";
+        public string ComparisonRelativeDisplay => $"{CreatedRelativeDisplay} · {BackupTypeDisplay} · {BackupId}";
+        public string ComparisonFullDisplay => $"{CreatedFullDisplay} · {BackupTypeDisplay} · {BackupId}";
+        public string ComparisonRawUtcDisplay => CreatedRawUtcDisplay;
         public string LockStateDisplay => IsLocked ? "已锁定" : "未锁定";
         public string SourceDisplay => string.IsNullOrWhiteSpace(SourceDevice) ? "未知设备" : SourceDevice;
         public string OperatingSystemDisplay => string.IsNullOrWhiteSpace(OperatingSystem) ? "未知系统" : OperatingSystem;
