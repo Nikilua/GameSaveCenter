@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R23-02 生产资源状态矩阵（已实现，待环境验证，2026-09-22）
+
+- 按生产壳层与各页面的真实资源合并链，核对 `GscWpfUiButton` 派生、输入/组合框、Toggle/Check/Slider、DataGrid 行/列头、Tab、当前页/检查器滚动条和状态表面；直接实例引用与页面派生 key 单独记录。
+- Light/Dark fixture 已实际实例化代表控件，但没有把基类样例冒充所有派生样式；`AcrylicNavItem` 焦点/禁用、设置派生 Tab 和各页 DataGrid 状态明确保留待验。当前滚动条系统、命令绑定、选框、net462 兼容和安全语义未改。
+- WPF 静态质量检查 `0 errors / 27 warnings / 177 info`；证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-02-PRODUCTION-RESOURCE-STATE-MATRIX-20260922.md`。下一可执行任务：`R23-03` 代表页面终审。
+
 ## 当前第三轮 R23-01 每组可审阅交付（本子批已满足，2026-09-22）
 
 - 以 `553b38a9` 为审计基线复查第三轮账本：R00–R22 共 23 组、184 项，每组 8 项；184/184 行都有非占位实现提交字段和 `evidence/` 路径。
