@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 接续点校正与 R21-04（2026-09-21）
+
+- 用户指出最近应进行到 R12-04；账本核对结果是 R12-04 已在 `e4e42f40` 满足，R12-05 至 R12-08 也已有后续独立记录。本轮不重建、不回滚这些事实，当前分支继续从真实未完成项推进。
+- R21-04 复用现有 `TaskEventUiBatcher`、`TaskNotificationDeduper`、`SessionNotificationAccumulator`、`NotificationLevelPolicy`、Dashboard Toast 和 Task Center 状态 Binding。新增 `R21AsyncCompletionAnnouncementBehaviorTests 2/2`，验证终态辅助通知不改变键盘焦点、Automation 文本可回读，列表加载状态面从加载文案变为最近更新时间。
+- 定向通知/批处理/会话/任务页行为 `22/22`、Core `5/5`、Worker `5/5`；隔离 Release `0/0`、XAML `24/24`、source/diff、WPF `0/27/162` 通过。相邻旧套件仍有 1 条旧源码断言失败，未改写为绿色。下一项 R21-05。
+- 真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录仍未验；main 用户改动未碰、未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md`。
+
 ## 第三轮 R21-03 验证错误播报（2026-09-21）
 
 - 先查最新实现，确认设置页已有合并验证摘要：模型范围错误、可取消路径校验和字段 `Validation.GetErrors` 按目标去重；字段 `HelpText`、错误详情链接和聚焦目标同步清除/更新，空错误集合折叠旧摘要。

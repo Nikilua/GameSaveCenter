@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 接续点校正与 R21-04 异步完成播报
+
+- 用户校正最近交接应以 R12-04 为准；核对发现 R12-04 已满足且 R12-05 至 R12-08 已有历史证据，不回滚、不重做。当前真实未完成项为 R21-04，已在本批收口。
+- 复用 `TaskEventUiBatcher`、终态通知去重、会话摘要、Dashboard Toast 和 Task Center 加载状态。新增行为 `2/2`，相邻定向 `22/22`，Core `5/5`，Worker `5/5`；隔离 Release `0/0`、XAML `24/24`、source/diff、WPF `0/27/162` 通过。
+- 合并相邻旧套件时记录既有 `TaskCenterViewResponsiveTests.FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 单条失败（`28/1`），没有修改旧断言或伪造绿色。临时 source-copy/build 已清理；真实宿主/UIA/读屏/OS 输入/IME/DPI/跨屏/呈现/ETW/性能和 Demo 原目录未验。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md`。下一可执行任务：R21-05 禁用与隐藏区别。
+
 ## 2026-09-21 R21-03 验证错误播报
 
 - 先核对已有设置验证 Binding、错误摘要、字段 HelpText、详情 Hyperlink 和异步路径协调器；确认能力已存在，没有为表格方向新造通知体系或改业务语义。

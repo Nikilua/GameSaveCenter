@@ -1,5 +1,16 @@
 # GameSaveCenter 当前事实入口
 
+## 接续点校正与当前边界（2026-09-21）
+
+- 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
+- 本轮在当前分支实际收口 R21-04：新增受控 WPF 终态播报/任务页加载状态行为证据，现状为“已满足，待环境验证”。下一可执行任务为 R21-05 禁用与隐藏区别。
+
+## 当前第三轮 R21-04 异步完成播报（已满足，待环境验证）
+
+- 复用 `TaskEventUiBatcher`、`TaskNotificationDeduper`、会话摘要和 Task Center 历史；运行中进度合并且有界，终态即时更新，不对同一失败证据重复播报。Dashboard `FeedbackToast` 通过非焦点 Automation peer 提供最终状态和详情回读入口。
+- 新增实际 WPF 行为 `2/2`：终态 Toast 的 Name/HelpText、焦点保持和 Task Center 加载态到最近更新时间；相邻通知/批处理/会话/任务页行为 `22/22`，Core `5/5`，Worker `5/5`。隔离 Release solution `0/0`、XAML `24/24`、source/diff、WPF `0/27/162` 通过。
+- 合并相邻旧套件时仍有一条既有 `TaskCenterViewResponsiveTests.FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 源码断言失败（`28 passed / 1 failed`），没有将它改写为通过；真实 Playnite/package-host、UIA/读屏、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录仍未验。证据见 [`R21-04 异步完成播报`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md)。
+
 ## 当前第三轮 R21-03 验证错误播报（已满足，待环境验证）
 
 - 先复用现有设置验证实现：`QueueValidationSummaryUpdate` 合并编辑变化，`RefreshValidationSummaryCore` 合并模型/路径/字段校验，按目标去重；字段帮助文本和详情链接与错误目标关联，修复后无错误时折叠旧摘要与详情。

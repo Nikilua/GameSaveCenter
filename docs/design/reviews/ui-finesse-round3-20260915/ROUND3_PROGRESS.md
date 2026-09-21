@@ -4,6 +4,8 @@
 
 每个 ID 分别记录实现与验收。状态不能由自动通过推导为已验收；不需要的维度写“不适用+原因”。每阶段更新本表，不以重复的聚合报告替代具体条件。可在行后链接详细证据，保持表格简短。
 
+> 2026-09-21 接续点校正：用户指出最近交接应以 R12-04 为准。核对后 R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立历史证据；本轮不重做、不回滚，也不抹去已完成的后续事实。当前按真实账本继续处理首个未完成项。
+
 | ID | 任务 | 状态 | 实现 commit | 自动验证 | 视觉/交互 | 宿主/性能 | 证据与下一步 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | R00-01 | 按压合成算法 | 已满足 | a95e900 / e216e9b | 当前 HEAD 定向 `4/4`；黑底灰背景负例、非等距 stop 和 88 状态样本通过；当前隔离 Release XAML `24/24`、解决方案 `0/0`、RenderHarness `0/0` | Light/Dark 当前 HEAD clean-tree 受控 WPF 均 `finesse-fixture OK`、88 样本 0 violation；不代替真实按压/屏幕帧 | 算法/资源计算，不适用真实宿主性能签收；真实宿主按压/屏幕帧未验 | [R00-01/02 证据](evidence/R00-01-02-CONTRAST-SCALE-20260916.md)；R00-01 当前可控条件已满足 |
@@ -177,7 +179,7 @@
 | R21-01 | 八入口纯键盘 | 已满足，待环境验证 | c3459ebd | R21 新增 `2/2`；相关焦点/键盘/无障碍/生产壳层回归 `31/31`；隔离 Release `0 errors / 2` 既有 warning；source/XAML/diff 通过 | 八个生产入口在 STA WPF host 中有前/反向实际焦点轨迹，全部留在入口范围并命中安全命令/导航名；现有 R05/GamePicker 夹具覆盖方向键、Enter/Esc | 未运行真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏或宿主性能；不以离屏窗口替代呈现 | [R21-01 八入口纯键盘](evidence/R21-01-KEYBOARD-TRACE-20260921.md)；下一项 `R21-02` 控件名称与值 |
 | R21-02 | 控件名称与值 | 已满足，待环境验证 | efb42b7b / 6b56a467 / 03f8d33f | `R21AutomationValueBehaviorTests 21/21`；相关定向 `35/35`；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML/diff 通过；WPF `0/27/162` | 图标按钮、复合选择器、开关和进度条均有实际 WPF peer 名称/状态/值证据；覆盖 Invoke、选值、无选中 `null`、Off/On/Indeterminate、正常/未知/越界进度，关联 HelpText 明确 | 未运行真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；不以离屏 peer 替代这些验证 | [R21-02 收口](evidence/R21-02-CLOSEOUT-20260921.md)；下一项 `R21-03` 验证错误播报 |
 | R21-03 | 验证错误播报 | 已满足，待环境验证 | 6e94195d（复用现有实现） | 设置错误导航 `1/1`；R09 错误视觉恢复 `2/2`；异步验证/源审计/数值边界 `16/16`；隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML/diff 与 WPF `0/27/162` 通过 | 复用合并验证摘要、字段 HelpText、错误详情 Hyperlink 和聚焦目标；不按每次键入重复播报；空错误集合折叠旧摘要，字段修复/错误视觉恢复有实际 WPF 负例 | 合成/fake/隔离 testhost 与目录；未运行真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰、未合并 | [R21-03 验证错误播报](evidence/R21-03-VALIDATION-ANNOUNCEMENT-20260921.md)；下一项 `R21-04` 异步完成播报 |
-| R21-04 | 异步完成播报 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R21-04 | 异步完成播报 | 已满足，待环境验证 | f6c9619c / a67d371e / 882638ea | 新增行为 `2/2`；相邻定向 `22/22`；Core `5/5`；Worker `5/5`；隔离 Release `0/0`；XAML `24/24`；source/diff 通过；WPF `0/27/162` | 终态 Toast 实际不抢焦点且可由 Automation Name/HelpText 回读；Task Center 加载态实际变为最近更新时间；进度合并、终态旁路、失败证据去重和会话摘要均有行为负例 | 合成/fake/隔离 STA WPF；未验真实 Playnite/package-host、UIA/读屏、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能；Demo 原目录不可用 | [R21-04 异步完成播报](evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md)；相邻旧套件另有 `28/1` 基线失败，未改写；下一项 `R21-05` 禁用与隐藏区别 |
 | R21-05 | 禁用与隐藏区别 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-06 | 可选择技术文本 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R21-07 | 焦点可视回归 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -776,3 +778,10 @@
 - 真实 WPF `SettingsValidationNavigationBehaviorTests` 验证错误链接切到自动化分类、字段可见并取得键盘焦点、字段 HelpText 关联错误和滚动容器移动（`1/1`）；既有 R09 真实控件测试验证越界 `9` 出现错误视觉、合法 `2` 后 `Validation.GetHasError=false` 且焦点样式恢复（`2/2`）。异步旧请求/离页取消、源审计和数值边界 `16/16` 通过；没有把 `Assert.Contains` 当作交互签收。
 - 干净 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` 为 `0 errors`，仅 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/162` 通过。本批无生产代码变更，临时 source-copy/build 已清理。
 - 真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/物理跨屏、最终呈现、ETW 和宿主性能仍待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R21-03 验证错误播报](evidence/R21-03-VALIDATION-ANNOUNCEMENT-20260921.md)。下一可执行小批量：`R21-04` 异步完成播报，先盘点完成/失败/列表加载通知和重复进度去重。
+
+## 2026-09-21 Round3 R21-04 异步完成播报
+
+- 先查现有能力：`TaskEventUiBatcher` 合并运行中进度并限制待处理队列，终态即时旁路；`TaskNotificationDeduper` 只领取终态且对不同失败证据保留可见性；Dashboard Toast 和 Task Center 历史提供最终状态/详情回读，不新造通知服务或 DTO。
+- 新增 `R21AsyncCompletionAnnouncementBehaviorTests` `2/2`：真实 STA WPF 窗口验证终态 Toast 的 Name/HelpText、非焦点属性与焦点不变；实际 `TaskCenterView` 验证加载态文本更新为最近更新时间。相邻通知/批处理/会话/旧任务页行为合计 `22/22`，另 Core `5/5`、Worker `5/5`。
+- 隔离 Release solution `0/0`、XAML `24/24`、source/diff 和 WPF `0/27/162` 通过。合并相邻旧测试时仍有 `TaskCenterViewResponsiveTests.FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 单条旧源码断言失败（`28/1`），本批未绕过、未改写。
+- 证据只来自合成 DTO、fake/隔离 testhost、隔离目录和 STA WPF；真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、presented frame、ETW、宿主性能仍待验。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R21-04 异步完成播报](evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md)。下一可执行小批量：`R21-05` 禁用与隐藏区别。
