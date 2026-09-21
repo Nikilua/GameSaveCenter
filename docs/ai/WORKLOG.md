@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 归类预览与批次历史时间入口（第七子批次）
+
+- 继续先核对已有能力：`MediaClassificationSuggestionDto`、`MediaClassificationPreviewDto`、`MediaClassificationBatchSummaryDto` 和 MediaCenter 归类预览/批次历史均已存在；本阶段只复用 `TimeDisplayFormatter`，没有新增服务、持久化字段或分类操作路径。
+- `a799317b` 为建议、预览和批次摘要增加相对/完整/原始 UTC 显示；页面保留旧 `CapturedLocal`、`CreatedLocal`、`UpdatedLocal`、`ExpiresLocal`、`DetailDisplay` 兼容属性，预览纳入/目标覆盖/应用/撤销/过期/恢复和有限列表虚拟化保持。预览摘要、建议条目和批次历史的完整时间进入 Tooltip/Automation HelpText。
+- 最终提交身份 Release Playnite `net462`、Playnite Tests `net472` 为 `0 errors`；`R22TimeDisplayBehaviorTests 10/10`，相关有限列表/刷新/来源规则 `4/4`；Worker `MediaSyncServiceTests 19/20`，唯一失败为既有 `MediaSyncServiceTests.cs:570` NRE，排除该测试后 `19/19`；组合 `27 passed / 3 failed / 0 skipped`，3 条既有 R14/字体断言漂移未改写。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据已更新为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MEDIA-TIME-20260921.md`，账本仍为“部分满足，待继续”。真实剪贴板、系统时钟跳变/跨系统启动周期、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验；main 用户改动未碰未合并。下一可执行任务：Maintenance `ValidationFindingDto.EvidenceTimeDisplay` 共享时间合同与未知时间负例。
+
 ## 2026-09-21 R22-01 MediaCenter 媒体时间入口（第六子批次）
 
 - 先核对现有 `MediaItemDto.CapturedLocal` 和 MediaCenter 四类入口：Media Inbox 表格、当前游戏媒体卡片、选中媒体详情、重复组条目均已有同一 DTO；没有新增服务、媒体时间 DTO 或视觉体系。`MediaClassificationSuggestionDto.CapturedLocal`、分类批次摘要时间和 `ValidationFindingDto.EvidenceTimeDisplay` 另有页面/兼容边界，未由本批代签。
