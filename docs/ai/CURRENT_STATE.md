@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 恢复确认框时间（本子批已满足，R22-01 仍部分满足）
+
+- `c5dc47fc` 收口 `DashboardViewModel.RestoreAsync` 的真实原生确认消息：复用 `BackupVersionDto.CreatedRelativeDisplay` 与 `CreatedFullDisplay`，版本行同时显示相对时间和完整本地时区/round-trip UTC；未知 `CreatedUtc` 保持“时间未知”，不伪造日期。
+- 新增生产 `BuildRestoreConfirmation`，行为测试直接读取实际消息，确认来源/系统/可恢复性、安全关闭游戏提示、PreRestore 保护和确认上下文保持；二次选中项核对、取消/错误和恢复命令提交路径未改。`R22RestoreConfirmationTimeBehaviorTests` 与 R12/R22 相邻定向合计 `28/28`。
+- Release 隔离构建 XAML `24/24`、Contracts/Playnite net462、Tests net472、Worker `0 errors`，保留既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。证据见 [`R22-01 恢复确认框时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESTORE-CONFIRMATION-TIME-20260921.md)。
+- 只证明生产消息构造、合成备份 DTO、隔离 testhost 和隔离构建；未启动真实 Playnite/package-host，未宣称最终呈现、UIA/读屏、DPI/跨屏、跨时区字体、ETW 或宿主性能；没有真实存档、媒体、云端、恢复写入或外发诊断，Demo 原目录不可用。
+- 下一可执行任务：继续按真实绑定核对 R22-01 剩余用户可见旧 `ToLocalTime` 入口（优先恢复/校验相关详情），或转入依赖已满足的下一独立 Q/R 小批；保留当前选框、滚动条、命令和恢复安全语义。
+
 ## 当前第三轮 R22-01 远端隔离有效期（本子批已满足，R22-01 仍部分满足）
 
 - `f39b8ef1` 复用 `RemoteBackupStageResultDto` 与 `TimeDisplayFormatter`，将远端隔离有效期正文改为相对时间，完整本地时区与 round-trip UTC 进入 Maintenance 设备状态 TextBlock 的 Tooltip/Automation HelpText；隔离下载、校验、取消、清理等待、PreRestore、恢复门控和“不覆盖当前存档”语义保持。

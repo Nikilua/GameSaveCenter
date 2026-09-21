@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 恢复确认框时间（2026-09-21，第三十子批次）
+
+- `c5dc47fc` 复用 `BackupVersionDto` 已有相对/完整时间投影，令安全恢复原生确认正文同时显示相对时间与完整本地/round-trip UTC；未知时间保持“时间未知”，没有改变确认、PreRestore、取消/错误、二次选中项核对或恢复写入门控。
+- `R22RestoreConfirmationTimeBehaviorTests` 直接读取生产确认消息，联合 R12 重校验和 R22 时间定向 `28/28`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，既有 MediaCenter CS8602 未改写。证据：`R22-01-RESTORE-CONFIRMATION-TIME-20260921.md`。
+- 只证明生产消息构造、合成备份 DTO、fake/隔离 testhost 与隔离构建，不等价真实 Playnite/package-host、最终呈现、UIA/读屏、跨时区字体、DPI/跨屏、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；下一项逐项核对恢复/校验相关剩余旧 `ToLocalTime` 用户入口，或转入已满足依赖的下一独立 Q/R 小批。
+
 ## 第三轮 R22-01 远端隔离有效期（2026-09-21，第二十九子批次）
 
 - `f39b8ef1` 复用 `RemoteBackupStageResultDto` 与 `TimeDisplayFormatter`，让 Maintenance 远端隔离状态正文使用相对有效期，Tooltip/Automation HelpText 保留完整本地/UTC 证据；保留隔离下载、校验、取消、PreRestore 和不覆盖当前存档安全语义。

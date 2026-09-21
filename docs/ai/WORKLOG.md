@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 恢复确认框时间（第三十子批次）
+
+- 先查 `RestoreAsync` 的真实确认消息和 `BackupVersionDto` 已有时间投影；没有新建时间服务，也没有把复制/日志的机器可读完整时间改成相对时间。
+- `c5dc47fc` 将确认正文版本行改为相对时间（完整本地时间与 round-trip UTC），保留来源、系统、可恢复性、安全关闭游戏和 PreRestore 提示；未知时间保持“时间未知”，确认、二次选中项核对、取消/错误和恢复命令语义不变。
+- `R22RestoreConfirmationTimeBehaviorTests`、R12 重校验、R22 时间定向合计 `28/28`；Release/XAML `24/24`、Contracts/Playnite/Tests/Worker `0 errors`，既有 MediaCenter CS8602 未改写；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESTORE-CONFIRMATION-TIME-20260921.md`。仅使用合成备份 DTO、生产消息构造、fake/隔离 testhost 和隔离构建目录；未启动真实 Playnite/package-host，没有真实存档、媒体、云端、恢复写入或外发诊断，Demo 原目录不可用，main 用户改动未碰未合并。
+- 未宣称原生宿主最终呈现、UIA/读屏、跨时区字体、DPI/跨屏、ETW 或宿主性能。R22-01 仍“部分满足，待继续”；下一可执行小批量是恢复/校验相关剩余旧 `ToLocalTime` 入口盘点，或下一独立 Q/R 任务。
+
 ## 2026-09-21 R22-01 远端隔离有效期（第二十九子批次）
 
 - 先查 `RemoteBackupStageResultDto`、`StagedRemoteBackupStatus` 和 Maintenance 设备状态绑定；复用现有 DTO、formatter 和隔离恢复命令，没有新增下载/恢复服务。
