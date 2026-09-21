@@ -2,7 +2,7 @@
 
 ## 本子批次结论
 
-提交 `2be8627db39304a2a3f929a797799c5c366b28c0`、`c211a04f5c28b400bac976cfc2223cae2a709299`、`0db4abe7`、`058ca8ff` 和 `44023ad6` 完成 Save 历史/详情、Maintenance 审计表、恢复可用性检查时间、Local Mirror 最近同步时间及恢复巡检时间的显示接入。R22-01 整项仍为“部分满足，待继续”，保留其他时间入口和真实宿主边界，未修改真实存档、诊断写入或用户目录。
+提交 `2be8627db39304a2a3f929a797799c5c366b28c0`、`c211a04f5c28b400bac976cfc2223cae2a709299`、`0db4abe7`、`058ca8ff`、`44023ad6` 和 `0df6c69e` 完成 Save 历史/详情、Maintenance 审计表、恢复可用性检查时间、Local Mirror 最近同步时间、恢复巡检时间及首次环境检查时间的显示接入。R22-01 整项仍为“部分满足，待继续”，保留其他时间入口和真实宿主边界，未修改真实存档、诊断写入或用户目录。
 
 ## 复用与实现
 
@@ -13,10 +13,11 @@
 - `BackupVersionDto.RestoreReadinessCheckedDisplay` 保留旧的本地时间、结果较旧提示和“尚未检查”语义；新增相对/完整显示，SaveCenter 所选版本详情改用相对时间，完整时间进入 Tooltip/UIA HelpText。恢复校验命令、选中版本、恢复保护和滚动系统未改。
 - `LocalMirrorStatusDto.LastSyncDisplay` 保留旧的本地时间和“尚未同步”语义；新增相对/完整/原始 UTC 显示，Maintenance 镜像状态卡片改用相对时间，完整时间进入 Tooltip/UIA HelpText。镜像刷新/同步命令和“绝不删除镜像中的多余文件”语义未改。
 - `HealthInspectionStateDto` 保留 `LastSuccessfulLocalDisplay`、`LastCompletedLocalDisplay`、`NextDueLocalDisplay` 与 `NextPlanDisplay` 兼容属性；新增相对/完整/原始 UTC 投影，Maintenance 恢复巡检卡片改用相对时间，完整计划与最近时间进入 Tooltip/UIA HelpText。停用、尚未成功、尚未完成、待安排、取消、单次预算和已有维护命令保持；`LastAttemptDisplay` 旧动作摘要路径未迁移。
+- `EnvironmentCheckReportDto` 保留 `CheckedLocalDisplay` 与“尚未检查”语义；新增相对/完整/原始 UTC 投影，首次环境检查卡片改用相对时间，完整值进入 Tooltip/UIA HelpText。`EnvironmentCheckService` 的非破坏性检查、完成/跳过条件、手动测试备份和运行检查命令保持；本批未扩大真实目录或存档操作。
 
 ## 实际验证
 
-- `R22TimeDisplayBehaviorTests` `15/15`：共享 formatter、任务/活动、BackupVersion/AuditLog DTO、恢复校验、Local Mirror 和 HealthInspection 时间的完整/原始 UTC 合同，以及 Save/Maintenance 绑定入口；Health/时间/维护定向 `25/25`；`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests` `7/7`。
+- `R22TimeDisplayBehaviorTests` `16/16`：共享 formatter、任务/活动、BackupVersion/AuditLog DTO、恢复校验、Local Mirror、HealthInspection 和 EnvironmentCheck 时间的完整/原始 UTC 合同，以及 Save/Maintenance 绑定入口；Health/Environment/时间/维护 Playnite 相关 `27 passed / 2 skipped / 0 failed`；Worker `EnvironmentCheckServiceTests 1/1`；`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests` `7/7`。
 - `R06SortingBehaviorTests` `4/4`、`R11HistoryTimeNavigationBehaviorTests` `3/3`；该定向批次合计 `27/27`，恢复校验与 Local Mirror 的旧 stale/unknown 负例和新绑定均实际覆盖。
 - 精确代码提交身份 `44023ad6` 的隔离 Release 构建：XAML `24/24`，Playnite `net462` 与 Playnite Tests `net472` `0 errors`；`validate-source.py`、`git diff --check` 和 WPF 静态检查 `0 errors / 27 warnings / 177 info` 通过。联合回归为 `32 passed / 3 failed / 0 skipped`（总计 35），3 条失败仍是既有分类证据、分类选择和 Sidebar 版本文本断言漂移，未改写为通过。
 - 全套 `WpfUiResourceDictionaryTests` 记录为 `133 passed / 39 skipped / 4 failed`；本批相关 Save 旧绑定断言已由 `c211a04f` 校正。剩余 3 条失败分别是既有 Settings 响应字段断言、媒体空数据滚动断言和 Inbox 下拉共享模板断言，与本批时间字段无关，未改写为通过。
@@ -28,4 +29,4 @@
 
 ## 下一步
 
-继续 R22-01：先核对 `EnvironmentCheckStateDto.CheckedLocalDisplay` 及同一 Maintenance 页剩余旧本地时间直显，复用已有 formatter 后补未知/兼容负例；再处理系统时钟和宿主边界。
+继续 R22-01：盘点 Storage 与同一 Maintenance 页剩余旧本地时间直显，复用已有 formatter 后补未知/兼容负例；再处理系统时钟和宿主边界。

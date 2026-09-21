@@ -8,6 +8,14 @@
 - 代码提交 `44023ad6` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、0 errors，`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。业务验证仅使用合成 DTO、fake/隔离测试宿主与隔离构建目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
 - R22-01 仍“部分满足，待继续”。真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为核对 `EnvironmentCheckStateDto.CheckedLocalDisplay` 及同一 Maintenance 页剩余旧本地时间直显，先查已有 DTO/绑定和复制入口。
 
+## 2026-09-21 R22-01 EnvironmentCheck 首次环境检查时间（第十三子批次）
+
+- 先核对现有 `EnvironmentCheckReportDto`、`EnvironmentCheckService`、Maintenance 首次环境检查卡片以及运行检查/完成/跳过/测试备份命令；本批只复用 `TimeDisplayFormatter`，没有新增检查服务、持久化字段、真实目录写入或自动备份。
+- `0df6c69e` 保留 `CheckedLocalDisplay` 的“尚未检查”兼容语义，新增 `CheckedRelativeDisplay`、`CheckedFullDisplay`、`CheckedRawUtcDisplay`；卡片正文使用相对时间，Tooltip/Automation HelpText 保留完整时间。已有检查项目状态、失败/警告摘要、完成条件、跳过路径、手动测试备份和 `RunEnvironmentCheckCommand` 门控保持。
+- 合成 DTO 负例覆盖“尚未检查”和未记录 UTC；`R22TimeDisplayBehaviorTests` `16/16`，Playnite 相关 `27 passed / 2 skipped / 0 failed`，Worker `EnvironmentCheckServiceTests 1/1`，`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`。联合回归 `33 passed / 3 failed / 0 skipped`（总计 36），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `0df6c69e` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为继续盘点 Storage 与同一 Maintenance 页剩余旧本地时间直显，优先查现有 DTO/绑定和复制入口。
+
 ## 2026-09-21 R22-01 Overview 最近访问时间（第十一子批次）
 
 - 先核对已有 `RecentAccessItem`、稳定 ID 记录、Overview 最近访问有限/虚拟化列表和 `OpenRecentAccessCommand`；本阶段只复用 `TimeDisplayFormatter`，没有新增记录服务、计时器或导航路径。
