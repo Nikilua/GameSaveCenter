@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-03 验证错误播报
+
+- 先核对已有设置验证 Binding、错误摘要、字段 HelpText、详情 Hyperlink 和异步路径协调器；确认能力已存在，没有为表格方向新造通知体系或改业务语义。
+- 现有 STA WPF 证据覆盖错误链接分类/字段聚焦 `1/1`，R09 数值校验覆盖越界 `9` → 合法 `2` 的错误视觉恢复 `2/2`；设置异步最新请求/取消、源审计和数值边界 `16/16`。
+- 干净 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors`，仅既有 `MediaCenterView.xaml.cs:671 CS8602` 两条 warning；source validation、XAML `24/24`、WPF `0/27/162`、diff check 通过。新增事实证据：`R21-03-VALIDATION-ANNOUNCEMENT-20260921.md`。
+- 本轮临时 source-copy/build 已清理；真实 Playnite/package-host、UIA/读屏、OS 输入、IME、DPI/跨屏、呈现、ETW、宿主性能和 Demo 原目录仍未验，main 用户改动未碰、未合并。下一可执行任务：R21-04 异步完成播报。
+
 ## 2026-09-21 R21-02 控件名称与值收口
 
 - 按 R21-02 完成条件收口图标/动作按钮、复合选择器、开关和进度条；`R21AutomationValueBehaviorTests 21/21`，相关 `35/35`，最新隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 warning，WPF `0/27/162`。

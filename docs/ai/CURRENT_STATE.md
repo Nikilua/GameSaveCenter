@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R21-03 验证错误播报（已满足，待环境验证）
+
+- 先复用现有设置验证实现：`QueueValidationSummaryUpdate` 合并编辑变化，`RefreshValidationSummaryCore` 合并模型/路径/字段校验，按目标去重；字段帮助文本和详情链接与错误目标关联，修复后无错误时折叠旧摘要与详情。
+- 现有真实 WPF 行为证据覆盖设置错误链接到自动化分类并聚焦字段（`1/1`）、越界校验到合法值后错误视觉恢复（`2/2`），异步旧结果/离页取消、源审计和数值边界 `16/16`；本批没有生产代码变更。证据见 [`R21-03 验证错误播报`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-03-VALIDATION-ANNOUNCEMENT-20260921.md)。
+- 干净 D 盘 source-copy Release Playnite `net462` / Tests `net472` 构建 `0 errors`，仅既有 `MediaCenterView.xaml.cs:671` 两条 warning；source/XAML/diff 与 WPF `0/27/162` 通过。真实 Playnite/package-host、Windows UIA/读屏、OS 输入、IME、DPI/跨屏、最终呈现、ETW 和宿主性能仍未验；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：R21-04 异步完成播报，先查后台完成/失败和列表加载的现有通知入口与去重语义。
+
 ## 当前第三轮 R21-02 控件名称与值（已满足，待环境验证）
 
 - R21-02 已按图标/动作按钮、复合选择器、开关和进度条四类控件收口；`R21AutomationValueBehaviorTests 21/21`，相关定向 `35/35`，最新隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 warning，WPF 静态检查 `0/27/162`。

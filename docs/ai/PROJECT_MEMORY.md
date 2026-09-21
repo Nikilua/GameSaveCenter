@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-03 验证错误播报（2026-09-21）
+
+- 先查最新实现，确认设置页已有合并验证摘要：模型范围错误、可取消路径校验和字段 `Validation.GetErrors` 按目标去重；字段 `HelpText`、错误详情链接和聚焦目标同步清除/更新，空错误集合折叠旧摘要。
+- 本批没有生产代码变更。现有实际 WPF 证据为设置错误链接切分类并聚焦字段 `1/1`，数值错误视觉在越界 `9` → 合法 `2` 后恢复 `2/2`；异步最新结果/离页取消、源审计和数值边界 `16/16`。这不是单纯 `Assert.Contains` 签收。
+- 干净 D 盘 source-copy Release Playnite `net462` / Tests `net472` 构建 `0 errors`，仅 `MediaCenterView.xaml.cs:671` 两条既有 warning；source/XAML/diff 和 WPF `0/27/162` 通过，临时副本已清理。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-03-VALIDATION-ANNOUNCEMENT-20260921.md`。
+- 真实 Playnite/package-host、系统 UIA/读屏、OS 输入、IME、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍是未验边界；main 用户改动未碰、未合并。下一项 R21-04：盘点异步完成/失败/列表加载通知、重复进度去重和可再次读取入口。
+
 ## 第三轮 R21-02 控件名称与值收口（2026-09-21）
 
 - R21-02 按图标按钮、复合选择器、开关、进度条和负例完成收口，当前账本状态为“已满足，待环境验证”。`R21AutomationValueBehaviorTests 21/21`，相关筛选 `35/35`，最新 Playnite `net462` / Tests `net472` 隔离 Release `0 errors / 2` 条既有 warning，WPF `0/27/162`。
