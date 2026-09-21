@@ -530,6 +530,13 @@ namespace GameSaveCenter.Contracts
         public string EvidenceTimeDisplay => CreatedUtc == DateTime.MinValue
             ? "证据时间未知"
             : $"证据时间：{CreatedLocal:yyyy-MM-dd HH:mm:ss}";
+        public string EvidenceTimeRelativeDisplay => CreatedUtc == DateTime.MinValue
+            ? "证据时间未知"
+            : $"证据时间：{TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow)}";
+        public string EvidenceTimeFullDisplay => CreatedUtc == DateTime.MinValue
+            ? "证据时间未知"
+            : $"证据时间：{TimeDisplayFormatter.Full(CreatedUtc)}";
+        public string EvidenceTimeRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public string SeverityDisplay => Severity switch
         {
             FindingSeverity.Info => "提示",

@@ -152,6 +152,26 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void ValidationFindingTimeEntrypointsKeepLegacyUnknownAndExposeFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var finding = new ValidationFindingDto { CreatedUtc = timestamp };
+        var unknown = new ValidationFindingDto();
+
+        Assert.Equal($"证据时间：{timestamp.ToLocalTime():yyyy-MM-dd HH:mm:ss}", finding.EvidenceTimeDisplay);
+        Assert.Equal($"证据时间：{TimeDisplayFormatter.Full(timestamp)}", finding.EvidenceTimeFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), finding.EvidenceTimeRawUtcDisplay);
+        Assert.NotEqual("证据时间未知", finding.EvidenceTimeRelativeDisplay);
+        Assert.Equal("证据时间未知", unknown.EvidenceTimeRelativeDisplay);
+        Assert.Equal(2, maintenance.Split(new[] { "SelectedFinding.EvidenceTimeRelativeDisplay" }, StringSplitOptions.None).Length - 1);
+        Assert.Contains("SelectedFinding.EvidenceTimeFullDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedFinding.EvidenceTimeFullDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
