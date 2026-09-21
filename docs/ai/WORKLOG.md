@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 远端隔离有效期（第二十九子批次）
+
+- 先查 `RemoteBackupStageResultDto`、`StagedRemoteBackupStatus` 和 Maintenance 设备状态绑定；复用现有 DTO、formatter 和隔离恢复命令，没有新增下载/恢复服务。
+- `f39b8ef1` 将隔离有效期正文改为相对时间，完整本地/UTC 状态进入 Tooltip/Automation HelpText；未下载、进行中、取消、失败和“当前存档不会被覆盖”语义保持。
+- `R22RemoteStageTimeBehaviorTests 3/3`（含实际 STA WPF）、R13 云端隔离 `13/13`、设备状态 `1/1`，合计 `17/17`。Release/XAML `24/24`、Contracts/Playnite/Tests/Worker `0 errors`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过，既有 MediaCenter CS8602 未修改。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-REMOTE-STAGE-TIME-20260921.md`。仅使用合成 DTO、fake/隔离 testhost 和隔离构建目录，没有真实远端下载、Worker、隔离区、恢复、存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；未宣称真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW 或宿主性能。下一可执行小批量：核对恢复确认框 `backupCreated` 的用户可见时间。
+
 ## 2026-09-21 R22-01 Overview 快照更新时间（第二十八子批次）
 
 - 先核对 `OverviewSnapshotDisplay`、`DashboardViewModel` 和 `OverviewView` 的真实绑定；复用 `TimeDisplayFormatter`，没有新增快照服务、DTO 或指标计算。

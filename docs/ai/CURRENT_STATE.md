@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 远端隔离有效期（本子批已满足，R22-01 仍部分满足）
+
+- `f39b8ef1` 复用 `RemoteBackupStageResultDto` 与 `TimeDisplayFormatter`，将远端隔离有效期正文改为相对时间，完整本地时区与 round-trip UTC 进入 Maintenance 设备状态 TextBlock 的 Tooltip/Automation HelpText；隔离下载、校验、取消、清理等待、PreRestore、恢复门控和“不覆盖当前存档”语义保持。
+- 新增 `Staged/Expires` 相对/完整/原始 UTC 投影；未下载、下载中、取消、失败状态不伪造有效期。实际 STA WPF 读取设备状态正文、Tooltip、HelpText；`R22RemoteStageTimeBehaviorTests 3/3`、R13 云端隔离 `13/13`、设备状态源 `1/1`，定向合计 `17/17`。
+- Release 隔离构建 XAML `24/24`、Contracts/Playnite/Tests/Worker `0 errors`，保留既有 `MediaCenterView.xaml.cs:671 CS8602` 基线；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。证据见 [`R22-01 远端隔离有效期`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-REMOTE-STAGE-TIME-20260921.md)。
+- 验证只使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离目录，没有真实远端下载、Worker、隔离区、恢复、存档、媒体、云端或诊断写入。真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验；恢复确认框、校验有效期及其他残余用户可见旧 `ToLocalTime` 入口仍需按绑定逐项核对。
+- 下一可执行任务：先核对恢复确认框中 `backupCreated` 的用户可见时间，区分确认正文、完整提示与复制/日志字段，再选择依赖已满足的下一独立 Q/R 小批。
+
 ## 当前第三轮 R22-01 Overview 快照更新时间（本子批已满足，R22-01 仍部分满足）
 
 - `60db7534` 复用已有 `TimeDisplayFormatter`，将 `OverviewSnapshotScopeDisplay` 正文的快照更新时间改为相对时间；`OverviewSnapshotUpdatedDisplay` 保留完整本地时区与 round-trip UTC，并新增原始 UTC 投影。未加载/默认生成时间仍明确为未知，不把默认指标当作真实零值。

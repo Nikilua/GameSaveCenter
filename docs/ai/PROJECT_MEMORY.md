@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 远端隔离有效期（2026-09-21，第二十九子批次）
+
+- `f39b8ef1` 复用 `RemoteBackupStageResultDto` 与 `TimeDisplayFormatter`，让 Maintenance 远端隔离状态正文使用相对有效期，Tooltip/Automation HelpText 保留完整本地/UTC 证据；保留隔离下载、校验、取消、PreRestore 和不覆盖当前存档安全语义。
+- 实际 STA WPF 与 DTO/状态构建测试 `R22RemoteStageTimeBehaviorTests 3/3`；相邻 R13 `13/13`、设备状态 `1/1`，定向 `17/17`。Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，既有 MediaCenter CS8602 和其他大类旧断言均未改写。证据：`R22-01-REMOTE-STAGE-TIME-20260921.md`。
+- 只证明合成 DTO、fake DataContext、隔离 testhost 和隔离目录，不等价真实远端/Worker/隔离区/恢复、Playnite/package-host、Windows UIA/读屏、系统时钟跳变、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；下一项核对恢复确认框 `backupCreated` 时间，保持确认、PreRestore、取消/错误和写入保护边界。
+
 ## 第三轮 R22-01 Overview 快照更新时间（2026-09-21，第二十八子批次）
 
 - `60db7534` 复用 `TimeDisplayFormatter`，将 Overview 全库/当前游戏快照摘要正文改为相对时间；完整本地/UTC 证据进入首页摘要 TextBlock 的 Tooltip 与 Automation HelpText，保留未加载/默认时间未知、真实零值、命令和滚动语义。
