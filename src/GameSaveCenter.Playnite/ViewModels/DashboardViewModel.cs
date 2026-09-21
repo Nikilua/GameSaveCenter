@@ -5174,6 +5174,19 @@ namespace GameSaveCenter.Playnite.ViewModels
             await LoadDetailsAsync();
         }
 
+        internal static string BuildRestoreConfirmation(string gameName, BackupVersionDto backup)
+        {
+            var backupCreatedRelative = backup.CreatedRelativeDisplay;
+            var backupCreatedFull = backup.CreatedFullDisplay;
+            var backupType = backup.BackupTypeDisplay;
+            var backupSource = backup.SourceDisplay;
+            var backupOperatingSystem = backup.OperatingSystemDisplay;
+            var backupLockState = backup.LockStateDisplay;
+            var readinessStatus = backup.RestoreReadinessStatusDisplay;
+            var readinessSummary = backup.RestoreReadinessSummaryDisplay;
+            return $"游戏：{gameName}\n版本：{backupCreatedRelative}（{backupCreatedFull}） · {backupType}\n来源：{backupSource} · {backupOperatingSystem}\n状态：{backupLockState} · 可恢复性：{readinessStatus}\n{readinessSummary}\n\n恢复前会先创建并锁定当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。\n\n继续恢复选中的历史版本？";
+        }
+
         private async Task RestoreAsync()
         {
             var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
@@ -5181,14 +5194,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var gameId = game.PlayniteId;
             var gameName = game.Name;
             var backupId = backup.BackupId;
-            var backupCreated = backup.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss");
-            var backupType = backup.BackupTypeDisplay;
-            var backupSource = backup.SourceDisplay;
-            var backupOperatingSystem = backup.OperatingSystemDisplay;
-            var backupLockState = backup.LockStateDisplay;
-            var readinessStatus = backup.RestoreReadinessStatusDisplay;
-            var readinessSummary = backup.RestoreReadinessSummaryDisplay;
-            var confirmation = $"游戏：{gameName}\n版本：{backupCreated} · {backupType}\n来源：{backupSource} · {backupOperatingSystem}\n状态：{backupLockState} · 可恢复性：{readinessStatus}\n{readinessSummary}\n\n恢复前会先创建并锁定当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。\n\n继续恢复选中的历史版本？";
+            var confirmation = BuildRestoreConfirmation(gameName, backup);
             if (!await plugin.ConfirmAsync(
                     "GameSaveCenter 安全恢复",
                     confirmation,
