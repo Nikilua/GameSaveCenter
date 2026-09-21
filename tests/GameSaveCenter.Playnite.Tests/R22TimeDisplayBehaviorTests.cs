@@ -196,6 +196,28 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void LocalMirrorTimeEntrypointKeepsLegacyUnknownAndExposesFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var mirror = new LocalMirrorStatusDto { LastSyncUtc = timestamp };
+        var unknown = new LocalMirrorStatusDto();
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), mirror.LastSyncDisplay);
+        Assert.NotEqual("尚未同步", mirror.LastSyncRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), mirror.LastSyncFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), mirror.LastSyncRawUtcDisplay);
+        Assert.Equal("尚未同步", unknown.LastSyncRelativeDisplay);
+        Assert.Equal("尚未同步", unknown.LastSyncFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.LastSyncRawUtcDisplay);
+        Assert.Contains("LocalMirrorStatus.LastSyncRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("LocalMirrorStatus.LastSyncFullDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding LocalMirrorStatus.LastSyncFullDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
