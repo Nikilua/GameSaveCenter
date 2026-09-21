@@ -7,7 +7,8 @@
 - `1250aaad` 先复用现有 `TaskTimelineBuilder` 的 UTC 时间与序号排序，新增 Contracts 共享 `TimeDisplayFormatter`；相对时间的 `nowUtc` 可注入，完整提示包含本地时区偏移和 round-trip UTC 原值，未知时间不被伪造为当前时间。
 - `TaskTimelineEntryDto` 增加相对/完整/原始时间属性，Task Center 时间线显示相对时间并把完整提示放入 Tooltip/Automation HelpText；没有改变游戏选框、滚动条、命令绑定、取消/错误、恢复保护或有限列表性能。
 - `538fcae9` 继续复用现有 Worker/SQLite 恢复链路，接入 `MonotonicTaskClock`、`ElapsedSeconds` 和三列增量 schema；新任务终态、活动快照和 Worker 重启收口使用同一单调计数器，旧任务保留 legacy fallback。`b53ab44f` 把同一 formatter 接入 Task Center/Overview，`2be8627d` 接入 Save 历史/详情和 Maintenance 审计表，`c211a04f` 校正旧 Save 绑定断言，`abe9369e` 接入 Retention 预览并保留旧报告字段；保留分页、选择、滚动、复制、只读预览和二次确认语义。R22 时间 `8/8`、R15 `3/3`、Overview `1/1`、R10 `2/2`、R06 `4/4`、R11 `3/3`；Retention Playnite `15/15`、Worker `12/12`；最终 Release Playnite/Playnite Tests/Worker Tests `0 errors`，Playnite 主项目 2 条既有 warning，source/XAML/diff/WPF `0/27/177` 通过。
-- R22-01 尚未完成：MediaCenter 及其他 Save/恢复时间入口未全部迁移，真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、呈现、DPI/跨屏、ETW 和宿主性能仍未验。WPF 全套基线另有 3 条与本批无关失败，未改写为绿色。证据：`R22-01-RETENTION-TIME-20260921.md`、`R22-01-SAVE-MAINTENANCE-TIME-20260921.md`、`R22-01-OVERVIEW-TIME-20260921.md`、`R22-01-TIME-DISPLAY-20260921.md`、`R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步盘点 MediaCenter `CapturedLocal` 及剩余时间入口与已有复制行为。
+- `e4389a0904ec5e027a5c04525e18d9c1126209b1` 将 `MediaItemDto` 的 `CapturedRelativeDisplay/CapturedFullDisplay/CapturedRawUtcDisplay` 接入 Media Inbox、当前游戏媒体、选中详情和重复组条目；保留 `CapturedLocal`、复制/虚拟化/滚动/命令和媒体写入语义。`R22TimeDisplayBehaviorTests 9/9`，Media/分类相邻组合 `26 passed / 3 failed / 0 skipped`，3 条为既有 R14/字体断言漂移；Playnite/Tests Release `0 errors`，WPF 静态 `0/27/177`。
+- R22-01 尚未完成：`MediaClassificationSuggestionDto.CapturedLocal`、批次 `CreatedLocal/UpdatedLocal/ExpiresLocal`、`ValidationFindingDto.EvidenceTimeDisplay` 及其他 Save/恢复时间入口仍需逐项核对；真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、呈现、DPI/跨屏、ETW 和宿主性能仍未验。WPF 全套基线的 3 条无关失败未改写为绿色，Demo 原目录不可用，main 用户改动未碰未合并。证据：`R22-01-MEDIA-TIME-20260921.md`、`R22-01-RETENTION-TIME-20260921.md`、`R22-01-SAVE-MAINTENANCE-TIME-20260921.md`、`R22-01-OVERVIEW-TIME-20260921.md`、`R22-01-TIME-DISPLAY-20260921.md`、`R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步盘点分类/批次/证据时间的当前直显和兼容边界。
 
 ## 第三轮 R22-04 打开路径失败（2026-09-21）
 
@@ -26,7 +27,7 @@
 - `b20f1a4bc1444c4a702fb4d28254a85f249719e9` 只新增 `R21FocusVisualRegressionBehaviorTests` 行为夹具；复用 `GscSharedFocusVisual`、生产游戏选框滚动/虚拟化、运行时主题资源和关闭回焦路径，没有新增服务、DTO、命令或视觉体系。
 - 真实生产 Shell + 合成 2,000 项验证 `ScrollIntoView` 请求后末项容器实现、搜索框焦点保持和共享焦点样式；浅/深主题切换后焦点不漂移；关闭 Overlay 后回焦可见游戏选框。提交后串行 R21 `1/1`、R09 `2/2`、R05 主题弹层 `1/1`，合计 `4/4`。
 - Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过。并行隐藏 WPF 窗口的抢焦点失败和旧 R05 手动注入 VM 初始化夹具失败未改写为绿色；隔离宿主的 `VerticalOffset`、像素裁剪和 presented frame 不作为物理滚动/最终呈现证据。
-- 真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、ETW、宿主性能和 Demo 原目录未验；main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260921/evidence/R21-07-FOCUS-VISUAL-20260921.md`。下一步 R21-08 单屏与跨屏分账。
+- 真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、ETW、宿主性能和 Demo 原目录未验；main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-07-FOCUS-VISUAL-20260921.md`。下一步 R21-08 单屏与跨屏分账。
 
 ## 第三轮 R21-05 禁用与隐藏区别（2026-09-21）
 

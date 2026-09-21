@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 MediaCenter 媒体时间入口（第六子批次）
+
+- 先核对现有 `MediaItemDto.CapturedLocal` 和 MediaCenter 四类入口：Media Inbox 表格、当前游戏媒体卡片、选中媒体详情、重复组条目均已有同一 DTO；没有新增服务、媒体时间 DTO 或视觉体系。`MediaClassificationSuggestionDto.CapturedLocal`、分类批次摘要时间和 `ValidationFindingDto.EvidenceTimeDisplay` 另有页面/兼容边界，未由本批代签。
+- `e4389a09` 为 `MediaItemDto` 增加共享 formatter 的相对/完整/原始 UTC 属性，MediaCenter 以相对时间显示并把完整时间放入 Tooltip/Automation HelpText；保留 `CapturedLocal`、表格复制、虚拟化、列宽、选框、滚动条、命令/Binding 和媒体写入语义。
+- `R22TimeDisplayBehaviorTests 9/9`；`R18TableContainerBudgetTests | R19DraftRefreshBehaviorTests | R14SourceRulePreviewTests 4/4`。合并相邻媒体/分类回归 `26 passed / 3 failed / 0 skipped`，失败为既有 R14 选中索引/分类证据与字体层级断言漂移，未改写为通过。
+- 精确提交身份 Release Playnite `net462`、Playnite Tests `net472` 为 `0 errors`，主项目保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MEDIA-TIME-20260921.md`。
+- R22-01 仍“部分满足，待继续”：真实剪贴板、系统时钟跳变/跨系统启动周期、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。下一可执行任务：盘点分类 `CapturedLocal`、批次 `Created/Updated/Expires` 和 ValidationFinding 证据时间的当前直显与兼容边界。
+
 ## 2026-09-21 R22-01 时间显示统一（第一子批次）
 
 - 先查现有 DTO/Worker/时间线能力：此前没有共享时间格式化器；时间线已按 `OccurredUtc` 排序，但 `TaskStatusDto.DurationDisplay` 仍使用墙上 UTC 时间，Worker 的 `Stopwatch` 只用于吞吐采样。本阶段不把已有能力误写成单调任务时长。
