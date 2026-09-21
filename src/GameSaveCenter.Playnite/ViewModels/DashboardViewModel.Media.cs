@@ -73,7 +73,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public string MediaClassificationPreviewSummary => MediaClassificationPreview == null
             ? mediaClassificationStatus
-            : $"{MediaClassificationPreview.SummaryDisplay} {MediaClassificationPreview.SelectionSummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresUtc.ToLocalTime():MM-dd HH:mm}。低/中置信项目保持未归类。";
+            : $"{MediaClassificationPreview.SummaryDisplay} {MediaClassificationPreview.SelectionSummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresRelativeDisplay}。低/中置信项目保持未归类。";
 
         public bool HasMediaInboxBatchFailures => MediaInboxBatchFailures.Count > 0;
         public string MediaInboxBatchFailureSummary => MediaInboxBatchFailures.Count == 0

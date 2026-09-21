@@ -120,6 +120,38 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void MediaClassificationTimeEntrypointsUseSharedContractAndKeepUnknownNegative()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var suggestion = new MediaClassificationSuggestionDto { CapturedUtc = timestamp };
+        var preview = new MediaClassificationPreviewDto
+        {
+            CreatedUtc = timestamp,
+            ExpiresUtc = timestamp.AddMinutes(30)
+        };
+        var batch = new MediaClassificationBatchSummaryDto
+        {
+            State = "Preview",
+            UpdatedUtc = timestamp,
+            ExpiresUtc = timestamp.AddMinutes(30)
+        };
+
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), suggestion.CapturedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), suggestion.CapturedRawUtcDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(preview.ExpiresUtc), preview.ExpiresFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(batch.UpdatedUtc), batch.UpdatedFullDisplay);
+        Assert.Contains("有效至", batch.ExpiryRelativeDisplay, StringComparison.Ordinal);
+        Assert.Equal("时间未知", new MediaClassificationSuggestionDto().CapturedRelativeDisplay);
+        Assert.Contains("CapturedRelativeDisplay, Mode=OneWay", media, StringComparison.Ordinal);
+        Assert.Contains("UpdatedRelativeDisplay, Mode=OneWay", media, StringComparison.Ordinal);
+        Assert.Contains("ExpiryRelativeDisplay, Mode=OneWay", media, StringComparison.Ordinal);
+        Assert.Contains("ExpiresFullDisplay", media, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

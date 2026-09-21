@@ -304,7 +304,7 @@
                                 <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
                                 <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
                                 <ui:Button x:Name="ReloadMediaInboxButton" Content="返回最新" Command="{Binding ReloadMediaInboxCommand}" Click="OnReloadMediaInboxClick" ToolTip="重新载入较新的媒体收件箱内容并回到列表顶部" AutomationProperties.Name="返回最新媒体收件箱内容" Visibility="Collapsed" Margin="0,0,8,4"/>
-                                <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="媒体归类建议状态"/>
+                                <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding MediaClassificationPreview.ExpiresFullDisplay}" AutomationProperties.Name="媒体归类建议状态" AutomationProperties.HelpText="{Binding MediaClassificationPreview.ExpiresFullDisplay}"/>
                                 <TextBlock Text="选择媒体后可在右侧预览并归类" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
                                 <ui:Button x:Name="MediaInboxHistoryButton" Content="批次历史" Style="{DynamicResource GscWpfUiSecondaryButton}" Click="OnMediaInboxHistoryClick" ToolTip="单独打开媒体归类批次历史" AutomationProperties.Name="打开媒体归类批次历史" Margin="0,0,8,4"/>
                                 <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" Click="OnLoadMoreMediaInboxClick" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
@@ -416,7 +416,7 @@
                                 <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,14,0,0">
                                     <StackPanel>
                                         <TextBlock Text="归类建议预览" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="媒体归类建议选择汇总"/>
+                                        <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" ToolTip="{Binding MediaClassificationPreview.ExpiresFullDisplay}" AutomationProperties.Name="媒体归类建议选择汇总" AutomationProperties.HelpText="{Binding MediaClassificationPreview.ExpiresFullDisplay}"/>
                                         <ListBox x:Name="MediaClassificationPreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationPreview.Items}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                                             <ListBox.Style>
                                                 <Style TargetType="ListBox">
@@ -436,6 +436,7 @@
                                                     <Border Background="{DynamicResource GscGlassStrongBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
                                                         <StackPanel>
                                                             <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/>
+                                                            <TextBlock Text="{Binding CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CapturedFullDisplay, Mode=OneWay}"/>
                                                             <Grid Margin="0,3,0,0">
                                                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                                 <CheckBox Style="{DynamicResource GscCheckBox}" Content="纳入应用" IsChecked="{Binding IsIncluded, Mode=TwoWay}" AutomationProperties.Name="纳入此媒体归类建议"/>
@@ -502,7 +503,9 @@
                                                         <StackPanel>
                                                             <TextBlock Text="{Binding StateDisplay}" FontWeight="SemiBold"/>
                                                             <TextBlock Text="{Binding CountsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
-                                                            <TextBlock Text="{Binding DetailDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding StatusDetailDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding UpdatedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding UpdatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding UpdatedFullDisplay, Mode=OneWay}"/>
+                                                            <TextBlock Text="{Binding ExpiryRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" ToolTip="{Binding ExpiryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding ExpiryFullDisplay, Mode=OneWay}"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>

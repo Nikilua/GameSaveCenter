@@ -95,6 +95,9 @@ public sealed class MediaClassificationSuggestionDto : INotifyPropertyChanged
     public bool CanEditTarget => Confidence == "High" && !string.IsNullOrWhiteSpace(SuggestedPlayniteId);
 
     public DateTime CapturedLocal => CapturedUtc.ToLocalTime();
+    public string CapturedRelativeDisplay => TimeDisplayFormatter.Relative(CapturedUtc, DateTime.UtcNow);
+    public string CapturedFullDisplay => TimeDisplayFormatter.Full(CapturedUtc);
+    public string CapturedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CapturedUtc);
     public bool CanApply => IsIncluded && !string.IsNullOrWhiteSpace(TargetPlayniteId) && Confidence == "High";
     public string ConfidenceDisplay => Confidence switch
     {
@@ -133,6 +136,12 @@ public sealed class MediaClassificationPreviewDto
     public string State { get; set; } = "Preview";
     public DateTime CreatedUtc { get; set; }
     public DateTime ExpiresUtc { get; set; }
+    public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+    public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+    public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
+    public string ExpiresRelativeDisplay => TimeDisplayFormatter.Relative(ExpiresUtc, DateTime.UtcNow);
+    public string ExpiresFullDisplay => TimeDisplayFormatter.Full(ExpiresUtc);
+    public string ExpiresRawUtcDisplay => TimeDisplayFormatter.RawUtc(ExpiresUtc);
     public List<MediaClassificationSuggestionDto> Items { get; set; } = new List<MediaClassificationSuggestionDto>();
     public int HighConfidenceCount { get; set; }
     public int MediumConfidenceCount { get; set; }
@@ -198,6 +207,17 @@ public sealed class MediaClassificationBatchSummaryDto
     public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
     public DateTime UpdatedLocal => UpdatedUtc.ToLocalTime();
     public DateTime ExpiresLocal => ExpiresUtc.ToLocalTime();
+    public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+    public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+    public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
+    public string UpdatedRelativeDisplay => TimeDisplayFormatter.Relative(UpdatedUtc, DateTime.UtcNow);
+    public string UpdatedFullDisplay => TimeDisplayFormatter.Full(UpdatedUtc);
+    public string UpdatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(UpdatedUtc);
+    public string ExpiresRelativeDisplay => TimeDisplayFormatter.Relative(ExpiresUtc, DateTime.UtcNow);
+    public string ExpiresFullDisplay => TimeDisplayFormatter.Full(ExpiresUtc);
+    public string ExpiresRawUtcDisplay => TimeDisplayFormatter.RawUtc(ExpiresUtc);
+    public string ExpiryRelativeDisplay => State == "Preview" ? $"有效至 {ExpiresRelativeDisplay}" : string.Empty;
+    public string ExpiryFullDisplay => State == "Preview" ? ExpiresFullDisplay : string.Empty;
     public bool IsUndoable => (State == "Applied" || State == "AppliedWithConflicts") && AppliedCount > 0;
     public string StateDisplay => State switch
     {
@@ -211,6 +231,15 @@ public sealed class MediaClassificationBatchSummaryDto
         _ => "未知状态"
     };
     public string CountsDisplay => $"{ItemCount} 项 · 已应用 {AppliedCount} · 冲突 {ConflictCount} · 已撤销 {UndoneCount}";
+    public string StatusDetailDisplay
+    {
+        get
+        {
+            var error = string.IsNullOrWhiteSpace(LastError) ? string.Empty : $" · {LastError}";
+            return $"{StateDisplay}{error}";
+        }
+    }
+
     public string DetailDisplay
     {
         get
