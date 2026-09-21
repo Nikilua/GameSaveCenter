@@ -120,6 +120,21 @@ public sealed class CloudTransferStatusDto
         ? TimeDisplayFormatter.Full(LastSuccessfulVerificationUtc.Value)
         : "未知";
     public string LastSuccessfulVerificationRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastSuccessfulVerificationUtc ?? DateTime.MinValue);
+    public string RetryTimingRelativeDisplay
+    {
+        get
+        {
+            if (!NextAttemptUtc.HasValue) return "无自动重试";
+            var remaining = NextAttemptUtc.Value - DateTime.UtcNow;
+            return remaining <= TimeSpan.Zero
+                ? "可立即重试"
+                : $"约 {FormatRemaining(remaining)} 后";
+        }
+    }
+    public string RetryTimingFullDisplay => !NextAttemptUtc.HasValue
+        ? "无自动重试"
+        : $"{TimeDisplayFormatter.Full(NextAttemptUtc.Value)} · {RetryTimingRelativeDisplay}";
+    public string RetryTimingRawUtcDisplay => TimeDisplayFormatter.RawUtc(NextAttemptUtc ?? DateTime.MinValue);
     public string RetryTimingDisplay
     {
         get

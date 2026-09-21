@@ -341,6 +341,25 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void CloudTransferRetryTimingKeepsImmediateAndUnknownStatesWithFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var scheduled = new CloudTransferStatusDto { NextAttemptUtc = DateTime.UtcNow.AddHours(1) };
+        var immediate = new CloudTransferStatusDto { NextAttemptUtc = DateTime.UtcNow.AddMinutes(-1) };
+        var unknown = new CloudTransferStatusDto();
+
+        Assert.Contains("后", scheduled.RetryTimingRelativeDisplay, StringComparison.Ordinal);
+        Assert.Equal("可立即重试", immediate.RetryTimingRelativeDisplay);
+        Assert.Equal("无自动重试", unknown.RetryTimingRelativeDisplay);
+        Assert.Contains(TimeDisplayFormatter.Full(scheduled.NextAttemptUtc!.Value), scheduled.RetryTimingFullDisplay, StringComparison.Ordinal);
+        Assert.Equal("未记录 UTC 时间", unknown.RetryTimingRawUtcDisplay);
+        Assert.Contains("SelectedCloudTransfer.RetryTimingRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedCloudTransfer.RetryTimingFullDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

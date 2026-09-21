@@ -24,7 +24,9 @@ public sealed class R13CloudTransferStageBehaviorTests
         var root = TestRepositoryContext.Root;
         var source = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
 
-        Assert.Contains("SelectedCloudTransfer.RetryTimingDisplay", source);
+        Assert.Contains("SelectedCloudTransfer.RetryTimingRelativeDisplay", source);
+        Assert.Contains("SelectedCloudTransfer.RetryTimingFullDisplay", source);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedCloudTransfer.RetryTimingFullDisplay}\"", source);
         Assert.DoesNotContain("SelectedCloudTransfer.NextAttemptLocal, StringFormat", source);
     }
 
