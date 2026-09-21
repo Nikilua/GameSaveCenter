@@ -13,6 +13,12 @@
 - 新增单调计时 `2/2`、任务查询/恢复 `9/9`、Coordinator 失败/取消 `7/7`、旧 schema migration `4/4`、隔离 Worker 硬重启 `1/1`；最终提交身份 Playnite `net462` `0 errors / 2` 条既有 warning，Playnite Tests/Worker Tests `0/0`；R22 时间 `5/5`、R15 `3/3`，source/XAML/diff 通过。
 - 仍不宣称系统时钟跳变/跨系统启动周期、真实剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW 或宿主性能；Overview/Maintenance/Save 等其他时间入口尚未全部迁移。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步继续盘点剩余时间入口与已有复制行为。
 
+## 2026-09-21 R22-01 Overview 与任务入口时间显示（第三子批次）
+
+- `b53ab44f` 复用 `TimeDisplayFormatter`、`TaskStatusDto` 和 `ActivityEntryDto`，把相对时间、完整本地时区提示和原始 UTC 接入 Task Center 任务表/详情、Overview 最近任务和全局活动；没有新增服务、计时器、真实数据写入，也没有改变任务表列宽、分页/选择、滚动、复制、命令、取消或恢复语义。
+- `R22TimeDisplayBehaviorTests 6/6`、`R15TaskTimelineTests 3/3`、`OverviewInteractionTests 1/1`、`R10RecentAccessBehaviorTests 2/2`，本批合计 `12/12`。实际提交身份 Release Playnite `net462` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，Playnite Tests `net472` `0/0`；source validation、XAML `24/24`、diff 和 WPF `0/27/177` 通过。
+- R22-01 仍为“部分满足，待继续”：Maintenance/Save 等其他时间入口、真实剪贴板、系统时钟跳变/跨系统启动周期、真实 Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-TIME-20260921.md`。下一步盘点 Maintenance/Save 剩余时间入口和已有复制行为。
+
 ## 2026-09-21 R22-04 打开路径失败
 
 - 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
