@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R23-03 代表页面终审（已实现，待环境验证，2026-09-22）
+
+- 按概览、存档、媒体、工具、任务、维护、设置、壳层八类入口复核当前 XAML 状态承载、信息层级、命令/Automation 可达性及空/错/加载语义；工具、设置和壳层的不适用状态单独说明。
+- 复用 R00–R22 现有行为、Light/Dark fixture 和合成/fake WPF 证据，没有把历史宿主截图或 `Assert.Contains` 源码门禁升级为当前真实呈现通过；Demo 原目录不可用，继续以恢复生产基线和 Demo-first 资源链为准。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-03-REPRESENTATIVE-PAGE-FINAL-20260922.md`。下一可执行任务：`R23-04` 非空隔离宿主。
+
 ## 当前第三轮 R23-02 生产资源状态矩阵（已实现，待环境验证，2026-09-22）
 
 - 按生产壳层与各页面的真实资源合并链，核对 `GscWpfUiButton` 派生、输入/组合框、Toggle/Check/Slider、DataGrid 行/列头、Tab、当前页/检查器滚动条和状态表面；直接实例引用与页面派生 key 单独记录。
