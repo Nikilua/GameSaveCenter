@@ -116,6 +116,7 @@ public sealed class MaintenanceActionItem
     public string NextAttemptDisplay { get; set; } = "待安排";
     public string LastVerifiedFullDisplay { get; set; } = string.Empty;
     public string LastAttemptFullDisplay { get; set; } = string.Empty;
+    public string LedgerUpdatedFullDisplay { get; set; } = string.Empty;
     public string NextAttemptFullDisplay { get; set; } = string.Empty;
     public string TimingDisplay => ActionKind switch
     {
@@ -126,7 +127,7 @@ public sealed class MaintenanceActionItem
     public string TimingFullDisplay => ActionKind switch
     {
         MaintenanceActionKind.CloudTransfer => $"上次尝试：{FullOrLegacy(LastAttemptFullDisplay, LastAttemptDisplay)} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
-        MaintenanceActionKind.RetentionQuarantine => $"账本更新：{LedgerUpdatedDisplay} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
+        MaintenanceActionKind.RetentionQuarantine => $"账本更新：{FullOrLegacy(LedgerUpdatedFullDisplay, LedgerUpdatedDisplay)} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
         _ => $"最近完成：{FullOrLegacy(LastAttemptFullDisplay, LastAttemptDisplay)} · 最近成功：{FullOrLegacy(LastVerifiedFullDisplay, LastVerifiedDisplay)} · 下轮计划：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}"
     };
     public string ActionText { get; set; } = string.Empty;
@@ -257,9 +258,12 @@ public sealed partial class DashboardViewModel
             Title = "恢复可用性巡检",
             StatusDisplay = inspection.LastStatusDisplay,
             Detail = string.IsNullOrWhiteSpace(inspection.LastSummary) ? "尚未记录巡检摘要。" : inspection.LastSummary,
-            LastVerifiedDisplay = inspection.LastSuccessfulLocalDisplay,
-            LastAttemptDisplay = inspection.LastCompletedLocalDisplay,
-            NextAttemptDisplay = inspection.NextDueLocalDisplay,
+            LastVerifiedDisplay = inspection.LastSuccessfulRelativeDisplay,
+            LastVerifiedFullDisplay = inspection.LastSuccessfulFullDisplay,
+            LastAttemptDisplay = inspection.LastCompletedRelativeDisplay,
+            LastAttemptFullDisplay = inspection.LastCompletedFullDisplay,
+            NextAttemptDisplay = inspection.NextDueRelativeDisplay,
+            NextAttemptFullDisplay = inspection.NextDueFullDisplay,
             ActionText = inspection.IsRunning ? "查看巡检状态" : "立即巡检",
             ActionToolTip = "运行现有的非破坏性恢复可用性巡检，不覆盖真实存档。",
             ActionKind = MaintenanceActionKind.HealthInspection
@@ -343,7 +347,8 @@ public sealed partial class DashboardViewModel
                 Detail = $"游戏 {DisplayGameName(entry.PlayniteId, entry.PlayniteId)} · {detail}",
                 OriginalPathDisplay = string.IsNullOrWhiteSpace(entry.OriginalPath) ? "未记录" : entry.OriginalPath,
                 QuarantinePathDisplay = string.IsNullOrWhiteSpace(entry.QuarantinePath) ? "未记录" : entry.QuarantinePath,
-                LedgerUpdatedDisplay = entry.UpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"),
+                LedgerUpdatedDisplay = TimeDisplayFormatter.Relative(entry.UpdatedUtc, DateTime.UtcNow),
+                LedgerUpdatedFullDisplay = TimeDisplayFormatter.Full(entry.UpdatedUtc),
                 NextAttemptDisplay = entry.State == RetentionQuarantineState.RecoveryRequired ? "需人工确认" : "Worker 下次启动时协调",
                 ActionText = "受控恢复",
                 ActionToolTip = "只针对这条已持久化账本执行安全检查；遇到路径或文件身份冲突会保留并标记人工处理。",

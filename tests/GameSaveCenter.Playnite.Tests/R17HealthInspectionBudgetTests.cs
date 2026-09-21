@@ -58,7 +58,8 @@ public sealed class R17HealthInspectionBudgetTests
         Assert.Contains("Snapshot.HealthInspection.NextPlanRelativeDisplay", view, StringComparison.Ordinal);
         Assert.Contains("AutomationProperties.HelpText=\"{Binding Snapshot.HealthInspection.LastCompletedFullDisplay}\"", view, StringComparison.Ordinal);
         Assert.Contains("AutomationProperties.HelpText=\"{Binding Snapshot.HealthInspection.NextPlanFullDisplay}\"", view, StringComparison.Ordinal);
-        Assert.Contains("LastAttemptDisplay = inspection.LastCompletedLocalDisplay", actions, StringComparison.Ordinal);
+        Assert.Contains("LastAttemptDisplay = inspection.LastCompletedRelativeDisplay", actions, StringComparison.Ordinal);
+        Assert.Contains("LastAttemptFullDisplay = inspection.LastCompletedFullDisplay", actions, StringComparison.Ordinal);
         Assert.Contains("最近完成：{LastAttemptDisplay}", actions, StringComparison.Ordinal);
     }
 }
