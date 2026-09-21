@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 快速历史通知时间（2026-09-21，第二十五子批次）
+
+- `3f535cb2` 复用 `BackupVersionDto`，将 Playnite 游戏菜单快速历史通知行改为相对时间 + 完整本地/UTC 时间同行展示；没有新增通知体系、Worker 服务或查询写入。
+- 备份数量/大小/恢复可用性、20 行上限、ForceRefresh、稳定 PlayniteId 和只读边界保持。`QuickActionSourceTests 2/2`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，仅既有 2 条 MediaCenter CS8602。
+- 只证明合成 DTO、格式化方法和隔离构建，不等价真实 Playnite 菜单/通知宿主、UIA/读屏、呈现、DPI/跨屏、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。复制列和内部日志/导出仍保持独立，下一步核对其机器可读时间语义。证据：`R22-01-QUICK-HISTORY-TIME-20260921.md`。
+
 ## 第三轮 R22-01 历史跳转状态时间（2026-09-21，第二十四子批次）
 
 - `1bac9090` 复用 `BackupVersionDto.CreatedRelativeDisplay/CreatedFullDisplay`，将历史列表最近/较早跳转的 Dashboard 状态正文切为相对时间；`StatusMessageFullDisplay` 默认回退普通状态原文，历史跳转显式保留完整本地/UTC 证据。

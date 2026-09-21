@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 快速历史通知时间（第二十五子批次）
+
+- 先核对 `GameSaveCenterPlugin.ShowBackupHistoryQuickActionAsync` 和 `ShowInfo` 的真实能力：通知没有 Tooltip/Automation 容器，因此没有引入新的通知设计。
+- `3f535cb2` 复用已有 DTO/formatter，每条快速历史通知行同时显示相对时间和完整本地/UTC 时间；数量、大小、恢复可用性、ForceRefresh、20 行上限和只读查询保持。
+- `QuickActionSourceTests 2/2`；隔离 Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-QUICK-HISTORY-TIME-20260921.md`。只使用合成 DTO 和隔离构建，没有真实 Playnite 菜单/通知宿主、存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实通知呈现、UIA/读屏、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对 SaveHistory 复制列及仅内部日志/导出时间字段。
 ## 2026-09-21 R22-01 历史跳转状态时间（第二十四子批次）
 
 - 先核对 `DashboardViewModel.BackupHistory` 的本地日期筛选、UTC 稳定导航和状态栏绑定；没有把插件菜单快速历史通知、复制列或内部日志一起改写。

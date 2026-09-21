@@ -5,6 +5,13 @@
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
 - 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 至 R21-08，并补证 R22-04；当前继续选择后续依赖已满足的 Q/R 小批量。若获得第二个物理显示器，优先按 R21-08 清单补真实宿主跨屏回放。
 
+## 当前第三轮 R22-01 快速历史通知时间（本子批已满足，R22-01 仍部分满足）
+
+- `3f535cb2` 复用 `BackupVersionDto` 共享时间投影，`GameSaveCenterPlugin.ShowBackupHistoryQuickActionAsync` 的每条通知行同时显示相对时间和完整本地/UTC 时间；数量、大小、恢复可用性、20 行上限、ForceRefresh 和只读查询保持。
+- `QuickActionSourceTests 2/2`，实际调用快速历史格式化方法覆盖相对/完整时间及既有字段；Release XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；source/diff 与 WPF `0/27/177` 通过。
+- 验证仅使用合成 DTO 和隔离构建，没有真实 Playnite 菜单/通知宿主、存档、媒体、云端或诊断写入。真实通知呈现、UIA/读屏、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验；复制列与内部日志/导出字段仍待核对。证据见 [`R22-01 快速历史通知时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-QUICK-HISTORY-TIME-20260921.md)。
+- 下一可执行任务：核对 SaveHistory DataGrid 复制列与仅内部日志/导出时间字段，保持稳定机器可读格式，不把复制/日志误改为相对时间。
+
 ## 当前第三轮 R22-01 历史跳转状态时间（本子批已满足，R22-01 仍部分满足）
 
 - `1bac9090` 将 SaveCenter 历史列表“跳到最近/较早版本”状态正文改为相对时间，新增 `StatusMessageFullDisplay`；状态栏 Tooltip/Automation HelpText 保留完整本地时区与 round-trip UTC。日期范围筛选仍按本地日历，导航排序、稳定 ID、选中项、滚动和命令门控保持。
