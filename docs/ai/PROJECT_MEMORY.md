@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 比较版本下拉时间（2026-09-21，第二十二子批次）
+
+- `0c9870fb` 先核对 R11-02 已有比较契约：A/B `SelectedItem`、交换命令、比较命令和同版本禁用负例均已有实际 STA WPF 证据；本批只把 SaveCenter 两个生产 ComboBox 的条目模板改为相对正文、完整 Tooltip/Automation HelpText，不重建比较服务或差异 DTO。
+- `BackupVersionDto.ComparisonDisplay` 与 `CreatedUtc` 排序事实保留，新增 `ComparisonRelativeDisplay`、`ComparisonFullDisplay`、`ComparisonRawUtcDisplay`，未知时间仍显示明确负例。`R22TimeDisplayBehaviorTests 22/22`、`R11VersionComparisonBehaviorTests 2/2`，定向合计 `24/24`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，仅既有 2 条 MediaCenter CS8602。
+- 验证只证明合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建，不等价真实 Playnite/package-host、UIA/读屏、真实剪贴板、系统时钟跳变、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。`CompareSelectionSummary`/`BuildComparisonSummary` 与历史状态消息尚未迁移，R22-01 仍部分满足。证据：`R22-01-COMPARISON-ENTRY-TIME-20260921.md`。下一步继续核对这些状态消息和其他 Save/恢复旧本地时间入口。
+
 ## 第三轮 R22-01 恢复流程选择版本时间（2026-09-21，第二十一子批次）
 
 - `391d28b8` 核对 `RestoreWorkflowProgress.BuildSelectionStep` 与 SaveCenter `RestoreWorkflowSteps` 模板，确认旧 `CreatedLocal` 确实进入用户可见 Detail；复用 `BackupVersionDto.CreatedRelativeDisplay/CreatedFullDisplay`，新增 `DetailFullDisplay`，其他步骤默认回退原 Detail。

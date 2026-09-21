@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 比较版本下拉时间（第二十二子批次）
+
+- 先核对 R11-02 的实际比较行为和 SaveCenter 生产 ComboBox：已有 A/B 选中项、交换/比较命令、同版本禁用负例，不把旧 `ComparisonDisplay` 的存在误判为已统一的时间展示。
+- `0c9870fb` 保留旧比较标签和 `CreatedUtc` 排序事实，新增相对/完整/原始 UTC 条目投影；两个生产下拉使用 ItemTemplate 显示相对正文，完整时间进入 Tooltip/Automation HelpText。未改比较方向、选框、滚动条、命令、取消/错误、安全或 net462 语义。
+- 实际隔离 STA WPF 读取 A/B SelectedItem、模板文本、Tooltip 和 HelpText，并保留比较/交换/同版本负例；`R22TimeDisplayBehaviorTests 22/22`、`R11VersionComparisonBehaviorTests 2/2`，合计 `24/24`。Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COMPARISON-ENTRY-TIME-20260921.md`。仅使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、剪贴板、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对比较选择/结果摘要和历史跳转状态消息的旧本地时间直显。
+
 ## 2026-09-21 R22-01 Overview 选中游戏最近备份时间（第二十子批次）
 
 - 先核对 `GameStatusDto.LastBackupUtc`、`LastBackupLocal`、Dashboard 选中游戏属性和 Overview 当前游戏卡片，确认该处确实存在生产绑定的旧本地短日期；没有扩大为未绑定的 Storage 时间字段或其他 Save/恢复入口。

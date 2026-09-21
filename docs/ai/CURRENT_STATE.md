@@ -5,6 +5,13 @@
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
 - 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 至 R21-08，并补证 R22-04；当前继续选择后续依赖已满足的 Q/R 小批量。若获得第二个物理显示器，优先按 R21-08 清单补真实宿主跨屏回放。
 
+## 当前第三轮 R22-01 比较版本下拉时间（本子批已满足，R22-01 仍部分满足）
+
+- `0c9870fb` 保留 `BackupVersionDto.ComparisonDisplay`、`CreatedUtc` 排序事实和 SaveCenter A/B 双向 `SelectedItem`；新增相对/完整/原始 UTC 比较条目投影。两个生产 ComboBox 使用共享 ItemTemplate，正文显示相对时间，Tooltip/Automation HelpText 保留完整本地时间与 round-trip UTC。
+- 实际隔离 STA WPF 读取 A/B 选中项及模板生成的条目文本、Tooltip、HelpText，并保留比较、交换和同版本禁用负例；`R22TimeDisplayBehaviorTests 22/22`、`R11VersionComparisonBehaviorTests 2/2`，定向合计 `24/24`。Release XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；source/diff 与 WPF `0/27/177` 通过。
+- 选框、滚动条、命令绑定、差异方向、取消/错误语义和 Playnite/net462 兼容保持。验证仅使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，没有真实存档、媒体、云端或诊断写入；真实 Playnite/package-host、UIA/读屏、剪贴板、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验。`CompareSelectionSummary`/`BuildComparisonSummary` 与历史跳转状态消息仍待下一子批逐项核对。证据见 [`R22-01 比较版本下拉时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COMPARISON-ENTRY-TIME-20260921.md)。
+- 下一可执行任务：核对 `BuildComparisonSelectionSummary`/`BuildComparisonSummary` 和历史跳转状态消息中的旧本地时间直显，保持比较方向、稳定排序和复制/导出边界。
+
 ## 当前第三轮 R22-01 Overview 选中游戏最近备份时间（本子批已满足，R22-01 仍部分满足）
 
 - `4e85d665` 保留 `GameStatusDto.LastBackupUtc` 排序原值、`LastBackupLocal` 兼容投影和 Dashboard 旧 `SelectedGameLastBackupDisplay`，新增相对/完整/原始 UTC 时间投影；Overview 当前游戏卡片正文显示相对时间，Tooltip/Automation HelpText 保留完整本地时区与 round-trip UTC。
