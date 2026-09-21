@@ -59,6 +59,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             AttachViewModel(DataContext as DashboardViewModel);
             AttachColumnLayout();
+            UpdateMediaSelectionSummary();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -136,6 +137,13 @@ namespace GameSaveCenter.Playnite.Views
                 ResetSelectedVideoPreview();
                 QueueSelectedMediaIntoView();
             }
+
+            if (string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaSearchText), StringComparison.Ordinal)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaFilter), StringComparison.Ordinal)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaLoadedSummary), StringComparison.Ordinal))
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(UpdateMediaSelectionSummary));
+            }
         }
 
         private void InvalidatePendingAnchorRestore()
@@ -179,6 +187,7 @@ namespace GameSaveCenter.Playnite.Views
             // the user must explicitly request details for the newly selected item.
             mediaInboxInspectorOpen = false;
             UpdateMediaInboxSelectionSummary();
+            UpdateMediaSelectionSummary();
             CommandManager.InvalidateRequerySuggested();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
@@ -229,6 +238,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            UpdateMediaSelectionSummary();
             if (pendingMediaAnchor == null) return;
             var anchor = pendingMediaAnchor;
             pendingMediaAnchor = null;
@@ -262,6 +272,7 @@ namespace GameSaveCenter.Playnite.Views
             CaptureSelection(MediaGrid.SelectedItems, selectedMediaIds);
             pendingMediaAnchor = CaptureAnchor(MediaGrid);
             ArmPendingAnchorExpiry();
+            UpdateMediaSelectionSummary();
         }
 
         private void OnLoadMoreMediaInboxClick(object sender, RoutedEventArgs e)
@@ -629,11 +640,28 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (!restoringSelection && !selectionRestoreQueued)
                 UpdateSelectionDelta(selectedMediaIds, e);
+            UpdateMediaSelectionSummary();
             mediaInspectorOpen = false;
             ResetSelectedVideoPreview();
             QueueSelectedMediaIntoView();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void UpdateMediaSelectionSummary()
+        {
+            if (MediaGrid == null || MediaCurrentBatchSelectionSummary == null)
+                return;
+
+            var visibleCount = MediaGrid.SelectedItems.Count;
+            var totalCount = selectedMediaIds.Count;
+            var hiddenCount = Math.Max(0, totalCount - visibleCount);
+            var resultCount = MediaGrid.Items.Count;
+            MediaCurrentBatchSelectionSummary.Text = totalCount == 0
+                ? $"当前结果 {resultCount} 项 · 未选择媒体 · Ctrl / Shift 多选"
+                : hiddenCount > 0
+                    ? $"已选 {totalCount} 项 · 当前结果 {resultCount} 项 · 当前窗口 {visibleCount} 项可操作 · 另 {hiddenCount} 项暂不可见"
+                    : $"已选 {totalCount} 项 · 当前结果 {resultCount} 项 · 可批量处理";
         }
 
         private void QueueSelectedMediaIntoView()

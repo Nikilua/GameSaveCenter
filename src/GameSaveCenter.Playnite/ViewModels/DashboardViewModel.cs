@@ -1664,25 +1664,73 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SetValue(ref policyTemplateBatchSearchText, value ?? string.Empty);
                 PolicyTemplateBatchTargetsView?.Refresh();
                 OnPropertyChanged(nameof(PolicyTemplateBatchVisibleCount));
+                OnPropertyChanged(nameof(PolicyTemplateBatchHiddenSelectedCount));
+                OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
             }
         }
         public int PolicyTemplateBatchVisibleCount
             => PolicyTemplateBatchTargetsView?.Cast<object>().Count() ?? 0;
         public int PolicyTemplateBatchSelectedCount
             => PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets).Count;
+        public int PolicyTemplateBatchHiddenSelectedCount
+            => CountPolicyTemplateBatchHiddenSelected(PolicyTemplateBatchTargets, PolicyTemplateBatchSearchText);
         public int PolicyTemplateBatchExcludedCount
             => Math.Max(0, PolicyTemplateBatchTargets.Count - PolicyTemplateBatchSelectedCount);
         public int PolicyTemplateBatchChangeCount
             => PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets).Sum(target => target.ChangeCount);
         public bool HasPolicyTemplateBatchResults => PolicyTemplateBatchResults.Count > 0;
         public string PolicyTemplateBatchSummary
-            => SelectedPolicyTemplate == null
-                ? "选择已保存策略模板后，可明确勾选批量应用目标。"
-                : PolicyTemplateBatchSelectedCount == 0
-                ? $"尚未选择目标；当前列表显示 {PolicyTemplateBatchTargets.Count} 个游戏，排除 {PolicyTemplateBatchExcludedCount} 个。筛选不会自动选择全部。"
-                : PolicyTemplateBatchSelectedCount > PolicyTemplateBatchPreview.MaxTargetCount
-                ? $"已选择 {PolicyTemplateBatchSelectedCount} 个目标，超过单次最多 {PolicyTemplateBatchPreview.MaxTargetCount} 个；请减少选择。"
-                : $"目标 {PolicyTemplateBatchSelectedCount} 个 · 排除 {PolicyTemplateBatchExcludedCount} 个 · 预计覆盖 {PolicyTemplateBatchChangeCount} 项字段；筛选隐藏项仍按稳定 ID 保留选择。";
+            => BuildPolicyTemplateBatchSummary(
+                SelectedPolicyTemplate != null,
+                PolicyTemplateBatchTargets.Count,
+                PolicyTemplateBatchVisibleCount,
+                PolicyTemplateBatchSelectedCount,
+                PolicyTemplateBatchHiddenSelectedCount,
+                PolicyTemplateBatchExcludedCount,
+                PolicyTemplateBatchChangeCount);
+
+        internal static bool MatchesPolicyTemplateBatchTarget(PolicyTemplateBatchTarget target, string? searchText)
+        {
+            if (target == null) return false;
+            var query = (searchText ?? string.Empty).Trim();
+            return query.Length == 0
+                || target.GameName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0
+                || target.PlayniteId.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        internal static int CountPolicyTemplateBatchHiddenSelected(
+            IEnumerable<PolicyTemplateBatchTarget> targets,
+            string? searchText)
+        {
+            if (targets == null) return 0;
+            return PolicyTemplateBatchPreview.Select(targets)
+                .Count(target => !MatchesPolicyTemplateBatchTarget(target, searchText));
+        }
+
+        internal static string BuildPolicyTemplateBatchSummary(
+            bool hasTemplate,
+            int totalCount,
+            int visibleCount,
+            int selectedCount,
+            int hiddenSelectedCount,
+            int excludedCount,
+            int changeCount)
+        {
+            if (!hasTemplate)
+                return "选择已保存策略模板后，可明确勾选批量应用目标。";
+
+            var total = Math.Max(0, totalCount);
+            var visible = Math.Max(0, Math.Min(total, visibleCount));
+            var selected = Math.Max(0, selectedCount);
+            var hidden = Math.Max(0, Math.Min(selected, hiddenSelectedCount));
+            var excluded = Math.Max(0, excludedCount);
+            var resultScope = $"当前筛选结果 {visible}/{total} 个游戏";
+            if (selected == 0)
+                return $"尚未选择目标；{resultScope}；隐藏选择 0 个；排除 {excluded} 个。筛选不会自动选择全部游戏。";
+            if (selected > PolicyTemplateBatchPreview.MaxTargetCount)
+                return $"已选择 {selected} 个目标；{resultScope}；隐藏选择 {hidden} 个；超过单次最多 {PolicyTemplateBatchPreview.MaxTargetCount} 个，请减少选择。";
+            return $"已选择 {selected} 个目标；{resultScope}；隐藏选择 {hidden} 个；排除 {excluded} 个；预计覆盖 {Math.Max(0, changeCount)} 项字段；筛选隐藏项仍按稳定 ID 保留选择。";
+        }
         public bool CanApplyPolicyTemplateBatch
             => SelectedPolicyTemplate != null
                 && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId)
@@ -2980,11 +3028,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private bool FilterPolicyTemplateBatchTarget(object item)
         {
-            if (item is not PolicyTemplateBatchTarget target) return false;
-            var query = PolicyTemplateBatchSearchText.Trim();
-            return query.Length == 0
-                || target.GameName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0
-                || target.PlayniteId.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
+            return item is PolicyTemplateBatchTarget target
+                && MatchesPolicyTemplateBatchTarget(target, PolicyTemplateBatchSearchText);
         }
 
         private void RefreshPolicyTemplateBatchTargets(IEnumerable<GameStatusDto>? source = null)
@@ -3010,6 +3055,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             PolicyTemplateBatchTargetsView?.Refresh();
             OnPropertyChanged(nameof(PolicyTemplateBatchVisibleCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchHiddenSelectedCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchExcludedCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchChangeCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
@@ -3021,6 +3067,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (!string.Equals(e.PropertyName, nameof(PolicyTemplateBatchTarget.IsSelected), StringComparison.Ordinal)) return;
             OnPropertyChanged(nameof(PolicyTemplateBatchSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchHiddenSelectedCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchExcludedCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchChangeCount));
             OnPropertyChanged(nameof(PolicyTemplateBatchSummary));

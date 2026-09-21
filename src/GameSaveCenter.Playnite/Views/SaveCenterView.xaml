@@ -586,7 +586,9 @@
                                              <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding PolicyTemplateBatchSearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" ToolTip="按游戏名称或稳定 ID 筛选；筛选不会清除已勾选目标" AutomationProperties.Name="筛选模板批量应用目标"/>
                                              <TextBlock Text="{Binding PolicyTemplateBatchSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="模板批量应用目标摘要"/>
                                              <WrapPanel Margin="0,6,0,0">
-                                                 <TextBlock Text="{Binding PolicyTemplateBatchSelectedCount, StringFormat=目标：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
+                                                 <TextBlock Text="{Binding PolicyTemplateBatchSelectedCount, StringFormat=已选：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
+                                                 <TextBlock Text="{Binding PolicyTemplateBatchVisibleCount, StringFormat=当前结果：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
+                                                 <TextBlock Text="{Binding PolicyTemplateBatchHiddenSelectedCount, StringFormat=隐藏选择：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
                                                  <TextBlock Text="{Binding PolicyTemplateBatchExcludedCount, StringFormat=排除：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,12,0"/>
                                                  <TextBlock Text="{Binding PolicyTemplateBatchChangeCount, StringFormat=变更字段：{0}}" Style="{DynamicResource GscCaptionStyle}"/>
                                              </WrapPanel>
