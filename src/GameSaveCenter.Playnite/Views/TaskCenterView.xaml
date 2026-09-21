@@ -472,7 +472,7 @@
                                 <DataTemplate>
                                     <Grid Margin="0,3,0,3">
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="150"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding TimeDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding UtcTimeDisplay}"/>
+                                        <TextBlock Text="{Binding RelativeTimeDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding FullTimeDisplay}" AutomationProperties.HelpText="{Binding FullTimeDisplay}"/>
                                         <Border Grid.Column="1" Width="4" Height="4" CornerRadius="2" Background="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0"/>
                                         <StackPanel Grid.Column="2">
                                             <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>

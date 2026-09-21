@@ -13,6 +13,15 @@ public sealed class TaskTimelineEntryDto
     public string Detail { get; set; } = string.Empty;
     public DateTime? OccurredUtc { get; set; }
     public bool HasKnownTime => OccurredUtc.HasValue;
+    public string RelativeTimeDisplay => OccurredUtc.HasValue
+        ? TimeDisplayFormatter.Relative(OccurredUtc.Value, DateTime.UtcNow)
+        : "时间未知";
+    public string FullTimeDisplay => OccurredUtc.HasValue
+        ? TimeDisplayFormatter.Full(OccurredUtc.Value)
+        : "时间未知";
+    public string RawUtcTimeDisplay => OccurredUtc.HasValue
+        ? TimeDisplayFormatter.RawUtc(OccurredUtc.Value)
+        : "未记录 UTC 时间";
     public string LocalTimeDisplay => OccurredUtc.HasValue
         ? OccurredUtc.Value.ToLocalTime().ToString("MM-dd HH:mm:ss")
         : "时间未知";
