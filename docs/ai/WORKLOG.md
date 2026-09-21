@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 CloudTransfer 维护动作摘要时间（第十六子批次）
+
+- 先核对已有 `CloudTransferStatusDto` 时间投影、`MaintenanceActionItem` 行动分组、维护页模板和 `OpenCloudQueue` 命令；本批复用现有 DTO/状态/命令，没有新增重试服务、云端请求、分页或写入路径。
+- `47bc1d00` 为 `CloudTransferSummaryDto` 增加相对/完整/原始下次计划投影；维护行动项 CloudTransfer 正文使用相对上次尝试与下次重试，Tooltip/Automation HelpText 使用完整本地时间和 UTC 原值。未来/过去/无计划分别覆盖“约……后”“可立即重试”“按队列状态”，失败或认证无计划仍显示“需处理后再试”；HealthInspection、RetentionQuarantine、动作分组、分页/筛选和旧显示字段保持。
+- `MaintenanceCloudTransferResolverTests | MaintenanceReportSourceTests` `11/11`、`R22TimeDisplayBehaviorTests` `18/18`、`UiDisplayMappingTests` `40/40`；Release 隔离构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0/27/177` 通过。期间首次测试发现摘要过去时间未映射为“可立即重试”，已在同一阶段修正并复跑通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-CLOUD-ACTION-TIMING-20260921.md`；只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断。Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”；真实剪贴板、系统时钟跳变/跨系统启动周期、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为盘点 Storage 及其他仍直显旧本地时间的 Save/恢复入口。
+
 ## 2026-09-21 R22-01 CloudTransfer 下次重试时间（第十五子批次）
 
 - 先核对已有 `CloudTransferStatusDto.RetryTimingDisplay`、Maintenance 选中队列详情和 R13 的重试/分页/脱敏门禁；本批只复用 `TimeDisplayFormatter`，没有新增重试调度、云端请求或队列服务。

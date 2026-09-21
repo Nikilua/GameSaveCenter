@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 CloudTransfer 维护动作摘要时间（2026-09-21，第十六子批次）
+
+- `47bc1d00` 先复用已有 `CloudTransferStatusDto` 时间投影、`MaintenanceActionItem` 分组/命令和维护页 `DataTemplate`，没有新造重试服务、队列、分页或云端请求。CloudTransfer 行动摘要正文改用相对的上次尝试/下次计划，`TimingFullDisplay` 通过 Tooltip/Automation HelpText 保留完整本地时间与 round-trip UTC；HealthInspection、RetentionQuarantine 和旧显示字段使用回退保持不变。
+- `CloudTransferSummaryDto` 的维护摘要增加相对/完整/原始下次计划属性；未来、过去、无计划和失败/认证无计划分别覆盖“约……后”“可立即重试”“按队列状态”“需处理后再试”。分页、筛选、重试/校验、脱敏、有限列表、动作分组和 `OpenCloudQueue` 参数未变。
+- `MaintenanceCloudTransferResolverTests | MaintenanceReportSourceTests 11/11`、`R22TimeDisplayBehaviorTests 18/18`、`UiDisplayMappingTests 40/40`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`（仅既有 2 条 MediaCenter CS8602）通过。证据：`R22-01-CLOUD-ACTION-TIMING-20260921.md`。
+- 仍只证明合成 DTO、fake/隔离 testhost 和静态接线/构建，不等价真实云端、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰、未合并。R22-01 仍部分满足，下一步盘点 Storage 及其他旧本地时间直显。
+
 ## 第三轮 R22-01 时间显示统一（2026-09-21，部分满足）
 
 - `1250aaad` 先复用现有 `TaskTimelineBuilder` 的 UTC 时间与序号排序，新增 Contracts 共享 `TimeDisplayFormatter`；相对时间的 `nowUtc` 可注入，完整提示包含本地时区偏移和 round-trip UTC 原值，未知时间不被伪造为当前时间。
