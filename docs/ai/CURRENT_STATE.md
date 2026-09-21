@@ -3,7 +3,14 @@
 ## 接续点校正与当前边界（2026-09-21）
 
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
-- 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05、R21-06，并在当前接续点完成 R21-07 焦点回归证据；下一项为 R21-08。
+- 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 至 R21-08；当前继续选择后续依赖已满足的 Q/R 小批量。若获得第二个物理显示器，优先按 R21-08 清单补真实宿主跨屏回放。
+
+## 当前第三轮 R21-08 单屏与跨屏分账（已满足，待环境验证）
+
+- 先复用 Q24-03 的 `scripts/real-host-audit.ps1`、生产宿主内 `GameBrowserPanel`/`GameBrowserScrim` 和共享 ComboBox Popup；没有新增 Popup 定位、独立窗口或 DPI 体系，也没有改变游戏选框、滚动条、命令/Binding、取消/错误和恢复语义。
+- 当前 Windows 主机真实 `System.Windows.Forms.Screen.AllScreens` 只有 `\\.\DISPLAY1`：Bounds `0,0 1707×960`，WorkArea `0,0 1707×912`。`R05PopupBoundaryBehaviorTests` `2/2`、`R09PixelStrokeBehaviorTests` `2/2`（1.00–2.00 逻辑尺度模拟）、`R09ThemeSwitchBehaviorTests` `1/1`、拓扑/源码契约 `26/26`；Release 测试项目 `0 errors / 2` 条既有 CS8602 warning，real-host 脚本语法通过。
+- 单屏条件下不执行跨屏迁移，不把离屏 DPI 模拟或代理截图写成物理跨屏结论。第二个物理屏获得后，按证据清单验证 Popup 位置、字体/文本度量、焦点、主题资源/资源释放、回迁和前后呈现帧；真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、跨屏呈现、ETW、宿主性能和 Demo 原目录仍待验。证据见 [`R21-08 单屏与跨屏分账`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md)。
+- 下一可执行任务：后续依赖已满足的 Q/R 小批量；若双屏可用，优先完成上述真实宿主回放。
 
 ## 当前第三轮 R21-05 禁用与隐藏区别（已满足，待环境验证）
 
@@ -25,7 +32,7 @@
 - `b20f1a4b` 新增 `R21FocusVisualRegressionBehaviorTests`：真实生产 Shell 加合成 2,000 项，请求 `ListBox.ScrollIntoView` 后末项容器实际实现且保留焦点样式；浅/深运行时主题切换后强调色变化、焦点仍在可见搜索框；关闭选择器后 Overlay 折叠并回焦可见游戏选框。串行 `1/1`，R09 焦点环 `2/2`，R05 主题弹层 `1/1`，合计 `4/4`。
 - 提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。并行隐藏 WPF 窗口的抢焦点失败和旧 R05 手动注入 VM 初始化夹具失败均保留为边界，没有改写为绿色。
 - 证据仅来自合成 DTO、生产资源和隔离 STA WPF；不把隔离宿主的 `VerticalOffset`、像素裁剪或 presented frame 当物理滚动/最终呈现结论。真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、ETW、宿主性能和 Demo 原目录仍待验；main 用户改动未碰、未合并。证据见 [`R21-07 焦点可视回归`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-07-FOCUS-VISUAL-20260921.md)。
-- 下一可执行任务：R21-08 单屏与跨屏分账，先列当前单屏/DPI 可测能力和 Popup/字体/焦点的真实跨屏待验场景。
+- R21-08 已推进为当前最新验收记录；下一项为后续依赖已满足的 Q/R 小批量。
 
 ## 当前第三轮 R21-04 异步完成播报（已满足，待环境验证）
 

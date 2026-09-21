@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-08 单屏与跨屏分账（2026-09-21）
+
+- 代码基线 `8a31421aea3e4ca3d61884a9ff6c035300faf723` 只同步 R21-08 证据，未改生产代码；复用 Q24-03 的 `real-host-audit.ps1`、宿主内游戏选框和共享 ComboBox Popup，没有新增独立窗口、跨屏定位或 DPI 体系。
+- 当前主机真实 `System.Windows.Forms.Screen.AllScreens` 只有 `\\.\DISPLAY1`，Bounds `0,0 1707×960`、WorkArea `0,0 1707×912`。`R05PopupBoundaryBehaviorTests 2/2`、`R09PixelStrokeBehaviorTests 2/2`（1.00–2.00 逻辑 DPI 模拟）、`R09ThemeSwitchBehaviorTests 1/1`、拓扑/源码契约 `26/26`；Release 测试项目 `0 errors / 2` 条既有 CS8602 warning，real-host 脚本语法通过。
+- 单屏条件下不启动真实跨屏迁移；已留下双屏隔离 Playnite 场景，待验证 Popup 位置、字体/文本度量、焦点、主题资源/资源释放、回迁和呈现帧。离屏 DPI、代理截图和单屏事实不替代物理跨屏；真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、ETW、宿主性能和 Demo 原目录仍未验。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md`。下一步后续依赖已满足的 Q/R 小批量。
+
 ## 第三轮 R21-07 焦点可视回归（2026-09-21）
 
 - `b20f1a4bc1444c4a702fb4d28254a85f249719e9` 只新增 `R21FocusVisualRegressionBehaviorTests` 行为夹具；复用 `GscSharedFocusVisual`、生产游戏选框滚动/虚拟化、运行时主题资源和关闭回焦路径，没有新增服务、DTO、命令或视觉体系。

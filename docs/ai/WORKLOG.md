@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-08 单屏与跨屏分账
+
+- 先查已有 Q24-03 真实宿主前置、生产宿主内游戏选框和共享 ComboBox Popup；没有新增跨屏定位、独立窗口、DPI 或滚动体系，也没有改变命令、Binding、取消/错误、恢复保护和有限列表性能。
+- 当前 Windows 主机真实枚举只有 `\\.\DISPLAY1`，Bounds `0,0 1707×960`、WorkArea `0,0 1707×912`；`real-host-audit.ps1` 语法通过，单屏状态应为 `blocked-single-display`。既有 `R05PopupBoundaryBehaviorTests 2/2`、`R09PixelStrokeBehaviorTests 2/2`（1.00–2.00 逻辑尺度模拟）、`R09ThemeSwitchBehaviorTests 1/1`、拓扑/源码契约 `26/26` 均通过。
+- 当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；R21-08 按“已满足，待环境验证”收口。已写入双屏隔离 Playnite 执行清单，覆盖 Popup 位置、字体/文本度量、焦点、主题资源/资源释放、回迁和前后呈现帧；没有把离屏 DPI 模拟或代理截图写成物理跨屏。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md`。Demo 原目录不可用，main 用户改动未碰未合并；真实双屏 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、跨屏呈现、ETW 和宿主性能仍未验。下一可执行任务：后续依赖已满足的 Q/R 小批量；双屏可用时优先按清单回放。
+
 ## 2026-09-21 R21-07 焦点可视回归
 
 - 先核对生产 `GscSharedFocusVisual`、AcrylicProductionShell 游戏选框/滚动/关闭回焦和既有 R09/R05 证据；本阶段没有重建焦点、滚动、主题或弹层体系，也没有改命令、Binding、取消/错误、恢复保护和有限列表性能。

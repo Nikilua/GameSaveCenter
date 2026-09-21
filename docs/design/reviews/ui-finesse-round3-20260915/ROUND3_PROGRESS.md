@@ -183,7 +183,7 @@
 | R21-05 | 禁用与隐藏区别 | 已满足，待环境验证 | 380234e2 | 本项行为 `2/2`；邻接 R21DisabledHidden/R02ActionAvailabilityHint/R21AutomationValue/R21KeyboardNavigationTrace/R21AsyncCompletionAnnouncement `31/31`；Release 测试项目 `0 错误 / 2` 条既有 CS8602 warning；source/XAML/diff 通过 | 实际 `SaveCenterView` 验证 Collapsed 隐藏分支不入可见树/焦点，说明文本可聚焦且 Name/HelpText 可读；维护条件满足时同一命令绑定恢复可执行；共享禁用动作保持可见并由 UIA Invoke 拒绝 | 合成/fake/隔离 WindowHost；未验真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、呈现帧、ETW 或宿主性能；Demo 原目录不可用 | [R21-05 禁用与隐藏行为](evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md)；完整 Release 脚本的 Worker 仍有未修改的 `MediaSyncServiceTests.cs:570` NRE（350/1/351）；下一项 `R21-06` 可选择技术文本 |
 | R21-06 | 可选择技术文本 | 已满足，待环境验证 | 866ceecd（复用既有实现并补版本入口） | R21-06 与 R03/R11/R15 行为 `13/13`；Release 测试项目 `0 错误 / 2` 条既有 CS8602 warning；source/XAML/diff 通过 | 路径与技术详情实际可全选复制；Dashboard/AcrylicProductionShell 两条插件版本入口使用共享只读 TextBox，实际可聚焦、全选，HelpText 提示 Ctrl+C；不改变版本赋值、页面导航或复制命令 | 合成路径/错误 DTO、实际 WPF TextBox、SaveCenterView、隔离 WindowHost；未验真实剪贴板/读屏、Playnite/package-host、选择像素、DPI/跨屏/呈现帧/ETW/宿主性能 | [R21-06 可选择技术文本](evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md)；按“已满足，待环境验证”收口，后续进入 R21-07 焦点可视回归 |
 | R21-07 | 焦点可视回归 | 已满足，待环境验证 | b20f1a4b | R21 新增 `1/1`；R09 焦点环 `2/2`；R05 主题弹层 `1/1`；串行合计 `4/4`；Release 测试项目 `0 错误 / 2` 条既有 CS8602 warning；source/XAML/diff 通过 | 生产 Shell 中 2,000 项合成列表请求末项实现，搜索框焦点保持可见；浅/深主题资源切换后焦点样式仍在；选择器关闭后回焦可见游戏选框；保留生产选框、滚动条、Binding 和命令语义 | 合成/fake/隔离 STA WPF；隔离隐藏宿主不把 VerticalOffset/物理裁剪当作最终呈现证据；未验真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、presented frame、ETW 或宿主性能；Demo 原目录不可用；旧 R05 选择器初始化夹具失败未改写 | [R21-07 焦点可视回归](evidence/R21-07-FOCUS-VISUAL-20260921.md)；按“已满足，待环境验证”收口，下一项 `R21-08` 单屏与跨屏分账 |
-| R21-08 | 单屏与跨屏分账 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
+| R21-08 | 单屏与跨屏分账 | 已满足，待环境验证 | 8a31421a（复用既有实现） | `R05PopupBoundaryBehaviorTests 2/2`；`R09PixelStrokeBehaviorTests 2/2`；`R09ThemeSwitchBehaviorTests 1/1`；拓扑/源码契约 `26/26`；Release 测试项目 `0 errors / 2` 条既有 CS8602 warning；real-host 脚本语法通过 | 当前主机真实拓扑仅 `\\.\DISPLAY1`，Bounds `1707×960`、WorkArea `1707×912`；生产 Popup 在当前工作区内边界/滚动通过；1.00–2.00 仅逻辑 DPI 像素模拟；已准备第二物理屏迁移、Popup/字体/焦点/资源释放的可执行场景清单 | 未运行真实双屏 Playnite/package-host，未把离屏 DPI 模拟当物理跨屏；Popup 跨屏位置、字体清晰度、焦点与资源释放、呈现帧、Windows UIA/读屏、OS 输入/IME、ETW、宿主性能仍待验；Demo 原目录不可用；main 用户改动未碰、未合并 | [R21-08 单屏与跨屏分账](evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md)；当前单屏条件阻塞，下一可执行任务为后续依赖已满足的 Q/R 小批量 |
 | R22-01 | 时间显示统一 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R22-02 | 容量单位统一 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
 | R22-03 | 复制反馈轻量 | 待开始 | — | 待验 | 待验 | 待定适用性 | 先核对最新实现及对应 Q 项 |
@@ -808,3 +808,11 @@
 - 一次把三组 WPF 测试并行放入同一 testhost 时，多个隐藏窗口互相争抢桌面焦点，产生离屏时序失败；拆成独立 testhost 后均通过，不把它写成产品失败。旧 R05 选择器/焦点边界夹具仍有手动注入 VM 后未走最新 Shell 初始化路径的既有失败，本批没有改写旧断言。
 - 隔离隐藏宿主不能把 `ScrollViewer.VerticalOffset`、末项实际像素裁剪或 presented frame 作为物理滚动/最终呈现证据；真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、像素焦点环、ETW 和宿主性能仍待验。Demo 原目录不可用，main 用户改动未碰、未合并。本批只使用合成游戏 DTO、隔离 STA 窗口和生产资源，没有访问真实存档、媒体目录、云端或外发诊断。证据见 [R21-07 焦点可视回归](evidence/R21-07-FOCUS-VISUAL-20260921.md)。
 - 下一可执行小批量：`R21-08` 单屏与跨屏分账，先记录当前单屏/DPI 可测边界与 Popup/字体/焦点的真实跨屏待验场景，不把离屏模拟写成物理跨屏结论。
+
+## 2026-09-21 Round3 R21-08 单屏与跨屏分账
+
+- 先核对已有 Q24-03 真实宿主前置：`scripts/real-host-audit.ps1` 使用 `System.Windows.Forms.Screen.AllScreens` 记录显示器边界/工作区，并在单屏时把 `Q24_03PhysicalCrossScreen.Status` 置为 `blocked-single-display`；没有新造 Popup 定位、独立窗口或 DPI 体系。
+- 当前 Windows 主机真实枚举只有 `\\.\DISPLAY1`，Bounds 为 `0,0 1707×960`，WorkArea 为 `0,0 1707×912`；因此没有执行跨屏迁移，也没有把离屏逻辑 DPI 模拟写成物理跨屏通过。双屏场景已写成可执行清单：Popup 位置、字体/文本度量、焦点、主题资源/资源释放、回迁和前后呈现证据。
+- 现有实际证据：`R05PopupBoundaryBehaviorTests 2/2`、`R09PixelStrokeBehaviorTests 2/2`（1.00–2.00 逻辑尺度模拟）、`R09ThemeSwitchBehaviorTests 1/1`、拓扑/源码契约 `26/26`；当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，real-host 脚本语法通过。
+- R21-08 按“已满足，待环境验证”收口。真实双屏 Playnite/package-host、Popup 跨屏像素位置、字体清晰度、焦点和资源释放、呈现帧、Windows UIA/读屏、OS 输入/IME、ETW、宿主性能仍待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R21-08 单屏与跨屏分账](evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md)。
+- 下一可执行任务：进入后续依赖已满足的 Q/R 小批量；若获得第二个物理显示器，优先按本证据的双屏清单运行隔离 Playnite 宿主回放。
