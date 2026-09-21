@@ -2,20 +2,22 @@
 
 ## 本子批次结论
 
-本子批次提交 `b53ab44fd48c3e2a879cb886f410ffb155c3b2fb` 已把已有共享时间显示契约接入 Task Center 任务表/详情和 Overview 最近任务/全局活动两个入口。R22-01 整项仍为“部分满足，待继续”，没有把其他页面、真实剪贴板或真实宿主验证提前写成完成。
+本子批次提交 `b53ab44fd48c3e2a879cb886f410ffb155c3b2fb`、`308c2b06` 和 `6ea7bf9a` 已把已有共享时间显示契约接入 Task Center 任务表/详情、Overview 最近任务/全局活动及最近访问三个入口。R22-01 整项仍为“部分满足，待继续”，没有把其他页面、真实剪贴板或真实宿主验证提前写成完成。
 
 ## 复用与实现
 
 - 复用 Contracts 的 `TimeDisplayFormatter`、`TaskStatusDto` 和 `ActivityEntryDto`，为任务/活动 DTO 提供相对时间、带本地时区偏移的完整时间和原始 UTC round-trip 文本；未知任务开始时间仍为“未开始”。
 - Task Center 任务表改用相对时间；已有任务表列宽、`DataGridClipboardBehavior`、分页/选择、命令绑定和滚动系统保持不变。时间单元格 Tooltip 提供完整时间，任务详情开始时间同时提供完整时间和 Automation HelpText。
 - Overview 最近任务和全局活动继续使用有限/虚拟化列表，仅替换时间显示绑定为相对时间，并把完整时间放入 Tooltip 与 Automation HelpText；没有新增计时器、服务、真实数据写入或第二套时间格式化逻辑。
+- `RecentAccessItem` 保留 `LastAccessDisplay` 兼容属性，新增相对/完整/原始 UTC 投影；Overview 最近访问行文本使用相对时间，按钮和行 Tooltip/Automation HelpText 使用完整时间。稳定 ID、最近访问记录裁剪、导航命令、有限列表虚拟化和滚动条保持；`DateTime.MinValue` 负例明确显示“时间未知/未记录 UTC 时间”。
 
 ## 实际验证
 
 - `R22TimeDisplayBehaviorTests` `6/6`：共享格式化器边界，以及任务/活动 DTO 的完整时间、原始 UTC、未开始负例。
 - `R15TaskTimelineTests` `3/3`：时间线 UTC 顺序、未知时间负例、Task Center 与 Overview 的绑定契约。
 - `OverviewInteractionTests` `1/1`、`R10RecentAccessBehaviorTests` `2/2`；本批选定 Playnite 行为测试合计 `12/12`。
-- 提交身份 Release 构建：Playnite `net462` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；Playnite Tests `net472` `0 warnings / 0 errors`。`validate-source.py`、XAML `24/24`、`git diff --check` 通过；WPF 静态检查 `0 errors / 27 warnings / 177 info`，warning/info 为既有布局/主题资源规则提示。
+- `R22TimeDisplayBehaviorTests` 在最近访问入口收口为 `14/14`；与 `R10RecentAccessBehaviorTests`、Save 排序/历史、维护诊断组合的定向回归为 `30/30`，包含最近访问未知时间负例。
+- 生产代码提交 `308c2b06` 的 Release 构建：Playnite `net462` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；Playnite Tests `net472` `0 warnings / 0 errors`；随后 `6ea7bf9a` 仅补充已通过的测试负例。`validate-source.py`、XAML `24/24`、`git diff --check` 通过；WPF 静态检查 `0 errors / 27 warnings / 177 info`，warning/info 为既有布局/主题资源规则提示。
 
 ## 未验边界
 
@@ -25,4 +27,4 @@
 
 ## 下一步
 
-继续 R22-01：Retention 保留预览已单独接入；先盘点 MediaCenter `CapturedLocal` 及剩余 `CreatedLocal`、`CreatedDisplay`、`StringFormat` 和复制入口，逐个复用同一 formatter 并补对应负例；随后再处理真实系统时钟与宿主边界。
+继续 R22-01：先盘点 Storage/RecentAccess 之外其他仍直显旧本地时间的生产绑定，逐个复用同一 formatter 并补对应负例；随后再处理真实系统时钟与宿主边界。

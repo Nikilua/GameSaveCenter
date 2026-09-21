@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 Overview 最近访问时间（第十一子批次）
+
+- 先核对已有 `RecentAccessItem`、稳定 ID 记录、Overview 最近访问有限/虚拟化列表和 `OpenRecentAccessCommand`；本阶段只复用 `TimeDisplayFormatter`，没有新增记录服务、计时器或导航路径。
+- `308c2b06` 保留 `LastAccessDisplay` 兼容属性，新增相对/完整/原始 UTC 投影和完整摘要；最近访问行文本使用相对时间，按钮/行 Tooltip 与 Automation HelpText 使用完整时间，记录裁剪、稳定 ID、命令、滚动和虚拟化保持。`6ea7bf9a` 补充 `DateTime.MinValue` 的“时间未知/未记录 UTC 时间”负例。
+- 最终生产代码提交 `308c2b06` 的 Release 构建为 Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；随后测试提交 `6ea7bf9a` 已在相同最终源状态下通过 `R22TimeDisplayBehaviorTests 14/14`、`R10RecentAccessBehaviorTests 2/2`、Save/Maintenance 相关回归，定向合计 `30/30`。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成记录、fake/隔离 WPF testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点 Storage/RecentAccess 之外其他仍直显旧本地时间的生产绑定。
+
 ## 2026-09-21 R22-01 Local Mirror 最近同步时间（第十子批次）
 
 - 先核对已有 `LocalMirrorStatusDto.LastSyncUtc`、Maintenance 镜像状态卡片以及同步/刷新命令；本阶段只复用 `TimeDisplayFormatter`，没有新增镜像服务、文件操作或删除路径。
