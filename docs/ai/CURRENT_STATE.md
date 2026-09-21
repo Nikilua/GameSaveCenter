@@ -5,6 +5,13 @@
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
 - 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 至 R21-08，并补证 R22-04；当前继续选择后续依赖已满足的 Q/R 小批量。若获得第二个物理显示器，优先按 R21-08 清单补真实宿主跨屏回放。
 
+## 当前第三轮 R22-01 历史跳转状态时间（本子批已满足，R22-01 仍部分满足）
+
+- `1bac9090` 将 SaveCenter 历史列表“跳到最近/较早版本”状态正文改为相对时间，新增 `StatusMessageFullDisplay`；状态栏 Tooltip/Automation HelpText 保留完整本地时区与 round-trip UTC。日期范围筛选仍按本地日历，导航排序、稳定 ID、选中项、滚动和命令门控保持。
+- `R11HistoryTimeNavigationBehaviorTests 4/4`，覆盖本地范围、同秒稳定排序、未知时间负例、最近/较早两个方向和绑定门禁；Release XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；source/diff 与 WPF `0/27/177` 通过。
+- 验证仅使用合成 DTO、源码/绑定契约和隔离构建目录，没有真实存档、媒体、云端或诊断写入。真实 Playnite/package-host、UIA/读屏、系统输入、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验。插件菜单快速历史通知、复制列和仅内部日志/导出字段仍待单独核对。证据见 [`R22-01 历史跳转状态时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-HISTORY-JUMP-TIME-20260921.md)。
+- 下一可执行任务：核对 `GameSaveCenterPlugin.ShowBackupHistoryQuickActionAsync` 的通知时间语义，并分别记录通知正文、复制列和内部日志/导出的真实边界。
+
 ## 当前第三轮 R22-01 比较选择与结果摘要时间（本子批已满足，R22-01 仍部分满足）
 
 - `ea010656` 复用 `BackupVersionDto` 的相对/完整时间投影，将 `DashboardViewModel` 的比较选择摘要和比较完成摘要正文切换为相对时间；对应完整摘要进入 SaveCenter Tooltip/Automation HelpText。A→B 方向、稳定 ID、新增/删除语义、同版本负例和比较命令保持。

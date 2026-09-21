@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 历史跳转状态时间（2026-09-21，第二十四子批次）
+
+- `1bac9090` 复用 `BackupVersionDto.CreatedRelativeDisplay/CreatedFullDisplay`，将历史列表最近/较早跳转的 Dashboard 状态正文切为相对时间；`StatusMessageFullDisplay` 默认回退普通状态原文，历史跳转显式保留完整本地/UTC 证据。
+- 本地日历范围、UTC 导航排序、稳定 BackupId、选中、滚动、命令门控和无可跳转语义保持。`R11HistoryTimeNavigationBehaviorTests 4/4`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，仅既有 2 条 MediaCenter CS8602。
+- 只证明合成 DTO、源码绑定契约和隔离构建，不等价真实 Playnite/package-host、UIA/读屏、系统输入、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。插件快速历史通知没有同等 Tooltip/Automation 容器，下一步单独核对其正文与复制/内部日志边界。证据：`R22-01-HISTORY-JUMP-TIME-20260921.md`。
+
 ## 第三轮 R22-01 比较选择与结果摘要时间（2026-09-21，第二十三子批次）
 
 - `ea010656` 复用已有 `BackupVersionDto` 时间投影；`DashboardViewModel` 比较选择/结果摘要正文改用相对时间，完整摘要通过生产 SaveCenter `TextBlock` 的 Tooltip/Automation HelpText 提供。没有新增比较服务、IPC、差异列表、排序或命令路径。

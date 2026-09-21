@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 历史跳转状态时间（第二十四子批次）
+
+- 先核对 `DashboardViewModel.BackupHistory` 的本地日期筛选、UTC 稳定导航和状态栏绑定；没有把插件菜单快速历史通知、复制列或内部日志一起改写。
+- `1bac9090` 复用已有时间 DTO：历史跳转状态正文使用相对时间，状态栏 `StatusMessageFullDisplay` 的 Tooltip/Automation HelpText 保留完整本地时间与 UTC；其他普通状态消息默认回退原文。
+- `R11HistoryTimeNavigationBehaviorTests 4/4` 覆盖范围、排序、未知时间、最近/较早反馈和绑定门禁；Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-HISTORY-JUMP-TIME-20260921.md`。只使用合成 DTO、源码/绑定契约和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统输入、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对插件快速历史通知和复制/内部日志时间语义。
 ## 2026-09-21 R22-01 比较选择与结果摘要时间（第二十三子批次）
 
 - 先核对 `DashboardViewModel` 两个生产摘要的实际绑定：`CompareSelectionSummary` 与 `DiffComparedSummary` 确实是用户可见文本；历史跳转、快速历史、复制和内部导出保持独立，不在本批混改。
