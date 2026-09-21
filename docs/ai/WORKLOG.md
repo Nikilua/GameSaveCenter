@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 复制列与报告/日志时间（第二十六子批次）
+
+- 先查 `DataGridClipboardFormatter`、SaveHistory 复制命令、Worker 健康报告测试和诊断/Worker 日志格式；确认这些是稳定机器可读完整时间，不把它们误改成相对正文。
+- `494a911f` 只补 SaveHistory 行/单元格实际格式化证据，保留本地 `yyyy-MM-dd HH:mm:ss`、BackupId 稳定去重、TSV、脱敏、完整值复制和既有报告/日志格式，没有新增文件、剪贴板或诊断写入。
+- `R06ClipboardBehaviorTests 4/4`、`R22TimeDisplayBehaviorTests 23/23`、Worker `MaintenanceReportServiceTests 2/2`；隔离 Release XAML `24/24`、Playnite/Tests/Worker `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COPY-EXPORT-TIME-20260921.md`。只使用合成 DTO、fake/隔离 testhost 和隔离构建目录，没有真实剪贴板、报告/日志目录、存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实剪贴板/报告/日志目录、Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为盘点残余用户可见 `ToLocalTime` 入口后选择下一独立 Q/R 小批。
 ## 2026-09-21 R22-01 快速历史通知时间（第二十五子批次）
 
 - 先核对 `GameSaveCenterPlugin.ShowBackupHistoryQuickActionAsync` 和 `ShowInfo` 的真实能力：通知没有 Tooltip/Automation 容器，因此没有引入新的通知设计。

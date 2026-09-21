@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 复制列与报告/日志时间（2026-09-21，第二十六子批次）
+
+- `494a911f` 复用既有 `DataGridClipboardFormatter` 和报告/日志格式，不改变 SaveHistory 复制的完整本地秒级时间、稳定 `BackupId` 去重、TSV、脱敏或完整值复制；Worker 健康报告生成时间已有完整本地秒级行为证据。
+- `R06ClipboardBehaviorTests 4/4`、`R22TimeDisplayBehaviorTests 23/23`、Worker `MaintenanceReportServiceTests 2/2`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，仅既有 2 条 MediaCenter CS8602。按“已满足，待环境验证”记录这组机器可读输出，未将相对时间引入复制/日志/导出。
+- 只证明合成 DTO、fake/隔离 testhost 和隔离目录，不等价真实剪贴板、报告/日志目录、Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。残余用户可见 `ToLocalTime` 入口仍需逐项核对。证据：`R22-01-COPY-EXPORT-TIME-20260921.md`。
+
 ## 第三轮 R22-01 快速历史通知时间（2026-09-21，第二十五子批次）
 
 - `3f535cb2` 复用 `BackupVersionDto`，将 Playnite 游戏菜单快速历史通知行改为相对时间 + 完整本地/UTC 时间同行展示；没有新增通知体系、Worker 服务或查询写入。
