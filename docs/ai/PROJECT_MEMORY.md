@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 维护摘要时间（2026-09-21，第三十一子批次）
+
+- `df689dc1` 复用健康巡检已有相对/完整投影，修正 Maintenance 诊断概览行动摘要中的恢复巡检与隔离账本旧本地时间；正文相对，Tooltip/Automation HelpText 完整本地/round-trip UTC，保留人工确认、分页、Worker 协调和非破坏性巡检边界。
+- 实际 STA WPF `MaintenanceView` 与相邻维护/恢复/时间测试定向 `38/38`；Release/XAML/source/diff/WPF `0 warnings / 0 errors / 27 warnings / 177 info`，既有 MediaCenter CS8602 未改写。证据：`R22-01-MAINTENANCE-ACTION-TIME-20260921.md`。
+- 只证明合成动作、fake DataContext、隔离 testhost 和隔离构建，不等价真实 Playnite/package-host、UIA/读屏、最终呈现、系统时钟跳变、DPI/跨屏、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；下一项盘点概览/最近访问等仍实际绑定的旧 `ToLocalTime`，或选择下一独立 Q/R 小批。
+
 ## 第三轮 R22-01 恢复确认框时间（2026-09-21，第三十子批次）
 
 - `c5dc47fc` 复用 `BackupVersionDto` 已有相对/完整时间投影，令安全恢复原生确认正文同时显示相对时间与完整本地/round-trip UTC；未知时间保持“时间未知”，没有改变确认、PreRestore、取消/错误、二次选中项核对或恢复写入门控。

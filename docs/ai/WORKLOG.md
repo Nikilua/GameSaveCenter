@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 维护摘要时间（第三十一子批次）
+
+- 先查 Maintenance 诊断概览的真实 `MaintenanceActionSections`、`TimingDisplay` 绑定；确认恢复巡检和隔离账本的旧本地时间确实进入用户可见行动摘要，云端动作已有相对/完整合同。
+- `df689dc1` 将恢复巡检最近成功/最近完成/下轮计划改为相对正文并补完整投影，将隔离账本 `UpdatedUtc` 改为相对正文并补完整投影；实际视图的 Tooltip/Automation HelpText 继续绑定 `TimingFullDisplay`，不改变分页、人工确认、Worker 协调或非破坏性巡检。
+- 实际 STA WPF 行为与相邻维护/恢复/时间测试定向 `38/38`；Release/XAML `24/24`、Contracts/Playnite/Tests/Worker `0 warnings / 0 errors`，既有 MediaCenter CS8602 未改写；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MAINTENANCE-ACTION-TIME-20260921.md`。仅使用合成动作、fake/隔离 STA WPF 和隔离构建目录；未启动真实 Playnite/package-host，没有真实存档、媒体、云端、账本协调、恢复写入或外发诊断，Demo 原目录不可用，main 用户改动未碰未合并。
+- 未宣称真实 UIA/读屏、最终呈现、系统时钟跳变、DPI/跨屏、ETW 或宿主性能。R22-01 仍“部分满足，待继续”；下一可执行小批量是盘点概览/最近访问等实际绑定的旧 `ToLocalTime` 入口，或下一独立 Q/R 任务。
+
 ## 2026-09-21 R22-01 恢复确认框时间（第三十子批次）
 
 - 先查 `RestoreAsync` 的真实确认消息和 `BackupVersionDto` 已有时间投影；没有新建时间服务，也没有把复制/日志的机器可读完整时间改成相对时间。

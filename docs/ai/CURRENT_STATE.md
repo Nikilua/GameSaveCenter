@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 维护摘要时间（本子批已满足，R22-01 仍部分满足）
+
+- `df689dc1` 修正 Maintenance 诊断概览真实“下一步运维”行动摘要的两个旧时间入口：恢复巡检的最近成功/最近完成/下轮计划改用相对正文并保留完整投影，隔离账本更新时间改用相对正文并新增完整 Tooltip/Automation HelpText 回退。
+- 实际 STA WPF `MaintenanceView` 读取行动摘要 TextBlock，确认正文使用 `TimingDisplay`、Tooltip/HelpText 使用 `TimingFullDisplay`；云端动作、分页、人工确认、Worker 协调和非破坏性巡检语义保持。`R22MaintenanceActionTimeBehaviorTests` 联合相关维护/恢复/时间定向合计 `38/38`。
+- Release 隔离构建 XAML `24/24`、Contracts/Playnite net462、Tests net472、Worker `0 warnings / 0 errors`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。证据见 [`R22-01 维护摘要时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MAINTENANCE-ACTION-TIME-20260921.md)。
+- 只证明合成动作、fake DataContext、隔离 STA WPF 和隔离构建；未启动真实 Playnite/package-host，未宣称 UIA/读屏、最终呈现、系统时钟跳变、DPI/物理跨屏、ETW 或宿主性能；没有真实存档、媒体、云端、账本协调、恢复写入或外发诊断，Demo 原目录不可用。
+- 下一可执行任务：继续核对 R22-01 恢复/校验详情之外的旧 `ToLocalTime` 绑定（优先仍实际显示的概览或最近访问入口），或转入依赖已满足的下一独立 Q/R 小批；保持当前选框、滚动条、命令与安全语义。
+
 ## 当前第三轮 R22-01 恢复确认框时间（本子批已满足，R22-01 仍部分满足）
 
 - `c5dc47fc` 收口 `DashboardViewModel.RestoreAsync` 的真实原生确认消息：复用 `BackupVersionDto.CreatedRelativeDisplay` 与 `CreatedFullDisplay`，版本行同时显示相对时间和完整本地时区/round-trip UTC；未知 `CreatedUtc` 保持“时间未知”，不伪造日期。
