@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-08 状态样式一致索引（第三十七子批次）
+
+- 启动先盘点现有 `StatusGlyphConverter`、`TaskCenterView`/`MaintenanceView` 绑定、`WorkspaceStatePresenter` 和 Demo 主题图标/颜色资源；确认大部分成功/失败/需关注映射已存在，缺口只在运行与暂停文本线索。
+- `d919179a` 补充运行/进行中/传输中/处理中/校验中等 `ℹ` 线索，暂停/未知 `⚠` 线索，保留成功 `✓`、错误 `×` 和业务状态值；没有替换颜色资源、状态服务、命令绑定、选框或滚动条。
+- `R22StatusStyleIndexBehaviorTests 7/7`；状态/图标/Workspace 回归 `32 passed / 1 skipped`，skip 为既有 legacy source skip；提交身份隔离 Release XAML `24/24`、Playnite net462/Tests net472/Worker `0 errors`，两条既有 MediaCenter CS8602 warning；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 仅用合成状态和隔离 testhost；未验真实跨页颜色/图标、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现/ETW/宿主性能，Demo 原目录不可用，main 用户改动未碰。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-08-STATUS-STYLE-INDEX-20260922.md`。代码已提交，文档待独立提交并推送；下一可执行项为 `R23-01` 每组可审阅交付。
+
 ## 2026-09-22 R22-07 确认框信息结构（第三十六子批次）
 
 - 启动核对了真实确认事件、恢复/清理/协调/批量/任务取消调用、按钮文案和 `DashboardView` 遮罩生命周期；已有正文列出对象/范围/后果，确认详情沿用独立 `ScrollViewer`，没有重建确认服务。

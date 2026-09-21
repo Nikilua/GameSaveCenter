@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-08 状态样式一致索引（2026-09-22，第三十七子批次）
+
+- `d919179a` 先核对确认成功/失败/需关注已有共享转换器和主题资源，只补运行/传输/处理/校验与暂停文本线索，不重建跨页状态服务、不改绑定/颜色/选框/滚动条。
+- `StatusGlyphConverter` 现在把运行桶映射 `ℹ`、暂停/未知映射 `⚠`；成功 `✓`、错误 `×` 保持。TaskCenter 与 Maintenance 继续共用转换器，未知不借用成功图标。
+- `R22StatusStyleIndexBehaviorTests 7/7`；相关状态/图标/Workspace `32 passed / 1 skipped`，skip 为既有 legacy source skip；Release/XAML/source/diff/WPF 基线通过，两条 MediaCenter CS8602 未改写。
+- 未宣称真实跨页颜色/图标呈现、Playnite/package-host、UIA/读屏、OS 输入、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，dirty main 未改，真实存档/媒体/云端/诊断未触碰。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-08-STATUS-STYLE-INDEX-20260922.md`。
+- 下一项 `R23-01`：整理每组可审阅交付，必须保持事实/边界准确。
+
 ## 第三轮 R22-07 确认框信息结构（2026-09-22，第三十六子批次）
 
 - `3ac6d16a` 复用既有确认事件、Dashboard 内嵌遮罩和详情滚动区；真实恢复/清理/协调/批量/任务取消调用的对象、范围、后果和动作按钮已核对，不把表格方向误判为所有调用都缺功能。

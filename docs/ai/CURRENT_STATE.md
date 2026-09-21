@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-08 状态样式一致索引（本子批已满足，待环境验证）
+
+- `d919179a` 复用现有 `StatusGlyphConverter`、TaskCenter/Maintenance 绑定和 Demo 主题资源，只补状态文本线索缺口：运行/进行中/传输中/处理中/校验中等返回信息符号，暂停/未知返回警示符号；成功/错误映射保持，未知不借用成功。
+- `R22StatusStyleIndexBehaviorTests 7/7`；状态/图标/Workspace 定向回归 `32 passed / 1 skipped`（既有 legacy source skip）。隔离 Release XAML `24/24`、Playnite `net462` / Tests `net472` / Worker `0 errors`，既有 `MediaCenterView.xaml.cs:699 CS8602` 两条 warning；source/diff 通过，WPF `0/27/177`。
+- 仅使用合成状态、现有 DTO/转换器和隔离 testhost；真实跨页颜色/图标呈现、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能和 Demo 原目录仍未验。未触碰 dirty main，未读写真实存档/媒体/云端或外发诊断。证据：`evidence/R22-08-STATUS-STYLE-INDEX-20260922.md`。
+- 下一可执行任务：按依赖进入 `R23-01` 每组可审阅交付，只整理已完成事实和真实未验边界。
+
 ## 当前第三轮 R22-07 确认框信息结构（本子批已满足，待环境验证）
 
 - `3ac6d16a` 先核对真实恢复、清理、协调、批量与任务取消确认调用，确认对象/范围/后果已经在正文中出现，动作按钮由调用方提供明确文案；确认卡沿用独立可滚动详情区、Demo 基线和既有遮罩焦点生命周期。
