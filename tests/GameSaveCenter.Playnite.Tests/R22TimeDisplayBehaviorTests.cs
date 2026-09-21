@@ -293,6 +293,27 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void EnvironmentCheckTimeEntrypointKeepsUnknownSemanticsAndExposesFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var timestamp = new DateTime(2026, 9, 19, 11, 12, 13, DateTimeKind.Utc);
+        var report = new EnvironmentCheckReportDto { CheckedUtc = timestamp };
+        var unknown = new EnvironmentCheckReportDto();
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), report.CheckedLocalDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), report.CheckedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), report.CheckedRawUtcDisplay);
+        Assert.Equal("尚未检查", unknown.CheckedRelativeDisplay);
+        Assert.Equal("尚未检查", unknown.CheckedFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.CheckedRawUtcDisplay);
+        Assert.Contains("EnvironmentCheck.CheckedRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("EnvironmentCheck.CheckedFullDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding EnvironmentCheck.CheckedFullDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
