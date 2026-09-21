@@ -164,6 +164,13 @@ namespace GameSaveCenter.Contracts
         public string HealthReasonDisplay => HealthReasons != null && HealthReasons.Count > 0
             ? string.Join("；", HealthReasons)
             : HealthSummary;
+        public string LastBackupRelativeDisplay => LastBackupUtc.HasValue
+            ? TimeDisplayFormatter.Relative(LastBackupUtc.Value, DateTime.UtcNow)
+            : "时间未知";
+        public string LastBackupFullDisplay => LastBackupUtc.HasValue
+            ? TimeDisplayFormatter.Full(LastBackupUtc.Value)
+            : "时间未知";
+        public string LastBackupRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastBackupUtc ?? DateTime.MinValue);
         public string CloudStateDisplay => CloudState switch
         {
             "Uploaded" => "已上传",

@@ -376,6 +376,28 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void OverviewSelectedGameBackupKeepsLegacyProjectionAndExposesFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+        var timestamp = DateTime.UtcNow.AddHours(-3);
+        var game = new GameStatusDto { LastBackupUtc = timestamp };
+        var unknown = new GameStatusDto();
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("MM-dd HH:mm"), game.LastBackupLocal?.ToString("MM-dd HH:mm"));
+        Assert.NotEqual("时间未知", game.LastBackupRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), game.LastBackupFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), game.LastBackupRawUtcDisplay);
+        Assert.Equal("时间未知", unknown.LastBackupRelativeDisplay);
+        Assert.Equal("时间未知", unknown.LastBackupFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.LastBackupRawUtcDisplay);
+        Assert.Contains("SelectedGameLastBackupRelativeDisplay, Mode=OneWay", overview, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding SelectedGameLastBackupFullDisplay, Mode=OneWay}\"", overview, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedGameLastBackupFullDisplay, Mode=OneWay}\"", overview, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

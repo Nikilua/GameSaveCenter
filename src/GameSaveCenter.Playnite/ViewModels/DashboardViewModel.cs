@@ -819,6 +819,22 @@ namespace GameSaveCenter.Playnite.ViewModels
                 : SelectedGame?.LastBackupUtc is DateTime backupUtc
                     ? backupUtc.ToLocalTime().ToString("MM-dd HH:mm")
                     : "暂无";
+        public string SelectedGameLastBackupRelativeDisplay
+            => !IsDashboardSnapshotLoaded
+                ? "—"
+                : SelectedGame?.LastBackupUtc is DateTime
+                    ? SelectedGame.LastBackupRelativeDisplay
+                    : "暂无";
+        public string SelectedGameLastBackupFullDisplay
+            => !IsDashboardSnapshotLoaded
+                ? "—"
+                : SelectedGame?.LastBackupUtc is DateTime
+                    ? SelectedGame.LastBackupFullDisplay
+                    : "暂无";
+        public string SelectedGameLastBackupRawUtcDisplay
+            => SelectedGame?.LastBackupUtc is DateTime
+                ? SelectedGame.LastBackupRawUtcDisplay
+                : "未记录 UTC 时间";
         public int MaintenanceTabIndex { get => maintenanceTabIndex; set { SetValue(ref maintenanceTabIndex, value); } }
         /// <summary>Remembers the ordinary media tab; purpose actions may override it once.</summary>
         public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(3, value))); } }
@@ -889,6 +905,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(SelectedGameMediaCountDisplay));
             OnPropertyChanged(nameof(SelectedGameCloudStateDisplay));
             OnPropertyChanged(nameof(SelectedGameLastBackupDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupRelativeDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupFullDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupRawUtcDisplay));
         }
         public RecentProtectionSummary RecentProtection { get => recentProtection; private set => SetValue(ref recentProtection, value); }
         public WorkerSettingsSnapshotDto EffectiveSettings
