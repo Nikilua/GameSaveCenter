@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-03 复制反馈轻量（2026-09-21，第三十三子批次）
+
+- `5a21e18e` 新增 `ClipboardFeedback`，必须复用现有 `FeedbackToast` UI Automation Peer 和 `GscRedesignFeedbackToast*` 资源；Popup 放在目标控件附近，不进入布局、不获取焦点，同一目标复用实例，活动状态切换时关闭前一条。
+- DataGrid `Ctrl+C`/`Ctrl+Shift+C`、设置页路径、Dashboard 命令通知和通知详情复制均接通成功/空内容/占用失败反馈；失败文案要保留可重试信息。Dashboard 没有焦点源控件时才使用单一合并 Toast，不能让连续复制堆 Toast。
+- `R22CopyFeedbackBehaviorTests 2/2` 实际验证 Popup 定位、复用、布局尺寸、焦点和失败 Automation 文案；R06 `4/4`、R15 `6/6`、R16 `1/1`，R21 两个独立 STA 场景各 `1/1`。提交身份 Release net462/net472 无错误，既有 MediaCenter CS8602 两条 warning 保留。
+- 只用 fake setter、合成 DTO、隔离 STA Window；未宣称真实 Windows 剪贴板、Playnite/package-host、UIA/读屏、键盘/IME、DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用，不修改 dirty main、真实存档/媒体/云端/诊断。
+- 下一项 `R22-05`：先盘点批量动作跨筛选保留选择、当前结果数量和隐藏选择提示，再补行为/负例；保留游戏选框、滚动条、命令和安全门控。
+
 ## 第三轮 R22-02 容量单位（2026-09-21，第三十二子批次）
 
 - `86b72e1e` 将重复的容量格式化逻辑收敛到 Contracts `ByteSizeFormatter`，统一 1024 进制 `B/KiB/MiB/GiB`、最多两位小数和小于 1 KiB 直接显示 B；Trainer/诊断/媒体预览/元数据灾备等旧入口不再把小值显示成 `0 KiB`，未知大小保持未知。

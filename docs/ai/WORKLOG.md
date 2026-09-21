@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-03 复制反馈轻量（第三十三子批次）
+
+- 启动先查明：DataGrid 有稳定 TSV/脱敏复制但失败静默；设置页路径已有本地状态文本；Dashboard 任务/路径/诊断/维护报告/通知详情复制分别走重试、全局通知或直接剪贴板写入。没有把表格新增方向误判为能力缺失。
+- `5a21e18e` 新增共享 `ClipboardFeedback` Popup，复用现有 FeedbackToast 自动化 Peer 和主题资源；DataGrid、设置页、Dashboard 复制通知和详情复制均接通成功/空内容/失败重试状态。连续复制通过同一目标实例和 Dashboard fallback 合并，不改变布局或焦点。
+- 新增 `R22CopyFeedbackBehaviorTests` 实际 STA Window 行为 `2/2`，覆盖成功、连续复制复用、fake 占用失败、重试文案、Automation Name/HelpText、PlacementTarget 和布局尺寸；相邻 R06 `4/4`、R15 `6/6`、R16 `1/1`，R21 两个独立 STA 场景各 `1/1`。
+- 提交身份 Release 编译 Playnite `net462` / Tests `net472` 无错误；保留既有 `MediaCenterView.xaml.cs:671 CS8602` 两条 warning。`validate-source.py`、`git diff --check` 通过，WPF `0/27/177`，与此前基线一致。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-03-COPY-FEEDBACK-20260921.md`。
+- 只使用 fake 剪贴板、合成 DTO、隔离 STA Window；未启动真实 Playnite/package-host、未验证真实剪贴板/UIA/读屏/物理跨屏/呈现帧/ETW/宿主性能，Demo 原目录不可用。main 用户改动未碰，未读写真实存档、媒体、云端或外发诊断。
+- 已提交并推送 `5a21e18e` 到 `codex/ui-finesse-round2`；下一可执行任务为 `R22-05`，先核对批量动作现有选择汇总和跨筛选隐藏选择负例。
+
 ## 2026-09-21 R22-02 容量单位统一（第三十二子批次）
 
 - 先扫描 Contracts、Playnite Views/ViewModels 与 Worker 报告的实际容量入口，确认大多数已是 1024 进制，但 Media source preview 仍为 `KB/MB/GB`，Trainer、诊断和 Dashboard 元数据摘要的小值可能显示为 `0.x/0.0 KiB/MiB`；没有把表格“新增功能”当成缺失断言。

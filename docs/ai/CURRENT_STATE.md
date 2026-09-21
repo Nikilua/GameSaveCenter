@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-03 复制反馈轻量（本子批已满足，待环境验证）
+
+- `5a21e18e` 新增共享 `ClipboardFeedback`，复用现有 `FeedbackToast` 自动化 Peer 与 Demo 基线主题资源，在 DataGrid、设置页路径复制、Dashboard 复制通知和通知详情复制的原控件附近显示短暂 Popup；不改布局、不抢焦点，同一目标/全局活动状态合并连续反馈。
+- DataGrid 的成功、空内容和剪贴板占用失败均有反馈，失败含“请稍后重试”；设置页状态同步 Automation Name/HelpText；Dashboard 复制通知区分 `IsCopyFeedback`，有焦点源控件定位原控件，无焦点的程序化调用回退到单一可合并 Toast。
+- `R22CopyFeedbackBehaviorTests 2/2`；R06 `4/4`、R15 `6/6`、R16 `1/1`；R21 两个独立 STA 场景 `1/1 + 1/1`。提交身份 Release Playnite `net462`/Tests `net472` 无错误，保留既有 `MediaCenterView.xaml.cs:671 CS8602` 两条 warning；source/diff 通过，WPF `0/27/177`。
+- 仅使用 fake 剪贴板 setter、合成 DTO、隔离 STA Window；未验真实 Playnite/package-host、真实剪贴板、UIA/读屏、DPI/物理跨屏、呈现帧、ETW 或宿主性能。Demo 原目录不可用，main 用户改动未碰、未合并；未读取/写入真实存档、媒体、云端或外发诊断。证据：`evidence/R22-03-COPY-FEEDBACK-20260921.md`。
+- 下一可执行任务：`R22-05` 批量数量防歧义，先盘点跨筛选选择、当前结果数与隐藏选择提示的现有能力和负例。
+
 ## 当前第三轮 R22-02 容量单位（本子批已满足，待环境验证）
 
 - `86b72e1e` 新增 Contracts 级 `ByteSizeFormatter`，把 Backup/恢复校验、Storage/Retention、Media/Trainer、诊断/元数据灾备、Worker 报告与 Playnite 进度等容量显示统一为 1024 进制 `B/KiB/MiB/GiB`；小于 1 KiB 直接显示字节，避免误导性的 `0 KiB`。比较页 `0 B` 与 IPC 差异摘要 `+0 B` 语义分别保留。
