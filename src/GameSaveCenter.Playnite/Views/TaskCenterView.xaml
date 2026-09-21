@@ -274,7 +274,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBlock x:Name="TaskQueueLastUpdatedSummary" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0" ToolTip="{Binding TaskPageStatusSummary}"/>
+                            <TextBlock x:Name="TaskQueueLastUpdatedSummary" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -303,7 +303,7 @@
                     </Border.Style>
                     <Grid>
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding TaskPageStatusSummary}" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" VerticalAlignment="Center"/>
                         <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding RefreshCommand}" Content="重试" Margin="10,0,0,0" AutomationProperties.Name="重试任务记录读取"/>
                     </Grid>
                 </Border>

@@ -74,6 +74,8 @@ public sealed class R21AsyncCompletionAnnouncementBehaviorTests
         Exception? exception = null;
         string? loadingText = null;
         string? completedText = null;
+        string? completedToolTip = null;
+        string? completedHelpText = null;
 
         RunSta(() =>
         {
@@ -89,10 +91,14 @@ public sealed class R21AsyncCompletionAnnouncementBehaviorTests
                     var summary = (TextBlock)view.FindName("TaskQueueLastUpdatedSummary")!;
                     loadingText = summary.Text;
 
-                    state.TaskPageStatusSummary = "最近更新：2026-09-21 12:34:56";
+                    state.TaskPageStatusSummary = "最近更新：刚刚";
+                    state.TaskPageStatusSummaryFullDisplay = "最近更新：2026-09-21 12:34:56 (UTC+08:00) · 2026-09-21T04:34:56.0000000Z";
                     state.Raise(nameof(TaskPageStatusContext.TaskPageStatusSummary));
+                    state.Raise(nameof(TaskPageStatusContext.TaskPageStatusSummaryFullDisplay));
                     PumpLayout(window);
                     completedText = summary.Text;
+                    completedToolTip = summary.ToolTip as string;
+                    completedHelpText = AutomationProperties.GetHelpText(summary);
                 }
                 finally
                 {
@@ -107,7 +113,9 @@ public sealed class R21AsyncCompletionAnnouncementBehaviorTests
 
         Assert.Null(exception);
         Assert.Equal("正在加载任务记录…", loadingText);
-        Assert.Equal("最近更新：2026-09-21 12:34:56", completedText);
+        Assert.Equal("最近更新：刚刚", completedText);
+        Assert.Equal("最近更新：2026-09-21 12:34:56 (UTC+08:00) · 2026-09-21T04:34:56.0000000Z", completedToolTip);
+        Assert.Equal(completedToolTip, completedHelpText);
     }
 
     private static Window Show(FrameworkElement content, double width, double height)
@@ -162,6 +170,7 @@ public sealed class R21AsyncCompletionAnnouncementBehaviorTests
         public ICollectionView TasksView { get; }
 
         public string TaskPageStatusSummary { get; set; } = "正在加载任务记录…";
+        public string TaskPageStatusSummaryFullDisplay { get; set; } = "正在加载任务记录…";
 
         public bool IsTaskPageLoading => true;
         public bool TaskPageLoadFailed => false;

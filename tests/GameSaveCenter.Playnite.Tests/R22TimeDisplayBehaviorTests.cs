@@ -480,6 +480,19 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void TaskPageUpdatedTimeUsesSharedRelativeFullAndRawContract()
+    {
+        var timestamp = new DateTime(2026, 9, 18, 12, 34, 56, DateTimeKind.Utc);
+
+        Assert.NotEqual("未知", DashboardViewModel.FormatTaskPageLastUpdatedRelative(timestamp));
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), DashboardViewModel.FormatTaskPageLastUpdatedFull(timestamp));
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), DashboardViewModel.FormatTaskPageLastUpdatedRawUtc(timestamp));
+        Assert.Equal("未知", DashboardViewModel.FormatTaskPageLastUpdatedRelative(null));
+        Assert.Equal("未知", DashboardViewModel.FormatTaskPageLastUpdatedFull(null));
+        Assert.Equal("未记录 UTC 时间", DashboardViewModel.FormatTaskPageLastUpdatedRawUtc(null));
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

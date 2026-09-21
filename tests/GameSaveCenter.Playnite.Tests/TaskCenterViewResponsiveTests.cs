@@ -89,7 +89,7 @@ namespace GameSaveCenter.Playnite.Tests
             var technical = view.IndexOf("x:Name=\"TaskTechnicalDetailsExpander\"", StringComparison.Ordinal);
             Assert.True(failure >= 0 && technical > failure);
             Assert.Contains("Header=\"技术详情\" IsExpanded=\"False\"", view);
-            Assert.Contains("Text=\"{Binding SelectedTask.ErrorMessage, Mode=OneWay}\"", view);
+            Assert.Contains("Text=\"{Binding SelectedTask.FailureSummary, Mode=OneWay}\"", view);
             Assert.Contains("Text=\"{Binding SelectedTask.ErrorCode, Mode=OneWay}\"", view);
         }
 

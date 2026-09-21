@@ -1,4 +1,5 @@
 using System;
+using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.ViewModels
 {
@@ -20,6 +21,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(TaskPageHasLoaded));
                 OnPropertyChanged(nameof(TaskPageState));
                 OnPropertyChanged(nameof(TaskPageStatusSummary));
+                OnPropertyChanged(nameof(TaskPageStatusSummaryFullDisplay));
             }
         }
 
@@ -33,6 +35,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(IsTaskPageLoading));
                 OnPropertyChanged(nameof(TaskPageState));
                 OnPropertyChanged(nameof(TaskPageStatusSummary));
+                OnPropertyChanged(nameof(TaskPageStatusSummaryFullDisplay));
                 RaiseCommandStates();
             }
         }
@@ -47,6 +50,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(TaskPageLoadFailed));
                 OnPropertyChanged(nameof(TaskPageState));
                 OnPropertyChanged(nameof(TaskPageStatusSummary));
+                OnPropertyChanged(nameof(TaskPageStatusSummaryFullDisplay));
             }
         }
 
@@ -60,6 +64,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 taskPageErrorMessage = normalized;
                 OnPropertyChanged(nameof(TaskPageErrorMessage));
                 OnPropertyChanged(nameof(TaskPageStatusSummary));
+                OnPropertyChanged(nameof(TaskPageStatusSummaryFullDisplay));
             }
         }
 
@@ -72,13 +77,21 @@ namespace GameSaveCenter.Playnite.ViewModels
                 taskPageLastUpdatedUtc = value;
                 OnPropertyChanged(nameof(TaskPageLastUpdatedUtc));
                 OnPropertyChanged(nameof(TaskPageLastUpdatedDisplay));
+                OnPropertyChanged(nameof(TaskPageLastUpdatedRelativeDisplay));
+                OnPropertyChanged(nameof(TaskPageLastUpdatedFullDisplay));
+                OnPropertyChanged(nameof(TaskPageLastUpdatedRawUtcDisplay));
                 OnPropertyChanged(nameof(TaskPageStatusSummary));
+                OnPropertyChanged(nameof(TaskPageStatusSummaryFullDisplay));
             }
         }
 
         public string TaskPageLastUpdatedDisplay => TaskPageLastUpdatedUtc.HasValue
             ? TaskPageLastUpdatedUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
             : "未知";
+
+        public string TaskPageLastUpdatedRelativeDisplay => FormatTaskPageLastUpdatedRelative(TaskPageLastUpdatedUtc);
+        public string TaskPageLastUpdatedFullDisplay => FormatTaskPageLastUpdatedFull(TaskPageLastUpdatedUtc);
+        public string TaskPageLastUpdatedRawUtcDisplay => FormatTaskPageLastUpdatedRawUtc(TaskPageLastUpdatedUtc);
 
         public bool TaskPageHasItems => Tasks.Count > 0;
 
@@ -95,19 +108,29 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        public string TaskPageStatusSummary
+        public string TaskPageStatusSummary => BuildTaskPageStatusSummary(useFullTime: false);
+        public string TaskPageStatusSummaryFullDisplay => BuildTaskPageStatusSummary(useFullTime: true);
+
+        internal static string FormatTaskPageLastUpdatedRelative(DateTime? value)
+            => value.HasValue ? TimeDisplayFormatter.Relative(value.Value, DateTime.UtcNow) : "未知";
+
+        internal static string FormatTaskPageLastUpdatedFull(DateTime? value)
+            => value.HasValue ? TimeDisplayFormatter.Full(value.Value) : "未知";
+
+        internal static string FormatTaskPageLastUpdatedRawUtc(DateTime? value)
+            => value.HasValue ? TimeDisplayFormatter.RawUtc(value.Value) : "未记录 UTC 时间";
+
+        private string BuildTaskPageStatusSummary(bool useFullTime)
         {
-            get
-            {
-                if (taskPageIsLoading)
-                    return TaskPageHasItems ? $"正在刷新；已保留 {Tasks.Count} 条旧数据。" : "正在加载任务记录…";
-                if (taskPageLoadFailed)
-                    return TaskPageHasItems
-                        ? $"任务记录暂时无法更新；已保留旧数据（最近更新：{TaskPageLastUpdatedDisplay}）。可点击“重试”。"
-                        : "任务记录暂时无法读取；可点击“重试”。";
-                if (!taskPageHasLoaded) return "等待读取任务记录…";
-                return $"最近更新：{TaskPageLastUpdatedDisplay}";
-            }
+            var lastUpdated = useFullTime ? TaskPageLastUpdatedFullDisplay : TaskPageLastUpdatedRelativeDisplay;
+            if (taskPageIsLoading)
+                return TaskPageHasItems ? $"正在刷新；已保留 {Tasks.Count} 条旧数据。" : "正在加载任务记录…";
+            if (taskPageLoadFailed)
+                return TaskPageHasItems
+                    ? $"任务记录暂时无法更新；已保留旧数据（最近更新：{lastUpdated}）。可点击“重试”。"
+                    : "任务记录暂时无法读取；可点击“重试”。";
+            if (!taskPageHasLoaded) return "等待读取任务记录…";
+            return $"最近更新：{lastUpdated}";
         }
 
         private void BeginTaskPageLoad()
