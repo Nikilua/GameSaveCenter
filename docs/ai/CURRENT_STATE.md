@@ -12,12 +12,12 @@
 - 提交身份 Release 测试项目为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过。完整 Release 的 Worker 仍有未修改路径 `MediaSyncServiceTests.cs:570` NRE，未改写为通过。
 - 真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能和 Demo 原目录仍未验；main 用户改动未碰、未合并。证据见 [`R21-05 禁用与隐藏行为`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md)。下一项为 R21-06 可选择技术文本。
 
-## 当前第三轮 R21-06 可选择技术文本（进行中）
+## 当前第三轮 R21-06 可选择技术文本（已满足，待环境验证）
 
-- 复用现有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`；本批没有新增控件、复制服务或业务语义。
-- 既有实际 WPF 行为 `R03LongPathTests | R11DiffListSearchBehaviorTests | R15TaskFailureCopyTests` 合计 `11/11`：长路径可 `SelectAll` 回读完整值，SaveCenter 路径命令接收完整值，技术详情保留脱敏错误码/详情/任务 ID 并可全选。证据见 [`R21-06 可选择技术文本`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md)。
-- 当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。版本/诊断普通 TextBlock 的剩余入口、真实剪贴板/读屏、选择像素、Playnite host、DPI/跨屏和宿主性能仍未验。
-- 下一可执行小批量：继续 R21-06，先盘点版本与诊断摘要中仍不可键盘选择的文本，确认是否已有等价复制/Tooltip 入口，再决定最小共享控件修补。
+- 复用现有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`，新增共享 `GscWpfUiTechnicalTextBox`，将 Dashboard/AcrylicProductionShell 两条插件版本显示改为只读可选 TextBox；原版本赋值、布局和导航不变。
+- `R03LongPathTests | R11DiffListSearchBehaviorTests | R15TaskFailureCopyTests | R21SelectableTechnicalTextBehaviorTests` 合计 `13/13`：路径、脱敏错误码/技术详情/任务 ID 及两条版本入口均有实际 WPF 选择行为，版本框可聚焦全选并提示 Ctrl+C。证据见 [`R21-06 可选择技术文本`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md)。
+- 提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。真实剪贴板/读屏、选择像素、Playnite host、DPI/跨屏、最终呈现和宿主性能仍未验；Demo 原目录不可用，main 用户改动未碰未合并。
+- 下一项为 R21-07 焦点可视回归。
 
 ## 当前第三轮 R21-04 异步完成播报（已满足，待环境验证）
 

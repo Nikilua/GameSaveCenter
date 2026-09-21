@@ -9,11 +9,11 @@
 - Release 测试项目以提交身份构建为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。完整脚本的 Worker 既有 `MediaSyncServiceTests.cs:570` NRE 保留为限制，不绕过、不改写。
 - 仅使用合成/fake/隔离宿主；Demo 原目录不可用，main 用户改动未碰未合并。真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能未验。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md`。下一步 R21-06 可选择技术文本。
 
-## 第三轮 R21-06 可选择技术文本（2026-09-21，现有能力核对）
+## 第三轮 R21-06 可选择技术文本（2026-09-21）
 
-- 生产已有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`，路径与技术详情不需要重建控件或复制服务。本批只补事实证据，提交身份为 `e647b5bd`。
-- `R03LongPathTests`、`R11DiffListSearchBehaviorTests`、`R15TaskFailureCopyTests` 在当前提交身份下合计 `11/11`：实际 WPF TextBox 可键盘全选回读完整长路径/技术详情，SaveCenter 复制命令收到完整路径，错误码、脱敏详情和任务 ID 保留在复制负载中。
-- Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过。普通 TextBlock 版本/诊断摘要、真实剪贴板/系统 UIA/读屏、选择像素、Playnite host、DPI/跨屏和性能仍未验。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md`。下一步核对残余版本/诊断入口。
+- 生产已有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`；本批新增共享 `GscWpfUiTechnicalTextBox`，将 Dashboard/AcrylicProductionShell 两条插件版本显示改为只读可选 TextBox，保留原版本赋值、布局和导航。提交 `866ceecd`。
+- `R03LongPathTests`、`R11DiffListSearchBehaviorTests`、`R15TaskFailureCopyTests`、`R21SelectableTechnicalTextBehaviorTests` 合计 `13/13`：实际 WPF TextBox 选择、SaveCenter 完整路径复制、错误码/脱敏详情/任务 ID 和版本文本焦点/全选均通过。
+- Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source/XAML/diff 通过。真实剪贴板/系统 UIA/读屏、选择像素、Playnite host、DPI/跨屏、最终呈现、ETW 和性能未验；Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md`。R21-06 按“已满足，待环境验证”收口，下一步 R21-07。
 
 ## 接续点校正与 R21-04（2026-09-21）
 
