@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using GameSaveCenter.Contracts;
 using Xunit;
@@ -67,6 +68,26 @@ public sealed class R22TimeDisplayBehaviorTests
         task.StartedUtc = null;
         Assert.Equal("未开始", task.StartedRelativeDisplay);
         Assert.Equal("未开始", task.StartedFullDisplay);
+    }
+
+    [Fact]
+    public void SaveAndMaintenanceTimeEntrypointsUseSharedDisplayBindings()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var saveDto = new BackupVersionDto { CreatedUtc = new DateTime(2026, 9, 20, 12, 34, 56, DateTimeKind.Utc) };
+        var audit = new AuditLogEntryDto { CreatedUtc = saveDto.CreatedUtc };
+
+        Assert.Equal(TimeDisplayFormatter.Full(saveDto.CreatedUtc), saveDto.CreatedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(saveDto.CreatedUtc), saveDto.CreatedRawUtcDisplay);
+        Assert.Equal(saveDto.CreatedFullDisplay, audit.CreatedFullDisplay);
+        Assert.Equal(saveDto.CreatedRawUtcDisplay, audit.CreatedRawUtcDisplay);
+        Assert.Contains("Binding=\"{Binding CreatedRelativeDisplay, Mode=OneWay}\"", save, StringComparison.Ordinal);
+        Assert.Contains("SelectedBackup.CreatedFullDisplay", save, StringComparison.Ordinal);
+        Assert.Contains("Binding=\"{Binding CreatedRelativeDisplay, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("CreatedFullDisplay, Mode=OneWay", maintenance, StringComparison.Ordinal);
     }
 
     [Fact]

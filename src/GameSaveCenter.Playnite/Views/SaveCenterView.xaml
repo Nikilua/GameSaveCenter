@@ -13,7 +13,7 @@
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
             <Style x:Key="SavePathText" TargetType="TextBlock" BasedOn="{StaticResource GscPathText}"><Setter Property="ToolTip" Value="{Binding Path}"/></Style>
-            <Style x:Key="SaveHistoryTimeText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}"><Setter Property="ToolTip" Value="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/></Style>
+            <Style x:Key="SaveHistoryTimeText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}"><Setter Property="ToolTip" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/><Setter Property="AutomationProperties.HelpText" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/></Style>
             <Style x:Key="SaveCountValue" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumericCell}"/>
             <Style x:Key="SaveSizeValue" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumericCell}"><Setter Property="TextTrimming" Value="None"/><Setter Property="Tag" Value="SaveHistorySize"/></Style>
             <Style x:Key="SaveHealthStateBadge" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
@@ -196,7 +196,7 @@
                             </Border>
                             <DataGrid x:Name="SaveHistoryGrid" Grid.Row="1" Style="{StaticResource SaveDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}" SelectionMode="Extended" SelectionChanged="OnSaveHistorySelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="SaveHistory" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选存档行；Ctrl+Shift+C 复制当前单元格">
                             <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="SaveHistoryTimeColumn" HeaderStyle="{StaticResource SaveFirstHeader}" Header="时间" infra:DataGridColumnHeaderHelpBehavior.Description="本地时间；悬停可查看完整时间。" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveHistoryTimeText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                <DataGridTextColumn x:Name="SaveHistoryTimeColumn" HeaderStyle="{StaticResource SaveFirstHeader}" Header="时间" infra:DataGridColumnHeaderHelpBehavior.Description="相对时间；悬停可查看本地时区、完整秒级时间和原始 UTC 值。" Binding="{Binding CreatedRelativeDisplay, Mode=OneWay}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveHistoryTimeText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTemplateColumn x:Name="SaveHistoryTypeColumn" Header="类型" Width="124">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -325,7 +325,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
-                                    <TextBlock Text="创建时间" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                                    <TextBlock Text="创建时间" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding SelectedBackup.CreatedRelativeDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedBackup.CreatedFullDisplay, Mode=OneWay}"/>
                                     <TextBlock Grid.Row="1" Text="触发方式" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedBackup.BackupTypeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="2" Text="文件数量" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBackup.FileCount, Mode=OneWay}" Margin="0,9,0,0"/>
                                     <TextBlock Grid.Row="3" Text="大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedBackup.SizeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>

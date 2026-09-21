@@ -117,6 +117,9 @@ namespace GameSaveCenter.Contracts
         public string ArchivePath { get; set; } = string.Empty;
         public RestoreReadinessDto? RestoreReadiness { get; set; }
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public string SizeDisplay => FormatBytes(TotalBytes);
         public string BackupTypeDisplay => IsPreRestore ? "恢复前快照" : "普通备份";
         public string ComparisonDisplay => $"{CreatedLocal:yyyy-MM-dd HH:mm} · {BackupTypeDisplay} · {BackupId}";
@@ -264,6 +267,9 @@ namespace GameSaveCenter.Contracts
         public string DetailJson { get; set; } = "{}";
         public DateTime CreatedUtc { get; set; }
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
     }
 
     /// <summary>Detected save path that still requires a user decision.</summary>
