@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 CloudTransfer 详情证据时间（第十四子批次）
+
+- 先核对已有 `CloudTransferStatusDto`、Maintenance 云端队列详情、R13 队列分页/筛选/重试/脱敏门禁；本批只复用 `TimeDisplayFormatter`，没有新增云端服务、请求、分页或诊断路径。
+- `6a27ef42` 保留 `LastAttemptDisplay` 与 `LastSuccessfulVerificationDisplay` 兼容属性，新增相对/完整/原始 UTC 投影；选中云端详情正文显示相对时间，Tooltip/Automation HelpText 保留完整时间。`RetryTimingDisplay`、维护动作摘要 `LastAttemptDisplay`/`NextAttemptDisplay` 和队列状态合同留给后续边界。
+- 合成 DTO 覆盖最后尝试/最后成功校验已知时间与“未知/未记录 UTC 时间”负例；`R22TimeDisplayBehaviorTests` `17/17`，云端/Health/Environment/时间/维护定向 `39/39`，R13 云端队列及相邻维护门禁均通过。联合回归 `34 passed / 3 failed / 0 skipped`（总计 37），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `6a27ef42` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实剪贴板、云端/Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为核对 `RetryTimingDisplay` 与 Maintenance 动作摘要中剩余 CloudTransfer 旧本地时间，仍先查实际绑定和状态边界。
+
 ## 2026-09-21 R22-01 HealthInspection 恢复巡检时间（第十二子批次）
 
 - 先核对现有 `HealthInspectionStateDto`、Maintenance 恢复巡检卡片、`DashboardViewModel.MaintenanceActions` 和 R17 预算/取消门禁；本批只复用 `TimeDisplayFormatter`，没有新增巡检服务、定时器、存档写入或诊断发送路径。
