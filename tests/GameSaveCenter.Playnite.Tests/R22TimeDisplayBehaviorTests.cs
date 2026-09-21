@@ -259,6 +259,40 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void HealthInspectionTimeEntrypointsKeepUnknownSemanticsAndExposeFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var state = new HealthInspectionStateDto
+        {
+            LastSuccessfulUtc = timestamp,
+            LastCompletedUtc = timestamp.AddMinutes(2),
+            NextDueUtc = timestamp.AddHours(1),
+            IntervalMinutes = 30,
+            MaxDurationSeconds = 120
+        };
+        var unknown = new HealthInspectionStateDto();
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), state.LastSuccessfulLocalDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), state.LastSuccessfulFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), state.LastSuccessfulRawUtcDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(state.LastCompletedUtc!.Value), state.LastCompletedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(state.NextDueUtc!.Value), state.NextDueFullDisplay);
+        Assert.Contains(state.NextDueRelativeDisplay, state.NextPlanRelativeDisplay, StringComparison.Ordinal);
+        Assert.Contains(state.NextDueFullDisplay, state.NextPlanFullDisplay, StringComparison.Ordinal);
+        Assert.Equal("尚未成功验证", unknown.LastSuccessfulRelativeDisplay);
+        Assert.Equal("尚未结束一轮巡检", unknown.LastCompletedRelativeDisplay);
+        Assert.Equal("待安排", unknown.NextDueRelativeDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.NextDueRawUtcDisplay);
+        Assert.Contains("LastSuccessfulRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("LastCompletedRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("NextPlanRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding Snapshot.HealthInspection.NextPlanFullDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
