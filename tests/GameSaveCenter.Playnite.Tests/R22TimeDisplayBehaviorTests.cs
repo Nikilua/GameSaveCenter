@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -215,6 +217,33 @@ public sealed class R22TimeDisplayBehaviorTests
         Assert.Contains("LocalMirrorStatus.LastSyncRelativeDisplay", maintenance, StringComparison.Ordinal);
         Assert.Contains("LocalMirrorStatus.LastSyncFullDisplay", maintenance, StringComparison.Ordinal);
         Assert.Contains("AutomationProperties.HelpText=\"{Binding LocalMirrorStatus.LastSyncFullDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void RecentAccessTimeEntrypointKeepsLegacyTextAndUsesFullTooltip()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var item = new RecentAccessItem(
+            new RecentAccessRecord
+            {
+                PlayniteId = "recent-time-game",
+                Workspace = RecentAccessRecord.SavesWorkspace,
+                LastAccessUtc = timestamp
+            },
+            "时间测试游戏");
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("MM-dd HH:mm"), item.LastAccessDisplay);
+        Assert.NotEqual("时间未知", item.LastAccessRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), item.LastAccessFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), item.LastAccessRawUtcDisplay);
+        Assert.Contains(item.LastAccessRelativeDisplay, item.SummaryDisplay, StringComparison.Ordinal);
+        Assert.Contains(item.LastAccessFullDisplay, item.SummaryFullDisplay, StringComparison.Ordinal);
+        Assert.Contains("Text=\"{Binding SummaryDisplay, Mode=OneWay}\"", overview, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding SummaryFullDisplay}\"", overview, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SummaryFullDisplay}\"", overview, StringComparison.Ordinal);
     }
 
     [Fact]

@@ -1,4 +1,5 @@
 using System;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
 
 namespace GameSaveCenter.Playnite.ViewModels
@@ -23,7 +24,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         public int TabIndex { get; }
         public DateTime LastAccessUtc { get; }
         public string LastAccessDisplay => LastAccessUtc.ToLocalTime().ToString("MM-dd HH:mm");
-        public string SummaryDisplay => $"{WorkspaceDisplay} · {LastAccessDisplay}";
+        public string LastAccessRelativeDisplay => TimeDisplayFormatter.Relative(LastAccessUtc, DateTime.UtcNow);
+        public string LastAccessFullDisplay => TimeDisplayFormatter.Full(LastAccessUtc);
+        public string LastAccessRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastAccessUtc);
+        public string SummaryDisplay => $"{WorkspaceDisplay} · {LastAccessRelativeDisplay}";
+        public string SummaryFullDisplay => $"{WorkspaceDisplay} · {LastAccessFullDisplay}";
 
         public static string ToWorkspaceDisplay(string workspace)
             => workspace switch
