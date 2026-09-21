@@ -61,6 +61,11 @@ public sealed class MaintenanceReportSourceTests
         Assert.Contains("RunMaintenanceActionCommand", maintenance);
         Assert.Contains("LastVerifiedDisplay", actions);
         Assert.Contains("NextAttemptDisplay", actions);
+        Assert.Contains("transfer.LastAttemptRelativeDisplay", actions);
+        Assert.Contains("transfer.RetryTimingRelativeDisplay", actions);
+        Assert.Contains("NextAttemptRelativeDisplay", actions);
+        Assert.Contains("TimingFullDisplay", maintenance);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding TimingFullDisplay, Mode=OneWay}\"", maintenance);
         Assert.Contains("MessageTypes.GetRetentionQuarantineEntries", viewModel);
         Assert.Contains("RetentionQuarantinePageRequestDto", viewModel);
         Assert.Contains("RetentionQuarantineLoadedDisplay", maintenance);

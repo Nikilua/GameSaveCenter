@@ -85,7 +85,7 @@
                                     <TextBlock Grid.Column="1" Text="{Binding QuarantinePathDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" ToolTip="{Binding QuarantinePathDisplay}"/>
                                 </Grid>
                             </StackPanel>
-                            <TextBlock Text="{Binding TimingDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding TimingDisplay}" ToolTip="{Binding TimingFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TimingFullDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </StackPanel>
                         <ui:Button Grid.Column="1"
                                    Style="{DynamicResource GscWpfUiContextButton}"

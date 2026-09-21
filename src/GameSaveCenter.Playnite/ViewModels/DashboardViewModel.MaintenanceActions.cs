@@ -114,11 +114,20 @@ public sealed class MaintenanceActionItem
     public string LastAttemptDisplay { get; set; } = "尚未尝试";
     public string LedgerUpdatedDisplay { get; set; } = "尚未更新";
     public string NextAttemptDisplay { get; set; } = "待安排";
+    public string LastVerifiedFullDisplay { get; set; } = string.Empty;
+    public string LastAttemptFullDisplay { get; set; } = string.Empty;
+    public string NextAttemptFullDisplay { get; set; } = string.Empty;
     public string TimingDisplay => ActionKind switch
     {
         MaintenanceActionKind.CloudTransfer => $"上次尝试：{LastAttemptDisplay} · 下次尝试：{NextAttemptDisplay}",
         MaintenanceActionKind.RetentionQuarantine => $"账本更新：{LedgerUpdatedDisplay} · 下次尝试：{NextAttemptDisplay}",
         _ => $"最近完成：{LastAttemptDisplay} · 最近成功：{LastVerifiedDisplay} · 下轮计划：{NextAttemptDisplay}"
+    };
+    public string TimingFullDisplay => ActionKind switch
+    {
+        MaintenanceActionKind.CloudTransfer => $"上次尝试：{FullOrLegacy(LastAttemptFullDisplay, LastAttemptDisplay)} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
+        MaintenanceActionKind.RetentionQuarantine => $"账本更新：{LedgerUpdatedDisplay} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
+        _ => $"最近完成：{FullOrLegacy(LastAttemptFullDisplay, LastAttemptDisplay)} · 最近成功：{FullOrLegacy(LastVerifiedFullDisplay, LastVerifiedDisplay)} · 下轮计划：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}"
     };
     public string ActionText { get; set; } = string.Empty;
     public string ActionToolTip { get; set; } = string.Empty;
@@ -136,6 +145,9 @@ public sealed class MaintenanceActionItem
         MaintenanceActionKind.CloudTransfer => MaintenanceActionGroup.NeedsManualHandling,
         _ => MaintenanceActionGroup.Routine
     };
+
+    private static string FullOrLegacy(string full, string legacy)
+        => string.IsNullOrWhiteSpace(full) ? legacy : full;
 }
 
 /// <summary>
@@ -267,8 +279,12 @@ public sealed partial class DashboardViewModel
             if (!knownCloudKeys.Add(transfer.TransferKey))
                 continue;
 
-            var next = transfer.NextAttemptLocal?.ToString("yyyy-MM-dd HH:mm")
-                ?? (transfer.State is "AuthenticationRequired" or "Failed" or "CheckFailed" ? "需处理后再试" : "手动确认");
+            var next = transfer.NextAttemptUtc.HasValue
+                ? transfer.RetryTimingRelativeDisplay
+                : transfer.State is "AuthenticationRequired" or "Failed" or "CheckFailed" ? "需处理后再试" : "手动确认";
+            var nextFull = transfer.NextAttemptUtc.HasValue
+                ? transfer.RetryTimingFullDisplay
+                : transfer.State is "AuthenticationRequired" or "Failed" or "CheckFailed" ? "需处理后再试" : "手动确认";
             items.Add(new MaintenanceActionItem
             {
                 ItemId = "cloud:" + transfer.TransferKey,
@@ -278,8 +294,10 @@ public sealed partial class DashboardViewModel
                 Detail = string.IsNullOrWhiteSpace(transfer.LastError)
                     ? transfer.GuaranteeLevelDisplay
                     : $"{transfer.GuaranteeLevelDisplay} · {transfer.LastError}",
-                LastAttemptDisplay = transfer.LastAttemptUtc?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "尚未尝试",
+                LastAttemptDisplay = transfer.LastAttemptUtc.HasValue ? transfer.LastAttemptRelativeDisplay : "尚未尝试",
+                LastAttemptFullDisplay = transfer.LastAttemptUtc.HasValue ? transfer.LastAttemptFullDisplay : "尚未尝试",
                 NextAttemptDisplay = next,
+                NextAttemptFullDisplay = nextFull,
                 ActionText = "打开云队列",
                 ActionToolTip = "打开这条真实云端传输记录；上传重试或远端校验仍沿用原有状态与确认边界。",
                 ActionKind = MaintenanceActionKind.CloudTransfer,
@@ -300,7 +318,9 @@ public sealed partial class DashboardViewModel
                 StatusDisplay = "未全部加载",
                 Detail = "维护页只列当前已加载的真实记录；打开云队列可继续分页查看，不会把加载窗口当成全集。",
                 LastAttemptDisplay = "摘要未列出明细",
-                NextAttemptDisplay = Snapshot.CloudTransfers?.NextAttemptLocal?.ToString("yyyy-MM-dd HH:mm") ?? "按队列状态",
+                LastAttemptFullDisplay = "摘要未列出明细",
+                NextAttemptDisplay = Snapshot.CloudTransfers?.NextAttemptRelativeDisplay ?? "按队列状态",
+                NextAttemptFullDisplay = Snapshot.CloudTransfers?.NextAttemptFullDisplay ?? "按队列状态",
                 ActionText = "查看全部队列",
                 ActionToolTip = "打开云端队列并保留服务端分页、筛选和一致性校验。",
                 ActionKind = MaintenanceActionKind.CloudTransfer
@@ -422,5 +442,6 @@ public sealed partial class DashboardViewModel
            && left.Detail == right.Detail
            && left.OriginalPathDisplay == right.OriginalPathDisplay
            && left.QuarantinePathDisplay == right.QuarantinePathDisplay
-           && left.TimingDisplay == right.TimingDisplay;
+           && left.TimingDisplay == right.TimingDisplay
+           && left.TimingFullDisplay == right.TimingFullDisplay;
 }

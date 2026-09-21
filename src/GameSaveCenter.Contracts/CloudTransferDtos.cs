@@ -275,6 +275,20 @@ public sealed class CloudTransferSummaryDto
     public List<CloudTransferStatusDto> Items { get; set; } = new List<CloudTransferStatusDto>();
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
+    public string NextAttemptRelativeDisplay
+    {
+        get
+        {
+            if (!NextAttemptUtc.HasValue) return "按队列状态";
+            return NextAttemptUtc.Value <= DateTime.UtcNow
+                ? "可立即重试"
+                : TimeDisplayFormatter.Relative(NextAttemptUtc.Value, DateTime.UtcNow);
+        }
+    }
+    public string NextAttemptFullDisplay => NextAttemptUtc.HasValue
+        ? TimeDisplayFormatter.Full(NextAttemptUtc.Value)
+        : "按队列状态";
+    public string NextAttemptRawUtcDisplay => TimeDisplayFormatter.RawUtc(NextAttemptUtc ?? DateTime.MinValue);
     public int AttentionCount => RetryScheduledCount + AuthenticationRequiredCount + CheckFailedCount + FailedCount;
     public int QueueCount => PendingCount + TransferringCount + VerifyingCount + RetryScheduledCount + AuthenticationRequiredCount
         + CheckFailedCount + FailedCount + PausedCount;
