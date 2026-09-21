@@ -46,6 +46,28 @@ public sealed class R06ClipboardBehaviorTests
     }
 
     [Fact]
+    public void SaveHistoryCopyKeepsStableFullLocalTimestamp()
+    {
+        var timestamp = new DateTime(2026, 9, 18, 12, 34, 56, DateTimeKind.Utc);
+        var backup = new BackupVersionDto
+        {
+            BackupId = "save-history-copy-time",
+            CreatedUtc = timestamp,
+            FileCount = 3,
+            TotalBytes = 4096
+        };
+
+        var row = DataGridClipboardFormatter.FormatRowForVerification("SaveHistory", backup);
+        var values = row.Split('\t');
+        var expectedTimestamp = timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+
+        Assert.Equal(expectedTimestamp, values[0]);
+        Assert.Equal(expectedTimestamp, DataGridClipboardFormatter.FormatCellForVerification("SaveHistory", "时间", backup));
+        Assert.Equal(backup.BackupTypeDisplay, values[1]);
+        Assert.DoesNotContain(backup.CreatedRelativeDisplay, row, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void CurrentCellKeepsFullTechnicalValueAndRedactsCredentialSyntax()
     {
         RunSta(() =>
