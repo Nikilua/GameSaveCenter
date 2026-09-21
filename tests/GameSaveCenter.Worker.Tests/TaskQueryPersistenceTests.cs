@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
@@ -73,6 +74,41 @@ public sealed class TaskQueryPersistenceTests : IDisposable
 
         Assert.Equal(1, summary.WaitingForUserCount);
         Assert.Equal(1, summary.PendingCloudCount);
+    }
+
+    [Fact]
+    public async Task MonotonicTaskDurationRoundTripsAndIsCapturedDuringRestartRecovery()
+    {
+        var startedTimestamp = Stopwatch.GetTimestamp() - Stopwatch.Frequency;
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "monotonic-recovery",
+            WorkerSessionId = "old-worker",
+            TaskType = "Backup",
+            GameId = "game-1",
+            GameName = "测试游戏",
+            State = TaskState.Running,
+            ProgressPercent = 20,
+            Message = "正在执行",
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-2),
+            StartedUtc = DateTime.UtcNow.AddMinutes(-1),
+            ElapsedSeconds = 2.5,
+            MonotonicStartedTimestamp = startedTimestamp,
+            MonotonicFrequency = Stopwatch.Frequency
+        }, CancellationToken.None);
+
+        var beforeRecovery = Assert.Single(await store.GetActiveTasksAsync(CancellationToken.None));
+        Assert.Equal(2.5, beforeRecovery.ElapsedSeconds);
+        Assert.Equal(startedTimestamp, beforeRecovery.MonotonicStartedTimestamp);
+
+        Assert.Equal(1, await store.MarkInterruptedTasksAsync("new-worker", CancellationToken.None));
+
+        var recovered = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None));
+        Assert.Equal(TaskState.Failed, recovered.State);
+        Assert.True(recovered.ElapsedSeconds >= 2.5);
+        Assert.Equal(0, recovered.MonotonicStartedTimestamp);
+        Assert.Equal(0, recovered.MonotonicFrequency);
+        Assert.Equal("old-worker", recovered.WorkerSessionId);
     }
 
     [Fact]

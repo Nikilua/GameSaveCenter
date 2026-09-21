@@ -305,6 +305,11 @@ namespace GameSaveCenter.Contracts
         public DateTime CreatedUtc { get; set; }
         public DateTime? StartedUtc { get; set; }
         public DateTime? FinishedUtc { get; set; }
+        /// <summary>Accumulated monotonic task seconds; null means legacy/unknown.</summary>
+        public double? ElapsedSeconds { get; set; }
+        /// <summary>Monotonic start point for a live task; it is cleared at terminal state.</summary>
+        public long MonotonicStartedTimestamp { get; set; }
+        public long MonotonicFrequency { get; set; }
         public string ErrorCode { get; set; } = string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
         public BackupResultDto? BackupResult { get; set; }
@@ -436,14 +441,25 @@ namespace GameSaveCenter.Contracts
         {
             get
             {
+                var measured = ElapsedSeconds;
+                if (State == TaskState.Running && MonotonicStartedTimestamp > 0)
+                    measured = Math.Max(0, measured ?? 0) + MonotonicTaskClock.SecondsSince(MonotonicStartedTimestamp, MonotonicFrequency);
+                if (measured.HasValue)
+                    return FormatDurationSeconds(measured.Value);
+
                 var start = StartedUtc ?? CreatedUtc;
                 var end = FinishedUtc ?? DateTime.UtcNow;
                 var duration = end - start;
-                if (duration.TotalSeconds < 1) return "< 1 秒";
-                if (duration.TotalMinutes < 1) return $"{duration.TotalSeconds:0} 秒";
-                if (duration.TotalHours < 1) return $"{duration.TotalMinutes:0.#} 分钟";
-                return $"{duration.TotalHours:0.#} 小时";
+                return FormatDurationSeconds(Math.Max(0, duration.TotalSeconds));
             }
+        }
+
+        private static string FormatDurationSeconds(double seconds)
+        {
+            if (double.IsNaN(seconds) || double.IsInfinity(seconds) || seconds < 1) return "< 1 秒";
+            if (seconds < 60) return $"{seconds:0} 秒";
+            if (seconds < 3600) return $"{seconds / 60:0.#} 分钟";
+            return $"{seconds / 3600:0.#} 小时";
         }
 
         private static string FormatWorkRate(double rate, string unit)

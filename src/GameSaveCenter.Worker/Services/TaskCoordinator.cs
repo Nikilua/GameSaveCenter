@@ -75,7 +75,7 @@ public sealed class TaskCoordinator
             TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
             RequestId=requestId ?? string.Empty,
             SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName ?? string.Empty,
-            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CancellationState=TaskCancellationStates.None, CreatedUtc=createdUtc ?? DateTime.UtcNow,
+            State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CancellationState=TaskCancellationStates.None, CreatedUtc=createdUtc ?? DateTime.UtcNow, ElapsedSeconds=0,
             SourceReferences=taskSources
         };
         var gate=_gameLocks.GetOrAdd(string.IsNullOrWhiteSpace(gameId)?"__global__":gameId,_=>new SemaphoreSlim(1,1));
@@ -98,7 +98,7 @@ public sealed class TaskCoordinator
         {
             await gate.WaitAsync(linked.Token).ConfigureAwait(false);
             gateEntered=true;
-            task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.Message="正在执行";task.StageMessage="正在执行";task.CancellationState=TaskCancellationStates.None;
+            task.State=TaskState.Running;task.StartedUtc=DateTime.UtcNow;task.MonotonicStartedTimestamp=MonotonicTaskClock.Timestamp;task.MonotonicFrequency=MonotonicTaskClock.Frequency;task.ElapsedSeconds=0;task.Message="正在执行";task.StageMessage="正在执行";task.CancellationState=TaskCancellationStates.None;
             await PersistAndPublishAsync(task,linked.Token).ConfigureAwait(false);
             progress=new TaskProgress(async (percent,message)=>
             {
@@ -198,6 +198,7 @@ public sealed class TaskCoordinator
                     runtime.Task.StageMessage="已完成";
                 }
             }
+            CaptureMonotonicElapsed(runtime.Task);
             runtime.Task.FinishedUtc = DateTime.UtcNow;
             runtime.Terminal = true;
         }
@@ -218,6 +219,7 @@ public sealed class TaskCoordinator
                 progress.RestoreReport.OutcomeKind = "Cancelled";
                 progress.RestoreReport.FailureCode = string.Empty;
             }
+            CaptureMonotonicElapsed(runtime.Task);
             runtime.Task.FinishedUtc = DateTime.UtcNow;
             runtime.Terminal = true;
         }
@@ -237,6 +239,7 @@ public sealed class TaskCoordinator
             runtime.Task.ErrorCode = errorCode;
             runtime.Task.ErrorMessage = errorMessage;
             runtime.Task.Message = "执行失败";
+            CaptureMonotonicElapsed(runtime.Task);
             runtime.Task.FinishedUtc = DateTime.UtcNow;
             runtime.Terminal = true;
         }
@@ -336,12 +339,20 @@ public sealed class TaskCoordinator
     private static TaskCompletionSource<bool> NewChangeSignal()
         =>new(TaskCreationOptions.RunContinuationsAsynchronously);
 
+    private static void CaptureMonotonicElapsed(TaskStatusDto task)
+    {
+        task.ElapsedSeconds = Math.Max(0, task.ElapsedSeconds ?? 0)
+            + MonotonicTaskClock.SecondsSince(task.MonotonicStartedTimestamp, task.MonotonicFrequency);
+        task.MonotonicStartedTimestamp = 0;
+        task.MonotonicFrequency = 0;
+    }
+
     private static TaskStatusDto Clone(TaskStatusDto task)=>new()
     {
             TaskId=task.TaskId,SessionId=task.SessionId,WorkerSessionId=task.WorkerSessionId,TaskType=task.TaskType,GameId=task.GameId,GameName=task.GameName,State=task.State,
             RequestId=task.RequestId,
             ProgressPercent=task.ProgressPercent,Message=task.Message,StageMessage=task.StageMessage,CancellationState=task.CancellationState,CreatedUtc=task.CreatedUtc,StartedUtc=task.StartedUtc,
-            FinishedUtc=task.FinishedUtc,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
+            FinishedUtc=task.FinishedUtc,ElapsedSeconds=task.ElapsedSeconds,MonotonicStartedTimestamp=task.MonotonicStartedTimestamp,MonotonicFrequency=task.MonotonicFrequency,ErrorCode=task.ErrorCode,ErrorMessage=task.ErrorMessage,
             ProgressCompletedUnits=task.ProgressCompletedUnits,ProgressTotalUnits=task.ProgressTotalUnits,ProgressUnit=task.ProgressUnit,
             ProgressRatePerSecond=task.ProgressRatePerSecond,ProgressEtaSeconds=task.ProgressEtaSeconds,ProgressUpdatedUtc=task.ProgressUpdatedUtc,
             SourceReferences=task.SourceReferences?.Select(reference => reference.Clone()).ToList() ?? new List<TaskSourceReferenceDto>(),
