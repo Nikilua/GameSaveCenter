@@ -314,6 +314,33 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void CloudTransferEvidenceEntrypointsKeepUnknownSemanticsAndExposeFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var attempted = new DateTime(2026, 9, 20, 7, 8, 9, DateTimeKind.Utc);
+        var verified = attempted.AddMinutes(3);
+        var transfer = new CloudTransferStatusDto
+        {
+            LastAttemptUtc = attempted,
+            LastSuccessfulVerificationUtc = verified
+        };
+        var unknown = new CloudTransferStatusDto();
+
+        Assert.Equal(attempted.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), transfer.LastAttemptDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(attempted), transfer.LastAttemptFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(attempted), transfer.LastAttemptRawUtcDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(verified), transfer.LastSuccessfulVerificationFullDisplay);
+        Assert.Equal("未知", unknown.LastAttemptRelativeDisplay);
+        Assert.Equal("未知", unknown.LastSuccessfulVerificationFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.LastSuccessfulVerificationRawUtcDisplay);
+        Assert.Contains("SelectedCloudTransfer.LastAttemptRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastSuccessfulVerificationRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedCloudTransfer.LastSuccessfulVerificationFullDisplay, TargetNullValue=未知}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

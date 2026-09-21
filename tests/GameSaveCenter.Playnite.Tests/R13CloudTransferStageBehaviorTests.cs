@@ -37,8 +37,10 @@ public sealed class R13CloudTransferStageBehaviorTests
 
         Assert.Contains("SelectedCloudTransfer.RemoteObjectDisplay", view, StringComparison.Ordinal);
         Assert.Contains("SelectedCloudTransfer.SourceDeviceDisplay", view, StringComparison.Ordinal);
-        Assert.Contains("SelectedCloudTransfer.LastAttemptDisplay", view, StringComparison.Ordinal);
-        Assert.Contains("SelectedCloudTransfer.LastSuccessfulVerificationDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastAttemptRelativeDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastSuccessfulVerificationRelativeDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastAttemptFullDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.LastSuccessfulVerificationFullDisplay", view, StringComparison.Ordinal);
         Assert.Contains("CopyTextWithRetryAsync(DiagnosticSummary", viewModel, StringComparison.Ordinal);
         Assert.Contains("text = ClipboardValueSanitizer.Sanitize", viewModel, StringComparison.Ordinal);
 

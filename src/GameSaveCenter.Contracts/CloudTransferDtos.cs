@@ -103,9 +103,23 @@ public sealed class CloudTransferStatusDto
     public string LastAttemptDisplay => LastAttemptUtc.HasValue
         ? LastAttemptUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
         : "未知";
+    public string LastAttemptRelativeDisplay => LastAttemptUtc.HasValue
+        ? TimeDisplayFormatter.Relative(LastAttemptUtc.Value, DateTime.UtcNow)
+        : "未知";
+    public string LastAttemptFullDisplay => LastAttemptUtc.HasValue
+        ? TimeDisplayFormatter.Full(LastAttemptUtc.Value)
+        : "未知";
+    public string LastAttemptRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastAttemptUtc ?? DateTime.MinValue);
     public string LastSuccessfulVerificationDisplay => LastSuccessfulVerificationUtc.HasValue
         ? LastSuccessfulVerificationUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
         : "未知";
+    public string LastSuccessfulVerificationRelativeDisplay => LastSuccessfulVerificationUtc.HasValue
+        ? TimeDisplayFormatter.Relative(LastSuccessfulVerificationUtc.Value, DateTime.UtcNow)
+        : "未知";
+    public string LastSuccessfulVerificationFullDisplay => LastSuccessfulVerificationUtc.HasValue
+        ? TimeDisplayFormatter.Full(LastSuccessfulVerificationUtc.Value)
+        : "未知";
+    public string LastSuccessfulVerificationRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastSuccessfulVerificationUtc ?? DateTime.MinValue);
     public string RetryTimingDisplay
     {
         get

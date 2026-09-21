@@ -644,9 +644,9 @@
                                     <TextBlock Text="来源设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
                                     <TextBlock Text="{Binding SelectedCloudTransfer.SourceDeviceDisplay, TargetNullValue=未知设备}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.SourceDeviceDisplay, TargetNullValue=未知设备}"/>
                                     <TextBlock Text="最后尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastAttemptDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastAttemptRelativeDisplay, TargetNullValue=未知}" ToolTip="{Binding SelectedCloudTransfer.LastAttemptFullDisplay, TargetNullValue=未知}" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.LastAttemptFullDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
                                     <TextBlock Text="最后成功校验" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastSuccessfulVerificationDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastSuccessfulVerificationRelativeDisplay, TargetNullValue=未知}" ToolTip="{Binding SelectedCloudTransfer.LastSuccessfulVerificationFullDisplay, TargetNullValue=未知}" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.LastSuccessfulVerificationFullDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
                                     <Border Padding="10" Margin="0,14,0,0">
                                         <Border.Style>
                                             <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
