@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-05 批量数量防歧义（本子批已满足，待环境验证）
+
+- `501cb715` 为当前游戏媒体批量动作增加“已选 / 当前结果 / 当前窗口可操作 / 隐藏选择”摘要；策略模板批量增加筛选结果与隐藏已选计数，仍由稳定 ID 和显式勾选决定；媒体收件箱 R05-04、任务中心当前结果批量语义已核对并复用，未重建。
+- `R22BatchCountBehaviorTests 3/3`；R05 收件箱跨筛选 `3/3`；R16 策略模板与 TaskRetry 源契约合计 `3/3`。隔离 Release XAML `24/24`、Playnite `net462` / Tests `net472` / Worker `0 errors`，保留既有 `MediaCenterView.xaml.cs:699 CS8602` 两条 warning；source/diff 通过，WPF `0/27/177`。
+- 仅使用合成 DTO、隔离 STA Window、fake/稳定 ID 集合和隔离 `.tmp`；未验真实 Playnite/package-host、Windows UIA/读屏、实际键盘筛选切换、DPI/物理跨屏、呈现帧、ETW 或宿主性能。Demo 原目录不可用，main 用户改动未碰、未合并；未读写真实存档、媒体、云端或外发诊断。证据：`evidence/R22-05-BATCH-COUNT-20260921.md`。
+- 下一可执行任务：`R22-06` 长任务离页提示，先核对现有任务订阅、导航和完成通知，再补行为负例。
+
 ## 当前第三轮 R22-03 复制反馈轻量（本子批已满足，待环境验证）
 
 - `5a21e18e` 新增共享 `ClipboardFeedback`，复用现有 `FeedbackToast` 自动化 Peer 与 Demo 基线主题资源，在 DataGrid、设置页路径复制、Dashboard 复制通知和通知详情复制的原控件附近显示短暂 Popup；不改布局、不抢焦点，同一目标/全局活动状态合并连续反馈。

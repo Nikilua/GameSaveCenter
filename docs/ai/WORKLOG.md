@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-05 批量数量防歧义（第三十四子批次）
+
+- 先核对真实适用性：R05-04 已覆盖媒体收件箱跨模式稳定 ID 选择汇总；任务中心批量重试是当前筛选结果模型，已有当前结果/可重试/未纳入说明；缺口是当前游戏媒体动作栏和策略模板批量区没有同时显示当前结果与隐藏选择。
+- `501cb715` 增加当前游戏媒体批量摘要，继续传递原 `MediaGrid.SelectedItems`；策略模板新增 `PolicyTemplateBatchHiddenSelectedCount`、筛选结果/隐藏选择摘要和五项数量分栏；没有替换游戏选框、滚动条、命令、取消/错误或 Worker 协议。
+- `R22BatchCountBehaviorTests 3/3` 实际覆盖合成策略目标正/负例和隔离 WPF ListBox 跨筛选选择；关联 R05 `3/3`、R16/TaskRetry `3/3`。Release 隔离构建 XAML `24/24`、Playnite net462/Tests net472/Worker `0 errors`，既有 MediaCenter CS8602 两条 warning 保留；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-05-BATCH-COUNT-20260921.md`。仅用合成数据、隔离 STA Window 和 `.tmp` 构建输出，未启动真实 Playnite/package-host、未读写真实存档/媒体/云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- 代码提交已推送 `501cb715` 到 `codex/ui-finesse-round2`；下一可执行任务为 `R22-06` 长任务离页提示，先核对真实任务订阅和导航完成通知。
+
 ## 2026-09-21 R22-03 复制反馈轻量（第三十三子批次）
 
 - 启动先查明：DataGrid 有稳定 TSV/脱敏复制但失败静默；设置页路径已有本地状态文本；Dashboard 任务/路径/诊断/维护报告/通知详情复制分别走重试、全局通知或直接剪贴板写入。没有把表格新增方向误判为能力缺失。

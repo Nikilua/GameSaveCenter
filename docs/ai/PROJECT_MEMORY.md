@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-05 批量数量防歧义（2026-09-21，第三十四子批次）
+
+- `501cb715` 在不改变现有 ListBox/DataGrid 选择、分页窗口和命令参数的前提下，补齐当前游戏媒体批量动作的已选/当前结果/隐藏选择摘要；策略模板批量复用 `PolicyTemplateBatchPreview.Select`，新增筛选结果和隐藏已选计数，空选择不隐式全选，100 项上限仍有效。
+- 媒体收件箱已有 R05-04 的按模式稳定 ID 汇总；任务中心按当前结果批量而非复选选择，已有当前结果/筛选/可重试证据，本批只补适用的交互并在测试中固定这两个边界。
+- `R22BatchCountBehaviorTests 3/3`、R05 `3/3`、R16/TaskRetry 合计 `3/3`；隔离 Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，两条既有 `MediaCenterView.xaml.cs:699 CS8602` 保留。
+- 未宣称真实 Playnite/package-host、Windows UIA/读屏、物理 DPI/跨屏、最终呈现、ETW 或宿主性能；Demo 原目录不可用，未改 dirty main、真实存档/媒体/云端/诊断。
+- 下一项 `R22-06`：核对长任务离页提示已有任务订阅、导航与完成通知，先补行为/负例再决定最小实现。
+
 ## 第三轮 R22-03 复制反馈轻量（2026-09-21，第三十三子批次）
 
 - `5a21e18e` 新增 `ClipboardFeedback`，必须复用现有 `FeedbackToast` UI Automation Peer 和 `GscRedesignFeedbackToast*` 资源；Popup 放在目标控件附近，不进入布局、不获取焦点，同一目标复用实例，活动状态切换时关闭前一条。
