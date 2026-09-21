@@ -172,6 +172,30 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void RestoreReadinessTimeEntrypointKeepsLegacyStaleAndUnknownSemantics()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var backup = new BackupVersionDto
+        {
+            CreatedUtc = timestamp,
+            RestoreReadiness = new RestoreReadinessDto { CheckedUtc = timestamp }
+        };
+        var unknown = new BackupVersionDto();
+
+        Assert.Equal($"检查于 {timestamp.ToLocalTime():yyyy-MM-dd HH:mm:ss}（结果较旧，建议重新验证）", backup.RestoreReadinessCheckedDisplay);
+        Assert.Contains("结果较旧", backup.RestoreReadinessCheckedRelativeDisplay, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.Full(timestamp), backup.RestoreReadinessCheckedFullDisplay, StringComparison.Ordinal);
+        Assert.Equal("尚未检查", unknown.RestoreReadinessCheckedRelativeDisplay);
+        Assert.Equal("尚未检查", unknown.RestoreReadinessCheckedFullDisplay);
+        Assert.Contains("SelectedBackup.RestoreReadinessCheckedRelativeDisplay", save, StringComparison.Ordinal);
+        Assert.Contains("SelectedBackup.RestoreReadinessCheckedFullDisplay", save, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedBackup.RestoreReadinessCheckedFullDisplay, Mode=OneWay}\"", save, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

@@ -341,7 +341,7 @@
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessMetricsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessHashValidationDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessHashCoverageDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
-                                <TextBlock Text="{Binding SelectedBackup.RestoreReadinessCheckedDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                <TextBlock Text="{Binding SelectedBackup.RestoreReadinessCheckedRelativeDisplay, Mode=OneWay}" ToolTip="{Binding SelectedBackup.RestoreReadinessCheckedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedBackup.RestoreReadinessCheckedFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ValidateRestoreReadinessCommand}" Margin="0,10,0,0" AutomationProperties.Name="验证所选版本的可恢复性">
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="验证可恢复性" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>

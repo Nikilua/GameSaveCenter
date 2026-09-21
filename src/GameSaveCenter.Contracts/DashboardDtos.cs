@@ -163,6 +163,22 @@ namespace GameSaveCenter.Contracts
                     : $"检查于 {localChecked:yyyy-MM-dd HH:mm:ss}";
             }
         }
+        public string RestoreReadinessCheckedRelativeDisplay => BuildRestoreReadinessCheckedDisplay(false);
+        public string RestoreReadinessCheckedFullDisplay => BuildRestoreReadinessCheckedDisplay(true);
+
+        private string BuildRestoreReadinessCheckedDisplay(bool full)
+        {
+            if (RestoreReadiness?.CheckedUtc is not DateTime checkedUtc)
+                return "尚未检查";
+
+            var age = DateTime.UtcNow - checkedUtc.ToUniversalTime();
+            var time = full
+                ? TimeDisplayFormatter.Full(checkedUtc)
+                : TimeDisplayFormatter.Relative(checkedUtc, DateTime.UtcNow);
+            return age >= TimeSpan.FromDays(1)
+                ? $"检查于 {time}（结果较旧，建议重新验证）"
+                : $"检查于 {time}";
+        }
 
         private static string FormatBytes(long bytes)
         {
