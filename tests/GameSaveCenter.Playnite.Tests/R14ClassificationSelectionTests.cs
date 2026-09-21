@@ -76,7 +76,16 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("{Binding IdentityDisplay}", media, StringComparison.Ordinal);
         Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\"", media, StringComparison.Ordinal);
         Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\"", media, StringComparison.Ordinal);
-        Assert.DoesNotContain("SelectedIndex=", media, StringComparison.Ordinal);
+        var inboxTargetSelection = media.IndexOf("SelectedItem=\"{Binding InboxTargetGame}\"", StringComparison.Ordinal);
+        var inboxTargetStart = media.LastIndexOf("<ComboBox", inboxTargetSelection, StringComparison.Ordinal);
+        var inboxTargetEnd = media.IndexOf("/>", inboxTargetSelection, StringComparison.Ordinal);
+        Assert.True(inboxTargetStart >= 0 && inboxTargetEnd > inboxTargetStart);
+        Assert.DoesNotContain("SelectedIndex=", media.Substring(inboxTargetStart, inboxTargetEnd - inboxTargetStart), StringComparison.Ordinal);
+        var mediaTargetSelection = media.IndexOf("SelectedItem=\"{Binding MediaTargetGame}\"", StringComparison.Ordinal);
+        var mediaTargetStart = media.LastIndexOf("<ComboBox", mediaTargetSelection, StringComparison.Ordinal);
+        var mediaTargetEnd = media.IndexOf("/>", mediaTargetSelection, StringComparison.Ordinal);
+        Assert.True(mediaTargetStart >= 0 && mediaTargetEnd > mediaTargetStart);
+        Assert.DoesNotContain("SelectedIndex=", media.Substring(mediaTargetStart, mediaTargetEnd - mediaTargetStart), StringComparison.Ordinal);
         Assert.Contains("{Binding IconPath}", picker, StringComparison.Ordinal);
         Assert.Contains("{Binding IdentityDisplay}", picker, StringComparison.Ordinal);
         Assert.Contains("IconPath", contracts, StringComparison.Ordinal);

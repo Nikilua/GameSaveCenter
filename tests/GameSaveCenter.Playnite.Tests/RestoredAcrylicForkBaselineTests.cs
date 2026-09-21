@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using GameSaveCenter.Playnite.ViewModels;
+using GameSaveCenter.Playnite.Views;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -43,7 +45,9 @@ public sealed class RestoredAcrylicForkBaselineTests
         var shellCode = ReadSource("Views", "AcrylicProductionShellView.xaml.cs");
 
         Assert.Contains("nameof(DashboardViewModel.SelectedGame)", shellCode);
-        Assert.Contains("viewModel?.SelectedGame?.Name ?? \"未选择游戏\"", shellCode);
+        Assert.Contains("GetPageSubtitle(", shellCode);
+        Assert.Equal("合成游戏 · 路径与恢复点状态", AcrylicProductionShellView.GetPageSubtitle(WorkspaceKind.Saves, "合成游戏", null));
+        Assert.Equal("未选择游戏 · 路径与恢复点状态", AcrylicProductionShellView.GetPageSubtitle(WorkspaceKind.Saves, null, null));
         Assert.DoesNotContain("Elden Ring · 路径与恢复点状态", shellCode);
     }
 

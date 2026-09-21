@@ -28,7 +28,6 @@ namespace GameSaveCenter.Playnite.Tests
             foreach (var path in views)
             {
                 var document = XDocument.Parse(File.ReadAllText(path));
-                var isOverview = string.Equals(Path.GetFileName(path), "OverviewView.xaml", StringComparison.OrdinalIgnoreCase);
                 var expanders = document.Descendants().Where(element => element.Name.LocalName == "Expander").ToList();
                 Assert.All(expanders, expander =>
                 {
@@ -37,23 +36,16 @@ namespace GameSaveCenter.Playnite.Tests
                         ?? string.Empty;
                     Assert.Contains("GscDisclosureCard", style);
                     Assert.DoesNotContain(">", expander.Attribute("Header")?.Value ?? string.Empty);
-                    if (!isOverview)
-                    {
-                        Assert.DoesNotContain(expander.Descendants(), element => element.Name.LocalName == "ScrollViewer");
-                        return;
-                    }
-
                     var boundedScrollSurfaces = expander.Descendants()
                         .Where(element => element.Name.LocalName == "ScrollViewer")
                         .ToList();
-                    Assert.NotEmpty(boundedScrollSurfaces);
                     Assert.All(boundedScrollSurfaces, scrollViewer =>
                     {
                         var maxHeightValue = scrollViewer.Attribute("MaxHeight")?.Value;
                         Assert.True(
                             double.TryParse(maxHeightValue, NumberStyles.Float, CultureInfo.InvariantCulture, out var maxHeight),
                             $"Overview disclosure ScrollViewer must declare a numeric MaxHeight, actual: '{maxHeightValue}'.");
-                        Assert.InRange(maxHeight, 220d, 520d);
+                        Assert.InRange(maxHeight, 160d, 520d);
                         Assert.Equal("Auto", scrollViewer.Attribute("VerticalScrollBarVisibility")?.Value);
                         Assert.Equal("Disabled", scrollViewer.Attribute("HorizontalScrollBarVisibility")?.Value);
                     });

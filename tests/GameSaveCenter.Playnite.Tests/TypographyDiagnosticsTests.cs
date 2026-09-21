@@ -262,9 +262,10 @@ namespace GameSaveCenter.Playnite.Tests
             var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
 
             Assert.Contains("x:Name=\"SidebarBrandText\" Text=\"GameSaveCenter\" FontSize=\"{DynamicResource GscBodyFontSize}\"", shell);
-            Assert.Contains("x:Name=\"SidebarProductionVersionText\" Text=\"v0.6.73\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", shell);
+            Assert.Contains("x:Name=\"SidebarProductionVersionText\" Text=\"v0.6.73\" Style=\"{DynamicResource GscWpfUiTechnicalTextBox}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", shell);
             Assert.Contains("Text=\"{Binding FileName}\" FontSize=\"{DynamicResource GscBodyFontSize}\"", media);
-            Assert.Contains("StringFormat={}{0:MM-dd HH:mm}}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", media);
+            Assert.Contains("Text=\"{Binding CapturedRelativeDisplay, Mode=OneWay}\" Style=\"{DynamicResource GscCaptionStyle}\"", media);
+            Assert.Contains("ToolTip=\"{Binding CapturedFullDisplay, Mode=OneWay}\"", media);
             Assert.Contains("Text=\"{Binding TaskTypeDisplay, Mode=OneWay}\" Foreground=\"{DynamicResource GscPrimaryTextBrush}\" FontSize=\"{DynamicResource GscBodyFontSize}\"", overview);
             Assert.Contains("Text=\"{Binding DetailMessage, Mode=OneWay}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", overview);
             Assert.Contains("ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}\" Foreground=\"{DynamicResource GscInfoBrush}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", save);

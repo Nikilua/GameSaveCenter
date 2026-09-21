@@ -4762,10 +4762,14 @@ public sealed class WpfUiResourceDictionaryTests
             var document = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", file)));
             foreach (var overlay in document.Descendants().Where(element => element.Name.LocalName == "TextBlock" && element.Attribute("IsHitTestVisible")?.Value == "False"))
             {
+                // An outer page StackPanel is a valid scroll host. The empty overlay must
+                // instead share a Grid/Border viewport with its list so it does not become
+                // another measured item that pushes the local scroll surface away. The
+                // finite migration preview is intentionally a compact StackPanel row.
                 var finitePathPreview = file == "MaintenanceView.xaml" &&
                                         overlay.ToString().IndexOf("暂无路径需要迁移", StringComparison.Ordinal) >= 0;
                 if (!finitePathPreview)
-                    Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
+                    Assert.NotEqual("StackPanel", overlay.Parent?.Name.LocalName);
             }
         }
     }
@@ -5094,7 +5098,7 @@ public sealed class WpfUiResourceDictionaryTests
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
 
         Assert.Contains("x:Name=\"AppearanceFields\" Columns=\"2\"", settings);
-        Assert.Contains("x:Name=\"AutomationIntervalFields\" Columns=\"3\"", settings);
+        Assert.Contains("x:Name=\"AutomationIntervalFields\" settings:GameSaveCenterSettingsView.SearchTerms=\"自动化 间隔 默认 游玩 进程 检测 管理面板 刷新\" Columns=\"3\"", settings);
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         Assert.Contains("x:Name=\"SettingsScroller\"", redesign);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", redesign);

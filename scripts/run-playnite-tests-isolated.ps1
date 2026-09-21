@@ -2,6 +2,7 @@
 param(
     [ValidateSet('Debug', 'Release')][string]$Configuration = 'Release',
     [string]$OutputRoot = '',
+    [string]$TestTempRoot = '',
     [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot)
 )
 
@@ -10,7 +11,12 @@ $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
 $previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
 
 if ($OutputRoot) {
-    $isolatedTestTempRoot = Join-Path ([System.IO.Path]::GetFullPath($OutputRoot)) 'test-temp'
+    $isolatedTestTempRoot = if ([string]::IsNullOrWhiteSpace($TestTempRoot)) {
+        Join-Path ([System.IO.Path]::GetFullPath($OutputRoot)) 'test-temp'
+    }
+    else {
+        [System.IO.Path]::GetFullPath($TestTempRoot)
+    }
     New-Item -ItemType Directory -Path $isolatedTestTempRoot -Force | Out-Null
     $env:TEMP = $isolatedTestTempRoot
     $env:TMP = $isolatedTestTempRoot

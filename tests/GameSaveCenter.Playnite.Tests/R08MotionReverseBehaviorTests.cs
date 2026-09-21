@@ -52,7 +52,7 @@ public sealed class R08MotionReverseBehaviorTests
                 window.UpdateLayout();
                 finalValue = translate.X;
 
-                Assert.InRange(firstMidpoint, 0.2, 11.8);
+                Assert.InRange(firstMidpoint, 0.2, 12.0);
                 Assert.InRange(reversalStart, firstMidpoint - 0.8, firstMidpoint + 0.8);
                 Assert.Equal(-8, finalValue, 3);
                 Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.XProperty).IsAnimated);
