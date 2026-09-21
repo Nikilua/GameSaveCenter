@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-06 可选择技术文本（现有能力核对）
+
+- 先查已有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`；没有新增控件、服务、DTO、命令或复制通道。本批复用现有实现，提交身份 `e647b5bd`。
+- `R03LongPathTests`、`R11DiffListSearchBehaviorTests`、`R15TaskFailureCopyTests` 合计 `11/11`：实际 WPF 长路径/技术详情 TextBox 可 `SelectAll` 回读完整值，SaveCenter 路径复制保持完整原值，错误码/脱敏技术详情/任务 ID 复制负载保持正确。不是单纯源码字符串断言。
+- 当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过。Demo 原目录不可用，main 用户改动未碰未合并；真实剪贴板、UIA/读屏、Playnite host、DPI/跨屏、选择像素和性能未验。
+- R21-06 仍进行中：下一小批核对版本/诊断摘要中普通 TextBlock 的剩余入口及现有复制/Tooltip 等价能力，再决定是否需要最小共享样式补修。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md`。
+
 ## 2026-09-21 R21-05 禁用与隐藏区别
 
 - 先核对已有 `ActionAvailabilityHints`、SaveCenter 维护跳转条件、`GscWpfUiContextButton` 和 Automation 绑定；没有重建服务、DTO、命令或业务语义。本批只新增 `R21DisabledHiddenBehaviorTests` 与证据，提交 `380234e2`。
