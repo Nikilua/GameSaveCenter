@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R21-05 禁用与隐藏区别（2026-09-21）
+
+- `380234e20c127277d3655a07a11e1e29ee23f2cd` 只新增行为夹具和证据，先复用 `ActionAvailabilityHints`、SaveCenter 的维护条件、`GscWpfUiContextButton` 及已有 Automation 绑定；没有新增服务、DTO、命令，也没有触碰选框、滚动条、取消/错误、恢复保护或列表性能。
+- `R21DisabledHiddenBehaviorTests` 实际使用 `SaveCenterView`/生产资源/隔离 `WindowHost`：隐藏分支 `Collapsed` 不入可见树且不能取焦点，说明文本仍可聚焦并提供 Name/HelpText；条件满足后原按钮可见且命令可执行；共享禁用动作保持可见，UIA Invoke 拒绝并保持零副作用。新增 `2/2`，邻接组合 `31/31`。
+- Release 测试项目以提交身份构建为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。完整脚本的 Worker 既有 `MediaSyncServiceTests.cs:570` NRE 保留为限制，不绕过、不改写。
+- 仅使用合成/fake/隔离宿主；Demo 原目录不可用，main 用户改动未碰未合并。真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能未验。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md`。下一步 R21-06 可选择技术文本。
+
 ## 接续点校正与 R21-04（2026-09-21）
 
 - 用户指出最近应进行到 R12-04；账本核对结果是 R12-04 已在 `e4e42f40` 满足，R12-05 至 R12-08 也已有后续独立记录。本轮不重建、不回滚这些事实，当前分支继续从真实未完成项推进。

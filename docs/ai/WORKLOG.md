@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R21-05 禁用与隐藏区别
+
+- 先核对已有 `ActionAvailabilityHints`、SaveCenter 维护跳转条件、`GscWpfUiContextButton` 和 Automation 绑定；没有重建服务、DTO、命令或业务语义。本批只新增 `R21DisabledHiddenBehaviorTests` 与证据，提交 `380234e2`。
+- 实际 `SaveCenterView`/生产资源/隔离 `WindowHost` 行为验证 `2/2`：隐藏维护跳转为 `Collapsed`，不在可见树且不能取焦点；说明文本可聚焦并读回 Name/HelpText；条件满足后原命令绑定恢复可执行。共享禁用动作保持可见，UIA `Invoke` 被拒绝且无副作用。邻接组合 `31/31`。
+- 提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过。完整 Release 脚本编译解决方案后，Worker 仍在未修改的 `MediaSyncServiceTests.cs:570` 抛 NRE（350/1/351），按真实事实保留。
+- 只用合成/fake/隔离宿主，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，main 用户改动未碰未合并。真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能仍未验。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md`。
+- 下一可执行任务：`R21-06` 可选择技术文本，先查已有 TextBlock/复制语义和负例，再按小批量补实际行为证据。
+
 ## 2026-09-21 接续点校正与 R21-04 异步完成播报
 
 - 用户校正最近交接应以 R12-04 为准；核对发现 R12-04 已满足且 R12-05 至 R12-08 已有历史证据，不回滚、不重做。当前真实未完成项为 R21-04，已在本批收口。

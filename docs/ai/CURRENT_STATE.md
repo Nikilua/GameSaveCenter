@@ -3,7 +3,14 @@
 ## 接续点校正与当前边界（2026-09-21）
 
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
-- 本轮在当前分支实际收口 R21-04：新增受控 WPF 终态播报/任务页加载状态行为证据，现状为“已满足，待环境验证”。下一可执行任务为 R21-05 禁用与隐藏区别。
+- 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 的行为证据，最新接续点见下节，下一项为 R21-06。
+
+## 当前第三轮 R21-05 禁用与隐藏区别（已满足，待环境验证）
+
+- `380234e2` 只新增 `R21DisabledHiddenBehaviorTests` 与事实证据，生产业务代码未改；复用 `ActionAvailabilityHints`、SaveCenter 维护跳转条件、`GscWpfUiContextButton` 和现有 Automation 绑定。
+- 实际 `SaveCenterView` 行为覆盖隐藏分支 `Collapsed`/不可见/不可聚焦、说明文本焦点与 Name/HelpText，条件满足后的原命令绑定可执行；共享禁用动作保持可见，UIA Invoke 被拒绝且无副作用。新增 `2/2`，相关邻接 `31/31`。
+- 提交身份 Release 测试项目为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过。完整 Release 的 Worker 仍有未修改路径 `MediaSyncServiceTests.cs:570` NRE，未改写为通过。
+- 真实 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能和 Demo 原目录仍未验；main 用户改动未碰、未合并。证据见 [`R21-05 禁用与隐藏行为`](../design/reviews/ui-finesse-round3-20260915/evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md)。下一项为 R21-06 可选择技术文本。
 
 ## 当前第三轮 R21-04 异步完成播报（已满足，待环境验证）
 

@@ -3,6 +3,7 @@
 日期：2026-09-21
 分支：`codex/ui-finesse-round2`
 任务：R21-05「禁用与隐藏区别」
+提交身份：`GscBuildCommit=380234e20c127277d3655a07a11e1e29ee23f2cd`
 
 ## 验证范围
 
@@ -22,7 +23,7 @@
 
 - `scripts/validate-source.py`：通过。
 - `scripts/check-xaml.ps1`：24 个 XAML 文件通过。
-- R21-05 测试项目 Release 编译：0 警告、0 错误。
+- R21-05 测试项目 Release 编译：0 错误；保留项目已有的 `MediaCenterView.xaml.cs:671` 两条 `CS8602` 警告。
 - 完整 Release 构建已完成编译，但 Worker 全量测试仍有一个与本项无关的既有失败：`MediaSyncServiceTests.ClassificationApplyUsesSelectedStableIdsAndValidatedTargetOverride` 在 `MediaSyncServiceTests.cs:570` 抛出 `NullReferenceException`（350 通过、1 失败、351 总计）；本阶段未修改该路径。
 - 未宣称真实 Playnite 渲染、操作系统 UIA/读屏、DPI/跨屏、呈现帧、ETW 或宿主性能验证；Demo 原目录在当前工作区不可用，视觉判断沿用已恢复生产基线。
 
