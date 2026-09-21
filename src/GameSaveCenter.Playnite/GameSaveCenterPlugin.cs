@@ -394,9 +394,12 @@ namespace GameSaveCenter.Playnite
                 ShowInfo($"{game.Name} 暂无备份历史。");
                 return;
             }
-            var lines = versions.Take(20).Select(x => $"{x.CreatedLocal:yyyy-MM-dd HH:mm} · {x.SizeDisplay} · {x.RestoreReadinessStatusDisplay}");
+            var lines = versions.Take(20).Select(FormatBackupHistoryQuickActionLine);
             ShowInfo($"{game.Name} 共 {versions.Count} 个备份版本：\n" + string.Join("\n", lines));
         }
+
+        internal static string FormatBackupHistoryQuickActionLine(BackupVersionDto version)
+            => $"时间：{version.CreatedRelativeDisplay}（{version.CreatedFullDisplay}） · {version.SizeDisplay} · {version.RestoreReadinessStatusDisplay}";
 
         private async Task ValidateLatestReadinessQuickActionAsync(GameMenuActionContext context)
         {
