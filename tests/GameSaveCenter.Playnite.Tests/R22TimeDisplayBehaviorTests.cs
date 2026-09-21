@@ -360,6 +360,22 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void StorageRankKeepsLegacyDateAndExposesRelativeFullAndRawEvidence()
+    {
+        var timestamp = DateTime.UtcNow.AddMinutes(-2);
+        var rank = new StorageGameRankDto { LatestBackupUtc = timestamp };
+        var unknown = new StorageGameRankDto();
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("MM-dd HH:mm"), rank.LatestBackupDisplay);
+        Assert.Contains("前", rank.LatestBackupRelativeDisplay, StringComparison.Ordinal);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), rank.LatestBackupFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), rank.LatestBackupRawUtcDisplay);
+        Assert.Equal("时间未知", unknown.LatestBackupRelativeDisplay);
+        Assert.Equal("时间未知", unknown.LatestBackupFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.LatestBackupRawUtcDisplay);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

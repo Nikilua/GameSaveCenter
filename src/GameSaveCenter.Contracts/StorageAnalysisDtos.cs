@@ -73,6 +73,13 @@ namespace GameSaveCenter.Contracts
 
         public string BackupBytesDisplay => FormatBytes(BackupBytes);
         public string LatestBackupDisplay => LatestBackupUtc?.ToLocalTime().ToString("MM-dd HH:mm") ?? "—";
+        public string LatestBackupRelativeDisplay => LatestBackupUtc.HasValue
+            ? TimeDisplayFormatter.Relative(LatestBackupUtc.Value, DateTime.UtcNow)
+            : "时间未知";
+        public string LatestBackupFullDisplay => LatestBackupUtc.HasValue
+            ? TimeDisplayFormatter.Full(LatestBackupUtc.Value)
+            : "时间未知";
+        public string LatestBackupRawUtcDisplay => TimeDisplayFormatter.RawUtc(LatestBackupUtc ?? DateTime.MinValue);
         public string LatestBackupIdDisplay => string.IsNullOrWhiteSpace(LatestBackupId) ? "版本不可用" : LatestBackupId;
 
         private static string FormatBytes(long bytes)
