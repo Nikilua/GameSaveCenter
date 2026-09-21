@@ -3841,7 +3841,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                    "从已校验的远端备份恢复",
                    $"即将恢复“{staged.GameName}”在设备“{staged.RemoteDevice}”上的版本“{staged.BackupId}”。\n\n恢复前会创建并锁定本机当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。",
                    "创建快照并恢复",
-                   "取消"))return;
+                   "取消",
+                   isDangerous: true))return;
             var task=await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreRemoteBackup,
                 new RemoteRestoreRequestDto
                 {
@@ -5246,7 +5247,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "GameSaveCenter 安全恢复",
                     confirmation,
                     "开始安全恢复",
-                    "取消")) return;
+                    "取消",
+                    isDangerous: true)) return;
             if (!RestoreConfirmationGuard.IsCurrent(
                     gameId,
                     backupId,
@@ -5290,7 +5292,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "撤销恢复",
                     $"游戏：{gameName}\n撤销将恢复最近的 PreRestore 快照，并且仍会先保存当前状态。确认继续？",
                     "撤销恢复",
-                    "取消")) return;
+                    "取消",
+                    isDangerous: true)) return;
             var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.UndoRestore, new GameQueryDto { PlayniteId = gameId }, TimeSpan.FromMinutes(30));
             await RefreshCoreAsync(false);
             NotifyTaskResults(new[] { task });

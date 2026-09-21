@@ -1194,6 +1194,13 @@ namespace GameSaveCenter.Playnite.Views
             DialogConfirmButton.Content = request.ConfirmText;
             DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, request.IsDangerous ? "GscErrorBrush" : "GscAccentBrush");
             DialogConfirmButton.SetResourceReference(Control.BorderBrushProperty, request.IsDangerous ? "GscErrorBrush" : "GscAccentBrush");
+            DialogConfirmationPolicy.ApplyConfirmationButtons(DialogConfirmButton, DialogCancelButton, request.IsDangerous);
+            AutomationProperties.SetHelpText(
+                DialogCancelButton,
+                request.IsDangerous ? "安全选项：按 Enter 可取消本次操作。" : "取消本次操作。");
+            AutomationProperties.SetHelpText(
+                DialogConfirmButton,
+                request.IsDangerous ? $"危险操作：{request.ConfirmText}；需主动移到此按钮后按 Enter。" : request.ConfirmText);
             OpenDialog(request.IsDangerous ? DialogCancelButton : DialogConfirmButton);
         }
 
@@ -1213,6 +1220,7 @@ namespace GameSaveCenter.Playnite.Views
             DialogConfirmButton.Content = request.PrimaryText;
             DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, "GscAccentBrush");
             DialogConfirmButton.SetResourceReference(Control.BorderBrushProperty, "GscAccentBrush");
+            DialogConfirmationPolicy.ApplyChoiceButtons(DialogConfirmButton, DialogCancelButton);
             OpenDialog(DialogConfirmButton);
         }
 
@@ -1234,6 +1242,7 @@ namespace GameSaveCenter.Playnite.Views
             DialogConfirmButton.Content = "关闭";
             DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, "GscAccentBrush");
             DialogConfirmButton.SetResourceReference(Control.BorderBrushProperty, "GscAccentBrush");
+            DialogConfirmationPolicy.ApplyResultButton(DialogConfirmButton, DialogCancelButton);
             OpenDialog(DialogConfirmButton);
         }
 
