@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 时间显示统一（2026-09-21，部分满足）
+
+- `1250aaad` 先复用现有 `TaskTimelineBuilder` 的 UTC 时间与序号排序，新增 Contracts 共享 `TimeDisplayFormatter`；相对时间的 `nowUtc` 可注入，完整提示包含本地时区偏移和 round-trip UTC 原值，未知时间不被伪造为当前时间。
+- `TaskTimelineEntryDto` 增加相对/完整/原始时间属性，Task Center 时间线显示相对时间并把完整提示放入 Tooltip/Automation HelpText；没有改变游戏选框、滚动条、命令绑定、取消/错误、恢复保护或有限列表性能。
+- `R22TimeDisplayBehaviorTests 5/5`、R15 `3/3`；提交身份 Release Playnite `net462` `0 errors / 2` 条既有 MediaCenter nullable warning，Tests `net472` `0/0`，source/XAML `24/24`/diff 通过，WPF `0/27/177`。
+- R22-01 尚未完成：`TaskStatusDto.DurationDisplay` 和 Worker 任务状态仍按墙上 UTC 时间，单调 elapsed、持久化/恢复和时钟跳变行为待下一子批次；本阶段没有真实系统时钟、剪贴板、Playnite/package-host、UIA/读屏、呈现、DPI/跨屏、ETW 或宿主性能证据。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md`。下一步核对 TaskCoordinator 与任务快照恢复边界。
+
 ## 第三轮 R22-04 打开路径失败（2026-09-21）
 
 - 代码基线 `a43a896843d63762ff6473bc664ba6182cb4f8fc` 复用 R16 的 `SettingsPathEditorService`、设置页路径编辑器、完整路径复制和 Dashboard `RunLocal` 错误边界，没有新增服务、权限操作或 Explorer 绕过。

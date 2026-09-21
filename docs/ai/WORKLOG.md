@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 时间显示统一（第一子批次）
+
+- 先查现有 DTO/Worker/时间线能力：此前没有共享时间格式化器；时间线已按 `OccurredUtc` 排序，但 `TaskStatusDto.DurationDisplay` 仍使用墙上 UTC 时间，Worker 的 `Stopwatch` 只用于吞吐采样。本阶段不把已有能力误写成单调任务时长。
+- `1250aaad` 新增 Contracts `TimeDisplayFormatter` 和 `R22TimeDisplayBehaviorTests`，任务时间线接入相对时间、完整时区提示、原始 UTC 属性；未知时间、命令/Binding、现有 UTC 排序和有限时间线滚动保持不变，没有新增服务或真实数据写入。
+- 新增行为 `5/5`，既有 R15 时间线 `3/3`；提交身份 Release Playnite `net462` `0 errors / 2` 条既有 CS8602 warning，Tests `net472` `0/0`；source validation、XAML `24/24`、diff 通过，WPF `0/27/177`。
+- R22-01 记为“部分满足，待继续”。真实剪贴板、系统时钟跳变、单调任务时长/持久化、Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md`。下一步核对 `TaskStatusDto`、`TaskCoordinator` 和任务快照恢复。
+
 ## 2026-09-21 R22-04 打开路径失败
 
 - 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
