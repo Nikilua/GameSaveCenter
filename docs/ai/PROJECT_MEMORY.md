@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 比较选择与结果摘要时间（2026-09-21，第二十三子批次）
+
+- `ea010656` 复用已有 `BackupVersionDto` 时间投影；`DashboardViewModel` 比较选择/结果摘要正文改用相对时间，完整摘要通过生产 SaveCenter `TextBlock` 的 Tooltip/Automation HelpText 提供。没有新增比较服务、IPC、差异列表、排序或命令路径。
+- `BuildComparisonSelectionSummary`/`BuildComparisonSummary` 的 A→B、版本 ID、新增/删除和同版本负例保持；新增完整摘要负例覆盖未选择版本。`R22TimeDisplayBehaviorTests 23/23`、`R11VersionComparisonBehaviorTests 2/2`，合计 `25/25`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，仅既有 2 条 MediaCenter CS8602。
+- 仍只证明合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建；不等价真实 Playnite/package-host、UIA/读屏、剪贴板、系统时钟跳变、DPI/跨屏、呈现、ETW 或宿主性能。Demo 原目录不可用，main 用户改动未碰未合并。历史跳转状态、快速历史摘要、复制列和内部日志/导出仍待核对。证据：`R22-01-COMPARISON-SUMMARY-TIME-20260921.md`。下一步处理这些仍直显旧本地时间的真实入口。
+
 ## 第三轮 R22-01 比较版本下拉时间（2026-09-21，第二十二子批次）
 
 - `0c9870fb` 先核对 R11-02 已有比较契约：A/B `SelectedItem`、交换命令、比较命令和同版本禁用负例均已有实际 STA WPF 证据；本批只把 SaveCenter 两个生产 ComboBox 的条目模板改为相对正文、完整 Tooltip/Automation HelpText，不重建比较服务或差异 DTO。

@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 比较选择与结果摘要时间（第二十三子批次）
+
+- 先核对 `DashboardViewModel` 两个生产摘要的实际绑定：`CompareSelectionSummary` 与 `DiffComparedSummary` 确实是用户可见文本；历史跳转、快速历史、复制和内部导出保持独立，不在本批混改。
+- `ea010656` 复用已有 DTO/formatter，把 A/B 选择和比较结果正文改为相对时间，完整本地时间与 UTC 原值进入 Tooltip/Automation HelpText；A→B 方向、版本 ID、差异语义、同版本禁用和比较/交换命令保持。
+- `R22TimeDisplayBehaviorTests 23/23`、`R11VersionComparisonBehaviorTests 2/2`，合计 `25/25`；实际隔离 STA WPF 读取摘要文本与完整提示。Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COMPARISON-SUMMARY-TIME-20260921.md`。只使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、剪贴板、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对历史跳转状态消息与快速历史摘要的用户可见边界。
+
 ## 2026-09-21 R22-01 比较版本下拉时间（第二十二子批次）
 
 - 先核对 R11-02 的实际比较行为和 SaveCenter 生产 ComboBox：已有 A/B 选中项、交换/比较命令、同版本禁用负例，不把旧 `ComparisonDisplay` 的存在误判为已统一的时间展示。
