@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 HealthInspection 恢复巡检时间（第十二子批次）
+
+- 先核对现有 `HealthInspectionStateDto`、Maintenance 恢复巡检卡片、`DashboardViewModel.MaintenanceActions` 和 R17 预算/取消门禁；本批只复用 `TimeDisplayFormatter`，没有新增巡检服务、定时器、存档写入或诊断发送路径。
+- `44023ad6` 为最近成功、最近完成、下次到期增加相对/完整/原始 UTC 投影；Maintenance 卡片正文使用相对时间，Tooltip/Automation HelpText 保留完整时间。停用、未运行、取消、本轮完成与上次成功的区别、单次预算、命令和旧 `LastAttemptDisplay` 兼容路径保持；R17 中随绑定迁移而过时的两个源码入口断言改为新相对/完整入口，没有以源码包含代替交互签收。
+- 合成 DTO 负例覆盖“尚未成功验证”“尚未结束一轮巡检”“待安排”“未记录 UTC 时间”；`R22TimeDisplayBehaviorTests` `15/15`，Health/时间/维护定向 `25/25`，`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests` `7/7`。联合回归 `32 passed / 3 failed / 0 skipped`（总计 35），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `44023ad6` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、0 errors，`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。业务验证仅使用合成 DTO、fake/隔离测试宿主与隔离构建目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为核对 `EnvironmentCheckStateDto.CheckedLocalDisplay` 及同一 Maintenance 页剩余旧本地时间直显，先查已有 DTO/绑定和复制入口。
+
 ## 2026-09-21 R22-01 Overview 最近访问时间（第十一子批次）
 
 - 先核对已有 `RecentAccessItem`、稳定 ID 记录、Overview 最近访问有限/虚拟化列表和 `OpenRecentAccessCommand`；本阶段只复用 `TimeDisplayFormatter`，没有新增记录服务、计时器或导航路径。
