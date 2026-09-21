@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 任务页更新时间（2026-09-21，第二十七子批次）
+
+- `c96130a2` 复用 `TimeDisplayFormatter`，将任务页状态正文改为相对时间，提供完整本地时间/round-trip UTC 的 Tooltip 与 Automation HelpText，并保留 `TaskPageLastUpdatedDisplay` 兼容属性、任务刷新/重试、旧数据保留和取消/错误语义。
+- 实际 STA WPF `TaskCenterView` 读取任务摘要正文、Tooltip、HelpText；`R22TimeDisplayBehaviorTests 24/24`、`R21AsyncCompletionAnnouncementBehaviorTests 2/2`、`TaskCenterViewResponsiveTests 7/7`，定向 `33/33`。Release/XAML/source/diff/WPF 为 `0 errors / 27 warnings / 177 info`；首轮完整编译仅出现既有 2 条 MediaCenter CS8602，未改写。
+- 只证明合成时间、fake DataContext、隔离 testhost 和隔离目录，不等价真实 Playnite/package-host、Windows UIA/读屏、系统时钟跳变、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。证据：`R22-01-TASK-PAGE-TIME-20260921.md`。
+- R22-01 仍“部分满足，待继续”；下一项先核对 `OverviewSnapshotDisplay.Updated`、远端暂存有效期等实际用户绑定的旧 `ToLocalTime`，再推进独立 Q/R 小批。
+
 ## 第三轮 R22-01 复制列与报告/日志时间（2026-09-21，第二十六子批次）
 
 - `494a911f` 复用既有 `DataGridClipboardFormatter` 和报告/日志格式，不改变 SaveHistory 复制的完整本地秒级时间、稳定 `BackupId` 去重、TSV、脱敏或完整值复制；Worker 健康报告生成时间已有完整本地秒级行为证据。

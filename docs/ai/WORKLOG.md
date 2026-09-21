@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 任务页更新时间（第二十七子批次）
+
+- 先查任务页已有状态机、`TaskPageLastUpdatedUtc`、`TaskPageStatusSummary` 和 `TaskCenterView` 的实际绑定；复用 `TimeDisplayFormatter`，没有新增服务、DTO、通知体系或时间排序逻辑。
+- `c96130a2` 将任务页正文改为相对时间，完整本地/UTC 时间进入任务摘要与 stale banner 的 Tooltip/Automation HelpText；保持加载、失败保留旧数据、重试、列表、滚动、取消/错误和 `TaskPageLastUpdatedDisplay` 兼容语义。
+- 实际 STA WPF 行为测试读取 `TaskQueueLastUpdatedSummary` 的正文、Tooltip、HelpText；`R22TimeDisplayBehaviorTests 24/24`、`R21AsyncCompletionAnnouncementBehaviorTests 2/2`、`TaskCenterViewResponsiveTests 7/7`，合计 `33/33`。Release/XAML `24/24`、Playnite/Tests/Worker `0 errors`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。首轮完整编译的 2 条既有 MediaCenter CS8602 未修改。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TASK-PAGE-TIME-20260921.md`。仅使用合成时间、fake/隔离 testhost 与隔离构建目录，没有真实存档、媒体、云端、报告/日志、剪贴板或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；未宣称真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW 或宿主性能。下一可执行小批量：核对 `OverviewSnapshotDisplay.Updated`、远端暂存有效期等残余用户可见 `ToLocalTime` 入口，再选择下一依赖已满足的 Q/R 任务。
+
 ## 2026-09-21 R22-01 复制列与报告/日志时间（第二十六子批次）
 
 - 先查 `DataGridClipboardFormatter`、SaveHistory 复制命令、Worker 健康报告测试和诊断/Worker 日志格式；确认这些是稳定机器可读完整时间，不把它们误改成相对正文。

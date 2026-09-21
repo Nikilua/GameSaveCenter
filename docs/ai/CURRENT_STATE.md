@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 任务页更新时间（本子批已满足，R22-01 仍部分满足）
+
+- `c96130a2` 复用已有 `TimeDisplayFormatter`，将 `TaskPageStatusSummary` 正文改为相对时间，新增任务页相对/完整/原始 UTC 投影；任务队列摘要与 stale banner 的 Tooltip/Automation HelpText 绑定完整状态文本。加载、无数据失败、保留旧数据、重试、任务查询、列表滚动和取消/错误语义保持，旧 `TaskPageLastUpdatedDisplay` 兼容属性保留。
+- 实际 STA WPF `TaskCenterView` 行为证据确认 `TaskQueueLastUpdatedSummary` 在加载态显示原状态，完成态显示相对“刚刚”，Tooltip 与 `AutomationProperties.HelpText` 同时提供完整本地时间和 UTC 原值；`R22TimeDisplayBehaviorTests 24/24`、`R21AsyncCompletionAnnouncementBehaviorTests 2/2`、`TaskCenterViewResponsiveTests 7/7`，定向合计 `33/33`。
+- Release 隔离构建 XAML `24/24`、Playnite/Tests/Worker `0 errors`；本阶段首轮完整编译报告的 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` 未改写，测试证据校正后的重编仍为 `0 errors`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。证据见 [`R22-01 任务页更新时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TASK-PAGE-TIME-20260921.md)。
+- 验证只使用合成时间、fake DataContext、隔离 STA WPF 和隔离目录，没有真实存档、媒体、云端、报告/日志、剪贴板或诊断写入。真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验；残余用户可见旧 `ToLocalTime` 入口仍需按实际绑定逐项核对。
+- 下一可执行任务：先核对 `OverviewSnapshotDisplay.Updated` 与远端暂存有效期等残余用户可见时间入口，再选择依赖已满足的下一独立 Q/R 小批，不改已证实稳定的复制/日志/导出字段。
+
 ## 接续点校正与当前边界（2026-09-21）
 
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
