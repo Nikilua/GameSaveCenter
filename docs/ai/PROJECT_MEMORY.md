@@ -4815,3 +4815,10 @@
 - 当前代理样本为：单次切换 `29` 回调/p95 `74.5ms`/最大 `234.6ms`，快速二次切换 `41` 回调/p95 `18.5ms`/最大 `35.2ms`，无动画终态 `4` 回调/p95/最大 `21.4ms`。这只说明受控 WPF/offscreen logical DIP 的回调间隔，不能写成 DWM/PresentMon/物理掉帧。
 - `shellqa` 同次运行最终失败，5 个几何门禁分别是两项 header actions 越界和三项 Media inbox/batch row 间距异常；保持“部分满足，待几何与宿主性能验收”，不要改报告状态或用字符串断言掩盖。
 - ETW/WPR/xperf 权限拒绝仍是外部边界；没有 ETL、真实呈现帧或停顿期间采样栈。下一可执行任务：R23-06 安装/回退身份核查；同时把 R23-05 几何失败作为独立复核入口。
+
+## 2026-09-22 Round3 R23-06 安装与回退可核查
+
+- R23-06 先复用现有 `package.ps1`、`install-dev.ps1`、发布身份读取和合成 profile，不新建安装/恢复服务。首次把 package 输出放到 D 盘时，Worker 源码测试为 `347/355`，根因是从 `AppContext.BaseDirectory` 向上找仓库；`57754b33` 让 Worker 测试复用 Playnite 的 `GscSourceRoot`、`GscBuildCommit` 和 `TestRepositoryContext`，最终完整门禁恢复为 `355/355`。
+- 最终发布候选的 XAML/Core/Worker/Playnite source/WPF 门禁分别为 `24/24`、`125/125`、`355/355`、`111` 类、`101` 类，Release `0 errors`，仅保留既有两条 `MediaCenterView.xaml.cs:699 CS8602` warning。六份程序集均绑定 `0.6.73+57754b33…`，zip/pext 同 SHA-256 `B35723A0…974F54`，各 `44,060,821` bytes。
+- 只在 `.tmp/r23-04-synthetic-profile-20260922` 的 Extensions 目标安装并核对最终候选，再恢复已备份的 `0.6.73+5b5d6305…` 目录；清单、DLL 文件版本、ProductVersion 和 Worker 存在性均已复核。不能把合成 profile 的目录级回退写成真实存档恢复，也不能写成当前 Playnite 屏幕/UIA/宿主性能通过。
+- 证据：`evidence/R23-06-PACKAGE-ROLLBACK-20260922.md`。下一可执行任务优先是 R23-04 runner UIA/summary 收口；R23-05 的五项几何失败、真实 presented frame 和 ETW 权限边界继续单列；若先做收尾则推进 R23-07。

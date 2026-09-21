@@ -8556,3 +8556,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前代理运行报告绑定 `fef68005d86c5daa801850afa04d01b3eb113209`、`WorkingTreeClean=True`：单次切换 29 Rendering 回调/p95 `74.5ms`/最大 `234.6ms`，快速二次切换 41/p95 `18.5ms`/最大 `35.2ms`，无动画终态 4/p95/最大 `21.4ms`。这些是 offscreen WPF 回调代理，不是屏幕呈现帧。
 - shellqa 最终 `FAILED`，报告实际保留 5 个几何失败（header actions 越界 2 项、Media inbox/batch row 间距 3 项）；本阶段不把它改成性能通过，也不以离屏图替代真实呈现帧。
 - ETW/WPR/xperf 权限拒绝未绕过；没有 ETL/PresentMon/真实 DWM 样本。证据：`evidence/R23-05-FRAME-PERFORMANCE-EVIDENCE-20260922.md`。下一可执行任务：R23-06 安装与回退身份核查，R23-05 几何问题与真实呈现帧仍待验。
+
+## 2026-09-22 Round3 R23-06 安装与回退可核查
+
+- 先查已有 `package.ps1`、`install-dev.ps1`、Playnite 测试身份上下文并复用；没有新建安装器或恢复服务。D 盘外置输出第一次暴露 Worker 源码测试从 `AppContext.BaseDirectory` 寻根导致 `347/355`，提交 `57754b33` 改为使用 `GscSourceRoot`/`GscBuildCommit` 与 `TestRepositoryContext`，未改 Worker 业务、IPC、DTO 或存储。
+- 修复后完整 Release package 成功：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类，Release `0 errors`，既有 `MediaCenterView.xaml.cs:699` 两条 CS8602 warning；六份程序集身份一致为 `0.6.73+57754b33…`，zip/pext SHA-256 均为 `B35723A0…974F54`、大小均为 `44,060,821` bytes。
+- 在合成 profile `.tmp/r23-04-synthetic-profile-20260922` 的 Extensions 目标完成最终候选安装复核，再恢复 `0.6.73+5b5d6305…` 备份并复核清单/DLL/ProductVersion/Worker；未触碰真实 Playnite Extensions、存档、媒体、云端或诊断。该演练是包身份与目录级回退证据，不是真实存档恢复或当前宿主呈现通过。
+- 证据：`evidence/R23-06-PACKAGE-ROLLBACK-20260922.md`。账本改为“已满足，待宿主环境验证”；下一可执行项是 R23-04 runner UIA/summary 收口或 R23-07 任务去重与收尾。R23-05 五项几何失败、真实 presented frame 与 ETW 权限边界继续保留。

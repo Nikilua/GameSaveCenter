@@ -2586,3 +2586,10 @@
 - 代理样本：单次切换 29 回调、p95 `74.5ms`、最大 `234.6ms`、慢帧比例 `0.143`；快速二次切换 41 回调、p95 `18.5ms`、最大 `35.2ms`；无动画终态 4 回调、p95/最大 `21.4ms`。这些是 offscreen logical DIP 下 WPF Rendering 回调间隔，不是真实屏幕呈现帧。
 - 同次 shellqa 最终 `FAILED`，真实报告列出 5 个几何失败：980/1040 header actions 越界各 1 项，Media 1040/1100/1366 inbox grid 与 batch row 顶部间距异常各 1 项；不把性能数字或截图掩盖为通过，也不在本阶段改写几何实现。
 - ETW/WPR/xperf 的系统跟踪权限边界继续有效；没有 ETL、PresentMon 或真实 DWM 帧样本，不报告物理刷新率、真实掉帧率或停顿调用栈。证据：`evidence/R23-05-FRAME-PERFORMANCE-EVIDENCE-20260922.md`。下一可执行任务：R23-06 安装与回退身份核查；R23-05 几何失败和真实呈现帧分别保留待验。
+
+## 2026-09-22 Round3 R23-06 安装与回退可核查
+
+- 当前分支提交 `57754b33c8dc759e8f0ce7c26560ee488a5dc557` 修复了外置 D 盘 package 输出下 Worker 源码测试从 `AppContext.BaseDirectory` 错误寻根的问题：复用 Playnite 测试已有的 `GscSourceRoot`/`GscBuildCommit` 元数据和 `TestRepositoryContext`，完整 package 门禁最终为 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类，Release `0 errors`，保留既有两条 `CS8602` warning。
+- 最终 zip/pext 的内容门禁通过，六份程序集身份一致为 `0.6.73+57754b33c8dc759e8f0ce7c26560ee488a5dc557`；两包 SHA-256 均为 `B35723A0B8009D4AFE709D4ECA621B7938AEDA216D9C67DC56E324B144974F54`，大小均为 `44,060,821` bytes。首次外置输出的 `347/355` 是隔离测试根绑定问题，修复后不是业务断言失败。
+- 在 `.tmp/r23-04-synthetic-profile-20260922` 的明确 Extensions 目录安装最终候选，核对清单 `0.6.73`、DLL `0.6.73.0`、ProductVersion `0.6.73+57754b33…` 和 Worker 文件；随后只在同一合成目录恢复 `0.6.73+5b5d6305…` 备份，回退身份核对成功。没有触碰真实 Playnite Extensions、存档、媒体、云端或诊断。
+- 本项证明发布身份、包内容、隔离安装和目录级回退，不证明当前候选的真实 Playnite 呈现、UIA/读屏、物理 DPI/跨屏、宿主帧性能或真实存档恢复；R23-04 的 UIA/summary runner 边界和 R23-05 的五项几何/真实 presented frame 边界继续保留。证据：`evidence/R23-06-PACKAGE-ROLLBACK-20260922.md`。下一可执行任务：先收口 R23-04 runner UIA/summary，或推进 R23-07 任务去重与收尾。
