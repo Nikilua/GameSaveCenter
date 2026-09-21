@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 Maintenance 诊断证据时间（第八子批次）
+
+- 先核对已有 `ValidationFindingDto`、Maintenance 两个诊断详情入口和共享技术文本/帮助绑定；本阶段只复用 `TimeDisplayFormatter`，没有新增服务、持久化字段、命令或诊断发送路径。
+- `eb6a8682` 为 `ValidationFindingDto` 增加相对/完整/原始 UTC 证据时间，保留 `CreatedLocal`、旧 `EvidenceTimeDisplay` 与 `DateTime.MinValue` 的“证据时间未知”；Maintenance 的两个 `SelectedFinding` 详情入口改用相对显示，完整时间进入 Tooltip/Automation HelpText，表格、复制、导航、命令和错误语义未变。
+- 最终 Release 构建身份为 `eb6a8682`：Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`R22TimeDisplayBehaviorTests 11/11`、`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`；联合门禁 `28 passed / 3 failed / 0 skipped`，3 条仍为旧 SourceRule fixture、分类 `SelectedIndex` 和 Sidebar 版本文本断言漂移。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成 DTO、fake/隔离 testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点其他 Save/恢复时间直显与兼容/未知负例。
+
 ## 2026-09-21 R22-01 归类预览与批次历史时间入口（第七子批次）
 
 - 继续先核对已有能力：`MediaClassificationSuggestionDto`、`MediaClassificationPreviewDto`、`MediaClassificationBatchSummaryDto` 和 MediaCenter 归类预览/批次历史均已存在；本阶段只复用 `TimeDisplayFormatter`，没有新增服务、持久化字段或分类操作路径。
