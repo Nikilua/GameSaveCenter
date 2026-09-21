@@ -2,6 +2,12 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 Storage 分析时间合同（2026-09-21，第十七子批次）
+
+- 先查现有 `StorageAnalysisDto.CheckedUtc`、`StorageGameRankDto.LatestBackupDisplay` 和 Maintenance 存储分析模板，确认当前卡片没有绑定这两个时间入口；因此不新增页面字段或布局，只把已有 `LatestBackupUtc` 的兼容显示合同补齐为相对/完整/原始 UTC，旧属性保留。
+- `9d319296` 未改变 Storage 的只读服务、逻辑/物理容量区分、失联路径说明、稳定 `PlayniteId`/`BackupId` 导航、刷新命令和不删除语义。`R22TimeDisplayBehaviorTests | R17StorageAnalysisNavigationTests 22/22`、Core `UiDisplayMappingTests 40/40`，Release/XAML/source/diff 通过；WPF 沿用无 XAML 变更的 `0/27/177` 基线。
+- 证据：`R22-01-STORAGE-TIME-20260921.md`。只证明合成 DTO、fake/隔离 testhost 和现有模板盘点，不等价真实 Playnite/package-host、最终呈现、UIA/读屏、DPI/跨屏、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰、未合并。R22-01 仍部分满足，下一步盘点其他 Save/恢复旧本地时间直显。
+
 ## 第三轮 R22-01 CloudTransfer 维护动作摘要时间（2026-09-21，第十六子批次）
 
 - `47bc1d00` 先复用已有 `CloudTransferStatusDto` 时间投影、`MaintenanceActionItem` 分组/命令和维护页 `DataTemplate`，没有新造重试服务、队列、分页或云端请求。CloudTransfer 行动摘要正文改用相对的上次尝试/下次计划，`TimingFullDisplay` 通过 Tooltip/Automation HelpText 保留完整本地时间与 round-trip UTC；HealthInspection、RetentionQuarantine 和旧显示字段使用回退保持不变。

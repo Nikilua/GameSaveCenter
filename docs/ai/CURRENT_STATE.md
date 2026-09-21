@@ -5,6 +5,13 @@
 - 用户校正最近交接应以 R12-04 为准。核对账本后，R12-04 已由 `e4e42f40` 满足，R12-05 至 R12-08 也已有独立证据；不回滚、不重做，也不把这些历史事实改写成未完成。
 - 本轮启动时当前分支已收口 R21-04；随后已完成 R21-05 至 R21-08，并补证 R22-04；当前继续选择后续依赖已满足的 Q/R 小批量。若获得第二个物理显示器，优先按 R21-08 清单补真实宿主跨屏回放。
 
+## 当前第三轮 R22-01 Storage 分析时间合同（本子批已满足，R22-01 仍部分满足）
+
+- `9d319296` 核对 `StorageAnalysisDto.CheckedUtc` 与 `StorageGameRankDto.LatestBackupDisplay`：前者未绑定到 Maintenance 卡片，后者虽是兼容属性也未绑定到两处存储排行模板；不把未呈现的旧属性写成视觉缺陷。仅为 `LatestBackupUtc` 增加相对/完整/原始 UTC 投影，旧显示、容量口径、失联路径说明、稳定 ID 导航、刷新命令和只读/不删除语义保持。
+- `R22TimeDisplayBehaviorTests | R17StorageAnalysisNavigationTests` `22/22`、`UiDisplayMappingTests` `40/40` 通过；Release XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 CS8602；source/diff 通过，因本批无 XAML 变更沿用 WPF `0/27/177`。
+- 证据来自合成 DTO、fake/隔离测试宿主和现有模板盘点，没有真实存档、媒体、云端或外发诊断写入；真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验，main 用户改动未碰、未合并。证据见 [`R22-01 Storage 分析时间合同`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-STORAGE-TIME-20260921.md)。
+- 下一可执行任务：盘点其他 Save/恢复入口的旧本地时间直显，继续先查已有 DTO/绑定、复制入口和稳定排序。
+
 ## 当前第三轮 R22-01 CloudTransfer 维护动作摘要（本子批已满足，R22-01 仍部分满足）
 
 - `47bc1d00` 复用已有 `CloudTransferStatusDto` 的相对/完整时间投影，并把维护行动项中的 CloudTransfer 上次尝试与下次计划改为相对正文；`TimingFullDisplay` 进入 Tooltip/Automation HelpText，保留完整本地时间和 round-trip UTC。健康巡检、隔离账本、动作分组、`OpenCloudQueue` 命令和旧兼容字段未迁移或破坏。

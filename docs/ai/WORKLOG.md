@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 Storage 分析时间合同（第十七子批次）
+
+- 先查 `StorageAnalysisDto.CheckedUtc`、`StorageGameRankDto.LatestBackupDisplay`、Maintenance 两处存储排行模板和 R17 稳定 ID 导航；确认 `CheckedUtc` 与 `LatestBackupDisplay` 当前都没有生产卡片绑定，不把未呈现属性当作视觉缺陷。
+- `9d319296` 只为已有 `StorageGameRankDto.LatestBackupUtc` 补相对/完整/原始 UTC 投影，保留旧 `LatestBackupDisplay`；没有改 Storage 卡片布局、容量口径、失联路径解释、刷新命令、稳定 ID 导航或只读/不删除边界。
+- `R22TimeDisplayBehaviorTests | R17StorageAnalysisNavigationTests` `22/22`、`UiDisplayMappingTests` `40/40`；Release 隔离构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check` 通过，因无 XAML 变更沿用上一子批 WPF `0/27/177`。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-STORAGE-TIME-20260921.md`。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”；真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为盘点其他 Save/恢复入口的旧本地时间直显。
+
 ## 2026-09-21 R22-01 CloudTransfer 维护动作摘要时间（第十六子批次）
 
 - 先核对已有 `CloudTransferStatusDto` 时间投影、`MaintenanceActionItem` 行动分组、维护页模板和 `OpenCloudQueue` 命令；本批复用现有 DTO/状态/命令，没有新增重试服务、云端请求、分页或写入路径。
