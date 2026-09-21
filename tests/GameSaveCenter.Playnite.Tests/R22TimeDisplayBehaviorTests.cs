@@ -241,6 +241,18 @@ public sealed class R22TimeDisplayBehaviorTests
         Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), item.LastAccessRawUtcDisplay);
         Assert.Contains(item.LastAccessRelativeDisplay, item.SummaryDisplay, StringComparison.Ordinal);
         Assert.Contains(item.LastAccessFullDisplay, item.SummaryFullDisplay, StringComparison.Ordinal);
+        var unknown = new RecentAccessItem(
+            new RecentAccessRecord
+            {
+                PlayniteId = "recent-unknown-game",
+                Workspace = RecentAccessRecord.SavesWorkspace,
+                LastAccessUtc = DateTime.MinValue
+            },
+            "未知时间游戏");
+
+        Assert.Equal("时间未知", unknown.LastAccessRelativeDisplay);
+        Assert.Equal("时间未知", unknown.LastAccessFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.LastAccessRawUtcDisplay);
         Assert.Contains("Text=\"{Binding SummaryDisplay, Mode=OneWay}\"", overview, StringComparison.Ordinal);
         Assert.Contains("ToolTip=\"{Binding SummaryFullDisplay}\"", overview, StringComparison.Ordinal);
         Assert.Contains("AutomationProperties.HelpText=\"{Binding SummaryFullDisplay}\"", overview, StringComparison.Ordinal);
