@@ -1240,6 +1240,23 @@
         <Setter Property="AutomationProperties.HelpText" Value="可选择完整路径；按 Ctrl+C 复制"/>
     </Style>
 
+    <Style x:Key="GscWpfUiTechnicalTextBox"
+           TargetType="TextBox"
+           BasedOn="{StaticResource GscWpfUiTextBox}">
+        <!-- Technical values remain read-only but use the native TextBox selection
+             surface so version/diagnostic values can be selected without a mouse drag. -->
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource GscAccentBrush}"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="AutomationProperties.HelpText" Value="可选择文本；按 Ctrl+C 复制"/>
+    </Style>
+
     <Style x:Key="GscWpfUiComboBox"
            TargetType="ComboBox"
            BasedOn="{StaticResource {x:Type ComboBox}}">

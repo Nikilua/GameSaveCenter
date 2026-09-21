@@ -122,7 +122,7 @@
                                                Margin="9,0,0,0" VerticalAlignment="Center"/>
                                     <Border x:Name="SidebarProductionBadge" Background="{DynamicResource GscAccentTintBrush}" CornerRadius="8"
                                             Padding="8,4" Margin="8,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock x:Name="SidebarProductionVersionText" Text="v0.6.73" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscAccentBrush}"/>
+                                        <TextBox x:Name="SidebarProductionVersionText" Text="v0.6.73" Style="{DynamicResource GscWpfUiTechnicalTextBox}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscAccentBrush}" AutomationProperties.Name="当前插件版本" ToolTip="当前插件版本；可按 Ctrl+C 复制"/>
                                     </Border>
                                 </StackPanel>
                             </Grid>

@@ -608,7 +608,7 @@
                             </Border>
                             <StackPanel x:Name="SidebarBrandText" Margin="10,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="GameSaveCenter" FontWeight="SemiBold" FontSize="14"/>
-<TextBlock x:Name="SidebarVersionText" Text="v0.6.73" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+<TextBox x:Name="SidebarVersionText" Text="v0.6.73" Style="{DynamicResource GscWpfUiTechnicalTextBox}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" AutomationProperties.Name="当前插件版本" ToolTip="当前插件版本；可按 Ctrl+C 复制"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
