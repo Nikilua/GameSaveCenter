@@ -8563,3 +8563,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 修复后完整 Release package 成功：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类，Release `0 errors`，既有 `MediaCenterView.xaml.cs:699` 两条 CS8602 warning；六份程序集身份一致为 `0.6.73+57754b33…`，zip/pext SHA-256 均为 `B35723A0…974F54`、大小均为 `44,060,821` bytes。
 - 在合成 profile `.tmp/r23-04-synthetic-profile-20260922` 的 Extensions 目标完成最终候选安装复核，再恢复 `0.6.73+5b5d6305…` 备份并复核清单/DLL/ProductVersion/Worker；未触碰真实 Playnite Extensions、存档、媒体、云端或诊断。该演练是包身份与目录级回退证据，不是真实存档恢复或当前宿主呈现通过。
 - 证据：`evidence/R23-06-PACKAGE-ROLLBACK-20260922.md`。账本改为“已满足，待宿主环境验证”；下一可执行项是 R23-04 runner UIA/summary 收口或 R23-07 任务去重与收尾。R23-05 五项几何失败、真实 presented frame 与 ETW 权限边界继续保留。
+
+## 2026-09-22 Round3 R23-07 任务去重与收尾
+
+- 先查第二轮 `ROUND2_PROGRESS.md` 与第三轮 `ROUND3_PROGRESS.md`，复用已有 Q/R 证据入口；本项没有新增代码、服务、DTO、命令或测试夹具。
+- 第三轮逐行计数为 192（24 组×8）：收口后 `已满足` 112、`已实现/待环境验证` 29、`已满足/待环境验证` 44、`已满足/待宿主环境验证` 1、外部阻塞 1、部分满足 3、不适用 1、待开始 1（R23-08）。
+- 第二轮逐行计数为 208（26 组×8）：代码 128/80，自动 207 通过/1 待验，视觉 155 通过/50 待验/3 不适用，宿主 4 通过/8 待验/195 外部阻塞/1 不适用；最终已验收只有 5 行：Q00-06、Q00-07、Q00-08、Q25-07、Q25-08。没有把聚合通过数写成全量完成。
+- 证据：`evidence/R23-07-TASK-DEDUPE-CLOSURE-20260922.md`。下一项是 R23-08 下一轮准入清单；R23-04 UIA/summary、R23-05 几何与真实 presented frame、R02-06 原生菜单、Q24-03 跨屏仍待验，main/真实用户数据未碰。
