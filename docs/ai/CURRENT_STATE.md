@@ -2571,3 +2571,11 @@
 - 同秒排序固定为 `CreatedUtc` 后 `BackupId`；`R11HistoryTimeNavigationBehaviorTests 3/3` 覆盖本地日历、未知时间、清除和稳定顺序。R06 `4/4`、R11 版本摘要/保护 `4/4`、资源字典 `137/39/0`；组合 `148/39/0`；Release `0/0`、XAML `24/24`。
 - 实现提交 `8cc329e4` 已推送；证据为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-08-HISTORY-TIME-NAVIGATION-20260919.md`。隔离合成验证不等价真实 Playnite/package-host、呈现帧、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用。main DEV-INSTALL-008 仍为 Playnite `73/588/57`、安装器退出 `1`，未被改写。
 - 下一可执行任务：R12-01 恢复分步摘要；先核对已有恢复 DTO、任务状态及取消/错误语义。
+
+## 2026-09-22 Round3 R23-04 非空隔离宿主
+
+- 当前分支 HEAD `5b5d6305521e59d0644e21db845b6f4aa7ff1d1c` 已重新执行隔离 Release 门禁：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类通过；保留既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning。
+- 真实 `D:\\software\\Playnite\\Playnite.DesktopApp.exe` 使用 `.tmp/r23-04-synthetic-profile-20260922` 启动；合成 `library/games.db` 通过 LiteDB 读取 `Game` 集合计数 `1`。runner metadata 标记 `EvidenceSource=RealPlaynite`、隔离 profile、隔离 Worker/IPC，并绑定当前 commit；未读写真实库、存档、媒体或云端。
+- 当前嵌入捕获 `artifacts/ui-host-audit-r23-04-rerun-20260922/metadata.json` 明确 `CaptureOrigin=EmbeddedPlaynite`、`DashboardWasAlreadyHostedByPlaynite=true`、`DedicatedAuditWindowUsed=false`，DPI `1.5`，Dashboard `1313.33×898.0`；保留概览/媒体/存档/工具/概览滚动面精选原图和溢出分类。
+- UIA 未找到 GameSaveCenter 侧栏项，外层 runner 等待后未生成 `summary.json` 或 `embedded-current/dashboard/capture-manifest.json`，随后中断；因此 R23-04 只记“部分满足，待宿主 runner 收口”，不把 UIA、专用窗口、manifest 完整性或全量宿主验收写成通过。单屏的 Q24-03 仍为 `blocked-single-display`，Fusion 未复制到隔离 profile，Playnite Desktop 版本为 `unknown`。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。下一可执行任务：先补 runner UIA/summary 的具体待验步骤；独立推进 R23-05 帧性能证据分账。

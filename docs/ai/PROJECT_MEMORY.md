@@ -4800,3 +4800,11 @@
 - 已验证：R11History `3/3`，R06 `4/4`，R11 版本摘要/保护 `4/4`，资源字典 `137/39/0`，组合 `148 passed / 39 skipped / 0 failed`；Release `0/0`，XAML `24/24`，source/XAML/diff check 通过。提交 `8cc329e4` 已推送。
 - 证据边界不变：合成 DTO/fake/隔离 STA/隔离目录不等价真实 Playnite/package-host 安装呈现、物理 DPI/跨屏、UIA/IME、ETW 或宿主性能；Demo 原目录不可用；main DEV-INSTALL-008 `73/588/57`、安装器退出 `1` 独立保留，不能写成 main 已安装。
 - 下一可执行任务：R12-01 恢复分步摘要；先复用已有恢复任务/状态 DTO 和取消、错误、保护语义。
+
+## 2026-09-22 Round3 R23-04 非空隔离宿主
+
+- R23-04 先复用现有 `real-host-audit.ps1`、当前发布身份、Playnite 嵌入捕获和隔离 profile，没有新建宿主或数据服务。当前 commit `5b5d6305` 的 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类门禁通过。
+- 真实 Playnite 使用 `.tmp/r23-04-synthetic-profile-20260922`，合成 `games.db` 的 `Game` 集合计数为 `1`；runner metadata 绑定 `5b5d6305`、真实 Playnite 路径和隔离 Worker/IPC。不得把这个合成非空库扩大成真实用户库验证。
+- `metadata.json` 的 `CaptureOrigin=EmbeddedPlaynite`、`DashboardWasAlreadyHostedByPlaynite=true`、`DedicatedAuditWindowUsed=false` 和当前 commit 证明精选原图来自当前变更的真实嵌入宿主；没有专用窗口证据，也没有旧包替代当前身份。
+- UIA 没找到 GameSaveCenter 侧栏项，runner 未完成收口，缺少 `summary.json` 与外层 `capture-manifest.json`；账本应保持“部分满足，待宿主 runner 收口”，不能把 UIA/manifest/专用窗口/全量宿主验收写成通过。单屏、Fusion 未复制和 Desktop 版本 unknown 继续保留为事实边界。
+- 证据：`evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。下一可执行任务：把 UIA/summary 作为明确待验步骤，继续独立推进 R23-05 帧性能证据闭环；不绕过 ETW/系统跟踪权限。

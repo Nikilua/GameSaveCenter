@@ -8541,3 +8541,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - D 盘隔离源码副本构建 Release solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py`、XAML check、diff check 通过。阶段临时目录为 `.tmp/r11-08-source`，完成文档提交后清理，不纳入 Git。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-08-HISTORY-TIME-NAVIGATION-20260919.md`；提交 `8cc329e4` 已推送 `codex/ui-finesse-round2`。main 的 DEV-INSTALL-008 `73/588/57`/退出 `1` 仍单列，未触碰 main 用户文件、真实存档/媒体/云端/诊断。
 - 未验真实 Playnite/package-host 安装与呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，继续沿用恢复生产基线。下一可执行任务：R12-01 恢复分步摘要。
+
+## 2026-09-22 Round3 R23-04 非空隔离宿主
+
+- 先按真实账本核对 R23-04；当前提交 `5b5d6305` 的隔离 Release 门禁通过：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类；只保留既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning。
+- 真实 `D:\\software\\Playnite\\Playnite.DesktopApp.exe` 使用隔离 profile `.tmp/r23-04-synthetic-profile-20260922`，合成 `games.db` 的 `Game` 集合计数为 `1`；runner metadata 绑定当前 commit，Worker/IPC 为隔离范围。未触碰真实存档、媒体、用户云端或诊断。
+- 当前嵌入证据 `artifacts/ui-host-audit-r23-04-rerun-20260922` 的 metadata 明确 `CaptureOrigin=EmbeddedPlaynite`、已由 Playnite 托管、未使用专用审计窗口；精选概览/媒体/存档/工具/滚动面原图已在 R23-04 报告中列出哈希。
+- UIA 未找到 GameSaveCenter 侧栏项，runner 未生成 `summary.json` 或外层 `capture-manifest.json`，等待后中断；因此账本只记“部分满足，待宿主 runner 收口”。单屏、Fusion 未复制、Playnite Desktop 版本 unknown 和专用窗口未验均如实保留。
+- 证据：`evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。本阶段尚未清理被报告引用的当前 artifacts；下一可执行任务是 runner UIA/summary 待验步骤和独立的 R23-05 帧性能证据分账。
