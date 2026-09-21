@@ -112,9 +112,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
 
             SelectedBackup = target;
-            StatusMessage = recentFirst
-                ? $"已跳到最近版本：{target.CreatedLocal:yyyy-MM-dd HH:mm:ss}。"
-                : $"已跳到较早版本：{target.CreatedLocal:yyyy-MM-dd HH:mm:ss}。";
+            StatusMessage = BuildBackupJumpStatusMessage(target, recentFirst);
+            StatusMessageFullDisplay = BuildBackupJumpStatusFullDisplay(target, recentFirst);
         }
+
+        internal static string BuildBackupJumpStatusMessage(BackupVersionDto target, bool recentFirst)
+            => recentFirst
+                ? $"已跳到最近版本：{target.CreatedRelativeDisplay}。"
+                : $"已跳到较早版本：{target.CreatedRelativeDisplay}。";
+
+        internal static string BuildBackupJumpStatusFullDisplay(BackupVersionDto target, bool recentFirst)
+            => recentFirst
+                ? $"已跳到最近版本：{target.CreatedFullDisplay}。"
+                : $"已跳到较早版本：{target.CreatedFullDisplay}。";
     }
 }

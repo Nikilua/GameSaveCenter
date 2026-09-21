@@ -92,6 +92,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private BackupPolicyDto? subscribedSelectedGamePolicy;
         private BackupPolicyDto? subscribedPolicyTemplateDraftPolicy;
         private string statusMessage = "准备就绪";
+        private string statusMessageFullDisplay = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
         private bool dashboardSnapshotLoaded;
@@ -940,7 +941,16 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RaiseCommandStates();
             }
         }
-        public string StatusMessage { get => statusMessage; private set => SetValue(ref statusMessage, value); }
+        public string StatusMessage
+        {
+            get => statusMessage;
+            private set
+            {
+                SetValue(ref statusMessage, value);
+                StatusMessageFullDisplay = value;
+            }
+        }
+        public string StatusMessageFullDisplay { get => statusMessageFullDisplay; private set => SetValue(ref statusMessageFullDisplay, value); }
         public BackupPreviewDto BackupPreview { get => backupPreview; private set => SetValue(ref backupPreview, value ?? new BackupPreviewDto()); }
         public BackupResultDto BackupResult { get => backupResult; private set => SetValue(ref backupResult, value ?? new BackupResultDto()); }
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }

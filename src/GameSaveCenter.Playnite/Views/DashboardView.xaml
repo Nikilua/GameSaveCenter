@@ -1250,7 +1250,7 @@
                         </Border.Style>
                     </Border>
                     <TextBlock Text="{Binding StatusMessage, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}"
-                               TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusMessage, Mode=OneWay}"/>
+                               TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusMessageFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding StatusMessageFullDisplay, Mode=OneWay}"/>
                 </DockPanel>
             </Border>
             <Border Grid.Column="1" Visibility="Collapsed" Background="{DynamicResource GscAccentTintBrush}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}"

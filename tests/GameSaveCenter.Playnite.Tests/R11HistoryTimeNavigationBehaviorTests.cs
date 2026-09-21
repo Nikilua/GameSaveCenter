@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -46,6 +47,28 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
     }
 
     [Fact]
+    public void JumpStatusUsesRelativeTextAndFullTimeEvidence()
+    {
+        var timestamp = DateTime.UtcNow.AddDays(-2);
+        var backup = Backup("jump-time", timestamp);
+        var unknown = Backup("jump-unknown", DateTime.MinValue);
+
+        var recent = DashboardViewModel.BuildBackupJumpStatusMessage(backup, recentFirst: true);
+        var recentFull = DashboardViewModel.BuildBackupJumpStatusFullDisplay(backup, recentFirst: true);
+        var earlier = DashboardViewModel.BuildBackupJumpStatusMessage(backup, recentFirst: false);
+        var earlierFull = DashboardViewModel.BuildBackupJumpStatusFullDisplay(backup, recentFirst: false);
+
+        Assert.Contains("已跳到最近版本", recent, StringComparison.Ordinal);
+        Assert.Contains(backup.CreatedRelativeDisplay, recent, StringComparison.Ordinal);
+        Assert.Contains(backup.CreatedFullDisplay, recentFull, StringComparison.Ordinal);
+        Assert.Contains("已跳到较早版本", earlier, StringComparison.Ordinal);
+        Assert.Contains(backup.CreatedRelativeDisplay, earlier, StringComparison.Ordinal);
+        Assert.Contains(backup.CreatedFullDisplay, earlierFull, StringComparison.Ordinal);
+        Assert.Contains(unknown.CreatedRelativeDisplay, DashboardViewModel.BuildBackupJumpStatusMessage(unknown, true), StringComparison.Ordinal);
+        Assert.Contains(unknown.CreatedFullDisplay, DashboardViewModel.BuildBackupJumpStatusFullDisplay(unknown, true), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void SaveHistoryExposesLocalRangeAndNavigationCommandsWithoutReplacingTheBackupCollectionBinding()
     {
         var root = TestRepositoryContext.Root;
@@ -59,6 +82,7 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         Assert.Contains("BackupHistoryRangeSummary", save);
         Assert.Contains("JumpToRecentBackupCommand", save);
         Assert.Contains("JumpToEarlierBackupCommand", save);
+        Assert.Contains("StatusMessageFullDisplay, Mode=OneWay", System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
         Assert.Contains("SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty", saveCode);
         Assert.Contains("nameof(DashboardViewModel.BackupHistoryView)", saveCode);
         Assert.Contains("BackupHistoryDateRange.Matches", history);
