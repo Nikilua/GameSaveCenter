@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 恢复可用性检查时间（第九子批次）
+
+- 先核对已有 `BackupVersionDto.RestoreReadiness`、SaveCenter 选中版本详情和共享 `TimeDisplayFormatter`；本阶段只补展示投影，没有新增恢复服务、命令、存档写入或安全判断。
+- `0db4abe7` 保留旧 `RestoreReadinessCheckedDisplay` 的本地时间、结果较旧提示和“尚未检查”，新增相对/完整投影；SaveCenter 详情显示相对时间，完整值进入 Tooltip/Automation HelpText。恢复校验、选中版本、恢复保护、滚动和命令绑定保持。
+- 最终 Release 构建身份为 `0db4abe7`：Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`R22TimeDisplayBehaviorTests 12/12`、`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`、`R06SortingBehaviorTests 4/4`、`R11HistoryTimeNavigationBehaviorTests 3/3`，定向合计 `26/26`。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成 DTO、fake/隔离 testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点 Local Mirror `LastSyncDisplay` 与其他仍直显旧本地时间的入口。
+
 ## 2026-09-21 R22-01 Maintenance 诊断证据时间（第八子批次）
 
 - 先核对已有 `ValidationFindingDto`、Maintenance 两个诊断详情入口和共享技术文本/帮助绑定；本阶段只复用 `TimeDisplayFormatter`，没有新增服务、持久化字段、命令或诊断发送路径。
