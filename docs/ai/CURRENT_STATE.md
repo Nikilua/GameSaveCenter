@@ -8,9 +8,10 @@
 ## 当前第三轮 R22-01 时间显示统一（部分满足，待继续）
 
 - `1250aaad` 新增 Contracts 共享 `TimeDisplayFormatter`，使用可注入 `nowUtc` 稳定覆盖“刚刚/分钟/昨天”边界、完整本地时区提示和 round-trip UTC 原值；任务时间线新增相对/完整/原始时间属性，Task Center 时间线绑定相对时间，保留原有 UTC 排序和未知时间语义。
-- `R22TimeDisplayBehaviorTests` `5/5`、既有 `R15TaskTimelineTests` `3/3`；当前提交身份 Release Playnite `net462` `0 errors / 2` 条既有 CS8602 warning，Tests `net472` `0/0`；source、XAML `24/24`、diff 通过，WPF 静态审查 `0/27/177`。
-- `TaskStatusDto.DurationDisplay` 与 Worker 运行状态仍使用墙上 UTC 时间，单调任务时长/恢复持久化尚未实现；没有系统时钟跳变或真实剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能证据。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [`R22-01 时间显示`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md)。
-- 下一可执行任务：继续 R22-01，先核对 `TaskStatusDto`/Worker `TaskCoordinator`/任务快照恢复路径，补单调任务时长与系统时钟跳变/重启边界。
+- `538fcae9` 将 `MonotonicTaskClock` 接入 TaskCoordinator、TaskStatusDto 和 SQLite 任务快照/Worker 重启收口；新任务终态/重启失败状态使用单调 elapsed，旧任务无单调字段时保留 legacy fallback，不改变取消、错误和恢复保护。
+- R22 时间 `5/5`、R15 `3/3`；Worker 单调时长 `2/2`、任务查询/恢复 `9/9`、Coordinator `7/7`、migration `4/4`、隔离 Worker 硬重启 `1/1`。最终提交身份 Release Playnite `net462` `0 errors / 2` 条既有 CS8602 warning，Playnite Tests/Worker Tests `0/0`；source、XAML `24/24`、diff 通过。
+- R22-01 仍未完成：Overview/Maintenance/Save 等其他时间入口尚未全部迁移，真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [`R22-01 时间显示`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md) 与 [`R22-01 单调时长`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MONOTONIC-TASK-DURATION-20260921.md)。
+- 下一可执行任务：继续 R22-01，先盘点 Overview/Task Center 其他时间入口和已有复制行为，复用 formatter/技术文本控件。
 
 ## 当前第三轮 R22-04 打开路径失败（已满足，待环境验证）
 

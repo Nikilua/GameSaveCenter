@@ -7,6 +7,12 @@
 - 新增行为 `5/5`，既有 R15 时间线 `3/3`；提交身份 Release Playnite `net462` `0 errors / 2` 条既有 CS8602 warning，Tests `net472` `0/0`；source validation、XAML `24/24`、diff 通过，WPF `0/27/177`。
 - R22-01 记为“部分满足，待继续”。真实剪贴板、系统时钟跳变、单调任务时长/持久化、Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md`。下一步核对 `TaskStatusDto`、`TaskCoordinator` 和任务快照恢复。
 
+## 2026-09-21 R22-01 任务单调时长与恢复（第二子批次）
+
+- `538fcae9` 复用现有 TaskCoordinator、SqliteStateStore/EnsureColumn 和 Worker 重启收口，新增 `MonotonicTaskClock`、TaskStatusDto elapsed/起点字段与 `tasks` 三列增量迁移；新任务终态和重启中断任务不再依赖墙上时间计算时长，旧任务无单调字段时保留 legacy fallback。
+- 新增单调计时 `2/2`、任务查询/恢复 `9/9`、Coordinator 失败/取消 `7/7`、旧 schema migration `4/4`、隔离 Worker 硬重启 `1/1`；最终提交身份 Playnite `net462` `0 errors / 2` 条既有 warning，Playnite Tests/Worker Tests `0/0`；R22 时间 `5/5`、R15 `3/3`，source/XAML/diff 通过。
+- 仍不宣称系统时钟跳变/跨系统启动周期、真实剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW 或宿主性能；Overview/Maintenance/Save 等其他时间入口尚未全部迁移。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步继续盘点剩余时间入口与已有复制行为。
+
 ## 2026-09-21 R22-04 打开路径失败
 
 - 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
