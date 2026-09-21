@@ -120,6 +120,9 @@ namespace GameSaveCenter.Contracts
         public bool IsHealthProtected { get; set; }
 
         public string CreatedDisplay => CreatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public string TotalBytesDisplay => FormatBytes(TotalBytes);
 
         private static string FormatBytes(long bytes)

@@ -91,6 +91,18 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void RetentionPreviewKeepsLegacyTextAndExposesSharedTimeContract()
+    {
+        var timestamp = new DateTime(2026, 9, 19, 8, 7, 6, DateTimeKind.Utc);
+        var item = new RetentionSimulationItemDto { CreatedUtc = timestamp };
+
+        Assert.Equal(timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), item.CreatedDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), item.CreatedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), item.CreatedRawUtcDisplay);
+        Assert.NotEqual("时间未知", item.CreatedRelativeDisplay);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

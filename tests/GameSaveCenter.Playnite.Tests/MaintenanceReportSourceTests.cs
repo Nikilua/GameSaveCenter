@@ -80,7 +80,8 @@ public sealed class MaintenanceReportSourceTests
         var service = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "RetentionSimulationService.cs"));
         var dto = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "RetentionSimulationDtos.cs"));
 
-        Assert.Contains("Text=\"{Binding CreatedDisplay}\"", maintenance);
+        Assert.Contains("Text=\"{Binding CreatedRelativeDisplay}\"", maintenance);
+        Assert.Contains("CreatedFullDisplay, Mode=OneWay", maintenance);
         Assert.Contains("Text=\"{Binding Reason}\"", maintenance);
         Assert.Contains("Text=\"{Binding RetentionSimulation.Summary}\"", maintenance);
         Assert.Contains("Command=\"{Binding ApplyRetentionSimulationCommand}\"", maintenance);

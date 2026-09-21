@@ -959,7 +959,7 @@
                                                             <TextBlock Text="{Binding GameName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                             <TextBlock Text="{Binding ArchivePath}" Style="{StaticResource MaintenancePathText}" ToolTip="{Binding ArchivePath}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0"/>
                                                         </StackPanel>
-                                                        <TextBlock Grid.Column="1" Text="{Binding CreatedDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center" Margin="8,0"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding CreatedRelativeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center" Margin="8,0" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}"/>
                                                         <TextBlock Grid.Column="2" Text="{Binding TotalBytesDisplay}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                                         <TextBlock Grid.Column="3" Text="{Binding Reason}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Reason}"/>
                                                     </Grid>
