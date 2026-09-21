@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-01 Overview 快照更新时间（第二十八子批次）
+
+- 先核对 `OverviewSnapshotDisplay`、`DashboardViewModel` 和 `OverviewView` 的真实绑定；复用 `TimeDisplayFormatter`，没有新增快照服务、DTO 或指标计算。
+- `60db7534` 将全库/当前游戏快照摘要正文改为相对时间，完整本地/UTC 时间进入同一首页 TextBlock 的 Tooltip/Automation HelpText，保留未加载、默认生成时间未知和真实零值语义。
+- `OverviewSnapshotDisplayTests 3/3`、`OverviewInteractionTests 2/2`；Release/XAML `24/24`、Playnite/Tests/Worker `0 errors`，保留既有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。资源大类另有 3 条既有 Settings/Media/Inbox 断言漂移，未修改。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SNAPSHOT-TIME-20260921.md`。仅使用合成快照、fake/隔离 testhost 和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；未宣称真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW 或宿主性能。下一可执行小批量：核对 `StagedRemoteBackupStatus` 远端隔离有效期绑定。
+
 ## 2026-09-21 R22-01 任务页更新时间（第二十七子批次）
 
 - 先查任务页已有状态机、`TaskPageLastUpdatedUtc`、`TaskPageStatusSummary` 和 `TaskCenterView` 的实际绑定；复用 `TimeDisplayFormatter`，没有新增服务、DTO、通知体系或时间排序逻辑。

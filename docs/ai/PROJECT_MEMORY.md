@@ -2,6 +2,13 @@
 
 > 维护时间：2026-09-21
 
+## 第三轮 R22-01 Overview 快照更新时间（2026-09-21，第二十八子批次）
+
+- `60db7534` 复用 `TimeDisplayFormatter`，将 Overview 全库/当前游戏快照摘要正文改为相对时间；完整本地/UTC 证据进入首页摘要 TextBlock 的 Tooltip 与 Automation HelpText，保留未加载/默认时间未知、真实零值、命令和滚动语义。
+- 实际 STA WPF `OverviewView` 与格式化测试 `5/5`；Release/XAML/source/diff/WPF `0 errors / 27 warnings / 177 info`，既有 MediaCenter CS8602 及 3 条资源大类旧断言漂移均未改写。证据：`R22-01-OVERVIEW-SNAPSHOT-TIME-20260921.md`。
+- 只证明合成快照、fake DataContext、隔离 testhost 和隔离目录，不等价真实 Playnite/package-host、Windows UIA/读屏、系统时钟跳变、DPI/跨屏、呈现、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；下一项核对 `StagedRemoteBackupStatus` 和远端隔离有效期实际绑定，保持隔离下载、PreRestore、取消/错误和不覆盖当前存档的安全语义。
+
 ## 第三轮 R22-01 任务页更新时间（2026-09-21，第二十七子批次）
 
 - `c96130a2` 复用 `TimeDisplayFormatter`，将任务页状态正文改为相对时间，提供完整本地时间/round-trip UTC 的 Tooltip 与 Automation HelpText，并保留 `TaskPageLastUpdatedDisplay` 兼容属性、任务刷新/重试、旧数据保留和取消/错误语义。

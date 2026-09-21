@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 Overview 快照更新时间（本子批已满足，R22-01 仍部分满足）
+
+- `60db7534` 复用已有 `TimeDisplayFormatter`，将 `OverviewSnapshotScopeDisplay` 正文的快照更新时间改为相对时间；`OverviewSnapshotUpdatedDisplay` 保留完整本地时区与 round-trip UTC，并新增原始 UTC 投影。未加载/默认生成时间仍明确为未知，不把默认指标当作真实零值。
+- 实际 STA WPF `OverviewView` 读取首页快照摘要 TextBlock：正文显示合成相对时间，Tooltip 与 `AutomationProperties.HelpText` 均返回完整时间证据；`OverviewSnapshotDisplayTests 3/3`、`OverviewInteractionTests 2/2`，本批 `5/5`。
+- Release 隔离构建 XAML `24/24`、Playnite/Tests/Worker `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。资源大类另有 3 条未修改的旧断言漂移（Settings/Media 空态/Inbox 模板），未写成本批通过。证据见 [`R22-01 Overview 快照更新时间`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SNAPSHOT-TIME-20260921.md)。
+- 验证只使用合成快照、fake DataContext、隔离 STA WPF 和隔离目录，没有真实存档、媒体、云端或诊断写入。真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验；远端备份隔离状态/有效期及其他残余用户可见旧 `ToLocalTime` 入口仍需按绑定逐项核对。
+- 下一可执行任务：先核对 `StagedRemoteBackupStatus` 是否将远端隔离有效期直显到 Maintenance，复用现有 `RemoteBackupStageResultDto` 时间字段与安全语义，再选择依赖已满足的下一独立 Q/R 小批。
+
 ## 当前第三轮 R22-01 任务页更新时间（本子批已满足，R22-01 仍部分满足）
 
 - `c96130a2` 复用已有 `TimeDisplayFormatter`，将 `TaskPageStatusSummary` 正文改为相对时间，新增任务页相对/完整/原始 UTC 投影；任务队列摘要与 stale banner 的 Tooltip/Automation HelpText 绑定完整状态文本。加载、无数据失败、保留旧数据、重试、任务查询、列表滚动和取消/错误语义保持，旧 `TaskPageLastUpdatedDisplay` 兼容属性保留。
