@@ -358,7 +358,7 @@
                                                         <TextBlock Text="{Binding Glyph}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Top"/>
                                                         <StackPanel Grid.Column="1" Margin="6,0,8,0">
                                                             <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{Binding Detail}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                            <TextBlock Text="{Binding Detail}" ToolTip="{Binding DetailFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding DetailFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
                                                             <TextBlock Text="{Binding ResolutionDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.HelpText="{Binding ResolutionDisplay}"/>
                                                         </StackPanel>
                                                         <TextBlock Grid.Column="2" Text="{Binding StatusDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Top"/>

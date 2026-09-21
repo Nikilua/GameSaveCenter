@@ -398,6 +398,35 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void RestoreWorkflowSelectionUsesRelativeTimeAndFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
+        var timestamp = DateTime.UtcNow.AddDays(-2);
+        var backup = new BackupVersionDto
+        {
+            BackupId = "restore-time-contract",
+            CreatedUtc = timestamp
+        };
+
+        var selection = RestoreWorkflowProgress.Build(backup, false, false, false, null, string.Empty, string.Empty)
+            .Single(step => step.Key == "selection");
+
+        Assert.Contains(backup.CreatedRelativeDisplay, selection.Detail, StringComparison.Ordinal);
+        Assert.Contains(backup.CreatedFullDisplay, selection.DetailFullDisplay, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.RawUtc(timestamp), selection.DetailFullDisplay, StringComparison.Ordinal);
+        Assert.Contains("Text=\"{Binding Detail}\"", save, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding DetailFullDisplay, Mode=OneWay}\"", save, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding DetailFullDisplay, Mode=OneWay}\"", save, StringComparison.Ordinal);
+
+        var pending = RestoreWorkflowProgress.Build(null, false, false, false, null, string.Empty, string.Empty)
+            .Single(step => step.Key == "selection");
+        Assert.Equal("请先从历史列表选择一个稳定 ID 的版本。", pending.Detail);
+        Assert.Equal(pending.Detail, pending.DetailFullDisplay);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

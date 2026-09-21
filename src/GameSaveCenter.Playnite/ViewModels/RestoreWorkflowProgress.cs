@@ -16,19 +16,21 @@ namespace GameSaveCenter.Playnite.ViewModels
 
     public sealed class RestoreWorkflowStepState
     {
-        public RestoreWorkflowStepState(string key, string title, RestoreWorkflowStepStatus status, string detail, string resolution = "")
+        public RestoreWorkflowStepState(string key, string title, RestoreWorkflowStepStatus status, string detail, string resolution = "", string detailFullDisplay = "")
         {
             Key = key;
             Title = title;
             Status = status;
             Detail = detail ?? string.Empty;
             Resolution = resolution ?? string.Empty;
+            DetailFullDisplay = string.IsNullOrWhiteSpace(detailFullDisplay) ? Detail : detailFullDisplay;
         }
 
         public string Key { get; }
         public string Title { get; }
         public RestoreWorkflowStepStatus Status { get; }
         public string Detail { get; }
+        public string DetailFullDisplay { get; }
         public string Resolution { get; }
         public string ResolutionDisplay => string.IsNullOrWhiteSpace(Resolution) ? string.Empty : $"处理步骤：{Resolution}";
         public bool IsCompleted => Status == RestoreWorkflowStepStatus.Complete || Status == RestoreWorkflowStepStatus.Warning;
@@ -118,7 +120,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "selection",
                     "选择版本",
                     RestoreWorkflowStepStatus.Complete,
-                    $"已选择 {backup!.CreatedLocal:yyyy-MM-dd HH:mm:ss} · {backup.BackupTypeDisplay} · {backup.BackupId}");
+                    $"已选择 {backup!.CreatedRelativeDisplay} · {backup.BackupTypeDisplay} · {backup.BackupId}",
+                    detailFullDisplay: $"已选择 {backup.CreatedFullDisplay} · {backup.BackupTypeDisplay} · {backup.BackupId}");
 
         private static RestoreWorkflowStepState BuildReadinessStep(
             BackupVersionDto? backup,
