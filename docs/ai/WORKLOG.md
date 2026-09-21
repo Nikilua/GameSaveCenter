@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-21 R22-02 容量单位统一（第三十二子批次）
+
+- 先扫描 Contracts、Playnite Views/ViewModels 与 Worker 报告的实际容量入口，确认大多数已是 1024 进制，但 Media source preview 仍为 `KB/MB/GB`，Trainer、诊断和 Dashboard 元数据摘要的小值可能显示为 `0.x/0.0 KiB/MiB`；没有把表格“新增功能”当成缺失断言。
+- `86b72e1e` 新增 `ByteSizeFormatter`，迁移容量 DTO、Worker 格式化和 Playnite 恢复进度；增加元数据灾备 DTO `SizeDisplay`，Dashboard 摘要和完整性低磁盘提示改用共享口径；保留未知大小、比较页零差值 `0 B`、IPC `+0 B`、命令/绑定/取消/错误/恢复保护、选框和滚动条。
+- 新增 `R22CapacityUnitBehaviorTests`，覆盖小值/边界/有符号差值和跨 DTO 入口 `13/13`；`MaintenanceReportServiceTests` 用隔离 1 字节镜像文件确认报告正文 `1 B` 且无 `0 KiB`，`3/3`。相关 Core 合跑 `53/53`。
+- 最终验证：隔离 Release 构建 XAML `24/24`，Contracts/Playnite net462、Tests net472、Worker `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check` 通过；WPF `0/27/177`。Demo 原目录不可用，未运行真实 Playnite/package-host、UIA/读屏、DPI/跨屏、ETW、宿主性能或真实数据写入。
+- 临时构建目录 `.tmp/r22-02-capacity-build-20260921` 仅用于本批验证，提交前后按规则清理。提交已推送到 `codex/ui-finesse-round2`；下一可执行项为 `R22-03` 复制反馈轻量。
+
 ## 2026-09-21 R22-01 维护摘要时间（第三十一子批次）
 
 - 先查 Maintenance 诊断概览的真实 `MaintenanceActionSections`、`TimingDisplay` 绑定；确认恢复巡检和隔离账本的旧本地时间确实进入用户可见行动摘要，云端动作已有相对/完整合同。

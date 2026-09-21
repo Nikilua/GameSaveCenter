@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-02 容量单位（本子批已满足，待环境验证）
+
+- `86b72e1e` 新增 Contracts 级 `ByteSizeFormatter`，把 Backup/恢复校验、Storage/Retention、Media/Trainer、诊断/元数据灾备、Worker 报告与 Playnite 进度等容量显示统一为 1024 进制 `B/KiB/MiB/GiB`；小于 1 KiB 直接显示字节，避免误导性的 `0 KiB`。比较页 `0 B` 与 IPC 差异摘要 `+0 B` 语义分别保留。
+- `R22CapacityUnitBehaviorTests 13/13`、相关 Core `53/53`、Worker `MaintenanceReportServiceTests 3/3`；隔离 Release XAML `24/24`、0 errors/2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；source/diff 通过，WPF `0/27/177`。1 字节隔离镜像的真实维护报告正文为 `1 B`。
+- 只证明合成 DTO、fake/隔离 Worker 和隔离目录；未验真实 Playnite/package-host、UIA/读屏、DPI/物理跨屏、呈现帧、ETW 或宿主性能；Demo 原目录不可用，main 用户改动未碰、未合并。`.tmp/r22-02-capacity-build-20260921` 完成本批后清理。
+- 下一可执行任务：进入 `R22-03` 复制反馈轻量，先核对现有复制入口及成功/失败状态；保持容量口径、命令绑定、取消/错误、恢复保护、选框和滚动条。
+
 ## 当前第三轮 R22-01 维护摘要时间（本子批已满足，R22-01 仍部分满足）
 
 - `df689dc1` 修正 Maintenance 诊断概览真实“下一步运维”行动摘要的两个旧时间入口：恢复巡检的最近成功/最近完成/下轮计划改用相对正文并保留完整投影，隔离账本更新时间改用相对正文并新增完整 Tooltip/Automation HelpText 回退。

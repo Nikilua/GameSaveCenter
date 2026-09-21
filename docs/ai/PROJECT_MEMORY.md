@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-02 容量单位（2026-09-21，第三十二子批次）
+
+- `86b72e1e` 将重复的容量格式化逻辑收敛到 Contracts `ByteSizeFormatter`，统一 1024 进制 `B/KiB/MiB/GiB`、最多两位小数和小于 1 KiB 直接显示 B；Trainer/诊断/媒体预览/元数据灾备等旧入口不再把小值显示成 `0 KiB`，未知大小保持未知。
+- Backup/恢复校验/Retention/Storage/Media/Local Mirror/Worker 维护报告与 Playnite 恢复进度均复用该口径；比较页 `0 B` 与 IPC `+0 B` 差值语义保留。新增 `R22CapacityUnitBehaviorTests 13/13`，隔离维护报告 1 字节镜像输出 `1 B`，相关 Core `53/53`、Worker `3/3`。
+- Release 隔离构建 XAML `24/24`、0 errors/2 条既有 MediaCenter CS8602；source/diff 通过，WPF `0/27/177`。只使用合成/fake/隔离目录，未改真实存档、媒体、云端或诊断；未验真实 Playnite/package-host、UIA/读屏、DPI/跨屏、呈现帧、ETW、宿主性能，Demo 原目录不可用。
+- 下一项为 `R22-03` 复制反馈轻量，先核对现有复制入口的成功/失败语义与读屏信息；不改变当前容量、命令、取消/错误和恢复保护边界。
+
 > 维护时间：2026-09-21
 
 ## 第三轮 R22-01 维护摘要时间（2026-09-21，第三十一子批次）
