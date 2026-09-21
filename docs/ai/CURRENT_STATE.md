@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-07 确认框信息结构（本子批已满足，待环境验证）
+
+- `3ac6d16a` 先核对真实恢复、清理、协调、批量与任务取消确认调用，确认对象/范围/后果已经在正文中出现，动作按钮由调用方提供明确文案；确认卡沿用独立可滚动详情区、Demo 基线和既有遮罩焦点生命周期。
+- 新增共享 `DialogConfirmationPolicy` 显式管理危险/普通确认、三选一和结果关闭的 `IsDefault`/`IsCancel`；危险确认初始焦点仍为取消，确认不再成为 Enter 默认项，并补 Automation HelpText。恢复、撤销恢复、已校验远端恢复均补 `isDangerous: true`，PreRestore、当前项复核、取消/错误和 Worker 协议不变。
+- `R22ConfirmationStructureBehaviorTests 4/4`；相关对话框/焦点/恢复/远端回归 `34/34`；提交身份 Release XAML `24/24`、Playnite `net462` / Tests `net472` / Worker `0 errors`，既有 `MediaCenterView.xaml.cs:699 CS8602` 两条 warning；source/diff 通过，WPF `0/27/177`。
+- 仅用合成请求/DTO、隔离 STA WPF 和 `.tmp`；native fallback 的 Playnite Yes/No API 限制、真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验。未触碰 dirty main，未读写真实存档/媒体/云端或外发诊断。证据：`evidence/R22-07-CONFIRMATION-STRUCTURE-20260922.md`。
+- 下一可执行任务：`R22-08` 状态样式一致索引，先盘点状态资源/图标/文案映射，再做小批量行为证据。
+
 ## 当前第三轮 R22-06 长任务离页提示（本子批已满足，待环境验证）
 
 - `ef671288` 在任务页筛选栏补充明确的离页语义说明并同步 Automation Name/HelpText；现有 Worker 后台执行、任务快照/历史恢复、实时事件订阅、终态 Toast、显式取消和缓存 TaskCenter 页面均保留，没有新增自动取消或模拟进度。

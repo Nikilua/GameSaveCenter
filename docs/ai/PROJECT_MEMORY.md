@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-07 确认框信息结构（2026-09-22，第三十六子批次）
+
+- `3ac6d16a` 复用既有确认事件、Dashboard 内嵌遮罩和详情滚动区；真实恢复/清理/协调/批量/任务取消调用的对象、范围、后果和动作按钮已核对，不把表格方向误判为所有调用都缺功能。
+- 新增 `DialogConfirmationPolicy`，对危险确认显式取消安全、确认非 Enter 默认；普通确认、三选一、结果关闭各自保留明确策略。初始焦点、Escape、回焦、一次完成和关闭动画保持。恢复、撤销恢复、已校验远端恢复补危险标记，保留 PreRestore 和当前对象核对。
+- `R22ConfirmationStructureBehaviorTests 4/4` 与相关对话框/焦点/恢复/远端回归 `34/34`；Release/XAML/source/diff/WPF 基线通过，既有 MediaCenter CS8602 两条 warning 未改写。
+- native fallback 仍只能调用 Playnite `YesNo`，仅保守返回 No；未宣称真实宿主自定义按钮、UIA/读屏、OS 输入、呈现、DPI/跨屏、ETW 或性能。Demo 原目录不可用，dirty main 未改，真实存档/媒体/云端/诊断未触碰。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-07-CONFIRMATION-STRUCTURE-20260922.md`。下一项 `R22-08` 状态样式一致索引，先查现有状态映射。
+
 ## 第三轮 R22-06 长任务离页提示（2026-09-21，第三十五子批次）
 
 - `ef671288` 复用现有 Worker 后台执行、任务快照/历史恢复、事件订阅与终态通知，只在 TaskCenter 筛选栏补充“离开本页不会取消，返回后恢复阶段和进度”的可见/Automation 说明；Dashboard 卸载仍只停止展示监听，显式 `CancelTaskCommand` 是唯一取消入口。

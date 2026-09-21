@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-07 确认框信息结构（第三十六子批次）
+
+- 启动核对了真实确认事件、恢复/清理/协调/批量/任务取消调用、按钮文案和 `DashboardView` 遮罩生命周期；已有正文列出对象/范围/后果，确认详情沿用独立 `ScrollViewer`，没有重建确认服务。
+- `3ac6d16a` 新增共享危险键盘策略：危险确认 `IsDefault=false`、取消 `IsCancel=true`，普通/三选一/结果策略分开；恢复、撤销恢复、已校验远端恢复显式 `isDangerous: true`；补 `R22ConfirmationStructureBehaviorTests` 的 STA 行为和恢复调用边界。
+- `R22ConfirmationStructureBehaviorTests 4/4`；相关对话框/焦点/恢复/远端回归 `34/34`。提交身份隔离 Release XAML `24/24`、Playnite net462/Tests net472/Worker `0 errors`，既有 `MediaCenterView.xaml.cs:699 CS8602` 两条 warning；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 期间首次测试暴露并修正了新夹具未在 STA 创建 WPF Button 的问题；未把该夹具错误计入产品失败。仅用合成/fake/隔离 `.tmp`，native fallback Yes/No、真实宿主/UIA/读屏/OS 输入/DPI/跨屏/呈现/ETW/性能及 Demo 原目录仍未验；main 用户改动未碰。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-07-CONFIRMATION-STRUCTURE-20260922.md`。代码已提交，文档待本阶段独立提交并推送；下一可执行项为 `R22-08` 状态样式一致索引。
+
 ## 2026-09-21 R22-06 长任务离页提示（第三十五子批次）
 
 - 先核对事实：Worker 任务不随工作区切换或 Dashboard 卸载取消；实时事件是可选通道，任务快照/历史轮询和缓存 TaskCenter 是返回后的恢复来源；显式 `CancelTaskCommand` 保持唯一取消入口。
