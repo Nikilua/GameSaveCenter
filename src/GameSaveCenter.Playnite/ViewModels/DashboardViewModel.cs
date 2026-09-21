@@ -5481,11 +5481,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (await ClipboardRetry.TrySetTextAsync(text, Clipboard.SetText).ConfigureAwait(true))
             {
                 StatusMessage = statusMessage;
-                plugin.ShowInfo(infoMessage);
+                plugin.ShowCopySuccess(infoMessage);
                 return;
             }
             StatusMessage = "复制失败：剪贴板暂时被其他程序占用，请稍后重试";
-            plugin.ShowError("无法复制到剪贴板：剪贴板暂时被其他程序占用。请稍后重试。");
+            plugin.ShowCopyError("无法复制到剪贴板：剪贴板暂时被其他程序占用。请稍后重试。");
         }
 
         private async Task CancelSelectedTaskAsync()

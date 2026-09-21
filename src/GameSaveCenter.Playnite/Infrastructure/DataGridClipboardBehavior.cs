@@ -76,11 +76,26 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (modifiers != ModifierKeys.Control && modifiers != (ModifierKeys.Control | ModifierKeys.Shift)) return;
 
             var copyCell = modifiers == (ModifierKeys.Control | ModifierKeys.Shift);
-            var text = BuildCopyText(grid, copyCell);
-            if (string.IsNullOrEmpty(text)) return;
+            if (TryCopy(grid, copyCell)) args.Handled = true;
+        }
 
-            if (!TrySetClipboardText(text)) return;
-            args.Handled = true;
+        private static bool TryCopy(DataGrid grid, bool copyCell)
+        {
+            var text = BuildCopyText(grid, copyCell);
+            if (string.IsNullOrEmpty(text))
+            {
+                ClipboardFeedback.Show(grid, "没有可复制内容，请先选择一行或单元格。", true);
+                return false;
+            }
+
+            if (!TrySetClipboardText(text))
+            {
+                ClipboardFeedback.Show(grid, "复制失败：剪贴板暂时被其他程序占用，请稍后重试。", true);
+                return false;
+            }
+
+            ClipboardFeedback.Show(grid, copyCell ? "当前单元格已复制。" : "所选行已复制。", false);
+            return true;
         }
 
         private static bool TrySetClipboardText(string text)
@@ -111,6 +126,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static string BuildCopyTextForVerification(DataGrid grid, bool copyCell)
             => BuildCopyText(grid, copyCell);
+
+        internal static bool TryCopyForVerification(DataGrid grid, bool copyCell)
+            => TryCopy(grid, copyCell);
     }
 
     /// <summary>Allowlisted TSV formatter used by the production clipboard behavior.</summary>

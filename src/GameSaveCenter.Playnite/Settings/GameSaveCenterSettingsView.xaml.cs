@@ -691,24 +691,27 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSettingsPathCopyClick(object sender, RoutedEventArgs e)
         {
-            _ = CopySettingsPathAsync();
+            _ = CopySettingsPathAsync(sender as FrameworkElement);
             e.Handled = true;
         }
 
-        private async Task CopySettingsPathAsync()
+        private async Task CopySettingsPathAsync(FrameworkElement? feedbackTarget = null)
         {
             if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
             var value = ClipboardValueSanitizer.Sanitize(textBox.Text ?? string.Empty);
             if (value.Length == 0)
             {
                 SetSettingsPathEditorStatus(option, "当前字段为空，无法复制。");
+                ClipboardFeedback.Show(feedbackTarget ?? SettingsPathEditorStatus, "当前字段为空，无法复制。", true);
                 return;
             }
 
             var copied = await ClipboardRetry.TrySetTextAsync(value, Clipboard.SetText).ConfigureAwait(true);
-            SetSettingsPathEditorStatus(option, copied
+            var message = copied
                 ? "完整路径已复制到剪贴板。"
-                : "复制失败：剪贴板暂时被其他程序占用，请稍后重试。", !copied);
+                : "复制失败：剪贴板暂时被其他程序占用，请稍后重试。";
+            SetSettingsPathEditorStatus(option, message, !copied);
+            ClipboardFeedback.Show(feedbackTarget ?? SettingsPathEditorStatus, message, !copied);
         }
 
         private bool TryGetCurrentPathEditor(out SettingsPathEditorOption option, out TextBox textBox)
@@ -751,7 +754,10 @@ namespace GameSaveCenter.Playnite.Settings
         private void SetSettingsPathEditorStatus(SettingsPathEditorOption option, string message, bool isError = false)
         {
             if (SettingsPathEditorStatus == null) return;
-            SettingsPathEditorStatus.Text = $"{option.DisplayName}：{message}";
+            var fullMessage = $"{option.DisplayName}：{message}";
+            SettingsPathEditorStatus.Text = fullMessage;
+            AutomationProperties.SetHelpText(SettingsPathEditorStatus, fullMessage);
+            AutomationProperties.SetName(SettingsPathEditorStatus, "当前路径编辑反馈：" + option.DisplayName);
             SettingsPathEditorStatus.Foreground = isError
                 ? (Brush)FindResource("GscErrorBrush")
                 : (Brush)FindResource("GscSecondaryTextBrush");

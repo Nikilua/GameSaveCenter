@@ -906,6 +906,20 @@ namespace GameSaveCenter.Playnite
                 AddNotification("Info", message, NotificationType.Info);
         }
 
+        public void ShowCopySuccess(string message)
+        {
+            logger.Info(message);
+            if (!RaiseUiNotification("复制成功", message, UiNotificationKind.Success, message, true))
+                AddNotification("Copy", message, NotificationType.Info);
+        }
+
+        public void ShowCopyError(string message)
+        {
+            logger.Error(message);
+            if (!RaiseUiNotification("复制失败", message, UiNotificationKind.Error, message, true))
+                AddNotification("Copy.Error", message, NotificationType.Error);
+        }
+
         public void ShowWarning(string message)
         {
             logger.Warn(message);
@@ -988,12 +1002,12 @@ namespace GameSaveCenter.Playnite
             return builder.ToString().TrimEnd();
         }
 
-        private bool RaiseUiNotification(string title, string message, UiNotificationKind kind, string? detailMessage = null)
+        private bool RaiseUiNotification(string title, string message, UiNotificationKind kind, string? detailMessage = null, bool isCopyFeedback = false)
         {
             var handler = UiNotificationRequested;
             if (handler == null) return false;
             var summaryLength = kind == UiNotificationKind.Success || kind == UiNotificationKind.Information ? 180 : 320;
-            var args = new UiNotificationEventArgs(title, LimitNotificationText(message, summaryLength), kind, detailMessage ?? message);
+            var args = new UiNotificationEventArgs(title, LimitNotificationText(message, summaryLength), kind, detailMessage ?? message, isCopyFeedback);
             if (!TryInvokeUi(() => handler(this, args), "notification request")) return false;
             return args.Handled;
         }

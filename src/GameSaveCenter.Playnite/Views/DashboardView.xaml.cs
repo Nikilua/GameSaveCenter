@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
@@ -1085,10 +1086,26 @@ namespace GameSaveCenter.Playnite.Views
             if (!IsLoaded || !IsVisible) return;
             e.Handled = true;
 
+            if (e.IsCopyFeedback)
+            {
+                if (Keyboard.FocusedElement is FrameworkElement focused
+                    && focused.IsVisible
+                    && focused.IsEnabled)
+                {
+                    ClipboardFeedback.Show(focused, e.Message, e.Kind == UiNotificationKind.Error);
+                    return;
+                }
+
+                // Programmatic copy commands can have no focused source control. Keep a
+                // single fallback toast in that case; ShowToast coalesces copy feedback.
+                ShowToast(e.Title, e.Message, e.Kind, e.DetailMessage, true);
+                return;
+            }
+
             // Keep notifications in the native page-local toast. WPF-UI's SnackbarPresenter
             // contains deferred Border.CornerRadius resources that are unsafe in Playnite's host
             // layout and must never be allowed to destabilize the extension window.
-            ShowToast(e.Title, e.Message, e.Kind, e.DetailMessage);
+            ShowToast(e.Title, e.Message, e.Kind, e.DetailMessage, false);
         }
 
         private void OnUiConfirmationRequested(object? sender, UiConfirmationEventArgs e)
@@ -1248,26 +1265,14 @@ namespace GameSaveCenter.Playnite.Views
             var detail = activeDialogDetailMessage;
             if (string.IsNullOrWhiteSpace(detail)) return;
 
-            for (var attempt = 0; attempt < 4; attempt++)
+            var copied = await ClipboardRetry.TrySetTextAsync(detail, Clipboard.SetText).ConfigureAwait(true);
+            if (string.Equals(activeDialogDetailMessage, detail, StringComparison.Ordinal))
             {
-                try
-                {
-                    Clipboard.SetText(detail);
-                    if (string.Equals(activeDialogDetailMessage, detail, StringComparison.Ordinal))
-                        DialogCopyButton.Content = "已复制";
-                    return;
-                }
-                catch (Exception) when (attempt < 3)
-                {
-                    await Task.Delay(150 + attempt * 100).ConfigureAwait(true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "GameSaveCenter failed to copy notification detail.");
-                    if (string.Equals(activeDialogDetailMessage, detail, StringComparison.Ordinal))
-                        DialogCopyButton.Content = "重试复制";
-                    return;
-                }
+                DialogCopyButton.Content = copied ? "已复制" : "重试复制";
+                ClipboardFeedback.Show(
+                    DialogCopyButton,
+                    copied ? "详情已复制到剪贴板。" : "复制失败：剪贴板暂时被其他程序占用，请稍后重试。",
+                    !copied);
             }
         }
 
@@ -1402,8 +1407,16 @@ namespace GameSaveCenter.Playnite.Views
             if (target is TextBox textBox) textBox.SelectAll();
         }
 
-        private void ShowToast(string title, string message, UiNotificationKind kind, string detailMessage)
+        private void ShowToast(string title, string message, UiNotificationKind kind, string detailMessage, bool isCopyFeedback)
         {
+            if (isCopyFeedback)
+            {
+                var copyCards = ToastHost.Children.OfType<Border>()
+                    .Where(card => card.Tag is bool isCopy && isCopy)
+                    .ToArray();
+                foreach (var copyCard in copyCards) RemoveToast(copyCard);
+            }
+
             var accentKey = kind == UiNotificationKind.Error ? "GscErrorBrush"
                 : kind == UiNotificationKind.Warning ? "GscWarningBrush"
                 : kind == UiNotificationKind.Success ? "GscSuccessBrush"
@@ -1415,6 +1428,7 @@ namespace GameSaveCenter.Playnite.Views
                 Opacity = MotionEnabled ? 0 : 1,
                 RenderTransform = new TranslateTransform(MotionEnabled ? 18 : 0, 0)
             };
+            card.Tag = isCopyFeedback;
 
             var layout = new Grid();
             layout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(12) });
