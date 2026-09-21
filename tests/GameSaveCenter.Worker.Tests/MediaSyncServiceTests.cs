@@ -855,7 +855,7 @@ BEGIN SELECT RAISE(ABORT, 'injected audit failure'); END;");
 
     private async Task<MediaItemDto> AddInboxMediaAsync(string mediaId, string originalPath, DateTime capturedUtc)
     {
-        var content = new byte[] { 1, 4, 7, (byte)mediaId.Length, (byte)mediaId[0], (byte)mediaId[1] };
+        var content = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(mediaId)).Take(6).ToArray();
         var archivePath = Path.Combine(options.MediaArchiveDirectory, "_Inbox", "Pending", mediaId + ".png");
         Directory.CreateDirectory(Path.GetDirectoryName(originalPath)!);
         Directory.CreateDirectory(Path.GetDirectoryName(archivePath)!);
