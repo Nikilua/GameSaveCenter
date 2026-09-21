@@ -708,8 +708,8 @@
                                     </StackPanel>
                                     <ui:Button Grid.Column="3" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding SwapCompareBackupCommand}" Content="交换 A/B" ToolTip="交换比较方向并重新计算差异" AutomationProperties.Name="交换 A 和 B 版本" VerticalAlignment="Bottom" Margin="12,0,0,0"/>
                                 </Grid>
-                                <TextBlock Grid.Row="2" Text="{Binding CompareSelectionSummary, TargetNullValue=请选择两个不同版本。, FallbackValue=请选择两个不同版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0"/>
-                                <TextBlock Grid.Row="3" Text="{Binding DiffComparedSummary, TargetNullValue=尚未选择可比较的版本。, FallbackValue=尚未选择可比较的版本。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                <TextBlock Grid.Row="2" Text="{Binding CompareSelectionSummary, TargetNullValue=请选择两个不同版本。, FallbackValue=请选择两个不同版本。}" ToolTip="{Binding CompareSelectionSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CompareSelectionSummaryFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                <TextBlock Grid.Row="3" Text="{Binding DiffComparedSummary, TargetNullValue=尚未选择可比较的版本。, FallbackValue=尚未选择可比较的版本。}" ToolTip="{Binding DiffComparedSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding DiffComparedSummaryFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                 <Grid Grid.Row="4" Margin="0,10,0,0">
                                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>

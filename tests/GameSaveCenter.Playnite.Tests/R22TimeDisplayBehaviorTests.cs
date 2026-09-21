@@ -447,6 +447,39 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void ComparisonSummariesUseRelativeTextAndExposeFullEvidence()
+    {
+        var left = new BackupVersionDto
+        {
+            BackupId = "summary-left",
+            CreatedUtc = DateTime.UtcNow.AddDays(-3)
+        };
+        var right = new BackupVersionDto
+        {
+            BackupId = "summary-right",
+            CreatedUtc = DateTime.UtcNow.AddHours(-2)
+        };
+
+        var selection = DashboardViewModel.BuildComparisonSelectionSummary(left, right);
+        var selectionFull = DashboardViewModel.BuildComparisonSelectionSummaryFull(left, right);
+        var result = DashboardViewModel.BuildComparisonSummary(left, right);
+        var resultFull = DashboardViewModel.BuildComparisonSummaryFull(left, right);
+
+        Assert.Contains(left.ComparisonRelativeDisplay, selection, StringComparison.Ordinal);
+        Assert.Contains(right.ComparisonRelativeDisplay, selection, StringComparison.Ordinal);
+        Assert.Contains(left.ComparisonFullDisplay, selectionFull, StringComparison.Ordinal);
+        Assert.Contains(right.ComparisonFullDisplay, selectionFull, StringComparison.Ordinal);
+        Assert.Contains(left.CreatedRelativeDisplay, result, StringComparison.Ordinal);
+        Assert.Contains(right.CreatedRelativeDisplay, result, StringComparison.Ordinal);
+        Assert.Contains(left.CreatedFullDisplay, resultFull, StringComparison.Ordinal);
+        Assert.Contains(right.CreatedFullDisplay, resultFull, StringComparison.Ordinal);
+        Assert.Contains("新增属于 B", selection, StringComparison.Ordinal);
+        Assert.Contains("删除属于 A", selectionFull, StringComparison.Ordinal);
+        Assert.Equal("A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。", DashboardViewModel.BuildComparisonSelectionSummary(left, left));
+        Assert.Equal("尚未选择可比较的版本。", DashboardViewModel.BuildComparisonSummaryFull(null, right));
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);

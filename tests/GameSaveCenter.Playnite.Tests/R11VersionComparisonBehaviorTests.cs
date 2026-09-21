@@ -100,6 +100,12 @@ public sealed class R11VersionComparisonBehaviorTests
                 Assert.True(compareButton.IsEnabled);
                 Assert.False(swapButton.IsEnabled);
                 Assert.Contains("新增属于 B", state.CompareSelectionSummary);
+                var selectionSummary = FindVisualChildren<TextBlock>(view).Single(text => text.Text == state.CompareSelectionSummary);
+                Assert.Equal(state.CompareSelectionSummaryFullDisplay, selectionSummary.ToolTip);
+                Assert.Equal(state.CompareSelectionSummaryFullDisplay, AutomationProperties.GetHelpText(selectionSummary));
+                var emptyResultSummary = FindVisualChildren<TextBlock>(view).Single(text => text.Text == state.DiffComparedSummary);
+                Assert.Equal(state.DiffComparedSummaryFullDisplay, emptyResultSummary.ToolTip);
+                Assert.Equal(state.DiffComparedSummaryFullDisplay, AutomationProperties.GetHelpText(emptyResultSummary));
 
                 compareButton.Command!.Execute(null);
                 Assert.Equal(1, state.CompareRequestCount);
@@ -190,9 +196,15 @@ public sealed class R11VersionComparisonBehaviorTests
         public string CompareSelectionSummary => CompareLeftBackup != null && CompareRightBackup != null
             ? string.Equals(CompareLeftBackup.BackupId, CompareRightBackup.BackupId, StringComparison.OrdinalIgnoreCase)
                 ? "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。"
-                : $"A：{CompareLeftBackup.ComparisonDisplay} → B：{CompareRightBackup.ComparisonDisplay}；新增属于 B，删除属于 A。"
+                : $"A：{CompareLeftBackup.ComparisonRelativeDisplay} → B：{CompareRightBackup.ComparisonRelativeDisplay}；新增属于 B，删除属于 A。"
+            : "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+        public string CompareSelectionSummaryFullDisplay => CompareLeftBackup != null && CompareRightBackup != null
+            ? string.Equals(CompareLeftBackup.BackupId, CompareRightBackup.BackupId, StringComparison.OrdinalIgnoreCase)
+                ? "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。"
+                : $"A：{CompareLeftBackup.ComparisonFullDisplay} → B：{CompareRightBackup.ComparisonFullDisplay}；新增属于 B，删除属于 A。"
             : "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
         public string DiffComparedSummary { get; } = "尚未选择可比较的版本。";
+        public string DiffComparedSummaryFullDisplay => "尚未选择可比较的版本。";
         public BackupDiffDto? LastBackupDiff { get; } = null;
         public string DiffSummary { get; } = "选择两个版本后，比较结果会显示在这里。";
         public int CompareRequestCount { get; private set; }

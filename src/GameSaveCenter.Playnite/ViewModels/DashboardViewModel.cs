@@ -1586,6 +1586,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string DiffSummary { get => diffSummary; private set => SetValue(ref diffSummary, value); }
         public string DiffComparedSummary { get => diffComparedSummary; private set => SetValue(ref diffComparedSummary, value); }
         public string CompareSelectionSummary { get => compareSelectionSummary; private set => SetValue(ref compareSelectionSummary, value); }
+        public string CompareSelectionSummaryFullDisplay => BuildComparisonSelectionSummaryFull(CompareLeftBackup, CompareRightBackup);
+        public string DiffComparedSummaryFullDisplay => LastBackupDiff == null
+            ? "尚未选择可比较的版本。"
+            : BuildComparisonSummaryFull(CompareLeftBackup, CompareRightBackup);
         public string DiffPathSearchText
         {
             get => diffPathSearchText;
@@ -1680,6 +1684,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SetValue(ref lastBackupDiff, value);
                 diffPathVisibleLimit = 120;
                 RefreshDiffPathResults();
+                OnPropertyChanged(nameof(DiffComparedSummaryFullDisplay));
             }
         }
         public BackupVersionDto? CompareLeftBackup
@@ -5009,6 +5014,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (suppressComparisonSelectionRefresh) return;
             if (LastBackupDiff != null) ClearBackupComparison();
             CompareSelectionSummary = BuildComparisonSelectionSummary(CompareLeftBackup, CompareRightBackup);
+            OnPropertyChanged(nameof(CompareSelectionSummaryFullDisplay));
+            OnPropertyChanged(nameof(DiffComparedSummaryFullDisplay));
             OnPropertyChanged(nameof(CanCompareSelectedBackups));
             RaiseCommandStates();
         }
@@ -5049,14 +5056,26 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool IsBackupInCurrentCollection(BackupVersionDto? backup)
             => backup != null && Backups.Any(item => IsSameBackup(item, backup.BackupId));
 
-        private static string BuildComparisonSummary(BackupVersionDto left, BackupVersionDto right)
-            => $"比较方向：A（{left.CreatedLocal:yyyy-MM-dd HH:mm} · {left.BackupId}） → B（{right.CreatedLocal:yyyy-MM-dd HH:mm} · {right.BackupId}）";
+        internal static string BuildComparisonSummary(BackupVersionDto left, BackupVersionDto right)
+            => $"比较方向：A（{left.CreatedRelativeDisplay} · {left.BackupId}） → B（{right.CreatedRelativeDisplay} · {right.BackupId}）";
 
-        private static string BuildComparisonSelectionSummary(BackupVersionDto? left, BackupVersionDto? right)
+        internal static string BuildComparisonSummaryFull(BackupVersionDto? left, BackupVersionDto? right)
+            => left == null || right == null
+                ? "尚未选择可比较的版本。"
+                : $"比较方向：A（{left.CreatedFullDisplay} · {left.BackupId}） → B（{right.CreatedFullDisplay} · {right.BackupId}）";
+
+        internal static string BuildComparisonSelectionSummary(BackupVersionDto? left, BackupVersionDto? right)
         {
             if (left == null || right == null) return "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
             if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase)) return "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。";
-            return $"A：{left.ComparisonDisplay} → B：{right.ComparisonDisplay}；新增属于 B，删除属于 A。";
+            return $"A：{left.ComparisonRelativeDisplay} → B：{right.ComparisonRelativeDisplay}；新增属于 B，删除属于 A。";
+        }
+
+        internal static string BuildComparisonSelectionSummaryFull(BackupVersionDto? left, BackupVersionDto? right)
+        {
+            if (left == null || right == null) return "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+            if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase)) return "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。";
+            return $"A：{left.ComparisonFullDisplay} → B：{right.ComparisonFullDisplay}；新增属于 B，删除属于 A。";
         }
 
         private void LoadMoreDiffPaths()
