@@ -6,8 +6,8 @@
 
 - `1250aaad` 先复用现有 `TaskTimelineBuilder` 的 UTC 时间与序号排序，新增 Contracts 共享 `TimeDisplayFormatter`；相对时间的 `nowUtc` 可注入，完整提示包含本地时区偏移和 round-trip UTC 原值，未知时间不被伪造为当前时间。
 - `TaskTimelineEntryDto` 增加相对/完整/原始时间属性，Task Center 时间线显示相对时间并把完整提示放入 Tooltip/Automation HelpText；没有改变游戏选框、滚动条、命令绑定、取消/错误、恢复保护或有限列表性能。
-- `538fcae9` 继续复用现有 Worker/SQLite 恢复链路，接入 `MonotonicTaskClock`、`ElapsedSeconds` 和三列增量 schema；新任务终态、活动快照和 Worker 重启收口使用同一单调计数器，旧任务保留 legacy fallback。`b53ab44f` 再把同一 formatter 接入 Task Center 任务表/详情与 Overview 最近任务/全局活动，保留分页、选择、滚动、复制和命令语义。R22 时间 `6/6`、R15 `3/3`、Overview `1/1`、R10 `2/2`，本批 `12/12`；Worker 单调/查询/Coordinator/migration/硬重启分别 `2/2`、`9/9`、`7/7`、`4/4`、`1/1`；最终 Release Playnite `0 errors / 2` 条既有 warning，Playnite/Worker Tests `0/0`，source/XAML/diff/WPF `0/27/177` 通过。
-- R22-01 尚未完成：Maintenance/Save 等其他时间入口未全部迁移，真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、呈现、DPI/跨屏、ETW 和宿主性能仍未验。证据：`R22-01-OVERVIEW-TIME-20260921.md`、`R22-01-TIME-DISPLAY-20260921.md`、`R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步盘点 Maintenance/Save 剩余时间入口与已有复制行为。
+- `538fcae9` 继续复用现有 Worker/SQLite 恢复链路，接入 `MonotonicTaskClock`、`ElapsedSeconds` 和三列增量 schema；新任务终态、活动快照和 Worker 重启收口使用同一单调计数器，旧任务保留 legacy fallback。`b53ab44f` 把同一 formatter 接入 Task Center/Overview，`2be8627d` 接入 Save 历史/详情和 Maintenance 审计表，`c211a04f` 校正旧 Save 绑定断言；保留分页、选择、滚动、复制和命令语义。R22 时间 `7/7`、R15 `3/3`、Overview `1/1`、R10 `2/2`、R06 `4/4`、R11 `3/3`，本子批 `17 passed / 1 skipped`；Worker 单调/查询/Coordinator/migration/硬重启分别 `2/2`、`9/9`、`7/7`、`4/4`、`1/1`；最终 Release Playnite `0 errors / 2` 条既有 warning，Playnite Tests `0 errors`，source/XAML/diff/WPF `0/27/177` 通过。
+- R22-01 尚未完成：Maintenance 保留预览及其他 Save/恢复时间入口未全部迁移，真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、呈现、DPI/跨屏、ETW 和宿主性能仍未验。WPF 全套基线另有 3 条与本批无关失败，未改写为绿色。证据：`R22-01-SAVE-MAINTENANCE-TIME-20260921.md`、`R22-01-OVERVIEW-TIME-20260921.md`、`R22-01-TIME-DISPLAY-20260921.md`、`R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步盘点 Maintenance 保留预览及剩余时间入口与已有复制行为。
 
 ## 第三轮 R22-04 打开路径失败（2026-09-21）
 

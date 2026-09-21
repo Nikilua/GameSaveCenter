@@ -19,6 +19,12 @@
 - `R22TimeDisplayBehaviorTests 6/6`、`R15TaskTimelineTests 3/3`、`OverviewInteractionTests 1/1`、`R10RecentAccessBehaviorTests 2/2`，本批合计 `12/12`。实际提交身份 Release Playnite `net462` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，Playnite Tests `net472` `0/0`；source validation、XAML `24/24`、diff 和 WPF `0/27/177` 通过。
 - R22-01 仍为“部分满足，待继续”：Maintenance/Save 等其他时间入口、真实剪贴板、系统时钟跳变/跨系统启动周期、真实 Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-TIME-20260921.md`。下一步盘点 Maintenance/Save 剩余时间入口和已有复制行为。
 
+## 2026-09-21 R22-01 Save 与 Maintenance 时间入口（第四子批次）
+
+- `2be8627d` 复用 `TimeDisplayFormatter`，为已有 `BackupVersionDto`、`AuditLogEntryDto` 增加相对/完整/原始 UTC 显示；Save 历史/详情和 Maintenance 审计表改用相对时间，保留列宽、分页/选择、滚动、DataGrid 复制、恢复/校验/诊断命令和安全语义。`c211a04f` 校正随绑定迁移而过时的 Save 源码断言。
+- `R22TimeDisplayBehaviorTests 7/7`、`R06SortingBehaviorTests 4/4`、`R11HistoryTimeNavigationBehaviorTests 3/3`，相关 WPF 方法 `3/3`，另 1 条真实宿主条件方法跳过；本子批定向 `17 passed / 1 skipped`。精确提交身份 Release Playnite `net462` `0 errors / 2` 条既有 warning，Playnite Tests `0 errors`；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
+- 全套 `WpfUiResourceDictionaryTests` 记录 `133 passed / 39 skipped / 4 failed`；本批 Save 旧绑定断言已校正，剩余 3 条为既有 Settings 响应字段、媒体空数据滚动、Inbox 下拉共享模板断言失败，未改写为绿色。R22-01 仍为“部分满足，待继续”；Maintenance 保留预览/其他 Save 恢复时间、真实剪贴板、时钟跳变、Playnite host/UIA/呈现/DPI/跨屏/ETW/宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-SAVE-MAINTENANCE-TIME-20260921.md`。下一步盘点 Maintenance 保留预览及剩余时间入口和复制行为。
+
 ## 2026-09-21 R22-04 打开路径失败
 
 - 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
