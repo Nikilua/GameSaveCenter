@@ -25,4 +25,4 @@
 
 ## 下一步
 
-继续 R22-01：先盘点 Maintenance 保留预览及剩余 `CreatedLocal`、`CreatedDisplay`、`StringFormat` 和复制入口，逐个复用同一 formatter 并补对应负例；随后再处理真实系统时钟与宿主边界。
+继续 R22-01：Retention 保留预览已单独接入；先盘点 MediaCenter `CapturedLocal` 及剩余 `CreatedLocal`、`CreatedDisplay`、`StringFormat` 和复制入口，逐个复用同一 formatter 并补对应负例；随后再处理真实系统时钟与宿主边界。

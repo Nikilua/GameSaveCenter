@@ -25,6 +25,12 @@
 - `R22TimeDisplayBehaviorTests 7/7`、`R06SortingBehaviorTests 4/4`、`R11HistoryTimeNavigationBehaviorTests 3/3`，相关 WPF 方法 `3/3`，另 1 条真实宿主条件方法跳过；本子批定向 `17 passed / 1 skipped`。精确提交身份 Release Playnite `net462` `0 errors / 2` 条既有 warning，Playnite Tests `0 errors`；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
 - 全套 `WpfUiResourceDictionaryTests` 记录 `133 passed / 39 skipped / 4 failed`；本批 Save 旧绑定断言已校正，剩余 3 条为既有 Settings 响应字段、媒体空数据滚动、Inbox 下拉共享模板断言失败，未改写为绿色。R22-01 仍为“部分满足，待继续”；Maintenance 保留预览/其他 Save 恢复时间、真实剪贴板、时钟跳变、Playnite host/UIA/呈现/DPI/跨屏/ETW/宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-SAVE-MAINTENANCE-TIME-20260921.md`。下一步盘点 Maintenance 保留预览及剩余时间入口和复制行为。
 
+## 2026-09-21 R22-01 Retention 预览时间入口（第五子批次）
+
+- `abe9369e` 复用 `TimeDisplayFormatter`，为 `RetentionSimulationItemDto` 增加相对/完整/原始 UTC 显示；保留旧 `CreatedDisplay` 供报告兼容，Maintenance 预览只替换展示绑定，不改变只读预览、保护判断、Apply 二次确认或真实存档操作。
+- `R22TimeDisplayBehaviorTests 8/8`、`MaintenanceReportSourceTests 4/4`、`R17FindingTriageBehaviorTests 3/3`，Playnite `15/15`；`RetentionSimulationServiceTests 12/12`。提交身份 Playnite `net462`、Playnite Tests `net472`、Worker Tests `net8` `0 errors`，主项目保留 2 条既有 warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
+- R22-01 仍为“部分满足，待继续”：MediaCenter `CapturedLocal` 及其他时间入口、真实剪贴板、系统时钟跳变/跨系统启动周期、真实 Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RETENTION-TIME-20260921.md`。下一步盘点 MediaCenter `CapturedLocal` 及剩余时间入口和已有复制行为。
+
 ## 2026-09-21 R22-04 打开路径失败
 
 - 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。

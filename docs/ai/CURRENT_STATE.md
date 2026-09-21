@@ -11,9 +11,10 @@
 - `538fcae9` 将 `MonotonicTaskClock` 接入 TaskCoordinator、TaskStatusDto 和 SQLite 任务快照/Worker 重启收口；新任务终态/重启失败状态使用单调 elapsed，旧任务无单调字段时保留 legacy fallback，不改变取消、错误和恢复保护。
 - `b53ab44f` 将共享时间显示接入 Task Center 任务表/详情、Overview 最近任务和全局活动；保留任务表列宽、分页/选择、滚动、复制、命令和取消语义，完整时间进入 Tooltip/Automation HelpText。
 - `2be8627d` 将同一 formatter 接入 Save 历史/详情和 Maintenance 审计表，保留存档选择/分页/滚动/复制及诊断命令；`c211a04f` 校正随绑定迁移而过时的 Save 源码断言。
-- R22 时间 `7/7`、R15 `3/3`、Overview `1/1`、R10 `2/2`、R06 `4/4`、R11 `3/3`，本子批 `17 passed / 1 skipped`；Worker 单调时长 `2/2`、任务查询/恢复 `9/9`、Coordinator `7/7`、migration `4/4`、隔离 Worker 硬重启 `1/1`。精确提交身份 Release Playnite `net462` `0 errors / 2` 条既有 CS8602 warning，Playnite Tests `0 errors`；source、XAML `24/24`、diff 和 WPF `0/27/177` 通过。
-- R22-01 仍未完成：Maintenance 保留预览及其他 Save/恢复时间入口尚未全部迁移；真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。WPF 全套基线另有 3 条与本批无关失败，未改写为绿色。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [`R22-01 Save 与 Maintenance`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-SAVE-MAINTENANCE-TIME-20260921.md)、[`R22-01 Overview 与任务入口`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-TIME-20260921.md)、[`R22-01 时间显示`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md) 与 [`R22-01 单调时长`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MONOTONIC-TASK-DURATION-20260921.md)。
-- 下一可执行任务：继续 R22-01，先盘点 Maintenance 保留预览及剩余时间入口和已有复制行为，复用 formatter/技术文本控件。
+- `abe9369e` 将 Retention 预览保留项接入同一 formatter，保留旧 `CreatedDisplay`、只读预览和二次确认语义；未触碰真实存档操作。
+- R22 时间 `8/8`、R15 `3/3`、Overview `1/1`、R10 `2/2`、R06 `4/4`、R11 `3/3`；Retention Playnite `15/15`、Worker `12/12`。精确提交身份 Release Playnite/Playnite Tests/Worker Tests `0 errors`（Playnite 主项目 2 条既有 CS8602 warning）；source、XAML `24/24`、diff 和 WPF `0/27/177` 通过。
+- R22-01 仍未完成：MediaCenter 及其他 Save/恢复时间入口尚未全部迁移；真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。WPF 全套基线另有 3 条与本批无关失败，未改写为绿色。Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [`R22-01 Retention 预览`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RETENTION-TIME-20260921.md)、[`R22-01 Save 与 Maintenance`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-SAVE-MAINTENANCE-TIME-20260921.md)、[`R22-01 Overview 与任务入口`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-TIME-20260921.md)、[`R22-01 时间显示`](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md) 与 [`R22-01 单调时长`](../design/reviews/ui-finesse-round3-20260921/evidence/R22-01-MONOTONIC-TASK-DURATION-20260921.md)。
+- 下一可执行任务：继续 R22-01，先盘点 MediaCenter `CapturedLocal` 入口及剩余时间字段和已有复制行为，复用 formatter/技术文本控件。
 
 ## 当前第三轮 R22-04 打开路径失败（已满足，待环境验证）
 
