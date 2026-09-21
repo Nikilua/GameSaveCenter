@@ -4067,6 +4067,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"TextElement.Foreground\" Value=\"{DynamicResource GscPrimaryTextBrush}\"/>", combined);
         Assert.Contains("<Setter Property=\"TextTrimming\" Value=\"CharacterEllipsis\"/>", combined);
         Assert.Contains("<Setter Property=\"ToolTip\" Value=\"{Binding Text, RelativeSource={RelativeSource Self}}\"/>", combined);
+        Assert.Contains("x:Key=\"MediaGameTargetTemplate\"", combined);
+        Assert.Contains("Text=\"{Binding IdentityDisplay}\" Style=\"{DynamicResource GscCaptionStyle}\" TextTrimming=\"CharacterEllipsis\"", combined);
 
         var documents = new[] { XDocument.Parse(dashboard) }.Concat(workspacePaths.Select(path => XDocument.Parse(File.ReadAllText(path)))).ToArray();
         var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
@@ -4088,11 +4090,14 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.NotEmpty(matches);
             foreach (var comboBox in matches)
             {
+                var usesMediaGameTargetTemplate = (comboBox.Attribute("ItemTemplate")?.Value ?? string.Empty)
+                    .IndexOf("MediaGameTargetTemplate", StringComparison.Ordinal) >= 0;
                 Assert.True(
                     comboBox.Descendants().Any(element =>
                         element.Name.LocalName == "TextBlock"
                         && ((element.Attribute("Style")?.Value.IndexOf("GscComboBoxLongText", StringComparison.Ordinal) ?? -1) >= 0
-                            || element.Attribute("TextTrimming")?.Value == "CharacterEllipsis")),
+                            || element.Attribute("TextTrimming")?.Value == "CharacterEllipsis"))
+                    || usesMediaGameTargetTemplate,
                     "受限宽度下拉选择未复用 GscComboBoxLongText：" + target.Description);
             }
         }
