@@ -44,18 +44,7 @@ public sealed class MaintenanceReportServiceTests : IDisposable
             RestoreReadiness = new RestoreReadinessDto { Status = RestoreReadinessStatus.Ready }
         }, "{}", CancellationToken.None);
 
-        var storage = new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance);
-        var mirror = new LocalMirrorService(options, NullLogger<LocalMirrorService>.Instance);
-        var integrity = new IntegrityCheckService(options, store, NullLogger<IntegrityCheckService>.Instance);
-        var retention = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
-        var service = new MaintenanceReportService(
-            options,
-            store,
-            storage,
-            mirror,
-            integrity,
-            retention,
-            NullLogger<MaintenanceReportService>.Instance);
+        var service = CreateReportService();
 
         var report = await service.GetAsync(new MaintenanceReportRequestDto
         {
@@ -82,6 +71,19 @@ public sealed class MaintenanceReportServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ReportUsesCanonicalUnitForSmallMirrorFile()
+    {
+        options.EnableLocalMirror = true;
+        Directory.CreateDirectory(options.LocalMirrorPath);
+        await File.WriteAllBytesAsync(Path.Combine(options.LocalMirrorPath, "one-byte.bin"), new byte[] { 0x2A });
+
+        var report = await CreateReportService().GetAsync(new MaintenanceReportRequestDto(), CancellationToken.None);
+
+        Assert.Contains("本地镜像：镜像可用：1 个文件，共 1 B", report.ReportText);
+        Assert.DoesNotContain("0 KiB", report.ReportText);
+    }
+
+    [Fact]
     public void ReportRedactorRemovesUrlParametersAndWindowsUserNames()
     {
         var redacted = MaintenanceReportRedactor.Redact(
@@ -97,5 +99,21 @@ public sealed class MaintenanceReportServiceTests : IDisposable
     {
         SqliteConnection.ClearAllPools();
         try { if (Directory.Exists(root)) Directory.Delete(root, true); } catch { }
+    }
+
+    private MaintenanceReportService CreateReportService()
+    {
+        var storage = new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance);
+        var mirror = new LocalMirrorService(options, NullLogger<LocalMirrorService>.Instance);
+        var integrity = new IntegrityCheckService(options, store, NullLogger<IntegrityCheckService>.Instance);
+        var retention = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        return new MaintenanceReportService(
+            options,
+            store,
+            storage,
+            mirror,
+            integrity,
+            retention,
+            NullLogger<MaintenanceReportService>.Instance);
     }
 }

@@ -559,15 +559,7 @@ public sealed class IpcRequestDispatcher
         return new RetentionPreviewDto{KeepBackupIds=plan.Keep.Select(x=>x.BackupId).ToList(),ProtectedHealthBackupIds=plan.HealthProtected.Select(x=>x.BackupId).ToList(),DeleteCandidateIds=plan.DeleteCandidates.Select(x=>x.BackupId).ToList(),Summary=$"建议保留 {plan.Keep.Count} 个版本；其中 {plan.HealthProtected.Count} 个健康恢复点受保护；{plan.DeleteCandidates.Count} 个版本可由用户审核后清理。自动删除未启用。"};
     }
 
-    private static string FormatBytes(long bytes)
-    {
-        var sign = bytes < 0 ? "-" : "+";
-        var value = Math.Abs((double)bytes);
-        if (value < 1024) return $"{sign}{value:0} B";
-        if (value < 1024 * 1024) return $"{sign}{value / 1024:0.##} KiB";
-        if (value < 1024 * 1024 * 1024) return $"{sign}{value / 1024 / 1024:0.##} MiB";
-        return $"{sign}{value / 1024 / 1024 / 1024:0.##} GiB";
-    }
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.FormatSignedDelta(bytes);
 
     private async Task<object> ValidateAsync(ValidateGameRequestDto request,CancellationToken token)
     {

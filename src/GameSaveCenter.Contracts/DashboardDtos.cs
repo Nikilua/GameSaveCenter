@@ -183,13 +183,7 @@ namespace GameSaveCenter.Contracts
                 : $"检查于 {time}";
         }
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Persisted evidence from a non-destructive restore-readiness check.</summary>
@@ -253,20 +247,10 @@ namespace GameSaveCenter.Contracts
         public string ComparisonQuality { get; set; } = "Estimated";
         public string ComparisonQualityDisplay => string.Equals(ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase) ? "精确比较" :
             string.Equals(ComparisonQuality, "InvalidManifest", StringComparison.OrdinalIgnoreCase) ? "Manifest 无效" : "估算比较（缺少完整 Hash）";
-        public string TotalBytesDeltaDisplay => TotalBytesDelta == 0
-            ? "0 B"
-            : TotalBytesDelta > 0
-                ? $"+{FormatBytes(TotalBytesDelta)}"
-                : $"-{FormatBytes(Math.Abs(TotalBytesDelta))}";
+        public string TotalBytesDeltaDisplay => ByteSizeFormatter.FormatDelta(TotalBytesDelta);
         public string Summary { get; set; } = string.Empty;
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Retention recommendation. Deletion is never implied by this DTO.</summary>
@@ -364,13 +348,7 @@ namespace GameSaveCenter.Contracts
                 ? "已忽略"
                 : "已归类";
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Indexed storage totals for the selected game's assigned media.</summary>
@@ -383,12 +361,6 @@ namespace GameSaveCenter.Contracts
         public long TotalBytes { get; set; }
         public string TotalSizeDisplay => FormatBytes(TotalBytes);
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 }

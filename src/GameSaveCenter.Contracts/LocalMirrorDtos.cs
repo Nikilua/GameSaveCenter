@@ -25,13 +25,7 @@ namespace GameSaveCenter.Contracts
         public string AvailableDisplay => Available ? "可用" : "不可用";
         public string TotalBytesDisplay => FormatBytes(TotalBytes);
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Result of a user-initiated mirror sync. Mirror-only files are never deleted.</summary>

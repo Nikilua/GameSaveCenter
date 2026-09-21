@@ -3134,7 +3134,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 TimeSpan.FromMinutes(5));
             ApplyOnUi(() =>
             {
-                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.PackageBytes / 1024d / 1024d:0.#} MiB）" +
+                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.SizeDisplay}）" +
                     (result.PluginSettingsIncluded ? "，已包含 Playnite 插件设置。" : string.Empty);
                 StatusMessage = result.Summary;
             });

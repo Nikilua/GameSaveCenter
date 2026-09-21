@@ -181,11 +181,5 @@ public sealed class MaintenanceReportService
         return "已配置（仅 copy/check，不做删除）";
     }
 
-    private static string FormatBytes(long bytes)
-    {
-        if (bytes < 1024) return $"{bytes:0} B";
-        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-    }
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
 }

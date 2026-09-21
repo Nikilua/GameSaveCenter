@@ -312,7 +312,7 @@ public sealed class IntegrityCheckService
                 Code = "LOW_DISK_SPACE",
                 Severity = "Warning",
                 Title = $"{label}所在磁盘空间不足",
-                Detail = $"{root} 剩余 {drive.AvailableFreeSpace / 1024d / 1024d:0.#} MiB",
+                Detail = $"{root} 剩余 {ByteSizeFormatter.Format(drive.AvailableFreeSpace)}",
                 SuggestedAction = "清理磁盘或迁移目录，避免备份写入失败。"
             });
         }

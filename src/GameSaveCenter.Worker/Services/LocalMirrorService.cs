@@ -233,13 +233,7 @@ public sealed class LocalMirrorService
         try { if (File.Exists(path)) File.Delete(path); } catch { }
     }
 
-    private static string FormatBytes(long bytes)
-    {
-        if (bytes < 1024) return $"{bytes:0} B";
-        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-    }
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
 
     private sealed class MirrorMarker
     {

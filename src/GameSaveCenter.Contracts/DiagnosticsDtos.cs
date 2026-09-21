@@ -31,10 +31,7 @@ public sealed class DiagnosticsPackageResultDto
     public string Summary { get; set; } = string.Empty;
     public string ResultDisplay => $"{Summary}\n位置：{PackagePath}\n大小：{FormatBytes(PackageBytes)}";
 
-    private static string FormatBytes(long bytes)
-        => bytes < 1024 * 1024
-            ? $"{bytes / 1024d:0.#} KiB"
-            : $"{bytes / 1024d / 1024d:0.##} MiB";
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
 }
 
 public sealed class DiagnosticsPackagePreviewItemDto

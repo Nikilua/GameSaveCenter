@@ -25,13 +25,7 @@ public sealed class MediaSourcePreviewItemDto
     public long SizeBytes { get; set; }
     public string SizeDisplay => FormatBytes(SizeBytes);
 
-    private static string FormatBytes(long value)
-    {
-        if (value < 1024) return $"{value} B";
-        if (value < 1024 * 1024) return $"{value / 1024d:0.#} KB";
-        if (value < 1024L * 1024 * 1024) return $"{value / (1024d * 1024):0.#} MB";
-        return $"{value / (1024d * 1024 * 1024):0.#} GB";
-    }
+    private static string FormatBytes(long value) => ByteSizeFormatter.Format(value);
 }
 
 /// <summary>Read-only source rule dry-run result. It never persists a rule or media item.</summary>

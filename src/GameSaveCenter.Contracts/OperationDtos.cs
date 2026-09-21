@@ -94,13 +94,7 @@ namespace GameSaveCenter.Contracts
             _ => "尚未预览"
         };
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     public sealed class BackupPreviewPathDto
@@ -257,13 +251,7 @@ namespace GameSaveCenter.Contracts
             return string.Join("\r\n", lines);
         }
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Request to validate one indexed backup without touching live save files.</summary>

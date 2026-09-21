@@ -34,13 +34,7 @@ namespace GameSaveCenter.Contracts
                 ? "已索引版本的归档路径均可核查。"
                 : $"{MissingIndexedPathCount} 个索引版本的归档路径失联；逻辑体积 {MissingIndexedBytesDisplay} 未计入磁盘实测，不代表占用为 0，请到存档中心核对。";
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Added indexed backup volume inside a rolling window.</summary>
@@ -52,13 +46,7 @@ namespace GameSaveCenter.Contracts
 
         public string AddedBytesDisplay => FormatBytes(AddedBytes);
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>One game's indexed backup footprint for the storage leaderboard.</summary>
@@ -82,12 +70,6 @@ namespace GameSaveCenter.Contracts
         public string LatestBackupRawUtcDisplay => TimeDisplayFormatter.RawUtc(LatestBackupUtc ?? DateTime.MinValue);
         public string LatestBackupIdDisplay => string.IsNullOrWhiteSpace(LatestBackupId) ? "版本不可用" : LatestBackupId;
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 }
