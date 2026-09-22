@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R00/R01 动效探针时序复核
+
+- `83cf8e28`/`f90c3f8a`/`0e468873` 只修正 RenderHarness：深色资源首帧先布局，活动态/完成态用有界 Dispatcher 等待，增加实际观察值；没有生产动效改动。
+- 当前 RenderHarness Release Playnite `net462` 构建 `0 error`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；四个 Light/Dark motion probes 全部 exit `0`，`UiFinesseFoundationTests 9/9`。
+- R00-03/R01-04 按当前受控证据改为“已满足”；未验真实 Playnite 输入、UIA/读屏、偏好通知、DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录。证据：[R00/R01 动效探针时序复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-MOTION-PROBE-RECHECK-20260923.md)。下一项 R23-04，受阻则继续独立 Q/R。
+
 ## 2026-09-23 Round3 R22-01 残余时间入口复核
 
 - 当前工作区为 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`，身份 `df6bee9d`；本批没有生产代码变更。扫描生产视图绑定后确认旧本地直显属性只在兼容、报告/复制/日志或内部入口保留。

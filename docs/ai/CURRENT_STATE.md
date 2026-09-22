@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R00/R01 动效探针时序复核（2026-09-23）
+
+- `0e468873` 只修正 RenderHarness 的深色资源首帧/完成回调采样：先完成响应式布局，以有界等待观察活动中间态和最终 `270 DIP`/无动画/`X=0`，没有改生产动效、命令、绑定或视觉体系。
+- 当前隔离 RenderHarness Release 为 Playnite `net462`、`0 error`，保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；`motionprobe`、`motionreentryprobe`、`motionhotprobe`、`motioncycleprobe` Light/Dark 均 exit `0`，`UiFinesseFoundationTests 9/9`。
+- R00-03/R01-04 当前受控证据改按“已满足”记录；这些是 STA WPF/offscreen logical DIP，不是真实 Playnite 输入、UIA/读屏、物理 DPI/跨屏、presented frame、ETW 或宿主性能通过。证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-MOTION-PROBE-RECHECK-20260923.md`。
+- 下一可执行任务仍为 R23-04 正常可枚举 Playnite 主窗体/UIA 会话；若 CEF/窗口暴露继续阻塞，转依赖已满足的独立 Q/R 小批量。
+
 ## 第三轮 R22-01 残余时间入口复核（2026-09-23）
 
 - 本批没有生产代码变更；在 D 盘 `codex/ui-finesse-round2` 的 `df6bee9d` 上逐项扫描生产 `Views`/`ViewModels`/`Contracts`，未发现生产 XAML 绑定到旧本地直显时间投影。`LastAccessDisplay`、`TaskPageLastUpdatedDisplay`、`LastAttemptDisplay` 和 Contracts 旧 `ToLocalTime` 属性保留为兼容、报告/复制/日志或内部入口，实际页面绑定使用相对/完整/原始 UTC 合同。

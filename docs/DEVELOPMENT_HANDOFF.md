@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R00/R01 动效探针时序复核：当前 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 身份为 `0e468873`；本批只修正 RenderHarness 采样，不改生产动效。深色资源先完成响应式布局，活动/完成态均以有界 Dispatcher 等待和实际观察值校正首帧/完成回调晚到误判。RenderHarness Release Playnite `net462` `0 error`，四个 Light/Dark motion probes 全部 exit `0`，`UiFinesseFoundationTests 9/9`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。R00-03/R01-04 按受控证据改为“已满足”；真实 Playnite 输入、UIA/读屏、Windows 偏好通知、DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录仍未验。下一项为 R23-04 正常可枚举宿主会话，若 CEF/窗口暴露继续阻塞则转依赖已满足的独立 Q/R。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-MOTION-PROBE-RECHECK-20260923.md`。
+
 > 2026-09-23 R22-01 残余时间入口复核：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一有效工作区，当前开发分支 `codex/ui-finesse-round2`，复核身份 `df6bee9d`；本批没有生产代码变更。生产 `Views/*.xaml` 未发现旧本地直显时间绑定，兼容/报告/复制/日志/内部入口保留；`R22TimeDisplayBehaviorTests 30/30`、`R10RecentAccessBehaviorTests 2/2`，隔离 Release XAML `24/24`、Playnite `net462`、`0 error`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录仍未验。下一可执行项为 R23-04 正常可枚举宿主会话；若 CEF/窗口暴露继续阻塞，转依赖已满足的独立 Q/R 小批量。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESIDUAL-ENTRY-RECHECK-20260923.md`。

@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R00/R01 动效探针时序复核（2026-09-23）
+
+- 当前 `0e468873` 只改变 RenderHarness 的采样夹具：深色主题先完成响应式布局，活动/完成态采用有界等待并记录观察值；没有改生产 `GscMotion`、XAML、命令、Binding、选框、滚动条或 `net462` 路径。
+- `motionprobe`、`motionreentryprobe`、`motionhotprobe`、`motioncycleprobe` Light/Dark 全部通过，Loaded/Unloaded 各 100 次；`UiFinesseFoundationTests 9/9`，RenderHarness Release `0 error`，仅保留两条既有 nullable warning。
+- R00-03/R01-04 可控证据收口为“已满足”，但仍不宣称真实 Playnite 输入/偏好通知、UIA/读屏、DPI/跨屏、presented frame、ETW 或宿主性能。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-MOTION-PROBE-RECHECK-20260923.md`。下一项 R23-04，受阻则推进独立 Q/R。
+
 ## 第三轮 R22-01 残余时间入口复核（2026-09-23）
 
 - 当前唯一工作区仍为 `D:\workplace\github\GameSaveCenter`，本批在 `codex/ui-finesse-round2` 的 `df6bee9d` 上复核，没有生产代码变更，也没有把 main 的旧实现覆盖到当前分支。
