@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-04 UIA 宿主窗口暴露边界复测（2026-09-22）
+
+- 继续使用 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter`、分支 `codex/ui-finesse-round2`；当前 `0157ace6` 无生产代码变更。隔离 runner 的 XAML/Core/Worker/Playnite source/WPF 门禁为 `24/24`、`125/125`、`355/355`、`111`、`101`，Release `0 error / 2` 条既有 warning。
+- 真实 Playnite 日志证明插件加载及主窗体创建，但 PID `39900` 的 `MainWindowHandle=0`；Win32 `EnumWindows` 和按 PID UIA 查找均为 `0`。没有生成 `summary.json`，所以不能宣称 UIA/键盘/读屏/Controlled host 通过，也不能把当前结果归咎于 GameSaveCenter 侧栏。
+- `artifacts/ui-host-audit-r23-04-uia-debug-20260922` 只作为 `EmbeddedPlaynite` 结构/布局/滚动证据保留；单屏 Q24-03、最终 presented frame、ETW、宿主性能、Demo 原目录和 Fusion/Playnite Desktop 版本边界不变。profile、测试临时目录和未引用构建缓存已清理。
+- 下一步：先寻找能稳定暴露 Playnite 主窗体的隔离桌面会话；仍不可用时转 R23-05 独立几何小批量，不把离屏/代理数据写成真实帧性能。
+
 ## 第三轮 R23-04 UIA/Controlled host 复测（2026-09-22）
 
 - 继续沿用 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter` 和 `codex/ui-finesse-round2`；当前 `f457a7a0` 无生产代码变更。真实 Playnite 使用隔离 profile/合成空库加载当前包，日志确认插件已加载，嵌入式证据绑定 `f457a7a0`。

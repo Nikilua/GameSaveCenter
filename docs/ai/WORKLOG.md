@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 Round3 R23-04 UIA 宿主窗口暴露边界复测
+
+- 在 D 盘隔离 workspace、合成空库和真实 Playnite 上重跑 `real-host-audit.ps1`；当前 `0157ace6` 的 XAML/Core/Worker/Playnite source/WPF 门禁为 `24/24`、`125/125`、`355/355`、`111`、`101`，Release `0 error / 2` 条既有 `CS8602` warning。
+- Playnite 日志有插件加载和主窗体创建事件，但进程 PID `39900` 的 `MainWindowHandle=0`；Win32 顶层窗口枚举、按 PID UIA 元素枚举均为空。侧栏定位约 90 秒超时、没有 `summary.json`，runner 正确以 partial 结束。
+- 没有新增生产代码，也没有把 `EmbeddedPlaynite` 受控输出写成 UIA/键盘/读屏/Presented frame 通过；隔离 profile、测试目录和未引用构建缓存已清理，当前 debug 审计输出因证据引用保留。单屏、ETW、Demo 原目录不可用和宿主性能边界继续记录。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260922.md`。下一可执行项：寻找可稳定暴露窗口的宿主会话；若仍阻塞，推进 R23-05 几何小批量。
+
 ## 2026-09-22 Round3 R23-04 UIA/Controlled host 复测
 
 - 按 R23-04 真实账本和 Demo-first/WPF 质量门禁复测，没有新增生产代码；使用 `f457a7a0` 在 D 盘隔离 workspace、合成空库和真实 `D:\software\Playnite\Playnite.DesktopApp.exe` 启动当前包。
