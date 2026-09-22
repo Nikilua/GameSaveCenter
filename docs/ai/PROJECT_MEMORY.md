@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-01 任务阶段可读定向复核（2026-09-24）
+
+- 复用 `4e7ac33a` 的 TaskCoordinator、TaskStageResolver、StageMessage 和 SQLite stage_message 迁移，没有新增生产代码；Worker 相关套件 `16/16`、Playnite `R15TaskStageTests 2/2` 通过。
+- 阶段消息继续独立于终态错误，未知总量显示 `—`，旧库空 stage_message 可读；既有 Task 截图只证明阶段列/未知阶段负例的 offscreen 布局。
+- 当前 Release XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462`；真实宿主阶段事件、任务历史重启、DPI/UIA/IME、presented frame、ETW 和宿主性能未验。下一项 R15-02。
+
+证据为 `R15-01-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-08 来源规则试运行定向复核（2026-09-24）
 
 - 复用 `89141528` 的来源 DTO、匹配器、IPC 和 Worker 预算/取消链，没有新增生产代码；Worker `MediaSyncServiceTests 20/20` 与 Playnite `R14SourceRulePreviewTests 1/1` 通过。

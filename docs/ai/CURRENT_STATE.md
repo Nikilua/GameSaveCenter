@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R15-01 任务阶段可读定向复核（2026-09-24）
+
+- 本批没有生产代码变更；当前 `9a63e7e2` 的 Worker `TaskCoordinatorFailureTests` + `TaskQueryPersistenceTests` 合计 `16/16`、Playnite `R15TaskStageTests 2/2` 通过，覆盖阶段写入/迁移/查询、可读阶段映射、未知进度和终态错误分离。
+- 当前 Release 为 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；既有 `Task-1600x900` 仅作阶段列与未知阶段负例的 offscreen 视觉证据。
+- 真实宿主阶段事件全覆盖、真实任务历史、Playnite/UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，沿用恢复生产基线。下一项为 `R15-02`。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-08 来源规则试运行定向复核（2026-09-24）
 
 - 本批没有生产代码变更；当前 `6d426f6e` 的 Worker `MediaSyncServiceTests 20/20`、Playnite `R14SourceRulePreviewTests 1/1` 通过，覆盖命中/排除原因、扫描预算截断、只读不入库/不移动和 UI/IPC/取消契约。
