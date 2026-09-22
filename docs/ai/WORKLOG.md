@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R14-04 撤销边界定向复核
+
+- 本批没有生产代码变更，复用现有撤销链；隔离 Worker `MediaSyncServiceTests 20/20` 通过。正常撤销覆盖归档副本恢复，人工收藏/备注变化负例为 `UndoneWithConflicts`，后来决定保留且不重建 Inbox 副本。
+- 合并主分支 Release 构建复核为 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过；source/XAML/diff 门禁通过。
+- 仅使用合成/fake/隔离 SQLite/目录，真实 Playnite/package-host、RenderHarness 新呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R14-05。
+
 ## 2026-09-23 Round3 R14-03 部分成功处理定向复核
 
 - 复用 `aef251b1` 的 Worker 逐项 best-effort、`MediaInboxBatchFailures` 和 `RetryFailedMediaInboxBatchCommand`，本批没有生产代码变更；补齐 Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4` 与 `MediaWindowAnchorContractTests 10/10`。
