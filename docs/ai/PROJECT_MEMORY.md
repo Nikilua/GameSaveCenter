@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-01 本地镜像时间摘要校正（2026-09-22）
+
+- `b45e31db` 只修复一个真实残余入口：Worker `LocalMirrorService.StatusAsync` 不再把 `LastSyncDisplay` 固定日期嵌入 `Message`；维护页紧凑镜像卡片改绑 `LastSyncRelativeDisplay`，完整时间进入 Tooltip/Automation HelpText。既有同步命令、取消/错误、只复制校验和镜像多余文件保护保持。
+- 合成 marker 行为 `LocalMirrorServiceTests 6/6`、R22 时间行为 `30/30`；Release XAML `24/24`、0 errors/2 条既有 CS8602；clean shell/full RenderHarness 绑定当前提交，浅深主题目标维护页无本批新增问题，但全报告仍受既有 Overview/Settings/Task/Save 基线失败影响。
+- 仅使用隔离目录、fake 和离屏 logical DIP；真实 Playnite/UIA/读屏、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R22-01-LOCAL-MIRROR-TIME-20260922.md`。下一项回到 R23-04 UIA/Controlled host，阻塞时继续独立 Q/R 小批量。
+
 ## 第三轮 R13/R14 定向复核与视觉夹具校正（2026-09-22）
 
 - `8a9a052e` 仅扩展 `FakeDashboardData` 的合成 `MediaDuplicateInspection`、`MediaSourcePreview` 和清空态复位，让已有生产 XAML 的正向列表有可见样本；没有改业务服务、DTO、命令或 Binding。

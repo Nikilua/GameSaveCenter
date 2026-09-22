@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 Round3 R22-01 本地镜像时间摘要校正
+
+- 先查已有 `LocalMirrorStatusDto` 时间投影和 Maintenance 两处镜像状态入口；本批复用 `LastSyncRelativeDisplay`/`LastSyncFullDisplay`，没有新增 DTO、服务、命令或存储字段。
+- `b45e31db` 将 Worker `Message` 中的旧 `LastSyncDisplay` 改为相对时间，维护页紧凑镜像行直接绑定相对时间并提供完整时间 HelpText；只复制/校验、镜像多余文件不删除、取消/错误和滚动语义未改。
+- `LocalMirrorServiceTests 6/6`、`R22TimeDisplayBehaviorTests 30/30`；Release solution XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:699 CS8602`；clean shellqa 和全量 RenderHarness 绑定 `b45e31db`，Maintenance Light/Dark 目标尺寸无本批新增问题。全量报告仍因 Overview/Settings/Task/Save 既有基线失败，未宣称全局 render-qa 通过。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R22-01-LOCAL-MIRROR-TIME-20260922.md`。只使用合成 marker、fake 和隔离目录；真实 Playnite/UIA/读屏、OS 输入/IME、DPI/跨屏、呈现帧、ETW/宿主性能未验；Demo 原目录不可用。下一可执行任务：R23-04 UIA/Controlled host，若环境继续阻塞则推进其他独立 Q/R 小批量。
+
 ## 2026-09-22 Round3 R13/R14 定向复核与视觉夹具校正
 
 - 先按已有能力补跑现有夹具：Core `40/40`、Worker `32/32`、Playnite R13/R14 `19/19`；未接触真实网络、存档、媒体或云端。
