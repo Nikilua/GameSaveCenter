@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-24 R15-02 取消过程展示定向复核：本批没有生产代码变更；当前 `c879cf43` 的 Worker 取消套件 `16/16`、Playnite `R15TaskCancellationTests + R15TaskStageTests + R06TaskProgressBehaviorTests 8/8` 通过，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。覆盖 `Requested → Finalizing → Cancelled`、重复取消幂等、完成后晚到取消、成功/取消终态和未知进度；`Task-1600x900` 仅为合成“已取消”终态证据。真实长任务取消、Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R15-03 任务详情时间线。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-02-TARGETED-RECHECK-20260924.md`。
+
 > 2026-09-24 R15-01 任务阶段可读定向复核：本批没有生产代码变更；当前 `9a63e7e2` 的 Worker `TaskCoordinatorFailureTests` + `TaskQueryPersistenceTests` 合计 `16/16`、Playnite `R15TaskStageTests 2/2` 通过，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。阶段消息与终态错误保持分离，未知总量不伪造百分比；`Task-1600x900` 仅为合成 offscreen 阶段列/未知阶段负例证据。真实宿主阶段事件、任务历史、DPI/UIA/IME、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R15-02 取消过程展示。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TARGETED-RECHECK-20260924.md`。

@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-02 取消过程展示定向复核（2026-09-24）
+
+- 复用 `9c8241fb` 的取消 IPC、TaskCoordinator、`cancellation_state` 迁移和 Task Center 状态显示，没有新增生产代码；Worker 套件 `16/16`、Playnite 取消/进度/阶段套件 `8/8` 通过。
+- `Requested → Finalizing → Cancelled`、重复取消幂等、完成后晚到取消、成功/取消终态分离和选中任务滚动锚点有受控覆盖；截图只显示合成“已取消”终态，不证明过渡帧。
+- 当前 Release XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462`；真实长任务、Playnite/UIA/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R15-03。
+
+证据为 `R15-02-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R15-01 任务阶段可读定向复核（2026-09-24）
 
 - 复用 `4e7ac33a` 的 TaskCoordinator、TaskStageResolver、StageMessage 和 SQLite stage_message 迁移，没有新增生产代码；Worker 相关套件 `16/16`、Playnite `R15TaskStageTests 2/2` 通过。
