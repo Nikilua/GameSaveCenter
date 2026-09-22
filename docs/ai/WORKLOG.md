@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R17-03 检查进度预算定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`e0b5cd15` 上复用 `87473bc3` 的健康巡检进度实现，没有新增生产代码。
+- Worker `HealthInspectionServiceTests 12/12`；Playnite R17 合并回归 `10/10`，其中 R17-03 `3/3`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证游标恢复、范围/预算/延后摘要、游戏运行和操作锁门禁、候选先持久化、取消不伪装整库完成、失败分类、最近成功/完成和下轮计划；只用合成/fake/隔离 SQLite/目录，没有真实配置、存档、媒体、云端或诊断写入。真实宿主和呈现仍待验，Demo 原目录不可用。
+
+证据：[R17-03 检查进度预算定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R17-03-INSPECTION-PROGRESS-BUDGET-RECHECK-20260923.md)。下一可执行任务：`R17-04 保留预览对比`。
+
 ## 2026-09-23 Round3 R17-02 诊断包预览定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`837528bc` 上复用 `2b6e9051` 的诊断包预览实现，没有新增生产代码。
