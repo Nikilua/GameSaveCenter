@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R17-07 检查项一键定位定向复核（2026-09-23）
+
+- `280c839e` 只记录 `e8d581c6` 现有检查项导航的复测，没有新增生产代码；健康诊断按稳定 `PlayniteId + BackupId` 精确路由，历史标题前缀兼容，缺失版本不选邻居且无版本身份不回落到失败任务。
+- Worker `18/18`（迁移 4、健康巡检 12、Finding 持久化 2）；Playnite `FindingNavigationResolverTests 11/11`、完整 R17 `15/15`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成 DTO、fake 服务、隔离 SQLite 和临时目录；未验真实宿主、Explorer/权限、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R17-08 维护报告可读性`，先盘点报告 DTO/导出服务、摘要分组、时间/计数一致性和脱敏负例。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R17-07-FINDING-NAVIGATION-RECHECK-20260923.md`。
+
 ## 第三轮 R17-06 存储分析导航定向复核（2026-09-23）
 
 - `1077a7ee` 只记录 `51cae6b9` 现有存储分析能力的复测，没有新增生产代码；维护卡片区分逻辑索引体积、备份目录实测和卷剩余，失联路径保留逻辑体积并禁止按 0 解释。
