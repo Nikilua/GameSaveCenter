@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R17-05 隔离账本入口定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d01ab7ea` 上复用 `3002a8dc` 的隔离账本入口，没有新增生产代码。
+- Worker `RetentionQuarantineRecoveryTests 5/5`；Playnite R17 合并 `12/12`，隔离账本源码/绑定 `2/2`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证分页总量、原/隔离路径、完整 Tooltip、EntryId 定向恢复、移动中断恢复、已知隔离文件清理和冲突停止；只用合成/fake/隔离 SQLite，没有真实配置、存档、媒体、云端或诊断写入。真实宿主和呈现仍待验，Demo 原目录不可用。
+
+证据：[R17-05 隔离账本入口定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R17-05-QUARANTINE-LEDGER-RECHECK-20260923.md)。下一可执行任务：`R17-06 存储分析导航`。
+
 ## 2026-09-23 Round3 R17-04 保留预览对比定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`503c2119` 上复用 `3c73b498` 的保留预览实现，没有新增生产代码。
