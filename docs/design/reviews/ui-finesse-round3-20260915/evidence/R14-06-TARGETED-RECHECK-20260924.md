@@ -3,7 +3,7 @@
 日期：2026-09-24
 工作区：`D:\\workplace\\github\\GameSaveCenter`
 分支：`codex/ui-finesse-round2`
-当前复核代码身份：`a5e55638`
+当前复核代码身份：`89f07445`
 实现提交：`cfbb1279`（本批没有生产代码变更）
 
 ## 结论
@@ -15,7 +15,7 @@ R14-06 已按受控实现和定向行为结果收口为“已满足，待环境�
 - `GamePickerViewModelTests 22/22` 通过。新增 `SameNameItemsRemainDistinctAndSelectionUsesPlayniteId`：两个显示名均为“同名游戏”的 DTO 产生不同 `IdentityDisplay`，并以 `same-name-id-b` 作为 preferred ID 时仍选中第二个对象；已有过滤隐藏选择和“显示当前游戏”行为继续通过。
 - `R14ClassificationSelectionTests 4/4` 通过。目标下拉、批量归类、预览覆盖和重新归类入口继续使用 `SelectedItem` 或 `TargetPlayniteId`，不使用 `SelectedIndex`；模板字段包含图标、平台和稳定身份。
 - `GamePickerKeyboardBehaviorTests 6/6` 通过，保留现有 Enter、无结果、输入法组合态和方向键行为门禁。
-- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot artifacts/gsc-b/r14-06-recheck-20260924` 通过；XAML `24/24`、解决方案 `0 error/0 warning`，Playnite 目标 `net462`。本批只新增测试夹具，既有 `MediaCenterView.xaml.cs:706` nullable 边界未改。
+- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot artifacts/gsc-b/r14-06-recheck-20260924` 通过；XAML `24/24`、解决方案 `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite 目标 `net462`。本批只新增测试夹具，既有 nullable 边界未改。
 - `python scripts/validate-source.py`、`scripts/check-xaml.ps1 -ProjectRoot .` 和 `git diff --check` 在本批文档更新后通过。
 
 ## 受控视觉证据

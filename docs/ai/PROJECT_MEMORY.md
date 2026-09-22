@@ -1,9 +1,17 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-07 媒体详情浏览定向复核（2026-09-24）
+
+- 复用 `c17d9bc7` 的 `SelectedMedia`、稳定 `MediaId`、当前已加载媒体窗口、`SelectionAnchorResolver`、缩略图 generation/cancellation 和视频失败回退；没有新增生产代码。
+- 当前提交重新生成身份一致的隔离产物后，选定 Playnite 套件 `46/46` 通过；XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462` 编译通过。既有截图只作详情入口/列表视觉证据，未证明打开后的详情面板。
+- 不把当前窗口导航写成跨页导航，不把缩略图/源契约测试写成真实编解码、UIA/焦点、DPI/跨屏、最终呈现或宿主性能通过。只使用合成/fake/隔离路径；下一项 R14-08。
+
+证据为 `R14-07-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-06 批量目标防误选定向复核（2026-09-24）
 
 - 本批无生产代码变更，复用 `cfbb1279` 的目标显示与过滤保护；新增真实行为夹具确认两个同名对象的 `IdentityDisplay` 不同，并按 preferred `PlayniteId` 选中指定对象。
-- `GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过；隔离 Release XAML `24/24`、solution `0 error/0 warning`、Playnite `net462` 编译通过。既有 `Shell-Media-1040x700` 只作 offscreen 图标/平台/稳定 ID 视觉证据。
+- `GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过；隔离 Release XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462` 编译通过。既有 `Shell-Media-1040x700` 只作 offscreen 图标/平台/稳定 ID 视觉证据。
 - 真实 Playnite/UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和超大真实媒体库未验；只使用合成/fake/隔离 testhost，不触碰真实存档、媒体或云端。下一项 R14-07。
 
 证据为 `R14-06-TARGETED-RECHECK-20260924.md`。

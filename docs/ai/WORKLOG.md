@@ -1,9 +1,17 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Round3 R14-07 媒体详情浏览定向复核
+
+- 本批没有生产代码变更；修正一次隔离产物身份不一致后，从当前 `89f07445` 重新构建并复跑 R14-07 相关 Playnite 套件，最终 `46/46` 通过。
+- 覆盖当前已加载窗口上一项/下一项、MediaId 锚点、`ScrollIntoView`/焦点回归契约、截图实际尺寸、缺失/失败/取消和 generation 边界；Release XAML `24/24`、solution `0 error/2` 条既有 nullable warning、Playnite `net462` 编译通过。
+- 既有 `Media-1040x700-tab1` 只显示媒体网格和“查看媒体详情”入口，不把未打开详情截图写成详情呈现通过。真实 Playnite/UIA/读屏/IME、DPI/跨屏、视频编解码、presented frame、ETW 和宿主性能未验。Demo 原目录不可用，下一项 R14-08。
+
+证据：[R14-07 媒体详情浏览定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R14-07-TARGETED-RECHECK-20260924.md)。
+
 ## 2026-09-24 Round3 R14-06 批量目标防误选定向复核
 
 - 本批没有生产代码变更；复用 `cfbb1279` 的 IconPath、IdentityDisplay、现有选框过滤和媒体目标稳定绑定，新增同名目标按 Playnite ID 区分并按 preferred ID 选中的行为夹具。
-- `GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过；隔离 Release 构建 XAML `24/24`、solution `0 error/0 warning`、Playnite `net462` 通过。
+- `GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过；隔离 Release 构建 XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462` 通过。
 - 既有 `Shell-Media-1040x700` 仅人工确认合成 offscreen 选框/目标卡片显示图标、平台和稳定 ID；不把截图写成同名下拉、真实 Playnite、DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能通过。Demo 原目录不可用，下一项 R14-07。
 
 证据：[R14-06 目标防误选定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGETED-RECHECK-20260924.md)。
