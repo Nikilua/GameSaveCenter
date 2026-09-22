@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R16-07 配置导入预览定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`01e83d8a` 上复用 `451195ad` 的导入预览实现，没有新增生产代码。
+- R16 行为 `4/4`、源码 `1/1`、既有 `PortableSettingsTests 10/10`，合计 `15/15`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证预览不改草稿、确认后应用、未知字段、旧架构/坏值、异常回滚、凭据和设备身份边界；只用合成 JSON/detached settings/隔离目录，没有真实用户配置、存档、媒体、云端或诊断写入。真实宿主和最终呈现仍待验，Demo 原目录不可用。
+
+证据：[R16-07 配置导入预览定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R16-07-SETTINGS-IMPORT-PREVIEW-RECHECK-20260923.md)。下一可执行任务：`R16-08 保存冲突处理`。
+
 ## 2026-09-23 Round3 R16-06 生效条件说明定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`9cef273b` 上复用 `83e7c745` 的生效条件提示和 `EndEdit → NotifyVisualSettingsChanged → settings.update → WorkerOptions.Apply/SyncPlan` 链路，没有新增生产代码。

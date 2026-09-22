@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R16-07 配置导入预览定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`01e83d8a` 上复用 `451195ad` 的 portable settings v1、detached 预览、确认后应用、未知字段/凭据/设备身份保护和异常回滚。
+- R16-07 行为 `4/4`、源码 `1/1`、既有 `PortableSettingsTests 10/10`，合计 `15/15`；隔离 Release solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 保留游戏选框、滚动条、命令绑定、保存/取消、错误/取消/恢复保护和 net462；未验真实 Playnite/package-host 文件选择器/MessageBox/保存取消、DPI/UIA/IME、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R16-07-SETTINGS-IMPORT-PREVIEW-RECHECK-20260923.md`。下一可执行任务：`R16-08 保存冲突处理`。
+
 ## 第三轮 R16-06 生效条件说明定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`9cef273b` 上复用 `83e7c745` 的四类生效提示与真实消费链标注。
