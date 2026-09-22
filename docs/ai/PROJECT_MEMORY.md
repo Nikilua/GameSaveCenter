@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R16-06 生效条件说明定向复核（2026-09-23）
+
+- `9cef273b` 只记录 `83e7c745` 现有生效条件提示/消费链实现的复测，没有新增生产代码；外观即时预览、下一任务、下一轮轮询/健康计划和下一次 Playnite 启动分别标注，普通设置没有被笼统写成需重启。
+- `R16SettingsEffectSourceTests 2/2` 与 R16-05 路径回归 `6/6`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。源测试只证明文案/链路/负例契约，不证明真实宿主时序。
+- 未验真实 Playnite/package-host 保存后呈现、Worker 重启/轮询、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录；测试未写真实存档、媒体、云端或用户配置。
+- 下一项 `R16-07 配置导入预览`，先核对导入报告、版本/未知字段、凭据和失败回退边界。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-RECHECK-20260923.md`。
+
 ## 第三轮 R16-05 路径编辑一致定向复核（2026-09-23）
 
 - `3121d337` 只记录 `955dc52e` 现有路径编辑实现的复测，没有新增生产代码；六个本地工具/目录字段共用当前字段选择、浏览、单字段探测、严格打开和复制入口，Rclone 远端目标不进入本地动作。
