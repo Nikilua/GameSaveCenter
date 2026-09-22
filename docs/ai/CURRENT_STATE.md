@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R13/R14 定向复核与视觉夹具校正（已满足，待环境验证，2026-09-22）
+
+- `8a9a052e` 只补隔离 RenderHarness 的合成重复组/来源试运行 DTO 与清空态复位，没有改生产服务、DTO、命令或绑定；当前 R13/R14 定向 Core `40/40`、Worker `32/32`、Playnite `19/19`。
+- clean-tree RenderHarness `8a9a052e` 报告为 Light/Dark、offscreen logical DIP `1.00`；Maintenance 无 R13 专属问题，Media 重复组为 `2` 组/组内 `4` 项，来源试运行 `4` 项。全报告仍因既有 Overview/Settings/Task/Save 基线为 `FAILED`，没有写成全局 render-qa 通过。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R13-R14-TARGETED-RECHECK-20260922.md`。真实网络/媒体/Playnite UIA、物理 DPI/跨屏、presented frame、ETW 和宿主性能仍未验；下一可执行项为 R23-05 独立几何/性能边界或可枚举 Playnite 宿主会话。
+
 ## 第三轮 R23-04 UIA 宿主窗口暴露边界复测（已满足，待宿主环境验证，2026-09-22）
 
 - 当前 `0157ace6` 的完整隔离 runner 先通过 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`，Release `0 error`，仅既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning；真实 `D:\software\Playnite\Playnite.DesktopApp.exe` 日志确认插件加载并记录主窗体创建。

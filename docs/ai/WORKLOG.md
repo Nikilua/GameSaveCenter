@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 Round3 R13/R14 定向复核与视觉夹具校正
+
+- 先按已有能力补跑现有夹具：Core `40/40`、Worker `32/32`、Playnite R13/R14 `19/19`；未接触真实网络、存档、媒体或云端。
+- RenderHarness 首轮发现 FakeDashboardData 没有生产 XAML 已绑定的重复组/来源试运行 DTO，补 `8a9a052e` 后 clean-tree 报告绑定该身份：重复组 `2` 组、组内 `4` 项、来源试运行 `4` 项；Maintenance 无 R13 专属问题，双主题代表图已抽查。
+- 全报告仍因既有 Overview/Settings/Task/Save 基线失败，保持真实边界，不把受控图写成全局 render-qa 或宿主呈现通过。证据：`design/reviews/ui-finesse-round3-20260915/evidence/R13-R14-TARGETED-RECHECK-20260922.md`；下一项 R23-05 独立几何/性能边界或可枚举宿主复测。
+
 ## 2026-09-22 Round3 R23-04 UIA 宿主窗口暴露边界复测
 
 - 在 D 盘隔离 workspace、合成空库和真实 Playnite 上重跑 `real-host-audit.ps1`；当前 `0157ace6` 的 XAML/Core/Worker/Playnite source/WPF 门禁为 `24/24`、`125/125`、`355/355`、`111`、`101`，Release `0 error / 2` 条既有 `CS8602` warning。
