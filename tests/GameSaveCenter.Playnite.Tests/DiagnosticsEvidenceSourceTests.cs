@@ -40,6 +40,9 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("SidebarAutomationFound", hostScript);
         Assert.Contains("SkipInstallTests", hostScript);
         Assert.Contains("skipped-by-explicit-audit-switch", hostScript);
+        Assert.Contains("Initialize-IsolatedPlayniteConfig", hostScript);
+        Assert.Contains("Backup\\config.json", hostScript);
+        Assert.Contains("restored-from-isolated-backup", hostScript);
         Assert.Contains("host-startup-blocker.json", hostScript);
         Assert.Contains("cef-startup-access-denied-before-main-window", hostScript);
         Assert.Contains("CountsAsVisualPass = $false", hostScript);

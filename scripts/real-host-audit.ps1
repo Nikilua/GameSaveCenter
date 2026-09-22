@@ -133,6 +133,66 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
         Scope = 'isolated-audit-process'
     }
 }
+
+function Initialize-IsolatedPlayniteConfig {
+    if ([string]::IsNullOrWhiteSpace($UserDataDir)) {
+        return
+    }
+
+    $configPath = Join-Path $UserDataDir 'config.json'
+    if (Test-Path -LiteralPath $configPath -PathType Leaf) {
+        $runnerMetadata.IsolatedProfileConfig = 'pre-existing'
+        return
+    }
+
+    $bootstrapProcess = $null
+    $backupConfigPath = Join-Path $UserDataDir 'Backup\config.json'
+    try {
+        Write-Host '==> Initializing isolated Playnite profile configuration' -ForegroundColor DarkCyan
+        $bootstrapProcess = Start-Process -FilePath $PlayniteExecutable `
+            -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
+            -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir) `
+            -PassThru
+        $deadline = (Get-Date).AddSeconds(45)
+        while (-not (Test-Path -LiteralPath $configPath -PathType Leaf) -and
+               -not (Test-Path -LiteralPath $backupConfigPath -PathType Leaf) -and
+               (Get-Date) -lt $deadline) {
+            Start-Sleep -Seconds 2
+            try { $bootstrapProcess.Refresh() } catch { }
+            if ($bootstrapProcess.HasExited -and (Get-Date) -lt $deadline) {
+                Start-Sleep -Seconds 1
+            }
+        }
+
+        if (Test-Path -LiteralPath $configPath -PathType Leaf) {
+            $runnerMetadata.IsolatedProfileConfig = 'created-by-bootstrap'
+            return
+        }
+
+        if (Test-Path -LiteralPath $backupConfigPath -PathType Leaf) {
+            Copy-Item -LiteralPath $backupConfigPath -Destination $configPath -Force
+            $runnerMetadata.IsolatedProfileConfig = 'restored-from-isolated-backup'
+            return
+        }
+
+        throw "Playnite did not create an isolated config or backup within 45 seconds: $UserDataDir"
+    }
+    finally {
+        if ($null -ne $bootstrapProcess) {
+            try { $bootstrapProcess.Refresh() } catch { }
+            if (-not $bootstrapProcess.HasExited) {
+                try { $bootstrapProcess.CloseMainWindow() | Out-Null } catch { }
+                Start-Sleep -Seconds 2
+                try { $bootstrapProcess.Refresh() } catch { }
+                if (-not $bootstrapProcess.HasExited) {
+                    Stop-Process -Id $bootstrapProcess.Id -Force -ErrorAction SilentlyContinue
+                }
+            }
+        }
+    }
+}
+
+Initialize-IsolatedPlayniteConfig
 $runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
 $startedPlayniteProcess = $null
