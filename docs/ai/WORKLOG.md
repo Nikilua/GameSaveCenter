@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 概览云端队列时间（第四十八子批次）
+
+- 只核对实际生产 `OverviewView.xaml` 绑定，确认上下文胶囊和云端队列卡片原来都把 `Snapshot.CloudTransfers.SummaryDisplay` 当 Tooltip；没有把报告、复制列或日志的完整时间入口混入本批。
+- `74d3dcdc` 复用 `CloudTransferSummaryDto.NextAttemptUtc` 与 `TimeDisplayFormatter`，新增 `SummaryRelativeDisplay`/`SummaryFullDisplay`；旧 `SummaryDisplay` 保留兼容。概览正文仍由状态/数量字段组成，Tooltip/Automation HelpText 提供完整本地/UTC；命令、筛选、分页、选中、取消/错误和队列安全语义未改。
+- 提交后 `R22TimeDisplayBehaviorTests 28/28`；隔离 Release XAML `24/24`，Playnite `net462`/Tests `net472` 构建 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；`validate-source.py`、diff check 通过。当前 D 盘没有 `scripts/validate_wpf_ui.py`，未将 WPF 静态审查写成通过。
+- 仅使用合成 `CloudTransferSummaryDto` 与隔离构建/测试目录，未触碰真实存档、媒体、云端或外发诊断；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+- 证据：`evidence/R22-01-OVERVIEW-CLOUD-SUMMARY-TIME-20260922.md`。下一可执行项：继续按实际绑定盘点 `DashboardViewModel`/Contracts 的 stale/缓存时间入口。
+
 ## 2026-09-22 R22-01 Trainer 版本发布时间（第四十七子批次）
 
 - 先核对 `TrainerReleaseDto.PublishedUtc` 和 `TrainerCenterView` 的两个真实绑定；确认不是缺失功能断言，而是仍在使用旧本地日期投影。
