@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R18-01 连续输入基准定向复核（2026-09-23）
+
+- `0173364e` 只记录 `10bc5789` 现有连续输入基准的复测，没有新增生产代码；2,000/10,000 项各 30 次查询、粘贴、删除和已提交中文查询通过，最终防抖刷新各 1 次。
+- R18 基准 `1/1`；当前 `GamePicker|DebouncedRefreshTests` 宽筛选 `50/50`（含 R18-02 受控窗口夹具及其他相邻回归）；本次 p95/max 为 `2.350/3.825 ms`、`7.297/9.657 ms`，过滤评估 `60,000/300,000`，托管堆代理峰值 `303,024/1,448,112 bytes`。
+- 隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源校验、XAML `24/24`、diff、WPF `0/28/162` 通过；测试只用合成内存列表和受控 testhost，未验真实宿主、Windows IME 候选窗口、ETW、presented frame、宿主性能和 Demo 原目录。
+- 下一项 `R18-02 真实 Dispatcher 基准`，分开记录 VM 数据完成和受控窗口可见反馈。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R18-01-CONTINUOUS-INPUT-RECHECK-20260923.md`。
+
 ## 第三轮 R17-08 维护报告可读性定向复核（2026-09-23）
 
 - `fc8dffa5` 只记录 `59d4190b` 现有维护报告能力的复测，没有新增生产代码；报告沿用原采集、IPC、复制/导出链，固定身份/摘要/待处理/已验证/未知分组和同一生成时间，统一脱敏 URL 参数与 Windows 用户路径。

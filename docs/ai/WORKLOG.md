@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R18-01 连续输入基准定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`0173364e` 上复用 `10bc5789` 的 GamePicker 连续输入基准，没有新增生产代码。
+- `R18ContinuousInputBenchmarkTests 1/1`；当前 `GamePicker|DebouncedRefreshTests` 宽筛选 `50/50`，包含已存在的 R18-02 受控窗口类及相邻回归；2,000/10,000 项 p95/max `2.350/3.825 ms`、`7.297/9.657 ms`，过滤评估 `60,000/300,000`，托管堆代理峰值 `303,024/1,448,112 bytes`。Release `0 errors/2 warnings` 均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证粘贴/删除/已提交中文查询结果、20ms 防抖最终刷新次数和大库同步过滤；只用合成内存列表，没有真实配置、存档、媒体、云端或诊断写入。真实 Playnite、Windows IME 候选窗口和呈现仍待验，Demo 原目录不可用。
+
+证据：[R18-01 连续输入基准定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R18-01-CONTINUOUS-INPUT-RECHECK-20260923.md)。下一可执行任务：`R18-02 真实 Dispatcher 基准`。
+
 ## 2026-09-23 Round3 R17-08 维护报告可读性定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`fc8dffa5` 上复用 `59d4190b` 的维护报告能力，没有新增生产代码；按当前测试实际数量校正旧摘要。
