@@ -1,3 +1,4 @@
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
 
@@ -57,11 +58,25 @@ public sealed class FilterConditionSummaryTests
     [Fact]
     public void StaleDetailKeepsBothLastSuccessAndRefreshFailureReason()
     {
+        var lastSuccessUtc = new System.DateTime(2026, 9, 20, 8, 30, 0, System.DateTimeKind.Utc);
+        var nowUtc = new System.DateTime(2026, 9, 22, 8, 30, 0, System.DateTimeKind.Utc);
         var detail = FilterConditionSummary.StaleStateDetail(
-            new System.DateTime(2026, 9, 20, 8, 30, 0, System.DateTimeKind.Utc),
-            "Worker 当前离线");
+            lastSuccessUtc,
+            "Worker 当前离线",
+            nowUtc);
 
         Assert.Contains("上次成功读取：", detail);
+        Assert.Contains(TimeDisplayFormatter.Relative(lastSuccessUtc, nowUtc), detail);
+        Assert.Contains(TimeDisplayFormatter.Full(lastSuccessUtc), detail);
         Assert.Contains("本次刷新失败：Worker 当前离线", detail);
+    }
+
+    [Fact]
+    public void StaleDetailWithoutLastSuccessDoesNotInventAReadTime()
+    {
+        var detail = FilterConditionSummary.StaleStateDetail(null, "Worker 当前离线", new System.DateTime(2026, 9, 22, 8, 30, 0, System.DateTimeKind.Utc));
+
+        Assert.DoesNotContain("上次成功读取：", detail);
+        Assert.Equal("本次刷新失败：Worker 当前离线", detail);
     }
 }

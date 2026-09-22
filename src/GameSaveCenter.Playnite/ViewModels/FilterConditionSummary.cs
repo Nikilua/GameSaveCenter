@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.ViewModels;
 
@@ -41,10 +42,10 @@ public static class FilterConditionSummary
                 ? $"暂无符合当前筛选的云端传输记录。\n{activeSummary}"
                 : "暂无云端传输记录。\n刷新队列后会显示已加载的记录。";
 
-    public static string StaleStateDetail(DateTime? lastSuccessUtc, string errorMessage)
+    public static string StaleStateDetail(DateTime? lastSuccessUtc, string errorMessage, DateTime? nowUtc = null)
     {
         var lastSuccess = lastSuccessUtc.HasValue
-            ? $"上次成功读取：{lastSuccessUtc.Value.ToLocalTime():yyyy-MM-dd HH:mm}。"
+            ? $"上次成功读取：{TimeDisplayFormatter.Relative(lastSuccessUtc.Value, nowUtc ?? DateTime.UtcNow)}（{TimeDisplayFormatter.Full(lastSuccessUtc.Value)}）。"
             : string.Empty;
         return string.IsNullOrWhiteSpace(errorMessage)
             ? lastSuccess
