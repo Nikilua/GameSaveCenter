@@ -84,7 +84,11 @@ public static class Program
         (720, 640),
         (960, 640),
         (980, 640),
-        (1040, 700)
+        (1040, 700),
+        (1200, 720),
+        (1279, 720),
+        (1280, 720),
+        (1366, 768)
     };
 
     public static int Main(string[] args)
@@ -7345,23 +7349,35 @@ public static class Program
                 host.UpdateLayout();
 
                 var headerRow = shell.GetType().GetField("HeaderRow", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(shell) as RowDefinition;
+                var headerActionsRow = shell.GetType().GetField("HeaderActionsRow", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(shell) as RowDefinition;
                 var headerSurface = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderSurface");
+                var title = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderTitlePanel");
                 var actions = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderActionsPanel");
-                if (headerRow == null || headerSurface == null || actions == null)
+                if (headerRow == null || headerActionsRow == null || headerSurface == null || title == null || actions == null)
                     throw new InvalidOperationException("Production shell header probe elements are missing.");
 
-                if (windowW < 980 && headerRow.ActualHeight <= 68)
+                var compact = ResponsiveLayoutCoordinator.Calculate(windowW, windowH).IsCompactShellHeader;
+                if (compact != headerRow.Height.IsAuto)
+                    s_problems.Add($"Shell {windowW}x{windowH} header row state disagrees with the coordinator (compact={compact}, row={headerRow.Height}).");
+                if (compact != headerActionsRow.Height.IsAuto)
+                    s_problems.Add($"Shell {windowW}x{windowH} action row state disagrees with the coordinator (compact={compact}, row={headerActionsRow.Height}).");
+                if (compact && headerRow.ActualHeight <= 68)
                     s_problems.Add($"Shell {windowW}x{windowH} compact header did not grow beyond the original 68 DIP row.");
                 if (actions.Visibility == Visibility.Visible)
                 {
                     var actionsBounds = actions.TransformToAncestor(headerSurface).TransformBounds(new Rect(0, 0, actions.ActualWidth, actions.ActualHeight));
+                    var titleBounds = title.TransformToAncestor(headerSurface).TransformBounds(new Rect(0, 0, title.ActualWidth, title.ActualHeight));
                     if (actionsBounds.Left < -0.5 || actionsBounds.Right > headerSurface.ActualWidth + 0.5
                         || actionsBounds.Top < -0.5 || actionsBounds.Bottom > headerSurface.ActualHeight + 0.5)
                         s_problems.Add($"Shell {windowW}x{windowH} header actions exceed HeaderSurface bounds ({actionsBounds.Left:0.0}..{actionsBounds.Right:0.0}, {actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}/{headerSurface.ActualWidth:0.0}x{headerSurface.ActualHeight:0.0}).");
+                    if (compact && titleBounds.Bottom > actionsBounds.Top + 0.5)
+                        s_problems.Add($"Shell {windowW}x{windowH} compact title/actions overlap vertically (title={titleBounds.Top:0.0}..{titleBounds.Bottom:0.0}, actions={actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}).");
+                    if (!compact && titleBounds.Right > actionsBounds.Left + 0.5)
+                        s_problems.Add($"Shell {windowW}x{windowH} expanded title/actions overlap horizontally (title={titleBounds.Left:0.0}..{titleBounds.Right:0.0}, actions={actionsBounds.Left:0.0}..{actionsBounds.Right:0.0}).");
                 }
 
                 SavePng(host, Path.Combine(outputRoot, $"Shell-{windowW}x{windowH}.png"));
-                report.AppendLine($"  Shell {windowW}x{windowH} header={headerRow.ActualHeight:0.0} actions={actions.ActualWidth:0.0}x{actions.ActualHeight:0.0}");
+                report.AppendLine($"  Shell {windowW}x{windowH} compact={compact} header={headerRow.ActualHeight:0.0} actions={actions.ActualWidth:0.0}x{actions.ActualHeight:0.0}");
             }
             catch (Exception ex)
             {
