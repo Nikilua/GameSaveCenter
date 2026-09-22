@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-24 R21-05 当前身份复测：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一有效工作区，当前开发分支 `codex/ui-finesse-round2`；C 盘旧仓库与用户删除的 `src.zip` 均不存在。R21-05 实现已在 `380234e2`，本次只以 `1f69b803` 复测，不重复实现。实际 `R21DisabledHiddenBehaviorTests 2/2`，隔离 Release XAML `24/24`、Playnite `net462`、`0 error`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。下一可执行任务是 R23-04 正常可枚举 Playnite 主窗体/UIA 会话；若 CEF/窗口暴露仍阻塞，转依赖已满足的独立 Q/R 小批量。不绕过 ETW/系统跟踪拒绝，不把离屏/代理/AutomationPeer 结果写成真实宿主呈现或性能通过。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-TARGETED-RECHECK-20260924.md`。
+
 > 2026-09-24 R15-03 任务详情时间线定向复核：实现 `fe0c05a9` 已提供 `OccurredUtc`、UTC/本地双显示、缺失事件/时间未知和有界详情时间线；本批 `b6170ec9` 只新增乱序 UTC、同刻序号稳定排序、跨任务过滤行为测试。Worker `12/12`、Playnite 时间线/批处理/阶段/取消/进度套件 `15/15`，Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。既有 Task 截图没有打开时间线卡，不作时间线呈现证据；真实 Worker 重启历史、Playnite/UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用。下一项 R15-04 重复通知归并。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TARGETED-RECHECK-20260924.md`。

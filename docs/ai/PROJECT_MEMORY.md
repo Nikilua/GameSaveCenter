@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R21-05 禁用与隐藏区别当前复测（2026-09-24）
+
+- 当前 D 盘工作区为 `D:\workplace\github\GameSaveCenter`，实现沿用 `380234e2`，复测身份为 `1f69b803`；没有新增服务、DTO、命令或视觉体系，也没有改变游戏选框、滚动条、取消/错误/恢复保护或 `net462` 兼容。
+- 实际 `SaveCenterView`/共享上下文按钮/隔离 STA WindowHost 行为 `2/2`：隐藏分支不进入可见树和 Tab/焦点路径，说明文本保留 Name/HelpText；满足条件时同一命令恢复；禁用动作的 Automation Invoke 被拒绝且无副作用。
+- 当前隔离 Release 为 XAML `24/24`、Playnite `net462`、`0 error`，保留 `MediaCenterView.xaml.cs:706` 两条既有 CS8602 warning。真实宿主/UIA/读屏/IME、DPI/跨屏、呈现帧、ETW 和宿主性能未验；下一可执行项保留 R23-04 正常可枚举宿主会话。
+
+证据为 `R21-05-TARGETED-RECHECK-20260924.md`；初始实现证据为 `R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md`。
+
 ## 第三轮 R15-03 任务详情时间线定向复核（2026-09-24）
 
 - 复用 `fe0c05a9` 的 `TaskTimelineBuilder`、`TaskCoordinator`、`TaskEventBroadcaster` 和 Task Center 详情链；本批 `b6170ec9` 只补行为边界，不新增生产服务/DTO，也不改变选框、滚动条、命令绑定、取消/错误/恢复保护或 `net462` 路径。
