@@ -75,7 +75,7 @@ GameSaveCenter.RenderHarness.exe shellqa D:\gsc-r23-05-shellqa-clean-20260922
 
 Demo 原目录不可用，继续参考已恢复生产基线；本批没有读取或写入真实存档、删除真实媒体、写用户云端或外发诊断。游戏选框、滚动条系统、命令绑定、取消/错误语义、恢复保护、有限列表性能和 Playnite/net462 未改。
 
-下一可执行任务：推进 R23-06 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 仍按真实宿主边界推进，真实呈现帧仍需获得系统允许的 ETW/PresentMon 等价工具后另行复测。
+下一可执行任务：R23-06 当前候选安装与回退身份已完成，回到 R23-04 UIA/Controlled host runner UIA/summary 收口；真实呈现帧仍需获得系统允许的 ETW/PresentMon 等价工具后另行复测。
 
 ## 2026-09-23 当前身份复核
 

@@ -4,7 +4,7 @@
 
 - 在 `b5c7a6d4` 的干净隔离 RenderHarness 上重跑 `shellqa`，刷新 R23-05 与 R00-06 共用的 Media 页尾/表格几何事实；XAML `24/24`、solution `0 errors/2` 条既有 nullable warning。
 - Media `1040/1100/1366` 均保持 `gridTopGap=142 DIP`，footer/历史/次级动作可达。Rendering 代理当前样本：单次 `30` 回调/p95 `27.1ms`/最大 `87.4ms`，快速二次 `46`/`14.3ms`/`39.4ms`，无动画 `4`/`21.6ms`。
-- 代理数值只证明受控 WPF 回调与几何，不是 DWM/PresentMon/物理刷新率或 Playnite 宿主端到端性能；ETW 权限拒绝和真实 presented frame 边界保持。下一项仍是 R23-06 候选安装/回退身份核查，或正常 Playnite UIA 会话恢复。
+- 代理数值只证明受控 WPF 回调与几何，不是 DWM/PresentMon/物理刷新率或 Playnite 宿主端到端性能；ETW 权限拒绝和真实 presented frame 边界保持。R23-06 候选安装/回退已在上一批完成；下一项回到 R23-04 runner UIA/summary 收口，或等待正常 Playnite UIA 会话。
 
 ## 2026-09-23 Round3 R00/R01 媒体可达性修复与证据校正
 
