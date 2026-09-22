@@ -728,6 +728,9 @@
                    SnapsToDevicePixels="True"/>
     </DataTemplate>
 
+    <ui:ButtonContentTemplateSelector x:Key="GscWpfUiButtonContentTemplateSelector"
+                                      TextTemplate="{StaticResource GscWpfUiButtonTextTemplate}"/>
+
     <!-- Settings uses the same production palette as the workspace pages. Do not reuse
          AcrylicReferenceControls' Demo segment fill here: that legacy token is bright in
          the dark reference palette and becomes a gray slab in Playnite settings. -->
@@ -813,7 +816,8 @@
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="ContentTemplate" Value="{StaticResource GscWpfUiButtonTextTemplate}"/>
+        <Setter Property="ContentTemplate" Value="{x:Null}"/>
+        <Setter Property="ContentTemplateSelector" Value="{StaticResource GscWpfUiButtonContentTemplateSelector}"/>
         <Setter Property="ui:Button.CornerRadius" Value="14"/>
         <!-- Use the shared button glass surface for every existing ui:Button style. Pages already
              inherit this primitive, so the visual refresh is applied consistently without
@@ -902,6 +906,7 @@
                                  its ellipsis can work at narrow responsive widths. -->
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                               Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="Stretch"

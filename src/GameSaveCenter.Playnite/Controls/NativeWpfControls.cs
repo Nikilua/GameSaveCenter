@@ -159,6 +159,19 @@ namespace GameSaveCenter.Playnite.Controls
     }
 
     /// <summary>
+    /// Keeps the shared button text template for string content while allowing
+    /// production buttons that provide a real WPF visual tree (icon + label)
+    /// to render that tree instead of stringifying it.
+    /// </summary>
+    public sealed class ButtonContentTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate? TextTemplate { get; set; }
+
+        public override DataTemplate? SelectTemplate(object item, DependencyObject container)
+            => item is UIElement || item is FrameworkContentElement ? null : TextTemplate;
+    }
+
+    /// <summary>
     /// Page-local task feedback surface with a UI Automation feedback peer.
     /// The peer exposes terminal task feedback without taking keyboard focus.
     /// </summary>
