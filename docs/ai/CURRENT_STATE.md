@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R15-03 任务详情时间线定向复核（2026-09-24）
+
+- 当前实现 `fe0c05a9` 已提供任务时间线的 `OccurredUtc`、UTC/本地双显示、缺失事件/时间的未知语义、有限事件窗口和 `220 DIP` 详情滚动卡；本批 `b6170ec9` 只补乱序事件按 UTC、同刻按序号稳定排序及跨任务过滤行为测试，没有生产代码变更。
+- Worker `TaskCoordinatorFailureTests + TaskEventBroadcasterTests 12/12`、Playnite `R15TaskTimelineTests + TaskEventUiBatcherTests + R15TaskStageTests + R15TaskCancellationTests + R06TaskProgressBehaviorTests 15/15` 通过；当前 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。
+- 既有 Task 截图只显示列表/阶段/取消和详情当前阶段，没有打开时间线卡，不作时间线呈现证据。真实 Worker 重启历史、Playnite/UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，沿用恢复生产基线。下一项为 `R15-04`。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R15-02 取消过程展示定向复核（2026-09-24）
 
 - 本批没有生产代码变更；当前 `c879cf43` 的 Worker 取消套件 `16/16`、Playnite `R15TaskCancellationTests + R15TaskStageTests + R06TaskProgressBehaviorTests 8/8` 通过，覆盖取消状态迁移、重复请求、取消/完成竞争、未知进度和滚动锚点。

@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-03 任务详情时间线定向复核（2026-09-24）
+
+- 复用 `fe0c05a9` 的 `TaskTimelineBuilder`、`TaskCoordinator`、`TaskEventBroadcaster` 和 Task Center 详情链；本批 `b6170ec9` 只补行为边界，不新增生产服务/DTO，也不改变选框、滚动条、命令绑定、取消/错误/恢复保护或 `net462` 路径。
+- Worker `12/12`、Playnite 相关套件 `15/15` 通过；新增测试实际覆盖乱序事件按 UTC、同刻按序号稳定排序、跨任务过滤，已有测试覆盖无重试臆测与 legacy 无时间。
+- 截图没有打开时间线卡，因而不宣称时间线真实呈现；重启后历史、真实 Playnite、UIA/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验。下一项 R15-04。
+
+证据为 `R15-03-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R15-02 取消过程展示定向复核（2026-09-24）
 
 - 复用 `9c8241fb` 的取消 IPC、TaskCoordinator、`cancellation_state` 迁移和 Task Center 状态显示，没有新增生产代码；Worker 套件 `16/16`、Playnite 取消/进度/阶段套件 `8/8` 通过。
