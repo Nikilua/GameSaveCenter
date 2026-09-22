@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-01 Trainer 版本发布时间合同（2026-09-22，第四十七子批次）
+
+- `TrainerCenterView` 列表和详情实际绑定 `TrainerReleaseDto.PublishedUtc`；`c0885757` 复用 `TimeDisplayFormatter`，正文用相对时间，Tooltip/Automation HelpText 用完整本地/UTC，Raw UTC 保留可复制投影。
+- Unknown/缺失发布时间保持“日期未知”，旧 `PublishedDisplay` 只作兼容属性，生产 XAML 已用负例确认不再绑定。
+- `R22TimeDisplayBehaviorTests 27/27`、XAML `24/24`、最终 Release `0 error / 0 warning`、source/diff 通过；WPF 静态脚本缺失事实继续保留。
+- 下一步先查 `DashboardViewModel`/Contracts 其余实际 stale/缓存用户入口，不把报告/复制列/日志稳定完整时间误改成相对时间。
+
 ## 第三轮 R22-01 游戏来源诊断时间合同（2026-09-22，第四十六子批次）
 
 - 真实生产绑定位于 `MaintenanceView.xaml` 的游戏来源诊断只读 TextBox；复用 `GameDiscoveryDiagnosticDto` 现有三个 UTC 字段和共享 `TimeDisplayFormatter`，没有新增服务或 DTO。

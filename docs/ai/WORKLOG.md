@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 Trainer 版本发布时间（第四十七子批次）
+
+- 先核对 `TrainerReleaseDto.PublishedUtc` 和 `TrainerCenterView` 的两个真实绑定；确认不是缺失功能断言，而是仍在使用旧本地日期投影。
+- `c0885757` 增加相对/完整/Raw UTC 投影，列表和详情正文改用相对时间，完整时间进入 Tooltip/Automation HelpText；旧 `PublishedDisplay` 保留但生产 XAML 不再使用。下载命令、虚拟化、选中版本、隔离解压和错误/取消语义未改。
+- `R22TimeDisplayBehaviorTests 27/27`；隔离 Release XAML `24/24`、最终 `0 error / 0 warning`；source validation、diff check 通过。当前 D 盘没有 `scripts/validate_wpf_ui.py`，未将 WPF 静态审查写成通过。
+- 仅使用合成 DTO 与隔离构建/测试目录，未触碰真实存档、媒体、云端或外发诊断；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+- 下一可执行项：继续按实际绑定盘点 `DashboardViewModel`/Contracts 的 stale/缓存时间入口。
+
 ## 2026-09-22 R22-01 游戏来源诊断时间（第四十六子批次）
 
 - 在 D 盘开发分支先核对已有 `GameDiscoveryDiagnosticDto`、`TimeDisplayFormatter` 和 `MaintenanceView` 实际绑定；未重建服务/DTO，也未把报告、复制列或日志入口混入本批。
