@@ -2606,3 +2606,12 @@
 - R23-08 只收录有证据、可复现或有明确用户价值的入口，不新增设计体系。P0 是 R23-04 runner 的 UIA/`summary.json`/外层 manifest 收口和 R23-05 shell/media 五项几何失败；P1 是 R22-01 残余时间入口、R02-06 Playnite 原生菜单宿主回放和当前 `57754b33` 候选的真实宿主身份复测。
 - P2 保留 Q24-03 第二物理显示器跨屏（当前 `DISPLAY1`、`blocked-single-display`）和真实 presented-frame/停顿采样（ETW/WPR/xperf 权限拒绝）；它们等待硬件/权限，不用逻辑 DPI、离屏截图或 Rendering 代理替代。
 - 不准入重复离屏截图、没有复现依据的新视觉想法、静态断言冒充交互、绕过系统跟踪权限和真实用户存档/媒体/云端写入。证据：`evidence/R23-08-NEXT-ROUND-ADMISSION-20260922.md`。下一执行顺序：先做 R23-04 runner，外部阻塞则转 R23-05 几何小批量。
+
+## 2026-09-22 Round3 R23-04 任务表宿主初始化修复
+
+- 当前提交 `9026f4a2812c5c534a46abb1bf79aed7afd7988d` 收口了 R23-04 runner 先后暴露的两个真实宿主错误：7 列 `TaskGrid` 的列宽 key 补齐 `stage`，并补齐 `ProductionDataGridSortProfiles.AttachTasks` 的 stage 排序契约；没有替换游戏选框、滚动条、命令绑定或 net462 控件路线。
+- 新增实际 XAML 与生产 key 顺序/数量回归，以及 `R06SortingBehaviorTests.TaskStageSortKeepsUnknownStageLast`；未知阶段使用现有 `TaskStageResolver` 的真实文本负例并置后。当前门禁为 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类，Release `0 errors`，保留既有两条 `MediaCenterView.xaml.cs:699 CS8602` warning。
+- 真实 Playnite 在 09:13 使用当前隔离安装启动并加载 `GameSaveCenter 0.6.73`；09:13 后日志没有新的 `Column key count` 或 `Sort contract count` 未处理异常。当前输出于 09:16:15 生成当前 commit 绑定的 `summary.json`/`capture-manifest.json`：33 个 Dashboard、1 个 Settings，均为 `EmbeddedPlaynite`；summary 标记 `EmbeddedDashboardCaptured=true`、`ControlledDashboardCaptured=false`。
+- 因 UIA 仍未找到侧栏项，runner 外层仍是 partial，专用审计窗口、Controlled host、UIA/键盘可达性未验；Fusion 未复制、单屏 `blocked-single-display`、Playnite Desktop 版本 `unknown` 继续保留。不把当前嵌入原图或 manifest 扩大成完整宿主验收。
+- 当前 R00–R23 账本状态为：`已满足` 113、`已实现，待环境验证` 29、`已满足，待环境验证` 44、`已满足，待宿主环境验证` 2、部分满足 2、外部阻塞 1、不适用 1，共 192 项；状态变化只来自本项真实证据，不代表全量宿主验收。
+- 证据：`evidence/R23-04-TASK-GRID-HOST-FIX-20260922.md`；账本 R23-04 改为“已满足，待宿主环境验证”。下一可执行任务：R23-05 shell/media 五项几何失败小批量；R23-04 UIA/Controlled host 和真实 presented frame 作为明确待验边界继续保留。

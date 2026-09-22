@@ -4835,3 +4835,11 @@
 - R23-08 不增加新设计，只保留可复现问题或明确用户价值。P0：R23-04 runner UIA/summary/manifest 和 R23-05 shell/media 五项几何失败；P1：R22-01 残余时间入口、R02-06 Playnite 原生菜单宿主回放、R23-06 当前 `57754b33` 候选的真实宿主复测；P2：Q24-03 双屏跨屏和真实 presented-frame/停顿采样。
 - R23-04/R23-05 的问题已有当前证据；Q24-03 因单屏 `blocked-single-display`，真实 frame 因 ETW/WPR/xperf 权限拒绝，不做绕过。必须继续区分离屏逻辑 DIP、Rendering/Stopwatch 代理与物理呈现。
 - 不准入重复截图、未复现的设计想法、静态断言冒充交互、真实用户存档/媒体/云端写入。证据：`evidence/R23-08-NEXT-ROUND-ADMISSION-20260922.md`。下一执行顺序为先收口 R23-04 runner，受阻则推进 R23-05 几何。
+
+## 2026-09-22 Round3 R23-04 任务表宿主初始化修复
+
+- R23-04 runner 先后在真实 Playnite 暴露 `DataGridColumnLayoutController` 的 6/7 列 key 不匹配和 `DataGridStableSortController` 的 6/7 排序契约不匹配；当前 `TaskGrid` 的 7 列顺序固定为 local-time/task/stage/game/state/progress/detail。提交 `9026f4a2` 补齐两个契约，复用 `TaskStatusDto.StageDisplay`/`HasKnownStage`，新增列映射回归和 stage 已知/未知排序行为负例。
+- 当前完整门禁为 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111`、WPF `101`、Release `0 errors`；只保留既有两条 `MediaCenterView.xaml.cs:699 CS8602` warning。R06 排序测试在隔离 testhost 通过。
+- 真实 Playnite 当前 commit 启动日志在 09:13 加载扩展后没有新的两类初始化异常；当前输出 09:16:15 生成 `summary.json`/`capture-manifest.json`，绑定 `9026f4a2`，33 个 Dashboard 与 1 个 Settings 捕获均为 `EmbeddedPlaynite`。这使 R23-04 从“runner 未收口”提升为“已满足，待宿主环境验证”。
+- UIA 侧栏定位仍失败，runner 外层 partial、`ControlledDashboardCaptured=false`，专用审计窗口/键盘可达性未验；不把当前 summary、嵌入原图、逻辑 DPI 或单屏结果写成完整宿主通过。Fusion 未复制、Q24-03 `blocked-single-display` 和真实 presented frame/ETW 权限边界继续保留。
+- 证据：`evidence/R23-04-TASK-GRID-HOST-FIX-20260922.md`。下一执行任务转 R23-05 五项几何失败小批量；R23-04 UIA/Controlled host 留作外部待验。

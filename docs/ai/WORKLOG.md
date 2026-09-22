@@ -8576,3 +8576,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 只把已有证据支持的可复现问题/用户价值纳入下一轮：P0 为 R23-04 runner UIA/summary/manifest 和 R23-05 五项 shell/media 几何失败；P1 为 R22-01 残余时间入口、R02-06 Playnite 原生菜单和当前 `57754b33` 候选宿主复测；P2 为 Q24-03 双屏和权限允许后的真实 presented-frame 采样。
 - 明确排除重复离屏截图、无复现依据的新设计、静态断言交互签收、ETW 绕过和真实用户数据写入；保存单屏/ETW 的真实阻塞事实。证据：`evidence/R23-08-NEXT-ROUND-ADMISSION-20260922.md`。
 - R23-08 收口后下一执行顺序是先处理 R23-04 runner，若外部 UIA/窗口条件继续阻塞则做 R23-05 几何小批量；未合并 main。
+
+## 2026-09-22 Round3 R23-04 任务表宿主初始化修复
+
+- 复用现有 `TaskGrid`、`DataGridColumnLayoutController`、`ProductionDataGridSortProfiles` 和 R06 测试，不新增服务/DTO。真实宿主先暴露列宽 key 数量错误，再暴露排序契约数量错误；`9026f4a2` 补齐 stage 两处映射，保留 7 列顺序并添加未知阶段负例。
+- 两次完整 Release package 门禁最终以 `9026f4a2` 通过：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111`、WPF `101`、0 errors；隔离 WPF 101/101 通过。第一次新增 stage 测试误用了 resolver 不支持的“正在上传/正在备份”，已改为现有真实“正在复制到云端/正在扫描”后重跑通过，没有放宽断言。
+- 真实 Playnite 使用合成非空 profile 和当前安装候选启动；09:13 后没有新的 `Column key count`/`Sort contract count` 异常。当前输出在 09:16:15 生成当前 commit 的 summary/manifest，Embedded Dashboard/Settings 捕获存在；runner 仍因 UIA 侧栏定位失败而 partial，Controlled host/专用窗口未验。
+- Computer Use helper 两次按技能规则重试均因“系统找不到指定的路径”失败，没有发出点击；没有把该失败改写成产品 UIA 结论。隔离 Playnite 进程随后需清理，历史日志和当前证据目录保留引用。
+- 账本 R23-04 已同步为“已满足，待宿主环境验证”；新增证据 `evidence/R23-04-TASK-GRID-HOST-FIX-20260922.md`。下一可执行任务：R23-05 shell/media 五项几何失败小批量；当前阶段不合并 main。
