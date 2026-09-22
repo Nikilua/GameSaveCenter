@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R16-01 设置搜索定位定向复核（2026-09-23）
+
+- `ae9aedbc` 只记录 `a4e35578` 现有设置搜索实现的复测，没有新增设置导航或 DTO；搜索字段索引、分类切换、清空恢复和原有输入绑定继续复用。
+- 搜索 `1/1`、源契约 `1/1`、验证导航 `1/1`、草稿生命周期 `1/1` 独立 testhost 通过；命中字段可见且可编辑，清空恢复原分类，配置/pending edit 不变。状态为“已满足，待环境验证”。
+- 合并 WPF testhost 会触发既有 `Application` 多实例限制，拆分后通过，保留为环境边界；Playnite `net462` 无新增错误，仅两条既有 warning，Demo 原目录不可用。
+- 未验真实 Playnite/浅深主题/UIA/读屏/IME/DPI/呈现/ETW/宿主性能。下一项 `R16-02 策略差异预览`，先核对继承值与显式覆盖值。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R16-01-SETTINGS-SEARCH-RECHECK-20260923.md`。
+
 ## 第三轮 R15-08 清理历史范围定向复核（2026-09-23）
 
 - `569fa1d8` 只记录既有 Retention Simulation、预览句柄、保护门禁和隔离账本的复测，没有新增生产清理服务；状态保持“已满足”。

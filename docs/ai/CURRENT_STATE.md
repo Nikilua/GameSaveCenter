@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R16-01 设置搜索定位定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`ae9aedbc` 上复用 `a4e35578` 的设置字段索引、分类切换和原有控件绑定。
+- `R16SettingsSearchBehaviorTests 1/1`、`SettingsValidationSourceTests 1/1`、验证导航 `1/1`、草稿生命周期 `1/1` 均在独立 testhost 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；`validate-source.py`、XAML `24/24`、diff check 通过。
+- 输入“恢复巡检间隔”后定位自动化分类、匹配字段可见且可编辑；清空恢复原分类和字段；搜索不写配置、不产生 pending edit。R16-01 状态校正为“已满足，待环境验证”。
+- 合并 WPF testhost 的 `Application` 多实例冲突已按独立 testhost 复测并如实保留；未验真实 Playnite 最终布局、浅深主题、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R16-01-SETTINGS-SEARCH-RECHECK-20260923.md`。下一可执行任务：`R16-02 策略差异预览`。
+
 ## 第三轮 R15-08 清理历史范围定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`569fa1d8` 上复用既有 Retention Simulation、保护门禁和隔离账本。
