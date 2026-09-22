@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R15-05 任务来源定位定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`ba4d624b` 上复用 `0d1ff346` 的稳定来源引用与精确解析能力。
+- 实际 Playnite `R15TaskSourceNavigationTests 3/3`、Worker `TaskQueryPersistenceTests + TaskEventBroadcasterTests + TaskCoordinatorFailureTests 21/21` 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。
+- 已删除游戏不跳同名游戏，已删除版本不选邻近版本，来源 clone 保留稳定 ID/关联游戏 ID/诊断详情。R15-05 受控条件已满足，账本状态为“已满足，待环境验证”。
+- 继续保留游戏选框、详情滚动、命令绑定、取消/错误/恢复保护和 net462；只使用合成 DTO、fake/内存任务和隔离 SQLite/测试宿主。未验真实 Playnite 来源卡片、删除/重命名后的 UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-RECHECK-20260923.md`。下一可执行任务：`R15-06 耗时与吞吐`，先核对可靠采样、未知总量和停顿语义。
+
 ## 第三轮 R23-05 壳层断点几何复测（2026-09-23）
 
 - `b5e7fca0` 只扩展 RenderHarness 的真实 WPF shellqa 断点探针，没有新增生产 UI/业务代码；当前工作区仍为 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`。

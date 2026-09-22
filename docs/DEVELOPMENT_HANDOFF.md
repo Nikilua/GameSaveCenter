@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R15-05 任务来源定位定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `ba4d624b`；没有新增生产代码，复用 `0d1ff346` 的稳定来源引用与精确导航。Playnite `R15TaskSourceNavigationTests 3/3`、Worker 查询/广播/失败路径 `21/21` 通过，Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。已删除游戏不跳同名游戏，已删除版本不选邻近版本，来源 clone 保留稳定诊断身份；账本校正为“已满足，待环境验证”。真实 Playnite 来源卡片、删除/重命名后的 UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验，Demo 原目录不可用；未碰真实存档、媒体、云端或诊断。下一可执行项为 R15-06 耗时与吞吐。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-RECHECK-20260923.md`。
+
 > 2026-09-23 R23-05 壳层断点几何复测：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 提交 `b5e7fca0` 只扩展 RenderHarness 的实际 WPF 断点探针，没有新增生产 UI/业务代码。提交后 clean `shellqa` exit `0`、`WorkingTreeClean=True`：1200/1279 为 compact，1280/1366 为 expanded，标题/动作区分行或不重叠且动作区在 HeaderSurface 内；Media 1040/1100/1366 `gridTopGap=142 DIP`，页尾可达；`ResponsiveLayoutCoordinatorTests + MediaInboxGeometryTests 8/8`，XAML `24/24`，solution `0 errors/2` 条既有 warning。R23-05 仍“部分满足，待宿主性能验收”，不把离屏/Rendering/Stopwatch 写成 presented frame；R23-04 CEF `0x5` 与 ETW 权限边界仍保留。下一项为依赖已满足的 Q/R 行为小批量，不重复当前几何探针。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-05-HEADER-BREAKPOINT-RECHECK-20260923.md`。

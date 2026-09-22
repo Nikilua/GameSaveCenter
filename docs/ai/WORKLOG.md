@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R15-05 任务来源定位定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`ba4d624b` 上复用 `0d1ff346` 的现有实现，没有新增生产代码。
+- `R15TaskSourceNavigationTests 3/3` 通过：已删除游戏不跳同名游戏、已删除版本不选邻近版本、来源 clone 保留稳定 ID/关联游戏 ID/诊断详情；Worker `TaskQueryPersistenceTests + TaskEventBroadcasterTests + TaskCoordinatorFailureTests 21/21` 通过。
+- Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。R15-05 校正为“已满足，待环境验证”。
+- 只使用合成 DTO、fake/内存任务和隔离 SQLite/测试宿主；未验真实 Playnite 来源卡片、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原目录不可用。
+
+证据：[R15-05 来源定位定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-RECHECK-20260923.md)。下一可执行任务：`R15-06 耗时与吞吐`。
+
 ## 2026-09-23 Round3 R23-05 壳层断点几何复测
 
 - 在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 上，先复用 R23-05 已有生产几何修复；本阶段只改 RenderHarness，提交 `b5e7fca0` 将真实 WPF shellqa 从 720/960/980/1040 扩展到 1200/1279/1280/1366，并检查 compact/expanded 行状态、标题/动作区正负几何关系和 HeaderSurface 边界。
