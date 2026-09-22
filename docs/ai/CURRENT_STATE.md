@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R23-05 壳层断点几何复测（2026-09-23）
+
+- `b5e7fca0` 只扩展 RenderHarness 的真实 WPF shellqa 断点探针，没有新增生产 UI/业务代码；当前工作区仍为 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`。
+- 提交后 clean 隔离 Release `shellqa` exit `0`、`WorkingTreeClean=True`：1200/1279 DIP compact header `101.3`，1280/1366 expanded header `68.0`；标题/动作区分行或不重叠且动作区不越过 HeaderSurface。`ResponsiveLayoutCoordinatorTests` + `MediaInboxGeometryTests` `8/8`；XAML `24/24`、solution `0 errors/2` 条既有 warning。
+- R23-05 仍只是“部分满足，待宿主性能验收”：离屏 logical DIP、Rendering/Stopwatch 代理不能替代真实 presented frame、ETW/WPR/xperf、Playnite 宿主性能、UIA/读屏、DPI/跨屏。下一项不重复几何探针，转依赖已满足的 Q/R 行为小批量；R23-04 CEF `0x5` 阻塞仍如实保留。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R23-05-HEADER-BREAKPOINT-RECHECK-20260923.md`。
+
 ## 第三轮 R00/R01 动效探针时序复核（2026-09-23）
 
 - `0e468873` 只修正 RenderHarness 的深色资源首帧/完成回调采样：先完成响应式布局，以有界等待观察活动中间态和最终 `270 DIP`/无动画/`X=0`，没有改生产动效、命令、绑定或视觉体系。

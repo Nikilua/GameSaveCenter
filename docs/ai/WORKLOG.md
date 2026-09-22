@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R23-05 壳层断点几何复测
+
+- 在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 上，先复用 R23-05 已有生产几何修复；本阶段只改 RenderHarness，提交 `b5e7fca0` 将真实 WPF shellqa 从 720/960/980/1040 扩展到 1200/1279/1280/1366，并检查 compact/expanded 行状态、标题/动作区正负几何关系和 HeaderSurface 边界。
+- clean 隔离 Release：XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；`shellqa` exit `0`、`WorkingTreeClean=True`；Media `gridTopGap=142 DIP`，页尾 footer/历史/次级动作可达；定向 `ResponsiveLayoutCoordinatorTests + MediaInboxGeometryTests 8/8`。
+- 本批只证明受控 WPF/offscreen logical DIP 的布局关系，不把 Rendering/Stopwatch 写成 presented frame、物理刷新率或宿主性能通过；ETW/WPR/xperf、真实 Playnite/UIA/读屏/IME、DPI/跨屏仍未验。C 盘旧仓库和用户删除的 `src.zip` 未使用；下一项不重复几何探针，转依赖已满足的 Q/R 行为小批量。
+
+证据：[R23-05 壳层断点几何复测](../design/reviews/ui-finesse-round3-20260915/evidence/R23-05-HEADER-BREAKPOINT-RECHECK-20260923.md)。
+
 ## 2026-09-23 Round3 R00/R01 动效探针时序复核
 
 - `83cf8e28`/`f90c3f8a`/`0e468873` 只修正 RenderHarness：深色资源首帧先布局，活动态/完成态用有界 Dispatcher 等待，增加实际观察值；没有生产动效改动。
