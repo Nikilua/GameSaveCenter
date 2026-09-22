@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R23-04 UIA 候选窗口探测复测
+
+- `f551359c` 增强 `real-host-audit.ps1`：复用已有 Win32 顶层窗口枚举，逐窗创建 UIA 根节点，保留 MainWindowHandle 回退，并把候选窗口、UIA 根节点类型、匹配结果和动作写入 `host-window-exposure.json`；没有改变产品控件、命令、Binding、滚动或安全语义。
+- AST、source、XAML `24/24`、Release `-SkipTests` `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning 通过；相关 `DiagnosticsEvidenceTests` 在修正过期源码契约后 `1/1`。隔离安装校验 `extension.yaml 0.6.73` / DLL `0.6.73.0`，使用显式 `-SkipInstallTests`。
+- 当前真实隔离 Playnite PID `3556` 的 `MainWindowHandle=0x40B24`，可见窗口 `Startup Error` / `#32770`，顶层窗口 `5`；runner 60 秒/30 次逐窗 UIA 探测，5 个根节点均可建立但没有 `GameSaveCenter` 侧栏，`MatchedWindows=[]`，无 `summary.json`，按 `[PARTIAL]` 结束。`cef.log` 仍为 `platform_channel ... 拒绝访问 (0x5)`。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260923.md` 与 `artifacts/ui-host-audit-r23-04-uia-candidates-20260923`。隔离 PID 已停止；下一项是正常 Playnite UIA 会话，若外部条件不变则推进依赖已满足的 Q/R 小批量。真实 UIA/键盘/读屏、presented frame、DPI/跨屏、ETW 和宿主性能仍未验。
+
 ## 2026-09-23 Round3 R23-05 当前身份证据刷新
 
 - 在 `b5c7a6d4` 的干净隔离 RenderHarness 上重跑 `shellqa`，刷新 R23-05 与 R00-06 共用的 Media 页尾/表格几何事实；XAML `24/24`、solution `0 errors/2` 条既有 nullable warning。
