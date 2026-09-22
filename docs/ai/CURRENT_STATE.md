@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R17-08 维护报告可读性定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`fc8dffa5` 上复用 `59d4190b` 的结构化报告、统一生成时间、身份透传和脱敏器；旧摘要按当前测试实际数量校正为 Worker `3/3`、Playnite `MaintenanceReportSourceTests 4/4`。
+- 完整 R17 `15/15`；隔离 Release `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 保留游戏选框、滚动条、命令绑定、错误/取消/恢复保护、有限列表性能和 net462；未验真实导出/剪贴板/对话框、宿主呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R17-08-MAINTENANCE-REPORT-RECHECK-20260923.md`。下一可执行任务：`R18-01 连续输入基准`。
+
 ## 第三轮 R17-07 检查项一键定位定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`280c839e` 上复用 `e8d581c6` 的稳定 Finding/Health/Task 来源、健康诊断 `PlayniteId + BackupId` 精确路由、缺失版本负例和维护返回栈。
