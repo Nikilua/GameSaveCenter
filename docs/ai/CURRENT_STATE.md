@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R22-01 本地镜像时间摘要校正（已满足，待环境验证，2026-09-22）
+
+- `b45e31db` 复用已有时间投影，将 `LocalMirrorService` 状态摘要和维护页紧凑镜像时间行改用相对时间；完整本地时区时间保留在 Tooltip/Automation HelpText，命令、滚动、镜像只复制/校验和兼容投影不变。
+- Worker `LocalMirrorServiceTests 6/6`、Playnite `R22TimeDisplayBehaviorTests 30/30`；clean `shellqa`/全量 RenderHarness 绑定 `b45e31db`、`WorkingTreeClean=True`，Maintenance Light/Dark 目标尺寸无本批新增问题；全量报告仍保留既有 Overview/Settings/Task/Save 失败。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R22-01-LOCAL-MIRROR-TIME-20260922.md`。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW 和宿主性能仍未验；下一项回到 R23-04 UIA/Controlled host。
+
 ## 第三轮 R13/R14 定向复核与视觉夹具校正（已满足，待环境验证，2026-09-22）
 
 - `8a9a052e` 只补隔离 RenderHarness 的合成重复组/来源试运行 DTO 与清空态复位，没有改生产服务、DTO、命令或绑定；当前 R13/R14 定向 Core `40/40`、Worker `32/32`、Playnite `19/19`。

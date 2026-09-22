@@ -8,6 +8,8 @@
 
 > 2026-09-22 R13/R14 定向复核校正：`8a9a052e` 只补 RenderHarness 合成 DTO，不改生产服务/DTO/命令/绑定。Core `40/40`、Worker `32/32`、Playnite R13/R14 定向 `19/19`；clean-tree RenderHarness 报告绑定 `8a9a052e`，Maintenance 无 R13 专属问题，Media 重复组 `2` 组/组内 `4` 项、来源试运行 `4` 项且无 R14 专属问题。全报告仍因既有 Overview/Settings/Task/Save 基线以 `FAILED` 结束，不能写成全局 `render-qa OK`；本批真实 Playnite、网络/外部工具、UIA/IME、物理 DPI/跨屏、presented frame、ETW 和宿主性能仍未验。详见 [R13/R14 定向复核](evidence/R13-R14-TARGETED-RECHECK-20260922.md)。R13-07/R13-08/R14-01～R14-08 的“定向夹具未执行”历史字段以本条和证据为当前事实；状态仅在受控范围内补齐，不扩大成真实宿主通过。下一项转 R23-05 独立几何/性能边界或等待可枚举 Playnite 宿主会话。
 
+> 2026-09-22 R22-01 本地镜像时间摘要校正：`b45e31db` 只复用已有 `LastSyncRelativeDisplay`/`LastSyncFullDisplay`，将 Worker 状态摘要和维护页紧凑镜像时间行从旧 `LastSyncDisplay` 改为相对时间，未改同步、命令、滚动、镜像删除保护或兼容投影。Worker 镜像 `6/6`、Playnite `R22TimeDisplayBehaviorTests 30/30`；clean `shellqa` 和全量 RenderHarness 绑定 `b45e31db`、`WorkingTreeClean=True`，Maintenance 浅/深主题目标尺寸无本批新增问题。全量 RenderHarness 仍因 Overview/Settings/Task/Save 既有基线 `FAILED`，不写成全局通过；详见 [R22-01 本地镜像时间摘要](evidence/R22-01-LOCAL-MIRROR-TIME-20260922.md)。真实 Playnite/UIA/读屏、OS 输入/IME、DPI/跨屏、呈现帧、ETW 和宿主性能仍未验；下一项回到 R23-04 UIA/Controlled host。
+
 | 本轮 ID | 当前受控复核状态 | 当前自动/视觉事实 |
 | --- | --- | --- |
 | R13-07 | 已满足，待环境验证 | Core/Worker/Playnite 定向 `40/40`、`32/32`、`19/19`；Maintenance `FindingsGrid` `8` 行、`5/4` 可读行，无 R13 专属 RenderHarness 问题 |
