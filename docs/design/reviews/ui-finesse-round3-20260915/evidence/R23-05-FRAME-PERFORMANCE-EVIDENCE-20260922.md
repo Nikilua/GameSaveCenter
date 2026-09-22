@@ -76,3 +76,10 @@ GameSaveCenter.RenderHarness.exe shellqa D:\gsc-r23-05-shellqa-clean-20260922
 Demo 原目录不可用，继续参考已恢复生产基线；本批没有读取或写入真实存档、删除真实媒体、写用户云端或外发诊断。游戏选框、滚动条系统、命令绑定、取消/错误语义、恢复保护、有限列表性能和 Playnite/net462 未改。
 
 下一可执行任务：推进 R23-06 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 仍按真实宿主边界推进，真实呈现帧仍需获得系统允许的 ETW/PresentMon 等价工具后另行复测。
+
+## 2026-09-23 当前身份复核
+
+- 当前提交 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 在同一隔离 Release RenderHarness 上重跑 `shellqa`；XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706` nullable warning，报告 `WorkingTreeClean=True`、`DpiScale=1.00` offscreen logical DIP。
+- Media 几何仍在 `1040×700`、`1100×720`、`1366×768` 记录 `gridTopGap=142 DIP`，footer、历史和次级动作可滚动到达；这次结果同时验证了 R00-06 对 footer 增加后的页级滚动/预算修复，没有改变选框、滚动条、命令或 Binding。
+- 本次应用层代理样本为：单次切换 `30` 回调、p95 `27.1ms`、最大 `87.4ms`；快速二次切换 `46` 回调、p95 `14.3ms`、最大 `39.4ms`；无动画终态 `4` 回调、p95/最大 `21.6ms`。这些是 WPF Rendering/Stopwatch 代理，不能写成 DWM/PresentMon/物理刷新率或宿主端到端性能。
+- ETW/WPR/xperf 权限拒绝、真实 Playnite presented frame、物理 DPI/跨屏和宿主性能仍未验；本次只刷新当前身份与受控几何/代理数据，不改写系统跟踪权限边界。
