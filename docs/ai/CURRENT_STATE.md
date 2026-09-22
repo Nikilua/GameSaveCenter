@@ -1,6 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-## 当前第三轮 R22-01 维护云端状态详情时间合同（部分满足，待继续，2026-09-22）
+## 第三轮 R22-01 时间显示统一审计收口（已满足，待环境验证，2026-09-22）
+
+- `ed03c49e` 补充生产 `Views/*.xaml` 时间入口审计：旧本地投影和云端 `DetailDisplay` 绑定均未重新出现，相对/完整时间入口仍在真实页面绑定中；报告、复制列、日志稳定完整时间语义按设计保留。
+- `R22TimeDisplayBehaviorTests 30/30`、`R22TaskDurationBehaviorTests 2/2`；主分支合并为 `002c2c63`，完整 solution Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。source validation、diff check 通过。
+- 账本已改为“已满足，待环境验证”。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW/宿主性能未验；Demo 原目录不可用，`scripts/validate_wpf_ui.py` 当前不存在。
+- 下一可执行项：R23-04 UIA/Controlled host 收口；若宿主能力仍受环境限制，保留具体阻塞并推进独立可做的 R23-05/相关验证。
+
+## 第三轮 R22-01 维护云端状态详情子批次（已完成，2026-09-22）
 
 - `db2ba3c0` 收口 `MaintenanceView` 云端队列表格和选中记录的真实 `CloudTransferStatusDto.DetailDisplay` 绑定：正文使用相对重试时间，Tooltip/Automation HelpText 使用完整本地时区与 UTC；旧属性保留给稳定报告路径。
 - 提交后 `R22TimeDisplayBehaviorTests 29/29`；隔离 Release XAML `24/24`、`0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；source validation、diff check 通过。

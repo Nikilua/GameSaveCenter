@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R22-01 时间显示统一审计收口（2026-09-22，第五十子批次）
+
+- `ed03c49e` 在已有 `TimeDisplayFormatter`、DTO 相对/完整/Raw UTC 投影和各页面绑定证据之上，补充读取当前生产 `Views/*.xaml` 的负向/正向审计。旧本地投影与云端 `DetailDisplay` 未被重新绑定；Dashboard/Contracts 中报告、导出、复制列、日志的完整时间入口是稳定输出语义，不应为页面相对时间合同强行替换。
+- `R22TimeDisplayBehaviorTests 30/30`；`R22TaskDurationBehaviorTests 2/2` 覆盖计数器差值、倒退/无效频率和终态耗时持久化；UTC 时间线排序独立于相对文案。主分支 `002c2c63` 完整 Release solution `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。
+- R22-01 账本状态改为“已满足，待环境验证”。本批不访问真实存档、媒体、云端或用户诊断；真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW/宿主性能未验；Demo 原目录不可用，`scripts/validate_wpf_ui.py` 不存在。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-AUDIT-CLOSEOUT-20260922.md`。下一可执行项为 R23-04 UIA/Controlled host 收口；遇到宿主限制时不扩大声明，保留具体待验边界并推进独立可做任务。
+
 ## 第三轮 R22-01 维护云端状态详情时间合同（2026-09-22，第四十九子批次）
 
 - `MaintenanceView` 云端表格和选中详情实际绑定 `CloudTransferStatusDto.DetailDisplay`；`db2ba3c0` 保留旧兼容属性供 Worker 报告使用，同时接入 `DetailRelativeDisplay` 与 `DetailFullDisplay`。
