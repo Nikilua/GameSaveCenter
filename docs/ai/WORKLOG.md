@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R16-05 路径编辑一致定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`3121d337` 上复用 `955dc52e` 的现有路径编辑实现，没有新增生产代码。
+- `R16SettingsPathEditorBehaviorTests + R16SettingsPathEditorSourceTests + SettingsPathValidationTests 6/6` 通过；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证有效/缺失/文件误作目录、保存校验、严格打开、远端目标排除和剪贴板入口；只用合成路径/隔离目录，没有真实网络、ACL、剪贴板、Explorer、存档、媒体、云端或诊断写入。真实宿主与最终呈现仍待验，Demo 原目录不可用。
+
+证据：[R16-05 路径编辑一致定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R16-05-PATH-EDITOR-RECHECK-20260923.md)。下一可执行任务：`R16-06 生效条件说明`。
+
 ## 2026-09-23 Round3 R16-04 恢复默认粒度定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`666c60bb` 上复用 `2b194461` 的现有实现，没有新增生产代码。
