@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R16-02 策略差异预览定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `e63c62c7`；没有新增生产代码，复用 `b327d5ef` 的策略 DTO、模板目录、13 字段差异比较和保存/取消链。Core `BackupPolicyTemplateCatalogTests 5/5`、Playnite 策略源契约 `2/2`，Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。已保存/显式草稿/模板覆盖差异、复制回退、取消不发 Worker 请求和未保存草稿禁用模板均有行为/负例证据，R16-02 校正为“已满足，待环境验证”。真实 Playnite 差异卡片、浅深主题、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用。下一可执行项为 R16-03 模板应用范围。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-02-POLICY-DIFF-RECHECK-20260923.md`。
+
 > 2026-09-23 R16-01 设置搜索定位定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `ae9aedbc`；没有新增生产代码，复用 `a4e35578` 的设置字段索引、分类切换和原有控件绑定。搜索 `1/1`、源契约 `1/1`、验证导航 `1/1`、草稿生命周期 `1/1` 均在独立 testhost 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。搜索命中/清空恢复、可编辑性、配置不写入和 pending edit 不变均有证据；合并 WPF testhost 的 `Application` 多实例冲突作为环境边界记录。真实 Playnite 设置页、浅深主题、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验，Demo 原目录不可用。下一可执行项为 R16-02 策略差异预览。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-01-SETTINGS-SEARCH-RECHECK-20260923.md`。

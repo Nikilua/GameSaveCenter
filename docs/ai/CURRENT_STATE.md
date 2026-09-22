@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R16-02 策略差异预览定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`e63c62c7` 上复用 `b327d5ef` 的策略 DTO、模板目录、13 字段差异比较和保存/取消链。
+- Core `BackupPolicyTemplateCatalogTests 5/5`、Playnite `R16PolicyDiffSourceTests + R16PolicyTemplateBatchSourceTests 2/2` 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；`validate-source.py`、XAML `24/24`、diff check 通过。
+- 已保存/显式草稿/模板覆盖差异、复制回退、取消不发 Worker 请求和未保存草稿禁用模板均有行为/负例证据。R16-02 状态为“已满足，待环境验证”。
+- 保留游戏选框、滚动条、命令绑定、取消/错误/恢复保护和 net462；未验真实 Playnite 差异卡片、浅深主题、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R16-02-POLICY-DIFF-RECHECK-20260923.md`。下一可执行任务：`R16-03 模板应用范围`。
+
 ## 第三轮 R16-01 设置搜索定位定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`ae9aedbc` 上复用 `a4e35578` 的设置字段索引、分类切换和原有控件绑定。
