@@ -449,7 +449,8 @@ function Get-PlayniteProcessSnapshot {
 
 function Write-RealHostWindowExposure {
     param(
-        [bool]$SidebarAutomationFound
+        [bool]$SidebarAutomationFound,
+        [object]$UiAutomationProbe
     )
 
     $processSnapshots = @(Get-PlayniteProcessSnapshot)
@@ -479,8 +480,9 @@ function Write-RealHostWindowExposure {
         UserDataMode = if ([string]::IsNullOrWhiteSpace($UserDataDir)) { 'current-user-data' } else { 'isolated-user-data' }
         PlayniteExecutable = $PlayniteExecutable
         StartedProcessId = if ($null -eq $startedPlayniteProcess) { $null } else { $startedPlayniteProcess.Id }
-        UiAutomationProbeSeconds = 60
+        UiAutomationProbeSeconds = if ($null -eq $UiAutomationProbe) { 60 } else { $UiAutomationProbe.ProbeSeconds }
         SidebarAutomationFound = $SidebarAutomationFound
+        UiAutomation = $UiAutomationProbe
         ProcessSnapshots = $processSnapshots
         TopLevelWindows = $topLevelWindows
         MainWindowHandleNonZero = @($processSnapshots | Where-Object { $_.MainWindowHandle -ne 0 }).Count
@@ -494,54 +496,198 @@ function Write-RealHostWindowExposure {
     return $evidence
 }
 
+function Get-PlayniteUiAutomationCandidates {
+    $processSnapshots = @(Get-PlayniteProcessSnapshot)
+    $processIds = @($processSnapshots | ForEach-Object { [uint32]$_.ProcessId })
+    $topLevelWindows = @()
+    if ($processSnapshots.Count -gt 0) {
+        $topLevelWindows = @([GscTopLevelWindowProbe]::Enumerate($processIds))
+    }
+
+    $knownHandles = @{}
+    $candidates = New-Object 'System.Collections.Generic.List[object]'
+    foreach ($window in $topLevelWindows) {
+        if ($null -eq $window -or [Int64]$window.Handle -eq 0) {
+            continue
+        }
+        $handle = [Int64]$window.Handle
+        if ($knownHandles.ContainsKey($handle)) {
+            continue
+        }
+        $knownHandles[$handle] = $true
+        $candidates.Add([ordered]@{
+                Handle = $handle
+                HandleHex = [string]$window.HandleHex
+                ProcessId = [uint32]$window.ProcessId
+                IsVisible = [bool]$window.IsVisible
+                Title = [string]$window.Title
+                ClassName = [string]$window.ClassName
+                Source = 'win32-top-level-enumeration'
+            })
+    }
+
+    # Keep the historical MainWindowHandle path as a candidate even when the host
+    # does not expose it through EnumWindows during the same polling interval.
+    foreach ($process in @($processSnapshots | Where-Object { $_.MainWindowHandle -ne 0 })) {
+        $handle = [Int64]$process.MainWindowHandle
+        if ($knownHandles.ContainsKey($handle)) {
+            continue
+        }
+        $knownHandles[$handle] = $true
+        $candidates.Add([ordered]@{
+                Handle = $handle
+                HandleHex = [string]$process.MainWindowHandleHex
+                ProcessId = [uint32]$process.ProcessId
+                IsVisible = $true
+                Title = [string]$process.MainWindowTitle
+                ClassName = ''
+                Source = 'process-main-window-handle'
+            })
+    }
+
+    return [ordered]@{
+        ProcessSnapshots = $processSnapshots
+        TopLevelWindows = $topLevelWindows
+        Candidates = @($candidates.ToArray())
+    }
+}
+
 function Invoke-GameSaveCenterSidebar {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes
     Add-Type -AssemblyName System.Windows.Forms
     $deadline = (Get-Date).AddSeconds(60)
+    $attempts = 0
+    $lastCandidateWindows = @()
+    $lastMatchedWindows = @()
     while ((Get-Date) -lt $deadline) {
-        $process = Get-Process -Name 'Playnite.DesktopApp' -ErrorAction SilentlyContinue |
-            ForEach-Object {
-                try { $_.Refresh() } catch { }
-                $_
-            } |
-            Where-Object { $_.MainWindowHandle -ne 0 } |
-            Select-Object -First 1
-        if ($process) {
-            $window = [System.Windows.Automation.AutomationElement]::FromHandle($process.MainWindowHandle)
+        $attempts++
+        $candidateSnapshot = Get-PlayniteUiAutomationCandidates
+        $windowResults = New-Object 'System.Collections.Generic.List[object]'
+        $matchedWindows = New-Object 'System.Collections.Generic.List[object]'
+        foreach ($candidate in @($candidateSnapshot.Candidates)) {
+            $windowResult = [ordered]@{
+                Handle = [Int64]$candidate.Handle
+                HandleHex = [string]$candidate.HandleHex
+                ProcessId = [uint32]$candidate.ProcessId
+                IsVisible = [bool]$candidate.IsVisible
+                Title = [string]$candidate.Title
+                ClassName = [string]$candidate.ClassName
+                Source = [string]$candidate.Source
+                AutomationRootFound = $false
+                SidebarElementFound = $false
+            }
+            $window = $null
+            try {
+                $window = [System.Windows.Automation.AutomationElement]::FromHandle(
+                    [IntPtr]$candidate.Handle)
+                if ($null -ne $window) {
+                    $windowResult.AutomationRootFound = $true
+                    $windowResult.AutomationRootName = [string]$window.Current.Name
+                    $windowResult.AutomationRootControlType = [string]$window.Current.ControlType.ProgrammaticName
+                }
+            }
+            catch {
+                $windowResult.AutomationError = $_.Exception.Message
+            }
+            if ($null -eq $window) {
+                $windowResults.Add($windowResult)
+                continue
+            }
+
             $condition = New-Object System.Windows.Automation.PropertyCondition(
                 [System.Windows.Automation.AutomationElement]::NameProperty,
                 'GameSaveCenter')
-            $item = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $condition)
+            $item = $null
+            try {
+                $item = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $condition)
+            }
+            catch {
+                $windowResult.AutomationError = $_.Exception.Message
+            }
             if ($item) {
+                $windowResult.SidebarElementFound = $true
+                $windowResult.SidebarElementControlType = [string]$item.Current.ControlType.ProgrammaticName
+                $windowResult.SidebarElementName = [string]$item.Current.Name
+                $matchedWindows.Add($windowResult)
                 $invoke = $null
                 try { $invoke = $item.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern) } catch { }
                 if ($invoke) {
                     $invoke.Invoke()
                     Write-Host 'Clicked GameSaveCenter sidebar item' -ForegroundColor Green
-                    return $true
+                    $windowResult.Action = 'invoke'
+                    $windowResults.Add($windowResult)
+                    return [pscustomobject]@{
+                        Found = $true
+                        Action = 'invoke'
+                        Attempts = $attempts
+                        ProbeSeconds = 60
+                        CandidateWindows = @($windowResults.ToArray())
+                        MatchedWindows = @($matchedWindows.ToArray())
+                        ProcessSnapshots = @($candidateSnapshot.ProcessSnapshots)
+                        TopLevelWindows = @($candidateSnapshot.TopLevelWindows)
+                    }
                 }
                 $select = $null
                 try { $select = $item.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern) } catch { }
                 if ($select) {
                     $select.Select()
                     Write-Host 'Selected GameSaveCenter sidebar item' -ForegroundColor Green
-                    return $true
+                    $windowResult.Action = 'select'
+                    $windowResults.Add($windowResult)
+                    return [pscustomobject]@{
+                        Found = $true
+                        Action = 'select'
+                        Attempts = $attempts
+                        ProbeSeconds = 60
+                        CandidateWindows = @($windowResults.ToArray())
+                        MatchedWindows = @($matchedWindows.ToArray())
+                        ProcessSnapshots = @($candidateSnapshot.ProcessSnapshots)
+                        TopLevelWindows = @($candidateSnapshot.TopLevelWindows)
+                    }
                 }
-                $item.SetFocus()
-                [System.Windows.Forms.SendKeys]::SendWait('{ENTER}')
-                Write-Host 'Focused GameSaveCenter sidebar item' -ForegroundColor Green
-                return $true
+                try {
+                    $item.SetFocus()
+                    [System.Windows.Forms.SendKeys]::SendWait('{ENTER}')
+                    Write-Host 'Focused GameSaveCenter sidebar item' -ForegroundColor Green
+                    $windowResult.Action = 'focus-enter'
+                    $windowResults.Add($windowResult)
+                    return [pscustomobject]@{
+                        Found = $true
+                        Action = 'focus-enter'
+                        Attempts = $attempts
+                        ProbeSeconds = 60
+                        CandidateWindows = @($windowResults.ToArray())
+                        MatchedWindows = @($matchedWindows.ToArray())
+                        ProcessSnapshots = @($candidateSnapshot.ProcessSnapshots)
+                        TopLevelWindows = @($candidateSnapshot.TopLevelWindows)
+                    }
+                }
+                catch {
+                    $windowResult.ActionError = $_.Exception.Message
+                }
             }
+            $windowResults.Add($windowResult)
         }
+
+        $lastCandidateWindows = @($windowResults.ToArray())
+        $lastMatchedWindows = @($matchedWindows.ToArray())
         Start-Sleep -Seconds 2
     }
     Write-Warning 'Could not locate GameSaveCenter sidebar item via UI Automation.'
-    return $false
+    return [pscustomobject]@{
+        Found = $false
+        Action = 'not-found'
+        Attempts = $attempts
+        ProbeSeconds = 60
+        CandidateWindows = $lastCandidateWindows
+        MatchedWindows = $lastMatchedWindows
+    }
 }
 
-$sidebarAutomationFound = [bool](Invoke-GameSaveCenterSidebar)
-Write-RealHostWindowExposure -SidebarAutomationFound $sidebarAutomationFound | Out-Null
+$sidebarProbe = Invoke-GameSaveCenterSidebar
+$sidebarAutomationFound = [bool]$sidebarProbe.Found
+Write-RealHostWindowExposure -SidebarAutomationFound $sidebarAutomationFound -UiAutomationProbe $sidebarProbe | Out-Null
 
 $summary = Join-Path $Output 'summary.json'
 $startupBlocker = Get-RealHostStartupBlocker -HostUserDataDir $UserDataDir -StartedProcess $startedPlayniteProcess

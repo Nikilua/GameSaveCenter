@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-04 UIA 候选窗口探测复测（2026-09-23）
+
+- 在 D 盘唯一工作区、`codex/ui-finesse-round2` 上，`f551359c` 只增强 `real-host-audit.ps1` 的宿主证据：逐窗探测 Win32 顶层窗口和 UIA 根节点，保留 MainWindowHandle 回退，结构化记录候选、根节点类型、匹配和动作；没有修改生产 UI 或业务语义。
+- 当前隔离 Playnite PID `3556`、句柄 `0x40B24`、可见 `Startup Error`、顶层窗口 `5`；60 秒/30 次探测实际建立 5 个 UIA 根节点，但 `GameSaveCenter` 侧栏未找到，`summary.json` 不存在，`MatchedWindows=[]`。CEF `platform_channel` 仍为拒绝访问 `0x5`。
+- 结果仍是宿主窗口/CEF 环境阻塞，不是产品侧栏缺失结论；不宣称 UIA、键盘、读屏、Controlled host、presented frame、DPI/跨屏、ETW 或宿主性能通过。隔离 PID 已停止，审计输出因新证据引用保留。
+- 下一步先寻找正常可枚举 Playnite 会话；条件不变时继续依赖已满足的 Q/R 小批量，不重复 R23-06。
+
 ## 第三轮 R00/R01 当前证据校正（2026-09-23）
 
 - 在 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter`、`codex/ui-finesse-round2` 上，`b5c7a6d4` 修复 Media Inbox footer 增加后表格可读区预算过旧的问题：紧凑/窄宽继续使用页级滚动，当前 footer 预算 `360 DIP`；保留 picker、滚动条、命令/Binding、取消/错误、恢复保护、有限列表和 Playnite `net462`。

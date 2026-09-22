@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R23-04 UIA 候选窗口探测复测（2026-09-23）
+
+- `f551359c58142e43bfc9dbe4dd3dff3987111244` 只增强真实宿主 runner：复用已有 Win32 顶层窗口枚举，逐窗建立 UIA 根节点，保留 `MainWindowHandle` 回退，并把候选窗口、根节点名称/控件类型、匹配窗口和动作写入 `host-window-exposure.json`；不修改生产 UI、命令、Binding、选框、滚动条、取消/错误或恢复语义。
+- AST、source、XAML `24/24`、Release `-SkipTests` `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning 通过；相关 `DiagnosticsEvidenceTests 1/1`。隔离安装校验 `extension.yaml 0.6.73`、DLL `0.6.73.0`，审计开关显式跳过安装器重复测试。
+- 真实隔离 Playnite PID `3556` 的可见窗口是 `Startup Error`（`#32770`，`MainWindowHandle=0x40B24`），顶层窗口 `5`；UIA 60 秒/30 次探测建立了 5 个候选根节点但没有侧栏元素，`summary.json` 不存在，结果为 `top-level-window-observed-ui-automation-not-confirmed` / `[PARTIAL]`。`cef.log` 仍为 `platform_channel ... 拒绝访问 (0x5)`。
+- 证据：[R23-04 UIA 窗口候选复测](../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260923.md) 与 `artifacts/ui-host-audit-r23-04-uia-candidates-20260923`。隔离 PID 已停止；下一项取得正常可枚举 Playnite 会话，若继续受阻则推进独立 Q/R。真实 UIA/键盘/读屏、DPI/跨屏、presented frame、ETW 和宿主性能仍未验。
+
 ## 第三轮 R00/R01 当前证据校正（2026-09-23）
 
 - 当前唯一开发工作区为 `D:\workplace\github\GameSaveCenter`，分支 `codex/ui-finesse-round2`；C 盘旧仓库已不存在，`src.zip` 未触碰。

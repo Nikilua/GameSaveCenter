@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R23-04 runner UIA 候选探测：代码提交 `f551359c58142e43bfc9dbe4dd3dff3987111244` 复用已有 Win32 顶层窗口枚举，逐窗建立 UIA 根节点，保留 MainWindowHandle 回退，并把候选窗口/根节点类型/匹配动作写入 `host-window-exposure.json`；没有修改生产 UI、命令/Binding、选框、滚动条或安全语义。真实隔离 Playnite PID `3556` 的可见窗口仍是 `Startup Error`，句柄 `0x40B24`，顶层窗口 `5`；60 秒/30 次逐窗探测建立 5 个 UIA 根节点但没有 GameSaveCenter 侧栏，`summary.json` 未生成，`cef.log` 仍为 `platform_channel` 拒绝访问 `0x5`，按 `[PARTIAL]` 收口。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260923.md` 和 `artifacts/ui-host-audit-r23-04-uia-candidates-20260923`。隔离 PID 已停止；下一可执行项是正常可枚举 Playnite UIA 会话，若继续阻塞则推进依赖已满足的 Q/R 小批量。真实 UIA/键盘/读屏、presented frame、DPI/跨屏、ETW/宿主性能仍未验。
+
 > 2026-09-23 R00/R01 当前证据收口：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一开发工作区，当前分支 `codex/ui-finesse-round2`，代码提交 `b5c7a6d4`。Media Inbox footer 增加后的旧表格预算已修正为窄宽/紧凑高度页级滚动与 `360 DIP` footer 预算；XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706` nullable warning。Media 几何/锚点、审计源、身份、数字、负例、大库和动效行为定向证据分别通过 `3/3`、`10/10`、`6/6`、`2/2`、`1/1`、`5/5`、`9/9`。
 
 > 当前同身份 RenderHarness 的 Light/Dark finesse、scale、media geometry、toolbar、shell 夹具通过；审计索引 `20/20`，summary 实际为 `168` 快照、`7 HIGH/4 MEDIUM`，不能写成 0 风险。motion reentry/hot probes 在当前 Dispatcher 环境重跑未稳定通过，已记录为待验而未改生产动效。freshness 报告 `R01-07-freshness-report-20260923.json` 为 `14/14 fresh`，包身份 `not-provided`。

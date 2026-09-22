@@ -31,9 +31,16 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("GSC_UI_AUDIT_EVENT_PIPE_NAME", hostScript);
         Assert.Contains("GameSaveCenter.Worker.Audit.", hostScript);
         Assert.Contains("IpcIsolation", hostScript);
-        Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
+        Assert.Contains("Get-PlayniteProcessSnapshot", hostScript);
+        Assert.Contains("$process.Refresh()", hostScript);
         Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
         Assert.Contains("GscTopLevelWindowProbe", hostScript);
+        Assert.Contains("Get-PlayniteUiAutomationCandidates", hostScript);
+        Assert.Contains("win32-top-level-enumeration", hostScript);
+        Assert.Contains("AutomationRootControlType", hostScript);
+        Assert.Contains("CandidateWindows", hostScript);
+        Assert.Contains("MatchedWindows", hostScript);
+        Assert.Contains("UiAutomation = $UiAutomationProbe", hostScript);
         Assert.Contains("host-window-exposure.json", hostScript);
         Assert.Contains("playnite-process-without-top-level-window", hostScript);
         Assert.Contains("top-level-window-observed-ui-automation-not-confirmed", hostScript);
