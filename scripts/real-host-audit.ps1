@@ -4,7 +4,8 @@ param(
     [string]$Output = '',
     [string]$UserDataDir = '',
     [string]$PlayniteExecutable = '',
-    [string]$TestTempRoot = ''
+    [string]$TestTempRoot = '',
+    [switch]$SkipInstallTests
 )
 
 $ErrorActionPreference = 'Stop'
@@ -88,6 +89,10 @@ if ($displayTopology.Count -lt 2) {
     Write-Warning "Q24-03 physical cross-screen replay is blocked: only $($displayTopology.Count) display detected."
 }
 $installArguments = @{ Configuration = $Configuration }
+if ($SkipInstallTests) {
+    $installArguments.SkipTests = $true
+    $runnerMetadata.InstallTests = 'skipped-by-explicit-audit-switch'
+}
 if (-not [string]::IsNullOrWhiteSpace($TestTempRoot)) {
     $installArguments.TestTempRoot = [System.IO.Path]::GetFullPath($TestTempRoot)
     $runnerMetadata.TestTempRoot = $installArguments.TestTempRoot

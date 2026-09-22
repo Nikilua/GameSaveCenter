@@ -38,6 +38,8 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("playnite-process-without-top-level-window", hostScript);
         Assert.Contains("top-level-window-observed-ui-automation-not-confirmed", hostScript);
         Assert.Contains("SidebarAutomationFound", hostScript);
+        Assert.Contains("SkipInstallTests", hostScript);
+        Assert.Contains("skipped-by-explicit-audit-switch", hostScript);
         Assert.Contains("host-startup-blocker.json", hostScript);
         Assert.Contains("cef-startup-access-denied-before-main-window", hostScript);
         Assert.Contains("CountsAsVisualPass = $false", hostScript);
