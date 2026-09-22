@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R17-05 隔离账本入口定向复核（2026-09-23）
+
+- `d01ab7ea` 只记录 `3002a8dc` 现有隔离账本入口的复测，没有新增生产代码；分页只返回未删除项，恢复按 EntryId 定向，路径不安全、原路径冲突或文件身份不一致时保留文件并标记 `RecoveryRequired`。
+- Worker `5/5`；Playnite R17 `12/12`（隔离账本源码/绑定 `2/2`）；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成 DTO、fake IPC、隔离 SQLite 和临时目录；未验真实宿主、Explorer/权限、重启恢复、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R17-06 存储分析导航`，先核对已有存储统计、来源记录和维护页跳转能力，再决定是否需要代码。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R17-05-QUARANTINE-LEDGER-RECHECK-20260923.md`。
+
 ## 第三轮 R17-04 保留预览对比定向复核（2026-09-23）
 
 - `503c2119` 只记录 `3c73b498` 现有保留预览实现的复测，没有新增生产代码；预览只读，Apply 校验确认/句柄/十分钟时效/候选与策略指纹并在操作锁内重读，索引删除失败恢复原路径且不虚增释放量。
