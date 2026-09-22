@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R15-08 清理历史范围定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`569fa1d8` 上复用既有 Retention Simulation、保护门禁和隔离账本。
+- Worker 清理/恢复账本 `17/17`、Playnite 维护页/账本契约 `6/6` 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。
+- 预览句柄/二次确认、运行中任务与共享锁忙碌跳过、锁定/健康/PreRestore 保护、归档身份校验和隔离账本恢复均有行为证据，R15-08 保持“已满足”。
+- 仅使用合成版本、fake/隔离 SQLite、临时归档和隔离锁，没有删除真实历史；未验真实 Playnite 清理呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能，Demo 原目录不可用。Worker 全量既有 `MediaSyncService.cs:570` 失败不变。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-RECHECK-20260923.md`。下一可执行任务：`R16-01 设置搜索定位`。
+
 ## 第三轮 R15-07 失败结果复制定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `37dd4a03` 的任务复制、统一脱敏、有限高详情和重试语义。

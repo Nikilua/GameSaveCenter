@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-08 清理历史范围定向复核（2026-09-23）
+
+- `569fa1d8` 只记录既有 Retention Simulation、预览句柄、保护门禁和隔离账本的复测，没有新增生产清理服务；状态保持“已满足”。
+- Worker 清理/恢复账本 `17/17`、Playnite 维护页/账本契约 `6/6`；覆盖二次确认、预览过期/状态变化、运行中/共享锁忙碌跳过、锁定/健康/PreRestore 保护、归档身份校验和失败账本恢复。
+- Playnite `net462` 构建无错误，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；只用合成版本、fake/隔离 SQLite、临时归档和隔离锁，没有删除真实历史。真实 Playnite/呈现/UIA/IME/DPI/ETW/宿主性能仍未验，Demo 原目录不可用。
+- 下一项 `R16-01 设置搜索定位`，先核对现有设置页筛选/分组/滚动和命令绑定，不重建导航体系。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-RECHECK-20260923.md`。
+
 ## 第三轮 R15-07 失败结果复制定向复核（2026-09-23）
 
 - `d9dc4317` 只记录 `37dd4a03` 现有实现的复测，没有新增生产服务/DTO；任务复制命令、`ClipboardTextSanitizer`、失败摘要、有限高只读详情和最多四次重试继续复用。

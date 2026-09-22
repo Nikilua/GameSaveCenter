@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R15-08 清理历史范围定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `569fa1d8`；没有新增生产代码，复用既有 Retention Simulation、预览句柄、保护门禁和隔离账本。Worker 清理/恢复账本 `17/17`、Playnite 维护页/账本契约 `6/6`，`net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。预览过期/状态变化、二次确认、运行中/共享锁忙碌跳过、锁定/健康/PreRestore 保护和账本恢复均有行为证据，R15-08 保持“已满足”。真实 Playnite 清理呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，Worker 全量既有 `MediaSyncService.cs:570` 失败不变。下一可执行项为 R16-01 设置搜索定位。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-RECHECK-20260923.md`。
+
 > 2026-09-23 R15-07 失败结果复制定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `d9dc4317`；没有新增生产代码，复用 `37dd4a03` 的任务复制、统一脱敏、有限高详情和剪贴板重试。Playnite 失败复制/剪贴板/恢复/任务详情套件 `21/21`，`net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。短摘要、密码负例、完整脱敏 payload、只读可选择详情、第三次成功和四次失败均有行为证据，账本校正为“已满足，待环境验证”。真实系统剪贴板/Playnite UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，Worker 全量既有 `MediaSyncService.cs:570` 失败不变。下一可执行项为 R15-08 清理历史范围。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-RECHECK-20260923.md`。
