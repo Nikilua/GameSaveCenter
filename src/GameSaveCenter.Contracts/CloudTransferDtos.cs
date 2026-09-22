@@ -321,6 +321,18 @@ public sealed class CloudTransferSummaryDto
         }
     }
 
+    public string SummaryRelativeDisplay => BuildSummaryDisplay(useFullTime: false);
+    public string SummaryFullDisplay => BuildSummaryDisplay(useFullTime: true);
+
+    private string BuildSummaryDisplay(bool useFullTime)
+    {
+        if (TotalCount == 0) return "暂无云端传输记录";
+        var next = NextAttemptUtc.HasValue
+            ? $"，下次 {(useFullTime ? NextAttemptFullDisplay : NextAttemptRelativeDisplay)}"
+            : string.Empty;
+        return $"{PrimaryStatusDisplay} · {TotalCount} 项{next}";
+    }
+
     public string LoadedDisplay => HasMore
         ? $"已加载 {LoadedCount}/{TotalCount} 项"
         : $"已加载全部 {LoadedCount} 项";
