@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R23-04 UIA 宿主窗口暴露边界复测（已满足，待宿主环境验证，2026-09-22）
+
+- 当前 `0157ace6` 的完整隔离 runner 先通过 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`，Release `0 error`，仅既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning；真实 `D:\software\Playnite\Playnite.DesktopApp.exe` 日志确认插件加载并记录主窗体创建。
+- 该 Playnite PID `39900` 的 `MainWindowHandle=0`；只读 Win32 顶层窗口枚举和按 PID UIA 查找均为 `0`。runner 无法合法定位侧栏，约 90 秒无 `summary.json`，按 `[PARTIAL]` 结束。这个结果是当前桌面会话的窗口暴露限制，不是产品侧栏缺失结论。
+- 仍保留 `EmbeddedPlaynite` 结构/视觉树/资源/滚动输出，但不把它扩大成 UIA、键盘、读屏、Controlled host、最终 presented frame 或宿主性能通过；单屏 Q24-03、ETW 权限、Demo 原目录不可用等边界继续有效。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260922.md`。隔离 profile、测试临时目录和未引用构建缓存已清理；下一项是寻找可稳定暴露窗口的宿主会话，若仍阻塞则推进 R23-05 几何小批量。
+
 ## 第三轮 R23-04 UIA/Controlled host 复测（已满足，待宿主环境验证，2026-09-22）
 
 - 当前 `f457a7a0` 已在真实 `D:\software\Playnite\Playnite.DesktopApp.exe` 的隔离用户数据目录中加载 GameSaveCenter `0.6.73`，并生成 `EmbeddedPlaynite` 当前 Dashboard 截图、视觉树、资源快照、样式指纹和滚动证据；metadata 为 Playnite 已托管、DPI `1.5`、Dashboard `1313.33 × 898 DIP`。
