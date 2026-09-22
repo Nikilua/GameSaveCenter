@@ -4,6 +4,7 @@
 
 - `c0885757` 收口 `TrainerReleaseDto.PublishedUtc` 的真实列表/详情绑定：正文使用相对时间，Tooltip/Automation HelpText 使用完整本地时区与 UTC 原值；缺失发布时间仍为“日期未知”，旧 `PublishedDisplay` 仅保留兼容。
 - `R22TimeDisplayBehaviorTests 27/27`；隔离 Release XAML `24/24`、最终构建 `0 error / 0 warning`；source validation、diff check 通过。
+- `9efc54eb` 已同步本批证据与交接文档，`811b4046` 已合并到 `main` 并推送；主分支 Release 构建为 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。
 - 当前仓库不存在 `scripts/validate_wpf_ui.py`，本批未新增 WPF 静态审查通过声明；真实 Playnite/UIA/呈现/ETW/宿主性能仍未验，Demo 原目录不可用。
 - 下一可执行项：继续核对 `DashboardViewModel`/Contracts 其余真实 stale/缓存时间入口；报告/复制列/日志的稳定完整时间语义不由本批代签。
 
