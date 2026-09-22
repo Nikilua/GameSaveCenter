@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R17-02 诊断包预览定向复核（2026-09-23）
+
+- `837528bc` 只记录 `2b6e9051` 现有诊断包预览实现的复测，没有新增生产代码；预览只读列出类别、上限和脱敏范围，明确排除存档/媒体/数据库内容/凭据/自动上传，取消确认不调用创建 IPC。
+- Playnite `7/7`；Worker 诊断预览+ZIP `2/2`，R17-01 SQLite 回归 `2/2`，相关合计 `11/11`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成请求、fake/隔离 SQLite、隔离日志和临时目录；未验真实宿主确认框、Explorer/权限、日志并发、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R17-03 检查进度预算`，先核对巡检范围、暂停/延后原因、最近成功时间、下轮计划和取消/结束状态。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R17-02-DIAGNOSTICS-PACKAGE-PREVIEW-RECHECK-20260923.md`。
+
 ## 第三轮 R17-01 健康结果分层定向复核（2026-09-23）
 
 - `3f9d8e2b` 只记录 `eb033251` 现有健康结果分层实现的复测，没有新增生产代码；已解决项继续退出 `resolved=0` 开放队列，证据时间保留，跨来源按游戏+稳定代码+问题标题去重，错误优先分到立即/建议/信息三档。

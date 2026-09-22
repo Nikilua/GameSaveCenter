@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R17-02 诊断包预览定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`837528bc` 上复用 `2b6e9051` 的只读预览、类别/脱敏/排除清单、确认前置和生成后结果展示。
+- Playnite R17 `7/7`；Worker 诊断预览与既有真实 ZIP `2/2`，R17-01 SQLite 回归 `2/2`，相关合计 `11/11`；隔离 Release `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 保留当前游戏选框、滚动条、命令绑定、错误/取消/恢复保护、有限列表性能和 net462；确认前不生成、不上传，数据库只输出摘要。未验真实 Playnite/package-host 确认框/Explorer/权限/日志并发、DPI/UIA/IME、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R17-02-DIAGNOSTICS-PACKAGE-PREVIEW-RECHECK-20260923.md`。下一可执行任务：`R17-03 检查进度预算`。
+
 ## 第三轮 R17-01 健康结果分层定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`3f9d8e2b` 上复用 `eb033251` 的 `resolved=0` 开放队列、健康巡检 resolve、证据时间、跨来源去重和三档影响分组。
