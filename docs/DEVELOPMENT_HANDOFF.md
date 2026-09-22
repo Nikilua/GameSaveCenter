@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R23-05 壳层断点几何复测：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 提交 `b5e7fca0` 只扩展 RenderHarness 的实际 WPF 断点探针，没有新增生产 UI/业务代码。提交后 clean `shellqa` exit `0`、`WorkingTreeClean=True`：1200/1279 为 compact，1280/1366 为 expanded，标题/动作区分行或不重叠且动作区在 HeaderSurface 内；Media 1040/1100/1366 `gridTopGap=142 DIP`，页尾可达；`ResponsiveLayoutCoordinatorTests + MediaInboxGeometryTests 8/8`，XAML `24/24`，solution `0 errors/2` 条既有 warning。R23-05 仍“部分满足，待宿主性能验收”，不把离屏/Rendering/Stopwatch 写成 presented frame；R23-04 CEF `0x5` 与 ETW 权限边界仍保留。下一项为依赖已满足的 Q/R 行为小批量，不重复当前几何探针。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-05-HEADER-BREAKPOINT-RECHECK-20260923.md`。
+
 > 2026-09-23 R00/R01 动效探针时序复核：当前 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 身份为 `0e468873`；本批只修正 RenderHarness 采样，不改生产动效。深色资源先完成响应式布局，活动/完成态均以有界 Dispatcher 等待和实际观察值校正首帧/完成回调晚到误判。RenderHarness Release Playnite `net462` `0 error`，四个 Light/Dark motion probes 全部 exit `0`，`UiFinesseFoundationTests 9/9`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。R00-03/R01-04 按受控证据改为“已满足”；真实 Playnite 输入、UIA/读屏、Windows 偏好通知、DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录仍未验。下一项为 R23-04 正常可枚举宿主会话，若 CEF/窗口暴露继续阻塞则转依赖已满足的独立 Q/R。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-MOTION-PROBE-RECHECK-20260923.md`。

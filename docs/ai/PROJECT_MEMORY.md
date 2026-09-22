@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-05 壳层断点几何复测（2026-09-23）
+
+- `b5e7fca0` 只在 RenderHarness 增加真实 WPF 壳层断点覆盖：1200/1279 走 compact，1280/1366 走 expanded；检查 `RowDefinition` 状态、标题/动作区真实几何关系和 `HeaderSurface` 边界，不修改生产 UI、命令、Binding、选框、滚动条、取消/错误/恢复或 `net462`。
+- 提交后 clean shellqa `0`：`WorkingTreeClean=True`，Media Inbox 1040/1100/1366 的 `gridTopGap=142 DIP`，页尾仍由页级滚动可达；定向 `ResponsiveLayoutCoordinatorTests + MediaInboxGeometryTests 8/8`，XAML `24/24`，solution `0 errors/2` 条既有 warning。
+- 这是受控 offscreen logical DIP 的几何行为证据，不替代真实 Playnite/UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；R23-04 CEF `platform_channel` `0x5` 仍阻塞。下一项转依赖已满足的 Q/R 行为小批量，避免重复 shellqa。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-05-HEADER-BREAKPOINT-RECHECK-20260923.md`。
+
 ## 第三轮 R00/R01 动效探针时序复核（2026-09-23）
 
 - 当前 `0e468873` 只改变 RenderHarness 的采样夹具：深色主题先完成响应式布局，活动/完成态采用有界等待并记录观察值；没有改生产 `GscMotion`、XAML、命令、Binding、选框、滚动条或 `net462` 路径。
