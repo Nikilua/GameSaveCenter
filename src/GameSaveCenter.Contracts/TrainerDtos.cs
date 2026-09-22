@@ -197,6 +197,13 @@ namespace GameSaveCenter.Contracts
             }
         }
         public string PublishedDisplay => PublishedUtc.HasValue ? PublishedUtc.Value.ToLocalTime().ToString("yyyy-MM-dd") : "日期未知";
+        public string PublishedRelativeDisplay => PublishedUtc.HasValue
+            ? TimeDisplayFormatter.Relative(PublishedUtc.Value, DateTime.UtcNow)
+            : "日期未知";
+        public string PublishedFullDisplay => PublishedUtc.HasValue
+            ? TimeDisplayFormatter.Full(PublishedUtc.Value)
+            : "日期未知";
+        public string PublishedRawUtcDisplay => TimeDisplayFormatter.RawUtc(PublishedUtc ?? DateTime.MinValue);
     }
 
     public sealed class TrainerCatalogQueryDto

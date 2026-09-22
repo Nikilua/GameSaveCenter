@@ -549,6 +549,30 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void TrainerReleasePublicationUsesSharedRelativeFullAndRawContract()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+        var timestamp = new DateTime(2026, 9, 18, 9, 8, 7, DateTimeKind.Utc);
+        var release = new TrainerReleaseDto { PublishedUtc = timestamp };
+        var unknown = new TrainerReleaseDto();
+
+        Assert.NotEqual("日期未知", release.PublishedRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), release.PublishedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), release.PublishedRawUtcDisplay);
+        Assert.Equal("日期未知", unknown.PublishedRelativeDisplay);
+        Assert.Equal("日期未知", unknown.PublishedFullDisplay);
+        Assert.Equal("未记录 UTC 时间", unknown.PublishedRawUtcDisplay);
+        Assert.Contains("PublishedRelativeDisplay", trainer, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding PublishedFullDisplay, Mode=OneWay}\"", trainer, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding PublishedFullDisplay, Mode=OneWay}\"", trainer, StringComparison.Ordinal);
+        Assert.Contains("SelectedTrainerRelease.PublishedRelativeDisplay", trainer, StringComparison.Ordinal);
+        Assert.Contains("SelectedTrainerRelease.PublishedFullDisplay", trainer, StringComparison.Ordinal);
+        Assert.DoesNotContain("PublishedDisplay, Mode=OneWay", trainer, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
