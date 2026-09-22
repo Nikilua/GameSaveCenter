@@ -35,7 +35,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             IsComfortableHeight = height >= 760;
             IsShortFooter = height < 700;
             IsFooterHintVisible = width >= 900;
-            IsCompactShellHeader = width < 980;
+            IsCompactShellHeader = width < 1280;
             IsVeryCompactShellHeader = width < 720;
             ShellPickerWidth = IsCompactShellHeader
                 ? (IsVeryCompactShellHeader ? 190 : 220)

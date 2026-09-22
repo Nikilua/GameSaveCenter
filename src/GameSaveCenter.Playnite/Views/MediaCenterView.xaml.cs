@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,6 +59,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             AttachViewModel(DataContext as DashboardViewModel);
             AttachColumnLayout();
+            UpdateMediaSelectionSummary();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -129,6 +131,19 @@ namespace GameSaveCenter.Playnite.Views
             {
                 InvalidatePendingAnchorRestore();
             }
+
+            if (string.Equals(e.PropertyName, nameof(DashboardViewModel.SelectedMedia), StringComparison.Ordinal))
+            {
+                ResetSelectedVideoPreview();
+                QueueSelectedMediaIntoView();
+            }
+
+            if (string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaSearchText), StringComparison.Ordinal)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaFilter), StringComparison.Ordinal)
+                || string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaLoadedSummary), StringComparison.Ordinal))
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(UpdateMediaSelectionSummary));
+            }
         }
 
         private void InvalidatePendingAnchorRestore()
@@ -172,6 +187,7 @@ namespace GameSaveCenter.Playnite.Views
             // the user must explicitly request details for the newly selected item.
             mediaInboxInspectorOpen = false;
             UpdateMediaInboxSelectionSummary();
+            UpdateMediaSelectionSummary();
             CommandManager.InvalidateRequerySuggested();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
@@ -222,6 +238,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            UpdateMediaSelectionSummary();
             if (pendingMediaAnchor == null) return;
             var anchor = pendingMediaAnchor;
             pendingMediaAnchor = null;
@@ -255,6 +272,7 @@ namespace GameSaveCenter.Playnite.Views
             CaptureSelection(MediaGrid.SelectedItems, selectedMediaIds);
             pendingMediaAnchor = CaptureAnchor(MediaGrid);
             ArmPendingAnchorExpiry();
+            UpdateMediaSelectionSummary();
         }
 
         private void OnLoadMoreMediaInboxClick(object sender, RoutedEventArgs e)
@@ -348,10 +366,9 @@ namespace GameSaveCenter.Playnite.Views
                     ? Visibility.Collapsed
                     : Visibility.Visible;
                 // The inbox DataGrid and its inspector own the vertical scroll surfaces.
-                // When the page-level fallback is needed for an extremely short host, cap
-                // the DataGrid by the current available height so the outer viewer cannot
-                // hand it an infinite measure and turn thousands of rows into one giant
-                // presenter with ScrollableHeight=0.
+                // Keep the DataGrid finite even when the page-level viewer owns overflow;
+                // an infinite MaxHeight lets the outer ScrollViewer hand Standard WPF's
+                // DataGrid an unbounded measure and instantiate the complete inbox window.
                 // A stale banner is part of the page content, not a bottom overlay.
                 // When it appears at a short-but-not-fallback height, keeping the page
                 // scroller disabled lets the banner, toolbar and footer consume the
@@ -370,16 +387,15 @@ namespace GameSaveCenter.Playnite.Views
                 // Above it, preserve the finite star-sized table viewport so batch actions
                 // and the primary grid stay in the first screen.
                 var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
-                // Keep the page channel available at every size. Auto does not paint a
-                // thumb when the content fits, but it lets the 212 DIP reading floor
-                // escape the compact PageHost instead of being clipped by a disabled
-                // outer viewer.
-                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                // The inner DataGrid owns the normal finite table viewport. Keep the
+                // page-level overflow channel only for the short/stale fallback; a
+                // nested Auto ScrollViewer otherwise measures Standard WPF rows as a
+                // page surface and defeats the retained-row container budget.
+                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
+                    ? ScrollBarVisibility.Auto
+                    : ScrollBarVisibility.Disabled;
                 MediaInboxPageScrollViewer.VerticalContentAlignment = VerticalAlignment.Top;
                 MediaInboxScrollSurface.VerticalAlignment = VerticalAlignment.Top;
-                MediaInboxGrid.MaxHeight = useInboxPageFallbackScroll
-                    ? Math.Max(1d, height)
-                    : double.PositiveInfinity;
                 var sourceStack = width < 900;
                 MediaSourceFields.Columns = sourceStack ? 1 : 2;
                 MediaSourceLayout.ColumnDefinitions[1].Width = sourceStack ? new GridLength(0) : new GridLength(14);
@@ -469,8 +485,17 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxGrid.MinHeight = readableGridHeight;
                 MediaInboxLayout.MinHeight = readableFrameHeight;
                 MediaInboxTableFrame.MinHeight = readableFrameHeight;
-                MediaInboxGrid.Height = double.NaN;
-                MediaInboxGrid.MaxHeight = Math.Max(readableGridHeight, height);
+                // The outer page viewer can measure its content with infinite height.
+                // Give the inner grid an explicit finite viewport in the normal layout;
+                // otherwise Standard row virtualization is defeated and every retained
+                // inbox row becomes a live DataGridRow. The short-host fallback keeps the
+                // existing page overflow route while still respecting the readable floor.
+                var finiteInboxHeight = Math.Max(readableGridHeight, height - 220d);
+                var inboxViewportHeight = useInboxPageFallbackScroll
+                    ? Math.Max(readableGridHeight, Math.Max(1d, height))
+                    : finiteInboxHeight;
+                MediaInboxGrid.Height = inboxViewportHeight;
+                MediaInboxGrid.MaxHeight = inboxViewportHeight;
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
@@ -615,9 +640,80 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (!restoringSelection && !selectionRestoreQueued)
                 UpdateSelectionDelta(selectedMediaIds, e);
+            UpdateMediaSelectionSummary();
             mediaInspectorOpen = false;
+            ResetSelectedVideoPreview();
+            QueueSelectedMediaIntoView();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void UpdateMediaSelectionSummary()
+        {
+            if (MediaGrid == null || MediaCurrentBatchSelectionSummary == null)
+                return;
+
+            var visibleCount = MediaGrid.SelectedItems.Count;
+            var totalCount = selectedMediaIds.Count;
+            var hiddenCount = Math.Max(0, totalCount - visibleCount);
+            var resultCount = MediaGrid.Items.Count;
+            MediaCurrentBatchSelectionSummary.Text = totalCount == 0
+                ? $"当前结果 {resultCount} 项 · 未选择媒体 · Ctrl / Shift 多选"
+                : hiddenCount > 0
+                    ? $"已选 {totalCount} 项 · 当前结果 {resultCount} 项 · 当前窗口 {visibleCount} 项可操作 · 另 {hiddenCount} 项暂不可见"
+                    : $"已选 {totalCount} 项 · 当前结果 {resultCount} 项 · 可批量处理";
+        }
+
+        private void QueueSelectedMediaIntoView()
+        {
+            if (!IsLoaded || MediaGrid == null)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                var selected = attachedViewModel?.SelectedMedia;
+                if (selected == null || MediaGrid.Items.IndexOf(selected) < 0)
+                    return;
+
+                MediaGrid.ScrollIntoView(selected);
+                MediaGrid.UpdateLayout();
+                (MediaGrid.ItemContainerGenerator.ContainerFromItem(selected) as FrameworkElement)?.BringIntoView();
+            }));
+        }
+
+        private void ResetSelectedVideoPreview()
+        {
+            if (MediaSelectedVideoFallback == null)
+                return;
+
+            MediaSelectedVideoFallback.Visibility = Visibility.Collapsed;
+            MediaSelectedVideo?.ClearValue(UIElement.VisibilityProperty);
+            var selected = attachedViewModel?.SelectedMedia;
+            if (selected?.Kind != MediaKind.VideoClip)
+                return;
+
+            var path = selected.ArchivePath;
+            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsSupportedVideoPath(path))
+            {
+                MediaSelectedVideoFallback.Visibility = Visibility.Visible;
+                MediaSelectedVideo.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void OnSelectedMediaVideoFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            MediaSelectedVideo.Visibility = Visibility.Collapsed;
+            MediaSelectedVideoFallback.Visibility = Visibility.Visible;
+        }
+
+        private static bool IsSupportedVideoPath(string path)
+        {
+            var extension = Path.GetExtension(path);
+            return string.Equals(extension, ".mp4", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".m4v", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".wmv", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".avi", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(extension, ".mov", StringComparison.OrdinalIgnoreCase);
         }
 
         private void OnReloadMediaWindowClick(object sender, RoutedEventArgs e)
@@ -968,10 +1064,13 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaCompactDetailsClick(object sender, RoutedEventArgs e)
         {
-            if (MediaGrid.SelectedItem == null) return;
-            mediaInspectorOpen = !mediaInspectorOpen;
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(mediaInspectorOpen ? MediaInspectorScrollViewer : MediaCompactDetailsButton);
+             if (MediaGrid.SelectedItem == null) return;
+             mediaInspectorOpen = !mediaInspectorOpen;
+             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            if (mediaInspectorOpen)
+                FocusElement(MediaInspectorScrollViewer);
+            else
+                FocusSelectedMediaRow();
         }
 
         private void OnMediaInboxCompactDetailsClick(object sender, RoutedEventArgs e)
@@ -990,11 +1089,26 @@ namespace GameSaveCenter.Playnite.Views
                 return;
 
             mediaInspectorOpen = false;
-            ApplyResponsiveLayout(
-                responsiveWidth > 0 ? responsiveWidth : ActualWidth,
-                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(MediaCompactDetailsButton);
-            e.Handled = true;
+             ApplyResponsiveLayout(
+                 responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                 responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            FocusSelectedMediaRow();
+             e.Handled = true;
+         }
+
+        private void FocusSelectedMediaRow()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                var selected = attachedViewModel?.SelectedMedia;
+                if (selected == null || MediaGrid.Items.IndexOf(selected) < 0)
+                    return;
+
+                MediaGrid.ScrollIntoView(selected);
+                MediaGrid.UpdateLayout();
+                if (MediaGrid.ItemContainerGenerator.ContainerFromItem(selected) is UIElement row)
+                    FocusElement(row);
+            }));
         }
 
         private void OnMediaInboxInspectorPreviewKeyDown(object sender, KeyEventArgs e)

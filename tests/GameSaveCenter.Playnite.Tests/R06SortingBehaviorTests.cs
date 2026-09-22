@@ -71,14 +71,38 @@ public sealed class R06SortingBehaviorTests
                 Task("negative", TaskState.Running, -1)
             };
             var view = new ListCollectionView(items);
-            var grid = CreateGrid(6);
+            var grid = CreateGrid(7);
             grid.ItemsSource = view;
 
             using (var controller = ProductionDataGridSortProfiles.AttachTasks(grid))
             {
-                controller.ApplySortForVerification(4, ListSortDirection.Ascending);
+                controller.ApplySortForVerification(5, ListSortDirection.Ascending);
                 Assert.Equal(new[] { "two", "ten", "negative", "queued" }, view.Cast<TaskStatusDto>().Select(item => item.TaskId).ToArray());
-                Assert.Equal(ListSortDirection.Ascending, grid.Columns[4].SortDirection);
+                Assert.Equal(ListSortDirection.Ascending, grid.Columns[5].SortDirection);
+            }
+        });
+    }
+
+    [Fact]
+    public void TaskStageSortKeepsUnknownStageLast()
+    {
+        RunSta(() =>
+        {
+            var items = new ObservableCollection<TaskStatusDto>
+            {
+                Task("upload", TaskState.Running, 10, "正在复制到云端"),
+                Task("scan", TaskState.Running, 10, "正在扫描"),
+                Task("unknown", TaskState.Running, 10, "")
+            };
+            var view = new ListCollectionView(items);
+            var grid = CreateGrid(7);
+            grid.ItemsSource = view;
+
+            using (var controller = ProductionDataGridSortProfiles.AttachTasks(grid))
+            {
+                controller.ApplySortForVerification(2, ListSortDirection.Ascending);
+                Assert.Equal(new[] { "upload", "scan", "unknown" }, view.Cast<TaskStatusDto>().Select(item => item.TaskId).ToArray());
+                Assert.Equal(ListSortDirection.Ascending, grid.Columns[2].SortDirection);
             }
         });
     }
@@ -143,7 +167,7 @@ public sealed class R06SortingBehaviorTests
             Comment = id
         };
 
-    private static TaskStatusDto Task(string id, TaskState state, int progress)
+    private static TaskStatusDto Task(string id, TaskState state, int progress, string stageMessage = "")
         => new TaskStatusDto
         {
             TaskId = id,
@@ -151,6 +175,7 @@ public sealed class R06SortingBehaviorTests
             GameName = id,
             State = state,
             ProgressPercent = progress,
+            StageMessage = stageMessage,
             CreatedUtc = new DateTime(2026, 9, 18)
         };
 

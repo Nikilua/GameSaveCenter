@@ -43,9 +43,69 @@ namespace GameSaveCenter.Contracts
         public string LastSuccessfulLocalDisplay => LastSuccessfulUtc.HasValue
             ? LastSuccessfulUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
             : "尚未成功验证";
+        public string LastSuccessfulRelativeDisplay => LastSuccessfulUtc.HasValue
+            ? TimeDisplayFormatter.Relative(LastSuccessfulUtc.Value, DateTime.UtcNow)
+            : "尚未成功验证";
+        public string LastSuccessfulFullDisplay => LastSuccessfulUtc.HasValue
+            ? TimeDisplayFormatter.Full(LastSuccessfulUtc.Value)
+            : "尚未成功验证";
+        public string LastSuccessfulRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastSuccessfulUtc ?? DateTime.MinValue);
+
+        public string LastCompletedLocalDisplay => LastCompletedUtc.HasValue
+            ? LastCompletedUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+            : "尚未结束一轮巡检";
+        public string LastCompletedRelativeDisplay => LastCompletedUtc.HasValue
+            ? TimeDisplayFormatter.Relative(LastCompletedUtc.Value, DateTime.UtcNow)
+            : "尚未结束一轮巡检";
+        public string LastCompletedFullDisplay => LastCompletedUtc.HasValue
+            ? TimeDisplayFormatter.Full(LastCompletedUtc.Value)
+            : "尚未结束一轮巡检";
+        public string LastCompletedRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastCompletedUtc ?? DateTime.MinValue);
 
         public string NextDueLocalDisplay => NextDueUtc.HasValue
             ? NextDueUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
             : "待安排";
+        public string NextDueRelativeDisplay => NextDueUtc.HasValue
+            ? TimeDisplayFormatter.Relative(NextDueUtc.Value, DateTime.UtcNow)
+            : "待安排";
+        public string NextDueFullDisplay => NextDueUtc.HasValue
+            ? TimeDisplayFormatter.Full(NextDueUtc.Value)
+            : "待安排";
+        public string NextDueRawUtcDisplay => TimeDisplayFormatter.RawUtc(NextDueUtc ?? DateTime.MinValue);
+
+        public string CurrentCandidateDisplay
+        {
+            get
+            {
+                var playniteId = IsRunning ? CursorPlayniteId : LastPlayniteId;
+                var backupId = IsRunning ? CursorBackupId : LastBackupId;
+                if (!string.IsNullOrWhiteSpace(playniteId) && !string.IsNullOrWhiteSpace(backupId))
+                    return IsRunning
+                        ? $"当前候选：{playniteId} / {backupId}"
+                        : $"最近候选：{playniteId} / {backupId}";
+                return IsRunning ? "正在读取备份索引，候选尚未选择" : "尚未选择候选";
+            }
+        }
+
+        public string NextPlanDisplay => !Enabled
+            ? "下轮计划：巡检已停用"
+            : $"下轮计划：{NextDueLocalDisplay} · 每 {IntervalMinutes} 分钟 · 单次预算 {MaxDurationSeconds} 秒";
+        public string NextPlanRelativeDisplay => !Enabled
+            ? "下轮计划：巡检已停用"
+            : $"下轮计划：{NextDueRelativeDisplay} · 每 {IntervalMinutes} 分钟 · 单次预算 {MaxDurationSeconds} 秒";
+        public string NextPlanFullDisplay => !Enabled
+            ? "下轮计划：巡检已停用"
+            : $"下轮计划：{NextDueFullDisplay} · 每 {IntervalMinutes} 分钟 · 单次预算 {MaxDurationSeconds} 秒";
+
+        public string ProgressDisplay
+        {
+            get
+            {
+                if (IsRunning) return "进行中；当前摘要不代表整库已检查";
+                if (LastStatus == "Cancelled") return "本轮已取消；不代表整库已检查";
+                if (LastStatus == "Deferred") return "本轮已推迟；未将延后项计为已检查";
+                return LastStatus == "NeverRun" ? "尚未开始" : "本轮已结束";
+            }
+        }
     }
 }

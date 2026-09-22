@@ -17,7 +17,7 @@
 <Style x:Key="MaintenanceDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"><Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
             </Style>
             <Style x:Key="MaintenanceLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextAlignment" Value="Left"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
-            <Style x:Key="MaintenanceTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}"><Setter Property="ToolTip" Value="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/></Style>
+            <Style x:Key="MaintenanceTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}"><Setter Property="ToolTip" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/><Setter Property="AutomationProperties.HelpText" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/></Style>
             <Style x:Key="MaintenancePathText" TargetType="TextBlock" BasedOn="{StaticResource GscPathText}"><Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextAlignment" Value="Left"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
             <Style x:Key="MaintenanceOverflowList" TargetType="ListBox">
                 <Setter Property="Background" Value="Transparent"/>
@@ -73,7 +73,19 @@
                             </Grid>
                             <TextBlock Text="{Binding CategoryDisplay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/>
                             <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0"/>
-                            <TextBlock Text="{Binding TimingDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                            <StackPanel x:Name="QuarantinePaths" Visibility="Collapsed" Margin="0,3,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="原路径：" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding OriginalPathDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" ToolTip="{Binding OriginalPathDisplay}"/>
+                                </Grid>
+                                <Grid Margin="0,2,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="隔离路径：" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding QuarantinePathDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" ToolTip="{Binding QuarantinePathDisplay}"/>
+                                </Grid>
+                            </StackPanel>
+                            <TextBlock Text="{Binding TimingDisplay}" ToolTip="{Binding TimingFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TimingFullDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </StackPanel>
                         <ui:Button Grid.Column="1"
                                    Style="{DynamicResource GscWpfUiContextButton}"
@@ -86,6 +98,11 @@
                                    VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding ActionKind}" Value="RetentionQuarantine">
+                        <Setter TargetName="QuarantinePaths" Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -119,6 +136,7 @@
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Margin="12,2,12,8">
@@ -135,7 +153,35 @@
                                                 <ui:Button Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshDiagnosticsCommand}" ToolTip="刷新诊断" AutomationProperties.Name="刷新诊断"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                                             </StackPanel>
                                         </Grid>
-                                        <Grid Grid.Row="1">
+                                        <ItemsControl Grid.Row="1" ItemsSource="{Binding FindingTriageGroups}" Margin="12,0,12,8">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate><UniformGrid Columns="3"/></ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border x:Name="FindingTriageCard" Padding="10" Margin="0,0,8,0">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                            <StackPanel MinWidth="0">
+                                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}"/>
+                                                                <TextBlock Text="{Binding Description}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            </StackPanel>
+                                                            <TextBlock Grid.Column="1" Text="{Binding CountDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Top"/>
+                                                        </Grid>
+                                                        <Border.Style>
+                                                            <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Group}" Value="Immediate"><Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Group}" Value="Recommended"><Setter Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Group}" Value="Information"><Setter Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Grid Grid.Row="2">
                                             <DataGrid x:Name="FindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}" SelectionMode="Extended" SelectionChanged="OnMaintenanceDiagnosticsSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="Finding" ToolTip="Ctrl+C 复制所选诊断行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选诊断行；Ctrl+Shift+C 复制当前单元格">
                                                 <DataGrid.Columns>
                                                     <DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" infra:DataGridColumnHeaderHelpBehavior.Description="诊断严重级别；错误和严重项需要先查看详情再处理。" Width="{StaticResource GscSeverityColumnWidth}">
@@ -161,7 +207,7 @@
                                                     </DataGridTextColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
-                                            <TextBlock Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                            <TextBlock Text="当前没有需要处理的诊断项。&#xA;备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Findings.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                                         </Grid>
                                     </Grid>
                                 </Border>
@@ -196,6 +242,7 @@
                                                 </Grid>
                                                 <TextBlock Text="{Binding SelectedFinding.GameName, TargetNullValue=选择一条诊断项查看详情}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                                 <TextBlock Text="{Binding SelectedFinding.Title, TargetNullValue=暂无标题}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                <TextBlock Text="{Binding SelectedFinding.EvidenceTimeRelativeDisplay, TargetNullValue=证据时间未知}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,5,0,0" ToolTip="{Binding SelectedFinding.EvidenceTimeFullDisplay}" AutomationProperties.HelpText="{Binding SelectedFinding.EvidenceTimeFullDisplay}"/>
                                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
                                                     <TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                                 </Border>
@@ -292,7 +339,7 @@
                                                 <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="数据与备份目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="可访问" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.DataDirectory}" Style="{StaticResource MaintenancePathText}" ToolTip="{Binding EffectiveSettings.DataDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"/></StackPanel></Border>
                                                 <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="媒体目录" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.UnassignedMediaCount, StringFormat={}{0} 项待归类}" Foreground="{DynamicResource GscWarningBrush}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding EffectiveSettings.MediaArchiveDirectory}" Style="{StaticResource MaintenancePathText}" ToolTip="{Binding EffectiveSettings.MediaArchiveDirectory}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"/></StackPanel></Border>
                                                 <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,0,8"><StackPanel><TextBlock Text="设备状态" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding DeviceComparisons.Count, StringFormat={}{0} 项需比较}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="人工决策，不自动覆盖远端" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/></StackPanel></Border>
-                                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="恢复巡检" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastStatusDisplay, FallbackValue=尚未运行}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastSuccessfulLocalDisplay, FallbackValue=尚未成功验证}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Snapshot.HealthInspection.LastSummary}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/></StackPanel></Border>
+                                                <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="12" Margin="0,0,8,8"><StackPanel><TextBlock Text="恢复巡检" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="12"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastStatusDisplay, FallbackValue=尚未运行}" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.ProgressDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.CurrentCandidateDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Snapshot.HealthInspection.CurrentCandidateDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastSuccessfulRelativeDisplay, StringFormat=最近成功：{0}}" ToolTip="{Binding Snapshot.HealthInspection.LastSuccessfulFullDisplay}" AutomationProperties.HelpText="{Binding Snapshot.HealthInspection.LastSuccessfulFullDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastCompletedRelativeDisplay, StringFormat=最近完成：{0}}" ToolTip="{Binding Snapshot.HealthInspection.LastCompletedFullDisplay}" AutomationProperties.HelpText="{Binding Snapshot.HealthInspection.LastCompletedFullDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.NextPlanRelativeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Snapshot.HealthInspection.NextPlanFullDisplay}" AutomationProperties.HelpText="{Binding Snapshot.HealthInspection.NextPlanFullDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/><TextBlock Text="{Binding Snapshot.HealthInspection.LastSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Snapshot.HealthInspection.LastSummary}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/></StackPanel></Border>
                                             </UniformGrid>
                                         </StackPanel>
                                     </Border>
@@ -308,7 +355,7 @@
                                             <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
                                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                 <TextBlock Text="{Binding EnvironmentCheck.Summary}" Foreground="{DynamicResource GscInfoBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding EnvironmentCheck.Summary}" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding EnvironmentCheck.CheckedLocalDisplay, StringFormat=最近检查：{0}}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="12,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding EnvironmentCheck.CheckedLocalDisplay, StringFormat=最近检查：{0}}"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding EnvironmentCheck.CheckedRelativeDisplay, StringFormat=最近检查：{0}}" ToolTip="{Binding EnvironmentCheck.CheckedFullDisplay, StringFormat=最近检查：{0}}" AutomationProperties.HelpText="{Binding EnvironmentCheck.CheckedFullDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="12,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                             </Grid>
                                             <Expander x:Name="EnvironmentCheckDisclosure" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GscDisclosureCard}" Header="首次环境检查" Margin="0,10,0,0">
                                                 <StackPanel Margin="0,6,0,0">
@@ -352,7 +399,7 @@
                                             <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
                                             <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
-                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="生成不包含存档、媒体和凭据的脱敏 ZIP"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="先预览类别和脱敏范围；确认后生成，不包含存档、媒体和凭据"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyMaintenanceReportCommand}" Content="复制健康报告" Margin="0,0,8,8" ToolTip="生成用户可读健康报告并复制到剪贴板"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExportMaintenanceReportCommand}" Content="导出健康报告" Margin="0,0,8,8" ToolTip="导出为 TXT 或 Markdown 用户可读健康报告"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RunIntegrityCheckCommand}" Content="完整性自检" Margin="0,0,8,8"/>
@@ -416,12 +463,44 @@
                                                             <TextBox Style="{StaticResource GscWpfUiTextBox}" Text="{Binding PathRemapNewRoot, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,10"/>
                                                             <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding RunPathRemapCommand}" Content="执行路径迁移" HorizontalAlignment="Left"/>
                                                             <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding PathRemapSummary, TargetNullValue=尚未执行路径迁移。}" Margin="0,10,0,0"/>
+                                                            <TextBlock Text="路径对照预览" FontWeight="SemiBold" Margin="0,12,0,0"/>
+                                                            <TextBlock Text="迁移后路径会写入索引与 Worker 设置；确认前不会写入用户目录，也不会移动文件。点击路径单元格后可 Ctrl+A/C 复制完整路径。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,8"/>
+                                                            <DataGrid x:Name="PathRemapPreviewGrid" Tag="FiniteViewport" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding PathRemapPreview.Items}" MaxHeight="260" MinHeight="60" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True" CanUserAddRows="False" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" SelectionMode="Single" SelectionUnit="CellOrRowHeader" ToolTip="点击路径单元格后可 Ctrl+A/C 复制完整路径" AutomationProperties.Name="路径迁移预览" AutomationProperties.HelpText="显示原路径与迁移后路径；预览不会写入用户目录。">
+                                                                <DataGrid.Columns>
+                                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="类别" Binding="{Binding Category}" Width="90" MinWidth="78"/>
+                                                                    <DataGridTemplateColumn Header="原路径" Width="1.15*" MinWidth="180">
+                                                                        <DataGridTemplateColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBox Text="{Binding OldPathDisplay, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0" TextWrapping="NoWrap" ToolTip="{Binding OldPathDisplay}"/>
+                                                                            </DataTemplate>
+                                                                        </DataGridTemplateColumn.CellTemplate>
+                                                                    </DataGridTemplateColumn>
+                                                                    <DataGridTemplateColumn Header="将写入路径（仅预览）" Width="1.15*" MinWidth="180">
+                                                                        <DataGridTemplateColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBox Text="{Binding NewPathDisplay, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0" TextWrapping="NoWrap" Foreground="{DynamicResource GscAccentBrush}" ToolTip="{Binding NewPathDisplay}"/>
+                                                                            </DataTemplate>
+                                                                        </DataGridTemplateColumn.CellTemplate>
+                                                                    </DataGridTemplateColumn>
+                                                                    <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="目标状态" Binding="{Binding TargetStateDisplay}" Width="140" MinWidth="130"/>
+                                                                </DataGrid.Columns>
+                                                            </DataGrid>
+                                                            <TextBlock Text="暂无路径需要迁移。" IsHitTestVisible="False" Margin="0,8,0,0">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding PathRemapPreview.Items.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
                                                         </StackPanel>
                                                     </Border>
                                                     <Border Grid.Row="10" Grid.ColumnSpan="2" Style="{DynamicResource GscDiagnosticHintBubble}" Padding="12" Margin="0,8,0,0">
                                                         <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding TaskReconcileSummary, TargetNullValue=尚未协调中断任务。}"/>
                                                     </Border>
-                                                    <ui:WorkspaceStatePresenter Grid.Row="11" Grid.ColumnSpan="2" State="Degraded" Title="云端处于降级状态" Message="已启用云端上传，但 Rclone 当前不可用；本地备份和恢复仍可正常使用。" Margin="0,12,0,0" IsHitTestVisible="False">
+                                                    <ui:WorkspaceStatePresenter Grid.Row="11" Grid.ColumnSpan="2" State="Degraded" Title="云端功能暂时受限" Message="云端上传已启用，但云端工具或远端配置当前不可用；本地备份和恢复仍可正常使用。" Margin="0,12,0,0" IsHitTestVisible="False">
                                                         <ui:WorkspaceStatePresenter.Style>
                                                             <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -490,37 +569,60 @@
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1" Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="1.2*"/><ColumnDefinition Width="1*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                         <ComboBox Grid.Column="0" Width="160" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding CloudTransferStateOptions}" SelectedValue="{Binding CloudTransferStateFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Code" SelectionChanged="OnCloudTransferFilterSelectionChanged" ToolTip="按云端队列状态筛选" AutomationProperties.Name="云端队列状态筛选"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" Style="{DynamicResource GscComboBoxLongText}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
                         <ComboBox Grid.Column="1" Width="120" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding CloudTransferKindOptions}" SelectedValue="{Binding CloudTransferKindFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Code" SelectionChanged="OnCloudTransferFilterSelectionChanged" ToolTip="按备份或媒体筛选" AutomationProperties.Name="云端队列类型筛选"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" Style="{DynamicResource GscComboBoxLongText}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
-                        <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshCloudTransfersCommand}" Content="刷新队列" Margin="8,0,0,0" AutomationProperties.Name="刷新云端队列"/>
-                        <ui:Button x:Name="CloudTransferCompactDetailsButton" Grid.Column="3" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看详情 ›" HorizontalAlignment="Right" Visibility="Collapsed" Click="OnCloudTransferCompactDetailsClick" AutomationProperties.Name="查看或收起云端队列详情"/>
+                        <TextBox Grid.Column="2" MinWidth="96" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CloudTransferGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="8,0,0,0" ToolTip="按游戏名称或 Playnite ID 筛选" AutomationProperties.Name="云端队列游戏筛选"/>
+                        <TextBox Grid.Column="3" MinWidth="96" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CloudTransferSourceDeviceFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="8,0,0,0" ToolTip="按来源设备精确筛选；留空显示全部设备" AutomationProperties.Name="云端队列来源设备筛选"/>
+                        <ComboBox Grid.Column="4" Width="130" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding CloudTransferTimeFilterOptions}" SelectedValue="{Binding CloudTransferTimeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Code" SelectionChanged="OnCloudTransferFilterSelectionChanged" ToolTip="按最后更新时间筛选" AutomationProperties.Name="云端队列时间筛选"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" Style="{DynamicResource GscComboBoxLongText}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                        <ui:Button Grid.Column="5" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshCloudTransfersCommand}" Content="刷新队列" Margin="8,0,0,0" AutomationProperties.Name="刷新云端队列"/>
+                        <ui:Button Grid.Column="6" Command="{Binding ClearCloudTransferFiltersCommand}" Content="清除" Margin="8,0,0,0" ToolTip="清除状态、类型、游戏、来源设备和时间筛选；不改变队列记录" AutomationProperties.Name="清除云端队列筛选">
+                            <ui:Button.Style>
+                                <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiToolbarButton}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers><DataTrigger Binding="{Binding CloudTransferHasActiveFilters}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </ui:Button.Style>
+                        </ui:Button>
+                        <ui:Button x:Name="CloudTransferCompactDetailsButton" Grid.Column="7" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看详情 ›" HorizontalAlignment="Right" Visibility="Collapsed" Click="OnCloudTransferCompactDetailsClick" AutomationProperties.Name="查看或收起云端队列详情"/>
                     </Grid>
                     <Grid x:Name="CloudTransfersLayout" Grid.Row="2" Margin="0,0,0,12">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Border x:Name="CloudTransferTableFrame" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignTableFrame}">
                             <Grid>
-                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                                 <Grid Grid.Row="0" Margin="12,2,12,8">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock Text="传输明细" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="10,0,0,0" Padding="8,3" VerticalAlignment="Center"><TextBlock Text="{Binding CloudTransferLoadedSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Border>
+                                        <Border Style="{DynamicResource GscRedesignContextPill}" Margin="10,0,0,0" Padding="8,3" VerticalAlignment="Center" ToolTip="{Binding CloudTransferStateDetail}"><TextBlock Text="{Binding CloudTransferLoadedSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Border>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1" Text="{Binding CloudTransferViewSummary.QueueControlDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudTransferViewSummary.QueueControlDisplay}"/>
                                 </Grid>
-                                <Grid Grid.Row="1">
+                                <Border x:Name="CloudTransferStaleBanner" Grid.Row="1" Padding="10" Margin="0,0,0,8">
+                                    <Border.Style>
+                                        <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers><DataTrigger Binding="{Binding CloudTransferStaleVisible}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <StackPanel><TextBlock Text="云端队列显示已过期" FontWeight="SemiBold"/><TextBlock Text="{Binding CloudTransferStateDetail}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,8,0"/></StackPanel>
+                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshCloudTransfersCommand}" Content="重试" AutomationProperties.Name="重试读取云端队列" Margin="8,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                                <Grid Grid.Row="2">
                                     <DataGrid x:Name="CloudTransferGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding CloudTransferItems}" SelectedItem="{Binding SelectedCloudTransfer, Mode=TwoWay}" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" SelectionChanged="OnCloudTransferSelectionChanged">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="状态" Binding="{Binding StateDisplay, Converter={StaticResource GscStatusGlyphConverter}}" Width="112" MinWidth="102"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                            <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="阶段" Binding="{Binding QueuePhaseDisplay, Converter={StaticResource GscStatusGlyphConverter}}" Width="112" MinWidth="102"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn Header="类型" Binding="{Binding KindDisplay}" Width="70" MinWidth="60"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="150" MinWidth="120"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn Header="保证级别" Binding="{Binding GuaranteeLevelDisplay}" Width="*" MinWidth="190"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                             <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="状态详情" Binding="{Binding DetailDisplay}" Width="1.1*" MinWidth="210"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                    <TextBlock Text="暂无符合筛选条件的云端传输记录。&#xA;上传成功不代表远端已校验，请选择记录查看保证级别。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CloudTransferItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    <TextBlock Text="{Binding CloudTransferEmptyStateMessage, Mode=OneWay}" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding CloudTransferItems.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -531,16 +633,43 @@
                                     <TextBlock Text="{Binding SelectedCloudTransfer.GameName, TargetNullValue=尚未选择传输记录}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.GameName}" Margin="0,4,0,0"/>
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
                                         <StackPanel>
-                                            <TextBlock Text="{Binding SelectedCloudTransfer.GuaranteeLevelDisplay, TargetNullValue=选择一条记录查看远端保证级别}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.QueuePhaseDisplay, TargetNullValue=选择一条记录查看队列阶段}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.GuaranteeLevelDisplay, TargetNullValue=选择一条记录查看远端保证级别}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                             <TextBlock Text="{Binding SelectedCloudTransfer.DetailDisplay, TargetNullValue=暂无状态详情}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.NetworkRecoveryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,5,0,0" AutomationProperties.Name="网络恢复反馈" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.NetworkRecoveryDisplay}"/>
                                         </StackPanel>
                                     </Border>
-                                    <TextBlock Text="错误码" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastErrorCode, TargetNullValue=无}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.LastErrorCode}"/>
-                                    <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastError, TargetNullValue=无}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                    <TextBlock Text="远端对象" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.RemoteObjectDisplay, TargetNullValue=未知}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.RemoteObjectDisplay, TargetNullValue=未知}"/>
+                                    <TextBlock Text="来源设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.SourceDeviceDisplay, TargetNullValue=未知设备}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.SourceDeviceDisplay, TargetNullValue=未知设备}"/>
+                                    <TextBlock Text="最后尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastAttemptRelativeDisplay, TargetNullValue=未知}" ToolTip="{Binding SelectedCloudTransfer.LastAttemptFullDisplay, TargetNullValue=未知}" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.LastAttemptFullDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="最后成功校验" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.LastSuccessfulVerificationRelativeDisplay, TargetNullValue=未知}" ToolTip="{Binding SelectedCloudTransfer.LastSuccessfulVerificationFullDisplay, TargetNullValue=未知}" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.LastSuccessfulVerificationFullDisplay, TargetNullValue=未知}" TextWrapping="Wrap"/>
+                                    <Border Padding="10" Margin="0,14,0,0">
+                                        <Border.Style>
+                                            <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding SelectedCloudTransfer.HasRecognizedFailure}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.FailureCategoryDisplay}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.FailureNextStepDisplay}" TextWrapping="Wrap" Margin="0,4,0,0" Style="{DynamicResource GscDiagnosticHintText}"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Expander Style="{StaticResource GscDisclosureCard}" Header="原始诊断" IsExpanded="False" Margin="0,10,0,0" AutomationProperties.Name="展开原始云端诊断">
+                                        <StackPanel>
+                                            <TextBlock Text="错误码" Style="{DynamicResource GscCaptionStyle}"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.LastErrorCode, TargetNullValue=无}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedCloudTransfer.LastErrorCode}"/>
+                                            <TextBlock Text="错误详情" Style="{DynamicResource GscCaptionStyle}" Margin="0,8,0,3"/>
+                                            <TextBlock Text="{Binding SelectedCloudTransfer.LastError, TargetNullValue=无}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                        </StackPanel>
+                                    </Expander>
                                     <TextBlock Text="下一次尝试" Style="{DynamicResource GscCaptionStyle}" Margin="0,10,0,3"/>
-                                    <TextBlock Text="{Binding SelectedCloudTransfer.NextAttemptLocal, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue=暂无自动重试}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.RetryTimingRelativeDisplay}" ToolTip="{Binding SelectedCloudTransfer.RetryTimingFullDisplay}" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.RetryTimingFullDisplay}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCloudTransfer.ManualRetryScopeDisplay, TargetNullValue=选择记录查看手动重试范围}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="手动重试范围" AutomationProperties.HelpText="{Binding SelectedCloudTransfer.ManualRetryScopeDisplay, TargetNullValue=选择记录查看手动重试范围}"/>
                                     <Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,14,0,0"><TextBlock Text="远端校验只读取并比对远端内容，不上传、不覆盖本地存档或媒体。认证失败不会被当作可自动重试的上传。" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap"/></Border>
                                     <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8">
                                         <Grid>
@@ -560,8 +689,12 @@
                                         </Grid>
                                     </Border>
                                     <WrapPanel Margin="0,14,0,0">
-                                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding VerifyCloudTransferCommand}" Content="校验远端内容" ToolTip="只读校验远端内容，不会上传或覆盖" AutomationProperties.Name="校验远端内容" Margin="0,0,8,8"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryCloudUploadCommand}" Content="重试上传" ToolTip="只重新提交失败或已排队的上传" AutomationProperties.Name="重试云端上传" Margin="0,0,0,8"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding VerifyCloudTransferCommand}" ToolTip="只读校验远端内容，不会上传或覆盖" AutomationProperties.Name="校验远端内容" Margin="0,0,8,8">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="校验远端内容" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryCloudUploadCommand}" ToolTip="仅重试当前选中的失败或排队上传；不重新执行本地备份" AutomationProperties.Name="重试当前选中的云端上传" Margin="0,0,0,8">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionUpload}"/><TextBlock Text="重试上传" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
@@ -618,7 +751,7 @@
                             <ui:Button x:Name="MaintenanceDeviceCompactDetailsButton" Grid.Row="2" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看设备详情 ›" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,8,8,0" Visibility="Collapsed" Click="OnMaintenanceDeviceCompactDetailsClick" AutomationProperties.Name="查看或收起所选设备详情"/>
                         </Grid>
                     </Border>
-                    <ScrollViewer x:Name="MaintenanceDeviceInspectorScrollViewer" Grid.Row="2" Grid.Column="2" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch" Margin="0,10,0,0" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnCompactInspectorPreviewKeyDown"><Border Style="{DynamicResource GscRedesignSectionCard}" Padding="14"><StackPanel><TextBlock Text="冲突决策" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="{Binding SelectedDeviceComparison.GameName, TargetNullValue=尚未选择冲突记录}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedDeviceComparison.GameName}" Margin="0,4,0,0"/><Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,12,0,0"><TextBlock Text="两台设备的版本差异不会自动合并或覆盖；请先下载到隔离区并校验远端，再执行安全恢复。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/></Border><TextBlock Text="决策" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,6"/><ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding DeviceDecisionOptions}" SelectedItem="{Binding DeviceDecision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=稍后处理, FallbackValue=稍后处理}" ToolTip="选择设备冲突处理方式" AutomationProperties.Name="设备冲突处理方式"/><TextBlock Text="决策备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,12,0,6"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding DeviceDecisionComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" MaxHeight="120" AcceptsReturn="True" TextWrapping="Wrap" ToolTip="仅记录判断依据" AutomationProperties.Name="设备冲突决策备注"/><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SaveDeviceDecisionCommand}" Content="保存决策" Margin="0,14,0,0" HorizontalAlignment="Left" AutomationProperties.Name="保存设备冲突决策"/><Separator Margin="0,16,0,12"/><TextBlock Text="远端恢复（隔离下载）" Style="{DynamicResource GscCaptionStyle}"/><StackPanel Orientation="Horizontal" Margin="0,8,0,0"><ui:Button Style="{DynamicResource GscWpfUiRemoteRestoreButton}" Command="{Binding StageRemoteBackupCommand}" Content="1 · 下载到隔离区并校验" ToolTip="下载到本机隔离区并校验，不覆盖当前存档" AutomationProperties.Name="下载到隔离区并校验远端备份" Margin="0,0,8,0"/><ui:Button Style="{DynamicResource GscWpfUiRemoteRestoreButton}" Command="{Binding RestoreStagedRemoteBackupCommand}" Content="2 · 快照并恢复" ToolTip="仅恢复已校验的隔离备份，并先创建 PreRestore 快照" AutomationProperties.Name="从已校验远端备份恢复"/></StackPanel><Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8"><TextBlock Text="{Binding RemoteRestoreAvailabilityHint, Mode=OneWay}" Style="{DynamicResource GscActionAvailabilityHintText}" TextWrapping="Wrap" AutomationProperties.Name="{Binding RemoteRestoreAvailabilityHint, Mode=OneWay}" AutomationProperties.HelpText="{Binding RemoteRestoreAvailabilityHint, Mode=OneWay}"/></Border><Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,10,0,0"><TextBlock Text="{Binding StagedRemoteBackupStatus, Mode=OneWay}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" AutomationProperties.Name="远端备份隔离状态"/></Border></StackPanel></Border></ScrollViewer>
+                    <ScrollViewer x:Name="MaintenanceDeviceInspectorScrollViewer" Grid.Row="2" Grid.Column="2" Style="{DynamicResource GscInspectorScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch" Margin="0,10,0,0" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnCompactInspectorPreviewKeyDown"><Border Style="{DynamicResource GscRedesignSectionCard}" Padding="14"><StackPanel><TextBlock Text="冲突决策" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="{Binding SelectedDeviceComparison.GameName, TargetNullValue=尚未选择冲突记录}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedDeviceComparison.GameName}" Margin="0,4,0,0"/><Border Style="{DynamicResource GscRedesignSubCard}" Margin="0,12,0,0"><TextBlock Text="两台设备的版本差异不会自动合并或覆盖；请先下载到隔离区并校验远端，再执行安全恢复。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/></Border><TextBlock Text="决策" Style="{DynamicResource GscCaptionStyle}" Margin="0,14,0,6"/><ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding DeviceDecisionOptions}" SelectedItem="{Binding DeviceDecision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=稍后处理, FallbackValue=稍后处理}" ToolTip="选择设备冲突处理方式" AutomationProperties.Name="设备冲突处理方式"/><TextBlock Text="决策备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,12,0,6"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding DeviceDecisionComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" MaxHeight="120" AcceptsReturn="True" TextWrapping="Wrap" ToolTip="仅记录判断依据" AutomationProperties.Name="决策备注"/><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SaveDeviceDecisionCommand}" Content="保存决策" Margin="0,14,0,0" HorizontalAlignment="Left" AutomationProperties.Name="保存设备冲突决策"/><Separator Margin="0,16,0,12"/><TextBlock Text="远端恢复（隔离下载）" Style="{DynamicResource GscCaptionStyle}"/><StackPanel Orientation="Horizontal" Margin="0,8,0,0"><ui:Button Style="{DynamicResource GscWpfUiRemoteRestoreButton}" Command="{Binding StageRemoteBackupCommand}" Content="1 · 下载到隔离区并校验" ToolTip="下载到本机隔离区并校验，不覆盖当前存档" AutomationProperties.Name="下载到隔离区并校验远端备份" Margin="0,0,8,0"/><ui:Button Style="{DynamicResource GscWpfUiRemoteRestoreButton}" Command="{Binding RestoreStagedRemoteBackupCommand}" Content="2 · 快照并恢复" ToolTip="仅恢复已校验的隔离备份，并先创建 PreRestore 快照" AutomationProperties.Name="从已校验远端备份恢复"/></StackPanel><ProgressBar Minimum="0" Maximum="100" Value="{Binding RemoteBackupStageProgress, Mode=OneWay}" Height="6" Margin="0,10,0,0" AutomationProperties.Name="远端备份隔离下载进度" AutomationProperties.HelpText="{Binding RemoteBackupStageProgress, StringFormat={}{0}%}"><ProgressBar.Style><Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsRemoteBackupStageActive}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ProgressBar.Style></ProgressBar><ui:Button Command="{Binding CancelRemoteBackupStageCommand}" Content="取消下载" ToolTip="取消后等待 Worker 清理隔离区" AutomationProperties.Name="取消远端备份下载" HorizontalAlignment="Left" Margin="0,8,0,0"><ui:Button.Style><Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiToolbarButton}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsRemoteBackupStageActive}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ui:Button.Style></ui:Button><Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8"><TextBlock Text="{Binding RemoteRestoreAvailabilityHint, Mode=OneWay}" Style="{DynamicResource GscActionAvailabilityHintText}" TextWrapping="Wrap" AutomationProperties.Name="{Binding RemoteRestoreAvailabilityHint, Mode=OneWay}" AutomationProperties.HelpText="{Binding RemoteRestoreAvailabilityHint, Mode=OneWay}"/></Border><Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,10,0,0"><TextBlock Text="{Binding StagedRemoteBackupStatus, Mode=OneWay}" ToolTip="{Binding StagedRemoteBackupStatusFullDisplay, Mode=OneWay}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" AutomationProperties.Name="远端备份隔离状态" AutomationProperties.HelpText="{Binding StagedRemoteBackupStatusFullDisplay, Mode=OneWay}"/></Border></StackPanel></Border></ScrollViewer>
                 </Grid>
                 </Grid>
             </TabItem>
@@ -647,12 +780,32 @@
                                 <StackPanel>
                                     <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="备份存储分析" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="只读统计；增长预测为估算。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshStorageAnalysisCommand}" Content="刷新分析"/></Grid>
                                     <UniformGrid x:Name="MaintenanceStorageDemoMetrics" Columns="3" Margin="0,18,0,0">
-                                         <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.VolumeFreeDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="目录实测" Style="{DynamicResource GscCaptionStyle}"/></StackPanel>
-                                         <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.BackupVersionCount, FallbackValue=0}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="索引版本" Style="{DynamicResource GscCaptionStyle}"/></StackPanel>
-                                         <StackPanel><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="容量预估（估算）" Style="{DynamicResource GscCaptionStyle}"/></StackPanel>
+                                         <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.IndexedBackupBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="索引体积" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="SQLite 逻辑大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
+                                         <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="磁盘实测" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="备份目录文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
+                                         <StackPanel><TextBlock Text="{Binding StorageAnalysis.VolumeFreeDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="磁盘剩余" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding StorageAnalysis.VolumeTotalDisplay, FallbackValue=—, StringFormat=容量 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
                                     </UniformGrid>
-                                    <ProgressBar Minimum="0" Maximum="{Binding StorageAnalysis.VolumeTotalBytes}" Value="{Binding StorageAnalysis.RepositoryBytes}" Height="7" Margin="0,18,0,0"/>
-                                    <TextBlock Text="{Binding StorageAnalysis.Summary, TargetNullValue=尚未分析备份存储。}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding StorageAnalysis.Summary}" Margin="0,6,0,0"/>
+                                    <ProgressBar Minimum="0" Maximum="{Binding StorageAnalysis.VolumeTotalBytes}" Value="{Binding StorageAnalysis.RepositoryBytes}" AutomationProperties.Name="备份存储占用比例" Height="7" Margin="0,18,0,0" ToolTip="磁盘实测：备份目录文件大小；索引体积另行统计"/>
+                                    <TextBlock Text="{Binding StorageAnalysis.Summary, TargetNullValue=尚未分析备份存储。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding StorageAnalysis.Summary}" Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding StorageAnalysis.MissingIndexedPathSummary}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                    <TextBlock Text="占用排行（按 SQLite 逻辑大小）" Style="{DynamicResource GscSectionTitleStyle}" Margin="0,14,0,0"/>
+                                    <ItemsControl ItemsSource="{Binding StorageAnalysis.TopGames}" Margin="0,8,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,0,0,6">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                        <StackPanel MinWidth="0">
+                                                            <TextBlock Text="{Binding GameName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                            <TextBlock Text="{Binding BackupBytesDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                        <TextBlock Grid.Column="1" Text="{Binding BackupCount, StringFormat={}{0} 个版本}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="8,0"/>
+                                                        <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiContextButton}" Content="查看游戏" Command="{Binding DataContext.OpenStorageGameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" ToolTip="按稳定 Playnite ID 打开此游戏的存档中心" AutomationProperties.Name="按存储排行打开游戏" Margin="4,0"/>
+                                                        <ui:Button Grid.Column="3" Style="{DynamicResource GscWpfUiContextButton}" Content="查看版本" Command="{Binding DataContext.OpenStorageBackupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" ToolTip="按稳定版本 ID 打开此游戏的最新索引版本" AutomationProperties.Name="按存储排行打开最新版本" Margin="4,0,0,0"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -806,7 +959,7 @@
                                                             <TextBlock Text="{Binding GameName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
                                                             <TextBlock Text="{Binding ArchivePath}" Style="{StaticResource MaintenancePathText}" ToolTip="{Binding ArchivePath}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0"/>
                                                         </StackPanel>
-                                                        <TextBlock Grid.Column="1" Text="{Binding CreatedDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center" Margin="8,0"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding CreatedRelativeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center" Margin="8,0" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}"/>
                                                         <TextBlock Grid.Column="2" Text="{Binding TotalBytesDisplay}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                                         <TextBlock Grid.Column="3" Text="{Binding Reason}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Reason}"/>
                                                     </Grid>
@@ -851,7 +1004,7 @@
                                 <UniformGrid x:Name="MaintenanceLocalMirrorMetrics" Columns="3" Margin="0,14,0,0">
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding LocalMirrorStatus.AvailableDisplay, FallbackValue=不可用}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="状态" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="外置盘在线" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding LocalMirrorStatus.CopiedCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="已同步文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="镜像内文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
-                                    <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="{Binding LocalMirrorStatus.TotalBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="镜像体积" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="{Binding LocalMirrorStatus.LastSyncDisplay, StringFormat=最近同步：{0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="{Binding LocalMirrorStatus.TotalBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="镜像体积" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="{Binding LocalMirrorStatus.LastSyncRelativeDisplay, StringFormat=最近同步：{0}}" ToolTip="{Binding LocalMirrorStatus.LastSyncFullDisplay}" AutomationProperties.HelpText="{Binding LocalMirrorStatus.LastSyncFullDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                 </UniformGrid>
                             </StackPanel>
                         </Border>
@@ -893,7 +1046,7 @@
                             </Border>
                             <DataGrid Grid.Row="1" x:Name="MaintenanceAuditFindingsGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Findings}" SelectedItem="{Binding SelectedFinding}">
                             <DataGrid.Columns><DataGridTemplateColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="等级" Width="{StaticResource GscSeverityColumnWidth}"><DataGridTemplateColumn.CellTemplate><DataTemplate><Border x:Name="SeverityPill" Style="{DynamicResource GscRedesignTableStatusPill}"><TextBlock Text="{Binding SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" HorizontalAlignment="Center"/></Border><DataTemplate.Triggers><DataTrigger Binding="{Binding Severity}" Value="Info"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Warning"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscSafetyFillBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Error"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger><DataTrigger Binding="{Binding Severity}" Value="Critical"><Setter TargetName="SeverityPill" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter TargetName="SeverityPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/></DataTrigger></DataTemplate.Triggers></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn><DataGridTextColumn Header="游戏" Binding="{Binding GameName}" Width="180"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="190"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="详情" Binding="{Binding Detail}" Width="*" MinWidth="320"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns>
-                        </DataGrid><TextBlock Grid.Row="1" Text="当前没有需要处理的诊断项。&#xA;Worker、备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding MaintenanceState}" Value="Empty"><Setter Property="Visibility" Value="Visible"/></DataTrigger><DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                        </DataGrid><TextBlock Grid.Row="1" Text="当前没有需要处理的诊断项。&#xA;备份和媒体状态正常时，这里会保持为空。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding MaintenanceState}" Value="Empty"><Setter Property="Visibility" Value="Visible"/></DataTrigger><DataTrigger Binding="{Binding IsWorkerOffline}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                             <ui:WorkspaceStatePresenter Grid.Row="0" Grid.RowSpan="2" State="{Binding MaintenancePresenterState}" Title="{Binding MaintenanceStateTitle}" Message="{Binding MaintenanceStateMessage}" Detail="{Binding MaintenanceStateDetail}" RetryCommand="{Binding RefreshDiagnosticsCommand}" RetryText="重试">
                                 <ui:WorkspaceStatePresenter.Style>
                                     <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
@@ -936,6 +1089,7 @@
                                     </Grid>
                                     <TextBlock Text="{Binding SelectedFinding.GameName, TargetNullValue=选择一条诊断项查看详情}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                                     <TextBlock Text="{Binding SelectedFinding.Title, TargetNullValue=暂无标题}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                    <TextBlock Text="{Binding SelectedFinding.EvidenceTimeRelativeDisplay, TargetNullValue=证据时间未知}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,5,0,0" ToolTip="{Binding SelectedFinding.EvidenceTimeFullDisplay}" AutomationProperties.HelpText="{Binding SelectedFinding.EvidenceTimeFullDisplay}"/>
                                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0"><TextBlock Text="{Binding SelectedFinding.Detail, TargetNullValue=暂无详细说明}" TextWrapping="Wrap" Foreground="{DynamicResource GscSecondaryTextBrush}"/></Border>
                                     <Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,12,0,0"><TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding SelectedFinding.SuggestedAction, TargetNullValue=暂无建议处理方式}"/></Border>
                                     <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
@@ -957,7 +1111,7 @@
                                 <Border Grid.Row="1" Margin="0,10,0,0" Style="{StaticResource GscTableFrame}" ClipToBounds="True">
                                     <Grid>
                                         <DataGrid x:Name="MaintenanceAuditLogGrid" Style="{StaticResource MaintenanceDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Audit}" MinHeight="260">
-                                            <DataGrid.Columns><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="时间" Binding="{Binding CreatedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm:ss}}" Width="112"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="分类" Binding="{Binding Category}" Width="100"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="消息" Binding="{Binding Message}" Width="*" MinWidth="170"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns>
+                                            <DataGrid.Columns><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="时间" infra:DataGridColumnHeaderHelpBehavior.Description="相对时间；悬停可查看本地时区、完整秒级时间和原始 UTC 值。" Binding="{Binding CreatedRelativeDisplay, Mode=OneWay}" Width="112"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn Header="分类" Binding="{Binding Category}" Width="100"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn><DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="消息" Binding="{Binding Message}" Width="*" MinWidth="170"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn></DataGrid.Columns>
                                         </DataGrid>
                                         <TextBlock Text="暂无审计记录。&#xA;同步、备份和媒体操作完成后会在这里留下时间线。" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Audit.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
                                     </Grid>
@@ -989,7 +1143,7 @@
                                 <Grid.RowDefinitions><RowDefinition x:Name="ProcessMappingEditorPrimaryRow" Height="Auto"/><RowDefinition x:Name="ProcessMappingEditorCompactRow" Height="0"/></Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="ProcessMappingExecutableColumn" Width="*"/><ColumnDefinition x:Name="ProcessMappingEditorGutterColumn" Width="8"/><ColumnDefinition x:Name="ProcessMappingTargetColumn" Width="240"/><ColumnDefinition x:Name="ProcessMappingActionGutterColumn" Width="8"/><ColumnDefinition x:Name="ProcessMappingActionColumn" Width="Auto"/></Grid.ColumnDefinitions>
                                 <TextBox x:Name="ProcessMappingExecutableTextBox" Grid.Column="0" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding ProcessMappingExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入 EXE 文件名，例如 skse64.exe" Margin="0,0,0,8"/>
-                                <ComboBox x:Name="ProcessMappingTargetGameComboBox" Grid.Column="2" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding ProcessMappingTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
+                                <ComboBox x:Name="ProcessMappingTargetGameComboBox" Grid.Column="2" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding ProcessMappingTargetGame}" Margin="0,0,0,8" AutomationProperties.Name="进程映射目标游戏"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
                                 <ui:Button x:Name="ProcessMappingSaveButton" Grid.Column="4" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SaveProcessMappingCommand}" Content="绑定" Margin="0,0,0,8"/>
                             </Grid>
                         </Grid>

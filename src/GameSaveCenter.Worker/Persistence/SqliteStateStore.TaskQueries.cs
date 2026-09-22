@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using GameSaveCenter.Contracts;
 using Microsoft.Data.Sqlite;
 
@@ -18,7 +19,7 @@ public sealed partial class SqliteStateStore
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,elapsed_seconds,monotonic_started_timestamp,monotonic_frequency,error_code,error_message,restore_report_json,source_references_json,progress_completed_units,progress_total_units,progress_unit,progress_rate,progress_eta_seconds,progress_updated_utc
 FROM tasks
 WHERE state IN ($queued,$running,$waiting)
 ORDER BY created_utc DESC,task_id DESC;";
@@ -42,7 +43,7 @@ ORDER BY created_utc DESC,task_id DESC;";
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = $@"
-SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,created_utc,started_utc,finished_utc,error_code,error_message
+SELECT task_id,request_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,elapsed_seconds,monotonic_started_timestamp,monotonic_frequency,error_code,error_message,restore_report_json,source_references_json,progress_completed_units,progress_total_units,progress_unit,progress_rate,progress_eta_seconds,progress_updated_utc
 FROM tasks
 WHERE {filter.Sql}
 ORDER BY created_utc DESC,task_id DESC
@@ -186,7 +187,7 @@ WHERE state=$state AND finished_utc IS NOT NULL
         foreach (var parameter in parameters) command.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
     }
 
-    private static TaskStatusDto ReadTask(SqliteDataReader reader)
+    private TaskStatusDto ReadTask(SqliteDataReader reader)
         => new TaskStatusDto
         {
             TaskId = reader.GetString(0),
@@ -199,11 +200,26 @@ WHERE state=$state AND finished_utc IS NOT NULL
             State = (TaskState)reader.GetInt32(7),
             ProgressPercent = reader.GetInt32(8),
             Message = reader.IsDBNull(9) ? string.Empty : reader.GetString(9),
-            CreatedUtc = DateTime.Parse(reader.GetString(10)).ToUniversalTime(),
-            StartedUtc = reader.IsDBNull(11) ? null : DateTime.Parse(reader.GetString(11)).ToUniversalTime(),
-            FinishedUtc = reader.IsDBNull(12) ? null : DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
-            ErrorCode = reader.IsDBNull(13) ? string.Empty : reader.GetString(13),
-            ErrorMessage = reader.IsDBNull(14) ? string.Empty : reader.GetString(14)
+            StageMessage = reader.IsDBNull(10) ? string.Empty : reader.GetString(10),
+            CancellationState = reader.IsDBNull(11) ? string.Empty : reader.GetString(11),
+            CreatedUtc = DateTime.Parse(reader.GetString(12)).ToUniversalTime(),
+            StartedUtc = reader.IsDBNull(13) ? null : DateTime.Parse(reader.GetString(13)).ToUniversalTime(),
+            FinishedUtc = reader.IsDBNull(14) ? null : DateTime.Parse(reader.GetString(14)).ToUniversalTime(),
+            ElapsedSeconds = reader.IsDBNull(15) ? null : reader.GetDouble(15),
+            MonotonicStartedTimestamp = reader.IsDBNull(16) ? 0 : reader.GetInt64(16),
+            MonotonicFrequency = reader.IsDBNull(17) ? 0 : reader.GetInt64(17),
+            ErrorCode = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+            ErrorMessage = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+            RestoreReport = reader.IsDBNull(20) || string.IsNullOrWhiteSpace(reader.GetString(20))
+                ? null
+                : JsonSerializer.Deserialize<RestoreReportDto>(reader.GetString(20), _json),
+            SourceReferences = DeserializeTaskSourceReferences(reader.IsDBNull(21) ? string.Empty : reader.GetString(21)),
+            ProgressCompletedUnits = reader.IsDBNull(22) ? -1 : reader.GetInt64(22),
+            ProgressTotalUnits = reader.IsDBNull(23) ? -1 : reader.GetInt64(23),
+            ProgressUnit = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
+            ProgressRatePerSecond = reader.IsDBNull(25) ? 0 : reader.GetDouble(25),
+            ProgressEtaSeconds = reader.IsDBNull(26) ? null : reader.GetDouble(26),
+            ProgressUpdatedUtc = reader.IsDBNull(27) ? null : DateTime.Parse(reader.GetString(27)).ToUniversalTime()
         };
 
     private static string EncodeTaskCursor(DateTime createdUtc, string taskId)

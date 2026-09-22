@@ -5,7 +5,13 @@
     <UseWPF>true</UseWPF>
     <IsPackable>false</IsPackable>
     <StartupObject>GameSaveCenter.RenderHarness.Program</StartupObject>
+    <GscSourceRoot Condition="'$(GscSourceRoot)' == ''">$(GSC_SOURCE_ROOT)</GscSourceRoot>
+    <GscSourceRoot Condition="'$(GscSourceRoot)' == ''">$(MSBuildProjectDirectory)\..\..</GscSourceRoot>
   </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="GscSourceRoot" Value="$(GscSourceRoot)" />
+    <AssemblyMetadata Include="GscBuildCommit" Value="$(GscBuildCommit)" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj" />
   </ItemGroup>

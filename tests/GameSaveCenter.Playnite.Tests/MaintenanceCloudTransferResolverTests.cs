@@ -86,6 +86,31 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void CloudTransferActionUsesRelativeTimingWithFullEvidenceAndKeepsUnknownStates()
+        {
+            var cloud = new MaintenanceActionItem
+            {
+                ActionKind = MaintenanceActionKind.CloudTransfer,
+                LastAttemptDisplay = "3 分钟前",
+                LastAttemptFullDisplay = "2026-09-08 20:00:00 (UTC+08:00) · 2026-09-08T12:00:00.0000000Z",
+                NextAttemptDisplay = "约 12 分钟后",
+                NextAttemptFullDisplay = "2026-09-08 20:15:00 (UTC+08:00) · 2026-09-08T12:15:00.0000000Z · 约 12 分钟后"
+            };
+            var unknownSummary = new CloudTransferSummaryDto();
+            var expiredSummary = new CloudTransferSummaryDto
+            {
+                NextAttemptUtc = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            };
+
+            Assert.Equal("上次尝试：3 分钟前 · 下次尝试：约 12 分钟后", cloud.TimingDisplay);
+            Assert.Contains("2026-09-08T12:00:00.0000000Z", cloud.TimingFullDisplay);
+            Assert.Contains("2026-09-08T12:15:00.0000000Z", cloud.TimingFullDisplay);
+            Assert.Equal("按队列状态", unknownSummary.NextAttemptRelativeDisplay);
+            Assert.Equal("可立即重试", expiredSummary.NextAttemptRelativeDisplay);
+            Assert.Contains("2020-01-01T00:00:00.0000000Z", expiredSummary.NextAttemptFullDisplay);
+        }
+
+        [Fact]
         public void MaintenanceOverviewGroupsActionsAndBoundsTheDefaultPreview()
         {
             var items = new List<MaintenanceActionItem>

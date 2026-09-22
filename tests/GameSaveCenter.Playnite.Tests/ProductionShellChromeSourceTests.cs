@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -337,6 +338,193 @@ public sealed class ProductionShellChromeSourceTests
         thread.Join();
 
         Assert.Null(exception);
+    }
+
+    [Fact]
+    public void CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation()
+    {
+        Exception? exception = null;
+        var selectedBeforeCollapse = false;
+        var selectedAfterCollapse = false;
+        var selectedAfterExpand = false;
+        var collapsedWidth = 0d;
+        var taskLabelVisibility = Visibility.Visible;
+        var taskIconVisibility = Visibility.Collapsed;
+        var collapseToolTip = string.Empty;
+        var collapseAutomationName = string.Empty;
+        var navigationChecks = 0;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => false,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.UpdateLayout();
+
+                var taskNav = Assert.IsType<System.Windows.Controls.RadioButton>(shell.FindName("NavTasks"));
+                taskNav.IsChecked = true;
+                shell.UpdateLayout();
+                selectedBeforeCollapse = taskNav.IsChecked == true;
+
+                var navigation = new[]
+                {
+                    ("NavOverview", "NavOverviewContent", "NavOverviewLabel"),
+                    ("NavSaves", "NavSavesContent", "NavSavesLabel"),
+                    ("NavTrainers", "NavTrainersContent", "NavTrainersLabel"),
+                    ("NavMedia", "NavMediaContent", "NavMediaLabel"),
+                    ("NavTasks", "NavTasksContent", "NavTasksLabel"),
+                    ("NavMaintenance", "NavMaintenanceContent", "NavMaintenanceLabel"),
+                    ("NavSettings", "NavSettingsContent", "NavSettingsLabel")
+                };
+                foreach (var (buttonName, contentName, labelName) in navigation)
+                {
+                    var button = Assert.IsType<System.Windows.Controls.RadioButton>(shell.FindName(buttonName));
+                    var content = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName(contentName));
+                    var label = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName(labelName));
+                    Assert.True(button.IsTabStop);
+                    Assert.NotNull(button.ToolTip);
+                    Assert.False(string.IsNullOrWhiteSpace(AutomationProperties.GetName(button)));
+                    Assert.Equal(Visibility.Visible, content.Visibility);
+                    Assert.NotEmpty(content is System.Windows.Controls.Panel panel && panel.Children.Count > 0
+                        ? panel.Children.OfType<UIElement>().Select(child => child.Visibility.ToString())
+                        : Array.Empty<string>());
+                    Assert.NotEqual(Visibility.Hidden, label.Visibility);
+                    navigationChecks++;
+                }
+
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                shell.UpdateLayout();
+
+                selectedAfterCollapse = taskNav.IsChecked == true;
+                collapsedWidth = shell.SidebarWidthForAudit;
+                taskLabelVisibility = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("NavTasksLabel")).Visibility;
+                var taskContent = Assert.IsAssignableFrom<System.Windows.Controls.Panel>(shell.FindName("NavTasksContent"));
+                taskIconVisibility = taskContent.Children.OfType<UIElement>().First().Visibility;
+                collapseToolTip = shell.SidebarCollapseButtonForAudit.ToolTip?.ToString() ?? string.Empty;
+                collapseAutomationName = AutomationProperties.GetName(shell.SidebarCollapseButtonForAudit);
+
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                shell.UpdateLayout();
+                selectedAfterExpand = taskNav.IsChecked == true;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(selectedBeforeCollapse);
+        Assert.True(selectedAfterCollapse);
+        Assert.True(selectedAfterExpand);
+        Assert.Equal(72d, collapsedWidth);
+        Assert.Equal(Visibility.Collapsed, taskLabelVisibility);
+        Assert.Equal(Visibility.Visible, taskIconVisibility);
+        Assert.Equal("展开导航栏", collapseToolTip);
+        Assert.Equal("展开导航栏", collapseAutomationName);
+        Assert.Equal(7, navigationChecks);
+    }
+
+    [Fact]
+    public void ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels()
+    {
+        Exception? exception = null;
+        var sidebarWidth = 0d;
+        var mainPageWidth = 0d;
+        var brandIconBounds = Rect.Empty;
+        var badgeBounds = Rect.Empty;
+        var badgeVisibility = Visibility.Collapsed;
+        var longLabelVisibility = Visibility.Collapsed;
+        var shellClipsSidebar = false;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => false,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.UpdateLayout();
+
+                var longLabel = Assert.IsType<System.Windows.Controls.TextBlock>(shell.FindName("NavTasksLabel"));
+                longLabel.Text = "任务与同步恢复中心";
+                shell.UpdateLayout();
+
+                var sidebar = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarSurface"));
+                var brandIcon = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarBrandIcon"));
+                var badge = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarProductionBadge"));
+                var mainPage = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("MainPageHost"));
+                sidebarWidth = shell.SidebarWidthForAudit;
+                mainPageWidth = mainPage.ActualWidth;
+                badgeVisibility = badge.Visibility;
+                longLabelVisibility = longLabel.Visibility;
+                shellClipsSidebar = sidebar.ClipToBounds;
+                brandIconBounds = brandIcon.TransformToAncestor(shell).TransformBounds(
+                    new Rect(0, 0, brandIcon.ActualWidth, brandIcon.ActualHeight));
+                badgeBounds = badge.TransformToAncestor(shell).TransformBounds(
+                    new Rect(0, 0, badge.ActualWidth, badge.ActualHeight));
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(270d, sidebarWidth);
+        Assert.True(mainPageWidth > 0);
+        Assert.Equal(Visibility.Visible, badgeVisibility);
+        Assert.Equal(Visibility.Visible, longLabelVisibility);
+        Assert.True(shellClipsSidebar);
+        Assert.False(brandIconBounds.IntersectsWith(badgeBounds));
     }
 
     [Fact]

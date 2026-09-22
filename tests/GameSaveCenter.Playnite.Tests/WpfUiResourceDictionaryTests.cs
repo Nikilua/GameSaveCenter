@@ -224,6 +224,7 @@ public sealed class WpfUiResourceDictionaryTests
             "GscIconNavTasks", "GscIconNavMaintenance", "GscIconNavSettings",
             "GscIconActionBackup", "GscIconActionBrowseFolder", "GscIconActionHistory",
             "GscIconActionRefresh", "GscIconActionRestore", "GscIconActionRun",
+            "GscIconActionUpload", "GscIconActionVerify", "GscIconActionCategorize", "GscIconActionIgnore",
             "GscIconSectionAppearance", "GscIconSectionAutomation", "GscIconSectionBackupRestore",
             "GscIconSectionGeneralDirectory", "GscIconSectionMigration", "GscIconStatusError", "GscIconStatusInfo",
             "GscIconStatusSuccess", "GscIconStatusWarning"
@@ -537,7 +538,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ApplySettingsMaterialResources", paletteSource);
         Assert.Contains("resources[\"GscPickerScrimBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscPopupAllowsTransparency\"] = glassEnabled", paletteSource);
-        Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
+        Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled && !palette.IsHighContrast ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
         Assert.Contains("if (!enabled) return null;", paletteSource);
         Assert.Contains("highContrast ? accent", paletteSource);
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", dashboard);
@@ -859,7 +860,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Command=\"{Binding ValidateCommand}\"", dashboard);
         Assert.Contains("Command=\"{Binding DetectPathsCommand}\"", dashboard);
         Assert.Contains("Click=\"OnTogglePolicy\"", dashboard);
-        Assert.Contains("Header=\"时间\" Binding=\"{Binding CreatedLocal", saves);
+
+        var saveDocument = XDocument.Parse(saves);
+        var timeColumn = saveDocument.Descendants().Single(element =>
+            element.Name.LocalName == "DataGridTextColumn"
+            && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "SaveHistoryTimeColumn");
+        Assert.Equal("时间", timeColumn.Attribute("Header")?.Value);
+        Assert.Equal("{Binding CreatedRelativeDisplay, Mode=OneWay}", timeColumn.Attribute("Binding")?.Value);
+        Assert.Contains("CreatedFullDisplay", saves);
     }
 
     [LegacyProductionUiBaselineFact]
@@ -1135,7 +1143,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Where(element => element.Name.LocalName == "DataGrid")
             .ToList();
 
-        Assert.Equal(6, dataGrids.Count);
+        Assert.Equal(7, dataGrids.Count);
 
         foreach (var dataGrid in dataGrids)
         {
@@ -1218,7 +1226,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
         Assert.Contains("x:Name=\"MediaInboxTableFrame\" Style=\"{StaticResource MediaTableFrame}\" Padding=\"14,12,14,12\"", media);
         Assert.Contains("x:Name=\"MediaInboxFooter\" Grid.Row=\"2\" Margin=\"0,10,0,0\"", media);
-        Assert.Contains("x:Name=\"MediaInboxSecondaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Center\" Margin=\"0,8,0,0\"", media);
+        Assert.Contains("x:Name=\"MediaFilterPresetRow\" Grid.Row=\"0\"", media);
+        Assert.Contains("x:Name=\"MediaInboxAvailabilityBand\" Grid.Row=\"1\"", media);
+        Assert.Contains("x:Name=\"MediaInboxSecondaryActions\" Grid.Row=\"3\" VerticalAlignment=\"Center\" Margin=\"0,8,0,0\"", media);
         Assert.Contains("x:Name=\"MediaTabControl\" Grid.Row=\"1\" SelectedIndex=\"{Binding MediaTabIndex, Mode=TwoWay}\" MinWidth=\"0\" MinHeight=\"0\" Margin=\"8,0,8,0\"", media);
         Assert.Contains("<Setter Property=\"Padding\" Value=\"16,8\"/>", media);
         Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);
@@ -2544,7 +2554,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveCompareLayout\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareRetentionScrollViewer\"", saveText);
         Assert.Contains("x:Name=\"SaveCompareMainScrollViewer\"", saveText);
-        Assert.Contains("{Binding LastBackupDiff.Added.Count", saveText);
+        Assert.Contains("{Binding DiffAddedMatchCount", saveText);
+        Assert.Contains("{Binding DiffModifiedMatchCount", saveText);
+        Assert.Contains("{Binding DiffRemovedMatchCount", saveText);
+        Assert.Contains("ItemsSource=\"{Binding DiffAddedPaths}\"", saveText);
+        Assert.Contains("ItemsSource=\"{Binding DiffModifiedPaths}\"", saveText);
+        Assert.Contains("ItemsSource=\"{Binding DiffRemovedPaths}\"", saveText);
         Assert.Contains("{Binding LastBackupDiff.UnchangedCount", saveText);
         Assert.Contains("{Binding LastBackupDiff.TotalBytesDeltaDisplay", saveText);
         Assert.Contains("{Binding DiffComparedSummary", saveText);
@@ -3673,8 +3688,8 @@ public sealed class WpfUiResourceDictionaryTests
         // The overview must make the two states that are otherwise easy to miss visible:
         // active games and games requiring attention. Keep these bindings OneWay so a
         // read-only snapshot cannot accidentally be written back from a template.
-        Assert.Contains("Text=\"{Binding Snapshot.RunningGames, Mode=OneWay}\"", overview);
-        Assert.Contains("Text=\"{Binding Snapshot.WarningGames, Mode=OneWay}\"", overview);
+        Assert.Contains("Text=\"{Binding OverviewRunningGamesDisplay, Mode=OneWay}\"", overview);
+        Assert.Contains("Text=\"{Binding OverviewWarningGamesDisplay, Mode=OneWay}\"", overview);
         Assert.Contains("snapshot.HealthyGames = snapshot.Games.Count", dashboardService);
         Assert.Contains("snapshot.AttentionGames = snapshot.Games.Count", dashboardService);
         Assert.Contains("snapshot.RiskGames = snapshot.Games.Count", dashboardService);
@@ -3700,12 +3715,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("查看明细", cloudQueueCard.ToString());
         Assert.Equal("{DynamicResource GscRedesignSectionCard}", strip.Attribute("Style")?.Value);
         Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Rectangle" && element.Attribute("Fill")?.Value == "{DynamicResource GscTableDividerBrush}"));
-        Assert.Contains("Binding Snapshot.ManagedGames, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.MatchedGames, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.RunningGames, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.WarningGames, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewManagedGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewMatchedGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewRunningGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewWarningGamesDisplay, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewSnapshotScopeDisplay", strip.ToString());
         Assert.Contains("Binding Snapshot.PendingCloudTasks, Mode=OneWay", strip.ToString());
-        Assert.Contains("Binding Snapshot.UnassignedMediaCount, Mode=OneWay", strip.ToString());
+        Assert.Contains("Binding OverviewUnassignedMediaDisplay, Mode=OneWay", strip.ToString());
 
         // Hover feedback stays render-only and is wired through EventSetters on the card style.
         var overviewText = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
@@ -4053,6 +4069,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("<Setter Property=\"TextElement.Foreground\" Value=\"{DynamicResource GscPrimaryTextBrush}\"/>", combined);
         Assert.Contains("<Setter Property=\"TextTrimming\" Value=\"CharacterEllipsis\"/>", combined);
         Assert.Contains("<Setter Property=\"ToolTip\" Value=\"{Binding Text, RelativeSource={RelativeSource Self}}\"/>", combined);
+        Assert.Contains("x:Key=\"MediaGameTargetTemplate\"", combined);
+        Assert.Contains("Text=\"{Binding IdentityDisplay}\" Style=\"{DynamicResource GscCaptionStyle}\" TextTrimming=\"CharacterEllipsis\"", combined);
 
         var documents = new[] { XDocument.Parse(dashboard) }.Concat(workspacePaths.Select(path => XDocument.Parse(File.ReadAllText(path)))).ToArray();
         var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
@@ -4074,11 +4092,14 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.NotEmpty(matches);
             foreach (var comboBox in matches)
             {
+                var usesMediaGameTargetTemplate = (comboBox.Attribute("ItemTemplate")?.Value ?? string.Empty)
+                    .IndexOf("MediaGameTargetTemplate", StringComparison.Ordinal) >= 0;
                 Assert.True(
                     comboBox.Descendants().Any(element =>
                         element.Name.LocalName == "TextBlock"
                         && ((element.Attribute("Style")?.Value.IndexOf("GscComboBoxLongText", StringComparison.Ordinal) ?? -1) >= 0
-                            || element.Attribute("TextTrimming")?.Value == "CharacterEllipsis")),
+                            || element.Attribute("TextTrimming")?.Value == "CharacterEllipsis"))
+                    || usesMediaGameTargetTemplate,
                     "受限宽度下拉选择未复用 GscComboBoxLongText：" + target.Description);
             }
         }
@@ -4727,7 +4748,8 @@ public sealed class WpfUiResourceDictionaryTests
             ("MaintenanceView.xaml", "Findings.Count"),
             ("MaintenanceView.xaml", "DeviceComparisons.Count"),
             ("MaintenanceView.xaml", "Audit.Count"),
-            ("MaintenanceView.xaml", "ProcessMappings.Count")
+            ("MaintenanceView.xaml", "ProcessMappings.Count"),
+            ("MaintenanceView.xaml", "PathRemapPreview.Items.Count")
         };
 
         foreach (var (file, trigger) in views)
@@ -4747,7 +4769,14 @@ public sealed class WpfUiResourceDictionaryTests
             var document = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", file)));
             foreach (var overlay in document.Descendants().Where(element => element.Name.LocalName == "TextBlock" && element.Attribute("IsHitTestVisible")?.Value == "False"))
             {
-                Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
+                // An outer page StackPanel is a valid scroll host. The empty overlay must
+                // instead share a Grid/Border viewport with its list so it does not become
+                // another measured item that pushes the local scroll surface away. The
+                // finite migration preview is intentionally a compact StackPanel row.
+                var finitePathPreview = file == "MaintenanceView.xaml" &&
+                                        overlay.ToString().IndexOf("暂无路径需要迁移", StringComparison.Ordinal) >= 0;
+                if (!finitePathPreview)
+                    Assert.NotEqual("StackPanel", overlay.Parent?.Name.LocalName);
             }
         }
     }
@@ -4763,7 +4792,7 @@ public sealed class WpfUiResourceDictionaryTests
         // own a centered, hit-test-free empty state so an empty page never shows a blank
         // DataGrid frame without explaining the next step.
         var dataGrids = maintenance.Descendants().Where(element => element.Name.LocalName == "DataGrid").ToArray();
-        Assert.Equal(6, dataGrids.Length);
+        Assert.Equal(7, dataGrids.Length);
         foreach (var grid in dataGrids)
         {
             var overlay = grid.Parent?.Elements().FirstOrDefault(element =>
@@ -4771,7 +4800,8 @@ public sealed class WpfUiResourceDictionaryTests
                 element.Attribute("IsHitTestVisible")?.Value == "False");
             Assert.NotNull(overlay);
             Assert.Contains("BasedOn=\"{StaticResource GscEmptyStateText}\"", overlay!.ToString());
-            Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
+            if (grid.Attribute("Tag")?.Value != "FiniteViewport")
+                Assert.DoesNotContain(overlay.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
         }
     }
 
@@ -5075,7 +5105,7 @@ public sealed class WpfUiResourceDictionaryTests
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
 
         Assert.Contains("x:Name=\"AppearanceFields\" Columns=\"2\"", settings);
-        Assert.Contains("x:Name=\"AutomationIntervalFields\" Columns=\"3\"", settings);
+        Assert.Contains("x:Name=\"AutomationIntervalFields\" settings:GameSaveCenterSettingsView.SearchTerms=\"自动化 间隔 默认 游玩 进程 检测 管理面板 刷新\" Columns=\"3\"", settings);
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
         Assert.Contains("x:Name=\"SettingsScroller\"", redesign);
         Assert.Contains("Style=\"{DynamicResource GscPageScrollViewer}\"", redesign);
@@ -5285,9 +5315,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("resources[\"GscErrorBrush\"]", palette);
         Assert.Contains("resources[\"GscTableAlternateRowBrush\"]", palette);
         Assert.Contains("resources[\"GscRowHoverStrongBrush\"]", palette);
-        Assert.Contains("resources[\"GscScrollThumbHoverBrush\"] = Brush(WithAlpha(palette.AccentHover", palette);
+        Assert.Contains("resources[\"GscScrollThumbHoverBrush\"] = Brush(palette.IsHighContrast", palette);
         Assert.DoesNotContain("Color.FromArgb(166, 124, 92, 252)", palette);
-        Assert.Contains("SystemParameters.HighContrast ? (byte)0", palette);
+        Assert.Contains("palette.IsHighContrast ? (byte)0", palette);
+        Assert.Contains("SystemColors.ControlDarkColor", palette);
+        Assert.Contains("SystemColors.HighlightColor", palette);
         Assert.Contains("ApplyRuntimeThemeResources(Resources, palette", dashboardCode);
         Assert.Contains("ApplyRuntimeThemeResources(workspaceView.Resources, palette", dashboardCode);
         Assert.Contains("GetLegacyCompatibilityWorkspaceViews()", dashboardCode);
@@ -5311,9 +5343,9 @@ public sealed class WpfUiResourceDictionaryTests
         var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
 
         Assert.Contains("public static void ApplyDemoCoreResources(ResourceDictionary resources, bool isDark)", palette);
-        Assert.Contains("if (SystemParameters.HighContrast)\n                return;", palette);
-        Assert.Contains("ApplyDemoCoreResources(resources, palette.IsDark);", palette);
-        Assert.Contains("ApplyDemoCoreResources(Resources, palette.IsDark);", settingsCode);
+        Assert.Contains("if (highContrast)\n                return;", palette);
+        Assert.Contains("ApplyDemoCoreResources(resources, palette.IsDark, palette.IsHighContrast);", palette);
+        Assert.Contains("ApplyDemoCoreResources(Resources, palette.IsDark, palette.IsHighContrast);", settingsCode);
         Assert.Contains("Color.FromArgb(0xEE, 0x26, 0x2B, 0x36)", palette);
         Assert.Contains("Color.FromArgb(0xF5, 0xFF, 0xFF, 0xFF)", palette);
         Assert.Contains("resources[\"GscTableHeaderBrush\"] = Brush(tableHeader);", palette);
@@ -6098,12 +6130,13 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
-        Assert.Equal(5, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
+        Assert.Equal(6, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
         Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskHistoryScope, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged", tasks);
         Assert.Contains("TaskHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged", tasks);
+        Assert.Contains("TaskFilterPresets", tasks);
         Assert.Contains("Style=\"{DynamicResource GscWpfUiComboBox}\" ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Stretch\"/>", overview);
         Assert.DoesNotContain("ScrollViewer.VerticalContentAlignment\" Value=\"Center\"", overview);

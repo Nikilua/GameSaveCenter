@@ -1,5 +1,1075 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 媒体缓存时间显示（第四十五子批次）
+
+- D 盘 `D:\workplace\github\GameSaveCenter` 已切换到 `codex/ui-finesse-round2`；原 C 盘 worktree 已停止使用，删除因进程句柄暂缓。D 盘 `main` 原未提交对话框改动先保存为 `2e071b3e`，未加入 `src.zip`。
+- `48db9ee5` 将媒体收件箱 Offline/Stale 缓存标题复用 `TimeDisplayFormatter.Relative`，`2484f132` 同步 RenderHarness fake/绑定清单，`b1afb004` 补 Stale 相对/完整时间行为回归；新增完整时间 Tooltip/Automation HelpText，不改变数量、命令、选框、滚动、取消/错误或恢复保护。
+- 验证：最终 `MediaWorkspaceStateCacheTests 7/7`；`WorkspaceStateSourceTests 9/9 + 1 skip`；脚本化隔离 Release 构建 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`；XAML `24/24`、source validation、diff check、WPF `0/30/177` 通过。普通未带 `GSC_BUILD_COMMIT` 的入口拒绝身份，按既有门禁重跑。
+- 仅使用合成 UTC、fake RenderHarness、隔离输出；未接触真实存档/媒体/云端/诊断。Demo 原目录不可用；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+- 下一可执行项：继续盘点 `DashboardViewModel` 其余 stale/缓存 `ToLocalTime` 用户入口。
+
+## 2026-09-22 R22-01 云端过期提示时间合同（第四十四子批次）
+
+- 复核后没有修改 `RecentAccessItem.LastAccessDisplay` 兼容属性：Overview 实际使用 `SummaryDisplay` 的相对时间，Tooltip/Automation 使用完整时间；将真实用户可见残余定位到云端 stale banner 的 `StaleStateDetail`。
+- `2bf95267` 复用 `TimeDisplayFormatter`，增加相对 + 完整本地/UTC 投影与 `nowUtc` 注入；无成功时间不生成假时间，刷新失败原因原样保留。命令、分页、筛选、旧数据、选框、滚动、取消/错误不变。
+- 验证：`FilterConditionSummaryTests 7/7`、`R22TimeDisplayBehaviorTests 24/24`、合跑 `31/31`；XAML `24/24`；最终 solution Release `0 warning / 0 error`；`validate-source.py`/`git diff --check` 待文档提交前复跑。
+- 仅使用合成时间、fake/隔离 testhost 和 D: 隔离构建目录，未启动真实 Playnite/package-host，未写真实存档/媒体/云端/诊断；下一可执行项继续盘点 Dashboard stale/缓存时间入口，或选依赖已满足的 Q/R。
+
+## 2026-09-22 R23-04 共享按钮复合内容修复与最终宿主证据（第四十三子批次）
+
+- 先核对真实宿主截图：Overview/Saves/Media 的共享复合按钮曾显示 `System.Windows.Controls.StackPanel`，确认不是断言缺口而是真实 `ContentTemplate` 将 WPF 视觉树字符串化；没有改用新设计体系，也没有重建按钮/命令。
+- `8a9eead2` 在共享 `GscWpfUiButton` 基础样式接入 `ButtonContentTemplateSelector`：`UIElement`/`FrameworkContentElement` 直接呈现，字符串继续沿用既有文本模板；新增 `R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree` 覆盖正例与字符串负例。
+- 干净提交验证：XAML `24/24`、Release `0 errors`/既有 2 条 CS8602、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`；package zip/pext 同为 `44,061,387` bytes、SHA-256 `531B4590…D74F7`。
+- 真实隔离 Playnite 宿主输出 `ui-host-audit-r23-04-content-fix-clean-20260922`：summary `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`HighGateCount=0`；manifest `33 Dashboard + 1 Settings`，Overview/Saves/Media 截图确认复合按钮已显示真实图标/中文标签。UIA 仍未找到侧栏项，未把嵌入截图扩大成 UIA/键盘或完整宿主验收。
+- 仅使用合成库、fake/隔离 profile；精确停止本轮 Playnite/Worker 进程。单屏 Q24-03、Fusion/Playnite 版本未知、真实 presented frame、物理跨屏、ETW/PresentMon、宿主性能仍未验；未触碰 dirty main、真实存档/媒体/云端或外发诊断。下一可执行项：R23-04 UIA/Controlled host 或依赖满足的 R23-05 真实宿主性能。
+
+## 2026-09-22 R23-06 当前候选安装与回退复核（第四十二子批次）
+
+- 沿用 D: 隔离源码副本和当前 `102b74b0`，完成 package Release 构建/内容门禁：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、六份程序集同身份、zip/pext 同 SHA `C84C7CAB…D30117F`。
+- Playnite WPF 隔离首轮在 `UiFinesseFoundationTests.EntranceMotionReentryKeepsTheCurrentDispatcherValue` 出现一次时序抖动；没有修改产品或测试，精确复跑 `UiFinesseFoundationTests 9/9`，最后 4 个未执行 UI 类 `27 passed/11 skipped`。该边界在证据中保留，不写成无条件全量无抖动通过。
+- 新 D: 合成 profile 安装当前包并核对清单/DLL/Worker 必需文件；随后只删除明确的合成扩展目录并从已核实旧 synthetic 目录恢复 `9026f4a2`，回退身份成功。未接触真实 Playnite Extensions、存档、媒体、云端或外发诊断。
+- 当前候选 package 事实和回退证据已同步账本/证据；文档待独立提交。下一可执行任务：R23-04 UIA/Controlled host 收口；R23-05 几何已收口，真实 presented frame/宿主性能仍按权限边界待验。
+
+## 2026-09-22 R23-05 壳层与 Media 几何修复（第四十一子批次）
+
+- 启动先确认默认目录是 dirty `main`，未在其上编辑；切回 `codex/ui-finesse-round2` worktree，复核上一版 R23-05 的 5 个几何失败。linked worktree 的 `obj` ACL 拒绝后，沿用已授权 D: 隔离源码副本流程。
+- `130ba48a` 修复共享响应式阈值和 Media Inbox footer 行位：980–1279 宽度进入现有第二行头部动作；筛选预设/可用性提示移到 footer，保留 DataGrid、页面级滚动、选框、命令/绑定、Automation、取消/错误和有限列表。
+- clean RenderHarness `shellqa` 通过：Shell 720/960/980/1040 双主题无越界；Media 1040/1100/1366 `gridTopGap=142 DIP`，页末 footer/历史/次级动作均在 viewport 内。Rendering/Stopwatch 代理样本已记录，但真实 presented frame、ETW、Playnite 宿主性能不宣称通过。
+- 验证：XAML `24/24`；隔离 solution Release `0 errors/2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`；响应式 `5/5`、Media 动作/筛选 `6/6`、WPF 结构 `137 passed/39 skipped/0 failed`、source/diff 通过。完整 `render-qa` 仍有 Overview/Settings/Task 等本批无关既有失败，未改门槛或冒充全量通过。
+- 代码提交 `130ba48a` 已推送；R23-05 账本更新为“部分满足，待宿主性能验收”，R23-08 移除几何 P0、保留 presented-frame 权限 P2。文档待独立提交后清理 D: 临时源码/构建/报告目录。下一可执行任务：R23-06 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 仍待验。
+
+## 2026-09-22 R23-03 代表页面终审（第四十子批次）
+
+- 复查概览、存档、媒体、工具、任务、维护、设置、壳层当前 XAML 和 R00–R22 证据；没有重复实现已有服务/DTO/状态承载，页面派生表格和壳层选框/滚动边界保留。
+- 终审逐页记录空、错、加载、可读性、可达性和 Demo 对应/例外；工具/设置/壳层没有强行套用数据工作区 Empty presenter，历史截图不作为当前呈现通过。
+- 仅同步报告、账本、记忆和日志，无生产代码修改；未启动真实 Playnite/package-host，不做真实存档/媒体/云端/诊断写入。下一可执行项为 `R23-04` 非空隔离宿主。
+
+## 2026-09-22 R23-02 生产资源状态矩阵（第三十九子批次）
+
+- 核对 `AcrylicProductionResources`、`DesignTokens`、`WpfUiProduction`、`Redesign` 和真实页面 `Style` 引用；按钮、输入、组合框、Toggle、DataGrid、Tab、滚动条及页面派生样式均按实际实例列入，不把 Demo/Lab 只声明样式算作生产实例。
+- Light/Dark fixture 复用代表控件与既有 R00/R01 几何/对比度证据；状态矩阵明确 `AcrylicNavItem` 焦点/禁用、设置派生 Tab、各页表格尚未逐项呈现，未把共享基类断言升级为派生样式通过。
+- 本阶段没有资源或生产代码修改，仅同步矩阵、账本、记忆和日志；WPF `0/27/177`，source/diff 文档门禁通过。未启动 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、presented frame、ETW 或宿主性能。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-02-PRODUCTION-RESOURCE-STATE-MATRIX-20260922.md`。下一可执行项：`R23-03` 代表页面终审。
+
+## 2026-09-22 R23-01 每组可审阅交付（第三十八子批次）
+
+- 先核对 R23 原始条件和第三轮账本，没有新增代码需求：R00–R22 共 23 组、184 项，每组 8 项；184/184 行均有非占位提交字段和 evidence 路径。
+- 账本仍明确区分已满足、已实现待环境验证、部分满足、外部阻塞和不适用；没有用 R23-01 的交付审计替代 R02-06 宿主菜单阻塞或 R22-01 未完时间入口。
+- 当前分支 clean 且与远端同为 `553b38a9`，未触碰 main 用户改动；R22-08 精确构建临时目录已清理。本阶段只同步证据、账本、记忆和日志。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-01-GROUP-DELIVERY-20260922.md`。下一可执行项：`R23-02` 生产资源状态矩阵。
+
+## 2026-09-22 R22-08 状态样式一致索引（第三十七子批次）
+
+- 启动先盘点现有 `StatusGlyphConverter`、`TaskCenterView`/`MaintenanceView` 绑定、`WorkspaceStatePresenter` 和 Demo 主题图标/颜色资源；确认大部分成功/失败/需关注映射已存在，缺口只在运行与暂停文本线索。
+- `d919179a` 补充运行/进行中/传输中/处理中/校验中等 `ℹ` 线索，暂停/未知 `⚠` 线索，保留成功 `✓`、错误 `×` 和业务状态值；没有替换颜色资源、状态服务、命令绑定、选框或滚动条。
+- `R22StatusStyleIndexBehaviorTests 7/7`；状态/图标/Workspace 回归 `32 passed / 1 skipped`，skip 为既有 legacy source skip；提交身份隔离 Release XAML `24/24`、Playnite net462/Tests net472/Worker `0 errors`，两条既有 MediaCenter CS8602 warning；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 仅用合成状态和隔离 testhost；未验真实跨页颜色/图标、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现/ETW/宿主性能，Demo 原目录不可用，main 用户改动未碰。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-08-STATUS-STYLE-INDEX-20260922.md`。代码已提交，文档待独立提交并推送；下一可执行项为 `R23-01` 每组可审阅交付。
+
+## 2026-09-22 R22-07 确认框信息结构（第三十六子批次）
+
+- 启动核对了真实确认事件、恢复/清理/协调/批量/任务取消调用、按钮文案和 `DashboardView` 遮罩生命周期；已有正文列出对象/范围/后果，确认详情沿用独立 `ScrollViewer`，没有重建确认服务。
+- `3ac6d16a` 新增共享危险键盘策略：危险确认 `IsDefault=false`、取消 `IsCancel=true`，普通/三选一/结果策略分开；恢复、撤销恢复、已校验远端恢复显式 `isDangerous: true`；补 `R22ConfirmationStructureBehaviorTests` 的 STA 行为和恢复调用边界。
+- `R22ConfirmationStructureBehaviorTests 4/4`；相关对话框/焦点/恢复/远端回归 `34/34`。提交身份隔离 Release XAML `24/24`、Playnite net462/Tests net472/Worker `0 errors`，既有 `MediaCenterView.xaml.cs:699 CS8602` 两条 warning；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 期间首次测试暴露并修正了新夹具未在 STA 创建 WPF Button 的问题；未把该夹具错误计入产品失败。仅用合成/fake/隔离 `.tmp`，native fallback Yes/No、真实宿主/UIA/读屏/OS 输入/DPI/跨屏/呈现/ETW/性能及 Demo 原目录仍未验；main 用户改动未碰。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-07-CONFIRMATION-STRUCTURE-20260922.md`。代码已提交，文档待本阶段独立提交并推送；下一可执行项为 `R22-08` 状态样式一致索引。
+
+## 2026-09-21 R22-06 长任务离页提示（第三十五子批次）
+
+- 先核对事实：Worker 任务不随工作区切换或 Dashboard 卸载取消；实时事件是可选通道，任务快照/历史轮询和缓存 TaskCenter 是返回后的恢复来源；显式 `CancelTaskCommand` 保持唯一取消入口。
+- `ef671288` 在 TaskCenter 筛选栏增加离页/返回说明与 Automation Name/HelpText，不新建任务状态，不改取消/错误、终态通知、选框、滚动条或 Worker 协议。
+- `R22LongTaskLeavePageBehaviorTests 2/2`；R21 异步完成播报 `2/2`；R08 缓存工作区切换第一场景通过，第二个旧 Shell 文本契约断言失败不改写。提交身份 Release Playnite net462/Tests net472 `0 errors`，既有 MediaCenter CS8602 两条 warning；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-06-LONG-TASK-LEAVE-20260921.md`。仅用合成/fake WPF 和隔离 `.tmp`，未启动真实 Playnite/package-host/Worker 长任务，未读写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- 代码提交已推送 `ef671288` 到 `codex/ui-finesse-round2`；下一可执行任务为 `R22-07` 确认框信息结构，先补危险确认负例。
+
+## 2026-09-21 R22-05 批量数量防歧义（第三十四子批次）
+
+- 先核对真实适用性：R05-04 已覆盖媒体收件箱跨模式稳定 ID 选择汇总；任务中心批量重试是当前筛选结果模型，已有当前结果/可重试/未纳入说明；缺口是当前游戏媒体动作栏和策略模板批量区没有同时显示当前结果与隐藏选择。
+- `501cb715` 增加当前游戏媒体批量摘要，继续传递原 `MediaGrid.SelectedItems`；策略模板新增 `PolicyTemplateBatchHiddenSelectedCount`、筛选结果/隐藏选择摘要和五项数量分栏；没有替换游戏选框、滚动条、命令、取消/错误或 Worker 协议。
+- `R22BatchCountBehaviorTests 3/3` 实际覆盖合成策略目标正/负例和隔离 WPF ListBox 跨筛选选择；关联 R05 `3/3`、R16/TaskRetry `3/3`。Release 隔离构建 XAML `24/24`、Playnite net462/Tests net472/Worker `0 errors`，既有 MediaCenter CS8602 两条 warning 保留；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-05-BATCH-COUNT-20260921.md`。仅用合成数据、隔离 STA Window 和 `.tmp` 构建输出，未启动真实 Playnite/package-host、未读写真实存档/媒体/云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- 代码提交已推送 `501cb715` 到 `codex/ui-finesse-round2`；下一可执行任务为 `R22-06` 长任务离页提示，先核对真实任务订阅和导航完成通知。
+
+## 2026-09-21 R22-03 复制反馈轻量（第三十三子批次）
+
+- 启动先查明：DataGrid 有稳定 TSV/脱敏复制但失败静默；设置页路径已有本地状态文本；Dashboard 任务/路径/诊断/维护报告/通知详情复制分别走重试、全局通知或直接剪贴板写入。没有把表格新增方向误判为能力缺失。
+- `5a21e18e` 新增共享 `ClipboardFeedback` Popup，复用现有 FeedbackToast 自动化 Peer 和主题资源；DataGrid、设置页、Dashboard 复制通知和详情复制均接通成功/空内容/失败重试状态。连续复制通过同一目标实例和 Dashboard fallback 合并，不改变布局或焦点。
+- 新增 `R22CopyFeedbackBehaviorTests` 实际 STA Window 行为 `2/2`，覆盖成功、连续复制复用、fake 占用失败、重试文案、Automation Name/HelpText、PlacementTarget 和布局尺寸；相邻 R06 `4/4`、R15 `6/6`、R16 `1/1`，R21 两个独立 STA 场景各 `1/1`。
+- 提交身份 Release 编译 Playnite `net462` / Tests `net472` 无错误；保留既有 `MediaCenterView.xaml.cs:671 CS8602` 两条 warning。`validate-source.py`、`git diff --check` 通过，WPF `0/27/177`，与此前基线一致。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-03-COPY-FEEDBACK-20260921.md`。
+- 只使用 fake 剪贴板、合成 DTO、隔离 STA Window；未启动真实 Playnite/package-host、未验证真实剪贴板/UIA/读屏/物理跨屏/呈现帧/ETW/宿主性能，Demo 原目录不可用。main 用户改动未碰，未读写真实存档、媒体、云端或外发诊断。
+- 已提交并推送 `5a21e18e` 到 `codex/ui-finesse-round2`；下一可执行任务为 `R22-05`，先核对批量动作现有选择汇总和跨筛选隐藏选择负例。
+
+## 2026-09-21 R22-02 容量单位统一（第三十二子批次）
+
+- 先扫描 Contracts、Playnite Views/ViewModels 与 Worker 报告的实际容量入口，确认大多数已是 1024 进制，但 Media source preview 仍为 `KB/MB/GB`，Trainer、诊断和 Dashboard 元数据摘要的小值可能显示为 `0.x/0.0 KiB/MiB`；没有把表格“新增功能”当成缺失断言。
+- `86b72e1e` 新增 `ByteSizeFormatter`，迁移容量 DTO、Worker 格式化和 Playnite 恢复进度；增加元数据灾备 DTO `SizeDisplay`，Dashboard 摘要和完整性低磁盘提示改用共享口径；保留未知大小、比较页零差值 `0 B`、IPC `+0 B`、命令/绑定/取消/错误/恢复保护、选框和滚动条。
+- 新增 `R22CapacityUnitBehaviorTests`，覆盖小值/边界/有符号差值和跨 DTO 入口 `13/13`；`MaintenanceReportServiceTests` 用隔离 1 字节镜像文件确认报告正文 `1 B` 且无 `0 KiB`，`3/3`。相关 Core 合跑 `53/53`。
+- 最终验证：隔离 Release 构建 XAML `24/24`，Contracts/Playnite net462、Tests net472、Worker `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check` 通过；WPF `0/27/177`。Demo 原目录不可用，未运行真实 Playnite/package-host、UIA/读屏、DPI/跨屏、ETW、宿主性能或真实数据写入。
+- 临时构建目录 `.tmp/r22-02-capacity-build-20260921` 仅用于本批验证，提交前后按规则清理。提交已推送到 `codex/ui-finesse-round2`；下一可执行项为 `R22-03` 复制反馈轻量。
+
+## 2026-09-21 R22-01 维护摘要时间（第三十一子批次）
+
+- 先查 Maintenance 诊断概览的真实 `MaintenanceActionSections`、`TimingDisplay` 绑定；确认恢复巡检和隔离账本的旧本地时间确实进入用户可见行动摘要，云端动作已有相对/完整合同。
+- `df689dc1` 将恢复巡检最近成功/最近完成/下轮计划改为相对正文并补完整投影，将隔离账本 `UpdatedUtc` 改为相对正文并补完整投影；实际视图的 Tooltip/Automation HelpText 继续绑定 `TimingFullDisplay`，不改变分页、人工确认、Worker 协调或非破坏性巡检。
+- 实际 STA WPF 行为与相邻维护/恢复/时间测试定向 `38/38`；Release/XAML `24/24`、Contracts/Playnite/Tests/Worker `0 warnings / 0 errors`，既有 MediaCenter CS8602 未改写；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MAINTENANCE-ACTION-TIME-20260921.md`。仅使用合成动作、fake/隔离 STA WPF 和隔离构建目录；未启动真实 Playnite/package-host，没有真实存档、媒体、云端、账本协调、恢复写入或外发诊断，Demo 原目录不可用，main 用户改动未碰未合并。
+- 未宣称真实 UIA/读屏、最终呈现、系统时钟跳变、DPI/跨屏、ETW 或宿主性能。R22-01 仍“部分满足，待继续”；下一可执行小批量是盘点概览/最近访问等实际绑定的旧 `ToLocalTime` 入口，或下一独立 Q/R 任务。
+
+## 2026-09-21 R22-01 恢复确认框时间（第三十子批次）
+
+- 先查 `RestoreAsync` 的真实确认消息和 `BackupVersionDto` 已有时间投影；没有新建时间服务，也没有把复制/日志的机器可读完整时间改成相对时间。
+- `c5dc47fc` 将确认正文版本行改为相对时间（完整本地时间与 round-trip UTC），保留来源、系统、可恢复性、安全关闭游戏和 PreRestore 提示；未知时间保持“时间未知”，确认、二次选中项核对、取消/错误和恢复命令语义不变。
+- `R22RestoreConfirmationTimeBehaviorTests`、R12 重校验、R22 时间定向合计 `28/28`；Release/XAML `24/24`、Contracts/Playnite/Tests/Worker `0 errors`，既有 MediaCenter CS8602 未改写；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESTORE-CONFIRMATION-TIME-20260921.md`。仅使用合成备份 DTO、生产消息构造、fake/隔离 testhost 和隔离构建目录；未启动真实 Playnite/package-host，没有真实存档、媒体、云端、恢复写入或外发诊断，Demo 原目录不可用，main 用户改动未碰未合并。
+- 未宣称原生宿主最终呈现、UIA/读屏、跨时区字体、DPI/跨屏、ETW 或宿主性能。R22-01 仍“部分满足，待继续”；下一可执行小批量是恢复/校验相关剩余旧 `ToLocalTime` 入口盘点，或下一独立 Q/R 任务。
+
+## 2026-09-21 R22-01 远端隔离有效期（第二十九子批次）
+
+- 先查 `RemoteBackupStageResultDto`、`StagedRemoteBackupStatus` 和 Maintenance 设备状态绑定；复用现有 DTO、formatter 和隔离恢复命令，没有新增下载/恢复服务。
+- `f39b8ef1` 将隔离有效期正文改为相对时间，完整本地/UTC 状态进入 Tooltip/Automation HelpText；未下载、进行中、取消、失败和“当前存档不会被覆盖”语义保持。
+- `R22RemoteStageTimeBehaviorTests 3/3`（含实际 STA WPF）、R13 云端隔离 `13/13`、设备状态 `1/1`，合计 `17/17`。Release/XAML `24/24`、Contracts/Playnite/Tests/Worker `0 errors`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过，既有 MediaCenter CS8602 未修改。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-REMOTE-STAGE-TIME-20260921.md`。仅使用合成 DTO、fake/隔离 testhost 和隔离构建目录，没有真实远端下载、Worker、隔离区、恢复、存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；未宣称真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW 或宿主性能。下一可执行小批量：核对恢复确认框 `backupCreated` 的用户可见时间。
+
+## 2026-09-21 R22-01 Overview 快照更新时间（第二十八子批次）
+
+- 先核对 `OverviewSnapshotDisplay`、`DashboardViewModel` 和 `OverviewView` 的真实绑定；复用 `TimeDisplayFormatter`，没有新增快照服务、DTO 或指标计算。
+- `60db7534` 将全库/当前游戏快照摘要正文改为相对时间，完整本地/UTC 时间进入同一首页 TextBlock 的 Tooltip/Automation HelpText，保留未加载、默认生成时间未知和真实零值语义。
+- `OverviewSnapshotDisplayTests 3/3`、`OverviewInteractionTests 2/2`；Release/XAML `24/24`、Playnite/Tests/Worker `0 errors`，保留既有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。资源大类另有 3 条既有 Settings/Media/Inbox 断言漂移，未修改。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SNAPSHOT-TIME-20260921.md`。仅使用合成快照、fake/隔离 testhost 和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；未宣称真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW 或宿主性能。下一可执行小批量：核对 `StagedRemoteBackupStatus` 远端隔离有效期绑定。
+
+## 2026-09-21 R22-01 任务页更新时间（第二十七子批次）
+
+- 先查任务页已有状态机、`TaskPageLastUpdatedUtc`、`TaskPageStatusSummary` 和 `TaskCenterView` 的实际绑定；复用 `TimeDisplayFormatter`，没有新增服务、DTO、通知体系或时间排序逻辑。
+- `c96130a2` 将任务页正文改为相对时间，完整本地/UTC 时间进入任务摘要与 stale banner 的 Tooltip/Automation HelpText；保持加载、失败保留旧数据、重试、列表、滚动、取消/错误和 `TaskPageLastUpdatedDisplay` 兼容语义。
+- 实际 STA WPF 行为测试读取 `TaskQueueLastUpdatedSummary` 的正文、Tooltip、HelpText；`R22TimeDisplayBehaviorTests 24/24`、`R21AsyncCompletionAnnouncementBehaviorTests 2/2`、`TaskCenterViewResponsiveTests 7/7`，合计 `33/33`。Release/XAML `24/24`、Playnite/Tests/Worker `0 errors`；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。首轮完整编译的 2 条既有 MediaCenter CS8602 未修改。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TASK-PAGE-TIME-20260921.md`。仅使用合成时间、fake/隔离 testhost 与隔离构建目录，没有真实存档、媒体、云端、报告/日志、剪贴板或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；未宣称真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/物理跨屏、最终呈现、ETW 或宿主性能。下一可执行小批量：核对 `OverviewSnapshotDisplay.Updated`、远端暂存有效期等残余用户可见 `ToLocalTime` 入口，再选择下一依赖已满足的 Q/R 任务。
+
+## 2026-09-21 R22-01 复制列与报告/日志时间（第二十六子批次）
+
+- 先查 `DataGridClipboardFormatter`、SaveHistory 复制命令、Worker 健康报告测试和诊断/Worker 日志格式；确认这些是稳定机器可读完整时间，不把它们误改成相对正文。
+- `494a911f` 只补 SaveHistory 行/单元格实际格式化证据，保留本地 `yyyy-MM-dd HH:mm:ss`、BackupId 稳定去重、TSV、脱敏、完整值复制和既有报告/日志格式，没有新增文件、剪贴板或诊断写入。
+- `R06ClipboardBehaviorTests 4/4`、`R22TimeDisplayBehaviorTests 23/23`、Worker `MaintenanceReportServiceTests 2/2`；隔离 Release XAML `24/24`、Playnite/Tests/Worker `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COPY-EXPORT-TIME-20260921.md`。只使用合成 DTO、fake/隔离 testhost 和隔离构建目录，没有真实剪贴板、报告/日志目录、存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实剪贴板/报告/日志目录、Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为盘点残余用户可见 `ToLocalTime` 入口后选择下一独立 Q/R 小批。
+## 2026-09-21 R22-01 快速历史通知时间（第二十五子批次）
+
+- 先核对 `GameSaveCenterPlugin.ShowBackupHistoryQuickActionAsync` 和 `ShowInfo` 的真实能力：通知没有 Tooltip/Automation 容器，因此没有引入新的通知设计。
+- `3f535cb2` 复用已有 DTO/formatter，每条快速历史通知行同时显示相对时间和完整本地/UTC 时间；数量、大小、恢复可用性、ForceRefresh、20 行上限和只读查询保持。
+- `QuickActionSourceTests 2/2`；隔离 Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-QUICK-HISTORY-TIME-20260921.md`。只使用合成 DTO 和隔离构建，没有真实 Playnite 菜单/通知宿主、存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实通知呈现、UIA/读屏、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对 SaveHistory 复制列及仅内部日志/导出时间字段。
+## 2026-09-21 R22-01 历史跳转状态时间（第二十四子批次）
+
+- 先核对 `DashboardViewModel.BackupHistory` 的本地日期筛选、UTC 稳定导航和状态栏绑定；没有把插件菜单快速历史通知、复制列或内部日志一起改写。
+- `1bac9090` 复用已有时间 DTO：历史跳转状态正文使用相对时间，状态栏 `StatusMessageFullDisplay` 的 Tooltip/Automation HelpText 保留完整本地时间与 UTC；其他普通状态消息默认回退原文。
+- `R11HistoryTimeNavigationBehaviorTests 4/4` 覆盖范围、排序、未知时间、最近/较早反馈和绑定门禁；Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-HISTORY-JUMP-TIME-20260921.md`。只使用合成 DTO、源码/绑定契约和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统输入、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对插件快速历史通知和复制/内部日志时间语义。
+## 2026-09-21 R22-01 比较选择与结果摘要时间（第二十三子批次）
+
+- 先核对 `DashboardViewModel` 两个生产摘要的实际绑定：`CompareSelectionSummary` 与 `DiffComparedSummary` 确实是用户可见文本；历史跳转、快速历史、复制和内部导出保持独立，不在本批混改。
+- `ea010656` 复用已有 DTO/formatter，把 A/B 选择和比较结果正文改为相对时间，完整本地时间与 UTC 原值进入 Tooltip/Automation HelpText；A→B 方向、版本 ID、差异语义、同版本禁用和比较/交换命令保持。
+- `R22TimeDisplayBehaviorTests 23/23`、`R11VersionComparisonBehaviorTests 2/2`，合计 `25/25`；实际隔离 STA WPF 读取摘要文本与完整提示。Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COMPARISON-SUMMARY-TIME-20260921.md`。只使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、剪贴板、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对历史跳转状态消息与快速历史摘要的用户可见边界。
+
+## 2026-09-21 R22-01 比较版本下拉时间（第二十二子批次）
+
+- 先核对 R11-02 的实际比较行为和 SaveCenter 生产 ComboBox：已有 A/B 选中项、交换/比较命令、同版本禁用负例，不把旧 `ComparisonDisplay` 的存在误判为已统一的时间展示。
+- `0c9870fb` 保留旧比较标签和 `CreatedUtc` 排序事实，新增相对/完整/原始 UTC 条目投影；两个生产下拉使用 ItemTemplate 显示相对正文，完整时间进入 Tooltip/Automation HelpText。未改比较方向、选框、滚动条、命令、取消/错误、安全或 net462 语义。
+- 实际隔离 STA WPF 读取 A/B SelectedItem、模板文本、Tooltip 和 HelpText，并保留比较/交换/同版本负例；`R22TimeDisplayBehaviorTests 22/22`、`R11VersionComparisonBehaviorTests 2/2`，合计 `24/24`。Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-COMPARISON-ENTRY-TIME-20260921.md`。仅使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，没有真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、剪贴板、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对比较选择/结果摘要和历史跳转状态消息的旧本地时间直显。
+
+## 2026-09-21 R22-01 Overview 选中游戏最近备份时间（第二十子批次）
+
+- 先核对 `GameStatusDto.LastBackupUtc`、`LastBackupLocal`、Dashboard 选中游戏属性和 Overview 当前游戏卡片，确认该处确实存在生产绑定的旧本地短日期；没有扩大为未绑定的 Storage 时间字段或其他 Save/恢复入口。
+- `4e85d665` 保留排序原值和旧兼容属性，新增相对/完整/原始 UTC 投影；Overview 正文改用相对时间，Tooltip/Automation HelpText 提供完整证据；加载、未选择、无备份和未知时间边界均保留明确语义。选框、滚动、备份/详情命令和 Playnite/net462 兼容不变。
+- `R22TimeDisplayBehaviorTests 20/20`、`OverviewInteractionTests 2/2`，定向合计 `22/22`；新增 STA WPF 用例实际检查绑定后的文本、Tooltip、HelpText。Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-SELECTED-BACKUP-TIME-20260921.md`。只使用合成 DTO、fake DataContext、隔离 STA WPF 和隔离构建目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为继续盘点其他 Save/恢复入口旧本地时间直显。
+
+## 2026-09-21 R22-01 恢复流程选择版本时间（第二十一子批次）
+
+- 先查 `RestoreWorkflowProgress.BuildSelectionStep` 和 SaveCenter `RestoreWorkflowSteps` 的实际模板，确认 `CreatedLocal` 进入用户可见 Detail；本阶段没有把比较下拉、历史跳转消息或复制列一并签收。
+- `391d28b8` 复用 `BackupVersionDto` 的共享时间投影，第一步 Detail 改为相对时间，`DetailFullDisplay` 保留完整本地时间与 UTC 原值，XAML 将其用于 Tooltip/Automation HelpText；其余步骤回退原 Detail，恢复状态、安全保护、命令和滚动保持。
+- `R22TimeDisplayBehaviorTests 21/21`、`R12RestoreWorkflowBehaviorTests 7/7`，合计 `28/28`；Release XAML `24/24`、Playnite/Tests `0 errors`，仅已有 2 条 MediaCenter CS8602；`validate-source.py`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESTORE-SELECTION-TIME-20260921.md`。使用合成恢复 DTO、状态夹具和隔离构建目录，未执行真实恢复、PreRestore 或任何用户数据写入；Demo 原目录不可用，main 用户改动未碰未合并。
+- R22-01 仍“部分满足，待继续”；真实 Playnite/package-host、UIA/读屏、系统时钟跳变、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为核对 SaveCenter 比较下拉 `ComparisonDisplay` 与历史跳转状态消息。
+
+## 2026-09-21 R22-01 Storage 分析时间合同（第十七子批次）
+
+- 先查 `StorageAnalysisDto.CheckedUtc`、`StorageGameRankDto.LatestBackupDisplay`、Maintenance 两处存储排行模板和 R17 稳定 ID 导航；确认 `CheckedUtc` 与 `LatestBackupDisplay` 当前都没有生产卡片绑定，不把未呈现属性当作视觉缺陷。
+- `9d319296` 只为已有 `StorageGameRankDto.LatestBackupUtc` 补相对/完整/原始 UTC 投影，保留旧 `LatestBackupDisplay`；没有改 Storage 卡片布局、容量口径、失联路径解释、刷新命令、稳定 ID 导航或只读/不删除边界。
+- `R22TimeDisplayBehaviorTests | R17StorageAnalysisNavigationTests` `22/22`、`UiDisplayMappingTests` `40/40`；Release 隔离构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check` 通过，因无 XAML 变更沿用上一子批 WPF `0/27/177`。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-STORAGE-TIME-20260921.md`。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”；真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为盘点其他 Save/恢复入口的旧本地时间直显。
+
+## 2026-09-21 R22-01 CloudTransfer 维护动作摘要时间（第十六子批次）
+
+- 先核对已有 `CloudTransferStatusDto` 时间投影、`MaintenanceActionItem` 行动分组、维护页模板和 `OpenCloudQueue` 命令；本批复用现有 DTO/状态/命令，没有新增重试服务、云端请求、分页或写入路径。
+- `47bc1d00` 为 `CloudTransferSummaryDto` 增加相对/完整/原始下次计划投影；维护行动项 CloudTransfer 正文使用相对上次尝试与下次重试，Tooltip/Automation HelpText 使用完整本地时间和 UTC 原值。未来/过去/无计划分别覆盖“约……后”“可立即重试”“按队列状态”，失败或认证无计划仍显示“需处理后再试”；HealthInspection、RetentionQuarantine、动作分组、分页/筛选和旧显示字段保持。
+- `MaintenanceCloudTransferResolverTests | MaintenanceReportSourceTests` `11/11`、`R22TimeDisplayBehaviorTests` `18/18`、`UiDisplayMappingTests` `40/40`；Release 隔离构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0/27/177` 通过。期间首次测试发现摘要过去时间未映射为“可立即重试”，已在同一阶段修正并复跑通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-CLOUD-ACTION-TIMING-20260921.md`；只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断。Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”；真实剪贴板、系统时钟跳变/跨系统启动周期、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验。下一可执行任务为盘点 Storage 及其他仍直显旧本地时间的 Save/恢复入口。
+
+## 2026-09-21 R22-01 CloudTransfer 下次重试时间（第十五子批次）
+
+- 先核对已有 `CloudTransferStatusDto.RetryTimingDisplay`、Maintenance 选中队列详情和 R13 的重试/分页/脱敏门禁；本批只复用 `TimeDisplayFormatter`，没有新增重试调度、云端请求或队列服务。
+- `f1e568d0` 新增 `RetryTimingRelativeDisplay`、`RetryTimingFullDisplay`、`RetryTimingRawUtcDisplay`，详情正文显示“约多久后/可立即重试/无自动重试”，Tooltip/Automation HelpText 保留完整下次 UTC 证据；旧 `RetryTimingDisplay`、`NextAttemptLocal` 和队列状态合同保留。
+- 合成 DTO 覆盖未来重试、已到期立即重试、无自动重试和未记录 UTC；`R22TimeDisplayBehaviorTests` `18/18`，云端/Health/Environment/时间/维护定向 `40/40`，R13 云端队列及相邻维护门禁均通过。联合回归 `35 passed / 3 failed / 0 skipped`（总计 38），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `f1e568d0` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实剪贴板、云端/Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为核对 Maintenance 动作摘要中 CloudTransfer 的 `LastAttemptDisplay`/`NextAttemptDisplay`，再盘点 Storage。
+
+## 2026-09-21 R22-01 CloudTransfer 详情证据时间（第十四子批次）
+
+- 先核对已有 `CloudTransferStatusDto`、Maintenance 云端队列详情、R13 队列分页/筛选/重试/脱敏门禁；本批只复用 `TimeDisplayFormatter`，没有新增云端服务、请求、分页或诊断路径。
+- `6a27ef42` 保留 `LastAttemptDisplay` 与 `LastSuccessfulVerificationDisplay` 兼容属性，新增相对/完整/原始 UTC 投影；选中云端详情正文显示相对时间，Tooltip/Automation HelpText 保留完整时间。`RetryTimingDisplay`、维护动作摘要 `LastAttemptDisplay`/`NextAttemptDisplay` 和队列状态合同留给后续边界。
+- 合成 DTO 覆盖最后尝试/最后成功校验已知时间与“未知/未记录 UTC 时间”负例；`R22TimeDisplayBehaviorTests` `17/17`，云端/Health/Environment/时间/维护定向 `39/39`，R13 云端队列及相邻维护门禁均通过。联合回归 `34 passed / 3 failed / 0 skipped`（总计 37），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `6a27ef42` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实剪贴板、云端/Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为核对 `RetryTimingDisplay` 与 Maintenance 动作摘要中剩余 CloudTransfer 旧本地时间，仍先查实际绑定和状态边界。
+
+## 2026-09-21 R22-01 HealthInspection 恢复巡检时间（第十二子批次）
+
+- 先核对现有 `HealthInspectionStateDto`、Maintenance 恢复巡检卡片、`DashboardViewModel.MaintenanceActions` 和 R17 预算/取消门禁；本批只复用 `TimeDisplayFormatter`，没有新增巡检服务、定时器、存档写入或诊断发送路径。
+- `44023ad6` 为最近成功、最近完成、下次到期增加相对/完整/原始 UTC 投影；Maintenance 卡片正文使用相对时间，Tooltip/Automation HelpText 保留完整时间。停用、未运行、取消、本轮完成与上次成功的区别、单次预算、命令和旧 `LastAttemptDisplay` 兼容路径保持；R17 中随绑定迁移而过时的两个源码入口断言改为新相对/完整入口，没有以源码包含代替交互签收。
+- 合成 DTO 负例覆盖“尚未成功验证”“尚未结束一轮巡检”“待安排”“未记录 UTC 时间”；`R22TimeDisplayBehaviorTests` `15/15`，Health/时间/维护定向 `25/25`，`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests` `7/7`。联合回归 `32 passed / 3 failed / 0 skipped`（总计 35），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `44023ad6` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、0 errors，`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。业务验证仅使用合成 DTO、fake/隔离测试宿主与隔离构建目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为核对 `EnvironmentCheckStateDto.CheckedLocalDisplay` 及同一 Maintenance 页剩余旧本地时间直显，先查已有 DTO/绑定和复制入口。
+
+## 2026-09-21 R22-01 EnvironmentCheck 首次环境检查时间（第十三子批次）
+
+- 先核对现有 `EnvironmentCheckReportDto`、`EnvironmentCheckService`、Maintenance 首次环境检查卡片以及运行检查/完成/跳过/测试备份命令；本批只复用 `TimeDisplayFormatter`，没有新增检查服务、持久化字段、真实目录写入或自动备份。
+- `0df6c69e` 保留 `CheckedLocalDisplay` 的“尚未检查”兼容语义，新增 `CheckedRelativeDisplay`、`CheckedFullDisplay`、`CheckedRawUtcDisplay`；卡片正文使用相对时间，Tooltip/Automation HelpText 保留完整时间。已有检查项目状态、失败/警告摘要、完成条件、跳过路径、手动测试备份和 `RunEnvironmentCheckCommand` 门控保持。
+- 合成 DTO 负例覆盖“尚未检查”和未记录 UTC；`R22TimeDisplayBehaviorTests` `16/16`，Playnite 相关 `27 passed / 2 skipped / 0 failed`，Worker `EnvironmentCheckServiceTests 1/1`，`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`。联合回归 `33 passed / 3 failed / 0 skipped`（总计 36），3 条仍为旧 `SourceRule` fixture、分类 `SelectedIndex`、Sidebar 版本文本断言漂移。
+- 代码提交 `0df6c69e` 已推送 `codex/ui-finesse-round2`；隔离 Release 构建 XAML `24/24`、Playnite/Tests `0 errors`，保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602`；`validate-source.py`、`git diff --check`、WPF 静态审计 `0 errors / 27 warnings / 177 info` 通过。只使用合成 DTO、fake/隔离测试宿主和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰、未合并。
+- R22-01 仍“部分满足，待继续”。真实系统时钟跳变/跨系统启动周期、剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；下一可执行任务为继续盘点 Storage 与同一 Maintenance 页剩余旧本地时间直显，优先查现有 DTO/绑定和复制入口。
+
+## 2026-09-21 R22-01 Overview 最近访问时间（第十一子批次）
+
+- 先核对已有 `RecentAccessItem`、稳定 ID 记录、Overview 最近访问有限/虚拟化列表和 `OpenRecentAccessCommand`；本阶段只复用 `TimeDisplayFormatter`，没有新增记录服务、计时器或导航路径。
+- `308c2b06` 保留 `LastAccessDisplay` 兼容属性，新增相对/完整/原始 UTC 投影和完整摘要；最近访问行文本使用相对时间，按钮/行 Tooltip 与 Automation HelpText 使用完整时间，记录裁剪、稳定 ID、命令、滚动和虚拟化保持。`6ea7bf9a` 补充 `DateTime.MinValue` 的“时间未知/未记录 UTC 时间”负例。
+- 最终生产代码提交 `308c2b06` 的 Release 构建为 Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；随后测试提交 `6ea7bf9a` 已在相同最终源状态下通过 `R22TimeDisplayBehaviorTests 14/14`、`R10RecentAccessBehaviorTests 2/2`、Save/Maintenance 相关回归，定向合计 `30/30`。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成记录、fake/隔离 WPF testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点 Storage/RecentAccess 之外其他仍直显旧本地时间的生产绑定。
+
+## 2026-09-21 R22-01 Local Mirror 最近同步时间（第十子批次）
+
+- 先核对已有 `LocalMirrorStatusDto.LastSyncUtc`、Maintenance 镜像状态卡片以及同步/刷新命令；本阶段只复用 `TimeDisplayFormatter`，没有新增镜像服务、文件操作或删除路径。
+- `058ca8ff` 保留 `LastSyncDisplay` 的本地时间和“尚未同步”，新增相对/完整/原始 UTC 投影；镜像状态卡片显示相对时间，完整值进入 Tooltip/Automation HelpText。复制、校验、取消和“绝不删除镜像中的多余文件”语义保持。
+- 最终 Release 构建身份为 `058ca8ff`：Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`R22TimeDisplayBehaviorTests 13/13`、`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`、`R06SortingBehaviorTests 4/4`、`R11HistoryTimeNavigationBehaviorTests 3/3`，定向合计 `27/27`。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成 DTO、fake/隔离 testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点 Storage/RecentAccess 等其他仍直显旧本地时间的生产绑定。
+
+## 2026-09-21 R22-01 恢复可用性检查时间（第九子批次）
+
+- 先核对已有 `BackupVersionDto.RestoreReadiness`、SaveCenter 选中版本详情和共享 `TimeDisplayFormatter`；本阶段只补展示投影，没有新增恢复服务、命令、存档写入或安全判断。
+- `0db4abe7` 保留旧 `RestoreReadinessCheckedDisplay` 的本地时间、结果较旧提示和“尚未检查”，新增相对/完整投影；SaveCenter 详情显示相对时间，完整值进入 Tooltip/Automation HelpText。恢复校验、选中版本、恢复保护、滚动和命令绑定保持。
+- 最终 Release 构建身份为 `0db4abe7`：Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`R22TimeDisplayBehaviorTests 12/12`、`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`、`R06SortingBehaviorTests 4/4`、`R11HistoryTimeNavigationBehaviorTests 3/3`，定向合计 `26/26`。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成 DTO、fake/隔离 testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点 Local Mirror `LastSyncDisplay` 与其他仍直显旧本地时间的入口。
+
+## 2026-09-21 R22-01 Maintenance 诊断证据时间（第八子批次）
+
+- 先核对已有 `ValidationFindingDto`、Maintenance 两个诊断详情入口和共享技术文本/帮助绑定；本阶段只复用 `TimeDisplayFormatter`，没有新增服务、持久化字段、命令或诊断发送路径。
+- `eb6a8682` 为 `ValidationFindingDto` 增加相对/完整/原始 UTC 证据时间，保留 `CreatedLocal`、旧 `EvidenceTimeDisplay` 与 `DateTime.MinValue` 的“证据时间未知”；Maintenance 的两个 `SelectedFinding` 详情入口改用相对显示，完整时间进入 Tooltip/Automation HelpText，表格、复制、导航、命令和错误语义未变。
+- 最终 Release 构建身份为 `eb6a8682`：Playnite `net462`、Playnite Tests `net472` `0 errors`，主项目仍有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`R22TimeDisplayBehaviorTests 11/11`、`MaintenanceReportSourceTests | R17FindingTriageBehaviorTests 7/7`；联合门禁 `28 passed / 3 failed / 0 skipped`，3 条仍为旧 SourceRule fixture、分类 `SelectedIndex` 和 Sidebar 版本文本断言漂移。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 本批只使用合成 DTO、fake/隔离 testhost 和隔离目录，未写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，main 用户改动未碰未合并。R22-01 仍为“部分满足，待继续”，下一项盘点其他 Save/恢复时间直显与兼容/未知负例。
+
+## 2026-09-21 R22-01 归类预览与批次历史时间入口（第七子批次）
+
+- 继续先核对已有能力：`MediaClassificationSuggestionDto`、`MediaClassificationPreviewDto`、`MediaClassificationBatchSummaryDto` 和 MediaCenter 归类预览/批次历史均已存在；本阶段只复用 `TimeDisplayFormatter`，没有新增服务、持久化字段或分类操作路径。
+- `a799317b` 为建议、预览和批次摘要增加相对/完整/原始 UTC 显示；页面保留旧 `CapturedLocal`、`CreatedLocal`、`UpdatedLocal`、`ExpiresLocal`、`DetailDisplay` 兼容属性，预览纳入/目标覆盖/应用/撤销/过期/恢复和有限列表虚拟化保持。预览摘要、建议条目和批次历史的完整时间进入 Tooltip/Automation HelpText。
+- 最终提交身份 Release Playnite `net462`、Playnite Tests `net472` 为 `0 errors`；`R22TimeDisplayBehaviorTests 10/10`，相关有限列表/刷新/来源规则 `4/4`；Worker `MediaSyncServiceTests 19/20`，唯一失败为既有 `MediaSyncServiceTests.cs:570` NRE，排除该测试后 `19/19`；组合 `27 passed / 3 failed / 0 skipped`，3 条既有 R14/字体断言漂移未改写。`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。
+- 证据已更新为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MEDIA-TIME-20260921.md`，账本仍为“部分满足，待继续”。真实剪贴板、系统时钟跳变/跨系统启动周期、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能和 Demo 原目录仍未验；main 用户改动未碰未合并。下一可执行任务：Maintenance `ValidationFindingDto.EvidenceTimeDisplay` 共享时间合同与未知时间负例。
+
+## 2026-09-21 R22-01 MediaCenter 媒体时间入口（第六子批次）
+
+- 先核对现有 `MediaItemDto.CapturedLocal` 和 MediaCenter 四类入口：Media Inbox 表格、当前游戏媒体卡片、选中媒体详情、重复组条目均已有同一 DTO；没有新增服务、媒体时间 DTO 或视觉体系。`MediaClassificationSuggestionDto.CapturedLocal`、分类批次摘要时间和 `ValidationFindingDto.EvidenceTimeDisplay` 另有页面/兼容边界，未由本批代签。
+- `e4389a09` 为 `MediaItemDto` 增加共享 formatter 的相对/完整/原始 UTC 属性，MediaCenter 以相对时间显示并把完整时间放入 Tooltip/Automation HelpText；保留 `CapturedLocal`、表格复制、虚拟化、列宽、选框、滚动条、命令/Binding 和媒体写入语义。
+- `R22TimeDisplayBehaviorTests 9/9`；`R18TableContainerBudgetTests | R19DraftRefreshBehaviorTests | R14SourceRulePreviewTests 4/4`。合并相邻媒体/分类回归 `26 passed / 3 failed / 0 skipped`，失败为既有 R14 选中索引/分类证据与字体层级断言漂移，未改写为通过。
+- 精确提交身份 Release Playnite `net462`、Playnite Tests `net472` 为 `0 errors`，主项目保留 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check`、WPF `0/27/177` 通过。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MEDIA-TIME-20260921.md`。
+- R22-01 仍“部分满足，待继续”：真实剪贴板、系统时钟跳变/跨系统启动周期、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW、宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。下一可执行任务：盘点分类 `CapturedLocal`、批次 `Created/Updated/Expires` 和 ValidationFinding 证据时间的当前直显与兼容边界。
+
+## 2026-09-21 R22-01 时间显示统一（第一子批次）
+
+- 先查现有 DTO/Worker/时间线能力：此前没有共享时间格式化器；时间线已按 `OccurredUtc` 排序，但 `TaskStatusDto.DurationDisplay` 仍使用墙上 UTC 时间，Worker 的 `Stopwatch` 只用于吞吐采样。本阶段不把已有能力误写成单调任务时长。
+- `1250aaad` 新增 Contracts `TimeDisplayFormatter` 和 `R22TimeDisplayBehaviorTests`，任务时间线接入相对时间、完整时区提示、原始 UTC 属性；未知时间、命令/Binding、现有 UTC 排序和有限时间线滚动保持不变，没有新增服务或真实数据写入。
+- 新增行为 `5/5`，既有 R15 时间线 `3/3`；提交身份 Release Playnite `net462` `0 errors / 2` 条既有 CS8602 warning，Tests `net472` `0/0`；source validation、XAML `24/24`、diff 通过，WPF `0/27/177`。
+- R22-01 记为“部分满足，待继续”。真实剪贴板、系统时钟跳变、单调任务时长/持久化、Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-DISPLAY-20260921.md`。下一步核对 `TaskStatusDto`、`TaskCoordinator` 和任务快照恢复。
+
+## 2026-09-21 R22-01 任务单调时长与恢复（第二子批次）
+
+- `538fcae9` 复用现有 TaskCoordinator、SqliteStateStore/EnsureColumn 和 Worker 重启收口，新增 `MonotonicTaskClock`、TaskStatusDto elapsed/起点字段与 `tasks` 三列增量迁移；新任务终态和重启中断任务不再依赖墙上时间计算时长，旧任务无单调字段时保留 legacy fallback。
+- 新增单调计时 `2/2`、任务查询/恢复 `9/9`、Coordinator 失败/取消 `7/7`、旧 schema migration `4/4`、隔离 Worker 硬重启 `1/1`；最终提交身份 Playnite `net462` `0 errors / 2` 条既有 warning，Playnite Tests/Worker Tests `0/0`；R22 时间 `5/5`、R15 `3/3`，source/XAML/diff 通过。
+- 仍不宣称系统时钟跳变/跨系统启动周期、真实剪贴板、Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW 或宿主性能；Overview/Maintenance/Save 等其他时间入口尚未全部迁移。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MONOTONIC-TASK-DURATION-20260921.md`。下一步继续盘点剩余时间入口与已有复制行为。
+
+## 2026-09-21 R22-01 Overview 与任务入口时间显示（第三子批次）
+
+- `b53ab44f` 复用 `TimeDisplayFormatter`、`TaskStatusDto` 和 `ActivityEntryDto`，把相对时间、完整本地时区提示和原始 UTC 接入 Task Center 任务表/详情、Overview 最近任务和全局活动；没有新增服务、计时器、真实数据写入，也没有改变任务表列宽、分页/选择、滚动、复制、命令、取消或恢复语义。
+- `R22TimeDisplayBehaviorTests 6/6`、`R15TaskTimelineTests 3/3`、`OverviewInteractionTests 1/1`、`R10RecentAccessBehaviorTests 2/2`，本批合计 `12/12`。实际提交身份 Release Playnite `net462` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，Playnite Tests `net472` `0/0`；source validation、XAML `24/24`、diff 和 WPF `0/27/177` 通过。
+- R22-01 仍为“部分满足，待继续”：Maintenance/Save 等其他时间入口、真实剪贴板、系统时钟跳变/跨系统启动周期、真实 Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-OVERVIEW-TIME-20260921.md`。下一步盘点 Maintenance/Save 剩余时间入口和已有复制行为。
+
+## 2026-09-21 R22-01 Save 与 Maintenance 时间入口（第四子批次）
+
+- `2be8627d` 复用 `TimeDisplayFormatter`，为已有 `BackupVersionDto`、`AuditLogEntryDto` 增加相对/完整/原始 UTC 显示；Save 历史/详情和 Maintenance 审计表改用相对时间，保留列宽、分页/选择、滚动、DataGrid 复制、恢复/校验/诊断命令和安全语义。`c211a04f` 校正随绑定迁移而过时的 Save 源码断言。
+- `R22TimeDisplayBehaviorTests 7/7`、`R06SortingBehaviorTests 4/4`、`R11HistoryTimeNavigationBehaviorTests 3/3`，相关 WPF 方法 `3/3`，另 1 条真实宿主条件方法跳过；本子批定向 `17 passed / 1 skipped`。精确提交身份 Release Playnite `net462` `0 errors / 2` 条既有 warning，Playnite Tests `0 errors`；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
+- 全套 `WpfUiResourceDictionaryTests` 记录 `133 passed / 39 skipped / 4 failed`；本批 Save 旧绑定断言已校正，剩余 3 条为既有 Settings 响应字段、媒体空数据滚动、Inbox 下拉共享模板断言失败，未改写为绿色。R22-01 仍为“部分满足，待继续”；Maintenance 保留预览/其他 Save 恢复时间、真实剪贴板、时钟跳变、Playnite host/UIA/呈现/DPI/跨屏/ETW/宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-SAVE-MAINTENANCE-TIME-20260921.md`。下一步盘点 Maintenance 保留预览及剩余时间入口和复制行为。
+
+## 2026-09-21 R22-01 Retention 预览时间入口（第五子批次）
+
+- `abe9369e` 复用 `TimeDisplayFormatter`，为 `RetentionSimulationItemDto` 增加相对/完整/原始 UTC 显示；保留旧 `CreatedDisplay` 供报告兼容，Maintenance 预览只替换展示绑定，不改变只读预览、保护判断、Apply 二次确认或真实存档操作。
+- `R22TimeDisplayBehaviorTests 8/8`、`MaintenanceReportSourceTests 4/4`、`R17FindingTriageBehaviorTests 3/3`，Playnite `15/15`；`RetentionSimulationServiceTests 12/12`。提交身份 Playnite `net462`、Playnite Tests `net472`、Worker Tests `net8` `0 errors`，主项目保留 2 条既有 warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
+- R22-01 仍为“部分满足，待继续”：MediaCenter `CapturedLocal` 及其他时间入口、真实剪贴板、系统时钟跳变/跨系统启动周期、真实 Playnite/package-host、UIA/读屏、DPI/跨屏、呈现、ETW 和宿主性能未验。Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RETENTION-TIME-20260921.md`。下一步盘点 MediaCenter `CapturedLocal` 及剩余时间入口和已有复制行为。
+
+## 2026-09-21 R22-04 打开路径失败
+
+- 先查并复用 R16 `SettingsPathEditorService`、设置页当前字段编辑器、完整路径复制和 Dashboard `RunLocal`/`ReportDashboardFailure`；没有新增文件服务、权限修改、Explorer 绕过或用户数据写入。
+- `R16SettingsPathEditorBehaviorTests` 在隔离临时目录实际验证有效文件、有效目录、缺失目录、文件冒充目录；源码边界合计 `3/3`。当前提交身份 Release 构建 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff 通过。
+- R22-04 按“已满足，待环境验证”收口。真实 Explorer/Playnite host 启动失败、网络共享/ACL/占用、UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW 和宿主性能未验；Demo 原目录不可用，main 用户改动未碰未合并。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-04-OPEN-PATH-FAILURE-20260921.md`。下一可执行任务：`R22-01` 时间显示统一或其他依赖满足的 Q/R 小批量。
+
+## 2026-09-21 R21-08 单屏与跨屏分账
+
+- 先查已有 Q24-03 真实宿主前置、生产宿主内游戏选框和共享 ComboBox Popup；没有新增跨屏定位、独立窗口、DPI 或滚动体系，也没有改变命令、Binding、取消/错误、恢复保护和有限列表性能。
+- 当前 Windows 主机真实枚举只有 `\\.\DISPLAY1`，Bounds `0,0 1707×960`、WorkArea `0,0 1707×912`；`real-host-audit.ps1` 语法通过，单屏状态应为 `blocked-single-display`。既有 `R05PopupBoundaryBehaviorTests 2/2`、`R09PixelStrokeBehaviorTests 2/2`（1.00–2.00 逻辑尺度模拟）、`R09ThemeSwitchBehaviorTests 1/1`、拓扑/源码契约 `26/26` 均通过。
+- 当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；R21-08 按“已满足，待环境验证”收口。已写入双屏隔离 Playnite 执行清单，覆盖 Popup 位置、字体/文本度量、焦点、主题资源/资源释放、回迁和前后呈现帧；没有把离屏 DPI 模拟或代理截图写成物理跨屏。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-08-SINGLE-CROSS-SCREEN-20260921.md`。Demo 原目录不可用，main 用户改动未碰未合并；真实双屏 Playnite/package-host、Windows UIA/读屏、OS 输入/IME、跨屏呈现、ETW 和宿主性能仍未验。下一可执行任务：后续依赖已满足的 Q/R 小批量；双屏可用时优先按清单回放。
+
+## 2026-09-21 R21-07 焦点可视回归
+
+- 先核对生产 `GscSharedFocusVisual`、AcrylicProductionShell 游戏选框/滚动/关闭回焦和既有 R09/R05 证据；本阶段没有重建焦点、滚动、主题或弹层体系，也没有改命令、Binding、取消/错误、恢复保护和有限列表性能。
+- 提交 `b20f1a4b` 新增 `R21FocusVisualRegressionBehaviorTests`：生产 Shell + 合成 2,000 项请求 `ScrollIntoView` 后末项容器实际实现，搜索框焦点保持并有共享焦点样式；浅/深主题资源切换后强调色变化且焦点不漂移；关闭选择器后回焦可见游戏选框。
+- 已推送提交身份下 Release 项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；串行 R21 `1/1`、R09 `2/2`、R05 主题弹层 `1/1`，合计 `4/4`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。并行隐藏 WPF 窗口抢焦点失败和旧 R05 手动注入 VM 初始化夹具失败保留为真实边界，没有改写为绿色。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-07-FOCUS-VISUAL-20260921.md`。Demo 原目录不可用，main 用户改动未碰未合并；隔离宿主的 `VerticalOffset`/像素裁剪/presented frame、真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、ETW 和宿主性能仍未验。下一可执行任务：R21-08 单屏与跨屏分账。
+
+## 2026-09-21 R21-06 可选择技术文本
+
+- 先查已有 `GscWpfUiPathDetailTextBox`、`CopyPathCommand`、TaskCenter `SafeDetailMessage` 和 `TaskFailureClipboardFormatter`；只新增共享 `GscWpfUiTechnicalTextBox`，把 Dashboard/AcrylicProductionShell 两条插件版本显示改成只读可选 TextBox，提交 `866ceecd`，没有新增服务、DTO、命令或导航。
+- `R03LongPathTests`、`R11DiffListSearchBehaviorTests`、`R15TaskFailureCopyTests`、`R21SelectableTechnicalTextBehaviorTests` 合计 `13/13`：长路径、SaveCenter 完整路径、脱敏错误码/技术详情/任务 ID 和版本文本均通过实际 WPF 选择/复制相关行为，不是单纯源码字符串断言。
+- 当前提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过。Demo 原目录不可用，main 用户改动未碰未合并；真实剪贴板、UIA/读屏、Playnite host、DPI/跨屏、选择像素和性能未验。
+- R21-06 按“已满足，待环境验证”收口；下一可执行任务：`R21-07` 焦点可视回归。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-06-SELECTABLE-TECHNICAL-TEXT-20260921.md`。
+
+## 2026-09-21 R21-05 禁用与隐藏区别
+
+- 先核对已有 `ActionAvailabilityHints`、SaveCenter 维护跳转条件、`GscWpfUiContextButton` 和 Automation 绑定；没有重建服务、DTO、命令或业务语义。本批只新增 `R21DisabledHiddenBehaviorTests` 与证据，提交 `380234e2`。
+- 实际 `SaveCenterView`/生产资源/隔离 `WindowHost` 行为验证 `2/2`：隐藏维护跳转为 `Collapsed`，不在可见树且不能取焦点；说明文本可聚焦并读回 Name/HelpText；条件满足后原命令绑定恢复可执行。共享禁用动作保持可见，UIA `Invoke` 被拒绝且无副作用。邻接组合 `31/31`。
+- 提交身份 Release 测试项目 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过。完整 Release 脚本编译解决方案后，Worker 仍在未修改的 `MediaSyncServiceTests.cs:570` 抛 NRE（350/1/351），按真实事实保留。
+- 只用合成/fake/隔离宿主，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，main 用户改动未碰未合并。真实 Playnite/package-host、系统 UIA/读屏、OS 输入/IME、DPI/跨屏、呈现、ETW、宿主性能仍未验。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-DISABLED-HIDDEN-BEHAVIOR-20260921.md`。
+- 下一可执行任务：`R21-06` 可选择技术文本，先查已有 TextBlock/复制语义和负例，再按小批量补实际行为证据。
+
+## 2026-09-21 接续点校正与 R21-04 异步完成播报
+
+- 用户校正最近交接应以 R12-04 为准；核对发现 R12-04 已满足且 R12-05 至 R12-08 已有历史证据，不回滚、不重做。当前真实未完成项为 R21-04，已在本批收口。
+- 复用 `TaskEventUiBatcher`、终态通知去重、会话摘要、Dashboard Toast 和 Task Center 加载状态。新增行为 `2/2`，相邻定向 `22/22`，Core `5/5`，Worker `5/5`；隔离 Release `0/0`、XAML `24/24`、source/diff、WPF `0/27/162` 通过。
+- 合并相邻旧套件时记录既有 `TaskCenterViewResponsiveTests.FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 单条失败（`28/1`），没有修改旧断言或伪造绿色。临时 source-copy/build 已清理；真实宿主/UIA/读屏/OS 输入/IME/DPI/跨屏/呈现/ETW/性能和 Demo 原目录未验。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md`。下一可执行任务：R21-05 禁用与隐藏区别。
+
+## 2026-09-21 R21-03 验证错误播报
+
+- 先核对已有设置验证 Binding、错误摘要、字段 HelpText、详情 Hyperlink 和异步路径协调器；确认能力已存在，没有为表格方向新造通知体系或改业务语义。
+- 现有 STA WPF 证据覆盖错误链接分类/字段聚焦 `1/1`，R09 数值校验覆盖越界 `9` → 合法 `2` 的错误视觉恢复 `2/2`；设置异步最新请求/取消、源审计和数值边界 `16/16`。
+- 干净 D 盘 source-copy Release 构建 Playnite `net462` / Tests `net472` `0 errors`，仅既有 `MediaCenterView.xaml.cs:671 CS8602` 两条 warning；source validation、XAML `24/24`、WPF `0/27/162`、diff check 通过。新增事实证据：`R21-03-VALIDATION-ANNOUNCEMENT-20260921.md`。
+- 本轮临时 source-copy/build 已清理；真实 Playnite/package-host、UIA/读屏、OS 输入、IME、DPI/跨屏、呈现、ETW、宿主性能和 Demo 原目录仍未验，main 用户改动未碰、未合并。下一可执行任务：R21-04 异步完成播报。
+
+## 2026-09-21 R21-02 控件名称与值收口
+
+- 按 R21-02 完成条件收口图标/动作按钮、复合选择器、开关和进度条；`R21AutomationValueBehaviorTests 21/21`，相关 `35/35`，最新隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 warning，WPF `0/27/162`。
+- 实际 WPF peer 和既有 R06/R12/媒体行为覆盖名称、Invoke、Selection、Toggle、RangeValue、HelpText 以及无选中/未知/越界/忙碌/空选择/三态边界；没有改生产业务语义。账本已记为“已满足，待环境验证”。
+- 下一可执行任务：进入 R21-03，复用现有验证错误 Binding、状态 presenter 和错误摘要，补错误出现与修复后旧状态消失的实际行为证据。真实宿主 UIA/读屏、呈现、DPI/IME、ETW、性能仍未验。
+
+## 2026-09-21 R21-02 选择器无选中与开关三态边界（续作小批量）
+
+- `efb42b7b` 已完成：复用 ComboBox、`ToggleSwitch` 和共享状态模板，新增实际 WPF peer 负例，覆盖无选中 `GetSelection()==null`、选中后单项，以及 `Indeterminate → Off → On`；没有修改生产代码。
+- `R21AutomationValueBehaviorTests 21/21`；相关筛选 `35/35`。D 盘 source-copy 以 `GscBuildCommit=efb42b7b3dd6f259954cb3c8d170e97776428c9d` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接工作树 `_wpftmp.csproj` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成选项、fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。三态不代表当前业务 Binding 会产生 Indeterminate，真实 Playnite host、UIA/读屏、呈现、DPI/IME、性能仍未验。
+- 下一可执行任务：继续 R21-02 剩余复合选择器与逐控件状态/值负例；公共门禁完成后进入 R21-03 错误播报。
+
+## 2026-09-21 R21-02 TaskCenter 任务进度 UIA 值与状态边界（续作小批量）
+
+- `6b56a467` 已完成：复用 TaskCenter 既有 `ProgressValue`/`ProgressDisplay` 与生产 Binding，新增实际 WPF `ProgressBar`/`AutomationPeer` 行为证据，覆盖正常 `42`、未知 `-1`、越界 `120`，没有修改生产代码或业务语义。
+- `R21AutomationValueBehaviorTests 20/20`；`R21AutomationValueBehaviorTests | R06TaskProgressBehaviorTests | R03NumericAlignmentTests` `34/34`。验证了 UIA 名称、`RangeValue` 的 `0–100` 范围、正常值、未知值 `HelpText=—` 和越界钳制。
+- D 盘 source-copy 以 `GscBuildCommit=6b56a467a3143285b680122e82e6cc5d26c2678d` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接工作树 `_wpftmp.csproj` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成 DTO、fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。真实 Playnite host、Windows UIA/读屏、呈现、DPI/IME、性能仍未验。
+- 下一可执行任务：继续 R21-02 剩余复合选择器与逐控件状态/值负例；公共门禁完成后进入 R21-03 错误播报。
+
+## 2026-09-21 R21-02 MediaCenter 媒体详情位置值与导航边界（续作小批量）
+
+- `806d5a27` 已完成：先复用生产 `MediaDetailNavigationDisplay` 与前后导航状态，新增实际行为证据覆盖未选择、首项 `1 / 2`、末项 `2 / 2` 及两端不可导航负例，没有修改生产媒体业务语义。
+- `R21AutomationValueBehaviorTests 19/19`；本批相关组合筛选 `22/22`。测试使用合成 `MediaItemDto`、隔离 ViewModel 字段和实际 WPF `TextBlock` peer，验证“媒体详情位置”名称与值承载，未用字符串断言代替行为。
+- D 盘源码副本以提交身份 `GscBuildCommit=806d5a27` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。Demo 原目录不可用，main 用户改动未碰、未合并；真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+- 下一可执行任务：继续 R21-02 其他逐控件状态/值负例，公共门禁完成后进入 R21-03 错误播报。
+
+## 2026-09-21 R21-02 MediaCenter 批量动作忙碌态刷新（续作小批量）
+
+- `e0805624` 已完成：修复三个 MediaCenter 批量命令漏列于 `RaiseCommandStatesCore` 的 CanExecute 刷新列表；不改生产命令参数、绑定或媒体写入路径。
+- `R21AutomationValueBehaviorTests 17/17`；相关回归 `65/65`。新增探针实际挂接 WPF `Button.Command`，验证 `可用 → 忙碌禁用 → 恢复可用`；空选择 null/空集合负例继续通过。
+- D 盘源码副本以 `GscBuildCommit=e0805624` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/162` 通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成命令/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：继续 R21-02 其他逐控件状态/值负例，公共门禁完成后进入 R21-03 错误播报；真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 MediaCenter 批量动作空选择保护（续作小批量）
+
+- `f7b664f1` 已提交并推送：不改生产代码，只为既有 `UpdateMediaMetadataBatchAsync` 空选择/null 保护补行为证据；两条路径均在 IPC 前返回相同中文错误。
+- `R21AutomationValueBehaviorTests 16/16`；相关回归 `64/64`。测试反射等待真实生产私有异步方法，未用字符串断言冒充行为。
+- D 盘源码副本以 `GscBuildCommit=f7b664f1` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成参数/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：核对批量动作忙碌态/CanExecute 的真实绑定边界，再继续其他状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 MediaCenter 批量动作名称与 Invoke（续作小批量）
+
+- `9fd7223c` 已提交并推送：复用三个现有批量命令和两处操作条，仅补三类按钮的稳定 Automation 名称，未改命令参数、样式或批量语义。
+- 新增实际 WPF Peer 行为证据：三类名称各计数 2，三个隔离按钮均可通过 `IInvokeProvider` 调用；`R21AutomationValueBehaviorTests 15/15`，相关回归 `63/63`。
+- D 盘源码副本以 `GscBuildCommit=9fd7223c` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。Invoke 夹具不替代真实 ICommand/批量写入。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：补批量动作禁用/空选择负例，再盘点其他逐控件状态/值边界；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 MediaCenter 备注与元数据动作（续作小批量）
+
+- `b20dac99` 已提交并推送：复用 `MediaComment` Binding、`UpdateMediaMetadataCommand` 和 `ReassignMediaCommand`，仅补备注、保存元数据、移动归类三个控件的稳定 Automation 名称。
+- 新增实际 WPF Peer 行为证据：名称、备注 Value 从“原备注”更新为“更新备注”、两个 Button 的 Invoke 通道；`R21AutomationValueBehaviorTests 14/14`，相关回归 `62/62`。
+- D 盘源码副本以 `GscBuildCommit=b20dac99` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。Invoke 夹具不替代真实 ICommand/宿主写入验证。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：继续盘点 MediaCenter 批量动作和其他逐控件状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 MediaCenter 收藏开关名称与状态（续作小批量）
+
+- `42f5744d` 已提交并待推送：复用 MediaCenter 现有 `MediaFavorite` Binding 和 ToggleSwitch，仅补稳定 Automation 名称“收藏当前媒体”，不改命令、服务、DTO 或媒体写入语义。
+- 新增实际 WPF Peer 行为证据：名称、`Off → On → Off` 回切负例；`R21AutomationValueBehaviorTests 13/13`，相关回归 `61/61`。
+- D 盘源码副本以 `GscBuildCommit=42f5744d` Release 构建 Playnite `net462` / Tests `net472`，`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；source validation、XAML `24/24`、diff、WPF `0/27/177` 通过。首次 `working-tree` 身份不一致被测试夹具拒绝，统一提交身份后已重跑通过。
+- 链接 `_wpftmp` 仍受 `Access denied` 限制，未绕过；source-copy/build 已清理。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。
+- 下一可执行任务：继续盘点 MediaCenter 备注/元数据动作和其他逐控件状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 SaveCenter 策略控件外置标签与状态（续作小批量）
+
+- `e1fadaab` 已提交并推送：不改生产 XAML，复用 SaveCenter 四个策略开关、异常保护/策略模板选择器和锁定版本 CheckBox 的标签、Binding 与 Automation 名称，补实际 WPF peer 名称与状态/选值变化证据。
+- `R21AutomationValueBehaviorTests 12/12`；相关进度/焦点/键盘/无障碍/生产壳层 `60/60`。新增测试实际创建四个 ToggleSwitch、两个 ComboBox 和一个 CheckBox peer，验证 Toggle/CheckBox `Off → On`、名称和两个选值切换。
+- 提交身份 D 盘源码副本 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`。
+- 链接工作树 WPF `_wpftmp.csproj` 写入仍遇 `Access denied`，没有提升或绕过；改用项目已有 D 盘源码副本流程，验证后清理 source-copy/build。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-SAVECENTER-POLICY-PEER-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 Maintenance 云端队列筛选器名称与值（续作小批量）
+
+- `f3eecad0` 已提交并推送：不改生产 XAML，复用 Maintenance 已有云端队列状态/类型/时间三个筛选器的名称、选项来源和 Binding，补实际 WPF peer 名称与选值变化证据。
+- `R21AutomationValueBehaviorTests 11/11`；相关进度/焦点/键盘/无障碍/生产壳层 `59/59`。新增测试实际创建三个 ComboBox peer，验证名称及“全部/全部时间”到“待处理/媒体/最近一天”的切换。
+- 提交身份 D 盘源码副本 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`。
+- 链接工作树 WPF `_wpftmp.csproj` 写入仍遇 `Access denied`，没有提升或绕过；改用项目已有 D 盘源码副本流程，验证后清理 source-copy/build。只使用合成/fake/隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-MAINTENANCE-CLOUD-SELECTORS-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态/值负例；R21-02 公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 MediaCenter 额外选择器名称与值（续作小批量）
+
+- 提交并推送 `eac4276f`：不改生产 XAML，复用 MediaCenter 已有“媒体收件箱视图”“媒体筛选预设”“媒体归类批次状态筛选”“调整归类建议目标”的名称、选项来源和 Binding，补实际 WPF peer 名称与选值变化证据。
+- `R21AutomationValueBehaviorTests` `10/10`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `58/58`。新增测试实际创建四个 ComboBox peer，验证名称和第一项→第二项选值切换。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增诊断。
+- 仅使用已有生产 MediaCenter XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-MEDIA-EXTRA-SELECTORS-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 Maintenance 进程映射选择器名称与值（续作小批量）
+
+- 提交并推送 `915ac77c`：复用 Maintenance 映射编辑器的 `Games` 数据源、`ProcessMappingTargetGame` `SelectedItem` Binding、游戏名称模板和“绑定”命令，为目标游戏选择器补稳定 Automation 名称；没有改进程映射保存、删除或进程识别语义。
+- `R21AutomationValueBehaviorTests` `9/9`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `57/57`。新增测试实际检查 Maintenance ComboBox peer 名称并验证选项从“游戏 A”切换到“游戏 B”。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增诊断。
+- 仅使用生产 Maintenance XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-MAINTENANCE-PROCESS-MAPPING-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 Dashboard 选框与策略控件名称/状态（续作小批量）
+
+- 提交并推送 `6a8cae16`：复用 Dashboard 游戏状态/平台/排序筛选、同步路径和当前游戏策略编辑器的既有 Binding 与命令，为三个 ComboBox、六个策略 ToggleSwitch 及保存按钮补稳定 Automation 名称；没有改筛选、排序、同步或策略语义。
+- `R21AutomationValueBehaviorTests` `8/8`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `56/56`。新增测试实际检查三个 Dashboard ComboBox、六个 ToggleSwitch 和保存按钮的 peer 名称，验证选项切换与 Toggle `Off→On`。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 0 warnings`；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增诊断。
+- 仅使用生产 Dashboard XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-DASHBOARD-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 MediaCenter 选择器名称与值（续作小批量）
+
+- 提交并推送 `da16043d`：复用 MediaCenter 收件箱归类目标、当前游戏媒体类型筛选、所选媒体重新归类目标的现有数据源、Binding 和后续命令，补稳定 Automation 名称；没有改媒体归类、筛选、移动或文件语义。
+- `R21AutomationValueBehaviorTests` `7/7`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `55/55`。新增测试实际检查三个 ComboBox peer 和三个合成选中值变化。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-MEDIA-SELECTORS-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 TrainerCenter 工具设置名称与状态（续作小批量）
+
+- 提交并推送 `5d9cb81c`：复用 TrainerCenter 工具设置的现有 Binding、`CanTrackProcess` 禁用条件和 ToggleSwitch 实现，为版本/已有实例处理方式/风险类别三个选择器及四个工具设置开关补稳定 Automation 名称；没有改工具启动、保存或风险判定。
+- `R21AutomationValueBehaviorTests` `6/6`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `54/54`。新增测试实际检查三个 ComboBox、四个 ToggleSwitch 的 peer、Toggle `Off→On` 和版本值变化。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-TRAINER-SETTINGS-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续盘点其他复合选择器和逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 TrainerCenter 导入控件名称（续作小批量）
+
+- 提交并推送 `c327f92a`：复用 TrainerCenter 两个已有导入确认路径、候选 Binding、确认命令和取消命令，为 ComboBox 及确认/取消动作补稳定 Automation 名称；没有改导入或文件语义。
+- `R21AutomationValueBehaviorTests` `5/5`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `53/53`。新增测试实际检查 ComboBox/Button peer 和候选值 A→B，生产源码契约确认两处呈现路径各有名称。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-TRAINER-IMPORT-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续 R21-02 Trainer 工具设置版本/风险/运行策略选择器与开关，再补其他逐控件状态值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 进度控件名称与值（续作小批量）
+
+- 提交并推送 `74b559e2`：复用 TaskCenter `ProgressValue`/`ProgressDisplay` 和 Maintenance 远端阶段值，为 DataGrid 行、所选任务详情、远端隔离下载进度补 Automation 名称与 HelpText；没有改 DTO、命令、取消、恢复保护或滚动/选框系统。
+- `R21AutomationValueBehaviorTests` `4/4`；相关进度/焦点/键盘/无障碍/生产壳层筛选 `52/52`。既有 R06/R12 行为回归覆盖未知/排队/零值/越界/取消/成功及远端下载、校验、取消/失败负例。
+- source-copy Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`，未见本批新增 warning。
+- 仅使用生产 XAML、合成 WPF peer、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并；本批临时 source-copy/build 已清理。证据：`evidence/R21-02-PROGRESS-AUTOMATION-20260921.md`。
+- 下一可执行任务：继续 R21-02 剩余复合选择器及逐控件状态/值负例；公共门禁完成后进入 R21-03 错误播报。真实宿主 UIA、呈现、DPI/IME、性能仍未验。
+
+## 2026-09-21 R21-02 SaveCenter 控件名称与值（续作小批量）
+
+- 提交并推送 `efa9614f`：复用 SaveCenter 现有 ToggleSwitch、ComboBox、CheckBox、命令和 Binding，为四个存档策略开关、异常保护等级、策略模板、锁定所选版本和两个策略动作补语义 Automation 名称；没有新增服务、DTO 或业务值。
+- `R21AutomationValueBehaviorTests` `4/4`；相关 R21 键盘/焦点/无障碍/生产壳层回归 `35/35`。受控 WPF peer 实际覆盖 Toggle 名称与 `Off/On`、ComboBox 选中值，既有 glyph 与 ProgressBar RangeValue 证据继续通过。
+- 隔离 source-copy Release Playnite `net462` / Tests `net472` 无错误；首次编译仅有 2 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning，后续 no-restore `0/0`；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态检查 `0/27/177`。source-copy/build 已清理。
+- 不把 R21-02 写成完成：TaskCenter DataGrid 进度条、Maintenance 远端备份进度、其余复合选择器和状态/值负例待继续。只使用合成控件、生产源码契约和隔离 testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-SAVECENTER-AUTOMATION-20260921.md`。
+- 下一可执行任务仍为 R21-02 剩余进度条名称和值与负例，之后进入 R21-03 错误播报。
+
+## 2026-09-21 R21-02 控件名称与值（部分收口）
+
+- 先盘点现有 UIA/Automation 名称；本批补 Dashboard/Overview/Maintenance/Trainer 明确进度条名和 TaskCenter 状态/类型/游戏筛选名，未改变命令、Binding 或数值。提交并推送 `1ca2d01d`。
+- `R21AutomationValueBehaviorTests` 的 AutomationPeer 名称、Toggle `Off/On`、ProgressBar RangeValue 行为 `2/2`；与 R21-01 相关回归 `33/33`。隔离 Release `net462/net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。
+- 不把本批当整项完成：SaveCenter 外置标签开关、更多复合选择器、DataGrid 进度条和状态/值负例待继续。仅使用生产 XAML、合成 WPF 控件、fake/隔离 source-copy/testhost；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R21-02-AUTOMATION-VALUE-20260921.md`。
+- 下一可执行任务仍为 `R21-02` 剩余控件；之后进入 `R21-03` 验证错误播报。
+
+## 2026-09-21 R21-01 八入口纯键盘
+
+- 先核对 Q24、现有 KeyboardFocus/UIA 测试和八个生产入口；已有命令/Binding/导航优先复用。本阶段只给 TrainerCenter 默认工具页四个已有工具栏命令补 Automation 名称，并增加 `R21KeyboardNavigationTraceTests`，没有重建业务能力。提交并推送 `c3459ebd`。
+- 八入口实际 STA WPF 前/反向焦点轨迹 `2/2`；相关 R05/GamePicker/键盘/无障碍/生产壳层套件显式注入 `GSC_BUILD_COMMIT=82d00b0f` 后 `31/31`。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning；source/XAML/diff 通过。
+- 首轮未注入构建身份的 `14` 条统一身份门禁失败未计作产品失败；补齐后全部通过。方向键、Enter/Esc 复用既有 R05/GamePicker 夹具，新增八入口主要记录 Tab/Shift+Tab 等价焦点轨迹。
+- 只用合成宿主资源、fake/隔离 testhost/source-copy；Demo 原目录不可用，main 用户改动未碰、未合并。真实 Playnite/package-host、OS 输入、UIA/读屏、IME、物理 DPI/跨屏、呈现、宿主性能待验。证据：`evidence/R21-01-KEYBOARD-TRACE-20260921.md`。
+- 下一可执行任务：`R21-02` 控件名称与值，先盘点图标按钮、复合选择器、开关和进度条的 UIA 状态/值及负例。
+
+## 2026-09-21 R20-08 状态语气统一
+
+- 先核对 `WorkspaceStatePresenter`、`ActionAvailabilityHints`、`OverviewPriorityResolver` 等已有能力；实际修正 Shell 概览副标题陈旧健康语气，以及主状态中的 Worker/Rclone 内部术语，保留命令、Binding、取消/错误、恢复保护、选框/滚动条和有限列表。
+- `OverviewPriorityResolverTests`、R02/R07/Workspace/R06 组合定向 `30/30`；相关较宽套件 `25 passed / 1 skipped / 1 failed / 27 total`，唯一失败为未修改的任务详情旧绑定源断言。Release 隔离构建 Playnite `net462` / Tests `net472` `0 errors / 2` 既有 warning；source/XAML/diff 通过。提交并推送 `176183ec`。
+- 仅使用合成/fake/隔离 testhost/source-copy/目录；Demo 原目录不可用，main 用户改动未碰、未合并。真实宿主、工具/云端、呈现、DPI/UIA/IME、ETW、宿主性能待验。证据：`evidence/R20-08-STATE-TONE-20260921.md`。
+- 上一项已推进到 `R21-01`；当前事实见日志顶部。
+
+## 2026-09-21 R20-07 最近活动密度
+
+- 先查已有能力：Worker active/recent 任务按 TaskId 去重，活动审计由 `ActivityTimelineMapper` 输出有限摘要；Playnite `TaskEventUiBatcher` 合并高频进度、限制 `128/32`、终态即时落地，Overview 最近任务保留 8 项并本地滚动。
+- TaskCenter 选中项已有失败摘要/错误码、技术详情 Expander、复制/重试和有界任务时间线；无新增生产代码。Core 活动映射 `4/4`，Playnite 定向 `11/11`（批处理 `3/3`、时间线 `3/3`、首页活动 `1/1`、选择/详情 `4/4`）。
+- 组合 WPF host 首次出现 R06 详情选择时序失败，单独类进程重跑 `2/2`；按真实边界记录，未绕过或修改产品断言。隔离 Release Playnite `net462` / Tests `net472` `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` warning，source/XAML/diff 通过。
+- 仅使用合成/fake/隔离 testhost/source-copy/目录，没有真实数据写入；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R20-07-RECENT-ACTIVITY-DENSITY-20260921.md`。
+- 下一可执行任务：`R20-08 状态语气统一`，先核对加载、失败、空、完成和需要操作的现有文案来源/模板；真实 Playnite/package-host、Worker 实时流、呈现、DPI/UIA/IME、ETW、宿主性能仍待验。
+
+## 2026-09-21 R20-06 部分可用状态
+
+- 先查已有能力：`ActionAvailabilityHints` 已覆盖恢复、媒体收件箱、云端和隔离远端恢复的禁用前置与解释，`WorkspaceStatePresenter` 已覆盖 Loading/Empty/Error/Degraded/Offline；保留各工作区独立状态，没有重建状态模型。
+- 首次 R07 WPF 回归真实发现 `MaintenanceView.xaml` 云端过期横幅的 `Style.BasedOn` 不能使用 `DynamicResource`，抛出 `XamlParseException`；改为 `StaticResource` 后提交 `e32ed599`。这是本阶段唯一生产修正。
+- 隔离 Release source-copy 构建显式绑定 `GscBuildCommit=36dbc3f9`，Playnite `net462` / Tests `net472`：`0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671` `CS8602`。R02/R07/Workspace `18 total / 17 passed / 0 failed / 1 skipped`；skip 为已撤销旧架构事实，testhost 关闭有已知 TextServices COM 清理噪声；`validate-source.py`、XAML `24/24`、diff 通过。
+- 仅使用合成/fake/隔离 testhost/source-copy/目录，没有真实存档、媒体、云端或诊断写入；Demo 原目录不可用，main 用户改动未碰、未合并。证据：`evidence/R20-06-PARTIAL-AVAILABILITY-20260921.md`。
+- 下一可执行任务：`R20-07 最近活动密度`，先核对现有事件摘要、进度合并、展开详情和计数来源；真实 Playnite/package-host、Worker/Named Pipe、外部工具、呈现、DPI/UIA/IME、ETW、宿主性能仍待验。
+
+## 2026-09-21 R20-05 Stale 可理解
+
+- 先查现有状态：任务、存档、媒体、维护已有 stale/最后成功/错误/重试；只补云端有旧记录读取失败时的可见边界。云端新增最近成功时间、错误原因、旧数据摘要和重试横幅，失败不清空列表。
+- `FilterConditionSummary.StaleStateDetail` 统一 stale 文案；定向 `37 passed / 1 failed / 0 skipped / 38 total`，唯一失败为未修改的 `FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 断言漂移。隔离 Release `0 errors / 2` 既有 warning；source、XAML `24/24`、diff 通过。提交 `c492bbc2`。
+- 只用合成/fake/隔离 testhost 和目录，未写真实存档、媒体、云端或诊断；未宣称真实宿主、呈现、DPI/UIA/IME、ETW、宿主性能。Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-05-STALE-UNDERSTANDABLE-20260921.md`。
+- 下一可执行任务：从 Q/R 依赖账本选择依赖已满足且边界明确的小批量，先查已有实现和负例覆盖。
+
+## 2026-09-20 R20-04 零结果恢复
+
+- 先查现有能力：任务中心已有摘要/`FilterEmpty`/清除命令；媒体已有 `MediaHasActiveFilters`、清除命令和 `WorkspaceDataState`；云端已有五类筛选、分页和刷新。只补缺失的游戏选框/媒体/云端条件摘要与云端读取失败分流。
+- 新增 `FilterConditionSummary`，游戏选框空结果提供真实条件和清除搜索/筛选；媒体空态绑定状态消息；云端清除只清空筛选后重新加载，读取异常写入失败状态并明确不等于零结果。保留选框、滚动条、命令绑定、取消/恢复和有限列表路径。
+- `FilterConditionSummaryTests` + `GamePickerViewModelTests` `26/26`；受影响套件 `171 passed / 3 failed / 50 skipped / 224 total`，三条是未修改的设置字段、空态覆盖层、下拉模板基线。隔离 Release `0 errors / 2` 既有 `MediaCenterView.xaml.cs:671` warning；source、XAML `24/24`、diff 通过。提交 `cf09f3f6`。
+- 只用合成/fake/隔离 testhost 和目录，未写真实存档、媒体、云端或诊断；未宣称真实 Playnite/package-host、呈现、DPI/UIA/IME、ETW、宿主性能。Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-04-ZERO-RESULT-RECOVERY-20260920.md`。
+- 下一可执行任务：从 Q/R 依赖账本选择依赖已满足且边界明确的小批量，先查已有实现和负例覆盖。
+
+## 2026-09-20 R20-03 首次配置引导
+
+- 先查现有 `EnvironmentCheckCard`、`EnvironmentCheckService`、`OnboardingCompleted`、维护工作区入口和测试备份命令，追溯到祖先提交 `1a90cd06`；确认任务已满足，本阶段无生产代码变更。
+- Worker 合成隔离 `EnvironmentCheckServiceTests` `1/1`；Playnite 当前身份定向 `3 passed / 1 skipped / 0 failed / 4 total`，跳过项为 legacy 宿主事实。Playnite/Tests source-copy `0 errors / 2` 条既有 warning，Worker.Tests `0/0`；source、XAML `24/24`、diff 通过。
+- 旧工作树产物因缺 `GscBuildCommit` 拒绝了 3 条源测试，固定 `31784686` 后隔离重建复测；没有把身份门失败计入行为结果。未运行真实宿主、外部工具、真实用户目录/存档/云端、呈现、DPI/UIA/IME、ETW/性能；Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-03-FIRST-USE-ONBOARDING-20260920.md`。
+- 下一可执行任务：`R20-04` 零结果恢复，先盘点筛选模型、条件摘要、清除命令和离线失败呈现。
+
+## 2026-09-20 R20-02 指标统计范围
+
+- 先核对已有 `DashboardSnapshotDto.GeneratedUtc`、全库计数、当前游戏 DTO、Overview 绑定和既有来源提示；没有重建服务/DTO，也没有改变游戏选框、滚动条或命令入口。
+- 新增 `OverviewSnapshotDisplay` 和 `DashboardViewModel` 显示投影：全库与当前游戏范围/更新时间可见，快照未加载显示 `—` 且说明不代表 0，合法零仍显示 0；未加载时隐藏依赖快照的比例条与状态胶囊，并保持现有快照来源。
+- 核心定向 `40/40`；概览相关布局断言 `4 skipped`；更宽筛选 `194 passed / 3 failed / 50 skipped / 247 total`，3 条失败为本阶段未修改的设置字段、空态覆盖层和下拉模板基线。隔离 Release `0 errors / 2` 既有 `MediaCenterView.xaml.cs:671` warning；source、XAML `24/24`、diff 通过。
+- 链接工作树 obj/WPF 临时项目 `Access denied` 未绕过；未运行真实宿主、呈现、DPI/UIA/IME、ETW/性能，未写真实存档/媒体/云端；Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-02-METRIC-SCOPE-20260920.md`。
+- 下一可执行任务：`R20-03` 首次配置引导，先查环境检查、设置入口、完成标记和可返回/不自动改配置边界。
+
+## 2026-09-20 R20-01 概览下一步
+
+- 先核对已有 `OverviewPriorityResolver`、概览快照、`GamePickerViewModel`、生产 Shell 和任务工作区；实现失败任务、空库、未匹配、可备份四种首屏优先级与真实入口。未新增服务/DTO，不使用全库备份命令作为概览动作。
+- 未匹配进入现有游戏选框“未匹配”；工具可用且已匹配但没有本地备份的游戏进入“可备份”筛选；失败任务进入任务中心“失败”筛选并显式刷新；空库沿用已有刷新动作。补了可备份筛选的负例及无关快照变化不跳优先级测试。
+- `OverviewPriorityResolverTests` + `GamePickerViewModelTests` `32/32`；Overview 交互 + Shell 源码 `5/5`；Release 隔离 source-copy 编译 Playnite `net462` / Tests `net472` 通过。`validate-source.py`、XAML `24/24`、`git diff --check` 通过；仅有既有 `MediaCenterView.xaml.cs:671` nullable warning。
+- 链接工作树构建因写 `obj/...AssemblyInfoInputs.cache`/WPF 临时项目 `Access denied` 失败，未绕过权限；无真实 Playnite/Worker/外部工具/存档/云端写入或 presented frame/DPI/UIA/IME/ETW/宿主性能验证。Demo 原目录不可用，main 用户改动未碰。证据：`evidence/R20-01-OVERVIEW-NEXT-ACTION-20260920.md`。
+- 下一可执行任务：`R20-02` 指标统计范围，先盘点概览数字的来源、更新时间以及当前游戏/全库/未知未加载区分。
+
+## 2026-09-20 R19-08 慢调用可取消
+
+- 先查已有能力：`ExternalProcessRunner` 的 per-call timeout/token、整树 kill、输出上限；Ludusavi/Rclone 所有外部等待均传入边界；`WorkerIpcClient` 取消关闭管道、同 RequestId 复核和可能已接收标记；生产 Busy finally 解锁；云端只有明确成功才写 `Uploaded`。
+- Worker `ExternalProcessRunner`/云队列/ledger 定向 `36/36`，`RcloneClientSourceTests 1/1`；Playnite 可执行子集 `7 passed/6 skipped/0 failed/13 total`。Named Pipe 6 条因环境权限跳过；另 2 条旧 net472 源码测试因缺 `GscBuildCommit` 身份门退出。
+- `validate-source.py`、XAML `24/24`、`git diff --check` 通过；本阶段无生产代码变更。未宣称真实管道/网络/外部工具/云端写入，未绕过 Named Pipe 权限；只用合成/fake/隔离目录，Demo 原目录不可用。证据：`evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md`。
+- 下一可执行任务：`R20-01` 概览下一步，先盘点 OverviewPriorityResolver、无游戏/未匹配/可备份/失败入口。
+
+## 2026-09-20 R19-07 外部文件变化
+
+- 先复用现有 `AsyncThumbnailImage`/`MediaThumbnailLoader`、MediaFailed fallback、`OpenPath`、`RestoreReadinessService`、`ValidateRestoreReadinessCommand` 和 `RestoreOrchestrator`；没有增加文件监视器或静默路径迁移。
+- Worker `RestoreReadinessTests 14/14`；Playnite 纯媒体/恢复说明 `7/7`。组合相关 Playnite `17 passed/4 failed/21 total`，4 条均在旧 net472 产物缺 `GscBuildCommit` 的身份门退出，不计行为失败。
+- 缺失/损坏媒体保留详情和路径上下文；备份重新校验隔离 ZIP/Manifest/哈希并阻止失败版本恢复，显式路径检测/设置承担重新定位。source、XAML `24/24`、diff 通过；本阶段无生产代码变更。证据：`evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。
+- 只用合成/fake/隔离目录，未写真实数据；真实 Playnite 外部移动/占用/损坏、Explorer/播放器、呈现、DPI/UIA/IME、ETW、宿主性能待验，Demo 原目录不可用。下一可执行任务：`R19-08` 慢调用可取消。
+
+## 2026-09-20 R19-06 分页快照变化
+
+- 先核对最新实现：Worker 任务/媒体均用稳定时间+ID 游标和 limit+1 末页判定；Playnite 筛选/刷新 reset、generation 丢弃迟到页、同上下文翻页沿用 cursor；媒体累加器按 ID 去重/更新并限制 2,000，选择按稳定 ID 恢复。
+- Worker `TaskQueryPersistenceTests` + `MediaQueryPersistenceTests` `12/12`；Playnite `MediaPageAccumulatorTests` + `TaskIndexedCollectionTests` `10/10`，`R07SelectionAnchorBehaviorTests` `4/4`。合并筛选 `15 passed/1 failed/16 total` 的 1 条为旧 R06 net472 产物缺 `GscBuildCommit` 身份失败，未扩大解释。
+- 本阶段无生产代码变更；`validate-source.py`、XAML `24/24`、`git diff --check` 通过，沿用 `6d1a401b` clean-tree Release `0 errors/2 existing warnings`。证据：`evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。
+- 只用合成 DTO、fake/隔离 SQLite/testhost，未写真实数据；真实并发快照、Playnite/package-host、呈现、DPI/UIA/IME、ETW、宿主性能待验，Demo 原目录不可用。下一可执行任务：`R19-07` 外部文件变化。
+
+## 2026-09-20 R19-05 Worker 重启恢复
+
+- 先复用已有 `WorkerInitializationService`/`MarkInterruptedTasksAsync`、`BackupOrchestrator.ResumePendingAsync`、`CloudTransferStateService`、`TaskEventBroadcaster` 和 Playnite durable change feed；确认启动恢复、事件断线修复和单连接订阅均已存在。
+- Worker event/reconcile/cloud `18/18`，Playnite `TaskEventUiBatcher 3/3`，XAML/source/diff 门禁通过；独立进程硬重启因 Named Pipe 权限 `1 skipped`，没有伪造成通过。
+- Playnite 相邻 subscription 组一条测试因旧 net472 产物缺 `GscBuildCommit` 身份门退出；事件 batcher 独立回归通过。证据：`evidence/R19-05-WORKER-RESTART-RECOVERY-20260920.md`。
+- 只用合成事件、隔离 SQLite/fake/testhost，未写真实数据；真实 Worker/Playnite 重启、管道、呈现、DPI/UIA/IME、ETW、宿主性能待验，Demo 原目录不可用。下一可执行任务：`R19-06` 分页快照变化。
+
+## 2026-09-20 R19-04 取消关闭顺序
+
+- 先核对已有生命周期：Dashboard `Unloaded` 先停 timer/事件订阅再 `CancelDeferredUiWork`，VM 取消分页、详情、媒体、云端、初始同步并推进 generation；插件停止先取消 lifetime/通知轮询，最后停止自己拥有的 Worker；Worker 启动协调旧任务并由任务页读取持久化状态。
+- `LatestRequestCoordinator` + Busy `5/5`；`TaskReconcileService` `1/1`；取消/重启相邻 Worker 组合 `13 passed / 1 skipped / 14 total`。这组结果实际覆盖取消收尾、迟到回写拒绝、busy 恢复、任务终态和重复协调，不只做 `Assert.Contains`。
+- 独立 Worker 硬重启因当前环境禁止本地 Named Pipe 跳过；WPF shutdown 源测试因复用的旧 net472 产物缺 `GscBuildCommit` 被身份校验拦截。没有提升权限或把阻塞写成通过。证据：`evidence/R19-04-CLOSE-CANCEL-ORDER-20260920.md`。
+- 未读写真实存档、媒体、云端或诊断；真实 Playnite/Worker 同时断管、DPI/UIA/IME、呈现、ETW、宿主性能仍待验，Demo 原目录不可用。下一可执行任务：`R19-05` Worker 重启恢复。
+
+## 2026-09-20 R19-03 重复执行幂等
+
+- 先查已有能力：`IpcEnvelope.RequestId`、`IpcRequestSemantics`、Worker `IpcRequestLedger`/`NamedPipeServerService`、`WorkerIpcClient.RequestWithTrackingAsync` 和生产 `BusyOperationCoordinator` 已覆盖同 ID 单次 claim/响应重放、冲突/执行中/Worker 中断状态、丢响应同 ID 复核和 UI 连点门；本阶段没有重建或改变写服务。
+- Worker ledger/消息边界 `16/16`，R02 Busy 原子门与共享生产按钮 `2/2`，XAML `24/24`、`validate-source.py`、`git diff --check` 通过。Named Pipe 客户端组因当前执行环境禁止本地 Named Pipe 客户端而跳过。
+- linked WPF solution 的 `_wpftmp.csproj` 生成遇到 Access denied；外部源码副本 restore 遇 `NU1301`，没有提升权限或伪造构建通过。证据：`evidence/R19-03-IDEMPOTENCY-20260920.md`。
+- 只用合成请求、fake/隔离 testhost 和本地已有产物，未写真实存档、媒体、云端或诊断；真实 Playnite/Worker 断连、呈现、DPI/UIA/IME、ETW、宿主性能仍待验，Demo 原目录不可用。下一可执行任务：`R19-04` 取消关闭顺序。
+
+## 2026-09-20 R19-02 刷新失败保留草稿
+
+- 先复用现有能力：存档/媒体编辑字段已经有独立 dirty 标记，同稳定 ID 刷新调用 `SyncBackupEditor`/`SyncMediaEditor` 并保留 dirty 字段；失败路径只更新 `WorkspaceDataState`/错误详情，不重置集合或编辑对象。
+- 不增加新的 Draft 服务；`7b2d3afa` 新增直接调用生产 VM 同步/失败边界的隔离行为测试，覆盖存档和媒体的失败保留、同 ID 成功不覆盖 dirty 字段、干净字段接受服务端值，`2/2` 通过。
+- R11 版本备注真实 WPF 取消路径与工作区状态相邻回归最终 `14 passed / 1 skipped / 15 total`；clean-tree Release `0 errors/2 existing MediaCenter nullable warnings`，source/XAML/diff 门禁通过。
+- 只用合成 DTO、隔离 VM/WPF testhost，不读写真实数据。未验真实 Playnite/Worker 断连、慢刷新与草稿呈现时序、presented frame、DPI/UIA/读屏、ETW/宿主性能；Demo 原目录不可用。证据：`evidence/R19-02-DRAFT-REFRESH-20260920.md`。下一可执行任务：`R19-03` 重复执行幂等。
+
+## 2026-09-20 R19-01 旧请求晚返回
+
+- 先核对已有 `LatestRequestCoordinator`、详情/媒体/收件箱/云端/归类历史代际和 `MediaWorkspaceStateCache`；确认筛选/搜索有媒体代际保护，但普通 `LoadDetailsAsync()` 在工作区切换时没有绑定启动 workspace，Media 旧异常也缺少详情上下文门。
+- `ed107c50` 做最小修复：工作区切换立即失效详情和媒体代际；详情加载捕获 workspace/generation/game ID，并在请求开始、成功、取消和失败的 UI 边界复核；媒体失败回写也复核同一门。保留游戏选框、滚动条、命令绑定、取消/错误/恢复、有限列表和 `net462`。
+- 新增 `SlowSuccessFromOldContextCannotReplaceANewContextFailure` 负例，A 的迟到成功无法覆盖 B 的标题、数据、选择、更新时间和失败；已有 `MediaWorkspaceStateCache` A/B 旧完成负例继续通过。
+- 最终 clean-tree 隔离 Release `0 errors/2 existing MediaCenter nullable warnings`；工作区状态、媒体分页锚点、页面重访和请求协调回归 `30 passed / 1 skipped / 31 total`；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。代码已推送 `origin/codex/ui-finesse-round2`。
+- 只用合成/fake/隔离 testhost，不写真实存档、媒体、云端或诊断；未验实际 Playnite IPC 延迟注入、宿主跨线程时序、presented frame、DPI/UIA/读屏、ETW 和宿主性能。Demo 原目录不可用。证据：`evidence/R19-01-LATE-REQUEST-CONTEXT-20260920.md`。下一可执行任务：`R19-02` 刷新失败保留草稿。
+
+## 2026-09-20 R18-08 低性能降级触发
+
+- 先复核既有能力：`AdaptiveThemePaletteFactory.ApplyMaterialResources` 在 glass=false 时使用真实 null Effect、关闭 PopupAnimation/环境层；`GscMotion.IsEnabled` 与 `NormalizeAll` 已处理系统/用户无动画回退；已有 `lowcostprobe` 具备双主题、六工作区、两尺寸和文本/溢出门禁。
+- 首次模拟运行保留了实际失败：Media Inspector 的 `MediaClassificationPreviewItems` 在 1600×900 产生 unnamed 可见水平 ScrollViewer；可视树定位到 ListBox，确认不是只应排除的 TextBox `PART_ContentHost`。`3bfe3d3c` 为 preview/history ListBox 增加 Horizontal Disabled，同时让 harness 区分合法输入框内容滚动、DataGrid 横向滚动和真正页面溢出。
+- clean-tree lowcostprobe 最终 `24/24`：Effects null、PopupTransparency=False、PopupAnimation=None、visibleEffects=0、文本 4–147、unexpectedOverflow 全 0，`lowcostprobe OK`；Media/Trainer Light 代表图已查看。Release `0 errors/2 条既有 warning`。
+- 直接相关回归 `37/37`，`validate-source.py`、diff 通过；联合 R14 筛选 40 pass/2 fail/42，失败是旧 R14 源断言（旧 SourceRule 文本、误判 TabControl SelectedIndex），未改动也未冒充通过。
+- 只使用隔离 WPF/offscreen logical DIP 与合成数据，未验真实 Render Tier/GPU、Playnite package-host、DPI/UIA/ETW/屏幕帧，未写真实数据。Demo 原目录不可用。下一可执行任务：`R19-01` 异步竞态与故障恢复入口。
+
+## 2026-09-20 R18-07 长时资源曲线
+
+- 先查既有 Q25-04 `RunEnduranceProbe`，确认已经覆盖真实 Dispatcher Window、六工作区、Light/Dark、Media 预览/详情、250ms 动作循环和约 10 秒样本；本阶段只补资源序列字段，没有重建耐久脚本。
+- `56d8e1b7` 增加 managed/private/working set、threads/handles、探针可见 timers、反射可见托管事件委托、`HasAnimatedProperties` 动画持有者代理、thumbnail cache/active decode 字段和原始样本；随后 `c5c33e18` 增加动作目标后的 30 秒静置段，静置期间每约 10 秒继续记录，最后才关闭窗口。
+- 最终报告：1800 秒操作 + 30 秒静置，`1830.2/1830s`、177 samples、2769 cycles、8537 completed actions、0 action failures、`enduranceprobe OK`。1800 秒后 cycle 保持 2769，timers 为 0，private/working set 先回落，最后两点分别稳定在 268,775,424/298,184,704；handles 1170–1547，threads 22–42，subscriptions 1，animated owners 0，thumb cache 0/96。
+- 验证：相关源测试 `31/31`；Release 隔离构建 `0 errors/2 条既有 MediaCenter nullable warning`；`validate-source.py` 与 `git diff --check` 通过。报告原始序列保留在 `.tmp/r18-07-endurance-final/enduranceprobe-report.txt`，未把 `WorkingTreeClean=False` 改写成 clean。
+- 只用合成/fake/隔离 WPF Window，没有真实存档、媒体、云端或诊断写入，也没有绕过 ETW/系统权限。Demo 原目录不可用；真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW、宿主性能未验。下一可执行任务：`R18-08 低性能降级触发`。
+
+## 2026-09-20 R18-06 页面重访成本
+
+- 先核对生产 `AcrylicProductionShellView` 的页面 registry：六个页面在 Attach 时创建，`NavigateTo` 同页保持同一 `PageHost.Content`；`RequestWorkspaceLoad` 只调用 Media/Maintenance/选中游戏详情读取，没有整库 `RefreshDashboard`/`Synchronize`。
+- `1b19fd4c` 新增 `WorkspaceRevisitLoadGate`：15 秒热态窗口按 workspace、稳定游戏 ID 和 Media 筛选/搜索/收件箱模式隔离；成功才记录新鲜度，失败/取消、卸载失效和晚返回不能发布新鲜时间。显式 `LoadDetailsCommand` 仍是强制读取。
+- 壳层增加 `[PERF] WorkspacePages`、`WorkspaceActivation` 的 binding/first-revisit/attach-reuse/layout 日志；VM 增加 `[PERF] WorkspaceLoad` 的 read/skip/outcome/load 日志，未把同步布局或代理耗时写成 presented frame。
+- 验证：`WorkspaceRevisitLoadGate`/source `7/7`，页面生命周期/状态 presenter/请求协调/忙状态相邻回归 `31/31`；`validate-source.py`、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`。本阶段 `.tmp/r18-06-*` 已清理。
+- 只用合成时间/context、fake/source、隔离 net472/WPF testhost；没有真实数据写入。真实 Playnite 首次/重访采样、presented frame、DPI/UIA/读屏、ETW/宿主性能仍待验。证据：`evidence/R18-06-WORKSPACE-REVISIT-20260920.md`。下一可执行任务：`R18-07 长时资源曲线`。
+
+## 2026-09-20 R18-05 后台事件合并
+
+- 先盘点现有 `TaskEventBroadcaster` 的 128 容量通道、durable change feed、Playnite 事件监听、`TaskIndexedCollection`、`BatchObservableCollection` 和 Dashboard `Unloaded` 取消；确认缺口是 UI 每事件同步 `Dispatcher.Invoke`，且旧 `DropOldest` 可能淘汰终态。
+- `91947336` 增加 net462 兼容 `TaskEventUiBatcher`：TaskId 合并、pending `128`、每批 `32`；终态优先 `DataBind` 投递并移除旧进度；`StopTaskEventSubscription` 释放队列。Worker 改为固定容量内优先保留终态，durable feed/快照仍是恢复来源。
+- 验证：Playnite `TaskEventUiBatcher 3/3`，Worker `TaskEventBroadcaster 5/5`，相关 Playnite 回归 `19/19`；`validate-source.py`、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`。一次无身份注入的源码测试失败和一次短暂错误序列断言均已按真实原因修正后重跑，不计入产品失败。
+- 只用合成事件、fake 调度、隔离 testhost/SQLite；没有真实存档、媒体、云端写入。没有宣称真实 Playnite 卸载/重载、presented frame、DPI/UIA/读屏、ETW 或宿主性能。`.tmp/r18-05-solution`、本阶段 TestResults 已清理。证据：`evidence/R18-05-BACKGROUND-EVENT-BATCHING-20260920.md`。下一可执行任务：`R18-06 页面重访成本`。
+
+## 2026-09-20 R18-04 表格容器预算
+
+- 先复核 RenderHarness 已有 L21/L32 滚动探针、生产 DataGrid 模板、MediaPageAccumulator 和 Media `Standard/Item/禁列虚拟化`例外；没有重建表格或改游戏选框/滚动条体系。
+- 真实生产 WPF 探针首轮捕获了外层页级 ScrollViewer 在有限响应式布局生效前让 Media Inbox 生成全部 2,000 行的负例。`64843642` 将正常高度 Media Inbox 改为有限 `Height/MaxHeight`，外层纵向滚动仅短页/stale fallback 开启；同时把 c17 媒体详情 `BasedOn` 动态资源修正为静态资源，避免真实 WPF 解析失败。
+- `R18TableContainerBudgetTests 1/1`：2k/10k/20k 下 Task `9/7`、Media `9/9`（最大容器/最大可视行），Media UI 窗口均 `2,000`；8 次滚动 p95/最大 Task 为 `52.846/52.846`、`28.365/28.365`、`34.807/34.807ms`，Media 为 `0.132/0.132`、`0.289/0.289`、`0.153/0.153ms`。相关媒体分页/锚点/几何/滚动回归 `23/23`，source、XAML `24/24`、diff 通过，Release `0 errors/2 条既有 MediaCenter nullable warning`。
+- 只用合成 DTO、fake 分页、隔离 STA testhost；首轮“先 Show 后布局”的全量容器负例和最终“首次 measure 前应用布局”边界均写入证据。没有把受控逻辑 DIP 写成真实宿主/物理屏幕/ETW 性能，`.tmp/r18-04-solution` 和 TestResults 已清理。证据：`evidence/R18-04-TABLE-CONTAINER-BUDGET-20260920.md`。下一可执行任务：`R18-05 后台事件合并`，先查任务/媒体事件投递、批处理和卸载订阅。
+
+## 2026-09-20 R18-03 缩略图滚动预算
+
+- 先核对现有 `AsyncThumbnailLoader`/`AsyncThumbnailImage`：3 路后台 decode、96 项 LRU、不可见/卸载取消和 generation 迟到结果保护已经存在，未新增第二套 loader。
+- `e54d514e` 增加隔离合成预算/失败负例，`18c5073f` 把缓存/活动样本改成实际诊断输出。10 个 12 项窗口共 120 请求，峰值活动 `3`，缓存 `96/96`，每轮活动归零，托管堆增量代理最大 `90,072 bytes`，预取消 `1`，替换后最终 `Ready`。
+- R18-03 `1/1`，AsyncThumbnailLoader/Image 回归 `9/9`；source、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`；无生产 XAML 改动，WPF `0/27/162` 沿用。
+- c17 引入的 `64×64` PreviewDimensions 断言与当前 `PreviewWidth=96` 实测不符，按现行 DecodePixelWidth 行为校正为 `96×96`，未改生产 loader。只用合成/fake/隔离目录，未写真实媒体；`.tmp/r18-03-solution` 已清理。
+- 代码/测试已提交并推送 `e54d514e`、`18c5073f`。证据：`evidence/R18-03-THUMBNAIL-BUDGET-20260920.md`。下一可执行任务：`R18-04 表格容器预算`。
+
+## 2026-09-20 R18-02 真实 Dispatcher 基准
+
+- 先核对既有 `GamePickerViewModel` 的 Dispatcher 投递、现有 STA 窗口夹具和容器绑定；没有改生产 XAML、页面结构或 `FilteredCount` 契约。
+- `59468b37` 增加 20 次受控窗口回放，`5b28b0c3` 校正输出来源为 `ListBox.ItemContainerGenerator + IsVisible + ActualWidth/Height + UpdateLayout`。VM 完成 p95/最大 `52.272/63.581ms`，VM→可见容器增量 p95/最大 `28.343/49.942ms`；20 次可见计数均为 1，容器 `476×19.24 DIP`。
+- 首轮未安装 `DispatcherSynchronizationContext` 时夹具真实失败，补上后 `R18DispatcherVisibilityBenchmarkTests 1/1`；R18/游戏选框/键盘/IME/防抖合并 `47/47`。source、XAML `24/24`、diff 通过；Release 隔离 solution `0 errors/2 条既有 MediaCenter nullable warning`；WPF `0/27/162` 为无 XAML 变更的既有静态基线。
+- 受控窗口和布局可见性不等于 presented frame、物理 DPI、60fps、Playnite 宿主、UIA/读屏或 ETW/性能；未写真实存档/媒体/云端。证据：`evidence/R18-02-DISPATCHER-VISIBILITY-20260920.md`；`.tmp/r18-02-solution` 已清理。
+- 代码已提交并推送 `59468b37`、`5b28b0c3` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R18-03 缩略图滚动预算`。
+
+## 2026-09-20 R18-01 连续输入基准
+
+- 先核对现有 `GamePickerViewModel` 的本地缓存、20ms 延迟、批量 `SetItems`、取消和 `GamePickerKeyboardBehaviorTests` 的真实 STA WPF IME 路由；没有重建选框或输入体系。
+- `10bc5789` 增加内部 `GamePickerPerformanceDiagnostics` 与 `R18ContinuousInputBenchmarkTests`。2,000/10,000 项各 30 次连续英文输入 p95/最大值为 `4.908/6.121ms`、`12.115/13.813ms`，并保留每次延迟、过滤评估、托管堆增量代理的原始数组；粘贴/删除/已提交中文 IME 查询和单次最终防抖刷新均通过。
+- R18 `1/1`，选框/键盘/IME/防抖相邻回归 `46/46`；source、XAML `24/24`、diff 门禁通过；Release 隔离 solution `0 errors/2 条既有 MediaCenterView.xaml.cs:664 nullable warning`；无 XAML 改动，WPF 静态沿用 `0/27/162`。
+- 分配量使用 net472 可用的 `GC.GetTotalMemory(false)` 前后非负托管堆变化代理，不冒充 ETW 或真实呈现；测试输出与证据保留 30 个原始样本。只用合成/fake/隔离 testhost，未触碰真实数据；Demo 原目录不可用，main 用户改动未碰、未合并；`.tmp/r18-01-solution` 已清理。
+- 代码已提交并推送 `10bc5789` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R18-02 真实 Dispatcher 基准`，区分 VM 数据完成和受控窗口可见反馈。
+
+## 2026-09-20 R17-08 维护报告可读性
+
+- 审计确认原报告已有统一 Worker 状态采集、复制/导出和 IPC，但正文平铺且没有插件/Playnite 身份，时间来自另一时钟表达；本阶段沿用原链路，只增加请求身份 DTO、分段输出和末端脱敏。
+- `59d4190b` 让摘要与“待处理/已验证/未知”标题共用同一生成时间和计数；软件身份列出插件、Worker、Playnite、协议和运行时；URL 参数、URL 凭据和 Windows 用户路径由共享脱敏器清理。
+- Worker R17-08 `2/2`、Playnite R17-08 `4/4`；合并相关回归 Worker `5/5`、Playnite `19/19`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-08-MAINTENANCE-REPORT-20260920.md`。
+- 未触碰真实存档、媒体、云端、剪贴板或诊断目录；Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r17-08-solution` 已清理。
+- 代码已提交并推送 `59d4190b` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R18-01 连续输入基准`，先核对游戏选框搜索、取消/IME 和大库性能夹具。
+
+## 2026-09-20 R17-07 检查项一键定位
+
+- 复核确认存档路径、失败任务、云队列和维护返回栈已有生产实现；本阶段只补健康巡检的稳定版本身份与精确版本定位，没有重建导航服务。
+- `e8d581c6` 为 `ValidationFindingDto`/SQLite `findings` 增加 `BackupId` 及旧表迁移；新旧健康 Finding 均可按稳定 `PlayniteId + BackupId` 定位，目标消失不邻近回退，无版本身份不回落到任务中心；维护选择键和原筛选/滚动返回保持。
+- Worker 迁移/健康/Finding `18/18`，Playnite R17 `15/15`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-07-FINDING-NAVIGATION-20260920.md`。
+- 只用合成 DTO、fake 服务、隔离 SQLite/临时目录，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r17-07-solution` 在文档提交前清理。
+- 代码已提交并推送 `e8d581c6` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-08 维护报告可读性`，先盘点报告 DTO/导出服务、分组和脱敏器。
+
+## 2026-09-20 R17-06 存储分析导航
+
+- 先核对现有存储分析 DTO、Worker 统计、维护页 Demo 卡片、TopGames 以及稳定游戏/版本解析；确认已有逻辑索引与目录实测能力，未重建服务。
+- `51cae6b9` 补充失联索引路径和逻辑体积说明，区分 SQLite 逻辑大小与备份目录物理实测；排行带最新稳定 `BackupId`，维护页两条入口按 `PlayniteId`/`BackupId` 精确导航，缺失游戏或版本不回退。
+- Worker `StorageAnalysisServiceTests` `4/4`，Playnite R17-06 `4/4`，完整 Playnite R17 `15/15`；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-06-STORAGE-ANALYSIS-NAVIGATION-20260920.md`。
+- 仅用合成 DTO、fake 服务、隔离 SQLite/目录；未写真实存档、媒体、云端或诊断数据。Demo 原目录不可用，main 用户改动、`src.zip` 和未跟踪对话框文件未碰、未合并；`.tmp/r17-06-solution` 已清理。
+- 已提交并推送 `51cae6b9` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-07 检查项一键定位`，先核对已有稳定 Finding/Health/Task 来源和工作区入口。
+
+## 2026-09-20 R17-05 隔离账本入口
+
+- 审计确认既有隔离账本 DTO、分页查询、逐条 `EntryId` 恢复和确认语义已经存在；Worker 隔离 SQLite 夹具覆盖路径冲突/身份不一致保留残留、不默认删除。
+- `3002a8dc` 在维护行动项中增加原路径/隔离路径的显式可核查行，并将操作文案明确为“受控恢复”；只对隔离账本项显示，保持现有有限列表、滚动、绑定和恢复算法。
+- Worker `RetentionQuarantineRecoveryTests` `5/5`，Playnite 完整 R17 `12/12`（新增 `2/2`、维护报告 `3/3`）；隔离 Release solution `0 errors/2 条既有 warning`；source、XAML `24/24`、diff、WPF `0/27/162` 通过。证据：`evidence/R17-05-QUARANTINE-LEDGER-20260920.md`。
+- 本阶段仅用合成/fake/隔离 SQLite/临时目录，未改真实存档、媒体、云端或生产账本；Demo 原目录不可用，main 用户改动和 `src.zip` 未碰、未合并。`.tmp/r17-05-solution` 已清理。
+- 已提交并推送 `3002a8dc` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-06 存储分析导航`，先核对已有存储统计、来源记录和维护页跳转能力。
+
+## 2026-09-20 R17-04 保留预览对比
+
+- 审计确认既有预览已显示候选、保护项、按索引体积的预计释放和隔离占用；Apply 已有二次确认、预览时效/句柄、live 重算、策略/候选/归档指纹和共享操作锁门禁。
+- 补充隔离 SQLite trigger 负例，证明索引删除失败时归档恢复原路径、隔离账本保留、`MovedBytes/FreedBytes` 不计释放；本阶段未重建生产服务或修改真实数据。
+- 最终 Worker Retention `12/12`、Playnite R17 `10/10`、维护源码 `3/3`；布局回归 `20 passed/11 skipped`；Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R17-04-RETENTION-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、Explorer/权限、真实锁/文件故障/重启恢复、presented frame、ETW、宿主性能；`.tmp/r17-04-solution` 已清理。Demo 原目录不可用，main 用户改动未碰、未合并。
+- 已提交并推送 `3c73b498` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-05 隔离账本入口`，先查现有隔离列表和受控恢复入口。
+
+## 2026-09-20 R17-03 检查进度预算
+
+- 审计确认健康巡检已有持久化游标、单次预算、运行中会话/操作锁、延后候选和取消/失败终态；缺口是维护页和最终摘要不能说明本轮索引范围、延后原因、最近完成和未读取归档边界。
+- `87473bc3` 复用 `LastSummary` 持久化通道，补充索引总数/需检查/延后/候选数和未读取归档说明；DTO 增加当前候选、最近完成、进度边界和下轮计划；游戏运行/锁占用/全候选延后、取消、时间预算和异常结束分别保留准确语义。
+- 最终 Worker 健康巡检 `12/12`、Playnite R17 `10/10`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R17-03-INSPECTION-PROGRESS-BUDGET-20260920.md`。
+- 未验真实 Playnite/package-host、最终主题/DPI/UIA/IME/焦点滚动、presented frame、ETW、宿主性能和真实游戏/锁/超时进程时序；只用合成/fake/隔离 SQLite/目录。Demo 原目录不可用，main 用户改动未碰、未合并。`.tmp/r17-03-solution` 已清理。
+- 已提交并推送 `87473bc3` 到 `origin/codex/ui-finesse-round2`。下一可执行任务：`R17-04 保留预览对比`，先查保留预览的候选、保护项、隔离账本和执行前过期条件。
+
+## 2026-09-20 R17-02 诊断包预览
+
+- 审计确认原诊断包服务已有脱敏、有限日志、2 MiB 上限、类别文件和生成结果路径/大小；缺口是点击后直接生成，用户生成前看不到范围。
+- `2b6e9051` 增加只读预览 DTO/IPC，列出类别、可选日志、脱敏方式、上限和排除项；Playnite 先确认，取消不生成，确认后复用原生成服务，结果显示完整位置与大小。
+- 最终 Playnite R17 `7/7`、Worker R17 `3/3`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 未验真实 Playnite/package-host 确认框、真实目录生成/权限/Explorer、日志并发和最终呈现/DPI/UIA/IME/ETW/性能；只用合成请求、fake/隔离 SQLite/临时目录，不上传或改真实数据。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r17-02-solution` 为本阶段构建输出，文档提交前清理。下一可执行任务：`R17-03 检查进度预算`，先查健康巡检范围和延后/取消语义。
+
+## 2026-09-20 R17-01 健康结果分层
+
+- 审计确认既有 `findings.resolved=0` 查询和健康巡检 stable finding/resolve 已满足“已解决项退出待处理”；缺口是 DTO 未返回证据时间，维护页没有按影响分层，也没有跨来源展示去重。
+- `eb033251` 增加 `ValidationFindingDto.CreatedUtc`/详情证据时间和 SQLite 映射；新增 `FindingTriageResolver`，按游戏、稳定代码、问题标题合并重复来源，按真实影响生成三档摘要，原问题表与滚动/命令/导航保留。
+- 最终提交 Playnite R17 `5/5`、Worker R17 `2/2`；完整 Release solution `0 errors/2 条既有 MediaCenter nullable warning`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 未验真实 Playnite/package-host、多来源生产标题稳定性、最终主题/DPI/UIA/IME、presented frame、ETW、宿主性能；仅使用合成 DTO、fake/隔离 SQLite。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r17-01-solution` 是本阶段可复现构建输出，文档提交前清理。下一可执行任务：`R17-02 诊断包预览`，先核对现有生成前范围与脱敏语义。
+
+## 2026-09-20 R16-08 保存冲突处理
+
+- 审计确认设置已有 Playnite 编辑基线但 `EndEdit` 未检查最新持久化快照；后台/另一入口变化可能被草稿静默覆盖。新增 `SettingsConflictResolver` 三方合并和字段显示名。
+- `EndEdit` 保存前读取最新 settings。非冲突后台字段合入草稿并更新取消基线；同字段冲突不部分合并，触发字段级事件，设置页提示“当前草稿未写入”，抛出 `SettingsConflictException` 阻断保存。原保存/视觉/Worker 应用链保持不变。
+- 最终 HEAD 定向回归 `17/17`；完整 Release/net462 solution `0 errors/2 existing MediaCenter nullable warnings`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R16-08-SETTINGS-CONFLICT-20260920.md`。
+- 未验真实 Playnite 双设置窗口、后台共享对象线程竞态、宿主错误呈现、DPI/UIA/IME、RenderHarness、ETW、宿主性能；只用合成 detached/fake/隔离构建，不改真实配置/存档/媒体/云端。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r16-08-*` 为本阶段输出，文档提交前清理。下一可执行任务：`R17-01 健康结果分层`，先查现有健康检查结果、已解决项和跨来源去重时间证据。
+
+## 2026-09-20 R16-07 配置导入预览
+
+- 现有设置导出已是架构 v1，导入已有缺失路径报告、detached 校验和设备身份保护；当前 DTO 不含凭据。没有重建 DTO 或配置源。
+- `451195ad` 新增非变更 `PreviewPortableJson` 与确认后 `ApplyPortableJson`。预览展示版本、兼容性、字段差异、未知字段和安全说明；未知旧字段忽略，确认取消/旧架构/坏值不改草稿，应用前快照用于异常恢复。设置页保留原文件读取和报告路径，仅在 Yes 后写入当前草稿。
+- 最终 HEAD 定向测试 `15/15`；隔离 Release/net462 solution `0 errors/2 existing MediaCenter nullable warnings`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。证据：`evidence/R16-07-SETTINGS-IMPORT-PREVIEW-20260920.md`。
+- 未验真实 Playnite/package-host 文件对话框、MessageBox、保存取消、最终呈现、DPI/UIA/IME、RenderHarness、ETW、宿主性能；只用合成 JSON/detached settings/隔离目录，未改真实配置、存档、媒体、云端或诊断。Demo 原目录不可用，main 用户改动未碰、未合并。
+- `.tmp/r16-07-*` 为本阶段输出，文档提交前清理。下一可执行任务：`R16-08 保存冲突处理`，先核对编辑基线与后台更新的字段级冲突边界。
+
+## 2026-09-20 R16-06 生效条件说明
+
+- 追踪确认设置保存链为 `EndEdit` 保存并触发视觉变更，再由插件发送 `settings.update`；Worker 应用运行时选项并重算健康计划。四个设置分类旁补充具体生效条件：外观即时预览/保存后重建、下一任务、下一轮检查和下一次 Playnite 启动。
+- 没有发现普通设置必须重启 Playnite 的消费点，未把所有字段标为重启；保留云端时段和安全模式已有边界。命令/Binding、保存取消、Worker 更新和安全语义未改。
+- 验证：提交后当前身份定向链路/负例与 R16-05 路径回归 `8/8`；Release solution `0 errors/2 warnings`（既有 MediaCenter nullable）；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。真实 Playnite/package-host 时序、最终呈现、DPI/UIA/IME、ETW/宿主性能仍待验。
+- 已提交并推送 `83e7c745` 到 `origin/codex/ui-finesse-round2`。Demo 原目录不可用，main 用户改动未碰、未合并。证据：[R16-06 生效条件说明](../design/reviews/ui-finesse-round3-20260915/evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-20260920.md)。下一可执行任务：`R16-07 配置导入预览`。
+
+## 2026-09-20 R16-05 路径编辑一致
+
+- 核对确认原设置页只有全量异步路径校验、粘贴标准化和导入/导出，没有统一的路径浏览、单字段校验、严格打开和复制入口；新增统一路径编辑卡片，复用六个本地工具/目录字段的现有 Binding，排除 Rclone 云端目标。
+- 只读探测区分有效、缺失、网络/磁盘不可达、类型错误和无权限；打开只处理当前有效路径，不回退父目录；复制复用现有脱敏和剪贴板重试；浏览取消不改草稿。保留保存/取消、滚动条、游戏选框、取消/错误/恢复保护、有限列表和 net462。
+- 验证：定向行为/源码/既有路径回归 `6/6`；外部隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664`）；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。真实网络/ACL/剪贴板/Explorer 未用。
+- 已提交并推送 `955dc52e` 到 `origin/codex/ui-finesse-round2`。Demo 原目录不可用；真实 Playnite/package-host、文件夹对话框归属、最终呈现、DPI/UIA/IME、ETW/宿主性能仍待验；main 用户改动未碰、未合并。证据：[R16-05 路径编辑一致](../design/reviews/ui-finesse-round3-20260915/evidence/R16-05-PATH-EDITOR-20260920.md)。下一可执行任务：`R16-06 生效条件说明`。
+
+## 2026-09-20 R16-04 恢复默认粒度
+
+- 核对确认现有设置没有分级默认入口；复用 `GameSaveCenterSettings` 的草稿/取消语义，新增 `SettingsResetCatalog` 和单字段、四分类、全部默认的明确 UI 操作。
+- 全部默认只处理安全标量与 UI 偏好，保留 Worker/Ludusavi/Rclone、存档/媒体/镜像路径、云端目标和设备身份；确认文案列出影响。重置后重绑同一草稿对象，不发保存或 Worker 请求，取消可恢复原草稿。
+- 验证：外部隔离 Release `0 errors/2 warnings`（既有 MediaCenter nullable）；行为 `2/2`、源码 `1/1`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。使用隔离 `obj` 的 `--no-restore`，fresh restore 未宣称通过，临时副本已清理。
+- 已提交并推送 `2b194461` 到 `origin/codex/ui-finesse-round2`。只用合成 settings/fake/隔离目录，Demo 原目录不可用；真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW/宿主性能仍待验；main 用户改动未碰、未合并。证据：[R16-04 恢复默认粒度](../design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-20260920.md)。下一可执行任务：`R16-05 路径编辑一致`。
+
+## 2026-09-20 R16-03 模板应用范围
+
+- 先确认现有实现只有单目标模板应用，没有把单项命令误记成批量能力；随后复用现有模板/策略 DTO、归一化、游戏操作锁、持久化和审计路径，新增有界批量 DTO/IPC、目标预览、结果列表和逐项重试。
+- 批量只提交明确勾选的稳定 Playnite ID，最多 100 个；筛选不清除选择，空选择不全选，超限不静默截断。应用前展示目标、排除和变更字段数；Worker 单项失败继续，取消仍传播。
+- 验证：外部隔离 Release solution `0 errors/2 warnings`（既有 `MediaCenterView.xaml.cs:664` nullable）；Core `3/3`、Playnite 源契约 `1/1`、Worker `2/2`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。fresh restore 无诊断退出，改用隔离副本现有 `obj` 的 `--no-restore` 构建，临时副本已清理。
+- 已提交并推送 `52fbf5de` 到 `origin/codex/ui-finesse-round2`。只使用合成/fake/隔离目录，Demo 原目录不可用；未验真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW 或宿主性能；main 用户改动未碰、未合并。证据：[R16-03 模板应用范围](../design/reviews/ui-finesse-round3-20260915/evidence/R16-03-POLICY-TEMPLATE-BATCH-20260920.md)。下一可执行任务：`R16-04 恢复默认粒度`。
+
+## 2026-09-20 R16-02 策略差异预览
+
+- 先核对并复用现有 `BackupPolicyDto`、`BackupPolicyTemplateDto`、模板目录、Worker IPC 和 `DashboardViewModel` 保存/刷新基线；在 `b327d5ef` 中补充 13 字段有界差异、字段通知、游戏策略保存前差异卡和模板应用前差异卡。
+- 本地取消只复制保存基线回草稿，不发 Worker 请求；未保存游戏草稿时模板应用按钮禁用。实际核心测试验证差异字段、复制不改源对象和变更通知；Playnite 源测试验证取消无 `RequestAsync` 以及模板应用保护。
+- 外部隔离 Release solution 单节点 `0 errors/7 warnings`，警告均为离线 NuGet `NU1900`；核心 `5/5`、Playnite 源契约 `1/1`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/177` 通过。Demo 原目录不可用，linked `obj` 仍 `Access denied`，只用合成/fake/隔离目录，未碰 main 用户改动。
+- 代码提交已推送 `origin/codex/ui-finesse-round2`；本阶段外部临时副本随后清理。未验真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW 或宿主性能。证据：[R16-02 策略差异预览](../design/reviews/ui-finesse-round3-20260915/evidence/R16-02-POLICY-DIFF-20260920.md)。下一可执行任务：`R16-03 模板应用范围`。
+
+## 2026-09-20 R16-01 设置搜索定位
+
+- 在 `a4e35578` 中沿用设置页现有分类、控件和 Binding，增加搜索框、结果摘要和 `SearchTerms` 附加属性；匹配只控制字段/分类可见性，清空恢复原分类，验证错误定位先清空搜索，不改设置值或保存取消语义。
+- 外部隔离副本 Release solution 单节点构建 `0 errors/10 warnings`；R16 行为 `1/1`、源契约 `1/1`，验证导航/草稿分别独立 `1/1`；`validate-source.py`、XAML `24/24`、diff 通过；WPF 静态 `0/28/177`。警告为离线 `NU1900` 与既有 `MediaCenterView.xaml.cs:664` nullable。
+- 联合 WPF 筛选触发既有 Application 多实例生命周期夹具冲突，改用独立 testhost 后全部通过；只用合成设置/fake/隔离目录，未碰真实用户数据。Demo 原目录不可用，linked `obj` 仍 `Access denied`，真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW/性能仍待验；main 用户改动未碰、未合并。
+- 证据：[R16-01 设置搜索定位](../design/reviews/ui-finesse-round3-20260915/evidence/R16-01-SETTINGS-SEARCH-20260920.md)。下一可执行任务：`R16-02 策略差异预览`。
+
+## 2026-09-20 R15-08 清理历史范围
+
+- 先核对既有 Retention Simulation、维护页和 SQLite 隔离账本，确认任务表方向已由现有实现覆盖：预览含日期、候选原因、保留/保护影响、预计释放和隔离账本状态，应用必须二次确认并匹配 Worker 预览句柄。
+- 运行中备份/恢复/媒体操作共享 `GameOperationKind.Retention` 锁，忙碌游戏跳过；候选/策略/归档身份变化拒绝执行；清理仅处理安全范围内 ZIP，隔离账本先记账并支持重启后恢复/人工确认，不删任务记录。
+- `a07f0518` 补充日期/原因/负例和维护页契约夹具，并修正 R15-07 后陈旧的 `Clipboard.SetText` 源码断言。当前外部副本 Worker 清理/隔离账本 `16/16`、Playnite `net462` 维护页 `3/3`；source/XAML `24/24`/diff 通过，NU1900 为离线漏洞源警告，Playnite 保留 `MediaCenterView.xaml.cs:664` 既有 2 条 warning。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、ETW/宿主性能；只用合成/fake/隔离目录，Demo 原目录不可用，未写真实存档/媒体/云端/诊断/系统剪贴板。证据：[R15-08 清理历史范围](../design/reviews/ui-finesse-round3-20260915/evidence/R15-08-HISTORY-CLEANUP-SCOPE-20260920.md)。下一项：`R16-01 设置搜索定位`。
+
+## 2026-09-20 R15-07 失败结果复制
+
+- 在 `37dd4a03` 中复用已有 `CopyTaskErrorCommand`、错误字段、恢复报告脱敏文本和剪贴板入口；新增 Contracts 共享 `ClipboardTextSanitizer`、240 字符以内 `FailureSummary`、安全 `SafeDetailMessage`、完整复制格式化器和最多 4 次瞬时失败重试。完整复制仍保留错误摘要、错误码、详情和任务 ID，但返回前统一脱敏。
+- Task Center 失败卡显示脱敏短摘要和错误码；技术详情默认收起，使用 `GscWpfUiTextBox` 只读、可选择、有限高 180 的文本框。未改动当前选框、滚动条、命令/Binding、取消/错误/恢复语义或 net462 兼容。
+- 验证：Playnite R15TaskFailureCopy `6/6`；R06/R12/R15 相邻回归 `14/14`；完整外部 Release solution `7 warnings/0 errors`（均为离线 NuGet `NU1900`）；定向 Playnite 保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 warning；source/XAML/diff、WPF `0/28/162` 通过。R06 旧复制夹具按当前任务表补回“阶段”列后通过；未重复跑 Worker 全量，R15-06 的既有单项失败仍保留。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/跨屏、UIA/IME、ETW 和宿主性能；linked `obj` 仍 `Access denied`，使用外部源码副本。只用合成 DTO、fake 剪贴板和隔离 STA WPF，Demo 原目录不可用；未写真实存档/媒体/云端/诊断/系统剪贴板。证据：[R15-07 失败结果复制](../design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-20260920.md)。下一项：`R15-08 清理历史范围`。
+
+## 2026-09-20 R15-06 耗时与吞吐
+
+- 在 `6f65638e` 中先核对现有 `StartedUtc/FinishedUtc`、TaskProgress 百分比和各操作总量；没有把阶段百分比误当吞吐。新增可选工作量采样与平滑速率/ETA，只接入整库游戏数、媒体专属候选文件数和已知下载总字节。
+- 采样器最多保留 5 个推进样本，至少两次推进才显示速率；15 秒无推进重置样本，10 秒无新推进隐藏速率/ETA；普通阶段报告清空旧采样。SQLite 追加列自动迁移，广播、快照比较器、最近/活动/分页查询均同步字段。Task Center 只在可靠条件满足时显示采样卡片。
+- 行为回归：Worker 任务查询/采样/广播/失败定向 `20/20`；Playnite R15 `11/11`；source validation、XAML `24/24`、diff check；WPF 静态 `0/28/162`。最终外部隔离 Release solution 到达 Playnite `net462`，`0 errors/2` 条既有 warning，Core `106/106`。
+- 全量 Worker 脚本真实结果为 `342 passed / 1 skipped / 1 failed / 344 total`，既有失败 `MediaSyncServiceTests.ClassificationApplyUsesSelectedStableIdsAndValidatedTargetOverride`（`MediaSyncServiceTests.cs:570`）；按门禁停止，未写成全量通过。直接 linked `obj` 仍有 `Access denied`，未强杀未知进程。
+- 未验真实 Playnite/package-host、RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；只用合成/fake/隔离 SQLite/目录，Demo 原目录不可用，main 用户改动和 `src.zip` 未碰。证据：[R15-06 耗时与吞吐](../design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-20260920.md)。下一可执行任务：`R15-07 失败结果复制`。
+
+## 2026-09-20 R15-05 任务来源定位
+
+- 在 `0d1ff346` 中先核对并复用现有 TaskStatusDto、TaskCoordinator、Worker 广播、SQLite 任务查询、云队列入口和媒体历史精确 BatchId 恢复；新增稳定来源引用 DTO/迁移列。恢复/远端暂存记录版本来源，云重试记录云队列来源，普通任务保留稳定游戏来源。
+- Task Center 详情新增有限来源卡片；游戏继续用原入口，其他对象按 BackupId、BatchId 或稳定队列键精确查找。对象删除时保留任务诊断并清除待选目标，不跳同名游戏或邻近版本。已有分类操作不创建独立任务，因此没有虚构媒体批次任务。
+- 验证：当前提交身份外部源码副本 solution Release `0 errors/2 条既有 warning`；Playnite R15 `10/10`、Worker 来源/任务回归 `18/18`；`validate-source.py`、XAML `24/24`、diff check；WPF 静态 `0/28/162`。首次未注入身份的直接 vstest 被测试门禁拒绝，随后按 `GSC_BUILD_COMMIT=0d1ff346` 重建并通过，不计入产品失败。
+- linked worktree 直接 WPF 临时工程仍有 Access denied 边界；未宣称真实 Playnite/RenderHarness/最终呈现、DPI/UIA/IME、ETW 或宿主性能。只用合成/fake/隔离 SQLite，Demo 原目录不可用，main 用户改动和 `src.zip` 未碰。
+- 证据：[R15-05 任务来源定位](../design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-20260920.md)。下一可执行任务：`R15-06 耗时与吞吐`，先核对可靠采样和未知总量语义。
+
+## 2026-09-20 R15-04 重复通知归并
+
+- 在 `a67d371e` 中先核对并复用 `BoundedTaskIdSet`、`SessionNotificationAccumulator`、`NotificationLevelPolicy`、Dashboard Toast 和 Task Center 历史；新增任务终态通知指纹。进度事件不领取通知键，相同失败证据只提示一次，不同失败证据保留；摘要后新失败/取消不静音。
+- 验证：`validate-source.py`、XAML `24/24`、diff check；Playnite Release `net462` 外部源码副本项目构建 0 errors/2 条既有 nullable warning；通知、会话摘要、R15 时间线、R13 相邻夹具 `28/28`；WPF 静态 `0/28/177`。
+- linked WPF 临时项目仍 `Access denied`，未宣称完整 solution/RenderHarness/真实宿主；未验真实 Toast/OS 通知、最终呈现、DPI/UIA/IME、ETW/性能。只用合成/fake/隔离数据，Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰。
+- 证据：[R15-04 重复通知归并](../design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TASK-NOTIFICATION-DEDUPE-20260920.md)。下一可执行任务：`R15-05 任务来源定位`，先核对稳定对象身份和删除对象负例。
+
+## 2026-09-20 R15-03 任务详情时间线
+
+- 在 `fe0c05a9` 中先核对并复用 `TaskChangeEventDto`、`TaskCoordinator`、Worker 广播和 Task Center；新增 `OccurredUtc`，没有另建历史服务，也没有把任务刷新快照冒充重试记录。
+- `TaskTimelineBuilder` 只整理已知创建、开始、阶段、取消和结束记录，按 UTC/序号稳定排序并显示本地时间与 UTC；缺失事件/时间显示“时间未知”，无关联依据不生成重试条目。Dashboard 事件窗口最多 64 条/任务、200 个任务，详情卡 `MaxHeight=220`，现有滚动、选框、命令绑定、取消/错误/恢复保护和 net462 保持。
+- 验证：`validate-source.py`、XAML `24/24`、diff check；Worker Release 隔离定向 `11/11`；Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15-01/R15-02/R15-03 `11/11`；WPF 静态检查 `0/28/162`。Playnite 的 `MediaCenterView.xaml.cs:664` 2 条 nullable warning 为既有告警。
+- 四个本批隔离输出目录已清理。仅用合成 DTO、fake/内存事件和隔离构建，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；未宣称完整 solution/RenderHarness/真实宿主、重启持久时间线、最终呈现、DPI/UIA/IME、ETW 或性能通过；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据：[R15-03 任务详情时间线](../design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TASK-TIMELINE-20260920.md)。下一可执行任务：`R15-04 重复通知归并`，先查现有任务通知、会话摘要和失败历史入口，并补重复事件不刷屏/重要失败不静音的负例。
+
+## 2026-09-20 R15-02 取消过程展示
+
+- 在 `9c8241fb` 中先核对并复用现有 TaskCoordinator、取消 IPC、任务 DTO、SQLite 查询和 Task Center；增加持久化取消阶段与详情状态卡。运行时闸门保证连点取消只调用一次令牌取消，`Requested → Finalizing → Cancelled` 以及取消后失败/晚到请求均有稳定终态。
+- 快照比较器、最近/活动/分页查询和任务复制列同步取消/阶段字段；保留原有 TaskState、命令绑定、滚动、恢复/错误语义和 net462 兼容。
+- 当前提交身份验证：`validate-source.py`、XAML `24/24`、diff check；Worker Release 隔离定向 `14/14`；Playnite Release `net462` 构建 0 错误、R06 取消回归 + R15 阶段/取消 `8/8`；WPF 静态检查 `0/28/162`。Playnite 构建仅保留 `MediaCenterView.xaml.cs:664` 的 2 条既有 nullable warning。
+- 完整 solution 脚本在 linked worktree 生成 WPF 临时项目时被 `Access denied` 阻断，未记为全 solution 通过；Worker 与 Playnite 项目已分别实际构建。测试只用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据：[R15-02 取消过程展示](../design/reviews/ui-finesse-round3-20260915/evidence/R15-02-TASK-CANCELLATION-20260920.md)。下一可执行任务：`R15-03 任务详情时间线`，先核对任务事件缓存、阶段字段和详情滚动容器；真实 Playnite/RenderHarness、最终呈现、DPI/UIA/IME、presented frame、ETW、宿主性能未验。
+
+## 2026-09-20 R15-01 任务阶段可读
+
+- 在 `4e7ac33a` 中先核对并复用现有任务协调、阶段事件、任务 DTO 和 SQLite 查询；新增共享阶段解析、最后真实阶段字段和 Task Center 阶段列/详情。未知进度显示 `—`，失败/取消不覆盖最后阶段，错误继续单独可见。
+- `tasks.stage_message` 通过现有迁移入口接入新增、更新和分页读取；命令绑定、取消语义、滚动/有限列表和 net462 路径保持。
+- 验证：`validate-source.py`、XAML `24/24`、diff check；Worker Release 隔离定向测试 `12/12`；Playnite Release `net462` 定向测试 `2/2`；WPF 静态检查 `0/28/177`。Playnite 构建只有既有 nullable warning 2 条。
+- 仅使用合成/fake/隔离数据，未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；真实 Playnite/RenderHarness、宿主阶段事件全覆盖、最终呈现、DPI/UIA/IME、ETW、性能未验；main 用户改动和 `src.zip` 未碰、未合并。
+- 证据：[R15-01 任务阶段可读](../design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TASK-STAGES-20260920.md)。下一可执行任务：`R15-02 取消过程展示`，先核对取消请求、取消中状态和竞争终态。
+
+## 2026-09-20 R14-08 来源规则试运行
+
+- 在 `89141528` 中复用现有来源规则 DTO、媒体匹配器和 Worker IPC，增加只读草稿试运行。UI 样本显示命中/排除、大小、路径和原因；保存规则、媒体入库、移动和归类链均不被试运行调用。
+- Worker 以 linked cancellation token 限制时间、扫描项和样本数；UI 列表使用 `MaxHeight=240`、`FiniteViewport`、Recycling，保留当前选框、滚动、命令绑定、错误/取消语义和 net462 路径。另修复重复组 `Border` 的单子级 XAML 结构，未改变其列表行为。
+- 验证：源码验证通过，XAML `24/24`，diff check 通过；Worker Release 隔离构建 `0/0`、行为测试 `1/1`；Playnite Release `net462` 契约测试 `1/1`，构建有既有 nullable warning 2 条；WPF 静态检查 `0/28/177`。render-qa linked `obj` 权限阻塞，未宣称呈现通过。
+- 只使用合成/fake/隔离目录和 SQLite；未写真实存档、媒体、云端或诊断。Demo 原目录不可用，沿用恢复生产基线；main dirty 改动和 `src.zip` 未碰、未合并。证据：[R14-08 来源规则试运行](../design/reviews/ui-finesse-round3-20260915/evidence/R14-08-SOURCE-RULE-PREVIEW-20260920.md)。
+- 下一可执行任务：`R15-01 任务阶段可读`；先核对 TaskCoordinator/任务事件阶段 DTO。R14-08 的真实 Playnite、权限拒绝目录、超大目录和最终呈现仍待验。
+
+## 2026-09-20 R14-07 媒体详情浏览
+
+- 在现有媒体分页/稳定选择链上增加当前已加载窗口的上一项/下一项、位置摘要和列表行回滚；没有新增跨页假数据或替换滚动系统。
+- 详情摘要复用现有媒体 DTO；异步截图显示真实解码尺寸，视频路径缺失/格式不支持/MediaFailed 使用回退，现有取消与失败状态不变。
+- `validate-source.py`、XAML `24/24`、`git diff --check` 通过；新增行为/源码契约夹具。Playnite Tests Release build 退出 1，仅 0 警告/0 错误且无诊断，未宣称构建或 testhost 通过。
+- 仅用合成/fake/隔离路径；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并；无新增需保留的 artifacts/.tmp。
+- 证据：[R14-07 媒体详情浏览](../design/reviews/ui-finesse-round3-20260915/evidence/R14-07-MEDIA-DETAIL-20260920.md)。下一可执行任务：补跑 R14-04/R14-05/R14-06/R14-07 定向验证，再核对 R14-08。
+
+## 2026-09-20 R14-06 批量目标防误选
+
+- 复用现有 Playnite 描述/状态 DTO 与游戏选框，不改变过滤语义；沿描述快照传递本地 IconPath，增加稳定 IdentityDisplay。
+- 全局选框以图标/首字母回退、平台和 Playnite ID 辨识游戏；媒体批量归类、预览目标覆盖、重新归类目标显示同一组名称/平台/ID，保持 SelectedItem/稳定 ID 绑定，重名游戏不靠名称或索引区分。
+- 代码提交 cfbb1279 已推送。验证：validate-source.py、XAML 24/24、git diff --check 通过；新增 GamePicker 显示行为和 R14 目标模板契约夹具。
+- 定向 Playnite testhost 连续无输出，已终止当前会话，未产出运行时通过；Release/net462、真实 Playnite 呈现、DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能仍未验。
+- 仅用合成/fake/隔离数据，不下载图标、不写真实存档/媒体/云端/诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 src.zip 未碰、未合并。
+- 证据：[R14-06 批量目标防误选](../design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGET-GUARD-20260920.md)。下一可执行任务：补跑 R14-04/R14-05/R14-06 定向验证，再推进 R14-07 媒体详情浏览。
+
+## 2026-09-20 R14-05 重复媒体识别视图
+
+- 先核对现有扫描入库已通过 SHA-256 去重，但没有用户回看入口；复用现有 MediaItemDto/GetMediaAsync，新增当前游戏范围的只读确定/疑似重复组查询。
+- Worker 按相同非空哈希生成确定组，按同类型、文件名和大小一致生成疑似组；扫描 5000、组 100、组内 24 的有界结果，Media Tab 使用有限高度/Recycling，只能选择查看，不提供删除、移动或归类命令。
+- Worker 疑似组隔离夹具、Playnite 只读契约和取消/generation 代码已加入，代码提交 `136285d5` 已推送。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过；linked `obj` Access denied/SDK-Workload 阻塞构建和运行时测试，未写成通过。
+- 仅使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：[R14-05 重复媒体识别视图](../design/reviews/ui-finesse-round3-20260915/evidence/R14-05-DUPLICATE-INSPECTION-20260920.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R14-04/R14-05 定向验证，再推进 `R14-06 批量目标防误选`。
+
+## 2026-09-20 R14-04 撤销边界说明
+
+- 先核对既有媒体归类历史和撤销链，确认 `1c0c5a37`/`a7c39922` 已具备入口、批次选择和安全回退条件；本阶段只补边界行为证据。
+- Worker 撤销前重新匹配应用后快照，持久层以当前目标、Assigned、应用后归档路径和 Applied 批次项做条件更新；冲突项目不会恢复移动，也不会覆盖后来人工决定。
+- 新增 `ClassificationUndoLeavesLaterManualDecisionAndArchiveUntouched` 隔离负例，既有正常撤销夹具继续覆盖 Store 重启和归档副本恢复。代码提交 `03521991` 已推送。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过；定向 Worker dotnet testhost 长时间无输出，未产出可签收运行时结果。
+- 仅使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。证据：[R14-04 撤销边界说明](../design/reviews/ui-finesse-round3-20260915/evidence/R14-04-UNDO-BOUNDARY-20260920.md)。
+- 下一可执行任务：`R14-05 重复媒体识别视图`，先核对已有 hash/元数据重复检测并保持只读、不删除真实媒体；R14-04 运行时复跑待可用 SDK/Workload。
+
+## 2026-09-20 R14-03 部分成功处理
+
+- 先核对最新 MediaSyncService：批量归类、忽略、恢复本来已逐项捕获失败，但 UI 只提示首条原因；本阶段复用 `MediaInboxBatchResultDto`，新增失败集合、稳定 ID 和原操作/目标留存。
+- Media 收件箱新增有限高度/Recycling 失败列表与“仅重试失败项”命令；重试请求只来自上次失败集合，成功项不会再次执行，重试后的失败集合按新结果替换。
+- Worker 新增真实隔离 SQLite/fake 部分失败夹具；Playnite 新增失败集合、命令和列表源契约。代码提交 `aef251b1` 已推送到 `codex/ui-finesse-round2`。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过；Worker/Playnite 定向运行、Release/net462、RenderHarness 未执行。
+- 使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，main 用户改动未碰、未合并，没有新 artifacts/.tmp。证据：[R14-03 部分成功处理](../design/reviews/ui-finesse-round3-20260915/evidence/R14-03-PARTIAL-RETRY-20260920.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02/R14-03 定向测试与回归，再推进 `R14-04 撤销边界说明`。
+
+## 2026-09-20 R14-02 预览选择编辑
+
+- 复用现有媒体归类预览批次和稳定 `MediaId`，补齐预览排除、纳入数量汇总和高置信目标编辑；应用命令现在以 `SelectedHighConfidenceCount` 为门禁，排除全部可应用项时不可执行。
+- 新增 `MediaClassificationTargetOverrideDto` 与批次目标更新存储；Worker 只接受当前游戏目录中存在且批次仍为 `Pending` 的目标，写回用户调整原因后重读记录，非法目标跳过并保持未归类。原有冲突、取消、恢复保护和撤销链没有重建或放宽。
+- 新增 Core 选择状态、Worker 隔离 SQLite 行为和 Playnite 源契约夹具。代码提交 `69cf2a72` 已推送到 `codex/ui-finesse-round2`。
+- 验证：`python scripts/validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离构建 `0 warning / 0 error`。当前 Core 测试宿主未产出可运行结果；Worker/Playnite/RenderHarness 未执行。
+- 使用合成/fake/隔离目录，未写真实存档、媒体、云端或诊断；Demo 原目录不可用，沿用恢复生产基线；`.tmp/r14-02-build` 已清理，main 用户改动未碰、未合并。证据：[R14-02 预览选择编辑](../design/reviews/ui-finesse-round3-20260915/evidence/R14-02-CLASSIFICATION-SELECTION-20260920.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01/R14-02 定向测试与相关回归，再推进 `R14-03 部分成功处理`；真实宿主呈现与性能仍未验。
+
+## 2026-09-19 R14-01 归类建议解释
+
+- 先核对现有 `MediaSyncService` 建议算法已复用来源规则、游戏会话、进程映射和文件名证据；新增共享 DTO 的结构化依据显示，不重建服务或改变应用/撤销、取消、恢复保护、媒体移动语义。
+- Media 预览卡逐条显示候选游戏的依据；多候选仍无目标，无任何依据显示“待判断”。保留预览列表有限高度、Recycling、Inspector 滚动和原命令绑定。Worker/Core/Playnite/RenderHarness 均使用合成/fake/隔离夹具。
+- 验证：`validate-source.py`、XAML `24/24`、`git diff --check`、Contracts/Core Release 隔离 `0 warning / 0 error`。Core 定向测试因项目引用目标框架评估退出 `1` 未进入 testhost；Worker restore 退出 `1`，Playnite/RenderHarness 未执行。
+- 代码提交 `7735cd7c` 已推送；R14 隔离构建目录已清理。此前 `.tmp/r13-verify-source` 曾被未知 `dotnet` 进程短暂占用，阶段末已精确删除，未强杀。证据：[R14-01 归类建议解释](../design/reviews/ui-finesse-round3-20260915/evidence/R14-01-CLASSIFICATION-EVIDENCE-20260919.md)。
+- 下一可执行任务：在可用 SDK/Workload 环境补跑 R13-07/R13-08/R14-01 定向测试，再进入 R14-02。
+
+## 2026-09-19 R13-08 失败分类帮助
+
+- 先复用 `RcloneFailureClassifier` 和稳定错误码，新增无空间/限流；共享 DTO 只为已识别认证、空间、远端不存在、校验差异、限流提供下一步，未知错误不猜测。维护页把帮助和折叠原始诊断分开，限流沿用有限退避。
+- Core 正例/未知负例、Worker 分类和 Playnite 绑定夹具已加入；源码校验、XAML `24/24`、diff check 通过，但由于 SDK `9.0.302` 缺少 Workload resolver，定向 build/test 未执行。
+- `96a4c6a9` 已推送。没有运行真实 rclone/远端配额/Playnite/package-host/RenderHarness/最终呈现，未写真实云端、存档、媒体或诊断；main 用户改动未碰。R13-07 隔离源目录首次清理时短暂被占用，阶段末已精确删除，未强杀。
+- 证据：[R13-08 失败分类帮助](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CLOUD-FAILURE-HELP-20260919.md)。下一可执行任务：在可用 SDK/Workload 环境同时验证 R13-07/R13-08，再进入 R14-01。
+
+## 2026-09-19 R13-07 队列筛选与汇总
+
+- 先核对并复用现有状态/类型筛选、分页一致性 token、`existingKeys` 去重和选中项恢复；实现游戏/Playnite ID、来源设备、24 小时/7 天/30 天筛选，摘要新增未筛选 `GlobalTotalCount`，维护页明确当前筛选与全局计数。筛选栏改为可收缩列，RenderHarness 合成绑定同步。
+- 新增 Worker 合成 SQLite 正负例和 Playnite 源行为夹具；只覆盖合成/fake/隔离数据，没有写真实云端、存档、媒体或诊断。WPF 质量检查按 Demo-first 只检查共享样式、绑定、最小宽度和既有滚动容器，没有宣称离屏或真实呈现。
+- `python scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过。Worker/Playnite 定向测试未执行：唯一 SDK `9.0.302` 缺少 Workload resolver 目录，`global.json` 的 `8.0.100` restore 退出 `1` 且无 assets；linked `obj` 另有 Access denied。
+- 代码提交 `d6c2af90` 已推送。`r13-07-build` 已清理；`r13-07-source` 首次清理时短暂被占用，阶段末已精确删除，未强杀。证据：[R13-07 队列筛选与汇总](../design/reviews/ui-finesse-round3-20260915/evidence/R13-07-QUEUE-FILTER-SUMMARY-20260919.md)。
+- 下一可执行任务：在可用 SDK/Workload 的隔离目录补跑 R13-07/R13-08 定向夹具与回归；通过后再进入 R14-01。
+
+## 2026-09-19 R13-06 离线恢复反馈
+
+- 先查明现有 `CloudRetryPolicy`/`CloudRetryService` 已有 1/5/15/60/240/720 分钟退避、最多 6 次、30 秒轮询、每轮最多 10 项顺序处理和无逐条 `ShowTaskNotification`；没有重建队列或改变上传/校验/取消/恢复语义。
+- 新增 `CloudTransferStatusDto.NetworkRecoveryDisplay` 与维护页绑定：网络失败等待态说明退避次数/批次边界，传输态说明网络已恢复并按批次上传，认证失败不误报。游戏选框、滚动条、命令绑定、有限列表和 net462 路径保持。
+- 验证：Core `1/1`；Worker `CloudRetryPersistenceTests 10/10`；Playnite `R13CloudTransferStageBehaviorTests 11/11`；Release 外部隔离 solution `0 warning / 0 error`、Playnite `net462`；XAML `24/24`；source validation/diff check 通过。WPF 仅按 Demo-first 检查共享详情容器、样式和绑定，未把静态/离屏结果写成真实视觉通过。
+- 代码提交 `e4244329` 已推送；证据：[R13-06 离线恢复反馈](../design/reviews/ui-finesse-round3-20260915/evidence/R13-06-OFFLINE-RECOVERY-20260919.md)。合成/fake/隔离临时目录已清理；未写真实网络、云端、存档、媒体或诊断；main 用户改动和 `src.zip` 未碰、未合并；旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一可执行任务：`R13-07 队列筛选与汇总`，先查现有状态筛选、全局计数、分页和选中项联动。
+
+## 2026-09-19 R13-05 远端证据详情
+
+- 先查并复用现有云端 DTO、队列状态、远端布局、维护页详情和复制诊断链；新增共享 display-only 脱敏投影，没有改变上传/校验/取消语义。远端对象按现有备份/媒体相对路径生成，来源设备、最后尝试和最后成功校验进入详情。
+- 实际行为覆盖未知字段、URI 密码、query token、Bearer token、`RemoteVerified → Uploaded` 历史未知边界；Worker 映射 `1/1`，Core 脱敏/显示 `2/2`，Playnite R13 `10/10`。既有复制诊断 sanitizer 的认证负例未泄漏原值。
+- Release 外部隔离 solution `0 warning / 0 error`，Playnite `net462`；XAML `24/24`，source validation/diff check 通过。WPF 仅按 Demo-first 检查共享详情容器、样式、换行/省略和 Tooltip，未把静态/离屏结果写成真实视觉通过。
+- 代码提交 `e280cf1c` 已推送；证据：[R13-05 远端证据详情](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-REMOTE-EVIDENCE-20260919.md)。本批临时目录已清理；未写真实云端、存档、媒体或诊断，main 用户改动和 `src.zip` 未碰、未合并；旧 `.tmp/r12-07-build-final` 仍因 Access denied 暂留。
+- 下一可执行任务：`R13-06 离线恢复反馈`，先查现有 Worker/维护页离线状态、恢复入口和错误分类。
+
+## 2026-09-19 R13-04 暂停与允许时段
+
+- 先查并复用 `WorkerOptions.CloudUploadQueuePaused`、允许时段字段、`CloudRetryService` 和现有设置页开关；没有重建队列或改变调度器。队列摘要按暂停、允许时段外、空队列、运行中投影，补足“队列空闲”与运行中边界。
+- 设置页保留现有暂停恢复入口，补充恢复已保存队列、下一轮 Worker 检查生效和不取消进行中上传的明确说明。源码复核确认暂停跳过自动 sweep、时段外持久化 defer；没有把静态源审查写成真实云端运行时通过。
+- 验证：Core 定向 `1/1`；Worker 允许时段/暂停持久化 `3/3`；Playnite `R13CloudTransferStageBehaviorTests 9/9`、`PortableSettingsTests 10/10`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。
+- 代码提交 `cca3f052` 已推送；证据：[R13-04 暂停与允许时段](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-PAUSE-WINDOW-20260919.md)。隔离副本/输出已清理；未验真实 Playnite/package-host、真实远端/进行中上传时序、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main 用户改动和 `src.zip` 未碰、未合并。`.tmp/r12-07-build-final` 仍因 Access denied 暂留。下一可执行任务：`R13-05 远端证据详情`。
+
+## 2026-09-19 R13-03 手动重试范围
+
+- 先查并复用现有维护页单项/媒体重试、任务中心选中/批量重试、`CloudTransferStateService`、`TaskCoordinator` 和 IPC ledger；没有重建云端服务或另造 RequestId 系统。`CanManuallyRetry` 仅允许 `Failed`/`RetryScheduled`，详情明确只重试当前选中云端项，不重新执行本地备份。
+- 新增行为验证覆盖 DTO 状态正负例、真实 `RelayCommand.CanExecute` 忙态门控；传输中/已上传/已校验负例不可重试，第二次点击提交数为 `1`。任务中心批量现有代码按当前筛选结果及稳定任务 ID、任务类型/游戏去重；云端路径保留本地成功与失败分层。
+- 验证：Playnite `R13CloudTransferStageBehaviorTests 8/8`；Core `UiDisplayMappingTests 29/29`；Worker `CloudTransferStateTests|BackupResultLayerTests 19/19`、`IpcRequestLedgerTests 6/6`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。Playnite IPC 客户端类 `1 passed / 6 skipped / 0 failed`，跳过项未算真实 named-pipe 通过。
+- 代码提交 `680ea83a` 已推送；证据：[R13-03 手动重试范围](../design/reviews/ui-finesse-round3-20260915/evidence/R13-03-MANUAL-RETRY-SCOPE-20260919.md)。外部副本/输出已清理；未验真实 Playnite/package-host、真实远端、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未碰、未合并。下一可执行任务：`R13-04 暂停与允许时段`。
+
+## 2026-09-19 R13-02 下次重试时间
+
+- 先复用现有 `NextAttemptUtc/NextAttemptLocal` 和维护页详情；`RetryTimingDisplay` 同时输出本地绝对时间与约 N 分钟/小时/天后，到期输出可立即重试，空值输出无自动重试。没有添加 Dispatcher/Timer 或每行常驻计时器。
+- 验证：Core `UiDisplayMappingTests 29/29`；Playnite `R13CloudTransferStageBehaviorTests 2/2`；Worker `CloudTransferStateTests 11/11`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。首轮 nullable 警告已修复后才签收。
+- 外部源码/输出已清理；未验真实 Playnite/package-host、真实远端、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未碰、未合并。证据：[R13-02 下次重试时间](../design/reviews/ui-finesse-round3-20260915/evidence/R13-02-RETRY-TIMING-20260919.md)。下一可执行任务：`R13-03 手动重试范围`。
+
+## 2026-09-19 R13-01 队列阶段展示
+
+- 先核对并复用现有 `CloudTransferStatusDto.State`、`CloudTransferSummaryDto.QueueControlDisplay`、Worker `CloudTransferStateService` 和维护页队列；只增加派生 `QueuePhaseDisplay` 与绑定，不改状态机、重试、验证、选框、滚动或命令语义。
+- 阶段显示覆盖等待队列、网络/不完整传输退避、普通重试、上传中、验证中、等待验证和已验证；维护页详情继续保留 Guarantee 级别。认证失败重试负例为普通等待重试，不冒充网络等待。
+- 验证：Core `UiDisplayMappingTests 27/27`；Playnite `R13CloudTransferStageBehaviorTests|MaintenanceCloudTransferResolverTests 7/7`；Worker `CloudTransferStateTests 11/11`；外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；source validation/diff check 通过。源码型测试用显式 `GIT_DIR` 绑定当前 linked worktree `e516a3d1`，外部输出已清理。
+- 未验真实 Playnite/package-host、真实远端、最终呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线；main dirty R08 文件和 `src.zip` 未碰、未合并。证据：[R13-01 队列阶段展示](../design/reviews/ui-finesse-round3-20260915/evidence/R13-01-CLOUD-QUEUE-STAGES-20260919.md)。下一可执行任务：`R13-02 下次重试时间`。
+
+## 2026-09-19 R12-08 恢复结果报告
+
+- 先核对已有 `RestoreOrchestrator`、`TaskCoordinator`、`TaskStatusDto`、PreRestore 和任务详情滚动容器，再以 `RestoreReportDto` 补齐报告；没有重建恢复流程，也没有改变选框、滚动、命令/绑定、取消/错误、保护或 net462。
+- 报告贯穿 Worker 运行、SQLite 任务持久化、最近/活动/分页查询和 TaskCenter 结果卡；显示目标版本、任务 ID、预览文件数/大小、保护快照、失败阶段及完成/回滚/人工介入/取消/失败。复制使用脱敏文本，不包含路径、诊断详情或凭据。
+- 行为验证：Playnite R12 `15/15`；Worker `RestoreReadinessTests|RestoreOrchestratorTests|TaskQueryPersistenceTests 34/34`；最终外部隔离 Debug solution `0 warning / 0 error`；XAML `24/24`；`validate-source.py`、`git diff --check` 通过。分页查询曾因默认 JSON 选项丢失 `PreRestoreBackupId`，修复后才签收。
+- 当前 linked worktree WPF `_wpftmp.csproj` 直接构建仍 Access denied，最终使用当前分支外部隔离源码副本和输出根；不代表真实 Playnite/package-host 或最终呈现。未验物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。未写真实存档/媒体/云端/诊断；main dirty R08 文件和 `src.zip` 未碰、未合并。
+- `.tmp/r12-07-build-final` 在关闭 MSBuild/VB/C# 编译器服务器后精确清理仍逐项 Access denied，未强杀未知进程；本阶段外部隔离源码/输出已清理且不作为证据引用。证据：[R12-08 恢复结果报告](../design/reviews/ui-finesse-round3-20260915/evidence/R12-08-RESTORE-RESULT-REPORT-20260919.md)。下一可执行任务：`R13-01 队列阶段展示`。
+
+## 2026-09-19 R12-07 预览失效重验
+
+- 先核对并复用现有 `DashboardViewModel`、`RestoreOrchestrator`、`RestoreReadinessService`、版本/映射 DTO 和 PreRestore 链路；`00724e62` 只补确认返回后的游戏/版本身份守卫。确认期间切换对象会清空流程并拒绝旧确认，不改变命令、取消/错误、选框、滚动或 net462。
+- Worker 既有最新映射/精确 `BackupId` 解析和目标重预览已由行为测试钉住：调用顺序为 `preview → write → post-validation`。新增同大小归档替换夹具，Manifest SHA-256 不一致时二次 readiness 返回 `Corrupted/Failed`。
+- 验证：隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；Playnite R12 `13/13`；Worker `RestoreReadinessTests|RestoreOrchestratorTests 27/27`；`validate-source.py`、`git diff --check` 通过。已推送 `00724e62`。
+- 证据：[R12-07 预览失效重验证据](../design/reviews/ui-finesse-round3-20260915/evidence/R12-07-RESTORE-REVALIDATION-20260919.md)。证据仅使用合成 Manifest/归档、fake Worker 和隔离目录；未验真实 Playnite/package-host、全量 WPF、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main 用户 R08 改动和 `src.zip` 未触碰、未合并。已关闭 MSBuild 并尝试精确清理 `.tmp/r12-07-build-final`，VB/C# 编译器服务器拒绝 shutdown，目录暂留，未强杀未知进程；下一次启动先重试清理，再执行 R12-08 恢复结果报告。
+
+## 2026-09-19 R12-06 恢复冲突说明
+
+- 先复用现有 `RestoreReadinessDto`、`TaskStatusDto`、恢复错误码和 `RestoreWorkflowProgress`；`423856b2` 只新增原因分类与步骤级处理建议，覆盖游戏运行、操作锁、磁盘空间、目标权限和未知写入失败。没有新增恢复服务/DTO/IPC，也没有改变命令、取消、错误传播、PreRestore、回滚、游戏选框、滚动条或 net462。
+- SaveCenter 原四步流程新增一行 `ResolutionDisplay`，并绑定 Automation HelpText。游戏运行要求退出游戏/启动器/MOD；操作锁要求等待任务中心且不并发重试；空间不足要求清理/迁移后重验；权限问题要求核对 Playnite/Worker 账户 ACL；没有明确依据时保持未知原因，不建议关闭安全机制。
+- 验证：隔离 Debug solution `0 warning / 0 error`、XAML `24/24`；Playnite R12 `11/11`（新增冲突说明 `4/4` + 既有恢复流程 `7/7`）；Worker `RestoreOrchestratorTests 12/12`；`validate-source.py`、`git diff --check` 通过。
+- 已提交并推送 `423856b2`。证据：[R12-06 恢复冲突说明](../design/reviews/ui-finesse-round3-20260915/evidence/R12-06-RESTORE-CONFLICT-EXPLANATION-20260919.md)。全量 WPF 未运行，真实 Playnite/package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能仍未验；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R12-07 预览失效重验。
+
+## 2026-09-19 R12-05 远端下载进度
+
+- 复用现有 `TaskCoordinator`、任务事件流、`RemoteBackupStagingService`、rclone 安全允许列表和 Maintenance 远端恢复入口；StageRemote 现在发布准备、下载到隔离区、完整性校验、Ludusavi 版本确认、写入隔离清单和等待恢复确认进度。
+- 下载结果明确“隔离区已校验、当前存档尚未恢复”；取消/失败清理本次隔离目录，取消终态保留隔离区已清理或清理失败的实际消息，清理失败不再静默吞掉。Playnite 进度条和取消按钮仅由 RemoteStage 事件驱动，非远端任务不会污染状态。
+- 验证：最终 D 盘隔离 Debug solution 构建 `0 warning / 0 error`、XAML `24/24`；`R12RemoteStageProgressBehaviorTests 3/3`、`RemoteBackupStagingSafetyTests 22/22`；source validation、XAML check、diff check 通过。全量隔离 WPF 在既有 R07 resize/focus 用例失败处停止，事实保留，未改写为 skip/通过。
+- 提交 `23e5b9d4` 已推送 `origin/codex/ui-finesse-round2`。证据：[R12-05 远端下载进度](../design/reviews/ui-finesse-round3-20260915/evidence/R12-05-REMOTE-STAGE-PROGRESS-20260919.md)。Demo 原目录不可用，沿用恢复生产基线；main 用户文件和 `src.zip` 未触碰。
+- 未验真实 Playnite/package-host、rclone/Ludusavi 远端、最终呈现帧、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；未写真实存档/媒体/云端/诊断。下一可执行任务：R12-06 恢复冲突说明。
+
+## 2026-09-19 R12-04 恢复保护备份
+
+- 在 `codex/ui-finesse-round2` 先核对 RestoreOrchestrator、TaskCoordinator、GameOperationLock 和已有 PreRestore 回滚测试；`e4e42f40` 将保护备份失败、版本无法确认、锁定失败和索引保存失败统一为 `RESTORE_PRERESTORE_FAILED`，目标恢复调用不会提前发生。
+- `RestoreWorkflowProgress` 把执行阶段当前状态明确为“保护备份”，失败投影保留错误码与中止原因；成功消息补充保护快照已创建并锁定。SaveCenter 原命令、取消/错误传播、滚动和四阶段入口未改。
+- 定向证据：Worker `RestoreOrchestratorTests 12/12`，Playnite `R12RestoreWorkflowBehaviorTests 7/7`，资源字典 `137/39/0`；完整 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp/r12-04-full-build` 为 XAML `24/24`、Release `0/0`、Core `85/85`、Worker `326/326`，source `68` 类/WPF `84` 类隔离进程全返回 0，脚本最终报告全部成功。
+- `validate-source.py`、XAML、`git diff --check` 通过。证据使用 fake/合成状态、隔离目录/SQLite、STA WPF/offscreen logical DIP，不代表真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW 或宿主性能；Demo 原目录不可用，沿用恢复生产基线。
+- main 最新一键命令在安装前仍因 `DangerousConfirmationKeepsCancelAsTheInitialFocusTarget` 失败（`273 passed / 18 skipped / 1 failed / 292 total`）；main dirty R08 对话框实现与跟踪测试源断言尚未安全集成。代码已推送，文档将在本阶段同步后推送，main 尚未合并。下一可执行小批量为 R12-05 远端下载进度。
+
+## 2026-09-19 R12-01 恢复流程分步摘要
+
+- 在 `codex/ui-finesse-round2` 先核对已有 `RestoreReadiness`、`TaskStatusDto`、确认/取消/错误入口；`e1a8da0c` 只新增四阶段状态投影、失败保留详情和 Save 页面分步摘要，保留 PreRestore 保护、命令绑定、游戏选框、滚动条、net462 兼容和有限列表策略。
+- 新增 `R12RestoreWorkflowBehaviorTests`，覆盖成功、warning、游戏运行阻断、恢复后失败和 XAML 命令可达，R12 `6/6`；相邻回归合计 `17/17`；资源字典类 `137/39/0`；隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source/XAML/diff check 和 WPF 静态审查 `0/24/177`。
+- 当前提交绑定的 render-qa 完成但退出 `1`，日志保留既有离屏基线问题，不改写成通过；真实 Playnite/package-host、物理 DPI/跨屏、presented frame、UIA/IME、ETW、宿主性能仍未验。Demo 原目录不可用，沿用恢复生产基线；main 用户文件未触碰。
+- 代码已提交并推送 `origin/codex/ui-finesse-round2`。文档同步后清理 `.tmp\\r12-01-*`，下一可执行小批量为 R12-02 校验结果解释；安装/合并 main 仍需在不覆盖用户改动的前提下另行处理。
+
 ## 2026-09-18 R08-06 数字变化动效
 
 - 先核对已有 Overview 计数、进度条和技术文本；实现只覆盖六个摘要计数。`acbfe7e0` 复用 `GscMotion` 增加 render-only `ScaleTransform` pulse（`1.04`、`420ms` 节流），`96 DIP` 固定槽位防止 `99→100` 推挤；减动效和系统动画关闭时即时落字，进度/技术文本不动画。
@@ -7294,10 +8364,261 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `cc63523` 的 Release 构建、打包、隔离安装和全量自动测试通过：XAML `24/24`、Core `83/83`、Worker `310/311`（1 skip）、Playnite `495/558`（63 skip），失败 `0`。
 - `cc63523` 最新真实宿主重跑在 Playnite `Application started` 后因 CEF `mojo platform_channel` `Access denied (0x5)` 退出，没有 `summary.json` 或 Embedded Dashboard/Settings；该次只记录为宿主启动边界，不改写历史 `69e1f84` 真实嵌入证据，也未结束用户扩展目录 Worker PID `23304`。详见 `evidence/q13-q25/REAL_HOST_AUDIT-FP-FIX-20260915.md`。
 
-## 2026-09-18 合并后 Playnite 测试门禁修复
+## 2026-09-18 Round3 R08-07 对话框遮罩同步
 
-- 用户提供的合并后日志显示：XAML `24/24`、Release 构建 `0` 错误、Core `83/83`、Worker `311/311` 均通过，但 Playnite 全量在同一测试宿主中为 `588 passed / 73 failed / 57 skipped`，因此脚本在安装前停止。
-- 在干净提交快照复现为同类 WPF 生命周期污染：全量套件失败，而逐类独立进程及代表性 WPF 类通过；另发现 5 处源码断言仍锁定旧实现/属性顺序，已改为语义校验。没有修改生产游戏选框、滚动条、命令、取消/错误语义或 Playnite 兼容实现。
-- 新增 `scripts/run-playnite-tests-isolated.ps1`，按测试类发现 WPF 生命周期依赖并逐类启动独立测试进程；`scripts/build.ps1` 已接入该门禁，任何失败仍会停止，不以跳过换取通过。提交 `d08509f3`（`修复Playnite测试隔离与构建门禁`）已推送 `origin/main`。
-- 本轮提交后的干净快照全量复核被本机磁盘空间阻塞：为避免污染用户工作树生成的临时构建输出耗尽系统盘，MSBuild 报“磁盘空间不足”；临时目录已清理。该次不计为构建或安装通过，也未启动真实 Playnite 安装。
-- 当前工作树仍保留用户未提交的 R08 对话框收尾改动与 `src.zip`，不能直接用它做 clean install。下一执行项：在有足够磁盘空间的干净提交树上运行 `scripts/build.ps1 -Configuration Release`，确认隔离 Playnite 全量通过后，再按脚本保护流程打包、隔离安装和启动；真实宿主像素、DPI、IME、读屏、ETW 与耐久边界仍未验。
+- 在 `codex/ui-finesse-round2` 提交并推送 `afa845a6`：新增 `DialogLifecycleStateMachine` 与 `DialogOverlayMotion`，将 Dashboard 内嵌对话框的完成声明、关闭期重入保护、卡片退场和遮罩折叠收口到同一生命周期；保留命令绑定、取消/错误语义、游戏选框和现有滚动条系统。
+- 新增 R08-07 行为测试：生命周期一次性完成/关闭期重入、隔离 STA WPF 遮罩退场终态、Dashboard 焦点 scope/tab cycle 源契约；R08 相关测试按类隔离进程 `16/16`，Core `83/83`，Worker `310/311`（1 skip）。
+- D: 隔离源目录 Release 构建通过，XAML `24/24`、`0 warning / 0 error`；`python scripts/validate-source.py` 与 `git diff --check` 通过。合并 R08 testhost 的 `6 failed / 10 passed` 未计为产品通过，已记录为 WPF Dispatcher/视觉资源污染边界。
+- C: 现有分支工作树直接构建受 WPF 生成 `_wpftmp.csproj` 的 `Access denied` 阻塞，未绕过权限；使用 D: 临时隔离源目录完成相同源码身份的构建核验。未运行真实 Playnite、物理 DPI/跨屏、IME、UIA/读屏、presented frame 或 ETW；Demo 原目录不可用，沿用恢复生产基线。
+- 证据与第三轮账本已同步到 `evidence/R08-07-DIALOG-OVERLAY-20260918.md` 与 `ROUND3_PROGRESS.md`。main 保持用户现有未提交改动不变；下一可执行项为 R08-08 变换所有权。
+
+## 2026-09-19 Round3 R00/R01 当前提交复核
+
+- 在 `3354fd82` 发现并修正 R00/R01 旧源码断言与证据身份问题：R01-07 历史当前扫描曾写入 `c3e67cb4`，隔离输出目录还会使 RenderHarness/UiAuditRunner 误认 main；现在使用 `GscSourceRoot/GscBuildCommit` 元数据并以完整 `3354fd82400df6659165a688b8fcb1eb87116ca4` 复核。
+- 干净隔离验证：XAML `24/24`、Release `0 warning / 0 error`；当前提交的受影响测试、双主题 finesse/motion、media geometry、审计与 Evidence Index 均通过。审计 `161` runtime snapshots、`0` Fidelity、`0` failed routes、无 HIGH/MEDIUM，索引校验 `20/20`。
+- freshness 报告 `14/14 fresh`，docs-only/shared-control/package-identity 三类测试通过；包身份保持 `not-provided`。没有把 R00-07、R01-01、R01-07 的既有 fresh 状态说成同一批重跑产物。
+- 本阶段证据已写入 `evidence/R00-R01-CURRENT-RECHECK-20260919.md` 和第三轮账本；临时构建、探针、审计输出待提交前清理。main 的用户文件未触碰。
+- 未验边界：Demo 原目录、真实 Playnite 呈现、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能、真实 package-host 安装。下一可执行任务为 R08-08 变换所有权。
+
+## 2026-09-19 Round3 R08-08 变换所有权
+
+- 先核对质量审查 F04 和 R00-02：旧 `GscMotion` 只克隆冻结变换，共用未冻结 `TranslateTransform/TransformGroup` 会串扰；没有把该风险误写成已发生的生产页面错位。
+- 在 `194a16fe` 收口 per-element RenderTransform 所有权：外部树首次进入 helper 即按当前值克隆，控件状态记录自有根，重复调用复用；新增 STA 行为测试验证共享直接变换和共享组合变换隔离，并保留旋转/平移几何。
+- 验证：最终提交干净隔离 Release/XAML `24/24`、solution `0 warning / 0 error`；Foundation `9/9`、R08-01 `2/2`、R08-02 `1/1`、R08-03 `1/1`、R08-05 `2/2`、R08-06 `3/3`、R08-07 `3/3`；源码校验和 diff check 通过。一次合并 testhost 的 14 项失败来自缺少构建身份和 WPF/时序污染，已改为带 `GSC_BUILD_COMMIT` 的串行隔离重跑，未计为产品失败。
+- 证据已写入 `evidence/R08-08-TRANSFORM-OWNERSHIP-20260919.md` 与第三轮账本；本阶段临时 worktree/build 已清理，main 用户改动不变。未验真实 Playnite/物理屏幕/呈现帧、UIA/读屏、ETW、宿主性能、动态资源绑定后续推送和 package-host。
+- 下一可执行任务：R09-01 主题转换闪白，继续先查现有能力和共享资源顺序。
+
+## 2026-09-19 Round3 R09-01 主题转换闪白
+
+- 先查现有能力：Dashboard/Settings 已有完整局部 palette 应用、DynamicResource、ToolTip 瞬态刷新和 in-host 游戏选择器；没有把表格方向误判成缺失而重建主题服务。
+- 新增 `R09ThemeSwitchBehaviorTests`，修正一次 Dispatcher `BeginInvoke` 参数顺序后，当前提交 `fe048952` 定向 `1/1`；Light→Dark 在下一 Render 优先级的 Popup、Path icon、placeholder/text 都得到新资源，host 哨兵未污染。
+- 当前提交干净隔离 Release/XAML `24/24`、solution `0 warning / 0 error`，源码门禁和 diff check 通过；临时 worktree/build 已清理。该结果不等价真实 presented frame 零闪、Playnite 系统主题、物理 DPI/跨屏、UIA/读屏、ETW 或宿主性能。
+- 证据与账本已准备同步；下一可执行任务为 R09-02 图标语义统一，先查现有资源映射和缺字负例。
+
+## 2026-09-19 Round3 R09-02 图标语义统一
+
+- 盘点确认：`ThemeAwareIcon` 已是生产矢量入口，备份/恢复已有部分 Geometry，但上传、校验、归类、忽略缺共享动作资源；没有字体缺字方框实现需要迁移。补充 `GscIconPack.xaml` 六个动作 Geometry 与统一 `GscActionIcon`，复用到 Dashboard/Overview/Save/Maintenance/Media 的真实按钮。
+- 先用合成 STA WPF 夹具验证真实 `ResourceDictionary`/`ThemeAwareIcon`，修正了 Pack URI 不适用于隔离 net472 testhost、XAML `clr-namespace` 需要 assembly-qualified 和 .NET Framework 字符串 API 不兼容等夹具环境问题；没有放宽生产门禁或绕过权限。
+- `c7c7ae0d` 已提交并推送。精确提交重建：XAML `24/24`、Release `0 warning / 0 error`、Playnite `net462`；新 R09-02 `2/2`，相邻图标/动作回归 `3/3`；`validate-source.py`、XAML 检查、`git diff --check` 通过。
+- 用户提供的 DEV-INSTALL-008 日志：编译 `0/0`、Core `83/83`、Worker `311/311`，但 main checkout 的 Playnite.Tests 全量为 `73 failed / 588 passed / 57 skipped`，失败混合 DataGrid/STA/视觉资源/身份与时序错误。本阶段没有把它归因成图标修复失败；用户未授权前不在 main 上覆盖或安装，后续合入后需在单一 checkout 重新执行完整安装器。
+- 文档已同步 `ROUND3_PROGRESS.md` 与 R09-02 证据。Demo 原目录不可用，仍沿用恢复生产基线；真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW、宿主性能和 package-host 未验。下一可执行任务：R09-03 一像素描边。
+
+## 2026-09-19 Round3 R09-03 一像素描边
+
+- 复核 `Redesign.xaml`、`DashboardView.xaml`、`AcrylicProductionResources.xaml` 后，针对共享选中/导航圆角 Chrome 的像素对齐不一致做最小修复：工作区 Tab 两份实现改为 `SnapsToDevicePixels=True`，两份导航模板显式声明 `SnapsToDevicePixels=True` 与 `UseLayoutRounding=True`。未改游戏选框、滚动条、命令、绑定、安全和取消/错误语义。
+- 新增 `R09PixelStrokeBehaviorTests`，实际实例化生产 Tab/导航模板并进入选中状态；另以 `RenderTargetBitmap` 的 96-DPI 显式缩放探针覆盖 `100/125/150/175/200%`。初次夹具失败是 Margin/Window opacity/抗锯齿采样假设，已改为 Canvas 实际坐标与按 scale 的带宽边界，未放宽生产门禁。
+- 实现提交 `083b7a22` 已完成：build.ps1 重建 XAML `24/24`、Release solution `0 warning / 0 error`，定向 `R09PixelStrokeBehaviorTests 2/2`，R09-02 图标和共享资源回归合计 `6/6`；`validate-source.py`、XAML 检查、diff check 通过。
+- 证据与账本已同步：`evidence/R09-03-PIXEL-STROKE-20260919.md`、`ROUND3_PROGRESS.md`。五档为明确模拟，不写成真实物理 DPI/Playnite/presented frame；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R09-04 阴影层次预算。
+
+## 2026-09-19 Round3 R09-04 阴影层次预算
+
+- 复核现有资源后没有重建实现：`GscSurface` 无 Effect，`GscElevatedSurface` 仅主卡片使用；工厂按 surface/primary/sidebar/popup/dialog/slider 分配有限冻结阴影，玻璃关闭返回真实 null。
+- 新增 `R09ShadowBudgetBehaviorTests`，覆盖浅/深 palette 的实际资源对象、低成本回退以及 3 张真实 WPF 卡片在 ScrollViewer 中有/无阴影的 `ExtentHeight` 对比；R09-04 `3/3`，组合 R09-02/R09-03/共享资源 `9/9`。
+- `3ad61099` 精确重建：XAML `24/24`、Release solution `0 warning / 0 error`、Playnite `net462`；源码校验、XAML 检查、diff check 通过。高对比 OS 未切换，R09-06 单独保留；不把离屏资源/布局写成真实宿主呈现。
+- 证据已准备同步：`evidence/R09-04-SHADOW-BUDGET-20260919.md`、`ROUND3_PROGRESS.md`。Demo 原目录不可用，继续使用恢复生产基线；下一可执行任务：R09-05 焦点轮廓合成。
+
+## 2026-09-19 Round3 R09-05 焦点轮廓合成
+
+- 先复核 `DesignTokens.xaml`、`WpfUiProduction.xaml`、`Redesign.xaml`：共享 `GscSharedFocusVisual`、Button `FocusOverlay`、selected Tab Chrome 和 TextBox `Validation.HasError` 已形成完整状态叠加，未发现需要修改生产模板的缺口。
+- 在 `3f7d0b30` 新增 `R09FocusOutlineBehaviorTests`。真实 STA WPF 控件验证 primary Button 焦点/失焦负例、共享焦点 Border 实例、selected Tab 不裁切、TextBox 非法 `9` 的错误边框以及改回 `2` 后的焦点状态恢复；R09-05 `2/2`。
+- 首轮两项夹具在连续 STA 中受全局 `Application.Current`/已关闭 Dispatcher 污染，已移除测试内跨 STA Application 依赖并用 collection 串行本组窗口；这记录为测试宿主边界，不放宽断言。Release 精确相邻回归 `11/11`，build XAML `24/24`、solution `0/0`，源码/XAML/diff check 通过。
+- 文档证据已写入 `evidence/R09-05-FOCUS-OUTLINE-20260919.md` 与 `ROUND3_PROGRESS.md`；没有把无系统键盘输入源时未自动出现的 Focus Adorner 写成真实呈现通过。Demo 原目录不可用，沿用恢复生产基线；main 用户未提交文件继续保持不动。下一可执行任务：R09-06 高对比真实配色。
+
+## 2026-09-19 Round3 R09-06 高对比真实配色
+
+- 现有高对比分支已经关闭玻璃，但复核发现进度轨道仍为硬编码颜色、禁用文字仍走普通主题透明度，且 helper 直接依赖全局 `SystemParameters.HighContrast`，无法做隔离恢复验证。
+- `1f2eac4a` 在原 `AdaptiveThemePalette`/局部 ResourceDictionary 上最小修复：高对比使用 `SystemColors` 语义色，进度/图标/禁用文字和悬停/选中保持可读；关闭阴影、透明 Popup、动画、游戏背景模糊和环境洗色；恢复普通 palette 后重新得到 material。命令、绑定、取消/错误语义、恢复保护、游戏选框、滚动条和列表性能未改。
+- `R09HighContrastBehaviorTests` 实例化实际绑定资源的 ProgressBar/Path/TextBlock，并验证高对比→普通主题资源字典恢复；正式脚本 Release 构建 0/0、XAML 24/24，R09/源码门禁 13/13，source/XAML/diff check 通过。没有切换真实 OS High Contrast，故只记录为可控行为证据。
+- 证据已写入 `evidence/R09-06-HIGH-CONTRAST-20260919.md`，账本已同步。DEV-INSTALL-008 main 合并后安装错误仍未在 dirty main 上覆盖或重跑；Demo 原目录不可用，继续使用恢复生产基线。下一可执行任务：R09-07 缩略图占位一致。
+## 2026-09-19 Round3 R09-07 缩略图占位一致
+
+- 盘点确认：缩略图异步加载与缓存能力已存在，媒体卡片也已有固定项/行高；缺口是列表没有覆盖加载、无图、视频、缺失和损坏的统一语义占位。新增共享 `MediaThumbnailPreview`，保留现有加载器和 `MediaKind`，不改变媒体命令、绑定、滚动、选框与虚拟化。
+- 实现提交 `72a1a07b`：`AsyncThumbnailImage` 补 `NoImage/Missing/Failed` 状态与状态变化事件；媒体列表用固定 `96 DIP` 预览槽位，详情截图文字同步，视频详情隐藏截图文字并继续使用 `MediaElement`。测试夹具实际检查尺寸、状态文案、成功迟到不挤操作行和负例。
+- 验证：R09-07 `1/1`，AsyncThumbnailImage `2/2`，AsyncThumbnailLoader `6/6`，MediaThumbnailConverter `1/1`，R09 `12/12`；build.ps1 XAML `24/24`、solution `0 warning / 0 error`；source/XAML/diff check 通过。已结束一次无输出的组合测试进程并改用窄分组复跑，窄分组结果为权威证据。
+- 证据已写入 `evidence/R09-07-THUMBNAIL-PLACEHOLDER-20260919.md`，随本阶段文档同步提交。用户安装日志的 DEV-INSTALL-008 仍是 dirty main 全量 Playnite.Tests `73 failed / 588 passed / 57 skipped`，编译/Core/Worker 成功但测试宿主失败；未在 main 上覆盖或重跑安装器。Demo 原目录不可用，下一可执行任务：R09-08 主题背景压力；真实 Playnite、呈现帧、物理 DPI/跨屏、UIA/读屏/IME、ETW、宿主性能和 package-host 仍未验。
+
+## 2026-09-19 Round3 R09-08 主题背景压力
+
+- 盘点后确认主题压力验证可直接复用现有 palette/guard；没有新增服务、DTO 或设计体系。`7de5c3de` 新增隔离 STA/WPF 夹具，使用四种合成宿主背景读取实际运行时 backdrop、ambient、glass/strong 资源，透明 stop 保持可见，按 alpha 合成后的正文对比度均达到项目门槛 `4.5`；黑底红层故意失败负例 `1/1` 被正确拒绝。
+- 同阶段修复 R09-06 的兼容性回归：恢复四参数 `AdaptiveThemePaletteFactory.Create`，显式高对比隔离测试改用 `CreateWithHighContrastOverride`，并修正过时的结构断言。R09-08 `2/2`，主题/材质 `8/8`，高对比/主题/阴影 `5/5`，R09 `14/14`；正式 Release/XAML `24/24`、solution `0 warning / 0 error`，源码校验、XAML、diff check 通过。
+- 证据已写入 `evidence/R09-08-BACKGROUND-PRESSURE-20260919.md`，本阶段文档随提交同步。验证边界仍为隔离逻辑 DIP/offscreen 行为，不是 Demo 像素、真实 Playnite presented frame、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能、package-host 或真实 Windows High Contrast；Demo 原目录不可用，沿用恢复生产基线。DEV-INSTALL-008 的 dirty main 全量安装失败未在 main 上覆盖或重跑；下一可执行任务：R10-01 上下文返回。
+
+## 2026-09-19 Round3 R10-01 上下文返回
+
+- 启动协议已完成：读取 `CURRENT_STATE.md`、`PROJECT_MEMORY.md`、`WORKLOG.md`、`DEVELOPMENT_HANDOFF.md`、质量审查、Round3 账本，并核对续作分支 `codex/ui-finesse-round2` 的状态与 git 历史；main 的用户文件保持未触碰。
+- 盘点确认现有 `FindingNavigationResolver`、稳定 PlayniteId、任务 DTO、缓存页签和现有滚动条系统可复用；没有重建服务或 DTO。`97770ed4` 新增会话内返回栈、任务关联游戏命令、Shell 返回按钮及真实 Task/Maintenance DataGrid ScrollViewer 捕获/恢复。
+- 行为定义覆盖正例和负例：LIFO 快照恢复游戏/页签/筛选/任务或诊断选择/滚动；原游戏、原任务或诊断项消失时不自动换成其他对象并说明。实现后 source validation、XAML `24/24`、Release solution `0/0`、R10 与相邻导航 `13/13`、diff check 全部通过。
+- 证据已写入 `evidence/R10-01-CONTEXT-RETURN-20260919.md`，账本 R10-01 已同步。用户安装日志事实为 main checkout 编译/Core/Worker 通过，但 Playnite 全量 `73/588/57` 失败混合 WPF 宿主/资源/布局/时序错误；不将其改写成 R10-01 隔离回归，也未在 dirty main 上安装或覆盖。
+- `.tmp/r10-01-build` 的构建输出已清理；仅剩 `test-temp/VBCSCompiler/AnalyzerAssemblyLoader` 被已有长驻 dotnet 进程锁定，未强制终止未知归属进程，待其自然退出后再安全删除。真实 Playnite 返回序列、physical DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-02。
+
+## 2026-09-19 Round3 R10-02 定位当前游戏
+
+- 先查已有能力后确认无需新增导航体系：R10-01 已提供任务详情按 `SelectedTask.GameId` 定位；媒体页已有当前游戏名称、Shell 选框和按 `SelectedGame.PlayniteId` 的加载/操作路径；`GamePickerViewModel` 自带稳定 ID 选择。
+- `3c258873` 新增 `R10ContextGameBehaviorTests`，实际测试重名 synthetic 游戏按 ID 选中目标，并核对 Task/Media/Shell 的真实生产接线。R10-02 `2/2`；与 R10-01、FindingNavigationResolver、PurposeNavigationSource 相邻合计 `15/15`。
+- 当前隔离 Release build `0 warning / 0 error`、XAML `24/24`，source validation、XAML、diff check 通过。证据 `evidence/R10-02-CURRENT-GAME-20260919.md` 已写入，账本已同步。
+- `.tmp/r10-02-build` 只用于本阶段构建/测试；收尾时若仍被 VBCSCompiler 锁定，保留锁定事实，不强制终止未知归属进程。真实 Playnite 定位、physical DPI/跨屏、presented frame、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-03。
+
+## 2026-09-19 Round3 R10-03 搜索快捷键
+
+- 先复用现有搜索框和 Dashboard 路由；实现 `563e6862` 新增 `SearchShortcutPolicy`，将 Ctrl+F 的作用域限制在无对话框、Shell 游戏选框和紧凑浏览器的当前页。保留输入框编辑快捷键及现有 IME/方向键/Enter/Esc 选框处理。
+- 行为定义覆盖正例和负例：当前页 Ctrl+F、三个输入占用场景、Ctrl+Z/C 和无 Ctrl 的 F；`R10SearchShortcutBehaviorTests` 与相邻接线定向结果 `9/9`。Release solution `0/0`、XAML `24/24`，source validation、XAML、diff check 通过。
+- 证据已写入 `evidence/R10-03-SEARCH-SHORTCUT-20260919.md`，账本已同步。只使用隔离 net472 testhost 和源码接线，未读取/修改真实存档、媒体、云端、用户配置或诊断数据；真实 Playnite 输入、全局键协作、呈现、UIA/读屏、DPI/跨屏、IME、ETW、宿主性能和 package-host 未验。Demo 原目录不可用，沿用恢复生产基线。
+- `.tmp/r10-03-build` 按规则尝试清理，但 `bin/obj/test-temp` 部分路径返回 Access denied，保留事实且不强杀未知 dotnet/testhost 进程；临时输出未提交。用户 DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 仍独立记录，main 用户文件未触碰。下一可执行任务：R10-04 快捷键帮助。
+
+## 2026-09-19 Round3 R10-04 快捷键帮助
+
+- 盘点确认没有现成快捷键帮助目录；复用现有 Shell、`RelayCommand`/`CanExecute`、当前工作区和 R10-03 搜索路由。`19be9f12` 新增页头帮助入口、键盘操作 Popup 和按当前页生成的最小元数据目录，只列 Ctrl+F，不虚构未接线快捷键。
+- 行为定义覆盖启用/禁用命令目录、媒体/维护当前页文案、真实 STA WPF 点击打开/关闭 Popup 与生产接线；最终定向结果 `13/13`。最终 D: 隔离全 solution Release `0 warning / 0 error`、Playnite `net462`、XAML `24/24`，source validation、XAML、diff check 通过。
+- 证据已写入 `evidence/R10-04-KEYBOARD-HELP-20260919.md`，账本已同步。只使用隔离 Window、合成 ViewModel 和真实生产 Shell/XAML；真实 Playnite presented frame、physical DPI/跨屏、UIA/读屏、真实输入/IME、全局键协作、ETW、宿主性能和 package-host 未验。Demo 原目录不可用，沿用恢复生产基线。
+- C: 盘空间不足曾使一次隔离构建失败，最终改用 D: 仓库 `.tmp\continuation-r10-04-build-final-20260919` 成功并清理；旧 VBCSCompiler 文件仍可能锁定，未强杀未知进程。用户 DEV-INSTALL-008 main 全量 `73 failed / 588 passed / 57 skipped` 独立记录，main 用户文件未触碰。下一可执行任务：R10-05 筛选预设。
+## 2026-09-19 Round3 R10-05 筛选预设
+
+- 先核对现有能力：`PolicyTemplates` 是备份策略模板，不等于筛选预设；任务筛选、媒体筛选、媒体“待归类/已忽略”模式、设置 JSON 和既有 `ConfirmAsync` 均可复用。
+- `005dc2c5` 已实现并推送 `FilterPresetDefinition`、设置规范化、任务/媒体页保存/应用/重命名/确认删除入口和紧凑任务预设行修复。持久化只包含字符串与稳定预设 ID，不保存任务/游戏/媒体 DTO 或临时对象；最多 32 条，非法旧值回退。
+- 验证：R10-05 `4/4`，R10 相邻 `14/14`，直接相关设置/状态/可访问性/响应式/预设回归 `25/25`；最终 Release/net462 solution `0 warning / 0 error`、XAML `24/24`，source/XAML/diff check 通过。Core `83/83`、Worker `311/311` 通过；全量 Playnite testhost 为 `84 failed / 610 passed / 57 skipped`，失败为混合既有 WPF PresentationSource/STA/资源/动画/DataGrid/源码契约边界，未写成 R10-05 通过。
+- 事实边界：用户 main 的 DEV-INSTALL-008 仍为 `0/0`、Core `83/83`、Worker `311/311`、Playnite `73/588/57`、安装器退出 1；main 未触碰。Demo 原目录不可用，继续沿用恢复生产基线；未验真实 Playnite 保存/确认 Popup、呈现、DPI/跨屏、UIA/IME、ETW、宿主性能和 package-host。
+- D: R10-05 5 个隔离构建目录中 4 个已按精确路径清理；`continuation-r10-05-build-20260919` 的部分 VBCSCompiler analyzer DLL 仍锁定，未强杀未知进程。下一可执行任务：R10-06 筛选来源提示。
+
+## 2026-09-19 Round3 R10-06 筛选来源提示
+
+- 盘点确认 R10-01 已有临时导航游戏 ID/名称、服务端 `GameName` 查询、本地任务过滤和 `RelayCommand`，无需新建服务或 DTO。`5403d797` 增加任务页来源提示与专用清除命令，复用现有取消/请求失效/有限列表刷新路径。
+- 行为定义覆盖带入条件正例、无来源负例、按钮 `CanExecute/Execute` 和保留搜索/状态编辑草稿；`R10FilterSourceBehaviorTests` `2/2`，完整 R10 `16/16`。最后隔离 Release/net462 solution `0/0`、XAML `24/24`、source/XAML/diff check 通过。
+- 完整脚本另因 C: 磁盘空间耗尽无法进入全量测试，限制发生在复制既有 Worker 依赖和生成 XAML 中间文件，不是本阶段源码编译诊断。main 用户文件未触碰，DEV-INSTALL-008 `73/588/57` 仍独立保留。Demo 原目录不可用，沿用恢复生产基线。
+- 本阶段 full 输出已删除；build 输出仅余 VBCSCompiler 锁定的 `test-temp`，未强杀未知进程。真实 Playnite 清除按钮/服务响应、呈现帧、物理 DPI/跨屏、UIA/读屏、IME、ETW、宿主性能和 package-host 未验。下一可执行任务：R10-07 侧栏信息密度。
+
+## 2026-09-19 Round3 R10-07 侧栏信息密度
+
+- 复核 `AcrylicProductionShellView` 与 `AcrylicNavItem` 后确认本项已有实现：侧栏 `270/72 DIP` 收展，`ApplySidebarLayout` 隐藏标签、保留图标并切换居中；入口是 RadioButton，已有选中态、Tooltip、Automation 名称和 Tab 键入口；品牌版本徽标展开显示、折叠隐藏。
+- 新增两项真实 STA WPF 行为验证，不以 `Assert.Contains` 代替交互：`CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation` 验证 7 个入口和选中态跨收展保持；`ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels` 验证长名称、徽标矩形和主区可用宽度。生产 Shell 测试 `12/12`，R10 组合 `28/28`。
+- Release/net462 `0 warning / 0 error`、XAML `24/24`、source validation、XAML check、diff check 均通过。没有生产实现变更，游戏选框、滚动条、命令/Binding、取消/错误、恢复保护和有限列表性能保持。
+- 证据已写入 `evidence/R10-07-SIDEBAR-DENSITY-20260919.md`，账本状态改为“已满足”。旧 `.tmp` 清理仍受 worktree Access denied/锁定句柄影响，未强杀未知进程；用户 main 改动未触碰。真实 Playnite/package-host、DPI/跨屏、呈现帧、UIA/IME、ETW、宿主性能仍未验。下一可执行任务：R10-08 最近操作续接。
+
+## 2026-09-19 Round3 R10-08 最近操作续接
+
+- 先查已有能力：`OverviewTasks`/`Activities`/`OpenActivityCommand` 已区分任务历史与全局活动；`GamePickerViewModel`、`Games` 和稳定 `PlayniteId` 可直接复用，没有新增服务或 DTO。
+- 新增 `RecentAccessRecord`、`RecentAccessItem` 和 `DashboardViewModel.RecentAccess.cs`。设置只落稳定 ID、工作区、TabIndex、UTC 时间，最多 8 条；按 ID 去重/排序，快照后清理已移除游戏；标题从当前快照解析，不保存本地路径。恢复入口复用现有选框、页签、工作区和加载请求，缺失对象只清理并提示。
+- Overview 新增独立“最近访问”卡片，`280 DIP` 最大高度、本地滚动、Recycling 虚拟化和专用 `OpenRecentAccessCommand`；“最近任务”保持原列表和语义。为该列表补充 `validate-source.py` 有限视口白名单，防止页级无限测量逃逸大列表门禁。
+- 验证：R10RecentAccess `2/2`；R10 组合 `18/18`；定向 Release 编译成功（Contracts/Core/Playnite `net462`、Tests `net472`）；XAML `24/24`；`validate-source.py`、XAML 检查、`git diff --check` 通过。行为包含真实 Overview STA WPF ButtonBase 点击，不以 `Assert.Contains` 单独签收。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-08-RECENT-ACCESS-20260919.md`，Round3 账本已改为“已满足”。main 用户文件未触碰；DEV-INSTALL-008 main `73 failed / 588 passed / 57 skipped` 和安装器退出 1 未在 dirty main 覆盖或重跑。Demo 原目录不可用，沿用恢复生产基线。
+- 未验真实 Playnite/package-host 安装与呈现、physical DPI/跨屏、UIA/读屏、真实键盘/IME、ETW、宿主性能；未读取/写入真实存档、媒体、用户云端或对外诊断。下一可执行任务：R11-01 版本信息摘要。
+
+## 2026-09-19 Round3 R11-01 版本信息摘要
+
+- 盘点确认 `BackupVersionDto`/`RestoreReadinessDto` 已有时间、大小、文件数、锁定、设备和隔离可恢复性字段；右侧版本详情与验证命令已存在，本阶段未新增服务或 DTO 请求。
+- `SaveHistoryDeviceColumn` 复用 `SourceDisplay`，空来源显示“未知设备”；新增 `ProtectionAndReadinessDisplay`。状态列取消 `IsLocked=True` 的绿色触发，改按恢复校验状态着色：Ready 成功、Warning 警告、Corrupted/Failed 错误、Unknown/未验证中性。长摘要放 ToolTip/详情，不改变固定列宽。
+- 实际验证：`R11VersionSummaryBehaviorTests 2/2`，Save 页面相邻空态/排序/列宽回归 `13/13`；真实 STA SaveCenterView/DataGrid 加载 7 列和历史集合；定向 Release 编译（Playnite `net462`/Tests `net472`）通过；XAML `24/24`、source/XAML/diff check 通过。
+- 证据已写入 `evidence/R11-01-VERSION-SUMMARY-20260919.md`，账本已改为“已满足”。未验真实 Playnite/package-host 安装呈现、physical DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。main DEV-INSTALL-008 `73/588/57` 与安装器退出 1 未在 dirty main 覆盖或重跑。
+- 下一可执行任务：R11-02 双版本对比选择；继续保持真实存档/媒体/云端隔离边界。
+
+## 2026-09-19 Round3 R11-02 双版本对比选择
+
+- 复核发现最新代码已有 `BackupCompareRequestDto`、`BackupDiffDto`、`CompareBackups` 和 `FileManifestDiffService`，但 Playnite 端仍只隐含比较“上一版本→当前版本”，比较页没有 A/B 选择、交换方向或同版本负例提示；按任务要求复用现有能力补齐边界。
+- `BackupVersionDto` 新增 `ComparisonDisplay`；`DashboardViewModel` 增加 A/B 选择属性、默认选择恢复、稳定 ID 校验、方向摘要和 `SwapCompareBackupCommand`。交换只重新走 `MessageTypes.CompareBackups`，不触碰真实恢复；同一版本命令不可执行并显示“不发起比较或恢复”。`SaveCenterView.xaml` 增加两个有限 `ComboBox`、交换按钮、A/B 语义提示，历史详情旧按钮文案同步。
+- `R11VersionComparisonBehaviorTests` 通过 `2/2`：Core 真实差异服务验证正反方向新增/删除/修改/大小增量，真实 SaveCenterView STA Window 验证 A/B 选择绑定、方向提示、交换入口和同版本禁用。R11-02 + R11-01 + Save R06 相邻回归 `15/15`；Release/net462 编译无 warning/error；XAML `24/24`；source/XAML/diff check 通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-02-VERSION-COMPARISON-20260919.md`；Round3 进度账本已改为“已满足”。本阶段没有读取/写入真实存档、媒体、云端或诊断，也未覆盖 dirty main；用户 main 安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1。
+- 未验真实 Worker IPC/归档读取、Playnite/package-host 安装与呈现、physical DPI/跨屏、UIA/读屏、IME、ETW、宿主性能；Demo 原目录不可用，沿用恢复生产基线。下一可执行任务：R11-03 差异列表搜索。
+
+## 2026-09-19 Round3 R11-03 差异列表搜索
+
+- 现有差异页只有三组无限 `ItemsControl` 和摘要，没有路径搜索、类型筛选、完整路径复制或有限加载；按任务要求复用 `BackupDiffDto`、`CopyPathCommand` 和现有 280 DIP inspector 滚动边界。
+- 新增 `BackupDiffPathFilter` 和 Dashboard 状态：全部/新增/修改/删除筛选，路径片段不区分大小写匹配，每类初始最多 120 条，匹配计数与显示窗口分开，逐步加载更多；`UnchangedCount` 与非 Exact 未知差异单独摘要。
+- SaveCenter 三组路径项使用真实只读 TextBox + 既有 `CopyPathCommand`，复制参数来自原始完整路径；同时修正 R11-02 行位扩展遗留的比较卡片重叠。`R11SaveWpf` 夹具集合禁并行，避免隔离 STA WPF 全局资源竞争造成假失败。
+- `R11DiffListSearchBehaviorTests 2/2`，R11 三项 WPF 组合 `6/6`，R06 存档页相邻回归 `11/11`；Release/net462 编译无 warning/error；XAML `24/24`；source/XAML/diff check 通过。证据：`evidence/R11-03-DIFF-LIST-20260919.md`，账本已改为“已满足”。
+- 本阶段未读取/写入真实存档、媒体、云端或诊断；未覆盖 dirty main。main 用户安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1。未验真实 Worker IPC/归档读取、大型清单呈现、Playnite/package-host、DPI/跨屏、UIA/IME、ETW、宿主性能。下一可执行任务：R11-04 版本说明编辑。
+
+## 2026-09-19 Round3 R11-04 版本说明编辑
+
+- 复核既有能力后确认备注/锁定编辑链路已存在：`BackupMetadataUpdateDto`、`EditBackupAsync`、历史刷新和 SQLite upsert 均复用；归档路径未作为编辑字段。仅补真实缺口：版本详情的本地取消草稿入口。
+- 实现 `CancelBackupMetadataCommand`、`HasBackupMetadataChanges` 和 SaveCenter “取消修改”按钮。取消复用当前 `SelectedBackup` 原值，不请求 Worker、不改变归档文件/文件名；保存命令和锁定/恢复保护语义不变。
+- 定向结果：`R11VersionNoteBehaviorTests 3/3`；R11-01/02/03/04 串行 `9/9`；Worker SQLite 重建 `1/1`；R06 相邻 `11/11`。D 盘隔离 Release solution `0 warning / 0 error`，XAML `24/24`，source validation、XAML check、diff check 通过。
+- 真实阻塞事实：continuation worktree 在 C 盘且 C 可用空间为 0，旧路径构建/测试宿主报 `MSB3491`/`0x80070070`；按项目既有 `GscBuildOutputRoot` 改用 D 盘临时输出完成验证，未强杀未知进程。D 盘阶段输出已清理；本轮为恢复记忆又清理了 continuation 可再生 bin/obj，不动源码和用户文件。
+- 证据文件：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-04-VERSION-NOTE-20260919.md`；账本 R11-04 已标记“已满足”。未验真实 Ludusavi/Worker 重启、Playnite/package-host 呈现和系统级边界；main 用户文件与 DEV-INSTALL-008 安装失败事实未覆盖。
+- 下一可执行任务：R11-05 保护操作解释。
+
+## 2026-09-19 Round3 R11-05 保护操作解释
+
+- 先核对现有实现，确认 `RetentionPlanner`、`RetentionSimulationService` 已有锁定/PreRestore/健康恢复点跳过规则和应用前重检；没有重建服务。补充 `BackupVersionDto` 保护状态 glyph、类型、解释和 `IsRetentionProtected`，并将健康保护判定与 Worker 严重异常边界对齐。
+- SaveCenter 历史行绑定 `✓`/`⚠` 和保护解释 ToolTip；详情锁定区显示锁定草稿的预览关系、解除条件和保存边界。保留游戏选框、滚动条、命令绑定、取消/错误语义、net462 和有限列表行为。
+- 验证：`R11ProtectionBehaviorTests 2/2`；Core `RetentionPlannerTests 3/3`；Worker 保护夹具 `2/2`；R11-01/02/03/04/05 串行 `11/11`；R06 相邻 `11/11`；D 盘隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source validation、XAML check、diff check 通过。
+- 真实边界：SaveCenter 夹具只证明合成 DTO 在真实生产视图中的行绑定/解释契约，不证明最终像素；Worker 使用隔离合成归档。未验真实 Ludusavi IPC/归档读取、Playnite/package-host、presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能。Demo 原目录不可用。WPF 非提升临时工程曾 Access denied，D 盘隔离输出完成验证；未绕过系统跟踪权限。
+- main 安装失败事实仍为 `0 warning / 0 error`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1；未触碰 main 用户文件。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-05-PROTECTION-EXPLANATION-20260919.md`；账本 R11-05 已标记“已满足”。
+- 下一可执行任务：R11-06 备份前变更摘要。
+
+## 2026-09-19 Round3 R11-06 备份前变更摘要
+
+- 先核对已有 Ludusavi preview 参数和现有路径发现候选，确认候选表不能代表本次备份范围。新增 `backup.preview` 只读 IPC、`BackupPreviewDto`/路径 DTO 和 Worker 预览解析，复用游戏匹配与 `ParseOperationSnapshot`。
+- preview 调用跳过备份目录创建，不建任务、不写历史/SQLite、不上传；路径返回最多 120 条，完整数量/大小单独摘要。SaveCenter 增加预览按钮、摘要卡、已识别路径和“预览不产生归档/执行前重新扫描”提示；立即备份仍走原真实链路。
+- 验证：Worker `BackupPreviewBehaviorTests 2/2`；SaveCenter STA `R11BackupPreviewBehaviorTests 1/1`；R11-01/02/03/04/05/06 串行 `12/12`；R06 `11/11`；D 盘隔离 Release solution `0 warning / 0 error`；XAML `24/24`；source validation、XAML check、diff check 通过。
+- 边界：只使用合成 Ludusavi JSON、隔离 STA 和测试宿主，未验真实 Ludusavi 输出/Worker IPC/归档变化、Playnite/package-host、presented frame、DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用。main 安装失败事实仍为 Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 1，未触碰 main 用户文件。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-06-BACKUP-PREVIEW-20260919.md`；账本 R11-06 已标记“已满足”。下一可执行任务：R11-07 备份结果分层。
+
+## 2026-09-19 Round3 R11-07 备份结果分层
+
+- 核对现有 `CloudTransferStatusDto`、云端状态服务、`RetryCloudUpload` IPC 和重试队列后，补充 `BackupResultDto` 的本地/云端分层；没有重建上传服务或引入新的状态源。
+- `BackupOrchestrator` 在本地历史索引/持久化后先记录本地成功；云端失败设置 RetryScheduled/AuthenticationRequired/Failed 并继续抛出失败任务，`TaskStatusDto.HasPartialSuccess` 保留错误语义而不隐藏本地历史。重试只复制本地已保留版本，不重建 Ludusavi 归档。
+- `TaskCoordinator`、`TaskEventBroadcaster` 的克隆和终态保留分层 DTO；SaveCenter 结果卡片用真实 `SaveCenterView` 显示本地成功、云端状态、补救解释和单独云端重试。Uploaded 负例显示待远端校验并隐藏上传重试。
+- 验证：D 盘可写源码副本执行仓库 `scripts/build.ps1 -SkipTests`，XAML `24/24`，Release solution `0 warning / 0 error`；Worker 分层/终态/事件 `9/9`、云状态相邻 `20/20`；Playnite R11 定向 `14/14`，相关 main 源码门禁校正 `6/6`；`validate-source.py`、XAML、diff check 通过。
+- 中途发现并修复真实 WPF 加载错误：`Style.BasedOn` 不接受 `DynamicResource`，改为 `StaticResource` 后 3 条 SaveCenter STA 夹具通过；记录为本阶段实际行为验证发现，不宣称只靠编译可以覆盖。
+- main 新日志仍独立为 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，未进入打包/安装。main 用户未提交文件保持不动。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-07-BACKUP-RESULT-LAYERS-20260919.md`；提交 `02860571` 已推送 `codex/ui-finesse-round2`。
+- 边界：合成 DTO/fake/隔离 STA/隔离目录，不等价真实 Ludusavi/rclone/Worker IPC、云端、存档、Playnite package-host、呈现帧、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用；WPF C 盘 worktree `wpftmp` 权限问题使用 D 盘副本，未绕过系统权限。下一可执行任务：R00/R01 小批量问题修复与证据校正。
+
+## 2026-09-19 Round3 R00/R01 合并后门禁纠偏
+
+- 用户回报 main 合并后一次构建安装仍失败；复核附件日志确认首个失败是 `SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi` 的过期连续字符串断言，整体 Playnite 为 `73 failed / 588 passed / 57 skipped`，安装器退出 `1`，未进入打包/安装。
+- 在 `codex/ui-finesse-round2` 先收口已有修改：XAML 关系断言、R02 文本/图标负例、状态源、字体白名单、布局计数、R08 动效有界等待和页面切换夹具；产品代码只补 `AcrylicProductionShellView` 导航返回按钮早期空引用保护。
+- 新增 WPF 类级 testhost 隔离脚本并接入 `scripts/build.ps1`。D 盘隔离 `build3` 构建 XAML `24/24`、Release `0 warning / 0 error`；source `65` 类组 + WPF `84` 类进程全通过；资源字典 `137/39/0`，Core `84/84`，Worker `322/1/0`。`validate-source.py`、XAML check、diff check 通过。
+- 提交 `c975e16d`（`收口Playnite测试隔离与断言漂移`）已推送到 `origin/codex/ui-finesse-round2`。证据：[R00/R01 门禁纠偏](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-TEST-GATE-CORRECTION-20260919.md)。
+- 未验证真实 package/Playnite host 安装、物理呈现/DPI/跨屏、UIA/IME、ETW、宿主性能；未触碰 main 用户文件或真实存档/媒体/云端/诊断。下一可执行任务：R11-08 历史时间导航。
+
+## 2026-09-19 Round3 R11-08 历史时间导航
+
+- 先核对已有 `BackupVersionDto` 时间字段和历史集合：不新增 DTO、存储、Worker IPC 或归档读取。补充 `BackupHistoryDateRange`，用 `CreatedLocal.Date` 做本地日历范围，并用 `CreatedUtc` + `BackupId` 固定同秒顺序。
+- `DashboardViewModel` 增加范围摘要、清除范围、最近/更早跳转；`SaveCenterView` 用独立 `CollectionViewSource` 绑定历史表，继续以 `Backups` 支撑 A/B 选择和既有绑定，保留滚动条、命令、取消/错误、恢复保护和有限列表行为。
+- 测试覆盖今天/昨天/近 7 天、未知时间活动范围负例与全部范围正例、清除恢复、同秒稳定顺序和 UI 契约：R11History `3/3`；R06 `4/4`；R11 版本摘要/保护 `4/4`；资源字典 `137 passed / 39 skipped / 0 failed`；组合 `148 passed / 39 skipped / 0 failed`。
+- D 盘隔离源码副本构建 Release solution `0 warning / 0 error`、XAML `24/24`；`validate-source.py`、XAML check、diff check 通过。阶段临时目录为 `.tmp/r11-08-source`，完成文档提交后清理，不纳入 Git。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-08-HISTORY-TIME-NAVIGATION-20260919.md`；提交 `8cc329e4` 已推送 `codex/ui-finesse-round2`。main 的 DEV-INSTALL-008 `73/588/57`/退出 `1` 仍单列，未触碰 main 用户文件、真实存档/媒体/云端/诊断。
+- 未验真实 Playnite/package-host 安装与呈现、物理 DPI/跨屏、UIA/IME、ETW、宿主性能；Demo 原目录不可用，继续沿用恢复生产基线。下一可执行任务：R12-01 恢复分步摘要。
+
+## 2026-09-22 Round3 R23-04 非空隔离宿主
+
+- 先按真实账本核对 R23-04；当前提交 `5b5d6305` 的隔离 Release 门禁通过：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类；只保留既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning。
+- 真实 `D:\\software\\Playnite\\Playnite.DesktopApp.exe` 使用隔离 profile `.tmp/r23-04-synthetic-profile-20260922`，合成 `games.db` 的 `Game` 集合计数为 `1`；runner metadata 绑定当前 commit，Worker/IPC 为隔离范围。未触碰真实存档、媒体、用户云端或诊断。
+- 当前嵌入证据 `artifacts/ui-host-audit-r23-04-rerun-20260922` 的 metadata 明确 `CaptureOrigin=EmbeddedPlaynite`、已由 Playnite 托管、未使用专用审计窗口；精选概览/媒体/存档/工具/滚动面原图已在 R23-04 报告中列出哈希。
+- UIA 未找到 GameSaveCenter 侧栏项，runner 未生成 `summary.json` 或外层 `capture-manifest.json`，等待后中断；因此账本只记“部分满足，待宿主 runner 收口”。单屏、Fusion 未复制、Playnite Desktop 版本 unknown 和专用窗口未验均如实保留。
+- 证据：`evidence/R23-04-NONEMPTY-ISOLATED-HOST-20260922.md`。本阶段尚未清理被报告引用的当前 artifacts；下一可执行任务是 runner UIA/summary 待验步骤和独立的 R23-05 帧性能证据分账。
+
+## 2026-09-22 Round3 R23-05 帧性能证据闭环
+
+- 先查已有 Q25-02 能力并复用 RenderHarness `shellqa`；当前 commit 单独构建 RenderHarness 成功，Release `0 errors`，保留既有 `MediaCenterView.xaml.cs:699` 两条 warning。
+- 当前代理运行报告绑定 `fef68005d86c5daa801850afa04d01b3eb113209`、`WorkingTreeClean=True`：单次切换 29 Rendering 回调/p95 `74.5ms`/最大 `234.6ms`，快速二次切换 41/p95 `18.5ms`/最大 `35.2ms`，无动画终态 4/p95/最大 `21.4ms`。这些是 offscreen WPF 回调代理，不是屏幕呈现帧。
+- shellqa 最终 `FAILED`，报告实际保留 5 个几何失败（header actions 越界 2 项、Media inbox/batch row 间距 3 项）；本阶段不把它改成性能通过，也不以离屏图替代真实呈现帧。
+- ETW/WPR/xperf 权限拒绝未绕过；没有 ETL/PresentMon/真实 DWM 样本。证据：`evidence/R23-05-FRAME-PERFORMANCE-EVIDENCE-20260922.md`。下一可执行任务：R23-06 安装与回退身份核查，R23-05 几何问题与真实呈现帧仍待验。
+
+## 2026-09-22 Round3 R23-06 安装与回退可核查
+
+- 先查已有 `package.ps1`、`install-dev.ps1`、Playnite 测试身份上下文并复用；没有新建安装器或恢复服务。D 盘外置输出第一次暴露 Worker 源码测试从 `AppContext.BaseDirectory` 寻根导致 `347/355`，提交 `57754b33` 改为使用 `GscSourceRoot`/`GscBuildCommit` 与 `TestRepositoryContext`，未改 Worker 业务、IPC、DTO 或存储。
+- 修复后完整 Release package 成功：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101` 类，Release `0 errors`，既有 `MediaCenterView.xaml.cs:699` 两条 CS8602 warning；六份程序集身份一致为 `0.6.73+57754b33…`，zip/pext SHA-256 均为 `B35723A0…974F54`、大小均为 `44,060,821` bytes。
+- 在合成 profile `.tmp/r23-04-synthetic-profile-20260922` 的 Extensions 目标完成最终候选安装复核，再恢复 `0.6.73+5b5d6305…` 备份并复核清单/DLL/ProductVersion/Worker；未触碰真实 Playnite Extensions、存档、媒体、云端或诊断。该演练是包身份与目录级回退证据，不是真实存档恢复或当前宿主呈现通过。
+- 证据：`evidence/R23-06-PACKAGE-ROLLBACK-20260922.md`。账本改为“已满足，待宿主环境验证”；下一可执行项是 R23-04 runner UIA/summary 收口或 R23-07 任务去重与收尾。R23-05 五项几何失败、真实 presented frame 与 ETW 权限边界继续保留。
+
+## 2026-09-22 Round3 R23-07 任务去重与收尾
+
+- 先查第二轮 `ROUND2_PROGRESS.md` 与第三轮 `ROUND3_PROGRESS.md`，复用已有 Q/R 证据入口；本项没有新增代码、服务、DTO、命令或测试夹具。
+- 第三轮逐行计数为 192（24 组×8）：收口后 `已满足` 112、`已实现/待环境验证` 29、`已满足/待环境验证` 44、`已满足/待宿主环境验证` 1、外部阻塞 1、部分满足 3、不适用 1、待开始 1（R23-08）。
+- 第二轮逐行计数为 208（26 组×8）：代码 128/80，自动 207 通过/1 待验，视觉 155 通过/50 待验/3 不适用，宿主 4 通过/8 待验/195 外部阻塞/1 不适用；最终已验收只有 5 行：Q00-06、Q00-07、Q00-08、Q25-07、Q25-08。没有把聚合通过数写成全量完成。
+- 证据：`evidence/R23-07-TASK-DEDUPE-CLOSURE-20260922.md`。下一项是 R23-08 下一轮准入清单；R23-04 UIA/summary、R23-05 几何与真实 presented frame、R02-06 原生菜单、Q24-03 跨屏仍待验，main/真实用户数据未碰。
+
+## 2026-09-22 Round3 R23-08 下一轮准入清单
+
+- 只把已有证据支持的可复现问题/用户价值纳入下一轮：P0 为 R23-04 runner UIA/summary/manifest 和 R23-05 五项 shell/media 几何失败；P1 为 R22-01 残余时间入口、R02-06 Playnite 原生菜单和当前 `57754b33` 候选宿主复测；P2 为 Q24-03 双屏和权限允许后的真实 presented-frame 采样。
+- 明确排除重复离屏截图、无复现依据的新设计、静态断言交互签收、ETW 绕过和真实用户数据写入；保存单屏/ETW 的真实阻塞事实。证据：`evidence/R23-08-NEXT-ROUND-ADMISSION-20260922.md`。
+- R23-08 收口后下一执行顺序是先处理 R23-04 runner，若外部 UIA/窗口条件继续阻塞则做 R23-05 几何小批量；未合并 main。
+
+## 2026-09-22 Round3 R23-04 任务表宿主初始化修复
+
+- 复用现有 `TaskGrid`、`DataGridColumnLayoutController`、`ProductionDataGridSortProfiles` 和 R06 测试，不新增服务/DTO。真实宿主先暴露列宽 key 数量错误，再暴露排序契约数量错误；`9026f4a2` 补齐 stage 两处映射，保留 7 列顺序并添加未知阶段负例。
+- 两次完整 Release package 门禁最终以 `9026f4a2` 通过：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111`、WPF `101`、0 errors；隔离 WPF 101/101 通过。第一次新增 stage 测试误用了 resolver 不支持的“正在上传/正在备份”，已改为现有真实“正在复制到云端/正在扫描”后重跑通过，没有放宽断言。
+- 真实 Playnite 使用合成非空 profile 和当前安装候选启动；09:13 后没有新的 `Column key count`/`Sort contract count` 异常。当前输出在 09:16:15 生成当前 commit 的 summary/manifest，Embedded Dashboard/Settings 捕获存在；runner 仍因 UIA 侧栏定位失败而 partial，Controlled host/专用窗口未验。
+- Computer Use helper 两次按技能规则重试均因“系统找不到指定的路径”失败，没有发出点击；没有把该失败改写成产品 UIA 结论。隔离 Playnite 进程随后需清理，历史日志和当前证据目录保留引用。
+- 账本 R23-04 已同步为“已满足，待宿主环境验证”；新增证据 `evidence/R23-04-TASK-GRID-HOST-FIX-20260922.md`。下一可执行任务：R23-05 shell/media 五项几何失败小批量；当前阶段不合并 main。

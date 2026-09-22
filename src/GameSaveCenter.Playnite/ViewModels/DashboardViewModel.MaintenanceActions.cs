@@ -108,15 +108,27 @@ public sealed class MaintenanceActionItem
     public string Title { get; set; } = string.Empty;
     public string StatusDisplay { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
+    public string OriginalPathDisplay { get; set; } = string.Empty;
+    public string QuarantinePathDisplay { get; set; } = string.Empty;
     public string LastVerifiedDisplay { get; set; } = "尚未验证";
     public string LastAttemptDisplay { get; set; } = "尚未尝试";
     public string LedgerUpdatedDisplay { get; set; } = "尚未更新";
     public string NextAttemptDisplay { get; set; } = "待安排";
+    public string LastVerifiedFullDisplay { get; set; } = string.Empty;
+    public string LastAttemptFullDisplay { get; set; } = string.Empty;
+    public string LedgerUpdatedFullDisplay { get; set; } = string.Empty;
+    public string NextAttemptFullDisplay { get; set; } = string.Empty;
     public string TimingDisplay => ActionKind switch
     {
         MaintenanceActionKind.CloudTransfer => $"上次尝试：{LastAttemptDisplay} · 下次尝试：{NextAttemptDisplay}",
         MaintenanceActionKind.RetentionQuarantine => $"账本更新：{LedgerUpdatedDisplay} · 下次尝试：{NextAttemptDisplay}",
-        _ => $"上次验证：{LastVerifiedDisplay} · 下次尝试：{NextAttemptDisplay}"
+        _ => $"最近完成：{LastAttemptDisplay} · 最近成功：{LastVerifiedDisplay} · 下轮计划：{NextAttemptDisplay}"
+    };
+    public string TimingFullDisplay => ActionKind switch
+    {
+        MaintenanceActionKind.CloudTransfer => $"上次尝试：{FullOrLegacy(LastAttemptFullDisplay, LastAttemptDisplay)} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
+        MaintenanceActionKind.RetentionQuarantine => $"账本更新：{FullOrLegacy(LedgerUpdatedFullDisplay, LedgerUpdatedDisplay)} · 下次尝试：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}",
+        _ => $"最近完成：{FullOrLegacy(LastAttemptFullDisplay, LastAttemptDisplay)} · 最近成功：{FullOrLegacy(LastVerifiedFullDisplay, LastVerifiedDisplay)} · 下轮计划：{FullOrLegacy(NextAttemptFullDisplay, NextAttemptDisplay)}"
     };
     public string ActionText { get; set; } = string.Empty;
     public string ActionToolTip { get; set; } = string.Empty;
@@ -134,6 +146,9 @@ public sealed class MaintenanceActionItem
         MaintenanceActionKind.CloudTransfer => MaintenanceActionGroup.NeedsManualHandling,
         _ => MaintenanceActionGroup.Routine
     };
+
+    private static string FullOrLegacy(string full, string legacy)
+        => string.IsNullOrWhiteSpace(full) ? legacy : full;
 }
 
 /// <summary>
@@ -243,8 +258,12 @@ public sealed partial class DashboardViewModel
             Title = "恢复可用性巡检",
             StatusDisplay = inspection.LastStatusDisplay,
             Detail = string.IsNullOrWhiteSpace(inspection.LastSummary) ? "尚未记录巡检摘要。" : inspection.LastSummary,
-            LastVerifiedDisplay = inspection.LastSuccessfulLocalDisplay,
-            NextAttemptDisplay = inspection.NextDueLocalDisplay,
+            LastVerifiedDisplay = inspection.LastSuccessfulRelativeDisplay,
+            LastVerifiedFullDisplay = inspection.LastSuccessfulFullDisplay,
+            LastAttemptDisplay = inspection.LastCompletedRelativeDisplay,
+            LastAttemptFullDisplay = inspection.LastCompletedFullDisplay,
+            NextAttemptDisplay = inspection.NextDueRelativeDisplay,
+            NextAttemptFullDisplay = inspection.NextDueFullDisplay,
             ActionText = inspection.IsRunning ? "查看巡检状态" : "立即巡检",
             ActionToolTip = "运行现有的非破坏性恢复可用性巡检，不覆盖真实存档。",
             ActionKind = MaintenanceActionKind.HealthInspection
@@ -264,8 +283,12 @@ public sealed partial class DashboardViewModel
             if (!knownCloudKeys.Add(transfer.TransferKey))
                 continue;
 
-            var next = transfer.NextAttemptLocal?.ToString("yyyy-MM-dd HH:mm")
-                ?? (transfer.State is "AuthenticationRequired" or "Failed" or "CheckFailed" ? "需处理后再试" : "手动确认");
+            var next = transfer.NextAttemptUtc.HasValue
+                ? transfer.RetryTimingRelativeDisplay
+                : transfer.State is "AuthenticationRequired" or "Failed" or "CheckFailed" ? "需处理后再试" : "手动确认";
+            var nextFull = transfer.NextAttemptUtc.HasValue
+                ? transfer.RetryTimingFullDisplay
+                : transfer.State is "AuthenticationRequired" or "Failed" or "CheckFailed" ? "需处理后再试" : "手动确认";
             items.Add(new MaintenanceActionItem
             {
                 ItemId = "cloud:" + transfer.TransferKey,
@@ -275,8 +298,10 @@ public sealed partial class DashboardViewModel
                 Detail = string.IsNullOrWhiteSpace(transfer.LastError)
                     ? transfer.GuaranteeLevelDisplay
                     : $"{transfer.GuaranteeLevelDisplay} · {transfer.LastError}",
-                LastAttemptDisplay = transfer.LastAttemptUtc?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "尚未尝试",
+                LastAttemptDisplay = transfer.LastAttemptUtc.HasValue ? transfer.LastAttemptRelativeDisplay : "尚未尝试",
+                LastAttemptFullDisplay = transfer.LastAttemptUtc.HasValue ? transfer.LastAttemptFullDisplay : "尚未尝试",
                 NextAttemptDisplay = next,
+                NextAttemptFullDisplay = nextFull,
                 ActionText = "打开云队列",
                 ActionToolTip = "打开这条真实云端传输记录；上传重试或远端校验仍沿用原有状态与确认边界。",
                 ActionKind = MaintenanceActionKind.CloudTransfer,
@@ -297,7 +322,9 @@ public sealed partial class DashboardViewModel
                 StatusDisplay = "未全部加载",
                 Detail = "维护页只列当前已加载的真实记录；打开云队列可继续分页查看，不会把加载窗口当成全集。",
                 LastAttemptDisplay = "摘要未列出明细",
-                NextAttemptDisplay = Snapshot.CloudTransfers?.NextAttemptLocal?.ToString("yyyy-MM-dd HH:mm") ?? "按队列状态",
+                LastAttemptFullDisplay = "摘要未列出明细",
+                NextAttemptDisplay = Snapshot.CloudTransfers?.NextAttemptRelativeDisplay ?? "按队列状态",
+                NextAttemptFullDisplay = Snapshot.CloudTransfers?.NextAttemptFullDisplay ?? "按队列状态",
                 ActionText = "查看全部队列",
                 ActionToolTip = "打开云端队列并保留服务端分页、筛选和一致性校验。",
                 ActionKind = MaintenanceActionKind.CloudTransfer
@@ -318,9 +345,12 @@ public sealed partial class DashboardViewModel
                 Title = $"待恢复文件 · {location}",
                 StatusDisplay = GetQuarantineStateDisplay(entry.State),
                 Detail = $"游戏 {DisplayGameName(entry.PlayniteId, entry.PlayniteId)} · {detail}",
-                LedgerUpdatedDisplay = entry.UpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"),
+                OriginalPathDisplay = string.IsNullOrWhiteSpace(entry.OriginalPath) ? "未记录" : entry.OriginalPath,
+                QuarantinePathDisplay = string.IsNullOrWhiteSpace(entry.QuarantinePath) ? "未记录" : entry.QuarantinePath,
+                LedgerUpdatedDisplay = TimeDisplayFormatter.Relative(entry.UpdatedUtc, DateTime.UtcNow),
+                LedgerUpdatedFullDisplay = TimeDisplayFormatter.Full(entry.UpdatedUtc),
                 NextAttemptDisplay = entry.State == RetentionQuarantineState.RecoveryRequired ? "需人工确认" : "Worker 下次启动时协调",
-                ActionText = "再次协调",
+                ActionText = "受控恢复",
                 ActionToolTip = "只针对这条已持久化账本执行安全检查；遇到路径或文件身份冲突会保留并标记人工处理。",
                 ActionKind = MaintenanceActionKind.RetentionQuarantine,
                 EntryId = entry.EntryId
@@ -415,5 +445,8 @@ public sealed partial class DashboardViewModel
         => left.ItemId == right.ItemId
            && left.StatusDisplay == right.StatusDisplay
            && left.Detail == right.Detail
-           && left.TimingDisplay == right.TimingDisplay;
+           && left.OriginalPathDisplay == right.OriginalPathDisplay
+           && left.QuarantinePathDisplay == right.QuarantinePathDisplay
+           && left.TimingDisplay == right.TimingDisplay
+           && left.TimingFullDisplay == right.TimingFullDisplay;
 }

@@ -181,7 +181,7 @@
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="11"
                                     Padding="{TemplateBinding Padding}"
-                                    SnapsToDevicePixels="False"
+                                    SnapsToDevicePixels="True"
                                     UseLayoutRounding="True"
                                     ClipToBounds="False">
                                 <ContentPresenter ContentSource="Header"
@@ -523,7 +523,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
                         <Border x:Name="NavChrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True" UseLayoutRounding="True">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center"/>
                         </Border>
@@ -607,7 +608,7 @@
                             </Border>
                             <StackPanel x:Name="SidebarBrandText" Margin="10,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="GameSaveCenter" FontWeight="SemiBold" FontSize="14"/>
-<TextBlock x:Name="SidebarVersionText" Text="v0.6.73" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+<TextBox x:Name="SidebarVersionText" Text="v0.6.73" Style="{DynamicResource GscWpfUiTechnicalTextBox}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" AutomationProperties.Name="当前插件版本" ToolTip="当前插件版本；可按 Ctrl+C 复制"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -944,9 +945,9 @@
                             </Button>
                         </Grid>
                         <UniformGrid Grid.Row="1" Columns="3">
-                            <ComboBox x:Name="GamePickerStatusComboBox" Style="{StaticResource GscWpfUiPickerFilterComboBox}" ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=OneWay, TargetNullValue=全部, FallbackValue=全部}" DropDownClosed="OnGamePickerFilterDropDownClosed" Margin="0,0,4,0" ToolTip="状态筛选"/>
-                            <ComboBox x:Name="GamePickerPlatformComboBox" Style="{StaticResource GscWpfUiPickerFilterComboBox}" ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedItem="{Binding GamePicker.PlatformFilter, Mode=OneWay, TargetNullValue=全部, FallbackValue=全部}" DropDownClosed="OnGamePickerFilterDropDownClosed" Margin="4,0,4,0" ToolTip="平台筛选"/>
-                            <ComboBox x:Name="GamePickerSortComboBox" Style="{StaticResource GscWpfUiPickerFilterComboBox}" ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=OneWay, TargetNullValue=名称, FallbackValue=名称}" DropDownClosed="OnGamePickerFilterDropDownClosed" Margin="4,0,0,0" ToolTip="排序"/>
+                            <ComboBox x:Name="GamePickerStatusComboBox" Style="{StaticResource GscWpfUiPickerFilterComboBox}" ItemsSource="{Binding GamePicker.StatusFilterOptions}" SelectedItem="{Binding GamePicker.StatusFilter, Mode=OneWay, TargetNullValue=全部, FallbackValue=全部}" DropDownClosed="OnGamePickerFilterDropDownClosed" Margin="0,0,4,0" ToolTip="状态筛选" AutomationProperties.Name="按状态筛选游戏"/>
+                            <ComboBox x:Name="GamePickerPlatformComboBox" Style="{StaticResource GscWpfUiPickerFilterComboBox}" ItemsSource="{Binding GamePicker.PlatformFilterOptions}" SelectedItem="{Binding GamePicker.PlatformFilter, Mode=OneWay, TargetNullValue=全部, FallbackValue=全部}" DropDownClosed="OnGamePickerFilterDropDownClosed" Margin="4,0,4,0" ToolTip="平台筛选" AutomationProperties.Name="按平台筛选游戏"/>
+                            <ComboBox x:Name="GamePickerSortComboBox" Style="{StaticResource GscWpfUiPickerFilterComboBox}" ItemsSource="{Binding GamePicker.SortOptions}" SelectedItem="{Binding GamePicker.SortMode, Mode=OneWay, TargetNullValue=名称, FallbackValue=名称}" DropDownClosed="OnGamePickerFilterDropDownClosed" Margin="4,0,0,0" ToolTip="排序" AutomationProperties.Name="排序游戏"/>
                         </UniformGrid>
                     </Grid>
                     <Grid Grid.Row="2">
@@ -1068,14 +1069,26 @@
                              <Button Style="{StaticResource GscButtonBase}" Content="显示当前游戏" Command="{Binding GamePicker.ShowSelectedGameCommand}"/>
                          </WrapPanel>
                      </Border>
-                     <TextBlock Text="没有符合条件的游戏&#x0a;请调整搜索或筛选条件。" IsHitTestVisible="False">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyText}">
+                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers><DataTrigger Binding="{Binding GamePicker.FilteredCount}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        </StackPanel.Style>
+                        <TextBlock Text="没有符合条件的游戏" Style="{StaticResource GscEmptyText}" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding GamePicker.ActiveFiltersSummary}" Style="{DynamicResource GscCaptionStyle}" TextAlignment="Center" Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,16">
+                        <WrapPanel.Style>
+                            <Style TargetType="WrapPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers><DataTrigger Binding="{Binding GamePicker.FilteredCount}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                            </Style>
+                        </WrapPanel.Style>
+                        <Button Style="{StaticResource GscButtonBase}" Content="清除搜索" Command="{Binding GamePicker.ClearSearchCommand}" Tag="{Binding ElementName=GameSearchTextBox}" Click="OnClearTextBoxClick" AutomationProperties.Name="清除游戏搜索" Margin="0,0,6,0"/>
+                        <Button Style="{StaticResource GscButtonBase}" Content="清除筛选" Command="{Binding ClearGamePickerFiltersCommand}" AutomationProperties.Name="清除游戏筛选"/>
+                    </WrapPanel>
                     </Grid>
                 </Grid>
             </Border>
@@ -1125,10 +1138,18 @@
                                 </UniformGrid>
                             </Grid>
                             <WrapPanel x:Name="GameHeaderActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="16,0,0,0">
-                                <ui:Button x:Name="BackupSelectedButton" Style="{StaticResource GscWpfUiToolbarPrimaryButton}" Command="{Binding BackupSelectedCommand}" Content="立即备份" Margin="0,0,8,0"/>
-                                <ui:Button x:Name="ValidateButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding ValidateCommand}" Content="重新校验" ToolTip="重新校验当前游戏的存档规则" AutomationProperties.Name="重新校验当前游戏存档规则" Margin="0,0,8,0"/>
-                                <ui:Button x:Name="DetectPathsButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding DetectPathsCommand}" Content="侦测路径" Margin="0,0,8,0"/>
-                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding LoadDetailsCommand}" Content="重新加载详情" ToolTip="重新加载当前游戏的备份、媒体和策略详情" AutomationProperties.Name="重新加载当前游戏详情" Margin="0,0,8,0"/>
+                                <ui:Button x:Name="BackupSelectedButton" Style="{StaticResource GscWpfUiToolbarPrimaryButton}" Command="{Binding BackupSelectedCommand}" AutomationProperties.Name="立即备份当前游戏" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBackup}"/><TextBlock Text="立即备份" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button x:Name="ValidateButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding ValidateCommand}" ToolTip="重新校验当前游戏的存档规则" AutomationProperties.Name="重新校验当前游戏存档规则" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button x:Name="DetectPathsButton" Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding DetectPathsCommand}" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="侦测路径" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Command="{Binding LoadDetailsCommand}" ToolTip="重新加载当前游戏的备份、媒体和策略详情" AutomationProperties.Name="重新加载当前游戏详情" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                                 <ui:Button x:Name="PolicyToggleButton" Style="{StaticResource GscWpfUiToolbarButton}" Click="OnTogglePolicy" Content="策略"/>
                             </WrapPanel>
                         </Grid>
@@ -1142,19 +1163,19 @@
 
                     <Border x:Name="BackupPolicyPanel" Grid.Row="2" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="1" CornerRadius="12" Padding="12" Margin="0,0,0,12" Visibility="Collapsed">
                         <WrapPanel VerticalAlignment="Center">
-                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="启用当前游戏自动任务" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.Enabled}" Margin="0,3,18,3" ToolTip="关闭后不会因启动、退出或游玩间隔自动备份或归档媒体；手动操作仍可使用。"/>
-                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="退出后备份" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.BackupOnGameStop}" Margin="0,3,18,3"/>
-                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="游玩中备份" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.BackupDuringPlay}" Margin="0,3,12,3"/>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="启用当前游戏自动任务" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.Enabled}" Margin="0,3,18,3" ToolTip="关闭后不会因启动、退出或游玩间隔自动备份或归档媒体；手动操作仍可使用。" AutomationProperties.Name="启用当前游戏自动任务"/>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="退出后备份" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.BackupOnGameStop}" Margin="0,3,18,3" AutomationProperties.Name="当前游戏退出后备份"/>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="游玩中备份" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.BackupDuringPlay}" Margin="0,3,12,3" AutomationProperties.Name="当前游戏游玩中备份"/>
                             <TextBlock Text="间隔" VerticalAlignment="Center"/>
                             <TextBox Style="{StaticResource GscNumericTextBox}" Width="88" infra:SelectAllOnKeyboardFocus.Enabled="True"
                                      ToolTip="允许 1–1440 分钟；输入完成后离开输入框或点击“保存策略”提交。" Margin="7,0,7,0">
                                 <TextBox.Text><Binding Path="SelectedGame.Policy.DuringPlayIntervalMinutes" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="1" Maximum="1440"/></Binding.ValidationRules></Binding></TextBox.Text>
                             </TextBox>
                             <TextBlock Text="分钟" VerticalAlignment="Center" Margin="0,0,18,0"/>
-                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="退出后归档媒体" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.SyncMediaOnGameStop}" Margin="0,3,18,3"/>
-                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="游玩中归档媒体" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.SyncMediaDuringPlay}" Margin="0,3,18,3"/>
-                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="上传云端" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.UploadAfterBackup}" Margin="0,3,12,3"/>
-                            <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding SavePolicyCommand}" Content="保存策略" Margin="0"/>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="退出后归档媒体" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.SyncMediaOnGameStop}" Margin="0,3,18,3" AutomationProperties.Name="当前游戏退出后归档媒体"/>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="游玩中归档媒体" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.SyncMediaDuringPlay}" Margin="0,3,18,3" AutomationProperties.Name="当前游戏游玩中归档媒体"/>
+                            <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="上传云端" OnContent="开" OffContent="关" IsChecked="{Binding SelectedGame.Policy.UploadAfterBackup}" Margin="0,3,12,3" AutomationProperties.Name="当前游戏上传云端"/>
+                            <ui:Button Style="{StaticResource GscWpfUiActionButton}" Command="{Binding SavePolicyCommand}" Content="保存策略" Margin="0" AutomationProperties.Name="保存当前游戏策略"/>
                         </WrapPanel>
                     </Border>
 
@@ -1229,7 +1250,7 @@
                         </Border.Style>
                     </Border>
                     <TextBlock Text="{Binding StatusMessage, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}"
-                               TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusMessage, Mode=OneWay}"/>
+                               TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusMessageFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding StatusMessageFullDisplay, Mode=OneWay}"/>
                 </DockPanel>
             </Border>
             <Border Grid.Column="1" Visibility="Collapsed" Background="{DynamicResource GscAccentTintBrush}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}"
@@ -1243,7 +1264,7 @@
                     </Style>
                 </Border.Style>
                 <StackPanel Orientation="Horizontal">
-                    <ProgressBar Width="38" Height="4" IsIndeterminate="True" ui:IndeterminateProgressBehavior.PauseWhenUnavailable="True" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ProgressBar Width="38" Height="4" IsIndeterminate="True" ui:IndeterminateProgressBehavior.PauseWhenUnavailable="True" AutomationProperties.Name="当前操作进度" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <TextBlock Text="后台更新" Foreground="{DynamicResource GscAccentBrush}" FontWeight="SemiBold"/>
                 </StackPanel>
             </Border>

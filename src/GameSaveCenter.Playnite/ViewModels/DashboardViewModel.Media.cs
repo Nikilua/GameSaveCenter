@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -47,7 +48,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => mediaClassificationPreview;
             private set
             {
+                if (mediaClassificationPreview != null)
+                    foreach (var item in mediaClassificationPreview.Items)
+                        item.PropertyChanged -= OnMediaClassificationSuggestionChanged;
                 SetValue(ref mediaClassificationPreview, value);
+                if (mediaClassificationPreview != null)
+                    foreach (var item in mediaClassificationPreview.Items)
+                        item.PropertyChanged += OnMediaClassificationSuggestionChanged;
+                OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+                RaiseCommandStates();
+            }
+        }
+
+        private void OnMediaClassificationSuggestionChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(MediaClassificationSuggestionDto.IsIncluded)
+                or nameof(MediaClassificationSuggestionDto.TargetPlayniteId)
+                or nameof(MediaClassificationSuggestionDto.CanApply))
+            {
                 OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
                 RaiseCommandStates();
             }
@@ -55,7 +73,12 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public string MediaClassificationPreviewSummary => MediaClassificationPreview == null
             ? mediaClassificationStatus
-            : $"{MediaClassificationPreview.SummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresUtc.ToLocalTime():MM-dd HH:mm}。低/中置信项目保持未归类。";
+            : $"{MediaClassificationPreview.SummaryDisplay} {MediaClassificationPreview.SelectionSummaryDisplay} 预览有效期至 {MediaClassificationPreview.ExpiresRelativeDisplay}。低/中置信项目保持未归类。";
+
+        public bool HasMediaInboxBatchFailures => MediaInboxBatchFailures.Count > 0;
+        public string MediaInboxBatchFailureSummary => MediaInboxBatchFailures.Count == 0
+            ? string.Empty
+            : $"上次批量{mediaInboxBatchOperation}有 {MediaInboxBatchFailures.Count} 项失败；成功项不会再次执行。";
 
         public string LastMediaClassificationBatchId
         {
@@ -264,6 +287,58 @@ namespace GameSaveCenter.Playnite.ViewModels
             RaiseCommandStates();
         }
 
+        private Task ReloadMediaDuplicateGroupsAsync()
+            => SelectedGame == null
+                ? Task.CompletedTask
+                : LoadMediaDuplicateGroupsAsync(SelectedGame.PlayniteId, CancellationToken.None);
+
+        private async Task LoadMediaDuplicateGroupsAsync(string playniteId, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(playniteId)) return;
+            var generation = Interlocked.Increment(ref mediaDuplicateLoadGeneration);
+            try
+            {
+                var inspection = await plugin.RequestAsync<MediaDuplicateInspectionDto>(
+                    MessageTypes.ListMediaDuplicateGroups,
+                    new MediaDuplicateQueryDto { PlayniteId = playniteId, MaxGroups = 100, ScanLimit = 5000 },
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                if (generation != Interlocked.Read(ref mediaDuplicateLoadGeneration)
+                    || !IsSelectedGame(playniteId)) return;
+
+                ApplyOnUi(() =>
+                {
+                    if (generation != Interlocked.Read(ref mediaDuplicateLoadGeneration)
+                        || !IsSelectedGame(playniteId)) return;
+                    var selectedId = SelectedMediaDuplicateGroup?.GroupId;
+                    MediaDuplicateInspection = inspection ?? new MediaDuplicateInspectionDto();
+                    SelectedMediaDuplicateGroup = MediaDuplicateInspection.Groups.FirstOrDefault(
+                        group => string.Equals(group.GroupId, selectedId, StringComparison.OrdinalIgnoreCase))
+                        ?? MediaDuplicateInspection.Groups.FirstOrDefault();
+                    RaiseCommandStates();
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Could not load media duplicate groups for " + playniteId);
+                if (generation != Interlocked.Read(ref mediaDuplicateLoadGeneration)
+                    || !IsSelectedGame(playniteId)) return;
+                ApplyOnUi(() =>
+                {
+                    MediaDuplicateInspection = new MediaDuplicateInspectionDto
+                    {
+                        ScannedItemCount = 0,
+                        ScanTruncated = false
+                    };
+                    SelectedMediaDuplicateGroup = null;
+                    OnPropertyChanged(nameof(MediaDuplicateGroupsSummary));
+                });
+            }
+        }
+
         private async Task LoadFilteredMediaPageAsync()
         {
             if (SelectedGame == null || CurrentWorkspace != WorkspaceKind.Media) return;
@@ -350,7 +425,37 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaLoadedSummary));
             SelectedMedia = SelectionAnchorResolver.Restore(Media, selectedId, previousSelectedIndex, item => item.MediaId)!;
             MediaView.Refresh();
+            OnPropertyChanged(nameof(CanNavigatePreviousMedia));
+            OnPropertyChanged(nameof(CanNavigateNextMedia));
+            OnPropertyChanged(nameof(MediaDetailNavigationDisplay));
             RaiseCommandStates();
+        }
+
+        public bool CanNavigatePreviousMedia => GetSelectedMediaIndex() > 0;
+
+        public bool CanNavigateNextMedia
+            => GetSelectedMediaIndex() >= 0 && GetSelectedMediaIndex() < Media.Count - 1;
+
+        public string MediaDetailNavigationDisplay
+        {
+            get
+            {
+                var index = GetSelectedMediaIndex();
+                return index < 0 ? "未选择媒体" : $"{index + 1} / {Media.Count}";
+            }
+        }
+
+        private int GetSelectedMediaIndex()
+            => SelectedMedia == null ? -1 : Media.IndexOf(SelectedMedia);
+
+        private void SelectAdjacentMedia(int delta)
+        {
+            var index = GetSelectedMediaIndex();
+            var targetIndex = index + delta;
+            if (index < 0 || targetIndex < 0 || targetIndex >= Media.Count)
+                return;
+
+            SelectedMedia = Media[targetIndex];
         }
 
         private MediaQueryDto BuildMediaQuery(string playniteId, string cursor)
@@ -389,6 +494,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaSearchText));
             OnPropertyChanged(nameof(MediaFilter));
             OnPropertyChanged(nameof(MediaHasActiveFilters));
+            OnPropertyChanged(nameof(MediaActiveFiltersSummary));
+            NotifyMediaDetailsStateChanged();
             MediaView.Refresh();
             uiStateSave?.Schedule();
             if (changed) ScheduleMediaPageQuery();
@@ -599,6 +706,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return;
             }
             var result=await ProcessInboxBatchAsync(MessageTypes.ReassignMediaBatch,selection.MediaIds.ToList(),targetId);
+            RememberMediaInboxBatchResult(MessageTypes.ReassignMediaBatch, "归类", targetId, targetName, result);
             ReportInboxBatchResult("归类",result,targetName,selection);
             await RefreshDashboardAsync(false,false);
             await LoadInboxAsync();
@@ -618,6 +726,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "取消")) return;
 
             var result=await ProcessInboxBatchAsync(MessageTypes.IgnoreMediaBatch,selection.MediaIds.ToList());
+            RememberMediaInboxBatchResult(MessageTypes.IgnoreMediaBatch, "忽略", string.Empty, string.Empty, result);
             ReportInboxBatchResult("忽略",result,selection: selection);
             await RefreshDashboardAsync(false,false);
             await LoadInboxAsync();
@@ -635,6 +744,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "取消")) return;
 
             var result = await ProcessInboxBatchAsync(MessageTypes.RestoreIgnoredMediaBatch, selection.MediaIds.ToList());
+            RememberMediaInboxBatchResult(MessageTypes.RestoreIgnoredMediaBatch, "恢复到待归类", string.Empty, string.Empty, result);
             ReportInboxBatchResult("恢复到待归类", result, selection: selection);
             await RefreshDashboardAsync(false, false);
             await LoadInboxAsync();
@@ -669,10 +779,18 @@ namespace GameSaveCenter.Playnite.ViewModels
                 .Select(x => x.MediaId)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
-            if (preview.HighConfidenceCount <= 0 || previewIds.Count == 0) throw new InvalidOperationException("当前预览没有可安全确认的高置信建议。");
+            var targetOverrides = preview.Items
+                .Where(x => x.CanApply && x.IsTargetOverridden && !string.IsNullOrWhiteSpace(x.MediaId))
+                .Select(x => new MediaClassificationTargetOverrideDto
+                {
+                    MediaId = x.MediaId,
+                    TargetPlayniteId = x.TargetPlayniteId
+                })
+                .ToList();
+            if (preview.SelectedHighConfidenceCount <= 0 || previewIds.Count == 0) throw new InvalidOperationException("当前预览没有可安全确认的高置信建议。");
             if (!await plugin.ConfirmAsync(
                     "应用媒体归类建议",
-                    $"操作：应用归类建议\n预览批次 {previewBatchId}，高置信建议 {preview.HighConfidenceCount} 项，实际提交 {previewIds.Count} 项；中/低置信 {preview.MediumConfidenceCount + preview.LowConfidenceCount} 项跳过。\n确认后将按本次捕获的批次 ID 和媒体 ID 执行，即使收件箱选择随后变化也不会改用新选择。\n\n只会处理预览后未发生变化的项目；冲突项目会继续留在待归类收件箱。原始截图/录像不会被删除。",
+                    $"操作：应用归类建议\n预览批次 {previewBatchId}，纳入 {preview.SelectedCount} 项，可提交高置信 {preview.SelectedHighConfidenceCount} 项，实际提交 {previewIds.Count} 项；排除 {preview.ExcludedCount} 项，中/低置信 {preview.MediumConfidenceCount + preview.LowConfidenceCount} 项跳过。\n确认后将按本次捕获的批次 ID、媒体 ID 和目标覆盖执行，即使收件箱选择随后变化也不会改用新选择。\n\n只会处理预览后未发生变化的项目；冲突项目会继续留在待归类收件箱。原始截图/录像不会被删除。",
                     "应用高置信建议",
                     "取消")) return;
 
@@ -681,6 +799,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     BatchId = previewBatchId,
                     MediaIds = previewIds,
+                    TargetOverrides = targetOverrides,
                     HighConfidenceOnly = true
             }, TimeSpan.FromMinutes(10));
             MediaClassificationPreview = null;
@@ -736,6 +855,62 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if(chunk.Failures!=null)result.Failures.AddRange(chunk.Failures);
             }
             return result;
+        }
+
+        private void RememberMediaInboxBatchResult(string messageType, string operation, string targetPlayniteId,
+            string targetName, MediaInboxBatchResultDto result)
+        {
+            mediaInboxBatchMessageType = messageType;
+            mediaInboxBatchOperation = operation;
+            mediaInboxBatchTargetPlayniteId = targetPlayniteId;
+            mediaInboxBatchTargetName = targetName;
+            MediaInboxBatchFailures.Clear();
+            foreach (var failure in (result.Failures ?? new List<MediaInboxBatchFailureDto>())
+                .Where(x => !string.IsNullOrWhiteSpace(x.MediaId))
+                .GroupBy(x => x.MediaId, StringComparer.OrdinalIgnoreCase)
+                .Select(x => x.Last()))
+            {
+                MediaInboxBatchFailures.Add(failure);
+            }
+            OnPropertyChanged(nameof(HasMediaInboxBatchFailures));
+            OnPropertyChanged(nameof(MediaInboxBatchFailureSummary));
+            RaiseCommandStates();
+        }
+
+        private async Task RetryFailedMediaInboxBatchAsync()
+        {
+            var failures = MediaInboxBatchFailures
+                .Where(x => !string.IsNullOrWhiteSpace(x.MediaId))
+                .GroupBy(x => x.MediaId, StringComparer.OrdinalIgnoreCase)
+                .Select(x => x.Last())
+                .ToList();
+            if (failures.Count == 0 || string.IsNullOrWhiteSpace(mediaInboxBatchMessageType))
+                throw new InvalidOperationException("没有可重试的媒体失败项。");
+
+            var detail = string.Join("\n", failures.Take(6).Select(x => $"{x.MediaId}：{x.ErrorMessage}"));
+            if (!await plugin.ConfirmAsync(
+                    "仅重试媒体失败项",
+                    $"操作：仅重试上次批量{mediaInboxBatchOperation}失败的 {failures.Count} 项。成功项不会再次执行。\n\n{detail}",
+                    "重试失败项",
+                    "取消")) return;
+
+            var result = await ProcessInboxBatchAsync(
+                mediaInboxBatchMessageType,
+                failures.Select(x => x.MediaId).ToList(),
+                mediaInboxBatchTargetPlayniteId);
+            RememberMediaInboxBatchResult(
+                mediaInboxBatchMessageType,
+                mediaInboxBatchOperation,
+                mediaInboxBatchTargetPlayniteId,
+                mediaInboxBatchTargetName,
+                result);
+            ReportInboxBatchResult("重试失败项", result, mediaInboxBatchTargetName);
+            await RefreshDashboardAsync(false, false);
+            await LoadInboxAsync();
+            if (MediaInboxMode == "已忽略") await LoadIgnoredMediaAsync();
+            if (SelectedGame != null && !string.IsNullOrWhiteSpace(mediaInboxBatchTargetPlayniteId)
+                && string.Equals(SelectedGame.PlayniteId, mediaInboxBatchTargetPlayniteId, StringComparison.OrdinalIgnoreCase))
+                await LoadDetailsAsync();
         }
 
         private void ReportInboxBatchResult(string operation,MediaInboxBatchResultDto result,string targetName="",MediaInboxBatchSelection? selection=null)

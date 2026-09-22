@@ -19,7 +19,9 @@ namespace GameSaveCenter.Playnite.Controls
                 return "✓ " + text;
             if (ContainsAny(text, "失败", "错误", "严重", "拒绝", "不可用"))
                 return "× " + text;
-            if (ContainsAny(text, "警告", "需关注", "注意", "待", "等待", "未配置", "未找到", "未锁定", "尚未", "未知", "冲突", "跳过", "异常"))
+            if (ContainsAny(text, "运行", "执行中", "进行中", "加载中", "同步中", "上传中", "下载中", "处理中", "校验中", "检查中", "验证中"))
+                return "ℹ " + text;
+            if (ContainsAny(text, "警告", "需关注", "注意", "待", "等待", "暂停", "未配置", "未找到", "未锁定", "尚未", "未知", "冲突", "跳过", "异常"))
                 return "⚠ " + text;
 
             return text;

@@ -52,3 +52,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\test-ui-evidence-fre
 ## 下一步
 
 R01-07 当前 baseline 与 freshness 校验已满足；下一可执行小批量为 R01-08“跳过测试说明”，继续区分本机可验证 gated 能力、历史 skip 和未启动真实 Playnite/package-host 的边界。
+
+## 2026-09-19 当前提交修正复核
+
+上一节“2026-09-18 当前分支扫描”中的 `c3e67cb4` 是历史文档扫描身份，不能作为当前续作分支的最新身份。该段保留用于审计历史，但已由本节和新的 [R00/R01 当前复核](R00-R01-CURRENT-RECHECK-20260919.md) supersede。
+
+- 当前源码身份：`3354fd82400df6659165a688b8fcb1eb87116ca4`。
+- 当前包身份：`not-provided`；没有真实 package-host 安装或重装结论。
+- 新扫描报告：[2026-09-19 freshness-report](R01-07-freshness-report-20260919.json)；14 条记录均为 `FRESH`，0 条 stale。
+- 复核同时修正了隔离 RenderHarness/UiAuditRunner 的源码根目录身份解析，以及仍指向旧实现的 R00/R01 源码断言。
+- R00-07、R01-01、R01-07 在当前路径规则下本来就是 fresh，因此没有把未重跑条目伪装成同一批构建产物；R00/R01 的实际构建、测试、审计与边界见当前复核证据。

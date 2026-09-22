@@ -45,6 +45,9 @@ public sealed class R08PageSwitchBehaviorTests
                 typeof(DashboardViewModel)
                     .GetField("gamePicker", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .SetValue(viewModel, new GamePickerViewModel());
+                typeof(DashboardViewModel)
+                    .GetField("navigationHistory", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(viewModel, new WorkspaceNavigationStack());
                 typeof(AcrylicProductionShellView)
                     .GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .SetValue(shell, viewModel);
@@ -173,7 +176,9 @@ public sealed class R08PageSwitchBehaviorTests
         var markup = System.IO.File.ReadAllText(System.IO.Path.Combine(
             root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
 
-        Assert.Contains("if (!ReferenceEquals(PageHost.Content, page))", source);
+        Assert.Contains("var contentChanged = !ReferenceEquals(PageHost.Content, page);", source);
+        Assert.Contains("if (contentChanged)", source);
+        Assert.Contains("PageHost.Content = page;", source);
         Assert.DoesNotContain("AnimateEntrance(PageHost", source);
         Assert.DoesNotContain("BlurEffect", markup);
         Assert.DoesNotContain("PageHost.Effect", source);

@@ -918,7 +918,7 @@ def check_0618_task_event_guards() -> None:
     for token in ("TaskEventBroadcaster", "_events.Publish(change)"):
         if token not in coordinator:
             fail(f"Task event publish guard missing: {token}")
-    for token in ("BoundedChannelFullMode.DropOldest", "PerSubscriberCapacity", "TaskEventSubscription"):
+    for token in ("FullMode = BoundedChannelFullMode.Wait", "PerSubscriberCapacity", "TaskEventSubscription", "FindIndex(existing => !IsTerminal(existing.Task.State))"):
         if token not in broadcaster:
             fail(f"Task event bounded fan-out guard missing: {token}")
     for token in ("options.EventPipeName", "PipeOptions.CurrentUserOnly", "MessageTypes.TaskEvent"):
@@ -1487,6 +1487,15 @@ def check_final_redesign_guards() -> None:
             )
         )
         bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "OverviewRecentAccessList"
+            and control.attrib.get("MaxHeight") == "280"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "OverviewStackScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
             control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "OverviewProtectionPreviewItems"
             and control.attrib.get("Tag") == "FiniteViewport"
             and any(
@@ -1509,6 +1518,35 @@ def check_final_redesign_guards() -> None:
             control.attrib.get("Tag") == "FiniteViewport"
             and control.attrib.get("MaxHeight") == "360"
             and control.attrib.get("ItemsSource") == "{Binding OverflowItems}"
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("Tag") == "FiniteViewport"
+            and control.attrib.get("MaxHeight") == "260"
+            and control.attrib.get("ItemsSource") == "{Binding PathRemapPreview.Items}"
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "MaintenanceDiagnosticsOverviewScrollSurface"
+                for node in ancestor_nodes
+            )
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") in {
+                "MediaDuplicateGroupsList",
+                "MediaDuplicateItemsList",
+            }
+            and control.attrib.get("Tag") == "FiniteViewport"
+            and control.attrib.get("MaxHeight") in {"430", "330"}
+            and any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == "MediaDuplicatePageScrollViewer"
+                for node in ancestor_nodes
+            )
+        )
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "MediaSourcePreviewItems"
+            and control.attrib.get("Tag") == "FiniteViewport"
+            and control.attrib.get("MaxHeight") == "240"
+            and control.attrib.get("ItemsSource") == "{Binding MediaSourcePreview.Items}"
         )
         allowed_page_scroll = allowed_page_scroll or page_scroll_contract or bounded_workspace_scroll
         if (("StackPanel" in ancestors or "ScrollViewer" in ancestors) and not allowed_page_scroll) or "Grid" not in ancestors:
@@ -1585,7 +1623,7 @@ def check_wpf_ui_production_scope_guards() -> None:
           "<ui:Card", "<ui:ToggleSwitch", "<ui:Button")),
         (dashboard_code, "Dashboard production feedback",
          ("ShowToast", "ShowFallbackConfirmation",
-          "if (confirmationOpen)", "confirmationOpen = false",
+          "if (dialogLifecycle.IsActive)", "dialogLifecycle.ForceClosed()",
           "return Task.CompletedTask")),
         (settings_code, "Settings production feedback",
          ("ShowSettingsMessage", "Task.Run", "MessageBox.Show")),

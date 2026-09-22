@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -21,7 +22,9 @@ namespace GameSaveCenter.Playnite.Views
     /// </summary>
     public partial class AcrylicProductionShellView : UserControl
     {
+        private static readonly global::Playnite.SDK.ILogger Logger = global::Playnite.SDK.LogManager.GetLogger();
         private readonly Dictionary<WorkspaceKind, UserControl> pages = new Dictionary<WorkspaceKind, UserControl>();
+        private readonly HashSet<WorkspaceKind> activatedWorkspaces = new HashSet<WorkspaceKind>();
         private DashboardViewModel? viewModel;
         private bool viewModelSubscribed;
         private bool suppressNavigation;
@@ -40,6 +43,9 @@ namespace GameSaveCenter.Playnite.Views
         public AcrylicProductionShellView()
         {
             InitializeComponent();
+            FocusWorkspaceSearchCommand = new RelayCommand(
+                _ => FocusWorkspaceSearchRequested?.Invoke(),
+                _ => FocusWorkspaceSearchRequested != null);
             TextCompositionManager.AddPreviewTextInputStartHandler(GameSearchTextBox, OnGameSearchCompositionStarted);
             TextCompositionManager.AddPreviewTextInputUpdateHandler(GameSearchTextBox, OnGameSearchCompositionUpdated);
             TextCompositionManager.AddPreviewTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
@@ -62,8 +68,26 @@ namespace GameSaveCenter.Playnite.Views
             => GetWorkspaceView(workspace) as T;
 
         public FrameworkElement PageHostForAudit => PageHost;
+        internal bool IsGamePickerOpen => PickerOverlay.Visibility == Visibility.Visible;
+        public ICommand FocusWorkspaceSearchCommand { get; }
+        public Action? FocusWorkspaceSearchRequested { get; set; }
+        internal IReadOnlyList<KeyboardShortcutHelpItem> KeyboardShortcutHelpItems
+            => viewModel == null
+                ? Array.Empty<KeyboardShortcutHelpItem>()
+                : KeyboardShortcutHelpCatalog.Create(viewModel.CurrentWorkspace, FocusWorkspaceSearchCommand);
 
         public TextBox GameSearchBoxForFocus => GameSearchTextBox;
+
+        public void OpenGamePicker()
+        {
+            if (viewModel == null || !GameContextButton.IsVisible)
+                return;
+
+            PickerOverlay.Visibility = Visibility.Visible;
+            QueueGamePickerFilterDefaults();
+            GameSearchTextBox.Focus();
+            Keyboard.Focus(GameSearchTextBox);
+        }
 
         public Action? SettingsRequested { get; set; }
 
@@ -124,12 +148,15 @@ namespace GameSaveCenter.Playnite.Views
         public void NavigateTo(WorkspaceKind workspace)
         {
             if (viewModel == null) return;
+            var timer = Stopwatch.StartNew();
             var page = GetPage(workspace);
+            var firstActivation = activatedWorkspaces.Add(workspace);
+            var contentChanged = !ReferenceEquals(PageHost.Content, page);
             // Keep a same-page navigation request on the existing visual tree. The
             // workspace command may be raised again while a refresh is completing;
             // reassigning the same cached page would otherwise make the host perform
             // an avoidable content transition and could disturb a nested scroll owner.
-            if (!ReferenceEquals(PageHost.Content, page))
+            if (contentChanged)
                 PageHost.Content = page;
             UpdatePageHeader(workspace);
             var gameScoped = workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance;
@@ -138,6 +165,7 @@ namespace GameSaveCenter.Playnite.Views
             HeaderBackupSelectedButton.Visibility = workspace == WorkspaceKind.Saves ? Visibility.Visible : Visibility.Collapsed;
             HeaderBackupButton.Visibility = Visibility.Visible;
             HeaderRefreshButton.Visibility = Visibility.Visible;
+            UpdateNavigationReturnButton();
 
             suppressNavigation = true;
             try
@@ -149,6 +177,8 @@ namespace GameSaveCenter.Playnite.Views
                 suppressNavigation = false;
             }
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            timer.Stop();
+            Logger.Debug($"[PERF] WorkspaceActivation workspace={workspace} phase={(firstActivation ? "first" : "revisit")} page={(contentChanged ? "attach" : "reuse")} layout={timer.Elapsed.TotalMilliseconds:F3}ms");
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -253,13 +283,17 @@ namespace GameSaveCenter.Playnite.Views
 
         private void CreatePages()
         {
+            var timer = Stopwatch.StartNew();
             pages.Clear();
+            activatedWorkspaces.Clear();
             pages[WorkspaceKind.Overview] = CreatePage(new OverviewView());
             pages[WorkspaceKind.Saves] = CreatePage(new SaveCenterView());
             pages[WorkspaceKind.Trainers] = CreatePage(new TrainerCenterView());
             pages[WorkspaceKind.Media] = CreatePage(new MediaCenterView());
             pages[WorkspaceKind.Tasks] = CreatePage(new TaskCenterView());
             pages[WorkspaceKind.Maintenance] = CreatePage(new MaintenanceView());
+            timer.Stop();
+            Logger.Debug($"[PERF] WorkspacePages created={pages.Count} binding={timer.Elapsed.TotalMilliseconds:F3}ms");
         }
 
         private UserControl CreatePage(UserControl page)
@@ -510,6 +544,32 @@ namespace GameSaveCenter.Playnite.Views
                 NavigateTo(viewModel.CurrentWorkspace);
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && viewModel != null)
                 UpdatePageHeader(viewModel.CurrentWorkspace);
+            else if (e.PropertyName == nameof(DashboardViewModel.OverviewPriorityTitle)
+                     && viewModel?.CurrentWorkspace == WorkspaceKind.Overview)
+                UpdatePageHeader(WorkspaceKind.Overview);
+            else if ((e.PropertyName == nameof(DashboardViewModel.HasNavigationReturnTarget)
+                      || e.PropertyName == nameof(DashboardViewModel.NavigationReturnLabel)
+                      || e.PropertyName == nameof(DashboardViewModel.NavigationReturnToolTip))
+                     && viewModel != null)
+                UpdateNavigationReturnButton();
+        }
+
+        private void OnKeyboardHelpClick(object sender, RoutedEventArgs e)
+        {
+            KeyboardShortcutHelpItemsControl.ItemsSource = KeyboardShortcutHelpItems;
+            KeyboardShortcutHelpPopup.IsOpen = !KeyboardShortcutHelpPopup.IsOpen;
+            e.Handled = true;
+        }
+
+        private void UpdateNavigationReturnButton()
+        {
+            if (HeaderBackButton == null)
+                return;
+
+            var visible = viewModel?.HasNavigationReturnTarget == true;
+            HeaderBackButton.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            HeaderBackButton.ToolTip = viewModel?.NavigationReturnToolTip ?? string.Empty;
+            AutomationProperties.SetName(HeaderBackButton, viewModel?.NavigationReturnLabel ?? "返回来源");
         }
 
         private void UpdatePageHeader(WorkspaceKind workspace)
@@ -523,34 +583,42 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Maintenance => "维护中心",
                 _ => "首页",
             };
-            PageSubtitleText.Text = workspace switch
+            PageSubtitleText.Text = GetPageSubtitle(
+                workspace,
+                viewModel?.SelectedGame?.Name,
+                viewModel?.OverviewPriorityTitle);
+        }
+
+        internal static string GetPageSubtitle(
+            WorkspaceKind workspace,
+            string? selectedGameName,
+            string? overviewPriorityTitle)
+        {
+            return workspace switch
             {
-                WorkspaceKind.Saves => $"{viewModel?.SelectedGame?.Name ?? "未选择游戏"} · 路径与恢复点状态",
+                WorkspaceKind.Saves => $"{selectedGameName ?? "未选择游戏"} · 路径与恢复点状态",
                 WorkspaceKind.Trainers => "修改器 · CT 表 · 自定义启动项",
                 WorkspaceKind.Media => "截图与录像的自动归档",
                 WorkspaceKind.Tasks => "备份 · 云端 · 媒体任务队列",
                 WorkspaceKind.Maintenance => "诊断 · 设备 · 保留策略 · 审计",
-                _ => "今日工作台 · 一切运行正常",
+                _ => string.IsNullOrWhiteSpace(overviewPriorityTitle)
+                    ? "今日工作台 · 正在读取概览状态"
+                    : $"今日工作台 · {overviewPriorityTitle}",
             };
         }
 
         private void OnGameContextClick(object sender, RoutedEventArgs e)
         {
             var opening = PickerOverlay.Visibility != Visibility.Visible;
-            PickerOverlay.Visibility = opening ? Visibility.Visible : Visibility.Collapsed;
             if (!opening)
             {
+                PickerOverlay.Visibility = Visibility.Collapsed;
                 FocusGameContextButton();
                 e.Handled = true;
                 return;
             }
 
-            if (PickerOverlay.Visibility == Visibility.Visible)
-            {
-                QueueGamePickerFilterDefaults();
-                GameSearchTextBox.Focus();
-                Keyboard.Focus(GameSearchTextBox);
-            }
+            OpenGamePicker();
         }
 
         private void OnPickerScrimMouseDown(object sender, MouseButtonEventArgs e)

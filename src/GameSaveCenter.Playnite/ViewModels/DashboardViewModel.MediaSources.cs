@@ -10,17 +10,26 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string customMediaSourcePath = string.Empty;
         private string customMediaPattern = "*";
         private bool customMediaShared;
+        private MediaSourcePreviewDto mediaSourcePreview = new MediaSourcePreviewDto();
 
         public string CustomMediaSourcePath
         {
             get => customMediaSourcePath;
-            set => SetValue(ref customMediaSourcePath, value);
+            set
+            {
+                SetValue(ref customMediaSourcePath, value);
+                RaiseCommandStates();
+            }
         }
 
         public string CustomMediaPattern
         {
             get => customMediaPattern;
-            set => SetValue(ref customMediaPattern, value);
+            set
+            {
+                SetValue(ref customMediaPattern, value);
+                RaiseCommandStates();
+            }
         }
 
         public bool CustomMediaShared
@@ -28,6 +37,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => customMediaShared;
             set => SetValue(ref customMediaShared, value);
         }
+
+        public MediaSourcePreviewDto MediaSourcePreview
+        {
+            get => mediaSourcePreview;
+            private set
+            {
+                SetValue(ref mediaSourcePreview, value ?? new MediaSourcePreviewDto());
+                OnPropertyChanged(nameof(MediaSourcePreviewSummary));
+            }
+        }
+
+        public string MediaSourcePreviewSummary => MediaSourcePreview.SummaryDisplay;
 
         private async Task AddMediaSourceAsync()
         {
@@ -45,6 +66,31 @@ namespace GameSaveCenter.Playnite.ViewModels
             CustomMediaSourcePath = string.Empty;
             ConfirmSuccess("自定义媒体来源已添加");
             await LoadDetailsAsync();
+        }
+
+        private async Task PreviewMediaSourceAsync()
+        {
+            if (string.IsNullOrWhiteSpace(CustomMediaSourcePath))
+                throw new InvalidOperationException("请输入截图或录像目录后再试运行。");
+
+            var preview = await plugin.RequestAsync<MediaSourcePreviewDto>(
+                MessageTypes.PreviewMediaSource,
+                new MediaSourcePreviewRequestDto
+                {
+                    PlayniteId = SelectedGame?.PlayniteId ?? string.Empty,
+                    RootPath = CustomMediaSourcePath,
+                    IncludePattern = CustomMediaPattern,
+                    SharedDirectory = CustomMediaShared,
+                    MaxItems = 120,
+                    MaxScannedEntries = 2000,
+                    TimeoutMs = 1500
+                });
+
+            ApplyOnUi(() => MediaSourcePreview = preview ?? new MediaSourcePreviewDto
+            {
+                State = "Unavailable",
+                ErrorDisplay = "试运行没有返回结果。"
+            });
         }
 
         private async Task UpdateMediaSourceAsync(MediaSourceRuleDto? source)

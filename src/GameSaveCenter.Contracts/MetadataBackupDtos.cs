@@ -14,6 +14,7 @@ public sealed class MetadataBackupResultDto
     public string PackagePath { get; set; } = string.Empty;
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public long PackageBytes { get; set; }
+    public string SizeDisplay => ByteSizeFormatter.Format(PackageBytes);
     public int IncludedFileCount { get; set; }
     public bool PluginSettingsIncluded { get; set; }
     public string Summary { get; set; } = string.Empty;

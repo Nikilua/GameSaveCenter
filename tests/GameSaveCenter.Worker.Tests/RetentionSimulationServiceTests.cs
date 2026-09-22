@@ -35,8 +35,9 @@ public sealed class RetentionSimulationServiceTests : IDisposable
     public async Task PreviewCountsCandidatesAndProtectedVersions()
     {
         await AddZeroRetentionPolicyAsync("g1");
+        var candidateCreatedUtc = new DateTime(2026, 6, 20, 10, 20, 30, DateTimeKind.Utc);
         var archive = CreateArchive("g1-delete.zip", 100);
-        await AddVersionAsync("g1", "delete", archive, 100, DateTime.UtcNow.AddDays(-90));
+        await AddVersionAsync("g1", "delete", archive, 100, candidateCreatedUtc);
         await AddVersionAsync("g1", "locked", CreateArchive("g1-locked.zip", 200), 200, DateTime.UtcNow.AddDays(-90), isLocked: true);
         await AddVersionAsync("g1", "pre", CreateArchive("g1-pre.zip", 300), 300, DateTime.UtcNow.AddDays(-90), isPreRestore: true);
         await AddVersionAsync("g1", "healthy", CreateArchive("g1-healthy.zip", 400), 400, DateTime.UtcNow.AddDays(-90), isReady: true);
@@ -72,6 +73,17 @@ public sealed class RetentionSimulationServiceTests : IDisposable
         Assert.Contains("预览只读", preview.Summary);
         var item = Assert.Single(preview.Items);
         Assert.Equal("delete", item.BackupId);
+        Assert.Equal(candidateCreatedUtc, item.CreatedUtc);
+        Assert.Equal(item.CreatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), item.CreatedDisplay);
+        Assert.Equal("超出保留窗口或桶位", item.Reason);
+        Assert.False(item.IsLocked);
+        Assert.False(item.IsPreRestore);
+        Assert.False(item.IsHealthProtected);
+        Assert.Contains("候选清理 1 个", preview.Summary);
+        Assert.Contains("用户锁定 1", preview.Summary);
+        Assert.Contains("健康恢复点保护 1", preview.Summary);
+        Assert.Contains("PreRestore 1", preview.Summary);
+        Assert.DoesNotContain(preview.Items, candidate => candidate.IsLocked || candidate.IsPreRestore || candidate.IsHealthProtected);
     }
 
     [Fact]
@@ -302,6 +314,42 @@ public sealed class RetentionSimulationServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task IndexDeletionFailureRestoresArchiveAndDoesNotCountFreedBytes()
+    {
+        await AddZeroRetentionPolicyAsync("g1");
+        var archive = CreateArchive("g1-delete-failure.zip", 500);
+        await AddVersionAsync("g1", "delete-failure", archive, 500, DateTime.UtcNow.AddDays(-90));
+        await ExecuteSqlAsync(@"CREATE TRIGGER fail_retention_index_delete
+BEFORE DELETE ON backup_versions
+WHEN OLD.backup_id = 'delete-failure'
+BEGIN SELECT RAISE(ABORT, 'injected retention index deletion failure'); END;");
+
+        try
+        {
+            var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+            var preview = await service.PreviewAsync(CancellationToken.None);
+            var result = await service.ApplyAsync(new RetentionSimulationApplyRequestDto
+            {
+                Confirmed = true,
+                PreviewId = preview.PreviewId,
+                PreviewGeneratedUtc = preview.GeneratedUtc
+            }, CancellationToken.None);
+
+            Assert.Equal(0, result.DeletedCount);
+            Assert.Equal(0, result.MovedBytes);
+            Assert.Equal(0, result.FreedBytes);
+            Assert.Equal(1, result.FailedCount);
+            Assert.True(result.RecoveryRequiredCount >= 1);
+            Assert.True(File.Exists(archive));
+            Assert.Contains(await store.GetStorageAnalysisRowsAsync(CancellationToken.None), x => x.BackupId == "delete-failure");
+        }
+        finally
+        {
+            await ExecuteSqlAsync("DROP TRIGGER fail_retention_index_delete;");
+        }
+    }
+
+    [Fact]
     public async Task ApplyRejectsExpiredPreview()
     {
         var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
@@ -337,6 +385,15 @@ public sealed class RetentionSimulationServiceTests : IDisposable
             KeepWeeklyWeeks = 0,
             KeepMonthlyMonths = 0
         }, CancellationToken.None);
+    }
+
+    private async Task ExecuteSqlAsync(string sql)
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        await command.ExecuteNonQueryAsync();
     }
 
     private string CreateArchive(string name, int size)

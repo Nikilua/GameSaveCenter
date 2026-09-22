@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
@@ -42,5 +43,49 @@ public sealed class BackupPolicyTemplateCatalogTests
 
         Assert.NotEqual(clone.Name, original.Name);
         Assert.NotEqual(clone.Policy.DuringPlayIntervalMinutes, original.Policy.DuringPlayIntervalMinutes);
+    }
+
+    [Fact]
+    public void PolicyDiffSeparatesSavedBaselineAndExplicitValues()
+    {
+        var inherited = new BackupPolicyDto { DuringPlayIntervalMinutes = 30, UploadAfterBackup = false };
+        var explicitValue = BackupPolicyTemplateCatalog.ClonePolicy(inherited);
+        explicitValue.DuringPlayIntervalMinutes = 15;
+        explicitValue.UploadAfterBackup = true;
+
+        var diff = BackupPolicyDiff.Compare(inherited, explicitValue);
+
+        Assert.Equal(new[] { "DuringPlayIntervalMinutes", "UploadAfterBackup" }, diff.Select(x => x.FieldKey));
+        Assert.Equal("30 分钟", diff[0].InheritedValue);
+        Assert.Equal("15 分钟", diff[0].ExplicitValue);
+        Assert.Equal("关闭", diff[1].InheritedValue);
+        Assert.Equal("开启", diff[1].ExplicitValue);
+    }
+
+    [Fact]
+    public void CopyPolicyToRestoresDraftWithoutChangingTheSource()
+    {
+        var source = new BackupPolicyDto { BackupDuringPlay = false, KeepDailyDays = 90 };
+        var target = new BackupPolicyDto { BackupDuringPlay = true, KeepDailyDays = 1 };
+
+        BackupPolicyDiff.CopyTo(source, target);
+
+        Assert.False(target.BackupDuringPlay);
+        Assert.Equal(90, target.KeepDailyDays);
+        Assert.True(source.BackupOnGameStop);
+    }
+
+    [Fact]
+    public void PolicyChangesRaiseFieldNotificationsForThePreviewBinding()
+    {
+        var policy = new BackupPolicyDto();
+        var changed = new List<string>();
+        policy.PropertyChanged += (_, args) => changed.Add(args.PropertyName ?? string.Empty);
+
+        policy.DuringPlayIntervalMinutes = 15;
+        policy.DuringPlayIntervalMinutes = 15;
+        policy.UploadAfterBackup = true;
+
+        Assert.Equal(new[] { "DuringPlayIntervalMinutes", "UploadAfterBackup" }, changed);
     }
 }

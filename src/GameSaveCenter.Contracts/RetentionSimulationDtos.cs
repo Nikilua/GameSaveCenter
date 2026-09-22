@@ -96,13 +96,7 @@ namespace GameSaveCenter.Contracts
 
         public string EstimatedReleaseDisplay => FormatBytes(EstimatedReleaseBytes);
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>One candidate row in the retention simulation. Deletion is never implied by preview.</summary>
@@ -120,15 +114,12 @@ namespace GameSaveCenter.Contracts
         public bool IsHealthProtected { get; set; }
 
         public string CreatedDisplay => CreatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public string TotalBytesDisplay => FormatBytes(TotalBytes);
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Request to apply the simulated cleanup after an explicit second confirmation.</summary>

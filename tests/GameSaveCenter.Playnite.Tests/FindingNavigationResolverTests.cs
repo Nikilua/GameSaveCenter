@@ -36,6 +36,66 @@ public sealed class FindingNavigationResolverTests
     }
 
     [Fact]
+    public void HealthFindingRoutesToItsExactBackupVersion()
+    {
+        var finding = new ValidationFindingDto
+        {
+            PlayniteId = "game-1",
+            BackupId = "backup-2",
+            Code = "HEALTH_INSPECTION_FAILED",
+            Title = "备份恢复校验需关注：backup-2"
+        };
+
+        var route = FindingNavigationResolver.Resolve(finding);
+        var backupId = FindingNavigationTargetResolver.ResolveBackupId(finding);
+        var backup = TaskSourceNavigationResolver.ResolveExactBackupVersion(
+            backupId,
+            new[]
+            {
+                new BackupVersionDto { BackupId = "backup-1" },
+                new BackupVersionDto { BackupId = "backup-2" }
+            });
+
+        Assert.Equal(FindingNavigationKind.BackupVersion, route.Kind);
+        Assert.Equal("backup-2", backupId);
+        Assert.NotNull(backup);
+        Assert.Equal("backup-2", backup!.BackupId);
+    }
+
+    [Fact]
+    public void LegacyHealthFindingUsesTitleIdentityButMissingVersionDoesNotSelectNeighbor()
+    {
+        var finding = new ValidationFindingDto
+        {
+            PlayniteId = "game-1",
+            Code = "HEALTH_INSPECTION_FAILED",
+            Title = "备份恢复校验需关注：legacy-backup"
+        };
+
+        var route = FindingNavigationResolver.Resolve(finding);
+        var backup = TaskSourceNavigationResolver.ResolveExactBackupVersion(
+            FindingNavigationTargetResolver.ResolveBackupId(finding),
+            new[] { new BackupVersionDto { BackupId = "other-backup" } });
+
+        Assert.Equal(FindingNavigationKind.BackupVersion, route.Kind);
+        Assert.Null(backup);
+    }
+
+    [Fact]
+    public void HealthFindingWithoutVersionIdentityKeepsTheDiagnosticWithoutTaskFallback()
+    {
+        var route = FindingNavigationResolver.Resolve(new ValidationFindingDto
+        {
+            PlayniteId = "game-1",
+            Code = "HEALTH_INSPECTION_FAILED",
+            Title = "恢复巡检需要关注"
+        });
+
+        Assert.Equal(FindingNavigationKind.None, route.Kind);
+        Assert.False(route.IsAvailable);
+    }
+
+    [Fact]
     public void TaskHintRoutesToFailedTasks()
     {
         var route = FindingNavigationResolver.Resolve(new ValidationFindingDto

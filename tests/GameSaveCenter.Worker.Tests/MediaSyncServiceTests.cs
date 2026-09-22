@@ -30,6 +30,55 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task MediaSourcePreviewIsBoundedReadOnlyAndExplainsMatchesAndExclusions()
+    {
+        var sourceRoot = Path.Combine(root, "PreviewSource");
+        Directory.CreateDirectory(Path.Combine(sourceRoot, "nested"));
+        var matchedPath = Path.Combine(sourceRoot, "match.png");
+        var patternExcludedPath = Path.Combine(sourceRoot, "other.jpg");
+        var typeExcludedPath = Path.Combine(sourceRoot, "notes.txt");
+        await File.WriteAllTextAsync(matchedPath, "png sample");
+        await File.WriteAllTextAsync(patternExcludedPath, "jpg sample");
+        await File.WriteAllTextAsync(typeExcludedPath, "not media");
+
+        var service = CreateService();
+        var result = await service.PreviewMediaSourceRuleAsync(new MediaSourcePreviewRequestDto
+        {
+            RootPath = sourceRoot,
+            IncludePattern = "*.png",
+            MaxItems = 10,
+            MaxScannedEntries = 20,
+            TimeoutMs = 1000
+        }, CancellationToken.None);
+
+        Assert.Equal("Completed", result.State);
+        Assert.Equal(3, result.ScannedCount);
+        Assert.Equal(1, result.MatchedCount);
+        Assert.Equal(2, result.ExcludedCount);
+        Assert.Contains(result.Items, item => item.Included && item.FileName == "match.png" && item.Reason.Contains("命中文件模式", StringComparison.Ordinal));
+        Assert.Contains(result.Items, item => !item.Included && item.Reason.Contains("未命中文件模式", StringComparison.Ordinal));
+        Assert.Contains(result.Items, item => !item.Included && item.Reason.Contains("不是支持的截图或录像格式", StringComparison.Ordinal));
+        Assert.Empty(await store.GetMediaSourcesAsync(string.Empty, CancellationToken.None));
+        Assert.True(File.Exists(matchedPath));
+        Assert.True(File.Exists(patternExcludedPath));
+        Assert.True(File.Exists(typeExcludedPath));
+
+        var budgeted = await service.PreviewMediaSourceRuleAsync(new MediaSourcePreviewRequestDto
+        {
+            RootPath = sourceRoot,
+            IncludePattern = "*",
+            MaxItems = 10,
+            MaxScannedEntries = 1,
+            TimeoutMs = 1000
+        }, CancellationToken.None);
+
+        Assert.Equal("Partial", budgeted.State);
+        Assert.True(budgeted.ScanTruncated);
+        Assert.Equal(1, budgeted.ScannedCount);
+        Assert.Single(budgeted.Items);
+    }
+
+    [Fact]
     public async Task RestoreIgnoredBatchMovesArchiveCopyBackToPendingWithoutDeletingOriginal()
     {
         var originalPath=Path.Combine(root,"Captures","capture.png");
@@ -72,6 +121,24 @@ public sealed class MediaSyncServiceTests : IDisposable
         var restored=await store.GetMediaByIdAsync("ignored-media",CancellationToken.None);
         Assert.Equal("Inbox",restored!.ClassificationState);
         Assert.Equal("用户撤销忽略，待重新归类",restored.ClassificationReason);
+    }
+
+    [Fact]
+    public async Task InboxBatchKeepsPerItemFailureAndDoesNotRepeatSuccessfulItem()
+    {
+        var media = await AddInboxMediaAsync("partial-ignore-media", Path.Combine(root, "Captures", "partial.png"), DateTime.UtcNow);
+
+        var result = await CreateService().IgnoreBatchAsync(new MediaInboxBatchRequestDto
+        {
+            MediaIds = new List<string> { media.MediaId, "missing-ignore-media" }
+        }, CancellationToken.None);
+
+        Assert.Single(result.UpdatedItems);
+        Assert.Equal(media.MediaId, result.UpdatedItems[0].MediaId);
+        var failure = Assert.Single(result.Failures);
+        Assert.Equal("missing-ignore-media", failure.MediaId);
+        Assert.NotEqual(string.Empty, failure.ErrorMessage);
+        Assert.Equal("Ignored", (await store.GetMediaByIdAsync(media.MediaId, CancellationToken.None))!.ClassificationState);
     }
 
     [Fact]
@@ -259,17 +326,26 @@ public sealed class MediaSyncServiceTests : IDisposable
         Assert.Equal("game-1", sourceSuggestion.SuggestedPlayniteId);
         Assert.Equal("High", sourceSuggestion.Confidence);
         Assert.Contains("媒体来源规则", sourceSuggestion.Reason);
+        var sourceEvidence = Assert.Single(sourceSuggestion.Evidence, x => x.Kind == "SourceRule");
+        Assert.Contains(sourceRoot, sourceEvidence.Detail, StringComparison.Ordinal);
+        Assert.Contains("Alpha Quest · 来源规则", sourceEvidence.SummaryDisplay, StringComparison.Ordinal);
         var sharedSuggestion = Assert.Single(preview.Items, x => x.MediaId == sharedMedia.MediaId);
         Assert.Equal("Low", sharedSuggestion.Confidence);
         Assert.Empty(sharedSuggestion.SuggestedPlayniteId);
         Assert.Contains("多个候选", sharedSuggestion.Reason);
+        Assert.True(sharedSuggestion.Evidence.Count >= 2);
+        Assert.Contains(sharedSuggestion.Evidence, x => x.Kind == "GameSession" && x.CandidateGameName == "Alpha Quest");
+        Assert.Contains(sharedSuggestion.Evidence, x => x.Kind == "GameSession" && x.CandidateGameName == "Beta Quest");
         var mappedSuggestion = Assert.Single(preview.Items, x => x.MediaId == mappedMedia.MediaId);
         Assert.Equal("game-2", mappedSuggestion.SuggestedPlayniteId);
         Assert.Equal("High", mappedSuggestion.Confidence);
         Assert.Contains("进程映射", mappedSuggestion.Reason);
+        Assert.Contains(mappedSuggestion.Evidence, x => x.Kind == "ProcessMapping" && x.CandidateGameName == "Beta Quest");
         var unknownSuggestion = Assert.Single(preview.Items, x => x.MediaId == unknownMedia.MediaId);
         Assert.Equal("Low", unknownSuggestion.Confidence);
         Assert.Contains("时间未知", unknownSuggestion.Reason);
+        Assert.False(unknownSuggestion.HasEvidence);
+        Assert.Equal("待判断 · 尚无可核实依据", unknownSuggestion.EvidenceSummaryDisplay);
     }
 
     [Fact]
@@ -339,6 +415,87 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ClassificationUndoLeavesLaterManualDecisionAndArchiveUntouched()
+    {
+        var prepared = await PrepareClassificationAsync("undo-conflict-media");
+        var service = CreateService();
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { prepared.Media.MediaId }
+        }, CancellationToken.None);
+        var applied = await service.ApplyClassificationPreviewAsync(new MediaClassificationApplyRequestDto
+        {
+            BatchId = preview.BatchId
+        }, CancellationToken.None);
+
+        Assert.Equal("Applied", applied.State);
+        await store.UpdateMediaMetadataAsync(new MediaMetadataUpdateDto
+        {
+            MediaId = prepared.Media.MediaId,
+            IsFavorite = true,
+            Comment = "用户后来补充的决定"
+        }, CancellationToken.None);
+
+        var undone = await service.UndoClassificationBatchAsync(new MediaClassificationUndoRequestDto
+        {
+            BatchId = preview.BatchId
+        }, CancellationToken.None);
+
+        Assert.Equal("UndoneWithConflicts", undone.State);
+        Assert.Equal(1, undone.ConflictCount);
+        var current = await store.GetMediaByIdAsync(prepared.Media.MediaId, CancellationToken.None);
+        Assert.Equal("Assigned", current!.ClassificationState);
+        Assert.True(current.IsFavorite);
+        Assert.Equal("用户后来补充的决定", current.Comment);
+        Assert.Equal(prepared.AppliedPath, current.ArchivePath);
+        Assert.True(File.Exists(prepared.AppliedPath));
+        Assert.False(File.Exists(prepared.InboxPath));
+    }
+
+    [Fact]
+    public async Task DuplicateInspectionSeparatesMetadataSuspectsFromHashEvidence()
+    {
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "duplicate-game", Name = "Duplicate Quest", Platform = GamePlatformKind.Steam }
+        }, CancellationToken.None);
+        var captured = new DateTime(2026, 9, 20, 12, 0, 0, DateTimeKind.Utc);
+        foreach (var item in new[]
+        {
+            new MediaItemDto
+            {
+                MediaId = "suspected-1", PlayniteId = "duplicate-game", Kind = MediaKind.Screenshot,
+                Source = MediaSourceKind.Custom, ArchivePath = Path.Combine(root, "archive", "one.png"),
+                OriginalPath = Path.Combine(root, "captures", "shot.png"), CapturedUtc = captured,
+                SizeBytes = 2048, Sha256 = "unique-suspected-hash-1", ClassificationState = "Assigned"
+            },
+            new MediaItemDto
+            {
+                MediaId = "suspected-2", PlayniteId = "duplicate-game", Kind = MediaKind.Screenshot,
+                Source = MediaSourceKind.Custom, ArchivePath = Path.Combine(root, "archive", "two.png"),
+                OriginalPath = Path.Combine(root, "captures", "shot.png"), CapturedUtc = captured.AddMinutes(-1),
+                SizeBytes = 2048, Sha256 = "unique-suspected-hash-2", ClassificationState = "Assigned"
+            }
+        })
+            await store.AddMediaAsync(item, CancellationToken.None);
+
+        var inspection = await CreateService().GetDuplicateGroupsAsync(new MediaDuplicateQueryDto
+        {
+            PlayniteId = "duplicate-game",
+            MaxGroups = 10,
+            ScanLimit = 100
+        }, CancellationToken.None);
+
+        var group = Assert.Single(inspection.Groups);
+        Assert.Equal("Suspected", group.Confidence);
+        Assert.Equal(2, group.ItemCount);
+        Assert.Equal(0, inspection.CertainGroupCount);
+        Assert.Equal(1, inspection.SuspectedGroupCount);
+        Assert.Contains("文件名和大小一致", group.Reason, StringComparison.Ordinal);
+        Assert.All(group.Items, item => Assert.Equal("Assigned", item.ClassificationState));
+    }
+
+    [Fact]
     public async Task ClassificationApplyLeavesChangedItemAndArchiveUntouched()
     {
         await store.UpsertGamesAsync(new[]
@@ -373,6 +530,44 @@ public sealed class MediaSyncServiceTests : IDisposable
         Assert.True(current.IsFavorite);
         Assert.Equal("用户刚刚补充的备注", current.Comment);
         Assert.True(File.Exists(media.ArchivePath));
+    }
+
+    [Fact]
+    public async Task ClassificationApplyUsesSelectedStableIdsAndValidatedTargetOverride()
+    {
+        var captured = new DateTime(2026, 9, 5, 10, 20, 30, DateTimeKind.Utc);
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = "game-1", Name = "Alpha Quest", Platform = GamePlatformKind.Steam },
+            new GameDescriptorDto { PlayniteId = "game-2", Name = "Beta Quest", Platform = GamePlatformKind.Steam }
+        }, CancellationToken.None);
+        var sourceRoot = Path.Combine(root, "Captures");
+        var first = await AddInboxMediaAsync("selection-media-1", Path.Combine(sourceRoot, "one.png"), captured);
+        var second = await AddInboxMediaAsync("selection-media-2", Path.Combine(sourceRoot, "two.png"), captured.AddMinutes(1));
+        await AddCustomSourceAsync("game-1", sourceRoot, "*.png");
+
+        var service = CreateService();
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { first.MediaId, second.MediaId }
+        }, CancellationToken.None);
+        Assert.All(preview.Items, item => Assert.Equal("game-1", item.SuggestedPlayniteId));
+
+        var result = await service.ApplyClassificationPreviewAsync(new MediaClassificationApplyRequestDto
+        {
+            BatchId = preview.BatchId,
+            MediaIds = new List<string> { first.MediaId },
+            TargetOverrides = new List<MediaClassificationTargetOverrideDto>
+            {
+                new MediaClassificationTargetOverrideDto { MediaId = first.MediaId, TargetPlayniteId = "game-2" }
+            }
+        }, CancellationToken.None);
+
+        Assert.Equal(1, result.AppliedCount);
+        var applied = await store.GetMediaByIdAsync(first.MediaId, CancellationToken.None);
+        Assert.Equal("game-2", applied!.PlayniteId);
+        Assert.Contains("用户在预览中调整目标", applied.ClassificationReason, StringComparison.Ordinal);
+        Assert.Equal("Inbox", (await store.GetMediaByIdAsync(second.MediaId, CancellationToken.None))!.ClassificationState);
     }
 
     [Fact]
@@ -660,7 +855,7 @@ BEGIN SELECT RAISE(ABORT, 'injected audit failure'); END;");
 
     private async Task<MediaItemDto> AddInboxMediaAsync(string mediaId, string originalPath, DateTime capturedUtc)
     {
-        var content = new byte[] { 1, 4, 7, (byte)mediaId.Length, (byte)mediaId[0], (byte)mediaId[1] };
+        var content = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(mediaId)).Take(6).ToArray();
         var archivePath = Path.Combine(options.MediaArchiveDirectory, "_Inbox", "Pending", mediaId + ".png");
         Directory.CreateDirectory(Path.GetDirectoryName(originalPath)!);
         Directory.CreateDirectory(Path.GetDirectoryName(archivePath)!);

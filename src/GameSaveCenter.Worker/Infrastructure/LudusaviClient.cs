@@ -42,7 +42,7 @@ public sealed class LudusaviClient : IRestoreClient
         if (force) args.Add("--force");
         if (preview) args.Add("--preview");
         args.AddRange(games.Where(x => !string.IsNullOrWhiteSpace(x)));
-        return ExecuteJsonAsync(args, token);
+        return ExecuteJsonAsync(args, token, ensureBackupDirectory: !preview);
     }
 
     public Task<LudusaviCommandResult> ListBackupsAsync(IEnumerable<string> games, CancellationToken token)
@@ -112,10 +112,10 @@ public sealed class LudusaviClient : IRestoreClient
         return result.Success ? result.StandardOutput.Trim() : string.Empty;
     }
 
-    private async Task<LudusaviCommandResult> ExecuteJsonAsync(IReadOnlyCollection<string> arguments, CancellationToken token)
+    private async Task<LudusaviCommandResult> ExecuteJsonAsync(IReadOnlyCollection<string> arguments, CancellationToken token, bool ensureBackupDirectory = true)
     {
         if (!IsAvailable) return LudusaviCommandResult.Failure("LUDUSAVI_NOT_CONFIGURED", "Ludusavi executable is unavailable.");
-        Directory.CreateDirectory(_options.LudusaviBackupDirectory);
+        if (ensureBackupDirectory) Directory.CreateDirectory(_options.LudusaviBackupDirectory);
         var result = await _runner.RunAsync(_options.LudusaviExecutable, arguments, null, TimeSpan.FromMinutes(15), token).ConfigureAwait(false);
         if (!result.Success)
         {

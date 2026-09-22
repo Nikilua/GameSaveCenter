@@ -64,11 +64,24 @@
                         <TextBlock x:Name="SettingsHeaderEyebrow" Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
                         <TextBlock Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径 · 存档策略 · 外观与自动化" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                        <TextBox x:Name="SettingsSearchTextBox" Style="{StaticResource GscWpfUiTextBox}" TextChanged="OnSettingsSearchTextChanged" Margin="0,10,0,0" MinWidth="260" MaxWidth="520" Height="32" ToolTip="搜索设置名称、用途或字段；不会修改配置。清空后恢复分类视图。" AutomationProperties.Name="搜索设置" AutomationProperties.HelpText="搜索只改变可见字段，不会修改设置值。"/>
+                        <TextBlock x:Name="SettingsSearchSummary" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置搜索结果"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                         <ui:Button x:Name="SettingsValidationLocateButton" Style="{StaticResource GscWpfUiToolbarButton}" Content="定位首个错误" MinWidth="104" Padding="8,3" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="OnSettingsValidationLocateClick" AutomationProperties.Name="定位首个设置错误" ToolTip="切换到包含首个校验错误的设置分类"/>
                         <Expander x:Name="SettingsValidationDetails" Header="查看错误详情" Foreground="{DynamicResource GscPrimaryTextBrush}" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误详情">
                             <TextBlock x:Name="SettingsValidationDetailsText" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </Expander>
+                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
+                            <StackPanel>
+                                <TextBlock Text="恢复默认" FontWeight="SemiBold"/>
+                                <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                                <WrapPanel>
+                                    <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" DisplayMemberPath="DisplayName" SelectedValuePath="Key" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" AutomationProperties.Name="恢复全部安全设置默认值"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                     <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
                         <TextBlock x:Name="SettingsSaveHintText" Text="已保存 · 由 Playnite 保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.Name="设置保存状态"/>
@@ -94,18 +107,33 @@
                             <Grid x:Name="SettingsGeneralPanel" Visibility="Visible">
                                 <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                    <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionGeneralDirectory}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="核心工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetGeneralDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复常规与目录安全设置默认值"/></WrapPanel>
                     <TextBlock Text="Worker 执行任务；Playnite 负责设置入口和游戏事件。路径支持环境变量与相对路径，保存后由 Worker 校验。粘贴路径或云端目标时会去除外层空白/引号；包含多个非空行的粘贴会被阻止，Ctrl+Z 可恢复粘贴前的字段值。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12" AutomationProperties.Name="路径粘贴标准化说明"/>
+                    <TextBlock x:Name="SettingsGeneralEffectHint" Text="生效：保存后同步当前 Worker；工具和目录从下一次新任务读取，正在执行的任务不切换。Worker 可执行文件在下一次 Worker 启动时使用，不要求重启 Playnite。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="常规与目录设置生效条件"/>
+                    <Border x:Name="SettingsPathEditorCard" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,12" AutomationProperties.Name="统一路径编辑">
+                        <StackPanel>
+                            <TextBlock Text="统一路径编辑" FontWeight="SemiBold"/>
+                            <TextBlock Text="选择当前字段后，可浏览、单独校验、打开或复制。打开只允许当前路径已存在且可读；缺失、网络不可达和无权限路径会保留在字段中并给出明确反馈。云端目标仍按远端文本编辑，不会被当作本地目录打开。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <WrapPanel>
+                                <ComboBox x:Name="SettingsPathEditorComboBox" Width="260" DisplayMemberPath="DisplayName" SelectedValuePath="Key" SelectionChanged="OnSettingsPathEditorSelectionChanged" ToolTip="选择要操作的当前本地路径字段" AutomationProperties.Name="选择当前路径字段"/>
+                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="浏览" Click="OnSettingsPathBrowseClick" Margin="8,0,0,0" AutomationProperties.Name="浏览并替换当前路径" ToolTip="目录使用文件夹选择器，可执行文件使用文件选择器"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="校验" Click="OnSettingsPathValidateClick" Margin="8,0,0,0" AutomationProperties.Name="校验当前路径"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="打开" Click="OnSettingsPathOpenClick" Margin="8,0,0,0" AutomationProperties.Name="打开当前有效路径" ToolTip="只打开当前字段中已存在且可读的路径"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="复制" Click="OnSettingsPathCopyClick" Margin="8,0,0,0" AutomationProperties.Name="复制当前完整路径"/>
+                            </WrapPanel>
+                            <TextBlock x:Name="SettingsPathEditorStatus" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,7,0,0" AutomationProperties.Name="当前路径编辑反馈"/>
+                        </StackPanel>
+                    </Border>
                     <TextBlock x:Name="SettingsGeneralValidationHint" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" AutomationProperties.Name="常规与目录校验说明"/>
                     <StackPanel x:Name="CoreToolFields">
-                    <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Worker" VerticalAlignment="Center"/><TextBox x:Name="WorkerExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Worker 可执行文件路径" AutomationProperties.Name="Worker 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>
-                    <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Ludusavi" VerticalAlignment="Center"/><TextBox x:Name="LudusaviExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding LudusaviExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 D:\GameSaveCenterTools\Ludusavi\ludusavi.exe" AutomationProperties.Name="Ludusavi 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>
-                    <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="存档目录" VerticalAlignment="Center"/><TextBox x:Name="LudusaviBackupDirectoryTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding LudusaviBackupDirectory, UpdateSourceTrigger=PropertyChanged}" ToolTip="Ludusavi 备份目录" AutomationProperties.Name="存档目录" infra:PasteNormalization.Kind="Path"/></Grid>
-                    <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Rclone" VerticalAlignment="Center"/><TextBox x:Name="RcloneExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding RcloneExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Rclone 可执行文件路径" AutomationProperties.Name="Rclone 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>
-                    <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="云端目标" VerticalAlignment="Center"/><TextBox Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding RcloneDestination, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 myremote:GameSaveCenter" AutomationProperties.Name="云端目标" infra:PasteNormalization.Kind="RemoteTarget"/></Grid>
-                    <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="媒体目录" VerticalAlignment="Center"/><TextBox x:Name="MediaArchiveDirectoryTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding MediaArchiveDirectory, UpdateSourceTrigger=PropertyChanged}" ToolTip="媒体归档目录" AutomationProperties.Name="媒体目录" infra:PasteNormalization.Kind="Path"/></Grid>
-                        <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="本地镜像" VerticalAlignment="Center"/><CheckBox Grid.Column="1" Style="{StaticResource GscCheckBox}" Content="启用第二本地镜像" IsChecked="{Binding EnableLocalMirror}" VerticalAlignment="Center" ToolTip="只复制和校验，不会删除主仓库或镜像中多余文件"/></Grid>
-                    <Grid Margin="0,0,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="镜像目录" VerticalAlignment="Center"/><TextBox x:Name="LocalMirrorPathTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding LocalMirrorPath, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 H:\GameSaveCenter-Mirror；外置硬盘未连接时状态为不可用而非错误" AutomationProperties.Name="本地镜像目录" infra:PasteNormalization.Kind="Path"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="工具 Worker 可执行文件 路径" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Worker" VerticalAlignment="Center"/><TextBox x:Name="WorkerExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding WorkerExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Worker 可执行文件路径" AutomationProperties.Name="Worker 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="工具 Ludusavi 可执行文件 路径" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Ludusavi" VerticalAlignment="Center"/><TextBox x:Name="LudusaviExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding LudusaviExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 D:\GameSaveCenterTools\Ludusavi\ludusavi.exe" AutomationProperties.Name="Ludusavi 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="存档 备份 目录 路径" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="存档目录" VerticalAlignment="Center"/><TextBox x:Name="LudusaviBackupDirectoryTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding LudusaviBackupDirectory, UpdateSourceTrigger=PropertyChanged}" ToolTip="Ludusavi 备份目录" AutomationProperties.Name="存档目录" infra:PasteNormalization.Kind="Path"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="Rclone 云端 可执行文件 路径" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Rclone" VerticalAlignment="Center"/><TextBox x:Name="RcloneExecutableTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding RcloneExecutable, UpdateSourceTrigger=PropertyChanged}" ToolTip="Rclone 可执行文件路径" AutomationProperties.Name="Rclone 可执行文件路径" infra:PasteNormalization.Kind="Path"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="云端 目标 Rclone 远端" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="云端目标" VerticalAlignment="Center"/><TextBox Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding RcloneDestination, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 myremote:GameSaveCenter" AutomationProperties.Name="云端目标" infra:PasteNormalization.Kind="RemoteTarget"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="媒体 目录 归档 路径" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="媒体目录" VerticalAlignment="Center"/><TextBox x:Name="MediaArchiveDirectoryTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding MediaArchiveDirectory, UpdateSourceTrigger=PropertyChanged}" ToolTip="媒体归档目录" AutomationProperties.Name="媒体目录" infra:PasteNormalization.Kind="Path"/></Grid>
+                        <Grid settings:GameSaveCenterSettingsView.SearchTerms="本地 镜像 启用" Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="本地镜像" VerticalAlignment="Center"/><CheckBox Grid.Column="1" Style="{StaticResource GscCheckBox}" Content="启用第二本地镜像" IsChecked="{Binding EnableLocalMirror}" VerticalAlignment="Center" ToolTip="只复制和校验，不会删除主仓库或镜像中多余文件"/></Grid>
+                    <Grid settings:GameSaveCenterSettingsView.SearchTerms="本地 镜像 目录 路径" Margin="0,0,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="{StaticResource GscSettingsFieldColumnWidth}"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="镜像目录" VerticalAlignment="Center"/><TextBox x:Name="LocalMirrorPathTextBox" Grid.Column="1" Style="{StaticResource GscWpfUiPathTextBox}" Text="{Binding LocalMirrorPath, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 H:\GameSaveCenter-Mirror；外置硬盘未连接时状态为不可用而非错误" AutomationProperties.Name="本地镜像目录" infra:PasteNormalization.Kind="Path"/></Grid>
                     </StackPanel>
                 </StackPanel>
             </ui:Card>
@@ -113,17 +141,18 @@
                     <Grid x:Name="SettingsBackupPanel" Visibility="Collapsed">
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionBackupRestore}" Width="20" Height="20" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="存档格式与历史版本" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
+                    <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscInfoIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionBackupRestore}" Width="20" Height="20" Foreground="{DynamicResource GscInfoBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="存档格式与历史版本" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetBackupDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复备份与恢复安全设置默认值"/></WrapPanel>
                     <TextBlock Text="推荐 ZIP + Zstandard。Simple 模式只维护一个当前副本，不适合作为多版本恢复历史。" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="SettingsBackupEffectHint" Text="生效：保存后同步 Worker；格式、压缩和保留数量从下一次备份任务读取，已开始的任务继续使用原参数。" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap" AutomationProperties.Name="备份与恢复设置生效条件"/>
                     <UniformGrid x:Name="StorageFormatFields" Columns="2" Margin="0,0,0,12">
-                        <StackPanel Margin="0,0,12,0">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="备份 格式 ZIP Simple 多版本 单副本" Margin="0,0,12,0">
                         <TextBlock Text="备份格式" VerticalAlignment="Center" Margin="0,0,0,4"/>
                         <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding BackupFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static contracts:BackupStorageFormat.Zip}, FallbackValue={x:Static contracts:BackupStorageFormat.Zip}}" SelectedValuePath="Tag" ToolTip="选择多版本 ZIP 或单副本 Simple 格式" AutomationProperties.Name="备份存储格式">
                             <ComboBoxItem Content="ZIP（多版本）" Tag="{x:Static contracts:BackupStorageFormat.Zip}"/>
                             <ComboBoxItem Content="Simple（单副本）" Tag="{x:Static contracts:BackupStorageFormat.Simple}"/>
                         </ComboBox>
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,0">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="压缩 方式 Zstandard Deflate Bzip2" Margin="0,0,0,0">
                         <TextBlock Text="压缩方式" VerticalAlignment="Center" Margin="0,0,0,4"/>
                         <ComboBox Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding Compression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=zstd, FallbackValue=zstd}" SelectedValuePath="Tag" ToolTip="选择备份压缩方式" AutomationProperties.Name="备份压缩方式">
                             <ComboBoxItem Content="Zstandard" Tag="zstd"/><ComboBoxItem Content="Deflate" Tag="deflate"/>
@@ -132,15 +161,15 @@
                         </StackPanel>
                      </UniformGrid>
                     <UniformGrid x:Name="StorageNumericFields" Columns="3">
-                        <StackPanel Margin="0,0,12,0">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="完整 版本 保留 数量 备份" Margin="0,0,12,0">
                         <TextBlock Text="完整版本数" VerticalAlignment="Center" Margin="0,0,0,4"/>
                          <TextBox x:Name="FullBackupLimitTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 1–255；离开输入框后提交。" AutomationProperties.Name="完整备份保留数量"><TextBox.Text><Binding Path="FullBackupLimit" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="1" Maximum="255"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox>
                         </StackPanel>
-                        <StackPanel Margin="0,0,12,0">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="差异 每组 版本 保留 数量" Margin="0,0,12,0">
                         <TextBlock Text="每组差异版本数" VerticalAlignment="Center" Margin="0,0,0,4"/>
                          <TextBox x:Name="DifferentialBackupLimitTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 0–255；离开输入框后提交。" AutomationProperties.Name="差异备份保留数量"><TextBox.Text><Binding Path="DifferentialBackupLimit" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="255"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox>
                         </StackPanel>
-                        <StackPanel Margin="0,0,0,0">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="压缩 等级 zstd" Margin="0,0,0,0">
                         <TextBlock Text="压缩等级" VerticalAlignment="Center" Margin="0,0,0,4"/>
                          <TextBox x:Name="CompressionLevelTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="zstd 推荐 3；允许 -7 到 22；离开输入框后提交。" AutomationProperties.Name="压缩等级"><TextBox.Text><Binding Path="CompressionLevel" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="-7" Maximum="22"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox>
                         </StackPanel>
@@ -151,13 +180,14 @@
                     <Grid x:Name="SettingsAppearancePanel" Visibility="Collapsed">
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <WrapPanel Margin="0,0,0,10">
                         <Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAppearance}" Width="20" Height="20" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                        <TextBlock Text="外观与动态效果" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    </StackPanel>
+                        <TextBlock Text="外观与动态效果" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAppearanceDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复外观与可访问性安全设置默认值"/>
+                    </WrapPanel>
                     <TextBlock Text="毛玻璃采用主题自适应的半透明表面和模糊环境光，不会修改 Playnite 外层窗口。系统高对比度或关闭动画时会自动降级。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <TextBlock x:Name="SettingsAppearanceEffectHint" Text="生效：当前设置页即时预览；保存后已打开的 GameSaveCenter 页面立即重建主题、动画和背景偏好，不需要重启 Playnite。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="外观设置生效条件"/>
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
-                        <StackPanel Margin="0,0,12,10">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 主题 浅色 深色 Playnite" Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
                         <ComboBox x:Name="ThemeModeSelector" Style="{StaticResource GscWpfUiComboBox}" SelectedValue="{Binding ThemeMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}, FallbackValue={x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}}" SelectedValuePath="Tag" SelectionChanged="OnThemeModeChanged" ToolTip="选择跟随 Playnite、浅色或深色主题" AutomationProperties.Name="界面主题">
                             <ComboBoxItem Content="跟随 Playnite" Tag="{x:Static settings:GameSaveCenterThemeMode.FollowPlaynite}"/>
@@ -166,7 +196,7 @@
                         </ComboBox>
                         <TextBlock Text="第三方主题可读性不佳时，可固定为浅色或深色。" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
                         </StackPanel>
-                        <StackPanel Margin="0,0,12,10">
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 毛玻璃 强度 环境光" Margin="0,0,12,10">
                             <TextBlock Text="毛玻璃强度" Margin="0,0,0,4"/>
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80" TextAlignment="Right"><Run Text="{Binding ElementName=GlassStrengthSlider, Path=Value, StringFormat={}{0:0}, Mode=OneWay}"/><Run Text="%"/></TextBlock>
@@ -174,21 +204,21 @@
                             </DockPanel>
                         </StackPanel>
                     </UniformGrid>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="外观 动画 界面 页面 悬停 按压" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
                                      IsChecked="{Binding EnableUiAnimations}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="启用界面动画">
                         <StackPanel>
                             <TextBlock Text="启用界面动画" FontWeight="SemiBold"/>
                             <TextBlock Text="页面淡入、滑动、悬停与按钮按压反馈" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="外观 毛玻璃 环境光 侧栏 浮层" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
                                      IsChecked="{Binding EnableGlassEffects}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="启用毛玻璃与环境光效果">
                         <StackPanel>
                             <TextBlock Text="启用毛玻璃与环境光效果" FontWeight="SemiBold"/>
                             <TextBlock Text="只用于侧栏、浮层和固定环境光，不应用到滚动内容" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="外观 游戏 背景 封面 环境色" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关"
                                      IsChecked="{Binding FollowSelectedGameBackground}" Margin="0,6" Checked="OnVisualSettingChanged" Unchecked="OnVisualSettingChanged" AutomationProperties.Name="跟随当前游戏背景">
                         <StackPanel>
                             <TextBlock Text="跟随当前游戏背景" FontWeight="SemiBold"/>
@@ -201,40 +231,41 @@
                     <Grid x:Name="SettingsAutomationPanel" Visibility="Collapsed">
                         <ui:Card Style="{StaticResource SettingsCard}">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscSuccessIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAutomation}" Width="20" Height="20" Foreground="{DynamicResource GscSuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="自动化与安全" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding AutoStartWorker}" Margin="0,5" AutomationProperties.Name="随 Playnite 启动 Worker">
+                    <WrapPanel Margin="0,0,0,10"><Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscSuccessIconFillBrush}" Margin="0,0,9,0"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSectionAutomation}" Width="20" Height="20" Foreground="{DynamicResource GscSuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="自动化与安全" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAutomationDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复自动化与媒体安全设置默认值"/></WrapPanel>
+                    <TextBlock x:Name="SettingsAutomationEffectHint" Text="生效：保存后同步 Worker/插件；轮询、队列和健康计划在下一轮边界读取，已开始的任务不会被取消。“随 Playnite 启动 Worker”和“下次以安全模式启动”只影响下一次 Playnite 启动；本页没有笼统的需重启项。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="自动化与安全设置生效条件"/>
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 启动 Worker Playnite" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding AutoStartWorker}" Margin="0,5" AutomationProperties.Name="随 Playnite 启动 Worker">
                         <StackPanel>
                             <TextBlock Text="随 Playnite 启动 Worker" FontWeight="SemiBold"/>
                             <TextBlock Text="管理面板未打开时也可执行已配置任务" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableProcessDetection}" Margin="0,5" AutomationProperties.Name="检测外部启动的游戏">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 进程 检测 外部启动 游戏" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableProcessDetection}" Margin="0,5" AutomationProperties.Name="检测外部启动的游戏">
                         <StackPanel>
                             <TextBlock Text="检测外部启动的游戏" FontWeight="SemiBold"/>
                             <TextBlock Text="识别 Steam、Xbox、启动器和 MOD 管理器外部启动" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableSessionSavePathDetection}" Margin="0,5" AutomationProperties.Name="会话存档路径检测">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 会话 存档 路径 检测" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableSessionSavePathDetection}" Margin="0,5" AutomationProperties.Name="会话存档路径检测">
                         <StackPanel>
                             <TextBlock Text="会话存档路径检测" FontWeight="SemiBold"/>
                             <TextBlock Text="对未匹配游戏记录启动前/退出后文件差异，生成候选路径" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableMediaSync}" Margin="0,5" AutomationProperties.Name="同步新增截图和录像">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 媒体 同步 截图 录像" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableMediaSync}" Margin="0,5" AutomationProperties.Name="同步新增截图和录像">
                         <StackPanel>
                             <TextBlock Text="同步新增截图和录像" FontWeight="SemiBold"/>
                             <TextBlock Text="源文件删除不会删除归档" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <WrapPanel Margin="22,1,0,5" IsEnabled="{Binding EnableMediaSync}">
+                    <WrapPanel settings:GameSaveCenterSettingsView.SearchTerms="媒体 Steam Xbox Windows 截图 游戏 相邻目录 自定义来源" Margin="22,1,0,5" IsEnabled="{Binding EnableMediaSync}">
                         <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="Steam 截图" OnContent="开" OffContent="关" IsChecked="{Binding EnableSteamMedia}" Margin="0,4,14,4"/>
                         <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="Xbox Game Bar" OnContent="开" OffContent="关" IsChecked="{Binding EnableXboxGameBarMedia}" Margin="0,4,14,4"/>
                         <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="Windows 截图" OnContent="开" OffContent="关" IsChecked="{Binding EnableWindowsScreenshotMedia}" Margin="0,4,14,4"/>
                         <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="游戏相邻目录" OnContent="开" OffContent="关" IsChecked="{Binding EnablePlatformAdjacentMedia}" Margin="0,4,14,4"/>
                         <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="自定义来源" OnContent="开" OffContent="关" IsChecked="{Binding EnableCustomMedia}" Margin="0,4,14,4"/>
                     </WrapPanel>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="完成本地任务后允许单向云端复制" OnContent="开" OffContent="关" IsChecked="{Binding EnableCloudUpload}" Margin="0,5"/>
-                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,3,0,4" IsEnabled="{Binding EnableCloudUpload}">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 云端 上传 复制" Style="{StaticResource GscWpfUiToggleSwitch}" Content="完成本地任务后允许单向云端复制" OnContent="开" OffContent="关" IsChecked="{Binding EnableCloudUpload}" Margin="0,5"/>
+                    <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 云端 上传 重试 队列 允许时段 起始分钟 结束分钟" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,3,0,4" IsEnabled="{Binding EnableCloudUpload}">
                         <StackPanel>
                             <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding CloudUploadQueuePaused}" AutomationProperties.Name="暂停云端自动重试">
                                 <StackPanel>
@@ -243,7 +274,7 @@
                                 </StackPanel>
                             </ui:ToggleSwitch>
                             <TextBlock Text="自动上传允许时段（本地时间）" FontWeight="SemiBold" Margin="0,10,0,0"/>
-                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <TextBlock Text="填写当天分钟数（0–1439 / 1–1440）；起始晚于结束表示跨午夜，默认 0–1440 为全天。更改后在下一轮 Worker 检查时生效；已开始的上传不会被取消。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,7"/>
                             <UniformGrid Columns="2">
                                 <StackPanel Margin="0,0,10,0">
                                     <TextBlock Text="起始分钟" Margin="0,0,0,4"/>
@@ -256,14 +287,14 @@
                             </UniformGrid>
                         </StackPanel>
                     </Border>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" Content="管理面板打开时自动刷新任务与状态" OnContent="开" OffContent="关" IsChecked="{Binding EnableDashboardAutoRefresh}" Margin="0,5"/>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableTaskNotifications}" Margin="0,5" AutomationProperties.Name="任务完成或失败时显示 Playnite 通知">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 管理面板 自动刷新 任务 状态" Style="{StaticResource GscWpfUiToggleSwitch}" Content="管理面板打开时自动刷新任务与状态" OnContent="开" OffContent="关" IsChecked="{Binding EnableDashboardAutoRefresh}" Margin="0,5"/>
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 任务 通知 完成 失败 Playnite" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding EnableTaskNotifications}" Margin="0,5" AutomationProperties.Name="任务完成或失败时显示 Playnite 通知">
                         <StackPanel>
                             <TextBlock Text="任务完成或失败时显示 Playnite 通知" FontWeight="SemiBold"/>
                             <TextBlock Text="管理面板关闭时也会监测" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0" IsEnabled="{Binding EnableTaskNotifications}">
+                    <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 通知 级别 重要 摘要 详细" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0" IsEnabled="{Binding EnableTaskNotifications}">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,14,0">
@@ -277,34 +308,34 @@
                             </ComboBox>
                         </Grid>
                     </Border>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeEnabled}" Margin="0,5" AutomationProperties.Name="安全模式">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 安全模式 暂停 自动备份 媒体 云端 工具" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeEnabled}" Margin="0,5" AutomationProperties.Name="安全模式">
                         <StackPanel>
                             <TextBlock Text="安全模式" FontWeight="SemiBold"/>
                             <TextBlock Text="暂停自动备份、自动媒体同步、云端上传和工具自动启动；手动操作仍可用" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeRequested}" Margin="0,5" AutomationProperties.Name="下次以安全模式启动">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 安全模式 下次启动" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeRequested}" Margin="0,5" AutomationProperties.Name="下次以安全模式启动">
                         <StackPanel>
                             <TextBlock Text="下次以安全模式启动" FontWeight="SemiBold"/>
                             <TextBlock Text="手动请求下一次启动进入安全模式；连续启动失败时也会自动请求确认" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <UniformGrid x:Name="AutomationIntervalFields" Columns="3" Margin="0,10,0,0">
+                    <UniformGrid x:Name="AutomationIntervalFields" settings:GameSaveCenterSettingsView.SearchTerms="自动化 间隔 默认 游玩 进程 检测 管理面板 刷新" Columns="3" Margin="0,10,0,0">
                          <StackPanel Margin="0,0,12,10"><TextBlock Text="默认游玩中备份间隔（分钟）" Margin="0,0,0,4"/><TextBox x:Name="DefaultBackupIntervalMinutesTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 1–1440 分钟；离开输入框后提交。" AutomationProperties.Name="默认游玩中备份间隔"><TextBox.Text><Binding Path="DefaultBackupIntervalMinutes" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="1" Maximum="1440"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                          <StackPanel Margin="0,0,12,10"><TextBlock Text="进程检测间隔（秒）" Margin="0,0,0,4"/><TextBox x:Name="ProcessPollingSecondsTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 2–60 秒；离开输入框后提交。" AutomationProperties.Name="进程检测间隔"><TextBox.Text><Binding Path="ProcessPollingSeconds" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="2" Maximum="60"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                          <StackPanel Margin="0,0,12,10"><TextBlock Text="管理面板刷新间隔（秒）" Margin="0,0,0,4"/><TextBox x:Name="DashboardRefreshSecondsTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 5–300 秒；离开输入框后提交。" AutomationProperties.Name="管理面板刷新间隔"><TextBox.Text><Binding Path="DashboardRefreshSeconds" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="5" Maximum="300"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                      </UniformGrid>
-                    <ui:ToggleSwitch Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding HealthInspectionEnabled}" Margin="0,2,0,5" AutomationProperties.Name="启用恢复可用性巡检">
+                    <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 恢复 巡检 可用性 备份" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding HealthInspectionEnabled}" Margin="0,2,0,5" AutomationProperties.Name="启用恢复可用性巡检">
                         <StackPanel>
                             <TextBlock Text="自动巡检备份的恢复可用性" FontWeight="SemiBold"/>
                             <TextBlock Text="只在隔离目录解包并核对清单/哈希，不会写入真实存档；游戏运行或同游戏有操作时自动推迟。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                         </StackPanel>
                     </ui:ToggleSwitch>
-                    <UniformGrid x:Name="HealthInspectionIntervalFields" Columns="2" Margin="0,8,0,0" IsEnabled="{Binding HealthInspectionEnabled}">
+                    <UniformGrid x:Name="HealthInspectionIntervalFields" settings:GameSaveCenterSettingsView.SearchTerms="自动化 恢复 巡检 间隔 重新验证 有效期 天" Columns="2" Margin="0,8,0,0" IsEnabled="{Binding HealthInspectionEnabled}">
                           <StackPanel Margin="0,0,12,10"><TextBlock Text="恢复巡检间隔（分钟）" Margin="0,0,0,4"/><TextBox x:Name="HealthInspectionIntervalMinutesTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="允许 15–10080 分钟；离开输入框后提交。" AutomationProperties.Name="恢复巡检间隔"><TextBox.Text><Binding Path="HealthInspectionIntervalMinutes" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="15" Maximum="10080"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                            <StackPanel Margin="0,0,0,10"><TextBlock Text="重新验证有效期（天）" Margin="0,0,0,4"/><TextBox x:Name="HealthInspectionStaleAfterDaysTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="超过此天数的备份会进入优先巡检队列。允许 1–3650 天。" AutomationProperties.Name="重新验证有效期"><TextBox.Text><Binding Path="HealthInspectionStaleAfterDays" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="1" Maximum="3650"/></Binding.ValidationRules></Binding></TextBox.Text></TextBox></StackPanel>
                     </UniformGrid>
-                     <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0">
+                     <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 最近 保护 统计 窗口 游玩" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,14,0">
@@ -318,14 +349,14 @@
                             </ComboBox>
                         </Grid>
                     </Border>
-                    <Border Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,12,0,0">
+                     <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 恢复 默认 安全 快照" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,12,0,0">
                         <TextBlock Text="自动恢复始终关闭。恢复必须经过当前快照、游戏关闭确认、预览、恢复后校验和可撤销快照。" TextWrapping="Wrap"/>
                     </Border>
                 </StackPanel>
             </ui:Card>
                     </Grid>
                     <Grid x:Name="SettingsMigrationPanel" Visibility="Collapsed">
-                        <ui:Card Style="{StaticResource SettingsCard}">
+                        <ui:Card settings:GameSaveCenterSettingsView.SearchTerms="设置迁移 导入 导出 备份 JSON 配置" Style="{StaticResource SettingsCard}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <Border Width="30" Height="30" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" Margin="0,0,9,0">

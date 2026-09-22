@@ -65,6 +65,27 @@ public sealed class CloudTransferStateTests : IDisposable
     }
 
     [Fact]
+    public async Task CloudStatusProjectsRemoteEvidenceAndKeepsHistoricalVerificationUnknown()
+    {
+        var state = CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance));
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-evidence", CancellationToken.None);
+        await state.MarkRemoteVerifiedAsync(CloudTransferKind.Backup, "game-evidence", CancellationToken.None);
+
+        var verified = Assert.Single((await state.GetStatusAsync(CancellationToken.None)).Items);
+
+        Assert.Equal($"{options.RcloneDestination}{options.DeviceStorageKey}/Saves", verified.RemoteObject);
+        Assert.Equal(options.DeviceStorageKey, verified.SourceDevice);
+        Assert.Equal(verified.UpdatedUtc, verified.LastSuccessfulVerificationUtc);
+        Assert.NotEqual("未知", verified.RemoteObjectDisplay);
+        Assert.NotEqual("未知", verified.LastSuccessfulVerificationDisplay);
+
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "game-evidence", CancellationToken.None);
+        var uploaded = Assert.Single((await state.GetStatusAsync(CancellationToken.None)).Items);
+
+        Assert.Equal("未知", uploaded.LastSuccessfulVerificationDisplay);
+    }
+
+    [Fact]
     public async Task QueueStateSurvivesStoreRecreation()
     {
         var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
@@ -136,6 +157,70 @@ public sealed class CloudTransferStateTests : IDisposable
         Assert.Single(filtered.Items);
         Assert.Equal("game-1004", filtered.Items[0].PlayniteId);
         Assert.Equal("已加载全部 1 项", filtered.LoadedDisplay);
+    }
+
+    [Fact]
+    public async Task CloudStatusFiltersGameDeviceAndTimeWhileKeepingGlobalCount()
+    {
+        var now = DateTime.UtcNow;
+        foreach (var item in new[]
+        {
+            new CloudTransferQueueEntry
+            {
+                TransferKey = "Backup:game-alpha",
+                Kind = CloudTransferKind.Backup,
+                PlayniteId = "game-alpha",
+                State = "Uploaded",
+                CreatedUtc = now.AddDays(-3),
+                UpdatedUtc = now.AddDays(-2)
+            },
+            new CloudTransferQueueEntry
+            {
+                TransferKey = "Backup:game-beta",
+                Kind = CloudTransferKind.Backup,
+                PlayniteId = "game-beta",
+                State = "RetryScheduled",
+                CreatedUtc = now.AddDays(-1),
+                UpdatedUtc = now.AddHours(-2)
+            },
+            new CloudTransferQueueEntry
+            {
+                TransferKey = "Media:game-beta",
+                Kind = CloudTransferKind.Media,
+                PlayniteId = "game-beta",
+                State = "Uploaded",
+                CreatedUtc = now.AddDays(-1),
+                UpdatedUtc = now.AddHours(-1)
+            }
+        })
+        {
+            await store.UpsertCloudTransferAsync(item, CancellationToken.None);
+        }
+
+        var filtered = await CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance))
+            .GetStatusAsync(new CloudTransferStatusRequestDto
+            {
+                GameName = "beta",
+                SourceDevice = options.DeviceStorageKey,
+                UpdatedAfterUtc = now.AddHours(-12),
+                PageSize = 10
+            }, CancellationToken.None);
+
+        Assert.Equal(1, filtered.TotalCount);
+        Assert.Equal(3, filtered.GlobalTotalCount);
+        Assert.Single(filtered.Items);
+        Assert.Equal("Backup:game-beta", filtered.Items[0].TransferKey);
+
+        var wrongDevice = await CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance))
+            .GetStatusAsync(new CloudTransferStatusRequestDto
+            {
+                GameName = "beta",
+                SourceDevice = "unknown-device",
+                PageSize = 10
+            }, CancellationToken.None);
+        Assert.Equal(0, wrongDevice.TotalCount);
+        Assert.Equal(3, wrongDevice.GlobalTotalCount);
+        Assert.Empty(wrongDevice.Items);
     }
 
     [Fact]

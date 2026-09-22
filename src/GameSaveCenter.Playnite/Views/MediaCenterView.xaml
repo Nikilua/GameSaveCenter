@@ -38,6 +38,22 @@
             </Style>
             <converters:MediaThumbnailConverter x:Key="MediaThumbnailConverter"/>
             <converters:MediaVideoSourceConverter x:Key="MediaVideoSourceConverter"/>
+            <DataTemplate x:Key="MediaGameTargetTemplate">
+                <Grid MinWidth="224" Margin="0,2" ToolTip="{Binding IdentityDisplay}">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Width="30" Height="30" CornerRadius="7" Background="{DynamicResource GscAccentIconFillBrush}" ClipToBounds="True" VerticalAlignment="Top">
+                        <Grid>
+                            <TextBlock Text="{Binding PlatformDisplay}" FontSize="9" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                            <Image Source="{Binding IconPath}" Stretch="UniformToFill"/>
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding PlatformDisplay}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding IdentityDisplay}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
             <Style x:Key="MediaDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}">
                 <Setter Property="RowStyle" Value="{StaticResource MediaInboxStableRowStyle}"/>
                 <Setter Property="Background" Value="Transparent"/>
@@ -89,7 +105,8 @@
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
             <Style x:Key="MediaTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}">
-                <Setter Property="ToolTip" Value="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                <Setter Property="ToolTip" Value="{Binding CapturedFullDisplay, Mode=OneWay}"/>
+                <Setter Property="AutomationProperties.HelpText" Value="{Binding CapturedFullDisplay, Mode=OneWay}"/>
             </Style>
             <Style x:Key="MediaPathText" TargetType="TextBlock" BasedOn="{StaticResource GscPathText}">
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
@@ -154,7 +171,7 @@
                 <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
                 <StackPanel Grid.Column="6" Margin="14,2,14,0">
                     <TextBlock Text="{Binding MediaInboxCountDisplay, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
-                    <TextBlock Text="{Binding MediaInboxCountCaption, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding MediaInboxCountCaption, Mode=OneWay}" ToolTip="{Binding MediaInboxCountCaptionFull, Mode=OneWay}" AutomationProperties.HelpText="{Binding MediaInboxCountCaptionFull, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -213,30 +230,13 @@
                                             <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <ComboBox Width="160" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏" AutomationProperties.Name="批量归类目标游戏" Margin="0,0,8,4">
-                                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="归类所选" Margin="0,0,8,4"/>
+                                    <ComboBox Width="220" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" AutomationProperties.Name="批量归类目标游戏" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,8,4"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" AutomationProperties.Name="归类所选媒体">
+                                        <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="归类所选" VerticalAlignment="Center"/></StackPanel>
+                                    </ui:Button>
                                 </StackPanel>
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="2,0,0,4"/>
                             </WrapPanel>
-                            <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,0,10">
-                                <Grid>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
-                                               Style="{DynamicResource GscActionAvailabilityHintText}"
-                                               AutomationProperties.Name="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
-                                               AutomationProperties.HelpText="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"/>
-                                    <ui:Button Grid.Column="1" Content="去维护中心检查" Command="{Binding OpenMaintenanceCommand}" Margin="10,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="去维护中心检查媒体环境">
-                                        <ui:Button.Style>
-                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers><DataTrigger Binding="{Binding MediaInboxNeedsMaintenance}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
-                                            </Style>
-                                        </ui:Button.Style>
-                                    </ui:Button>
-                                </Grid>
-                            </Border>
                             </StackPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" VerticalAlignment="Stretch" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="MediaInbox" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选媒体行；Ctrl+Shift+C 复制当前单元格"
@@ -246,7 +246,7 @@
                                       VirtualizingPanel.ScrollUnit="Item"
                                       ClipToBounds="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" infra:DataGridColumnHeaderHelpBehavior.Description="本地拍摄时间；悬停可查看完整时间。" Binding="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                    <DataGridTextColumn HeaderStyle="{StaticResource MediaFirstColumnHeader}" Header="拍摄时间" infra:DataGridColumnHeaderHelpBehavior.Description="相对拍摄时间；悬停可查看本地时区、完整秒级时间和原始 UTC 值。" Binding="{Binding CapturedRelativeDisplay, Mode=OneWay}" Width="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaTimeCell}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="类型" infra:DataGridColumnHeaderHelpBehavior.Description="媒体类型；当前支持截图、录像和未知媒体。" Binding="{Binding KindDisplay, Mode=OneWay}" Width="72"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="来源" infra:DataGridColumnHeaderHelpBehavior.Description="媒体来源；显示来源渠道，不代表归类结果。" Binding="{Binding SourceDisplay, Mode=OneWay}" Width="115"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     <DataGridTextColumn HeaderStyle="{StaticResource MediaMiddleColumnHeader}" Header="文件" infra:DataGridColumnHeaderHelpBehavior.Description="文件名；单元格复制使用完整原始路径。" Binding="{Binding FileName, Mode=OneWay}" Width="*" MinWidth="220"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MediaPathText}"><Setter Property="ToolTip" Value="{Binding OriginalPath}"/></Style></DataGridTextColumn.ElementStyle></DataGridTextColumn>
@@ -273,12 +273,38 @@
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
                         <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="0,10,0,0" VerticalAlignment="Center">
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <WrapPanel Grid.Row="0" VerticalAlignment="Center">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <WrapPanel x:Name="MediaFilterPresetRow" Grid.Row="0" Margin="0,0,0,10" VerticalAlignment="Center">
+                                <TextBlock Text="筛选预设" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ComboBox x:Name="MediaFilterPresetComboBox" Width="180" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterPresets}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedMediaFilterPreset, Mode=TwoWay}" ToolTip="选择已保存的媒体筛选组合" AutomationProperties.Name="媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyMediaFilterPresetCommand}" Content="应用" ToolTip="应用选中的媒体筛选预设" AutomationProperties.Name="应用媒体筛选预设" Margin="0,0,8,0"/>
+                                <TextBox x:Name="MediaFilterPresetNameBox" Width="132" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaFilterPresetNameDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入预设名称" AutomationProperties.Name="媒体筛选预设名称" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding SaveMediaFilterPresetCommand}" Content="保存" ToolTip="保存当前媒体筛选组合" AutomationProperties.Name="保存媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameMediaFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的媒体筛选预设" AutomationProperties.Name="重命名媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteMediaFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的媒体筛选预设" AutomationProperties.Name="删除媒体筛选预设"/>
+                            </WrapPanel>
+                            <Border x:Name="MediaInboxAvailabilityBand" Grid.Row="1" Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               Style="{DynamicResource GscActionAvailabilityHintText}"
+                                               AutomationProperties.Name="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               AutomationProperties.HelpText="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"/>
+                                    <ui:Button Grid.Column="1" Content="去维护中心检查" Command="{Binding OpenMaintenanceCommand}" Margin="10,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="去维护中心检查媒体环境">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding MediaInboxNeedsMaintenance}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+                                </Grid>
+                            </Border>
+                            <WrapPanel Grid.Row="2" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
                                 <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
                                 <ui:Button x:Name="ReloadMediaInboxButton" Content="返回最新" Command="{Binding ReloadMediaInboxCommand}" Click="OnReloadMediaInboxClick" ToolTip="重新载入较新的媒体收件箱内容并回到列表顶部" AutomationProperties.Name="返回最新媒体收件箱内容" Visibility="Collapsed" Margin="0,0,8,4"/>
-                                <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="媒体归类建议状态"/>
+                                <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" Width="220" VerticalAlignment="Center" Margin="0,0,10,4" ToolTip="{Binding MediaClassificationPreview.ExpiresFullDisplay}" AutomationProperties.Name="媒体归类建议状态" AutomationProperties.HelpText="{Binding MediaClassificationPreview.ExpiresFullDisplay}"/>
                                 <TextBlock Text="选择媒体后可在右侧预览并归类" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
                                 <ui:Button x:Name="MediaInboxHistoryButton" Content="批次历史" Style="{DynamicResource GscWpfUiSecondaryButton}" Click="OnMediaInboxHistoryClick" ToolTip="单独打开媒体归类批次历史" AutomationProperties.Name="打开媒体归类批次历史" Margin="0,0,8,4"/>
                                 <ui:Button Content="加载更多" Command="{Binding LoadMoreMediaInboxCommand}" Click="OnLoadMoreMediaInboxClick" ToolTip="加载下一页媒体收件箱项目" AutomationProperties.Name="加载更多媒体收件箱项目" Margin="0,0,0,4">
@@ -290,10 +316,12 @@
                                     </ui:Button.Style>
                                 </ui:Button>
                             </WrapPanel>
-                            <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,0">
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="忽略所选" Margin="0,0,8,4"/>
+                            <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="3" VerticalAlignment="Center" Margin="0,8,0,0">
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" AutomationProperties.Name="忽略所选媒体">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionIgnore}"/><TextBlock Text="忽略所选" VerticalAlignment="Center"/></StackPanel>
+                                </ui:Button>
                                 <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewMediaClassificationCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="生成归类建议" ToolTip="根据来源规则、游戏会话和进程映射生成可解释预览" Margin="0,0,8,4"/>
-                                <ui:Button Command="{Binding ApplyMediaClassificationCommand}" Content="应用高置信建议" ToolTip="只应用预览中唯一且高置信的建议" Margin="0,0,8,4">
+                                <ui:Button Command="{Binding ApplyMediaClassificationCommand}" Content="应用所选高置信建议" ToolTip="只提交当前预览中纳入的高置信建议；排除项不会执行" Margin="0,0,8,4">
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -301,7 +329,8 @@
                                         </Style>
                                     </ui:Button.Style>
                                 </ui:Button>
-                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,8,4">
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" AutomationProperties.Name="恢复所选已忽略媒体到待归类" Margin="0,0,8,4">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="恢复到待归类" VerticalAlignment="Center"/></StackPanel>
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -311,6 +340,39 @@
                                 </ui:Button>
                                 <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding UndoMediaClassificationCommand}" Content="撤销上次建议批次" ToolTip="只撤销未被后续修改的建议项目" Margin="0,0,0,4"/>
                             </WrapPanel>
+                            <Border Grid.Row="4" Padding="10,8" Margin="0,4,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource GscRedesignInfoBand}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers><DataTrigger Binding="{Binding HasMediaInboxBatchFailures}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding MediaInboxBatchFailureSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" VerticalAlignment="Center" AutomationProperties.Name="媒体批量失败汇总"/>
+                                        <ui:Button Grid.Column="1" Command="{Binding RetryFailedMediaInboxBatchCommand}" Content="仅重试失败项" Style="{DynamicResource GscWpfUiSecondaryButton}" Margin="8,0,0,0" ToolTip="只提交上次失败的稳定媒体 ID，成功项不会再次执行" AutomationProperties.Name="仅重试媒体失败项"/>
+                                    </Grid>
+                                    <ListBox Tag="FiniteViewport" ItemsSource="{Binding MediaInboxBatchFailures}" MaxHeight="128" Margin="0,6,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体批量失败逐项原因">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0,0,0,3"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding MediaId}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding MediaId}"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding ErrorMessage}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding ErrorMessage}" Margin="6,0,0,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </Border>
                         </Grid>
                         </Grid>
                     </Border>
@@ -325,8 +387,8 @@
                                 <Grid Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding SelectedInboxMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径}" AutomationProperties.Name="待归类媒体完整路径（可选择）"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CopyPathCommand}" CommandParameter="{Binding SelectedInboxMedia.ArchivePath}" Content="复制完整路径" ToolTip="复制未省略的媒体归档路径" AutomationProperties.Name="复制待归类媒体完整路径" Margin="8,0,0,0"/></Grid>
                                 <Border x:Name="MediaInboxPreviewPanel" Height="178" CornerRadius="12" ClipToBounds="True" Background="{DynamicResource GscControlFillBrush}" Margin="0,14,0,14">
                                     <Grid>
-                                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Margin="14" Foreground="{DynamicResource GscSecondaryTextBrush}">
-                                            <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="选择媒体查看预览"/><Style.Triggers><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Loading"><Setter Property="Text" Value="正在载入预览…"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Unavailable"><Setter Property="Text" Value="该文件无法预览"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Failed"><Setter Property="Text" Value="预览加载失败"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Ready"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                            <TextBlock TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Margin="14" Foreground="{DynamicResource GscSecondaryTextBrush}">
+                                                <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="选择媒体查看预览"/><Style.Triggers><DataTrigger Binding="{Binding SelectedInboxMedia.Kind}" Value="{x:Static contracts:MediaKind.VideoClip}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Loading"><Setter Property="Text" Value="正在载入缩略图…"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="NoImage"><Setter Property="Text" Value="暂无截图"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Missing"><Setter Property="Text" Value="媒体文件不存在"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Unavailable"><Setter Property="Text" Value="该文件暂不可预览"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Failed"><Setter Property="Text" Value="缩略图损坏或无法读取"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaInboxPreviewImage}" Value="Ready"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
                                         </TextBlock>
                                         <ui:AsyncThumbnailImage x:Name="MediaInboxPreviewImage" SourcePath="{Binding SelectedInboxMedia.ArchivePath}" PreviewWidth="480" Stretch="UniformToFill">
                                             <ui:AsyncThumbnailImage.Style>
@@ -354,8 +416,8 @@
                                 <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="10" Margin="0,14,0,0">
                                     <StackPanel>
                                         <TextBlock Text="归类建议预览" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                        <ListBox x:Name="MediaClassificationPreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationPreview.Items}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <TextBlock Text="{Binding MediaClassificationPreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" ToolTip="{Binding MediaClassificationPreview.ExpiresFullDisplay}" AutomationProperties.Name="媒体归类建议选择汇总" AutomationProperties.HelpText="{Binding MediaClassificationPreview.ExpiresFullDisplay}"/>
+                                        <ListBox x:Name="MediaClassificationPreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationPreview.Items}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                                             <ListBox.Style>
                                                 <Style TargetType="ListBox">
                                                     <Setter Property="Visibility" Value="Visible"/>
@@ -374,7 +436,44 @@
                                                     <Border Background="{DynamicResource GscGlassStrongBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
                                                         <StackPanel>
                                                             <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/>
+                                                            <TextBlock Text="{Binding CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CapturedFullDisplay, Mode=OneWay}"/>
+                                                            <Grid Margin="0,3,0,0">
+                                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                <CheckBox Style="{DynamicResource GscCheckBox}" Content="纳入应用" IsChecked="{Binding IsIncluded, Mode=TwoWay}" AutomationProperties.Name="纳入此媒体归类建议"/>
+                                                                <TextBlock Grid.Column="1" Text="{Binding ConfidenceDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                                            </Grid>
                                                             <TextBlock Text="{Binding SummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding EvidenceSummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0"/>
+                                                            <ItemsControl ItemsSource="{Binding Evidence}" Margin="0,3,0,0">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding SummaryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding SummaryDisplay}" AutomationProperties.Name="{Binding SummaryDisplay}" Margin="0,2,0,0"/>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                            <TextBlock Text="待判断：没有可核实的来源规则、游戏会话、进程映射或文件名依据。" TextWrapping="Wrap" Margin="0,3,0,0">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding HasEvidence}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                                <TextBlock Text="目标" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                                <ComboBox ItemsSource="{Binding DataContext.Games, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                          SelectedValuePath="PlayniteId"
+                                                                          SelectedValue="{Binding TargetPlayniteId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                          IsEnabled="{Binding CanEditTarget}"
+                                                                          MinWidth="150"
+                                                                          Style="{DynamicResource GscWpfUiComboBox}"
+                                                                          AutomationProperties.Name="调整归类建议目标">
+                                                                    <ComboBox.ItemTemplate><DataTemplate><ContentControl Content="{Binding}" ContentTemplate="{StaticResource MediaGameTargetTemplate}"/></DataTemplate></ComboBox.ItemTemplate>
+                                                                </ComboBox>
+                                                            </StackPanel>
+                                                            <TextBlock Text="{Binding TargetSelectionDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>
@@ -390,7 +489,7 @@
                                         <ComboBox x:Name="MediaClassificationHistoryStateCombo" ItemsSource="{Binding MediaClassificationHistoryStateOptions}" SelectedValuePath="Code" SelectedValue="{Binding MediaClassificationHistoryStateFilter}" SelectionChanged="OnMediaClassificationHistoryStateChanged" Style="{DynamicResource GscWpfUiComboBox}" Margin="0,8,0,0" AutomationProperties.Name="媒体归类批次状态筛选">
                                             <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Display}"/></DataTemplate></ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <ListBox x:Name="MediaClassificationHistoryList" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationHistoryItems}" SelectedItem="{Binding SelectedMediaClassificationBatch, Mode=TwoWay}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体归类批次历史">
+                                        <ListBox x:Name="MediaClassificationHistoryList" Tag="FiniteViewport" ItemsSource="{Binding MediaClassificationHistoryItems}" SelectedItem="{Binding SelectedMediaClassificationBatch, Mode=TwoWay}" MaxHeight="260" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体归类批次历史">
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="ListBoxItem">
                                                     <Setter Property="Padding" Value="0"/>
@@ -404,7 +503,9 @@
                                                         <StackPanel>
                                                             <TextBlock Text="{Binding StateDisplay}" FontWeight="SemiBold"/>
                                                             <TextBlock Text="{Binding CountsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
-                                                            <TextBlock Text="{Binding DetailDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding StatusDetailDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding UpdatedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding UpdatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding UpdatedFullDisplay, Mode=OneWay}"/>
+                                                            <TextBlock Text="{Binding ExpiryRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,2,0,0" ToolTip="{Binding ExpiryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding ExpiryFullDisplay, Mode=OneWay}"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>
@@ -434,11 +535,16 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
-                                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="180" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
-                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" Content="确认归类" HorizontalAlignment="Left"/>
-                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" Content="忽略并保留副本" Margin="0,8,0,0" HorizontalAlignment="Left"/>
+                                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="220" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,0,8" AutomationProperties.Name="媒体收件箱归类目标游戏"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" AutomationProperties.Name="确认归类" HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="确认归类" VerticalAlignment="Center"/></StackPanel>
+                                    </ui:Button>
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaCommand}" AutomationProperties.Name="忽略并保留副本" Margin="0,8,0,0" HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionIgnore}"/><TextBlock Text="忽略并保留副本" VerticalAlignment="Center"/></StackPanel>
+                                    </ui:Button>
                                 </StackPanel>
-                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Content="恢复到待归类" AutomationProperties.Name="恢复已忽略媒体到待归类" HorizontalAlignment="Left" Margin="0,0,0,0">
+                                <ui:Button Command="{Binding RestoreIgnoredMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" AutomationProperties.Name="恢复已忽略媒体到待归类" HorizontalAlignment="Left" Margin="0,0,0,0">
+                                    <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="恢复到待归类" VerticalAlignment="Center"/></StackPanel>
                                     <ui:Button.Style>
                                         <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiPrimaryActionButton}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -498,7 +604,7 @@
                                         </Button.Style>
                                     </Button>
                                 </Grid>
-                                <ComboBox Grid.Column="1" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="媒体类型筛选"/>
+                                <ComboBox Grid.Column="1" Margin="8,0,0,0" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterOptions}" SelectedItem="{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="媒体类型筛选" AutomationProperties.Name="媒体类型筛选"/>
                             </Grid>
                             <ui:Button Grid.Column="2" Command="{Binding ClearMediaFiltersCommand}" Content="清除" Margin="8,0,0,0" ToolTip="清除媒体搜索和类型筛选" AutomationProperties.Name="清除当前游戏媒体筛选">
                                 <ui:Button.Style>
@@ -511,7 +617,7 @@
                                 </ui:Button.Style>
                             </ui:Button>
                         </Grid>
-                        <ListBox Grid.Row="1" x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox Grid.Row="1" x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" AutomationProperties.Name="当前游戏媒体列表" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                             <!-- The current-game view is a bounded card surface. Keep the
                                  production card geometry while using the project's
                                  IScrollInfo panel so a 2000-item retained window does not
@@ -538,7 +644,7 @@
                                         <Grid.RowDefinitions><RowDefinition Height="96"/><RowDefinition Height="58"/></Grid.RowDefinitions>
                                         <Border Grid.Row="0" Background="{DynamicResource GscControlFillBrush}" ClipToBounds="True" ToolTip="{Binding FileName}">
                                             <Grid>
-                                                <ui:AsyncThumbnailImage SourcePath="{Binding ArchivePath}" PreviewWidth="96" Stretch="UniformToFill"/>
+                                                <ui:MediaThumbnailPreview SourcePath="{Binding ArchivePath}" Kind="{Binding Kind}" PreviewWidth="96"/>
                                                 <Border VerticalAlignment="Bottom" Height="42">
                                                     <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#00000000" Offset="0"/><GradientStop Color="#59000000" Offset="1"/></LinearGradientBrush></Border.Background>
                                                 </Border>
@@ -551,14 +657,14 @@
                                             </Grid>
                                         </Border>
                                         <Border Grid.Row="1" Background="{DynamicResource GscControlFillBrush}" Padding="10,7">
-                                            <StackPanel><TextBlock Text="{Binding FileName}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><Grid Margin="0,4,0,0"><TextBlock Text="{Binding CapturedLocal, Mode=OneWay, StringFormat={}{0:MM-dd HH:mm}}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscMutedTextBrush}"/><TextBlock Text="{Binding CloudStateDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" HorizontalAlignment="Right" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudStateDisplay}"/></Grid></StackPanel>
+                                            <StackPanel><TextBlock Text="{Binding FileName}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><Grid Margin="0,4,0,0"><TextBlock Text="{Binding CapturedRelativeDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscMutedTextBrush}" ToolTip="{Binding CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CapturedFullDisplay, Mode=OneWay}"/><TextBlock Text="{Binding CloudStateDisplay, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" HorizontalAlignment="Right" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudStateDisplay}"/></Grid></StackPanel>
                                         </Border>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                         <!-- MediaView.IsEmpty remains a filter-level signal; the workspace state decides whether this is a real empty result. -->
-                        <TextBlock Grid.Row="1" Text="当前游戏还没有媒体&#xA;导入截图或录像后，它们会显示在这里。" IsHitTestVisible="False">
+                        <TextBlock Grid.Row="1" Text="{Binding MediaDetailsStateMessage, Mode=OneWay}" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -607,9 +713,10 @@
                                 </ui:Button>
                             </StackPanel>
                             <WrapPanel x:Name="MediaCurrentBatchActions" Grid.Column="1" HorizontalAlignment="Right">
-                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注"/>
+                                <TextBlock x:Name="MediaCurrentBatchSelectionSummary" Text="当前结果 0 项 · 未选择媒体 · Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" MaxWidth="250" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="当前游戏媒体批量选择摘要"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选" AutomationProperties.Name="收藏所选媒体"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏" AutomationProperties.Name="取消收藏所选媒体"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注" AutomationProperties.Name="为所选媒体应用当前备注"/>
                             </WrapPanel>
                             <ui:Button x:Name="MediaCompactDetailsButton"
                                        Grid.Column="1"
@@ -639,35 +746,140 @@
                     <Border x:Name="MediaInspectorPanel" Style="{DynamicResource GscReadingCardStyle}" Padding="14">
                         <StackPanel x:Name="MediaMetadataPanel">
                                 <TextBlock Text="媒体详情" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="{Binding SelectedMedia.FileName, TargetNullValue=未选择媒体}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedMedia.FileName}" Margin="0,6,0,0"/>
-                                        <TextBlock Text="{Binding SelectedMedia.ArchivePath, Converter={StaticResource GscPathDisplayConverter}}" Style="{StaticResource MediaPathText}" Foreground="{DynamicResource GscMutedTextBrush}" ToolTip="{Binding SelectedMedia.ArchivePath}" Margin="0,4,0,0"/>
-                                <Grid Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding SelectedMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径}" AutomationProperties.Name="媒体完整路径（可选择）"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CopyPathCommand}" CommandParameter="{Binding SelectedMedia.ArchivePath}" Content="复制完整路径" ToolTip="复制未省略的媒体归档路径" AutomationProperties.Name="复制媒体完整路径" Margin="8,0,0,0"/></Grid>
+                                 <TextBlock Text="{Binding SelectedMedia.FileName, TargetNullValue=未选择媒体}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedMedia.FileName}" Margin="0,6,0,0"/>
+                                         <TextBlock Text="{Binding SelectedMedia.ArchivePath, Converter={StaticResource GscPathDisplayConverter}}" Style="{StaticResource MediaPathText}" Foreground="{DynamicResource GscMutedTextBrush}" ToolTip="{Binding SelectedMedia.ArchivePath}" Margin="0,4,0,0"/>
+                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                     <TextBlock Text="{Binding SelectedMedia.KindDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                     <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
+                                     <TextBlock Text="{Binding SelectedMedia.SourceDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                     <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
+                                     <TextBlock Text="{Binding SelectedMedia.SizeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                 </StackPanel>
+                                 <TextBlock Text="{Binding SelectedMedia.CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding SelectedMedia.CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedMedia.CapturedFullDisplay, Mode=OneWay}"/>
+                                 <Grid Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding SelectedMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径}" AutomationProperties.Name="媒体完整路径（可选择）"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CopyPathCommand}" CommandParameter="{Binding SelectedMedia.ArchivePath}" Content="复制完整路径" ToolTip="复制未省略的媒体归档路径" AutomationProperties.Name="复制媒体完整路径" Margin="8,0,0,0"/></Grid>
                                 <Border x:Name="MediaPreviewPanel" Height="178" CornerRadius="12" ClipToBounds="True" Background="{DynamicResource GscControlFillBrush}" Margin="0,14,0,14">
                                     <Grid>
-                                        <TextBlock Text="选择截图或录像可在此预览" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Margin="14" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
-                                        <ui:AsyncThumbnailImage SourcePath="{Binding SelectedMedia.ArchivePath}" PreviewWidth="480" Stretch="UniformToFill"><ui:AsyncThumbnailImage.Style><Style TargetType="ui:AsyncThumbnailImage"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.Screenshot}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ui:AsyncThumbnailImage.Style></ui:AsyncThumbnailImage>
-                                        <MediaElement Source="{Binding SelectedMedia.ArchivePath, Converter={StaticResource MediaVideoSourceConverter}}" LoadedBehavior="Play" UnloadedBehavior="Stop" IsMuted="True" Stretch="UniformToFill" ScrubbingEnabled="True"><MediaElement.Style><Style TargetType="MediaElement"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.VideoClip}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></MediaElement.Style></MediaElement>
-                                    </Grid>
-                                </Border>
-                                <Separator Margin="0,0,0,12"/>
-                                <ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="收藏" OnContent="开" OffContent="关" IsChecked="{Binding MediaFavorite}" Margin="0,0,0,10" HorizontalAlignment="Left"/>
+                                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Margin="14" Foreground="{DynamicResource GscSecondaryTextBrush}">
+                                            <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="选择截图或录像可在此预览"/><Style.Triggers><DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.VideoClip}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaSelectedPreviewImage}" Value="Loading"><Setter Property="Text" Value="正在载入缩略图…"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaSelectedPreviewImage}" Value="NoImage"><Setter Property="Text" Value="暂无截图"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaSelectedPreviewImage}" Value="Missing"><Setter Property="Text" Value="媒体文件不存在"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaSelectedPreviewImage}" Value="Unavailable"><Setter Property="Text" Value="该文件暂不可预览"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaSelectedPreviewImage}" Value="Failed"><Setter Property="Text" Value="缩略图损坏或无法读取"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaSelectedPreviewImage}" Value="Ready"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                        </TextBlock>
+                                        <ui:AsyncThumbnailImage x:Name="MediaSelectedPreviewImage" SourcePath="{Binding SelectedMedia.ArchivePath}" PreviewWidth="480" Stretch="UniformToFill"><ui:AsyncThumbnailImage.Style><Style TargetType="ui:AsyncThumbnailImage"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.Screenshot}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></ui:AsyncThumbnailImage.Style></ui:AsyncThumbnailImage>
+                                        <TextBlock Text="{Binding PreviewDimensions, ElementName=MediaSelectedPreviewImage}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,8" Background="{DynamicResource GscControlFillBrush}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.Screenshot}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                        <TextBlock x:Name="MediaSelectedVideoFallback" Text="录像文件不存在、格式不受支持或无法打开" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Margin="14" Foreground="{DynamicResource GscSecondaryTextBrush}" Visibility="Collapsed"/>
+                                        <MediaElement x:Name="MediaSelectedVideo" Source="{Binding SelectedMedia.ArchivePath, Converter={StaticResource MediaVideoSourceConverter}}" MediaFailed="OnSelectedMediaVideoFailed" LoadedBehavior="Play" UnloadedBehavior="Stop" IsMuted="True" Stretch="UniformToFill" ScrubbingEnabled="True"><MediaElement.Style><Style TargetType="MediaElement"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.VideoClip}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></MediaElement.Style></MediaElement>
+                                     </Grid>
+                                 </Border>
+                                 <Grid Margin="0,0,0,12">
+                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                     <ui:Button Command="{Binding PreviousMediaCommand}" Content="上一项" ToolTip="查看当前已加载窗口中的上一项媒体" AutomationProperties.Name="上一项媒体" Style="{DynamicResource GscWpfUiSecondaryButton}"/>
+                                     <TextBlock Grid.Column="1" Text="{Binding MediaDetailNavigationDisplay}" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" AutomationProperties.Name="媒体详情位置"/>
+                                     <ui:Button Grid.Column="2" Command="{Binding NextMediaCommand}" Content="下一项" ToolTip="查看当前已加载窗口中的下一项媒体" AutomationProperties.Name="下一项媒体" Style="{DynamicResource GscWpfUiSecondaryButton}"/>
+                                 </Grid>
+                                 <Separator Margin="0,0,0,12"/>
+                                <ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="收藏" OnContent="开" OffContent="关" IsChecked="{Binding MediaFavorite}" AutomationProperties.Name="收藏当前媒体" Margin="0,0,0,10" HorizontalAlignment="Left"/>
                                 <TextBlock Text="备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
-                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaComment, UpdateSourceTrigger=PropertyChanged}" ToolTip="为选中媒体添加备注" MinHeight="64" TextWrapping="Wrap" AcceptsReturn="True"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateMediaMetadataCommand}" Content="保存元数据" Margin="0,10,0,0" HorizontalAlignment="Left"/>
+                                <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaComment, UpdateSourceTrigger=PropertyChanged}" ToolTip="为选中媒体添加备注" AutomationProperties.Name="当前媒体备注" MinHeight="64" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding UpdateMediaMetadataCommand}" Content="保存元数据" AutomationProperties.Name="保存当前媒体元数据" Margin="0,10,0,0" HorizontalAlignment="Left"/>
                                 <!-- File actions identify different destinations, so retain explicit text. -->
                                 <WrapPanel Margin="0,12,0,0"><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding OpenSelectedMediaCommand}" Content="打开媒体" ToolTip="打开所选媒体" AutomationProperties.Name="打开所选媒体" Margin="0,0,8,8"/><ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding RevealSelectedMediaCommand}" Content="打开所在目录" ToolTip="打开所选媒体所在目录" AutomationProperties.Name="打开所选媒体目录" Margin="0,0,8,8"/></WrapPanel>
                                 <TextBlock Text="重新归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,8,0,5"/>
-                                <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding MediaTargetGame}" Margin="0,0,0,8"><ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate></ComboBox>
-                                <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding ReassignMediaCommand}" Content="移动并归类" HorizontalAlignment="Left"/>
+                                <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding MediaTargetGame}" ToolTip="重新归类目标；显示名称、平台和 Playnite ID" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,0,8" AutomationProperties.Name="重新归类目标游戏"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding ReassignMediaCommand}" Content="移动并归类" AutomationProperties.Name="移动并归类当前媒体" HorizontalAlignment="Left"/>
                                 <Separator Margin="0,14,0,12"/>
                                 <TextBlock Text="批量操作" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,7"/>
-                                <WrapPanel><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注"/></WrapPanel>
+                                <WrapPanel><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding FavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="收藏所选" AutomationProperties.Name="收藏所选媒体"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding UnfavoriteSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="取消收藏" AutomationProperties.Name="取消收藏所选媒体"/><ui:Button Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding CommentSelectedMediaCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="应用当前备注" AutomationProperties.Name="为所选媒体应用当前备注"/></WrapPanel>
                         </StackPanel>
                     </Border>
                     </ScrollViewer>
                     </Border>
                 </Grid>
                 </Grid>
+            </TabItem>
+            <TabItem Header="重复识别">
+                <ScrollViewer x:Name="MediaDuplicatePageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
+                    <StackPanel Margin="0,12,0,0">
+                        <Border Style="{DynamicResource GscRedesignInfoBand}" Padding="12" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="当前游戏媒体重复识别" FontSize="16" FontWeight="SemiBold"/>
+                                    <TextBlock Text="只检查已归档媒体；确定重复使用相同 SHA-256，疑似重复使用同类型、文件名和大小。这里仅供查看和选择，不会删除或移动真实媒体。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,12,0"/>
+                                </StackPanel>
+                                <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding MediaDuplicateGroupsSummary}" TextWrapping="Wrap" MaxWidth="260" TextAlignment="Right"/></Border>
+                            </Grid>
+                        </Border>
+                        <Grid MinHeight="0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource MediaTableFrame}" Padding="12" MinHeight="0">
+                                <Grid>
+                                    <ListBox x:Name="MediaDuplicateGroupsList" Tag="FiniteViewport" ItemsSource="{Binding MediaDuplicateInspection.Groups}" SelectedItem="{Binding SelectedMediaDuplicateGroup, Mode=TwoWay}" MaxHeight="430" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体重复组列表">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0,0,0,8"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                        <Border Background="{DynamicResource GscAccentTintStrongBrush}" CornerRadius="8" Padding="8,5" VerticalAlignment="Top"><TextBlock Text="{Binding ConfidenceDisplay}" FontWeight="SemiBold"/></Border>
+                                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                                            <TextBlock Text="{Binding SummaryDisplay}" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding ReasonDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                            <TextBlock Text="{Binding ItemsDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <TextBlock Text="当前游戏没有可核实的重复组。" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyText}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding MediaDuplicateInspection.Groups.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="12" VerticalAlignment="Top">
+                                <StackPanel>
+                                    <TextBlock Text="组内媒体" FontSize="15" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding MediaDuplicateSelectionSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,8"/>
+                                    <ListBox x:Name="MediaDuplicateItemsList" Tag="FiniteViewport" ItemsSource="{Binding SelectedMediaDuplicateGroup.Items}" MaxHeight="330" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="重复组媒体列表">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0,0,0,8"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource GscGlassStrongBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}" FontWeight="SemiBold"/>
+                                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                                            <TextBlock Text="{Binding CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" ToolTip="{Binding CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CapturedFullDisplay, Mode=OneWay}"/>
+                                                            <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
+                                                            <TextBlock Text="{Binding SizeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding ArchivePath, Converter={StaticResource GscPathDisplayConverter}}" Style="{StaticResource MediaPathText}" Foreground="{DynamicResource GscMutedTextBrush}" ToolTip="{Binding ArchivePath}" Margin="0,3,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <TextBlock Text="只显示有限数量的组内项目；原始媒体保持不变。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <ui:Button Content="重新识别" Command="{Binding ReloadMediaDuplicateGroupsCommand}" Style="{DynamicResource GscWpfUiSecondaryButton}" HorizontalAlignment="Left" Margin="0,10,0,0" ToolTip="重新读取当前游戏的已归档媒体并计算重复依据" AutomationProperties.Name="重新识别当前游戏媒体重复组"/>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="来源规则">
                 <Grid x:Name="MediaSourceLayout" Margin="0,12,0,0">
@@ -678,7 +890,32 @@
                             <StackPanel Margin="0,8,0,0">
                                 <TextBlock Text="添加截图或录像来源" Style="{DynamicResource GscRedesignSectionTitle}"/>
                                 <TextBlock Text="共享目录中无法唯一判断所属游戏的文件会进入待归类收件箱。粘贴目录或文件模式时会去除外层空白/引号；包含多个非空行的粘贴会被阻止，Ctrl+Z 可恢复粘贴前的字段值。" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap" AutomationProperties.Name="媒体来源粘贴标准化说明"/>
-                                <UniformGrid x:Name="MediaSourceFields" Columns="2" Margin="0,0,0,4"><StackPanel Margin="0,0,12,10"><TextBlock Text="截图或录像目录" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaSourcePath, UpdateSourceTrigger=PropertyChanged}" ToolTip="公共截图、录像或游戏媒体目录" AutomationProperties.Name="截图或录像目录" infra:PasteNormalization.Kind="Path"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="文件模式" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaPattern, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 *.png 或 *" AutomationProperties.Name="媒体文件模式" infra:PasteNormalization.Kind="ExcludePattern"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="目录类型" Margin="0,0,0,4"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="共享目录" OnContent="开" OffContent="关" IsChecked="{Binding CustomMediaShared}"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="操作" Margin="0,0,0,4"/><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AddMediaSourceCommand}" Content="添加来源" HorizontalAlignment="Left"/></StackPanel></UniformGrid>
+                                <UniformGrid x:Name="MediaSourceFields" Columns="2" Margin="0,0,0,4"><StackPanel Margin="0,0,12,10"><TextBlock Text="截图或录像目录" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaSourcePath, UpdateSourceTrigger=PropertyChanged}" ToolTip="公共截图、录像或游戏媒体目录" AutomationProperties.Name="截图或录像目录" infra:PasteNormalization.Kind="Path"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="文件模式" Margin="0,0,0,4"/><TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding CustomMediaPattern, UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 *.png 或 *" AutomationProperties.Name="媒体文件模式" infra:PasteNormalization.Kind="ExcludePattern"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="目录类型" Margin="0,0,0,4"/><ui:ToggleSwitch Style="{DynamicResource GscWpfUiToggleSwitch}" Content="共享目录" OnContent="开" OffContent="关" IsChecked="{Binding CustomMediaShared}"/></StackPanel><StackPanel Margin="0,0,12,10"><TextBlock Text="操作" Margin="0,0,0,4"/><WrapPanel><ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding PreviewMediaSourceCommand}" Content="试运行" ToolTip="只读扫描样本，不保存规则、不移动媒体" AutomationProperties.Name="试运行媒体来源规则" Margin="0,0,8,0"/><ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding AddMediaSourceCommand}" Content="添加来源" HorizontalAlignment="Left"/></WrapPanel></StackPanel></UniformGrid>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,4,12,0">
+                                    <StackPanel>
+                                        <TextBlock Text="来源规则试运行（只读）" FontWeight="SemiBold"/>
+                                        <TextBlock Text="先看样本命中与排除原因，再决定是否保存规则。试运行不会写入来源规则、移动文件或创建媒体记录。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,6"/>
+                                        <TextBlock Text="{Binding MediaSourcePreviewSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" AutomationProperties.Name="媒体来源试运行摘要"/>
+                                        <ListBox x:Name="MediaSourcePreviewItems" Tag="FiniteViewport" ItemsSource="{Binding MediaSourcePreview.Items}" MaxHeight="240" Margin="0,8,0,0" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="媒体来源试运行样本">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem"><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,6"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/></Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                                        <Border Background="{DynamicResource GscAccentTintStrongBrush}" CornerRadius="7" Padding="7,3" VerticalAlignment="Top"><TextBlock Text="{Binding DecisionDisplay}" FontWeight="SemiBold"/></Border>
+                                                        <StackPanel Grid.Column="1" Margin="9,0,0,0">
+                                                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding FileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileName}"/><TextBlock Grid.Column="1" Text="{Binding SizeDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="8,0,0,0"/></Grid>
+                                                            <TextBlock Text="{Binding Reason}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                            <TextBlock Text="{Binding Path}" Style="{StaticResource MediaPathText}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
                     </ScrollViewer>

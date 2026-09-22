@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net462" PrivateAssets="all" />

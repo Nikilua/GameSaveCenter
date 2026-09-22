@@ -16,6 +16,7 @@ namespace GameSaveCenter.Contracts
         public const string GameSessionStarted = "session.started";
         public const string GameSessionStopped = "session.stopped";
         public const string BackupGame = "backup.game";
+        public const string PreviewBackup = "backup.preview";
         public const string BackupAll = "backup.all";
         public const string ListBackups = "backup.list";
         public const string CompareBackups = "backup.compare";
@@ -31,12 +32,14 @@ namespace GameSaveCenter.Contracts
         public const string SavePolicyTemplate = "policy.template.save";
         public const string DeletePolicyTemplate = "policy.template.delete";
         public const string ApplyPolicyTemplate = "policy.template.apply";
+        public const string ApplyPolicyTemplateBatch = "policy.template.batch.apply";
         public const string RestorePreview = "restore.preview";
         public const string RestoreExecute = "restore.execute";
         public const string UndoRestore = "restore.undo";
         public const string SyncMedia = "media.sync";
         public const string ListMedia = "media.list";
         public const string ListMediaPage = "media.page";
+        public const string ListMediaDuplicateGroups = "media.duplicates.list";
         public const string GetMediaSummary = "media.summary";
         public const string UpdateMediaMetadata = "media.metadata.update";
         public const string UpdateMediaMetadataBatch = "media.metadata.batch.update";
@@ -57,6 +60,7 @@ namespace GameSaveCenter.Contracts
         public const string UpdateMediaSource = "media.source.update";
         public const string DeleteMediaSource = "media.source.delete";
         public const string ListMediaSources = "media.source.list";
+        public const string PreviewMediaSource = "media.source.preview";
         public const string DetectSavePaths = "detection.savePaths";
         public const string ListSaveCandidates = "detection.candidates.list";
         public const string AcceptSavePath = "detection.accept";
@@ -92,6 +96,7 @@ namespace GameSaveCenter.Contracts
         public const string PathRemap = "path.remap";
         public const string PreviewPathRemap = "path.remap.preview";
         public const string ReconcileTasks = "tasks.reconcile";
+        public const string PreviewDiagnosticsPackage = "diagnostics.package.preview";
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string StorageAnalysis = "storage.analysis";
         public const string PreviewRetentionSimulation = "retention.simulation.preview";

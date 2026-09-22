@@ -14,18 +14,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     public sealed class UiNotificationEventArgs : EventArgs
     {
-        public UiNotificationEventArgs(string title, string message, UiNotificationKind kind, string? detailMessage = null)
+        public UiNotificationEventArgs(string title, string message, UiNotificationKind kind, string? detailMessage = null, bool isCopyFeedback = false)
         {
             Title = title ?? string.Empty;
             Message = message ?? string.Empty;
             Kind = kind;
             DetailMessage = string.IsNullOrWhiteSpace(detailMessage) ? Message : detailMessage ?? string.Empty;
+            IsCopyFeedback = isCopyFeedback;
         }
 
         public string Title { get; }
         public string Message { get; }
         public string DetailMessage { get; }
         public UiNotificationKind Kind { get; }
+        public bool IsCopyFeedback { get; }
         public bool Handled { get; set; }
     }
 

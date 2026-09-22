@@ -211,14 +211,15 @@ reason=excluded.reason,updated_utc=excluded.updated_utc;",
         var severity = readiness.Status is RestoreReadinessStatus.Corrupted or RestoreReadinessStatus.Failed
             ? (int)FindingSeverity.Error
             : (int)FindingSeverity.Warning;
-        return ExecuteAsync(@"INSERT INTO findings(finding_id,playnite_id,severity,code,title,detail,suggested_action,created_utc,resolved)
-VALUES($id,$game,$severity,'HEALTH_INSPECTION_FAILED',$title,$detail,$action,$utc,0)
-ON CONFLICT(finding_id) DO UPDATE SET severity=excluded.severity,title=excluded.title,detail=excluded.detail,
+        return ExecuteAsync(@"INSERT INTO findings(finding_id,playnite_id,backup_id,severity,code,title,detail,suggested_action,created_utc,resolved)
+VALUES($id,$game,$backup,$severity,'HEALTH_INSPECTION_FAILED',$title,$detail,$action,$utc,0)
+ON CONFLICT(finding_id) DO UPDATE SET backup_id=excluded.backup_id,severity=excluded.severity,title=excluded.title,detail=excluded.detail,
 suggested_action=excluded.suggested_action,created_utc=excluded.created_utc,resolved=0;",
             new Dictionary<string, object?>
             {
                 ["$id"] = findingId,
                 ["$game"] = playniteId,
+                ["$backup"] = backupId,
                 ["$severity"] = severity,
                 ["$title"] = $"备份恢复校验需关注：{backupId}",
                 ["$detail"] = readiness.Summary,

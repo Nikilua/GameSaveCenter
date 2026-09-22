@@ -47,6 +47,8 @@ public sealed class FakeDashboardData
     public ICommand OpenActivityCommand { get; } = new NoopCommand();
     public ICommand OpenMediaWorkspaceCommand { get; } = new NoopCommand();
     public ICommand OpenSelectedFindingNavigationCommand { get; } = new NoopCommand();
+    public ICommand OpenStorageGameCommand { get; } = new NoopCommand();
+    public ICommand OpenStorageBackupCommand { get; } = new NoopCommand();
     public ICommand RefreshCommand { get; } = new NoopCommand();
     public ICommand RefreshCloudTransfersCommand { get; } = new NoopCommand();
     public ICommand LoadMoreCloudTransfersCommand { get; } = new NoopCommand();
@@ -344,7 +346,7 @@ public sealed class FakeDashboardData
             ExpiresUtc = classificationNow.AddMinutes(6),
             Items = new System.Collections.Generic.List<MediaClassificationSuggestionDto>
             {
-                new MediaClassificationSuggestionDto { MediaId = "IN-1", FileName = "shared-1.png", SuggestedGameName = "Baldur's Gate 3", SuggestedPlayniteId = "game-1", Confidence = "High", Reason = "媒体来源规则" },
+                new MediaClassificationSuggestionDto { MediaId = "IN-1", FileName = "shared-1.png", SuggestedGameName = "Baldur's Gate 3", SuggestedPlayniteId = "game-1", Confidence = "High", Reason = "媒体来源规则", Evidence = new System.Collections.Generic.List<MediaClassificationEvidenceDto> { new MediaClassificationEvidenceDto { Kind = "SourceRule", CandidateGameName = "Baldur's Gate 3", Detail = "目录 D:\\Captures\\BG3，模式 *.png" }, new MediaClassificationEvidenceDto { Kind = "GameSession", CandidateGameName = "Baldur's Gate 3", Detail = "2026-09-19 09:10–09:54" } } },
                 new MediaClassificationSuggestionDto { MediaId = "IN-2", FileName = "shared-2.png", Confidence = "Low", Reason = "多个候选游戏，保持未归类" }
             },
             HighConfidenceCount = 1,
@@ -915,6 +917,12 @@ public sealed class FakeDashboardData
         WorkspaceFixtureState.Offline => "离线 · 无法读取",
         _ => "待归类 · 来源文件始终保留"
     };
+    public string MediaInboxCountCaptionFull => fixtureState switch
+    {
+        WorkspaceFixtureState.Stale => "缓存 · 上次成功 2026-09-22 09:18:00 (UTC+08:00)",
+        WorkspaceFixtureState.Offline => "离线 · 无法读取",
+        _ => MediaInboxCountCaption
+    };
     public string MaintenanceState => FixtureStateText;
     public string MaintenancePresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
     public string MaintenanceStateTitle => FixtureStateTitle("维护信息");
@@ -966,11 +974,27 @@ public sealed class FakeDashboardData
     {
         new CloudTransferFilterOption(string.Empty, "全部类型"), new CloudTransferFilterOption("Backup", "备份"), new CloudTransferFilterOption("Media", "媒体")
     };
+    public ObservableCollection<CloudTransferFilterOption> CloudTransferTimeFilterOptions { get; } = new ObservableCollection<CloudTransferFilterOption>
+    {
+        new CloudTransferFilterOption(string.Empty, "全部时间"), new CloudTransferFilterOption("24h", "最近 24 小时"), new CloudTransferFilterOption("7d", "最近 7 天"), new CloudTransferFilterOption("30d", "最近 30 天")
+    };
     public string CloudTransferStateFilter { get; set; } = string.Empty;
     public string CloudTransferKindFilter { get; set; } = string.Empty;
+    public string CloudTransferGameFilter { get; set; } = string.Empty;
+    public string CloudTransferSourceDeviceFilter { get; set; } = string.Empty;
+    public string CloudTransferTimeFilter { get; set; } = string.Empty;
     public string CloudTransferAvailabilityHint => ActionAvailabilityHints.CloudTransfer(Snapshot.WorkerHealthy, EffectiveSettings.EnableCloudUpload, Snapshot.RcloneAvailable, SelectedCloudTransfer, IsBusy);
     public bool CloudTransferNeedsMaintenance => ActionAvailabilityHints.CloudTransferNeedsMaintenance(Snapshot.WorkerHealthy, EffectiveSettings.EnableCloudUpload, Snapshot.RcloneAvailable, SelectedCloudTransfer, IsBusy);
     public bool CloudTransferHasMore => CloudTransferViewSummary.HasMore;
+    public int CloudTransferGlobalCount => Math.Max(CloudTransferViewSummary.GlobalTotalCount, CloudTransferViewSummary.TotalCount);
+    public bool CloudTransferHasActiveFilters => !string.IsNullOrWhiteSpace(CloudTransferStateFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferKindFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferGameFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferSourceDeviceFilter)
+        || !string.IsNullOrWhiteSpace(CloudTransferTimeFilter);
+    public string CloudTransferScopeSummary => CloudTransferHasActiveFilters
+        ? $"当前筛选 {CloudTransferViewSummary.TotalCount}/{CloudTransferGlobalCount} 项"
+        : $"全局 {CloudTransferGlobalCount} 项";
     public string CloudTransferLoadedSummary => $"已加载全部 {CloudTransferItems.Count} 项";
     public int MediaTabIndex { get; set; }
     public int MaintenanceTabIndex { get; set; }

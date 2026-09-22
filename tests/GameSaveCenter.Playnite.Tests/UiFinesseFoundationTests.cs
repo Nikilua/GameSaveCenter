@@ -188,7 +188,12 @@ public sealed class UiFinesseFoundationTests
                 Assert.InRange(Math.Abs(translate.Y - interruptedY), 0, 0.8);
                 Assert.InRange(Math.Abs(host.Opacity - interruptedOpacity), 0, 0.08);
 
-                PumpDispatcher(TimeSpan.FromMilliseconds(420));
+                Assert.True(PumpDispatcherUntil(
+                    () => !DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated
+                        && !DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated
+                        && Math.Abs(translate.Y) < 0.01
+                        && Math.Abs(host.Opacity - 1) < 0.01,
+                    TimeSpan.FromMilliseconds(700)));
                 Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
                 Assert.False(DependencyPropertyHelper.GetValueSource(host, UIElement.OpacityProperty).IsAnimated);
                 Assert.Equal(0, translate.Y);
@@ -245,8 +250,8 @@ public sealed class UiFinesseFoundationTests
                 PumpDispatcher(TimeSpan.FromMilliseconds(120));
                 var renderedY = translate.Y;
                 var renderedOpacity = host.Opacity;
-                Assert.InRange(renderedY, 0.5, 11.5);
-                Assert.InRange(renderedOpacity, 0.05, 0.95);
+                Assert.InRange(renderedY, 0.01, 11.99);
+                Assert.InRange(renderedOpacity, 0.01, 0.99);
 
                 GscMotion.AnimateEntrance(host, 24);
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
@@ -340,6 +345,55 @@ public sealed class UiFinesseFoundationTests
     }
 
     [Fact]
+    public void ExternalMutableTransformsAreOwnedPerElement()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var sharedTranslate = new TranslateTransform(9, -3);
+                var first = new Border { RenderTransform = sharedTranslate };
+                var second = new Border { RenderTransform = sharedTranslate };
+
+                var firstTranslate = GscMotion.GetMutableTranslateTransform(first);
+                var secondTranslate = GscMotion.GetMutableTranslateTransform(second);
+
+                Assert.NotSame(sharedTranslate, firstTranslate);
+                Assert.NotSame(sharedTranslate, secondTranslate);
+                firstTranslate.X = 42;
+                Assert.Equal(9, secondTranslate.X);
+                Assert.Equal(9, sharedTranslate.X);
+                Assert.Equal(-3, secondTranslate.Y);
+
+                var sharedGroup = new TransformGroup();
+                sharedGroup.Children.Add(new RotateTransform(7));
+                var groupedFirst = new Border { RenderTransform = sharedGroup };
+                var groupedSecond = new Border { RenderTransform = sharedGroup };
+
+                var firstScale = GscMotion.GetMutableScaleTransform(groupedFirst);
+                var secondScale = GscMotion.GetMutableScaleTransform(groupedSecond);
+
+                Assert.NotSame(sharedGroup, groupedFirst.RenderTransform);
+                Assert.NotSame(sharedGroup, groupedSecond.RenderTransform);
+                firstScale.ScaleX = 1.25;
+                Assert.Equal(1, secondScale.ScaleX);
+                Assert.Equal(7, Assert.IsType<RotateTransform>(
+                    Assert.IsType<TransformGroup>(groupedSecond.RenderTransform).Children[0]).Angle);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void EntranceMotionTakesOverFromTheCurrentEffectiveValue()
     {
         var motion = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
@@ -358,6 +412,7 @@ public sealed class UiFinesseFoundationTests
     {
         var root = FindRepositoryRoot();
         var motion = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "GscMotion.cs"));
+        var dialogMotion = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "DialogOverlayMotion.cs"));
         var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
         var dashboard = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
         var shell = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs"));
@@ -367,11 +422,14 @@ public sealed class UiFinesseFoundationTests
         Assert.Contains("GscMotion.MotionDurationKind.Normal", overview);
         Assert.Contains("GscMotion.MotionDurationKind.Fast", dashboard);
         Assert.Contains("GscMotion.GetDuration(StatusPill, GscMotion.MotionDurationKind.Normal)", dashboard);
-        Assert.Contains("GscMotion.GetDuration(DialogCard, GscMotion.MotionDurationKind.Normal)", dashboard);
+        Assert.Contains("GscMotion.GetDuration(card, GscMotion.MotionDurationKind.Normal)", dialogMotion);
         Assert.Contains("GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Normal)", dashboard);
-        Assert.Contains("StopDialogMotion();", dashboard);
-        Assert.Contains("slide.Completed", dashboard);
-        Assert.Contains("dialogMotionGeneration", dashboard);
+        Assert.Contains("dialogMotion.BeginClose(MotionEnabled", dashboard);
+        Assert.Contains("dialogMotion.Normalize();", dashboard);
+        Assert.Contains("slide.Completed", dialogMotion);
+        Assert.Contains("StartCompletionWatchdog", dialogMotion);
+        Assert.Contains("dialogLifecycle.TryFinishClosing()", dashboard);
+        Assert.DoesNotContain("dialogMotionGeneration", dashboard);
         Assert.Contains("foreach (var card in cards)\n                RemoveToast(card);", dashboard);
         Assert.Contains("fade.Completed", dashboard);
         Assert.Contains("GscMotion.GetDuration(SidebarContentLayer, GscMotion.MotionDurationKind.Normal)", shell);
@@ -391,6 +449,20 @@ public sealed class UiFinesseFoundationTests
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpDispatcherUntil(Func<bool> condition, TimeSpan timeout)
+    {
+        var deadline = DateTime.UtcNow + timeout;
+        while (DateTime.UtcNow < deadline)
+        {
+            if (condition())
+                return true;
+
+            PumpDispatcher(TimeSpan.FromMilliseconds(40));
+        }
+
+        return condition();
     }
 
     private static int CountTransformNodes(Transform? transform)

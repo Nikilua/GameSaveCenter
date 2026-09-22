@@ -37,6 +37,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(3, picker.FilteredCount);
             picker.StatusFilter = "有备份";
             Assert.Equal(2, picker.FilteredCount);
+            picker.StatusFilter = "可备份";
+            Assert.Equal(1, picker.FilteredCount);
             picker.StatusFilter = "需处理";
             Assert.Equal(1, picker.FilteredCount);
             picker.StatusFilter = "未匹配";
@@ -246,6 +248,19 @@ namespace GameSaveCenter.Playnite.Tests
 
             var cjk = new GamePickerItem(Game("黑神话悟空"));
             Assert.Equal("黑神", cjk.Initials);
+        }
+
+        [Fact]
+        public void PickerItemsExposeStableIdentityAndOptionalPlayniteIcon()
+        {
+            var game = Game("same-name-id-b");
+            game.Name = "同名游戏";
+            game.IconPath = "C:\\isolated\\playnite-icon.png";
+            var item = new GamePickerItem(game);
+
+            Assert.Equal(game.IconPath, item.IconPath);
+            Assert.Contains("same-name-id-b", item.IdentityDisplay);
+            Assert.Contains("Playnite ID", item.IdentityDisplay);
         }
 
         [Fact]

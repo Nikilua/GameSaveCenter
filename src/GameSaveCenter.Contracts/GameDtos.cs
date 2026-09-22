@@ -11,6 +11,8 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        /// <summary>Resolved local Playnite icon path used only for read-only UI identification.</summary>
+        public string IconPath { get; set; } = string.Empty;
         public GamePlatformKind Platform { get; set; }
         public string PlatformGameId { get; set; } = string.Empty;
         public string PluginId { get; set; } = string.Empty;
@@ -99,6 +101,8 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        /// <summary>Resolved local Playnite icon path; an empty value means the placeholder is used.</summary>
+        public string IconPath { get; set; } = string.Empty;
         public GamePlatformKind Platform { get; set; }
         /// <summary>Whether the game is currently installed in Playnite.</summary>
         public bool IsInstalled { get; set; }
@@ -133,6 +137,7 @@ namespace GameSaveCenter.Contracts
             GamePlatformKind.Other => "其他",
             _ => "未知"
         };
+        public string IdentityDisplay => string.IsNullOrWhiteSpace(PlayniteId) ? "对象标识未知" : $"Playnite ID · {PlayniteId}";
         public string InstallStateDisplay => IsInstalled ? "已安装" : "未安装";
         public string InstallStateSourceDisplay => InstallStateSource switch
         {
@@ -159,6 +164,13 @@ namespace GameSaveCenter.Contracts
         public string HealthReasonDisplay => HealthReasons != null && HealthReasons.Count > 0
             ? string.Join("；", HealthReasons)
             : HealthSummary;
+        public string LastBackupRelativeDisplay => LastBackupUtc.HasValue
+            ? TimeDisplayFormatter.Relative(LastBackupUtc.Value, DateTime.UtcNow)
+            : "时间未知";
+        public string LastBackupFullDisplay => LastBackupUtc.HasValue
+            ? TimeDisplayFormatter.Full(LastBackupUtc.Value)
+            : "时间未知";
+        public string LastBackupRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastBackupUtc ?? DateTime.MinValue);
         public string CloudStateDisplay => CloudState switch
         {
             "Uploaded" => "已上传",

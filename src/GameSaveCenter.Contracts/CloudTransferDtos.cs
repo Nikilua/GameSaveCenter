@@ -60,6 +60,12 @@ public sealed class CloudTransferStatusRequestDto
     public int PageSize { get; set; } = 100;
     public string State { get; set; } = string.Empty;
     public CloudTransferKind? Kind { get; set; }
+    /// <summary>Case-insensitive game-name or Playnite-id fragment.</summary>
+    public string GameName { get; set; } = string.Empty;
+    /// <summary>Exact current source-device key/name; empty means all devices.</summary>
+    public string SourceDevice { get; set; } = string.Empty;
+    public DateTime? UpdatedAfterUtc { get; set; }
+    public DateTime? UpdatedBeforeUtc { get; set; }
     /// <summary>Opaque Worker-owned revision returned by the preceding page.</summary>
     public string ConsistencyToken { get; set; } = string.Empty;
 }
@@ -79,8 +85,69 @@ public sealed class CloudTransferStatusDto
     public string LastErrorCode { get; set; } = string.Empty;
     public string LastError { get; set; } = string.Empty;
     public DateTime UpdatedUtc { get; set; }
+    /// <summary>Display-only full remote object path; credentials are already redacted.</summary>
+    public string RemoteObject { get; set; } = string.Empty;
+    /// <summary>Stable device key or display name used by the remote object layout.</summary>
+    public string SourceDevice { get; set; } = string.Empty;
+    /// <summary>
+    /// The current durable row can prove this timestamp only while it is RemoteVerified.
+    /// Historical verification timestamps are unknown because the queue does not retain them.
+    /// </summary>
+    public DateTime? LastSuccessfulVerificationUtc { get; set; }
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
+    public string RemoteObjectDisplay => string.IsNullOrWhiteSpace(RemoteObject)
+        ? "未知"
+        : CloudRemoteDisplay.Redact(RemoteObject);
+    public string SourceDeviceDisplay => string.IsNullOrWhiteSpace(SourceDevice) ? "未知设备" : SourceDevice;
+    public string LastAttemptDisplay => LastAttemptUtc.HasValue
+        ? LastAttemptUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+        : "未知";
+    public string LastAttemptRelativeDisplay => LastAttemptUtc.HasValue
+        ? TimeDisplayFormatter.Relative(LastAttemptUtc.Value, DateTime.UtcNow)
+        : "未知";
+    public string LastAttemptFullDisplay => LastAttemptUtc.HasValue
+        ? TimeDisplayFormatter.Full(LastAttemptUtc.Value)
+        : "未知";
+    public string LastAttemptRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastAttemptUtc ?? DateTime.MinValue);
+    public string LastSuccessfulVerificationDisplay => LastSuccessfulVerificationUtc.HasValue
+        ? LastSuccessfulVerificationUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+        : "未知";
+    public string LastSuccessfulVerificationRelativeDisplay => LastSuccessfulVerificationUtc.HasValue
+        ? TimeDisplayFormatter.Relative(LastSuccessfulVerificationUtc.Value, DateTime.UtcNow)
+        : "未知";
+    public string LastSuccessfulVerificationFullDisplay => LastSuccessfulVerificationUtc.HasValue
+        ? TimeDisplayFormatter.Full(LastSuccessfulVerificationUtc.Value)
+        : "未知";
+    public string LastSuccessfulVerificationRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastSuccessfulVerificationUtc ?? DateTime.MinValue);
+    public string RetryTimingRelativeDisplay
+    {
+        get
+        {
+            if (!NextAttemptUtc.HasValue) return "无自动重试";
+            var remaining = NextAttemptUtc.Value - DateTime.UtcNow;
+            return remaining <= TimeSpan.Zero
+                ? "可立即重试"
+                : $"约 {FormatRemaining(remaining)} 后";
+        }
+    }
+    public string RetryTimingFullDisplay => !NextAttemptUtc.HasValue
+        ? "无自动重试"
+        : $"{TimeDisplayFormatter.Full(NextAttemptUtc.Value)} · {RetryTimingRelativeDisplay}";
+    public string RetryTimingRawUtcDisplay => TimeDisplayFormatter.RawUtc(NextAttemptUtc ?? DateTime.MinValue);
+    public string RetryTimingDisplay
+    {
+        get
+        {
+            if (!NextAttemptUtc.HasValue) return "无自动重试";
+            var remaining = NextAttemptUtc.Value - DateTime.UtcNow;
+            var relative = remaining <= TimeSpan.Zero
+                ? "可立即重试"
+                : $"约 {FormatRemaining(remaining)} 后";
+            var nextAttemptLocal = NextAttemptUtc.Value.ToLocalTime();
+            return $"{nextAttemptLocal:yyyy-MM-dd HH:mm} · {relative}";
+        }
+    }
     public string KindDisplay => Kind == CloudTransferKind.Backup ? "备份" : "媒体";
     public string StateDisplay => State switch
     {
@@ -97,6 +164,60 @@ public sealed class CloudTransferStatusDto
         "Paused" => "已暂停",
         _ => string.IsNullOrWhiteSpace(State) ? "未启用" : "未知状态"
     };
+
+    /// <summary>Readable queue phase; network backoff stays distinct from a generic retry.</summary>
+    public string QueuePhaseDisplay => State switch
+    {
+        "Pending" => "等待队列",
+        "RetryScheduled" when IsNetworkWait => "等待网络",
+        "RetryScheduled" => "等待重试",
+        "Transferring" => "上传中",
+        "Verifying" => "验证中",
+        "RemoteVerified" => "已验证",
+        "Uploaded" => "等待验证",
+        "Paused" => "等待策略时段",
+        _ => StateDisplay
+    };
+
+    /// <summary>Whether the selected row is an eligible target for a user retry.</summary>
+    public bool CanManuallyRetry => string.Equals(State, "Failed", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Explains the selected-row scope. A retry copies the already preserved local source;
+    /// it does not recreate a local backup or reprocess a successful transfer.
+    /// </summary>
+    public string ManualRetryScopeDisplay => CanManuallyRetry
+        ? "手动范围：仅当前选中项；只重试云端上传，不重新执行本地备份。"
+        : "当前状态不可手动重试；传输中或已完成项不会重复提交。";
+
+    /// <summary>
+    /// Explains the bounded offline recovery path without claiming that every queued item
+    /// will start at once when connectivity returns.
+    /// </summary>
+    public string NetworkRecoveryDisplay => State switch
+    {
+        "RetryScheduled" when IsNetworkFailure => $"等待网络恢复；按退避时间重试（已用 {Math.Max(0, AttemptCount)}/6 次自动重试，本轮最多 10 项）",
+        "Transferring" when IsNetworkFailure => "网络已恢复；按批次上传中",
+        _ => string.Empty
+    };
+
+    public bool HasRecognizedFailure => CloudFailureExplanation.Resolve(LastErrorCode).IsRecognized;
+    public string FailureCategoryDisplay => CloudFailureExplanation.Resolve(LastErrorCode).CategoryDisplay;
+    public string FailureNextStepDisplay => CloudFailureExplanation.Resolve(LastErrorCode).NextStepDisplay;
+
+    private bool IsNetworkFailure => string.Equals(LastErrorCode, "RCLONE_NETWORK_FAILED", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(LastErrorCode, "RCLONE_TRANSFER_INCOMPLETE", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(LastErrorCode, "RCLONE_RATE_LIMITED", StringComparison.OrdinalIgnoreCase);
+
+    private bool IsNetworkWait => string.Equals(State, "RetryScheduled", StringComparison.OrdinalIgnoreCase) && IsNetworkFailure;
+
+    private static string FormatRemaining(TimeSpan remaining)
+    {
+        if (remaining.TotalDays >= 1) return $"{(int)remaining.TotalDays} 天";
+        if (remaining.TotalHours >= 1) return $"{(int)remaining.TotalHours} 小时";
+        return $"{Math.Max(1, (int)Math.Ceiling(remaining.TotalMinutes))} 分钟";
+    }
 
     /// <summary>Explains what has actually been established about the remote copy.</summary>
     public string GuaranteeLevelDisplay => State switch
@@ -123,6 +244,8 @@ public sealed class CloudTransferStatusDto
 public sealed class CloudTransferSummaryDto
 {
     public int TotalCount { get; set; }
+    /// <summary>Total queue rows before the current state/kind/game/device/time filters.</summary>
+    public int GlobalTotalCount { get; set; }
     public int PendingCount { get; set; }
     public int TransferringCount { get; set; }
     public int VerifyingCount { get; set; }
@@ -144,10 +267,28 @@ public sealed class CloudTransferSummaryDto
     public string PageResetReason { get; set; } = string.Empty;
     public string StateFilter { get; set; } = string.Empty;
     public CloudTransferKind? KindFilter { get; set; }
+    public string GameNameFilter { get; set; } = string.Empty;
+    public string SourceDeviceFilter { get; set; } = string.Empty;
+    public DateTime? UpdatedAfterUtc { get; set; }
+    public DateTime? UpdatedBeforeUtc { get; set; }
     public DateTime? NextAttemptUtc { get; set; }
     public List<CloudTransferStatusDto> Items { get; set; } = new List<CloudTransferStatusDto>();
 
     public DateTime? NextAttemptLocal => NextAttemptUtc?.ToLocalTime();
+    public string NextAttemptRelativeDisplay
+    {
+        get
+        {
+            if (!NextAttemptUtc.HasValue) return "按队列状态";
+            return NextAttemptUtc.Value <= DateTime.UtcNow
+                ? "可立即重试"
+                : TimeDisplayFormatter.Relative(NextAttemptUtc.Value, DateTime.UtcNow);
+        }
+    }
+    public string NextAttemptFullDisplay => NextAttemptUtc.HasValue
+        ? TimeDisplayFormatter.Full(NextAttemptUtc.Value)
+        : "按队列状态";
+    public string NextAttemptRawUtcDisplay => TimeDisplayFormatter.RawUtc(NextAttemptUtc ?? DateTime.MinValue);
     public int AttentionCount => RetryScheduledCount + AuthenticationRequiredCount + CheckFailedCount + FailedCount;
     public int QueueCount => PendingCount + TransferringCount + VerifyingCount + RetryScheduledCount + AuthenticationRequiredCount
         + CheckFailedCount + FailedCount + PausedCount;
@@ -188,7 +329,9 @@ public sealed class CloudTransferSummaryDto
         ? "自动队列已暂停"
         : OutsideAllowedWindow
             ? "当前不在允许时段"
-            : "自动队列运行中";
+            : TotalCount <= 0
+                ? "队列空闲"
+                : "自动队列运行中";
 
     /// <summary>
     /// Keeps a successful upload distinct from a remote verification. A remote

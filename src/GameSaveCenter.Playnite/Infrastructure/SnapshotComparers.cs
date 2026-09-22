@@ -15,6 +15,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public static readonly Func<GameStatusDto, GameStatusDto, bool> Game = (a, b) =>
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
             && string.Equals(a.Name, b.Name, StringComparison.Ordinal)
+            && string.Equals(a.IconPath, b.IconPath, StringComparison.Ordinal)
             && a.Platform == b.Platform
             && a.IsInstalled == b.IsInstalled
             && a.LastPlayedUtc == b.LastPlayedUtc
@@ -43,7 +44,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
             && a.State == b.State
             && a.ProgressPercent == b.ProgressPercent
+            && a.ProgressCompletedUnits == b.ProgressCompletedUnits
+            && a.ProgressTotalUnits == b.ProgressTotalUnits
+            && string.Equals(a.ProgressUnit, b.ProgressUnit, StringComparison.Ordinal)
+            && a.ProgressRatePerSecond == b.ProgressRatePerSecond
+            && a.ProgressEtaSeconds == b.ProgressEtaSeconds
+            && a.ProgressUpdatedUtc == b.ProgressUpdatedUtc
             && string.Equals(a.Message, b.Message, StringComparison.Ordinal)
+            && string.Equals(a.StageMessage, b.StageMessage, StringComparison.Ordinal)
+            && string.Equals(a.CancellationState, b.CancellationState, StringComparison.Ordinal)
             && a.CreatedUtc == b.CreatedUtc
             && a.StartedUtc == b.StartedUtc
             && a.FinishedUtc == b.FinishedUtc
@@ -61,8 +70,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public static readonly Func<ValidationFindingDto, ValidationFindingDto, bool> Finding = (a, b) =>
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
+            && string.Equals(a.BackupId, b.BackupId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
             && a.Severity == b.Severity
+            && a.CreatedUtc == b.CreatedUtc
             && string.Equals(a.Code, b.Code, StringComparison.Ordinal)
             && string.Equals(a.Title, b.Title, StringComparison.Ordinal)
             && string.Equals(a.Detail, b.Detail, StringComparison.Ordinal)

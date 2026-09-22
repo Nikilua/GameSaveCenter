@@ -3,7 +3,8 @@ param(
     [ValidateSet('Debug', 'Release')][string]$Configuration = 'Release',
     [string]$Output = '',
     [string]$UserDataDir = '',
-    [string]$PlayniteExecutable = ''
+    [string]$PlayniteExecutable = '',
+    [string]$TestTempRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -87,6 +88,10 @@ if ($displayTopology.Count -lt 2) {
     Write-Warning "Q24-03 physical cross-screen replay is blocked: only $($displayTopology.Count) display detected."
 }
 $installArguments = @{ Configuration = $Configuration }
+if (-not [string]::IsNullOrWhiteSpace($TestTempRoot)) {
+    $installArguments.TestTempRoot = [System.IO.Path]::GetFullPath($TestTempRoot)
+    $runnerMetadata.TestTempRoot = $installArguments.TestTempRoot
+}
 if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     $UserDataDir = [System.IO.Path]::GetFullPath($UserDataDir)
     if (-not (Test-Path -LiteralPath $UserDataDir -PathType Container)) {

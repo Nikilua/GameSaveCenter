@@ -32,7 +32,7 @@ internal static class ActionAvailabilityHints
         if (isBusy)
             return "正在执行其他操作；当前媒体动作会在本次操作完成后重新评估。";
         if (!workerHealthy)
-            return "媒体收件箱动作暂不可用：Worker 当前离线。请到维护中心检查并重试；来源文件不会被删除。";
+            return "媒体收件箱动作暂不可用：后台服务当前离线。请到维护中心检查并重试；来源文件不会被删除。";
         if (string.Equals(mode, "已忽略", StringComparison.Ordinal))
         {
             return hasSelectedMedia
@@ -60,11 +60,11 @@ internal static class ActionAvailabilityHints
         if (isBusy)
             return "正在执行其他操作；当前云端动作会在本次操作完成后重新评估。";
         if (!workerHealthy)
-            return "云端队列动作暂不可用：Worker 当前离线。请到维护中心检查并重试；本地副本不会被当作远端已校验。";
+            return "云端队列动作暂不可用：后台服务当前离线。请到维护中心检查并重试；本地副本不会被当作远端已校验。";
         if (!cloudUploadEnabled)
             return "云端上传未启用；请到维护中心检查设置。当前不会把本地副本当作已上传或已校验。";
         if (!rcloneAvailable)
-            return "云端上传暂不可用：Rclone 不可用或远端未配置。请到维护中心运行环境检查；上传/校验动作保持受限。";
+            return "云端上传暂不可用：云端工具或远端配置尚未就绪。请到维护中心运行环境检查；上传/校验动作保持受限。";
         if (selected == null)
             return "请先在云端队列选中一条记录；详情中的远端校验和上传重试会按记录状态启用。";
 

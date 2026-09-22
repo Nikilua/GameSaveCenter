@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace GameSaveCenter.Contracts;
 
@@ -12,9 +14,42 @@ public sealed class MediaClassificationPreviewRequestDto
     public int Limit { get; set; } = 200;
 }
 
-/// <summary>One explainable game suggestion. Low-confidence items have no target.</summary>
-public sealed class MediaClassificationSuggestionDto
+/// <summary>One concrete local signal used to explain a classification suggestion.</summary>
+public sealed class MediaClassificationEvidenceDto
 {
+    public string Kind { get; set; } = string.Empty;
+    public string CandidatePlayniteId { get; set; } = string.Empty;
+    public string CandidateGameName { get; set; } = string.Empty;
+    public string Detail { get; set; } = string.Empty;
+
+    public string KindDisplay => Kind switch
+    {
+        "SourceRule" => "来源规则",
+        "GameSession" => "游戏会话",
+        "ProcessMapping" => "进程映射",
+        "FileName" => "文件名",
+        _ => "其他本地依据"
+    };
+
+    public string SummaryDisplay
+    {
+        get
+        {
+            var detail = string.IsNullOrWhiteSpace(Detail) ? "已命中" : Detail;
+            return string.IsNullOrWhiteSpace(CandidateGameName)
+                ? $"{KindDisplay} · {detail}"
+                : $"{CandidateGameName} · {KindDisplay} · {detail}";
+        }
+    }
+}
+
+/// <summary>One explainable game suggestion. Low-confidence items have no target.</summary>
+public sealed class MediaClassificationSuggestionDto : INotifyPropertyChanged
+{
+    private bool isIncluded = true;
+    private string targetPlayniteIdOverride = string.Empty;
+    private bool targetOverrideSet;
+
     public string MediaId { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
     public DateTime CapturedUtc { get; set; }
@@ -23,9 +58,47 @@ public sealed class MediaClassificationSuggestionDto
     public string Reason { get; set; } = string.Empty;
     public string Confidence { get; set; } = "Low";
     public string State { get; set; } = "Suggested";
+    public List<MediaClassificationEvidenceDto> Evidence { get; set; } = new List<MediaClassificationEvidenceDto>();
+    public bool IsIncluded
+    {
+        get => isIncluded;
+        set
+        {
+            if (isIncluded == value) return;
+            isIncluded = value;
+            OnPropertyChanged(nameof(IsIncluded));
+            OnPropertyChanged(nameof(CanApply));
+            OnPropertyChanged(nameof(StateDisplay));
+        }
+    }
+
+    /// <summary>Effective target selected in the still-local preview.</summary>
+    public string TargetPlayniteId
+    {
+        get => targetOverrideSet ? targetPlayniteIdOverride : SuggestedPlayniteId;
+        set
+        {
+            var normalized = value ?? string.Empty;
+            var nextOverride = !string.Equals(normalized, SuggestedPlayniteId, StringComparison.OrdinalIgnoreCase);
+            if (targetOverrideSet == nextOverride
+                && string.Equals(targetPlayniteIdOverride, normalized, StringComparison.OrdinalIgnoreCase)) return;
+            targetOverrideSet = nextOverride;
+            targetPlayniteIdOverride = normalized;
+            OnPropertyChanged(nameof(TargetPlayniteId));
+            OnPropertyChanged(nameof(IsTargetOverridden));
+            OnPropertyChanged(nameof(TargetSelectionDisplay));
+            OnPropertyChanged(nameof(CanApply));
+        }
+    }
+
+    public bool IsTargetOverridden => targetOverrideSet;
+    public bool CanEditTarget => Confidence == "High" && !string.IsNullOrWhiteSpace(SuggestedPlayniteId);
 
     public DateTime CapturedLocal => CapturedUtc.ToLocalTime();
-    public bool CanApply => !string.IsNullOrWhiteSpace(SuggestedPlayniteId) && Confidence == "High";
+    public string CapturedRelativeDisplay => TimeDisplayFormatter.Relative(CapturedUtc, DateTime.UtcNow);
+    public string CapturedFullDisplay => TimeDisplayFormatter.Full(CapturedUtc);
+    public string CapturedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CapturedUtc);
+    public bool CanApply => IsIncluded && !string.IsNullOrWhiteSpace(TargetPlayniteId) && Confidence == "High";
     public string ConfidenceDisplay => Confidence switch
     {
         "High" => "高置信",
@@ -42,6 +115,18 @@ public sealed class MediaClassificationSuggestionDto
     public string SummaryDisplay => string.IsNullOrWhiteSpace(SuggestedGameName)
         ? $"{ConfidenceDisplay} · {Reason}"
         : $"{ConfidenceDisplay} · {SuggestedGameName} · {Reason}";
+    public bool HasEvidence => Evidence != null && Evidence.Count > 0;
+    public string EvidenceSummaryDisplay => HasEvidence
+        ? $"依据 {Evidence.Count} 条"
+        : "待判断 · 尚无可核实依据";
+    public string TargetSelectionDisplay => string.IsNullOrWhiteSpace(TargetPlayniteId)
+        ? "未选择目标"
+        : IsTargetOverridden ? $"已调整目标 · {TargetPlayniteId}" : "使用建议目标";
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged(string propertyName)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 /// <summary>Worker-owned, expiring preview that must be explicitly confirmed.</summary>
@@ -51,12 +136,30 @@ public sealed class MediaClassificationPreviewDto
     public string State { get; set; } = "Preview";
     public DateTime CreatedUtc { get; set; }
     public DateTime ExpiresUtc { get; set; }
+    public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+    public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+    public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
+    public string ExpiresRelativeDisplay => TimeDisplayFormatter.Relative(ExpiresUtc, DateTime.UtcNow);
+    public string ExpiresFullDisplay => TimeDisplayFormatter.Full(ExpiresUtc);
+    public string ExpiresRawUtcDisplay => TimeDisplayFormatter.RawUtc(ExpiresUtc);
     public List<MediaClassificationSuggestionDto> Items { get; set; } = new List<MediaClassificationSuggestionDto>();
     public int HighConfidenceCount { get; set; }
     public int MediumConfidenceCount { get; set; }
     public int LowConfidenceCount { get; set; }
+    public int SelectedCount => Items?.Count(x => x.IsIncluded) ?? 0;
+    public int ExcludedCount => Items?.Count(x => !x.IsIncluded) ?? 0;
+    public int SelectedHighConfidenceCount => Items?.Count(x => x.CanApply) ?? 0;
     public string SummaryDisplay =>
         $"建议 {Items.Count} 项：高置信 {HighConfidenceCount}，中置信 {MediumConfidenceCount}，低置信 {LowConfidenceCount}；仅高置信可批量确认。";
+    public string SelectionSummaryDisplay =>
+        $"本次纳入 {SelectedCount} 项，可应用高置信 {SelectedHighConfidenceCount} 项，排除 {ExcludedCount} 项。";
+}
+
+/// <summary>Explicit per-item target selected in the still-valid preview.</summary>
+public sealed class MediaClassificationTargetOverrideDto
+{
+    public string MediaId { get; set; } = string.Empty;
+    public string TargetPlayniteId { get; set; } = string.Empty;
 }
 
 /// <summary>Confirms selected suggestions from one still-valid preview.</summary>
@@ -65,6 +168,7 @@ public sealed class MediaClassificationApplyRequestDto
     public string RequestId { get; set; } = string.Empty;
     public string BatchId { get; set; } = string.Empty;
     public List<string> MediaIds { get; set; } = new List<string>();
+    public List<MediaClassificationTargetOverrideDto> TargetOverrides { get; set; } = new List<MediaClassificationTargetOverrideDto>();
     public bool HighConfidenceOnly { get; set; } = true;
 }
 
@@ -103,6 +207,17 @@ public sealed class MediaClassificationBatchSummaryDto
     public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
     public DateTime UpdatedLocal => UpdatedUtc.ToLocalTime();
     public DateTime ExpiresLocal => ExpiresUtc.ToLocalTime();
+    public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+    public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+    public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
+    public string UpdatedRelativeDisplay => TimeDisplayFormatter.Relative(UpdatedUtc, DateTime.UtcNow);
+    public string UpdatedFullDisplay => TimeDisplayFormatter.Full(UpdatedUtc);
+    public string UpdatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(UpdatedUtc);
+    public string ExpiresRelativeDisplay => TimeDisplayFormatter.Relative(ExpiresUtc, DateTime.UtcNow);
+    public string ExpiresFullDisplay => TimeDisplayFormatter.Full(ExpiresUtc);
+    public string ExpiresRawUtcDisplay => TimeDisplayFormatter.RawUtc(ExpiresUtc);
+    public string ExpiryRelativeDisplay => State == "Preview" ? $"有效至 {ExpiresRelativeDisplay}" : string.Empty;
+    public string ExpiryFullDisplay => State == "Preview" ? ExpiresFullDisplay : string.Empty;
     public bool IsUndoable => (State == "Applied" || State == "AppliedWithConflicts") && AppliedCount > 0;
     public string StateDisplay => State switch
     {
@@ -116,6 +231,15 @@ public sealed class MediaClassificationBatchSummaryDto
         _ => "未知状态"
     };
     public string CountsDisplay => $"{ItemCount} 项 · 已应用 {AppliedCount} · 冲突 {ConflictCount} · 已撤销 {UndoneCount}";
+    public string StatusDetailDisplay
+    {
+        get
+        {
+            var error = string.IsNullOrWhiteSpace(LastError) ? string.Empty : $" · {LastError}";
+            return $"{StateDisplay}{error}";
+        }
+    }
+
     public string DetailDisplay
     {
         get

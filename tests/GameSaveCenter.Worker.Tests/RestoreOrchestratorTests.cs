@@ -53,6 +53,10 @@ public sealed class RestoreOrchestratorTests : IDisposable
         var result = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
 
         Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RolledBack", result.RestoreReport?.OutcomeKind);
+        Assert.True(result.RestoreReport?.WasRolledBack);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.RestoreReport?.FailureCode);
+        Assert.True(result.RestoreReport?.PreRestoreCreated);
         Assert.Equal("A", client.CurrentSave);
         Assert.Contains("B", client.RestoreCalls);
         Assert.Contains(client.RestoreCalls, x => x.StartsWith("pre-", StringComparison.OrdinalIgnoreCase));
@@ -72,6 +76,9 @@ public sealed class RestoreOrchestratorTests : IDisposable
 
         var restore = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
         Assert.Equal(TaskState.Succeeded, restore.State);
+        Assert.Equal("Completed", restore.RestoreReport?.OutcomeKind);
+        Assert.True(restore.RestoreReport?.PreRestoreCreated);
+        Assert.False(string.IsNullOrWhiteSpace(restore.RestoreReport?.PreRestoreBackupId));
         Assert.Equal("B", client.CurrentSave);
 
         var undo = await CreateOrchestrator().UndoAsync("game-1", CancellationToken.None);
@@ -81,6 +88,21 @@ public sealed class RestoreOrchestratorTests : IDisposable
         Assert.Contains(client.RestoreCalls, x => x == "B");
         Assert.True(client.RestoreCalls.Count(x => x.StartsWith("pre-", StringComparison.OrdinalIgnoreCase)) >= 2,
             $"Expected the original and undo PreRestore snapshots, got: {string.Join(",", client.RestoreCalls)}");
+    }
+
+    [Fact]
+    public async Task RestoreRevalidatesTargetWithPreviewImmediatelyBeforeWrite()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Succeeded, result.State);
+        Assert.Equal(3, client.RestoreOperations.Count);
+        Assert.Equal(("B", true), client.RestoreOperations[0]);
+        Assert.Equal(("B", false), client.RestoreOperations[1]);
+        Assert.Equal(("B", true), client.RestoreOperations[2]);
     }
 
     [Fact]
@@ -235,6 +257,31 @@ public sealed class RestoreOrchestratorTests : IDisposable
         Assert.Empty(client.RestoreCalls);
     }
 
+    [Fact]
+    public async Task PreRestoreFailure_BlocksDangerousRestore_AndRetryUsesFreshCurrentState()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+        client.FailPreRestoreCount = 1;
+
+        var first = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, first.State);
+        Assert.Equal("RESTORE_PRERESTORE_FAILED", first.ErrorCode);
+        Assert.Equal("A", client.CurrentSave);
+        Assert.Empty(client.RestoreCalls);
+        Assert.Empty(client.EditedBackups);
+
+        client.SetCurrentSave("A-latest");
+        var retry = await CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Succeeded, retry.State);
+        Assert.Contains("B", client.RestoreCalls);
+        Assert.Contains(client.EditedBackups, x => x.BackupId.StartsWith("pre-", StringComparison.OrdinalIgnoreCase) && x.Locked == true);
+        Assert.Contains(client.Backups, x => x.Key.StartsWith("pre-", StringComparison.OrdinalIgnoreCase) && x.Value == "A-latest");
+        Assert.Equal("B", client.CurrentSave);
+    }
+
     private RestoreOrchestrator CreateOrchestrator()
         => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider(), new GameOperationLock());
 
@@ -298,7 +345,9 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public HashSet<string> ThrowReadOnlyFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> FailPostValidationFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public List<string> RestoreCalls { get; } = new();
+        public List<(string BackupId, bool Preview)> RestoreOperations { get; } = new();
         public List<(string BackupId, bool? Locked)> EditedBackups { get; } = new();
+        public int FailPreRestoreCount { get; set; }
         public bool FailRollback { get; set; }
         public string LiveDirectory { get; }
         public string LiveSavePath => Path.Combine(LiveDirectory, "profile.dat");
@@ -319,6 +368,11 @@ public sealed class RestoreOrchestratorTests : IDisposable
 
         public Task<LudusaviCommandResult> BackupAsync(IEnumerable<string> games, bool force, bool preview, CancellationToken token)
         {
+            if (FailPreRestoreCount > 0)
+            {
+                FailPreRestoreCount--;
+                return Task.FromResult(Failure("pre-restore failed"));
+            }
             var id = "pre-" + DateTime.UtcNow.Ticks;
             Backups[id] = CurrentSave;
             return Task.FromResult(Success(BackupJson(id)));
@@ -330,6 +384,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public Task<LudusaviCommandResult> RestoreAsync(string game, string backupId, bool preview, CancellationToken token)
         {
             RestoreCalls.Add(backupId);
+            RestoreOperations.Add((backupId, preview));
             if (preview)
             {
                 var postValidation = string.Equals(CurrentSave, Backups.TryGetValue(backupId, out var expected) ? expected : backupId, StringComparison.Ordinal);

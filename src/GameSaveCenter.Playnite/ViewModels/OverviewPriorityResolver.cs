@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.ViewModels
@@ -38,7 +39,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return new OverviewPriorityState(
                     "Worker",
                     "Maintenance",
-                    "Worker 需要处理",
+                    "后台服务需要处理",
                     "后台服务当前不可用，先打开维护中心检查服务状态。",
                     "打开维护中心");
             }
@@ -64,14 +65,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "查看云端队列");
             }
 
-            if (snapshot.UnassignedMediaCount > 0)
+            if (snapshot.TaskSummary?.FailedCount > 0)
             {
                 return new OverviewPriorityState(
-                    "Media",
-                    "Media",
-                    $"{snapshot.UnassignedMediaCount} 项媒体待归类",
-                    "待归类媒体不会自动归入游戏，先确认目标游戏后再应用归类。",
-                    "打开媒体中心");
+                    "Tasks",
+                    "Tasks",
+                    $"{snapshot.TaskSummary.FailedCount} 项任务等待处理",
+                    "任务中心有失败记录，先打开失败筛选查看原因和可重试动作。",
+                    "查看失败任务");
             }
 
             if (snapshot.ManagedGames <= 0)
@@ -82,6 +83,44 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "还没有可管理的游戏",
                     "当前快照没有读到可管理的 Playnite 游戏；刷新游戏库后再继续。",
                     "刷新游戏库");
+            }
+
+            var games = snapshot.Games ?? new System.Collections.Generic.List<GameStatusDto>();
+            var unmatchedCount = games.Count(game => game != null && !game.LudusaviMatched);
+            if (unmatchedCount > 0)
+            {
+                return new OverviewPriorityState(
+                    "Unmatched",
+                    "GamePicker",
+                    $"{unmatchedCount} 个游戏尚未匹配存档",
+                    "先在游戏选框中查看未匹配项；选定游戏后可进入诊断并重试匹配。",
+                    "查看未匹配游戏");
+            }
+
+            var backupableCount = snapshot.LudusaviAvailable
+                ? games.Count(game => game != null
+                    && game.LudusaviMatched
+                    && game.BackupVersionCount <= 0
+                    && !game.LastBackupUtc.HasValue)
+                : 0;
+            if (backupableCount > 0)
+            {
+                return new OverviewPriorityState(
+                    "Backupable",
+                    "GamePicker",
+                    $"{backupableCount} 个游戏还没有本地备份",
+                    "先筛出可备份游戏并选定目标，再使用现有的立即备份；不会自动写入存档。",
+                    "查看可备份游戏");
+            }
+
+            if (snapshot.UnassignedMediaCount > 0)
+            {
+                return new OverviewPriorityState(
+                    "Media",
+                    "Media",
+                    $"{snapshot.UnassignedMediaCount} 项媒体待归类",
+                    "待归类媒体不会自动归入游戏，先确认目标游戏后再应用归类。",
+                    "打开媒体中心");
             }
 
             if (snapshot.WarningGames > 0)

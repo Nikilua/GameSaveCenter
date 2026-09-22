@@ -30,6 +30,7 @@ public sealed partial class DashboardViewModel
         var generation = Interlocked.Increment(ref cloudTransferLoadGeneration);
         var page = reset ? 0 : cloudTransferPage + 1;
         var requestCancellation = BeginCloudTransferRequest();
+        var timeWindow = GetCloudTransferTimeWindow();
         try
         {
             var request = new CloudTransferStatusRequestDto
@@ -38,6 +39,10 @@ public sealed partial class DashboardViewModel
                 PageSize = 100,
                 State = CloudTransferStateFilter,
                 Kind = ParseCloudTransferKind(CloudTransferKindFilter),
+                GameName = CloudTransferGameFilter,
+                SourceDevice = CloudTransferSourceDeviceFilter,
+                UpdatedAfterUtc = timeWindow.AfterUtc,
+                UpdatedBeforeUtc = timeWindow.BeforeUtc,
                 ConsistencyToken = reset ? string.Empty : cloudTransferConsistencyToken
             };
             var response = await plugin.RequestAsync<CloudTransferSummaryDto>(
@@ -55,6 +60,13 @@ public sealed partial class DashboardViewModel
 
                 if (CurrentWorkspace != WorkspaceKind.Maintenance)
                     return;
+
+                cloudTransferLoadFailed = false;
+                cloudTransferLastSuccessUtc = DateTime.UtcNow;
+                cloudTransferErrorMessage = string.Empty;
+                OnPropertyChanged(nameof(CloudTransferLoadFailed));
+                OnPropertyChanged(nameof(CloudTransferStateDetail));
+                OnPropertyChanged(nameof(CloudTransferStaleVisible));
 
                 var selectedKey = !string.IsNullOrWhiteSpace(pendingCloudTransferKey)
                     ? pendingCloudTransferKey
@@ -139,10 +151,56 @@ public sealed partial class DashboardViewModel
         {
             // A filter refresh or workspace switch superseded this page request.
         }
+        catch (Exception ex)
+        {
+            ApplyOnUi(() =>
+            {
+                if (generation != Interlocked.Read(ref cloudTransferLoadGeneration)
+                    || CurrentWorkspace != WorkspaceKind.Maintenance)
+                    return;
+
+                cloudTransferLoadFailed = true;
+                cloudTransferErrorMessage = ex.Message;
+                OnPropertyChanged(nameof(CloudTransferLoadFailed));
+                OnPropertyChanged(nameof(CloudTransferStateDetail));
+                OnPropertyChanged(nameof(CloudTransferStaleVisible));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            });
+            throw;
+        }
         finally
         {
             EndCloudTransferRequest(requestCancellation);
         }
+    }
+
+    private async Task ClearCloudTransferFiltersAsync()
+    {
+        cloudTransferFilterRefresh.Cancel();
+        if (!CloudTransferHasActiveFilters)
+            return;
+
+        ApplyOnUi(() =>
+        {
+            cloudTransferStateFilter = string.Empty;
+            cloudTransferKindFilter = string.Empty;
+            cloudTransferGameFilter = string.Empty;
+            cloudTransferSourceDeviceFilter = string.Empty;
+            cloudTransferTimeFilter = string.Empty;
+            OnPropertyChanged(nameof(CloudTransferStateFilter));
+            OnPropertyChanged(nameof(CloudTransferKindFilter));
+            OnPropertyChanged(nameof(CloudTransferGameFilter));
+            OnPropertyChanged(nameof(CloudTransferSourceDeviceFilter));
+            OnPropertyChanged(nameof(CloudTransferTimeFilter));
+            OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+            OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+            OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+            OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            RaiseCommandStates();
+        });
+
+        await LoadCloudTransferPageAsync(true).ConfigureAwait(false);
     }
 
     private async Task VerifySelectedCloudTransferAsync()
@@ -205,9 +263,7 @@ public sealed partial class DashboardViewModel
 
     private bool CanRetrySelectedCloudUpload()
     {
-        var state = SelectedCloudTransfer?.State;
-        return string.Equals(state, "Failed", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(state, "RetryScheduled", StringComparison.OrdinalIgnoreCase);
+        return SelectedCloudTransfer?.CanManuallyRetry == true;
     }
 
     private static CloudTransferKind? ParseCloudTransferKind(string value)
@@ -217,6 +273,18 @@ public sealed partial class DashboardViewModel
             "Media" => CloudTransferKind.Media,
             _ => null
         };
+
+    private (DateTime? AfterUtc, DateTime? BeforeUtc) GetCloudTransferTimeWindow()
+    {
+        var now = DateTime.UtcNow;
+        return CloudTransferTimeFilter switch
+        {
+            "24h" => (now.AddHours(-24), now),
+            "7d" => (now.AddDays(-7), now),
+            "30d" => (now.AddDays(-30), now),
+            _ => (null, null)
+        };
+    }
 
     private static bool AreSameCloudTransfer(CloudTransferStatusDto left, CloudTransferStatusDto right)
         => string.Equals(left.TransferKey, right.TransferKey, StringComparison.OrdinalIgnoreCase)

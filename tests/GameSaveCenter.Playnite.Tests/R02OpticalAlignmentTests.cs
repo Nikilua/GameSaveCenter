@@ -76,6 +76,69 @@ public sealed class R02OpticalAlignmentTests
         Assert.InRange(Math.Abs(chineseBaseline - englishBaseline), 0, 0.5);
     }
 
+    [Fact]
+    public void SharedButtonRendersVisualContentWithoutStringifyingTheControlTree()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        Exception? exception = null;
+        StackPanel? renderedContent = null;
+        string? renderedText = null;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var resources = LoadProductionResources();
+                var content = new StackPanel { Orientation = Orientation.Horizontal };
+                content.Children.Add(new TextBlock { Text = "立即备份" });
+                var button = new GameSaveCenter.Playnite.Controls.Button
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]),
+                    Content = content,
+                    Width = 160,
+                    Height = 36
+                };
+                var host = new Border { Resources = resources, Child = button };
+                host.Measure(new Size(180, 60));
+                host.Arrange(new Rect(0, 0, 180, 60));
+                host.UpdateLayout();
+                button.ApplyTemplate();
+                host.UpdateLayout();
+
+                renderedContent = FindVisualChild<StackPanel>(button);
+                renderedText = FindVisualChild<TextBlock>(button)?.Text;
+
+                var textButton = new GameSaveCenter.Playnite.Controls.Button
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]),
+                    Content = "重新校验",
+                    Width = 160,
+                    Height = 36
+                };
+                var textHost = new Border { Resources = resources, Child = textButton };
+                textHost.Measure(new Size(180, 60));
+                textHost.Arrange(new Rect(0, 0, 180, 60));
+                textHost.UpdateLayout();
+                textButton.ApplyTemplate();
+                textHost.UpdateLayout();
+                Assert.Equal("重新校验", FindVisualChild<TextBlock>(textButton)?.Text);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.NotNull(renderedContent);
+        Assert.Equal("立即备份", renderedText);
+        Assert.DoesNotContain("System.Windows.Controls", renderedText, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData(16d)]
     [InlineData(20d)]

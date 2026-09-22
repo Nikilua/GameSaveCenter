@@ -20,6 +20,7 @@ CREATE TABLE game_tools(tool_id TEXT PRIMARY KEY,playnite_id TEXT NOT NULL,tool_
 CREATE TABLE game_tool_versions(version_id TEXT PRIMARY KEY,tool_id TEXT NOT NULL REFERENCES game_tools(tool_id) ON DELETE CASCADE,version_name TEXT,entry_path TEXT NOT NULL,working_directory TEXT,arguments TEXT,source_url TEXT,file_sha256 TEXT,download_utc TEXT,created_utc TEXT NOT NULL);
 CREATE TABLE protection_prompt_states(playnite_id TEXT PRIMARY KEY,updated_utc TEXT NOT NULL);
 CREATE TABLE ipc_request_ledger(request_id TEXT PRIMARY KEY,type TEXT NOT NULL,state INTEGER NOT NULL,response_json TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
+CREATE TABLE findings(finding_id TEXT PRIMARY KEY,playnite_id TEXT,severity INTEGER NOT NULL,code TEXT NOT NULL,title TEXT NOT NULL,detail TEXT,suggested_action TEXT,created_utc TEXT NOT NULL,resolved INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE cloud_transfer_queue(transfer_key TEXT PRIMARY KEY,transfer_kind TEXT NOT NULL,playnite_id TEXT NOT NULL,state TEXT NOT NULL,attempt_count INTEGER NOT NULL DEFAULT 0,next_attempt_utc TEXT,last_attempt_utc TEXT,last_error_code TEXT,last_error TEXT,created_utc TEXT NOT NULL,updated_utc TEXT NOT NULL);
 ";
 
@@ -37,6 +38,8 @@ INSERT INTO media(media_id,playnite_id,kind,source,archive_path,original_path,ca
 VALUES ('m1','g1',0,0,'C:\\archive\\x.png','C:\\source\\x.png','2026-01-01T00:00:00Z',1,'abc',0,'','Pending');
 INSERT INTO cloud_transfer_queue(transfer_key,transfer_kind,playnite_id,state,created_utc,updated_utc)
 VALUES ('Backup:g1','Backup','g1','Pending','2026-01-01T00:00:00Z','2026-01-01T00:00:00Z');
+INSERT INTO findings(finding_id,playnite_id,severity,code,title,detail,suggested_action,created_utc,resolved)
+VALUES ('f1','g1',1,'HEALTH_INSPECTION_FAILED','备份恢复校验需关注：b1','legacy','查看版本','2026-01-01T00:00:00Z',0);
 ";
 
     private const string OlderSchema = @"
@@ -67,7 +70,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
         await harness.CreateLegacyFixtureAsync(LegacySchema, LegacyData, CancellationToken.None);
 
         var result = await harness.RunAsync(
-            new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "ipc_request_ledger", "cloud_transfer_queue", "query_revisions", "legacy_marker" },
+            new[] { "games", "tasks", "backup_versions", "game_policies", "backup_policy_templates", "sessions", "device_conflict_decisions", "media", "media_sources", "game_tools", "game_tool_versions", "protection_prompt_states", "ipc_request_ledger", "findings", "cloud_transfer_queue", "query_revisions", "legacy_marker" },
             new Dictionary<string, IReadOnlyCollection<string>>
             {
                 ["games"] = new[] { "match_input_hash", "last_match_attempt_utc", "descriptor_synced_utc" },
@@ -79,6 +82,7 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
                 ["game_tool_versions"] = new[] { "resolved_target_path" },
                 ["protection_prompt_states"] = new[] { "state", "last_save_recognized", "last_observed_utc", "last_prompt_utc" },
                 ["ipc_request_ledger"] = new[] { "protocol_version", "payload_hash" },
+                ["findings"] = new[] { "backup_id" },
                 ["cloud_transfer_queue"] = new[] { "operation_kind", "operation_id", "prior_state", "prior_operation_kind", "prior_operation_id", "prior_next_attempt_utc", "prior_last_attempt_utc", "prior_error_code", "prior_error" }
             },
             CancellationToken.None);
@@ -97,11 +101,13 @@ VALUES ('v9','tool9','1.0','C:\Tools\u.exe','C:\Tools','','','','2025-01-01T00:0
         Assert.Equal(1, result.RowCounts["device_conflict_decisions"]);
         Assert.Equal(1, result.RowCounts["media"]);
         Assert.Equal(1, result.RowCounts["cloud_transfer_queue"]);
+        Assert.Equal(1, result.RowCounts["findings"]);
         Assert.Equal(2, result.RowCounts["query_revisions"]);
         Assert.Equal("KeepBoth", harness.ReadScalar("SELECT decision FROM device_conflict_decisions WHERE playnite_id='g1';"));
         Assert.Contains("BackupOnGameStop", harness.ReadScalar("SELECT policy_json FROM game_policies WHERE playnite_id='g1';"));
         Assert.Equal("重要游戏", harness.ReadScalar("SELECT name FROM backup_policy_templates WHERE template_id='important';"));
         Assert.Equal("Default", harness.ReadScalar("SELECT launch_profile FROM sessions WHERE session_id='s1';"));
+        Assert.Equal(string.Empty, harness.ReadScalar("SELECT backup_id FROM findings WHERE finding_id='f1';"));
     }
 
     [Fact]

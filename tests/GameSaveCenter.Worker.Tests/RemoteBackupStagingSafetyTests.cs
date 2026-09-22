@@ -52,4 +52,21 @@ public sealed class RemoteBackupStagingSafetyTests
         var arguments=RcloneClient.BuildChecksumCheckArguments("cloud:GameSaveCenter",@"DEVICE\Saves",@"C:\staging\Vault");
         Assert.Equal(new[]{"check","cloud:GameSaveCenter/DEVICE/Saves",@"C:\staging\Vault","--one-way"},arguments);
     }
+
+    [Fact]
+    public void StagingCleanup_RemovesOnlyTheIsolatedDirectory()
+    {
+        var root=Path.Combine(Path.GetTempPath(),"gsc-r12-05-"+Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(root,"Vault"));
+        File.WriteAllText(Path.Combine(root,"Vault","partial.save"),"synthetic");
+        try
+        {
+            Assert.True(RemoteBackupStagingService.TryDeleteStaging(root));
+            Assert.False(Directory.Exists(root));
+        }
+        finally
+        {
+            if(Directory.Exists(root))Directory.Delete(root,true);
+        }
+    }
 }

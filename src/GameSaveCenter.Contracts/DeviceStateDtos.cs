@@ -109,6 +109,12 @@ namespace GameSaveCenter.Contracts
         public DateTime ExpiresUtc { get; set; }
         public bool Verified { get; set; }
         public string StatusMessage { get; set; } = string.Empty;
+        public string StagedRelativeDisplay => TimeDisplayFormatter.Relative(StagedUtc, DateTime.UtcNow);
+        public string StagedFullDisplay => TimeDisplayFormatter.Full(StagedUtc);
+        public string StagedRawUtcDisplay => TimeDisplayFormatter.RawUtc(StagedUtc);
+        public string ExpiresRelativeDisplay => TimeDisplayFormatter.Relative(ExpiresUtc, DateTime.UtcNow);
+        public string ExpiresFullDisplay => TimeDisplayFormatter.Full(ExpiresUtc);
+        public string ExpiresRawUtcDisplay => TimeDisplayFormatter.RawUtc(ExpiresUtc);
     }
 
     /// <summary>Explicit restore request for a previously verified remote staging vault.</summary>

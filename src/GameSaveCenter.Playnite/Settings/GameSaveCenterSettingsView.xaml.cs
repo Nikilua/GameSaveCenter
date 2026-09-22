@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Forms = System.Windows.Forms;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Diagnostics;
 using GameSaveCenter.Playnite.Infrastructure;
 using Microsoft.Win32;
@@ -23,6 +26,18 @@ namespace GameSaveCenter.Playnite.Settings
 {
     public partial class GameSaveCenterSettingsView : UserControl
     {
+        public static readonly DependencyProperty SearchTermsProperty = DependencyProperty.RegisterAttached(
+            "SearchTerms",
+            typeof(string),
+            typeof(GameSaveCenterSettingsView),
+            new PropertyMetadata(string.Empty));
+
+        public static void SetSearchTerms(DependencyObject element, string value)
+            => element.SetValue(SearchTermsProperty, value ?? string.Empty);
+
+        public static string GetSearchTerms(DependencyObject element)
+            => (string)element.GetValue(SearchTermsProperty);
+
         private static readonly ILogger Logger = LogManager.GetLogger();
         private bool entrancePlayed;
         private bool settingsTransferInProgress;
@@ -47,7 +62,11 @@ namespace GameSaveCenter.Playnite.Settings
         private readonly SettingsSaveFeedbackState saveFeedback = new();
         private readonly LatestAsyncValidationCoordinator<SettingsPathValidationSnapshot, IReadOnlyList<string>> pathValidationCoordinator = new();
         private readonly List<ValidationFieldTarget> validationFieldTargets = new();
+        private readonly List<SettingsSearchTarget> settingsSearchTargets = new();
         private ValidationFieldTarget? firstValidationTarget;
+        private bool settingsSearchApplying;
+        private int settingsSearchOriginCategory = -1;
+        private string appliedSettingsSearchQuery = string.Empty;
 
         private sealed class ValidationFieldTarget
         {
@@ -77,9 +96,28 @@ namespace GameSaveCenter.Playnite.Settings
             public ValidationFieldTarget? Target { get; }
         }
 
+        private sealed class SettingsSearchTarget
+        {
+            public SettingsSearchTarget(int categoryIndex, FrameworkElement element, string terms)
+            {
+                CategoryIndex = categoryIndex;
+                Element = element;
+                Terms = terms;
+            }
+
+            public int CategoryIndex { get; }
+            public FrameworkElement Element { get; }
+            public string Terms { get; }
+        }
+
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
+            SettingsResetFieldComboBox.ItemsSource = SettingsResetCatalog.Fields;
+            SettingsResetFieldComboBox.SelectedIndex = 0;
+            SettingsPathEditorComboBox.ItemsSource = SettingsPathEditorCatalog.Options;
+            SettingsPathEditorComboBox.SelectedIndex = 0;
+            RegisterSettingsSearchTargets();
             RegisterValidationFieldTargets();
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -92,6 +130,124 @@ namespace GameSaveCenter.Playnite.Settings
             AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
             AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(OnSettingsFieldChanged));
             AddHandler(Validation.ErrorEvent, new RoutedEventHandler(OnSettingsValidationErrorChanged));
+        }
+
+        private void RegisterSettingsSearchTargets()
+        {
+            settingsSearchTargets.Clear();
+            var panels = new FrameworkElement[]
+            {
+                SettingsGeneralPanel,
+                SettingsBackupPanel,
+                SettingsAppearancePanel,
+                SettingsAutomationPanel,
+                SettingsMigrationPanel
+            };
+            for (var categoryIndex = 0; categoryIndex < panels.Length; categoryIndex++)
+            {
+                foreach (var node in EnumerateLogicalTree(panels[categoryIndex]))
+                {
+                    if (node is not FrameworkElement element) continue;
+                    var terms = GetSearchTerms(element);
+                    if (!string.IsNullOrWhiteSpace(terms))
+                        settingsSearchTargets.Add(new SettingsSearchTarget(categoryIndex, element, terms));
+                }
+            }
+        }
+
+        private static IEnumerable<DependencyObject> EnumerateLogicalTree(DependencyObject root)
+        {
+            yield return root;
+            foreach (var child in LogicalTreeHelper.GetChildren(root).OfType<DependencyObject>())
+            {
+                foreach (var descendant in EnumerateLogicalTree(child))
+                    yield return descendant;
+            }
+        }
+
+        private void OnSettingsSearchTextChanged(object sender, TextChangedEventArgs e)
+            => ApplySettingsSearch();
+
+        private bool HasSettingsSearch
+            => !string.IsNullOrWhiteSpace(SettingsSearchTextBox?.Text);
+
+        private void ApplySettingsSearch()
+        {
+            if (settingsSearchApplying) return;
+            settingsSearchApplying = true;
+            try
+            {
+                var tabs = SettingsSectionTabs;
+                var summary = SettingsSearchSummary;
+                if (tabs == null || summary == null) return;
+                var query = SettingsSearchTextBox?.Text?.Trim() ?? string.Empty;
+                var wasSearching = appliedSettingsSearchQuery.Length > 0;
+                var panels = new FrameworkElement[]
+                {
+                    SettingsGeneralPanel,
+                    SettingsBackupPanel,
+                    SettingsAppearancePanel,
+                    SettingsAutomationPanel,
+                    SettingsMigrationPanel
+                };
+                if (query.Length > 0 && !wasSearching)
+                    settingsSearchOriginCategory = Math.Max(0, Math.Min(panels.Length - 1, SettingsSectionTabs?.SelectedIndex ?? 0));
+                if (query.Length == 0)
+                {
+                    foreach (var target in settingsSearchTargets)
+                        target.Element.Visibility = Visibility.Visible;
+                    var selectedIndex = wasSearching && settingsSearchOriginCategory >= 0
+                        ? settingsSearchOriginCategory
+                        : tabs.SelectedIndex;
+                    for (var index = 0; index < panels.Length; index++)
+                        SetCategoryVisibility(panels[index], index == selectedIndex);
+                    summary.Visibility = Visibility.Collapsed;
+                    appliedSettingsSearchQuery = string.Empty;
+                    settingsSearchOriginCategory = -1;
+                    if (wasSearching && tabs.SelectedIndex != selectedIndex)
+                        tabs.SelectedIndex = selectedIndex;
+                    return;
+                }
+
+                var matchingCategories = new HashSet<int>();
+                var matchCount = 0;
+                foreach (var target in settingsSearchTargets)
+                {
+                    var matches = ContainsSearchTerm(target.Terms, query);
+                    target.Element.Visibility = matches ? Visibility.Visible : Visibility.Collapsed;
+                    if (matches)
+                    {
+                        matchCount++;
+                        matchingCategories.Add(target.CategoryIndex);
+                    }
+                }
+
+                for (var index = 0; index < panels.Length; index++)
+                    SetCategoryVisibility(panels[index], matchingCategories.Contains(index));
+
+                summary.Text = matchCount == 0
+                    ? $"没有找到“{query}”匹配的设置；清空搜索恢复原分类。"
+                    : $"找到 {matchCount} 个匹配设置，涉及 {matchingCategories.Count} 个分类；搜索只改变可见字段，不会修改配置。";
+                summary.Visibility = Visibility.Visible;
+                var firstCategory = matchingCategories.OrderBy(index => index).DefaultIfEmpty(-1).First();
+                if (firstCategory >= 0 && tabs.SelectedIndex != firstCategory)
+                    tabs.SelectedIndex = firstCategory;
+                appliedSettingsSearchQuery = query;
+            }
+            finally
+            {
+                settingsSearchApplying = false;
+            }
+        }
+
+        private static bool ContainsSearchTerm(string value, string query)
+        {
+            var compactValue = value.Replace(" ", string.Empty);
+            var compactQuery = query.Replace(" ", string.Empty);
+            if (compactValue.IndexOf(compactQuery, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                return true;
+            return query.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .All(token => value.IndexOf(token, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
         private void RegisterValidationFieldTargets()
@@ -198,6 +354,7 @@ namespace GameSaveCenter.Playnite.Settings
                 observedSettings.SettingsApplyStarted -= OnSettingsApplyStarted;
                 observedSettings.SettingsApplyCompleted -= OnSettingsApplyCompleted;
                 observedSettings.SettingsSaveFailed -= OnSettingsSaveFailed;
+                observedSettings.SettingsConflictDetected -= OnSettingsConflictDetected;
             }
 
             observedSettings = e.NewValue as GameSaveCenterSettings;
@@ -213,6 +370,7 @@ namespace GameSaveCenter.Playnite.Settings
             observedSettings.SettingsApplyStarted += OnSettingsApplyStarted;
             observedSettings.SettingsApplyCompleted += OnSettingsApplyCompleted;
             observedSettings.SettingsSaveFailed += OnSettingsSaveFailed;
+            observedSettings.SettingsConflictDetected += OnSettingsConflictDetected;
             if (!settingsTransferInProgress || !settingsBaselineInitialized)
             {
                 savedSettingsFingerprint = observedSettings.GetEditBaselineFingerprint();
@@ -269,6 +427,19 @@ namespace GameSaveCenter.Playnite.Settings
             }, DispatcherPriority.Background);
         }
 
+        private void OnSettingsConflictDetected(object? sender, SettingsConflictDetectedEventArgs e)
+        {
+            if (sender is GameSaveCenterSettings settings)
+            {
+                savedSettingsFingerprint = settings.GetEditBaselineFingerprint();
+                settingsBaselineInitialized = true;
+            }
+
+            saveFeedback.Reset();
+            RefreshSaveState();
+            ShowSettingsMessage(e.Summary, "设置保存冲突", MessageBoxImage.Warning);
+        }
+
         private void OnSettingsReverted(object? sender, EventArgs e)
         {
             if (sender is not GameSaveCenterSettings settings) return;
@@ -282,7 +453,11 @@ namespace GameSaveCenter.Playnite.Settings
             RefreshSaveState();
         }
 
-        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e) => QueueValidationSummaryUpdate();
+        private void OnSettingsFieldChanged(object sender, RoutedEventArgs e)
+        {
+            if (ReferenceEquals(sender, SettingsPathEditorComboBox)) return;
+            QueueValidationSummaryUpdate();
+        }
 
         private void OnSettingsValidationErrorChanged(object sender, RoutedEventArgs e)
             => QueueValidationSummaryUpdate();
@@ -431,6 +606,243 @@ namespace GameSaveCenter.Playnite.Settings
             e.Handled = true;
         }
 
+        private void OnSettingsPathEditorSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshSettingsPathEditorStatus(false);
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathBrowseClick(object sender, RoutedEventArgs e)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            var currentValue = textBox.Text ?? string.Empty;
+            string? selectedPath = null;
+            if (option.Kind == SettingsPathEditorKind.Directory)
+            {
+                using (var dialog = new Forms.FolderBrowserDialog
+                {
+                    Description = $"选择{option.DisplayName}",
+                    ShowNewFolderButton = true,
+                    SelectedPath = GetPathDialogInitialDirectory(currentValue, true)
+                })
+                {
+                    if (dialog.ShowDialog() == Forms.DialogResult.OK)
+                        selectedPath = dialog.SelectedPath;
+                }
+            }
+            else
+            {
+                var dialog = new OpenFileDialog
+                {
+                    Title = $"选择{option.DisplayName}",
+                    Filter = "可执行文件 (*.exe)|*.exe|所有文件 (*.*)|*.*",
+                    CheckFileExists = true,
+                    Multiselect = false,
+                    InitialDirectory = GetPathDialogInitialDirectory(currentValue, false)
+                };
+                if (dialog.ShowDialog() == true)
+                    selectedPath = dialog.FileName;
+            }
+
+            if (string.IsNullOrWhiteSpace(selectedPath)) return;
+            textBox.Text = selectedPath;
+            RefreshSettingsPathEditorStatus(true);
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathValidateClick(object sender, RoutedEventArgs e)
+        {
+            RefreshSettingsPathEditorStatus(true);
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathOpenClick(object sender, RoutedEventArgs e)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            var probe = SettingsPathEditorService.Probe(option, textBox.Text);
+            if (!probe.IsValid)
+            {
+                SetSettingsPathEditorStatus(option, probe.Message);
+                e.Handled = true;
+                return;
+            }
+
+            try
+            {
+                var arguments = option.Kind == SettingsPathEditorKind.Executable
+                    ? "/select,\"" + probe.ExpandedPath + "\""
+                    : "\"" + probe.ExpandedPath + "\"";
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = arguments,
+                    UseShellExecute = false
+                });
+                SetSettingsPathEditorStatus(option, "当前路径已打开。", false);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "GameSaveCenter settings path editor failed to open the current path.");
+                SetSettingsPathEditorStatus(option, "当前路径有效，但打开失败：" + exception.Message);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnSettingsPathCopyClick(object sender, RoutedEventArgs e)
+        {
+            _ = CopySettingsPathAsync(sender as FrameworkElement);
+            e.Handled = true;
+        }
+
+        private async Task CopySettingsPathAsync(FrameworkElement? feedbackTarget = null)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            var value = ClipboardValueSanitizer.Sanitize(textBox.Text ?? string.Empty);
+            if (value.Length == 0)
+            {
+                SetSettingsPathEditorStatus(option, "当前字段为空，无法复制。");
+                ClipboardFeedback.Show(feedbackTarget ?? SettingsPathEditorStatus, "当前字段为空，无法复制。", true);
+                return;
+            }
+
+            var copied = await ClipboardRetry.TrySetTextAsync(value, Clipboard.SetText).ConfigureAwait(true);
+            var message = copied
+                ? "完整路径已复制到剪贴板。"
+                : "复制失败：剪贴板暂时被其他程序占用，请稍后重试。";
+            SetSettingsPathEditorStatus(option, message, !copied);
+            ClipboardFeedback.Show(feedbackTarget ?? SettingsPathEditorStatus, message, !copied);
+        }
+
+        private bool TryGetCurrentPathEditor(out SettingsPathEditorOption option, out TextBox textBox)
+        {
+            option = SettingsPathEditorComboBox?.SelectedItem as SettingsPathEditorOption
+                ?? SettingsPathEditorCatalog.Options.First();
+            textBox = ResolvePathEditorTextBox(option)!;
+            return textBox != null;
+        }
+
+        private TextBox? ResolvePathEditorTextBox(SettingsPathEditorOption option)
+        {
+            switch (option.Key)
+            {
+                case "WorkerExecutable": return WorkerExecutableTextBox;
+                case "LudusaviExecutable": return LudusaviExecutableTextBox;
+                case "LudusaviBackupDirectory": return LudusaviBackupDirectoryTextBox;
+                case "RcloneExecutable": return RcloneExecutableTextBox;
+                case "MediaArchiveDirectory": return MediaArchiveDirectoryTextBox;
+                case "LocalMirrorPath": return LocalMirrorPathTextBox;
+                default: return null;
+            }
+        }
+
+        private void RefreshSettingsPathEditorStatus(bool probeCurrent)
+        {
+            if (!TryGetCurrentPathEditor(out var option, out var textBox)) return;
+            if (!probeCurrent)
+            {
+                SetSettingsPathEditorStatus(option, string.IsNullOrWhiteSpace(textBox.Text)
+                    ? "当前字段尚未填写。"
+                    : "可浏览、校验、打开或复制当前字段。", false);
+                return;
+            }
+
+            var probe = SettingsPathEditorService.Probe(option, textBox.Text);
+            SetSettingsPathEditorStatus(option, probe.Message, !probe.IsValid);
+        }
+
+        private void SetSettingsPathEditorStatus(SettingsPathEditorOption option, string message, bool isError = false)
+        {
+            if (SettingsPathEditorStatus == null) return;
+            var fullMessage = $"{option.DisplayName}：{message}";
+            SettingsPathEditorStatus.Text = fullMessage;
+            AutomationProperties.SetHelpText(SettingsPathEditorStatus, fullMessage);
+            AutomationProperties.SetName(SettingsPathEditorStatus, "当前路径编辑反馈：" + option.DisplayName);
+            SettingsPathEditorStatus.Foreground = isError
+                ? (Brush)FindResource("GscErrorBrush")
+                : (Brush)FindResource("GscSecondaryTextBrush");
+        }
+
+        private static string GetPathDialogInitialDirectory(string value, bool allowDirectory)
+        {
+            var expanded = Environment.ExpandEnvironmentVariables(value?.Trim() ?? string.Empty);
+            if (allowDirectory && Directory.Exists(expanded)) return expanded;
+            var parent = string.Empty;
+            try { parent = Path.GetDirectoryName(Path.GetFullPath(expanded)) ?? string.Empty; }
+            catch (Exception exception) when (exception is ArgumentException || exception is NotSupportedException || exception is PathTooLongException || exception is IOException)
+            {
+                parent = string.Empty;
+            }
+            return Directory.Exists(parent)
+                ? parent
+                : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        }
+
+        private void OnResetSingleFieldClick(object sender, RoutedEventArgs e)
+        {
+            var settings = CurrentSettings;
+            var option = SettingsResetFieldComboBox.SelectedItem as SettingsResetFieldOption;
+            if (settings == null || option == null) return;
+            if (!ConfirmSettingsReset("确认恢复单字段默认", SettingsResetCatalog.BuildFieldImpact(option))) return;
+
+            SettingsResetCatalog.ResetField(settings, option.Key);
+            RefreshSettingsAfterDraftReset();
+        }
+
+        private void OnResetGeneralDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.General);
+
+        private void OnResetBackupDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.BackupRestore);
+
+        private void OnResetAppearanceDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.Appearance);
+
+        private void OnResetAutomationDefaultsClick(object sender, RoutedEventArgs e)
+            => ResetSettingsCategory(SettingsResetCategory.AutomationMedia);
+
+        private void OnResetAllDefaultsClick(object sender, RoutedEventArgs e)
+        {
+            var settings = CurrentSettings;
+            if (settings == null || !ConfirmSettingsReset("确认恢复全部默认", SettingsResetCatalog.BuildAllImpact())) return;
+
+            SettingsResetCatalog.ResetAll(settings);
+            RefreshSettingsAfterDraftReset();
+        }
+
+        private void ResetSettingsCategory(SettingsResetCategory category)
+        {
+            var settings = CurrentSettings;
+            if (settings == null || !ConfirmSettingsReset($"确认恢复{SettingsResetCatalog.GetCategoryDisplay(category)}默认", SettingsResetCatalog.BuildCategoryImpact(category))) return;
+
+            SettingsResetCatalog.ResetCategory(settings, category);
+            RefreshSettingsAfterDraftReset();
+        }
+
+        private bool ConfirmSettingsReset(string title, string impact)
+        {
+            var host = Window.GetWindow(this);
+            return MessageBox.Show(host, impact, title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+        }
+
+        private void RefreshSettingsAfterDraftReset()
+        {
+            var settings = CurrentSettings;
+            if (settings == null) return;
+
+            // Auto-properties in the Playnite settings DTO intentionally stay lightweight.
+            // Rebinding the same pending-edit instance refreshes every field without ending
+            // the edit session, so Playnite's Cancel button can still restore the prior draft.
+            DataContext = null;
+            DataContext = settings;
+            ApplyAdaptiveTheme();
+            ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            InvalidatePathValidation();
+            if (IsLoaded) StartPathValidation(pathValidationGeneration);
+            RefreshValidationSummary();
+            RefreshSaveState();
+        }
+
         private ValidationFieldTarget? ResolveValidationTarget(string error)
         {
             if (ContainsOrdinal(error, "Worker")) return FindValidationTarget("Worker 可执行文件");
@@ -513,6 +925,8 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void FocusValidationTarget(ValidationFieldTarget? target)
         {
+            if (HasSettingsSearch && SettingsSearchTextBox != null)
+                SettingsSearchTextBox.Clear();
             if (SettingsSectionTabs == null) return;
             if (target == null)
             {
@@ -805,6 +1219,11 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnSettingsTabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (HasSettingsSearch)
+            {
+                ApplySettingsSearch();
+                return;
+            }
             var selectedIndex = SettingsSectionTabs?.SelectedIndex ?? 0;
             SetCategoryVisibility(SettingsGeneralPanel, selectedIndex == 0);
             SetCategoryVisibility(SettingsBackupPanel, selectedIndex == 1);
@@ -952,8 +1371,16 @@ namespace GameSaveCenter.Playnite.Settings
                     if (info.Length > 1024 * 1024) throw new InvalidDataException("设置文件超过 1 MiB 安全上限。");
                     return File.ReadAllText(fileName);
                 });
-                var report = settings.ImportPortableJson(json);
                 if (!CanPresentUiFeedback) return;
+                var preview = settings.PreviewPortableJson(json);
+                if (!preview.IsCompatible)
+                {
+                    ShowSettingsMessage(preview.BuildConfirmationMessage(), "GameSaveCenter 设置导入预览", MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (!ConfirmSettingsImport(preview)) return;
+                var report = settings.ApplyPortableJson(preview);
                 DataContext = null;
                 DataContext = settings;
                 ApplyAdaptiveTheme();
@@ -969,6 +1396,17 @@ namespace GameSaveCenter.Playnite.Settings
             {
                 settingsTransferInProgress = false;
             }
+        }
+
+        private bool ConfirmSettingsImport(SettingsImportPreview preview)
+        {
+            var host = Window.GetWindow(this);
+            return MessageBox.Show(
+                       host,
+                       preview.BuildConfirmationMessage(),
+                       "确认导入 GameSaveCenter 设置",
+                       MessageBoxButton.YesNo,
+                       MessageBoxImage.Warning) == MessageBoxResult.Yes;
         }
 
         private Task ShowImportReportAsync(string summary, bool hasMissingPaths)
@@ -1051,7 +1489,7 @@ namespace GameSaveCenter.Playnite.Settings
             // Keep the same host-neutral baseline used by DashboardView. The settings
             // material below only changes structural surfaces; it must not leave core
             // semantic brushes inherited from a Playnite host dictionary.
-            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark);
+            AdaptiveThemePaletteFactory.ApplyDemoCoreResources(Resources, palette.IsDark, palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplySettingsMaterialResources(Resources, palette, glassEnabled);
 
             // Keep the fixed background ambient layer out of the render tree when glass is

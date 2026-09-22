@@ -5,7 +5,7 @@
     {
       "id": "R00-01-02",
       "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-      "sourceCommit": "89aa27e15e8ed8d2be5a68a6164541e9728d62ab",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["shared-controls", "all-pages"],
@@ -17,7 +17,7 @@
     {
       "id": "R00-03",
       "evidence": "evidence/R00-03-MOTION-LIFECYCLE-20260916.md",
-      "sourceCommit": "e5a12ffaea138c3a3efccaeb82c58d339ae7d494",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["shell", "all-pages"],
@@ -29,7 +29,7 @@
     {
       "id": "R00-04",
       "evidence": "evidence/R00-04-SEARCH-BENCHMARK-20260916.md",
-      "sourceCommit": "e5a12ffaea138c3a3efccaeb82c58d339ae7d494",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["shell", "game-picker"],
@@ -42,7 +42,7 @@
     {
       "id": "R00-05",
       "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
-      "sourceCommit": "e8fe1aab966d7390a9498cacd57def45e9147e3a",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["shared-controls", "all-pages"],
@@ -54,7 +54,7 @@
     {
       "id": "R00-06",
       "evidence": "evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md",
-      "sourceCommit": "e8fe1aab966d7390a9498cacd57def45e9147e3a",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["media-center"],
@@ -80,7 +80,7 @@
     {
       "id": "R00-08",
       "evidence": "evidence/R00-08-PICKER-ENTER-IME-20260916.md",
-      "sourceCommit": "4f5850247d1775fe0f9ffe252b727f06eea0699e",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["shell", "game-picker"],
@@ -106,7 +106,7 @@
     {
       "id": "R01-02",
       "evidence": "evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md",
-      "sourceCommit": "a5219c0906c6302752c026f734900f7cdbdf770b",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["dev-probe", "numeric-cells"],
@@ -119,7 +119,7 @@
     {
       "id": "R01-03",
       "evidence": "evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-      "sourceCommit": "c2399d7be9f723e77226619172be16778fe3646f",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": ["audit", "evidence-index"],
@@ -132,7 +132,7 @@
     {
       "id": "R01-04",
       "evidence": "evidence/R01-04-MOTION-BEHAVIOR-20260916.md",
-      "sourceCommit": "74abb10",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["shell", "motion"],
@@ -144,7 +144,7 @@
     {
       "id": "R01-05",
       "evidence": "evidence/R01-05-NEGATIVE-REGISTRY-20260916.md",
-      "sourceCommit": "810114e2",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["negative-fixtures", "all-pages"],
@@ -158,7 +158,7 @@
     {
       "id": "R01-06",
       "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "c2399d7be9f723e77226619172be16778fe3646f",
+      "sourceCommit": "3354fd82400df6659165a688b8fcb1eb87116ca4",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": ["audit", "host-evidence"],

@@ -56,6 +56,13 @@ namespace GameSaveCenter.Contracts
         public string CheckedLocalDisplay => CheckedUtc == default(DateTime)
             ? "尚未检查"
             : CheckedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+        public string CheckedRelativeDisplay => CheckedUtc == default(DateTime)
+            ? "尚未检查"
+            : TimeDisplayFormatter.Relative(CheckedUtc, DateTime.UtcNow);
+        public string CheckedFullDisplay => CheckedUtc == default(DateTime)
+            ? "尚未检查"
+            : TimeDisplayFormatter.Full(CheckedUtc);
+        public string CheckedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CheckedUtc);
     }
 
     public sealed class EnvironmentCheckRequestDto

@@ -33,7 +33,8 @@ public sealed class R02ActionAvailabilityHintTests
     [Fact]
     public void MediaAndCloudHintsCoverSelectionReadinessAndOperationalFailures()
     {
-        Assert.Contains("Worker 当前离线", ViewModels.ActionAvailabilityHints.MediaInbox(false, "待归类", false, false, false));
+        Assert.Contains("后台服务当前离线", ViewModels.ActionAvailabilityHints.MediaInbox(false, "待归类", false, false, false));
+        Assert.DoesNotContain("Worker 当前离线", ViewModels.ActionAvailabilityHints.MediaInbox(false, "待归类", false, false, false));
         Assert.Contains("选中媒体", ViewModels.ActionAvailabilityHints.MediaInbox(true, "待归类", false, false, false));
         Assert.Contains("目标游戏", ViewModels.ActionAvailabilityHints.MediaInbox(true, "待归类", true, false, false));
         Assert.Contains("来源文件和原始副本仍会保留", ViewModels.ActionAvailabilityHints.MediaInbox(true, "待归类", true, true, false));
@@ -42,6 +43,7 @@ public sealed class R02ActionAvailabilityHintTests
         Assert.False(ViewModels.ActionAvailabilityHints.MediaInboxNeedsMaintenance(true, false));
 
         Assert.Contains("云端上传未启用", ViewModels.ActionAvailabilityHints.CloudTransfer(true, false, false, null, false));
+        Assert.DoesNotContain("Rclone", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, false, null, false));
         Assert.Contains("选中一条记录", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, null, false));
         Assert.Contains("尚未远端校验", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("Uploaded"), false));
         Assert.Contains("重试上传", ViewModels.ActionAvailabilityHints.CloudTransfer(true, true, true, Transfer("Failed"), false));

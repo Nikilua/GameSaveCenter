@@ -220,11 +220,5 @@ public sealed class EnvironmentCheckService
     private static EnvironmentCheckItemDto Item(string key, string title, EnvironmentCheckState state, string summary, string detail, bool optional) => new()
     { Key = key, Title = title, State = state, Summary = summary, Detail = detail, Version = string.Empty, IsOptional = optional };
 
-    private static string FormatBytes(long bytes)
-    {
-        if (bytes < 1024) return bytes + " B";
-        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-    }
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
 }

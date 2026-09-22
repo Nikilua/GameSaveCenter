@@ -10,8 +10,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
 {
     /// <summary>
     /// Small, render-only motion primitives for the Playnite host.  Transforms are always
-    /// made per visual before being animated, so a Freezable supplied by a Style can never
-    /// be mutated or shared with another control instance.
+    /// made per visual before being animated, so a Freezable supplied by a Style or an
+    /// external RenderTransform can never be mutated or shared with another control instance.
     /// </summary>
     internal static class GscMotion
     {
@@ -30,6 +30,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public bool HasScaleBase;
             public double ScaleBaseX;
             public double ScaleBaseY;
+            public Transform? OwnedRenderTransform;
         }
 
         private sealed class MotionRegistry
@@ -107,24 +108,35 @@ namespace GameSaveCenter.Playnite.Infrastructure
         internal static EasingFunctionBase CreateEaseOut()
             => new CubicEase { EasingMode = EasingMode.EaseOut };
 
+        private static Transform? EnsureOwnedRenderTransform(FrameworkElement element, MotionState state)
+        {
+            var current = element.RenderTransform;
+            if (current == null || ReferenceEquals(current, Transform.Identity))
+                return null;
+
+            if (ReferenceEquals(current, state.OwnedRenderTransform))
+                return current;
+
+            // WPF does not expose every dependency-property owner of a mutable Freezable.
+            // Clone every external transform on first use instead of trying to infer whether
+            // another control already references it. CloneCurrentValue preserves the existing
+            // geometry while giving this element a mutation-safe tree.
+            var owned = current.CloneCurrentValue();
+            element.RenderTransform = owned;
+            state.OwnedRenderTransform = owned;
+            return owned;
+        }
+
         internal static TranslateTransform GetMutableTranslateTransform(FrameworkElement element)
         {
-            if (element.RenderTransform is TranslateTransform translate)
-            {
-                if (!translate.IsFrozen) return translate;
-                translate = (TranslateTransform)translate.CloneCurrentValue();
-                element.RenderTransform = translate;
+            var state = MotionStates.GetOrCreateValue(element);
+            var owned = EnsureOwnedRenderTransform(element, state);
+            if (owned is TranslateTransform translate)
                 return translate;
-            }
 
-            var group = element.RenderTransform as TransformGroup;
+            var group = owned as TransformGroup;
             if (group != null)
             {
-                if (group.IsFrozen)
-                {
-                    group = (TransformGroup)group.CloneCurrentValue();
-                    element.RenderTransform = group;
-                }
                 foreach (var child in group.Children)
                 {
                     if (child is TranslateTransform childTranslate && !childTranslate.IsFrozen)
@@ -136,38 +148,32 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             var mutable = new TranslateTransform();
-            if (element.RenderTransform != null && element.RenderTransform != Transform.Identity)
+            if (owned != null)
             {
                 var replacement = new TransformGroup();
-                replacement.Children.Add(element.RenderTransform.IsFrozen
-                    ? element.RenderTransform.CloneCurrentValue()
-                    : element.RenderTransform);
+                replacement.Children.Add(owned);
                 replacement.Children.Add(mutable);
                 element.RenderTransform = replacement;
+                state.OwnedRenderTransform = replacement;
             }
-            else element.RenderTransform = mutable;
+            else
+            {
+                element.RenderTransform = mutable;
+                state.OwnedRenderTransform = mutable;
+            }
             return mutable;
         }
 
         internal static ScaleTransform GetMutableScaleTransform(FrameworkElement element)
         {
-            if (element.RenderTransform is ScaleTransform scale)
-            {
-                if (!scale.IsFrozen) return scale;
-                scale = (ScaleTransform)scale.CloneCurrentValue();
-                element.RenderTransform = scale;
+            var state = MotionStates.GetOrCreateValue(element);
+            var owned = EnsureOwnedRenderTransform(element, state);
+            if (owned is ScaleTransform scale)
                 return scale;
-            }
 
-            var group = element.RenderTransform as TransformGroup;
+            var group = owned as TransformGroup;
             if (group != null)
             {
-                if (group.IsFrozen)
-                {
-                    group = (TransformGroup)group.CloneCurrentValue();
-                    element.RenderTransform = group;
-                }
-
                 var existing = FindMutableScaleTransform(group);
                 if (existing != null)
                     return existing;
@@ -178,16 +184,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             var mutable = new ScaleTransform(1, 1);
-            if (element.RenderTransform != null && element.RenderTransform != Transform.Identity)
+            if (owned != null)
             {
                 var replacement = new TransformGroup();
-                replacement.Children.Add(element.RenderTransform.IsFrozen
-                    ? element.RenderTransform.CloneCurrentValue()
-                    : element.RenderTransform);
+                replacement.Children.Add(owned);
                 replacement.Children.Add(mutable);
                 element.RenderTransform = replacement;
+                state.OwnedRenderTransform = replacement;
             }
-            else element.RenderTransform = mutable;
+            else
+            {
+                element.RenderTransform = mutable;
+                state.OwnedRenderTransform = mutable;
+            }
             return mutable;
         }
 

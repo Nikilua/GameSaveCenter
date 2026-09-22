@@ -15,14 +15,14 @@ public sealed class ResponsiveLayoutCoordinatorTests
             (width: 959d, mode: LayoutMode.Narrow, sidebar: 72d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
             (width: 960d, mode: LayoutMode.Compact, sidebar: 78d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
             (width: 979d, mode: LayoutMode.Compact, sidebar: 78d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
-            (width: 980d, mode: LayoutMode.Compact, sidebar: 78d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1039d, mode: LayoutMode.Compact, sidebar: 78d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1040d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1079d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1080d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1199d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1200d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
-            (width: 1279d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: false, shellPicker: 300d),
+            (width: 980d, mode: LayoutMode.Compact, sidebar: 78d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1039d, mode: LayoutMode.Compact, sidebar: 78d, gutter: 10d, pickerOnTopBar: false, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1040d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1079d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1080d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1199d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1200d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
+            (width: 1279d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
             (width: 1280d, mode: LayoutMode.Expanded, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 380d, shellCompact: false, shellPicker: 300d)
         };
 
@@ -68,7 +68,7 @@ public sealed class ResponsiveLayoutCoordinatorTests
     {
         var state = ResponsiveLayoutCoordinator.Calculate(980, 768);
 
-        Assert.False(state.IsCompactShellHeader);
+        Assert.True(state.IsCompactShellHeader);
         Assert.True(state.ShouldStackGameHeader(1179));
         Assert.False(state.ShouldStackGameHeader(1180));
         Assert.True(state.OverviewUsesStackedColumns);

@@ -34,7 +34,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         public string PlayniteId => Game.PlayniteId;
         public string Name => Game.Name ?? string.Empty;
+        public string IconPath => Game.IconPath ?? string.Empty;
         public string PlatformDisplay => Game.PlatformDisplay;
+        public string IdentityDisplay => Game.IdentityDisplay;
         public string InstallStateDisplay => Game.InstallStateDisplay;
         public string MatchStateDisplay => Game.MatchStateDisplay;
         public string HealthState => Game.HealthState ?? string.Empty;
@@ -44,6 +46,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsRunning => Game.IsRunning;
         public bool IsMatched => Game.LudusaviMatched;
         public bool HasBackups => Game.BackupVersionCount > 0;
+        public bool CanBackup => IsMatched && Game.BackupVersionCount <= 0 && !Game.LastBackupUtc.HasValue;
         public bool NeedsAttention => IsAttention(Game);
         public int BackupVersionCount => Game.BackupVersionCount;
         public int MediaCount => Game.MediaCount;

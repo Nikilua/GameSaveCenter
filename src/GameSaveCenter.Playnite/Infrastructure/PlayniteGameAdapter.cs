@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 PlayniteId = game.Id.ToString("D"),
                 Name = game.Name ?? string.Empty,
+                IconPath = ResolveIconPath(game.Icon),
                 Platform = DetectPlatform(game),
                 PlatformGameId = game.GameId ?? string.Empty,
                 PluginId = game.PluginId.ToString("D"),
@@ -144,6 +145,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 return File.Exists(expanded) || Directory.Exists(expanded);
             }
             catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException)) { return false; }
+        }
+
+        private string ResolveIconPath(string? reference)
+        {
+            if (string.IsNullOrWhiteSpace(reference)) return string.Empty;
+            try
+            {
+                var path = api.Database.GetFullFilePath(reference);
+                return !string.IsNullOrWhiteSpace(path) && File.Exists(path) ? path : string.Empty;
+            }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException))
+            {
+                return string.Empty;
+            }
         }
 
         private static GamePlatformKind DetectPlatform(Game game)

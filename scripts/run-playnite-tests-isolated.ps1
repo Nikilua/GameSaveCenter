@@ -1,11 +1,26 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidateSet('Debug', 'Release')][string]$Configuration = 'Release',
     [string]$OutputRoot = '',
+    [string]$TestTempRoot = '',
     [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot)
 )
 
 $ErrorActionPreference = 'Stop'
+$previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
+$previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
+
+if ($OutputRoot) {
+    $isolatedTestTempRoot = if ([string]::IsNullOrWhiteSpace($TestTempRoot)) {
+        Join-Path ([System.IO.Path]::GetFullPath($OutputRoot)) 'test-temp'
+    }
+    else {
+        [System.IO.Path]::GetFullPath($TestTempRoot)
+    }
+    New-Item -ItemType Directory -Path $isolatedTestTempRoot -Force | Out-Null
+    $env:TEMP = $isolatedTestTempRoot
+    $env:TMP = $isolatedTestTempRoot
+}
 
 function Invoke-PlayniteTestProcess {
     param(
@@ -100,5 +115,17 @@ try {
     Write-Host 'All Playnite tests passed with WPF classes isolated by process.' -ForegroundColor Green
 }
 finally {
+    if ($null -eq $previousTemp) {
+        Remove-Item Env:TEMP -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:TEMP = $previousTemp
+    }
+    if ($null -eq $previousTmp) {
+        Remove-Item Env:TMP -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:TMP = $previousTmp
+    }
     Pop-Location
 }

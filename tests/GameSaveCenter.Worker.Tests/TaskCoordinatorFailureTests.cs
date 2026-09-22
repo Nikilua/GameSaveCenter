@@ -2,6 +2,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Ipc;
 using GameSaveCenter.Worker.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
@@ -33,6 +34,123 @@ public sealed class TaskCoordinatorFailureTests
             (_, token) => Task.FromException(new OperationCanceledException(token)),
             TaskState.Cancelled,
             "Cancelled Game");
+    }
+
+    [Fact]
+    public async Task CloudFailureKeepsLocalBackupResultOnTheFailedTask()
+    {
+        var store = new RecordingTaskStatusStore();
+        var broadcaster = new TaskEventBroadcaster();
+        using var subscription = broadcaster.Subscribe();
+        var coordinator = new TaskCoordinator(store, broadcaster, NullLogger<TaskCoordinator>.Instance);
+
+        var result = await coordinator.RunAsync(
+            "Backup",
+            "game-under-test",
+            "Synthetic Game",
+            (progress, _) =>
+            {
+                progress.SetBackupResult(new BackupResultDto
+                {
+                    LocalState = "Succeeded",
+                    CloudState = "RetryScheduled",
+                    Summary = "本地备份已成功；云端上传已排队等待重试。"
+                });
+                return Task.FromException(new WorkerOperationException("RCLONE_NETWORK_FAILED", "网络不可用"));
+            },
+            CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.True(result.HasPartialSuccess);
+        Assert.Equal("Succeeded", result.BackupResult?.LocalState);
+        Assert.Equal("RetryScheduled", result.BackupResult?.CloudState);
+        Assert.Contains("本地备份已成功", result.BackupResult?.Summary ?? string.Empty);
+        Assert.Same(result, store.TerminalTask);
+
+        var events = new List<TaskChangeEventDto>();
+        while (subscription.Reader.TryRead(out var change)) events.Add(change);
+        var terminalEvent = events.Last(change => change.Task.TaskId == result.TaskId && change.Task.State == TaskState.Failed);
+        Assert.Equal("RetryScheduled", terminalEvent.Task.BackupResult?.CloudState);
+        Assert.True(terminalEvent.Task.HasPartialSuccess);
+    }
+
+    [Fact]
+    public async Task TerminalFailureKeepsTheLastReportedStageSeparateFromErrorMessage()
+    {
+        var store = new RecordingTaskStatusStore();
+        var coordinator = new TaskCoordinator(store, new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
+
+        var result = await coordinator.RunAsync(
+            "Backup",
+            "game-under-test",
+            "Synthetic Game",
+            async (progress, _) =>
+            {
+                await progress.ReportAsync(10, "正在扫描存档");
+                throw new WorkerOperationException("LUDUSAVI_FAILED", "合成失败");
+            },
+            CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("执行失败", result.Message);
+        Assert.Equal("正在扫描存档", result.StageMessage);
+        Assert.Equal("扫描中", result.StageDisplay);
+        Assert.Contains("合成失败", result.DetailMessage, StringComparison.Ordinal);
+        Assert.Same(result, store.TerminalTask);
+    }
+
+    [Fact]
+    public async Task CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled()
+    {
+        var store = new RecordingTaskStatusStore();
+        var coordinator = new TaskCoordinator(store, new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
+        var started = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var callbackCount = 0;
+
+        var run = coordinator.RunAsync(
+            "Backup",
+            "cancel-game",
+            "Synthetic Game",
+            async (_, token) =>
+            {
+                started.TrySetResult(true);
+                using var callback = token.Register(() => Interlocked.Increment(ref callbackCount));
+                await Task.Delay(Timeout.InfiniteTimeSpan, token);
+            },
+            CancellationToken.None,
+            taskId: "cancel-once");
+
+        await started.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        var responses = await Task.WhenAll(coordinator.CancelAsync("cancel-once"), coordinator.CancelAsync("cancel-once"));
+        var result = await run.WaitAsync(TimeSpan.FromSeconds(2));
+
+        Assert.All(responses, response => Assert.True(response));
+        Assert.Equal(1, Volatile.Read(ref callbackCount));
+        Assert.Equal(TaskState.Cancelled, result.State);
+        Assert.Equal(TaskCancellationStates.Cancelled, result.CancellationState);
+        Assert.Equal("已取消", result.CancellationDisplay);
+        Assert.Contains(store.Writes, task => task.CancellationState == TaskCancellationStates.Requested);
+        Assert.Contains(store.Writes, task => task.CancellationState == TaskCancellationStates.Finalizing);
+        Assert.Contains(store.Writes, task => task.State == TaskState.Cancelled && task.CancellationState == TaskCancellationStates.Cancelled);
+    }
+
+    [Fact]
+    public async Task CompletedTaskRejectsLateCancellationWithoutLeavingPendingState()
+    {
+        var coordinator = new TaskCoordinator(new RecordingTaskStatusStore(), new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
+        var result = await coordinator.RunAsync(
+            "Backup",
+            "completed-game",
+            "Synthetic Game",
+            (_, _) => Task.CompletedTask,
+            CancellationToken.None,
+            taskId: "already-completed");
+
+        Assert.Equal(TaskState.Succeeded, result.State);
+        Assert.False(await coordinator.CancelAsync(result.TaskId));
+        Assert.Equal(TaskCancellationStates.None, result.CancellationState);
+        Assert.False(result.IsCancellationPending);
+        Assert.Equal("不可取消", result.CancellationDisplay);
     }
 
     private static async Task AssertTerminalPersistenceFailureDoesNotLeakAsync(
@@ -99,6 +217,32 @@ public sealed class TaskCoordinatorFailureTests
                 throw new InvalidOperationException("injected terminal persistence failure");
             }
 
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class RecordingTaskStatusStore : ITaskStatusStore
+    {
+        public TaskStatusDto? TerminalTask { get; private set; }
+        public List<TaskStatusDto> Writes { get; } = new();
+
+        public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            lock (Writes)
+            {
+                Writes.Add(new TaskStatusDto
+                {
+                    TaskId = task.TaskId,
+                    State = task.State,
+                    Message = task.Message,
+                    StageMessage = task.StageMessage,
+                    CancellationState = task.CancellationState,
+                    ProgressPercent = task.ProgressPercent
+                });
+            }
+            if (task.State is TaskState.Succeeded or TaskState.Failed or TaskState.Cancelled)
+                TerminalTask = task;
             return Task.CompletedTask;
         }
     }

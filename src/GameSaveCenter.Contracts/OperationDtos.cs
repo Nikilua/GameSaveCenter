@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GameSaveCenter.Contracts
 {
@@ -11,21 +13,44 @@ namespace GameSaveCenter.Contracts
     }
 
     /// <summary>Per-game backup and synchronization policy.</summary>
-    public sealed class BackupPolicyDto
+    public sealed class BackupPolicyDto : INotifyPropertyChanged
     {
-        public bool Enabled { get; set; } = true;
-        public bool BackupOnGameStop { get; set; } = true;
-        public bool BackupDuringPlay { get; set; } = true;
-        public int DuringPlayIntervalMinutes { get; set; } = 30;
-        public bool UploadAfterBackup { get; set; }
-        public bool SyncMediaDuringPlay { get; set; } = true;
-        public bool SyncMediaOnGameStop { get; set; } = true;
-        public bool AllowAutomaticRestore { get; set; }
-        public BackupAnomalyProtectionLevel AnomalyProtectionLevel { get; set; } = BackupAnomalyProtectionLevel.Normal;
-        public int KeepRecentAllHours { get; set; } = 24;
-        public int KeepDailyDays { get; set; } = 30;
-        public int KeepWeeklyWeeks { get; set; } = 12;
-        public int KeepMonthlyMonths { get; set; } = 24;
+        private bool enabled = true;
+        private bool backupOnGameStop = true;
+        private bool backupDuringPlay = true;
+        private int duringPlayIntervalMinutes = 30;
+        private bool uploadAfterBackup;
+        private bool syncMediaDuringPlay = true;
+        private bool syncMediaOnGameStop = true;
+        private bool allowAutomaticRestore;
+        private BackupAnomalyProtectionLevel anomalyProtectionLevel = BackupAnomalyProtectionLevel.Normal;
+        private int keepRecentAllHours = 24;
+        private int keepDailyDays = 30;
+        private int keepWeeklyWeeks = 12;
+        private int keepMonthlyMonths = 24;
+
+        public bool Enabled { get => enabled; set => SetValue(ref enabled, value); }
+        public bool BackupOnGameStop { get => backupOnGameStop; set => SetValue(ref backupOnGameStop, value); }
+        public bool BackupDuringPlay { get => backupDuringPlay; set => SetValue(ref backupDuringPlay, value); }
+        public int DuringPlayIntervalMinutes { get => duringPlayIntervalMinutes; set => SetValue(ref duringPlayIntervalMinutes, value); }
+        public bool UploadAfterBackup { get => uploadAfterBackup; set => SetValue(ref uploadAfterBackup, value); }
+        public bool SyncMediaDuringPlay { get => syncMediaDuringPlay; set => SetValue(ref syncMediaDuringPlay, value); }
+        public bool SyncMediaOnGameStop { get => syncMediaOnGameStop; set => SetValue(ref syncMediaOnGameStop, value); }
+        public bool AllowAutomaticRestore { get => allowAutomaticRestore; set => SetValue(ref allowAutomaticRestore, value); }
+        public BackupAnomalyProtectionLevel AnomalyProtectionLevel { get => anomalyProtectionLevel; set => SetValue(ref anomalyProtectionLevel, value); }
+        public int KeepRecentAllHours { get => keepRecentAllHours; set => SetValue(ref keepRecentAllHours, value); }
+        public int KeepDailyDays { get => keepDailyDays; set => SetValue(ref keepDailyDays, value); }
+        public int KeepWeeklyWeeks { get => keepWeeklyWeeks; set => SetValue(ref keepWeeklyWeeks, value); }
+        public int KeepMonthlyMonths { get => keepMonthlyMonths; set => SetValue(ref keepMonthlyMonths, value); }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void SetValue<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return;
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     /// <summary>Request to back up one game or all games.</summary>
@@ -37,6 +62,97 @@ namespace GameSaveCenter.Contracts
         public string Reason { get; set; } = "Manual";
         public string SessionId { get; set; } = string.Empty;
         public string NotificationSessionId { get; set; } = string.Empty;
+    }
+
+    /// <summary>Read-only summary from Ludusavi's backup preview; it never represents an archive.</summary>
+    public sealed class BackupPreviewDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public string State { get; set; } = "Empty";
+        public DateTime GeneratedUtc { get; set; }
+        public int PathCount { get; set; }
+        public long TotalBytes { get; set; }
+        public List<BackupPreviewPathDto> Paths { get; set; } = new List<BackupPreviewPathDto>();
+        public string Summary { get; set; } = "点击“预览备份”后，这里会显示本次扫描范围。";
+        public string Detail { get; set; } = string.Empty;
+        public bool HasData => string.Equals(State, "Ready", StringComparison.OrdinalIgnoreCase) && PathCount > 0;
+        public string GeneratedDisplay => GeneratedUtc == default(DateTime) ? "尚未生成" : $"扫描于 {GeneratedUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss}";
+        public string PathSummaryDisplay => PathCount <= 0
+            ? "尚未识别到可纳入备份的路径。"
+            : $"已识别 {PathCount} 个路径 · {FormatBytes(TotalBytes)}{(Paths.Count < PathCount ? $" · 展示前 {Paths.Count} 个" : string.Empty)}";
+        public string IdentifiedPathsDisplay => Paths.Count == 0
+            ? "路径：尚未识别"
+            : "路径：" + string.Join("；", Paths.ConvertAll(x => x.Path));
+        public string StateDisplay => State switch
+        {
+            "Ready" => "已生成预览",
+            "Loading" => "扫描中",
+            "NoData" => "没有可纳入路径",
+            "Unavailable" => "暂不可预览",
+            "Error" => "预览失败",
+            _ => "尚未预览"
+        };
+
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
+    }
+
+    public sealed class BackupPreviewPathDto
+    {
+        public string Path { get; set; } = string.Empty;
+        public long SizeBytes { get; set; }
+    }
+
+    /// <summary>
+    /// Layered outcome for a backup task. A cloud copy is a follow-up to the local
+    /// version, so its failure must not erase or hide an already indexed local backup.
+    /// </summary>
+    public sealed class BackupResultDto
+    {
+        public string LocalState { get; set; } = "Unknown";
+        public string CloudState { get; set; } = "Disabled";
+        public string Summary { get; set; } = string.Empty;
+        public string Remediation { get; set; } = string.Empty;
+
+        public bool HasResult => !string.Equals(LocalState, "Unknown", StringComparison.OrdinalIgnoreCase);
+        public bool LocalBackupSucceeded => string.Equals(LocalState, "Succeeded", StringComparison.OrdinalIgnoreCase);
+        public bool IsPartialSuccess => LocalBackupSucceeded
+            && !string.Equals(CloudState, "Disabled", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(CloudState, "Uploaded", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(CloudState, "RemoteVerified", StringComparison.OrdinalIgnoreCase);
+        public bool CanRetryCloudUpload => LocalBackupSucceeded
+            && (string.Equals(CloudState, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(CloudState, "Failed", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(CloudState, "AuthenticationRequired", StringComparison.OrdinalIgnoreCase));
+        public bool CanVerifyRemote => LocalBackupSucceeded
+            && string.Equals(CloudState, "Uploaded", StringComparison.OrdinalIgnoreCase);
+
+        public string StateDisplay
+        {
+            get
+            {
+                if (!LocalBackupSucceeded) return "本地备份未完成";
+                return CloudState switch
+                {
+                    "Disabled" => "本地备份已成功",
+                    "RetryScheduled" => "本地备份已成功 · 云端上传排队",
+                    "Failed" => "本地备份已成功 · 云端镜像失败",
+                    "AuthenticationRequired" => "本地备份已成功 · 云端认证需处理",
+                    "Transferring" => "本地备份已成功 · 云端传输中",
+                    "Uploaded" => "本地备份已成功 · 云端已上传，待远端校验",
+                    "RemoteVerified" => "本地备份已成功 · 远端已校验",
+                    _ => $"本地备份已成功 · 云端状态：{CloudState}"
+                };
+            }
+        }
+
+        public string RemediationDisplay => string.IsNullOrWhiteSpace(Remediation)
+            ? CanRetryCloudUpload
+                ? "可单独重试云端上传；不会重新创建本地备份。"
+                : CanVerifyRemote
+                    ? "可发起远端校验；不会修改本地副本。"
+                    : string.Empty
+            : Remediation;
     }
 
     /// <summary>Request to synchronize screenshot and video sources.</summary>
@@ -59,6 +175,83 @@ namespace GameSaveCenter.Contracts
         public bool ConfirmedCurrentSnapshot { get; set; }
         public bool ConfirmedGameClosed { get; set; }
         public string UserComment { get; set; } = string.Empty;
+    }
+
+    /// <summary>Durable, credential-free summary of one restore execution.</summary>
+    public sealed class RestoreReportDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+        public int FileCount { get; set; }
+        public long TotalBytes { get; set; }
+        public string PreRestoreBackupId { get; set; } = string.Empty;
+        public bool PreRestoreCreated { get; set; }
+        public string Stage { get; set; } = string.Empty;
+        public string OutcomeKind { get; set; } = "Running";
+        public string FailureCode { get; set; } = string.Empty;
+        public bool WasRolledBack { get; set; }
+        public bool RequiresManualIntervention { get; set; }
+        public string TaskId { get; set; } = string.Empty;
+
+        public string FileScopeDisplay => FileCount > 0 || TotalBytes > 0
+            ? $"目标清单：{FileCount} 个文件 · {FormatBytes(TotalBytes)}"
+            : "目标文件范围：由执行前预览确认，未返回可计数清单";
+
+        public string ProtectionDisplay => PreRestoreCreated
+            ? $"保护备份：已创建并锁定 {PreRestoreBackupId}"
+            : "保护备份：尚未确认创建";
+
+        public string OutcomeDisplay => OutcomeKind switch
+        {
+            "Completed" => "全部完成",
+            "RolledBack" => "未完成，已回滚到保护快照",
+            "ManualIntervention" => "未完成，需人工检查",
+            "Cancelled" => "已取消",
+            "Failed" => "未完成",
+            _ => "执行中"
+        };
+
+        public string FailureDisplay => string.IsNullOrWhiteSpace(FailureCode)
+            ? string.IsNullOrWhiteSpace(Stage) ? "无失败阶段" : $"阶段：{Stage}"
+            : $"阶段：{Stage} · 错误码：{FailureCode}";
+
+        public RestoreReportDto Clone() => new RestoreReportDto
+        {
+            PlayniteId = PlayniteId,
+            GameName = GameName,
+            BackupId = BackupId,
+            FileCount = FileCount,
+            TotalBytes = TotalBytes,
+            PreRestoreBackupId = PreRestoreBackupId,
+            PreRestoreCreated = PreRestoreCreated,
+            Stage = Stage,
+            OutcomeKind = OutcomeKind,
+            FailureCode = FailureCode,
+            WasRolledBack = WasRolledBack,
+            RequiresManualIntervention = RequiresManualIntervention,
+            TaskId = TaskId
+        };
+
+        public string ToRedactedText()
+        {
+            var lines = new List<string>
+            {
+                $"恢复结果：{OutcomeDisplay}",
+                $"游戏：{GameName}",
+                $"游戏 ID：{PlayniteId}",
+                $"目标版本：{BackupId}",
+                FileScopeDisplay,
+                ProtectionDisplay,
+                $"失败阶段：{FailureDisplay}",
+                $"任务 ID：{TaskId}"
+            };
+            if (WasRolledBack) lines.Add("回滚：已执行");
+            if (RequiresManualIntervention) lines.Add("人工介入：需要检查当前存档目录");
+            return string.Join("\r\n", lines);
+        }
+
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Request to validate one indexed backup without touching live save files.</summary>
@@ -93,16 +286,78 @@ namespace GameSaveCenter.Contracts
         public TaskState State { get; set; }
         public int ProgressPercent { get; set; }
         public string Message { get; set; } = string.Empty;
+        /// <summary>Last real stage event; terminal error text must not erase it.</summary>
+        public string StageMessage { get; set; } = string.Empty;
+        /// <summary>Durable cancellation phase; an empty value means no cancellation was requested.</summary>
+        public string CancellationState { get; set; } = TaskCancellationStates.None;
         public DateTime CreatedUtc { get; set; }
         public DateTime? StartedUtc { get; set; }
         public DateTime? FinishedUtc { get; set; }
+        /// <summary>Accumulated monotonic task seconds; null means legacy/unknown.</summary>
+        public double? ElapsedSeconds { get; set; }
+        /// <summary>Monotonic start point for a live task; it is cleared at terminal state.</summary>
+        public long MonotonicStartedTimestamp { get; set; }
+        public long MonotonicFrequency { get; set; }
         public string ErrorCode { get; set; } = string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
+        public BackupResultDto? BackupResult { get; set; }
+        public RestoreReportDto? RestoreReport { get; set; }
+        /// <summary>
+        /// Optional reliable work sample. A task must explicitly report a known
+        /// total before the UI may derive a rate or ETA; stage percentages alone
+        /// are intentionally not treated as throughput data.
+        /// </summary>
+        public long ProgressCompletedUnits { get; set; } = -1;
+        public long ProgressTotalUnits { get; set; } = -1;
+        public string ProgressUnit { get; set; } = string.Empty;
+        public double ProgressRatePerSecond { get; set; }
+        public double? ProgressEtaSeconds { get; set; }
+        public DateTime? ProgressUpdatedUtc { get; set; }
+        /// <summary>Stable, credential-free objects that the task detail can navigate to.</summary>
+        public List<TaskSourceReferenceDto> SourceReferences { get; set; } = new List<TaskSourceReferenceDto>();
+        public bool HasRestoreReport => RestoreReport != null;
         public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public int ProgressValue => Math.Max(0, Math.Min(100, ProgressPercent));
-        public string ProgressDisplay => ProgressPercent < 0 || (State == TaskState.Queued && ProgressPercent == 0)
+        public string ProgressDisplay => ProgressPercent < 0
+            || (State == TaskState.Queued && ProgressPercent == 0)
+            || (State == TaskState.Running && ProgressPercent == 0 && string.Equals(StageMessage, "正在执行", StringComparison.Ordinal))
             ? "—"
             : $"{ProgressValue}%";
+        public bool HasReliableProgressMetrics => ProgressTotalUnits > 0
+            && ProgressCompletedUnits >= 0
+            && ProgressCompletedUnits <= ProgressTotalUnits
+            && ProgressRatePerSecond > 0
+            && !double.IsNaN(ProgressRatePerSecond)
+            && !double.IsInfinity(ProgressRatePerSecond)
+            && !string.IsNullOrWhiteSpace(ProgressUnit)
+            && State != TaskState.Queued
+            && State != TaskState.WaitingForUser
+            && (State != TaskState.Running
+                || !ProgressUpdatedUtc.HasValue
+                || DateTime.UtcNow - ProgressUpdatedUtc.Value <= TimeSpan.FromSeconds(10));
+        public string ProgressRateDisplay => HasReliableProgressMetrics
+            ? FormatWorkRate(ProgressRatePerSecond, ProgressUnit)
+            : "—";
+        public string ProgressEtaDisplay
+        {
+            get
+            {
+                if (State != TaskState.Running || !HasReliableProgressMetrics || !ProgressEtaSeconds.HasValue)
+                    return "—";
+                var seconds = ProgressEtaSeconds.Value;
+                if (double.IsNaN(seconds) || double.IsInfinity(seconds) || seconds < 0 || seconds > TimeSpan.FromDays(7).TotalSeconds) return "—";
+                if (seconds < 1) return "< 1 秒";
+                if (seconds < 60) return $"{seconds:0} 秒";
+                if (seconds < 3600) return $"{seconds / 60:0.#} 分钟";
+                return $"{seconds / 3600:0.#} 小时";
+            }
+        }
+        public string StageKey => TaskStageResolver.ResolveKey(TaskType, string.IsNullOrWhiteSpace(StageMessage) ? Message : StageMessage);
+        public string StageDisplay => TaskStageResolver.GetDisplay(StageKey);
+        public bool HasKnownStage => !string.Equals(StageKey, TaskStageResolver.Unknown, StringComparison.Ordinal);
         public string StateDisplay => State switch
         {
             TaskState.Queued => "等待中",
@@ -121,6 +376,7 @@ namespace GameSaveCenter.Contracts
             "MediaInbox" => "媒体归类",
             "BackupAll" => "整库备份",
             "TrainerDownload" => "修改器下载",
+            "RemoteStage" => "远端备份下载",
             "CloudUpload" => "云端上传",
             "Validation" => "存档校验",
             _ => string.IsNullOrWhiteSpace(TaskType) ? "后台任务" : TaskType
@@ -128,26 +384,95 @@ namespace GameSaveCenter.Contracts
         public string DetailMessage => State == TaskState.Failed && !string.IsNullOrWhiteSpace(ErrorMessage)
             ? FormatFailureDetail(ErrorCode, ErrorMessage)
             : Message;
+        /// <summary>
+        /// Short, first-line failure text for a scan-friendly task inspector. The
+        /// complete diagnostic remains available through DetailMessage.
+        /// </summary>
+        public string FailureSummary => SummarizeFailure(
+            State == TaskState.Failed && !string.IsNullOrWhiteSpace(ErrorMessage)
+                ? ErrorMessage
+                : Message);
+        public string SafeDetailMessage => ClipboardTextSanitizer.Sanitize(DetailMessage);
+        public bool HasPartialSuccess => BackupResult?.IsPartialSuccess == true;
 
         private static string FormatFailureDetail(string errorCode, string errorMessage)
             => string.IsNullOrWhiteSpace(errorCode)
                 ? errorMessage
                 : $"错误码：{errorCode}；{errorMessage}";
-        public bool CanCancel => State == TaskState.Queued || State == TaskState.Running;
+        private static string SummarizeFailure(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+            var lines = ClipboardTextSanitizer.Sanitize(value).Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var summary = (lines.Length == 0 ? value : lines[0]).Trim();
+            const int maxLength = 240;
+            return summary.Length <= maxLength
+                ? summary
+                : summary.Substring(0, maxLength - 1).TrimEnd() + "…";
+        }
+        public bool IsCancellationPending => State == TaskState.Queued || State == TaskState.Running
+            ? string.Equals(CancellationState, TaskCancellationStates.Requested, StringComparison.Ordinal)
+                || string.Equals(CancellationState, TaskCancellationStates.Finalizing, StringComparison.Ordinal)
+            : false;
+        public string CancellationDisplay
+        {
+            get
+            {
+                if (State == TaskState.Cancelled || string.Equals(CancellationState, TaskCancellationStates.Cancelled, StringComparison.Ordinal)) return "已取消";
+                if (string.Equals(CancellationState, TaskCancellationStates.Finalizing, StringComparison.Ordinal)) return "无法立即中断 · 正在安全收尾";
+                if (string.Equals(CancellationState, TaskCancellationStates.Requested, StringComparison.Ordinal)) return "正在取消";
+                if (string.Equals(CancellationState, TaskCancellationStates.NotInterruptible, StringComparison.Ordinal)) return "无法中断 · 任务已结束";
+                return CanCancel ? "可取消" : "不可取消";
+            }
+        }
+        public bool CanCancel => (State == TaskState.Queued || State == TaskState.Running)
+            && string.IsNullOrWhiteSpace(CancellationState);
         public DateTime? StartedLocal => StartedUtc?.ToLocalTime();
         public DateTime? FinishedLocal => FinishedUtc?.ToLocalTime();
+        public string StartedRelativeDisplay => StartedUtc.HasValue
+            ? TimeDisplayFormatter.Relative(StartedUtc.Value, DateTime.UtcNow)
+            : "未开始";
+        public string StartedFullDisplay => StartedUtc.HasValue
+            ? TimeDisplayFormatter.Full(StartedUtc.Value)
+            : "未开始";
         public string DurationDisplay
         {
             get
             {
+                var measured = ElapsedSeconds;
+                if (State == TaskState.Running && MonotonicStartedTimestamp > 0)
+                    measured = Math.Max(0, measured ?? 0) + MonotonicTaskClock.SecondsSince(MonotonicStartedTimestamp, MonotonicFrequency);
+                if (measured.HasValue)
+                    return FormatDurationSeconds(measured.Value);
+
                 var start = StartedUtc ?? CreatedUtc;
                 var end = FinishedUtc ?? DateTime.UtcNow;
                 var duration = end - start;
-                if (duration.TotalSeconds < 1) return "< 1 秒";
-                if (duration.TotalMinutes < 1) return $"{duration.TotalSeconds:0} 秒";
-                if (duration.TotalHours < 1) return $"{duration.TotalMinutes:0.#} 分钟";
-                return $"{duration.TotalHours:0.#} 小时";
+                return FormatDurationSeconds(Math.Max(0, duration.TotalSeconds));
             }
+        }
+
+        private static string FormatDurationSeconds(double seconds)
+        {
+            if (double.IsNaN(seconds) || double.IsInfinity(seconds) || seconds < 1) return "< 1 秒";
+            if (seconds < 60) return $"{seconds:0} 秒";
+            if (seconds < 3600) return $"{seconds / 60:0.#} 分钟";
+            return $"{seconds / 3600:0.#} 小时";
+        }
+
+        private static string FormatWorkRate(double rate, string unit)
+        {
+            if (string.Equals(unit, "字节", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(unit, "bytes", StringComparison.OrdinalIgnoreCase))
+                return $"{FormatBytes(rate)}/秒";
+            return $"{rate:0.#} {unit}/秒";
+        }
+
+        private static string FormatBytes(double value)
+        {
+            if (value < 1024) return $"{value:0.#} B";
+            if (value < 1024 * 1024) return $"{value / 1024:0.#} KiB";
+            if (value < 1024 * 1024 * 1024) return $"{value / (1024 * 1024):0.#} MiB";
+            return $"{value / (1024 * 1024 * 1024):0.#} GiB";
         }
     }
 
@@ -166,6 +491,8 @@ namespace GameSaveCenter.Contracts
     public sealed class TaskChangeEventDto
     {
         public long Sequence { get; set; }
+        /// <summary>Worker-observed UTC time for this change; legacy events may leave it unknown.</summary>
+        public DateTime OccurredUtc { get; set; }
         public TaskStatusDto Task { get; set; } = new TaskStatusDto();
     }
 
@@ -180,9 +507,24 @@ namespace GameSaveCenter.Contracts
     public sealed class ValidationFindingDto
     {
         public string PlayniteId { get; set; } = string.Empty;
+        /// <summary>Stable backup version identity when the finding is version-specific.</summary>
+        public string BackupId { get; set; } = string.Empty;
         /// <summary>Resolved game title when this finding is sent in a dashboard snapshot.</summary>
         public string GameName { get; set; } = string.Empty;
         public FindingSeverity Severity { get; set; }
+        /// <summary>UTC time when the evidence was recorded; legacy rows may be unknown.</summary>
+        public DateTime CreatedUtc { get; set; }
+        public DateTime CreatedLocal => CreatedUtc == DateTime.MinValue ? DateTime.MinValue : CreatedUtc.ToLocalTime();
+        public string EvidenceTimeDisplay => CreatedUtc == DateTime.MinValue
+            ? "证据时间未知"
+            : $"证据时间：{CreatedLocal:yyyy-MM-dd HH:mm:ss}";
+        public string EvidenceTimeRelativeDisplay => CreatedUtc == DateTime.MinValue
+            ? "证据时间未知"
+            : $"证据时间：{TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow)}";
+        public string EvidenceTimeFullDisplay => CreatedUtc == DateTime.MinValue
+            ? "证据时间未知"
+            : $"证据时间：{TimeDisplayFormatter.Full(CreatedUtc)}";
+        public string EvidenceTimeRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
         public string SeverityDisplay => Severity switch
         {
             FindingSeverity.Info => "提示",
@@ -239,6 +581,33 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public string TemplateId { get; set; } = string.Empty;
+    }
+
+    /// <summary>Copies one saved template snapshot to an explicit, bounded target set.</summary>
+    public sealed class ApplyPolicyTemplateBatchDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public List<string> PlayniteIds { get; set; } = new List<string>();
+    }
+
+    public sealed class PolicyTemplateBatchApplyItemDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public bool Applied { get; set; }
+        public string Error { get; set; } = string.Empty;
+        public string StatusDisplay => Applied ? "已应用" : "失败";
+        public bool CanRetry => !Applied && !string.IsNullOrWhiteSpace(PlayniteId);
+    }
+
+    public sealed class ApplyPolicyTemplateBatchResultDto
+    {
+        public string TemplateId { get; set; } = string.Empty;
+        public int RequestedCount { get; set; }
+        public int AppliedCount { get; set; }
+        public int FailedCount { get; set; }
+        public List<PolicyTemplateBatchApplyItemDto> Items { get; set; } = new List<PolicyTemplateBatchApplyItemDto>();
     }
 
     /// <summary>Compares two indexed backup manifests.</summary>

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
@@ -76,6 +77,41 @@ public sealed class TaskQueryPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task MonotonicTaskDurationRoundTripsAndIsCapturedDuringRestartRecovery()
+    {
+        var startedTimestamp = Stopwatch.GetTimestamp() - Stopwatch.Frequency;
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "monotonic-recovery",
+            WorkerSessionId = "old-worker",
+            TaskType = "Backup",
+            GameId = "game-1",
+            GameName = "测试游戏",
+            State = TaskState.Running,
+            ProgressPercent = 20,
+            Message = "正在执行",
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-2),
+            StartedUtc = DateTime.UtcNow.AddMinutes(-1),
+            ElapsedSeconds = 2.5,
+            MonotonicStartedTimestamp = startedTimestamp,
+            MonotonicFrequency = Stopwatch.Frequency
+        }, CancellationToken.None);
+
+        var beforeRecovery = Assert.Single(await store.GetActiveTasksAsync(CancellationToken.None));
+        Assert.Equal(2.5, beforeRecovery.ElapsedSeconds);
+        Assert.Equal(startedTimestamp, beforeRecovery.MonotonicStartedTimestamp);
+
+        Assert.Equal(1, await store.MarkInterruptedTasksAsync("new-worker", CancellationToken.None));
+
+        var recovered = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None));
+        Assert.Equal(TaskState.Failed, recovered.State);
+        Assert.True(recovered.ElapsedSeconds >= 2.5);
+        Assert.Equal(0, recovered.MonotonicStartedTimestamp);
+        Assert.Equal(0, recovered.MonotonicFrequency);
+        Assert.Equal("old-worker", recovered.WorkerSessionId);
+    }
+
+    [Fact]
     public async Task SummaryAndPageApplyIndependentFiltersAndDateHalfOpenRange()
     {
         var start = DateTime.UtcNow.AddHours(-2);
@@ -95,6 +131,144 @@ public sealed class TaskQueryPersistenceTests : IDisposable
         Assert.Equal(1, page.Summary.RunningCount);
         Assert.Equal(1, page.Summary.FailedCount);
         Assert.Equal(1, finishedSuccesses);
+    }
+
+    [Fact]
+    public async Task RestoreReportRoundTripsThroughRecentAndPagedTaskQueries()
+    {
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "restore-report",
+            TaskType = "Restore",
+            GameId = "game-1",
+            GameName = "测试游戏",
+            State = TaskState.Running,
+            ProgressPercent = 60,
+            Message = "正在安全收尾",
+            StageMessage = "正在执行恢复后校验",
+            CancellationState = TaskCancellationStates.Finalizing,
+            CreatedUtc = DateTime.UtcNow,
+            RestoreReport = new RestoreReportDto
+            {
+                PlayniteId = "game-1",
+                GameName = "测试游戏",
+                BackupId = "backup-b",
+                FileCount = 4,
+                TotalBytes = 4096,
+                PreRestoreBackupId = "pre-1",
+                PreRestoreCreated = true,
+                Stage = "回滚",
+                OutcomeKind = "RolledBack",
+                FailureCode = "RESTORE_FAILED_ROLLED_BACK",
+                WasRolledBack = true,
+                TaskId = "restore-report"
+            },
+            SourceReferences = new List<TaskSourceReferenceDto>
+            {
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.BackupVersion,
+                    StableId = "backup-b",
+                    PlayniteId = "game-1",
+                    DisplayName = "backup-b",
+                    Detail = "合成测试版本"
+                },
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.CloudTransfer,
+                    StableId = "Backup:game-1",
+                    PlayniteId = "game-1",
+                    DisplayName = "备份云队列",
+                    Detail = "合成测试队列"
+                }
+            }
+        }, CancellationToken.None);
+
+        var recent = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None));
+        var page = Assert.Single((await store.GetTaskPageAsync(new TaskQueryDto { Limit = 10 }, CancellationToken.None)).Items);
+
+        Assert.Equal("backup-b", recent.RestoreReport?.BackupId);
+        Assert.Equal("pre-1", page.RestoreReport?.PreRestoreBackupId);
+        Assert.Equal("RolledBack", page.RestoreReport?.OutcomeKind);
+        Assert.Equal("正在执行恢复后校验", recent.StageMessage);
+        Assert.Equal("校验中", page.StageDisplay);
+        Assert.Equal(TaskCancellationStates.Finalizing, recent.CancellationState);
+        Assert.Equal("无法立即中断 · 正在安全收尾", page.CancellationDisplay);
+        Assert.Contains(recent.SourceReferences, reference => reference.Kind == TaskSourceReferenceKind.BackupVersion
+            && reference.StableId == "backup-b");
+        Assert.Contains(page.SourceReferences, reference => reference.Kind == TaskSourceReferenceKind.CloudTransfer
+            && reference.StableId == "Backup:game-1");
+    }
+
+    [Fact]
+    public async Task ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta()
+    {
+        var sampled = DateTime.UtcNow.AddSeconds(-1);
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "sampled-progress",
+            TaskType = "TrainerDownload",
+            GameId = "game-1",
+            GameName = "测试游戏",
+            State = TaskState.Running,
+            ProgressPercent = 42,
+            Message = "正在下载",
+            CreatedUtc = sampled.AddMinutes(-1),
+            StartedUtc = sampled.AddMinutes(-1),
+            ProgressCompletedUnits = 420,
+            ProgressTotalUnits = 1000,
+            ProgressUnit = "字节",
+            ProgressRatePerSecond = 21,
+            ProgressEtaSeconds = 28,
+            ProgressUpdatedUtc = sampled
+        }, CancellationToken.None);
+
+        var recent = Assert.Single(await store.GetRecentTasksAsync(10, CancellationToken.None));
+        var page = Assert.Single((await store.GetTaskPageAsync(new TaskQueryDto { Limit = 10 }, CancellationToken.None)).Items);
+
+        Assert.Equal(420, recent.ProgressCompletedUnits);
+        Assert.Equal(1000, page.ProgressTotalUnits);
+        Assert.Equal("字节", recent.ProgressUnit);
+        Assert.Equal(21, page.ProgressRatePerSecond);
+        Assert.Equal(28, recent.ProgressEtaSeconds);
+        Assert.Equal("21 B/秒", recent.ProgressRateDisplay);
+        Assert.Equal("28 秒", recent.ProgressEtaDisplay);
+
+        var unknown = new TaskStatusDto
+        {
+            State = TaskState.Running,
+            ProgressCompletedUnits = -1,
+            ProgressTotalUnits = -1,
+            ProgressRatePerSecond = 99,
+            ProgressEtaSeconds = 1
+        };
+        var waiting = new TaskStatusDto
+        {
+            State = TaskState.WaitingForUser,
+            ProgressCompletedUnits = 5,
+            ProgressTotalUnits = 10,
+            ProgressUnit = "文件",
+            ProgressRatePerSecond = 1,
+            ProgressEtaSeconds = 5
+        };
+        var stale = new TaskStatusDto
+        {
+            State = TaskState.Running,
+            ProgressCompletedUnits = 5,
+            ProgressTotalUnits = 10,
+            ProgressUnit = "文件",
+            ProgressRatePerSecond = 1,
+            ProgressEtaSeconds = 5,
+            ProgressUpdatedUtc = DateTime.UtcNow.AddSeconds(-11)
+        };
+        Assert.False(unknown.HasReliableProgressMetrics);
+        Assert.Equal("—", unknown.ProgressRateDisplay);
+        Assert.Equal("—", unknown.ProgressEtaDisplay);
+        Assert.False(waiting.HasReliableProgressMetrics);
+        Assert.Equal("—", waiting.ProgressEtaDisplay);
+        Assert.False(stale.HasReliableProgressMetrics);
+        Assert.Equal("—", stale.ProgressRateDisplay);
+        Assert.Equal("—", stale.ProgressEtaDisplay);
     }
 
     [Fact]

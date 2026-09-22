@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -27,6 +29,25 @@ public sealed class QuickActionSourceTests
         Assert.Contains("MessageTypes.ListBackups", plugin);
         Assert.Contains("MessageTypes.ValidateRestoreReadiness", plugin);
         Assert.Contains("MessageTypes.ListGameTools", plugin);
+    }
+
+    [Fact]
+    public void BackupHistoryQuickActionLineKeepsRelativeAndFullTimeEvidence()
+    {
+        var timestamp = DateTime.UtcNow.AddDays(-2);
+        var backup = new BackupVersionDto
+        {
+            BackupId = "quick-history-time",
+            CreatedUtc = timestamp,
+            TotalBytes = 4096
+        };
+
+        var line = GameSaveCenterPlugin.FormatBackupHistoryQuickActionLine(backup);
+
+        Assert.Contains(backup.CreatedRelativeDisplay, line, StringComparison.Ordinal);
+        Assert.Contains(backup.CreatedFullDisplay, line, StringComparison.Ordinal);
+        Assert.Contains(backup.SizeDisplay, line, StringComparison.Ordinal);
+        Assert.Contains(backup.RestoreReadinessStatusDisplay, line, StringComparison.Ordinal);
     }
 
     private static string FindRepositoryRoot()

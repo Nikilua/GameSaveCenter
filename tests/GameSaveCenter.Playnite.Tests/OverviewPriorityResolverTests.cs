@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
+using GameSaveCenter.Playnite.Views;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -22,7 +24,7 @@ public sealed class OverviewPriorityResolverTests
 
         Assert.Equal("Worker", state.Kind);
         Assert.Equal("Maintenance", state.ActionKind);
-        Assert.Equal("Worker 需要处理", state.Title);
+        Assert.Equal("后台服务需要处理", state.Title);
         Assert.Equal("打开维护中心", state.ActionText);
     }
 
@@ -90,6 +92,58 @@ public sealed class OverviewPriorityResolverTests
         Assert.Equal("刷新概览", state.ActionText);
     }
 
+    [Theory]
+    [InlineData(WorkspaceKind.Overview, null, null, "今日工作台 · 正在读取概览状态")]
+    [InlineData(WorkspaceKind.Overview, null, "后台服务需要处理", "今日工作台 · 后台服务需要处理")]
+    [InlineData(WorkspaceKind.Saves, "合成游戏", "不应显示", "合成游戏 · 路径与恢复点状态")]
+    public void ShellSubtitleFollowsTheCurrentStateInsteadOfClaimingEverythingIsHealthy(
+        WorkspaceKind workspace,
+        string? selectedGameName,
+        string? overviewPriorityTitle,
+        string expected)
+    {
+        var subtitle = AcrylicProductionShellView.GetPageSubtitle(workspace, selectedGameName, overviewPriorityTitle);
+
+        Assert.Equal(expected, subtitle);
+        Assert.DoesNotContain("一切运行正常", subtitle);
+    }
+
+    [Fact]
+    public void PriorityCopyAlwaysExplainsTheStateAndTheNextAction()
+    {
+        var states = new[]
+        {
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = false }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true }, true),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+            {
+                WorkerHealthy = true,
+                ManagedGames = 4,
+                CloudTransfers = new CloudTransferSummaryDto { FailedCount = 1 }
+            }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+            {
+                WorkerHealthy = true,
+                ManagedGames = 4,
+                TaskSummary = new TaskSummaryDto { FailedCount = 1 }
+            }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 0 }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 4, UnassignedMediaCount = 1 }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 4, WarningGames = 1 }, false),
+            OverviewPriorityResolver.Resolve(new DashboardSnapshotDto { WorkerHealthy = true, ManagedGames = 4 }, false)
+        };
+
+        foreach (var state in states)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(state.Title));
+            Assert.False(string.IsNullOrWhiteSpace(state.Description));
+            Assert.False(string.IsNullOrWhiteSpace(state.ActionText));
+            Assert.DoesNotContain("Worker", state.Title);
+            Assert.DoesNotContain("Rclone", state.Description);
+            Assert.DoesNotContain("你", state.Description);
+        }
+    }
+
     [Fact]
     public void EmptyLibraryIsExplicitInsteadOfBeingReportedAsHealthy()
     {
@@ -118,6 +172,89 @@ public sealed class OverviewPriorityResolverTests
         Assert.Equal("Cloud", state.Kind);
         Assert.Equal("2 项云端任务需要处理", state.Title);
         Assert.Equal("查看云端队列", state.ActionText);
+    }
+
+    [Fact]
+    public void UnmatchedGamesUseTheExistingPickerRouteBeforeBackupableGames()
+    {
+        var state = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 2,
+            MatchedGames = 1,
+            LudusaviAvailable = true,
+            Games = new List<GameStatusDto>
+            {
+                new GameStatusDto { LudusaviMatched = false },
+                new GameStatusDto { LudusaviMatched = true }
+            }
+        }, false);
+
+        Assert.Equal("Unmatched", state.Kind);
+        Assert.Equal("GamePicker", state.ActionKind);
+        Assert.Equal("查看未匹配游戏", state.ActionText);
+    }
+
+    [Fact]
+    public void MatchedGameWithoutBackupUsesPickerInsteadOfLaunchingBulkWrite()
+    {
+        var state = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 1,
+            MatchedGames = 1,
+            LudusaviAvailable = true,
+            Games = new List<GameStatusDto>
+            {
+                new GameStatusDto { LudusaviMatched = true }
+            }
+        }, false);
+
+        Assert.Equal("Backupable", state.Kind);
+        Assert.Equal("GamePicker", state.ActionKind);
+        Assert.Equal("查看可备份游戏", state.ActionText);
+    }
+
+    [Fact]
+    public void FailedTasksUseTheTaskCenterRoute()
+    {
+        var state = OverviewPriorityResolver.Resolve(new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 4,
+            TaskSummary = new TaskSummaryDto { FailedCount = 2 }
+        }, false);
+
+        Assert.Equal("Tasks", state.Kind);
+        Assert.Equal("Tasks", state.ActionKind);
+        Assert.Equal("查看失败任务", state.ActionText);
+    }
+
+    [Fact]
+    public void UnrelatedSnapshotChangesDoNotMakeTheSamePriorityJump()
+    {
+        var first = new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 1,
+            LudusaviAvailable = true,
+            Games = new List<GameStatusDto> { new GameStatusDto { LudusaviMatched = true } }
+        };
+        var second = new DashboardSnapshotDto
+        {
+            WorkerHealthy = true,
+            ManagedGames = 1,
+            WarningGames = 9,
+            LudusaviAvailable = true,
+            Games = new List<GameStatusDto> { new GameStatusDto { LudusaviMatched = true } }
+        };
+
+        var firstState = OverviewPriorityResolver.Resolve(first, false);
+        var secondState = OverviewPriorityResolver.Resolve(second, false);
+
+        Assert.Equal(firstState.Kind, secondState.Kind);
+        Assert.Equal(firstState.ActionKind, secondState.ActionKind);
+        Assert.Equal(firstState.ActionText, secondState.ActionText);
     }
 
     [Fact]

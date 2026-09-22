@@ -3,6 +3,7 @@ param(
     [ValidateSet('Debug', 'Release')][string]$Configuration = 'Release',
     [string]$PlayniteExtensionsPath = '',
     [string]$PlayniteExecutable = '',
+    [string]$TestTempRoot = '',
     [switch]$NoStart,
     [switch]$SkipClean
 )
@@ -425,7 +426,11 @@ try {
         Remove-Item (Join-Path $root 'artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec') -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    & (Join-Path $PSScriptRoot 'build.ps1') -Configuration $Configuration -OutputRoot $buildOutputRoot
+    $buildArguments = @{ Configuration = $Configuration; OutputRoot = $buildOutputRoot }
+    if (-not [string]::IsNullOrWhiteSpace($TestTempRoot)) {
+        $buildArguments.TestTempRoot = $TestTempRoot
+    }
+    & (Join-Path $PSScriptRoot 'build.ps1') @buildArguments
     & (Join-Path $PSScriptRoot 'package.ps1') -Configuration $Configuration -SkipBuild -BuildOutputRoot $buildOutputRoot
 
     $stage = Join-Path $root 'artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'

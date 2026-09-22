@@ -15,16 +15,17 @@ namespace GameSaveCenter.Contracts
         public string Message { get; set; } = string.Empty;
 
         public string LastSyncDisplay => LastSyncUtc?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "尚未同步";
+        public string LastSyncRelativeDisplay => LastSyncUtc.HasValue
+            ? TimeDisplayFormatter.Relative(LastSyncUtc.Value, DateTime.UtcNow)
+            : "尚未同步";
+        public string LastSyncFullDisplay => LastSyncUtc.HasValue
+            ? TimeDisplayFormatter.Full(LastSyncUtc.Value)
+            : "尚未同步";
+        public string LastSyncRawUtcDisplay => TimeDisplayFormatter.RawUtc(LastSyncUtc ?? DateTime.MinValue);
         public string AvailableDisplay => Available ? "可用" : "不可用";
         public string TotalBytesDisplay => FormatBytes(TotalBytes);
 
-        private static string FormatBytes(long bytes)
-        {
-            if (bytes < 1024) return $"{bytes:0} B";
-            if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-            if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-            return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-        }
+        private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
     /// <summary>Result of a user-initiated mirror sync. Mirror-only files are never deleted.</summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -38,6 +39,8 @@ namespace GameSaveCenter.RenderHarness;
 /// </summary>
 public static class Program
 {
+    private static readonly string RepositoryRoot = ResolveRepositoryRoot();
+
     private static readonly List<string> s_problems = new List<string>();
 
     private static readonly (int Width, int Height)[] WindowSizes =
@@ -781,14 +784,17 @@ public static class Program
                                 .Where(scroll => scroll.ExtentWidth > scroll.ViewportWidth + 0.5)
                                 .ToArray();
                             var horizontalOverflow = horizontalOverflowScrolls.Length;
+                            var textInputOverflow = horizontalOverflowScrolls.Count(IsTextInputContentHost);
                             var unexpectedHorizontalOverflow = horizontalOverflowScrolls
-                                .Count(scroll => !scroll.Name.StartsWith("DG_", StringComparison.Ordinal));
+                                .Count(scroll => scroll.ComputedHorizontalScrollBarVisibility == Visibility.Visible
+                                    && !scroll.Name.StartsWith("DG_", StringComparison.Ordinal)
+                                    && !IsTextInputContentHost(scroll));
                             if (horizontalOverflow != 0)
                             {
                                 report.AppendLine(
                                     $"  {label} overflow: "
                                     + string.Join(", ", horizontalOverflowScrolls.Select(scroll =>
-                                        $"{(string.IsNullOrWhiteSpace(scroll.Name) ? "unnamed" : scroll.Name)} extent={scroll.ExtentWidth:0} viewport={scroll.ViewportWidth:0} hbar={scroll.ComputedHorizontalScrollBarVisibility}")));
+                                        $"{(string.IsNullOrWhiteSpace(scroll.Name) ? "unnamed" : scroll.Name)} extent={scroll.ExtentWidth:0} viewport={scroll.ViewportWidth:0} hbar={scroll.ComputedHorizontalScrollBarVisibility} textInput={IsTextInputContentHost(scroll)} owner={DescribeScrollOwner(scroll)}")));
                             }
                             if (unexpectedHorizontalOverflow != 0)
                                 problems.Add($"{label} has {unexpectedHorizontalOverflow} unexpected horizontal-overflow ScrollViewer(s) in low-cost mode.");
@@ -798,7 +804,7 @@ public static class Program
                             SavePng(host, outputPath);
                             sw.Stop();
                             report.AppendLine(
-                                $"  {label}: visibleText={visibleText} visibleEffects={visibleEffects} horizontalOverflow={horizontalOverflow} unexpectedOverflow={unexpectedHorizontalOverflow} "
+                                $"  {label}: visibleText={visibleText} visibleEffects={visibleEffects} horizontalOverflow={horizontalOverflow} textInputOverflow={textInputOverflow} unexpectedOverflow={unexpectedHorizontalOverflow} "
                                 + $"size={host.ActualWidth:0}x{host.ActualHeight:0} render_ms={sw.ElapsedMilliseconds} bytes={new FileInfo(outputPath).Length}");
                         }
                         catch (Exception ex)
@@ -881,8 +887,42 @@ public static class Program
             + $"gameOpacity={gameOpacity?.ToString("0.###") ?? "missing"}");
     }
 
+    private static bool IsTextInputContentHost(ScrollViewer scroll)
+    {
+        DependencyObject? current = scroll;
+        while (current != null)
+        {
+            if (current is TextBoxBase)
+                return true;
+
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        return false;
+    }
+
+    private static string DescribeScrollOwner(ScrollViewer scroll)
+    {
+        var owners = new List<string>();
+        DependencyObject? current = scroll;
+        for (var depth = 0; current != null && depth < 8; depth++)
+        {
+            if (current is FrameworkElement element)
+                owners.Add(string.IsNullOrWhiteSpace(element.Name)
+                    ? element.GetType().Name
+                    : $"{element.GetType().Name}#{element.Name}");
+            else
+                owners.Add(current.GetType().Name);
+
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        return string.Join("<", owners);
+    }
+
     private static int RunEnduranceProbe(string outputRoot, int durationSeconds)
     {
+        const int postActionSettleSeconds = 30;
         Directory.CreateDirectory(outputRoot);
         var reportPath = Path.Combine(outputRoot, "enduranceprobe-report.txt");
         var report = new StringBuilder();
@@ -890,8 +930,9 @@ public static class Program
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine("Host: real WPF STA Window with opacity 0.01; Playnite host and user input are not inferred");
         report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, Light/Dark theme");
-        report.AppendLine("Memory: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64; no forced GC in this probe");
+        report.AppendLine("Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe");
         report.AppendLine($"DurationTargetSeconds: {durationSeconds}");
+        report.AppendLine($"PostActionSettleSeconds: {postActionSettleSeconds}");
         AppendRunMetadata(
             report,
             "enduranceprobe",
@@ -962,10 +1003,14 @@ public static class Program
             var actionDurationsMs = new List<double>();
             var slowActionStacks = new List<string>();
             DispatcherTimer? actionTimer = null;
+            DispatcherTimer? settleTimer = null;
+            TimeSpan? actionStoppedAt = null;
 
             void RecordSample(bool final)
             {
                 process.Refresh();
+                var resourceRoots = pages.Select(item => item.View).Cast<UserControl>().Concat(new[] { shell }).ToArray();
+                var thumbnailDiagnostics = AsyncThumbnailLoader.CaptureDiagnostics();
                 var sample = new EnduranceSample
                 {
                     ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
@@ -976,14 +1021,25 @@ public static class Program
                     PrivateBytes = process.PrivateMemorySize64,
                     WorkingSetBytes = process.WorkingSet64,
                     ThreadCount = process.Threads.Count,
-                    HandleCount = process.HandleCount
+                    HandleCount = process.HandleCount,
+                    ActiveTimerCount = CountEnabledDispatcherTimers(resourceRoots)
+                        + (actionTimer?.IsEnabled == true ? 1 : 0),
+                    ManagedEventHandlerCount = CountManagedEventHandlers(resourceRoots),
+                    AnimatedOwnerCount = CountAnimatedOwners(resourceRoots),
+                    ThumbnailCacheCount = thumbnailDiagnostics.CacheCount,
+                    ThumbnailCacheLimit = thumbnailDiagnostics.CacheLimit,
+                    ActiveThumbnailDecodes = thumbnailDiagnostics.ActiveDecodes
                 };
                 samples.Add(sample);
                 report.AppendLine(
                     $"SAMPLE elapsed_s={sample.ElapsedSeconds:0.0} cycle={sample.Cycle} "
                     + $"page={sample.Page} theme={sample.Theme} managed={sample.ManagedBytes} "
                     + $"private={sample.PrivateBytes} workingSet={sample.WorkingSetBytes} "
-                    + $"threads={sample.ThreadCount} handles={sample.HandleCount} final={final}");
+                    + $"threads={sample.ThreadCount} handles={sample.HandleCount} "
+                    + $"timers={sample.ActiveTimerCount} subscriptions={sample.ManagedEventHandlerCount} "
+                    + $"animated_owners={sample.AnimatedOwnerCount} "
+                    + $"thumb_cache={sample.ThumbnailCacheCount}/{sample.ThumbnailCacheLimit} "
+                    + $"thumb_active={sample.ActiveThumbnailDecodes} final={final}");
                 lastSampleAt = stopwatch.Elapsed;
                 reportFlush();
             }
@@ -1109,9 +1165,27 @@ public static class Program
                 if (elapsed >= TimeSpan.FromSeconds(durationSeconds))
                 {
                     actionTimer!.Stop();
-                    RecordSample(final: true);
-                    window.Close();
-                    app.Shutdown();
+                    actionStoppedAt = elapsed;
+                    settleTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+                    {
+                        Interval = TimeSpan.FromSeconds(1)
+                    };
+                    settleTimer.Tick += (_, _) =>
+                    {
+                        var settledFor = stopwatch.Elapsed - actionStoppedAt.GetValueOrDefault();
+                        if (settledFor >= TimeSpan.FromSeconds(postActionSettleSeconds))
+                        {
+                            settleTimer!.Stop();
+                            RecordSample(final: true);
+                            window.Close();
+                            app.Shutdown();
+                        }
+                        else if (stopwatch.Elapsed - lastSampleAt >= TimeSpan.FromSeconds(10))
+                        {
+                            RecordSample(final: false);
+                        }
+                    };
+                    settleTimer.Start();
                 }
             };
             actionTimer.Start();
@@ -1133,7 +1207,7 @@ public static class Program
                 cycle,
                 completedActions,
                 actionFailureCount,
-                durationSeconds);
+                durationSeconds + postActionSettleSeconds);
             report.AppendLine(problems.Count == 0 ? "enduranceprobe OK" : "enduranceprobe FAILED");
             foreach (var problem in problems)
                 report.AppendLine("  PROBLEM " + problem);
@@ -1190,7 +1264,11 @@ public static class Program
             + $"managed_slope_bytes_per_min={managedSlope:0.##}");
         report.AppendLine(
             $"SUMMARY resources_first=threads:{first.ThreadCount},handles:{first.HandleCount} "
-            + $"resources_last=threads:{last.ThreadCount},handles:{last.HandleCount}");
+            + $"timers:{first.ActiveTimerCount},subscriptions:{first.ManagedEventHandlerCount},animated_owners:{first.AnimatedOwnerCount},"
+            + $"thumb_cache:{first.ThumbnailCacheCount}/{first.ThumbnailCacheLimit} "
+            + $"resources_last=threads:{last.ThreadCount},handles:{last.HandleCount} "
+            + $"timers:{last.ActiveTimerCount},subscriptions:{last.ManagedEventHandlerCount},animated_owners:{last.AnimatedOwnerCount},"
+            + $"thumb_cache:{last.ThumbnailCacheCount}/{last.ThumbnailCacheLimit}");
         if (actionDurationsMs.Count > 0)
         {
             var actionP95 = CalculatePercentile(actionDurationsMs, 0.95);
@@ -1247,6 +1325,88 @@ public static class Program
         public long WorkingSetBytes { get; set; }
         public int ThreadCount { get; set; }
         public int HandleCount { get; set; }
+        public int ActiveTimerCount { get; set; }
+        public int ManagedEventHandlerCount { get; set; }
+        public int AnimatedOwnerCount { get; set; }
+        public int ThumbnailCacheCount { get; set; }
+        public int ThumbnailCacheLimit { get; set; }
+        public int ActiveThumbnailDecodes { get; set; }
+    }
+
+    private static int CountEnabledDispatcherTimers(IEnumerable<UserControl> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            foreach (var value in ReadInstanceFieldValues(root))
+            {
+                if (value is DispatcherTimer timer && timer.IsEnabled)
+                {
+                    count++;
+                    continue;
+                }
+
+                if (value is IDictionary dictionary)
+                {
+                    foreach (DictionaryEntry entry in dictionary)
+                    {
+                        if (entry.Value is DispatcherTimer dictionaryTimer && dictionaryTimer.IsEnabled)
+                            count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static int CountManagedEventHandlers(IEnumerable<UserControl> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            foreach (var value in ReadInstanceFieldValues(root))
+            {
+                if (value is Delegate handler)
+                    count += handler.GetInvocationList().Length;
+            }
+        }
+
+        return count;
+    }
+
+    private static int CountAnimatedOwners(IEnumerable<UserControl> roots)
+    {
+        var count = 0;
+        foreach (var root in roots)
+        {
+            if (root.HasAnimatedProperties)
+                count++;
+            count += FindVisualChildren<UIElement>(root).Count(element => element.HasAnimatedProperties);
+        }
+
+        return count;
+    }
+
+    private static IEnumerable<object?> ReadInstanceFieldValues(object instance)
+    {
+        for (var type = instance.GetType(); type != null && type != typeof(object); type = type.BaseType)
+        {
+            foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly))
+            {
+                object? value;
+                try
+                {
+                    value = field.GetValue(instance);
+                }
+                catch (FieldAccessException)
+                {
+                    continue;
+                }
+
+                yield return value;
+            }
+        }
     }
 
     private static void CaptureOverviewEdgeFixture(
@@ -1998,7 +2158,7 @@ public static class Program
             "MediaDetailsStateDetail", "MediaDetailsStateOverlayVisible", "MediaDetailsStaleVisible",
             "MediaInboxState", "MediaInboxPresenterState", "MediaInboxStateTitle", "MediaInboxStateMessage",
             "MediaInboxStateDetail", "MediaInboxStateOverlayVisible", "MediaInboxStaleVisible",
-            "MediaInboxCountDisplay", "MediaInboxCountCaption",
+            "MediaInboxCountDisplay", "MediaInboxCountCaption", "MediaInboxCountCaptionFull",
             "MaintenanceState", "MaintenancePresenterState", "MaintenanceStateTitle", "MaintenanceStateMessage",
             "MaintenanceStateDetail", "MaintenanceStateOverlayVisible", "MaintenanceStaleVisible",
             "MaintenanceActionSummary", "MaintenanceActionItems",
@@ -4565,7 +4725,7 @@ public static class Program
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                WorkingDirectory = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."))
+                WorkingDirectory = RepositoryRoot
             };
             using var process = Process.Start(startInfo);
             if (process == null) return "unknown";
@@ -4579,6 +4739,28 @@ public static class Program
         {
             return "unknown";
         }
+    }
+
+    private static string ResolveRepositoryRoot()
+    {
+        var metadata = typeof(Program).Assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .ToDictionary(attribute => attribute.Key, attribute => attribute.Value, StringComparer.OrdinalIgnoreCase);
+        if (metadata.TryGetValue("GscSourceRoot", out var metadataRoot)
+            && !string.IsNullOrWhiteSpace(metadataRoot)
+            && File.Exists(Path.Combine(metadataRoot, "GameSaveCenter.sln")))
+        {
+            return Path.GetFullPath(metadataRoot);
+        }
+
+        var environmentRoot = Environment.GetEnvironmentVariable("GSC_SOURCE_ROOT");
+        if (!string.IsNullOrWhiteSpace(environmentRoot)
+            && File.Exists(Path.Combine(environmentRoot, "GameSaveCenter.sln")))
+        {
+            return Path.GetFullPath(environmentRoot);
+        }
+
+        return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
     }
 
     private static void CollectScrollDiagnostics(Grid host, StringBuilder report, string name, int windowW, int windowH, int tabIndex)

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Infrastructure;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 
@@ -20,6 +22,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool deviceIdWasLoaded;
         private int settingsSaveInProgress;
         private bool enableLocalMirror;
+        private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
         private bool autoStartWorker = true;
         private bool onboardingCompleted;
         private bool enableProcessDetection = true;
@@ -42,6 +45,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool sidebarCollapsed;
         private bool healthInspectionEnabled = true;
         private Dictionary<string, double> dataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
+        private List<RecentAccessRecord> recentAccess = new List<RecentAccessRecord>();
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
         public event EventHandler? SettingsCommitted;
@@ -60,6 +64,9 @@ namespace GameSaveCenter.Playnite.Settings
 
         /// <summary>Raised when writing settings or applying them to Worker fails.</summary>
         public event EventHandler<SettingsSaveFailedEventArgs>? SettingsSaveFailed;
+
+        /// <summary>Raised when a persisted settings change conflicts with the current draft.</summary>
+        public event EventHandler<SettingsConflictDetectedEventArgs>? SettingsConflictDetected;
 
         public GameSaveCenterSettings() { }
 
@@ -148,6 +155,12 @@ namespace GameSaveCenter.Playnite.Settings
         public string TaskHistoryRangeState { get; set; } = "全部时间";
         public string MediaFilterState { get; set; } = "全部";
         public string MediaSearchTextState { get; set; } = string.Empty;
+        /// <summary>Named read-only filter combinations; live task/media objects are never persisted.</summary>
+        public List<FilterPresetDefinition> FilterPresets
+        {
+            get => filterPresets;
+            set => filterPresets = FilterPresetDefinition.NormalizeMany(value);
+        }
 
         /// <summary>
         /// User-adjusted DataGrid widths keyed by the versioned view/column identity.
@@ -158,6 +171,13 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => dataGridColumnWidths;
             set => dataGridColumnWidths = CloneDataGridColumnWidths(value);
+        }
+
+        /// <summary>Stable-id-only recent game access records; names and paths are never persisted.</summary>
+        public List<RecentAccessRecord> RecentAccess
+        {
+            get => recentAccess;
+            set => recentAccess = RecentAccessRecord.NormalizeMany(value);
         }
 
         internal bool TryGetDataGridColumnWidth(string viewKey, string columnKey, out double width)
@@ -204,24 +224,84 @@ namespace GameSaveCenter.Playnite.Settings
 
         public SettingsImportReport ImportPortableJson(string json)
         {
+            return ApplyPortableJson(PreviewPortableJson(json));
+        }
+
+        /// <summary>
+        /// Parses and validates a portable package without changing this settings instance.
+        /// Unknown JSON properties are reported for the confirmation UI and ignored by the
+        /// existing Newtonsoft-compatible deserializer.
+        /// </summary>
+        public SettingsImportPreview PreviewPortableJson(string json)
+        {
             if (string.IsNullOrWhiteSpace(json)) throw new InvalidDataException("设置文件为空。");
             if (json.Length > 1024 * 1024) throw new InvalidDataException("设置文件超过 1 MiB 安全上限。");
+
+            var root = JObject.Parse(json);
             var package = JsonConvert.DeserializeObject<PortableSettingsPackage>(json)
                           ?? throw new InvalidDataException("设置文件格式无效。");
-            if (package.SchemaVersion != 1) throw new InvalidDataException($"不支持的设置架构版本：{package.SchemaVersion}。");
-            var imported = package.Settings ?? throw new InvalidDataException("设置文件不包含 settings 节点。");
-            var valueErrors = ValidateValueRanges(imported);
-            if (valueErrors.Count > 0) throw new InvalidDataException("设置值无效：" + string.Join("；", valueErrors));
+            var unknownFields = CollectUnknownFields(root);
+            if (package.SchemaVersion != 1)
+            {
+                return new SettingsImportPreview(
+                    package.SchemaVersion,
+                    package.ExportedUtc,
+                    false,
+                    $"不支持架构版本 v{package.SchemaVersion}",
+                    new List<SettingsImportField>(),
+                    unknownFields,
+                    new[] { $"不支持的设置架构版本：{package.SchemaVersion}" },
+                    null);
+            }
 
-            CopyFrom(imported);
-            var report = new SettingsImportReport { SchemaVersion = package.SchemaVersion, ExportedUtc = package.ExportedUtc };
-            AddMissingFile(report, "Worker", WorkerExecutable);
-            AddMissingFile(report, "Ludusavi", LudusaviExecutable);
-            AddMissingFile(report, "Rclone", RcloneExecutable);
-            AddMissingDirectory(report, "存档目录", LudusaviBackupDirectory);
-            AddMissingDirectory(report, "媒体目录", MediaArchiveDirectory);
-            if (EnableLocalMirror) AddMissingDirectory(report, "本地镜像", LocalMirrorPath);
-            return report;
+            var imported = package.Settings;
+            if (imported == null)
+            {
+                return new SettingsImportPreview(
+                    package.SchemaVersion,
+                    package.ExportedUtc,
+                    false,
+                    "缺少 settings 节点",
+                    new List<SettingsImportField>(),
+                    unknownFields,
+                    new[] { "设置文件不包含 settings 节点" },
+                    null);
+            }
+
+            var valueErrors = ValidateValueRanges(imported);
+            var fields = BuildImportFields(imported);
+            return new SettingsImportPreview(
+                package.SchemaVersion,
+                package.ExportedUtc,
+                valueErrors.Count == 0,
+                valueErrors.Count == 0 ? "兼容，可应用" : "设置值不兼容，不能应用",
+                fields,
+                unknownFields,
+                valueErrors,
+                imported);
+        }
+
+        /// <summary>
+        /// Applies a previously inspected package. A detached snapshot protects the live
+        /// draft if a property normalizer or future copy step fails unexpectedly.
+        /// </summary>
+        public SettingsImportReport ApplyPortableJson(SettingsImportPreview preview)
+        {
+            if (preview == null) throw new ArgumentNullException(nameof(preview));
+            if (!preview.IsCompatible || preview.ImportedSettings == null)
+                throw new InvalidDataException(preview.CompatibilitySummary);
+
+            var snapshot = Clone();
+            try
+            {
+                CopyFrom(preview.ImportedSettings);
+                return BuildImportReport(preview.SchemaVersion, preview.ExportedUtc);
+            }
+            catch
+            {
+                CopyFrom(snapshot);
+                throw;
+            }
         }
 
         /// <summary>
@@ -258,9 +338,9 @@ namespace GameSaveCenter.Playnite.Settings
 
         public void EndEdit()
         {
-            if (plugin == null || editingClone == null
-                || Interlocked.CompareExchange(ref settingsSaveInProgress, 1, 0) != 0)
-                return;
+            if (plugin == null || editingClone == null) return;
+            DetectAndReportSettingsConflict();
+            if (Interlocked.CompareExchange(ref settingsSaveInProgress, 1, 0) != 0) return;
 
             var settingsPersisted = false;
             SettingsSaveStarted?.Invoke(this, EventArgs.Empty);
@@ -293,6 +373,35 @@ namespace GameSaveCenter.Playnite.Settings
                 Volatile.Write(ref settingsSaveInProgress, 0);
                 throw;
             }
+        }
+
+        private void DetectAndReportSettingsConflict()
+        {
+            if (plugin == null || editingClone == null) return;
+
+            var persisted = plugin.LoadPluginSettings<GameSaveCenterSettings>();
+            var currentFingerprint = CreateSettingsFingerprint();
+            var persistedFingerprint = persisted?.CreateSettingsFingerprint();
+            var baselineFingerprint = editingClone.CreateSettingsFingerprint();
+            if (persisted == null
+                || string.Equals(persistedFingerprint, currentFingerprint, StringComparison.Ordinal)
+                || string.Equals(persistedFingerprint, baselineFingerprint, StringComparison.Ordinal))
+                return;
+
+            var resolution = SettingsConflictResolver.Merge(editingClone, this, persisted);
+            if (!resolution.HasConflicts)
+            {
+                if (resolution.HasExternalChanges)
+                    editingClone = persisted.Clone();
+                return;
+            }
+
+            // Move the edit baseline to the latest persisted state so Cancel keeps the
+            // external update. The user's conflicting draft remains visible and dirty.
+            editingClone = persisted.Clone();
+            var args = new SettingsConflictDetectedEventArgs(resolution);
+            SettingsConflictDetected?.Invoke(this, args);
+            throw new SettingsConflictException(args.Summary);
         }
 
         /// <summary>
@@ -512,7 +621,9 @@ namespace GameSaveCenter.Playnite.Settings
             TaskHistoryRangeState = IsSupportedTaskHistoryRange(other.TaskHistoryRangeState) ? other.TaskHistoryRangeState : "全部时间";
             MediaFilterState = string.IsNullOrWhiteSpace(other.MediaFilterState) ? "全部" : other.MediaFilterState;
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
+            FilterPresets = other.FilterPresets;
             DataGridColumnWidths = other.DataGridColumnWidths;
+            RecentAccess = other.RecentAccess;
         }
 
         private static string BuildDataGridColumnWidthKey(string viewKey, string columnKey)
@@ -536,6 +647,101 @@ namespace GameSaveCenter.Playnite.Settings
 
         private static bool IsSupportedTaskHistoryRange(string value)
             => value == "全部时间" || value == "今天" || value == "昨天" || value == "近7天" || value == "近30天";
+
+        private List<SettingsImportField> BuildImportFields(GameSaveCenterSettings imported)
+        {
+            var result = new List<SettingsImportField>();
+            foreach (var property in typeof(GameSaveCenterSettings).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (!property.CanRead || !property.CanWrite || property.Name == nameof(DeviceId)
+                    || property.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Length != 0)
+                    continue;
+
+                var currentValue = property.GetValue(this, null);
+                var importedValue = property.GetValue(imported, null);
+                if (AreEquivalent(currentValue, importedValue))
+                    continue;
+
+                result.Add(new SettingsImportField(property.Name, GetImportFieldDisplayName(property.Name)));
+            }
+
+            return result;
+        }
+
+        private static bool AreEquivalent(object? left, object? right)
+        {
+            if (ReferenceEquals(left, right)) return true;
+            if (left == null || right == null) return false;
+            try
+            {
+                return JToken.DeepEquals(JToken.FromObject(left), JToken.FromObject(right));
+            }
+            catch
+            {
+                return Equals(left, right);
+            }
+        }
+
+        private static string GetImportFieldDisplayName(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case nameof(WorkerExecutable): return "Worker 程序";
+                case nameof(LudusaviExecutable): return "Ludusavi 程序";
+                case nameof(LudusaviBackupDirectory): return "存档目录";
+                case nameof(RcloneExecutable): return "Rclone 程序";
+                case nameof(RcloneDestination): return "云端目标";
+                case nameof(MediaArchiveDirectory): return "媒体目录";
+                case nameof(LocalMirrorPath): return "本地镜像目录";
+                case nameof(ThemeMode): return "主题";
+                case nameof(EnableUiAnimations): return "界面动画";
+                case nameof(EnableGlassEffects): return "玻璃效果";
+                case nameof(FollowSelectedGameBackground): return "跟随游戏背景";
+                case nameof(BackupFormat): return "备份格式";
+                case nameof(Compression): return "压缩方式";
+                case nameof(CompressionLevel): return "压缩等级";
+                case nameof(FullBackupLimit): return "完整版本数";
+                case nameof(DifferentialBackupLimit): return "差异版本数";
+                case nameof(EnableCloudUpload): return "云端上传";
+                case nameof(CloudUploadQueuePaused): return "云端队列";
+                case nameof(SafeModeEnabled): return "安全模式";
+                case nameof(SafeModeRequested): return "下次安全启动";
+                default: return propertyName;
+            }
+        }
+
+        private static List<string> CollectUnknownFields(JObject root)
+        {
+            var result = new List<string>();
+            var knownRootNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "SchemaVersion",
+                "ExportedUtc",
+                "Settings"
+            };
+            foreach (var property in root.Properties())
+            {
+                if (!knownRootNames.Contains(property.Name))
+                    result.Add("根节点." + property.Name);
+            }
+
+            var settings = root["Settings"] as JObject;
+            if (settings == null) return result;
+            var knownNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var property in typeof(GameSaveCenterSettings).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (property.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Length == 0)
+                    knownNames.Add(property.Name);
+            }
+
+            foreach (var property in settings.Properties())
+            {
+                if (!knownNames.Contains(property.Name))
+                    result.Add("Settings." + property.Name);
+            }
+
+            return result;
+        }
 
         private static List<string> ValidateValueRanges(GameSaveCenterSettings value)
         {
@@ -566,6 +772,18 @@ namespace GameSaveCenter.Playnite.Settings
         private static void AddMissingDirectory(SettingsImportReport report, string label, string path)
         {
             if (!string.IsNullOrWhiteSpace(path) && !Directory.Exists(Expand(path))) report.MissingPaths.Add($"{label}：{path}");
+        }
+
+        private SettingsImportReport BuildImportReport(int schemaVersion, DateTime exportedUtc)
+        {
+            var report = new SettingsImportReport { SchemaVersion = schemaVersion, ExportedUtc = exportedUtc };
+            AddMissingFile(report, "Worker", WorkerExecutable);
+            AddMissingFile(report, "Ludusavi", LudusaviExecutable);
+            AddMissingFile(report, "Rclone", RcloneExecutable);
+            AddMissingDirectory(report, "存档目录", LudusaviBackupDirectory);
+            AddMissingDirectory(report, "媒体目录", MediaArchiveDirectory);
+            if (EnableLocalMirror) AddMissingDirectory(report, "本地镜像", LocalMirrorPath);
+            return report;
         }
 
         private static string Expand(string value) => string.IsNullOrWhiteSpace(value) ? string.Empty : Environment.ExpandEnvironmentVariables(value);

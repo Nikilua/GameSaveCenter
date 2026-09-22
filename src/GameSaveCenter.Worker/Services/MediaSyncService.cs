@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using GameSaveCenter.Contracts;
@@ -94,6 +97,151 @@ public sealed class MediaSyncService
         item.ClassificationReason=string.Empty;
         item.CloudState="Pending";
         return item;
+    }
+
+    /// <summary>
+    /// Inspects a source rule draft without adding a rule, moving a file, or writing a media row.
+    /// Both the sample count and the wall-clock budget are bounded so an inaccessible or large
+    /// directory cannot turn the settings page into an unbounded scan.
+    /// </summary>
+    public async Task<MediaSourcePreviewDto> PreviewMediaSourceRuleAsync(MediaSourcePreviewRequestDto request, CancellationToken token)
+    {
+        request ??= new MediaSourcePreviewRequestDto();
+        var root = Environment.ExpandEnvironmentVariables(request.RootPath ?? string.Empty).Trim();
+        var pattern = string.IsNullOrWhiteSpace(request.IncludePattern) ? "*" : request.IncludePattern.Trim();
+        var maxItems = Math.Max(1, Math.Min(request.MaxItems <= 0 ? 120 : request.MaxItems, 200));
+        var maxScanned = Math.Max(1, Math.Min(request.MaxScannedEntries <= 0 ? 2000 : request.MaxScannedEntries, 5000));
+        var timeoutMs = Math.Max(100, Math.Min(request.TimeoutMs <= 0 ? 1500 : request.TimeoutMs, 5000));
+        var result = new MediaSourcePreviewDto
+        {
+            RootPath = root,
+            IncludePattern = pattern,
+            MaxItems = maxItems,
+            MaxScannedEntries = maxScanned,
+            TimeoutMs = timeoutMs
+        };
+
+        if (string.IsNullOrWhiteSpace(root))
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "请先输入来源目录。";
+            return result;
+        }
+
+        if (pattern.Length > 256)
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "文件模式过长，试运行已拒绝。";
+            return result;
+        }
+
+        string fullRoot;
+        try
+        {
+            fullRoot = Path.GetFullPath(root);
+        }
+        catch (Exception ex) when (ex is ArgumentException || ex is NotSupportedException || ex is IOException)
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "来源目录路径无效，未开始扫描。";
+            _logger.LogDebug(ex, "Invalid media source dry-run path {Path}", root);
+            return result;
+        }
+
+        if (!Directory.Exists(fullRoot))
+        {
+            result.State = "Unavailable";
+            result.ErrorDisplay = "来源目录不存在或已移走，未写入任何规则。";
+            return result;
+        }
+
+        using var budget = CancellationTokenSource.CreateLinkedTokenSource(token);
+        budget.CancelAfter(timeoutMs);
+        var stopwatch = Stopwatch.StartNew();
+        IEnumerator<string>? files = null;
+        var completed = false;
+        try
+        {
+            files = Directory.EnumerateFiles(fullRoot, "*", SearchOption.AllDirectories).GetEnumerator();
+            while (result.ScannedCount < maxScanned)
+            {
+                budget.Token.ThrowIfCancellationRequested();
+                if (stopwatch.ElapsedMilliseconds >= timeoutMs)
+                {
+                    result.TimedOut = true;
+                    break;
+                }
+
+                bool hasNext;
+                try
+                {
+                    hasNext = files.MoveNext();
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    result.ErrorDisplay = "部分目录无权读取，已停止继续扫描。";
+                    _logger.LogDebug(ex, "Media source dry-run access denied {Path}", fullRoot);
+                    break;
+                }
+                catch (IOException ex)
+                {
+                    result.ErrorDisplay = "部分目录读取失败，已停止继续扫描。";
+                    _logger.LogDebug(ex, "Media source dry-run IO failure {Path}", fullRoot);
+                    break;
+                }
+
+                if (!hasNext)
+                {
+                    completed = true;
+                    break;
+                }
+
+                var path = files.Current;
+                if (string.IsNullOrWhiteSpace(path)) continue;
+                result.ScannedCount++;
+                var media = IsMedia(path);
+                var matched = media && MatchesIncludePattern(path, pattern);
+                if (matched) result.MatchedCount++;
+                else result.ExcludedCount++;
+
+                if (result.Items.Count < maxItems)
+                {
+                    var size = 0L;
+                    try { size = new FileInfo(path).Length; } catch { }
+                    result.Items.Add(new MediaSourcePreviewItemDto
+                    {
+                        Path = path,
+                        FileName = Path.GetFileName(path),
+                        Included = matched,
+                        SizeBytes = size,
+                        Reason = matched
+                            ? $"命中文件模式 {pattern}"
+                            : media
+                                ? $"未命中文件模式 {pattern}"
+                                : "排除：不是支持的截图或录像格式"
+                    });
+                }
+
+                if (result.ScannedCount % 32 == 0)
+                    await Task.Yield();
+            }
+
+            if (!completed && !result.TimedOut && result.ScannedCount >= maxScanned)
+                result.ScanTruncated = true;
+        }
+        catch (OperationCanceledException) when (!token.IsCancellationRequested)
+        {
+            result.TimedOut = true;
+        }
+        finally
+        {
+            files?.Dispose();
+        }
+
+        result.State = result.TimedOut || result.ScanTruncated || !string.IsNullOrWhiteSpace(result.ErrorDisplay)
+            ? "Partial"
+            : "Completed";
+        return result;
     }
 
     /// <summary>Removes an item from the inbox while retaining a recoverable local copy.</summary>
@@ -277,6 +425,26 @@ public sealed class MediaSyncService
         var records = await _store.GetMediaClassificationBatchItemsAsync(batch.BatchId, token).ConfigureAwait(false);
         var selected = NormalizeInboxBatchIds(request.MediaIds);
         var games = (await _catalog.GetGamesAsync(token).ConfigureAwait(false)).ToDictionary(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase);
+        var invalidTargetOverrides = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var targetOverride in request.TargetOverrides ?? new List<MediaClassificationTargetOverrideDto>())
+        {
+            if (string.IsNullOrWhiteSpace(targetOverride.MediaId)
+                || (selected.Count > 0 && !selected.Contains(targetOverride.MediaId, StringComparer.OrdinalIgnoreCase))) continue;
+            var record = records.FirstOrDefault(x => string.Equals(x.MediaId, targetOverride.MediaId, StringComparison.OrdinalIgnoreCase));
+            if (record == null || record.ItemState != "Pending") continue;
+            if (string.IsNullOrWhiteSpace(targetOverride.TargetPlayniteId)
+                || !games.TryGetValue(targetOverride.TargetPlayniteId, out var overrideGame))
+            {
+                invalidTargetOverrides.Add(record.MediaId);
+                continue;
+            }
+
+            var targetReason = $"用户在预览中调整目标：{overrideGame.Name}；原建议：{record.TargetReason}";
+            await _store.UpdateMediaClassificationBatchItemTargetAsync(
+                batch.BatchId, record.MediaId, overrideGame.PlayniteId, targetReason, token).ConfigureAwait(false);
+        }
+        if (request.TargetOverrides?.Count > 0)
+            records = await _store.GetMediaClassificationBatchItemsAsync(batch.BatchId, token).ConfigureAwait(false);
         var result = new MediaClassificationBatchResultDto { BatchId = batch.BatchId };
 
         foreach (var record in records)
@@ -285,6 +453,12 @@ public sealed class MediaSyncService
             if (record.ItemState == "Applied")
             {
                 AddClassificationResult(result, record.MediaId, "Skipped", "该建议批次项目已经应用。", skipped: true);
+                continue;
+            }
+            if (invalidTargetOverrides.Contains(record.MediaId))
+            {
+                AddClassificationResult(result, record.MediaId, "Skipped", "预览中选择的目标游戏不存在于当前游戏库，保持未归类。", skipped: true);
+                await _store.UpdateMediaClassificationBatchItemAsync(batch.BatchId, record.MediaId, "Skipped", string.Empty, token).ConfigureAwait(false);
                 continue;
             }
             if (request.HighConfidenceOnly && record.Confidence != "High")
@@ -422,6 +596,95 @@ public sealed class MediaSyncService
             PageResetRequired = true,
             PageResetReason = reason
         };
+
+    /// <summary>Builds a bounded, read-only duplicate view for one selected game's assigned media.</summary>
+    public async Task<MediaDuplicateInspectionDto> GetDuplicateGroupsAsync(
+        MediaDuplicateQueryDto request, CancellationToken token)
+    {
+        request ??= new MediaDuplicateQueryDto();
+        if (string.IsNullOrWhiteSpace(request.PlayniteId))
+            return new MediaDuplicateInspectionDto();
+
+        var scanLimit = Math.Clamp(request.ScanLimit, 1, 5000);
+        var maxGroups = Math.Clamp(request.MaxGroups, 1, 100);
+        var media = await _store.GetMediaAsync(request.PlayniteId.Trim(), scanLimit, token).ConfigureAwait(false);
+        var certainIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var groups = new List<MediaDuplicateGroupDto>();
+
+        foreach (var group in media
+            .Where(item => !string.IsNullOrWhiteSpace(item.Sha256))
+            .GroupBy(item => item.Sha256.Trim(), StringComparer.OrdinalIgnoreCase)
+            .Where(group => group.Count() > 1)
+            .OrderByDescending(group => group.Count())
+            .ThenByDescending(group => group.Max(item => item.CapturedUtc))
+            .Take(maxGroups))
+        {
+            foreach (var item in group)
+                certainIds.Add(item.MediaId);
+            groups.Add(CreateDuplicateGroup(
+                group,
+                "Certain",
+                "SHA-256 完全一致，属于确定重复；此视图不会删除或移动任何媒体。"));
+        }
+
+        if (groups.Count < maxGroups)
+        {
+            foreach (var group in media
+                .Where(item => !certainIds.Contains(item.MediaId))
+                .Select(item => new { Item = item, Key = BuildMetadataDuplicateKey(item) })
+                .Where(candidate => !string.IsNullOrWhiteSpace(candidate.Key))
+                .GroupBy(candidate => candidate.Key, StringComparer.OrdinalIgnoreCase)
+                .Where(group => group.Count() > 1)
+                .OrderByDescending(group => group.Count())
+                .ThenByDescending(group => group.Max(candidate => candidate.Item.CapturedUtc))
+                .Take(maxGroups - groups.Count))
+            {
+                groups.Add(CreateDuplicateGroup(
+                    group.Select(candidate => candidate.Item),
+                    "Suspected",
+                    "同类型、文件名和大小一致，但没有相同 SHA-256 证据；仅作为疑似重复供查看。"));
+            }
+        }
+
+        return new MediaDuplicateInspectionDto
+        {
+            Groups = groups,
+            ScannedItemCount = media.Count,
+            ScanTruncated = media.Count >= scanLimit
+        };
+    }
+
+    private static string BuildMetadataDuplicateKey(MediaItemDto item)
+    {
+        var fileName = item.FileName?.Trim() ?? string.Empty;
+        return fileName.Length == 0
+            ? string.Empty
+            : $"{(int)item.Kind}|{item.SizeBytes}|{fileName}";
+    }
+
+    private static MediaDuplicateGroupDto CreateDuplicateGroup(
+        IEnumerable<MediaItemDto> items, string confidence, string reason)
+    {
+        var ordered = items
+            .OrderByDescending(item => item.CapturedUtc)
+            .ThenByDescending(item => item.MediaId, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        return new MediaDuplicateGroupDto
+        {
+            GroupId = BuildDuplicateGroupId(confidence, ordered),
+            Confidence = confidence,
+            Reason = reason,
+            ItemCount = ordered.Count,
+            Items = ordered.Take(24).ToList()
+        };
+    }
+
+    private static string BuildDuplicateGroupId(string confidence, IReadOnlyList<MediaItemDto> items)
+    {
+        var key = string.Join("|", items.Select(item => item.MediaId).OrderBy(id => id, StringComparer.OrdinalIgnoreCase));
+        var digest = SHA256.HashData(Encoding.UTF8.GetBytes(confidence + ":" + key));
+        return confidence.ToLowerInvariant() + "-" + Convert.ToHexString(digest).ToLowerInvariant()[..12];
+    }
 
     /// <summary>Undoes only items that still match the applied snapshot; changed items become conflicts.</summary>
     public async Task<MediaClassificationBatchResultDto> UndoClassificationBatchAsync(MediaClassificationUndoRequestDto request, CancellationToken token)
@@ -711,18 +974,27 @@ public sealed class MediaSyncService
         IReadOnlyList<GameSessionEventDto> sessions,
         IReadOnlyList<ProcessMappingDto> mappings)
     {
-        var candidates = new Dictionary<string, (int Rank, List<string> Reasons)>(StringComparer.OrdinalIgnoreCase);
+        var candidates = new Dictionary<string, (int Rank, List<string> Reasons, List<MediaClassificationEvidenceDto> Evidence)>(StringComparer.OrdinalIgnoreCase);
 
-        void AddCandidate(string playniteId, int rank, string reason)
+        void AddCandidate(string playniteId, int rank, string reason, string evidenceKind, string evidenceDetail)
         {
             if (!gameById.ContainsKey(playniteId)) return;
+            var evidence = new MediaClassificationEvidenceDto
+            {
+                Kind = evidenceKind,
+                CandidatePlayniteId = playniteId,
+                CandidateGameName = gameById[playniteId].Name,
+                Detail = evidenceDetail
+            };
             if (candidates.TryGetValue(playniteId, out var candidate))
             {
                 if (!candidate.Reasons.Contains(reason, StringComparer.Ordinal)) candidate.Reasons.Add(reason);
-                candidates[playniteId] = (Math.Max(candidate.Rank, rank), candidate.Reasons);
+                if (!candidate.Evidence.Any(x => x.Kind == evidence.Kind && x.Detail == evidence.Detail))
+                    candidate.Evidence.Add(evidence);
+                candidates[playniteId] = (Math.Max(candidate.Rank, rank), candidate.Reasons, candidate.Evidence);
                 return;
             }
-            candidates[playniteId] = (rank, new List<string> { reason });
+            candidates[playniteId] = (rank, new List<string> { reason }, new List<MediaClassificationEvidenceDto> { evidence });
         }
 
         foreach (var source in sources.Where(x => x.Enabled && !string.IsNullOrWhiteSpace(x.PlayniteId)))
@@ -730,7 +1002,8 @@ public sealed class MediaSyncService
             if (IsPathWithin(item.OriginalPath, source.RootPath)
                 && MatchesIncludePattern(item.OriginalPath, source.IncludePattern))
             {
-                AddCandidate(source.PlayniteId, 3, "命中游戏媒体来源规则");
+                AddCandidate(source.PlayniteId, 3, "命中游戏媒体来源规则", "SourceRule",
+                    $"目录 {source.RootPath}，模式 {source.IncludePattern}");
             }
         }
 
@@ -741,9 +1014,18 @@ public sealed class MediaSyncService
         foreach (var sessionGame in matchingSessions.Select(x => x.PlayniteId)
                      .Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase))
         {
-            AddCandidate(sessionGame, 2, matchingSessions.Count(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase)) > 1
-                ? "媒体时间命中重叠的同一游戏会话"
-                : "媒体时间位于游戏会话窗口");
+            var matchingSessionCount = matchingSessions.Count(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase));
+            foreach (var session in matchingSessions.Where(x => string.Equals(x.PlayniteId, sessionGame, StringComparison.OrdinalIgnoreCase)))
+            {
+                var process = string.IsNullOrWhiteSpace(session.ProcessName) ? string.Empty : $"，进程 {session.ProcessName}";
+                var sessionWindow = session.StoppedUtc.HasValue
+                    ? $"{session.StartedUtc.ToLocalTime():yyyy-MM-dd HH:mm}–{session.StoppedUtc.Value.ToLocalTime():HH:mm}"
+                    : $"{session.StartedUtc.ToLocalTime():yyyy-MM-dd HH:mm} 起（未记录结束）";
+                AddCandidate(sessionGame, 2, matchingSessionCount > 1
+                    ? "媒体时间命中重叠的同一游戏会话"
+                    : "媒体时间位于游戏会话窗口", "GameSession",
+                    $"{sessionWindow}{process}");
+            }
         }
 
         foreach (var session in matchingSessions)
@@ -753,7 +1035,8 @@ public sealed class MediaSyncService
             foreach (var mapping in mappings.Where(x => x.Enabled && !string.IsNullOrWhiteSpace(x.PlayniteId)
                                                          && string.Equals(NormalizeProcessName(x.ExecutableName), processName, StringComparison.OrdinalIgnoreCase)))
             {
-                AddCandidate(mapping.PlayniteId, 3, "会话进程映射与媒体时间一致");
+                AddCandidate(mapping.PlayniteId, 3, "会话进程映射与媒体时间一致", "ProcessMapping",
+                    $"{mapping.ExecutableName} → {(string.IsNullOrWhiteSpace(mapping.GameName) ? gameById[mapping.PlayniteId].Name : mapping.GameName)}");
             }
         }
 
@@ -761,7 +1044,8 @@ public sealed class MediaSyncService
                                            && SharedFileMatchesGame(item.OriginalPath, x.Name)).ToList();
         foreach (var game in nameMatches)
         {
-            AddCandidate(game.PlayniteId, 2, nameMatches.Count == 1 ? "文件名唯一匹配游戏" : "文件名匹配多个候选游戏");
+            AddCandidate(game.PlayniteId, 2, nameMatches.Count == 1 ? "文件名唯一匹配游戏" : "文件名匹配多个候选游戏",
+                "FileName", nameMatches.Count == 1 ? "文件名唯一匹配" : "文件名匹配多个候选");
         }
 
         var suggestion = new MediaClassificationSuggestionDto
@@ -781,10 +1065,12 @@ public sealed class MediaSyncService
             suggestion.SuggestedGameName = game.Name;
             suggestion.Confidence = candidate.Value.Rank >= 3 ? "High" : "Medium";
             suggestion.Reason = string.Join("；", candidate.Value.Reasons);
+            suggestion.Evidence = candidate.Value.Evidence;
         }
         else if (candidates.Count > 1)
         {
             suggestion.Reason = "来源规则、会话或文件名产生多个候选，保持未归类";
+            suggestion.Evidence = candidates.Values.SelectMany(x => x.Evidence).ToList();
         }
         else
         {
@@ -927,7 +1213,7 @@ public sealed class MediaSyncService
             {
                 ct.ThrowIfCancellationRequested();index++;
                 if(await ArchiveCandidateAsync(candidate.Path,candidate.Source,game,"游戏专属来源",ct).ConfigureAwait(false))copied++;
-                if(index%20==0)await progress.ReportAsync(Math.Min(85,5+(int)(80d*index/Math.Max(1,candidates.Count))),$"已检查 {index}/{candidates.Count}").ConfigureAwait(false);
+                if(index%20==0)await progress.ReportWorkAsync(index,candidates.Count,"文件",$"已检查 {index}/{candidates.Count}",Math.Min(85,5+(int)(80d*index/Math.Max(1,candidates.Count)))).ConfigureAwait(false);
             }
 
             var policy=await _store.GetPolicyAsync(game.PlayniteId,ct).ConfigureAwait(false);
@@ -1039,7 +1325,17 @@ public sealed class MediaSyncService
         if(!policy.UploadAfterBackup)
         {
             await _cloudState.MarkPausedAsync(CloudTransferKind.Media,playniteId,"该游戏策略未允许媒体上传，已暂停自动重试。",token).ConfigureAwait(false);
-            return new TaskStatusDto{TaskType="CloudUpload",GameId=playniteId,GameName=game.Name,State=TaskState.Cancelled,Message="媒体云端上传已按策略暂停",CreatedUtc=DateTime.UtcNow,FinishedUtc=DateTime.UtcNow};
+            return new TaskStatusDto{TaskType="CloudUpload",GameId=playniteId,GameName=game.Name,State=TaskState.Cancelled,Message="媒体云端上传已按策略暂停",CreatedUtc=DateTime.UtcNow,FinishedUtc=DateTime.UtcNow,SourceReferences=new List<TaskSourceReferenceDto>
+            {
+                new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.CloudTransfer,
+                    StableId = CloudTransferStateService.GetTransferKey(CloudTransferKind.Media, playniteId),
+                    PlayniteId = playniteId,
+                    DisplayName = "媒体云队列",
+                    Detail = "策略暂停；没有重新执行本地媒体扫描"
+                }
+            }};
         }
         using var lease=await _gameLock.AcquireAsync(playniteId,GameOperationKind.CloudUpload,TimeSpan.FromSeconds(10),token).ConfigureAwait(false);
         if(lease==null)throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有操作正在执行，已跳过媒体云端上传重试。",playniteId);
@@ -1067,7 +1363,17 @@ public sealed class MediaSyncService
             await _store.UpdateMediaCloudStateAsync(playniteId,"Synced",ct).ConfigureAwait(false);
             await _cloudState.MarkUploadedAsync(CloudTransferKind.Media,playniteId,ct).ConfigureAwait(false);
             await progress.ReportAsync(100,"媒体云端复制重试完成").ConfigureAwait(false);
-        },token).ConfigureAwait(false);
+        },token,sourceReferences: new[]
+        {
+            new TaskSourceReferenceDto
+            {
+                Kind = TaskSourceReferenceKind.CloudTransfer,
+                StableId = CloudTransferStateService.GetTransferKey(CloudTransferKind.Media, game.PlayniteId),
+                PlayniteId = game.PlayniteId,
+                DisplayName = "媒体云队列",
+                Detail = "仅重试已保留的本地媒体归档"
+            }
+        }).ConfigureAwait(false);
     }
 
     /// <summary>

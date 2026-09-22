@@ -38,6 +38,11 @@ public sealed class StorageAnalysisService
         var rows = await _store.GetStorageAnalysisRowsAsync(token).ConfigureAwait(false);
         result.BackupVersionCount = rows.Count;
         result.IndexedBackupBytes = rows.Sum(x => Math.Max(0, x.TotalBytes));
+        var missingRows = rows
+            .Where(row => string.IsNullOrWhiteSpace(row.ArchivePath) || !File.Exists(row.ArchivePath))
+            .ToList();
+        result.MissingIndexedPathCount = missingRows.Count;
+        result.MissingIndexedBytes = missingRows.Sum(x => Math.Max(0, x.TotalBytes));
         result.RepositoryBytes = await CalculateRepositoryBytesAsync(_options.LudusaviBackupDirectory, token).ConfigureAwait(false);
 
         var now = DateTime.UtcNow;
@@ -55,13 +60,18 @@ public sealed class StorageAnalysisService
 
         result.TopGames = rows
             .GroupBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase)
-            .Select(group => new StorageGameRankDto
+            .Select(group =>
             {
-                PlayniteId = group.Key,
-                GameName = group.OrderByDescending(x => x.CreatedUtc).First().LudusaviName,
-                BackupCount = group.Count(),
-                BackupBytes = group.Sum(x => Math.Max(0, x.TotalBytes)),
-                LatestBackupUtc = group.Max(x => x.CreatedUtc)
+                var latest = group.OrderByDescending(x => x.CreatedUtc).First();
+                return new StorageGameRankDto
+                {
+                    PlayniteId = group.Key,
+                    GameName = latest.LudusaviName,
+                    BackupCount = group.Count(),
+                    BackupBytes = group.Sum(x => Math.Max(0, x.TotalBytes)),
+                    LatestBackupId = latest.BackupId,
+                    LatestBackupUtc = latest.CreatedUtc
+                };
             })
             .OrderByDescending(x => x.BackupBytes)
             .ThenByDescending(x => x.BackupCount)
@@ -132,7 +142,7 @@ public sealed class StorageAnalysisService
             : $"卷 {result.VolumeRoot} 剩余 {result.VolumeFreeDisplay} / 共 {result.VolumeTotalDisplay}";
         var footprint = $"索引 {result.BackupVersionCount} 个版本，索引体积 {result.IndexedBackupBytesDisplay}，目录实测 {result.RepositoryBytesDisplay}";
         var trend = result.Trends.FirstOrDefault(x => x.Days == 30)?.AddedBytesDisplay ?? "0 B";
-        return $"{volume}；{footprint}。近 30 天新增 {trend}（估算）";
+        return $"{volume}；{footprint}。近 30 天新增 {trend}（估算）。{result.MissingIndexedPathSummary}";
     }
 
     private static string GetVolumeRoot(string path)

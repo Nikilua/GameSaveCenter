@@ -108,9 +108,7 @@ namespace GameSaveCenter.Contracts
         public string RelativePath { get; set; } = string.Empty;
         public long SizeBytes { get; set; }
         public string FileName => Path.GetFileName(RelativePath ?? string.Empty);
-        public string SizeDisplay => SizeBytes < 1024 * 1024
-            ? $"{SizeBytes / 1024d:0.#} KiB"
-            : $"{SizeBytes / 1024d / 1024d:0.#} MiB";
+        public string SizeDisplay => ByteSizeFormatter.Format(SizeBytes);
         public string Display => $"{RelativePath} · {SizeDisplay}";
     }
 
@@ -181,9 +179,7 @@ namespace GameSaveCenter.Contracts
         public string DownloadUrl { get; set; } = string.Empty;
         public long SizeBytes { get; set; }
         public DateTime? PublishedUtc { get; set; }
-        public string SizeDisplay => SizeBytes <= 0 ? "未知大小"
-            : SizeBytes < 1024 * 1024 ? $"{SizeBytes / 1024d:0.#} KiB"
-            : $"{SizeBytes / 1024d / 1024d:0.#} MiB";
+        public string SizeDisplay => SizeBytes <= 0 ? "未知大小" : ByteSizeFormatter.Format(SizeBytes);
         public string VersionDisplay
         {
             get

@@ -120,6 +120,53 @@ public sealed class PathRemapServiceTests : IDisposable
         Assert.True(applied.AffectedRows >= 1);
     }
 
+    [Fact]
+    public async Task PreviewKeepsFullPathsAndDoesNotMatchSimilarRootsAcrossDrives()
+    {
+        var differentDriveRoot = @"D:\GameSaveCenter\Synthetic\NewSaves";
+        var longSegment = new string('x', 80);
+        var archive = Path.Combine(oldRoot, "game", longSegment, "backup.zip");
+        var similarArchive = Path.Combine(oldRoot + "-other", "game", "backup.zip");
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "g1",
+            BackupId = "long",
+            LudusaviName = "game",
+            CreatedUtc = DateTime.UtcNow,
+            TotalBytes = 1,
+            FileCount = 1,
+            ArchivePath = archive
+        }, "{}", CancellationToken.None);
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "g1",
+            BackupId = "similar",
+            LudusaviName = "game",
+            CreatedUtc = DateTime.UtcNow,
+            TotalBytes = 1,
+            FileCount = 1,
+            ArchivePath = similarArchive
+        }, "{}", CancellationToken.None);
+
+        var service = new PathRemapService(options, store,
+            new MetadataBackupService(options, store, NullLogger<MetadataBackupService>.Instance),
+            NullLogger<PathRemapService>.Instance);
+        var preview = await service.PreviewAsync(new PathRemapRequestDto
+        {
+            OldRoot = oldRoot,
+            NewRoot = differentDriveRoot
+        }, CancellationToken.None);
+
+        var item = Assert.Single(preview.Items, x => x.OldPath == archive);
+        Assert.Equal(archive, item.OldPathDisplay);
+        Assert.Equal(Path.Combine(differentDriveRoot, "game", longSegment, "backup.zip"), item.NewPathDisplay);
+        Assert.Equal("目标不存在（需明确确认）", item.TargetStateDisplay);
+        Assert.DoesNotContain(preview.Items, x => x.OldPath == similarArchive);
+        Assert.False(File.Exists(item.NewPath));
+        var versions = await store.GetBackupVersionsAsync("g1", CancellationToken.None);
+        Assert.Contains(versions, version => version.ArchivePath == archive);
+    }
+
     public void Dispose()
     {
         SqliteConnection.ClearAllPools();

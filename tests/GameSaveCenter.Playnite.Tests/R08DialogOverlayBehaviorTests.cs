@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using Xunit;
@@ -36,8 +35,6 @@ public sealed class R08DialogOverlayBehaviorTests
         Exception? failure = null;
         bool opened = false;
         bool closed = false;
-        bool openingWasAnimated = false;
-        bool closingWasAnimated = false;
 
         var thread = new Thread(() =>
         {
@@ -63,19 +60,26 @@ public sealed class R08DialogOverlayBehaviorTests
                 FlushLayout(window);
 
                 var motion = new DialogOverlayMotion(overlay, card);
+                var openStarted = DateTime.UtcNow;
                 motion.BeginOpen(true, () => opened = true);
                 Assert.Equal(Visibility.Visible, overlay.Visibility);
-                openingWasAnimated = DependencyPropertyHelper.GetValueSource(
-                    card, UIElement.OpacityProperty).IsAnimated;
                 Assert.True(WaitFor(window, () => opened));
+                Assert.True(DateTime.UtcNow - openStarted >= TimeSpan.FromMilliseconds(100));
 
+                var closeStarted = DateTime.UtcNow;
                 motion.BeginClose(true, () => closed = true);
                 Assert.Equal(Visibility.Visible, overlay.Visibility);
                 Assert.False(closed);
-                closingWasAnimated = WaitForAnimationAndCompletion(window, card, () => closed);
+                if (!WaitFor(window, () => closed))
+                {
+                    throw new InvalidOperationException(
+                        $"close callback did not run; opacity={card.Opacity}; overlay={overlay.Visibility}; animated={DependencyPropertyHelper.GetValueSource(card, UIElement.OpacityProperty).IsAnimated}");
+                }
+                Assert.True(DateTime.UtcNow - closeStarted >= TimeSpan.FromMilliseconds(100));
                 Assert.Equal(Visibility.Collapsed, overlay.Visibility);
                 Assert.Equal(0d, card.Opacity, 3);
-                Assert.Equal(0d, FindTranslate(card.RenderTransform)?.Y ?? 0d, 3);
+                var translate = Assert.IsType<System.Windows.Media.TranslateTransform>(card.RenderTransform);
+                Assert.Equal(0d, translate.Y, 3);
             }
             catch (Exception caught)
             {
@@ -92,10 +96,11 @@ public sealed class R08DialogOverlayBehaviorTests
         thread.Join();
 
         Assert.Null(failure);
-        Assert.True(opened);
-        Assert.True(openingWasAnimated);
-        Assert.True(closingWasAnimated);
-        Assert.True(closed);
+        if (!opened || !closed)
+        {
+            throw new InvalidOperationException(
+                $"dialog motion terminal flags were not all observed; opened={opened}; closed={closed}");
+        }
     }
 
     [Fact]
@@ -138,51 +143,24 @@ public sealed class R08DialogOverlayBehaviorTests
 
     private static bool WaitFor(Window window, Func<bool> predicate)
     {
+        var frame = new DispatcherFrame();
         var deadline = DateTime.UtcNow.AddMilliseconds(1500);
-        while (DateTime.UtcNow < deadline)
+        var timer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
         {
-            if (predicate())
-                return true;
-
-            window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
-            Thread.Sleep(5);
-        }
+            Interval = TimeSpan.FromMilliseconds(10)
+        };
+        timer.Tick += (_, __) =>
+        {
+            if (predicate() || DateTime.UtcNow >= deadline)
+            {
+                timer.Stop();
+                frame.Continue = false;
+            }
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
 
         return predicate();
     }
 
-    private static bool WaitForAnimationAndCompletion(Window window, Border card, Func<bool> completed)
-    {
-        var observed = false;
-        var deadline = DateTime.UtcNow.AddMilliseconds(1500);
-        while (DateTime.UtcNow < deadline)
-        {
-            observed |= DependencyPropertyHelper.GetValueSource(
-                card, UIElement.OpacityProperty).IsAnimated;
-            if (completed())
-                return observed;
-
-            window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
-            Thread.Sleep(5);
-        }
-
-        return observed;
-    }
-
-    private static TranslateTransform? FindTranslate(Transform? transform)
-    {
-        if (transform is TranslateTransform translate)
-            return translate;
-        if (!(transform is TransformGroup group))
-            return null;
-
-        foreach (var child in group.Children)
-        {
-            var nested = FindTranslate(child);
-            if (nested != null)
-                return nested;
-        }
-
-        return null;
-    }
 }

@@ -65,6 +65,8 @@ public sealed class RestoreReadinessService
             result.ExpectedFileCount = expected.Count;
             result.ExpectedTotalSize = expected.Sum(x => Math.Max(0, x.SizeBytes));
         }
+        result.HashEligibleFileCount = expected.Count;
+        result.HashCoveredFileCount = expected.Count(x => !string.IsNullOrWhiteSpace(x.Sha256));
         if (result.ExpectedTotalSize > 0 && TryGetAvailableBytes(stagingRoot, out var availableBytes)
             && availableBytes < result.ExpectedTotalSize + StagingFreeSpaceReserve)
         {
@@ -101,7 +103,6 @@ public sealed class RestoreReadinessService
             var expectedByPath = expected
                 .ToDictionary(x => NormalizeManifestPath(x.RelativePath), x => x, StringComparer.OrdinalIgnoreCase);
             var actualByPath = new Dictionary<string, ZipArchiveEntry>(StringComparer.OrdinalIgnoreCase);
-            var hashChecked = 0;
             var hashFailed = 0;
             var sizeMismatches = 0;
             foreach (var entry in files)
@@ -143,7 +144,6 @@ public sealed class RestoreReadinessService
 
                         if (!string.IsNullOrWhiteSpace(expectedEntry.Sha256))
                         {
-                            hashChecked++;
                             // ExtractEntryAsync hashes while copying so cancellation remains
                             // responsive and large files are not read twice.
                             var actualHash = extraction.Sha256;
@@ -169,13 +169,20 @@ public sealed class RestoreReadinessService
             if (sizeMismatches > 0) result.WarningCount += sizeMismatches;
             if (unexpectedActual > 0) result.WarningCount += unexpectedActual;
 
-            result.HashValidation = hashChecked == 0
-                ? "NotAvailable"
-                : hashFailed == 0 ? "Validated" : "Failed";
+            result.HashValidation = hashFailed > 0
+                ? "Failed"
+                : result.HashCoveredFileCount == 0
+                    ? "NotAvailable"
+                    : result.HashCoveredFileCount < result.HashEligibleFileCount
+                        ? "Partial"
+                        : "Validated";
 
             result.ExtractSucceeded = result.ErrorCount == 0;
             var metricMismatch = result.ExpectedFileCount > 0
                 && (result.ExpectedFileCount != result.ActualFileCount || result.ExpectedTotalSize != result.ActualTotalSize);
+            var hashUnavailable = result.HashCoveredFileCount == 0;
+            var hashPartial = result.HashCoveredFileCount > 0
+                && result.HashCoveredFileCount < result.HashEligibleFileCount;
             if (metricMismatch) result.WarningCount++;
 
             if (result.ErrorCount > 0)
@@ -185,18 +192,22 @@ public sealed class RestoreReadinessService
                     ? $"归档可以打开，但缺少 Manifest 中记录的 {missingExpected} 个文件。"
                     : "归档可以打开，但有条目无法安全提取或校验失败。";
             }
-            else if (metricMismatch || result.WarningCount > 0)
+            else if (metricMismatch || result.WarningCount > 0 || hashUnavailable || hashPartial)
             {
                 result.Status = RestoreReadinessStatus.Warning;
-                result.Summary = sizeMismatches > 0
-                    ? $"归档可以解压，但有 {sizeMismatches} 个文件与 Manifest 大小不同。"
-                    : !string.Equals(manifestState, ManifestReadState.Valid)
-                        ? "归档可以解压，但缺少 Manifest，无法完成逐文件恢复校验。"
-                        : unexpectedActual > 0
-                            ? $"归档可以解压，但包含 {unexpectedActual} 个 Manifest 未记录的额外文件。"
-                            : metricMismatch
-                    ? "归档可读取；条目统计与索引不完全一致，差分版本可能只包含变化项。"
-                    : "归档可读取并已提取到隔离目录，但包含需要留意的条目。";
+                result.Summary = !string.Equals(manifestState, ManifestReadState.Valid)
+                    ? "归档可以解压，但缺少 Manifest，无法完成逐文件恢复校验；这不等于校验成功。"
+                    : hashUnavailable
+                        ? "归档可以解压，但 Manifest 未提供文件哈希；这不等于校验成功。"
+                        : hashPartial
+                            ? $"归档可以解压，但 Manifest 只覆盖部分文件哈希（{result.HashCoveredFileCount}/{result.HashEligibleFileCount}），未覆盖文件不能视为已校验。"
+                            : sizeMismatches > 0
+                                ? $"归档可以解压，但有 {sizeMismatches} 个文件与 Manifest 大小不同。"
+                                : unexpectedActual > 0
+                                    ? $"归档可以解压，但包含 {unexpectedActual} 个 Manifest 未记录的额外文件。"
+                                    : metricMismatch
+                                        ? "归档可读取；条目统计与索引不完全一致，差分版本可能只包含变化项。"
+                                        : "归档可读取并已提取到隔离目录，但包含需要留意的条目。";
             }
             else
             {
@@ -326,13 +337,7 @@ public sealed class RestoreReadinessService
         }
     }
 
-    private static string FormatBytes(long bytes)
-    {
-        if (bytes < 1024) return $"{bytes} B";
-        if (bytes < 1024L * 1024) return $"{bytes / 1024d:0.##} KiB";
-        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024d / 1024d:0.##} MiB";
-        return $"{bytes / 1024d / 1024d / 1024d:0.##} GiB";
-    }
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
 
     private static bool TryDeleteStagingDirectory(string path)
     {

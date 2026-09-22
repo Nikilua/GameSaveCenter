@@ -187,7 +187,7 @@ public sealed class WorkspaceStateSourceTests
         {
             "MediaDetailsPresenterState", "MediaDetailsStateOverlayVisible", "MediaDetailsStaleVisible",
             "MediaInboxPresenterState", "MediaInboxStateOverlayVisible", "MediaInboxStaleVisible",
-            "MediaInboxCountDisplay", "MediaInboxCountCaption",
+            "MediaInboxCountDisplay", "MediaInboxCountCaption", "MediaInboxCountCaptionFull",
             "MaintenancePresenterState", "MaintenanceStateOverlayVisible", "MaintenanceStaleVisible",
             "MaintenanceActionSummary", "MaintenanceActionItems"
         })

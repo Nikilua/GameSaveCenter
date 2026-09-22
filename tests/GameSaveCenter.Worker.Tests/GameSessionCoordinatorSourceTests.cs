@@ -22,10 +22,5 @@ public sealed class GameSessionCoordinatorSourceTests
     }
 
     private static string FindRepositoryRoot()
-    {
-        var directory=new DirectoryInfo(AppContext.BaseDirectory);
-        while(directory!=null&&!File.Exists(Path.Combine(directory.FullName,"GameSaveCenter.sln")))
-            directory=directory.Parent;
-        return directory?.FullName??throw new DirectoryNotFoundException("Could not locate GameSaveCenter.sln.");
-    }
+        => TestRepositoryContext.Root;
 }

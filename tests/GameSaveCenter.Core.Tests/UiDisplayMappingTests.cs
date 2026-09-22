@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameSaveCenter.Contracts;
 using Xunit;
 
@@ -33,6 +34,196 @@ public sealed class UiDisplayMappingTests
         Assert.Equal("已上传 2 · 已校验 3", summary.GuaranteeDisplay);
     }
 
+    [Theory]
+    [InlineData("Pending", "", "等待队列")]
+    [InlineData("RetryScheduled", "RCLONE_NETWORK_FAILED", "等待网络")]
+    [InlineData("RetryScheduled", "RCLONE_AUTH_FAILED", "等待重试")]
+    [InlineData("Transferring", "", "上传中")]
+    [InlineData("Verifying", "", "验证中")]
+    [InlineData("RemoteVerified", "", "已验证")]
+    [InlineData("Uploaded", "", "等待验证")]
+    public void CloudTransferExposesTheActualQueuePhase(string state, string errorCode, string expected)
+    {
+        var transfer = new CloudTransferStatusDto { State = state, LastErrorCode = errorCode };
+
+        Assert.Equal(expected, transfer.QueuePhaseDisplay);
+    }
+
+    [Fact]
+    public void CloudSummarySeparatesWaitingWindowFromRunningQueue()
+    {
+        var paused = new CloudTransferSummaryDto { QueuePaused = true, TotalCount = 1 };
+        var outsideWindow = new CloudTransferSummaryDto { OutsideAllowedWindow = true };
+        var idle = new CloudTransferSummaryDto();
+        var running = new CloudTransferSummaryDto { TotalCount = 1 };
+
+        Assert.Equal("自动队列已暂停", paused.QueueControlDisplay);
+        Assert.Equal("当前不在允许时段", outsideWindow.QueueControlDisplay);
+        Assert.Equal("队列空闲", idle.QueueControlDisplay);
+        Assert.Equal("自动队列运行中", running.QueueControlDisplay);
+    }
+
+    [Fact]
+    public void CloudRetryTimingClampsExpiredAndKeepsAbsoluteTime()
+    {
+        var future = new CloudTransferStatusDto { NextAttemptUtc = DateTime.UtcNow.AddMinutes(5) };
+        var expired = new CloudTransferStatusDto { NextAttemptUtc = DateTime.UtcNow.AddMinutes(-5) };
+
+        Assert.Contains("·", future.RetryTimingDisplay);
+        Assert.Contains("后", future.RetryTimingDisplay);
+        Assert.Contains("可立即重试", expired.RetryTimingDisplay);
+        Assert.DoesNotContain("负", expired.RetryTimingDisplay);
+    }
+
+    [Fact]
+    public void CloudRetryTimingKeepsNoRetryDistinctFromAnExpiredRetry()
+    {
+        var noRetry = new CloudTransferStatusDto();
+
+        Assert.Equal("无自动重试", noRetry.RetryTimingDisplay);
+    }
+
+    [Fact]
+    public void CloudRemoteEvidenceKeepsUnknownFieldsUnknownAndRedactsCredentials()
+    {
+        var unknown = new CloudTransferStatusDto();
+
+        Assert.Equal("未知", unknown.RemoteObjectDisplay);
+        Assert.Equal("未知设备", unknown.SourceDeviceDisplay);
+        Assert.Equal("未知", unknown.LastAttemptDisplay);
+        Assert.Equal("未知", unknown.LastSuccessfulVerificationDisplay);
+
+        var verifiedAt = new DateTime(2026, 9, 19, 1, 2, 3, DateTimeKind.Utc);
+        var verified = new CloudTransferStatusDto
+        {
+            RemoteObject = "https://user:secret@example.invalid/root/Saves",
+            SourceDevice = "device-01",
+            LastAttemptUtc = verifiedAt,
+            LastSuccessfulVerificationUtc = verifiedAt
+        };
+
+        Assert.DoesNotContain("secret", verified.RemoteObjectDisplay, StringComparison.Ordinal);
+        Assert.Contains("[已隐藏]", verified.RemoteObjectDisplay, StringComparison.Ordinal);
+        Assert.Equal("device-01", verified.SourceDeviceDisplay);
+        var expectedLocal = verifiedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
+        Assert.Equal(expectedLocal, verified.LastAttemptDisplay);
+        Assert.Equal(expectedLocal, verified.LastSuccessfulVerificationDisplay);
+    }
+
+    [Fact]
+    public void CloudRemoteDisplayCombinesRelativePathWithoutExposingQueryCredentials()
+    {
+        var display = CloudRemoteDisplay.Combine(
+            "https://user:secret@example.invalid/root?token=query-secret",
+            "device\\Saves");
+
+        Assert.Contains("/root?token=[已隐藏]/device/Saves", display, StringComparison.Ordinal);
+        Assert.DoesNotContain("secret", display, StringComparison.Ordinal);
+        Assert.DoesNotContain("query-secret", display, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void CloudRecoveryExplainsBackoffAndOnlineBatchTransition()
+    {
+        var waiting = new CloudTransferStatusDto
+        {
+            State = "RetryScheduled",
+            AttemptCount = 2,
+            LastErrorCode = "RCLONE_NETWORK_FAILED"
+        };
+        var recovering = new CloudTransferStatusDto
+        {
+            State = "Transferring",
+            AttemptCount = 2,
+            LastErrorCode = "RCLONE_TRANSFER_INCOMPLETE"
+        };
+        var authentication = new CloudTransferStatusDto
+        {
+            State = "RetryScheduled",
+            AttemptCount = 2,
+            LastErrorCode = "RCLONE_AUTH_FAILED"
+        };
+
+        Assert.Contains("等待网络恢复", waiting.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("2/6", waiting.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("最多 10 项", waiting.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("网络已恢复", recovering.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Contains("按批次", recovering.NetworkRecoveryDisplay, StringComparison.Ordinal);
+        Assert.Equal(string.Empty, authentication.NetworkRecoveryDisplay);
+    }
+
+    [Theory]
+    [InlineData("RCLONE_AUTH_FAILED", "认证失败", "检查云端凭据")]
+    [InlineData("RCLONE_NO_SPACE", "空间不足", "释放本地或远端空间")]
+    [InlineData("RCLONE_REMOTE_NOT_FOUND", "远端不存在", "检查远端名称")]
+    [InlineData("RCLONE_CHECK_FAILED", "校验差异", "查看本地与远端内容差异")]
+    [InlineData("RCLONE_RATE_LIMITED", "远端限流", "等待限流窗口")]
+    public void CloudFailureExplanationOffersOnlyRecognizedNextSteps(string errorCode, string category, string nextStep)
+    {
+        var transfer = new CloudTransferStatusDto { LastErrorCode = errorCode };
+
+        Assert.True(transfer.HasRecognizedFailure);
+        Assert.Equal(category, transfer.FailureCategoryDisplay);
+        Assert.Contains(nextStep, transfer.FailureNextStepDisplay, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void UnknownCloudFailureKeepsRawCodeWithoutInventingNextStep()
+    {
+        var transfer = new CloudTransferStatusDto { LastErrorCode = "RCLONE_PROVIDER_NEW_FAILURE" };
+
+        Assert.False(transfer.HasRecognizedFailure);
+        Assert.Equal(string.Empty, transfer.FailureCategoryDisplay);
+        Assert.Equal(string.Empty, transfer.FailureNextStepDisplay);
+        Assert.Equal("RCLONE_PROVIDER_NEW_FAILURE", transfer.LastErrorCode);
+    }
+
+    [Fact]
+    public void ClassificationEvidenceNamesItsSignalAndKeepsNoEvidencePending()
+    {
+        var evidence = new MediaClassificationEvidenceDto
+        {
+            Kind = "ProcessMapping",
+            CandidateGameName = "Alpha Quest",
+            Detail = "alpha.exe → Alpha Quest"
+        };
+        var unknown = new MediaClassificationSuggestionDto();
+
+        Assert.Equal("Alpha Quest · 进程映射 · alpha.exe → Alpha Quest", evidence.SummaryDisplay);
+        Assert.True(unknown.HasEvidence == false);
+        Assert.Equal("待判断 · 尚无可核实依据", unknown.EvidenceSummaryDisplay);
+    }
+
+    [Fact]
+    public void ClassificationPreviewSelectionKeepsStableIdsAndHighConfidenceGate()
+    {
+        var suggestion = new MediaClassificationSuggestionDto
+        {
+            MediaId = "media-1",
+            SuggestedPlayniteId = "game-1",
+            SuggestedGameName = "Alpha Quest",
+            Confidence = "High"
+        };
+        var preview = new MediaClassificationPreviewDto
+        {
+            Items = new List<MediaClassificationSuggestionDto>
+            {
+                suggestion,
+                new MediaClassificationSuggestionDto { MediaId = "media-2", Confidence = "Low" }
+            }
+        };
+
+        Assert.True(suggestion.CanApply);
+        suggestion.TargetPlayniteId = "game-2";
+        Assert.True(suggestion.IsTargetOverridden);
+        Assert.True(suggestion.CanApply);
+        suggestion.IsIncluded = false;
+        Assert.False(suggestion.CanApply);
+        Assert.Equal("本次纳入 1 项，可应用高置信 0 项，排除 1 项。", preview.SelectionSummaryDisplay);
+        Assert.Equal("media-1", suggestion.MediaId);
+        Assert.Equal("game-2", suggestion.TargetPlayniteId);
+    }
+
     [Fact]
     public void UnknownCloudStateDoesNotLeakInternalValue()
     {
@@ -66,7 +257,28 @@ public sealed class UiDisplayMappingTests
         Assert.Equal("未知设备", backup.SourceDisplay);
         Assert.Equal("未知系统", backup.OperatingSystemDisplay);
         Assert.Equal("未验证", backup.RestoreReadinessStatusDisplay);
+        Assert.Equal("未提供哈希（不等于校验成功）", backup.RestoreReadinessHashValidationDisplay);
+        Assert.Equal("哈希覆盖：未提供", backup.RestoreReadinessHashCoverageDisplay);
         Assert.Equal("尚未检查", backup.RestoreReadinessCheckedDisplay);
+    }
+
+    [Fact]
+    public void RestoreReadinessDisplaySeparatesPartialHashesAndOldResults()
+    {
+        var backup = new BackupVersionDto
+        {
+            RestoreReadiness = new RestoreReadinessDto
+            {
+                HashValidation = "Partial",
+                HashCoveredFileCount = 1,
+                HashEligibleFileCount = 2,
+                CheckedUtc = DateTime.UtcNow.AddDays(-2)
+            }
+        };
+
+        Assert.Equal("哈希部分覆盖", backup.RestoreReadinessHashValidationDisplay);
+        Assert.Equal("哈希覆盖：1/2 个文件", backup.RestoreReadinessHashCoverageDisplay);
+        Assert.Contains("结果较旧", backup.RestoreReadinessCheckedDisplay);
     }
 
     [Theory]

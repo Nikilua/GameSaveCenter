@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +16,8 @@ namespace GameSaveCenter.Playnite.Controls
     public sealed class AsyncThumbnailImage : System.Windows.Controls.Image
     {
         public static readonly DependencyProperty PreviewStateProperty = DependencyProperty.Register(
-            nameof(PreviewState), typeof(string), typeof(AsyncThumbnailImage), new PropertyMetadata("Idle"));
+            nameof(PreviewState), typeof(string), typeof(AsyncThumbnailImage),
+            new PropertyMetadata("Idle", OnPreviewStateChanged));
         public static readonly DependencyProperty SourcePathProperty = DependencyProperty.Register(
             nameof(SourcePath), typeof(string), typeof(AsyncThumbnailImage),
             new PropertyMetadata(null, OnSourcePathChanged));
@@ -23,6 +25,10 @@ namespace GameSaveCenter.Playnite.Controls
         public static readonly DependencyProperty PreviewWidthProperty = DependencyProperty.Register(
             nameof(PreviewWidth), typeof(int), typeof(AsyncThumbnailImage),
             new PropertyMetadata(480, OnPreviewWidthChanged));
+
+        public static readonly DependencyProperty PreviewDimensionsProperty = DependencyProperty.Register(
+            nameof(PreviewDimensions), typeof(string), typeof(AsyncThumbnailImage),
+            new PropertyMetadata(string.Empty));
 
         private int generation;
         private CancellationTokenSource? pending;
@@ -46,11 +52,22 @@ namespace GameSaveCenter.Playnite.Controls
             set => SetValue(PreviewWidthProperty, value);
         }
 
+        public string PreviewDimensions
+        {
+            get => (string)GetValue(PreviewDimensionsProperty);
+            private set => SetValue(PreviewDimensionsProperty, value);
+        }
+
         public string PreviewState
         {
             get => (string)GetValue(PreviewStateProperty);
             private set => SetValue(PreviewStateProperty, value);
         }
+
+        public event EventHandler? PreviewStateChanged;
+
+        private static void OnPreviewStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((AsyncThumbnailImage)d).PreviewStateChanged?.Invoke(d, EventArgs.Empty);
 
         private static void OnSourcePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((AsyncThumbnailImage)d).StartLoad();
@@ -87,14 +104,24 @@ namespace GameSaveCenter.Playnite.Controls
             var expected = Interlocked.Increment(ref generation);
 
             var path = SourcePath;
-            if (string.IsNullOrWhiteSpace(path) || !IsLoaded || !IsVisible)
+            if (string.IsNullOrWhiteSpace(path))
             {
                 Source = null;
-                PreviewState = string.IsNullOrWhiteSpace(path) ? "Idle" : "Unavailable";
+                PreviewDimensions = string.Empty;
+                PreviewState = "NoImage";
+                return;
+            }
+
+            if (!IsLoaded || !IsVisible)
+            {
+                Source = null;
+                PreviewDimensions = string.Empty;
+                PreviewState = "Unavailable";
                 return;
             }
 
             Source = null;
+            PreviewDimensions = string.Empty;
             PreviewState = "Loading";
             var width = Math.Max(48, Math.Min(PreviewWidth, 480));
             var cancellation = new CancellationTokenSource();
@@ -124,9 +151,12 @@ namespace GameSaveCenter.Playnite.Controls
                 if (token.IsCancellationRequested || expected != Volatile.Read(ref generation)) return;
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;
-                    Source = image;
-                    PreviewState = image == null ? "Unavailable" : "Ready";
+                     if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;
+                     Source = image;
+                     PreviewDimensions = image == null
+                         ? string.Empty
+                         : $"{image.PixelWidth} × {image.PixelHeight} px";
+                     PreviewState = image == null ? ClassifyUnavailable(path) : "Ready";
                 }, DispatcherPriority.Background);
             }
             catch (OperationCanceledException)
@@ -137,8 +167,15 @@ namespace GameSaveCenter.Playnite.Controls
             {
                 // Keep the placeholder; missing/corrupt media never tears down the list.
                 if (expected == Volatile.Read(ref generation))
-                    await Dispatcher.InvokeAsync(() => PreviewState = "Failed", DispatcherPriority.Background);
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        PreviewDimensions = string.Empty;
+                        PreviewState = "Failed";
+                    }, DispatcherPriority.Background);
             }
         }
+
+        private static string ClassifyUnavailable(string path)
+            => File.Exists(path) ? "Failed" : "Missing";
     }
 }

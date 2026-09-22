@@ -83,6 +83,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GameSessionStarted=>await _sessions.StartAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GameSessionStopped=>await StopAsync(Read<GameSessionEventDto>(request),token).ConfigureAwait(false),
                 MessageTypes.BackupGame=>await _backup.BackupAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.PreviewBackup=>await _backup.PreviewAsync(Read<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.BackupAll=>await _backup.SubmitAllAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackups=>await ListBackupsAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),
@@ -95,6 +96,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.SyncMedia=>await _media.SyncAsync(Read<MediaSyncRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMedia=>await ListMediaAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMediaPage=>await _store.GetMediaPageAsync(Read<MediaQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListMediaDuplicateGroups=>await _media.GetDuplicateGroupsAsync(Read<MediaDuplicateQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetMediaSummary=>await _store.GetMediaSummaryAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaMetadata=>await UpdateMediaMetadataAsync(Read<MediaMetadataUpdateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateMediaMetadataBatch=>await UpdateMediaMetadataBatchAsync(Read<MediaMetadataBatchUpdateDto>(request),token).ConfigureAwait(false),
@@ -115,6 +117,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.UpdateMediaSource=>await UpdateMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeleteMediaSource=>await DeleteMediaSourceAsync(Read<MediaSourceRuleDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListMediaSources=>await _store.GetMediaSourcesAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
+                MessageTypes.PreviewMediaSource=>await _media.PreviewMediaSourceRuleAsync(Read<MediaSourcePreviewRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DetectSavePaths=>await _detection.DetectAsync(Read<DetectionRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListSaveCandidates=>await _store.GetSaveCandidatesAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.AcceptSavePath=>await _detection.AcceptAsync(Read<AcceptSavePathRequestDto>(request),token).ConfigureAwait(false),
@@ -128,6 +131,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.SavePolicyTemplate=>await SavePolicyTemplateAsync(Read<PolicyTemplateSaveDto>(request),token).ConfigureAwait(false),
                 MessageTypes.DeletePolicyTemplate=>await DeletePolicyTemplateAsync(Read<PolicyTemplateDeleteDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ApplyPolicyTemplate=>await ApplyPolicyTemplateAsync(Read<ApplyPolicyTemplateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ApplyPolicyTemplateBatch=>await ApplyPolicyTemplateBatchAsync(Read<ApplyPolicyTemplateBatchDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTasks=>await _store.GetRecentTasksAsync(200,token).ConfigureAwait(false),
                 MessageTypes.GetTaskPage=>await _store.GetTaskPageAsync(Read<TaskQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTaskChanges=>GetTaskChanges(Read<TaskChangeRequestDto>(request)),
@@ -138,7 +142,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.VerifyCloudTransfer=>await _cloudState.VerifyAsync(Read<CloudTransferVerifyRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.SyncDeviceStates=>await _deviceStates.SyncAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveDeviceConflictDecision=>await SaveDeviceConflictDecisionAsync(Read<DeviceConflictDecisionDto>(request),token).ConfigureAwait(false),
-                MessageTypes.StageRemoteBackup=>await _remoteBackups.StageAsync(Read<RemoteBackupStageRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.StageRemoteBackup=>await _remoteBackups.StageAsync(Read<RemoteBackupStageRequestDto>(request),token,request.RequestId).ConfigureAwait(false),
                 MessageTypes.RestoreRemoteBackup=>await _restore.ExecuteRemoteAsync(ReadCorrelated<RemoteRestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListProcessMappings=>await _store.GetProcessMappingsAsync(token).ConfigureAwait(false),
                 MessageTypes.SaveProcessMapping=>await SaveProcessMappingAsync(Read<ProcessMappingDto>(request),token).ConfigureAwait(false),
@@ -159,6 +163,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.PathRemap=>await _pathRemap.RemapAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewPathRemap=>await _pathRemap.PreviewAsync(Read<PathRemapRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ReconcileTasks=>await _taskReconcile.ReconcileAsync(token).ConfigureAwait(false),
+                MessageTypes.PreviewDiagnosticsPackage=>_diagnostics.Preview(Read<CreateDiagnosticsPackageRequestDto>(request)),
                 MessageTypes.CreateDiagnosticsPackage=>await _diagnostics.CreateAsync(Read<CreateDiagnosticsPackageRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.StorageAnalysis=>await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false),
                 MessageTypes.PreviewRetentionSimulation=>await _retentionSimulation.PreviewAsync(token).ConfigureAwait(false),
@@ -167,8 +172,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.RecoverRetentionQuarantine=>await RecoverRetentionQuarantineAsync(Read<RetentionQuarantineRecoveryRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalStatus=>await _localMirror.StatusAsync(token).ConfigureAwait(false),
                 MessageTypes.MirrorLocalSync=>await _localMirror.SyncAsync(token).ConfigureAwait(false),
-                MessageTypes.GetMaintenanceReport=>await _maintenanceReport.GetAsync(token).ConfigureAwait(false),
-                MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=_tasks.Cancel(Read<CancelTaskRequestDto>(request).TaskId)},
+                MessageTypes.GetMaintenanceReport=>await _maintenanceReport.GetAsync(Read<MaintenanceReportRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.CancelTask=>new CancelTaskResultDto{Cancelled=await _tasks.CancelAsync(Read<CancelTaskRequestDto>(request).TaskId).ConfigureAwait(false)},
                 MessageTypes.ListGameTools=>await _gameTools.ListAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
                 MessageTypes.InspectGameToolImport=>await _gameTools.InspectImportAsync(Read<InspectGameToolImportRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ImportGameTool=>await _gameTools.ImportAsync(Read<ImportGameToolRequestDto>(request),token).ConfigureAwait(false),
@@ -444,6 +449,67 @@ public sealed class IpcRequestDispatcher
         return new { applied = true, template = BackupPolicyTemplateCatalog.Clone(template) };
     }
 
+    private async Task<object> ApplyPolicyTemplateBatchAsync(ApplyPolicyTemplateBatchDto request, CancellationToken token)
+    {
+        var templateId = (request?.TemplateId ?? string.Empty).Trim();
+        var playniteIds = (request?.PlayniteIds ?? new List<string>())
+            .Where(id => !string.IsNullOrWhiteSpace(id))
+            .Select(id => id.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        if (string.IsNullOrWhiteSpace(templateId)) throw new ArgumentException("策略模板 ID 不能为空。");
+        if (playniteIds.Count == 0) throw new ArgumentException("至少需要一个明确选择的目标游戏。");
+        if (playniteIds.Count > 100) throw new ArgumentException("单次最多应用到 100 个目标游戏。");
+
+        var template = await _store.GetPolicyTemplateAsync(templateId, token).ConfigureAwait(false)
+                       ?? throw new KeyNotFoundException("策略模板不存在。");
+        var items = new List<PolicyTemplateBatchApplyItemDto>(playniteIds.Count);
+        foreach (var playniteId in playniteIds)
+        {
+            try
+            {
+                var game = await _catalog.GetGameAsync(playniteId, token).ConfigureAwait(false)
+                           ?? throw new KeyNotFoundException("目标游戏不存在。");
+                var policy = BackupPolicyTemplateCatalog.ClonePolicy(template.Policy);
+                using var lease = await AcquireGameOperationAsync(game.PlayniteId, token).ConfigureAwait(false);
+                await _store.SetPolicyAsync(game.PlayniteId, policy, token).ConfigureAwait(false);
+                await _store.AppendAuditAsync("PolicyTemplate", "批量应用策略模板",
+                    JsonSerializer.Serialize(new { game.PlayniteId, template.TemplateId, template.Name, policy }), token).ConfigureAwait(false);
+                items.Add(new PolicyTemplateBatchApplyItemDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteId = game.PlayniteId,
+                    GameName = game.Name,
+                    Applied = true
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                items.Add(new PolicyTemplateBatchApplyItemDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteId = playniteId,
+                    GameName = playniteId,
+                    Error = ex.Message
+                });
+            }
+        }
+
+        var appliedCount = items.Count(item => item.Applied);
+        return new ApplyPolicyTemplateBatchResultDto
+        {
+            TemplateId = template.TemplateId,
+            RequestedCount = playniteIds.Count,
+            AppliedCount = appliedCount,
+            FailedCount = items.Count - appliedCount,
+            Items = items
+        };
+    }
+
     private async Task<object> AddMediaSourceAsync(MediaSourceRuleDto source,CancellationToken token)
     {
         source.RootPath=Path.GetFullPath(Environment.ExpandEnvironmentVariables(source.RootPath));
@@ -493,15 +559,7 @@ public sealed class IpcRequestDispatcher
         return new RetentionPreviewDto{KeepBackupIds=plan.Keep.Select(x=>x.BackupId).ToList(),ProtectedHealthBackupIds=plan.HealthProtected.Select(x=>x.BackupId).ToList(),DeleteCandidateIds=plan.DeleteCandidates.Select(x=>x.BackupId).ToList(),Summary=$"建议保留 {plan.Keep.Count} 个版本；其中 {plan.HealthProtected.Count} 个健康恢复点受保护；{plan.DeleteCandidates.Count} 个版本可由用户审核后清理。自动删除未启用。"};
     }
 
-    private static string FormatBytes(long bytes)
-    {
-        var sign = bytes < 0 ? "-" : "+";
-        var value = Math.Abs((double)bytes);
-        if (value < 1024) return $"{sign}{value:0} B";
-        if (value < 1024 * 1024) return $"{sign}{value / 1024:0.##} KiB";
-        if (value < 1024 * 1024 * 1024) return $"{sign}{value / 1024 / 1024:0.##} MiB";
-        return $"{sign}{value / 1024 / 1024 / 1024:0.##} GiB";
-    }
+    private static string FormatBytes(long bytes) => ByteSizeFormatter.FormatSignedDelta(bytes);
 
     private async Task<object> ValidateAsync(ValidateGameRequestDto request,CancellationToken token)
     {
@@ -511,7 +569,7 @@ public sealed class IpcRequestDispatcher
         var valid=latest.FileCount>0&&latest.TotalBytes>0;
         if(!valid) await _store.AddFindingAsync(request.PlayniteId,new ValidationFindingDto
         {
-            PlayniteId=request.PlayniteId,Severity=FindingSeverity.Error,Code="LATEST_BACKUP_EMPTY",Title="最新备份摘要为空",
+            PlayniteId=request.PlayniteId,BackupId=latest.BackupId,Severity=FindingSeverity.Error,Code="LATEST_BACKUP_EMPTY",Title="最新备份摘要为空",
             Detail=$"文件数 {latest.FileCount}，体积 {latest.TotalBytes} 字节。",SuggestedAction="重新运行备份并核对 Ludusavi 匹配与存档路径。"
         },token).ConfigureAwait(false);
         return new{valid,latest.BackupId,latest.FileCount,latest.TotalBytes};

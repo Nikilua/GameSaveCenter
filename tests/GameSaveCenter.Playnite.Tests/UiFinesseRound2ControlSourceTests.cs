@@ -69,7 +69,7 @@ public sealed class UiFinesseRound2ControlSourceTests
 
         Assert.Contains("DialogConfirmButton.SetResourceReference(Control.BackgroundProperty, request.IsDangerous ? \"GscErrorBrush\" : \"GscAccentBrush\")", dashboardCode);
         Assert.Contains("OpenDialog(request.IsDangerous ? DialogCancelButton : DialogConfirmButton)", dashboardCode);
-        Assert.Contains("if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible) initialFocus.Focus();", dashboardCode);
+        Assert.Contains("if (IsLoaded && DialogOverlay.Visibility == Visibility.Visible && !dialogLifecycle.IsClosing)", dashboardCode);
     }
 
     [Fact]
@@ -110,6 +110,9 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("Padding=\"14,12,14,12\" MinHeight=\"0\"", view);
         Assert.Contains("x:Name=\"MediaInboxGrid\"", view);
         Assert.Contains("VirtualizingPanel.ScrollUnit=\"Item\"", view);
+        Assert.Contains("x:Name=\"MediaClassificationPreviewItems\"", view);
+        Assert.Contains("x:Name=\"MediaClassificationHistoryList\"", view);
+        Assert.Contains("ScrollViewer.HorizontalScrollBarVisibility=\"Disabled\"", view);
     }
 
     [Fact]
@@ -242,6 +245,8 @@ public sealed class UiFinesseRound2ControlSourceTests
         Assert.Contains("GscPopupAllowsTransparency", harness);
         Assert.Contains("GscPopupAnimation", harness);
         Assert.Contains("visibleEffects", harness);
+        Assert.Contains("ComputedHorizontalScrollBarVisibility", harness);
+        Assert.Contains("IsTextInputContentHost", harness);
         Assert.Contains("unexpectedHorizontalOverflow", harness);
     }
 
@@ -326,11 +331,20 @@ public sealed class UiFinesseRound2ControlSourceTests
         var probe = harness.Substring(start, end - start);
         Assert.Contains("args[0].Equals(\"enduranceprobe\"", harness);
         Assert.Contains("durationSeconds = 1800", harness);
+        Assert.Contains("postActionSettleSeconds = 30", probe);
+        Assert.Contains("actionStoppedAt", probe);
         Assert.Contains("new Window", probe);
         Assert.Contains("new DispatcherTimer", probe);
         Assert.Contains("GC.GetTotalMemory(false)", probe);
         Assert.DoesNotContain("GC.Collect", probe);
         Assert.Contains("workspace navigation, Media preview segment", probe);
+        Assert.Contains("HandleCount", probe);
+        Assert.Contains("WorkingSetBytes", probe);
+        Assert.Contains("ActiveTimerCount", probe);
+        Assert.Contains("ManagedEventHandlerCount", probe);
+        Assert.Contains("AnimatedOwnerCount", probe);
+        Assert.Contains("ThumbnailCacheCount", probe);
+        Assert.Contains("thumb_cache=", probe);
     }
 
     [Fact]

@@ -2,7 +2,8 @@
 param(
     [ValidateSet('Debug','Release')][string]$Configuration = 'Release',
     [switch]$SkipTests,
-    [string]$OutputRoot = ''
+    [string]$OutputRoot = '',
+    [string]$TestTempRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -81,7 +82,12 @@ try {
         # IntegrityCheckService deliberately reports low free space. Keep the
         # test fixture root on the same isolated volume as the build so a full
         # system TEMP drive cannot turn healthy fixture checks into warnings.
-        $isolatedTestTempRoot = Join-Path $isolatedOutputRoot 'test-temp'
+        $isolatedTestTempRoot = if ([string]::IsNullOrWhiteSpace($TestTempRoot)) {
+            Join-Path $isolatedOutputRoot 'test-temp'
+        }
+        else {
+            [System.IO.Path]::GetFullPath($TestTempRoot)
+        }
         New-Item -ItemType Directory -Path $isolatedTestTempRoot -Force | Out-Null
         $env:TEMP = $isolatedTestTempRoot
         $env:TMP = $isolatedTestTempRoot
@@ -108,13 +114,14 @@ try {
             '-c', $Configuration,
             '--no-build'
         ) + $msbuildArguments)
-        Write-Host "`n==> 运行 Playnite 设置迁移测试（WPF 类隔离）" -ForegroundColor Cyan
+        Write-Host "`n==> 运行 Playnite 测试（WPF 类隔离）" -ForegroundColor Cyan
         & (Join-Path $PSScriptRoot 'run-playnite-tests-isolated.ps1') `
             -Configuration $Configuration `
             -OutputRoot $OutputRoot `
+            -TestTempRoot $TestTempRoot `
             -ProjectRoot $root
         if ($LASTEXITCODE -ne 0) {
-            throw "运行 Playnite 设置迁移测试失败，dotnet 退出码：$LASTEXITCODE"
+            throw "运行 Playnite 测试失败，dotnet 退出码：$LASTEXITCODE"
         }
     }
 

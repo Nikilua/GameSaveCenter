@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -77,11 +76,26 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (modifiers != ModifierKeys.Control && modifiers != (ModifierKeys.Control | ModifierKeys.Shift)) return;
 
             var copyCell = modifiers == (ModifierKeys.Control | ModifierKeys.Shift);
-            var text = BuildCopyText(grid, copyCell);
-            if (string.IsNullOrEmpty(text)) return;
+            if (TryCopy(grid, copyCell)) args.Handled = true;
+        }
 
-            if (!TrySetClipboardText(text)) return;
-            args.Handled = true;
+        private static bool TryCopy(DataGrid grid, bool copyCell)
+        {
+            var text = BuildCopyText(grid, copyCell);
+            if (string.IsNullOrEmpty(text))
+            {
+                ClipboardFeedback.Show(grid, "没有可复制内容，请先选择一行或单元格。", true);
+                return false;
+            }
+
+            if (!TrySetClipboardText(text))
+            {
+                ClipboardFeedback.Show(grid, "复制失败：剪贴板暂时被其他程序占用，请稍后重试。", true);
+                return false;
+            }
+
+            ClipboardFeedback.Show(grid, copyCell ? "当前单元格已复制。" : "所选行已复制。", false);
+            return true;
         }
 
         private static bool TrySetClipboardText(string text)
@@ -112,6 +126,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal static string BuildCopyTextForVerification(DataGrid grid, bool copyCell)
             => BuildCopyText(grid, copyCell);
+
+        internal static bool TryCopyForVerification(DataGrid grid, bool copyCell)
+            => TryCopy(grid, copyCell);
     }
 
     /// <summary>Allowlisted TSV formatter used by the production clipboard behavior.</summary>
@@ -181,6 +198,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 {
                     task.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                     task.TaskTypeDisplay,
+                    task.StageDisplay,
                     task.GameName,
                     task.StateDisplay,
                     task.ProgressDisplay,
@@ -236,6 +254,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 {
                     "本地时间" => task.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                     "任务" => task.TaskTypeDisplay,
+                    "阶段" => task.StageDisplay,
                     "游戏" => task.GameName,
                     "状态" => task.StateDisplay,
                     "进度" => task.ProgressDisplay,
@@ -299,18 +318,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     internal static class ClipboardValueSanitizer
     {
-        private static readonly Regex KeyValueSecret = new Regex(
-            @"(?ix)\b(password|passwd|pwd|token|secret|client_secret|access_token|refresh_token|api[_-]?key|authorization|credential|private_key)\b\s*([=:])\s*(""[^""]*""|'[^']*'|Bearer\s+[^\s,;&]+|[^\s,;&]+)",
-            RegexOptions.Compiled);
-        private static readonly Regex BearerSecret = new Regex(@"(?i)\bBearer\s+[^\s,;]+", RegexOptions.Compiled);
-        private static readonly Regex UriCredential = new Regex(@"(?i)(https?://)[^\s/@]+:[^\s/@]+@", RegexOptions.Compiled);
-
         internal static string Sanitize(string value)
-        {
-            if (string.IsNullOrEmpty(value)) return string.Empty;
-            var sanitized = UriCredential.Replace(value, "$1[已隐藏]@");
-            sanitized = KeyValueSecret.Replace(sanitized, match => match.Groups[1].Value + match.Groups[2].Value + "[已隐藏]");
-            return BearerSecret.Replace(sanitized, "Bearer [已隐藏]");
-        }
+            => ClipboardTextSanitizer.Sanitize(value);
     }
 }

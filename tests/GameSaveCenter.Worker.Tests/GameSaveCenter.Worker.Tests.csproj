@@ -2,7 +2,15 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <GscSourceRoot Condition="'$(GscSourceRoot)' == ''">$(GSC_SOURCE_ROOT)</GscSourceRoot>
+    <GscSourceRoot Condition="'$(GscSourceRoot)' == ''">$(MSBuildProjectDirectory)\..\..</GscSourceRoot>
+    <GscBuildCommit Condition="'$(GscBuildCommit)' == ''">$(GSC_BUILD_COMMIT)</GscBuildCommit>
+    <GscBuildCommit Condition="'$(GscBuildCommit)' == ''">unknown</GscBuildCommit>
   </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="GscSourceRoot" Value="$(GscSourceRoot)" />
+    <AssemblyMetadata Include="GscBuildCommit" Value="$(GscBuildCommit)" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj" />
   </ItemGroup>

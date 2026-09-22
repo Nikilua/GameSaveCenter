@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace GameSaveCenter.Playnite.Infrastructure
 {
@@ -17,6 +18,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private int generation;
         private Action? completion;
         private bool closing;
+        private DispatcherTimer? completionWatchdog;
 
         internal DialogOverlayMotion(Grid overlay, Border card)
         {
@@ -29,6 +31,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var currentGeneration = ++generation;
             completion = completed;
             closing = false;
+            StopCompletionWatchdog();
             ClearMotion();
             overlay.Visibility = Visibility.Visible;
             card.Opacity = animated ? 0 : 1;
@@ -63,6 +66,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var currentGeneration = ++generation;
             completion = completed;
             closing = true;
+            StopCompletionWatchdog();
 
             if (overlay.Visibility != Visibility.Visible)
             {
@@ -96,12 +100,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 EasingFunction = easing,
                 FillBehavior = FillBehavior.HoldEnd
             };
-            // Opacity is the shared completion clock for the mask/card transition. The
-            // translate clock remains visual-only; using one authority prevents a stale
-            // transform callback from leaving the mask visible after close.
-            fade.Completed += (_, __) => CompleteClose(currentGeneration);
+            // The card's translate clock is the shared completion clock for the mask/card
+            // transition. Opacity is visual-only here: after an entrance clock has settled,
+            // WPF can retain its local value source and refuse a second opacity clock, while
+            // the owned transform remains deterministic. Using one authority prevents a
+            // stale callback from leaving the mask visible after close.
+            slide.Completed += (_, __) => CompleteClose(currentGeneration);
             card.BeginAnimation(UIElement.OpacityProperty, fade);
             translate.BeginAnimation(TranslateTransform.YProperty, slide);
+            StartCompletionWatchdog(currentGeneration, duration);
         }
 
         /// <summary>
@@ -115,6 +122,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             completion = null;
             closing = false;
             generation++;
+            StopCompletionWatchdog();
             ClearMotion();
 
             if (wasClosing)
@@ -135,6 +143,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             completion = null;
             closing = false;
             generation++;
+            StopCompletionWatchdog();
             ClearMotion();
             card.Opacity = 0;
             overlay.Visibility = Visibility.Collapsed;
@@ -147,6 +156,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
             var callback = completion;
             completion = null;
+            StopCompletionWatchdog();
             ClearMotion();
             card.Opacity = 1;
             callback?.Invoke();
@@ -160,6 +170,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var callback = completion;
             completion = null;
             closing = false;
+            StopCompletionWatchdog();
             ClearMotion();
             card.Opacity = 0;
             overlay.Visibility = Visibility.Collapsed;
@@ -174,6 +185,30 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
                 translate.Y = 0;
             }
+        }
+
+        private void StartCompletionWatchdog(int currentGeneration, TimeSpan duration)
+        {
+            var watchdog = new DispatcherTimer(DispatcherPriority.Render, card.Dispatcher)
+            {
+                Interval = duration + TimeSpan.FromMilliseconds(50)
+            };
+            watchdog.Tick += (_, __) =>
+            {
+                watchdog.Stop();
+                if (ReferenceEquals(completionWatchdog, watchdog))
+                    completionWatchdog = null;
+                if (currentGeneration == generation && closing)
+                    CompleteClose(currentGeneration);
+            };
+            completionWatchdog = watchdog;
+            watchdog.Start();
+        }
+
+        private void StopCompletionWatchdog()
+        {
+            completionWatchdog?.Stop();
+            completionWatchdog = null;
         }
     }
 }

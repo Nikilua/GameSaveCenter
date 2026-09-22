@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text.Json;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Models;
@@ -118,6 +119,9 @@ public sealed class HealthInspectionServiceTests : IDisposable
 
         Assert.Equal("Deferred", result.LastStatus);
         Assert.Equal(1, result.DeferredCount);
+        Assert.Contains("本轮范围：读取备份索引 1 项", result.LastSummary);
+        Assert.Contains("暂停原因：游戏正在运行", result.LastSummary);
+        Assert.Contains("仅候选会进入归档读取", result.LastSummary);
         var stored = Assert.Single(await store.GetBackupVersionsAsync("game-1", CancellationToken.None));
         Assert.Null(stored.RestoreReadiness);
         Assert.Empty(await store.GetOpenFindingsAsync(20, CancellationToken.None));
@@ -227,6 +231,30 @@ BEGIN SELECT RAISE(ABORT, 'injected candidate state failure'); END;");
         Assert.Equal("game-b", second.LastPlayniteId);
         var deferred = await store.GetHealthInspectionDeferredCandidatesAsync(CancellationToken.None);
         Assert.Contains(deferred, x => x.PlayniteId == "game-a" && x.BackupId == "backup-a");
+    }
+
+    [Fact]
+    public async Task CancellationRecordsIncompleteRoundWithoutClaimingArchiveWasChecked()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        await AddBackupAsync("game-1", "backup-1", archive, Manifest("profile.dat", 4));
+        using var cancellation = new CancellationTokenSource();
+        var service = CreateService();
+        service.InspectionStageHook = stage =>
+        {
+            if (stage == HealthInspectionStage.RunningStateSaved)
+                cancellation.Cancel();
+            return Task.CompletedTask;
+        };
+
+        var result = await service.RunNowAsync(cancellation.Token);
+
+        Assert.Equal("Cancelled", result.LastStatus);
+        Assert.Contains("结束状态：已取消", result.LastSummary);
+        Assert.Contains("尚未完成备份索引读取", result.LastSummary);
+        Assert.Contains("不代表整库", result.ProgressDisplay);
+        var stored = Assert.Single(await store.GetBackupVersionsAsync("game-1", CancellationToken.None));
+        Assert.Null(stored.RestoreReadiness);
     }
 
     [Fact]
@@ -342,7 +370,21 @@ BEGIN SELECT RAISE(ABORT, 'injected candidate state failure'); END;");
     }
 
     private static string Manifest(string path, long bytes)
-        => JsonSerializer.Serialize(new[] { new FileManifestEntry { RelativePath = path, SizeBytes = bytes } });
+        => JsonSerializer.Serialize(new[]
+        {
+            new FileManifestEntry
+            {
+                RelativePath = path,
+                SizeBytes = bytes,
+                Sha256 = Sha256("save")
+            }
+        });
+
+    private static string Sha256(string content)
+    {
+        using var sha = SHA256.Create();
+        return BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(content))).Replace("-", string.Empty);
+    }
 
     private async Task ExecuteSqlAsync(string sql)
     {

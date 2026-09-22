@@ -29,6 +29,9 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel : ObservableObject
     {
         partial void OnWorkspaceStateInitialize();
+        partial void OnNavigationStateInitialize();
+        partial void OnRecentAccessInitialize();
+        partial void OnBackupHistoryInitialize();
         partial void OnWorkspaceStateInputsChanged();
 
         private static readonly ILogger Logger = LogManager.GetLogger();
@@ -38,7 +41,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly PlayniteGameBackgroundProvider gameBackgroundProvider;
         private readonly SynchronizationContext? uiSynchronizationContext = SynchronizationContext.Current;
         private readonly Dictionary<string, TaskState> knownTaskStates = new Dictionary<string, TaskState>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, List<TaskChangeEventDto>> taskTimelineChanges = new Dictionary<string, List<TaskChangeEventDto>>(StringComparer.OrdinalIgnoreCase);
         private readonly TaskIndexedCollection taskIndex = new TaskIndexedCollection();
+        private const int MaxTaskTimelineEventsPerTask = 64;
+        private const int MaxTaskTimelineTasks = 200;
         private readonly BusyOperationCoordinator busyOperationCoordinator = new BusyOperationCoordinator();
         private readonly DateTime dashboardOpenedUtc = DateTime.UtcNow;
         private bool isBusy;
@@ -60,6 +66,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private CancellationTokenSource? mediaInboxRequestCancellation;
         private readonly LatestRequestCoordinator taskPageRequests = new LatestRequestCoordinator();
         private readonly LatestRequestCoordinator dashboardRefreshRequests = new LatestRequestCoordinator();
+        private static readonly TimeSpan WorkspaceRevisitFreshness = TimeSpan.FromSeconds(15);
+        private readonly WorkspaceRevisitLoadGate workspaceRevisitLoadGate =
+            new WorkspaceRevisitLoadGate(WorkspaceRevisitFreshness);
         private CancellationTokenSource? cloudTransferRequestCancellation;
         private CancellationTokenSource? mediaClassificationHistoryRequestCancellation;
         private CancellationTokenSource? selectedGameBackgroundCancellation;
@@ -69,18 +78,24 @@ namespace GameSaveCenter.Playnite.ViewModels
         private long selectedGameBackgroundGeneration;
         private bool selectedGameBackgroundPreferenceApplied;
         private Task? taskEventListener;
+        private TaskEventUiBatcher? taskEventBatcher;
         private bool commandRefreshScheduled;
         private readonly DebouncedRefresh taskSearchRefresh;
         private readonly DebouncedRefresh taskHistoryQueryRefresh;
         private readonly DebouncedRefresh mediaSearchRefresh;
         private readonly DebouncedRefresh mediaPageQueryRefresh;
+        private readonly DebouncedRefresh cloudTransferFilterRefresh;
         private readonly DebouncedRefresh uiStateSave;
         private DateTime lastFullDashboardRefreshUtc=DateTime.MinValue;
         private string? selectedGamePolicyId;
         private BackupPolicyDto? selectedGamePolicyBaseline;
+        private BackupPolicyDto? subscribedSelectedGamePolicy;
+        private BackupPolicyDto? subscribedPolicyTemplateDraftPolicy;
         private string statusMessage = "准备就绪";
+        private string statusMessageFullDisplay = "准备就绪";
         private BackupVersionDto selectedBackup = null!;
         private DashboardSnapshotDto snapshot = new DashboardSnapshotDto();
+        private bool dashboardSnapshotLoaded;
         private EnvironmentCheckReportDto environmentCheck = new EnvironmentCheckReportDto();
         private bool environmentCheckLoaded;
         private bool safeModePromptShown;
@@ -90,6 +105,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool lockSelectedBackup;
         private bool backupCommentDirty;
         private bool backupLockDirty;
+        private BackupPreviewDto backupPreview = new BackupPreviewDto();
+        private BackupResultDto backupResult = new BackupResultDto();
         private MediaItemDto selectedMedia = null!;
         private MediaStorageSummaryDto mediaSummary = new MediaStorageSummaryDto();
         private string mediaComment = string.Empty;
@@ -116,10 +133,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string ignoredMediaPageCursor = string.Empty;
         private int ignoredMediaPageTotalCount;
         private bool ignoredMediaPageHasMore;
+        private long mediaDuplicateLoadGeneration;
+        private MediaDuplicateInspectionDto mediaDuplicateInspection = new MediaDuplicateInspectionDto();
+        private MediaDuplicateGroupDto? selectedMediaDuplicateGroup;
         private MediaClassificationPreviewDto? mediaClassificationPreview;
         private string mediaClassificationStatus = "尚未生成归类建议。建议只会使用来源规则、会话和进程映射等本地证据。";
         private string lastMediaClassificationBatchId = string.Empty;
         private MediaClassificationBatchSummaryDto? selectedMediaClassificationBatch;
+        private string mediaInboxBatchMessageType = string.Empty;
+        private string mediaInboxBatchOperation = string.Empty;
+        private string mediaInboxBatchTargetPlayniteId = string.Empty;
+        private string mediaInboxBatchTargetName = string.Empty;
         private string mediaClassificationHistoryStateFilter = string.Empty;
         private int mediaClassificationHistoryPage;
         private bool mediaClassificationHistoryHasMore;
@@ -127,6 +151,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string? pendingMediaClassificationBatchId;
         private bool mediaClassificationHistoryNeedsManualRefresh;
         private long mediaClassificationHistoryLoadGeneration;
+        private string? pendingTaskBackupId;
         private const int MediaInboxBatchSize = 500;
         private TaskStatusDto selectedTask = null!;
         private ValidationFindingDto selectedFinding = null!;
@@ -139,6 +164,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string pathRemapOldRoot = string.Empty;
         private string pathRemapNewRoot = string.Empty;
         private string pathRemapSummary = "尚未执行路径迁移。";
+        private PathRemapPreviewDto pathRemapPreview = new PathRemapPreviewDto();
         private string taskReconcileSummary = "尚未协调中断任务。";
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
@@ -149,8 +175,23 @@ namespace GameSaveCenter.Playnite.ViewModels
         private BackupPolicyTemplateDto selectedPolicyTemplate = null!;
         private BackupPolicyTemplateDto policyTemplateDraft = new BackupPolicyTemplateDto();
         private string policyTemplateNameDraft = string.Empty;
+        private string policyTemplateBatchSearchText = string.Empty;
         private bool policyTemplatesLoaded;
         private BackupDiffDto? lastBackupDiff;
+        private BackupVersionDto? compareLeftBackup;
+        private BackupVersionDto? compareRightBackup;
+        private string compareSelectionSummary = "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+        private bool suppressComparisonSelectionRefresh;
+        private string diffPathSearchText = string.Empty;
+        private string diffPathKindFilter = "全部";
+        private int diffPathVisibleLimit = 120;
+        private int diffAddedMatchCount;
+        private int diffModifiedMatchCount;
+        private int diffRemovedMatchCount;
+        private int diffPathVisibleCount;
+        private bool diffPathHasMore;
+        private string diffPathFilterSummary = "比较两个版本后，可按类型和路径筛选。";
+        private string diffUnknownSummary = "差异质量和未变化数量会在比较后单独显示。";
         private RetentionPreviewDto? lastRetentionPreview;
         private bool suppressSelectionLoad;
         private string gameSearchText = string.Empty;
@@ -208,6 +249,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string deviceDecisionComment = string.Empty;
         private RemoteBackupStageResultDto? stagedRemoteBackup;
         private string stagedRemoteBackupStatus = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
+        private string stagedRemoteBackupStatusFullDisplay = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
         private string processMappingExecutable = string.Empty;
         private GameStatusDto processMappingTargetGame = null!;
         private ProcessMappingDto selectedProcessMapping = null!;
@@ -225,6 +267,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool cloudTransferNeedsManualRefresh;
         private string cloudTransferStateFilter = string.Empty;
         private string cloudTransferKindFilter = string.Empty;
+        private string cloudTransferGameFilter = string.Empty;
+        private string cloudTransferSourceDeviceFilter = string.Empty;
+        private string cloudTransferTimeFilter = string.Empty;
+        private bool cloudTransferLoadFailed;
+        private DateTime? cloudTransferLastSuccessUtc;
+        private string cloudTransferErrorMessage = string.Empty;
         private int maintenanceTabIndex;
         private int mediaTabIndex = 1;
         private int saveTabIndex;
@@ -244,6 +292,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             gamePicker.StateChanged += OnGamePickerStateChanged;
             gamePicker.PropertyChanged += OnGamePickerPropertyChanged;
             OnWorkspaceStateInitialize();
+            OnNavigationStateInitialize();
+            OnRecentAccessInitialize();
+            OnBackupHistoryInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
             gameSearchText = gamePicker.SearchText;
@@ -252,6 +303,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             gameDiagnosticPlayniteId = plugin.Settings.GamePickerSelectedGameId ?? string.Empty;
             GamesView = CollectionViewSource.GetDefaultView(Games);
             GamesView.Filter = FilterGame;
+            PolicyTemplateBatchTargetsView = CollectionViewSource.GetDefaultView(PolicyTemplateBatchTargets);
+            PolicyTemplateBatchTargetsView.Filter = FilterPolicyTemplateBatchTarget;
             TasksView = CollectionViewSource.GetDefaultView(Tasks);
             TasksView.Filter = FilterTask;
             MediaView = CollectionViewSource.GetDefaultView(Media);
@@ -264,7 +317,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             taskHistoryQueryRefresh = new DebouncedRefresh(() => ApplyOnUi(StartQueuedTaskHistoryQuery), TimeSpan.FromMilliseconds(240));
             mediaSearchRefresh = new DebouncedRefresh(() => ApplyOnUi(RefreshMediaView), TimeSpan.FromMilliseconds(180));
             mediaPageQueryRefresh = new DebouncedRefresh(() => Run(LoadFilteredMediaPageAsync), TimeSpan.FromMilliseconds(240));
+            cloudTransferFilterRefresh = new DebouncedRefresh(() => Run(() => LoadCloudTransferPageAsync(true)), TimeSpan.FromMilliseconds(240));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
+            InitializeFilterPresets();
             taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
             pendingTaskGameFilter = plugin.Settings.TaskGameFilterState ?? "全部";
             pendingTaskTypeFilter = plugin.Settings.TaskTypeFilterState ?? "全部";
@@ -281,6 +336,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyGameSort();
             RefreshCommand = new RelayCommand(_ => Run(RefreshAsync), _ => !IsBusy);
             BackupSelectedCommand = new RelayCommand(_ => Run(BackupSelectedAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
+            PreviewBackupCommand = new RelayCommand(_ => Run(PreviewBackupAsync), _ => !IsBusy && SelectedGame != null && SelectedGame.LudusaviMatched && Snapshot.LudusaviAvailable);
+            RetrySelectedGameCloudUploadCommand = new RelayCommand(_ => Run(RetrySelectedGameCloudUploadAsync), _ => !IsBusy && CanRetrySelectedGameCloudUpload());
             BackupAllCommand = new RelayCommand(_ => Run(BackupAllAsync), _ => !IsBusy && Snapshot.LudusaviAvailable && Games.Any(x => x.LudusaviMatched));
             SyncMediaCommand = new RelayCommand(_ => Run(SyncMediaAsync), _ => !IsBusy);
             DetectPathsCommand = new RelayCommand(_ => Run(DetectPathsAsync), _ => !IsBusy && SelectedGame != null);
@@ -290,14 +347,25 @@ namespace GameSaveCenter.Playnite.ViewModels
             UndoRestoreCommand = new RelayCommand(_ => Run(UndoRestoreAsync), _ => !IsBusy && SelectedGame != null && Backups.Any(x => x.IsPreRestore));
             LoadDetailsCommand = new RelayCommand(_ => Run(() => LoadDetailsAsync(true)), _ => !IsBusy && SelectedGame != null);
             SavePolicyCommand = new RelayCommand(_ => Run(SavePolicyAsync), _ => !IsBusy && SelectedGame != null);
+            CancelPolicyDraftCommand = new RelayCommand(_ => CancelPolicyDraft(), _ => !IsBusy && HasSelectedGamePolicyChanges);
             CreatePolicyTemplateCommand = new RelayCommand(_ => CreatePolicyTemplate(), _ => !IsBusy);
             SavePolicyTemplateCommand = new RelayCommand(_ => Run(SavePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft));
-            ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
+            ApplyPolicyTemplateCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateAsync), _ => !IsBusy && SelectedGame != null && !HasSelectedGamePolicyChanges && SelectedPolicyTemplate != null && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId));
+            ApplyPolicyTemplateBatchCommand = new RelayCommand(_ => Run(ApplyPolicyTemplateBatchAsync), _ => !IsBusy && CanApplyPolicyTemplateBatch);
+            RetryPolicyTemplateBatchItemCommand = new RelayCommand(value =>
+            {
+                if (value is PolicyTemplateBatchApplyItemDto item) Run(() => RetryPolicyTemplateBatchItemAsync(item));
+            }, value => !IsBusy && value is PolicyTemplateBatchApplyItemDto item && item.CanRetry && SelectedPolicyTemplate != null && string.Equals(item.TemplateId, SelectedPolicyTemplate.TemplateId, StringComparison.OrdinalIgnoreCase));
             DeletePolicyTemplateCommand = new RelayCommand(_ => Run(DeletePolicyTemplateAsync), _ => !IsBusy && PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn && !string.IsNullOrWhiteSpace(PolicyTemplateDraft.TemplateId));
             UpdateBackupMetadataCommand = new RelayCommand(_ => Run(UpdateBackupMetadataAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null);
-            CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && SelectedBackup != null && Backups.IndexOf(SelectedBackup) >= 0 && Backups.IndexOf(SelectedBackup) + 1 < Backups.Count);
+            CancelBackupMetadataCommand = new RelayCommand(_ => CancelBackupMetadataEdit(), _ => !IsBusy && SelectedBackup != null && HasBackupMetadataChanges);
+            CompareBackupCommand = new RelayCommand(_ => Run(CompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups);
+            SwapCompareBackupCommand = new RelayCommand(_ => Run(SwapAndCompareBackupAsync), _ => !IsBusy && SelectedGame != null && CanCompareSelectedBackups && LastBackupDiff != null);
+            LoadMoreDiffPathsCommand = new RelayCommand(_ => LoadMoreDiffPaths(), _ => !IsBusy && DiffPathHasMore);
+            ClearDiffPathFiltersCommand = new RelayCommand(_ => ClearDiffPathFilters(), _ => !IsBusy && (!string.IsNullOrWhiteSpace(DiffPathSearchText) || !string.Equals(DiffPathKindFilter, "全部", StringComparison.Ordinal)));
             PreviewRetentionCommand = new RelayCommand(_ => Run(PreviewRetentionAsync), _ => !IsBusy && SelectedGame != null && Backups.Count > 0);
             AddMediaSourceCommand = new RelayCommand(_ => Run(AddMediaSourceAsync), _ => !IsBusy && SelectedGame != null);
+            PreviewMediaSourceCommand = new RelayCommand(_ => Run(PreviewMediaSourceAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(CustomMediaSourcePath));
             UpdateMediaSourceCommand = new RelayCommand(value => Run(() => UpdateMediaSourceAsync(value as MediaSourceRuleDto)), _ => !IsBusy);
             DeleteMediaSourceCommand = new RelayCommand(value => Run(() => DeleteMediaSourceAsync(value as MediaSourceRuleDto)), _ => !IsBusy);
             AcceptCandidateCommand = new RelayCommand(_ => Run(AcceptCandidateAsync), _ => !IsBusy && SelectedGame != null && SelectedCandidate != null && !string.Equals(SelectedCandidate.Status, "Accepted", StringComparison.OrdinalIgnoreCase));
@@ -305,34 +373,49 @@ namespace GameSaveCenter.Playnite.ViewModels
             ReassignMediaCommand = new RelayCommand(_ => Run(ReassignMediaAsync), _ => !IsBusy && SelectedMedia != null && MediaTargetGame != null);
             LoadMoreMediaCommand = new RelayCommand(_ => Run(LoadMoreMediaPageAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null && MediaPageHasMore);
             ReloadMediaWindowCommand = new RelayCommand(_ => Run(ReloadMediaWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null);
+            ReloadMediaDuplicateGroupsCommand = new RelayCommand(_ => Run(ReloadMediaDuplicateGroupsAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null);
             ClearMediaFiltersCommand = new RelayCommand(_ => ClearMediaFilters(), _ => !IsBusy);
+            ApplyMediaFilterPresetCommand = new RelayCommand(_ => ApplyMediaFilterPreset(), _ => !IsBusy && SelectedMediaFilterPreset != null);
+            SaveMediaFilterPresetCommand = new RelayCommand(_ => Observe(SaveMediaFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
+            RenameMediaFilterPresetCommand = new RelayCommand(_ => Observe(RenameMediaFilterPresetAsync()), _ => !IsBusy && SelectedMediaFilterPreset != null && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
+            DeleteMediaFilterPresetCommand = new RelayCommand(_ => Observe(DeleteMediaFilterPresetAsync()), _ => !IsBusy && SelectedMediaFilterPreset != null);
             UpdateMediaMetadataCommand = new RelayCommand(_ => Run(UpdateMediaMetadataAsync), _ => !IsBusy && SelectedMedia != null);
             FavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, true, false)), _ => !IsBusy);
             UnfavoriteSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, false, false)), _ => !IsBusy);
             CommentSelectedMediaCommand = new RelayCommand(value => Run(() => UpdateMediaMetadataBatchAsync(value, null, true)), _ => !IsBusy);
             OpenSelectedMediaCommand = new RelayCommand(_ => RunLocal(OpenSelectedMedia), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
             RevealSelectedMediaCommand = new RelayCommand(_ => RunLocal(() => OpenPath(SelectedMedia.ArchivePath)), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
+            PreviousMediaCommand = new RelayCommand(_ => SelectAdjacentMedia(-1), _ => CanNavigatePreviousMedia);
+            NextMediaCommand = new RelayCommand(_ => SelectAdjacentMedia(1), _ => CanNavigateNextMedia);
             AssignInboxMediaCommand = new RelayCommand(_ => Run(AssignInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null && InboxTargetGame != null);
             IgnoreInboxMediaCommand = new RelayCommand(_ => Run(IgnoreInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null);
             AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
             IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
+            RetryFailedMediaInboxBatchCommand = new RelayCommand(_ => Run(RetryFailedMediaInboxBatchAsync), _ => !IsBusy && MediaInboxBatchFailures.Count > 0 && !string.IsNullOrWhiteSpace(mediaInboxBatchMessageType));
             PreviewMediaClassificationCommand = new RelayCommand(value => Run(() => PreviewMediaClassificationAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
-            ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.HighConfidenceCount > 0);
+            ApplyMediaClassificationCommand = new RelayCommand(_ => Run(ApplyMediaClassificationAsync), _ => !IsBusy && MediaClassificationPreview != null && MediaClassificationPreview.SelectedHighConfidenceCount > 0);
             UndoMediaClassificationCommand = new RelayCommand(_ => Run(UndoMediaClassificationAsync), _ => !IsBusy && CanUndoMediaClassification());
             RefreshMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(true)), _ => !IsBusy);
             LoadMoreMediaClassificationHistoryCommand = new RelayCommand(_ => Run(() => LoadMediaClassificationHistoryAsync(false)), _ => !IsBusy && MediaClassificationHistoryHasMore);
             LoadMoreMediaInboxCommand = new RelayCommand(_ => Run(LoadMoreMediaInboxPageAsync), _ => !IsBusy && MediaInboxPageHasMore);
             ReloadMediaInboxCommand = new RelayCommand(_ => Run(ReloadMediaInboxWindowAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media);
             CancelTaskCommand = new RelayCommand(_ => _ = CancelSelectedTaskAsync(), _ => SelectedTask != null && SelectedTask.CanCancel && !IsCancellingTask);
+            // Purpose-navigation commands are initialized by the navigation partial so
+            // route state stays separate from business operations.
             RetryTaskCommand = new RelayCommand(_ => Run(RetrySelectedTaskAsync), _ => !IsBusy && CanRetrySelectedTask());
             RetryAllTasksCommand = new RelayCommand(_ => Run(RetryAllTasksAsync), _ => !IsBusy && RetryableTaskCount > 0);
             LoadMoreTasksCommand = new RelayCommand(_ => Run(() => LoadTaskPageAsync(false)), _ => !IsBusy && taskHistoryActive && TaskHistoryHasMore);
             ClearTaskFiltersCommand = new RelayCommand(_ => ClearTaskFilters(), _ => !IsBusy);
+            ApplyTaskFilterPresetCommand = new RelayCommand(_ => ApplyTaskFilterPreset(), _ => !IsBusy && SelectedTaskFilterPreset != null);
+            SaveTaskFilterPresetCommand = new RelayCommand(_ => Observe(SaveTaskFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(TaskFilterPresetNameDraft));
+            RenameTaskFilterPresetCommand = new RelayCommand(_ => Observe(RenameTaskFilterPresetAsync()), _ => !IsBusy && SelectedTaskFilterPreset != null && !string.IsNullOrWhiteSpace(TaskFilterPresetNameDraft));
+            DeleteTaskFilterPresetCommand = new RelayCommand(_ => Observe(DeleteTaskFilterPresetAsync()), _ => !IsBusy && SelectedTaskFilterPreset != null);
             CopyTaskErrorCommand = new RelayCommand(
                 _ => Run(CopySelectedTaskErrorAsync),
                 _ => SelectedTask != null
-                     && (!string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)
+                     && (SelectedTask.HasRestoreReport
+                         || !string.IsNullOrWhiteSpace(SelectedTask.ErrorMessage)
                          || !string.IsNullOrWhiteSpace(SelectedTask.ErrorCode)
                          || !string.IsNullOrWhiteSpace(SelectedTask.DetailMessage)));
             CopyPathCommand = new RelayCommand(
@@ -345,6 +428,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenMaintenanceCommand = new RelayCommand(_ => OpenMaintenance());
             OpenCloudQueueCommand = new RelayCommand(_ => OpenCloudQueue());
             OpenMediaWorkspaceCommand = new RelayCommand(_ => OpenMediaWorkspace());
+            OpenFailedTasksCommand = new RelayCommand(_ => OpenFailedTasks());
+            OpenOverviewGamePickerCommand = new RelayCommand(_ => OpenOverviewGamePicker());
             OpenActivityCommand = new RelayCommand(value => OpenActivity(value as ActivityEntryDto), value => value is ActivityEntryDto);
             OpenAttentionFindingCommand = new RelayCommand(value => OpenAttentionFinding(value as ValidationFindingDto));
             OpenSelectedFindingNavigationCommand = new RelayCommand(_ => OpenSelectedFindingNavigation(), _ => SelectedFindingNavigation.IsAvailable && !IsBusy);
@@ -356,6 +441,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             LoadMoreRetentionQuarantineCommand = new RelayCommand(_ => Run(LoadMoreRetentionQuarantineAsync), _ => !IsBusy && RetentionQuarantineHasMore);
             RefreshCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(true)), _ => !IsBusy);
             LoadMoreCloudTransfersCommand = new RelayCommand(_ => Run(() => LoadCloudTransferPageAsync(false)), _ => !IsBusy && CloudTransferHasMore);
+            ClearCloudTransferFiltersCommand = new RelayCommand(_ => Run(ClearCloudTransferFiltersAsync), _ => !IsBusy && CloudTransferHasActiveFilters);
             VerifyCloudTransferCommand = new RelayCommand(_ => Run(VerifySelectedCloudTransferAsync), _ => !IsBusy && CanVerifySelectedCloudTransfer());
             RetryCloudUploadCommand = new RelayCommand(_ => Run(RetrySelectedCloudUploadAsync), _ => !IsBusy && CanRetrySelectedCloudUpload());
             DiagnoseGameCommand = new RelayCommand(_ => RunGameDiscoveryDiagnostic(), _ => !IsBusy && !IsGameDiagnosticLoading && !string.IsNullOrWhiteSpace(GameDiagnosticPlayniteId));
@@ -385,6 +471,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             SaveDeviceDecisionCommand = new RelayCommand(_ => Run(SaveDeviceDecisionAsync), _ => !IsBusy && SelectedDeviceComparison != null);
             StageRemoteBackupCommand = new RelayCommand(_ => Run(StageRemoteBackupAsync), _ => !IsBusy && SelectedDeviceComparison != null && !string.IsNullOrWhiteSpace(SelectedDeviceComparison.RemoteBackupId));
             RestoreStagedRemoteBackupCommand = new RelayCommand(_ => Run(RestoreStagedRemoteBackupAsync), _ => !IsBusy && StagedRemoteBackup != null && StagedRemoteBackup.Verified);
+            CancelRemoteBackupStageCommand = new RelayCommand(_ => CancelRemoteBackupStage(), _ => IsRemoteBackupStageActive);
             SaveProcessMappingCommand = new RelayCommand(_ => Run(SaveProcessMappingAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(ProcessMappingExecutable) && ProcessMappingTargetGame != null);
             DeleteProcessMappingCommand = new RelayCommand(_ => Run(DeleteProcessMappingAsync), _ => !IsBusy && SelectedProcessMapping != null);
             CopyDiagnosticsCommand = new RelayCommand(_ => Run(CopyDiagnosticsAsync), _ => !string.IsNullOrWhiteSpace(DiagnosticSummary));
@@ -421,6 +508,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         /// <summary>Shared global picker state. The dashboard keeps the legacy bindings below for compatibility.</summary>
         public GamePickerViewModel GamePicker => gamePicker;
         public BatchObservableCollection<TaskStatusDto> Tasks { get; } = new BatchObservableCollection<TaskStatusDto>();
+        public BatchObservableCollection<TaskTimelineEntryDto> SelectedTaskTimeline { get; } = new BatchObservableCollection<TaskTimelineEntryDto>();
+        public bool HasSelectedTaskTimeline => SelectedTaskTimeline.Count > 0;
         public BatchObservableCollection<TaskStatusDto> OverviewTasks { get; } = new BatchObservableCollection<TaskStatusDto>();
         public BatchObservableCollection<ActivityEntryDto> Activities { get; } = new BatchObservableCollection<ActivityEntryDto>();
         public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
@@ -432,7 +521,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         public IReadOnlyList<string> DeviceDecisionOptions { get; } = new[] { "稍后处理", "保留两者", "以本机为准", "以远端为准" };
         public BatchObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new BatchObservableCollection<ProcessMappingDto>();
         public BatchObservableCollection<BackupVersionDto> Backups { get; } = new BatchObservableCollection<BackupVersionDto>();
+        public BatchObservableCollection<string> DiffAddedPaths { get; } = new BatchObservableCollection<string>();
+        public BatchObservableCollection<string> DiffModifiedPaths { get; } = new BatchObservableCollection<string>();
+        public BatchObservableCollection<string> DiffRemovedPaths { get; } = new BatchObservableCollection<string>();
+        public IReadOnlyList<string> DiffPathKindOptions { get; } = new[] { "全部", "新增", "修改", "删除" };
         public BatchObservableCollection<BackupPolicyTemplateDto> PolicyTemplates { get; } = new BatchObservableCollection<BackupPolicyTemplateDto>();
+        public BatchObservableCollection<PolicyTemplateBatchTarget> PolicyTemplateBatchTargets { get; } = new BatchObservableCollection<PolicyTemplateBatchTarget>();
+        public ICollectionView PolicyTemplateBatchTargetsView { get; }
+        public ObservableCollection<PolicyTemplateBatchApplyItemDto> PolicyTemplateBatchResults { get; } = new ObservableCollection<PolicyTemplateBatchApplyItemDto>();
         public IReadOnlyList<BackupAnomalyProtectionOption> BackupAnomalyProtectionOptions { get; } = new[]
         {
             new BackupAnomalyProtectionOption(BackupAnomalyProtectionLevel.Off, "关闭比较告警"),
@@ -467,6 +563,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new BatchObservableCollection<TrainerReleaseDto>();
         public BatchObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; } = new BatchObservableCollection<CloudTransferStatusDto>();
         public BatchObservableCollection<MediaClassificationBatchSummaryDto> MediaClassificationHistoryItems { get; } = new BatchObservableCollection<MediaClassificationBatchSummaryDto>();
+        public ObservableCollection<MediaInboxBatchFailureDto> MediaInboxBatchFailures { get; } = new ObservableCollection<MediaInboxBatchFailureDto>();
         public IReadOnlyList<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new[]
         {
             new CloudTransferFilterOption(string.Empty, "全部状态"),
@@ -508,6 +605,28 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string MediaInboxLoadedSummary => (MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount) <= 0
             ? $"当前保留 {MediaInboxItems.Count} 条（窗口上限 {CurrentMediaInboxAccumulator.Capacity}）"
             : $"当前保留 {MediaInboxItems.Count} / {(MediaInboxMode == "已忽略" ? ignoredMediaPageTotalCount : unassignedMediaPageTotalCount)} 条（窗口上限 {CurrentMediaInboxAccumulator.Capacity}）";
+        public MediaDuplicateInspectionDto MediaDuplicateInspection
+        {
+            get => mediaDuplicateInspection;
+            private set
+            {
+                SetValue(ref mediaDuplicateInspection, value ?? new MediaDuplicateInspectionDto());
+                OnPropertyChanged(nameof(MediaDuplicateGroupsSummary));
+            }
+        }
+        public MediaDuplicateGroupDto? SelectedMediaDuplicateGroup
+        {
+            get => selectedMediaDuplicateGroup;
+            set
+            {
+                SetValue(ref selectedMediaDuplicateGroup, value);
+                OnPropertyChanged(nameof(MediaDuplicateSelectionSummary));
+            }
+        }
+        public string MediaDuplicateGroupsSummary => MediaDuplicateInspection.SummaryDisplay;
+        public string MediaDuplicateSelectionSummary => SelectedMediaDuplicateGroup == null
+            ? "选择一个重复组查看文件；这里只读，不会删除或移动媒体。"
+            : $"{SelectedMediaDuplicateGroup.SummaryDisplay} · {SelectedMediaDuplicateGroup.ReasonDisplay}";
         public MediaClassificationBatchSummaryDto? SelectedMediaClassificationBatch
         {
             get => selectedMediaClassificationBatch;
@@ -533,37 +652,195 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool MediaHasActiveFilters
             => !string.IsNullOrWhiteSpace(MediaSearchText)
                || !string.Equals(MediaFilter, "全部", StringComparison.Ordinal);
+        public string MediaActiveFiltersSummary => FilterConditionSummary.Media(MediaSearchText, MediaFilter);
         public IReadOnlyList<string> GameStatusFilterOptions { get; } = new[] { "全部", "已就绪", "未匹配", "运行中", "需关注", "有历史" };
         public IReadOnlyList<string> GameSortOptions { get; } = new[] { "名称", "运行优先", "匹配优先", "最近备份" };
-        public CloudTransferSummaryDto CloudTransferViewSummary { get => cloudTransferViewSummary; private set => SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto()); }
+        public CloudTransferSummaryDto CloudTransferViewSummary
+        {
+            get => cloudTransferViewSummary;
+            private set
+            {
+                SetValue(ref cloudTransferViewSummary, value ?? new CloudTransferSummaryDto());
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferScopeSummary));
+                OnPropertyChanged(nameof(CloudTransferGlobalCount));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            }
+        }
         public CloudTransferStatusDto SelectedCloudTransfer { get { return selectedCloudTransfer; } set { SetValue(ref selectedCloudTransfer, value); OnPropertyChanged(nameof(CloudTransferAvailabilityHint)); OnPropertyChanged(nameof(CloudTransferNeedsMaintenance)); RaiseCommandStates(); } }
         public bool CloudTransferHasMore => cloudTransferHasMore;
         public bool CloudTransferNeedsManualRefresh => cloudTransferNeedsManualRefresh;
+        public bool CloudTransferLoadFailed => cloudTransferLoadFailed;
+        public bool CloudTransferStaleVisible => CloudTransferLoadFailed && CloudTransferItems.Count > 0;
+        public string CloudTransferStateDetail => FilterConditionSummary.StaleStateDetail(cloudTransferLastSuccessUtc, cloudTransferErrorMessage);
+        public string CloudTransferActiveFiltersSummary => FilterConditionSummary.Cloud(
+            CloudTransferStateFilter,
+            CloudTransferKindFilter,
+            CloudTransferGameFilter,
+            CloudTransferSourceDeviceFilter,
+            CloudTransferTimeFilter);
         public string CloudTransferLoadedSummary => CloudTransferViewSummary.TotalCount <= 0
-            ? cloudTransferNeedsManualRefresh
-                ? "数据仍在变化，请点击“刷新队列”后继续"
-                : "暂无云端传输记录"
-            : cloudTransferHasMore
-                ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项"
+            ? CloudTransferLoadFailed
+                ? "读取失败；当前列表不代表没有记录，请点击“刷新队列”重试"
                 : cloudTransferNeedsManualRefresh
-                    ? $"数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续"
-                    : $"已加载全部 {CloudTransferItems.Count} 项";
-        public string CloudTransferStateFilter { get => cloudTransferStateFilter; set { SetValue(ref cloudTransferStateFilter, value ?? string.Empty); } }
-        public string CloudTransferKindFilter { get => cloudTransferKindFilter; set { SetValue(ref cloudTransferKindFilter, value ?? string.Empty); } }
+                ? "数据仍在变化，请点击“刷新队列”后继续"
+                : CloudTransferHasActiveFilters
+                    ? $"当前筛选 0/{CloudTransferGlobalCount} 项 · 暂无匹配记录"
+                    : "暂无云端传输记录"
+            : CloudTransferLoadFailed && CloudTransferItems.Count > 0
+                ? $"{CloudTransferScopeSummary} · 读取失败，已保留旧数据"
+                : $"{CloudTransferScopeSummary} · {(cloudTransferHasMore ? $"已加载 {CloudTransferItems.Count}/{CloudTransferViewSummary.TotalCount} 项" : cloudTransferNeedsManualRefresh ? "数据仍在变化，已暂停自动重试，请点击“刷新队列”后继续" : $"已加载全部 {CloudTransferItems.Count} 项")}";
+        public string CloudTransferEmptyStateMessage
+            => FilterConditionSummary.CloudEmptyState(
+                CloudTransferLoadFailed,
+                CloudTransferHasActiveFilters,
+                CloudTransferActiveFiltersSummary);
+        public string CloudTransferStateFilter
+        {
+            get => cloudTransferStateFilter;
+            set
+            {
+                SetValue(ref cloudTransferStateFilter, value ?? string.Empty);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            }
+        }
+        public string CloudTransferKindFilter
+        {
+            get => cloudTransferKindFilter;
+            set
+            {
+                SetValue(ref cloudTransferKindFilter, value ?? string.Empty);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            }
+        }
+        public IReadOnlyList<CloudTransferFilterOption> CloudTransferTimeFilterOptions { get; } = new[]
+        {
+            new CloudTransferFilterOption(string.Empty, "全部时间"),
+            new CloudTransferFilterOption("24h", "最近 24 小时"),
+            new CloudTransferFilterOption("7d", "最近 7 天"),
+            new CloudTransferFilterOption("30d", "最近 30 天")
+        };
+        public bool CloudTransferHasActiveFilters
+            => !string.IsNullOrWhiteSpace(CloudTransferStateFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferKindFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferGameFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferSourceDeviceFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferTimeFilter);
+        public int CloudTransferGlobalCount
+            => Math.Max(CloudTransferViewSummary.GlobalTotalCount, CloudTransferViewSummary.TotalCount);
+        public string CloudTransferScopeSummary
+            => CloudTransferHasActiveFilters
+                ? $"当前筛选 {CloudTransferViewSummary.TotalCount}/{CloudTransferGlobalCount} 项"
+                : $"全局 {CloudTransferGlobalCount} 项";
+        public string CloudTransferGameFilter
+        {
+            get => cloudTransferGameFilter;
+            set
+            {
+                var next = value ?? string.Empty;
+                if (string.Equals(cloudTransferGameFilter, next, StringComparison.Ordinal)) return;
+                SetValue(ref cloudTransferGameFilter, next);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+                cloudTransferFilterRefresh.Schedule();
+            }
+        }
+        public string CloudTransferSourceDeviceFilter
+        {
+            get => cloudTransferSourceDeviceFilter;
+            set
+            {
+                var next = value ?? string.Empty;
+                if (string.Equals(cloudTransferSourceDeviceFilter, next, StringComparison.Ordinal)) return;
+                SetValue(ref cloudTransferSourceDeviceFilter, next);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+                cloudTransferFilterRefresh.Schedule();
+            }
+        }
+        public string CloudTransferTimeFilter
+        {
+            get => cloudTransferTimeFilter;
+            set
+            {
+                var next = value ?? string.Empty;
+                if (string.Equals(cloudTransferTimeFilter, next, StringComparison.Ordinal)) return;
+                SetValue(ref cloudTransferTimeFilter, next);
+                OnPropertyChanged(nameof(CloudTransferHasActiveFilters));
+                OnPropertyChanged(nameof(CloudTransferActiveFiltersSummary));
+                OnPropertyChanged(nameof(CloudTransferLoadedSummary));
+                OnPropertyChanged(nameof(CloudTransferEmptyStateMessage));
+            }
+        }
 
         public DashboardSnapshotDto Snapshot
         {
             get => snapshot;
             private set
             {
-                SetValue(ref snapshot, value);
+                var nextSnapshot = value ?? new DashboardSnapshotDto();
+                dashboardSnapshotLoaded = value != null;
+                SetValue(ref snapshot, nextSnapshot);
+                NotifyOverviewSnapshotDisplaysChanged();
                 NotifyOverviewPriorityChanged();
                 OnWorkspaceStateInputsChanged();
             }
         }
+        public bool IsDashboardSnapshotLoaded => dashboardSnapshotLoaded;
+        public string OverviewSnapshotScopeDisplay => OverviewSnapshotDisplay.Scope(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewSnapshotUpdatedDisplay => OverviewSnapshotDisplay.UpdatedFull(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewSnapshotUpdatedRawUtcDisplay => OverviewSnapshotDisplay.UpdatedRawUtc(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewCurrentGameScopeDisplay => OverviewSnapshotDisplay.CurrentGameScope(IsDashboardSnapshotLoaded, Snapshot.GeneratedUtc);
+        public string OverviewManagedGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.ManagedGames);
+        public string OverviewMatchedGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.MatchedGames);
+        public string OverviewRunningGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.RunningGames);
+        public string OverviewWarningGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.WarningGames);
+        public string OverviewCloudQueueDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.CloudTransfers?.QueueCount ?? 0);
+        public string OverviewCloudAttentionDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.CloudTransfers?.AttentionCount ?? 0);
+        public string OverviewUnassignedMediaDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.UnassignedMediaCount);
+        public string OverviewHealthBreakdownDisplay => IsDashboardSnapshotLoaded
+            ? $"健康 {Snapshot.HealthyGames} · 注意 {Snapshot.AttentionGames} · 风险 {Snapshot.RiskGames} · 未知 {Snapshot.UnknownGames}"
+            : "健康 — · 注意 — · 风险 — · 未知 —";
+        public string OverviewRecentAccessCountDisplay => IsDashboardSnapshotLoaded ? $"全部 {RecentAccessItems.Count} 个" : "全部 —";
+        public string OverviewTasksCountDisplay => IsDashboardSnapshotLoaded ? $"全部 {OverviewTasks.Count} 个" : "全部 —";
+        public string SelectedGameBackupVersionDisplay => IsDashboardSnapshotLoaded && SelectedGame != null ? SelectedGame.BackupVersionCount.ToString() : "—";
+        public string SelectedGameMediaCountDisplay => IsDashboardSnapshotLoaded && SelectedGame != null ? $"{SelectedGame.MediaCount} 项" : "—";
+        public string SelectedGameCloudStateDisplay => IsDashboardSnapshotLoaded && SelectedGame != null ? SelectedGame.CloudStateDisplay : "—";
+        public string SelectedGameLastBackupDisplay
+            => !IsDashboardSnapshotLoaded
+                ? "—"
+                : SelectedGame?.LastBackupUtc is DateTime backupUtc
+                    ? backupUtc.ToLocalTime().ToString("MM-dd HH:mm")
+                    : "暂无";
+        public string SelectedGameLastBackupRelativeDisplay
+            => !IsDashboardSnapshotLoaded
+                ? "—"
+                : SelectedGame?.LastBackupUtc is DateTime
+                    ? SelectedGame.LastBackupRelativeDisplay
+                    : "暂无";
+        public string SelectedGameLastBackupFullDisplay
+            => !IsDashboardSnapshotLoaded
+                ? "—"
+                : SelectedGame?.LastBackupUtc is DateTime
+                    ? SelectedGame.LastBackupFullDisplay
+                    : "暂无";
+        public string SelectedGameLastBackupRawUtcDisplay
+            => SelectedGame?.LastBackupUtc is DateTime
+                ? SelectedGame.LastBackupRawUtcDisplay
+                : "未记录 UTC 时间";
         public int MaintenanceTabIndex { get => maintenanceTabIndex; set { SetValue(ref maintenanceTabIndex, value); } }
         /// <summary>Remembers the ordinary media tab; purpose actions may override it once.</summary>
-        public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(2, value))); } }
+        public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(3, value))); } }
         /// <summary>Remembers the ordinary save tab; diagnostics can route directly to paths.</summary>
         public int SaveTabIndex { get => saveTabIndex; set { SetValue(ref saveTabIndex, Math.Max(0, Math.Min(3, value))); } }
         public EnvironmentCheckReportDto EnvironmentCheck { get => environmentCheck; private set { SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto()); RaiseCommandStates(); } }
@@ -578,7 +855,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string OnboardingDescription => IsOnboardingPending
             ? "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。"
             : "重新运行非破坏性环境检查，确认备份链路仍然可用。";
-        private OverviewPriorityState OverviewPriority => OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
+        private OverviewPriorityState OverviewPriority => !IsDashboardSnapshotLoaded
+            ? new OverviewPriorityState("Loading", "Refresh", "正在读取概览数据", "全库快照尚未成功返回；数字显示为 —，不把未加载当成 0。", "重新读取")
+            : OverviewPriorityResolver.Resolve(Snapshot, IsOnboardingPending);
         public string OverviewPriorityKind => OverviewPriority.Kind;
         public string OverviewPriorityTitle => OverviewPriority.Title;
         public string OverviewPriorityDescription => OverviewPriority.Description;
@@ -589,6 +868,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             "Maintenance" => OpenMaintenanceCommand,
             "CloudQueue" => OpenCloudQueueCommand,
             "Media" => OpenMediaWorkspaceCommand,
+            "Tasks" => OpenFailedTasksCommand,
+            "GamePicker" => OpenOverviewGamePickerCommand,
             "Attention" => OpenAttentionCenterCommand,
             _ => RefreshCommand
         };
@@ -600,6 +881,37 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(OverviewPriorityActionText));
             OnPropertyChanged(nameof(OverviewPriorityActionToolTip));
             OnPropertyChanged(nameof(OverviewPriorityActionCommand));
+        }
+
+        private void NotifyOverviewSnapshotDisplaysChanged()
+        {
+            OnPropertyChanged(nameof(IsDashboardSnapshotLoaded));
+            OnPropertyChanged(nameof(OverviewSnapshotScopeDisplay));
+            OnPropertyChanged(nameof(OverviewSnapshotUpdatedDisplay));
+            OnPropertyChanged(nameof(OverviewSnapshotUpdatedRawUtcDisplay));
+            OnPropertyChanged(nameof(OverviewCurrentGameScopeDisplay));
+            OnPropertyChanged(nameof(OverviewManagedGamesDisplay));
+            OnPropertyChanged(nameof(OverviewMatchedGamesDisplay));
+            OnPropertyChanged(nameof(OverviewRunningGamesDisplay));
+            OnPropertyChanged(nameof(OverviewWarningGamesDisplay));
+            OnPropertyChanged(nameof(OverviewCloudQueueDisplay));
+            OnPropertyChanged(nameof(OverviewCloudAttentionDisplay));
+            OnPropertyChanged(nameof(OverviewUnassignedMediaDisplay));
+            OnPropertyChanged(nameof(OverviewHealthBreakdownDisplay));
+            OnPropertyChanged(nameof(OverviewRecentAccessCountDisplay));
+            OnPropertyChanged(nameof(OverviewTasksCountDisplay));
+            NotifyOverviewSelectedGameDisplaysChanged();
+        }
+
+        private void NotifyOverviewSelectedGameDisplaysChanged()
+        {
+            OnPropertyChanged(nameof(SelectedGameBackupVersionDisplay));
+            OnPropertyChanged(nameof(SelectedGameMediaCountDisplay));
+            OnPropertyChanged(nameof(SelectedGameCloudStateDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupRelativeDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupFullDisplay));
+            OnPropertyChanged(nameof(SelectedGameLastBackupRawUtcDisplay));
         }
         public RecentProtectionSummary RecentProtection { get => recentProtection; private set => SetValue(ref recentProtection, value); }
         public WorkerSettingsSnapshotDto EffectiveSettings
@@ -632,7 +944,18 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RaiseCommandStates();
             }
         }
-        public string StatusMessage { get => statusMessage; private set => SetValue(ref statusMessage, value); }
+        public string StatusMessage
+        {
+            get => statusMessage;
+            private set
+            {
+                SetValue(ref statusMessage, value);
+                StatusMessageFullDisplay = value;
+            }
+        }
+        public string StatusMessageFullDisplay { get => statusMessageFullDisplay; private set => SetValue(ref statusMessageFullDisplay, value); }
+        public BackupPreviewDto BackupPreview { get => backupPreview; private set => SetValue(ref backupPreview, value ?? new BackupPreviewDto()); }
+        public BackupResultDto BackupResult { get => backupResult; private set => SetValue(ref backupResult, value ?? new BackupResultDto()); }
         public string DiagnosticSummary { get => diagnosticSummary; private set => SetValue(ref diagnosticSummary, value); }
         public string IntegritySummary { get => integritySummary; private set => SetValue(ref integritySummary, value); }
         public string MetadataBackupSummary { get => metadataBackupSummary; private set => SetValue(ref metadataBackupSummary, value); }
@@ -643,7 +966,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => pathRemapOldRoot;
             set
             {
-                SetValue(ref pathRemapOldRoot, value ?? string.Empty);
+                var next = value ?? string.Empty;
+                if (!string.Equals(pathRemapOldRoot, next, StringComparison.Ordinal))
+                {
+                    SetValue(ref pathRemapOldRoot, next);
+                    PathRemapPreview = new PathRemapPreviewDto();
+                    PathRemapSummary = "路径已变化，请重新生成预览。";
+                }
                 RaiseCommandStates();
             }
         }
@@ -652,11 +981,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => pathRemapNewRoot;
             set
             {
-                SetValue(ref pathRemapNewRoot, value ?? string.Empty);
+                var next = value ?? string.Empty;
+                if (!string.Equals(pathRemapNewRoot, next, StringComparison.Ordinal))
+                {
+                    SetValue(ref pathRemapNewRoot, next);
+                    PathRemapPreview = new PathRemapPreviewDto();
+                    PathRemapSummary = "路径已变化，请重新生成预览。";
+                }
                 RaiseCommandStates();
             }
         }
         public string PathRemapSummary { get => pathRemapSummary; private set => SetValue(ref pathRemapSummary, value); }
+        public PathRemapPreviewDto PathRemapPreview { get => pathRemapPreview; private set => SetValue(ref pathRemapPreview, value ?? new PathRemapPreviewDto()); }
         public string TaskReconcileSummary { get => taskReconcileSummary; private set => SetValue(ref taskReconcileSummary, value); }
         public StorageAnalysisDto StorageAnalysis { get => storageAnalysis; private set => SetValue(ref storageAnalysis, value ?? new StorageAnalysisDto()); }
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
@@ -835,7 +1171,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        internal bool HasTaskNavigationTarget => !string.IsNullOrWhiteSpace(taskNavigationGameName);
+        public bool HasTaskNavigationTarget => !string.IsNullOrWhiteSpace(taskNavigationGameName);
+
+        public string TaskNavigationSourceSummary
+            => HasTaskNavigationTarget
+                ? $"已带入游戏“{taskNavigationGameName}”的诊断条件。清除后仅移除该条件，保留搜索、状态、类型和时间筛选。"
+                : string.Empty;
 
         private void ClearTaskNavigationTargetIfUserChangedFilter()
         {
@@ -844,6 +1185,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             taskNavigationGameId = string.Empty;
             taskNavigationGameName = string.Empty;
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
             OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
         }
@@ -852,6 +1195,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             taskNavigationGameId = target.IsExact ? target.PlayniteId : string.Empty;
             taskNavigationGameName = target.GameName ?? string.Empty;
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
             OnPropertyChanged(nameof(TaskHasActiveFilters));
             OnPropertyChanged(nameof(TaskActiveFiltersSummary));
         }
@@ -862,6 +1207,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => currentWorkspace;
             set
             {
+                if (currentWorkspace != value)
+                    CancelDetailsLoad();
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
                     CancelCloudTransferRequest();
                 if (currentWorkspace == WorkspaceKind.Media && value != WorkspaceKind.Media)
@@ -869,6 +1216,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SetValue(ref currentWorkspace, value);
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
+                RecordRecentAccess();
             }
         }
         public LayoutMode LayoutMode { get => layoutMode; set => SetValue(ref layoutMode, value); }
@@ -998,8 +1346,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                     selectedBackup = value!;
                     OnPropertyChanged(nameof(SelectedBackup));
                 }
-                if (!sameBackup)
+                if (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup))
+                {
+                    ResetRestoreWorkflow();
                     ClearBackupComparison();
+                    SetDefaultComparisonSelection(value);
+                }
                 SyncBackupEditor(value, sameBackup);
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
@@ -1021,6 +1373,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref selectedTask, value);
+                RebuildSelectedTaskTimeline();
+                OnPropertyChanged(nameof(SelectedTaskSourceReferences));
+                OnPropertyChanged(nameof(HasSelectedTaskSources));
+                OnPropertyChanged(nameof(SelectedTaskObjectReferences));
+                OnPropertyChanged(nameof(HasSelectedTaskObjectReferences));
                 RaiseCommandStates();
             }
         }
@@ -1049,6 +1406,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!applyingEditorSelection && !string.Equals(backupComment, normalized, StringComparison.Ordinal))
                     backupCommentDirty = true;
                 SetValue(ref backupComment, normalized);
+                OnPropertyChanged(nameof(HasBackupMetadataChanges));
+                RaiseCommandStates();
             }
         }
         public bool LockSelectedBackup
@@ -1059,8 +1418,15 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!applyingEditorSelection && lockSelectedBackup != value)
                     backupLockDirty = true;
                 SetValue(ref lockSelectedBackup, value);
+                OnPropertyChanged(nameof(HasBackupMetadataChanges));
+                OnPropertyChanged(nameof(BackupProtectionExplanationDisplay));
+                RaiseCommandStates();
             }
         }
+        public bool HasBackupMetadataChanges => backupCommentDirty || backupLockDirty;
+        public string BackupProtectionExplanationDisplay => LockSelectedBackup
+            ? "当前草稿已锁定：保留预览会始终跳过此版本；取消锁定并保存后，下一次预览才会按策略重新评估。"
+            : "当前草稿未锁定：保留预览会按当前策略评估；如需长期保留，请勾选锁定并保存。";
         public MediaItemDto SelectedMedia
         {
             get => selectedMedia;
@@ -1074,6 +1440,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     OnPropertyChanged(nameof(SelectedMedia));
                 }
                 SyncMediaEditor(value, sameMedia);
+                OnPropertyChanged(nameof(CanNavigatePreviousMedia));
+                OnPropertyChanged(nameof(CanNavigateNextMedia));
+                OnPropertyChanged(nameof(MediaDetailNavigationDisplay));
                 RaiseCommandStates();
             }
         }
@@ -1150,6 +1519,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(MediaHasActiveFilters));
+                OnPropertyChanged(nameof(MediaActiveFiltersSummary));
+                NotifyMediaDetailsStateChanged();
             }
         }
         public string MediaFilter
@@ -1165,6 +1536,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(MediaHasActiveFilters));
+                OnPropertyChanged(nameof(MediaActiveFiltersSummary));
+                NotifyMediaDetailsStateChanged();
             }
         }
         public IReadOnlyList<string> MediaInboxModeOptions { get; } = new[] { "待归类", "已忽略" };
@@ -1225,8 +1598,177 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
         public string DiffSummary { get => diffSummary; private set => SetValue(ref diffSummary, value); }
         public string DiffComparedSummary { get => diffComparedSummary; private set => SetValue(ref diffComparedSummary, value); }
+        public string CompareSelectionSummary { get => compareSelectionSummary; private set => SetValue(ref compareSelectionSummary, value); }
+        public string CompareSelectionSummaryFullDisplay => BuildComparisonSelectionSummaryFull(CompareLeftBackup, CompareRightBackup);
+        public string DiffComparedSummaryFullDisplay => LastBackupDiff == null
+            ? "尚未选择可比较的版本。"
+            : BuildComparisonSummaryFull(CompareLeftBackup, CompareRightBackup);
+        public string DiffPathSearchText
+        {
+            get => diffPathSearchText;
+            set
+            {
+                SetValue(ref diffPathSearchText, value ?? string.Empty);
+                diffPathVisibleLimit = 120;
+                RefreshDiffPathResults();
+                RaiseCommandStates();
+            }
+        }
+        public string DiffPathKindFilter
+        {
+            get => diffPathKindFilter;
+            set
+            {
+                var normalized = DiffPathKindOptions.Contains(value) ? value : "全部";
+                SetValue(ref diffPathKindFilter, normalized);
+                diffPathVisibleLimit = 120;
+                RefreshDiffPathResults();
+                RaiseCommandStates();
+            }
+        }
+        public int DiffAddedMatchCount { get => diffAddedMatchCount; private set => SetValue(ref diffAddedMatchCount, value); }
+        public int DiffModifiedMatchCount { get => diffModifiedMatchCount; private set => SetValue(ref diffModifiedMatchCount, value); }
+        public int DiffRemovedMatchCount { get => diffRemovedMatchCount; private set => SetValue(ref diffRemovedMatchCount, value); }
+        public int DiffPathVisibleCount { get => diffPathVisibleCount; private set => SetValue(ref diffPathVisibleCount, value); }
+        public bool DiffPathHasMore { get => diffPathHasMore; private set => SetValue(ref diffPathHasMore, value); }
+        public string DiffPathFilterSummary { get => diffPathFilterSummary; private set => SetValue(ref diffPathFilterSummary, value); }
+        public string DiffUnknownSummary { get => diffUnknownSummary; private set => SetValue(ref diffUnknownSummary, value); }
         public string RetentionSummary { get => retentionSummary; private set => SetValue(ref retentionSummary, value); }
-        public BackupDiffDto? LastBackupDiff { get => lastBackupDiff; private set => SetValue(ref lastBackupDiff, value); }
+        public IReadOnlyList<BackupPolicyDiffEntry> SelectedGamePolicyDiffEntries
+            => SelectedGame == null || selectedGamePolicyBaseline == null
+                ? Array.Empty<BackupPolicyDiffEntry>()
+                : BackupPolicyDiff.Compare(selectedGamePolicyBaseline, SelectedGame.Policy);
+        public bool HasSelectedGamePolicyChanges => SelectedGamePolicyDiffEntries.Count > 0;
+        public string SelectedGamePolicyDiffSummary
+            => HasSelectedGamePolicyChanges
+                ? $"当前草稿将显式覆盖 {SelectedGamePolicyDiffEntries.Count} 项；保存前不会写入 Worker。"
+                : "当前草稿与已保存值一致，不会写入策略变更。";
+        public IReadOnlyList<BackupPolicyDiffEntry> PolicyTemplateDiffEntries
+            => !HasPolicyTemplateDraft || SelectedGame == null || selectedGamePolicyBaseline == null || PolicyTemplateDraft == null
+                ? Array.Empty<BackupPolicyDiffEntry>()
+                : BackupPolicyDiff.Compare(selectedGamePolicyBaseline, PolicyTemplateDraft.Policy);
+        public bool HasPolicyTemplateDiff => PolicyTemplateDiffEntries.Count > 0;
+        public string PolicyTemplateDiffSummary
+            => HasSelectedGamePolicyChanges
+                ? "当前游戏还有未保存的策略草稿，请先保存或取消；模板不会覆盖未保存草稿。"
+                : !HasPolicyTemplateDraft
+                ? "选择或新建策略模板后，这里会显示应用前的字段差异。"
+                : HasPolicyTemplateDiff
+                ? $"模板将一次性覆盖 {PolicyTemplateDiffEntries.Count} 项；不会建立继承关系。"
+                : "模板与当前已保存策略一致；应用不会产生策略差异。";
+        public string PolicyTemplateBatchSearchText
+        {
+            get => policyTemplateBatchSearchText;
+            set
+            {
+                SetValue(ref policyTemplateBatchSearchText, value ?? string.Empty);
+                PolicyTemplateBatchTargetsView?.Refresh();
+                OnPropertyChanged(nameof(PolicyTemplateBatchVisibleCount));
+                OnPropertyChanged(nameof(PolicyTemplateBatchHiddenSelectedCount));
+                OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+            }
+        }
+        public int PolicyTemplateBatchVisibleCount
+            => PolicyTemplateBatchTargetsView?.Cast<object>().Count() ?? 0;
+        public int PolicyTemplateBatchSelectedCount
+            => PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets).Count;
+        public int PolicyTemplateBatchHiddenSelectedCount
+            => CountPolicyTemplateBatchHiddenSelected(PolicyTemplateBatchTargets, PolicyTemplateBatchSearchText);
+        public int PolicyTemplateBatchExcludedCount
+            => Math.Max(0, PolicyTemplateBatchTargets.Count - PolicyTemplateBatchSelectedCount);
+        public int PolicyTemplateBatchChangeCount
+            => PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets).Sum(target => target.ChangeCount);
+        public bool HasPolicyTemplateBatchResults => PolicyTemplateBatchResults.Count > 0;
+        public string PolicyTemplateBatchSummary
+            => BuildPolicyTemplateBatchSummary(
+                SelectedPolicyTemplate != null,
+                PolicyTemplateBatchTargets.Count,
+                PolicyTemplateBatchVisibleCount,
+                PolicyTemplateBatchSelectedCount,
+                PolicyTemplateBatchHiddenSelectedCount,
+                PolicyTemplateBatchExcludedCount,
+                PolicyTemplateBatchChangeCount);
+
+        internal static bool MatchesPolicyTemplateBatchTarget(PolicyTemplateBatchTarget target, string? searchText)
+        {
+            if (target == null) return false;
+            var query = (searchText ?? string.Empty).Trim();
+            return query.Length == 0
+                || target.GameName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0
+                || target.PlayniteId.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        internal static int CountPolicyTemplateBatchHiddenSelected(
+            IEnumerable<PolicyTemplateBatchTarget> targets,
+            string? searchText)
+        {
+            if (targets == null) return 0;
+            return PolicyTemplateBatchPreview.Select(targets)
+                .Count(target => !MatchesPolicyTemplateBatchTarget(target, searchText));
+        }
+
+        internal static string BuildPolicyTemplateBatchSummary(
+            bool hasTemplate,
+            int totalCount,
+            int visibleCount,
+            int selectedCount,
+            int hiddenSelectedCount,
+            int excludedCount,
+            int changeCount)
+        {
+            if (!hasTemplate)
+                return "选择已保存策略模板后，可明确勾选批量应用目标。";
+
+            var total = Math.Max(0, totalCount);
+            var visible = Math.Max(0, Math.Min(total, visibleCount));
+            var selected = Math.Max(0, selectedCount);
+            var hidden = Math.Max(0, Math.Min(selected, hiddenSelectedCount));
+            var excluded = Math.Max(0, excludedCount);
+            var resultScope = $"当前筛选结果 {visible}/{total} 个游戏";
+            if (selected == 0)
+                return $"尚未选择目标；{resultScope}；隐藏选择 0 个；排除 {excluded} 个。筛选不会自动选择全部游戏。";
+            if (selected > PolicyTemplateBatchPreview.MaxTargetCount)
+                return $"已选择 {selected} 个目标；{resultScope}；隐藏选择 {hidden} 个；超过单次最多 {PolicyTemplateBatchPreview.MaxTargetCount} 个，请减少选择。";
+            return $"已选择 {selected} 个目标；{resultScope}；隐藏选择 {hidden} 个；排除 {excluded} 个；预计覆盖 {Math.Max(0, changeCount)} 项字段；筛选隐藏项仍按稳定 ID 保留选择。";
+        }
+        public bool CanApplyPolicyTemplateBatch
+            => SelectedPolicyTemplate != null
+                && !string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId)
+                && !HasSelectedGamePolicyChanges
+                && PolicyTemplateBatchSelectedCount > 0
+                && PolicyTemplateBatchSelectedCount <= PolicyTemplateBatchPreview.MaxTargetCount;
+        public BackupDiffDto? LastBackupDiff
+        {
+            get => lastBackupDiff;
+            private set
+            {
+                SetValue(ref lastBackupDiff, value);
+                diffPathVisibleLimit = 120;
+                RefreshDiffPathResults();
+                OnPropertyChanged(nameof(DiffComparedSummaryFullDisplay));
+            }
+        }
+        public BackupVersionDto? CompareLeftBackup
+        {
+            get => compareLeftBackup;
+            set
+            {
+                if (ReferenceEquals(compareLeftBackup, value)) return;
+                SetValue(ref compareLeftBackup, value);
+                OnComparisonSelectionChanged();
+            }
+        }
+        public BackupVersionDto? CompareRightBackup
+        {
+            get => compareRightBackup;
+            set
+            {
+                if (ReferenceEquals(compareRightBackup, value)) return;
+                SetValue(ref compareRightBackup, value);
+                OnComparisonSelectionChanged();
+            }
+        }
+        public bool CanCompareSelectedBackups => IsValidComparisonSelection(CompareLeftBackup, CompareRightBackup);
         public RetentionPreviewDto? LastRetentionPreview { get => lastRetentionPreview; private set => SetValue(ref lastRetentionPreview, value); }
         public BackupPolicyTemplateDto SelectedPolicyTemplate
         {
@@ -1239,6 +1781,15 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ? new BackupPolicyTemplateDto()
                     : GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.Clone(value);
                 PolicyTemplateNameDraft = PolicyTemplateDraft.Name;
+                OnPropertyChanged(nameof(HasPolicyTemplateDraft));
+                OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+                OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+                OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+                PolicyTemplateBatchResults.Clear();
+                OnPropertyChanged(nameof(HasPolicyTemplateBatchResults));
+                RefreshPolicyTemplateBatchTargets();
+                OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+                OnPropertyChanged(nameof(CanApplyPolicyTemplateBatch));
                 RaiseCommandStates();
             }
         }
@@ -1248,18 +1799,33 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref policyTemplateDraft, value ?? new BackupPolicyTemplateDto());
+                SubscribePolicyTemplateDraft(policyTemplateDraft);
                 OnPropertyChanged(nameof(CanEditPolicyTemplate));
+                OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+                OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+                OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
             }
         }
         public bool CanEditPolicyTemplate => PolicyTemplateDraft != null && !PolicyTemplateDraft.IsBuiltIn;
+        public bool HasPolicyTemplateDraft
+            => SelectedPolicyTemplate != null || !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft);
         public string PolicyTemplateNameDraft
         {
             get => policyTemplateNameDraft;
-            set { SetValue(ref policyTemplateNameDraft, value ?? string.Empty); RaiseCommandStates(); }
+            set
+            {
+                SetValue(ref policyTemplateNameDraft, value ?? string.Empty);
+                OnPropertyChanged(nameof(HasPolicyTemplateDraft));
+                OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+                OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+                RaiseCommandStates();
+            }
         }
 
         public ICommand RefreshCommand { get; }
         public ICommand BackupSelectedCommand { get; }
+        public ICommand PreviewBackupCommand { get; }
+        public ICommand RetrySelectedGameCloudUploadCommand { get; }
         public ICommand BackupAllCommand { get; }
         public ICommand SyncMediaCommand { get; }
         public ICommand DetectPathsCommand { get; }
@@ -1269,14 +1835,22 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand UndoRestoreCommand { get; }
         public ICommand LoadDetailsCommand { get; }
         public ICommand SavePolicyCommand { get; }
+        public ICommand CancelPolicyDraftCommand { get; }
         public ICommand CreatePolicyTemplateCommand { get; }
         public ICommand SavePolicyTemplateCommand { get; }
         public ICommand ApplyPolicyTemplateCommand { get; }
+        public ICommand ApplyPolicyTemplateBatchCommand { get; }
+        public ICommand RetryPolicyTemplateBatchItemCommand { get; }
         public ICommand DeletePolicyTemplateCommand { get; }
         public ICommand UpdateBackupMetadataCommand { get; }
+        public ICommand CancelBackupMetadataCommand { get; }
         public ICommand CompareBackupCommand { get; }
+        public ICommand SwapCompareBackupCommand { get; }
+        public ICommand LoadMoreDiffPathsCommand { get; }
+        public ICommand ClearDiffPathFiltersCommand { get; }
         public ICommand PreviewRetentionCommand { get; }
         public ICommand AddMediaSourceCommand { get; }
+        public ICommand PreviewMediaSourceCommand { get; }
         public ICommand UpdateMediaSourceCommand { get; }
         public ICommand DeleteMediaSourceCommand { get; }
         public ICommand AcceptCandidateCommand { get; }
@@ -1284,18 +1858,26 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ReassignMediaCommand { get; }
         public ICommand LoadMoreMediaCommand { get; }
         public ICommand ReloadMediaWindowCommand { get; }
+        public ICommand ReloadMediaDuplicateGroupsCommand { get; }
         public ICommand ClearMediaFiltersCommand { get; }
+        public ICommand ApplyMediaFilterPresetCommand { get; }
+        public ICommand SaveMediaFilterPresetCommand { get; }
+        public ICommand RenameMediaFilterPresetCommand { get; }
+        public ICommand DeleteMediaFilterPresetCommand { get; }
         public ICommand UpdateMediaMetadataCommand { get; }
         public ICommand FavoriteSelectedMediaCommand { get; }
         public ICommand UnfavoriteSelectedMediaCommand { get; }
         public ICommand CommentSelectedMediaCommand { get; }
         public ICommand OpenSelectedMediaCommand { get; }
         public ICommand RevealSelectedMediaCommand { get; }
+        public ICommand PreviousMediaCommand { get; }
+        public ICommand NextMediaCommand { get; }
         public ICommand AssignInboxMediaCommand { get; }
         public ICommand IgnoreInboxMediaCommand { get; }
         public ICommand AssignInboxMediaBatchCommand { get; }
         public ICommand IgnoreInboxMediaBatchCommand { get; }
         public ICommand RestoreIgnoredMediaBatchCommand { get; }
+        public ICommand RetryFailedMediaInboxBatchCommand { get; }
         public ICommand PreviewMediaClassificationCommand { get; }
         public ICommand ApplyMediaClassificationCommand { get; }
         public ICommand UndoMediaClassificationCommand { get; }
@@ -1308,12 +1890,18 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RetryAllTasksCommand { get; }
         public ICommand LoadMoreTasksCommand { get; }
         public ICommand ClearTaskFiltersCommand { get; }
+        public ICommand ApplyTaskFilterPresetCommand { get; }
+        public ICommand SaveTaskFilterPresetCommand { get; }
+        public ICommand RenameTaskFilterPresetCommand { get; }
+        public ICommand DeleteTaskFilterPresetCommand { get; }
         public ICommand CopyTaskErrorCommand { get; }
         public ICommand CopyPathCommand { get; }
         public ICommand OpenAttentionCenterCommand { get; }
         public ICommand OpenMaintenanceCommand { get; }
         public ICommand OpenCloudQueueCommand { get; }
         public ICommand OpenMediaWorkspaceCommand { get; }
+        public ICommand OpenFailedTasksCommand { get; }
+        public ICommand OpenOverviewGamePickerCommand { get; }
         public ICommand OpenActivityCommand { get; }
         public ICommand OpenAttentionFindingCommand { get; }
         public ICommand OpenSelectedFindingNavigationCommand { get; }
@@ -1325,6 +1913,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand LoadMoreRetentionQuarantineCommand { get; }
         public ICommand RefreshCloudTransfersCommand { get; }
         public ICommand LoadMoreCloudTransfersCommand { get; }
+        public ICommand ClearCloudTransferFiltersCommand { get; }
         public ICommand VerifyCloudTransferCommand { get; }
         public ICommand RetryCloudUploadCommand { get; }
         public ICommand DiagnoseGameCommand { get; }
@@ -1354,6 +1943,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand SaveDeviceDecisionCommand { get; }
         public ICommand StageRemoteBackupCommand { get; }
         public ICommand RestoreStagedRemoteBackupCommand { get; }
+        public ICommand CancelRemoteBackupStageCommand { get; }
         public ICommand SaveProcessMappingCommand { get; }
         public ICommand DeleteProcessMappingCommand { get; }
         public ICommand CopyDiagnosticsCommand { get; }
@@ -1389,9 +1979,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             private set
             {
                 SetValue(ref stagedRemoteBackup,value);
-                StagedRemoteBackupStatus=value==null
-                    ?"尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。"
-                    :$"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；{value.ExpiresUtc.ToLocalTime():yyyy-MM-dd HH:mm} 前有效。";
+                StagedRemoteBackupStatus=BuildStagedRemoteBackupStatus(value, useFullTime: false);
+                StagedRemoteBackupStatusFullDisplay=BuildStagedRemoteBackupStatus(value, useFullTime: true);
                 OnPropertyChanged(nameof(RemoteRestoreAvailabilityHint));
                 RaiseCommandStates();
             }
@@ -1399,8 +1988,23 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string StagedRemoteBackupStatus
         {
             get=>stagedRemoteBackupStatus;
-            private set=>SetValue(ref stagedRemoteBackupStatus,value);
+            private set
+            {
+                SetValue(ref stagedRemoteBackupStatus,value);
+                StagedRemoteBackupStatusFullDisplay=value;
+            }
         }
+        public string StagedRemoteBackupStatusFullDisplay
+        {
+            get=>stagedRemoteBackupStatusFullDisplay;
+            private set=>SetValue(ref stagedRemoteBackupStatusFullDisplay,value);
+        }
+        internal static string BuildStagedRemoteBackupStatus(RemoteBackupStageResultDto? value, bool useFullTime)
+            => value == null
+                ? "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。"
+                : useFullTime
+                    ? $"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；有效期至：{value.ExpiresFullDisplay}。"
+                    : $"已校验：{value.GameName} / {value.RemoteDevice} / {value.BackupId}；有效期：{value.ExpiresRelativeDisplay}。";
         public string DeviceDecision { get=>deviceDecision; set=>SetValue(ref deviceDecision,value??"稍后处理"); }
         public string DeviceDecisionComment { get=>deviceDecisionComment; set=>SetValue(ref deviceDecisionComment,value??string.Empty); }
         public string ProcessMappingExecutable { get => processMappingExecutable; set { SetValue(ref processMappingExecutable,value??string.Empty); RaiseCommandStates(); } }
@@ -1521,6 +2125,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             RequestWorkspaceLoad();
         }
 
+        private void OpenFailedTasks()
+        {
+            TaskStatusFilter = "失败";
+            CurrentWorkspace = WorkspaceKind.Tasks;
+            taskSearchRefresh.Cancel();
+            taskHistoryQueryRefresh.Cancel();
+            Run(() => LoadTaskPageAsync(true));
+        }
+
+        private void OpenOverviewGamePicker()
+        {
+            GamePicker.StatusFilter = OverviewPriority.Kind == "Backupable" ? "可备份" : "未匹配";
+            CurrentWorkspace = WorkspaceKind.Overview;
+            GamePickerRequested?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <summary>
         /// Routes a curated overview activity to the workspace that owns the event. A
         /// game-scoped activity carries its stable Playnite id so a renamed game cannot
@@ -1579,12 +2199,41 @@ namespace GameSaveCenter.Playnite.ViewModels
                         return;
                     }
 
+                    PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
+                    pendingFindingBackupId = string.Empty;
+                    pendingStorageBackupId = string.Empty;
                     SelectedGame = Games.First(game => string.Equals(
                         game.PlayniteId,
                         saveTarget.PlayniteId,
                         StringComparison.OrdinalIgnoreCase));
+                    SelectedBackup = null!;
                     SaveTabIndex = 1;
                     CurrentWorkspace = WorkspaceKind.Saves;
+                    RequestWorkspaceLoad();
+                    break;
+                case FindingNavigationKind.BackupVersion:
+                    var versionTarget = FindingNavigationTargetResolver.ResolveExactGame(finding, Games);
+                    var findingBackupId = FindingNavigationTargetResolver.ResolveBackupId(finding);
+                    if (!versionTarget.IsAvailable || string.IsNullOrWhiteSpace(findingBackupId))
+                    {
+                        StatusMessage = !versionTarget.IsAvailable
+                            ? versionTarget.Message
+                            : "该诊断缺少稳定的备份版本标识，保留诊断但未跳转。请先刷新诊断。";
+                        return;
+                    }
+
+                    PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
+                    pendingTaskBackupId = null;
+                    pendingStorageBackupId = string.Empty;
+                    pendingFindingBackupId = findingBackupId;
+                    SaveTabIndex = 0;
+                    CurrentWorkspace = WorkspaceKind.Saves;
+                    SelectedBackup = null!;
+                    SelectedGame = Games.First(game => string.Equals(
+                        game.PlayniteId,
+                        versionTarget.PlayniteId,
+                        StringComparison.OrdinalIgnoreCase));
+                    StatusMessage = $"正在打开诊断对应版本“{findingBackupId}”；仅按稳定游戏/版本 ID 查找。";
                     RequestWorkspaceLoad();
                     break;
                 case FindingNavigationKind.FailedTasks:
@@ -1595,6 +2244,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                         return;
                     }
 
+                    PushNavigationReturnTarget("返回告警", $"来源：维护中心 · {finding?.Title ?? "诊断项"}");
                     applyingTaskNavigation = true;
                     try
                     {
@@ -1699,6 +2349,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         public event EventHandler? AttentionCenterRequested;
+        public event EventHandler? GamePickerRequested;
 
         /// <summary>Starts the Playnite game-started subscription once for the visible Dashboard.</summary>
         public void StartPlayniteGameStartedSubscription() => playniteGameStartedSubscription.Start();
@@ -1714,6 +2365,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void StartTaskEventSubscription()
         {
             if (taskEventSubscription != null) return;
+            taskEventBatcher = new TaskEventUiBatcher(
+                (action, immediate) =>
+                {
+                    var dispatcher = plugin.PlayniteApi.MainView.UIDispatcher;
+                    if (dispatcher.HasShutdownStarted || dispatcher.HasShutdownFinished) return;
+                    if (immediate)
+                        dispatcher.Invoke(action, DispatcherPriority.DataBind);
+                    else
+                        dispatcher.BeginInvoke(action, DispatcherPriority.Background);
+                },
+                ApplyTaskEventBatchOnUi);
             taskEventSubscription = new CancellationTokenSource();
             var token = taskEventSubscription.Token;
             taskEventListener = ListenForTaskEventsWhenReadyAsync(token);
@@ -1741,6 +2403,9 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void StopTaskEventSubscription()
         {
+            var batcher = taskEventBatcher;
+            taskEventBatcher = null;
+            batcher?.Dispose();
             var subscription = taskEventSubscription;
             taskEventSubscription = null;
             if (subscription == null) return;
@@ -1751,12 +2416,15 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public void CancelDeferredUiWork()
         {
+            workspaceRevisitLoadGate.InvalidateAll();
             gamePicker.CancelPendingRefresh();
             taskSearchRefresh.Cancel();
             taskHistoryQueryRefresh.Cancel();
             mediaSearchRefresh.Cancel();
             mediaPageQueryRefresh.Cancel();
+            cloudTransferFilterRefresh.Cancel();
             Interlocked.Increment(ref mediaPageGeneration);
+            Interlocked.Increment(ref mediaDuplicateLoadGeneration);
             Interlocked.Increment(ref mediaInboxLoadGeneration);
             Interlocked.Increment(ref taskPageGeneration);
             taskHistoryQueryQueued = false;
@@ -1794,27 +2462,91 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
+        private void RememberTaskTimelineChange(TaskChangeEventDto change)
+        {
+            if (change?.Task == null || string.IsNullOrWhiteSpace(change.Task.TaskId)) return;
+            if (!taskTimelineChanges.TryGetValue(change.Task.TaskId, out var changes))
+            {
+                changes = new List<TaskChangeEventDto>();
+                taskTimelineChanges[change.Task.TaskId] = changes;
+            }
+
+            if (change.Sequence > 0 && changes.Any(existing => existing.Sequence == change.Sequence)) return;
+            changes.Add(change);
+            if (changes.Count > MaxTaskTimelineEventsPerTask)
+                changes.RemoveRange(0, changes.Count - MaxTaskTimelineEventsPerTask);
+
+            while (taskTimelineChanges.Count > MaxTaskTimelineTasks)
+            {
+                var oldest = taskTimelineChanges
+                    .OrderBy(pair => pair.Value.Count == 0 ? long.MaxValue : pair.Value[pair.Value.Count - 1].Sequence)
+                    .FirstOrDefault();
+                if (oldest.Key == null) break;
+                taskTimelineChanges.Remove(oldest.Key);
+            }
+        }
+
+        private void RebuildSelectedTaskTimeline()
+        {
+            var task = SelectedTask;
+            IEnumerable<TaskChangeEventDto> changes = task == null || !taskTimelineChanges.TryGetValue(task.TaskId, out var observed)
+                ? Array.Empty<TaskChangeEventDto>()
+                : observed;
+            var timeline = task == null
+                ? Array.Empty<TaskTimelineEntryDto>()
+                : TaskTimelineBuilder.Build(task, changes);
+            SelectedTaskTimeline.ReplaceAll(timeline, (left, right) =>
+                left.Sequence == right.Sequence
+                && string.Equals(left.Kind, right.Kind, StringComparison.Ordinal)
+                && string.Equals(left.Title, right.Title, StringComparison.Ordinal)
+                && string.Equals(left.Detail, right.Detail, StringComparison.Ordinal)
+                && left.OccurredUtc == right.OccurredUtc);
+            OnPropertyChanged(nameof(HasSelectedTaskTimeline));
+        }
+
         private async Task ApplyTaskEventAsync(TaskChangeEventDto change)
         {
             if (change == null || change.Task == null) return;
-            ApplyOnUi(() =>
-            {
-                taskIndex.Merge(Tasks, change.Task);
-                Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
-                knownTaskStates[change.Task.TaskId] = change.Task.State;
-                taskSnapshotInitialized = true;
-                ApplyTrainerDownloadTaskUpdate(change.Task);
-                if (SelectedTask == null || string.Equals(SelectedTask.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase))
-                    SelectedTask = Tasks.FirstOrDefault(x => string.Equals(x.TaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase));
-                RaiseCommandStates();
-            });
+            taskEventBatcher?.Enqueue(change);
 
             if (change.Task.State == TaskState.Succeeded || change.Task.State == TaskState.Failed || change.Task.State == TaskState.Cancelled)
             {
-                // A terminal event can change backup/media counts and findings. Request the normal
-                // cached snapshot refresh; the event itself only updates the task rows immediately.
+                // Terminal states bypass the progress batch and are painted before the
+                // durable follow-up refresh. The refresh remains the source-of-truth repair
+                // path if the transient event pipe reconnects or a page is unloaded.
                 await RequestBackgroundRefreshAsync();
             }
+        }
+
+        private void ApplyTaskEventBatchOnUi(IReadOnlyList<TaskChangeEventDto> changes)
+        {
+            if (changes == null || changes.Count == 0) return;
+            Tasks.ApplyBatch(() =>
+            {
+                foreach (var change in changes)
+                {
+                    if (change == null || change.Task == null) continue;
+                    RememberTaskTimelineChange(change);
+                    taskIndex.Merge(Tasks, change.Task);
+                    knownTaskStates[change.Task.TaskId] = change.Task.State;
+                    taskSnapshotInitialized = true;
+                    ApplyTrainerDownloadTaskUpdate(change.Task);
+                    ApplyRemoteBackupStageTaskUpdate(change.Task);
+                }
+            });
+
+            Replace(OverviewTasks, Tasks.OrderByDescending(x => x.CreatedUtc).Take(8), SnapshotComparers.Task);
+            OnPropertyChanged(nameof(OverviewTasksCountDisplay));
+            var selectedTaskId = SelectedTask?.TaskId;
+            var selectedEvent = changes.LastOrDefault(change => change?.Task != null
+                && (string.IsNullOrWhiteSpace(selectedTaskId)
+                    || string.Equals(selectedTaskId, change.Task.TaskId, StringComparison.OrdinalIgnoreCase)));
+            var taskToSelect = selectedTaskId == null
+                ? selectedEvent?.Task?.TaskId
+                : selectedTaskId;
+            if (!string.IsNullOrWhiteSpace(taskToSelect))
+                SelectedTask = Tasks.FirstOrDefault(x => string.Equals(x.TaskId, taskToSelect, StringComparison.OrdinalIgnoreCase));
+            RaiseCommandStates();
         }
 
         private async Task InitializeAsync()
@@ -2098,6 +2830,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                             ? CloneGameWithPolicy(game, selectedGamePolicyDraft)
                             : game).ToList();
                     var gamesChanged = Replace(Games, displayGames, SnapshotComparers.Game);
+                    RefreshRecentAccessItems(pruneMissing: true);
                     var pickerChanged = gamePicker.SetItems(Games, selectedGameId ?? plugin.Settings.GamePickerSelectedGameId);
                     if (gamesChanged || pickerChanged)
                         RefreshGameView(false);
@@ -2121,6 +2854,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
                     if (selectedGamePolicyDraft == null)
                         UpdateSelectedGamePolicyBaseline(SelectedGame);
+                    else
+                    {
+                        SubscribeSelectedGamePolicy(SelectedGame);
+                        OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+                        OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+                        OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+                    }
+                    RefreshPolicyTemplateBatchTargets(data.Games);
                 }
                 finally { suppressSelectionLoad = false; }
                 // Cache-first snapshots can be older than the current wall clock. The protection
@@ -2144,15 +2885,20 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!taskHistoryActive)
                     CompleteTaskPageLoad();
                 Replace(OverviewTasks, data.RecentTasks.Take(8), SnapshotComparers.Task);
+                OnPropertyChanged(nameof(OverviewTasksCountDisplay));
                 Replace(Activities, data.RecentActivities.Take(12), SnapshotComparers.Activity);
                 RebuildTaskFilters();
                 RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
+                var findingTriage = FindingTriageResolver.Resolve(data.Findings);
+                data.Findings = findingTriage.Items.ToList();
+                ApplyFindingTriage(findingTriage);
                 var previousFindingIndex = SelectedFinding == null ? -1 : Findings.IndexOf(SelectedFinding);
                 var previousFindingPlayniteId = SelectedFinding?.PlayniteId;
+                var previousFindingBackupId = SelectedFinding?.BackupId;
                 var previousFindingCode = SelectedFinding?.Code;
                 var previousFindingTitle = SelectedFinding?.Title;
                 Replace(Findings, data.Findings, SnapshotComparers.Finding);
-                var previousFindingKey = BuildFindingSelectionKey(previousFindingPlayniteId, previousFindingCode, previousFindingTitle);
+                var previousFindingKey = BuildFindingSelectionKey(previousFindingPlayniteId, previousFindingBackupId, previousFindingCode, previousFindingTitle);
                 SelectedFinding = previousFindingIndex >= 0 || !string.IsNullOrWhiteSpace(previousFindingKey)
                     ? SelectionAnchorResolver.Restore(Findings, previousFindingKey, previousFindingIndex, BuildFindingSelectionKey)!
                     : null!;
@@ -2242,12 +2988,117 @@ namespace GameSaveCenter.Playnite.ViewModels
             return GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(selected.Policy);
         }
 
+        private void SubscribeSelectedGamePolicy(GameStatusDto? game)
+        {
+            var policy = game?.Policy;
+            if (ReferenceEquals(subscribedSelectedGamePolicy, policy)) return;
+            if (subscribedSelectedGamePolicy != null)
+                subscribedSelectedGamePolicy.PropertyChanged -= OnSelectedGamePolicyChanged;
+            subscribedSelectedGamePolicy = policy;
+            if (subscribedSelectedGamePolicy != null)
+                subscribedSelectedGamePolicy.PropertyChanged += OnSelectedGamePolicyChanged;
+        }
+
+        private void SubscribePolicyTemplateDraft(BackupPolicyTemplateDto? template)
+        {
+            var policy = template?.Policy;
+            if (ReferenceEquals(subscribedPolicyTemplateDraftPolicy, policy)) return;
+            if (subscribedPolicyTemplateDraftPolicy != null)
+                subscribedPolicyTemplateDraftPolicy.PropertyChanged -= OnPolicyTemplateDraftChanged;
+            subscribedPolicyTemplateDraftPolicy = policy;
+            if (subscribedPolicyTemplateDraftPolicy != null)
+                subscribedPolicyTemplateDraftPolicy.PropertyChanged += OnPolicyTemplateDraftChanged;
+        }
+
+        private void OnSelectedGamePolicyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+            OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+            RaiseCommandStates();
+        }
+
+        private void OnPolicyTemplateDraftChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+            OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+            OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
+            RaiseCommandStates();
+        }
+
+        private bool FilterPolicyTemplateBatchTarget(object item)
+        {
+            return item is PolicyTemplateBatchTarget target
+                && MatchesPolicyTemplateBatchTarget(target, PolicyTemplateBatchSearchText);
+        }
+
+        private void RefreshPolicyTemplateBatchTargets(IEnumerable<GameStatusDto>? source = null)
+        {
+            var selectedIds = new HashSet<string>(
+                PolicyTemplateBatchTargets.Where(target => target.IsSelected).Select(target => target.PlayniteId),
+                StringComparer.OrdinalIgnoreCase);
+            foreach (var target in PolicyTemplateBatchTargets)
+                target.PropertyChanged -= OnPolicyTemplateBatchTargetChanged;
+
+            var next = SelectedPolicyTemplate == null
+                || string.IsNullOrWhiteSpace(SelectedPolicyTemplate.TemplateId)
+                ? Array.Empty<PolicyTemplateBatchTarget>()
+                : PolicyTemplateBatchPreview.Build(source ?? Games, SelectedPolicyTemplate.Policy, selectedIds);
+            PolicyTemplateBatchTargets.ReplaceAll(next, (left, right) =>
+                string.Equals(left.PlayniteId, right.PlayniteId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(left.GameName, right.GameName, StringComparison.Ordinal)
+                && left.ChangeCount == right.ChangeCount
+                && left.IsSelected == right.IsSelected);
+            foreach (var target in PolicyTemplateBatchTargets)
+                target.PropertyChanged += OnPolicyTemplateBatchTargetChanged;
+
+            PolicyTemplateBatchTargetsView?.Refresh();
+            OnPropertyChanged(nameof(PolicyTemplateBatchVisibleCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchHiddenSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchExcludedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchChangeCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+            OnPropertyChanged(nameof(CanApplyPolicyTemplateBatch));
+            RaiseCommandStates();
+        }
+
+        private void OnPolicyTemplateBatchTargetChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (!string.Equals(e.PropertyName, nameof(PolicyTemplateBatchTarget.IsSelected), StringComparison.Ordinal)) return;
+            OnPropertyChanged(nameof(PolicyTemplateBatchSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchHiddenSelectedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchExcludedCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchChangeCount));
+            OnPropertyChanged(nameof(PolicyTemplateBatchSummary));
+            OnPropertyChanged(nameof(CanApplyPolicyTemplateBatch));
+            RaiseCommandStates();
+        }
+
+        private void CancelPolicyDraft()
+        {
+            if (SelectedGame == null || selectedGamePolicyBaseline == null) return;
+            BackupPolicyDiff.CopyTo(selectedGamePolicyBaseline, SelectedGame.Policy);
+            StatusMessage = "已撤销未保存的游戏策略修改；未写入 Worker。";
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+            OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+            RaiseCommandStates();
+        }
+
         private void UpdateSelectedGamePolicyBaseline(GameStatusDto? game)
         {
             selectedGamePolicyId = game?.PlayniteId;
             selectedGamePolicyBaseline = game == null
                 ? null
                 : GameSaveCenter.Core.Services.BackupPolicyTemplateCatalog.ClonePolicy(game.Policy);
+            SubscribeSelectedGamePolicy(game);
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffEntries));
+            OnPropertyChanged(nameof(HasSelectedGamePolicyChanges));
+            OnPropertyChanged(nameof(SelectedGamePolicyDiffSummary));
+            OnPropertyChanged(nameof(PolicyTemplateDiffEntries));
+            OnPropertyChanged(nameof(HasPolicyTemplateDiff));
+            OnPropertyChanged(nameof(PolicyTemplateDiffSummary));
         }
 
         private static GameStatusDto CloneGameWithPolicy(GameStatusDto source, BackupPolicyDto policy)
@@ -2256,6 +3107,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 PlayniteId = source.PlayniteId,
                 Name = source.Name,
+                IconPath = source.IconPath,
                 Platform = source.Platform,
                 IsInstalled = source.IsInstalled,
                 LastPlayedUtc = source.LastPlayedUtc,
@@ -2329,7 +3181,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 TimeSpan.FromMinutes(5));
             ApplyOnUi(() =>
             {
-                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.PackageBytes / 1024d / 1024d:0.#} MiB）" +
+                MetadataBackupSummary = $"元数据灾备包已生成：{result.PackagePath}（{result.SizeDisplay}）" +
                     (result.PluginSettingsIncluded ? "，已包含 Playnite 插件设置。" : string.Empty);
                 StatusMessage = result.Summary;
             });
@@ -2445,7 +3297,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     NewRoot = PathRemapNewRoot
                 },
                 TimeSpan.FromMinutes(2));
-            ApplyOnUi(() => PathRemapSummary = preview.Summary);
+            ApplyOnUi(() =>
+            {
+                PathRemapPreview = preview;
+                PathRemapSummary = preview.Summary;
+            });
             var message = $"预览到 {preview.AffectedRowCount} 条路径需要迁移。\n\n此操作会更新数据库与 Worker 设置，但不会移动任何文件。";
             if (preview.MissingTargetCount > 0)
                 message += $"\n\n其中 {preview.MissingTargetCount} 条目标路径当前不存在；继续将仍应用迁移，取消则按默认策略跳过本次迁移。";
@@ -2573,8 +3429,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                     var merged = reset
                         ? incoming
                         : Tasks.Concat(incoming.Where(item => !Tasks.Any(existing => string.Equals(existing.TaskId, item.TaskId, StringComparison.OrdinalIgnoreCase)))).ToList();
-                    var selectedTaskIndex = SelectedTask == null ? -1 : Tasks.IndexOf(SelectedTask);
-                    var selectedTaskId = SelectedTask?.TaskId;
+                    var restoringNavigationSelection = restoringNavigationTaskSelection;
+                    var selectedTaskIndex = restoringNavigationSelection
+                        ? pendingNavigationTaskIndex
+                        : SelectedTask == null ? -1 : Tasks.IndexOf(SelectedTask);
+                    var selectedTaskId = restoringNavigationSelection
+                        ? pendingNavigationTaskId
+                        : SelectedTask?.TaskId;
                     var changed = Replace(Tasks, merged, SnapshotComparers.Task);
                     if (changed) taskIndex.Rebuild(Tasks);
                     taskHistoryCursor = page?.NextCursor ?? string.Empty;
@@ -2594,6 +3455,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                     CompleteTaskPageLoad();
                     StatusMessage = TaskLoadedSummary;
                     RestoreTaskSelection(selectedTaskId, selectedTaskIndex);
+                    if (restoringNavigationSelection)
+                    {
+                        restoringNavigationTaskSelection = false;
+                        pendingNavigationTaskId = string.Empty;
+                        pendingNavigationTaskIndex = -1;
+                    }
                     RaiseCommandStates();
                 });
             }
@@ -2729,13 +3596,13 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task CopyMaintenanceReportAsync()
         {
-            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
+            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, CreateMaintenanceReportRequest(), TimeSpan.FromMinutes(3));
             await CopyTextWithRetryAsync(report.ReportText, "健康报告已复制", "健康报告已复制到剪贴板。");
         }
 
         private async Task ExportMaintenanceReportAsync()
         {
-            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, new { }, TimeSpan.FromMinutes(3));
+            var report = await plugin.RequestAsync<MaintenanceReportDto>(MessageTypes.GetMaintenanceReport, CreateMaintenanceReportRequest(), TimeSpan.FromMinutes(3));
             var dialog = new SaveFileDialog
             {
                 Title = "导出健康报告",
@@ -2749,6 +3616,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             StatusMessage = $"健康报告已导出：{dialog.FileName}";
             plugin.ShowInfo(StatusMessage);
         }
+
+        private MaintenanceReportRequestDto CreateMaintenanceReportRequest()
+            => new MaintenanceReportRequestDto
+            {
+                PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
+                PluginBuildIdentity = BuildIdentity.ForAssembly(System.Reflection.Assembly.GetExecutingAssembly()),
+                PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown"
+            };
 
         private void SkipOnboarding()
         {
@@ -2809,26 +3684,33 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CreateDiagnosticsPackageAsync()
         {
             var windowDip = TryGetMainWindowDipSize();
+            var request = new CreateDiagnosticsPackageRequestDto
+            {
+                PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
+                PluginBuildIdentity = BuildIdentity.ForAssembly(System.Reflection.Assembly.GetExecutingAssembly()),
+                PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown",
+                ThemeMode = plugin.Settings.ThemeMode.ToString(),
+                CurrentWorkspace = CurrentWorkspace.ToString(),
+                Scenario = "manual-diagnostics-package",
+                EvidenceSource = "RealPlaynite",
+                WindowWidthDip = windowDip.Width,
+                WindowHeightDip = windowDip.Height,
+                LoadedItemCount = GetLoadedDiagnosticItemCount(),
+                DpiScale = TryGetDpiScale(),
+                ScreenCount = TryGetScreenCount()
+            };
+            var preview = await plugin.RequestAsync<DiagnosticsPackagePreviewDto>(
+                MessageTypes.PreviewDiagnosticsPackage, request, TimeSpan.FromSeconds(30));
+            if (!await plugin.ConfirmAsync("确认生成诊断包", preview.ConfirmationText, "生成", "取消"))
+            {
+                StatusMessage = "已取消生成诊断包；未写入诊断 ZIP，未上传任何内容。";
+                return;
+            }
+
             var result = await plugin.RequestAsync<DiagnosticsPackageResultDto>(
-                MessageTypes.CreateDiagnosticsPackage,
-                new CreateDiagnosticsPackageRequestDto
-                {
-                    PluginVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev",
-                    PluginBuildIdentity = BuildIdentity.ForAssembly(System.Reflection.Assembly.GetExecutingAssembly()),
-                    PlayniteVersion = plugin.PlayniteApi.GetType().Assembly.GetName().Version?.ToString() ?? "unknown",
-                    ThemeMode = plugin.Settings.ThemeMode.ToString(),
-                    CurrentWorkspace = CurrentWorkspace.ToString(),
-                    Scenario = "manual-diagnostics-package",
-                    EvidenceSource = "RealPlaynite",
-                    WindowWidthDip = windowDip.Width,
-                    WindowHeightDip = windowDip.Height,
-                    LoadedItemCount = GetLoadedDiagnosticItemCount(),
-                    DpiScale = TryGetDpiScale(),
-                    ScreenCount = TryGetScreenCount()
-                },
-                TimeSpan.FromMinutes(3));
-            StatusMessage = result.Summary;
-            plugin.ShowInfo($"诊断包已生成：{Path.GetFileName(result.PackagePath)}");
+                MessageTypes.CreateDiagnosticsPackage, request, TimeSpan.FromMinutes(3));
+            StatusMessage = result.ResultDisplay;
+            plugin.ShowInfo(result.ResultDisplay);
             OpenPath(result.PackagePath);
         }
 
@@ -2927,14 +3809,29 @@ namespace GameSaveCenter.Playnite.ViewModels
                    $"将从设备“{selected.RemoteDevice}”下载完整 Ludusavi 备份库，并在本机隔离区校验版本“{selected.RemoteBackupId}”。\n\n此步骤不会恢复或覆盖当前存档，但下载量可能较大。是否继续？",
                    "下载到隔离区并校验",
                    "取消"))return;
-            var staged=await plugin.RequestAsync<RemoteBackupStageResultDto>(MessageTypes.StageRemoteBackup,
-                new RemoteBackupStageRequestDto
-                {
-                    PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,
-                    RemoteDeviceId=selected.RemoteDeviceId,BackupId=selected.RemoteBackupId
-                },TimeSpan.FromHours(3));
-            StagedRemoteBackup=staged;
-            ConfirmSuccess(staged.StatusMessage);
+            BeginRemoteBackupStage();
+            try
+            {
+                var cancellation=remoteStageCancellation?.Token??CancellationToken.None;
+                var staged=await plugin.RequestAsync<RemoteBackupStageResultDto>(MessageTypes.StageRemoteBackup,
+                    new RemoteBackupStageRequestDto
+                    {
+                        PlayniteId=selected.PlayniteId,RemoteDevice=selected.RemoteDevice,
+                        RemoteDeviceId=selected.RemoteDeviceId,BackupId=selected.RemoteBackupId
+                    },TimeSpan.FromHours(3),cancellation);
+                StagedRemoteBackup=staged;
+                ConfirmSuccess(staged.StatusMessage);
+            }
+            catch(Exception ex)
+            {
+                if(remoteStageCancellation?.IsCancellationRequested==true)
+                    StagedRemoteBackupStatus="远端备份下载已取消；请以任务事件中的隔离区清理结果为准。";
+                else
+                    StagedRemoteBackupStatus="远端备份未完成；"+ex.Message;
+                OnPropertyChanged(nameof(StagedRemoteBackupStatus));
+                throw;
+            }
+            finally { EndRemoteBackupStage(); }
         }
 
         private async Task RestoreStagedRemoteBackupAsync()
@@ -2944,7 +3841,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                    "从已校验的远端备份恢复",
                    $"即将恢复“{staged.GameName}”在设备“{staged.RemoteDevice}”上的版本“{staged.BackupId}”。\n\n恢复前会创建并锁定本机当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。",
                    "创建快照并恢复",
-                   "取消"))return;
+                   "取消",
+                   isDangerous: true))return;
             var task=await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreRemoteBackup,
                 new RemoteRestoreRequestDto
                 {
@@ -2989,27 +3887,70 @@ namespace GameSaveCenter.Playnite.ViewModels
             var id = SelectedGame.PlayniteId;
             if (!string.IsNullOrWhiteSpace(expectedGameId)
                 && !string.Equals(expectedGameId, id, StringComparison.OrdinalIgnoreCase)) return;
-            switch (CurrentWorkspace)
+            var requestWorkspace = CurrentWorkspace;
+            var requestGeneration = expectedGeneration != 0
+                ? expectedGeneration
+                : Interlocked.Increment(ref detailsLoadGeneration);
+            if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
+            switch (requestWorkspace)
             {
                 case WorkspaceKind.Saves:
                 {
-                    ApplyOnUi(BeginSaveDetailsLoad);
+                    ApplyOnUi(() =>
+                    {
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            BeginSaveDetailsLoad();
+                    });
                     try
                     {
                         var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory }, cancellationToken: cancellationToken);
                         var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                         await Task.WhenAll(backupsTask, candidatesTask);
-                        if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                         ApplyOnUi(() =>
                         {
-                            if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                             var selectedBackupIndex = SelectedBackup == null ? -1 : Backups.IndexOf(SelectedBackup);
                             var selectedBackupId = SelectedBackup?.BackupId;
                             var selectedCandidateBeforeRefresh = SelectedCandidate;
                             var selectedCandidateIndex = SelectedCandidate == null ? -1 : SaveCandidates.IndexOf(SelectedCandidate);
                             Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
-                            SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
+                            var requestedTaskBackupId = pendingTaskBackupId;
+                            var requestedFindingBackupId = pendingFindingBackupId;
+                            var requestedStorageBackupId = pendingStorageBackupId;
+                            var taskBackup = !string.IsNullOrWhiteSpace(requestedTaskBackupId)
+                                ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedTaskBackupId, Backups)
+                                : null;
+                            var findingBackup = !string.IsNullOrWhiteSpace(requestedFindingBackupId)
+                                ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedFindingBackupId, Backups)
+                                : null;
+                            var storageBackup = !string.IsNullOrWhiteSpace(requestedStorageBackupId)
+                                ? TaskSourceNavigationResolver.ResolveExactBackupVersion(requestedStorageBackupId, Backups)
+                                : null;
+                            if (!string.IsNullOrWhiteSpace(requestedTaskBackupId))
+                            {
+                                pendingTaskBackupId = null;
+                                SelectedBackup = taskBackup!;
+                                if (taskBackup == null)
+                                    StatusMessage = $"任务来源版本“{requestedTaskBackupId}”已不存在，未选择其他版本；任务诊断仍可查看。";
+                            }
+                            else if (!string.IsNullOrWhiteSpace(requestedFindingBackupId))
+                            {
+                                pendingFindingBackupId = string.Empty;
+                                SelectedBackup = findingBackup!;
+                                if (findingBackup == null)
+                                    StatusMessage = $"诊断对应版本“{requestedFindingBackupId}”已不存在，未选择其他版本；诊断仍可从维护中心返回查看。";
+                            }
+                            else if (!string.IsNullOrWhiteSpace(requestedStorageBackupId))
+                            {
+                                pendingStorageBackupId = string.Empty;
+                                SelectedBackup = storageBackup!;
+                                if (storageBackup == null)
+                                    StatusMessage = $"存储分析对应版本“{requestedStorageBackupId}”已不存在，未选择其他版本；已打开对应游戏。";
+                            }
+                            else
+                                SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
                             SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh, selectedCandidateIndex)!;
                             CompleteSaveDetailsLoad();
                             RaiseCommandStates();
@@ -3017,13 +3958,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
                     catch (OperationCanceledException)
                     {
-                        if ((expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)) && IsSelectedGame(id))
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
                             ApplyOnUi(CancelSaveDetailsLoad);
                         throw;
                     }
                     catch (Exception ex)
                     {
-                        if ((expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)) && IsSelectedGame(id))
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
                             ApplyOnUi(() => FailSaveDetailsLoad(ex));
                         throw;
                     }
@@ -3032,24 +3973,30 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case WorkspaceKind.Media:
                 {
                     var mediaRequestGeneration = Interlocked.Increment(ref mediaPageGeneration);
-                    ApplyOnUi(() => BeginMediaDetailsLoad(mediaRequestGeneration));
+                    ApplyOnUi(() =>
+                    {
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            BeginMediaDetailsLoad(mediaRequestGeneration);
+                    });
                     try
                     {
                         var mediaLoadTimer = Stopwatch.StartNew();
                         var mediaTask = plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, BuildMediaQuery(id, string.Empty), cancellationToken: cancellationToken);
                         var sourcesTask = plugin.RequestAsync<MediaSourceRuleDto[]>(MessageTypes.ListMediaSources, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                         var summaryTask = plugin.RequestAsync<MediaStorageSummaryDto>(MessageTypes.GetMediaSummary, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
-                        await Task.WhenAll(mediaTask, sourcesTask, summaryTask);
+                        var duplicateTask = LoadMediaDuplicateGroupsAsync(id, cancellationToken);
+                        await Task.WhenAll(mediaTask, sourcesTask, summaryTask, duplicateTask);
                         mediaLoadTimer.Stop();
-                        if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                         var mediaApplyTimer = Stopwatch.StartNew();
                         ApplyOnUi(() =>
                         {
-                            if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                            if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                             if (mediaRequestGeneration != Interlocked.Read(ref mediaPageGeneration)) return;
                             var selectedMediaId = SelectedMedia?.MediaId;
                             ApplyMediaPage(mediaTask.Result ?? new MediaPageDto(), reset: true, selectedId: selectedMediaId);
                             Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
+                            MediaSourcePreview = new MediaSourcePreviewDto();
                             MediaSummary=summaryTask.Result;
                             MediaTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, MediaTargetGame?.PlayniteId, StringComparison.OrdinalIgnoreCase))
                                               ?? SelectedGame
@@ -3062,12 +4009,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     }
                     catch (OperationCanceledException)
                     {
-                        ApplyOnUi(() => CancelMediaDetailsLoad(mediaRequestGeneration));
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            ApplyOnUi(() => CancelMediaDetailsLoad(mediaRequestGeneration));
                         throw;
                     }
                     catch (Exception ex)
                     {
-                        ApplyOnUi(() => FailMediaDetailsLoad(ex, mediaRequestGeneration));
+                        if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
+                            ApplyOnUi(() => FailMediaDetailsLoad(ex, mediaRequestGeneration));
                         throw;
                     }
                     break;
@@ -3075,10 +4024,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case WorkspaceKind.Trainers:
                 {
                     var gameTools = await plugin.RequestAsync<GameToolDto[]>(MessageTypes.ListGameTools, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
-                    if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                    if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                     ApplyOnUi(() =>
                     {
-                        if (!IsCurrentDetailsLoad(id, cancellationToken, expectedGeneration)) return;
+                        if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                         var selectedToolId = SelectedGameTool?.ToolId;
                         Replace(GameTools, gameTools, SnapshotComparers.GameTool);
                         SelectedGameTool = GameTools.FirstOrDefault(x => string.Equals(x.ToolId, selectedToolId, StringComparison.OrdinalIgnoreCase))
@@ -3090,16 +4039,88 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        private bool IsCurrentDetailsLoad(string playniteId, CancellationToken cancellationToken, long expectedGeneration)
+        private bool IsCurrentDetailsLoad(string playniteId, CancellationToken cancellationToken, long expectedGeneration, WorkspaceKind expectedWorkspace)
             => !cancellationToken.IsCancellationRequested
-               && (expectedGeneration == 0 || expectedGeneration == Interlocked.Read(ref detailsLoadGeneration))
+               && expectedGeneration == Interlocked.Read(ref detailsLoadGeneration)
+               && CurrentWorkspace == expectedWorkspace
                && IsSelectedGame(playniteId);
 
         public void RequestWorkspaceLoad()
         {
-            if (CurrentWorkspace == WorkspaceKind.Media) Run(LoadMediaWorkspaceAsync);
-            else if (CurrentWorkspace == WorkspaceKind.Maintenance) Run(LoadDiagnosticsAsync);
-            else if (IsGameScopedWorkspace(CurrentWorkspace)) Run(() => LoadDetailsAsync());
+            var workspace = CurrentWorkspace;
+            var contextKey = GetWorkspaceLoadContextKey(workspace);
+            if (workspace == WorkspaceKind.Media)
+                RunWorkspaceLoad(workspace, contextKey, LoadMediaWorkspaceAsync);
+            else if (workspace == WorkspaceKind.Maintenance)
+                RunWorkspaceLoad(workspace, contextKey, LoadDiagnosticsAsync);
+            else if (IsGameScopedWorkspace(workspace))
+                RunWorkspaceLoad(workspace, contextKey, () => LoadDetailsAsync());
+        }
+
+        private string GetWorkspaceLoadContextKey(WorkspaceKind workspace)
+        {
+            var gameId = SelectedGame?.PlayniteId ?? string.Empty;
+            switch (workspace)
+            {
+                case WorkspaceKind.Media:
+                    return string.Join("\u001f", new[]
+                    {
+                        workspace.ToString(),
+                        gameId,
+                        MediaFilter ?? string.Empty,
+                        MediaSearchText ?? string.Empty,
+                        MediaInboxMode ?? string.Empty
+                    });
+                case WorkspaceKind.Saves:
+                case WorkspaceKind.Trainers:
+                    return string.Join("\u001f", new[] { workspace.ToString(), gameId });
+                case WorkspaceKind.Maintenance:
+                    return workspace.ToString();
+                default:
+                    return workspace.ToString();
+            }
+        }
+
+        private void RunWorkspaceLoad(WorkspaceKind workspace, string contextKey, Func<Task> action)
+        {
+            Run(async () =>
+            {
+                if (CurrentWorkspace != workspace
+                    || !string.Equals(GetWorkspaceLoadContextKey(workspace), contextKey, StringComparison.Ordinal))
+                    return;
+                if (!workspaceRevisitLoadGate.TryBegin(contextKey, DateTime.UtcNow))
+                {
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=hot-revisit outcome=skipped freshness={WorkspaceRevisitFreshness.TotalSeconds:0}s");
+                    return;
+                }
+
+                var timer = Stopwatch.StartNew();
+                try
+                {
+                    await action();
+                    var currentContext = CurrentWorkspace == workspace
+                        && string.Equals(GetWorkspaceLoadContextKey(workspace), contextKey, StringComparison.Ordinal);
+                    var completed = currentContext && workspaceRevisitLoadGate.Complete(contextKey, DateTime.UtcNow);
+                    if (!currentContext || !completed)
+                        workspaceRevisitLoadGate.Cancel(contextKey);
+                    timer.Stop();
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=read outcome={(completed ? "ready" : "discarded")} load={timer.Elapsed.TotalMilliseconds:F3}ms");
+                }
+                catch (OperationCanceledException)
+                {
+                    workspaceRevisitLoadGate.Cancel(contextKey);
+                    timer.Stop();
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=read outcome=cancelled load={timer.Elapsed.TotalMilliseconds:F3}ms");
+                    throw;
+                }
+                catch
+                {
+                    workspaceRevisitLoadGate.Fail(contextKey);
+                    timer.Stop();
+                    Logger.Debug($"[PERF] WorkspaceLoad workspace={workspace} phase=read outcome=failed load={timer.Elapsed.TotalMilliseconds:F3}ms");
+                    throw;
+                }
+            });
         }
 
         private bool IsSelectedGame(string playniteId)
@@ -3113,9 +4134,23 @@ namespace GameSaveCenter.Playnite.ViewModels
             var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
             var gameId = game.PlayniteId;
             var gameName = game.Name;
+            ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+            {
+                PlayniteId = gameId,
+                GameName = gameName,
+                State = "Loading",
+                Summary = "立即备份会重新扫描当前范围；不会使用旧预览作为安全依据。"
+            });
             var tasks = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.BackupGame, new BackupRequestDto { PlayniteIds = { gameId }, Force = true, Reason = "Manual" }, TimeSpan.FromMinutes(15));
             NotifyTaskResults(tasks);
+            ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+            {
+                PlayniteId = gameId,
+                GameName = gameName,
+                Summary = "本次执行已结束；如需确认最新范围，请重新预览备份。"
+            });
             await RefreshCoreAsync(false);
+            AlignBackupResultWithSelectedGame();
             if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
             {
                 await LoadDetailsAsync();
@@ -3126,6 +4161,91 @@ namespace GameSaveCenter.Playnite.ViewModels
             else
             {
                 StatusMessage = $"“{gameName}”的备份已完成，请返回存档中心查看历史版本。";
+            }
+        }
+
+        private async Task RetrySelectedGameCloudUploadAsync()
+        {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var task = await plugin.RequestAsync<TaskStatusDto>(
+                MessageTypes.RetryCloudUpload,
+                new GameQueryDto { PlayniteId = game.PlayniteId },
+                TimeSpan.FromHours(2));
+            NotifyTaskResults(task == null ? Array.Empty<TaskStatusDto>() : new[] { task });
+            await RefreshCoreAsync(false);
+            AlignBackupResultWithSelectedGame();
+            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(game.PlayniteId))
+                await LoadDetailsAsync();
+            StatusMessage = task?.State == TaskState.Succeeded
+                ? "云端上传已完成；如需确认远端内容，请在维护中心执行远端校验。"
+                : "云端上传重试已提交；本地历史版本保持可见。";
+        }
+
+        private bool CanRetrySelectedGameCloudUpload()
+        {
+            if (SelectedGame == null) return false;
+            if (BackupResult.CanRetryCloudUpload) return true;
+            var state = SelectedGame.CloudState;
+            return string.Equals(state, "RetryScheduled", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(state, "Failed", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(state, "AuthenticationRequired", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void AlignBackupResultWithSelectedGame()
+        {
+            if (!BackupResult.LocalBackupSucceeded || SelectedGame == null) return;
+            var state = SelectedGame.CloudState;
+            if (string.Equals(state, "RemoteVerified", StringComparison.OrdinalIgnoreCase)
+                || (BackupResult.CloudState != "Disabled"
+                    && !string.IsNullOrWhiteSpace(state)
+                    && !string.Equals(state, "Disabled", StringComparison.OrdinalIgnoreCase)))
+            {
+                BackupResult.CloudState = state;
+                OnPropertyChanged(nameof(BackupResult));
+            }
+            RaiseCommandStates();
+        }
+
+        private async Task PreviewBackupAsync()
+        {
+            var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
+            var gameId = game.PlayniteId;
+            ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+            {
+                PlayniteId = gameId,
+                GameName = game.Name,
+                State = "Loading",
+                Summary = "正在扫描本次备份范围；不会创建归档。"
+            });
+            try
+            {
+                var result = await plugin.RequestAsync<BackupPreviewDto>(
+                    MessageTypes.PreviewBackup,
+                    new BackupRequestDto { PlayniteIds = { gameId }, Force = true, Reason = "Preview" },
+                    TimeSpan.FromMinutes(15));
+                if (!IsSelectedGame(gameId)) return;
+                ApplyOnUi(() => BackupPreview = result ?? new BackupPreviewDto
+                {
+                    PlayniteId = gameId,
+                    GameName = game.Name,
+                    State = "Error",
+                    Summary = "预览没有返回有效摘要，未创建归档。"
+                });
+                StatusMessage = result?.Summary ?? "预览没有返回有效摘要，未创建归档。";
+            }
+            catch
+            {
+                if (IsSelectedGame(gameId))
+                {
+                    ApplyOnUi(() => BackupPreview = new BackupPreviewDto
+                    {
+                        PlayniteId = gameId,
+                        GameName = game.Name,
+                        State = "Error",
+                        Summary = "备份范围预览失败，未创建归档。"
+                    });
+                }
+                throw;
             }
         }
 
@@ -3683,12 +4803,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             var gameId = game.PlayniteId;
             var gameName = game.Name;
             var selectedId = SelectedBackup?.BackupId ?? throw new InvalidOperationException("请先选择备份版本。");
-            var result = await plugin.RequestAsync<RestoreReadinessDto>(MessageTypes.ValidateRestoreReadiness,
-                new RestoreReadinessRequestDto { PlayniteId = gameId, BackupId = selectedId },
-                TimeSpan.FromMinutes(15));
-            if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
-                await LoadDetailsAsync(true);
-            ConfirmSuccess($"{gameName} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
+            BeginRestoreReadinessCheck();
+            try
+            {
+                var result = await plugin.RequestAsync<RestoreReadinessDto>(MessageTypes.ValidateRestoreReadiness,
+                    new RestoreReadinessRequestDto { PlayniteId = gameId, BackupId = selectedId },
+                    TimeSpan.FromMinutes(15));
+                if (CurrentWorkspace == WorkspaceKind.Saves && IsSelectedGame(gameId))
+                    await LoadDetailsAsync(true);
+                CompleteRestoreReadinessCheck();
+                ConfirmSuccess($"{gameName} / {selectedId}：{result.StatusDisplay}。{result.Summary}");
+            }
+            catch (Exception ex)
+            {
+                CompleteRestoreReadinessCheck(ex.Message);
+                throw;
+            }
         }
 
         private async Task SavePolicyAsync()
@@ -3764,6 +4894,94 @@ namespace GameSaveCenter.Playnite.ViewModels
             ConfirmSuccess($"已将策略模板“{templateName}”复制到 {gameName}；后续修改模板不会影响该游戏");
         }
 
+        private async Task ApplyPolicyTemplateBatchAsync()
+        {
+            var template = SelectedPolicyTemplate ?? throw new InvalidOperationException("请先选择策略模板。");
+            var selected = PolicyTemplateBatchPreview.Select(PolicyTemplateBatchTargets);
+            if (selected.Count == 0)
+            {
+                StatusMessage = "请先明确勾选至少一个目标游戏；筛选不会自动选择全部游戏。";
+                return;
+            }
+            if (selected.Count > PolicyTemplateBatchPreview.MaxTargetCount)
+            {
+                StatusMessage = $"当前选择超过单次最多 {PolicyTemplateBatchPreview.MaxTargetCount} 个目标，请先减少选择。";
+                return;
+            }
+
+            var confirmed = await plugin.ConfirmAsync(
+                "确认批量应用策略模板",
+                PolicyTemplateBatchPreview.BuildConfirmation(template.Name, PolicyTemplateBatchTargets),
+                "确认应用",
+                "取消").ConfigureAwait(true);
+            if (!confirmed)
+            {
+                StatusMessage = "已取消批量应用策略模板；目标选择和草稿保持不变。";
+                return;
+            }
+
+            var result = await plugin.RequestAsync<ApplyPolicyTemplateBatchResultDto>(
+                MessageTypes.ApplyPolicyTemplateBatch,
+                new ApplyPolicyTemplateBatchDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteIds = selected.Select(target => target.PlayniteId).ToList()
+                });
+            PolicyTemplateBatchResults.Clear();
+            foreach (var item in result?.Items ?? new List<PolicyTemplateBatchApplyItemDto>())
+                PolicyTemplateBatchResults.Add(item);
+            OnPropertyChanged(nameof(HasPolicyTemplateBatchResults));
+            foreach (var item in result?.Items?.Where(item => item.Applied) ?? Enumerable.Empty<PolicyTemplateBatchApplyItemDto>())
+            {
+                var target = PolicyTemplateBatchTargets.FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, item.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                if (target != null) target.IsSelected = false;
+            }
+
+            if (result == null)
+            {
+                StatusMessage = "批量应用没有返回结果，请保留当前选择后重试。";
+                return;
+            }
+            if (result.FailedCount == 0)
+                ConfirmSuccess($"已将策略模板“{template.Name}”应用到 {result.AppliedCount} 个游戏。排除项未改动。");
+            else
+                StatusMessage = $"策略模板已应用 {result.AppliedCount} 个，{result.FailedCount} 个失败；失败项可在下方逐项重试。";
+            await RefreshDashboardAsync(false, false);
+        }
+
+        private async Task RetryPolicyTemplateBatchItemAsync(PolicyTemplateBatchApplyItemDto item)
+        {
+            var template = SelectedPolicyTemplate ?? throw new InvalidOperationException("当前没有可重试的策略模板。");
+            if (!item.CanRetry || !string.Equals(item.TemplateId, template.TemplateId, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("该失败项已经不属于当前选中的策略模板。");
+
+            var result = await plugin.RequestAsync<ApplyPolicyTemplateBatchResultDto>(
+                MessageTypes.ApplyPolicyTemplateBatch,
+                new ApplyPolicyTemplateBatchDto
+                {
+                    TemplateId = template.TemplateId,
+                    PlayniteIds = new List<string> { item.PlayniteId }
+                });
+            var replacement = result?.Items?.FirstOrDefault() ?? new PolicyTemplateBatchApplyItemDto
+            {
+                TemplateId = template.TemplateId,
+                PlayniteId = item.PlayniteId,
+                GameName = item.GameName,
+                Error = "重试没有返回结果。"
+            };
+            var index = PolicyTemplateBatchResults.IndexOf(item);
+            if (index >= 0) PolicyTemplateBatchResults[index] = replacement;
+            if (replacement.Applied)
+            {
+                var target = PolicyTemplateBatchTargets.FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, replacement.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                if (target != null) target.IsSelected = false;
+                StatusMessage = $"已重试并应用 {replacement.GameName} 的策略模板。";
+            }
+            else
+                StatusMessage = $"{replacement.GameName} 重试仍失败；可以稍后再次重试。";
+            await RefreshDashboardAsync(false, false);
+        }
+
         private async Task DeletePolicyTemplateAsync()
         {
             var name = PolicyTemplateDraft.Name;
@@ -3793,34 +5011,185 @@ namespace GameSaveCenter.Playnite.ViewModels
             ConfirmSuccess("备份备注与锁定状态已保存");
         }
 
+        private void CancelBackupMetadataEdit()
+        {
+            if (SelectedBackup == null || !HasBackupMetadataChanges) return;
+
+            // Cancellation is a local draft rollback. It must not invoke Worker IPC or alter
+            // the archive file/metadata on disk.
+            SyncBackupEditor(SelectedBackup, preserveDirtyFields: false);
+            OnPropertyChanged(nameof(HasBackupMetadataChanges));
+            RaiseCommandStates();
+            StatusMessage = "已取消版本备注修改，恢复为原值。";
+        }
+
         private async Task CompareBackupAsync()
         {
-            var index = Backups.IndexOf(SelectedBackup);
-            if (index < 0 || index + 1 >= Backups.Count)
+            if (!TryGetComparisonSelection(out var leftBackup, out var rightBackup, out var selectionMessage))
             {
                 ClearBackupComparison();
-                DiffSummary = "没有可比较的上一个版本。";
-                DiffComparedSummary = "当前版本没有可比较的上一个版本。";
+                DiffSummary = selectionMessage;
+                DiffComparedSummary = selectionMessage;
                 return;
             }
 
             var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
-            var leftBackup = Backups[index + 1];
-            var rightBackup = SelectedBackup;
             var leftBackupId = leftBackup.BackupId;
             var rightBackupId = rightBackup.BackupId;
-            var comparedSummary = $"比较范围：{leftBackup.CreatedLocal:yyyy-MM-dd HH:mm}（上一版本） → {rightBackup.CreatedLocal:yyyy-MM-dd HH:mm}（当前版本）";
-            var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups, new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
-            var currentIndex = Backups.IndexOf(SelectedBackup);
+            var comparedSummary = BuildComparisonSummary(leftBackup, rightBackup);
+            var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups,
+                new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
             if (CurrentWorkspace != WorkspaceKind.Saves
                 || !IsSelectedGame(gameId)
-                || currentIndex < 0
-                || currentIndex + 1 >= Backups.Count
-                || !string.Equals(SelectedBackup?.BackupId, rightBackupId, StringComparison.OrdinalIgnoreCase)
-                || !string.Equals(Backups[currentIndex + 1].BackupId, leftBackupId, StringComparison.OrdinalIgnoreCase)) return;
+                || !IsSameBackup(CompareLeftBackup, leftBackupId)
+                || !IsSameBackup(CompareRightBackup, rightBackupId)) return;
             LastBackupDiff = diff;
             DiffSummary = diff.Summary;
             DiffComparedSummary = comparedSummary;
+        }
+
+        private async Task SwapAndCompareBackupAsync()
+        {
+            if (!CanCompareSelectedBackups) return;
+            var left = CompareLeftBackup;
+            var right = CompareRightBackup;
+            suppressComparisonSelectionRefresh = true;
+            try
+            {
+                CompareLeftBackup = right;
+                CompareRightBackup = left;
+            }
+            finally
+            {
+                suppressComparisonSelectionRefresh = false;
+            }
+            OnComparisonSelectionChanged();
+            await CompareBackupAsync();
+        }
+
+        private void SetDefaultComparisonSelection(BackupVersionDto? selected)
+        {
+            var index = selected == null ? -1 : Backups.IndexOf(selected);
+            var previous = index >= 0 && index + 1 < Backups.Count ? Backups[index + 1] : null;
+            suppressComparisonSelectionRefresh = true;
+            try
+            {
+                CompareLeftBackup = previous;
+                CompareRightBackup = selected;
+            }
+            finally
+            {
+                suppressComparisonSelectionRefresh = false;
+            }
+            OnComparisonSelectionChanged();
+        }
+
+        private void OnComparisonSelectionChanged()
+        {
+            if (suppressComparisonSelectionRefresh) return;
+            if (LastBackupDiff != null) ClearBackupComparison();
+            CompareSelectionSummary = BuildComparisonSelectionSummary(CompareLeftBackup, CompareRightBackup);
+            OnPropertyChanged(nameof(CompareSelectionSummaryFullDisplay));
+            OnPropertyChanged(nameof(DiffComparedSummaryFullDisplay));
+            OnPropertyChanged(nameof(CanCompareSelectedBackups));
+            RaiseCommandStates();
+        }
+
+        private bool TryGetComparisonSelection(out BackupVersionDto left, out BackupVersionDto right, out string message)
+        {
+            left = CompareLeftBackup!;
+            right = CompareRightBackup!;
+            if (left == null || right == null)
+            {
+                message = "请选择 A、B 两个版本后再比较。";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(left.BackupId) || string.IsNullOrWhiteSpace(right.BackupId))
+            {
+                message = "版本缺少稳定 ID，不能发起比较。";
+                return false;
+            }
+            if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase))
+            {
+                message = "A、B 不能选择同一版本；不会发起比较或恢复。";
+                return false;
+            }
+            message = string.Empty;
+            return true;
+        }
+
+        private static bool IsValidComparisonSelection(BackupVersionDto? left, BackupVersionDto? right)
+            => left != null
+                && right != null
+                && !string.IsNullOrWhiteSpace(left.BackupId)
+                && !string.IsNullOrWhiteSpace(right.BackupId)
+                && !string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase);
+
+        private static bool IsSameBackup(BackupVersionDto? backup, string backupId)
+            => backup != null && string.Equals(backup.BackupId, backupId, StringComparison.OrdinalIgnoreCase);
+
+        private bool IsBackupInCurrentCollection(BackupVersionDto? backup)
+            => backup != null && Backups.Any(item => IsSameBackup(item, backup.BackupId));
+
+        internal static string BuildComparisonSummary(BackupVersionDto left, BackupVersionDto right)
+            => $"比较方向：A（{left.CreatedRelativeDisplay} · {left.BackupId}） → B（{right.CreatedRelativeDisplay} · {right.BackupId}）";
+
+        internal static string BuildComparisonSummaryFull(BackupVersionDto? left, BackupVersionDto? right)
+            => left == null || right == null
+                ? "尚未选择可比较的版本。"
+                : $"比较方向：A（{left.CreatedFullDisplay} · {left.BackupId}） → B（{right.CreatedFullDisplay} · {right.BackupId}）";
+
+        internal static string BuildComparisonSelectionSummary(BackupVersionDto? left, BackupVersionDto? right)
+        {
+            if (left == null || right == null) return "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+            if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase)) return "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。";
+            return $"A：{left.ComparisonRelativeDisplay} → B：{right.ComparisonRelativeDisplay}；新增属于 B，删除属于 A。";
+        }
+
+        internal static string BuildComparisonSelectionSummaryFull(BackupVersionDto? left, BackupVersionDto? right)
+        {
+            if (left == null || right == null) return "请选择两个不同版本。A 为基准版本，B 为对照版本；新增属于 B，删除属于 A。";
+            if (string.Equals(left.BackupId, right.BackupId, StringComparison.OrdinalIgnoreCase)) return "A、B 当前是同一版本；请选择不同版本，不会发起比较或恢复。";
+            return $"A：{left.ComparisonFullDisplay} → B：{right.ComparisonFullDisplay}；新增属于 B，删除属于 A。";
+        }
+
+        private void LoadMoreDiffPaths()
+        {
+            if (!DiffPathHasMore) return;
+            diffPathVisibleLimit += 120;
+            RefreshDiffPathResults();
+            RaiseCommandStates();
+        }
+
+        private void ClearDiffPathFilters()
+        {
+            diffPathVisibleLimit = 120;
+            DiffPathSearchText = string.Empty;
+            DiffPathKindFilter = "全部";
+        }
+
+        private void RefreshDiffPathResults()
+        {
+            var projection = BackupDiffPathFilter.Apply(LastBackupDiff, DiffPathSearchText, DiffPathKindFilter, diffPathVisibleLimit);
+            DiffAddedPaths.ReplaceAll(projection.VisibleAdded);
+            DiffModifiedPaths.ReplaceAll(projection.VisibleModified);
+            DiffRemovedPaths.ReplaceAll(projection.VisibleRemoved);
+            DiffAddedMatchCount = projection.Added.Count;
+            DiffModifiedMatchCount = projection.Modified.Count;
+            DiffRemovedMatchCount = projection.Removed.Count;
+            DiffPathVisibleCount = projection.VisibleCount;
+            DiffPathHasMore = projection.HasMore;
+            var totalMatches = projection.MatchCount;
+            var filterDescription = string.IsNullOrWhiteSpace(DiffPathSearchText) ? "全部路径" : $"路径包含“{DiffPathSearchText.Trim()}”";
+            if (!string.Equals(DiffPathKindFilter, "全部", StringComparison.Ordinal)) filterDescription += $" · 类型：{DiffPathKindFilter}";
+            DiffPathFilterSummary = LastBackupDiff == null
+                ? "比较两个版本后，可按类型和路径筛选。"
+                : $"{filterDescription}：匹配 {totalMatches} 条，当前显示 {DiffPathVisibleCount} 条" + (DiffPathHasMore ? "，还可加载更多。" : "。");
+            DiffUnknownSummary = LastBackupDiff == null
+                ? "差异质量和未变化数量会在比较后单独显示。"
+                : string.Equals(LastBackupDiff.ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase)
+                    ? $"差异质量：精确比较；零变化：{LastBackupDiff.UnchangedCount} 条（不混入路径差异列表）。"
+                    : $"未知差异：{LastBackupDiff.ComparisonQualityDisplay}；零变化：{LastBackupDiff.UnchangedCount} 条（不混入路径差异列表）。";
         }
 
         private void ClearBackupComparison()
@@ -3853,6 +5222,19 @@ namespace GameSaveCenter.Playnite.ViewModels
             await LoadDetailsAsync();
         }
 
+        internal static string BuildRestoreConfirmation(string gameName, BackupVersionDto backup)
+        {
+            var backupCreatedRelative = backup.CreatedRelativeDisplay;
+            var backupCreatedFull = backup.CreatedFullDisplay;
+            var backupType = backup.BackupTypeDisplay;
+            var backupSource = backup.SourceDisplay;
+            var backupOperatingSystem = backup.OperatingSystemDisplay;
+            var backupLockState = backup.LockStateDisplay;
+            var readinessStatus = backup.RestoreReadinessStatusDisplay;
+            var readinessSummary = backup.RestoreReadinessSummaryDisplay;
+            return $"游戏：{gameName}\n版本：{backupCreatedRelative}（{backupCreatedFull}） · {backupType}\n来源：{backupSource} · {backupOperatingSystem}\n状态：{backupLockState} · 可恢复性：{readinessStatus}\n{readinessSummary}\n\n恢复前会先创建并锁定当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。\n\n继续恢复选中的历史版本？";
+        }
+
         private async Task RestoreAsync()
         {
             var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
@@ -3860,29 +5242,45 @@ namespace GameSaveCenter.Playnite.ViewModels
             var gameId = game.PlayniteId;
             var gameName = game.Name;
             var backupId = backup.BackupId;
-            var backupCreated = backup.CreatedLocal.ToString("yyyy-MM-dd HH:mm:ss");
-            var backupType = backup.BackupTypeDisplay;
-            var backupSource = backup.SourceDisplay;
-            var backupOperatingSystem = backup.OperatingSystemDisplay;
-            var backupLockState = backup.LockStateDisplay;
-            var readinessStatus = backup.RestoreReadinessStatusDisplay;
-            var readinessSummary = backup.RestoreReadinessSummaryDisplay;
-            var confirmation = $"游戏：{gameName}\n版本：{backupCreated} · {backupType}\n来源：{backupSource} · {backupOperatingSystem}\n状态：{backupLockState} · 可恢复性：{readinessStatus}\n{readinessSummary}\n\n恢复前会先创建并锁定当前存档的 PreRestore 快照。请确认游戏、启动器和 MOD 管理器均已关闭。\n\n继续恢复选中的历史版本？";
+            var confirmation = BuildRestoreConfirmation(gameName, backup);
             if (!await plugin.ConfirmAsync(
                     "GameSaveCenter 安全恢复",
                     confirmation,
                     "开始安全恢复",
-                    "取消")) return;
-            var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreExecute, new RestoreRequestDto
+                    "取消",
+                    isDangerous: true)) return;
+            if (!RestoreConfirmationGuard.IsCurrent(
+                    gameId,
+                    backupId,
+                    SelectedGame?.PlayniteId,
+                    SelectedBackup?.BackupId))
             {
-                PlayniteId = gameId,
-                BackupId = backupId,
-                ConfirmedCurrentSnapshot = true,
-                ConfirmedGameClosed = true,
-                UserComment = "Playnite restore wizard"
-            }, TimeSpan.FromMinutes(30));
-            await RefreshCoreAsync(false);
-            NotifyTaskResults(new[] { task });
+                ResetRestoreWorkflow();
+                StatusMessage = "确认期间游戏或版本已变化，未执行旧确认；请重新检查并确认当前版本。";
+                return;
+            }
+            BeginRestoreExecution();
+            TaskStatusDto? task = null;
+            try
+            {
+                task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.RestoreExecute, new RestoreRequestDto
+                {
+                    PlayniteId = gameId,
+                    BackupId = backupId,
+                    ConfirmedCurrentSnapshot = true,
+                    ConfirmedGameClosed = true,
+                    UserComment = "Playnite restore wizard"
+                }, TimeSpan.FromMinutes(30));
+                CompleteRestoreExecution(task);
+                await RefreshCoreAsync(false);
+                NotifyTaskResults(new[] { task });
+            }
+            catch (Exception ex)
+            {
+                if (task == null)
+                    CompleteRestoreExecution(null, ex.Message);
+                throw;
+            }
         }
 
         private async Task UndoRestoreAsync()
@@ -3894,7 +5292,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                     "撤销恢复",
                     $"游戏：{gameName}\n撤销将恢复最近的 PreRestore 快照，并且仍会先保存当前状态。确认继续？",
                     "撤销恢复",
-                    "取消")) return;
+                    "取消",
+                    isDangerous: true)) return;
             var task = await plugin.RequestAsync<TaskStatusDto>(MessageTypes.UndoRestore, new GameQueryDto { PlayniteId = gameId }, TimeSpan.FromMinutes(30));
             await RefreshCoreAsync(false);
             NotifyTaskResults(new[] { task });
@@ -4104,11 +5503,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task CopySelectedTaskErrorAsync()
         {
             if (SelectedTask == null) return;
-            var text = $"{SelectedTask.GameName} · {SelectedTask.TaskType}\r\n"
-                       + $"失败原因：{SelectedTask.ErrorMessage}\r\n"
-                       + $"错误码：{SelectedTask.ErrorCode}\r\n"
-                       + $"技术详情：{SelectedTask.DetailMessage}\r\n"
-                       + $"任务 ID：{SelectedTask.TaskId}";
+            if (SelectedTask.RestoreReport != null)
+            {
+                await CopyTextWithRetryAsync(
+                    SelectedTask.RestoreReport.ToRedactedText(),
+                    "恢复报告已复制",
+                    "已复制不含路径和诊断凭据的恢复结果报告。");
+                return;
+            }
+            var text = TaskFailureClipboardFormatter.Format(SelectedTask);
             await CopyTextWithRetryAsync(text, "任务详情已复制", "任务详情已复制到剪贴板。");
         }
 
@@ -4125,29 +5528,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             // credential redaction used by DataGrid rows. Local paths and normal
             // diagnostic values remain byte-for-byte unchanged.
             text = ClipboardValueSanitizer.Sanitize(text ?? string.Empty);
-            for (var attempt = 0; attempt < 4; attempt++)
+            if (await ClipboardRetry.TrySetTextAsync(text, Clipboard.SetText).ConfigureAwait(true))
             {
-                try
-                {
-                    Clipboard.SetText(text);
-                    StatusMessage = statusMessage;
-                    plugin.ShowInfo(infoMessage);
-                    return;
-                }
-                catch (COMException) when (attempt < 3)
-                {
-                    // CLIPBRD_E_CANT_OPEN / COM exceptions mean another process owns the
-                    // clipboard at this instant. A short asynchronous retry usually succeeds
-                    // without blocking the Playnite dispatcher between attempts.
-                    await Task.Delay(150 + attempt * 100).ConfigureAwait(true);
-                }
-                catch (Exception)
-                {
-                    break;
-                }
+                StatusMessage = statusMessage;
+                plugin.ShowCopySuccess(infoMessage);
+                return;
             }
             StatusMessage = "复制失败：剪贴板暂时被其他程序占用，请稍后重试";
-            plugin.ShowError("无法复制到剪贴板：剪贴板暂时被其他程序占用。请稍后重试。");
+            plugin.ShowCopyError("无法复制到剪贴板：剪贴板暂时被其他程序占用。请稍后重试。");
         }
 
         private async Task CancelSelectedTaskAsync()
@@ -4327,8 +5715,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void NotifyTaskResults(IEnumerable<TaskStatusDto> tasks)
         {
             var completed = tasks?.ToList() ?? new List<TaskStatusDto>();
+            var backupResultTask = completed.FirstOrDefault(x => x.BackupResult != null);
+            if (backupResultTask?.BackupResult != null)
+                ApplyOnUi(() => BackupResult = backupResultTask.BackupResult);
             foreach (var task in completed) plugin.ShowTaskNotification(task);
-            var failed = completed.FirstOrDefault(x => x.State == TaskState.Failed);
+            var failed = completed.FirstOrDefault(x => x.State == TaskState.Failed && !x.HasPartialSuccess);
             if (failed != null) throw new NotifiedTaskException(failed.DetailMessage);
             var cancelled = completed.FirstOrDefault(x => x.State == TaskState.Cancelled);
             if (cancelled != null) throw new NotifiedTaskException(string.IsNullOrWhiteSpace(cancelled.Message) ? "任务已取消" : cancelled.Message);
@@ -4411,6 +5802,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             var restored = !string.IsNullOrWhiteSpace(selectedTaskId)
                 ? Tasks.FirstOrDefault(item => string.Equals(item.TaskId, selectedTaskId, StringComparison.OrdinalIgnoreCase))
                 : null;
+            if (restoringNavigationTaskSelection && !string.IsNullOrWhiteSpace(selectedTaskId) && restored == null)
+            {
+                SelectedTask = null!;
+                StatusMessage = "返回任务时原任务已不在当前结果中，未替换为其他任务。筛选条件已恢复。";
+                return;
+            }
             if (restored == null && !string.IsNullOrWhiteSpace(taskNavigationGameName))
                 restored = Tasks.FirstOrDefault(MatchesTaskNavigationTarget);
             if (restored == null)
@@ -4422,15 +5819,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         private static string? BuildFindingSelectionKey(ValidationFindingDto? finding)
-            => finding == null ? null : BuildFindingSelectionKey(finding.PlayniteId, finding.Code, finding.Title);
+            => finding == null ? null : BuildFindingSelectionKey(finding.PlayniteId, finding.BackupId, finding.Code, finding.Title);
 
-        private static string? BuildFindingSelectionKey(string? playniteId, string? code, string? title)
+        private static string? BuildFindingSelectionKey(string? playniteId, string? backupId, string? code, string? title)
         {
             if (string.IsNullOrWhiteSpace(playniteId)
+                && string.IsNullOrWhiteSpace(backupId)
                 && string.IsNullOrWhiteSpace(code)
                 && string.IsNullOrWhiteSpace(title))
                 return null;
-            return $"{playniteId}\u001f{code}\u001f{title}";
+            return $"{playniteId}\u001f{backupId}\u001f{code}\u001f{title}";
         }
 
         private bool MatchesTaskNavigationTarget(TaskStatusDto task)
@@ -4586,6 +5984,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedGame), StringComparison.Ordinal))
             {
                 OnPropertyChanged(nameof(SelectedGame));
+                NotifyOverviewSelectedGameDisplaysChanged();
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
                 return;
@@ -4595,10 +5994,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             // duplicate IPC requests for the same game.
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
+            RecordRecentAccess();
             if (selected != null && !string.Equals(GameDiagnosticPlayniteId, selected.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 GameDiagnosticPlayniteId = selected.PlayniteId;
             UpdateSelectedGamePolicyBaseline(selected);
             OnPropertyChanged(nameof(SelectedGame));
+            NotifyOverviewSelectedGameDisplaysChanged();
             OnPropertyChanged(nameof(RestoreAvailabilityHint));
             OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
             if (!suppressSelectionLoad)
@@ -4758,6 +6159,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void CancelDetailsLoad()
         {
             Interlocked.Increment(ref detailsLoadGeneration);
+            Interlocked.Increment(ref mediaPageGeneration);
             CancelMediaPageRequest();
             var cancellation = Interlocked.Exchange(ref detailsLoadCancellation, null);
             if (cancellation == null) return;
@@ -4934,8 +6336,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SelectedGameToolVersion = null!;
                 SelectedBackup = null!;
                 SelectedCandidate = null!;
+                BackupPreview = new BackupPreviewDto();
+                BackupResult = new BackupResultDto();
                 SelectedMedia = null!;
                 MediaSummary = new MediaStorageSummaryDto();
+                Interlocked.Increment(ref mediaDuplicateLoadGeneration);
+                MediaDuplicateInspection = new MediaDuplicateInspectionDto();
+                SelectedMediaDuplicateGroup = null;
                 ResetMediaPageState();
             });
         }
@@ -4965,19 +6372,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             foreach (var command in new[]
             {
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
+                PreviewBackupCommand, RetrySelectedGameCloudUploadCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
-                ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand,
-                CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, DeletePolicyTemplateCommand,
-                UpdateBackupMetadataCommand, CompareBackupCommand, PreviewRetentionCommand,
-                AddMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
-                UpdateMediaMetadataCommand,OpenSelectedMediaCommand,RevealSelectedMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand, CancelPolicyDraftCommand,
+                CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
+                UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
+                ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
+                AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
+                UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
+                OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
-                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, CopyTaskErrorCommand, CopyPathCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
+                CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, OpenSelectedTaskSourceCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, OpenStorageGameCommand, OpenStorageBackupCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
