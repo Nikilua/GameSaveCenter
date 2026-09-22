@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R15-07 失败结果复制定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `37dd4a03` 的现有实现，没有新增生产代码。
+- Playnite `R15TaskFailureCopyTests + R06ClipboardBehaviorTests + R22CopyFeedbackBehaviorTests + R12RestoreReportBehaviorTests + TaskCenterViewResponsiveTests 21/21`；覆盖摘要上限、密码脱敏、完整 payload、只读详情选择、三次成功和四次失败负例。
+- Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。R15-07 校正为“已满足，待环境验证”。
+- 未验真实系统剪贴板/Playnite Task Center、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能；只用合成 DTO、fake 剪贴板和隔离 STA/testhost，Demo 原目录不可用。
+
+证据：[R15-07 失败结果复制定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-RECHECK-20260923.md)。下一可执行任务：`R15-08 清理历史范围`。
+
 ## 2026-09-23 Round3 R15-06 耗时与吞吐定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `6f65638e` 的现有实现，没有新增生产代码。

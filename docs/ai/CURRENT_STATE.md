@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R15-07 失败结果复制定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `37dd4a03` 的任务复制、统一脱敏、有限高详情和重试语义。
+- Playnite 失败复制/剪贴板/恢复/任务详情套件 `21/21` 通过；`net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。短摘要、密码负例、完整脱敏 payload、只读可选择详情、第三次成功和四次失败均有行为证据。
+- R15-07 受控条件已满足，账本状态为“已满足，待环境验证”；保留任务选中、详情滚动、命令绑定、取消/错误/恢复保护和 net462。
+- 未验真实 Playnite/package-host、系统剪贴板时序、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能；只用合成 DTO、fake 剪贴板和隔离 STA/testhost，Demo 原目录不可用。Worker 全量既有 `MediaSyncService.cs:570` 失败不变。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-RECHECK-20260923.md`。下一可执行任务：`R15-08 清理历史范围`。
+
 ## 第三轮 R15-06 耗时与吞吐定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `6f65638e` 的单调采样、可靠总量门控和 Task Center 字段。

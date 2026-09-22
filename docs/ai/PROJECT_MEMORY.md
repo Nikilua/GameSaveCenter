@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-07 失败结果复制定向复核（2026-09-23）
+
+- `d9dc4317` 只记录 `37dd4a03` 现有实现的复测，没有新增生产服务/DTO；任务复制命令、`ClipboardTextSanitizer`、失败摘要、有限高只读详情和最多四次重试继续复用。
+- Playnite 失败复制/剪贴板/恢复/任务详情 `21/21` 通过；覆盖 240 字符摘要、凭据脱敏负例、完整 payload、只读选择、第三次重试成功和四次失败负例。状态为“已满足，待环境验证”。
+- `net462` 构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；未验真实系统剪贴板/Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能。
+- 测试使用合成 DTO、fake 剪贴板 setter、隔离 STA/testhost；Demo 原目录不可用，Worker 全量既有 `MediaSyncService.cs:570` 失败不变。下一项 `R15-08 清理历史范围`。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-RECHECK-20260923.md`。
+
 ## 第三轮 R15-06 耗时与吞吐定向复核（2026-09-23）
 
 - `d9dc4317` 只记录 `6f65638e` 现有实现的复测，没有新增生产服务/DTO；`TaskProgress` 单调采样、`TaskStatusDto` 可靠总量字段、SQLite/广播 clone 和 Task Center 卡片继续复用。
