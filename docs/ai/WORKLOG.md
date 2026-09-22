@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Round3 R15-02 取消过程展示定向复核
+
+- 本批没有生产代码变更；当前 `c879cf43` 重新构建后，Worker 取消套件 `16/16`、Playnite 取消/阶段/进度套件 `8/8` 通过。
+- 覆盖 `Requested → Finalizing → Cancelled`、重复取消只发一次、完成后晚到取消、未知进度、成功/取消终态与滚动锚点；XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462` 编译通过。
+- `Task-1600x900` 只作合成终态视觉证据，不把截图写成真实长任务取消或过渡帧通过。Demo 原目录不可用，真实宿主/UIA/IME/DPI/呈现/ETW/性能未验，下一项 R15-03。
+
+证据：[R15-02 取消过程展示定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-02-TARGETED-RECHECK-20260924.md)。
+
 ## 2026-09-24 Round3 R15-01 任务阶段可读定向复核
 
 - 本批没有生产代码变更；当前 `9a63e7e2` 重新构建后，Worker 任务阶段套件 `16/16`、Playnite `R15TaskStageTests 2/2` 通过。
