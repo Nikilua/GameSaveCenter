@@ -43,3 +43,9 @@
 ## 下一步
 
 下一可执行小批量为 R00-08“搜索框 Enter/IME”：先查现有 `OnPickerPreviewKeyDown`、选框焦点回退和搜索无结果状态，再用已有事件/命令契约建立无结果 Enter、IME 候选确认、方向键、Enter、Esc 和焦点返回的行为负例，不凭字符串断言签收真实输入。
+
+## 2026-09-23 当前身份复核
+
+- 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `UiAuditSourceTests` 为 `6/6`；`toolbarprobe` 为 `OK`，正常输入表单仍以 `settings-form` 排除并记录理由，同祖先 `700 DIP` 动作栏命中横向溢出，不可达动作栏命中 `TOOLBAR_UNREACHABLE`。
+- 本次同一身份的完整受控审计实际为 `168` 个运行时快照、`0` Fidelity、`0` 失败路由，但摘要含 `7` 条 TRUE_PARENT_CHILD_SCROLL_CONFLICT HIGH 与 `4` 条 TOOLBAR_VERTICAL_EXPANSION MEDIUM；这些结果已保留，不能沿用历史的 `0 HIGH/0 MEDIUM` 文案。
+- 工具栏正例/负例仍来自实际 WPF 面板布局和分类几何；审计摘要中的页面滚动冲突属于当前审计边界，未在本小批量内改动滚动模型。

@@ -54,3 +54,9 @@
 ## 下一步
 
 下一可执行小批次为 R00-07“审计排除项收窄”：先核对 `AnalyzeToolbars` 的现有语义/几何分类，再为正常长表单和同祖先超宽、不可达工具条分别建立正例与失败负例，避免按 `TrainerToolsSettingsScrollViewer` 整棵子树静默排除。
+
+## 2026-09-23 当前身份复核
+
+- 当前提交 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `MediaInboxGeometryTests` 为 `3/3`，`MediaWindowAnchorContractTests` 为 `10/10`；隔离 Release solution 为 `0 errors/2` 条既有 nullable warning。
+- Light/Dark `mediageometryprobe` 均为 `normal/readable`、`horizontal-scroll/readable`、`alternate-density/readable`、`short-window-page-fallback`；`blocked-parent` 明确为 `pageScroll=False` 并保留 `PRIMARY_VIEWPORT_TOO_SHORT/HIGH` 与 `PRIMARY_VIEWPORT_UNREACHABLE/HIGH` 负例。
+- 当前实现把窄宽度/紧凑高度切换回页级滚动，并把表格预算改为包含现有 footer 行的 `360 DIP`；`shellqa` 在 `1040×700`、`1100×720`、`1366×768` 均记录 footer、历史和次级动作可达。该批没有更换游戏选框、滚动条体系、命令/绑定或 `net462` 契约。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R00/R01 当前证据校正（2026-09-23）
+
+- 当前唯一开发工作区为 `D:\workplace\github\GameSaveCenter`，分支 `codex/ui-finesse-round2`；C 盘旧仓库已不存在，`src.zip` 未触碰。
+- `b5c7a6d4` 修复 Media Inbox 在现有 footer 行加入后仍按旧 `220 DIP` 预算布局的问题：窄宽/紧凑高度保留页级滚动，表格预算改为 `360 DIP`，不改游戏选框、滚动条系统、命令/Binding、安全语义或 `net462`。
+- 当前隔离 Release：XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706` nullable warning；RenderHarness `0/0`。`MediaInboxGeometryTests 3/3`、`MediaWindowAnchorContractTests 10/10`、`UiAuditSourceTests 6/6`、`RepositoryIdentityTests 2/2`、`NumericCellReadabilityTests 2/2`、`UiNegativeFixtureRegistryTests 1/1`、`UiFinesseFoundationTests 9/9`、`LargeLibraryPerformanceTests 5/5`。
+- 当前 `finesseprobe` Light/Dark、`scaleprobe`、`mediageometryprobe`、`toolbarprobe`、`shellqa` 均带完整 `b5c7a6d4` 身份；审计索引 `20/20` 可追溯，但审计 summary 实际为 `168` 快照、`7 HIGH`、`4 MEDIUM`，旧的 0 风险文案已纠正。motion probes 在本机 Dispatcher 采样未稳定通过，作为未验边界保留。
+- freshness 报告已绑定当前完整 SHA，`14/14 fresh`；包身份 `not-provided`，真实 Playnite/UIA、DPI/跨屏、presented frame、ETW 与宿主性能仍未验。下一可执行任务：取得可枚举 Playnite 主窗体；若继续阻塞，推进 R23-05 或独立 Q/R 小批量。
+
 ## 第三轮 R23-04 窗口暴露证据校正（已满足，待宿主环境验证，2026-09-22）
 
 - `c6d65b08`/`2d327d4b`/`eba374c5` 为 `real-host-audit.ps1` 增加结构化 `host-window-exposure.json` 和全新隔离 profile 配置自举：记录 Playnite 进程快照、`MainWindowHandle`、Win32 顶层窗口标题/类名/可见性；保留 UIA 60 秒探测、`summary.json` 等待和 `[PARTIAL]` 语义，不猜测句柄。当前提交 `DiagnosticsEvidenceSourceTests 2/2`。

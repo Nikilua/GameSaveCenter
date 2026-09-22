@@ -36,3 +36,8 @@ R00-04 的代码与受控合成数据验证已完成，账本保持“代码完�
 ## 范围与边界
 
 该验证使用 `GamePickerViewModel`、fake DTO 和合成 2,000 项数据，结果属于隔离测试进程中的 WPF 逻辑/Dispatcher 等待证据，不是 Playnite 真机输入、IME 候选确认、连续打字节奏、物理 DPI、屏幕呈现帧或 ETW 性能证据。R18-01 仍需独立覆盖连续输入、IME、20ms debounce 的过滤次数/分配；真实宿主性能边界不由本批次升级。
+
+## 2026-09-23 当前身份复核
+
+- 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 隔离 testhost 的 `LargeLibraryPerformanceTests` 为 `5/5`；2000 条合成游戏的正式样本仍为 `30` 次，`search_changed_result_sets=30`，原始摘要为 `p50=46ms`、`p95=48ms`、`max=48ms`。
+- 不可能结果的有限超时负例仍通过；每次等待使用运行中的独立 `Stopwatch`。本次只刷新了合成数据和隔离 testhost 证据，未写真实游戏库、未把搜索逻辑样本升级为 IME 或 Playnite 宿主性能结论。
