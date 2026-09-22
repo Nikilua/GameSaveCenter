@@ -381,12 +381,12 @@ namespace GameSaveCenter.Playnite.Views
                 // Keep the inbox page finite in that band too, so the table retains a
                 // readable row viewport and the footer remains reachable through the
                 // page surface instead of compressing the star row below two rows.
-                // The direct themed 1366x768 content host is 528 DIP. At that size the
-                // wrapped action strip would otherwise leave only three readable rows, so
-                // keep 560 DIP as the calibrated lower bound for the page overflow path.
-                // Above it, preserve the finite star-sized table viewport so batch actions
-                // and the primary grid stay in the first screen.
-                var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;
+                // Compact-height pages and panes below the existing 900 DIP width
+                // breakpoint can wrap several footer rows. Keep the page scroll
+                // channel available in those layouts instead of clipping the grid
+                // inside a disabled frame; when the content fits, the viewer still
+                // reports no scrollable extent.
+                var useInboxPageFallbackScroll = compactHeight || width < 900 || staleInboxRequiresPageScroll;
                 // The inner DataGrid owns the normal finite table viewport. Keep the
                 // page-level overflow channel only for the short/stale fallback; a
                 // nested Auto ScrollViewer otherwise measures Standard WPF rows as a
@@ -490,7 +490,14 @@ namespace GameSaveCenter.Playnite.Views
                 // otherwise Standard row virtualization is defeated and every retained
                 // inbox row becomes a live DataGridRow. The short-host fallback keeps the
                 // existing page overflow route while still respecting the readable floor.
-                var finiteInboxHeight = Math.Max(readableGridHeight, height - 220d);
+                // The footer now owns the filter preset, availability, summary,
+                // secondary-action and failure rows. The old 220 DIP budget was
+                // calibrated before those rows moved below the table and lets a
+                // large page request more grid height than its table frame can
+                // visibly expose. Reserve the current non-table chrome budget;
+                // compact/fallback layouts still use the page surface below.
+                const double inboxNonTableHeightBudget = 360d;
+                var finiteInboxHeight = Math.Max(readableGridHeight, height - inboxNonTableHeightBudget);
                 var inboxViewportHeight = useInboxPageFallbackScroll
                     ? Math.Max(readableGridHeight, Math.Max(1d, height))
                     : finiteInboxHeight;
