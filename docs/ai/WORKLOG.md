@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R14-03 部分成功处理定向复核
+
+- 复用 `aef251b1` 的 Worker 逐项 best-effort、`MediaInboxBatchFailures` 和 `RetryFailedMediaInboxBatchCommand`，本批没有生产代码变更；补齐 Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4` 与 `MediaWindowAnchorContractTests 10/10`。
+- 隔离 Release 构建 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；失败列表 `MaxHeight=128`、Recycling，重试只提交上次失败稳定 ID，成功项不重复执行。
+- `validate-source.py`、XAML、diff check 通过；仅使用合成/fake/隔离 SQLite/testhost。真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和 RenderHarness 新失败样本未验。下一项 R14-04。
+
 ## 2026-09-23 Round3 R14-01/R14-02 受控证据账本校正
 
 - 本阶段只校正 `ROUND3_PROGRESS.md` 中 R14-01/02 的旧详细状态，没有新增生产代码；按 `8a9a052e` 的 R13/R14 定向复核补齐当前事实：R14-01 `1/1`、R14-02 `4/4`、Worker `MediaSyncServiceTests 20/20`。

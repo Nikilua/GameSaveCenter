@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-03 部分成功处理定向复核（2026-09-23）
+
+- `aef251b1` 的生产实现已具备逐项 best-effort、失败 ID/原因和仅重试失败项；本批只补实际证据，没有改服务、DTO、命令或 UI。Worker `MediaSyncServiceTests 20/20`，Playnite 相关定向 `14/14`。
+- 失败列表仍是 `MaxHeight=128`、Recycling 有限列表，重试请求只取上次失败稳定 ID；合成/fake/隔离测试证明成功项不重复执行，但不证明真实媒体写入或宿主呈现。
+- 当前真实边界仍包括 Playnite/package-host、UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和新的 RenderHarness 失败样本；下一项复核 R14-04 撤销冲突/恢复保护。
+
 ## 第三轮 R14-01/R14-02 受控证据账本校正（2026-09-23）
 
 - 本阶段没有生产代码变更，只把 R14-01/02 的详细账目与 `8a9a052e` 的 R13/R14 定向复核对齐：R14-01 `1/1`、R14-02 `4/4`、Worker `MediaSyncServiceTests 20/20`，并保留 R14-01/02 已满足但真实宿主待验的状态。

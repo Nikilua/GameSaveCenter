@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R14-03 部分成功处理定向复核（2026-09-23）
+
+- 本批没有生产代码变更；`aef251b1` 的现有逐项 best-effort、失败集合和“仅重试失败项”命令在当前隔离构建中补齐运行证据。Worker `MediaSyncServiceTests 20/20`，Playnite `R14ClassificationSelectionTests 4/4`、`MediaWindowAnchorContractTests 10/10`。
+- 当前 Release 构建 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；失败列表保持 `MaxHeight=128`、Recycling，成功项不会再次执行，当前列表选择不会扩大重试请求。
+- 仅使用合成数据、fake/隔离 SQLite 和隔离 WPF testhost；真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和 RenderHarness 新失败样本仍未验。下一项为 `R14-04`，不把离屏/源契约写成真实宿主呈现。
+
 ## 第三轮 R14-01/R14-02 受控证据账本校正（2026-09-23）
 
 - 本阶段只校正 `ROUND3_PROGRESS.md` 的两个历史详细行，没有新增生产服务、DTO、命令、Binding 或视觉实现；当前 R14 汇总事实以 `8a9a052e` 的定向复核为依据。
