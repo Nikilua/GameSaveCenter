@@ -5,6 +5,7 @@
 - 只处理 `MaintenanceView.xaml` 两个真实入口：云端队列表格状态详情和选中记录详情原来都绑定 `CloudTransferStatusDto.DetailDisplay`，Worker 维护报告继续保留该兼容属性。
 - `db2ba3c0` 复用 `RetryTimingRelativeDisplay` 与 `TimeDisplayFormatter`，新增 `DetailRelativeDisplay`/`DetailFullDisplay`；表格和选中详情正文改为相对时间，Tooltip/Automation HelpText 提供完整本地/UTC；命令、筛选、分页、选中、上传/校验、取消/错误语义未改。
 - 提交后 `R22TimeDisplayBehaviorTests 29/29`；隔离 Release XAML `24/24`，Playnite `net462`/Tests `net472` 构建 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；`validate-source.py`、diff check 通过。当前 D 盘没有 `scripts/validate_wpf_ui.py`，未将 WPF 静态审查或 render-qa 写成通过。
+- 证据/账本提交 `6cb2e53c` 已由 `3801184d` 合并到 `main` 并推送；主分支 Release 复核同样为 `0 error / 2` 条既有 warning。
 - 仅使用合成 DTO 与隔离构建/测试目录，未执行真实上传、远端校验、重试或云端写入；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 - 证据：`evidence/R22-01-CLOUD-DETAIL-TIME-20260922.md`。下一可执行项：继续按实际绑定盘点 `DashboardViewModel`/Contracts 的 stale/缓存时间入口。
 

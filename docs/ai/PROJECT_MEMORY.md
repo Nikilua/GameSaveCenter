@@ -5,6 +5,7 @@
 - `MaintenanceView` 云端表格和选中详情实际绑定 `CloudTransferStatusDto.DetailDisplay`；`db2ba3c0` 保留旧兼容属性供 Worker 报告使用，同时接入 `DetailRelativeDisplay` 与 `DetailFullDisplay`。
 - 表格/详情正文显示相对重试时间，Tooltip/Automation HelpText 提供完整本地时区、偏移和 round-trip UTC；未知计划保持“尚未重试”，不改变上传/校验、分页、筛选、选中或错误/取消语义。
 - `R22TimeDisplayBehaviorTests 29/29`，XAML `24/24`，提交后隔离 Release `0 error / 2` 条既有 CS8602；source/diff 通过。WPF 静态脚本缺失及无 render-qa 声明事实继续保留。
+- 证据/账本提交为 `6cb2e53c`，随后以 `3801184d` 合并并推送 `main`；主分支 Release 构建已复核为 `0 error / 2` 条既有 warning。
 - 下一步继续实际绑定审计；报告、复制列和日志仍使用稳定完整时间语义。
 
 ## 第三轮 R22-01 概览云端队列时间合同（2026-09-22，第四十八子批次）

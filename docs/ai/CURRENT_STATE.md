@@ -4,6 +4,7 @@
 
 - `db2ba3c0` 收口 `MaintenanceView` 云端队列表格和选中记录的真实 `CloudTransferStatusDto.DetailDisplay` 绑定：正文使用相对重试时间，Tooltip/Automation HelpText 使用完整本地时区与 UTC；旧属性保留给稳定报告路径。
 - 提交后 `R22TimeDisplayBehaviorTests 29/29`；隔离 Release XAML `24/24`、`0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；source validation、diff check 通过。
+- 证据/账本提交为 `6cb2e53c`，代码与文档已由 `3801184d` 合并到 `main` 并推送；主分支 Release 同样为 `0 error / 2` 条既有 warning。
 - 当前仓库不存在 `scripts/validate_wpf_ui.py`，本批未新增 WPF 静态审查或 render-qa 通过声明；真实 Playnite/UIA/呈现/ETW/宿主性能仍未验，Demo 原目录不可用。
 - 下一可执行项：继续核对 `DashboardViewModel`/Contracts 其余真实 stale/缓存时间入口；报告/复制列/日志的稳定完整时间语义不由本批代签。
 
