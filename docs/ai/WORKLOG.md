@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 媒体缓存时间显示（第四十五子批次）
+
+- D 盘 `D:\workplace\github\GameSaveCenter` 已切换到 `codex/ui-finesse-round2`；原 C 盘 worktree 已停止使用，删除因进程句柄暂缓。D 盘 `main` 原未提交对话框改动先保存为 `2e071b3e`，未加入 `src.zip`。
+- `48db9ee5` 将媒体收件箱 Offline/Stale 缓存标题复用 `TimeDisplayFormatter.Relative`，`2484f132` 同步 RenderHarness fake/绑定清单，`b1afb004` 补 Stale 相对/完整时间行为回归；新增完整时间 Tooltip/Automation HelpText，不改变数量、命令、选框、滚动、取消/错误或恢复保护。
+- 验证：最终 `MediaWorkspaceStateCacheTests 7/7`；`WorkspaceStateSourceTests 9/9 + 1 skip`；脚本化隔离 Release 构建 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`；XAML `24/24`、source validation、diff check、WPF `0/30/177` 通过。普通未带 `GSC_BUILD_COMMIT` 的入口拒绝身份，按既有门禁重跑。
+- 仅使用合成 UTC、fake RenderHarness、隔离输出；未接触真实存档/媒体/云端/诊断。Demo 原目录不可用；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+- 下一可执行项：继续盘点 `DashboardViewModel` 其余 stale/缓存 `ToLocalTime` 用户入口。
+
 ## 2026-09-22 R22-01 云端过期提示时间合同（第四十四子批次）
 
 - 复核后没有修改 `RecentAccessItem.LastAccessDisplay` 兼容属性：Overview 实际使用 `SummaryDisplay` 的相对时间，Tooltip/Automation 使用完整时间；将真实用户可见残余定位到云端 stale banner 的 `StaleStateDetail`。

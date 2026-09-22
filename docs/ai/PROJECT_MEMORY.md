@@ -1,11 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 第三轮 R22-01 云端过期提示时间合同（2026-09-22，第四十四子批次）
+## 第三轮 R22-01 媒体缓存时间合同（2026-09-22，第四十五子批次）
 
 - 先核对已有 `TimeDisplayFormatter` 和 R22-01 证据：Overview 最近访问的 `LastAccessDisplay` 只是兼容属性，实际绑定已用相对/完整时间；真正用户可见残余是 `FilterConditionSummary.StaleStateDetail` 在云端 stale banner 直接拼本地时间。
 - `2bf95267` 让 stale 成功读取时间同时显示相对 + 完整本地/UTC，允许注入 `nowUtc` 做稳定边界测试；没有改刷新命令、旧数据保留、分页筛选、选框、滚动条或错误/取消语义。无成功时间负例不伪造时间。
-- 验证：`FilterConditionSummaryTests 7/7`、`R22TimeDisplayBehaviorTests 24/24`、合跑 `31/31`；XAML `24/24`；最终 solution Release `0 warning / 0 error`；source/diff 通过。未启动真实宿主，Demo 原目录不可用，main dirty 未碰。
-- 下一可执行任务：继续盘点 `DashboardViewModel` 其余 stale/缓存 `ToLocalTime` 入口，或选择依赖满足的下一项 Q/R；不把本批覆盖扩大到报告/复制列/日志及真实宿主边界。
+- `48db9ee5`、`2484f132`、`b1afb004` 将媒体收件箱 Offline/Stale 缓存标题接到同一格式化器；短文案相对时间，完整本地/UTC 时间经 Tooltip/Automation HelpText 暴露；无成功时间仍不造时间，RenderHarness fake/字段清单同步。
+- 验证：`MediaWorkspaceStateCacheTests 7/7`；`WorkspaceStateSourceTests 9/9 + 1 skip`；XAML `24/24`；脚本化隔离 Release `0 error / 2` 条既有 warning；source/diff/WPF `0/30/177`。未启动真实宿主，Demo 原目录不可用；D 盘已迁移开发，C 盘旧 worktree 删除受句柄阻塞，未强行绕过。
+- 下一可执行任务：继续盘点 `DashboardViewModel` 其余 stale/缓存 `ToLocalTime` 入口；不把本批覆盖扩大到报告/复制列/日志及真实宿主边界。
 
 ## 第三轮 R23-04 共享按钮复合内容修复与真实嵌入证据（2026-09-22，第四十三子批次）
 
