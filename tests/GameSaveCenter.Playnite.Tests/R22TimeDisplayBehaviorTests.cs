@@ -674,6 +674,47 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void ProductionViewsDoNotBindLegacyLocalTimeProjections()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var viewsRoot = Path.Combine(TestRepositoryContext.Root, "src", "GameSaveCenter.Playnite", "Views");
+        var productionViews = string.Join(
+            Environment.NewLine,
+            Directory.GetFiles(viewsRoot, "*.xaml", SearchOption.TopDirectoryOnly).Select(File.ReadAllText));
+
+        var legacyLocalProperties = new[]
+        {
+            "CreatedDisplay",
+            "ComparisonDisplay",
+            "LastSyncDisplay",
+            "PublishedDisplay",
+            "LatestBackupDisplay",
+            "TaskPageLastUpdatedDisplay",
+            "SelectedGameLastBackupDisplay",
+            "LastAccessDisplay",
+            "CheckedLocalDisplay",
+            "GeneratedDisplay",
+            "LastAttemptDisplay",
+            "LastSuccessfulVerificationDisplay",
+            "RetryTimingDisplay"
+        };
+
+        foreach (var property in legacyLocalProperties)
+            Assert.DoesNotContain(property, productionViews, StringComparison.Ordinal);
+
+        Assert.DoesNotContain("Binding=\"{Binding DetailDisplay", productionViews, StringComparison.Ordinal);
+        Assert.DoesNotContain("SelectedCloudTransfer.DetailDisplay", productionViews, StringComparison.Ordinal);
+
+        Assert.Contains("SelectedGameLastBackupRelativeDisplay", productionViews, StringComparison.Ordinal);
+        Assert.Contains("SelectedGameLastBackupFullDisplay", productionViews, StringComparison.Ordinal);
+        Assert.Contains("TaskPageStatusSummaryFullDisplay", productionViews, StringComparison.Ordinal);
+        Assert.Contains("ComparisonRelativeDisplay", productionViews, StringComparison.Ordinal);
+        Assert.Contains("ComparisonFullDisplay", productionViews, StringComparison.Ordinal);
+        Assert.Contains("DetailRelativeDisplay", productionViews, StringComparison.Ordinal);
+        Assert.Contains("DetailFullDisplay", productionViews, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void UnknownTimelineTimeRemainsExplicit()
     {
         var task = new TaskStatusDto
