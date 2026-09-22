@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R16-08 保存冲突处理定向复核（2026-09-23）
+
+- `afe80186` 只记录 `ee6b37c9` 现有保存冲突实现的复测，没有新增生产代码；三方合并只吸收非冲突后台字段，同字段冲突保留草稿、提示字段并阻断保存，取消基线转到最新外部值。
+- `R16SettingsConflictBehaviorTests 3/3`、源码 `1/1`、脱离视图 WPF `1/1`、保存反馈 `2/2`、`PortableSettingsTests 10/10`，合计 `17/17`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成数据、detached settings、fake 服务和隔离目录；未验真实 Playnite 双窗口/共享 settings 竞态、宿主错误呈现、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R17-01 健康结果分层`，先核对健康结果、已解决项和跨来源去重时间证据。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R16-08-SETTINGS-CONFLICT-RECHECK-20260923.md`。
+
 ## 第三轮 R16-07 配置导入预览定向复核（2026-09-23）
 
 - `01e83d8a` 只记录 `451195ad` 现有导入预览实现的复测，没有新增生产代码；portable settings 架构 v1、detached 解析、确认后应用、未知字段忽略、设备身份保留和异常回滚继续复用。
