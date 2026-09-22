@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R17-08 维护报告可读性定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`fc8dffa5` 上复用 `59d4190b` 的维护报告能力，没有新增生产代码；按当前测试实际数量校正旧摘要。
+- Worker `MaintenanceReportServiceTests 3/3`；Playnite `MaintenanceReportSourceTests 4/4`（报告 IPC/复制/导出 `2/2`，同类维护回归 `2/2`）；完整 R17 `15/15`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证报告分组、时间/计数一致、身份透传、无条目语义、1 B 单位以及 URL 参数/Windows 用户路径脱敏负例；只用合成/fake/隔离 SQLite，没有真实配置、存档、媒体、云端或诊断写入。真实导出/剪贴板/宿主呈现仍待验，Demo 原目录不可用。
+
+证据：[R17-08 维护报告可读性定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R17-08-MAINTENANCE-REPORT-RECHECK-20260923.md)。下一可执行任务：`R18-01 连续输入基准`。
+
 ## 2026-09-23 Round3 R17-07 检查项一键定位定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`280c839e` 上复用 `e8d581c6` 的检查项导航，没有新增生产代码。

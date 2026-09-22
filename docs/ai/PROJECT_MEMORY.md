@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R17-08 维护报告可读性定向复核（2026-09-23）
+
+- `fc8dffa5` 只记录 `59d4190b` 现有维护报告能力的复测，没有新增生产代码；报告沿用原采集、IPC、复制/导出链，固定身份/摘要/待处理/已验证/未知分组和同一生成时间，统一脱敏 URL 参数与 Windows 用户路径。
+- Worker `MaintenanceReportServiceTests 3/3`；Playnite `MaintenanceReportSourceTests 4/4`（报告接线 `2/2`，同类维护回归 `2/2`）；完整 R17 `15/15`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成 DTO、fake 服务、隔离 SQLite 和临时目录；未验真实导出目录/剪贴板/保存对话框、宿主呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R18-01 连续输入基准`，先盘点 `GamePickerViewModel`、`DebouncedRefresh`、IME 夹具和大库合成基准，不把代理堆测量写成宿主性能证据。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R17-08-MAINTENANCE-REPORT-RECHECK-20260923.md`。
+
 ## 第三轮 R17-07 检查项一键定位定向复核（2026-09-23）
 
 - `280c839e` 只记录 `e8d581c6` 现有检查项导航的复测，没有新增生产代码；健康诊断按稳定 `PlayniteId + BackupId` 精确路由，历史标题前缀兼容，缺失版本不选邻居且无版本身份不回落到失败任务。
