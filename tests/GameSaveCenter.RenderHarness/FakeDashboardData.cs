@@ -60,6 +60,7 @@ public sealed class FakeDashboardData
     public ICommand ReloadMediaWindowCommand { get; } = new NoopCommand();
     public ICommand LoadMoreMediaInboxCommand { get; } = new NoopCommand();
     public ICommand ReloadMediaInboxCommand { get; } = new NoopCommand();
+    public ICommand ReloadMediaDuplicateGroupsCommand { get; } = new NoopCommand();
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
     public ICommand LoadDetailsCommand { get; } = new NoopCommand();
@@ -371,6 +372,50 @@ public sealed class FakeDashboardData
         });
         SelectedMediaClassificationBatch = MediaClassificationHistoryItems[0];
 
+        MediaDuplicateInspection = new MediaDuplicateInspectionDto
+        {
+            ScannedItemCount = Media.Count,
+            Groups = new System.Collections.Generic.List<MediaDuplicateGroupDto>
+            {
+                new MediaDuplicateGroupDto
+                {
+                    GroupId = "duplicate-certain-1",
+                    Confidence = "Certain",
+                    Reason = "SHA-256 相同",
+                    ItemCount = 4,
+                    Items = new System.Collections.Generic.List<MediaItemDto> { Media[0], Media[1], Media[2], Media[3] }
+                },
+                new MediaDuplicateGroupDto
+                {
+                    GroupId = "duplicate-suspected-1",
+                    Confidence = "Suspected",
+                    Reason = "同类型、文件名和大小相同",
+                    ItemCount = 2,
+                    Items = new System.Collections.Generic.List<MediaItemDto> { Media[2], Media[3] }
+                }
+            }
+        };
+        SelectedMediaDuplicateGroup = MediaDuplicateInspection.Groups[0];
+        MediaSourcePreview = new MediaSourcePreviewDto
+        {
+            RootPath = @"D:\Pictures\Games\{GameName}",
+            IncludePattern = "*.png",
+            State = "Completed",
+            ScannedCount = 4,
+            MatchedCount = 2,
+            ExcludedCount = 2,
+            MaxItems = 120,
+            MaxScannedEntries = 2000,
+            TimeoutMs = 1500,
+            Items = new System.Collections.Generic.List<MediaSourcePreviewItemDto>
+            {
+                new MediaSourcePreviewItemDto { Path = @"D:\Pictures\Games\BG3\camp.png", FileName = "camp.png", Included = true, Reason = "命中 *.png", SizeBytes = 1_200_000 },
+                new MediaSourcePreviewItemDto { Path = @"D:\Pictures\Games\BG3\combat.png", FileName = "combat.png", Included = true, Reason = "命中 *.png", SizeBytes = 2_400_000 },
+                new MediaSourcePreviewItemDto { Path = @"D:\Pictures\Games\BG3\notes.txt", FileName = "notes.txt", Included = false, Reason = "不匹配文件模式 *.png", SizeBytes = 18_000 },
+                new MediaSourcePreviewItemDto { Path = @"D:\Pictures\Games\BG3\capture.mp4", FileName = "capture.mp4", Included = false, Reason = "不匹配文件模式 *.png", SizeBytes = 8_400_000 }
+            }
+        };
+
         MediaSources.Add(new MediaSourceRuleDto
         {
             SourceId = "steam",
@@ -631,6 +676,14 @@ public sealed class FakeDashboardData
 
         Media.Clear();
         UnassignedMedia.Clear();
+        MediaDuplicateInspection.Groups.Clear();
+        MediaDuplicateInspection.ScannedItemCount = 0;
+        SelectedMediaDuplicateGroup = null;
+        MediaSourcePreview.Items.Clear();
+        MediaSourcePreview.State = "NotRun";
+        MediaSourcePreview.ScannedCount = 0;
+        MediaSourcePreview.MatchedCount = 0;
+        MediaSourcePreview.ExcludedCount = 0;
         Findings.Clear();
         Audit.Clear();
         MaintenanceActionItems.Clear();
@@ -665,6 +718,14 @@ public sealed class FakeDashboardData
         CloudTransferItems.Clear();
         MediaClassificationHistoryItems.Clear();
         MediaClassificationPreview.Items.Clear();
+        MediaDuplicateInspection.Groups.Clear();
+        MediaDuplicateInspection.ScannedItemCount = 0;
+        SelectedMediaDuplicateGroup = null;
+        MediaSourcePreview.Items.Clear();
+        MediaSourcePreview.State = "NotRun";
+        MediaSourcePreview.ScannedCount = 0;
+        MediaSourcePreview.MatchedCount = 0;
+        MediaSourcePreview.ExcludedCount = 0;
         LastRetentionPreview.KeepBackupIds.Clear();
         LastRetentionPreview.ProtectedHealthBackupIds.Clear();
         LastRetentionPreview.DeleteCandidateIds.Clear();
@@ -964,6 +1025,14 @@ public sealed class FakeDashboardData
     public string MediaClassificationHistoryStateFilter { get; set; } = string.Empty;
     public bool MediaClassificationHistoryHasMore => false;
     public string MediaClassificationHistoryLoadedSummary => $"已加载全部 {MediaClassificationHistoryItems.Count} 个批次";
+    public MediaDuplicateInspectionDto MediaDuplicateInspection { get; private set; } = new MediaDuplicateInspectionDto();
+    public MediaDuplicateGroupDto? SelectedMediaDuplicateGroup { get; set; }
+    public string MediaDuplicateGroupsSummary => MediaDuplicateInspection.SummaryDisplay;
+    public string MediaDuplicateSelectionSummary => SelectedMediaDuplicateGroup == null
+        ? "选择一个重复组查看有限的组内媒体。"
+        : $"{SelectedMediaDuplicateGroup.SummaryDisplay} · {SelectedMediaDuplicateGroup.ReasonDisplay}";
+    public MediaSourcePreviewDto MediaSourcePreview { get; private set; } = new MediaSourcePreviewDto();
+    public string MediaSourcePreviewSummary => MediaSourcePreview.SummaryDisplay;
     public CloudTransferSummaryDto CloudTransferViewSummary { get; private set; } = new CloudTransferSummaryDto();
     public CloudTransferStatusDto? SelectedCloudTransfer { get; set; }
     public ObservableCollection<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new ObservableCollection<CloudTransferFilterOption>

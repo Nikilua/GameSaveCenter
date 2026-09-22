@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R13/R14 定向复核与视觉夹具校正（2026-09-22）
+
+- `8a9a052e` 仅扩展 `FakeDashboardData` 的合成 `MediaDuplicateInspection`、`MediaSourcePreview` 和清空态复位，让已有生产 XAML 的正向列表有可见样本；没有改业务服务、DTO、命令或 Binding。
+- Core `UiDisplayMappingTests 40/40`、Worker `CloudRetryPersistenceTests + MediaSyncServiceTests 32/32`、Playnite 四个 R13/R14 类 `19/19`；clean-tree RenderHarness 绑定 `8a9a052e`，重复组/来源试运行均有有限视口样本。
+- 全局 RenderHarness 仍被既有 Overview/Settings/Task/Save 门禁阻断，不能写成全局视觉通过；R13/R14 的真实网络、真实媒体写入、Playnite UIA/IME、物理跨屏、presented frame、ETW/宿主性能仍未验。下一步 R23-05 独立几何/性能或可枚举宿主复测。
+
 ## 第三轮 R23-04 UIA 宿主窗口暴露边界复测（2026-09-22）
 
 - 继续使用 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter`、分支 `codex/ui-finesse-round2`；当前 `0157ace6` 无生产代码变更。隔离 runner 的 XAML/Core/Worker/Playnite source/WPF 门禁为 `24/24`、`125/125`、`355/355`、`111`、`101`，Release `0 error / 2` 条既有 warning。
