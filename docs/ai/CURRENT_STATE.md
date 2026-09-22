@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`93b115f4` 上复用 `e54d514e`/`18c5073f` 的 `AsyncThumbnailLoader` 3 路解码、96 项 LRU、取消和 generation 迟到结果保护。
+- `R18ThumbnailBudgetTests 1/1`；`AsyncThumbnailLoaderTests + AsyncThumbnailImageTests 8/8`，合计 `9/9`。120 请求/解码开始/成功均为 `120/120/120`，峰值活动 `3`，缓存封顶 `96/96`，每轮活动归零，托管堆代理峰值 `112,456 bytes`；Release `0 errors/2` 条既有 warning；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 保留当前游戏选框、滚动条、命令绑定、取消/错误/恢复保护、虚拟化和 net462；未验真实宿主快速滚动、显存、presented frame、DPI/UIA/IME、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R18-03-THUMBNAIL-BUDGET-RECHECK-20260923.md`。下一可执行任务：`R18-04 表格容器预算`。
+
 ## 第三轮 R18-02 真实 Dispatcher 基准定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`23d70d65` 上复用 `59468b37` 的 STA WPF 受控窗口两段测量和 `5b28b0c3` 的来源标注。
