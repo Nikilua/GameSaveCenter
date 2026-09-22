@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R17-07 检查项一键定位定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`280c839e` 上复用 `e8d581c6` 的检查项导航，没有新增生产代码。
+- Worker 迁移/健康/Finding `18/18`；Playnite `FindingNavigationResolverTests 11/11`、完整 R17 `15/15`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证稳定游戏/版本来源、旧诊断标题兼容、缺失版本/无版本身份/移除游戏负例，以及维护筛选、选中项和滚动返回语义；只用合成/fake/隔离 SQLite，没有真实配置、存档、媒体、云端或诊断写入。真实宿主和呈现仍待验，Demo 原目录不可用。
+
+证据：[R17-07 检查项一键定位定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R17-07-FINDING-NAVIGATION-RECHECK-20260923.md)。下一可执行任务：`R17-08 维护报告可读性`。
+
 ## 2026-09-23 Round3 R17-06 存储分析导航定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`1077a7ee` 上复用 `51cae6b9` 的存储分析导航，没有新增生产代码；按当前源码把旧证据的 Playnite R17-06 `4/4` 更正为 `3/3`。
