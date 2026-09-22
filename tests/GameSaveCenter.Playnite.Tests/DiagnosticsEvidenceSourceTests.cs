@@ -33,6 +33,11 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("IpcIsolation", hostScript);
         Assert.Contains("try { $_.Refresh() } catch { }", hostScript);
         Assert.Contains("Where-Object { $_.MainWindowHandle -ne 0 }", hostScript);
+        Assert.Contains("GscTopLevelWindowProbe", hostScript);
+        Assert.Contains("host-window-exposure.json", hostScript);
+        Assert.Contains("playnite-process-without-top-level-window", hostScript);
+        Assert.Contains("top-level-window-observed-ui-automation-not-confirmed", hostScript);
+        Assert.Contains("SidebarAutomationFound", hostScript);
         Assert.Contains("host-startup-blocker.json", hostScript);
         Assert.Contains("cef-startup-access-denied-before-main-window", hostScript);
         Assert.Contains("CountsAsVisualPass = $false", hostScript);
