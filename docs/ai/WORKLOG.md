@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Round3 R15-03 任务详情时间线定向复核
+
+- 当前实现已满足受控时间线条件；新增 `b6170ec9` 行为测试，验证乱序 UTC 排序、同刻序号稳定和跨任务过滤，没有生产代码变更。
+- Worker `TaskCoordinatorFailureTests + TaskEventBroadcasterTests 12/12`、Playnite 时间线/批处理/阶段/取消/进度相关套件 `15/15`；XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462`。
+- 截图未打开时间线卡，只作为任务列表/详情边界参考；真实 Worker 重启历史、Playnite/UIA/IME、DPI/跨屏、呈现/ETW/宿主性能未验。Demo 原目录不可用，下一项 R15-04。
+
+证据：[R15-03 任务详情时间线定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TARGETED-RECHECK-20260924.md)。
+
 ## 2026-09-24 Round3 R15-02 取消过程展示定向复核
 
 - 本批没有生产代码变更；当前 `c879cf43` 重新构建后，Worker 取消套件 `16/16`、Playnite 取消/阶段/进度套件 `8/8` 通过。

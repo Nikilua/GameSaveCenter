@@ -72,6 +72,35 @@ public sealed class R15TaskTimelineTests
     }
 
     [Fact]
+    public void TimelineSortsByObservedUtcThenSequenceAndIgnoresOtherTasks()
+    {
+        var created = new DateTime(2026, 9, 20, 3, 0, 0, DateTimeKind.Utc);
+        var task = new TaskStatusDto
+        {
+            TaskId = "stable-order-task",
+            TaskType = "Backup",
+            State = TaskState.Running,
+            CreatedUtc = created,
+            StartedUtc = created.AddSeconds(1)
+        };
+
+        var timeline = TaskTimelineBuilder.Build(task, new[]
+        {
+            Change(20, created.AddSeconds(10), task, TaskState.Running, "晚到阶段", TaskCancellationStates.None),
+            Change(10, created.AddSeconds(2), new TaskStatusDto { TaskId = "other-task" }, TaskState.Running, "不应出现", TaskCancellationStates.None),
+            Change(11, created.AddSeconds(2), task, TaskState.Running, "早到阶段", TaskCancellationStates.None),
+            Change(12, created.AddSeconds(2), task, TaskState.Running, "同刻第二阶段", TaskCancellationStates.None)
+        });
+
+        Assert.Equal(new[] { "早到阶段", "同刻第二阶段", "晚到阶段" }, timeline
+            .Where(entry => entry.Kind == "Stage")
+            .Select(entry => entry.Detail)
+            .ToArray());
+        Assert.DoesNotContain(timeline, entry => entry.Detail.IndexOf("不应出现", StringComparison.Ordinal) >= 0);
+        Assert.All(timeline.Where(entry => entry.Kind == "Stage"), entry => Assert.Contains("UTC", entry.TimeDisplay));
+    }
+
+    [Fact]
     public void TaskCenterUsesBoundedTimelineAndWorkerPublishesEventTimeAndStageFields()
     {
         TestRepositoryContext.AssertAssemblyMatchesSource();
