@@ -8,6 +8,14 @@
 
 证据：[R15-03 任务详情时间线定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TARGETED-RECHECK-20260924.md)。
 
+## 2026-09-24 Round3 R15-04 重复通知归并定向复核
+
+- 复核现有 `TaskNotificationDeduper`、会话累加器和通知等级路由；新增 `6510ccf6` 行为测试，确认错误码/错误消息缺失时未知详情变化仍产生新的通知证据，没有生产代码变更。
+- Playnite 核心通知/会话 `10/10`，相邻套件合计 `31/31`，Core `7/7`；XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462`。
+- 源码契约测试不写成真实 Toast 呈现；真实 Playnite/UIA/IME/DPI/呈现/ETW/宿主性能未验。Demo 原目录不可用，下一项 R15-05。
+
+证据：[R15-04 重复通知归并定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TARGETED-RECHECK-20260924.md)。
+
 ## 2026-09-24 Round3 R15-02 取消过程展示定向复核
 
 - 本批没有生产代码变更；当前 `c879cf43` 重新构建后，Worker 取消套件 `16/16`、Playnite 取消/阶段/进度套件 `8/8` 通过。

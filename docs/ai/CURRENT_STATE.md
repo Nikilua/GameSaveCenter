@@ -8,6 +8,14 @@
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TARGETED-RECHECK-20260924.md`。
 
+## 第三轮 R15-04 重复通知归并定向复核（2026-09-24）
+
+- 当前实现 `a67d371e` 复用 `TaskNotificationDeduper`、`SessionNotificationAccumulator`、通知等级策略和 Task Center 历史；本批 `6510ccf6` 只补未知失败详情变化的行为测试，没有生产代码变更。
+- Playnite 核心通知/会话行为 `10/10`，相邻通知反馈/时间线/UI 批处理/R13 夹具 `31/31`，Core 通知策略/摘要 `7/7`；当前 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。
+- `NotificationFeedbackSourceTests` 仅是源码契约检查，不作真实 Toast 交互证据；真实 Playnite 通知时序、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验。下一项为 `R15-05`。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R15-02 取消过程展示定向复核（2026-09-24）
 
 - 本批没有生产代码变更；当前 `c879cf43` 的 Worker 取消套件 `16/16`、Playnite `R15TaskCancellationTests + R15TaskStageTests + R06TaskProgressBehaviorTests 8/8` 通过，覆盖取消状态迁移、重复请求、取消/完成竞争、未知进度和滚动锚点。
