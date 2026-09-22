@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
+
+- `93b115f4` 只记录 `e54d514e`/`18c5073f` 现有缩略图 loader/control 的复测，没有新增生产代码；120 个合成请求分 10 个窗口完成，最多 3 路解码，96 项缓存封顶，活动每轮归零，取消和迟到失败替换均有行为证据。
+- R18-03 `1/1`；loader/image 回归 `8/8`，合计 `9/9`；本次托管堆代理峰值 `112,456 bytes`，不是 ETW/私有字节/显存证据；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，source/XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成 PNG、隔离目录、后台 loader 和受控 STA WPF 窗口；未验真实宿主快速滚动、显存、presented frame、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R18-04 表格容器预算`，先核对 DataGrid/ListBox 虚拟化和 2k/10k/20k 容器上限。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R18-03-THUMBNAIL-BUDGET-RECHECK-20260923.md`。
+
 ## 第三轮 R18-02 真实 Dispatcher 基准定向复核（2026-09-23）
 
 - `23d70d65` 只记录 `59468b37`/`5b28b0c3` 现有受控窗口基准的复测，没有新增生产代码；VM 完成点使用 `RefreshCount + LastSearchText`，可见反馈使用真实 Window 内的 ListBox 容器可见性和几何，不用 `FilteredCount` 代替。

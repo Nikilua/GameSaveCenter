@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R18-03 缩略图滚动预算定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`93b115f4` 上复用 `e54d514e`/`18c5073f` 的缩略图 loader/control，没有新增生产代码。
+- `R18ThumbnailBudgetTests 1/1`；loader/image 回归 `8/8`，合计 `9/9`；120 请求/解码开始/成功 `120/120/120`、峰值活动 `3`、缓存 `96/96`、活动逐轮归零、取消 `1`、迟到失败最终 `Ready`，托管堆代理峰值 `112,456 bytes`。Release `0 errors/2 warnings` 均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`；source、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证不可见/卸载取消、缓存和并发边界、替换路径迟到结果保护；只用合成 PNG/隔离目录，没有真实媒体、存档、云端或诊断写入。真实宿主快速滚动和呈现仍待验，Demo 原目录不可用。
+
+证据：[R18-03 缩略图滚动预算定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R18-03-THUMBNAIL-BUDGET-RECHECK-20260923.md)。下一可执行任务：`R18-04 表格容器预算`。
+
 ## 2026-09-23 Round3 R18-02 真实 Dispatcher 基准定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`23d70d65` 上复用 `59468b37`/`5b28b0c3` 的真实 Dispatcher 受控窗口基准，没有新增生产代码。
