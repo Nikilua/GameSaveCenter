@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-04 窗口暴露证据校正（2026-09-22）
+
+- 在 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 上，`c6d65b08`/`2d327d4b` 为真实宿主 runner 增加 Win32 顶层窗口探测和结构化 `host-window-exposure.json`；进程快照与窗口枚举只作事实记录，`CountsAsVisualPass=false`，不替代 UIA/Controlled host。
+- 当前提交 Release `-SkipTests` 构建 XAML `24/24`、`0` errors，既有两条 `MediaCenterView.xaml.cs:699 CS8602` 保留；`DiagnosticsEvidenceSourceTests 2/2`。`-SkipInstallTests` 是显式跳过安装器重复全量测试的工具开关，不把未执行的 101 个 WPF 隔离类写成通过。
+- 隔离 Playnite PID `6220` 的可见窗口为 `Startup Error`，句柄 `0x1DC07D6`，顶层窗口 `5`，UIA 侧栏未确认；`cef.log` 的 `platform_channel ... 拒绝访问 (0x5)` 是当前外部阻塞。无 `summary.json`，不宣称 UIA、键盘、读屏、Controlled host、presented frame 或性能。
+- 证据输出 `artifacts/ui-host-audit-r23-04-window-exposure-skiptests-20260922` 被保留并由证据文档引用；隔离 Playnite 已结束。下一步先取得正常可枚举宿主会话，若仍阻塞转 R23-05 几何小批量；禁止把代理/离屏数据写成真实屏幕或物理性能。
+
 ## 第三轮 R22-01 本地镜像时间摘要校正（2026-09-22）
 
 - `b45e31db` 只修复一个真实残余入口：Worker `LocalMirrorService.StatusAsync` 不再把 `LastSyncDisplay` 固定日期嵌入 `Message`；维护页紧凑镜像卡片改绑 `LastSyncRelativeDisplay`，完整时间进入 Tooltip/Automation HelpText。既有同步命令、取消/错误、只复制校验和镜像多余文件保护保持。

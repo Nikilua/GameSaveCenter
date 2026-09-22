@@ -4,6 +4,7 @@ param(
     [string]$PlayniteExtensionsPath = '',
     [string]$PlayniteExecutable = '',
     [string]$TestTempRoot = '',
+    [switch]$SkipTests,
     [switch]$NoStart,
     [switch]$SkipClean
 )
@@ -429,6 +430,9 @@ try {
     $buildArguments = @{ Configuration = $Configuration; OutputRoot = $buildOutputRoot }
     if (-not [string]::IsNullOrWhiteSpace($TestTempRoot)) {
         $buildArguments.TestTempRoot = $TestTempRoot
+    }
+    if ($SkipTests) {
+        $buildArguments.SkipTests = $true
     }
     & (Join-Path $PSScriptRoot 'build.ps1') @buildArguments
     & (Join-Path $PSScriptRoot 'package.ps1') -Configuration $Configuration -SkipBuild -BuildOutputRoot $buildOutputRoot

@@ -4,7 +4,8 @@ param(
     [string]$Output = '',
     [string]$UserDataDir = '',
     [string]$PlayniteExecutable = '',
-    [string]$TestTempRoot = ''
+    [string]$TestTempRoot = '',
+    [switch]$SkipInstallTests
 )
 
 $ErrorActionPreference = 'Stop'
@@ -88,6 +89,10 @@ if ($displayTopology.Count -lt 2) {
     Write-Warning "Q24-03 physical cross-screen replay is blocked: only $($displayTopology.Count) display detected."
 }
 $installArguments = @{ Configuration = $Configuration }
+if ($SkipInstallTests) {
+    $installArguments.SkipTests = $true
+    $runnerMetadata.InstallTests = 'skipped-by-explicit-audit-switch'
+}
 if (-not [string]::IsNullOrWhiteSpace($TestTempRoot)) {
     $installArguments.TestTempRoot = [System.IO.Path]::GetFullPath($TestTempRoot)
     $runnerMetadata.TestTempRoot = $installArguments.TestTempRoot
@@ -285,6 +290,150 @@ function Write-RealHostStartupBlocker {
     Write-Warning "Detected real-host startup blocker: $($Blocker.Classification). Evidence: $path"
 }
 
+if (-not ('GscTopLevelWindowProbe' -as [type])) {
+    Add-Type -TypeDefinition @"
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
+
+public static class GscTopLevelWindowProbe
+{
+    private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern bool EnumWindows(EnumWindowsProc callback, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [DllImport("user32.dll")]
+    private static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetClassName(IntPtr hWnd, StringBuilder className, int count);
+
+    public static object[] Enumerate(uint[] processIds)
+    {
+        var windows = new List<object>();
+        if (processIds == null || processIds.Length == 0)
+        {
+            return windows.ToArray();
+        }
+
+        EnumWindows((hWnd, lParam) =>
+        {
+            uint processId;
+            GetWindowThreadProcessId(hWnd, out processId);
+            if (Array.IndexOf(processIds, processId) < 0)
+            {
+                return true;
+            }
+
+            var title = new StringBuilder(512);
+            var className = new StringBuilder(256);
+            GetWindowText(hWnd, title, title.Capacity);
+            GetClassName(hWnd, className, className.Capacity);
+            windows.Add(new
+            {
+                Handle = hWnd.ToInt64(),
+                HandleHex = "0x" + hWnd.ToInt64().ToString("X"),
+                ProcessId = processId,
+                IsVisible = IsWindowVisible(hWnd),
+                Title = title.ToString(),
+                ClassName = className.ToString()
+            });
+            return true;
+        }, IntPtr.Zero);
+
+        return windows.ToArray();
+    }
+}
+"@
+}
+
+function Get-PlayniteProcessSnapshot {
+    return @(
+        Get-Process -Name 'Playnite.DesktopApp' -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                $process = $_
+                try {
+                    $process.Refresh()
+                    $mainWindowHandle = [Int64]$process.MainWindowHandle
+                    [ordered]@{
+                        ProcessId = $process.Id
+                        ProcessName = $process.ProcessName
+                        HasExited = [bool]$process.HasExited
+                        MainWindowHandle = $mainWindowHandle
+                        MainWindowHandleHex = ('0x{0:X}' -f $mainWindowHandle)
+                        MainWindowTitle = [string]$process.MainWindowTitle
+                    }
+                }
+                catch {
+                    [ordered]@{
+                        ProcessId = $process.Id
+                        ProcessName = $process.ProcessName
+                        HasExited = $true
+                        MainWindowHandle = 0
+                        MainWindowHandleHex = '0x0'
+                        MainWindowTitle = ''
+                        ProbeError = $_.Exception.Message
+                    }
+                }
+            }
+    )
+}
+
+function Write-RealHostWindowExposure {
+    param(
+        [bool]$SidebarAutomationFound
+    )
+
+    $processSnapshots = @(Get-PlayniteProcessSnapshot)
+    $topLevelWindows = @()
+    if ($processSnapshots.Count -gt 0) {
+        $processIds = @($processSnapshots | ForEach-Object { [uint32]$_.ProcessId })
+        $topLevelWindows = @([GscTopLevelWindowProbe]::Enumerate($processIds))
+    }
+
+    $classification = 'playnite-process-not-observed'
+    if ($processSnapshots.Count -gt 0 -and $topLevelWindows.Count -eq 0) {
+        $classification = 'playnite-process-without-top-level-window'
+    }
+    elseif ($topLevelWindows.Count -gt 0 -and -not $SidebarAutomationFound) {
+        $classification = 'top-level-window-observed-ui-automation-not-confirmed'
+    }
+    elseif ($SidebarAutomationFound) {
+        $classification = 'sidebar-automation-found-window-exposure-captured'
+    }
+
+    $evidence = [ordered]@{
+        Scenario = 'real-host-window-exposure'
+        EvidenceSource = 'RealPlaynite'
+        Classification = $classification
+        ObservedUtc = (Get-Date).ToUniversalTime().ToString('o')
+        OutputRoot = $Output
+        UserDataMode = if ([string]::IsNullOrWhiteSpace($UserDataDir)) { 'current-user-data' } else { 'isolated-user-data' }
+        PlayniteExecutable = $PlayniteExecutable
+        StartedProcessId = if ($null -eq $startedPlayniteProcess) { $null } else { $startedPlayniteProcess.Id }
+        UiAutomationProbeSeconds = 60
+        SidebarAutomationFound = $SidebarAutomationFound
+        ProcessSnapshots = $processSnapshots
+        TopLevelWindows = $topLevelWindows
+        MainWindowHandleNonZero = @($processSnapshots | Where-Object { $_.MainWindowHandle -ne 0 }).Count
+        TopLevelWindowCount = $topLevelWindows.Count
+        VisualEvidenceCaptured = $false
+        CountsAsVisualPass = $false
+    }
+    $path = Join-Path $Output 'host-window-exposure.json'
+    $evidence | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $path -Encoding UTF8
+    Write-Warning "Real-host window exposure evidence: $classification. Evidence: $path"
+    return $evidence
+}
+
 function Invoke-GameSaveCenterSidebar {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes
@@ -310,27 +459,29 @@ function Invoke-GameSaveCenterSidebar {
                 if ($invoke) {
                     $invoke.Invoke()
                     Write-Host 'Clicked GameSaveCenter sidebar item' -ForegroundColor Green
-                    return
+                    return $true
                 }
                 $select = $null
                 try { $select = $item.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern) } catch { }
                 if ($select) {
                     $select.Select()
                     Write-Host 'Selected GameSaveCenter sidebar item' -ForegroundColor Green
-                    return
+                    return $true
                 }
                 $item.SetFocus()
                 [System.Windows.Forms.SendKeys]::SendWait('{ENTER}')
                 Write-Host 'Focused GameSaveCenter sidebar item' -ForegroundColor Green
-                return
+                return $true
             }
         }
         Start-Sleep -Seconds 2
     }
     Write-Warning 'Could not locate GameSaveCenter sidebar item via UI Automation.'
+    return $false
 }
 
-Invoke-GameSaveCenterSidebar
+$sidebarAutomationFound = [bool](Invoke-GameSaveCenterSidebar)
+Write-RealHostWindowExposure -SidebarAutomationFound $sidebarAutomationFound | Out-Null
 
 $summary = Join-Path $Output 'summary.json'
 $startupBlocker = Get-RealHostStartupBlocker -HostUserDataDir $UserDataDir -StartedProcess $startedPlayniteProcess
