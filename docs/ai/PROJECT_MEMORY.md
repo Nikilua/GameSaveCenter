@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-05 重复媒体识别定向复核（2026-09-24）
+
+- `136285d5` 的重复识别已满足受控条件：Worker `20/20`、Playnite `4/4`；确定组使用非空 SHA-256，疑似组使用同类型/文件名/大小，查询上限为 `5000/100/24`，页面只读且不提供删除/移动。
+- 既有 RenderHarness `8a9a052e` 的 `1040×700` 重复页样本为 `2` 组/组内 `4` 项、组内 `330 DIP`，人工抽查代表截图；全局报告失败项属于其他页面，不能扩大成全局视觉通过。
+- 只使用合成/fake/隔离 SQLite/testhost/offscreen；真实媒体库、Playnite/UIA/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验。下一项 R14-06，复用现有 picker/稳定 ID。
+
 ## 第三轮 R14-04 撤销边界定向复核（2026-09-23）
 
 - 复用既有撤销服务和条件更新；`MediaSyncServiceTests 20/20` 覆盖正常归档副本恢复，以及应用后人工收藏/备注变化进入 `UndoneWithConflicts` 的负例。没有生产代码变更。

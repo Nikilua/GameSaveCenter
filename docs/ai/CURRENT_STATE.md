@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R14-05 重复媒体识别定向复核（2026-09-24）
+
+- 没有生产代码变更；复用 `136285d5` 的只读重复查询、DTO、IPC 和页面。Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4` 通过；合成行为覆盖确定/疑似分组与不删除/移动门禁。
+- 既有 clean RenderHarness 报告在 `1040×700` 的重复页记录 `2` 组、组内 `4` 项、`330 DIP` 组内列表并可滚动；全报告仍有 Overview/Settings/Task/Save 基线失败，未写成全局 render-qa 通过。
+- 当前 Release 为 XAML `24/24`、`0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；真实 Playnite、UIA/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和超大真实媒体库仍未验。下一项为 `R14-06`，继续保留现有游戏选框系统。
+
 ## 第三轮 R14-04 撤销边界定向复核（2026-09-23）
 
 - 没有生产代码变更；现有 `MediaSyncService` 撤销链在隔离 Release 中 `MediaSyncServiceTests 20/20` 通过。正常撤销夹具验证归档副本恢复和原始文件保留；人工收藏/备注变化负例验证 `UndoneWithConflicts`、后来决定保留且不重建 Inbox 副本。

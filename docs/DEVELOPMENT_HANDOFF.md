@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-24 R14-05 重复媒体识别定向复核：无生产代码变更，复用 `136285d5` 的只读重复查询/DTO/IPC/页面；Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4`，当前 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。合成行为覆盖 SHA-256 确定组、元数据疑似组和删除/移动门禁；既有 RenderHarness `1040×700` 重复页为 `2` 组/组内 `4` 项、`330 DIP`，全报告其他页面仍有基线失败。真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和超大真实媒体库未验。下一项 R14-06，保留现有游戏选框与稳定 ID 系统。
+
 > 2026-09-23 R14-04 撤销边界定向复核：无生产代码变更，Worker `MediaSyncServiceTests 20/20` 通过；正常撤销恢复归档副本并保留原始文件，应用后人工收藏/备注变化进入 `UndoneWithConflicts`，后来决定和应用后归档副本保留，不重建 Inbox 副本。合并主分支 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。仅合成/fake/隔离 SQLite/目录；真实 Playnite/package-host、RenderHarness 新呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R14-05 重复媒体只读分组。
 
 > 2026-09-23 R14-03 部分成功处理定向复核：本批无生产代码变更，复用 `aef251b1` 的逐项 best-effort 和失败重试命令；Worker `MediaSyncServiceTests 20/20`，Playnite `R14ClassificationSelectionTests 4/4`、`MediaWindowAnchorContractTests 10/10`，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。失败列表仍为 `MaxHeight=128`、Recycling，重试只提交上次失败稳定 ID，成功项不重复执行。仅合成/fake/隔离 testhost；真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和 RenderHarness 新失败样本未验。下一项 R14-04 撤销冲突/恢复保护。
