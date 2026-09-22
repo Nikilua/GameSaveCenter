@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R14-08 来源规则试运行定向复核（2026-09-24）
+
+- 本批没有生产代码变更；当前 `6d426f6e` 的 Worker `MediaSyncServiceTests 20/20`、Playnite `R14SourceRulePreviewTests 1/1` 通过，覆盖命中/排除原因、扫描预算截断、只读不入库/不移动和 UI/IPC/取消契约。
+- 当前 Release 为 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；既有 `Media-1600x900-tab3` 显示合成试运行 `4` 项、命中 `2`、排除 `2` 和有限样本列表。
+- 真实来源权限、超大目录、Playnite/package-host 最终呈现、DPI/跨屏、UIA/读屏/IME、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，沿用恢复生产基线。下一项为 `R15-01`。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-08-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-07 媒体详情浏览定向复核（2026-09-24）
 
 - 本批没有生产代码变更；当前 `89f07445` 重新生成同身份隔离产物后，选定 Playnite 套件 `46/46` 通过，覆盖详情导航/当前窗口边界、列表锚点、缩略图尺寸/取消/缺失、视频回退和 generation 保护。

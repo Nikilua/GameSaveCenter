@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-24 R14-08 来源规则试运行定向复核：本批没有生产代码变更；当前 `6d426f6e` 的 Worker `MediaSyncServiceTests 20/20`、Playnite `R14SourceRulePreviewTests 1/1` 通过，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。合成隔离来源样本扫描 `4` 项、命中 `2`、排除 `2`，显示原因/大小/路径，试运行不保存规则、不入库、不移动；既有 `Media-1600x900-tab3` 仅为 offscreen 证据。真实权限拒绝、超大目录、Playnite、DPI/UIA/IME、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R15-01 任务阶段可读。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-08-TARGETED-RECHECK-20260924.md`。
+
 > 2026-09-24 R14-07 媒体详情浏览定向复核：本批没有生产代码变更；当前 `89f07445` 重新生成身份一致的隔离产物后，选定 Playnite 套件 `46/46` 通过，覆盖当前已加载窗口导航、MediaId 列表锚点、缩略图尺寸/取消/缺失、视频回退和 generation 保护。隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过；既有 `Media-1040x700-tab1` 只显示详情入口与媒体列表，未打开详情面板。跨页导航、真实视频编解码、真实 Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R14-08 来源规则试运行。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-07-TARGETED-RECHECK-20260924.md`。
