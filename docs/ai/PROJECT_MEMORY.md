@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-04 撤销边界定向复核（2026-09-23）
+
+- 复用既有撤销服务和条件更新；`MediaSyncServiceTests 20/20` 覆盖正常归档副本恢复，以及应用后人工收藏/备注变化进入 `UndoneWithConflicts` 的负例。没有生产代码变更。
+- 撤销前重新读取媒体，目标/归档路径/状态/元数据变化不执行恢复移动，后来决定和应用后归档副本保留。只使用合成/fake/隔离 SQLite，不触碰真实存档、媒体或云端。
+- Playnite `net462` 仅完成 Release 编译复核，真实宿主、UIA/IME、DPI/跨屏、presented frame、ETW、宿主性能和 RenderHarness 新呈现仍未验；下一项 R14-05 重复媒体只读分组。
+
 ## 第三轮 R14-03 部分成功处理定向复核（2026-09-23）
 
 - `aef251b1` 的生产实现已具备逐项 best-effort、失败 ID/原因和仅重试失败项；本批只补实际证据，没有改服务、DTO、命令或 UI。Worker `MediaSyncServiceTests 20/20`，Playnite 相关定向 `14/14`。

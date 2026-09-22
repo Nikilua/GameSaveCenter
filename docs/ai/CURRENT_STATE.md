@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R14-04 撤销边界定向复核（2026-09-23）
+
+- 没有生产代码变更；现有 `MediaSyncService` 撤销链在隔离 Release 中 `MediaSyncServiceTests 20/20` 通过。正常撤销夹具验证归档副本恢复和原始文件保留；人工收藏/备注变化负例验证 `UndoneWithConflicts`、后来决定保留且不重建 Inbox 副本。
+- 当前合并主分支 Release 构建为 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite 目标 `net462`；source/XAML/diff 门禁通过。
+- 只使用合成/fake/隔离 SQLite/目录；真实 Playnite/package-host、RenderHarness 新呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验。下一项为 `R14-05` 确定/疑似重复只读视图，不触碰真实媒体。
+
 ## 第三轮 R14-03 部分成功处理定向复核（2026-09-23）
 
 - 本批没有生产代码变更；`aef251b1` 的现有逐项 best-effort、失败集合和“仅重试失败项”命令在当前隔离构建中补齐运行证据。Worker `MediaSyncServiceTests 20/20`，Playnite `R14ClassificationSelectionTests 4/4`、`MediaWindowAnchorContractTests 10/10`。

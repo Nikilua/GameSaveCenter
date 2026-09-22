@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R14-04 撤销边界定向复核：无生产代码变更，Worker `MediaSyncServiceTests 20/20` 通过；正常撤销恢复归档副本并保留原始文件，应用后人工收藏/备注变化进入 `UndoneWithConflicts`，后来决定和应用后归档副本保留，不重建 Inbox 副本。合并主分支 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。仅合成/fake/隔离 SQLite/目录；真实 Playnite/package-host、RenderHarness 新呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R14-05 重复媒体只读分组。
+
 > 2026-09-23 R14-03 部分成功处理定向复核：本批无生产代码变更，复用 `aef251b1` 的逐项 best-effort 和失败重试命令；Worker `MediaSyncServiceTests 20/20`，Playnite `R14ClassificationSelectionTests 4/4`、`MediaWindowAnchorContractTests 10/10`，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。失败列表仍为 `MaxHeight=128`、Recycling，重试只提交上次失败稳定 ID，成功项不重复执行。仅合成/fake/隔离 testhost；真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和 RenderHarness 新失败样本未验。下一项 R14-04 撤销冲突/恢复保护。
 
 > 2026-09-23 R14-01/R14-02 受控证据账本校正：本阶段只更新 `ROUND3_PROGRESS.md` 两个历史详细行，没有生产代码变更；以 `8a9a052e` 的 R13/R14 定向复核为当前事实，R14-01 `R14ClassificationEvidenceTests 1/1`、R14-02 `R14ClassificationSelectionTests 4/4`、Worker `MediaSyncServiceTests 20/20`，当前隔离 Release XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。受控证据仅来自合成/fake/隔离 testhost/offscreen logical DIP，不扩大为真实 Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能通过；下一项为 R14-03，真实媒体/云端仍未触碰。
