@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R15-06 耗时与吞吐定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `6f65638e` 的现有实现，没有新增生产代码。
+- Worker `TaskProgressMetricsTests + TaskQueryPersistenceTests + TaskEventBroadcasterTests + TaskCoordinatorFailureTests 22/22`；Playnite `R15TaskProgressMetricsTests + R06TaskProgressBehaviorTests + R22TaskDurationBehaviorTests 5/5`。实际覆盖两个推进样本、未知总量、等待确认、10 秒停顿、普通阶段清空、快照采样变化和单调耗时。
+- Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。R15-06 校正为“已满足，待环境验证”。
+- 未验真实 Playnite Task Center/最终呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能；Worker 全量既有 `MediaSyncService.cs:570` 失败不变；只用合成/fake/隔离 SQLite/测试宿主，Demo 原目录不可用。
+
+证据：[R15-06 耗时与吞吐定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-RECHECK-20260923.md)。下一可执行任务：`R15-07 失败结果复制`。
+
 ## 2026-09-23 Round3 R15-05 任务来源定位定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`ba4d624b` 上复用 `0d1ff346` 的现有实现，没有新增生产代码。

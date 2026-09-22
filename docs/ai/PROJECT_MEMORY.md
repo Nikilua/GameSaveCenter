@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-06 耗时与吞吐定向复核（2026-09-23）
+
+- `d9dc4317` 只记录 `6f65638e` 现有实现的复测，没有新增生产服务/DTO；`TaskProgress` 单调采样、`TaskStatusDto` 可靠总量字段、SQLite/广播 clone 和 Task Center 卡片继续复用。
+- Worker 采样/查询/广播/失败路径 `22/22`，Playnite 进度/快照/耗时 `5/5`；未知总量、等待确认、10 秒停顿、普通阶段清空、两个推进样本门槛和快照可见性均有行为证据。状态为“已满足，待环境验证”。
+- Playnite `net462` 构建无错误，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；`validate-source.py`、XAML `24/24`、diff check 通过。Worker 全量既有 `MediaSyncService.cs:570` 失败保持原样，不扩大定向证据。
+- 未验真实 Playnite/package-host 的 Task Center 呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能；只用合成/fake/隔离 SQLite/测试宿主，Demo 原目录不可用。下一项 `R15-07 失败结果复制`。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-RECHECK-20260923.md`。
+
 ## 第三轮 R15-05 任务来源定位定向复核（2026-09-23）
 
 - `ba4d624b` 只记录当前实现的行为复测，没有新增生产代码；`0d1ff346` 的 `TaskSourceReferenceDto`、SQLite 查询/Worker 广播来源链和 Task Center 精确导航继续复用。
