@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R18-02 真实 Dispatcher 基准定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`23d70d65` 上复用 `59468b37`/`5b28b0c3` 的真实 Dispatcher 受控窗口基准，没有新增生产代码。
+- `R18DispatcherVisibilityBenchmarkTests 1/1`；20 次 VM p95/最大 `38.259/64.967 ms`，VM→可见容器增量 `29.245/37.615 ms`，可见计数 `20/20=1`，容器 `476×19.24 DIP`；当前静态门禁 source、XAML `24/24`、diff、WPF `0/28/162` 通过，Release `0 errors/2 warnings` 均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。
+- 已验证 Dispatcher 上下文、Window 可见状态、列表容器和实际布局尺寸两段时间戳；没有真实配置、存档、媒体、云端或诊断写入。DWM/presented frame、真实 Playnite/IME/物理 DPI 和宿主性能仍待验，Demo 原目录不可用。
+
+证据：[R18-02 真实 Dispatcher 基准定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R18-02-DISPATCHER-VISIBILITY-RECHECK-20260923.md)。下一可执行任务：`R18-03 缩略图滚动预算`。
+
 ## 2026-09-23 Round3 R18-01 连续输入基准定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`0173364e` 上复用 `10bc5789` 的 GamePicker 连续输入基准，没有新增生产代码。

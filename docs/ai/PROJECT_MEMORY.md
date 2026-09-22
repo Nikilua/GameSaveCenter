@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R18-02 真实 Dispatcher 基准定向复核（2026-09-23）
+
+- `23d70d65` 只记录 `59468b37`/`5b28b0c3` 现有受控窗口基准的复测，没有新增生产代码；VM 完成点使用 `RefreshCount + LastSearchText`，可见反馈使用真实 Window 内的 ListBox 容器可见性和几何，不用 `FilteredCount` 代替。
+- `R18DispatcherVisibilityBenchmarkTests 1/1`；20 次 VM p95/最大 `38.259/64.967 ms`，VM→可见增量 `29.245/37.615 ms`，可见计数全为 1，容器 `476×19.24 DIP`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，source/XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 受控 STA Window/合成 DTO/testhost 不是 presented frame、DWM/60fps、Playnite 宿主、物理 DPI/跨屏、真实 IME、ETW 或宿主性能证据；Demo 原目录不可用。
+- 下一项 `R18-03 缩略图滚动预算`，先检查活动请求、取消、缓存上限和迟到结果保护。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R18-02-DISPATCHER-VISIBILITY-RECHECK-20260923.md`。
+
 ## 第三轮 R18-01 连续输入基准定向复核（2026-09-23）
 
 - `0173364e` 只记录 `10bc5789` 现有连续输入基准的复测，没有新增生产代码；2,000/10,000 项各 30 次查询、粘贴、删除和已提交中文查询通过，最终防抖刷新各 1 次。
