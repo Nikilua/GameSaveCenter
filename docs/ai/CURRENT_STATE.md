@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R22-01 残余时间入口复核（2026-09-23）
+
+- 本批没有生产代码变更；在 D 盘 `codex/ui-finesse-round2` 的 `df6bee9d` 上逐项扫描生产 `Views`/`ViewModels`/`Contracts`，未发现生产 XAML 绑定到旧本地直显时间投影。`LastAccessDisplay`、`TaskPageLastUpdatedDisplay`、`LastAttemptDisplay` 和 Contracts 旧 `ToLocalTime` 属性保留为兼容、报告/复制/日志或内部入口，实际页面绑定使用相对/完整/原始 UTC 合同。
+- `R22TimeDisplayBehaviorTests 30/30`、`R10RecentAccessBehaviorTests 2/2`；隔离 Release XAML `24/24`、Playnite `net462`、`0 error`，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。本批没有覆盖 main 的旧实现。
+- 这只收口本地绑定与 fake/隔离行为证据，不扩大为真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、presented frame、ETW 或宿主性能通过；Demo 原目录不可用，WPF 静态脚本仍不存在。证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESIDUAL-ENTRY-RECHECK-20260923.md`。
+- 下一可执行任务为 R23-04 正常可枚举 Playnite 主窗体/UIA 会话；若 CEF/窗口暴露仍阻塞，转依赖已满足的独立 Q/R 小批量。
+
 ## 第三轮 R21-05 禁用与隐藏区别当前复测（2026-09-24）
 
 - R21-05 实现已存在于 `380234e2`；本批没有重建生产代码。D 盘 `codex/ui-finesse-round2` 以当前 `1f69b803` 重新生成隔离 Release 产物，实际 `R21DisabledHiddenBehaviorTests 2/2` 通过。
