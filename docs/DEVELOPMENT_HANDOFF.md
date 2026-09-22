@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-22 当前开发批次：D 盘唯一工作区 `D:\workplace\github\GameSaveCenter`，分支 `codex/ui-finesse-round2`；`74d3dcdc` 已完成概览云端队列相对/完整时间 Tooltip 与 HelpText，证据、账本和长期记忆正在随本阶段同步，main 合并待本阶段收口。提交后 R22 时间定向 `28/28`、XAML `24/24`，Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。下一可执行项仍是继续盘点 `DashboardViewModel`/Contracts stale/缓存时间入口；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能未验。
+
 > 2026-09-22 当前接续点：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一开发工作区，当前开发分支为 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 Git prune。R22-01 Trainer 版本发布时间批次代码提交为 `c0885757`，证据/交接文档为 `9efc54eb`，已由 `811b4046` 合并到 `main` 并推送。主分支 Release 构建 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；本批仍未验证真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能。下一可执行项：继续按实际绑定盘点 `DashboardViewModel`/Contracts 的 stale/缓存时间入口，并保留报告/复制列/日志的稳定完整时间语义。
 
 > 2026-09-21 接续点校正：用户指出最近交接应以 R12-04 为准；账本核对显示 R12-04（`e4e42f40`）以及 R12-05 至 R12-08 均已有独立事实记录，本轮不回滚、不重做。当前分支随后按真实账本收口 R21-04：新增终态播报不抢焦点、任务页加载结束状态可读的实际 WPF 行为证据 `2/2`，相邻定向 `22/22`、Core `5/5`、Worker `5/5`，隔离 Release `0/0`；真实 Playnite/package-host、UIA/读屏、OS 输入、IME、DPI/跨屏、呈现、ETW、宿主性能和 Demo 原目录未验。相邻旧套件的 `TaskCenterViewResponsiveTests.FailedTaskDetailsPutUserReasonBeforeCollapsedTechnicalDetails` 仍为既有单条失败，未改写。证据见 `design/reviews/ui-finesse-round3-20260921/evidence/R21-04-ASYNC-COMPLETION-ANNOUNCEMENT-20260921.md`。下一可执行任务：R21-05 禁用与隐藏区别。

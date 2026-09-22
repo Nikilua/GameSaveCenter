@@ -360,6 +360,31 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void OverviewCloudSummaryUsesRelativePrimaryAndFullTooltip()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+        var scheduledUtc = DateTime.UtcNow.AddMinutes(10);
+        var scheduled = new CloudTransferSummaryDto
+        {
+            TotalCount = 1,
+            RetryScheduledCount = 1,
+            NextAttemptUtc = scheduledUtc
+        };
+        var unknown = new CloudTransferSummaryDto { TotalCount = 1, PendingCount = 1 };
+
+        Assert.Contains("下次", scheduled.SummaryRelativeDisplay, StringComparison.Ordinal);
+        Assert.Contains("后", scheduled.SummaryRelativeDisplay, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.Full(scheduledUtc), scheduled.SummaryFullDisplay, StringComparison.Ordinal);
+        Assert.Equal("待上传 · 1 项", unknown.SummaryRelativeDisplay);
+        Assert.Equal(unknown.SummaryRelativeDisplay, unknown.SummaryFullDisplay);
+        Assert.Contains("Snapshot.CloudTransfers.SummaryFullDisplay", overview, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding Snapshot.CloudTransfers.SummaryFullDisplay, Mode=OneWay}\"", overview, StringComparison.Ordinal);
+        Assert.DoesNotContain("Snapshot.CloudTransfers.SummaryDisplay, Mode=OneWay", overview, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void StorageRankKeepsLegacyDateAndExposesRelativeFullAndRawEvidence()
     {
         var timestamp = DateTime.UtcNow.AddMinutes(-2);

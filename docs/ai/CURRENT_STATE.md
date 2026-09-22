@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 概览云端队列时间合同（部分满足，待继续，2026-09-22）
+
+- `74d3dcdc` 收口 `OverviewView` 两个真实云端队列摘要入口：正文继续显示状态/数量，相关下次尝试摘要提供相对时间；上下文提示和云端队列卡片 Tooltip/Automation HelpText 改用完整本地时区与 round-trip UTC。旧 `SummaryDisplay` 保留兼容，命令、筛选、分页、选中和错误/取消语义未改。
+- 提交后 `R22TimeDisplayBehaviorTests 28/28`；隔离 Release XAML `24/24`、`0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；source validation、diff check 通过。
+- 当前仓库不存在 `scripts/validate_wpf_ui.py`，本批未新增 WPF 静态审查通过声明；真实 Playnite/UIA/呈现/ETW/宿主性能仍未验，Demo 原目录不可用。
+- 下一可执行项：继续核对 `DashboardViewModel`/Contracts 其余真实 stale/缓存时间入口；报告/复制列/日志的稳定完整时间语义不由本批代签。
+
 ## 当前第三轮 R22-01 Trainer 版本发布时间合同（部分满足，待继续，2026-09-22）
 
 - `c0885757` 收口 `TrainerReleaseDto.PublishedUtc` 的真实列表/详情绑定：正文使用相对时间，Tooltip/Automation HelpText 使用完整本地时区与 UTC 原值；缺失发布时间仍为“日期未知”，旧 `PublishedDisplay` 仅保留兼容。
