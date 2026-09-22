@@ -2083,6 +2083,7 @@ git branch --show-current
 - 交付前仍需保持真实宿主边界说明：本轮未重新取得 Playnite 重启后的逐像素折叠截图；不得把 RenderHarness 结果扩写为真实 Playnite 的 Light/Dark/Follow、DPI、键盘焦点或 Tooltip 已验收。
 # 当前交接（2026-09-22）
 
+- 最新开发提交 `c0885757` 已完成 Trainer 发布时间小批量；行为 `27/27`、Release `0/0`，文档提交和 main 合并仍需在本阶段完成。
 - 唯一开发工作区为 `D:\workplace\github\GameSaveCenter`，当前分支 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 `git worktree prune`。
 - 包含本次 `814d3e7a`/`412a7628` 的 `main` 合并提交 `8b3ebf33` 已在 D 盘以 Release 构建成功并推送；开发继续在 `codex/ui-finesse-round2`。
 - 当前未验边界：真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/物理跨屏、最终呈现帧、ETW、宿主性能；Demo 原目录不可用。当前仓库不存在 `scripts/validate_wpf_ui.py`，不得把 WPF 静态审查写成已复跑。
