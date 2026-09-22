@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R16-04 恢复默认粒度定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `666c60bb`；没有新增生产代码，复用 `2b194461` 的安全默认字段目录、单字段/分类/全部入口和 Playnite 草稿取消保护。行为 `2/2`、源码契约 `1/1`，当前提交隔离 Release solution `0 errors/2 条既有 warning`，均为 `MediaCenterView.xaml.cs:706` 的 `CS8602`；`validate-source.py`、XAML `24/24`、diff check 通过。直接复用旧输出曾触发 `1f968819`/`666c60bb` 身份保护，当前 checkout 重建后通过。未验真实 Playnite/package-host 点击与最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能；Demo 原目录不可用。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-RECHECK-20260923.md`。下一可执行任务：`R16-05 路径编辑一致`，先核对路径浏览/校验/打开/复制和权限/网络/不存在负例。
+
 > 2026-09-23 R16-03 模板应用范围定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `1f968819`；没有新增生产代码，复用 `52fbf5de` 的批量模板预览、稳定 ID 目标集合、逐项 Worker 执行和失败重试。Core 批量预览 `3/3`、Worker 策略持久化 `2/2`、Playnite 源契约 `1/1`，Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。显式勾选/排除、100 个上限、空选择、逐项结果、取消和稳定 ID 均有证据，R16-03 校正为“已满足，待环境验证”。真实 Playnite 批量点击/筛选/UIA/焦点、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用。下一可执行项为 R16-04 恢复默认粒度。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R16-03-POLICY-TEMPLATE-BATCH-RECHECK-20260923.md`。

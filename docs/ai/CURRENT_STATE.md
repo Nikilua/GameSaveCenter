@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R16-04 恢复默认粒度定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`666c60bb` 上复用 `2b194461` 的安全默认目录、单字段/分类/全部入口和草稿取消语义。
+- Playnite `R16SettingsDefaultsBehaviorTests 2/2`、`R16SettingsDefaultsSourceTests 1/1` 通过；当前提交隔离 Release solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。`validate-source.py`、XAML `24/24`、diff check 通过。
+- 直接复用旧程序集曾被身份保护以 `1f968819`/`666c60bb` 不一致拒绝，改用当前 checkout 隔离输出重建后通过；该边界已记录，未伪装成实现失败或成功。
+- 保留游戏选框、滚动条、命令绑定、保存/取消、错误/取消/恢复保护和 net462；未验真实 Playnite/package-host 点击与最终呈现、DPI/UIA/IME、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-RECHECK-20260923.md`。下一可执行任务：`R16-05 路径编辑一致`。
+
 ## 第三轮 R16-03 模板应用范围定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`1f968819` 上复用 `52fbf5de` 的批量模板预览、稳定 ID 目标集合、逐项 Worker 执行和失败重试。
