@@ -1,5 +1,7 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-22 当前宿主复测：D 盘 `D:\workplace\github\GameSaveCenter`、分支 `codex/ui-finesse-round2`、身份 `f457a7a0`；真实 Playnite 隔离 profile 已加载当前 GameSaveCenter 并生成 `EmbeddedPlaynite` 证据，XAML/Core/Worker/Playnite source/WPF 门禁分别为 `24/24`、`125/125`、`355/355`、`111`、`101`，Release `0 error / 2` 条既有 `CS8602` warning。UIA 未找到侧栏项，约 90 秒未生成 `summary.json`，所以不宣称 UIA/键盘/Controlled host；单屏、presented frame、ETW/宿主性能、Demo 原目录和 WPF 静态脚本仍未验。隔离 profile/临时目录已清理，当前审计目录保留作证据。下一可执行项：继续 R23-04 runner UIA/Controlled 收口，若环境仍阻塞则进入 R23-05 几何小批量。
+
 > 2026-09-22 当前收口：R22-01 时间显示统一已由 `ed03c49e` 补齐生产 `Views/*.xaml` 旧投影负向/相对完整入口正向审计，`R22TimeDisplayBehaviorTests 30/30`、`R22TaskDurationBehaviorTests 2/2`；主分支合并为 `002c2c63`，完整 Release `0 error / 2` 条既有 warning。R22-01 账本现为“已满足，待环境验证”。D 盘 `D:\workplace\github\GameSaveCenter` 是唯一工作区，C 盘旧 worktree 已删除。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW/宿主性能、Demo 原目录和缺失的 WPF 静态脚本仍未验。下一可执行项：R23-04 UIA/Controlled host 收口；报告/复制列/日志继续保留稳定完整时间语义。
 
 > 2026-09-22 当前开发批次：`db2ba3c0` 收口 Maintenance 云端队列表格/选中详情的相对重试时间与完整 Tooltip/HelpText，保留 Worker 报告兼容时间属性。证据/账本提交 `6cb2e53c` 已由 `3801184d` 合并到 `main` 并推送；提交后 R22 时间定向 `29/29`、XAML `24/24`，主分支 Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能未验。下一可执行项：继续盘点 `DashboardViewModel`/Contracts stale/缓存时间入口。

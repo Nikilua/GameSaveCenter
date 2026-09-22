@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R23-04 UIA/Controlled host 复测（已满足，待宿主环境验证，2026-09-22）
+
+- 当前 `f457a7a0` 已在真实 `D:\software\Playnite\Playnite.DesktopApp.exe` 的隔离用户数据目录中加载 GameSaveCenter `0.6.73`，并生成 `EmbeddedPlaynite` 当前 Dashboard 截图、视觉树、资源快照、样式指纹和滚动证据；metadata 为 Playnite 已托管、DPI `1.5`、Dashboard `1313.33 × 898 DIP`。
+- 本次门禁为 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`，Release `0 error`，仅既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning。没有生产代码变更。
+- UIA 未找到 GameSaveCenter 侧栏项，等待约 90 秒后没有 `summary.json`；因此没有 UIA/键盘/读屏或专用 Controlled host 证据，不把嵌入式截图写成完整宿主验收。单屏的 Q24-03 仍为 `blocked-single-display`，ETW/真实 presented frame/宿主性能继续未验。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-CONTROLLED-HOST-RECHECK-20260922.md`。隔离 profile 和测试临时目录已清理；当前审计输出因被证据引用保留。下一可执行项：先继续寻找可稳定生成 UIA/Controlled summary 的隔离宿主路径；若仍受阻，推进 R23-05 独立几何小批量。
+
 ## 第三轮 R22-01 时间显示统一审计收口（已满足，待环境验证，2026-09-22）
 
 - `ed03c49e` 补充生产 `Views/*.xaml` 时间入口审计：旧本地投影和云端 `DetailDisplay` 绑定均未重新出现，相对/完整时间入口仍在真实页面绑定中；报告、复制列、日志稳定完整时间语义按设计保留。

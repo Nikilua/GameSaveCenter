@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 Round3 R23-04 UIA/Controlled host 复测
+
+- 按 R23-04 真实账本和 Demo-first/WPF 质量门禁复测，没有新增生产代码；使用 `f457a7a0` 在 D 盘隔离 workspace、合成空库和真实 `D:\software\Playnite\Playnite.DesktopApp.exe` 启动当前包。
+- XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`；Release `0 error`，仅既有 `MediaCenterView.xaml.cs:699` 两条 CS8602。Playnite 日志确认插件加载，metadata 生成当前 `EmbeddedPlaynite` Dashboard/视觉树/资源快照/滚动证据。
+- UIA 未找到 GameSaveCenter 侧栏项，等待约 90 秒没有 `summary.json`，脚本按 partial 退出；因此账本不改成完整 UIA/键盘/Controlled 通过。单屏 `blocked-single-display`、专用审计窗口、Fusion、Playnite Desktop 版本、presented frame、ETW/宿主性能仍未验。
+- 关闭 Playnite 后清理本批隔离 profile、测试临时目录和未被引用的构建缓存；保留 `artifacts/ui-host-audit-r23-04-uia-20260922` 作为当前证据。没有触碰真实存档、媒体、云端或外发诊断；Demo 原目录不可用，`scripts/validate_wpf_ui.py` 不存在。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-CONTROLLED-HOST-RECHECK-20260922.md`。下一可执行项：先找可稳定生成 UIA/Controlled summary 的隔离宿主路径；若继续受阻，推进 R23-05 几何小批量。
+
 ## 2026-09-22 R22-01 时间显示统一审计收口（第五十子批次）
 
 - 继续按实际绑定盘点 `DashboardViewModel`/Contracts：生产 `Views/*.xaml` 未再引用已收口的旧本地投影或云端 `DetailDisplay`，报告、复制列、日志的稳定完整时间入口按设计保留，没有误改为相对时间。
