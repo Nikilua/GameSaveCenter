@@ -55,6 +55,16 @@ public sealed class TaskNotificationDeduperTests
     }
 
     [Fact]
+    public void UnknownFailureDetailRemainsVisibleWhenCodeAndMessageAreMissing()
+    {
+        var deduper = new TaskNotificationDeduper();
+
+        Assert.True(deduper.TryClaim(UnknownFailure("task-unknown", "第一次未知失败")));
+        Assert.False(deduper.TryClaim(UnknownFailure("task-unknown", "第一次未知失败")));
+        Assert.True(deduper.TryClaim(UnknownFailure("task-unknown", "第二次未知失败")));
+    }
+
+    [Fact]
     public void SuccessAndCancellationAreEachClaimedOnceWithoutUsingProgressText()
     {
         var deduper = new TaskNotificationDeduper();
@@ -70,5 +80,12 @@ public sealed class TaskNotificationDeduperTests
         State = TaskState.Failed,
         ErrorCode = code,
         ErrorMessage = message
+    };
+
+    private static TaskStatusDto UnknownFailure(string taskId, string detail) => new()
+    {
+        TaskId = taskId,
+        State = TaskState.Failed,
+        Message = detail
     };
 }
