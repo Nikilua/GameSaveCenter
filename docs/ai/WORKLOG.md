@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R22-01 残余时间入口复核
+
+- 当前工作区为 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`，身份 `df6bee9d`；本批没有生产代码变更。扫描生产视图绑定后确认旧本地直显属性只在兼容、报告/复制/日志或内部入口保留。
+- `R22TimeDisplayBehaviorTests 30/30`、`R10RecentAccessBehaviorTests 2/2`；隔离 Release XAML `24/24`、Playnite `net462`、`0 error`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。
+- 证据：[R22-01 残余时间入口复核](../design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESIDUAL-ENTRY-RECHECK-20260923.md)。未验真实 Playnite/UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录；下一项为 R23-04 正常可枚举宿主会话，受阻则推进独立 Q/R。
+
 ## 2026-09-24 Round3 R21-05 禁用与隐藏区别当前复测
 
 - 当前工作在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`，实现已由 `380234e2` 提供；本批没有生产代码变更，只复核当前 `1f69b803`。

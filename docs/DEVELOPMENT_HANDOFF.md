@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R22-01 残余时间入口复核：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一有效工作区，当前开发分支 `codex/ui-finesse-round2`，复核身份 `df6bee9d`；本批没有生产代码变更。生产 `Views/*.xaml` 未发现旧本地直显时间绑定，兼容/报告/复制/日志/内部入口保留；`R22TimeDisplayBehaviorTests 30/30`、`R10RecentAccessBehaviorTests 2/2`，隔离 Release XAML `24/24`、Playnite `net462`、`0 error`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、presented frame、ETW、宿主性能和 Demo 原目录仍未验。下一可执行项为 R23-04 正常可枚举宿主会话；若 CEF/窗口暴露继续阻塞，转依赖已满足的独立 Q/R 小批量。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-RESIDUAL-ENTRY-RECHECK-20260923.md`。
+
 > 2026-09-24 R21-05 当前身份复测：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一有效工作区，当前开发分支 `codex/ui-finesse-round2`；C 盘旧仓库与用户删除的 `src.zip` 均不存在。R21-05 实现已在 `380234e2`，本次只以 `1f69b803` 复测，不重复实现。实际 `R21DisabledHiddenBehaviorTests 2/2`，隔离 Release XAML `24/24`、Playnite `net462`、`0 error`，仅保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。下一可执行任务是 R23-04 正常可枚举 Playnite 主窗体/UIA 会话；若 CEF/窗口暴露仍阻塞，转依赖已满足的独立 Q/R 小批量。不绕过 ETW/系统跟踪拒绝，不把离屏/代理/AutomationPeer 结果写成真实宿主呈现或性能通过。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-TARGETED-RECHECK-20260924.md`。
