@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.ViewModels
 {
@@ -201,15 +202,19 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ? "—"
                     : MediaInboxItems.Count.ToString();
         public string MediaInboxCountCaption
-            => IsWorkerOffline
-                ? (mediaInboxStateCache.HasCurrentContextSuccess ? $"离线 · 缓存于 {mediaInboxStateCache.LastSuccessUtc.GetValueOrDefault().ToLocalTime():MM-dd HH:mm}" : "离线 · 无法读取")
-                : mediaInboxStateCache.State == WorkspaceDataState.Loading
-                    ? "正在读取 · 来源文件始终保留"
-                    : mediaInboxStateCache.State == WorkspaceDataState.Error || !mediaInboxStateCache.HasCurrentContextSuccess
-                        ? "无法读取 · 尚未确认数量"
-                        : mediaInboxStateCache.State == WorkspaceDataState.Stale
-                            ? $"缓存 · 上次成功 {mediaInboxStateCache.LastSuccessUtc.GetValueOrDefault().ToLocalTime():MM-dd HH:mm}"
-                            : "待归类 · 来源文件始终保留";
+            => FormatMediaInboxCountCaption(
+                IsWorkerOffline,
+                mediaInboxStateCache.State,
+                mediaInboxStateCache.LastSuccessUtc,
+                mediaInboxStateCache.HasCurrentContextSuccess,
+                useFullTime: false);
+        public string MediaInboxCountCaptionFull
+            => FormatMediaInboxCountCaption(
+                IsWorkerOffline,
+                mediaInboxStateCache.State,
+                mediaInboxStateCache.LastSuccessUtc,
+                mediaInboxStateCache.HasCurrentContextSuccess,
+                useFullTime: true);
         public string MediaInboxPresenterState => IsWorkerOffline
             ? WorkspaceDataState.Offline.ToString()
             : mediaInboxStateCache.State == WorkspaceDataState.Stale
@@ -323,6 +328,37 @@ namespace GameSaveCenter.Playnite.ViewModels
         private static string FormatStateDetail(DateTime? lastSuccessUtc, string errorMessage)
             => FilterConditionSummary.StaleStateDetail(lastSuccessUtc, errorMessage);
 
+        internal static string FormatMediaInboxCountCaption(
+            bool isWorkerOffline,
+            WorkspaceDataState state,
+            DateTime? lastSuccessUtc,
+            bool hasCurrentContextSuccess,
+            bool useFullTime,
+            DateTime? nowUtc = null)
+        {
+            if (isWorkerOffline)
+            {
+                return hasCurrentContextSuccess
+                    ? $"离线 · 缓存于 {FormatMediaInboxTimestamp(lastSuccessUtc, useFullTime, nowUtc)}"
+                    : "离线 · 无法读取";
+            }
+
+            if (state == WorkspaceDataState.Loading)
+                return "正在读取 · 来源文件始终保留";
+            if (state == WorkspaceDataState.Error || !hasCurrentContextSuccess)
+                return "无法读取 · 尚未确认数量";
+            if (state == WorkspaceDataState.Stale)
+                return $"缓存 · 上次成功 {FormatMediaInboxTimestamp(lastSuccessUtc, useFullTime, nowUtc)}";
+            return "待归类 · 来源文件始终保留";
+        }
+
+        private static string FormatMediaInboxTimestamp(DateTime? value, bool useFullTime, DateTime? nowUtc)
+            => !value.HasValue
+                ? "时间未知"
+                : useFullTime
+                    ? TimeDisplayFormatter.Full(value.Value)
+                    : TimeDisplayFormatter.Relative(value.Value, nowUtc ?? DateTime.UtcNow);
+
         private void NotifyMediaDetailsStateChanged()
         {
             OnPropertyChanged(nameof(MediaDetailsState));
@@ -367,6 +403,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaInboxState));
             OnPropertyChanged(nameof(MediaInboxCountDisplay));
             OnPropertyChanged(nameof(MediaInboxCountCaption));
+            OnPropertyChanged(nameof(MediaInboxCountCaptionFull));
             OnPropertyChanged(nameof(MediaInboxPresenterState));
             OnPropertyChanged(nameof(MediaInboxStateTitle));
             OnPropertyChanged(nameof(MediaInboxStateMessage));

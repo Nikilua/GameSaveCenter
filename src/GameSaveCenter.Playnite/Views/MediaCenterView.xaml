@@ -171,7 +171,7 @@
                 <Rectangle Grid.Column="5" Width="1" Fill="{DynamicResource GscTableDividerBrush}" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0,4"/>
                 <StackPanel Grid.Column="6" Margin="14,2,14,0">
                     <TextBlock Text="{Binding MediaInboxCountDisplay, Mode=OneWay}" Foreground="{DynamicResource GscWarningBrush}" FontSize="26" FontWeight="SemiBold"/>
-                    <TextBlock Text="{Binding MediaInboxCountCaption, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding MediaInboxCountCaption, Mode=OneWay}" ToolTip="{Binding MediaInboxCountCaptionFull, Mode=OneWay}" AutomationProperties.HelpText="{Binding MediaInboxCountCaptionFull, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
         </Border>

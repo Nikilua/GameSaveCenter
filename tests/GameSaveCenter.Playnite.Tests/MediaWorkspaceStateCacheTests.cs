@@ -1,4 +1,5 @@
 using System;
+using GameSaveCenter.Contracts;
 using Xunit;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -71,6 +72,48 @@ namespace GameSaveCenter.Playnite.Tests
 
             Assert.Equal(WorkspaceDataState.Empty, cache.State);
             Assert.Null(cache.LastSuccessUtc);
+        }
+
+        [Fact]
+        public void InboxCacheCaptionUsesRelativeTimeAndFullTimeTooltip()
+        {
+            var lastSuccessUtc = new DateTime(2026, 9, 22, 8, 0, 0, DateTimeKind.Utc);
+            var nowUtc = new DateTime(2026, 9, 22, 8, 2, 0, DateTimeKind.Utc);
+
+            var relative = DashboardViewModel.FormatMediaInboxCountCaption(
+                isWorkerOffline: true,
+                state: WorkspaceDataState.Ready,
+                lastSuccessUtc: lastSuccessUtc,
+                hasCurrentContextSuccess: true,
+                useFullTime: false,
+                nowUtc: nowUtc);
+            var full = DashboardViewModel.FormatMediaInboxCountCaption(
+                isWorkerOffline: true,
+                state: WorkspaceDataState.Ready,
+                lastSuccessUtc: lastSuccessUtc,
+                hasCurrentContextSuccess: true,
+                useFullTime: true,
+                nowUtc: nowUtc);
+
+            Assert.Equal("离线 · 缓存于 2 分钟前", relative);
+            Assert.Contains(TimeDisplayFormatter.Full(lastSuccessUtc), full, StringComparison.Ordinal);
+            Assert.DoesNotContain("ToLocalTime", relative, StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public void InboxCacheCaptionWithoutSuccessDoesNotInventTimestamp()
+        {
+            var caption = DashboardViewModel.FormatMediaInboxCountCaption(
+                isWorkerOffline: true,
+                state: WorkspaceDataState.Error,
+                lastSuccessUtc: null,
+                hasCurrentContextSuccess: false,
+                useFullTime: false,
+                nowUtc: new DateTime(2026, 9, 22, 8, 2, 0, DateTimeKind.Utc));
+
+            Assert.Equal("离线 · 无法读取", caption);
+            Assert.DoesNotContain("缓存于", caption, StringComparison.Ordinal);
+            Assert.DoesNotContain("上次成功", caption, StringComparison.Ordinal);
         }
     }
 }
