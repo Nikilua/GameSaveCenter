@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R17-01 健康结果分层定向复核（2026-09-23）
+
+- `3f9d8e2b` 只记录 `eb033251` 现有健康结果分层实现的复测，没有新增生产代码；已解决项继续退出 `resolved=0` 开放队列，证据时间保留，跨来源按游戏+稳定代码+问题标题去重，错误优先分到立即/建议/信息三档。
+- Playnite `5/5`、Worker 隔离 SQLite `2/2`，合计 `7/7`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成 DTO、fake/隔离 Worker 和临时 SQLite；未验真实宿主、多来源生产标题规范、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R17-02 诊断包预览`，先核对类别预览、脱敏范围和生成后大小/位置。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R17-01-HEALTH-RESULT-LAYERS-RECHECK-20260923.md`。
+
 ## 第三轮 R16-08 保存冲突处理定向复核（2026-09-23）
 
 - `afe80186` 只记录 `ee6b37c9` 现有保存冲突实现的复测，没有新增生产代码；三方合并只吸收非冲突后台字段，同字段冲突保留草稿、提示字段并阻断保存，取消基线转到最新外部值。

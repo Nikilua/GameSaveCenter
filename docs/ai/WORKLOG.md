@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R17-01 健康结果分层定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`3f9d8e2b` 上复用 `eb033251` 的健康结果分层实现，没有新增生产代码。
+- Playnite triage/维护页 `5/5`、Worker 隔离 SQLite `2/2`，合计 `7/7`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证 resolved finding 退出开放队列、证据时间、错误优先、跨来源去重、不同备份保留和三档分组，同时保留原 Findings Grid/选择/详情/复制/导航；只用合成 DTO、fake/隔离 SQLite，没有真实配置、存档、媒体、云端或诊断写入。真实宿主和最终呈现仍待验，Demo 原目录不可用。
+
+证据：[R17-01 健康结果分层定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R17-01-HEALTH-RESULT-LAYERS-RECHECK-20260923.md)。下一可执行任务：`R17-02 诊断包预览`。
+
 ## 2026-09-23 Round3 R16-08 保存冲突处理定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`afe80186` 上复用 `ee6b37c9` 的保存冲突实现，没有新增生产代码。
