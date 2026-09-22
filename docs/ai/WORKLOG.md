@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Round3 R14-06 批量目标防误选定向复核
+
+- 本批没有生产代码变更；复用 `cfbb1279` 的 IconPath、IdentityDisplay、现有选框过滤和媒体目标稳定绑定，新增同名目标按 Playnite ID 区分并按 preferred ID 选中的行为夹具。
+- `GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过；隔离 Release 构建 XAML `24/24`、solution `0 error/0 warning`、Playnite `net462` 通过。
+- 既有 `Shell-Media-1040x700` 仅人工确认合成 offscreen 选框/目标卡片显示图标、平台和稳定 ID；不把截图写成同名下拉、真实 Playnite、DPI/跨屏、UIA/IME、presented frame、ETW 或宿主性能通过。Demo 原目录不可用，下一项 R14-07。
+
+证据：[R14-06 目标防误选定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGETED-RECHECK-20260924.md)。
+
 ## 2026-09-24 Round3 R14-05 重复媒体识别定向复核
 
 - 本批没有生产代码变更，复用 `136285d5` 的只读重复查询和页面；Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4` 通过。确定/疑似分组、上限、IPC 和不删除/移动门禁均有实际覆盖。

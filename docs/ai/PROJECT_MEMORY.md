@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-06 批量目标防误选定向复核（2026-09-24）
+
+- 本批无生产代码变更，复用 `cfbb1279` 的目标显示与过滤保护；新增真实行为夹具确认两个同名对象的 `IdentityDisplay` 不同，并按 preferred `PlayniteId` 选中指定对象。
+- `GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过；隔离 Release XAML `24/24`、solution `0 error/0 warning`、Playnite `net462` 编译通过。既有 `Shell-Media-1040x700` 只作 offscreen 图标/平台/稳定 ID 视觉证据。
+- 真实 Playnite/UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和超大真实媒体库未验；只使用合成/fake/隔离 testhost，不触碰真实存档、媒体或云端。下一项 R14-07。
+
+证据为 `R14-06-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-05 重复媒体识别定向复核（2026-09-24）
 
 - `136285d5` 的重复识别已满足受控条件：Worker `20/20`、Playnite `4/4`；确定组使用非空 SHA-256，疑似组使用同类型/文件名/大小，查询上限为 `5000/100/24`，页面只读且不提供删除/移动。

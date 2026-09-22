@@ -264,6 +264,29 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void SameNameItemsRemainDistinctAndSelectionUsesPlayniteId()
+        {
+            var first = Game("same-name-id-a");
+            first.Name = "同名游戏";
+            var second = Game("same-name-id-b");
+            second.Name = "同名游戏";
+
+            var firstItem = new GamePickerItem(first);
+            var secondItem = new GamePickerItem(second);
+
+            Assert.NotEqual(firstItem.IdentityDisplay, secondItem.IdentityDisplay);
+            Assert.Contains("same-name-id-a", firstItem.IdentityDisplay);
+            Assert.Contains("same-name-id-b", secondItem.IdentityDisplay);
+
+            using var picker = new GamePickerViewModel();
+            picker.StatusFilter = "全部";
+            picker.SetItems(new[] { first, second }, "same-name-id-b");
+
+            Assert.Equal("same-name-id-b", picker.SelectedGame!.PlayniteId);
+            Assert.Equal("同名游戏", picker.SelectedGame.Name);
+        }
+
+        [Fact]
         public void LargeSetReplacementEmitsOneResetNotification()
         {
             using var picker = new GamePickerViewModel();
