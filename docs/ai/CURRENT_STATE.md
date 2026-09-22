@@ -5,7 +5,7 @@
 - `814d3e7a` 复用已有 `TimeDisplayFormatter` 收口 `MaintenanceView` 游戏来源诊断卡片的 Worker 描述同步、最后匹配尝试和最近备份时间：正文显示相对时间，Tooltip/Automation HelpText 显示完整本地时区与 UTC 原值；未知时间不虚构日期。
 - `R22TimeDisplayBehaviorTests 26/26`；隔离 Release XAML `24/24`、Playnite `net462`/Tests `net472`/Worker/Core `0 error`，保留 `MediaCenterView.xaml.cs:699` 两条既有 `CS8602` warning；source validation、diff check 通过。
 - 当前仓库不存在 `scripts/validate_wpf_ui.py`，本批未新增 WPF 静态审查通过声明；真实 Playnite/UIA/呈现/ETW/宿主性能仍未验。Demo 原目录不可用，继续参考已恢复生产基线。
-- D 盘 `D:\workplace\github\GameSaveCenter` 是唯一开发工作区，当前在 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 Git prune，`main` 合并提交 `1e1f0fd1` 已完成 Release 构建并推送。
+- D 盘 `D:\workplace\github\GameSaveCenter` 是唯一开发工作区，当前在 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 Git prune，包含本批的 `main` 合并提交 `8b3ebf33` 已完成 Release 构建并推送。
 - 下一可执行项：继续核对 `DashboardViewModel`/Contracts 其余真实 stale/缓存时间入口；报告/复制列/日志的稳定完整时间语义不由本批代签。
 
 ## 当前第三轮 R22-01 媒体缓存时间合同（部分满足，待继续，2026-09-22）
