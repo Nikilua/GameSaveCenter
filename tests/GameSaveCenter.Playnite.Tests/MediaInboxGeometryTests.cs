@@ -106,6 +106,62 @@ public sealed class MediaInboxGeometryTests
         Assert.True(measuredRows >= 4 || pageScrollable, $"only {measuredRows} complete rows and no page fallback");
     }
 
+    [Fact]
+    public void NarrowInboxKeepsThePageScrollChannelWhenFooterWraps()
+    {
+        Exception? exception = null;
+        var verticalVisibility = ScrollBarVisibility.Disabled;
+        var pageScrollable = false;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MediaCenterView();
+                var viewType = typeof(MediaCenterView);
+                var grid = (DataGrid)viewType.GetField("MediaInboxGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var pageScroller = (ScrollViewer)viewType.GetField("MediaInboxPageScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                grid.ItemsSource = Enumerable.Range(0, 24).Select(_ => new object()).ToArray();
+
+                window = new Window
+                {
+                    Content = view,
+                    Width = 760,
+                    Height = 600,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                view.ApplyResponsiveLayout(760, 600);
+                window.Show();
+                window.UpdateLayout();
+                view.ApplyResponsiveLayout(760, 600);
+                window.UpdateLayout();
+
+                verticalVisibility = pageScroller.VerticalScrollBarVisibility;
+                pageScrollable = pageScroller.ScrollableHeight > 0.5;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(ScrollBarVisibility.Auto, verticalVisibility);
+        Assert.True(pageScrollable, "narrow footer must remain reachable through the page scroll channel");
+    }
+
     private static bool IsFullyInside(FrameworkElement element, FrameworkElement boundary)
     {
         var bounds = element.TransformToAncestor(boundary).TransformBounds(

@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R00/R01 当前证据校正（2026-09-23）
+
+- 在 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter`、`codex/ui-finesse-round2` 上，`b5c7a6d4` 修复 Media Inbox footer 增加后表格可读区预算过旧的问题：紧凑/窄宽继续使用页级滚动，当前 footer 预算 `360 DIP`；保留 picker、滚动条、命令/Binding、取消/错误、恢复保护、有限列表和 Playnite `net462`。
+- 同一干净隔离身份完成 Release/XAML/RenderHarness 与 R00/R01 定向证据；`MediaInboxGeometryTests 3/3`、媒体锚点 `10/10`、审计源 `6/6`、身份 `2/2`、数字 `2/2`、负例 `1/1`、动效行为 `9/9`、大库 `5/5`。Light/Dark geometry、toolbar、shell、scale 夹具均通过。
+- 审计索引 `20/20` 通过，但实际 summary 是 `168` 快照、`7` HIGH（真实父子滚动冲突）、`4` MEDIUM（动作栏纵向扩展）；不能把历史 0 HIGH/0 MEDIUM 延续为当前事实。motion reentry/hot probes 在本机两次未稳定通过，已经记录，不绕过或重写探针。
+- `UI_EVIDENCE_BASELINE.json` 与 `R01-07-freshness-report-20260923.json` 已绑定 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5`，扫描 `14/14 fresh`，包身份仍 `not-provided`。下一步优先可枚举 Playnite 会话；宿主不通时继续独立 R23-05/Q/R。
+
 ## 第三轮 R23-04 窗口暴露证据校正（2026-09-22）
 
 - 在 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 上，`c6d65b08`/`2d327d4b`/`eba374c5` 为真实宿主 runner 增加 Win32 顶层窗口探测、结构化 `host-window-exposure.json` 和全新隔离 profile 配置自举；进程快照与窗口枚举只作事实记录，`CountsAsVisualPass=false`，不替代 UIA/Controlled host。

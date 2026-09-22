@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R00/R01 媒体可达性修复与证据校正
+
+- 接续前一批未提交状态，确认所有改动属于本任务；C 盘旧库不存在，未处理用户已删除的 `src.zip`。读取启动协议、质量审查、Round3 账本和 WPF skill 后继续。
+- `b5c7a6d4` 收口 Media Inbox：footer 行加入后旧 `height-220` 预算会把表格压到不可达；改为窄宽/紧凑高度页级回退与 `360 DIP` footer 预算，并补真实 `MediaInboxGeometryTests` 行为负例/正例和 audit content-height 绑定修复。
+- 当前隔离 Release/XAML/RenderHarness 通过；定向测试为 Media `3/3`、anchor `10/10`、audit source `6/6`、identity `2/2`、numeric `2/2`、negative `1/1`、motion behavior `9/9`、large-library `5/5`。Light/Dark finesse、scale、media geometry、toolbar、shell 夹具均带完整 SHA 通过。
+- 审计索引 `20/20`，但实际 summary `168` 快照、`7 HIGH/4 MEDIUM`，已修正文档旧摘要；motion probes 两次不稳定失败，保留真实未验边界，没有为了签收修改动效。
+- 更新 R00/R01 evidence、baseline 与 `R01-07-freshness-report-20260923.json`，当前 `14/14 fresh`、package `not-provided`。下一可执行任务：正常可枚举 Playnite 主窗体；若仍受 CEF/UIA 环境阻塞则推进 R23-05/独立 Q/R。提交前需继续完成分支 push、main 合并和 main 构建复核。
+
 ## 2026-09-22 Round3 R23-04 窗口暴露证据校正
 
 - 先核对现有 R23-04 UIA 复测：旧 runner 只能记录 `MainWindowHandle=0`，没有结构化顶层窗口事实。没有修改生产控件、选框、滚动条、命令绑定、取消/错误/恢复语义或 net462 路线。

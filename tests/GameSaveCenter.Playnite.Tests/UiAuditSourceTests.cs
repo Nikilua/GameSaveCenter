@@ -95,7 +95,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("x:Name=\"MediaInboxSecondaryActions\"", xaml);
         Assert.Contains("x:Name=\"MediaInboxGrid\" Tag=\"FiniteViewport\"", xaml);
         Assert.Contains("MediaInboxInfoBand.Visibility = compactInbox ? Visibility.Collapsed : Visibility.Visible;", codeBehind);
-        Assert.Contains("var useInboxPageFallbackScroll = height < 560 || staleInboxRequiresPageScroll;", codeBehind);
+        Assert.Contains("var useInboxPageFallbackScroll = compactHeight || width < 900 || staleInboxRequiresPageScroll;", codeBehind);
         Assert.Contains("mediaInboxInspectorOpen", codeBehind);
         Assert.Contains("mediaInboxHistoryOpen", codeBehind);
         Assert.Contains("MediaInboxSelectionDetails", xaml);
@@ -107,6 +107,7 @@ public sealed class UiAuditSourceTests
         Assert.Contains("MediaInboxGeometry.CalculateReadableGridHeight", codeBehind);
         Assert.Contains("MediaInboxGrid.Height = inboxViewportHeight;", codeBehind);
         Assert.Contains("MediaInboxGrid.MaxHeight = inboxViewportHeight;", codeBehind);
+        Assert.Contains("const double inboxNonTableHeightBudget = 360d;", codeBehind);
         Assert.Contains("var compactInbox = compactHeight;", codeBehind);
         Assert.Contains("ScrollBarVisibility.Disabled", codeBehind);
         Assert.Contains("MediaInboxPageScrollViewer", sourceValidator);

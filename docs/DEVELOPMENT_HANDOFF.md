@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R00/R01 当前证据收口：D 盘 `D:\workplace\github\GameSaveCenter` 是唯一开发工作区，当前分支 `codex/ui-finesse-round2`，代码提交 `b5c7a6d4`。Media Inbox footer 增加后的旧表格预算已修正为窄宽/紧凑高度页级滚动与 `360 DIP` footer 预算；XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706` nullable warning。Media 几何/锚点、审计源、身份、数字、负例、大库和动效行为定向证据分别通过 `3/3`、`10/10`、`6/6`、`2/2`、`1/1`、`5/5`、`9/9`。
+
+> 当前同身份 RenderHarness 的 Light/Dark finesse、scale、media geometry、toolbar、shell 夹具通过；审计索引 `20/20`，summary 实际为 `168` 快照、`7 HIGH/4 MEDIUM`，不能写成 0 风险。motion reentry/hot probes 在当前 Dispatcher 环境重跑未稳定通过，已记录为待验而未改生产动效。freshness 报告 `R01-07-freshness-report-20260923.json` 为 `14/14 fresh`，包身份 `not-provided`。
+
+> 下一可执行项：先寻找能稳定暴露 Playnite 主窗体/UIA 的隔离会话；当前宿主 CEF `platform_channel` 访问拒绝、`Startup Error`/无 summary、ETW/真实 presented frame/物理跨屏/宿主性能仍是边界。若外部条件不变，继续 R23-05 或依赖已满足的 Q/R 小批量；提交前完成当前分支 push、合并 `main`、main 构建复核并清理未被证据引用的 `.tmp`/`artifacts`。
+
 > 2026-09-22 当前 R23-04 窗口证据校正：D 盘 `D:\workplace\github\GameSaveCenter`、分支 `codex/ui-finesse-round2`；`c6d65b08`/`2d327d4b`/`eba374c5` 为 `real-host-audit.ps1` 增加 `host-window-exposure.json`、显式 `-SkipInstallTests` 和全新隔离 profile 配置自举。当前提交 Release `-SkipTests` 构建 XAML `24/24`、`0` errors，`DiagnosticsEvidenceSourceTests 2/2`，既有两条 `MediaCenterView.xaml:699 CS8602` 保留。真实隔离 Playnite PID `31920` 的可见窗口是 `Startup Error`，句柄 `0x19F08B4`，顶层窗口 `5`，UIA 侧栏未确认；runner metadata 为 `restored-from-isolated-backup`，`cef.log` 为 CEF `platform_channel` 拒绝访问 `0x5`，没有 `summary.json`，不宣称 UIA/键盘/读屏/Controlled host 或最终呈现通过。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260922.md` 和 `artifacts/ui-host-audit-r23-04-profile-bootstrap-20260922`。下一可执行任务：取得正常可枚举宿主会话；若仍阻塞则进入 R23-05 几何小批量。单屏、ETW/宿主性能、Demo 原目录边界继续有效。
 
 > 2026-09-22 当前 R22-01 本地镜像时间摘要：代码提交 `b45e31db` 复用现有相对/完整时间投影，修正 Worker `LocalMirrorService.Message` 和维护页紧凑镜像时间行，不改同步、命令、滚动、镜像删除保护或兼容投影。Worker `6/6`、Playnite `R22TimeDisplayBehaviorTests 30/30`；clean shell/full RenderHarness 绑定当前身份，Maintenance Light/Dark 目标尺寸无本批新增问题；全量报告仍保留 Overview/Settings/Task/Save 基线失败，未宣称全局 render-qa。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R22-01-LOCAL-MIRROR-TIME-20260922.md`。D 盘仍是唯一工作区，C 盘旧库不存在；真实 Playnite/UIA/读屏、OS 输入/IME、DPI/跨屏、presented frame、ETW/宿主性能未验。下一可执行项：回到 R23-04 UIA/Controlled host，阻塞时继续独立 Q/R 小批量。

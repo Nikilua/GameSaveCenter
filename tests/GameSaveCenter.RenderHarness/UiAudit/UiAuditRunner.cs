@@ -219,11 +219,15 @@ public static class UiAuditRunner
         };
         host.Children.Add(view);
 
-        // Dashboard and its workspace views receive the full shell height (not the
-        // reduced workspace content height) when they apply responsive layout. Keep
-        // the audit consistent with production and render-qa, otherwise stacked
-        // inspector/table budgets are computed against a shorter synthetic height.
-        Action applyLayout = () => ApplyLayout(view, route, size.ContentWidth, size.ActualHeight);
+        // The audit host is the page content surface, so page-level responsive
+        // layout must use the same finite content height that will be measured and
+        // clipped below. Passing the outer window height here lets a footer/table
+        // budget be calculated for a surface that is taller than the actual host.
+        Action applyLayout = () => ApplyLayout(
+            view,
+            route,
+            size.ContentWidth,
+            view is MediaCenterView ? size.ContentHeight : size.ActualHeight);
         applyLayout();
         host.Measure(new Size(size.ContentWidth, size.ContentHeight));
         host.Arrange(new Rect(0, 0, size.ContentWidth, size.ContentHeight));

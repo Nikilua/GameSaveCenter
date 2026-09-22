@@ -62,3 +62,10 @@ R01-07 当前 baseline 与 freshness 校验已满足；下一可执行小批量�
 - 新扫描报告：[2026-09-19 freshness-report](R01-07-freshness-report-20260919.json)；14 条记录均为 `FRESH`，0 条 stale。
 - 复核同时修正了隔离 RenderHarness/UiAuditRunner 的源码根目录身份解析，以及仍指向旧实现的 R00/R01 源码断言。
 - R00-07、R01-01、R01-07 在当前路径规则下本来就是 fresh，因此没有把未重跑条目伪装成同一批构建产物；R00/R01 的实际构建、测试、审计与边界见当前复核证据。
+
+## 2026-09-23 当前分支扫描
+
+- 当前源码身份为 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5`，包身份仍为 `not-provided`；没有真实 package-host 安装或重装结论。
+- 本次将 R00/R01 已实际刷新或复核的记录绑定到当前完整身份，并生成 [2026-09-23 freshness-report](R01-07-freshness-report-20260923.json)。扫描结果为 `14` 条 fresh、`0` 条 stale；文档变更没有被写成需要安装包。
+- R00-03 的当前事实不是“探针全通过”：`UiFinesseFoundationTests 9/9` 已通过，但 `motionreentryprobe`/`motionhotprobe` 重跑未稳定通过，失败样本已写入 R00-03/R01-04 证据；freshness 表示证据已绑定当前源码，不表示所有运行时探针通过。
+- 审计索引当前 `20/20` 可追溯，但 summary 真实包含 `7` 条 HIGH、`4` 条 MEDIUM；R01-03/R01-06 文档已改为事实口径。当前扫描的 `package=not-provided`、Playnite/UIA/物理呈现/ETW/宿主性能边界均保留。

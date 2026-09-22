@@ -30,3 +30,8 @@ R00-05 的共享样式修正与受控行为验证已完成，账本保持“代�
 ## 范围与边界
 
 测试窗口使用隔离资源、合成内容和不可见的低不透明度窗口来完成 Dispatcher/模板行为检查，没有写入真实存档、媒体或云端，也没有生成可冒充真实屏幕呈现的截图。该证据不替代 Playnite 嵌入宿主、用户主题、物理 DPI、真实鼠标按压或屏幕像素复核；“双主题”指当前生产主题资源在受控 WPF 实例中的 Light/Dark 运行时合成。后续 R01-02 继续处理数字单元格裁切，R00-06 继续处理媒体四行门禁。
+
+## 2026-09-23 当前身份复核
+
+- 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 隔离 Release testhost 的 `ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles` 为 `2/2`（Light/Dark）。
+- 存档、远端恢复和媒体批量三类派生样式仍观测到控件 `Opacity=1`、共享 `ButtonChrome=0.72`，状态切换高度无跳变；本次没有改动生产样式、命令、绑定或安全语义。

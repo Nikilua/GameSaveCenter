@@ -46,3 +46,8 @@
 ## 下一步
 
 R01-02 代码、负例和双主题受控证据已完成，当前提交复核未改变生产契约；下一可执行小批量为 R01-03“每项证据直达”：先核对账本行与证据链接是否逐项可达，再补断链/错链负例和报告入口校验。
+
+## 2026-09-23 当前身份复核
+
+- 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 隔离 testhost 的 `NumericCellReadabilityTests` 为 `2/2`；Light/Dark `finesseprobe` 均报告四个数值样本完整可读，窄列长负数仍为 `HorizontalFit=False`、`VerticalFit=True`、`must-fail=passed`。
+- 本次构建保留 Playnite `net462`；只刷新生产校对夹具、合成数据和隔离测试输出，没有修改业务表格命令、绑定、滚动或数据契约。

@@ -26,3 +26,9 @@
 
 - 未把受控 Window 结果升级为真实宿主 Loaded/Unloaded 耐久、鼠标/键盘快速输入、ETW 生命周期或物理 DPI/呈现帧签收。
 - 下一可执行任务：R00-04 修正 2000 项 GamePicker 基准的每次输入变化与独立超时计时器，并补有限时间负例。
+
+## 2026-09-23 当前身份复核
+
+- 当前提交 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `UiFinesseFoundationTests` 在独立 testhost 中为 `9/9`，覆盖完成态清钟、当前渲染值重入和 reduced-motion 归一；不以源码字符串替代行为测试。
+- 同一身份的 `motionreentryprobe` 与 `motionhotprobe` 各重跑一次，均未稳定通过：一次在 Light 最终宽度 `270` 时仍报 `finalAnimated=True`，另一次在 Dark 活动态采样未达到探针门槛；随后 hot-change 也因 Dark 活动态未归一而失败。两次均为受控 WPF/Dispatcher 探针失败，未据此改动生产动效，也不把历史通过数字继续写成当前探针通过。
+- 因此本条的行为类证据仍为 `9/9`，但真实输入、宿主 Loaded/Unloaded 耐久和受控探针时序稳定性继续是未验边界；freshness 已绑定当前身份，失败样本保留在本阶段临时报告中。

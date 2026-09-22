@@ -44,6 +44,11 @@ dotnet test tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.cs
 - `Key.ImeProcessed` 是 WPF 路由层的 IME 事件夹具，不等价于 Windows 真实中文输入法候选窗口、物理键盘时序或宿主呈现帧；真实 Playnite 嵌入、物理 DPI、屏幕像素、ETW 和 presented frame 仍未验。
 - 本阶段没有将无真实 OS IME/Playnite 输入写成缺陷已在宿主复现，也没有修改用户存档、媒体、云端或诊断外发数据。
 
+## 2026-09-23 当前身份复核
+
+- 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 隔离 testhost 的 `GamePickerKeyboardBehaviorTests` 为 `6/6`，`KeyboardFocusSourceTests` 为 `5/5`；覆盖无结果 Enter、IME/方向键不关闭、可见候选确认、Esc 和焦点返回。
+- 本次重跑仍只使用合成 DTO、生产 Shell/WPF 路由和隔离窗口；没有把 `ImeProcessed` 事件夹具写成 Windows 中文输入法候选 UI 或真实 Playnite 嵌入输入链通过。
+
 ## 下一步
 
 R00-08 代码与受控行为证据已完成，下一可执行小批量为 R01-01“测试源码根绑定”：修复隔离 `OutputRoot` 下源码测试可能向错误 checkout 回溯的问题，并补清晰的错根诊断。

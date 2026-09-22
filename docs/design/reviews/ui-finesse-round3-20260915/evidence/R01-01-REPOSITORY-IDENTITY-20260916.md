@@ -38,3 +38,8 @@
 ## 下一步
 
 R01-01 代码与隔离/跨 checkout 证据已完成，当前补充修复后的身份测试也已通过；下一可执行小批量为 R01-03“每项证据直达”，核对共享索引、报告入口和断链/错链负例。
+
+## 2026-09-23 当前身份复核
+
+- 当前提交 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `RepositoryIdentityTests` 为 `2/2`；隔离 Release solution XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706` nullable warning。
+- 本次 RenderHarness 与 Playnite 测试程序集均来自同一隔离 `GscBuildOutputRoot`，源码根为 D 盘当前 checkout；没有读取 C 盘旧仓库，也没有把默认 bin 中的旧程序集当作当前证据。
