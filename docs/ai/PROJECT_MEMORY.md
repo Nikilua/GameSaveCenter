@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R17-06 存储分析导航定向复核（2026-09-23）
+
+- `1077a7ee` 只记录 `51cae6b9` 现有存储分析能力的复测，没有新增生产代码；维护卡片区分逻辑索引体积、备份目录实测和卷剩余，失联路径保留逻辑体积并禁止按 0 解释。
+- Worker `4/4`；Playnite R17-06 `3/3`、完整 R17 `15/15`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- TopGames 按稳定 `PlayniteId`/`BackupId` 精确导航，缺失目标不回退；测试只用合成 DTO、fake、隔离 SQLite/目录。未验真实宿主、Explorer/权限、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R17-07 检查项一键定位`，先核对已有 Finding/Health/Task 来源、返回目标和入口，不把静态接线当交互签收。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R17-06-STORAGE-ANALYSIS-NAVIGATION-RECHECK-20260923.md`。
+
 ## 第三轮 R17-05 隔离账本入口定向复核（2026-09-23）
 
 - `d01ab7ea` 只记录 `3002a8dc` 现有隔离账本入口的复测，没有新增生产代码；分页只返回未删除项，恢复按 EntryId 定向，路径不安全、原路径冲突或文件身份不一致时保留文件并标记 `RecoveryRequired`。
