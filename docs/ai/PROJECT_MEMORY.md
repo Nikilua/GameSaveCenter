@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-04 共享按钮复合内容修复与真实嵌入证据（2026-09-22，第四十三子批次）
+
+- 真实隔离 Playnite 截图发现共享 `GscWpfUiButton` 的 `ContentTemplate` 会把图标+标签视觉树字符串化为 `System.Windows.Controls.StackPanel`；`8a9eead2` 复用共享样式与现有按钮类，新增 selector 让视觉树直呈现、字符串继续走文本模板，并补 STA 正/负行为测试。
+- 干净 Release 门禁：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`，0 errors，保留两条既有 `MediaCenterView.xaml.cs:699 CS8602`；不改命令、绑定、选框、滚动、取消/错误、恢复保护或 net462。
+- 最终宿主输出绑定 `8a9eead2`：`artifacts/ui-host-audit-r23-04-content-fix-clean-20260922`，真实 EmbeddedPlaynite Dashboard/Settings `33/1`，HighGate `0`；Overview/Saves/Media 原图确认按钮显示实际图标与中文标签。UIA 侧栏仍未定位，Controlled Dashboard false，专用审计窗口、presented frame、跨屏、ETW/宿主性能未验。
+- 业务验证只用合成 `games.db`、fake/隔离 Worker 和隔离 Playnite profile；没有真实存档、媒体、云端或诊断写入。Demo 原目录不可用，保留恢复生产基线和 Demo-first；main dirty 用户改动未碰，未合并。
+- 下一可执行任务：继续 R23-04 UIA/Controlled host 可达性，或按依赖进入 R23-05 真实宿主性能；真实 presented frame 仍受合规权限/宿主条件限制。
+
 ## 第三轮 R23-06 当前候选安装与回退复核（2026-09-22，第四十二子批次）
 
 - 当前候选 `102b74b0` 的六份程序集身份一致为 `0.6.73+102b74b08e0f04f2b334e3d75ecec161fd13103a`；zip/pext 同 SHA `C84C7CAB59CC44845DF1FF1629FA6544A19B410EF444D672F4407E252D30117F`，各 `44,060,877` bytes；package 内容门禁通过。

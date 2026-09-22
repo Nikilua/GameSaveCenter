@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R23-04 共享按钮复合内容修复与真实嵌入证据（已满足，待宿主环境验证，2026-09-22）
+
+- `8a9eead2` 修复 `GscWpfUiButton` 文字模板将 `StackPanel`/`Grid` 字符串化为 `System.Windows.Controls.*` 的真实宿主呈现缺陷：新增共享 `ButtonContentTemplateSelector`，视觉树直接呈现，字符串仍使用既有文本模板；新增 STA 正/负行为测试。
+- 干净提交门禁：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`，Release `0 errors`，保留既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602`。未改变命令/Binding、选框、滚动条、取消/错误、恢复保护或 Playnite/net462。
+- 真实隔离 Playnite 宿主输出 `artifacts/ui-host-audit-r23-04-content-fix-clean-20260922`：`EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`HighGateCount=0`，manifest `33 Dashboard + 1 Settings`。Overview/Saves/Media 原图人工复核确认复合按钮显示实际图标/中文标签，不再显示 `System.Windows.Controls.StackPanel`。
+- UIA 仍未找到侧栏项，Controlled/专用窗口、真实 presented frame、物理跨屏、ETW/PresentMon、宿主性能未验；单显示器使 Q24-03 `blocked-single-display`。Demo 原目录不可用，继续使用恢复生产基线与 Demo-first 资源链；业务只用合成库、fake/隔离 profile，未写真实存档、媒体、云端或外发诊断。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-TASK-GRID-HOST-FIX-20260922.md`。下一可执行任务：保留 UIA/Controlled host 待验，或按依赖推进 R23-05 真实宿主性能；主工作区 dirty 用户改动未碰、未合并。
+
 ## 当前第三轮 R23-06 当前候选安装与回退复核（已满足，待宿主环境验证，2026-09-22）
 
 - 当前候选身份绑定 `102b74b0`：六份程序集均为 `0.6.73+102b74b08e0f04f2b334e3d75ecec161fd13103a`；zip/pext 同 SHA-256 `C84C7CAB59CC44845DF1FF1629FA6544A19B410EF444D672F4407E252D30117F`，各 `44,060,877` bytes。

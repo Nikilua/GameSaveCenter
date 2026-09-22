@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R23-04 共享按钮复合内容修复与最终宿主证据（第四十三子批次）
+
+- 先核对真实宿主截图：Overview/Saves/Media 的共享复合按钮曾显示 `System.Windows.Controls.StackPanel`，确认不是断言缺口而是真实 `ContentTemplate` 将 WPF 视觉树字符串化；没有改用新设计体系，也没有重建按钮/命令。
+- `8a9eead2` 在共享 `GscWpfUiButton` 基础样式接入 `ButtonContentTemplateSelector`：`UIElement`/`FrameworkContentElement` 直接呈现，字符串继续沿用既有文本模板；新增 `R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree` 覆盖正例与字符串负例。
+- 干净提交验证：XAML `24/24`、Release `0 errors`/既有 2 条 CS8602、Core `125/125`、Worker `355/355`、Playnite source `111` 类、WPF `101/101`；package zip/pext 同为 `44,061,387` bytes、SHA-256 `531B4590…D74F7`。
+- 真实隔离 Playnite 宿主输出 `ui-host-audit-r23-04-content-fix-clean-20260922`：summary `EmbeddedDashboardCaptured=true`、`EmbeddedSettingsCaptured=true`、`ControlledDashboardCaptured=false`、`HighGateCount=0`；manifest `33 Dashboard + 1 Settings`，Overview/Saves/Media 截图确认复合按钮已显示真实图标/中文标签。UIA 仍未找到侧栏项，未把嵌入截图扩大成 UIA/键盘或完整宿主验收。
+- 仅使用合成库、fake/隔离 profile；精确停止本轮 Playnite/Worker 进程。单屏 Q24-03、Fusion/Playnite 版本未知、真实 presented frame、物理跨屏、ETW/PresentMon、宿主性能仍未验；未触碰 dirty main、真实存档/媒体/云端或外发诊断。下一可执行项：R23-04 UIA/Controlled host 或依赖满足的 R23-05 真实宿主性能。
+
 ## 2026-09-22 R23-06 当前候选安装与回退复核（第四十二子批次）
 
 - 沿用 D: 隔离源码副本和当前 `102b74b0`，完成 package Release 构建/内容门禁：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、六份程序集同身份、zip/pext 同 SHA `C84C7CAB…D30117F`。
