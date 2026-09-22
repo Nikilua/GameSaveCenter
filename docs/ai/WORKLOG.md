@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R17-06 存储分析导航定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`1077a7ee` 上复用 `51cae6b9` 的存储分析导航，没有新增生产代码；按当前源码把旧证据的 Playnite R17-06 `4/4` 更正为 `3/3`。
+- Worker `StorageAnalysisServiceTests 4/4`；Playnite R17-06 `3/3`、完整 R17 `15/15`；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已验证逻辑/物理存储指标分离、失联/不可用路径的非零语义、稳定游戏/版本导航和缺失版本负例；只用合成/fake/隔离 SQLite/目录，没有真实配置、存档、媒体、云端或诊断写入。真实宿主和呈现仍待验，Demo 原目录不可用。
+
+证据：[R17-06 存储分析导航定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R17-06-STORAGE-ANALYSIS-NAVIGATION-RECHECK-20260923.md)。下一可执行任务：`R17-07 检查项一键定位`。
+
 ## 2026-09-23 Round3 R17-05 隔离账本入口定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d01ab7ea` 上复用 `3002a8dc` 的隔离账本入口，没有新增生产代码。
