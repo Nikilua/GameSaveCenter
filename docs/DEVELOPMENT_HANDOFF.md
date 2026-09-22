@@ -1,6 +1,6 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-22 当前开发批次：`db2ba3c0` 收口 Maintenance 云端队列表格/选中详情的相对重试时间与完整 Tooltip/HelpText，保留 Worker 报告兼容时间属性。提交后 R22 时间定向 `29/29`、XAML `24/24`，Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。main 合并尚待本阶段文档同步；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能未验。下一可执行项：继续盘点 `DashboardViewModel`/Contracts stale/缓存时间入口。
+> 2026-09-22 当前开发批次：`db2ba3c0` 收口 Maintenance 云端队列表格/选中详情的相对重试时间与完整 Tooltip/HelpText，保留 Worker 报告兼容时间属性。证据/账本提交 `6cb2e53c` 已由 `3801184d` 合并到 `main` 并推送；提交后 R22 时间定向 `29/29`、XAML `24/24`，主分支 Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能未验。下一可执行项：继续盘点 `DashboardViewModel`/Contracts stale/缓存时间入口。
 
 > 2026-09-22 当前开发批次：D 盘唯一工作区 `D:\workplace\github\GameSaveCenter`，分支 `codex/ui-finesse-round2`；`74d3dcdc` 完成概览云端队列相对/完整时间 Tooltip 与 HelpText，证据/账本提交 `1292b296` 已由 `6aed472b` 合并到 `main` 并推送。提交后 R22 时间定向 `28/28`、XAML `24/24`，主分支 Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning。下一可执行项仍是继续盘点 `DashboardViewModel`/Contracts stale/缓存时间入口；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能未验。
 
