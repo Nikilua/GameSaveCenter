@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 云端过期提示时间合同（部分满足，待继续，2026-09-22）
+
+- `2bf95267` 复用 `TimeDisplayFormatter` 修复用户可见云端 stale banner 直接拼接本地时间的问题：显示相对时间 + 完整本地/UTC，成功读取时间为空时不虚构时间，只保留真实刷新失败原因；加入可注入参考时间。
+- `FilterConditionSummaryTests 7/7`、`R22TimeDisplayBehaviorTests 24/24`，合跑 `31/31`；XAML `24/24`；最终 solution Release `0 warning / 0 error`。命令、筛选、分页、旧数据保留、选框、滚动条和取消/错误语义未改。
+- `RecentAccessItem.LastAccessDisplay` 是保留兼容属性，Overview 实际绑定仍是相对时间和完整 Tooltip/Automation HelpText，本批未误改兼容入口。其他残余 `ToLocalTime` 仍待逐项核对。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-STALE-TIME-20260922.md`。下一可执行任务：继续盘点 Dashboard stale/缓存时间入口或选择依赖已满足的下一项 Q/R；真实 Playnite/UIA/呈现/ETW/宿主性能边界仍未验。
+
 ## 当前第三轮 R23-04 共享按钮复合内容修复与真实嵌入证据（已满足，待宿主环境验证，2026-09-22）
 
 - `8a9eead2` 修复 `GscWpfUiButton` 文字模板将 `StackPanel`/`Grid` 字符串化为 `System.Windows.Controls.*` 的真实宿主呈现缺陷：新增共享 `ButtonContentTemplateSelector`，视觉树直接呈现，字符串仍使用既有文本模板；新增 STA 正/负行为测试。

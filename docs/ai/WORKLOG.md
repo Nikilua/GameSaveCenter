@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 云端过期提示时间合同（第四十四子批次）
+
+- 复核后没有修改 `RecentAccessItem.LastAccessDisplay` 兼容属性：Overview 实际使用 `SummaryDisplay` 的相对时间，Tooltip/Automation 使用完整时间；将真实用户可见残余定位到云端 stale banner 的 `StaleStateDetail`。
+- `2bf95267` 复用 `TimeDisplayFormatter`，增加相对 + 完整本地/UTC 投影与 `nowUtc` 注入；无成功时间不生成假时间，刷新失败原因原样保留。命令、分页、筛选、旧数据、选框、滚动、取消/错误不变。
+- 验证：`FilterConditionSummaryTests 7/7`、`R22TimeDisplayBehaviorTests 24/24`、合跑 `31/31`；XAML `24/24`；最终 solution Release `0 warning / 0 error`；`validate-source.py`/`git diff --check` 待文档提交前复跑。
+- 仅使用合成时间、fake/隔离 testhost 和 D: 隔离构建目录，未启动真实 Playnite/package-host，未写真实存档/媒体/云端/诊断；下一可执行项继续盘点 Dashboard stale/缓存时间入口，或选依赖已满足的 Q/R。
+
 ## 2026-09-22 R23-04 共享按钮复合内容修复与最终宿主证据（第四十三子批次）
 
 - 先核对真实宿主截图：Overview/Saves/Media 的共享复合按钮曾显示 `System.Windows.Controls.StackPanel`，确认不是断言缺口而是真实 `ContentTemplate` 将 WPF 视觉树字符串化；没有改用新设计体系，也没有重建按钮/命令。
