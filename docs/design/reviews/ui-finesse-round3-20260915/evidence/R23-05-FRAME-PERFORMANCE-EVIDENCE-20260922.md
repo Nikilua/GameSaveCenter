@@ -2,36 +2,43 @@
 
 日期：2026-09-22  
 分支：`codex/ui-finesse-round2`  
-探针构建身份：`fef68005d86c5daa801850afa04d01b3eb113209`  
+探针构建身份：`130ba48ae287f029cf180d15784d21f3225ba8fe`
 任务：R23-05「帧性能证据闭环」
 
 ## 结论
 
-现有 `shellqa` 已在当前提交重新运行并取得 Rendering 回调代理样本；本批不宣称真实显示器呈现帧通过。探针最终为 `shell-qa FAILED`，失败来自同一报告中的 5 个几何门禁，不应被性能数字掩盖。
+本批先复核了上一版 `shellqa` 的 5 个真实几何失败，再修复共享壳层阈值和 Media Inbox footer 行位；当前提交重新运行 `shellqa` 已通过。Rendering/Stopwatch 仍只是应用层代理，本批不宣称真实显示器呈现帧通过。
 
 - Rendering 回调：已取得，来源是 WPF `CompositionTarget.Rendering`，记录回调数、`Stopwatch` 间隔、p95、最大间隔和超过 60Hz 阈值的比例。
+- 几何门禁：已修复并通过；Shell 头部在 980/1040 宽度进入显式第二行，Media 1040/1100/1366 的 `gridTopGap` 均为 `142 DIP`。
 - Stopwatch：已取得，记录受控侧栏切换的持续时间、布局/测量/排列次数和间隔样本。
 - 真实呈现帧：未取得。当前数据是 offscreen logical DIP / 受控 WPF 窗口代理，不是 DWM、PresentMon 或 ETW 的屏幕扫描输出。
 - ETW 边界：沿用 Q25 的真实事实，`xperf`/WPR 系统跟踪曾被权限策略拒绝；没有绕过拒绝，也没有虚构 ETL、调用栈或显示器丢帧率。
 
 ## 当前提交与运行
 
-单独构建 `tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj` 到 `D:\gsc-r23-05-build-20260922` 后运行：
+在 D: 隔离源码副本中构建 `tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj`，并在提交后的 clean tree 运行：
 
 ```text
-GameSaveCenter.RenderHarness.exe shellqa artifacts/r23-05-shellqa-20260922
+GameSaveCenter.RenderHarness.exe shellqa D:\gsc-r23-05-shellqa-clean-20260922
 ```
 
 报告记录：
 
 - `EvidenceSource=OffscreenRenderHarness`。
-- `Commit=fef68005d86c5daa801850afa04d01b3eb113209`。
+- `Commit=130ba48ae287f029cf180d15784d21f3225ba8fe`。
 - `WorkingTreeClean=True`。
 - Light/Dark 主题、合成生产壳层夹具、`DpiScale=1.00` logical DIP；真实宿主 DPI 未由该探针推断。
-- Release 构建 `0 errors`，仅既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning。
-- XAML 结构 `24/24`；source validation、XAML 检查和 `git diff --check` 已通过。
+- XAML `24/24`；solution Release 构建 `0 errors`，仅既有 `MediaCenterView.xaml.cs:699` 两条 `CS8602` warning；响应式边界 `5/5`、Media 动作/筛选回归 `6/6`、`WpfUiResourceDictionaryTests 137 passed / 39 skipped / 0 failed`。
+- source validation、XAML 检查和 `git diff --check` 已通过。
 
-原始报告：`artifacts/r23-05-shellqa-20260922/shell-qa-report.txt`。同目录保留该次探针生成的截图和主题/页面夹具，直到本批文档完成引用后再按清理规则处理。
+原始报告：`D:\gsc-r23-05-shellqa-clean-20260922\shell-qa-report.txt`。D: 临时目录只用于本批复核，文档提交前按规则清理；仓库不提交截图或构建物。
+
+## 几何修复结果
+
+- `ResponsiveLayoutCoordinator.IsCompactShellHeader` 从仅覆盖 `<980` 调整为覆盖 `<1280`；不改变 960/1040/1280 的页面 `LayoutMode`，只让头部动作在内容预算不足时进入现有第二行布局。响应式边界测试同步覆盖 980、1040、1200、1279 与 1280 的正负边界。
+- Media Inbox 保留原批量选择行、DataGrid、页面级 ScrollViewer、选框、命令和绑定；将筛选预设与可用性提示移到既有 `MediaInboxFooter` 的前两行，加载摘要、次级动作和失败带顺延，不隐藏或删除入口。
+- clean `shellqa` 结果：Shell `720/960/980/1040` 均无头部越界；Media `1040/1100/1366` 均为 `gridTopGap=142 DIP`；三种尺寸的 footer、历史和次级动作在页面末端均位于 viewport 内；Light/Dark 共用同一生产几何探针并通过。
 
 ## Rendering 代理样本
 
@@ -39,15 +46,15 @@ GameSaveCenter.RenderHarness.exe shellqa artifacts/r23-05-shellqa-20260922
 
 | 场景 | Rendering 回调 | 间隔 p95 | 最大间隔 | 慢帧比例（>16.67ms） | 终态 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| 单次切换 | 29 | 74.5ms | 234.6ms | 0.143 | 收起，稳定 |
-| 快速二次切换 | 41 | 18.5ms | 35.2ms | 0.100 | 展开，稳定 |
-| 无动画原子终态 | 4 | 21.4ms | 21.4ms | 0.333 | 收起，稳定 |
+| 单次切换 | 27 | 97.5ms | 213.8ms | 0.154 | 收起，稳定 |
+| 快速二次切换 | 44 | 16.3ms | 28.2ms | 0.047 | 展开，稳定 |
+| 无动画原子终态 | 4 | 29.0ms | 29.0ms | 0.333 | 收起，稳定 |
 
-对应 Stopwatch 持续时间为 `522.6ms`、`468.8ms`、`53.9ms`。这些数字只描述受控 WPF 窗口收到 Rendering 回调时的间隔和探针动作时间；不能转换为“显示器实际丢了多少帧”。
+对应 Stopwatch 持续时间为 `540.9ms`、`459.4ms`、`55.1ms`。这些数字只描述受控 WPF 窗口收到 Rendering 回调时的间隔和探针动作时间；不能转换为“显示器实际丢了多少帧”。
 
-## 同次运行的失败门禁
+## 修复前基线
 
-报告最终列出 5 个几何问题：
+修复前 `fef68005` 报告列出 5 个几何问题：
 
 1. `Shell 980x640` header actions 超出 `HeaderSurface` 边界。
 2. `Shell 1040x700` header actions 超出 `HeaderSurface` 边界。
@@ -55,7 +62,7 @@ GameSaveCenter.RenderHarness.exe shellqa artifacts/r23-05-shellqa-20260922
 4. Media `1100x720` inbox grid 与 batch row 的顶部间距为 `233 DIP`。
 5. Media `1366x768` inbox grid 与 batch row 的顶部间距为 `269 DIP`。
 
-本批不把这 5 项归类为性能通过，也不直接改写几何实现；它们是当前 `shellqa` 的真实失败输出，后续应作为独立的小批量几何复核/修复入口。R23-05 的性能数据保留为“代理已取得、报告未全绿”。
+以上 5 项已由当前 `130ba48a` 的 clean `shellqa` 复核收口；它们不再作为当前失败门禁。R23-05 的性能数据仍保留为“应用层代理已取得”，真实 presented frame/宿主性能不因几何通过而自动完成。
 
 ## 证据分账与未验边界
 
@@ -68,4 +75,4 @@ GameSaveCenter.RenderHarness.exe shellqa artifacts/r23-05-shellqa-20260922
 
 Demo 原目录不可用，继续参考已恢复生产基线；本批没有读取或写入真实存档、删除真实媒体、写用户云端或外发诊断。游戏选框、滚动条系统、命令绑定、取消/错误语义、恢复保护、有限列表性能和 Playnite/net462 未改。
 
-下一可执行任务：保留 R23-05 的几何失败待验入口，推进 R23-06 安装与回退身份核查；真实呈现帧仍需获得系统允许的 ETW/PresentMon 等价工具后另行复测。
+下一可执行任务：推进 R23-06 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 仍按真实宿主边界推进，真实呈现帧仍需获得系统允许的 ETW/PresentMon 等价工具后另行复测。

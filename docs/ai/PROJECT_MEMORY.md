@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-05 几何修复与帧证据复核（2026-09-22，第四十一子批次）
+
+- 先复核上一版 `shellqa` 的 5 个真实几何失败：980/1040 Shell actions 越界，Media 1040/1100/1366 表格顶部间距过大；没有把性能代理或截图当成真实呈现。
+- `130ba48a` 将 `IsCompactShellHeader` 调整为 `<1280`，仍使用现有显式第二行；Media Inbox 保留选框、滚动条、命令/Binding、状态和列表性能，把筛选预设/可用性提示放入既有 footer 行，不隐藏入口或改变业务语义。
+- clean 隔离 RenderHarness `shellqa` 通过：Shell 720/960/980/1040 双主题不越界；Media 三尺寸 `gridTopGap=142 DIP`，footer、历史、次级动作可达。Rendering/Stopwatch 只代表 offscreen WPF 应用层回调，ETW/WPR/xperf 权限拒绝保持，不报告 DWM/物理刷新率/真实掉帧。
+- 验证：XAML `24/24`；solution Release `0 errors/2` 条既有 warning；响应式 `5/5`、Media `6/6`、WPF 结构类 `137 passed/39 skipped`、source/diff 通过。代码提交已推送 `130ba48a`；本阶段文档待独立提交。main dirty 用户改动未碰，临时 D: 构建/报告不入 Git。
+- 下一项：R23-06 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 和真实 presented-frame 仍按宿主/权限边界推进。
+
 ## 第三轮 R23-03 代表页面终审（2026-09-22，第四十子批次）
 
 - 八类页面均按当前生产 XAML 入口核对：概览/存档/媒体/工具/任务/维护/设置/壳层。任务有 Empty/FilterEmpty/Loading/Error；存档、媒体、维护有各自状态承载；工具和设置按业务语义记录不适用/错误；壳层按选框、加载副标题、焦点和状态指示记录。

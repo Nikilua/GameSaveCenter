@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R23-05 壳层与 Media 几何修复（第四十一子批次）
+
+- 启动先确认默认目录是 dirty `main`，未在其上编辑；切回 `codex/ui-finesse-round2` worktree，复核上一版 R23-05 的 5 个几何失败。linked worktree 的 `obj` ACL 拒绝后，沿用已授权 D: 隔离源码副本流程。
+- `130ba48a` 修复共享响应式阈值和 Media Inbox footer 行位：980–1279 宽度进入现有第二行头部动作；筛选预设/可用性提示移到 footer，保留 DataGrid、页面级滚动、选框、命令/绑定、Automation、取消/错误和有限列表。
+- clean RenderHarness `shellqa` 通过：Shell 720/960/980/1040 双主题无越界；Media 1040/1100/1366 `gridTopGap=142 DIP`，页末 footer/历史/次级动作均在 viewport 内。Rendering/Stopwatch 代理样本已记录，但真实 presented frame、ETW、Playnite 宿主性能不宣称通过。
+- 验证：XAML `24/24`；隔离 solution Release `0 errors/2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`；响应式 `5/5`、Media 动作/筛选 `6/6`、WPF 结构 `137 passed/39 skipped/0 failed`、source/diff 通过。完整 `render-qa` 仍有 Overview/Settings/Task 等本批无关既有失败，未改门槛或冒充全量通过。
+- 代码提交 `130ba48a` 已推送；R23-05 账本更新为“部分满足，待宿主性能验收”，R23-08 移除几何 P0、保留 presented-frame 权限 P2。文档待独立提交后清理 D: 临时源码/构建/报告目录。下一可执行任务：R23-06 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 仍待验。
+
 ## 2026-09-22 R23-03 代表页面终审（第四十子批次）
 
 - 复查概览、存档、媒体、工具、任务、维护、设置、壳层当前 XAML 和 R00–R22 证据；没有重复实现已有服务/DTO/状态承载，页面派生表格和壳层选框/滚动边界保留。

@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R23-05 几何修复与帧证据复核（部分满足，待宿主性能验收，2026-09-22）
+
+- `130ba48a` 修复两个可复现的共享布局问题：Shell 头部紧凑阈值覆盖 `<1280`，复用现有第二行动作布局；Media Inbox 将筛选预设和可用性提示移到既有 footer 行，保留批量选择、DataGrid、页面滚动、命令/Binding、Automation 和有限列表语义。
+- clean 隔离 RenderHarness `shellqa` 通过：Light/Dark、Shell 720/960/980/1040 无头部越界；Media 1040/1100/1366 的 `gridTopGap` 均为 `142 DIP`，footer/历史/次级动作在页末可达；Rendering/Stopwatch 仅为 offscreen WPF 代理。
+- 验证：XAML `24/24`；solution Release `0 errors/2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`；响应式 `5/5`、Media 动作/筛选 `6/6`、`WpfUiResourceDictionaryTests 137 passed/39 skipped/0 failed`、source/diff 通过。ETW/WPR/xperf 仍受权限边界，真实 presented frame、Playnite 宿主性能、UIA/读屏、DPI/跨屏未验。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-05-FRAME-PERFORMANCE-EVIDENCE-20260922.md`。下一可执行任务：`R23-06` 当前候选安装与回退身份核查；R23-04 UIA/Controlled host 仍保留。
+
 ## 当前第三轮 R23-03 代表页面终审（已实现，待环境验证，2026-09-22）
 
 - 按概览、存档、媒体、工具、任务、维护、设置、壳层八类入口复核当前 XAML 状态承载、信息层级、命令/Automation 可达性及空/错/加载语义；工具、设置和壳层的不适用状态单独说明。
