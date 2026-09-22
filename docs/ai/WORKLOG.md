@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R16-04 恢复默认粒度定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`666c60bb` 上复用 `2b194461` 的现有实现，没有新增生产代码。
+- Playnite `R16SettingsDefaultsBehaviorTests 2/2`、`R16SettingsDefaultsSourceTests 1/1` 通过；当前提交隔离 Release solution `0 errors/2 warnings`，两条均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff check 通过。
+- 旧仓库输出的 `1f968819` 与当前 checkout 身份不一致，源码测试按保护逻辑拒绝；从当前 checkout 重建隔离输出后复测通过，作为真实测试边界写入证据。
+- 保留游戏选框、滚动条、命令/Binding、保存取消、错误/取消/恢复保护和 net462；只用合成 settings/隔离目录，未触碰真实存档、媒体、云端、用户配置或诊断。真实宿主和最终呈现仍待验，Demo 原目录不可用。
+
+证据：[R16-04 恢复默认粒度定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-RECHECK-20260923.md)。下一可执行任务：`R16-05 路径编辑一致`。
+
 ## 2026-09-23 Round3 R16-03 模板应用范围定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`1f968819` 上复用 `52fbf5de` 的现有实现，没有新增生产代码。

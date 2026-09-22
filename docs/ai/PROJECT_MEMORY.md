@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R16-04 恢复默认粒度定向复核（2026-09-23）
+
+- `666c60bb` 只记录 `2b194461` 现有设置恢复实现的复测，没有新增生产代码；单字段、四分类、全部默认、影响说明、敏感连接字段保护和 Playnite 草稿取消语义继续复用。
+- Playnite 行为 `2/2`、源码契约 `1/1`；当前 checkout 隔离 Release solution `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff 通过。旧输出的 `1f968819` 身份不一致由保护逻辑拒绝，重建后通过。
+- 测试仅用合成 settings、源码契约和 D 盘隔离目录；真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录仍待验。
+- 下一项 `R16-05 路径编辑一致`，先核对浏览/校验/打开/复制以及权限、网络不可达和不存在路径负例。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R16-04-RESET-GRANULARITY-RECHECK-20260923.md`。
+
 ## 第三轮 R16-03 模板应用范围定向复核（2026-09-23）
 
 - `1f968819` 只记录 `52fbf5de` 现有批量模板实现的复测，没有新增生产服务；稳定 Playnite ID、有界目标、排除项、100 个上限、逐项结果和游戏操作锁继续复用。
