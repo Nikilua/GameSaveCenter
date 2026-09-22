@@ -238,6 +238,19 @@ public sealed class CloudTransferStatusDto
             return $"{StateDisplay} · {attempt}{next}{reason}";
         }
     }
+
+    public string DetailRelativeDisplay => BuildDetailDisplay(useFullTime: false);
+    public string DetailFullDisplay => BuildDetailDisplay(useFullTime: true);
+
+    private string BuildDetailDisplay(bool useFullTime)
+    {
+        var attempt = AttemptCount > 0 ? $"第 {AttemptCount} 次" : "尚未重试";
+        var reason = string.IsNullOrWhiteSpace(LastError) ? string.Empty : $" · {LastError}";
+        var next = !NextAttemptUtc.HasValue
+            ? string.Empty
+            : $" · {(useFullTime ? TimeDisplayFormatter.Full(NextAttemptUtc.Value) : RetryTimingRelativeDisplay)} 再试";
+        return $"{StateDisplay} · {attempt}{next}{reason}";
+    }
 }
 
 /// <summary>Bounded aggregate used by dashboard and maintenance views.</summary>
