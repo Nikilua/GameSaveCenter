@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R15-06 耗时与吞吐定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`d9dc4317` 上复用 `6f65638e` 的单调采样、可靠总量门控和 Task Center 字段。
+- Worker 采样/查询/广播/失败链 `22/22`、Playnite 进度/快照/耗时套件 `5/5` 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。
+- 两个推进样本后才显示速率/ETA；未知总量、等待确认、10 秒无推进、普通阶段清空和任务快照采样变化均有行为证据。状态校正为“已满足，待环境验证”。
+- Worker 全量历史失败 `MediaSyncService.cs:570` 未改写为通过；真实 Playnite Task Center、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验。只用合成/fake/隔离 SQLite/测试宿主，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-RECHECK-20260923.md`。下一可执行任务：`R15-07 失败结果复制`。
+
 ## 第三轮 R15-05 任务来源定位定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`ba4d624b` 上复用 `0d1ff346` 的稳定来源引用与精确解析能力。

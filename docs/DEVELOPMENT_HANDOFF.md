@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R15-06 耗时与吞吐定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `d9dc4317`；没有新增生产代码，复用 `6f65638e` 的单调采样、可靠总量门控和 Task Center 字段。Worker 采样/查询/广播/失败链 `22/22`，Playnite 进度/快照/耗时套件 `5/5`，Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。未知总量、等待确认、10 秒停顿、普通阶段清空和两个推进样本门槛均有行为证据，账本校正为“已满足，待环境验证”。Worker 全量既有 `MediaSyncService.cs:570` 失败未改写，真实 Playnite Task Center、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用。下一可执行项为 R15-07 失败结果复制。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-RECHECK-20260923.md`。
+
 > 2026-09-23 R15-05 任务来源定位定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `ba4d624b`；没有新增生产代码，复用 `0d1ff346` 的稳定来源引用与精确导航。Playnite `R15TaskSourceNavigationTests 3/3`、Worker 查询/广播/失败路径 `21/21` 通过，Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。已删除游戏不跳同名游戏，已删除版本不选邻近版本，来源 clone 保留稳定诊断身份；账本校正为“已满足，待环境验证”。真实 Playnite 来源卡片、删除/重命名后的 UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验，Demo 原目录不可用；未碰真实存档、媒体、云端或诊断。下一可执行项为 R15-06 耗时与吞吐。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-RECHECK-20260923.md`。
