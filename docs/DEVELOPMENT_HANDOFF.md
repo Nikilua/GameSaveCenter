@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-24 R14-06 批量目标防误选定向复核：本批没有生产代码变更；在 `a5e55638` 上复用 `cfbb1279` 的 IconPath、IdentityDisplay、现有 Games/SelectedItem/TargetPlayniteId 和过滤后隐藏选择保护，新增同名对象按 Playnite ID 区分的行为夹具。`GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6`，隔离 Release XAML `24/24`、solution `0 error/0 warning`、Playnite `net462` 编译通过。`Shell-Media-1040x700` 仅为合成 offscreen 图标/平台/稳定 ID 视觉证据，不证明同名下拉运行时、真实 Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用；下一项 R14-07 媒体详情浏览，继续复用现有 `SelectedMedia`/分页/稳定 `MediaId`。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGETED-RECHECK-20260924.md`。
+
 > 2026-09-24 R14-05 重复媒体识别定向复核：无生产代码变更，复用 `136285d5` 的只读重复查询/DTO/IPC/页面；Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4`，当前 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。合成行为覆盖 SHA-256 确定组、元数据疑似组和删除/移动门禁；既有 RenderHarness `1040×700` 重复页为 `2` 组/组内 `4` 项、`330 DIP`，全报告其他页面仍有基线失败。真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能和超大真实媒体库未验。下一项 R14-06，保留现有游戏选框与稳定 ID 系统。
 
 > 2026-09-23 R14-04 撤销边界定向复核：无生产代码变更，Worker `MediaSyncServiceTests 20/20` 通过；正常撤销恢复归档副本并保留原始文件，应用后人工收藏/备注变化进入 `UndoneWithConflicts`，后来决定和应用后归档副本保留，不重建 Inbox 副本。合并主分支 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。仅合成/fake/隔离 SQLite/目录；真实 Playnite/package-host、RenderHarness 新呈现、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R14-05 重复媒体只读分组。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R14-06 批量目标防误选定向复核（2026-09-24）
+
+- 本批没有生产代码变更；在 `a5e55638` 上复用 `cfbb1279` 的 `IconPath`、`IdentityDisplay`、现有 Games/SelectedItem/TargetPlayniteId 和过滤后隐藏选择保护，只新增同名目标行为夹具。`GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6` 通过。
+- 隔离 Release 构建通过：XAML `24/24`、solution `0 error/0 warning`，Playnite `net462`；既有 `Shell-Media-1040x700` 截图显示选框/目标卡片的图标、平台、名称和 Playnite ID。截图是合成数据的 offscreen 证据，不等于同名下拉运行时或真实宿主呈现。
+- `IconPath` 仍只解析 Playnite 已有本地图标引用，不下载、不碰真实存档/媒体/云端。真实 Playnite/package-host、UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和超大真实媒体库仍未验；Demo 原目录不可用，沿用恢复生产基线。下一项为 `R14-07`。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-05 重复媒体识别定向复核（2026-09-24）
 
 - 没有生产代码变更；复用 `136285d5` 的只读重复查询、DTO、IPC 和页面。Worker `MediaSyncServiceTests 20/20`、Playnite `R14ClassificationSelectionTests 4/4` 通过；合成行为覆盖确定/疑似分组与不删除/移动门禁。
