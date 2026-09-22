@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R15-05 任务来源定位定向复核（2026-09-23）
+
+- `ba4d624b` 只记录当前实现的行为复测，没有新增生产代码；`0d1ff346` 的 `TaskSourceReferenceDto`、SQLite 查询/Worker 广播来源链和 Task Center 精确导航继续复用。
+- Playnite `R15TaskSourceNavigationTests 3/3`、Worker 查询/广播/失败路径 `21/21` 通过；同名游戏、邻近版本均不会作为稳定 ID 缺失时的兜底，来源 clone 保留诊断身份。账本校正为“已满足，待环境验证”。
+- 测试限于合成 DTO、fake/内存任务、隔离 SQLite 和测试宿主；没有读写真实存档、媒体、云端或诊断。真实 Playnite/package-host 来源卡片、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验，Demo 原目录不可用。
+- 下一可执行任务为 `R15-06 耗时与吞吐`，先核对可靠总量/采样和未知 ETA 语义；继续沿用 D 盘工作区，不恢复 C 盘旧仓库。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R15-05-TASK-SOURCE-LOCATION-RECHECK-20260923.md`。
+
 ## 第三轮 R23-05 壳层断点几何复测（2026-09-23）
 
 - `b5e7fca0` 只在 RenderHarness 增加真实 WPF 壳层断点覆盖：1200/1279 走 compact，1280/1366 走 expanded；检查 `RowDefinition` 状态、标题/动作区真实几何关系和 `HeaderSurface` 边界，不修改生产 UI、命令、Binding、选框、滚动条、取消/错误/恢复或 `net462`。
