@@ -385,6 +385,33 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void MaintenanceCloudDetailUsesRelativePrimaryAndFullEvidence()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var nextAttemptUtc = DateTime.UtcNow.AddMinutes(10);
+        var scheduled = new CloudTransferStatusDto
+        {
+            State = "RetryScheduled",
+            AttemptCount = 2,
+            NextAttemptUtc = nextAttemptUtc
+        };
+        var unknown = new CloudTransferStatusDto { State = "Pending" };
+
+        Assert.Contains("后", scheduled.DetailRelativeDisplay, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.Full(nextAttemptUtc), scheduled.DetailFullDisplay, StringComparison.Ordinal);
+        Assert.Equal("待上传 · 尚未重试", unknown.DetailRelativeDisplay);
+        Assert.Equal(unknown.DetailRelativeDisplay, unknown.DetailFullDisplay);
+        Assert.Contains("Binding=\"{Binding DetailRelativeDisplay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("Value=\"{Binding DetailFullDisplay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.DetailRelativeDisplay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedCloudTransfer.DetailFullDisplay, TargetNullValue=暂无状态详情}\"", maintenance, StringComparison.Ordinal);
+        Assert.DoesNotContain("Binding=\"{Binding DetailDisplay}\"", maintenance, StringComparison.Ordinal);
+        Assert.DoesNotContain("SelectedCloudTransfer.DetailDisplay", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void StorageRankKeepsLegacyDateAndExposesRelativeFullAndRawEvidence()
     {
         var timestamp = DateTime.UtcNow.AddMinutes(-2);
