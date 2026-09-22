@@ -1226,7 +1226,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
         Assert.Contains("x:Name=\"MediaInboxTableFrame\" Style=\"{StaticResource MediaTableFrame}\" Padding=\"14,12,14,12\"", media);
         Assert.Contains("x:Name=\"MediaInboxFooter\" Grid.Row=\"2\" Margin=\"0,10,0,0\"", media);
-        Assert.Contains("x:Name=\"MediaInboxSecondaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Center\" Margin=\"0,8,0,0\"", media);
+        Assert.Contains("x:Name=\"MediaFilterPresetRow\" Grid.Row=\"0\"", media);
+        Assert.Contains("x:Name=\"MediaInboxAvailabilityBand\" Grid.Row=\"1\"", media);
+        Assert.Contains("x:Name=\"MediaInboxSecondaryActions\" Grid.Row=\"3\" VerticalAlignment=\"Center\" Margin=\"0,8,0,0\"", media);
         Assert.Contains("x:Name=\"MediaTabControl\" Grid.Row=\"1\" SelectedIndex=\"{Binding MediaTabIndex, Mode=TwoWay}\" MinWidth=\"0\" MinHeight=\"0\" Margin=\"8,0,8,0\"", media);
         Assert.Contains("<Setter Property=\"Padding\" Value=\"16,8\"/>", media);
         Assert.Contains("Command=\"{Binding AssignInboxMediaBatchCommand}\"", media);

@@ -237,32 +237,6 @@
                                 </StackPanel>
                                 <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="2,0,0,4"/>
                             </WrapPanel>
-                            <WrapPanel x:Name="MediaFilterPresetRow" Margin="0,0,0,10" VerticalAlignment="Center">
-                                <TextBlock Text="筛选预设" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <ComboBox x:Name="MediaFilterPresetComboBox" Width="180" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterPresets}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedMediaFilterPreset, Mode=TwoWay}" ToolTip="选择已保存的媒体筛选组合" AutomationProperties.Name="媒体筛选预设" Margin="0,0,8,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyMediaFilterPresetCommand}" Content="应用" ToolTip="应用选中的媒体筛选预设" AutomationProperties.Name="应用媒体筛选预设" Margin="0,0,8,0"/>
-                                <TextBox x:Name="MediaFilterPresetNameBox" Width="132" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaFilterPresetNameDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入预设名称" AutomationProperties.Name="媒体筛选预设名称" Margin="0,0,8,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding SaveMediaFilterPresetCommand}" Content="保存" ToolTip="保存当前媒体筛选组合" AutomationProperties.Name="保存媒体筛选预设" Margin="0,0,8,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameMediaFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的媒体筛选预设" AutomationProperties.Name="重命名媒体筛选预设" Margin="0,0,8,0"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteMediaFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的媒体筛选预设" AutomationProperties.Name="删除媒体筛选预设"/>
-                            </WrapPanel>
-                            <Border Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,0,10">
-                                <Grid>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
-                                               Style="{DynamicResource GscActionAvailabilityHintText}"
-                                               AutomationProperties.Name="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
-                                               AutomationProperties.HelpText="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"/>
-                                    <ui:Button Grid.Column="1" Content="去维护中心检查" Command="{Binding OpenMaintenanceCommand}" Margin="10,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="去维护中心检查媒体环境">
-                                        <ui:Button.Style>
-                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers><DataTrigger Binding="{Binding MediaInboxNeedsMaintenance}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
-                                            </Style>
-                                        </ui:Button.Style>
-                                    </ui:Button>
-                                </Grid>
-                            </Border>
                             </StackPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" VerticalAlignment="Stretch" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
                                       SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="OnMediaInboxSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="MediaInbox" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选媒体行；Ctrl+Shift+C 复制当前单元格"
@@ -299,8 +273,34 @@
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
                         <Grid x:Name="MediaInboxFooter" Grid.Row="2" Margin="0,10,0,0" VerticalAlignment="Center">
-                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <WrapPanel Grid.Row="0" VerticalAlignment="Center">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <WrapPanel x:Name="MediaFilterPresetRow" Grid.Row="0" Margin="0,0,0,10" VerticalAlignment="Center">
+                                <TextBlock Text="筛选预设" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ComboBox x:Name="MediaFilterPresetComboBox" Width="180" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaFilterPresets}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedMediaFilterPreset, Mode=TwoWay}" ToolTip="选择已保存的媒体筛选组合" AutomationProperties.Name="媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyMediaFilterPresetCommand}" Content="应用" ToolTip="应用选中的媒体筛选预设" AutomationProperties.Name="应用媒体筛选预设" Margin="0,0,8,0"/>
+                                <TextBox x:Name="MediaFilterPresetNameBox" Width="132" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding MediaFilterPresetNameDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="输入预设名称" AutomationProperties.Name="媒体筛选预设名称" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding SaveMediaFilterPresetCommand}" Content="保存" ToolTip="保存当前媒体筛选组合" AutomationProperties.Name="保存媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameMediaFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的媒体筛选预设" AutomationProperties.Name="重命名媒体筛选预设" Margin="0,0,8,0"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteMediaFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的媒体筛选预设" AutomationProperties.Name="删除媒体筛选预设"/>
+                            </WrapPanel>
+                            <Border x:Name="MediaInboxAvailabilityBand" Grid.Row="1" Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="10,8" Margin="0,0,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               Style="{DynamicResource GscActionAvailabilityHintText}"
+                                               AutomationProperties.Name="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"
+                                               AutomationProperties.HelpText="{Binding MediaInboxAvailabilityHint, Mode=OneWay}"/>
+                                    <ui:Button Grid.Column="1" Content="去维护中心检查" Command="{Binding OpenMaintenanceCommand}" Margin="10,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="去维护中心检查媒体环境">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding MediaInboxNeedsMaintenance}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+                                </Grid>
+                            </Border>
+                            <WrapPanel Grid.Row="2" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding MediaInboxLoadedSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4" AutomationProperties.Name="媒体收件箱加载统计"/>
                                 <TextBlock x:Name="MediaInboxWindowAnchorNotice" Text="列表窗口已前移，当前位置不可恢复" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscWarningBrush}" VerticalAlignment="Center" Margin="0,0,8,4" Visibility="Collapsed"/>
                                 <ui:Button x:Name="ReloadMediaInboxButton" Content="返回最新" Command="{Binding ReloadMediaInboxCommand}" Click="OnReloadMediaInboxClick" ToolTip="重新载入较新的媒体收件箱内容并回到列表顶部" AutomationProperties.Name="返回最新媒体收件箱内容" Visibility="Collapsed" Margin="0,0,8,4"/>
@@ -316,7 +316,7 @@
                                     </ui:Button.Style>
                                 </ui:Button>
                             </WrapPanel>
-                            <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,0">
+                            <WrapPanel x:Name="MediaInboxSecondaryActions" Grid.Row="3" VerticalAlignment="Center" Margin="0,8,0,0">
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding IgnoreInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" AutomationProperties.Name="忽略所选媒体">
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionIgnore}"/><TextBlock Text="忽略所选" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>
@@ -340,7 +340,7 @@
                                 </ui:Button>
                                 <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding UndoMediaClassificationCommand}" Content="撤销上次建议批次" ToolTip="只撤销未被后续修改的建议项目" Margin="0,0,0,4"/>
                             </WrapPanel>
-                            <Border Grid.Row="2" Padding="10,8" Margin="0,4,0,0">
+                            <Border Grid.Row="4" Padding="10,8" Margin="0,4,0,0">
                                 <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource GscRedesignInfoBand}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
