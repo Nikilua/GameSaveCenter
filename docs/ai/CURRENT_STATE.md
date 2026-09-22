@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R16-03 模板应用范围定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`1f968819` 上复用 `52fbf5de` 的批量模板预览、稳定 ID 目标集合、逐项 Worker 执行和失败重试。
+- Core 批量预览 `3/3`、Worker 策略持久化 `2/2`、Playnite 批量模板源契约 `1/1` 通过；Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 warning；`validate-source.py`、XAML `24/24`、diff check 通过。
+- 显式勾选/排除、100 个上限、空选择、逐项结果、取消和稳定 ID 均有行为或契约证据。R16-03 状态校正为“已满足，待环境验证”。
+- 保留游戏选框、滚动条、命令绑定、取消/错误/恢复保护和 net462；未验真实 Playnite 批量点击/筛选/UIA/焦点、DPI/跨屏、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R16-03-POLICY-TEMPLATE-BATCH-RECHECK-20260923.md`。下一可执行任务：`R16-04 恢复默认粒度`。
+
 ## 第三轮 R16-02 策略差异预览定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`e63c62c7` 上复用 `b327d5ef` 的策略 DTO、模板目录、13 字段差异比较和保存/取消链。

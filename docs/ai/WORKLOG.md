@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R16-03 模板应用范围定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`1f968819` 上复用 `52fbf5de` 的现有实现，没有新增生产代码。
+- Core `PolicyTemplateBatchPreviewTests 3/3`、Worker `PolicyTemplatePersistenceTests 2/2`、Playnite `R16PolicyTemplateBatchSourceTests 1/1`；覆盖显式勾选/排除、稳定 ID、100 个上限、空选择、逐项结果和取消负例。
+- Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。R16-03 校正为“已满足，待环境验证”。
+- 未验真实 Playnite 批量点击/筛选/焦点/UIA、DPI/跨屏、presented frame、ETW 或宿主性能；Demo 原目录不可用。
+
+证据：[R16-03 模板应用范围定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R16-03-POLICY-TEMPLATE-BATCH-RECHECK-20260923.md)。下一可执行任务：`R16-04 恢复默认粒度`。
+
 ## 2026-09-23 Round3 R16-02 策略差异预览定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`e63c62c7` 上复用 `b327d5ef` 的现有实现，没有新增生产代码。
