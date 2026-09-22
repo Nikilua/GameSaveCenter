@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R16-06 生效条件说明定向复核
+
+- 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`9cef273b` 上复用 `83e7c745` 的生效条件提示和 `EndEdit → NotifyVisualSettingsChanged → settings.update → WorkerOptions.Apply/SyncPlan` 链路，没有新增生产代码。
+- `R16SettingsEffectSourceTests 2/2` 加 R16-05 路径回归 `6/6` 通过；当前提交隔离 Release `0 errors/2 warnings`，均为 `MediaCenterView.xaml.cs:706` 既有 `CS8602`。`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 已确认源码测试只覆盖提示/链路/负例契约，没有把它写成真实 Playnite 保存后时序；未使用真实存档、媒体、云端或用户配置，Demo 原目录不可用。真实宿主呈现、Worker 生命周期、DPI/UIA/IME、ETW/宿主性能仍待验。
+
+证据：[R16-06 生效条件说明定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R16-06-SETTINGS-EFFECT-CONDITIONS-RECHECK-20260923.md)。下一可执行任务：`R16-07 配置导入预览`。
+
 ## 2026-09-23 Round3 R16-05 路径编辑一致定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`3121d337` 上复用 `955dc52e` 的现有路径编辑实现，没有新增生产代码。
