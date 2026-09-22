@@ -31,6 +31,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 SetValue(ref gameDiscoveryDiagnostic, value);
                 OnPropertyChanged(nameof(GameDiscoveryDiagnosticSummary));
+                OnPropertyChanged(nameof(GameDiscoveryDiagnosticFullSummary));
             }
         }
 
@@ -45,6 +46,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         public string GameDiscoveryDiagnosticSummary => FormatGameDiscoveryDiagnostic(GameDiscoveryDiagnostic);
+        public string GameDiscoveryDiagnosticFullSummary => FormatGameDiscoveryDiagnostic(GameDiscoveryDiagnostic, useFullTime: true);
 
         private void RunGameDiscoveryDiagnostic()
         {
@@ -155,9 +157,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             GameDiscoveryDiagnostic = result;
         }
 
-        private static string FormatGameDiscoveryDiagnostic(GameDiscoveryDiagnosticDto? diagnostic)
+        internal static string FormatGameDiscoveryDiagnostic(
+            GameDiscoveryDiagnosticDto? diagnostic,
+            DateTime? nowUtc = null,
+            bool useFullTime = false)
         {
             if (diagnostic == null) return "尚未诊断游戏。请输入 Playnite 游戏 ID。";
+
+            var referenceUtc = nowUtc ?? DateTime.UtcNow;
 
             var lines = new System.Collections.Generic.List<string>
             {
@@ -166,9 +173,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 $"Worker 描述：{(diagnostic.WorkerRecordExists ? "存在" : diagnostic.WorkerReachable ? "不存在" : "未确认")}",
                 $"安装：Playnite 原始标志={(diagnostic.PlayniteIsInstalled ? "已安装" : "未安装")}；当前判定={(diagnostic.IsInstalled ? "已安装" : "未安装")}；来源={FormatInstallSource(diagnostic.InstallStateSource)}",
                 $"安装目录信号：{(diagnostic.HasInstallDirectoryConfigured ? diagnostic.InstallDirectoryPresent ? "已配置且存在" : "已配置但不存在" : "未配置")}",
-                $"Worker 描述同步：{FormatUtc(diagnostic.DescriptorSyncedUtc)}",
-                $"匹配：{FormatMatchState(diagnostic.MatchState, diagnostic.LudusaviName, diagnostic.MatchConfidence)}；最后尝试：{FormatUtc(diagnostic.LastMatchAttemptUtc)}",
-                $"备份：{diagnostic.BackupVersionCount} 个版本；最近备份：{FormatUtc(diagnostic.LastBackupUtc)}",
+                $"Worker 描述同步：{FormatUtc(diagnostic.DescriptorSyncedUtc, referenceUtc, useFullTime)}",
+                $"匹配：{FormatMatchState(diagnostic.MatchState, diagnostic.LudusaviName, diagnostic.MatchConfidence)}；最后尝试：{FormatUtc(diagnostic.LastMatchAttemptUtc, referenceUtc, useFullTime)}",
+                $"备份：{diagnostic.BackupVersionCount} 个版本；最近备份：{FormatUtc(diagnostic.LastBackupUtc, referenceUtc, useFullTime)}",
                 $"当前筛选：状态={diagnostic.CurrentStatusFilter}；平台={diagnostic.CurrentPlatformFilter}；搜索={(string.IsNullOrWhiteSpace(diagnostic.CurrentSearchText) ? "（空）" : "“" + diagnostic.CurrentSearchText.Trim() + "”")}"
             };
 
@@ -202,7 +209,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             return "未知";
         }
 
-        private static string FormatUtc(DateTime? value)
-            => value.HasValue ? value.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : "未知";
+        private static string FormatUtc(DateTime? value, DateTime nowUtc, bool useFullTime)
+            => value.HasValue
+                ? useFullTime
+                    ? TimeDisplayFormatter.Full(value.Value)
+                    : TimeDisplayFormatter.Relative(value.Value, nowUtc)
+                : "未知";
     }
 }

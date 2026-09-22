@@ -530,7 +530,7 @@
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding SyncGameDescriptorCommand}" Content="同步此游戏描述" Margin="0,0,8,8" ToolTip="只同步当前游戏的 Playnite 描述，不重新匹配其他游戏"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RetryGameMatchCommand}" Content="重试此游戏匹配" Margin="0,0,0,8" ToolTip="只为当前游戏执行一次 Ludusavi 匹配"/>
                                             </WrapPanel>
-                                            <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding GameDiscoveryDiagnosticSummary, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="150" MaxHeight="250" VerticalScrollBarVisibility="Auto" Margin="0,2,0,0" AutomationProperties.Name="游戏来源诊断结果"/>
+                                            <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding GameDiscoveryDiagnosticSummary, Mode=OneWay}" ToolTip="{Binding GameDiscoveryDiagnosticFullSummary, Mode=OneWay}" AutomationProperties.HelpText="{Binding GameDiscoveryDiagnosticFullSummary, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="150" MaxHeight="250" VerticalScrollBarVisibility="Auto" Margin="0,2,0,0" AutomationProperties.Name="游戏来源诊断结果"/>
                                         </StackPanel>
                                     </Border>
                                     <Border x:Name="MaintenanceDiagnosticSummaryGrid" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,10,0,0">

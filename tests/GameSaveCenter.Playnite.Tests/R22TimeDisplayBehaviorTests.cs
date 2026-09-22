@@ -493,6 +493,62 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void GameDiscoveryDiagnosticUsesRelativeSummaryAndFullEvidence()
+    {
+        var now = new DateTime(2026, 9, 22, 8, 0, 0, DateTimeKind.Utc);
+        var timestamp = now.AddMinutes(-3);
+        var diagnostic = new GameDiscoveryDiagnosticDto
+        {
+            Name = "合成测试游戏",
+            PlayniteExists = true,
+            WorkerRecordExists = true,
+            DescriptorSyncedUtc = timestamp,
+            LastMatchAttemptUtc = timestamp.AddMinutes(1),
+            LastBackupUtc = timestamp.AddMinutes(2),
+            MatchState = "Matched",
+            LudusaviName = "合成测试游戏",
+            BackupVersionCount = 2
+        };
+
+        var summary = DashboardViewModel.FormatGameDiscoveryDiagnostic(diagnostic, now);
+        var full = DashboardViewModel.FormatGameDiscoveryDiagnostic(diagnostic, now, useFullTime: true);
+
+        Assert.Contains("Worker 描述同步：3 分钟前", summary, StringComparison.Ordinal);
+        Assert.Contains("最后尝试：2 分钟前", summary, StringComparison.Ordinal);
+        Assert.Contains("最近备份：1 分钟前", summary, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.Full(timestamp), full, StringComparison.Ordinal);
+        Assert.Contains(TimeDisplayFormatter.RawUtc(timestamp), full, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void GameDiscoveryDiagnosticUnknownTimesRemainUnknownAndExposeFullBinding()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var diagnostic = new GameDiscoveryDiagnosticDto { Name = "未知时间游戏" };
+
+        var summary = DashboardViewModel.FormatGameDiscoveryDiagnostic(
+            diagnostic,
+            new DateTime(2026, 9, 22, 8, 0, 0, DateTimeKind.Utc));
+        var full = DashboardViewModel.FormatGameDiscoveryDiagnostic(
+            diagnostic,
+            new DateTime(2026, 9, 22, 8, 0, 0, DateTimeKind.Utc),
+            useFullTime: true);
+
+        Assert.Contains("Worker 描述同步：未知", summary, StringComparison.Ordinal);
+        Assert.Contains("最后尝试：未知", summary, StringComparison.Ordinal);
+        Assert.Contains("最近备份：未知", summary, StringComparison.Ordinal);
+        Assert.Contains("Worker 描述同步：未知", full, StringComparison.Ordinal);
+        Assert.Contains("最后尝试：未知", full, StringComparison.Ordinal);
+        Assert.Contains("最近备份：未知", full, StringComparison.Ordinal);
+        Assert.DoesNotContain("1970", full, StringComparison.Ordinal);
+        Assert.Contains("GameDiscoveryDiagnosticFullSummary", maintenance, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding GameDiscoveryDiagnosticFullSummary, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding GameDiscoveryDiagnosticFullSummary, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void TimelineOrderingRemainsUtcBasedWhileRelativeTextIsComputedSeparately()
     {
         var created = new DateTime(2026, 9, 20, 1, 0, 0, DateTimeKind.Utc);
