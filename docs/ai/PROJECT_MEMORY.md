@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R16-07 配置导入预览定向复核（2026-09-23）
+
+- `01e83d8a` 只记录 `451195ad` 现有导入预览实现的复测，没有新增生产代码；portable settings 架构 v1、detached 解析、确认后应用、未知字段忽略、设备身份保留和异常回滚继续复用。
+- R16 行为 `4/4`、源码 `1/1`、既有 portable 回归 `10/10`；隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 测试只用合成 JSON、detached settings 和隔离目录；未验真实 Playnite/package-host 文件选择器/MessageBox/保存取消、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录。
+- 下一项 `R16-08 保存冲突处理`，先核对 Playnite 编辑基线、后台更新通知和字段级合并/拒绝边界，禁止静默覆盖最后修改。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R16-07-SETTINGS-IMPORT-PREVIEW-RECHECK-20260923.md`。
+
 ## 第三轮 R16-06 生效条件说明定向复核（2026-09-23）
 
 - `9cef273b` 只记录 `83e7c745` 现有生效条件提示/消费链实现的复测，没有新增生产代码；外观即时预览、下一任务、下一轮轮询/健康计划和下一次 Playnite 启动分别标注，普通设置没有被笼统写成需重启。
