@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R21-05 禁用与隐藏区别当前复测（2026-09-24）
+
+- R21-05 实现已存在于 `380234e2`；本批没有重建生产代码。D 盘 `codex/ui-finesse-round2` 以当前 `1f69b803` 重新生成隔离 Release 产物，实际 `R21DisabledHiddenBehaviorTests 2/2` 通过。
+- `SaveCenterView` 的隐藏维护跳转、可聚焦解释文本、满足条件后的原命令恢复，以及共享禁用按钮的 UIA Invoke 负例均由实际 STA WPF 夹具验证；当前 Playnite `net462` 构建为 XAML `24/24`、`0 error`，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。
+- 这不是真实 Playnite/UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能证据；Demo 原目录不可用。下一可执行项是 R23-04 正常可枚举 Playnite 主窗体/UIA 会话，若继续受 CEF/窗口暴露阻塞则转依赖已满足的小批量。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R21-05-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R15-03 任务详情时间线定向复核（2026-09-24）
 
 - 当前实现 `fe0c05a9` 已提供任务时间线的 `OccurredUtc`、UTC/本地双显示、缺失事件/时间的未知语义、有限事件窗口和 `220 DIP` 详情滚动卡；本批 `b6170ec9` 只补乱序事件按 UTC、同刻按序号稳定排序及跨任务过滤行为测试，没有生产代码变更。

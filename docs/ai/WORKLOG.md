@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Round3 R21-05 禁用与隐藏区别当前复测
+
+- 当前工作在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`，实现已由 `380234e2` 提供；本批没有生产代码变更，只复核当前 `1f69b803`。
+- 隔离 Release 构建成功：XAML `24/24`、Playnite `net462`、`0 error`，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；实际 `R21DisabledHiddenBehaviorTests 2/2` 通过。
+- 真实行为覆盖 Collapsed 隐藏不入焦点/可见树、解释文本可聚焦且可由 Name/HelpText 读回、满足条件后原命令恢复，以及共享禁用按钮 UIA Invoke 被拒绝且无副作用。未验真实 Playnite/UIA/读屏/IME、DPI/跨屏、呈现帧、ETW 或宿主性能；Demo 原目录不可用。
+
+证据：[R21-05 当前复测](../design/reviews/ui-finesse-round3-20260915/evidence/R21-05-TARGETED-RECHECK-20260924.md)。下一可执行项为 R23-04 正常可枚举 Playnite 主窗体/UIA 会话；若环境仍阻塞则推进依赖已满足的小批量。
+
 ## 2026-09-24 Round3 R15-03 任务详情时间线定向复核
 
 - 当前实现已满足受控时间线条件；新增 `b6170ec9` 行为测试，验证乱序 UTC 排序、同刻序号稳定和跨任务过滤，没有生产代码变更。
