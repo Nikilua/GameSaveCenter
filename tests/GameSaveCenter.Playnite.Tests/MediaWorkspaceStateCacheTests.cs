@@ -115,5 +115,30 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.DoesNotContain("缓存于", caption, StringComparison.Ordinal);
             Assert.DoesNotContain("上次成功", caption, StringComparison.Ordinal);
         }
+
+        [Fact]
+        public void InboxStaleCaptionUsesRelativeTimeAndKeepsFullTimeAvailable()
+        {
+            var lastSuccessUtc = new DateTime(2026, 9, 22, 8, 0, 0, DateTimeKind.Utc);
+            var nowUtc = new DateTime(2026, 9, 22, 8, 2, 0, DateTimeKind.Utc);
+
+            var caption = DashboardViewModel.FormatMediaInboxCountCaption(
+                isWorkerOffline: false,
+                state: WorkspaceDataState.Stale,
+                lastSuccessUtc: lastSuccessUtc,
+                hasCurrentContextSuccess: true,
+                useFullTime: false,
+                nowUtc: nowUtc);
+            var fullCaption = DashboardViewModel.FormatMediaInboxCountCaption(
+                isWorkerOffline: false,
+                state: WorkspaceDataState.Stale,
+                lastSuccessUtc: lastSuccessUtc,
+                hasCurrentContextSuccess: true,
+                useFullTime: true,
+                nowUtc: nowUtc);
+
+            Assert.Equal("缓存 · 上次成功 2 分钟前", caption);
+            Assert.Contains(TimeDisplayFormatter.Full(lastSuccessUtc), fullCaption, StringComparison.Ordinal);
+        }
     }
 }
