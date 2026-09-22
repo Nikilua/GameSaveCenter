@@ -2081,3 +2081,9 @@ git branch --show-current
 - 首页 `OverviewView.xaml` 的风险卡首列为 14 DIP；关注事项滚动视口 `MaxHeight` 为 220 DIP，仍保留有限内部滚动、页面根滚动和真实 `OpenAttentionCenterCommand`。
 - 本轮验证：source/XAML/差异门禁通过，WPF 静态审查 0 error、18 warnings、172 info，Release 0 warning/0 error，Core 59/59、Worker 199/199、Playnite 295 通过/57 跳过，`.tmp/ui-qa-sidebar-icons-v1/render-qa-report.txt` 为 `render-qa OK`。
 - 交付前仍需保持真实宿主边界说明：本轮未重新取得 Playnite 重启后的逐像素折叠截图；不得把 RenderHarness 结果扩写为真实 Playnite 的 Light/Dark/Follow、DPI、键盘焦点或 Tooltip 已验收。
+# 当前交接（2026-09-22）
+
+- 唯一开发工作区为 `D:\workplace\github\GameSaveCenter`，当前分支 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 `git worktree prune`。
+- `main` 合并提交 `1e1f0fd1` 已在 D 盘以 Release 构建成功并推送；本次新增的 `814d3e7a` 游戏来源诊断时间小批量尚待文档提交、分支推送和再次合并 main。
+- 当前未验边界：真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/物理跨屏、最终呈现帧、ETW、宿主性能；Demo 原目录不可用。当前仓库不存在 `scripts/validate_wpf_ui.py`，不得把 WPF 静态审查写成已复跑。
+- 下一可执行任务：继续核对 `DashboardViewModel`/Contracts 的真实 stale/缓存时间入口；保留报告/复制列/日志的稳定完整时间语义。
