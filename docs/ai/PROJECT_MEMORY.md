@@ -5,7 +5,7 @@
 - 真实生产绑定位于 `MaintenanceView.xaml` 的游戏来源诊断只读 TextBox；复用 `GameDiscoveryDiagnosticDto` 现有三个 UTC 字段和共享 `TimeDisplayFormatter`，没有新增服务或 DTO。
 - `814d3e7a` 让正文显示相对时间；`GameDiscoveryDiagnosticFullSummary` 通过 Tooltip/Automation HelpText 提供完整本地时区 + round-trip UTC；null 时间仍显示“未知”，不把默认值当事实。
 - `R22TimeDisplayBehaviorTests 26/26`，隔离 Release `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`，XAML `24/24`，source/diff 通过。`scripts/validate_wpf_ui.py` 在 D 盘仓库不存在，后续只能在工具实际恢复后补跑，不得写成当前通过。
-- D 盘是唯一开发路径；C 盘旧 worktree 已删除、Git worktree 已 prune；`main` 的上一阶段合并 `1e1f0fd1` 已构建并推送。当前新批尚未合并 main。
+- D 盘是唯一开发路径；C 盘旧 worktree 已删除、Git worktree 已 prune；包含本批的 `main` 合并提交 `8b3ebf33` 已构建并推送。当前开发分支仍为 `codex/ui-finesse-round2`。
 - 不要把报告/复制列/日志完整时间入口改成相对时间；下一步先查实际用户可见绑定，再按小批量补 unknown/时区/行为证据。
 
 ## 第三轮 R22-01 媒体缓存时间合同（2026-09-22，第四十五子批次）

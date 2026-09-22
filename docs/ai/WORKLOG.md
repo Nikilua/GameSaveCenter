@@ -5,7 +5,7 @@
 - 在 D 盘开发分支先核对已有 `GameDiscoveryDiagnosticDto`、`TimeDisplayFormatter` 和 `MaintenanceView` 实际绑定；未重建服务/DTO，也未把报告、复制列或日志入口混入本批。
 - `814d3e7a` 将游戏来源诊断正文的三个时间入口改为相对时间，增加完整本地/UTC Tooltip 与 Automation HelpText；缺失时间保持“未知”。命令、筛选、匹配、取消/错误、安全、选框/滚动条和 net462 兼容未改。
 - `R22TimeDisplayBehaviorTests 26/26`；隔离 Release XAML `24/24`、`0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；source validation、diff check 通过。当前 D 盘仓库没有 `scripts/validate_wpf_ui.py`，未把缺失工具写成 WPF 静态审查通过。
-- 先前合并提交 `1e1f0fd1` 已在 D 盘构建并推送 `main`；C 盘旧 worktree 已删除并完成 Git prune。新批代码仍待文档提交、分支推送和再次合并 main。
+- 包含本批的合并提交 `8b3ebf33` 已在 D 盘完成 Release 构建并推送 `main`；C 盘旧 worktree 已删除并完成 Git prune。开发分支随后恢复为 `codex/ui-finesse-round2`。
 - 仅使用合成 DTO、固定 UTC 和隔离构建/测试目录；未触碰真实存档、媒体、云端或诊断外发。Demo 原目录不可用；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 - 下一可执行项：继续按实际绑定盘点 `DashboardViewModel`/Contracts 的 stale/缓存时间入口。
 

@@ -2084,6 +2084,6 @@ git branch --show-current
 # 当前交接（2026-09-22）
 
 - 唯一开发工作区为 `D:\workplace\github\GameSaveCenter`，当前分支 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 `git worktree prune`。
-- `main` 合并提交 `1e1f0fd1` 已在 D 盘以 Release 构建成功并推送；本次新增的 `814d3e7a` 游戏来源诊断时间小批量尚待文档提交、分支推送和再次合并 main。
+- 包含本次 `814d3e7a`/`412a7628` 的 `main` 合并提交 `8b3ebf33` 已在 D 盘以 Release 构建成功并推送；开发继续在 `codex/ui-finesse-round2`。
 - 当前未验边界：真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/物理跨屏、最终呈现帧、ETW、宿主性能；Demo 原目录不可用。当前仓库不存在 `scripts/validate_wpf_ui.py`，不得把 WPF 静态审查写成已复跑。
 - 下一可执行任务：继续核对 `DashboardViewModel`/Contracts 的真实 stale/缓存时间入口；保留报告/复制列/日志的稳定完整时间语义。
