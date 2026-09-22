@@ -1,6 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-24 R14-06 批量目标防误选定向复核：本批没有生产代码变更；在 `a5e55638` 上复用 `cfbb1279` 的 IconPath、IdentityDisplay、现有 Games/SelectedItem/TargetPlayniteId 和过滤后隐藏选择保护，新增同名对象按 Playnite ID 区分的行为夹具。`GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6`，隔离 Release XAML `24/24`、solution `0 error/0 warning`、Playnite `net462` 编译通过。`Shell-Media-1040x700` 仅为合成 offscreen 图标/平台/稳定 ID 视觉证据，不证明同名下拉运行时、真实 Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用；下一项 R14-07 媒体详情浏览，继续复用现有 `SelectedMedia`/分页/稳定 `MediaId`。
+> 2026-09-24 R14-07 媒体详情浏览定向复核：本批没有生产代码变更；当前 `89f07445` 重新生成身份一致的隔离产物后，选定 Playnite 套件 `46/46` 通过，覆盖当前已加载窗口导航、MediaId 列表锚点、缩略图尺寸/取消/缺失、视频回退和 generation 保护。隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过；既有 `Media-1040x700-tab1` 只显示详情入口与媒体列表，未打开详情面板。跨页导航、真实视频编解码、真实 Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R14-08 来源规则试运行。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-07-TARGETED-RECHECK-20260924.md`。
+
+> 2026-09-24 R14-06 批量目标防误选定向复核：本批没有生产代码变更；在 `89f07445` 上复用 `cfbb1279` 的 IconPath、IdentityDisplay、现有 Games/SelectedItem/TargetPlayniteId 和过滤后隐藏选择保护，新增同名对象按 Playnite ID 区分的行为夹具。`GamePickerViewModelTests 22/22`、`R14ClassificationSelectionTests 4/4`、`GamePickerKeyboardBehaviorTests 6/6`，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning、Playnite `net462` 编译通过。`Shell-Media-1040x700` 仅为合成 offscreen 图标/平台/稳定 ID 视觉证据，不证明同名下拉运行时、真实 Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 或宿主性能。Demo 原目录不可用；下一项 R14-07 媒体详情浏览，继续复用现有 `SelectedMedia`/分页/稳定 `MediaId`。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-06-TARGETED-RECHECK-20260924.md`。
 
