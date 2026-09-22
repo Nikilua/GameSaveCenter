@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R14-01/R14-02 受控证据账本校正（2026-09-23）
+
+- 本阶段只校正 `ROUND3_PROGRESS.md` 的两个历史详细行，没有新增生产服务、DTO、命令、Binding 或视觉实现；当前 R14 汇总事实以 `8a9a052e` 的定向复核为依据。
+- 当前 D 盘分支隔离 Release 构建为 XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；`R14ClassificationEvidenceTests 1/1`、`R14ClassificationSelectionTests 4/4`、Worker `MediaSyncServiceTests 20/20`。
+- 这次校正保留合成 DTO/fake/隔离 testhost 和 offscreen logical DIP 的边界；真实 Playnite/package-host、UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能和真实媒体/云端仍未验。下一可执行项为 `R14-03`，不重复已收口的 R14-01/02。
+
 ## 第三轮 R23-04 UIA 候选窗口探测复测（2026-09-23）
 
 - `f551359c58142e43bfc9dbe4dd3dff3987111244` 只增强真实宿主 runner：复用已有 Win32 顶层窗口枚举，逐窗建立 UIA 根节点，保留 `MainWindowHandle` 回退，并把候选窗口、根节点名称/控件类型、匹配窗口和动作写入 `host-window-exposure.json`；不修改生产 UI、命令、Binding、选框、滚动条、取消/错误或恢复语义。

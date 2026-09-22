@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-01/R14-02 受控证据账本校正（2026-09-23）
+
+- 本阶段没有生产代码变更，只把 R14-01/02 的详细账目与 `8a9a052e` 的 R13/R14 定向复核对齐：R14-01 `1/1`、R14-02 `4/4`、Worker `MediaSyncServiceTests 20/20`，并保留 R14-01/02 已满足但真实宿主待验的状态。
+- 当前隔离 Release 构建 XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；只使用合成 DTO、fake 服务、隔离目录和 offscreen logical DIP，不触碰真实存档、媒体或云端。
+- 不把全局 RenderHarness 既有失败、离屏结构或代理性能写成真实呈现/物理性能通过；下一项继续 `R14-03`，真实 Playnite/UIA/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍是边界。
+
 ## 第三轮 R23-04 UIA 候选窗口探测复测（2026-09-23）
 
 - 在 D 盘唯一工作区、`codex/ui-finesse-round2` 上，`f551359c` 只增强 `real-host-audit.ps1` 的宿主证据：逐窗探测 Win32 顶层窗口和 UIA 根节点，保留 MainWindowHandle 回退，结构化记录候选、根节点类型、匹配和动作；没有修改生产 UI 或业务语义。

@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R14-01/R14-02 受控证据账本校正
+
+- 本阶段只校正 `ROUND3_PROGRESS.md` 中 R14-01/02 的旧详细状态，没有新增生产代码；按 `8a9a052e` 的 R13/R14 定向复核补齐当前事实：R14-01 `1/1`、R14-02 `4/4`、Worker `MediaSyncServiceTests 20/20`。
+- 当前隔离 Release 构建 XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite/Worker 定向测试分别 `5/5`、`20/20`，source validation 与 diff check 通过。
+- 只使用合成/fake/隔离 testhost；真实 Playnite/package-host、UIA/读屏/IME、DPI/跨屏、presented frame、ETW、宿主性能及真实存档/媒体/云端未验。下一项是 R14-03，保留 R23-04 的外部宿主阻塞，不重复 R14-01/02。
+
 ## 2026-09-23 Round3 R23-04 UIA 候选窗口探测复测
 
 - `f551359c` 增强 `real-host-audit.ps1`：复用已有 Win32 顶层窗口枚举，逐窗创建 UIA 根节点，保留 MainWindowHandle 回退，并把候选窗口、UIA 根节点类型、匹配结果和动作写入 `host-window-exposure.json`；没有改变产品控件、命令、Binding、滚动或安全语义。
