@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R16-05 路径编辑一致定向复核（2026-09-23）
+
+- `3121d337` 只记录 `955dc52e` 现有路径编辑实现的复测，没有新增生产代码；六个本地工具/目录字段共用当前字段选择、浏览、单字段探测、严格打开和复制入口，Rclone 远端目标不进入本地动作。
+- 合成/隔离路径回归 `6/6`；覆盖有效、缺失、文件误作目录、保存校验、禁用健康检查和源契约负例。隔离 Release `0 errors/2 existing MediaCenter nullable warnings`，源码、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 未使用真实网络共享、用户 ACL、剪贴板或 Explorer；真实 Playnite/package-host、最终呈现、DPI/UIA/IME、ETW、宿主性能和 Demo 原目录仍待验。
+- 下一项 `R16-06 生效条件说明`，先核对设置字段实际消费点和保存/应用/重启边界。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R16-05-PATH-EDITOR-RECHECK-20260923.md`。
+
 ## 第三轮 R16-04 恢复默认粒度定向复核（2026-09-23）
 
 - `666c60bb` 只记录 `2b194461` 现有设置恢复实现的复测，没有新增生产代码；单字段、四分类、全部默认、影响说明、敏感连接字段保护和 Playnite 草稿取消语义继续复用。

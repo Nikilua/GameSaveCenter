@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R16-05 路径编辑一致定向复核（2026-09-23）
+
+- 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`3121d337` 上复用 `955dc52e` 的六字段路径编辑卡片、只读探测、Binding 和剪贴板重试。
+- `R16SettingsPathEditorBehaviorTests + R16SettingsPathEditorSourceTests + SettingsPathValidationTests 6/6` 通过；隔离 Release solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。
+- 保留游戏选框、滚动条、命令绑定、保存/取消、错误/取消/恢复保护和 net462；未验真实 Playnite/package-host、Explorer/文件夹对话框、UIA/焦点、DPI/跨屏、presented frame、ETW 或宿主性能，Demo 原目录不可用。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R16-05-PATH-EDITOR-RECHECK-20260923.md`。下一可执行任务：`R16-06 生效条件说明`。
+
 ## 第三轮 R16-04 恢复默认粒度定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`666c60bb` 上复用 `2b194461` 的安全默认目录、单字段/分类/全部入口和草稿取消语义。
