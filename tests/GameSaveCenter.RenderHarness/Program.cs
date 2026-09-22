@@ -6648,7 +6648,13 @@ public static class Program
                 window.UpdateLayout();
 
                 button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                PumpDispatcher(210);
+                // Wait for a bounded active intermediate frame instead of assuming that
+                // the first fixed slice already includes the dark-theme render pass.
+                PumpUntil(
+                    () => shell.SidebarTransitionRunningForAudit
+                        && shell.SidebarWidthForAudit > 78
+                        && shell.SidebarWidthForAudit < 270,
+                    420);
                 var interruptedWidth = shell.SidebarWidthForAudit;
                 report.AppendLine(
                     $"ReentryActive[{themeName}] width={interruptedWidth:0.##} "
@@ -6718,6 +6724,19 @@ public static class Program
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpUntil(Func<bool> predicate, int timeoutMilliseconds)
+    {
+        var deadline = DateTime.UtcNow.AddMilliseconds(Math.Max(1, timeoutMilliseconds));
+        while (DateTime.UtcNow < deadline)
+        {
+            if (predicate())
+                return true;
+            PumpDispatcher(20);
+        }
+
+        return predicate();
     }
 
     private static void RunSettingsThemeTransitionProbe(string outputRoot, StringBuilder report)
