@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-23 R15-07 失败结果复制定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `d9dc4317`；没有新增生产代码，复用 `37dd4a03` 的任务复制、统一脱敏、有限高详情和剪贴板重试。Playnite 失败复制/剪贴板/恢复/任务详情套件 `21/21`，`net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning。短摘要、密码负例、完整脱敏 payload、只读可选择详情、第三次成功和四次失败均有行为证据，账本校正为“已满足，待环境验证”。真实系统剪贴板/Playnite UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，Worker 全量既有 `MediaSyncService.cs:570` 失败不变。下一可执行项为 R15-08 清理历史范围。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-07-TASK-FAILURE-COPY-RECHECK-20260923.md`。
+
 > 2026-09-23 R15-06 耗时与吞吐定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核身份为 `d9dc4317`；没有新增生产代码，复用 `6f65638e` 的单调采样、可靠总量门控和 Task Center 字段。Worker 采样/查询/广播/失败链 `22/22`，Playnite 进度/快照/耗时套件 `5/5`，Playnite `net462` 定向构建无错误，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；`validate-source.py`、XAML `24/24`、diff check 通过。未知总量、等待确认、10 秒停顿、普通阶段清空和两个推进样本门槛均有行为证据，账本校正为“已满足，待环境验证”。Worker 全量既有 `MediaSyncService.cs:570` 失败未改写，真实 Playnite Task Center、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用。下一可执行项为 R15-07 失败结果复制。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-06-TASK-THROUGHPUT-RECHECK-20260923.md`。
