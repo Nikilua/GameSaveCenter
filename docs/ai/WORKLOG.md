@@ -1,12 +1,21 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 游戏来源诊断时间（第四十六子批次）
+
+- 在 D 盘开发分支先核对已有 `GameDiscoveryDiagnosticDto`、`TimeDisplayFormatter` 和 `MaintenanceView` 实际绑定；未重建服务/DTO，也未把报告、复制列或日志入口混入本批。
+- `814d3e7a` 将游戏来源诊断正文的三个时间入口改为相对时间，增加完整本地/UTC Tooltip 与 Automation HelpText；缺失时间保持“未知”。命令、筛选、匹配、取消/错误、安全、选框/滚动条和 net462 兼容未改。
+- `R22TimeDisplayBehaviorTests 26/26`；隔离 Release XAML `24/24`、`0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；source validation、diff check 通过。当前 D 盘仓库没有 `scripts/validate_wpf_ui.py`，未把缺失工具写成 WPF 静态审查通过。
+- 先前合并提交 `1e1f0fd1` 已在 D 盘构建并推送 `main`；C 盘旧 worktree 已删除并完成 Git prune。新批代码仍待文档提交、分支推送和再次合并 main。
+- 仅使用合成 DTO、固定 UTC 和隔离构建/测试目录；未触碰真实存档、媒体、云端或诊断外发。Demo 原目录不可用；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+- 下一可执行项：继续按实际绑定盘点 `DashboardViewModel`/Contracts 的 stale/缓存时间入口。
+
 ## 2026-09-22 R22-01 媒体缓存时间显示（第四十五子批次）
 
 - D 盘 `D:\workplace\github\GameSaveCenter` 已切换到 `codex/ui-finesse-round2`；原 C 盘 worktree 已停止使用，删除因进程句柄暂缓。D 盘 `main` 原未提交对话框改动先保存为 `2e071b3e`，未加入 `src.zip`。
 - `48db9ee5` 将媒体收件箱 Offline/Stale 缓存标题复用 `TimeDisplayFormatter.Relative`，`2484f132` 同步 RenderHarness fake/绑定清单，`b1afb004` 补 Stale 相对/完整时间行为回归；新增完整时间 Tooltip/Automation HelpText，不改变数量、命令、选框、滚动、取消/错误或恢复保护。
 - 验证：最终 `MediaWorkspaceStateCacheTests 7/7`；`WorkspaceStateSourceTests 9/9 + 1 skip`；脚本化隔离 Release 构建 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602`；XAML `24/24`、source validation、diff check、WPF `0/30/177` 通过。普通未带 `GSC_BUILD_COMMIT` 的入口拒绝身份，按既有门禁重跑。
 - 仅使用合成 UTC、fake RenderHarness、隔离输出；未接触真实存档/媒体/云端/诊断。Demo 原目录不可用；真实 Playnite/package-host、UIA/读屏、DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
-- 下一可执行项：继续盘点 `DashboardViewModel` 其余 stale/缓存 `ToLocalTime` 用户入口。
+- 下一可执行项：继续盘点 `DashboardViewModel` 其余 stale/缓存 `ToLocalTime` 用户入口；C 盘旧 worktree 已删除并完成 Git prune。
 
 ## 2026-09-22 R22-01 云端过期提示时间合同（第四十四子批次）
 

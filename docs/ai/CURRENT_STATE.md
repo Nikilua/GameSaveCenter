@@ -1,12 +1,20 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R22-01 游戏来源诊断时间合同（部分满足，待继续，2026-09-22）
+
+- `814d3e7a` 复用已有 `TimeDisplayFormatter` 收口 `MaintenanceView` 游戏来源诊断卡片的 Worker 描述同步、最后匹配尝试和最近备份时间：正文显示相对时间，Tooltip/Automation HelpText 显示完整本地时区与 UTC 原值；未知时间不虚构日期。
+- `R22TimeDisplayBehaviorTests 26/26`；隔离 Release XAML `24/24`、Playnite `net462`/Tests `net472`/Worker/Core `0 error`，保留 `MediaCenterView.xaml.cs:699` 两条既有 `CS8602` warning；source validation、diff check 通过。
+- 当前仓库不存在 `scripts/validate_wpf_ui.py`，本批未新增 WPF 静态审查通过声明；真实 Playnite/UIA/呈现/ETW/宿主性能仍未验。Demo 原目录不可用，继续参考已恢复生产基线。
+- D 盘 `D:\workplace\github\GameSaveCenter` 是唯一开发工作区，当前在 `codex/ui-finesse-round2`；C 盘旧 worktree 已删除并完成 Git prune，`main` 合并提交 `1e1f0fd1` 已完成 Release 构建并推送。
+- 下一可执行项：继续核对 `DashboardViewModel`/Contracts 其余真实 stale/缓存时间入口；报告/复制列/日志的稳定完整时间语义不由本批代签。
+
 ## 当前第三轮 R22-01 媒体缓存时间合同（部分满足，待继续，2026-09-22）
 
 - `2bf95267` 复用 `TimeDisplayFormatter` 修复用户可见云端 stale banner 直接拼接本地时间的问题：显示相对时间 + 完整本地/UTC，成功读取时间为空时不虚构时间，只保留真实刷新失败原因；加入可注入参考时间。
 - `48db9ee5`、`2484f132`、`b1afb004` 继续收口媒体收件箱 Offline/Stale 缓存标题：短文案使用相对时间，Tooltip/Automation HelpText 保留完整本地/UTC；无成功时间负例不虚构缓存时间，RenderHarness 字段契约同步。
 - `MediaWorkspaceStateCacheTests 7/7`；`WorkspaceStateSourceTests 9/9 + 1 skip`；XAML `24/24`；隔离 Release `0 error / 2` 条既有 `CS8602` warning；source validation、diff check、WPF `0/30/177` 通过。命令、筛选、分页、旧数据保留、选框、滚动条和取消/错误语义未改。
 - `RecentAccessItem.LastAccessDisplay` 是保留兼容属性，Overview 实际绑定仍是相对时间和完整 Tooltip/Automation HelpText，本批未误改兼容入口。其他残余 `ToLocalTime` 仍待逐项核对。
-- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MEDIA-CACHE-TIME-20260922.md`。下一可执行任务：继续盘点 `DashboardViewModel` 其余 stale/缓存时间入口；真实 Playnite/UIA/呈现/ETW/宿主性能边界仍未验。D 盘已切换到开发分支，C 盘旧 worktree 删除因进程句柄暂缓。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R22-01-MEDIA-CACHE-TIME-20260922.md`。下一可执行任务：继续盘点 `DashboardViewModel` 其余 stale/缓存时间入口；真实 Playnite/UIA/呈现/ETW/宿主性能边界仍未验。D 盘已切换到开发分支，C 盘旧 worktree 已删除并完成 Git prune。
 
 ## 当前第三轮 R23-04 共享按钮复合内容修复与真实嵌入证据（已满足，待宿主环境验证，2026-09-22）
 
