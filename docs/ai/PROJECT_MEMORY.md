@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R14-08 来源规则试运行定向复核（2026-09-24）
+
+- 复用 `89141528` 的来源 DTO、匹配器、IPC 和 Worker 预算/取消链，没有新增生产代码；Worker `MediaSyncServiceTests 20/20` 与 Playnite `R14SourceRulePreviewTests 1/1` 通过。
+- 受控样本为扫描 `4` 项、命中 `2`、排除 `2`，显示原因/大小/隔离路径；源规则试运行不保存、不入库、不移动，数量与时间预算返回 Partial/截断状态。
+- 当前 Release XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462`；真实目录权限、超大目录、Playnite/UIA/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R15-01。
+
+证据为 `R14-08-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R14-07 媒体详情浏览定向复核（2026-09-24）
 
 - 复用 `c17d9bc7` 的 `SelectedMedia`、稳定 `MediaId`、当前已加载媒体窗口、`SelectionAnchorResolver`、缩略图 generation/cancellation 和视频失败回退；没有新增生产代码。
