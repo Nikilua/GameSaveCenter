@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R22-01 时间显示统一审计收口（第五十子批次）
+
+- 继续按实际绑定盘点 `DashboardViewModel`/Contracts：生产 `Views/*.xaml` 未再引用已收口的旧本地投影或云端 `DetailDisplay`，报告、复制列、日志的稳定完整时间入口按设计保留，没有误改为相对时间。
+- `ed03c49e` 新增生产视图负向/正向绑定审计；`R22TimeDisplayBehaviorTests 30/30`，当前提交身份的 `R22TaskDurationBehaviorTests 2/2`，source validation、diff check 通过。
+- 主分支合并提交 `002c2c63` 的完整 Release solution 为 `0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；开发分支 Worker.Tests Release 编译 `0 warning / 0 error`。
+- R22-01 账本已收口为“已满足，待环境验证”。本批仍只使用合成 DTO、源审计和隔离 testhost；真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/跨屏、最终呈现、ETW/宿主性能未验，Demo 原目录不可用，WPF 静态脚本缺失未写成通过。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R22-01-TIME-AUDIT-CLOSEOUT-20260922.md`。下一可执行项：R23-04 UIA/Controlled host 收口；宿主受阻时保留边界并推进依赖满足的独立验证。
+
 ## 2026-09-22 R22-01 维护云端状态详情时间（第四十九子批次）
 
 - 只处理 `MaintenanceView.xaml` 两个真实入口：云端队列表格状态详情和选中记录详情原来都绑定 `CloudTransferStatusDto.DetailDisplay`，Worker 维护报告继续保留该兼容属性。
