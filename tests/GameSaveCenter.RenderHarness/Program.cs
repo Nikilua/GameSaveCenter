@@ -6329,9 +6329,20 @@ public static class Program
                 var interruptedWidth = shell.SidebarWidthForAudit;
                 button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 // The second intent can begin while the dark resource tree is still
-                // settling. Keep the assertion on the same 700 ms clock but leave a
-                // render-settle margin before judging the completed state.
-                PumpDispatcher((int)Math.Ceiling(duration.TotalMilliseconds) + 220);
+                // settling. Wait for the bounded final-state contract so a late
+                // Completed callback is not mistaken for a production state failure.
+                PumpUntil(
+                    () =>
+                    {
+                        var candidate = layer.RenderTransform as TranslateTransform;
+                        var animated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                            || (candidate != null && DependencyPropertyHelper.GetValueSource(candidate, TranslateTransform.XProperty).IsAnimated);
+                        return shell.SidebarWidthForAudit >= 269.99
+                            && !shell.SidebarTransitionRunningForAudit
+                            && (candidate == null || Math.Abs(candidate.X) <= 0.001)
+                            && !animated;
+                    },
+                    1200);
                 var reentryTranslate = layer.RenderTransform as TranslateTransform;
                 SavePng(shell, Path.Combine(outputRoot, $"motion-{themeName}-reentry-end.png"));
                 report.AppendLine(
