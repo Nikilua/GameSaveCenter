@@ -6328,7 +6328,21 @@ public static class Program
                 PumpDispatcher(midpoint);
                 var interruptedWidth = shell.SidebarWidthForAudit;
                 button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                PumpDispatcher((int)Math.Ceiling(duration.TotalMilliseconds) + 80);
+                // The second intent can begin while the dark resource tree is still
+                // settling. Wait for the bounded final-state contract so a late
+                // Completed callback is not mistaken for a production state failure.
+                PumpUntil(
+                    () =>
+                    {
+                        var candidate = layer.RenderTransform as TranslateTransform;
+                        var animated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
+                            || (candidate != null && DependencyPropertyHelper.GetValueSource(candidate, TranslateTransform.XProperty).IsAnimated);
+                        return shell.SidebarWidthForAudit >= 269.99
+                            && !shell.SidebarTransitionRunningForAudit
+                            && (candidate == null || Math.Abs(candidate.X) <= 0.001)
+                            && !animated;
+                    },
+                    1200);
                 var reentryTranslate = layer.RenderTransform as TranslateTransform;
                 SavePng(shell, Path.Combine(outputRoot, $"motion-{themeName}-reentry-end.png"));
                 report.AppendLine(
@@ -6422,7 +6436,10 @@ public static class Program
                 window.UpdateLayout();
 
                 button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                PumpDispatcher(210);
+                // Dark-theme resource application can spend the first render slice on
+                // rebuilding the shared shell brushes. Keep the sample inside the 700 ms
+                // audit clock while allowing that first render pass to settle.
+                PumpDispatcher(280);
                 var duringTranslate = layer.RenderTransform as TranslateTransform;
                 var duringAnimated = DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated
                     || (duringTranslate != null && DependencyPropertyHelper.GetValueSource(duringTranslate, TranslateTransform.XProperty).IsAnimated);
@@ -6438,6 +6455,12 @@ public static class Program
                     || (disabledTranslate != null && DependencyPropertyHelper.GetValueSource(disabledTranslate, TranslateTransform.XProperty).IsAnimated);
                 var disabledFinalWidth = shell.SidebarWidthForAudit;
                 SavePng(shell, Path.Combine(outputRoot, $"motion-hot-{themeName}-disabled-final.png"));
+                report.AppendLine(
+                    $"HotChangeObserved[{themeName}] duringWidth={duringWidth:0.##} "
+                    + $"duringOpacity={duringOpacity:0.###} duringAnimated={duringAnimated} "
+                    + $"motion={shell.SidebarMotionEnabledForAudit} running={shell.SidebarTransitionRunningForAudit} "
+                    + $"disabledFinalWidth={disabledFinalWidth:0.##} disabledOpacity={layer.Opacity:0.###} "
+                    + $"disabledX={disabledTranslate?.X:0.###} disabledAnimated={disabledAnimated}");
 
                 if (!duringAnimated || duringWidth <= 78 || duringWidth >= 270 || duringOpacity <= 0.05 || duringOpacity >= 0.95
                     || shell.SidebarMotionEnabledForAudit
@@ -6626,6 +6649,8 @@ public static class Program
                 };
                 window.Show();
                 window.UpdateLayout();
+                shell.ApplyResponsiveLayout(window.Width, window.Height);
+                window.UpdateLayout();
                 var layer = shell.FindName("SidebarContentLayer") as FrameworkElement
                     ?? throw new InvalidOperationException("Motion reentry probe could not find SidebarContentLayer.");
                 var button = shell.SidebarCollapseButtonForAudit;
@@ -6634,8 +6659,18 @@ public static class Program
                 window.UpdateLayout();
 
                 button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                PumpDispatcher(210);
+                // Wait for a bounded active intermediate frame instead of assuming that
+                // the first fixed slice already includes the dark-theme render pass.
+                PumpUntil(
+                    () => shell.SidebarTransitionRunningForAudit
+                        && shell.SidebarWidthForAudit > 78
+                        && shell.SidebarWidthForAudit < 270,
+                    420);
                 var interruptedWidth = shell.SidebarWidthForAudit;
+                report.AppendLine(
+                    $"ReentryActive[{themeName}] width={interruptedWidth:0.##} "
+                    + $"running={shell.SidebarTransitionRunningForAudit} "
+                    + $"motion={shell.SidebarMotionEnabledForAudit} opacity={layer.Opacity:0.###}");
                 if (!shell.SidebarTransitionRunningForAudit || interruptedWidth <= 78 || interruptedWidth >= 270)
                     throw new InvalidOperationException($"Motion reentry probe did not reach an active interrupted {themeName} state.");
                 SavePng(shell, Path.Combine(outputRoot, $"motion-reentry-{themeName}-interrupted.png"));
@@ -6700,6 +6735,19 @@ public static class Program
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpUntil(Func<bool> predicate, int timeoutMilliseconds)
+    {
+        var deadline = DateTime.UtcNow.AddMilliseconds(Math.Max(1, timeoutMilliseconds));
+        while (DateTime.UtcNow < deadline)
+        {
+            if (predicate())
+                return true;
+            PumpDispatcher(20);
+        }
+
+        return predicate();
     }
 
     private static void RunSettingsThemeTransitionProbe(string outputRoot, StringBuilder report)
