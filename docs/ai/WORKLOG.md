@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Round3 R15-01 任务阶段可读定向复核
+
+- 本批没有生产代码变更；当前 `9a63e7e2` 重新构建后，Worker 任务阶段套件 `16/16`、Playnite `R15TaskStageTests 2/2` 通过。
+- 覆盖 StageMessage 写入/查询/迁移、可读阶段、未知进度 `—`、失败/取消终态错误分离；XAML `24/24`、solution `0 error/2` 条既有 warning、Playnite `net462` 编译通过。
+- 既有 `Task-1600x900` 仅作合成 offscreen 阶段列/未知阶段负例视觉证据；真实宿主阶段事件覆盖、DPI/UIA/IME、presented frame、ETW 和宿主性能未验。Demo 原目录不可用，下一项 R15-02。
+
+证据：[R15-01 任务阶段可读定向复核](../design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TARGETED-RECHECK-20260924.md)。
+
 ## 2026-09-24 Round3 R14-08 来源规则试运行定向复核
 
 - 本批没有生产代码变更；当前 `6d426f6e` 重新构建后，Worker `MediaSyncServiceTests 20/20`、Playnite `R14SourceRulePreviewTests 1/1` 通过。

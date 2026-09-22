@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+> 2026-09-24 R15-01 任务阶段可读定向复核：本批没有生产代码变更；当前 `9a63e7e2` 的 Worker `TaskCoordinatorFailureTests` + `TaskQueryPersistenceTests` 合计 `16/16`、Playnite `R15TaskStageTests 2/2` 通过，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。阶段消息与终态错误保持分离，未知总量不伪造百分比；`Task-1600x900` 仅为合成 offscreen 阶段列/未知阶段负例证据。真实宿主阶段事件、任务历史、DPI/UIA/IME、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R15-02 取消过程展示。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-01-TARGETED-RECHECK-20260924.md`。
+
 > 2026-09-24 R14-08 来源规则试运行定向复核：本批没有生产代码变更；当前 `6d426f6e` 的 Worker `MediaSyncServiceTests 20/20`、Playnite `R14SourceRulePreviewTests 1/1` 通过，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。合成隔离来源样本扫描 `4` 项、命中 `2`、排除 `2`，显示原因/大小/路径，试运行不保存规则、不入库、不移动；既有 `Media-1600x900-tab3` 仅为 offscreen 证据。真实权限拒绝、超大目录、Playnite、DPI/UIA/IME、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R15-01 任务阶段可读。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R14-08-TARGETED-RECHECK-20260924.md`。
