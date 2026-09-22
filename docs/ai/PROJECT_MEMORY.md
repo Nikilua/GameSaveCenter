@@ -5,6 +5,7 @@
 - `OverviewView` 的云端上下文胶囊与队列卡片实际使用 `Snapshot.CloudTransfers.SummaryDisplay` 作为 Tooltip；`74d3dcdc` 保留旧兼容属性，同时接入 `SummaryRelativeDisplay` 与 `SummaryFullDisplay`。
 - 生产正文保持状态/数量，下一次尝试使用相对时间；Tooltip/Automation HelpText 提供完整本地时区、偏移和 round-trip UTC。未知/无自动重试保持既有文案，不改变队列命令、筛选分页、选中或错误/取消语义。
 - `R22TimeDisplayBehaviorTests 28/28`，XAML `24/24`，提交后隔离 Release `0 error / 2` 条既有 CS8602；source/diff 通过。WPF 静态脚本缺失事实继续保留。
+- 证据/账本提交为 `1292b296`，随后以 `6aed472b` 合并并推送 `main`；主分支 Release 构建已复核为 `0 error / 2` 条既有 warning。
 - 下一步继续实际绑定审计；报告、复制列和日志仍使用稳定完整时间语义，不要为统一外观强行改成相对时间。
 
 ## 第三轮 R22-01 Trainer 版本发布时间合同（2026-09-22，第四十七子批次）

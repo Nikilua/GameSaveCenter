@@ -4,6 +4,7 @@
 
 - `74d3dcdc` 收口 `OverviewView` 两个真实云端队列摘要入口：正文继续显示状态/数量，相关下次尝试摘要提供相对时间；上下文提示和云端队列卡片 Tooltip/Automation HelpText 改用完整本地时区与 round-trip UTC。旧 `SummaryDisplay` 保留兼容，命令、筛选、分页、选中和错误/取消语义未改。
 - 提交后 `R22TimeDisplayBehaviorTests 28/28`；隔离 Release XAML `24/24`、`0 error / 2` 条既有 `MediaCenterView.xaml.cs:699 CS8602` warning；source validation、diff check 通过。
+- 证据/账本提交为 `1292b296`，代码与文档已由 `6aed472b` 合并到 `main` 并推送；主分支 Release 同样为 `0 error / 2` 条既有 warning。
 - 当前仓库不存在 `scripts/validate_wpf_ui.py`，本批未新增 WPF 静态审查通过声明；真实 Playnite/UIA/呈现/ETW/宿主性能仍未验，Demo 原目录不可用。
 - 下一可执行项：继续核对 `DashboardViewModel`/Contracts 其余真实 stale/缓存时间入口；报告/复制列/日志的稳定完整时间语义不由本批代签。
 
