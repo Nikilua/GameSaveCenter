@@ -8,6 +8,14 @@
 
 证据为 `R15-03-TARGETED-RECHECK-20260924.md`。
 
+## 第三轮 R15-04 重复通知归并定向复核（2026-09-24）
+
+- 复用 `a67d371e` 的任务终态去重、会话摘要和通知等级策略；本批 `6510ccf6` 只补错误码/错误消息缺失时，未知详情变化仍可见的行为证据，没有新增生产服务或 DTO。
+- Playnite 核心去重/会话行为 `10/10`，相邻套件 `31/31`，Core 策略/摘要 `7/7`；进度不领取键，相同失败不重复，不同错误证据保留。
+- 源码契约不等于真实 Toast；Playnite/package-host 通知时序、UIA/读屏、DPI/IME、presented frame、ETW 和宿主性能未验。下一项 R15-05。
+
+证据为 `R15-04-TARGETED-RECHECK-20260924.md`。
+
 ## 第三轮 R15-02 取消过程展示定向复核（2026-09-24）
 
 - 复用 `9c8241fb` 的取消 IPC、TaskCoordinator、`cancellation_state` 迁移和 Task Center 状态显示，没有新增生产代码；Worker 套件 `16/16`、Playnite 取消/进度/阶段套件 `8/8` 通过。

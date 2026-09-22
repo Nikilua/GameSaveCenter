@@ -4,6 +4,10 @@
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-03-TARGETED-RECHECK-20260924.md`。
 
+> 2026-09-24 R15-04 重复通知归并定向复核：实现 `a67d371e` 已复用任务终态去重、会话累加、通知等级策略和 Task Center 历史；本批 `6510ccf6` 只新增未知失败详情变化行为测试。Playnite 核心通知/会话 `10/10`，相邻通知反馈/时间线/UI 批处理/R13 夹具 `31/31`，Core 通知策略/摘要 `7/7`；Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。源码契约不冒充真实 Toast；真实 Playnite 通知时序、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验。下一项 R15-05 任务来源定位。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-04-TARGETED-RECHECK-20260924.md`。
+
 > 2026-09-24 R15-02 取消过程展示定向复核：本批没有生产代码变更；当前 `c879cf43` 的 Worker 取消套件 `16/16`、Playnite `R15TaskCancellationTests + R15TaskStageTests + R06TaskProgressBehaviorTests 8/8` 通过，隔离 Release XAML `24/24`、solution `0 error/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462` 编译通过。覆盖 `Requested → Finalizing → Cancelled`、重复取消幂等、完成后晚到取消、成功/取消终态和未知进度；`Task-1600x900` 仅为合成“已取消”终态证据。真实长任务取消、Playnite、UIA/读屏/IME、DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。下一项 R15-03 任务详情时间线。
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R15-02-TARGETED-RECHECK-20260924.md`。
