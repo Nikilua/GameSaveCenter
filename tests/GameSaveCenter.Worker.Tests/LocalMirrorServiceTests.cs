@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Services;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -85,6 +86,30 @@ public sealed class LocalMirrorServiceTests : IDisposable
         Assert.True(status.Available);
         Assert.Equal(2, status.VerifiedCount);
         Assert.Contains("镜像可用", status.Message);
+    }
+
+    [Fact]
+    public async Task StatusSummaryUsesRelativeSyncTimeAndKeepsFullEvidenceSeparate()
+    {
+        options.EnableLocalMirror = true;
+        Directory.CreateDirectory(options.LocalMirrorPath);
+        var syncUtc = DateTime.UtcNow.AddHours(-2);
+        await File.WriteAllTextAsync(
+            Path.Combine(options.LocalMirrorPath, ".gsc-mirror-sync.json"),
+            JsonSerializer.Serialize(new
+            {
+                LastSyncUtc = syncUtc,
+                CopiedCount = 3,
+                VerifiedCount = 3,
+                TotalBytes = 4096
+            }));
+
+        var service = new LocalMirrorService(options, NullLogger<LocalMirrorService>.Instance);
+        var status = await service.StatusAsync(CancellationToken.None);
+
+        Assert.Contains($"最近同步 {status.LastSyncRelativeDisplay}", status.Message);
+        Assert.DoesNotContain(syncUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), status.Message);
+        Assert.Contains(syncUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm"), status.LastSyncFullDisplay);
     }
 
     [Fact]

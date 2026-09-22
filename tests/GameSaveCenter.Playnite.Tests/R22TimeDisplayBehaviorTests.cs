@@ -217,6 +217,8 @@ public sealed class R22TimeDisplayBehaviorTests
         Assert.Contains("LocalMirrorStatus.LastSyncRelativeDisplay", maintenance, StringComparison.Ordinal);
         Assert.Contains("LocalMirrorStatus.LastSyncFullDisplay", maintenance, StringComparison.Ordinal);
         Assert.Contains("AutomationProperties.HelpText=\"{Binding LocalMirrorStatus.LastSyncFullDisplay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("Text=\"{Binding LocalMirrorStatus.LastSyncRelativeDisplay, TargetNullValue=尚未同步}\"", maintenance, StringComparison.Ordinal);
+        Assert.DoesNotContain("Text=\"{Binding LocalMirrorStatus.Message, TargetNullValue=尚未检查}\"", maintenance, StringComparison.Ordinal);
     }
 
     [Fact]

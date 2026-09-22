@@ -79,7 +79,7 @@ public sealed class LocalMirrorService
                 _logger.LogWarning(ex, "Local mirror could not enumerate files for status");
             }
         }
-        status.Message = $"镜像可用：{status.CopiedCount} 个文件，共 {status.TotalBytesDisplay}；最近同步 {status.LastSyncDisplay}。";
+        status.Message = $"镜像可用：{status.CopiedCount} 个文件，共 {status.TotalBytesDisplay}；最近同步 {status.LastSyncRelativeDisplay}。";
         return status;
     }
 
