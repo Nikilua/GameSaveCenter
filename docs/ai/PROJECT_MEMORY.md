@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-04 UIA/Controlled host 复测（2026-09-22）
+
+- 继续沿用 D 盘唯一工作区 `D:\workplace\github\GameSaveCenter` 和 `codex/ui-finesse-round2`；当前 `f457a7a0` 无生产代码变更。真实 Playnite 使用隔离 profile/合成空库加载当前包，日志确认插件已加载，嵌入式证据绑定 `f457a7a0`。
+- 门禁为 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111`、WPF `101/101`；Release `0 error`，保留既有 `MediaCenterView.xaml.cs:699` 两条 CS8602。metadata 捕获 `EmbeddedPlaynite`、Playnite 已托管、DPI `1.5`、Dashboard `1313.33 × 898 DIP`。
+- UIA 侧栏定位失败，约 90 秒后没有 `summary.json`；不能宣称 UIA、键盘、读屏、专用 Controlled host 或 presented frame 通过。单屏、Playnite Desktop 版本 unknown、Fusion 未复制、ETW 权限、Demo 原目录和 WPF 静态脚本缺失都按事实保留。
+- 证据目录 `artifacts/ui-host-audit-r23-04-uia-20260922` 被文档引用而保留；隔离 profile/测试临时目录已清理。下一步是 UIA/Controlled runner 的可稳定交互路径，否则转 R23-05 几何小批量，不把离屏代理写成真实性能。
+
 ## 第三轮 R22-01 时间显示统一审计收口（2026-09-22，第五十子批次）
 
 - `ed03c49e` 在已有 `TimeDisplayFormatter`、DTO 相对/完整/Raw UTC 投影和各页面绑定证据之上，补充读取当前生产 `Views/*.xaml` 的负向/正向审计。旧本地投影与云端 `DetailDisplay` 未被重新绑定；Dashboard/Contracts 中报告、导出、复制列、日志的完整时间入口是稳定输出语义，不应为页面相对时间合同强行替换。
