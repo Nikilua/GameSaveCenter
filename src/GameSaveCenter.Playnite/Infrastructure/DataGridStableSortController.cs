@@ -270,6 +270,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 Column<TaskStatusDto>("local-time", "CreatedUtc", ListSortDirection.Descending, (a, b) => a.CreatedUtc.CompareTo(b.CreatedUtc), a => a.CreatedUtc == DateTime.MinValue, a => a.TaskId),
                 Column<TaskStatusDto>("task", "TaskTypeDisplay", ListSortDirection.Ascending, (a, b) => CompareText(a.TaskTypeDisplay, b.TaskTypeDisplay), a => string.IsNullOrWhiteSpace(a.TaskType), a => a.TaskId),
+                Column<TaskStatusDto>("stage", "StageDisplay", ListSortDirection.Ascending, (a, b) => CompareText(a.StageDisplay, b.StageDisplay), a => !a.HasKnownStage, a => a.TaskId),
                 Column<TaskStatusDto>("game", "GameName", ListSortDirection.Ascending, (a, b) => CompareText(a.GameName, b.GameName), a => string.IsNullOrWhiteSpace(a.GameName), a => a.TaskId),
                 Column<TaskStatusDto>("state", "State", ListSortDirection.Ascending, (a, b) => ((int)a.State).CompareTo((int)b.State), a => !Enum.IsDefined(typeof(TaskState), a.State), a => a.TaskId),
                 Column<TaskStatusDto>("progress", "ProgressValue", ListSortDirection.Ascending, (a, b) => a.ProgressValue.CompareTo(b.ProgressValue), IsUnknownProgress, a => a.TaskId),
