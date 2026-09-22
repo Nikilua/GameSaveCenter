@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R23-05 当前身份证据刷新
+
+- 在 `b5c7a6d4` 的干净隔离 RenderHarness 上重跑 `shellqa`，刷新 R23-05 与 R00-06 共用的 Media 页尾/表格几何事实；XAML `24/24`、solution `0 errors/2` 条既有 nullable warning。
+- Media `1040/1100/1366` 均保持 `gridTopGap=142 DIP`，footer/历史/次级动作可达。Rendering 代理当前样本：单次 `30` 回调/p95 `27.1ms`/最大 `87.4ms`，快速二次 `46`/`14.3ms`/`39.4ms`，无动画 `4`/`21.6ms`。
+- 代理数值只证明受控 WPF 回调与几何，不是 DWM/PresentMon/物理刷新率或 Playnite 宿主端到端性能；ETW 权限拒绝和真实 presented frame 边界保持。下一项仍是 R23-06 候选安装/回退身份核查，或正常 Playnite UIA 会话恢复。
+
 ## 2026-09-23 Round3 R00/R01 媒体可达性修复与证据校正
 
 - 接续前一批未提交状态，确认所有改动属于本任务；C 盘旧库不存在，未处理用户已删除的 `src.zip`。读取启动协议、质量审查、Round3 账本和 WPF skill 后继续。
