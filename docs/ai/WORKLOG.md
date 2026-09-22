@@ -3,9 +3,9 @@
 ## 2026-09-22 Round3 R23-04 窗口暴露证据校正
 
 - 先核对现有 R23-04 UIA 复测：旧 runner 只能记录 `MainWindowHandle=0`，没有结构化顶层窗口事实。没有修改生产控件、选框、滚动条、命令绑定、取消/错误/恢复语义或 net462 路线。
-- `c6d65b08` 增加 `GscTopLevelWindowProbe`、Playnite 进程快照和 `host-window-exposure.json`；`2d327d4b` 增加默认关闭的 `-SkipInstallTests` 透传，仅服务真实宿主审计，保留原等待/partial 语义。`DiagnosticsEvidenceSourceTests 2/2`。
-- 当前提交 Release `-SkipTests` 构建 XAML `24/24`、`0` errors，保留既有 `MediaCenterView.xaml.cs:699` 两条 warning；包六份程序集身份一致。隔离 Playnite 最终 PID `6220`、路径 `D:\software\Playnite\Playnite.DesktopApp.exe`、可见窗口 `Startup Error`、顶层窗口 `5`、UIA 侧栏未确认；`cef.log` 明确 `拒绝访问 (0x5)`，无 `summary.json`，runner `[PARTIAL]`。
-- 全新隔离 profile 首次启动生成 `Backup/config.json` 但未生成根配置；仅在同一隔离目录复制该自动生成配置后重跑，未接触真实用户 profile/存档/媒体/云端。已结束 PID，保留被证据引用的 `artifacts/ui-host-audit-r23-04-window-exposure-skiptests-20260922`，并已清理未引用构建/临时目录。
+- `c6d65b08` 增加 `GscTopLevelWindowProbe`、Playnite 进程快照和 `host-window-exposure.json`；`2d327d4b` 增加默认关闭的 `-SkipInstallTests` 透传，`eba374c5` 增加全新隔离 profile 配置自举，均仅服务真实宿主审计并保留原等待/partial 语义。`DiagnosticsEvidenceSourceTests 2/2`。
+- 当前提交 Release `-SkipTests` 构建 XAML `24/24`、`0` errors，保留既有 `MediaCenterView.xaml.cs:699` 两条 warning；包六份程序集身份一致。隔离 Playnite 最终 PID `31920`、路径 `D:\software\Playnite\Playnite.DesktopApp.exe`、可见窗口 `Startup Error`、顶层窗口 `5`、UIA 侧栏未确认；`cef.log` 明确 `拒绝访问 (0x5)`，无 `summary.json`，runner `[PARTIAL]`。
+- 全新隔离 profile 由 runner 启动 Playnite 生成 `Backup/config.json` 并自动恢复根配置，状态为 `restored-from-isolated-backup`，未接触真实用户 profile/存档/媒体/云端。已结束 PID，保留被证据引用的 `artifacts/ui-host-audit-r23-04-profile-bootstrap-20260922`，并已清理未引用构建/临时目录。
 - 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260922.md`。下一可执行任务：获得正常可枚举 Playnite 主窗体并重跑 UIA/Controlled；若外部权限仍阻塞，推进 R23-05 独立几何小批量。
 
 ## 2026-09-22 Round3 R22-01 本地镜像时间摘要校正

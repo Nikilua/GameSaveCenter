@@ -2,10 +2,10 @@
 
 ## 第三轮 R23-04 窗口暴露证据校正（已满足，待宿主环境验证，2026-09-22）
 
-- `c6d65b08`/`2d327d4b` 为 `real-host-audit.ps1` 增加结构化 `host-window-exposure.json`：记录 Playnite 进程快照、`MainWindowHandle`、Win32 顶层窗口标题/类名/可见性；保留 UIA 60 秒探测、`summary.json` 等待和 `[PARTIAL]` 语义，不猜测句柄。`DiagnosticsEvidenceSourceTests 2/2`。
+- `c6d65b08`/`2d327d4b`/`eba374c5` 为 `real-host-audit.ps1` 增加结构化 `host-window-exposure.json` 和全新隔离 profile 配置自举：记录 Playnite 进程快照、`MainWindowHandle`、Win32 顶层窗口标题/类名/可见性；保留 UIA 60 秒探测、`summary.json` 等待和 `[PARTIAL]` 语义，不猜测句柄。当前提交 `DiagnosticsEvidenceSourceTests 2/2`。
 - 当前提交独立 Release `-SkipTests` 构建 XAML `24/24`、`0` errors，保留既有 `MediaCenterView.xaml.cs:699` 两条 CS8602；六份程序集身份一致。安装器新增的 `-SkipInstallTests` 只用于本次真实宿主审计显式跳过重复全量测试，不记为 WPF 全量通过。
-- 隔离真实 Playnite PID `6220`、`MainWindowHandle=0x1DC07D6`，可见顶层窗口标题为 `Startup Error`，顶层窗口 `5` 个，`SidebarAutomationFound=false`，分类为 `top-level-window-observed-ui-automation-not-confirmed`；`cef.log` 为 `platform_channel ... 拒绝访问 (0x5)`，无 `summary.json`，因此没有 UIA/键盘/读屏/Controlled host 通过。
-- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260922.md` 与 `artifacts/ui-host-audit-r23-04-window-exposure-skiptests-20260922`。只使用隔离 profile/合成配置和独立 IPC；单屏、ETW/真实 presented frame/宿主性能、Demo 原目录边界不变。下一可执行任务：取得正常可枚举 Playnite 会话；若继续受阻则推进 R23-05 独立几何小批量。
+- 隔离真实 Playnite PID `31920`、`MainWindowHandle=0x19F08B4`，可见顶层窗口标题为 `Startup Error`，顶层窗口 `5` 个，`SidebarAutomationFound=false`，分类为 `top-level-window-observed-ui-automation-not-confirmed`；runner metadata 的 `IsolatedProfileConfig=restored-from-isolated-backup`，`cef.log` 为 `platform_channel ... 拒绝访问 (0x5)`，无 `summary.json`，因此没有 UIA/键盘/读屏/Controlled host 通过。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-04-UIA-WINDOW-EXPOSURE-RECHECK-20260922.md` 与 `artifacts/ui-host-audit-r23-04-profile-bootstrap-20260922`。只使用隔离 profile/合成配置和独立 IPC；单屏、ETW/真实 presented frame/宿主性能、Demo 原目录边界不变。下一可执行任务：取得正常可枚举 Playnite 会话；若继续受阻则推进 R23-05 独立几何小批量。
 
 ## 第三轮 R22-01 本地镜像时间摘要校正（已满足，待环境验证，2026-09-22）
 
