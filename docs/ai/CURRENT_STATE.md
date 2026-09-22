@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 当前第三轮 R23-06 当前候选安装与回退复核（已满足，待宿主环境验证，2026-09-22）
+
+- 当前候选身份绑定 `102b74b0`：六份程序集均为 `0.6.73+102b74b08e0f04f2b334e3d75ecec161fd13103a`；zip/pext 同 SHA-256 `C84C7CAB59CC44845DF1FF1629FA6544A19B410EF444D672F4407E252D30117F`，各 `44,060,877` bytes。
+- 隔离 package：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类；Release `0 errors/2` 条既有 `MediaCenterView.xaml:699 CS8602`。WPF 首轮在动效类出现一次 Dispatcher 时序失败，精确复跑 `9/9`，最后 4 类 `27 passed/11 skipped`，未改弱测试。
+- 新 D: 合成 profile 安装后清单/DLL/Worker 必需文件齐全，随后回退恢复旧 synthetic 候选 `0.6.73+9026f4a2…`；不触碰真实 Extensions、存档、媒体或云端。真实 Playnite 当前呈现、UIA/读屏、DPI/跨屏、ETW/宿主性能仍未验。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-06-PACKAGE-ROLLBACK-20260922.md`。下一可执行任务：R23-04 UIA/Controlled host 收口；R23-05 几何已通过，真实 presented frame/宿主性能仍按权限边界待验。
+
 ## 当前第三轮 R23-05 几何修复与帧证据复核（部分满足，待宿主性能验收，2026-09-22）
 
 - `130ba48a` 修复两个可复现的共享布局问题：Shell 头部紧凑阈值覆盖 `<1280`，复用现有第二行动作布局；Media Inbox 将筛选预设和可用性提示移到既有 footer 行，保留批量选择、DataGrid、页面滚动、命令/Binding、Automation 和有限列表语义。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R23-06 当前候选安装与回退复核（2026-09-22，第四十二子批次）
+
+- 当前候选 `102b74b0` 的六份程序集身份一致为 `0.6.73+102b74b08e0f04f2b334e3d75ecec161fd13103a`；zip/pext 同 SHA `C84C7CAB59CC44845DF1FF1629FA6544A19B410EF444D672F4407E252D30117F`，各 `44,060,877` bytes；package 内容门禁通过。
+- 隔离门禁为 XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、Release `0 errors/2` 条既有 warning。WPF 首轮 98/101 处唯一动效类 Dispatcher 时序抖动，精确复跑该类 `9/9`，最后 4 类 `27 passed/11 skipped`，不改测试门槛。
+- 新 D: 合成 profile 安装当前候选后核对清单 `0.6.73`、DLL `0.6.73.0`、ProductVersion 和 Worker 文件；目录级回退恢复旧 synthetic `9026f4a2` 候选。没有真实 Extensions/存档/媒体/云端写入，Demo 原目录不可用，真实宿主/UIA/呈现/ETW/性能边界保持。
+- R23-06 账本更新为“已满足，待宿主环境验证”；下一项回到 R23-04 UIA/Controlled host，R23-05 几何已通过，真实 presented frame/宿主性能仍待合规权限和宿主环境。
+
 ## 第三轮 R23-05 几何修复与帧证据复核（2026-09-22，第四十一子批次）
 
 - 先复核上一版 `shellqa` 的 5 个真实几何失败：980/1040 Shell actions 越界，Media 1040/1100/1366 表格顶部间距过大；没有把性能代理或截图当成真实呈现。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-22 R23-06 当前候选安装与回退复核（第四十二子批次）
+
+- 沿用 D: 隔离源码副本和当前 `102b74b0`，完成 package Release 构建/内容门禁：XAML `24/24`、Core `125/125`、Worker `355/355`、Playnite source `111` 类、六份程序集同身份、zip/pext 同 SHA `C84C7CAB…D30117F`。
+- Playnite WPF 隔离首轮在 `UiFinesseFoundationTests.EntranceMotionReentryKeepsTheCurrentDispatcherValue` 出现一次时序抖动；没有修改产品或测试，精确复跑 `UiFinesseFoundationTests 9/9`，最后 4 个未执行 UI 类 `27 passed/11 skipped`。该边界在证据中保留，不写成无条件全量无抖动通过。
+- 新 D: 合成 profile 安装当前包并核对清单/DLL/Worker 必需文件；随后只删除明确的合成扩展目录并从已核实旧 synthetic 目录恢复 `9026f4a2`，回退身份成功。未接触真实 Playnite Extensions、存档、媒体、云端或外发诊断。
+- 当前候选 package 事实和回退证据已同步账本/证据；文档待独立提交。下一可执行任务：R23-04 UIA/Controlled host 收口；R23-05 几何已收口，真实 presented frame/宿主性能仍按权限边界待验。
+
 ## 2026-09-22 R23-05 壳层与 Media 几何修复（第四十一子批次）
 
 - 启动先确认默认目录是 dirty `main`，未在其上编辑；切回 `codex/ui-finesse-round2` worktree，复核上一版 R23-05 的 5 个几何失败。linked worktree 的 `obj` ACL 拒绝后，沿用已授权 D: 隔离源码副本流程。
