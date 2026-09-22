@@ -917,6 +917,12 @@ public sealed class FakeDashboardData
         WorkspaceFixtureState.Offline => "离线 · 无法读取",
         _ => "待归类 · 来源文件始终保留"
     };
+    public string MediaInboxCountCaptionFull => fixtureState switch
+    {
+        WorkspaceFixtureState.Stale => "缓存 · 上次成功 2026-09-22 09:18:00 (UTC+08:00)",
+        WorkspaceFixtureState.Offline => "离线 · 无法读取",
+        _ => MediaInboxCountCaption
+    };
     public string MaintenanceState => FixtureStateText;
     public string MaintenancePresenterState => IsFixtureOffline ? "Offline" : fixtureState == WorkspaceFixtureState.Stale ? "Degraded" : FixtureStateText;
     public string MaintenanceStateTitle => FixtureStateTitle("维护信息");

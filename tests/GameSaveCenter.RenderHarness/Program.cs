@@ -2158,7 +2158,7 @@ public static class Program
             "MediaDetailsStateDetail", "MediaDetailsStateOverlayVisible", "MediaDetailsStaleVisible",
             "MediaInboxState", "MediaInboxPresenterState", "MediaInboxStateTitle", "MediaInboxStateMessage",
             "MediaInboxStateDetail", "MediaInboxStateOverlayVisible", "MediaInboxStaleVisible",
-            "MediaInboxCountDisplay", "MediaInboxCountCaption",
+            "MediaInboxCountDisplay", "MediaInboxCountCaption", "MediaInboxCountCaptionFull",
             "MaintenanceState", "MaintenancePresenterState", "MaintenanceStateTitle", "MaintenanceStateMessage",
             "MaintenanceStateDetail", "MaintenanceStateOverlayVisible", "MaintenanceStaleVisible",
             "MaintenanceActionSummary", "MaintenanceActionItems",
