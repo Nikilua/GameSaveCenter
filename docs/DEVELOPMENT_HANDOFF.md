@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：R08-03
+
+R08-02 当前 main Release 已复核，源码/测试身份 `9002668cafa6fe1a39272cf2b998ce95d752418e`：XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。按测试类串行 HotChange/Reverse/ShellChrome/Foundation `1/1 + 2/2 + 12/12 + 9/9 = 24/24`，全部 exit `0`。设置页关闭动画选项后 entrance clocks 清除、opacity/Y 归中性值，再开启不重放；侧栏反向/卸载回归通过。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260924.md`。
+
+下一项 R08-03 离屏与隐藏停机。前次 `4b7f0a34` test assembly 被源码身份 gate 拒绝后已当前 HEAD 重建；三份 WPF TRX 有 10 段 TextServicesHost 清理 COM 异常，根因未知、VSTest 均 exit `0`。系统动画偏好、正常 Playnite host、物理 DPI/跨屏、UIA/呈现帧仍未验。用户设置截图差异另见 `SETTINGS-HEADER-CURRENT-MAIN-RECHECK-20260924.md`，package identity/正常宿主窗口仍待对照。
+
 ## 2026-09-24 当前接续：R08-02
 
 R08-01 已在当前 main 身份复核：Release XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；动画专测 `2/2`，相邻 shell chrome/motion/settings geometry `23/23`，均 VSTest exit `0`。生产 source identity `0c0869a2`，目前测试/文档提交 `4b7f0a34`。Translate 和侧栏中途反向都从实际值连续接管至最新目标并清理动画 clocks。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260924.md`。TRX 收尾各有一段 TextServicesHost COM 清理异常，原因未知。

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4f28b579-5f98-443a-9f3b-cd0391a7c45f" name="lopmatu@SULT 2026-09-24 01:14:06" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T01:14:06.9756653+08:00" queuing="2026-09-24T01:14:06.9756657+08:00" start="2026-09-24T01:14:00.8601237+08:00" finish="2026-09-24T01:14:20.4815519+08:00" />
+  <TestSettings name="default" id="ac71a713-0a4b-4616-907a-b42531dac25e">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_01_14_06" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c087be5e-e575-4774-8b60-87f53e3d9bb0" testId="b0340ce6-688e-c340-02d5-18ae291f41df" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" computerName="SULT" duration="00:00:02.1310000" startTime="2026-09-24T01:14:04.8228493+08:00" endTime="2026-09-24T01:14:06.9230056+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c087be5e-e575-4774-8b60-87f53e3d9bb0">
+      <Output>
+        <StdOut>translate midpoint=9.566; reversalStart=9.566; final=-8</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="72673f8e-2860-43db-827b-efaf1741d0bf" testId="be5b923e-ad7a-cf67-60b8-2c11fea6272a" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" computerName="SULT" duration="00:00:02.4770000" startTime="2026-09-24T01:14:06.9589923+08:00" endTime="2026-09-24T01:14:09.4004534+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72673f8e-2860-43db-827b-efaf1741d0bf">
+      <Output>
+        <StdOut>sidebar collapseMid=185.333; reversalStart=185.333; reverseMid=209.333; final=270; opacity=1; trace=after-collapse collapsed=True; running=True; base=185.189; actual=185.333 | after-reverse-progress collapsed=False; running=True; base=209.205; actual=209.333</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-9002668c\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b0340ce6-688e-c340-02d5-18ae291f41df">
+      <Execution id="c087be5e-e575-4774-8b60-87f53e3d9bb0" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-9002668c\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-9002668c\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="be5b923e-ad7a-cf67-60b8-2c11fea6272a">
+      <Execution id="72673f8e-2860-43db-827b-efaf1741d0bf" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-9002668c\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b0340ce6-688e-c340-02d5-18ae291f41df" executionId="c087be5e-e575-4774-8b60-87f53e3d9bb0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="be5b923e-ad7a-cf67-60b8-2c11fea6272a" executionId="72673f8e-2860-43db-827b-efaf1741d0bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.75]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:07.52]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R08-02 当前复核
+
+- 当前 main `9002668c` Release：XAML `24/24`、0 errors，两条既有 CS8602 warnings。测试类串行 HotChange `1/1`、Reverse `2/2`、ShellChrome `12/12`、Foundation `9/9`，共 `24/24`，VSTest exit `0`。
+- Settings 关闭动画选项立即清除真实 SettingsShell entrance clocks 并归到 opacity1/Y0；重开不重放。侧栏中途反向、reduced-motion、unload 与基础 clock 清理都通过。10 段 TextServicesHost COM cleanup exception 已记，根因未知。
+- 旧身份测试程序集因 docs commit 前后 identity mismatch 被门禁拒绝后，按当前 main 重建复跑；不作为产品失败。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260924.md`。下一项 R08-03。
+
 ## 2026-09-24 main：R08-01 动画与设置顶栏复核
 
 - 当前生产代码 identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`；Release XAML `24/24`、0 errors，保留两条既有 CS8602 warning。当前 main `4b7f0a34` 本批只更新测试/文档。

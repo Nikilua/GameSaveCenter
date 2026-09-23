@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R08-02 当前复核
+
+- 当前身份 `9002668cafa6fe1a39272cf2b998ce95d752418e` Release 重建：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。
+- R08-02 串行四组 `24/24`：HotChange `1`、Reverse `2`、ShellChrome `12`、MotionFoundation `9`；均 exit `0`。关闭设置页动画选项时，真实 WPF entrance clocks 立刻释放并恢复 opacity/Y 中性状态，重新开启不重播；反向/卸载 clock 回归通过。TRX 有 10 段 TextServicesHost COM 清理噪声，root cause unknown。
+- 证据 `../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260924.md` 和四份 TRX。测试只切换合成设置选项，没有改 Windows 动画偏好或在正常 Playnite host 测试。下一项 R08-03 离屏与隐藏停机。
+
 ## 2026-09-24 main：R08-01 与设置页最新截图复核
 
 - Release solution XAML `24/24`、0 errors；保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。生产代码身份 `0c0869a2`；当前 main `4b7f0a34` 是证据/测试提交。

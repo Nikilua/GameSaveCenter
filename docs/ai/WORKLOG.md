@@ -9182,3 +9182,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R08-01 `2/2`、0 failed/skipped，exit `0`。Translate 中途值/反向起点 `9.287/9.287`，终点 `-8`；侧栏 collapse 中途/反向起点 `184/184`、反向进度 `213.333`、终宽 `270`、opacity `1`，transition/opacity clocks 已清理。相邻 shell chrome `12/12` + motion foundation `9/9` + settings geometry `2/2` = `23/23`、exit `0`。
 - 设置当前用户截图在生产视图 STA WPF 受控用例仍未复现；Light/Dark `2/2`，标题/搜索左差 `0 DIP`，居中负例右移 `287.33 DIP`，reset 与 path 控件全为 36 DIP 且中心线一致。无新增生产修补，避免对不可复现的宿主差异臆改。当前用户包 identity、Playnite 父容器及物理 DPI 未验；已有 CEF `platform_channel 0x5` 阻挡仍记录。
 - 两份 TRX 都有 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` shutdown 日志，根因未知、VSTest 仍明确 exit 0。证据：`R08-01-CURRENT-MAIN-RECHECK-20260924.md`、`SETTINGS-HEADER-CURRENT-MAIN-RECHECK-20260924.md` 与各自 TRX。下一项 R08-02 热关闭动画，用户设置截图继续待 package/host 对照。
+# 2026-09-24 main R08-02 热关闭动画复核
+
+- 当前 checkout/程序集 identity `9002668cafa6fe1a39272cf2b998ce95d752418e` Release solution 构建成功：XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Playnite `net462`、test `net472`。
+- 按类串行执行：R08MotionHotChange `1/1`、R08MotionReverse `2/2`、ProductionShellChromeSource `12/12`、UiFinesseFoundation `9/9`，共 `24/24`、0 fail/skip，各 VSTest exit `0`。真实 WPF SettingsShell 动画关掉后 clock 释放、opacity1/Y0；重新启用不重播。Translate 当前反向 `9.566→9.566→-8`；sidebar `185.333→185.333→209.333→270`。
+- 一次使用 `4b7f0a34` 构建的旧测试程序集时，7 个 source tests 正确因 HEAD `9002668c` 身份不一致而阻止读取；当前身份重建后串行回归全部通过。HotChange/Reverse/ShellChrome TRX 有 8/1/1 段 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`，Foundation 无；根因未知。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260924.md` 与四个 TRX。没有修改真实 Windows 动画选项/存档/媒体/云端/诊断。下一项 R08-03 离屏与隐藏停机。
