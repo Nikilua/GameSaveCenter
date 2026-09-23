@@ -9124,3 +9124,15 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前继续 `main`，没有切到 `codex/ui-finesse-round2`。R00-01/02 与 R00-05 不需要重建：baseline 源码身份仍是 `3a1dadd8`，main source HEAD `e9bebee8` freshness 14 records 全部无匹配源路径；脚本 docs-only/shared-control/package identity 自测在 e9bebee8 exit `0`。没有在本批重跑 R00 行为测试。
 - freshness JSON、Round3 R01-03/R01-07 链接、current recheck、用户截图报告、Current State、Project Memory 与 Handoff 已同步。R01 audit 汇总数是既有审计证据，本批没有重跑 audit；package identity `not-provided`，当前设置宿主错位保持未复现。
 - 下一项：用截图对应的窗口逻辑尺寸/DPI 复核生产 `GameSaveCenterSettingsView`、`ApplyResponsiveLayout` 和 package identity；若当前 main 在可比条件下错位，修代码并补行为/负例。之前隔离 Playnite CEF `platform_channel 0x5`、用户当前安装包与真实呈现仍待验。未操作真实用户数据。
+
+## 2026-09-23 设置页 SizeChanged 行为复核
+
+- 先核对已有代码：`GameSaveCenterSettingsView` 的生产 `OnLoaded`/`OnSizeChanged` 已调用响应布局，XAML 已包含左对齐与显式宽度修正；问题在于旧行为测试直接反射调用 `ApplyResponsiveLayout`，没有证明宿主事件链。本批移除手动调用，使用真实 WPF Window 生命周期/窗口 resize，并加入“搜索框设为居中”的实际几何负例。
+- Release 测试运行 `ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther` Light/Dark `2/2`。Playnite `net462`、test `net472`，build identity `62b17b0c`。测试顺序 `1280×840 → 1880×1200 → 560 → 1280×840 DIP`；左对齐为 `0 DIP`，center negative control `287.33 DIP`；宽 shell `1360 DIP`，紧凑搜索宽 `392 DIP`/溢出 `0`，save-hint 行 `1→0`，路径按钮和 ComboBox `36 DIP`/中心差 `0`。保留既有 `MediaCenterView.xaml.cs:703 CS8602` warning。
+- 第一次共用 `bin\Release\net472` 输出因被其他 testhost 进程占用而无法复制；未终止未知进程。隔离 `.tmp/settings-header-event-20260923/bin` 构建与测试成功；TRX 归档于 `evidence/settings-header-responsive-20260923/settings-header-event.trx`。`README.md` 记录量测与限制。
+- 本批没有改生产 Settings XAML/业务逻辑；当前隔离 STA/DPI 1.0 行为自动测试通过，但用户包 identity/正常 Playnite host/物理 DPI 未验证。截图表现与中心负例一致，但不能断言其来自旧包。下一项核对可用 package identity/host；CEF `platform_channel 0x5` 若继续阻挡则转依赖已满足的 Q/R。
+## 2026-09-23 设置页窗口事件复核与 freshness 更新
+
+- 当前 main 为 62b17b0c；freshness JSON 在该 HEAD 采样，14 条记录 needsRerun=false、matchedSourcePaths=0，documentationOnlyChange=false，package identity not-provided；历史 source baselines 未改。
+- 扩展 ReportedWorkspaceLayoutBehaviorTests：以真实 WPF Window Loaded/SizeChanged 驱动布局；Light/Dark 2/2。尺寸序列 1280×840、1880×1200、560、恢复 1280×840 DIP；标题/搜索左差 0 DIP，居中负例 287.33 DIP，路径组合框和按钮高度 36 DIP。Release Playnite net462/test net472，保留既有 CS8602 warning。
+- 没有生产 XAML/业务变更；用户当前安装包 identity、正常 Playnite host 和物理 DPI 未验，CEF platform_channel 0x5 仍是隔离 host 边界。具体下一步：核对宿主父容器/Settings XAML 的布局映射，可复现后再改生产代码；否则推进独立 Q/R。

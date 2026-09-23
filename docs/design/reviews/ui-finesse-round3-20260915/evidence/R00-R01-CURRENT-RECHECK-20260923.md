@@ -65,6 +65,12 @@ R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文
 
 ## 新增设置宿主截图差异与下一项
 
-用户新附的设置窗口图仍显示搜索输入框远离标题左边界，顶部图标明显下移。当前 `main` 的 `GameSaveCenterSettingsView.xaml` 已显式左对齐搜索框，并在 `3a1dadd8` 修正布局；`ReportedWorkspaceLayoutBehaviorTests` 的 Light/Dark `8/8` 覆盖生产设置视图几何和路径编辑控件，但测试窗口为隔离 STA、DPI 1.0。用户图未包含可核对的 package/build identity，之前正常 Playnite 宿主复核也受 CEF `platform_channel` `0x5` 阻挡，因此不能把源代码和离屏行为证据写成用户当前窗口已修复。
+用户新附的设置窗口图仍显示搜索输入框远离标题左边界、顶部图标明显下移。新增行为检查在生产 `GameSaveCenterSettingsView` 上由 `Loaded` 与真实 `SizeChanged` 路由更新布局，不再手动调用 `ApplyResponsiveLayout`；Release Playnite `net462`/test `net472` 两主题 `2/2`。在 `1280×840 → 1880×1200 → 560 → 1280×840 DIP` 窗口序列中，标题/搜索左差为 `0 DIP`，居中负例偏移 `287.33 DIP`；路径组合框与四按钮都是 `36 DIP`、中心差 `0`。证据见 [设置截图行为复核](settings-header-responsive-20260923/README.md)。
 
-下一项先以实际用户窗口边界复核设置视图：沿用合成设置对象与隔离宿主，覆盖截图尺寸换算出的逻辑尺寸、当前 `SettingsShell` 实际宽度、搜索框到标题左边界、图标顶部、保存状态及路径控件对齐；同时确认 `ApplyResponsiveLayout` 在宿主 `SizeChanged` 时执行。若 current checkout 可复现错位，再改共享布局并验证正/负场景；若不能复现，保留 package/host identity 与系统 DPI 为待核事实，不把问题关闭。随后继续依赖已满足的 Q/R 小批量。
+当前 `main` 生产视图已包含 `3a1dadd8` 左对齐修正并通过受控自动布局测试；测试 build identity 是 `62b17b0c`。用户图与中心负例形态相符，但没有 package/build identity，不能断言用户安装的是旧包。STA WPF 测试是 DPI 1.0，不替代正常 Playnite host 或物理 DPI；此前隔离 host 的 CEF `platform_channel` `0x5` 阻挡仍未消除。下一项需要核对当前待测 package identity/正常 host；若宿主条件仍受阻，保留该边界并继续依赖已满足的 Q/R 小批量，不关闭用户报告。
+## 2026-09-23 main HEAD 62b17b0c freshness 与设置事件链复核
+
+- freshness JSON 在 main HEAD 62b17b0c2019ceb67c44282f38cfd8476cbbf81c 重新采样；14 条记录均 needsRerun=false、matchedSourcePaths=0。逐条结果与 e9bebee8 采样一致；documentationOnlyChange=false，package identity 仍 not-provided。R00-01/02 与 R00-05 历史证据源码身份不变。
+- 设置页行为测试移除了反射调用布局私有方法，实际由 WPF Window Loaded/SizeChanged 驱动。Light/Dark 2/2；1280×840 → 1880×1200 → 560 → 1280×840 DIP，标题/搜索左差 0 DIP，居中负例 287.33 DIP，路径组合框和四按钮 36 DIP，保存提示行 1→0。Release Playnite net462 与测试 net472；TRX 与测量见 [设置截图行为复核](settings-header-responsive-20260923/README.md)。
+- 测试程序集 GscBuildCommit 为 62b17b0c；保留既有 MediaCenterView.xaml.cs:703 CS8602 警告。当前生产设置布局未改，证明的是隔离 STA WPF/DPI 1.0 的响应链。无当前用户包 identity、正常 Playnite package-host 或物理 DPI 证据，问题不关闭。
+- 下一可执行诊断：检查设置页实际宿主父容器约束与当前 XAML 列/行映射；只有在当前源码/允许的隔离宿主可复现后才改生产布局。CEF platform_channel 0x5 若仍阻挡，则转依赖已满足的独立 Q/R 行为小批，不把该宿主障碍伪装成已修复。

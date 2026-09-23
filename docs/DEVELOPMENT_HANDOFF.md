@@ -2257,3 +2257,15 @@ git branch --show-current
 - 用户最新设置截图仍见搜索框偏右、顶部图标下移；current main 的设置视图已包含左对齐与锚点修正，双主题行为几何测试过去为 `8/8`，但它是在 STA/DPI 1.0 离屏窗口。不要宣称用户当前宿主问题已解决。上一轮隔离 Playnite host 因 CEF `platform_channel` `0x5` 没有正常进入插件视图。
 - 下一可执行任务：在截图窗口尺寸换算出的逻辑尺寸/系统 DPI 下检查当前设置视图布局，确认 `ApplyResponsiveLayout` 的 SizeChanged 路由，采集当前待测包身份，并对比 header 图标 top、标题/搜索框 left、状态提示和路径编辑按钮位置。如果 current checkout 复现，则修共享布局并补正/负行为验证；否则记录包身份或 host 差异待核，不关闭问题，然后继续依赖已满足的 Q/R 小批量。
 - 已有边界：没有真实 Playnite 当前 package identity、正常宿主呈现、物理 DPI/跨屏、presented frame、ETW/宿主性能；不写用户存档、媒体、云端或外发诊断。Demo 原目录不可用，沿用恢复生产基线。
+
+## 当前交接（2026-09-23 设置截图行为复核）
+
+- 保持在 `main`。R00/R01 freshness 报告采样于 source HEAD `e9bebee8`，14/14 records 无需重跑、sourcePath 命中 0；freshness 自测通过，package identity 未提供。
+- 用户新设置截图的搜索框居中/顶部图标下移与当前 production settings layout 不同。本批在 `ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther` 删除私有布局方法手动调用，改由实际隔离 WPF Window 的 Loaded/SizeChanged 路由；宽 `1880×1200`、初始/恢复 `1280×840`、紧凑 `560`，Light/Dark `2/2`。title/search Δ0、center negative Δ287.33 DIP、compact width392/no overflow、save hint row `1→0`、paths buttons/combo 36 DIP/center Δ0。证据 `evidence/settings-header-responsive-20260923/`。
+- Release Playnite `net462` / tests `net472`；build metadata `GscBuildCommit=62b17b0c`；保留 `MediaCenterView.xaml.cs:703 CS8602` warning。共享输出第一次被另一 `testhost.net472` 锁定；改用 `.tmp/settings-header-event-20260923/bin` 后 `2/2` 成功，未停止其他进程。`.tmp` 通过归档 TRX 后清理。
+- 现有源码路径自动行为通过，但仍没有当前用户 package identity、正常 Playnite package-host 或物理 DPI 结果；之前隔离 host CEF `platform_channel 0x5` 阻挡。下一项若能使用既有隔离流程核对当前包身份/host 则继续；否则保留未验事实并推进独立 Q/R。不要把用户截图标为已解决。
+## 当前交接（2026-09-23 设置页事件链复核）
+
+- 工作分支 main；freshness JSON 采样 HEAD 62b17b0c，14 条 R00/R01 记录 needsRerun=false、matchedSourcePaths=0，documentationOnlyChange=false，package identity not-provided。
+- 设置页生产源码没有改；行为测试实际经历 WPF Loaded/SizeChanged，不再手动反射调用 ApplyResponsiveLayout。双主题 2/2，标题/搜索左差 0 DIP，居中错位负例 287.33 DIP，窗口尺寸序列含 1280×840、1880×1200、560、恢复；路径编辑控件 36 DIP。证据 settings-header-responsive-20260923/README.md 与 TRX。
+- 用户截图和正常 Playnite host 未绑定到当前 package identity；隔离 host 之前的 CEF platform_channel 0x5 阻挡仍未消除，不宣称用户宿主已修复。下一项先核对 Settings 父容器/宿主布局约束，再按现有隔离流程复现；受阻则继续可独立执行的 Q/R 小批任务。

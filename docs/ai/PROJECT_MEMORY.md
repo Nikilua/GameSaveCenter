@@ -1,10 +1,18 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-23 main 设置页窗口事件复核
+
+- 设置页用户截图对应的当前生产布局实现已在 3a1dadd8；本批只强化行为证据，没有改生产 XAML/业务代码。测试实际通过 Loaded/SizeChanged 路由，而非反射手调布局私有方法。
+- Light/Dark 2/2；1280×840、1880×1200、560、恢复 1280×840 DIP 窗口序列中，标题/搜索左差 0 DIP，居中负例 287.33 DIP，紧凑搜索 392 DIP 且无溢出；保存提示行 1→0，路径组合框与四按钮 36 DIP、中心差 0。证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/settings-header-responsive-20260923/README.md。
+- 最新 freshness 采样在 main HEAD 62b17b0c，14 条 R00/R01 记录 needsRerun=false、matchedSourcePaths=0；package identity not-provided。DPI 1.0 的隔离 WPF 窗口不代表 Playnite package-host 或物理 DPI。CEF platform_channel 0x5 host 边界仍在，用户截图不标为已解决。
+- 下一步先静态核对 Settings 宿主父容器和 XAML 布局映射；若不能在源码或既有隔离流程复现，记录所需 package identity/正常宿主输入，并继续独立 Q/R。
+
+
 ## 最新进度（2026-09-23 main：Q06-08）
 
 - `Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark` 使用生产 `GscWpfUiPrimaryButton` 与 STA WPF Window；Release 定向 `1/1`/exit 0，Light/Dark 共捕获 10 张 normal、hover、pressed、focus、disabled 截图，每张标明激活方式并自动检查状态 overlay/属性。
 - Hover 通过 WPF `MouseDevice.ChangeMouseOver` 内部状态变化探针（不是物理鼠标）；Space 是合成 KeyDown，focus 是程序化 WPF 焦点，disabled 假命令验证框架点击不执行。图像为 `RenderTargetBitmap` 96-DPI logical，不能替代真实 host/物理输入/DPI/呈现帧。
-- 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`。Q06-08 受控视觉/自动证据通过，宿主仍外部待验、最终未完成。下一项先复现用户最新设置窗口截图中的头部图标、搜索框、操作控件错位；现有 96-DPI 离屏几何与截图不一致，先定位窗口化/host/DPI 条件，未验证前不写已修复。
+- Q06-08 受控视觉与自动证据通过，Playnite 宿主仍待验、最终未完成。设置截图随后已通过 Loaded/SizeChanged 双主题行为复测，测量和 TRX 见 docs/design/reviews/ui-finesse-round3-20260915/evidence/settings-header-responsive-20260923/README.md；当前用户 package identity/正常宿主仍未核实。下一步核对宿主父容器与 XAML 布局映射，受阻时继续独立 Q/R。
 
 ## 最新进度（2026-09-23 main：Q06-07）
 
@@ -5367,3 +5375,9 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 仅在 `main` 上继续；最新 production source HEAD `e9bebee8`（Q06-08 代码提交 `8846d712`，后续为文档同步）。R00-01/02、R00-05 的历史行为证据源是 `3a1dadd8`，当前 `R00/R01` freshness 为 14 records 均无需重跑、无 source path 命中；不要把 baseline SHA 改成当前 SHA，也不要把旧测试写成当前重跑。freshness 自测在 e9bebee8 exit 0，package identity 未提供。
 - 新用户设置截图显示的居中搜索与下移图标和当前 `GameSaveCenterSettingsView` 的左对齐/顶部锚点修正不一致。现有行为证据为隔离 STA/DPI 1.0 的双主题结果，不替代用户 package-host；此前正常宿主捕获因 CEF `0x5` 未成功。先复核截图窗口的实际逻辑尺寸/DPI、当前 package 身份和 `ApplyResponsiveLayout` 调用，再决定是否需要源代码修复。
 - 用户已授权持续实现，不要每个 Q/R 阶段都询问是否继续。保持 Demo-first、Playnite `net462`、真实绑定/取消/错误和恢复保护；测试使用合成/fake/隔离目录，不写真实存档、媒体、云端或诊断外发。
+
+## 2026-09-23 设置窗口自动布局证据
+
+- `GameSaveCenterSettingsView` 已有 `3a1dadd8` 搜索左锚点修正。当前用户截图的搜索偏右可用居中 negative control 重现；不要只加 XAML 字符串断言。
+- 扩展 `ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther` 后，测试在实际隔离 WPF Window 中靠生产 `Loaded` 和 `SizeChanged` 自动布局，无手动 `ApplyResponsiveLayout` 调用。Light/Dark 为 `2/2`；宽/紧凑/恢复序列通过，搜索左差 0、居中负例偏移 287.33 DIP，路径 ComboBox/按钮均 36 DIP 且中心差0。TRX/解释在 `evidence/settings-header-responsive-20260923/`。
+- 此证据使用 DPI 1.0 STA 窗口，build identity 62b17b0c，不是正常 Playnite host、物理 DPI 或用户包身份。前次 host CEF `platform_channel 0x5` 仍是边界；不要因此标记用户截图已解决。下一步核对可用的包身份/正常 host，或继续独立 Q/R。

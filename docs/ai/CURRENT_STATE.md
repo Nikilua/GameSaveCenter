@@ -1,10 +1,18 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main 设置页窗口事件复核
+
+- 设置页用户截图对应的当前生产布局实现已在 3a1dadd8；本批只强化行为证据，没有改生产 XAML/业务代码。测试实际通过 Loaded/SizeChanged 路由，而非反射手调布局私有方法。
+- Light/Dark 2/2；1280×840、1880×1200、560、恢复 1280×840 DIP 窗口序列中，标题/搜索左差 0 DIP，居中负例 287.33 DIP，紧凑搜索 392 DIP 且无溢出；保存提示行 1→0，路径组合框与四按钮 36 DIP、中心差 0。证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/settings-header-responsive-20260923/README.md。
+- 最新 freshness 采样在 main HEAD 62b17b0c，14 条 R00/R01 记录 needsRerun=false、matchedSourcePaths=0；package identity not-provided。DPI 1.0 的隔离 WPF 窗口不代表 Playnite package-host 或物理 DPI。CEF platform_channel 0x5 host 边界仍在，用户截图不标为已解决。
+- 下一步先静态核对 Settings 宿主父容器和 XAML 布局映射；若不能在源码或既有隔离流程复现，记录所需 package identity/正常宿主输入，并继续独立 Q/R。
+
+
 ## 2026-09-23 main Q06-08 按钮五态序列
 
 - 在 `75769579c46d998cc3b931b8c0011762e7d8cfe4` 上仅加 WPF 行为/视觉夹具：生产主按钮 Light/Dark normal、hover、pressed、focus、disabled 共 10 张带激活方式的离屏图，Release 定向测试 `1/1`、exit `0`。Hover 是 `MouseDevice.ChangeMouseOver` 状态探针，按压为合成 Space，focus 为 `Keyboard.Focus`，禁用由假命令 `CanExecute=false` 驱动并验证点击 0 次调用。
 - 视觉和自动列现有受控证据；96-DPI 离屏图不代表物理鼠标、宿主焦点、Playnite、DPI 或真实屏幕帧，Q06-08 最终仍未完成。详见 `../design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`。
-- 下一可执行项：复现用户新增的设置窗口截图，核对标题图标/搜索输入框/操作按钮相对位置与 windowed 高度；当前受控 96-DPI 几何测试和用户截图不一致，先用当前源码及隔离宿主确定复现边界，再决定是否需要生产改动。
+- 设置页 Loaded/SizeChanged 自动事件验证已在本页最新条目完成；这不等于用户包或 Playnite 宿主已验证。下一项检查 Settings 宿主父容器和 XAML 列/行映射。
 
 ## 2026-09-23 main Q06-07 高频按钮与动效
 
@@ -3134,3 +3142,9 @@
 - `scripts/test-ui-evidence-freshness.ps1` 在 e9bebee8 exit 0，docs-only/shared-control/package-identity 测试通过。全局 `documentationOnlyChange=false`，但本次 14 条各自关联源码路径没有变化。当前 JSON 在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json`。
 - 用户新附的 Playnite 设置窗口截图仍显示顶部图标下移、搜索框偏离标题。仓库生产视图和 2026-09-23 双主题受控几何检查包含相应对齐修正，但没有用户包身份或正常宿主复现；上次隔离 host 受 CEF `platform_channel` `0x5` 阻挡。问题保持打开，不宣称宿主已修复。
 - 下一项先按该窗口边界复现设置视图，确认 `ApplyResponsiveLayout` 的 `SizeChanged` 调用、DPI/逻辑尺寸、图标顶边和搜索框左边界；如果 current main 可复现错位，修生产布局并补行为正/负例。然后继续依赖已满足的 Q/R。真实包 identity、正常 Playnite host、物理 DPI/屏幕呈现仍待验。
+
+## 2026-09-23 设置页 Loaded/SizeChanged 行为复核
+
+- 当前 main 生产设置实现未改；行为测试 build identity 为 `62b17b0c`，Playnite `net462` / test `net472`。在实际 WPF `Window` 中由 `Loaded` 与 `SizeChanged` 自动驱动，未手动调用布局私有方法；Light/Dark `2/2`。
+- `1280×840 → 1880×1200 → 560 → 1280×840 DIP` 实测搜索/标题左差 `0`，居中负例 `287.33 DIP`，紧凑搜索 `392 DIP` 且无溢出，保存提示行 `1→0`，路径 ComboBox 和四按钮 `36 DIP`、中心差 `0`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/settings-header-responsive-20260923/README.md` 与 TRX。
+- 这个结果证明当前生产视图在隔离 STA/DPI 1.0 窗口及响应布局链正确；用户安装包身份、正常 Playnite host 与物理 DPI 尚未验证。用户截图问题不关闭。下一项核对正常 host/package 身份；CEF `platform_channel` `0x5` 若持续阻挡，则继续已满足依赖的 Q/R 小批量。

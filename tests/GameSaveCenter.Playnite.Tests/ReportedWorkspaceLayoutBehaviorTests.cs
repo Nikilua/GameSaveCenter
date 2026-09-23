@@ -365,6 +365,12 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var searchWidth = 0d;
         var compactSearchWidth = 0d;
         var compactSearchRightOverflow = 0d;
+        var compactSearchTitleLeftDelta = 0d;
+        var wideSearchTitleLeftDelta = 0d;
+        var centeredRegressionDelta = 0d;
+        var wideShellWidth = 0d;
+        var compactSaveHintRow = -1;
+        var restoredSaveHintRow = -1;
         var resetTitleLeftDelta = 0d;
         var resetAfterSearchGap = 0d;
         var saveHintTitleTopDelta = 0d;
@@ -393,9 +399,6 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 window = CreateWindow(view, 1280, 840);
                 window.Show();
                 FlushLayout(window);
-                viewType.GetMethod("ApplyResponsiveLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
-                    .Invoke(view, new object[] { 1280d, 840d });
-                FlushLayout(window);
 
                 var iconBounds = BoundsIn(icon, headerGrid);
                 var titleBounds = BoundsIn(title, headerGrid);
@@ -410,6 +413,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 resetAfterSearchGap = resetBounds.Top - searchBounds.Bottom;
                 saveHintTitleTopDelta = Math.Abs(saveHintBounds.Top - titleBounds.Top);
 
+                search.HorizontalAlignment = HorizontalAlignment.Center;
+                FlushLayout(window);
+                centeredRegressionDelta = Math.Abs(BoundsIn(search, headerGrid).Left - titleBounds.Left);
+                search.HorizontalAlignment = HorizontalAlignment.Left;
+                FlushLayout(window);
+
+                window.Width = 1880;
+                window.Height = 1200;
+                FlushLayout(window);
+                var wideTitleBounds = BoundsIn(title, headerGrid);
+                var wideSearchBounds = BoundsIn(search, headerGrid);
+                wideSearchTitleLeftDelta = Math.Abs(wideSearchBounds.Left - wideTitleBounds.Left);
+                wideShellWidth = ((FrameworkElement)viewType.GetField("SettingsShell", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!).ActualWidth;
+
                 var buttons = FindVisualChildren<ButtonBase>(pathCard)
                     .Where(button => button.Content is string label && label is "浏览" or "校验" or "打开" or "复制")
                     .Cast<FrameworkElement>()
@@ -423,12 +440,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
 
                 window.Width = 560;
                 FlushLayout(window);
-                viewType.GetMethod("ApplyResponsiveLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
-                    .Invoke(view, new object[] { 560d, 840d });
-                FlushLayout(window);
                 var compactSearchBounds = BoundsIn(search, headerGrid);
                 compactSearchWidth = search.ActualWidth;
                 compactSearchRightOverflow = Math.Max(0, compactSearchBounds.Right - headerGrid.ActualWidth);
+                compactSearchTitleLeftDelta = Math.Abs(compactSearchBounds.Left - BoundsIn(title, headerGrid).Left);
+                compactSaveHintRow = Grid.GetRow(saveHint);
+
+                window.Width = 1280;
+                window.Height = 840;
+                FlushLayout(window);
+                restoredSaveHintRow = Grid.GetRow(saveHint);
             }
             catch (Exception caught)
             {
@@ -440,14 +461,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, compact search width/overflow={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##} DIP, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
+        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, centered-negative Δ={centeredRegressionDelta:0.##} DIP, wide shell/search={wideShellWidth:0.##}/{wideSearchTitleLeftDelta:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, compact search width/overflow/leftΔ={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##}/{compactSearchTitleLeftDelta:0.##} DIP, save-hint row={compactSaveHintRow}->{restoredSaveHintRow}, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
         Assert.Null(exception);
         Assert.True(iconTitleTopDelta <= 12, $"settings icon top is {iconTitleTopDelta:0.##} DIP from the title top");
         Assert.True(searchTitleLeftDelta <= 2, $"settings search starts {searchTitleLeftDelta:0.##} DIP away from the title edge");
+        Assert.True(centeredRegressionDelta >= 40, $"centered search negative control should expose the old alignment defect; measured {centeredRegressionDelta:0.##} DIP");
+        Assert.InRange(wideShellWidth, 1320, 1360);
+        Assert.InRange(wideSearchTitleLeftDelta, 0, 2);
         Assert.InRange(searchWidth, 500, 520);
         Assert.InRange(searchHeight, 35, 37);
         Assert.InRange(compactSearchWidth, 260, 520);
         Assert.InRange(compactSearchRightOverflow, 0, 1);
+        Assert.InRange(compactSearchTitleLeftDelta, 0, 2);
+        Assert.Equal(1, compactSaveHintRow);
+        Assert.Equal(0, restoredSaveHintRow);
         Assert.True(resetTitleLeftDelta <= 2, $"settings reset card starts {resetTitleLeftDelta:0.##} DIP away from the title edge");
         Assert.True(resetAfterSearchGap >= 8, $"settings reset card starts only {resetAfterSearchGap:0.##} DIP after the search field");
         Assert.True(saveHintTitleTopDelta <= 36, $"settings save hint is {saveHintTitleTopDelta:0.##} DIP below the title");
