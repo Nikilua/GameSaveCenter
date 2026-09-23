@@ -2275,3 +2275,10 @@ git branch --show-current
 - Light/Dark 2/2；图标/标题横向间距 12 DIP，标题/搜索左差 0 DIP，顶部恢复默认下拉框与两个按钮均 36 DIP、中心差 0；路径编辑控件同为 36 DIP。完整几何输出见 settings-header-responsive-20260923/README.md 和 settings-header-controls-geometry.trx。
 - Playnite net462/test net472 隔离构建通过；NU1900 来自 NuGet advisory 源不可达，既有 CS8602 保留。未返回的单独 logger 尝试无结果；诊断 console+TRX 双 logger 复跑成功 2/2。
 - 用户实际 package identity、正常 Playnite 父容器和物理 DPI 仍未确认，不宣称用户截图问题已修复。下一步核对当前 Settings 父容器/布局映射，宿主受阻时推进依赖已满足的 Q/R。
+
+## 当前交接（2026-09-23 main Release 设置包复验）
+
+- main HEAD 8e4f3194227afb28640754f12ab0889cb8bb71ce；完整隔离 Release solution XAML 24/24、0 errors、两条既有 CS8602；设置页 Loaded/SizeChanged几何测试当前构建 Light/Dark 2/2。TRX 在 evidence/settings-header-responsive-20260923/settings-header-controls-main-8e4f3194.trx。
+- 新包 artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext 的六个插件/Worker 构建身份一致，identity 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，SHA-256 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0。包未安装；现有同版本 artifacts 文件保留。
+- R00/R01 freshness 在 HEAD 8e4f3194 采样：14/14 fresh、0 source match、documentationOnlyChange=false、package not-provided；自测三类通过。
+- 用户截图仍与当前受控源/离屏图不同，当前 user package identity、正常 Playnite host、物理 DPI 尚待核对；CEF platform_channel 0x5 是实际宿主阻挡。等待用户给出加载包版本/构建 identity；同时继续下一项依赖已满足的 Q/R，不把准备好的包或隔离图写成用户屏幕验证。

@@ -87,3 +87,10 @@ R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文
 
 - freshness JSON 在 main HEAD 13442aa43405986a5a8f4599c91ca23a9342ea28 采样；14 条记录 needsRerun=false、matchedSourcePaths=0，changedPaths=743。documentationOnlyChange=false，因为从历史 evidence identity 以来含源码变化；package identity not-provided。R00-01/02 与 R00-05 的 evidence source commit 不变，未把本次设置测试说成 R00 旧探针重跑。
 - 对应正式报告为 [当前 freshness JSON](R01-07-freshness-report-20260923-current.json)。设置页控件几何的后续行为扩展和测试记录在本复核页上方；用户包身份及正常宿主尚未取得。
+
+## 2026-09-23 main HEAD 8e4f3194 Release 复验
+
+- freshness JSON 在 8e4f3194227afb28640754f12ab0889cb8bb71ce 采样；14 条记录 needsRerun=false、matchedSourcePaths=0，changedPaths=744，documentationOnlyChange=false，当前用户 package identity 仍 not-provided。freshness 自测的 docs-only、shared-control、package-identity 三组均通过。
+- 当前 main 隔离 Release 构建 XAML 24/24、solution 0 errors；两条 CS8602 仍位于 MediaCenterView.xaml.cs:703。设置页 Loaded/SizeChanged 几何测试以当前 Release 输出复跑，Light/Dark 2/2；TRX 为 [settings-header-controls-main-8e4f3194.trx](settings-header-responsive-20260923/settings-header-controls-main-8e4f3194.trx)。
+- 另在 detached 临时 checkout 生成了 0.6.73 包；六个插件/Worker 程序集的 AssemblyInformationalVersion 均为 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，SHA-256 为 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0。原有同版本 artifacts 包未覆盖；新包没有安装到用户 Playnite。
+- 当前生产源离屏图和 WPF 几何仍与用户截图不同；包 identity/正常 host/物理 DPI 尚无证据。此前隔离 host 的 CEF platform_channel 0x5 阻挡未变化，不据此断言用户窗口已修复。

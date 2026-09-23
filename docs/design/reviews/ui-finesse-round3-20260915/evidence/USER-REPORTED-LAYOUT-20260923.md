@@ -45,6 +45,14 @@
 Light/Dark 再次通过 2/2。图标到标题横向间距为 12 DIP，顶部恢复默认 ComboBox 与两个按钮全部为 36 DIP，中心差 0 DIP；完整原始几何和单独 TRX 见 [settings-header-controls-geometry.trx](settings-header-responsive-20260923/settings-header-controls-geometry.trx)。这些结果来自当前源代码的隔离 STA WPF 窗口，不是用户当前 Playnite host/package 的呈现结果。
 
 用户截图仍没有包身份，之前隔离 Playnite host 未能正常加载扩展（CEF `platform_channel` `0x5`），所以截图与当前受控行为的差异尚未在正常宿主解释。下一项核对当前 package identity/正常 host；如果宿主边界继续阻塞，保留待验状态并推进独立 Q/R 小批量，不把测试通过写成用户当前窗口已解决。
+
+### 2026-09-23 main Release 包身份与几何复验
+
+当前 main 8e4f3194 的完整隔离 Release 解决方案构建成功：XAML 24/24、0 errors，保留两条既有 MediaCenterView.xaml.cs:703 CS8602。相同构建产物上的设置页几何测试 Light/Dark 2/2；图标/标题 12 DIP，搜索/标题左差 0 DIP，顶部恢复默认控件全为 36 DIP、中心差 0。当前构建的原始 TRX 和测量见 [设置页行为证据](settings-header-responsive-20260923/settings-header-controls-main-8e4f3194.trx)；离屏代表图为 [Settings-2048x1152-tab0.png](user-reported-layout-20260923/Settings-2048x1152-tab0.png)。
+
+为了给用户提供可核对的当前构建，新包已生成在 [GameSaveCenter-0.6.73-main-8e4f3194.pext](../../../../artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext)，程序集身份 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，SHA-256 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0。它仅已打包，未安装或在真实 Playnite host 打开；原有同版本包保留。
+
+当前受控 source/render 与用户截图不一致，所以还需要把截图对应的当前插件 identity 与新包对照。用户当前包、正常 Playnite 父容器、物理 DPI、真实屏幕仍未验，不能宣称已经在用户环境修复。隔离 Playnite host 的 CEF platform_channel 0x5 仍阻止正常宿主复核。
 ### 2026-09-23 R00/R01 freshness 复核更新
 
 本次 freshness 采样 main HEAD 13442aa4，14 条记录均无需重跑且源码路径命中为 0；package identity 未提供，不能据此关闭真实宿主验证。

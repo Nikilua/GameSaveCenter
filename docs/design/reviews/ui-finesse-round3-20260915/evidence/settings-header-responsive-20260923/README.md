@@ -14,6 +14,14 @@
 
 有两次不带诊断 console logger 的隔离调用长时间没有返回或生成 TRX；均不计为测试结果，仅中断了本次启动的 dotnet test 会话。随后使用同一隔离 Release 程序集和诊断 console + TRX 双 logger 复跑，5 秒返回 2/2。最终 TRX 未记录 InvalidComObjectException。
 
+### 当前 main Release 构建与截图差异复核（2026-09-23）
+
+在 main 提交 8e4f3194 上执行隔离 Release 构建：XAML 结构 24/24，完整解决方案 0 errors，保留两条既有 MediaCenterView.xaml.cs:703 CS8602 警告。随后使用该构建产物运行本页设置几何用例，Light/Dark 2/2，0 failed / 0 skipped；原始 TRX 为 [settings-header-controls-main-8e4f3194.trx](settings-header-controls-main-8e4f3194.trx)。实际控件几何与上一节一致：标题/搜索左差 0 DIP、图标/标题间距 12 DIP，恢复默认组合框和两个按钮均 36 DIP 且中心差 0。
+
+基于同一提交另生成 Playnite 安装包，版本 0.6.73，程序集身份 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce；插件和 Worker 的六个程序集身份一致。SHA-256：B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0。包 [GameSaveCenter-0.6.73-main-8e4f3194.pext](../../../../../../artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext) 是为本次交付新增的本地产物，现有同版本包未覆盖。该包尚未安装到用户 Playnite。
+
+当前源码受控截图 [Settings-2048x1152-tab0.png](../user-reported-layout-20260923/Settings-2048x1152-tab0.png) 中，图标靠近标题、搜索与标题左边缘对齐；用户提供的截图仍与此不同。没有用户当前插件包身份和正常 Playnite host 结果，因此不能判定差异来自版本还是宿主约束，也不把这次构建或离屏图写成用户屏幕已修复。此前隔离 Playnite host 的 CEF platform_channel 0x5 阻挡仍有效。
+
 ## 几何与负例
 
 测试窗口尺寸均为逻辑 DIP，包含 `1280×840` 初始窗口、`1880×1200` 宽窗口、`560` 紧凑窗口和恢复到 `1280×840`。两主题的结果相同：

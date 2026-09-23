@@ -9141,3 +9141,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 扩展已有设置页 WPF 行为用例，补图标/标题横向锚点、顶部恢复默认下拉框和两个按钮的实际几何/数量行为断言。Light/Dark 2/2；图标/标题间距 12 DIP；重置控件均 36 DIP、中心差 0；路径编辑组合框及四按钮同高 36 DIP。
 - 构建 Playnite net462/test net472 成功，已有 CS8602 保留；NuGet advisory 源不可达产生 NU1900。最终隔离复跑以诊断 console+TRX 双 logger 得到 2/2、0 skipped，TRX 独立保存；单独 TRX logger 路径未完成，未计为结果。
 - 没有生产 XAML/业务修改。证据支持当前源码几何，未验证用户实际包、正常 Playnite 父容器或物理 DPI。CEF platform_channel 0x5 仍是之前的隔离 host 阻挡。
+
+## 2026-09-23 当前 main Release 构建包与设置页复验
+
+- 当前 main 为 8e4f3194227afb28640754f12ab0889cb8bb71ce。隔离 Release solution 构建：XAML 24/24、0 errors，保留两条既有 MediaCenterView.xaml.cs:703 CS8602；设置页 Loaded/SizeChanged 几何用例在同一构建产物上 Light/Dark 2/2。
+- freshness 报告更新至 HEAD 8e4f3194：14 records needsRerun=false、matchedSourcePaths=0、changedPaths=744、documentationOnlyChange=false、用户 package identity not-provided；freshness 自测通过。
+- 另在 detached 临时 checkout 打包 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，六个 Plugin/Worker 程序集身份一致。新包放在 artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext，SHA-256 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0；旧同版本包未覆盖、用户 Playnite 未安装。
+- 当前源离屏截图中设置标题图标/搜索锚点正确，用户截图仍不同。真实加载包身份、Playnite 父容器和物理 DPI 未验，之前隔离 host CEF platform_channel 0x5 阻挡未变；不写“用户环境已修复”。
