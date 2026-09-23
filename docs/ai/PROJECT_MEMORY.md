@@ -1,5 +1,25 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
+
+- `eaee1d20` 只修正 RenderHarness 对已有 busy 模板的采样环境/时序，没有生产忙态服务或 DTO 改动。旧探针的 Grid 未加载，无法启动 `IsLoaded` 门控的 120ms 指示器延迟；现改由屏幕外隔离 STA Window 加载控件，立即态应隐藏、150ms 后检查显示。
+- `R02BusyStateTests 4/4`：重复进入与失败/取消复位；结构样式回归；真实生产按钮宽度、内容、焦点、指示器延迟/消失；快完成不闪现负例。相邻 `R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState 1/1`。
+- Release solution XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。双主题探针均显示逻辑指标稳定：按钮 `180→180 DIP`，文本稳定，`ProgressBar 20×2.67 DIP`、IsVisible/IsIndeterminate 为 true、未暂停。
+- 离屏 PNG 与正常态像素几乎相同，不将其称为 spinner 动画像素或真实呈现证明；真实 Playnite/Worker 时序、读屏、物理 DPI、OS 输入/IME、presented frame、ETW、宿主性能仍未验。下一项 R02-03 禁用原因可达，先检查已有实现和相邻行为证据。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md`。
+
+## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
+
+- 当前分支 `codex/ui-finesse-round2` 的代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`。R00/R01 校正复用了现有实现：图标-only 样本如实标注无文字，半透明 `opacity=0.5` 的 hover+pressed+focus 同时态直接验证有效前景/灰底/4.5 对比度。未更换控件或服务，也未从 main 覆盖分支。
+- `5fbfc869` clean 身份 R00/R01 定向行为类 `36/36`；`38d5b7b2` 最终 Release identity/contrast `5/5`。隔离 solution XAML `24/24`、`0 errors/2` 既有 `MediaCenterView.xaml.cs:706 CS8602` warning（WPF 临时项目与 Playnite 项目各一条，Playnite `net462`）。freshness 按最终完整身份扫描 `14 fresh/0 stale`，包身份 `not-provided`。
+- R01 审计归档身份 `5fbfc869`：20 条索引全项 `20/20`；受控页面/控件统计 10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer，168 snapshots、110 warnings、0 Fidelity、0 failed routes；仍有 7 HIGH 滚动冲突、4 MEDIUM 工具栏纵向扩展，不能写成风险清零。
+- R18-04 在同一 clean 身份的 R18 专测 `1/1`，分页/锚点/几何/稳定选择类共 `23/23`（`6+10+3+4`）。Task 三规模最大容器/可见均为 `9/7`；Media UI 窗口 `2,000`、受控视口 `14`。Task 最大滚动样本 `51.172/25.651/20.681 ms`；Media `0.031/0.989/0.023 ms`，10k 的 `0.989` 是保留的单次尖峰，其他样本约 `0.02–0.05 ms`。
+- testhost 清理阶段的 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 出现在 R18 与锚点类 TRX；对应 xUnit 明确全通过、VSTest exit `0`。根因未知，照实作为关闭噪声记录。受控合成 STA/逻辑 DIP 不代表宿主呈现、物理屏、UIA/IME、ETW 或宿主性能。
+- 后续已在 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 复核并补上真实模式切换行为；下一项 R02-02 忙碌宽度稳定，先查已有 busy 状态和命令，再补实际交互测试。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md`、`design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。
+
 ## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
 
 - `93b115f4` 只记录 `e54d514e`/`18c5073f` 现有缩略图 loader/control 的复测，没有新增生产代码；120 个合成请求分 10 个窗口完成，最多 3 路解码，96 项缓存封顶，活动每轮归零，取消和迟到失败替换均有行为证据。

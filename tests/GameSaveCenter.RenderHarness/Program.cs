@@ -3156,11 +3156,17 @@ public static class Program
         {
             var buttonText = FindVisualChildren<TextBlock>(button)
                 .FirstOrDefault(text => !string.IsNullOrWhiteSpace(text.Text));
+            if (buttonText == null)
+            {
+                report.AppendLine($"  Button[{button.Appearance}] <icon-only>: no text label; text contrast not applicable");
+                continue;
+            }
+
             AppendTextElementEvidence(
                 report,
                 host,
                 bitmap,
-                $"Button[{button.Appearance}] {buttonText?.Text ?? "<composite>"}",
+                $"Button[{button.Appearance}] {buttonText.Text}",
                 buttonText,
                 textSamples);
         }
@@ -6072,8 +6078,25 @@ public static class Program
         };
         host.Children.Add(button);
 
+        Window? window = null;
         try
         {
+            window = new Window
+            {
+                Width = host.Width,
+                Height = host.Height,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Left = -32000,
+                Top = -32000,
+                Opacity = 0.01,
+                Content = host
+            };
+            window.Show();
+            window.UpdateLayout();
+
             foreach (var (themeName, themeMode) in ThemeModes)
             {
                 ApplyThemePalette(resourceHost, themeMode, glassEnabled: true, motionEnabled: true);
@@ -6090,17 +6113,34 @@ public static class Program
                 button.IsBusy = true;
                 host.UpdateLayout();
                 var indicatorHost = button.Template?.FindName("BusyIndicatorHost", button) as FrameworkElement;
+                var immediateIndicatorVisible = indicatorHost?.Visibility == Visibility.Visible;
+                PumpDispatcher(150);
+                host.UpdateLayout();
                 var indicator = FindVisualChildren<ProgressBar>(button).FirstOrDefault(progress => progress.IsIndeterminate);
                 var busyWidth = button.ActualWidth;
                 var stable = Math.Abs(normalWidth - busyWidth) < 0.01;
                 var visible = indicatorHost?.Visibility == Visibility.Visible;
+                var busyStateActive = button.IsBusy;
+                var indicatorSize = indicator?.RenderSize ?? Size.Empty;
+                var indicatorIsVisible = indicator?.IsVisible == true;
+                var indicatorAnimationPaused = indicator != null
+                    && GameSaveCenter.Playnite.Controls.IndeterminateProgressBehavior.GetIsAnimationPaused(indicator);
+                var indicatorBounds = indicator == null
+                    ? Rect.Empty
+                    : indicator.TransformToAncestor(host).TransformBounds(new Rect(new Point(0, 0), indicatorSize));
                 var contentStable = contentText != null && contentText.Text == "全部备份";
                 SavePng(host, Path.Combine(outputRoot, $"button-busy-{themeName}-busy.png"));
                 report.AppendLine(
                     $"Busy[{themeName}] normalWidth={normalWidth:0.##} busyWidth={busyWidth:0.##} "
-                    + $"widthStable={stable} indicatorVisible={visible} indeterminate={indicator?.IsIndeterminate == true} "
+                    + $"widthStable={stable} immediateIndicatorVisible={immediateIndicatorVisible} "
+                    + $"indicatorVisibleAfter150ms={visible} busyStateActive={busyStateActive} "
+                    + $"indeterminate={indicator?.IsIndeterminate == true} indicatorIsVisible={indicatorIsVisible} "
+                    + $"animationPaused={indicatorAnimationPaused} indicatorSize={indicatorSize.Width:0.##}x{indicatorSize.Height:0.##} "
+                    + $"indicatorBounds={indicatorBounds.X:0.##},{indicatorBounds.Y:0.##},{indicatorBounds.Width:0.##},{indicatorBounds.Height:0.##} "
                     + $"contentStable={contentStable}");
-                if (!stable || !visible || indicator == null || !contentStable)
+                if (!stable || immediateIndicatorVisible || !visible || !busyStateActive || indicator == null
+                    || !indicatorIsVisible || indicatorAnimationPaused || indicatorSize.Width <= 0
+                    || indicatorSize.Height <= 0 || !contentStable)
                     throw new InvalidOperationException($"Busy button contract failed for {themeName}.");
                 button.IsBusy = false;
             }
@@ -6113,6 +6153,10 @@ public static class Program
             s_problems.Add("ButtonBusyProbe failed: " + ex.Message);
             report.AppendLine("ButtonBusyProbe FAILED");
             report.AppendLine(ex.ToString());
+        }
+        finally
+        {
+            window?.Close();
         }
     }
 

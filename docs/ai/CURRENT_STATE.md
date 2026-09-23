@@ -1,5 +1,24 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
+
+- 当前分支 `codex/ui-finesse-round2`，提交 `eaee1d20`。没有重建 busy 服务或 DTO；修正 RenderHarness，使忙态按钮位于已加载的屏幕外 STA Window 中，等待原有 120ms 指示器延迟后再检查。
+- Release solution XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；`R02BusyStateTests 4/4`，相邻 `R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState 1/1`。
+- 两主题探针均验证立即隐藏、150ms 后显示、动画未暂停、进度条 `20×2.67 DIP`，按钮 `180→180 DIP`、内容稳定；旧快完成测试验证短任务不闪现 spinner。离屏 PNG 不作动画像素、对比度或真实呈现证据。
+- 未验真实 Playnite/Worker 时序、物理 DPI/跨屏、OS 输入/IME、presented frame、读屏、ETW 或宿主性能；业务假数据和隔离窗口，没有写真实存档/媒体/云端。下一项 R02-03 禁用原因可达，先复核现有说明与测试覆盖。
+
+证据：[R02-02 忙态宽度当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md)、[第三轮账本](../design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md)。
+
+## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
+
+- 当前代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`，分支 `codex/ui-finesse-round2`。R00/R01 已核对已有能力并补齐两处证据缺口：图标-only 不再误报为控件缺失；R00-01 的半透明 hover+pressed+focus 组合态现在有直接颜色/对比度行为断言。最终身份隔离 Release solution 构建 XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；身份与对比测试 `5/5`，前一 clean 身份 R00/R01 定向行为类 `36/36`。
+- 受控审计绑定 `5fbfc869`：`10 Views/33 Tabs/297 Button/ToggleButton/16 DataGrid/38 ScrollViewer/292 conditional UI`，168 runtime snapshots、110 warnings、0 Fidelity、0 route failures；索引 `20/20`。仍有 `7 HIGH TRUE_PARENT_CHILD_SCROLL_CONFLICT` 和 `4 MEDIUM TOOLBAR_VERTICAL_EXPANSION`。freshness 在当前完整身份扫描为 `14 fresh/0 stale`，包身份 `not-provided`。
+- R18-04 的 clean 复采身份为 `5fbfc869`。Task 2k/10k/20k 均为最大已实现容器/可见行为 `9/7`；Media UI 窗口仍限制为 `2,000` 项，受控视口为 `14`。滚动最大样本：Task `51.172/25.651/20.681 ms`；Media `0.031/0.989/0.023 ms`。10k Media 的 `0.989 ms` 为单次调度尖峰，其他样本约 `0.02–0.05 ms`，不隐藏该最大值。
+- R18 专测 `1/1`；相关分页/锚点/几何/稳定选择测试精确为 `6+10+3+4=23/23`，方法名与样本见证据。WPF testhost 关闭阶段出现 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；xUnit/VSTest 结果明确成功、进程 exit `0`，根因未明，作为清理噪声记录而不改判测试结果。
+- 证据仅来自合成 DTO、fake/隔离目录、受控 STA WPF 与逻辑 DIP。真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、OS IME、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，沿用恢复的生产基线。保留当前游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护、有限列表和 `net462` 兼容。
+
+证据：[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md)、[R18-04 测试与滚动复采](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)、[R01-06 归档审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md)、[R01-07 freshness 报告](../design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json)。R02-01 已于后续提交 `cdfd2788` 完成当前运行时行为复核；下一项 R02-02 忙碌宽度稳定，外部宿主与系统跟踪边界保持未验。
+
 ## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
 
 - 本批没有新增生产代码；在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`93b115f4` 上复用 `e54d514e`/`18c5073f` 的 `AsyncThumbnailLoader` 3 路解码、96 项 LRU、取消和 generation 迟到结果保护。
