@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main R18-04 与用户窗口问题当前复核
+
+- 测试身份 `abd7927b` Release build：XAML `24/24`、0 errors、两条既有 Media nullable warning。R18Table 专测 `1/1`；MediaPageAccumulator `6/6`、MediaWindowAnchor `10/10`、MediaInboxGeometry `3/3`、R07SelectionAnchor `4/4`，关联总数 `23/23`。精确用例、三种覆盖类型和五份 TRX 位于 `R18-04-CURRENT-MAIN-RECHECK-20260924.md`。
+- 23 项包括 10 个纯数据/几何/选择行为、7 个源码契约和 6 个真实生产 WPF 控件的隔离 STA 行为；`MediaPageAccumulatorTests` 的 Stopwatch 只约束数据累积，不能叫呈现性能。
+- 当前 R18 视口结果 Task 三档 `7/9/7`；Media Inbox `7/7/7`、10k/20k UI 缓存 `2,000`。较早 `922501e7` 的 Inbox `14/14/14` 来自旧预算；commit `b5c7a6d4` 将 footer 预算从 `220` 改为 `360 DIP`，`da91bd68` 将短窗扩大交给页 viewer 并保持内层 DataGrid 有限高度。新一轮 Task max `59.837/26.136/24.464 ms`；Media `0.089/0.031/0.026 ms`，包含 STA 布局采样，不是宿主帧时间。
+- 用户 Inbox/Task/Save/Settings 四处窗口几何由当前 Light/Dark 受控 WPF 行为 `8/8` 覆核：Media 按钮各 `36 DIP`、滚动条不伸进 footer；Task 行回收后失败状态/边框误差 `0`；Save 操作行 `36 DIP`、尾部空白 `9.33 DIP`；Settings 搜索左差 `0 DIP`，按钮中心/高度一致。该结果没有让实际用户截图/Playnite host 验收通过。
+- 本机 Extension DLL `0.6.73+7a4ba2a9` 比布局修复提交旧；截图来源只是推断。candidate `e83d8ba9` 包 SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E` 已生成未安装。Host CEF `0x5`、R23-05 ETW/真实 presented frame 和 R02-06 原生菜单是剩余外部边界；不绕过。
+- R18/Anchor TRX 有 `6/2` 行 TextServicesHost COM 清理噪声，各测试 exit `0`；root cause 未明。证据另见 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md`。
+
 ## 2026-09-24 main R08-05 页面切换复核
 
 - 在 `13c38754` 当前 main 身份重新 Release 构建：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；source validation、XAML structural validation 与 `git diff --check` 通过。

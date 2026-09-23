@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R18-04 23 项组成与用户四页窗口复核
+
+- Release/test assembly built at code/test identity `abd7927b`；solution 成功、XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。R18 专测 `1/1`，四个相关行为类 `6+10+3+4=23/23`，0 failed/skipped、独立 VSTest exit `0`。23 项精确方法、测试参数和纯逻辑/源码契约/STA WPF 分类见 `../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924.md`。
+- 本轮专测 Task 2k/10k/20k 最大已实现/完整可视均为 `9/7`；Media Inbox 当前源 `7/7/7`，UI 页缓存维持 `2,000`。Task 滚动最大 `59.837/26.136/24.464 ms`；Media `0.089/0.031/0.026 ms`。较早 `14/14/14` 是 `922501e7` 前的窗口/预算布局；`b5c7a6d4` 更新 footer 高度预算，`da91bd68` 把短窗溢出交给页级滚动并将 DataGrid 高度钳制为有限值。
+- 当前生产布局四页 Light/Dark `ReportedWorkspaceLayoutBehaviorTests 8/8`，0 fail/skip，TRX 无 COM 清理异常：Inbox 操作按钮均 `36 DIP`，内层滚动条留在 grid 内并与 footer 间隔 `10 DIP`；Task 失败行状态错配/行框位置误差 `0`；Save 操作行 `36 DIP`、内容间距 `10 DIP`/尾白 `9.33 DIP`；Settings 搜索与标题左对齐、图标/标题顶差 `11.33 DIP`、重置/路径按钮均 `36 DIP` 同中心。
+- 本机安装目录 DLL `0.6.73+7a4ba2a9` 早于当前布局修正；它可能解释用户截图与当前源的差异，但实际截图加载模块未关联。可审阅包 `[GameSaveCenter-0.6.73.pext](../../artifacts/GameSaveCenter-0.6.73.pext)` identity `0.6.73+e83d8ba9`、SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。
+- R18 专测 TRX 收尾含 6 行、MediaWindowAnchor TRX 含 2 行 WPF TextServicesHost `InvalidComObjectException`；对应结果仍通过，根因未知。正常 Playnite host/用户屏幕 DPI/UIA/呈现帧/ETW/宿主性能未验，CEF `platform_channel 0x5` 不绕过。
+- 四页证据：`../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md` 和 TRX。R23-05 真实 presented-frame/停顿采样与 R02-06 Playnite 原生菜单仍待各自外部条件；其余当前可执行的 R18-04 行为门禁已通过。
+
 ## 2026-09-24 main：R08-05 页面切换复核
 
 - 当前 main/测试程序集 identity `13c38754`。Release solution 构建成功，XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；source、XAML 和 diff check 通过。

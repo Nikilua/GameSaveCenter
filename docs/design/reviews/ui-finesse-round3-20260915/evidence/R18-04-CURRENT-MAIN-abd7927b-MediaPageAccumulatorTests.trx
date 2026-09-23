@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8323c4eb-38a2-48ca-b015-23f7f73916a9" name="lopmatu@SULT 2026-09-24 02:31:26" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T02:31:26.0430618+08:00" queuing="2026-09-24T02:31:26.0430623+08:00" start="2026-09-24T02:31:20.6415979+08:00" finish="2026-09-24T02:31:40.3455553+08:00" />
+  <TestSettings name="default" id="022ec0a8-8eb2-4f36-9cf4-ec23c98c116c">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_02_31_26" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="02149afd-d90c-4d48-b98a-35f54ceb9476" testId="c1c07fce-6e7b-38a6-1346-4088b7337ae3" testName="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.BackendScaleKeepsTheMediaWindowBounded(backendCount: 2000, expectedCount: 2000)" computerName="SULT" duration="00:00:00.0020000" startTime="2026-09-24T02:31:24.6740942+08:00" endTime="2026-09-24T02:31:24.6750935+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02149afd-d90c-4d48-b98a-35f54ceb9476" />
+    <UnitTestResult executionId="f845af82-fa78-4531-a997-de1f9b8cb2b9" testId="74fc1003-7dda-1a5a-c142-de253ecbdf64" testName="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.Appending250PagesKeepsBoundedWindowAndSelectedItem" computerName="SULT" duration="00:00:00.1100000" startTime="2026-09-24T02:31:24.5860930+08:00" endTime="2026-09-24T02:31:24.6710938+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f845af82-fa78-4531-a997-de1f9b8cb2b9" />
+    <UnitTestResult executionId="81bd7865-7fc5-4def-8a1b-ef6765c3e2a7" testId="7b497fa3-fe1d-8341-0691-7414d4ac1080" testName="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.BackendScaleKeepsTheMediaWindowBounded(backendCount: 10000, expectedCount: 2000)" computerName="SULT" duration="00:00:00.0150000" startTime="2026-09-24T02:31:24.6760937+08:00" endTime="2026-09-24T02:31:24.6880928+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="81bd7865-7fc5-4def-8a1b-ef6765c3e2a7" />
+    <UnitTestResult executionId="08c90c3d-2a62-4c54-aaa4-15bc5faae9ca" testId="1bd0f65b-cc28-b2ba-b9ed-25680fb29c75" testName="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.BackendScaleKeepsTheMediaWindowBounded(backendCount: 200, expectedCount: 200)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T02:31:24.6900948+08:00" endTime="2026-09-24T02:31:24.6910929+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08c90c3d-2a62-4c54-aaa4-15bc5faae9ca" />
+    <UnitTestResult executionId="31f3d85b-2f7f-4711-91ef-256ba7dfb242" testId="3ef7ceba-8058-d148-8f40-e76b3e961792" testName="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.CrossingTheEleventhPageMakesEvictedSelectionExplicitButKeepsPinnedSelection" computerName="SULT" duration="00:00:00.0100000" startTime="2026-09-24T02:31:24.5820939+08:00" endTime="2026-09-24T02:31:24.5830946+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="31f3d85b-2f7f-4711-91ef-256ba7dfb242" />
+    <UnitTestResult executionId="6e1d0c96-6e9c-4897-b374-a0ddbd40da84" testId="b2d6f681-716f-24dd-e331-81c1c5777443" testName="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.AppendingOverlappingPageUpdatesByIdWithoutDuplicating" computerName="SULT" duration="00:00:00.0510000" startTime="2026-09-24T02:31:24.5140978+08:00" endTime="2026-09-24T02:31:24.5510928+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e1d0c96-6e9c-4897-b374-a0ddbd40da84" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.CrossingTheEleventhPageMakesEvictedSelectionExplicitButKeepsPinnedSelection" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3ef7ceba-8058-d148-8f40-e76b3e961792">
+      <Execution id="31f3d85b-2f7f-4711-91ef-256ba7dfb242" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests" name="CrossingTheEleventhPageMakesEvictedSelectionExplicitButKeepsPinnedSelection" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.BackendScaleKeepsTheMediaWindowBounded(backendCount: 200, expectedCount: 200)" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1bd0f65b-cc28-b2ba-b9ed-25680fb29c75">
+      <Execution id="08c90c3d-2a62-4c54-aaa4-15bc5faae9ca" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests" name="BackendScaleKeepsTheMediaWindowBounded" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.BackendScaleKeepsTheMediaWindowBounded(backendCount: 10000, expectedCount: 2000)" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7b497fa3-fe1d-8341-0691-7414d4ac1080">
+      <Execution id="81bd7865-7fc5-4def-8a1b-ef6765c3e2a7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests" name="BackendScaleKeepsTheMediaWindowBounded" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.BackendScaleKeepsTheMediaWindowBounded(backendCount: 2000, expectedCount: 2000)" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c1c07fce-6e7b-38a6-1346-4088b7337ae3">
+      <Execution id="02149afd-d90c-4d48-b98a-35f54ceb9476" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests" name="BackendScaleKeepsTheMediaWindowBounded" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.Appending250PagesKeepsBoundedWindowAndSelectedItem" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="74fc1003-7dda-1a5a-c142-de253ecbdf64">
+      <Execution id="f845af82-fa78-4531-a997-de1f9b8cb2b9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests" name="Appending250PagesKeepsBoundedWindowAndSelectedItem" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests.AppendingOverlappingPageUpdatesByIdWithoutDuplicating" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b2d6f681-716f-24dd-e331-81c1c5777443">
+      <Execution id="6e1d0c96-6e9c-4897-b374-a0ddbd40da84" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaPageAccumulatorTests" name="AppendingOverlappingPageUpdatesByIdWithoutDuplicating" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c1c07fce-6e7b-38a6-1346-4088b7337ae3" executionId="02149afd-d90c-4d48-b98a-35f54ceb9476" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="74fc1003-7dda-1a5a-c142-de253ecbdf64" executionId="f845af82-fa78-4531-a997-de1f9b8cb2b9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b497fa3-fe1d-8341-0691-7414d4ac1080" executionId="81bd7865-7fc5-4def-8a1b-ef6765c3e2a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1bd0f65b-cc28-b2ba-b9ed-25680fb29c75" executionId="08c90c3d-2a62-4c54-aaa4-15bc5faae9ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3ef7ceba-8058-d148-8f40-e76b3e961792" executionId="31f3d85b-2f7f-4711-91ef-256ba7dfb242" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2d6f681-716f-24dd-e331-81c1c5777443" executionId="6e1d0c96-6e9c-4897-b374-a0ddbd40da84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.72]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.79]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.03]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

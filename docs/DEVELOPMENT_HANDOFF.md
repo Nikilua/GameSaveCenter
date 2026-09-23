@@ -1,10 +1,14 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-24 当前接续：核对 R18-04 23 项组成
+## 2026-09-24 当前接续：R23-04 / R23-05 外部验收边界
 
-R08-05 当前 main/测试 identity `13c38754` 已复核：Release solution XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；源码、XAML、diff check 通过。PageSwitch `2/2`、R02 Busy `4/4`、R08 feedback `4/4`、ShellChrome `12/12`、Foundation `9/9` 合计 `31/31`，均 exit `0`。当前实测 Task→Media/返回布局增量各 `1/1`，同页重入 `0/0`，滚动保持 `10→10`。壳层 TRX 有一段 TextServicesHost `InvalidComObjectException` 清理日志、原因未知。
+最近的 main 行为复核已完成：R08-05 当前身份 `13c38754` 的页面切换回归 `31/31`；R18-04 当前代码/test identity `abd7927b` 的专测 `1/1`、相关行为 `23/23`，用户四页 Light/Dark 布局 `8/8`。Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；相关证据和 TRX 已提交。
 
-证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-05-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。接下来按用户要求从当前 main test assembly 核对 R18-04 的四个相关测试类、精确用例/理论参数与覆盖性质；R18 专测当前报告为 `1/1`，已有测量和 COM 清理事实按对应 R18 证据分账。本地扩展 identity `0.6.73+7a4ba2a9` 早于现有设置/媒体修正；可审阅包 `[GameSaveCenter-0.6.73.pext](../artifacts/GameSaveCenter-0.6.73.pext)` identity `0.6.73+e83d8ba9`、SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。用户 Media/Task/Save/Settings 问题还需正常 Playnite host 或用户包身份对照；CEF `platform_channel 0x5` 不绕过。
+用户报告的 Media Inbox 动作高、列表滚入 footer，Task 失败行框偏移，Save 窗口化动作周边空白，Settings 顶栏错位，在当前生产视图的隔离 STA WPF 行为几何中均未复现。新样本 Media Inbox `7/7/7`（早期 `14/14/14` 属旧布局预算），按钮 36 DIP，滚动条留在 DataGrid。Task 行 chrome 位置与错误状态误差均 0；Save action row 36 DIP、尾白 9.33 DIP；Settings search/title 左差 0，reset/path controls 36 DIP 同中心。测试/TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md`。
+
+本机 Playnite Extension identity `0.6.73+7a4ba2a9` 早于 screenshot 修正 commits，是实际差异的可能解释；截图无法关联到运行中 DLL，因果仍未确认。候选 `[GameSaveCenter-0.6.73.pext](../artifacts/GameSaveCenter-0.6.73.pext)` identity `0.6.73+e83d8ba9`，SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，只作审阅、未安装。实际宿主复核仍被 Playnite CEF `platform_channel 0x5` 阻挡；R23-05 真正呈现帧采样仍受 ETW/WPR/xperf 权限限制，不绕过。
+
+可继续的 Q/R 源码/隔离行为门禁已逐项满足；当前仅剩的未完成条件是 R02-06 原生菜单宿主输入、R23-04 正常 Playnite/Controlled host、R23-05 真实 presented frame/宿主性能。下一执行点：在隔离 Playnite runner/Cef host 正常可用时用候选身份复核四页；取得合规系统跟踪权限时再补真实 frame 证据。不可用时继续未依赖宿主的其他小批量任务，不把离屏几何/代理时间冒充用户屏幕通过。
 
 ## 2026-09-24 当前接续：R08-02
 

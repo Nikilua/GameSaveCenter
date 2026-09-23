@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0ecc2828-b235-43f5-9a84-7a60c452c62a" name="lopmatu@SULT 2026-09-24 02:32:33" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T02:32:33.3606949+08:00" queuing="2026-09-24T02:32:33.3606951+08:00" start="2026-09-24T02:32:28.0412282+08:00" finish="2026-09-24T02:32:49.8885044+08:00" />
+  <TestSettings name="default" id="97f0ee0f-d2be-4e6a-b6b8-8d37ef55cb7c">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_02_32_33" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="7d45482f-a1dd-49bd-a7eb-ed31a4eaf425" testId="9c1a4a49-09cc-2eb8-28b6-baf9d0720f0a" testName="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.StableIdentityWinsOverChangedRowPosition" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T02:32:31.8660571+08:00" endTime="2026-09-24T02:32:31.8680562+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d45482f-a1dd-49bd-a7eb-ed31a4eaf425" />
+    <UnitTestResult executionId="88502694-7cf2-4338-9b6f-c524e77c3061" testId="bf983846-3557-bc46-c7ce-a45d06973159" testName="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.DataGridSelectionUsesResolvedNeighborAfterRefresh" computerName="SULT" duration="00:00:02.0550000" startTime="2026-09-24T02:32:31.8720571+08:00" endTime="2026-09-24T02:32:33.9085983+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88502694-7cf2-4338-9b6f-c524e77c3061" />
+    <UnitTestResult executionId="7afdd3f4-5bc7-4175-9d27-2a18e3e828b9" testId="23ca9cd4-67ba-0a1a-fe8e-7083b560d674" testName="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.SaveCandidateRestoreUsesNeighborWhenStablePathWasRemoved" computerName="SULT" duration="00:00:00.0080000" startTime="2026-09-24T02:32:31.8630589+08:00" endTime="2026-09-24T02:32:31.8640574+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7afdd3f4-5bc7-4175-9d27-2a18e3e828b9" />
+    <UnitTestResult executionId="7fccdcc7-8b80-4455-bb6e-91826f232b52" testId="797090a7-fcb1-d3c3-3a6f-3d979ccbcea4" testName="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.MissingIdentityClampsToNeighborInsteadOfFirstRow" computerName="SULT" duration="00:00:00.0270000" startTime="2026-09-24T02:32:31.8330613+08:00" endTime="2026-09-24T02:32:31.8450572+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7fccdcc7-8b80-4455-bb6e-91826f232b52" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.SaveCandidateRestoreUsesNeighborWhenStablePathWasRemoved" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="23ca9cd4-67ba-0a1a-fe8e-7083b560d674">
+      <Execution id="7afdd3f4-5bc7-4175-9d27-2a18e3e828b9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests" name="SaveCandidateRestoreUsesNeighborWhenStablePathWasRemoved" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.MissingIdentityClampsToNeighborInsteadOfFirstRow" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="797090a7-fcb1-d3c3-3a6f-3d979ccbcea4">
+      <Execution id="7fccdcc7-8b80-4455-bb6e-91826f232b52" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests" name="MissingIdentityClampsToNeighborInsteadOfFirstRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.StableIdentityWinsOverChangedRowPosition" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9c1a4a49-09cc-2eb8-28b6-baf9d0720f0a">
+      <Execution id="7d45482f-a1dd-49bd-a7eb-ed31a4eaf425" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests" name="StableIdentityWinsOverChangedRowPosition" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests.DataGridSelectionUsesResolvedNeighborAfterRefresh" storage="d:\workplace\github\gamesavecenter\.tmp\build-main-abd7927b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="bf983846-3557-bc46-c7ce-a45d06973159">
+      <Execution id="88502694-7cf2-4338-9b6f-c524e77c3061" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\build-main-abd7927b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests" name="DataGridSelectionUsesResolvedNeighborAfterRefresh" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9c1a4a49-09cc-2eb8-28b6-baf9d0720f0a" executionId="7d45482f-a1dd-49bd-a7eb-ed31a4eaf425" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bf983846-3557-bc46-c7ce-a45d06973159" executionId="88502694-7cf2-4338-9b6f-c524e77c3061" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23ca9cd4-67ba-0a1a-fe8e-7083b560d674" executionId="7afdd3f4-5bc7-4175-9d27-2a18e3e828b9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="797090a7-fcb1-d3c3-3a6f-3d979ccbcea4" executionId="7fccdcc7-8b80-4455-bb6e-91826f232b52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.37]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.73]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.78]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.92]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

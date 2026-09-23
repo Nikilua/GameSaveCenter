@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 main R18-04 23 项组成与四页窗口复核
+
+- 在 clean `main` 的代码/测试身份 `abd7927b` 上 Release build：XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warnings；Playnite `net462`、tests `net472`。
+- R18 专测 `1/1`，并重新执行四类关联测试：`MediaPageAccumulatorTests 6/6`、`MediaWindowAnchorContractTests 10/10`、`MediaInboxGeometryTests 3/3`、`R07SelectionAnchorBehaviorTests 4/4`，共 `23/23`、0 fail/skip、四进程 exit `0`。精确用例名/理论数据已与 TRX、当前 source 对照：10 纯数据/几何/选择行为、7 源契约、6 隔离 STA WPF 行为；不是 23 项真实宿主交互。
+- 本次 R18 输出：Task 2k/10k/20k 最大 realized/visible `9/7`；Media Inbox `7/7/7`，后端 10k/20k UI cache `2,000`。Task 8 次 scroll 最大 `59.837/26.136/24.464 ms`；Media `0.089/0.031/0.026 ms`。这与旧 `14/14/14` 属不同生产布局：`b5c7a6d4` 将下表 footer 预算调整为 360 DIP，`da91bd68` 确保短窗时 DataGrid 仍受有限高度约束。R18/Anchor TRX 收尾分别含 6/2 段 WPF TextServicesHost `InvalidComObjectException`，各测试仍 exit `0`，根因未知。
+- 在同一程序集重跑用户四页 `ReportedWorkspaceLayoutBehaviorTests`，Light/Dark 各四项合 `8/8`、无 COM cleanup 文本：Media 按钮 `36 DIP` 且内部滚动条不越 grid/footer；Task 失败行 `7` 个样本无状态/位置错配；Save 操作行 `36 DIP`、上下间距正常；Settings 搜索左对齐、按钮等高同中心。没有生产代码变更。
+- 当前本机旧 Extension identity `0.6.73+7a4ba2a9` 早于 Settings/Media/Task 修正；它是截图与受控当前源不同的可能原因，不是确认因果。候选 e83 包保持未安装；正常 Playnite host 仍受 CEF `platform_channel 0x5` 阻挡。用户真实截图修复状态未关闭。
+- 证据：`R18-04-CURRENT-MAIN-RECHECK-20260924.md`、五份 R18 TRX、`USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md` 与 TRX。source validation、XAML 24/24、diff check 均通过。下一阶段在当前 R/Q 已无非宿主代码缺口；R02-06 原生菜单和 R23-05 真实帧须等各自宿主/权限条件，不绕过。
+
 ## 2026-09-24 main R08-05 页面切换当前复核
 
 - 当前 main/测试程序集 identity `13c38754` 的 Release solution build 成功：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。`validate-source.py`、`check-xaml.ps1`（24 files）和 `git diff --check` 通过。
