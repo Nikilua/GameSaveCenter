@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：R08-02
+
+R08-01 已在当前 main 身份复核：Release XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；动画专测 `2/2`，相邻 shell chrome/motion/settings geometry `23/23`，均 VSTest exit `0`。生产 source identity `0c0869a2`，目前测试/文档提交 `4b7f0a34`。Translate 和侧栏中途反向都从实际值连续接管至最新目标并清理动画 clocks。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260924.md`。TRX 收尾各有一段 TextServicesHost COM 清理异常，原因未知。
+
+下一项 R08-02 热关闭动画，先查已有关闭/退场实现。用户最新设置页截图仍与隔离 WPF 结果不符；当前源 Light/Dark 几何为 `2/2`（标题/搜索左差 0 DIP，icon-title 横向 12 DIP，重置及路径控件 36 DIP 同中心），但 package identity、正常 Playnite 父容器和物理 DPI 尚未核实。CEF `platform_channel 0x5` 曾阻断隔离 host；继续按真实限制记录，不宣称实机已经修复。已有 0.6.73+8e4f3194 包仅作身份对照，未安装。
+
 ## 2026-09-24 当前接续：R07-08
 
 当前 `main` 为 `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`。resize 压力序列通过当前受控验收：Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；最终测试项目 0 warning/error；resize 和相邻响应布局/Task/滚动/Media 几何行为 `21/21`。测试从外层 Window 尺寸事件实际进入 production shell `SizeChanged`，不直接调用布局方法。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20260924.md`。TRX 有 6 段 WPF 文本服务 `InvalidComObjectException` 收尾日志，根因未知，VSTest exit `0`。

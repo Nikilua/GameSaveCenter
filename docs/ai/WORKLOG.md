@@ -9176,3 +9176,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 更新 `R07ResizeStressBehaviorTests`，去掉直接调用 `ApplyResponsiveLayout`，改为只调整隔离外层 Window，让生产 shell `SizeChanged` 事件驱动布局。窗口 client inset 稳定约 `13.333 DIP`；宽/窄/短/宽/恢复序列的任务详情、选择器、搜索焦点持续可见，紧凑详情 MaxHeight `160`、宽态 `∞`，选择器高度预算按缩小窗口递减，SizeChanged 计数 `7`。
 - resize + ResponsiveCoordinator `5` + Task responsive `7` + details breakpoint `1` + scroll ownership `2` + Media Inbox geometry `3` + fine scroll `2`，共 `21/21`、0 failed/skipped，VSTest exit `0`。TRX 收尾有 4 段 `TextServicesHost.OnUnregisterTextStore` 和 2 段 `TextServicesContext.StopTransitoryExtension` `InvalidComObjectException`，root cause unknown。
 - 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20260924.md` 与 `.trx`。验证边界为隔离 STA WPF/合成数据/逻辑 DIP；未验正常 Playnite、物理拖窗/跨屏 DPI、UIA/读屏、最终帧、ETW 或宿主性能；没有改动真实数据。下一项 R08-01 中途反向连续当前 main 复核。
+# 2026-09-24 main R08-01 与设置页顶栏复核
+
+- 当前 main Release solution 构建成功：XAML `24/24`、0 errors；两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Playnite `net462`、test `net472`。生产源 identity `0c0869a2`，当前测试/文档 commit `4b7f0a34` 未改生产代码。
+- R08-01 `2/2`、0 failed/skipped，exit `0`。Translate 中途值/反向起点 `9.287/9.287`，终点 `-8`；侧栏 collapse 中途/反向起点 `184/184`、反向进度 `213.333`、终宽 `270`、opacity `1`，transition/opacity clocks 已清理。相邻 shell chrome `12/12` + motion foundation `9/9` + settings geometry `2/2` = `23/23`、exit `0`。
+- 设置当前用户截图在生产视图 STA WPF 受控用例仍未复现；Light/Dark `2/2`，标题/搜索左差 `0 DIP`，居中负例右移 `287.33 DIP`，reset 与 path 控件全为 36 DIP 且中心线一致。无新增生产修补，避免对不可复现的宿主差异臆改。当前用户包 identity、Playnite 父容器及物理 DPI 未验；已有 CEF `platform_channel 0x5` 阻挡仍记录。
+- 两份 TRX 都有 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` shutdown 日志，根因未知、VSTest 仍明确 exit 0。证据：`R08-01-CURRENT-MAIN-RECHECK-20260924.md`、`SETTINGS-HEADER-CURRENT-MAIN-RECHECK-20260924.md` 与各自 TRX。下一项 R08-02 热关闭动画，用户设置截图继续待 package/host 对照。

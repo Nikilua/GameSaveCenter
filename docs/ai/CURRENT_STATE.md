@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R08-01 与设置页最新截图复核
+
+- Release solution XAML `24/24`、0 errors；保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。生产代码身份 `0c0869a2`；当前 main `4b7f0a34` 是证据/测试提交。
+- R08-01 专测 `2/2`，Translate 和侧栏都从实际中途值连续反向到最后目标，opacity/transition 时钟清理；相邻 shell/motion/设置几何 `23/23`。TRX 收尾有 WPF TextServicesHost `InvalidComObjectException` 噪声，root cause unknown，两次 VSTest 都 exit `0`。
+- 用户最新设置截图仍未在隔离 WPF 复现：Light/Dark 2/2 证明标题/搜索左差 `0 DIP`、图标/标题横向间距 `12 DIP`、恢复默认与路径按钮 `36 DIP` 同高同中心；当前用户 package identity/Playnite host/物理 DPI 未确认，因此截图问题继续待验。详见 `../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-CURRENT-MAIN-RECHECK-20260924.md`。
+- 下一可执行项 R08-02 热关闭动画；同时在获得用户包身份或正常 host 条件后对照设置页真实布局。
+
 ## 2026-09-24 main：R07-08 当前复核
 
 - 当前 production/source identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`。Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`；更新测试项目构建 `0 warning/error`。

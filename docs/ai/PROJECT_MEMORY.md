@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R08-01 动画与设置顶栏复核
+
+- 当前生产代码 identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`；Release XAML `24/24`、0 errors，保留两条既有 CS8602 warning。当前 main `4b7f0a34` 本批只更新测试/文档。
+- R08-01 动画专测 `2/2`、相邻 shell/motion foundation/Settings geometry `23/23` 均 exit `0`；实测反向起点等于当时呈现中点，最终符合最新目标，动画 clock 清理。两份 TRX 都如实记录 TextServicesHost COM cleanup exception，root cause unknown。
+- 设置最新 screenshot 在隔离 Light/Dark STA WPF 中仍未复现。Geometry `2/2`：标题/搜索左差 0 DIP；icon/title 横向间距 12 DIP；重置/路径控件同高同中心。用户 package identity 与正常 Playnite/物理 DPI 未核实，所以不写“用户环境已修复”。证据位于 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-CURRENT-MAIN-RECHECK-20260924.md`。
+- 下一项 R08-02；如果用户包/正常 Playnite host 仍不可用，继续独立 Q/R，不绕过 CEF 0x5、ETW 或 OS trace 权限阻挡。
+
 ## 2026-09-24 main：R07-08 当前复核
 
 - 当前 production identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`；Release XAML `24/24`、0 errors，保留两条既有 CS8602 warning；Playnite `net462`，测试 `net472`。
