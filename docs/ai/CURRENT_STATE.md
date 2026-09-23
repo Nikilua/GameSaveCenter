@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R07-05 当前复核
+
+- 当前 `main` 源码/测试身份 `ec9b0a2107d1fe6d091043d0f99f2e9378e78b7c`。Release 隔离构建 XAML `24/24`、0 errors，保留 `MediaCenterView.xaml.cs:703` 两条既有 `CS8602` warning。
+- R07-05 断点行为与相邻滚动、Task 响应和详情预算类共 `17/17`、0 failed/skip。先前 `8e4f3194` 的测试程序集被源码身份门禁拦下 4 个源码读取用例；按当前 `ec9b0a21` 重建后完整复跑成功。TRX 收尾有一条 WPF TextServicesContext `InvalidComObjectException`，VSTest exit `0`，根因未知。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20260924.md` 与同名 TRX。隔离 STA WPF/合成 DTO/逻辑 DIP，不代表正常 Playnite shell 拖窗、物理 DPI、设备输入或最终呈现。
+- 下一可执行项 R07-06 当前 main 状态横幅复核。Settings 当前源码几何证据/包身份边界仍见下方 2026-09-23 记录；用户 package identity 与正常 Playnite host 尚未确认，CEF `platform_channel 0x5` 曾阻断隔离宿主。
+
 ## 2026-09-23 main 设置页窗口事件复核
 
 - 设置页用户截图对应的当前生产布局实现已在 3a1dadd8；本批只强化行为证据，没有改生产 XAML/业务代码。测试实际通过 Loaded/SizeChanged 路由，而非反射手调布局私有方法。

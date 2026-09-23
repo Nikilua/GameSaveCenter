@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R07-05 当前复核
+
+- 当前源码/测试构建身份 `ec9b0a2107d1fe6d091043d0f99f2e9378e78b7c`；Release solution XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。
+- R07-05 和相邻五类共 `17/17`，0 fail/skip。旧 `8e4f3194` 测试程序集的身份保护曾拒绝 4 个源码读取测试；当前 checkout 重建后完整通过，不作为产品失败。TRX 有 WPF TextServicesContext `InvalidComObjectException` 收尾输出，exit 0、根因未知。
+- 测试限定于隔离 STA WPF、合成数据与逻辑 DIP；没有验正常 Playnite shell resize、用户包、物理 DPI/跨屏、设备输入、呈现帧或宿主性能。未触碰真实数据。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20260924.md`。下一项 R07-06 当前 main 复核。
+
 ## 2026-09-23 main 设置页窗口事件复核
 
 - 设置页用户截图对应的当前生产布局实现已在 3a1dadd8；本批只强化行为证据，没有改生产 XAML/业务代码。测试实际通过 Loaded/SizeChanged 路由，而非反射手调布局私有方法。

@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续
+
+当前 `main` 与 `origin/main` 起点为 `ec9b0a21`；R07-05 在同身份 Release 隔离构建后复跑断点和相邻回归 `17/17`、0 failed/skip，XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warning。旧身份测试程序集被 checkout 身份门禁拦下 4 个源码读取用例，重建后通过。TRX 收尾的一条 WPF TextServicesContext `InvalidComObjectException` 如实记录，原因未知、VSTest exit 0。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20260924.md`。
+
+下一项：R07-06 状态横幅预算当前 main 复核；先盘点现有行为断言，再跑本项与相邻空态/详情/滚动门禁，按当前 checkout 构建以遵守源码身份保护。测试仅限合成数据、隔离 STA WPF 与逻辑 DIP。正常 Playnite host、用户 package identity、物理 DPI/跨屏、真实设备输入、UIA/读屏、presented frame、ETW 与宿主性能仍待验；不接触真实存档、媒体、云端或诊断。
+
 ## 2026-09-23 当前接续
 
 Q06-08 已追加生产按钮 normal/hover/pressed/focus/disabled 五态双主题受控截图与自动行为检查，定向 Release `1/1`/exit 0。证据在 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`；Hover、Space 和程序化焦点均属受控 WPF，不是物理输入或 Playnite 真实呈现，任务最终仍未完成。此前四处截图布局问题、R18-04 与审计的历史身份和边界仍见下方历史记录及 Round3 对应 evidence。

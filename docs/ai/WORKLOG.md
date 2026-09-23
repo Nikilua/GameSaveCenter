@@ -9148,3 +9148,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - freshness 报告更新至 HEAD 8e4f3194：14 records needsRerun=false、matchedSourcePaths=0、changedPaths=744、documentationOnlyChange=false、用户 package identity not-provided；freshness 自测通过。
 - 另在 detached 临时 checkout 打包 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，六个 Plugin/Worker 程序集身份一致。新包放在 artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext，SHA-256 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0；旧同版本包未覆盖、用户 Playnite 未安装。
 - 当前源离屏截图中设置标题图标/搜索锚点正确，用户截图仍不同。真实加载包身份、Playnite 父容器和物理 DPI 未验，之前隔离 host CEF platform_channel 0x5 阻挡未变；不写“用户环境已修复”。
+
+## 2026-09-24 main R07-05 当前复核
+
+- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot .tmp/build-main-ec9b0a21`：XAML `24/24`，Release solution `0 error`；保留 `MediaCenterView.xaml.cs:703` 两条既有 `CS8602` warning。
+- 当前 checkout 身份 `ec9b0a21` 下，R07-05 与相邻断点/滚动/Task/详情行为复跑 `17/17`、0 failed/skip。一次复用 `8e4f3194` 的旧程序集被身份门禁拒绝 4 个源码读取用例，按当前 checkout 重建后成功；该拒绝不是产品行为失败。
+- TRX 收尾含一次 WPF TextServicesContext `InvalidComObjectException`（`StopTransitoryExtension`/`Uninitialize`），根因未知，VSTest exit `0`。用例使用合成 DTO/fake、隔离 STA WPF、逻辑 DIP；未启动正常 Playnite，也未碰真实数据。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20260924.md`、同名 `.trx`。下一项 R07-06 当前 main 状态横幅预算复核。
