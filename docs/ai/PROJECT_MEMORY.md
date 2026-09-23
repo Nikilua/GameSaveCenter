@@ -2,13 +2,13 @@
 
 ## 2026-09-23 main 接续与 R18-04 当前证据
 
-- 当前工作分支是 main；审计源码身份为 f55dce61adba84fec96c3e5434e5a8c1e3fa7132，之后只有文档证据提交，包含 ui-finesse-round2 已验证代码并保留 main 后续提交。不要切回 codex/ui-finesse-round2，也不要用旧 main 页面实现覆盖当前 UI。
-- R18-04 在 main Release 测试程序集复核通过：专测 1/1；MediaPageAccumulator 6/6、MediaWindowAnchorContract 10/10、MediaInboxGeometry 3/3、R07SelectionAnchor 4/4，相关总计 23/23，0 skip。精确方法名见 R18-04 证据。
-- 2k/10k/20k Task 最大实现/可见行 9/7；Media Inbox 视口/实现/可见 14/14/14，Media UI 窗口最多 2,000 项。最新 main 样本 Task 最大滚动 64.610/31.580/26.482ms，Media 0.027/0.025/0.652ms；单次 0.652ms 不筛除，前次约 0.03ms 样本保留为历史数据。
-- 合成 DTO/隔离 STA WPF/逻辑 DIP 不是宿主帧性能证据。WPF TextServicesHost InvalidComObjectException 曾出现在 testhost 清理阶段；xUnit 明确通过、进程 exit 0，根因未明。本次 main TRX 通过且控制台未复现。
+- 当前工作分支是 main；R18-04 最新源码身份 `922501e71c9b77f5c7d227edb4aa42ebe9308d78`。继续沿用合并后的 AcrylicFork 生产基线，不切回 feature，也不以旧 main 页面实现覆盖当前 UI。
+- 当前 Release 构建 XAML `24/24`、solution `0 errors/2` 条既有 MediaCenter CS8602 warning、Playnite `net462`。R18 专测 `1/1`；四类关联行为回归按 TRX `6+10+3+4=23/23`，0 失败、0 跳过。方法名、理论参数和验证形态见 R18-04 证据。
+- Task 三档最大实现/可见行为 `9/7`；Media Inbox `14/14/14`，UI 窗口仍限制 `2,000` 项。当前滚动最大 Task `69.227/34.083/36.431ms`，Media `0.027/0.026/0.032ms`；原始数组已记录，历史 `0.652ms` 保留为此前单独样本。
+- 合成 DTO/隔离 STA WPF/逻辑 DIP 不是宿主帧性能证据。R18/Anchor testhost 收尾分别记录 6/2 次 TextServicesHost InvalidComObjectException；TRX 通过且进程 exit `0`，根因未明。
 - R00/R01 main 审计归档和 freshness 已校正；下一项 R23-02 生产资源状态矩阵。真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能边界仍未验。
 
-证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。
+证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。下一项 R23-02 生产资源状态矩阵；真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能仍待验。
 
 ## 2026-09-23 R00/R01 main 证据校正
 

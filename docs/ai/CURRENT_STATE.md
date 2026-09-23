@@ -2,13 +2,13 @@
 
 ## 2026-09-23 main 接续与 R18-04 当前复核
 
-- 当前分支 main；审计源码身份 f55dce61adba84fec96c3e5434e5a8c1e3fa7132，之后只提交文档证据并保留 main 后续历史，工作区已切离 feature 分支。R02-02 RenderHarness 探针修正随合并进入 main。
-- R18-04 使用 main Release 测试程序集复核：容器预算专测 1/1；四个相关行为类 23/23、0 skip。组成是 MediaPageAccumulator 6、MediaWindowAnchorContract 10、MediaInboxGeometry 3、R07SelectionAnchor 4，完整用例名见 R18-04 证据。
-- Task 2k/10k/20k 最大实现/可见行均为 9/7；Media Inbox 14/14/14，后端 10k/20k 时 UI 项仍封顶 2,000。main 这一轮滚动最大 Task 64.610/31.580/26.482ms，Media 0.027/0.025/0.652ms；20k Media 单样本 0.652ms 如实保留，之前约 0.03ms 的采样仍作为旧样本。
-- 数据来自合成 DTO、隔离 STA WPF Window 和逻辑 DIP。此前 testhost 清理日志出现过 TextServicesHost InvalidComObjectException，但 xUnit 成功且进程退出码为 0，根因未知；本次 main TRX 均通过，控制台未重现。
+- 当前分支 main；R18-04 最新复核源码身份 `922501e71c9b77f5c7d227edb4aa42ebe9308d78`，包含 main 合并后的实现和后续 R00/R01 文档校正。
+- 当前隔离 Release 构建 XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning、Playnite `net462`。R18 专测 `1/1`；关联四类行为测试 `6+10+3+4=23/23`，0 失败、0 跳过，精确方法名/理论参数及覆盖形态见证据。
+- Task 2k/10k/20k 最大实现/可见行均 `9/7`；Media Inbox `14/14/14`，10k/20k 后端下 UI 项仍封顶 2,000。当前滚动最大 Task `69.227/34.083/36.431ms`，Media `0.027/0.026/0.032ms`；完整原始样本已记录。
+- 数据来自合成 DTO、隔离 STA WPF Window 和逻辑 DIP。R18 专测与 Anchor testhost 收尾日志分别出现 6/2 次 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；TRX 均全通过、VSTest exit `0`，根因未知，按清理输出如实保留。
 - R00/R01 main 证据与 freshness 已校正；下一项 R23-02 生产资源状态矩阵。真实 Playnite、物理 DPI/UIA/IME、presented frame、ETW 和宿主性能仍未验。
 
-证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。
+证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。下一项 R23-02 生产资源状态矩阵；真实 Playnite、物理 DPI/UIA/IME、presented frame、ETW 和宿主性能仍未验。
 
 ## 2026-09-23 R00/R01 main 证据校正
 

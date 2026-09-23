@@ -113,3 +113,33 @@ Media 20k 最新一轮包含 0.652 ms 单样本，故本轮最大值不能写成
 相关测试的原始 TRX 只作本地核对，测试名和计数已转录至本文件，临时输出随后清理；其用例名与真实断言覆盖范围由上表逐项列出，不把 Assert.Contains 源码契约单独当成交互/性能证明。此前 R18/锚点隔离 testhost 收尾时出现过 TextServicesHost.OnUnregisterTextStore InvalidComObjectException；xUnit/VSTest 计数仍成功、进程 exit 0，根因未明。本次 main 两次 VSTest 的 TRX 均为通过，控制台未重现该噪声。
 
 本次仍只使用合成 DTO、生产 WPF 视图、隔离 STA Window 和逻辑 DIP。没有真实 Playnite/package-host 呈现、物理 DPI/跨屏、UIA/读屏、IME、DWM presented frame、ETW 或宿主性能证据；未触碰真实存档、媒体、用户云端或诊断目录。Demo 原目录不可用，沿用恢复的生产基线。
+
+## 当前 main HEAD `922501e7` 精确复核（2026-09-23）
+
+在 main `922501e71c9b77f5c7d227edb4aa42ebe9308d78` 新建隔离 Release 输出后，重新执行 R18 专测及四个关联类，每类使用独立 VSTest 进程并保存本机 TRX。XAML 检查 `24/24`；Release solution `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite 目标仍为 `net462`。R18 专测中的程序集身份检查通过。
+
+| 测试类 | TRX total / passed / failed / skipped | 精确展开 |
+| --- | ---: | --- |
+| `R18TableContainerBudgetTests`（专测，不计入 23 项） | `1 / 1 / 0 / 0` | `ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets` |
+| `MediaPageAccumulatorTests` | `6 / 6 / 0 / 0` | `Appending250PagesKeepsBoundedWindowAndSelectedItem`；`AppendingOverlappingPageUpdatesByIdWithoutDuplicating`；`CrossingTheEleventhPageMakesEvictedSelectionExplicitButKeepsPinnedSelection`；`BackendScaleKeepsTheMediaWindowBounded(backendCount: 200, expectedCount: 200)`；同一 theory 的 `(2000, 2000)`、`(10000, 2000)` |
+| `MediaWindowAnchorContractTests` | `10 / 10 / 0 / 0` | `LoadMoreSurfacesCaptureAndRestoreTheMediaAnchor`；`EvictedWindowHasAnExplicitReloadRouteAndVisibleSelectionSemantics`；`PurposeNavigationUsesDedicatedMediaAndSaveTabState`；`GridScrollTemplateReservesTheRealContentViewport`；`AnchorDiagnosticsRecordExecutionAndSkipReasonsWithoutChangingScrollSemantics`；`AnchorUsesTheRowsPresenterScrollViewerWhenTemplatesExposeMultipleViewers`；`AnchorViewerSelectionPrefersRowsPresenterOverALargerOuterViewer`；`CurrentMediaCardsUseTheBoundedVirtualizingPanel`；`StaleRestoreCallbackCannotSurfaceEvictedAnchorAfterContextInvalidation`；`EvictedAnchorNoticeReleasesSelectionRestoreGuard` |
+| `MediaInboxGeometryTests` | `3 / 3 / 0 / 0` | `ReadableFloorUsesTableChromeAndFrameChromeIndependently`；`ProductionInboxKeepsFourRowsOrExposesThePageFallback`；`NarrowInboxKeepsThePageScrollChannelWhenFooterWraps` |
+| `R07SelectionAnchorBehaviorTests` | `4 / 4 / 0 / 0` | `StableIdentityWinsOverChangedRowPosition`；`MissingIdentityClampsToNeighborInsteadOfFirstRow`；`SaveCandidateRestoreUsesNeighborWhenStablePathWasRemoved`；`DataGridSelectionUsesResolvedNeighborAfterRefresh` |
+| **关联行为测试合计** | **`23 / 23 / 0 / 0`** | **`6 + 10 + 3 + 4`；R18 专测单独计数** |
+
+覆盖形态需与用例名一起理解：`MediaPageAccumulatorTests` 是合成分页/容量/身份行为；`MediaWindowAnchorContractTests` 中 7 项是源码结构/契约断言，另 3 项实际创建 STA WPF 视图/模板验证负责滚动查看器选择、过期回调不显示锚点提示、淘汰提示释放选择恢复保护；`MediaInboxGeometryTests` 包含 1 项几何计算和 2 项实际 STA 窗口布局/页级滚动检查；`R07SelectionAnchorBehaviorTests` 包含 3 项选择解析行为和 1 项实际 DataGrid 刷新选中检查。计数不是 23 项都经过真实宿主交互的主张。
+
+本次专测在 2k/10k/20k 后端规模下得到以下实际容器与滚动结果。8 点测试内 p95 使用最近秩规则，因此与最大值相同；原始值完整保留：
+
+| 页面 | 后端 / UI 项数 | 视口 / 最大已实现 / 最大可见 | 8 次滚动原始样本 (ms) | p95 / 最大 (ms) |
+| --- | --- | --- | --- | ---: |
+| Task | 2k / 2k | 7 / 9 / 7 | `3.496, 69.227, 14.481, 14.564, 12.013, 31.256, 15.350, 19.450` | `69.227 / 69.227` |
+| Media Inbox | 2k / 2k | 14 / 14 / 14 | `0.027, 0.020, 0.022, 0.023, 0.019, 0.023, 0.023, 0.022` | `0.027 / 0.027` |
+| Task | 10k / 10k | 7 / 9 / 7 | `0.714, 23.961, 25.567, 16.130, 14.225, 34.083, 14.680, 19.301` | `34.083 / 34.083` |
+| Media Inbox | 10k / 2k | 14 / 14 / 14 | `0.026, 0.024, 0.019, 0.020, 0.022, 0.022, 0.019, 0.019` | `0.026 / 0.026` |
+| Task | 20k / 20k | 7 / 9 / 7 | `1.198, 17.374, 36.431, 16.628, 13.598, 25.935, 13.828, 17.820` | `36.431 / 36.431` |
+| Media Inbox | 20k / 2k | 14 / 14 / 14 | `0.032, 0.023, 0.020, 0.019, 0.024, 0.023, 0.019, 0.023` | `0.032 / 0.032` |
+
+Media UI 窗口在 10k/20k 后端下仍为 2,000 项；Media 继续使用 Standard/Item、关闭列虚拟化，Task 继续使用 Recycling/Item、开启列虚拟化。与较早 main 采样相比，当前三档 Media 最大值均约 `0.03 ms`；前次 20k 的 `0.652 ms` 是另一次保留的样本，不覆盖本次值，也不据此声称真实宿主滚动帧性能。
+
+清理输出在 TRX 中有记录：R18 专测 testhost 输出 `TextServicesHost.OnUnregisterTextStore` 的 `InvalidComObjectException` 文本 6 次，`MediaWindowAnchorContractTests` testhost 输出 2 次。两进程的 TRX 计数均全通过，五个 `dotnet test` 进程均 exit `0`；本次没有把该输出改判为测试失败，也未查明其清理阶段根因。原始 TRX 位于 `.tmp/r18-04-current-main-20260923/trx`，完成证据同步后清理；此处保留用例名、计数、采样及边界作为持久记录。

@@ -2,11 +2,11 @@
 
 ## 2026-09-23 main 合并后 R18-04 测试组成复核
 
-- 在 main HEAD f55dce61 使用当前 Release Playnite Tests 程序集重跑 R18 专测与四类关联行为回归；TestRepositoryContext 身份检查通过。
-- R18TableContainerBudgetTests 1/1；MediaPageAccumulatorTests 6/6、MediaWindowAnchorContractTests 10/10、MediaInboxGeometryTests 3/3、R07SelectionAnchorBehaviorTests 4/4，TRX 汇总 23/23、0 失败、0 跳过，exit 0。用例名、正负例与理论展开数已同步到 R18 证据，原始 TRX 为本机临时输出。
-- main 实测 Task 三档最大容器/可见均 9/7；Media Inbox 14/14/14，窗口项数 2,000。8 次滚动样本原样记录；Media 20k 有一个 0.652ms 调度样本，其余六个末尾样本为 0.029–0.039ms，没有筛除慢值。
-- R18-04 账本与证据已更新。仅合成 DTO、隔离 STA/逻辑 DIP；不宣称宿主性能或 presented frame。测试历史清理阶段出现过 TextServicesHost InvalidComObjectException，测试明确成功、exit 0，根因未知。
-- 下一步：R23-02 生产资源状态矩阵，补齐缺失的派生样式和 Light/Dark 状态观察。
+- 在 main HEAD `922501e71c9b77f5c7d227edb4aa42ebe9308d78` 以隔离 Release 输出重建 solution，XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；R18 专测内的源码身份检查通过。
+- R18 专测 `1/1`；MediaPageAccumulator `6/6`、MediaWindowAnchorContract `10/10`、MediaInboxGeometry `3/3`、R07SelectionAnchor `4/4`，合计 `23/23`、0 失败/0 跳过，五个进程 exit `0`。逐项方法名、backend theory 参数以及哪些是结构断言/STA WPF 实测已同步到证据。
+- Task 三档最大容器/可见均 `9/7`；Media Inbox `14/14/14`，10k/20k 后端的 UI 窗口仍是 2,000。最新滚动最大 Task `69.227/34.083/36.431ms`、Media `0.027/0.026/0.032ms`，八个原始样本全部保留。
+- R18 与 Anchor testhost 清理输出分别出现 6/2 次 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；TRX 计数全通过、exit `0`，根因未查明。证据限合成 DTO、隔离 STA/逻辑 DIP，不外推宿主帧性能。
+- 下一步：R23-02 生产资源状态矩阵，先对照真实资源和已有 fixture，再补缺失的 Light/Dark 状态观察。
 
 ## 2026-09-23 main 分支 R00/R01 证据收口
 
