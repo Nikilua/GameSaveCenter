@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 最新进度（2026-09-23 main：Q06-07）
+
+- 复用现有 BusyOperationCoordinator、RelayCommand、GscMotion 动效逆转与生产按钮模板；无生产代码改动。新 `Q06ContinuousButtonBehaviorTests` 证明真实 WPF 按钮命令派发期间 busy gate 阻止二次提交，busy 解除后允许下一次执行，旁边安全操作不被全局禁用。
+- R08 两个 STA 行为样例通过：新目标替换旧目标，从当前渲染值接续，最终宽度/opacity正确且旧时钟停止。合计 `Q06Continuous 1/1 + R02Busy 4/4 + R08MotionReverse 2/2 + R13 retry gate 1/1 = 8/8`。
+- Q06 测试程序集必须以 `GscBuildCommit` 绑定当前 checkout 构建；一次错误的 `--no-build` 运行因旧 metadata 缺失而失败，正确身份重新构建后全过。R08 testhost 结束有 TextServicesHost InvalidComObjectException 清理文本，测试仍通过/exit 0，根因未知。
+- 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-07-CONTINUOUS-ACTION-20260923.md`。下一项 Q06-08 状态序列录证。物理鼠标、高频真实输入、屏幕像素、Playnite host 仍待验。
+
 ## 最新进度（2026-09-23 main：Q06-06）
 
 - 当前主分支在用户截图布局阶段之后新增 Q06-06 行为测试；代码起点 `34c9d817`。Release 定向 `WorkspaceStatePresenterBehaviorTests` 为 `8/8`，无错误；初次完整编译出现既有 `MediaCenterView.xaml.cs:703 CS8602` warning。
@@ -13,7 +20,7 @@
 
 必须区别样本：当前 R18-04 TRX Task 为 7/9/7、Media 为 7/7/7；旧 `14/14/14` 来自不同受控窗口，不能并成同一采样。当前 testhost 关闭时 R18 专测输出 6 行 TextServicesHost `InvalidComObjectException` 清理噪声，但 TRX `1/1`、exit 0、根因未知。当前 audit 168 snapshots/118 warnings/0 Fidelity/0 failed routes，仍有 7 HIGH/4 MEDIUM；index 20/20；freshness 14/14，package identity not-provided。Render QA 仍有 40 个其他尺寸问题。
 
-Q06-06 已补受控 Enter/Space 单次命令、Space 按压态和不可执行负例；鼠标项只覆盖框架点击派发终点。下一步 Q06-07 高频连续操作。真实鼠标/Playnite 输入仍不能由离屏事件代替。
+Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据已补；真实鼠标/Playnite 输入仍未验。下一步 Q06-08 状态序列录证。
 
 
 ## 2026-09-23 main 接续与 R23-03 代表页面终审

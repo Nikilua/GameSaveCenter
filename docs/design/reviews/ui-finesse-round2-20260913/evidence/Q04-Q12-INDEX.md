@@ -45,6 +45,12 @@
 - STA Window 中合成 Enter/Space 路由后各执行一次；Space `KeyDown` 同步进入 `IsPressed`。不可执行命令的 Enter、Space 与点击派发探针均执行 0 次。
 - 鼠标项只验证 WPF `ButtonBase.OnClick` 派发终点，不是物理鼠标事件；合成 `KeyUp` 不改 `KeyboardDevice`，所以没有把释放状态/动画像素写成通过。真实鼠标、双主题屏幕反馈和 Playnite 宿主仍待验。
 
+## 2026-09-23 Q06-07 高频连续操作
+
+- [Q06-07 复核](Q06-07-CONTINUOUS-ACTION-20260923.md)复用忙态协调器、`RelayCommand` CanExecute、生产 `WorkspaceStatePresenter` 按钮和共享 `GscMotion` 逆转；新增实际命令派发阶段的快速二次提交负例，完成后可再次执行，兄弟操作保持可用。
+- 新门禁 `1/1`、R02 忙态 `4/4`、R08 动画逆转 `2/2`、云端重试门禁 `1/1`，共 `8/8`。R08 testhost 的 WPF TextServicesHost 清理异常如实保留，测试结果/exit code 为成功。
+- 连续按钮探针使用 `ButtonBase.OnClick`，侧栏逆转用合成 Click 路由事件；二者是受控 WPF 行为，不是物理鼠标序列/真实 Playnite，也没有屏幕帧或像素动画验收。
+
 ## 2026-09-15 Q12-07 排序箭头双状态复核
 
 - 在提交 `2f3d17b8a34780546039aa6b7b07ecbb1c6a2ec6` 的 clean tree 上运行 `finesseprobe <output> dark sorted` 与 `light sorted`；报告身份均为 `WorkingTreeClean=True`、`DpiScale=1.00`，并记录 `SortFixture: ascending="名称" visible=True width=14; descending="数值" visible=True width=14 angle=180`。
@@ -54,7 +60,7 @@
 ## 逐组边界
 
 - Q04：卡片/输入/弹层/表格使用共享圆角、描边和阴影资源；截图检查嵌套表面、表格壳层和无玻璃视觉层级。滚动行不新增逐行 Effect，真实窗口接缝与关闭玻璃后的宿主组合仍待验。
-- Q05–Q06：按钮高度、padding、文本模板、复合内容、忙态占位、危险确认布局、卸载清理和禁用/按压/焦点共享模板已被夹具与源码测试覆盖；Q05-05/Q05-06 另有 Light/Dark 证据。Q06-06 已证明受控 Enter/Space 单次命令、Space 按下态和禁用负例，并探测 `ButtonBase.OnClick` 点击派发；真实鼠标序列、按下/松开视觉和宿主命令仍需验收。
+- Q05–Q06：按钮高度、padding、文本模板、复合内容、忙态占位、危险确认布局、卸载清理和禁用/按压/焦点共享模板已被夹具与源码测试覆盖；Q05-05/Q05-06 另有 Light/Dark 证据。Q06-06 已证明受控 Enter/Space 单次命令、Space 按下态和禁用负例，并探测点击派发；Q06-07 已证明受控 busy gate 拒绝重复命令、动画逆转采用最新终态且释放旧时钟；真实鼠标、屏幕视觉及 Playnite 输入仍需验收。
 - Q07：`ThemeAwareIcon` 的 Path stroke/fill 绑定控件最终 Foreground，状态图标和复制图标在双主题截图中可见；分数 DPI 的实际线宽、完整图标包去重和读屏命名仍不能由离屏 PNG 宣称完成。
 - Q08：TextBox 内容视口、CaretBrush、SelectionBrush、只读/禁用资源和长路径 Tooltip 已专项记录；中文 IME 组合、候选确认、撤销和粘贴原值属于宿主输入验收。
 - Q09：ComboBox 选中内容、Chevron、3 项 Popup 与有限滚动模板已专项记录；Popup 真定位、键盘关闭不写回、游戏选框 DropDownClosed 同步和移屏主题切换待真实窗口验收。

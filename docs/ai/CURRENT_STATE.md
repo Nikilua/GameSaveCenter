@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main Q06-07 高频按钮与动效
+
+- 在 Q06-06 行为提交 `caa6099455f6a1f9e2b2cdbbe2780ccd040b8e7f` 上复用既有 `BusyOperationCoordinator`、`RelayCommand`、共享按钮模板和 `GscMotion` 动效逆转，不改生产服务/DTO/样式。新增测试：busy 时第二次命令派发为 0 次，释放 busy 后允许下一次执行，兄弟按钮持续可用。
+- 定向 Release `Q06ContinuousButtonBehaviorTests 1/1`、`R02BusyStateTests 4/4`、`R08MotionReverseBehaviorTests 2/2`、R13 重试门禁 `1/1`，隔离 VSTest 合计 `8/8`。R08 有一段 WPF TextServicesHost `InvalidComObjectException` 清理噪声，exit 0、测试通过、原因未知。构建无错误，已有 `MediaCenterView.xaml.cs:703 CS8602` warning。
+- 侧栏最新目标、宽度和时钟清理由合成 Click 驱动的 STA WPF Window 验证；连续按钮通过 `ButtonBase.OnClick` 验证框架命令派发。不是物理鼠标/Playnite/屏幕像素或呈现帧证据，Q06-07 最终仍未完成。
+- 证据：`../design/reviews/ui-finesse-round2-20260913/evidence/Q06-07-CONTINUOUS-ACTION-20260923.md`。下一可执行任务 Q06-08 状态序列录证。
+
 ## 2026-09-23 main Q06-06 按钮命令行为复核
 
 - 在 `main` 的 `34c9d817` 工作树上扩展 `WorkspaceStatePresenterBehaviorTests`；Release 定向结果 `8/8`，Playnite `net462`、测试 `net472`，无构建错误。首次完整编译保留已有 `MediaCenterView.xaml.cs:703 CS8602` warning。

@@ -2236,9 +2236,16 @@ git branch --show-current
 - 当前未验边界：真实 Playnite/package-host、UIA/读屏、OS 输入/IME、DPI/物理跨屏、最终呈现帧、ETW、宿主性能；Demo 原目录不可用。当前仓库不存在 `scripts/validate_wpf_ui.py`，不得把 WPF 静态审查写成已复跑。
 - 下一可执行任务：继续核对 `DashboardViewModel`/Contracts 的真实 stale/缓存时间入口；保留报告/复制列/日志的稳定完整时间语义。
 
-## 当前交接（2026-09-23 Q06-06）
+## 阶段交接（2026-09-23 Q06-06）
 
 - 当前唯一工作区 `D:\workplace\github\GameSaveCenter`，当前分支 `main`；上一阶段四项用户布局反馈与 R00/R01/R18-04 证据校正均已提交、推送，详见 `docs/ai/CURRENT_STATE.md` 顶部和 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-20260923.md`。
 - Q06-06 复用 WorkspaceStatePresenter 生产重试按钮：定向 Release 行为测试 `8/8`。Enter/Space 合成路由各调用命令一次，Space KeyDown 可观测按压态；CanExecute=false 键盘与 WPF 点击派发负例均不调用命令。
 - 点击探针仅反射触发 `ButtonBase.OnClick`，不等于实际鼠标输入；合成 KeyUp 不更新 KeyboardDevice；真实鼠标、像素动画、Playnite host、UIA/读屏、物理 DPI/跨屏、presented frame、ETW 和宿主性能仍未验。Demo 原目录不可用，延续恢复生产基线；保持现有游戏选框/滚动条与 net462 兼容。
 - 下一可执行任务：Q06-07 高频连续操作。只验证真实按钮命令重入/动画最终状态，复用 CanExecute 和现有安全语义，不新建全局禁用。
+
+## 当前交接（2026-09-23 Q06-07）
+
+- 当前工作区 `D:\workplace\github\GameSaveCenter`，分支 `main`；Q06-06 的单次键盘命令/负例已在 `caa60994` 提交并推送。
+- Q06-07 复用现有忙态协调器、RelayCommand 与 GscMotion 逆转；本阶段增加一个受控生产按钮命令派发负例。测试分别按当前 `GscBuildCommit` 编译身份运行，合计 `8/8`；Release Playnite `net462` 成功。
+- 真实鼠标高频序列、像素/动画屏幕反馈、真实 Playnite/UIA、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验。R08 testhost 的 WPF TextServicesHost 清理异常曾输出，但测试为 `2/2`、进程 exit 0，根因未知。
+- 下一可执行任务：Q06-08 状态序列录证。先核对现有 normal/hover/pressed/focus/disabled 覆盖，再补可靠行为探针和失败负例；不把合成输入、离屏截图当真实鼠标或宿主呈现。

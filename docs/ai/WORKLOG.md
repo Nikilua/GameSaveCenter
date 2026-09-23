@@ -9102,3 +9102,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 夹具第一次添加“合成 KeyUp 后 IsPressed=false”断言时得到 7/8；验证发现手工 `RaiseEvent(KeyUp)` 不更新实际 `KeyboardDevice` 状态，删除该不可靠断言后最终 8/8。没有将此夹具差异解释成生产控件缺陷。
 - 最初未限并行的 `dotnet test` 调用超过 8 分钟未输出/返回；对其 PID 执行 `taskkill /T /F` 被系统拒绝。随后以 `-m:1 -p:BuildInParallel=false` 构建和测试成功。未强制终止其他未知 dotnet 进程。
 - 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-06-BUTTON-ACTIVATION-20260923.md`，Round2 账本 Q06-06 与 Q04–Q12 索引已同步。保留物理鼠标、真实键盘设备松开、像素/动画、Playnite UIA 和宿主行为边界；最终仍为未完成。下一可执行任务：Q06-07 高频连续操作。
+
+## 2026-09-23 main Q06-07 高频连续操作
+
+- 先检查现有覆盖，不重建忙态服务/DTO：R02 已有 BusyOperationCoordinator 并行重入、失败/取消复位；R13 已有云端手动重试 CanExecute 门禁；R08 已有 STA 窗口下反向动画接续、最新目标、旧时钟释放。
+- 新增 `Q06ContinuousButtonBehaviorTests`，复用生产 `WorkspaceStatePresenter`/`GscWpfUiActionButton` 和现有 `RelayCommand`。通过框架 `ButtonBase.OnClick` 执行第一次后 busy gate 关闭，同步派发第二次保持计数 1、按钮禁用；兄弟按钮仍启用；清除 busy 后可以再次执行。新行为 `1/1`。
+- 相关门禁独立 VSTest：R02 busy `4/4`、R08 motion reverse `2/2`、R13 retry gate `1/1`，与新行为合计 `8/8`。Playnite Release `net462` / test `net472`，正确 `GscBuildCommit=caa6099455f6a1f9e2b2cdbbe2780ccd040b8e7f` 构建 0 errors，保留既有 `MediaCenterView.xaml.cs:703 CS8602` warning。一次无构建重用的 R02 跑法因程序集 `GscBuildCommit=unknown` 失败，重建身份后 `4/4` 全过；不是产品断言失败。
+- R08 VSTest 结束额外输出 WPF TextServicesHost `OnUnregisterTextStore InvalidComObjectException` 清理堆栈，exit `0`、2/2 通过，根因未知。初次新测试编译别名错误已修正，最终构建与行为验证成功。
+- 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-07-CONTINUOUS-ACTION-20260923.md`；Round2 账本、Q04–Q12 索引、当前状态/记忆/交接同步。受控 Click/命令派发和离屏 WPF 动效不等于物理鼠标高频输入、屏幕像素或 Playnite host，Q06-07 最终仍未完成。下一可执行任务：Q06-08 状态序列录证。

@@ -6,6 +6,8 @@
 
 2026-09-23 Q06-06 补齐隔离 WPF 按钮夹具中的 Enter/Space 单次执行、Space 按下反馈、不可执行负例和 `ButtonBase.OnClick` 命令派发；证据与输入边界见[Q06-06 按钮激活复核](evidence/Q06-06-BUTTON-ACTIVATION-20260923.md)。键盘输入是 STA 窗口中的合成路由事件；鼠标仅验证 WPF 点击派发终点，真实鼠标、像素态与 Playnite 宿主仍待环境验证。
 
+2026-09-23 Q06-07 复用 `BusyOperationCoordinator`、`RelayCommand` 和 `GscMotion` 逆转行为，并补生产按钮命令门禁的快速重复派发行测试；自动行为/时钟证据和边界见[Q06-07 高频操作复核](evidence/Q06-07-CONTINUOUS-ACTION-20260923.md)。真实鼠标连点、屏幕像素和 Playnite 宿主仍待验。
+
 | ID | 精修点 | 实现 | 自动验证 | 视觉 | 宿主 | 最终结论 | 证据/commit/剩余动作 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Q00-01 | 黑字漏检 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [双主题受控报告](evidence/Q00-INDEX.md#q00-01q00-05) 与 [当前深色设置回归](evidence/Q00-INDEX.md#2026-09-15-深色设置校验标题回归)；Expander 标题显式绑定主题主前景；真实宿主待验 |
@@ -62,7 +64,7 @@
 | Q06-04 | 禁用解释 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [正常/禁用夹具](evidence/Q04-Q12-INDEX.md)；禁用 Tooltip 与真实业务原因待验 |
 | Q06-05 | 复合状态优先级 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [选中悬停优先级证据](evidence/q04-q12/nav-priority-20260915.md)；共享 `AcrylicNavItem` 已补 `Selected+Hover` 最后规则，组合输入序列仍待宿主 |
 | Q06-06 | 鼠标键盘一致 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [按钮激活行为证据](evidence/Q06-06-BUTTON-ACTIVATION-20260923.md)；键盘单次执行/Space 按压态与不可执行负例通过；真实鼠标输入、视觉帧及 Playnite 宿主待验 |
-| Q06-07 | 高频连续操作 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [共享动效/按钮来源](evidence/Q04-Q12-INDEX.md)；真实命令快速重入待验 |
+| Q06-07 | 高频连续操作 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [按钮门禁、动画逆转和终态证据](evidence/Q06-07-CONTINUOUS-ACTION-20260923.md)；受控命令门禁/时钟收尾通过，真实鼠标与屏幕反馈待验 |
 | Q06-08 | 状态序列录证 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [状态序列边界](evidence/Q04-Q12-INDEX.md)；离屏仅捕获 normal/disabled，其他状态声明待宿主 |
 | Q07-01 | 图标视觉尺寸 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [图标双主题截图](evidence/Q04-Q12-INDEX.md)；线稿由 24 DIP 共享 Viewbox 承载 |
 | Q07-02 | 笔画缩放 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [GscLineIcon 来源](evidence/Q04-Q12-INDEX.md)；分数 DPI 线宽待实机 |
