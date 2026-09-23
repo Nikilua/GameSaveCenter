@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 ROUND3 账本与工作区审计
+
+- 规范任务表核对为 192 个唯一 ID；表前 10 行是 R13/R14 阶段摘要，不计入任务数。R02-06 仍待 Playnite 原生菜单宿主输入验证，R23-04 仍待正常宿主环境，R23-05 仍待真实 presented-frame/宿主性能；本次未启动宿主或重试 CEF 受阻路径。
+- 已从 `.tmp/` 清除 26 个可确认已完成、无引用的旧目录，释放约 1.81 GiB；保留当前 R00 证据引用目录及归属不明的其他临时目录。没有改动代码、测试、`artifacts/` 或用户文件。
+- 本轮没有新构建或测试。当前 main 的 R18-04、四页隔离布局及其他已记录证据见下方历史条目；它们不代表正常 Playnite、物理 DPI 或真实呈现已验。
+
 ## 2026-09-24 main：R18-04 23 项组成与用户四页窗口复核
 
 - Release/test assembly built at code/test identity `abd7927b`；solution 成功、XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。R18 专测 `1/1`，四个相关行为类 `6+10+3+4=23/23`，0 failed/skipped、独立 VSTest exit `0`。23 项精确方法、测试参数和纯逻辑/源码契约/STA WPF 分类见 `../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924.md`。

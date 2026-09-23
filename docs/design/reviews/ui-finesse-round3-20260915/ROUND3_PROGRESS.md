@@ -1,3 +1,9 @@
+## 2026-09-24 ROUND3 状态与临时目录审计
+
+- 核对规范任务表：正文表格 192 项、ID 唯一；表前 R13/R14 的 10 行是阶段摘要，不计入 192 项。逐项状态以任务表为准，R02-06 仍是 Playnite 原生菜单外部阻塞，R23-04 仍待正常宿主环境，R23-05 仍待真实呈现帧/宿主性能验收；本轮未启动 Playnite，也未重试此前受 CEF `platform_channel 0x5` 阻挡的宿主流程。
+- 清理仓库 `.tmp/` 内已完成且无文档/脚本引用的旧构建与布局 QA 目录共 26 个，释放约 1.81 GiB。保留被 R00 当前证据引用的 `.tmp/r00-current-refresh`，也未清理归属不确定的旧目录；未改动 `artifacts/`、跟踪文件或其他任务文件。
+- 本轮仅作账本与工作区审计，无源代码、测试或验收结果变化。下一步仍从任务表中选择依赖已满足的小批量推进；宿主相关项等待正常隔离宿主可运行，R23-05 等待合规跟踪权限。真实 Playnite 渲染、用户窗口截图及物理 DPI 仍未验。
+
 ## 2026-09-23 R00/R01 证据收口与设置截图行为复核
 
 - 本次 freshness JSON 的 main source identity 为 HEAD 8e4f3194227afb28640754f12ab0889cb8bb71ce；14 条 R00/R01 记录均 needsRerun=false、matchedSourcePaths=0，documentationOnlyChange=false，package identity not-provided。R00-01/02、R00-05 历史证据身份仍保持 3a1dadd8。

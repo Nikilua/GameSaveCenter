@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 ROUND3 接续审计
+
+- `UI_FINESSE_ROUND3_192_TASKS_2026-09-15.md` 规范任务表仍为 192 个唯一任务 ID；前置 R13/R14 摘要行另计，不要当成重复任务。继续逐项以组说明、具体条件和公共门禁共同判定，已有能力优先复用。
+- 旧临时输出清理只触及仓库 `.tmp/` 中 26 个已完成且无引用目录（约 1.81 GiB）；保留 R00 证据仍引用的目录和归属不确定的目录。清理不等于任务验收。
+- R02-06 的真实 Playnite 原生菜单输入、R23-04 的正常宿主环境、R23-05 的真实 presented-frame/宿主性能仍是外部门禁；不绕过 CEF 启动限制或 ETW/WPR/xperf 权限。下一轮继续选依赖满足的 Q/R 小批量并留下具体宿主复验步骤。
+
 ## 2026-09-24 main R18-04 与用户窗口问题当前复核
 
 - 测试身份 `abd7927b` Release build：XAML `24/24`、0 errors、两条既有 Media nullable warning。R18Table 专测 `1/1`；MediaPageAccumulator `6/6`、MediaWindowAnchor `10/10`、MediaInboxGeometry `3/3`、R07SelectionAnchor `4/4`，关联总数 `23/23`。精确用例、三种覆盖类型和五份 TRX 位于 `R18-04-CURRENT-MAIN-RECHECK-20260924.md`。
