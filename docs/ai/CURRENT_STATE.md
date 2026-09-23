@@ -1,12 +1,14 @@
 # GameSaveCenter 当前事实入口
 
-## 第三轮 R18-04 表格容器预算当前复核（2026-09-23）
+## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
 
-- 在 D 盘工作区 `codex/ui-finesse-round2`、构建身份 `f175c57dda95f6eee9031f0363349189c4e47bb9` 复核既有 `64843642` 有限视口实现，无生产代码变更。Task 2k/10k/20k 均为 `9` 个最大已实现容器、`7` 个视口/可见行；Media UI 窗口保持 `2,000` 项，当前模板与 `1280×720 DIP` 窗口产生 `14` 行视口/最大容器/可见行。Task 最大滚动样本为 `60.790/30.387/38.595 ms`；Media 为 `0.026/0.027/0.031 ms`。
-- R18 专测 `1/1`；相关回归精确为分页 `6`、锚点 `10`、几何 `3`、稳定选择 `4`，合计 `23/23`。隔离 Release solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。WPF 关闭阶段有 `TextServicesHost InvalidComObjectException` 调试输出；xUnit 成功、VSTest 退出码 `0`，噪声未查明。
-- 只用合成 DTO、生产 WPF 视图、隔离 STA 与逻辑 DIP；未验真实 Playnite/package-host、物理 DPI/UIA/IME、呈现帧、ETW 或宿主性能。Demo 原目录不可用。
+- 当前代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`，分支 `codex/ui-finesse-round2`。R00/R01 已核对已有能力并补齐两处证据缺口：图标-only 不再误报为控件缺失；R00-01 的半透明 hover+pressed+focus 组合态现在有直接颜色/对比度行为断言。最终身份隔离 Release solution 构建 XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；身份与对比测试 `5/5`，前一 clean 身份 R00/R01 定向行为类 `36/36`。
+- 受控审计绑定 `5fbfc869`：`10 Views/33 Tabs/297 Button/ToggleButton/16 DataGrid/38 ScrollViewer/292 conditional UI`，168 runtime snapshots、110 warnings、0 Fidelity、0 route failures；索引 `20/20`。仍有 `7 HIGH TRUE_PARENT_CHILD_SCROLL_CONFLICT` 和 `4 MEDIUM TOOLBAR_VERTICAL_EXPANSION`。freshness 在当前完整身份扫描为 `14 fresh/0 stale`，包身份 `not-provided`。
+- R18-04 的 clean 复采身份为 `5fbfc869`。Task 2k/10k/20k 均为最大已实现容器/可见行为 `9/7`；Media UI 窗口仍限制为 `2,000` 项，受控视口为 `14`。滚动最大样本：Task `51.172/25.651/20.681 ms`；Media `0.031/0.989/0.023 ms`。10k Media 的 `0.989 ms` 为单次调度尖峰，其他样本约 `0.02–0.05 ms`，不隐藏该最大值。
+- R18 专测 `1/1`；相关分页/锚点/几何/稳定选择测试精确为 `6+10+3+4=23/23`，方法名与样本见证据。WPF testhost 关闭阶段出现 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；xUnit/VSTest 结果明确成功、进程 exit `0`，根因未明，作为清理噪声记录而不改判测试结果。
+- 证据仅来自合成 DTO、fake/隔离目录、受控 STA WPF 与逻辑 DIP。真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、OS IME、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，沿用恢复的生产基线。保留当前游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护、有限列表和 `net462` 兼容。
 
-证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。下一项按用户优先级复核/校正 R00/R01 当前证据身份与仍未验边界；之后继续依赖已满足的 Q/R 小批量。
+证据：[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md)、[R18-04 测试与滚动复采](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)、[R01-06 归档审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md)、[R01-07 freshness 报告](../design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json)。下一项转入 R02-01 当前来源/行为小批复核；外部宿主与系统跟踪边界保持未验。
 
 ## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
 

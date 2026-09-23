@@ -65,3 +65,30 @@ R18 专测会先验证测试程序集与源码身份，再在 2k/10k/20k 下检�
 此结果来自合成 DTO、生产 WPF 视图、固定逻辑 DIP 窗口和隔离 STA testhost。它证明容器/窗口上限、有限滚动与当前受控窗口中的滚动更新时间；不证明真实 Playnite/package-host 首次 Loaded 时序、物理 DPI/跨屏、UIA/读屏、IME、实际呈现帧、ETW 或宿主性能。Demo 原目录不可用；本批没有访问真实存档、媒体或云端。
 
 下一可执行任务：按用户指定优先复核并校正 R00/R01 当前证据身份与仍未满足的边界；之后继续依赖已满足的 Q/R 小批量，R18-05 保持后续可执行项。
+
+## 2026-09-23 clean commit 复采与 23 项精确组成
+
+用户要求核对相关行为测试的精确组成。为此，在当前 clean commit `5fbfc869ecddec852440ac82b3b0cc94343f3d60` 的隔离 Release 输出中重新执行 R18 专测和四个相关类，并导出独立 TRX。专测 `1/1`；相关行为测试 `23/23`，0 失败、0 跳过。R18 专测仍观察到 `TextServicesHost.OnUnregisterTextStore` 的 WPF `InvalidComObjectException` 清理输出；TRX `Counters` 为 `total=1, passed=1, failed=0`，VSTest 进程 exit `0`。根因未查明。
+
+| 测试类 | TRX 数量 | 精确用例组成 |
+| --- | ---: | --- |
+| `MediaPageAccumulatorTests` | 6 | `Appending250PagesKeepsBoundedWindowAndSelectedItem`；`AppendingOverlappingPageUpdatesByIdWithoutDuplicating`；`CrossingTheEleventhPageMakesEvictedSelectionExplicitButKeepsPinnedSelection`；`BackendScaleKeepsTheMediaWindowBounded` × 3（backend `200/200`、`2000/2000`、`10000/2000`） |
+| `MediaWindowAnchorContractTests` | 10 | `LoadMoreSurfacesCaptureAndRestoreTheMediaAnchor`；`EvictedWindowHasAnExplicitReloadRouteAndVisibleSelectionSemantics`；`PurposeNavigationUsesDedicatedMediaAndSaveTabState`；`GridScrollTemplateReservesTheRealContentViewport`；`AnchorDiagnosticsRecordExecutionAndSkipReasonsWithoutChangingScrollSemantics`；`AnchorUsesTheRowsPresenterScrollViewerWhenTemplatesExposeMultipleViewers`；`AnchorViewerSelectionPrefersRowsPresenterOverALargerOuterViewer`；`CurrentMediaCardsUseTheBoundedVirtualizingPanel`；`StaleRestoreCallbackCannotSurfaceEvictedAnchorAfterContextInvalidation`；`EvictedAnchorNoticeReleasesSelectionRestoreGuard` |
+| `MediaInboxGeometryTests` | 3 | `ReadableFloorUsesTableChromeAndFrameChromeIndependently`；`ProductionInboxKeepsFourRowsOrExposesThePageFallback`；`NarrowInboxKeepsThePageScrollChannelWhenFooterWraps` |
+| `R07SelectionAnchorBehaviorTests` | 4 | `StableIdentityWinsOverChangedRowPosition`；`MissingIdentityClampsToNeighborInsteadOfFirstRow`；`SaveCandidateRestoreUsesNeighborWhenStablePathWasRemoved`；`DataGridSelectionUsesResolvedNeighborAfterRefresh` |
+| **相关行为合计** | **23** | 以上四类；R18 专测不计入 |
+
+clean commit 的 TRX 同时保存了实际 WPF 测量。几何与容器数量和前次一致：Task 仍为 viewport/最大实现/可见 `7/9/7`；Media Inbox 仍为 `14/14/14`，后端到 10k/20k 时 UI 缓存仍为 2,000 项。该次 8 次滚动样本如下：
+
+| 页面 | 后端 / UI 项数 | 滚动 p95 / 最大 (ms) | 原始 8 样本 (ms) |
+| --- | --- | ---: | --- |
+| Task | 2k / 2k | 51.172 / 51.172 | `3.015, 51.172, 27.597, 14.638, 11.299, 25.428, 12.445, 16.140` |
+| Media Inbox | 2k / 2k | 0.031 / 0.031 | `0.028, 0.030, 0.020, 0.019, 0.019, 0.031, 0.019, 0.018` |
+| Task | 10k / 10k | 25.651 / 25.651 | `0.498, 16.343, 21.623, 14.160, 12.373, 25.651, 16.768, 18.258` |
+| Media Inbox | 10k / 2k | 0.989 / 0.989 | `0.027, 0.034, 0.026, 0.025, 0.026, 0.989, 0.048, 0.029` |
+| Task | 20k / 20k | 20.681 / 20.681 | `0.431, 14.061, 17.945, 13.401, 11.387, 20.681, 17.502, 16.820` |
+| Media Inbox | 20k / 2k | 0.023 / 0.023 | `0.023, 0.019, 0.019, 0.019, 0.019, 0.019, 0.021, 0.021` |
+
+Media 10k 这一轮含单个 `0.989 ms` 样本，所以该轮最大值不能继续简写成约 `0.03 ms`；其余七次在 `0.025–0.048 ms`。这类隔离 STA Stopwatch 仅报告观察样本，不把排程抖动解释为真实宿主帧时延，也不以重复采样筛除慢值。前一组样本仍保留在本报告“当前采样”表中，供对照测量波动。
+
+构建身份由 `GSC_BUILD_COMMIT` 绑定到 `5fbfc869...`；Release solution 为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。TRX 目录在 `.tmp/r00-r01-audit-20260923/focused-tests/trx-final-5fbfc869`，仅为本机可再生输出，不纳入 Git。

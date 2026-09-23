@@ -69,3 +69,10 @@ R01-07 当前 baseline 与 freshness 校验已满足；下一可执行小批量�
 - 本次将 R00/R01 已实际刷新或复核的记录绑定到当前完整身份，并生成 [2026-09-23 freshness-report](R01-07-freshness-report-20260923.json)。扫描结果为 `14` 条 fresh、`0` 条 stale；文档变更没有被写成需要安装包。
 - R00-03 的当前事实不是“探针全通过”：`UiFinesseFoundationTests 9/9` 已通过，但 `motionreentryprobe`/`motionhotprobe` 重跑未稳定通过，失败样本已写入 R00-03/R01-04 证据；freshness 表示证据已绑定当前源码，不表示所有运行时探针通过。
 - 审计索引当前 `20/20` 可追溯，但 summary 真实包含 `7` 条 HIGH、`4` 条 MEDIUM；R01-03/R01-06 文档已改为事实口径。当前扫描的 `package=not-provided`、Playnite/UIA/物理呈现/ETW/宿主性能边界均保留。
+
+## 2026-09-23 freshness 映射补验
+
+- 在最终测试/源码身份 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0` 运行 freshness 扫描：14 条记录 `14 fresh / 0 stale`；源码证据身份与包身份分开显示，`package=not-provided`。
+- 复核发现 R00-01/02 以前没有把 `UiDiagnosticsExporterTests.cs`、`UiFinesseFoundationTests.cs` 计入 sourcePaths，R00-05 缺 `WpfUiResourceDictionaryTests.cs`，R00-06 缺 `MediaInboxGeometryTests.cs`。现补入映射，并分别用刚完成的行为测试与 clean audit 身份刷新 sourceCommit；以后这些测试文件变化会正确触发证据待复验。
+- `scripts/test-ui-evidence-freshness.ps1` 通过 docs-only、shared-control 与合成 package identity 三组用例。文档-only 仍不要求重跑/重装，共享控件变化只命中相关记录，包错配只要求相应包绑定证据重装。
+- 当前结果文件：[2026-09-23 freshness report](R01-07-freshness-report-20260923-current.json)。扫描 HEAD 是 `38d5b7b2...`；之后提交只包含本次文档与 baseline 修订，不改变被审计的生产代码。

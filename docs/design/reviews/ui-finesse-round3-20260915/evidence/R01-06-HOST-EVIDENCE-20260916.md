@@ -36,3 +36,10 @@ R01-06 当前身份、摘要、manifest、索引和精选图已满足；下一�
 - 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的受控审计生成 `168` 个快照；`EVIDENCE_INDEX` 校验为 `20/20` 行、引用/身份/样本/边界均 `20/20`，`0` Fidelity、`0` 失败路由。
 - 当前 summary 的真实风险为 `7` 条 HIGH（父子滚动冲突）和 `4` 条 MEDIUM（待归类动作栏纵向扩展）；精选图/manifest 的持久归档规则不变，但不再声称本次审计 `0 HIGH/0 MEDIUM`。
 - 这仍是受控 WPF 离屏 logical DIP 证据；没有真实 Playnite Dashboard/UIA/物理 DPI/呈现帧/ETW/宿主性能身份，也没有执行真实存档、媒体、云端或诊断写入。
+
+## 2026-09-23 clean-tree 当前归档
+
+- 新的持久归档为 [R01-06-controlled-audit-20260923](R01-06-controlled-audit-20260923/README.md)，源码审计身份 `5fbfc869ecddec852440ac82b3b0cc94343f3d60`。它保存 summary、portable metadata、manifest、route map、fidelity matrix、layout report、20 项 evidence index 和六张人工查看过的代表图。
+- 六张图分别为概览 standard/narrow、媒体待归类、维护诊断、存档历史、任务中心。全量 screenshot/JSON 集未入库，按归档 README 在隔离 `.tmp` 中重建。Metadata 不留下机器绝对输出目录或 ZIP 路径。
+- 当前审计 `168` 快照、0 Fidelity、0 路由失败，真实保留 `7 HIGH / 4 MEDIUM`；索引五类校验都是 `20/20`。R01-06 freshness sourceCommit 绑定到该实际 audit commit，不把测试-only `38d5b7b2` 误作审计构建身份。
+- 图像与所有结果仍是 synthetic DTO + WPF offscreen logical DIP；不宣称真实 Playnite 呈现、物理 DPI/跨屏、OS 输入/IME、presented frame、ETW 或宿主性能。

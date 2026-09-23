@@ -1,13 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 第三轮 R18-04 表格容器预算当前复核（2026-09-23）
+## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
 
-- `f175c57d` 上复用 `64843642` 的生产有限视口实现，无生产代码变更。Task 2k/10k/20k 均 `maxRealized=9/maxVisible=7`；Media 当前共享模板与 `1280×720 DIP` 受控窗口为 `viewport/maxRealized/maxVisible=14/14/14`，UI 窗口仍受 `MediaPageAccumulator` 限制为 `2,000`。
-- R18 专测 `1/1`；媒体回归类 `MediaPageAccumulator 6/6`、`MediaWindowAnchorContract 10/10`、`MediaInboxGeometry 3/3`、`R07SelectionAnchor 4/4`，合计 `23/23`。Task 最大滚动 `60.790/30.387/38.595 ms`，Media 最大滚动 `0.026/0.027/0.031 ms`；隔离 Release `0 errors/2` 条既有 CS8602 warning，XAML `24/24`。
-- WPF TextServicesHost 清理输出有 `InvalidComObjectException`，但相关 xUnit 结果及进程退出码明确成功；根因未确认。受控 STA/逻辑 DIP 不等价真实 Playnite 呈现、物理 DPI、UIA/IME、ETW 或宿主性能。
-- 下一项按用户优先级对 R00/R01 做当前身份和证据边界复核，之后推进独立 Q/R 小批。
+- 当前分支 `codex/ui-finesse-round2` 的代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`。R00/R01 校正复用了现有实现：图标-only 样本如实标注无文字，半透明 `opacity=0.5` 的 hover+pressed+focus 同时态直接验证有效前景/灰底/4.5 对比度。未更换控件或服务，也未从 main 覆盖分支。
+- `5fbfc869` clean 身份 R00/R01 定向行为类 `36/36`；`38d5b7b2` 最终 Release identity/contrast `5/5`。隔离 solution XAML `24/24`、`0 errors/2` 既有 `MediaCenterView.xaml.cs:706 CS8602` warning（WPF 临时项目与 Playnite 项目各一条，Playnite `net462`）。freshness 按最终完整身份扫描 `14 fresh/0 stale`，包身份 `not-provided`。
+- R01 审计归档身份 `5fbfc869`：20 条索引全项 `20/20`；受控页面/控件统计 10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer，168 snapshots、110 warnings、0 Fidelity、0 failed routes；仍有 7 HIGH 滚动冲突、4 MEDIUM 工具栏纵向扩展，不能写成风险清零。
+- R18-04 在同一 clean 身份的 R18 专测 `1/1`，分页/锚点/几何/稳定选择类共 `23/23`（`6+10+3+4`）。Task 三规模最大容器/可见均为 `9/7`；Media UI 窗口 `2,000`、受控视口 `14`。Task 最大滚动样本 `51.172/25.651/20.681 ms`；Media `0.031/0.989/0.023 ms`，10k 的 `0.989` 是保留的单次尖峰，其他样本约 `0.02–0.05 ms`。
+- testhost 清理阶段的 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 出现在 R18 与锚点类 TRX；对应 xUnit 明确全通过、VSTest exit `0`。根因未知，照实作为关闭噪声记录。受控合成 STA/逻辑 DIP 不代表宿主呈现、物理屏、UIA/IME、ETW 或宿主性能。
+- 下一项为 R02-01：先查账本任务的具体条件、现有服务/DTO/行为夹具，再以当前源身份复核已有动作优先级能力；若全满足则只补当前证据并标记“已满足”，不重复建功能。
 
-证据：`design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md`、`design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。
 
 ## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
 

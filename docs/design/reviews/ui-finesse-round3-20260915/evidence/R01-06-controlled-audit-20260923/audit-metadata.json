@@ -1,0 +1,82 @@
+{
+  "GeneratedUtc": "2026-09-23T02:07:06.613988Z",
+  "CommitSha": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+  "PluginVersion": "0.6.73.0",
+  "PlayniteVersion": "6.16.0.0",
+  "WindowsVersion": "Microsoft Windows NT 6.2.9200.0",
+  "DpiScale": 1.0,
+  "Sizes": [
+    {
+      "Key": "maximized",
+      "RequestedWidth": 1707.0,
+      "RequestedHeight": 912.0,
+      "ActualWidth": 1707.0,
+      "ActualHeight": 912.0,
+      "ContentWidth": 1383.0,
+      "ContentHeight": 672.0,
+      "Note": "SystemParameters.WorkArea"
+    },
+    {
+      "Key": "2k",
+      "RequestedWidth": 2560.0,
+      "RequestedHeight": 1440.0,
+      "ActualWidth": 2560.0,
+      "ActualHeight": 1440.0,
+      "ContentWidth": 2236.0,
+      "ContentHeight": 1200.0,
+      "Note": "logical DIP"
+    },
+    {
+      "Key": "wide",
+      "RequestedWidth": 1920.0,
+      "RequestedHeight": 1080.0,
+      "ActualWidth": 1920.0,
+      "ActualHeight": 1080.0,
+      "ContentWidth": 1596.0,
+      "ContentHeight": 840.0,
+      "Note": "logical DIP"
+    },
+    {
+      "Key": "standard",
+      "RequestedWidth": 1440.0,
+      "RequestedHeight": 900.0,
+      "ActualWidth": 1440.0,
+      "ActualHeight": 900.0,
+      "ContentWidth": 1116.0,
+      "ContentHeight": 660.0,
+      "Note": "logical DIP"
+    },
+    {
+      "Key": "compact",
+      "RequestedWidth": 1200.0,
+      "RequestedHeight": 760.0,
+      "ActualWidth": 1200.0,
+      "ActualHeight": 760.0,
+      "ContentWidth": 904.0,
+      "ContentHeight": 520.0,
+      "Note": "logical DIP"
+    },
+    {
+      "Key": "narrow-1100",
+      "RequestedWidth": 1100.0,
+      "RequestedHeight": 720.0,
+      "ActualWidth": 1100.0,
+      "ActualHeight": 720.0,
+      "ContentWidth": 804.0,
+      "ContentHeight": 480.0,
+      "Note": "logical DIP"
+    },
+    {
+      "Key": "narrow",
+      "RequestedWidth": 1040.0,
+      "RequestedHeight": 700.0,
+      "ActualWidth": 1040.0,
+      "ActualHeight": 700.0,
+      "ContentWidth": 744.0,
+      "ContentHeight": 460.0,
+      "Note": "logical DIP"
+    }
+  ],
+  "OutputRoot": ".tmp/r01-06-reproduce-audit",
+  "ZipPath": ".tmp/GameSaveCenter-ui-audit.zip (not retained)"
+}

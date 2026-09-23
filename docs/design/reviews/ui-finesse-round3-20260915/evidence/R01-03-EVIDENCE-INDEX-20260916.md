@@ -79,3 +79,10 @@ R01-03 的索引实现与当前提交完整性校验已完成，下一可执行�
 - 当前提交 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的隔离审计记录为 `168` 个运行时快照、`0` Fidelity、`0` 失败路由；`validate-ui-evidence-index.ps1` 输出 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。
 - 当前审计摘要实际包含 `7` 条 TRUE_PARENT_CHILD_SCROLL_CONFLICT HIGH 和 `4` 条 TOOLBAR_VERTICAL_EXPANSION MEDIUM；它们是摘要中的真实发现，不能再沿用历史 `0 HIGH/0 MEDIUM` 说法。索引可追溯性通过不等于这些页面风险已清零。
 - 审计运行显式设置 `GSC_SOURCE_ROOT`、`GSC_BUILD_COMMIT`、`GSC_UI_AUDIT_COMMIT`，结果身份为完整 SHA，`WorkingTreeClean=True`；未启动真实 Playnite，不把索引校验升级为宿主呈现通过。
+
+## 2026-09-23 clean-tree 当前审计
+
+- 在 clean commit `5fbfc869ecddec852440ac82b3b0cc94343f3d60` 的隔离 Release RenderHarness 上生成审计；结果完整 SHA 与 `audit-metadata.json`、20 项索引一致。XAML `24/24`，solution `0 errors / 2` 条既有 nullable warning。
+- 当前摘要为 `168` 个运行时快照、`110` 个运行时警告、`0` Fidelity、`0` 失败路由；明确有 `7 HIGH / 4 MEDIUM`。索引校验 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。
+- 探针报告中一个纯图标按钮此前标成 `<composite>: missing`。核对屏幕图与可视树后确认控件存在且没有文本节点；RenderHarness 已改为“icon-only / no text label / text contrast not applicable”，不将它混入文字对比样本，也不误报缺控件。
+- 该审计、索引和当前 38d5b7b2 freshness 记录之间只有之后的测试断言与文档变化；R01-03 的 `sourcePaths` 未被这些变化命中。完整归档链接见 [R01-06 当前审计](R01-06-controlled-audit-20260923/README.md)。

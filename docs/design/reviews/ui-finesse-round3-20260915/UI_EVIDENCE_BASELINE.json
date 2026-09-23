@@ -5,22 +5,30 @@
     {
       "id": "R00-01-02",
       "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["shared-controls", "all-pages"],
+      "scopes": [
+        "shared-controls",
+        "all-pages"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Themes/*.xaml",
-        "src/GameSaveCenter.Playnite/Controls/*.cs"
+        "src/GameSaveCenter.Playnite/Controls/*.cs",
+        "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/UiFinesseFoundationTests.cs"
       ]
     },
     {
       "id": "R00-03",
       "evidence": "evidence/R00-03-MOTION-LIFECYCLE-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["shell", "all-pages"],
+      "scopes": [
+        "shell",
+        "all-pages"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs",
         "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs"
@@ -29,10 +37,13 @@
     {
       "id": "R00-04",
       "evidence": "evidence/R00-04-SEARCH-BENCHMARK-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["shell", "game-picker"],
+      "scopes": [
+        "shell",
+        "game-picker"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml*",
         "src/GameSaveCenter.Playnite/ViewModels/*GamePicker*.cs",
@@ -42,35 +53,45 @@
     {
       "id": "R00-05",
       "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["shared-controls", "all-pages"],
+      "scopes": [
+        "shared-controls",
+        "all-pages"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Themes/*.xaml",
-        "src/GameSaveCenter.Playnite/Controls/*.cs"
+        "src/GameSaveCenter.Playnite/Controls/*.cs",
+        "tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs"
       ]
     },
     {
       "id": "R00-06",
       "evidence": "evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["media-center"],
+      "scopes": [
+        "media-center"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml*",
         "src/GameSaveCenter.Playnite/Diagnostics/*.cs",
-        "tests/GameSaveCenter.Playnite.Tests/MediaWindowAnchorContractTests.cs"
+        "tests/GameSaveCenter.Playnite.Tests/MediaWindowAnchorContractTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/MediaInboxGeometryTests.cs"
       ]
     },
     {
       "id": "R00-07",
       "evidence": "evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["trainer-center", "audit"],
+      "scopes": [
+        "trainer-center",
+        "audit"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml*",
         "src/GameSaveCenter.Playnite/Diagnostics/RealHostUiAuditService.cs",
@@ -80,10 +101,13 @@
     {
       "id": "R00-08",
       "evidence": "evidence/R00-08-PICKER-ENTER-IME-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["shell", "game-picker"],
+      "scopes": [
+        "shell",
+        "game-picker"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
         "src/GameSaveCenter.Playnite/ViewModels/*GamePicker*.cs",
@@ -93,10 +117,12 @@
     {
       "id": "R01-01",
       "evidence": "evidence/R01-01-REPOSITORY-IDENTITY-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
-      "scopes": ["test-infrastructure"],
+      "scopes": [
+        "test-infrastructure"
+      ],
       "sourcePaths": [
         "scripts/build.ps1",
         "tests/GameSaveCenter.Playnite.Tests/*.csproj",
@@ -106,10 +132,13 @@
     {
       "id": "R01-02",
       "evidence": "evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["dev-probe", "numeric-cells"],
+      "scopes": [
+        "dev-probe",
+        "numeric-cells"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Views/Development/UiFrameworkProbeView.xaml*",
         "tests/GameSaveCenter.Playnite.Tests/*NumericCellReadability*.cs",
@@ -119,10 +148,13 @@
     {
       "id": "R01-03",
       "evidence": "evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
-      "scopes": ["audit", "evidence-index"],
+      "scopes": [
+        "audit",
+        "evidence-index"
+      ],
       "sourcePaths": [
         "tests/GameSaveCenter.RenderHarness/Program.cs",
         "scripts/validate-ui-evidence-index.ps1",
@@ -132,10 +164,13 @@
     {
       "id": "R01-04",
       "evidence": "evidence/R01-04-MOTION-BEHAVIOR-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["shell", "motion"],
+      "scopes": [
+        "shell",
+        "motion"
+      ],
       "sourcePaths": [
         "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs",
         "tests/GameSaveCenter.Playnite.Tests/UiFinesseFoundationTests.cs"
@@ -144,10 +179,13 @@
     {
       "id": "R01-05",
       "evidence": "evidence/R01-05-NEGATIVE-REGISTRY-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["negative-fixtures", "all-pages"],
+      "scopes": [
+        "negative-fixtures",
+        "all-pages"
+      ],
       "sourcePaths": [
         "tests/GameSaveCenter.Playnite.Tests/UiNegativeFixtureRegistryTests.cs",
         "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePalette.cs",
@@ -158,10 +196,13 @@
     {
       "id": "R01-06",
       "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "b5c7a6d423a4bf23004c3b080e133b3b0b065fa5",
+      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
       "packageCommit": null,
       "runtimeKind": "offscreen",
-      "scopes": ["audit", "host-evidence"],
+      "scopes": [
+        "audit",
+        "host-evidence"
+      ],
       "sourcePaths": [
         "tests/GameSaveCenter.RenderHarness/Program.cs",
         "src/GameSaveCenter.Playnite/Diagnostics/RealHostUiAuditService.cs"
@@ -173,7 +214,10 @@
       "sourceCommit": "e1324fe",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
-      "scopes": ["audit", "evidence-freshness"],
+      "scopes": [
+        "audit",
+        "evidence-freshness"
+      ],
       "sourcePaths": [
         "scripts/check-ui-evidence-freshness.ps1",
         "scripts/test-ui-evidence-freshness.ps1"

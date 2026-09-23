@@ -1,13 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
-## 2026-09-23 Round3 R18-04 表格容器预算当前复核
+## 2026-09-23 Round3 R00/R01 证据校正与 R18-04 复采收口
 
-- 在 D 盘 `D:\workplace\github\GameSaveCenter`、分支 `codex/ui-finesse-round2`、当前构建身份 `f175c57dda95f6eee9031f0363349189c4e47bb9` 复核已有 `64843642` 实现；未改生产代码，也未从 main 覆盖当前实现。
-- 隔离 Release solution 构建 `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。R18 专测 `1/1`；分页/锚点/几何/选择行为按类分别为 `6/6 + 10/10 + 3/3 + 4/4 = 23/23`。
-- 当前 2k/10k/20k Task 均 `9` 个最大已实现容器、`7` 个视口/可见行，滚动最大 `60.790/30.387/38.595 ms`。Media UI 窗口保持 2,000 项；当前共享模板与 `1280×720 DIP` 视口为 14 行，最大容器/可见 `14/14`，滚动最大 `0.026/0.027/0.031 ms`。记录的逐类、逐样本结果见证据。
-- R18 与媒体锚点 WPF testhost 关闭阶段出现 TextServicesHost `InvalidComObjectException` 调试输出；xUnit 测试通过且 dotnet 退出码为 0，根因未确认。仅为合成数据/隔离 STA/逻辑 DIP，不宣称真实 Playnite、物理屏幕或 ETW 性能通过；Demo 原目录不可用。
+- 继续使用 `codex/ui-finesse-round2`，HEAD `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`，没有从 main 覆盖当前实现。代码/测试小批已分别提交并推送：`5fbfc869 校正图标按钮对比证据标签`、`38d5b7b2 补全半透明按钮组合态对比断言`。本次更新账本、baseline 和长期证据，不包含 `.tmp`。
+- R00/R01 在 `5fbfc869` 的定向行为套件 `36/36`；最终 `38d5b7b2` 的 RepositoryIdentity + contrast `5/5`。完整隔离 Release solution XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。freshness 当前完整身份 `14 fresh/0 stale`，索引 `20/20`。
+- 复采 R18-04 clean 身份 `5fbfc869`：专测 `1/1`，分页/锚点/几何/选择相关行为类精确 `6+10+3+4=23/23`。Task 2k/10k/20k 最大容器/可见均 `9/7`；Media UI 窗口 `2,000`、受控视口 `14`。滚动最大 Task `51.172/25.651/20.681 ms`、Media `0.031/0.989/0.023 ms`，10k Media `0.989` 是需保留的一次调度尖峰。
+- audit 有 7 HIGH 滚动冲突、4 MEDIUM 工具栏纵向扩展；不写成风险清零。testhost 关闭阶段 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 属清理输出，xUnit/VSTest 成功且 exit `0`，根因未知。只用 synthetic DTO/fake/隔离 STA/逻辑 DIP；未验真实 Playnite、物理 DPI/UIA/IME、presented frame、ETW 或宿主性能，Demo 原目录不可用。
 
-证据：[R18-04 当前表格容器复核](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)。下一项：按用户优先级复核和校正 R00/R01 当前证据身份与待验边界，再推进依赖已满足的 Q/R 小批。
+证据：[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md)、[R18-04 复采及 23 项精确组成](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)、[R01-06 可移植审计归档](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md)。下一项：R02-01 当前来源/行为小批；先核对现有实现，满足时补证并记“已满足”。
 
 ## 2026-09-23 Round3 R18-03 缩略图滚动预算定向复核
 
