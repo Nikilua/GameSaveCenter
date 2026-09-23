@@ -9117,3 +9117,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 相关门禁独立 VSTest：R02 busy `4/4`、R08 motion reverse `2/2`、R13 retry gate `1/1`，与新行为合计 `8/8`。Playnite Release `net462` / test `net472`，正确 `GscBuildCommit=caa6099455f6a1f9e2b2cdbbe2780ccd040b8e7f` 构建 0 errors，保留既有 `MediaCenterView.xaml.cs:703 CS8602` warning。一次无构建重用的 R02 跑法因程序集 `GscBuildCommit=unknown` 失败，重建身份后 `4/4` 全过；不是产品断言失败。
 - R08 VSTest 结束额外输出 WPF TextServicesHost `OnUnregisterTextStore InvalidComObjectException` 清理堆栈，exit `0`、2/2 通过，根因未知。初次新测试编译别名错误已修正，最终构建与行为验证成功。
 - 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-07-CONTINUOUS-ACTION-20260923.md`；Round2 账本、Q04–Q12 索引、当前状态/记忆/交接同步。受控 Click/命令派发和离屏 WPF 动效不等于物理鼠标高频输入、屏幕像素或 Playnite host，Q06-07 最终仍未完成。下一可执行任务：Q06-08 状态序列录证。
+
+## 2026-09-23 main Q06-08 状态五态证据与 R00/R01 校正
+
+- Q06-08 已由 `8846d712` 收口并推送：生产 `GscWpfUiPrimaryButton` 在 Light/Dark 的 normal/hover/pressed/focus/disabled 状态序列为 `1/1`；不可执行状态不派发命令。Hover 是 WPF MouseDevice 状态，不是物理鼠标；焦点/Space 是受控 STA 激活，不代表 OS 输入。10 张 offscreen 图和 TRX 保存在 Round2 证据目录。
+- 当前继续 `main`，没有切到 `codex/ui-finesse-round2`。R00-01/02 与 R00-05 不需要重建：baseline 源码身份仍是 `3a1dadd8`，current HEAD `8846d712` freshness 14 records 全部无匹配源路径；脚本 docs-only/shared-control/package identity 自测 exit `0`。没有在本批重跑 R00 行为测试。
+- freshness JSON、Round3 R01-03/R01-07 链接、current recheck、用户截图报告、Current State、Project Memory 与 Handoff 已同步。R01 audit 汇总数是既有审计证据，本批没有重跑 audit；package identity `not-provided`，当前设置宿主错位保持未复现。
+- 下一项：用截图对应的窗口逻辑尺寸/DPI 复核生产 `GameSaveCenterSettingsView`、`ApplyResponsiveLayout` 和 package identity；若当前 main 在可比条件下错位，修代码并补行为/负例。之前隔离 Playnite CEF `platform_channel 0x5`、用户当前安装包与真实呈现仍待验。未操作真实用户数据。

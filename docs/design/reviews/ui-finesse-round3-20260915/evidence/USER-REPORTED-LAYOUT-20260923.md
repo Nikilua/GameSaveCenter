@@ -32,4 +32,10 @@
 
 截图由隔离 WPF 离屏渲染器生成，包含合成数据；`DpiScale=1.0` 和测试中的 DIP 不是物理屏幕 DPI。未验证当前 Playnite package-host 的最终呈现、Windows UIA/读屏、OS IME、真实鼠标滚轮、DWM presented frame、物理跨屏、ETW 或宿主性能。R18-04 的 WPF testhost 结束时另记录 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理输出 6 次；TRX 为 `1/1` 且退出码 `0`，根因未知，按清理噪声记录。
 
-本次没有读取或改写真实存档、媒体、用户云端或诊断数据。Demo 原目录不可用，布局复核沿用恢复的生产基线。下一步在完成 R00/R01 freshness 同步并推送后，执行 Q06-06 鼠标/Enter/Space 单次命令行为小批量；R02-06 主机菜单和 R23-05 系统级呈现仍保留实际环境边界。
+本次没有读取或改写真实存档、媒体、用户云端或诊断数据。Demo 原目录不可用，布局复核沿用恢复的生产基线。R02-06 主机菜单和 R23-05 系统级呈现仍保留实际环境边界。
+
+## 2026-09-23 追加：设置窗口截图差异
+
+用户随后提供的设置窗口截图仍显示顶部图标落到搜索行附近、搜索输入框从标题左边界向右偏移。该附件属于用户当前宿主观察，不是仓库生成的离屏图，也没有复制进仓库 artifacts。当前生产 XAML 已在 `3a1dadd8` 将搜索框明确放到标题列并左对齐；现有 `ReportedWorkspaceLayoutBehaviorTests` 以生产设置视图验证 Light/Dark `8/8`，包含图标/标题顶边、搜索/标题左边界、恢复默认卡片和路径编辑组合框/按钮几何。这些 STA WPF 几何结果不能说明用户当前安装包身份，也不证明实际 Playnite host 的 DPI/尺寸行为。
+
+本次 R00/R01 freshness 复核截至 main `8846d712`：14 条记录的 sourcePaths 均无变更，但没有 package identity。此前隔离 Playnite host 未能正常加载扩展（CEF `platform_channel` `0x5`），所以当前可见用户截图与现有受控图的差异还没有在正常宿主中解释。下一项先以截图尺寸和逻辑 DPI 核验当前生产设置视图及 `SizeChanged` 响应；如果当前 checkout 在该条件下错位，则修共享布局并增加行为/负例验证；否则保留安装包/宿主身份待核边界，不宣称已解决。
