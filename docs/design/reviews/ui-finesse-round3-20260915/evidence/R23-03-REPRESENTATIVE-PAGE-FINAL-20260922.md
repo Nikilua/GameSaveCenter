@@ -1,8 +1,8 @@
 # R23-03 代表页面终审
 
-日期：2026-09-22  
-状态：已实现，待环境验证  
-审计基线：`16f4dee6`（R23-02 资源矩阵；本项无新增业务代码）
+日期：2026-09-23
+状态：已满足受控页面终审，真实宿主环境待验
+审计基线：`16f4dee6`（既有页面盘点）；当前代码与验证身份：`7a4ba2a94da870c832e59f3ee025f9e34325d175`（此后只追加文档）
 
 ## 终审方法
 
@@ -29,6 +29,14 @@
 - Light/Dark fixture 的代表控件已验证布局、文字、按钮/输入/选择/表格代理和共享状态层；`R23-02` 矩阵已明确哪些状态是基类继承、哪些是页面派生、哪些不适用。
 - 本报告不把源码中有 `WorkspaceStatePresenter` 写成真实所有页面的屏幕可读性，也不把自动化名称写成 UIA/读屏通过；R23-04 需要固定当前构建身份，在隔离非空宿主复测并保留精选原图。
 
+## 2026-09-23 当前 main 复核
+
+- 本轮没有新增业务/页面代码。当前八个实际入口复核为 `src/GameSaveCenter.Playnite/Views/OverviewView.xaml`、`SaveCenterView.xaml`、`MediaCenterView.xaml`、`TrainerCenterView.xaml`、`TaskCenterView.xaml`、`MaintenanceView.xaml`、`src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml` 与 `AcrylicProductionShellView.xaml`；它们分别承载首页、存档、媒体、工具、任务、维护、设置、壳层。以当前文件/绑定和命令入口为准，沿用表中的 Demo 对应或业务语义例外。
+- 当前 main 隔离 Release 重建：XAML `24/24`、solution `0 errors`；Playnite `net462`、Playnite.Tests `net472`，有两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。
+- 当前抽样行为门禁：`WorkspaceStateSourceTests` `9 passed / 1 skipped`、`R21AutomationValueBehaviorTests 21/21`、`R21FocusVisualRegressionBehaviorTests 1/1`、`R21DisabledHiddenBehaviorTests 2/2`、`R10RecentAccessBehaviorTests 2/2`、`R23ProductionResourceStateBehaviorTests 3/3`；合计 `38 passed / 0 failed / 1 skipped`。唯一 skip 是 `WorkspaceStateSourceTests.SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages`，TRX 原因明确为断言针对已撤销的“今日工作台”UI 架构，本次没有把它计作通过。每类单独 testhost，均 exit `0`。
+- 可达性证据包含 WPF AutomationPeer 上的名称/状态/动作、媒体空选择不写 metadata 的负例、Save 可用/禁用与安全原因、首页最近访问入口的命令路由；状态证据包含各页真实 presenter/绑定契约及源页面加载/空/错误语义。R23-02 的实际导航焦点/禁用和四种 DataGrid 派生样式也在当前代码基线上 `3/3` 重验。
+- 以上属于生产 XAML、生产资源和隔离 STA WPF/合成数据的受控证据，不等于正常 Playnite package-host 的现场文字可读性、UIA/屏幕阅读器、用户鼠标/键盘、最终呈现像素或跨 DPI 验收。R23-04 最近仍遇到 CEF `platform_channel ... 拒绝访问 (0x5)`，窗口出现不能证明正常宿主；Demo 原目录不可用，继续以恢复生产基线按 Demo-first 核对。没有读写真实存档/媒体/云端或外发诊断。
+
 ## 下一步
 
-进入 `R23-04` 非空隔离宿主：使用固定构建身份和合成非空库，分别记录嵌入 Playnite 与专用窗口 manifest，重新观察本报告标为待验的页面状态；不修改真实存档、媒体、用户云端或发送诊断。
+下一步转 `R23-04` 正常可枚举隔离 Playnite 会话；若 CEF `0x5` 阻塞继续存在，则记录限制并推进依赖已满足的 Q/R 项。本报告不把旧宿主截图当当前通过，也不允许使用真实存档、媒体或用户云端验证。

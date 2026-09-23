@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main 接续与 R23-03 代表页面终审
+
+- 当前代码验证身份为 `7a4ba2a94da870c832e59f3ee025f9e34325d175`；该身份相较于 R23-02 代码提交 `a18cb43e` 仅有文档更新。八个生产页面入口均存在：Overview、Save、Media、Trainer、Task、Maintenance、`Settings/GameSaveCenterSettingsView.xaml` 和 Acrylic shell。
+- 隔离 Release 当前身份 XAML `24/24`、solution `0 errors`、Playnite `net462`；保留两条 `MediaCenterView.xaml.cs:706 CS8602` warning。六类针对性的当前复核共 `38 passed / 0 failed / 1 skipped`；skip 是 `WorkspaceStateSourceTests.SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages`，理由为断言属于已撤销的“今日工作台”架构。
+- 覆盖当前状态 presenter/加载合同、跨页 Automation 名称/状态/动作、媒体空选择写入负例、焦点切换、禁用/安全原因及首页最近访问命令；各测试均为隔离 testhost，不写真实数据。
+- R23-03 状态为已满足受控终审、真实宿主待验。Playnite package-host、UIA/读屏、真实输入、当前宿主像素、物理 DPI/跨屏、ETW/性能仍未验；R23-04 CEF `platform_channel ... 拒绝访问 (0x5)` 边界未改变。下一项先复核 R23-04 正常可枚举会话；不可用则继续已满足依赖的 Q/R。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-03-REPRESENTATIVE-PAGE-FINAL-20260922.md`。
+
 ## 2026-09-23 main 接续与 R23-02 生产状态矩阵
 
 - 当前分支 main；生产样式/行为测试提交 `a18cb43eb3a7a623aeefa1546be5b2407f30173a`。该提交为 `AcrylicNavItem` 补共享焦点可视与键盘焦点边框、禁用 opacity；为实际设置容器生成的 `GscSettingsSectionTabItem` 补禁用外观。
