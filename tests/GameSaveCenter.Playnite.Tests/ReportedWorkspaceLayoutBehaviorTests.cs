@@ -31,14 +31,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactInboxKeepsTheAssignButtonCompactAndTheGridInsideItsFrameRow(GameSaveCenterThemeMode theme)
+    public void CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var buttonHeight = 0d;
+        var buttonHeightSpread = 0d;
+        var modeComboHeight = 0d;
         var comboHeight = 0d;
         var buttonCenterDelta = 0d;
+        var clearButtonVisible = false;
+        var buttonGeometryDetails = string.Empty;
         var gridToFooterOverlap = 0d;
         var gridHeight = 0d;
+        var gridBarContained = false;
+        var gridBarMetrics = string.Empty;
         var pageScrollable = false;
         var footerReachable = false;
         var footerViewportMetrics = string.Empty;
@@ -72,15 +78,40 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 FlushLayout(window);
 
                 var targetCombo = (ComboBox)viewType.GetField("MediaInboxTargetGameComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var modeCombo = (ComboBox)viewType.GetField("MediaInboxModeCombo", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var clearButton = (ButtonBase)viewType.GetField("MediaInboxClearSelectionButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var resetButton = (ButtonBase)viewType.GetField("MediaInboxResetColumnWidthButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var assignButton = (ButtonBase)viewType.GetField("MediaInboxAssignSelectedButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                buttonHeight = assignButton.ActualHeight;
+                grid.SelectedIndex = 0;
+                FlushLayout(window);
+                grid.ScrollIntoView(grid.Items[grid.Items.Count - 1]);
+                grid.UpdateLayout();
+                FlushLayout(window);
+                clearButtonVisible = clearButton.Visibility == Visibility.Visible && clearButton.ActualHeight > 0;
+                var batchButtons = new FrameworkElement[] { clearButton, resetButton, assignButton };
+                var buttonHeights = batchButtons.Select(button => button.ActualHeight).ToArray();
+                var buttonCenters = batchButtons.Select(button => CenterY(button, window)).ToArray();
+                buttonHeight = buttonHeights.Max();
+                buttonHeightSpread = buttonHeights.Max() - buttonHeights.Min();
+                modeComboHeight = modeCombo.ActualHeight;
                 comboHeight = targetCombo.ActualHeight;
-                buttonCenterDelta = Math.Abs(CenterY(assignButton, actions) - CenterY(targetCombo, actions));
+                buttonCenterDelta = buttonCenters.Max(center => Math.Abs(center - CenterY(targetCombo, window)));
+                buttonGeometryDetails = $"clear/reset/assign={string.Join("/", buttonHeights.Select(value => value.ToString("0.##")))} DIP, mode={modeComboHeight:0.##} DIP, centersΔ={string.Join("/", buttonCenters.Select(center => Math.Abs(center - CenterY(targetCombo, window)).ToString("0.##")))} DIP";
 
                 var gridBounds = BoundsIn(grid, frame);
                 var footerBounds = BoundsIn(footer, frame);
                 gridHeight = grid.ActualHeight;
                 gridToFooterOverlap = Math.Max(0, gridBounds.Bottom - footerBounds.Top);
+                var internalGridScrollViewer = FindVisualChildren<ScrollViewer>(grid)
+                    .FirstOrDefault(scrollViewer => scrollViewer.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled && scrollViewer.ActualHeight > 0);
+                var internalGridScrollBar = FindVisualChildren<ScrollBar>(grid)
+                    .FirstOrDefault(scrollBar => scrollBar.Orientation == Orientation.Vertical && scrollBar.ActualHeight > 0);
+                if (internalGridScrollBar != null)
+                {
+                    var gridBarBounds = BoundsIn(internalGridScrollBar, frame);
+                    gridBarContained = gridBounds.Contains(gridBarBounds) && gridBarBounds.Bottom <= footerBounds.Top + 1;
+                    gridBarMetrics = $"bar={gridBarBounds.Top:0.##}..{gridBarBounds.Bottom:0.##}, grid={gridBounds.Top:0.##}..{gridBounds.Bottom:0.##}, footerTop={footerBounds.Top:0.##}, internalOffset={internalGridScrollViewer?.VerticalOffset:0.##}/{internalGridScrollViewer?.ScrollableHeight:0.##}";
+                }
                 pageScrollable = pageScroller.ScrollableHeight > 0.5;
                 inboxTabVisible = pageScroller.IsVisible;
                 var verticalScrollBar = FindVisualChildren<ScrollBar>(pageScroller)
@@ -104,13 +135,17 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Media Inbox: button={buttonHeight:0.##} DIP, target={comboHeight:0.##} DIP, centerΔ={buttonCenterDelta:0.##} DIP, grid={gridHeight:0.##} DIP, grid/footer overlap={gridToFooterOverlap:0.##} DIP, {footerViewportMetrics}");
+        output.WriteLine($"{theme} Media Inbox: {buttonGeometryDetails}, max button={buttonHeight:0.##} DIP, spread={buttonHeightSpread:0.##} DIP, target={comboHeight:0.##} DIP, max centerΔ={buttonCenterDelta:0.##} DIP, clear visible={clearButtonVisible}, grid={gridHeight:0.##} DIP, grid/footer overlap={gridToFooterOverlap:0.##} DIP, internal scrollbar contained={gridBarContained} ({gridBarMetrics}), {footerViewportMetrics}");
         Assert.Null(exception);
         Assert.True(comboHeight >= 35, $"synthetic selected game template measured unexpectedly short: {comboHeight:0.##} DIP");
-        Assert.True(buttonHeight <= 52, $"assign button stretched to {buttonHeight:0.##} DIP beside a {comboHeight:0.##} DIP game target");
-        Assert.True(buttonCenterDelta <= 1, $"assign button center drifted {buttonCenterDelta:0.##} DIP from its game target");
+        Assert.True(clearButtonVisible, "the geometry probe must include the selected-media clear action shown in the reported state");
+        Assert.InRange(buttonHeight, 32, 42);
+        Assert.True(buttonHeightSpread <= 1, $"batch action button heights differ by {buttonHeightSpread:0.##} DIP: {buttonGeometryDetails}");
+        Assert.InRange(modeComboHeight, 32, 42);
+        Assert.True(buttonCenterDelta <= 1, $"a batch action button center drifted {buttonCenterDelta:0.##} DIP from its game target: {buttonGeometryDetails}");
         Assert.True(gridHeight < 500, $"compact inbox grid exceeded its finite viewport: {gridHeight:0.##} DIP");
         Assert.True(gridToFooterOverlap <= 1, $"inbox grid overlaps the footer by {gridToFooterOverlap:0.##} DIP");
+        Assert.True(gridBarContained, $"the DataGrid's own scrollbar must stay inside its finite table frame and above the footer ({gridBarMetrics})");
         Assert.True(inboxTabVisible, "the geometry probe must measure the selected inbox tab, not a hidden tab template");
         Assert.True(pageScrollable, "compact page fallback should retain its page-level scroll channel");
         Assert.True(footerReachable, $"the page scroll channel should bring the footer into view ({footerViewportMetrics})");
@@ -203,8 +238,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     public void FailedTaskChromeTracksItsOwnRealizedRowBounds(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
-        var errorChromeTopOffset = 0d;
-        var errorChromeBottomOffset = 0d;
+        var errorChromeTopInset = 0d;
+        var errorChromeBottomInset = 0d;
+        var errorChromeLeftInset = 0d;
+        var errorChromeRightInset = 0d;
+        var errorChromePositionError = 0d;
         var rowCount = 0;
         var realizedRowsAfterRecycle = 0;
         var miscoloredRows = 0;
@@ -236,10 +274,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     .ToArray();
                 grid.ItemsSource = tasks;
 
-                window = CreateWindow(view, 1480, 900);
+                window = CreateWindow(view, 2048, 1152);
                 window.Show();
                 FlushLayout(window);
-                view.ApplyResponsiveLayout(1480, 900);
+                view.ApplyResponsiveLayout(2048, 1152);
                 FlushLayout(window);
                 taskGridMetrics = $"theme={theme}, grid={grid.ActualWidth:0.##}×{grid.ActualHeight:0.##}, visible={grid.IsVisible}, loaded={grid.IsLoaded}, visibility={grid.Visibility}, items={grid.Items.Count}, virtualized={VirtualizingPanel.GetIsVirtualizing(grid)}";
 
@@ -277,13 +315,24 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                         var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
                         var rowBounds = BoundsIn(row, grid);
                         var chromeBounds = BoundsIn(chrome, grid);
-                        errorChromeTopOffset = Math.Max(errorChromeTopOffset, chromeBounds.Top - rowBounds.Top);
-                        errorChromeBottomOffset = Math.Max(errorChromeBottomOffset, rowBounds.Bottom - chromeBounds.Bottom);
 
                         var isErrorStyle = ReferenceEquals(chrome.Background, errorTint)
                             && ReferenceEquals(chrome.BorderBrush, errorStroke);
                         if (task.State == TaskState.Failed)
+                        {
                             failedRowsChecked++;
+                            var topInset = chromeBounds.Top - rowBounds.Top;
+                            var bottomInset = rowBounds.Bottom - chromeBounds.Bottom;
+                            var leftInset = chromeBounds.Left - rowBounds.Left;
+                            var rightInset = rowBounds.Right - chromeBounds.Right;
+                            errorChromeTopInset = Math.Max(errorChromeTopInset, topInset);
+                            errorChromeBottomInset = Math.Max(errorChromeBottomInset, bottomInset);
+                            errorChromeLeftInset = Math.Max(errorChromeLeftInset, leftInset);
+                            errorChromeRightInset = Math.Max(errorChromeRightInset, rightInset);
+                            errorChromePositionError = Math.Max(errorChromePositionError, Math.Max(
+                                Math.Max(Math.Abs(topInset - 2), Math.Abs(bottomInset - 2)),
+                                Math.Max(Math.Abs(leftInset - 4), Math.Abs(rightInset - 12))));
+                        }
                         if ((task.State == TaskState.Failed) != isErrorStyle)
                             miscoloredRows++;
                     }
@@ -299,16 +348,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Task grid: initial/recycled rows={rowCount}/{realizedRowsAfterRecycle}, far row reached={recycledTargetRealized}, failed rows checked={failedRowsChecked}, chrome status mismatches={miscoloredRows}, row-height spread={realizedRowHeightSpread:0.##} DIP, {taskGridMetrics}");
+        output.WriteLine($"{theme} Task grid: initial/recycled rows={rowCount}/{realizedRowsAfterRecycle}, far row reached={recycledTargetRealized}, failed rows checked={failedRowsChecked}, chrome status mismatches={miscoloredRows}, error chrome insets top/bottom/left/right={errorChromeTopInset:0.##}/{errorChromeBottomInset:0.##}/{errorChromeLeftInset:0.##}/{errorChromeRightInset:0.##} DIP, max position error={errorChromePositionError:0.##} DIP, row-height spread={realizedRowHeightSpread:0.##} DIP, {taskGridMetrics}");
         Assert.Null(exception);
-        Assert.True(rowCount is >= 5 and <= 16, $"initial viewport realized {rowCount} task rows; {taskGridMetrics}");
-        Assert.True(realizedRowsAfterRecycle is >= 5 and <= 16, $"scrolled viewport realized {realizedRowsAfterRecycle} task rows; {taskGridMetrics}");
+        Assert.True(rowCount is >= 5 and <= 32, $"initial viewport realized {rowCount} task rows; {taskGridMetrics}");
+        Assert.True(realizedRowsAfterRecycle is >= 5 and <= 32, $"scrolled viewport realized {realizedRowsAfterRecycle} task rows; {taskGridMetrics}");
         Assert.True(recycledTargetRealized, "ScrollIntoView must reach the far synthetic item so this probe covers recycled containers");
         Assert.True(failedRowsChecked >= 4, $"expected failed rows in both realized viewports; checked {failedRowsChecked}");
         Assert.True(miscoloredRows == 0, $"a recycled task row retained stale failure chrome on {miscoloredRows} realized row(s)");
         Assert.True(realizedRowHeightSpread <= 1, $"realized task rows have a {realizedRowHeightSpread:0.##} DIP height spread");
-        Assert.InRange(errorChromeTopOffset, 0, 4);
-        Assert.InRange(errorChromeBottomOffset, 0, 4);
+        Assert.True(failedRowsChecked >= 4, $"expected failed rows after recycling; checked {failedRowsChecked}");
+        Assert.InRange(errorChromePositionError, 0, 1);
     }
 
     [Theory]

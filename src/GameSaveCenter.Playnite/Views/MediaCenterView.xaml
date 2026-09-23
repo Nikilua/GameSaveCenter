@@ -220,9 +220,9 @@
                                     <TextBlock Text="批量处理" FontWeight="SemiBold"/>
                                     <TextBlock x:Name="MediaInboxBatchSelectionSummary" Text="未选择媒体 · Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" Width="160" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="批量选择摘要" Margin="0,3,0,0"/>
                                 </StackPanel>
-                                <ui:Button x:Name="MediaInboxClearSelectionButton" Style="{DynamicResource GscWpfUiActionButton}" Content="清空选择" ToolTip="只清空当前媒体收件箱视图的选择，不改变视图或筛选条件" AutomationProperties.Name="清空媒体批量选择" Click="OnClearMediaInboxSelectionClick" Visibility="Collapsed" Margin="0,0,8,4"/>
-                                <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Content="重置列宽" ToolTip="恢复媒体收件箱表格的默认列宽" AutomationProperties.Name="重置媒体收件箱表格列宽" Click="OnResetColumnLayoutClick" Margin="0,0,8,4"/>
-                                <ComboBox x:Name="MediaInboxModeCombo" Width="104" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaInboxModeOptions}" SelectedItem="{Binding MediaInboxMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="OnMediaInboxModeSelectionChanged" ToolTip="切换媒体收件箱视图" AutomationProperties.Name="媒体收件箱视图" Margin="0,0,8,4"/>
+                                <ui:Button x:Name="MediaInboxClearSelectionButton" Style="{DynamicResource GscWpfUiActionButton}" Content="清空选择" ToolTip="只清空当前媒体收件箱视图的选择，不改变视图或筛选条件" AutomationProperties.Name="清空媒体批量选择" Click="OnClearMediaInboxSelectionClick" Visibility="Collapsed" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                                <ui:Button x:Name="MediaInboxResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置列宽" ToolTip="恢复媒体收件箱表格的默认列宽" AutomationProperties.Name="重置媒体收件箱表格列宽" Click="OnResetColumnLayoutClick" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                                <ComboBox x:Name="MediaInboxModeCombo" Width="104" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding MediaInboxModeOptions}" SelectedItem="{Binding MediaInboxMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="OnMediaInboxModeSelectionChanged" ToolTip="切换媒体收件箱视图" AutomationProperties.Name="媒体收件箱视图" VerticalAlignment="Center" Margin="0,0,8,4"/>
                                 <StackPanel x:Name="MediaInboxTargetActions" Orientation="Horizontal">
                                     <StackPanel.Style>
                                         <Style TargetType="StackPanel">
@@ -230,12 +230,12 @@
                                             <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <ComboBox x:Name="MediaInboxTargetGameComboBox" Width="220" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" AutomationProperties.Name="批量归类目标游戏" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,8,4"/>
+                                    <ComboBox x:Name="MediaInboxTargetGameComboBox" Width="220" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" AutomationProperties.Name="批量归类目标游戏" ItemTemplate="{StaticResource MediaGameTargetTemplate}" VerticalAlignment="Center" Margin="0,0,8,4"/>
                                     <ui:Button x:Name="MediaInboxAssignSelectedButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" VerticalAlignment="Center" AutomationProperties.Name="归类所选媒体">
                                         <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="归类所选" VerticalAlignment="Center"/></StackPanel>
                                     </ui:Button>
                                 </StackPanel>
-                                <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" Margin="2,0,0,4"/>
+                                <ui:Button x:Name="MediaInboxCompactDetailsButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="查看预览与归类 ›" ToolTip="打开所选媒体的预览、归类建议和安全操作" AutomationProperties.Name="查看所选媒体预览与归类" Click="OnMediaInboxCompactDetailsClick" Visibility="Collapsed" VerticalAlignment="Center" Margin="2,0,0,4"/>
                             </WrapPanel>
                             </StackPanel>
                             <DataGrid Grid.Row="1" x:Name="MediaInboxGrid" Tag="FiniteViewport" Style="{StaticResource MediaDataGrid}" MinHeight="0" VerticalAlignment="Stretch" ItemsSource="{Binding MediaInboxItems}" SelectedItem="{Binding SelectedInboxMedia}"
