@@ -9163,3 +9163,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 最终当前隔离回归：R07StatusBanner `4/4`、R06EmptyState `2/2`、TaskResponsive `7/7`、R06Details `2/2`、R07Scroll `2/2`，共 `17/17`、0 failed/skip、VSTest exit `0`。首次全组因 fake 缺少通知而有 4 个新断言失败，修正 fixture 后完整重建复跑通过。
 - TRX 收尾 9 段 WPF TextServicesHost/TextStore `InvalidComObjectException`，root cause unknown，测试结果仍明确成功。受控 STA WPF/合成 DTO/fake/DIP，不宣称真实 Playnite UIA、宿主拖窗、主题截图矩阵、物理 DPI、设备输入、呈现帧、ETW 或宿主性能，未写真实数据。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20260924.md` 与 TRX。下一项 R07-07 当前 main 触控板增量复核。
+
+## 2026-09-24 main R07-07 当前复核
+
+- 滚动路由生产实现自 `98e8b244` 后未变化；共享 WPF production/redesign 资源及 DataGrid/Task 布局随后变更，因此仍复跑实测当前控件。`scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot .tmp/build-main-d46fc76e`：XAML `24/24`、solution 0 errors，保留 `MediaCenterView.xaml.cs:703` 两条既有 `CS8602` warning，Playnite `net462`。
+- Release 当前测试结果：R07FineScroll `2/2`、R07ScrollOwnership `2/2`、MediaInboxGeometry `3/3`、ResponsiveLayoutCoordinator `5/5`、TaskCenterViewResponsive `7/7`；共 `19/19`、0 fail/skip、VSTest exit `0`。12×`-30` offset `0..36`、反向 +120 为 `33→30→27`、最大值 `154/154`；20 个合成 wheel 的 LayoutUpdated `17`、末端无效 5 个事件新增布局 `0`、可见行 `6–9`。嵌套 -360 外层 `32→80/432`、内层 `628` 保持、单次 Layout `1`、可见容器 `2`。
+- TRX 未见 InvalidComObject 清理异常。合成 routed wheel、实际 DataGrid 内部 ScrollViewer、隔离 STA WPF/逻辑 DIP；不是触控板设备/OS 输入、Playnite host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 或宿主性能证据。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20260924.md` 与 TRX。下一项 R07-08 当前 main resize 压力复核。

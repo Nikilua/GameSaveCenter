@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R07-07 当前复核
+
+- 当前代码身份 `d46fc76e8da76814a6f4870880f98f153c2581cd`；Release XAML `24/24`、0 errors，两条既有 `CS8602` warning；Playnite `net462`。
+- 细滚动行为与相邻 scroll/data grid/task 响应共 `19/19`。-30 每次 +3 DIP、+120 反向单调、最大 offset `154`、20 个 routed wheel 布局计数 `17`、末端无效 wheel 新增布局 `0`、可见 DataGridRow `6–9`；嵌套 `-360` 外层 `32→80/432`、内层不动、单次 layout 1。
+- 共享主题/布局变更后在当前模板复测；滚动路由代码未变。仅合成事件/隔离 STA WPF/逻辑 DIP，未验真实触控板/OS/Playnite/物理 DPI/呈现帧/ETW/宿主性能。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20260924.md`。下一项 R07-08。
+
 ## 2026-09-24 main：R07-06 当前复核
 
 - 生产源码身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`；Release XAML `24/24`、0 errors，已有两条 `MediaCenterView.xaml.cs:703 CS8602` warning；更新测试项目 0 warning/error。

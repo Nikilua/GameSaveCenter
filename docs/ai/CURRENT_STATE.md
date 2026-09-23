@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R07-07 当前复核
+
+- 当前生产身份 `d46fc76e8da76814a6f4870880f98f153c2581cd`。Release solution XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warning；Playnite `net462`、测试 `net472`。
+- 当前滚动/视口组 `19/19`、0 failed/skip：FineScroll `2`、ScrollOwnership `2`、Media Geometry `3`、ResponsiveCoordinator `5`、TaskResponsive `7`。-30/+120/末端/容器/嵌套边界具体指标见证据 `R07-07-CURRENT-MAIN-RECHECK-20260924.md` 与 TRX。
+- `ScrollBoundaryRoutingBehavior` 自 98e8 后未变；共享 WPF 生产资源/DataGrid/Task 布局变更后已复测当前实际模板。测试是合成 routed wheel 与隔离 STA WPF/逻辑 DIP，不是真实触控板、OS 输入、Playnite/UIA、物理呈现或宿主性能证据。
+- 下一可执行项 R07-08 当前 main resize 压力复核。
+
 ## 2026-09-24 main：R07-06 当前复核
 
 - 生产源码复核身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`。Release solution XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warning；更新的测试项目重建 0 warning/error。

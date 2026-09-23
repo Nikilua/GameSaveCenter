@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：R07-07
+
+当前 `main` 为 `d46fc76e8da76814a6f4870880f98f153c2581cd`。由于 98e8 后共享 WPF 生产资源和 DataGrid/Task 布局变化，已按当前 Release 构建复跑细滚动/滚动所有权/Media geometry/响应断点/Task 页面共 `19/19`，0 fail/skip；XAML `24/24`、0 errors，保留两条既有 `CS8602` warning。重点指标：20 个 -30/+120 等 routed wheel 产生 `17` 次 LayoutUpdated，末端 5 个 no-op 产生 0 布局增量，行容器 `6–9`；嵌套 -360 的单次边界传播 layout `1`。证据在 `R07-07-CURRENT-MAIN-RECHECK-20260924.md`。
+
+下一项 R07-08 resize 压力序列当前 main 复核。触控板样本为合成 WPF routed wheel，不是物理设备/OS 输入；隔离 STA 窗口不代表正常 Playnite、物理 DPI/跨屏、UIA/读屏、presented frame 或宿主性能。继续保留既有滚动条与有限列表行为。
+
 ## 2026-09-24 当前接续：R07-06
 
 当前生产源码身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`。状态横幅与相邻空态/Task/详情/滚动当前行为 `17/17`，Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；改进的 Playnite 测试项目构建 0 warning/error。用 WPF AutomationPeer `IInvokeProvider` 调用实际按钮后，计数型 fake 验证重试/安全恢复命令各执行一次；Stale 横幅没有泛化关闭按钮，Task 成功状态按绑定收起。TRX 有 9 段 TextServicesHost/TextStore COM 清理噪声，根因未知、exit 0。
