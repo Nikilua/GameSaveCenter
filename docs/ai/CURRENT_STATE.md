@@ -1,13 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-## 第三轮 R02-01 动作优先级当前复核（2026-09-23）
+## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
 
-- 当前分支 `codex/ui-finesse-round2`、完整测试身份 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7`。生产 UI 未改；补强 `R02ActionPriorityTests`，因为旧测试虽检查了主动作数、DataTrigger 声明和真实共享样式，但没有运行时切换 Inbox 模式。
-- 新 STA WPF 行为测试加载生产 `MediaCenterView`，从实际 ComboBox 切换“待归类→已忽略→待归类”；绑定值往返正确，每种状态只显示对应的 Primary 动作，另一动作 `Visibility/IsVisible=Collapsed/False`，可见主动作数始终为 `1`。旧两项结构与危险样式外观测试保留。没有执行命令或业务写入。
-- 当前身份隔离 Release solution：XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；`R02ActionPriorityTests 3/3`。
-- 证据为合成模式状态、fake 上下文、隔离 STA Window 和逻辑 DIP；真实 Playnite、屏幕阅读器、物理 DPI/跨屏、OS IME、presented frame、ETW 与宿主性能仍未验。R00/R01 审计保留 `7 HIGH/4 MEDIUM`，不属于此项修复。
+- 当前分支 `codex/ui-finesse-round2`，提交 `eaee1d20`。没有重建 busy 服务或 DTO；修正 RenderHarness，使忙态按钮位于已加载的屏幕外 STA Window 中，等待原有 120ms 指示器延迟后再检查。
+- Release solution XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；`R02BusyStateTests 4/4`，相邻 `R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState 1/1`。
+- 两主题探针均验证立即隐藏、150ms 后显示、动画未暂停、进度条 `20×2.67 DIP`，按钮 `180→180 DIP`、内容稳定；旧快完成测试验证短任务不闪现 spinner。离屏 PNG 不作动画像素、对比度或真实呈现证据。
+- 未验真实 Playnite/Worker 时序、物理 DPI/跨屏、OS 输入/IME、presented frame、读屏、ETW 或宿主性能；业务假数据和隔离窗口，没有写真实存档/媒体/云端。下一项 R02-03 禁用原因可达，先复核现有说明与测试覆盖。
 
-证据：[R02-01 动作优先级当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md)、[第三轮账本](../design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md)。下一项：R02-02 忙碌宽度稳定，检查现有 busy 样式/命令状态，补实际状态变化、重复提交与失败/取消复位行为。
+证据：[R02-02 忙态宽度当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md)、[第三轮账本](../design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md)。
 
 ## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
 

@@ -1,13 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 第三轮 R02-01 动作优先级当前复核（2026-09-23）
+## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
 
-- `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 只新增行为测试，没有生产 UI 改动。原两项 `R02ActionPriorityTests` 已覆盖 XML 区域主动作数量、Inbox DataTrigger 声明、危险样式资源角色，以及 STA 实例化 Primary/Danger 样式后的 Appearance/几何/背景差异；缺少在生产视图中切换 DataTrigger 输入观察结果的行为证据。
-- 新增测试挂载真实生产 `MediaCenterView` 到隔离 STA Window，使用可通知 fake 上下文和实际模式 ComboBox，往返切换两种模式；绑定值、可见/折叠和恰好一个 Primary 全部逐状态断言。无归类/恢复命令执行。
-- clean commit Release solution build 成功：XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；R02 定向 `3/3`。
-- 真实 Playnite/读屏/物理 DPI/OS 输入/IME/presented frame/ETW/宿主性能未验，受控审计 `7 HIGH/4 MEDIUM` 未消除。下一项 R02-02：盘点并复用真实 busy 状态链，补点击、状态复位、焦点正负行为。
+- `eaee1d20` 只修正 RenderHarness 对已有 busy 模板的采样环境/时序，没有生产忙态服务或 DTO 改动。旧探针的 Grid 未加载，无法启动 `IsLoaded` 门控的 120ms 指示器延迟；现改由屏幕外隔离 STA Window 加载控件，立即态应隐藏、150ms 后检查显示。
+- `R02BusyStateTests 4/4`：重复进入与失败/取消复位；结构样式回归；真实生产按钮宽度、内容、焦点、指示器延迟/消失；快完成不闪现负例。相邻 `R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState 1/1`。
+- Release solution XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。双主题探针均显示逻辑指标稳定：按钮 `180→180 DIP`，文本稳定，`ProgressBar 20×2.67 DIP`、IsVisible/IsIndeterminate 为 true、未暂停。
+- 离屏 PNG 与正常态像素几乎相同，不将其称为 spinner 动画像素或真实呈现证明；真实 Playnite/Worker 时序、读屏、物理 DPI、OS 输入/IME、presented frame、ETW、宿主性能仍未验。下一项 R02-03 禁用原因可达，先检查已有实现和相邻行为证据。
 
-证据：`design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md`。
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md`。
 
 ## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
 

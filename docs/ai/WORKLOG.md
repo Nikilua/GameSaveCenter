@@ -1,13 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
-## 2026-09-23 Round3 R02-01 动作优先级行为复核
+## 2026-09-23 Round3 R02-02 忙碌宽度复核
 
-- 在 `codex/ui-finesse-round2` 的提交 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 增加 `InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView`。审阅原测试后确认：原有结构断言能检查 DataTrigger 声明与区域 Primary 数量，共享资源夹具能实际比较 Primary/Danger 外观，但没有驱动生产视图的模式属性完成切换。
-- 新夹具使用真实 `MediaCenterView`、Inbox 模式 ComboBox、fake 可通知上下文和隔离 STA Window，执行待归类→已忽略→待归类；逐状态检查绑定值、活动按钮显示、非活动按钮折叠、可见动作恰有一个 Primary。没有调用 Apply/Restore/Delete 命令。
-- clean 提交身份 Release `-SkipTests` solution build：XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite `net462`。`R02ActionPriorityTests 3/3`，全通过。
-- 本轮只修改测试；现有命令、危险语义、安全保护、游戏选框、滚动条、有限列表和绑定未动。未启动真实宿主/写真实数据/外发诊断；屏幕阅读器、物理 DPI、IME、presented frame、ETW/宿主性能未验，当前审计 `7 HIGH/4 MEDIUM` 保留。
+- 在 `codex/ui-finesse-round2` 提交 `eaee1d20` 修正 `RunButtonBusyProbe`：增加已加载、屏幕外的 STA Window；记录立即隐藏/150ms 后出现的逻辑状态、按钮宽度/文本、进度条尺寸/可见/暂停状态。旧探针只创建 Grid，导致生产控件 `IsLoaded=false`，原 120ms 定时器不启动。
+- Release `-SkipTests` 构建 XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；RenderHarness 同源码内容构建 0 errors。VSTest 当前身份：`R02BusyStateTests 4/4`，相邻 `MediaBatchCommandsRefreshBusyCanExecuteState 1/1`。
+- Light/Dark 探针都通过：立即不显示，150ms 后逻辑可见且 indeterminate、动画未暂停；进度条 `20×2.67 DIP`，按钮 `180→180 DIP`，文本保持。截图离屏样本的忙态像素差异极弱，不作为动画帧/对比度证明。
+- 本批没有生产 UI 变化或业务命令执行；真实 Playnite/Worker 时序、物理 DPI/OS 输入/IME/presented frame/ETW/宿主性能未验。下一项 R02-03 禁用原因可达，先核对相邻说明与当前测试行为。
 
-证据：[R02-01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md)。下一项：R02-02 忙碌宽度稳定，先查真实 busy 样式和命令状态，再补交互行为。
+证据：[R02-02 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md)。
 
 ## 2026-09-23 Round3 R00/R01 证据校正与 R18-04 复采收口
 
