@@ -9188,3 +9188,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 按类串行执行：R08MotionHotChange `1/1`、R08MotionReverse `2/2`、ProductionShellChromeSource `12/12`、UiFinesseFoundation `9/9`，共 `24/24`、0 fail/skip，各 VSTest exit `0`。真实 WPF SettingsShell 动画关掉后 clock 释放、opacity1/Y0；重新启用不重播。Translate 当前反向 `9.566→9.566→-8`；sidebar `185.333→185.333→209.333→270`。
 - 一次使用 `4b7f0a34` 构建的旧测试程序集时，7 个 source tests 正确因 HEAD `9002668c` 身份不一致而阻止读取；当前身份重建后串行回归全部通过。HotChange/Reverse/ShellChrome TRX 有 8/1/1 段 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`，Foundation 无；根因未知。
 - 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260924.md` 与四个 TRX。没有修改真实 Windows 动画选项/存档/媒体/云端/诊断。下一项 R08-03 离屏与隐藏停机。
+
+# 2026-09-24 main R08-03 离屏与隐藏停机复核
+
+- 当前生产源码身份 `378ceb13` 的 Release solution 构建 XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；Playnite `net462`、测试 `net472`。补充状态断言后的 Playnite 测试项目构建 `0 warnings / 0 errors`，生产代码未改。
+- 原测试确实观测共享 ProgressBar storyboard：可见位移 `>0.5 DIP`；隐藏 Tab 与最小化窗口各等待 `360ms`、位移精确到小数后三位稳定；恢复后运动继续。原测试缺少业务状态不变断言，现于隐藏、暂停等待、恢复各阶段直接确认 `IsIndeterminate == true`。
+- 当前测试程序集按类串行：Offscreen `1/1`、HotChange `1/1`、Reverse `2/2`、ProductionShellChrome `12/12`、UiFinesseFoundation `9/9`，合计 `25/25`、0 failed/skipped，各 VSTest exit `0`。Foundation 首次筛选类名不匹配、实际未执行用例；核实真实类名 `UiFinesseFoundationTests` 后复跑计入上述结果。
+- HotChange/Reverse/ShellChrome TRX 分别含 8/1/1 段 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；Offscreen/Foundation 未见，根因未知，测试仍明确成功。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。没有触碰真实存档、媒体、云端或诊断。
+- 下一项 R08-04 业务完成节奏。用户新增 Settings 窗口截图和此前 Media/Task/Save 布局报告仍待按实际包身份及正常 Playnite 宿主复核；不把隔离 WPF 结果或离屏截图宣称为实机修复。

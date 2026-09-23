@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R08-03 当前复核
+
+- 当前生产源码 identity `378ceb13`。Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；加入测试断言后 Playnite 测试项目重建 0 warnings/errors。
+- R08-03 与相邻动效/壳层 `25/25`：Offscreen `1`、HotChange `1`、Reverse `2`、ShellChrome `12`、Foundation `9`；按类串行，均 0 failed/skipped、VSTest exit `0`。隐藏与最小化时 storyboard 实际暂停、恢复后继续，并在对应各节点断言 `IsIndeterminate` 业务状态一直为 true。
+- HotChange/Reverse/ShellChrome TRX 分别含 8/1/1 段 WPF TextServicesHost COM 清理异常；Offscreen/Foundation 无该异常，根因未知。测试只在隔离 STA WPF、合成数据和逻辑 DIP，不等价正常 Playnite 宿主/真实呈现。
+- [R08-03 当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20260924.md) 与五份 TRX。下一项 R08-04 业务完成节奏。
+
 ## 2026-09-24 main：R08-02 当前复核
 
 - 当前身份 `9002668cafa6fe1a39272cf2b998ce95d752418e` Release 重建：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。

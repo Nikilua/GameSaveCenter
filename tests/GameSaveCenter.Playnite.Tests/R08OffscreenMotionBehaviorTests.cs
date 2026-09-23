@@ -72,26 +72,32 @@ public sealed class R08OffscreenMotionBehaviorTests
                 tabs.SelectedIndex = 1;
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
                 Assert.True(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
+                Assert.True(progress.IsIndeterminate, "hiding the tab must not change the busy state");
                 var hiddenStart = translate.X;
                 PumpDispatcher(TimeSpan.FromMilliseconds(360));
                 Assert.Equal(hiddenStart, translate.X, 3);
+                Assert.True(progress.IsIndeterminate, "pausing the hidden animation must preserve the busy state");
 
                 tabs.SelectedIndex = 0;
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
                 Assert.False(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
+                Assert.True(progress.IsIndeterminate, "restoring the tab must preserve the busy state");
                 var restoredStart = translate.X;
                 Assert.True(PumpDispatcherUntil(() => Math.Abs(translate.X - restoredStart) > 0.5, TimeSpan.FromMilliseconds(600)), "spinner did not resume after the tab became visible");
 
                 window.WindowState = WindowState.Minimized;
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
                 Assert.True(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
+                Assert.True(progress.IsIndeterminate, "minimizing the window must not change the busy state");
                 var minimizedStart = translate.X;
                 PumpDispatcher(TimeSpan.FromMilliseconds(360));
                 Assert.Equal(minimizedStart, translate.X, 3);
+                Assert.True(progress.IsIndeterminate, "pausing the minimized animation must preserve the busy state");
 
                 window.WindowState = WindowState.Normal;
                 PumpDispatcher(TimeSpan.FromMilliseconds(100));
                 Assert.False(IndeterminateProgressBehavior.GetIsAnimationPaused(progress));
+                Assert.True(progress.IsIndeterminate, "restoring the window must preserve the busy state");
                 var unminimizedStart = translate.X;
                 Assert.True(PumpDispatcherUntil(() => Math.Abs(translate.X - unminimizedStart) > 0.5, TimeSpan.FromMilliseconds(600)), "spinner did not resume after the window was restored");
             }

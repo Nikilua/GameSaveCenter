@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R08-03 当前复核
+
+- 当前 production identity `378ceb13`；Release solution XAML `24/24`、0 errors，保留两条既有 CS8602 warnings。补充行为断言后 Playnite 测试项目重建 0 warnings/errors。
+- 五类串行 `25/25`、0 failed/skipped、VSTest exit `0`。原 R08-03 夹具已实际测量可见移动、隐藏 Tab/最小化时 360ms 稳定和恢复移动，但未直接断言业务状态。本次在隐藏、暂停等待及恢复节点新增 `IsIndeterminate == true`，确认视觉时钟暂停不会伪造业务完成。
+- HotChange/Reverse/ShellChrome 有 8/1/1 段 TextServicesHost COM cleanup 异常输出，Offscreen/Foundation 没有；原因未知。隔离 STA WPF/逻辑 DIP，不宣称真实 Playnite、物理呈现或宿主性能通过。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。下一项 R08-04 业务完成节奏。
+
 ## 2026-09-24 main：R08-02 当前复核
 
 - 当前 main `9002668c` Release：XAML `24/24`、0 errors，两条既有 CS8602 warnings。测试类串行 HotChange `1/1`、Reverse `2/2`、ShellChrome `12/12`、Foundation `9/9`，共 `24/24`，VSTest exit `0`。

@@ -1,10 +1,12 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-24 当前接续：R08-03
+## 2026-09-24 当前接续：R08-04
 
-R08-02 当前 main Release 已复核，源码/测试身份 `9002668cafa6fe1a39272cf2b998ce95d752418e`：XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。按测试类串行 HotChange/Reverse/ShellChrome/Foundation `1/1 + 2/2 + 12/12 + 9/9 = 24/24`，全部 exit `0`。设置页关闭动画选项后 entrance clocks 清除、opacity/Y 归中性值，再开启不重放；侧栏反向/卸载回归通过。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260924.md`。
+R08-03 当前 main 生产源码 identity `378ceb13` 已复核：Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；测试项目补充行为断言后重建 0/0。Offscreen `1/1`、HotChange `1/1`、Reverse `2/2`、ProductionShellChrome `12/12`、UiFinesseFoundation `9/9` 按类串行，共 `25/25`、均 exit `0`。隐藏 Tab 与最小化窗口下实际 ProgressBar storyboard 暂停，恢复后运动继续；在暂停各阶段 `IsIndeterminate` 仍为 true。生产实现未改。
 
-下一项 R08-03 离屏与隐藏停机。前次 `4b7f0a34` test assembly 被源码身份 gate 拒绝后已当前 HEAD 重建；三份 WPF TRX 有 10 段 TextServicesHost 清理 COM 异常，根因未知、VSTest 均 exit `0`。系统动画偏好、正常 Playnite host、物理 DPI/跨屏、UIA/呈现帧仍未验。用户设置截图差异另见 `SETTINGS-HEADER-CURRENT-MAIN-RECHECK-20260924.md`，package identity/正常宿主窗口仍待对照。
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。HotChange/Reverse/ShellChrome TRX 仍有 8/1/1 段 WPF TextServicesHost `InvalidComObjectException` 清理输出，Offscreen/Foundation 无，根因未知。验证为合成内容、隔离 STA WPF 与逻辑 DIP；正常 Playnite 页面/嵌入窗口、物理 DPI/跨屏、UIA、呈现帧、ETW/宿主性能仍未验。
+
+下一项：R08-04 业务完成节奏，先复核现有服务/DTO与行为测试覆盖再实施。独立跟进用户所报 Media Inbox、Task Center、Save Center 和 Settings 窗口化布局问题；Settings 最新截图与当前受控几何仍有差异，当前包 identity/正常 Playnite host 未核对，隔离 host 曾被 CEF `platform_channel 0x5` 阻挡。不得据此宣称实机已修复，不绕过限制。
 
 ## 2026-09-24 当前接续：R08-02
 
