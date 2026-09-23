@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main 接续：R18-04 当前身份与用例组成复核
+
+- 当前源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872`。隔离 Release 输出 XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite 目标 `net462`。
+- R18 专测 `1/1`；四类关联测试逐个独立 testhost 运行并核对 TRX：Accumulator `6/6`、Media Window Anchor `10/10`、Inbox Geometry `3/3`、Selection Anchor `4/4`，合计 `23/23`，0 失败、0 跳过；五个进程均 exit `0`。精确方法与覆盖类型见 R18-04 证据。
+- 当前复采 Task 2k/10k/20k 最大容器/可见行为 `9/7`；Media Inbox 为 `14/14/14`，10k/20k 后端时 UI 窗口仍限 `2,000`。Task 本轮最大滚动时间 `69.573/39.230/31.008 ms`；Media `0.034/0.036/0.917 ms`，20k 的 0.917 是完整八点样本中的单次观察，保留而未筛除。另有独立复采各档约 `0.03 ms`，不能合并或冒充同一轮。
+- R18 专测/锚点 testhost TRX 分别记录 6/2 行 WPF `TextServicesHost.OnUnregisterTextStore` `InvalidComObjectException` 清理输出；相关测试仍全部通过、exit `0`，根因未明。其余三类本次没有该异常文本。
+- 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。下一项先完成已生成的 R00-01/02、R00-05 当前身份文档及 freshness 同步；之后继续依赖已满足的 Q/R。真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、IME、presented frame、ETW、宿主性能仍未验。
+
 ## 2026-09-23 main 接续与 R23-03 代表页面终审
 
 - 当前代码验证身份为 `7a4ba2a94da870c832e59f3ee025f9e34325d175`；该身份相较于 R23-02 代码提交 `a18cb43e` 仅有文档更新。八个生产页面入口均存在：Overview、Save、Media、Trainer、Task、Maintenance、`Settings/GameSaveCenterSettingsView.xaml` 和 Acrylic shell。

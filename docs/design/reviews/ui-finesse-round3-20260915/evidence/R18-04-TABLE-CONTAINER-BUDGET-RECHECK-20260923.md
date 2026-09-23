@@ -114,6 +114,25 @@ Media 20k 最新一轮包含 0.652 ms 单样本，故本轮最大值不能写成
 
 本次仍只使用合成 DTO、生产 WPF 视图、隔离 STA Window 和逻辑 DIP。没有真实 Playnite/package-host 呈现、物理 DPI/跨屏、UIA/读屏、IME、DWM presented frame、ETW 或宿主性能证据；未触碰真实存档、媒体、用户云端或诊断目录。Demo 原目录不可用，沿用恢复的生产基线。
 
+## 当前 main HEAD `d752424e` 复核（2026-09-23）
+
+在 `d752424ee46c861e080a8e57b01f90f19c3a7872` 的干净源码身份上，使用隔离 Release 输出 `.tmp/r00-current-refresh` 运行 R18 专测和四个关联类，分别生成本地 TRX。现有精确用例表与本轮 TRX 完全吻合：专测 `1/1/0/0`；关联类 `MediaPageAccumulator 6/6`、`MediaWindowAnchorContract 10/10`、`MediaInboxGeometry 3/3`、`R07SelectionAnchor 4/4`，合计 `23/23`，0 失败、0 跳过；五个 VSTest 进程均 exit `0`。理论用例按 TRX 展开为三个 backend-scale 实例（200/200、2,000/2,000、10,000/2,000）。专测身份断言通过，Playnite 目标为 `net462`；当前 Release 构建 XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。
+
+| 页面 | 后端 / UI 项数 | 视口 / 最大已实现 / 最大可见 | 8 次滚动原始样本 (ms) | p95 / 最大 (ms) |
+| --- | --- | --- | --- | ---: |
+| Task | 2k / 2k | 7 / 9 / 7 | `3.631, 69.573, 17.625, 16.082, 17.977, 39.291, 15.268, 19.565` | `69.573 / 69.573` |
+| Media Inbox | 2k / 2k | 14 / 14 / 14 | `0.034, 0.028, 0.024, 0.027, 0.021, 0.028, 0.026, 0.022` | `0.034 / 0.034` |
+| Task | 10k / 10k | 7 / 9 / 7 | `0.727, 25.585, 17.856, 16.052, 15.174, 39.230, 16.593, 22.417` | `39.230 / 39.230` |
+| Media Inbox | 10k / 2k | 14 / 14 / 14 | `0.027, 0.021, 0.036, 0.022, 0.024, 0.020, 0.020, 0.022` | `0.036 / 0.036` |
+| Task | 20k / 20k | 7 / 9 / 7 | `0.556, 17.481, 31.008, 22.828, 14.180, 22.754, 17.693, 19.288` | `31.008 / 31.008` |
+| Media Inbox | 20k / 2k | 14 / 14 / 14 | `0.025, 0.021, 0.917, 0.077, 0.035, 0.023, 0.025, 0.030` | `0.917 / 0.917` |
+
+容器边界与旧复核一致：Task 三档最大已实现行为 `9`、最大可见行为 `7`；Media Inbox 为 `14/14/14`，且后端 10k/20k 时 UI 缓存仍为 `2,000`。Media 20k 本轮有一个 `0.917 ms` 样本，其余七次为 `0.021–0.077 ms`，因此完整报告本轮最大值为 `0.917 ms`；更早独立复采出现三档约 `0.03 ms` 的最大值，均作为各自原始样本保留，不以重跑筛除慢值或把 Stopwatch 布局更新时间解释为真实宿主帧延迟。八点最近秩 p95 与每组最大值相同。
+
+本轮 R18 专测 testhost 的 TRX 捕获到 `TextServicesHost.OnUnregisterTextStore` / `InvalidComObjectException` 清理输出 6 次，锚点类捕获 2 次；其余三个关联类未捕获该异常文本。对应计数全部通过，VSTest 退出码均为 `0`；噪声发生于 WPF testhost 清理阶段，根因未查明，不能据此改记为失败。`.tmp/r00-current-refresh/r18-verify` 下的 TRX 是本地临时文件，本节保留计数、用例表和完整样本，临时目录完成同步后清理。
+
+本轮继续使用合成 DTO、生产 WPF 视图、隔离 STA Window 和逻辑 DIP；不证明真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、IME、DWM presented frame、ETW 或宿主性能。没有触碰真实存档、媒体、用户云端或诊断目录。
+
 ## 当前 main HEAD `922501e7` 精确复核（2026-09-23）
 
 在 main `922501e71c9b77f5c7d227edb4aa42ebe9308d78` 新建隔离 Release 输出后，重新执行 R18 专测及四个关联类，每类使用独立 VSTest 进程并保存本机 TRX。XAML 检查 `24/24`；Release solution `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite 目标仍为 `net462`。R18 专测中的程序集身份检查通过。

@@ -9078,3 +9078,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 真实 Playnite 使用合成非空 profile 和当前安装候选启动；09:13 后没有新的 `Column key count`/`Sort contract count` 异常。当前输出在 09:16:15 生成当前 commit 的 summary/manifest，Embedded Dashboard/Settings 捕获存在；runner 仍因 UIA 侧栏定位失败而 partial，Controlled host/专用窗口未验。
 - Computer Use helper 两次按技能规则重试均因“系统找不到指定的路径”失败，没有发出点击；没有把该失败改写成产品 UIA 结论。隔离 Playnite 进程随后需清理，历史日志和当前证据目录保留引用。
 - 账本 R23-04 已同步为“已满足，待宿主环境验证”；新增证据 `evidence/R23-04-TASK-GRID-HOST-FIX-20260922.md`。下一可执行任务：R23-05 shell/media 五项几何失败小批量；当前阶段不合并 main。
+# 2026-09-23 main R18-04 复采与 23 项组成核对
+
+- 绑定源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872`，复用当前生产 DataGrid、`MediaPageAccumulator` 和隔离 Release 输出；Playnite `net462`，XAML `24/24`，solution 0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。
+- R18 专测 `1/1`；关联行为类逐个 VSTest：`MediaPageAccumulatorTests 6/6`、`MediaWindowAnchorContractTests 10/10`、`MediaInboxGeometryTests 3/3`、`R07SelectionAnchorBehaviorTests 4/4`，TRX 合计 `23/23`，0 失败/0 跳过，五个进程 exit 0。精确方法/理论参数和行为覆盖性质同步到 R18-04 证据。
+- 当前 Task 2k/10k/20k 最大实现/可见行为均为 `9/7`；Media Inbox `14/14/14`，UI 窗口仍限 `2,000`。本轮滚动最大 Task 为 `69.573/39.230/31.008 ms`、Media 为 `0.034/0.036/0.917 ms`；保留 20k Media 的单次 0.917 ms，不用再次采样去除。先前独立约 0.03 ms 结果继续作为单独一轮事实。
+- R18/Anchor TRX 分别包含 6/2 行 WPF `TextServicesHost.OnUnregisterTextStore` `InvalidComObjectException` 清理输出，测试通过并 exit 0，根因未明；其他三类本次无该异常文本。
+- 仅受控合成数据与 STA WPF/逻辑 DIP；没有真实 Playnite、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能证据；没有触碰真实存档/媒体/云端。下一项：完成 R00-01/02、R00-05 freshness 文档收口。
