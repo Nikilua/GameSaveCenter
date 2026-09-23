@@ -32,6 +32,7 @@ public sealed class R07ResizeStressBehaviorTests
     {
         Exception? exception = null;
         var samples = new List<ResizeSample>();
+        var shellSizeChangedCount = 0;
 
         var thread = new Thread(() =>
         {
@@ -39,6 +40,7 @@ public sealed class R07ResizeStressBehaviorTests
             try
             {
                 var shell = new AcrylicProductionShellView();
+                shell.SizeChanged += (_, __) => shellSizeChangedCount++;
                 typeof(AcrylicProductionShellView)
                     .GetMethod("CreatePages", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(shell, null);
@@ -82,7 +84,7 @@ public sealed class R07ResizeStressBehaviorTests
                     Opacity = 0.01
                 };
                 window.Show();
-                ApplySize(window, shell, 1366, 900);
+                ApplySize(window, 1366, 900);
                 if (!taskView.TaskDetailScrollViewerElement.IsVisible)
                     throw new InvalidOperationException("selected task detail was not visible at the wide baseline.");
 
@@ -99,9 +101,13 @@ public sealed class R07ResizeStressBehaviorTests
                     (width: 1366d, height: 900d, label: "restored")
                 })
                 {
-                    ApplySize(window, shell, size.width, size.height);
+                    ApplySize(window, size.width, size.height);
                     samples.Add(new ResizeSample(
                         size.label,
+                        size.width,
+                        size.height,
+                        shell.ActualWidth,
+                        shell.ActualHeight,
                         taskView.TaskDetailScrollViewerElement.Visibility,
                         pickerOverlay.Visibility,
                         shell.GameSearchBoxForFocus.IsKeyboardFocusWithin,
@@ -112,8 +118,16 @@ public sealed class R07ResizeStressBehaviorTests
                         pickerPanel.MaxHeight));
                 }
 
+                var wideSample = samples.Single(sample => sample.Label == "wide");
+                var shellWidthInset = wideSample.RequestedWidth - wideSample.ShellActualWidth;
+                var shellHeightInset = wideSample.RequestedHeight - wideSample.ShellActualHeight;
+                Assert.InRange(shellWidthInset, 0, 32);
+                Assert.InRange(shellHeightInset, 0, 32);
+
                 Assert.All(samples, sample =>
                 {
+                    Assert.InRange(Math.Abs((sample.RequestedWidth - sample.ShellActualWidth) - shellWidthInset), 0, 1);
+                    Assert.InRange(Math.Abs((sample.RequestedHeight - sample.ShellActualHeight) - shellHeightInset), 0, 1);
                     Assert.Equal(Visibility.Visible, sample.DetailVisibility);
                     Assert.Equal(Visibility.Visible, sample.PickerVisibility);
                     Assert.True(sample.SearchHasFocus, $"search focus was lost during {sample.Label}");
@@ -124,9 +138,18 @@ public sealed class R07ResizeStressBehaviorTests
                     Assert.True(IsFiniteOrPositiveInfinity(sample.PickerMaxHeight), $"picker MaxHeight became invalid during {sample.Label}: {sample.PickerMaxHeight}");
                     if (sample.Label == "wide-again" || sample.Label == "restored")
                         Assert.True(double.IsPositiveInfinity(sample.DetailMaxHeight), $"wide detail retained a finite MaxHeight during {sample.Label}: {sample.DetailMaxHeight}");
+                    if (sample.Label == "narrow" || sample.Label == "short")
+                        Assert.True(sample.DetailMaxHeight > 0 && !double.IsPositiveInfinity(sample.DetailMaxHeight), $"compact detail did not receive its finite height budget during {sample.Label}: {sample.DetailMaxHeight}");
                 });
+
+                Assert.True(shellSizeChangedCount >= 4, $"window resize did not reach the production shell SizeChanged route enough times: {shellSizeChangedCount}");
+                Assert.True(samples.Single(sample => sample.Label == "narrow").PickerMaxHeight < samples.Single(sample => sample.Label == "wide").PickerMaxHeight,
+                    "picker height budget did not decrease when the window narrowed");
+                Assert.True(samples.Single(sample => sample.Label == "short").PickerMaxHeight < samples.Single(sample => sample.Label == "narrow").PickerMaxHeight,
+                    "picker height budget did not decrease when the window became shorter");
                 foreach (var sample in samples)
                     output.WriteLine(sample.ToString());
+                output.WriteLine($"shellSizeChangedCount={shellSizeChangedCount}");
             }
             catch (Exception caught)
             {
@@ -145,19 +168,17 @@ public sealed class R07ResizeStressBehaviorTests
         Assert.Null(exception);
     }
 
-    private static void ApplySize(Window window, AcrylicProductionShellView shell, double width, double height)
+    private static void ApplySize(Window window, double width, double height)
     {
         window.Width = width;
         window.Height = height;
-        FlushLayout(window);
-        shell.ApplyResponsiveLayout(width, height);
         FlushLayout(window);
     }
 
     private static void FlushLayout(Window window)
     {
         window.UpdateLayout();
-        window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
+        window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
         window.UpdateLayout();
     }
 
@@ -195,6 +216,10 @@ public sealed class R07ResizeStressBehaviorTests
     {
         public ResizeSample(
             string label,
+            double requestedWidth,
+            double requestedHeight,
+            double shellActualWidth,
+            double shellActualHeight,
             Visibility detailVisibility,
             Visibility pickerVisibility,
             bool searchHasFocus,
@@ -205,6 +230,10 @@ public sealed class R07ResizeStressBehaviorTests
             double pickerMaxHeight)
         {
             Label = label;
+            RequestedWidth = requestedWidth;
+            RequestedHeight = requestedHeight;
+            ShellActualWidth = shellActualWidth;
+            ShellActualHeight = shellActualHeight;
             DetailVisibility = detailVisibility;
             PickerVisibility = pickerVisibility;
             SearchHasFocus = searchHasFocus;
@@ -216,6 +245,10 @@ public sealed class R07ResizeStressBehaviorTests
         }
 
         public string Label { get; }
+        public double RequestedWidth { get; }
+        public double RequestedHeight { get; }
+        public double ShellActualWidth { get; }
+        public double ShellActualHeight { get; }
         public Visibility DetailVisibility { get; }
         public Visibility PickerVisibility { get; }
         public bool SearchHasFocus { get; }
@@ -226,7 +259,7 @@ public sealed class R07ResizeStressBehaviorTests
         public double PickerMaxHeight { get; }
 
         public override string ToString()
-            => $"{Label}: detail={DetailVisibility}; picker={PickerVisibility}; focus={SearchHasFocus}; "
+            => $"{Label}: shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; detail={DetailVisibility}; picker={PickerVisibility}; focus={SearchHasFocus}; "
                 + $"gridActual={TaskGridActualHeight:0.###}; gridMax={TaskGridMaxHeight:0.###}; "
                 + $"detailMax={DetailMaxHeight:0.###}; pickerActual={PickerActualHeight:0.###}; pickerMax={PickerMaxHeight:0.###}";
     }

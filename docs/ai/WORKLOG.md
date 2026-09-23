@@ -9170,3 +9170,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release 当前测试结果：R07FineScroll `2/2`、R07ScrollOwnership `2/2`、MediaInboxGeometry `3/3`、ResponsiveLayoutCoordinator `5/5`、TaskCenterViewResponsive `7/7`；共 `19/19`、0 fail/skip、VSTest exit `0`。12×`-30` offset `0..36`、反向 +120 为 `33→30→27`、最大值 `154/154`；20 个合成 wheel 的 LayoutUpdated `17`、末端无效 5 个事件新增布局 `0`、可见行 `6–9`。嵌套 -360 外层 `32→80/432`、内层 `628` 保持、单次 Layout `1`、可见容器 `2`。
 - TRX 未见 InvalidComObject 清理异常。合成 routed wheel、实际 DataGrid 内部 ScrollViewer、隔离 STA WPF/逻辑 DIP；不是触控板设备/OS 输入、Playnite host、物理 DPI/跨屏、UIA/读屏、presented frame、ETW 或宿主性能证据。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20260924.md` 与 TRX。下一项 R07-08 当前 main resize 压力复核。
+# 2026-09-24 main R07-08 当前复核
+
+- 当前 production identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`。Release solution 构建 XAML `24/24`、0 errors，保留 `MediaCenterView.xaml.cs:703` 两条既有 `CS8602` warning；Playnite 测试项目按最终测试源重建为 0 warning/error。
+- 更新 `R07ResizeStressBehaviorTests`，去掉直接调用 `ApplyResponsiveLayout`，改为只调整隔离外层 Window，让生产 shell `SizeChanged` 事件驱动布局。窗口 client inset 稳定约 `13.333 DIP`；宽/窄/短/宽/恢复序列的任务详情、选择器、搜索焦点持续可见，紧凑详情 MaxHeight `160`、宽态 `∞`，选择器高度预算按缩小窗口递减，SizeChanged 计数 `7`。
+- resize + ResponsiveCoordinator `5` + Task responsive `7` + details breakpoint `1` + scroll ownership `2` + Media Inbox geometry `3` + fine scroll `2`，共 `21/21`、0 failed/skipped，VSTest exit `0`。TRX 收尾有 4 段 `TextServicesHost.OnUnregisterTextStore` 和 2 段 `TextServicesContext.StopTransitoryExtension` `InvalidComObjectException`，root cause unknown。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20260924.md` 与 `.trx`。验证边界为隔离 STA WPF/合成数据/逻辑 DIP；未验正常 Playnite、物理拖窗/跨屏 DPI、UIA/读屏、最终帧、ETW 或宿主性能；没有改动真实数据。下一项 R08-01 中途反向连续当前 main 复核。

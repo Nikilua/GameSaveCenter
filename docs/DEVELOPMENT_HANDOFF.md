@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：R07-08
+
+当前 `main` 为 `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`。resize 压力序列通过当前受控验收：Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；最终测试项目 0 warning/error；resize 和相邻响应布局/Task/滚动/Media 几何行为 `21/21`。测试从外层 Window 尺寸事件实际进入 production shell `SizeChanged`，不直接调用布局方法。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20260924.md`。TRX 有 6 段 WPF 文本服务 `InvalidComObjectException` 收尾日志，根因未知，VSTest exit `0`。
+
+下一项 R08-01 当前 main 中途反向连续复核。隔离 STA WPF/合成任务/逻辑 DIP 不代表 Playnite 正常宿主、物理窗口拖动/跨屏 DPI、真实 UIA、呈现帧或宿主性能。设置页几何代码已有受控 Light/Dark 行为证据，但用户最新截图的加载包身份和正常 Playnite 宿主布局仍未核对，CEF `platform_channel 0x5` 先前阻挡隔离 host；继续保留该问题与 Media/Task/Save 截图边界，不宣称真实用户环境已修复。
+
 ## 2026-09-24 当前接续：R07-07
 
 当前 `main` 为 `d46fc76e8da76814a6f4870880f98f153c2581cd`。由于 98e8 后共享 WPF 生产资源和 DataGrid/Task 布局变化，已按当前 Release 构建复跑细滚动/滚动所有权/Media geometry/响应断点/Task 页面共 `19/19`，0 fail/skip；XAML `24/24`、0 errors，保留两条既有 `CS8602` warning。重点指标：20 个 -30/+120 等 routed wheel 产生 `17` 次 LayoutUpdated，末端 5 个 no-op 产生 0 布局增量，行容器 `6–9`；嵌套 -360 的单次边界传播 layout `1`。证据在 `R07-07-CURRENT-MAIN-RECHECK-20260924.md`。

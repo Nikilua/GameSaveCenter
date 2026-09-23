@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R07-08 当前复核
+
+- 当前 production/source identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`。Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`；更新测试项目构建 `0 warning/error`。
+- R07-08 resize 与相邻 responsive/Task/scroll/Media geometry 行为 `21/21`、0 failed/skipped、exit `0`。测试经外层 `Window.Width/Height` 触发真实 shell `SizeChanged`，详情/选择器/焦点保持，紧凑详情预算为 `160 DIP`、宽态恢复 `∞`，选择器预算随窗口缩小。TRX 收尾有 6 段 WPF 文本服务 COM 清理异常日志，原因未知。
+- [R07-08 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20260924.md) 与 TRX。隔离 STA WPF、合成任务及逻辑 DIP 不表示正常 Playnite、物理拖动/跨屏 DPI、实际呈现/性能通过。下一项 R08-01 当前 main 中途反向连续复核。
+
 ## 2026-09-24 main：R07-07 当前复核
 
 - 当前生产身份 `d46fc76e8da76814a6f4870880f98f153c2581cd`。Release solution XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warning；Playnite `net462`、测试 `net472`。

@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R07-08 当前复核
+
+- 当前 production identity `0c0869a2a95a9e949af5dc257bf7c7b4da2f80b6`；Release XAML `24/24`、0 errors，保留两条既有 CS8602 warning；Playnite `net462`，测试 `net472`。
+- 由外层隔离 Window 尺寸变化触发生产 shell `SizeChanged` 的 resize 行为及相邻回归 `21/21`。详情/选择器/焦点保持，详情限制在紧凑窗口为 `160 DIP` 并在宽态解除，选择器 MaxHeight 随窗口缩小。TRX 记录 6 段文本服务 COM 清理噪声，测试明确成功、根因未知。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20260924.md`/`.trx`。未验正常 Playnite、物理 resize/DPI、最终呈现、UIA、ETW 或宿主性能。下一项 R08-01 当前 main 中途反向连续。
+
 ## 2026-09-24 main：R07-07 当前复核
 
 - 当前代码身份 `d46fc76e8da76814a6f4870880f98f153c2581cd`；Release XAML `24/24`、0 errors，两条既有 `CS8602` warning；Playnite `net462`。
