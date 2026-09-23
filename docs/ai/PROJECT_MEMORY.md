@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R18-04 表格容器预算当前复核（2026-09-23）
+
+- `f175c57d` 上复用 `64843642` 的生产有限视口实现，无生产代码变更。Task 2k/10k/20k 均 `maxRealized=9/maxVisible=7`；Media 当前共享模板与 `1280×720 DIP` 受控窗口为 `viewport/maxRealized/maxVisible=14/14/14`，UI 窗口仍受 `MediaPageAccumulator` 限制为 `2,000`。
+- R18 专测 `1/1`；媒体回归类 `MediaPageAccumulator 6/6`、`MediaWindowAnchorContract 10/10`、`MediaInboxGeometry 3/3`、`R07SelectionAnchor 4/4`，合计 `23/23`。Task 最大滚动 `60.790/30.387/38.595 ms`，Media 最大滚动 `0.026/0.027/0.031 ms`；隔离 Release `0 errors/2` 条既有 CS8602 warning，XAML `24/24`。
+- WPF TextServicesHost 清理输出有 `InvalidComObjectException`，但相关 xUnit 结果及进程退出码明确成功；根因未确认。受控 STA/逻辑 DIP 不等价真实 Playnite 呈现、物理 DPI、UIA/IME、ETW 或宿主性能。
+- 下一项按用户优先级对 R00/R01 做当前身份和证据边界复核，之后推进独立 Q/R 小批。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。
+
 ## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
 
 - `93b115f4` 只记录 `e54d514e`/`18c5073f` 现有缩略图 loader/control 的复测，没有新增生产代码；120 个合成请求分 10 个窗口完成，最多 3 路解码，96 项缓存封顶，活动每轮归零，取消和迟到失败替换均有行为证据。

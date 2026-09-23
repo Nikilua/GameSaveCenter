@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R18-04 表格容器预算当前复核
+
+- 在 D 盘 `D:\workplace\github\GameSaveCenter`、分支 `codex/ui-finesse-round2`、当前构建身份 `f175c57dda95f6eee9031f0363349189c4e47bb9` 复核已有 `64843642` 实现；未改生产代码，也未从 main 覆盖当前实现。
+- 隔离 Release solution 构建 `0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。R18 专测 `1/1`；分页/锚点/几何/选择行为按类分别为 `6/6 + 10/10 + 3/3 + 4/4 = 23/23`。
+- 当前 2k/10k/20k Task 均 `9` 个最大已实现容器、`7` 个视口/可见行，滚动最大 `60.790/30.387/38.595 ms`。Media UI 窗口保持 2,000 项；当前共享模板与 `1280×720 DIP` 视口为 14 行，最大容器/可见 `14/14`，滚动最大 `0.026/0.027/0.031 ms`。记录的逐类、逐样本结果见证据。
+- R18 与媒体锚点 WPF testhost 关闭阶段出现 TextServicesHost `InvalidComObjectException` 调试输出；xUnit 测试通过且 dotnet 退出码为 0，根因未确认。仅为合成数据/隔离 STA/逻辑 DIP，不宣称真实 Playnite、物理屏幕或 ETW 性能通过；Demo 原目录不可用。
+
+证据：[R18-04 当前表格容器复核](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)。下一项：按用户优先级复核和校正 R00/R01 当前证据身份与待验边界，再推进依赖已满足的 Q/R 小批。
+
 ## 2026-09-23 Round3 R18-03 缩略图滚动预算定向复核
 
 - 本批在 D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2`、`93b115f4` 上复用 `e54d514e`/`18c5073f` 的缩略图 loader/control，没有新增生产代码。
