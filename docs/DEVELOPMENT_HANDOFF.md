@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：R07-06
+
+当前生产源码身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`。状态横幅与相邻空态/Task/详情/滚动当前行为 `17/17`，Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；改进的 Playnite 测试项目构建 0 warning/error。用 WPF AutomationPeer `IInvokeProvider` 调用实际按钮后，计数型 fake 验证重试/安全恢复命令各执行一次；Stale 横幅没有泛化关闭按钮，Task 成功状态按绑定收起。TRX 有 9 段 TextServicesHost/TextStore COM 清理噪声，根因未知、exit 0。
+
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20260924.md`。下一项 R07-07 当前 main 触控板小增量复核；先比较实现和上一轮提交，确认变化关联后再运行现有行为/滚动测量。不可将隔离 WPF AutomationPeer 当成 Playnite/系统 UIA，不把逻辑 DIP 或 Stopwatch 推断为真实设备输入、物理跨屏/最终帧/宿主性能。正常 Playnite host 与用户包 identity 仍未核实；不操作真实存档、媒体、云端或诊断。
+
 ## 2026-09-24 当前接续
 
 当前 `main` 与 `origin/main` 起点为 `ec9b0a21`；R07-05 在同身份 Release 隔离构建后复跑断点和相邻回归 `17/17`、0 failed/skip，XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warning。旧身份测试程序集被 checkout 身份门禁拦下 4 个源码读取用例，重建后通过。TRX 收尾的一条 WPF TextServicesContext `InvalidComObjectException` 如实记录，原因未知、VSTest exit 0。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20260924.md`。

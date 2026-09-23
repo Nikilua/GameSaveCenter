@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R07-06 当前复核
+
+- 生产源码身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`；Release XAML `24/24`、0 errors，已有两条 `MediaCenterView.xaml.cs:703 CS8602` warning；更新测试项目 0 warning/error。
+- R07-06 + 相邻四类行为共 `17/17`。WPF 实例按钮通过 AutomationPeer `IInvokeProvider` 实际调用各自 fake command 一次；错误无数据态仍显示重试 presenter；Task 失败/加载及恢复转换、表格 viewport、stale 唯一重试按钮与维护安全模式恢复动作均有行为断言。
+- TRX shutdown 有 9 段 TextServicesHost/TextStore `InvalidComObjectException`，根因未知；exit `0`。未启动正常 Playnite、未做主题图像矩阵、物理 DPI/跨屏/OS 输入/最终帧/ETW/宿主性能，未接触真实数据。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20260924.md`。下一项 R07-07 当前 main 复核。
+
 ## 2026-09-24 main：R07-05 当前复核
 
 - 当前源码/测试构建身份 `ec9b0a2107d1fe6d091043d0f99f2e9378e78b7c`；Release solution XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。

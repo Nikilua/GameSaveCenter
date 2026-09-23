@@ -9155,3 +9155,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 checkout 身份 `ec9b0a21` 下，R07-05 与相邻断点/滚动/Task/详情行为复跑 `17/17`、0 failed/skip。一次复用 `8e4f3194` 的旧程序集被身份门禁拒绝 4 个源码读取用例，按当前 checkout 重建后成功；该拒绝不是产品行为失败。
 - TRX 收尾含一次 WPF TextServicesContext `InvalidComObjectException`（`StopTransitoryExtension`/`Uninitialize`），根因未知，VSTest exit `0`。用例使用合成 DTO/fake、隔离 STA WPF、逻辑 DIP；未启动正常 Playnite，也未碰真实数据。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20260924.md`、同名 `.trx`。下一项 R07-06 当前 main 状态横幅预算复核。
+
+## 2026-09-24 main R07-06 当前复核
+
+- 源码提交身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`。Release solution XAML `24/24`、0 errors，保留 `MediaCenterView.xaml.cs:703` 两条既有 `CS8602` warning；新增断言后的 Playnite 测试项目 Release/net472 重建 0 warning/error，生产 Playnite 为 net462。
+- 扩展现有 `R07StatusBannerBudgetBehaviorTests`：按钮只断言 Command 引用不足以验收交互，于是用 `IInvokeProvider.Invoke` 激活实际实例按钮并计数验证 Task 重试、错误 presenter 重试、Save 重试、Maintenance 重试与安全模式恢复各执行一次。Task fake 原 `NotifyState` 漏发 loading/failed 属性通知，导致恢复后横幅仍显示；补齐通知后按状态可见→收起。Stale banner / safe mode 分别断言只有一个明确按钮。
+- 最终当前隔离回归：R07StatusBanner `4/4`、R06EmptyState `2/2`、TaskResponsive `7/7`、R06Details `2/2`、R07Scroll `2/2`，共 `17/17`、0 failed/skip、VSTest exit `0`。首次全组因 fake 缺少通知而有 4 个新断言失败，修正 fixture 后完整重建复跑通过。
+- TRX 收尾 9 段 WPF TextServicesHost/TextStore `InvalidComObjectException`，root cause unknown，测试结果仍明确成功。受控 STA WPF/合成 DTO/fake/DIP，不宣称真实 Playnite UIA、宿主拖窗、主题截图矩阵、物理 DPI、设备输入、呈现帧、ETW 或宿主性能，未写真实数据。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20260924.md` 与 TRX。下一项 R07-07 当前 main 触控板增量复核。

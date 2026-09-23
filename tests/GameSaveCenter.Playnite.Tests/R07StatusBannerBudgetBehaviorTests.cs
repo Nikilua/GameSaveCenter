@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -53,18 +55,29 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                 var queue = (Border)view.FindName("TaskQueuePanel")!;
                 var retry = FindVisualChildren<WpfButton>(banner).Single(button => Equals(button.Content, "重试"));
 
+                Assert.Single(FindVisualChildren<WpfButton>(banner));
                 Assert.Equal(Visibility.Visible, banner.Visibility);
                 Assert.Same(state.RefreshCommand, retry.Command);
                 Assert.True(banner.ActualHeight > 0);
                 Assert.True(grid.MinHeight >= 236);
                 Assert.True(grid.ActualHeight >= grid.MinHeight - 1);
                 Assert.True(queue.ActualHeight >= banner.ActualHeight + grid.MinHeight);
+                Assert.True(retry.IsEnabled);
+                Assert.True(retry.IsVisible);
+                Assert.Equal(1, InvokeButton(retry));
+                Assert.Equal(1, state.RefreshCommand.ExecuteCount);
 
                 state.IsTaskPageLoading = true;
                 state.TaskPageLoadFailed = false;
                 state.NotifyState();
                 PumpLayout(window);
                 Assert.Equal(Visibility.Visible, banner.Visibility);
+                Assert.True(grid.ActualHeight >= grid.MinHeight - 1);
+
+                state.IsTaskPageLoading = false;
+                state.NotifyState();
+                PumpLayout(window);
+                Assert.Equal(Visibility.Collapsed, banner.Visibility);
                 Assert.True(grid.ActualHeight >= grid.MinHeight - 1);
             }
             finally
@@ -100,6 +113,10 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                 Assert.Same(state.RefreshCommand, errorPresenter.RetryCommand);
                 Assert.Contains("任务记录暂时无法读取", errorPresenter.Message);
                 Assert.DoesNotContain("Worker", errorPresenter.Message);
+                var retry = (WpfButton)errorPresenter.Template!.FindName("RetryButton", errorPresenter)!;
+                Assert.Equal(Visibility.Visible, retry.Visibility);
+                Assert.Equal(1, InvokeButton(retry));
+                Assert.Equal(1, state.RefreshCommand.ExecuteCount);
             }
             finally
             {
@@ -126,10 +143,13 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                 var grid = (DataGrid)view.FindName("SaveHistoryGrid")!;
                 var retry = FindVisualChildren<WpfButton>(banner).Single(button => Equals(button.Content, "重试"));
 
+                Assert.Single(FindVisualChildren<WpfButton>(banner));
                 Assert.Equal(Visibility.Visible, banner.Visibility);
                 Assert.Same(state.LoadDetailsCommand, retry.Command);
                 Assert.True(grid.MinHeight >= 236);
                 Assert.True(grid.ActualHeight >= grid.MinHeight - 1);
+                Assert.Equal(1, InvokeButton(retry));
+                Assert.Equal(1, state.LoadDetailsCommand.ExecuteCount);
             }
             finally
             {
@@ -167,10 +187,13 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                 var banner = (Border)view.FindName("MaintenanceStaleBanner")!;
                 var grid = (DataGrid)view.FindName("MaintenanceAuditFindingsGrid")!;
                 var retry = FindVisualChildren<WpfButton>(banner).Single(button => Equals(button.Content, "重试"));
+                Assert.Single(FindVisualChildren<WpfButton>(banner));
                 Assert.Equal(Visibility.Visible, banner.Visibility);
                 Assert.Same(state.RefreshDiagnosticsCommand, retry.Command);
                 Assert.True(grid.MinHeight >= 260);
                 Assert.True(grid.ActualHeight >= grid.MinHeight - 1);
+                Assert.Equal(1, InvokeButton(retry));
+                Assert.Equal(1, state.RefreshDiagnosticsCommand.ExecuteCount);
 
                 tabs.SelectedIndex = 0;
                 var subTabs = (TabControl)view.FindName("MaintenanceDiagnosticsSubTabs")!;
@@ -182,8 +205,11 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                     .Single(text => text.Text != null && text.Text.IndexOf("安全模式已开启", StringComparison.Ordinal) >= 0);
                 var safeModeBorder = FindVisualAncestor<Border>(safeModeText);
                 var exit = FindVisualChildren<WpfButton>(safeModeBorder!).Single(button => Equals(button.Content, "恢复正常模式"));
+                Assert.Single(FindVisualChildren<WpfButton>(safeModeBorder!));
                 Assert.Equal(Visibility.Visible, safeModeBorder!.Visibility);
                 Assert.Same(state.ExitSafeModeCommand, exit.Command);
+                Assert.Equal(1, InvokeButton(exit));
+                Assert.Equal(1, state.ExitSafeModeCommand.ExecuteCount);
             }
             finally
             {
@@ -229,6 +255,20 @@ public sealed class R07StatusBannerBudgetBehaviorTests
         window.UpdateLayout();
     }
 
+    private static int InvokeButton(WpfButton button)
+    {
+        var clickCount = 0;
+        RoutedEventHandler clicked = (_, _) => clickCount++;
+        button.Click += clicked;
+        var peer = FrameworkElementAutomationPeer.CreatePeerForElement(button);
+        Assert.NotNull(peer);
+        var invoke = Assert.IsAssignableFrom<IInvokeProvider>(peer!.GetPattern(PatternInterface.Invoke));
+        invoke.Invoke();
+        button.Dispatcher.Invoke(DispatcherPriority.Background, new Action(button.UpdateLayout));
+        button.Click -= clicked;
+        return clickCount;
+    }
+
     private static IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
         where T : DependencyObject
     {
@@ -262,7 +302,7 @@ public sealed class R07StatusBannerBudgetBehaviorTests
         public string TaskPageStatusSummary => TaskPageLoadFailed
             ? (TaskPageHasItems ? "读取失败，已保留旧数据。" : "读取任务失败，请重试。")
             : IsTaskPageLoading ? "正在刷新，已保留旧数据。" : "最近更新：合成时间";
-        public ICommand RefreshCommand { get; } = new TestCommand();
+        public TestCommand RefreshCommand { get; } = new TestCommand();
         public int TaskTotalCount => Tasks.Count;
         public string TaskTotalCountLabel => "任务总数";
         public int RunningTaskCount => 0;
@@ -284,7 +324,11 @@ public sealed class R07StatusBannerBudgetBehaviorTests
 
         public void NotifyState()
         {
-            foreach (var name in new[] { nameof(TaskPageHasItems), nameof(TaskPageState), nameof(TaskPageStatusSummary), nameof(TaskTotalCount) })
+            foreach (var name in new[]
+            {
+                nameof(IsTaskPageLoading), nameof(TaskPageLoadFailed), nameof(TaskPageErrorMessage),
+                nameof(TaskPageHasItems), nameof(TaskPageState), nameof(TaskPageStatusSummary), nameof(TaskTotalCount)
+            })
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
@@ -298,7 +342,7 @@ public sealed class R07StatusBannerBudgetBehaviorTests
         public object? SelectedGame => null;
         public object? SelectedBackup { get; set; }
         public object? SelectedCandidate { get; set; }
-        public ICommand LoadDetailsCommand { get; } = new TestCommand();
+        public TestCommand LoadDetailsCommand { get; } = new TestCommand();
         public string SaveDetailsState => "Stale";
         public string SaveDetailsPresenterState => "Degraded";
         public string SaveDetailsStateTitle => "存档列表显示已过期";
@@ -326,14 +370,15 @@ public sealed class R07StatusBannerBudgetBehaviorTests
         public bool IsWorkerOffline => false;
         public bool IsCloudDegraded => false;
         public WorkerSettingsSnapshotDto Snapshot { get; } = new WorkerSettingsSnapshotDto { SafeModeEnabled = true };
-        public ICommand RefreshDiagnosticsCommand { get; } = new TestCommand();
-        public ICommand ExitSafeModeCommand { get; } = new TestCommand();
+        public TestCommand RefreshDiagnosticsCommand { get; } = new TestCommand();
+        public TestCommand ExitSafeModeCommand { get; } = new TestCommand();
     }
 
     private sealed class TestCommand : ICommand
     {
+        public int ExecuteCount { get; private set; }
         public bool CanExecute(object? parameter) => true;
-        public void Execute(object? parameter) { }
+        public void Execute(object? parameter) => ExecuteCount++;
         public event EventHandler? CanExecuteChanged { add { } remove { } }
     }
 }

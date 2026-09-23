@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R07-06 当前复核
+
+- 生产源码复核身份 `2e591b9f6217c1dcf7ac5d0494a55a7e6e230c82`。Release solution XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warning；更新的测试项目重建 0 warning/error。
+- 横幅本项及相邻空态/Task/详情/滚动行为 `17/17`、0 failed/skip。测试由真实实例按钮的 WPF `IInvokeProvider` 调用 fake 命令并计数；验证三个 Stale 横幅只含“重试”、无旧数据失败仍可见、加载结束后 Task 横幅随状态收起、恢复正常模式命令可达。无真实业务操作。
+- TRX 有 9 段 WPF `TextServicesHost.OnUnregisterTextStore` / `TextStore.OnDetach` `InvalidComObjectException` 清理输出；根因未知，VSTest exit `0`。测试是隔离 STA WPF/合成 DTO/逻辑 DIP，不等于实际 Playnite/UIA/两主题截图或设备呈现。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20260924.md`。下一可执行项 R07-07 当前 main 触控板增量复核。
+
 ## 2026-09-24 main：R07-05 当前复核
 
 - 当前 `main` 源码/测试身份 `ec9b0a2107d1fe6d091043d0f99f2e9378e78b7c`。Release 隔离构建 XAML `24/24`、0 errors，保留 `MediaCenterView.xaml.cs:703` 两条既有 `CS8602` warning。
