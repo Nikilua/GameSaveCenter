@@ -91,7 +91,7 @@ clean commit 的 TRX 同时保存了实际 WPF 测量。几何与容器数量和
 
 Media 10k 这一轮含单个 `0.989 ms` 样本，所以该轮最大值不能继续简写成约 `0.03 ms`；其余七次在 `0.025–0.048 ms`。这类隔离 STA Stopwatch 仅报告观察样本，不把排程抖动解释为真实宿主帧时延，也不以重复采样筛除慢值。前一组样本保留在本报告 f175c57d 历史采样表中，供对照测量波动。
 
-构建身份由 `GSC_BUILD_COMMIT` 绑定到 `5fbfc869...`；Release solution 为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。TRX 目录在 `.tmp/r00-r01-audit-20260923/focused-tests/trx-final-5fbfc869`，仅为本机可再生输出，不纳入 Git。
+构建身份由 `GSC_BUILD_COMMIT` 绑定到 `5fbfc869...`；Release solution 为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。TRX 仅为本机可再生输出，具体用例名和计数已转录到本文件，不纳入 Git。
 
 ## main 合并后复核（2026-09-23）
 

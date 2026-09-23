@@ -1,5 +1,11 @@
 # R01-07 基线失效规则证据
 
+## 2026-09-23 main 当前复核
+
+- baseline 的 R01-03 与 R01-06 sourceCommit 已绑定到实际受控审计身份 f55dce61adba84fec96c3e5434e5a8c1e3fa7132。
+- 以报告 HEAD c46c5b99894cfeaaf502a43fba30bb1bb1ed345a 扫描，14 条证据全部 FRESH、0 条 stale；包身份 not-provided，没有真实安装/宿主复验结论。
+- scripts/test-ui-evidence-freshness.ps1 的 docs-only、shared-control、package-identity 三类行为验证通过。当前完整输出见 [main freshness JSON](R01-07-freshness-report-20260923-current.json)。
+- 本次输出记录代码路径与包身份分开计算；fresh 只表示关联源路径未变，不代表外部宿主证据已满足。
 ## 结论
 
 R01-07 已满足。新增 check-ui-evidence-freshness.ps1 和版本化 UI_EVIDENCE_BASELINE.json，按每条证据自己的源码提交比较 Git 变更，并用 sourcePaths/scopes 标记受影响页面。脚本分别输出当前源码身份和包身份；纯文档变更不要求重跑或重装，包身份不一致时只在包绑定证据上要求重装。
@@ -51,7 +57,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\test-ui-evidence-fre
 
 ## 下一步
 
-R01-07 当前 baseline 与 freshness 校验已满足；下一可执行小批量为 R01-08“跳过测试说明”，继续区分本机可验证 gated 能力、历史 skip 和未启动真实 Playnite/package-host 的边界。
+R01-08 跳过测试说明已有独立证据；按主账本继续处理依赖满足的 Q/R 小批量。
 
 ## 2026-09-19 当前提交修正复核
 

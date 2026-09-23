@@ -1,6 +1,6 @@
 {
-  "GeneratedUtc": "2026-09-23T02:07:06.613988Z",
-  "CommitSha": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+  "GeneratedUtc": "2026-09-23T05:23:50.2689042Z",
+  "CommitSha": "f55dce61adba84fec96c3e5434e5a8c1e3fa7132",
   "PluginVersion": "0.6.73.0",
   "PlayniteVersion": "6.16.0.0",
   "WindowsVersion": "Microsoft Windows NT 6.2.9200.0",
@@ -77,6 +77,6 @@
       "Note": "logical DIP"
     }
   ],
-  "OutputRoot": ".tmp/r01-06-reproduce-audit",
-  "ZipPath": ".tmp/GameSaveCenter-ui-audit.zip (not retained)"
+  "OutputRoot": ".tmp/r00-r01-main-audit-20260923",
+  "ZipPath": ".tmp/GameSaveCenter-ui-audit.zip"
 }

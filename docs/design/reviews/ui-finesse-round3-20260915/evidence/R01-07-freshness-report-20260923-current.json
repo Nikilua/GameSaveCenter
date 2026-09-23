@@ -1,7 +1,7 @@
 {
     "schemaVersion":  1,
-    "generatedUtc":  "2026-09-23T03:12:27.6748926Z",
-    "currentSourceCommit":  "cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7",
+    "generatedUtc":  "2026-09-23T05:46:08.3835410Z",
+    "currentSourceCommit":  "c46c5b99894cfeaaf502a43fba30bb1bb1ed345a",
     "currentPackageCommit":  "not-provided",
     "packageIdentityStatus":  "not-provided",
     "changedPaths":  [
@@ -755,11 +755,14 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
-                                                          "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -803,12 +806,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -852,12 +858,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -901,12 +910,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -949,12 +961,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -998,12 +1013,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -1047,12 +1065,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -1095,11 +1116,14 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
-                                                          "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -1143,12 +1167,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -1167,42 +1194,19 @@
                                        "evidence-index"
                                    ],
                         "runtimeKind":  "infrastructure",
-                        "evidenceSourceCommit":  "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+                        "evidenceSourceCommit":  "f55dce61adba84fec96c3e5434e5a8c1e3fa7132",
                         "changedPathsSinceEvidence":  [
                                                           "docs/ai/CURRENT_STATE.md",
                                                           "docs/ai/PROJECT_MEMORY.md",
                                                           "docs/ai/WORKLOG.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/AUDIT_SUMMARY.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/audit-metadata.json",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/EVIDENCE_INDEX.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/LAYOUT_REPORT.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/maintenance-diagnostics-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/media-inbox-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/overview-narrow.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/overview-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/save-history-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/task-center-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/UI_FIDELITY_MATRIX.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/UI_MANIFEST.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/UI_ROUTE_MAP.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
-                                                          "docs/DEVELOPMENT_HANDOFF.md",
-                                                          "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "docs/DEVELOPMENT_HANDOFF.md"
                                                       ],
                         "matchedSourcePaths":  [
 
                                                ],
-                        "documentationOnlyChange":  false,
+                        "documentationOnlyChange":  true,
                         "needsRerun":  false,
                         "reinstallRequired":  false,
                         "packageBaselineCommit":  "not-applicable",
@@ -1241,12 +1245,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -1290,12 +1297,15 @@
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md",
+                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
                                                           "docs/DEVELOPMENT_HANDOFF.md",
                                                           "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+                                                          "tests/GameSaveCenter.RenderHarness/Program.cs"
                                                       ],
                         "matchedSourcePaths":  [
 
@@ -1314,42 +1324,19 @@
                                        "host-evidence"
                                    ],
                         "runtimeKind":  "offscreen",
-                        "evidenceSourceCommit":  "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+                        "evidenceSourceCommit":  "f55dce61adba84fec96c3e5434e5a8c1e3fa7132",
                         "changedPathsSinceEvidence":  [
                                                           "docs/ai/CURRENT_STATE.md",
                                                           "docs/ai/PROJECT_MEMORY.md",
                                                           "docs/ai/WORKLOG.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/AUDIT_SUMMARY.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/audit-metadata.json",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/EVIDENCE_INDEX.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/LAYOUT_REPORT.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/maintenance-diagnostics-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/media-inbox-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/overview-narrow.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/overview-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/save-history-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/screenshots/task-center-standard.png",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/UI_FIDELITY_MATRIX.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/UI_MANIFEST.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/UI_ROUTE_MAP.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-HOST-EVIDENCE-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md",
                                                           "docs/design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md",
-                                                          "docs/design/reviews/ui-finesse-round3-20260915/UI_EVIDENCE_BASELINE.json",
-                                                          "docs/DEVELOPMENT_HANDOFF.md",
-                                                          "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
-                                                          "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs"
+                                                          "docs/DEVELOPMENT_HANDOFF.md"
                                                       ],
                         "matchedSourcePaths":  [
 
                                                ],
-                        "documentationOnlyChange":  false,
+                        "documentationOnlyChange":  true,
                         "needsRerun":  false,
                         "reinstallRequired":  false,
                         "packageBaselineCommit":  "not-applicable",

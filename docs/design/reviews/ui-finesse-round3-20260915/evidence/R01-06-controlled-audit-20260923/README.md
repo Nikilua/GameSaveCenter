@@ -1,40 +1,26 @@
-# R01-06 受控审计归档（2026-09-23）
+# R01-06 受控 UI 审计归档（2026-09-23）
 
 ## 身份与结果
 
-- 审计源码提交：`5fbfc869ecddec852440ac82b3b0cc94343f3d60`（clean tree）
-- 插件版本：`0.6.73.0`；Playnite SDK：`6.16.0.0`
-- WPF 离屏逻辑 DPI：`1.0`；审计窗口按逻辑 DIP 建立，不是真实 Playnite 宿主或物理屏幕采样。
-- 运行时快照：`168`；Fidelity 警告：`0`；失败路由：`0`；HIGH：`7`；MEDIUM：`4`。
-- `EVIDENCE_INDEX.md` 的 20 行均可追到结果、完整身份、样本和边界（索引校验 `20/20`）。
-- 审计的 7 条 HIGH 是媒体页父子滚动冲突；4 条 MEDIUM 是待归类工具栏纵向扩展。该归档保留实际发现，不代表问题已消除。
+- 采样源码身份：f55dce61adba84fec96c3e5434e5a8c1e3fa7132（main 合并提交）；audit-metadata.json 保留采样时间、运行环境与相对输出路径。
+- 运行：RenderHarness 的 WPF 离屏 audit，逻辑 DPI 1.0；七种受控窗口尺寸。
+- 静态清点：10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer、292 conditional UI。
+- 运行时：168 snapshots、110 warnings、0 Fidelity warnings、0 route failures。
+- 本轮实际发现仍有 7 HIGH TRUE_PARENT_CHILD_SCROLL_CONFLICT 与 4 MEDIUM TOOLBAR_VERTICAL_EXPANSION。审计没有把它们归为清零。
+- 证据索引抽样 20 项；validate-ui-evidence-index.ps1 校验 20/20 references、identities、samples、boundaries。
 
 ## 文件
 
-- `AUDIT_SUMMARY.md`：静态/运行时计数、告警和真实发现。
-- `audit-metadata.json`：完整 SHA、版本、尺寸、逻辑 DPI；路径改为可再生相对路径。
-- `UI_MANIFEST.md`、`UI_ROUTE_MAP.md`、`UI_FIDELITY_MATRIX.md`：页面、路由和状态入口。
-- `LAYOUT_REPORT.md`：运行时布局记录。
-- `EVIDENCE_INDEX.md`：20 个控件/状态样本的结果入口、身份、样本和边界。
-- `screenshots/`：六张人工查看过的代表图：概览标准/窄窗、媒体待归类、维护诊断、存档历史、任务中心。所有图来自 synthetic DTO 和 WPF 离屏 logical DIP。
+保留聚合摘要、索引、布局报告、Fidelity 矩阵、静态 manifest 和 route map 的 Markdown 报告，以及 6 张可代表页面状态的受控离屏图。完整 JSON/raw tree/log 和临时 zip 可由 RenderHarness 重建；不归档机器绝对路径或本机临时文件夹。
 
-全量截图和 JSON 树共数百个文件，未复制到仓库；在下方命令中可本机重建。图片不证明真实 Playnite 呈现、物理 DPI、屏幕帧、UIA/IME 或宿主性能。
+- overview-standard.png、overview-narrow.png
+- save-history-standard.png
+- media-inbox-standard.png
+- task-center-standard.png
+- maintenance-diagnostics-standard.png
 
-## 重现
+截图来自 synthetic DTO 和隔离 WPF audit，不是 Playnite 最终呈现、物理 DPI/跨屏、UIA/读屏、DWM presented frame、ETW 或宿主性能证据。它们只用于本报告标注的受控布局观察。
 
-在独立 checkout 中使用归档源码提交 `5fbfc869ecddec852440ac82b3b0cc94343f3d60`：
+## 重建
 
-```powershell
-$buildRoot = '.tmp\r01-06-reproduce-build'
-$auditRoot = '.tmp\r01-06-reproduce-audit'
-$env:GSC_SOURCE_ROOT = (Get-Location).Path
-$env:GSC_BUILD_COMMIT = (git rev-parse HEAD).Trim()
-$env:GSC_UI_AUDIT_COMMIT = $env:GSC_BUILD_COMMIT
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\build.ps1 -Configuration Release -SkipTests -OutputRoot $buildRoot
-dotnet restore tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj -m:1 "-p:GscBuildOutputRoot=$buildRoot" -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
-dotnet build tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj -c Release --no-restore -m:1 -nodeReuse:false "-p:GscBuildOutputRoot=$buildRoot" -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
-& "$buildRoot\bin\GameSaveCenter.RenderHarness\Release\net472\GameSaveCenter.RenderHarness.exe" audit $auditRoot
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\validate-ui-evidence-index.ps1 -AuditRoot $auditRoot
-```
-
-审计只展示合成数据、切换受控页面/Tab 和收集截图；没有执行备份、恢复、删除、迁移、下载、配置保存、真实媒体/云端写入或诊断外发。ZIP 和完整输出属于本机 `.tmp` 可再生文件，没有归档。
+在目标源码 checkout 执行 Release build，再用其 GameSaveCenter.RenderHarness.exe audit <output-directory> 生成完整输出。生成过程中设置 GSC_SOURCE_ROOT、GSC_BUILD_COMMIT 与 GSC_UI_AUDIT_COMMIT 为该 checkout 的绝对路径和完整 SHA，可避免短 SHA/机器路径误标。之后使用 scripts/validate-ui-evidence-index.ps1 -AuditRoot <output-directory> -MinimumRows 20 校验索引。

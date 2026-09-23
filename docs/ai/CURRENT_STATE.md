@@ -2,15 +2,24 @@
 
 ## 2026-09-23 main 接续与 R18-04 当前复核
 
-- 当前分支 main，HEAD f55dce61adba84fec96c3e5434e5a8c1e3fa7132；合并 codex/ui-finesse-round2 后保留 main 后续历史，工作区已切离 feature 分支。R02-02 RenderHarness 探针修正随合并进入 main。
+- 当前分支 main；审计源码身份 f55dce61adba84fec96c3e5434e5a8c1e3fa7132，之后只提交文档证据并保留 main 后续历史，工作区已切离 feature 分支。R02-02 RenderHarness 探针修正随合并进入 main。
 - R18-04 使用 main Release 测试程序集复核：容器预算专测 1/1；四个相关行为类 23/23、0 skip。组成是 MediaPageAccumulator 6、MediaWindowAnchorContract 10、MediaInboxGeometry 3、R07SelectionAnchor 4，完整用例名见 R18-04 证据。
 - Task 2k/10k/20k 最大实现/可见行均为 9/7；Media Inbox 14/14/14，后端 10k/20k 时 UI 项仍封顶 2,000。main 这一轮滚动最大 Task 64.610/31.580/26.482ms，Media 0.027/0.025/0.652ms；20k Media 单样本 0.652ms 如实保留，之前约 0.03ms 的采样仍作为旧样本。
 - 数据来自合成 DTO、隔离 STA WPF Window 和逻辑 DIP。此前 testhost 清理日志出现过 TextServicesHost InvalidComObjectException，但 xUnit 成功且进程退出码为 0，根因未知；本次 main TRX 均通过，控制台未重现。
-- 下一步按当前目标完成 R00/R01 主分支证据更新，再推进依赖满足的 Q/R。真实 Playnite、物理 DPI/UIA/IME、presented frame、ETW 和宿主性能仍未验。
+- R00/R01 main 证据与 freshness 已校正；下一项 R23-02 生产资源状态矩阵。真实 Playnite、物理 DPI/UIA/IME、presented frame、ETW 和宿主性能仍未验。
 
 证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。
 
-## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
+## 2026-09-23 R00/R01 main 证据校正
+
+- main 源码审计身份 f55dce61adba84fec96c3e5434e5a8c1e3fa7132；RenderHarness 审计 168 snapshots、110 warnings、0 Fidelity、0 failed routes，保留 7 HIGH 父子滚动冲突和 4 MEDIUM 工具栏纵向扩展。
+- R01-06 便携归档已更新；20 项索引引用/身份/样本/边界校验均 20/20。R01-03 和 R01-06 baseline sourceCommit 已绑到 f55dce61。
+- 当前 R00/R01 联合行为套件为 179 passed、39 skipped、0 failed / 218；39 项均为已撤销“今日工作台”架构的 WpfUiResourceDictionaryTests，skip 原因已从 TRX 核实，没有记为通过。
+- freshness 当前 HEAD c46c5b99 为 14 fresh/0 stale；docs-only/shared-control/package-identity 测试通过；package identity not-provided。
+- 下一项 R02-03 禁用原因可达性，先查已有门禁、说明和命令行为。真实 Playnite、package-host、物理 DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能未验。
+
+证据：design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md、R01-06-controlled-audit-20260923/README.md、R01-07-freshness-report-20260923-current.json。
+## 历史：R02-02 忙碌宽度复核（2026-09-23）
 
 - 当前分支 `codex/ui-finesse-round2`，提交 `eaee1d20`。没有重建 busy 服务或 DTO；修正 RenderHarness，使忙态按钮位于已加载的屏幕外 STA Window 中，等待原有 120ms 指示器延迟后再检查。
 - Release solution XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；`R02BusyStateTests 4/4`，相邻 `R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState 1/1`。
@@ -19,7 +28,7 @@
 
 证据：[R02-02 忙态宽度当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-02-BUSY-WIDTH-20260916.md)、[第三轮账本](../design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md)。
 
-## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
+## 历史：feature branch R00/R01 证据校正与 R18-04 复采（2026-09-23）
 
 - 当前代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`，分支 `codex/ui-finesse-round2`。R00/R01 已核对已有能力并补齐两处证据缺口：图标-only 不再误报为控件缺失；R00-01 的半透明 hover+pressed+focus 组合态现在有直接颜色/对比度行为断言。最终身份隔离 Release solution 构建 XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；身份与对比测试 `5/5`，前一 clean 身份 R00/R01 定向行为类 `36/36`。
 - 受控审计绑定 `5fbfc869`：`10 Views/33 Tabs/297 Button/ToggleButton/16 DataGrid/38 ScrollViewer/292 conditional UI`，168 runtime snapshots、110 warnings、0 Fidelity、0 route failures；索引 `20/20`。仍有 `7 HIGH TRUE_PARENT_CHILD_SCROLL_CONFLICT` 和 `4 MEDIUM TOOLBAR_VERTICAL_EXPANSION`。freshness 在当前完整身份扫描为 `14 fresh/0 stale`，包身份 `not-provided`。

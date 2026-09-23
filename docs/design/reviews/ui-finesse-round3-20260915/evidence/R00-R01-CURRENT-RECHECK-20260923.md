@@ -1,34 +1,48 @@
 # R00/R01 当前复核与证据校正（2026-09-23）
 
-## 本批修正
+## main 身份与当前结论
 
-在 `tests/GameSaveCenter.RenderHarness/Program.cs` 中，纯图标次要按钮没有 `TextBlock` 时，审计原本输出 `<composite>: missing`。查看 Light 探针截图并核对实际控件后，确认按钮已呈现，只是没有可测文字。现改为 `<icon-only>: no text label; text contrast not applicable`，避免把无文字样本记成控件缺失。提交 `5fbfc869` 不改生产 UI、命令或绑定。
+本次受控审计采样的源码身份为 main 提交 f55dce61adba84fec96c3e5434e5a8c1e3fa7132。其后的 c46c5b99 只更新复核文档，没有改审计源码；分支仍为 main。已将 R01-03 与 R01-06 的 evidence baseline sourceCommit 绑定到该审计身份。
 
-核对 R00-01 原计算断言时，又发现 `opacity=0.5` 的数值测试仅验证 pressed 状态；hover+pressed+focus 虽出现在另一个 88 项矩阵，但没有与半透明 chrome 同时验证。已在 `UiDiagnosticsExporterTests.GradientContrastModelsWholeChromeOpacityAndNonUniformStops` 增加组合态行为断言：直接核验灰色合成背景、黑色有效文字与 `4.5` 对比度门槛。提交 `38d5b7b2`，不是字符串存在性检查。
+R00/R01 已有代码修正随合并进入 main：RenderHarness 将图标按钮标记为“无文字样本”，不再误报控件缺失；半透明 hover+pressed+focus 组合态增加了有效文字颜色与对比度的行为断言。没有覆盖 main 生产实现或改写命令/业务语义。
 
-同时补充 R01-07 的源路径映射：R00-01/02 记录此前只观察主题/控件源码，没有跟踪 `UiDiagnosticsExporterTests.cs` 和 `UiFinesseFoundationTests.cs`；R00-05 缺 `WpfUiResourceDictionaryTests.cs`；R00-06 缺 `MediaInboxGeometryTests.cs`。新规则可在这些行为夹具变化时使对应证据进入待复验状态。
+## main 构建与行为回归
 
-## 当前身份构建与行为结果
+main 身份的隔离 Release solution build 已通过：XAML 24/24，0 errors，Playnite target 为 net462；保留 2 条既有 MediaCenterView.xaml.cs:706 CS8602 warning。
 
-- 最终代码/测试 checkout：`38d5b7b2`，`codex/ui-finesse-round2`。
-- Release solution 构建及 XAML 校验：XAML `24/24`，`0 errors`，两条既有 `CS8602` warning 均位于 `MediaCenterView.xaml.cs:706`（WPF 临时项目与正式 Playnite 项目各一条）。Playnite 仍编译为 `net462`。
-- 最终构建身份下，`RepositoryIdentityTests 2/2`；R00-01 灰底/半透明组合态 + Light/Dark 状态矩阵 `3/3`。
-- `5fbfc869` clean 构建的 R00/R01 选定行为类 `36/36`：`UiFinesseFoundationTests 9`、R00-01 contrast `3`、R00-05 disabled chrome `2`、`GamePickerKeyboardBehaviorTests 6`、`LargeLibraryPerformanceTests 5`、`RepositoryIdentityTests 2`、`NumericCellReadabilityTests 2`、`UiAuditSourceTests 6`、`UiNegativeFixtureRegistryTests 1`。失败 `0`、跳过 `0`。
-- 同一 clean 身份的 R18 专测 `1/1`，相关媒体/选择回归 `23/23`；精确 23 项方法与理论用例已列在 [R18-04 报告](R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)。其中 media page theory 按 200、2,000、10,000 后端规模展开成 3 个测试。
-- 完整 Release 构建、TRX 文件和逐类 testhost 输出位于 `.tmp/r00-r01-audit-20260923`；均为可再生临时内容，不引用为长期 artifact。
+R00/R01 相关类在该 Release 测试程序集中的联合结果为 179 passed、39 skipped、0 failed，共 218 项。计数按类为：
 
-## 视觉/行为探针与审计
+| 测试类 | 通过 | 跳过 |
+| --- | ---: | ---: |
+| GamePickerKeyboardBehaviorTests | 6 | 0 |
+| LargeLibraryPerformanceTests | 5 | 0 |
+| NumericCellReadabilityTests | 2 | 0 |
+| RepositoryIdentityTests | 2 | 0 |
+| UiAuditSourceTests | 6 | 0 |
+| UiDiagnosticsExporterTests | 11 | 0 |
+| UiFinesseFoundationTests | 9 | 0 |
+| UiNegativeFixtureRegistryTests | 1 | 0 |
+| WpfUiResourceDictionaryTests | 137 | 39 |
+| **合计** | **179** | **39** |
 
-- `5fbfc869` clean-tree Light/Dark `finesseprobe` 均 exit `0`：每主题 88 个渐变按钮状态/stop 样本，0 violations；数字可读 `4/4`；窄列、黑字深底和裁切负例 `must-fail=passed`；图标按钮明确报告“无文字样本”。
-- R00-03/R01-04 的 `UiFinesseFoundationTests 9/9` 与 Light/Dark motion probe 结果按受控 STA/Dispatcher 记录；它们不等价真实 Playnite 输入或 presented frame。
-- `5fbfc869` clean-tree 完整 WPF 离屏审计：10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer、292 conditional UI；168 runtime snapshots、110 runtime warnings、0 Fidelity、0 failed routes。当前仍有 7 HIGH `TRUE_PARENT_CHILD_SCROLL_CONFLICT` 与 4 MEDIUM `TOOLBAR_VERTICAL_EXPANSION`，明确保留为待处理发现。
-- `validate-ui-evidence-index.ps1` 输出 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。六张代表图、报告与便携 metadata 已归档到 [R01-06 当前审计](R01-06-controlled-audit-20260923/README.md)。
-- WPF testhost TRX 中，`R18TableContainerBudgetTests` 与 `MediaWindowAnchorContractTests` 的关闭阶段记录 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；xUnit/VSTest 计数明确通过（分别 `1/1`、`10/10`），进程 exit `0`。根因未查明，未把它改写为失败或忽略。
+39 项均有明确的 xUnit skip 记录，原因是这些断言针对已撤销的“今日工作台”UI 架构，与恢复后的 AcrylicFork 生产页面不再适用；不把它们计为通过。本次没有失败项。历史 5fbfc869 的 36/36 和 38d5b7b2 的身份/对比度 5/5 仍只对应各自测试身份，不冒充为 main 上的同一计数。
 
-## freshness 和验收边界
+## 当前 RenderHarness 审计
 
-更新后的 `UI_EVIDENCE_BASELINE.json` 已在完整代码身份 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0` 上运行 freshness：`14 fresh/0 stale`；docs-only、shared-control 和 package-identity 行为样例通过。报告分别列源身份和包身份；包身份仍为 `not-provided`。没有启动真实 Playnite/package-host，也没有验证真实宿主像素、UIA/读屏、物理 DPI/跨屏、IME 候选 UI、presented frame、ETW 或宿主性能。Demo 原目录不可用，使用已恢复的生产基线；仅使用 synthetic DTO、fake 状态和隔离目录。
+main 源码身份 f55dce61 的完整受控 WPF audit 报告现已归档至 [R01-06 main 审计](R01-06-controlled-audit-20260923/README.md)。RenderHarness 使用 synthetic DTO、隔离 WPF 窗口和逻辑 DPI 1.0；窗口尺寸覆盖 maximized、2k、wide、standard、compact、narrow-1100、narrow。
 
-没有访问真实存档或媒体，也没有云端写入/诊断外发。当前游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护、有限列表和 Playnite `net462` 兼容保持不变。
+- 静态清点：10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer、292 conditional UI。
+- 运行时输出：168 snapshots、110 warnings、0 Fidelity warnings、0 failed routes。
+- 当前真实审计发现：7 HIGH TRUE_PARENT_CHILD_SCROLL_CONFLICT、4 MEDIUM TOOLBAR_VERTICAL_EXPANSION。索引通过不表示这些发现已经修复或清零。
+- evidence index 抽样 E01–E20；对持久归档运行 validate-ui-evidence-index.ps1 的结果为 rows=20、references=20/20、identities=20/20、samples=20/20、boundaries=20/20。
+- 归档保留 6 份报告 Markdown、便携 metadata 与 6 张代表图；完整 JSON、raw tree、全量截图、日志和临时 zip 未入库。
 
-后续已在提交 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 完成 R02-01 当前来源/行为复核，细节见 [R02-01 证据](R02-01-ACTION-PRIORITY-20260916.md)。下一可执行任务为 R02-02 忙碌宽度稳定；真实 Playnite/package-host、物理呈现/输入、ETW/宿主性能仍是未验边界。
+## freshness
+
+R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文档提交之前的 main HEAD c46c5b99894cfeaaf502a43fba30bb1bb1ed345a 运行 freshness，14 records 为 fresh、0 stale；scripts/test-ui-evidence-freshness.ps1 的 docs-only、shared-control、package-identity 用例通过。package identity 为 not-provided，不能据此宣称已重装或运行真实 package-host。
+
+## 边界与下一项
+
+审计截图是受控 WPF 离屏 logical DIP 样本，不证明真实 Playnite Dashboard、物理 DPI/跨屏、UIA/读屏、Windows IME、DWM presented frame、ETW 或宿主性能。保留的 7 HIGH / 4 MEDIUM 是本轮真实发现，后续按具体任务处理。没有访问真实存档或媒体、写用户云端或外发诊断；Demo 原目录不可用，沿用已恢复的生产基线。
+
+下一可执行小批量：R23-02 生产资源状态矩阵，优先补齐 AcrylicNavItem、设置派生 Tab 和各页 DataGrid 的实际 Light/Dark WPF 状态观察；无法在受控窗口证明的宿主边界继续明示。

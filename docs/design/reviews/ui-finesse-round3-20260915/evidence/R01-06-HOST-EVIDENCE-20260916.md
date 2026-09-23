@@ -1,5 +1,6 @@
 # R01-06 宿主证据保全证据
 
+> 当前 main 审计与归档已在 f55dce61adba84fec96c3e5434e5a8c1e3fa7132 重新生成并校验。旧 c2399d7b、b5c7a6d4、5fbfc869 章节仅为历史记录；当前摘要为 168 snapshots、110 warnings、7 HIGH/4 MEDIUM，E01–E20 五类索引校验为 20/20。完整可移植材料见 [R01-06 main 归档](R01-06-controlled-audit-20260923/README.md)。
 ## 结论
 
 R01-06 已满足。当前受控审计的关键身份、摘要、manifest、路由/交互矩阵、运行时布局和具体证据索引已归档到 [R01-06-host-evidence-20260916/](R01-06-host-evidence-20260916/)。六张精选图随仓库保存；完整截图集仍由归档说明中的固定 checkout 和审计命令重现，不依赖某台机器的绝对临时路径。

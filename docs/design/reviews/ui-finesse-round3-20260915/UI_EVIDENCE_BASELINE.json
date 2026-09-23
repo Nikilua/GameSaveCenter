@@ -148,7 +148,7 @@
     {
       "id": "R01-03",
       "evidence": "evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "sourceCommit": "f55dce61adba84fec96c3e5434e5a8c1e3fa7132",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -196,7 +196,7 @@
     {
       "id": "R01-06",
       "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "sourceCommit": "f55dce61adba84fec96c3e5434e5a8c1e3fa7132",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
