@@ -9203,3 +9203,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前测试程序集按类串行 `R02BusyStateTests 4/4` + `R08BusinessFeedbackBehaviorTests 4/4` = `8/8`，0 failed/skipped，各 VSTest exit `0`。TRX 均未见 `InvalidComObjectException`。
 - 忙态等真实 action 结束；慢任务按钮保持宽度、内容和焦点；快速任务 `150ms` 后 spinner 仍 `Collapsed`；重复请求/失败/取消门禁与复位通过；成功/失败/取消 DTO 和 `FeedbackToast` AutomationPeer 文本一致。
 - 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20260924.md` 与两份 TRX。范围仅合成 DTO/fake/隔离 STA WPF/逻辑 DIP，未验正常 Playnite、Worker 长请求、Narrator/真实 UIA、物理 DPI/呈现/ETW/宿主性能。下一项 R08-05 页面切换轻量化。
+
+# 2026-09-24 当前 main 设置窗口截图与本机包身份复核
+
+- 读取本机 Playnite 扩展目录文件元数据（不启动/修改宿主）：manifest `0.6.73`；DLL FileVersion `0.6.73.0`、ProductVersion `0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`、SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`。`7a4ba2a9` 在当前 main 历史中早于设置 `3a1dadd8`、窗口/媒体 `da91bd68`，以及 Task 行框 `9f3d7ab9`、媒体按钮 `a4bac32f` 修正；推断该旧安装可能解释用户截图，但没有正在运行的 Playnite 进程能关联截图载入实例。
+- 当前 main 生产设置视图按截图估算 `1254×800 DIP` 的 Light/Dark STA WPF 复核：icon-title top Δ`11.33`、横向间距 `12`、search-title left Δ`0`、search-icon top gap `72.67`；恢复默认控件中心/高度 spread `0/0`，路径下拉框与四按钮均 `36 DIP` 同中心。假设源于 1881×1208 px 截图中约54px按钮，不等于实测系统 DPI。
+- 一次两主题合跑 xUnit 显示 2 个测试通过后 testhost 不退出且未生成 TRX；等待约2.5分钟后仅中断该自启动 runner，不计通过。按主题单独重跑 Light/Dark 各 `1/1`、VSTest exit `0`、无 COM cleanup 记录。当前源码结构与截图位置不同；不宣称实际 Playnite 已修复。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md` 和两份 TRX。下一步准备当前 main 可审阅 `.pext`（不安装），完成身份对照后推进 R08-05。

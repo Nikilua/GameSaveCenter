@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 设置页窗口截图复核
+
+- Playnite 扩展目录的 `GameSaveCenter.Playnite.dll` manifest `0.6.73`，ProductVersion `0.6.73+7a4ba2a9`，SHA-256 `5E02…50E22`；该构建早于 `3a1dadd8` 搜索框修正和 `da91bd68` 窗口/媒体滚动修正。当前没有运行中宿主，截图关联尚未确认。
+- 当前 main 生产设置布局在假设 `1254×800 DIP` 的 WPF STA 用例中 Light/Dark `1/1+1/1`：icon/title top 差 `11.33 DIP`，search/title left 差 `0`，search/icon top gap `72.67`；重置组/路径组控件 `36 DIP` 同中心。该尺寸是从图像控件比例估出的可能 150% 换算，不是实测 DPI。
+- [窗口化截图复核](../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)、两份主题 TRX。截图视觉与当前源码结构不一致；旧安装是推断原因，未宣称宿主已修复。准备当前 main 可审阅包但不安装；CEF `platform_channel 0x5` 限制未绕过。
+
 ## 2026-09-24 main：R08-04 当前复核
 
 - 当前生产 identity `09ec3132` Release solution XAML `24/24`、0 errors，保留两条既有 CS8602 warnings。R08-04 两类行为 `8/8`（R02 busy `4`、R08 feedback `4`）、均 exit `0`。

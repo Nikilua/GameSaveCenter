@@ -17,3 +17,9 @@
 已有可供身份比对的本地包仍为 [GameSaveCenter-0.6.73-main-8e4f3194.pext](../../../../artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext)，程序集身份 `0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce`，尚未安装，也不是当前 main `4b7f0a34` 身份。本证据不表示用户已使用该包。
 
 **当前受控布局已满足；最新用户截图的真实宿主差异仍待 package identity 与正常 Playnite host 对照。**
+
+## 2026-09-24 窗口截图补充
+
+本机安装目录中的 DLL 已只读识别为 `0.6.73+7a4ba2a9`，其祖先关系早于当前 main 设置搜索修正 `3a1dadd8` 和窗口/媒体布局修正 `da91bd68`；没有运行中的 Playnite 进程可与该 DLL 建立截图时间关联。当前 main 在近似窗口逻辑尺寸 `1254×800 DIP` 的 Light/Dark 实际 WPF 测量均为通过：icon/title top 差 `11.33 DIP`、search/title left 差 `0`、search/icon top 间隔 `72.67 DIP`、恢复默认组控件中心/高度差 `0`、路径组全 `36 DIP` 同中心。该 150% 尺寸换算只是由截图控件像素高度推测，实际 DPI 未核实。
+
+结果、DLL SHA-256、VSTest 中断后按主题单独重跑的事实与边界见[窗口化截图当前 main 复核](SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)和两份 TRX。当前截图视觉位置与最新源码结构不一致；旧安装身份是可能解释，仍未证明当时屏幕用的是该扩展 DLL。未宣称 Playnite 实际窗口已经修复。
