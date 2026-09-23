@@ -1575,7 +1575,8 @@ namespace GameSaveCenter.Playnite.Settings
             var headerIconSize = narrow || shortHeight ? 34d : compact ? 40d : 46d;
             SettingsHeaderIcon.Width = headerIconSize;
             SettingsHeaderIcon.Height = headerIconSize;
-            SettingsHeaderIcon.Margin = compact ? new Thickness(0, 0, 10, 0) : new Thickness(0, 0, 12, 0);
+            SettingsHeaderIcon.VerticalAlignment = VerticalAlignment.Top;
+            SettingsHeaderIcon.Margin = new Thickness(0, SettingsHeaderEyebrow.Visibility == Visibility.Visible ? 8 : 0, compact ? 10 : 12, 0);
 
             // The outer SettingsDemoShell owns the product-level 18-DIP breathing room.
             // Keep the inner content stretch-only so the demo shell does not regress into
@@ -1601,9 +1602,7 @@ namespace GameSaveCenter.Playnite.Settings
             SettingsSaveHint.HorizontalAlignment = stackHeaderHint
                 ? HorizontalAlignment.Left
                 : HorizontalAlignment.Stretch;
-            SettingsSaveHint.VerticalAlignment = stackHeaderHint
-                ? VerticalAlignment.Top
-                : VerticalAlignment.Center;
+            SettingsSaveHint.VerticalAlignment = VerticalAlignment.Top;
             SettingsSaveHint.Margin = stackHeaderHint
                 ? new Thickness(0, 12, 0, 0)
                 : new Thickness(14, 0, 0, 0);

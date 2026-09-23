@@ -486,10 +486,10 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxLayout.MinHeight = readableFrameHeight;
                 MediaInboxTableFrame.MinHeight = readableFrameHeight;
                 // The outer page viewer can measure its content with infinite height.
-                // Give the inner grid an explicit finite viewport in the normal layout;
+                // Give the inner grid an explicit finite viewport in every layout;
                 // otherwise Standard row virtualization is defeated and every retained
-                // inbox row becomes a live DataGridRow. The short-host fallback keeps the
-                // existing page overflow route while still respecting the readable floor.
+                // inbox row becomes a live DataGridRow. The short-host fallback belongs
+                // to the page surface and must never enlarge the DataGrid into its footer.
                 // The footer now owns the filter preset, availability, summary,
                 // secondary-action and failure rows. The old 220 DIP budget was
                 // calibrated before those rows moved below the table and lets a
@@ -498,11 +498,8 @@ namespace GameSaveCenter.Playnite.Views
                 // compact/fallback layouts still use the page surface below.
                 const double inboxNonTableHeightBudget = 360d;
                 var finiteInboxHeight = Math.Max(readableGridHeight, height - inboxNonTableHeightBudget);
-                var inboxViewportHeight = useInboxPageFallbackScroll
-                    ? Math.Max(readableGridHeight, Math.Max(1d, height))
-                    : finiteInboxHeight;
-                MediaInboxGrid.Height = inboxViewportHeight;
-                MediaInboxGrid.MaxHeight = inboxViewportHeight;
+                MediaInboxGrid.Height = finiteInboxHeight;
+                MediaInboxGrid.MaxHeight = finiteInboxHeight;
                 MediaGrid.MinHeight = 236d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;

@@ -100,7 +100,7 @@
                                 <Grid x:Name="SaveHistorySummaryGrid">
                                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SaveHistorySummaryActionsRow" Height="0"/></Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition x:Name="SaveHistorySummaryActionsColumn" Width="Auto"/></Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Row="0" Grid.Column="0" MinWidth="0" VerticalAlignment="Center">
+                                    <StackPanel x:Name="SaveHistorySummaryContentStack" Grid.Row="0" Grid.Column="0" MinWidth="0" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="历史版本" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                                             <Border Style="{DynamicResource GscRedesignContextPill}" Padding="9,4" Margin="10,0,0,0" VerticalAlignment="Center">

@@ -101,8 +101,9 @@ public sealed class R18TableContainerBudgetTests
         Assert.Contains("TaskGrid", task);
         Assert.Contains("MediaInboxGrid", media);
         Assert.Contains("public const int DefaultCapacity = 2000", accumulator);
-        Assert.Contains("var inboxViewportHeight", mediaCodeBehind);
-        Assert.Contains("MediaInboxGrid.Height = inboxViewportHeight", mediaCodeBehind);
+        Assert.Contains("var finiteInboxHeight = Math.Max(readableGridHeight, height - inboxNonTableHeightBudget);", mediaCodeBehind);
+        Assert.Contains("MediaInboxGrid.Height = finiteInboxHeight", mediaCodeBehind);
+        Assert.DoesNotContain("Math.Max(readableGridHeight, Math.Max(1d, height))", mediaCodeBehind);
         Assert.Contains("MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll", mediaCodeBehind);
     }
 

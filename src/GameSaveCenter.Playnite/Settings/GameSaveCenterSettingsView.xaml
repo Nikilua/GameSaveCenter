@@ -53,7 +53,7 @@
                 <Grid x:Name="SettingsHeaderGrid">
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <Border x:Name="SettingsHeaderIcon" Grid.Row="0" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0">
+                    <Border x:Name="SettingsHeaderIcon" Grid.Row="0" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0" VerticalAlignment="Top">
                         <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
                                            IconData="{StaticResource GscIconNavSettings}"
                                            Width="27" Height="27"
@@ -62,9 +62,9 @@
                     </Border>
                     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock x:Name="SettingsHeaderEyebrow" Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
-                        <TextBlock Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
+                        <TextBlock x:Name="SettingsHeaderTitle" Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径 · 存档策略 · 外观与自动化" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
-                        <TextBox x:Name="SettingsSearchTextBox" Style="{StaticResource GscWpfUiTextBox}" TextChanged="OnSettingsSearchTextChanged" Margin="0,10,0,0" MinWidth="260" MaxWidth="520" Height="32" ToolTip="搜索设置名称、用途或字段；不会修改配置。清空后恢复分类视图。" AutomationProperties.Name="搜索设置" AutomationProperties.HelpText="搜索只改变可见字段，不会修改设置值。"/>
+                        <TextBox x:Name="SettingsSearchTextBox" Style="{StaticResource GscWpfUiTextBox}" TextChanged="OnSettingsSearchTextChanged" Margin="0,10,0,0" MinWidth="260" MaxWidth="520" Height="32" HorizontalAlignment="Left" ToolTip="搜索设置名称、用途或字段；不会修改配置。清空后恢复分类视图。" AutomationProperties.Name="搜索设置" AutomationProperties.HelpText="搜索只改变可见字段，不会修改设置值。"/>
                         <TextBlock x:Name="SettingsSearchSummary" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置搜索结果"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                         <ui:Button x:Name="SettingsValidationLocateButton" Style="{StaticResource GscWpfUiToolbarButton}" Content="定位首个错误" MinWidth="104" Padding="8,3" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="OnSettingsValidationLocateClick" AutomationProperties.Name="定位首个设置错误" ToolTip="切换到包含首个校验错误的设置分类"/>
@@ -76,9 +76,9 @@
                                 <TextBlock Text="恢复默认" FontWeight="SemiBold"/>
                                 <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
                                 <WrapPanel>
-                                    <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" DisplayMemberPath="DisplayName" SelectedValuePath="Key" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
-                                    <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
-                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" AutomationProperties.Name="恢复全部安全设置默认值"/>
+                                    <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" VerticalAlignment="Center" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" VerticalAlignment="Center" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
                                 </WrapPanel>
                             </StackPanel>
                         </Border>
@@ -115,11 +115,11 @@
                             <TextBlock Text="统一路径编辑" FontWeight="SemiBold"/>
                             <TextBlock Text="选择当前字段后，可浏览、单独校验、打开或复制。打开只允许当前路径已存在且可读；缺失、网络不可达和无权限路径会保留在字段中并给出明确反馈。云端目标仍按远端文本编辑，不会被当作本地目录打开。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
                             <WrapPanel>
-                                <ComboBox x:Name="SettingsPathEditorComboBox" Width="260" DisplayMemberPath="DisplayName" SelectedValuePath="Key" SelectionChanged="OnSettingsPathEditorSelectionChanged" ToolTip="选择要操作的当前本地路径字段" AutomationProperties.Name="选择当前路径字段"/>
-                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="浏览" Click="OnSettingsPathBrowseClick" Margin="8,0,0,0" AutomationProperties.Name="浏览并替换当前路径" ToolTip="目录使用文件夹选择器，可执行文件使用文件选择器"/>
-                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="校验" Click="OnSettingsPathValidateClick" Margin="8,0,0,0" AutomationProperties.Name="校验当前路径"/>
-                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="打开" Click="OnSettingsPathOpenClick" Margin="8,0,0,0" AutomationProperties.Name="打开当前有效路径" ToolTip="只打开当前字段中已存在且可读的路径"/>
-                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="复制" Click="OnSettingsPathCopyClick" Margin="8,0,0,0" AutomationProperties.Name="复制当前完整路径"/>
+                                <ComboBox x:Name="SettingsPathEditorComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" SelectionChanged="OnSettingsPathEditorSelectionChanged" VerticalAlignment="Center" ToolTip="选择要操作的当前本地路径字段" AutomationProperties.Name="选择当前路径字段"/>
+                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="浏览" Click="OnSettingsPathBrowseClick" Margin="8,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="浏览并替换当前路径" ToolTip="目录使用文件夹选择器，可执行文件使用文件选择器"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="校验" Click="OnSettingsPathValidateClick" Margin="8,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="校验当前路径"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="打开" Click="OnSettingsPathOpenClick" Margin="8,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="打开当前有效路径" ToolTip="只打开当前字段中已存在且可读的路径"/>
+                                <ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="复制" Click="OnSettingsPathCopyClick" Margin="8,0,0,0" VerticalAlignment="Center" AutomationProperties.Name="复制当前完整路径"/>
                             </WrapPanel>
                             <TextBlock x:Name="SettingsPathEditorStatus" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,7,0,0" AutomationProperties.Name="当前路径编辑反馈"/>
                         </StackPanel>

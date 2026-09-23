@@ -141,6 +141,20 @@ namespace GameSaveCenter.Playnite.Views
                         candidateInspectorOpen = true;
                 }
                 var ruleCardCompact = width < 700;
+                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+                // The shell passes the resized PageHost width from its SizeChanged pass;
+                // prefer that current value over this child grid's previous ActualWidth,
+                // which can still describe the old window for one layout turn.
+                var historyLayoutWidth = width > 0 ? width : SaveHistoryLayout.ActualWidth;
+                var historyInspectorSideBySide = !compact && SaveHistoryGrid.SelectedItem != null;
+                var historySummaryAvailableWidth = Math.Max(0, historyLayoutWidth - (historyInspectorSideBySide ? inspectorWidth.Value + 14 : 0));
+                // The summary has a long action strip. Measuring it in an Auto column
+                // beside a narrow selected-version table can consume the entire card
+                // width, forcing the summary copy to wrap to thousands of lines while
+                // the actions remain vertically centered in the resulting empty space.
+                // Stack only this action strip when its actual table column cannot give
+                // the summary content and all actions a stable side-by-side measure.
+                var historyActionsCompact = ruleCardCompact || historySummaryAvailableWidth < 1240;
                 if (SaveCurrentRuleActions != null)
                 {
                     SaveCurrentRuleActionsRow.Height = ruleCardCompact
@@ -161,23 +175,26 @@ namespace GameSaveCenter.Playnite.Views
                 }
                 if (SaveHistorySummaryActions != null)
                 {
-                    SaveHistorySummaryActionsRow.Height = ruleCardCompact
+                    SaveHistorySummaryActionsRow.Height = historyActionsCompact
                         ? GridLength.Auto
                         : new GridLength(0);
-                    SaveHistorySummaryActionsColumn.Width = ruleCardCompact
+                    SaveHistorySummaryActionsColumn.Width = historyActionsCompact
                         ? new GridLength(0)
                         : GridLength.Auto;
-                    Grid.SetRow(SaveHistorySummaryActions, ruleCardCompact ? 1 : 0);
-                    Grid.SetColumn(SaveHistorySummaryActions, ruleCardCompact ? 0 : 1);
-                    Grid.SetColumnSpan(SaveHistorySummaryActions, ruleCardCompact ? 2 : 1);
-                    SaveHistorySummaryActions.Margin = ruleCardCompact
+                    Grid.SetRow(SaveHistorySummaryActions, historyActionsCompact ? 1 : 0);
+                    Grid.SetColumn(SaveHistorySummaryActions, historyActionsCompact ? 0 : 1);
+                    Grid.SetColumnSpan(SaveHistorySummaryActions, historyActionsCompact ? 2 : 1);
+                    Grid.SetColumnSpan(SaveHistorySummaryContentStack, historyActionsCompact ? 2 : 1);
+                    SaveHistorySummaryActions.Margin = historyActionsCompact
                         ? new Thickness(0, 10, 0, 0)
                         : new Thickness(14, 0, 0, 0);
-                    SaveHistorySummaryActions.HorizontalAlignment = ruleCardCompact
+                    SaveHistorySummaryActions.HorizontalAlignment = historyActionsCompact
                         ? HorizontalAlignment.Stretch
                         : HorizontalAlignment.Right;
+                    SaveHistorySummaryActions.VerticalAlignment = historyActionsCompact
+                        ? VerticalAlignment.Top
+                        : VerticalAlignment.Center;
                 }
-                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
 
                 // On compact hosts the selected-version inspector is a drawer, not a
                 // permanent second row. The table keeps the finite star row by default;
