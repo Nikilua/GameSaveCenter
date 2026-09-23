@@ -1,12 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-24 当前接续：R08-05
+## 2026-09-24 当前接续：核对 R18-04 23 项组成
 
-R08-04 当前 main 生产源码 identity `09ec3132` 已复核：Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings。R02 Busy `4/4` 与 R08 feedback `4/4` 按类串行，共 `8/8`、0 fail/skip、VSTest exit `0`。忙碌态等真实 action 结束、快速任务 `150ms` 后不闪 spinner，终态 DTO 和 Toast AutomationPeer 行为通过。
+R08-05 当前 main/测试 identity `13c38754` 已复核：Release solution XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；源码、XAML、diff check 通过。PageSwitch `2/2`、R02 Busy `4/4`、R08 feedback `4/4`、ShellChrome `12/12`、Foundation `9/9` 合计 `31/31`，均 exit `0`。当前实测 Task→Media/返回布局增量各 `1/1`，同页重入 `0/0`，滚动保持 `10→10`。壳层 TRX 有一段 TextServicesHost `InvalidComObjectException` 清理日志、原因未知。
 
-证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20260924.md` 与两份 TRX。R08-04 生产/测试文件自 `43141399` 后未变；两份当前 TRX 未见 COM 清理异常文本。范围为合成 DTO/fake/隔离 STA WPF 与逻辑 DIP；真实 Playnite/Worker 长请求、Narrator/真实 UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
-
-可审阅候选包已生成：[GameSaveCenter-0.6.73.pext](../artifacts/GameSaveCenter-0.6.73.pext)，build identity `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，SHA-256 `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。随后推进 R08-05 页面切换轻量化并先查现有代码/依赖。本机扩展目录 DLL identity `0.6.73+7a4ba2a9` 早于 Settings `3a1dadd8` 与窗口/Media `da91bd68` 修正；图像复核受控几何两主题通过，但未关联用户截图的实际运行实例，不可宣称实机已修复。Task/Media/Save/Settings 问题需等用户用新 package 或提供运行时 identity 后再关闭。CEF `platform_channel 0x5` 仍是隔离 host 阻挡，不绕过。
+证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-05-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。接下来按用户要求从当前 main test assembly 核对 R18-04 的四个相关测试类、精确用例/理论参数与覆盖性质；R18 专测当前报告为 `1/1`，已有测量和 COM 清理事实按对应 R18 证据分账。本地扩展 identity `0.6.73+7a4ba2a9` 早于现有设置/媒体修正；可审阅包 `[GameSaveCenter-0.6.73.pext](../artifacts/GameSaveCenter-0.6.73.pext)` identity `0.6.73+e83d8ba9`、SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。用户 Media/Task/Save/Settings 问题还需正常 Playnite host 或用户包身份对照；CEF `platform_channel 0x5` 不绕过。
 
 ## 2026-09-24 当前接续：R08-02
 

@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main R08-05 页面切换复核
+
+- 在 `13c38754` 当前 main 身份重新 Release 构建：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；source validation、XAML structural validation 与 `git diff --check` 通过。
+- 五类串行行为回归 `31/31`、0 failed/skipped、VSTest exit `0`：R08PageSwitch `2`、R02 Busy `4`、R08 feedback `4`、ProductionShellChrome `12`、Foundation `9`。页切换实测 offset `10→10`、两个方向 Measure/Arrange 各 `1/1`、同页重复导航 `0/0`。
+- 一个 ShellChrome TRX 含 1 段 TextServicesHost `InvalidComObjectException` 清理文本，根因未知；测试仍通过且 exit 0。数据来源为合成任务、生产 WPF 页面与隔离 STA Window/逻辑 DIP；不写成真实 Playnite 呈现或宿主性能证据。
+- 用户的 Media/Task/Save/Settings 窗口问题仍待当前候选包身份/正常 host 对照。下一项按用户最新请求核对 R18-04 23 项相关测试。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-05-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。
+
 ## 2026-09-24 设置页窗口截图与已安装包身份
 
 - 本机 Playnite Extensions 目录只读识别 `GameSaveCenter.Playnite.dll` 为 manifest `0.6.73`、ProductVersion `0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`、SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`。提交 `7a4ba2a9` 是当前 main 祖先，早于 `3a1dadd8` Settings search 和 `da91bd68` window/media 修正；这是本机安装目录事实，不证明用户截图的实际载入 DLL。

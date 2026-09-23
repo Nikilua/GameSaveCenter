@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 main R08-05 页面切换当前复核
+
+- 当前 main/测试程序集 identity `13c38754` 的 Release solution build 成功：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。`validate-source.py`、`check-xaml.ps1`（24 files）和 `git diff --check` 通过。
+- 按 WPF testhost 类级隔离串行：R08PageSwitch `2/2`、R02 Busy `4/4`、R08 BusinessFeedback `4/4`、ProductionShellChrome `12/12`、UiFinesseFoundation `9/9`，合计 `31/31`、0 failed/skipped，各 VSTest exit `0`。
+- 当前 R08 页面切换输出 offset `10→10`，Task→Media `Measure/Arrange=1/1`、Media→Task `1/1`；复用页面实例且 selection 保留；同页导航 `0/0` 为测试精确断言。与 2026-09-18 初始证据的 `2/2` 是不同轮次实测，不合并覆盖。
+- ShellChrome TRX 收尾有一段 WPF TextServicesHost `InvalidComObjectException` 清理输出，其他四份没有；VSTest 通过，根因未知。没有改生产代码、测试代码或页面布局；用户四处窗口化问题仍待 package/正常 host 对照。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-05-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。下一项依用户请求核对 R18-04 相关 `23` 项测试组成。
+
 ## 2026-09-23：Q06-08 五态序列录证
 
 - 基于 `75769579c46d998cc3b931b8c0011762e7d8cfe4` 新增 `Q06ButtonStateSequenceBehaviorTests`；不改生产控件/命令。受控 STA WPF 下 Light/Dark 各实际捕获 normal、hover、pressed、focus、disabled；测试断言 overlay、状态属性和 disabled 点击负例，结果 `1/1`、exit 0。

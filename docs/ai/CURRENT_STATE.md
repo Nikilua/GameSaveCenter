@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R08-05 页面切换复核
+
+- 当前 main/测试程序集 identity `13c38754`。Release solution 构建成功，XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；source、XAML 和 diff check 通过。
+- R08PageSwitch `2/2`、R02 Busy `4/4`、R08 business feedback `4/4`、ShellChrome `12/12`、Foundation `9/9`，按类串行合计 `31/31`，全部 VSTest exit `0`。实际滚动 offset `10→10`；Task→Media/返回 shell Measure/Arrange 都观测为 `1/1`，同页重入 `0/0` 精确断言。
+- 一份 ShellChrome TRX 收尾有一段 WPF TextServicesHost `InvalidComObjectException` 输出，仍明确 12/12 通过、exit 0；根因未知。证据 `../design/reviews/ui-finesse-round3-20260915/evidence/R08-05-CURRENT-MAIN-RECHECK-20260924.md` 和五份 TRX。
+- 用户报告的 Media、Task、Save、Settings 实际窗口表现不由此项关闭；本地旧扩展与候选包差异及正常宿主对照仍待验。下一项按用户请求核对 R18-04 的 23 项关联行为用例组成。
+
 ## 2026-09-24 设置页窗口截图复核
 
 - Playnite 扩展目录的 `GameSaveCenter.Playnite.dll` manifest `0.6.73`，ProductVersion `0.6.73+7a4ba2a9`，SHA-256 `5E02…50E22`；该构建早于 `3a1dadd8` 搜索框修正和 `da91bd68` 窗口/媒体滚动修正。当前没有运行中宿主，截图关联尚未确认。
