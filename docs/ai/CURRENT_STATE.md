@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main Q06-06 按钮命令行为复核
+
+- 在 `main` 的 `34c9d817` 工作树上扩展 `WorkspaceStatePresenterBehaviorTests`；Release 定向结果 `8/8`，Playnite `net462`、测试 `net472`，无构建错误。首次完整编译保留已有 `MediaCenterView.xaml.cs:703 CS8602` warning。
+- Enter、Space 合成 WPF 路由事件分别只调用 fake 命令一次；Space KeyDown 时观察到 `IsPressed=true`。CanExecute=false 的 Enter、Space 与 WPF 点击派发探针均 0 次调用。
+- `ButtonBase.OnClick` 仅代表鼠标释放后的框架命令派发终点；不代表物理鼠标、按下/松开像素反馈或 Playnite 宿主。合成 KeyUp 不更新 KeyboardDevice，所以没有签收松开动画。
+- 证据：`../design/reviews/ui-finesse-round2-20260913/evidence/Q06-06-BUTTON-ACTIVATION-20260923.md`。Q06-06 自动行为证据已补齐，但最终仍未完成；下一可执行任务 Q06-07 高频连续操作。
+
 ## 2026-09-23 当前 main：用户截图布局修复与证据收口
 
 - 当前代码身份 `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`。Media Inbox 按钮高度/滚动框、Task 失败行框、Save History 窗口化动作留白、Settings 标题图标/搜索/按钮分别由 `da91bd68`、`a4bac32f`、`9f3d7ab9`、`3a1dadd8` 收口；四类 Light/Dark 行为 `8/8`。

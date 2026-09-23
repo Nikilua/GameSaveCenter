@@ -9094,3 +9094,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 Task 2k/10k/20k 最大实现/可见行为均为 `9/7`；Media Inbox `14/14/14`，UI 窗口仍限 `2,000`。本轮滚动最大 Task 为 `69.573/39.230/31.008 ms`、Media 为 `0.034/0.036/0.917 ms`；保留 20k Media 的单次 0.917 ms，不用再次采样去除。先前独立约 0.03 ms 结果继续作为单独一轮事实。
 - R18/Anchor TRX 分别包含 6/2 行 WPF `TextServicesHost.OnUnregisterTextStore` `InvalidComObjectException` 清理输出，测试通过并 exit 0，根因未明；其他三类本次无该异常文本。
 - 仅受控合成数据与 STA WPF/逻辑 DIP；没有真实 Playnite、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能证据；没有触碰真实存档/媒体/云端。下一项：完成 R00-01/02、R00-05 freshness 文档收口。
+
+## 2026-09-23 main Q06-06 按钮激活行为复核
+
+- 先核对既有覆盖：`WorkspaceStatePresenterBehaviorTests` 已合成路由 Enter/Space 并计数；`OverviewInteractionTests` 反射调 `ButtonBase.OnClick`，但现有断言未覆盖按压反馈、不可执行负例或媒体/状态按钮入口。`RaiseEvent(Button.ClickEvent)` 不会调用命令，未用它冒充点击。
+- 在现有生产 `WorkspaceStatePresenter` 重试按钮夹具上补行为检查，复用 `GscWpfUiActionButton` 与 fake `ICommand`。最终 Release 定向 `8/8`：Enter/Space 各单次命令；Space KeyDown 的 `IsPressed=true`；`CanExecute=false` 的 Enter/Space 和点击派发均 0 次；WPF `ButtonBase.OnClick` 点击命令派发为 1 次。构建 Playnite `net462` 成功，保留首次全编译打印的既有 `MediaCenterView.xaml.cs:703 CS8602` 警告。
+- 夹具第一次添加“合成 KeyUp 后 IsPressed=false”断言时得到 7/8；验证发现手工 `RaiseEvent(KeyUp)` 不更新实际 `KeyboardDevice` 状态，删除该不可靠断言后最终 8/8。没有将此夹具差异解释成生产控件缺陷。
+- 最初未限并行的 `dotnet test` 调用超过 8 分钟未输出/返回；对其 PID 执行 `taskkill /T /F` 被系统拒绝。随后以 `-m:1 -p:BuildInParallel=false` 构建和测试成功。未强制终止其他未知 dotnet 进程。
+- 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-06-BUTTON-ACTIVATION-20260923.md`，Round2 账本 Q06-06 与 Q04–Q12 索引已同步。保留物理鼠标、真实键盘设备松开、像素/动画、Playnite UIA 和宿主行为边界；最终仍为未完成。下一可执行任务：Q06-07 高频连续操作。

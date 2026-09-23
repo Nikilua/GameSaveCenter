@@ -1,7 +1,9 @@
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameSaveCenter.Playnite.Controls;
@@ -132,6 +134,8 @@ public sealed class WorkspaceStatePresenterBehaviorTests
                 {
                     RoutedEvent = Keyboard.KeyDownEvent
                 });
+                if (key == Key.Space)
+                    Assert.True(retryButton.IsPressed, "Space key-down should enter the shared pressed state immediately.");
                 retryButton.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, source, 0, key)
                 {
                     RoutedEvent = Keyboard.KeyUpEvent
@@ -149,6 +153,95 @@ public sealed class WorkspaceStatePresenterBehaviorTests
 
         Assert.Null(exception);
         Assert.Equal(1, executeCount);
+    }
+
+    [Fact]
+    public void FailureRetryButtonFrameworkClickDispatchExecutesOnce()
+    {
+        Exception? exception = null;
+        var executeCount = 0;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var resourceHost = new MediaCenterView();
+                var presenter = CreatePresenter(resourceHost, "Error", new CountingCommand(() => executeCount++));
+                window = CreateWindow(presenter);
+                window.Show();
+                window.UpdateLayout();
+                presenter.ApplyTemplate();
+                var retryButton = (WpfButton)presenter.Template!.FindName("RetryButton", presenter)!;
+
+                // The pointer release path ends in ButtonBase.OnClick. Calling that protected
+                // framework dispatch directly avoids RaiseEvent(ClickEvent), which does not
+                // run command routing or CanExecute checks.
+                typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(retryButton, Array.Empty<object>());
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        Assert.Null(exception);
+        Assert.Equal(1, executeCount);
+    }
+
+    [Theory]
+    [InlineData(Key.Enter)]
+    [InlineData(Key.Space)]
+    public void RetryCommandThatCannotExecuteIgnoresKeyboardAndClickDispatch(Key key)
+    {
+        Exception? exception = null;
+        var executeCount = 0;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var resourceHost = new MediaCenterView();
+                var command = new CountingCommand(() => executeCount++, canExecute: false);
+                var presenter = CreatePresenter(resourceHost, "Error", command);
+                window = CreateWindow(presenter);
+                window.Show();
+                window.UpdateLayout();
+                presenter.ApplyTemplate();
+                var retryButton = (WpfButton)presenter.Template!.FindName("RetryButton", presenter)!;
+                Assert.False(retryButton.IsEnabled);
+
+                var source = PresentationSource.FromVisual(retryButton)
+                    ?? throw new InvalidOperationException("重试按钮尚未连接到 WPF PresentationSource。");
+                retryButton.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, source, 0, key)
+                {
+                    RoutedEvent = Keyboard.KeyDownEvent
+                });
+                retryButton.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, source, 0, key)
+                {
+                    RoutedEvent = Keyboard.KeyUpEvent
+                });
+                typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(retryButton, Array.Empty<object>());
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        Assert.Null(exception);
+        Assert.Equal(0, executeCount);
     }
 
     private static WorkspaceStatePresenter CreatePresenter(MediaCenterView resourceHost, string state, ICommand command)
@@ -215,8 +308,13 @@ public sealed class WorkspaceStatePresenterBehaviorTests
     private sealed class CountingCommand : ICommand
     {
         private readonly Action execute;
+        private readonly bool canExecute;
 
-        public CountingCommand(Action execute) => this.execute = execute;
+        public CountingCommand(Action execute, bool canExecute = true)
+        {
+            this.execute = execute;
+            this.canExecute = canExecute;
+        }
 
         public event EventHandler? CanExecuteChanged
         {
@@ -224,7 +322,7 @@ public sealed class WorkspaceStatePresenterBehaviorTests
             remove { }
         }
 
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute(object? parameter) => canExecute;
 
         public void Execute(object? parameter) => execute();
     }
