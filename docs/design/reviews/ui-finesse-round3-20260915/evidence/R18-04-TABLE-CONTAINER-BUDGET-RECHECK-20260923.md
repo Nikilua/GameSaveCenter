@@ -133,6 +133,23 @@ Media 20k 最新一轮包含 0.652 ms 单样本，故本轮最大值不能写成
 
 本轮继续使用合成 DTO、生产 WPF 视图、隔离 STA Window 和逻辑 DIP；不证明真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、IME、DWM presented frame、ETW 或宿主性能。没有触碰真实存档、媒体、用户云端或诊断目录。
 
+## 当前 main HEAD `3a1dadd8` 精确复采（2026-09-23）
+
+当前隔离 Release 输出绑定完整 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`，R18 专测 TRX 为 `1/1`、0 失败/跳过，Playnite 目标 `net462`。与上节不同，这次 R18 TRX 的 Media Inbox 受控布局为 `7/7/7`；不把早前另一窗口/共享模板样本 `14/14/14` 混入同一轮。Task 三档均为 viewport/max-realized/max-visible `7/9/7`；Media 后端 10k/20k 时 UI 页缓存仍限制在 2,000 项。
+
+| 页面 | 后端 / UI 项数 | 视口 / 最大已实现 / 最大可见 | 8 次滚动原始样本 (ms) | p95 / 最大 (ms) |
+| --- | --- | --- | --- | ---: |
+| Task | 2k / 2k | 7 / 9 / 7 | `4.801, 62.290, 21.731, 29.117, 12.685, 16.833, 32.189, 20.696` | `62.290 / 62.290` |
+| Media Inbox | 2k / 2k | 7 / 7 / 7 | `0.034, 0.023, 0.019, 0.021, 0.019, 0.019, 0.019, 0.019` | `0.034 / 0.034` |
+| Task | 10k / 10k | 7 / 9 / 7 | `0.602, 23.505, 20.394, 16.409, 15.058, 41.504, 15.732, 20.547` | `41.504 / 41.504` |
+| Media Inbox | 10k / 2k | 7 / 7 / 7 | `0.025, 1.132, 0.348, 0.054, 0.020, 0.018, 0.020, 0.020` | `1.132 / 1.132` |
+| Task | 20k / 20k | 7 / 9 / 7 | `0.717, 19.401, 18.161, 32.467, 16.547, 20.930, 17.308, 25.950` | `32.467 / 32.467` |
+| Media Inbox | 20k / 2k | 7 / 7 / 7 | `0.028, 0.022, 0.020, 0.188, 0.075, 0.036, 0.029, 0.027` | `0.188 / 0.188` |
+
+八点最近秩 p95 与最大值相同；保留 `1.132 ms` 与 `0.188 ms` 单点样本，不用其他轮次样本覆盖。Task 使用 Recycling/Item、`CanContentScroll=True`、列虚拟化开启；Media Inbox 使用 Standard/Item、`CanContentScroll=True`、列虚拟化关闭。两页均报告 `rowsPanelVirtualizing=True`。Stopwatch 受 STA Dispatcher 调度影响，这些值只代表本轮受控滚动更新样本，不代表真实 Playnite 帧时或屏幕刷新表现。
+
+本次 R18 testhost 关闭时捕获 6 行 WPF TextServicesHost `OnUnregisterTextStore` / `InvalidComObjectException` 清理输出；TRX 仍明确 `1/1`，VSTest 退出码 `0`。根因未知，因此保留为清理噪声记录，不改判测试失败。
+
 ## 当前 main HEAD `922501e7` 精确复核（2026-09-23）
 
 在 main `922501e71c9b77f5c7d227edb4aa42ebe9308d78` 新建隔离 Release 输出后，重新执行 R18 专测及四个关联类，每类使用独立 VSTest 进程并保存本机 TRX。XAML 检查 `24/24`；Release solution `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite 目标仍为 `net462`。R18 专测中的程序集身份检查通过。

@@ -46,3 +46,13 @@ R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文
 审计截图是受控 WPF 离屏 logical DIP 样本，不证明真实 Playnite Dashboard、物理 DPI/跨屏、UIA/读屏、Windows IME、DWM presented frame、ETW 或宿主性能。保留的 7 HIGH / 4 MEDIUM 是本轮真实发现，后续按具体任务处理。没有访问真实存档或媒体、写用户云端或外发诊断；Demo 原目录不可用，沿用已恢复的生产基线。
 
 下一可执行小批量：R23-02 生产资源状态矩阵，优先补齐 AcrylicNavItem、设置派生 Tab 和各页 DataGrid 的实际 Light/Dark WPF 状态观察；无法在受控窗口证明的宿主边界继续明示。
+
+## 当前 main `3a1dadd8` 与用户截图问题复核
+
+源码身份为 `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`。当前 Release 构建 Playnite `net462`、XAML `24/24`、`0 errors`，保留两条已有 `MediaCenterView.xaml.cs:703 CS8602` warning。`ReportedWorkspaceLayoutBehaviorTests` 两主题 `8/8`；R18 专测 `1/1`，分页/锚点/几何/选择关联行为 `23/23`，各类按独立 testhost 运行。
+
+- Light/Dark `finesseprobe` 当前 SHA 均为 palette `11` checks、`0` violations、numeric readability `4/4`、窄列负例通过；`WorkingTreeClean=False` 是当时文档改动导致，不影响完整源码/build SHA 一致。
+- RenderHarness 完整审计：`168` snapshots、`118` warnings、`0` Fidelity、`0` 失败路由、`7 HIGH / 4 MEDIUM`；索引 `20/20`。用户四张布局截图、精确 DIP 和 R18 原始样本见 [用户截图布局复核](USER-REPORTED-LAYOUT-20260923.md)。
+- 全局 `render-qa` 为 `40 PROBLEM`：OverviewRecentAccessList `20`、SaveHistoryGrid `8`、TaskGrid `4`、其他 SettingsLayout 断点 `8`。定向四页行为回归通过不等于 render-qa 门禁全绿。
+- WPF 技能静态审查 `0 errors / 30 warnings / 177 info`。清单包含既有 StackPanel/滚动控件和模板建议项；本轮未以静态 warning 代替 WPF 布局行为结果。
+- 不把离屏逻辑 DIP/合成数据描述为真实 Playnite package-host、物理 DPI/UIA/IME、DWM presented frame、ETW 或宿主性能证据；没有碰真实存档、媒体、云端或诊断数据。Demo 原目录不可用，继续使用恢复的生产基线。下一可执行小批量待 freshness 校正后从第二轮 Q 队列选。

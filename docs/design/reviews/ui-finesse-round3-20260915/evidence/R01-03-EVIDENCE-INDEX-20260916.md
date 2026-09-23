@@ -87,3 +87,9 @@ R01-07 freshness baseline 已在 main 按 f55dce61 审计身份更新，14 条�
 - 当前摘要为 `168` 个运行时快照、`110` 个运行时警告、`0` Fidelity、`0` 失败路由；明确有 `7 HIGH / 4 MEDIUM`。索引校验 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。
 - 探针报告中一个纯图标按钮此前标成 `<composite>: missing`。核对屏幕图与可视树后确认控件存在且没有文本节点；RenderHarness 已改为“icon-only / no text label / text contrast not applicable”，不将它混入文字对比样本，也不误报缺控件。
 - 该审计、索引和当前 38d5b7b2 freshness 记录之间只有之后的测试断言与文档变化；R01-03 的 `sourcePaths` 未被这些变化命中。完整归档链接见 [R01-06 当前审计](R01-06-controlled-audit-20260923/README.md)。
+
+## 2026-09-23 当前 main `3a1dadd8` 归档身份
+
+- 当前完整源码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8` 的受控 audit 报告、metadata、layout、manifest、route map、fidelity matrix、evidence index 与六张精选图已更新到 [R01-06 归档](R01-06-controlled-audit-20260923/README.md)。
+- 当前审计统计 `168` snapshots、`118` warnings、`0` Fidelity、`0` failed routes，实际仍有 `7 HIGH / 4 MEDIUM`。索引校验复跑 `20/20` references、identities、samples、boundaries。
+- 当前 `UiAuditSourceTests 6/6`；本次归档证明每项证据可追溯，不把索引校验升级为页面全状态、宿主输入或呈现帧通过。

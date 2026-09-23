@@ -580,8 +580,8 @@
 
 - Button |  | Command={Binding ReloadMediaInboxCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button | MediaInboxClearSelectionButton | Style={DynamicResource GscWpfUiActionButton}
-- Button |  | Style={DynamicResource GscWpfUiActionButton}
-- Button | 归类所选 | Command={Binding AssignInboxMediaBatchCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
+- Button | MediaInboxResetColumnWidthButton | Style={DynamicResource GscWpfUiActionButton}
+- Button | MediaInboxAssignSelectedButton | Command={Binding AssignInboxMediaBatchCommand} | Style={DynamicResource GscWpfUiPrimaryActionButton}
 - Button | MediaInboxCompactDetailsButton | Style={DynamicResource GscWpfUiSecondaryButton}
 - Button |  | Command={Binding ApplyMediaFilterPresetCommand} | Style={DynamicResource GscWpfUiActionButton}
 - Button |  | Command={Binding SaveMediaFilterPresetCommand} | Style={DynamicResource GscWpfUiSecondaryButton}
@@ -606,7 +606,7 @@
 - Button | 恢复到待归类 | Command={Binding RestoreIgnoredMediaBatchCommand}
 - CheckBox |  | Style={DynamicResource GscCheckBox}
 - ComboBox | MediaInboxModeCombo | Style={DynamicResource GscWpfUiFilterComboBox}
-- ComboBox |  | Style={DynamicResource GscWpfUiComboBox}
+- ComboBox | MediaInboxTargetGameComboBox | Style={DynamicResource GscWpfUiComboBox}
 - ComboBox | MediaFilterPresetComboBox | Style={DynamicResource GscWpfUiFilterComboBox}
 - ComboBox |  | Style={DynamicResource GscWpfUiComboBox}
 - ComboBox | MediaClassificationHistoryStateCombo | Style={DynamicResource GscWpfUiComboBox}
@@ -1177,8 +1177,8 @@
 - Button |  | Style={StaticResource GscWpfUiSecondaryButton}
 - Button |  | Style={StaticResource GscWpfUiPrimaryButton}
 - CheckBox |  | Style={StaticResource GscCheckBox}
-- ComboBox | SettingsResetFieldComboBox
-- ComboBox | SettingsPathEditorComboBox
+- ComboBox | SettingsResetFieldComboBox | Style={StaticResource GscWpfUiComboBox}
+- ComboBox | SettingsPathEditorComboBox | Style={StaticResource GscWpfUiComboBox}
 - ComboBox |  | Style={StaticResource GscWpfUiComboBox}
 - ComboBox |  | Style={StaticResource GscWpfUiComboBox}
 - ComboBox | ThemeModeSelector | Style={StaticResource GscWpfUiComboBox}

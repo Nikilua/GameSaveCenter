@@ -1,6 +1,14 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-09-23 main 接续：R18-04 当前身份与用例组成复核
+## 2026-09-23 当前 main：用户截图布局修复与证据收口
+
+- 当前代码身份 `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`。Media Inbox 按钮高度/滚动框、Task 失败行框、Save History 窗口化动作留白、Settings 标题图标/搜索/按钮分别由 `da91bd68`、`a4bac32f`、`9f3d7ab9`、`3a1dadd8` 收口；四类 Light/Dark 行为 `8/8`。
+- Release Playnite `net462`，XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。当前截图复核与 R18/关联测试、完整 raw samples、InvalidComObjectException 清理噪声和边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-20260923.md` 与 R18-04 证据。
+- 当前审计 `168 snapshots / 118 warnings / 0 Fidelity / 0 failed routes / 7 HIGH / 4 MEDIUM`；证据索引 `20/20`；freshness `14 fresh / 0 stale`、package `not-provided`。render-qa 有 40 项其他尺寸问题，不能记为全局通过。
+- 下一可执行 Q 小批量：Q06-06 鼠标/Enter/Space 使用真实 WPF 输入路由核对即时反馈与单次命令；先确认既有断言没有覆盖同一行为。R02-06 菜单宿主与 R23-05 系统呈现采集边界仍待外部环境。Demo 原目录不可用，继续基于恢复的生产基线。
+
+
+## 历史复核：R18-04 之前身份 d752424e
 
 - 当前源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872`。隔离 Release 输出 XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite 目标 `net462`。
 - R18 专测 `1/1`；四类关联测试逐个独立 testhost 运行并核对 TRX：Accumulator `6/6`、Media Window Anchor `10/10`、Inbox Geometry `3/3`、Selection Anchor `4/4`，合计 `23/23`，0 失败、0 跳过；五个进程均 exit `0`。精确方法与覆盖类型见 R18-04 证据。

@@ -159,10 +159,10 @@
 | 维护中心 | 发现的问题 |  | Button | {Binding DataContext.CopyDiagnosticsCommand} | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding ReloadMediaInboxCommand} | No | Yes |
 | 媒体中心 | 待归类 | MediaInboxClearSelectionButton | Button |  | No | Yes |
-| 媒体中心 | 待归类 |  | Button |  | No | Yes |
+| 媒体中心 | 待归类 | MediaInboxResetColumnWidthButton | Button |  | No | Yes |
 | 媒体中心 | 待归类 | MediaInboxModeCombo | ComboBox |  | No | Yes |
-| 媒体中心 | 待归类 |  | ComboBox |  | No | Yes |
-| 媒体中心 | 待归类 |  | Button | {Binding AssignInboxMediaBatchCommand} | No | Yes |
+| 媒体中心 | 待归类 | MediaInboxTargetGameComboBox | ComboBox |  | No | Yes |
+| 媒体中心 | 待归类 | MediaInboxAssignSelectedButton | Button | {Binding AssignInboxMediaBatchCommand} | No | Yes |
 | 媒体中心 | 待归类 | MediaInboxCompactDetailsButton | Button |  | No | Yes |
 | 媒体中心 | 待归类 | MediaFilterPresetComboBox | ComboBox |  | No | Yes |
 | 媒体中心 | 待归类 |  | Button | {Binding ApplyMediaFilterPresetCommand} | No | Yes |

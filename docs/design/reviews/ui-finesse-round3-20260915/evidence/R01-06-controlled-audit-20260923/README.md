@@ -2,12 +2,13 @@
 
 ## 身份与结果
 
-- 采样源码身份：f55dce61adba84fec96c3e5434e5a8c1e3fa7132（main 合并提交）；audit-metadata.json 保留采样时间、运行环境与相对输出路径。
+- 采样源码身份：`3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`（当前 main）；`audit-metadata.json` 保留采样时间、运行环境与相对输出路径。
 - 运行：RenderHarness 的 WPF 离屏 audit，逻辑 DPI 1.0；七种受控窗口尺寸。
 - 静态清点：10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer、292 conditional UI。
-- 运行时：168 snapshots、110 warnings、0 Fidelity warnings、0 route failures。
+- 运行时：168 snapshots、118 warnings、0 Fidelity warnings、0 route failures。
 - 本轮实际发现仍有 7 HIGH TRUE_PARENT_CHILD_SCROLL_CONFLICT 与 4 MEDIUM TOOLBAR_VERTICAL_EXPANSION。审计没有把它们归为清零。
 - 证据索引抽样 20 项；validate-ui-evidence-index.ps1 校验 20/20 references、identities、samples、boundaries。
+- 本次 R00-07 toolbarprobe 的三个合成 WPF 场景通过：正常输入表单按理由排除；700 DIP 超宽动作栏与不可达动作栏均保留为告警。
 
 ## 文件
 

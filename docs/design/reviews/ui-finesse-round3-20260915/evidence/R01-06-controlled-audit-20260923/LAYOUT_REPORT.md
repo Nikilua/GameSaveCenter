@@ -210,29 +210,31 @@ Warnings:
 ### compact 904x520
 
 - ScrollViewer HeaderScrollViewer: 902x36, viewport=36, extent=36, scrollable=0, nested=True
-- ScrollViewer DG_ScrollViewer: 901x329, viewport=5, extent=8, scrollable=3, nested=True
+- ScrollViewer DG_ScrollViewer: 901x253, viewport=3, extent=8, scrollable=5, nested=True
 - ScrollViewer SaveHistoryActionsScrollViewer: 0x0, viewport=0, extent=0, scrollable=0, nested=True
-- DataGrid SaveHistoryGrid: 901x329, rows=8, visible~5.4, virtualization=IsVirtualizing=True,Mode=Recycling
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=138x24 DIP, desiredWidth=138, visible=138x24, availableWidth=944.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=930.67x36 DIP, desiredWidth=944.67, visible=877.33x36, availableWidth=944.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=930.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- DataGrid SaveHistoryGrid: 901x253, rows=8, visible~3.9, virtualization=IsVirtualizing=True,Mode=Recycling
+  - TABLE_VIEWPORT_TOO_SHORT
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=878.67x24 DIP, desiredWidth=878.67, visible=878.67x24, availableWidth=878.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=878.67x66 DIP, desiredWidth=878.67, visible=878.67x66, availableWidth=878.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=878.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x25.33 DIP, desiredWidth=106, visible=106x25.33, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 Warnings:
 - [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文：DG_ScrollViewer (chain=SaveCenterView > Border > ContentPresenter > Grid > TabControl > Grid > PART_SelectedContentHost (ContentPresenter) > SaveHistoryLayout (Grid) > Border > Grid > SaveHistoryGrid (DataGrid) > GscDataGridBorder (Border))
+- [HIGH] TABLE_VIEWPORT_TOO_SHORT: SaveHistoryGrid 估算可见行数 3.9，实际高度 253 DIP
 
 ### maximized 1383x672
 
 - ScrollViewer HeaderScrollViewer: 1381x36, viewport=36, extent=36, scrollable=0, nested=True
-- ScrollViewer DG_ScrollViewer: 1006x483, viewport=8, extent=8, scrollable=0, nested=True
+- ScrollViewer DG_ScrollViewer: 1006x437, viewport=7, extent=8, scrollable=1, nested=True
 - ScrollViewer SaveHistoryActionsScrollViewer: 360x621, viewport=615, extent=1144, scrollable=529, nested=True
 - ScrollViewer PART_ContentHost: 307x61, viewport=55, extent=19, scrollable=0, nested=True
-- DataGrid SaveHistoryGrid: 1006x483, rows=8, visible~8.5, virtualization=IsVirtualizing=True,Mode=Recycling
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=138x24 DIP, desiredWidth=138, visible=138x24, availableWidth=38.67, children=2, actions/inputs=0/0, horizontalOverflow=True, reachable=True, scrollableAncestor=
-- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=930.67x36 DIP, desiredWidth=944.67, visible=930.67x36, availableWidth=983.33, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=930.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- DataGrid SaveHistoryGrid: 1006x437, rows=8, visible~7.6, virtualization=IsVirtualizing=True,Mode=Recycling
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=983.33x24 DIP, desiredWidth=983.33, visible=983.33x24, availableWidth=983.33, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=983.33x36 DIP, desiredWidth=983.33, visible=983.33x36, availableWidth=983.33, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=983.33, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
@@ -241,53 +243,59 @@ Warnings:
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=309.33x44 DIP, desiredWidth=309.33, visible=0x0, availableWidth=344, children=2, actions/inputs=2/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SaveHistoryActionsScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=278.67x19.33 DIP, desiredWidth=278.67, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SaveHistoryActionsScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=286.67x19.33 DIP, desiredWidth=286.67, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SaveHistoryActionsScrollViewer
+Warnings:
+- [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文：DG_ScrollViewer (chain=SaveCenterView > Border > ContentPresenter > Grid > TabControl > Grid > PART_SelectedContentHost (ContentPresenter) > SaveHistoryLayout (Grid) > Border > Grid > SaveHistoryGrid (DataGrid) > GscDataGridBorder (Border))
 
 ### narrow 744x460
 
 - ScrollViewer HeaderScrollViewer: 742x36, viewport=36, extent=36, scrollable=0, nested=True
-- ScrollViewer DG_ScrollViewer: 741x269, viewport=4, extent=8, scrollable=4, nested=True
+- ScrollViewer DG_ScrollViewer: 741x236, viewport=3, extent=8, scrollable=5, nested=True
 - ScrollViewer SaveHistoryActionsScrollViewer: 0x0, viewport=0, extent=0, scrollable=0, nested=True
-- DataGrid SaveHistoryGrid: 741x269, rows=8, visible~4.2, virtualization=IsVirtualizing=True,Mode=Recycling
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=138x24 DIP, desiredWidth=138, visible=138x24, availableWidth=944.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=930.67x36 DIP, desiredWidth=944.67, visible=717.33x36, availableWidth=944.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=930.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- DataGrid SaveHistoryGrid: 741x236, rows=8, visible~3.6, virtualization=IsVirtualizing=True,Mode=Recycling
+  - TABLE_VIEWPORT_TOO_SHORT
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=718.67x24 DIP, desiredWidth=718.67, visible=718.67x24, availableWidth=718.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=718.67x66 DIP, desiredWidth=718.67, visible=718.67x66, availableWidth=718.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=718.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x25.33 DIP, desiredWidth=106, visible=0x0, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=False, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x19.33 DIP, desiredWidth=106, visible=106x19.33, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 Warnings:
 - [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文：DG_ScrollViewer (chain=SaveCenterView > Border > ContentPresenter > Grid > TabControl > Grid > PART_SelectedContentHost (ContentPresenter) > SaveHistoryLayout (Grid) > Border > Grid > SaveHistoryGrid (DataGrid) > GscDataGridBorder (Border))
+- [HIGH] TABLE_VIEWPORT_TOO_SHORT: SaveHistoryGrid 估算可见行数 3.6，实际高度 236 DIP
 
 ### narrow-1100 804x480
 
 - ScrollViewer HeaderScrollViewer: 802x36, viewport=36, extent=36, scrollable=0, nested=True
-- ScrollViewer DG_ScrollViewer: 801x289, viewport=4, extent=8, scrollable=4, nested=True
+- ScrollViewer DG_ScrollViewer: 801x236, viewport=3, extent=8, scrollable=5, nested=True
 - ScrollViewer SaveHistoryActionsScrollViewer: 0x0, viewport=0, extent=0, scrollable=0, nested=True
-- DataGrid SaveHistoryGrid: 801x289, rows=8, visible~4.6, virtualization=IsVirtualizing=True,Mode=Recycling
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=138x24 DIP, desiredWidth=138, visible=138x24, availableWidth=944.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=930.67x36 DIP, desiredWidth=944.67, visible=777.33x36, availableWidth=944.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=930.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- DataGrid SaveHistoryGrid: 801x236, rows=8, visible~3.6, virtualization=IsVirtualizing=True,Mode=Recycling
+  - TABLE_VIEWPORT_TOO_SHORT
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=778.67x24 DIP, desiredWidth=778.67, visible=778.67x24, availableWidth=778.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=778.67x66 DIP, desiredWidth=778.67, visible=778.67x66, availableWidth=778.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=778.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x25.33 DIP, desiredWidth=106, visible=42.67x25.33, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x19.33 DIP, desiredWidth=106, visible=106x19.33, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 Warnings:
 - [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文：DG_ScrollViewer (chain=SaveCenterView > Border > ContentPresenter > Grid > TabControl > Grid > PART_SelectedContentHost (ContentPresenter) > SaveHistoryLayout (Grid) > Border > Grid > SaveHistoryGrid (DataGrid) > GscDataGridBorder (Border))
+- [HIGH] TABLE_VIEWPORT_TOO_SHORT: SaveHistoryGrid 估算可见行数 3.6，实际高度 236 DIP
 
 ### standard 1116x660
 
 - ScrollViewer HeaderScrollViewer: 1114x36, viewport=36, extent=36, scrollable=0, nested=True
-- ScrollViewer DG_ScrollViewer: 739x471, viewport=7, extent=8, scrollable=1, nested=True
+- ScrollViewer DG_ScrollViewer: 739x395, viewport=6, extent=8, scrollable=2, nested=True
 - ScrollViewer SaveHistoryActionsScrollViewer: 360x609, viewport=603, extent=1144, scrollable=541, nested=True
 - ScrollViewer PART_ContentHost: 307x61, viewport=55, extent=19, scrollable=0, nested=True
-- DataGrid SaveHistoryGrid: 739x471, rows=8, visible~8.1, virtualization=IsVirtualizing=True,Mode=Recycling
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=138x24 DIP, desiredWidth=138, visible=138x24, availableWidth=944.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=930.67x36 DIP, desiredWidth=944.67, visible=715.33x36, availableWidth=944.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=930.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- DataGrid SaveHistoryGrid: 739x395, rows=8, visible~6.6, virtualization=IsVirtualizing=True,Mode=Recycling
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=716.67x24 DIP, desiredWidth=716.67, visible=716.67x24, availableWidth=716.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=716.67x66 DIP, desiredWidth=716.67, visible=716.67x66, availableWidth=716.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=716.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x25.33 DIP, desiredWidth=106, visible=0x0, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=False, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=106x19.33 DIP, desiredWidth=106, visible=106x19.33, availableWidth=106, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=278.67x19.33 DIP, desiredWidth=278.67, visible=278.67x19.33, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SaveHistoryActionsScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=309.33x44 DIP, desiredWidth=309.33, visible=0x0, availableWidth=344, children=2, actions/inputs=2/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SaveHistoryActionsScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=278.67x19.33 DIP, desiredWidth=278.67, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SaveHistoryActionsScrollViewer
@@ -298,13 +306,13 @@ Warnings:
 ### wide 1596x840
 
 - ScrollViewer HeaderScrollViewer: 1594x36, viewport=36, extent=36, scrollable=0, nested=True
-- ScrollViewer DG_ScrollViewer: 1219x651, viewport=8, extent=8, scrollable=0, nested=True
+- ScrollViewer DG_ScrollViewer: 1219x605, viewport=8, extent=8, scrollable=0, nested=True
 - ScrollViewer SaveHistoryActionsScrollViewer: 360x789, viewport=783, extent=1144, scrollable=361, nested=True
 - ScrollViewer PART_ContentHost: 307x61, viewport=55, extent=19, scrollable=0, nested=True
-- DataGrid SaveHistoryGrid: 1219x651, rows=8, visible~11.7, virtualization=IsVirtualizing=True,Mode=Recycling
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=252x24 DIP, desiredWidth=252, visible=252x24, availableWidth=252, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=930.67x36 DIP, desiredWidth=944.67, visible=930.67x36, availableWidth=1196.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=930.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- DataGrid SaveHistoryGrid: 1219x605, rows=8, visible~10.8, virtualization=IsVirtualizing=True,Mode=Recycling
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=1196.67x24 DIP, desiredWidth=1196.67, visible=1196.67x24, availableWidth=1196.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar SaveHistorySummaryActions: purpose=action-toolbar, excluded=False, reason=, layout=1196.67x36 DIP, desiredWidth=1196.67, visible=1196.67x36, availableWidth=1196.67, children=6, actions/inputs=8/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=389.33x36 DIP, desiredWidth=397.33, visible=389.33x36, availableWidth=1196.67, children=5, actions/inputs=3/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x25.33 DIP, desiredWidth=78, visible=78x25.33, availableWidth=78, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=
@@ -864,7 +872,7 @@ Warnings:
 - ListBox MediaClassificationHistoryList: 291x260, items=3
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=1811.33x75.33 DIP, desiredWidth=1811.33, visible=1811.33x75.33, availableWidth=2216, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=2216, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=2216, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=2216, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=1811.33x36 DIP, desiredWidth=1811.33, visible=1811.33x36, availableWidth=2216, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1811.33x40 DIP, desiredWidth=1811.33, visible=1811.33x40, availableWidth=2216, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=1811.33x40 DIP, desiredWidth=1811.33, visible=1811.33x40, availableWidth=2216, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
@@ -878,126 +886,129 @@ Warnings:
 ### compact 904x520
 
 - ScrollViewer HeaderScrollViewer: 886x37, viewport=37, extent=37, scrollable=0, nested=True
-- ScrollViewer MediaInboxPageScrollViewer: 888x385, viewport=379, extent=873, scrollable=494, nested=True
-- ScrollViewer DG_ScrollViewer: 841x520, viewport=6, extent=6, scrollable=0, nested=True
+- ScrollViewer MediaInboxPageScrollViewer: 888x385, viewport=379, extent=615, scrollable=236, nested=True
+- ScrollViewer DG_ScrollViewer: 841x262, viewport=4, extent=6, scrollable=2, nested=True
 - ScrollViewer PART_ContentHost: 129x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer MediaInboxInspectorScrollViewer: 0x0, viewport=0, extent=0, scrollable=0, nested=True
-- DataGrid MediaInboxGrid: 841x520, rows=6, visible~9.2, virtualization=IsVirtualizing=True,Mode=Standard
-- MediaInbox 几何：grid visible/layout=234/520 DIP，header=42/42 DIP，完整行=3/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=short-window-page-fallback，pageScroll=True
+- DataGrid MediaInboxGrid: 841x262, rows=6, visible~4.2, virtualization=IsVirtualizing=True,Mode=Standard
+- MediaInbox 几何：grid visible/layout=234/262 DIP，header=42/42 DIP，完整行=3/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=short-window-page-fallback，pageScroll=True
 - ListBox : 0x0, items=0
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=841.33x115.33 DIP, desiredWidth=841.33, visible=841.33x115.33, availableWidth=872, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=872, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=872, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=872, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=841.33x36 DIP, desiredWidth=841.33, visible=0x0, availableWidth=872, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=841.33x40 DIP, desiredWidth=841.33, visible=0x0, availableWidth=872, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=841.33x40 DIP, desiredWidth=841.33, visible=0x0, availableWidth=872, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=872, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 Warnings:
+- [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文：DG_ScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxTableFrame (Border) > Grid > MediaInboxGrid (DataGrid) > GscDataGridBorder (Border))
 - [MEDIUM] TOOLBAR_VERTICAL_EXPANSION: MediaInboxBatchActionRow 动作工具栏高度 115 DIP，包含 6 个子元素
-- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=3/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=234 / layout=520
+- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=3/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=234 / layout=262
 
 ### maximized 1383x672
 
 - ScrollViewer HeaderScrollViewer: 1365x37, viewport=37, extent=37, scrollable=0, nested=True
-- ScrollViewer MediaInboxPageScrollViewer: 1367x537, viewport=531, extent=985, scrollable=454, nested=True
-- ScrollViewer DG_ScrollViewer: 946x672, viewport=6, extent=6, scrollable=0, nested=True
+- ScrollViewer MediaInboxPageScrollViewer: 1367x537, viewport=531, extent=625, scrollable=94, nested=True
+- ScrollViewer DG_ScrollViewer: 946x312, viewport=4, extent=6, scrollable=2, nested=True
 - ScrollViewer PART_ContentHost: 129x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer MediaInboxInspectorScrollViewer: 360x482, viewport=476, extent=1500, scrollable=1024, nested=True
 - ScrollViewer PART_ContentHost: 200x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer : 289x258, viewport=1, extent=2, scrollable=1, nested=True
 - ScrollViewer : 289x258, viewport=2, extent=3, scrollable=1, nested=True
-- DataGrid MediaInboxGrid: 946x672, rows=6, visible~12.1, virtualization=IsVirtualizing=True,Mode=Standard
-- MediaInbox 几何：grid visible/layout=426/672 DIP，header=42/42 DIP，完整行=6/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=readable，pageScroll=True
+- DataGrid MediaInboxGrid: 946x312, rows=6, visible~5.2, virtualization=IsVirtualizing=True,Mode=Standard
+- MediaInbox 几何：grid visible/layout=312/312 DIP，header=42/42 DIP，完整行=5/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=readable，pageScroll=True
 - ListBox : 0x0, items=0
 - ListBox MediaClassificationPreviewItems: 291x260, items=2
 - ListBox MediaClassificationHistoryList: 291x260, items=3
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=946x75.33 DIP, desiredWidth=946, visible=946x75.33, availableWidth=1350.67, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=1350.67, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=1350.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=946x36 DIP, desiredWidth=946, visible=0x0, availableWidth=1350.67, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=946x40 DIP, desiredWidth=946, visible=0x0, availableWidth=1350.67, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=1350.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=946x36 DIP, desiredWidth=946, visible=946x36, availableWidth=1350.67, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=946x40 DIP, desiredWidth=946, visible=946x13.33, availableWidth=1350.67, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=946x40 DIP, desiredWidth=946, visible=0x0, availableWidth=1350.67, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=1350.67, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxInspectorScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=120x19.33 DIP, desiredWidth=120, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxInspectorScrollViewer
 Warnings:
+- [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文：DG_ScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxTableFrame (Border) > Grid > MediaInboxGrid (DataGrid) > GscDataGridBorder (Border))
 - [INFO] NESTED_VERTICAL_SCROLL: 嵌套纵向滚动上下文：MediaInboxInspectorScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid))
 - [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文： (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxInspectorScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxInspectorFrame (Border) > StackPanel > Border > StackPanel > MediaClassificationPreviewItems (ListBox) > Bd (Border))
 - [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文： (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxInspectorScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxInspectorFrame (Border) > StackPanel > Border > StackPanel > MediaClassificationHistoryList (ListBox) > Bd (Border))
-- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=6/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=426 / layout=672
 
 ### narrow 744x460
 
 - ScrollViewer HeaderScrollViewer: 726x37, viewport=37, extent=37, scrollable=0, nested=True
-- ScrollViewer MediaInboxPageScrollViewer: 728x325, viewport=319, extent=816, scrollable=497, nested=True
-- ScrollViewer DG_ScrollViewer: 681x460, viewport=6, extent=6, scrollable=0, nested=True
+- ScrollViewer MediaInboxPageScrollViewer: 728x325, viewport=319, extent=618, scrollable=299, nested=True
+- ScrollViewer DG_ScrollViewer: 681x262, viewport=4, extent=6, scrollable=2, nested=True
 - ScrollViewer PART_ContentHost: 129x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer MediaInboxInspectorScrollViewer: 0x0, viewport=0, extent=0, scrollable=0, nested=True
-- DataGrid MediaInboxGrid: 681x460, rows=6, visible~8.0, virtualization=IsVirtualizing=True,Mode=Standard
-- MediaInbox 几何：grid visible/layout=170.67/460 DIP，header=42/42 DIP，完整行=2/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=short-window-page-fallback，pageScroll=True
+- DataGrid MediaInboxGrid: 681x262, rows=6, visible~4.2, virtualization=IsVirtualizing=True,Mode=Standard
+- MediaInbox 几何：grid visible/layout=170.67/262 DIP，header=42/42 DIP，完整行=2/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=short-window-page-fallback，pageScroll=True
 - ListBox : 0x0, items=0
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=681.33x118.67 DIP, desiredWidth=681.33, visible=681.33x118.67, availableWidth=712, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=712, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=712, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=712, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=681.33x36 DIP, desiredWidth=681.33, visible=0x0, availableWidth=712, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=681.33x40 DIP, desiredWidth=681.33, visible=0x0, availableWidth=712, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=681.33x40 DIP, desiredWidth=681.33, visible=0x0, availableWidth=712, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=712, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 Warnings:
+- [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文：DG_ScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxTableFrame (Border) > Grid > MediaInboxGrid (DataGrid) > GscDataGridBorder (Border))
 - [MEDIUM] TOOLBAR_VERTICAL_EXPANSION: MediaInboxBatchActionRow 动作工具栏高度 119 DIP，包含 6 个子元素
-- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=2/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=171 / layout=460
+- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=2/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=171 / layout=262
 
 ### narrow-1100 804x480
 
 - ScrollViewer HeaderScrollViewer: 786x37, viewport=37, extent=37, scrollable=0, nested=True
-- ScrollViewer MediaInboxPageScrollViewer: 788x345, viewport=339, extent=836, scrollable=497, nested=True
-- ScrollViewer DG_ScrollViewer: 741x480, viewport=6, extent=6, scrollable=0, nested=True
+- ScrollViewer MediaInboxPageScrollViewer: 788x345, viewport=339, extent=618, scrollable=279, nested=True
+- ScrollViewer DG_ScrollViewer: 741x262, viewport=4, extent=6, scrollable=2, nested=True
 - ScrollViewer PART_ContentHost: 129x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer MediaInboxInspectorScrollViewer: 0x0, viewport=0, extent=0, scrollable=0, nested=True
-- DataGrid MediaInboxGrid: 741x480, rows=6, visible~8.4, virtualization=IsVirtualizing=True,Mode=Standard
-- MediaInbox 几何：grid visible/layout=190.67/480 DIP，header=42/42 DIP，完整行=2/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=short-window-page-fallback，pageScroll=True
+- DataGrid MediaInboxGrid: 741x262, rows=6, visible~4.2, virtualization=IsVirtualizing=True,Mode=Standard
+- MediaInbox 几何：grid visible/layout=190.67/262 DIP，header=42/42 DIP，完整行=2/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=short-window-page-fallback，pageScroll=True
 - ListBox : 0x0, items=0
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=741.33x118.67 DIP, desiredWidth=741.33, visible=741.33x118.67, availableWidth=772, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=772, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=772, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=772, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=741.33x36 DIP, desiredWidth=741.33, visible=0x0, availableWidth=772, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=741.33x40 DIP, desiredWidth=741.33, visible=0x0, availableWidth=772, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=741.33x40 DIP, desiredWidth=741.33, visible=0x0, availableWidth=772, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=772, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 Warnings:
+- [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文：DG_ScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxTableFrame (Border) > Grid > MediaInboxGrid (DataGrid) > GscDataGridBorder (Border))
 - [MEDIUM] TOOLBAR_VERTICAL_EXPANSION: MediaInboxBatchActionRow 动作工具栏高度 119 DIP，包含 6 个子元素
-- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=2/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=191 / layout=480
+- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=2/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=191 / layout=262
 
 ### standard 1116x660
 
 - ScrollViewer HeaderScrollViewer: 1098x37, viewport=37, extent=37, scrollable=0, nested=True
-- ScrollViewer MediaInboxPageScrollViewer: 1100x525, viewport=519, extent=1016, scrollable=497, nested=True
-- ScrollViewer DG_ScrollViewer: 679x660, viewport=6, extent=6, scrollable=0, nested=True
+- ScrollViewer MediaInboxPageScrollViewer: 1100x525, viewport=519, extent=656, scrollable=137, nested=True
+- ScrollViewer DG_ScrollViewer: 679x300, viewport=4, extent=6, scrollable=2, nested=True
 - ScrollViewer PART_ContentHost: 129x33, viewport=27, extent=19, scrollable=0, nested=True
 - ScrollViewer MediaInboxInspectorScrollViewer: 360x470, viewport=464, extent=1500, scrollable=1036, nested=True
 - ScrollViewer PART_ContentHost: 200x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer : 289x258, viewport=1, extent=2, scrollable=1, nested=True
 - ScrollViewer : 289x258, viewport=2, extent=3, scrollable=1, nested=True
-- DataGrid MediaInboxGrid: 679x660, rows=6, visible~11.9, virtualization=IsVirtualizing=True,Mode=Standard
-- MediaInbox 几何：grid visible/layout=370.67/660 DIP，header=42/42 DIP，完整行=6/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=readable，pageScroll=True
+- DataGrid MediaInboxGrid: 679x300, rows=6, visible~5.0, virtualization=IsVirtualizing=True,Mode=Standard
+- MediaInbox 几何：grid visible/layout=300/300 DIP，header=42/42 DIP，完整行=4/4，row=52 DIP，horizontalBar=12 DIP，frame padding/border=24/2 DIP，required grid/frame=262/288 DIP，status=readable，pageScroll=True
 - ListBox : 0x0, items=0
 - ListBox MediaClassificationPreviewItems: 291x260, items=2
 - ListBox MediaClassificationHistoryList: 291x260, items=3
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=679.33x118.67 DIP, desiredWidth=679.33, visible=679.33x118.67, availableWidth=1084, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=1084, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=1084, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=679.33x36 DIP, desiredWidth=679.33, visible=0x0, availableWidth=1084, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=1084, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=679.33x36 DIP, desiredWidth=679.33, visible=679.33x36, availableWidth=1084, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=679.33x40 DIP, desiredWidth=679.33, visible=0x0, availableWidth=1084, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=679.33x40 DIP, desiredWidth=679.33, visible=0x0, availableWidth=1084, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=1084, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxInspectorScrollViewer
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=120x19.33 DIP, desiredWidth=120, visible=0x0, availableWidth=344, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxInspectorScrollViewer
 Warnings:
+- [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文：DG_ScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxTableFrame (Border) > Grid > MediaInboxGrid (DataGrid) > GscDataGridBorder (Border))
 - [INFO] NESTED_VERTICAL_SCROLL: 嵌套纵向滚动上下文：MediaInboxInspectorScrollViewer (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid))
 - [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文： (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxInspectorScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxInspectorFrame (Border) > StackPanel > Border > StackPanel > MediaClassificationPreviewItems (ListBox) > Bd (Border))
 - [INFO] EXPECTED_SIBLING_SCROLL: 嵌套纵向滚动上下文： (chain=MediaCenterView > Border > ContentPresenter > Grid > MediaTabControl (TabControl) > Grid > PART_SelectedContentHost (ContentPresenter) > MediaInboxPageScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxScrollSurface (Grid) > MediaInboxPageSurface (Grid) > MediaInboxLayout (Grid) > MediaInboxInspectorScrollViewer (ScrollViewer) > Grid > ScrollContentPresenter > MediaInboxInspectorFrame (Border) > StackPanel > Border > StackPanel > MediaClassificationHistoryList (ListBox) > Bd (Border))
 - [MEDIUM] TOOLBAR_VERTICAL_EXPANSION: MediaInboxBatchActionRow 动作工具栏高度 119 DIP，包含 6 个子元素
-- [INFO] PRIMARY_SCROLL_ACCESS: MediaInboxGrid 当前有效裁剪区域为表头完整=True、完整行=6/4，可通过 MediaInboxPageScrollViewer 滚动到完整表格：visible=371 / layout=660
 
 ### wide 1596x840
 
@@ -1016,7 +1027,7 @@ Warnings:
 - ListBox MediaClassificationHistoryList: 291x260, items=3
 - Toolbar MediaInboxBatchActionRow: purpose=action-toolbar, excluded=False, reason=, layout=1171.33x75.33 DIP, desiredWidth=1171.33, visible=1171.33x75.33, availableWidth=1576, children=6, actions/inputs=4/4, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxTargetActions: purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=344.67x75.33 DIP, desiredWidth=344.67, visible=344.67x75.33, availableWidth=1576, children=2, actions/inputs=1/2, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x54.67 DIP, desiredWidth=78, visible=78x54.67, availableWidth=1576, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=78x19.33 DIP, desiredWidth=78, visible=78x19.33, availableWidth=1576, children=2, actions/inputs=0/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaFilterPresetRow: purpose=action-toolbar, excluded=False, reason=, layout=1171.33x36 DIP, desiredWidth=1171.33, visible=1171.33x36, availableWidth=1576, children=7, actions/inputs=4/3, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1171.33x40 DIP, desiredWidth=1171.33, visible=1171.33x40, availableWidth=1576, children=7, actions/inputs=3/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
 - Toolbar MediaInboxSecondaryActions: purpose=action-toolbar, excluded=False, reason=, layout=1171.33x40 DIP, desiredWidth=1171.33, visible=1171.33x40, availableWidth=1576, children=5, actions/inputs=5/0, horizontalOverflow=False, reachable=True, scrollableAncestor=MediaInboxPageScrollViewer
@@ -2038,8 +2049,8 @@ Warnings:
 ### 2k 2236x1200
 
 - ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x737, viewport=5, extent=5, scrollable=0, nested=True
-- ScrollViewer SettingsScroller: 1154x756, viewport=750, extent=733, scrollable=0, nested=True
+- ScrollViewer : 171x733, viewport=5, extent=5, scrollable=0, nested=True
+- ScrollViewer SettingsScroller: 1154x752, viewport=746, extent=733, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2047,16 +2058,16 @@ Warnings:
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x737, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1061.33x36 DIP, desiredWidth=1061.33, visible=1061.33x36, availableWidth=1061.33, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- ListBox SettingsSectionTabs: 171x733, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1244.67x36 DIP, desiredWidth=1244.67, visible=1244.67x36, availableWidth=1244.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=779.33x36 DIP, desiredWidth=779.33, visible=779.33x36, availableWidth=1150, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=756.67x36 DIP, desiredWidth=756.67, visible=756.67x36, availableWidth=1150, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 
 ### compact 904x520
 
 - ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x41, viewport=1, extent=5, scrollable=4, nested=True
-- ScrollViewer SettingsScroller: 619x60, viewport=54, extent=765, scrollable=711, nested=True
+- ScrollViewer : 171x37, viewport=1, extent=5, scrollable=4, nested=True
+- ScrollViewer SettingsScroller: 619x56, viewport=50, extent=765, scrollable=715, nested=True
 - ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2064,8 +2075,8 @@ Warnings:
 - ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x41, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=526.67x36 DIP, desiredWidth=526.67, visible=526.67x36, availableWidth=526.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- ListBox SettingsSectionTabs: 171x37, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=710x36 DIP, desiredWidth=710, visible=710x36, availableWidth=710, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=551.33x36 DIP, desiredWidth=551.33, visible=551.33x36, availableWidth=603.33, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=528.67x36 DIP, desiredWidth=528.67, visible=0x0, availableWidth=603.33, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 Warnings:
@@ -2074,8 +2085,8 @@ Warnings:
 ### maximized 1383x672
 
 - ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x209, viewport=4, extent=5, scrollable=1, nested=True
-- ScrollViewer SettingsScroller: 1098x228, viewport=222, extent=733, scrollable=511, nested=True
+- ScrollViewer : 171x205, viewport=4, extent=5, scrollable=1, nested=True
+- ScrollViewer SettingsScroller: 1098x224, viewport=218, extent=733, scrollable=515, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2083,18 +2094,18 @@ Warnings:
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x209, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1005.33x36 DIP, desiredWidth=1005.33, visible=1005.33x36, availableWidth=1005.33, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- ListBox SettingsSectionTabs: 171x205, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1188.67x36 DIP, desiredWidth=1188.67, visible=1188.67x36, availableWidth=1188.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=779.33x36 DIP, desiredWidth=779.33, visible=779.33x36, availableWidth=1082, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=756.67x36 DIP, desiredWidth=756.67, visible=756.67x7.33, availableWidth=1082, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=756.67x36 DIP, desiredWidth=756.67, visible=756.67x3.33, availableWidth=1082, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 Warnings:
 - [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文： (chain=GameSaveCenterSettingsView > Border > ContentPresenter > Grid > SettingsDemoShell (Border) > SettingsShell (Grid) > SettingsWorkspace (Grid) > SettingsCategoryRail (Border) > SettingsSectionTabs (ListBox))
 
 ### narrow 744x460
 
-- ScrollViewer PART_ContentHost: 399x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x0, viewport=1, extent=5, scrollable=4, nested=True
-- ScrollViewer SettingsScroller: 459x0, viewport=0, extent=849, scrollable=849, nested=True
+- ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
+- ScrollViewer : 171x11, viewport=1, extent=5, scrollable=4, nested=True
+- ScrollViewer SettingsScroller: 459x29, viewport=23, extent=849, scrollable=826, nested=True
 - ScrollViewer PART_ContentHost: 242x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 242x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 242x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2102,16 +2113,16 @@ Warnings:
 - ScrollViewer PART_ContentHost: 242x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 242x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 242x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x0, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=378.67x72 DIP, desiredWidth=378.67, visible=378.67x72, availableWidth=378.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=394.67x36 DIP, desiredWidth=394.67, visible=0x0, availableWidth=443.33, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
+- ListBox SettingsSectionTabs: 171x11, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=562x36 DIP, desiredWidth=562, visible=562x36, availableWidth=562, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=394.67x36 DIP, desiredWidth=394.67, visible=394.67x10, availableWidth=443.33, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=372x72 DIP, desiredWidth=372, visible=0x0, availableWidth=443.33, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 
 ### narrow-1100 804x480
 
-- ScrollViewer PART_ContentHost: 459x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x0, viewport=1, extent=5, scrollable=4, nested=True
-- ScrollViewer SettingsScroller: 519x17, viewport=11, extent=817, scrollable=806, nested=True
+- ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
+- ScrollViewer : 171x31, viewport=1, extent=5, scrollable=4, nested=True
+- ScrollViewer SettingsScroller: 519x49, viewport=43, extent=817, scrollable=774, nested=True
 - ScrollViewer PART_ContentHost: 302x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 302x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 302x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2119,16 +2130,18 @@ Warnings:
 - ScrollViewer PART_ContentHost: 302x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 302x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 302x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x0, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=438.67x72 DIP, desiredWidth=438.67, visible=438.67x72, availableWidth=438.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
-- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=454.67x36 DIP, desiredWidth=454.67, visible=0x0, availableWidth=503.33, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
+- ListBox SettingsSectionTabs: 171x31, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=622x36 DIP, desiredWidth=622, visible=622x36, availableWidth=622, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=454.67x36 DIP, desiredWidth=454.67, visible=454.67x30, availableWidth=503.33, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=432x72 DIP, desiredWidth=432, visible=0x0, availableWidth=503.33, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
+Warnings:
+- [INFO] EXPECTED_INTERNAL_SCROLL: 控件内部滚动上下文： (chain=GameSaveCenterSettingsView > Border > ContentPresenter > Grid > SettingsDemoShell (Border) > SettingsShell (Grid) > SettingsWorkspace (Grid) > SettingsCategoryRail (Border) > SettingsSectionTabs (ListBox))
 
 ### standard 1116x660
 
 - ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x197, viewport=4, extent=5, scrollable=1, nested=True
-- ScrollViewer SettingsScroller: 831x216, viewport=210, extent=733, scrollable=523, nested=True
+- ScrollViewer : 171x193, viewport=4, extent=5, scrollable=1, nested=True
+- ScrollViewer SettingsScroller: 831x212, viewport=206, extent=733, scrollable=527, nested=True
 - ScrollViewer PART_ContentHost: 614x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 614x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 614x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2136,8 +2149,8 @@ Warnings:
 - ScrollViewer PART_ContentHost: 614x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 614x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 614x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x197, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=738.67x36 DIP, desiredWidth=738.67, visible=738.67x36, availableWidth=738.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- ListBox SettingsSectionTabs: 171x193, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=922x36 DIP, desiredWidth=922, visible=922x36, availableWidth=922, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=766.67x36 DIP, desiredWidth=766.67, visible=766.67x36, availableWidth=815.33, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=744x36 DIP, desiredWidth=744, visible=0x0, availableWidth=815.33, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 Warnings:
@@ -2146,8 +2159,8 @@ Warnings:
 ### wide 1596x840
 
 - ScrollViewer PART_ContentHost: 517x33, viewport=27, extent=19, scrollable=0, nested=True
-- ScrollViewer : 171x377, viewport=5, extent=5, scrollable=0, nested=True
-- ScrollViewer SettingsScroller: 1154x396, viewport=390, extent=733, scrollable=343, nested=True
+- ScrollViewer : 171x373, viewport=5, extent=5, scrollable=0, nested=True
+- ScrollViewer SettingsScroller: 1154x392, viewport=386, extent=733, scrollable=347, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
@@ -2155,8 +2168,8 @@ Warnings:
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
 - ScrollViewer PART_ContentHost: 627x33, viewport=27, extent=16, scrollable=0, nested=True
-- ListBox SettingsSectionTabs: 171x377, items=5
-- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1061.33x36 DIP, desiredWidth=1061.33, visible=1061.33x36, availableWidth=1061.33, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
+- ListBox SettingsSectionTabs: 171x373, items=5
+- Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=1244.67x36 DIP, desiredWidth=1244.67, visible=1244.67x36, availableWidth=1244.67, children=3, actions/inputs=2/2, horizontalOverflow=False, reachable=True, scrollableAncestor=
 - Toolbar : purpose=content-flow, excluded=True, reason=非动作内容流：没有足够的命令按钮, layout=779.33x36 DIP, desiredWidth=779.33, visible=779.33x36, availableWidth=1138, children=3, actions/inputs=1/0, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 - Toolbar : purpose=action-toolbar, excluded=False, reason=, layout=756.67x36 DIP, desiredWidth=756.67, visible=756.67x36, availableWidth=1138, children=5, actions/inputs=4/2, horizontalOverflow=False, reachable=True, scrollableAncestor=SettingsScroller
 

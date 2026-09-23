@@ -1,6 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-> 2026-09-23 当前交接：工作分支 `main`，R18-04 当前源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872`；Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。R18 专测 `1/1`，四个关联行为类 `6+10+3+4=23/23`、0 失败/跳过，五个 VSTest 进程 exit 0；精确用例、当前原始滚动样本与 6/2 行 `InvalidComObjectException` testhost 清理输出见 `evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。Task 最大容器/可见 `9/7`；Media Inbox `14/14/14`，UI 上限 `2,000`；本次 20k Media 样本有一个 `0.917 ms`，保留为单独观察。下一步先完成 R00-01/02 和 R00-05 已跑完探针/行为测试的证据及 freshness 同步，然后继续依赖已满足的 Q/R 小批量。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。没有触碰真实存档、媒体、用户云端或外发诊断。
+## 2026-09-23 当前接续
+
+当前 main 代码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`。用户截图四处布局问题已各自提交；当前 Release/XAML `24/24`、0 errors/2 条既有 CS8602 warning；截图布局双主题行为 `8/8`，R18 专测 `1/1` + 关联行为 `23/23`。审计 `168 snapshots / 118 warnings / 7 HIGH / 4 MEDIUM`、证据索引 `20/20`、freshness `14/14`，package identity not-provided。渲染总门禁仍有 40 个问题，真实 Playnite/UIA/IME、物理 DPI、presented frame、ETW/宿主性能未验；WPF testhost 清理噪声 6 行 InvalidComObjectException、R18 TRX 仍 `1/1`，根因未知。细节见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-20260923.md` 与 R18-04 evidence。
+
+下一可执行项：Q06-06 鼠标/Enter/Space 一致性；先查已有真实事件/命令断言，再补隔离 WPF 输入正/负行为验证。R02-06 Playnite 菜单宿主、R23-05 系统呈现数据仍为外部未验边界。Demo 原目录不可用，遵守 Demo-first 对恢复生产基线的引用，不自创替代体系。
+
+
+> 历史交接（已由上方本轮 main 接续更新）：工作分支 `main`，R18-04 当前源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872`；Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。R18 专测 `1/1`，四个关联行为类 `6+10+3+4=23/23`、0 失败/跳过，五个 VSTest 进程 exit 0；精确用例、当前原始滚动样本与 6/2 行 `InvalidComObjectException` testhost 清理输出见 `evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。Task 最大容器/可见 `9/7`；Media Inbox `14/14/14`，UI 上限 `2,000`；本次 20k Media 样本有一个 `0.917 ms`，保留为单独观察。下一步先完成 R00-01/02 和 R00-05 已跑完探针/行为测试的证据及 freshness 同步，然后继续依赖已满足的 Q/R 小批量。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。没有触碰真实存档、媒体、用户云端或外发诊断。
 
 > 2026-09-23 R18-03 缩略图滚动预算定向复核：D 盘 `D:\workplace\github\GameSaveCenter` 的 `codex/ui-finesse-round2` 当前复核基线为 `93b115f4`；没有新增生产代码，复用 `e54d514e`/`18c5073f` 的 `AsyncThumbnailLoader` 3 路解码、96 项 LRU、取消和 generation 迟到结果保护。`R18ThumbnailBudgetTests 1/1`；loader/image 回归 `8/8`，合计 `9/9`；120 请求/解码开始/成功 `120/120/120`，峰值活动 `3`，缓存 `96/96`、活动逐轮归零、取消 `1`、迟到失败最终 `Ready`，托管堆代理峰值 `112,456 bytes`；隔离 Release `0 errors/2 条既有 warning`，均为 `MediaCenterView.xaml.cs:706` 的 `CS8602`；`validate-source.py`、XAML `24/24`、diff、WPF `0/28/162` 通过。未验真实 Playnite/package-host 快速滚动、显存、presented frame、DPI/UIA/IME、ETW 或宿主性能；只用合成 PNG/隔离目录/受控 STA，Demo 原目录不可用。证据见 `design/reviews/ui-finesse-round3-20260915/evidence/R18-03-THUMBNAIL-BUDGET-RECHECK-20260923.md`。下一可执行任务：`R18-04 表格容器预算`，先核对 DataGrid/ListBox 虚拟化和 2k/10k/20k 容器上限。
 

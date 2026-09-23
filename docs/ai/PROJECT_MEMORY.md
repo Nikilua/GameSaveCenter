@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 当前接续事实（2026-09-23 main）
+
+本轮用户新增四张布局问题已由 `da91bd68`、`a4bac32f`、`9f3d7ab9`、`3a1dadd8` 分批收口，当前代码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`。媒体待归类按钮为 36 DIP、表格滚动不越 footer；任务失败行边框错位为 0；存档历史 1040×700 窗口操作区为 36 DIP 紧凑行；设置页搜索框与标题左缘一致、宽屏上限 520 DIP、窄布局 408 DIP 无溢出。四种页面 Light/Dark 行为 `8/8`，证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-20260923.md`。
+
+必须区别样本：当前 R18-04 TRX Task 为 7/9/7、Media 为 7/7/7；旧 `14/14/14` 来自不同受控窗口，不能并成同一采样。当前 testhost 关闭时 R18 专测输出 6 行 TextServicesHost `InvalidComObjectException` 清理噪声，但 TRX `1/1`、exit 0、根因未知。当前 audit 168 snapshots/118 warnings/0 Fidelity/0 failed routes，仍有 7 HIGH/4 MEDIUM；index 20/20；freshness 14/14，package identity not-provided。Render QA 仍有 40 个其他尺寸问题。
+
+下一步从旧 Q 队列做 Q06-06 输入一致性行为小批量：先看已有事件/命令测试覆盖；使用隔离 WPF Window 验证 Enter、Space、鼠标各单次调用；负例验证不可执行按钮无调用。真实 Playnite输入/ETW边界不能由离屏事件代替。
+
+
 ## 2026-09-23 main 接续与 R23-03 代表页面终审
 
 - 当前复核代码身份 `7a4ba2a94da870c832e59f3ee025f9e34325d175`，相对样式/测试提交 `a18cb43e` 仅有 docs 变化。八类生产入口和各自 Demo 对应/业务例外已在 R23-03 索引逐项记录。

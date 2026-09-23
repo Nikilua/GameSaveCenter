@@ -1,7 +1,7 @@
 # UI Route Map
 
-生成时间：2026-09-23T05:23:50.2689042Z
-Commit：f55dce61adba84fec96c3e5434e5a8c1e3fa7132
+生成时间：2026-09-23T11:36:16.7264933Z
+Commit：3a1dadd80bae6152dce9c3f684d5d2c745f02bc8
 
 路由来自真实 XAML 源码自动发现；新增页面加入 Dashboard 或 Views 目录后会自动出现在本文件。
 

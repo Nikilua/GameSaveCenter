@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23：修复用户报告的四处窗口化布局问题
+
+- main 上完成四个独立源代码提交：媒体滚动边界与存档操作留白 `da91bd68`、Media Inbox 批量动作高度及几何检查 `a4bac32f`、Task 失败行 chrome `9f3d7ab9`、Settings header/search 锚点 `3a1dadd8`。
+- 同一当前身份验证：Release XAML `24/24`、0 errors/2 条既有 nullable warning；布局行为 Light/Dark `8/8`；R18 专测 `1/1`、关联用例 `23/23`；列明的隔离测试合计 `87 passed / 13 skipped / 0 failed`。测试退出时 WPF TextServicesHost 有 6 行 InvalidComObjectException 清理输出，结果通过/exit0、原因未知。
+- RenderHarness 当前 audit `168/118/0 Fidelity/0 failed routes`，保留 `7 HIGH/4 MEDIUM`；archive index `20/20`。Render QA 仍有 40 项，Overview 20、Save 8、Task 4、其他 SettingsLayout 8；没有写成整套门禁通过。freshness `14/14 fresh`，行为脚本测试通过。
+- 留档了四张受控离屏图、R18 原始样本与审计摘要；Demo 原目录不可用，仍以恢复生产基线做比较。无真实存档/媒体/云端/诊断写入；真实 Playnite/package-host、DPI/UIA/IME、presented frame、ETW/宿主性能未验。
+- 下一阶段 Q06-06：核查 Enter、Space、鼠标输入路由在隔离 WPF 中是否单次执行同一安全命令，补不可执行负例；先查现有行为测试，避免重复实现。
+
+
 ## 2026-09-23 Round3 R23-03 代表页面当前身份复核
 
 - 本批不改生产页面/服务/DTO/命令；按当前生产入口核对概览、存档、媒体、Trainer 工具、任务、维护、设置与 Acrylic shell 的信息状态、真实命令/Automation 路由、滚动/选择/安全边界及 Demo 对应/业务例外。

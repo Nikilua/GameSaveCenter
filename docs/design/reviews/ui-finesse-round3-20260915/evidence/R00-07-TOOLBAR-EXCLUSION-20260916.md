@@ -49,3 +49,9 @@
 - 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `UiAuditSourceTests` 为 `6/6`；`toolbarprobe` 为 `OK`，正常输入表单仍以 `settings-form` 排除并记录理由，同祖先 `700 DIP` 动作栏命中横向溢出，不可达动作栏命中 `TOOLBAR_UNREACHABLE`。
 - 本次同一身份的完整受控审计实际为 `168` 个运行时快照、`0` Fidelity、`0` 失败路由，但摘要含 `7` 条 TRUE_PARENT_CHILD_SCROLL_CONFLICT HIGH 与 `4` 条 TOOLBAR_VERTICAL_EXPANSION MEDIUM；这些结果已保留，不能沿用历史的 `0 HIGH/0 MEDIUM` 文案。
 - 工具栏正例/负例仍来自实际 WPF 面板布局和分类几何；审计摘要中的页面滚动冲突属于当前审计边界，未在本小批量内改动滚动模型。
+
+## 2026-09-23 当前 main identity 复核
+
+- 当前 `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8` 下 `UiAuditSourceTests 6/6`，当前 `toolbarprobe` 的正常表单、同命名祖先 `700 DIP` 超宽动作栏、垂直不可达动作栏三个合成 WPF 场景均符合预期。
+- 当前完整受控审计 `168` snapshots、`118` warnings、`0` Fidelity、`0` 失败路由；摘要保留 `7 HIGH / 4 MEDIUM`。这不等于旧记录曾经的 `0 HIGH / 0 MEDIUM`，也不代表用户报告页面风险已全部关闭。
+- 受控面板/离屏逻辑尺寸不替代当前 Playnite 宿主可达性、ETW 或呈现帧证据；本次 audit 归档见 [R01-06 controlled audit](R01-06-controlled-audit-20260923/README.md)。

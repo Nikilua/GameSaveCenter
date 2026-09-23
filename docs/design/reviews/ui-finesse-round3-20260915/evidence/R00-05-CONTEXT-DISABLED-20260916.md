@@ -35,3 +35,15 @@ R00-05 的共享样式修正与受控行为验证已完成，账本保持“代�
 
 - 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 隔离 Release testhost 的 `ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles` 为 `2/2`（Light/Dark）。
 - 存档、远端恢复和媒体批量三类派生样式仍观测到控件 `Opacity=1`、共享 `ButtonChrome=0.72`，状态切换高度无跳变；本次没有改动生产样式、命令、绑定或安全语义。
+
+## 2026-09-23 当前 main 主题资源身份刷新
+
+- 当前样式与测试源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872` 的隔离 Release 输出中，`ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles` Light/Dark `2/2` 通过、0 失败/跳过；每个 case 均实际加载生产主题字典和 Context/RemoteRestore/MediaBatch 派生样式。
+- 两主题中三类按钮均保持控件 `Opacity=1`、模板 `ButtonChrome.Opacity=0.72`；启停高度差 `<0.01 DIP`，复合标签/图标/解释文字保持可见且主题合成最低对比度达到 `3.0`。本轮未改生产样式、命令、Binding、布局或错误/安全语义。
+- 隔离 Release 构建身份与 R00-01/02 探针相同：XAML `24/24`，solution 0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning。测试是隔离 STA WPF/合成主题环境，不能替代真实 Playnite 屏幕像素、物理 DPI 或宿主输入。
+
+## 2026-09-23 当前 main HEAD `3a1dadd8` 复核
+
+- 当前隔离 Release testhost 的 `ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles` Light/Dark `2/2` 通过；实际加载 Context、RemoteRestore、MediaBatch 三类生产派生样式。
+- 本轮继续观察控件 `Opacity=1`、模板 `ButtonChrome.Opacity=0.72`，高度切换差 `<0.01 DIP`；不改变样式、命令、Binding 或安全/错误语义。
+- 当前 build 保留两条已有 `MediaCenterView.xaml.cs:703 CS8602` warning；受控 WPF 资源合成不替代真实宿主像素、物理 DPI 和用户输入。

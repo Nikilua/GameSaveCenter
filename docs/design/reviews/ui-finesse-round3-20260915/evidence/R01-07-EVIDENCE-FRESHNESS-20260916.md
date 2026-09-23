@@ -87,3 +87,9 @@ R01-08 跳过测试说明已有独立证据；按主账本继续处理依赖满�
 
 - R02-01 新增测试提交 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 后，freshness 在该完整 SHA 上再次运行，14 条记录均无需重跑，0 stale；变化的 R02 测试路径未匹配 R00/R01 已绑定证据源路径。`package=not-provided` 仍保留，不能代替 package-host 复验。
 - docs-only、shared-control 和 package-identity 三组 freshness 行为测试通过；报告仍独立记录源码与包身份。
+
+## 2026-09-23 当前 main `3a1dadd8` 复扫
+
+- 将本轮已实际复核的 R00-01-02、R00-05、R00-06、R00-07、R01-03、R01-06 证据记录绑定到完整源码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`；其余 sourcePaths 未命中的记录保留各自原身份。
+- `check-ui-evidence-freshness.ps1 -HeadCommit HEAD` 输出 `14 fresh / 0 stale`；`package=not-provided`，不构成安装包或 Playnite 宿主验证。`test-ui-evidence-freshness.ps1` 的 docs-only、shared-control、package-identity 用例通过。
+- 当前报告：[2026-09-23 main freshness](R01-07-freshness-report-20260923-current.json)。文档变更不要求重跑/重装；sourceCommit 与 packageCommit 仍分开记录。

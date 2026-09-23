@@ -60,3 +60,10 @@
 - 当前提交 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `MediaInboxGeometryTests` 为 `3/3`，`MediaWindowAnchorContractTests` 为 `10/10`；隔离 Release solution 为 `0 errors/2` 条既有 nullable warning。
 - Light/Dark `mediageometryprobe` 均为 `normal/readable`、`horizontal-scroll/readable`、`alternate-density/readable`、`short-window-page-fallback`；`blocked-parent` 明确为 `pageScroll=False` 并保留 `PRIMARY_VIEWPORT_TOO_SHORT/HIGH` 与 `PRIMARY_VIEWPORT_UNREACHABLE/HIGH` 负例。
 - 当前实现把窄宽度/紧凑高度切换回页级滚动，并把表格预算改为包含现有 footer 行的 `360 DIP`；`shellqa` 在 `1040×700`、`1100×720`、`1366×768` 均记录 footer、历史和次级动作可达。该批没有更换游戏选框、滚动条体系、命令/绑定或 `net462` 契约。
+
+## 2026-09-23 用户媒体截图当前 identity 复核
+
+- 当前 main `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8` 的 `ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow` 双主题 `2/2`；四个布局回归用例按 Light/Dark 展开共 `8/8`。
+- 媒体批量动作与模式框为 `36 DIP`、中心偏差最大 `0.33 DIP`；表格 `360 DIP`、footer 重叠 `0`；内部滚动条落在表格框内，内部 offset `74/74 DIP` 后页级 offset `107.33/107.33 DIP`，滚轮通道没有穿过 footer。
+- 同一 3a 身份 R18 专测记录 Media Inbox `7/7/7`，并非旧证据中的 `14/14/14`。两者使用不同受控窗口/共享模板测量范围，当前 R18 TRX 值以 [R18-04 当前复采](R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md) 为准，不混成一个样本。
+- 该证据来自合成媒体条目和离屏 logical DIP，不替代 Playnite 中实际滚轮、物理尺寸或最终呈现验证；用户截图布局的四页复核见 [用户截图布局复核](USER-REPORTED-LAYOUT-20260923.md)。
