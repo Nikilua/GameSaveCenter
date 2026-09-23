@@ -1,5 +1,15 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main 接续与 R18-04 当前复核
+
+- 当前分支 main，HEAD f55dce61adba84fec96c3e5434e5a8c1e3fa7132；合并 codex/ui-finesse-round2 后保留 main 后续历史，工作区已切离 feature 分支。R02-02 RenderHarness 探针修正随合并进入 main。
+- R18-04 使用 main Release 测试程序集复核：容器预算专测 1/1；四个相关行为类 23/23、0 skip。组成是 MediaPageAccumulator 6、MediaWindowAnchorContract 10、MediaInboxGeometry 3、R07SelectionAnchor 4，完整用例名见 R18-04 证据。
+- Task 2k/10k/20k 最大实现/可见行均为 9/7；Media Inbox 14/14/14，后端 10k/20k 时 UI 项仍封顶 2,000。main 这一轮滚动最大 Task 64.610/31.580/26.482ms，Media 0.027/0.025/0.652ms；20k Media 单样本 0.652ms 如实保留，之前约 0.03ms 的采样仍作为旧样本。
+- 数据来自合成 DTO、隔离 STA WPF Window 和逻辑 DIP。此前 testhost 清理日志出现过 TextServicesHost InvalidComObjectException，但 xUnit 成功且进程退出码为 0，根因未知；本次 main TRX 均通过，控制台未重现。
+- 下一步按当前目标完成 R00/R01 主分支证据更新，再推进依赖满足的 Q/R。真实 Playnite、物理 DPI/UIA/IME、presented frame、ETW 和宿主性能仍未验。
+
+证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。
+
 ## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
 
 - 当前分支 `codex/ui-finesse-round2`，提交 `eaee1d20`。没有重建 busy 服务或 DTO；修正 RenderHarness，使忙态按钮位于已加载的屏幕外 STA Window 中，等待原有 120ms 指示器延迟后再检查。

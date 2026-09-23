@@ -1,5 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-23 main 接续与 R18-04 当前证据
+
+- 当前工作分支是 main，HEAD f55dce61adba84fec96c3e5434e5a8c1e3fa7132，包含 ui-finesse-round2 已验证代码并保留 main 后续提交。不要切回 codex/ui-finesse-round2，也不要用旧 main 页面实现覆盖当前 UI。
+- R18-04 在 main Release 测试程序集复核通过：专测 1/1；MediaPageAccumulator 6/6、MediaWindowAnchorContract 10/10、MediaInboxGeometry 3/3、R07SelectionAnchor 4/4，相关总计 23/23，0 skip。精确方法名见 R18-04 证据。
+- 2k/10k/20k Task 最大实现/可见行 9/7；Media Inbox 视口/实现/可见 14/14/14，Media UI 窗口最多 2,000 项。最新 main 样本 Task 最大滚动 64.610/31.580/26.482ms，Media 0.027/0.025/0.652ms；单次 0.652ms 不筛除，前次约 0.03ms 样本保留为历史数据。
+- 合成 DTO/隔离 STA WPF/逻辑 DIP 不是宿主帧性能证据。WPF TextServicesHost InvalidComObjectException 曾出现在 testhost 清理阶段；xUnit 明确通过、进程 exit 0，根因未明。本次 main TRX 通过且控制台未复现。
+- 下一步更新 R00/R01 的 main 审计归档与 freshness 证据；其后按表格继续依赖满足的 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、presented frame、ETW 和宿主性能边界仍未验。
+
+证据：design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md。
+
 ## 第三轮 R02-02 忙碌宽度当前复核（2026-09-23）
 
 - `eaee1d20` 只修正 RenderHarness 对已有 busy 模板的采样环境/时序，没有生产忙态服务或 DTO 改动。旧探针的 Grid 未加载，无法启动 `IsLoaded` 门控的 120ms 指示器延迟；现改由屏幕外隔离 STA Window 加载控件，立即态应隐藏、150ms 后检查显示。

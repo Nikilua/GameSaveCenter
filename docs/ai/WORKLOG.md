@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 main 合并后 R18-04 测试组成复核
+
+- 在 main HEAD f55dce61 使用当前 Release Playnite Tests 程序集重跑 R18 专测与四类关联行为回归；TestRepositoryContext 身份检查通过。
+- R18TableContainerBudgetTests 1/1；MediaPageAccumulatorTests 6/6、MediaWindowAnchorContractTests 10/10、MediaInboxGeometryTests 3/3、R07SelectionAnchorBehaviorTests 4/4，TRX 汇总 23/23、0 失败、0 跳过，exit 0。用例名、正负例与理论展开数已同步到 R18 证据，原始 TRX 为本机临时输出。
+- main 实测 Task 三档最大容器/可见均 9/7；Media Inbox 14/14/14，窗口项数 2,000。8 次滚动样本原样记录；Media 20k 有一个 0.652ms 调度样本，其余六个末尾样本为 0.029–0.039ms，没有筛除慢值。
+- R18-04 账本与证据已更新。仅合成 DTO、隔离 STA/逻辑 DIP；不宣称宿主性能或 presented frame。测试历史清理阶段出现过 TextServicesHost InvalidComObjectException，测试明确成功、exit 0，根因未知。
+- 下一步：按目标更新 R00/R01 的 main 审计归档和 freshness，随后检查依赖满足的 Q/R。
+
 ## 2026-09-23 Round3 R02-02 忙碌宽度复核
 
 - 在 `codex/ui-finesse-round2` 提交 `eaee1d20` 修正 `RunButtonBusyProbe`：增加已加载、屏幕外的 STA Window；记录立即隐藏/150ms 后出现的逻辑状态、按钮宽度/文本、进度条尺寸/可见/暂停状态。旧探针只创建 Grid，导致生产控件 `IsLoaded=false`，原 120ms 定时器不启动。

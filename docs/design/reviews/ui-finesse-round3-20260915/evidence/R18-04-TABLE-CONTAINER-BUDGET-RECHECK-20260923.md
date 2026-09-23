@@ -1,6 +1,6 @@
 # R18-04 表格容器预算定向复核（2026-09-23）
 
-## 身份与范围
+## 此前复核身份（f175c57d）
 
 - 仓库：`D:\workplace\github\GameSaveCenter`
 - 分支：`codex/ui-finesse-round2`
@@ -8,7 +8,7 @@
 - 本批没有改生产代码。复用 `64843642` 已完成的有限视口修复、生产 Task/Media DataGrid、`MediaPageAccumulator` 与当前共享模板；没有从 `main` 复制或覆盖实现。
 - R18-04 专测在隔离 Release testhost 中通过 `1/1`。相关媒体分页、锚点、几何和稳定选择行为回归合计 `23/23`，精确组成见下表。
 
-## 当前采样
+## f175c57d 采样
 
 探针使用生产 `TaskCenterView` 与 `MediaCenterView`、合成 DTO、隔离 STA WPF Window。Task 窗口为 `1100×640 DIP`，Media Inbox 窗口为 `1280×720 DIP`；响应式有限布局在首次 measure 前应用。每个场景执行 8 次滚动并测量实际 DataGridRow 容器、完整可见行和滚动更新耗时。
 
@@ -89,6 +89,27 @@ clean commit 的 TRX 同时保存了实际 WPF 测量。几何与容器数量和
 | Task | 20k / 20k | 20.681 / 20.681 | `0.431, 14.061, 17.945, 13.401, 11.387, 20.681, 17.502, 16.820` |
 | Media Inbox | 20k / 2k | 0.023 / 0.023 | `0.023, 0.019, 0.019, 0.019, 0.019, 0.019, 0.021, 0.021` |
 
-Media 10k 这一轮含单个 `0.989 ms` 样本，所以该轮最大值不能继续简写成约 `0.03 ms`；其余七次在 `0.025–0.048 ms`。这类隔离 STA Stopwatch 仅报告观察样本，不把排程抖动解释为真实宿主帧时延，也不以重复采样筛除慢值。前一组样本仍保留在本报告“当前采样”表中，供对照测量波动。
+Media 10k 这一轮含单个 `0.989 ms` 样本，所以该轮最大值不能继续简写成约 `0.03 ms`；其余七次在 `0.025–0.048 ms`。这类隔离 STA Stopwatch 仅报告观察样本，不把排程抖动解释为真实宿主帧时延，也不以重复采样筛除慢值。前一组样本保留在本报告 f175c57d 历史采样表中，供对照测量波动。
 
 构建身份由 `GSC_BUILD_COMMIT` 绑定到 `5fbfc869...`；Release solution 为 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，XAML `24/24`。TRX 目录在 `.tmp/r00-r01-audit-20260923/focused-tests/trx-final-5fbfc869`，仅为本机可再生输出，不纳入 Git。
+
+## main 合并后复核（2026-09-23）
+
+当前分支为 main，源码身份 f55dce61adba84fec96c3e5434e5a8c1e3fa7132。使用该提交隔离 Release 输出运行 R18 专测和相关四类行为回归；测试程序集身份检查通过。R18TableContainerBudgetTests.ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets 为 1/1；四类行为测试 TRX 为 23/23，0 失败、0 跳过、VSTest exit 0。测试输出发生顺序不固定，精确用例名和理论展开数仍以本文件“23 项相关行为回归组成”表为准：Accumulator 6（其中 3 个 backend-scale theory 实例）、Anchor 10、Inbox geometry 3、selection anchor 4。
+
+本次 main 采样确认容器和有限页边界：Task 在 2k/10k/20k 下最大已实现容器均为 9、最大可见行为 7；Media Inbox 视口/已实现/可见行为 14/14/14，后端规模 10k/20k 时 UI 项仍为 2,000。Task 保持 Recycling/Item/列虚拟化；Media 保留 Standard/Item/禁列虚拟化例外。
+
+| 页面 | 后端 / UI 项数 | 视口 / 最大容器 / 最大可见 | 8 次滚动原始样本 (ms) | 最大 / 本测试 p95 (ms) |
+| --- | --- | --- | --- | ---: |
+| Task | 2k / 2k | 7 / 9 / 7 | 3.536, 64.610, 16.537, 16.953, 14.055, 31.025, 16.568, 20.791 | 64.610 |
+| Media Inbox | 2k / 2k | 14 / 14 / 14 | 0.027, 0.020, 0.019, 0.019, 0.019, 0.019, 0.021, 0.020 | 0.027 |
+| Task | 10k / 10k | 7 / 9 / 7 | 0.656, 17.932, 27.330, 16.420, 16.202, 25.212, 31.580, 21.808 | 31.580 |
+| Media Inbox | 10k / 2k | 14 / 14 / 14 | 0.025, 0.024, 0.020, 0.020, 0.019, 0.019, 0.022, 0.019 | 0.025 |
+| Task | 20k / 20k | 7 / 9 / 7 | 0.859, 19.233, 26.482, 17.281, 15.436, 24.117, 18.091, 21.208 | 26.482 |
+| Media Inbox | 20k / 2k | 14 / 14 / 14 | 0.652, 0.159, 0.039, 0.030, 0.029, 0.029, 0.030, 0.037 | 0.652 |
+
+Media 20k 最新一轮包含 0.652 ms 单样本，故本轮最大值不能写成约 0.03 ms；其余 7 次为 0.029–0.159 ms，其中后 6 次为 0.029–0.039 ms。此前 f175c57d 采样的 Media 最大值为 0.026/0.027/0.031 ms，保留作历史样本，不以重复采样筛掉 main 的慢值。测试内 8 点最近秩 p95 等于最大值；Stopwatch/STA 布局刷新受调度影响，只能表述为这轮受控样本，不能外推为真实 Playnite 帧延迟或宿主性能。
+
+相关测试的原始 TRX 只作本地核对，测试名和计数已转录至本文件，临时输出随后清理；其用例名与真实断言覆盖范围由上表逐项列出，不把 Assert.Contains 源码契约单独当成交互/性能证明。此前 R18/锚点隔离 testhost 收尾时出现过 TextServicesHost.OnUnregisterTextStore InvalidComObjectException；xUnit/VSTest 计数仍成功、进程 exit 0，根因未明。本次 main 两次 VSTest 的 TRX 均为通过，控制台未重现该噪声。
+
+本次仍只使用合成 DTO、生产 WPF 视图、隔离 STA Window 和逻辑 DIP。没有真实 Playnite/package-host 呈现、物理 DPI/跨屏、UIA/读屏、IME、DWM presented frame、ETW 或宿主性能证据；未触碰真实存档、媒体、用户云端或诊断目录。Demo 原目录不可用，沿用恢复的生产基线。
