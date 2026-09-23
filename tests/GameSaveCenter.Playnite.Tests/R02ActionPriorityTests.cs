@@ -1,12 +1,17 @@
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Threading;
 using System.Xml.Linq;
+using GameSaveCenter.Playnite.Views;
+using PlayniteButton = GameSaveCenter.Playnite.Controls.Button;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -137,6 +142,132 @@ public sealed class R02ActionPriorityTests
         Assert.IsType<LinearGradientBrush>(primaryChromeBrush);
         Assert.IsType<SolidColorBrush>(dangerChromeBrush);
         Assert.NotEqual(((SolidColorBrush)dangerChromeBrush!).Color, ((LinearGradientBrush)primaryChromeBrush!).GradientStops[0].Color);
+    }
+
+    [Fact]
+    public void InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView()
+    {
+        Exception? exception = null;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var context = new InboxModeContext("待归类");
+                var view = new MediaCenterView
+                {
+                    DataContext = context,
+                    Width = 1280,
+                    Height = 820
+                };
+                window = new Window
+                {
+                    Content = view,
+                    Width = 1280,
+                    Height = 820,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+
+                window.Show();
+                FlushLayout(window);
+
+                var buttons = FindVisualDescendants<PlayniteButton>(view).ToArray();
+                var apply = Assert.Single(buttons, button =>
+                    string.Equals(button.Content as string, "应用所选高置信建议", StringComparison.Ordinal));
+                var restore = Assert.Single(buttons, button =>
+                    AutomationProperties.GetName(button) == "恢复所选已忽略媒体到待归类");
+                var modeSelector = Assert.Single(FindVisualDescendants<ComboBox>(view), combo =>
+                    AutomationProperties.GetName(combo) == "媒体收件箱视图");
+
+                AssertInboxModeActionPair(apply, restore, applyVisible: true);
+
+                modeSelector.SelectedItem = "已忽略";
+                FlushLayout(window);
+                Assert.Equal("已忽略", context.MediaInboxMode);
+                AssertInboxModeActionPair(apply, restore, applyVisible: false);
+
+                modeSelector.SelectedItem = "待归类";
+                FlushLayout(window);
+                Assert.Equal("待归类", context.MediaInboxMode);
+                AssertInboxModeActionPair(apply, restore, applyVisible: true);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
+    private static void AssertInboxModeActionPair(PlayniteButton apply, PlayniteButton restore, bool applyVisible)
+    {
+        var expectedVisible = applyVisible ? apply : restore;
+        var expectedHidden = applyVisible ? restore : apply;
+
+        Assert.Equal(Visibility.Visible, expectedVisible.Visibility);
+        Assert.True(expectedVisible.IsVisible, "the active mode action must be visible in the hosted production view");
+        Assert.Equal(Visibility.Collapsed, expectedHidden.Visibility);
+        Assert.False(expectedHidden.IsVisible, "the inactive mode action must not remain in the visible action row");
+        Assert.Equal("Primary", expectedVisible.Appearance);
+        Assert.Equal("Primary", expectedHidden.Appearance);
+        Assert.Equal(1, new[] { apply, restore }.Count(button =>
+            button.Visibility == Visibility.Visible
+            && string.Equals(button.Appearance, "Primary", StringComparison.Ordinal)));
+    }
+
+    private static void FlushLayout(Window window)
+        => window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(window.UpdateLayout));
+
+    private static System.Collections.Generic.IEnumerable<T> FindVisualDescendants<T>(DependencyObject root)
+        where T : DependencyObject
+    {
+        if (root is T match)
+            yield return match;
+
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            foreach (var child in FindVisualDescendants<T>(VisualTreeHelper.GetChild(root, index)))
+                yield return child;
+        }
+    }
+
+    private sealed class InboxModeContext : INotifyPropertyChanged
+    {
+        private string mediaInboxMode;
+
+        public InboxModeContext(string mediaInboxMode) => this.mediaInboxMode = mediaInboxMode;
+
+        public int MediaTabIndex { get; set; }
+
+        public string[] MediaInboxModeOptions { get; } = new[] { "待归类", "已忽略" };
+
+        public string MediaInboxMode
+        {
+            get => mediaInboxMode;
+            set
+            {
+                if (string.Equals(mediaInboxMode, value, StringComparison.Ordinal))
+                    return;
+
+                mediaInboxMode = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MediaInboxMode)));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 
     private static XElement LoadXaml(string root, params string[] parts)
