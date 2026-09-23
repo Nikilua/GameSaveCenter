@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main Q06-08 按钮五态序列
+
+- 在 `75769579c46d998cc3b931b8c0011762e7d8cfe4` 上仅加 WPF 行为/视觉夹具：生产主按钮 Light/Dark normal、hover、pressed、focus、disabled 共 10 张带激活方式的离屏图，Release 定向测试 `1/1`、exit `0`。Hover 是 `MouseDevice.ChangeMouseOver` 状态探针，按压为合成 Space，focus 为 `Keyboard.Focus`，禁用由假命令 `CanExecute=false` 驱动并验证点击 0 次调用。
+- 视觉和自动列现有受控证据；96-DPI 离屏图不代表物理鼠标、宿主焦点、Playnite、DPI 或真实屏幕帧，Q06-08 最终仍未完成。详见 `../design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`。
+- 下一可执行项：复现用户新增的设置窗口截图，核对标题图标/搜索输入框/操作按钮相对位置与 windowed 高度；当前受控 96-DPI 几何测试和用户截图不一致，先用当前源码及隔离宿主确定复现边界，再决定是否需要生产改动。
+
 ## 2026-09-23 main Q06-07 高频按钮与动效
 
 - 在 Q06-06 行为提交 `caa6099455f6a1f9e2b2cdbbe2780ccd040b8e7f` 上复用既有 `BusyOperationCoordinator`、`RelayCommand`、共享按钮模板和 `GscMotion` 动效逆转，不改生产服务/DTO/样式。新增测试：busy 时第二次命令派发为 0 次，释放 busy 后允许下一次执行，兄弟按钮持续可用。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23：Q06-08 五态序列录证
+
+- 基于 `75769579c46d998cc3b931b8c0011762e7d8cfe4` 新增 `Q06ButtonStateSequenceBehaviorTests`；不改生产控件/命令。受控 STA WPF 下 Light/Dark 各实际捕获 normal、hover、pressed、focus、disabled；测试断言 overlay、状态属性和 disabled 点击负例，结果 `1/1`、exit 0。
+- 修正截图夹具使用主题 backdrop 和换行激活标签后，逐张目视检查 10 张 PNG；另存原始状态报告与 TRX。Playnite Release `net462`、测试 `net472`；构建成功，报告既有 `MediaCenterView.xaml.cs:703 CS8602`，NuGet 漏洞源请求 `NU1900` 因服务索引不可用，包仍由已恢复缓存构建。
+- Hover 通过 WPF `MouseDevice.ChangeMouseOver` 状态探针而非 OS 鼠标；Space 为合成键盘路由，focus 为程序化 WPF 焦点；RenderTargetBitmap 96-DPI logical，不是 Playnite、物理 DPI 或呈现帧。Q06-08 受控自动与视觉列通过，host 外部待验，最终未完成。
+- 证据：`../design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`。下一项处理用户新报的设置窗口错位，先核实现有控件在用户窗口化尺寸下是否复现，再做最小共享布局修复与行为证据。
+
 ## 2026-09-23：修复用户报告的四处窗口化布局问题
 
 - main 上完成四个独立源代码提交：媒体滚动边界与存档操作留白 `da91bd68`、Media Inbox 批量动作高度及几何检查 `a4bac32f`、Task 失败行 chrome `9f3d7ab9`、Settings header/search 锚点 `3a1dadd8`。

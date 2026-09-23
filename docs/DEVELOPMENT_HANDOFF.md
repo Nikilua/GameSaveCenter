@@ -2,9 +2,9 @@
 
 ## 2026-09-23 当前接续
 
-当前 main 代码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`。用户截图四处布局问题已各自提交；当前 Release/XAML `24/24`、0 errors/2 条既有 CS8602 warning；截图布局双主题行为 `8/8`，R18 专测 `1/1` + 关联行为 `23/23`。审计 `168 snapshots / 118 warnings / 7 HIGH / 4 MEDIUM`、证据索引 `20/20`、freshness `14/14`，package identity not-provided。渲染总门禁仍有 40 个问题，真实 Playnite/UIA/IME、物理 DPI、presented frame、ETW/宿主性能未验；WPF testhost 清理噪声 6 行 InvalidComObjectException、R18 TRX 仍 `1/1`，根因未知。细节见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-20260923.md` 与 R18-04 evidence。
+Q06-08 已追加生产按钮 normal/hover/pressed/focus/disabled 五态双主题受控截图与自动行为检查，定向 Release `1/1`/exit 0。证据在 `docs/design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`；Hover、Space 和程序化焦点均属受控 WPF，不是物理输入或 Playnite 真实呈现，任务最终仍未完成。此前四处截图布局问题、R18-04 与审计的历史身份和边界仍见下方历史记录及 Round3 对应 evidence。
 
-下一可执行项：Q06-06 鼠标/Enter/Space 一致性；先查已有真实事件/命令断言，再补隔离 WPF 输入正/负行为验证。R02-06 Playnite 菜单宿主、R23-05 系统呈现数据仍为外部未验边界。Demo 原目录不可用，遵守 Demo-first 对恢复生产基线的引用，不自创替代体系。
+下一可执行项：复现用户新增的设置窗口截图，核对标题图标、搜索输入框与操作按钮在窗口化高度/宽度下的相对位置；现有 96-DPI 受控几何测试与用户截图不一致。先用当前源码和隔离宿主区分尺寸、DPI 与加载版本，再决定生产修正。Demo 原目录不可用，遵守 Demo-first 并沿用恢复生产基线。
 
 
 > 历史交接（已由上方本轮 main 接续更新）：工作分支 `main`，R18-04 当前源码身份 `d752424ee46c861e080a8e57b01f90f19c3a7872`；Release XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`。R18 专测 `1/1`，四个关联行为类 `6+10+3+4=23/23`、0 失败/跳过，五个 VSTest 进程 exit 0；精确用例、当前原始滚动样本与 6/2 行 `InvalidComObjectException` testhost 清理输出见 `evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。Task 最大容器/可见 `9/7`；Media Inbox `14/14/14`，UI 上限 `2,000`；本次 20k Media 样本有一个 `0.917 ms`，保留为单独观察。下一步先完成 R00-01/02 和 R00-05 已跑完探针/行为测试的证据及 freshness 同步，然后继续依赖已满足的 Q/R 小批量。真实 Playnite/package-host、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW 和宿主性能未验；Demo 原目录不可用。没有触碰真实存档、媒体、用户云端或外发诊断。

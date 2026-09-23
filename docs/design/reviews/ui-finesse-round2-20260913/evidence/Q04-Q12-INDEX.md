@@ -51,6 +51,12 @@
 - 新门禁 `1/1`、R02 忙态 `4/4`、R08 动画逆转 `2/2`、云端重试门禁 `1/1`，共 `8/8`。R08 testhost 的 WPF TextServicesHost 清理异常如实保留，测试结果/exit code 为成功。
 - 连续按钮探针使用 `ButtonBase.OnClick`，侧栏逆转用合成 Click 路由事件；二者是受控 WPF 行为，不是物理鼠标序列/真实 Playnite，也没有屏幕帧或像素动画验收。
 
+## 2026-09-23 Q06-08 五态序列双主题探针
+
+- [Q06-08 五态证据](q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md)：使用生产 `GscWpfUiPrimaryButton` 模板，在 Light/Dark 各捕获 normal、hover、pressed、focus、disabled，并自动检查模板 overlay、WPF 状态属性与 CanExecute=false 的点击负例；Release 定向测试 `1/1`。
+- 截图均标明激活方式，完整状态报告与 TRX 同目录。离屏图片以 96-DPI logical WPF Window 输出；Hover 来自 `MouseDevice.ChangeMouseOver`，不是物理鼠标。Space、程序化焦点和假命令各自只证明受控路由行为。
+- 当前补齐受控状态的自动和视觉证据；物理输入、Playnite 宿主、UIA/读屏、物理 DPI、真实屏幕帧和动画像素序列未验，Q06-08 最终仍未完成。
+
 ## 2026-09-15 Q12-07 排序箭头双状态复核
 
 - 在提交 `2f3d17b8a34780546039aa6b7b07ecbb1c6a2ec6` 的 clean tree 上运行 `finesseprobe <output> dark sorted` 与 `light sorted`；报告身份均为 `WorkingTreeClean=True`、`DpiScale=1.00`，并记录 `SortFixture: ascending="名称" visible=True width=14; descending="数值" visible=True width=14 angle=180`。
@@ -60,7 +66,7 @@
 ## 逐组边界
 
 - Q04：卡片/输入/弹层/表格使用共享圆角、描边和阴影资源；截图检查嵌套表面、表格壳层和无玻璃视觉层级。滚动行不新增逐行 Effect，真实窗口接缝与关闭玻璃后的宿主组合仍待验。
-- Q05–Q06：按钮高度、padding、文本模板、复合内容、忙态占位、危险确认布局、卸载清理和禁用/按压/焦点共享模板已被夹具与源码测试覆盖；Q05-05/Q05-06 另有 Light/Dark 证据。Q06-06 已证明受控 Enter/Space 单次命令、Space 按下态和禁用负例，并探测点击派发；Q06-07 已证明受控 busy gate 拒绝重复命令、动画逆转采用最新终态且释放旧时钟；真实鼠标、屏幕视觉及 Playnite 输入仍需验收。
+- Q05–Q06：按钮高度、padding、文本模板、复合内容、忙态占位、危险确认布局、卸载清理和禁用/按压/焦点共享模板已被夹具与源码测试覆盖；Q05-05/Q05-06 另有 Light/Dark 证据。Q06-06 已证明受控 Enter/Space 单次命令、Space 按下态和禁用负例，并探测点击派发；Q06-07 已证明受控 busy gate 拒绝重复命令、动画逆转采用最新终态且释放旧时钟；Q06-08 已捕获生产模板五态双主题并检查状态属性。真实鼠标、Playnite 输入与屏幕帧仍需验收。
 - Q07：`ThemeAwareIcon` 的 Path stroke/fill 绑定控件最终 Foreground，状态图标和复制图标在双主题截图中可见；分数 DPI 的实际线宽、完整图标包去重和读屏命名仍不能由离屏 PNG 宣称完成。
 - Q08：TextBox 内容视口、CaretBrush、SelectionBrush、只读/禁用资源和长路径 Tooltip 已专项记录；中文 IME 组合、候选确认、撤销和粘贴原值属于宿主输入验收。
 - Q09：ComboBox 选中内容、Chevron、3 项 Popup 与有限滚动模板已专项记录；Popup 真定位、键盘关闭不写回、游戏选框 DropDownClosed 同步和移屏主题切换待真实窗口验收。

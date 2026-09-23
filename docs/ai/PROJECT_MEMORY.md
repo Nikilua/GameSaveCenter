@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 最新进度（2026-09-23 main：Q06-08）
+
+- `Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark` 使用生产 `GscWpfUiPrimaryButton` 与 STA WPF Window；Release 定向 `1/1`/exit 0，Light/Dark 共捕获 10 张 normal、hover、pressed、focus、disabled 截图，每张标明激活方式并自动检查状态 overlay/属性。
+- Hover 通过 WPF `MouseDevice.ChangeMouseOver` 内部状态变化探针（不是物理鼠标）；Space 是合成 KeyDown，focus 是程序化 WPF 焦点，disabled 假命令验证框架点击不执行。图像为 `RenderTargetBitmap` 96-DPI logical，不能替代真实 host/物理输入/DPI/呈现帧。
+- 证据：`docs/design/reviews/ui-finesse-round2-20260913/evidence/q04-q12/q06-08-states-20260923/Q06-08-BUTTON-STATES-20260923.md`。Q06-08 受控视觉/自动证据通过，宿主仍外部待验、最终未完成。下一项先复现用户最新设置窗口截图中的头部图标、搜索框、操作控件错位；现有 96-DPI 离屏几何与截图不一致，先定位窗口化/host/DPI 条件，未验证前不写已修复。
+
 ## 最新进度（2026-09-23 main：Q06-07）
 
 - 复用现有 BusyOperationCoordinator、RelayCommand、GscMotion 动效逆转与生产按钮模板；无生产代码改动。新 `Q06ContinuousButtonBehaviorTests` 证明真实 WPF 按钮命令派发期间 busy gate 阻止二次提交，busy 解除后允许下一次执行，旁边安全操作不被全局禁用。
