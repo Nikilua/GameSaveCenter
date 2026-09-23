@@ -235,17 +235,13 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void FailedTaskChromeTracksItsOwnRealizedRowBounds(GameSaveCenterThemeMode theme)
+    public void FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
-        var errorChromeTopInset = 0d;
-        var errorChromeBottomInset = 0d;
-        var errorChromeLeftInset = 0d;
-        var errorChromeRightInset = 0d;
-        var errorChromePositionError = 0d;
+        var rowChromePositionError = 0d;
         var rowCount = 0;
         var realizedRowsAfterRecycle = 0;
-        var miscoloredRows = 0;
+        var errorPresentationMismatches = 0;
         var realizedRowHeightSpread = 0d;
         var failedRowsChecked = 0;
         var recycledTargetRealized = false;
@@ -315,26 +311,24 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                         var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
                         var rowBounds = BoundsIn(row, grid);
                         var chromeBounds = BoundsIn(chrome, grid);
+                        rowChromePositionError = Math.Max(rowChromePositionError, Math.Max(
+                            Math.Max(Math.Abs(chromeBounds.Top - rowBounds.Top), Math.Abs(rowBounds.Bottom - chromeBounds.Bottom)),
+                            Math.Max(Math.Abs(chromeBounds.Left - rowBounds.Left), Math.Abs(rowBounds.Right - chromeBounds.Right))));
 
-                        var isErrorStyle = ReferenceEquals(chrome.Background, errorTint)
-                            && ReferenceEquals(chrome.BorderBrush, errorStroke);
+                        var statusPill = FindVisualChildren<Border>(row).FirstOrDefault(candidate => candidate.Name == "TaskStatusPill");
+                        var statusPillIsError = statusPill != null
+                            && ReferenceEquals(statusPill.Background, errorTint)
+                            && ReferenceEquals(statusPill.BorderBrush, errorStroke);
+                        var rowHasErrorFrame = ReferenceEquals(chrome.Background, errorTint)
+                            || ReferenceEquals(chrome.BorderBrush, errorStroke);
                         if (task.State == TaskState.Failed)
                         {
                             failedRowsChecked++;
-                            var topInset = chromeBounds.Top - rowBounds.Top;
-                            var bottomInset = rowBounds.Bottom - chromeBounds.Bottom;
-                            var leftInset = chromeBounds.Left - rowBounds.Left;
-                            var rightInset = rowBounds.Right - chromeBounds.Right;
-                            errorChromeTopInset = Math.Max(errorChromeTopInset, topInset);
-                            errorChromeBottomInset = Math.Max(errorChromeBottomInset, bottomInset);
-                            errorChromeLeftInset = Math.Max(errorChromeLeftInset, leftInset);
-                            errorChromeRightInset = Math.Max(errorChromeRightInset, rightInset);
-                            errorChromePositionError = Math.Max(errorChromePositionError, Math.Max(
-                                Math.Max(Math.Abs(topInset - 2), Math.Abs(bottomInset - 2)),
-                                Math.Max(Math.Abs(leftInset - 4), Math.Abs(rightInset - 12))));
+                            if (!statusPillIsError || rowHasErrorFrame)
+                                errorPresentationMismatches++;
                         }
-                        if ((task.State == TaskState.Failed) != isErrorStyle)
-                            miscoloredRows++;
+                        else if (statusPillIsError || rowHasErrorFrame)
+                            errorPresentationMismatches++;
                     }
                 }
             }
@@ -348,16 +342,15 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Task grid: initial/recycled rows={rowCount}/{realizedRowsAfterRecycle}, far row reached={recycledTargetRealized}, failed rows checked={failedRowsChecked}, chrome status mismatches={miscoloredRows}, error chrome insets top/bottom/left/right={errorChromeTopInset:0.##}/{errorChromeBottomInset:0.##}/{errorChromeLeftInset:0.##}/{errorChromeRightInset:0.##} DIP, max position error={errorChromePositionError:0.##} DIP, row-height spread={realizedRowHeightSpread:0.##} DIP, {taskGridMetrics}");
+        output.WriteLine($"{theme} Task grid: initial/recycled rows={rowCount}/{realizedRowsAfterRecycle}, far row reached={recycledTargetRealized}, failed rows checked={failedRowsChecked}, error-presentation mismatches={errorPresentationMismatches}, row chrome position error={rowChromePositionError:0.##} DIP, row-height spread={realizedRowHeightSpread:0.##} DIP, {taskGridMetrics}");
         Assert.Null(exception);
         Assert.True(rowCount is >= 5 and <= 32, $"initial viewport realized {rowCount} task rows; {taskGridMetrics}");
         Assert.True(realizedRowsAfterRecycle is >= 5 and <= 32, $"scrolled viewport realized {realizedRowsAfterRecycle} task rows; {taskGridMetrics}");
         Assert.True(recycledTargetRealized, "ScrollIntoView must reach the far synthetic item so this probe covers recycled containers");
         Assert.True(failedRowsChecked >= 4, $"expected failed rows in both realized viewports; checked {failedRowsChecked}");
-        Assert.True(miscoloredRows == 0, $"a recycled task row retained stale failure chrome on {miscoloredRows} realized row(s)");
+        Assert.True(errorPresentationMismatches == 0, $"failure status left its status cell or a full-row error frame appeared on {errorPresentationMismatches} realized row(s)");
         Assert.True(realizedRowHeightSpread <= 1, $"realized task rows have a {realizedRowHeightSpread:0.##} DIP height spread");
-        Assert.True(failedRowsChecked >= 4, $"expected failed rows after recycling; checked {failedRowsChecked}");
-        Assert.InRange(errorChromePositionError, 0, 1);
+        Assert.InRange(rowChromePositionError, 0, 1);
     }
 
     [Theory]

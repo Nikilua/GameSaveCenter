@@ -624,15 +624,6 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="RowChrome" Property="Opacity" Value="0.42"/>
             </Trigger>
-            <DataTrigger Binding="{Binding Path=DataContext.State, RelativeSource={RelativeSource Self}}" Value="{x:Static contracts:TaskState.Failed}">
-                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
-                <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
-                <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
-                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
-                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
-            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

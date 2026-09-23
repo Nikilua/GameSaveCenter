@@ -18,7 +18,7 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R06SelectionStateBehaviorTests
 {
     [Fact]
-    public void ProductionRowsDistinguishActiveInactiveKeyboardAndFailedStates()
+    public void ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome()
     {
         RunSta(() =>
         {
@@ -69,9 +69,9 @@ public sealed class R06SelectionStateBehaviorTests
                 var failedChrome = ChromeFor(failedRow);
                 var failedData = Assert.IsType<TaskStatusDto>(failedRow.DataContext);
                 Assert.Equal(TaskState.Failed, failedData.State);
-                var expectedErrorColor = BrushColor(resources["GscErrorTintBrush"]);
-                var actualErrorColor = BrushColor(failedChrome.Background);
-                Assert.Equal(expectedErrorColor, actualErrorColor);
+                Assert.Equal(BrushColor(resources["GscSelectionInactiveBrush"]), BrushColor(failedChrome.Background));
+                Assert.NotEqual(BrushColor(resources["GscErrorTintBrush"]), BrushColor(failedChrome.Background));
+                Assert.NotEqual(BrushColor(resources["GscErrorBrush"]), BrushColor(failedChrome.BorderBrush));
 
                 grid.SelectedItem = items[1];
                 succeededRow.Focusable = true;
