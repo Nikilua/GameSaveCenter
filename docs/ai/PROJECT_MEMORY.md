@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 第三轮 R02-01 动作优先级当前复核（2026-09-23）
+
+- `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 只新增行为测试，没有生产 UI 改动。原两项 `R02ActionPriorityTests` 已覆盖 XML 区域主动作数量、Inbox DataTrigger 声明、危险样式资源角色，以及 STA 实例化 Primary/Danger 样式后的 Appearance/几何/背景差异；缺少在生产视图中切换 DataTrigger 输入观察结果的行为证据。
+- 新增测试挂载真实生产 `MediaCenterView` 到隔离 STA Window，使用可通知 fake 上下文和实际模式 ComboBox，往返切换两种模式；绑定值、可见/折叠和恰好一个 Primary 全部逐状态断言。无归类/恢复命令执行。
+- clean commit Release solution build 成功：XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；R02 定向 `3/3`。
+- 真实 Playnite/读屏/物理 DPI/OS 输入/IME/presented frame/ETW/宿主性能未验，受控审计 `7 HIGH/4 MEDIUM` 未消除。下一项 R02-02：盘点并复用真实 busy 状态链，补点击、状态复位、焦点正负行为。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md`。
+
 ## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
 
 - 当前分支 `codex/ui-finesse-round2` 的代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`。R00/R01 校正复用了现有实现：图标-only 样本如实标注无文字，半透明 `opacity=0.5` 的 hover+pressed+focus 同时态直接验证有效前景/灰底/4.5 对比度。未更换控件或服务，也未从 main 覆盖分支。
@@ -7,7 +16,7 @@
 - R01 审计归档身份 `5fbfc869`：20 条索引全项 `20/20`；受控页面/控件统计 10 Views、33 Tabs、297 Button/ToggleButton、16 DataGrid、38 ScrollViewer，168 snapshots、110 warnings、0 Fidelity、0 failed routes；仍有 7 HIGH 滚动冲突、4 MEDIUM 工具栏纵向扩展，不能写成风险清零。
 - R18-04 在同一 clean 身份的 R18 专测 `1/1`，分页/锚点/几何/稳定选择类共 `23/23`（`6+10+3+4`）。Task 三规模最大容器/可见均为 `9/7`；Media UI 窗口 `2,000`、受控视口 `14`。Task 最大滚动样本 `51.172/25.651/20.681 ms`；Media `0.031/0.989/0.023 ms`，10k 的 `0.989` 是保留的单次尖峰，其他样本约 `0.02–0.05 ms`。
 - testhost 清理阶段的 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 出现在 R18 与锚点类 TRX；对应 xUnit 明确全通过、VSTest exit `0`。根因未知，照实作为关闭噪声记录。受控合成 STA/逻辑 DIP 不代表宿主呈现、物理屏、UIA/IME、ETW 或宿主性能。
-- 下一项为 R02-01：先查账本任务的具体条件、现有服务/DTO/行为夹具，再以当前源身份复核已有动作优先级能力；若全满足则只补当前证据并标记“已满足”，不重复建功能。
+- 后续已在 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 复核并补上真实模式切换行为；下一项 R02-02 忙碌宽度稳定，先查已有 busy 状态和命令，再补实际交互测试。
 
 证据：`design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md`、`design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md`。
 

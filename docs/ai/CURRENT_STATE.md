@@ -1,5 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 第三轮 R02-01 动作优先级当前复核（2026-09-23）
+
+- 当前分支 `codex/ui-finesse-round2`、完整测试身份 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7`。生产 UI 未改；补强 `R02ActionPriorityTests`，因为旧测试虽检查了主动作数、DataTrigger 声明和真实共享样式，但没有运行时切换 Inbox 模式。
+- 新 STA WPF 行为测试加载生产 `MediaCenterView`，从实际 ComboBox 切换“待归类→已忽略→待归类”；绑定值往返正确，每种状态只显示对应的 Primary 动作，另一动作 `Visibility/IsVisible=Collapsed/False`，可见主动作数始终为 `1`。旧两项结构与危险样式外观测试保留。没有执行命令或业务写入。
+- 当前身份隔离 Release solution：XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning，Playnite `net462`；`R02ActionPriorityTests 3/3`。
+- 证据为合成模式状态、fake 上下文、隔离 STA Window 和逻辑 DIP；真实 Playnite、屏幕阅读器、物理 DPI/跨屏、OS IME、presented frame、ETW 与宿主性能仍未验。R00/R01 审计保留 `7 HIGH/4 MEDIUM`，不属于此项修复。
+
+证据：[R02-01 动作优先级当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md)、[第三轮账本](../design/reviews/ui-finesse-round3-20260915/ROUND3_PROGRESS.md)。下一项：R02-02 忙碌宽度稳定，检查现有 busy 样式/命令状态，补实际状态变化、重复提交与失败/取消复位行为。
+
 ## 第三轮 R00/R01 证据校正与 R18-04 当前复采（2026-09-23）
 
 - 当前代码/测试身份为 `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`，分支 `codex/ui-finesse-round2`。R00/R01 已核对已有能力并补齐两处证据缺口：图标-only 不再误报为控件缺失；R00-01 的半透明 hover+pressed+focus 组合态现在有直接颜色/对比度行为断言。最终身份隔离 Release solution 构建 XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；身份与对比测试 `5/5`，前一 clean 身份 R00/R01 定向行为类 `36/36`。
@@ -8,7 +17,7 @@
 - R18 专测 `1/1`；相关分页/锚点/几何/稳定选择测试精确为 `6+10+3+4=23/23`，方法名与样本见证据。WPF testhost 关闭阶段出现 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；xUnit/VSTest 结果明确成功、进程 exit `0`，根因未明，作为清理噪声记录而不改判测试结果。
 - 证据仅来自合成 DTO、fake/隔离目录、受控 STA WPF 与逻辑 DIP。真实 Playnite/package-host、物理 DPI/跨屏、UIA/读屏、OS IME、presented frame、ETW 和宿主性能仍未验；Demo 原目录不可用，沿用恢复的生产基线。保留当前游戏选框、滚动条、命令绑定、取消/错误语义、恢复保护、有限列表和 `net462` 兼容。
 
-证据：[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md)、[R18-04 测试与滚动复采](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)、[R01-06 归档审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md)、[R01-07 freshness 报告](../design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json)。下一项转入 R02-01 当前来源/行为小批复核；外部宿主与系统跟踪边界保持未验。
+证据：[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md)、[R18-04 测试与滚动复采](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md)、[R01-06 归档审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260923/README.md)、[R01-07 freshness 报告](../design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json)。R02-01 已于后续提交 `cdfd2788` 完成当前运行时行为复核；下一项 R02-02 忙碌宽度稳定，外部宿主与系统跟踪边界保持未验。
 
 ## 第三轮 R18-03 缩略图滚动预算定向复核（2026-09-23）
 

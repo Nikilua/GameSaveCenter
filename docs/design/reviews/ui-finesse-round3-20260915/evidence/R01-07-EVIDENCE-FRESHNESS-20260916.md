@@ -76,3 +76,8 @@ R01-07 当前 baseline 与 freshness 校验已满足；下一可执行小批量�
 - 复核发现 R00-01/02 以前没有把 `UiDiagnosticsExporterTests.cs`、`UiFinesseFoundationTests.cs` 计入 sourcePaths，R00-05 缺 `WpfUiResourceDictionaryTests.cs`，R00-06 缺 `MediaInboxGeometryTests.cs`。现补入映射，并分别用刚完成的行为测试与 clean audit 身份刷新 sourceCommit；以后这些测试文件变化会正确触发证据待复验。
 - `scripts/test-ui-evidence-freshness.ps1` 通过 docs-only、shared-control 与合成 package identity 三组用例。文档-only 仍不要求重跑/重装，共享控件变化只命中相关记录，包错配只要求相应包绑定证据重装。
 - 当前结果文件：[2026-09-23 freshness report](R01-07-freshness-report-20260923-current.json)。扫描 HEAD 是 `38d5b7b2...`；之后提交只包含本次文档与 baseline 修订，不改变被审计的生产代码。
+
+## 2026-09-23 R02-01 测试提交后复扫
+
+- R02-01 新增测试提交 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 后，freshness 在该完整 SHA 上再次运行，14 条记录均无需重跑，0 stale；变化的 R02 测试路径未匹配 R00/R01 已绑定证据源路径。`package=not-provided` 仍保留，不能代替 package-host 复验。
+- docs-only、shared-control 和 package-identity 三组 freshness 行为测试通过；报告仍独立记录源码与包身份。

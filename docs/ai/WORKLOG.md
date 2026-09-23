@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R02-01 动作优先级行为复核
+
+- 在 `codex/ui-finesse-round2` 的提交 `cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7` 增加 `InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView`。审阅原测试后确认：原有结构断言能检查 DataTrigger 声明与区域 Primary 数量，共享资源夹具能实际比较 Primary/Danger 外观，但没有驱动生产视图的模式属性完成切换。
+- 新夹具使用真实 `MediaCenterView`、Inbox 模式 ComboBox、fake 可通知上下文和隔离 STA Window，执行待归类→已忽略→待归类；逐状态检查绑定值、活动按钮显示、非活动按钮折叠、可见动作恰有一个 Primary。没有调用 Apply/Restore/Delete 命令。
+- clean 提交身份 Release `-SkipTests` solution build：XAML `24/24`，`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite `net462`。`R02ActionPriorityTests 3/3`，全通过。
+- 本轮只修改测试；现有命令、危险语义、安全保护、游戏选框、滚动条、有限列表和绑定未动。未启动真实宿主/写真实数据/外发诊断；屏幕阅读器、物理 DPI、IME、presented frame、ETW/宿主性能未验，当前审计 `7 HIGH/4 MEDIUM` 保留。
+
+证据：[R02-01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R02-01-ACTION-PRIORITY-20260916.md)。下一项：R02-02 忙碌宽度稳定，先查真实 busy 样式和命令状态，再补交互行为。
+
 ## 2026-09-23 Round3 R00/R01 证据校正与 R18-04 复采收口
 
 - 继续使用 `codex/ui-finesse-round2`，HEAD `38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0`，没有从 main 覆盖当前实现。代码/测试小批已分别提交并推送：`5fbfc869 校正图标按钮对比证据标签`、`38d5b7b2 补全半透明按钮组合态对比断言`。本次更新账本、baseline 和长期证据，不包含 `.tmp`。

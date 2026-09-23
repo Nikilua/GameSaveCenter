@@ -66,3 +66,17 @@ $env:GSC_UI_AUDIT_COMMIT = "89c9cc3"
 ## 下一步
 
 下一可执行小批量为 R02-02“忙碌宽度稳定”，先核对现有忙碌状态模板和按钮最小宽度能力，再补状态切换/负例行为证据。
+
+## 2026-09-23 当前身份与运行时互斥复核
+
+当前复核身份：`cdfd27880b5bb53800dc73de8a5f764f3e5a4ce7`，分支 `codex/ui-finesse-round2`。生产 XAML/共享样式没有改动；沿用 `89c9cc3` 已有的动作优先级实现。
+
+先检查原有 `R02ActionPriorityTests` 两项覆盖范围：第一项从生产 Overview/Save/Media XAML 验证主动作区域数量、Media Inbox 两种模式的 DataTrigger 声明，以及恢复/删除按钮的共享危险样式；第二项在 STA 下加载真实 `DesignTokens.xaml`、`WpfUiProduction.xaml`、`Redesign.xaml` 并实例化 Primary/Danger 按钮，验证 Appearance、填充资源与高度差异。第一项只确认触发器存在和声明值，不能证明 WPF 运行时切换时可见状态互斥。
+
+为该缺口新增 `InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView`：在隔离 STA Window 加载生产 `MediaCenterView`，用合成可通知上下文和真实模式 ComboBox 项目，执行“待归类 → 已忽略 → 待归类”切换。每一步核对双向绑定值、活动/非活动按钮的 `Visibility` 与 `IsVisible`，两者均保持 Primary 角色，且该模式动作对始终恰有一个可见主动作；未执行任何业务命令。
+
+提交身份 `cdfd2788` 的隔离 Release solution 构建：XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite 目标 `net462`。`R02ActionPriorityTests 3/3`，0 失败、0 跳过。原两项样式/结构检查仍保留，第三项补的是实际生产视图中的运行时正向和反向切换行为。
+
+本次只在受控逻辑 DIP、合成状态和 fake 数据上下文中验证；没有启动真实 Playnite、执行归类/恢复/删除命令、写真实存档/媒体/云端或外发诊断。真实宿主、屏幕阅读器、物理 DPI/跨屏、OS 输入/IME、presented frame、ETW 与宿主性能仍未验；当前独立受控审计中的 `7 HIGH` 滚动冲突和 `4 MEDIUM` 工具栏纵向扩展仍保留，不属于本项修复结果。
+
+下一可执行小批量：R02-02“忙碌宽度稳定”，先盘点生产按钮 busy 模板、真实命令忙碌状态和现有测试；已存在的服务/状态优先复用，并补点击重复提交、失败/取消复位和焦点行为。
