@@ -1533,6 +1533,7 @@ namespace GameSaveCenter.Playnite.Settings
         private void ApplyResponsiveLayout(double width, double height)
         {
             if (SettingsShell == null || SettingsHeaderGrid == null || SettingsHeaderHintRow == null
+                || SettingsSearchTextBox == null
                 || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null
                 || SettingsWorkspace == null || SettingsCategoryRail == null || SettingsScroller == null
                 || SettingsCompactContentRow == null || SettingsIntroDescription == null
@@ -1577,6 +1578,14 @@ namespace GameSaveCenter.Playnite.Settings
             SettingsHeaderIcon.Height = headerIconSize;
             SettingsHeaderIcon.VerticalAlignment = VerticalAlignment.Top;
             SettingsHeaderIcon.Margin = new Thickness(0, SettingsHeaderEyebrow.Visibility == Visibility.Visible ? 8 : 0, compact ? 10 : 12, 0);
+            // The search field shares the header grid's two trailing columns. A stretched
+            // TextBox with a 520-DIP MaxWidth is centered by WPF when the span is wider,
+            // which separates its left edge from the title. Keep it explicitly left sized
+            // to the available span as the settings host is resized.
+            var availableSearchWidth = Math.Max(140, layoutWidth - SettingsHeader.Padding.Left - SettingsHeader.Padding.Right
+                - headerIconSize - SettingsHeaderIcon.Margin.Right - 4);
+            SettingsSearchTextBox.Width = Math.Min(520, availableSearchWidth);
+            SettingsSearchTextBox.MinWidth = Math.Min(260, SettingsSearchTextBox.Width);
 
             // The outer SettingsDemoShell owns the product-level 18-DIP breathing room.
             // Keep the inner content stretch-only so the demo shell does not regress into

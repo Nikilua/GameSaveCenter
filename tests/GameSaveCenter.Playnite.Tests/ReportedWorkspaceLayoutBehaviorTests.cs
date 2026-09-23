@@ -359,8 +359,14 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     public void SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
-        var iconTitleCenterDelta = 0d;
+        var iconTitleTopDelta = 0d;
         var searchTitleLeftDelta = 0d;
+        var searchHeight = 0d;
+        var searchWidth = 0d;
+        var compactSearchWidth = 0d;
+        var compactSearchRightOverflow = 0d;
+        var resetTitleLeftDelta = 0d;
+        var resetAfterSearchGap = 0d;
         var saveHintTitleTopDelta = 0d;
         var pathControlCenterSpread = 0d;
         var pathControlHeightSpread = 0d;
@@ -379,23 +385,29 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var icon = (FrameworkElement)viewType.GetField("SettingsHeaderIcon", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var title = (FrameworkElement)viewType.GetField("SettingsHeaderTitle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var search = (FrameworkElement)viewType.GetField("SettingsSearchTextBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var resetCard = (FrameworkElement)viewType.GetField("SettingsResetDefaultsCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var saveHint = (FrameworkElement)viewType.GetField("SettingsSaveHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCombo = (FrameworkElement)viewType.GetField("SettingsPathEditorComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCard = (FrameworkElement)viewType.GetField("SettingsPathEditorCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
-                window = CreateWindow(view, 1280, 900);
+                window = CreateWindow(view, 1280, 840);
                 window.Show();
                 FlushLayout(window);
                 viewType.GetMethod("ApplyResponsiveLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
-                    .Invoke(view, new object[] { 1280d, 900d });
+                    .Invoke(view, new object[] { 1280d, 840d });
                 FlushLayout(window);
 
                 var iconBounds = BoundsIn(icon, headerGrid);
                 var titleBounds = BoundsIn(title, headerGrid);
                 var searchBounds = BoundsIn(search, headerGrid);
+                var resetBounds = BoundsIn(resetCard, headerGrid);
                 var saveHintBounds = BoundsIn(saveHint, headerGrid);
-                iconTitleCenterDelta = Math.Abs((iconBounds.Top + iconBounds.Height / 2) - (titleBounds.Top + titleBounds.Height / 2));
+                iconTitleTopDelta = Math.Abs(iconBounds.Top - titleBounds.Top);
                 searchTitleLeftDelta = Math.Abs(searchBounds.Left - titleBounds.Left);
+                searchHeight = search.ActualHeight;
+                searchWidth = search.ActualWidth;
+                resetTitleLeftDelta = Math.Abs(resetBounds.Left - titleBounds.Left);
+                resetAfterSearchGap = resetBounds.Top - searchBounds.Bottom;
                 saveHintTitleTopDelta = Math.Abs(saveHintBounds.Top - titleBounds.Top);
 
                 var buttons = FindVisualChildren<ButtonBase>(pathCard)
@@ -408,6 +420,15 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 pathControlCenterSpread = pathCenters.Max() - pathCenters.Min();
                 pathControlHeightSpread = pathHeights.Max() - pathHeights.Min();
                 pathHeightDetails = string.Join(", ", pathControls.Select(control => $"{control.GetType().Name}/{(control is ContentControl content ? content.Content : "combo")}: {control.ActualHeight:0.##}"));
+
+                window.Width = 560;
+                FlushLayout(window);
+                viewType.GetMethod("ApplyResponsiveLayout", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { 560d, 840d });
+                FlushLayout(window);
+                var compactSearchBounds = BoundsIn(search, headerGrid);
+                compactSearchWidth = search.ActualWidth;
+                compactSearchRightOverflow = Math.Max(0, compactSearchBounds.Right - headerGrid.ActualWidth);
             }
             catch (Exception caught)
             {
@@ -419,10 +440,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Settings: icon/title centerΔ={iconTitleCenterDelta:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
+        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, compact search width/overflow={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##} DIP, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
         Assert.Null(exception);
-        Assert.True(iconTitleCenterDelta <= 20, $"settings icon center is {iconTitleCenterDelta:0.##} DIP from the title center");
+        Assert.True(iconTitleTopDelta <= 12, $"settings icon top is {iconTitleTopDelta:0.##} DIP from the title top");
         Assert.True(searchTitleLeftDelta <= 2, $"settings search starts {searchTitleLeftDelta:0.##} DIP away from the title edge");
+        Assert.InRange(searchWidth, 500, 520);
+        Assert.InRange(searchHeight, 35, 37);
+        Assert.InRange(compactSearchWidth, 260, 520);
+        Assert.InRange(compactSearchRightOverflow, 0, 1);
+        Assert.True(resetTitleLeftDelta <= 2, $"settings reset card starts {resetTitleLeftDelta:0.##} DIP away from the title edge");
+        Assert.True(resetAfterSearchGap >= 8, $"settings reset card starts only {resetAfterSearchGap:0.##} DIP after the search field");
         Assert.True(saveHintTitleTopDelta <= 36, $"settings save hint is {saveHintTitleTopDelta:0.##} DIP below the title");
         Assert.True(pathControlCenterSpread <= 3, $"path combo/actions centers span {pathControlCenterSpread:0.##} DIP");
         Assert.True(pathControlHeightSpread <= 10, $"path combo/actions heights differ by {pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");

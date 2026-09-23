@@ -51,7 +51,13 @@
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                 <Border x:Name="SettingsHeader" Style="{DynamicResource GscRedesignWorkspaceHeroCard}" ClipToBounds="False" Background="{DynamicResource GscSettingsCardBrush}">
                 <Grid x:Name="SettingsHeaderGrid">
-                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/></Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition x:Name="SettingsHeaderHintRow" Height="0"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <Border x:Name="SettingsHeaderIcon" Grid.Row="0" Width="46" Height="46" CornerRadius="15" Background="{DynamicResource GscAccentBrush}" Margin="0,0,12,0" VerticalAlignment="Top">
                         <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
@@ -64,25 +70,27 @@
                         <TextBlock x:Name="SettingsHeaderEyebrow" Text="SETTINGS" Style="{DynamicResource GscRedesignHeroEyebrow}"/>
                         <TextBlock x:Name="SettingsHeaderTitle" Text="GameSaveCenter 设置" Style="{DynamicResource GscRedesignHeroTitle}"/>
                         <TextBlock x:Name="SettingsHeaderSubtitle" Text="工具路径 · 存档策略 · 外观与自动化" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
-                        <TextBox x:Name="SettingsSearchTextBox" Style="{StaticResource GscWpfUiTextBox}" TextChanged="OnSettingsSearchTextChanged" Margin="0,10,0,0" MinWidth="260" MaxWidth="520" Height="32" HorizontalAlignment="Left" ToolTip="搜索设置名称、用途或字段；不会修改配置。清空后恢复分类视图。" AutomationProperties.Name="搜索设置" AutomationProperties.HelpText="搜索只改变可见字段，不会修改设置值。"/>
+                    </StackPanel>
+                    <TextBox x:Name="SettingsSearchTextBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource GscWpfUiTextBox}" TextChanged="OnSettingsSearchTextChanged" Margin="0,10,0,0" MinWidth="260" MaxWidth="520" Width="520" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="搜索设置名称、用途或字段；不会修改配置。清空后恢复分类视图。" AutomationProperties.Name="搜索设置" AutomationProperties.HelpText="搜索只改变可见字段，不会修改设置值。"/>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
                         <TextBlock x:Name="SettingsSearchSummary" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置搜索结果"/>
                         <TextBlock x:Name="SettingsValidationSummary" Foreground="{DynamicResource GscErrorBrush}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误"/>
                         <ui:Button x:Name="SettingsValidationLocateButton" Style="{StaticResource GscWpfUiToolbarButton}" Content="定位首个错误" MinWidth="104" Padding="8,3" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="OnSettingsValidationLocateClick" AutomationProperties.Name="定位首个设置错误" ToolTip="切换到包含首个校验错误的设置分类"/>
                         <Expander x:Name="SettingsValidationDetails" Header="查看错误详情" Foreground="{DynamicResource GscPrimaryTextBrush}" Margin="0,4,0,0" Visibility="Collapsed" AutomationProperties.Name="设置验证错误详情">
                             <TextBlock x:Name="SettingsValidationDetailsText" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                         </Expander>
-                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
-                            <StackPanel>
-                                <TextBlock Text="恢复默认" FontWeight="SemiBold"/>
-                                <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
-                                <WrapPanel>
-                                    <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" VerticalAlignment="Center" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
-                                    <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" VerticalAlignment="Center" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
-                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
-                                </WrapPanel>
-                            </StackPanel>
-                        </Border>
                     </StackPanel>
+                    <Border x:Name="SettingsResetDefaultsCard" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="恢复默认" FontWeight="SemiBold"/>
+                            <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
+                            <WrapPanel>
+                                <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" VerticalAlignment="Center" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
+                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" VerticalAlignment="Center" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
+                                <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
                     <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
                         <TextBlock x:Name="SettingsSaveHintText" Text="已保存 · 由 Playnite 保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.Name="设置保存状态"/>
                     </Border>
