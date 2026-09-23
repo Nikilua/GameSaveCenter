@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R08-04 当前复核
+
+- 当前 main `09ec3132` Release XAML `24/24`、0 errors，两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings。R02 Busy `4/4` + R08 business feedback `4/4`，共 `8/8`、VSTest exit `0`，两份 TRX 无 COM cleanup 异常。
+- R08-04 生产/测试文件自 `43141399` 后未变；慢任务完成后才解除忙态，快速完成 `150ms` 不闪 spinner；失败/取消和成功/失败/取消终态反馈一致。仅合成 DTO/fake/隔离 STA WPF；不宣称真实 Playnite/Worker/Narrator/物理呈现通过。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20260924.md` 与两份 TRX。下一项 R08-05。
+
 ## 2026-09-24 main：R08-03 当前复核
 
 - 当前 production identity `378ceb13`；Release solution XAML `24/24`、0 errors，保留两条既有 CS8602 warnings。补充行为断言后 Playnite 测试项目重建 0 warnings/errors。

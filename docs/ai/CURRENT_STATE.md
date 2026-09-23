@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 main：R08-04 当前复核
+
+- 当前生产 identity `09ec3132` Release solution XAML `24/24`、0 errors，保留两条既有 CS8602 warnings。R08-04 两类行为 `8/8`（R02 busy `4`、R08 feedback `4`）、均 exit `0`。
+- 慢任务 busy state 等 action 完成，快速任务 `150ms` 后 spinner 仍折叠，失败/取消复位与终态 DTO/Toast feedback 通过。测试只用 fake 与隔离 STA WPF，不表示真实 Playnite/读屏/宿主性能。
+- [R08-04 当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20260924.md) 与两份 TRX。下一项 R08-05 页面切换轻量化。
+
 ## 2026-09-24 main：R08-03 当前复核
 
 - 当前生产源码 identity `378ceb13`。Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；加入测试断言后 Playnite 测试项目重建 0 warnings/errors。

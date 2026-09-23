@@ -9196,3 +9196,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前测试程序集按类串行：Offscreen `1/1`、HotChange `1/1`、Reverse `2/2`、ProductionShellChrome `12/12`、UiFinesseFoundation `9/9`，合计 `25/25`、0 failed/skipped，各 VSTest exit `0`。Foundation 首次筛选类名不匹配、实际未执行用例；核实真实类名 `UiFinesseFoundationTests` 后复跑计入上述结果。
 - HotChange/Reverse/ShellChrome TRX 分别含 8/1/1 段 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；Offscreen/Foundation 未见，根因未知，测试仍明确成功。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20260924.md` 与五份 TRX。没有触碰真实存档、媒体、云端或诊断。
 - 下一项 R08-04 业务完成节奏。用户新增 Settings 窗口截图和此前 Media/Task/Save 布局报告仍待按实际包身份及正常 Playnite 宿主复核；不把隔离 WPF 结果或离屏截图宣称为实机修复。
+
+# 2026-09-24 main R08-04 业务完成节奏复核
+
+- 当前生产/测试 identity `09ec3132`；完整 Release solution XAML `24/24`、0 errors，保留两条 `MediaCenterView.xaml.cs:703 CS8602` warnings；Playnite `net462`、测试 `net472`。R08-04 生产和测试文件自 `43141399` 后未变。
+- 当前测试程序集按类串行 `R02BusyStateTests 4/4` + `R08BusinessFeedbackBehaviorTests 4/4` = `8/8`，0 failed/skipped，各 VSTest exit `0`。TRX 均未见 `InvalidComObjectException`。
+- 忙态等真实 action 结束；慢任务按钮保持宽度、内容和焦点；快速任务 `150ms` 后 spinner 仍 `Collapsed`；重复请求/失败/取消门禁与复位通过；成功/失败/取消 DTO 和 `FeedbackToast` AutomationPeer 文本一致。
+- 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20260924.md` 与两份 TRX。范围仅合成 DTO/fake/隔离 STA WPF/逻辑 DIP，未验正常 Playnite、Worker 长请求、Narrator/真实 UIA、物理 DPI/呈现/ETW/宿主性能。下一项 R08-05 页面切换轻量化。
