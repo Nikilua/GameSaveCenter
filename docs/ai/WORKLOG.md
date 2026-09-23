@@ -1,5 +1,17 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-23 Round3 R23-02 生产资源状态矩阵
+
+- `a18cb43eb3a7a623aeefa1546be5b2407f30173a` 补 `AcrylicNavItem` 的共享焦点与禁用反馈、生产设置生成 TabItem 的禁用外观，并新增三个隔离 STA WPF 行为测试。
+- Light/Dark 实测导航项的选择/失选、焦点/失焦、disabled 与拒焦；实测 `GscSettingsSectionTabItem` 选择不变量和禁用/拒焦；分别实例化 Task、Media Inbox、Save History、Maintenance 页面派生 DataGrid，检查各自 Style/RowStyle、选中行、单元格焦点、禁用传播及拒焦。目标类 `3/3`，0 失败/0 跳过。
+- 提交后隔离 Release XAML `24/24`、solution `0 errors`，保留两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite `net462`、测试 `net472`。`git diff --check` 后续随文档门禁复核。
+- 同源码额外复跑 `R00-01/02` 指定对比/变换方法 `5/5`、`R00-05` ContextButton Light/Dark `2/2`。`check-ui-evidence-freshness.ps1` 为 `12 fresh/2 stale`；R00-01/02 Light/Dark RenderHarness 探针未重跑，故如实保留这两条及 R00-05 的 stale 源身份，不擅自更新基线。
+- `python scripts/validate-source.py` 通过；WPF 技能静态审查 `0 errors/30 warnings/177 info`。报告包含两条预先存在于 `.tmp/r12-04-stage` 副本的滚动容器警告；没有本阶段新增的 error。
+- 本轮没有注入鼠标，hover 仅记录模板声明；侧栏边界按钮、未实例化的 Tab 派生项和同 key 的其他页面网格不由这些样例推断通过。未验真实 Playnite、UIA/读屏、IME、物理 DPI/跨屏、presented frame、ETW 或宿主性能；未改当前滚动条或业务语义。
+- 下一项：R23-03 代表页面终审，先读取既有 evidence 和当前生产 XAML，逐页核对高风险状态，复用已有行为证据而不重做实现。
+
+证据：`../design/reviews/ui-finesse-round3-20260915/evidence/R23-02-PRODUCTION-RESOURCE-STATE-MATRIX-20260922.md`。
+
 ## 2026-09-23 main 合并后 R18-04 测试组成复核
 
 - 在 main HEAD `922501e71c9b77f5c7d227edb4aa42ebe9308d78` 以隔离 Release 输出重建 solution，XAML `24/24`、`0 errors/2` 条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；R18 专测内的源码身份检查通过。

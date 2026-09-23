@@ -1,5 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-23 main 接续与 R23-02 生产状态矩阵
+
+- 当前工作分支 main；R23-02 样式与行为测试源码身份 `a18cb43eb3a7a623aeefa1546be5b2407f30173a`。沿用恢复的 AcrylicFork 生产基线和 Demo-first，不回退到旧页面实现。
+- `AcrylicNavItem` 现在显式声明 `GscSharedFocusVisual`、键盘焦点边框和 disabled opacity；生产设置 `GscSettingsSectionTabItem` 增加禁用透明度/文案色。三个行为测试在 Light/Dark 中分别验证导航、自动生成设置项和四个不同页面 DataGrid 派生样式，3/3 全过。
+- 提交后隔离 Release solution XAML `24/24`、0 errors/两条既有 `MediaCenterView.xaml.cs:706 CS8602` warning；Playnite `net462`、测试 `net472`。矩阵明确 hover 未由真实鼠标驱动，其他侧栏按钮和 Tab 派生项不能由样例推断通过。
+- `validate-source.py` 通过，WPF 静态检查 `0/30/177`；UI freshness `12/14`，两条 stale 为 R00-01/02、R00-05。关联老行为测试已复跑 `5/5`、`2/2`，R00-01/02 RenderHarness 双主题样本未复测，所以记录仍 stale，package identity `not-provided`。
+- 受控 STA WPF/合成行不是真实宿主、屏幕呈现、UIA/读屏、物理 DPI、ETW 或性能证据。用户数据/云端未触碰，当前游戏选框和滚动条系统保持。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-02-PRODUCTION-RESOURCE-STATE-MATRIX-20260922.md`。下一项 R23-03 代表页面终审。
+
 ## 2026-09-23 main 接续与 R18-04 当前证据
 
 - 当前工作分支是 main；R18-04 最新源码身份 `922501e71c9b77f5c7d227edb4aa42ebe9308d78`。继续沿用合并后的 AcrylicFork 生产基线，不切回 feature，也不以旧 main 页面实现覆盖当前 UI。

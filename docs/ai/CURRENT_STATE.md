@@ -1,5 +1,15 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-23 main 接续与 R23-02 生产状态矩阵
+
+- 当前分支 main；生产样式/行为测试提交 `a18cb43eb3a7a623aeefa1546be5b2407f30173a`。该提交为 `AcrylicNavItem` 补共享焦点可视与键盘焦点边框、禁用 opacity；为实际设置容器生成的 `GscSettingsSectionTabItem` 补禁用外观。
+- 同提交的隔离 Release 构建：XAML `24/24`、solution `0 errors`，保留 `MediaCenterView.xaml.cs:706` 两条既有 `CS8602` warning；Playnite `net462`、Playnite.Tests `net472`。
+- 提交后 `R23ProductionResourceStateBehaviorTests 3/3`、0 失败/0 跳过。Light/Dark 分别观察导航项、生成 TabItem 与 Task/Media Inbox/Save History/Maintenance 四个不同派生 DataGrid 的实际选择、焦点、禁用与拒焦行为；完整用例名及断言范围见 R23-02 证据。
+- `validate-source.py` 通过；WPF 技能静态检查 `0 errors/30 warnings/177 info`。UI freshness 为 `12/14 fresh`：`R00-01-02`、`R00-05` 因主题 XAML 文件级变更仍 stale；关联行为方法已复跑 `5/5 + 2/2`，但未重复 R00-01/02 Light/Dark RenderHarness 探针，未改旧记录身份。
+- hover 本轮只审阅模板声明，未注入鼠标；侧栏边界按钮、其他派生 Tab 和其他同 key 网格实例未被样例替代验收。真实 Playnite/UIA/读屏、OS 输入/IME、物理 DPI/跨屏、最终呈现帧、ETW 和宿主性能仍未验。保留当前滚动条、命令/业务语义和 net462。
+
+证据：`design/reviews/ui-finesse-round3-20260915/evidence/R23-02-PRODUCTION-RESOURCE-STATE-MATRIX-20260922.md`。下一项 R23-03 代表页面终审；先核对既有结果与当前生产 XAML，再逐页收口高风险实际状态。
+
 ## 2026-09-23 main 接续与 R18-04 当前复核
 
 - 当前分支 main；R18-04 最新复核源码身份 `922501e71c9b77f5c7d227edb4aa42ebe9308d78`，包含 main 合并后的实现和后续 R00/R01 文档校正。
