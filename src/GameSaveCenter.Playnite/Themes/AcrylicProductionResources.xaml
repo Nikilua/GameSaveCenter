@@ -21,6 +21,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
@@ -53,6 +54,13 @@
                             <Setter TargetName="NavChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                         </MultiTrigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="NavChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="NavChrome" Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="NavChrome" Property="Opacity" Value="0.46"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

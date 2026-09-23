@@ -771,6 +771,10 @@
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                             <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="TabChrome" Property="Opacity" Value="0.45"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
