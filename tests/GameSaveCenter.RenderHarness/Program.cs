@@ -3156,11 +3156,17 @@ public static class Program
         {
             var buttonText = FindVisualChildren<TextBlock>(button)
                 .FirstOrDefault(text => !string.IsNullOrWhiteSpace(text.Text));
+            if (buttonText == null)
+            {
+                report.AppendLine($"  Button[{button.Appearance}] <icon-only>: no text label; text contrast not applicable");
+                continue;
+            }
+
             AppendTextElementEvidence(
                 report,
                 host,
                 bitmap,
-                $"Button[{button.Appearance}] {buttonText?.Text ?? "<composite>"}",
+                $"Button[{button.Appearance}] {buttonText.Text}",
                 buttonText,
                 textSamples);
         }
