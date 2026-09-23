@@ -4,7 +4,7 @@
 
 - 本机 Playnite Extensions 目录只读识别 `GameSaveCenter.Playnite.dll` 为 manifest `0.6.73`、ProductVersion `0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`、SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`。提交 `7a4ba2a9` 是当前 main 祖先，早于 `3a1dadd8` Settings search 和 `da91bd68` window/media 修正；这是本机安装目录事实，不证明用户截图的实际载入 DLL。
 - 新窗口截图尺寸 `1881×1208 px`；按 36 DIP 控件约 54px 估算的 `1254×800 DIP` 仅是假设。当前生产 Settings 视图 Light/Dark 两次独立 VSTest `1/1`：icon/title top `11.33 DIP`、search/title left `0`、search/icon top gap `72.67`；reset controls 全 `36 DIP` 同中心，path combo/four actions 也是 `36 DIP` 同中心。没有修改生产 XAML。
-- 两主题合跑时 xUnit 显示 2/2 passed 但 runner 未退出、无 TRX；该调用在约 2.5 分钟后中断，未计通过。按主题串行的两个 TRX 均 exit `0`，无 COM 清理噪声。证据 `SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。后续准备当前 main 包让用户按安装版本核对，不代装；正常 Playnite host 与物理 DPI 仍未验，CEF `platform_channel 0x5` 不绕过。
+- 两主题合跑时 xUnit 显示 2/2 passed 但 runner 未退出、无 TRX；该调用在约 2.5 分钟后中断，未计通过。按主题串行的两个 TRX 均 exit `0`，无 COM 清理噪声。当前 main package 已生成：[GameSaveCenter-0.6.73.pext](../../artifacts/GameSaveCenter-0.6.73.pext)，identity `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，SHA-256 `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`、45,537,931 bytes，未安装。六份 DLL identity/必需文件/self-contained Worker assertion 通过；Core125/125，Worker355 pass/1 skip；package 默认 Playnite 105 类合跑在第3类中断，故不作完整 Playnite suite 结论。正常 Playnite host 与物理 DPI 仍未验，CEF `platform_channel 0x5` 不绕过。
 
 ## 2026-09-24 main：R08-04 当前复核
 

@@ -4,7 +4,8 @@
 
 - Playnite 扩展目录的 `GameSaveCenter.Playnite.dll` manifest `0.6.73`，ProductVersion `0.6.73+7a4ba2a9`，SHA-256 `5E02…50E22`；该构建早于 `3a1dadd8` 搜索框修正和 `da91bd68` 窗口/媒体滚动修正。当前没有运行中宿主，截图关联尚未确认。
 - 当前 main 生产设置布局在假设 `1254×800 DIP` 的 WPF STA 用例中 Light/Dark `1/1+1/1`：icon/title top 差 `11.33 DIP`，search/title left 差 `0`，search/icon top gap `72.67`；重置组/路径组控件 `36 DIP` 同中心。该尺寸是从图像控件比例估出的可能 150% 换算，不是实测 DPI。
-- [窗口化截图复核](../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)、两份主题 TRX。截图视觉与当前源码结构不一致；旧安装是推断原因，未宣称宿主已修复。准备当前 main 可审阅包但不安装；CEF `platform_channel 0x5` 限制未绕过。
+- 基于 `e83d8ba9` 的可审阅包 [GameSaveCenter-0.6.73.pext](../../artifacts/GameSaveCenter-0.6.73.pext) 已生成，六程序集 identity `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，size `45,537,931`、SHA-256 `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。Package 脚本内容/同源断言通过；Core `125/125`、Worker `355/356`（1 skip），完整 Playnite 105 类没有跑完，不用其总数作结论。
+- [窗口化截图复核](../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)、两份主题 TRX。截图视觉与当前源码结构不一致；旧安装是推断原因，未宣称宿主已修复。CEF `platform_channel 0x5` 限制未绕过。
 
 ## 2026-09-24 main：R08-04 当前复核
 

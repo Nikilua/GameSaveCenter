@@ -4,7 +4,7 @@
 - 当前阶段 Q06-08 已在 `8846d712` 完成并推送；按钮五态 Light/Dark 行为与证据已同步。R18-04 复采、23 项组成、TextServicesHost 清理噪声和用户四页问题的边界继续见各自证据；现有用户截图布局行为覆盖为 Light/Dark `8/8`，不等于当前安装包宿主截图已验。
 - 设置视图的 Loaded/SizeChanged 自动布局测试 Light/Dark 2/2；覆盖 1280×840、1880×1200、560、恢复 1280×840 DIP。标题/搜索左差 0 DIP，居中负例 287.33 DIP，图标/标题横向间距 12 DIP；顶部恢复默认下拉框与两个按钮均 36 DIP、中心差 0，路径组合框与四按钮同为 36 DIP。8e4f3194 上 Release 解决方案构建 0 errors/2 条既有 CS8602，设置几何用例再跑 2/2；当前包为 0.6.73+8e4f3194，SHA-256 和 TRX 见设置证据页。
 - 2026-09-24 本机扩展目录只读 identity 为 `0.6.73+7a4ba2a9`、DLL SHA `5E02…50E22`；该身份早于 `3a1dadd8` 设置搜索修正、`da91bd68` 窗口/媒体滚动修正。**推断：**旧安装可能解释新截图与源码差异，但没有运行中进程关联截图，不能确认呈现源。
-- 新截图近似 `1254×800 DIP` 复核 Light/Dark 各 `1/1`、exit `0`：icon/title 顶差 `11.33`、search/title 左差 `0`、search/icon 顶间隔 `72.67`，恢复/路径操作高度与中心线一致。具体边界见[窗口化设置截图复核](evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)。受控源码几何通过仍不等于当前用户屏幕已修复；正常 Playnite host、真实 DPI 未验，CEF platform_channel 0x5 限制未绕过。接下来先准备当前 main 可审阅包，再推进已满足依赖的 Q/R 小批。
+- 新截图近似 `1254×800 DIP` 复核 Light/Dark 各 `1/1`、exit `0`：icon/title 顶差 `11.33`、search/title 左差 `0`、search/icon 顶间隔 `72.67`，恢复/路径操作高度与中心线一致。基于 `e83d8ba9` 的可审阅包已生成，身份 `0.6.73+e83d8ba9`、SHA `75A8…B73E`、未安装。具体几何、包构建边界见[窗口化设置截图复核](evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)。受控源码几何通过仍不等于当前用户屏幕已修复；正常 Playnite host、真实 DPI 未验，CEF platform_channel 0x5 限制未绕过。下一项 R08-05。
 
 ## 2026-09-24 R08-04 当前 main 业务完成节奏复核
 

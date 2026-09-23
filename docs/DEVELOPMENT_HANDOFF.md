@@ -6,7 +6,7 @@ R08-04 当前 main 生产源码 identity `09ec3132` 已复核：Release solution
 
 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20260924.md` 与两份 TRX。R08-04 生产/测试文件自 `43141399` 后未变；两份当前 TRX 未见 COM 清理异常文本。范围为合成 DTO/fake/隔离 STA WPF 与逻辑 DIP；真实 Playnite/Worker 长请求、Narrator/真实 UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
 
-下一项：先基于提交后的当前 main 准备可审阅 `.pext` 供用户核对（不安装）；随后推进 R08-05 页面切换轻量化并先查现有代码/依赖。本机扩展目录 DLL identity `0.6.73+7a4ba2a9` 早于 Settings `3a1dadd8` 与窗口/Media `da91bd68` 修正；图像复核受控几何两主题通过，但未关联用户截图的实际运行实例，不可宣称实机已修复。Task/Media/Save/Settings 问题都需等用户使用新 package 或提供运行时 identity 后再关闭。CEF `platform_channel 0x5` 仍是隔离 host 阻挡，不绕过。
+可审阅候选包已生成：[GameSaveCenter-0.6.73.pext](../artifacts/GameSaveCenter-0.6.73.pext)，build identity `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，SHA-256 `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。随后推进 R08-05 页面切换轻量化并先查现有代码/依赖。本机扩展目录 DLL identity `0.6.73+7a4ba2a9` 早于 Settings `3a1dadd8` 与窗口/Media `da91bd68` 修正；图像复核受控几何两主题通过，但未关联用户截图的实际运行实例，不可宣称实机已修复。Task/Media/Save/Settings 问题需等用户用新 package 或提供运行时 identity 后再关闭。CEF `platform_channel 0x5` 仍是隔离 host 阻挡，不绕过。
 
 ## 2026-09-24 当前接续：R08-02
 

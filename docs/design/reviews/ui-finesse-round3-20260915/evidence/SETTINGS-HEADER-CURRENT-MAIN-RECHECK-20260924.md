@@ -22,4 +22,4 @@
 
 本机安装目录中的 DLL 已只读识别为 `0.6.73+7a4ba2a9`，其祖先关系早于当前 main 设置搜索修正 `3a1dadd8` 和窗口/媒体布局修正 `da91bd68`；没有运行中的 Playnite 进程可与该 DLL 建立截图时间关联。当前 main 在近似窗口逻辑尺寸 `1254×800 DIP` 的 Light/Dark 实际 WPF 测量均为通过：icon/title top 差 `11.33 DIP`、search/title left 差 `0`、search/icon top 间隔 `72.67 DIP`、恢复默认组控件中心/高度差 `0`、路径组全 `36 DIP` 同中心。该 150% 尺寸换算只是由截图控件像素高度推测，实际 DPI 未核实。
 
-结果、DLL SHA-256、VSTest 中断后按主题单独重跑的事实与边界见[窗口化截图当前 main 复核](SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)和两份 TRX。当前截图视觉位置与最新源码结构不一致；旧安装身份是可能解释，仍未证明当时屏幕用的是该扩展 DLL。未宣称 Playnite 实际窗口已经修复。
+结果、DLL SHA-256、VSTest 中断后按主题单独重跑的事实与边界见[窗口化截图当前 main 复核](SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)和两份 TRX。候选安装包现为 `0.6.73+e83d8ba9`，SHA-256 `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，未安装。当前截图视觉位置与最新源码结构不一致；旧安装身份是可能解释，仍未证明当时屏幕用的是该扩展 DLL。未宣称 Playnite 实际窗口已经修复。

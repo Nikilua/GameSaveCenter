@@ -2,7 +2,7 @@
 
 ## 结论
 
-本机 Playnite 扩展目录中的设置程序集身份早于当前分支的设置、页面窗口和媒体布局修正。用户最新截图的图标与搜索框相对位置不符合当前 main 的生产 XAML。没有再改生产布局；先保留当前实现的尺寸行为证据，并准备将当前 main 打包供用户更新核对。当前没有运行中的 Playnite/GameSaveCenter 进程，因此无法证明该截图由本机这个 DLL 实际呈现。
+本机 Playnite 扩展目录中的设置程序集身份早于当前分支的设置、页面窗口和媒体布局修正。用户最新截图的图标与搜索框相对位置不符合当前 main 的生产 XAML。没有再改生产布局；已将当前 main 打包为可审阅候选供用户核对。当前没有运行中的 Playnite/GameSaveCenter 进程，因此无法证明该截图由本机这个 DLL 实际呈现。
 
 ## 本机扩展身份对照
 
@@ -21,6 +21,12 @@
 
 测试期间把两个主题放在同一 VSTest 进程时，xUnit 输出两条用例已通过，但进程未结束、未写 TRX；约两分半后中断该运行，不计作通过。随后 Dark 与 Light 各自独立运行，结果分别 `1/1`、退出码 `0`；保存的两份 TRX 都无 `InvalidComObjectException`。
 
+## 当前 main 安装包候选
+
+- 基于提交 `e83d8ba913080f2700e41f9d0b5f18b98ce04803` 的候选包：[GameSaveCenter-0.6.73.pext](../../../../artifacts/GameSaveCenter-0.6.73.pext)。包大小 `45,537,931` 字节，SHA-256 `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`。
+- `scripts/package.ps1 -SkipBuild -BuildOutputRoot .tmp/package-e83d8ba9` 完成 Worker 自包含发布、必需内容校验与六个 Plugin/Worker 程序集同源校验；统一身份 `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`。包未安装/替换本机 Playnite。
+- 同批 Release solution 已构建：XAML `24/24`、0 errors、保留两条既有 `CS8602` warnings；Core `125/125`，Worker `355/356`（1 条既有 skip）。完整 Playnite 隔离套件有 105 类；为复用已完成的干净构建生成包，在第 3 类启动后中断全套，故不记录 Playnite 全量总数。此后按主题独立完成的设置几何 Light/Dark 用例、R08-03/R08-04 行为回归已有各自证据。
+
 该受控几何使用 STA WPF、逻辑 DIP，不模拟 Playnite 父窗口或物理 DPI，不能替代正常宿主截图。当前安装目录 DLL 与最新代码的对应关系是目前能够确认的本机事实；实际用户屏幕/载入进程仍未验。此前隔离 host 的 CEF `platform_channel 0x5` 限制未绕过。
 
 ## 原始结果
@@ -28,4 +34,4 @@
 - [Dark 主题 1254×800 DIP](SETTINGS-HEADER-WINDOWED-1254x800-DARK-20260924.trx)
 - [Light 主题 1254×800 DIP](SETTINGS-HEADER-WINDOWED-1254x800-LIGHT-20260924.trx)
 
-下一步：基于提交后的当前 main 准备可审阅 `.pext`，不安装到 Playnite；之后继续 R08-05。
+下一步：由用户使用候选包或提供实际运行时 identity 后对照截图；本机不代装。随后继续 R08-05。
