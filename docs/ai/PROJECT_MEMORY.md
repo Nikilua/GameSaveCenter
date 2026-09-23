@@ -4,7 +4,7 @@
 
 - 设置页用户截图对应的当前生产布局实现已在 3a1dadd8；本批只强化行为证据，没有改生产 XAML/业务代码。测试实际通过 Loaded/SizeChanged 路由，而非反射手调布局私有方法。
 - Light/Dark 2/2；1280×840、1880×1200、560、恢复 1280×840 DIP 窗口序列中，标题/搜索左差 0 DIP，居中负例 287.33 DIP，紧凑搜索 392 DIP 且无溢出；保存提示行 1→0，路径组合框与四按钮 36 DIP、中心差 0。证据见 docs/design/reviews/ui-finesse-round3-20260915/evidence/settings-header-responsive-20260923/README.md。
-- 最新 freshness 采样在 main HEAD 62b17b0c，14 条 R00/R01 记录 needsRerun=false、matchedSourcePaths=0；package identity not-provided。DPI 1.0 的隔离 WPF 窗口不代表 Playnite package-host 或物理 DPI。CEF platform_channel 0x5 host 边界仍在，用户截图不标为已解决。
+- 最新 freshness 采样在 main HEAD 13442aa4，14 条 R00/R01 记录 needsRerun=false、matchedSourcePaths=0；package identity not-provided。隔离 WPF 几何不代表 Playnite package-host 或物理 DPI。
 - 下一步先静态核对 Settings 宿主父容器和 XAML 布局映射；若不能在源码或既有隔离流程复现，记录所需 package identity/正常宿主输入，并继续独立 Q/R。
 
 

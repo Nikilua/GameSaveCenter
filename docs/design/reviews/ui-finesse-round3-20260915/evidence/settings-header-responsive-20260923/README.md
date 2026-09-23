@@ -6,6 +6,14 @@
 
 `ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther` 在 Light/Dark 两主题均通过，合计 `2/2`，0 failed / 0 skipped。Release 构建的 Playnite 目标为 `net462`，测试目标为 `net472`；保留既有 `MediaCenterView.xaml.cs:703 CS8602` nullable warning。实际 TRX 为 [settings-header-event.trx](settings-header-event.trx)。测试程序集构建身份为当时 main HEAD `62b17b0c`；生产 Settings 实现相对前次证据身份没有代码改动。
 
+### 顶栏重置控件几何补测（2026-09-23）
+
+随后把用户截图中的顶部图标和“恢复默认”控件也纳入同一生产视图行为用例。Light/Dark 两主题再次通过，新增实测为：图标与标题左边缘横向间距 12 DIP；重置下拉框及两个按钮均 36 DIP，三者中心差 0 DIP，中心线均为 71.33 DIP。控件宽度为 260、90.67、102.67 DIP。测试还断言两个预期按钮都存在、控件同高且中心对齐。
+
+本次 TRX 为 [settings-header-controls-geometry.trx](settings-header-controls-geometry.trx)，结果 2/2、0 failed / 0 skipped。Release Playnite net462 与测试 net472；构建保留既有 MediaCenterView.xaml.cs:703 CS8602，恢复时 NuGet advisory 源不可达有 NU1900 warning，项目恢复/编译成功。构建元数据 GscBuildCommit=13442aa4，测试包含当时工作树中的新增断言。
+
+有两次不带诊断 console logger 的隔离调用长时间没有返回或生成 TRX；均不计为测试结果，仅中断了本次启动的 dotnet test 会话。随后使用同一隔离 Release 程序集和诊断 console + TRX 双 logger 复跑，5 秒返回 2/2。最终 TRX 未记录 InvalidComObjectException。
+
 ## 几何与负例
 
 测试窗口尺寸均为逻辑 DIP，包含 `1280×840` 初始窗口、`1880×1200` 宽窗口、`560` 紧凑窗口和恢复到 `1280×840`。两主题的结果相同：
@@ -13,12 +21,14 @@
 | 检查 | Light / Dark |
 | --- | ---: |
 | 标题图标上沿差 | `11.33 DIP`（门槛 `≤12`） |
+| 图标到标题的水平间距 | 12 DIP |
 | 标题到搜索框左边界 | `0 DIP` |
 | 宽窗口 SettingsShell / 搜索左边界差 | `1360 DIP / 0 DIP` |
 | 搜索框宽高 | `520×36 DIP` |
 | 紧凑窗口搜索宽度 / 溢出 / 左边界差 | `392 DIP / 0 DIP / 0 DIP` |
 | 保存提示所在行（紧凑 → 恢复） | `1 → 0` |
 | 恢复默认卡左边界 / 与搜索间距 | `0 DIP / 14 DIP` |
+| 恢复默认下拉框与两个按钮中心/高度差 | 0 DIP / 0 DIP，三个控件均 36 DIP |
 | 路径组合框与四个按钮的高度 | 全部 `36 DIP` |
 | 路径控件中心差 / 高度差 | `0 DIP / 0 DIP` |
 

@@ -40,4 +40,11 @@
 
 本次 R00/R01 freshness 复核在 main source HEAD 62b17b0c：14 条记录的 sourcePaths 均无变更，package identity 仍未提供。随后在当前生产设置视图补 Loaded/SizeChanged 几何行为复核，两主题 2/2；不手动调用布局方法，搜索左差 0 DIP，居中负例为 287.33 DIP，窄窗口保存状态行回到正常位置，路径组合框和四按钮均为 36 DIP。详细数据见[设置截图行为复核](settings-header-responsive-20260923/README.md)。
 
+### 2026-09-23 设置顶栏与恢复默认控件补测
+
+Light/Dark 再次通过 2/2。图标到标题横向间距为 12 DIP，顶部恢复默认 ComboBox 与两个按钮全部为 36 DIP，中心差 0 DIP；完整原始几何和单独 TRX 见 [settings-header-controls-geometry.trx](settings-header-responsive-20260923/settings-header-controls-geometry.trx)。这些结果来自当前源代码的隔离 STA WPF 窗口，不是用户当前 Playnite host/package 的呈现结果。
+
 用户截图仍没有包身份，之前隔离 Playnite host 未能正常加载扩展（CEF `platform_channel` `0x5`），所以截图与当前受控行为的差异尚未在正常宿主解释。下一项核对当前 package identity/正常 host；如果宿主边界继续阻塞，保留待验状态并推进独立 Q/R 小批量，不把测试通过写成用户当前窗口已解决。
+### 2026-09-23 R00/R01 freshness 复核更新
+
+本次 freshness 采样 main HEAD 13442aa4，14 条记录均无需重跑且源码路径命中为 0；package identity 未提供，不能据此关闭真实宿主验证。

@@ -2269,3 +2269,9 @@ git branch --show-current
 - 工作分支 main；freshness JSON 采样 HEAD 62b17b0c，14 条 R00/R01 记录 needsRerun=false、matchedSourcePaths=0，documentationOnlyChange=false，package identity not-provided。
 - 设置页生产源码没有改；行为测试实际经历 WPF Loaded/SizeChanged，不再手动反射调用 ApplyResponsiveLayout。双主题 2/2，标题/搜索左差 0 DIP，居中错位负例 287.33 DIP，窗口尺寸序列含 1280×840、1880×1200、560、恢复；路径编辑控件 36 DIP。证据 settings-header-responsive-20260923/README.md 与 TRX。
 - 用户截图和正常 Playnite host 未绑定到当前 package identity；隔离 host 之前的 CEF platform_channel 0x5 阻挡仍未消除，不宣称用户宿主已修复。下一项先核对 Settings 父容器/宿主布局约束，再按现有隔离流程复现；受阻则继续可独立执行的 Q/R 小批任务。
+## 当前交接（2026-09-23 设置页顶栏控件几何补测）
+
+- 主分支在 13442aa4；当前未提交修改只扩展 ReportedWorkspaceLayoutBehaviorTests 并更新该行为证据/交接。
+- Light/Dark 2/2；图标/标题横向间距 12 DIP，标题/搜索左差 0 DIP，顶部恢复默认下拉框与两个按钮均 36 DIP、中心差 0；路径编辑控件同为 36 DIP。完整几何输出见 settings-header-responsive-20260923/README.md 和 settings-header-controls-geometry.trx。
+- Playnite net462/test net472 隔离构建通过；NU1900 来自 NuGet advisory 源不可达，既有 CS8602 保留。未返回的单独 logger 尝试无结果；诊断 console+TRX 双 logger 复跑成功 2/2。
+- 用户实际 package identity、正常 Playnite 父容器和物理 DPI 仍未确认，不宣称用户截图问题已修复。下一步核对当前 Settings 父容器/布局映射，宿主受阻时推进依赖已满足的 Q/R。

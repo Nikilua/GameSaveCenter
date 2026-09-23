@@ -9136,3 +9136,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 main 为 62b17b0c；freshness JSON 在该 HEAD 采样，14 条记录 needsRerun=false、matchedSourcePaths=0，documentationOnlyChange=false，package identity not-provided；历史 source baselines 未改。
 - 扩展 ReportedWorkspaceLayoutBehaviorTests：以真实 WPF Window Loaded/SizeChanged 驱动布局；Light/Dark 2/2。尺寸序列 1280×840、1880×1200、560、恢复 1280×840 DIP；标题/搜索左差 0 DIP，居中负例 287.33 DIP，路径组合框和按钮高度 36 DIP。Release Playnite net462/test net472，保留既有 CS8602 warning。
 - 没有生产 XAML/业务变更；用户当前安装包 identity、正常 Playnite host 和物理 DPI 未验，CEF platform_channel 0x5 仍是隔离 host 边界。具体下一步：核对宿主父容器/Settings XAML 的布局映射，可复现后再改生产代码；否则推进独立 Q/R。
+## 2026-09-23 设置页顶部输入与按钮几何补测
+
+- 扩展已有设置页 WPF 行为用例，补图标/标题横向锚点、顶部恢复默认下拉框和两个按钮的实际几何/数量行为断言。Light/Dark 2/2；图标/标题间距 12 DIP；重置控件均 36 DIP、中心差 0；路径编辑组合框及四按钮同高 36 DIP。
+- 构建 Playnite net462/test net472 成功，已有 CS8602 保留；NuGet advisory 源不可达产生 NU1900。最终隔离复跑以诊断 console+TRX 双 logger 得到 2/2、0 skipped，TRX 独立保存；单独 TRX logger 路径未完成，未计为结果。
+- 没有生产 XAML/业务修改。证据支持当前源码几何，未验证用户实际包、正常 Playnite 父容器或物理 DPI。CEF platform_channel 0x5 仍是之前的隔离 host 阻挡。

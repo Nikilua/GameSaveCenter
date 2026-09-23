@@ -74,3 +74,16 @@ R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文
 - 设置页行为测试移除了反射调用布局私有方法，实际由 WPF Window Loaded/SizeChanged 驱动。Light/Dark 2/2；1280×840 → 1880×1200 → 560 → 1280×840 DIP，标题/搜索左差 0 DIP，居中负例 287.33 DIP，路径组合框和四按钮 36 DIP，保存提示行 1→0。Release Playnite net462 与测试 net472；TRX 与测量见 [设置截图行为复核](settings-header-responsive-20260923/README.md)。
 - 测试程序集 GscBuildCommit 为 62b17b0c；保留既有 MediaCenterView.xaml.cs:703 CS8602 警告。当前生产设置布局未改，证明的是隔离 STA WPF/DPI 1.0 的响应链。无当前用户包 identity、正常 Playnite package-host 或物理 DPI 证据，问题不关闭。
 - 下一可执行诊断：检查设置页实际宿主父容器约束与当前 XAML 列/行映射；只有在当前源码/允许的隔离宿主可复现后才改生产布局。CEF platform_channel 0x5 若仍阻挡，则转依赖已满足的独立 Q/R 行为小批，不把该宿主障碍伪装成已修复。
+
+## 2026-09-23 设置顶栏及重置控件几何补测
+
+- 追踪插件入口确认 GetSettingsView 直接返回 GameSaveCenterSettingsView；首次打开尺寸由 EnsureHostWindowSize 设置，布局使用 SettingsShell.ActualWidth 并由生产 Loaded/SizeChanged 路由更新。Playnite 真正承载的父容器仍不在当前隔离窗口中。
+- 同一 Light/Dark 行为用例新增图标与标题的水平间距，以及顶部恢复默认 ComboBox/两个按钮的中心线、高度和存在性检查。结果为图标到标题 12 DIP；三个顶部控件均 36 DIP、中心差 0 DIP；路径控件保持 36 DIP、中心差 0。单独 TRX 见 [设置顶栏几何补测](settings-header-responsive-20260923/settings-header-controls-geometry.trx)。
+- 构建元数据 GscBuildCommit=13442aa4，测试程序集包含当前未提交测试修改。最终采用诊断 console 与 TRX 双 logger 的隔离复跑，2/2、0 failed/0 skipped、5 秒；Playnite net462/test net472 编译/运行成功，NU1900 是恢复时 NuGet advisory 源不可达 warning，保留既有 CS8602。另两次未返回的尝试没有结果，不计作通过。
+- 受控几何未复现错位；用户当前包身份/正常宿主视图未核实。下一项沿用 Settings 宿主容器边界检查，无法取得正常宿主时继续已满足依赖的 Q/R 小批量。
+
+
+## 2026-09-23 main HEAD 13442aa4 freshness 更新
+
+- freshness JSON 在 main HEAD 13442aa43405986a5a8f4599c91ca23a9342ea28 采样；14 条记录 needsRerun=false、matchedSourcePaths=0，changedPaths=743。documentationOnlyChange=false，因为从历史 evidence identity 以来含源码变化；package identity not-provided。R00-01/02 与 R00-05 的 evidence source commit 不变，未把本次设置测试说成 R00 旧探针重跑。
+- 对应正式报告为 [当前 freshness JSON](R01-07-freshness-report-20260923-current.json)。设置页控件几何的后续行为扩展和测试记录在本复核页上方；用户包身份及正常宿主尚未取得。

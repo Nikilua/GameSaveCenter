@@ -360,9 +360,14 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     {
         Exception? exception = null;
         var iconTitleTopDelta = 0d;
+        var iconTitleHorizontalGap = 0d;
         var searchTitleLeftDelta = 0d;
         var searchHeight = 0d;
         var searchWidth = 0d;
+        var resetControlCenterSpread = 0d;
+        var resetControlHeightSpread = 0d;
+        var resetControlDetails = string.Empty;
+        var resetButtonCount = 0;
         var compactSearchWidth = 0d;
         var compactSearchRightOverflow = 0d;
         var compactSearchTitleLeftDelta = 0d;
@@ -392,6 +397,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var title = (FrameworkElement)viewType.GetField("SettingsHeaderTitle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var search = (FrameworkElement)viewType.GetField("SettingsSearchTextBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var resetCard = (FrameworkElement)viewType.GetField("SettingsResetDefaultsCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var resetFieldCombo = (FrameworkElement)viewType.GetField("SettingsResetFieldComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var saveHint = (FrameworkElement)viewType.GetField("SettingsSaveHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCombo = (FrameworkElement)viewType.GetField("SettingsPathEditorComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCard = (FrameworkElement)viewType.GetField("SettingsPathEditorCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -406,12 +412,25 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var resetBounds = BoundsIn(resetCard, headerGrid);
                 var saveHintBounds = BoundsIn(saveHint, headerGrid);
                 iconTitleTopDelta = Math.Abs(iconBounds.Top - titleBounds.Top);
+                iconTitleHorizontalGap = titleBounds.Left - iconBounds.Right;
                 searchTitleLeftDelta = Math.Abs(searchBounds.Left - titleBounds.Left);
                 searchHeight = search.ActualHeight;
                 searchWidth = search.ActualWidth;
                 resetTitleLeftDelta = Math.Abs(resetBounds.Left - titleBounds.Left);
                 resetAfterSearchGap = resetBounds.Top - searchBounds.Bottom;
                 saveHintTitleTopDelta = Math.Abs(saveHintBounds.Top - titleBounds.Top);
+
+                var resetButtons = FindVisualChildren<ButtonBase>(resetCard)
+                    .Where(button => button.Content is string label && label is "恢复单字段" or "恢复全部默认")
+                    .Cast<FrameworkElement>()
+                    .ToArray();
+                resetButtonCount = resetButtons.Length;
+                var resetControls = resetButtons.Concat(new[] { resetFieldCombo }).ToArray();
+                var resetCenters = resetControls.Select(control => CenterY(control, resetCard)).ToArray();
+                var resetHeights = resetControls.Select(control => control.ActualHeight).ToArray();
+                resetControlCenterSpread = resetCenters.Max() - resetCenters.Min();
+                resetControlHeightSpread = resetHeights.Max() - resetHeights.Min();
+                resetControlDetails = string.Join(", ", resetControls.Select(control => $"{control.GetType().Name}={control.ActualWidth:0.##}×{control.ActualHeight:0.##} DIP @ {CenterY(control, resetCard):0.##}"));
 
                 search.HorizontalAlignment = HorizontalAlignment.Center;
                 FlushLayout(window);
@@ -461,10 +480,14 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, centered-negative Δ={centeredRegressionDelta:0.##} DIP, wide shell/search={wideShellWidth:0.##}/{wideSearchTitleLeftDelta:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, compact search width/overflow/leftΔ={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##}/{compactSearchTitleLeftDelta:0.##} DIP, save-hint row={compactSaveHintRow}->{restoredSaveHintRow}, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
+        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, horizontal gap={iconTitleHorizontalGap:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, centered-negative Δ={centeredRegressionDelta:0.##} DIP, wide shell/search={wideShellWidth:0.##}/{wideSearchTitleLeftDelta:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, reset controls center/height spread={resetControlCenterSpread:0.##}/{resetControlHeightSpread:0.##} DIP ({resetControlDetails}), compact search width/overflow/leftΔ={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##}/{compactSearchTitleLeftDelta:0.##} DIP, save-hint row={compactSaveHintRow}->{restoredSaveHintRow}, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
         Assert.Null(exception);
         Assert.True(iconTitleTopDelta <= 12, $"settings icon top is {iconTitleTopDelta:0.##} DIP from the title top");
+        Assert.InRange(iconTitleHorizontalGap, 11, 13);
         Assert.True(searchTitleLeftDelta <= 2, $"settings search starts {searchTitleLeftDelta:0.##} DIP away from the title edge");
+        Assert.Equal(2, resetButtonCount);
+        Assert.InRange(resetControlCenterSpread, 0, 1);
+        Assert.InRange(resetControlHeightSpread, 0, 1);
         Assert.True(centeredRegressionDelta >= 40, $"centered search negative control should expose the old alignment defect; measured {centeredRegressionDelta:0.##} DIP");
         Assert.InRange(wideShellWidth, 1320, 1360);
         Assert.InRange(wideSearchTitleLeftDelta, 0, 2);
