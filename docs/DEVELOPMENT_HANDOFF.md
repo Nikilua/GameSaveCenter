@@ -2252,8 +2252,8 @@ git branch --show-current
 
 ## 当前交接（2026-09-23 R00/R01 freshness 与设置宿主差异）
 
-- 当前仓库在 `D:\workplace\github\GameSaveCenter` 的 `main`，HEAD `8846d712af8fc388cb18cb732d94321d95034f11`。不要使用 `codex/ui-finesse-round2` 分支。Q06-08 已完成并推送。
-- R00/R01 freshness current report 有 14 条记录，均 `needsRerun=false`、`matchedSourcePaths=0`；R00-01/02 与 R00-05 仍绑定 `3a1dadd8` 证据身份。freshness self-test exit 0；全局 `documentationOnlyChange=false`。package identity `not-provided`。该结果不代表这批重跑过 R00 测试、RenderHarness 或重新安装。
+- 当前仓库在 `D:\workplace\github\GameSaveCenter` 的 `main`；最新 production source HEAD `e9bebee860c3a1374fba671bfd933c3cd681b543`，Q06-08 代码提交为 `8846d712`，之后只有证据/交接文档提交。不要使用 `codex/ui-finesse-round2` 分支。
+- R00/R01 freshness current report 绑定 e9bebee8，有 14 条记录，均 `needsRerun=false`、`matchedSourcePaths=0`；R00-01/02 与 R00-05 仍绑定 `3a1dadd8` 证据身份。freshness self-test 在 e9bebee8 exit 0；全局 `documentationOnlyChange=false`。package identity `not-provided`。该结果不代表这批重跑过 R00 测试、RenderHarness 或重新安装。
 - 用户最新设置截图仍见搜索框偏右、顶部图标下移；current main 的设置视图已包含左对齐与锚点修正，双主题行为几何测试过去为 `8/8`，但它是在 STA/DPI 1.0 离屏窗口。不要宣称用户当前宿主问题已解决。上一轮隔离 Playnite host 因 CEF `platform_channel` `0x5` 没有正常进入插件视图。
 - 下一可执行任务：在截图窗口尺寸换算出的逻辑尺寸/系统 DPI 下检查当前设置视图布局，确认 `ApplyResponsiveLayout` 的 SizeChanged 路由，采集当前待测包身份，并对比 header 图标 top、标题/搜索框 left、状态提示和路径编辑按钮位置。如果 current checkout 复现，则修共享布局并补正/负行为验证；否则记录包身份或 host 差异待核，不关闭问题，然后继续依赖已满足的 Q/R 小批量。
 - 已有边界：没有真实 Playnite 当前 package identity、正常宿主呈现、物理 DPI/跨屏、presented frame、ETW/宿主性能；不写用户存档、媒体、云端或外发诊断。Demo 原目录不可用，沿用恢复生产基线。

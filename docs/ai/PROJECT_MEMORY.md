@@ -5364,6 +5364,6 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 ## 2026-09-23 续作要点：R00/R01 与设置截图
 
-- 仅在 `main` 上继续；当前 HEAD `8846d712`。R00-01/02、R00-05 的历史行为证据源是 `3a1dadd8`，当前 `R00/R01` freshness 为 14 records 均无需重跑、无 source path 命中；不要把 baseline SHA 改成当前 SHA，也不要把旧测试写成当前重跑。freshness 自测 exit 0，package identity 未提供。
+- 仅在 `main` 上继续；最新 production source HEAD `e9bebee8`（Q06-08 代码提交 `8846d712`，后续为文档同步）。R00-01/02、R00-05 的历史行为证据源是 `3a1dadd8`，当前 `R00/R01` freshness 为 14 records 均无需重跑、无 source path 命中；不要把 baseline SHA 改成当前 SHA，也不要把旧测试写成当前重跑。freshness 自测在 e9bebee8 exit 0，package identity 未提供。
 - 新用户设置截图显示的居中搜索与下移图标和当前 `GameSaveCenterSettingsView` 的左对齐/顶部锚点修正不一致。现有行为证据为隔离 STA/DPI 1.0 的双主题结果，不替代用户 package-host；此前正常宿主捕获因 CEF `0x5` 未成功。先复核截图窗口的实际逻辑尺寸/DPI、当前 package 身份和 `ApplyResponsiveLayout` 调用，再决定是否需要源代码修复。
 - 用户已授权持续实现，不要每个 Q/R 阶段都询问是否继续。保持 Demo-first、Playnite `net462`、真实绑定/取消/错误和恢复保护；测试使用合成/fake/隔离目录，不写真实存档、媒体、云端或诊断外发。

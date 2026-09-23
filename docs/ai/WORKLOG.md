@@ -9121,6 +9121,6 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 ## 2026-09-23 main Q06-08 状态五态证据与 R00/R01 校正
 
 - Q06-08 已由 `8846d712` 收口并推送：生产 `GscWpfUiPrimaryButton` 在 Light/Dark 的 normal/hover/pressed/focus/disabled 状态序列为 `1/1`；不可执行状态不派发命令。Hover 是 WPF MouseDevice 状态，不是物理鼠标；焦点/Space 是受控 STA 激活，不代表 OS 输入。10 张 offscreen 图和 TRX 保存在 Round2 证据目录。
-- 当前继续 `main`，没有切到 `codex/ui-finesse-round2`。R00-01/02 与 R00-05 不需要重建：baseline 源码身份仍是 `3a1dadd8`，current HEAD `8846d712` freshness 14 records 全部无匹配源路径；脚本 docs-only/shared-control/package identity 自测 exit `0`。没有在本批重跑 R00 行为测试。
+- 当前继续 `main`，没有切到 `codex/ui-finesse-round2`。R00-01/02 与 R00-05 不需要重建：baseline 源码身份仍是 `3a1dadd8`，main source HEAD `e9bebee8` freshness 14 records 全部无匹配源路径；脚本 docs-only/shared-control/package identity 自测在 e9bebee8 exit `0`。没有在本批重跑 R00 行为测试。
 - freshness JSON、Round3 R01-03/R01-07 链接、current recheck、用户截图报告、Current State、Project Memory 与 Handoff 已同步。R01 audit 汇总数是既有审计证据，本批没有重跑 audit；package identity `not-provided`，当前设置宿主错位保持未复现。
 - 下一项：用截图对应的窗口逻辑尺寸/DPI 复核生产 `GameSaveCenterSettingsView`、`ApplyResponsiveLayout` 和 package identity；若当前 main 在可比条件下错位，修代码并补行为/负例。之前隔离 Playnite CEF `platform_channel 0x5`、用户当前安装包与真实呈现仍待验。未操作真实用户数据。

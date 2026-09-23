@@ -55,13 +55,13 @@ R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文
 - RenderHarness 完整审计：`168` snapshots、`118` warnings、`0` Fidelity、`0` 失败路由、`7 HIGH / 4 MEDIUM`；索引 `20/20`。用户四张布局截图、精确 DIP 和 R18 原始样本见 [用户截图布局复核](USER-REPORTED-LAYOUT-20260923.md)。
 - 全局 `render-qa` 为 `40 PROBLEM`：OverviewRecentAccessList `20`、SaveHistoryGrid `8`、TaskGrid `4`、其他 SettingsLayout 断点 `8`。定向四页行为回归通过不等于 render-qa 门禁全绿。
 - WPF 技能静态审查 `0 errors / 30 warnings / 177 info`。清单包含既有 StackPanel/滚动控件和模板建议项；本轮未以静态 warning 代替 WPF 布局行为结果。
-- 不把离屏逻辑 DIP/合成数据描述为真实 Playnite package-host、物理 DPI/UIA/IME、DWM presented frame、ETW 或宿主性能证据；没有碰真实存档、媒体、云端或诊断数据。Demo 原目录不可用，继续使用恢复的生产基线。本节记录的下一项 freshness 校正已在后续 `8846d712` 复核中完成，见文末。
+- 不把离屏逻辑 DIP/合成数据描述为真实 Playnite package-host、物理 DPI/UIA/IME、DWM presented frame、ETW 或宿主性能证据；没有碰真实存档、媒体、云端或诊断数据。Demo 原目录不可用，继续使用恢复的生产基线。本节记录的下一项 freshness 校正已在后续 `e9bebee8` 复核中完成，见文末。
 
-## 当前 main `8846d712` 范围 freshness 复核（2026-09-23）
+## main source HEAD `e9bebee8` 范围 freshness 复核（2026-09-23）
 
-- `check-ui-evidence-freshness.ps1` 在当前 main `8846d712af8fc388cb18cb732d94321d95034f11` 输出 14 条 R00/R01 记录；逐条 `needsRerun=false`、`matchedSourcePaths=0`。R00-01/02 与 R00-05 仍以 `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8` 为证据源码身份；本次没有重写历史 baseline，也没有把旧测试冒称为在 8846 上重跑。
-- `scripts/test-ui-evidence-freshness.ps1` exit `0`，覆盖 docs-only、shared-control 变更失效、package identity mismatch 三个门禁负例。完整 freshness JSON 已更新到 [当前 freshness 报告](R01-07-freshness-report-20260923-current.json)。报告全局 `documentationOnlyChange=false`，因为从旧证据提交到当前 HEAD 的变更还包括源码；结论仅是每条记录声明的 sourcePaths 均未匹配到变化。package identity 为 `not-provided`，不表示已安装或运行当前包。
-- R01-03 当前链接改为本复核页，不再错误指向用户截图布局报告；R01-07 账本记录本次 `8846d712` fresh-scope 结果。RenderHarness 的 `168 / 118 / 0 Fidelity / 0 failed routes`、`7 HIGH / 4 MEDIUM` 仍是既有受控审计数据，没有在本次重新运行。
+- `check-ui-evidence-freshness.ps1` 在 source HEAD `e9bebee860c3a1374fba671bfd933c3cd681b543` 输出 14 条 R00/R01 记录；逐条 `needsRerun=false`、`matchedSourcePaths=0`。R00-01/02 与 R00-05 仍以 `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8` 为证据源码身份；本次没有重写历史 baseline，也没有把旧测试冒称为在 e9bebee8 上重跑。
+- `scripts/test-ui-evidence-freshness.ps1` 在 e9bebee8 exit `0`，覆盖 docs-only、shared-control 变更失效、package identity mismatch 三个门禁负例。完整 freshness JSON 已更新到 [当前 freshness 报告](R01-07-freshness-report-20260923-current.json)。报告全局 `documentationOnlyChange=false`，因为从旧证据提交到当前 source HEAD 的变更还包括源码；结论仅是每条记录声明的 sourcePaths 均未匹配到变化。package identity 为 `not-provided`，不表示已安装或运行当前包。
+- R01-03 当前链接改为本复核页，不再错误指向用户截图布局报告；R01-07 账本记录本次 `e9bebee8` fresh-scope 结果。RenderHarness 的 `168 / 118 / 0 Fidelity / 0 failed routes`、`7 HIGH / 4 MEDIUM` 仍是既有受控审计数据，没有在本次重新运行。
 
 ## 新增设置宿主截图差异与下一项
 

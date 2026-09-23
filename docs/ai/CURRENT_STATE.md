@@ -3130,7 +3130,7 @@
 
 ## 2026-09-23 当前续作：R00/R01 freshness 与用户设置截图
 
-- 当前工作树在 `main`，HEAD `8846d712af8fc388cb18cb732d94321d95034f11`。Q06-08 五态行为证据已提交并推送；R00/R01 当前文档复核检查 14 条记录均为 `needsRerun=false`、`matchedSourcePaths=0`。证据原始源码身份保持 `3a1dadd8`，本次没有冒称旧行为测试在 8846 上重跑；package identity `not-provided`。
-- `scripts/test-ui-evidence-freshness.ps1` 当前 exit 0，docs-only/shared-control/package-identity 测试通过。全局 `documentationOnlyChange=false`，但本次 14 条各自关联源码路径没有变化。当前 JSON 在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json`。
+- 当前生产源码 HEAD `e9bebee860c3a1374fba671bfd933c3cd681b543`，工作分支为 `main`；最近的代码实现提交 Q06-08 为 `8846d712`，后续只同步了文档。R00/R01 freshness 在 e9bebee8 检查 14 条记录，均 `needsRerun=false`、`matchedSourcePaths=0`。证据原始源码身份保持 `3a1dadd8`，没有冒称旧行为测试在 e9bebee8 重跑；package identity `not-provided`。
+- `scripts/test-ui-evidence-freshness.ps1` 在 e9bebee8 exit 0，docs-only/shared-control/package-identity 测试通过。全局 `documentationOnlyChange=false`，但本次 14 条各自关联源码路径没有变化。当前 JSON 在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260923-current.json`。
 - 用户新附的 Playnite 设置窗口截图仍显示顶部图标下移、搜索框偏离标题。仓库生产视图和 2026-09-23 双主题受控几何检查包含相应对齐修正，但没有用户包身份或正常宿主复现；上次隔离 host 受 CEF `platform_channel` `0x5` 阻挡。问题保持打开，不宣称宿主已修复。
 - 下一项先按该窗口边界复现设置视图，确认 `ApplyResponsiveLayout` 的 `SizeChanged` 调用、DPI/逻辑尺寸、图标顶边和搜索框左边界；如果 current main 可复现错位，修生产布局并补行为正/负例。然后继续依赖已满足的 Q/R。真实包 identity、正常 Playnite host、物理 DPI/屏幕呈现仍待验。

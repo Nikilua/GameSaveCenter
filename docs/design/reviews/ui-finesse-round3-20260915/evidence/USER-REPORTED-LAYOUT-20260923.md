@@ -38,4 +38,4 @@
 
 用户随后提供的设置窗口截图仍显示顶部图标落到搜索行附近、搜索输入框从标题左边界向右偏移。该附件属于用户当前宿主观察，不是仓库生成的离屏图，也没有复制进仓库 artifacts。当前生产 XAML 已在 `3a1dadd8` 将搜索框明确放到标题列并左对齐；现有 `ReportedWorkspaceLayoutBehaviorTests` 以生产设置视图验证 Light/Dark `8/8`，包含图标/标题顶边、搜索/标题左边界、恢复默认卡片和路径编辑组合框/按钮几何。这些 STA WPF 几何结果不能说明用户当前安装包身份，也不证明实际 Playnite host 的 DPI/尺寸行为。
 
-本次 R00/R01 freshness 复核截至 main `8846d712`：14 条记录的 sourcePaths 均无变更，但没有 package identity。此前隔离 Playnite host 未能正常加载扩展（CEF `platform_channel` `0x5`），所以当前可见用户截图与现有受控图的差异还没有在正常宿主中解释。下一项先以截图尺寸和逻辑 DPI 核验当前生产设置视图及 `SizeChanged` 响应；如果当前 checkout 在该条件下错位，则修共享布局并增加行为/负例验证；否则保留安装包/宿主身份待核边界，不宣称已解决。
+本次 R00/R01 freshness 复核在 main source HEAD `e9bebee8`：14 条记录的 sourcePaths 均无变更，但没有 package identity。此前隔离 Playnite host 未能正常加载扩展（CEF `platform_channel` `0x5`），所以当前可见用户截图与现有受控图的差异还没有在正常宿主中解释。下一项先以截图尺寸和逻辑 DPI 核验当前生产设置视图及 `SizeChanged` 响应；如果当前 checkout 在该条件下错位，则修共享布局并增加行为/负例验证；否则保留安装包/宿主身份待核边界，不宣称已解决。
