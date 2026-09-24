@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 R23-04 合成库夹具准备
+
+- 新增 opt-in Playnite SDK seeder，只向仓库 `.tmp/` 下显式隔离 profile 导入 64 条稳定合成记录；限制 1–512，固定测试前缀、未安装、无安装目录、幂等补缺。运行 manifest 带 run ID，缺失/不同 run ID 不计种子通过。
+- 预提交 Release solution `0 errors`、保留两条既有 CS8602；source/XAML/PowerShell parse 通过，seed catalog `4/4`、宿主 evidence `6/6`、用户四页窗口几何 `8/8`。此阶段没有启动 Playnite，尚无非空库运行时证据。
+- 下步在提交后沿用隔离 runner 启动一次并核对 manifest/CEF；真实 Embedded/UIA 仍未验。详见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-SYNTHETIC-LIBRARY-SEEDER-PREP-20260924.md`。
+
 ## 2026-09-24 Settings 窗口化截图追加复核
 
 - Settings 当前生产布局修正已在 `3a1dadd8`；当前 `c866c027` Release 的四页 Light/Dark 回归 `8/8` 通过，Settings 顶栏在 1254×800 DIP 的 Loaded/SizeChanged 窗口序列通过，TRX 无清理异常。没有改当前已通过的生产布局。

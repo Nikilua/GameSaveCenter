@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj" />
+    <ProjectReference Include="..\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

@@ -4,9 +4,13 @@ param(
     [string]$PlayniteExtensionsPath = '',
     [string]$PlayniteExecutable = '',
     [string]$TestTempRoot = '',
+    [string]$BuildOutputRoot = '',
+    [string]$RunLogPath = '',
+    [string]$InstallReportPath = '',
     [switch]$SkipTests,
     [switch]$NoStart,
-    [switch]$SkipClean
+    [switch]$SkipClean,
+    [switch]$SkipPackageArchives
 )
 
 $ErrorActionPreference = 'Stop'
@@ -29,8 +33,35 @@ New-Item $artifactsPath -ItemType Directory -Force | Out-Null
 # The configuration is already passed to build.ps1, so it does not need to be
 # repeated in the filesystem path.
 $buildToken = ([Guid]::NewGuid().ToString('N')).Substring(0, 8)
-$buildOutputRoot = Join-Path $artifactsPath ("gsc-b\{0}" -f $buildToken)
+$buildOutputRoot = if ([string]::IsNullOrWhiteSpace($BuildOutputRoot)) {
+    Join-Path $artifactsPath ("gsc-b\{0}" -f $buildToken)
+}
+else {
+    $resolvedBuildOutputRoot = [System.IO.Path]::GetFullPath($BuildOutputRoot)
+    $temporaryRoot = [System.IO.Path]::GetFullPath((Join-Path $root '.tmp'))
+    $temporaryPrefix = $temporaryRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $resolvedBuildOutputRoot.StartsWith($temporaryPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "BuildOutputRoot must be inside repository .tmp: $resolvedBuildOutputRoot"
+    }
+    $resolvedBuildOutputRoot
+}
 $runLogPath = Join-Path $artifactsPath 'one-click-install.log'
+$reportPath = Join-Path $root 'artifacts\last-dev-install.txt'
+$artifactsPrefix = [System.IO.Path]::GetFullPath($artifactsPath).TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+if (-not [string]::IsNullOrWhiteSpace($RunLogPath)) {
+    $resolvedRunLogPath = [System.IO.Path]::GetFullPath($RunLogPath)
+    if (-not $resolvedRunLogPath.StartsWith($artifactsPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "RunLogPath must be inside repository artifacts: $resolvedRunLogPath"
+    }
+    $runLogPath = $resolvedRunLogPath
+}
+if (-not [string]::IsNullOrWhiteSpace($InstallReportPath)) {
+    $resolvedInstallReportPath = [System.IO.Path]::GetFullPath($InstallReportPath)
+    if (-not $resolvedInstallReportPath.StartsWith($artifactsPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "InstallReportPath must be inside repository artifacts: $resolvedInstallReportPath"
+    }
+    $reportPath = $resolvedInstallReportPath
+}
 $transcriptStarted = $false
 try {
     Start-Transcript -Path $runLogPath -Force | Out-Null
@@ -44,7 +75,6 @@ Write-Host "一键安装器：$installerRevision" -ForegroundColor DarkCyan
 Write-Host "安装脚本：$PSCommandPath" -ForegroundColor DarkCyan
 
 $extensionId = 'GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
-$reportPath = Join-Path $root 'artifacts\last-dev-install.txt'
 
 function Read-ManifestVersion {
     param([Parameter(Mandatory = $true)][string]$ManifestPath)
@@ -435,7 +465,9 @@ try {
         $buildArguments.SkipTests = $true
     }
     & (Join-Path $PSScriptRoot 'build.ps1') @buildArguments
-    & (Join-Path $PSScriptRoot 'package.ps1') -Configuration $Configuration -SkipBuild -BuildOutputRoot $buildOutputRoot
+    $packageArguments = @('-Configuration', $Configuration, '-SkipBuild', '-BuildOutputRoot', $buildOutputRoot)
+    if ($SkipPackageArchives) { $packageArguments += '-SkipPackageArchives' }
+    & (Join-Path $PSScriptRoot 'package.ps1') @packageArguments
 
     $stage = Join-Path $root 'artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
     # package.ps1 recreates this directory. Keep a second, explicit check here
@@ -457,6 +489,7 @@ try {
     $report = [System.Collections.Generic.List[string]]::new()
     $report.Add("时间：$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
     $report.Add("源码版本：$expectedVersion")
+    $report.Add("隔离构建目录：$buildOutputRoot")
     foreach ($result in $results) {
         $report.Add("安装目录：$($result.Target)")
         $report.Add("清单版本：$($result.ManifestVersion)")

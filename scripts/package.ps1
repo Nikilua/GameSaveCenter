@@ -4,7 +4,8 @@ param(
     [bool]$SelfContainedWorker = $true,
     [string]$Runtime = 'win-x64',
     [switch]$SkipBuild,
-    [string]$BuildOutputRoot = ''
+    [string]$BuildOutputRoot = '',
+    [switch]$SkipPackageArchives
 )
 
 $ErrorActionPreference = 'Stop'
@@ -412,19 +413,24 @@ $packageVersion = $Matches[1].Trim()
 if ($packageVersion -ne $sourceVersion) {
     throw "打包版本不一致：源码 extension.yaml 为 $sourceVersion，打包目录为 $packageVersion。请先清理并重新构建。"
 }
-$zip = Join-Path $artifacts "GameSaveCenter-$packageVersion-playnite.zip"
-$pext = Join-Path $artifacts "GameSaveCenter-$packageVersion.pext"
-Get-ChildItem $artifacts -File -ErrorAction SilentlyContinue |
-    Where-Object { $_.Name -like 'GameSaveCenter-*-playnite.zip' -or $_.Name -like 'GameSaveCenter-*.pext' } |
-    Remove-Item -Force -ErrorAction SilentlyContinue
-Remove-Item $zip,$pext -Force -ErrorAction SilentlyContinue
-Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
-Copy-Item $zip $pext
-Assert-PackageContents -PackagePath $pext -ExpectedVersion $packageVersion -ExpectedSelfContained $SelfContainedWorker
+if (-not $SkipPackageArchives) {
+    $zip = Join-Path $artifacts "GameSaveCenter-$packageVersion-playnite.zip"
+    $pext = Join-Path $artifacts "GameSaveCenter-$packageVersion.pext"
+    Get-ChildItem $artifacts -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -like 'GameSaveCenter-*-playnite.zip' -or $_.Name -like 'GameSaveCenter-*.pext' } |
+        Remove-Item -Force -ErrorAction SilentlyContinue
+    Remove-Item $zip,$pext -Force -ErrorAction SilentlyContinue
+    Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
+    Copy-Item $zip $pext
+    Assert-PackageContents -PackagePath $pext -ExpectedVersion $packageVersion -ExpectedSelfContained $SelfContainedWorker
 
-Write-Host "`n打包成功：$zip" -ForegroundColor Green
-Write-Host "Playnite 安装包：$pext" -ForegroundColor Green
-Write-Host '若当前 Playnite 拒绝直接安装 .pext，请使用 scripts/install-dev.ps1。' -ForegroundColor Yellow
+    Write-Host "`n打包成功：$zip" -ForegroundColor Green
+    Write-Host "Playnite 安装包：$pext" -ForegroundColor Green
+    Write-Host '若当前 Playnite 拒绝直接安装 .pext，请使用 scripts/install-dev.ps1。' -ForegroundColor Yellow
+}
+else {
+    Write-Host "`n安装暂存目录已校验，按隔离审计请求保留现有版本化安装包：$stage" -ForegroundColor Green
+}
 }
 finally {
     if ($null -eq $previousBuildCommit) {

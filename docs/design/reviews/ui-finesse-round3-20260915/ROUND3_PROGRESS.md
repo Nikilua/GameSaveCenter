@@ -1,3 +1,10 @@
+## 2026-09-24 R23-04 合成非空库夹具准备
+
+- 按 R23-04 当前缺口补充测试专用 Playnite SDK seeder：显式开关才安装至隔离 Extensions；数据路径强制在仓库 `.tmp/`，拒绝 reparse point；默认 64 条有固定合成前缀的未安装游戏，无安装目录，不改正式插件。
+- Release solution `0 errors`，两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；source validator、XAML `24/24`、PowerShell parse 通过。目录边界/稳定测试 `4/4`，宿主证据契约 `6/6`，用户四页几何 `8/8`。包脚本支持隔离审计跳过版本化 `.pext/.zip` 覆盖。
+- 此阶段未运行 Playnite；R23-04 状态不变，真实数据库 manifest 与 Embedded/UIA 仍待验。下一步提交后，在 `.tmp` 新 profile 按证据页命令仅做一次种子启动。CEF 若仍 `platform_channel 0x5`，保留真实阻塞与 seed 是否执行事实，不重试同状态。
+- 证据：[R23-04 合成库夹具准备](evidence/R23-04-SYNTHETIC-LIBRARY-SEEDER-PREP-20260924.md)。
+
 ## 2026-09-24 ROUND3 状态与临时目录审计
 
 - 核对规范任务表：正文表格 192 项、ID 唯一；表前 R13/R14 的 10 行是阶段摘要，不计入 192 项。逐项状态以任务表为准，R02-06 仍是 Playnite 原生菜单外部阻塞，R23-04 仍待正常宿主环境，R23-05 仍待真实呈现帧/宿主性能验收；本轮未启动 Playnite，也未重试此前受 CEF `platform_channel 0x5` 阻挡的宿主流程。

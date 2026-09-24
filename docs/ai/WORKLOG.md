@@ -9252,3 +9252,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 main `e83d8ba9` 包 [GameSaveCenter-0.6.73.pext](../../artifacts/GameSaveCenter-0.6.73.pext) 已生成；包大小 `45,537,931` bytes、SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，六份 Plugin/Worker 程序集均为 `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，package 内容及 self-contained Worker 校验通过，未安装/替换本机扩展。
 - 包脚本关联 Release build `0 errors`、两条既有 CS8602；Core `125/125`，Worker `355/356`（一条既有 hard-restart skip）。默认 Playnite 全集含105个隔离 WPF 类；为避免重跑已验证相关类，仅启动到第3类后中断，未取得全量 Playnite 数字。之后 `package.ps1 -SkipBuild` 复用已构建 DLL，完成 Worker 发布和包校验。
 - 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md` 和两份 TRX。候选包留给用户更新核对，不代装；随后推进 R08-05。
+
+# 2026-09-24 R23-04 合成非空库 seeder 准备
+
+- 新增测试专用 Playnite GenericPlugin 与 `SyntheticGameCatalog`，仅显式启用后导入最多 512 条固定前缀的合成、未安装游戏。稳定 ID 和名称使重复启动只补缺；不设置安装目录，导入目标限定为仓库 `.tmp/` 下的隔离 Playnite profile，并阻止 reparse point 路径。
+- `real-host-audit.ps1` 将同 run ID 的计数 manifest 复制到 audit output；marker 未出现时记 `not-observed`。隔离构建输出在 profile 内，调用 `dev-install-run.ps1` 时跳过版本化 `.pext/.zip` 覆盖。正式 GameSaveCenter 插件未改。
+- 预提交完整 Release solution build 0 errors，保留两条既有 Media `CS8602`；`validate-source.py`、XAML `24/24`、三个 PowerShell AST parse 通过。目录边界/重复稳定性 `4/4`、宿主证据契约 `6/6`、四页窗口布局 `8/8`；拒绝非 `.tmp` UserDataDir 的安全负例未改动哨兵输出。
+- 尚未启动 Playnite，因此没有非空库 runtime manifest，R23-04 仍待真实 Embedded/UIA 验证。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-SYNTHETIC-LIBRARY-SEEDER-PREP-20260924.md`。提交后用新隔离 profile 仅跑一次；CEF `platform_channel 0x5` 若仍阻塞则记录，不重试相同状态。

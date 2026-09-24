@@ -5,11 +5,36 @@ param(
     [string]$UserDataDir = '',
     [string]$PlayniteExecutable = '',
     [string]$TestTempRoot = '',
+    [switch]$SeedSyntheticLibrary,
+    [ValidateRange(1, 512)][int]$SyntheticLibraryCount = 64,
     [switch]$SkipInstallTests
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+if ($SeedSyntheticLibrary) {
+    if ([string]::IsNullOrWhiteSpace($UserDataDir)) {
+        throw 'SeedSyntheticLibrary requires an explicit isolated UserDataDir under repository .tmp.'
+    }
+    $UserDataDir = [System.IO.Path]::GetFullPath($UserDataDir)
+    $temporaryRoot = [System.IO.Path]::GetFullPath((Join-Path $root '.tmp'))
+    $temporaryPrefix = $temporaryRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $UserDataDir.StartsWith($temporaryPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Synthetic library seeding is restricted to an isolated profile below repository .tmp: $UserDataDir"
+    }
+    $cursor = $UserDataDir
+    while ($cursor.StartsWith($temporaryPrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+           [string]::Equals($cursor, $temporaryRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        if (Test-Path -LiteralPath $cursor) {
+            $entry = Get-Item -LiteralPath $cursor -Force
+            if (($entry.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                throw "Synthetic library profile cannot traverse a reparse point: $cursor"
+            }
+        }
+        if ([string]::Equals($cursor, $temporaryRoot, [System.StringComparison]::OrdinalIgnoreCase)) { break }
+        $cursor = Split-Path -Parent $cursor
+    }
+}
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $Output = Join-Path $root 'artifacts\ui-host-audit'
 }
@@ -30,9 +55,16 @@ $previousWorkerPipeName = [Environment]::GetEnvironmentVariable('GameSaveCenter_
 $previousWorkerEventPipeName = [Environment]::GetEnvironmentVariable('GameSaveCenter__EventPipeName', 'Process')
 $previousAuditPipeName = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_PIPE_NAME', 'Process')
 $previousAuditEventPipeName = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_EVENT_PIPE_NAME', 'Process')
+$previousSyntheticSeedDirectory = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_SEED_DIRECTORY', 'Process')
+$previousSyntheticSeedRunId = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_SEED_RUN_ID', 'Process')
+$previousSyntheticSeedCount = [Environment]::GetEnvironmentVariable('GSC_UI_AUDIT_SEED_COUNT', 'Process')
 $isolatedWorkerDataDirectory = ''
 $isolatedPipeName = ''
 $isolatedEventPipeName = ''
+$syntheticSeedDirectory = ''
+$syntheticSeedManifestPath = ''
+$syntheticSeedRunId = ''
+$syntheticBuildOutputRoot = ''
 $auditStartedUtc = [DateTime]::UtcNow.ToString('O')
 try {
     $commit = (& git -C $root rev-parse HEAD 2>$null | Select-Object -First 1).Trim()
@@ -59,6 +91,9 @@ $runnerMetadata = [ordered]@{
     DataVolume = 'captured from production snapshot/diagnostic metadata when available'
     Timing = 'capture manifest includes per-surface capture status; host interaction time is not fabricated'
     UserDataMode = if ([string]::IsNullOrWhiteSpace($UserDataDir)) { 'current-user-data' } else { 'isolated-user-data' }
+    SyntheticLibrary = if ($SeedSyntheticLibrary) {
+        [ordered]@{ Status = 'requested'; RequestedCount = $SyntheticLibraryCount; EvidenceSource = 'SyntheticPlayniteLibrary' }
+    } else { [ordered]@{ Status = 'not-requested'; EvidenceSource = 'none' } }
 }
 Add-Type -AssemblyName System.Windows.Forms
 $displayTopology = @([System.Windows.Forms.Screen]::AllScreens | ForEach-Object {
@@ -124,6 +159,10 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     $installArguments.PlayniteExtensionsPath = $isolatedExtensionsPath
     $installArguments.PlayniteExecutable = $PlayniteExecutable
     $installArguments.NoStart = $true
+    # Isolated audits must keep package archives and their historical hashes intact.
+    $installArguments.SkipPackageArchives = $true
+    $installArguments.RunLogPath = Join-Path $Output 'dev-install.log'
+    $installArguments.InstallReportPath = Join-Path $Output 'dev-install-report.txt'
     $runnerMetadata.UserDataDir = $UserDataDir
     $runnerMetadata.PlayniteExecutable = $PlayniteExecutable
     $runnerMetadata.WorkerDataDirectory = $isolatedWorkerDataDirectory
@@ -131,6 +170,21 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
         PipeName = $isolatedPipeName
         EventPipeName = $isolatedEventPipeName
         Scope = 'isolated-audit-process'
+    }
+    if ($SeedSyntheticLibrary) {
+        $syntheticSeedDirectory = Join-Path $UserDataDir 'audit-fixtures'
+        $syntheticSeedManifestPath = Join-Path $syntheticSeedDirectory 'synthetic-library-manifest.json'
+        $syntheticBuildOutputRoot = Join-Path $syntheticSeedDirectory 'build'
+        $syntheticSeedRunId = [Guid]::NewGuid().ToString('D')
+        $installArguments.BuildOutputRoot = $syntheticBuildOutputRoot
+        $runnerMetadata.SyntheticLibrary = [ordered]@{
+            Status = 'seeder-build-and-install-pending'
+            RequestedCount = $SyntheticLibraryCount
+            EvidenceSource = 'SyntheticPlayniteLibrary'
+            RunId = $syntheticSeedRunId
+            ManifestPath = $syntheticSeedManifestPath
+            BuildOutputRoot = $syntheticBuildOutputRoot
+        }
     }
 }
 
@@ -245,14 +299,76 @@ try {
             $pluginSettings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $pluginSettingsPath -Encoding UTF8
         }
 
+        if ($SeedSyntheticLibrary) {
+            $seederId = '9466c3cb-4c5d-4909-8334-21c608eeb309'
+            $seederDirectory = Join-Path $isolatedExtensionsPath "GameSaveCenter_AuditSeeder_$seederId"
+            $seederAssembly = Join-Path (Join-Path (Join-Path (Join-Path $syntheticBuildOutputRoot 'bin') 'GameSaveCenter.Playnite.HostAuditSeeder') $Configuration) 'net462\GameSaveCenter.Playnite.HostAuditSeeder.dll'
+            $seederManifest = Join-Path (Split-Path -Parent $seederAssembly) 'extension.yaml'
+            if (-not (Test-Path -LiteralPath $seederAssembly -PathType Leaf) -or
+                -not (Test-Path -LiteralPath $seederManifest -PathType Leaf)) {
+                throw "The synthetic Playnite seeder was not built: $seederAssembly"
+            }
+            if (Test-Path -LiteralPath $seederDirectory -PathType Container) {
+                $existingManifest = Join-Path $seederDirectory 'extension.yaml'
+                if (-not (Test-Path -LiteralPath $existingManifest -PathType Leaf) -or
+                    -not (Select-String -LiteralPath $existingManifest -Pattern "^Id:\s*$seederId\s*$" -Quiet)) {
+                    throw "Refusing to overwrite an unrecognized isolated extension directory: $seederDirectory"
+                }
+            }
+            else {
+                New-Item -ItemType Directory -Path $seederDirectory -Force | Out-Null
+            }
+            Copy-Item -LiteralPath $seederAssembly -Destination (Join-Path $seederDirectory 'GameSaveCenter.Playnite.HostAuditSeeder.dll') -Force
+            Copy-Item -LiteralPath $seederManifest -Destination (Join-Path $seederDirectory 'extension.yaml') -Force
+            $runnerMetadata.SyntheticLibrary.SeederAssemblyIdentity = (Get-Item -LiteralPath $seederAssembly).VersionInfo.ProductVersion
+            $runnerMetadata.SyntheticLibrary.ExtensionDirectory = $seederDirectory
+        }
+
         $runnerMetadata.DatabasePath = Join-Path $UserDataDir 'library'
         $runnerMetadata.WorkerExecutable = $pluginWorker
         $runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
         Write-Host "==> Starting Playnite with isolated user data: $UserDataDir" -ForegroundColor Cyan
+        if ($SeedSyntheticLibrary) {
+            [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_SEED_DIRECTORY', $syntheticSeedDirectory, 'Process')
+            [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_SEED_RUN_ID', $syntheticSeedRunId, 'Process')
+            [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_SEED_COUNT', $SyntheticLibraryCount.ToString([System.Globalization.CultureInfo]::InvariantCulture), 'Process')
+        }
         $startedPlayniteProcess = Start-Process -FilePath $PlayniteExecutable `
             -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
             -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir) `
             -PassThru
+        if ($SeedSyntheticLibrary) {
+            $seedDeadline = (Get-Date).AddSeconds(30)
+            $seedManifest = $null
+            while ((Get-Date) -lt $seedDeadline) {
+                if (Test-Path -LiteralPath $syntheticSeedManifestPath -PathType Leaf) {
+                    try {
+                        $candidateManifest = Get-Content -LiteralPath $syntheticSeedManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+                        if ([string]::Equals([string]$candidateManifest.runId, $syntheticSeedRunId, [System.StringComparison]::OrdinalIgnoreCase)) {
+                            $seedManifest = $candidateManifest
+                            break
+                        }
+                    }
+                    catch { }
+                }
+                try { $startedPlayniteProcess.Refresh() } catch { }
+                if ($startedPlayniteProcess.HasExited) { break }
+                Start-Sleep -Seconds 1
+            }
+            $runnerMetadata.SyntheticLibrary.RuntimeStatus = if ($null -eq $seedManifest) { 'not-observed' } else { [string]$seedManifest.status }
+            $runnerMetadata.SyntheticLibrary.RuntimeManifestObserved = $null -ne $seedManifest
+            if ($null -ne $seedManifest) {
+                Copy-Item -LiteralPath $syntheticSeedManifestPath -Destination (Join-Path $Output 'synthetic-library-manifest.json') -Force
+                $runnerMetadata.SyntheticLibrary.PresentCount = [int]$seedManifest.presentCount
+                $runnerMetadata.SyntheticLibrary.AddedCount = [int]$seedManifest.addedCount
+                $runnerMetadata.SyntheticLibrary.RuntimeAssemblyIdentity = [string]$seedManifest.assemblyIdentity
+                $runnerMetadata.SyntheticLibrary.CopiedManifest = Join-Path $Output 'synthetic-library-manifest.json'
+            }
+            else {
+                $runnerMetadata.SyntheticLibrary.UnverifiedReason = 'No manifest from this run was observed before the host exited or the 30-second startup window elapsed.'
+            }
+            $runnerMetadata | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
+        }
     }
 }
 finally {
@@ -267,7 +383,10 @@ finally {
         @{ Name = 'GameSaveCenter__PipeName'; Value = $previousWorkerPipeName },
         @{ Name = 'GameSaveCenter__EventPipeName'; Value = $previousWorkerEventPipeName },
         @{ Name = 'GSC_UI_AUDIT_PIPE_NAME'; Value = $previousAuditPipeName },
-        @{ Name = 'GSC_UI_AUDIT_EVENT_PIPE_NAME'; Value = $previousAuditEventPipeName }
+        @{ Name = 'GSC_UI_AUDIT_EVENT_PIPE_NAME'; Value = $previousAuditEventPipeName },
+        @{ Name = 'GSC_UI_AUDIT_SEED_DIRECTORY'; Value = $previousSyntheticSeedDirectory },
+        @{ Name = 'GSC_UI_AUDIT_SEED_RUN_ID'; Value = $previousSyntheticSeedRunId },
+        @{ Name = 'GSC_UI_AUDIT_SEED_COUNT'; Value = $previousSyntheticSeedCount }
     )) {
         if ($null -eq $entry.Value) {
             Remove-Item ("Env:" + $entry.Name) -ErrorAction SilentlyContinue

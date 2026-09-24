@@ -13,6 +13,7 @@ public sealed class DiagnosticsEvidenceSourceTests
         var root = FindRepositoryRoot();
         var harness = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
         var hostScript = File.ReadAllText(Path.Combine(root, "scripts", "real-host-audit.ps1"));
+        var hostSeeder = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.Playnite.HostAuditSeeder", "HostAuditSeederPlugin.cs"));
 
         Assert.Contains("EvidenceSource: {sourceKind}", harness);
         Assert.Contains("ResolveGitValue(\"rev-parse HEAD\")", harness);
@@ -55,6 +56,19 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("CountsAsVisualPass = $false", hostScript);
         Assert.Contains("if ($commit) {", hostScript);
         Assert.DoesNotContain("if ($LASTEXITCODE -eq 0 -and $commit)", hostScript);
+        Assert.Contains("SeedSyntheticLibrary", hostScript);
+        Assert.Contains("Synthetic library seeding is restricted to an isolated profile below repository .tmp", hostScript);
+        Assert.Contains("GameSaveCenter_AuditSeeder_$seederId", hostScript);
+        Assert.Contains("GSC_UI_AUDIT_SEED_RUN_ID", hostScript);
+        Assert.Contains("RuntimeManifestObserved", hostScript);
+        Assert.Contains("not-observed", hostScript);
+        Assert.Contains("SkipPackageArchives", hostScript);
+        Assert.Contains("RunLogPath = Join-Path $Output 'dev-install.log'", hostScript);
+        Assert.Contains("InstallReportPath = Join-Path $Output 'dev-install-report.txt'", hostScript);
+        Assert.Contains("GSC_UI_AUDIT_SEED_DIRECTORY", hostSeeder);
+        Assert.Contains("Guid.TryParse(runId, out _)", hostSeeder);
+        Assert.Contains("PlayniteApi.Database.ImportGame(metadata)", hostSeeder);
+        Assert.Contains("synthetic-library-manifest.json", hostSeeder);
     }
 
     [Fact]
@@ -84,6 +98,34 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Equal(1, states["已满足无需修改"]);
         Assert.Equal(31, states["代码完成待验收"]);
         Assert.Equal(6, states["外部阻塞"]);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(64)]
+    [InlineData(512)]
+    public void SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(int count)
+    {
+        var games = GameSaveCenter.Playnite.HostAuditSeeder.SyntheticGameCatalog.Create(count);
+
+        Assert.Equal(count, games.Count);
+        Assert.Equal(count, games.Select(game => game.GameId).Distinct(StringComparer.Ordinal).Count());
+        Assert.All(games, game =>
+        {
+            Assert.StartsWith(GameSaveCenter.Playnite.HostAuditSeeder.SyntheticGameCatalog.GameIdPrefix, game.GameId, StringComparison.Ordinal);
+            Assert.StartsWith(GameSaveCenter.Playnite.HostAuditSeeder.SyntheticGameCatalog.NamePrefix, game.Name, StringComparison.Ordinal);
+            Assert.False(game.IsInstalled);
+            Assert.Null(game.InstallDirectory);
+        });
+        Assert.Equal(games.Select(game => game.GameId),
+            GameSaveCenter.Playnite.HostAuditSeeder.SyntheticGameCatalog.Create(count).Select(game => game.GameId));
+    }
+
+    [Fact]
+    public void SyntheticHostAuditCatalogRejectsUnboundedRequests()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => GameSaveCenter.Playnite.HostAuditSeeder.SyntheticGameCatalog.Create(0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => GameSaveCenter.Playnite.HostAuditSeeder.SyntheticGameCatalog.Create(513));
     }
 
     private static string FindRepositoryRoot()

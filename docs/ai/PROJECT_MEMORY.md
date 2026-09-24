@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 R23-04 合成库 seeder
+
+- `tests/GameSaveCenter.Playnite.HostAuditSeeder` 是独立测试插件，不进正式 package。只有 `real-host-audit.ps1 -SeedSyntheticLibrary` 才部署；用户数据目录必须在 repo `.tmp/` 且祖先不能是 reparse point。默认导入 64 条稳定合成记录，1–512 上限，未安装且没有安装路径，重复执行只补缺。
+- `IGameDatabase.ImportGame` 的结果以当前 run ID manifest 记录；manifest 缺失或 ID 不符是 `not-observed`，不是通过。隔离审计跳过覆盖版本化 package archive，构建目录留在隔离 profile。
+- 预提交 Release build 0 errors / 两条既有 CS8602；source/XAML/PowerShell parse 通过，Seeder catalog 4/4，source guard 6/6，用户四页行为 8/8。夹具运行尚未验证；提交后执行一次隔离 host seed，CEF 若未变化则不重试。
+
 ## 2026-09-24 Settings 用户窗口截图后续
 
 - Settings 搜索框/顶栏修正已在 `3a1dadd8`；当前 main 候选 `c866c027` 重新测四页 Light/Dark `8/8`，包含 Settings `1254×800 DIP` 窗口化 Loaded/SizeChanged 测试及错位负例。当前 source 的受控几何通过，未新增生产代码。

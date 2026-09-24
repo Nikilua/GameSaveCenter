@@ -1,0 +1,6 @@
+Id: 9466c3cb-4c5d-4909-8334-21c608eeb309
+Name: GameSaveCenter UI Audit Seeder
+Author: GameSaveCenter Tests
+Version: 1.0
+Module: GameSaveCenter.Playnite.HostAuditSeeder.dll
+Type: GenericPlugin

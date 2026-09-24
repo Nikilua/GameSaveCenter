@@ -260,7 +260,7 @@ def check_solution() -> None:
     expected = {
         "GameSaveCenter.Contracts", "GameSaveCenter.Core", "GameSaveCenter.Worker",
         "GameSaveCenter.Playnite", "GameSaveCenter.Core.Tests", "GameSaveCenter.Worker.Tests",
-        "GameSaveCenter.Playnite.Tests"
+        "GameSaveCenter.Playnite.Tests", "GameSaveCenter.Playnite.HostAuditSeeder"
     }
     if set(names) != expected:
         fail(f"Solution project set mismatch: {set(names)!r}")

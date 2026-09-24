@@ -1,5 +1,12 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：R23-04 合成非空库夹具
+
+R23-04 以前缺少可复现的非空 Playnite 库。新增独立测试 seeder 和 `real-host-audit.ps1 -SeedSyntheticLibrary` opt-in，数据限定在 repo `.tmp/` 隔离 profile、固定合成前缀、未安装且没有安装目录；用本次 run ID manifest 证明是否真正导入。包归档覆盖在隔离宿主流程中关闭。
+
+预提交 Release build 成功（0 errors、两条既有 CS8602），source/XAML/脚本 parse 通过，catalog `4/4`、宿主 evidence `6/6`、用户四页几何 `8/8`。只完成夹具准备，尚未启动 Playnite、未观察到 manifest，也未关闭 R23-04。提交推送后按[夹具准备证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-SYNTHETIC-LIBRARY-SEEDER-PREP-20260924.md)在 `.tmp/` 新 profile 仅启动一次；检查运行 manifest，再看 CEF 阻断。CEF `platform_channel 0x5` 若相同则不重试。
+
+## 2026-09-24 当前接续：Settings 截图后续与候选包
 ## 2026-09-24 当前接续：Settings 截图后续与候选包
 
 用户再次报告窗口化 Settings 顶部图标、搜索框及操作控件错位。该布局修正在 `3a1dadd8` 已进入当前 main；`c866c027` Release 当前四页 Light/Dark `ReportedWorkspaceLayoutBehaviorTests` 为 `8/8`，Settings 1254×800 DIP Loaded/SizeChanged 几何 Light/Dark 各通过。原始 TRX 与度量见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。
