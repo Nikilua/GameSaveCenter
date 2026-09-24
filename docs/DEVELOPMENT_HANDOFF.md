@@ -8,6 +8,12 @@
 
 本轮没有布局源码变更。继续选择不依赖 CEF/ETW 的 Q/R 小批量；宿主正常后再完成 R23-04。不要把 STA WPF 几何或候选包构建写成真实 Playnite 呈现。
 
+## 2026-09-24 当前接续：R00/R01 freshness 校正
+
+当前 main `57d96bbba75c413269ed723b71c2d2ec26cb500d` 的 R01-07 freshness 复算为 `14/14 fresh`、0 stale、0 source-path 匹配；三个失效负例通过。`R23-02` 记录中的 `12/14` 是当时快照，ROUND3_PROGRESS 已增加当前 14/14 与 R01-07 JSON 引用。`documentationOnlyChange=false` 仍应保留，因为这些 evidence baseline 以来确有源码变化；当前 package identity 未提供。
+
+这是路径 freshness 校验，不替代 R00/R01 行为用例、RenderHarness 或真实 Playnite host。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260923.md` 和 `R01-07-freshness-report-20260924-current.json`。下一项继续不依赖 CEF/ETW 的 Q/R；正常隔离 Playnite 恢复后再跑 R23-04。
+
 ## 2026-09-24 当前接续：R23-07 账本状态复算
 
 当前 main 的 R23-07 保持“已满足”。正式第三轮任务表 `192/192` 唯一 ID，状态为 106 已满足/受控复核、83 等待明确环境门禁、1 外部阻塞、1 部分满足、1 不适用；旧 9 月 22 日统计仅作历史。第二轮 `208/208` 唯一 Q ID 中 5 已验收、203 未完成。细节见 `design/reviews/ui-finesse-round3-20260915/evidence/R23-07-CURRENT-MAIN-STATUS-RECHECK-20260924.md`。

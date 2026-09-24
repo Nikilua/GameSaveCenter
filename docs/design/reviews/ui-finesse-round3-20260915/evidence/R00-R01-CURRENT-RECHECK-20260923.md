@@ -94,3 +94,9 @@ R01-03、R01-06 的 sourceCommit 均绑定到 f55dce61 完整 SHA。以当前文
 - 当前 main 隔离 Release 构建 XAML 24/24、solution 0 errors；两条 CS8602 仍位于 MediaCenterView.xaml.cs:703。设置页 Loaded/SizeChanged 几何测试以当前 Release 输出复跑，Light/Dark 2/2；TRX 为 [settings-header-controls-main-8e4f3194.trx](settings-header-responsive-20260923/settings-header-controls-main-8e4f3194.trx)。
 - 另在 detached 临时 checkout 生成了 0.6.73 包；六个插件/Worker 程序集的 AssemblyInformationalVersion 均为 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，SHA-256 为 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0。原有同版本 artifacts 包未覆盖；新包没有安装到用户 Playnite。
 - 当前生产源离屏图和 WPF 几何仍与用户截图不同；包 identity/正常 host/物理 DPI 尚无证据。此前隔离 host 的 CEF platform_channel 0x5 阻挡未变化，不据此断言用户窗口已修复。
+
+## 2026-09-24 main R01-07 freshness 当前复核
+
+- 在 main commit `57d96bbba75c413269ed723b71c2d2ec26cb500d` 运行 `check-ui-evidence-freshness.ps1 -HeadCommit HEAD`：14 条 R00/R01 记录 `14/14 fresh`、0 stale、`matchedSourcePaths=0`。完整结果见 [R01-07 freshness JSON](R01-07-freshness-report-20260924-current.json)。全局 `documentationOnlyChange=false`，因为记录基线以来的历史变化包含源码；当前 package identity 为 `not-provided`，不是安装/宿主状态。
+- `scripts/test-ui-evidence-freshness.ps1` exit `0`：docs-only 不失效、shared-control 路径只使对应记录失效、package identity mismatch 要求重新安装。脚本临时 package fixture 在退出清理。
+- 该 freshness 只复算各记录声明的 sourcePaths；没有重跑 R00/R01 行为测试、RenderHarness 或真实宿主，不改任务完成数。R23-02 原记录的 `12/14` 是当时快照，当前复算为 `14/14`；保留原历史数并在账本行更新现状。

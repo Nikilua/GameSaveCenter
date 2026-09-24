@@ -6,6 +6,11 @@
 - 候选 pext identity `0.6.73+c866c027a2c7a2232028e9a20f1e2060bcf027cd`，SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`，未安装。隔离 Playnite startup 因 CEF `platform_channel 0x5` 仅显示 Startup Error；未声称实际设置窗口通过。四页源码与用户旧 DLL 差异、真实限制和下一步见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。
 - 本次无生产代码变更；账本任务状态不变。下一步继续依赖满足、不依赖 CEF/ETW 的 Q/R 小批量，留下宿主复验边界。
 
+## 2026-09-24 R00/R01 freshness 证据校正
+
+- 在 main `57d96bbba75c413269ed723b71c2d2ec26cb500d` 运行当前 freshness：R00/R01 `14/14 fresh`、0 stale、0 source-path match；生成 `R01-07-freshness-report-20260924-current.json`。全局 `documentationOnlyChange=false` 是对历史基线范围的描述，package identity 仍 `not-provided`。
+- `scripts/test-ui-evidence-freshness.ps1` 三项负例 `docs-only / shared-control / package-identity` 通过，exit `0`。对应更新 R23-02 行，把 `12/14` 保留为当时值并标明当前 `14/14`；没有重跑旧行为测试或主机审计，未改任务状态。
+
 ## 2026-09-24 R23-07 当前 main 状态复算
 
 - 从 ROUND3 正式任务表区复算 `192/192` 唯一 ID：106 已满足/受控复核，83 已满足但等待明确环境，1 外部阻塞，1 部分满足，1 不适用。旧 `112/29/45/1/3/1/1` 为 9 月 22 日历史快照。

@@ -6,6 +6,11 @@
 - 当前候选 [GameSaveCenter-0.6.73-main-c866c027.pext](../../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext) SHA `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`；未安装。本机旧 `7a4ba2a9` DLL 可能与截图版本有关，不能确认为截图实际加载源。c866 隔离 Playnite host 遇 CEF `platform_channel 0x5`，无正常页面呈现。
 - 原始 TRX、尺寸和外部验证边界见 `design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。不要因离屏/隔离 STA 几何关闭用户实机问题；正常 host 可用时复验，当前转继续不依赖宿主的 Q/R。
 
+## 2026-09-24 R00/R01 freshness 校正
+
+- main `57d96bbb` 重新运行 freshness 后 14 条 R00/R01 记录均为 fresh、无 source path 匹配；freshness 自测覆盖 docs-only、shared-control 和 package identity mismatch，exit `0`。R23-02 旧 `12/14` 为历史快照，当前值在 ROUND3_PROGRESS 行更新。
+- 结果只表示记录登记的源码路径无需重跑；不表示 R00/R01 行为测试、RenderHarness 或真实 Playnite 已重跑。package identity 未提供。完整 JSON 在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260924-current.json`。
+
 ## 2026-09-24 当前 main 的 R23-07 去重状态
 
 - 只从 ROUND3 正式 8 列任务表头之后计算：`192/192` 唯一任务 ID。当前状态分组为 `106` 已满足/受控复核、`83` 已满足但待具体环境、`1` 外部阻塞、`1` 部分满足、`1` 不适用；9 月 22 日 R23-07 计数是当时快照，不要复制成当前统计。
