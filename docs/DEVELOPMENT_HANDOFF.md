@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前续接：R20-01 已收口，下一项 R20-02
+
+main 已推送测试补充 `1a43f474`。R20-01 当前 Release：resolver `15/15`、picker `22/22`、实际 WPF 概览 hero 点击/生产路由 `4/4`、Shell picker `4/4`；四页用户布局 Light/Dark `8/8`。新行为测试点按主动作后验证未匹配/可备份筛选、Overview 工作区和 shell 请求一次，并确认无全库备份执行。solution XAML `24/24`、0 errors、两条既有 Media `CS8602`；五份 TRX 无 fail/skip 和 `InvalidComObjectException`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md`。
+
+用户 Settings 最新截图仍未与实际加载程序集关联。当前源码 Light/Dark 设置页逻辑 DIP 行为通过，旧本机 DLL 是较早版本线索；候选 `c866c027` 未安装，隔离 Playnite 启动受 CEF `platform_channel 0x5` 阻断。不宣称用户窗口已修复，也不绕过宿主权限。Media/Task/Save 的隔离布局在相同四页套件通过；所有 STA WPF 几何不是正常宿主、物理 DPI 或真实呈现证据。
+
+下一可执行项 `R20-02 指标统计范围`：先盘点 `DashboardSnapshotDto` 的计数、当前游戏/全库显示和更新时间，再运行其当前 main 行为用例并检查未知/未加载负例。只用合成数据与隔离 testhost；完成后更新证据与 R20-03 的交接。
+
 ## 2026-09-24 R19-06 当前身份验证结果
 
 当前 main/test identity `9b3dd2f1` Release build 的 XAML `24/24`、0 errors；R19-06 Worker 查询 `13/13`、Playnite 分页/索引 `10/10`、稳定选择 `4/4`，合计 `27/27`；相邻 R06 sorting/identity `5/5`。旧合并运行的 stale `GscBuildCommit` 失败不再复现。R19-06 保持“已满足，待环境验证”，生产并发变更时序与正常 Playnite/package-host 仍待验。细节和 TRX 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。

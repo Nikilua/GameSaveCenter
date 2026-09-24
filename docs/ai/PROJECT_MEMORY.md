@@ -5519,3 +5519,10 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - WorkerIpcClient NamedPipe 行为结果 `1 passed / 6 skipped`，skip 原因是当前环境禁止创建本地 Named Pipe 客户端。测试包括写响应丢失后同 RequestId 复核、模糊写取消和读等待取消；没有以源代码断言伪装实测，也未绕过权限。Worker ledger restart-in-flight 则在可用隔离 SQLite 测试中 `6/6`。
 - 六份当前 main TRX 无 `InvalidComObjectException`。使用的是本机 loopback ping、Windows PowerShell no-profile、fake cloud/SQLite 和 STA WPF；未执行真实 Rclone/Ludusavi、网络远端、云写或真实 Playnite Worker pipe。
 - R19-08 结论“已满足，待环境验证”；下一项 `R20-01`。保留 named-pipe/真实 host 与真实云写待验边界。
+
+## 2026-09-24 R20-01 当前 main 续验
+
+- 当前代码/测试 identity `1a43f474`。复用 `OverviewPriorityResolver`、`DashboardViewModel` 与 `GamePickerViewModel`；新增的真实 WPF hero click 行为用例执行生产命令与 `OpenOverviewGamePicker`，分别观察到“未匹配”和“可备份”筛选、Overview 状态和一次 shell 请求，且 `BackupAllCommand` 计数为 0。
+- 定向类：priority `15/15`，picker `22/22`，overview interactions `4/4`，picker shell `4/4`；四页布局 Light/Dark `8/8`。TRX 全部 0 fail/skip，未见 WPF COM cleanup 噪声。Release solution XAML `24/24`、0 errors、两条已有 Media `CS8602`；source validator 通过。
+- Settings 用户截图纳入同一身份布局复查：1880×1200 DIP 宽态与近似 1254×800 DIP 窗口态都验证了当前源码的锚点和操作对齐；逻辑 DIP/隔离 STA 结果不等于实际 Playnite 窗口。之前读取的本机 DLL 比 `3a1dadd8` 修正早，但没有截图进程映射；候选未安装，CEF `platform_channel 0x5` 未绕过。
+- 本阶段没有修改生产 UI、Worker、存档、媒体或云端；未触碰用户真实 profile。完整证据、TRX、包身份和未验边界见 `design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md`。下一项 R20-02。

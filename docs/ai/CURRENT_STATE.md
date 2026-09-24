@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 当前 main：R20-01 与用户布局回归
+
+- `1a43f474` Release solution build：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`。R20-01 测试类 `15+22+4+4=45/45`，用户四页 Light/Dark 窗口行为 `8/8`；全部 TRX 为 0 failed/skip 且未见 `InvalidComObjectException`。新增的 2 个案例通过实际 WPF 概览主按钮进入生产 Dashboard 路由，覆盖未匹配/可备份筛选、工作区请求和禁止全库备份负例。
+- Settings 用户截图当前源码的隔离几何仍通过：标题/搜索左差 `0 DIP`，icon/title 顶差 `11.33 DIP`，路径及 reset 操作中心对齐。上次读取到的本机扩展 DLL 早于修正，但截图加载身份未绑定；候选包未安装，真实 Playnite/物理 DPI/呈现仍待环境验证。CEF `platform_channel 0x5` 不绕过。
+- 证据与 TRX：`../design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md` 和 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-1A43F474.trx`。下一项 `R20-02` 指标统计范围；先核对数字、来源和更新时间。
+
 ## 2026-09-24 R19-06 当前 main 复核
 
 - 当前 `main` identity `9b3dd2f1` Release build：XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Worker 查询 `13/13`、Playnite 分页/索引 `10/10`、稳定选择 `4/4`，R19-06 关联行为 `27/27`；相邻 R06 排序/源码身份 `5/5`。旧 net472 身份门失败在当前产物不复现。

@@ -9303,3 +9303,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前行为 `60 passed / 6 skipped / 0 failed / 66 total`：Worker `37/37`、内存流 IPC `10/10`、Playnite Busy/latest-request/cancellation-feedback `12/12`，Named Pipe client `1/7` 通过，6 条明确因当前权限能力 skip。六份 TRX 无 `InvalidComObjectException`。loopback/powershell 测试确认可执行文件存在。
 - 取消复位、外部进程超时稳定码、云验证不伪成功、重启 ledger 标 Interrupted 均有本地行为证据；Named Pipe 实时取消/模糊写响应、真实宿主/外部工具/云端未验，未绕过限制。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md`。六份 TRX 已归档，`.tmp/r19-08a` 已清理。下一项 R20-01。
+
+## 2026-09-24 R20-01 当前 main 复核
+
+- 发现旧 R20-01 测试分别证明了状态、筛选器和其他概览按钮，但没有点击概览 hero 本身。新增 WPF 行为回归：经 `ButtonBase` 点击进入生产 `DashboardViewModel` priority command/route，实际验证未匹配、可备份、Overview workspace 与 picker event，并断言没有全库备份调用。提交 `1a43f474` 已推送。
+- 同一身份完整 Release build XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602`。Resolver `15/15`、Picker `22/22`、Overview interaction `4/4`、Shell `4/4`，合计 R20 `45/45`; 四页布局 Light/Dark `8/8`。五份 TRX 全无 fail/skip/COM 清理噪声；source validator 通过。
+- Settings 新截图继续用当前源码在 `1880×1200 DIP` 与近似 `1254×800 DIP` 的隔离窗口中复核：搜索与标题左齐，标题图标、reset/path 操作对齐。但截图进程/加载 DLL/Playnite parent 未捕获；本机历史 DLL 为旧 identity 只是线索。候选包未安装，CEF `platform_channel 0x5` 阻止正常隔离宿主；不绕过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md` 和五份 `1A43F474` TRX。下一任务 R20-02；Demo 原目录不可用，继续以恢复基线实现。

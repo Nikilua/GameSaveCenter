@@ -48,3 +48,10 @@ Media Inbox 的内部 scrollbar containment、页 footer 回退和窄窗滚动�
 - Settings 仍测得 icon/title 顶边差 `11.33 DIP`、水平间距 `12 DIP`；search/title 左差 `0 DIP`，居中错位负例 `287.33 DIP`；窗口化 `1254×800 DIP` 下 search 为 `520×36 DIP`，位于图标下方 `72.67 DIP`；重置字段/按钮高度差与中心差 `0 DIP`，路径组合框/4 按钮均 `36 DIP` 且中心一致。
 - 本机实际 Extensions DLL 的读取结果仍为 `0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`（SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`），早于 `3a1dadd8` 布局修正。截图没有加载进程关联，故这仍是版本线索而非因果确认。候选 `c866c027` 包未安装；正常隔离 Playnite 仍被 CEF `platform_channel 0x5` 阻挡。
 - 当前结果是受控 WPF/DIP 源布局通过，用户窗口是否加载修正版仍未验证；本阶段未改 Settings 生产布局，也未写入真实扩展目录。当前 TRX：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-9B3DD2F1.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-9B3DD2F1.trx)。
+
+## 2026-09-24 当前 main `1a43f474` 再复核
+
+- 新 Release/test identity `1a43f474` 下四页 `ReportedWorkspaceLayoutBehaviorTests` 为 `8/8` passed、0 failed/skipped，TRX 未见 `InvalidComObjectException`。Settings Light/Dark 的 Loaded/SizeChanged 窗口化几何、居中负例和恢复默认/路径操作高度及中心线再次通过；Media、Task、Save 同类回归也通过。
+- 用户截图尺寸为 `1881×1208 px`。测试分别覆盖 `1880×1200 DIP` 宽态和近似 `1254×800 DIP` 窗口态；150% 只作为图像比例的估算解释，不代表已读取系统 DPI。四页结果来自隔离 STA WPF 及合成任务，不模拟 Playnite 外层设置宿主、实际模块加载或物理屏幕。
+- 当前本机 Extensions DLL 身份仍只作旧版本线索；没有当时进程的模块清单，截图与程序集未关联。候选 `c866c027` 包的生产源码与 `1a43f474` main 一致（main 后续无 Playnite production source diff），包没有安装。隔离 Playnite 仍因 CEF `platform_channel 0x5` 失败；不能声称真实窗口已经修复。
+- 当前 TRX：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-1A43F474.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-1A43F474.trx)。Release solution build `0 errors`，两条既有 `MediaCenterView.xaml.cs:703 CS8602` 未变。
