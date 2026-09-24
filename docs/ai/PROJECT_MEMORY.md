@@ -5508,7 +5508,7 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 ## 2026-09-24 main R19-07 与设置截图续接
 
-- R19-07 复用既有媒体缩略图 generation/取消、Missing/Failed 占位、父路径回退与备份 RestoreReadiness；新增隔离负例覆盖独占锁定 ZIP、媒体文件移走再恢复并显式刷新。main 预提交 identity `f11e27dd` 的 Release：XAML `24/24`、0 errors/2 既有 `CS8602`，Worker `15/15`、媒体 move/recovery `2/2`、邻接 `16/16`。
+- R19-07 复用既有媒体缩略图 generation/取消、Missing/Failed 占位、父路径回退与备份 RestoreReadiness；新增隔离负例覆盖独占锁定 ZIP、媒体文件移走再恢复并显式刷新。main commit `9760c648` 的 Release：XAML `24/24`、0 errors/2 既有 `CS8602`，Worker `15/15`、媒体 move/recovery `2/2`、邻接 `16/16`。
 - 当前四类用户布局报告在同一构建的 `ReportedWorkspaceLayoutBehaviorTests` 为 `8/8` 双主题，设置窗口 `1254×800 DIP` 的图标/标题、搜索锚点、恢复按钮、路径控件几何均通过；这是源视图 STA 测量，不能代替 Playnite 父窗口或真实 DPI。
 - 本机已读扩展 DLL identity `7a4ba2a9` 早于 `3a1dadd8` 设置/页面截图修正，但不能确认用户截图进程加载了它。CEF `platform_channel 0x5` 仍阻止隔离宿主复核。不要安装到真实扩展目录，不宣称用户屏幕已修好。证据在 `evidence/USER-REPORTED-LAYOUT-20260923.md` 和 `evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。
 - 下一项 `R19-08`；最终证据在提交新 identity 后刷新，不把旧 net472 产物的 `GscBuildCommit` 错配失败沿用为当前失败。

@@ -2378,8 +2378,8 @@ git branch --show-current
 
 ## 当前交接（2026-09-24 R19-07 与设置截图复核）
 
-- 在 main 上收口 R19-07。预提交源码身份 `f11e27dd` 的完整 Release solution 成功（XAML `24/24`、0 errors、两条既有 Media `CS8602`）；Worker `15/15`、媒体移动/显式刷新 `2/2`、相关 Playnite 行为 `16/16`。
+- 在 main 上收口 R19-07。提交/测试身份 `9760c648` 的完整 Release solution 成功（XAML `24/24`、0 errors、两条既有 Media `CS8602`）；Worker `15/15`、媒体移动/显式刷新 `2/2`、相关 Playnite 行为 `16/16`。
 - 同一构建的 `ReportedWorkspaceLayoutBehaviorTests` 四页/双主题 `8/8`：Media 控件高度/表格滚动边界，Task 失败行框，Save 窗口化操作行，Settings 图标/标题/搜索/输入按钮几何均通过。TRX 在 round3 evidence 目录，R19-07 文档已有本次数字和测试夹具负例细节。
 - 用户设置截图尚未绑定运行进程。读取到的本机 DLL identity `7a4ba2a9` 早于 `3a1dadd8` 修正，只是线索；隔离 Playnite 受 CEF `platform_channel 0x5` 阻挡，不能宣称当前宿主截图修复。保留真实宿主/物理 DPI边界。
-- 本次变更包含两个测试和阶段文档，没有生产代码改变。提交后需生成新 build identity，重跑 RestoreReadiness、R09 thumbnail recovery 与 `ReportedWorkspaceLayoutBehaviorTests`，随后提交最终 TRX/账本刷新；清理自己产生的 `.tmp/r19d`。
+- 本次变更包含两个测试和阶段文档，没有生产代码改变；提交后已用新身份重跑全部关键用例，TRX 与账本均刷新到 `9760c648`。`.tmp/r19d`、`.tmp/r19e` 已清理。
 - 下一可执行任务：R19-08 慢调用可取消。先核对现有外部工具与 IPC 取消/超时/未知写结果语义，再增加 fake 慢服务的真实行为/负例；不进行真实云端写入。
