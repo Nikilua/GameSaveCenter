@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="fe6f9e5a-610d-464e-8c95-bfb28029fec0" name="lopmatu@SULT 2026-09-24 14:13:45" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T14:13:45.3469335+08:00" queuing="2026-09-24T14:13:45.3469340+08:00" start="2026-09-24T14:13:35.1793631+08:00" finish="2026-09-24T14:14:00.7078050+08:00" />
+  <TestSettings name="default" id="670d619a-8f1f-46cd-bd96-cec36900eaa3">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_14_13_45" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e57be74d-7b32-4738-8298-9f766c58638e" testId="2dc509a4-e96e-9c04-7597-b062f8424252" testName="GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests.ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets" computerName="SULT" duration="00:00:05.4610000" startTime="2026-09-24T14:13:39.2877879+08:00" endTime="2026-09-24T14:13:44.7281956+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e57be74d-7b32-4738-8298-9f766c58638e">
+      <Output>
+        <StdOut>R18-04 Task backend=2000 ui=2000 mode=Recycling unit=Item canContentScroll=True columnVirtualization=True viewportRows=7 maxRealized=9 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=9 scrollable=1994 p95_ms=80.839 max_ms=80.839 scroll_ms=3.643,80.839,18.925,19.003,20.211,39.268,18.775,21.416&#xD;
+R18-04 Media-Inbox backend=2000 ui=2000 mode=Standard unit=Item canContentScroll=True columnVirtualization=False viewportRows=7 maxRealized=7 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=7 scrollable=1994 p95_ms=0.04 max_ms=0.04 scroll_ms=0.04,0.024,0.036,0.034,0.028,0.027,0.023,0.023&#xD;
+R18-04 Task backend=10000 ui=10000 mode=Recycling unit=Item canContentScroll=True columnVirtualization=True viewportRows=7 maxRealized=9 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=9 scrollable=9994 p95_ms=33.607 max_ms=33.607 scroll_ms=0.618,17.483,20.712,33.607,13.78,20.089,17.568,23.392&#xD;
+R18-04 Media-Inbox backend=10000 ui=2000 mode=Standard unit=Item canContentScroll=True columnVirtualization=False viewportRows=7 maxRealized=7 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=7 scrollable=1994 p95_ms=0.052 max_ms=0.052 scroll_ms=0.025,0.02,0.052,0.021,0.019,0.018,0.019,0.018&#xD;
+R18-04 Task backend=20000 ui=20000 mode=Recycling unit=Item canContentScroll=True columnVirtualization=True viewportRows=7 maxRealized=9 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=9 scrollable=19994 p95_ms=28.492 max_ms=28.492 scroll_ms=0.459,16.419,28.492,17.962,15.171,27.287,17.676,24.213&#xD;
+R18-04 Media-Inbox backend=20000 ui=2000 mode=Standard unit=Item canContentScroll=True columnVirtualization=False viewportRows=7 maxRealized=7 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=7 scrollable=1994 p95_ms=0.025 max_ms=0.025 scroll_ms=0.025,0.02,0.019,0.019,0.018,0.018,0.018,0.018</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests.ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets" storage="d:\workplace\github\gamesavecenter\.tmp\r20-02-cdd28fd2\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2dc509a4-e96e-9c04-7597-b062f8424252">
+      <Execution id="e57be74d-7b32-4738-8298-9f766c58638e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r20-02-cdd28fd2\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests" name="ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2dc509a4-e96e-9c04-7597-b062f8424252" executionId="e57be74d-7b32-4738-8298-9f766c58638e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.89]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.43]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

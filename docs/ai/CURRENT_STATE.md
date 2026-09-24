@@ -1,10 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-09-24 当前 main：R20-01 与用户布局回归
+## 2026-09-24 当前 main：R20-02、R18-04 复测与新缺陷定位
 
-- `1a43f474` Release solution build：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`。R20-01 测试类 `15+22+4+4=45/45`，用户四页 Light/Dark 窗口行为 `8/8`；全部 TRX 为 0 failed/skip 且未见 `InvalidComObjectException`。新增的 2 个案例通过实际 WPF 概览主按钮进入生产 Dashboard 路由，覆盖未匹配/可备份筛选、工作区请求和禁止全库备份负例。
-- Settings 用户截图当前源码的隔离几何仍通过：标题/搜索左差 `0 DIP`，icon/title 顶差 `11.33 DIP`，路径及 reset 操作中心对齐。上次读取到的本机扩展 DLL 早于修正，但截图加载身份未绑定；候选包未安装，真实 Playnite/物理 DPI/呈现仍待环境验证。CEF `platform_channel 0x5` 不绕过。
-- 证据与 TRX：`../design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md` 和 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-1A43F474.trx`。下一项 `R20-02` 指标统计范围；先核对数字、来源和更新时间。
+- `cdd28fd2` Release solution build：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`。R20-02 相关核心 `48/48`、四页 Light/Dark `8/8`，合计 `56/56`、0 失败/跳过；六份 TRX 无 `InvalidComObjectException`。
+- 在相同 identity 重跑 R18 专测 `1/1` 与相关行为 `23/23`（Accumulator `6`、Anchor `10`、Inbox geometry `3`、Selection anchor `4`）。固定 `1100×640/1280×720 DIP` 夹具 Task 为 `9/7`，Media Inbox `7/7/7`、UI 窗口 `2,000`；Stopwatch 最大 Task `80.839/33.607/28.492ms`、Media `0.040/0.052/0.025ms`。R18/Anchor TRX 分别有 6/2 次 TextServices `InvalidComObjectException` 清理噪声，但 xUnit/VSTest 明确通过，根因未知。用户另报更大窗口 Media `14` 行、约 `0.03ms`；原始 TRX/尺寸未附，单独保留为用户报告，不和固定窗口结果混算。
+- `crash.zip` 的 Playnite 日志在 `DataGridStableSortController.OnSorting` 记录 `NullReferenceException`，紧随其后是 Playnite crash handler；当前 `R06SortingBehaviorTests` 只调用内部排序切换 API，未覆盖实际列头事件。现有共享 `GscRoundedDataGridRowTemplate` 在选中/焦点 trigger 改动 `RowChrome.Margin`，会连内容一起缩进；待改为不参与内容布局的独立 chrome 层并用真实 WPF 行几何验证。Media Inbox 两处目标选择 ComboBox 与批量/单项命令均依赖独立 `InboxTargetGame`；用户要求复用全局 `SelectedGame`，需清理对应缓存/CanExecute/确认目标绑定并补行为与空目标负例。
+- R18 精确 23 项组成和当前样本见 `../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md`。R20 证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R20-02-CURRENT-MAIN-RECHECK-20260924.md`。
+- 当前下一可执行小批量：先补实际 DataGrid 标题点击排序与无效列事件保护，再修共享选中 chrome 几何、待归类改用全局游戏选择；新布局仍须保留命令、安全取消、Playnite/net462、虚拟化与现有滚动条。
 
 ## 2026-09-24 R19-06 当前 main 复核
 

@@ -1,5 +1,14 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 main R20-02 与 R18-04 当前身份复测
+
+- `cdd28fd2` Release solution/XAML build：XAML `24/24`、0 errors，两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings。R20-02 相关核心 `48/48`、四页用户布局双主题 `8/8`，合计 `56/56`，0 failed/skipped；归档六份 TRX。
+- R18 专测 `1/1`，四类关联行为 `MediaPageAccumulator 6 + MediaWindowAnchorContract 10 + MediaInboxGeometry 3 + R07SelectionAnchor 4 = 23/23`，每个 testhost exit `0`。精确方法和参数见 `R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md`。固定窗口 Task 三档最大实现/可见均 `9/7`；Media 固定 `1280×720 DIP` 视口 `7/7/7`、UI cache `2,000`。此次 Task 滚动最大 `80.839/33.607/28.492ms`，Media `0.040/0.052/0.025ms`，不可解释为真实呈现延迟。
+- R18 TRX 出现 TextServicesHost `InvalidComObjectException` 清理文本（R18 专测 6 次、Anchor 2 次），xUnit 清楚报告 `1/1` 与 `10/10` Passed、VSTest 均 exit 0；根因未知。相关 TRX 已归档。
+- 用户另报不同窗口尺度 Media Inbox 14 行、最大约 `0.03ms`；没有同次原始 TRX/窗口尺寸，故另行标注为用户报告，未并入 fixed-window 数据。
+- 用户 crash.zip 的当前 Playnite 日志定位排序崩溃到 `DataGridStableSortController.OnSorting` 的 NRE。下一批补实际列头事件与无效列负例，接着修共享选中行 chrome 不得推移 cell 内容，再移除 Media Inbox 内目标 ComboBox 并以全局 `SelectedGame` 作为归类目标。
+- 证据：[R20-02 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R20-02-CURRENT-MAIN-RECHECK-20260924.md)、[R18-04 cdd28fd2 复测](../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md)。真实 Playnite/物理 DPI/UIA/呈现帧/ETW/宿主性能仍待环境；CEF 权限不绕过。
+
 ## 2026-09-24 R19-06 当前 main 行为复核与 Settings 截图身份核对
 
 - 在 `main` HEAD `9b3dd2f19f1bfce8c51ec12ec1b8b654c3c15bc1` 新建隔离 Release 输出 `.tmp/r19b`；XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings。`validate-source.py` 和 `git diff --check` 通过。

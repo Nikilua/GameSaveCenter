@@ -1,5 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R20-02/R18-04 复测与待修复缺陷
+
+- main/test identity `cdd28fd2`：Release/XAML `24/24`、0 errors/两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；R20-02 核心+R20-01 相关行为 `48/48`，四页双主题布局 `8/8`，共 `56/56`，TRX 无 WPF COM 清理异常。
+- R18 专测 `1/1`，相关四类行为 `23/23`（Accumulator 6、Anchor 10、Inbox geometry 3、Selection anchor 4）。当前固定测试窗 Task `9/7`、Media Inbox `7/7/7`，UI 页缓存 `2,000`；Stopwatch 是 STA/UpdateLayout 代理。R18/Anchor TRX 收尾分别记录 6/2 个 `InvalidComObjectException`，但测试与进程通过，原因未知。用户另给的不同窗口样本为 Media Inbox 14 行、约 0.03ms，因没有附原始 TRX/准确窗口尺寸，须单独标成用户提供数据，不覆盖当前固定窗口复测。
+- `crash.zip` 只读检查证实用户排序崩溃日志顶层在 `DataGridStableSortController.OnSorting`；先补 actual header event 行为和负例，不能把旧 `R06SortingBehaviorTests` 内部 toggle 测试当作已覆盖。
+- 共享 `GscRoundedDataGridRowTemplate` selected/focus trigger 改写 `RowChrome.Margin`，影响行内 `SelectiveScrollingGrid` 排版。改成与内容分层、`IsHitTestVisible=False` 的背景/轮廓并实测选择前后 cell/content 几何，不应仅断言 XAML 字符串。
+- Media Inbox 全局批量和 compact detail 当前独立依赖 `InboxTargetGame`，并缓存 target across page. 用户要求去掉冗余目标下拉、改用顶部全局 `SelectedGame`。实现时移除旧目标缓存/restore 语义，命令仍要在无全局游戏或无媒体选择时不可执行并保留确认取消/错误结果。
+- 当前证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md`、`R20-02-CURRENT-MAIN-RECHECK-20260924.md`。先交付用户指出的三处修复，随后继续 R20-03/Q/R；真实 Playnite仍受 CEF `platform_channel 0x5` 阻挡，不绕过。
+
 ## 2026-09-24 R19-06 当前 main 复核
 
 - 当前 main/test identity `9b3dd2f19f1bfce8c51ec12ec1b8b654c3c15bc1` 下 Release XAML `24/24`、0 errors/两条既有 Media nullable warnings；Worker 查询 `13/13`、Playnite page/index `10/10`、selection anchor `4/4`，关联 R19-06 行为 `27/27`；相邻 R06 sort/identity `5/5`。刷新后的 `GscBuildCommit` 身份门正常通过。
