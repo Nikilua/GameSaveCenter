@@ -50,6 +50,12 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("SkipInstallTests", hostScript);
         Assert.Contains("skipped-by-explicit-audit-switch", hostScript);
         Assert.Contains("Initialize-IsolatedPlayniteConfig", hostScript);
+        Assert.Contains("New-IsolatedBootstrapFailureEvidence", hostScript);
+        Assert.Contains("IsolatedProfileBootstrapFailure = $bootstrapFailureEvidence", hostScript);
+        Assert.Contains("CefAccessDeniedMatches = $cefAccessDeniedMatches", hostScript);
+        Assert.Contains("cef-startup-access-denied-before-main-window", hostScript);
+        Assert.Contains("isolated-profile-bootstrap-failed-before-host-install", hostScript);
+        Assert.Contains("CountsAsVisualPass = $false", hostScript);
         Assert.Contains("Backup\\config.json", hostScript);
         Assert.Contains("restored-from-isolated-backup", hostScript);
         Assert.Contains("host-startup-blocker.json", hostScript);
@@ -96,6 +102,15 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("function Find-PlayniteDesktopThemeDirectory", hostScript);
         Assert.Contains("Themes\\Desktop", hostScript);
         Assert.Contains("theme.yaml", hostScript);
+
+        var bootstrapFunction = hostScript.IndexOf("function Initialize-IsolatedPlayniteConfig", StringComparison.Ordinal);
+        var bootstrapInvocation = hostScript.IndexOf("Initialize-IsolatedPlayniteConfig", bootstrapFunction + "function Initialize-IsolatedPlayniteConfig".Length, StringComparison.Ordinal);
+        var failureEvidenceWrite = hostScript.IndexOf("$runnerMetadata.IsolatedProfileBootstrapFailure = $bootstrapFailureEvidence", StringComparison.Ordinal);
+        var extensionInstall = hostScript.IndexOf("dev-install-run.ps1", bootstrapInvocation, StringComparison.Ordinal);
+        Assert.True(bootstrapFunction >= 0);
+        Assert.True(bootstrapInvocation >= 0);
+        Assert.True(failureEvidenceWrite > bootstrapInvocation && failureEvidenceWrite < extensionInstall,
+            "bootstrap failures must persist the runner and blocker evidence before the extension installer can run");
     }
 
     [Fact]

@@ -1,10 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-24 最新：修复 R23-04 隔离 bootstrap 后复验
+## 2026-09-24 最新：R23-04 外部启动阻塞
 
-main `42884321` 的一次审计未生成当前 run ID manifest/summary：Playnite 出现 generic Startup Error safe-mode prompt。复查发现 runner 配置 bootstrap 两秒后强杀，profile 留下 `safestart.flag`；桌面主题目录也按 ID 查错位置。工作树现已改为正常关闭/超时停止 runner，按 `theme.yaml` ID 查找安装与用户主题。代码验证 Release 0 errors、审计源测试 `7/7`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。
+`42884321` 首次 Startup Error 的 `cef.log` 为空；强杀/safe-start 是已找到的 runner 缺陷，但不能断言它是首次报错唯一原因。`08a10da9` 全新隔离 profile 在安装扩展前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite bootstrap 不正常退出并留下 `safestart.flag`；没有扩展/seeder、manifest、summary、Dashboard 或 UIA 页面。当前权限/系统状态不重试，不删标记，不绕过权限。工作树补齐失败时 `runner-metadata.json` 与 `host-startup-blocker.json` 写盘逻辑。Release build `0 errors/2` 条既有 CS8602；source test `7/7`、用户四页行为 `8/8`、离线 synthetic log 正/负分类通过。当前 build 在脏工作树上，提交后重建复跑。详细证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。
 
-下一步提交该夹具修正后，用全新 `.tmp` profile 仅启动一次，先验证 bootstrap 正常退出、`safestart.flag` 不残留、内置主题复制成功，再核对 64 条合成库 manifest/UIA。若 bootstrap 未正常退出，停止、不强杀、不继续宿主。R23-04 与真实设置窗口验证仍未关闭。
+Settings 最新截图仍与当前 source 的隔离 WPF 几何不符。`ReportedWorkspaceLayoutBehaviorTests` 对当前候选是 Light/Dark `8/8`，其中搜索/标题锚点、图标行、reset/path 控件行为均实测；但截图载入包身份与 Playnite 父容器未捕获。候选包未安装，真实 Settings 窗口问题仍开放；正常宿主复验受上述 CEF 阻塞。
 
 ## 2026-09-24 继续 R23-04 runner 收口
 
@@ -12,13 +12,13 @@ main `42884321` 的一次审计未生成当前 run ID manifest/summary：Playnit
 
 当前 checkout 是 `main`；`codex/ui-finesse-round2` 没有已挂载 worktree，且生产代码停留在 `8a08863b` 基点（远端后续唯一提交只改 RenderHarness）。main 已含这之后的生产布局与审计收口。本批沿最新 main 修复，未将旧 main 内容覆盖回 round2 分支；后续如切回 round2，先逐项对照其 RenderHarness 独有提交和 main 之后的生产变更，不能 reset/force。
 
-此旧 profile 已留下 `safestart.flag`，不再复用。先提交 runner 修正，再在全新 `.tmp` profile 做一次验证；只有 bootstrap 确认优雅退出、内置主题复制成功后才继续宿主 seed。若 Startup Error 再现，保留具体对话框/日志事实并停止，不把它预设为 CEF `0x5`。
+前述旧 profile 留下了 `safestart.flag`，没有复用。之后已在 `.tmp/r23-04-seeded-host-20260924-08a10da9` 全新目录做过一次 bootstrap 尝试；启动在扩展安装前被 CEF `platform_channel 0x5` 阻断，safe-start 标记仍留在隔离 profile。细节与不重试边界见顶部最新交接；同状态不再启动。
 
 ## 2026-09-24 当前接续：R23-04 合成非空库夹具
 
 R23-04 以前缺少可复现的非空 Playnite 库。新增独立测试 seeder 和 `real-host-audit.ps1 -SeedSyntheticLibrary` opt-in，数据限定在 repo `.tmp/` 隔离 profile、固定合成前缀、未安装且没有安装目录；用本次 run ID manifest 证明是否真正导入。包归档覆盖在隔离宿主流程中关闭。
 
-预提交 Release build 成功（0 errors、两条既有 CS8602），source/XAML/脚本 parse 通过，catalog `4/4`、宿主 evidence `6/6`、用户四页几何 `8/8`。只完成夹具准备，尚未启动 Playnite、未观察到 manifest，也未关闭 R23-04。提交推送后按[夹具准备证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-SYNTHETIC-LIBRARY-SEEDER-PREP-20260924.md)在 `.tmp/` 新 profile 仅启动一次；检查运行 manifest，再看 CEF 阻断。CEF `platform_channel 0x5` 若相同则不重试。
+夹具准备阶段曾完成 Release build、catalog `4/4`、宿主 evidence `6/6` 与四页几何 `8/8`，当时尚未启动 Playnite。后续唯一全新 profile bootstrap 结果及 CEF 直接阻塞已在顶部最新交接和 [R23-04 当前证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md)追加；R23-04 仍未验收。
 
 ## 2026-09-24 当前接续：Settings 截图后续与候选包
 ## 2026-09-24 当前接续：Settings 截图后续与候选包

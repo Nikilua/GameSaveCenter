@@ -1,10 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-09-24 R23-04 host attempt 的夹具根因
+## 2026-09-24 R23-04 host attempt 当前边界
 
-- `42884321` 候选已安装到隔离 profile，Playnite 仅暴露 generic Startup Error/safe-mode prompt。无同 run ID `d0eae852-7672-422f-bdd9-9fbdb7e6bcb3` manifest，无 `summary.json`，UIA 未见 GSC 侧栏；`cef.log` 为 0 bytes。本次没有 CEF `platform_channel 0x5` 证据，不标外部 CEF 阻塞或 seed 通过。
-- 发现 runner 创建 profile 后只等 2 秒便强杀 bootstrap，留下 `safestart.flag`；内置主题也因按 ID 作为文件夹名查找而漏检。工作树已修为优雅退出 + 不强杀、按主题 manifest ID 查找并复制到隔离目录。源守卫 `7/7`、Release build 0 errors；修复后 host 结果待全新 profile 复验。
-- 同一最新生产源的四页 Light/Dark 几何 `8/8`，Settings 搜索左齐标题、Top/reset/path controls `36 DIP`。用户新截图与当前隔离窗口几何不一致；旧 DLL 可能是原因但没有进程关联，真实 Settings 宿主问题未关闭。证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md` 与 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-42884321.md`。
+- `42884321` 首次 host attempt 的 `cef.log` 为空，UIA 只见 generic Startup Error/safe-mode prompt；没有 run ID manifest 或 Dashboard。runner 曾在 profile 初始化后强杀 Playnite，旧 profile 留下 `safestart.flag`，但这不足以唯一归因首次 Startup Error。
+- `08a10da9` 全新隔离 profile 在扩展安装前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite 初始化未正常退出，safe-start 标记仍在；没有扩展安装、seeder、manifest 或第二次启动。相同环境不重试、不绕过权限。工作树已补失败 metadata/blocker 写盘；当前 HEAD `08a10da9` 的工作树 Release build `0 errors/2` 条既有 warning，源测试 `7/7`、四页布局 `8/8`，离线正/负分类、source validator、PowerShell AST、diff check 通过。提交后按最终 identity 重建复跑。
+- Settings 新截图仍与当前源码的 Light/Dark `1254×800 DIP` 受控几何不符：source test 断言搜索/title 左差、icon/title 行、reset/path 控件；但未模拟 Playnite 父容器，也未识别截图所载程序集。用户实际窗口问题开放。证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md` 与 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md`。
 
 ## 2026-09-24 R23-04 隔离 runner 参数修正
 

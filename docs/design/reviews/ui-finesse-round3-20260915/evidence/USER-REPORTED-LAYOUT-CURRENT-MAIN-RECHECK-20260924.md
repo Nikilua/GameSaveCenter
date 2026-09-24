@@ -24,6 +24,12 @@ Media Inbox 的内部 scrollbar containment、页 footer 回退和窄窗滚动�
 - 这组证据来自合成数据、生产 WPF 页面、隔离 STA Window 和逻辑 DIP。未验证正常 Playnite/package-host、截图的真实加载版本、Windows 物理 DPI/跨屏、UIA/读屏、IME、DWM presented frame、ETW 或宿主性能。不能据此声明用户屏幕上的问题已修复。
 - 没有读写真实存档、媒体、云端或诊断数据；Demo 原始目录不可用，沿用恢复生产基线。CEF `platform_channel 0x5` 的隔离 host 限制未绕过。
 
+## Settings 最新截图补充
+
+用户随后提供的设置窗口图像为 `1881×1208 px`。画面中搜索框约 `778×54 px`，与当前源码 `520×36 DIP` 在约 `150%` 比例下的表观尺寸接近，但搜索框左边缘相对标题右移约 `258 px`，图标也落在搜索框附近；当前源码的 `SettingsSearchTextBox` 锚定到标题列左侧，图标在标题行，因而当前隔离几何与截图关系仍不相符。该缩放仅为图像估算，不代表测得 Windows DPI。
+
+当前 main 的 Settings 生产实现不再改动：已有 Light/Dark `1254×800 DIP` Loaded/SizeChanged 行为复核、搜索居中负例，以及重置/路径控件尺寸和中心线断言；这些无法模拟 Playnite 设置宿主的父容器与真实加载程序集。截图关联身份未获证，CEF `platform_channel 0x5` 又阻止当前隔离 Playnite 主窗口启动。结论仍是当前源受控几何通过，用户实际窗口未关闭；待有正常宿主环境后，用进程/程序集 identity 采集复现。
+
 原始测试结果：[ReportedWorkspaceLayoutBehaviorTests 当前 main TRX](USER-REPORTED-LAYOUT-CURRENT-MAIN-20260924.trx)。
 
 ## 2026-09-24 当前 main 包复核补充

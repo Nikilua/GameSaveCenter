@@ -227,6 +227,47 @@ function Find-PlayniteDesktopThemeDirectory {
     return $null
 }
 
+function New-IsolatedBootstrapFailureEvidence {
+    param(
+        [Parameter(Mandatory = $true)][System.Management.Automation.ErrorRecord]$BootstrapError,
+        [Parameter(Mandatory = $true)][AllowEmptyCollection()][string[]]$CefTail,
+        [Parameter(Mandatory = $true)][string]$CefLogPath,
+        [Parameter(Mandatory = $true)][string]$ProfilePath,
+        [Parameter(Mandatory = $true)][string]$HostExecutable,
+        [string]$Commit,
+        [string]$RunId
+    )
+
+    $cefAccessDeniedMatches = @($CefTail | Where-Object {
+        $_ -match 'platform_channel' -and $_ -match '(Access denied|拒绝访问|0x5)'
+    })
+    $classification = if ($cefAccessDeniedMatches.Count -gt 0) {
+        'cef-startup-access-denied-before-main-window'
+    }
+    else {
+        'isolated-profile-bootstrap-failed-before-host-install'
+    }
+
+    return [ordered]@{
+        Scenario = 'isolated-profile-bootstrap'
+        EvidenceSource = 'RealPlaynite'
+        Classification = $classification
+        Commit = $Commit
+        RunId = $RunId
+        UserDataDir = $ProfilePath
+        PlayniteExecutable = $HostExecutable
+        ErrorType = $BootstrapError.Exception.GetType().FullName
+        ErrorMessage = $BootstrapError.Exception.Message
+        CefLog = $CefLogPath
+        CefTail = $CefTail
+        CefAccessDeniedMatches = $cefAccessDeniedMatches
+        ObservedUtc = (Get-Date).ToUniversalTime().ToString('o')
+        BootstrapSucceeded = $false
+        VisualEvidenceCaptured = $false
+        CountsAsVisualPass = $false
+    }
+}
+
 function Initialize-IsolatedPlayniteConfig {
     if ([string]::IsNullOrWhiteSpace($UserDataDir)) {
         return
@@ -305,7 +346,32 @@ function Initialize-IsolatedPlayniteConfig {
     }
 }
 
-Initialize-IsolatedPlayniteConfig
+try {
+    Initialize-IsolatedPlayniteConfig
+}
+catch {
+    $bootstrapError = $_
+    $cefLogPath = Join-Path $UserDataDir 'cef.log'
+    $cefBootstrapTail = @()
+    if (Test-Path -LiteralPath $cefLogPath -PathType Leaf) {
+        $cefBootstrapTail = @(Get-Content -LiteralPath $cefLogPath -Tail 100 -ErrorAction SilentlyContinue)
+    }
+    $bootstrapFailureEvidence = New-IsolatedBootstrapFailureEvidence `
+        -BootstrapError $bootstrapError `
+        -CefTail $cefBootstrapTail `
+        -CefLogPath $cefLogPath `
+        -ProfilePath $UserDataDir `
+        -HostExecutable $PlayniteExecutable `
+        -Commit $runnerMetadata.Commit `
+        -RunId $(if ($SeedSyntheticLibrary) { $syntheticSeedRunId } else { '' })
+    $runnerMetadata.IsolatedProfileBootstrap = 'failed-before-extension-install'
+    $runnerMetadata.IsolatedProfileBootstrapFailure = $bootstrapFailureEvidence
+    $runnerMetadata | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
+    $bootstrapBlockerPath = Join-Path $Output 'host-startup-blocker.json'
+    $bootstrapFailureEvidence | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $bootstrapBlockerPath -Encoding UTF8
+    Write-Warning "Detected isolated bootstrap blocker: $($bootstrapFailureEvidence.Classification). Evidence: $bootstrapBlockerPath"
+    throw
+}
 $runnerMetadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
 Write-Host "==> Starting Playnite with GSC_REAL_HOST_AUDIT=$Output" -ForegroundColor Cyan
 $startedPlayniteProcess = $null
