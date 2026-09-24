@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Controls;
+using GameSaveCenter.Playnite.Converters;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -91,6 +92,59 @@ public sealed class R09ThumbnailPlaceholderBehaviorTests : IDisposable
         });
     }
 
+    [Fact]
+    public void ExplicitRefreshAfterMediaMovesReplacesOldImageAndCanRecover()
+    {
+        RunSta(() =>
+        {
+            var originalPath = Path.Combine(root, "media.png");
+            var movedPath = Path.Combine(root, "moved.png");
+            WritePng(originalPath, 64, 64, 61);
+            AsyncThumbnailLoader.ClearCache();
+
+            var preview = new MediaThumbnailPreview
+            {
+                Width = 96,
+                Height = 96,
+                Kind = MediaKind.Screenshot
+            };
+            var image = Assert.IsType<AsyncThumbnailImage>(preview.Children[0]);
+            var window = CreateWindow(preview, 128, 128);
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                preview.SourcePath = originalPath;
+                PumpUntil(window.Dispatcher, () => preview.PreviewState == "Ready", TimeSpan.FromSeconds(3));
+                Assert.Equal((byte)61, FirstPixel(image));
+
+                File.Move(originalPath, movedPath);
+                RefreshPreview(preview, originalPath);
+                PumpUntil(window.Dispatcher, () => preview.PreviewState == "Missing", TimeSpan.FromSeconds(3));
+
+                Assert.True(preview.IsPlaceholderVisible);
+                Assert.Equal("媒体文件不存在", preview.PlaceholderText);
+                Assert.Null(image.Source);
+                Assert.Equal(96, preview.ActualWidth, 3);
+                Assert.Equal(96, preview.ActualHeight, 3);
+                Assert.True(File.Exists(movedPath));
+
+                WritePng(originalPath, 64, 64, 231);
+                RefreshPreview(preview, originalPath);
+                PumpUntil(window.Dispatcher, () => preview.PreviewState == "Ready", TimeSpan.FromSeconds(3));
+
+                Assert.Equal((byte)231, FirstPixel(image));
+                Assert.False(preview.IsPlaceholderVisible);
+                Assert.Equal(96, preview.ActualWidth, 3);
+                Assert.Equal(96, preview.ActualHeight, 3);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     public void Dispose()
     {
         try { Directory.Delete(root, true); }
@@ -145,6 +199,21 @@ public sealed class R09ThumbnailPlaceholderBehaviorTests : IDisposable
         encoder.Frames.Add(BitmapFrame.Create(bitmap));
         using var stream = File.Create(path);
         encoder.Save(stream);
+    }
+
+    private static void RefreshPreview(MediaThumbnailPreview preview, string path)
+    {
+        preview.SourcePath = string.Empty;
+        preview.SourcePath = path;
+    }
+
+    private static byte FirstPixel(AsyncThumbnailImage image)
+    {
+        var source = Assert.IsAssignableFrom<BitmapSource>(image.Source);
+        var stride = source.PixelWidth * 4;
+        var pixels = new byte[stride * source.PixelHeight];
+        source.CopyPixels(pixels, stride, 0);
+        return pixels[0];
     }
 
     private static void RunSta(Action action)

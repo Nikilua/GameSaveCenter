@@ -5505,3 +5505,10 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - `GameSaveCenterSettingsView` 已有 `3a1dadd8` 搜索左锚点修正。当前用户截图的搜索偏右可用居中 negative control 重现；不要只加 XAML 字符串断言。
 - 扩展 `ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther` 后，测试在实际隔离 WPF Window 中靠生产 `Loaded` 和 `SizeChanged` 自动布局，无手动 `ApplyResponsiveLayout` 调用。Light/Dark 为 `2/2`；宽/紧凑/恢复序列通过，搜索左差 0、居中负例偏移 287.33 DIP，路径 ComboBox/按钮均 36 DIP 且中心差0。TRX/解释在 `evidence/settings-header-responsive-20260923/`。
 - 此证据使用 DPI 1.0 STA 窗口，build identity 62b17b0c，不是正常 Playnite host、物理 DPI 或用户包身份。前次 host CEF `platform_channel 0x5` 仍是边界；不要因此标记用户截图已解决。下一步核对可用的包身份/正常 host，或继续独立 Q/R。
+
+## 2026-09-24 main R19-07 与设置截图续接
+
+- R19-07 复用既有媒体缩略图 generation/取消、Missing/Failed 占位、父路径回退与备份 RestoreReadiness；新增隔离负例覆盖独占锁定 ZIP、媒体文件移走再恢复并显式刷新。main 预提交 identity `f11e27dd` 的 Release：XAML `24/24`、0 errors/2 既有 `CS8602`，Worker `15/15`、媒体 move/recovery `2/2`、邻接 `16/16`。
+- 当前四类用户布局报告在同一构建的 `ReportedWorkspaceLayoutBehaviorTests` 为 `8/8` 双主题，设置窗口 `1254×800 DIP` 的图标/标题、搜索锚点、恢复按钮、路径控件几何均通过；这是源视图 STA 测量，不能代替 Playnite 父窗口或真实 DPI。
+- 本机已读扩展 DLL identity `7a4ba2a9` 早于 `3a1dadd8` 设置/页面截图修正，但不能确认用户截图进程加载了它。CEF `platform_channel 0x5` 仍阻止隔离宿主复核。不要安装到真实扩展目录，不宣称用户屏幕已修好。证据在 `evidence/USER-REPORTED-LAYOUT-20260923.md` 和 `evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。
+- 下一项 `R19-08`；最终证据在提交新 identity 后刷新，不把旧 net472 产物的 `GscBuildCommit` 错配失败沿用为当前失败。

@@ -9287,3 +9287,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `real-host-audit.ps1` 将同 run ID 的计数 manifest 复制到 audit output；marker 未出现时记 `not-observed`。隔离构建输出在 profile 内，调用 `dev-install-run.ps1` 时跳过版本化 `.pext/.zip` 覆盖。正式 GameSaveCenter 插件未改。
 - 预提交完整 Release solution build 0 errors，保留两条既有 Media `CS8602`；`validate-source.py`、XAML `24/24`、三个 PowerShell AST parse 通过。目录边界/重复稳定性 `4/4`、宿主证据契约 `6/6`、四页窗口布局 `8/8`；拒绝非 `.tmp` UserDataDir 的安全负例未改动哨兵输出。
 - 尚未启动 Playnite，因此没有非空库 runtime manifest，R23-04 仍待真实 Embedded/UIA 验证。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-SYNTHETIC-LIBRARY-SEEDER-PREP-20260924.md`。提交后用新隔离 profile 仅跑一次；CEF `platform_channel 0x5` 若仍阻塞则记录，不重试相同状态。
+
+# 2026-09-24 R19-07 外部文件变化与设置窗口补充复核
+
+- R19-07 加入 Worker 独占锁 archive 失败负例和 WPF 媒体移动→Missing→显式刷新恢复行为；复用现有业务服务、DTO、绑定和命令，没有生产代码改动。
+- Release solution 在 `.tmp/r19d` 成功：XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602`；`validate-source.py`、`git diff --check` 通过。相同构建 `RestoreReadiness 15/15`、缩略图 move/recovery `2/2`、异步缩略图/转换/R12/R14/MediaInbox `16/16`、ReportedWorkspace 四页两主题 `8/8`。
+- 最终 TRX 未见 `InvalidComObjectException`；第一次新预览用例失败来自测试像素复制 stride，修正后独立和全量构建各复跑通过。隔离 WPF 不等价真实 Playnite host。
+- 用户设置窗口问题已在 `3a1dadd8` 的生产布局中修正并由当前源码几何验证；当前读取到的本机扩展 DLL identity 早于该改动，但截图进程未绑定。不得宣称实际用户窗口已修复，CEF `platform_channel 0x5` 限制不绕过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`、`USER-REPORTED-LAYOUT-20260923.md`。下一项 R19-08；提交后用新 `GscBuildCommit` 重跑关键用例后再清理 `.tmp/r19d`。

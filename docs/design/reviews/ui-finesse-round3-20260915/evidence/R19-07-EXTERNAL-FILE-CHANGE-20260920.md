@@ -34,3 +34,13 @@ R19-07 要求媒体/备份详情打开期间文件被移动、占用或损坏时
 ## 5. 下一步
 
 下一可执行任务为 `R19-08 慢调用可取消`：先核对网络、外部工具等待、可观察超时、取消后 UI 解锁和未知写结果语义，再补 fake 慢服务与取消负例。
+
+## 2026-09-24 main 定向复核
+
+- 当前 main 预提交源码/测试身份为 `f11e27dd`；完整 Release solution build 输出到仓库 `.tmp/r19d`，XAML `24/24`、`0 errors`，仅有 `MediaCenterView.xaml.cs:703` 的两条既有 `CS8602` warning。`validate-source.py` 与 `git diff --check` 通过。
+- Worker `RestoreReadinessTests` `15/15`，新锁定归档负例验证占用期间返回 `Failed`、保留 `BackupId`、原归档仍在原路径且 staging 清理。Playnite `R09ThumbnailPlaceholderBehaviorTests` `2/2`，新移动/恢复用例验证旧图清空、显示 Missing 占位，再显式刷新后显示新合成图。
+- 相邻 Playnite 行为 `16/16`：`AsyncThumbnailImageTests`、`MediaThumbnailConverterTests`、R12 冲突解释与重检、R14 分类选择、`MediaInboxGeometryTests`。最终 TRX 均未包含 `InvalidComObjectException`。新增预览测试第一次运行暴露的是测试夹具 `CopyPixels` stride 错误，修正后正式结果为 `2/2`。
+- 同一当前 main 测试程序集的 `ReportedWorkspaceLayoutBehaviorTests` `8/8`，包含四页 Light/Dark：媒体批量按钮 `36 DIP`，内滚动条保持在表格框内且不触 footer；任务失败状态只在状态单元格；存档窗口化摘要动作行 `36 DIP`、操作后空白 `9.33 DIP`；设置图标/标题上沿差 `11.33 DIP`、搜索/标题左差 `0 DIP`、恢复默认和路径控件高度/中心线一致，错误居中负例右偏 `287.33 DIP`。测量为隔离 STA WPF、合成数据、逻辑 DIP，不是 Playnite 屏幕像素。
+- 用户新设置截图与当前源几何测试结果不同。已记录的本机扩展 DLL identity `7a4ba2a9` 早于设置 `3a1dadd8` 修正；这是可解释截图差异的线索，不足以证明截图所用进程载入了该 DLL。CEF `platform_channel 0x5` 仍阻挡隔离 Playnite 宿主复核；没有宣称真实宿主已修复。详见 `SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md` 与 `USER-REPORTED-LAYOUT-20260923.md`。
+
+TRX：`R19-07-RESTORE-READINESS-MAIN-F11E27DD.trx`、`R19-07-THUMBNAIL-MOVE-RECOVERY-MAIN-F11E27DD.trx`、`R19-07-RELATED-BEHAVIOR-MAIN-F11E27DD.trx`、`USER-REPORTED-LAYOUT-MAIN-F11E27DD.trx`。本批无生产代码修改；提交后再用新 `GscBuildCommit` 构建身份复跑关键行为用例并刷新最终证据。

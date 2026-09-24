@@ -3273,3 +3273,10 @@
 - 当前 main 生产设置实现未改；行为测试 build identity 为 `62b17b0c`，Playnite `net462` / test `net472`。在实际 WPF `Window` 中由 `Loaded` 与 `SizeChanged` 自动驱动，未手动调用布局私有方法；Light/Dark `2/2`。
 - `1280×840 → 1880×1200 → 560 → 1280×840 DIP` 实测搜索/标题左差 `0`，居中负例 `287.33 DIP`，紧凑搜索 `392 DIP` 且无溢出，保存提示行 `1→0`，路径 ComboBox 和四按钮 `36 DIP`、中心差 `0`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/settings-header-responsive-20260923/README.md` 与 TRX。
 - 这个结果证明当前生产视图在隔离 STA/DPI 1.0 窗口及响应布局链正确；用户安装包身份、正常 Playnite host 与物理 DPI 尚未验证。用户截图问题不关闭。下一项核对正常 host/package 身份；CEF `platform_channel` `0x5` 若持续阻挡，则继续已满足依赖的 Q/R 小批量。
+
+# 2026-09-24 main R19-07 外部文件变化与用户布局复核
+
+- 当前 main 预提交源码/测试身份 `f11e27dd`：完整 Release solution XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`；`validate-source.py` 和 `git diff --check` 通过。
+- R19-07 定向结果：Worker `RestoreReadinessTests 15/15`（含归档独占锁失败、BackupId 保留及 staging 清理）；媒体缩略图移动/刷新 `2/2`（移动后 Missing/旧图清除，恢复文件并显式刷新后新图呈现）；相关异步缩略图、转换、R12、R14、MediaInbox `16/16`。最终 TRX 未含 `InvalidComObjectException`。
+- 本机四类用户布局反馈当前 main 行为类 `8/8` 双主题：媒体按钮/列表滚动、任务状态框、窗口化存档操作行、设置标题/搜索/输入按钮均由生产 WPF 控件在隔离窗口实测。截图对应实际 Playnite 进程未确认；本机扩展目录 DLL 是 `0.6.73+7a4ba2a9…`，早于设置对齐修正，属于可能线索而非已证明因果。CEF `platform_channel 0x5` 阻挡隔离宿主复核，不宣称用户屏幕已修复。
+- 证据：`evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md` 与 `evidence/USER-REPORTED-LAYOUT-20260923.md`。下一可执行任务 `R19-08 慢调用可取消`；提交后刷新 `GscBuildCommit` 并复跑关键测试。未验边界保持真实宿主外部文件时序、用户当前包/DPI/屏幕和 CEF 宿主访问。

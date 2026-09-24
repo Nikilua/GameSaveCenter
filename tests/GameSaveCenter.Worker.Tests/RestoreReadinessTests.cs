@@ -88,6 +88,35 @@ public sealed class RestoreReadinessTests : IDisposable
     }
 
     [Fact]
+    public async Task LockedArchive_IsFailedWithBackupIdentityAndCleanedStaging()
+    {
+        var archive = CreateArchive(("profile.dat", "save"));
+        var version = Version(archive, 1, 4);
+        version.BackupId = "backup-locked-during-review";
+        var staging = Path.Combine(root, "locked-staging");
+        RestoreReadinessDto result;
+
+        using (new FileStream(archive, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+        {
+            result = await service.ValidateAsync(
+                version,
+                Manifest("profile.dat", 4),
+                staging,
+                CancellationToken.None);
+        }
+
+        Assert.Equal(RestoreReadinessStatus.Failed, result.Status);
+        Assert.False(result.ArchiveReadable);
+        Assert.Equal(1, result.ErrorCount);
+        Assert.Equal("backup-locked-during-review", result.BackupVersionId);
+        Assert.Contains("文件系统错误", result.Summary);
+        Assert.Equal("Cleaned", result.StagingCleanupStatus);
+        Assert.Equal(archive, version.ArchivePath);
+        Assert.True(File.Exists(archive));
+        Assert.True(!Directory.Exists(staging) || !Directory.EnumerateFileSystemEntries(staging).Any());
+    }
+
+    [Fact]
     public async Task UnsafeEntry_IsRejectedAndDoesNotEscapeStaging()
     {
         var archive = CreateArchive(("../outside.txt", "escape"));

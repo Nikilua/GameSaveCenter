@@ -56,3 +56,9 @@ Light/Dark 再次通过 2/2。图标到标题横向间距为 12 DIP，顶部恢�
 ### 2026-09-23 R00/R01 freshness 复核更新
 
 本次 freshness 采样 main HEAD 13442aa4，14 条记录均无需重跑且源码路径命中为 0；package identity 未提供，不能据此关闭真实宿主验证。
+
+### 2026-09-24 当前 main 窗口化设置截图复核
+
+用户补充的窗口化截图再次指出顶部图标、搜索输入和按钮偏位。当前 main 已有 `3a1dadd8` 的共享设置头部锚点修正；本批没有重复修改生产布局。预提交身份 `f11e27dd` 的 `ReportedWorkspaceLayoutBehaviorTests` 全类在完整 Release 构建上 `8/8` 通过，涵盖媒体、任务、存档和设置四类反馈的 Light/Dark 行为。设置测量为图标/标题顶边差 `11.33 DIP`、横向间距 `12 DIP`、搜索框/标题左差 `0 DIP`、搜索框/图标顶边差 `72.67 DIP`、居中错位负例 `287.33 DIP`；恢复默认控件和路径编辑 ComboBox/按钮均 `36 DIP` 且中心线差 `0`。紧凑窗口搜索宽 `392 DIP`、无右溢出。
+
+本机扩展目录中记录的 DLL `ProductVersion=0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`，SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`，身份早于 `3a1dadd8`；它可能解释截图差异，但不能证明截图捕获时 Playnite 进程载入了该文件。测试是隔离 STA WPF、逻辑 DIP，不等于真实 host。隔离 Playnite 仍受 CEF `platform_channel 0x5` 阻挡，因此问题保持“源码行为已验证、当前用户宿主未验”，不写成实际窗口已修复。原始当前 main TRX：[USER-REPORTED-LAYOUT-MAIN-F11E27DD.trx](USER-REPORTED-LAYOUT-MAIN-F11E27DD.trx)。

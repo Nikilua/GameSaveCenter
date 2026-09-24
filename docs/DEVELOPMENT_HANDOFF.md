@@ -2375,3 +2375,11 @@ git branch --show-current
 - 新包 artifacts/GameSaveCenter-0.6.73-main-8e4f3194.pext 的六个插件/Worker 构建身份一致，identity 0.6.73+8e4f3194227afb28640754f12ab0889cb8bb71ce，SHA-256 B6602DB38D98CDE9B11B8B0B414F43337B00AA021A11C001BBCB542912D9B3B0。包未安装；现有同版本 artifacts 文件保留。
 - R00/R01 freshness 在 HEAD 8e4f3194 采样：14/14 fresh、0 source match、documentationOnlyChange=false、package not-provided；自测三类通过。
 - 用户截图仍与当前受控源/离屏图不同，当前 user package identity、正常 Playnite host、物理 DPI 尚待核对；CEF platform_channel 0x5 是实际宿主阻挡。等待用户给出加载包版本/构建 identity；同时继续下一项依赖已满足的 Q/R，不把准备好的包或隔离图写成用户屏幕验证。
+
+## 当前交接（2026-09-24 R19-07 与设置截图复核）
+
+- 在 main 上收口 R19-07。预提交源码身份 `f11e27dd` 的完整 Release solution 成功（XAML `24/24`、0 errors、两条既有 Media `CS8602`）；Worker `15/15`、媒体移动/显式刷新 `2/2`、相关 Playnite 行为 `16/16`。
+- 同一构建的 `ReportedWorkspaceLayoutBehaviorTests` 四页/双主题 `8/8`：Media 控件高度/表格滚动边界，Task 失败行框，Save 窗口化操作行，Settings 图标/标题/搜索/输入按钮几何均通过。TRX 在 round3 evidence 目录，R19-07 文档已有本次数字和测试夹具负例细节。
+- 用户设置截图尚未绑定运行进程。读取到的本机 DLL identity `7a4ba2a9` 早于 `3a1dadd8` 修正，只是线索；隔离 Playnite 受 CEF `platform_channel 0x5` 阻挡，不能宣称当前宿主截图修复。保留真实宿主/物理 DPI边界。
+- 本次变更包含两个测试和阶段文档，没有生产代码改变。提交后需生成新 build identity，重跑 RestoreReadiness、R09 thumbnail recovery 与 `ReportedWorkspaceLayoutBehaviorTests`，随后提交最终 TRX/账本刷新；清理自己产生的 `.tmp/r19d`。
+- 下一可执行任务：R19-08 慢调用可取消。先核对现有外部工具与 IPC 取消/超时/未知写结果语义，再增加 fake 慢服务的真实行为/负例；不进行真实云端写入。
