@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 R23-04 host attempt 的夹具根因
+
+- `42884321` 候选已安装到隔离 profile，Playnite 仅暴露 generic Startup Error/safe-mode prompt。无同 run ID `d0eae852-7672-422f-bdd9-9fbdb7e6bcb3` manifest，无 `summary.json`，UIA 未见 GSC 侧栏；`cef.log` 为 0 bytes。本次没有 CEF `platform_channel 0x5` 证据，不标外部 CEF 阻塞或 seed 通过。
+- 发现 runner 创建 profile 后只等 2 秒便强杀 bootstrap，留下 `safestart.flag`；内置主题也因按 ID 作为文件夹名查找而漏检。工作树已修为优雅退出 + 不强杀、按主题 manifest ID 查找并复制到隔离目录。源守卫 `7/7`、Release build 0 errors；修复后 host 结果待全新 profile 复验。
+- 同一最新生产源的四页 Light/Dark 几何 `8/8`，Settings 搜索左齐标题、Top/reset/path controls `36 DIP`。用户新截图与当前隔离窗口几何不一致；旧 DLL 可能是原因但没有进程关联，真实 Settings 宿主问题未关闭。证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md` 与 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-42884321.md`。
+
 ## 2026-09-24 R23-04 隔离 runner 参数修正
 
 - 首次 seed runner 已成功编译全部 Release solution，但在 `package.ps1` 参数绑定处退出；原因是 `dev-install-run.ps1` 数组 splat 把 `-Configuration` 当作位置参数。无安装、无 Playnite 启动、无 manifest。本地改成具名 hashtable splat，并增加 source regression assertion。

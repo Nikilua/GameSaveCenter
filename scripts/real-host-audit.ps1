@@ -188,6 +188,45 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     }
 }
 
+function Find-PlayniteDesktopThemeDirectory {
+    param([Parameter(Mandatory = $true)][string]$ThemeId)
+
+    $themeRoots = [System.Collections.Generic.List[string]]::new()
+    if (-not [string]::IsNullOrWhiteSpace($env:APPDATA)) {
+        $themeRoots.Add((Join-Path $env:APPDATA 'Playnite\Themes\Desktop'))
+    }
+    if (-not [string]::IsNullOrWhiteSpace($PlayniteExecutable)) {
+        $playniteInstallThemeRoot = Join-Path (Split-Path -Parent $PlayniteExecutable) 'Themes\Desktop'
+        if (-not $themeRoots.Contains($playniteInstallThemeRoot)) {
+            $themeRoots.Add($playniteInstallThemeRoot)
+        }
+    }
+
+    foreach ($themeRoot in $themeRoots) {
+        if (-not (Test-Path -LiteralPath $themeRoot -PathType Container)) { continue }
+        foreach ($themeDirectory in Get-ChildItem -LiteralPath $themeRoot -Directory -ErrorAction SilentlyContinue) {
+            $manifestPath = Join-Path $themeDirectory.FullName 'theme.yaml'
+            if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) { continue }
+            try {
+                $idLine = Get-Content -LiteralPath $manifestPath -ErrorAction Stop |
+                    Where-Object { $_ -match '^\s*Id\s*:\s*(.+?)\s*$' } |
+                    Select-Object -First 1
+                if ($idLine -and $idLine -match '^\s*Id\s*:\s*(.+?)\s*$') {
+                    $candidateId = $Matches[1].Trim().Trim('"').Trim("'")
+                    if ([string]::Equals($candidateId, $ThemeId, [System.StringComparison]::OrdinalIgnoreCase)) {
+                        return $themeDirectory.FullName
+                    }
+                }
+            }
+            catch {
+                # A broken user theme should not prevent trying other installed themes.
+            }
+        }
+    }
+
+    return $null
+}
+
 function Initialize-IsolatedPlayniteConfig {
     if ([string]::IsNullOrWhiteSpace($UserDataDir)) {
         return
@@ -235,13 +274,33 @@ function Initialize-IsolatedPlayniteConfig {
         if ($null -ne $bootstrapProcess) {
             try { $bootstrapProcess.Refresh() } catch { }
             if (-not $bootstrapProcess.HasExited) {
-                try { $bootstrapProcess.CloseMainWindow() | Out-Null } catch { }
-                Start-Sleep -Seconds 2
-                try { $bootstrapProcess.Refresh() } catch { }
+                $windowDeadline = [DateTime]::UtcNow.AddSeconds(20)
+                while (-not $bootstrapProcess.HasExited -and
+                       $bootstrapProcess.MainWindowHandle -eq [IntPtr]::Zero -and
+                       [DateTime]::UtcNow -lt $windowDeadline) {
+                    Start-Sleep -Milliseconds 250
+                    try { $bootstrapProcess.Refresh() } catch { }
+                }
+
                 if (-not $bootstrapProcess.HasExited) {
-                    Stop-Process -Id $bootstrapProcess.Id -Force -ErrorAction SilentlyContinue
+                    $closeRequested = $false
+                    try { $closeRequested = $bootstrapProcess.CloseMainWindow() } catch { }
+                    if (-not $closeRequested) {
+                        throw "Playnite isolated profile bootstrap did not expose a closable main window: $UserDataDir"
+                    }
+
+                    if (-not $bootstrapProcess.WaitForExit(20000)) {
+                        throw "Playnite isolated profile bootstrap did not exit gracefully; refusing to force-stop it and leave a safe-start marker: $UserDataDir"
+                    }
                 }
             }
+
+            try { $bootstrapProcess.Refresh() } catch { }
+            $safeStartFlag = Join-Path $UserDataDir 'safestart.flag'
+            if (-not $bootstrapProcess.HasExited -or (Test-Path -LiteralPath $safeStartFlag -PathType Leaf)) {
+                throw "Playnite isolated profile bootstrap did not close cleanly: $UserDataDir"
+            }
+            $runnerMetadata.IsolatedProfileBootstrapShutdown = 'closed-gracefully'
         }
     }
 }
@@ -266,15 +325,15 @@ try {
         $playniteConfig.AutoBackupEnabled = $false
         $playniteConfig | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $playniteConfigPath -Encoding UTF8
 
-        # A copied config can reference a user desktop theme that is not present in the
-        # isolated profile.  Playnite then starts with a black/empty client window and the
-        # host audit loses the very surface it is meant to inspect.  Copy only the configured
-        # theme into the isolated profile; never alter the user's theme or global config.
+        # A copied config can reference a desktop theme that is not present in the
+        # isolated profile.  Resolve it by manifest ID from user or installed Playnite
+        # theme roots, then copy only into this isolated profile.
         $configuredTheme = [string]$playniteConfig.Theme
         if (-not [string]::IsNullOrWhiteSpace($configuredTheme)) {
-            $sourceTheme = Join-Path (Join-Path $env:APPDATA 'Playnite\Themes\Desktop') $configuredTheme
+            $sourceTheme = Find-PlayniteDesktopThemeDirectory -ThemeId $configuredTheme
             $isolatedTheme = Join-Path (Join-Path $UserDataDir 'Themes\Desktop') $configuredTheme
-            if (Test-Path -LiteralPath $sourceTheme -PathType Container) {
+            if (-not [string]::IsNullOrWhiteSpace($sourceTheme) -and
+                (Test-Path -LiteralPath $sourceTheme -PathType Container)) {
                 New-Item -ItemType Directory -Path (Split-Path -Parent $isolatedTheme) -Force | Out-Null
                 Copy-Item -LiteralPath $sourceTheme -Destination $isolatedTheme -Recurse -Force
                 $runnerMetadata.ConfiguredDesktopTheme = $configuredTheme

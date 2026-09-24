@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 R23-04 bootstrap 启动边界
+
+- `real-host-audit.ps1` 首次为隔离 Playnite 创建配置时必须正常收尾；不能在 `CloseMainWindow()` 后只等 2 秒再强杀，否则 `safestart.flag` 会让下一次启动进入通用安全模式对话框。等待主窗口和 `WaitForExit(20000)`；不能优雅退出就停 runner 并记录，不能继续安装/启动。
+- 复制配置引用的 desktop theme 时，按各候选目录 `theme.yaml` 的 `Id` 查找；内置默认主题的配置 ID 是 `Playnite_builtin_DefaultDesktop`，文件夹名为 `Default`，安装根在 Playnite exe 同级的 `Themes\Desktop`。只复制到 repo `.tmp` 隔离 profile。
+- 2026-09-24 当前 host attempt 没有 manifest/summary，UIA 仅读到 Startup Error；`cef.log` 为空，不能定成 CEF 0x5。已修 runner，等待提交后全新隔离 profile 验证。四页行为 `8/8` 仍只代表隔离 WPF/逻辑 DIP，不代表用户 Playnite 窗口通过。
+
 ## 2026-09-24 R23-04 runner 参数修复
 
 - `dev-install-run.ps1` 调 `package.ps1` 必须用哈希表具名 splat；字符串数组 splat 会把 `-Configuration` 当成位置值，脚本可在构建成功后、安装/启动前失败。参数结构由 `DiagnosticsEvidenceSourceTests` 守护。

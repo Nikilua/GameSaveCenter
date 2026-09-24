@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 隔离 bootstrap 根因与用户四页布局复核
+
+- main `42884321` 的 R23-04 runner 第一次成功安装六份身份一致的 `0.6.73+42884321` 插件/Worker 文件到隔离 profile，但没有 manifest、summary 或 Dashboard。Playnite UIA 看到 generic Startup Error safe-mode 提示；CEF log 空，不记录为 `platform_channel 0x5`。
+- 确认 audit bootstrap 在配置信息写盘后 2 秒便强制终止 Playnite，profile 留有 `safestart.flag`；也查出内置主题按 ID 拼目录导致找不到 `Themes/Desktop/Default`。已修成等待正常退出、超时不强杀，以及按 `theme.yaml` ID 扫描安装/用户主题。Release build 0 errors、`DiagnosticsEvidenceSourceTests 7/7`，source/AST/diff 通过。修复后的全新 profile host 结果待测。
+- 最新 main `42884321` 用户四页 Light/Dark 几何 `8/8`，TRX `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-42884321.trx`，无清理异常。Settings 当前源码的标题/搜索左差 0 DIP、按钮 36 DIP；新截图仍不匹配，加载模块身份未确认。两个证据入口：`R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`、`USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-42884321.md`。
+
 ## 2026-09-24 R23-04 runner 参数传递修复
 
 - 首次 seed runner 在打包前因字符串数组 splat 使 `-Configuration` 变成位置参数而退出；构建已成功，未安装扩展、未启动 Playnite、未导入数据。现改具名参数并为参数结构加 source regression check。

@@ -1,5 +1,9 @@
 # R23-08 下一轮准入清单
 
+## 2026-09-24 当前 main 补充
+
+9 月 22 日表中的 `9026f4a2` 嵌入宿主记录仍是历史事实。当前 main `42884321` 的 9 月 24 日隔离 seed runner 只观察到 safe-start Startup Error，没有 run ID manifest、summary 或侧栏 UIA；`cef.log` 为空。复查发现 runner 的 bootstrap 强杀与内置 theme ID 查找缺陷，已在工作树修正，当前仍需全新 profile 受控复验。本更新不把 R23-04 记为外部 CEF 阻塞或完成；下一次启动要先证明 bootstrap 干净退出，再只启动一次真实隔离宿主。证据：[R23-04 启动夹具根因](R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md)。
+
 日期：2026-09-22  
 分支：`codex/ui-finesse-round2`  
 审计基线：`4ad8bd17`（R23-07 任务去重收口）  

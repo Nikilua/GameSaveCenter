@@ -1,12 +1,18 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 最新：修复 R23-04 隔离 bootstrap 后复验
+
+main `42884321` 的一次审计未生成当前 run ID manifest/summary：Playnite 出现 generic Startup Error safe-mode prompt。复查发现 runner 配置 bootstrap 两秒后强杀，profile 留下 `safestart.flag`；桌面主题目录也按 ID 查错位置。工作树现已改为正常关闭/超时停止 runner，按 `theme.yaml` ID 查找安装与用户主题。代码验证 Release 0 errors、审计源测试 `7/7`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。
+
+下一步提交该夹具修正后，用全新 `.tmp` profile 仅启动一次，先验证 bootstrap 正常退出、`safestart.flag` 不残留、内置主题复制成功，再核对 64 条合成库 manifest/UIA。若 bootstrap 未正常退出，停止、不强杀、不继续宿主。R23-04 与真实设置窗口验证仍未关闭。
+
 ## 2026-09-24 继续 R23-04 runner 收口
 
 修复隔离安装 runner 的 `package.ps1` 参数传递：必须用具名 hashtable splat。首次执行在构建后、打包前失败，因此没有安装/启动宿主，也没有 seed manifest；修正的 Release build 与定向 evidence test `1/1` 已通过。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md`。
 
 当前 checkout 是 `main`；`codex/ui-finesse-round2` 没有已挂载 worktree，且生产代码停留在 `8a08863b` 基点（远端后续唯一提交只改 RenderHarness）。main 已含这之后的生产布局与审计收口。本批沿最新 main 修复，未将旧 main 内容覆盖回 round2 分支；后续如切回 round2，先逐项对照其 RenderHarness 独有提交和 main 之后的生产变更，不能 reset/force。
 
-下一步只重试该尚未启动的隔离流程，使用 `.tmp/r23-04-seeded-host-20260924-d26bfd4a` profile、`artifacts/ui-host-audit-r23-04-seeded-20260924-d26bfd4a` 输出及 64 条 synthetic games。核对 manifest 后记录真实 CEF/窗口状态。若仍为 CEF `platform_channel 0x5`，不绕过也不在同状态下再次启动；此时 UIA/Embedded 继续待正常宿主环境。
+此旧 profile 已留下 `safestart.flag`，不再复用。先提交 runner 修正，再在全新 `.tmp` profile 做一次验证；只有 bootstrap 确认优雅退出、内置主题复制成功后才继续宿主 seed。若 Startup Error 再现，保留具体对话框/日志事实并停止，不把它预设为 CEF `0x5`。
 
 ## 2026-09-24 当前接续：R23-04 合成非空库夹具
 

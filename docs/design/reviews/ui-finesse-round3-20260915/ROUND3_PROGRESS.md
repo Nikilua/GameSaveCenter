@@ -1,3 +1,9 @@
+## 2026-09-24 R23-04 bootstrap safe-start 修复与四页布局复核
+
+- main `42884321` 的一次非空库 host run 在启动后遇到 Playnite “Startup Error/是否进入安全模式”对话框；UIA 未找到 GameSaveCenter 侧栏，run ID manifest、`summary.json` 均未观察到。`cef.log` 为空；当次 `playnite.log` 没有 CEF `platform_channel 0x5`。因此不能记为 CEF 外部阻塞或真实 UI 通过。
+- 根因定位到隔离初始化器：profile 配置生成后等待 2 秒即 `Stop-Process -Force`，留下 `safestart.flag`；此外配置主题按 ID 拼路径，漏掉 Playnite 安装 `Themes/Desktop/Default/theme.yaml`。已修为等待正常退出，不能正常关闭就停止 runner；桌面主题按 manifest ID 从安装/用户目录查找后只复制到隔离 profile。Release build 0 errors，审计源守卫 `7/7`。具体原始 JSON/log 路径和边界见 [R23-04 bootstrap 根因](evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md)。修复后新 profile 宿主复验仍待执行，R23-04 未签收。
+- 当前 `main` `42884321` 的用户四页布局行为组 Light/Dark `8/8`，TRX 无 COM 清理噪声。Inbox 按钮/滚动 containment、Task 失败框、存档操作行及 Settings 搜索/图标/按钮几何结果见[复核证据](evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-42884321.md)和同名 TRX。用户截图进程未与包身份关联，不能宣称真实设置宿主问题关闭。
+
 ## 2026-09-24 R23-04 合成非空库夹具准备
 
 - 按 R23-04 当前缺口补充测试专用 Playnite SDK seeder：显式开关才安装至隔离 Extensions；数据路径强制在仓库 `.tmp/`，拒绝 reparse point；默认 64 条有固定合成前缀的未安装游戏，无安装目录，不改正式插件。

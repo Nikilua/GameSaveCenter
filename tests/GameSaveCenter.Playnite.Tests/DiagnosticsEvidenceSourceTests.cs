@@ -80,6 +80,25 @@ public sealed class DiagnosticsEvidenceSourceTests
     }
 
     [Fact]
+    public void IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes()
+    {
+        var root = FindRepositoryRoot();
+        var hostScript = File.ReadAllText(Path.Combine(root, "scripts", "real-host-audit.ps1"));
+        var bootstrapStart = hostScript.IndexOf("function Initialize-IsolatedPlayniteConfig", StringComparison.Ordinal);
+        var bootstrapEnd = hostScript.IndexOf("Initialize-IsolatedPlayniteConfig\n", bootstrapStart, StringComparison.Ordinal);
+
+        Assert.True(bootstrapStart >= 0);
+        Assert.True(bootstrapEnd > bootstrapStart);
+        var bootstrap = hostScript.Substring(bootstrapStart, bootstrapEnd - bootstrapStart);
+        Assert.Contains("WaitForExit(20000)", bootstrap);
+        Assert.Contains("safestart.flag", bootstrap);
+        Assert.DoesNotContain("Stop-Process -Id $bootstrapProcess.Id -Force", bootstrap);
+        Assert.Contains("function Find-PlayniteDesktopThemeDirectory", hostScript);
+        Assert.Contains("Themes\\Desktop", hostScript);
+        Assert.Contains("theme.yaml", hostScript);
+    }
+
+    [Fact]
     public void Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping()
     {
         var root = FindRepositoryRoot();

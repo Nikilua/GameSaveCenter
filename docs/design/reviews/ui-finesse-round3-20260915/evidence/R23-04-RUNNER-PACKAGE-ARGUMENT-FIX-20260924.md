@@ -15,3 +15,5 @@
 ## 后续门禁
 
 接下来仅重试一次原先未到达启动阶段的隔离 seed runner，核对同一 run ID 的 manifest 和 Playnite/CEF 结果。首次调用没有启动宿主，因此不受“宿主启动失败后不在相同状态下重试”的限制。所有写入继续限定仓库 `.tmp/` 隔离 profile 与本轮审计输出；不安装到真实用户 profile，不改用户存档、媒体、云端或诊断数据。
+
+后续 `42884321` seed run 已越过参数绑定并安装候选，但被 profile bootstrap 强杀留下的 safe-start prompt 阻挡，未产生 manifest。该 runner 根因及修正见 [R23-04 bootstrap safe-start 复核](R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md)；不能把该失败归因成 CEF `0x5`。
