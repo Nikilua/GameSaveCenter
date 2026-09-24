@@ -27,10 +27,10 @@
 
 ## 失败证据路径验证
 
-- 基于 HEAD `08a10da9` 的当前工作树，Release solution build：0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；XAML structural check `24/24`。
+- `910480c7` clean Release rebuild：0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；XAML structural check `24/24`。
 - `DiagnosticsEvidenceSourceTests 7/7` 通过，覆盖 bootstrap 关闭/主题查找和 runner 将失败证据写盘置于安装脚本之前；离线解析并执行 `New-IsolatedBootstrapFailureEvidence` 的合成正例/负例也通过：带 `platform_channel`+拒绝访问/`0x5` 分类为 CEF blocker，不含拒绝标记则分类为一般 bootstrap 失败，两者 `CountsAsVisualPass=false`。没有启动 Playnite。
 - 用户四页布局当前行为 Light/Dark `8/8` 通过，TRX 无 `InvalidComObjectException`。Source validator、PowerShell AST 和 diff check 通过；WPF 静态审查 `0 errors`、30 warnings/177 info，warning/info 为全仓审查输出，未用它们宣称宿主验证。
-- 此次构建在 `08a10da9` HEAD 上包含尚未提交的脚本/测试修改；提交后会按最终源码 identity 再构建和复跑定向用例。原始 TRX：[`R23-04 bootstrap evidence 7/7`](R23-04-BOOTSTRAP-FAILURE-EVIDENCE-20260924.trx)、[`用户四页行为 8/8`](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-LATEST.trx)。
+- 最终身份原始 TRX：[`R23-04 bootstrap evidence 7/7`](R23-04-BOOTSTRAP-FAILURE-EVIDENCE-20260924-910480C7.trx)、[`用户四页行为 8/8`](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-910480C7.trx)。构建与行为用例均针对 `910480c7`，提交后的证据追加不会改变生产/测试代码。
 
 ## 完成边界
 

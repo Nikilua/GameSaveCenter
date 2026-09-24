@@ -3,9 +3,9 @@
 ## 2026-09-24 R23-04 CEF 启动失败证据与 Settings 新截图
 
 - `08a10da9` 全新隔离 profile 的 `cef.log` 在扩展/seeder 安装前出现 `platform_channel.cc:108` FATAL “拒绝访问 (0x5)”，Playnite bootstrap 未正常退出，留下 `safestart.flag`；没有 GSC 加载、manifest、summary、Dashboard 或 UIA 侧栏。首次 `42884321` 安全模式提示的唯一根因仍未知；强杀是夹具缺陷但不能归因该首次报错。
-- 改 `real-host-audit.ps1`：bootstrap 抛错时读取隔离 CEF 日志，将直接 `platform_channel`+拒绝访问标记分类，落盘 runner metadata 与 blocker JSON 后停止，不安装/启动宿主。`DiagnosticsEvidenceSourceTests 7/7`、用户四页行为 `8/8`；离线 helper CEF 0x5 正例/一般失败负例通过。Release solution build `0 errors/2` 条既有 CS8602，XAML `24/24`；source validator、PowerShell AST、diff check 通过。WPF 静态审查 `0 errors/30 warnings/177 info`。此 build 在 `08a10da9` HEAD 的工作树变更上，提交后按最终 commit identity 重建复跑。
+- 改 `real-host-audit.ps1`：bootstrap 抛错时读取隔离 CEF 日志，将直接 `platform_channel`+拒绝访问标记分类，落盘 runner metadata 与 blocker JSON 后停止，不安装/启动宿主。`910480c7` clean Release rebuild `0 errors/2` 条既有 CS8602，XAML `24/24`；`DiagnosticsEvidenceSourceTests 7/7`、用户四页行为 `8/8`；离线 helper CEF 0x5 正例/一般失败负例通过。Source validator、PowerShell AST、diff check 通过。WPF 静态审查 `0 errors/30 warnings/177 info`。最终 identity 的两份 TRX 已归档。
 - 用户新增 Settings 截图的相对位置仍与当前 source/受控布局不同。当前候选 `c866c027` 包未装，截图没有进程/程序集关联；不能把当前 STA WPF 几何 `8/8` 写成实机修复，也不据此盲改已通过的生产 XAML。Playnite parent-host 复验被 CEF `0x5` 阻挡。
-- 已修正 bootstrap 与布局证据文档，保留原始隔离日志和安全标记。下一步完成脚本行为证据、Release build/source test、提交推送；其后继续不依赖 CEF/ETW 的小批次。真实宿主及 Settings 图像根因未验。
+- 已修正 bootstrap 与布局证据文档，保留原始隔离日志和安全标记；`910480c7` 已推送。真实宿主及 Settings 图像根因未验。下一步提交本阶段最终证据后，按用户新增截图重新检查 Settings 顶部图标、搜索框和操作区在 Playnite 宿主尺寸下的布局覆盖；CEF 正常宿主复验仍受 `platform_channel 0x5` 阻挡。
 
 ## 2026-09-24 隔离 bootstrap 根因与用户四页布局复核
 

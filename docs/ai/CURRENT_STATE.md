@@ -3,15 +3,15 @@
 ## 2026-09-24 R23-04 host attempt 当前边界
 
 - `42884321` 首次 host attempt 的 `cef.log` 为空，UIA 只见 generic Startup Error/safe-mode prompt；没有 run ID manifest 或 Dashboard。runner 曾在 profile 初始化后强杀 Playnite，旧 profile 留下 `safestart.flag`，但这不足以唯一归因首次 Startup Error。
-- `08a10da9` 全新隔离 profile 在扩展安装前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite 初始化未正常退出，safe-start 标记仍在；没有扩展安装、seeder、manifest 或第二次启动。相同环境不重试、不绕过权限。工作树已补失败 metadata/blocker 写盘；当前 HEAD `08a10da9` 的工作树 Release build `0 errors/2` 条既有 warning，源测试 `7/7`、四页布局 `8/8`，离线正/负分类、source validator、PowerShell AST、diff check 通过。提交后按最终 identity 重建复跑。
+- `08a10da9` 全新隔离 profile 在扩展安装前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite 初始化未正常退出，safe-start 标记仍在；没有扩展安装、seeder、manifest 或第二次启动。相同环境不重试、不绕过权限。失败 metadata/blocker 写盘已提交为 `910480c7`；该身份 clean Release build `0 errors/2` 条既有 warning，源测试 `7/7`、四页布局 `8/8`，离线正/负分类与 source validator 通过。WPF 静态审查 `0 errors/30 warnings/177 info`。TRX 见 bootstrap 与 layout evidence。
 - Settings 新截图仍与当前源码的 Light/Dark `1254×800 DIP` 受控几何不符：source test 断言搜索/title 左差、icon/title 行、reset/path 控件；但未模拟 Playnite 父容器，也未识别截图所载程序集。用户实际窗口问题开放。证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md` 与 `USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md`。
 
-## 2026-09-24 R23-04 隔离 runner 参数修正
+## 2026-09-24 R23-04 隔离 runner 参数修正与后续启动结果
 
 - 首次 seed runner 已成功编译全部 Release solution，但在 `package.ps1` 参数绑定处退出；原因是 `dev-install-run.ps1` 数组 splat 把 `-Configuration` 当作位置参数。无安装、无 Playnite 启动、无 manifest。本地改成具名 hashtable splat，并增加 source regression assertion。
 - 修正后 Release solution 0 errors、两条既有 CS8602；证据 source test `1/1`、XAML `24/24`、源校验/PowerShell AST/diff check 通过。较短构建根 `.tmp/r3b24` 避开 net472 test adapter 路径上限。
 - 当前磁盘 worktree 是 `main`，不是 `codex/ui-finesse-round2`；两者共同点为 `8a08863b`，round2 分支无独立 worktree，远端仅有一条 RenderHarness 采样修正未在 main。main 已包含其后的生产布局修复与本轮账本收口。为保留已验证的最新代码，本批沿当前 main 继续，没有把 main 旧实现复制到 round2，也没有改写 round2 分支。
-- 下一步提交后在唯一隔离 profile 重跑一次 runner；真实宿主/CEF/Embedded/UIA 结论待此次运行。细节见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md`。
+- 修正已提交后，唯一隔离 profile 的后续启动在扩展安装前被 CEF `platform_channel 0x5` 阻断，未执行安装、seed 或第二次启动；当前环境不重试、不绕过权限。失败 evidence 写盘已在 `910480c7` 合并，clean identity build 与定向用例通过。细节见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md` 和 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。
 
 ## 2026-09-24 R23-04 合成库夹具准备
 

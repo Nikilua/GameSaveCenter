@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="01274162-d1f7-4c9f-955e-7f62385e3134" name="lopmatu@SULT 2026-09-24 11:04:18" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T11:04:18.7513379+08:00" queuing="2026-09-24T11:04:18.7513385+08:00" start="2026-09-24T11:04:06.7331516+08:00" finish="2026-09-24T11:04:44.7905811+08:00" />
+  <TestSettings name="default" id="788a071c-d106-4fcd-a697-dbb3870ca093">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_11_04_18" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="034747be-ad0f-413e-b344-6b0e5b9a1c1b" testId="3e867d51-35ab-df84-be15-7cde1b106a2b" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Light)" computerName="SULT" duration="00:00:03.0870000" startTime="2026-09-24T11:04:25.0107490+08:00" endTime="2026-09-24T11:04:28.0948752+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="034747be-ad0f-413e-b344-6b0e5b9a1c1b">
+      <Output>
+        <StdOut>Light Settings: icon/title topΔ=11.33 DIP, horizontal gap=12 DIP, search/title leftΔ=0 DIP, centered-negative Δ=287.33 DIP, wide shell/search=1360/0 DIP, windowed 1254×800 icon/title topΔ=11.33 DIP, search/title leftΔ=0 DIP, search/icon top gap=72.67 DIP, reset center/height spread=0/0 DIP, search size=520×36 DIP, reset/title leftΔ=0 DIP, reset/search gap=14 DIP, reset controls center/height spread=0/0 DIP (Button=90.67×36 DIP @ 71.33, Button=102.67×36 DIP @ 71.33, ComboBox=260×36 DIP @ 71.33), compact search width/overflow/leftΔ=392/0/0 DIP, save-hint row=1-&gt;0, hint/title topΔ=19.33 DIP, path control center spread=0 DIP, height spread=0 DIP (Button/浏览: 36, Button/校验: 36, Button/打开: 36, Button/复制: 36, ComboBox/combo: 36)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="726ecd86-4e7d-4704-bfbc-be11d4e2b542" testId="fbe44cf9-75c2-f417-0c33-fc05b6e170df" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Dark)" computerName="SULT" duration="00:00:00.5270000" startTime="2026-09-24T11:04:28.0978759+08:00" endTime="2026-09-24T11:04:28.6228181+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="726ecd86-4e7d-4704-bfbc-be11d4e2b542">
+      <Output>
+        <StdOut>Dark Task grid: initial/recycled rows=13/14, far row reached=True, failed rows checked=7, error-presentation mismatches=0, row chrome position error=0 DIP, row-height spread=0 DIP, theme=Dark, grid=1693.33×644.67, visible=True, loaded=True, visibility=Visible, items=2400, virtualized=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="49cbdbe4-686d-4553-8950-673018ccd239" testId="9e3c6f8b-30ab-fe18-71eb-8de17a35559e" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Light)" computerName="SULT" duration="00:00:00.7910000" startTime="2026-09-24T11:04:18.7295651+08:00" endTime="2026-09-24T11:04:19.4734795+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49cbdbe4-686d-4553-8950-673018ccd239">
+      <Output>
+        <StdOut>Light Media Inbox: clear/reset/assign=36/36/36 DIP, mode=36 DIP, centersΔ=0.33/0.33/0.33 DIP, max button=36 DIP, spread=0 DIP, target=71.33 DIP, max centerΔ=0.33 DIP, clear visible=True, grid=360 DIP, grid/footer overlap=0 DIP, internal scrollbar contained=True (bar=140.67..458.67, grid=98.67..458.67, footerTop=468.67, internalOffset=74/74), offset=107.33, extent=672.67, viewport=565.33, footer=373.33..552; loaded=True, visible=True, enabled=True, mode=Auto/Visible, contentScroll=False, bar=74/74, afterScroll=107.33/107.33, barAfter=74</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="72426779-252c-4e9e-b1e9-c036bf9121a8" testId="92dca8d8-017c-0ca1-5bd7-bf82b0104435" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Light)" computerName="SULT" duration="00:00:00.4960000" startTime="2026-09-24T11:04:28.6238196+08:00" endTime="2026-09-24T11:04:29.1186633+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72426779-252c-4e9e-b1e9-c036bf9121a8">
+      <Output>
+        <StdOut>Light Task grid: initial/recycled rows=13/14, far row reached=True, failed rows checked=7, error-presentation mismatches=0, row chrome position error=0 DIP, row-height spread=0 DIP, theme=Light, grid=1693.33×644.67, visible=True, loaded=True, visibility=Visible, items=2400, virtualized=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="24b0d416-25c6-4977-ad55-f2ed8b066d76" testId="5b92d484-f6f0-286a-f232-9ef2ecc57b98" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Dark)" computerName="SULT" duration="00:00:03.1520000" startTime="2026-09-24T11:04:21.8584664+08:00" endTime="2026-09-24T11:04:25.0077492+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="24b0d416-25c6-4977-ad55-f2ed8b066d76">
+      <Output>
+        <StdOut>Dark Settings: icon/title topΔ=11.33 DIP, horizontal gap=12 DIP, search/title leftΔ=0 DIP, centered-negative Δ=287.33 DIP, wide shell/search=1360/0 DIP, windowed 1254×800 icon/title topΔ=11.33 DIP, search/title leftΔ=0 DIP, search/icon top gap=72.67 DIP, reset center/height spread=0/0 DIP, search size=520×36 DIP, reset/title leftΔ=0 DIP, reset/search gap=14 DIP, reset controls center/height spread=0/0 DIP (Button=90.67×36 DIP @ 71.33, Button=102.67×36 DIP @ 71.33, ComboBox=260×36 DIP @ 71.33), compact search width/overflow/leftΔ=392/0/0 DIP, save-hint row=1-&gt;0, hint/title topΔ=19.33 DIP, path control center spread=0 DIP, height spread=0 DIP (Button/浏览: 36, Button/校验: 36, Button/打开: 36, Button/复制: 36, ComboBox/combo: 36)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4dbaf765-97fd-4926-93dc-b483d09d44bc" testId="f14d8609-0abd-c6e4-e4de-0cbe507aab27" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light)" computerName="SULT" duration="00:00:01.1520000" startTime="2026-09-24T11:04:20.7039603+08:00" endTime="2026-09-24T11:04:21.8554811+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4dbaf765-97fd-4926-93dc-b483d09d44bc">
+      <Output>
+        <StdOut>Light Save history: summary=1010×442, content=987.33×377.33, actions=987.33×36@row1, selected=True, inspector=Visible/360×836; wideRow=0, windowedAgainRow=1, action/content gap=10 DIP, trailing whitespace=9.33 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c46a93d7-b755-4f53-837c-279975ce28ca" testId="173f2a21-7e05-9824-5b3c-9c9b97a322d4" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Dark)" computerName="SULT" duration="00:00:05.1100000" startTime="2026-09-24T11:04:13.6286072+08:00" endTime="2026-09-24T11:04:18.6823859+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c46a93d7-b755-4f53-837c-279975ce28ca">
+      <Output>
+        <StdOut>Dark Media Inbox: clear/reset/assign=36/36/36 DIP, mode=36 DIP, centersΔ=0.33/0.33/0.33 DIP, max button=36 DIP, spread=0 DIP, target=71.33 DIP, max centerΔ=0.33 DIP, clear visible=True, grid=360 DIP, grid/footer overlap=0 DIP, internal scrollbar contained=True (bar=140.67..458.67, grid=98.67..458.67, footerTop=468.67, internalOffset=74/74), offset=107.33, extent=672.67, viewport=565.33, footer=373.33..552; loaded=True, visible=True, enabled=True, mode=Auto/Visible, contentScroll=False, bar=74/74, afterScroll=107.33/107.33, barAfter=74</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ffdfe6a6-7ecf-48f5-bfd9-a725372c297d" testId="518e3f14-882c-6541-6ec8-46c20a796276" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark)" computerName="SULT" duration="00:00:01.2290000" startTime="2026-09-24T11:04:19.4784814+08:00" endTime="2026-09-24T11:04:20.7029576+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffdfe6a6-7ecf-48f5-bfd9-a725372c297d">
+      <Output>
+        <StdOut>Dark Save history: summary=1010×442, content=987.33×377.33, actions=987.33×36@row1, selected=True, inspector=Visible/360×836; wideRow=0, windowedAgainRow=1, action/content gap=10 DIP, trailing whitespace=9.33 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f14d8609-0abd-c6e4-e4de-0cbe507aab27">
+      <Execution id="4dbaf765-97fd-4926-93dc-b483d09d44bc" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9e3c6f8b-30ab-fe18-71eb-8de17a35559e">
+      <Execution id="49cbdbe4-686d-4553-8950-673018ccd239" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5b92d484-f6f0-286a-f232-9ef2ecc57b98">
+      <Execution id="24b0d416-25c6-4977-ad55-f2ed8b066d76" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3e867d51-35ab-df84-be15-7cde1b106a2b">
+      <Execution id="034747be-ad0f-413e-b344-6b0e5b9a1c1b" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="518e3f14-882c-6541-6ec8-46c20a796276">
+      <Execution id="ffdfe6a6-7ecf-48f5-bfd9-a725372c297d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="173f2a21-7e05-9824-5b3c-9c9b97a322d4">
+      <Execution id="c46a93d7-b755-4f53-837c-279975ce28ca" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="92dca8d8-017c-0ca1-5bd7-bf82b0104435">
+      <Execution id="72426779-252c-4e9e-b1e9-c036bf9121a8" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\r3b24\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fbe44cf9-75c2-f417-0c33-fc05b6e170df">
+      <Execution id="726ecd86-4e7d-4704-bfbc-be11d4e2b542" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r3b24\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3e867d51-35ab-df84-be15-7cde1b106a2b" executionId="034747be-ad0f-413e-b344-6b0e5b9a1c1b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fbe44cf9-75c2-f417-0c33-fc05b6e170df" executionId="726ecd86-4e7d-4704-bfbc-be11d4e2b542" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9e3c6f8b-30ab-fe18-71eb-8de17a35559e" executionId="49cbdbe4-686d-4553-8950-673018ccd239" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="92dca8d8-017c-0ca1-5bd7-bf82b0104435" executionId="72426779-252c-4e9e-b1e9-c036bf9121a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5b92d484-f6f0-286a-f232-9ef2ecc57b98" executionId="24b0d416-25c6-4977-ad55-f2ed8b066d76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f14d8609-0abd-c6e4-e4de-0cbe507aab27" executionId="4dbaf765-97fd-4926-93dc-b483d09d44bc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="173f2a21-7e05-9824-5b3c-9c9b97a322d4" executionId="c46a93d7-b755-4f53-837c-279975ce28ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="518e3f14-882c-6541-6ec8-46c20a796276" executionId="ffdfe6a6-7ecf-48f5-bfd9-a725372c297d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:01.95]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.66]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.78]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:20.42]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

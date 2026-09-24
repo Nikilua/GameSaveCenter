@@ -32,6 +32,8 @@ Media Inbox 的内部 scrollbar containment、页 footer 回退和窄窗滚动�
 
 原始测试结果：[ReportedWorkspaceLayoutBehaviorTests 当前 main TRX](USER-REPORTED-LAYOUT-CURRENT-MAIN-20260924.trx)。
 
+2026-09-24 最终提交复跑：`910480c7` clean Release rebuild 后 `ReportedWorkspaceLayoutBehaviorTests 8/8`、0 failed/skipped；设置页相关测量仍保持上述受控结果，TRX 无 `InvalidComObjectException`：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-910480C7.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-910480C7.trx)。此复跑不绑定用户截图所载包或 Playnite parent-host。
+
 ## 2026-09-24 当前 main 包复核补充
 
 用户继续报告 Settings 顶部图标、输入框和操作控件错位。受控隔离窗口里，同一生产 Settings 视图的 Light/Dark 行为与几何仍通过；没有证据支持再改生产布局。`c866c027` Release 候选包已生成，当前本机 Extensions DLL `0.6.73+7a4ba2a9` 早于该 UI 修正，但无法将截图关联到该旧 DLL。候选包未安装；同身份隔离 Playnite 主窗体因为 CEF `platform_channel 0x5` 停在 Startup Error。因此最新可确认结果是“当前源与候选包包含修正、受控 WPF 回归通过”，真实 Playnite 用户窗口仍待正常宿主复验。

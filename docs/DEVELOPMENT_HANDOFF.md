@@ -2,7 +2,7 @@
 
 ## 2026-09-24 最新：R23-04 外部启动阻塞
 
-`42884321` 首次 Startup Error 的 `cef.log` 为空；强杀/safe-start 是已找到的 runner 缺陷，但不能断言它是首次报错唯一原因。`08a10da9` 全新隔离 profile 在安装扩展前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite bootstrap 不正常退出并留下 `safestart.flag`；没有扩展/seeder、manifest、summary、Dashboard 或 UIA 页面。当前权限/系统状态不重试，不删标记，不绕过权限。工作树补齐失败时 `runner-metadata.json` 与 `host-startup-blocker.json` 写盘逻辑。Release build `0 errors/2` 条既有 CS8602；source test `7/7`、用户四页行为 `8/8`、离线 synthetic log 正/负分类通过。当前 build 在脏工作树上，提交后重建复跑。详细证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。
+`42884321` 首次 Startup Error 的 `cef.log` 为空；强杀/safe-start 是已找到的 runner 缺陷，但不能断言它是首次报错唯一原因。`08a10da9` 全新隔离 profile 在安装扩展前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite bootstrap 不正常退出并留下 `safestart.flag`；没有扩展/seeder、manifest、summary、Dashboard 或 UIA 页面。当前权限/系统状态不重试，不删标记，不绕过权限。失败时写出 `runner-metadata.json` 与 `host-startup-blocker.json` 的逻辑已在 `910480c7` 提交。clean Release build `0 errors/2` 条既有 CS8602；source test `7/7`、用户四页行为 `8/8`、离线 synthetic log 正/负分类通过。最终身份 TRX 与本阶段 evidence 已归档。详细证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。
 
 Settings 最新截图仍与当前 source 的隔离 WPF 几何不符。`ReportedWorkspaceLayoutBehaviorTests` 对当前候选是 Light/Dark `8/8`，其中搜索/标题锚点、图标行、reset/path 控件行为均实测；但截图载入包身份与 Playnite 父容器未捕获。候选包未安装，真实 Settings 窗口问题仍开放；正常宿主复验受上述 CEF 阻塞。
 

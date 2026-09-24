@@ -4,7 +4,7 @@
 
 - `real-host-audit.ps1` 首次为隔离 Playnite 创建配置时必须正常收尾；不能在 `CloseMainWindow()` 后只等 2 秒再强杀，否则 `safestart.flag` 会让下一次启动进入通用安全模式对话框。等待主窗口和 `WaitForExit(20000)`；不能优雅退出就停 runner 并记录，不能继续安装/启动。
 - 复制配置引用的 desktop theme 时，按各候选目录 `theme.yaml` 的 `Id` 查找；内置默认主题的配置 ID 是 `Playnite_builtin_DefaultDesktop`，文件夹名为 `Default`，安装根在 Playnite exe 同级的 `Themes\Desktop`。只复制到 repo `.tmp` 隔离 profile。
-- `42884321` attempt 的 CEF log 为空，所以不能据此断定 CEF；强杀是 runner 缺陷，但未能证明它是该 Startup Error 唯一根因。后续全新 profile `08a10da9` 在扩展安装前直接记录 CEF `platform_channel 0x5`，无 manifest/summary，safe-start 标记残留；当前环境不重试、不绕过权限。工作树已补 runner catch，将写盘 metadata/blocker；离线 CEF 拒绝正例与一般失败负例分类通过。Release build `0 errors/2` 条既有 warning；源测试 `7/7`，用户布局 `8/8`。STA WPF/逻辑 DIP 结果不代表用户 Playnite 窗口通过；提交后按最终 identity 重建。
+- `42884321` attempt 的 CEF log 为空，所以不能据此断定 CEF；强杀是 runner 缺陷，但未能证明它是该 Startup Error 唯一根因。后续全新 profile `08a10da9` 在扩展安装前直接记录 CEF `platform_channel 0x5`，无 manifest/summary，safe-start 标记残留；当前环境不重试、不绕过权限。runner catch 于 `910480c7` 合并推送，将失败写盘 metadata/blocker；离线 CEF 拒绝正例与一般失败负例分类通过。该 identity clean Release build `0 errors/2` 条既有 warning；源测试 `7/7`，用户布局 `8/8`。STA WPF/逻辑 DIP 不代表用户 Playnite 窗口通过。
 
 ## 2026-09-24 R23-04 runner 参数修复
 
