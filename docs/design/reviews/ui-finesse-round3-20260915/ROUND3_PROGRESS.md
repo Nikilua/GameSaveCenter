@@ -1036,3 +1036,9 @@
 - 同一隔离 Release build XAML `24/24`、0 errors、两条既有 Media `CS8602` warning；真实 WPF 列头排序升/降序 + detached view 负例 `7/7`。证据：[R06 排序 detached-view 复核](evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md)。
 - 这只是针对用户崩溃路径的行为修复，不签收完整 `R06-02`；真实 Playnite/package-host 鼠标输入、用户加载包身份与宿主呈现仍待验。首次默认 `dotnet test` 被旧默认 `bin` assembly 的 identity gate 拦截，最终改运行 `.tmp/sortfix` 同 checkout 隔离 Release assembly 后测试通过；不把入口身份不一致记录成产品回归。
 - 下一可执行小批量：共享 DataGrid row selected/focus chrome 的几何修复，先添加能比较真实 cell/content 选择前后的行为探针；再移除 Media Inbox 重复游戏目标选择并改用顶部全局 `SelectedGame`。
+# 2026-09-24 用户反馈：DataGrid 选中态行内容几何
+
+- 共享 `GscRoundedDataGridRowTemplate` 原先将 `SelectiveScrollingGrid` 包进会改 Margin 的 `RowChrome`，选中/焦点状态因此会重排行内容。现在 RowBackground/行内容/RowChrome 是模板 Grid 的 sibling；状态 Margin 保留在背景/描边层，细节滚动、虚拟化、圆角和 scrollbar 安全 inset 保持。禁用透明度改由 DataGridRow 统一应用，保留文字/内容淡化。
+- 实际 WPF DataGrid 比较未选、失焦选中、键盘焦点选中时每个 cell/TextBlock 的 x/y/宽/高；四个生产表格在 Light/Dark 均由 `<=0.25 DIP` 门限覆盖。再检查 disabled opacity 与失败 badge；不是源码包含断言代替几何。
+- Release/XAML `24/24`、0 errors/两条既有 Media CS8602；R06Selection `2/2`、R23 四表主题状态+几何 `1/1`、ReportedWorkspace `8/8`、模板结构 `1/1`、R06排序回归 `7/7`，总 `19/19`。source validator/diff check 通过。详情与五份 TRX：[DataGrid 选中/焦点几何](evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md)。
+- 仅证明隔离生产 WPF 窗口逻辑 DIP；Playnite/package-host 最终呈现和用户安装身份未验，CEF `platform_channel 0x5` 不绕过。此为 `R06-03` 几何定点修复，不签收完整任务。下一项 Media Inbox 移除冗余目标下拉并使用全局 `SelectedGame`，保持确认/取消/错误与空目标行为。

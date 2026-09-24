@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -230,9 +231,17 @@ public sealed class R23ProductionResourceStateBehaviorTests
 
                         var row = grid.ItemContainerGenerator.ContainerFromItem(rows[0]) as DataGridRow;
                         Assert.NotNull(row);
+                        Assert.Same(external, Keyboard.Focus(external));
+                        FlushLayout(window);
+                        var unselectedGeometry = CaptureCellAndTextGeometry(row!, grid);
+
                         grid.SelectedItem = rows[0];
+                        Assert.Same(external, Keyboard.Focus(external));
                         FlushLayout(window);
                         Assert.True(row!.IsSelected, $"{fixture.Name} did not apply selection to the realized row");
+                        Assert.False(Selector.GetIsSelectionActive(row), $"{fixture.Name} selection should be inactive while focus is outside the grid");
+                        var inactiveSelectionGeometry = CaptureCellAndTextGeometry(row, grid);
+                        AssertRowGeometryUnchanged(unselectedGeometry, inactiveSelectionGeometry, fixture.Name, theme, "inactive selection");
 
                         var cell = FindVisualChildren<DataGridCell>(row)
                             .FirstOrDefault(candidate => candidate.IsVisible && candidate.ActualWidth > 0);
@@ -240,6 +249,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         Assert.Same(cell, Keyboard.Focus(cell));
                         FlushLayout(window);
                         Assert.True(row.IsKeyboardFocusWithin, $"{fixture.Name} row did not retain keyboard focus");
+                        var keyboardFocusedGeometry = CaptureCellAndTextGeometry(row, grid);
+                        AssertRowGeometryUnchanged(unselectedGeometry, keyboardFocusedGeometry, fixture.Name, theme, "keyboard-focused selection");
                         var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
                         Assert.Equal(BrushColor(page.Resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
                         Assert.Equal(new Thickness(2), chrome.BorderThickness);
@@ -248,7 +259,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         FlushLayout(window);
                         Assert.False(row.IsEnabled, $"{fixture.Name} row remained enabled with its DataGrid disabled");
                         Assert.False(cell!.IsEnabled, $"{fixture.Name} cell remained enabled with its DataGrid disabled");
-                        Assert.Equal(0.42d, chrome.Opacity);
+                        Assert.Equal(0.42d, row.Opacity);
+                        Assert.Equal(1d, chrome.Opacity);
                         Assert.Same(external, Keyboard.Focus(external));
                         FlushLayout(window);
                         Assert.NotSame(cell, Keyboard.Focus(cell));
@@ -328,6 +340,46 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 yield return match;
             foreach (var nested in FindVisualChildren<T>(child))
                 yield return nested;
+        }
+    }
+
+    private static Rect[] CaptureCellAndTextGeometry(DataGridRow row, DataGrid grid)
+    {
+        var cells = FindVisualChildren<DataGridCell>(row)
+            .Where(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0 && cell.ActualHeight > 0)
+            .OrderBy(cell => cell.Column.DisplayIndex)
+            .ToArray();
+        if (cells.Length == 0)
+            throw new InvalidOperationException("The realized row has no visible cells to measure.");
+
+        return cells.SelectMany(cell =>
+        {
+            var content = FindVisualChildren<TextBlock>(cell)
+                .Where(text => text.Visibility == Visibility.Visible && text.ActualWidth > 0 && text.ActualHeight > 0)
+                .Select(text => BoundsRelativeTo(text, grid));
+            return new[] { BoundsRelativeTo(cell, grid) }.Concat(content);
+        }).ToArray();
+    }
+
+    private static Rect BoundsRelativeTo(FrameworkElement element, FrameworkElement ancestor)
+    {
+        var origin = element.TransformToAncestor(ancestor).Transform(new Point(0, 0));
+        return new Rect(origin.X, origin.Y, element.ActualWidth, element.ActualHeight);
+    }
+
+    private static void AssertRowGeometryUnchanged(Rect[] expected, Rect[] actual, string page, GameSaveCenterThemeMode theme, string state)
+    {
+        Assert.Equal(expected.Length, actual.Length);
+        for (var index = 0; index < expected.Length; index++)
+        {
+            Assert.True(Math.Abs(expected[index].X - actual[index].X) <= 0.25,
+                $"{page}/{theme} {state} shifted cell/content {index} horizontally from {expected[index]} to {actual[index]}.");
+            Assert.True(Math.Abs(expected[index].Y - actual[index].Y) <= 0.25,
+                $"{page}/{theme} {state} shifted cell/content {index} vertically from {expected[index]} to {actual[index]}.");
+            Assert.True(Math.Abs(expected[index].Width - actual[index].Width) <= 0.25,
+                $"{page}/{theme} {state} changed cell/content {index} width from {expected[index]} to {actual[index]}.");
+            Assert.True(Math.Abs(expected[index].Height - actual[index].Height) <= 0.25,
+                $"{page}/{theme} {state} changed cell/content {index} height from {expected[index]} to {actual[index]}.");
         }
     }
 

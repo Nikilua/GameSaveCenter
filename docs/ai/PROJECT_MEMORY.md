@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：共享 DataGrid selected/focus 几何
+
+- `GscRoundedDataGridRowTemplate` 将 `RowBackground`、`SelectiveScrollingGrid` 和透明且 `IsHitTestVisible=false` 的 `RowChrome` 放为 Grid sibling；selection/focus margin 不再重排 row content。右侧滚动安全 inset/圆角保持。Disabled opacity 移到 `DataGridRow` 本身以继续淡化文字和内容。
+- 真实 WPF cell/TextBlock 正常、失焦选中、键盘焦点选中布局比较在 `<=0.25 DIP` 门限通过；生产 Save/Task/Media Inbox/Maintenance 四表 Light/Dark、disabled/status state 也覆盖。相关行为与回归 `19/19`；隔离 Release/XAML `24/24`、0 errors/2 条既有 Media `CS8602`。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md`。
+- 真实 Playnite/package-host 的呈现帧/物理输入仍待验。下一项 Media Inbox 归类目标去重：单项/批量共用 shell `SelectedGame`，去掉 `InboxTargetGame` 保存/恢复；异步确认前捕获目标 DTO/ID，取消、错误与空目标语义不变。
+
 ## 2026-09-24 main：R06 排序崩溃当前复核
 
 - 用户 `crash.zip` 排序日志含 `ListCollectionView.PrepareLocalArray → RefreshOverride → DeferHelper.Dispose → DataGridStableSortController.ApplyCurrentSort → ToggleSort → OnSorting`。控制器现在检测 detached/null `SourceCollection`，不会对失效 view 执行 `DeferRefresh`；无效排序事件被消费，现有活动箭头会恢复。

@@ -3604,11 +3604,23 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Attribute("Property")?.Value == "Margin"
             && element.Attribute("Value")?.Value == "4,2,12,2");
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowBackground"
+            && element.Attribute("Property")?.Value == "Margin"
+            && element.Attribute("Value")?.Value == "4,2,12,2");
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "BorderBrush"
             && (element.Attribute("Value")?.Value ?? "").Contains("GscAccentBrush"));
         Assert.Contains(template.Descendants(), element => element.Name.LocalName == "SelectiveScrollingGrid");
         Assert.Contains(template.Descendants(), element => element.Name.LocalName == "DataGridDetailsPresenter");
+
+        var rootGrid = template.Elements().Single(element => element.Name.LocalName == "Grid");
+        var rowContent = rootGrid.Elements().Single(element => element.Name.LocalName == "SelectiveScrollingGrid");
+        var rowChrome = rootGrid.Elements().Single(element => element.Name.LocalName == "Border"
+            && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "RowChrome");
+        Assert.Same(rootGrid, rowContent.Parent);
+        Assert.Same(rootGrid, rowChrome.Parent);
+        Assert.Equal("False", rowChrome.Attribute("IsHitTestVisible")?.Value);
     }
 
     [LegacyProductionUiBaselineFact]

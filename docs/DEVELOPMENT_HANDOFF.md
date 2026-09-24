@@ -4,12 +4,9 @@
 
 R20-02/R18-04 先前复核在 `cdd28fd2` 收口；之后 R06 排序崩溃修复已在当前 main 完成：真实 WPF 列头升/降序与 detached-view 负例 `7/7`，隔离 Release solution/XAML `24/24`、0 errors/两条既有 Media `CS8602`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。
 
-剩余两个用户反馈小批量：
+R06 排序崩溃和选中行内容缩进两处已定点修复。当前只剩一个用户反馈代码批次：删除 Media Inbox 冗余 `InboxTargetGame` 下拉，归类命令复用全局 `SelectedGame`，维持空目标禁用、确认目标快照和取消/错误语义并覆盖行为。行几何修复见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md`，包含生产四表双主题的 cell/content 实测。
 
-1. 修共享 `GscRoundedDataGridRowTemplate`，选择/键盘焦点只改独立 chrome，不挪动 cell 内容；用真实 WPF 选择前后 cell/content 几何验证。
-2. 删除 Media Inbox 冗余 `InboxTargetGame` 下拉，归类命令改用顶部全局 `SelectedGame`，维持空目标禁用、确认目标快照和取消/错误语义并覆盖行为。
-
-主线的 Settings/Save/Task/Media 截图布局不因四页隔离逻辑 DIP 通过而宣称真实 Playnite 已验。CEF `platform_channel 0x5` 不绕过；Demo-first、Playnite/net462、命令/恢复/取消/虚拟化和现有滚动系统仍有效。两项完成后继续 `R20-03` 或其他依赖满足的 Q/R，不必逐阶段询问。
+主线的 Settings/Save/Task/Media 截图布局不因四页隔离逻辑 DIP 通过而宣称真实 Playnite 已验。CEF `platform_channel 0x5` 不绕过；Demo-first、Playnite/net462、命令/恢复/取消/虚拟化和现有滚动系统仍有效。Inbox 改动完成后继续 `R20-03` 或其他依赖满足的 Q/R，不必逐阶段询问。
 
 ## 2026-09-24 R19-06 当前身份验证结果
 
@@ -2402,10 +2399,10 @@ git branch --show-current
 - 当前源码已有明确超时、同 RequestId 有限复核、可能已接收未知结果、finally 复位；真实 Playnite/Worker pipe、真实 Ludusavi/Rclone 与远端云写仍未验。设置截图的实际加载包/真实宿主呈现也仍未验。
 - TRX 已按 `6618de22` 放入 R19-08 evidence；六份原始结果均已归档，`.tmp/r19-08a` 已清理。本阶段无生产代码变更。
 - 下一可执行任务：R20-01 概览下一步。复用 `OverviewPriorityResolver`、状态投影与游戏选框命令，使用合成状态覆盖无游戏/未匹配/可备份/失败待处理；绝不启动真实存档或云写。
-# 当前交接（2026-09-24 R06 排序崩溃）
+# 当前交接（2026-09-24 R06 排序与行几何）
 
 - 当前仓库 `D:\workplace\github\GameSaveCenter`，分支 `main`，从当前最新生产代码继续；不要切回无独立 worktree 的 `codex/ui-finesse-round2`，也不要用 main 的旧实现覆盖当前源。
 - `crash.zip` 的真实 DataGrid 列头排序 NRE 已在 `DataGridStableSortController` 修复：排序前确认 `ItemsSource` view 仍有 `SourceCollection`，失效视图不刷新，已消费的无效列头事件不会流入 WPF 默认反射排序；detached 后点击可恢复 controller-owned sort arrow。
 - 当前隔离 Release solution/XAML `24/24` 成功、0 errors/2 条既有 `MediaCenterView.xaml.cs:703 CS8602`；同 checkout 的真实 WPF 列头与 detached-view 行为 `7/7`。证据和 TRX 位于 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。不签收真实 Playnite/package-host 输入和整项 R06-02。
-- 下一可执行小批量：修 `GscRoundedDataGridRowTemplate` 选中/焦点描边不要改变 cell/content x/y 几何，并用真实 WPF DataGrid 做选择前后坐标行为测试。随后修 Media Inbox 重复选框改用全局 `SelectedGame`，保留命令可执行条件、确认目标快照、取消/错误语义。之后继续可做的 Q/R 任务。
+- 下一可执行小批量：修 Media Inbox 重复游戏目标选择，复用全局 `SelectedGame`，保留命令可执行条件、确认目标快照、取消/错误语义。排序和行几何的隔离行为证据已分别归档；真实宿主边界照旧。
 - 用户此前指认的媒体/任务/存档/设置窗口问题，不可因 STA 离屏几何通过而标成真实宿主已修复；现行隔离 Playnite仍受 CEF `platform_channel 0x5` 阻挡，不重试绕过。保留真实宿主、最终呈现帧、物理 DPI/跨屏、Windows UIA/IME、ETW 与宿主性能未验边界。Demo 原目录不可用，沿用已恢复生产基线。

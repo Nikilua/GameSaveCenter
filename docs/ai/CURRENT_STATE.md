@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 当前 main：DataGrid 选中/焦点不再挤压内容
+
+- 共享 `GscRoundedDataGridRowTemplate` 将背景、`SelectiveScrollingGrid` 内容和描边拆为同级；选中/键盘焦点圆角 Margin 保留，但只影响背景与不可命中的描边，不缩进 cell。Disabled opacity 保持作用于整行内容；滚动条 12 DIP 安全间距、细节滚动、命令与虚拟化保持。
+- 实际 WPF cell/TextBlock 几何，普通/失焦选中/键盘焦点选中对照误差门限 `<=0.25 DIP`；Save/Task/Media Inbox/Maintenance 四表 Light/Dark，disabled 与失败 badge 状态通过。该几何行为 `R06Selection 2/2 + R23 production state 1/1`；相关布局 `8/8`、模板 `1/1`、排序 `7/7`，合计 `19/19`。详见 `../design/reviews/ui-finesse-round3-20260915/evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md`。
+- Release solution/XAML `24/24`，0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；source validator 和 diff check 通过。真实 Playnite/package-host/物理输入/最终呈现未验，CEF `platform_channel 0x5` 不绕过。
+- 下一可执行小批量：Media Inbox 移除重复游戏目标选择并改用全局 `SelectedGame`，保留确认目标快照和命令空目标/取消/失败语义。
+
 ## 2026-09-24 当前 main：R06 排序崩溃修复
 
 - 用户 `crash.zip` 日志中的真实列头排序在 `ListCollectionView.DeferRefresh` 收尾抛 `NullReferenceException`。控制器现重解析 `ItemsSource`、拦截 detached/null `SourceCollection`，并在 WPF 清掉列头箭头时恢复控制器拥有的箭头状态。

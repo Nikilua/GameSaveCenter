@@ -9325,3 +9325,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 真实 WPF `DataGridColumnHeader` 升/降序行为、detached-view 无异常/箭头恢复负例共 `7/7`；隔离 Release solution、Playnite `net462` 构建成功，XAML `24/24`，保留两条既有 Media `CS8602` warning。
 - 首次常规测试入口选中了旧 `bin` assembly，身份门拒绝；改由 `.tmp/sortfix` 当前 checkout 的隔离程序集运行，结果 `7/7`，原始 TRX 已归档。见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。
 - 不代表用户当前 Playnite/package-host 鼠标路径或最终呈现通过；不签收 R06-02 全项。下一项修共享 DataGrid selected/focus chrome 的不缩进内容几何。
+# 2026-09-24 DataGrid 行选中/焦点内容几何
+
+- 把 `GscRoundedDataGridRowTemplate` 的背景、选择描边和 `SelectiveScrollingGrid` 内容拆成 Grid sibling；保留圆角、行间距、右侧滚动安全 inset、详细行滚动。将 disabled opacity 移至整个 DataGridRow，确保文本和 cell 内容仍然变暗。
+- 加入真实 WPF geometry behavior：未选、失焦选中和键盘焦点选中前后捕获各 cell/TextBlock 相对 DataGrid 的 x/y/width/height；误差 `<=0.25 DIP`。四个生产页表格在 Light/Dark、禁用态与 status badge 状态通过。
+- Release solution Playnite `net462`、Tests `net472`，XAML `24/24`、0 errors，两条既有 Media `CS8602` warning；定向 `19/19`（Selection `2`、四页生产 state+geometry `1`、用户布局 `8`、模板契约 `1`、排序回归 `7`）。source validator 与 `git diff --check` 通过。
+- 用户真实 Playnite/package-host 呈现帧和物理输入未验，CEF `0x5` 不绕过。此为 R06-03 定点修复，不签收全项。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md`。下一项 Media Inbox 目标复用全局 `SelectedGame`。

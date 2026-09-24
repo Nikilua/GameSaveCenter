@@ -557,14 +557,12 @@
          14 DIP rounded corners. SelectiveScrollingGrid keeps WPF row virtualization and
          details scrolling intact. -->
     <ControlTemplate x:Key="GscRoundedDataGridRowTemplate" TargetType="{x:Type DataGridRow}">
-        <Border x:Name="RowChrome"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="0"
-                Margin="0"
-                SnapsToDevicePixels="True">
-            <SelectiveScrollingGrid>
+        <Grid SnapsToDevicePixels="True">
+            <Border x:Name="RowBackground"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="0"
+                    Margin="0"/>
+            <SelectiveScrollingGrid x:Name="RowContent">
                 <SelectiveScrollingGrid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -586,13 +584,21 @@
                                           SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
                                           Visibility="{TemplateBinding DetailsVisibility}"/>
             </SelectiveScrollingGrid>
-        </Border>
+            <Border x:Name="RowChrome"
+                    Background="Transparent"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="0"
+                    Margin="0"
+                    IsHitTestVisible="False"/>
+        </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+                <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
-                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
@@ -608,7 +614,8 @@
                     <Condition Property="IsSelected" Value="True"/>
                     <Condition Property="Selector.IsSelectionActive" Value="False"/>
                 </MultiTrigger.Conditions>
-                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
+                <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
+                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
@@ -620,9 +627,10 @@
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="2"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="3,1,11,1"/>
+                <Setter TargetName="RowBackground" Property="Margin" Value="3,1,11,1"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="RowChrome" Property="Opacity" Value="0.42"/>
+                <Setter Property="Opacity" Value="0.42"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
