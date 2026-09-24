@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 R19-06 当前 main 复核
+
+- 当前 `main` identity `9b3dd2f1` Release build：XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Worker 查询 `13/13`、Playnite 分页/索引 `10/10`、稳定选择 `4/4`，R19-06 关联行为 `27/27`；相邻 R06 排序/源码身份 `5/5`。旧 net472 身份门失败在当前产物不复现。
+- 当前分页游标、generation reset、去重累加和稳定 ID 选择语义与旧 R19-06 evidence 一致；本轮无生产代码变更。真实并发数据变更与 Playnite/package-host 呈现仍待验。证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。
+- 同身份用户四页布局 `8/8`；Settings 几何仍通过，但本机扩展目录 DLL `0.6.73+7a4ba2a9` 早于修正，截图实际加载身份未确认；候选未安装，CEF `platform_channel 0x5` 仍阻止正常宿主复验。TRX 见 `../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-9B3DD2F1.trx`。
+
 ## 2026-09-24 R23-04 host attempt 当前边界
 
 - `42884321` 首次 host attempt 的 `cef.log` 为空，UIA 只见 generic Startup Error/safe-mode prompt；没有 run ID manifest 或 Dashboard。runner 曾在 profile 初始化后强杀 Playnite，旧 profile 留下 `safestart.flag`，但这不足以唯一归因首次 Startup Error。

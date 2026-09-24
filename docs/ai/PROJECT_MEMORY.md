@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 R19-06 当前 main 复核
+
+- 当前 main/test identity `9b3dd2f19f1bfce8c51ec12ec1b8b654c3c15bc1` 下 Release XAML `24/24`、0 errors/两条既有 Media nullable warnings；Worker 查询 `13/13`、Playnite page/index `10/10`、selection anchor `4/4`，关联 R19-06 行为 `27/27`；相邻 R06 sort/identity `5/5`。刷新后的 `GscBuildCommit` 身份门正常通过。
+- 稳定游标、limit+1 末页、generation/context reset、按稳定 ID 累加和选择锚点仍符合 R19-06；最新字段映射改动仅拓展已存储计时信息。全为合成 DTO、fake/隔离 SQLite/testhost；生产并发新增/删除/排序呈现、正常 Playnite 与宿主性能仍未验。证据/原始 TRX 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。
+- 同一 identity `ReportedWorkspaceLayoutBehaviorTests 8/8`；Settings 几何通过，但当前本机 Extensions DLL `7a4ba2a9` 早于 `3a1dadd8` 布局修正，不能证明用户截图加载版本。候选包未安装，CEF `platform_channel 0x5` 阻止隔离 Playnite 页面验证，不把源几何写成真实宿主修复。
+
 ## 2026-09-24 R23-04 bootstrap 启动边界
 
 - `real-host-audit.ps1` 首次为隔离 Playnite 创建配置时必须正常收尾；不能在 `CloseMainWindow()` 后只等 2 秒再强杀，否则 `safestart.flag` 会让下一次启动进入通用安全模式对话框。等待主窗口和 `WaitForExit(20000)`；不能优雅退出就停 runner 并记录，不能继续安装/启动。

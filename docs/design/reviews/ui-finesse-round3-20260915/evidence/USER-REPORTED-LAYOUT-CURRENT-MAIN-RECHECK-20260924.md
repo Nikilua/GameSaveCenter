@@ -41,3 +41,10 @@ Media Inbox 的内部 scrollbar containment、页 footer 回退和窄窗滚动�
 - 候选包：[GameSaveCenter-0.6.73-main-c866c027.pext](../../../../../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext)，SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`。
 - 当前 `c866c027` 四页行为 TRX：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx)，`8/8` passed、0 failed、0 skipped，无 COM 清理异常文本。
 - 隔离宿主限制、构建与完整测试边界见[设置页窗口复核](SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)。
+
+## 2026-09-24 当前 HEAD `9b3dd2f1` 再复核
+
+- 以新 Release/test assembly identity `0.6.73+9b3dd2f19f1bfce8c51ec12ec1b8b654c3c15bc1` 再运行四页 Light/Dark 行为套件，`8/8` passed、0 failed/skipped。TRX 无 `InvalidComObjectException` 清理文本。
+- Settings 仍测得 icon/title 顶边差 `11.33 DIP`、水平间距 `12 DIP`；search/title 左差 `0 DIP`，居中错位负例 `287.33 DIP`；窗口化 `1254×800 DIP` 下 search 为 `520×36 DIP`，位于图标下方 `72.67 DIP`；重置字段/按钮高度差与中心差 `0 DIP`，路径组合框/4 按钮均 `36 DIP` 且中心一致。
+- 本机实际 Extensions DLL 的读取结果仍为 `0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`（SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`），早于 `3a1dadd8` 布局修正。截图没有加载进程关联，故这仍是版本线索而非因果确认。候选 `c866c027` 包未安装；正常隔离 Playnite 仍被 CEF `platform_channel 0x5` 阻挡。
+- 当前结果是受控 WPF/DIP 源布局通过，用户窗口是否加载修正版仍未验证；本阶段未改 Settings 生产布局，也未写入真实扩展目录。当前 TRX：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-9B3DD2F1.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-9B3DD2F1.trx)。

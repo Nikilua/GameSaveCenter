@@ -35,3 +35,12 @@ R19-06 要求翻页期间新增、删除或排序变化使用稳定游标或明�
 ## 5. 下一步
 
 下一可执行任务为 `R19-07 外部文件变化`：先核对媒体/备份详情打开期间文件被移动、占用或损坏的已有回退、诊断上下文和重新定位入口，再补隔离文件系统负例。
+
+## 2026-09-24 main 当前身份复核
+
+- 当前 checkout 为 `main`，Release/test identity `9b3dd2f19f1bfce8c51ec12ec1b8b654c3c15bc1`。与 `6d1a401b` 比较后，任务/媒体的稳定游标键与谓词、MediaPageAccumulator、稳定选择解析没有发生语义变更；后续任务查询改动补存单调耗时字段，媒体视图增加了筛选摘要/详情通知。故重新构建并按类复测，不把旧程序集失败沿用为当前失败。
+- Release solution/XAML build：XAML `24/24`、0 errors，保留 `MediaCenterView.xaml.cs:703` 的两条既有 `CS8602` warning。`python scripts/validate-source.py` 和 `git diff --check` 通过。
+- Worker `TaskQueryPersistenceTests + MediaQueryPersistenceTests` `13/13`；Playnite `MediaPageAccumulatorTests + TaskIndexedCollectionTests` `10/10`；`R07SelectionAnchorBehaviorTests` `4/4`，合计 R19-06 关联行为 `27/27`。新增的单调耗时恢复用例也通过。
+- 旧合并运行中的 R06 `GscBuildCommit` 身份门失败已在当前构建中复测：相邻 `R06SortingBehaviorTests 5/5` 通过，其中 `ProductionTablesAttachStableProfilesAndKeepSharedArrowContract` 当前源/程序集身份相符。该失败只保留为旧 net472 产物问题，不计当前行为失败。
+- 原始结果分别见 [Worker 查询 13/13](R19-06-WORKER-QUERIES-20260924-9B3DD2F1.trx)、[Playnite 分页/任务索引 10/10](R19-06-PLAYNITE-PAGES-20260924-9B3DD2F1.trx)、[稳定选择 4/4](R19-06-SELECTION-ANCHOR-20260924-9B3DD2F1.trx) 和[相邻排序 5/5](R19-06-ADJACENT-SORTING-20260924-9B3DD2F1.trx)。
+- 本轮只使用隔离 SQLite、fake、合成 DTO 与测试集合；生产并发新增/删除/重排时的呈现时序、正常 Playnite/package-host、最终呈现帧、DPI/UIA/IME、ETW 和宿主性能仍未验。任务维持“已满足，待环境验证”。

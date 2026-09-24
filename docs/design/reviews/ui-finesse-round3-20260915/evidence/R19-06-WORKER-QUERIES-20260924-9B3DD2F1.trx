@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="70300a88-d4af-42f8-9243-97aa279a887e" name="lopmatu@SULT 2026-09-24 11:25:00" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T11:25:00.7475917+08:00" queuing="2026-09-24T11:25:00.7475920+08:00" start="2026-09-24T11:24:58.6628197+08:00" finish="2026-09-24T11:25:11.3023723+08:00" />
+  <TestSettings name="default" id="19e67e81-7507-4307-a79c-a56b5bd4ec86">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_11_25_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="069d49ab-534e-44f1-9bab-a54a4a640bb0" testId="b2291155-6283-bbd8-dc89-ba0087e88c19" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SummaryCountsWaitingCloudTasksAsPending" computerName="SULT" duration="00:00:00.2734517" startTime="2026-09-24T11:24:59.9922825+08:00" endTime="2026-09-24T11:25:00.2597196+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="069d49ab-534e-44f1-9bab-a54a4a640bb0" />
+    <UnitTestResult executionId="4ee35de6-79d8-4b0b-8002-e138d2c8a64b" testId="0b8e0c91-66ef-3ff2-2de7-5b3e0fec8779" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta" computerName="SULT" duration="00:00:00.2902159" startTime="2026-09-24T11:25:02.5999087+08:00" endTime="2026-09-24T11:25:02.8900723+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ee35de6-79d8-4b0b-8002-e138d2c8a64b" />
+    <UnitTestResult executionId="4cf96438-3f8d-4872-aa0f-5b10bd6b4aa7" testId="438e23ae-73cc-4d12-b219-521b1fecb424" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.MonotonicTaskDurationRoundTripsAndIsCapturedDuringRestartRecovery" computerName="SULT" duration="00:00:00.2731173" startTime="2026-09-24T11:25:02.3266004+08:00" endTime="2026-09-24T11:25:02.5997285+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4cf96438-3f8d-4872-aa0f-5b10bd6b4aa7" />
+    <UnitTestResult executionId="4bfe70ac-4797-491e-ad18-010ed28722ad" testId="7b63c467-3e36-b496-446d-79e7e9134877" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SummaryAndPageApplyIndependentFiltersAndDateHalfOpenRange" computerName="SULT" duration="00:00:00.2836877" startTime="2026-09-24T11:25:00.2607252+08:00" endTime="2026-09-24T11:25:00.5435173+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4bfe70ac-4797-491e-ad18-010ed28722ad" />
+    <UnitTestResult executionId="b8980a0c-e309-4cb2-ae07-82dc2d0b98af" testId="d603f0a7-ffdd-6cc7-7be8-c9be99b7bb25" testName="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.PageUsesStableCursorWhenMediaShareCaptureTime" computerName="SULT" duration="00:00:00.2825877" startTime="2026-09-24T11:25:07.1878484+08:00" endTime="2026-09-24T11:25:07.4704293+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8980a0c-e309-4cb2-ae07-82dc2d0b98af" />
+    <UnitTestResult executionId="8b191bfa-79a1-4d5b-9e96-bd1a8cfd0507" testId="3f2b47f3-430d-6f9d-3089-c12e9f893f9c" testName="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.SearchFindsMatchingMediaOutsideTheFirstPage" computerName="SULT" duration="00:00:00.8880845" startTime="2026-09-24T11:25:06.2995777+08:00" endTime="2026-09-24T11:25:07.1876893+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b191bfa-79a1-4d5b-9e96-bd1a8cfd0507" />
+    <UnitTestResult executionId="d1254bb9-d5f1-46d6-a17e-20f5b56183f9" testId="4ac9edac-c017-2bad-7040-0b01b045c191" testName="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.MediaPageQueriesUseStableCaptureIndexes" computerName="SULT" duration="00:00:03.5009357" startTime="2026-09-24T11:25:07.7542720+08:00" endTime="2026-09-24T11:25:11.2552271+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d1254bb9-d5f1-46d6-a17e-20f5b56183f9" />
+    <UnitTestResult executionId="d82db259-918a-445c-88ae-876fb8e557bf" testId="c9dfb2df-7ebe-c17d-487c-67622fa5b086" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SearchFindsMatchingTaskOutsideTheDefaultRecentWindow" computerName="SULT" duration="00:00:00.8831195" startTime="2026-09-24T11:25:00.5438600+08:00" endTime="2026-09-24T11:25:01.4268010+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d82db259-918a-445c-88ae-876fb8e557bf" />
+    <UnitTestResult executionId="28179b89-96b9-44c1-99e2-18d0c76b5249" testId="4201d1c8-8e40-ba97-1360-294146ce88df" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ActiveTaskQueryIsIndependentOfRecentHistoryWindow" computerName="SULT" duration="00:00:00.8994095" startTime="2026-09-24T11:25:01.4271523+08:00" endTime="2026-09-24T11:25:02.3264299+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="28179b89-96b9-44c1-99e2-18d0c76b5249" />
+    <UnitTestResult executionId="706323cb-95ba-485d-81fc-d39b5fa3a387" testId="03d3ee74-1f93-8a17-018d-fcc0e791fedf" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.PageUsesStableCursorWhenTasksShareCreationTime" computerName="SULT" duration="00:00:00.2845485" startTime="2026-09-24T11:25:06.0136035+08:00" endTime="2026-09-24T11:25:06.2978174+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="706323cb-95ba-485d-81fc-d39b5fa3a387" />
+    <UnitTestResult executionId="41c02b56-60e0-4064-929c-85d474276360" testId="0f539a38-6901-c929-ada0-8dbd4a7f79b1" testName="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.PageAppliesSearchKindFavoriteAndInboxStateTotals" computerName="SULT" duration="00:00:00.2835959" startTime="2026-09-24T11:25:07.4705818+08:00" endTime="2026-09-24T11:25:07.7541444+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="41c02b56-60e0-4064-929c-85d474276360" />
+    <UnitTestResult executionId="7aac5ab3-721a-433e-b81c-6d4349adcdaf" testId="7c7ecd99-c1d6-a231-98a5-342b75d7e236" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.RestoreReportRoundTripsThroughRecentAndPagedTaskQueries" computerName="SULT" duration="00:00:00.5375029" startTime="2026-09-24T11:24:59.4435853+08:00" endTime="2026-09-24T11:24:59.9860313+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7aac5ab3-721a-433e-b81c-6d4349adcdaf" />
+    <UnitTestResult executionId="3fc7e53b-a760-437e-a18d-b1d7aa65b09d" testId="3a01efd1-817f-0b3a-705e-6429c1fbc53b" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.FinishedTaskCountUsesTheFinishedStateIndex" computerName="SULT" duration="00:00:03.1229078" startTime="2026-09-24T11:25:02.8902298+08:00" endTime="2026-09-24T11:25:06.0131248+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fc7e53b-a760-437e-a18d-b1d7aa65b09d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.MonotonicTaskDurationRoundTripsAndIsCapturedDuringRestartRecovery" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="438e23ae-73cc-4d12-b219-521b1fecb424">
+      <Execution id="4cf96438-3f8d-4872-aa0f-5b10bd6b4aa7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="MonotonicTaskDurationRoundTripsAndIsCapturedDuringRestartRecovery" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.RestoreReportRoundTripsThroughRecentAndPagedTaskQueries" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="7c7ecd99-c1d6-a231-98a5-342b75d7e236">
+      <Execution id="7aac5ab3-721a-433e-b81c-6d4349adcdaf" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="RestoreReportRoundTripsThroughRecentAndPagedTaskQueries" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ActiveTaskQueryIsIndependentOfRecentHistoryWindow" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="4201d1c8-8e40-ba97-1360-294146ce88df">
+      <Execution id="28179b89-96b9-44c1-99e2-18d0c76b5249" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="ActiveTaskQueryIsIndependentOfRecentHistoryWindow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SearchFindsMatchingTaskOutsideTheDefaultRecentWindow" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="c9dfb2df-7ebe-c17d-487c-67622fa5b086">
+      <Execution id="d82db259-918a-445c-88ae-876fb8e557bf" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="SearchFindsMatchingTaskOutsideTheDefaultRecentWindow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.PageAppliesSearchKindFavoriteAndInboxStateTotals" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="0f539a38-6901-c929-ada0-8dbd4a7f79b1">
+      <Execution id="41c02b56-60e0-4064-929c-85d474276360" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests" name="PageAppliesSearchKindFavoriteAndInboxStateTotals" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.FinishedTaskCountUsesTheFinishedStateIndex" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="3a01efd1-817f-0b3a-705e-6429c1fbc53b">
+      <Execution id="3fc7e53b-a760-437e-a18d-b1d7aa65b09d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="FinishedTaskCountUsesTheFinishedStateIndex" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SummaryAndPageApplyIndependentFiltersAndDateHalfOpenRange" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="7b63c467-3e36-b496-446d-79e7e9134877">
+      <Execution id="4bfe70ac-4797-491e-ad18-010ed28722ad" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="SummaryAndPageApplyIndependentFiltersAndDateHalfOpenRange" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.SearchFindsMatchingMediaOutsideTheFirstPage" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="3f2b47f3-430d-6f9d-3089-c12e9f893f9c">
+      <Execution id="8b191bfa-79a1-4d5b-9e96-bd1a8cfd0507" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests" name="SearchFindsMatchingMediaOutsideTheFirstPage" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SummaryCountsWaitingCloudTasksAsPending" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="b2291155-6283-bbd8-dc89-ba0087e88c19">
+      <Execution id="069d49ab-534e-44f1-9bab-a54a4a640bb0" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="SummaryCountsWaitingCloudTasksAsPending" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.PageUsesStableCursorWhenTasksShareCreationTime" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="03d3ee74-1f93-8a17-018d-fcc0e791fedf">
+      <Execution id="706323cb-95ba-485d-81fc-d39b5fa3a387" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="PageUsesStableCursorWhenTasksShareCreationTime" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.PageUsesStableCursorWhenMediaShareCaptureTime" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="d603f0a7-ffdd-6cc7-7be8-c9be99b7bb25">
+      <Execution id="b8980a0c-e309-4cb2-ae07-82dc2d0b98af" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests" name="PageUsesStableCursorWhenMediaShareCaptureTime" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="0b8e0c91-66ef-3ff2-2de7-5b3e0fec8779">
+      <Execution id="4ee35de6-79d8-4b0b-8002-e138d2c8a64b" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests" name="ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.MediaPageQueriesUseStableCaptureIndexes" storage="d:\workplace\github\gamesavecenter\.tmp\r19b\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="4ac9edac-c017-2bad-7040-0b01b045c191">
+      <Execution id="d1254bb9-d5f1-46d6-a17e-20f5b56183f9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19b\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests" name="MediaPageQueriesUseStableCaptureIndexes" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b2291155-6283-bbd8-dc89-ba0087e88c19" executionId="069d49ab-534e-44f1-9bab-a54a4a640bb0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0b8e0c91-66ef-3ff2-2de7-5b3e0fec8779" executionId="4ee35de6-79d8-4b0b-8002-e138d2c8a64b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="438e23ae-73cc-4d12-b219-521b1fecb424" executionId="4cf96438-3f8d-4872-aa0f-5b10bd6b4aa7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b63c467-3e36-b496-446d-79e7e9134877" executionId="4bfe70ac-4797-491e-ad18-010ed28722ad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d603f0a7-ffdd-6cc7-7be8-c9be99b7bb25" executionId="b8980a0c-e309-4cb2-ae07-82dc2d0b98af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3f2b47f3-430d-6f9d-3089-c12e9f893f9c" executionId="8b191bfa-79a1-4d5b-9e96-bd1a8cfd0507" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ac9edac-c017-2bad-7040-0b01b045c191" executionId="d1254bb9-d5f1-46d6-a17e-20f5b56183f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9dfb2df-7ebe-c17d-487c-67622fa5b086" executionId="d82db259-918a-445c-88ae-876fb8e557bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4201d1c8-8e40-ba97-1360-294146ce88df" executionId="28179b89-96b9-44c1-99e2-18d0c76b5249" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03d3ee74-1f93-8a17-018d-fcc0e791fedf" executionId="706323cb-95ba-485d-81fc-d39b5fa3a387" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0f539a38-6901-c929-ada0-8dbd4a7f79b1" executionId="41c02b56-60e0-4064-929c-85d474276360" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c7ecd99-c1d6-a231-98a5-342b75d7e236" executionId="7aac5ab3-721a-433e-b81c-6d4349adcdaf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a01efd1-817f-0b3a-705e-6429c1fbc53b" executionId="3fc7e53b-a760-437e-a18d-b1d7aa65b09d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="13" executed="13" passed="13" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.18)&#xD;
+[xUnit.net 00:00:00.09]   Discovering: GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.16]   Discovered:  GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.18]   Starting:    GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:12.01]   Finished:    GameSaveCenter.Worker.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

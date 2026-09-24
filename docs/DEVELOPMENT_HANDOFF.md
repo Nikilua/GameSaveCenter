@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 R19-06 当前身份验证结果
+
+当前 main/test identity `9b3dd2f1` Release build 的 XAML `24/24`、0 errors；R19-06 Worker 查询 `13/13`、Playnite 分页/索引 `10/10`、稳定选择 `4/4`，合计 `27/27`；相邻 R06 sorting/identity `5/5`。旧合并运行的 stale `GscBuildCommit` 失败不再复现。R19-06 保持“已满足，待环境验证”，生产并发变更时序与正常 Playnite/package-host 仍待验。细节和 TRX 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R19-06-PAGED-SNAPSHOT-20260920.md`。
+
+Settings 截图已在同 identity Light/Dark 四页套件再复核 `8/8`，当前本机旧 extension DLL `7a4ba2a9` 早于 `3a1dadd8` 布局修正；用户截图没有模块身份关联，候选未安装。不要把受控几何写成用户窗口已修复。下一任务为 R19-07 外部文件变化。
+
 ## 2026-09-24 最新：R23-04 外部启动阻塞
 
 `42884321` 首次 Startup Error 的 `cef.log` 为空；强杀/safe-start 是已找到的 runner 缺陷，但不能断言它是首次报错唯一原因。`08a10da9` 全新隔离 profile 在安装扩展前直接记录 CEF `platform_channel.cc:108` 拒绝访问 `0x5`，Playnite bootstrap 不正常退出并留下 `safestart.flag`；没有扩展/seeder、manifest、summary、Dashboard 或 UIA 页面。当前权限/系统状态不重试，不删标记，不绕过权限。失败时写出 `runner-metadata.json` 与 `host-startup-blocker.json` 的逻辑已在 `910480c7` 提交。clean Release build `0 errors/2` 条既有 CS8602；source test `7/7`、用户四页行为 `8/8`、离线 synthetic log 正/负分类通过。最终身份 TRX 与本阶段 evidence 已归档。详细证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md`。

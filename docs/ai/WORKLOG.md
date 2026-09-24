@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 R19-06 当前 main 行为复核与 Settings 截图身份核对
+
+- 在 `main` HEAD `9b3dd2f19f1bfce8c51ec12ec1b8b654c3c15bc1` 新建隔离 Release 输出 `.tmp/r19b`；XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings。`validate-source.py` 和 `git diff --check` 通过。
+- 当前 Worker `TaskQueryPersistenceTests + MediaQueryPersistenceTests 13/13`；Playnite `MediaPageAccumulatorTests + TaskIndexedCollectionTests 10/10`；`R07SelectionAnchorBehaviorTests 4/4`，R19-06 关联行为合计 `27/27`。旧合并筛选中 `GscBuildCommit` 的相邻 R06 错误，在 fresh build 的 `R06SortingBehaviorTests 5/5` 通过，确认是旧测试产物身份问题。
+- 同一新 identity 用户四页 Light/Dark `ReportedWorkspaceLayoutBehaviorTests 8/8`。Settings 图标/标题差 `11.33 DIP`，搜索/标题左差 `0`，重置与路径操作 `36 DIP` 等高同中心，搜索居中负例 `287.33 DIP`；TRX 无 COM 清理异常。当前源布局通过并不等于用户截图通过。
+- 只读核对真实 Extensions DLL：`0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`、SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`，早于 `3a1dadd8`。截图未关联运行模块；候选 `c866c027` 包仍未安装，真实宿主受 CEF `platform_channel 0x5` 阻挡。没有改 Settings 生产源码或写用户 profile。
+- R19-06 状态维持“已满足，待环境验证”：生产并发数据变更的具体 UI 时序、宿主渲染/性能未验。证据在 `evidence/R19-06-PAGED-SNAPSHOT-20260920.md`、`evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md` 与所链 TRX。下一项 R19-07 外部文件变化，先查既有服务和隔离文件负例。
+
 ## 2026-09-24 R23-04 CEF 启动失败证据与 Settings 新截图
 
 - `08a10da9` 全新隔离 profile 的 `cef.log` 在扩展/seeder 安装前出现 `platform_channel.cc:108` FATAL “拒绝访问 (0x5)”，Playnite bootstrap 未正常退出，留下 `safestart.flag`；没有 GSC 加载、manifest、summary、Dashboard 或 UIA 侧栏。首次 `42884321` 安全模式提示的唯一根因仍未知；强杀是夹具缺陷但不能归因该首次报错。
