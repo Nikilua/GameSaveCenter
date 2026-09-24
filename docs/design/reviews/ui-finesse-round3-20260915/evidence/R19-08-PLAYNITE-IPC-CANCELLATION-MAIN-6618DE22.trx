@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0fce1fa2-62ed-43c7-b796-fa554d3427f6" name="lopmatu@SULT 2026-09-24 13:24:53" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T13:24:53.8926944+08:00" queuing="2026-09-24T13:24:53.8926948+08:00" start="2026-09-24T13:24:47.9681490+08:00" finish="2026-09-24T13:25:07.9947227+08:00" />
+  <TestSettings name="default" id="b8713882-2c9a-43d8-9a22-614fc4f03411">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_13_24_53" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="8346bde2-da00-42e6-bffd-9d81edfa7232" testId="63b75e1e-d3a3-9dda-e8ae-e8642bd614d6" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReadClosesThePipeAndReturnsPromptly" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T13:24:52.4091147+08:00" endTime="2026-09-24T13:24:52.4101134+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8346bde2-da00-42e6-bffd-9d81edfa7232">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1d94e11a-ea9b-4976-9e0a-ed27713bf30f" testId="9da31e6c-b632-cee7-f816-81f140c0f846" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T13:24:52.3960381+08:00" endTime="2026-09-24T13:24:52.3970402+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d94e11a-ea9b-4976-9e0a-ed27713bf30f">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4b633482-4419-4a03-88ec-469354ec8493" testId="3fc05850-2274-ea31-29b8-cce260a7ac86" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T13:24:52.4121121+08:00" endTime="2026-09-24T13:24:52.4121121+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4b633482-4419-4a03-88ec-469354ec8493">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="dee5d090-8f51-43c7-9616-a699c7db9794" testId="87ae9a83-0025-6ed7-03b9-6691d6f90d85" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationBeforeConnectDoesNotOpenARequest" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T13:24:52.3628685+08:00" endTime="2026-09-24T13:24:52.3689423+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dee5d090-8f51-43c7-9616-a699c7db9794">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="846d89e1-e53a-44f1-a1a5-cfd3d92ab0bb" testId="1af87699-f056-3cb3-764f-ba188c2617ed" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T13:24:52.4181153+08:00" endTime="2026-09-24T13:24:52.4181153+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="846d89e1-e53a-44f1-a1a5-cfd3d92ab0bb">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="126e3ae0-261e-468e-b95b-adb9888869b4" testId="45c79aa9-6e0d-dac4-d796-2ccdd89689fd" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-24T13:24:52.4151120+08:00" endTime="2026-09-24T13:24:52.4151120+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="126e3ae0-261e-468e-b95b-adb9888869b4">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3d53f488-f76f-4fca-acd5-99333175bad8" testId="6d35e710-fb01-c54a-dfb3-fe4552d79951" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.IsolatedAuditEnvironmentOverridesTheProductionPipePair" computerName="SULT" duration="00:00:00.0470000" startTime="2026-09-24T13:24:52.4211125+08:00" endTime="2026-09-24T13:24:52.4231145+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d53f488-f76f-4fca-acd5-99333175bad8" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1af87699-f056-3cb3-764f-ba188c2617ed">
+      <Execution id="846d89e1-e53a-44f1-a1a5-cfd3d92ab0bb" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.IsolatedAuditEnvironmentOverridesTheProductionPipePair" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6d35e710-fb01-c54a-dfb3-fe4552d79951">
+      <Execution id="3d53f488-f76f-4fca-acd5-99333175bad8" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="IsolatedAuditEnvironmentOverridesTheProductionPipePair" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationBeforeConnectDoesNotOpenARequest" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="87ae9a83-0025-6ed7-03b9-6691d6f90d85">
+      <Execution id="dee5d090-8f51-43c7-9616-a699c7db9794" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="CallerCancellationBeforeConnectDoesNotOpenARequest" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReadClosesThePipeAndReturnsPromptly" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="63b75e1e-d3a3-9dda-e8ae-e8642bd614d6">
+      <Execution id="8346bde2-da00-42e6-bffd-9d81edfa7232" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="CallerCancellationDuringReadClosesThePipeAndReturnsPromptly" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9da31e6c-b632-cee7-f816-81f140c0f846">
+      <Execution id="1d94e11a-ea9b-4976-9e0a-ed27713bf30f" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="HostShutdownDuringReadIsDistinctFromCallerCancellation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="45c79aa9-6e0d-dac4-d796-2ccdd89689fd">
+      <Execution id="126e3ae0-261e-468e-b95b-adb9888869b4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3fc05850-2274-ea31-29b8-cce260a7ac86">
+      <Execution id="4b633482-4419-4a03-88ec-469354ec8493" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="LostWriteResponseIsRecoveredWithTheSameRequestId" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="63b75e1e-d3a3-9dda-e8ae-e8642bd614d6" executionId="8346bde2-da00-42e6-bffd-9d81edfa7232" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9da31e6c-b632-cee7-f816-81f140c0f846" executionId="1d94e11a-ea9b-4976-9e0a-ed27713bf30f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3fc05850-2274-ea31-29b8-cce260a7ac86" executionId="4b633482-4419-4a03-88ec-469354ec8493" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="87ae9a83-0025-6ed7-03b9-6691d6f90d85" executionId="dee5d090-8f51-43c7-9616-a699c7db9794" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1af87699-f056-3cb3-764f-ba188c2617ed" executionId="846d89e1-e53a-44f1-a1a5-cfd3d92ab0bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45c79aa9-6e0d-dac4-d796-2ccdd89689fd" executionId="126e3ae0-261e-468e-b95b-adb9888869b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6d35e710-fb01-c54a-dfb3-fe4552d79951" executionId="3d53f488-f76f-4fca-acd5-99333175bad8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.48]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.92]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.99]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.09]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:03.12]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:03.13]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:03.13]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:03.14]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:03.14]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:03.15]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationBeforeConnectDoesNotOpenARequest”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReadClosesThePipeAndReturnsPromptly”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried”。&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-09-24T13:24:52.3772322+08:00">
+        <Text>[xUnit.net 00:00:03.09]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationBeforeConnectDoesNotOpenARequest [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-09-24T13:24:52.3979404+08:00">
+        <Text>[xUnit.net 00:00:03.12]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-09-24T13:24:52.4110443+08:00">
+        <Text>[xUnit.net 00:00:03.13]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReadClosesThePipeAndReturnsPromptly [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-09-24T13:24:52.4133035+08:00">
+        <Text>[xUnit.net 00:00:03.13]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-09-24T13:24:52.4162790+08:00">
+        <Text>[xUnit.net 00:00:03.14]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-09-24T13:24:52.4192865+08:00">
+        <Text>[xUnit.net 00:00:03.14]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

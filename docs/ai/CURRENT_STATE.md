@@ -3280,3 +3280,10 @@
 - R19-07 定向结果：Worker `RestoreReadinessTests 15/15`（含归档独占锁失败、BackupId 保留及 staging 清理）；媒体缩略图移动/刷新 `2/2`（移动后 Missing/旧图清除，恢复文件并显式刷新后新图呈现）；相关异步缩略图、转换、R12、R14、MediaInbox `16/16`。最终 TRX 未含 `InvalidComObjectException`。
 - 本机四类用户布局反馈当前 main 行为类 `8/8` 双主题：媒体按钮/列表滚动、任务状态框、窗口化存档操作行、设置标题/搜索/输入按钮均由生产 WPF 控件在隔离窗口实测。截图对应实际 Playnite 进程未确认；本机扩展目录 DLL 是 `0.6.73+7a4ba2a9…`，早于设置对齐修正，属于可能线索而非已证明因果。CEF `platform_channel 0x5` 阻挡隔离宿主复核，不宣称用户屏幕已修复。
 - 证据：`evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md` 与 `evidence/USER-REPORTED-LAYOUT-20260923.md`。下一可执行任务 `R19-08 慢调用可取消`。未验边界保持真实宿主外部文件时序、用户当前包/DPI/屏幕和 CEF 宿主访问。
+
+# 2026-09-24 main R19-08 慢调用可取消复核
+
+- 当前 main/test identity `6618de22` 完整 Release：XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602`；`validate-source.py` 和 `git diff --check` 通过。
+- 行为结果 `60 passed / 6 skipped / 0 failed / 66 total`：Worker 外部进程/云队列/请求 ledger/Rclone `37/37`，内存流 IPC 行边界 `10/10`，Playnite Busy 复位、LatestRequest 取消和取消反馈 `12/12`；Named Pipe 行为 `1 passed / 6 skipped`。
+- 六条 Named Pipe 客户端/写响应重放时序由夹具权限探测明确跳过；没有绕过。真实 Playnite/Worker IPC、外部 Ludusavi/Rclone、远端云写入、DPI/UIA/presented frame 和 ETW 未验。所有定向 TRX 在 `evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md` 中索引。
+- 下一可执行任务：`R20-01 概览下一步`，先核对现有 resolver/状态/真实导航，用四种合成首屏状态补行为证据；设置截图当前安装包身份与真实宿主仍独立待验。

@@ -33,3 +33,15 @@ R19-08 要求为网络与外部工具等待设置可观察的超时和取消边�
 ## 4. 下一步
 
 下一可执行任务为 `R20-01 概览下一步`：先核对 OverviewPriorityResolver、现有概览状态与真实导航入口，覆盖无游戏、未匹配、可备份和失败待处理四种合成状态；本项的真实 Playnite/Worker 管道和真实外部工具边界继续作为待验项。
+
+## 2026-09-24 当前 main 定向复核
+
+- 当前 main/test identity `6618de22`。完整 Release solution：XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602`；`validate-source.py` 与 `git diff --check` 通过。Plugin 为 `net462`，Playnite tests `net472`，Worker `net8.0-windows`。
+- Worker 慢调用组 `37/37`：`ExternalProcessRunnerTests` `5/5`（本机 ping loopback 取消、PowerShell UTF-8、双流输出上限、非零退出诊断、稳定超时码）；`CloudTransferStateTests` `13/13`（取消/失败验证不丢失既有 Uploaded 保证、旧代际不覆盖新状态）；`CloudRetryPersistenceTests` `12/12`（有限退避、恢复队列、重启中断状态）；`IpcRequestLedgerTests` `6/6`（RequestId 同 envelope ledger、冲突拒绝、重启中的写状态改为 Interrupted）；`RcloneClientSourceTests` `1/1`。
+- IPC 边界组 `IpcMessageBoundaryTests` `10/10`，其中阻塞 `MemoryStream` 确实等到 read 开始后再发出取消并观察到 `OperationCanceledException`，其余边界门保持有限消息/客户端槽，不以断言代替行为。Playnite `LatestRequestCoordinatorTests` `4/4`、`R02BusyStateTests` `4/4`、`R08BusinessFeedbackBehaviorTests` `4/4`：覆盖旧请求失效、重复操作被拒绝、失败/取消后 IsBusy 在 finally 复位、快速/慢速按钮 busy 状态与取消结果反馈。
+- `WorkerIpcClientBehaviorTests` `1 passed / 6 skipped / 7 total`：唯一不依赖 pipe 的隔离 pipe-name 测试通过；六条客户端连接/读取消/Host 退出/写响应丢失后同 RequestId 复核/模糊写取消用例因 `NamedPipeTestSupport` 探测到当前环境禁止创建本地 Named Pipe 客户端而跳过。未绕过限制。最终六份 TRX 均无 `InvalidComObjectException`。
+- 总计 `60 passed / 6 skipped / 0 failed / 66 total`。Loopback ping 和 PowerShell 的可执行文件均存在；它们只用于本地进程边界测试，没有运行真实 Ludusavi/Rclone、访问网络远端或写云端。测试仍不能证明 Named Pipe/Playnite/Worker 实际 IPC 时序或真实云端写入状态。
+
+当前结论仍为“已满足，待环境验证”。TRX：`R19-08-WORKER-SLOW-CANCEL-MAIN-6618DE22.trx`、`R19-08-IPC-MESSAGE-BOUNDARY-MAIN-6618DE22.trx`、`R19-08-PLAYNITE-IPC-CANCELLATION-MAIN-6618DE22.trx`、`R19-08-PLAYNITE-BUSY-CANCELLATION-MAIN-6618DE22.trx`、`R19-08-REQUEST-COORDINATOR-MAIN-6618DE22.trx`、`R19-08-CANCELLATION-FEEDBACK-MAIN-6618DE22.trx`。
+
+下一可执行任务：`R20-01 概览下一步`。先核对现有 `OverviewPriorityResolver`、首屏状态 DTO 与游戏选框真实导航；四态仅用合成游戏/任务验证。当前设置截图的用户包身份与真实 host 呈现仍保持独立待验，不把 STA WPF 结果升级成实机通过。

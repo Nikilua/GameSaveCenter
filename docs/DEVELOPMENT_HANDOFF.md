@@ -2383,3 +2383,11 @@ git branch --show-current
 - 用户设置截图尚未绑定运行进程。读取到的本机 DLL identity `7a4ba2a9` 早于 `3a1dadd8` 修正，只是线索；隔离 Playnite 受 CEF `platform_channel 0x5` 阻挡，不能宣称当前宿主截图修复。保留真实宿主/物理 DPI边界。
 - 本次变更包含两个测试和阶段文档，没有生产代码改变；提交后已用新身份重跑全部关键用例，TRX 与账本均刷新到 `9760c648`。`.tmp/r19d`、`.tmp/r19e` 已清理。
 - 下一可执行任务：R19-08 慢调用可取消。先核对现有外部工具与 IPC 取消/超时/未知写结果语义，再增加 fake 慢服务的真实行为/负例；不进行真实云端写入。
+
+## 当前交接（2026-09-24 R19-08）
+
+- R19-08 已在当前 main `6618de22` 复核；完整 Release solution 成功，XAML `24/24`、0 errors、保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`。
+- 行为门 `60 passed / 6 skipped / 0 failed / 66 total`：Worker进程/云状态/ledger `37/37`、内存流 IPC `10/10`、Playnite Busy `4/4`、最新请求取消 `4/4`、取消反馈 `4/4`；NamedPipe 客户端仅非 pipe 隔离名称用例 `1/1`，其余六条因当前环境禁止客户端 pipe 而 skip。无权限绕过。
+- 当前源码已有明确超时、同 RequestId 有限复核、可能已接收未知结果、finally 复位；真实 Playnite/Worker pipe、真实 Ludusavi/Rclone 与远端云写仍未验。设置截图的实际加载包/真实宿主呈现也仍未验。
+- TRX 已按 `6618de22` 放入 R19-08 evidence；六份原始结果均已归档，`.tmp/r19-08a` 已清理。本阶段无生产代码变更。
+- 下一可执行任务：R20-01 概览下一步。复用 `OverviewPriorityResolver`、状态投影与游戏选框命令，使用合成状态覆盖无游戏/未匹配/可备份/失败待处理；绝不启动真实存档或云写。

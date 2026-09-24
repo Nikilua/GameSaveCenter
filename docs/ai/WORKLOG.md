@@ -9295,3 +9295,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 最终 TRX 未见 `InvalidComObjectException`；第一次新预览用例失败来自测试像素复制 stride，修正后独立和全量构建各复跑通过。隔离 WPF 不等价真实 Playnite host。
 - 用户设置窗口问题已在 `3a1dadd8` 的生产布局中修正并由当前源码几何验证；当前读取到的本机扩展 DLL identity 早于该改动，但截图进程未绑定。不得宣称实际用户窗口已修复，CEF `platform_channel 0x5` 限制不绕过。
 - 最终 TRX 均绑定 `9760c648`，已归档到 evidence；`.tmp/r19d` 和 `.tmp/r19e` 已清理。下一项 R19-08。
+
+# 2026-09-24 R19-08 慢调用与取消边界
+
+- 复核并复用当前 ExternalProcessRunner、Rclone/Ludusavi timeout/token、Worker RequestId ledger、WorkerIpcClient replay/cancel 与 BusyOperationCoordinator。没有生产代码修改。
+- 当前 main `6618de22` 完整 Release 构建：XAML `24/24`、0 errors、两条既有 Media `CS8602`；source validator 与 `git diff --check` 通过。
+- 当前行为 `60 passed / 6 skipped / 0 failed / 66 total`：Worker `37/37`、内存流 IPC `10/10`、Playnite Busy/latest-request/cancellation-feedback `12/12`，Named Pipe client `1/7` 通过，6 条明确因当前权限能力 skip。六份 TRX 无 `InvalidComObjectException`。loopback/powershell 测试确认可执行文件存在。
+- 取消复位、外部进程超时稳定码、云验证不伪成功、重启 ledger 标 Interrupted 均有本地行为证据；Named Pipe 实时取消/模糊写响应、真实宿主/外部工具/云端未验，未绕过限制。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md`。六份 TRX 已归档，`.tmp/r19-08a` 已清理。下一项 R20-01。

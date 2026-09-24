@@ -5512,3 +5512,10 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 当前四类用户布局报告在同一构建的 `ReportedWorkspaceLayoutBehaviorTests` 为 `8/8` 双主题，设置窗口 `1254×800 DIP` 的图标/标题、搜索锚点、恢复按钮、路径控件几何均通过；这是源视图 STA 测量，不能代替 Playnite 父窗口或真实 DPI。
 - 本机已读扩展 DLL identity `7a4ba2a9` 早于 `3a1dadd8` 设置/页面截图修正，但不能确认用户截图进程加载了它。CEF `platform_channel 0x5` 仍阻止隔离宿主复核。不要安装到真实扩展目录，不宣称用户屏幕已修好。证据在 `evidence/USER-REPORTED-LAYOUT-20260923.md` 和 `evidence/R19-07-EXTERNAL-FILE-CHANGE-20260920.md`。
 - 下一项 `R19-08`；最终证据在提交新 identity 后刷新，不把旧 net472 产物的 `GscBuildCommit` 错配失败沿用为当前失败。
+
+## 2026-09-24 main R19-08 取消语义复核
+
+- main identity `6618de22` 当前 Release/XAML `24/24`、0 errors/2 既有 Media `CS8602`。Worker 慢调用/云状态/Request ledger/Rclone `37/37`；MemoryStream IPC 边界 `10/10`；Playnite Busy `4/4`、LatestRequest `4/4`、反馈 `4/4`。
+- WorkerIpcClient NamedPipe 行为结果 `1 passed / 6 skipped`，skip 原因是当前环境禁止创建本地 Named Pipe 客户端。测试包括写响应丢失后同 RequestId 复核、模糊写取消和读等待取消；没有以源代码断言伪装实测，也未绕过权限。Worker ledger restart-in-flight 则在可用隔离 SQLite 测试中 `6/6`。
+- 六份当前 main TRX 无 `InvalidComObjectException`。使用的是本机 loopback ping、Windows PowerShell no-profile、fake cloud/SQLite 和 STA WPF；未执行真实 Rclone/Ludusavi、网络远端、云写或真实 Playnite Worker pipe。
+- R19-08 结论“已满足，待环境验证”；下一项 `R20-01`。保留 named-pipe/真实 host 与真实云写待验边界。

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3c18fcf8-25e9-494e-a00d-8c2bfe8e81a5" name="lopmatu@SULT 2026-09-24 13:26:00" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-24T13:26:00.2022212+08:00" queuing="2026-09-24T13:26:00.2022216+08:00" start="2026-09-24T13:25:59.1275673+08:00" finish="2026-09-24T13:26:00.3387639+08:00" />
+  <TestSettings name="default" id="8aaab2b5-079c-4678-9a8e-bafa40da888c">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-24_13_26_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="29213883-33bd-4a69-a1d5-31ae2b63f4f6" testId="37bb825c-a406-645b-9cd9-c4d8ed172bc5" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 0, expected: 1)" computerName="SULT" duration="00:00:00.0002862" startTime="2026-09-24T13:25:59.9497846+08:00" endTime="2026-09-24T13:25:59.9498634+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29213883-33bd-4a69-a1d5-31ae2b63f4f6" />
+    <UnitTestResult executionId="daf82f45-18bb-432d-be91-1c9c8432a428" testId="da792e39-8d75-1406-11c1-de792e377fca" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.OversizedLineIsDiscardedBeforeTheNextMessageIsRead" computerName="SULT" duration="00:00:00.1769862" startTime="2026-09-24T13:25:59.9541582+08:00" endTime="2026-09-24T13:26:00.1167132+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="daf82f45-18bb-432d-be91-1c9c8432a428" />
+    <UnitTestResult executionId="59c0cad3-81ad-4023-b389-8fbb8ce5f963" testId="7c065887-964b-e5b3-1383-7e74fe319bcf" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PendingReadCanBeCancelledBeforeThePipeProducesData" computerName="SULT" duration="00:00:00.0082108" startTime="2026-09-24T13:26:00.1248077+08:00" endTime="2026-09-24T13:26:00.1360422+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="59c0cad3-81ad-4023-b389-8fbb8ce5f963" />
+    <UnitTestResult executionId="1046f4df-2007-4a9e-927d-aad55e5c1ab0" testId="4abcc83d-78c4-b2cd-0ca2-5c8ff696e438" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.MaximumAllowedLineIsReturnedWithoutTruncation" computerName="SULT" duration="00:00:00.1466003" startTime="2026-09-24T13:26:00.1695278+08:00" endTime="2026-09-24T13:26:00.2839694+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1046f4df-2007-4a9e-927d-aad55e5c1ab0" />
+    <UnitTestResult executionId="11c108e6-0634-4c62-838e-0c5e55b08e44" testId="f9cc0cd9-2db1-c52c-bdfe-bbc2ce45183d" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PendingReadCancellationUsesAReleasableRegistration" computerName="SULT" duration="00:00:00.0010324" startTime="2026-09-24T13:25:59.9540326+08:00" endTime="2026-09-24T13:25:59.9540659+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11c108e6-0634-4c62-838e-0c5e55b08e44" />
+    <UnitTestResult executionId="9dae1ed4-25da-412b-abbd-d145b5cbb5b3" testId="2f17316b-3c00-28d4-bb69-b5c176de7a5b" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.MediaInboxRequestsKeepCompatibilityAndAddCursorPages" computerName="SULT" duration="00:00:00.0076950" startTime="2026-09-24T13:26:00.1169982+08:00" endTime="2026-09-24T13:26:00.1245563+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9dae1ed4-25da-412b-abbd-d145b5cbb5b3" />
+    <UnitTestResult executionId="2bec4a11-5824-484f-979a-9722a436db45" testId="da829f68-5d45-ddf4-d185-10f9e25aeca2" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 1000, expected: 1000)" computerName="SULT" duration="00:00:00.0039416" startTime="2026-09-24T13:25:59.9460425+08:00" endTime="2026-09-24T13:25:59.9461340+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bec4a11-5824-484f-979a-9722a436db45" />
+    <UnitTestResult executionId="cad1fd5a-a880-43a7-8741-2752c3f09922" testId="fe3b2444-7130-93ff-a846-d327c50abdcc" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 5000, expected: 1000)" computerName="SULT" duration="00:00:00.0000139" startTime="2026-09-24T13:25:59.9500277+08:00" endTime="2026-09-24T13:25:59.9500803+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cad1fd5a-a880-43a7-8741-2752c3f09922" />
+    <UnitTestResult executionId="8634dbb9-dd40-458e-8462-4d9eca0c6003" testId="62aa897d-7077-09ab-b9c2-eb8ce71a5a87" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PipeEndpointsUseTheSharedBoundedReaderAndFiniteClientSlots" computerName="SULT" duration="00:00:00.1476566" startTime="2026-09-24T13:25:59.7809187+08:00" endTime="2026-09-24T13:25:59.9339058+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8634dbb9-dd40-458e-8462-4d9eca0c6003" />
+    <UnitTestResult executionId="25140817-9d0b-4e6a-8be0-d6e5c1952829" testId="fde114d4-5b19-c6db-655f-4c82f66708ed" testName="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: -10, expected: 1)" computerName="SULT" duration="00:00:00.0000070" startTime="2026-09-24T13:25:59.9536982+08:00" endTime="2026-09-24T13:25:59.9537801+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25140817-9d0b-4e6a-8be0-d6e5c1952829" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.OversizedLineIsDiscardedBeforeTheNextMessageIsRead" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="da792e39-8d75-1406-11c1-de792e377fca">
+      <Execution id="daf82f45-18bb-432d-be91-1c9c8432a428" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="OversizedLineIsDiscardedBeforeTheNextMessageIsRead" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 0, expected: 1)" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="37bb825c-a406-645b-9cd9-c4d8ed172bc5">
+      <Execution id="29213883-33bd-4a69-a1d5-31ae2b63f4f6" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="CurrentGameMediaRequestsAreClampedBeforeStoreAccess" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 5000, expected: 1000)" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="fe3b2444-7130-93ff-a846-d327c50abdcc">
+      <Execution id="cad1fd5a-a880-43a7-8741-2752c3f09922" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="CurrentGameMediaRequestsAreClampedBeforeStoreAccess" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PendingReadCancellationUsesAReleasableRegistration" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="f9cc0cd9-2db1-c52c-bdfe-bbc2ce45183d">
+      <Execution id="11c108e6-0634-4c62-838e-0c5e55b08e44" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="PendingReadCancellationUsesAReleasableRegistration" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: -10, expected: 1)" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="fde114d4-5b19-c6db-655f-4c82f66708ed">
+      <Execution id="25140817-9d0b-4e6a-8be0-d6e5c1952829" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="CurrentGameMediaRequestsAreClampedBeforeStoreAccess" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PipeEndpointsUseTheSharedBoundedReaderAndFiniteClientSlots" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="62aa897d-7077-09ab-b9c2-eb8ce71a5a87">
+      <Execution id="8634dbb9-dd40-458e-8462-4d9eca0c6003" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="PipeEndpointsUseTheSharedBoundedReaderAndFiniteClientSlots" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PendingReadCanBeCancelledBeforeThePipeProducesData" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="7c065887-964b-e5b3-1383-7e74fe319bcf">
+      <Execution id="59c0cad3-81ad-4023-b389-8fbb8ce5f963" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="PendingReadCanBeCancelledBeforeThePipeProducesData" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.MaximumAllowedLineIsReturnedWithoutTruncation" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="4abcc83d-78c4-b2cd-0ca2-5c8ff696e438">
+      <Execution id="1046f4df-2007-4a9e-927d-aad55e5c1ab0" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="MaximumAllowedLineIsReturnedWithoutTruncation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.MediaInboxRequestsKeepCompatibilityAndAddCursorPages" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="2f17316b-3c00-28d4-bb69-b5c176de7a5b">
+      <Execution id="9dae1ed4-25da-412b-abbd-d145b5cbb5b3" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="MediaInboxRequestsKeepCompatibilityAndAddCursorPages" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 1000, expected: 1000)" storage="d:\workplace\github\gamesavecenter\.tmp\r19-08a\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="da829f68-5d45-ddf4-d185-10f9e25aeca2">
+      <Execution id="2bec4a11-5824-484f-979a-9722a436db45" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r19-08a\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests" name="CurrentGameMediaRequestsAreClampedBeforeStoreAccess" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="37bb825c-a406-645b-9cd9-c4d8ed172bc5" executionId="29213883-33bd-4a69-a1d5-31ae2b63f4f6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da792e39-8d75-1406-11c1-de792e377fca" executionId="daf82f45-18bb-432d-be91-1c9c8432a428" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c065887-964b-e5b3-1383-7e74fe319bcf" executionId="59c0cad3-81ad-4023-b389-8fbb8ce5f963" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4abcc83d-78c4-b2cd-0ca2-5c8ff696e438" executionId="1046f4df-2007-4a9e-927d-aad55e5c1ab0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f9cc0cd9-2db1-c52c-bdfe-bbc2ce45183d" executionId="11c108e6-0634-4c62-838e-0c5e55b08e44" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2f17316b-3c00-28d4-bb69-b5c176de7a5b" executionId="9dae1ed4-25da-412b-abbd-d145b5cbb5b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da829f68-5d45-ddf4-d185-10f9e25aeca2" executionId="2bec4a11-5824-484f-979a-9722a436db45" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fe3b2444-7130-93ff-a846-d327c50abdcc" executionId="cad1fd5a-a880-43a7-8741-2752c3f09922" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="62aa897d-7077-09ab-b9c2-eb8ce71a5a87" executionId="8634dbb9-dd40-458e-8462-4d9eca0c6003" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fde114d4-5b19-c6db-655f-4c82f66708ed" executionId="25140817-9d0b-4e6a-8be0-d6e5c1952829" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="10" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.18)&#xD;
+[xUnit.net 00:00:00.08]   Discovering: GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.16]   Discovered:  GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.18]   Starting:    GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.71]   Finished:    GameSaveCenter.Worker.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
