@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 继续 R23-04 runner 收口
+
+修复隔离安装 runner 的 `package.ps1` 参数传递：必须用具名 hashtable splat。首次执行在构建后、打包前失败，因此没有安装/启动宿主，也没有 seed manifest；修正的 Release build 与定向 evidence test `1/1` 已通过。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md`。
+
+当前 checkout 是 `main`；`codex/ui-finesse-round2` 没有已挂载 worktree，且生产代码停留在 `8a08863b` 基点（远端后续唯一提交只改 RenderHarness）。main 已含这之后的生产布局与审计收口。本批沿最新 main 修复，未将旧 main 内容覆盖回 round2 分支；后续如切回 round2，先逐项对照其 RenderHarness 独有提交和 main 之后的生产变更，不能 reset/force。
+
+下一步只重试该尚未启动的隔离流程，使用 `.tmp/r23-04-seeded-host-20260924-d26bfd4a` profile、`artifacts/ui-host-audit-r23-04-seeded-20260924-d26bfd4a` 输出及 64 条 synthetic games。核对 manifest 后记录真实 CEF/窗口状态。若仍为 CEF `platform_channel 0x5`，不绕过也不在同状态下再次启动；此时 UIA/Embedded 继续待正常宿主环境。
+
 ## 2026-09-24 当前接续：R23-04 合成非空库夹具
 
 R23-04 以前缺少可复现的非空 Playnite 库。新增独立测试 seeder 和 `real-host-audit.ps1 -SeedSyntheticLibrary` opt-in，数据限定在 repo `.tmp/` 隔离 profile、固定合成前缀、未安装且没有安装目录；用本次 run ID manifest 证明是否真正导入。包归档覆盖在隔离宿主流程中关闭。

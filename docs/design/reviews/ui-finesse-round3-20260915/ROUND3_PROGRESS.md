@@ -1018,3 +1018,8 @@
 - 当前提交身份 Release Playnite `net462` / Tests `net472` 构建 `0 errors / 2` 条既有 `MediaCenterView.xaml.cs:671 CS8602` warning；`validate-source.py`、XAML `24/24`、`git diff --check` 通过。
 - R22-04 按“已满足，待环境验证”收口。真实 Explorer/Playnite host 的启动失败、网络共享/ACL/占用、最终呈现、UIA/读屏、OS 输入/IME、DPI/跨屏、ETW 和宿主性能仍待验；Demo 原目录不可用，main 用户改动未碰、未合并。证据见 [R22-04 打开路径失败](evidence/R22-04-OPEN-PATH-FAILURE-20260921.md)。
 - 下一可执行任务：按依赖选择 `R22-01` 时间显示统一或其他独立 Q/R 小批量；优先继续查已有时间格式化/任务时长能力，避免只以源码包含断言签收。
+## 2026-09-24 R23-04 隔离 runner 打包参数修正
+
+- 首次 seed runner 在 Release build 后、package 前失败：`dev-install-run.ps1` 对 `package.ps1` 使用参数字符串数组 splat，导致 `-Configuration` 被位置绑定。失败前没有部署正式扩展或 seeder，没有启动 Playnite，也没有 manifest；不记为 CEF/宿主结果。
+- 修为 hashtable 具名 splat，新增 source guard。Release solution `0 errors`、两条既有 CS8602；定向 guard test `1/1`，XAML `24/24`、source validator、PowerShell AST、diff check 通过。深 `.tmp` 的首个 test invocation 被 net472 260 字符路径限制挡住；短 `.tmp/r3b24` 重建后测试通过。
+- 证据：[R23-04 runner 参数修正](evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md)。下一步提交后对未曾启动的同一隔离 seed 流程重试一次，检查 run ID manifest 与实际 Playnite/CEF；不触碰真实 profile，不绕过 CEF。R23-04 保持开放。

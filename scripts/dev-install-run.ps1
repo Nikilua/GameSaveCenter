@@ -465,8 +465,12 @@ try {
         $buildArguments.SkipTests = $true
     }
     & (Join-Path $PSScriptRoot 'build.ps1') @buildArguments
-    $packageArguments = @('-Configuration', $Configuration, '-SkipBuild', '-BuildOutputRoot', $buildOutputRoot)
-    if ($SkipPackageArchives) { $packageArguments += '-SkipPackageArchives' }
+    $packageArguments = @{
+        Configuration = $Configuration
+        SkipBuild = $true
+        BuildOutputRoot = $buildOutputRoot
+    }
+    if ($SkipPackageArchives) { $packageArguments.SkipPackageArchives = $true }
     & (Join-Path $PSScriptRoot 'package.ps1') @packageArguments
 
     $stage = Join-Path $root 'artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'

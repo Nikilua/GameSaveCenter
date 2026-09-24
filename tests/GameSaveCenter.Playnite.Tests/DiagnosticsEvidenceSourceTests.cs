@@ -13,6 +13,7 @@ public sealed class DiagnosticsEvidenceSourceTests
         var root = FindRepositoryRoot();
         var harness = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
         var hostScript = File.ReadAllText(Path.Combine(root, "scripts", "real-host-audit.ps1"));
+        var installScript = File.ReadAllText(Path.Combine(root, "scripts", "dev-install-run.ps1"));
         var hostSeeder = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.Playnite.HostAuditSeeder", "HostAuditSeederPlugin.cs"));
 
         Assert.Contains("EvidenceSource: {sourceKind}", harness);
@@ -65,6 +66,13 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("SkipPackageArchives", hostScript);
         Assert.Contains("RunLogPath = Join-Path $Output 'dev-install.log'", hostScript);
         Assert.Contains("InstallReportPath = Join-Path $Output 'dev-install-report.txt'", hostScript);
+        Assert.Contains("$packageArguments = @{", installScript);
+        Assert.Contains("Configuration = $Configuration", installScript);
+        Assert.Contains("SkipBuild = $true", installScript);
+        Assert.Contains("BuildOutputRoot = $buildOutputRoot", installScript);
+        Assert.Contains("$packageArguments.SkipPackageArchives = $true", installScript);
+        Assert.Contains("@packageArguments", installScript);
+        Assert.DoesNotContain("@('-Configuration', $Configuration", installScript);
         Assert.Contains("GSC_UI_AUDIT_SEED_DIRECTORY", hostSeeder);
         Assert.Contains("Guid.TryParse(runId, out _)", hostSeeder);
         Assert.Contains("PlayniteApi.Database.ImportGame(metadata)", hostSeeder);

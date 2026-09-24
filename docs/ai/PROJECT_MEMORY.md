@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 R23-04 runner 参数修复
+
+- `dev-install-run.ps1` 调 `package.ps1` 必须用哈希表具名 splat；字符串数组 splat 会把 `-Configuration` 当成位置值，脚本可在构建成功后、安装/启动前失败。参数结构由 `DiagnosticsEvidenceSourceTests` 守护。
+- 首次失败没有安装、启动或写入 seed manifest；修正后 Release solution 构建 0 errors/两条既有 CS8602，定向证据用例 `1/1`。优先使用短 `.tmp/r3b24` 构建根，避免 .NET Framework 测试适配器 260 字符路径限制。
+- 后续只重试未曾到达宿主启动的隔离 runner；使用 profile `.tmp/r23-04-seeded-host-20260924-d26bfd4a` 与独立 audit output，不写真实 profile。结果未出前保持 R23-04 开放。
+
 ## 2026-09-24 R23-04 合成库 seeder
 
 - `tests/GameSaveCenter.Playnite.HostAuditSeeder` 是独立测试插件，不进正式 package。只有 `real-host-audit.ps1 -SeedSyntheticLibrary` 才部署；用户数据目录必须在 repo `.tmp/` 且祖先不能是 reparse point。默认导入 64 条稳定合成记录，1–512 上限，未安装且没有安装路径，重复执行只补缺。

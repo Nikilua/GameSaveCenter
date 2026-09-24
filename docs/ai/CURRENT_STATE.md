@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 R23-04 隔离 runner 参数修正
+
+- 首次 seed runner 已成功编译全部 Release solution，但在 `package.ps1` 参数绑定处退出；原因是 `dev-install-run.ps1` 数组 splat 把 `-Configuration` 当作位置参数。无安装、无 Playnite 启动、无 manifest。本地改成具名 hashtable splat，并增加 source regression assertion。
+- 修正后 Release solution 0 errors、两条既有 CS8602；证据 source test `1/1`、XAML `24/24`、源校验/PowerShell AST/diff check 通过。较短构建根 `.tmp/r3b24` 避开 net472 test adapter 路径上限。
+- 当前磁盘 worktree 是 `main`，不是 `codex/ui-finesse-round2`；两者共同点为 `8a08863b`，round2 分支无独立 worktree，远端仅有一条 RenderHarness 采样修正未在 main。main 已包含其后的生产布局修复与本轮账本收口。为保留已验证的最新代码，本批沿当前 main 继续，没有把 main 旧实现复制到 round2，也没有改写 round2 分支。
+- 下一步提交后在唯一隔离 profile 重跑一次 runner；真实宿主/CEF/Embedded/UIA 结论待此次运行。细节见 `../design/reviews/ui-finesse-round3-20260915/evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md`。
+
 ## 2026-09-24 R23-04 合成库夹具准备
 
 - 新增 opt-in Playnite SDK seeder，只向仓库 `.tmp/` 下显式隔离 profile 导入 64 条稳定合成记录；限制 1–512，固定测试前缀、未安装、无安装目录、幂等补缺。运行 manifest 带 run ID，缺失/不同 run ID 不计种子通过。

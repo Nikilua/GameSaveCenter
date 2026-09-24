@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 R23-04 runner 参数传递修复
+
+- 首次 seed runner 在打包前因字符串数组 splat 使 `-Configuration` 变成位置参数而退出；构建已成功，未安装扩展、未启动 Playnite、未导入数据。现改具名参数并为参数结构加 source regression check。
+- Release solution 0 errors、两条既有 CS8602；宿主 evidence 定向用例 `1/1`、XAML `24/24`、source validation、相关 PowerShell AST 与 diff check 通过。第一次测试因深层输出路径触发 .NET Framework 260 字符限制，短根 `.tmp/r3b24` 重跑通过。
+- 当前 checkout 是 main；旧 round2 分支无独立 worktree，只有一条 RenderHarness 专用提交不在 main，其余近期生产修正位于 main。为避免切换到落后的生产布局，本批继续当前 main，不重置或覆盖该分支。
+- 下一步提交后沿用唯一隔离 profile 重试 seed runner 一次；详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md`。Playnite 正常窗口与 UIA 仍待观察，CEF 限制不绕过。
+
 ## 2026-09-24 Settings 窗口化截图跟进
 
 - 核对用户最新设置截图后，确认当前 main 的 `3a1dadd8` 已有标题/搜索锚点修正。`c866c027` Release 候选上重跑四页 `ReportedWorkspaceLayoutBehaviorTests`，Light/Dark `8/8` passed、0 fail/skip；Settings 两主题实测搜索/标题左差 `0 DIP`、图标/标题顶差 `11.33 DIP`、reset/path 控件 `36 DIP` 同中心。归档原始 TRX。
