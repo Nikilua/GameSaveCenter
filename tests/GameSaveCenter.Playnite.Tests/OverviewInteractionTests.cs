@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -10,6 +11,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite;
+using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using PlayniteButton = GameSaveCenter.Playnite.Controls.Button;
 using Xunit;
@@ -18,6 +22,90 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class OverviewInteractionTests
 {
+    [Theory]
+    [InlineData(false, "Unmatched", "未匹配")]
+    [InlineData(true, "Backupable", "可备份")]
+    public void PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup(
+        bool matched,
+        string expectedKind,
+        string expectedFilter)
+    {
+        Exception? exception = null;
+        var bulkBackupCalls = 0;
+        var pickerRequests = 0;
+
+        var thread = new System.Threading.Thread(() =>
+        {
+            try
+            {
+                var snapshot = new DashboardSnapshotDto
+                {
+                    WorkerHealthy = true,
+                    ManagedGames = 1,
+                    LudusaviAvailable = matched,
+                    Games = new List<GameStatusDto>
+                    {
+                        new GameStatusDto { LudusaviMatched = matched }
+                    }
+                };
+                var plugin = (GameSaveCenterPlugin)FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin));
+                SetBackingField(plugin, "Settings", new GameSaveCenterSettings { OnboardingCompleted = true });
+
+                var viewModel = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+                var gamePicker = new GamePickerViewModel();
+                SetPrivateField(viewModel, "plugin", plugin);
+                SetPrivateField(viewModel, "gamePicker", gamePicker);
+                SetPrivateField(viewModel, "snapshot", snapshot);
+                SetPrivateField(viewModel, "dashboardSnapshotLoaded", true);
+                SetPrivateField(viewModel, "currentWorkspace", WorkspaceKind.Tasks);
+                SetBackingField(viewModel, "OpenOverviewGamePickerCommand", new RelayCommand(_ =>
+                    typeof(DashboardViewModel).GetMethod("OpenOverviewGamePicker", BindingFlags.Instance | BindingFlags.NonPublic)!
+                        .Invoke(viewModel, Array.Empty<object>())));
+                SetBackingField(viewModel, "BackupAllCommand", new CountingCommand(() => bulkBackupCalls++));
+                viewModel.GamePickerRequested += (_, _) => pickerRequests++;
+
+                var overview = new OverviewView
+                {
+                    DataContext = new OverviewPriorityInteractionData(viewModel),
+                    Width = 1280,
+                    Height = 820
+                };
+                var host = new Grid { Width = 1280, Height = 820 };
+                host.Children.Add(overview);
+                host.Measure(new Size(1280, 820));
+                host.Arrange(new Rect(0, 0, 1280, 820));
+                overview.UpdateLayout();
+
+                Assert.Equal(expectedKind, viewModel.OverviewPriorityKind);
+                Assert.Equal(expectedFilter == "未匹配" ? "查看未匹配游戏" : "查看可备份游戏", viewModel.OverviewPriorityActionText);
+                var heroAction = FindVisualDescendants<PlayniteButton>(overview).Single(button =>
+                    AutomationProperties.GetName(button) == viewModel.OverviewPriorityActionText);
+                Assert.Same(viewModel.OverviewPriorityActionCommand, heroAction.Command);
+
+                // Exercise ButtonBase's normal command dispatch, then verify the real
+                // DashboardViewModel route updates the shared picker and asks the shell
+                // to open it. A matched game must never turn this action into bulk backup.
+                typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(heroAction, Array.Empty<object>());
+
+                Assert.Equal(expectedFilter, gamePicker.StatusFilter);
+                Assert.Equal(WorkspaceKind.Overview, viewModel.CurrentWorkspace);
+                Assert.Equal(1, pickerRequests);
+                Assert.Equal(0, bulkBackupCalls);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(System.Threading.ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+    }
+
     [Fact]
     public void OverviewActivityRowsKeepTheirVisualTreeAndCloudQueueCardExecutesOneClickCommand()
     {
@@ -222,6 +310,36 @@ public sealed class OverviewInteractionTests
         public ICommand RefreshCommand { get; } = new CountingCommand(() => { });
         public ICommand OpenCloudQueueCommand { get; } = new CountingCommand(() => { });
     }
+
+    private sealed class OverviewPriorityInteractionData
+    {
+        private readonly DashboardViewModel viewModel;
+
+        public OverviewPriorityInteractionData(DashboardViewModel viewModel) => this.viewModel = viewModel;
+
+        public DashboardSnapshotDto Snapshot => viewModel.Snapshot;
+        public string OverviewPriorityKind => viewModel.OverviewPriorityKind;
+        public string OverviewPriorityTitle => viewModel.OverviewPriorityTitle;
+        public string OverviewPriorityDescription => viewModel.OverviewPriorityDescription;
+        public string OverviewPriorityActionText => viewModel.OverviewPriorityActionText;
+        public string OverviewPriorityActionToolTip => viewModel.OverviewPriorityActionToolTip;
+        public ICommand OverviewPriorityActionCommand => viewModel.OverviewPriorityActionCommand;
+        public ObservableCollection<ActivityEntryDto> Activities { get; } = new();
+        public ObservableCollection<TaskStatusDto> OverviewTasks { get; } = new();
+        public ICommand RefreshCommand { get; } = new CountingCommand(() => { });
+        public ICommand OpenCloudQueueCommand { get; } = new CountingCommand(() => { });
+        public ICommand OpenActivityCommand { get; } = new CountingCommand(() => { });
+    }
+
+    private static void SetPrivateField(object target, string fieldName, object? value)
+    {
+        var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        field!.SetValue(target, value);
+    }
+
+    private static void SetBackingField(object target, string propertyName, object? value)
+        => SetPrivateField(target, $"<{propertyName}>k__BackingField", value);
 
     private sealed class CountingCommand : ICommand
     {
