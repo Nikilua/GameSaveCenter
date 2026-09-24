@@ -2,10 +2,13 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -136,6 +139,115 @@ public sealed class R06SortingBehaviorTests
     }
 
     [Fact]
+    public void ClickingARealColumnHeaderAppliesTheStableSortInBothDirections()
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var items = new ObservableCollection<BackupVersionDto>
+                {
+                    Backup("b", new DateTime(2026, 9, 18), 10, 20),
+                    Backup("small", new DateTime(2026, 9, 18), 2, 10),
+                    Backup("a", new DateTime(2026, 9, 18), 10, 20)
+                };
+                var view = new ListCollectionView(items);
+                var grid = CreateGrid(7);
+                grid.ItemsSource = view;
+
+                using var controller = ProductionDataGridSortProfiles.AttachSaveHistory(grid);
+                window = new Window
+                {
+                    Content = grid,
+                    Width = 720,
+                    Height = 260,
+                    ShowInTaskbar = false,
+                    WindowStyle = WindowStyle.ToolWindow
+                };
+                window.Show();
+                window.UpdateLayout();
+                grid.UpdateLayout();
+
+                var header = FindVisualChildren<DataGridColumnHeader>(grid)
+                    .Single(columnHeader => ReferenceEquals(columnHeader.Column, grid.Columns[2]));
+                var onClick = typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?? throw new Xunit.Sdk.XunitException("WPF ButtonBase.OnClick was not found.");
+
+                onClick.Invoke(header, null);
+                Assert.Equal(new[] { "small", "a", "b" }, view.Cast<BackupVersionDto>().Select(item => item.BackupId).ToArray());
+                Assert.Equal(ListSortDirection.Ascending, grid.Columns[2].SortDirection);
+
+                onClick.Invoke(header, null);
+                Assert.Equal(new[] { "a", "b", "small" }, view.Cast<BackupVersionDto>().Select(item => item.BackupId).ToArray());
+                Assert.Equal(ListSortDirection.Descending, grid.Columns[2].SortDirection);
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void ClickingAHeaderAfterItsCollectionViewWasDetachedDoesNotRefreshTheDeadView()
+    {
+        RunSta(() =>
+        {
+            var items = new ObservableCollection<BackupVersionDto>
+            {
+                Backup("b", new DateTime(2026, 9, 18), 10, 20),
+                Backup("a", new DateTime(2026, 9, 18), 2, 10)
+            };
+            var view = new ListCollectionView(items);
+            var grid = CreateGrid(7);
+            grid.ItemsSource = view;
+
+            using (var controller = ProductionDataGridSortProfiles.AttachSaveHistory(grid))
+            {
+                var activeKey = controller.ActiveColumnKey;
+                var activeDirection = controller.ActiveDirection;
+                Window? window = null;
+                try
+                {
+                    window = new Window
+                    {
+                        Content = grid,
+                        Width = 720,
+                        Height = 260,
+                        ShowInTaskbar = false,
+                        WindowStyle = WindowStyle.ToolWindow
+                    };
+                    window.Show();
+                    window.UpdateLayout();
+                    grid.UpdateLayout();
+
+                    var header = FindVisualChildren<DataGridColumnHeader>(grid)
+                        .Single(columnHeader => ReferenceEquals(columnHeader.Column, grid.Columns[2]));
+                    var onClick = typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
+                        ?? throw new Xunit.Sdk.XunitException("WPF ButtonBase.OnClick was not found.");
+
+                    view.DetachFromSourceCollection();
+                    Assert.Null(view.SourceCollection);
+
+                    var sortClick = Record.Exception(() => onClick.Invoke(header, null));
+
+                    Assert.Null(sortClick);
+                }
+                finally
+                {
+                    window?.Close();
+                }
+
+                Assert.Equal(activeKey, controller.ActiveColumnKey);
+                Assert.Equal(activeDirection, controller.ActiveDirection);
+                Assert.Equal(activeDirection, grid.Columns[0].SortDirection);
+                Assert.Null(grid.Columns[2].SortDirection);
+            }
+        });
+    }
+
+    [Fact]
     public void ProductionTablesAttachStableProfilesAndKeepSharedArrowContract()
     {
         TestRepositoryContext.AssertAssemblyMatchesSource();
@@ -201,6 +313,17 @@ public sealed class R06SortingBehaviorTests
             });
         }
         return grid;
+    }
+
+    private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
+        where T : DependencyObject
+    {
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            var child = VisualTreeHelper.GetChild(root, index);
+            if (child is T match) yield return match;
+            foreach (var nested in FindVisualChildren<T>(child)) yield return nested;
+        }
     }
 
     private static void RunSta(Action action)

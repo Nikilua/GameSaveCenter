@@ -111,6 +111,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             if (disposed) return;
             var next = ResolveView(grid.ItemsSource);
+            if (next != null && next.SourceCollection == null)
+                next = null;
             if (ReferenceEquals(view, next))
             {
                 ApplyCurrentSort();
@@ -132,11 +134,51 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private void OnSorting(object sender, DataGridSortingEventArgs e)
         {
             if (disposed) return;
-            var index = grid.Columns.IndexOf(e.Column);
+
+            // This controller owns sorting for the whole grid. Consume malformed or stale
+            // routed events too, so WPF does not fall through to its reflection-based sort
+            // path after the custom handler declines a column it cannot resolve.
+            if (e == null) return;
+            e.Handled = true;
+            var column = e.Column;
+            if (column == null) return;
+
+            var index = -1;
+            for (var current = 0; current < grid.Columns.Count; current++)
+            {
+                if (!ReferenceEquals(grid.Columns[current], column)) continue;
+                index = current;
+                break;
+            }
             if (index < 0 || index >= columns.Count) return;
 
-            e.Handled = true;
+            if (!EnsureCurrentView())
+            {
+                // DataGrid may clear the clicked column's arrow before raising Sorting.
+                // Restore the controller-owned indicator even when the source view was detached.
+                ApplyCurrentSort();
+                return;
+            }
+
             ToggleSort(index);
+        }
+
+        private bool EnsureCurrentView()
+        {
+            var next = ResolveView(grid.ItemsSource);
+            if (next == null || next.SourceCollection == null)
+            {
+                view = null;
+                return false;
+            }
+
+            if (!ReferenceEquals(view, next))
+            {
+                view = next;
+                ApplyCurrentSort();
+            }
+
+            return true;
         }
 
         private void ToggleSort(int index)
@@ -161,7 +203,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             for (var i = 0; i < grid.Columns.Count; i++)
                 grid.Columns[i].SortDirection = i == activeColumnIndex ? activeDirection : (ListSortDirection?)null;
 
-            if (view == null) return;
+            if (view == null || view.SourceCollection == null) return;
             var selected = columns[activeColumnIndex];
             if (view is ListCollectionView listView)
             {

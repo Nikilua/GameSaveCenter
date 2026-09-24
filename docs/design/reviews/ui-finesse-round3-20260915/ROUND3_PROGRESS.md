@@ -1030,3 +1030,9 @@
 - 首次 seed runner 在 Release build 后、package 前失败：`dev-install-run.ps1` 对 `package.ps1` 使用参数字符串数组 splat，导致 `-Configuration` 被位置绑定。失败前没有部署正式扩展或 seeder，没有启动 Playnite，也没有 manifest；不记为 CEF/宿主结果。
 - 修为 hashtable 具名 splat，新增 source guard。Release solution `0 errors`、两条既有 CS8602；定向 guard test `1/1`，XAML `24/24`、source validator、PowerShell AST、diff check 通过。深 `.tmp` 的首个 test invocation 被 net472 260 字符路径限制挡住；短 `.tmp/r3b24` 重建后测试通过。
 - 证据：[R23-04 runner 参数修正](evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md)。下一步提交后对未曾启动的同一隔离 seed 流程重试一次，检查 run ID manifest 与实际 Playnite/CEF；不触碰真实 profile，不绕过 CEF。R23-04 保持开放。
+# 2026-09-24 用户反馈：R06 表格排序崩溃修复
+
+- 用户日志实际命中 `DataGridStableSortController.ApplyCurrentSort()` 的 `ListCollectionView.DeferRefresh` 清理路径。已在当前 main 修复 stale/detached `SourceCollection` 检查，防止失效 view 刷新，并恢复 DataGrid 先行清除后的 controller-owned 箭头。
+- 同一隔离 Release build XAML `24/24`、0 errors、两条既有 Media `CS8602` warning；真实 WPF 列头排序升/降序 + detached view 负例 `7/7`。证据：[R06 排序 detached-view 复核](evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md)。
+- 这只是针对用户崩溃路径的行为修复，不签收完整 `R06-02`；真实 Playnite/package-host 鼠标输入、用户加载包身份与宿主呈现仍待验。首次默认 `dotnet test` 被旧默认 `bin` assembly 的 identity gate 拦截，最终改运行 `.tmp/sortfix` 同 checkout 隔离 Release assembly 后测试通过；不把入口身份不一致记录成产品回归。
+- 下一可执行小批量：共享 DataGrid row selected/focus chrome 的几何修复，先添加能比较真实 cell/content 选择前后的行为探针；再移除 Media Inbox 重复游戏目标选择并改用顶部全局 `SelectedGame`。

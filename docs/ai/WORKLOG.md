@@ -9319,3 +9319,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 同一身份完整 Release build XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602`。Resolver `15/15`、Picker `22/22`、Overview interaction `4/4`、Shell `4/4`，合计 R20 `45/45`; 四页布局 Light/Dark `8/8`。五份 TRX 全无 fail/skip/COM 清理噪声；source validator 通过。
 - Settings 新截图继续用当前源码在 `1880×1200 DIP` 与近似 `1254×800 DIP` 的隔离窗口中复核：搜索与标题左齐，标题图标、reset/path 操作对齐。但截图进程/加载 DLL/Playnite parent 未捕获；本机历史 DLL 为旧 identity 只是线索。候选包未安装，CEF `platform_channel 0x5` 阻止正常隔离宿主；不绕过。
 - 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md` 和五份 `1A43F474` TRX。下一任务 R20-02；Demo 原目录不可用，继续以恢复基线实现。
+# 2026-09-24 R06 表格排序崩溃修复
+
+- 只读检查用户 `crash.zip` 后定位列头排序异常落在 `ListCollectionView` detached source 的 `DeferRefresh` 清理路径；更新 `DataGridStableSortController` 对当前 `ItemsSource`/`SourceCollection` 的校验和无效列事件处理。
+- 真实 WPF `DataGridColumnHeader` 升/降序行为、detached-view 无异常/箭头恢复负例共 `7/7`；隔离 Release solution、Playnite `net462` 构建成功，XAML `24/24`，保留两条既有 Media `CS8602` warning。
+- 首次常规测试入口选中了旧 `bin` assembly，身份门拒绝；改由 `.tmp/sortfix` 当前 checkout 的隔离程序集运行，结果 `7/7`，原始 TRX 已归档。见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。
+- 不代表用户当前 Playnite/package-host 鼠标路径或最终呈现通过；不签收 R06-02 全项。下一项修共享 DataGrid selected/focus chrome 的不缩进内容几何。

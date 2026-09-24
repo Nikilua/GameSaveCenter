@@ -1,13 +1,19 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 main：R06 排序崩溃当前复核
+
+- 用户 `crash.zip` 排序日志含 `ListCollectionView.PrepareLocalArray → RefreshOverride → DeferHelper.Dispose → DataGridStableSortController.ApplyCurrentSort → ToggleSort → OnSorting`。控制器现在检测 detached/null `SourceCollection`，不会对失效 view 执行 `DeferRefresh`；无效排序事件被消费，现有活动箭头会恢复。
+- 同一 checkout 的隔离 Release solution 成功、XAML `24/24`、两条既有 Media `CS8602` warning；真实 WPF 列头升/降序及 detached source 负例 `7/7`。证据为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md` 与关联 TRX。未签收完整 R06-02 或真实 Playnite 鼠标/宿主呈现。
+- 下一项先修共享 `GscRoundedDataGridRowTemplate` 选中和键盘焦点 chrome 几何，实际比较选择前后 cell/content；然后将 Media Inbox 批量/compact 赋值目标统一到 shell `SelectedGame`，保留确认目标在异步确认期间的快照、安全取消与错误语义。
+
 ## 2026-09-24 main：R20-02/R18-04 复测与待修复缺陷
 
 - main/test identity `cdd28fd2`：Release/XAML `24/24`、0 errors/两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；R20-02 核心+R20-01 相关行为 `48/48`，四页双主题布局 `8/8`，共 `56/56`，TRX 无 WPF COM 清理异常。
 - R18 专测 `1/1`，相关四类行为 `23/23`（Accumulator 6、Anchor 10、Inbox geometry 3、Selection anchor 4）。当前固定测试窗 Task `9/7`、Media Inbox `7/7/7`，UI 页缓存 `2,000`；Stopwatch 是 STA/UpdateLayout 代理。R18/Anchor TRX 收尾分别记录 6/2 个 `InvalidComObjectException`，但测试与进程通过，原因未知。用户另给的不同窗口样本为 Media Inbox 14 行、约 0.03ms，因没有附原始 TRX/准确窗口尺寸，须单独标成用户提供数据，不覆盖当前固定窗口复测。
-- `crash.zip` 只读检查证实用户排序崩溃日志顶层在 `DataGridStableSortController.OnSorting`；先补 actual header event 行为和负例，不能把旧 `R06SortingBehaviorTests` 内部 toggle 测试当作已覆盖。
+- `crash.zip` 的真实 WPF 列头升/降序和 `ListCollectionView` detached source 已补实际行为/负例，并在后续 R06 小批量 `7/7` 通过；详见上方 `R06 排序崩溃当前复核`。旧测试内部 toggle 仍只证明控制器 API。
 - 共享 `GscRoundedDataGridRowTemplate` selected/focus trigger 改写 `RowChrome.Margin`，影响行内 `SelectiveScrollingGrid` 排版。改成与内容分层、`IsHitTestVisible=False` 的背景/轮廓并实测选择前后 cell/content 几何，不应仅断言 XAML 字符串。
 - Media Inbox 全局批量和 compact detail 当前独立依赖 `InboxTargetGame`，并缓存 target across page. 用户要求去掉冗余目标下拉、改用顶部全局 `SelectedGame`。实现时移除旧目标缓存/restore 语义，命令仍要在无全局游戏或无媒体选择时不可执行并保留确认取消/错误结果。
-- 当前证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md`、`R20-02-CURRENT-MAIN-RECHECK-20260924.md`。先交付用户指出的三处修复，随后继续 R20-03/Q/R；真实 Playnite仍受 CEF `platform_channel 0x5` 阻挡，不绕过。
+- 当前 R18/R20 复测证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md`、`R20-02-CURRENT-MAIN-RECHECK-20260924.md`。排序崩溃已修；先交付共享选中 chrome 与 Inbox 全局游戏选择两项反馈，随后继续 R20-03/Q/R。真实 Playnite仍受 CEF `platform_channel 0x5` 阻挡，不绕过。
 
 ## 2026-09-24 R19-06 当前 main 复核
 

@@ -1,12 +1,19 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 当前 main：R06 排序崩溃修复
+
+- 用户 `crash.zip` 日志中的真实列头排序在 `ListCollectionView.DeferRefresh` 收尾抛 `NullReferenceException`。控制器现重解析 `ItemsSource`、拦截 detached/null `SourceCollection`，并在 WPF 清掉列头箭头时恢复控制器拥有的箭头状态。
+- 同一当前 checkout 的隔离 Release：solution build 成功、XAML `24/24`、0 errors/2 条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；实际 `DataGridColumnHeader` 升/降序和 detached view 负例在 `R06SortingBehaviorTests 7/7` 通过。TRX 与根因证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。
+- 本次只收口排序崩溃，不代表真实 Playnite/package-host 的鼠标输入、用户加载包身份或最终呈现已验证，也不签收完整 R06-02。
+- 下一可执行小批量：改共享 DataGrid 选中/键盘焦点 chrome，使其不缩进 cell 内容；用真实 WPF 几何断言选择前后 cell/content 坐标不变。之后移除 Media Inbox 重复目标游戏选择并复用全局 `SelectedGame`。
+
 ## 2026-09-24 当前 main：R20-02、R18-04 复测与新缺陷定位
 
 - `cdd28fd2` Release solution build：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`。R20-02 相关核心 `48/48`、四页 Light/Dark `8/8`，合计 `56/56`、0 失败/跳过；六份 TRX 无 `InvalidComObjectException`。
 - 在相同 identity 重跑 R18 专测 `1/1` 与相关行为 `23/23`（Accumulator `6`、Anchor `10`、Inbox geometry `3`、Selection anchor `4`）。固定 `1100×640/1280×720 DIP` 夹具 Task 为 `9/7`，Media Inbox `7/7/7`、UI 窗口 `2,000`；Stopwatch 最大 Task `80.839/33.607/28.492ms`、Media `0.040/0.052/0.025ms`。R18/Anchor TRX 分别有 6/2 次 TextServices `InvalidComObjectException` 清理噪声，但 xUnit/VSTest 明确通过，根因未知。用户另报更大窗口 Media `14` 行、约 `0.03ms`；原始 TRX/尺寸未附，单独保留为用户报告，不和固定窗口结果混算。
-- `crash.zip` 的 Playnite 日志在 `DataGridStableSortController.OnSorting` 记录 `NullReferenceException`，紧随其后是 Playnite crash handler；当前 `R06SortingBehaviorTests` 只调用内部排序切换 API，未覆盖实际列头事件。现有共享 `GscRoundedDataGridRowTemplate` 在选中/焦点 trigger 改动 `RowChrome.Margin`，会连内容一起缩进；待改为不参与内容布局的独立 chrome 层并用真实 WPF 行几何验证。Media Inbox 两处目标选择 ComboBox 与批量/单项命令均依赖独立 `InboxTargetGame`；用户要求复用全局 `SelectedGame`，需清理对应缓存/CanExecute/确认目标绑定并补行为与空目标负例。
+- `crash.zip` 的列头排序崩溃已在上方 R06 阶段修复并由实际 WPF 点击/失效 view 负例验证 `7/7`。仍待改共享 `GscRoundedDataGridRowTemplate` 的 `RowChrome.Margin` 布局缩进，以及 Media Inbox 使用独立 `InboxTargetGame` 的重复目标 ComboBox。
 - R18 精确 23 项组成和当前样本见 `../design/reviews/ui-finesse-round3-20260915/evidence/R18-04-CURRENT-MAIN-RECHECK-20260924-CDD28FD2.md`。R20 证据见 `../design/reviews/ui-finesse-round3-20260915/evidence/R20-02-CURRENT-MAIN-RECHECK-20260924.md`。
-- 当前下一可执行小批量：先补实际 DataGrid 标题点击排序与无效列事件保护，再修共享选中 chrome 几何、待归类改用全局游戏选择；新布局仍须保留命令、安全取消、Playnite/net462、虚拟化与现有滚动条。
+- 当时记录的 R06/R18 复测结果保留为历史；后续 R06 排序修复见顶部阶段。下一小批量是共享选中 chrome 几何，随后待归类复用全局游戏选择；仍须保留命令、安全取消、Playnite/net462、虚拟化与现有滚动条。
 
 ## 2026-09-24 R19-06 当前 main 复核
 
