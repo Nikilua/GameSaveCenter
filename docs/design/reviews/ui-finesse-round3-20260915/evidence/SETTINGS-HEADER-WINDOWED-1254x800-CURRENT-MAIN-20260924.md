@@ -2,7 +2,7 @@
 
 ## 结论
 
-本机 Playnite 扩展目录中的设置程序集身份早于当前分支的设置、页面窗口和媒体布局修正。用户最新截图的图标与搜索框相对位置不符合当前 main 的生产 XAML。没有再改生产布局；已将当前 main 打包为可审阅候选供用户核对。当前没有运行中的 Playnite/GameSaveCenter 进程，因此无法证明该截图由本机这个 DLL 实际呈现。
+本机 Playnite 扩展目录中的设置程序集身份早于当前分支的设置、页面窗口和媒体布局修正。用户最新截图仍显示图标、搜索框相对位置错开；这一窗口化布局问题已在当前 main 的 `3a1dadd8` 修正，后续 `c866c027` 构建也通过了相同尺寸的受控行为复核。没有再改已经通过当前布局门禁的生产代码。当前没有正常运行的 Playnite/GameSaveCenter 主界面，因此无法确认用户截图的实际加载包，也不能写成真实窗口已修复。
 
 ## 本机扩展身份对照
 
@@ -34,4 +34,11 @@
 - [Dark 主题 1254×800 DIP](SETTINGS-HEADER-WINDOWED-1254x800-DARK-20260924.trx)
 - [Light 主题 1254×800 DIP](SETTINGS-HEADER-WINDOWED-1254x800-LIGHT-20260924.trx)
 
-下一步：由用户使用候选包或提供实际运行时 identity 后对照截图；本机不代装。随后继续 R08-05。
+## 2026-09-24 当前 main 包复测补充
+
+- 当前 main 候选为 [GameSaveCenter-0.6.73-main-c866c027.pext](../../../../../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext)，SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`；六个插件/Worker 程序集的 informational identity 为 `0.6.73+c866c027a2c7a2232028e9a20f1e2060bcf027cd`。对应 Playnite zip 也保存在同目录。包未安装到用户的实际扩展目录。
+- 当前 `c866c027` 的 `ReportedWorkspaceLayoutBehaviorTests` 记录 `8/8` passed、0 failed、0 skipped；Settings 顶栏 Light/Dark 各 `1/1`，包含 `1254×800 DIP` 窗口化尺寸、实际 Loaded/SizeChanged 路由和居中错位负例。原始 TRX：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx)，SHA-256 `86B03105AE17CD7EE8FC7649FD831234326B3CD8ED549D936D01759A705E9354`；TRX 无 `InvalidComObjectException` 文本。
+- 候选包完整 Release 流程：XAML `24/24`、0 errors，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Core `125/125`，Worker `355 passed / 0 failed / 1 skipped`。Playnite 隔离测试报告 105 个 WPF 类执行、未提供聚合总数，不据此声称总用例数。
+- 同身份隔离宿主安装启动后只出现 `Startup Error`，CEF `platform_channel.cc:108` 报拒绝访问 `0x5`，没有页面/UIA 视觉通过；不绕过该权限限制。隔离安装构建与 `.pext` 候选为分别构建的产物，虽 assembly identity 相同，不声称字节相同。
+
+下一步：有正常 Playnite host 后，用当前 identity 对照用户窗口；条件不变时不重试 CEF 受阻路径。本轮接续其他不依赖宿主/ETW 的 Q/R 小批量。

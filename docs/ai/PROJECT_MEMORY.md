@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-24 Settings 用户窗口截图后续
+
+- Settings 搜索框/顶栏修正已在 `3a1dadd8`；当前 main 候选 `c866c027` 重新测四页 Light/Dark `8/8`，包含 Settings `1254×800 DIP` 窗口化 Loaded/SizeChanged 测试及错位负例。当前 source 的受控几何通过，未新增生产代码。
+- 当前候选 [GameSaveCenter-0.6.73-main-c866c027.pext](../../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext) SHA `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`；未安装。本机旧 `7a4ba2a9` DLL 可能与截图版本有关，不能确认为截图实际加载源。c866 隔离 Playnite host 遇 CEF `platform_channel 0x5`，无正常页面呈现。
+- 原始 TRX、尺寸和外部验证边界见 `design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。不要因离屏/隔离 STA 几何关闭用户实机问题；正常 host 可用时复验，当前转继续不依赖宿主的 Q/R。
+
 ## 2026-09-24 当前 main 的 R23-07 去重状态
 
 - 只从 ROUND3 正式 8 列任务表头之后计算：`192/192` 唯一任务 ID。当前状态分组为 `106` 已满足/受控复核、`83` 已满足但待具体环境、`1` 外部阻塞、`1` 部分满足、`1` 不适用；9 月 22 日 R23-07 计数是当时快照，不要复制成当前统计。

@@ -4,6 +4,12 @@
 - 清理仓库 `.tmp/` 内已完成且无文档/脚本引用的旧构建与布局 QA 目录共 26 个，释放约 1.81 GiB。保留被 R00 当前证据引用的 `.tmp/r00-current-refresh`，也未清理归属不确定的旧目录；未改动 `artifacts/`、跟踪文件或其他任务文件。
 - 本轮仅作账本与工作区审计，无源代码、测试或验收结果变化。下一步仍从任务表中选择依赖已满足的小批量推进；宿主相关项等待正常隔离宿主可运行，R23-05 等待合规跟踪权限。真实 Playnite 渲染、用户窗口截图及物理 DPI 仍未验。
 
+## 2026-09-24 Settings 窗口化截图追加复核
+
+- 用户再次报告 Settings 顶部图标、搜索框和操作控件错位。`3a1dadd8` 已将搜索框锚定标题列并约束宽度；当前 `c866c027` Release 构建的 `ReportedWorkspaceLayoutBehaviorTests` 四页 Light/Dark 共 `8/8`，Settings 两主题各 `1/1`，覆盖近似 `1254×800 DIP` 窗口、Loaded/SizeChanged 及搜索居中错位负例。当前源无复现，未改生产代码。
+- 当前候选包为 `0.6.73+c866c027a2c7a2232028e9a20f1e2060bcf027cd`，SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`，未安装。原始 TRX 为 `evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx`。本机旧 DLL `7a4ba2a9` 可能解释截图差异但未关联；当前身份隔离宿主仍因 CEF `platform_channel 0x5` 仅打开 Startup Error，不能记为 Playnite 视觉通过。
+- 192 项账本状态不变。具体尺寸、包与宿主边界见[设置页窗口化复核](evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)和[用户四页布局复核](evidence/USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924.md)。下一项继续做不依赖 CEF/ETW 的 Q/R 小批量；R23-04 仅在正常隔离宿主可用时复验。
+
 ## 2026-09-24 R23-07 当前 main 状态复算
 
 - 正式 8 列表头之后的任务表为 `192/192` 个唯一 ID；表前 10 行 R13/R14 摘要排除。当前分组：已满足/当前 main 受控复核 `106`、已满足但待明确环境门禁 `83`、外部阻塞 `1`（R02-06）、部分满足 `1`（R23-05）、不适用 `1`（R05-05）。没有待开始、实施中或代码完成待验收行。9 月 22 日的 `112/29/45/1/3/1/1` 保留作历史快照，不作为当前数字。

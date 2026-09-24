@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-24 Settings 窗口化截图追加复核
+
+- Settings 当前生产布局修正已在 `3a1dadd8`；当前 `c866c027` Release 的四页 Light/Dark 回归 `8/8` 通过，Settings 顶栏在 1254×800 DIP 的 Loaded/SizeChanged 窗口序列通过，TRX 无清理异常。没有改当前已通过的生产布局。
+- 可审阅包 `[GameSaveCenter-0.6.73-main-c866c027.pext](../../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext)` SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`，未安装。当前本机旧 DLL 身份与用户截图的对应关系未证实；隔离 Playnite 主窗体受 CEF `platform_channel 0x5` 阻挡。不得写成真实宿主已修复。
+- 证据与下一步见 `../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`；先继续依赖已满足且不受 CEF/ETW 限制的 Q/R 小批量。
+
 ## 2026-09-24 R23-07 当前 main 状态复算
 
 - R 表正式 8 列任务区为 `192/192` 唯一 ID：已满足/当前受控复核 `106`，已满足但待明确环境门禁 `83`，外部阻塞 `1`（R02-06），部分满足 `1`（R23-05），不适用 `1`（R05-05）。旧 R23-07 的 9 月 22 日统计是历史快照；本次没有重跑 192 项行为测试、没有改代码或改变任务验收状态。

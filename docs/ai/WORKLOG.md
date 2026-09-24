@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-24 Settings 窗口化截图跟进
+
+- 核对用户最新设置截图后，确认当前 main 的 `3a1dadd8` 已有标题/搜索锚点修正。`c866c027` Release 候选上重跑四页 `ReportedWorkspaceLayoutBehaviorTests`，Light/Dark `8/8` passed、0 fail/skip；Settings 两主题实测搜索/标题左差 `0 DIP`、图标/标题顶差 `11.33 DIP`、reset/path 控件 `36 DIP` 同中心。归档原始 TRX。
+- 候选 pext identity `0.6.73+c866c027a2c7a2232028e9a20f1e2060bcf027cd`，SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`，未安装。隔离 Playnite startup 因 CEF `platform_channel 0x5` 仅显示 Startup Error；未声称实际设置窗口通过。四页源码与用户旧 DLL 差异、真实限制和下一步见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。
+- 本次无生产代码变更；账本任务状态不变。下一步继续依赖满足、不依赖 CEF/ETW 的 Q/R 小批量，留下宿主复验边界。
+
 ## 2026-09-24 R23-07 当前 main 状态复算
 
 - 从 ROUND3 正式任务表区复算 `192/192` 唯一 ID：106 已满足/受控复核，83 已满足但等待明确环境，1 外部阻塞，1 部分满足，1 不适用。旧 `112/29/45/1/3/1/1` 为 9 月 22 日历史快照。

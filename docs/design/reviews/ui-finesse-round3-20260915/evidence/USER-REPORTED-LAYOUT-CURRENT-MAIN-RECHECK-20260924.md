@@ -25,3 +25,11 @@ Media Inbox 的内部 scrollbar containment、页 footer 回退和窄窗滚动�
 - 没有读写真实存档、媒体、云端或诊断数据；Demo 原始目录不可用，沿用恢复生产基线。CEF `platform_channel 0x5` 的隔离 host 限制未绕过。
 
 原始测试结果：[ReportedWorkspaceLayoutBehaviorTests 当前 main TRX](USER-REPORTED-LAYOUT-CURRENT-MAIN-20260924.trx)。
+
+## 2026-09-24 当前 main 包复核补充
+
+用户继续报告 Settings 顶部图标、输入框和操作控件错位。受控隔离窗口里，同一生产 Settings 视图的 Light/Dark 行为与几何仍通过；没有证据支持再改生产布局。`c866c027` Release 候选包已生成，当前本机 Extensions DLL `0.6.73+7a4ba2a9` 早于该 UI 修正，但无法将截图关联到该旧 DLL。候选包未安装；同身份隔离 Playnite 主窗体因为 CEF `platform_channel 0x5` 停在 Startup Error。因此最新可确认结果是“当前源与候选包包含修正、受控 WPF 回归通过”，真实 Playnite 用户窗口仍待正常宿主复验。
+
+- 候选包：[GameSaveCenter-0.6.73-main-c866c027.pext](../../../../../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext)，SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`。
+- 当前 `c866c027` 四页行为 TRX：[USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx](USER-REPORTED-LAYOUT-CURRENT-MAIN-RECHECK-20260924-C866C027.trx)，`8/8` passed、0 failed、0 skipped，无 COM 清理异常文本。
+- 隔离宿主限制、构建与完整测试边界见[设置页窗口复核](SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md)。

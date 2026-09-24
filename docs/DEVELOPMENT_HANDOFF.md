@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-24 当前接续：Settings 截图后续与候选包
+
+用户再次报告窗口化 Settings 顶部图标、搜索框及操作控件错位。该布局修正在 `3a1dadd8` 已进入当前 main；`c866c027` Release 当前四页 Light/Dark `ReportedWorkspaceLayoutBehaviorTests` 为 `8/8`，Settings 1254×800 DIP Loaded/SizeChanged 几何 Light/Dark 各通过。原始 TRX 与度量见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md`。
+
+审阅包 [GameSaveCenter-0.6.73-main-c866c027.pext](../artifacts/current-main/GameSaveCenter-0.6.73-main-c866c027.pext) identity `0.6.73+c866c027a2c7a2232028e9a20f1e2060bcf027cd`、SHA-256 `17B5C51CA502C0C2F119DFCBF98BF720AC43C56F899CB6BC3A6C909923498CAA`，未装入真实用户 profile。现有本机 Extension 是较早的 `7a4ba2a9`，只能作可能解释；截图进程未关联。新身份隔离 host 因 CEF `platform_channel 0x5` 启动失败，用户真实窗口仍需正常 host 验证。
+
+本轮没有布局源码变更。继续选择不依赖 CEF/ETW 的 Q/R 小批量；宿主正常后再完成 R23-04。不要把 STA WPF 几何或候选包构建写成真实 Playnite 呈现。
+
 ## 2026-09-24 当前接续：R23-07 账本状态复算
 
 当前 main 的 R23-07 保持“已满足”。正式第三轮任务表 `192/192` 唯一 ID，状态为 106 已满足/受控复核、83 等待明确环境门禁、1 外部阻塞、1 部分满足、1 不适用；旧 9 月 22 日统计仅作历史。第二轮 `208/208` 唯一 Q ID 中 5 已验收、203 未完成。细节见 `design/reviews/ui-finesse-round3-20260915/evidence/R23-07-CURRENT-MAIN-STATUS-RECHECK-20260924.md`。
