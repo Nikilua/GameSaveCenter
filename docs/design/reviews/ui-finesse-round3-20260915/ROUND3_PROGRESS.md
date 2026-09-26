@@ -1,3 +1,10 @@
+# 2026-09-26 Settings short-window viewport repair
+
+- Settings 阶段收口 Task 后的 8 个 RenderHarness findings：5 种宽度的 560-DIP 样本中 category rail 可视区 `174.4 DIP`、滚到末项后边界 `165.6 DIP`；正文从 128/144 提高为 `185.6 DIP`。恢复默认说明与命令没有移除，短高自动折叠、正常高度恢复；同一断点内保留用户切换。
+- 修复类别门禁单位：ListBox `CanContentScroll=True` 时 `ScrollViewer.ViewportHeight` 是 logical item count，不是 DIP。现在使用 `ScrollContentPresenter.ActualHeight` 和同坐标系末项边界。完整双主题/多尺寸 RenderHarness `render-qa OK`、0 PROBLEM、退出码 0；Release Harness 和 Playnite.Tests/依赖 `0 warnings/0 errors`；Source validation、XAML `24/24`、diff check 通过。R 账本仍 192 项、`106/83/1/1/1`。
+- 证据：[Settings 矮窗视口修复](evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md)。这是离屏 WPF/DIP 结论，不代替 Playnite host、用户包 identity、物理 DPI/呈现。普通 restore 被 NuGet.Config ACL 阻止，采用现有资产/no-restore 和 `.tmp` 输出隔离。
+- 下一独立诊断：SaveHistory WPF 窗口化间距测试在 Light/Dark 实测 `1.6 DIP`，期望 `8–14 DIP`；完整 RenderHarness 未报该问题。先查测试几何与生产视觉树/边距，再决定修复，不放宽断言。
+
 # 2026-09-26 Overview empty recent-access viewport
 
 - 当前 main 起点 `daa6ecb2` 上的空集合 fixture 将 `OverviewRecentAccessList` 实测为 `2 DIP`；Auto 行测量没有从 `MaxHeight` 获得任何最小高度。将本列表最小高度设为 `236 DIP`，保留空状态内容、最大高度、Recycling virtualization 和内部滚动。

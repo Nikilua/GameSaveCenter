@@ -354,6 +354,97 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     }
 
     [Theory]
+    [InlineData(760d)]
+    [InlineData(920d)]
+    public void ShortSettingsPageKeepsCategoryAndBodyViewports(double width)
+    {
+        Exception? exception = null;
+        var categoryViewportHeight = 0d;
+        var lastCategoryHeight = 0d;
+        var lastCategoryBottom = double.NaN;
+        var bodyViewportHeight = 0d;
+        var resetCollapsedForShortLayout = false;
+        var resetActionsAvailableWhenExpanded = false;
+        var resetExpandedAfterReturningToTallLayout = false;
+        var geometry = string.Empty;
+        var resetTransitions = string.Empty;
+
+        RunSta(() =>
+        {
+            try
+            {
+                EnsureApplicationResources();
+                var view = new GameSaveCenter.Playnite.Settings.GameSaveCenterSettingsView
+                {
+                    DataContext = new GameSaveCenterSettings()
+                };
+                var viewType = view.GetType();
+                var apply = viewType.GetMethod("ApplyResponsiveLayout", BindingFlags.Instance | BindingFlags.NonPublic)!;
+                var host = new Grid { Width = width, Height = 560 };
+                host.Children.Add(view);
+                apply.Invoke(view, new object[] { width, 560d });
+                host.Measure(new Size(width, 560));
+                host.Arrange(new Rect(0, 0, width, 560));
+                host.UpdateLayout();
+                apply.Invoke(view, new object[] { width, 560d });
+                host.UpdateLayout();
+
+                var tabs = FindVisualChildren<ListBox>(host).Single(item => item.Name == "SettingsSectionTabs");
+                var categoryScroller = FindVisualChildren<ScrollViewer>(tabs).First();
+                var categoryPresenter = FindVisualChildren<ScrollContentPresenter>(categoryScroller).FirstOrDefault();
+                var bodyScroller = FindVisualChildren<ScrollViewer>(host).Single(item => item.Name == "SettingsScroller");
+                var resetExpander = FindVisualChildren<Expander>(host).Single(item => item.Name == "SettingsResetDefaultsExpander");
+                var resetFieldCombo = (ComboBox)viewType.GetField("SettingsResetFieldComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var header = FindVisualChildren<FrameworkElement>(host).Single(item => item.Name == "SettingsHeader");
+                var headerGrid = FindVisualChildren<Grid>(header).Single(item => item.Name == "SettingsHeaderGrid");
+                var lastTab = FindVisualChildren<ListBoxItem>(tabs)
+                    .Single(item => tabs.ItemContainerGenerator.IndexFromContainer(item) == tabs.Items.Count - 1);
+                categoryViewportHeight = categoryPresenter?.ActualHeight ?? categoryScroller.ActualHeight;
+                lastCategoryHeight = lastTab.ActualHeight;
+                bodyViewportHeight = bodyScroller.ViewportHeight;
+                resetCollapsedForShortLayout = !resetExpander.IsExpanded;
+                categoryScroller.ScrollToVerticalOffset(categoryScroller.ScrollableHeight);
+                host.UpdateLayout();
+                var categoryViewport = (FrameworkElement?)categoryPresenter ?? categoryScroller;
+                var lastTabOrigin = lastTab.TransformToAncestor(categoryViewport).Transform(new Point(0, 0));
+                lastCategoryBottom = lastTabOrigin.Y + lastTab.ActualHeight;
+                var shell = (FrameworkElement)viewType.GetField("SettingsShell", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var workspace = (FrameworkElement)viewType.GetField("SettingsWorkspace", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var rail = (FrameworkElement)viewType.GetField("SettingsCategoryRail", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var headerRows = string.Join(",", headerGrid.RowDefinitions.Select(row => row.ActualHeight.ToString("0.##")));
+                geometry = $"shell={shell.ActualWidth:0.##}x{shell.ActualHeight:0.##}, header={header.ActualHeight:0.##}, headerRows=[{headerRows}], workspace={workspace.ActualWidth:0.##}x{workspace.ActualHeight:0.##}, rail={rail.ActualWidth:0.##}x{rail.ActualHeight:0.##}, tabs={tabs.ActualWidth:0.##}x{tabs.ActualHeight:0.##}, categoryViewportDip={categoryViewportHeight:0.##}, logicalViewport={categoryScroller.ViewportHeight:0.##}, canContentScroll={categoryScroller.CanContentScroll}, lastTab={lastCategoryHeight:0.##}/{lastCategoryBottom:0.##}, bodyViewport={bodyViewportHeight:0.##}, resetCollapsed={resetCollapsedForShortLayout}";
+                resetExpander.IsExpanded = true;
+                host.UpdateLayout();
+                resetActionsAvailableWhenExpanded = resetExpander.IsExpanded
+                    && resetFieldCombo.Visibility == Visibility.Visible;
+                apply.Invoke(view, new object[] { width, 560d });
+                host.UpdateLayout();
+                host.Height = 900;
+                host.Measure(new Size(width, 900));
+                host.Arrange(new Rect(0, 0, width, 900));
+                host.UpdateLayout();
+                apply.Invoke(view, new object[] { width, 900d });
+                host.UpdateLayout();
+                resetExpandedAfterReturningToTallLayout = resetExpander.IsExpanded;
+                resetTransitions = $"expandedActionsAvailable={resetActionsAvailableWhenExpanded}, restoredExpandedAtTallHeight={resetExpandedAfterReturningToTallLayout}";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        output.WriteLine($"Settings {width:0}x560: {geometry}; reset transition: {resetTransitions}");
+        Assert.Null(exception);
+        Assert.True(categoryViewportHeight >= lastCategoryHeight - 0.5, geometry);
+        Assert.True(lastCategoryBottom <= categoryViewportHeight + 1, geometry);
+        Assert.True(bodyViewportHeight >= 160, geometry);
+        Assert.True(resetCollapsedForShortLayout, geometry);
+        Assert.True(resetActionsAvailableWhenExpanded, geometry);
+        Assert.True(resetExpandedAfterReturningToTallLayout, geometry);
+    }
+
+    [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
     public void SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(GameSaveCenterThemeMode theme)

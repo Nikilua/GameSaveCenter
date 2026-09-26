@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 Settings 矮窗视口修复与 UI gate 收口
+
+- 修复 Task/Overview/Save 之后剩余的 8 个 Settings RenderHarness findings。短高 `<760 DIP` 自动折叠恢复默认 disclosure，但保留安全说明与真实单字段/全部默认命令；正常高度恢复展开，并尊重同一断点内的手动选择。RenderHarness 将 category ListBox 的 ScrollContentPresenter DIP 可视高度与 logical `ViewportHeight` 项目单位分开验证。
+- 当前 Release RenderHarness 完整双主题/多尺寸运行 `render-qa OK`、0 PROBLEM、退出码 0；Settings 560-DIP category viewport `174.4 DIP`、末项滚到末端底边 `165.6 DIP`，正文 viewport `185.6 DIP`。离屏 logical DIP，不等同真实 Playnite/物理 DPI。
+- Release RenderHarness、Playnite.Tests 及依赖构建均 `0 warnings/0 errors`（复用现有 restore assets、`--no-restore`、`.tmp` 隔离输出）。短窗 Settings 两个 WPF case 报告通过，Settings Header/Path Light/Dark `2/2`，正确 build identity 的 R16 reset 契约 `1/1`；source validation、XAML `24/24`、diff check 通过。
+- 扩展布局用例另外独立重现 SaveHistory gap `1.6 DIP` 而断言期望 `8–14 DIP`；该页不在本次改动范围，作为下一独立诊断批次。普通 NuGet restore 被用户配置 ACL 拒绝；未更改权限。没有启动 Playnite；CEF/host、用户包与物理 DPI 边界照旧。
+- R 台账仍为 192 个唯一 ID，`106/83/1/1/1` 不变。证据：[Settings 矮窗视口](../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md)。下一步单独诊断 SaveHistory 几何用例，再按当前准入记忆继续。
+
 ## 2026-09-26 Task 队列视口/compact Inspector 修复
 
 - Task Render QA 当前无 PROBLEM：桌面行高 52 DIP 的表格最小视口为 264 DIP；紧凑行高 36 DIP 的表格最小视口 200 DIP。紧凑短页打开详情时暂收起次要统计条、关闭后恢复；用页面实测高度确定短窗布局；Inspector 限高 136 DIP 并留 2 DIP 底边。

@@ -5914,6 +5914,9 @@ public static class Program
                     var categoryScroller = tabs == null
                         ? null
                         : FindVisualChildren<ScrollViewer>(tabs).FirstOrDefault();
+                    var categoryPresenter = categoryScroller == null
+                        ? null
+                        : FindVisualChildren<ScrollContentPresenter>(categoryScroller).FirstOrDefault();
                     var visibleTabs = tabItems.Count(item => item.Visibility == Visibility.Visible);
                     var minTabWidth = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualWidth);
                     var minTabHeight = tabItems.Count == 0 ? 0 : tabItems.Min(item => item.ActualHeight);
@@ -5927,18 +5930,20 @@ public static class Program
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} expected 5 categories, got {(tabs == null ? 0 : tabs.Items.Count)}");
                     if (tabItems.Count < 5 || tabItems.Any(item => item.Visibility != Visibility.Visible || item.ActualWidth <= 0 || item.ActualHeight <= 0))
                         s_problems.Add($"SettingsLayout w={width:0} h={height:0} not all category tabs are visible and measurable");
-                    if (categoryScroller != null && tabItems.Count > 0 && categoryScroller.ScrollableHeight > 0.5)
+                    if (categoryScroller != null && tabItems.Count > 0)
                     {
                         categoryScroller.ScrollToVerticalOffset(categoryScroller.ScrollableHeight);
                         host.UpdateLayout();
                         var lastTab = tabItems.OrderBy(item => tabs!.Items.IndexOf(item)).Last();
-                        var lastTabOrigin = lastTab.TransformToAncestor(categoryScroller).Transform(new Point(0, 0));
+                        var viewportElement = (FrameworkElement?)categoryPresenter ?? categoryScroller;
+                        var viewportDip = viewportElement.ActualHeight;
+                        var lastTabOrigin = lastTab.TransformToAncestor(viewportElement).Transform(new Point(0, 0));
                         var lastTabBottom = lastTabOrigin.Y + lastTab.ActualHeight;
                         report.AppendLine(
-                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottom={lastTabBottom:0.##} viewport={categoryScroller.ViewportHeight:0.##} scrollable={categoryScroller.ScrollableHeight:0.##}");
-                        if (lastTabBottom > categoryScroller.ViewportHeight + 1)
+                            $"  SettingsLayout w={width:0} h={height:0} lastTabBottomDip={lastTabBottom:0.##} viewportDip={viewportDip:0.##} logicalViewport={categoryScroller.ViewportHeight:0.##} scrollable={categoryScroller.ScrollableHeight:0.##}");
+                        if (viewportDip > 0 && lastTabBottom > viewportDip + 1)
                         {
-                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category is outside the scroll viewport (tab={lastTabBottom:0.##}, viewport={categoryScroller.ViewportHeight:0.##})");
+                            s_problems.Add($"SettingsLayout w={width:0} h={height:0} last category is outside the scroll viewport (tab={lastTabBottom:0.##} DIP, viewport={viewportDip:0.##} DIP)");
                         }
                     }
                     var contentScroller = FindVisualChildren<ScrollViewer>(host).FirstOrDefault(scroller => scroller.Name == "SettingsScroller");

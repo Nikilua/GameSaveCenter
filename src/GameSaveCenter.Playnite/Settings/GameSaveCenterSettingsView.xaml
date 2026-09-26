@@ -81,15 +81,19 @@
                         </Expander>
                     </StackPanel>
                     <Border x:Name="SettingsResetDefaultsCard" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
-                        <StackPanel>
-                            <TextBlock Text="恢复默认" FontWeight="SemiBold"/>
-                            <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,7"/>
-                            <WrapPanel>
-                                <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" VerticalAlignment="Center" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
-                                <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" VerticalAlignment="Center" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
-                                <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
-                            </WrapPanel>
-                        </StackPanel>
+                        <Expander x:Name="SettingsResetDefaultsExpander" Style="{StaticResource GscExpander}" Header="恢复默认" IsExpanded="True"
+                                  Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                  AutomationProperties.Name="恢复默认设置"
+                                  AutomationProperties.HelpText="展开后可恢复单个字段或全部安全设置默认值。路径、云端目标和设备身份始终保留；操作只修改当前草稿，可用 Playnite 的取消按钮放弃。">
+                            <StackPanel>
+                                <TextBlock Text="单字段、单分类和全部默认的范围不同；路径、云端目标和设备身份始终保留。所有操作只修改当前草稿，可用 Playnite 的取消按钮放弃。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,7"/>
+                                <WrapPanel>
+                                    <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" VerticalAlignment="Center" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" VerticalAlignment="Center" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
+                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Expander>
                     </Border>
                     <Border x:Name="SettingsSaveHint" Grid.Row="0" Grid.Column="2" Style="{StaticResource GscRedesignContextPill}" VerticalAlignment="Center" Margin="14,0,0,0" ToolTip="设置仍由 Playnite 设置窗口的保存和取消按钮提交。">
                         <TextBlock x:Name="SettingsSaveHintText" Text="已保存 · 由 Playnite 保存按钮提交" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.Name="设置保存状态"/>

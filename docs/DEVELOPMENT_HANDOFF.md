@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前续接：Settings UI gate 已全绿；SaveHistory 有单独间距复现
+
+Settings 矮窗阶段已修复并验证：高度 `<760 DIP` 时折叠顶部恢复默认 disclosure，原安全说明和设置命令仍可展开使用，正常高度恢复时自动展开。category ListBox 的 logical item viewport 与真实 DIP viewport 分开量测。RenderHarness 全量 `render-qa OK`、0 PROBLEM；560-DIP 页面 rail/body/末项数据见[阶段证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md)。
+
+Release RenderHarness 与 Playnite.Tests 项目隔离输出构建 `0 warnings/0 errors`；短窗 WPF 两个尺寸均通过，Settings Header/Path Light/Dark `2/2`，R16 reset contract `1/1`。Source validation、XAML `24/24`、diff check 通过。由于 `%AppData%\NuGet\NuGet.Config` ACL 拒绝，未做普通 restore；复用现有 assets/no-restore。未启动 Playnite，离屏 DIP 不是真实宿主/物理 DPI 证明。R ledger 保持 192 项、`106/83/1/1/1`。
+
+**接下来先独立诊断 SaveHistory 窗口化间距**：`ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions` 在 Light/Dark 单独运行都测得 content/action gap `1.6 DIP`，而测试期望 `8–14 DIP`。完整 RenderHarness 没有 SaveHistory PROBLEM，因此先核对夹具几何、目标 Grid row/margin 与真实控件边界，再决定最小修复；不要改变断言规避布局问题，也不要把它混入已完成的 Settings commit。测试扩展运行还有一次未设置 build identity 的 R16 源码读取拒绝，随后正确 identity 构建已 `1/1` 通过。
+
 ## 2026-09-26 当前接续：Overview 与 Task 完成，Settings UI gate 仍待修复
 
 上一阶段 Save 历史窄窗已修复并推送。随后在 `daa6ecb2` 上复跑完整离屏基线发现 Overview 的真实空集合 `RecentAccessItems` 让 `OverviewRecentAccessList` 因 `MinHeight=0` 收缩成 2 DIP；已设 236 DIP 最小视口，修复后 11 个窗口样本均为 236 DIP，Overview PROBLEM 从 20 项降为 0。命令、真实数据、空态和列表内部滚动/虚拟化保持。

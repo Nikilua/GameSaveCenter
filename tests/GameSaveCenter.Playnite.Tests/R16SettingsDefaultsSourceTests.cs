@@ -15,6 +15,9 @@ public sealed class R16SettingsDefaultsSourceTests
         var catalog = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "SettingsResetCatalog.cs"));
 
         Assert.Contains("SettingsResetFieldComboBox", view);
+        Assert.Contains("x:Name=\"SettingsResetDefaultsExpander\"", view);
+        Assert.Contains("AutomationProperties.Name=\"恢复默认设置\"", view);
+        Assert.Contains("AutomationProperties.HelpText=\"展开后可恢复", view);
         Assert.Contains("OnResetSingleFieldClick", view);
         Assert.Contains("OnResetGeneralDefaultsClick", view);
         Assert.Contains("OnResetBackupDefaultsClick", view);
@@ -24,6 +27,7 @@ public sealed class R16SettingsDefaultsSourceTests
         Assert.Contains("SettingsResetCatalog.ResetField", code);
         Assert.Contains("SettingsResetCatalog.ResetCategory", code);
         Assert.Contains("SettingsResetCatalog.ResetAll", code);
+        Assert.Contains("SettingsResetDefaultsExpander.IsExpanded = !shortHeight;", code);
         Assert.Contains("DataContext = null", code);
         Assert.Contains("不会被清空", catalog);
 

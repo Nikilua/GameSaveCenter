@@ -50,6 +50,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool settingsBaselineInitialized;
         private bool settingsClosePromptOpen;
         private bool restoreDraftFocusOnLoad;
+        private bool isShortHeightSettingsLayout;
         private int firstValidationCategoryIndex;
         private Size pendingResponsiveSize;
         private GameSaveCenterSettings? observedSettings;
@@ -1537,7 +1538,8 @@ namespace GameSaveCenter.Playnite.Settings
                 || SettingsHeaderSubtitle == null || SettingsSaveHint == null || SettingsSectionTabs == null
                 || SettingsWorkspace == null || SettingsCategoryRail == null || SettingsScroller == null
                 || SettingsCompactContentRow == null || SettingsIntroDescription == null
-                || SettingsHeaderIcon == null || SettingsHeader == null || SettingsHeaderEyebrow == null) return;
+                || SettingsHeaderIcon == null || SettingsHeader == null || SettingsHeaderEyebrow == null
+                || SettingsResetDefaultsExpander == null) return;
 
             // SettingsShell is the real layout surface.  The Playnite settings host can be
             // wider than this shell because the shell is capped at 1360 DIP and inset by the
@@ -1556,6 +1558,11 @@ namespace GameSaveCenter.Playnite.Settings
             var compact = layoutWidth < 560;
             var narrow = layoutWidth < 520;
             var shortHeight = height > 0 && height < 760;
+            if (shortHeight != isShortHeightSettingsLayout)
+            {
+                SettingsResetDefaultsExpander.IsExpanded = !shortHeight;
+                isShortHeightSettingsLayout = shortHeight;
+            }
             var horizontalMargin = narrow ? 10 : 18;
             var contentWidth = Math.Max(320, layoutWidth - horizontalMargin * 2 - 40);
             var formWidth = compact ? contentWidth : Math.Max(320, contentWidth - 248);
