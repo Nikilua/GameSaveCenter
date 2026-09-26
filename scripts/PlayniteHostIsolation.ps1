@@ -216,10 +216,23 @@ function Initialize-GscIsolatedPlayniteProfile {
         }
         $marker = Get-Content -LiteralPath $markerPath -Raw -Encoding UTF8 | ConvertFrom-Json
         $markerProfileId = [Guid]::Empty
-        if ([int]$marker.SchemaVersion -ne 1 -or
+        $markerProfilePath = ''
+        if (-not [string]::IsNullOrWhiteSpace([string]$marker.ProfilePath)) {
+            try {
+                $markerProfilePath = [System.IO.Path]::GetFullPath([string]$marker.ProfilePath).TrimEnd(
+                    [System.IO.Path]::DirectorySeparatorChar,
+                    [System.IO.Path]::AltDirectorySeparatorChar)
+            }
+            catch {
+                $markerProfilePath = ''
+            }
+        }
+        $expectedProfilePath = $profilePath.TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar)
+        if ([int]$marker.SchemaVersion -ne 2 -or
             -not [string]::Equals([string]$marker.RepositoryRoot, $repositoryPath, [System.StringComparison]::OrdinalIgnoreCase) -or
+            -not [string]::Equals($markerProfilePath, $expectedProfilePath, [System.StringComparison]::OrdinalIgnoreCase) -or
             -not [Guid]::TryParse([string]$marker.ProfileId, [ref]$markerProfileId)) {
-            throw "Isolated Playnite profile marker is invalid or belongs to another repository: $markerPath"
+            throw "Isolated Playnite profile marker is invalid or belongs to another repository/profile: $markerPath"
         }
         Assert-GscNoReparsePointsUnderPath -Path $profilePath
         return [pscustomobject]@{
@@ -237,9 +250,10 @@ function Initialize-GscIsolatedPlayniteProfile {
 
     $profileId = [Guid]::NewGuid().ToString('D')
     $marker = [ordered]@{
-        SchemaVersion = 1
+        SchemaVersion = 2
         ProfileId = $profileId
         RepositoryRoot = $repositoryPath
+        ProfilePath = $profilePath
         CreatedBy = 'scripts/real-host-audit.ps1'
         CreatedUtc = [DateTime]::UtcNow.ToString('O')
     }

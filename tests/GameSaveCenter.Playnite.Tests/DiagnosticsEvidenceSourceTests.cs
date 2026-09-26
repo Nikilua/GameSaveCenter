@@ -29,6 +29,8 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("function Assert-GscPlayniteProfileDatabaseIsolation", isolationHelpers);
         Assert.Contains("ReparsePoint", isolationHelpers);
         Assert.Contains("function Initialize-GscIsolatedPlayniteProfile", isolationHelpers);
+        Assert.Contains("SchemaVersion = 2", isolationHelpers);
+        Assert.Contains("ProfilePath = $profilePath", isolationHelpers);
         Assert.Contains("Refusing to overwrite existing Playnite host audit output", isolationHelpers);
         Assert.Contains("--userdatadir", isolationHelpers);
         Assert.Contains("function Get-GscPlayniteProcessStartEvidence", isolationHelpers);

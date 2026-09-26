@@ -1,5 +1,11 @@
 # 开发实现进度
 
+## 2026-09-26 ENV-001 profile marker 路径绑定
+
+- 独立复核发现 marker 可被复制到同仓库另一个 `.tmp` profile，从而绕过“拒绝接管未知非空目录”的检查。marker schema 现为 `2`，同时验证 RepositoryRoot、规范化绝对 ProfilePath 和 GUID；旧 marker 不自动迁移，需新 profile 路径。
+- PowerShell isolation helper tests 通过，复制 marker 负例保持目标哨兵文件；Release `DiagnosticsEvidenceSourceTests 8/8`，保留两条已有 `MediaCenterView.xaml.cs:703 CS8602` warning。测试 junction 清理改为 .NET 非递归 link 删除。
+- 本批只加固 ENV-001 runner，不启动 Playnite、不接触用户数据，也不改变 192 项 R 状态；WMI 命令行权限拒绝与历史 CEF `0x5` 边界未解除。证据：`design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md`。
+
 ## 2026-09-26 ENV-001 隔离 Playnite runner 安全收口
 
 - 审计 runner 现在 fail-closed 校验显式仓库 `.tmp` profile、Playnite executable、进程冲突与命令行可观测性；拒绝未标记的非空目录、profile reparse point、profile 外数据库路径和已有 output 覆盖。隔离安装不会关闭用户 Playnite/Worker；审计脚本不再查询用户 AppData 主题/日志路径。

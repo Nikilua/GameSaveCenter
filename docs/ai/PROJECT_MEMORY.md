@@ -5584,3 +5584,10 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 定向类：priority `15/15`，picker `22/22`，overview interactions `4/4`，picker shell `4/4`；四页布局 Light/Dark `8/8`。TRX 全部 0 fail/skip，未见 WPF COM cleanup 噪声。Release solution XAML `24/24`、0 errors、两条已有 Media `CS8602`；source validator 通过。
 - Settings 用户截图纳入同一身份布局复查：1880×1200 DIP 宽态与近似 1254×800 DIP 窗口态都验证了当前源码的锚点和操作对齐；逻辑 DIP/隔离 STA 结果不等于实际 Playnite 窗口。之前读取的本机 DLL 比 `3a1dadd8` 修正早，但没有截图进程映射；候选未安装，CEF `platform_channel 0x5` 未绕过。
 - 本阶段没有修改生产 UI、Worker、存档、媒体或云端；未触碰用户真实 profile。完整证据、TRX、包身份和未验边界见 `design/reviews/ui-finesse-round3-20260915/evidence/R20-01-OVERVIEW-NEXT-ACTION-CURRENT-MAIN-20260924.md`。下一项 R20-02。
+
+# 2026-09-26 ENV-001 profile marker 路径绑定复核
+
+- 独立审查 `PlayniteHostIsolation.ps1` 发现：旧 marker 只含 RepositoryRoot 与 GUID，可复制到同仓库 `.tmp` 的其他已有目录并被误信任。
+- marker schema 升为 `2`，包含规范化绝对 `ProfilePath`；复用时必须同时匹配 profile path、RepositoryRoot 和合法 GUID。旧 schema/异目录副本 fail-closed，不自动迁移、删除或覆盖旧目录。PowerShell helper test 覆盖原目录复用、复制 marker 到带哨兵文件的另一目录时拒绝且保留哨兵。
+- `Test-PlayniteHostIsolation.ps1` 通过；Release `DiagnosticsEvidenceSourceTests 8/8`。Windows PowerShell 5.1 的 junction 测试清理由 `Remove-Item` 改为 `[System.IO.Directory]::Delete(path, $false)`，确保只删 link 本身；scratch `.tmp`/`artifacts` 已清理。
+- 没有启动 Playnite或触碰用户 profile、存档、媒体、云端、剪贴板；WMI 命令行权限/CEF `0x5` 环境门禁不变，ENV-001 继续阻塞。R 总基线 192 项、状态 `106/83/1/1/1` 不变。证据：`ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md`。

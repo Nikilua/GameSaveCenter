@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 ENV-001 marker 路径身份加固
+
+隔离 profile marker 已升级到 schema `2`，除仓库根/GUID 外还绑定规范化绝对 `ProfilePath`；复制到另一个目录的 marker 不再能接管已有目录，旧 schema 也 fail-closed，不自动迁移或删除。PowerShell helper test 通过；Release `DiagnosticsEvidenceSourceTests 8/8`。Windows PowerShell 5.1 junction 测试清理路径已修正为仅删除 link 本身。完整证据：[ENV-001 profile marker 路径绑定复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md)。
+
+此改动只加固 runner，不解除真机环境门禁：WMI 当前 PID 命令行权限仍拒绝访问，CEF `platform_channel 0x5` 没有新状态证据；未启动 Playnite。ENV-001 仍为 `BLOCKED_ENVIRONMENT`，R 账本仍为 192 项、状态数 `106/83/1/1/1`。
+
 ## 2026-09-26 用户备份诊断/乱码/复制问题已修复并复验
 
 从既有项目任务找回用户原始报告。修复提交 `3f42de43` 已在当前 main 历史中：Ludusavi stdout/stderr 按 UTF-8 解码，失败诊断保留 raw output，任务详情复制对剪贴板占用短暂重试并在持续失败时反馈。以产品代码基线 `d1559fc9` 重建的 Worker 回归 `5/5`、Playnite 相关复制/反馈回归 `21/21` 通过。原始备份失败根因是当时 GitHub manifest 网络下载超时；不把外部网络恢复说成代码修复。未验真实 Playnite/系统剪贴板。详见 [当前 main 复核证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md)。

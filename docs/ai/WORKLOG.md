@@ -9385,3 +9385,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 首次 Playnite test invocation 忘记设置源码身份环境变量，测试身份门按设计拒绝；随后设置当前 `GSC_BUILD_COMMIT/GSC_SOURCE_ROOT` 重建并重跑，最终 `21/21` 无失败/跳过。Worker stdout encoding 测试在当前 Release `5/5` 全通过。
 - 原始失败是 manifest 网络请求超时，诊断修复并未实现自动网络/备份重试。只做隔离测试，无 Playnite host、真实 OS clipboard、用户数据操作。临时 `.tmp/bug-report-recheck-d1559fc9` 配置已清理；证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md`。
 - 不修改产品代码或 192 项任务状态；在 CURRENT_STATE、PROJECT_MEMORY 和 DEVELOPMENT_HANDOFF 补齐跨机器可追溯闭环。
+
+# 2026-09-26 ENV-001 profile marker 路径绑定复核
+
+- 复核最近的隔离 runner 时发现 profile marker 没有绑定其所在目录；同仓库另一个已有 `.tmp` 目录若带有复制来的 marker，会被接受。`PlayniteHostIsolation.ps1` 改为 schema 2，并记录/验证规范化绝对 ProfilePath；旧 schema 和异路径 marker 均拒绝，不自动迁移/覆盖。
+- helper test 加入“复制合法 marker 到另一目录并保护哨兵文件”的行为负例。首次运行发现 Windows PowerShell 5.1 对 junction 的 `Remove-Item` 抛 NullReferenceException；清理改成 `[System.IO.Directory]::Delete(path, $false)` 后 helper suite 通过。
+- Release `DiagnosticsEvidenceSourceTests` 首次启动因错误的 GSC_BUILD_COMMIT identity 被测试门拒绝；改用 checkout 当前完整 HEAD 重建后最终 `8/8`，0 failed/skipped，保留两条既有 Media CS8602 warning。
+- 测试只在仓库 `.tmp`/`artifacts` 建临时夹具且清理完成；未启动 Playnite或触碰用户数据。192 项基线与 ENV-001 宿主阻塞状态不变。详细证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md`。

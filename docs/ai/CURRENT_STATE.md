@@ -1,8 +1,14 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 ENV-001 profile marker 路径绑定复核
+
+- 独立复核发现旧隔离 marker 只绑定仓库根和 GUID，复制到同仓库另一个已有 profile 目录会被接受。marker schema 升为 `2`，必须同时匹配规范化绝对 `ProfilePath`；旧 schema/异路径标记 fail-closed，不自动迁移或覆盖旧目录。
+- `Test-PlayniteHostIsolation.ps1` 通过，复制 marker 的负例确认目标目录哨兵保留；Release `DiagnosticsEvidenceSourceTests 8/8`，含两条既有 Media `CS8602` warning。PowerShell 5.1 junction 测试清理改用 .NET 非递归 link 删除；临时 `.tmp`/`artifacts` 测试目录已清理。
+- 没有启动 Playnite或接触用户数据；WMI 命令行权限和 CEF `platform_channel 0x5` 环境边界未变化，ENV-001 仍为 `BLOCKED_ENVIRONMENT`。R 台账仍为 192 项、状态计数 `106/83/1/1/1`。证据：[profile marker 路径绑定复核](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md)。
+
 ## 2026-09-26 当前续接：ENV-001 runner 已加固，真机门禁仍阻塞
 
-- 新增 `PlayniteHostIsolation.ps1`，并收口 `real-host-audit.ps1` / `dev-install-run.ps1`：显式隔离路径、进程命令行可观测性、marker/reparse/database/output 检查均 fail-closed；不终止用户进程、不读用户 AppData 主题/日志。
+- 新增 `PlayniteHostIsolation.ps1`，并收口 `real-host-audit.ps1` / `dev-install-run.ps1`：显式隔离路径、进程命令行可观测性、marker 与 profile 绝对路径绑定/reparse/database/output 检查均 fail-closed；不终止用户进程、不读用户 AppData 主题/日志。
 - Release solution `--no-restore` build `0 warning/0 error`，XAML `24/24`；Core `125/125`、Worker `357/357`。Playnite 源码组 `465 passed/18 skipped/483 total`，另有 `105/105` 个 WPF 测试类按进程隔离通过；R02/R06/R08/R09 本机敏感回归分别复测 `2/2`、`4/4`、`2/2`、`2/2`。源码 validator、PowerShell AST、隔离 runner helper tests、`git diff --check` 均通过。
 - 本机 Playnite 位于 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 且签名有效，但当前执行身份查询 `Win32_Process` 命令行被拒绝；新 runner 在任何 profile/output 副作用前拒绝。9 月 24 日同机 CEF `platform_channel 0x5` 记录未解除，因此本轮未启动 Playnite、未取得宿主/UIA/最终呈现证据，ENV-001 仍为 `BLOCKED_ENVIRONMENT`。
 - R 账本仍为 192 个唯一 ID，状态计数 `106/83/1/1/1` 不变。完整环境边界与回归结果见 [ENV-001 runner evidence](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。

@@ -39,6 +39,17 @@ try {
     Assert-True (-not $reopened.Created) 'A marked profile should be recognized rather than reinitialized.'
     Assert-True ($reopened.ProfileId -eq $profile.ProfileId) 'A marked profile should retain its stable profile ID.'
 
+    $copiedMarkerProfilePath = Join-Path $testRoot 'copied-marker-profile'
+    New-Item -ItemType Directory -Path $copiedMarkerProfilePath | Out-Null
+    $copiedMarkerPath = Join-Path $copiedMarkerProfilePath (Split-Path -Leaf $profile.MarkerPath)
+    Copy-Item -LiteralPath $profile.MarkerPath -Destination $copiedMarkerPath
+    $copiedProfileData = Join-Path $copiedMarkerProfilePath 'preserve-me.txt'
+    [System.IO.File]::WriteAllText($copiedProfileData, 'copied markers must not adopt another directory')
+    Assert-ThrowsContaining {
+        Initialize-GscIsolatedPlayniteProfile -RepositoryRoot $repoRoot -UserDataDir $copiedMarkerProfilePath
+    } 'another repository/profile'
+    Assert-True (Test-Path -LiteralPath $copiedProfileData -PathType Leaf) 'A profile containing a copied marker must remain untouched.'
+
     $startupArguments = New-GscPlayniteUserDataArguments -UserDataDir $profilePath
     Assert-True ($startupArguments.Contains('--userdatadir')) 'The launch arguments must explicitly select Playnite user data.'
     Assert-True ($startupArguments.Contains('"' + $profilePath + '"')) 'A user-data path with spaces must remain one quoted argument.'
@@ -111,7 +122,7 @@ try {
         Assert-ThrowsContaining {
             Initialize-GscIsolatedPlayniteProfile -RepositoryRoot $repoRoot -UserDataDir $profilePath
         } 'reparse points'
-        Remove-Item -LiteralPath $junctionPath -Force
+        [System.IO.Directory]::Delete($junctionPath, $false)
     }
 
     Write-Host 'Playnite host isolation helper tests passed.' -ForegroundColor Green
