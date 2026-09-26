@@ -6,6 +6,8 @@
 
 真实宿主验收仍 `BLOCKED_ENVIRONMENT`：Playnite 在 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 且签名有效，但当前执行身份无权查询 `Win32_Process` 命令行；审计 runner 在任何目录副作用前拒绝。另有 2026-09-24 同机 CEF `platform_channel 0x5` 的 fresh-profile 启动拒绝记录；系统状态未改变，本轮没有再次启动。不要声称已验证实际用户 AppData/库零写入、扩展加载、UIA 或 Playnite 呈现；不要绕过进程/CEF 保护。完整证据：[ENV-001 runner evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。
 
+2026-09-26 只读核对[Playnite 官方命令行文档](https://api.playnite.link/docs/manual/advanced/cmdlineArguments.html)：`--userdatadir` 只重定向数据目录，未列出并行独立实例参数；`--shutdown` 会关闭已有实例，不能作为隔离方案。此前 `--userdatadir` 实测仍命中全局单实例行为；目前无安全替代启动方案，不猜参数、不在 CEF 状态未变时重试。
+
 ## 2026-09-26 当前准入状态：产品实现项已收口，环境门禁待变化
 
 R23-06 当前 main 包安装/回退复核完成后，已校准 R23-08 的旧执行顺序。192 项唯一 R 账本仍为 `106` 项受控满足、`83` 项待环境、`1` 外部阻塞、`1` 部分满足、`1` 不适用；没有待开始或实施中的代码项。R22-01 残余时间入口亦没有发现新的生产绑定缺口。

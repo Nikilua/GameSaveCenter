@@ -8,6 +8,7 @@
 - 环境结论：找到签名有效的 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe`，但 WMI 当前 PID 命令行权限返回 Access Denied；host runner 负向验证证明它在副作用前拒绝。先前 fresh profile CEF `platform_channel 0x5` 同状态不重试。本阶段没有实际启动 Playnite，不能声称 AppData/库零写入、扩展加载或 UIA/页面通过；ENV-001 仍 `BLOCKED_ENVIRONMENT`。
 - 详细证据：[ENV-001-ISOLATED-RUNNER-20260926.md](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。只有进程观察权限/CEF 环境有变化或用户提供新的明确复现缺陷后再继续；不可在同一 CEF/权限状态重试或绕过保护。
 - 本次续接复验：HEAD 为 `f18364b9`，工作树干净；Playnite/Worker 无活动进程、活动显示器仍只有 `\\.\DISPLAY21`，当前 PID 的 `Win32_Process.CommandLine` 读取仍 Access Denied。未读取用户 AppData 或尝试启动。Media Inbox 条目原指向的 R20-03 已被 R23-08 当前准入结论覆盖，不作为现行领取项。
+- 2026-09-26 再查[Playnite 官方命令行参数文档](https://api.playnite.link/docs/manual/advanced/cmdlineArguments.html)：`--userdatadir` 仅重定向数据目录，官方列表没有独立并行实例参数；`--shutdown` 会关闭已有实例。历史 `--userdatadir` 启动曾被现有单实例接管并退出，因此不推测隐藏参数、不重试同 CEF 状态；见 ENV-001 evidence。
 
 ## 2026-09-26 当前准入：等待环境条件或新的用户缺陷
 

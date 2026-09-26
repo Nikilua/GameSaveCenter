@@ -9371,3 +9371,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 核对 R23-08 当前准入 evidence：192 项 R 台账 `106/83/1/1/1`，没有待开始/实施中/代码完成待验收项；R23-04、Q24-03、R23-05 各有明确环境门槛。未发现新的用户复现缺陷，故不自创产品行为改动。
 - 修正 CURRENT_STATE、PROJECT_MEMORY 与 DEVELOPMENT_HANDOFF 中 Media Inbox 完成后仍指向旧 R20-03 的过期指针；handoff 改为链接实际存在的 R23-08 当前准入 evidence，明确由此决议支配历史“下一项”备注。
 - 此轮只校正记忆/准入文档，不改变 R 计数、产品代码或 ENV-001 状态。
+
+# 2026-09-26 ENV-001 官方启动参数复核
+
+- 重读当前准入证据与 `docs/AUTONOMOUS_BACKLOG.md` 后，R 表仍为 192 个唯一 ID（`106/83/1/1/1`），backlog 没有 `READY`/`IN_PROGRESS` 产品条目；只读复验显示器为 `\\.\DISPLAY21`，Playnite/Worker 未运行，当前 PID 命令行 WMI 查询仍拒绝访问。
+- 为寻找不触碰用户实例的隔离启动替代方案，只查 Playnite 官方命令行参考；其参数清单说明 `--userdatadir` 是数据目录重定向，没有列出并行实例开关，`--shutdown` 会关闭已有实例。结合历史启动日志中的 `Application already running, shutting down.`，不尝试未知参数、不重跑同状态 CEF 启动。
+- 将该边界同步到 ENV-001 evidence、autonomous backlog、CURRENT_STATE、PROJECT_MEMORY 与 DEVELOPMENT_HANDOFF。无产品代码任务被准入；192 项账本及 ENV-001 状态不变。

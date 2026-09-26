@@ -7,6 +7,7 @@
 - 本机 Playnite 位于 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 且签名有效，但当前执行身份查询 `Win32_Process` 命令行被拒绝；新 runner 在任何 profile/output 副作用前拒绝。9 月 24 日同机 CEF `platform_channel 0x5` 记录未解除，因此本轮未启动 Playnite、未取得宿主/UIA/最终呈现证据，ENV-001 仍为 `BLOCKED_ENVIRONMENT`。
 - R 账本仍为 192 个唯一 ID，状态计数 `106/83/1/1/1` 不变。完整环境边界与回归结果见 [ENV-001 runner evidence](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。
 - 提交 `f18364b9` 后的只读复验仍为单显示器 `\\.\DISPLAY21`、Playnite/Worker 无运行进程、当前 PID 命令行 WMI 查询拒绝访问；未读取用户数据目录或重试 CEF。R23-08 当前准入结论仍有效：没有可直接领取的产品代码项。
+- 2026-09-26 又核对 Playnite 官方命令行文档：`--userdatadir` 只重定向数据目录，文档没有独立并行实例参数；`--shutdown` 会关闭已有实例。结合旧实测，本机没有已知安全替代启动方式；ENV-001 保持阻塞，不猜测参数或重试同状态 CEF。
 
 ## 2026-09-26 当前准入结论：没有可直接执行的 R 代码项
 

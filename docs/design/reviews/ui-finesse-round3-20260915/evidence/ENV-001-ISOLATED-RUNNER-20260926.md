@@ -15,6 +15,7 @@
 - 本机 Playnite/Worker 当前未运行。已找到并检查 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe`（签名有效，文件修改时间 2026-09-11）；这纠正了此前只检查标准安装目录的遗漏。
 - 当前 Codex 执行身份对 `Win32_Process` 的当前 PID 命令行查询返回“拒绝访问”。用该 Playnite 路径调用审计入口时，新 preflight 返回非零；独立 `.tmp` profile、marker 和 `artifacts` output 均不存在，宿主未启动。
 - 已有 [2026-09-24 Playnite bootstrap 记录](R23-04-BOOTSTRAP-SAFE-START-ROOT-CAUSE-20260924-42884321.md)明确包含 fresh profile 的 CEF `platform_channel 0x5` / `拒绝访问`，并要求同状态不重试。本阶段没有改变该 OS/Cef 条件，因此没有再次启动，也没有下载或安装 Playnite。
+- 2026-09-26 只读核对了 [Playnite 官方命令行参数文档](https://api.playnite.link/docs/manual/advanced/cmdlineArguments.html)：文档将 `--userdatadir` 定义为重定向数据目录，没有列出启动独立并行实例的参数；`--shutdown` 会关闭已有实例，不能用于隔离启动。结合 2026-08-01 `--userdatadir` 实测仍输出 `Application already running, shutting down.`，目前没有可安全采用的官方多实例启动替代方案；不猜测隐藏参数、不重试相同 CEF 条件。
 - 所以尚无测试 PID/扩展加载/UIA/页面截图，也没有通过宿主文件跟踪证明 AppData/现有库未读写。ENV-001 状态保持 `BLOCKED_ENVIRONMENT`。
 
 ## 自动验证
