@@ -1,12 +1,12 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-26 当前续接：Settings 与 SaveHistory UI gate 收口，等待推送授权
+## 2026-09-26 当前续接：Settings 与 SaveHistory UI gate 收口，已推送 origin/main
 
 Settings 矮窗阶段已修复并验证：高度 `<760 DIP` 时折叠顶部恢复默认 disclosure，原安全说明和设置命令仍可展开使用，正常高度恢复时自动展开。category ListBox 的 logical item viewport 与真实 DIP viewport 分开量测。随后独立修复 SaveHistory 摘要/操作间距：紧凑 margin 由 2 改 10 DIP，Light/Dark gap 从 `1.6` 到 `9.6 DIP`，既有 `8–14 DIP` 断言不变。两个阶段的 RenderHarness 全量 `render-qa OK`、0 PROBLEM；证据分别见 [Settings](docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md) 和 [SaveHistory](docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
 
 Release RenderHarness 与 Playnite.Tests 项目隔离输出构建 `0 warnings/0 errors`；短窗 WPF 两个尺寸均通过，Settings Header/Path Light/Dark `2/2`，R16 reset contract `1/1`。Source validation、XAML `24/24`、diff check 通过。由于 `%AppData%\NuGet\NuGet.Config` ACL 拒绝，未做普通 restore；复用现有 assets/no-restore。未启动 Playnite，离屏 DIP 不是真实宿主/物理 DPI 证明。R ledger 保持 192 项、`106/83/1/1/1`。
 
-Settings 独立 commit 为 `f0999af3`；SaveHistory 是后续独立阶段，本地提交后都在 `main`。向 `origin/main` 推送已被审批策略拒绝；针对 Settings commit 的用户确认尚未回复，批准范围不会自动覆盖 SaveHistory commit。不要绕过审批或改用其他传输。Playnite 仍因已记录的 CEF/host 边界未启动；当前结论仅限离屏测试/RenderHarness。
+Settings 独立 commit `f0999af3`；SaveHistory 独立 commit `15a5fe22`。首次推送请求被审批策略拒绝，用户随后批准这两条精确提交；2026-09-26 已普通快进推送至 `origin/main`，核对本地 HEAD 与远端均为 `15a5fe22`、工作树干净。Playnite 仍因已记录的 CEF/host 边界未启动；当前结论仅限离屏测试/RenderHarness。
 
 ## 2026-09-26 当前接续：Overview 与 Task 完成，Settings UI gate 仍待修复
 

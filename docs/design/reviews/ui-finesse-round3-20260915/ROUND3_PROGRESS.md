@@ -2,7 +2,7 @@
 
 - `ReportedWorkspaceLayoutBehaviorTests` 在 Light/Dark 独立复现摘要正文与动作区 gap `1.6 DIP`（既有目标 `8–14 DIP`）。将紧凑动作区 top margin 从 2 改为 10 DIP 后，两主题实测均为 `9.6 DIP`，断言与行为未放宽/替换。
 - Release Playnite.Tests/RenderHarness 隔离构建 `0/0`，布局回归 `2/2`；完整 RenderHarness `render-qa OK`、0 PROBLEM；1040×700 Save 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。R ledger 192 项、`106/83/1/1/1` 不变。
-- 证据：[SaveHistory action separation](evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。复用既有 restore assets、未启动 Playnite；离屏 DIP 不代替真实 host/物理 DPI。Settings 与本阶段分别提交；远端 push 仍待审批。
+- 证据：[SaveHistory action separation](evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。复用既有 restore assets、未启动 Playnite；离屏 DIP 不代替真实 host/物理 DPI。Settings 与本阶段分别提交，用户批准后已普通快进推送至 origin/main（当前 `15a5fe22`）。
 
 # 2026-09-26 Settings short-window viewport repair
 

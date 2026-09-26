@@ -5,7 +5,7 @@
 - Settings 阶段之后扩展布局回归单独复现窗口化 SaveHistory Light/Dark 的内容-操作区 gap 均为 `1.6 DIP`，但既有范围为 `8–14 DIP`。将 `SaveHistorySummaryActions` 紧凑布局上 margin 由 2 调整为 10 DIP，修复后 Light/Dark 均为 `9.6 DIP`；保留断言、命令与 wide layout 行为。
 - Playnite.Tests / RenderHarness Release 隔离构建 `0 warnings/0 errors`；目标测试 `2/2`。完整双主题/多尺寸 RenderHarness `render-qa OK`、0 PROBLEM，Save 页 1040×700 DIP 表格 `4/4` 可读；source validation、XAML `24/24`、diff check 通过。
 - 测试通过 `dotnet vstest` 使用 `.tmp` 下已构建程序集复跑；曾有一次 `dotnet test --no-build` 按错误的输出路径未找到程序集（0 次测试），随后使用实际 `bin/Release/net472` 路径复跑并以 `2/2` 成功结束。普通 restore 受 NuGet.Config ACL 阻止；未改权限、未启动 Playnite。完整 RenderHarness 临时截图/输出在确认报告后清理。逻辑 DIP 不等同真实宿主/DPI。R ledger 192 项、`106/83/1/1/1` 不变。
-- Settings 阶段 `f0999af3` 与 SaveHistory 阶段分别提交；远端推送被审批策略挡住，待用户确认后再做。证据：[SaveHistory action separation](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
+- Settings 阶段 `f0999af3` 与 SaveHistory 阶段分别提交。首次推送请求被审批策略挡住；用户批准指定提交后，于 2026-09-26 将两条提交普通快进推送到 `origin/main`（`b85e53ed..15a5fe22`），推送后 HEAD 与 origin/main 同为 `15a5fe22`。证据：[SaveHistory action separation](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
 
 ## 2026-09-26 Settings 矮窗视口与类别可达性收口
 
