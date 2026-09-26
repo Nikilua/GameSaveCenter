@@ -6,7 +6,7 @@ Settings 矮窗阶段已修复并验证：高度 `<760 DIP` 时折叠顶部恢�
 
 Release RenderHarness 与 Playnite.Tests 项目隔离输出构建 `0 warnings/0 errors`；短窗 WPF 两个尺寸均通过，Settings Header/Path Light/Dark `2/2`，R16 reset contract `1/1`。Source validation、XAML `24/24`、diff check 通过。由于 `%AppData%\NuGet\NuGet.Config` ACL 拒绝，未做普通 restore；复用现有 assets/no-restore。未启动 Playnite，离屏 DIP 不是真实宿主/物理 DPI 证明。R ledger 保持 192 项、`106/83/1/1/1`。
 
-Settings 独立 commit `f0999af3`；SaveHistory 独立 commit `15a5fe22`。首次推送请求被审批策略拒绝，用户随后批准这两条精确提交；2026-09-26 已普通快进推送至 `origin/main`，核对本地 HEAD 与远端均为 `15a5fe22`、工作树干净。Playnite 仍因已记录的 CEF/host 边界未启动；当前结论仅限离屏测试/RenderHarness。
+Settings 独立 commit `f0999af3`；SaveHistory 独立 commit `15a5fe22`。首次推送请求被审批策略拒绝，用户随后批准这两条精确提交；2026-09-26 已普通快进推送至 `origin/main`（功能提交范围 `b85e53ed..15a5fe22`）。推送状态的记忆同步也已独立提交并推送，当前本地 `main` 与远端同步、工作树干净。Playnite 仍因已记录的 CEF/host 边界未启动；当前结论仅限离屏测试/RenderHarness。
 
 ## 2026-09-26 当前接续：Overview 与 Task 完成，Settings UI gate 仍待修复
 

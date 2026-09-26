@@ -5,7 +5,7 @@
 - `ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions` 独立复现 Light/Dark `1.6 DIP`，断言为 `8–14 DIP`。紧凑布局 `SaveHistorySummaryActions` 顶部 margin 从 2 调整到 10 DIP 后，两主题均 `9.6 DIP`，既有断言未放宽；宽布局 `14 DIP` 横向间距与真实操作行为保持。
 - Release Playnite.Tests 和 RenderHarness 隔离构建 `0/0`；目标回归 `2/2`。完整 RenderHarness `render-qa OK`、0 PROBLEM；Save 页 1040×700 DIP 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md`。
 - 复用现有 NuGet assets、`--no-restore` 和 `.tmp` 隔离输出；NuGet.Config ACL 未改，Playnite 未启动。只证明测试夹具/离屏逻辑 DIP，不代表真实宿主或物理 DPI。R ledger 192 项及 `106/83/1/1/1` 不变。
-- Settings commit `f0999af3` 与本阶段 commit `15a5fe22` 按独立阶段分别提交；用户批准后已于 2026-09-26 普通快进推送至 `origin/main`，当前本地/远端均为 `15a5fe22`。首次推送请求曾遭审批策略拒绝，未绕过。
+- Settings commit `f0999af3` 与本阶段 commit `15a5fe22` 按独立阶段分别提交；用户批准后已于 2026-09-26 普通快进推送至 `origin/main`（功能提交范围 `b85e53ed..15a5fe22`）。推送状态的文档同步亦已提交并推送；当前本地 `main` 与 `origin/main` 同步、工作树干净。首次推送请求曾遭审批策略拒绝，未绕过。
 
 ## 2026-09-26 Settings short-window viewport 修复
 
