@@ -9363,3 +9363,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Playnite 非 WPF 源码测试组 `465 passed/18 skipped/483 total`；105 个 WPF 测试类分进程完整通过。期间修正当前 125% WPF 布局下把 34 DIP 精确值写死的半物理像素容差、剪贴板日期字段子串误判、Motion 270 DIP 宽度容差，以及 R09 圆角描边 anti-alias 明暗阈值。定向结果：R02 `2/2`、R06 `4/4`、R08 `2/2`、R09 `2/2`。18 个 skip 是既有显式 skip，包含撤销 UI 基线断言与当前权限下不可运行的 Named Pipe 客户端用例；无最终失败。
 - `validate-source.py`、4 个 PowerShell AST 检查、XAML 检查和 `git diff --check` 均通过。当前 NuGet 用户配置读取受限时使用已经还原的资产执行 `--no-restore` build。
 - Playnite exe 已找到且 Authenticode 签名有效；本机当前 WMI `Win32_Process` 命令行查询 Access Denied，新 preflight 因而不建 profile/output、不启动 host。已有 2026-09-24 CEF `platform_channel 0x5` 证据且环境未变化，本阶段未重试。真实 Playnite PID/扩展/UIA/页面/文件跟踪仍无证据，ENV-001 记为 `BLOCKED_ENVIRONMENT`。本机证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md`。
+
+# 2026-09-26 准入记忆与 handoff 指针复核
+
+- 按启动协议重读 CURRENT_STATE、PROJECT_MEMORY、WORKLOG、DEVELOPMENT_HANDOFF、最近 Git commit 与状态；当前 HEAD `f18364b9`，工作树干净，`origin/main` 与 HEAD 一致。
+- 只读复验：Playnite/Worker 无活动进程；当前 PID 的 `Win32_Process.CommandLine` 查询仍返回 Access Denied，显示器仍只有 `\\.\DISPLAY21`。未读取用户配置、未启动 Playnite；CEF 启动状态没有新证据，因此不重试。
+- 核对 R23-08 当前准入 evidence：192 项 R 台账 `106/83/1/1/1`，没有待开始/实施中/代码完成待验收项；R23-04、Q24-03、R23-05 各有明确环境门槛。未发现新的用户复现缺陷，故不自创产品行为改动。
+- 修正 CURRENT_STATE、PROJECT_MEMORY 与 DEVELOPMENT_HANDOFF 中 Media Inbox 完成后仍指向旧 R20-03 的过期指针；handoff 改为链接实际存在的 R23-08 当前准入 evidence，明确由此决议支配历史“下一项”备注。
+- 此轮只校正记忆/准入文档，不改变 R 计数、产品代码或 ENV-001 状态。

@@ -6,6 +6,7 @@
 - Release solution `--no-restore` build `0 warning/0 error`，XAML `24/24`；Core `125/125`、Worker `357/357`。Playnite 源码组 `465 passed/18 skipped/483 total`，另有 `105/105` 个 WPF 测试类按进程隔离通过；R02/R06/R08/R09 本机敏感回归分别复测 `2/2`、`4/4`、`2/2`、`2/2`。源码 validator、PowerShell AST、隔离 runner helper tests、`git diff --check` 均通过。
 - 本机 Playnite 位于 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 且签名有效，但当前执行身份查询 `Win32_Process` 命令行被拒绝；新 runner 在任何 profile/output 副作用前拒绝。9 月 24 日同机 CEF `platform_channel 0x5` 记录未解除，因此本轮未启动 Playnite、未取得宿主/UIA/最终呈现证据，ENV-001 仍为 `BLOCKED_ENVIRONMENT`。
 - R 账本仍为 192 个唯一 ID，状态计数 `106/83/1/1/1` 不变。完整环境边界与回归结果见 [ENV-001 runner evidence](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。
+- 提交 `f18364b9` 后的只读复验仍为单显示器 `\\.\DISPLAY21`、Playnite/Worker 无运行进程、当前 PID 命令行 WMI 查询拒绝访问；未读取用户数据目录或重试 CEF。R23-08 当前准入结论仍有效：没有可直接领取的产品代码项。
 
 ## 2026-09-26 当前准入结论：没有可直接执行的 R 代码项
 
@@ -28,7 +29,7 @@
 - 单项/批量归类在确认前捕获目标 DTO/ID/名称，再执行真实命令；全局目标为空或媒体选择为空时仍禁用，取消与错误提示不吞掉。选中全局游戏会刷新命令状态和可用性提示，稳定名称/身份绑定与 AutomationProperties 已覆盖。
 - 当前构建验证：XAML `24/24`，Release solution `0 errors`、两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Core `125/125`；受影响 Playnite `179 passed/40 skipped`；Worker 非进程级 `356/356`。Python source/WPF validator 因 `python`/`py` 不可用未执行。
 - `WorkerProcessRestartTests` 的真实进程夹具在本机运行超过 12 分钟无输出而停止；真实 Playnite/package-host、物理输入、最终呈现仍未验证，CEF `platform_channel 0x5` 不绕过。R 192 项基线与 Q/R 状态计数不在本批擅自改写。
-- 下一步：按交接继续 R20-03 或其他依赖满足的 Q/R，并保持本页真实命令、绑定、虚拟化、键盘/UIA、安全取消语义。
+- Media Inbox 完成后，旧的 `R20-03` 执行指针已由后续 R23-08 准入复核取代；当前无可据以修改产品行为的开放项。下一项须等待新的可复现用户缺陷/明确范围，或 R23-04、Q24-03、R23-05 的环境前置发生可观察变化。
 
 ## 2026-09-24 当前 main：DataGrid 选中/焦点不再挤压内容
 

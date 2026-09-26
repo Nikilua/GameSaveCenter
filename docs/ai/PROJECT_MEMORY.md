@@ -7,6 +7,7 @@
 - 自动验证：Release solution `--no-restore` build `0/0`，XAML `24/24`，Core `125/125`，Worker `357/357`，Playnite source tests `465/483`（18 项为既有显式 skip，包含撤销 UI 基线断言与当前权限下不可运行的 Named Pipe 客户端用例），WPF `105/105` 类隔离通过；R02 hit area `2/2`、R06 clipboard `4/4`、R08 motion `2/2`、R09 pixel stroke `2/2`。像素探针已按实际可见抗锯齿强度判定，几何/圆角门槛保留。源 validator、PowerShell AST、helper tests、diff check 通过。
 - 环境结论：找到签名有效的 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe`，但 WMI 当前 PID 命令行权限返回 Access Denied；host runner 负向验证证明它在副作用前拒绝。先前 fresh profile CEF `platform_channel 0x5` 同状态不重试。本阶段没有实际启动 Playnite，不能声称 AppData/库零写入、扩展加载或 UIA/页面通过；ENV-001 仍 `BLOCKED_ENVIRONMENT`。
 - 详细证据：[ENV-001-ISOLATED-RUNNER-20260926.md](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。只有进程观察权限/CEF 环境有变化或用户提供新的明确复现缺陷后再继续；不可在同一 CEF/权限状态重试或绕过保护。
+- 本次续接复验：HEAD 为 `f18364b9`，工作树干净；Playnite/Worker 无活动进程、活动显示器仍只有 `\\.\DISPLAY21`，当前 PID 的 `Win32_Process.CommandLine` 读取仍 Access Denied。未读取用户 AppData 或尝试启动。Media Inbox 条目原指向的 R20-03 已被 R23-08 当前准入结论覆盖，不作为现行领取项。
 
 ## 2026-09-26 当前准入：等待环境条件或新的用户缺陷
 
@@ -27,7 +28,7 @@
 - `AssignInboxMediaAsync` 与 `AssignInboxMediaBatchAsync` 在确认/提交边界捕获目标 DTO、名称和 ID，之后不受用户切换全局选择器影响；无目标、无媒体、取消、错误和批量分批/重试语义保持原状。命令状态和提示文字同步到顶部选择器语义，RenderHarness 与 WPF 源契约覆盖该边界。
 - 当前验证为 XAML `24/24`、Release solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602`、Core `125/125`、受影响 Playnite `219`（`179/40` pass/skip）、Worker 非进程级 `356/356`。`WorkerProcessRestartTests` 在本机真实进程夹具超过 12 分钟无结果，不能作为本批失败证据，也未宣称该环境边界通过。
 - Python validator 因本机无 `python`/`py` 未执行；真实 Playnite/package-host/物理输入/最终呈现仍待环境，CEF `platform_channel 0x5` 不绕过。R 基线仍为 192 项唯一任务，不因本批自动改计数。
-- 下一项沿 handoff 继续 R20-03 或依赖已满足的 Q/R；若后续改 WPF，继续以 Demo-first 页面基线为主、Apple skill 仅做质量检查。
+- R20-03 是本条目当时的过渡指针，之后已由 R23-08 复核覆盖；当前没有可直接领取的产品代码项。等待新复现缺陷/明确范围或环境门禁变化，不从历史“下一项”文字推断任务仍开放。
 
 ## 2026-09-24 main：共享 DataGrid selected/focus 几何
 
