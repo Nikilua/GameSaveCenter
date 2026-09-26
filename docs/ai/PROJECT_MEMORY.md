@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 用户慢启动/缩略图卡顿当前 main 复核
+
+- 当前 main `a1544da2` 上重读了历史 Playnite 启动诊断并检查真实生产入口：大型库 Worker 预热与首屏 Ludusavi 版本探测解耦已由 PERF-001 实现；媒体列表/详情走 `AsyncThumbnailImage`，限制 3 并发和 96 项 LRU；旧 `MediaThumbnailConverter` 资源没有活动 XAML binding。
+- Release 测试程序集从当前源码身份构建成功，`0 errors/2` 条既有 Media `CS8602` warnings。大型库启动/Dashboard 6 用例、AsyncThumbnailLoader 6、AsyncThumbnailImage 2、R18 thumbnail budget 1、R09 placeholder 2，合计 `17/17`。
+- 没有产品代码改动；实际冷启动与 presented-frame 性能仍需可用 Playnite/合规 ETW 环境，不能由 STA/合成测试替代。没有启动 Playnite或触碰用户数据。证据：[当前 main 慢启动/缩略图复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。R 总基线仍 192 项，`106/83/1/1/1` 不变。
+
 ## 2026-09-26 当前续接：ENV-001 启动进程身份加固
 
 - 对 `Get-GscPlayniteProcessStartEvidence` 做了边界复核：路径必须是唯一且带引号的 `--userdatadir`，规范化完整路径相等；拒绝 sibling 前缀、重复参数和取证前退出。首次快照后再等 500 ms，确认同一 PID、exe 路径和完整命令行仍存在，降低将短命单实例转发进程误认为隔离实例的风险。

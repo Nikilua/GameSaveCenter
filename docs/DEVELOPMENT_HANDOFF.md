@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 用户慢启动/缩略图卡顿当前 main 复核
+
+当前 HEAD `a1544da2` 的大型库 Worker 预热、Dashboard 版本后台探测和异步限流缩略图回归通过 `17/17`（build `0 errors/2` 条既有 Media nullable warnings）。旧 converter 没有活动 XAML binding；当前没有证据支持重复改产品代码。此验证不涵盖真实 Playnite cold start 或 presented-frame/ETW 性能，本轮没有启动宿主。详细记录：[当前 main 慢启动/缩略图复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。
+
+接续时仍按 R23-08 当前准入：R 表 192 个唯一 ID、`106/83/1/1/1`，没有可直接领取的产品代码项；等待新的可复现用户缺陷/明确范围，或 R23-04、Q24-03、R23-05 环境前置发生变化。
+
 ## 2026-09-26 当前续接：ENV-001 启动身份稳定窗口
 
 隔离 runner 现在要求 `--userdatadir` 唯一、带引号且规范化全路径完全相同，并在首次进程快照后 500 ms 再确认同一 PID/exe/命令行仍存活；相似前缀、重复参数、首次快照前后退出均拒绝。此举针对 Playnite 单实例转发的短命子进程，仍不消除启动前后竞态，也不是 OS 级隔离证明。证据：[ENV-001 启动进程身份复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。

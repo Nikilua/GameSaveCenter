@@ -9399,3 +9399,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 设置当前 `GSC_BUILD_COMMIT/GSC_SOURCE_ROOT` 后 Release solution `--no-restore` build `0 warning/0 error`；Core `125/125`，Worker `357/357`，Playnite `DiagnosticsEvidenceSourceTests 8/8`。PowerShell helper、4 个脚本 AST 和 `git diff --check` 通过。Playnite source group 的 111 类通过；105 类 WPF 全量逐进程组未完成，不作全量通过声明。
 - 正式 `scripts/build.ps1` 先通过 XAML `24/24`，随后 restore 因当前身份无权读 `%AppData%\NuGet\NuGet.Config` 失败；使用已还原资产/no-restore 完成后续检查。一次未带 build identity 的并行 solution 测试仅作入口诊断，源码身份门按预期拒绝；停止了由该命令遗留的本轮 testhost 后才重建。
 - 未启动 Playnite；WMI 命令行 Access Denied、既有 CEF `platform_channel 0x5` 均未变化。稳定窗口仍不消除 preflight→launch TOCTOU。ENV-001 仍阻塞；R 表仍 192 个唯一 ID、`106/83/1/1/1`，本轮无任务状态变化。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md`。
+
+# 2026-09-26 用户慢启动与缩略图卡顿当前 main 复核
+
+- 对照历史用户诊断核验当前源码：大库 Worker 预热、Dashboard 首帧不等待 Ludusavi 版本探测已由 PERF-001 收口；媒体缩略图从文件探测到解码走后台、3 路上限、96 项 LRU 与取消保护。旧 `MediaThumbnailConverter` 资源在当前 XAML 中无活动绑定。
+- 当前 `a1544da2` Release 测试项目 `0 error/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；启动/Dashboard 回归 `6/6`，AsyncThumbnailLoader `6/6`，AsyncThumbnailImage `2/2`，R18 budget `1/1`，R09 placeholder `2/2`，总计 `17/17`，零失败/跳过。
+- 未改产品代码或 192 项 R 状态；未启动 Playnite、触碰用户数据或尝试实际呈现/ETW 测量。自动化用例不等同实际冷启动或宿主掉帧验收。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md`。

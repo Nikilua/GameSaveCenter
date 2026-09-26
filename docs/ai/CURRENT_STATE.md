@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 用户慢启动/缩略图卡顿：当前 main 复核
+
+- 历史诊断中插件初始化约 `0.63 s`，不能解释 Playnite 冷启动约 `39.22 s`；首次 Dashboard IPC 快照约 `977 ms`，旧缩略图解码样本约 `200–534 ms`。当前大库 Worker 预热、Dashboard Ludusavi 版本后台探测和异步限流缩略图均已实现。
+- 当前 HEAD `a1544da2` Release Playnite 测试项目构建 `0 error/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602`；启动行为 `6/6`、异步缩略图加载器 `6/6`、Image 控件 `2/2`、R18 预算 `1/1`、R09 占位 `2/2`，共 `17/17`。
+- 这只是当前源代码/合成夹具回归，不代表 Playnite 冷启动、真实媒体设备或 presented frame 性能验收；本轮没有启动 Playnite。详情：[当前 main 慢启动/缩略图复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。
+
 ## 2026-09-26 ENV-001 启动进程身份稳定性复核
 
 - 启动取证现在拒绝相似前缀 profile、重复 `--userdatadir`、取证前退出，以及首次 CIM 快照后 500 ms 稳定窗口内退出/身份变化；第二快照复核同 PID、可执行文件和完整命令行。对应负例已加入 helper tests。
