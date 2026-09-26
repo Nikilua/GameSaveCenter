@@ -700,7 +700,8 @@ namespace GameSaveCenter.Playnite.Views
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsSupportedVideoPath(path))
             {
                 MediaSelectedVideoFallback.Visibility = Visibility.Visible;
-                MediaSelectedVideo.Visibility = Visibility.Collapsed;
+                if (MediaSelectedVideo != null)
+                    MediaSelectedVideo.Visibility = Visibility.Collapsed;
             }
         }
 

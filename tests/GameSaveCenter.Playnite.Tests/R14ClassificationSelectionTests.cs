@@ -108,6 +108,7 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("FocusSelectedMediaRow", viewCode, StringComparison.Ordinal);
         Assert.Contains("MediaFailed=\"OnSelectedMediaVideoFailed\"", view, StringComparison.Ordinal);
         Assert.Contains("MediaSelectedVideoFallback", view, StringComparison.Ordinal);
+        Assert.Contains("if (MediaSelectedVideo != null)", viewCode, StringComparison.Ordinal);
         Assert.Contains("PreviewDimensions", view, StringComparison.Ordinal);
         Assert.Contains("PixelWidth", thumbnail, StringComparison.Ordinal);
         Assert.Contains("PixelHeight", thumbnail, StringComparison.Ordinal);
