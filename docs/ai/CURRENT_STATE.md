@@ -6,6 +6,7 @@
 - Release Playnite.Tests / RenderHarness 隔离构建均 `0 warnings/0 errors`。SaveHistory Light/Dark `2/2`；完整双主题、多尺寸 RenderHarness `render-qa OK`、0 PROBLEM；Save 页 1040×700 DIP 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。
 - 使用既有 restore assets、`--no-restore` 与 `.tmp` 输出隔离；用户 NuGet.Config ACL 限制未更改。未启动 Playnite，不能外推到真实宿主/物理 DPI。R 台账仍 192 项、`106/83/1/1/1`。
 - Settings 阶段 commit `f0999af3` 与本阶段 commit `15a5fe22` 分开提交；用户批准后已于 2026-09-26 快进推送至 `origin/main`（功能提交范围 `b85e53ed..15a5fe22`）。随后推送状态的记忆/交接同步也已独立提交并推送；当前 `main` 与 `origin/main` 同步、工作树干净。首次推送请求曾被审批策略拦截，获批后使用普通快进推送完成。证据：[SaveHistory 间距](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
+- 交接中后续的 Settings/Render QA 未完成描述是阶段历史快照，已由顶部当前事实与后续修复覆盖；当前项目级离屏 RenderHarness 无 PROBLEM。
 
 ## 2026-09-26 Settings 矮窗视口修复与 UI gate 收口
 

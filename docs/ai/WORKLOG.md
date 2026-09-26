@@ -6,6 +6,7 @@
 - Playnite.Tests / RenderHarness Release 隔离构建 `0 warnings/0 errors`；目标测试 `2/2`。完整双主题/多尺寸 RenderHarness `render-qa OK`、0 PROBLEM，Save 页 1040×700 DIP 表格 `4/4` 可读；source validation、XAML `24/24`、diff check 通过。
 - 测试通过 `dotnet vstest` 使用 `.tmp` 下已构建程序集复跑；曾有一次 `dotnet test --no-build` 按错误的输出路径未找到程序集（0 次测试），随后使用实际 `bin/Release/net472` 路径复跑并以 `2/2` 成功结束。普通 restore 受 NuGet.Config ACL 阻止；未改权限、未启动 Playnite。完整 RenderHarness 临时截图/输出在确认报告后清理。逻辑 DIP 不等同真实宿主/DPI。R ledger 192 项、`106/83/1/1/1` 不变。
 - Settings 阶段 `f0999af3` 与 SaveHistory 阶段 `15a5fe22` 分别提交；用户批准后于 2026-09-26 普通快进推送到 `origin/main`（功能提交范围 `b85e53ed..15a5fe22`）。随后推送状态的文档同步也已独立提交并推送；当前本地 `main` 与远端同步、工作树干净。首次推送请求曾被审批策略挡住，未绕过。证据：[SaveHistory action separation](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
+- 交接入口现标明：下方 Settings/Render QA 未完成描述是中间阶段快照，已被顶部最新事实与完成批次覆盖。仅更新导航注释，不改产品代码或 R 状态；`git diff --check` 通过。
 
 ## 2026-09-26 Settings 矮窗视口与类别可达性收口
 

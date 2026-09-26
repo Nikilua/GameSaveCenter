@@ -6,6 +6,7 @@
 - Release Playnite.Tests 和 RenderHarness 隔离构建 `0/0`；目标回归 `2/2`。完整 RenderHarness `render-qa OK`、0 PROBLEM；Save 页 1040×700 DIP 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md`。
 - 复用现有 NuGet assets、`--no-restore` 和 `.tmp` 隔离输出；NuGet.Config ACL 未改，Playnite 未启动。只证明测试夹具/离屏逻辑 DIP，不代表真实宿主或物理 DPI。R ledger 192 项及 `106/83/1/1/1` 不变。
 - Settings commit `f0999af3` 与本阶段 commit `15a5fe22` 按独立阶段分别提交；用户批准后已于 2026-09-26 普通快进推送至 `origin/main`（功能提交范围 `b85e53ed..15a5fe22`）。推送状态的文档同步亦已提交并推送；当前本地 `main` 与 `origin/main` 同步、工作树干净。首次推送请求曾遭审批策略拒绝，未绕过。
+- `DEVELOPMENT_HANDOFF.md` 后续旧阶段快照仍保留当时的 Settings/Render QA 未完成描述；当前最新事实为完整离屏 RenderHarness 0 PROBLEM，交接顶部已说明历史属性，避免重复领取。
 
 ## 2026-09-26 Settings short-window viewport 修复
 

@@ -8,6 +8,8 @@ Release RenderHarness 与 Playnite.Tests 项目隔离输出构建 `0 warnings/0 
 
 Settings 独立 commit `f0999af3`；SaveHistory 独立 commit `15a5fe22`。首次推送请求被审批策略拒绝，用户随后批准这两条精确提交；2026-09-26 已普通快进推送至 `origin/main`（功能提交范围 `b85e53ed..15a5fe22`）。推送状态的记忆同步也已独立提交并推送，当前本地 `main` 与远端同步、工作树干净。Playnite 仍因已记录的 CEF/host 边界未启动；当前结论仅限离屏测试/RenderHarness。
 
+> 归档说明：下方较早的 2026-09-26 交接块保留其记录当时的阶段状态；其中“Settings 待修”及 8/13/33 项 Render QA 问题均已由本节之后的独立阶段收口。当前全量离屏 RenderHarness 为 `render-qa OK`、0 PROBLEM。继续工作时以本节和 `docs/ai/CURRENT_STATE.md` 最新入口为准，不要从这些历史快照重复领取已完成页面问题。
+
 ## 2026-09-26 当前接续：Overview 与 Task 完成，Settings UI gate 仍待修复
 
 上一阶段 Save 历史窄窗已修复并推送。随后在 `daa6ecb2` 上复跑完整离屏基线发现 Overview 的真实空集合 `RecentAccessItems` 让 `OverviewRecentAccessList` 因 `MinHeight=0` 收缩成 2 DIP；已设 236 DIP 最小视口，修复后 11 个窗口样本均为 236 DIP，Overview PROBLEM 从 20 项降为 0。命令、真实数据、空态和列表内部滚动/虚拟化保持。
