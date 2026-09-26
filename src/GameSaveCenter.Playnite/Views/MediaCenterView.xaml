@@ -230,7 +230,13 @@
                                             <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <ComboBox x:Name="MediaInboxTargetGameComboBox" Width="220" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" AutomationProperties.Name="批量归类目标游戏" ItemTemplate="{StaticResource MediaGameTargetTemplate}" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                                    <Border x:Name="MediaInboxGlobalTargetSummary" Width="220" Height="36" Style="{DynamicResource GscRedesignSubCard}" Padding="8,4" VerticalAlignment="Center" Margin="0,0,8,4" AutomationProperties.Name="媒体收件箱当前全局目标游戏">
+                                        <Grid VerticalAlignment="Center">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" AutomationProperties.Name="当前全局目标游戏" AutomationProperties.HelpText="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
                                     <ui:Button x:Name="MediaInboxAssignSelectedButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaBatchCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaInboxGrid}" Margin="0,0,8,4" VerticalAlignment="Center" AutomationProperties.Name="归类所选媒体">
                                         <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="归类所选" VerticalAlignment="Center"/></StackPanel>
                                     </ui:Button>
@@ -534,8 +540,10 @@
                                             <Style.Triggers><DataTrigger Binding="{Binding MediaInboxMode}" Value="已忽略"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <TextBlock Text="归类到" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
-                                    <ComboBox Style="{DynamicResource GscWpfUiComboBox}" MinWidth="220" ItemsSource="{Binding Games}" SelectedItem="{Binding InboxTargetGame}" ToolTip="批量归类目标游戏；显示名称、平台和 Playnite ID" ItemTemplate="{StaticResource MediaGameTargetTemplate}" Margin="0,0,0,8" AutomationProperties.Name="媒体收件箱归类目标游戏"/>
+                                    <TextBlock Text="归类到顶部当前游戏" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,5"/>
+                                    <Border x:Name="MediaInboxInspectorGlobalTargetSummary" MinHeight="36" Style="{DynamicResource GscRedesignSubCard}" Padding="8,6" Margin="0,0,0,8" AutomationProperties.Name="媒体收件箱当前全局目标游戏">
+                                        <TextBlock Text="{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" AutomationProperties.Name="当前全局目标游戏" AutomationProperties.HelpText="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}"/>
+                                    </Border>
                                     <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding AssignInboxMediaCommand}" AutomationProperties.Name="确认归类" HorizontalAlignment="Left">
                                         <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionCategorize}"/><TextBlock Text="确认归类" VerticalAlignment="Center"/></StackPanel>
                                     </ui:Button>

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 当前 main：Media Inbox 统一使用顶部全局目标
+
+- 本批已删除 Media Inbox 独立 `InboxTargetGame` 状态、保存/恢复和目标下拉；批量操作栏与 compact Inspector 改为只读展示顶部全局 `SelectedGame`，忽略模式的可见性和当前游戏详情 `MediaTargetGame` 保持不变。
+- 单项/批量归类在确认前捕获目标 DTO/ID/名称，再执行真实命令；全局目标为空或媒体选择为空时仍禁用，取消与错误提示不吞掉。选中全局游戏会刷新命令状态和可用性提示，稳定名称/身份绑定与 AutomationProperties 已覆盖。
+- 当前构建验证：XAML `24/24`，Release solution `0 errors`、两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning；Core `125/125`；受影响 Playnite `179 passed/40 skipped`；Worker 非进程级 `356/356`。Python source/WPF validator 因 `python`/`py` 不可用未执行。
+- `WorkerProcessRestartTests` 的真实进程夹具在本机运行超过 12 分钟无输出而停止；真实 Playnite/package-host、物理输入、最终呈现仍未验证，CEF `platform_channel 0x5` 不绕过。R 192 项基线与 Q/R 状态计数不在本批擅自改写。
+- 下一步：按交接继续 R20-03 或其他依赖满足的 Q/R，并保持本页真实命令、绑定、虚拟化、键盘/UIA、安全取消语义。
+
 ## 2026-09-24 当前 main：DataGrid 选中/焦点不再挤压内容
 
 - 共享 `GscRoundedDataGridRowTemplate` 将背景、`SelectiveScrollingGrid` 内容和描边拆为同级；选中/键盘焦点圆角 Margin 保留，但只影响背景与不可命中的描边，不缩进 cell。Disabled opacity 保持作用于整行内容；滚动条 12 DIP 安全间距、细节滚动、命令与虚拟化保持。

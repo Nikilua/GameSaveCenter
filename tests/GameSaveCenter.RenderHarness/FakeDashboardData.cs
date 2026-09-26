@@ -647,7 +647,6 @@ public sealed class FakeDashboardData
         SelectedTrainerRelease = TrainerReleases[0];
         SelectedImportEntryCandidate = ImportEntryCandidates[0];
         MediaTargetGame = Games[0];
-        InboxTargetGame = Games[0];
         ProcessMappingTargetGame = Games[0];
         LastBackupDiff = new BackupDiffDto
         {
@@ -1000,7 +999,7 @@ public sealed class FakeDashboardData
     public string MediaInboxEmptyText => MediaInboxMode == "已忽略" ? "当前没有已忽略的媒体。" : "当前没有等待归类的媒体。";
     public string RestoreAvailabilityHint => ActionAvailabilityHints.Restore(SelectedGame != null, SelectedBackup != null, Snapshot.LudusaviAvailable, IsBusy);
     public bool RestoreAvailabilityNeedsMaintenance => ActionAvailabilityHints.RestoreNeedsMaintenance(SelectedGame != null, SelectedBackup != null, Snapshot.LudusaviAvailable, IsBusy);
-    public string MediaInboxAvailabilityHint => ActionAvailabilityHints.MediaInbox(Snapshot.WorkerHealthy, MediaInboxMode, SelectedInboxMedia != null, InboxTargetGame != null, IsBusy);
+    public string MediaInboxAvailabilityHint => ActionAvailabilityHints.MediaInbox(Snapshot.WorkerHealthy, MediaInboxMode, SelectedInboxMedia != null, SelectedGame != null, IsBusy);
     public bool MediaInboxNeedsMaintenance => ActionAvailabilityHints.MediaInboxNeedsMaintenance(Snapshot.WorkerHealthy, IsBusy);
     public ObservableCollection<MediaSourceRuleDto> MediaSources { get; } = new ObservableCollection<MediaSourceRuleDto>();
     public ObservableCollection<ValidationFindingDto> Findings { get; } = new ObservableCollection<ValidationFindingDto>();
@@ -1145,7 +1144,6 @@ public sealed class FakeDashboardData
     public string RemoteRestoreAvailabilityHint => ActionAvailabilityHints.RemoteRestore(SelectedDeviceComparison != null, !string.IsNullOrWhiteSpace(SelectedDeviceComparison?.RemoteBackupId), StagedRemoteBackup != null, StagedRemoteBackup?.Verified == true, IsBusy);
     public ProcessMappingDto? SelectedProcessMapping { get; set; }
     public GameStatusDto MediaTargetGame { get; set; } = null!;
-    public GameStatusDto InboxTargetGame { get; set; } = null!;
     public GameStatusDto ProcessMappingTargetGame { get; set; } = null!;
     public MediaStorageSummaryDto MediaSummary { get; set; } = new MediaStorageSummaryDto
     {

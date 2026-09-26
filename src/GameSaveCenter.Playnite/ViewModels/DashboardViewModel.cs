@@ -119,7 +119,6 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string mediaInboxMode = "待归类";
         private GameStatusDto mediaTargetGame = null!;
         private MediaItemDto selectedInboxMedia = null!;
-        private GameStatusDto inboxTargetGame = null!;
         private long mediaPageGeneration;
         private string mediaPageCursor = string.Empty;
         private int mediaPageTotalCount;
@@ -387,9 +386,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             RevealSelectedMediaCommand = new RelayCommand(_ => RunLocal(() => OpenPath(SelectedMedia.ArchivePath)), _ => SelectedMedia != null && !string.IsNullOrWhiteSpace(SelectedMedia.ArchivePath));
             PreviousMediaCommand = new RelayCommand(_ => SelectAdjacentMedia(-1), _ => CanNavigatePreviousMedia);
             NextMediaCommand = new RelayCommand(_ => SelectAdjacentMedia(1), _ => CanNavigateNextMedia);
-            AssignInboxMediaCommand = new RelayCommand(_ => Run(AssignInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null && InboxTargetGame != null);
+            AssignInboxMediaCommand = new RelayCommand(_ => Run(AssignInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null && SelectedGame != null);
             IgnoreInboxMediaCommand = new RelayCommand(_ => Run(IgnoreInboxMediaAsync), _ => !IsBusy && MediaInboxMode == "待归类" && SelectedInboxMedia != null);
-            AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && InboxTargetGame != null && GetSelectedInboxMedia(value).Count > 0);
+            AssignInboxMediaBatchCommand = new RelayCommand(value => Run(() => AssignInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && SelectedGame != null && GetSelectedInboxMedia(value).Count > 0);
             IgnoreInboxMediaBatchCommand = new RelayCommand(value => Run(() => IgnoreInboxMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "待归类" && GetSelectedInboxMedia(value).Count > 0);
             RestoreIgnoredMediaBatchCommand = new RelayCommand(value => Run(() => RestoreIgnoredMediaBatchAsync(value)), value => !IsBusy && MediaInboxMode == "已忽略" && GetSelectedInboxMedia(value).Count > 0);
             RetryFailedMediaInboxBatchCommand = new RelayCommand(_ => Run(RetryFailedMediaInboxBatchAsync), _ => !IsBusy && MediaInboxBatchFailures.Count > 0 && !string.IsNullOrWhiteSpace(mediaInboxBatchMessageType));
@@ -1580,17 +1579,6 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref selectedInboxMedia, value);
-                OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
-                OnPropertyChanged(nameof(MediaInboxNeedsMaintenance));
-                RaiseCommandStates();
-            }
-        }
-        public GameStatusDto InboxTargetGame
-        {
-            get => inboxTargetGame;
-            set
-            {
-                SetValue(ref inboxTargetGame, value);
                 OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
                 OnPropertyChanged(nameof(MediaInboxNeedsMaintenance));
                 RaiseCommandStates();
@@ -5987,6 +5975,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 NotifyOverviewSelectedGameDisplaysChanged();
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
+                OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
+                RaiseCommandStates();
                 return;
             }
             // SelectedItem raises both SelectedItem and SelectedGame notifications. Respond once
@@ -6002,6 +5992,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             NotifyOverviewSelectedGameDisplaysChanged();
             OnPropertyChanged(nameof(RestoreAvailabilityHint));
             OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
+            OnPropertyChanged(nameof(MediaInboxAvailabilityHint));
             if (!suppressSelectionLoad)
             {
                 RefreshSelectedGameIcon();

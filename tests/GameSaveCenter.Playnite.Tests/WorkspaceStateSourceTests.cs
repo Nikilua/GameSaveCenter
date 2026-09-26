@@ -100,7 +100,9 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("StartQueuedMediaInboxLoad();", implementation);
         Assert.Contains("requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration)", media);
         Assert.Contains("var currentSelectedId = SelectedInboxMedia?.MediaId", media);
-        Assert.Contains("var currentTargetId = InboxTargetGame?.PlayniteId", media);
+        Assert.DoesNotContain("InboxTargetGame", media);
+        Assert.Contains("ApplyMediaInboxPage(inbox, reset: true, collectionMode: \"待归类\", selectedId: selectedId)", media);
+        Assert.Contains("var target = SelectedGame ?? throw new InvalidOperationException(\"请先在页面顶部选择目标游戏。\")", media);
         Assert.Contains("LoadMediaInboxModeAsync", media);
         Assert.Contains("RequestMediaInboxPageAsync(true, ignored: false, requestGeneration: requestGeneration)", media);
         Assert.Contains("ListUnassignedMediaPage", media);

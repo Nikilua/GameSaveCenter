@@ -42,9 +42,9 @@ internal static class ActionAvailabilityHints
         if (!hasSelectedMedia)
             return "请先在媒体列表选中媒体（一项或多项）；选中后才能归类或忽略。";
         if (!hasTargetGame)
-            return "已选中媒体；请先选择目标游戏，归类按钮才会启用。";
+            return "已选中媒体；请先在页面顶部的全局游戏选择器选中目标游戏，归类按钮才会启用。";
 
-        return "已选中媒体和目标游戏；可确认归类，来源文件和原始副本仍会保留。";
+        return "已选中媒体和顶部当前游戏；可确认归类，来源文件和原始副本仍会保留。";
     }
 
     public static bool MediaInboxNeedsMaintenance(bool workerHealthy, bool isBusy)

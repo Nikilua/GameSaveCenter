@@ -84,7 +84,9 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"保存当前游戏策略\"", dashboard);
         Assert.Contains("AutomationProperties.Name=\"备份存储占用比例\"", maintenance);
         Assert.Contains("Value=\"{Binding RemoteBackupStageProgress, Mode=OneWay}\" Height=\"6\" Margin=\"0,10,0,0\" AutomationProperties.Name=\"远端备份隔离下载进度\" AutomationProperties.HelpText=\"{Binding RemoteBackupStageProgress, StringFormat={}{0}%}\"", maintenance);
-        Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\" ToolTip=\"批量归类目标游戏；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"媒体收件箱归类目标游戏\"", media);
+        Assert.Contains("AutomationProperties.Name=\"媒体收件箱当前全局目标游戏\"", media);
+        Assert.Contains("AutomationProperties.Name=\"当前全局目标游戏\"", media);
+        Assert.Contains("Text=\"{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}\"", media);
         Assert.Contains("ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\" ToolTip=\"媒体类型筛选\" AutomationProperties.Name=\"媒体类型筛选\"", media);
         Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\" ToolTip=\"重新归类目标；显示名称、平台和 Playnite ID\" ItemTemplate=\"{StaticResource MediaGameTargetTemplate}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"重新归类目标游戏\"", media);
         Assert.Contains("SelectedItem=\"{Binding ProcessMappingTargetGame}\" Margin=\"0,0,0,8\" AutomationProperties.Name=\"进程映射目标游戏\"", maintenance);

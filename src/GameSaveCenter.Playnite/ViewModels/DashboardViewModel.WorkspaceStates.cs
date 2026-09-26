@@ -106,7 +106,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             Snapshot.WorkerHealthy,
             MediaInboxMode,
             SelectedInboxMedia != null,
-            InboxTargetGame != null,
+            SelectedGame != null,
             IsBusy);
         public bool MediaInboxNeedsMaintenance => ActionAvailabilityHints.MediaInboxNeedsMaintenance(Snapshot.WorkerHealthy, IsBusy);
         public string CloudTransferAvailabilityHint => ActionAvailabilityHints.CloudTransfer(

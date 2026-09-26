@@ -127,7 +127,6 @@ namespace GameSaveCenter.Playnite.ViewModels
             try
             {
                 var selectedId = SelectedInboxMedia?.MediaId;
-                var targetId = InboxTargetGame?.PlayniteId;
                 var inbox = await RequestMediaInboxPageAsync(true, ignored: false, requestGeneration: requestGeneration);
                 if (inbox == null) return;
                 ApplyOnUi(() =>
@@ -135,7 +134,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
                         return;
 
-                    ApplyMediaInboxPage(inbox, reset: true, collectionMode: "待归类", selectedId: selectedId, targetId: targetId);
+                    ApplyMediaInboxPage(inbox, reset: true, collectionMode: "待归类", selectedId: selectedId);
                     CompleteMediaInboxLoad("待归类", requestGeneration);
                 });
             }
@@ -167,7 +166,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
                         return;
 
-                    ApplyMediaInboxPage(ignored, reset: true, collectionMode: "已忽略", selectedId: selectedId, targetId: null);
+                    ApplyMediaInboxPage(ignored, reset: true, collectionMode: "已忽略", selectedId: selectedId);
                     CompleteMediaInboxLoad("已忽略", requestGeneration);
                 });
             }
@@ -190,7 +189,6 @@ namespace GameSaveCenter.Playnite.ViewModels
             try
             {
                 var selectedId = SelectedInboxMedia?.MediaId;
-                var targetId = InboxTargetGame?.PlayniteId;
                 var page = await RequestMediaInboxPageAsync(false, ignored: requestMode == "已忽略", requestGeneration: requestGeneration);
                 if (page == null) return;
                 ApplyOnUi(() =>
@@ -198,7 +196,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (!string.Equals(MediaInboxMode, requestMode, StringComparison.Ordinal)
                         || requestGeneration != Interlocked.Read(ref mediaInboxLoadGeneration))
                         return;
-                    ApplyMediaInboxPage(page, reset: false, collectionMode: requestMode, selectedId: selectedId, targetId: targetId);
+                    ApplyMediaInboxPage(page, reset: false, collectionMode: requestMode, selectedId: selectedId);
                     CompleteMediaInboxLoad(requestMode, requestGeneration);
                 });
             }
@@ -238,7 +236,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        private void ApplyMediaInboxPage(MediaPageDto page, bool reset, string collectionMode, string? selectedId, string? targetId)
+        private void ApplyMediaInboxPage(MediaPageDto page, bool reset, string collectionMode, string? selectedId)
         {
             var ignored = string.Equals(collectionMode, "已忽略", StringComparison.Ordinal);
             var incoming = page.Items ?? new List<MediaItemDto>();
@@ -275,14 +273,6 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ? selectedId
                 : currentSelectedId;
             ApplyMediaInboxMode(keepSelectedId, previousSelectedIndex);
-
-            var currentTargetId = InboxTargetGame?.PlayniteId;
-            var keepTargetId = string.Equals(currentTargetId, targetId, StringComparison.OrdinalIgnoreCase)
-                ? targetId
-                : currentTargetId;
-            InboxTargetGame = Games.FirstOrDefault(x => string.Equals(x.PlayniteId, keepTargetId, StringComparison.OrdinalIgnoreCase))
-                              ?? SelectedGame
-                              ?? Games.FirstOrDefault();
             OnPropertyChanged(nameof(MediaInboxLoadedSummary));
             RaiseCommandStates();
         }
@@ -665,12 +655,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task AssignInboxMediaAsync()
         {
             var media = SelectedInboxMedia ?? throw new InvalidOperationException("请先选择待归类媒体。");
-            var target = InboxTargetGame ?? throw new InvalidOperationException("请选择目标游戏。");
-            await plugin.RequestAsync<MediaItemDto>(MessageTypes.ReassignMedia, new ReassignMediaRequestDto { MediaId = media.MediaId, TargetPlayniteId = target.PlayniteId });
-            ConfirmSuccess($"已将 {media.FileName} 归类到 {target.Name}");
+            var target = SelectedGame ?? throw new InvalidOperationException("请先在页面顶部选择目标游戏。");
+            var targetId = target.PlayniteId;
+            var targetName = target.Name;
+            await plugin.RequestAsync<MediaItemDto>(MessageTypes.ReassignMedia, new ReassignMediaRequestDto { MediaId = media.MediaId, TargetPlayniteId = targetId });
+            ConfirmSuccess($"已将 {media.FileName} 归类到 {targetName}");
             await RefreshDashboardAsync(false, false);
             await LoadInboxAsync();
-            if (SelectedGame != null && string.Equals(SelectedGame.PlayniteId, target.PlayniteId, StringComparison.OrdinalIgnoreCase))
+            if (SelectedGame != null && string.Equals(SelectedGame.PlayniteId, targetId, StringComparison.OrdinalIgnoreCase))
                 await LoadDetailsAsync();
         }
 
@@ -693,7 +685,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var selection = CaptureInboxMediaSelection(value);
             if (selection.UniqueCount == 0) throw new InvalidOperationException("请先在收件箱中选择一个或多个有效媒体。");
 
-            var target=InboxTargetGame??throw new InvalidOperationException("请选择目标游戏。");
+            var target = SelectedGame ?? throw new InvalidOperationException("请先在页面顶部选择目标游戏。");
             var targetId = target.PlayniteId;
             var targetName = target.Name;
             if (!await plugin.ConfirmAsync(

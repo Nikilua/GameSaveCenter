@@ -1122,7 +1122,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("HeaderStyle=\"{StaticResource MaintenanceLastColumnHeader}\" Header=\"问题\"", maintenance);
         Assert.Contains("DataGridLoaded", maintenanceCode);
         Assert.DoesNotContain("AddHandler(FrameworkElement.LoadedEvent, new RoutedEventHandler(ApplyHeaderTheme), true)", maintenanceCode);
-        Assert.Contains("ApplyMediaInboxPage(inbox, reset: true, collectionMode: \"待归类\", selectedId: selectedId, targetId: targetId)", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));
+        Assert.Contains("ApplyMediaInboxPage(inbox, reset: true, collectionMode: \"待归类\", selectedId: selectedId)", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs")));
         var mediaViewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.Media.cs"));
         Assert.Contains("MediaPageSize = 200", mediaViewModel);
         Assert.Contains("MediaInboxPageHasMore", mediaViewModel);
@@ -1206,7 +1206,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding IgnoreInboxMediaCommand}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding RestoreIgnoredMediaBatchCommand}");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("ItemsSource")?.Value == "{Binding MediaClassificationPreview.Items}");
-        Assert.Contains(inspector.Descendants(), element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}");
+        Assert.Contains(inspector.Descendants(), element => element.Attribute("Text")?.Value == "{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}");
     }
 
     [Fact]
@@ -4091,7 +4091,6 @@ public sealed class WpfUiResourceDictionaryTests
         {
             new { Description = "ImportEntryCandidates", Match = (Func<XElement, bool>)(element => element.Attribute("ItemsSource")?.Value == "{Binding ImportEntryCandidates}") },
             new { Description = "SelectedGameTool.Versions", Match = (Func<XElement, bool>)(element => element.Attribute("ItemsSource")?.Value == "{Binding SelectedGameTool.Versions}") },
-            new { Description = "InboxTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding InboxTargetGame}") },
             new { Description = "MediaTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding MediaTargetGame}") },
             new { Description = "ProcessMappingTargetGame", Match = (Func<XElement, bool>)(element => element.Attribute("SelectedItem")?.Value == "{Binding ProcessMappingTargetGame}") },
             new { Description = "CloudTransferStateOptions", Match = (Func<XElement, bool>)(element => element.Attribute("ItemsSource")?.Value == "{Binding CloudTransferStateOptions}") },

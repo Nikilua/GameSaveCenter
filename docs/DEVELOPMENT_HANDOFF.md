@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前续接：Media Inbox 全局目标改动已完成
+
+用户要求的 Media Inbox 代码批次已完成：删除重复的 `InboxTargetGame` 目标状态与 ComboBox，批量/单项归类统一使用页面顶部全局 `SelectedGame`；compact Inspector 和批量栏只读展示当前全局游戏。目标 DTO/ID/名称在异步确认前捕获，避免确认期间切换选择器造成目标漂移；空目标禁用、无媒体禁用、取消、错误和批量重试语义均保留。
+
+本批 Release solution/XAML `24/24`、0 errors、两条既有 `MediaCenterView.xaml.cs:703 CS8602`；Core `125/125`，受影响 Playnite `219`（179 passed/40 skipped），Worker 非进程级 `356/356`。全量脚本的 `WorkerProcessRestartTests` 在当前机真实进程夹具超过 12 分钟无结果后停止，需作为环境夹具单独复验，不能写成生产代码失败。`python`/`py` 不可用，Python validator 未执行；真实 Playnite/package-host 和最终呈现仍受 CEF `platform_channel 0x5` 边界影响。
+
+R 表仍以 192 项唯一任务为总基线，本批不改计数。后续直接继续 R20-03 或其他依赖满足的 Q/R，不必回滚到旧的局部目标选择；任何后续 WPF 改动继续保持 Demo-first、Playnite/net462、命令/绑定、虚拟化、键盘/UIA 和安全语义。
+
 ## 2026-09-24 当前续接：用户报告的 DataGrid 问题
 
 R20-02/R18-04 先前复核在 `cdd28fd2` 收口；之后 R06 排序崩溃修复已在当前 main 完成：真实 WPF 列头升/降序与 detached-view 负例 `7/7`，隔离 Release solution/XAML `24/24`、0 errors/两条既有 Media `CS8602`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。

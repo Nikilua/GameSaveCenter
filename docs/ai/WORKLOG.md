@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 R06 Media Inbox 全局目标去重
+
+- 按当前 main 的续接协议完成用户反馈批次：Media Inbox 单项/批量归类统一使用顶部全局 `SelectedGame`，移除重复的 `InboxTargetGame` 状态、保存/恢复逻辑和目标 ComboBox；compact detail 保留只读的当前全局目标摘要，避免再次引入局部目标选择。
+- 归类命令仍在没有全局目标或没有媒体选择时不可执行；异步确认前捕获目标 DTO/ID，取消、错误、空目标和批量重试语义保持不变。`MediaInboxAvailabilityHint`、AutomationProperties、RenderHarness fixture 与相关源契约已同步。
+- 验证：XAML structural `24/24`；Release solution build `0 errors`，保留两条既有 `MediaCenterView.xaml.cs:703 CS8602`；核心 `125/125`；受影响 Playnite 回归 `179 passed / 40 skipped / 0 failed`（219 total）；Worker 非进程级回归 `356/356`。全量脚本中的 `WorkerProcessRestartTests` 在本机真实进程夹具运行超过 12 分钟无结果，已停止并单独记录为环境夹具阻塞，不归因本次变更。
+- `python`/`py` 不在本机 PATH，`scripts/validate-source.py` 与 Python WPF validator 未执行；PowerShell XAML 检查和构建身份校验已执行。真实 Playnite/package-host、物理输入、最终呈现与 CEF `platform_channel 0x5` 边界仍未验。R 表 192 项唯一基线不改计数，本批仅收口其中的代码反馈。
+- 下一步按交接继续 R20-03 或其他已满足依赖的 Q/R；保留现有命令、绑定、虚拟化、滚动和 Playnite/net462 兼容性。
+
 ## 2026-09-24 main R20-02 与 R18-04 当前身份复测
 
 - `cdd28fd2` Release solution/XAML build：XAML `24/24`、0 errors，两条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings。R20-02 相关核心 `48/48`、四页用户布局双主题 `8/8`，合计 `56/56`，0 failed/skipped；归档六份 TRX。

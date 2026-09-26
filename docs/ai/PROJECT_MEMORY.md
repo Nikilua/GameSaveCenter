@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 main：Media Inbox 归类目标统一到全局游戏选择器
+
+- Media Inbox 已移除独立 `InboxTargetGame` 状态和重复目标 ComboBox；单项、批量和 compact detail 共用 Dashboard shell 的 `SelectedGame`。页面加载不再跨页保存/恢复局部目标，Inspector/批量栏只显示当前全局目标的只读名称与稳定身份。
+- `AssignInboxMediaAsync` 与 `AssignInboxMediaBatchAsync` 在确认/提交边界捕获目标 DTO、名称和 ID，之后不受用户切换全局选择器影响；无目标、无媒体、取消、错误和批量分批/重试语义保持原状。命令状态和提示文字同步到顶部选择器语义，RenderHarness 与 WPF 源契约覆盖该边界。
+- 当前验证为 XAML `24/24`、Release solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602`、Core `125/125`、受影响 Playnite `219`（`179/40` pass/skip）、Worker 非进程级 `356/356`。`WorkerProcessRestartTests` 在本机真实进程夹具超过 12 分钟无结果，不能作为本批失败证据，也未宣称该环境边界通过。
+- Python validator 因本机无 `python`/`py` 未执行；真实 Playnite/package-host/物理输入/最终呈现仍待环境，CEF `platform_channel 0x5` 不绕过。R 基线仍为 192 项唯一任务，不因本批自动改计数。
+- 下一项沿 handoff 继续 R20-03 或依赖已满足的 Q/R；若后续改 WPF，继续以 Demo-first 页面基线为主、Apple skill 仅做质量检查。
+
 ## 2026-09-24 main：共享 DataGrid selected/focus 几何
 
 - `GscRoundedDataGridRowTemplate` 将 `RowBackground`、`SelectiveScrollingGrid` 和透明且 `IsHitTestVisible=false` 的 `RowChrome` 放为 Grid sibling；selection/focus margin 不再重排 row content。右侧滚动安全 inset/圆角保持。Disabled opacity 移到 `DataGridRow` 本身以继续淡化文字和内容。

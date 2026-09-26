@@ -21,6 +21,7 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("SelectedHighConfidenceCount", viewModel, StringComparison.Ordinal);
         Assert.Contains("SelectedHighConfidenceCount > 0", dashboardViewModel, StringComparison.Ordinal);
         Assert.Contains("TargetOverrides", viewModel, StringComparison.Ordinal);
+        Assert.DoesNotContain("InboxTargetGame", viewModel + dashboardViewModel, StringComparison.Ordinal);
         Assert.Contains("MediaClassificationTargetOverrideDto", contracts, StringComparison.Ordinal);
         Assert.Contains("UpdateMediaClassificationBatchItemTargetAsync", worker, StringComparison.Ordinal);
         Assert.Contains("invalidTargetOverrides", worker, StringComparison.Ordinal);
@@ -74,13 +75,10 @@ public sealed class R14ClassificationSelectionTests
         Assert.Contains("{Binding IconPath}", media, StringComparison.Ordinal);
         Assert.Contains("{Binding PlatformDisplay}", media, StringComparison.Ordinal);
         Assert.Contains("{Binding IdentityDisplay}", media, StringComparison.Ordinal);
-        Assert.Contains("SelectedItem=\"{Binding InboxTargetGame}\"", media, StringComparison.Ordinal);
+        Assert.Contains("Text=\"{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}\"", media, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}\"", media, StringComparison.Ordinal);
+        Assert.DoesNotContain("InboxTargetGame", media, StringComparison.Ordinal);
         Assert.Contains("SelectedItem=\"{Binding MediaTargetGame}\"", media, StringComparison.Ordinal);
-        var inboxTargetSelection = media.IndexOf("SelectedItem=\"{Binding InboxTargetGame}\"", StringComparison.Ordinal);
-        var inboxTargetStart = media.LastIndexOf("<ComboBox", inboxTargetSelection, StringComparison.Ordinal);
-        var inboxTargetEnd = media.IndexOf("/>", inboxTargetSelection, StringComparison.Ordinal);
-        Assert.True(inboxTargetStart >= 0 && inboxTargetEnd > inboxTargetStart);
-        Assert.DoesNotContain("SelectedIndex=", media.Substring(inboxTargetStart, inboxTargetEnd - inboxTargetStart), StringComparison.Ordinal);
         var mediaTargetSelection = media.IndexOf("SelectedItem=\"{Binding MediaTargetGame}\"", StringComparison.Ordinal);
         var mediaTargetStart = media.LastIndexOf("<ComboBox", mediaTargetSelection, StringComparison.Ordinal);
         var mediaTargetEnd = media.IndexOf("/>", mediaTargetSelection, StringComparison.Ordinal);

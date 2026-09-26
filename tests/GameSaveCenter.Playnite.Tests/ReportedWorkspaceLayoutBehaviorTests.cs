@@ -77,7 +77,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 view.ApplyResponsiveLayout(1280, 720);
                 FlushLayout(window);
 
-                var targetCombo = (ComboBox)viewType.GetField("MediaInboxTargetGameComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var targetSummary = (FrameworkElement)viewType.GetField("MediaInboxGlobalTargetSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var modeCombo = (ComboBox)viewType.GetField("MediaInboxModeCombo", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var clearButton = (ButtonBase)viewType.GetField("MediaInboxClearSelectionButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var resetButton = (ButtonBase)viewType.GetField("MediaInboxResetColumnWidthButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -94,9 +94,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 buttonHeight = buttonHeights.Max();
                 buttonHeightSpread = buttonHeights.Max() - buttonHeights.Min();
                 modeComboHeight = modeCombo.ActualHeight;
-                comboHeight = targetCombo.ActualHeight;
-                buttonCenterDelta = buttonCenters.Max(center => Math.Abs(center - CenterY(targetCombo, window)));
-                buttonGeometryDetails = $"clear/reset/assign={string.Join("/", buttonHeights.Select(value => value.ToString("0.##")))} DIP, mode={modeComboHeight:0.##} DIP, centersΔ={string.Join("/", buttonCenters.Select(center => Math.Abs(center - CenterY(targetCombo, window)).ToString("0.##")))} DIP";
+                comboHeight = targetSummary.ActualHeight;
+                buttonCenterDelta = buttonCenters.Max(center => Math.Abs(center - CenterY(targetSummary, window)));
+                buttonGeometryDetails = $"clear/reset/assign={string.Join("/", buttonHeights.Select(value => value.ToString("0.##")))} DIP, mode={modeComboHeight:0.##} DIP, target={comboHeight:0.##} DIP, centersΔ={string.Join("/", buttonCenters.Select(center => Math.Abs(center - CenterY(targetSummary, window)).ToString("0.##")))} DIP";
 
                 var gridBounds = BoundsIn(grid, frame);
                 var footerBounds = BoundsIn(footer, frame);
@@ -543,7 +543,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         return new MediaPageContext
         {
             Games = new ObservableCollection<SyntheticGameTarget> { target },
-            InboxTargetGame = target,
+            SelectedGame = target,
             MediaInboxItems = Enumerable.Range(0, 80).Select(index => new MediaItemDto
             {
                 MediaId = "layout-media-" + index,
@@ -660,7 +660,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     private sealed class MediaPageContext
     {
         public ObservableCollection<SyntheticGameTarget> Games { get; set; } = new();
-        public SyntheticGameTarget? InboxTargetGame { get; set; }
+        public SyntheticGameTarget? SelectedGame { get; set; }
         public MediaItemDto[] MediaInboxItems { get; set; } = Array.Empty<MediaItemDto>();
         public string MediaInboxMode { get; set; } = "待归类";
         public int MediaTabIndex { get; set; }
