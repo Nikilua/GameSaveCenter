@@ -9,6 +9,12 @@
 - 提交 `f18364b9` 后的只读复验仍为单显示器 `\\.\DISPLAY21`、Playnite/Worker 无运行进程、当前 PID 命令行 WMI 查询拒绝访问；未读取用户数据目录或重试 CEF。R23-08 当前准入结论仍有效：没有可直接领取的产品代码项。
 - 2026-09-26 又核对 Playnite 官方命令行文档：`--userdatadir` 只重定向数据目录，文档没有独立并行实例参数；`--shutdown` 会关闭已有实例。结合旧实测，本机没有已知安全替代启动方式；ENV-001 保持阻塞，不猜测参数或重试同状态 CEF。
 
+## 2026-09-26 用户报告：Ludusavi 失败详情/复制错误当前 main 复核
+
+- 跨任务找到用户关于备份失败、中文诊断乱码和复制详情报错的原始诊断记录。三处实现已在 main 提交 `3f42de43`：外部进程 UTF-8、Ludusavi 失败原始输出保留、任务复制剪贴板重试与失败反馈。
+- 以产品代码基线 `d1559fc9` Release 重建后，Worker 定向 `5/5`、Playnite 复制/反馈相关 `21/21` 通过；构建保留两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。未启动 Playnite或触碰真实系统剪贴板；详见 [当前 main 复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md)。
+- 原始备份超时由当时 Ludusavi manifest 网络请求超时触发；本批只复验既有诊断与复制修复，不宣称解决外部网络，也未改变自动重试策略。R 基线仍为 192 项。
+
 ## 2026-09-26 当前准入结论：没有可直接执行的 R 代码项
 
 - `R23-06` 当前 main 包身份、合成安装与文件级回退已完成；R23-08 的旧“下一项 R23-06”已校准。R23-06 详情见 [当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md)。

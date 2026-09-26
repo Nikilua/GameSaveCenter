@@ -9377,3 +9377,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 重读当前准入证据与 `docs/AUTONOMOUS_BACKLOG.md` 后，R 表仍为 192 个唯一 ID（`106/83/1/1/1`），backlog 没有 `READY`/`IN_PROGRESS` 产品条目；只读复验显示器为 `\\.\DISPLAY21`，Playnite/Worker 未运行，当前 PID 命令行 WMI 查询仍拒绝访问。
 - 为寻找不触碰用户实例的隔离启动替代方案，只查 Playnite 官方命令行参考；其参数清单说明 `--userdatadir` 是数据目录重定向，没有列出并行实例开关，`--shutdown` 会关闭已有实例。结合历史启动日志中的 `Application already running, shutting down.`，不尝试未知参数、不重跑同状态 CEF 启动。
 - 将该边界同步到 ENV-001 evidence、autonomous backlog、CURRENT_STATE、PROJECT_MEMORY 与 DEVELOPMENT_HANDOFF。无产品代码任务被准入；192 项账本及 ENV-001 状态不变。
+
+# 2026-09-26 用户备份诊断/乱码/复制问题当前 main 复验
+
+- 检查近期项目任务记录，找回用户关于多次备份失败、错误详情乱码和复制详情抛错的原始诊断线程。实现修复已由 `3f42de43` 提交；该提交可从当前 main HEAD 到达，代码包含 UTF-8 stdout/stderr、Ludusavi 失败 raw output 与剪贴板占用重试/失败反馈。
+- 以产品代码基线 `d1559fc9` Release 构建 Worker `ExternalProcessRunnerTests 5/5`；Playnite `R15TaskFailureCopyTests`、`R06ClipboardBehaviorTests`、`R22CopyFeedbackBehaviorTests`、`R12RestoreReportBehaviorTests`、`TaskCenterViewResponsiveTests` 合计 `21/21`。Playnite 构建有两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning，无错误。
+- 首次 Playnite test invocation 忘记设置源码身份环境变量，测试身份门按设计拒绝；随后设置当前 `GSC_BUILD_COMMIT/GSC_SOURCE_ROOT` 重建并重跑，最终 `21/21` 无失败/跳过。Worker stdout encoding 测试在当前 Release `5/5` 全通过。
+- 原始失败是 manifest 网络请求超时，诊断修复并未实现自动网络/备份重试。只做隔离测试，无 Playnite host、真实 OS clipboard、用户数据操作。临时 `.tmp/bug-report-recheck-d1559fc9` 配置已清理；证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md`。
+- 不修改产品代码或 192 项任务状态；在 CURRENT_STATE、PROJECT_MEMORY 和 DEVELOPMENT_HANDOFF 补齐跨机器可追溯闭环。

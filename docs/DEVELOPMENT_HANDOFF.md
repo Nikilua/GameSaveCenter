@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 用户备份诊断/乱码/复制问题已修复并复验
+
+从既有项目任务找回用户原始报告。修复提交 `3f42de43` 已在当前 main 历史中：Ludusavi stdout/stderr 按 UTF-8 解码，失败诊断保留 raw output，任务详情复制对剪贴板占用短暂重试并在持续失败时反馈。以产品代码基线 `d1559fc9` 重建的 Worker 回归 `5/5`、Playnite 相关复制/反馈回归 `21/21` 通过。原始备份失败根因是当时 GitHub manifest 网络下载超时；不把外部网络恢复说成代码修复。未验真实 Playnite/系统剪贴板。详见 [当前 main 复核证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md)。
+
 ## 2026-09-26 当前续接：ENV-001 runner 加固完成，真实宿主继续阻塞
 
 已完成 ENV-001 的本地 runner 安全阶段：隔离目录、marker/reparse、进程观察、数据库/output 范围与安装时不终止现有进程均 fail-closed。Release solution `--no-restore` build `0/0`、XAML `24/24`、Core `125/125`、Worker `357/357`；Playnite 源码组 `465 passed/18 skipped`，105 个 WPF 类隔离通过。源码 validator、PowerShell AST、runner helper tests、diff check 通过。R 基线仍为 192，状态数 `106/83/1/1/1`。

@@ -10,6 +10,12 @@
 - 本次续接复验：HEAD 为 `f18364b9`，工作树干净；Playnite/Worker 无活动进程、活动显示器仍只有 `\\.\DISPLAY21`，当前 PID 的 `Win32_Process.CommandLine` 读取仍 Access Denied。未读取用户 AppData 或尝试启动。Media Inbox 条目原指向的 R20-03 已被 R23-08 当前准入结论覆盖，不作为现行领取项。
 - 2026-09-26 再查[Playnite 官方命令行参数文档](https://api.playnite.link/docs/manual/advanced/cmdlineArguments.html)：`--userdatadir` 仅重定向数据目录，官方列表没有独立并行实例参数；`--shutdown` 会关闭已有实例。历史 `--userdatadir` 启动曾被现有单实例接管并退出，因此不推测隐藏参数、不重试同 CEF 状态；见 ENV-001 evidence。
 
+## 2026-09-26 用户报告的备份失败/乱码/复制报错复核
+
+- 从既有 Codex 项目任务记录找回用户原始问题；实现修复已在当前 main 可达的 `3f42de43`：外部进程 UTF-8 解码、Ludusavi 非零退出保留 raw output、任务详情复制对短暂剪贴板占用重试并给出失败反馈。
+- 以产品代码基线 `d1559fc9` 重建测试：Worker `ExternalProcessRunnerTests 5/5`，Playnite `R15TaskFailureCopyTests + R06ClipboardBehaviorTests + R22CopyFeedbackBehaviorTests + R12RestoreReportBehaviorTests + TaskCenterViewResponsiveTests 21/21`；无失败/跳过。Release Playnite 仍有两条既有 `MediaCenterView.xaml.cs:703 CS8602` warning。真实 Playnite、OS 剪贴板、用户数据未触碰。
+- 原始 manifest 下载超时属于外部网络故障；当前代码增强诊断与复制，不将网络恢复误记为插件修复，也不新增未经要求的自动备份重试。证据：[USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-BACKUP-UTF8-COPY-CURRENT-MAIN-RECHECK-20260926.md)。192 项基线及 `106/83/1/1/1` 状态不变。
+
 ## 2026-09-26 当前准入：等待环境条件或新的用户缺陷
 
 - R23-06 当前 main 包/隔离安装/文件级回退已收口，不重复。R 表 192 项唯一任务计数维持 `106/83/1/1/1`（满足受控/待环境/外部阻塞/部分满足/不适用），没有待实现/实施中的 R 项。
