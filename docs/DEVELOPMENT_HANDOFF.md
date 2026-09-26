@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前续接：R23-06 当前 main 安装/回退门禁
+
+R23-06 已按当前 main `4f778e9bd7e305cc878e83671f372b6b954b32e8` 重建当前 Release 包并完成仓库 `.tmp` 合成 profile 安装/回退：XAML `24/24`、solution `0 errors/2` 条既有 Media `CS8602` warnings，Core `125/125`、Playnite 隔离相关类 `179 passed/40 skipped`、Worker 非进程级 `356/356`；source validator 通过，WPF static `0 errors/28 warnings/177 info`。zip/pext 同 SHA-256 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`。回退后的六份 DLL 与旧候选逐文件一致。
+
+本批没有触碰真实用户 Extensions/profile、存档、媒体或云端，也没有启动 Playnite。合并 Playnite testhost 超 11 分钟无结果后按类隔离运行通过；`WorkerProcessRestartTests` 未纳入当前 Worker 命令范围。CEF `platform_channel 0x5`、真实 UIA/读屏、呈现帧/ETW/宿主性能仍是环境边界，不重试同状态或绕过权限。R 总基线保持 192 项唯一任务。证据：[R23-06 当前 main 安装与回退复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md)。
+
+下一步按 `R23-08-NEXT-ROUND-ADMISSION-20260922.md` 选择依赖满足且尚有实际用户价值的 Q/R 小批量；R23-04 与 R23-05 的宿主/物理呈现门禁不能由 synthetic profile 或离屏 WPF 代替。新 WPF 源码改动前仍须先读 Demo-first design gate 与仓库 `wpf-apple-desktop-ui` skill。
+
 ## 2026-09-26 当前续接：Media Inbox 全局目标改动已完成
 
 用户要求的 Media Inbox 代码批次已完成：删除重复的 `InboxTargetGame` 目标状态与 ComboBox，批量/单项归类统一使用页面顶部全局 `SelectedGame`；compact Inspector 和批量栏只读展示当前全局游戏。目标 DTO/ID/名称在异步确认前捕获，避免确认期间切换选择器造成目标漂移；空目标禁用、无媒体禁用、取消、错误和批量重试语义均保留。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 当前 main：R23-06 包安装与回退复核
+
+- 当前提交 `4f778e9bd7e305cc878e83671f372b6b954b32e8` 的 Release package、六份程序集身份、manifest 和 Worker self-contained 文件门禁通过。zip/pext SHA-256 均为 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`，各 `45,482,846` bytes。
+- 当前身份验证：XAML `24/24`、Release `0 errors/2` 条既有 Media `CS8602` warnings、Core `125/125`、Playnite `179 passed/40 skipped`、Worker 非进程级 `356/356`；bundled Python source validator 通过，WPF static validator `0 errors/28 warnings/177 info`。合并 Playnite testhost 无结果后改为隔离类运行；`WorkerProcessRestartTests` 不在该 Worker 命令范围内。
+- 新合成 profile 安装当前候选后，逐 DLL 恢复并核对旧候选 `74159b1a…`；只操作仓库 `.tmp`，没有写真实用户 profile 或启动 Playnite。不要将文件级回退扩大为真实宿主/恢复验证。
+- R23-06 状态维持“已满足，待宿主环境验证”；CEF `platform_channel 0x5`、UIA/读屏、真实最终呈现/ETW/宿主性能等边界未解除。192 项唯一任务基线不变。完整记录：[R23-06 当前 main 安装与回退复核](../design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md)。
+- 下一步依 R23-08 准入清单选择依赖已满足的 Q/R；不在相同 CEF 状态重试 R23-04，不绕过权限。
+
 ## 2026-09-26 当前 main：Media Inbox 统一使用顶部全局目标
 
 - 本批已删除 Media Inbox 独立 `InboxTargetGame` 状态、保存/恢复和目标下拉；批量操作栏与 compact Inspector 改为只读展示顶部全局 `SelectedGame`，忽略模式的可见性和当前游戏详情 `MediaTargetGame` 保持不变。

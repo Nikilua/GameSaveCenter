@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 main：R23-06 当前身份的包/回退门禁
+
+- `4f778e9bd7e305cc878e83671f372b6b954b32e8` Release 候选 XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602`；Core `125/125`、Playnite 受影响类 `179 passed/40 skipped`、Worker 非进程级 `356/356`。source validator 通过，WPF static 为 `0 errors/28 warnings/177 info`。
+- zip/pext 各 `45,482,846` bytes、同 SHA-256 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`；六份主/共享程序集均带当前完整 commit ProductVersion。仓库 `.tmp` 合成 profile 安装与旧 `74159b1a…` 候选逐文件恢复通过，未写真实 profile 或启动 Playnite。
+- 合并 Playnite testhost 无结果超过 11 分钟后中止，隔离类测试通过；`WorkerProcessRestartTests` 未在本轮运行范围内，不作通过声明。实际 Playnite、CEF `platform_channel 0x5` 后的正常宿主、UIA/读屏和真实呈现仍待环境。
+- R23-06 仅保持“已满足，待宿主环境验证”，R 总基线仍为 192 项唯一任务。证据：[R23-06 当前 main 安装与回退复核](../design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md)。下一步按 R23-08 准入顺序选择依赖满足的 Q/R，不重复未变化的 CEF 尝试。
+
 ## 2026-09-26 main：Media Inbox 归类目标统一到全局游戏选择器
 
 - Media Inbox 已移除独立 `InboxTargetGame` 状态和重复目标 ComboBox；单项、批量和 compact detail 共用 Dashboard shell 的 `SelectedGame`。页面加载不再跨页保存/恢复局部目标，Inspector/批量栏只显示当前全局目标的只读名称与稳定身份。

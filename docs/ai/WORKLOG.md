@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 R23-06 当前 main 安装与回退复核
+
+- 基于 main `4f778e9bd7e305cc878e83671f372b6b954b32e8` 重新构建 Release package 并复核六份程序集身份；XAML `24/24`、solution `0 errors`、两条既有 Media `CS8602` warnings，zip/pext 同 SHA-256 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`。
+- 当前身份 Core `125/125`、Playnite 相关隔离类 `179 passed/40 skipped`、Worker 非进程级 `356/356`。合并 Playnite testhost 超 11 分钟无结果后停止，分类隔离均有明确结果；Worker process-restart 测试不属于这次命令范围。bundled `validate-source.py` 通过；WPF static `0 errors/28 warnings/177 info`。
+- 只在仓库 `.tmp/r23-06-current-4f778e9b` 合成 profile 安装新候选，随后逐文件恢复旧 `74159b1a…` stage；核对 manifest、六份 DLL 和 Worker self-contained 运行文件。真实 Extensions/profile、存档、媒体、云端未触碰；未启动 Playnite。
+- 同步 R23-06 进展行与当前状态/长期记忆/交接，新增证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md`。192 项唯一任务基线保持不变；生成 `.tmp` 审计目录在记录后清理，根级最新 package/stage 保留且不纳入 Git。
+- 后续按 R23-08 准入清单选依赖满足的 Q/R；R23-04 CEF `0x5` 状态未变化，不重试或绕权；真实宿主及最终呈现不宣称通过。
+
 ## 2026-09-26 R06 Media Inbox 全局目标去重
 
 - 按当前 main 的续接协议完成用户反馈批次：Media Inbox 单项/批量归类统一使用顶部全局 `SelectedGame`，移除重复的 `InboxTargetGame` 状态、保存/恢复逻辑和目标 ComboBox；compact detail 保留只读的当前全局目标摘要，避免再次引入局部目标选择。
