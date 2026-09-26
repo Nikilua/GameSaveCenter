@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 当前续接：ENV-001 runner 已加固，真机门禁仍阻塞
+
+- 新增 `PlayniteHostIsolation.ps1`，并收口 `real-host-audit.ps1` / `dev-install-run.ps1`：显式隔离路径、进程命令行可观测性、marker/reparse/database/output 检查均 fail-closed；不终止用户进程、不读用户 AppData 主题/日志。
+- Release solution `--no-restore` build `0 warning/0 error`，XAML `24/24`；Core `125/125`、Worker `357/357`。Playnite 源码组 `465 passed/18 skipped/483 total`，另有 `105/105` 个 WPF 测试类按进程隔离通过；R02/R06/R08/R09 本机敏感回归分别复测 `2/2`、`4/4`、`2/2`、`2/2`。源码 validator、PowerShell AST、隔离 runner helper tests、`git diff --check` 均通过。
+- 本机 Playnite 位于 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 且签名有效，但当前执行身份查询 `Win32_Process` 命令行被拒绝；新 runner 在任何 profile/output 副作用前拒绝。9 月 24 日同机 CEF `platform_channel 0x5` 记录未解除，因此本轮未启动 Playnite、未取得宿主/UIA/最终呈现证据，ENV-001 仍为 `BLOCKED_ENVIRONMENT`。
+- R 账本仍为 192 个唯一 ID，状态计数 `106/83/1/1/1` 不变。完整环境边界与回归结果见 [ENV-001 runner evidence](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。
+
 ## 2026-09-26 当前准入结论：没有可直接执行的 R 代码项
 
 - `R23-06` 当前 main 包身份、合成安装与文件级回退已完成；R23-08 的旧“下一项 R23-06”已校准。R23-06 详情见 [当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md)。

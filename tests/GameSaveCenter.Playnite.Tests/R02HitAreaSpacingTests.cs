@@ -24,6 +24,10 @@ public sealed class R02HitAreaSpacingTests
         Rect copyBounds = Rect.Empty;
         Rect deleteBounds = Rect.Empty;
         Thickness copyMargin = new();
+        double copyWidthRoundingTolerance = 0;
+        double copyHeightRoundingTolerance = 0;
+        double deleteWidthRoundingTolerance = 0;
+        double deleteHeightRoundingTolerance = 0;
         GscButton? copyButton = null;
         GscButton? deleteButton = null;
         GscButton? copyHit = null;
@@ -53,6 +57,10 @@ public sealed class R02HitAreaSpacingTests
 
                 copyBounds = BoundsRelativeTo(copyButton, row);
                 deleteBounds = BoundsRelativeTo(deleteButton, row);
+                copyWidthRoundingTolerance = HalfPhysicalPixelInDip(copyButton, horizontal: true);
+                copyHeightRoundingTolerance = HalfPhysicalPixelInDip(copyButton, horizontal: false);
+                deleteWidthRoundingTolerance = HalfPhysicalPixelInDip(deleteButton, horizontal: true);
+                deleteHeightRoundingTolerance = HalfPhysicalPixelInDip(deleteButton, horizontal: false);
                 copyMargin = copyButton.Margin;
                 copyHit = HitButtonAt(window, Center(copyButton, window));
                 deleteHit = HitButtonAt(window, Center(deleteButton, window));
@@ -74,10 +82,10 @@ public sealed class R02HitAreaSpacingTests
         thread.Join();
 
         Assert.Null(exception);
-        Assert.Equal(34, copyBounds.Width);
-        Assert.Equal(34, copyBounds.Height);
-        Assert.Equal(34, deleteBounds.Width);
-        Assert.Equal(34, deleteBounds.Height);
+        Assert.InRange(Math.Abs(34 - copyBounds.Width), 0, copyWidthRoundingTolerance);
+        Assert.InRange(Math.Abs(34 - copyBounds.Height), 0, copyHeightRoundingTolerance);
+        Assert.InRange(Math.Abs(34 - deleteBounds.Width), 0, deleteWidthRoundingTolerance);
+        Assert.InRange(Math.Abs(34 - deleteBounds.Height), 0, deleteHeightRoundingTolerance);
         Assert.Equal(6, copyMargin.Right);
         Assert.False(copyBounds.IntersectsWith(deleteBounds));
         Assert.InRange(deleteBounds.Left - copyBounds.Right, 5.5, 6.5);
@@ -94,6 +102,8 @@ public sealed class R02HitAreaSpacingTests
         Rect[] bounds = Array.Empty<Rect>();
         GscButton?[] buttons = Array.Empty<GscButton?>();
         GscButton?[] hits = Array.Empty<GscButton?>();
+        double[] widthRoundingTolerances = Array.Empty<double>();
+        double[] heightRoundingTolerances = Array.Empty<double>();
 
         var thread = new Thread(() =>
         {
@@ -109,6 +119,8 @@ public sealed class R02HitAreaSpacingTests
                 row.Children.Add(delete);
                 row.Children.Add(retry);
                 buttons = new[] { copy, delete, retry };
+                widthRoundingTolerances = buttons.Select(button => HalfPhysicalPixelInDip(button!, horizontal: true)).ToArray();
+                heightRoundingTolerances = buttons.Select(button => HalfPhysicalPixelInDip(button!, horizontal: false)).ToArray();
                 var host = new Border { Resources = resources, Child = row };
                 window = CreateWindow(host, 120, 120);
                 window.Show();
@@ -143,11 +155,11 @@ public sealed class R02HitAreaSpacingTests
 
         Assert.Null(exception);
         Assert.Equal(3, bounds.Length);
-        Assert.All(bounds, bound =>
+        for (var index = 0; index < bounds.Length; index++)
         {
-            Assert.Equal(34, bound.Width);
-            Assert.Equal(34, bound.Height);
-        });
+            Assert.InRange(Math.Abs(34 - bounds[index].Width), 0, widthRoundingTolerances[index]);
+            Assert.InRange(Math.Abs(34 - bounds[index].Height), 0, heightRoundingTolerances[index]);
+        }
         Assert.InRange(Math.Abs(bounds[0].Top - bounds[1].Top), 0, 0.5);
         Assert.True(bounds[2].Top >= bounds[0].Bottom - 0.5, $"third action row started at {bounds[2].Top:0.##}, first row ended at {bounds[0].Bottom:0.##}");
         Assert.InRange(bounds[0].Left, 0, 0.5);
@@ -214,6 +226,12 @@ public sealed class R02HitAreaSpacingTests
 
     private static Rect BoundsRelativeTo(FrameworkElement element, Visual ancestor)
         => element.TransformToAncestor(ancestor).TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+
+    private static double HalfPhysicalPixelInDip(Visual visual, bool horizontal)
+    {
+        var scale = VisualTreeHelper.GetDpi(visual);
+        return 0.5 / (horizontal ? scale.DpiScaleX : scale.DpiScaleY) + 0.001;
+    }
 
     private static string Format(Rect bound)
         => $"({bound.Left:0.##},{bound.Top:0.##},{bound.Width:0.##}x{bound.Height:0.##})";

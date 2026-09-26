@@ -3,6 +3,8 @@
 更新时间：2026-09-05
 目标版本：`0.6.73-development-preview`
 
+2026-09-26 ENV-001（工程环境门禁，非产品回归）：隔离 Playnite runner 已增加 profile/路径/reparse/进程/output fail-closed 保护；当前 Codex 执行身份无法查询 `Win32_Process` 命令行，入口因此在创建 profile/output 前拒绝。本机 2026-09-24 fresh isolated bootstrap 已记录 CEF `platform_channel 0x5` 拒绝访问，环境状态未变化，不重试。自动验证已收口：Release `--no-restore` build `0/0`、Playnite 源码 `465/483`（18 项既有 skip）、WPF `105/105` 类隔离通过；未启动 Playnite，真实扩展加载、AppData/库访问边界和 UIA 仍未验，任务保持 `BLOCKED_ENVIRONMENT`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md`。
+
 > **编号说明（2026-08-31）**：本台账经过多轮 AI 协作后存在少量编号复用冲突：`GSC-012`、`GSC-024`、`GSC-025`、`GSC-026`、`GSC-027`、`GSC-049`、`GSC-093`、`GSC-094`、`GSC-104` 各出现在两条不同问题上。同一编号下的多条记录均为独立问题，互不合并；后续引用请以「问题文字」为准，而不是只凭编号。待真机回归阶段统一重编号时，会在此处登记新旧编号映射。
 
 2026-09-05 GSC-134：任务中心搜索框输入文字不可见；根因是生产 TextBox 模板把 Padding 同时用于外层 Border 和原生内容视图，`7 DIP` 上下内边距将 viewport 压至约 `5 DIP`。已移除外层重复 Padding，保持 `36 DIP` 高度、`30,7,38,7` 输入内边距、Foreground/Binding 和清除按钮；STA 回归与 Render QA 已验证。真实 Playnite 主题、DPI 和键盘输入仍需复核。

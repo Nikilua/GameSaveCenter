@@ -8,6 +8,40 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class DiagnosticsEvidenceSourceTests
 {
     [Fact]
+    public void IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost()
+    {
+        var root = FindRepositoryRoot();
+        var hostScript = File.ReadAllText(Path.Combine(root, "scripts", "real-host-audit.ps1"));
+        var installScript = File.ReadAllText(Path.Combine(root, "scripts", "dev-install-run.ps1"));
+        var isolationHelpers = File.ReadAllText(Path.Combine(root, "scripts", "PlayniteHostIsolation.ps1"));
+
+        Assert.Contains("Real-host audits require an explicit user-data profile under repository .tmp.", hostScript);
+        Assert.Contains("Real-host audits require an explicit Playnite.DesktopApp.exe path.", hostScript);
+        Assert.Contains("Resolve-GscRepositoryScopedPath", hostScript);
+        Assert.Contains("Initialize-GscIsolatedPlayniteProfile", hostScript);
+        Assert.Contains("Assert-GscNoActivePlayniteProcesses -Processes $initialHostProcessSnapshot", hostScript);
+        Assert.Contains("SkipPlayniteShutdownForIsolatedTarget = $true", hostScript);
+        Assert.Contains("Get-GscPlayniteProcessStartEvidence", hostScript);
+        Assert.DoesNotContain("Remove-Item -LiteralPath $Output -Recurse -Force", hostScript);
+
+        Assert.Contains("function Resolve-GscRepositoryScopedPath", isolationHelpers);
+        Assert.Contains("function Assert-GscNoReparsePointsUnderPath", isolationHelpers);
+        Assert.Contains("function Assert-GscPlayniteProfileDatabaseIsolation", isolationHelpers);
+        Assert.Contains("ReparsePoint", isolationHelpers);
+        Assert.Contains("function Initialize-GscIsolatedPlayniteProfile", isolationHelpers);
+        Assert.Contains("Refusing to overwrite existing Playnite host audit output", isolationHelpers);
+        Assert.Contains("--userdatadir", isolationHelpers);
+        Assert.Contains("function Get-GscPlayniteProcessStartEvidence", isolationHelpers);
+
+        Assert.Contains("[switch]$SkipPlayniteShutdownForIsolatedTarget", installScript);
+        Assert.Contains("SkipPlayniteShutdownForIsolatedTarget requires -NoStart.", installScript);
+        Assert.Contains("SkipPlayniteShutdownForIsolatedTarget requires an explicit isolated PlayniteExtensionsPath under repository .tmp.", installScript);
+        Assert.Contains("Assert-GscNoActivePlayniteProcesses -Processes $isolationConflicts", installScript);
+        Assert.Contains("if ($SkipPlayniteShutdownForIsolatedTarget)", installScript);
+        Assert.Contains("Stop-PlayniteAndOwnedWorkerReliably @stopArguments", installScript);
+    }
+
+    [Fact]
     public void RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields()
     {
         var root = FindRepositoryRoot();
@@ -15,6 +49,7 @@ public sealed class DiagnosticsEvidenceSourceTests
         var hostScript = File.ReadAllText(Path.Combine(root, "scripts", "real-host-audit.ps1"));
         var installScript = File.ReadAllText(Path.Combine(root, "scripts", "dev-install-run.ps1"));
         var hostSeeder = File.ReadAllText(Path.Combine(root, "tests", "GameSaveCenter.Playnite.HostAuditSeeder", "HostAuditSeederPlugin.cs"));
+        var isolationHelpers = File.ReadAllText(Path.Combine(root, "scripts", "PlayniteHostIsolation.ps1"));
 
         Assert.Contains("EvidenceSource: {sourceKind}", harness);
         Assert.Contains("ResolveGitValue(\"rev-parse HEAD\")", harness);
@@ -64,7 +99,7 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("if ($commit) {", hostScript);
         Assert.DoesNotContain("if ($LASTEXITCODE -eq 0 -and $commit)", hostScript);
         Assert.Contains("SeedSyntheticLibrary", hostScript);
-        Assert.Contains("Synthetic library seeding is restricted to an isolated profile below repository .tmp", hostScript);
+        Assert.Contains("Path must be a descendant of repository ${ScopeRootName}", isolationHelpers);
         Assert.Contains("GameSaveCenter_AuditSeeder_$seederId", hostScript);
         Assert.Contains("GSC_UI_AUDIT_SEED_RUN_ID", hostScript);
         Assert.Contains("RuntimeManifestObserved", hostScript);
@@ -100,6 +135,11 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("safestart.flag", bootstrap);
         Assert.DoesNotContain("Stop-Process -Id $bootstrapProcess.Id -Force", bootstrap);
         Assert.Contains("function Find-PlayniteDesktopThemeDirectory", hostScript);
+        Assert.DoesNotContain("$env:APPDATA", hostScript);
+        var themeLookupStart = hostScript.IndexOf("function Find-PlayniteDesktopThemeDirectory", StringComparison.Ordinal);
+        var themeLookupEnd = hostScript.IndexOf("function New-IsolatedBootstrapFailureEvidence", themeLookupStart, StringComparison.Ordinal);
+        Assert.True(themeLookupEnd > themeLookupStart);
+        Assert.DoesNotContain("APPDATA", hostScript.Substring(themeLookupStart, themeLookupEnd - themeLookupStart));
         Assert.Contains("Themes\\Desktop", hostScript);
         Assert.Contains("theme.yaml", hostScript);
 

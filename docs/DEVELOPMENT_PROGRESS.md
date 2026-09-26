@@ -1,5 +1,12 @@
 # 开发实现进度
 
+## 2026-09-26 ENV-001 隔离 Playnite runner 安全收口
+
+- 审计 runner 现在 fail-closed 校验显式仓库 `.tmp` profile、Playnite executable、进程冲突与命令行可观测性；拒绝未标记的非空目录、profile reparse point、profile 外数据库路径和已有 output 覆盖。隔离安装不会关闭用户 Playnite/Worker；审计脚本不再查询用户 AppData 主题/日志路径。
+- 自动脚本/源码门禁、XAML `24/24`、Release solution `--no-restore` build `0 warning/0 error`、Core `125/125`、Worker `357/357` 已通过。Playnite 源码组 `465 passed/18 skipped/483 total`；105 个 WPF 测试类独立进程全部通过。R02/R06/R08/R09 受当前 WPF DPI/像素采样影响的类别复测分别 `2/2`、`4/4`、`2/2`、`2/2`，无最终失败。
+- 本机 Playnite 可执行文件已找到且签名有效，但 Codex 身份的 WMI 命令行查询为“拒绝访问”；runner 实测在副作用前拒绝。9 月 24 日同机 fresh profile 的 CEF `platform_channel 0x5` 仍受既有“不在同状态重试”规则约束，本批未启动宿主。环境门禁未通过，ENV-001 保持 `BLOCKED_ENVIRONMENT`；不改变产品版本或 R 账本 192 项基线。
+- 证据：[ENV-001 隔离 runner 安全收口](design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。
+
 - [x] GSC-133（2026-09-04）：修复 Worker 目录缓存只按 Ludusavi 匹配输入去重导致的安装状态陈旧。`GameMatchInput` 继续避免安装状态触发重匹配，但 `GameCatalogService` 现在独立比较并持久化安装状态、安装目录、启动动作等描述变化；新增“死亡空间已匹配后从未安装变为已安装”的 Worker 回归测试，版本提升到 0.6.73。Release 编译 0 warning/0 error；Core `65/65`、Worker `235/235`、Playnite `331/388`（57 跳过）；XAML `19/19`、源码/WPF 门禁通过；0.6.73 已打包并安装到本机 Playnite，日志确认加载 `0.6.73.0`。
 
 - [x] GSC-132（2026-09-03）：继续修复游戏选择器“显示已安装但已安装筛选搜不到”的 WPF 竞态。两套选择器不再通过 `SelectionChanged` 写回共享 ViewModel，改为仅在 `DropDownClosed` 后提交用户选择；新增“已安装 + 死亡空间搜索”回归测试，版本提升到 0.6.72。已完成 Release 编译（0 warning/0 error）、Core `65/65`、Worker `234/234`、Playnite `331/388`（57 跳过）、XAML `19/19`、源码/WPF 门禁和 Render QA；本机 Playnite 已实际加载 `0.6.72.0`，安装包与安装 DLL 已核对。当前本机样本只有 3 个游戏，不含用户目标游戏，目标机器仍需复核。

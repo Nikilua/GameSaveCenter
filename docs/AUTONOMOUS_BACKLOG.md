@@ -41,13 +41,15 @@
 ### ENV-001：可审计的隔离 Playnite 真机测试环境
 
 - **优先级**：P0
-- **状态**：PROPOSED
+- **状态**：BLOCKED_ENVIRONMENT
 - **前置条件**：不得停止、关闭或覆盖用户正在使用的 Playnite/Worker；不得把 `.tmp/` 或测试库纳入 Git。
 - **根因与影响**：当前工作区的 `.tmp/playnite-ui-test/Playnite` 仅含 `DatabasePath: library` 和独立扩展文件，尚不能以可审计证据证明 Playnite 会使用独立配置、扩展数据根和单独进程，而非复用用户 `%AppData%\\Playnite` 或向现有单实例转发。启动它可能影响用户实例，因而不能作为 UI-001 真机验收环境。
 - **范围**：只建立并验证一个独立 Playnite 数据根、空测试库、独立扩展目录和可记录的启动 PID 边界；证明不读取/写入用户 AppData、现有库或现有扩展目录后，才允许执行后续 UI/功能 smoke test。
 - **非目标**：不启动现有用户 Playnite；不删除用户数据；不安装到用户扩展目录；不执行备份、恢复、云端镜像或媒体删除。
 - **验收标准**：启动方式与官方 portable/独立数据机制有可复查依据；启动前后均能记录测试 PID 与数据根；用户实例 PID/路径未变；测试扩展与 Worker（如启动）均从测试目录加载；测试后日志能证明无用户 AppData/库写入。
 - **阻塞条件**：无法证明 Playnite 数据隔离或无法获得安全的独立启动方式时，保持 `BLOCKED_ENVIRONMENT`，不得以 `--hidesplashscreen`、复制安装目录或强制结束进程代替证据。
+- **阶段结果（2026-09-26）**：隔离 runner 已补 fail-closed 守卫：要求显式 `.tmp` profile 与 `Playnite.DesktopApp.exe`；核对没有 Playnite/Worker 冲突进程；启动前验证进程命令行可观察；标记并拒绝非空未标记 profile；递归拒绝 reparse point；数据库路径限制在 profile；拒绝覆盖已有 audit output；隔离安装分支跳过停止用户 Playnite/Worker；脚本不读取用户 AppData 主题/日志路径。相应 PowerShell 与源码契约测试已加入。Release solution `--no-restore` build `0/0`、XAML `24/24`、Core `125/125`、Worker `357/357`；Playnite 源码测试 `465 passed/18 skipped`，105 个 WPF 测试类分进程通过。R 表仍是 192 项，未新增、重分类或签收任何 R ID。
+- **当前阻塞**：本机已发现有效签名的 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe`，但当前工具身份对 `Win32_Process` 命令行查询返回“拒绝访问”；runner 现会在创建目录/profile 或启动宿主之前拒绝。主机记录还明确证明同一 Playnite 在 2026-09-24 的 fresh isolated bootstrap 遇到 CEF `platform_channel 0x5`，相同系统/权限状态不重复启动；未下载、安装或启动 Playnite。故实际宿主进程、AppData/库写入边界、扩展加载、UIA 与页面验收尚未完成，维持 `BLOCKED_ENVIRONMENT`。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md`。
 
 ### DOC-001：完成度评估版本与证据一致性复核
 

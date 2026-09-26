@@ -9354,3 +9354,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 加入真实 WPF geometry behavior：未选、失焦选中和键盘焦点选中前后捕获各 cell/TextBlock 相对 DataGrid 的 x/y/width/height；误差 `<=0.25 DIP`。四个生产页表格在 Light/Dark、禁用态与 status badge 状态通过。
 - Release solution Playnite `net462`、Tests `net472`，XAML `24/24`、0 errors，两条既有 Media `CS8602` warning；定向 `19/19`（Selection `2`、四页生产 state+geometry `1`、用户布局 `8`、模板契约 `1`、排序回归 `7`）。source validator 与 `git diff --check` 通过。
 - 用户真实 Playnite/package-host 呈现帧和物理输入未验，CEF `0x5` 不绕过。此为 R06-03 定点修复，不签收全项。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md`。下一项 Media Inbox 目标复用全局 `SelectedGame`。
+
+# 2026-09-26 ENV-001 runner 加固与本机隔离测试复核
+
+- 续接异设备记忆，核对 R 台账仍为 192 个唯一 ID（`106/83/1/1/1`）；选择 backlog 中已登记的 ENV-001 安全收口，不改产品业务或版本。
+- 新增 `scripts/PlayniteHostIsolation.ps1`：仓库范围路径/reparse 校验、进程冲突与当前 PID 命令行能力检查、profile marker 生命周期、数据库路径隔离、audit output 防覆盖。更新 `real-host-audit.ps1`，将 `--userdatadir` 用于两段启动，拒绝用户 AppData 主题/日志解析并在启动前做 fail-closed preflight。更新 `dev-install-run.ps1`，隔离安装限定显式 `.tmp` 根和 `-NoStart`，避免其关闭用户 Playnite/Worker。
+- 新增 PowerShell helper tests 与 C# 源码合约。`Test-PlayniteHostIsolation.ps1` 通过；无 exe、WMI 权限不足和路径/reparse 等负向入口副作用前拒绝。XAML `24/24`，Release solution `--no-restore` build `0 warning/0 error`，Core `125/125`、Worker `357/357`。
+- Playnite 非 WPF 源码测试组 `465 passed/18 skipped/483 total`；105 个 WPF 测试类分进程完整通过。期间修正当前 125% WPF 布局下把 34 DIP 精确值写死的半物理像素容差、剪贴板日期字段子串误判、Motion 270 DIP 宽度容差，以及 R09 圆角描边 anti-alias 明暗阈值。定向结果：R02 `2/2`、R06 `4/4`、R08 `2/2`、R09 `2/2`。18 个 skip 是既有显式 skip，包含撤销 UI 基线断言与当前权限下不可运行的 Named Pipe 客户端用例；无最终失败。
+- `validate-source.py`、4 个 PowerShell AST 检查、XAML 检查和 `git diff --check` 均通过。当前 NuGet 用户配置读取受限时使用已经还原的资产执行 `--no-restore` build。
+- Playnite exe 已找到且 Authenticode 签名有效；本机当前 WMI `Win32_Process` 命令行查询 Access Denied，新 preflight 因而不建 profile/output、不启动 host。已有 2026-09-24 CEF `platform_channel 0x5` 证据且环境未变化，本阶段未重试。真实 Playnite PID/扩展/UIA/页面/文件跟踪仍无证据，ENV-001 记为 `BLOCKED_ENVIRONMENT`。本机证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md`。

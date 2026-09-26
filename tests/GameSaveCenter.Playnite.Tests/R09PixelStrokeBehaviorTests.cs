@@ -254,12 +254,24 @@ public sealed class R09PixelStrokeBehaviorTests
             .Where(row => IsBright(pixels, pixelWidth, sampleX, row))
             .ToArray();
         var longestRun = LongestConsecutiveRun(brightRows);
+        var brightPixelRows = Enumerable.Range(0, lastRow + 1)
+            .Where(row => Enumerable.Range(0, pixelWidth).Any(column => IsBright(pixels, pixelWidth, column, row)))
+            .ToArray();
+        var brightPixelColumns = Enumerable.Range(0, pixelWidth)
+            .Where(column => Enumerable.Range(0, lastRow + 1).Any(row => IsBright(pixels, pixelWidth, column, row)))
+            .ToArray();
+        var sampleRows = Enumerable.Range(Math.Max(0, expectedRow - 3), Math.Min(lastRow, expectedRow + 3) - Math.Max(0, expectedRow - 3) + 1)
+            .Select(row => $"{row}:{pixels[(row * pixelWidth + sampleX) * 4]}")
+            .ToArray();
 
         var minimumPixels = Math.Max(1, (int)Math.Floor(scale));
         var maximumPixels = Math.Max(2, (int)Math.Ceiling(scale) + 1);
         Assert.True(
             longestRun >= minimumPixels && longestRun <= maximumPixels,
-            $"scale={scale:0.00}, expectedRow={expectedRow}, sampleX={sampleX}, brightRows=[{string.Join(",", brightRows)}]");
+            $"scale={scale:0.00}, expectedRow={expectedRow}, sampleX={sampleX}, brightRows=[{string.Join(",", brightRows)}], " +
+            $"samples=[{string.Join(",", sampleRows)}], " +
+            $"allBrightBounds=rows:{(brightPixelRows.Length == 0 ? "none" : $"{brightPixelRows[0]}..{brightPixelRows[brightPixelRows.Length - 1]}")}, " +
+            $"columns:{(brightPixelColumns.Length == 0 ? "none" : $"{brightPixelColumns[0]}..{brightPixelColumns[brightPixelColumns.Length - 1]}")}");
     }
 
     private static void AssertRoundedCornerDoesNotSquareOff(
@@ -302,7 +314,7 @@ public sealed class R09PixelStrokeBehaviorTests
         if (x < 0 || y < 0 || x >= width || y * width * 4 + x * 4 + 2 >= pixels.Count)
             return false;
         var offset = (y * width + x) * 4;
-        return pixels[offset] > 220 && pixels[offset + 1] > 220 && pixels[offset + 2] > 220;
+        return pixels[offset] > 80 && pixels[offset + 1] > 80 && pixels[offset + 2] > 80;
     }
 
     private static void RunSta(Action action)

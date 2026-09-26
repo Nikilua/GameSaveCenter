@@ -12,42 +12,32 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-if ($SeedSyntheticLibrary) {
-    if ([string]::IsNullOrWhiteSpace($UserDataDir)) {
-        throw 'SeedSyntheticLibrary requires an explicit isolated UserDataDir under repository .tmp.'
-    }
-    $UserDataDir = [System.IO.Path]::GetFullPath($UserDataDir)
-    $temporaryRoot = [System.IO.Path]::GetFullPath((Join-Path $root '.tmp'))
-    $temporaryPrefix = $temporaryRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
-    if (-not $UserDataDir.StartsWith($temporaryPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-        throw "Synthetic library seeding is restricted to an isolated profile below repository .tmp: $UserDataDir"
-    }
-    $cursor = $UserDataDir
-    while ($cursor.StartsWith($temporaryPrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
-           [string]::Equals($cursor, $temporaryRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
-        if (Test-Path -LiteralPath $cursor) {
-            $entry = Get-Item -LiteralPath $cursor -Force
-            if (($entry.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
-                throw "Synthetic library profile cannot traverse a reparse point: $cursor"
-            }
-        }
-        if ([string]::Equals($cursor, $temporaryRoot, [System.StringComparison]::OrdinalIgnoreCase)) { break }
-        $cursor = Split-Path -Parent $cursor
-    }
+$hostIsolationHelpers = Join-Path $PSScriptRoot 'PlayniteHostIsolation.ps1'
+. $hostIsolationHelpers
+
+if ([string]::IsNullOrWhiteSpace($UserDataDir)) {
+    throw 'Real-host audits require an explicit user-data profile under repository .tmp.'
 }
-if ([string]::IsNullOrWhiteSpace($Output)) {
-    $Output = Join-Path $root 'artifacts\ui-host-audit'
-}
-$Output = [System.IO.Path]::GetFullPath($Output)
-$artifactsRoot = [System.IO.Path]::GetFullPath((Join-Path $root 'artifacts'))
-if (-not $Output.StartsWith($artifactsRoot + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)) {
-    throw "Output must be inside artifacts: $Output"
+if ([string]::IsNullOrWhiteSpace($PlayniteExecutable)) {
+    throw 'Real-host audits require an explicit Playnite.DesktopApp.exe path.'
 }
 
-if (Test-Path -LiteralPath $Output) {
-    Remove-Item -LiteralPath $Output -Recurse -Force
+$PlayniteExecutable = Assert-GscPlayniteExecutable -PlayniteExecutable $PlayniteExecutable
+$initialHostProcessSnapshot = @(Get-GscPlayniteConflictingProcesses)
+Assert-GscNoActivePlayniteProcesses -Processes $initialHostProcessSnapshot
+Assert-GscProcessCommandLineInspectionAvailable
+if (-not (Test-Path -LiteralPath (Join-Path $root '.tmp') -PathType Container)) {
+    New-Item -ItemType Directory -Path (Join-Path $root '.tmp') -Force | Out-Null
 }
-New-Item -ItemType Directory -Path $Output -Force | Out-Null
+if (-not (Test-Path -LiteralPath (Join-Path $root 'artifacts') -PathType Container)) {
+    New-Item -ItemType Directory -Path (Join-Path $root 'artifacts') -Force | Out-Null
+}
+$UserDataDir = Resolve-GscRepositoryScopedPath -RepositoryRoot $root -Path $UserDataDir -ScopeRootName '.tmp'
+$Output = Get-GscHostAuditOutputPath -RepositoryRoot $root -Output $Output
+$isolatedProfile = Initialize-GscIsolatedPlayniteProfile -RepositoryRoot $root -UserDataDir $UserDataDir
+$UserDataDir = $isolatedProfile.Path
+New-Item -ItemType Directory -Path $Output | Out-Null
+$artifactsRoot = [System.IO.Path]::GetFullPath((Join-Path $root 'artifacts'))
 
 $env:GSC_REAL_HOST_AUDIT = $Output
 $previousWorkerDataDirectory = [Environment]::GetEnvironmentVariable('GameSaveCenter__DataDirectory', 'Process')
@@ -90,7 +80,16 @@ $runnerMetadata = [ordered]@{
     Theme = 'captured per metadata-*.json'
     DataVolume = 'captured from production snapshot/diagnostic metadata when available'
     Timing = 'capture manifest includes per-surface capture status; host interaction time is not fabricated'
-    UserDataMode = if ([string]::IsNullOrWhiteSpace($UserDataDir)) { 'current-user-data' } else { 'isolated-user-data' }
+    UserDataMode = 'isolated-user-data'
+    UserDataProfileId = $isolatedProfile.ProfileId
+    UserDataProfileMarker = $isolatedProfile.MarkerPath
+    ProcessIsolation = [ordered]@{
+        Policy = 'refuse-existing-processes; never close user Playnite or Worker'
+        InitialConflicts = @($initialHostProcessSnapshot)
+        InitialCheckUtc = [DateTime]::UtcNow.ToString('O')
+    }
+    OutputOverwritePolicy = 'refuse-existing-path; unique default output directory'
+    PlayniteStartupArguments = New-GscPlayniteUserDataArguments -UserDataDir $UserDataDir
     SyntheticLibrary = if ($SeedSyntheticLibrary) {
         [ordered]@{ Status = 'requested'; RequestedCount = $SyntheticLibraryCount; EvidenceSource = 'SyntheticPlayniteLibrary' }
     } else { [ordered]@{ Status = 'not-requested'; EvidenceSource = 'none' } }
@@ -159,6 +158,7 @@ if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
     $installArguments.PlayniteExtensionsPath = $isolatedExtensionsPath
     $installArguments.PlayniteExecutable = $PlayniteExecutable
     $installArguments.NoStart = $true
+    $installArguments.SkipPlayniteShutdownForIsolatedTarget = $true
     # Isolated audits must keep package archives and their historical hashes intact.
     $installArguments.SkipPackageArchives = $true
     $installArguments.RunLogPath = Join-Path $Output 'dev-install.log'
@@ -192,13 +192,13 @@ function Find-PlayniteDesktopThemeDirectory {
     param([Parameter(Mandatory = $true)][string]$ThemeId)
 
     $themeRoots = [System.Collections.Generic.List[string]]::new()
-    if (-not [string]::IsNullOrWhiteSpace($env:APPDATA)) {
-        $themeRoots.Add((Join-Path $env:APPDATA 'Playnite\Themes\Desktop'))
-    }
     if (-not [string]::IsNullOrWhiteSpace($PlayniteExecutable)) {
-        $playniteInstallThemeRoot = Join-Path (Split-Path -Parent $PlayniteExecutable) 'Themes\Desktop'
-        if (-not $themeRoots.Contains($playniteInstallThemeRoot)) {
-            $themeRoots.Add($playniteInstallThemeRoot)
+        $playniteExecutableDirectory = Split-Path -Parent $PlayniteExecutable
+        foreach ($installDirectory in @($playniteExecutableDirectory, (Split-Path -Parent $playniteExecutableDirectory))) {
+            $playniteInstallThemeRoot = Join-Path $installDirectory 'Themes\Desktop'
+            if (-not $themeRoots.Contains($playniteInstallThemeRoot)) {
+                $themeRoots.Add($playniteInstallThemeRoot)
+            }
         }
     }
 
@@ -282,11 +282,18 @@ function Initialize-IsolatedPlayniteConfig {
     $bootstrapProcess = $null
     $backupConfigPath = Join-Path $UserDataDir 'Backup\config.json'
     try {
+        $bootstrapConflicts = @(Get-GscPlayniteConflictingProcesses)
+        Assert-GscNoActivePlayniteProcesses -Processes $bootstrapConflicts
+        $bootstrapArguments = New-GscPlayniteUserDataArguments -UserDataDir $UserDataDir
         Write-Host '==> Initializing isolated Playnite profile configuration' -ForegroundColor DarkCyan
         $bootstrapProcess = Start-Process -FilePath $PlayniteExecutable `
             -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
-            -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir) `
+            -ArgumentList $bootstrapArguments `
             -PassThru
+        $runnerMetadata.IsolatedProfileBootstrapProcess = Get-GscPlayniteProcessStartEvidence `
+            -StartedProcess $bootstrapProcess `
+            -ExpectedExecutable $PlayniteExecutable `
+            -ExpectedUserDataDir $UserDataDir
         $deadline = (Get-Date).AddSeconds(45)
         while (-not (Test-Path -LiteralPath $configPath -PathType Leaf) -and
                -not (Test-Path -LiteralPath $backupConfigPath -PathType Leaf) -and
@@ -348,6 +355,7 @@ function Initialize-IsolatedPlayniteConfig {
 
 try {
     Initialize-IsolatedPlayniteConfig
+    Assert-GscNoReparsePointsUnderPath -Path $UserDataDir
 }
 catch {
     $bootstrapError = $_
@@ -391,9 +399,8 @@ try {
         $playniteConfig.AutoBackupEnabled = $false
         $playniteConfig | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $playniteConfigPath -Encoding UTF8
 
-        # A copied config can reference a desktop theme that is not present in the
-        # isolated profile.  Resolve it by manifest ID from user or installed Playnite
-        # theme roots, then copy only into this isolated profile.
+        # Resolve a desktop theme only from the Playnite installation, never from
+        # the user's AppData profile, then copy it into this isolated profile.
         $configuredTheme = [string]$playniteConfig.Theme
         if (-not [string]::IsNullOrWhiteSpace($configuredTheme)) {
             $sourceTheme = Find-PlayniteDesktopThemeDirectory -ThemeId $configuredTheme
@@ -408,7 +415,7 @@ try {
             else {
                 $runnerMetadata.ConfiguredDesktopTheme = $configuredTheme
                 $runnerMetadata.ConfiguredDesktopThemeCopied = $false
-                Write-Warning "Configured Playnite desktop theme was not found in the current user profile: $configuredTheme"
+                Write-Warning "Configured Playnite desktop theme was not found in the Playnite installation: $configuredTheme"
             }
         }
 
@@ -449,7 +456,8 @@ try {
             $runnerMetadata.SyntheticLibrary.ExtensionDirectory = $seederDirectory
         }
 
-        $runnerMetadata.DatabasePath = Join-Path $UserDataDir 'library'
+        $runnerMetadata.DatabasePath = Assert-GscPlayniteProfileDatabaseIsolation -UserDataDir $UserDataDir -Configuration $playniteConfig
+        Assert-GscNoReparsePointsUnderPath -Path $UserDataDir
         $runnerMetadata.WorkerExecutable = $pluginWorker
         $runnerMetadata | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
         Write-Host "==> Starting Playnite with isolated user data: $UserDataDir" -ForegroundColor Cyan
@@ -458,10 +466,18 @@ try {
             [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_SEED_RUN_ID', $syntheticSeedRunId, 'Process')
             [Environment]::SetEnvironmentVariable('GSC_UI_AUDIT_SEED_COUNT', $SyntheticLibraryCount.ToString([System.Globalization.CultureInfo]::InvariantCulture), 'Process')
         }
+        $launchConflicts = @(Get-GscPlayniteConflictingProcesses)
+        Assert-GscNoActivePlayniteProcesses -Processes $launchConflicts
+        $playniteStartupArguments = New-GscPlayniteUserDataArguments -UserDataDir $UserDataDir
         $startedPlayniteProcess = Start-Process -FilePath $PlayniteExecutable `
             -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
-            -ArgumentList @('--startdesktop', '--hidesplashscreen', '--userdatadir', $UserDataDir) `
+            -ArgumentList $playniteStartupArguments `
             -PassThru
+        $runnerMetadata.PlayniteLaunch = Get-GscPlayniteProcessStartEvidence `
+            -StartedProcess $startedPlayniteProcess `
+            -ExpectedExecutable $PlayniteExecutable `
+            -ExpectedUserDataDir $UserDataDir
+        $runnerMetadata | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $Output 'runner-metadata.json') -Encoding UTF8
         if ($SeedSyntheticLibrary) {
             $seedDeadline = (Get-Date).AddSeconds(30)
             $seedManifest = $null
@@ -544,7 +560,7 @@ function Get-RealHostStartupBlocker {
     }
 
     if ([string]::IsNullOrWhiteSpace($HostUserDataDir)) {
-        $HostUserDataDir = Join-Path $env:APPDATA 'Playnite'
+        throw 'Real-host blocker diagnostics require the explicit isolated Playnite user-data directory.'
     }
 
     $playniteLogPath = Join-Path $HostUserDataDir 'playnite.log'

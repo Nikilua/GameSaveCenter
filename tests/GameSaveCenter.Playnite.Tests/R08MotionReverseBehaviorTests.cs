@@ -83,6 +83,7 @@ public sealed class R08MotionReverseBehaviorTests
         var reversalStart = 0d;
         var reverseMidpoint = 0d;
         var finalWidth = 0d;
+        var finalWidthRoundingTolerance = 0d;
         var finalOpacity = 0d;
         var sidebarTrace = string.Empty;
 
@@ -101,6 +102,7 @@ public sealed class R08MotionReverseBehaviorTests
                 window.Show();
                 window.UpdateLayout();
                 shell.UpdateLayout();
+                finalWidthRoundingTolerance = 0.5 / VisualTreeHelper.GetDpi(shell).DpiScaleX + 0.001;
 
                 var sidebar = Assert.IsType<ColumnDefinition>(shell.FindName("SidebarColumn"));
                 var layer = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarContentLayer"));
@@ -132,7 +134,7 @@ public sealed class R08MotionReverseBehaviorTests
                 Assert.InRange(collapseMidpoint, 72.2, 269.8);
                 Assert.InRange(reversalStart, collapseMidpoint - 1.5, collapseMidpoint + 1.5);
                 Assert.True(reverseMidpoint > reversalStart, $"sidebar did not reverse toward expanded target: {reverseMidpoint} <= {reversalStart}");
-                Assert.Equal(270, finalWidth, 1);
+                Assert.InRange(Math.Abs(270 - finalWidth), 0, finalWidthRoundingTolerance);
                 Assert.False(shell.SidebarTransitionRunningForAudit);
                 Assert.Equal(1, finalOpacity, 3);
                 Assert.False(DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated);

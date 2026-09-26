@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 当前执行阶段：ENV-001 runner 安全收口
+
+- 用户要求在本机接续异设备开发记录。本批选择 backlog 中已登记的 ENV-001，不改产品业务，不改版本，不新增/重分类 R ID；192 个唯一项与 `106/83/1/1/1` 状态计数保持。
+- runner 已显式要求仓库 `.tmp` profile 和 Playnite executable；启动前检查用户 Playnite/Worker 进程及当前进程命令行查询能力。Profile marker、空目录、递归 reparse point、数据库路径、audit output 唯一性均有保护；isolated install 仅 `-NoStart` 并跳过任何强制关闭逻辑。审计资源主题/日志不再从用户 AppData 解析。
+- 自动验证：Release solution `--no-restore` build `0/0`，XAML `24/24`，Core `125/125`，Worker `357/357`，Playnite source tests `465/483`（18 项为既有显式 skip，包含撤销 UI 基线断言与当前权限下不可运行的 Named Pipe 客户端用例），WPF `105/105` 类隔离通过；R02 hit area `2/2`、R06 clipboard `4/4`、R08 motion `2/2`、R09 pixel stroke `2/2`。像素探针已按实际可见抗锯齿强度判定，几何/圆角门槛保留。源 validator、PowerShell AST、helper tests、diff check 通过。
+- 环境结论：找到签名有效的 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe`，但 WMI 当前 PID 命令行权限返回 Access Denied；host runner 负向验证证明它在副作用前拒绝。先前 fresh profile CEF `platform_channel 0x5` 同状态不重试。本阶段没有实际启动 Playnite，不能声称 AppData/库零写入、扩展加载或 UIA/页面通过；ENV-001 仍 `BLOCKED_ENVIRONMENT`。
+- 详细证据：[ENV-001-ISOLATED-RUNNER-20260926.md](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。只有进程观察权限/CEF 环境有变化或用户提供新的明确复现缺陷后再继续；不可在同一 CEF/权限状态重试或绕过保护。
+
 ## 2026-09-26 当前准入：等待环境条件或新的用户缺陷
 
 - R23-06 当前 main 包/隔离安装/文件级回退已收口，不重复。R 表 192 项唯一任务计数维持 `106/83/1/1/1`（满足受控/待环境/外部阻塞/部分满足/不适用），没有待实现/实施中的 R 项。

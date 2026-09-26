@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前续接：ENV-001 runner 加固完成，真实宿主继续阻塞
+
+已完成 ENV-001 的本地 runner 安全阶段：隔离目录、marker/reparse、进程观察、数据库/output 范围与安装时不终止现有进程均 fail-closed。Release solution `--no-restore` build `0/0`、XAML `24/24`、Core `125/125`、Worker `357/357`；Playnite 源码组 `465 passed/18 skipped`，105 个 WPF 类隔离通过。源码 validator、PowerShell AST、runner helper tests、diff check 通过。R 基线仍为 192，状态数 `106/83/1/1/1`。
+
+真实宿主验收仍 `BLOCKED_ENVIRONMENT`：Playnite 在 `D:\software\Playnite\Playnite\Playnite.DesktopApp.exe` 且签名有效，但当前执行身份无权查询 `Win32_Process` 命令行；审计 runner 在任何目录副作用前拒绝。另有 2026-09-24 同机 CEF `platform_channel 0x5` 的 fresh-profile 启动拒绝记录；系统状态未改变，本轮没有再次启动。不要声称已验证实际用户 AppData/库零写入、扩展加载、UIA 或 Playnite 呈现；不要绕过进程/CEF 保护。完整证据：[ENV-001 runner evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md)。
+
 ## 2026-09-26 当前准入状态：产品实现项已收口，环境门禁待变化
 
 R23-06 当前 main 包安装/回退复核完成后，已校准 R23-08 的旧执行顺序。192 项唯一 R 账本仍为 `106` 项受控满足、`83` 项待环境、`1` 外部阻塞、`1` 部分满足、`1` 不适用；没有待开始或实施中的代码项。R22-01 残余时间入口亦没有发现新的生产绑定缺口。

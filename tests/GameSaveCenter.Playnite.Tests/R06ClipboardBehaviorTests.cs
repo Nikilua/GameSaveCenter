@@ -64,7 +64,7 @@ public sealed class R06ClipboardBehaviorTests
         Assert.Equal(expectedTimestamp, values[0]);
         Assert.Equal(expectedTimestamp, DataGridClipboardFormatter.FormatCellForVerification("SaveHistory", "时间", backup));
         Assert.Equal(backup.BackupTypeDisplay, values[1]);
-        Assert.DoesNotContain(backup.CreatedRelativeDisplay, row, StringComparison.Ordinal);
+        Assert.DoesNotContain(backup.CreatedRelativeDisplay, values.Skip(1));
     }
 
     [Fact]

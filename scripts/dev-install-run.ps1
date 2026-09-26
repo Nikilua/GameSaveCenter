@@ -9,6 +9,7 @@ param(
     [string]$InstallReportPath = '',
     [switch]$SkipTests,
     [switch]$NoStart,
+    [switch]$SkipPlayniteShutdownForIsolatedTarget,
     [switch]$SkipClean,
     [switch]$SkipPackageArchives
 )
@@ -27,6 +28,24 @@ catch {
 }
 
 $root = Split-Path -Parent $PSScriptRoot
+$hostIsolationHelpers = Join-Path $PSScriptRoot 'PlayniteHostIsolation.ps1'
+. $hostIsolationHelpers
+if ($SkipPlayniteShutdownForIsolatedTarget) {
+    if (-not $NoStart) {
+        throw 'SkipPlayniteShutdownForIsolatedTarget requires -NoStart.'
+    }
+    if ([string]::IsNullOrWhiteSpace($PlayniteExtensionsPath)) {
+        throw 'SkipPlayniteShutdownForIsolatedTarget requires an explicit isolated PlayniteExtensionsPath under repository .tmp.'
+    }
+
+    $PlayniteExtensionsPath = Resolve-GscRepositoryScopedPath `
+        -RepositoryRoot $root `
+        -Path $PlayniteExtensionsPath `
+        -ScopeRootName '.tmp'
+    $isolationConflicts = @(Get-GscPlayniteConflictingProcesses)
+    Assert-GscNoActivePlayniteProcesses -Processes $isolationConflicts
+}
+
 $artifactsPath = Join-Path $root 'artifacts'
 New-Item $artifactsPath -ItemType Directory -Force | Out-Null
 # Keep the isolated root short enough for the .NET Framework test adapter.
@@ -450,7 +469,12 @@ try {
     if ($playniteExecutables.Count -gt 0) {
         $stopArguments.TrustedPlayniteExecutables = $playniteExecutables
     }
-    Stop-PlayniteAndOwnedWorkerReliably @stopArguments
+    if ($SkipPlayniteShutdownForIsolatedTarget) {
+        Write-Host '隔离扩展目标：跳过停止 Playnite/Worker；若发现既有进程则已在入口处拒绝。' -ForegroundColor DarkCyan
+    }
+    else {
+        Stop-PlayniteAndOwnedWorkerReliably @stopArguments
+    }
 
     if (-not $SkipClean) {
         Write-Host "`n==> 使用新的隔离构建目录：无需清理正在使用的标准 bin/obj" -ForegroundColor DarkCyan
