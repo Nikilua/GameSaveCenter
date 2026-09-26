@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 ENV-001 启动进程身份稳定性复核
+
+- 启动取证现在拒绝相似前缀 profile、重复 `--userdatadir`、取证前退出，以及首次 CIM 快照后 500 ms 稳定窗口内退出/身份变化；第二快照复核同 PID、可执行文件和完整命令行。对应负例已加入 helper tests。
+- 身份注入的 Release `--no-restore` solution build `0 warning/0 error`；Core `125/125`、Worker `357/357`、`DiagnosticsEvidenceSourceTests 8/8`、PowerShell helper 与 AST `4/4`、diff check 通过。Playnite source group 的 111 类通过；105 个 WPF 类的全量逐进程阶段未完成，不记为全量通过。
+- 本机 WMI 命令行访问拒绝和既有 CEF `platform_channel 0x5` 未变化；没有启动 Playnite。短暂存活确认不消除 preflight→launch TOCTOU，也不证明内核级隔离或无副作用。ENV-001 仍 `BLOCKED_ENVIRONMENT`；R 表仍 192 项、`106/83/1/1/1`。
+- 证据：[启动进程身份复核](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。
+
 ## 2026-09-26 ENV-001 profile marker 路径绑定复核
 
 - 独立复核发现旧隔离 marker 只绑定仓库根和 GUID，复制到同仓库另一个已有 profile 目录会被接受。marker schema 升为 `2`，必须同时匹配规范化绝对 `ProfilePath`；旧 schema/异路径标记 fail-closed，不自动迁移或覆盖旧目录。

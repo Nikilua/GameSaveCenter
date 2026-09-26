@@ -34,6 +34,10 @@ public sealed class DiagnosticsEvidenceSourceTests
         Assert.Contains("Refusing to overwrite existing Playnite host audit output", isolationHelpers);
         Assert.Contains("--userdatadir", isolationHelpers);
         Assert.Contains("function Get-GscPlayniteProcessStartEvidence", isolationHelpers);
+        Assert.Contains("exactly one quoted --userdatadir argument", isolationHelpers);
+        Assert.Contains("selected a different user-data path", isolationHelpers);
+        Assert.Contains("exited before its isolation command line could be verified", isolationHelpers);
+        Assert.Contains("exited before the isolation process stability confirmation", isolationHelpers);
 
         Assert.Contains("[switch]$SkipPlayniteShutdownForIsolatedTarget", installScript);
         Assert.Contains("SkipPlayniteShutdownForIsolatedTarget requires -NoStart.", installScript);

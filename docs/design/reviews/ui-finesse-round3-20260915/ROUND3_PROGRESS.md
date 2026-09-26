@@ -1042,3 +1042,10 @@
 - 实际 WPF DataGrid 比较未选、失焦选中、键盘焦点选中时每个 cell/TextBlock 的 x/y/宽/高；四个生产表格在 Light/Dark 均由 `<=0.25 DIP` 门限覆盖。再检查 disabled opacity 与失败 badge；不是源码包含断言代替几何。
 - Release/XAML `24/24`、0 errors/两条既有 Media CS8602；R06Selection `2/2`、R23 四表主题状态+几何 `1/1`、ReportedWorkspace `8/8`、模板结构 `1/1`、R06排序回归 `7/7`，总 `19/19`。source validator/diff check 通过。详情与五份 TRX：[DataGrid 选中/焦点几何](evidence/R06-DATAGRID-SELECTION-GEOMETRY-CURRENT-MAIN-20260924.md)。
 - 仅证明隔离生产 WPF 窗口逻辑 DIP；Playnite/package-host 最终呈现和用户安装身份未验，CEF `platform_channel 0x5` 不绕过。此为 `R06-03` 几何定点修复，不签收完整任务。下一项 Media Inbox 移除冗余目标下拉并使用全局 `SelectedGame`，保持确认/取消/错误与空目标行为。
+
+## 2026-09-26 ENV-001 启动进程身份稳定性复核
+
+- runner 的启动快照现只接受一个带引号的 `--userdatadir`，规范化后与期望绝对路径完全相同；拒绝 sibling 前缀、重复参数，以及首次 CIM 快照前后退出。首次快照后等待 500 ms 并确认 PID、exe 与完整命令行未变，以降低把 Playnite 单实例转发短命进程误认成隔离宿主的风险。
+- Release solution `--no-restore` build `0 warning/0 error`；XAML `24/24`、Core `125/125`、Worker `357/357`、Playnite `DiagnosticsEvidenceSourceTests 8/8`、Playnite source-only group 111 类通过；helper tests、4 个 PowerShell AST、diff check 通过。105 类 WPF 逐进程全量套件未完成，不作通过声明。
+- 当前 WMI `Win32_Process.CommandLine` Access Denied 与旧 CEF `platform_channel 0x5` 条件未变化，本轮未启动 Playnite；稳定窗口不消除 preflight→launch TOCTOU，也不能证明 OS 级隔离或无副作用。ENV-001 保持 `BLOCKED_ENVIRONMENT`。
+- R 主账本复核仍是 `192/192` 唯一 ID、`106/83/1/1/1`，本轮不新增、重分类或签收任务。证据：[ENV-001 启动进程身份复核](evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。

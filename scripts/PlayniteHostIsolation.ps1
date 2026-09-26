@@ -301,9 +301,46 @@ function Get-GscPlayniteProcessStartEvidence {
 
             $commandLine = [string]$processRecord.CommandLine
             $expectedDataDir = [System.IO.Path]::GetFullPath($ExpectedUserDataDir)
-            if ($commandLine -notmatch '(?i)(?:^|\s)--userdatadir(?:\s|$)' -or
-                -not $commandLine.Contains($expectedDataDir)) {
-                throw "Started Playnite process command line does not prove the requested --userdatadir. PID=$($StartedProcess.Id); expected='$expectedDataDir'; command='$commandLine'"
+            $userDataDirArguments = [System.Text.RegularExpressions.Regex]::Matches(
+                $commandLine,
+                '(?i)(?:^|\s)--userdatadir\s+"(?<path>[^"]+)"(?=\s|$)')
+            if ($userDataDirArguments.Count -ne 1) {
+                throw "Started Playnite process must expose exactly one quoted --userdatadir argument. PID=$($StartedProcess.Id); count=$($userDataDirArguments.Count); command='$commandLine'"
+            }
+
+            try {
+                $observedDataDir = [System.IO.Path]::GetFullPath($userDataDirArguments[0].Groups['path'].Value)
+            }
+            catch {
+                throw "Started Playnite process exposed an invalid --userdatadir path. PID=$($StartedProcess.Id); command='$commandLine'; $($_.Exception.Message)"
+            }
+
+            $pathTrimChars = [char[]]@([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar)
+            $expectedDataDirKey = $expectedDataDir.TrimEnd($pathTrimChars)
+            $observedDataDirKey = $observedDataDir.TrimEnd($pathTrimChars)
+            if (-not [string]::Equals($observedDataDirKey, $expectedDataDirKey, [System.StringComparison]::OrdinalIgnoreCase)) {
+                throw "Started Playnite process command line selected a different user-data path. PID=$($StartedProcess.Id); expected='$expectedDataDir'; observed='$observedDataDir'"
+            }
+
+            # Playnite can forward a second invocation to an existing process and
+            # exit successfully. Require the launched PID and its command line to
+            # remain stable beyond that short forwarding window before accepting it.
+            Start-Sleep -Milliseconds 500
+            $StartedProcess.Refresh()
+            if ($StartedProcess.HasExited) {
+                throw "Started Playnite process exited before the isolation process stability confirmation; refusing to accept this launch. PID=$($StartedProcess.Id); expectedExecutable='$expectedPath'; expectedUserDataDir='$expectedDataDir'"
+            }
+
+            $confirmationRecord = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $($StartedProcess.Id)" -ErrorAction Stop
+            if ($null -eq $confirmationRecord -or [int]$confirmationRecord.ProcessId -ne [int]$StartedProcess.Id) {
+                throw "Started Playnite process could not be confirmed with the same PID after the stability window. PID=$($StartedProcess.Id); expectedUserDataDir='$expectedDataDir'"
+            }
+
+            $confirmationPath = [string]$confirmationRecord.ExecutablePath
+            if ([string]::IsNullOrWhiteSpace($confirmationPath) -or
+                -not [string]::Equals([System.IO.Path]::GetFullPath($confirmationPath), $expectedPath, [System.StringComparison]::OrdinalIgnoreCase) -or
+                -not [string]::Equals([string]$confirmationRecord.CommandLine, $commandLine, [System.StringComparison]::Ordinal)) {
+                throw "Started Playnite process identity changed during the isolation stability window. PID=$($StartedProcess.Id); expectedExecutable='$expectedPath'; expectedUserDataDir='$expectedDataDir'"
             }
 
             return [ordered]@{
@@ -313,18 +350,13 @@ function Get-GscPlayniteProcessStartEvidence {
                 ExecutablePath = $actualPath
                 CommandLine = $commandLine
                 UserDataDir = $expectedDataDir
+                ObservedUserDataDir = $observedDataDir
                 ObservedUtc = [DateTime]::UtcNow.ToString('O')
             }
         }
 
         if ($StartedProcess.HasExited) {
-            return [ordered]@{
-                Status = 'process-exited-before-isolation-snapshot'
-                ProcessId = [int]$StartedProcess.Id
-                ExecutablePath = [System.IO.Path]::GetFullPath($ExpectedExecutable)
-                UserDataDir = [System.IO.Path]::GetFullPath($ExpectedUserDataDir)
-                ObservedUtc = [DateTime]::UtcNow.ToString('O')
-            }
+            throw "Started Playnite process exited before its isolation command line could be verified; refusing to accept this launch. PID=$($StartedProcess.Id); expectedExecutable='$([System.IO.Path]::GetFullPath($ExpectedExecutable))'; expectedUserDataDir='$([System.IO.Path]::GetFullPath($ExpectedUserDataDir))'"
         }
 
         Start-Sleep -Milliseconds 100

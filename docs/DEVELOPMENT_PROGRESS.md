@@ -1,5 +1,12 @@
 # 开发实现进度
 
+## 2026-09-26 ENV-001 启动进程身份稳定性复核
+
+- `Get-GscPlayniteProcessStartEvidence` 改为要求唯一 `--userdatadir` 参数与规范化完整路径相等，并将启动前/后的进程退出视为失败。首次快照后延迟 500 ms，再验证原 PID、exe 和完整命令行仍一致，针对短暂的 Playnite 单实例转发。
+- 负例覆盖兄弟前缀目录、重复参数、首次快照前退出及快照后退出。身份注入的 Release solution `--no-restore` build `0/0`、Core `125/125`、Worker `357/357`、Playnite `DiagnosticsEvidenceSourceTests 8/8`、helper tests、PowerShell AST `4/4`、diff check 通过。Playnite source group 111 类通过；未完成 WPF 105 类全量逐进程回归，本批不涉及 UI。
+- `scripts/build.ps1` 在 XAML `24/24` 后因当前身份无权读取 NuGet 用户配置而停止；复用已还原资产继续验证。WMI 命令行权限拒绝和 CEF `0x5` 边界未变化，未启动 Playnite。稳定确认仍不消除 TOCTOU 或证明 OS 级隔离；ENV-001 保持阻塞，R 账本 192 项/`106/83/1/1/1` 不变。
+- 证据：[ENV-001 启动进程身份复核](design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。
+
 ## 2026-09-26 ENV-001 profile marker 路径绑定
 
 - 独立复核发现 marker 可被复制到同仓库另一个 `.tmp` profile，从而绕过“拒绝接管未知非空目录”的检查。marker schema 现为 `2`，同时验证 RepositoryRoot、规范化绝对 ProfilePath 和 GUID；旧 marker 不自动迁移，需新 profile 路径。

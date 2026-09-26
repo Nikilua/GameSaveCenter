@@ -90,6 +90,84 @@ try {
     [System.IO.File]::WriteAllBytes($wrongExecutable, [byte[]]@())
     Assert-ThrowsContaining { Assert-GscPlayniteExecutable -PlayniteExecutable $wrongExecutable } 'Playnite.DesktopApp.exe'
 
+    $script:mockPlayniteProcessRecord = [pscustomobject]@{
+        ProcessId = $PID
+        Name = 'Playnite.DesktopApp.exe'
+        ExecutablePath = $fakeExecutable
+        CommandLine = '"' + $fakeExecutable + '" --startdesktop --hidesplashscreen --userdatadir "' + $profilePath + '"'
+    }
+    $script:terminateAfterFirstPlayniteSnapshot = $null
+    function Get-CimInstance {
+        [CmdletBinding()]
+        param([string]$ClassName, [string]$Filter)
+        if ($null -ne $script:terminateAfterFirstPlayniteSnapshot -and -not $script:forwardingSnapshotReturned) {
+            $script:forwardingSnapshotReturned = $true
+            $snapshot = $script:mockPlayniteProcessRecord
+            $script:terminateAfterFirstPlayniteSnapshot.Kill()
+            return $snapshot
+        }
+        return $script:mockPlayniteProcessRecord
+    }
+    $currentProcess = [System.Diagnostics.Process]::GetCurrentProcess()
+    $verifiedStart = Get-GscPlayniteProcessStartEvidence `
+        -StartedProcess $currentProcess `
+        -ExpectedExecutable $fakeExecutable `
+        -ExpectedUserDataDir $profilePath
+    Assert-True ($verifiedStart.Status -eq 'verified-isolated-process') 'A process record with the exact isolated path should be accepted.'
+    Assert-True ($verifiedStart.ObservedUserDataDir -eq $profilePath) 'The observed user-data path should be recorded explicitly.'
+
+    $siblingProfilePath = $profilePath + '-sibling'
+    $script:mockPlayniteProcessRecord.CommandLine = '"' + $fakeExecutable + '" --userdatadir "' + $siblingProfilePath + '"'
+    Assert-ThrowsContaining {
+        Get-GscPlayniteProcessStartEvidence -StartedProcess $currentProcess -ExpectedExecutable $fakeExecutable -ExpectedUserDataDir $profilePath
+    } 'selected a different user-data path'
+
+    $script:mockPlayniteProcessRecord.CommandLine = '"' + $fakeExecutable + '" --userdatadir "' + $profilePath + '" --userdatadir "' + $siblingProfilePath + '"'
+    Assert-ThrowsContaining {
+        Get-GscPlayniteProcessStartEvidence -StartedProcess $currentProcess -ExpectedExecutable $fakeExecutable -ExpectedUserDataDir $profilePath
+    } 'exactly one quoted --userdatadir'
+
+    $forwardedStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $forwardedStartInfo.FileName = $env:ComSpec
+    $forwardedStartInfo.Arguments = '/c ping 127.0.0.1 -n 6 >NUL'
+    $forwardedStartInfo.UseShellExecute = $false
+    $forwardedProcess = [System.Diagnostics.Process]::Start($forwardedStartInfo)
+    try {
+        $script:mockPlayniteProcessRecord = [pscustomobject]@{
+            ProcessId = $forwardedProcess.Id
+            Name = 'Playnite.DesktopApp.exe'
+            ExecutablePath = $fakeExecutable
+            CommandLine = '"' + $fakeExecutable + '" --startdesktop --hidesplashscreen --userdatadir "' + $profilePath + '"'
+        }
+        $script:terminateAfterFirstPlayniteSnapshot = $forwardedProcess
+        $script:forwardingSnapshotReturned = $false
+        Assert-ThrowsContaining {
+            Get-GscPlayniteProcessStartEvidence -StartedProcess $forwardedProcess -ExpectedExecutable $fakeExecutable -ExpectedUserDataDir $profilePath
+        } 'exited before the isolation process stability confirmation'
+    }
+    finally {
+        $script:terminateAfterFirstPlayniteSnapshot = $null
+        if (-not $forwardedProcess.HasExited) { $forwardedProcess.Kill() }
+        $forwardedProcess.Dispose()
+    }
+
+    $exitStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $exitStartInfo.FileName = $env:ComSpec
+    $exitStartInfo.Arguments = '/c exit 0'
+    $exitStartInfo.UseShellExecute = $false
+    $exitedProcess = [System.Diagnostics.Process]::Start($exitStartInfo)
+    try {
+        $exitedProcess.WaitForExit()
+        $script:mockPlayniteProcessRecord = $null
+        Assert-ThrowsContaining {
+            Get-GscPlayniteProcessStartEvidence -StartedProcess $exitedProcess -ExpectedExecutable $fakeExecutable -ExpectedUserDataDir $profilePath
+        } 'exited before its isolation command line could be verified'
+    }
+    finally {
+        $exitedProcess.Dispose()
+        $currentProcess.Dispose()
+    }
+
     $outputPath = Join-Path (Join-Path $repoRoot 'artifacts') ("env001-output-test-" + [Guid]::NewGuid().ToString('N'))
     Assert-True ((Get-GscHostAuditOutputPath -RepositoryRoot $repoRoot -Output $outputPath) -eq $outputPath) 'A new artifacts child should be accepted.'
     New-Item -ItemType Directory -Path $outputPath | Out-Null

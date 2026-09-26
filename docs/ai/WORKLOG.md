@@ -9392,3 +9392,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - helper test 加入“复制合法 marker 到另一目录并保护哨兵文件”的行为负例。首次运行发现 Windows PowerShell 5.1 对 junction 的 `Remove-Item` 抛 NullReferenceException；清理改成 `[System.IO.Directory]::Delete(path, $false)` 后 helper suite 通过。
 - Release `DiagnosticsEvidenceSourceTests` 首次启动因错误的 GSC_BUILD_COMMIT identity 被测试门拒绝；改用 checkout 当前完整 HEAD 重建后最终 `8/8`，0 failed/skipped，保留两条既有 Media CS8602 warning。
 - 测试只在仓库 `.tmp`/`artifacts` 建临时夹具且清理完成；未启动 Playnite或触碰用户数据。192 项基线与 ENV-001 宿主阻塞状态不变。详细证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md`。
+
+# 2026-09-26 ENV-001 启动进程身份稳定性复核
+
+- 发现启动取证原先对子串匹配 sibling profile、允许重复 `--userdatadir`，且首次快照后短命转发进程可能被误记为隔离启动。现要求唯一带引号参数与规范化完整路径相等，并在首次快照后 500 ms 确认原 PID/exe/命令行仍一致；新增快照后退出负例。
+- 设置当前 `GSC_BUILD_COMMIT/GSC_SOURCE_ROOT` 后 Release solution `--no-restore` build `0 warning/0 error`；Core `125/125`，Worker `357/357`，Playnite `DiagnosticsEvidenceSourceTests 8/8`。PowerShell helper、4 个脚本 AST 和 `git diff --check` 通过。Playnite source group 的 111 类通过；105 类 WPF 全量逐进程组未完成，不作全量通过声明。
+- 正式 `scripts/build.ps1` 先通过 XAML `24/24`，随后 restore 因当前身份无权读 `%AppData%\NuGet\NuGet.Config` 失败；使用已还原资产/no-restore 完成后续检查。一次未带 build identity 的并行 solution 测试仅作入口诊断，源码身份门按预期拒绝；停止了由该命令遗留的本轮 testhost 后才重建。
+- 未启动 Playnite；WMI 命令行 Access Denied、既有 CEF `platform_channel 0x5` 均未变化。稳定窗口仍不消除 preflight→launch TOCTOU。ENV-001 仍阻塞；R 表仍 192 个唯一 ID、`106/83/1/1/1`，本轮无任务状态变化。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md`。

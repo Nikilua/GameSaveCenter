@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前续接：ENV-001 启动身份稳定窗口
+
+隔离 runner 现在要求 `--userdatadir` 唯一、带引号且规范化全路径完全相同，并在首次进程快照后 500 ms 再确认同一 PID/exe/命令行仍存活；相似前缀、重复参数、首次快照前后退出均拒绝。此举针对 Playnite 单实例转发的短命子进程，仍不消除启动前后竞态，也不是 OS 级隔离证明。证据：[ENV-001 启动进程身份复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。
+
+当前验证：Release solution `--no-restore` build `0/0`、Core `125/125`、Worker `357/357`、Playnite `DiagnosticsEvidenceSourceTests 8/8`、隔离 helper 与 PowerShell AST `4/4` 通过。Playnite source-only 111 类通过；105 类 WPF 全量逐进程套件没有完成，不得从此前阶段记录推断为本阶段通过。`scripts/build.ps1` restore 无权读取用户 NuGet.Config，已用现有还原资产验证。
+
+WMI `Win32_Process.CommandLine` 当前仍 Access Denied，CEF `platform_channel 0x5` 条件不变；本轮没有启动 Playnite。ENV-001 维持 `BLOCKED_ENVIRONMENT`，R 账本维持 192 项 `106/83/1/1/1`。只有权限/CEF 条件变化后再做真实宿主验证；新源码任务仍依新用户复现/明确范围准入。
+
 ## 2026-09-26 ENV-001 marker 路径身份加固
 
 隔离 profile marker 已升级到 schema `2`，除仓库根/GUID 外还绑定规范化绝对 `ProfilePath`；复制到另一个目录的 marker 不再能接管已有目录，旧 schema 也 fail-closed，不自动迁移或删除。PowerShell helper test 通过；Release `DiagnosticsEvidenceSourceTests 8/8`。Windows PowerShell 5.1 junction 测试清理路径已修正为仅删除 link 本身。完整证据：[ENV-001 profile marker 路径绑定复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md)。

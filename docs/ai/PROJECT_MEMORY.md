@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 当前续接：ENV-001 启动进程身份加固
+
+- 对 `Get-GscPlayniteProcessStartEvidence` 做了边界复核：路径必须是唯一且带引号的 `--userdatadir`，规范化完整路径相等；拒绝 sibling 前缀、重复参数和取证前退出。首次快照后再等 500 ms，确认同一 PID、exe 路径和完整命令行仍存在，降低将短命单实例转发进程误认为隔离实例的风险。
+- 新增“首次 CIM 快照后退出”的测试；当前身份 Release solution `--no-restore` build `0/0`、Core `125/125`、Worker `357/357`、Playnite `DiagnosticsEvidenceSourceTests 8/8`、helper、4 个 PowerShell parser 和 diff check 通过。正式 build wrapper 的 NuGet restore 因无权读用户 NuGet.Config 失败，之后使用仓库已还原资产/no-restore 验证。
+- Playnite source-only 测试组 111 类通过；未完成 105 类 WPF 全量隔离（只进入前两类后停止，因为本批无 UI 改动）。不要把裸跑的 solution 并行 testhost 结果记为最终回归；其中源码 identity 门按预期拒绝无身份程序集。
+- 本机 WMI 命令行仍 Access Denied，CEF `platform_channel 0x5` 仍不重试；未启动 Playnite。稳定窗口降低瞬时单实例转发误认，但仍有 preflight→launch TOCTOU，不证明 OS 级隔离或文件未写入。ENV-001 保持 `BLOCKED_ENVIRONMENT`。
+- R 表仍为 192 个唯一 ID，计数 `106/83/1/1/1`，不新增/重分类/签收 R 项。详情：[ENV-001 启动进程身份复核](../design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。
+
 ## 2026-09-26 当前执行阶段：ENV-001 runner 安全收口
 
 - 用户要求在本机接续异设备开发记录。本批选择 backlog 中已登记的 ENV-001，不改产品业务，不改版本，不新增/重分类 R ID；192 个唯一项与 `106/83/1/1/1` 状态计数保持。
