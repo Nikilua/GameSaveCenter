@@ -197,12 +197,24 @@ namespace GameSaveCenter.Playnite.Views
             isApplyingLayout = true;
             try
             {
-                // The queue is the primary Demo-aligned surface.  When the detail
-                // inspector stacks below it, reserve a readable table viewport and
-                // let only the inspector consume the remaining finite height.
-                const double tableMinHeight = 236d;
+                // The queue is the primary Demo-aligned surface. Reserve enough room
+                // for the header and four complete rows at the active row density.
+                // When the compact inspector opens, its own scroll surface gives up
+                // a little height; the compact queue still keeps four complete
+                // rows while the inspector is visible.
+                const double desktopTaskGridMinHeight = 264d; // 52-DIP header + 4 x 52-DIP rows + rounding allowance.
+                const double compactTaskGridMinHeight = 200d; // 52-DIP header + 4 x 36-DIP rows + rounding allowance.
+                const double compactOpenTaskGridMinHeight = 200d; // Keep four compact rows while the inspector is open.
+                const double compactInspectorMaxHeight = 136d;
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var stack = detailBreakpoint.Evaluate(width);
+                var tableMinHeight = stack ? compactTaskGridMinHeight : desktopTaskGridMinHeight;
+                // Some hosts report the outer window height while this view is
+                // arranged inside a shorter PageHost. Prefer the measured page
+                // viewport so the compact summary does not consume table rows.
+                var availableHeight = TaskPageScrollSurface.ActualHeight > 0
+                    ? TaskPageScrollSurface.ActualHeight
+                    : height;
                 if (wasWideDetailLayout && stack
                     && TaskGrid.SelectedItem != null
                     && TaskDetailScrollViewer.Visibility == Visibility.Visible)
@@ -212,11 +224,9 @@ namespace GameSaveCenter.Playnite.Views
                     taskInspectorOpen = true;
                 }
                 var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
-                // The compact inspector is a secondary drawer. Once it is open, keep
-                // three 36-DIP rows plus the header visible instead of allowing the
-                // original 236-DIP minimum to overflow the finite PageHost and hide
-                // the table behind the drawer.
-                TaskGrid.MinHeight = compactInspectorOpen ? 180d : tableMinHeight;
+                // Keep four compact rows both before and while the secondary drawer
+                // is open; the summary strip yields its space on short pages below.
+                TaskGrid.MinHeight = compactInspectorOpen ? compactOpenTaskGridMinHeight : tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
                 // The compact page must expose several task rows before the stacked
@@ -228,8 +238,14 @@ namespace GameSaveCenter.Playnite.Views
                 // short window, tighten only the secondary summary chrome so the queue still
                 // gets a useful first viewport; the table and inspector keep their own scroll
                 // surfaces instead of scrolling the whole workspace.
-                var shortHeight = height > 0 && height < 720;
-                TaskSummaryPanel.Visibility = Visibility.Visible;
+                var shortHeight = availableHeight > 0 && availableHeight < 720;
+                // On a short compact page, let the selected-task inspector reclaim
+                // the secondary count strip. The user can restore it by closing the
+                // inspector; this preserves four complete queue rows without hiding
+                // filter or task actions.
+                TaskSummaryPanel.Visibility = compactInspectorOpen && shortHeight
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
                 TaskSummaryPanel.MinHeight = shortHeight ? 52 : 84;
                 TaskSummaryPanel.Padding = shortHeight ? new Thickness(6, 5, 6, 5) : new Thickness(6, 14, 6, 14);
                 // Keep the four count/action entry points, but move their explanatory
@@ -359,9 +375,11 @@ namespace GameSaveCenter.Playnite.Views
                 Grid.SetColumn(TaskDetailScrollViewer, stack ? 0 : 2);
                 Grid.SetColumnSpan(TaskDetailScrollViewer, stack ? 3 : 1);
                 Grid.SetRow(TaskDetailScrollViewer, stack ? 4 : 3);
-                TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-                var viewportHeight = TaskPageScrollSurface.ActualHeight > 0
-                    ? TaskPageScrollSurface.ActualHeight
+                // A small bottom inset avoids the 0.8-DIP PageHost overflow produced
+                // by the host's fractional layout rounding at the compact breakpoint.
+                TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 2) : new Thickness(0);
+                var viewportHeight = availableHeight > 0
+                    ? availableHeight
                     : Math.Max(320, height);
                 var workspaceHeight = viewportHeight > 0
                     ? viewportHeight
@@ -369,12 +387,12 @@ namespace GameSaveCenter.Playnite.Views
                         - TaskFilterBar.ActualHeight
                         - TaskMoreFiltersExpander.ActualHeight
                     : Math.Max(320, height - 200);
-                // A 96-DIP strip below the queue was too small to read task details at the
-                // demo-minimum and common 1366-DIP windows. Keep the finite cap so the
-                // inspector owns its own scroll, but give stacked mode a readable floor.
+                // Keep the finite cap so the inspector owns its own scroll. In stacked
+                // mode reserve a 4-DIP bottom inset after accounting for the larger
+                // four-row table; this also absorbs host layout-rounding drift.
                 var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableMinHeight - 10));
                 if (showInspector && stack)
-                    inspectorHeight = Math.Min(inspectorHeight, 160);
+                    inspectorHeight = Math.Min(inspectorHeight, compactInspectorMaxHeight);
                 TaskDetailScrollViewer.MaxHeight = showInspector && stack
                     ? inspectorHeight
                     : double.PositiveInfinity;

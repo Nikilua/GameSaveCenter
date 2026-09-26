@@ -53,7 +53,50 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(5, shortSummaryTopPadding);
             Assert.Equal(84, regularSummaryMinHeight);
             Assert.Equal(14, regularSummaryTopPadding);
-            Assert.Equal(236, taskGridMinHeight);
+            Assert.Equal(200, taskGridMinHeight);
+        }
+
+        [Fact]
+        public void MeasuredPageViewportOverridesOuterWindowHeightForShortLayout()
+        {
+            Exception? exception = null;
+            double summaryMinHeight = 0;
+            var waitingSummaryCollapsed = false;
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    var view = new TaskCenterView();
+                    var viewType = typeof(TaskCenterView);
+                    var summary = (Border)viewType.GetField("TaskSummaryPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var waitingSummary = (TextBlock)viewType.GetField("TaskWaitingSummaryText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var host = new Grid { Width = 784, Height = 480 };
+                    host.Children.Add(view);
+
+                    view.ApplyResponsiveLayout(784, 720);
+                    host.Measure(new Size(784, 480));
+                    host.Arrange(new Rect(0, 0, 784, 480));
+                    host.UpdateLayout();
+                    view.ApplyResponsiveLayout(784, 720);
+                    host.UpdateLayout();
+
+                    summaryMinHeight = summary.MinHeight;
+                    waitingSummaryCollapsed = waitingSummary.Visibility == Visibility.Collapsed;
+                }
+                catch (Exception caught)
+                {
+                    exception = caught;
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+
+            Assert.Null(exception);
+            Assert.Equal(52, summaryMinHeight);
+            Assert.True(waitingSummaryCollapsed);
         }
 
         [Fact]
@@ -189,6 +232,8 @@ namespace GameSaveCenter.Playnite.Tests
             Exception? exception = null;
             var compactTableMinHeight = 0d;
             var compactInspectorMaxHeight = 0d;
+            var compactSummaryVisibility = Visibility.Visible;
+            var restoredSummaryVisibility = Visibility.Collapsed;
             var queueDetailsVisibility = Visibility.Visible;
             var inspectorCloseVisibility = Visibility.Collapsed;
 
@@ -208,10 +253,17 @@ namespace GameSaveCenter.Playnite.Tests
                     view.ApplyResponsiveLayout(715, 577);
                     viewType.GetMethod("OnTaskCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
                         .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                    view.ApplyResponsiveLayout(715, 577);
                     compactTableMinHeight = grid.MinHeight;
                     compactInspectorMaxHeight = view.TaskDetailScrollViewerElement.MaxHeight;
+                    compactSummaryVisibility = ((Border)viewType.GetField("TaskSummaryPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!).Visibility;
                     queueDetailsVisibility = button.Visibility;
                     inspectorCloseVisibility = closeButton.Visibility;
+
+                    viewType.GetMethod("OnTaskCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                        .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                    view.ApplyResponsiveLayout(715, 577);
+                    restoredSummaryVisibility = ((Border)viewType.GetField("TaskSummaryPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!).Visibility;
                 }
                 catch (Exception caught)
                 {
@@ -224,8 +276,10 @@ namespace GameSaveCenter.Playnite.Tests
             thread.Join();
 
             Assert.Null(exception);
-            Assert.Equal(180, compactTableMinHeight);
-            Assert.Equal(160, compactInspectorMaxHeight);
+            Assert.Equal(200, compactTableMinHeight);
+            Assert.Equal(136, compactInspectorMaxHeight);
+            Assert.Equal(Visibility.Collapsed, compactSummaryVisibility);
+            Assert.Equal(Visibility.Visible, restoredSummaryVisibility);
             Assert.Equal(Visibility.Collapsed, queueDetailsVisibility);
             Assert.Equal(Visibility.Visible, inspectorCloseVisibility);
         }

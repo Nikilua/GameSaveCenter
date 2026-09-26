@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 Task 队列四行视口与紧凑 Inspector 收边
+
+- 继续 `741f81b8` 后的完整 Render QA：Task 桌面 52-DIP 行高原 `236 DIP` 最小视口只容三行，紧凑详情布局还受外层 PageHost 高度/取整影响。更新为桌面 264、紧凑 200 DIP；短窄布局打开 Inspector 时收起次要统计条，关闭时恢复，筛选和任务动作仍保留。布局优先采用 `TaskPageScrollSurface.ActualHeight`；紧凑 Inspector 限高 136 DIP 并留 2 DIP 底边。
+- RenderHarness Task/step1 `1100×720` 为 `4/4` 行、`200 DIP`；Shell Task `1040×700` PageHost `726×556`、Grid `710×200`、打开 Inspector `726×136`、`openedRows=4`；`1100×720` PageHost `786×576`、Grid `771×200`、`openedRows=4`。Task 无 PROBLEM，Inspector 不再越过 surface。项目总问题从 13 降至 8，全部为 Settings 560-DIP 矮窗问题，项目 gate 尚未通过。
+- Release RenderHarness build `0/0`；Task 响应式/Inspector 回归 `9/9`；source validator、XAML `24/24`、WPF 静态审查 `0 errors/28 warnings/177 info`、`git diff --check` 通过。Harness 仍用仓库已有资产 `--no-restore`，离屏逻辑 DIP 不代表 Playnite host/物理 DPI；未启动 Playnite。R 表 192 项、`106/83/1/1/1` 不变。证据：[Task viewport/Inspector 修复](../design/reviews/ui-finesse-round3-20260915/evidence/TASK-FOUR-ROW-INSPECTOR-VIEWPORT-20260926.md)。
+
 ## 2026-09-26 Overview 最近访问空态视口修复
 
 - 当前 main `daa6ecb2` 的 RenderHarness 将 `RecentAccessItems` 设为空，发现 `OverviewRecentAccessList` 被 Auto 行压至 `2 DIP`；`MaxHeight=280` 不约束最小值。将本列表 `MinHeight` 设为 `236 DIP`，保留真实空集合、空态文案、内部滚动、Recycling virtualization 和 280 DIP 上限，不引入占位数据。

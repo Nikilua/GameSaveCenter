@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 Task compact viewport 与 Inspector 边界修复
+
+- 在 Overview 阶段提交 `741f81b8` 之后继续完整 UI Render QA。Task 桌面 52-DIP 行高原 236-DIP 最小值只能完整显示三行；统一提高桌面视口到 264 DIP、紧凑 36-DIP 行的四行视口到 200 DIP。紧凑详情打开且页面较短时临时收起次要任务统计条以释放高度，关闭详情会恢复；Task 的筛选、队列命令、真实数据、行虚拟化和内部滚动未改变。
+- 矮宿主可能把外层窗口高度传给 Task 页，短窗判定现优先使用 `TaskPageScrollSurface.ActualHeight`。紧凑 Inspector 的滚动视口限高 136 DIP，顶部间距 10、底部安全 inset 2 DIP；RenderHarness 中此前 `0.8 DIP` 的边界越出已消除。
+- `Task/step1:1100x720` `4/4` 行、200 DIP；Shell Task 1040×700/1100×720 两个 compact inspector 样本均 `openedRows=4`，Grid 200 DIP，Inspector 136 DIP。完整 Render QA 从 13 降至 8 个 PROBLEM，余项全部为 Settings 高 560 DIP 时类别 rail/body viewport；不得称项目级 gate 已通过。
+- Release RenderHarness build `0/0`，Task 定向回归 `9/9`，source validator、XAML `24/24`、WPF static `0 errors/28 warnings/177 info`、diff check 通过。Harness 使用现有 restore 资产；未启动 Playnite，离屏样本不能代替宿主/物理 DPI 验收。R ledger 仍 192 个 ID、`106/83/1/1/1`。详细几何与边界见[证据](../design/reviews/ui-finesse-round3-20260915/evidence/TASK-FOUR-ROW-INSPECTOR-VIEWPORT-20260926.md)。
+
 ## 2026-09-26 Overview empty recent-access viewport 已修复
 
 - 复核已推送 main `daa6ecb2` 时发现 `OverviewRecentAccessList` 在 `RecentAccessItems` 为空时因自身 `MinHeight=0` 和内容 Auto 测量而坍缩至 2 DIP；不是缺少假数据，也不是 shared scrollbar 模板缺陷。设 `MinHeight=236` 后仍保留 `MaxHeight=280`、真实 ItemsSource、空态消息、内部滚动与虚拟化。

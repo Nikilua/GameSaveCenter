@@ -1061,3 +1061,10 @@
 - Release solution `--no-restore` build `0 warning/0 error`；XAML `24/24`、Core `125/125`、Worker `357/357`、Playnite `DiagnosticsEvidenceSourceTests 8/8`、Playnite source-only group 111 类通过；helper tests、4 个 PowerShell AST、diff check 通过。105 类 WPF 逐进程全量套件未完成，不作通过声明。
 - 当前 WMI `Win32_Process.CommandLine` Access Denied 与旧 CEF `platform_channel 0x5` 条件未变化，本轮未启动 Playnite；稳定窗口不消除 preflight→launch TOCTOU，也不能证明 OS 级隔离或无副作用。ENV-001 保持 `BLOCKED_ENVIRONMENT`。
 - R 主账本复核仍是 `192/192` 唯一 ID、`106/83/1/1/1`，本轮不新增、重分类或签收任务。证据：[ENV-001 启动进程身份复核](evidence/ENV-001-PROCESS-START-IDENTITY-20260926.md)。
+# 2026-09-26 Task queue four-row viewport / compact inspector
+
+- After `741f81b8`, Render QA showed the 52-DIP desktop task rows could fit only three records in a 236-DIP viewport. Desktop minimum is now 264 DIP; compact 36-DIP rows reserve 200 DIP. On a short compact page with the inspector open, the secondary metric strip yields its space and returns when the inspector closes. Short-height decisions use the measured Task page viewport; the stacked inspector is capped at 136 DIP with a 2-DIP bottom inset.
+- RenderHarness `Task/step1:1100x720` now reads `4/4` rows at 200 DIP. Compact shell samples at 1040×700 and 1100×720 each retain four opened rows and keep the inspector within the Task surface. No Task PROBLEM remains; the complete report is down from 13 to 8 PROBLEMs, all eight in Settings at 560 DIP height.
+- Release RenderHarness build `0/0`; Task responsive/inspector tests `9/9`; source validator, XAML `24/24`, WPF static `0 errors/28 warnings/177 info`, and diff check passed. Offscreen logical DIP only; Playnite was not started. The 192-ID R ledger and `106/83/1/1/1` counts are unchanged. Details: [Task viewport evidence](evidence/TASK-FOUR-ROW-INSPECTOR-VIEWPORT-20260926.md).
+
+# 2026-09-26 Overview empty recent-access viewport

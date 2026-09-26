@@ -1544,13 +1544,16 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"TaskPageScrollSurface\"", task);
         Assert.Contains("Grid x:Name=\"TaskPageScrollSurface\"", task);
         Assert.DoesNotContain("ScrollViewer x:Name=\"TaskPageScrollSurface\"", task);
-        Assert.Contains("const double tableMinHeight = 236d", taskCode);
+        Assert.Contains("const double desktopTaskGridMinHeight = 264d", taskCode);
+        Assert.Contains("const double compactTaskGridMinHeight = 200d", taskCode);
+        Assert.Contains("const double compactOpenTaskGridMinHeight = 200d", taskCode);
         Assert.DoesNotContain("tableViewportHeight", taskCode);
-        Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
+        Assert.Contains("TaskGrid.MinHeight = compactInspectorOpen ? compactOpenTaskGridMinHeight : tableMinHeight", taskCode);
         Assert.Contains("TaskGrid.MaxHeight = double.PositiveInfinity", taskCode);
         Assert.Contains("TaskPageScrollSurface.ActualHeight", taskCode);
         Assert.Contains("- TaskSummaryPanel.ActualHeight", taskCode);
-        Assert.Contains("- TaskQueuePanel.ActualHeight", taskCode);
+        Assert.Contains("- TaskFilterBar.ActualHeight", taskCode);
+        Assert.Contains("- TaskMoreFiltersExpander.ActualHeight", taskCode);
         Assert.Contains("var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableMinHeight - 10))", taskCode);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", task);
@@ -4453,6 +4456,55 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(inspectorCollapsed);
         Assert.True(buttonVisible);
         Assert.True(opened);
+    }
+
+    [Fact]
+    public void TaskGridReservesFourRowsAndCompactInspectorKeepsBottomInset()
+    {
+        Exception? exception = null;
+        var desktopGridMinHeight = 0d;
+        var compactGridMinHeight = 0d;
+        var openedCompactGridMinHeight = 0d;
+        var compactInspectorMaxHeight = 0d;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new TaskCenterView();
+                var viewType = typeof(TaskCenterView);
+                var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                view.ApplyResponsiveLayout(1280, 800);
+                desktopGridMinHeight = grid.MinHeight;
+
+                view.ApplyResponsiveLayout(960, 640);
+                compactGridMinHeight = grid.MinHeight;
+                var selected = new object();
+                grid.ItemsSource = new[] { selected };
+                grid.SelectedItem = selected;
+                view.ApplyResponsiveLayout(960, 640);
+                viewType.GetMethod("OnTaskCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(view, new object[] { button, new RoutedEventArgs() });
+                openedCompactGridMinHeight = grid.MinHeight;
+                compactInspectorMaxHeight = view.TaskDetailScrollViewerElement.MaxHeight;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.Equal(264, desktopGridMinHeight);
+        Assert.Equal(200, compactGridMinHeight);
+        Assert.Equal(200, openedCompactGridMinHeight);
+        Assert.Equal(136, compactInspectorMaxHeight);
     }
 
     [LegacyProductionUiBaselineFact]

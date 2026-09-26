@@ -1,15 +1,16 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-26 当前接续：Overview 空态完成，Task/Settings UI gate 仍待修复
+## 2026-09-26 当前接续：Overview 与 Task 完成，Settings UI gate 仍待修复
 
 上一阶段 Save 历史窄窗已修复并推送。随后在 `daa6ecb2` 上复跑完整离屏基线发现 Overview 的真实空集合 `RecentAccessItems` 让 `OverviewRecentAccessList` 因 `MinHeight=0` 收缩成 2 DIP；已设 236 DIP 最小视口，修复后 11 个窗口样本均为 236 DIP，Overview PROBLEM 从 20 项降为 0。命令、真实数据、空态和列表内部滚动/虚拟化保持。
 
-当前 Render QA 还剩 **13 个 PROBLEM**，应作为后续两个独立实现阶段：
+Task 已作为独立阶段修复：桌面/紧凑视口分别提供 264/200 DIP，Task/step1 1100×720 完整可读 4/4 行；1040×700 与 1100×720 compact Inspector 均留在 Task surface 内。短窄页面打开详情时次要统计条暂隐、关闭后恢复，命令和筛选不变。证据：[Task 队列/Inspector](docs/design/reviews/ui-finesse-round3-20260915/evidence/TASK-FOUR-ROW-INSPECTOR-VIEWPORT-20260926.md)。
 
-1. Task `TaskGrid` 在 1366×768 / 1100×720 紧凑尺寸只显示 3/4 行；1040×700 compact Inspector 跑出 Task surface。
-2. Settings 560 DIP 高度下，宽 760–1400 DIP 有末尾类别越出 viewport；760/880 主体仅 128 DIP、920 主体 144 DIP。
+当前 Render QA 还剩 **8 个 PROBLEM**，均为下一独立阶段 Settings：
 
-全项目 gate 仍未通过。RenderHarness 结果为离屏 WPF/逻辑 DIP，不是 Playnite host、真实 DPI 或最终呈现证明。本轮 `render-qa.ps1` 包装 build 受 NuGet.Config ACL 阻断，已通过 no-restore build + 同一 harness 取得报告；后续构建优先使用本机已还原资产并记录此限制。证据：[Overview 当前阶段](docs/design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-EMPTY-RECENT-ACCESS-VIEWPORT-20260926.md)。
+1. Settings 560 DIP 高度下，宽 760–1400 DIP 有末尾类别越出 viewport；760/880 主体仅 128 DIP、920 主体 144 DIP。
+
+全项目 gate 仍未通过。RenderHarness 结果为离屏 WPF/逻辑 DIP，不是 Playnite host、真实 DPI 或最终呈现证明。本轮 `render-qa.ps1` 包装 build 受 NuGet.Config ACL 阻断，已通过 no-restore build + 同一 harness 取得报告；后续构建优先使用本机已还原资产并记录此限制。下一步按 Settings 真实页面和 shared 资源继续，不把剩余问题改写成 R 任务完成或全项目通过。
 
 ## 2026-09-26 当前接续：Save 窄窗修复完成，三组 UI gate 问题待分批处理
 

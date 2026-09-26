@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 Task 队列视口/compact Inspector 修复
+
+- Task Render QA 当前无 PROBLEM：桌面行高 52 DIP 的表格最小视口为 264 DIP；紧凑行高 36 DIP 的表格最小视口 200 DIP。紧凑短页打开详情时暂收起次要统计条、关闭后恢复；用页面实测高度确定短窗布局；Inspector 限高 136 DIP 并留 2 DIP 底边。
+- `Task/step1:1100x720` 完整可读 `4/4` 行；Shell Task 1040×700 与 1100×720 compact inspector 都 `openedRows=4`。原 inspector 出界已消除。完整 Render QA 还剩 8 个 PROBLEM，均为 Settings 560-DIP 高度下末端类别越界及主体 viewport 不足；全项目 gate 未通过。
+- Release RenderHarness `0 warning/0 error`，Task 响应式相关回归 `9/9`；source validator、XAML `24/24`、WPF static `0 errors/28 warnings/177 info`、diff check 通过。使用现有 restore assets/no-restore；未启动 Playnite，结果只代表离屏逻辑 DIP。
+- R 基线保持 192 个 ID、`106/83/1/1/1`。证据：[Task 队列视口与 Inspector](../design/reviews/ui-finesse-round3-20260915/evidence/TASK-FOUR-ROW-INSPECTOR-VIEWPORT-20260926.md)。下一独立阶段处理 Settings 剩余 8 项。
+
 ## 2026-09-26 Overview 最近访问空态视口修复
 
 - `OverviewRecentAccessList` 在真实 `RecentAccessItems` 空集合下曾被 WPF Auto 行测量收缩为 2 DIP；设最小高度 236 DIP 后，RenderHarness 11 个窗口尺寸均为 `236 DIP`，保留 280 DIP 上限、空态文案、内部滚动和 Recycling virtualization。
