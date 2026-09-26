@@ -1,12 +1,19 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 SaveHistory summary/action gap 收口
+
+- `ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions` 独立复现 Light/Dark `1.6 DIP`，断言为 `8–14 DIP`。紧凑布局 `SaveHistorySummaryActions` 顶部 margin 从 2 调整到 10 DIP 后，两主题均 `9.6 DIP`，既有断言未放宽；宽布局 `14 DIP` 横向间距与真实操作行为保持。
+- Release Playnite.Tests 和 RenderHarness 隔离构建 `0/0`；目标回归 `2/2`。完整 RenderHarness `render-qa OK`、0 PROBLEM；Save 页 1040×700 DIP 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md`。
+- 复用现有 NuGet assets、`--no-restore` 和 `.tmp` 隔离输出；NuGet.Config ACL 未改，Playnite 未启动。只证明测试夹具/离屏逻辑 DIP，不代表真实宿主或物理 DPI。R ledger 192 项及 `106/83/1/1/1` 不变。
+- Settings commit `f0999af3` 与本阶段按独立阶段分别提交。推送审批策略拒绝，等待用户对精确提交/目标的授权；不得改用其他 Git 传输绕过。
+
 ## 2026-09-26 Settings short-window viewport 修复
 
 - 在 `b85e53ed` 后续修 Settings 阶段剩余的 8 个离屏 RenderHarness findings。恢复默认安全操作使用共享 `GscExpander`；页面高度低于 760 DIP 时自动折叠，安全范围说明/草稿/取消语义/真实命令均保留，返回正常高度恢复展开，断点内尊重用户选择。
 - `SettingsSectionTabs` 使用 item-based scrolling，`ScrollViewer.ViewportHeight` 是逻辑项目单位而非 DIP。RenderHarness 改以 `ScrollContentPresenter.ActualHeight` 检查 DIP。完整 RenderHarness 最终 `render-qa OK`、0 PROBLEM；Settings 560-DIP rail `174.4 DIP`、最后一项滚动到底后 `165.6 DIP`，正文 viewport `185.6 DIP`。
 - 当前 Release RenderHarness/Playnite.Tests 项目依赖构建 `0 warnings/0 errors`；短窗行为两种宽度均通过，Settings Header/Path Light/Dark `2/2`，R16 reset source contract `1/1`。source validator、XAML `24/24`、diff check 通过。普通 restore 因 `%AppData%\NuGet\NuGet.Config` ACL 拒绝未运行；用现有资产、`--no-restore` 和 `.tmp` 独立 `BaseOutputPath` 验证。
-- 扩展 `ReportedWorkspaceLayoutBehaviorTests` 时单独复现 SaveHistory gap `1.6 DIP`（断言目标 `8–14 DIP`），是不同页面的后续任务，不混入 Settings 修改。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md`。
-- 不启动 Playnite或宣称真实宿主/物理 DPI/呈现完成；CEF 边界不变。192 项 R ledger 状态 `106/83/1/1/1` 不变。下一步先诊断 SaveHistory gap 用例是否真实布局缺陷，再依 project memory 继续。
+- 扩展 `ReportedWorkspaceLayoutBehaviorTests` 时另复现 SaveHistory gap `1.6 DIP`（断言目标 `8–14 DIP`），随后已在独立阶段修复为 `9.6 DIP`，详见最新 SaveHistory 记忆条目及独立证据；没有混入 Settings 修改。Settings 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md`。
+- 不启动 Playnite或宣称真实宿主/物理 DPI/呈现完成；CEF 边界不变。192 项 R ledger 状态 `106/83/1/1/1` 不变。
 
 ## 2026-09-26 Task compact viewport 与 Inspector 边界修复
 

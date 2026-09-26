@@ -1,12 +1,19 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 SaveHistory 摘要/操作区间距修复
+
+- Settings 阶段之后扩展布局回归单独复现窗口化 SaveHistory Light/Dark 的内容-操作区 gap 均为 `1.6 DIP`，但既有范围为 `8–14 DIP`。将 `SaveHistorySummaryActions` 紧凑布局上 margin 由 2 调整为 10 DIP，修复后 Light/Dark 均为 `9.6 DIP`；保留断言、命令与 wide layout 行为。
+- Playnite.Tests / RenderHarness Release 隔离构建 `0 warnings/0 errors`；目标测试 `2/2`。完整双主题/多尺寸 RenderHarness `render-qa OK`、0 PROBLEM，Save 页 1040×700 DIP 表格 `4/4` 可读；source validation、XAML `24/24`、diff check 通过。
+- 测试通过 `dotnet vstest` 使用 `.tmp` 下已构建程序集复跑；曾有一次 `dotnet test --no-build` 按错误的输出路径未找到程序集（0 次测试），随后使用实际 `bin/Release/net472` 路径复跑并以 `2/2` 成功结束。普通 restore 受 NuGet.Config ACL 阻止；未改权限、未启动 Playnite。完整 RenderHarness 临时截图/输出在确认报告后清理。逻辑 DIP 不等同真实宿主/DPI。R ledger 192 项、`106/83/1/1/1` 不变。
+- Settings 阶段 `f0999af3` 与 SaveHistory 阶段分别提交；远端推送被审批策略挡住，待用户确认后再做。证据：[SaveHistory action separation](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
+
 ## 2026-09-26 Settings 矮窗视口与类别可达性收口
 
 - 在 `b85e53ed` Task 阶段后处理剩余 8 个 Settings gate findings。顶部恢复默认卡改为共享可访问 `GscExpander` disclosure；宿主高 `<760 DIP` 自动折叠，保留安全说明、单字段/全部默认命令及仅修改草稿的语义；返回正常高度恢复展开，同一高度布局期间不覆盖用户的手动切换。
 - 诊断发现 category ListBox `CanContentScroll=True` 的 `ViewportHeight` 计数为逻辑项目单位（4/5），不能与 DIP 控件边界比较。RenderHarness 改用 `ScrollContentPresenter.ActualHeight` 作为 viewport DIP，并以同一 presenter 为坐标系检查滚动到末项时边界。
 - Release Harness build `0 warnings/0 errors`；全量双主题/多尺寸 RenderHarness `render-qa OK`、退出 0、0 PROBLEM。560-DIP 的 5 个宽度 category viewport `174.4 DIP`、末项边界 `165.6 DIP`、body viewport `185.6 DIP`。报告曾生成 372 张 `.tmp` PNG；最终证据只保留在 `SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md`。
 - Release Playnite.Tests 及依赖 `0 warnings/0 errors`；短窗用例两个宽度均通过，Settings Header/Path 两主题 `2/2`，带正确 GSC build identity 的 R16 reset source test `1/1`。`validate-source.py`、XAML `24/24`、`git diff --check` 通过。
-- 普通 restore 因当前用户 `%AppData%\NuGet\NuGet.Config` ACL 失败；不更改权限，以已有 assets + `--no-restore` + `.tmp` BaseOutputPath 完成。未运行 Playnite。扩展布局类还独立重现 SaveHistory gap `1.6 DIP`（期望 `8–14`），后续分阶段处理；本阶段未碰 SaveHistory 实现。R 账本 192 项及 `106/83/1/1/1` 不变。
+- 普通 restore 因当前用户 `%AppData%\NuGet\NuGet.Config` ACL 失败；不更改权限，以已有 assets + `--no-restore` + `.tmp` BaseOutputPath 完成。未运行 Playnite。扩展布局类还独立重现 SaveHistory gap `1.6 DIP`（期望 `8–14`），已由下一独立阶段处理；本阶段未碰 SaveHistory 实现。R 账本 192 项及 `106/83/1/1/1` 不变。
 
 ## 2026-09-26 Task 队列四行视口与紧凑 Inspector 收边
 

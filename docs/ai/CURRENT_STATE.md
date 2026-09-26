@@ -1,12 +1,19 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 SaveHistory 摘要与操作间距修复
+
+- 修复窗口化 SaveHistory 摘要正文与操作区实测仅 `1.6 DIP` 的间距问题：紧凑布局操作区顶部 margin 从 2 调至 10 DIP，Light/Dark 回归现为 `9.6 DIP`，既有 `8–14 DIP` 断言保持不变；命令、布局切换和宽布局横向间距不变。
+- Release Playnite.Tests / RenderHarness 隔离构建均 `0 warnings/0 errors`。SaveHistory Light/Dark `2/2`；完整双主题、多尺寸 RenderHarness `render-qa OK`、0 PROBLEM；Save 页 1040×700 DIP 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。
+- 使用既有 restore assets、`--no-restore` 与 `.tmp` 输出隔离；用户 NuGet.Config ACL 限制未更改。未启动 Playnite，不能外推到真实宿主/物理 DPI。R 台账仍 192 项、`106/83/1/1/1`。
+- Settings 阶段 commit `f0999af3` 与本阶段均为本地独立提交；推送被审批策略拦截，等待用户确认，不绕过。证据：[SaveHistory 间距](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
+
 ## 2026-09-26 Settings 矮窗视口修复与 UI gate 收口
 
 - 修复 Task/Overview/Save 之后剩余的 8 个 Settings RenderHarness findings。短高 `<760 DIP` 自动折叠恢复默认 disclosure，但保留安全说明与真实单字段/全部默认命令；正常高度恢复展开，并尊重同一断点内的手动选择。RenderHarness 将 category ListBox 的 ScrollContentPresenter DIP 可视高度与 logical `ViewportHeight` 项目单位分开验证。
 - 当前 Release RenderHarness 完整双主题/多尺寸运行 `render-qa OK`、0 PROBLEM、退出码 0；Settings 560-DIP category viewport `174.4 DIP`、末项滚到末端底边 `165.6 DIP`，正文 viewport `185.6 DIP`。离屏 logical DIP，不等同真实 Playnite/物理 DPI。
 - Release RenderHarness、Playnite.Tests 及依赖构建均 `0 warnings/0 errors`（复用现有 restore assets、`--no-restore`、`.tmp` 隔离输出）。短窗 Settings 两个 WPF case 报告通过，Settings Header/Path Light/Dark `2/2`，正确 build identity 的 R16 reset 契约 `1/1`；source validation、XAML `24/24`、diff check 通过。
-- 扩展布局用例另外独立重现 SaveHistory gap `1.6 DIP` 而断言期望 `8–14 DIP`；该页不在本次改动范围，作为下一独立诊断批次。普通 NuGet restore 被用户配置 ACL 拒绝；未更改权限。没有启动 Playnite；CEF/host、用户包与物理 DPI 边界照旧。
-- R 台账仍为 192 个唯一 ID，`106/83/1/1/1` 不变。证据：[Settings 矮窗视口](../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md)。下一步单独诊断 SaveHistory 几何用例，再按当前准入记忆继续。
+- 扩展布局用例另发现 SaveHistory gap `1.6 DIP`（期望 `8–14 DIP`）；已在后续独立阶段修复为 Light/Dark `9.6 DIP`，详见相邻最新事实入口与独立证据。普通 NuGet restore 被用户配置 ACL 拒绝；未更改权限。没有启动 Playnite；CEF/host、用户包与物理 DPI 边界照旧。
+- R 台账仍为 192 个唯一 ID，`106/83/1/1/1` 不变。Settings 阶段证据：[Settings 矮窗视口](../design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md)。
 
 ## 2026-09-26 Task 队列视口/compact Inspector 修复
 

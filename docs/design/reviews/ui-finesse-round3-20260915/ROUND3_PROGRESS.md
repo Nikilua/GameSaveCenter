@@ -1,9 +1,15 @@
+# 2026-09-26 SaveHistory summary/action separation
+
+- `ReportedWorkspaceLayoutBehaviorTests` 在 Light/Dark 独立复现摘要正文与动作区 gap `1.6 DIP`（既有目标 `8–14 DIP`）。将紧凑动作区 top margin 从 2 改为 10 DIP 后，两主题实测均为 `9.6 DIP`，断言与行为未放宽/替换。
+- Release Playnite.Tests/RenderHarness 隔离构建 `0/0`，布局回归 `2/2`；完整 RenderHarness `render-qa OK`、0 PROBLEM；1040×700 Save 表格 `4/4` 行。Source validation、XAML `24/24`、diff check 通过。R ledger 192 项、`106/83/1/1/1` 不变。
+- 证据：[SaveHistory action separation](evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。复用既有 restore assets、未启动 Playnite；离屏 DIP 不代替真实 host/物理 DPI。Settings 与本阶段分别提交；远端 push 仍待审批。
+
 # 2026-09-26 Settings short-window viewport repair
 
 - Settings 阶段收口 Task 后的 8 个 RenderHarness findings：5 种宽度的 560-DIP 样本中 category rail 可视区 `174.4 DIP`、滚到末项后边界 `165.6 DIP`；正文从 128/144 提高为 `185.6 DIP`。恢复默认说明与命令没有移除，短高自动折叠、正常高度恢复；同一断点内保留用户切换。
 - 修复类别门禁单位：ListBox `CanContentScroll=True` 时 `ScrollViewer.ViewportHeight` 是 logical item count，不是 DIP。现在使用 `ScrollContentPresenter.ActualHeight` 和同坐标系末项边界。完整双主题/多尺寸 RenderHarness `render-qa OK`、0 PROBLEM、退出码 0；Release Harness 和 Playnite.Tests/依赖 `0 warnings/0 errors`；Source validation、XAML `24/24`、diff check 通过。R 账本仍 192 项、`106/83/1/1/1`。
 - 证据：[Settings 矮窗视口修复](evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md)。这是离屏 WPF/DIP 结论，不代替 Playnite host、用户包 identity、物理 DPI/呈现。普通 restore 被 NuGet.Config ACL 阻止，采用现有资产/no-restore 和 `.tmp` 输出隔离。
-- 下一独立诊断：SaveHistory WPF 窗口化间距测试在 Light/Dark 实测 `1.6 DIP`，期望 `8–14 DIP`；完整 RenderHarness 未报该问题。先查测试几何与生产视觉树/边距，再决定修复，不放宽断言。
+- 后续扩展测试发现的 SaveHistory `1.6 DIP` 间距已在下一独立阶段修复为 `9.6 DIP`，断言范围保留；见顶部独立证据。
 
 # 2026-09-26 Overview empty recent-access viewport
 

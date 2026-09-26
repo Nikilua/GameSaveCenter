@@ -193,6 +193,9 @@ namespace GameSaveCenter.Playnite.Views
                 }
                 if (SaveHistorySummaryActions != null)
                 {
+                    // Keep the stacked command strip visually distinct from its summary
+                    // even after WPF layout rounding; a 2-DIP gap collapsed to 1.6 DIP
+                    // in the production-size window and made the two groups read as one.
                     SaveHistorySummaryActionsRow.Height = historyActionsCompact
                         ? GridLength.Auto
                         : new GridLength(0);
@@ -204,7 +207,7 @@ namespace GameSaveCenter.Playnite.Views
                     Grid.SetColumnSpan(SaveHistorySummaryActions, historyActionsCompact ? 2 : 1);
                     Grid.SetColumnSpan(SaveHistorySummaryContentStack, historyActionsCompact ? 2 : 1);
                     SaveHistorySummaryActions.Margin = historyActionsCompact
-                        ? new Thickness(0, 2, 0, 0)
+                        ? new Thickness(0, 10, 0, 0)
                         : new Thickness(14, 0, 0, 0);
                     SaveHistorySummaryActions.HorizontalAlignment = historyActionsCompact
                         ? HorizontalAlignment.Stretch
