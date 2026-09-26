@@ -1,9 +1,15 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 Media 视频预览 fallback 空引用保护
+
+- 在 `MediaCenterView.ResetSelectedVideoPreview` 的坏路径分支中，先显示 fallback，再检查 `MediaSelectedVideo` 是否可用后才折叠播放器；这是明确的 XAML generated-field nullability guard，保留正常路径行为并移除当前 Release warning。
+- 实现提交 `f1b746d51b3621e1e4f24ee7ca90809d2116aea4` 的 Release Playnite 测试项目 build `0/0`，R14 media selection/preview 类 `4/4`，source validator 通过，WPF static validator `0 errors/28 warnings/177 info`。没有 Playnite host 或真实视频播放验证。
+- 不新增或改变 R 项；基线仍 `192`，`106/83/1/1/1`。证据：[Media preview null safety](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-PREVIEW-NULL-SAFETY-20260926.md)。
+
 ## 2026-09-26 用户慢启动/缩略图卡顿当前 main 复核
 
-- 当前 main `a1544da2` 上重读了历史 Playnite 启动诊断并检查真实生产入口：大型库 Worker 预热与首屏 Ludusavi 版本探测解耦已由 PERF-001 实现；媒体列表/详情走 `AsyncThumbnailImage`，限制 3 并发和 96 项 LRU；旧 `MediaThumbnailConverter` 资源没有活动 XAML binding。
-- Release 测试程序集从当前源码身份构建成功，`0 errors/2` 条既有 Media `CS8602` warnings。大型库启动/Dashboard 6 用例、AsyncThumbnailLoader 6、AsyncThumbnailImage 2、R18 thumbnail budget 1、R09 placeholder 2，合计 `17/17`。
+- 在产品代码基线 `a1544da2`（随后 `e7e1d341` 仅提交文档）上重读历史 Playnite 启动诊断并检查真实生产入口：大型库 Worker 预热与首屏 Ludusavi 版本探测解耦已由 PERF-001 实现；媒体列表/详情走 `AsyncThumbnailImage`，限制 3 并发和 96 项 LRU；旧 `MediaThumbnailConverter` 资源没有活动 XAML binding。
+- 在该性能复核的 `a1544da2` 代码基线上，Release 测试程序集 `0 errors/2` 条当时的 Media `CS8602` warnings；大型库启动/Dashboard 6 用例、AsyncThumbnailLoader 6、AsyncThumbnailImage 2、R18 thumbnail budget 1、R09 placeholder 2，合计 `17/17`。后续 `f1b746d5` 加 guard 后，当前 build 已无警告。
 - 没有产品代码改动；实际冷启动与 presented-frame 性能仍需可用 Playnite/合规 ETW 环境，不能由 STA/合成测试替代。没有启动 Playnite或触碰用户数据。证据：[当前 main 慢启动/缩略图复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。R 总基线仍 192 项，`106/83/1/1/1` 不变。
 
 ## 2026-09-26 当前续接：ENV-001 启动进程身份加固

@@ -1,8 +1,12 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 Media 视频预览 fallback 空引用保护
+
+当前 main `f1b746d5` 对无效/不支持视频路径增加 `MediaSelectedVideo` null guard，保留 fallback 显示并消除重复的 `CS8602` 构建 warning。Release 测试项目 `0 warning/0 error`，R14 media preview/selection `4/4`，source validator 通过，WPF 静态检查 `0 errors/28 warnings/177 info`。没有启动 Playnite；真实视频播放仍未验。证据：[Media 预览空引用保护](docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-PREVIEW-NULL-SAFETY-20260926.md)。R 账本仍为 192 项、`106/83/1/1/1`。
+
 ## 2026-09-26 用户慢启动/缩略图卡顿当前 main 复核
 
-当前 HEAD `a1544da2` 的大型库 Worker 预热、Dashboard 版本后台探测和异步限流缩略图回归通过 `17/17`（build `0 errors/2` 条既有 Media nullable warnings）。旧 converter 没有活动 XAML binding；当前没有证据支持重复改产品代码。此验证不涵盖真实 Playnite cold start 或 presented-frame/ETW 性能，本轮没有启动宿主。详细记录：[当前 main 慢启动/缩略图复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。
+- 性能用例基于产品代码提交 `a1544da2`（随后 `e7e1d341` 为文档复核提交），而不是当前 `f1b746d5`；`17/17` 结果不受之后的视频预览 null guard 影响。当前 HEAD 的对应构建已为 `0 warning/0 error`。旧 converter 没有活动 XAML binding；真实 Playnite cold start 或 presented-frame/ETW 性能仍未验。详细记录：[当前 main 慢启动/缩略图复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。
 
 接续时仍按 R23-08 当前准入：R 表 192 个唯一 ID、`106/83/1/1/1`，没有可直接领取的产品代码项；等待新的可复现用户缺陷/明确范围，或 R23-04、Q24-03、R23-05 环境前置发生变化。
 

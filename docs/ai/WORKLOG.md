@@ -9405,3 +9405,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 对照历史用户诊断核验当前源码：大库 Worker 预热、Dashboard 首帧不等待 Ludusavi 版本探测已由 PERF-001 收口；媒体缩略图从文件探测到解码走后台、3 路上限、96 项 LRU 与取消保护。旧 `MediaThumbnailConverter` 资源在当前 XAML 中无活动绑定。
 - 当前 `a1544da2` Release 测试项目 `0 error/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602` warnings；启动/Dashboard 回归 `6/6`，AsyncThumbnailLoader `6/6`，AsyncThumbnailImage `2/2`，R18 budget `1/1`，R09 placeholder `2/2`，总计 `17/17`，零失败/跳过。
 - 未改产品代码或 192 项 R 状态；未启动 Playnite、触碰用户数据或尝试实际呈现/ETW 测量。自动化用例不等同实际冷启动或宿主掉帧验收。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md`。
+
+# 2026-09-26 Media 视频预览 fallback 空引用保护
+
+- Release 编译持续提示 `MediaCenterView.xaml.cs:703 CS8602`。复核 `ResetSelectedVideoPreview` 的无效/不支持路径发现 fallback 已显示，但命名 `MediaSelectedVideo` 仍无条件解引用；增加 null guard 后，若播放器元素未生成则保留可读 fallback，不再抛空引用。
+- 补充 `R14ClassificationSelectionTests` 回归契约。当前提交 `f1b746d5` 的 Release Playnite 测试项目 build `0 warnings/0 errors`，R14 类 `4/4`；`scripts/validate-source.py` 通过，WPF 静态审查 `0 errors/28 warnings/177 info`，`git diff --check` 通过。
+- 未启动 Playnite或测试真实视频播放；无 XAML/布局变更。192 项 R 基线及 `106/83/1/1/1` 不变。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-PREVIEW-NULL-SAFETY-20260926.md`。

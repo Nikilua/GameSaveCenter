@@ -1,9 +1,15 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 Media 视频预览 fallback 空引用保护
+
+- `MediaCenterView.ResetSelectedVideoPreview` 对 XAML 命名的 `MediaSelectedVideo` 增加 null guard，避免无效/不支持视频分支在显示 fallback 后因元素不可用而空引用；已加载元素时仍按原逻辑折叠。对应 R14 回归契约通过。
+- 当前提交 `f1b746d5` Release Playnite 测试项目构建 `0 warning/0 error`，`R14ClassificationSelectionTests 4/4`，source validator 通过；WPF 静态检查 `0 errors/28 warnings/177 info`，提示为未触碰的既有 XAML 项。
+- 未启动 Playnite，未做真实视频播放验证。192 项 R 账本与 `106/83/1/1/1` 状态数不变。证据：[Media 预览空引用保护](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-PREVIEW-NULL-SAFETY-20260926.md)。
+
 ## 2026-09-26 用户慢启动/缩略图卡顿：当前 main 复核
 
 - 历史诊断中插件初始化约 `0.63 s`，不能解释 Playnite 冷启动约 `39.22 s`；首次 Dashboard IPC 快照约 `977 ms`，旧缩略图解码样本约 `200–534 ms`。当前大库 Worker 预热、Dashboard Ludusavi 版本后台探测和异步限流缩略图均已实现。
-- 当前 HEAD `a1544da2` Release Playnite 测试项目构建 `0 error/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602`；启动行为 `6/6`、异步缩略图加载器 `6/6`、Image 控件 `2/2`、R18 预算 `1/1`、R09 占位 `2/2`，共 `17/17`。
+- 上一性能复核的产品代码基线为 `a1544da2`（之后 `e7e1d341` 仅更新文档）；其 Release 测试构建有两条当时的 `MediaCenterView.xaml.cs:703 CS8602` warning。随后 `f1b746d5` 为该处加了 null guard，当前构建已为 `0 warning/0 error`。该基线的启动行为 `6/6`、异步缩略图加载器 `6/6`、Image 控件 `2/2`、R18 预算 `1/1`、R09 占位 `2/2`，共 `17/17`。
 - 这只是当前源代码/合成夹具回归，不代表 Playnite 冷启动、真实媒体设备或 presented frame 性能验收；本轮没有启动 Playnite。详情：[当前 main 慢启动/缩略图复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STARTUP-THUMBNAIL-CURRENT-MAIN-RECHECK-20260926.md)。
 
 ## 2026-09-26 ENV-001 启动进程身份稳定性复核
