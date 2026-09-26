@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前准入状态：产品实现项已收口，环境门禁待变化
+
+R23-06 当前 main 包安装/回退复核完成后，已校准 R23-08 的旧执行顺序。192 项唯一 R 账本仍为 `106` 项受控满足、`83` 项待环境、`1` 外部阻塞、`1` 部分满足、`1` 不适用；没有待开始或实施中的代码项。R22-01 残余时间入口亦没有发现新的生产绑定缺口。
+
+本机目前只枚举到一个活动桌面显示器 `\\.\DISPLAY21`，Playnite/Worker 未运行。下一步只有在条件变化后继续相应实测：正常隔离宿主可启动且 CEF 状态改变后做 R23-04；第二活动屏可用后做 Q24-03；获得合规系统跟踪权限后做 R23-05。不要在 CEF `platform_channel 0x5` 状态不变时重复启动或绕过权限，也不要用逻辑模拟替代物理跨屏/真实 presented frame。若要继续源码开发，请提供新的可复现缺陷或明确功能范围；没有证据时不自创业务/UI改动。
+
+详细准入：[R23-08 当前 main 准入复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R23-08-CURRENT-MAIN-ADMISSION-20260926.md)。
+
 ## 2026-09-26 当前续接：R23-06 当前 main 安装/回退门禁
 
 R23-06 已按当前 main `4f778e9bd7e305cc878e83671f372b6b954b32e8` 重建当前 Release 包并完成仓库 `.tmp` 合成 profile 安装/回退：XAML `24/24`、solution `0 errors/2` 条既有 Media `CS8602` warnings，Core `125/125`、Playnite 隔离相关类 `179 passed/40 skipped`、Worker 非进程级 `356/356`；source validator 通过，WPF static `0 errors/28 warnings/177 info`。zip/pext 同 SHA-256 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`。回退后的六份 DLL 与旧候选逐文件一致。

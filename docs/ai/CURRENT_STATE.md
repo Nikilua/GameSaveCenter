@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 当前准入结论：没有可直接执行的 R 代码项
+
+- `R23-06` 当前 main 包身份、合成安装与文件级回退已完成；R23-08 的旧“下一项 R23-06”已校准。R23-06 详情见 [当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R23-06-CURRENT-MAIN-ROLLBACK-20260926.md)。
+- R 表基线仍为 192 个唯一 ID：106 项已满足/受控复核、83 项待环境门禁、1 项外部阻塞、1 项部分满足、1 项不适用，没有待开始/实施中的实现项。
+- 本机只枚举到一个活动桌面显示器 `\\.\DISPLAY21`，Playnite/Worker 当前均未运行；Q24-03 等第二屏，R23-04 等正常隔离宿主/CEF 状态变化，R23-05 等合规 ETW 权限。当前不能把这些环境门禁转成源码改动或用模拟结果签收。
+- R22-01 残余时间入口复核没有发现生产 XAML 新绑定缺口。没有新的用户报告/明确功能范围时不自创产品行为改动。准入细节见 [R23-08 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R23-08-CURRENT-MAIN-ADMISSION-20260926.md)。
+
 ## 2026-09-26 当前 main：R23-06 包安装与回退复核
 
 - 当前提交 `4f778e9bd7e305cc878e83671f372b6b954b32e8` 的 Release package、六份程序集身份、manifest 和 Worker self-contained 文件门禁通过。zip/pext SHA-256 均为 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`，各 `45,482,846` bytes。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 R23-08 当前准入复核
+
+- R23-06 本机当前 main 安装/回退阶段已完成后，重读 R23-08 与 R22-01 残余入口证据，更新过期的“下一项 R23-06”记录。R 表仍为 192 项，计数 `106/83/1/1/1`，没有待开始或实施中行。
+- 当前 Windows 桌面拓扑通过 `System.Windows.Forms.Screen.AllScreens` 只枚举 `\\.\DISPLAY21` 一屏；Playnite/Worker 未运行。未启动 Playnite或重试已知 CEF `platform_channel 0x5`，未尝试绕过 ETW 权限。
+- 准入结论：R22-01 无新时间绑定缺口；R23-04、Q24-03、R23-05 分别等待宿主/CEF、第二显示器、合规跟踪权限。当前没有可据以修改产品行为的开放 R 代码项；等待环境变化或用户新的可复现 bug/明确功能范围。
+- 证据：[R23-08 当前 main 准入复核](../design/reviews/ui-finesse-round3-20260915/evidence/R23-08-CURRENT-MAIN-ADMISSION-20260926.md)。本阶段仅文档与只读环境核验，不改产品代码或 192 项统计。
+
 ## 2026-09-26 R23-06 当前 main 安装与回退复核
 
 - 基于 main `4f778e9bd7e305cc878e83671f372b6b954b32e8` 重新构建 Release package 并复核六份程序集身份；XAML `24/24`、solution `0 errors`、两条既有 Media `CS8602` warnings，zip/pext 同 SHA-256 `82A615DA72E55527266E9CA7A7B1A67A5926472485FEC0E57DD234F8F6B24DF1`。

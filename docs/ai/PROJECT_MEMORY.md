@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 当前准入：等待环境条件或新的用户缺陷
+
+- R23-06 当前 main 包/隔离安装/文件级回退已收口，不重复。R 表 192 项唯一任务计数维持 `106/83/1/1/1`（满足受控/待环境/外部阻塞/部分满足/不适用），没有待实现/实施中的 R 项。
+- 本机活动桌面拓扑只枚举到 `\\.\DISPLAY21`；Playnite/Worker 当前未运行。Q24-03 需第二活动显示器；R23-04 需 CEF/正常隔离宿主条件变化；R23-05 需合规 ETW 权限。相同 CEF `0x5` 状态不重试，不绕过权限。
+- R22-01 残余 `ToLocalTime` 入口已盘点，当前没有新的生产 XAML 绑定缺口。无新的复现缺陷或明确范围时，不臆造页面/业务改动。详见 [R23-08 当前准入复核](../design/reviews/ui-finesse-round3-20260915/evidence/R23-08-CURRENT-MAIN-ADMISSION-20260926.md)。
+
 ## 2026-09-26 main：R23-06 当前身份的包/回退门禁
 
 - `4f778e9bd7e305cc878e83671f372b6b954b32e8` Release 候选 XAML `24/24`、solution `0 errors/2` 条既有 `MediaCenterView.xaml.cs:703 CS8602`；Core `125/125`、Playnite 受影响类 `179 passed/40 skipped`、Worker 非进程级 `356/356`。source validator 通过，WPF static 为 `0 errors/28 warnings/177 info`。
