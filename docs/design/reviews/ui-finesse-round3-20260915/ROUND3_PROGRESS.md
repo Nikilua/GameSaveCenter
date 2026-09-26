@@ -1,3 +1,9 @@
+# 2026-09-26 Save history compact viewport recheck
+
+- 在当前 main 起始身份 `0e340c08` 上复核旧 UI gate，发现 Save history 在窄窗中垂直空间不足；修正后 1040×700 DIP Render QA 样本表视口 `260 DIP`、完整可读 `4/4` 行，三个操作按钮各 `36 DIP`。窄布局保留可发现的恢复可用性说明，不占底部数据行空间。
+- 离屏 RenderHarness 168 个快照：HIGH/MEDIUM/Fidelity/失败路由均为 0；完整 `render-qa` 仍有 33 个 PROBLEM，限于 Overview 最近访问列表 2 DIP、Task 行数/compact Inspector 越界、Settings 矮窗类别/主体视口不足。项目级 gate 未通过；后续应按这三组继续，而不是依据旧 R23-08 快照称无代码工作。
+- 目标回归 `3/3`、RenderHarness build `0/0`、XAML `24/24`、source validator 与 WPF 静态检查通过。本批不改 R 账本（192 项，`106/83/1/1/1`），未启动 Playnite/真实宿主。完整细节：[Save history compact viewport recheck](evidence/SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md)。
+
 ## 2026-09-24 R23-04 隔离宿主启动边界更新
 
 - `42884321` 首次 host run 只观察到通用 Startup Error/safe-mode prompt，manifest、`summary.json` 与 GSC 侧栏均未出现，`cef.log` 是空文件。runner 强杀缺陷与旧 profile 的 `safestart.flag` 已发现，但不能唯一归因该次报错。

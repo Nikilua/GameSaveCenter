@@ -331,18 +331,40 @@ public static class UiLayoutAnalyzer
         foreach (var grid in FindVisualChildren<DataGrid>(scroller))
         {
             var visibility = ScrollViewer.GetVerticalScrollBarVisibility(grid);
-            if (visibility == ScrollBarVisibility.Auto || visibility == ScrollBarVisibility.Visible)
+            if ((visibility == ScrollBarVisibility.Auto || visibility == ScrollBarVisibility.Visible)
+                && HasScrollableVerticalDescendant(grid)
+                && !HasFiniteVerticalViewport(grid))
                 return true;
         }
 
         foreach (var list in FindVisualChildren<ListBox>(scroller))
         {
             var visibility = ScrollViewer.GetVerticalScrollBarVisibility(list);
-            if (visibility == ScrollBarVisibility.Auto || visibility == ScrollBarVisibility.Visible)
+            if ((visibility == ScrollBarVisibility.Auto || visibility == ScrollBarVisibility.Visible)
+                && HasScrollableVerticalDescendant(list)
+                && !HasFiniteVerticalViewport(list))
                 return true;
         }
 
         return false;
+    }
+
+    private static bool HasScrollableVerticalDescendant(FrameworkElement element)
+    {
+        return FindVisualChildren<ScrollViewer>(element).Any(viewer =>
+            viewer.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled
+            && viewer.VerticalScrollBarVisibility != ScrollBarVisibility.Hidden
+            && viewer.ExtentHeight > viewer.ViewportHeight + 0.5);
+    }
+
+    private static bool HasFiniteVerticalViewport(FrameworkElement element)
+    {
+        if (element.Tag is string tag
+            && string.Equals(tag, "FiniteViewport", StringComparison.Ordinal))
+            return true;
+
+        return (!double.IsNaN(element.Height) && !double.IsInfinity(element.Height))
+            || (!double.IsNaN(element.MaxHeight) && !double.IsInfinity(element.MaxHeight));
     }
 
     private static void AnalyzeVerticalFill(DependencyObject root, UiLayoutReport report)

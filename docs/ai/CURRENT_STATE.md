@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 Save 历史窄窗 UI gate 复核
+
+- 当前 main 起始基线 `0e340c08` 的 Save 历史表曾在 1040×700 DIP 窗口不足四行可读；已改为 260 DIP 最小视口，在 RenderHarness 中四行完整可读。详情入口和 36 DIP 共享按钮样式保持真实命令，紧凑布局的恢复可用性提示移至 Inspector 并保留 Tooltip/Automation HelpText。
+- 168 个离屏运行时快照 `HIGH=0/MEDIUM=0/Fidelity=0/失败路由=0`。完整 Render QA 仍有 33 个 PROBLEM：Overview 最近访问列表 2 DIP、Task 表行数/紧凑 Inspector 越界、Settings 矮窗主体/类别视口不足；目标 Save/Media 页没有 PROBLEM，不能把项目级 gate 记作通过。
+- RenderHarness Release `0/0`；定向测试 `3/3`、source validator、XAML `24/24`、WPF static `0 errors/28 warnings/177 info`、diff check 通过。未启动 Playnite，离屏 DIP 不等于真实宿主/物理 DPI 验证。
+- R 账本保持 192 个唯一 ID、`106/83/1/1/1`。本轮复核和范围见 [Save 历史窄窗证据](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md)；后续应以 Render QA 的 Overview、Task、Settings 三组问题作为明确 UI 实现批次，不把它们错误归为已关闭。
+
 ## 2026-09-26 Media 视频预览 fallback 空引用保护
 
 - `MediaCenterView.ResetSelectedVideoPreview` 对 XAML 命名的 `MediaSelectedVideo` 增加 null guard，避免无效/不支持视频分支在显示 fallback 后因元素不可用而空引用；已加载元素时仍按原逻辑折叠。对应 R14 回归契约通过。

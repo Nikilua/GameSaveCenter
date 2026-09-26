@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 Save 历史窄窗视口修正与 UI gate 复核
+
+- 当前 main 起始点 `0e340c08` 上重新复现 Save 历史窄窗行数不足，修复为 `260 DIP` 表格最小高度；详情动作入口靠近标题，沿用共享 36 DIP icon-only button，并新增/调整恢复提示的 Tooltip、Automation HelpText 与 compact Inspector 可见性。命令、安全语义不变。
+- RenderHarness analyzer 现在区分“真实溢出且无有限 viewport”与已约束的内部列表；168 snapshots 为 HIGH 0、MEDIUM 0、Fidelity 0、失败路由 0，87 INFO。RenderHarness build `0 warning/0 error`，三条定向用例 `3/3`，source validator、XAML `24/24`、WPF static `0 errors/28 warnings/177 info`、diff check 通过。
+- 完整 Render QA 仍失败：33 个 PROBLEM 分布在 Overview 最近访问列表（2 DIP）、Task 表可读行数/compact Inspector 越界、Settings 矮窗主体与类别 viewport。没有 Save 或 Media 的问题。本条只确认 Save 页面修复，剩余三组应作为后续 UI 批次，不记项目 gate 通过。
+- 离屏 logical DIP 不代表 Playnite/物理 DPI；本轮未启动 Playnite，不改 R 任务计数（192，`106/83/1/1/1`）。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md`。
+
 ## 2026-09-26 R23-08 当前准入复核
 
 - R23-06 本机当前 main 安装/回退阶段已完成后，重读 R23-08 与 R22-01 残余入口证据，更新过期的“下一项 R23-06”记录。R 表仍为 192 项，计数 `106/83/1/1/1`，没有待开始或实施中行。

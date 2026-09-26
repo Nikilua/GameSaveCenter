@@ -1502,9 +1502,20 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Name=\"SaveHistoryGrid\"", save);
         Assert.Contains("x:Name=\"SaveCandidateGrid\"", save);
-        Assert.Contains("const double tableMinHeight = 236d", saveCode);
+        Assert.Contains("x:Name=\"SaveHistoryCompactDetailsButton\"", save);
+        Assert.Contains("ToolTip=\"{Binding RestoreAvailabilityHint, Mode=OneWay}\"", save);
+        Assert.Contains("x:Name=\"SaveHistoryRestoreAvailabilityHint\"", save);
+        Assert.Contains("x:Name=\"SaveHistoryInspectorAvailabilityHint\"", save);
+        Assert.Contains("x:Name=\"SaveLoadDetailsButton\" Style=\"{DynamicResource GscIconOnlyToolbarButton}\"", save);
+        Assert.Contains("const double tableMinHeight = 260d", saveCode);
         Assert.Contains("SaveHistoryGrid.MinHeight = tableMinHeight", saveCode);
         Assert.Contains("SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d)", saveCode);
+        Assert.Contains("SaveHistorySummaryCard.Padding = historyActionsCompact", saveCode);
+        Assert.Contains("new Thickness(10, 4, 10, 4)", saveCode);
+        Assert.Contains("SaveHistorySummaryActions.Margin = historyActionsCompact", saveCode);
+        Assert.Contains("new Thickness(0, 2, 0, 0)", saveCode);
+        Assert.Contains("SaveHistoryRestoreAvailabilityHint.Visibility = compact", saveCode);
+        Assert.Contains("SaveHistoryInspectorAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);
         Assert.Contains("candidateHeight - tableMinHeight - 10", saveCode);
 
@@ -2316,6 +2327,53 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("SaveCandidateReasonScrollViewer", saveText);
         Assert.DoesNotContain("SaveCandidateActionsScrollViewer", saveText);
         Assert.DoesNotContain("<Border Grid.Row=\"1\" Style=\"{DynamicResource GscSurface}\"", saveText);
+    }
+
+    [Fact]
+    public void SaveCenterCompactModeKeepsRestoreAvailabilityAccessibleWithoutTakingTableRows()
+    {
+        Exception? exception = null;
+        var compactHintMoved = false;
+        var wideHintRestored = false;
+
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var view = new SaveCenterView();
+                var viewType = typeof(SaveCenterView);
+                var historyGrid = (DataGrid)viewType.GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var pageHint = (Border)viewType.GetField("SaveHistoryRestoreAvailabilityHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspectorHint = (Border)viewType.GetField("SaveHistoryInspectorAvailabilityHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var detailsButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("SaveHistoryCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                var selected = new object();
+                historyGrid.ItemsSource = new[] { selected };
+                historyGrid.SelectedItem = selected;
+
+                view.ApplyResponsiveLayout(744, 460);
+                compactHintMoved = pageHint.Visibility == Visibility.Collapsed
+                    && inspectorHint.Visibility == Visibility.Visible
+                    && detailsButton.Visibility == Visibility.Visible;
+
+                view.ApplyResponsiveLayout(1116, 660);
+                wideHintRestored = pageHint.Visibility == Visibility.Visible
+                    && inspectorHint.Visibility == Visibility.Collapsed
+                    && detailsButton.Visibility == Visibility.Collapsed;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.True(compactHintMoved, "Compact mode should move the full safety hint into the reachable inspector and leave the table footer free.");
+        Assert.True(wideHintRestored, "Wide mode should restore the inline safety hint and hide the compact details entry.");
     }
 
     [LegacyProductionUiBaselineFact]

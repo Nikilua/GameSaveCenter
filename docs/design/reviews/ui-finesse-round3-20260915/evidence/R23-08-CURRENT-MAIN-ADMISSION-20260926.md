@@ -8,6 +8,12 @@
 
 按当前 R23-08 清单和 main 证据，当前没有可在本机直接领取的新增产品代码项。R 任务表仍是 `192/192` 个唯一 ID：`106` 项已满足/当前 main 受控复核、`83` 项已满足但待明确环境门禁、`1` 项外部阻塞（R02-06）、`1` 项部分满足且待宿主性能（R23-05）、`1` 项不适用（R05-05）；没有待开始、实施中或代码完成待验收的 R 行。本复核不改这些计数。
 
+### 2026-09-26 后续 UI gate 复核补记
+
+上述结论是 R 行准入快照，不代表 RenderHarness 能发现的问题均不存在。随后以当前 main 起始身份 `0e340c08` 执行的 UI gate 复核发现并修复了 Save 历史窄窗可读行数问题：1040×700 DIP 下 4 行完整可读。此为已有 UI gate 证据的实现跟进，不新增 R ID，也不改变 `192 / 106/83/1/1/1` 统计。
+
+该完整 Render QA gate 仍有 33 个 PROBLEM：Overview 最近访问列表仅 2 DIP、Task 某些尺寸可读行数不足且 compact Inspector 越界、Settings 矮窗主体/类别 viewport 不足。后续应把这三组作为新的逐页 UI 实现阶段；项目级 Render QA 当前仍未通过。详见 [Save compact 与完整 gate 复核](SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md)。
+
 - R23-06 当前身份的包/合成安装/文件级回退已在 [当前 main 证据](R23-06-CURRENT-MAIN-ROLLBACK-20260926.md) 收口，不应重复。
 - R22-01 残余时间入口已逐项核对：没有生产 `Views/*.xaml` 绑定旧本地时间投影的证据；若没有新增具体入口，不应继续改时间展示。
 - 本机 `System.Windows.Forms.Screen.AllScreens` 只枚举一个活动桌面显示器 `\\.\DISPLAY21`（Bounds `2352×1470`，WorkArea `2352×1446`），因此 Q24-03 真实跨屏条件仍不具备。本轮没有把逻辑 DPI 模拟当成第二块物理屏幕。

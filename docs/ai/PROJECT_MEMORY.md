@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 Save 历史窄窗视口修正与项目级 gate 结果
+
+- 从当前 main `0e340c08` 重新审计后，修复 Save Center 历史页窄窗中表格可读行数不足：列表 min-height 调至 260 DIP；详情入口移动到标题行附近，复用共享 36 DIP icon-only 样式，并为恢复可用性提示保留 Tooltip、Automation HelpText 与 Inspector 入口。compact 布局隐藏底部重复提示以让出表格空间，宽布局仍显示。
+- RenderHarness 168 个 runtime snapshots：HIGH/MEDIUM/Fidelity/route failures 均为 0，87 INFO。嵌套滚动 analyzer 现在只有实际垂直溢出且没有显式有限 viewport 才报 HIGH；媒体有限高度子列表不再误报。
+- 三个定向回归 `3/3`、Harness build `0/0`、source validator、XAML `24/24`、WPF static `0 errors/28 warnings/177 info`、diff check 通过。Render QA 项目 gate 仍失败，共 33 PROBLEM：Overview list 2 DIP、Task 行数与 compact inspector 越界、Settings 矮窗类别/主体 viewport 不足；Save/Media 无问题。后续应将这三组作为可执行 UI 工作范围，不能引用单页通过宣称全项目通过。
+- 使用离屏 WPF/逻辑 DIP，未安装/启动 Playnite，不代表实际宿主、物理 DPI 或最终呈现验收。R ledger 不变：192 个唯一 ID，`106/83/1/1/1`。完整记录：[Save 历史窄窗证据](../design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md)。
+
 ## 2026-09-26 Media 视频预览 fallback 空引用保护
 
 - 在 `MediaCenterView.ResetSelectedVideoPreview` 的坏路径分支中，先显示 fallback，再检查 `MediaSelectedVideo` 是否可用后才折叠播放器；这是明确的 XAML generated-field nullability guard，保留正常路径行为并移除当前 Release warning。

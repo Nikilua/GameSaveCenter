@@ -94,11 +94,11 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
-                // Keep the primary table readable when the selected-version inspector is
-                // stacked below it.  The table still owns its internal virtualized scroll;
-                // this floor only prevents the inspector's Auto row from reducing it to a
-                // one-row strip during a short window resize.
-                const double tableMinHeight = 236d;
+                // Keep four complete history rows readable when the selected-version
+                // inspector is stacked below it. The table still owns its internal
+                // virtualized scroll; this floor prevents the inspector's Auto row from
+                // reducing the primary list below the common-window baseline.
+                const double tableMinHeight = 260d;
                 SaveHistoryGrid.MinHeight = tableMinHeight;
                 SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d);
                 // On narrow hosts the lock status is the essential per-row summary; the
@@ -128,6 +128,12 @@ namespace GameSaveCenter.Playnite.Views
                 // room, which made the production page structurally different.
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var compact = detailBreakpoint.Evaluate(width);
+                SaveHistoryRestoreAvailabilityHint.Visibility = compact
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+                SaveHistoryInspectorAvailabilityHint.Visibility = compact
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
                 if (wasWideDetailLayout && compact)
                 {
                     // The same inspector is already visible beside the selected row.
@@ -155,6 +161,18 @@ namespace GameSaveCenter.Playnite.Views
                 // Stack only this action strip when its actual table column cannot give
                 // the summary content and all actions a stable side-by-side measure.
                 var historyActionsCompact = ruleCardCompact || historySummaryAvailableWidth < 1240;
+                if (SaveHistorySummaryCard != null)
+                {
+                    // The stacked command row otherwise steals roughly two table-row
+                    // heights from the 1040x700 DIP workspace. Tighten only the
+                    // surrounding whitespace; keep every command and hit target intact.
+                    SaveHistorySummaryCard.Padding = historyActionsCompact
+                        ? new Thickness(10, 4, 10, 4)
+                        : new Thickness(10, 8, 10, 8);
+                    SaveHistorySummaryCard.Margin = historyActionsCompact
+                        ? new Thickness(0, 0, 0, 2)
+                        : new Thickness(0, 0, 0, 10);
+                }
                 if (SaveCurrentRuleActions != null)
                 {
                     SaveCurrentRuleActionsRow.Height = ruleCardCompact
@@ -186,7 +204,7 @@ namespace GameSaveCenter.Playnite.Views
                     Grid.SetColumnSpan(SaveHistorySummaryActions, historyActionsCompact ? 2 : 1);
                     Grid.SetColumnSpan(SaveHistorySummaryContentStack, historyActionsCompact ? 2 : 1);
                     SaveHistorySummaryActions.Margin = historyActionsCompact
-                        ? new Thickness(0, 10, 0, 0)
+                        ? new Thickness(0, 2, 0, 0)
                         : new Thickness(14, 0, 0, 0);
                     SaveHistorySummaryActions.HorizontalAlignment = historyActionsCompact
                         ? HorizontalAlignment.Stretch

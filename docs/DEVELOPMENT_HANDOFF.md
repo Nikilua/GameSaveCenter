@@ -1,5 +1,17 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-26 当前接续：Save 窄窗修复完成，三组 UI gate 问题待分批处理
+
+起始 `main` 为 `0e340c08`，R 表 192 项的当前总体计数仍是 `106/83/1/1/1`。本轮重新跑当前 UI harness 后找到 Save 历史页 compact viewport 问题并修复：1040×700 DIP 下历史表 4 行完整可读，动作按钮 36 DIP，恢复提示仍通过详情按钮 Tooltip/Automation HelpText 与 Inspector 可访问。三条目标回归通过。
+
+**下一轮明确的源码工作范围来自完整 Render QA 的 33 个 PROBLEM，而不是旧 R23-08 的“无可执行项”快照：**
+
+1. Overview `OverviewRecentAccessList` 多种尺寸/主题下 viewport 仅 2 DIP（要求至少 236 DIP）。
+2. Task 在部分尺寸只显示 3/4 行；1100×720 compact step 的 Inspector 越过 Task surface。
+3. Settings 在 560 DIP 高度部分宽度类别 viewport 仅 2–3 DIP、主体 viewport 128–144 DIP。
+
+完整 gate 目前仍是失败状态；不得因 Save 单页修复或 168 个基础 audit snapshots 的 HIGH/MEDIUM 为 0 而记作全项目通过。逐页修复仍须按 Demo-first、共享控件修复、Light/Dark/尺寸验证与真实命令/辅助功能约束执行。证据：[当前 Render QA 与 Save 修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md)。离屏逻辑 DIP 不等于 Playnite host/物理 DPI；本轮没有启动 Playnite。
+
 ## 2026-09-26 Media 视频预览 fallback 空引用保护
 
 当前 main `f1b746d5` 对无效/不支持视频路径增加 `MediaSelectedVideo` null guard，保留 fallback 显示并消除重复的 `CS8602` 构建 warning。Release 测试项目 `0 warning/0 error`，R14 media preview/selection `4/4`，source validator 通过，WPF 静态检查 `0 errors/28 warnings/177 info`。没有启动 Playnite；真实视频播放仍未验。证据：[Media 预览空引用保护](docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-PREVIEW-NULL-SAFETY-20260926.md)。R 账本仍为 192 项、`106/83/1/1/1`。

@@ -55,6 +55,8 @@ public sealed class UiAuditSourceTests
         Assert.Contains("toolbarprobe", program);
         Assert.Contains("PRIMARY_VIEWPORT_UNREACHABLE", layout);
         Assert.Contains("approvedMediaInboxInspectorScroll", layout);
+        Assert.Contains("HasScrollableVerticalDescendant", layout);
+        Assert.Contains("HasFiniteVerticalViewport", layout);
         Assert.Contains("CONTROL_CLIPPED", layout);
         Assert.Contains("RunProductionShellMediaProbe", program);
         Assert.Contains("MediaInboxFooter", program);
