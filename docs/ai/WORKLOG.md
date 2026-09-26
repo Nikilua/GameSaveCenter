@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-26 Overview 最近访问空态视口修复
+
+- 当前 main `daa6ecb2` 的 RenderHarness 将 `RecentAccessItems` 设为空，发现 `OverviewRecentAccessList` 被 Auto 行压至 `2 DIP`；`MaxHeight=280` 不约束最小值。将本列表 `MinHeight` 设为 `236 DIP`，保留真实空集合、空态文案、内部滚动、Recycling virtualization 和 280 DIP 上限，不引入占位数据。
+- 修复前 Render QA 33 PROBLEM（20 个 Overview 重复尺寸/主题项）；修复后 11 个 Overview 窗口样本均 `236 DIP/items=0`，Overview PROBLEM `0`，完整项目剩余 `13` 个 Task/Settings PROBLEM。
+- Release RenderHarness build `0 warning/0 error`；`RestoredAcrylicForkBaselineTests 16/16`。source validator、XAML `24/24`、WPF 静态审查 `0 errors/28 warnings/177 info`、`git diff --check` 通过。`scripts/render-qa.ps1` 包装 build 被 NuGet.Config ACL 阻断，使用现有 assets/no-restore 后直接运行相同 RenderHarness 得到完整报告。
+- 未启动 Playnite；离屏 DIP 不替代真实 host/DPI。R 台账 192 项、`106/83/1/1/1` 不变。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-EMPTY-RECENT-ACCESS-VIEWPORT-20260926.md`。
+
 ## 2026-09-26 Save 历史窄窗视口修正与 UI gate 复核
 
 - 当前 main 起始点 `0e340c08` 上重新复现 Save 历史窄窗行数不足，修复为 `260 DIP` 表格最小高度；详情动作入口靠近标题，沿用共享 36 DIP icon-only button，并新增/调整恢复提示的 Tooltip、Automation HelpText 与 compact Inspector 可见性。命令、安全语义不变。

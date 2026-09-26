@@ -1,3 +1,9 @@
+# 2026-09-26 Overview empty recent-access viewport
+
+- 当前 main 起点 `daa6ecb2` 上的空集合 fixture 将 `OverviewRecentAccessList` 实测为 `2 DIP`；Auto 行测量没有从 `MaxHeight` 获得任何最小高度。将本列表最小高度设为 `236 DIP`，保留空状态内容、最大高度、Recycling virtualization 和内部滚动。
+- 修复后 RenderHarness 11 个常用/大窗口样本全部 `236 DIP`、`items=0`；Light/Dark 页面均无 Overview PROBLEM。总 gate 从 33 项降至 13 项，Task 和 Settings 问题仍开放。
+- Release build `0/0`，Overview baseline source test class `16/16`。`render-qa.ps1` 常规 restore/build 受 NuGet.Config ACL 限制；用现有 assets `--no-restore` 构建后直接运行同一 harness。未启动 Playnite，离屏验证不作为实际宿主/DPI验收。证据：[Overview empty viewport](evidence/OVERVIEW-EMPTY-RECENT-ACCESS-VIEWPORT-20260926.md)。
+
 # 2026-09-26 Save history compact viewport recheck
 
 - 在当前 main 起始身份 `0e340c08` 上复核旧 UI gate，发现 Save history 在窄窗中垂直空间不足；修正后 1040×700 DIP Render QA 样本表视口 `260 DIP`、完整可读 `4/4` 行，三个操作按钮各 `36 DIP`。窄布局保留可发现的恢复可用性说明，不占底部数据行空间。

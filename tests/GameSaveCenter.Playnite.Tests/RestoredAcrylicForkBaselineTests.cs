@@ -19,6 +19,8 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("风险与提醒", overview);
         Assert.Contains("OverviewActivityList", overview);
         Assert.Contains("OverviewActivityTimelineList", overview);
+        Assert.Contains("x:Name=\"OverviewRecentAccessList\"", overview);
+        Assert.Contains("MinHeight=\"236\"", overview);
         Assert.Contains("x:Name=\"OverviewActivityColumn\"", overview);
         Assert.Contains("Grid.RowSpan=\"2\"", overview);
         Assert.Contains("今日工作台", overview);

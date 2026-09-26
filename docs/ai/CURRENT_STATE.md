@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-26 Overview 最近访问空态视口修复
+
+- `OverviewRecentAccessList` 在真实 `RecentAccessItems` 空集合下曾被 WPF Auto 行测量收缩为 2 DIP；设最小高度 236 DIP 后，RenderHarness 11 个窗口尺寸均为 `236 DIP`，保留 280 DIP 上限、空态文案、内部滚动和 Recycling virtualization。
+- 修复前全项目 Render QA 33 项 PROBLEM；修复后 Overview PROBLEM `0`，全项目余 `13` 项仅在 Task 与 Settings。项目级 gate 尚未通过。
+- Release Harness `0/0`，Overview 来源契约测试类 `16/16`。Render QA 包装脚本受 NuGet.Config 访问权限影响未能自建；使用既有 assets 的 `--no-restore` build + 同一 RenderHarness 产出完整报告。未启动 Playnite，逻辑 DIP 不代表宿主/DPI 实测。
+- 192 项 R 基线与 `106/83/1/1/1` 不变。详细记录：[Overview 空列表视口证据](../design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-EMPTY-RECENT-ACCESS-VIEWPORT-20260926.md)。下一项继续处理 Task 和 Settings 两组余项。
+
 ## 2026-09-26 Save 历史窄窗 UI gate 复核
 
 - 当前 main 起始基线 `0e340c08` 的 Save 历史表曾在 1040×700 DIP 窗口不足四行可读；已改为 260 DIP 最小视口，在 RenderHarness 中四行完整可读。详情入口和 36 DIP 共享按钮样式保持真实命令，紧凑布局的恢复可用性提示移至 Inspector 并保留 Tooltip/Automation HelpText。

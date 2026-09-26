@@ -14,6 +14,10 @@
 
 该完整 Render QA gate 仍有 33 个 PROBLEM：Overview 最近访问列表仅 2 DIP、Task 某些尺寸可读行数不足且 compact Inspector 越界、Settings 矮窗主体/类别 viewport 不足。后续应把这三组作为新的逐页 UI 实现阶段；项目级 Render QA 当前仍未通过。详见 [Save compact 与完整 gate 复核](SAVE-HISTORY-COMPACT-VIEWPORT-RECHECK-20260926.md)。
 
+### Overview 阶段完成补记
+
+在上述 gate 快照后，已在 `OverviewRecentAccessList` 上补 `MinHeight=236`，仅修复真实空集合下 ListBox 内容自动高度测量造成的 2 DIP 视口；保留 280 DIP cap、ItemsSource、空态提示、内部滚动和虚拟化。完整 RenderHarness 的 Overview 11 个常用尺寸现在均为 236 DIP，Overview PROBLEM `0`；项目总问题减至 `13` 个，剩余仅 Task 与 Settings。证据：[Overview 空列表 viewport](OVERVIEW-EMPTY-RECENT-ACCESS-VIEWPORT-20260926.md)。全局 gate 仍未通过。
+
 - R23-06 当前身份的包/合成安装/文件级回退已在 [当前 main 证据](R23-06-CURRENT-MAIN-ROLLBACK-20260926.md) 收口，不应重复。
 - R22-01 残余时间入口已逐项核对：没有生产 `Views/*.xaml` 绑定旧本地时间投影的证据；若没有新增具体入口，不应继续改时间展示。
 - 本机 `System.Windows.Forms.Screen.AllScreens` 只枚举一个活动桌面显示器 `\\.\DISPLAY21`（Bounds `2352×1470`，WorkArea `2352×1446`），因此 Q24-03 真实跨屏条件仍不具备。本轮没有把逻辑 DPI 模拟当成第二块物理屏幕。

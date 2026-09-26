@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-26 Overview empty recent-access viewport 已修复
+
+- 复核已推送 main `daa6ecb2` 时发现 `OverviewRecentAccessList` 在 `RecentAccessItems` 为空时因自身 `MinHeight=0` 和内容 Auto 测量而坍缩至 2 DIP；不是缺少假数据，也不是 shared scrollbar 模板缺陷。设 `MinHeight=236` 后仍保留 `MaxHeight=280`、真实 ItemsSource、空态消息、内部滚动与虚拟化。
+- 修复后 RenderHarness 11 个窗口尺寸均得到 `236 DIP` 空列表视口；Light/Dark Overview PROBLEM 为 0。完整 UI gate 从 33 个降为 13 个，剩余都在 Task/Settings。`render-qa.ps1` 的常规 build 被 NuGet.Config ACL 阻断，之后以当前 assets `--no-restore` 构建并执行相同 harness，输出完整 gate 报告。
+- Release build `0/0`，`RestoredAcrylicForkBaselineTests 16/16`，source validator、XAML `24/24`、WPF static `0 errors/28 warnings/177 info` 和 diff check 通过。未启动 Playnite；结果是离屏逻辑 DIP，不等于宿主/DPI 呈现。R 基线 192 项、`106/83/1/1/1` 保持。证据：[Overview 空态 viewport](../design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-EMPTY-RECENT-ACCESS-VIEWPORT-20260926.md)。
+
 ## 2026-09-26 Save 历史窄窗视口修正与项目级 gate 结果
 
 - 从当前 main `0e340c08` 重新审计后，修复 Save Center 历史页窄窗中表格可读行数不足：列表 min-height 调至 260 DIP；详情入口移动到标题行附近，复用共享 36 DIP icon-only 样式，并为恢复可用性提示保留 Tooltip、Automation HelpText 与 Inspector 入口。compact 布局隐藏底部重复提示以让出表格空间，宽布局仍显示。

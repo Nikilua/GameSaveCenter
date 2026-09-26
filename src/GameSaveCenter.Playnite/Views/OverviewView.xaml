@@ -513,7 +513,7 @@
                                      ItemsSource="{Binding RecentAccessItems}"
                                      ItemContainerStyle="{StaticResource OverviewRecentAccessItemStyle}"
                                      HorizontalContentAlignment="Stretch"
-                                     MinHeight="0"
+                                     MinHeight="236"
                                      MaxHeight="280"
                                      Background="Transparent"
                                      BorderThickness="0"
