@@ -1,12 +1,20 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-27 当前续接：当前 HEAD 全页面离屏 RenderHarness 通过
+
+在代码提交 `a829521c` 构建的 Release Harness 上，当前 checkout `1de39cfb27d3fc75517c914c20efe5cc7a4bd262` 直接运行完整页面 `render-qa`（该 checkout 在 a829 之后仅有文档提交）。覆盖 11 档窗口、七工作区、Light/Dark 和 shell/主题/resize 探针，372 PNG，`WorkingTreeClean=True`、退出码 0、`render-qa OK`、无 PROBLEM。完整边界：[当前 HEAD RenderHarness evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。
+
+正式 R 表经唯一 ID 重算仍 192 项；表内 202 个匹配行包含 10 个 R13/R14 摘要重复，归并状态 `106/83/1/1/1`。本机只读环境复核仍为单屏 `DISPLAY21`、Playnite 未运行、WMI 命令行访问拒绝；不启动真实宿主。故 R23-04、Q24-03、R23-05 及 Settings 用户截图的宿主验收边界仍开放，RenderHarness 不替代这些证据。
+
+前一阶段提交 `a829521c`/`57ce10e9` 与 push-status `1de39cfb` 已同步；本次文档/evidence 更新单独提交并推送后，继续以本节及 `docs/ai/CURRENT_STATE.md` 为事实入口。`AUTONOMOUS_BACKLOG.md` 当前没有 READY/IN_PROGRESS 工作项；无新复现缺陷或环境门槛变化时不自创产品行为。
+
 ## 2026-09-27 当前续接：Task compact UI Audit 误报已收口
 
 在 GSC-058 之后的 168 快照 UI Audit 中，Task compact/narrow 200-DIP 表格因 analyzer 固定要求 236 DIP 而出现 3 条 HIGH。实测表头 41.6 DIP、行高 36 DIP，200 DIP 可显示约 4.4 行；四行门槛是 185.6 DIP。因此这是审计器使用旧桌面密度常量导致的误报，不是需要改 Task 页面布局。
 
 `a829521c752adcecd62e7a8c9bfc76149a40c49d` 已将 analyzer 改为由实测表头和行高计算四行阈值（加 0.5 DIP 取整容差），测试 `UiAuditSourceTests 6/6`，Release RenderHarness build `0/0`。相同代码身份 UI Audit 168 snapshots、85 INFO、HIGH 0、MEDIUM 0、Fidelity 0、failed routes 0。没有生产 XAML 改动；完整项目 `render-qa` 与全量 Playnite.Tests 本阶段未运行，也未启动 Playnite。R 总账 192 项、`106/83/1/1/1` 不变。证据：[UI Audit compact Task viewport 误报修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。
 
-接续仍以本文件后续最新 ENV-001 / R23-08 事实与 `docs/ai/CURRENT_STATE.md` 为准；本次没有改变环境门禁或新增产品待办。实现 `a829521c` 与记忆/evidence `57ce10e9` 已普通快进推送至 `origin/main`（`d9165ce2..57ce10e9`）；本推送状态同步提交后复核最终指针。不要把旧 3 条 HIGH 继续当作当前问题。
+接续仍以本文件后续最新 ENV-001 / R23-08 事实与 `docs/ai/CURRENT_STATE.md` 为准；本次没有改变环境门禁或新增产品待办。实现 `a829521c` 与记忆/evidence `57ce10e9` 已普通快进推送至 `origin/main`（`d9165ce2..57ce10e9`），状态同步提交 `1de39cfb` 已随后推送。不要把旧 3 条 HIGH 继续当作当前问题。
 
 ## 2026-09-27 当前续接：GSC-058 与 RenderHarness / UI 源断言复核
 

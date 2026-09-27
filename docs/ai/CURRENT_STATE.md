@@ -1,11 +1,18 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前续接：修复后全页面 RenderHarness 与 192 项账本复核
+
+- 在代码提交 `a829521c` 构建的 Release RenderHarness 上，对当前 checkout `1de39cfb27d3fc75517c914c20efe5cc7a4bd262` 直接运行完整 `render-qa`；其后到该 HEAD 的提交仅为文档。报告动态读取当前 HEAD，标记 `WorkingTreeClean=True`，372 张 PNG、11 种窗口尺寸、7 个工作区及 Light/Dark/主题/resize/shell 专项均结束 `render-qa OK`、退出码 0、无 PROBLEM。
+- 重新按正式 `ROUND3_PROGRESS.md` 的唯一 ID 解析：共有 192 项；202 个匹配行包含 10 个 R13/R14 前置摘要重复项。状态归并保持 `106/83/1/1/1`，无账本更改。
+- 只读环境检查：单屏 `\\.\DISPLAY21`（2352×1470）、Playnite 未运行、WMI `Win32_Process.CommandLine` 仍拒绝访问；没有启动宿主。故不把离屏结果扩大为 Settings 用户截图、实际 Playnite/物理 DPI、Q24-03 跨屏或 R23-05 帧性能通过。
+- 详见[当前 main 全页面 RenderHarness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。本机环境门禁仍按 R23-08 等待变化；本阶段没有新增或臆造产品代码项。
+
 ## 2026-09-27 当前续接：UI Audit 紧凑 Task 视口误报已修复
 
 - GSC-058 后续复核发现 UI Audit 对 TaskGrid compact/narrow 的 200-DIP 视口报 3 条 HIGH。analyzer 使用固定 236 DIP 下限，忽略紧凑模式 36-DIP 行高；按实际表头 41.6 DIP + 四行 36 DIP 计算只需 185.6 DIP，200 DIP 可估算显示 4.4 行，因此属于审计规则误报，不是页面缺陷。
 - RenderHarness analyzer 已改为按实测表头/行高计算四行阈值，并加 0.5 DIP 取整容差；对应 Playnite source test 锁定新规则并防止旧常量回归。无生产 XAML/UI 变更。实现提交 `a829521c752adcecd62e7a8c9bfc76149a40c49d`。
 - 以该提交身份 Release RenderHarness build `0 warning/0 error`，`UiAuditSourceTests 6/6`。完整审计 168 快照、85 INFO、HIGH 0、MEDIUM 0、Fidelity 0、失败路由 0；TaskGrid compact 仍为 200 DIP / 4.4 行。不是完整 `render-qa` 或全量 Playnite.Tests 结论。
-- 未启动 Playnite；离屏逻辑 DIP 不代表真实宿主或物理 DPI。R 台账仍 192 个唯一项、`106/83/1/1/1`。详见[审计误报修复证据](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。实现提交 `a829521c` 与记忆/evidence 提交 `57ce10e9` 已于 2026-09-27 普通快进推送至 `origin/main`（`d9165ce2..57ce10e9`）；本次推送状态同步后再复核最终指针。
+- 未启动 Playnite；离屏逻辑 DIP 不代表真实宿主或物理 DPI。R 台账仍 192 个唯一项、`106/83/1/1/1`。详见[审计误报修复证据](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。实现提交 `a829521c` 与记忆/evidence 提交 `57ce10e9` 已于 2026-09-27 普通快进推送至 `origin/main`（`d9165ce2..57ce10e9`）；推送状态同步提交 `1de39cfb` 已推送，最终指针由上方当前 RenderHarness 复核记录。
 
 ## 2026-09-27 当前续接：RenderHarness 复核与共享样式回归断言校准
 

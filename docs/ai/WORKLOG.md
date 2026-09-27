@@ -1,12 +1,20 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 当前 HEAD 全页面 RenderHarness 复核
+
+- 为避免只依赖 UI Audit 的 168 条布局快照，使用 Release RenderHarness 完整运行页面 `render-qa`。报告中当前 checkout SHA `1de39cfb27d3fc75517c914c20efe5cc7a4bd262`、`WorkingTreeClean=True`；工具代码来自已验证的 `a829521c`，该提交以后没有生产代码变化。
+- 覆盖 11 个窗口尺寸、七工作区、Light/Dark、首屏与主题/resize/shell 几何专项；372 张 PNG，退出码 0，`render-qa OK`，无 `PROBLEM`。输出没有留在 Git，证据记录后清理。
+- 正式 R 台账唯一 ID 复算 `192`；Markdown 的 202 个 R ID 行含 10 行 R13/R14 摘要重复，状态归并仍 `106/83/1/1/1`，没有修改台账。`AUTONOMOUS_BACKLOG.md` 目前没有 READY/IN_PROGRESS 项。
+- 环境只读复核：`DISPLAY21` 单屏 2352×1470，Playnite 进程不存在；查询 Win32_Process 命令行仍 Access Denied。未启动宿主。Settings 用户截图、隔离 Playnite、Q24-03 第二屏、R23-05 合规 ETW/真实呈现仍不能由离屏矩阵关闭；现有阻塞不绕过。
+- 证据：[当前 main 全页面 RenderHarness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。前一阶段实现 `a829521c`、记忆/evidence `57ce10e9` 与推送状态同步 `1de39cfb` 已推至 `origin/main`；本阶段复核后再同步文档与新证据。
+
 ## 2026-09-27 UI Audit compact Task viewport 误报修复
 
 - 追查 GSC-058 完整 UI Audit 留下的 3 条 Task narrow/compact HIGH；本地新跑结果显示 TaskGrid 200 DIP、表头 41.6、实测行高 36、估算可见 4.4 行。项目门禁是约四行可读，真正最低需要 185.6 DIP；审计器残留的固定 236-DIP 桌面常量造成误报。
 - `UiLayoutAnalyzer` 改为用实测 `headerHeight + rowHeight × 4` 推导阈值，比较时留 0.5 DIP rounding tolerance；`UiAuditSourceTests` 增加公式与旧常量负向契约。生产 Task 页面、XAML 与命令无改动。实现单独提交 `a829521c752adcecd62e7a8c9bfc76149a40c49d`。
 - 以该提交完整 SHA Release 构建 RenderHarness：`0 warning/0 error`；Playnite.Tests 定向 `UiAuditSourceTests` `6/6`。当前 identity 全量 Audit `168` runtime snapshots、`85` INFO、HIGH `0`、MEDIUM `0`、Fidelity `0`、failed routes `0`；compact TaskGrid `200 DIP / 4.4` 行。
 - 只运行本阶段定向测试和 UI Audit，未跑完整 Playnite.Tests/项目级 render-qa；未启动 Playnite，离屏 logical DIP 不代表真实宿主/物理 DPI。R 台账仍 192 项、`106/83/1/1/1`。临时输出 `.tmp/ui-audit-current-bdfa7770`、`.tmp/ui-audit-current-fixed-bdfa7770`、`.tmp/ui-audit-a829521c` 和根 ZIP 记录后按规则清理，不进 Git。
-- 证据：[UI Audit compact Task viewport 误报](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。实现提交 `a829521c` 与本阶段记忆/evidence 提交 `57ce10e9` 已于 2026-09-27 普通快进推送到 `origin/main`（`d9165ce2..57ce10e9`）；当前推送状态同步单独成文并复核最终指针。
+- 证据：[UI Audit compact Task viewport 误报](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。实现提交 `a829521c` 与本阶段记忆/evidence 提交 `57ce10e9` 已于 2026-09-27 普通快进推送到 `origin/main`（`d9165ce2..57ce10e9`）；状态同步提交 `1de39cfb` 随后推送，最终指针在下一条当前 HEAD 复核中记录。
 
 ## 2026-09-27 RenderHarness 基线复核与共享样式断言校准
 
