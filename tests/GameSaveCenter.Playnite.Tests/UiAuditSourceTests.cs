@@ -44,6 +44,8 @@ public sealed class UiAuditSourceTests
         Assert.Contains("VisualTreeHelper", visualTree);
         Assert.Contains("NESTED_VERTICAL_SCROLL", layout);
         Assert.Contains("TABLE_VIEWPORT_TOO_SHORT", layout);
+        Assert.Contains("minimumReadableHeight = headerHeight + (rowHeight * 4)", layout);
+        Assert.DoesNotContain("grid.ActualHeight < 236", layout);
         Assert.Contains("TOOLBAR_VERTICAL_EXPANSION", layout);
         Assert.Contains("FindNearestScrollViewer", layout);
         Assert.Contains("IsExplicitToolbar", layout);

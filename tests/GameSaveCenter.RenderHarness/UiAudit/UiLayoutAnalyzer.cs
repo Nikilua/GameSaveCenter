@@ -533,6 +533,7 @@ public static class UiLayoutAnalyzer
 
             var row = FindVisualChildren<DataGridRow>(grid).FirstOrDefault();
             var rowHeight = row != null && row.ActualHeight > 0 ? row.ActualHeight : 36;
+            var minimumReadableHeight = headerHeight + (rowHeight * 4);
             var visibleRows = grid.ActualHeight > headerHeight
                 ? (grid.ActualHeight - headerHeight) / rowHeight
                 : 0;
@@ -627,7 +628,7 @@ public static class UiLayoutAnalyzer
                 });
             }
 
-            if (grid.ActualHeight > 0 && (visibleRows < 4 || grid.ActualHeight < 236))
+            if (grid.ActualHeight > 0 && grid.ActualHeight + 0.5 < minimumReadableHeight)
             {
                 record.Warnings.Add("TABLE_VIEWPORT_TOO_SHORT");
                 report.Warnings.Add(new UiAuditWarning
