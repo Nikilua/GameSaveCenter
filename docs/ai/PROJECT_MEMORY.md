@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 跨设备历史用户问题核对
+
+- 历史崩溃与备份/详情复制问题已对照当前 `main` 核实：修复提交 `3f42de43`、`d7f36bc`、`e42ebff`、`9e01b60`、`bb3ce57`、`3b50d1d` 均可从当前 HEAD 到达；`crash.zip` DataGrid 排序另由当前 R06 证据记录。慢启动/缩略图问题已做当前源码定向复验，Media 视频预览空引用由 `f1b746d5` 修复。
+- 没发现新的待修用户复现。Settings 截图和若干 Playnite 崩溃修复仍缺当前安装包身份/隔离宿主回归，不把源码测试说成真机通过；沿用 ENV-001 与既有环境边界，不重试相同 CEF/WMI 状态。
+- 本轮开始时 `main`=`origin/main`=`bad234fa` 且工作树干净；192 个 R 唯一项、`106/83/1/1/1` 计数不变，backlog 无 READY/IN_PROGRESS 产品项。下一步只在出现新复现/证据，或 Playnite 进程观察与隔离宿主条件真实改变后继续相应代码或宿主验收。
+
 ## 2026-09-27 当前 HEAD 完整 RenderHarness 复核与账本复算
 
 - 直接运行 Release Harness 的全页面 `render-qa`，当前报告 commit `1de39cfb27d3fc75517c914c20efe5cc7a4bd262`、`WorkingTreeClean=True`；Harness 源码最后在 `a829521c` 变化，之后只有文档提交。11 档窗口 × 七工作区、主题与专项探针生成 372 PNG，退出码 0、`render-qa OK`、没有 PROBLEM。

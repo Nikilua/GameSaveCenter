@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 跨设备历史用户问题与主线核验
+
+- 按续接要求检查历史 Codex 项目线程，重点复核崩溃问题及备份失败/详情乱码/复制报错、慢启动/缩略图卡顿等用户反馈；以当前仓库与证据文档为准，不把历史线程摘要直接当成当前代码状态。
+- 备份诊断修复 `3f42de43`，以及崩溃相关 `d7f36bc`、`e42ebff`、`9e01b60`、`bb3ce57`、`3b50d1d` 均确认是当前 `main` 的祖先提交。对应 UTF-8/raw output/剪贴板反馈、WPF 主题资源、冻结变换、ContentDialogHost 与只读绑定防线已有项目回归记录；`crash.zip` DataGrid 排序根因另见 R06 记录。
+- 启动/缩略图反馈已有当前源码定向复验；Media 视频预览 fallback 的空引用已由 `f1b746d5` 修复。Settings 用户截图仍缺正常宿主与实际安装包身份闭环。历史 bug 当前没有新的未归档复现或待改产品代码项。
+- 本轮起点 `bad234fa` 与 `origin/main` 同步且工作树干净；backlog 没有 READY/IN_PROGRESS 产品项。R 台账仍 192 个唯一 ID、状态计数 `106/83/1/1/1`。不重复启动处于相同 WMI/CEF 状态的 Playnite；其余宿主、双屏与 ETW/呈现帧边界按现有环境阻塞记录保留。本轮仅同步记忆，不改产品代码、账本状态或用户数据。
+
 ## 2026-09-27 当前 HEAD 全页面 RenderHarness 复核
 
 - 为避免只依赖 UI Audit 的 168 条布局快照，使用 Release RenderHarness 完整运行页面 `render-qa`。报告中当前 checkout SHA `1de39cfb27d3fc75517c914c20efe5cc7a4bd262`、`WorkingTreeClean=True`；工具代码来自已验证的 `a829521c`，该提交以后没有生产代码变化。
