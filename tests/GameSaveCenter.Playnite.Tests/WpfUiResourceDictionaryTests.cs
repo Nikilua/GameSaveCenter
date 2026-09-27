@@ -1513,7 +1513,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SaveHistorySummaryCard.Padding = historyActionsCompact", saveCode);
         Assert.Contains("new Thickness(10, 4, 10, 4)", saveCode);
         Assert.Contains("SaveHistorySummaryActions.Margin = historyActionsCompact", saveCode);
-        Assert.Contains("new Thickness(0, 2, 0, 0)", saveCode);
+        // The former 2-DIP gap rounded to 1.6 DIP; 10 DIP now yields a readable 9.6 DIP gap.
+        Assert.Contains("new Thickness(0, 10, 0, 0)", saveCode);
         Assert.Contains("SaveHistoryRestoreAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("SaveHistoryInspectorAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);
