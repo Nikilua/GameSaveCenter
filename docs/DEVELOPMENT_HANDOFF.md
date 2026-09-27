@@ -6,7 +6,7 @@ GSC-058 首页已调整为先展示全宽待处理与最近任务；刷新、全
 
 当前 identity Release 两个项目构建 `0/0`，XAML `24/24`，定向首页/媒体回归 `6/6`，Overview 双主题 × 1040×700/1600×900 × 空任务/多风险/离线 `12/12`。完整 UI Audit `168` 快照、Fidelity/失败路由 `0/0`；3 条 HIGH 仍属 Task 窄窗。全页 RenderHarness 仍有 4 条 SettingsState fixture PROBLEM，宽过滤测试也有 2 条旧样式断言失败；不要写成全项目门禁通过，细节见 [GSC-058 evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md)。
 
-普通 NuGet restore 受用户配置 ACL 阻止，沿用现有 assets/no-restore；未运行 Python validator，Demo 原始 Design 目录不可用。未启动 Playnite，真实宿主/物理 DPI 仍待验证。R 总基线维持 192 项、`106/83/1/1/1`。本轮提交与记忆同步按普通快进推送；之后继续按可复现用户问题/明确范围逐个独立阶段，不从旧 R23-08 快照臆造新产品任务。
+普通 NuGet restore 受用户配置 ACL 阻止，沿用现有 assets/no-restore；未运行 Python validator，Demo 原始 Design 目录不可用。未启动 Playnite，真实宿主/物理 DPI 仍待验证。R 总基线维持 192 项、`106/83/1/1/1`。功能及首轮记忆提交范围 `1b7c1379..1c244f65` 已于 2026-09-27 普通快进推送至 `origin/main`，本机当时核对本地/远端一致；推送状态会再以单独记忆同步提交收口。之后继续按可复现用户问题/明确范围逐个独立阶段，不从旧 R23-08 快照臆造新产品任务。
 
 ## 2026-09-26 当前续接：Settings 与 SaveHistory UI gate 收口，已推送 origin/main
 

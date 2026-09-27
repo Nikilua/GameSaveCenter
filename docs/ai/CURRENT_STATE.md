@@ -6,7 +6,7 @@
 - 最终代码 identity `1860cdb7460e0588427162eb5426d33b6133e875` 的 Release Playnite.Tests / RenderHarness 构建均 `0 warnings/0 errors`；XAML `24/24`；定向首页/媒体回归 `6/6`；Overview 双主题、1040×700/1600×900 的空任务/多风险/离线边界夹具 `12/12`，无水平溢出、四个主要表面均可测量。
 - 完整 UI Audit `168` 快照、Fidelity `0`、失败路由 `0`、`88` 条扫描警告；残留 `3` HIGH 均是 Task 窄视口 200 DIP（估算 4.4 行）。全量 RenderHarness `render-qa` 仍有 4 条 SettingsState 夹具问题；未触碰 Settings，本轮不宣称项目级渲染 gate 通过。较宽过滤测试还存在两条旧 UI 源断言不匹配，见证据。
 - 普通 restore 被用户 NuGet.Config ACL 阻止；沿用现有 restore assets/no-restore 与 `.tmp` 隔离输出，未改配置/权限。未找到 Python/py，`validate-source.py` 未执行。Demo Design 原目录缺失；未启动 Playnite，逻辑 DIP 不等于实际宿主/物理 DPI。证据：[GSC-058 首页离屏视觉回归](../design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md)。
-- 实现提交 `d9b08aa2`；RenderHarness 窗口说明校准提交 `1860cdb7`。R 总基线仍为 192 项，状态 `106/83/1/1/1`，没有重算或修改台账。
+- 实现提交 `d9b08aa2`、RenderHarness 说明校准 `1860cdb7` 与首轮记忆/evidence 提交 `1c244f65` 已于 2026-09-27 普通快进推送至 `origin/main`（范围 `1b7c1379..1c244f65`）；本机核对远端跟踪分支一致。R 总基线仍为 192 项，状态 `106/83/1/1/1`，没有重算或修改台账。
 
 ## 2026-09-26 SaveHistory 摘要与操作间距修复
 

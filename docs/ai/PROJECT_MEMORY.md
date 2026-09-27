@@ -6,7 +6,7 @@
 - `1860cdb7` 最终身份 Release 测试与 RenderHarness 隔离构建 `0/0`；XAML `24/24`；首页优先级/视图契约和媒体页签相关定向 `6/6`。`overviewedges` Light/Dark × 1040×700/1600×900 × 空任务/多风险/Worker offline 为 `12/12`，无水平溢出；空态、优先按钮和风险滚动可达。
 - 完整 UI Audit `168` 个快照、`88` 条运行时警告、Fidelity `0`、路由失败 `0`；3 个 HIGH 是未修改 Task 页的 200-DIP 窄视口估行数 4.4。完整 render-qa 有 4 条 SettingsState 夹具 PROBLEM，因此不宣称全项目 gate 通过。2 条已有测试断言与当前共享按钮/Expander 样式不匹配，具体方法和宽过滤总数见 GSC-058 evidence。
 - 用户 NuGet.Config ACL 仍不允许 restore；复用已有 restore assets 和 no-restore 隔离构建，不改 ACL。Python/py 不存在，source validator 未运行。Demo Design 根目录在本机缺失，未启动真实 Playnite；逻辑 DIP/WPF 离屏图只证明测试宿主。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md`。
-- `d9b08aa2` 是首页实现阶段，`1860cdb7` 校准 RenderHarness 实际窗口说明。R ledger 保持 192 项及 `106/83/1/1/1`；该 UI issue 不增加或重计 R 项。
+- `d9b08aa2` 是首页实现阶段，`1860cdb7` 校准 RenderHarness 实际窗口说明，`1c244f65` 同步了首轮项目记忆；三条提交已于 2026-09-27 普通快进推送到 `origin/main`，本机与远端跟踪分支一致。R ledger 保持 192 项及 `106/83/1/1/1`；该 UI issue 不增加或重计 R 项。
 
 ## 2026-09-26 SaveHistory summary/action gap 收口
 
