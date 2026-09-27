@@ -324,7 +324,13 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("立即扫描", TextContent(buttons[0]));
             Assert.Contains("GscWpfUiActionButton", buttons[1].Attribute("Style")?.Value);
             Assert.Equal("重新校验", TextContent(buttons[1]));
-            Assert.Contains("GscIconOnlyButtonBase", buttons[2].Attribute("Style")?.Value);
+            Assert.Equal("{DynamicResource GscIconOnlyToolbarButton}", buttons[2].Attribute("Style")?.Value);
+            var productionStyles = XDocument.Parse(File.ReadAllText(Path.Combine(
+                root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml")));
+            var toolbarButtonStyle = productionStyles.Descendants()
+                .Single(element => element.Name.LocalName == "Style"
+                    && element.Attribute(xamlKey)?.Value == "GscIconOnlyToolbarButton");
+            Assert.Equal("{StaticResource GscIconOnlyButtonBase}", toolbarButtonStyle.Attribute("BasedOn")?.Value);
             Assert.All(buttons, button =>
             {
                 Assert.NotNull(button.Attribute("ToolTip"));
@@ -361,8 +367,21 @@ namespace GameSaveCenter.Playnite.Tests
                 Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml")
             };
 
-            foreach (var view in views)
+            foreach (var view in views.Take(views.Length - 1))
                 Assert.DoesNotContain("GscExpander", File.ReadAllText(view));
+
+            var settings = XDocument.Parse(File.ReadAllText(views[views.Length - 1]));
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var xamlKey = XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var resetDefaultsExpander = settings.Descendants()
+                .Single(element => element.Attribute(xamlName)?.Value == "SettingsResetDefaultsExpander");
+            Assert.Equal("{StaticResource GscExpander}", resetDefaultsExpander.Attribute("Style")?.Value);
+
+            var designTokens = XDocument.Parse(File.ReadAllText(Path.Combine(
+                root, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml")));
+            Assert.Contains(designTokens.Descendants(), element => element.Name.LocalName == "Style"
+                && element.Attribute(xamlKey)?.Value == "GscExpander"
+                && element.Attribute("TargetType")?.Value == "Expander");
         }
 
         [Fact]

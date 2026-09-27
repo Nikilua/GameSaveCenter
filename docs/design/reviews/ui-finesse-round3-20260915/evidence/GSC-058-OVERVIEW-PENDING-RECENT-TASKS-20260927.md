@@ -18,6 +18,10 @@ RenderHarness 说明修正：`1860cdb7460e0588427162eb5426d33b6133e875`
 - `OverviewPrioritySummaryHidesDuplicateStatusPills`、全局活动和统计条 legacy 测试按项目标记跳过；新首页信息层级测试与新 WPF 布局契约测试均通过。没有启动 Playnite；离屏 WPF 的逻辑 DIP 不是宿主、UIA、物理 DPI 或最终呈现证明。
 - UI Audit/RenderHarness 截图和 ZIP 位于本机 `.tmp/gsc058-release-20260927/`，仅供本次核验，记录完成后按仓库规则清理，不进入 Git。
 
+## 后续复核
+
+2026-09-27 在当前产品提交 `d5f0e8c2aa134d76255408c822f63348439e56d9` 使用现有 restore assets 重新构建并完整运行 RenderHarness，结果为 `render-qa OK`、无 PROBLEM；Settings normal/dirty/invalid 三态全部通过。此前提及的四条 SettingsState PROBLEM 未复现，原因未知，因此没有据此改动 Settings 产品代码或测试夹具。对应结果和两条共享样式测试断言校准详见 [UI-REGRESSION-CONTRACTS-20260927.md](UI-REGRESSION-CONTRACTS-20260927.md)。
+
 ## 结论
 
 GSC-058 首页重构已完成当前机器的源代码、绑定契约、边界状态与离屏视觉回归；不宣称真实 Playnite 宿主验收完成。R 总基线保持 `192` 项，状态 `106/83/1/1/1`，本批没有增删或重计账本项。

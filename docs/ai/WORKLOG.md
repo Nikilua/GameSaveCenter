@@ -1,10 +1,18 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 RenderHarness 基线复核与共享样式断言校准
+
+- 按上一轮遗留问题在当前提交 `d5f0e8c2aa134d76255408c822f63348439e56d9` 重新运行完整 Release RenderHarness。包装脚本的普通 restore 仍因用户 NuGet.Config ACL 失败；使用既有 restore assets 的 `dotnet build --no-restore` 构建成功（0 warnings/0 errors），同一 harness 全量结束 `render-qa OK`、0 PROBLEM、372 张快照，报告写明 `WorkingTreeClean=True`。Settings normal/dirty/invalid 的提示与 summary visibility 全通过。此前记录的 4 个 SettingsState PROBLEM 未复现，根因未证实，因此不改 Settings 生产代码/夹具。
+- 独立校准 `UiLayoutRegressionTests` 两个旧断言：Save 当前规则刷新按钮采用 `GscIconOnlyToolbarButton`，测试现核实其基样式继承；设置页恢复默认 disclosure 的 `GscExpander` 是已登记的共享 Expander 资源，测试显式核实控件映射与资源 TargetType。没有生产 XAML/命令变更。
+- 当前 HEAD `GscBuildCommit` 身份下 Playnite.Tests Release build `0 warnings/0 errors`；目标两个用例 `2/2`，整类 `20 passed / 11 skipped / 0 failed`。首次未带身份的调用由仓库门禁拒绝，随后按项目约定注入当前 HEAD 重跑。
+- 完整报告曾写入 `.tmp/gsc058-settings-state-recheck-20260927`，本阶段记录确认后清理；不进 Git。RenderHarness 是离屏 WPF logical DIP，不代表真实 Playnite/物理 DPI；本批未启动 Playnite。Demo 原始目录仍不可用。R 账本保持 192 项、`106/83/1/1/1`。
+- 证据：[RenderHarness 当前身份复核与 UI 源断言校准](../design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。本阶段按仓库规则独立提交并快进推送，随后补记最终 commit identity。
+
 ## 2026-09-27 GSC-058 首页待处理/最近任务回归
 
 - 按 GSC-058 验收收敛首页层级：刷新/备份全部/媒体同步动作保留；一张全宽待处理优先卡在前，最近任务和风险/关注详情保留。首页不再渲染重复统计、当前游戏摘要、最近访问及全局活动卡。其余业务数据、命令与工作区未删除。MediaCenter 未改源码；确认 Inbox 与当前游戏媒体、重复识别、来源规则为独立页签，并继续展示类型/来源本地化字段。
 - 代码与测试分为两个提交：`d9b08aa2` 首页/RenderHarness 改动，`1860cdb7` 修正边界夹具标题中已过期的 820×700 样本说明。最终 identity Release Playnite.Tests 和 RenderHarness 各 `0 warnings/0 errors`；XAML `24/24`；首页与 Media 相关定向测试 `6/6`。边界夹具双主题 × 两尺寸 × 三状态 `12/12`，空任务、风险视口及 Worker 离线优先按钮通过，水平溢出为 0。
-- 完整 UI Audit `168` 快照、Fidelity `0`、失败路由 `0`、88 scanner warnings；仍有 3 条 HIGH Task 200-DIP 窄窗行数估计。完整 RenderHarness `render-qa` 有 4 条 SettingsState normal/dirty 状态 hint 与摘要可见性断言失败；本批未改其 Settings 源/夹具。宽过滤运行 `34 passed / 11 skipped / 2 failed`，两条失配是旧按钮继承关系和共享 `GscExpander` 排斥断言，细节见 evidence；不能记全量 suite 通过。
+- 完整 UI Audit `168` 快照、Fidelity `0`、失败路由 `0`、88 scanner warnings；仍有 3 条 HIGH Task 200-DIP 窄窗行数估计。首轮 RenderHarness 对 SettingsState 报告 4 项 hint/summary 问题，后续当前 identity 全量重跑未再复现；宽过滤中发现的两条旧按钮继承/共享 `GscExpander` 排斥断言已由后续独立测试阶段校准，结果见紧邻日志与证据，不将旧运行误写为当前结果。
 - XAML、diff check 通过；普通 restore 遭用户 NuGet.Config ACL 拒绝，沿用现有 assets/no-restore 隔离构建。Python/py 不存在，未运行 `validate-source.py`；Demo Design 原目录不可用。无真实 Playnite/物理 DPI 结论。临时审计/build/screenshot 输出仅在 `.tmp/gsc058-release-20260927`，本阶段结束时清理，不进 Git。
 - 证据：[GSC-058 首页离屏回归](../design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md)。R ledger 192 项及 `106/83/1/1/1` 不变。功能、边界说明和首轮 memory/handoff 三个提交已于 2026-09-27 普通快进推送（`1b7c1379..1c244f65`）；之后另作推送状态的记忆同步。宿主回归仍待 CEF/Playnite 条件。
 

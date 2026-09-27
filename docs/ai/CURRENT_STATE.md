@@ -1,10 +1,16 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前续接：RenderHarness 复核与共享样式回归断言校准
+
+- 在 `d5f0e8c2aa134d76255408c822f63348439e56d9` 上重新构建并完整运行 Release RenderHarness：构建 `0 warning/0 error`，372 张 PNG，报告 `WorkingTreeClean=True`、`render-qa OK`、无 PROBLEM。Settings normal/dirty/invalid 三态均通过；此前记录的 4 条 SettingsState 问题本次未复现，原因未知，未改 Settings 产品代码或夹具。
+- 更新两条过期源契约：Save 当前规则刷新按钮验证使用 `GscIconOnlyToolbarButton` 并继承 `GscIconOnlyButtonBase`；共享 disclosure 测试保留其他六个页面的原限制，同时确认设置页恢复默认区使用主题资源中的 `GscExpander`。Playnite.Tests Release build `0 warning/0 error`；目标用例 `2/2`，整个 `UiLayoutRegressionTests` 类 `20 passed / 11 skipped / 0 failed`。
+- 本阶段只改测试断言与文档，不改生产 UI/XAML；RenderHarness 为离屏 WPF logical DIP，未启动 Playnite。普通 Restore 仍受用户 NuGet.Config ACL 阻止，使用现有资产 `--no-restore` 构建。详见[证据](../design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。R 台账保持 192 项及 `106/83/1/1/1`。
+
 ## 2026-09-27 GSC-058 首页信息层级收敛与离屏回归
 
 - 首页以全宽“待处理”优先卡与最近任务为主；保留刷新/全部备份/同步媒体命令，将重复统计、当前游戏摘要、最近访问和全局活动折叠。风险与关注列表继续显示为待处理详情；DTO、命令、绑定和独立工作区能力不删改。媒体页未改源码，确认 Inbox + 当前游戏媒体/重复识别/来源规则三个局部页签互斥，类型/来源使用 `KindDisplay`、`SourceDisplay`、`SourceKindDisplay`。
 - 最终代码 identity `1860cdb7460e0588427162eb5426d33b6133e875` 的 Release Playnite.Tests / RenderHarness 构建均 `0 warnings/0 errors`；XAML `24/24`；定向首页/媒体回归 `6/6`；Overview 双主题、1040×700/1600×900 的空任务/多风险/离线边界夹具 `12/12`，无水平溢出、四个主要表面均可测量。
-- 完整 UI Audit `168` 快照、Fidelity `0`、失败路由 `0`、`88` 条扫描警告；残留 `3` HIGH 均是 Task 窄视口 200 DIP（估算 4.4 行）。全量 RenderHarness `render-qa` 仍有 4 条 SettingsState 夹具问题；未触碰 Settings，本轮不宣称项目级渲染 gate 通过。较宽过滤测试还存在两条旧 UI 源断言不匹配，见证据。
+- 完整 UI Audit `168` 快照、Fidelity `0`、失败路由 `0`、`88` 条扫描警告；残留 `3` HIGH 均是 Task 窄视口 200 DIP（估算 4.4 行）。首轮记录的 4 条 SettingsState 问题已在后续 `d5f0e8c2` 全量离屏复跑中未再复现；两条旧 UI 源断言已在后续独立阶段校准，见当前事实入口与对应证据。
 - 普通 restore 被用户 NuGet.Config ACL 阻止；沿用现有 restore assets/no-restore 与 `.tmp` 隔离输出，未改配置/权限。未找到 Python/py，`validate-source.py` 未执行。Demo Design 原目录缺失；未启动 Playnite，逻辑 DIP 不等于实际宿主/物理 DPI。证据：[GSC-058 首页离屏视觉回归](../design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md)。
 - 实现提交 `d9b08aa2`、RenderHarness 说明校准 `1860cdb7` 与首轮记忆/evidence 提交 `1c244f65` 已于 2026-09-27 普通快进推送至 `origin/main`（范围 `1b7c1379..1c244f65`）；本机核对远端跟踪分支一致。R 总基线仍为 192 项，状态 `106/83/1/1/1`，没有重算或修改台账。
 

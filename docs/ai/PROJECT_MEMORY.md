@@ -1,10 +1,17 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 RenderHarness 复核与共享样式回归契约
+
+- 在 `d5f0e8c2aa134d76255408c822f63348439e56d9` 上用 `--no-restore` 重新构建 Release RenderHarness（`0 warnings/0 errors`）并完成全量运行：372 张图、`WorkingTreeClean=True`、`render-qa OK`、无 PROBLEM。Settings 的 normal/dirty/invalid 三态均符合预期；此前 GSC-058 记录的 4 个 SettingsState PROBLEM 本次未复现，原因未确定，不修改 Settings 产品或夹具。
+- 校准 `UiLayoutRegressionTests` 两条过期源断言：存档规则按钮应使用 `GscIconOnlyToolbarButton`，并验证资源定义继承 `GscIconOnlyButtonBase`；Disclosure 测试保持其他六个页面的原约束，并显式断言 Settings 恢复默认 Expander 使用共享 `GscExpander` 资源。
+- 带当前 HEAD `GscBuildCommit` 身份的 Playnite.Tests Release build `0/0`；目标测试 `2/2`，整个 `UiLayoutRegressionTests` 类 `20 passed/11 skipped/0 failed`。没有生产 XAML 改动，也未启动 Playnite。RenderHarness 仅代表离屏 WPF logical DIP。
+- 报告/截图曾写入 `.tmp/gsc058-settings-state-recheck-20260927`，证据记录后按规则清理，不进入 Git。证据：[UI 回归契约复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。R ledger 仍为 192 项、`106/83/1/1/1`；阶段提交后补记最终 commit identity。
+
 ## 2026-09-27 GSC-058 首页重构与离屏回归
 
 - 首页保留全局动作命令，以全宽待处理优先项和最近任务为主要信息；重复统计、当前游戏摘要、最近访问与全局活动不在首页重复展示。风险/关注详情仍是待处理区域；工作区、DTO、绑定、命令和选择器不删除。媒体源码保持原状，验收 Inbox + 当前游戏媒体、重复识别、来源规则三个互斥局部页签；DTO/来源按 `KindDisplay`、`SourceDisplay`、`SourceKindDisplay` 显示。
 - `1860cdb7` 最终身份 Release 测试与 RenderHarness 隔离构建 `0/0`；XAML `24/24`；首页优先级/视图契约和媒体页签相关定向 `6/6`。`overviewedges` Light/Dark × 1040×700/1600×900 × 空任务/多风险/Worker offline 为 `12/12`，无水平溢出；空态、优先按钮和风险滚动可达。
-- 完整 UI Audit `168` 个快照、`88` 条运行时警告、Fidelity `0`、路由失败 `0`；3 个 HIGH 是未修改 Task 页的 200-DIP 窄视口估行数 4.4。完整 render-qa 有 4 条 SettingsState 夹具 PROBLEM，因此不宣称全项目 gate 通过。2 条已有测试断言与当前共享按钮/Expander 样式不匹配，具体方法和宽过滤总数见 GSC-058 evidence。
+- 完整 UI Audit `168` 个快照、`88` 条运行时警告、Fidelity `0`、路由失败 `0`；3 个 HIGH 是未修改 Task 页的 200-DIP 窄视口估行数 4.4。GSC-058 首轮完整 render-qa 报告的 4 条 SettingsState PROBLEM 已在当前 `d5f0e8c2` 全量复跑中未再复现，原因未知；2 条旧共享样式源断言已由后续独立阶段校准，当前类测试为 `20 passed/11 skipped/0 failed`，详见后续事实与证据。
 - 用户 NuGet.Config ACL 仍不允许 restore；复用已有 restore assets 和 no-restore 隔离构建，不改 ACL。Python/py 不存在，source validator 未运行。Demo Design 根目录在本机缺失，未启动真实 Playnite；逻辑 DIP/WPF 离屏图只证明测试宿主。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md`。
 - `d9b08aa2` 是首页实现阶段，`1860cdb7` 校准 RenderHarness 实际窗口说明，`1c244f65` 同步了首轮项目记忆；三条提交已于 2026-09-27 普通快进推送到 `origin/main`，本机与远端跟踪分支一致。R ledger 保持 192 项及 `106/83/1/1/1`；该 UI issue 不增加或重计 R 项。
 
