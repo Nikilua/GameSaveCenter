@@ -6,7 +6,7 @@
 
 最终代码身份 `b62baef5` solution Release build `0 warnings/0 errors`、XAML `24/24`、非 WPF/source 测试组 `465 passed / 18 skipped / 0 failed`；三个改动类与关键回归隔离通过。105 个 WPF 类以分进程方式覆盖成功，但证据分布于 `76bc8a0d`/`b62baef5`；曾有一次官方顺序运行在 `R08MotionReverseBehaviorTests` 间歇失败，重复隔离运行和最终身份定向运行通过，故不宣称全套单次全绿。Overview RenderHarness 在 clean `76bc8a0d` 上 12 个边界组合通过。完整边界见[测试证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-LEGACY-COMPATIBILITY-TESTS-20260927.md)。
 
-R 账本仍是 192 个唯一 ID，状态 `106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品项。没有启动 Playnite。后续如无新用户复现、测试失败证据或环境门禁变化，不应把这轮过期契约重新扩展成产品 UI 修改；R08 单次间歇 runner 失败保留为测试稳定性观察。提交 `b62baef5` 之后的文档/evidence 阶段仍需独立提交并推送。
+R 账本仍是 192 个唯一 ID，状态 `106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品项。没有启动 Playnite。后续如无新用户复现、测试失败证据或环境门禁变化，不应把这轮过期契约重新扩展成产品 UI 修改；R08 单次间歇 runner 失败保留为测试稳定性观察。测试提交 `6d6d7507`、`76bc8a0d`、`b62baef5` 与文档/evidence 提交 `303f6127` 已于 2026-09-27 普通快进推送至 `origin/main`（`1a3089aa..303f6127`）；推送后核对 `HEAD=origin/main=303f6127`、工作树干净。
 
 ## 2026-09-27 当前续接：WPF 布局测试类现可正常关闭 testhost
 
