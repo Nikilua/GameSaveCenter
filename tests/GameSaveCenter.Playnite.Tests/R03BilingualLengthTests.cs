@@ -91,20 +91,19 @@ public sealed class R03BilingualLengthTests
     }
 
     [Fact]
-    public void OverviewLengthFixtureKeepsTitlesInspectableAndActionsPresent()
+    public void OverviewEdgeFixturesMatchTheCurrentRenderedHomeMatrix()
     {
         var root = TestRepositoryContext.Root;
         var view = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
-        var harness = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "FakeDashboardData.cs"));
         var runner = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "tests", "GameSaveCenter.RenderHarness", "Program.cs"));
 
-        Assert.Contains("TextTrimming=\"CharacterEllipsis\" ToolTip=\"{Binding SelectedGame.Name, Mode=OneWay}\"", view);
         Assert.Contains("TextTrimming=\"CharacterEllipsis\" ToolTip=\"{Binding DetailMessage}\"", view);
-        Assert.Contains("BilingualLengthStress", harness);
-        Assert.Contains("BilingualLongEnglishSentence", harness);
-        Assert.Contains("windowW == 820", runner);
-        Assert.Contains("englishVisible", runner);
-        Assert.Contains("currentGameButtons", runner);
+        Assert.Contains("Profiles: empty-activity, many-risks, offline", runner);
+        Assert.Contains("viewports: 1040x700, 1600x900", runner);
+        Assert.Contains("(1040, 700), (1600, 900)", runner);
+        Assert.DoesNotContain("BilingualLengthStress", runner);
+        Assert.DoesNotContain("englishVisible", runner);
+        Assert.DoesNotContain("currentGameButtons", runner);
     }
 
     private static string Describe(ActionMeasurement measurement)

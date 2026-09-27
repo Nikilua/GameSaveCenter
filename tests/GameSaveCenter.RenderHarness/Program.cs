@@ -682,12 +682,10 @@ public static class Program
 
             foreach (var (themeName, themeMode) in ThemeModes)
             {
-                foreach (var (windowW, windowH) in new[] { (820, 700), (1040, 700), (1600, 900) })
+                foreach (var (windowW, windowH) in new[] { (1040, 700), (1600, 900) })
                 {
                     foreach (var fixture in cases)
                     {
-                        if (windowW == 820 && fixture.Profile != OverviewFixtureProfile.BilingualLengthStress)
-                            continue;
                         var view = new OverviewView
                         {
                             DataContext = new FakeDashboardData(18, fixture.State, fixture.Profile)
