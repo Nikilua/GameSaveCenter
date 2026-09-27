@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 GSC-058 首页旧交互兼容测试校准
+
+- 续接当前 main 后发现三处测试/夹具仍使用 GSC-058 之前的页面契约。独立提交 `6d6d7507` 校准 Overview 统计/活动折叠行为；`76bc8a0d` 移除死掉的 820-DIP 双语边界分支并更新源契约；`b62baef5` 校准 Recent Access 默认折叠与首页任务集合隔离。只改测试和 RenderHarness 夹具，没有生产 UI 或业务代码变更。
+- 最终 `b62baef5` Release solution `0/0`、XAML `24/24`、Playnite 非 WPF/source 测试组 `465 passed / 18 skipped / 0 failed`；受影响类为 `4/4、2/2、2/2`，R08 定向 `2/2`。WPF 105 类分批覆盖通过，证据跨 `76bc8a0d` 与 `b62baef5`；一次官方顺序运行在 R08 有间歇失败，隔离复跑通过，所以不记录为完整单次全绿。Harness 在 `76bc8a0d` clean identity 下边界矩阵 `12/12`、无 PROBLEM。
+- R ledger 仍 192 唯一项、`106/83/1/1/1`；backlog 无 READY/IN_PROGRESS。未启动 Playnite。所有本轮自建 `.tmp` 测试输出已按精确路径清理。证据：[首页旧交互兼容回归](../design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-LEGACY-COMPATIBILITY-TESTS-20260927.md)。
+
 ## 2026-09-27 ReportedWorkspace WPF testhost 收尾生命周期修复
 
 - 复现旧测试夹具收尾问题：`ReportedWorkspaceLayoutBehaviorTests` 10/10 测例通过并发出 xUnit `Finished`，但静态 fallback STA 的 `Dispatcher.Run()` 与新建 `Application` 均无 owner 收尾，VSTest 2 分钟后由 blame hang 保护终止（10 passed，run aborted，2.4275 分钟）。

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前续接：GSC-058 首页旧兼容测试契约已校准
+
+- 三个独立测试提交：`6d6d7507` 校准首页折叠统计/全局活动的交互测试；`76bc8a0d` 移除 Overview 双语边界夹具中过时且不可达的 820-DIP 分支；`b62baef5` 校准最近访问默认折叠后的兼容命令与集合隔离测试。无生产 XAML/C#、绑定、命令或业务行为改动。
+- 最终身份 `b62baef5` Release solution `0 warnings/0 errors`、XAML `24/24`、Playnite 非 WPF/source 组 `465 passed / 18 skipped / 0 failed`。三个改动类 `4/4 + 2/2 + 2/2`，R08 定向 `2/2`。WPF 105 类分进程覆盖成功，但证据跨 `76bc8a0d` 与 `b62baef5`；一次官方隔离运行在 R08 间歇失败，之后重复通过，因此不能称完整单次全绿。Overview 边界 RenderHarness 在 `76bc8a0d` 的 clean identity 下 `12/12`，无 PROBLEM。
+- 证据：[GSC-058 首页旧交互兼容回归](../design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-LEGACY-COMPATIBILITY-TESTS-20260927.md)。R 台账仍 192 个唯一项、`106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品项，没有启动 Playnite。本机 `.tmp` 中本轮测试目录已清理。
+
 ## 2026-09-27 当前提交：修复 ReportedWorkspace WPF 测试宿主收尾挂起
 
 - 测试修复提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc`：`ReportedWorkspaceLayoutBehaviorTests` 的静态 fallback STA Dispatcher 长期运行 `Dispatcher.Run()`，测试中创建的 `Application` 也没有被关闭；所有 xUnit 用例结束后 VSTest/testhost 仍可能无法正常结束。

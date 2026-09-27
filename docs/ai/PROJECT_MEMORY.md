@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 GSC-058 首页兼容回归断言与边界夹具校准
+
+- 当前续接发现旧测试仍假设首页统计条、全局活动和最近访问默认可见；另一个边界夹具还包含被 GSC-058 移除的 820-DIP 双语专用视口。依次用提交 `6d6d7507`、`76bc8a0d`、`b62baef5` 校准测试与 RenderHarness 夹具，没有恢复旧 UI 或修改生产逻辑。
+- 最终身份 Release solution `0/0`、XAML `24/24`；Playnite 非 WPF/source 组 `465 passed / 18 skipped / 0 failed`。改动行为类和 R08/R10 最终身份隔离通过。WPF 105 类由分进程证据覆盖，但分布在两个相邻身份；官方全序列曾在 R08 出现一次间歇失败，随后的 R08 隔离重跑通过，不能标记为单次完整 WPF 全绿。Overview 12 个 Harness 边界组合在 `76bc8a0d` clean identity 下全通过。
+- 证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-LEGACY-COMPATIBILITY-TESTS-20260927.md`。R 台账继续是 192 个唯一项、`106/83/1/1/1`；不新增产品工作项。没有启动真实 Playnite，离屏结果不代表宿主/DPI/UIA 验收。本轮已清理自己在 `.tmp` 下的精确隔离输出，保留其他目录。
+
 ## 2026-09-27 ReportedWorkspace WPF 回归 testhost 收尾挂起已修复
 
 - 诊断确认这不是布局断言失败：修复前 `ReportedWorkspaceLayoutBehaviorTests` 的 10 个测试全部通过且 xUnit 发出 `Finished`，但静态 fallback STA 线程永久执行 `Dispatcher.Run()`，测试新建的 `Application` 也没有显式 shutdown；VSTest 在两分钟 hang timeout 后仍只能终止 testhost。复现日志为 10 passed、0 assertion failures、run aborted after `2.4275 min`。

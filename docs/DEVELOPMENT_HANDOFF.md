@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-27 当前续接：GSC-058 旧首页交互回归契约校准
+
+本机接续后核对 `CURRENT_STATE`、项目记忆、工作日志、交接、近期 Git 历史和干净工作树；当前实现保留 GSC-058 的新首页层级。旧 `OverviewInteractionTests`、`R03BilingualLengthTests`、`R10RecentAccessBehaviorTests` 及 Overview 边界夹具仍带旧假设，已在 `6d6d7507`、`76bc8a0d`、`b62baef5` 三个独立提交中校准。生产 XAML/C#、绑定、命令和业务行为未改，192 项台账未改。
+
+最终代码身份 `b62baef5` solution Release build `0 warnings/0 errors`、XAML `24/24`、非 WPF/source 测试组 `465 passed / 18 skipped / 0 failed`；三个改动类与关键回归隔离通过。105 个 WPF 类以分进程方式覆盖成功，但证据分布于 `76bc8a0d`/`b62baef5`；曾有一次官方顺序运行在 `R08MotionReverseBehaviorTests` 间歇失败，重复隔离运行和最终身份定向运行通过，故不宣称全套单次全绿。Overview RenderHarness 在 clean `76bc8a0d` 上 12 个边界组合通过。完整边界见[测试证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/OVERVIEW-LEGACY-COMPATIBILITY-TESTS-20260927.md)。
+
+R 账本仍是 192 个唯一 ID，状态 `106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品项。没有启动 Playnite。后续如无新用户复现、测试失败证据或环境门禁变化，不应把这轮过期契约重新扩展成产品 UI 修改；R08 单次间歇 runner 失败保留为测试稳定性观察。提交 `b62baef5` 之后的文档/evidence 阶段仍需独立提交并推送。
+
 ## 2026-09-27 当前续接：WPF 布局测试类现可正常关闭 testhost
 
 当前代码提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc` 修复 `ReportedWorkspaceLayoutBehaviorTests` 的测试夹具生命周期。旧静态 fallback STA Dispatcher 永久执行 `Dispatcher.Run()`，而该类显式创建的 WPF `Application` 未 shutdown；修复前曾出现 10/10 测例通过、xUnit `Finished` 后 testhost 挂起，VSTest hang timeout 终止运行的确证。现在 xUnit collection fixture 复用活动的既有 Application Dispatcher；如本 fixture 自行创建 Dispatcher/Application，则在 collection 清理阶段只关闭自己拥有的对象并等待线程退出。
