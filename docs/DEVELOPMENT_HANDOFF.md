@@ -6,7 +6,7 @@
 
 精确身份 Release Playnite.Tests 与完整 solution build 均 `0 warnings/0 errors`，XAML `24/24`；R08 单独 5 次 `2/2`，正式隔离 runner source 111 类组 + WPF 105 类 clean exit `0`。完整证据：[R08 时序竞态复现与修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-MOTION-REVERSE-TESTHOST-TIMING-20260927.md)。之前“全套 WPF 没有单次 clean runner”的事实已由本次精确身份完整运行取代。
 
-R 基线仍为 192 项、状态 `106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品任务。真实 Playnite、第二显示器、WMI 命令行和 ETW 环境门槛未变化；不把隔离 WPF 测试说成宿主验收。本次实现提交已完成，当前记忆/evidence 文档待独立提交后，将代码与文档一起普通快进推送。
+R 基线仍为 192 项、状态 `106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品任务。真实 Playnite、第二显示器、WMI 命令行和 ETW 环境门槛未变化；不把隔离 WPF 测试说成宿主验收。代码提交 `b382fb02` 与记忆/evidence 提交 `be77d3ae` 已于 2026-09-27 普通快进推送至 `origin/main`（`2d3eaf42..be77d3ae`）。
 
 ## 2026-09-27 当前续接：GSC-058 旧首页交互回归契约校准
 
