@@ -20,12 +20,15 @@ namespace GameSaveCenter.Playnite.Tests;
 [Collection("ReportedWorkspaceLayoutWpf")]
 public sealed class ReportedWorkspaceLayoutBehaviorTests
 {
-    private static readonly Lazy<Dispatcher> FallbackStaDispatcher = new(CreateFallbackStaDispatcher);
     private readonly ITestOutputHelper output;
+    private readonly ReportedWorkspaceLayoutWpfFixture fixture;
+    private readonly Dispatcher dispatcher;
 
-    public ReportedWorkspaceLayoutBehaviorTests(ITestOutputHelper output)
+    public ReportedWorkspaceLayoutBehaviorTests(ITestOutputHelper output, ReportedWorkspaceLayoutWpfFixture fixture)
     {
         this.output = output;
+        this.fixture = fixture;
+        dispatcher = fixture.Dispatcher;
     }
 
     [Theory]
@@ -662,9 +665,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             Opacity = 0.01
         };
 
-    private static void EnsureApplicationResources()
+    private void EnsureApplicationResources()
     {
         var application = Application.Current ?? new Application();
+        fixture.RegisterApplicationForShutdown(application);
         application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         if (!application.Resources.Contains("BaseTextBlockStyle"))
             application.Resources.Add("BaseTextBlockStyle", new Style(typeof(TextBlock)));
@@ -682,46 +686,15 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         host.UpdateLayout();
     }
 
-    private static void RunSta(Action action)
+    private void RunSta(Action action)
     {
         Exception? exception = null;
-        GetTestDispatcher().Invoke(new Action(() =>
+        dispatcher.Invoke(new Action(() =>
         {
             try { action(); }
             catch (Exception caught) { exception = caught; }
         }));
         if (exception != null) throw exception;
-    }
-
-    private static Dispatcher GetTestDispatcher()
-    {
-        var application = Application.Current;
-        if (application != null
-            && !application.Dispatcher.HasShutdownStarted
-            && !application.Dispatcher.HasShutdownFinished)
-            return application.Dispatcher;
-
-        return FallbackStaDispatcher.Value;
-    }
-
-    private static Dispatcher CreateFallbackStaDispatcher()
-    {
-        var ready = new ManualResetEvent(false);
-        Dispatcher? dispatcher = null;
-        var thread = new Thread(() =>
-        {
-            dispatcher = Dispatcher.CurrentDispatcher;
-            ready.Set();
-            Dispatcher.Run();
-        })
-        {
-            IsBackground = true,
-            Name = "Reported workspace layout WPF STA"
-        };
-        thread.SetApartmentState(ApartmentState.STA);
-        thread.Start();
-        ready.WaitOne();
-        return dispatcher!;
     }
 
     private static void FlushLayout(Window window)
@@ -802,6 +775,105 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
 }
 
 [CollectionDefinition("ReportedWorkspaceLayoutWpf", DisableParallelization = true)]
-public sealed class ReportedWorkspaceLayoutWpfCollection
+public sealed class ReportedWorkspaceLayoutWpfCollection : ICollectionFixture<ReportedWorkspaceLayoutWpfFixture>
 {
+}
+
+public sealed class ReportedWorkspaceLayoutWpfFixture : IDisposable
+{
+    private readonly ManualResetEvent dispatcherReady = new(false);
+    private Thread? dispatcherThread;
+    private bool ownsDispatcher;
+    private Dispatcher? dispatcher;
+    private Application? application;
+    private Exception? dispatcherStartupException;
+
+    public ReportedWorkspaceLayoutWpfFixture()
+    {
+        var existingApplication = Application.Current;
+        if (existingApplication != null
+            && !existingApplication.Dispatcher.HasShutdownStarted
+            && !existingApplication.Dispatcher.HasShutdownFinished)
+        {
+            dispatcher = existingApplication.Dispatcher;
+            return;
+        }
+
+        ownsDispatcher = true;
+        dispatcherThread = new Thread(RunDispatcher)
+        {
+            IsBackground = true,
+            Name = "Reported workspace layout WPF STA"
+        };
+        dispatcherThread.SetApartmentState(ApartmentState.STA);
+        dispatcherThread.Start();
+
+        if (!dispatcherReady.WaitOne(TimeSpan.FromSeconds(10)))
+            throw new TimeoutException("Reported workspace layout WPF dispatcher did not initialize within 10 seconds.");
+        if (dispatcherStartupException != null)
+            throw new InvalidOperationException("Reported workspace layout WPF dispatcher failed to initialize.", dispatcherStartupException);
+    }
+
+    public Dispatcher Dispatcher => dispatcher
+        ?? throw new InvalidOperationException("Reported workspace layout WPF dispatcher is unavailable.");
+
+    public void RegisterApplicationForShutdown(Application value)
+    {
+        if (ownsDispatcher)
+            application = value;
+    }
+
+    public void Dispose()
+    {
+        if (!ownsDispatcher)
+        {
+            dispatcherReady.Dispose();
+            return;
+        }
+
+        var ownedDispatcher = dispatcher;
+        var ownedThread = dispatcherThread;
+        if (ownedDispatcher == null || ownedThread == null || !ownedThread.IsAlive)
+        {
+            dispatcherReady.Dispose();
+            return;
+        }
+
+        try
+        {
+            ownedDispatcher.Invoke(new Action(() =>
+            {
+                if (application != null && ReferenceEquals(application.Dispatcher, ownedDispatcher))
+                    application.Shutdown();
+                if (!ownedDispatcher.HasShutdownStarted)
+                    ownedDispatcher.BeginInvokeShutdown(DispatcherPriority.Send);
+            }));
+
+            if (!ownedThread.Join(TimeSpan.FromSeconds(10)))
+                throw new TimeoutException("Reported workspace layout WPF dispatcher did not shut down within 10 seconds.");
+        }
+        finally
+        {
+            dispatcherReady.Dispose();
+        }
+    }
+
+    private void RunDispatcher()
+    {
+        try
+        {
+            dispatcher = Dispatcher.CurrentDispatcher;
+        }
+        catch (Exception exception)
+        {
+            dispatcherStartupException = exception;
+        }
+        finally
+        {
+            dispatcherReady.Set();
+        }
+
+        if (dispatcher != null)
+            Dispatcher.Run();
+    }
 }
