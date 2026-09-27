@@ -6,7 +6,7 @@
 - `UiLayoutAnalyzer` 改为用实测 `headerHeight + rowHeight × 4` 推导阈值，比较时留 0.5 DIP rounding tolerance；`UiAuditSourceTests` 增加公式与旧常量负向契约。生产 Task 页面、XAML 与命令无改动。实现单独提交 `a829521c752adcecd62e7a8c9bfc76149a40c49d`。
 - 以该提交完整 SHA Release 构建 RenderHarness：`0 warning/0 error`；Playnite.Tests 定向 `UiAuditSourceTests` `6/6`。当前 identity 全量 Audit `168` runtime snapshots、`85` INFO、HIGH `0`、MEDIUM `0`、Fidelity `0`、failed routes `0`；compact TaskGrid `200 DIP / 4.4` 行。
 - 只运行本阶段定向测试和 UI Audit，未跑完整 Playnite.Tests/项目级 render-qa；未启动 Playnite，离屏 logical DIP 不代表真实宿主/物理 DPI。R 台账仍 192 项、`106/83/1/1/1`。临时输出 `.tmp/ui-audit-current-bdfa7770`、`.tmp/ui-audit-current-fixed-bdfa7770`、`.tmp/ui-audit-a829521c` 和根 ZIP 记录后按规则清理，不进 Git。
-- 证据：[UI Audit compact Task viewport 误报](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。记忆/交接文档提交与推送状态待本阶段收尾。
+- 证据：[UI Audit compact Task viewport 误报](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。实现提交 `a829521c` 与本阶段记忆/evidence 提交 `57ce10e9` 已于 2026-09-27 普通快进推送到 `origin/main`（`d9165ce2..57ce10e9`）；当前推送状态同步单独成文并复核最终指针。
 
 ## 2026-09-27 RenderHarness 基线复核与共享样式断言校准
 

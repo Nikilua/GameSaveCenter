@@ -5,7 +5,7 @@
 - 继 GSC-058 当前身份完整审计后，重新检查原 3 条 Task compact/narrow `TABLE_VIEWPORT_TOO_SHORT` HIGH。页面实测 TaskGrid 是 200 DIP、表头 41.6 DIP、紧凑行高 36 DIP；四行实际只需 185.6 DIP，估算可见 4.4 行。固定 236 DIP analyzer 下限沿用桌面行高假设，是误报来源。
 - RenderHarness analyzer 改为 `headerHeight + rowHeight × 4` 的数据驱动门槛，比较时保留 0.5 DIP 布局取整余量；源契约测试检查表达式且排斥旧 236-DIP 常量。产品 Task 页面、XAML、业务和命令不变。代码阶段提交 `a829521c752adcecd62e7a8c9bfc76149a40c49d`。
 - 同 SHA Release RenderHarness build `0/0`，`UiAuditSourceTests 6/6`。全量 UI Audit `168` snapshots、`85` INFO、HIGH/MEDIUM/Fidelity/失败路由均 `0`；TaskGrid compact `200 DIP / 4.4` 行。此处不是项目级 `render-qa` 或完整 Playnite.Tests 套件。
-- 离屏逻辑 DIP 不证明真实 Playnite/物理 DPI；没有启动宿主。R 账本仍 192 个唯一 ID、`106/83/1/1/1`，不重算/变更。证据：[UI Audit compact Task 视口误报修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。
+- 离屏逻辑 DIP 不证明真实 Playnite/物理 DPI；没有启动宿主。R 账本仍 192 个唯一 ID、`106/83/1/1/1`，不重算/变更。证据：[UI Audit compact Task 视口误报修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。实现提交 `a829521c` 与本条记忆/evidence 提交 `57ce10e9` 已于 2026-09-27 普通快进推送至 `origin/main`（`d9165ce2..57ce10e9`）；推送状态由后续独立文档提交记录。
 
 ## 2026-09-27 RenderHarness 复核与共享样式回归契约
 
