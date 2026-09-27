@@ -5,7 +5,7 @@
 - 在 `d5f0e8c2aa134d76255408c822f63348439e56d9` 上用 `--no-restore` 重新构建 Release RenderHarness（`0 warnings/0 errors`）并完成全量运行：372 张图、`WorkingTreeClean=True`、`render-qa OK`、无 PROBLEM。Settings 的 normal/dirty/invalid 三态均符合预期；此前 GSC-058 记录的 4 个 SettingsState PROBLEM 本次未复现，原因未确定，不修改 Settings 产品或夹具。
 - 校准 `UiLayoutRegressionTests` 两条过期源断言：存档规则按钮应使用 `GscIconOnlyToolbarButton`，并验证资源定义继承 `GscIconOnlyButtonBase`；Disclosure 测试保持其他六个页面的原约束，并显式断言 Settings 恢复默认 Expander 使用共享 `GscExpander` 资源。
 - 带当前 HEAD `GscBuildCommit` 身份的 Playnite.Tests Release build `0/0`；目标测试 `2/2`，整个 `UiLayoutRegressionTests` 类 `20 passed/11 skipped/0 failed`。没有生产 XAML 改动，也未启动 Playnite。RenderHarness 仅代表离屏 WPF logical DIP。
-- 报告/截图曾写入 `.tmp/gsc058-settings-state-recheck-20260927`，证据记录后按规则清理，不进入 Git。证据：[UI 回归契约复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。阶段提交 `fb6c1785`；R ledger 仍为 192 项、`106/83/1/1/1`。
+- 报告/截图曾写入 `.tmp/gsc058-settings-state-recheck-20260927`，证据记录后按规则清理，不进入 Git。证据：[UI 回归契约复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。测试阶段 `fb6c1785` 与推送状态同步 `d9165ce2` 已于 2026-09-27 快进推送至 `origin/main`（`d5f0e8c2..d9165ce2`）；R ledger 仍为 192 项、`106/83/1/1/1`。
 
 ## 2026-09-27 GSC-058 首页重构与离屏回归
 

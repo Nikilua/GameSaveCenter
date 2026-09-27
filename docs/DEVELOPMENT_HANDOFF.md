@@ -6,7 +6,7 @@ GSC-058 首页已调整为先展示全宽待处理与最近任务；刷新、全
 
 当前 identity Release RenderHarness build `0/0`；在 `d5f0e8c2` 上全量重跑为 `render-qa OK`、0 PROBLEM、372 个 PNG。Settings normal/dirty/invalid 三态均通过，首轮记录的 4 个 SettingsState PROBLEM 未复现且原因未知，未修改 Settings 产品代码/夹具。两个旧 UI 源断言已独立校准：Save 图标按钮断言检查 toolbar 派生样式及其基样式继承；Disclosure 测试确认 Settings 恢复默认控件使用共享 `GscExpander`。Playnite.Tests build `0/0`，`UiLayoutRegressionTests` `20 passed / 11 skipped / 0 failed`。详见[当前复核证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。
 
-普通 NuGet restore 受用户配置 ACL 阻止，沿用现有 assets/no-restore；未运行 Python validator，Demo 原始 Design 目录不可用。未启动 Playnite，真实宿主/物理 DPI 仍待验证。R 总基线维持 192 项、`106/83/1/1/1`。本轮测试/记忆阶段已提交 `fb6c1785`，推送状态将以单独文档提交记录。之后继续按可复现用户问题/明确范围逐个独立阶段，不从旧 R23-08 快照臆造新产品任务。
+普通 NuGet restore 受用户配置 ACL 阻止，沿用现有 assets/no-restore；未运行 Python validator，Demo 原始 Design 目录不可用。未启动 Playnite，真实宿主/物理 DPI 仍待验证。R 总基线维持 192 项、`106/83/1/1/1`。本轮测试阶段 `fb6c1785` 与推送状态文档 `d9165ce2` 已于 2026-09-27 快进推送至 `origin/main`，本机已核对分支；不再把这两条提交列作待推送。之后继续按可复现用户问题/明确范围逐个独立阶段，不从旧 R23-08 快照臆造新产品任务。
 
 ## 2026-09-26 当前续接：Settings 与 SaveHistory UI gate 收口，已推送 origin/main
 
