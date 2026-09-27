@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前续接：UI Audit 紧凑 Task 视口误报已修复
+
+- GSC-058 后续复核发现 UI Audit 对 TaskGrid compact/narrow 的 200-DIP 视口报 3 条 HIGH。analyzer 使用固定 236 DIP 下限，忽略紧凑模式 36-DIP 行高；按实际表头 41.6 DIP + 四行 36 DIP 计算只需 185.6 DIP，200 DIP 可估算显示 4.4 行，因此属于审计规则误报，不是页面缺陷。
+- RenderHarness analyzer 已改为按实测表头/行高计算四行阈值，并加 0.5 DIP 取整容差；对应 Playnite source test 锁定新规则并防止旧常量回归。无生产 XAML/UI 变更。实现提交 `a829521c752adcecd62e7a8c9bfc76149a40c49d`。
+- 以该提交身份 Release RenderHarness build `0 warning/0 error`，`UiAuditSourceTests 6/6`。完整审计 168 快照、85 INFO、HIGH 0、MEDIUM 0、Fidelity 0、失败路由 0；TaskGrid compact 仍为 200 DIP / 4.4 行。不是完整 `render-qa` 或全量 Playnite.Tests 结论。
+- 未启动 Playnite；离屏逻辑 DIP 不代表真实宿主或物理 DPI。R 台账仍 192 个唯一项、`106/83/1/1/1`。详见[审计误报修复证据](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。推送状态在本阶段文档与代码提交完成后另行同步。
+
 ## 2026-09-27 当前续接：RenderHarness 复核与共享样式回归断言校准
 
 - 在 `d5f0e8c2aa134d76255408c822f63348439e56d9` 上重新构建并完整运行 Release RenderHarness：构建 `0 warning/0 error`，372 张 PNG，报告 `WorkingTreeClean=True`、`render-qa OK`、无 PROBLEM。Settings normal/dirty/invalid 三态均通过；此前记录的 4 条 SettingsState 问题本次未复现，原因未知，未改 Settings 产品代码或夹具。

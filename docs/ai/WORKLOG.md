@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 UI Audit compact Task viewport 误报修复
+
+- 追查 GSC-058 完整 UI Audit 留下的 3 条 Task narrow/compact HIGH；本地新跑结果显示 TaskGrid 200 DIP、表头 41.6、实测行高 36、估算可见 4.4 行。项目门禁是约四行可读，真正最低需要 185.6 DIP；审计器残留的固定 236-DIP 桌面常量造成误报。
+- `UiLayoutAnalyzer` 改为用实测 `headerHeight + rowHeight × 4` 推导阈值，比较时留 0.5 DIP rounding tolerance；`UiAuditSourceTests` 增加公式与旧常量负向契约。生产 Task 页面、XAML 与命令无改动。实现单独提交 `a829521c752adcecd62e7a8c9bfc76149a40c49d`。
+- 以该提交完整 SHA Release 构建 RenderHarness：`0 warning/0 error`；Playnite.Tests 定向 `UiAuditSourceTests` `6/6`。当前 identity 全量 Audit `168` runtime snapshots、`85` INFO、HIGH `0`、MEDIUM `0`、Fidelity `0`、failed routes `0`；compact TaskGrid `200 DIP / 4.4` 行。
+- 只运行本阶段定向测试和 UI Audit，未跑完整 Playnite.Tests/项目级 render-qa；未启动 Playnite，离屏 logical DIP 不代表真实宿主/物理 DPI。R 台账仍 192 项、`106/83/1/1/1`。临时输出 `.tmp/ui-audit-current-bdfa7770`、`.tmp/ui-audit-current-fixed-bdfa7770`、`.tmp/ui-audit-a829521c` 和根 ZIP 记录后按规则清理，不进 Git。
+- 证据：[UI Audit compact Task viewport 误报](../design/reviews/ui-finesse-round3-20260915/evidence/UI-AUDIT-COMPACT-TASK-VIEWPORT-20260927.md)。记忆/交接文档提交与推送状态待本阶段收尾。
+
 ## 2026-09-27 RenderHarness 基线复核与共享样式断言校准
 
 - 按上一轮遗留问题在当前提交 `d5f0e8c2aa134d76255408c822f63348439e56d9` 重新运行完整 Release RenderHarness。包装脚本的普通 restore 仍因用户 NuGet.Config ACL 失败；使用既有 restore assets 的 `dotnet build --no-restore` 构建成功（0 warnings/0 errors），同一 harness 全量结束 `render-qa OK`、0 PROBLEM、372 张快照，报告写明 `WorkingTreeClean=True`。Settings normal/dirty/invalid 的提示与 summary visibility 全通过。此前记录的 4 个 SettingsState PROBLEM 未复现，根因未证实，因此不改 Settings 生产代码/夹具。
