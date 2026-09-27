@@ -2560,3 +2560,4 @@ git branch --show-current
 - 当前隔离 Release solution/XAML `24/24` 成功、0 errors/2 条既有 `MediaCenterView.xaml.cs:703 CS8602`；同 checkout 的真实 WPF 列头与 detached-view 行为 `7/7`。证据和 TRX 位于 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-DETACHED-VIEW-CURRENT-MAIN-20260924.md`。不签收真实 Playnite/package-host 输入和整项 R06-02。
 - 下一可执行小批量：修 Media Inbox 重复游戏目标选择，复用全局 `SelectedGame`，保留命令可执行条件、确认目标快照、取消/错误语义。排序和行几何的隔离行为证据已分别归档；真实宿主边界照旧。
 - 用户此前指认的媒体/任务/存档/设置窗口问题，不可因 STA 离屏几何通过而标成真实宿主已修复；现行隔离 Playnite仍受 CEF `platform_channel 0x5` 阻挡，不重试绕过。保留真实宿主、最终呈现帧、物理 DPI/跨屏、Windows UIA/IME、ETW 与宿主性能未验边界。Demo 原目录不可用，沿用已恢复生产基线。
+- 2026-09-27 用户 Bug 回归验证与证据提交 `f5997929` 已快进推送至 `origin/main`（`d9d1f563..f5997929`）；源码/测试树未变，当前环境门槛与未验范围维持。
