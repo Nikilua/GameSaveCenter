@@ -107,7 +107,7 @@ public sealed class OverviewInteractionTests
     }
 
     [Fact]
-    public void OverviewActivityRowsKeepTheirVisualTreeAndCloudQueueCardExecutesOneClickCommand()
+    public void OverviewKeepsLegacyActivityHiddenAndMetricCommandWiredBehindCollapsedStrip()
     {
         Exception? exception = null;
         var cloudQueueClicks = 0;
@@ -136,6 +136,7 @@ public sealed class OverviewInteractionTests
                     Width = 1280,
                     Height = 820
                 };
+
                 var host = new Grid
                 {
                     Width = 1280,
@@ -147,28 +148,25 @@ public sealed class OverviewInteractionTests
                 host.Arrange(new Rect(0, 0, 1280, 820));
                 overview.UpdateLayout();
 
-                var activityButton = FindVisualDescendants<PlayniteButton>(overview).Find(button =>
-                    AutomationProperties.GetName(button) == "打开活动对应工作区");
-                Assert.NotNull(activityButton);
-                Assert.IsType<Border>(activityButton!.Content);
+                var legacyStatStrip = Assert.IsType<Border>(overview.FindName("OverviewStatStrip"));
+                var legacyActivityCard = Assert.IsType<Border>(overview.FindName("OverviewGlobalActivityCard"));
+                Assert.Equal(Visibility.Collapsed, legacyStatStrip.Visibility);
+                Assert.Equal(Visibility.Collapsed, legacyActivityCard.Visibility);
 
-                var cloudQueueCard = FindVisualDescendants<PlayniteButton>(overview).Find(button =>
+                var renderedButtons = FindVisualDescendants<PlayniteButton>(overview);
+                Assert.DoesNotContain(renderedButtons, button =>
+                    AutomationProperties.GetName(button) == "打开活动对应工作区");
+
+                var cloudQueueCard = renderedButtons.Find(button =>
                     AutomationProperties.GetName(button) == "打开云端队列");
-                Assert.NotNull(cloudQueueCard);
-                Assert.IsType<StackPanel>(cloudQueueCard!.Content);
+                Assert.True(cloudQueueCard is not null, "The collapsed compatibility strip should retain its cloud queue command control.");
+                Assert.False(cloudQueueCard!.IsVisible);
+                Assert.IsType<StackPanel>(cloudQueueCard.Content);
                 Assert.Null(cloudQueueCard.ContentTemplate);
                 Assert.Same(data.OpenCloudQueueCommand, cloudQueueCard.Command);
 
-                var cloudStatusLine = ((StackPanel)cloudQueueCard.Content).Children
-                    .OfType<TextBlock>()
-                    .Last();
-                var cloudStatusText = string.Concat(cloudStatusLine.Inlines
-                    .OfType<System.Windows.Documents.Run>()
-                    .Select(run => run.Text));
-                Assert.Contains("已上传 2 · 已校验 3", cloudStatusText);
-
-                // Invoke the framework's protected click path so ButtonBase performs its
-                // normal CanExecute/Execute handling rather than calling the command directly.
+                // The legacy card is intentionally hidden from users; invoke ButtonBase's
+                // normal route only to protect the retained command wiring from regressions.
                 typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(cloudQueueCard, Array.Empty<object>());
             }
@@ -182,7 +180,7 @@ public sealed class OverviewInteractionTests
         thread.Start();
         thread.Join();
 
-        Assert.Null(exception);
+        Assert.True(exception is null, exception?.ToString());
         Assert.Equal(1, cloudQueueClicks);
     }
 
