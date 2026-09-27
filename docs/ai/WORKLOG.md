@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 GSC-058 首页待处理/最近任务回归
+
+- 按 GSC-058 验收收敛首页层级：刷新/备份全部/媒体同步动作保留；一张全宽待处理优先卡在前，最近任务和风险/关注详情保留。首页不再渲染重复统计、当前游戏摘要、最近访问及全局活动卡。其余业务数据、命令与工作区未删除。MediaCenter 未改源码；确认 Inbox 与当前游戏媒体、重复识别、来源规则为独立页签，并继续展示类型/来源本地化字段。
+- 代码与测试分为两个提交：`d9b08aa2` 首页/RenderHarness 改动，`1860cdb7` 修正边界夹具标题中已过期的 820×700 样本说明。最终 identity Release Playnite.Tests 和 RenderHarness 各 `0 warnings/0 errors`；XAML `24/24`；首页与 Media 相关定向测试 `6/6`。边界夹具双主题 × 两尺寸 × 三状态 `12/12`，空任务、风险视口及 Worker 离线优先按钮通过，水平溢出为 0。
+- 完整 UI Audit `168` 快照、Fidelity `0`、失败路由 `0`、88 scanner warnings；仍有 3 条 HIGH Task 200-DIP 窄窗行数估计。完整 RenderHarness `render-qa` 有 4 条 SettingsState normal/dirty 状态 hint 与摘要可见性断言失败；本批未改其 Settings 源/夹具。宽过滤运行 `34 passed / 11 skipped / 2 failed`，两条失配是旧按钮继承关系和共享 `GscExpander` 排斥断言，细节见 evidence；不能记全量 suite 通过。
+- XAML、diff check 通过；普通 restore 遭用户 NuGet.Config ACL 拒绝，沿用现有 assets/no-restore 隔离构建。Python/py 不存在，未运行 `validate-source.py`；Demo Design 原目录不可用。无真实 Playnite/物理 DPI 结论。临时审计/build/screenshot 输出仅在 `.tmp/gsc058-release-20260927`，本阶段结束时清理，不进 Git。
+- 证据：[GSC-058 首页离屏回归](../design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md)。R ledger 192 项及 `106/83/1/1/1` 不变。随后将 memory/handoff 单独同步提交并随本阶段普通快进推送；宿主回归仍待 CEF/Playnite 条件。
+
 ## 2026-09-26 SaveHistory 摘要/操作区间距修复
 
 - Settings 阶段之后扩展布局回归单独复现窗口化 SaveHistory Light/Dark 的内容-操作区 gap 均为 `1.6 DIP`，但既有范围为 `8–14 DIP`。将 `SaveHistorySummaryActions` 紧凑布局上 margin 由 2 调整为 10 DIP，修复后 Light/Dark 均为 `9.6 DIP`；保留断言、命令与 wide layout 行为。

@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-27 当前续接：GSC-058 首页完成本机离屏回归
+
+GSC-058 首页已调整为先展示全宽待处理与最近任务；刷新、全部备份、同步媒体命令、风险和关注项仍保留；重复统计、当前游戏摘要、最近访问和全局活动不再占首页。MediaCenter 无源码变更；Inbox 与当前游戏媒体/重复识别/来源规则三个局部 Tab 互斥，DTO 类型/来源使用用户语言字段。实现提交 `d9b08aa2`，RenderHarness 样本说明修正 `1860cdb7`。
+
+当前 identity Release 两个项目构建 `0/0`，XAML `24/24`，定向首页/媒体回归 `6/6`，Overview 双主题 × 1040×700/1600×900 × 空任务/多风险/离线 `12/12`。完整 UI Audit `168` 快照、Fidelity/失败路由 `0/0`；3 条 HIGH 仍属 Task 窄窗。全页 RenderHarness 仍有 4 条 SettingsState fixture PROBLEM，宽过滤测试也有 2 条旧样式断言失败；不要写成全项目门禁通过，细节见 [GSC-058 evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/GSC-058-OVERVIEW-PENDING-RECENT-TASKS-20260927.md)。
+
+普通 NuGet restore 受用户配置 ACL 阻止，沿用现有 assets/no-restore；未运行 Python validator，Demo 原始 Design 目录不可用。未启动 Playnite，真实宿主/物理 DPI 仍待验证。R 总基线维持 192 项、`106/83/1/1/1`。本轮提交与记忆同步按普通快进推送；之后继续按可复现用户问题/明确范围逐个独立阶段，不从旧 R23-08 快照臆造新产品任务。
+
 ## 2026-09-26 当前续接：Settings 与 SaveHistory UI gate 收口，已推送 origin/main
 
 Settings 矮窗阶段已修复并验证：高度 `<760 DIP` 时折叠顶部恢复默认 disclosure，原安全说明和设置命令仍可展开使用，正常高度恢复时自动展开。category ListBox 的 logical item viewport 与真实 DIP viewport 分开量测。随后独立修复 SaveHistory 摘要/操作间距：紧凑 margin 由 2 改 10 DIP，Light/Dark gap 从 `1.6` 到 `9.6 DIP`，既有 `8–14 DIP` 断言不变。两个阶段的 RenderHarness 全量 `render-qa OK`、0 PROBLEM；证据分别见 [Settings](docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-SHORT-WINDOW-VIEWPORT-20260926.md) 和 [SaveHistory](docs/design/reviews/ui-finesse-round3-20260915/evidence/SAVE-HISTORY-ACTION-SEPARATION-20260926.md)。
