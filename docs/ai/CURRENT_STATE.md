@@ -4,7 +4,7 @@
 
 - 在 `d5f0e8c2aa134d76255408c822f63348439e56d9` 上重新构建并完整运行 Release RenderHarness：构建 `0 warning/0 error`，372 张 PNG，报告 `WorkingTreeClean=True`、`render-qa OK`、无 PROBLEM。Settings normal/dirty/invalid 三态均通过；此前记录的 4 条 SettingsState 问题本次未复现，原因未知，未改 Settings 产品代码或夹具。
 - 更新两条过期源契约：Save 当前规则刷新按钮验证使用 `GscIconOnlyToolbarButton` 并继承 `GscIconOnlyButtonBase`；共享 disclosure 测试保留其他六个页面的原限制，同时确认设置页恢复默认区使用主题资源中的 `GscExpander`。Playnite.Tests Release build `0 warning/0 error`；目标用例 `2/2`，整个 `UiLayoutRegressionTests` 类 `20 passed / 11 skipped / 0 failed`。
-- 本阶段只改测试断言与文档，不改生产 UI/XAML；RenderHarness 为离屏 WPF logical DIP，未启动 Playnite。普通 Restore 仍受用户 NuGet.Config ACL 阻止，使用现有资产 `--no-restore` 构建。详见[证据](../design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。R 台账保持 192 项及 `106/83/1/1/1`。
+- 本阶段只改测试断言与文档，不改生产 UI/XAML；RenderHarness 为离屏 WPF logical DIP，未启动 Playnite。普通 Restore 仍受用户 NuGet.Config ACL 阻止，使用现有资产 `--no-restore` 构建。阶段提交 `fb6c1785`，推送状态随后单独同步。详见[证据](../design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。R 台账保持 192 项及 `106/83/1/1/1`。
 
 ## 2026-09-27 GSC-058 首页信息层级收敛与离屏回归
 

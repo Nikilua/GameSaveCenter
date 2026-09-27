@@ -6,7 +6,7 @@
 - 独立校准 `UiLayoutRegressionTests` 两个旧断言：Save 当前规则刷新按钮采用 `GscIconOnlyToolbarButton`，测试现核实其基样式继承；设置页恢复默认 disclosure 的 `GscExpander` 是已登记的共享 Expander 资源，测试显式核实控件映射与资源 TargetType。没有生产 XAML/命令变更。
 - 当前 HEAD `GscBuildCommit` 身份下 Playnite.Tests Release build `0 warnings/0 errors`；目标两个用例 `2/2`，整类 `20 passed / 11 skipped / 0 failed`。首次未带身份的调用由仓库门禁拒绝，随后按项目约定注入当前 HEAD 重跑。
 - 完整报告曾写入 `.tmp/gsc058-settings-state-recheck-20260927`，本阶段记录确认后清理；不进 Git。RenderHarness 是离屏 WPF logical DIP，不代表真实 Playnite/物理 DPI；本批未启动 Playnite。Demo 原始目录仍不可用。R 账本保持 192 项、`106/83/1/1/1`。
-- 证据：[RenderHarness 当前身份复核与 UI 源断言校准](../design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。本阶段按仓库规则独立提交并快进推送，随后补记最终 commit identity。
+- 证据：[RenderHarness 当前身份复核与 UI 源断言校准](../design/reviews/ui-finesse-round3-20260915/evidence/UI-REGRESSION-CONTRACTS-20260927.md)。阶段提交：`fb6c1785`；推送状态在后续记忆同步中记录。
 
 ## 2026-09-27 GSC-058 首页待处理/最近任务回归
 
