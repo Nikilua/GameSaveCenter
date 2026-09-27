@@ -5,7 +5,8 @@
 - 本轮源码/测试验证身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` Release solution build `0/0`、Core `125/125`、Worker `357/357`、ExternalProcessRunner UTF-8/退出诊断 `5/5`、XAML `24/24`。Playnite 当前身份用户报告 bug 类：备份/复制反馈 `22/22`，大库启动/异步缩略图 `16/16`；`RepositoryIdentityTests 2/2`；WPF 资源类 `139 passed/39` 个原有显式 skip。
 - 精确全量 Playnite runner 在上一代码身份 `b382fb02` 已 clean exit；从 `b382` 到 `d9d1f563` 的 `src/`、`tests/` 没有变化，当前主线代码树相同。此轮没有改产品代码、R 行或用户数据，也未启动 Playnite。原历史 bug evidence 保留其各自时间身份，本次补充证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md`。
 - 192 个 R 唯一项、`106/83/1/1/1` 维持；backlog 没有 READY/IN_PROGRESS 项。真实隔离 Playnite、第二活动显示器和 ETW 门槛不变，不通过离屏/合成测试代替这些验收。
-- 验证与证据提交 `f5997929`（`d9d1f563..f5997929`）及记忆推送状态同步提交 `25ceaf8a`（`f5997929..25ceaf8a`）均已于 2026-09-27 快进推送至 `origin/main`；当前源码/测试仍以 `d9d1f563` 为验证身份，后续为文档提交。
+- 验证与证据提交 `f5997929`（`d9d1f563..f5997929`）及后续文档同步提交 `25ceaf8a`、`1bae1818` 均已推送至 `origin/main`；本轮检查起点 `HEAD=origin/main=1bae1818`，fetch 未发现其他设备新提交。源码/测试验证身份仍为 `d9d1f563`，此后的续接更改仅涉及文档。
+- 2026-09-27 再次复算 `ROUND3_PROGRESS.md` 确认 192 个唯一 R ID；只读主机检查未发现 Playnite/Worker，当前唯一活动屏为 `\\.\DISPLAY21`（2352×1470），WPR 未录制。没有启动宿主，也未尝试绕过此前 CEF/WMI 环境门禁；无新用户 bug 证据，backlog 仍为 4 项 IMPLEMENTED、5 项 BLOCKED_ENVIRONMENT、0 项 READY/IN_PROGRESS。
 
 ## 2026-09-27 R08 动效反向测试时序竞态已修复
 

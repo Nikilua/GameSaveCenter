@@ -2,11 +2,11 @@
 
 ## 2026-09-27 当前 main 用户 Bug/Core/Worker 回归核验
 
-本轮 Release 验证对应源码/测试身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14`：solution `0 warnings/0 errors`、Core `125/125`、Worker `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。该身份的 Playnite 备份诊断/复制五类测试 `22/22`，慢启动/缩略图五类 `16/16`，RepositoryIdentity `2/2`；WPF 资源字典类 `139 passed/39 skipped`。之后 `f5997929` 与 `25ceaf8a` 只改文档，当前 HEAD 为 `25ceaf8a`，已与 `origin/main` 同步。
+本轮 Release 验证对应源码/测试身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14`：solution `0 warnings/0 errors`、Core `125/125`、Worker `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。该身份的 Playnite 备份诊断/复制五类测试 `22/22`，慢启动/缩略图五类 `16/16`，RepositoryIdentity `2/2`；WPF 资源字典类 `139 passed/39 skipped`。此后 `f5997929`、`25ceaf8a` 与 `1bae1818` 只改文档；本轮开始时 HEAD 与 `origin/main` 均为 `1bae1818`，fetch 未发现其他设备新提交。
 
 完整 Playnite 官方隔离 runner 已在代码提交 `b382fb02` clean exit（111 个 source 类组、105 个 WPF 类）；自 `b382` 起 `src/` 与 `tests/` 无任何差异，当前 HEAD 的新增提交仅文档。本次因此在新 SHA 上重跑 Core、Worker 和用户 Bug 定向类，避免重复启动全部 105 个 testhost。结果与安全边界见[当前 main 用户 Bug 回归证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md)。
 
-R 基线仍 192 项、`106/83/1/1/1`，无 READY/IN_PROGRESS 产品任务；环境门禁仍阻止真实 Playnite/双屏/ETW 结论，不以源码/隔离测试冒充。未改产品代码或 backlog。
+R 基线仍 192 项、`106/83/1/1/1`，无 READY/IN_PROGRESS 产品任务；环境门禁仍阻止真实 Playnite/双屏/ETW 结论，不以源码/隔离测试冒充。2026-09-27 本轮 fetch 未发现远端新提交；只读检查未发现 Playnite/Worker 进程，活动屏为单屏 `\\.\DISPLAY21` 2352×1470，WPR 未录制。没有启动宿主或重试既有 CEF/WMI 路径，未改产品代码或 backlog。
 
 ## 2026-09-27 当前续接：R08 动效反向测试竞态已修复
 
