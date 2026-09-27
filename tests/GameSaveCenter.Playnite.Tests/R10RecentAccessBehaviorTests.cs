@@ -66,7 +66,7 @@ public sealed class R10RecentAccessBehaviorTests
     }
 
     [Fact]
-    public void OverviewRecentAccessEntryUsesItsCommandAndKeepsTaskHistorySeparate()
+    public void OverviewRecentAccessCommandRemainsWiredInCollapsedCompatibilityCardAndTaskHistoryStaysSeparate()
     {
         Exception? exception = null;
         var clicks = 0;
@@ -84,6 +84,15 @@ public sealed class R10RecentAccessBehaviorTests
                         LastAccessUtc = new DateTime(2026, 9, 19, 1, 2, 3, DateTimeKind.Utc)
                     },
                     "长名称测试游戏"));
+                data.OverviewTasks.Add(new TaskStatusDto
+                {
+                    TaskId = "task-1",
+                    TaskType = "备份",
+                    GameName = "任务历史游戏",
+                    State = TaskState.Succeeded,
+                    Message = "最近任务记录",
+                    CreatedUtc = DateTime.UtcNow
+                });
 
                 var overview = new OverviewView
                 {
@@ -91,15 +100,28 @@ public sealed class R10RecentAccessBehaviorTests
                     Width = 1280,
                     Height = 980
                 };
+                var recentAccessCard = Assert.IsType<Border>(overview.FindName("OverviewRecentAccessCard"));
+                Assert.Equal(Visibility.Collapsed, recentAccessCard.Visibility);
+                // GSC-058 removes recent-access from the default home hierarchy. Reveal
+                // this retained compatibility surface only in the test to verify its
+                // existing command, without restoring it in production UI.
+                recentAccessCard.Visibility = Visibility.Visible;
+
                 var host = new Grid { Width = 1280, Height = 980 };
                 host.Children.Add(overview);
                 host.Measure(new Size(1280, 980));
                 host.Arrange(new Rect(0, 0, 1280, 980));
                 overview.UpdateLayout();
 
+                var recentAccessList = Assert.IsType<ListBox>(overview.FindName("OverviewRecentAccessList"));
+                var taskHistoryList = Assert.IsType<ListBox>(overview.FindName("OverviewActivityList"));
+                Assert.Same(data.RecentAccessItems, recentAccessList.ItemsSource);
+                Assert.Same(data.OverviewTasks, taskHistoryList.ItemsSource);
+                Assert.NotSame(recentAccessList.ItemsSource, taskHistoryList.ItemsSource);
+
                 var button = FindVisualDescendants<PlayniteButton>(overview)
                     .SingleOrDefault(candidate => AutomationProperties.GetName(candidate) == "打开最近访问对象");
-                Assert.NotNull(button);
+                Assert.True(button is not null, "The test-revealed recent-access card should realize its action row.");
                 Assert.Same(data.OpenRecentAccessCommand, button!.Command);
                 Assert.Equal("game-1", ((RecentAccessItem)button.CommandParameter!).PlayniteId);
                 Assert.True(button.Command!.CanExecute(button.CommandParameter));
@@ -116,7 +138,7 @@ public sealed class R10RecentAccessBehaviorTests
         thread.Start();
         thread.Join();
 
-        Assert.Null(exception);
+        Assert.True(exception is null, exception?.ToString());
         Assert.Equal(1, clicks);
     }
 
