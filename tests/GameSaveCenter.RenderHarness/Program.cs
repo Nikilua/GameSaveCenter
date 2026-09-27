@@ -664,7 +664,7 @@ public static class Program
         report.AppendLine("GameSaveCenter Overview boundary-state fixtures");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine("Profiles: empty-activity, many-risks, offline");
-        report.AppendLine("Themes: light, dark; viewports: 820x700 (bilingual), 1040x700, 1600x900");
+        report.AppendLine("Themes: light, dark; viewports: 1040x700, 1600x900");
         AppendRunMetadata(report, "overviewedges", "OffscreenRenderHarness", "light,dark", "empty-activity; many-risks; offline; 1040x700/1600x900");
         report.AppendLine();
         var problems = new List<string>();
