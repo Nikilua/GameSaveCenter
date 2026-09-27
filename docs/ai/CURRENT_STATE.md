@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 R08 动效反向测试时序修复，全量 Playnite runner clean
+
+- 在测试提交 `b382fb02cde41f65d8daff5166934161eb956e2b` 修复 WPF 测试竞态：固定 1000ms DispatcherTimer 到期并不保证动画 `Completed` 回调已运行；复现时最终宽度 `269.6 DIP`、透明度 `1`，但 transition flag 仍为 true。测试改为等待真实完成状态并设置超时；Translate 用实际进行中样本，完成时同时核验两个动画时钟已释放且值到达最新目标，超时用 `Stopwatch`。
+- 当前代码身份 Playnite.Tests Release 和完整 solution Release `0 warnings/0 errors`；XAML `24/24`。正式 `scripts/run-playnite-tests-isolated.ps1 -Configuration Release` clean exit `0`，111 个 source 类组与全部 105 个 WPF 隔离类通过；R08 类额外连续 5 次 `2/2`。
+- 仅修测试，无生产动画/XAML/UI/业务改动。证据：[R08 reverse testhost timing](../design/reviews/ui-finesse-round3-20260915/evidence/R08-MOTION-REVERSE-TESTHOST-TIMING-20260927.md)。R 账本仍 192 唯一项、`106/83/1/1/1`，没有真实 Playnite 或宿主/DPI 验收。本地当前代码提交尚待本阶段记忆/evidence 提交后推送。
+
 ## 2026-09-27 当前续接：GSC-058 首页旧兼容测试契约已校准
 
 - 三个独立测试提交：`6d6d7507` 校准首页折叠统计/全局活动的交互测试；`76bc8a0d` 移除 Overview 双语边界夹具中过时且不可达的 820-DIP 分支；`b62baef5` 校准最近访问默认折叠后的兼容命令与集合隔离测试。无生产 XAML/C#、绑定、命令或业务行为改动。

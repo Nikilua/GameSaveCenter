@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 R08 WPF 动效反向测试竞态修复
+
+- 在前一轮遗留的 R08 间歇失败上继续定位：当前旧身份定向 3/5 复现 sidebar transition flag 断言失败；1 秒定时泵送后实际宽度已到 `269.6 DIP`、opacity `1`，但 WPF `Completed` callback 尚未执行。不是生产目标错误。修复前另一次试验也证明单看 `IsAnimated=false` 会在首个 clock tick 前误判，Translate 最终仍停在旧值 `0.816`。
+- 测试提交 `b382fb02cde41f65d8daff5166934161eb956e2b` 使用 bounded polling 等待真实完成回调；Translate 中途反向等真实 in-flight 值，完成谓词同时核验 X/Y 时钟释放及目标值，deadline 改用单调 Stopwatch。仅测试文件变更，未改生产代码/XAML。
+- 构建：Playnite.Tests Release 与完整 solution Release `0 warnings / 0 errors`；XAML `24/24`。精确身份 R08 连续 5 次 `2/2`；项目正式 Playnite 隔离 runner clean exit `0`，source group 111 类与 WPF 105 类均完成，无失败。报告不扩展为真实 Playnite/DPI/UIA 验收。
+- 本机仍单屏，Playnite 未启动，CIM 命令行权限拒绝；R 台账 192 唯一 ID、`106/83/1/1/1` 未变，backlog 无 READY/IN_PROGRESS。证据：[R08 动效反向测试时序修复](../design/reviews/ui-finesse-round3-20260915/evidence/R08-MOTION-REVERSE-TESTHOST-TIMING-20260927.md)。
+
 ## 2026-09-27 GSC-058 首页旧交互兼容测试校准
 
 - 续接当前 main 后发现三处测试/夹具仍使用 GSC-058 之前的页面契约。独立提交 `6d6d7507` 校准 Overview 统计/活动折叠行为；`76bc8a0d` 移除死掉的 820-DIP 双语边界分支并更新源契约；`b62baef5` 校准 Recent Access 默认折叠与首页任务集合隔离。只改测试和 RenderHarness 夹具，没有生产 UI 或业务代码变更。

@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-27 当前续接：R08 动效反向测试竞态已修复
+
+测试提交 `b382fb02cde41f65d8daff5166934161eb956e2b` 解决 `R08MotionReverseBehaviorTests` 的间歇失败。根因是 test-only fixed 1000ms dispatcher pump 会先于 WPF `Completed` 回调触发；测试把 timer expiry 错当成 transition finished。现改为轮询回调产生的显式 running state；Translate 完成还须满足 X/Y clocks released 且值到达目标，首个动画样本必须处于实际 in-flight 状态，timeout 用 Stopwatch。没有改生产动画/XAML/UI。
+
+精确身份 Release Playnite.Tests 与完整 solution build 均 `0 warnings/0 errors`，XAML `24/24`；R08 单独 5 次 `2/2`，正式隔离 runner source 111 类组 + WPF 105 类 clean exit `0`。完整证据：[R08 时序竞态复现与修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-MOTION-REVERSE-TESTHOST-TIMING-20260927.md)。之前“全套 WPF 没有单次 clean runner”的事实已由本次精确身份完整运行取代。
+
+R 基线仍为 192 项、状态 `106/83/1/1/1`；backlog 无 READY/IN_PROGRESS 产品任务。真实 Playnite、第二显示器、WMI 命令行和 ETW 环境门槛未变化；不把隔离 WPF 测试说成宿主验收。本次实现提交已完成，当前记忆/evidence 文档待独立提交后，将代码与文档一起普通快进推送。
+
 ## 2026-09-27 当前续接：GSC-058 旧首页交互回归契约校准
 
 本机接续后核对 `CURRENT_STATE`、项目记忆、工作日志、交接、近期 Git 历史和干净工作树；当前实现保留 GSC-058 的新首页层级。旧 `OverviewInteractionTests`、`R03BilingualLengthTests`、`R10RecentAccessBehaviorTests` 及 Overview 边界夹具仍带旧假设，已在 `6d6d7507`、`76bc8a0d`、`b62baef5` 三个独立提交中校准。生产 XAML/C#、绑定、命令和业务行为未改，192 项台账未改。

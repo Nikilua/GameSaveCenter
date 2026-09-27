@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 R08 动效反向测试时序竞态已修复
+
+- 自动化复现证明旧测试把固定 1000ms DispatcherTimer 当作动画完成信号；timer tick 与 WPF `Completed` 回调存在竞态，导致最终值已到 `269.6 DIP`/opacity `1` 仍读到 transition-running=true。测试提交 `b382fb02cde41f65d8daff5166934161eb956e2b` 改为等待明确完成状态和 bounded timeout。
+- Translate 反向样例等待实际 in-flight 取样，再等 X/Y 时钟释放且值到达目标；sidebar 等待其 transition 标记由真实 Completed callback 清除。deadline 使用 `Stopwatch`。修复前只轮询 `IsAnimated=false` 曾误判时钟首帧前的旧值 `0.816` 已完成；最终谓词加了目标值条件。
+- 最终身份 Playnite.Tests 与 solution Release build 均 `0 warning / 0 error`，XAML `24/24`；官方分进程全量 runner clean exit `0`，source 111 类组和 WPF 105 类通过；R08 定向 `5 × 2/2`。详见 evidence 文件。只改测试，不改生产动画/UI；单屏、WMI Access Denied、未运行 Playnite等宿主门槛不变。R baseline 192，状态 `106/83/1/1/1`。
+
 ## 2026-09-27 GSC-058 首页兼容回归断言与边界夹具校准
 
 - 当前续接发现旧测试仍假设首页统计条、全局活动和最近访问默认可见；另一个边界夹具还包含被 GSC-058 移除的 820-DIP 双语专用视口。依次用提交 `6d6d7507`、`76bc8a0d`、`b62baef5` 校准测试与 RenderHarness 夹具，没有恢复旧 UI 或修改生产逻辑。
