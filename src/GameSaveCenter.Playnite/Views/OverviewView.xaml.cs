@@ -150,37 +150,18 @@ namespace GameSaveCenter.Playnite.Views
                 OverviewActivityTimelineList.Tag = compactActivity ? "Compact" : "Wide";
             }
 
-            // HomeView places TODAY and the selected-game context in a two-column row.
-            // Keep that relationship whenever the primary workspace can support it; when
-            // the real secondary risk column leaves less than 760 DIP, stack the two cards
-            // as a single readable flow instead of compressing the context pills.
+            // The summary row now spans the whole page. The selected game is already
+            // available through the shell's global picker and its dedicated workspaces.
             if (OverviewHeroAndGameRow != null)
             {
-                var stackHeroAndGame = primaryWidth < 700;
-                OverviewHeroGameCompactRow.Height = stackHeroAndGame
-                    ? GridLength.Auto
-                    : new GridLength(0);
-                OverviewHeroGameGutterColumn.Width = new GridLength(stackHeroAndGame ? 0 : 14);
-                OverviewHeroColumn.Width = new GridLength(1.0, GridUnitType.Star);
-                OverviewCurrentGameColumn.Width = new GridLength(1.0, GridUnitType.Star);
-
                 Grid.SetRow(OverviewTodayHeroCard, 0);
                 Grid.SetColumn(OverviewTodayHeroCard, 0);
-                Grid.SetColumnSpan(OverviewTodayHeroCard, stackHeroAndGame ? 3 : 1);
-                Grid.SetRow(OverviewCurrentGameCard, stackHeroAndGame ? 1 : 0);
-                Grid.SetColumn(OverviewCurrentGameCard, stackHeroAndGame ? 0 : 2);
-                Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1);
-                OverviewCurrentGameCard.Margin = stackHeroAndGame
-                    ? new Thickness(0, 14, 0, 0)
-                    : new Thickness(0);
+                Grid.SetColumnSpan(OverviewTodayHeroCard, 3);
+                OverviewHeroGameCompactRow.Height = new GridLength(0);
 
-                // The hero owns a full-width title row and a full-width status row.
-                // Keep the status row horizontal until the card is genuinely narrow;
-                // this prevents status dots from being squeezed into an empty-looking
-                // vertical strip at maximized 2K logical widths.
                 var heroWidth = OverviewTodayHeroCard.ActualWidth > 0
                     ? OverviewTodayHeroCard.ActualWidth
-                    : Math.Max(320d, primaryWidth * (stackHeroAndGame ? 1d : 0.5d));
+                    : Math.Max(320d, primaryWidth);
                 OverviewTodayHeroCard.Padding = heroWidth < 560
                     ? new Thickness(16, 16, 16, 14)
                     : new Thickness(22, 18, 22, 16);
@@ -195,12 +176,10 @@ namespace GameSaveCenter.Playnite.Views
             // without limit or cover the controls below it.
             OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
-            // On a compact page host, preserve the actionable priority title/button but
-            // reduce the decorative eyebrow, explanatory copy and minimum card height.
-            // This moves the real workbench into the first viewport without changing the
-            // selected-game or all-games command scope.
+            // Keep the compact priority summary actionable while leaving first-screen
+            // space for recent tasks and pending work instead of duplicate counters.
             var compactFirstViewport = height > 0 && height < 560;
-            OverviewTodayHeroCard.MinHeight = compactFirstViewport ? 132 : 205;
+            OverviewTodayHeroCard.MinHeight = compactFirstViewport ? 112 : 132;
             OverviewTodayHeroCard.Padding = compactFirstViewport
                 ? new Thickness(16, 10, 16, 10)
                 : OverviewTodayHeroCard.Padding;

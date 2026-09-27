@@ -301,10 +301,8 @@
 
         <Grid x:Name="OverviewPrimaryPanel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MinWidth="0">
             <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-            <!-- Keep the complete left workbench in one page-level scroll channel. This
-                 prevents the hero, second metric row, or activity section from being
-                 measured into a clipped sibling row at common window heights. The list
-                 still owns its finite local viewport and Recycling virtualization. -->
+            <!-- Keep the complete home workbench in one page-level scroll channel. The
+                 task list still owns its finite local viewport and Recycling virtualization. -->
             <Grid x:Name="OverviewPrimaryScrollSurface"
                   Grid.Row="0"
                   Grid.RowSpan="2"
@@ -316,9 +314,9 @@
                 <ColumnDefinition x:Name="OverviewFlowGutterColumn" Width="14"/>
                 <ColumnDefinition x:Name="OverviewFlowSecondaryColumn" Width="410"/>
             </Grid.ColumnDefinitions>
-            <!-- Auxiliary batch/environment actions stay available, but the real page
-                 hierarchy starts with current state and the selected game. -->
-            <Border x:Name="OverviewHomeToolbar" Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="14,10" Margin="0,0,0,12">
+            <!-- Keep global commands available; the home then prioritizes pending work
+                 and the recent-task list rather than repeating dashboard counters. -->
+            <Border x:Name="OverviewHomeToolbar" Grid.Row="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="14,10" Margin="0,0,0,12">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -327,7 +325,7 @@
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel MinWidth="0" VerticalAlignment="Center">
                         <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="今日工作台"/>
-                        <TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="这里处理全局备份和媒体同步；当前游戏操作在右侧卡片。" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Style="{DynamicResource GscRedesignSectionSubtitle}" Text="刷新概览、备份全部游戏或同步媒体；待处理事项和最近任务优先显示。" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <WrapPanel x:Name="OverviewHomeToolbarActions" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0,0,0">
                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshCommand}" Content="刷新" MinWidth="72" AutomationProperties.Name="刷新概览"/>
@@ -336,10 +334,10 @@
                     </WrapPanel>
                 </Grid>
             </Border>
-             <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,14">
+             <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0,0,14">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHeroGameCompactRow" Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="1*"/></Grid.ColumnDefinitions>
-                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="205">
+                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="132">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -352,7 +350,7 @@
                              second full-size wash here: it creates a square inner background and
                              makes the rounded card look like a panel inside another panel. -->
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
-                            <TextBlock x:Name="OverviewTodayHeroEyebrow" Style="{DynamicResource GscRedesignHeroEyebrow}" Text="TODAY"/>
+                            <TextBlock x:Name="OverviewTodayHeroEyebrow" Style="{DynamicResource GscRedesignHeroEyebrow}" Text="待处理"/>
                             <TextBlock AutomationProperties.Name="{Binding OverviewPriorityTitle}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewPriorityTitle}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
@@ -368,7 +366,7 @@
                             <TextBlock x:Name="OverviewTodayHeroDescription" Text="{Binding OverviewPriorityDescription}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
                             <ui:Button Style="{DynamicResource GscWpfUiPrimaryButton}" Command="{Binding OverviewPriorityActionCommand}" Content="{Binding OverviewPriorityActionText}" ToolTip="{Binding OverviewPriorityActionToolTip}" AutomationProperties.Name="{Binding OverviewPriorityActionText}" Margin="0,10,0,0" HorizontalAlignment="Left" MinWidth="116"/>
                         </StackPanel>
-                        <WrapPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
+                        <WrapPanel x:Name="OverviewHeroStatusPills" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Visibility="Collapsed">
                             <WrapPanel.Style>
                                 <Style TargetType="WrapPanel">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -386,7 +384,7 @@
                         </WrapPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="OverviewCurrentGameCard" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="16" MinHeight="150">
+                <Border x:Name="OverviewCurrentGameCard" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="16" MinHeight="150" Visibility="Collapsed">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -416,10 +414,10 @@
                 </Border>
             </Grid>
 
-            <!-- Keep the Demo HomeView reading order: current context first, then one
-                 continuous six-metric strip. Production keeps real Snapshot counters and
-                 ratio bars; no demo placeholder numbers. -->
-             <Border x:Name="OverviewStatStrip" Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,14" MinHeight="84" Margin="0,0,0,12" ToolTip="{Binding OverviewSnapshotScopeDisplay}">
+            <!-- Retain the real Snapshot counter bindings as a collapsed compatibility
+                 surface; duplicating these totals above the pending/task content was the
+                 information-overload regression tracked by GSC-058. -->
+             <Border x:Name="OverviewStatStrip" Grid.Row="1" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,14" MinHeight="84" Margin="0,0,0,12" ToolTip="{Binding OverviewSnapshotScopeDisplay}" Visibility="Collapsed">
                 <StackPanel>
                     <TextBlock Text="{Binding OverviewSnapshotScopeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="8,0,8,8" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewSnapshotUpdatedDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding OverviewSnapshotUpdatedDisplay, Mode=OneWay}"/>
                 <Grid>
@@ -484,10 +482,8 @@
                 </StackPanel>
              </Border>
 
-              <!-- The risk rail spans the recent-task and global-activity area. Keep
-                   the two left cards in their own top-aligned column so the taller
-                   right rail cannot stretch the recent-task card and leave a blank
-                   gap below its finite list. -->
+              <!-- The pending/risk rail aligns with recent tasks. Keep its content in a
+                   top-aligned column so the taller rail cannot stretch the task card. -->
               <Grid x:Name="OverviewActivityColumn"
                      Grid.Row="3"
                     Grid.RowSpan="2"
@@ -496,7 +492,7 @@
                     VerticalAlignment="Top"
                     MinHeight="0">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-              <Border x:Name="OverviewRecentAccessCard" Grid.Row="0" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
+              <Border x:Name="OverviewRecentAccessCard" Grid.Row="0" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0" Visibility="Collapsed">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,8">
@@ -661,7 +657,7 @@
              </Border>
              </Grid>
              </Border>
-              <Border Grid.Row="2" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0">
+             <Border x:Name="OverviewGlobalActivityCard" Grid.Row="2" Style="{StaticResource OverviewReadingCard}" Margin="0,0,0,14" MinHeight="0" Visibility="Collapsed">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <Grid Margin="0,0,0,12">

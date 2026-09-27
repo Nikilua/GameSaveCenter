@@ -663,9 +663,9 @@ public static class Program
         var report = new StringBuilder();
         report.AppendLine("GameSaveCenter Overview boundary-state fixtures");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        report.AppendLine("Profiles: empty-activity, many-risks, long-title, bilingual-length, offline");
+        report.AppendLine("Profiles: empty-activity, many-risks, offline");
         report.AppendLine("Themes: light, dark; viewports: 820x700 (bilingual), 1040x700, 1600x900");
-        AppendRunMetadata(report, "overviewedges", "OffscreenRenderHarness", "light,dark", "empty-activity; many-risks; long-title; bilingual-length; offline; bilingual 820x700; 1040x700/1600x900");
+        AppendRunMetadata(report, "overviewedges", "OffscreenRenderHarness", "light,dark", "empty-activity; many-risks; offline; 1040x700/1600x900");
         report.AppendLine();
         var problems = new List<string>();
 
@@ -677,8 +677,6 @@ public static class Program
             {
                 (Name: "empty-activity", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.EmptyActivity),
                 (Name: "many-risks", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.ManyRisks),
-                (Name: "long-title", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.LongTitle),
-                (Name: "bilingual-length", State: WorkspaceFixtureState.Ready, Profile: OverviewFixtureProfile.BilingualLengthStress),
                 (Name: "offline", State: WorkspaceFixtureState.Offline, Profile: OverviewFixtureProfile.Default)
             };
 
@@ -1444,10 +1442,6 @@ public static class Program
             .FirstOrDefault(element => element.Name == "OverviewStackScrollSurface");
         var hero = FindVisualChildren<FrameworkElement>(host)
             .FirstOrDefault(element => element.Name == "OverviewTodayHeroCard");
-        var currentGame = FindVisualChildren<FrameworkElement>(host)
-            .FirstOrDefault(element => element.Name == "OverviewCurrentGameCard");
-        var statStrip = FindVisualChildren<FrameworkElement>(host)
-            .FirstOrDefault(element => element.Name == "OverviewStatStrip");
         var activityCard = FindVisualChildren<FrameworkElement>(host)
             .FirstOrDefault(element => element.Name == "OverviewRecentActivityCard");
         var riskCard = FindVisualChildren<FrameworkElement>(host)
@@ -1460,27 +1454,13 @@ public static class Program
         var activityTexts = FindVisualChildren<TextBlock>(host).ToArray();
         var activityPresenters = FindVisualChildren<WorkspaceStatePresenter>(host).ToArray();
         var activityEmptyPresenter = activityPresenters.FirstOrDefault(presenter => presenter.Visibility == Visibility.Visible);
-        var activityEmpty = activityEmptyPresenter != null
-            || activityTexts.Any(text => text.Visibility == Visibility.Visible
-                && text.Text.IndexOf("暂无全局活动", StringComparison.Ordinal) >= 0);
         var taskEmpty = activityCard != null
             && activityTexts.Any(text => text.Visibility == Visibility.Visible
                 && text.Text.IndexOf("暂无任务记录", StringComparison.Ordinal) >= 0);
         var riskViewport = FindVisualChildren<ScrollViewer>(host)
             .FirstOrDefault(element => element.Name == "OverviewRiskViewport");
-        var titleText = currentGame == null
-            ? null
-            : FindVisualChildren<TextBlock>(currentGame)
-                .FirstOrDefault(text => text.Text == data.SelectedGame.Name);
-        var longEnglishText = activityCard == null
-            ? null
-            : FindVisualChildren<TextBlock>(activityCard)
-                .FirstOrDefault(text => text.Text == data.BilingualLongEnglishSentence);
-        var currentGameButtons = currentGame == null
-            ? Array.Empty<Button>()
-            : FindVisualChildren<Button>(currentGame).Where(button => button.Visibility == Visibility.Visible).ToArray();
         var horizontalOverflow = page != null && page.ExtentWidth > page.ViewportWidth + 0.5;
-        var primarySurfaceCount = new[] { hero, currentGame, statStrip, activityCard, riskCard, findingsCard }
+        var primarySurfaceCount = new[] { hero, activityCard, riskCard, findingsCard }
             .Count(element => element != null && element.ActualWidth > 0 && element.ActualHeight > 0);
         var riskRows = riskCard == null
             ? 0
@@ -1488,29 +1468,22 @@ public static class Program
         var actionText = heroAction == null ? string.Empty : heroAction.Content?.ToString() ?? string.Empty;
         report.AppendLine(
             $"  {fixtureName} theme={themeMode} size={windowW}x{windowH}: " +
-            $"surfaces={primarySurfaceCount}/6 heroAction='{actionText}' " +
-            $"activityEmpty={activityEmpty} taskEmpty={taskEmpty} emptyHeight={(activityEmptyPresenter == null ? "missing" : $"{activityEmptyPresenter.ActualHeight:0}")} presenters={activityPresenters.Length} tasks={data.OverviewTasks.Count} activities={data.Activities.Count} " +
+            $"surfaces={primarySurfaceCount}/4 heroAction='{actionText}' " +
+            $"taskEmpty={taskEmpty} emptyHeight={(activityEmptyPresenter == null ? "missing" : $"{activityEmptyPresenter.ActualHeight:0}")} presenters={activityPresenters.Length} tasks={data.OverviewTasks.Count} " +
             $"riskRows={riskRows} riskItems={data.RecentProtection.Items.Count} " +
             $"riskExtent={(riskViewport == null ? "missing" : $"{riskViewport.ExtentHeight:0}/{riskViewport.ViewportHeight:0}")} " +
             $"pageExtent={(page == null ? "missing" : $"{page.ExtentHeight:0}/{page.ViewportHeight:0}")} " +
-            $"titleChars={data.SelectedGame.Name.Length} titleTrim={titleText?.TextTrimming} titleTooltip={titleText?.ToolTip != null} " +
-            $"englishChars={data.BilingualLongEnglishSentence.Length} englishVisible={longEnglishText?.Visibility == Visibility.Visible} " +
-            $"currentGameButtons={currentGameButtons.Length} buttonHeights={string.Join(",", currentGameButtons.Select(button => button.ActualHeight.ToString("0.##")))} " +
             $"pageOverflowH={horizontalOverflow} priority={data.OverviewPriorityKind}");
 
-        if (primarySurfaceCount != 6)
-            problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} missing one or more Overview primary surfaces");
+        if (primarySurfaceCount != 4)
+            problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} missing the pending/recent Overview surfaces");
         if (hero == null || hero.ActualWidth <= 0 || hero.ActualHeight <= 0 || heroAction == null || heroAction.ActualWidth <= 0)
             problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} has no reachable hero action");
         if (page == null || page.ActualWidth <= 0 || page.ActualHeight <= 0 || horizontalOverflow)
             problems.Add($"{fixtureName} {themeMode} {windowW}x{windowH} has invalid page viewport or horizontal overflow");
         if (fixtureName == "empty-activity"
-            && (!activityEmpty
-                || activityEmptyPresenter == null
-                || activityEmptyPresenter.ActualHeight < 100
-                || data.OverviewTasks.Count != 0
-                || data.Activities.Count != 0))
-            problems.Add($"empty-activity {themeMode} {windowW}x{windowH} did not expose the empty activity state");
+            && (!taskEmpty || data.OverviewTasks.Count != 0))
+            problems.Add($"empty-activity {themeMode} {windowW}x{windowH} did not expose the empty recent-task state");
         if (fixtureName == "many-risks"
             && (data.RecentProtection.Items.Count < 6
                 || riskRows < 6
@@ -1519,23 +1492,6 @@ public static class Program
                         || riskViewport.VerticalScrollBarVisibility == ScrollBarVisibility.Hidden
                         || riskViewport.ExtentHeight <= riskViewport.ViewportHeight + 0.5))))
             problems.Add($"many-risks {themeMode} {windowW}x{windowH} does not expose a reachable finite risk viewport");
-        if (fixtureName == "long-title"
-            && (data.SelectedGame.Name.Length < 80
-                || titleText == null
-                || titleText.TextTrimming != TextTrimming.CharacterEllipsis
-                || titleText.ToolTip == null))
-            problems.Add($"long-title {themeMode} {windowW}x{windowH} lost title ellipsis or tooltip reachability");
-        if (fixtureName == "bilingual-length"
-            && (data.SelectedGame.Name.Length < 30
-                || titleText == null
-                || titleText.TextTrimming != TextTrimming.CharacterEllipsis
-                || !string.Equals(titleText.ToolTip as string, data.SelectedGame.Name, StringComparison.Ordinal)
-                || longEnglishText == null
-                || longEnglishText.Visibility != Visibility.Visible
-                || longEnglishText.TextTrimming != TextTrimming.CharacterEllipsis
-                || currentGameButtons.Length < 2
-                || currentGameButtons.Any(button => button.ActualWidth <= 0 || button.ActualHeight < 30)))
-            problems.Add($"bilingual-length {themeMode} {windowW}x{windowH} lost full-value reachability or action geometry");
         if (fixtureName == "offline"
             && (data.Snapshot.WorkerHealthy
                 || data.OverviewPriorityKind != "Worker"
@@ -2256,8 +2212,8 @@ public static class Program
 
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v3-overview-current-game-wide.png"),
-                "OverviewCurrentGameCard",
+                Path.Combine(outputRoot, "v3-overview-pending-wide.png"),
+                "OverviewTodayHeroCard",
                 1600,
                 900,
                 ApplyOverviewV3,
@@ -2406,8 +2362,8 @@ public static class Program
 
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v4-overview-current-game-standard.png"),
-                "OverviewCurrentGameCard",
+                Path.Combine(outputRoot, "v4-overview-pending-standard.png"),
+                "OverviewTodayHeroCard",
                 1600,
                 900,
                 ApplyOverviewV3,
@@ -2612,8 +2568,8 @@ public static class Program
                 report);
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v6-overview-activity-wide.png"),
-                "OverviewActivityTimelineList",
+                Path.Combine(outputRoot, "v6-overview-recent-tasks-wide.png"),
+                "OverviewActivityList",
                 1600,
                 900,
                 ApplyOverviewV3,
@@ -2621,8 +2577,8 @@ public static class Program
                 report);
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v6-overview-activity-narrow.png"),
-                "OverviewActivityTimelineList",
+                Path.Combine(outputRoot, "v6-overview-recent-tasks-narrow.png"),
+                "OverviewActivityList",
                 1040,
                 700,
                 ApplyOverviewV3,
@@ -2639,8 +2595,8 @@ public static class Program
                 report);
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v6-overview-current-game.png"),
-                "OverviewCurrentGameCard",
+                Path.Combine(outputRoot, "v6-overview-pending-summary.png"),
+                "OverviewTodayHeroCard",
                 1600,
                 900,
                 ApplyOverviewV3,
@@ -2777,8 +2733,8 @@ public static class Program
 
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v6-2-overview-activity-wide.png"),
-                "OverviewActivityTimelineList",
+                Path.Combine(outputRoot, "v6-2-overview-recent-tasks-wide.png"),
+                "OverviewActivityList",
                 1600,
                 900,
                 ApplyOverviewV3,
@@ -2786,8 +2742,8 @@ public static class Program
                 report);
             CaptureV3Shot(
                 new OverviewView { DataContext = new FakeDashboardData() },
-                Path.Combine(outputRoot, "v6-2-overview-activity-narrow.png"),
-                "OverviewActivityTimelineList",
+                Path.Combine(outputRoot, "v6-2-overview-recent-tasks-narrow.png"),
+                "OverviewActivityList",
                 1040,
                 700,
                 ApplyOverviewV3,

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -10,21 +11,36 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class RestoredAcrylicForkBaselineTests
 {
     [Fact]
-    public void OverviewKeepsTheDemoSectionsAndTheCurrentWorkbenchActions()
+    public void OverviewPrioritizesPendingWorkAndRecentTasksWithoutDuplicateHomePanels()
     {
         var overview = ReadSource("Views", "OverviewView.xaml");
 
         Assert.Contains("最近任务", overview);
-        Assert.Contains("全局活动", overview);
+        Assert.Contains("Command=\"{Binding OverviewPriorityActionCommand}\"", overview);
         Assert.Contains("风险与提醒", overview);
         Assert.Contains("OverviewActivityList", overview);
-        Assert.Contains("OverviewActivityTimelineList", overview);
-        Assert.Contains("x:Name=\"OverviewRecentAccessList\"", overview);
-        Assert.Contains("MinHeight=\"236\"", overview);
         Assert.Contains("x:Name=\"OverviewActivityColumn\"", overview);
         Assert.Contains("Grid.RowSpan=\"2\"", overview);
         Assert.Contains("今日工作台", overview);
-        Assert.DoesNotContain("最近活动", overview);
+        Assert.Contains("Command=\"{Binding RefreshCommand}\"", overview);
+        Assert.Contains("Command=\"{Binding BackupAllCommand}\"", overview);
+        Assert.Contains("Command=\"{Binding SyncMediaCommand}\"", overview);
+        Assert.Contains("Text=\"待处理\"", overview);
+
+        var document = XDocument.Parse(overview);
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        foreach (var hiddenElement in new[]
+                 {
+                     "OverviewHeroStatusPills",
+                     "OverviewCurrentGameCard",
+                     "OverviewStatStrip",
+                     "OverviewRecentAccessCard",
+                     "OverviewGlobalActivityCard"
+                 })
+        {
+            var element = document.Descendants().Single(node => node.Attribute(xamlName)?.Value == hiddenElement);
+            Assert.Equal("Collapsed", element.Attribute("Visibility")?.Value);
+        }
     }
 
     [Fact]

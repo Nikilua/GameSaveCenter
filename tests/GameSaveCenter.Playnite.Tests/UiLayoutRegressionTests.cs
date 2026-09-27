@@ -9,7 +9,7 @@ namespace GameSaveCenter.Playnite.Tests
     public sealed class UiLayoutRegressionTests
     {
         [LegacyProductionUiBaselineFact]
-        public void OverviewHeroStatusPillsUseAFullWidthSecondRow()
+        public void OverviewPrioritySummaryHidesDuplicateStatusPills()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
@@ -24,6 +24,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("Left", statusRow.Attribute("HorizontalAlignment")?.Value);
             Assert.Null(statusRow.Attribute("Grid.Column"));
             Assert.Null(statusRow.Attribute("Grid.ColumnSpan"));
+            Assert.Equal("Collapsed", statusRow.Attribute("Visibility")?.Value);
             Assert.Contains("OverviewTodayHeroCard.Padding", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs")));
         }
 
@@ -177,19 +178,24 @@ namespace GameSaveCenter.Playnite.Tests
         public void OverviewGlobalActivityTimelineUsesCuratedBusinessEvents()
         {
             var root = FindRepositoryRoot();
-            var overview = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml"));
+            var overviewPath = Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml");
+            var overview = File.ReadAllText(overviewPath);
+            var document = XDocument.Parse(overview);
+            var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var globalActivityCard = document.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewGlobalActivityCard");
 
             Assert.Contains("x:Name=\"OverviewActivityTimelineList\"", overview);
             Assert.Contains("ItemsSource=\"{Binding Activities}\"", overview);
             Assert.Contains("Text=\"全局活动\"", overview);
             Assert.Contains("{Binding KindDisplay, Mode=OneWay}", overview);
             Assert.Contains("{Binding ResultDisplay, Mode=OneWay}", overview);
+            Assert.Equal("Collapsed", globalActivityCard.Attribute("Visibility")?.Value);
             Assert.DoesNotContain("MaxHeight=\"240\"", overview);
             Assert.Contains("ScrollViewer.VerticalScrollBarVisibility=\"Disabled\"", overview);
         }
 
         [LegacyProductionUiBaselineFact]
-        public void OverviewStatStripUsesTheDemoContinuousSummaryStructure()
+        public void OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters()
         {
             var root = FindRepositoryRoot();
             var overview = XDocument.Parse(File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
@@ -198,6 +204,7 @@ namespace GameSaveCenter.Playnite.Tests
             var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
 
             Assert.Equal("Border", strip.Name.LocalName);
+            Assert.Equal("Collapsed", strip.Attribute("Visibility")?.Value);
             Assert.Contains(strip.Descendants(), element => element.Name.LocalName == "Grid");
             Assert.Equal(5, strip.Descendants().Count(element => element.Name.LocalName == "Border" && element.Attribute("Style")?.Value == "{StaticResource OverviewStatCard}"));
             Assert.Single(strip.Descendants(), element => element.Name.LocalName == "Button"

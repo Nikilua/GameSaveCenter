@@ -3861,7 +3861,7 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void OverviewFollowsDemoContextThenMetricsThenActivityOrder()
+    public void OverviewPrioritizesPendingAndRecentTasksBeforeSecondaryContent()
     {
         var repositoryRoot = FindRepositoryRoot();
         var overview = XDocument.Parse(File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml")));
@@ -3870,32 +3870,45 @@ public sealed class WpfUiResourceDictionaryTests
         var hero = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTodayHeroCard");
         var currentGame = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewCurrentGameCard");
         var metrics = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewStatStrip");
+        var heroPills = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewHeroStatusPills");
+        var recentAccess = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewRecentAccessCard");
+        var globalActivity = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewGlobalActivityCard");
         var activity = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityList");
+        var activityColumn = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewActivityColumn");
+        var recentTasksCard = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewRecentActivityCard");
+        var risk = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewRiskCard");
+        var findings = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewFindingsCard");
         var toolbar = overview.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewHomeToolbar");
 
-        // The production page follows Demo HomeView's hierarchy: TODAY/current-game,
-        // metrics, recent activity, then the auxiliary batch/environment action surface.
-        Assert.Equal("0", heroGameRow.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        // Home starts with its real global operations and one concise priority action,
+        // followed by recent tasks and the pending/risk rail. Repeated counters and
+        // unrelated recent/global-history panels stay out of the rendered home flow.
+        Assert.Equal("0", toolbar.Attribute("Grid.Row")?.Value);
+        Assert.Equal("1", heroGameRow.Attribute("Grid.Row")?.Value);
         Assert.Same(heroGameRow, hero.Parent);
         Assert.Same(heroGameRow, currentGame.Parent);
         Assert.Equal("0", hero.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
         Assert.Equal("0", currentGame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        Assert.Equal("1*", heroGameRow.Descendants().Single(element => element.Name.LocalName == "ColumnDefinition" && element.Attribute(xamlName)?.Value == "OverviewCurrentGameColumn").Attribute("Width")?.Value);
-        Assert.Equal("1", metrics.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        Assert.Equal("2", toolbar.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
-        var activityFrame = activity.Ancestors().First(element => element.Name.LocalName == "Border"
-            && element.Attributes().Any(attribute => attribute.Name.LocalName == "Grid.Row")
-            && element.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value == "1");
-        Assert.Equal("1", activityFrame.Attributes().Single(attribute => attribute.Name.LocalName == "Grid.Row").Value);
+        Assert.Equal("3", activityColumn.Attribute("Grid.Row")?.Value);
+        Assert.Equal("1", recentTasksCard.Attribute("Grid.Row")?.Value);
+        Assert.Equal("0", risk.Attribute("Grid.Row")?.Value);
+        Assert.Equal("1", findings.Attribute("Grid.Row")?.Value);
         Assert.Equal("{Binding OverviewTasks}", activity.Attribute("ItemsSource")?.Value);
         Assert.Equal("{Binding SelectedTask}", activity.Attribute("SelectedItem")?.Value);
+        Assert.Contains("Command=\"{Binding OverviewPriorityActionCommand}\"", hero.ToString());
+        Assert.Contains("Command=\"{Binding RefreshCommand}\"", toolbar.ToString());
+        Assert.Contains("Command=\"{Binding BackupAllCommand}\"", toolbar.ToString());
+        Assert.Contains("Command=\"{Binding SyncMediaCommand}\"", toolbar.ToString());
+        Assert.Equal("Collapsed", currentGame.Attribute("Visibility")?.Value);
+        Assert.Equal("Collapsed", metrics.Attribute("Visibility")?.Value);
+        Assert.Equal("Collapsed", heroPills.Attribute("Visibility")?.Value);
+        Assert.Equal("Collapsed", recentAccess.Attribute("Visibility")?.Value);
+        Assert.Equal("Collapsed", globalActivity.Attribute("Visibility")?.Value);
 
         var overviewCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "OverviewView.xaml.cs"));
-        Assert.Contains("var stackHeroAndGame = primaryWidth < 700", overviewCode);
-        Assert.Contains("OverviewHeroGameCompactRow.Height", overviewCode);
-        Assert.Contains("OverviewHeroColumn.Width = new GridLength(1.0, GridUnitType.Star);", overviewCode);
-        Assert.Contains("OverviewCurrentGameColumn.Width = new GridLength(1.0, GridUnitType.Star);", overviewCode);
-        Assert.Contains("Grid.SetColumnSpan(OverviewCurrentGameCard, stackHeroAndGame ? 3 : 1)", overviewCode);
+        Assert.Contains("Grid.SetColumnSpan(OverviewTodayHeroCard, 3);", overviewCode);
+        Assert.Contains("OverviewStackScrollSurface.VerticalScrollBarVisibility = ScrollBarVisibility.Auto", overviewCode);
+        Assert.DoesNotContain("stackHeroAndGame", overviewCode);
     }
 
     [LegacyProductionUiBaselineFact]
