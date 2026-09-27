@@ -2,9 +2,10 @@
 
 ## 2026-09-27 当前 main 用户 Bug 回归复核
 
-- 最新远端 main `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` 精确身份 Release solution build `0 warnings/0 errors`；Core.Tests `125/125`、Worker.Tests `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。
+- 本轮最新源码/测试验证身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` 的 Release solution build `0 warnings/0 errors`；Core.Tests `125/125`、Worker.Tests `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。
 - 用户备份编码/失败详情/复制问题相关 Playnite 类在当前身份合计 `22/22`；慢启动/缩略图相关已选行为类 `16/16`；RepositoryIdentity `2/2`。`WpfUiResourceDictionaryTests` `139 passed/39 skipped`，skip 为该类既有显式 skip。
 - Playnite 完整官方隔离 runner 最近在 `b382fb02` clean exit，111 个 source 类组 + 105 个 WPF 类；`b382..d9d1` 源码与测试树无差异，因此无须为 docs-only SHA 重做约 105 个独立 testhost 的全量运行。本阶段仅验证，不改生产代码、192 项账本或 backlog。未启动 Playnite，宿主环境门槛不变。详见[当前 main 用户 Bug 回归证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md)。
+- 后续文档/evidence 提交 `f5997929` 与记忆推送状态提交 `25ceaf8a` 均已推送；当前 HEAD=`origin/main`=`25ceaf8a`，源码/测试验证身份仍为 `d9d1f563`。重新核对唯一 backlog：4 项 `IMPLEMENTED`、5 项 `BLOCKED_ENVIRONMENT`，无 `READY/IN_PROGRESS`；旧交接中的 R20-01 指针已被后续进度与当前门槛取代，不据此启动产品改动。下一步等待新用户复现证据或环境门槛实际变化。
 
 ## 2026-09-27 R08 WPF 动效反向测试竞态修复
 

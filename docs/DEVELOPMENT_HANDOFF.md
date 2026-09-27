@@ -2,7 +2,7 @@
 
 ## 2026-09-27 当前 main 用户 Bug/Core/Worker 回归核验
 
-精确当前 checkout `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` Release solution `0 warnings/0 errors`、Core `125/125`、Worker `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。当前身份 Playnite 备份诊断/复制五类测试 `22/22`，慢启动/缩略图五类 `16/16`，RepositoryIdentity `2/2`；WPF 资源字典类 `139 passed/39 skipped`。
+本轮 Release 验证对应源码/测试身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14`：solution `0 warnings/0 errors`、Core `125/125`、Worker `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。该身份的 Playnite 备份诊断/复制五类测试 `22/22`，慢启动/缩略图五类 `16/16`，RepositoryIdentity `2/2`；WPF 资源字典类 `139 passed/39 skipped`。之后 `f5997929` 与 `25ceaf8a` 只改文档，当前 HEAD 为 `25ceaf8a`，已与 `origin/main` 同步。
 
 完整 Playnite 官方隔离 runner 已在代码提交 `b382fb02` clean exit（111 个 source 类组、105 个 WPF 类）；自 `b382` 起 `src/` 与 `tests/` 无任何差异，当前 HEAD 的新增提交仅文档。本次因此在新 SHA 上重跑 Core、Worker 和用户 Bug 定向类，避免重复启动全部 105 个 testhost。结果与安全边界见[当前 main 用户 Bug 回归证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md)。
 
