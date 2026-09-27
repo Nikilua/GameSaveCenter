@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 ReportedWorkspace WPF testhost 收尾生命周期修复
+
+- 复现旧测试夹具收尾问题：`ReportedWorkspaceLayoutBehaviorTests` 10/10 测例通过并发出 xUnit `Finished`，但静态 fallback STA 的 `Dispatcher.Run()` 与新建 `Application` 均无 owner 收尾，VSTest 2 分钟后由 blame hang 保护终止（10 passed，run aborted，2.4275 分钟）。
+- 在代码提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc` 中将 Dispatcher 纳入 xUnit collection fixture；有活动的既有 Application 时复用且不关闭；本 fixture 新建时，仅在 collection dispose 关闭所拥有的 Application/Dispatcher，并等待 STA 线程退出。无生产 XAML/C# 或业务行为变化。
+- 以最终提交 SHA 构建完整 Release solution：`0 warning / 0 error`；XAML `24/24`。同一隔离行为类在该 SHA `10/10`、VSTest clean exit `0`、`40.6731 s`。提交前相同源码另两次 clean `10/10`（`40.4071 s`、`40.4766 s`），避免只依赖单次退出观察。`git diff --check` 通过。
+- 本阶段 `.tmp/reported-layout-*` 三个输出根均先验证位于仓库 `.tmp`，测试和记录后清理；没有留下 testhost 进程。证据：[WPF testhost lifecycle](../design/reviews/ui-finesse-round3-20260915/evidence/REPORTED-WORKSPACE-WPF-TESTHOST-LIFECYCLE-20260927.md)。R ledger 保持 192 项、`106/83/1/1/1`，未启动 Playnite或改变积压任务状态。
+
 ## 2026-09-27 当前提交用户 Bug 回归：修正过期 Save/Trainer 视口契约
 
 - 在 `84189694` 当前 checkout 重跑用户 bug 定向回归时，先发现 `WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport` 仍断言 SaveHistory 紧凑动作区顶部 margin 为 `2 DIP`。当前生产代码已按既有实测改为 `10 DIP`，RenderHarness/行为证据为布局取整后 `9.6 DIP`；这是测试契约漂移，不是新 UI 缺陷。

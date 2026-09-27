@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-27 当前续接：WPF 布局测试类现可正常关闭 testhost
+
+当前代码提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc` 修复 `ReportedWorkspaceLayoutBehaviorTests` 的测试夹具生命周期。旧静态 fallback STA Dispatcher 永久执行 `Dispatcher.Run()`，而该类显式创建的 WPF `Application` 未 shutdown；修复前曾出现 10/10 测例通过、xUnit `Finished` 后 testhost 挂起，VSTest hang timeout 终止运行的确证。现在 xUnit collection fixture 复用活动的既有 Application Dispatcher；如本 fixture 自行创建 Dispatcher/Application，则在 collection 清理阶段只关闭自己拥有的对象并等待线程退出。
+
+最终身份 Release solution `0 warning/0 error`、XAML `24/24`、目标隔离类 `10/10` clean exit（40.6731 秒）；提交前相同源码还两次 clean exit。证据：[WPF testhost lifecycle](docs/design/reviews/ui-finesse-round3-20260915/evidence/REPORTED-WORKSPACE-WPF-TESTHOST-LIFECYCLE-20260927.md)。该阶段仅改测试夹具，不改生产 UI；R 账本仍 192 项、`106/83/1/1/1`，没有启动 Playnite。上一条 SaveHistory 回归断言校准 `84189694` 与记忆提交 `d63a282f` 已推送；本阶段实现 `a07929b7` 与记忆/evidence 文档分开提交并一并推送至 `origin/main`。
+
 ## 2026-09-27 当前续接：SaveHistory 测试契约修复与用户 Bug 定向复核
 
 实现/测试提交 `84189694` 仅校准 `SaveAndTrainerStackedInspectorsReserveAReadableListViewport` 的旧断言：SaveHistory 紧凑动作区现在使用 `10 DIP` 上间距（行为样本为 `9.6 DIP`），不改生产 XAML/C#。当前提交 Release solution `0 warning/0 error`、XAML `24/24`；Worker 5 项 + 已 clean exit 的 Playnite 定向类 188 项通过，WPF 资源类有 39 项既有显式 skip。

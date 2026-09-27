@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 ReportedWorkspace WPF 回归 testhost 收尾挂起已修复
+
+- 诊断确认这不是布局断言失败：修复前 `ReportedWorkspaceLayoutBehaviorTests` 的 10 个测试全部通过且 xUnit 发出 `Finished`，但静态 fallback STA 线程永久执行 `Dispatcher.Run()`，测试新建的 `Application` 也没有显式 shutdown；VSTest 在两分钟 hang timeout 后仍只能终止 testhost。复现日志为 10 passed、0 assertion failures、run aborted after `2.4275 min`。
+- 提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc` 将 STA/Application 生命周期纳入 xUnit collection fixture。fixture 优先复用已存在且活动的 Application Dispatcher；只有自行创建 STA 时才在 collection dispose 中关闭本 fixture 注册的 Application、停止 Dispatcher 并 join，避免关闭其他测试拥有的宿主。
+- 最终提交身份 Release solution `0 warning/0 error`、XAML `24/24`、diff check 通过；带 `GscBuildCommit=a07929b7014a2d55971bdf39a8a85ffa00ad5bdc` 的定向 WPF 类 `10 passed / 0 failed`，VSTest clean exit `0`，`40.6731 s`。同一源码在提交前另两次分别 `40.4071 s` 和 `40.4766 s` clean exit，作为收尾稳定性复核。
+- 证据：[WPF testhost lifecycle 复现与修复](docs/design/reviews/ui-finesse-round3-20260915/evidence/REPORTED-WORKSPACE-WPF-TESTHOST-LIFECYCLE-20260927.md)。只改测试夹具，不改生产 UI、R 台账或用户数据；192 项及 `106/83/1/1/1` 不变，没有运行真实 Playnite。产品 backlog 当前没有 READY/IN_PROGRESS 项；已实现的 192 项基线未因本次测试修复改写。
+
 ## 2026-09-27 当前提交回归结果：SaveHistory 断言漂移已修正
 
 - 实现/测试提交 `84189694` 只把 `WpfUiResourceDictionaryTests` 的 SaveHistory compact action margin 源契约从旧 `2 DIP` 改为当前实现 `10 DIP`；既有行为证据的可见间距为 `9.6 DIP`。生产 XAML/C#、命令、业务逻辑与 192 项台账均未改。

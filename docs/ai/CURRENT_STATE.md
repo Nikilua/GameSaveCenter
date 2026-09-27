@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前提交：修复 ReportedWorkspace WPF 测试宿主收尾挂起
+
+- 测试修复提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc`：`ReportedWorkspaceLayoutBehaviorTests` 的静态 fallback STA Dispatcher 长期运行 `Dispatcher.Run()`，测试中创建的 `Application` 也没有被关闭；所有 xUnit 用例结束后 VSTest/testhost 仍可能无法正常结束。
+- 在修复前用 VSTest 支持的 `--blame-hang-timeout 120000ms` 复现：10 项全通过、xUnit 已发出 `Finished`，但 testhost 继续挂起，2.4275 分钟后被 blame 中止。修复后该类在同一机器连续三次 10/10 通过并 clean exit；最后一次程序集身份与当前提交 `a07929b7014a2d55971bdf39a8a85ffa00ad5bdc` 完全一致。
+- 测试集合 fixture 管理其拥有的 STA Dispatcher/Application：复用既有活动 Application Dispatcher；自行创建时在集合结束关闭自己创建的 Application、请求 Dispatcher shutdown 并限时 join。生产 XAML/C#、布局、命令和业务行为均未修改。最终 Release solution `0 warning/0 error`、XAML `24/24`、`git diff --check` 通过。
+- 证据：[ReportedWorkspace WPF testhost lifecycle](../design/reviews/ui-finesse-round3-20260915/evidence/REPORTED-WORKSPACE-WPF-TESTHOST-LIFECYCLE-20260927.md)。R 台账仍 192 个唯一项、`106/83/1/1/1`；没有 Playnite 实机验证或 R 行变更。
+
 ## 2026-09-27 当前续接：用户 Bug 回归中的旧视口断言已校准
 
 - 当前实现提交 `84189694` 修复了一个过期测试契约：SaveHistory compact summary/action 的生产顶部间距是 `10 DIP`，实测布局取整后 `9.6 DIP`；旧测试仍要求 `2 DIP`。只改 Playnite 测试文件，不改生产布局。
