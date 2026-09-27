@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前续接：用户 Bug 回归中的旧视口断言已校准
+
+- 当前实现提交 `84189694` 修复了一个过期测试契约：SaveHistory compact summary/action 的生产顶部间距是 `10 DIP`，实测布局取整后 `9.6 DIP`；旧测试仍要求 `2 DIP`。只改 Playnite 测试文件，不改生产布局。
+- 当前身份 Release solution `0 warning/0 error`，XAML `24/24`。已 clean exit 的定向回归 `193 passed / 39 skipped / 0 failed`（Worker 5 项 + Playnite 188 项；skip 全来自 WPF 资源类原有显式 skip）。`ReportedWorkspaceLayoutBehaviorTests` 当前身份日志列出 `10/10` passed，但 VSTest 在测试完成后收尾卡住、手动中断；父提交 `96b5524e` 上同一类有完整 clean `10/10` 记录，不把本次 runner 写作 clean exit。
+- R 台账保持 192 个唯一项及 `106/83/1/1/1`；未启动 Playnite，真实宿主/当前安装包截图仍未验。该阶段只校准测试契约，不需要重新跑 RenderHarness；前一阶段全页面 render-qa 仍是 `0 PROBLEM`。
+
 ## 2026-09-27 当前续接：修复后全页面 RenderHarness 与 192 项账本复核
 
 - 在代码提交 `a829521c` 构建的 Release RenderHarness 上，对当前 checkout `1de39cfb27d3fc75517c914c20efe5cc7a4bd262` 直接运行完整 `render-qa`；其后到该 HEAD 的提交仅为文档。报告动态读取当前 HEAD，标记 `WorkingTreeClean=True`，372 张 PNG、11 种窗口尺寸、7 个工作区及 Light/Dark/主题/resize/shell 专项均结束 `render-qa OK`、退出码 0、无 PROBLEM。

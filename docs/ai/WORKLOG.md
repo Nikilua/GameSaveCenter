@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 当前提交用户 Bug 回归：修正过期 Save/Trainer 视口契约
+
+- 在 `84189694` 当前 checkout 重跑用户 bug 定向回归时，先发现 `WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport` 仍断言 SaveHistory 紧凑动作区顶部 margin 为 `2 DIP`。当前生产代码已按既有实测改为 `10 DIP`，RenderHarness/行为证据为布局取整后 `9.6 DIP`；这是测试契约漂移，不是新 UI 缺陷。
+- 仅更新 `WpfUiResourceDictionaryTests.cs` 断言与注释，未改 Save/Trainer XAML、生产代码、命令或业务行为。实现单独提交 `84189694`。
+- 当前提交身份 Release solution 构建 `0 warning/0 error`、XAML `24/24`。Worker `ExternalProcessRunnerTests 5/5`；已干净退出的 Playnite 定向类合计 `188 passed / 39 skipped / 0 failed`（其中 WPF 资源类 `139 passed / 39` 个既有显式 skip）；连同 Worker 为 `193 passed / 39 skipped / 0 failed`。覆盖任务复制/剪贴板、恢复报告、Task、R06 排序崩溃、R14 媒体预览、WPF 资源、异步缩略图及启动预算。
+- `ReportedWorkspaceLayoutBehaviorTests` 在当前提交身份下逐项日志显示 `10/10` passed、xUnit `Finished`，但 VSTest 收尾未退出；诊断复跑后手动中断 runner，不将该 invocation 记作 clean exit。相同生产代码在父提交 `96b5524e` 已有一次完整命令 `10/10` clean 通过。没有断言失败；VSTest 收尾波动保留说明。
+- 构建和测试产物只写入 `.tmp/current-user-bug-recheck-84189694`，确认进程结束后已按路径边界清理；`git diff --check` 通过。R 台账仍 192 唯一项、`106/83/1/1/1`，backlog 无 READY/IN_PROGRESS；未启动 Playnite。RenderHarness 全量 UI 基线在前一阶段已 `0 PROBLEM`，本批没有生产布局变化。
+
 ## 2026-09-27 跨设备历史用户问题与主线核验
 
 - 按续接要求检查历史 Codex 项目线程，重点复核崩溃问题及备份失败/详情乱码/复制报错、慢启动/缩略图卡顿等用户反馈；以当前仓库与证据文档为准，不把历史线程摘要直接当成当前代码状态。

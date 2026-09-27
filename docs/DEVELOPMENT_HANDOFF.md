@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-27 当前续接：SaveHistory 测试契约修复与用户 Bug 定向复核
+
+实现/测试提交 `84189694` 仅校准 `SaveAndTrainerStackedInspectorsReserveAReadableListViewport` 的旧断言：SaveHistory 紧凑动作区现在使用 `10 DIP` 上间距（行为样本为 `9.6 DIP`），不改生产 XAML/C#。当前提交 Release solution `0 warning/0 error`、XAML `24/24`；Worker 5 项 + 已 clean exit 的 Playnite 定向类 188 项通过，WPF 资源类有 39 项既有显式 skip。
+
+注意：当前身份 `ReportedWorkspaceLayoutBehaviorTests` 的 10 个用例均逐项报告 Passed，但 VSTest 在 xUnit `Finished` 后未退出；诊断进程被手动中断，不能称 clean exit。父提交 `96b5524e` 同一类先前完整 clean `10/10`。R 账本仍 192 项、`106/83/1/1/1`；ENV-001/真实 Playnite、Q24-03 双屏和 R23-05 物理呈现/ETW 边界均不变。临时 `.tmp` 已清理。
+
 ## 2026-09-27 当前续接：当前 HEAD 全页面离屏 RenderHarness 通过
 
 在代码提交 `a829521c` 构建的 Release Harness 上，当前 checkout `1de39cfb27d3fc75517c914c20efe5cc7a4bd262` 直接运行完整页面 `render-qa`（该 checkout 在 a829 之后仅有文档提交）。覆盖 11 档窗口、七工作区、Light/Dark 和 shell/主题/resize 探针，372 PNG，`WorkingTreeClean=True`、退出码 0、`render-qa OK`、无 PROBLEM。完整边界：[当前 HEAD RenderHarness evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。

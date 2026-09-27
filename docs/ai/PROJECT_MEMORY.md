@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 当前提交回归结果：SaveHistory 断言漂移已修正
+
+- 实现/测试提交 `84189694` 只把 `WpfUiResourceDictionaryTests` 的 SaveHistory compact action margin 源契约从旧 `2 DIP` 改为当前实现 `10 DIP`；既有行为证据的可见间距为 `9.6 DIP`。生产 XAML/C#、命令、业务逻辑与 192 项台账均未改。
+- 当前身份 Release solution `0 warning/0 error`、XAML `24/24`。清洁退出的用户 bug 定向集共 `193 passed / 39 skipped / 0 failed`；另 `ReportedWorkspaceLayoutBehaviorTests` 当前身份逐项 `10/10` 显示通过，但 VSTest 结束阶段卡住后被中断，不能写作正常 clean exit。该类在父提交 `96b5524e` 曾完整 clean `10/10`。
+- RenderHarness/当前记忆中的真实 Playnite 环境门槛不变：没有生产 UI 改动、不启动宿主；ENV-001、Q24-03、R23-05 与 Settings 用户截图仍分别等待隔离宿主、第二显示器、合规帧采集/宿主身份条件。暂时没有其他可安全准入的产品代码项。
+
 ## 2026-09-27 跨设备历史用户问题核对
 
 - 历史崩溃与备份/详情复制问题已对照当前 `main` 核实：修复提交 `3f42de43`、`d7f36bc`、`e42ebff`、`9e01b60`、`bb3ce57`、`3b50d1d` 均可从当前 HEAD 到达；`crash.zip` DataGrid 排序另由当前 R06 证据记录。慢启动/缩略图问题已做当前源码定向复验，Media 视频预览空引用由 `f1b746d5` 修复。
