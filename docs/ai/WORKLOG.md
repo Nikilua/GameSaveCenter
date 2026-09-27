@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-27 当前 main 用户 Bug 回归复核
+
+- 最新远端 main `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` 精确身份 Release solution build `0 warnings/0 errors`；Core.Tests `125/125`、Worker.Tests `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。
+- 用户备份编码/失败详情/复制问题相关 Playnite 类在当前身份合计 `22/22`；慢启动/缩略图相关已选行为类 `16/16`；RepositoryIdentity `2/2`。`WpfUiResourceDictionaryTests` `139 passed/39 skipped`，skip 为该类既有显式 skip。
+- Playnite 完整官方隔离 runner 最近在 `b382fb02` clean exit，111 个 source 类组 + 105 个 WPF 类；`b382..d9d1` 源码与测试树无差异，因此无须为 docs-only SHA 重做约 105 个独立 testhost 的全量运行。本阶段仅验证，不改生产代码、192 项账本或 backlog。未启动 Playnite，宿主环境门槛不变。详见[当前 main 用户 Bug 回归证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md)。
+
 ## 2026-09-27 R08 WPF 动效反向测试竞态修复
 
 - 在前一轮遗留的 R08 间歇失败上继续定位：当前旧身份定向 3/5 复现 sidebar transition flag 断言失败；1 秒定时泵送后实际宽度已到 `269.6 DIP`、opacity `1`，但 WPF `Completed` callback 尚未执行。不是生产目标错误。修复前另一次试验也证明单看 `IsAnimated=false` 会在首个 clock tick 前误判，Translate 最终仍停在旧值 `0.816`。

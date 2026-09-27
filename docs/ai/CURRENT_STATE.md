@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-27 当前 main 用户 Bug 回归：Core/Worker 全量与 Playnite 定向通过
+
+- 当前精确构建身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` 的 Release solution `0 warnings/0 errors`、XAML `24/24`；Core.Tests `125/125`、Worker.Tests `357/357` clean exit，`ExternalProcessRunnerTests 5/5`。Playnite 备份/复制五类 `6+4+2+2+8` 全通过；慢启动/缩略图五类 `5+6+2+1+2` 全通过；`RepositoryIdentityTests 2/2`、WPF resource 类 `139 passed/39 skipped/0 failed`。
+- Playnite 官方全量隔离 runner 在 `b382fb02` clean exit（111 个 source 类组及 105 个 WPF 类全过）。`b382fb02..d9d1f563` 的 `src/`、`tests/` 无差异，因此当前代码与完整 runner 验证的代码树一致；当前身份另重跑用户 bug 定向类。
+- 本阶段无新产品代码缺陷；没有更改 backlog 或 R 台账，仍 192 唯一 ID、`106/83/1/1/1`。未启动真实 Playnite。证据：[当前 main 用户 Bug 回归复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md)。
+
 ## 2026-09-27 R08 动效反向测试时序修复，全量 Playnite runner clean
 
 - 在测试提交 `b382fb02cde41f65d8daff5166934161eb956e2b` 修复 WPF 测试竞态：固定 1000ms DispatcherTimer 到期并不保证动画 `Completed` 回调已运行；复现时最终宽度 `269.6 DIP`、透明度 `1`，但 transition flag 仍为 true。测试改为等待真实完成状态并设置超时；Translate 用实际进行中样本，完成时同时核验两个动画时钟已释放且值到达最新目标，超时用 `Stopwatch`。

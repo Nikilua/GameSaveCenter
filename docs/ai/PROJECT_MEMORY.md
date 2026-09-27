@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-27 当前 main 用户 Bug 回归复核
+
+- 当前 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` Release solution build `0/0`、Core `125/125`、Worker `357/357`、ExternalProcessRunner UTF-8/退出诊断 `5/5`、XAML `24/24`。Playnite 当前身份用户报告 bug 类：备份/复制反馈 `22/22`，大库启动/异步缩略图 `16/16`；`RepositoryIdentityTests 2/2`；WPF 资源类 `139 passed/39` 个原有显式 skip。
+- 精确全量 Playnite runner 在上一代码身份 `b382fb02` 已 clean exit；从 `b382` 到 `d9d1f563` 的 `src/`、`tests/` 没有变化，当前主线代码树相同。此轮没有改产品代码、R 行或用户数据，也未启动 Playnite。原历史 bug evidence 保留其各自时间身份，本次补充证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-REGRESSIONS-CURRENT-MAIN-20260927.md`。
+- 192 个 R 唯一项、`106/83/1/1/1` 维持；backlog 没有 READY/IN_PROGRESS 项。真实隔离 Playnite、第二活动显示器和 ETW 门槛不变，不通过离屏/合成测试代替这些验收。
+
 ## 2026-09-27 R08 动效反向测试时序竞态已修复
 
 - 自动化复现证明旧测试把固定 1000ms DispatcherTimer 当作动画完成信号；timer tick 与 WPF `Completed` 回调存在竞态，导致最终值已到 `269.6 DIP`/opacity `1` 仍读到 transition-running=true。测试提交 `b382fb02cde41f65d8daff5166934161eb956e2b` 改为等待明确完成状态和 bounded timeout。
