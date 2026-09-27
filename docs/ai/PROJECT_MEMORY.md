@@ -5,7 +5,7 @@
 - 直接运行 Release Harness 的全页面 `render-qa`，当前报告 commit `1de39cfb27d3fc75517c914c20efe5cc7a4bd262`、`WorkingTreeClean=True`；Harness 源码最后在 `a829521c` 变化，之后只有文档提交。11 档窗口 × 七工作区、主题与专项探针生成 372 PNG，退出码 0、`render-qa OK`、没有 PROBLEM。
 - 重算 `ROUND3_PROGRESS.md` 的 ID：202 行含 10 行 R13/R14 摘要重复，唯一任务仍 `192/192`。将细分状态归并后为 `106/83/1/1/1`，与当前记忆一致；没有修改任何 R 行。
 - 桌面只读拓扑仍单屏 `\\.\DISPLAY21` 2352×1470；Playnite 未运行，WMI 命令行访问仍拒绝。没有启动真实宿主。该 RenderHarness 只代表离屏 WPF logical DIP，不能签收用户 Settings 截图、真实 Playnite、物理跨屏或 R23-05 presented-frame/ETW。
-- 详证：[当前 HEAD 全页面 RenderHarness](docs/design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。R23-04/Q24-03/R23-05 环境前置没有变化；无 READY backlog 时不自创产品改动。
+- 详证：[当前 HEAD 全页面 RenderHarness](docs/design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。R23-04/Q24-03/R23-05 环境前置没有变化；无 READY backlog 时不自创产品改动。文档/evidence 提交 `e4a4d710` 已普通快进推送至 `origin/main`（`1de39cfb..e4a4d710`），推送后当时本地与远端 SHA 相同。
 
 ## 2026-09-27 UI Audit compact Task 视口阈值校准
 

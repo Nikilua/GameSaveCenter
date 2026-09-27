@@ -5,7 +5,7 @@
 - 在代码提交 `a829521c` 构建的 Release RenderHarness 上，对当前 checkout `1de39cfb27d3fc75517c914c20efe5cc7a4bd262` 直接运行完整 `render-qa`；其后到该 HEAD 的提交仅为文档。报告动态读取当前 HEAD，标记 `WorkingTreeClean=True`，372 张 PNG、11 种窗口尺寸、7 个工作区及 Light/Dark/主题/resize/shell 专项均结束 `render-qa OK`、退出码 0、无 PROBLEM。
 - 重新按正式 `ROUND3_PROGRESS.md` 的唯一 ID 解析：共有 192 项；202 个匹配行包含 10 个 R13/R14 前置摘要重复项。状态归并保持 `106/83/1/1/1`，无账本更改。
 - 只读环境检查：单屏 `\\.\DISPLAY21`（2352×1470）、Playnite 未运行、WMI `Win32_Process.CommandLine` 仍拒绝访问；没有启动宿主。故不把离屏结果扩大为 Settings 用户截图、实际 Playnite/物理 DPI、Q24-03 跨屏或 R23-05 帧性能通过。
-- 详见[当前 main 全页面 RenderHarness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。本机环境门禁仍按 R23-08 等待变化；本阶段没有新增或臆造产品代码项。
+- 详见[当前 main 全页面 RenderHarness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。本机环境门禁仍按 R23-08 等待变化；本阶段没有新增或臆造产品代码项。证据/记忆提交 `e4a4d710` 已于 2026-09-27 普通快进推送至 `origin/main`（`1de39cfb..e4a4d710`），推送后核对当时 `HEAD=origin/main=e4a4d710`。
 
 ## 2026-09-27 当前续接：UI Audit 紧凑 Task 视口误报已修复
 

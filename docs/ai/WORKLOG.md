@@ -6,7 +6,7 @@
 - 覆盖 11 个窗口尺寸、七工作区、Light/Dark、首屏与主题/resize/shell 几何专项；372 张 PNG，退出码 0，`render-qa OK`，无 `PROBLEM`。输出没有留在 Git，证据记录后清理。
 - 正式 R 台账唯一 ID 复算 `192`；Markdown 的 202 个 R ID 行含 10 行 R13/R14 摘要重复，状态归并仍 `106/83/1/1/1`，没有修改台账。`AUTONOMOUS_BACKLOG.md` 目前没有 READY/IN_PROGRESS 项。
 - 环境只读复核：`DISPLAY21` 单屏 2352×1470，Playnite 进程不存在；查询 Win32_Process 命令行仍 Access Denied。未启动宿主。Settings 用户截图、隔离 Playnite、Q24-03 第二屏、R23-05 合规 ETW/真实呈现仍不能由离屏矩阵关闭；现有阻塞不绕过。
-- 证据：[当前 main 全页面 RenderHarness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。前一阶段实现 `a829521c`、记忆/evidence `57ce10e9` 与推送状态同步 `1de39cfb` 已推至 `origin/main`；本阶段复核后再同步文档与新证据。
+- 证据：[当前 main 全页面 RenderHarness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/RENDER-QA-CURRENT-HEAD-20260927.md)。前一阶段实现 `a829521c`、记忆/evidence `57ce10e9` 与推送状态同步 `1de39cfb` 已推至 `origin/main`；本阶段文档/evidence 提交 `e4a4d710` 已普通快进推送（`1de39cfb..e4a4d710`），随后单独同步此推送状态。
 
 ## 2026-09-27 UI Audit compact Task viewport 误报修复
 
