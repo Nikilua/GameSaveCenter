@@ -100,6 +100,78 @@ public sealed class R23ProductionResourceStateBehaviorTests
     }
 
     [Fact]
+    public void AcrylicNavigationKeepsKeyboardFocusOutlineVisibleWhileSelectedInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            var navigation = new RadioButton
+            {
+                Style = Assert.IsType<Style>(resources["AcrylicNavItem"]),
+                Content = "媒体中心",
+                Width = 180,
+                Height = 48
+            };
+            var external = new TextBox { Width = 120, Height = 32, Margin = new Thickness(0, 60, 0, 0) };
+            root.Children.Add(navigation);
+            root.Children.Add(external);
+            var window = CreateWindow(root, 320, 160);
+
+            try
+            {
+                window.Show();
+                FlushLayout(window);
+                navigation.ApplyTemplate();
+                var chrome = Assert.IsType<Border>(navigation.Template.FindName("NavChrome", navigation));
+
+                foreach (var mode in Themes)
+                {
+                    ApplyTheme(root, mode);
+                    navigation.IsEnabled = true;
+                    navigation.IsChecked = true;
+                    Assert.Same(navigation, Keyboard.Focus(navigation));
+                    FlushLayout(window);
+
+                    Assert.True(navigation.IsChecked, $"{mode}: current page selection was lost");
+                    Assert.True(navigation.IsKeyboardFocusWithin, $"{mode}: keyboard focus was not retained");
+                    Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.Background));
+                    Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(2), chrome.BorderThickness);
+
+                    Assert.Same(external, Keyboard.Focus(external));
+                    FlushLayout(window);
+                    Assert.True(navigation.IsChecked, $"{mode}: focus movement changed the current page");
+                    Assert.False(navigation.IsKeyboardFocusWithin);
+                    Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.Background));
+                    Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(1), chrome.BorderThickness);
+
+                    navigation.IsChecked = false;
+                    Assert.Same(navigation, Keyboard.Focus(navigation));
+                    FlushLayout(window);
+                    Assert.False(navigation.IsChecked);
+                    Assert.True(navigation.IsKeyboardFocusWithin);
+                    Assert.Equal(Colors.Transparent, BrushColor(chrome.Background));
+                    Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(2), chrome.BorderThickness);
+
+                    Assert.Same(external, Keyboard.Focus(external));
+                    navigation.IsEnabled = false;
+                    FlushLayout(window);
+                    Assert.False(navigation.IsKeyboardFocusWithin);
+                    Assert.Equal(0.46d, chrome.Opacity);
+                    Assert.NotSame(navigation, Keyboard.Focus(navigation));
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
     public void SettingsSectionTabsUseTheirGeneratedStyleForSelectionFocusAndDisabledNegativeInBothThemes()
     {
         RunSta(() =>
