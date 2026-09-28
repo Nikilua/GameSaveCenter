@@ -1,5 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 当前交接：Q11-01 受控布局回归与 Media Inbox 宿主边界
+
+- 测试提交 `cd631771f812fa1f3aed99b5d079f49043ae7f13` 只增加生产侧栏的实际 WPF 几何行为回归；Release Playnite.Tests `0/0`，`ProductionShellChromeSourceTests 13/13` exit `0`。七个入口的 icon/label、选中框横向全宽、垂直中心和间距在展开/收起/恢复后对齐。受控窗口为 `900×640 DIP`，不是 Playnite host，Q11-01 宿主/呈现仍待验。证据：[Q11-01 导航节奏](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md)。
+- Media Inbox「待归类」滚动空白仍没有修复；当前没有 Playnite 进程/EXE，`Win32_Process` 命令行访问被拒，既有 CEF bootstrap 限制未变化。当前 main 的 54 点合成 WPF 滚动回归没有复现问题，不可据此猜模板或虚拟化根因。若用户侧能提供本次加载插件的 `[GSC-GRID-DIAGNOSTIC]` 顶部/中段/Thumb 到底及滚动往返日志（同次运行需含插件 build/MVID、windowDip、dpi、theme 和 `gridGeometryDip`/`outerPage`），按 presenter-header gap 与 firstRow-presenter gap 分支决定修复；未收到前继续依赖满足的小批次。
+
 ## 2026-09-28 当前交接：Media Inbox 滚动错位与 Q10-08 证据
 
 - Q10-08 已对精确测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` clean 运行 `ReportedWorkspaceLayoutBehaviorTests 16/16`；Release Playnite 测试程序集 `0 warning/0 error`。密集选项在三种主题资源模式、三档 DIP 尺寸检查实际布局、标题/说明归属、媒体来源换行、父子绑定启停和页尾可达；该项没有生产 XAML/C# 更改。证据：[Q10-08](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)。真实 Playnite/package-host 与物理 DPI 尚待验，Round2 Q10-08 仍未完成。

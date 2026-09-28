@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q11-01 生产壳层导航图文节奏
+
+- `AcrylicProductionShellView` 共七个 `AcrylicNavItem`。当前 `cd631771` 新增真实 STA WPF `Window` 几何行为门禁，覆盖展开/收起/恢复、icon/label 中心、X 对齐、各项高度、主导航相邻中心间隔、收起居中、选中框横向全宽以及任务选择保留；该项没有生产 UI 改动。精确结果见 `design/reviews/ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md`。
+- 精确 `GSC_BUILD_COMMIT=cd631771f812fa1f3aed99b5d079f49043ae7f13` 下 Playnite.Tests `0 warning/0 error`，`ProductionShellChromeSourceTests 13/13` exit0；一次早期命令提交了不同 build SHA，7 个源码断言被 identity gate 拒绝后已精确重建并通过。成功 TRX 有 1 条 TextServicesHost `InvalidComObjectException` 清理行，根因未知。
+- STA 测量只有 DIP 几何，真实 Playnite 主题/输入/presented frame 未验，Q11-01 综合状态不签收。Media Inbox 用户缺陷仍需用户侧诊断；当前机器没有 Playnite EXE，进程命令行访问拒绝，不能以本项受控结果替代。
+
 ## 2026-09-28 Q10-08 设置密集选项分组行为证据
 
 - 在当前测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 运行 `ReportedWorkspaceLayoutBehaviorTests 16/16` clean exit。生产设置页密集开关用 Light/Dark/FollowPlaynite 资源模式、1280×840、920×700、560×640 DIP 窗口实际布局；标题、帮助文本、行内边界、媒体源 WrapPanel 的组内无重叠换行、`INotifyPropertyChanged` 父子启停以及页尾安全模式可达均有行为/几何断言。

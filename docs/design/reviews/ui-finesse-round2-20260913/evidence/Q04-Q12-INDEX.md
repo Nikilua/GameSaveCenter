@@ -77,7 +77,7 @@
 - Q08：TextBox 内容视口、CaretBrush、SelectionBrush、只读/禁用资源和长路径 Tooltip 已专项记录；中文 IME 组合、候选确认、撤销和粘贴原值属于宿主输入验收。
 - Q09：ComboBox 选中内容、Chevron、3 项 Popup 与有限滚动模板已专项记录；Popup 真定位、键盘关闭不写回、游戏选框 DropDownClosed 同步和移屏主题切换待真实窗口验收。
 - Q10：CheckBox 勾形/半选、ToggleSwitch、Slider 的共享几何与实际边界已记录；本仓库没有额外 RadioButton 业务组，导航 RadioButton 继续沿用 `GscNavItem`/`AcrylicNavItem` 的真实导航入口，不新增控件。绑定拒绝、连续切换和键盘步进仍需宿主行为验收。
-- Q11：当前导航 RadioButton、TabControl/TabItem 的共享入口已核对来源；本夹具只对 ListBox 选中/焦点节奏做受控检查，不把离屏截图冒充六页导航状态保持或真实页签溢出验收。
+- Q11：当前导航 RadioButton、TabControl/TabItem 的共享入口已核对来源；Q11-01 现以生产壳层 STA WPF 行为测试量测七项导航在展开/收起/恢复时的图标标签中心、完整导航框和纵向节奏，`13/13` 类复核见[Q11-01 导航几何](../../ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md)。本证据不代表 Playnite 像素呈现、六页宿主宽窄切换、导航状态保持或真实页签溢出验收。
 - Q12：DataGrid 表头、行、状态胶囊、数字/路径列、排序槽、4 行端点和双主题业务空表在截图/报告中复核；完整名称 Tooltip、最坏列宽、排序点击和真实 Worker/Playnite 数据生命周期仍需各工作区宿主回归。
 
 ## 2026-09-15 Q12-08 业务空表双主题复核

@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q11-01 导航展开/收起图文几何
+
+- 测试提交 `cd631771f812fa1f3aed99b5d079f49043ae7f13` 为生产 `AcrylicProductionShellView` 增加 STA WPF 几何回归，仅改测试。七个入口逐项量测图标/标签/框位置、主区行高和间隔、收起时图标居中、选中框横向全宽及收起往返的垂直稳定性；展开/收起/恢复实测图标中心 `36.33/34.33/36.33 DIP`，主导航间距 `54 DIP`。Release Playnite.Tests `0 warning/0 error`，壳层行为类 `13/13` exit `0`。证据：[Q11-01 导航几何](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md)。
+- 首次整类测试调用的 `GSC_BUILD_COMMIT` 输入有误，身份门禁拒绝 7 个源码测试；随后精确 HEAD 重建整类 13/13。TRX 有 1 条 WPF TextServicesHost COM 清理噪声，根因未知。受控窗口不是 Playnite host；主题颜色、OS 输入与最终呈现仍待验，Round2 Q11-01 最终未完成。Media Inbox 宿主空白仍未复现/修复。
+
 ## 2026-09-28 Q10-08 设置密集选项自动行为已补证
 
 - 当前源码/测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 的 Release Playnite 测试程序集构建 `0 warning / 0 error`；`ReportedWorkspaceLayoutBehaviorTests` 在该身份下 `16/16` clean exit。生产设置页在 Light/Dark/FollowPlaynite 资源模式、1280×840/920×700/560×640 DIP 下，开关标题/说明归属、媒体子项换行和不重叠、绑定禁用恢复及页尾可达均有实际布局/行为断言。本阶段仅补测试，无生产 UI 修改。证据：[Q10-08 设置密集选项](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)。

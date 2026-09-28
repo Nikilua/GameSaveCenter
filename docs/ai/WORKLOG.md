@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q11-01 导航收起/展开图文几何
+
+- 审阅 Demo-first 下现有 `AcrylicProductionShellView`/`AcrylicNavItem`，复用 26-DIP 图标和 RadioButton，不改生产控件、颜色或命令。给 `ProductionShellChromeSourceTests` 增加实际 WPF 行为几何断言：七个导航项展开/收起/恢复逐行验证图标/标签中心、水平起点、等高、主区相邻间距、选中边框覆盖整行、收起图标居中及选择保留。
+- `cd631771f812fa1f3aed99b5d079f49043ae7f13` Release Playnite.Tests 构建 `0 warning/0 error`；`ProductionShellChromeSourceTests 13/13`，exit `0`。几何输出展开/恢复 `54 DIP` 主导航中心间距、图标中心 X `36.33 DIP`；收起后 `54 DIP`、图标中心 X `34.33 DIP`。确切结果和边界见 Q11-01 evidence。成功运行有 1 条 TextServicesHost COM 清理噪声，根因未知。
+- 首次整类构建调用传入错误的 `GSC_BUILD_COMMIT`；7 个源码读取用例被 identity gate 拒绝。随后严格使用 `git rev-parse HEAD` clean build，整类通过 13/13。真实 Playnite、主题颜色与最终呈现仍待验。
+
 ## 2026-09-28 Q10-08 设置密集选项分组
 
 - 复用现有生产设置页、ToggleSwitch 和绑定模型，没有新增服务/DTO 或改生产 UI。新增行为测试检查八个开关在三个主题资源模式及 1280×840、920×700、560×640 DIP 下标题/说明归属、行高和裁切、标题/帮助的字重与色彩层级；媒体来源五个子项窄窗换行不重叠；父同步开关经 `INotifyPropertyChanged` 控制子项禁用/恢复；页尾安全模式 `BringIntoView` 后完整位于视口内。
