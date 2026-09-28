@@ -9641,3 +9641,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 对照 Q13 条件先查已有能力，没有重建共享 selected/focus 模板。当前 `d46d6be5` Release solution/XAML build 成功 `0 warning / 0 error`、XAML `24/24`；`R06SelectionStateBehaviorTests 2/2`、四个生产 DataGrid 浅/深主题状态几何用例 `1/1` 均 exit 0。行为实际从成功行焦点切到外部 TextBox，selection 继续存在且变成 inactive fill/muted border；失败行状态单元格与选中层、透明 cell 内容层保持；生产四表状态下 cell/TextBlock 坐标误差 `<=0.25 DIP`。
 - 结果、当前 test assembly SHA 与两份 TRX：[Q13-01 recheck](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。复用 `R06-03` 的 Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据，但本次没有重跑 screenshot/render，也没有 Playnite OS input/physical DPI/UIA/presented frame；Q13-01 仍保留外部阻塞/最终未完成。下一项 Q13-02 多选：先盘点 Extended/计数/半选现状，再补 Ctrl/Shift 实际 routed input 与负例。
+
+# 2026-09-29 Q13-02 多选反馈边界核对
+
+- 复用已有生产多选实现和测试，没有因任务标题新增范围选择代码：Media/Task/Save/Maintenance 使用 `SelectionMode=Extended`；`R05MultiSelectionSummaryBehaviorTests 3/3` 覆盖 Media DataGrid 空/单/多选、隐藏项计数及清空保留模式；`R22BatchCountBehaviorTests 3/3` 覆盖策略隐藏选择/空选择负例与当前媒体摘要。两组历史证据已在 `R22-05-BATCH-COUNT-20260921.md` 交叉说明。tri-state 控件目前无 DataGrid 全选消费者，R05-05 已判不适用。
+- 逐项确认真实 Ctrl/Shift 修饰键序列及范围 anchor 未被现有断言覆盖。宿主测试需记录 modifier、focus、anchor、稳定 ID、摘要和普通点击替换/另一模式不串选负例。真实隔离 Playnite 仍受 WMI Access Denied/CEF `0x5` 阻止，本轮不注入系统全局输入、不绕过门禁；具体待验清单见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md`。Q13-02 最终状态仍未完成，转做受控可执行 Q13-03。

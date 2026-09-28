@@ -1,3 +1,9 @@
+## 2026-09-29 Q13-02 多选反馈：已有计数行为与宿主手势边界
+
+- 盘点确认 Media/Task/Save/Maintenance 主表已使用 `SelectionMode=Extended`；Media 批量动作复用 `SelectedItems`，稳定 ID/模式范围与隐藏选择摘要已存在。复用 `R05MultiSelectionSummaryBehaviorTests 3/3` 的 0/1/2 计数、隐藏项、清空且保留模式，以及 `R22BatchCountBehaviorTests 3/3` 的隐藏计数/空选择负例；没有重建功能。`GscCheckBox` 的 tri-state 只是视觉状态，当前批量 DataGrid 无全选/半选消费者，R05-05 已判不适用。
+- 现有测试没有实际 Ctrl/Shift 鼠标修饰键序列；源码 `SelectionMode=Extended` 声明不作为手势通过证据。隔离宿主仍受 WMI Access Denied/CEF `platform_channel 0x5` 限制，本轮不使用 SendInput 抢占桌面，也不绕过门禁；Q13-02 宿主及最终状态保持外部阻塞/未完成。具体真实 host 复核和负例步骤：[Q13-02](evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
+- 下一项 Q13-03 行内按钮命中/稳定 ID：先查既有命令与测试，补生产 WPF 树 HitTest/routed action 行为；主机鼠标命中仍作为单独待验。
+
 ## 2026-09-29 Q13-01 失焦选中：已有共享实现当前 main 复核
 
 - 没有重做样式或增加产品代码。当前身份 `d46d6be5` Release solution/XAML `0 warning / 0 error`、XAML `24/24`；`R06SelectionStateBehaviorTests 2/2` 实际 WPF 测量活动选中→外部失焦后的 inactive brush/muted outline，`R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes 1/1` 在 Task/Media/Save/Maintenance 四表及 Light/Dark 比较状态下 cell/TextBlock 几何，门限 `<=0.25 DIP`。

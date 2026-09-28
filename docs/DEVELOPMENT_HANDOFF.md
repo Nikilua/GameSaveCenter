@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q13-02 多选已实现范围与手势待验
+
+- 生产批量模型已存在，不新增第二套：主 DataGrid 使用 Extended，Media 命令接 `SelectedItems`；R05/R22 历史 WPF 行为测试覆盖计数、空选、清空、隐藏选择和负例。Tri-state 复选框当前无生产 DataGrid 消费点。细节与明确未覆盖的实际修饰键手势：[Q13-02 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
+- Q13-02 Ctrl/Shift 鼠标手势与跨范围 anchor 未验；不能把程序化 SelectedItems 操作写成真实 Ctrl/Shift 输入。Playnite 隔离启动边界仍是进程命令行 WMI Access Denied / CEF `platform_channel 0x5`；不调用系统级 SendInput、不绕过限制。任务保留外部阻塞/未完成。
+- 下一项 Q13-03 行内按钮命中/稳定 ID：先查当前命令参数、DataTemplate、已有行状态/HitTest 测试，尝试在生产 WPF 视图树做实际坐标 HitTest 与 routed action，宿主鼠标命中继续单列边界。
+
 ## 2026-09-29 当前交接：Q13-01 已有能力当前身份复核
 
 - Q13-01 没有新增产品代码。当前 `d46d6be5` Release/XAML `0 warning / 0 error`；`R06SelectionStateBehaviorTests 2/2` 实测选中行获得焦点后移到外部控件时 inactive selection 仍可见，`R23ProductionResourceStateBehaviorTests` 的四个生产表格浅/深主题几何 `1/1`，状态变化时 cell/TextBlock 坐标误差 `<=0.25 DIP`。现有 `R06-03` Light/Dark render 与 Media Inbox 212 DIP 门禁见[复核说明](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。

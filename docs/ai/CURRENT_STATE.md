@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q13-02 多选反馈核对
+
+- 生产主表已有 `SelectionMode=Extended`，Media 批量命令传入当前 `SelectedItems`；R05/R22 既有 WPF 行为证据覆盖 0/1/2 选择摘要、清空、隐藏 ID、空选负例。tri-state CheckBox 是视觉控件，无当前 DataGrid 批量消费者，不新增全选模型。Q13-02 核对：[证据与边界](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
+- Ctrl/Shift 实际修饰键与范围 anchor 尚未在宿主验证；现有测试只操作 SelectedItems/选择 API，不能代替手势。Playnite 隔离宿主仍受 WMI Access Denied/CEF `0x5` 限制；不以 `SelectionMode` 源码断言签收，也不使用 SendInput 绕开。下一项 Q13-03 行内按钮命中。
+
 ## 2026-09-29 Q13-01 失焦选中当前 main 复核
 
 - `d46d6be5` Release solution/XAML `0 warning / 0 error`、XAML `24/24`；已有共享实现没有重建。`R06SelectionStateBehaviorTests 2/2` 真实 STA DataGrid 从焦点行移动到外部控件，确认 selection 保留且视觉变为 inactive brush/muted outline；生产四表 Light/Dark 选择/焦点/禁用几何 `1/1`，cell/TextBlock 状态几何误差 `<=0.25 DIP`。测试与边界：[Q13-01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。

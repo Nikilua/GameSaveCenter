@@ -115,7 +115,7 @@
 | Q12-07 | 列头排序标记 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [排序箭头双状态证据](evidence/Q04-Q12-INDEX.md#2026-09-15-q12-07-排序箭头双状态复核)；升序/降序箭头均为 14 DIP 可见槽，真实排序点击与排序结果仍待宿主 |
 | Q12-08 | 表格空内容 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [双主题业务空表证据](evidence/q04-q12/Q12-08-EMPTY-TABLES-20260915.md)；Save/Task/Trainer/Media/Maintenance 空表与空态已由 production views 离屏复核，真实 Worker/Playnite 生命周期待宿主 |
 | Q13-01 | 失焦选中 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前 main 复核](../ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)：已有实现当前身份 `R06Selection 2/2`、四个生产表格 Light/Dark 几何 `1/1`；真实 Playnite 失焦输入/最终呈现仍待宿主 |
-| Q13-02 | 多选反馈 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；批量计数与半选入口已复核，Ctrl/Shift 手势待宿主 |
+| Q13-02 | 多选反馈 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [多选当前证据/待验手势](../ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)：R05/R22 已覆盖计数、空选、清空/隐藏选项；tri-state 仅为控件视觉、无业务消费者；Ctrl/Shift 修饰键序列须隔离 Playnite 宿主 |
 | Q13-03 | 行内按钮命中 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；行内命令/稳定行标识已复核，真实命中序列待宿主 |
 | Q13-04 | 列调整热区 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；表头 resize/sort 部件和最小列约束已复核，拖拽待宿主 |
 | Q13-05 | 滚动条 Thumb | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；现有 ScrollBar 模板与端点审计通过，真实 Hover 待宿主 |

@@ -5817,3 +5817,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 - Q13-01 已有共享实现，复用 `R06-03` 的 active/inactive selection、focus ring、错误行和透明 cell chrome；不新增产品代码。当前 `d46d6be5` Release/XAML `0 warning / 0 error`，`R06SelectionStateBehaviorTests 2/2` 覆盖真实 WPF 焦点从选中行移出后 inactive selection 保留，生产四个 DataGrid 在 Light/Dark 下状态几何 `1/1`、`<=0.25 DIP`。
 - 既有 Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据仍有效；当前复核是隔离 STA/逻辑 DIP，不等同真实 Playnite host/OS 失焦输入/物理 DPI/UIA/presented frame。Q13-01 的可控证据已有，宿主栏仍待验，最终不标完成。TRX/说明在 `design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md`。下一项 Q13-02 Ctrl/Shift 多选手势。
+
+# 2026-09-29 Q13-02 多选反馈边界核对
+
+- 复核生产 Extended DataGrid 与真实消费者后确认，R05 `3/3`、R22 `3/3` 已验证摘要计数/空选/清空/隐藏 ID；没有测试真实 Ctrl/Shift 鼠标修饰键序列。Tri-state 复选框当前没有 DataGrid 全选消费者，已由 R05-05 判定不适用；不重复造业务模型。
+- 真实手势必须在隔离 Playnite host 记录 modifier/focus/anchor/stable IDs/摘要。当前进程命令行 WMI Access Denied、CEF `platform_channel 0x5`，本轮不抢占桌面键鼠、不绕过启动门禁；Q13-02 自动范围部分已有证据，宿主/最终仍未完成。步骤见 `design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md`。下一项 Q13-03 受控 WPF inline button hit-test。
