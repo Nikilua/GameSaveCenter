@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 R06 排序崩溃 clean-main 复核
+
+- 审计发现原排序崩溃 TRX 于 `f8a82469` 提交前运行，Git 身份仍为父提交 `ade4b937`；保留原始历史，不把它写成干净提交证据。当前工作树在 `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` clean，且 `f8a82469..HEAD` 的排序控制器/测试源文件无差异。
+- 在本轮专用 `.tmp/r06sort-clean-3d83d38f` 执行完整 Release solution build（`0 warning/0 error`、XAML `24/24`）和 `R06SortingBehaviorTests 7/7`（0 failed/skipped，exit 0）。点击正例验证真实 WPF 列头受控 Click 升/降序及箭头；负例 detach 其 CollectionView 后再点，验证无异常和排序状态稳定。测试执行 assembly/source identity gate。测试结束并归档 TRX 后，临时 `.tmp/r06sort-clean-3d83d38f` 已清理。
+- 脱敏 TRX 与证据记录见 `evidence/R06-SORTING-CLEAN-MAIN-RECHECK-20260928.md`。无生产改动；真实 OS 输入、Playnite/package-host、用户加载包和呈现仍未验。
+
 ## 2026-09-28 R00/R01 freshness 与 SettingsState 夹具定位修正
 
 - freshness 扫描在 `3a1dadd8` / `38d5b7b2` 旧身份下报 7 项 R00/R01 证据路径 stale。复核时发现 RenderHarness SettingsState 探针错误地从自定义构建目录回退五层，落在 `.tmp`，使 valid normal/dirty 夹具把 Worker 路径设为空；修正为复用静态 `RepositoryRoot`。没有改生产 Settings 或路径验证。

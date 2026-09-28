@@ -1,5 +1,9 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 R06 排序崩溃修复的 clean-main 身份复核
+
+用户排序崩溃修复提交 `f8a82469` 的旧 TRX 在提交前运行、绑定父提交 `ade4b937`。本次在干净当前 `main` `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 重建完整 Release solution（`0 warning/0 error`、XAML `24/24`），`R06SortingBehaviorTests 7/7` clean exit；实际 WPF 列头 Click 正例与 detached CollectionView 负例均通过。详细证据及脱敏 TRX：[R06 clean-main 排序复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-CLEAN-MAIN-RECHECK-20260928.md)。真实 Playnite 鼠标/触屏、用户包、用户库和最终呈现仍未验；没有访问真实数据。
+
 ## 2026-09-28 RenderHarness SettingsState 误报与 R00/R01 证据刷新
 
 当前源码提交 `59afd8f4bd81039e1e8150d0ccc35e608b357113` 修正 SettingsState 探针对 `.tmp` 自定义构建目录的源码根定位；正常/dirty 夹具此前因 Worker 路径为空而误报，修正后完整双主题 render-qa `OK`，设置三态通过。Release solution 和 RenderHarness 均 `0 warning/0 error`，XAML `24/24`；当前 `UiAuditSourceTests 6/6`、RepositoryIdentity `2/2`、BuildIdentity `3/3`。

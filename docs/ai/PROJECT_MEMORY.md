@@ -1,5 +1,10 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 R06 排序崩溃的 clean-main 补证
+
+- `f8a82469` 的 detached `ListCollectionView` 防护与实际 WPF 列头受控 Click/负例在当前代码中未再变化。由于旧 TRX 于提交创建前约 5 分钟运行、身份指向父提交 `ade4b937`，当前完整 HEAD `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 已重新隔离 Release 构建并复跑 `R06SortingBehaviorTests 7/7`，0 failed/skipped，exit 0；solution `0/0`，XAML `24/24`。
+- 清洁身份报告及脱敏 TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-CLEAN-MAIN-RECHECK-20260928.md`。受控窗口不等于真实 OS 鼠标、Playnite 宿主、当前用户包或呈现帧。
+
 ## 2026-09-28 R00/R01 freshness 复核与 RenderHarness 路径校正
 
 - 修复 RenderHarness SettingsState 夹具源码根计算：自定义 `.tmp` 输出目录时，局部探针的五层父路径指向 `.tmp`，所以 Worker path 空而误报 normal/dirty 错误。现复用已有 `RepositoryRoot`；生产 Settings 校验没有改变。

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 R06 表格排序崩溃：干净 main 身份复核
+
+- 用户 `crash.zip` 指向的失效 `ListCollectionView` 排序刷新异常由 `f8a82469` 修复。原 2026-09-24 TRX 早于代码提交约 5 分钟，记录身份为父提交 `ade4b937`；本次在干净当前 `main` 完整身份 `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 重新 Release 构建并运行 `R06SortingBehaviorTests 7/7`，0 fail/skip，exit 0。
+- 本次包含真实 WPF `DataGridColumnHeader` 受控 Click 升/降序行为和 detach-view 点击负例；完整 solution build `0 warning / 0 error`、XAML `24/24`。原 TRX 保留为历史，本次清洁身份 TRX 与范围说明见 [R06 排序复核](../design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-CLEAN-MAIN-RECHECK-20260928.md)。
+- 真实 OS 鼠标/触屏、Playnite/package-host、用户加载包及 presented frame 未验；不修改 R06 排序实现，也未触碰用户库数据。
+
 ## 2026-09-28 当前复核：SettingsState RenderHarness 根路径误报已修正
 
 - 当前源码提交 `59afd8f4bd81039e1e8150d0ccc35e608b357113` 只改 `tests/GameSaveCenter.RenderHarness/Program.cs`：SettingsState 探针复用已解析好的 `RepositoryRoot`，不再从自定义 `.tmp` 输出目录固定回退五层而误指向 `.tmp/src/...`。没有改生产 Settings 校验、路径、XAML 或业务代码。
