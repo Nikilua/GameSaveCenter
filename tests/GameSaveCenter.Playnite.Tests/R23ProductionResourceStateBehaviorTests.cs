@@ -382,6 +382,87 @@ public sealed class R23ProductionResourceStateBehaviorTests
     }
 
     [Fact]
+    public void WorkspaceTabContentsStretchAcrossNarrowViewportRegardlessOfHeaderWidthInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            var style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]);
+            var items = new[]
+            {
+                new TabItem
+                {
+                    Style = style,
+                    Header = "常规",
+                    Content = new Border { Child = new TextBlock { Text = "short page" } },
+                    IsSelected = true
+                },
+                new TabItem
+                {
+                    Style = style,
+                    Header = "Validation and restore history",
+                    Content = new Border { Child = new TextBlock { Text = "long header page" } }
+                },
+                new TabItem
+                {
+                    Style = style,
+                    Header = "待归类 + 200",
+                    Content = new Border { Child = new TextBlock { Text = "count page" } }
+                }
+            };
+            var tabs = new TabControl
+            {
+                Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabControl"]),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch
+            };
+            foreach (var item in items)
+                tabs.Items.Add(item);
+            root.Children.Add(tabs);
+            var window = CreateWindow(root, 380, 240);
+
+            try
+            {
+                window.Show();
+                FlushLayout(window);
+                tabs.ApplyTemplate();
+                var contentHost = Assert.IsType<ContentPresenter>(tabs.Template.FindName("PART_SelectedContentHost", tabs));
+
+                foreach (var mode in Themes)
+                {
+                    ApplyTheme(root, mode);
+                    foreach (var item in items)
+                    {
+                        tabs.SelectedItem = item;
+                        FlushLayout(window);
+
+                        var content = Assert.IsType<Border>(item.Content);
+                        var hostBounds = BoundsRelativeTo(contentHost, tabs);
+                        var contentBounds = BoundsRelativeTo(content, contentHost);
+                        Assert.True(tabs.ActualWidth > 0 && tabs.ActualHeight > 0,
+                            $"{mode}/{item.Header}: narrow TabControl was not laid out.");
+                        Assert.True(contentHost.ActualWidth > 0 && contentHost.ActualHeight > 0,
+                            $"{mode}/{item.Header}: selected content viewport was empty.");
+                        Assert.True(Math.Abs(hostBounds.Left) <= 0.25,
+                            $"{mode}/{item.Header}: selected content viewport was horizontally offset: {hostBounds}.");
+                        Assert.True(Math.Abs(contentBounds.Left) <= 0.25 && Math.Abs(contentBounds.Top) <= 0.25,
+                            $"{mode}/{item.Header}: selected page content was offset inside its viewport: {contentBounds}.");
+                        Assert.True(Math.Abs(content.ActualWidth - contentHost.ActualWidth) <= 0.25,
+                            $"{mode}/{item.Header}: selected page did not stretch to the narrow viewport; content={content.ActualWidth}, viewport={contentHost.ActualWidth}.");
+                        Assert.True(Math.Abs(content.ActualHeight - contentHost.ActualHeight) <= 0.25,
+                            $"{mode}/{item.Header}: selected page did not stretch vertically; content={content.ActualHeight}, viewport={contentHost.ActualHeight}.");
+                    }
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
     public void EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes()
     {
         RunSta(() =>
