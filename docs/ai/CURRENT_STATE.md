@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q11-08 快速导航与 R08 当前身份复核
+
+- `8e3cc914` 只增加生产工作区导航的真实 WPF RadioButton `Checked` 行为回归。Overview/Tasks 七次快速交替时逐次核对 workspace、缓存 PageHost、标题、唯一选中 RadioButton 和 WPF 键盘焦点；终态在 dispatcher 布局后仍正确。Q11-08 类 `4/4`，导航来源/历史 `6/6`，R08 反向动效最终身份 `2/2`。Release solution/XAML `0 warning / 0 error`、XAML `24/24`；三个定向组 `12/12`。证据：[Q11-08](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md)。
+- 新测试是 `1366×900 DIP`、透明 STA WPF 夹具；真实 Playnite、物理键鼠、主题/DPI 和 presented frame 未验，Q11-08 保持最终未完成。没有生产 UI 改动。
+- 最新 R08 用户 `1/2` 失败仍缺失败机器完整 log/TRX。本机精确身份 8 轮复核均 `2/2`，最终 `8e3cc914` 另 `2/2`；不据此宣称用户故障已定位或解决。详见 [R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。下一项继续检查已有能力与依赖满足的 Q13 行为任务。
+
 ## 2026-09-29 R08 隔离构建失败报告复核
 
 - 用户再次报告 `R08MotionReverseBehaviorTests` 为 `1/2` 失败，但未包含失败方法/堆栈/TRX；本 checkout 的同名 one-click 日志实际是 9 月 24 日的宿主审计，不能代表本次失败。

@@ -105,7 +105,7 @@
 | Q11-05 | 页签内容拉伸 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [页签窄宽内容拉伸](../ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)；共享 ContentPresenter 浅/深主题在 `380×240 DIP` 实测 x/y 对齐和横纵 Stretch；Playnite host/物理 DPI 待验 |
 | Q11-06 | 页签溢出 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q11-06 行为证据](../ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)：生产页签数已核 `4/4/6/4`，四页浅/深主题 320×240 DIP 受控 WPF 全项可达；真实 Playnite 呈现、OS 输入和有效物理 DPI 仍待验 |
 | Q11-07 | 导航状态保存 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q11-07 WPF 往返证据](../ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)：搜索/四筛选、三个工作区 Tab、选中任务与滚动偏移跨切页保持；真实 Playnite/主题截图/DPI 仍待验 |
-| Q11-08 | 导航过渡 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航过渡来源](evidence/Q04-Q12-INDEX.md)；快速来回与焦点待宿主 |
+| Q11-08 | 导航过渡 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q11-08 受控 WPF 行为](../ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md)：真实 RadioButton Checked 路由快速交替 7 次，逐次核对缓存页/标题/唯一选中项/WPF 焦点；Playnite/presented frame/OS 输入仍待宿主 |
 | Q12-01 | 表头文字 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [表格截图](evidence/Q04-Q12-INDEX.md)；连续表面表头字重已复核 |
 | Q12-02 | 行中文字基线 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [4 行端点报告](evidence/Q04-Q12-INDEX.md)；52 DIP 行高未裁字 |
 | Q12-03 | 长名称省略 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [路径/表格截图](evidence/Q04-Q12-INDEX.md)；Tooltip 来源保留 |

@@ -5806,3 +5806,9 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 用户提供 `R08MotionReverseBehaviorTests 1/2` 失败摘要，没有失败方法、断言堆栈或 TRX；仓库同名 one-click 日志是 2026-09-24 的宿主审计，不能用于诊断这次失败。
 - 在 `c50de56a` 精确身份 Release solution build `0 warning / 0 error`、XAML `24/24`。从隔离 DLL 顺序运行 8 个新 testhost，每轮 R08 `2/2`，总 `16/16`、0 failed/skipped、exit `0`；各轮 TextServicesHost COM 清理异常如实记录。未修改生产动画，失败在本机未复现，不能据通过关闭用户报告。TRX/程序集身份/复核范围见 `design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md`。
 - 下一项 Q11-08 导航过渡；若获取用户失败机器的完整 log/TRX，再据真实失败断言继续排查。Media Inbox Playnite 同进程诊断仍未取得。
+
+# 2026-09-29 Q11-08 快速导航行为复核
+
+- `8e3cc914` 只增加生产 RadioButton `Checked` 路由的 WPF 行为回归，没有生产导航/动画改动。Overview/Tasks 快速交替 7 次，每次核对 workspace、缓存 PageHost 页面引用、标题、唯一选中项及 WPF 焦点；最终 dispatcher 布局后仍是 Tasks。`R08PageSwitchBehaviorTests 4/4`，导航来源/历史 `6/6`，R08 反向动效 `2/2`，定向合计 `12/12`；Release solution `0 warning / 0 error`、XAML `24/24`。
+- R08 反向动效 testhost 的 xUnit 结果与 VSTest exit 明确成功，但退出时输出 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`，根因未知。用户此前 `1/2` 失败未取得失败方法/堆栈/TRX；当前复跑没有复现，不能关闭或声称修复该报告。
+- 测试为 `1366×900 DIP` 透明 STA WPF 夹具，真实页面使用无业务服务的状态 DataContext；不是真实 Playnite、OS 输入、主题/DPI 或呈现帧验收。Round2 Q11-08 最终保持未完成。证据：`design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md`。下一项核对 Q13 已有交互行为缺口。

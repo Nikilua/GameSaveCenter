@@ -1,3 +1,9 @@
+## 2026-09-29 Q11-08 快速导航过渡
+
+- 当前生产导航本来就同步替换缓存 PageHost 页面、标题和 RadioButton 选中状态，不使用全页入场动画。本阶段只补行为验证，无生产代码修改。提交 `8e3cc914` 的 `R08PageSwitchBehaviorTests 4/4` 中新增七次 Overview/Tasks 快速 Checked 路由；每次实际 WPF 状态核对 workspace、正确页引用、标题、唯一选中项和仍聚焦的导航项，布局刷新后终点一致。观测 `routes=7; final=Tasks; title=任务中心; focus=NavTasks; pageEffects=none`。
+- 同身份导航来源/历史 `PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`；用户前条报告的 `R08MotionReverseBehaviorTests 2/2`。三组共 `12/12`，0 failed/skipped。Release solution `0 warning / 0 error`、XAML `24/24`。R08 testhost 有一条 TextServicesHost `InvalidComObjectException` 退出清理噪声，根因未知，测试和进程均成功。证据：[Q11-08](evidence/Q11-08-NAV-TRANSITION-20260929/README.md)。
+- 受控 `1366×900 DIP`、透明 STA Window 和 WPF focus API 结果不等于 OS 输入、无旧帧的屏幕级验证或 Playnite host；主题/物理 DPI/真实呈现仍待验，Round2 Q11-08 最终未完成。下一项检查 Q13 已登记的交互任务，先确认现有测试覆盖和缺失负例。
+
 ## 2026-09-29 R08 用户失败报告：本机当前身份 8 轮复核
 
 - 用户提供 one-click 摘要 `R08MotionReverseBehaviorTests 1/2`，无方法/断言/TRX；checkout 内同名日志最后更新于 9 月 24 日，是宿主审计记录，不含该失败。

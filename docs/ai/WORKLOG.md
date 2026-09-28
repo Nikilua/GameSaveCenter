@@ -9630,3 +9630,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在 `main`/`c50de56ae9d54995e5bc4834c6bf6d664097bb07` 上用独立输出重新执行 Release solution build：XAML `24/24`，0 warning/error。测试程序集 SHA-256 `39FF75E6744AEC3748BAD7243B0F9D56DA9D8D9250140141655D77F170320811`。
 - 当前 R08 类分 8 个新 testhost、每次串行详细 TRX：每轮 `2/2`，共 `16/16`，0 failed/skipped，全部 exit `0`。每轮均额外输出 WPF TextServicesHost `OnUnregisterTextStore InvalidComObjectException` 清理异常，根因未知；测试结果明确通过。详细复核与 TRX 在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/`。
 - 没有重现用户失败，因此不改生产动画、不宣称用户故障已解决；仍需原始失败 log/TRX 断言定位。仅隔离 STA WPF/合成动画，不是 Playnite 呈现验证。下一项 Q11-08 导航过渡。
+
+# 2026-09-29 Q11-08 快速导航过渡行为
+
+- 检查生产导航后确认页面、标题与导航选中项同步切换，页面直接使用缓存的 UserControl，没有全页入场动画；本阶段只增行为回归，无生产 UI 改动。新用例真实触发 Overview/Tasks RadioButton `Checked` 路由并交替 7 次，逐次验证 workspace、PageHost 缓存页面、标题、唯一选中状态、WPF 焦点及页面无 opacity/effect/transform 动画状态，最终布局刷新后仍为 Tasks。
+- 最终身份 `8e3cc914` Release solution/XAML 构建 `0 warning / 0 error`、XAML `24/24`。`R08PageSwitchBehaviorTests 4/4`、`PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`、`R08MotionReverseBehaviorTests 2/2`，共 `12/12` passed、0 failed/skipped。R08 退出有 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声，xUnit/VSTest 均成功，根因未知。
+- 证据与三份 TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/`。透明 `1366×900 DIP` STA 窗口及 WPF focus API 不代表 Playnite host、OS 输入、主题/物理 DPI 或呈现帧；Q11-08 视觉/宿主待验，Round2 最终未完成。用户 R08 `1/2` 失败缺原始方法/堆栈/TRX，本机复跑未重现，继续保持打开。下一项检查 Q13 已登记交互项的现有行为与缺失负例；Media Inbox 实机滚动根因仍待同进程诊断。

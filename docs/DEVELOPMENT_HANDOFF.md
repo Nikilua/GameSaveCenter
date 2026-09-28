@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q11-08 导航行为已补测
+
+- Q11-08 实现提交 `8e3cc914`：只新增实际生产 RadioButton `Checked` 路由的 WPF 回归，无生产 UI 改动。Overview/Tasks 快速交替七次，`R08PageSwitchBehaviorTests 4/4`；导航来源/历史 `6/6`；R08 反向动画 `2/2`。最终身份 Release solution/XAML build `0 warning / 0 error`、XAML `24/24`；定向共 `12/12`。证据及边界：[Q11-08](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md)。
+- 夹具是透明 STA WPF `1366×900 DIP`，不是 Playnite host、OS 键鼠输入、主题/物理 DPI 或屏幕呈现帧；Q11-08 Round2 最终状态仍未完成。R08 用户最新 `1/2` 测试失败尚无完整 log/TRX；本机 8 轮及最终身份回归未复现，保持问题打开。
+- 下一任务检查 Q13-01「失焦选中」现有行为覆盖与负例；复用生产 DataGrid/选择样式，缺少实测时再补受控行为，保留真实宿主失焦输入待验边界。Media Inbox 滚动问题仍等待同进程诊断日志。
+
 ## 2026-09-29 R08 用户失败报告复核
 
 - 用户最新 one-click 摘要为 `R08MotionReverseBehaviorTests 1/2`，没有失败方法、堆栈或 TRX；本机 `artifacts/one-click-install.log` 是 2026-09-24 的另一轮宿主审计，不可拿来诊断。
