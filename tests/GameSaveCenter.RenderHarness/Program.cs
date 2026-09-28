@@ -5931,8 +5931,7 @@ public static class Program
         if (refresh == null || apply == null)
             throw new InvalidOperationException("Settings state probe methods not found.");
 
-        var repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
-        var workerOutputRoot = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Worker", "bin", "Release");
+        var workerOutputRoot = Path.Combine(RepositoryRoot, "src", "GameSaveCenter.Worker", "bin", "Release");
         var workerPath = Directory.Exists(workerOutputRoot)
             ? Directory.EnumerateFiles(workerOutputRoot, "GameSaveCenter.Worker.exe", SearchOption.AllDirectories).FirstOrDefault() ?? string.Empty
             : string.Empty;
