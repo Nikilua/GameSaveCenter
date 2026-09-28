@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 RenderHarness SettingsState 误报与 R00/R01 证据刷新
+
+当前源码提交 `59afd8f4bd81039e1e8150d0ccc35e608b357113` 修正 SettingsState 探针对 `.tmp` 自定义构建目录的源码根定位；正常/dirty 夹具此前因 Worker 路径为空而误报，修正后完整双主题 render-qa `OK`，设置三态通过。Release solution 和 RenderHarness 均 `0 warning/0 error`，XAML `24/24`；当前 `UiAuditSourceTests 6/6`、RepositoryIdentity `2/2`、BuildIdentity `3/3`。
+
+R00/R01 freshness 7 项证据路径已重新验证，0 stale；当前受控 audit `168` snapshots、`103` warnings、0 HIGH/0 MEDIUM/0 Fidelity/0 failed routes，index `20/20`。首次错误结果、源码根原因和原始受控证据见[当前复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260928.md)与[R01-06 归档](docs/design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260928/README.md)。package identity 未提供；不能外推为真实 Playnite/用户包/物理 DPI/跨屏/呈现帧/ETW 通过。
+
+R ledger 仍 192 项、`106/83/1/1/1`。R23-08/backlog 暂无 READY/IN_PROGRESS 产品代码项。下一步可执行条件是出现新的可复现用户问题，或 ENV-001、第二显示器、合规帧采集等既有环境门槛实际变化；不得为凑进度自造功能或重试被拒绝的跟踪权限。
+
 ## 2026-09-28 main 跨设备续接与媒体 Inbox/R18 补证
 
 本轮按用户要求 fetch 并 fast-forward 到远端 `main`，续接基线为 `331a57137f755897f309664064a8f8e1adbbd58f`。当前媒体 Inbox 已复用顶栏全局游戏目标；只补了测试，不重做已落地的生产 UI。Release solution `0 warning/0 error`、XAML `24/24`、source validator 通过。媒体分类选择 `4/4`；ReportedWorkspace 双主题/其他布局行为类 `10/10` clean；R18 专测 `1/1`；四类关联行为按独立进程 `6+10+3+4=23/23`。测试组成、不同上下文采样与原始 TRX 见[证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md)。

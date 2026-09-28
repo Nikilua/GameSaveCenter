@@ -5,7 +5,7 @@
     {
       "id": "R00-01-02",
       "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-      "sourceCommit": "3a1dadd80bae6152dce9c3f684d5d2c745f02bc8",
+      "sourceCommit": "53e61175fb6dbcbd3776071d1a856698eb309114",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -53,7 +53,7 @@
     {
       "id": "R00-05",
       "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
-      "sourceCommit": "3a1dadd80bae6152dce9c3f684d5d2c745f02bc8",
+      "sourceCommit": "53e61175fb6dbcbd3776071d1a856698eb309114",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -69,7 +69,7 @@
     {
       "id": "R00-06",
       "evidence": "evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md",
-      "sourceCommit": "3a1dadd80bae6152dce9c3f684d5d2c745f02bc8",
+      "sourceCommit": "53e61175fb6dbcbd3776071d1a856698eb309114",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -85,7 +85,7 @@
     {
       "id": "R00-07",
       "evidence": "evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md",
-      "sourceCommit": "3a1dadd80bae6152dce9c3f684d5d2c745f02bc8",
+      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -117,7 +117,7 @@
     {
       "id": "R01-01",
       "evidence": "evidence/R01-01-REPOSITORY-IDENTITY-20260916.md",
-      "sourceCommit": "38d5b7b2d0488dc5e7234d77ff1435c9d4e521c0",
+      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -148,7 +148,7 @@
     {
       "id": "R01-03",
       "evidence": "evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-      "sourceCommit": "3a1dadd80bae6152dce9c3f684d5d2c745f02bc8",
+      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -196,7 +196,7 @@
     {
       "id": "R01-06",
       "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "3a1dadd80bae6152dce9c3f684d5d2c745f02bc8",
+      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

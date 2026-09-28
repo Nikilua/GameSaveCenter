@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 R00/R01 freshness 复核与 RenderHarness 路径校正
+
+- 修复 RenderHarness SettingsState 夹具源码根计算：自定义 `.tmp` 输出目录时，局部探针的五层父路径指向 `.tmp`，所以 Worker path 空而误报 normal/dirty 错误。现复用已有 `RepositoryRoot`；生产 Settings 校验没有改变。
+- 代码提交 `59afd8f4bd81039e1e8150d0ccc35e608b357113`。Release solution `0/0`、XAML `24/24`、完整干净双主题 render-qa `373` 输出（312 PNG）OK；设置三态通过。当前源码审计 `168` snapshots、`103` warnings、0 HIGH/0 MEDIUM/0 Fidelity/0 route failure，索引 `20/20`。
+- freshness 刷新 7 条 R00/R01 记录后 `0 stale`；package identity `not-provided`。R00-01/02、05、06 测试身份为 53e61175，之后没有匹配这些 `sourcePaths` 的变化；R00-07 与 R01-01/03/06 以 59afd8f4 当前身份验证。
+- 详细证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260928.md`。审计/渲染都是合成数据和离屏逻辑 DIP；未启动 Playnite、未使用真实存档/媒体/云端，不能宣称 package-host 或物理呈现通过。R ledger 192、状态 `106/83/1/1/1`；R23-08 无 READY/IN_PROGRESS 产品代码项。
+
 ## 2026-09-28 跨设备续接与 R18-04 复核
 
 - 远端 `main` 快进基线 `331a57137f755897f309664064a8f8e1adbbd58f`。只在现有 `ReportedWorkspaceLayoutBehaviorTests` 增加 WPF 实际绑定检查：两个媒体目标摘要随合成全局游戏切换、清空和恢复，名称/身份 Tooltip/Automation HelpText 同步。产品 XAML、ViewModel、命令和 DTO 未改。

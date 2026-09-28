@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 当前复核：SettingsState RenderHarness 根路径误报已修正
+
+- 当前源码提交 `59afd8f4bd81039e1e8150d0ccc35e608b357113` 只改 `tests/GameSaveCenter.RenderHarness/Program.cs`：SettingsState 探针复用已解析好的 `RepositoryRoot`，不再从自定义 `.tmp` 输出目录固定回退五层而误指向 `.tmp/src/...`。没有改生产 Settings 校验、路径、XAML 或业务代码。
+- 修正前首次 render-qa 的 normal/dirty 各有两条误报，皆因夹具拿到空 Worker 路径；修正后干净身份完整双主题 RenderHarness `373` 输出/`312` PNG、normal/dirty/invalid 三态正确、`WorkingTreeClean=True`、`render-qa OK`。没有删去首次失败事实。
+- Release solution `0 warning/0 error`、XAML `24/24`、RenderHarness `0/0`；当前身份 `UiAuditSourceTests 6/6`、RepositoryIdentity `2/2`、BuildIdentity `3/3`。R00/R01 freshness 当前 `0` stale、`0` matched source paths；package identity 未提供。
+- 当前受控 UI Audit `168` snapshots、`103` warnings、0 HIGH、0 MEDIUM、0 Fidelity、0 route failure；20 个索引项 `20/20` 通过。详细证据：[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260928.md)、[R01-06 当前归档](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260928/README.md)。离屏结果不代表真实 Playnite、物理 DPI/跨屏、UIA/IME、呈现帧或宿主性能。
+- R ledger 保持 192 唯一项、`106/83/1/1/1`；backlog 仍无 READY/IN_PROGRESS 产品代码项。下一步等待新的可复现用户问题或真实宿主/系统环境门槛变化，不从残留警告自行创建功能。
+
 ## 2026-09-28 跨设备续接：R18-04 采样与媒体目标绑定补证
 
 - 按用户要求从远端 `main` fetch 并 fast-forward；合并基线为 `331a57137f755897f309664064a8f8e1adbbd58f`，没有把 `main` 旧实现覆盖到其他分支。当前新增仅为 `ReportedWorkspaceLayoutBehaviorTests` 的 WPF 绑定/负例补证，没有生产 UI 变更。
