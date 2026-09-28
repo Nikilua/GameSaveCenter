@@ -1,10 +1,16 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q11-05 Stretch 补证与 R08 反转采样稳定性
+
+- 共享 TabControl 本已有 Stretch setter 和独立星号内容行；增加真实 STA WPF 窄窗行为用例，不改生产 XAML。380×240 DIP，浅/深主题短中文/长英文/计数标签切换均测得页面根边界紧贴内容 Presenter，宽高差 `<=0.25 DIP`。`R23ProductionResourceStateBehaviorTests 6/6`，TRX `artifacts/q11-05-tab-content-stretch-20260928/q11-05-tab-content-stretch-e467c3b2.trx`。
+- 用户报告 R08 类 `1/2` 失败；完整错误日志不在本 checkout，本地同名文件为 9/24。测试代码审查发现首次收起固定等 100 ms 后采实际宽度，可能在首帧尚未布局时误判；改为 bounded dispatcher sampling 真实进行中的宽度/活动时钟，反向同样等方向性进度，并保留终态断言。修订后 R08 完整类连续 8 次 `2/2`，汇总日志 `artifacts/r08-motion-flake-20260928/r08-fixed-repeat.log`。
+- 当前完整隔离 Release build 脚本：solution `0 warning/0 error`，Core `125/125`，Worker `356 passed / 1 existing skip / 0 failed`；Playnite 108 个隔离类仍运行中。最终进度另行补记。生产动画没有变更。下一项 Q11-06；真实 Playnite 媒体滚动诊断仍待同进程数据。
+
 ## 2026-09-28 Q11-04 页签内边距与内容稳定
 
 - 审核共享 `GscRedesignWorkspaceTabItem`，已有 14×7 DIP Padding、11 DIP 圆角和独立间距，无生产 XAML 变更。新增 WPF 行为用例以短中文、长英文、组合计数 header 实测浅/深主题边界；文字保持自然宽、Chrome 圆角内缩安全、徽章不重叠，切换不同标签时选中内容 Presenter 宽度变化不超过 0.25 DIP。
 - 最终提交 `9804f494c77f97c6a38a81e56c861f9918a4b9ea` Release Playnite.Tests build 成功，`R23ProductionResourceStateBehaviorTests 5/5` 0 failed/skipped、exit `0`，TRX 无 COM cleanup exception。结果 `artifacts/q11-04-tab-padding-20260928/q11-04-r23-resource-state-9804f494.trx`。
-- 宿主/真实业务页/物理 DPI 未验，Q11-04 仍未完成。下一项 Q11-05；Media Inbox 真宿主日志到位后优先返回。
+- 宿主/真实业务页/物理 DPI 未验，Q11-04 仍未完成。下一项 Q11-06；Media Inbox 真宿主日志到位后优先返回。
 
 ## 2026-09-28 Q11-03 收起导航 Tooltip 文本与图标
 

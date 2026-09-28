@@ -102,7 +102,7 @@
 | Q11-02 | 当前项强调 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [当前页与键盘焦点叠加](../ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md)；浅/深主题的真实 WPF 选中+聚焦、失焦保选、未选中聚焦、禁用拒焦通过；OS 鼠标 hover 与 Playnite 宿主仍待验 |
 | Q11-03 | 收起模式提示 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [收起导航 Tooltip/图标状态](../ui-finesse-round3-20260915/evidence/Q11-03-COLLAPSED-NAV-TOOLTIPS-20260928.md)；七项文字折叠、图标可见、Tooltip 文本和自动化名称通过；Popup 延迟/定位及 Playnite 宿主待验 |
 | Q11-04 | 页签内边距 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [页签长文本与计数几何](../ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md)；短中文、长英文、计数 Header 边界/内边距和切换标签后内容视口宽度稳定通过；Playnite host/物理 DPI 待验 |
-| Q11-05 | 页签内容拉伸 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [TabControl 来源](evidence/Q04-Q12-INDEX.md)；ContentPresenter Stretch 已复核 |
+| Q11-05 | 页签内容拉伸 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [页签窄宽内容拉伸](../ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)；共享 ContentPresenter 浅/深主题在 `380×240 DIP` 实测 x/y 对齐和横纵 Stretch；Playnite host/物理 DPI 待验 |
 | Q11-06 | 页签溢出 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [TabControl 来源](evidence/Q04-Q12-INDEX.md)；当前页签数与窄窗宿主仍待验 |
 | Q11-07 | 导航状态保存 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [页签状态测试来源](evidence/Q04-Q12-INDEX.md)；真实切页/滚动保持待验 |
 | Q11-08 | 导航过渡 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航过渡来源](evidence/Q04-Q12-INDEX.md)；快速来回与焦点待宿主 |

@@ -1,13 +1,15 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-28 当前交接：Q11-01/02/03/04 受控布局回归与 Media Inbox 宿主边界
+## 2026-09-28 当前交接：Q11-01/02/03/04/05 布局回归、R08 采样稳定性与 Media Inbox 宿主边界
 
+- Q11-05 已在共享 `GscRedesignWorkspaceTabControl` 样式基础上补真实 STA WPF 布局行为，没有生产 XAML 变化。`380×240 DIP` 下短中文/长英文/计数 Header 逐项切换后，内容根 Border 对齐 `PART_SelectedContentHost` 左上角，宽高差 `<=0.25 DIP`；浅/深主题 `R23ProductionResourceStateBehaviorTests 6/6`。Q11-05 Stretch 证据补齐，Playnite host/物理 DPI 仍待验；下一 Q11-06 窄窗页签滚动与键盘可达性。证据：[Q11-05](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)。
 - Q11-04 在共享 `GscRedesignWorkspaceTabItem` 上补了 STA WPF 布局行为：短中文、长英文、计数 Header 的完整自然宽度/圆角内边界及徽章不重叠；切换各类页签后 `PART_SelectedContentHost` 宽度 `<=0.25 DIP` 差异。浅/深主题下 `R23ProductionResourceStateBehaviorTests 5/5`，Release 构建成功，TRX 无 COM 清理异常。没有生产 UI 修改；实际业务页、Playnite host、FollowPlaynite、物理 DPI/OS 输入仍待验。证据：[Q11-04](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md)。
 - Q11-03 在现有生产 WPF shell 收起行为后补验七项 label Collapsed、图标仍有可见宽度、入口可启用/TabStop、Tooltip 文本及 UIA Name 映射。`ProductionShellChromeSourceTests 13/13`，Release build 成功；没有生产 XAML 变更。TRX 有一条 TextServicesHost COM 清理噪声但 xUnit/VSTest exit 0。没有打开 Tooltip Popup，延迟/定位/OS 鼠标/宿主仍待验；详见 [Q11-03](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-03-COLLAPSED-NAV-TOOLTIPS-20260928.md)。
 - Q11-02 用例提交 `9987dbb10f14519f3da2614215ab298410320149` 补齐现有测试未覆盖的“当前项选中+键盘焦点同时成立”状态。生产 AcrylicNavItem 浅/深主题 WPF 中焦点描边保持可见，焦点移开时选中状态保留，未选中焦点及禁用拒焦通过；R23 资源状态类 `4/4`。没有生产 XAML 变化；OS mouse hover、Playnite 宿主和屏幕呈现仍待验。详见 [Q11-02 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md)。
 - 测试提交 `cd631771f812fa1f3aed99b5d079f49043ae7f13` 只增加生产侧栏的实际 WPF 几何行为回归；Release Playnite.Tests `0/0`，`ProductionShellChromeSourceTests 13/13` exit `0`。七个入口的 icon/label、选中框横向全宽、垂直中心和间距在展开/收起/恢复后对齐。受控窗口为 `900×640 DIP`，不是 Playnite host，Q11-01 宿主/呈现仍待验。证据：[Q11-01 导航节奏](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md)。
 - Media Inbox「待归类」滚动空白仍没有修复。当前没有 Playnite 进程；本机有 EXE 文件但版本资源不是运行中宿主身份。隔离 runner 需要的 Win32 命令行检查仍 Access Denied，因此本轮未启动；先前隔离启动在插件安装前无法正常关闭，脚本拒绝强制终止。没有取得 GSC DLL identity 或当前滚动前后日志。保持安全门，不按合成结果猜共享模板/虚拟化根因。用户提供同进程 `[GSC-GRID-DIAGNOSTIC]`（含顶部/中段/Thumb 到底/往返、build/MVID、windowDip、dpi、theme、`gridGeometryDip`/`outerPage`）或隔离条件恢复后，先按 presenter-header 与 firstRow-presenter 差值分流再修。细节：[当前宿主复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-RECHECK-20260928.md)。
-- 当前独立下一任务为 Q11-05 页签内容 Stretch 复核；Media Inbox 仍为高优先未复现缺陷，获得有效宿主日志后立即返回。
+- R08-01 的用户一键测试反馈 `1/2`，本地修订测试中固定 `100ms` 后取宽度存在采样窗脆弱点，改为有界等待真实活动的动画中间值；修订后 Release 类测试连续 `8/8` 轮、每轮 `2/2`。完整 build 脚本仍在 Playnite 隔离类阶段运行，最终状态见本轮新增 [R08 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
+- 当前独立下一任务为 Q11-06 页签窄窗溢出/可达性；Media Inbox 仍为高优先未复现缺陷，获得有效宿主日志后立即返回。
 
 ## 2026-09-28 当前交接：Media Inbox 滚动错位与 Q10-08 证据
 

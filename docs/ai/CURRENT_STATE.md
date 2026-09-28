@@ -1,9 +1,15 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q11-05 页签内容拉伸；R08 反转测试稳定性
+
+- `e467c3b2fe080965c3946f1f3101f707c731472b` 在 Release `0 warning / 0 error`。Q11-05 用共享 `GscRedesignWorkspaceTabControl` 于 `380×240 DIP` 真实 STA WPF 窗口切换短中文/长英文/计数页签，Light/Dark 均验证内容根与 `PART_SelectedContentHost` x/y 对齐，宽高差 `<=0.25 DIP`；`R23ProductionResourceStateBehaviorTests 6/6`，TRX 无 COM 清理噪声。没有生产 XAML 修改；证据：[Q11-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)。
+- 用户的一键构建日志报告 R08 动效类 `1/2` 失败；本工作区同名日志仍是 9/24 旧文件，未取得失败断言详情。本地曾在整类复跑中间歇复现一次。R08 测试从固定 100 ms 取样改成有界等待实际动画时钟和中间宽度；修订后完整类连续 `8/8` 轮通过，正在执行完整隔离 Release build 脚本。证据：[R08 测试稳定性](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
+- 下一项 Q11-06 窄窗 Tab 可达性。Media Inbox 滚动缺陷仍待实际 Playnite 同进程日志；未据合成测试猜根因。
+
 ## 2026-09-28 Q11-04 页签内边距和内容视口行为
 
 - 最终测试身份 `9804f494c77f97c6a38a81e56c861f9918a4b9ea` 的 Release Playnite 测试项目构建成功；`R23ProductionResourceStateBehaviorTests 5/5`、0 failed/skipped、exit `0`，TRX 无 WPF COM cleanup noise。生产共享页签样式在 Light/Dark 测量短中文、长英文、计数徽章：header 保持在圆角边框 15-DIP 内缩区内、文字自然宽度完整、徽章不与标签重叠/计数不逃逸，选择不同宽度页签时内容视口宽度变化 `<=0.25 DIP`。没有生产样式修改。证据：[Q11-04](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md)。
-- STA 合成样本不代表 Playnite host、FollowPlaynite/DPI/屏幕边缘输入；Q11-04 仍未完成。下一独立任务 `Q11-05` 内容 Stretch 复核；Media Inbox 滚动根因仍等同进程宿主诊断，获得证据后优先返回。
+- STA 合成样本不代表 Playnite host、FollowPlaynite/DPI/屏幕边缘输入；Q11-04 仍未完成。下一独立任务 `Q11-06` 页签溢出与键盘可达性；Media Inbox 滚动根因仍等同进程宿主诊断，获得证据后优先返回。
 
 ## 2026-09-28 Q11-03 收起导航可识别性行为复核
 

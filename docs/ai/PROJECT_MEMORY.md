@@ -1,10 +1,16 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q11-05 内容拉伸 / R08 反转采样修订
+
+- `e467c3b2` 在共享 `GscRedesignWorkspaceTabControl` 上补真实 STA WPF 页面根布局测量：380×240 DIP、三种 Header、Light/Dark；内容根 Border 的 x/y 与内容 Presenter 左上对齐，宽高各差 `<=0.25 DIP`。没有生产 XAML 改动，`R23ProductionResourceStateBehaviorTests 6/6`。
+- 同提交将 `R08MotionReverseBehaviorTests` 的固定 100 ms 取样替换成有界 dispatcher pump，只有观测到仍在运行的动画时钟和内部宽度才反向；保持最终目标/时钟释放断言。修订后完整类 8 次独立 testhost 均 `2/2`；完整 build 正在跑。用户失败机器的详细 stack 不可见，根因结论限于自动化采样时序。
+- 证据：[Q11-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)、[R08 稳定性](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。下一任务 Q11-06；Media Inbox 等当前 Playnite 的 DLL/DPI/theme/scroll 同进程诊断。
+
 ## 2026-09-28 Q11-04 页签长短标签和计数内边距
 
 - `9804f494` 在真实 STA WPF `TabControl` 下复用 `GscRedesignWorkspaceTabItem`；短中文/长英文/“待归类+200”在浅深主题均通过 15-DIP border+padding safe inset、natural text bounds、count no-overlap/in-badge、圆角非裁切及 36-DIP minimum height。依次选择三种 header 时 `PART_SelectedContentHost.ActualWidth` 差 `<=0.25 DIP`，浅深 header slot 差 `<=0.25 DIP`。没有生产 UI 修改。
 - 最终提交 Release Playnite.Tests build 成功，`R23ProductionResourceStateBehaviorTests 5/5`，无失败/skip/COM cleanup noise。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md`。真实业务页/Playnite host/FollowPlaynite theme、物理 DPI/OS 输入仍待验，Q11-04 不签最终完成。
-- 下一项 Q11-05 TabControl 内容 Stretch。用户 Media Inbox bug 仍需同次运行的 build/MVID/windowDip/DPI/theme 和滚动位置日志或恢复安全隔离 host。
+- 下一项 Q11-06 TabControl 窄窗溢出与键盘可达性。用户 Media Inbox bug 仍需同次运行的 build/MVID/windowDip/DPI/theme 和滚动位置日志或恢复安全隔离 host。
 
 ## 2026-09-28 Q11-03 收起侧栏入口名称和图标
 
