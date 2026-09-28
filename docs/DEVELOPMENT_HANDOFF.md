@@ -6,6 +6,12 @@
 - 用户失败仍缺具体失败方法、消息/堆栈及对应 TRX；本机 one-click 日志是 9/24 旧文件，不能拿隔离通过冒充已解决。失败报告继续保持打开。
 - 接续先检查 Round2 Q13-06 当前共享模板与真实行为用例是否已满足，不先按旧状态快照重建实现；随后推进下一项依赖已满足的任务。Media Inbox 真实滚动错位仍等安全隔离宿主及前后诊断日志。
 
+## 2026-09-29 Q13-06 已补交角/末行末列自动证据
+
+- `b98ea5a2` 新增实际生产 `MediaInboxGrid` 的 WPF 测量回归，没有生产模板改动。两条滚动条同时可见时，顶部/中段/右下端的 Header、Presenter、横/竖条分别相接且不重叠；2,000 合成项最底行与最右单元格完整，Row virtualization/Item scroll 保留。`MediaInboxScrollBehaviorTests 4/4`、滚动条 Thumb `1/1`；Release/XAML `0/0`、`24/24`。详细几何、MVID 与 TRX：[Q13-06 证据](design/reviews/ui-finesse-round3-20260915/evidence/Q13-06-DATAGRID-SCROLLBAR-CORNER-20260929/README.md)。
+- 自动行为条件满足；Q13-06 仍因真实 Playnite 宿主像素边界保留“外部阻塞/最终未完成”。没有启动 Playnite；实际屏幕/DPI切换没在本阶段验证。
+- 下一可执行项：先核对 Q13-07 已实现的滚动链边界用例和具体完成条件，再决定需补证还是推进 Q13-08。Media Inbox 用户报告的大块空白仍待同进程真实宿主 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-29 当前交接：Q13-05 Thumb 行为已补；Media Inbox 宿主未启动
 
 - 提交 `ae35be70` 只增加共享滚动条模板 WPF 行为回归：双主题/纵横端点/36 DIP 下限/无拼接几何/Hover `1/1`；同身份 Media Inbox WPF 滚动 `3/3`。完整证据：[Q13-05](design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。

@@ -6,6 +6,12 @@
 - 用户 `1/2` 失败没有方法名/断言/堆栈/TRX；本地同名 one-click 日志仍是 9/24 的旧宿主审计。当前复跑不等于定位或修复，R08 用户故障保持打开。
 - 接续 Q13-06 账本检查；Media Inbox 真实滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
 
+## 2026-09-29 Q13-06 滚动条交角自动行为补证
+
+- `b98ea5a2` 只补生产 `MediaInboxGrid` 的 WPF 行为测试，不改 UI 模板。顶部/中段/右下端实际测得表头、内容视口、横纵条共边不重叠；2,000 项时最后一行及最右单元格完整，虚拟化与 Item 滚动保持。`MediaInboxScrollBehaviorTests 4/4`、`Q13ScrollBarThumbBehaviorTests 1/1`，Release `0 warning / 0 error`、XAML `24/24`。
+- Q13-06 自动行为证据已补，主账本仍保留宿主像素外部阻塞/最终未完成；本地 STA 窗口不冒充真实 Playnite/屏幕验证。[几何、程序集身份和 TRX](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-06-DATAGRID-SCROLLBAR-CORNER-20260929/README.md)。
+- 下一项先核对 Q13-07 滚动链已有行为证据后再推进；Media Inbox 真实宿主滚动根因仍未确认。
+
 ## 2026-09-29 Q13-05 Thumb 行为；Media Inbox 宿主前置仍受阻
 
 - `ae35be70` 只新增 WPF 行为测试，复核共享 Thumb Light/Dark、纵横向端点、36 DIP 最小长度、单形状端帽和主题 Hover `1/1`；Release solution `0 warning / 0 error`、XAML `24/24`。同身份 Media Inbox 隔离滚动 `3/3`，含 synthetic 输出尺度 `1/1.25/1.5`、顶/中/底、往返与窗口缩放；COM 清理噪声未知根因，TRX/VSTest 通过。[Q13-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。

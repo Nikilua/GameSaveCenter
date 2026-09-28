@@ -6,6 +6,12 @@
 - 当前 checkout 的 `artifacts/one-click-install.log` 最后修改于 2026-09-24，不是用户本次失败记录。用户失败仍无具体用例、断言、堆栈或 TRX，不能宣称已定位或修复；当前证据与边界：[R08 97a9b712 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
 - 下一步继续核对 Round2 Q13-06 现有交角/末行末列行为证据，再按账本推进；Media Inbox 真实宿主滚动缺陷仍是外部阻塞。
 
+## 2026-09-29 Q13-06 交角与末行末列 WPF 行为证据
+
+- 生产共享 3×3 DataGrid ScrollViewer 模板已有独立内容视口/纵条/横条区域；旧 Inbox 滚动行为未直接断言横纵条交界与最右单元格。`b98ea5a2` 只新增测试，未改模板。900×760 DIP STA Window、620×400 DIP grid、2,000 合成媒体，顶部/中段/右下端测量的视口与滚动条共边但无面积重叠；最底索引 `1999` 行完整、最后列在右边界内，虚拟化未退化。
+- `MediaInboxScrollBehaviorTests 4/4`、`Q13ScrollBarThumbBehaviorTests 1/1`、Release `0/0`、XAML `24/24`。当前 WPF DPI 报告 `1.5×1.5`，但没执行真实 Playnite、物理跨屏或像素输入；Q13-06 最终项仍等待宿主边界。证据：[Q13-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-06-DATAGRID-SCROLLBAR-CORNER-20260929/README.md)。
+- 下一项先核对 Q13-07 已有滚动链实现/行为覆盖，避免重建已有能力。Media Inbox 用户滚动 bug 仍待安全隔离 Playnite 下同进程几何日志。
+
 ## 2026-09-29 Q13-05 Thumb 行为与 Media Inbox 宿主重检
 
 - `ae35be70` 不改生产资源，仅新增 `Q13ScrollBarThumbBehaviorTests`；同一生产滚动条 Light/Dark、纵横向端点/36 DIP 最小 Thumb/端帽几何/单形状和动态 Hover `1/1`。Release `0/0`、XAML `24/24`。同身份 `MediaInboxScrollBehaviorTests 3/3`，但 `1/1.25/1.5` 是合成输出变换不是物理 DPI。[Q13-05 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。

@@ -6,6 +6,12 @@
 - `97a9b712` 隔离 Release solution/XAML build `0 warning / 0 error`、`24/24`。12 个独立 VSTest 进程每轮 R08 `2/2`，共 `24/24`，全部 exit `0`；每进程有一条 `InvalidComObjectException` 清理输出、原因未知。未更改产品/测试源码。逐轮 TRX 与限制：[R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
 - 用户失败仍未定位；继续核对 Q13-06 现有共享 DataGrid 交角及末行末列证据。Media Inbox 真实 Playnite 滚动复现条件仍未满足。
 
+## 2026-09-29 Q13-06 DataGrid 交角行为补测
+
+- 现有共享模板已给 Header、ContentPresenter、横条、竖条分配独立 3×3 区域，未改生产 XAML/C#。新增 production `MediaInboxGrid` STA WPF 行为回归后，发现并校准了测试对“边界刚好相接”的误判（WPF `Rect.IntersectsWith` 把共边算相交）；最终断言只把超过 `0.5 DIP` 的面积交叠作为覆盖。
+- 最终提交 `b98ea5a2` Release solution/XAML `0 warning / 0 error`、`24/24`；Media Inbox 滚动类 `4/4`、共享 Thumb `1/1`。以 2,000 条合成项量测顶/中/右下：Header bottom=Presenter top `82 DIP`，Presenter right=vertical left `608 DIP`，Presenter bottom=horizontal top `388 DIP`；末行索引 1999 与五个单元格完整，最后列滚至最右完整。结果与 TRX：[Q13-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-06-DATAGRID-SCROLLBAR-CORNER-20260929/README.md)。
+- Q13-06 自动行为条件已有证据，主账本真实宿主像素边界仍外部阻塞/最终未完成。WPF testhost 输出 TextServicesHost COM 清理异常但 TRX 明确 `4/4`、exit `0`，根因未知；没有启动 Playnite。下一项先核对 Q13-07 已有滚动链证据。
+
 ## 2026-09-29 Q13-05 共享滚动条 Thumb 与 Media Inbox 重检
 
 - 先复核 `DesignTokens.xaml` 现有双向 ScrollBar 模板：4 DIP 轨道端边距、36 DIP 最小长度、单一圆角 Rectangle 端帽、主题动态 Hover 资源已实现，无需更换系统或调整 ScrollUnit。提交 `ae35be70` 新增双主题生产 Thumb STA WPF 回归 `1/1`，实际检查纵/横轨道值端点、边隙、下限、单形状端帽及 Hover/离开刷恢复。

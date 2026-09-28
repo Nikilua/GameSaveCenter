@@ -1210,3 +1210,9 @@
 - 用户本次摘要仍只说明 `R08MotionReverseBehaviorTests` `1/2`，没有失败方法、断言或堆栈；checkout 内同名安装日志时间为 9/24，无法代表此轮。当前 `97a9b712` Release solution/XAML build `0 warning / 0 error`、`24/24`。
 - 从同一隔离输出以独立 VSTest 进程串行跑 R08 类 12 轮：每轮两项均通过，共 `24/24`、所有进程 exit `0`。各轮有 `InvalidComObjectException` 清理输出，根因未知；没有修改动画实现或测试断言。逐轮 TRX：[R08-RECHECK-97A9B712](evidence/R08-RECHECK-97A9B712-20260929/README.md)。
 - 这不定位用户侧失败，R08 报告保持打开，不更改账本状态。后续工作回到 Q13-06 已有交角/末行末列证据核验；Media Inbox 真实宿主问题仍按安全边界待验。
+
+## 2026-09-29 Q13-06 DataGrid 滚动交角与末行末列行为
+
+- 先检查已有共享 `GscRedesignDataGridTemplate` 和 `MediaInboxScrollBehaviorTests`：生产模板已有独立 3×3 横纵条布局，旧 2,000 项行为测试覆盖虚拟化/末行完整，但未直接量测两滚动条交角，也没确认最后一列完整位于 viewport。故只补实际生产 DataGrid 的 STA WPF 行为回归，没有改模板。
+- `b98ea5a2` Release solution/XAML `0 warning / 0 error`、`24/24`；Media Inbox 滚动类 `4/4`、Q13 Thumb 双主题类 `1/1`。顶/中/右下实测 Header bottom 与 Presenter top `82 DIP`、Presenter right 与竖条 left `608 DIP`、Presenter bottom 与横条 top `388 DIP`；两条滚动条同样只共边。滚到底/最右后末行 1999 完整，五个 cell 均有内容、最右单元格在视口内；列表保持 2,000 项、Item scroll 与行虚拟化。完整身份/边界/TRX：[Q13-06](evidence/Q13-06-DATAGRID-SCROLLBAR-CORNER-20260929/README.md)。
+- Round2 Q13-06 自动行为栏有本身份实际证据；因真实 Playnite 宿主/屏幕像素未验，仍保持 external blocker / incomplete。Media Inbox 用户报告的滚动错位未由此证明已经修复；下一项先核对 Q13-07 既有滚动链行为覆盖。
