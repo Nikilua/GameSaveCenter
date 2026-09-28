@@ -6,6 +6,7 @@
 - 精确提交身份 Release solution/XAML `0/0`、`24/24`；生产 `MaintenanceView` 的 STA WPF Light/Dark 行为 `1/1`：A 保持选中时命中/执行 B 行删除按钮只给 B 参数，Inspector 仍给 A；生产绑定契约 `1/1`。source validation、diff check 通过。[Q13-03 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
 - 不启动真实 Playnite/Worker、无 OS 鼠标/真实桌面命中或用户数据操作；Q13-03 宿主栏仍未完成。下一项 Q13-04 列调整命中热区。
 - 用户再次贴出 R08 `1/2` one-click 汇总但没有失败用例详情；本地 one-click 日志是 9/24 的其它审计。提交 `256a40f2` Release 身份隔离 R08 `2/2`、exit `0`；TextServicesHost `InvalidComObjectException` 是可见清理噪声，根因未知。该轮未复现，不表示故障解决；等待完整失败段/TRX后才能定位。详见[复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+- 后续在当前 `4a16874d` main 精确隔离 Release build 后，R08 两用例 `TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget` 与 `SidebarRapidReversalUsesLatestTargetAndReleasesOldClock` 均通过（`2/2`、exit `0`）；XAML `24/24`、solution `0 warning/0 error`，TRX 已归档于上述证据目录。console 有一条 TextServicesHost COM 清理噪声，根因未知。用户 `1/2` 失败依旧没有方法/堆栈/TRX，不能宣称已修。`origin/main` fetch 确认为 `4a16874d`，远端 codex 分支祖先已在 main 历史内。
 
 ## 2026-09-29 Q11-07 工作区状态保留
 

@@ -5,6 +5,7 @@
 - 检查生产命令和 DTO 后发现行内按钮不传当前行参数，旧命令会读取独立选中项。提交 `256a40f2` 让行内删除传入 `ProcessMappingDto`，DashboardViewModel 只接受明确 DTO 并使用其 EXE 名请求既有 Worker 消息；不增加服务/DTO。生产详情仍会切到实际请求目标。
 - `ProcessMappingInlineActionBehaviorTests 1/1` 使用真实 `MaintenanceView`/DataGrid/Button 与合成 A/B 项，在 Light/Dark 中保持 A 选中、对 B 行实际按钮中心 WPF HitTest 后经 AutomationPeer Invoke，捕获 B 参数且选中详情仍为 A；Inspector 按钮另外回归 A。`WpfUiResourceDictionaryTests.MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected 1/1`；Release solution `0 warning/0 error`、XAML `24/24`，source validator 与 diff check 通过。证据：[Q13-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
 - 用户再次报告 one-click R08 `1/2` 失败，但未附失败方法/堆栈/TRX；本地同名日志是 9/24 的另一任务。提交 `256a40f2` 同身份 R08 单独复核 `2/2`，exit `0`，testhost 有 TextServices `InvalidComObjectException` 清理噪声；继续保持未定位，不称已修复。详见 [R08 current recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+- 随后在当前 main `4a16874d` 重新隔离 Release build（XAML `24/24`、solution `0 warning/0 error`），实际 R08 两用例均通过，`2/2`、exit `0`；保存精确 TRX `R08-4a16874d.trx`，testhost 清理噪声仍为一条 TextServicesHost `InvalidComObjectException`。用户侧失败未复现，原始失败方法/堆栈/TRX 仍缺，不能推断根因。`git fetch origin` 后 `origin/main=4a16874d`，没有更晚的 main 提交；当前 checkout 仅 main worktree。
 - 没有启动真实 Playnite、执行 Worker 删除、访问真实存档/媒体/云端或外发诊断；Q13-03 真桌面鼠标命中仍未验。下一项 Q13-04 列宽调整命中热区。
 
 ## 2026-09-29 Q11-07 工作区状态往返行为

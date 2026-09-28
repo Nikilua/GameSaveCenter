@@ -5,6 +5,7 @@
 - `256a40f2` 修复 Maintenance 进程映射行内按钮漏传行 DTO、旧命令会误用另一选中行的问题。Light/Dark 生产 WPF 行为 `1/1`，源绑定契约 `1/1`；精确身份 Release solution/XAML `0 warning / 0 error`、`24/24`，source validation/diff check 通过。证据：[Q13-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
 - 没有启动真实 Playnite、执行 Worker 删除请求或 OS 级鼠标输入；Q13-03 真实宿主行命中仍待验，最终状态不签收。
 - 用户新提供的 one-click 摘要仍为 R08 `1/2`，但缺失败方法/堆栈/TRX；同身份本机 R08 `2/2`，伴随 TextServicesHost COM 清理噪声。证据：[R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。失败未定位，不标成已解决。
+- 在当前 `4a16874d` main 完成隔离 Release solution/XAML 构建（`0 warning/0 error`、`24/24`），R08 两个具体用例 `2/2`、exit `0`；TRX 与身份见同一 [R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。仍缺失败机器原始断言与堆栈，因此失败未定位。远端 fetch 后 `origin/main=4a16874d`，没有待合并的 main 提交。
 - 下一项 Q13-04 列宽调整命中热区；Media Inbox 真实滚动错位仍需同进程 `[GSC-GRID-DIAGNOSTIC]`。
 
 ## 2026-09-29 Q13-02 多选反馈核对

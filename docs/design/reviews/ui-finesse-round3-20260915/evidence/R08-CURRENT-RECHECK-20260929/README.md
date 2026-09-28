@@ -25,3 +25,11 @@
 - 在提交 `256a40f2` 的隔离 Release solution build 后，单独运行 `R08MotionReverseBehaviorTests`：`2/2`、0 failed/skipped、VSTest exit `0`；TRX 为 [`R08-256a40f2.trx`](R08-256a40f2.trx)。
 - 该次退出仍输出 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`；xUnit/VSTest 明确成功，根因未知。此文本仅记录为清理噪声，不视为业务失败，也不代表已解决用户的间歇失败。
 - 用户失败仍未复现，失败方法与该提交身份未能在用户机器上核对。不能据本地单轮通过宣称已定位或根治；如再次发生，需要完整失败段或相应 TRX 来确定是哪一个动画断言。
+
+## 2026-09-29 当前 main `4a16874d` 再复核
+
+- 用户随后再次提供 `R08MotionReverseBehaviorTests` `1 passed / 1 failed / 2 total`，没有失败方法、断言、堆栈或 TRX。本机 `artifacts/one-click-install.log` 仍是 2026-09-24 的旧宿主审计，不能定位这次失败。
+- `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot .tmp/r08-user-failure-4a16874d/build` 在 `4a16874dfa62904ae6ed54f824e4366a1402aff2` 下完成：XAML `24/24`、solution `0 warning / 0 error`。构建后从此隔离输出执行 R08 两用例，结果 `2/2`、0 failed/skipped、VSTest exit `0`；两个具体用例均通过：`TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget`、`SidebarRapidReversalUsesLatestTargetAndReleasesOldClock`。TRX：[R08-4a16874d.trx](R08-4a16874d.trx)，测试程序集 SHA-256 `33F4F22FF0CFEC2FF0A732D64842C0C82103DC73AB7C3333171E0E86CA0B5640`。
+- 本次 console 有 1 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理输出；xUnit/VSTest 结果仍为 `2/2` 且 exit `0`，根因未知。它不是用户报告的失败证据。
+- 本轮 fetch 成功，`origin/main` 与本地 `4a16874d` 相同，没有更晚的 main 提交；`origin/codex/ui-finesse-round2` 指向 `eaee1d20`，该提交已包含在当前 main 历史内。当前本地工作树只有 main checkout，另一个本地 `codex/ui-finesse-round2` 引用并非单独 worktree。
+- 用户失败仍未复现或定位。继续需要失败机器完整 one-click log 的失败段或该轮 TRX（包含失败用例名、消息和堆栈）；本地当前身份的通过结果不能替代它。自动化 STA WPF 夹具也不代表 Playnite 宿主动画或呈现。

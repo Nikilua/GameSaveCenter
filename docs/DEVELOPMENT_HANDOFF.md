@@ -7,6 +7,12 @@
 - 用户再次报告 R08 one-click `1/2` 失败，但没带失败方法/断言/堆栈/TRX。本 checkout 的同名日志仍是 9/24 另一轮审计。当前 `256a40f2` 精确 Release 身份单独复跑 `2/2`；有 `TextServicesHost InvalidComObjectException` 退出噪声但 VSTest exit `0`，无法据此定位或宣称修好用户故障。详见[R08 记录](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
 - 下一项 Q13-04 列宽调整命中热区：优先复用共享 DataGrid 模板并补实际拖动/边界行为。Media Inbox 滚动错位仍需同次真实 Playnite `[GSC-GRID-DIAGNOSTIC]`，包括运行 DLL 身份、逻辑尺寸、DPI、主题、header/ScrollContentPresenter/首行坐标和外层 offset。
 
+## 2026-09-29 R08 最新复核补充
+
+- 用户提供的 R08 `1/2` 仍没有失败用例名、断言或堆栈。本机 9/24 one-click 日志不是该轮记录；在当前 `4a16874d` 精确隔离 Release 构建中，两个用例均通过，TRX 在 `evidence/R08-CURRENT-RECHECK-20260929/R08-4a16874d.trx`。此结果未定位用户失败，需取得失败机器完整日志/TRX。
+- `git fetch origin` 确认 `origin/main=4a16874d`；远端 `codex/ui-finesse-round2` 的 `eaee1d20` 已在 main 祖先链中。当前 repo 只有 main worktree；不要从旧本地 codex ref 覆盖 main。
+- 下一项继续 Q13-04 列宽拖动热区；Media Inbox 真实宿主滚动缺陷仍以同进程几何日志为诊断前置。
+
 ## 2026-09-29 当前交接：Q13-02 多选已实现范围与手势待验
 
 - 生产批量模型已存在，不新增第二套：主 DataGrid 使用 Extended，Media 命令接 `SelectedItems`；R05/R22 历史 WPF 行为测试覆盖计数、空选、清空、隐藏选择和负例。Tri-state 复选框当前无生产 DataGrid 消费点。细节与明确未覆盖的实际修饰键手势：[Q13-02 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
