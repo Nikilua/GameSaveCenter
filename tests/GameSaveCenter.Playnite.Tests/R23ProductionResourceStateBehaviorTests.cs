@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
@@ -463,6 +465,201 @@ public sealed class R23ProductionResourceStateBehaviorTests
     }
 
     [Fact]
+    public void WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var pages = new[]
+            {
+                (FileName: "SaveCenterView.xaml", ExpectedCount: 4),
+                (FileName: "MediaCenterView.xaml", ExpectedCount: 4),
+                (FileName: "MaintenanceView.xaml", ExpectedCount: 6),
+                (FileName: "TrainerCenterView.xaml", ExpectedCount: 4)
+            };
+            var productionHeaders = pages.Select(page =>
+                (page.FileName, Headers: ReadTopLevelWorkspaceTabHeaders(page.FileName))).ToArray();
+            foreach (var page in productionHeaders)
+                Assert.Equal(pages.Single(expected => expected.FileName == page.FileName).ExpectedCount, page.Headers.Length);
+
+            var resources = LoadProductionResources();
+            var tabControlStyle = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabControl"]);
+            var tabItemStyle = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]);
+
+            foreach (var page in productionHeaders)
+            {
+                foreach (var theme in Themes)
+                {
+                    var root = new Grid { Resources = resources };
+                    root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    var beforeTabs = new Button { Content = "前一控件", Height = 30, Width = 110 };
+                    Grid.SetRow(beforeTabs, 0);
+                    root.Children.Add(beforeTabs);
+
+                    var tabs = new TabControl
+                    {
+                        Style = tabControlStyle,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        VerticalContentAlignment = VerticalAlignment.Stretch
+                    };
+                    foreach (var header in page.Headers)
+                    {
+                        tabs.Items.Add(new TabItem
+                        {
+                            Style = tabItemStyle,
+                            Header = header,
+                            Content = new Border { Child = new TextBlock { Text = page.FileName + ": " + header } }
+                        });
+                    }
+                    Grid.SetRow(tabs, 1);
+                    root.Children.Add(tabs);
+                    var window = CreateWindow(root, 320, 240);
+
+                    try
+                    {
+                        window.Show();
+                        tabs.ApplyTemplate();
+                        FlushLayout(window);
+                        var headerViewer = Assert.IsType<ScrollViewer>(tabs.Template.FindName("HeaderScrollViewer", tabs));
+                        var contentHost = Assert.IsType<ContentPresenter>(tabs.Template.FindName("PART_SelectedContentHost", tabs));
+                        var horizontalBar = Assert.Single(FindVisualChildren<ScrollBar>(headerViewer),
+                            scrollBar => scrollBar.Orientation == Orientation.Horizontal);
+
+                        ApplyTheme(root, theme);
+                        tabs.SelectedIndex = 0;
+                        headerViewer.ScrollToHorizontalOffset(0);
+                        FlushLayout(window);
+
+                        Assert.Equal(page.Headers.Length, tabs.Items.Count);
+                        Assert.Equal(ScrollBarVisibility.Auto, headerViewer.HorizontalScrollBarVisibility);
+                        Assert.True(headerViewer.ViewportWidth > 0, $"{page.FileName}/{theme}: header viewport has no width.");
+                        Assert.True(headerViewer.ScrollableWidth > 24,
+                            $"{page.FileName}/{theme}: current production headers do not exercise the narrow overflow path; " +
+                            $"count={page.Headers.Length}, viewport={headerViewer.ViewportWidth:0.##}, extent={headerViewer.ExtentWidth:0.##}.");
+                        Assert.True(horizontalBar.IsVisible && horizontalBar.ActualHeight >= 10,
+                            $"{page.FileName}/{theme}: the horizontal mouse scroll channel is not visible.");
+
+                        var baselineContentWidth = contentHost.ActualWidth;
+                        var firstTab = Assert.IsType<TabItem>(tabs.Items[0]);
+                        Assert.Same(beforeTabs, Keyboard.Focus(beforeTabs));
+                        Assert.True(beforeTabs.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)),
+                            $"{page.FileName}/{theme}: Tab could not enter the workspace headers.");
+                        var focusedTab = Assert.IsType<TabItem>(Keyboard.FocusedElement is DependencyObject focused
+                            ? FindVisualAncestor<TabItem>(focused)
+                            : null);
+                        Assert.Same(firstTab, focusedTab);
+
+                        for (var index = 1; index < tabs.Items.Count; index++)
+                        {
+                            var source = Keyboard.FocusedElement as FrameworkElement ?? (FrameworkElement)tabs.Items[index - 1];
+                            RaiseWorkspaceTabKeyDown(source, window, Key.Right);
+                            FlushLayout(window);
+                            var selected = Assert.IsType<TabItem>(tabs.Items[index]);
+                            Assert.Equal(index, tabs.SelectedIndex);
+                            Assert.True(selected.IsKeyboardFocusWithin,
+                                $"{page.FileName}/{theme}: Right did not move keyboard focus to '{page.Headers[index]}'.");
+                            Assert.True(IsFullyInsideViewport(selected, headerViewer),
+                                $"{page.FileName}/{theme}: keyboard-selected '{page.Headers[index]}' was not scrolled into the header viewport.");
+                            Assert.True(Math.Abs(contentHost.ActualWidth - baselineContentWidth) <= 0.25,
+                                $"{page.FileName}/{theme}: overflowing headers changed the selected content width.");
+                        }
+
+                        for (var index = tabs.Items.Count - 2; index >= 0; index--)
+                        {
+                            var source = Keyboard.FocusedElement as FrameworkElement ?? (FrameworkElement)tabs.Items[index + 1];
+                            RaiseWorkspaceTabKeyDown(source, window, Key.Left);
+                            FlushLayout(window);
+                            var selected = Assert.IsType<TabItem>(tabs.Items[index]);
+                            Assert.Equal(index, tabs.SelectedIndex);
+                            Assert.True(selected.IsKeyboardFocusWithin,
+                                $"{page.FileName}/{theme}: Left did not return keyboard focus to '{page.Headers[index]}'.");
+                            Assert.True(IsFullyInsideViewport(selected, headerViewer),
+                                $"{page.FileName}/{theme}: keyboard-selected '{page.Headers[index]}' was not scrolled back into view.");
+                        }
+
+                        Assert.InRange(headerViewer.HorizontalOffset, 0, 0.5);
+                        tabs.SelectedIndex = 0;
+                        headerViewer.ScrollToHorizontalOffset(0);
+                        FlushLayout(window);
+
+                        var increaseTrackButton = GetScrollTrackButton(horizontalBar, increase: true);
+                        var previousOffset = headerViewer.HorizontalOffset;
+                        var scrollSteps = 0;
+                        while (headerViewer.HorizontalOffset < headerViewer.ScrollableWidth - 0.5 && scrollSteps++ < 8)
+                        {
+                            InvokeRepeatButtonClick(increaseTrackButton);
+                            FlushLayout(window);
+                            Assert.True(headerViewer.HorizontalOffset > previousOffset + 0.5,
+                                $"{page.FileName}/{theme}: mouse scroll-bar page action did not advance the header viewport.");
+                            previousOffset = headerViewer.HorizontalOffset;
+                        }
+                        Assert.True(headerViewer.HorizontalOffset >= headerViewer.ScrollableWidth - 0.5,
+                            $"{page.FileName}/{theme}: mouse scroll-bar actions could not reach the final tab.");
+
+                        var lastTab = Assert.IsType<TabItem>(tabs.Items[tabs.Items.Count - 1]);
+                        Assert.True(IsFullyInsideViewport(lastTab, headerViewer),
+                            $"{page.FileName}/{theme}: final tab is clipped after mouse scrolling.");
+                        RaiseWorkspaceTabMouseClick(lastTab, window);
+                        FlushLayout(window);
+                        Assert.Equal(tabs.Items.Count - 1, tabs.SelectedIndex);
+
+                        var decreaseTrackButton = GetScrollTrackButton(horizontalBar, increase: false);
+                        previousOffset = headerViewer.HorizontalOffset;
+                        scrollSteps = 0;
+                        while (headerViewer.HorizontalOffset > 0.5 && scrollSteps++ < 8)
+                        {
+                            InvokeRepeatButtonClick(decreaseTrackButton);
+                            FlushLayout(window);
+                            Assert.True(headerViewer.HorizontalOffset < previousOffset - 0.5,
+                                $"{page.FileName}/{theme}: mouse scroll-bar page action did not return toward the first tab.");
+                            previousOffset = headerViewer.HorizontalOffset;
+                        }
+                        var firstVisibleTab = Assert.IsType<TabItem>(tabs.Items[0]);
+                        Assert.True(IsFullyInsideViewport(firstVisibleTab, headerViewer));
+                        RaiseWorkspaceTabMouseClick(firstVisibleTab, window);
+                        FlushLayout(window);
+                        Assert.Equal(0, tabs.SelectedIndex);
+                    }
+                    finally
+                    {
+                        window.Close();
+                    }
+                }
+            }
+
+            var wideRoot = new Grid { Resources = resources };
+            var wideTabs = new TabControl
+            {
+                Style = tabControlStyle,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch
+            };
+            foreach (var header in productionHeaders.Single(page => page.FileName == "MaintenanceView.xaml").Headers)
+                wideTabs.Items.Add(new TabItem { Style = tabItemStyle, Header = header, Content = new Border() });
+            wideRoot.Children.Add(wideTabs);
+            var wideWindow = CreateWindow(wideRoot, 1280, 280);
+            try
+            {
+                wideWindow.Show();
+                wideTabs.ApplyTemplate();
+                FlushLayout(wideWindow);
+                var wideViewer = Assert.IsType<ScrollViewer>(wideTabs.Template.FindName("HeaderScrollViewer", wideTabs));
+                Assert.True(wideViewer.ScrollableWidth <= 0.5,
+                    $"a wide workspace should fit its current six maintenance tabs; scrollable={wideViewer.ScrollableWidth:0.##} DIP.");
+                var wideBar = Assert.Single(FindVisualChildren<ScrollBar>(wideViewer),
+                    scrollBar => scrollBar.Orientation == Orientation.Horizontal);
+                Assert.Equal(Visibility.Collapsed, wideBar.Visibility);
+            }
+            finally
+            {
+                wideWindow.Close();
+            }
+        });
+    }
+
+    [Fact]
     public void EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes()
     {
         RunSta(() =>
@@ -629,6 +826,76 @@ public sealed class R23ProductionResourceStateBehaviorTests
             foreach (var nested in FindVisualChildren<T>(child))
                 yield return nested;
         }
+    }
+
+    private static T? FindVisualAncestor<T>(DependencyObject element)
+        where T : DependencyObject
+    {
+        for (DependencyObject? current = element; current != null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (current is T match)
+                return match;
+        }
+
+        return null;
+    }
+
+    private static string[] ReadTopLevelWorkspaceTabHeaders(string fileName)
+    {
+        XNamespace presentation = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+        var path = Path.Combine(TestRepositoryContext.Root, "src", "GameSaveCenter.Playnite", "Views", fileName);
+        var page = XDocument.Load(path);
+        var tabControl = page.Descendants(presentation + "TabControl").FirstOrDefault()
+            ?? throw new InvalidOperationException($"{fileName} has no production TabControl.");
+        return tabControl.Elements(presentation + "TabItem")
+            .Select(tab => (string?)tab.Attribute("Header") ?? string.Empty)
+            .ToArray();
+    }
+
+    private static bool IsFullyInsideViewport(FrameworkElement element, ScrollViewer viewer)
+    {
+        var bounds = BoundsRelativeTo(element, viewer);
+        return bounds.Left >= -0.5 && bounds.Right <= viewer.ViewportWidth + 0.5;
+    }
+
+    private static RepeatButton GetScrollTrackButton(ScrollBar scrollBar, bool increase)
+    {
+        scrollBar.ApplyTemplate();
+        var track = Assert.IsType<Track>(scrollBar.Template!.FindName("PART_Track", scrollBar));
+        return Assert.IsType<RepeatButton>(increase ? track.IncreaseRepeatButton : track.DecreaseRepeatButton);
+    }
+
+    private static void InvokeRepeatButtonClick(RepeatButton button)
+        => (typeof(RepeatButton).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("WPF RepeatButton.OnClick was not found."))
+            .Invoke(button, Array.Empty<object>());
+
+    private static void RaiseWorkspaceTabKeyDown(FrameworkElement source, Window host, Key keyValue)
+    {
+        var presentationSource = PresentationSource.FromVisual(host)
+            ?? throw new InvalidOperationException("The workspace tab test window has no presentation source.");
+        source.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, presentationSource, 0, keyValue)
+        {
+            RoutedEvent = Keyboard.PreviewKeyDownEvent
+        });
+        source.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, presentationSource, 0, keyValue)
+        {
+            RoutedEvent = Keyboard.KeyDownEvent
+        });
+    }
+
+    private static void RaiseWorkspaceTabMouseClick(TabItem item, Window host)
+    {
+        _ = PresentationSource.FromVisual(host)
+            ?? throw new InvalidOperationException("The workspace tab test window has no presentation source.");
+        item.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+        {
+            RoutedEvent = UIElement.MouseLeftButtonDownEvent
+        });
+        item.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+        {
+            RoutedEvent = UIElement.MouseLeftButtonUpEvent
+        });
     }
 
     private static Rect[] CaptureCellAndTextGeometry(DataGridRow row, DataGrid grid)
