@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q11-02 导航当前项与焦点叠加复核；Media Inbox 宿主仍阻塞
+
+- `9987dbb10f14519f3da2614215ab298410320149` 只扩展导航状态测试。Release Playnite 测试项目构建成功；`R23ProductionResourceStateBehaviorTests 4/4`、0 失败/跳过，exit `0`。浅/深主题中测量选中+焦点描边、焦点移出后选中保留、未选中聚焦和禁用拒焦；没有生产 UI 变化。证据：[Q11-02](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md)。真实鼠标 hover、OS Tab、Playnite host 和呈现未验，Q11-02 仍未完成。
+- 本次 Media Inbox 宿主复核未能启动 Playnite：进程枚举为 0；宿主 EXE 存在但 File/ProductVersion 均为 `1.0.0.0`（不证明运行版）；隔离 runner 必需的 `Win32_Process` 命令行预检仍 Access Denied，故本轮没有发起启动。旧隔离尝试在插件安装前未正常退出，runner 拒绝强杀，没有 GSC DLL identity 或 grid 滚动日志。没有对数据模板作猜测修改。事实与原有失败输出：[Media Inbox 宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-RECHECK-20260928.md)。
+- 用户缺陷保持未复现/未修；待同次运行的 DLL path/version/MVID、windowDip/DPI/theme 和顶部/中段/拖到底/往返 `[GSC-GRID-DIAGNOSTIC]`。当前独立下一小批 `Q11-03` 收起导航 Tooltip 行为；收到媒体宿主证据后优先返回该缺陷。
+
 ## 2026-09-28 Q11-01 导航展开/收起图文几何
 
 - 测试提交 `cd631771f812fa1f3aed99b5d079f49043ae7f13` 为生产 `AcrylicProductionShellView` 增加 STA WPF 几何回归，仅改测试。七个入口逐项量测图标/标签/框位置、主区行高和间隔、收起时图标居中、选中框横向全宽及收起往返的垂直稳定性；展开/收起/恢复实测图标中心 `36.33/34.33/36.33 DIP`，主导航间距 `54 DIP`。Release Playnite.Tests `0 warning/0 error`，壳层行为类 `13/13` exit `0`。证据：[Q11-01 导航几何](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md)。

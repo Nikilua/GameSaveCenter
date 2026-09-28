@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q11-02 当前导航项与键盘焦点叠加
+
+- 检查 `AcrylicNavItem` 模板及现有 R23 状态测试：已有测试分别验证选中和未选中聚焦，却没有覆盖当前页选中与键盘焦点同时成立。`9987dbb10f14519f3da2614215ab298410320149` 仅新增这一组合的 STA WPF 行为测试，没有更改生产样式。
+- 当前提交身份下 Release Playnite.Tests 构建成功；`R23ProductionResourceStateBehaviorTests 4/4`、0 failed/skipped、exit `0`。Light/Dark 实测 selected+focus accent 描边 `2 DIP`、失焦保选、未选中焦点、禁用拒焦。TRX `artifacts/q11-02-nav-focus-20260928/q11-02-r23-resource-state-9987dbb1.trx`，未见 `InvalidComObjectException`。自动状态测试未驱动 OS mouse hover/Tab；真实 Playnite 仍待验。
+- 同时按用户要求新鲜核对 Media Inbox 隔离宿主：当前 Playnite 进程数 0，找到的 EXE 版本资源 `1.0.0.0`；runner 的命令行预检被 Access Denied 拒绝。既有 `real-host-media-inbox-20260928` 隔离启动在插件安装前失败且不强制终止；本轮未启动或安装。无 runtime DLL identity、DPI/theme、窗口几何及滚动日志，因此没有猜测修改 DataGrid。证据 `MEDIA-INBOX-HOST-RECHECK-20260928.md`。
+- 下一项为 Q11-03 收起导航 Tooltip 延迟/位置行为；取得用户同进程诊断或隔离前置条件恢复后优先回到 Media Inbox 根因。
+
 ## 2026-09-28 Q11-01 导航收起/展开图文几何
 
 - 审阅 Demo-first 下现有 `AcrylicProductionShellView`/`AcrylicNavItem`，复用 26-DIP 图标和 RadioButton，不改生产控件、颜色或命令。给 `ProductionShellChromeSourceTests` 增加实际 WPF 行为几何断言：七个导航项展开/收起/恢复逐行验证图标/标签中心、水平起点、等高、主区相邻间距、选中边框覆盖整行、收起图标居中及选择保留。

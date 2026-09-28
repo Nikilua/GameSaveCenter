@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q11-02 当前导航选中态与焦点叠加；Media Inbox 宿主预检复核
+
+- `9987dbb10f14519f3da2614215ab298410320149` 新增一个 STA WPF 行为用例，未改生产 UI。Light/Dark 实际 `AcrylicNavItem` 模板证明选中+键盘焦点时强选中填充仍在且 2-DIP accent focus outline 可见；焦点移出不改变选择；未选中聚焦和禁用拒焦也有正/负断言。`R23ProductionResourceStateBehaviorTests 4/4`，Release 构建成功，无失败/跳过/COM cleanup 噪声。Q11-02 仍缺真实 mouse hover/OS Tab/Playnite/presented frame。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md`。
+- 用户 Media Inbox 缺陷本轮没有真实宿主复现或生产修复。当前无 Playnite 进程；已找到 EXE 但版本资源只是 `1.0.0.0`，不是运行身份。安全隔离 runner 的 Win32 命令行可用性检查仍 Access Denied，拒绝绕过；此前启动在插件安装前未安全关闭，没有 GSC 日志。不能从 WPF synthetic pass 决定是共享视口或行锚点原因。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-RECHECK-20260928.md`。
+- 等用户侧同进程身份/窗口/DPI/主题和 top/mid/thumb-end/roundtrip `[GSC-GRID-DIAGNOSTIC]`，或隔离权限/正常关闭条件恢复后继续取证。下一独立任务 Q11-03 tooltip 定位与延迟行为。
+
 ## 2026-09-28 Q11-01 生产壳层导航图文节奏
 
 - `AcrylicProductionShellView` 共七个 `AcrylicNavItem`。当前 `cd631771` 新增真实 STA WPF `Window` 几何行为门禁，覆盖展开/收起/恢复、icon/label 中心、X 对齐、各项高度、主导航相邻中心间隔、收起居中、选中框横向全宽以及任务选择保留；该项没有生产 UI 改动。精确结果见 `design/reviews/ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md`。

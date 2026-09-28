@@ -1,3 +1,9 @@
+## 2026-09-28 当前续作：Q11-02 状态组合与 Media Inbox 宿主门禁
+
+- Q11-02 新增 `AcrylicNavItem` 真实 WPF selected+keyboard focus 重叠行为，提交 `9987dbb10f14519f3da2614215ab298410320149`，`R23ProductionResourceStateBehaviorTests 4/4` 通过；不改生产样式。Q11-02 保持未完成，OS mouse hover 和 Playnite host 未验；证据见 [Q11-02](evidence/Q11-02-SELECTED-FOCUS-20260928.md)。Round2 账本只更新该项，不改变第三轮 192 行 R 统计。
+- Media Inbox 用户空白问题按真实宿主流程再次检查：Playnite 进程为 0，找到的 Desktop EXE 文件资源版本为 `1.0.0.0`，无法充当运行身份；隔离 runner 的命令行可用性门返回 Access Denied。本轮没有启动/改真实 profile，旧失败隔离记录发生在 GSC 安装前。用户缺陷未复现、未修，数据模板/虚拟化保持不动；详见 [Media Inbox 宿主复核](evidence/MEDIA-INBOX-HOST-RECHECK-20260928.md)。
+- 当前独立下一项 Round2 `Q11-03` 收起导航 Tooltip 行为；取得同次真实宿主诊断或隔离前置恢复后，优先返回 Media Inbox 根因分流。
+
 ## 2026-09-28 Q10-07 设置滑杆实际可操作性
 
 - 盘点生产设置 `GlassStrengthSlider` 和共享 `GscSlider`：旧证据只量得开发夹具 150 DIP 可见，新增生产 WPF 用例在旧模板 Light/Dark `0/2` 复现轨道上下命中为 `none`。`e007a339` 用透明命中面承载原 4 DIP 可见轨道，18 DIP 可见圆形 Thumb 保持，命中扩大到 32 DIP；键盘小/大步长固定为 1/10。

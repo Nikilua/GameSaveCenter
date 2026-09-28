@@ -99,7 +99,7 @@
 | Q10-07 | Slider 可操作性 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [设置真实滑杆命中/键盘/标签行为](../ui-finesse-round3-20260915/evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md)；共享轨道上下命中修复，Light/Dark/FollowPlaynite 实际 WPF `3/3`，宿主输入/DPI 待验 |
 | Q10-08 | 密集选项分组 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [设置密集选项行为](../ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)；自动 WPF 覆盖三主题资源模式及 1280/920/560 DIP、标题/说明归属、换行、绑定禁用与页尾可达；真实 Playnite/package-host 与物理 DPI 待验 |
 | Q11-01 | 侧栏图文节奏 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [导航图文中心几何](../ui-finesse-round3-20260915/evidence/Q11-01-NAVIGATION-RHYTHM-20260928.md)；实际 WPF 七项展开/收起/恢复、标签/图标/选中框横向全宽与垂直节奏通过，Playnite 主题和最终呈现待验 |
-| Q11-02 | 当前项强调 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航状态来源](evidence/Q04-Q12-INDEX.md)；Focus/Selected 实机序列待验 |
+| Q11-02 | 当前项强调 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [当前页与键盘焦点叠加](../ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md)；浅/深主题的真实 WPF 选中+聚焦、失焦保选、未选中聚焦、禁用拒焦通过；OS 鼠标 hover 与 Playnite 宿主仍待验 |
 | Q11-03 | 收起模式提示 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航 Tooltip 来源](evidence/Q04-Q12-INDEX.md)；收起时定位待宿主 |
 | Q11-04 | 页签内边距 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [TabItem 来源](evidence/Q04-Q12-INDEX.md)；长英文/计数溢出待宿主 |
 | Q11-05 | 页签内容拉伸 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [TabControl 来源](evidence/Q04-Q12-INDEX.md)；ContentPresenter Stretch 已复核 |
