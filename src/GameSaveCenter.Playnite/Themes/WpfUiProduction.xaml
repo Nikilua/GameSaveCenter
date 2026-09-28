@@ -1125,6 +1125,7 @@
     <Style x:Key="GscWpfUiToggleSwitch"
            TargetType="{x:Type ui:ToggleSwitch}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="MotionEnabled" Value="{DynamicResource GscToggleMotionEnabled}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="MinHeight" Value="34"/>
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
@@ -1164,20 +1165,6 @@
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Track" Property="Background" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="17" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="0" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>

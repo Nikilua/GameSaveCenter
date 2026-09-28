@@ -3,8 +3,11 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.Controls
 {
@@ -213,9 +216,106 @@ namespace GameSaveCenter.Playnite.Controls
 
     public class ToggleSwitch : CheckBox
     {
+        private TranslateTransform? thumbTransform;
+        private int motionGeneration;
+
         static ToggleSwitch()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleSwitch), new FrameworkPropertyMetadata(typeof(CheckBox)));
+        }
+
+        public ToggleSwitch()
+        {
+            IsEnabledChanged += HandleIsEnabledChanged;
+        }
+
+        public static readonly DependencyProperty MotionEnabledProperty =
+            DependencyProperty.Register(
+                nameof(MotionEnabled),
+                typeof(bool),
+                typeof(ToggleSwitch),
+                new FrameworkPropertyMetadata(true, OnMotionEnabledChanged));
+
+        public bool MotionEnabled
+        {
+            get => (bool)GetValue(MotionEnabledProperty);
+            set => SetValue(MotionEnabledProperty, value);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            if (GetTemplateChild("Thumb") is FrameworkElement thumb)
+            {
+                thumbTransform = thumb.RenderTransform as TranslateTransform;
+                if (thumbTransform == null || thumbTransform.IsFrozen)
+                {
+                    thumbTransform = new TranslateTransform();
+                    thumb.RenderTransform = thumbTransform;
+                }
+            }
+            MoveThumb(animate: false);
+        }
+
+        protected override void OnChecked(RoutedEventArgs e)
+        {
+            base.OnChecked(e);
+            MoveThumb(animate: true);
+        }
+
+        protected override void OnUnchecked(RoutedEventArgs e)
+        {
+            base.OnUnchecked(e);
+            MoveThumb(animate: true);
+        }
+
+        private void HandleIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsEnabled)
+                MoveThumb(animate: false);
+        }
+
+        private static void OnMotionEnabledChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool enabled && !enabled)
+                ((ToggleSwitch)dependencyObject).MoveThumb(animate: false);
+        }
+
+        private void MoveThumb(bool animate)
+        {
+            if (thumbTransform == null)
+                return;
+
+            var target = IsChecked == true ? 17d : 0d;
+            var generation = ++motionGeneration;
+            var configuredDuration = TryFindResource("GscToggleMotionFast");
+            var duration = configuredDuration is Duration value && value.HasTimeSpan
+                ? value.TimeSpan
+                : GscMotion.Fast;
+            if (!animate || !MotionEnabled || !GscMotion.IsEnabled(true) || duration <= TimeSpan.Zero)
+            {
+                thumbTransform.BeginAnimation(TranslateTransform.XProperty, null);
+                thumbTransform.X = target;
+                return;
+            }
+
+            var current = thumbTransform.X;
+            thumbTransform.BeginAnimation(TranslateTransform.XProperty, null);
+            thumbTransform.X = current;
+            var transition = new DoubleAnimation(current, target, duration)
+            {
+                EasingFunction = GscMotion.CreateEaseOut(),
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            transition.Completed += (_, __) =>
+            {
+                if (generation != motionGeneration)
+                    return;
+
+                thumbTransform.BeginAnimation(TranslateTransform.XProperty, null);
+                thumbTransform.X = target;
+            };
+            thumbTransform.BeginAnimation(TranslateTransform.XProperty, transition, HandoffBehavior.SnapshotAndReplace);
         }
 
         public static readonly DependencyProperty OnContentProperty =

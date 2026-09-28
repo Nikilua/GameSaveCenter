@@ -654,6 +654,7 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
         var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var nativeControls = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Controls", "NativeWpfControls.cs"));
 
         Assert.Contains("x:Name=\"FocusOverlay\"", production);
         Assert.Contains("x:Name=\"HoverOverlay\"", production);
@@ -666,6 +667,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Themes/MotionTokens.xaml", production);
         Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", production);
         Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", production);
+        Assert.Contains("<Setter Property=\"MotionEnabled\" Value=\"{DynamicResource GscToggleMotionEnabled}\"/>", production);
         Assert.Contains("GscOnAccentHoverOverlayBrush", production);
         Assert.Contains("GscOnAccentPressedOverlayBrush", production);
         Assert.Contains("<SolidColorBrush x:Key=\"GscOnAccentHoverOverlayBrush\"", tokens);
@@ -677,8 +679,12 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("<ColumnDefinition Width=\"46\"/>", production);
         Assert.Contains("Width=\"40\" Height=\"23\" CornerRadius=\"11.5\"", production);
-        Assert.Contains("RenderTransform.(TranslateTransform.X)", production);
-        Assert.Contains("EasingFunction=\"{StaticResource GscMotionEaseOut}\"", production);
+        Assert.DoesNotContain("RenderTransform.(TranslateTransform.X)", production);
+        Assert.Contains("protected override void OnChecked(RoutedEventArgs e)", nativeControls);
+        Assert.Contains("protected override void OnUnchecked(RoutedEventArgs e)", nativeControls);
+        Assert.Contains("MoveThumb(animate: true)", nativeControls);
+        Assert.Contains("EasingFunction = GscMotion.CreateEaseOut()", nativeControls);
+        Assert.Contains("FillBehavior = FillBehavior.HoldEnd", nativeControls);
     }
 
     [Fact]

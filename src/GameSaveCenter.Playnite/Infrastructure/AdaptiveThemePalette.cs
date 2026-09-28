@@ -374,6 +374,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
             resources["GscPopupAllowsTransparency"] = glassEnabled;
             resources["GscPopupAnimation"] = motionEnabled && !palette.IsHighContrast ? PopupAnimation.Fade : PopupAnimation.None;
+            var toggleMotionEnabled = motionEnabled && !palette.IsHighContrast && GscMotion.IsEnabled(true);
+            resources["GscToggleMotionEnabled"] = toggleMotionEnabled;
+            resources["GscToggleMotionFast"] = new Duration(
+                toggleMotionEnabled
+                    ? GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Fast)
+                    : TimeSpan.Zero);
             var glassStrength = Math.Max(0.2, Math.Min(1, palette.GlassStrength));
             // The production shell owns the one ambient wash across sidebar, pages and footer.
             // Page-local AmbientMaterialLayer instances remain for compatibility and game
