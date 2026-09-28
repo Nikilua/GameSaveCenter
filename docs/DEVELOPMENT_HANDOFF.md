@@ -6,7 +6,7 @@
 
 只有确认几何变化发生在整个内容视口还是行本身，才分别查 `Themes/Redesign.xaml`/有限高度页面布局，或 `MediaDataGrid` 虚拟化、集合刷新与锚点恢复。保留 row virtualization、现有滚动条、Playnite/net462、命令/取消/错误/恢复语义；不使用空白填充、负边距或关闭虚拟化遮盖。目标回归应使用合成媒体和隔离 WPF 窗口覆盖顶部/中段/拖动到底/反复往返/resize/125%/150% DPI，检查首行贴近内容视口、末行完整和页尾操作可达，再由 Playnite 宿主复核。实际 root cause 未确认前不改共享模板或生产布局。
 
-Q10-06 已在 `9ec0ab83` 收口自动行为回归：精确提交 Release 构建 `0/0`，相关 WPF 测试 `5/5`，证据为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md`。真实 package-host/视觉验收仍待做，不标最终完成。远端 `origin/main` 已 fetch 到且当时没有其他设备新提交；本地 `main` 在 `origin/main` 前 1 个代码提交，文档/证据正在同步。R ledger 维持 192 项、`106/83/1/1/1`。
+Q10-06 已在 `9ec0ab83` 收口自动行为回归：精确提交 Release 构建 `0/0`，相关 WPF 测试 `5/5`，证据为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md`。代码提交及证据/交接提交已快进推送至 `origin/main`（`00eb7b8c..85231015`），推送后核对 `HEAD=origin/main=85231015`、工作树干净。真实 package-host/视觉验收仍待做，不标最终完成。R ledger 维持 192 项、`106/83/1/1/1`。
 
 ## 2026-09-28 Q10-03 续接与 Q10-06 下一步（历史快照）
 
