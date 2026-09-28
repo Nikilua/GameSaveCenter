@@ -313,9 +313,25 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     ApplyTheme(root, mode);
                     FlushLayout(window);
                     var widths = new double[items.Length];
+                    tabs.ApplyTemplate();
+                    var contentHost = Assert.IsType<ContentPresenter>(tabs.Template.FindName("PART_SelectedContentHost", tabs));
+                    double? baselineContentWidth = null;
 
                     foreach (var item in items)
                     {
+                        tabs.SelectedItem = item;
+                        FlushLayout(window);
+                        Assert.True(contentHost.ActualWidth > 0, $"{mode}/{item.Header}: selected content viewport was unavailable.");
+                        if (baselineContentWidth.HasValue)
+                        {
+                            Assert.True(Math.Abs(contentHost.ActualWidth - baselineContentWidth.Value) <= 0.25,
+                                $"{mode}/{item.Header}: changing tab header width changed the content viewport from {baselineContentWidth.Value} to {contentHost.ActualWidth}.");
+                        }
+                        else
+                        {
+                            baselineContentWidth = contentHost.ActualWidth;
+                        }
+
                         item.ApplyTemplate();
                         FlushLayout(window);
                         var chrome = Assert.IsType<Border>(item.Template.FindName("Chrome", item));
