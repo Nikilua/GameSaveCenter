@@ -2138,6 +2138,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d)", maintenanceCode);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedProcessMapping}\" Value=\"{x:Null}\">", maintenanceText);
         Assert.Contains("Command=\"{Binding DeleteProcessMappingCommand}\" CommandParameter=\"{Binding SelectedProcessMapping}\"", maintenanceText);
+        Assert.Contains("CommandParameter=\"{Binding}\" AutomationProperties.Name=\"{Binding ExecutableName}\"", maintenanceText);
         Assert.Contains("Command=\"{Binding SaveProcessMappingCommand}\"", maintenanceText);
         Assert.Contains("SelectedItem=\"{Binding ProcessMappingTargetGame}\"", maintenanceText);
     }

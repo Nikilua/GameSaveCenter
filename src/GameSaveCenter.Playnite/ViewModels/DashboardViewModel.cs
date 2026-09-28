@@ -472,7 +472,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             RestoreStagedRemoteBackupCommand = new RelayCommand(_ => Run(RestoreStagedRemoteBackupAsync), _ => !IsBusy && StagedRemoteBackup != null && StagedRemoteBackup.Verified);
             CancelRemoteBackupStageCommand = new RelayCommand(_ => CancelRemoteBackupStage(), _ => IsRemoteBackupStageActive);
             SaveProcessMappingCommand = new RelayCommand(_ => Run(SaveProcessMappingAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(ProcessMappingExecutable) && ProcessMappingTargetGame != null);
-            DeleteProcessMappingCommand = new RelayCommand(_ => Run(DeleteProcessMappingAsync), _ => !IsBusy && SelectedProcessMapping != null);
+            DeleteProcessMappingCommand = new RelayCommand(
+                parameter =>
+                {
+                    if (parameter is ProcessMappingDto mapping)
+                        Run(() => DeleteProcessMappingAsync(mapping));
+                },
+                parameter => !IsBusy && parameter is ProcessMappingDto);
             CopyDiagnosticsCommand = new RelayCommand(_ => Run(CopyDiagnosticsAsync), _ => !string.IsNullOrWhiteSpace(DiagnosticSummary));
             CreateDiagnosticsPackageCommand = new RelayCommand(_ => Run(CreateDiagnosticsPackageAsync), _ => !IsBusy && !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
             OpenDataDirectoryCommand = new RelayCommand(_ => RunLocal(() => OpenPath(EffectiveSettings.DataDirectory)), _ => !string.IsNullOrWhiteSpace(EffectiveSettings.DataDirectory));
@@ -3653,9 +3659,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             StatusMessage=$"已将 {saved.ExecutableName} 绑定到 {saved.GameName}";
         }
 
-        private async Task DeleteProcessMappingAsync()
+        private async Task DeleteProcessMappingAsync(ProcessMappingDto mapping)
         {
-            await plugin.RequestAsync<object>(MessageTypes.DeleteProcessMapping,new ProcessMappingDto{ExecutableName=SelectedProcessMapping.ExecutableName});
+            SelectedProcessMapping = mapping;
+            await plugin.RequestAsync<object>(MessageTypes.DeleteProcessMapping,new ProcessMappingDto{ExecutableName=mapping.ExecutableName});
             await LoadDiagnosticsAsync();StatusMessage="已删除进程映射";
         }
 
