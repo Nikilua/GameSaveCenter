@@ -15,6 +15,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
@@ -854,6 +855,149 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     private sealed class SliderProbeSettings
     {
         public int GlassEffectStrength { get; set; } = 78;
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    [InlineData(GameSaveCenterThemeMode.FollowPlaynite)]
+    public void SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var observations = new System.Collections.Generic.List<string>();
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                EnsureApplicationResources();
+                var settings = new DenseSettingsProbe();
+                var view = new GameSaveCenterSettingsView { DataContext = settings };
+                ApplyTheme(view, theme);
+                var viewType = view.GetType();
+                var tabs = (ListBox)viewType.GetField("SettingsSectionTabs", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var automation = (FrameworkElement)viewType.GetField("SettingsAutomationPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var pageScroller = (ScrollViewer)viewType.GetField("SettingsScroller", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                tabs.SelectedIndex = 3;
+
+                window = CreateWindow(view, 1280, 840);
+                window.Show();
+                FlushLayout(window);
+                var toggles = FindVisualChildren<ToggleSwitch>(automation).ToArray();
+                var mediaToggle = Assert.Single(toggles, toggle => AutomationProperties.GetName(toggle) == "同步新增截图和录像");
+                var safeModeToggle = Assert.Single(toggles, toggle => AutomationProperties.GetName(toggle) == "安全模式");
+                var inspectedNames = new[]
+                {
+                    "随 Playnite 启动 Worker",
+                    "检测外部启动的游戏",
+                    "会话存档路径检测",
+                    "同步新增截图和录像",
+                    "任务完成或失败时显示 Playnite 通知",
+                    "安全模式",
+                    "下次以安全模式启动",
+                    "启用恢复可用性巡检"
+                };
+                var inspected = inspectedNames.Select(name => Assert.Single(toggles, toggle => AutomationProperties.GetName(toggle) == name)).ToArray();
+                var sourceGroup = Assert.Single(FindVisualChildren<WrapPanel>(automation),
+                    panel => panel.Children.OfType<ToggleSwitch>().Count() == 5);
+
+                foreach (var size in new[] { (Width: 1280d, Height: 840d), (Width: 920d, Height: 700d), (Width: 560d, Height: 640d) })
+                {
+                    window.Width = size.Width;
+                    window.Height = size.Height;
+                    FlushLayout(window);
+                    Assert.True(automation.IsVisible, "automation settings must remain selected after resize");
+
+                    foreach (var toggle in inspected)
+                    {
+                        toggle.ApplyTemplate();
+                        var track = Assert.IsType<Border>(toggle.Template!.FindName("Track", toggle));
+                        var content = FindVisualChildren<ContentPresenter>(toggle).First();
+                        var lines = FindVisualChildren<TextBlock>(content).ToArray();
+                        Assert.Equal(2, lines.Length);
+                        var trackBounds = BoundsIn(track, toggle);
+                        var titleBounds = BoundsIn(lines[0], toggle);
+                        var helpBounds = BoundsIn(lines[1], toggle);
+                        Assert.True(titleBounds.Left >= trackBounds.Right + 4,
+                            $"title must stay beside its own switch at {size.Width} DIP: {AutomationProperties.GetName(toggle)} track={trackBounds},title={titleBounds}");
+                        Assert.True(Math.Abs(helpBounds.Left - titleBounds.Left) <= 1 && helpBounds.Top >= titleBounds.Bottom - 1,
+                            $"help text must stay below its own title at {size.Width} DIP: {AutomationProperties.GetName(toggle)} title={titleBounds},help={helpBounds}");
+                        Assert.True(helpBounds.Right <= toggle.ActualWidth + 1 && helpBounds.Bottom <= toggle.ActualHeight + 1,
+                            $"help text must fit its own row at {size.Width} DIP: {AutomationProperties.GetName(toggle)} help={helpBounds},row={toggle.ActualWidth:0.##}x{toggle.ActualHeight:0.##}");
+                        Assert.True(lines[0].FontWeight.ToOpenTypeWeight() > lines[1].FontWeight.ToOpenTypeWeight(),
+                            $"the option title must have stronger weight than its help text: {AutomationProperties.GetName(toggle)}");
+                        var titleColor = (lines[0].Foreground as SolidColorBrush)?.Color;
+                        var helpColor = (lines[1].Foreground as SolidColorBrush)?.Color;
+                        Assert.True(titleColor.HasValue && helpColor.HasValue && titleColor != helpColor,
+                            $"the help text must retain the secondary text brush: {AutomationProperties.GetName(toggle)} title={titleColor},help={helpColor}");
+                    }
+
+                    var childToggles = sourceGroup.Children.OfType<ToggleSwitch>().ToArray();
+                    Assert.Equal(5, childToggles.Length);
+                    var childBounds = childToggles.Select(child => BoundsIn(child, sourceGroup)).ToArray();
+                    for (var index = 0; index < childBounds.Length; index++)
+                    {
+                        Assert.True(childBounds[index].Left >= -1 && childBounds[index].Right <= sourceGroup.ActualWidth + 1,
+                            $"media source option must remain inside the group at {size.Width} DIP: {childBounds[index]}/{sourceGroup.ActualWidth:0.##}");
+                        for (var other = index + 1; other < childBounds.Length; other++)
+                            Assert.True(childBounds[index].IntersectsWith(childBounds[other]) == false,
+                                $"wrapped source options must not overlap at {size.Width} DIP: {childBounds[index]} and {childBounds[other]}");
+                    }
+                    observations.Add($"{size.Width:0}x{size.Height:0}:sourceRows={childBounds.Select(bounds => Math.Round(bounds.Top)).Distinct().Count()},safeMode={safeModeToggle.ActualWidth:0.##}x{safeModeToggle.ActualHeight:0.##}");
+                }
+
+                safeModeToggle.BringIntoView();
+                FlushLayout(window);
+                var pagePresenter = FindVisualChildren<ScrollContentPresenter>(pageScroller).First();
+                var safeBounds = BoundsIn(safeModeToggle, pageScroller);
+                var viewport = BoundsIn(pagePresenter, pageScroller);
+                Assert.True(safeBounds.Top >= viewport.Top - 1 && safeBounds.Bottom <= viewport.Bottom + 1,
+                    $"the bottom option must remain reachable in the short settings page: option={safeBounds},viewport={viewport}");
+
+                Assert.True(settings.EnableMediaSync);
+                Assert.True(sourceGroup.IsEnabled);
+                mediaToggle.IsChecked = false;
+                FlushLayout(window);
+                Assert.False(settings.EnableMediaSync);
+                Assert.False(sourceGroup.IsEnabled);
+                Assert.True(sourceGroup.Children.OfType<ToggleSwitch>().All(child => !child.IsEnabled),
+                    "disabled media source choices must follow the parent value without disappearing or moving under another label");
+                mediaToggle.IsChecked = true;
+                FlushLayout(window);
+                Assert.True(settings.EnableMediaSync && sourceGroup.IsEnabled);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        foreach (var observation in observations)
+            output.WriteLine($"{theme} {observation}");
+        Assert.Null(exception);
+    }
+
+    private sealed class DenseSettingsProbe : INotifyPropertyChanged
+    {
+        private bool enableMediaSync = true;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public bool EnableMediaSync
+        {
+            get => enableMediaSync;
+            set
+            {
+                if (enableMediaSync == value) return;
+                enableMediaSync = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EnableMediaSync)));
+            }
+        }
+        public bool EnableCloudUpload { get; set; } = true;
+        public bool EnableTaskNotifications { get; set; } = true;
+        public bool HealthInspectionEnabled { get; set; } = true;
     }
 
     private static MediaPageContext CreateMediaContext()
