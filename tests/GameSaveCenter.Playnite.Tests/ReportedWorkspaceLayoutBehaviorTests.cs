@@ -1,11 +1,13 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
@@ -53,15 +55,21 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var footerViewportMetrics = string.Empty;
         var pageScrollProperties = string.Empty;
         var inboxTabVisible = false;
+        var initialGlobalTargetIsVisibleInBothSummaries = false;
+        var globalTargetSwitchUpdatesBothSummaries = false;
+        var clearingGlobalTargetUsesEmptyStateInBothSummaries = false;
+        var restoringGlobalTargetUpdatesBothSummaries = false;
+        var globalTargetBindingDetails = string.Empty;
 
         RunSta(() =>
         {
             Window? window = null;
             try
             {
+                var mediaContext = CreateMediaContext();
                 var view = new MediaCenterView
                 {
-                    DataContext = CreateMediaContext()
+                    DataContext = mediaContext
                 };
                 ApplyTheme(view, theme);
                 var viewType = typeof(MediaCenterView);
@@ -81,6 +89,53 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 FlushLayout(window);
 
                 var targetSummary = (FrameworkElement)viewType.GetField("MediaInboxGlobalTargetSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspectorTargetSummary = (FrameworkElement)viewType.GetField("MediaInboxInspectorGlobalTargetSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var toolbarTargetName = FindBoundText(targetSummary, "SelectedGame.Name");
+                var inspectorTargetName = FindBoundText(inspectorTargetSummary, "SelectedGame.Name");
+                var initialTarget = mediaContext.SelectedGame!;
+                initialGlobalTargetIsVisibleInBothSummaries =
+                    toolbarTargetName.Text == initialTarget.Name &&
+                    inspectorTargetName.Text == initialTarget.Name &&
+                    Equals(toolbarTargetName.ToolTip, initialTarget.IdentityDisplay) &&
+                    Equals(inspectorTargetName.ToolTip, initialTarget.IdentityDisplay) &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(toolbarTargetName) == initialTarget.IdentityDisplay &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(inspectorTargetName) == initialTarget.IdentityDisplay;
+                var nextTarget = new SyntheticGameTarget
+                {
+                    Name = "Synthetic Second Target",
+                    PlatformDisplay = "GOG",
+                    IdentityDisplay = "Playnite ID · synthetic-second-id"
+                };
+                mediaContext.SelectedGame = nextTarget;
+                FlushLayout(window);
+                globalTargetSwitchUpdatesBothSummaries =
+                    toolbarTargetName.Text == nextTarget.Name &&
+                    inspectorTargetName.Text == nextTarget.Name &&
+                    Equals(toolbarTargetName.ToolTip, nextTarget.IdentityDisplay) &&
+                    Equals(inspectorTargetName.ToolTip, nextTarget.IdentityDisplay) &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(toolbarTargetName) == nextTarget.IdentityDisplay &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(inspectorTargetName) == nextTarget.IdentityDisplay;
+                globalTargetBindingDetails = $"switch={toolbarTargetName.Text}/{inspectorTargetName.Text}; identity={toolbarTargetName.ToolTip}/{inspectorTargetName.ToolTip}";
+                mediaContext.SelectedGame = null;
+                FlushLayout(window);
+                clearingGlobalTargetUsesEmptyStateInBothSummaries =
+                    toolbarTargetName.Text == "未选择游戏" &&
+                    inspectorTargetName.Text == "未选择游戏" &&
+                    Equals(toolbarTargetName.ToolTip, "未选择游戏") &&
+                    Equals(inspectorTargetName.ToolTip, "未选择游戏") &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(toolbarTargetName) == "未选择游戏" &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(inspectorTargetName) == "未选择游戏";
+                globalTargetBindingDetails += $"; cleared={toolbarTargetName.Text}/{inspectorTargetName.Text}; empty={clearingGlobalTargetUsesEmptyStateInBothSummaries}";
+                mediaContext.SelectedGame = initialTarget;
+                FlushLayout(window);
+                restoringGlobalTargetUpdatesBothSummaries =
+                    toolbarTargetName.Text == initialTarget.Name &&
+                    inspectorTargetName.Text == initialTarget.Name &&
+                    Equals(toolbarTargetName.ToolTip, initialTarget.IdentityDisplay) &&
+                    Equals(inspectorTargetName.ToolTip, initialTarget.IdentityDisplay) &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(toolbarTargetName) == initialTarget.IdentityDisplay &&
+                    System.Windows.Automation.AutomationProperties.GetHelpText(inspectorTargetName) == initialTarget.IdentityDisplay;
+                globalTargetBindingDetails += $"; restored={toolbarTargetName.Text}/{inspectorTargetName.Text}";
                 var modeCombo = (ComboBox)viewType.GetField("MediaInboxModeCombo", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var clearButton = (ButtonBase)viewType.GetField("MediaInboxClearSelectionButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var resetButton = (ButtonBase)viewType.GetField("MediaInboxResetColumnWidthButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -138,7 +193,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Media Inbox: {buttonGeometryDetails}, max button={buttonHeight:0.##} DIP, spread={buttonHeightSpread:0.##} DIP, target={comboHeight:0.##} DIP, max centerΔ={buttonCenterDelta:0.##} DIP, clear visible={clearButtonVisible}, grid={gridHeight:0.##} DIP, grid/footer overlap={gridToFooterOverlap:0.##} DIP, internal scrollbar contained={gridBarContained} ({gridBarMetrics}), {footerViewportMetrics}");
+        output.WriteLine($"{theme} Media Inbox: {buttonGeometryDetails}, max button={buttonHeight:0.##} DIP, spread={buttonHeightSpread:0.##} DIP, target={comboHeight:0.##} DIP, max centerΔ={buttonCenterDelta:0.##} DIP, clear visible={clearButtonVisible}, global target binding={globalTargetBindingDetails}, grid={gridHeight:0.##} DIP, grid/footer overlap={gridToFooterOverlap:0.##} DIP, internal scrollbar contained={gridBarContained} ({gridBarMetrics}), {footerViewportMetrics}");
         Assert.Null(exception);
         Assert.True(comboHeight >= 35, $"synthetic selected game template measured unexpectedly short: {comboHeight:0.##} DIP");
         Assert.True(clearButtonVisible, "the geometry probe must include the selected-media clear action shown in the reported state");
@@ -146,6 +201,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.True(buttonHeightSpread <= 1, $"batch action button heights differ by {buttonHeightSpread:0.##} DIP: {buttonGeometryDetails}");
         Assert.InRange(modeComboHeight, 32, 42);
         Assert.True(buttonCenterDelta <= 1, $"a batch action button center drifted {buttonCenterDelta:0.##} DIP from its game target: {buttonGeometryDetails}");
+        Assert.True(initialGlobalTargetIsVisibleInBothSummaries, $"the selected global game's initial name, identity, and accessibility text must appear in both summaries ({globalTargetBindingDetails})");
+        Assert.True(globalTargetSwitchUpdatesBothSummaries, $"changing the global game must update toolbar and inspector names, identity tooltips, and accessibility help text ({globalTargetBindingDetails})");
+        Assert.True(clearingGlobalTargetUsesEmptyStateInBothSummaries, $"clearing the global game must leave both summaries in the empty state ({globalTargetBindingDetails})");
+        Assert.True(restoringGlobalTargetUpdatesBothSummaries, $"restoring the global game must refresh both summaries before geometry is measured ({globalTargetBindingDetails})");
         Assert.True(gridHeight < 500, $"compact inbox grid exceeded its finite viewport: {gridHeight:0.##} DIP");
         Assert.True(gridToFooterOverlap <= 1, $"inbox grid overlaps the footer by {gridToFooterOverlap:0.##} DIP");
         Assert.True(gridBarContained, $"the DataGrid's own scrollbar must stay inside its finite table frame and above the footer ({gridBarMetrics})");
@@ -626,7 +685,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.True(pathControlHeightSpread <= 10, $"path combo/actions heights differ by {pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
     }
 
-    private static object CreateMediaContext()
+    private static MediaPageContext CreateMediaContext()
     {
         var target = new SyntheticGameTarget
         {
@@ -721,13 +780,31 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         }
     }
 
-    private sealed class MediaPageContext
+    private static TextBlock FindBoundText(DependencyObject root, string bindingPath)
+        => FindVisualChildren<TextBlock>(root).Single(textBlock =>
+            BindingOperations.GetBinding(textBlock, TextBlock.TextProperty) is Binding binding &&
+            string.Equals(binding.Path?.Path, bindingPath, StringComparison.Ordinal));
+
+    private sealed class MediaPageContext : INotifyPropertyChanged
     {
+        private SyntheticGameTarget? selectedGame;
+
         public ObservableCollection<SyntheticGameTarget> Games { get; set; } = new();
-        public SyntheticGameTarget? SelectedGame { get; set; }
+        public SyntheticGameTarget? SelectedGame
+        {
+            get => selectedGame;
+            set
+            {
+                if (ReferenceEquals(selectedGame, value)) return;
+                selectedGame = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedGame)));
+            }
+        }
         public MediaItemDto[] MediaInboxItems { get; set; } = Array.Empty<MediaItemDto>();
         public string MediaInboxMode { get; set; } = "待归类";
         public int MediaTabIndex { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 
     private sealed class SyntheticGameTarget

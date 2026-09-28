@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 跨设备续接：R18-04 采样与媒体目标绑定补证
+
+- 按用户要求从远端 `main` fetch 并 fast-forward；合并基线为 `331a57137f755897f309664064a8f8e1adbbd58f`，没有把 `main` 旧实现覆盖到其他分支。当前新增仅为 `ReportedWorkspaceLayoutBehaviorTests` 的 WPF 绑定/负例补证，没有生产 UI 变更。
+- Release solution `0 warnings / 0 errors`、XAML `24/24`、源码校验和 `git diff --check` 通过。Reported workspace 行为类 `10/10` clean；媒体分类选择 `4/4`；R18-04 专测 `1/1`；四个关联类按独立 testhost 串行 `6+10+3+4=23/23`。精确方法组成与 TRX：[当前 main 媒体/R18 复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md)。
+- R18 本次 STA 样本 Task 三档最大实现/可见容器均 `9/7`；Media Inbox 在此专测直接窗口下是 `7/7`，UI 缓存仍 `2,000`。滚动样本 max 分别为 Task `63.899/32.968/27.796 ms`、Media `0.027/0.217/0.463 ms`。这和先前共享模板/窗口样本的 Media `14` 容器、约 `0.03 ms` 有差异，按不同 harness context 分开记录；不能当作真实宿主或 presented frame 性能。
+- R18 TRX 有 6 条 WPF `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理输出，锚点类 TRX 有 2 条；测试分别 `1/1`、`10/10` 且 exit `0`，根因未知。没有为此修改清理代码或淡化通过状态。
+- 媒体收件箱直接绑定顶部全局 `SelectedGame` 和双处摘要已由远端实现；当前补测验证目标切换、清空、恢复、Tooltip 与 Automation HelpText。没有启动 Playnite、安装包或访问真实存档/媒体/云端。R ledger 仍 192 项、`106/83/1/1/1`；R23-08 准入条件未变，无 READY/IN_PROGRESS 产品项。下一步继续只领取存在证据且依赖满足的小批量；宿主/物理屏/ETW 条件变化前保留现有边界。
+
 ## 2026-09-27 当前 main 用户 Bug 回归：Core/Worker 全量与 Playnite 定向通过
 
 - 当前精确构建身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` 的 Release solution `0 warnings/0 errors`、XAML `24/24`；Core.Tests `125/125`、Worker.Tests `357/357` clean exit，`ExternalProcessRunnerTests 5/5`。Playnite 备份/复制五类 `6+4+2+2+8` 全通过；慢启动/缩略图五类 `5+6+2+1+2` 全通过；`RepositoryIdentityTests 2/2`、WPF resource 类 `139 passed/39 skipped/0 failed`。

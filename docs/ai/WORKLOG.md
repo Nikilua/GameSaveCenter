@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 跨设备 main 续接、R18 复采与媒体目标绑定补测
+
+- `fetch origin main` 后将本地 `main` 快进至 `331a57137f755897f309664064a8f8e1adbbd58f`；远端已包含媒体 Inbox 全局目标改造，未将旧 `main` 实现覆盖到别的分支。新增仅为测试：双主题真实 WPF `Binding` 切换/清空/恢复全局游戏，断言工具栏与详情的游戏名、稳定身份 Tooltip 和 Automation HelpText；生产代码没有修改。
+- 当前 Release solution build `0 warning / 0 error`、XAML `24/24`、`python scripts/validate-source.py`、`git diff --check` 通过。`ReportedWorkspaceLayoutBehaviorTests 10/10` clean exit；`R14ClassificationSelectionTests 4/4`；`R18TableContainerBudgetTests 1/1`；关联测试类独立串行 `MediaPageAccumulator 6/6`、`MediaWindowAnchorContract 10/10`、`MediaInboxGeometry 3/3`、`R07SelectionAnchor 4/4`，精确合计 `23/23`，无 skip/fail。
+- 本次 R18 读数：Task `2k/10k/20k` 的 max realized/visible 为 `9/7`；Media Inbox 在本测试的独立 `MediaCenterView` 窗口中为 `7/7`，UI page 固定 `2000`。滚动最大值 Task `63.899/32.968/27.796 ms`，Media `0.027/0.217/0.463 ms`。和此前用户提供的共享模板/窗口 Media `14` 行、约 `0.03 ms` 样本不同；按测试上下文分别保存，不合并、不扩展成真实宿主性能。详细方法名/样本/TRX：[复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md)。
+- R18 TRX 中保留了 6 条、MediaWindowAnchor TRX 中 2 条 WPF `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理异常；对应 xUnit `1/1` 与 `10/10`，VSTest 均 exit `0`，根因未知。R ledger 192 项、`106/83/1/1/1` 未变。没有启动宿主、安装包或触碰用户数据。依 R23-08，当前无 READY/IN_PROGRESS 产品代码项；下一步等待新复现或宿主/系统权限门槛变化，不自行造代码缺陷。
+
 ## 2026-09-27 当前 main 用户 Bug 回归复核
 
 - 本轮最新源码/测试验证身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` 的 Release solution build `0 warnings/0 errors`；Core.Tests `125/125`、Worker.Tests `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。

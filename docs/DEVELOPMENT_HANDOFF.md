@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 main 跨设备续接与媒体 Inbox/R18 补证
+
+本轮按用户要求 fetch 并 fast-forward 到远端 `main`，续接基线为 `331a57137f755897f309664064a8f8e1adbbd58f`。当前媒体 Inbox 已复用顶栏全局游戏目标；只补了测试，不重做已落地的生产 UI。Release solution `0 warning/0 error`、XAML `24/24`、source validator 通过。媒体分类选择 `4/4`；ReportedWorkspace 双主题/其他布局行为类 `10/10` clean；R18 专测 `1/1`；四类关联行为按独立进程 `6+10+3+4=23/23`。测试组成、不同上下文采样与原始 TRX 见[证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md)。
+
+本次 R18 单窗测试 Media Inbox `7` 个 realized/visible row，cache 仍为 `2000`；此前共享模板/窗口样本曾为 `14`，不混用。滚动样本属于 ScrollTo+同步布局的隔离 STA 数据，不证明真实宿主滚动/呈现。TRX 的 WPF TextServicesHost COM cleanup noise 共记录 R18 6 条、anchor 类 2 条；通过结果、exit `0` 与根因未知同时保留。生产代码、R 台账和 backlog 未改，R 状态 `192 / 106/83/1/1/1`；R23-08 仍无 READY/IN_PROGRESS 产品项。下一可执行项：有新用户复现时按当前 main 增补实际负例；真实 Playnite/物理跨屏/presented frame/ETW 仅在相应环境门槛变化后复验。
+
 ## 2026-09-27 当前 main 用户 Bug/Core/Worker 回归核验
 
 本轮 Release 验证对应源码/测试身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14`：solution `0 warnings/0 errors`、Core `125/125`、Worker `357/357`、ExternalProcessRunner `5/5`、XAML `24/24`。该身份的 Playnite 备份诊断/复制五类测试 `22/22`，慢启动/缩略图五类 `16/16`，RepositoryIdentity `2/2`；WPF 资源字典类 `139 passed/39 skipped`。此后 `f5997929`、`25ceaf8a` 与 `1bae1818` 只改文档；本轮开始时 HEAD 与 `origin/main` 均为 `1bae1818`，fetch 未发现其他设备新提交。

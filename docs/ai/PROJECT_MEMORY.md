@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 跨设备续接与 R18-04 复核
+
+- 远端 `main` 快进基线 `331a57137f755897f309664064a8f8e1adbbd58f`。只在现有 `ReportedWorkspaceLayoutBehaviorTests` 增加 WPF 实际绑定检查：两个媒体目标摘要随合成全局游戏切换、清空和恢复，名称/身份 Tooltip/Automation HelpText 同步。产品 XAML、ViewModel、命令和 DTO 未改。
+- Release solution `0 warning/0 error`、XAML `24/24`、`validate-source.py` 和 `git diff --check` 通过；ReportedWorkspace `10/10`、R14 分类选择 `4/4`、R18 专测 `1/1`，R18 四个关联类 `6+10+3+4=23/23`。原始 TRX 与逐项组成见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md`。
+- 本次直接窗口的 Media Inbox 样本实现/可见行为 `7/7`，有限 UI 缓存 `2,000`；Task 三档 `9/7`。滚动最大值受本次 STA 布局刷新时序影响，详细值与此前共享模板/窗口样本分别保存，不能解释为宿主帧时长或真实性能退化。R18 testhost 的 6 条及 anchor testhost 的 2 条 TextServicesHost COM 清理文本均保留，结果/进程退出码明确通过，根因未知。
+- R ledger 和 backlog 状态不变；复核 R23-08 准入门槛，没有已证实的下一项可实现产品代码工作。真实 Playnite/用户包/物理 DPI/多屏/presented frame/ETW 未验；系统跟踪拒绝不绕过。合成数据没有写入真实存档、媒体或云端。
+
 ## 2026-09-27 当前 main 用户 Bug 回归复核
 
 - 本轮源码/测试验证身份 `d9d1f563a8cf87585cf69ef83dac2773e2d18b14` Release solution build `0/0`、Core `125/125`、Worker `357/357`、ExternalProcessRunner UTF-8/退出诊断 `5/5`、XAML `24/24`。Playnite 当前身份用户报告 bug 类：备份/复制反馈 `22/22`，大库启动/异步缩略图 `16/16`；`RepositoryIdentityTests 2/2`；WPF 资源类 `139 passed/39` 个原有显式 skip。

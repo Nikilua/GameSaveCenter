@@ -1,3 +1,11 @@
+## 2026-09-28 main：R18-04 精确组成、复采与全局媒体目标行为补证
+
+- 按跨设备续接请求将本地 `main` fast-forward 至 `331a57137f755897f309664064a8f8e1adbbd58f`。远端已含媒体 Inbox 全局游戏目标的生产实现；本批只在 `ReportedWorkspaceLayoutBehaviorTests` 增加实际 WPF Binding 状态变化断言，没有改 XAML/ViewModel/业务代码。
+- Release solution `0 warnings / 0 errors`、XAML `24/24`、source validation 与 diff check 通过。Reported workspace `10/10` clean exit；R14 分类选择 `4/4`；R18 专测 `1/1`。关联测试精确为 MediaPageAccumulator `6`、MediaWindowAnchorContract `10`、MediaInboxGeometry `3`、R07SelectionAnchor `4`，独立 testhost 合计 `23/23`，无失败/skip；纯数据/几何/选择 `10`、源码契约 `7`、STA WPF `6`。
+- 本次 R18 STA 采样 Task 三档均 `9` 个实现容器/最多 `7` 行可见；Media Inbox 此专测视窗 `7/7` 且后端增至 20k 仍只缓存 2k。最大 ScrollTo+布局同步时长 Task `63.899/32.968/27.796 ms`、Media `0.027/0.217/0.463 ms`。用户先前给出的共享模板/窗口读数 Media `14` 和约 `0.03 ms` 属于不同样本上下文，分开保存，不冒充真实宿主帧性能。
+- TRX 保留 R18 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声 6 次、MediaWindowAnchor 2 次；各 testhost 结果明确全通过且退出 `0`，根因未知。双主题切换/清空/恢复的全局游戏摘要验证、23 项逐项组成、采样和原始 TRX 见[完整证据](evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md)。未安装或启动 Playnite，无真实宿主/物理 DPI/presented frame/ETW 结论。
+- R ledger 仍 192 项、`106/83/1/1/1`；R23-08 当前准入仍无 READY/IN_PROGRESS 产品代码项。下一步等待新的可复现产品问题或明确环境门槛变化；不从这组离屏采样自行创建性能缺陷。
+
 # 2026-09-26 SaveHistory summary/action separation
 
 - `ReportedWorkspaceLayoutBehaviorTests` 在 Light/Dark 独立复现摘要正文与动作区 gap `1.6 DIP`（既有目标 `8–14 DIP`）。将紧凑动作区 top margin 从 2 改为 10 DIP 后，两主题实测均为 `9.6 DIP`，断言与行为未放宽/替换。
