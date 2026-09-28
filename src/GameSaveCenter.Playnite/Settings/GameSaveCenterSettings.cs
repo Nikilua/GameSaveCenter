@@ -196,6 +196,13 @@ namespace GameSaveCenter.Playnite.Settings
             dataGridColumnWidths[BuildDataGridColumnWidthKey(viewKey, columnKey)] = width;
         }
 
+        internal bool RemoveDataGridColumnWidth(string viewKey, string columnKey)
+        {
+            if (string.IsNullOrWhiteSpace(viewKey) || string.IsNullOrWhiteSpace(columnKey))
+                return false;
+            return dataGridColumnWidths.Remove(BuildDataGridColumnWidthKey(viewKey, columnKey));
+        }
+
         internal void ResetDataGridColumnWidths(string viewKey)
         {
             if (string.IsNullOrWhiteSpace(viewKey)) return;

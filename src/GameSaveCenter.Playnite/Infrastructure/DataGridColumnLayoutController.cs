@@ -140,9 +140,22 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private void OnColumnWidthChanged(object? sender, EventArgs e)
         {
             if (disposed || applying || layoutPassDepth != 0 || !(sender is DataGridColumn column)) return;
-            if (column.Width.UnitType != DataGridLengthUnitType.Pixel) return;
             var index = grid.Columns.IndexOf(column);
-            if (index < 0 || !TryNormalizeWidth(column, column.Width.Value, out var normalizedWidth)) return;
+            if (index < 0) return;
+            if (column.Width.UnitType == DataGridLengthUnitType.Auto)
+            {
+                // WPF uses Auto when a header gripper is double-clicked. Remove the old
+                // pixel override so a later layout pass does not undo that user action.
+                if (settings.RemoveDataGridColumnWidth(viewKey, columnKeys[index]))
+                {
+                    persistPending = true;
+                    persistTimer.Stop();
+                    persistTimer.Start();
+                }
+                return;
+            }
+            if (column.Width.UnitType != DataGridLengthUnitType.Pixel) return;
+            if (!TryNormalizeWidth(column, column.Width.Value, out var normalizedWidth)) return;
             settings.SetDataGridColumnWidth(viewKey, columnKeys[index], normalizedWidth);
             persistPending = true;
             persistTimer.Stop();
