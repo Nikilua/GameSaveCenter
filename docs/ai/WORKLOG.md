@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q11-04 页签内边距与内容稳定
+
+- 审核共享 `GscRedesignWorkspaceTabItem`，已有 14×7 DIP Padding、11 DIP 圆角和独立间距，无生产 XAML 变更。新增 WPF 行为用例以短中文、长英文、组合计数 header 实测浅/深主题边界；文字保持自然宽、Chrome 圆角内缩安全、徽章不重叠，切换不同标签时选中内容 Presenter 宽度变化不超过 0.25 DIP。
+- 最终提交 `9804f494c77f97c6a38a81e56c861f9918a4b9ea` Release Playnite.Tests build 成功，`R23ProductionResourceStateBehaviorTests 5/5` 0 failed/skipped、exit `0`，TRX 无 COM cleanup exception。结果 `artifacts/q11-04-tab-padding-20260928/q11-04-r23-resource-state-9804f494.trx`。
+- 宿主/真实业务页/物理 DPI 未验，Q11-04 仍未完成。下一项 Q11-05；Media Inbox 真宿主日志到位后优先返回。
+
 ## 2026-09-28 Q11-03 收起导航 Tooltip 文本与图标
 
 - 扩展生产 `AcrylicProductionShellView` 的 STA WPF collapse 行为测试，收起后七项 label 都为 Collapsed、图标 Visible 且有尺寸，按钮 Enabled/TabStop，Tooltip 和 Automation Name 分别匹配真实页面。没有修改生产样式/XAML。

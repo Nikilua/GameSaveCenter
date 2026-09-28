@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q11-04 页签内边距和内容视口行为
+
+- 最终测试身份 `9804f494c77f97c6a38a81e56c861f9918a4b9ea` 的 Release Playnite 测试项目构建成功；`R23ProductionResourceStateBehaviorTests 5/5`、0 failed/skipped、exit `0`，TRX 无 WPF COM cleanup noise。生产共享页签样式在 Light/Dark 测量短中文、长英文、计数徽章：header 保持在圆角边框 15-DIP 内缩区内、文字自然宽度完整、徽章不与标签重叠/计数不逃逸，选择不同宽度页签时内容视口宽度变化 `<=0.25 DIP`。没有生产样式修改。证据：[Q11-04](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md)。
+- STA 合成样本不代表 Playnite host、FollowPlaynite/DPI/屏幕边缘输入；Q11-04 仍未完成。下一独立任务 `Q11-05` 内容 Stretch 复核；Media Inbox 滚动根因仍等同进程宿主诊断，获得证据后优先返回。
+
 ## 2026-09-28 Q11-03 收起导航可识别性行为复核
 
 - `50865efcd67e3e17bfe32445ef7eab85b298d871` 仅补实际生产 shell WPF 回归：收起导航的七项标签确实折叠、图标有可见布局尺寸、按钮保持启用/TabStop、Tooltip 完整文案与 UIA Name 对应。`ProductionShellChromeSourceTests 13/13`，Release 测试项目构建成功、0 failed/skipped、exit `0`。TRX 有 1 条 TextServicesHost COM 清理异常输出，根因未知。

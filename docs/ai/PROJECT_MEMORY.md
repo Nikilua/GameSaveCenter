@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q11-04 页签长短标签和计数内边距
+
+- `9804f494` 在真实 STA WPF `TabControl` 下复用 `GscRedesignWorkspaceTabItem`；短中文/长英文/“待归类+200”在浅深主题均通过 15-DIP border+padding safe inset、natural text bounds、count no-overlap/in-badge、圆角非裁切及 36-DIP minimum height。依次选择三种 header 时 `PART_SelectedContentHost.ActualWidth` 差 `<=0.25 DIP`，浅深 header slot 差 `<=0.25 DIP`。没有生产 UI 修改。
+- 最终提交 Release Playnite.Tests build 成功，`R23ProductionResourceStateBehaviorTests 5/5`，无失败/skip/COM cleanup noise。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md`。真实业务页/Playnite host/FollowPlaynite theme、物理 DPI/OS 输入仍待验，Q11-04 不签最终完成。
+- 下一项 Q11-05 TabControl 内容 Stretch。用户 Media Inbox bug 仍需同次运行的 build/MVID/windowDip/DPI/theme 和滚动位置日志或恢复安全隔离 host。
+
 ## 2026-09-28 Q11-03 收起侧栏入口名称和图标
 
 - 测试提交 `50865efc` 仅改 `ProductionShellChromeSourceTests`。生产 WPF shell 真实收起/布局后对七入口逐项验证 label Collapsed、icon Visible/ActualWidth>0、RadioButton enabled/TabStop、Tooltip text 和 UIA Name 映射；`ProductionShellChromeSourceTests 13/13` clean test result，Release build 成功。

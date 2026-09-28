@@ -1,3 +1,8 @@
+## 2026-09-28 当前续作：Q11-04 页签内边距和标签切换稳定性
+
+- 最终代码/测试身份 `9804f494c77f97c6a38a81e56c861f9918a4b9ea` 的 `R23ProductionResourceStateBehaviorTests 5/5` 通过。短中文、长英文及计数 Header 在共享工作区 TabItem 真实 WPF 模板中不裁切/无重叠，均落在圆角安全边界内；切换 Tab 后 selected content width 变化 `<=0.25 DIP`，跨浅深主题 slot 差同样受限。仅测试变化，无生产样式调整；证据：[Q11-04](evidence/Q11-04-TAB-HEADER-PADDING-20260928.md)。
+- Q11-04 仍缺 Playnite 真实页面/物理 DPI/OS 输入，不标最终完成。下一独立任务 `Q11-05` TabControl 内容 Stretch；Media Inbox 主问题待同进程宿主诊断或安全隔离环境恢复。
+
 ## 2026-09-28 当前续作：Q11-03 收起导航入口状态
 
 - `50865efcd67e3e17bfe32445ef7eab85b298d871` 只补实际 WPF collapse 后的 label/icon/Tooltip/UIA 名称行为，没有生产样式变化。`ProductionShellChromeSourceTests 13/13` 通过；TRX 记录 1 条 WPF TextServicesHost COM 清理噪声，根因未知。
