@@ -9686,3 +9686,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 先复核已存在的生产 `ScrollBoundaryRoutingBehavior`、MediaCenter Inbox 页面/Inspector 有界滚动及 R07 通用边界测试；缺口是缺少真实生产页面与 compact-details 打开流程的组合行为。提交 `8e4c32a7` 仅补 `ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary`，无生产 UI/业务代码变更。
 - Release solution/XAML `0 warning / 0 error`、XAML `24/24`、source validation 通过；生产 Media Inbox `5/5`、R07 scroll ownership `2/2`、R07 fine-scroll `2/2` 在独立 testhost exit 0。860×620 DIP synthetic WPF window；Inspector 中段不转移，顶/底分别把 16 DIP 步进传给页面，双顶端负例消费事件。证据与三份 TRX：[Q13-07](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。
 - 仅合成 routed PreviewMouseWheel，不代表 OS 鼠标/触控板惯性或真实 Playnite；Q13-07 自动行为补证完成，宿主栏仍外部阻塞/最终未完成。下一步核对 Q13-08 稳定分页锚点既有能力。Media Inbox 用户报告的大块空白仍须取得安全真实宿主滚动前后同进程几何，才能选原因和修复。
+
+# 2026-09-29 R08 one-click 间歇失败再次复核
+
+- 用户再次提供 `R08MotionReverseBehaviorTests 1 passed / 1 failed / 2 total` 摘要，没有失败用例名、断言、堆栈或 TRX。本机 `artifacts/one-click-install.log` 最后修改于 9/24，不能用来诊断这次输出。
+- 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`。在该精确隔离输出中独立串行启动 12 个 VSTest 进程，每轮单跑 R08 类；12 轮均 `2/2`，总 `24/24`、0 failed/skipped、所有 exit `0`。每个 console 都在 xUnit 完成后出现 TextServicesHost `InvalidComObjectException` 清理异常，TRX 随后为通过；根因未知。逐轮原始日志/TRX：[R08 复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
+- 本机未复现，未改动画/测试或放宽断言，不宣称已解决用户失败。继续定位需要失败机器完整 R08 log 段或 TRX（具体测试、错误消息/堆栈及构建身份）。下项按账本核对 Q13-08；Media Inbox 真实滚动空白仍待同进程宿主诊断。

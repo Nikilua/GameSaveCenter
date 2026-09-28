@@ -2,9 +2,9 @@
 
 ## 2026-09-29 R08 one-click 失败摘要再次复核（仍未定位）
 
-- 当前 `97a9b712` Release solution/XAML build `0 warning / 0 error`、`24/24`；R08 类按独立 VSTest 进程串行重跑 12 轮，`24/24` 通过、全部 exit `0`。每轮伴随 WPF `InvalidComObjectException` testhost 清理输出，根因未知；没有生产代码修改。[本次 TRX 与身份](design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)
-- 用户失败仍缺具体失败方法、消息/堆栈及对应 TRX；本机 one-click 日志是 9/24 旧文件，不能拿隔离通过冒充已解决。失败报告继续保持打开。
-- 已在 `8e4c32a7` 为 Q13-07 补生产 Inbox Inspector/页面滚动边界整合回归，没有改生产布局或路由。证据与真实宿主边界：[Q13-07](design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。账本仍标记外部阻塞/未完成，触控板和真实 Playnite host 未验；接续先核对 Q13-08 稳定分页锚点已有测试再决定需补证范围。Media Inbox 真实表格滚动错位仍等安全隔离宿主及同进程前后诊断日志。
+- 用户再次提供 `R08MotionReverseBehaviorTests 1/2` 汇总但未附方法名、断言、堆栈或 TRX；checkout 中同名日志仍是 9/24 的其他宿主审计。[当前身份复跑记录](design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
+- 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`；独立 R08 testhost 12 轮均 `2/2`、总 `24/24`、exit `0`。每轮伴随 WPF `InvalidComObjectException` 清理输出，根因未知；没有动画/测试代码修改。当前复跑未定位/解决用户侧故障。
+- Q13-07 已补 Inbox Inspector/页面滚动边界生产整合回归；详情见 [Q13-07](design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。下一项核对 Q13-08 稳定分页锚点；Media Inbox 真实表格滚动错位仍等安全隔离宿主及前后诊断日志。
 
 ## 2026-09-29 Q13-06 已补交角/末行末列自动证据
 

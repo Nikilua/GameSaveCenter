@@ -2,8 +2,8 @@
 
 ## 2026-09-29 R08 one-click 失败报告重检（未复现）
 
-- 当前 `main` 身份 `97a9b712` Release solution/XAML build 成功（`0 warning / 0 error`、`24/24`）。12 个独立 VSTest 进程各跑 `R08MotionReverseBehaviorTests` 两个用例，共 `24/24`、全部 exit `0`；各有一条 WPF `InvalidComObjectException` 清理输出，根因未知。[12 份 TRX 与范围](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
-- 用户 `1/2` 失败没有方法名/断言/堆栈/TRX；本地同名 one-click 日志仍是 9/24 的旧宿主审计。当前复跑不等于定位或修复，R08 用户故障保持打开。
+- 用户再次提供 R08 `1/2` 失败摘要，仍没有失败用例名/断言/堆栈/TRX；本机同名 one-click 日志仍是 9/24 的旧宿主审计。
+- 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`；12 个独立 VSTest 进程各运行该类两条用例，合计 `24/24`、全部 exit `0`。每轮有 WPF `InvalidComObjectException` 清理输出，根因未知。未修改动画/测试或声称解决用户失败。[12 份 TRX、console 与边界](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
 - 已完成 Q13-07 生产 Inbox Inspector/页面滚动边界整合行为补证，下一项核对 Q13-08；Media Inbox 真实表格滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
 
 ## 2026-09-29 Q13-07 Inbox Inspector 滚动边界补证

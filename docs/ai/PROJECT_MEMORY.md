@@ -2,9 +2,9 @@
 
 ## 2026-09-29 R08 one-click `1/2` 报告再复核（未复现）
 
-- 在当前 `97a9b712` main Release solution/XAML build 成功，`0 warning / 0 error`、XAML `24/24`。从隔离输出启动 12 个串行、独立 VSTest 进程，每轮 `R08MotionReverseBehaviorTests 2/2`，共 `24/24`、均 exit `0`。两方法分别是 Translate 中途反向与 Sidebar 快速反向；每轮有 WPF `InvalidComObjectException` 清理输出，TRX 仍为通过，清理异常根因未知。
-- 当前 checkout 的 `artifacts/one-click-install.log` 最后修改于 2026-09-24，不是用户本次失败记录。用户失败仍无具体用例、断言、堆栈或 TRX，不能宣称已定位或修复；当前证据与边界：[R08 97a9b712 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
-- 下一步继续核对 Round2 Q13-06 现有交角/末行末列行为证据，再按账本推进；Media Inbox 真实宿主滚动缺陷仍是外部阻塞。
+- 在代码身份 `8e4c32a7` Release solution/XAML build 成功，`0 warning / 0 error`、XAML `24/24`。从该隔离输出启动 12 个串行独立 VSTest 进程，每轮 `R08MotionReverseBehaviorTests 2/2`，共 `24/24`、均 exit `0`。两方法为 Translate 中途反向与 Sidebar 快速反向；每轮在 xUnit 完成后有 WPF `InvalidComObjectException` 清理输出，根因未知。
+- 用户再次提供 `1/2` 失败计数，没有具体失败用例、断言、堆栈或 TRX；本机 `artifacts/one-click-install.log` 仍为 9/24 的旧宿主审计。当前连续复跑没有定位或解决用户故障；精确身份、逐轮 TRX/console 与结论：[R08 8e4c32a7 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
+- Q13-07 滚动边界行为已补证；下一步按账本审 Q13-08 稳定 ID 分页锚点。Media Inbox 用户表格滚动空白仍需安全真实 Playnite 同进程诊断。
 
 ## 2026-09-29 Q13-07 Inbox Inspector 滚动边界补证
 

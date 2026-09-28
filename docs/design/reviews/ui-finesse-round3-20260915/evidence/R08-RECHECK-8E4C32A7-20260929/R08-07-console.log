@@ -1,0 +1,32 @@
+D:\workplace\github\GameSaveCenter\.tmp\q13-07-media-scroll-chain-8e4c32a7\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.14.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+D:\workplace\github\GameSaveCenter\.tmp\q13-07-media-scroll-chain-8e4c32a7\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.37]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.72]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.77]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget [3 s]
+  标准输出消息:
+ translate midpoint=0.482; sampled=True; reversalStart=0.482; final=-8; completed=True
+
+
+[xUnit.net 00:00:09.39]   Finished:    GameSaveCenter.Playnite.Tests
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock [3 s]
+  标准输出消息:
+ sidebar collapseMid=256.667; reversalStart=256.667; reverseMid=259.333; final=270; opacity=1; completed=True; trace=after-collapse collapsed=True; running=True; base=256.641; actual=256.667 | after-reverse-progress collapsed=False; running=True; base=259.003; actual=259.333
+
+
+
+测试运行成功。
+测试总数: 2
+     通过数: 2
+总时间: 21.3713 秒
+结果文件: D:\workplace\github\GameSaveCenter\.tmp\q13-07-media-scroll-chain-8e4c32a7\build\r08-stress\run-07\R08.trx
