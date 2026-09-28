@@ -96,7 +96,7 @@
 | Q10-04 | 单选组区别 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航 RadioButton 来源](evidence/Q04-Q12-INDEX.md)；本仓库无额外业务 Radio 组 |
 | Q10-05 | 开关滑块几何 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Toggle/Slider 截图](evidence/Q04-Q12-INDEX.md)；两端几何已受控复核 |
 | Q10-06 | 开关过程状态 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q10-06 绑定/拒绝/禁用/连续反转/关闭动效行为](../ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md)；自动 WPF 行为已测，真实 Playnite/package-host 视觉仍待验 |
-| Q10-07 | Slider 可操作性 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [SelectionControlContract](evidence/Q04-Q12-INDEX.md)；轨道/Thumb 150 DIP 实际可见 |
+| Q10-07 | Slider 可操作性 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [设置真实滑杆命中/键盘/标签行为](../ui-finesse-round3-20260915/evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md)；共享轨道上下命中修复，Light/Dark/FollowPlaynite 实际 WPF `3/3`，宿主输入/DPI 待验 |
 | Q10-08 | 密集选项分组 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [设置字段来源](evidence/Q04-Q12-INDEX.md)；短窗多开关堆叠待宿主 |
 | Q11-01 | 侧栏图文节奏 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航来源](evidence/Q04-Q12-INDEX.md)；六页宿主宽窄切换待验 |
 | Q11-02 | 当前项强调 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航状态来源](evidence/Q04-Q12-INDEX.md)；Focus/Selected 实机序列待验 |

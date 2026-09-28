@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q10-07 设置页毛玻璃强度滑杆
+
+- 查现有生产 `GlassStrengthSlider`、共享样式及旧 Q04–Q12 150 DIP 视觉探针。新增真实设置 WPF 用例先于旧模板 Light/Dark `0/2` 复现轨道上下命中为空；在 `e007a339` 修复共享轨道透明命中面、Thumb 32 DIP 命中及 1/10 键盘步长，不新增 DTO/服务或改保存业务。
+- 同提交 Release solution `0 warning/0 error`、XAML `24/24`、source validation、WPF static `0 errors/30 warnings/177 info`；生产设置页 Light/Dark/FollowPlaynite 新用例 `3/3`，关联类按 WPF 类隔离 `13/13`、`3/3`、`24/24`。RenderHarness 设置主题探针 `1040×700 DIP` 浅/深页图可见滑杆与标签，exit 0。三类合并 testhost 曾因 R09 全局资源状态污染 `39/40`，随后 R09 独立 `3/3`，保留失败事实。
+- 测试使用假设置值及离屏页面，不读写真实用户设置/存档/媒体/云端。当前 WPF 测试宿主 DPI 150%，Playnite/package-host、物理 OS 输入/DPI 与 presented frame 未验；Round2 Q10-07 最终未完成，R 表不变。证据 `evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md`。下一独立任务 Q10-08；Media Inbox 宿主滚动缺陷等前后日志后优先处理。
+
 ## 2026-09-28 Q10-06 开关过程行为补证
 
 - 盘点并复用现有 `ToggleSwitch`、Binding 和设置模型；`9ec0ab83` 增加实例独占的滑块位移、当前值接续、动效关闭/高对比度回退，并补默认 motion 资源。没有新增服务、DTO、命令或持久化字段。

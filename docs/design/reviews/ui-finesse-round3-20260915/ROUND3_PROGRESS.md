@@ -1,3 +1,9 @@
+## 2026-09-28 Q10-07 设置滑杆实际可操作性
+
+- 盘点生产设置 `GlassStrengthSlider` 和共享 `GscSlider`：旧证据只量得开发夹具 150 DIP 可见，新增生产 WPF 用例在旧模板 Light/Dark `0/2` 复现轨道上下命中为 `none`。`e007a339` 用透明命中面承载原 4 DIP 可见轨道，18 DIP 可见圆形 Thumb 保持，命中扩大到 32 DIP；键盘小/大步长固定为 1/10。
+- 精确提交 Release solution `0 warning/0 error`、XAML `24/24`、source validation 通过。Light/Dark/FollowPlaynite 实际设置视图 `3/3`，受控点击、键盘、百分比绑定、禁用/UIA 拒绝和窄短窗口均有行为断言；关联类按 WPF 类隔离 `13/13 + 3/3 + 24/24`。合并类 testhost 的 R09 全局资源污染曾导致 `1` 项失败，独立 R09 `3/3`，没有删去该失败事实。
+- 同身份生产设置页 `1040×700 DIP` 浅/深色 RenderHarness 图与报告可见滑杆/值标签，属于离屏组件视觉。Playnite/package-host、物理鼠标/键盘、125%/200% DPI、屏幕呈现仍未验；Round2 Q10-07 最终保持未完成，192 项 R 台账不变。细节见 [Q10-07 evidence](evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md)。下一独立任务 Q10-08；Media Inbox 真实宿主滚动空白仍优先等待安全隔离日志。
+
 ## 2026-09-28 Q10-06 Toggle 过程状态行为补证
 
 - `9ec0ab83` 在共享 Toggle 上复用现有 Binding/设置模型，增加按元素拥有的 Thumb 位移动效与关闭动效/高对比度回退；不新增服务、DTO、命令或存档字段。提交后 Release solution `0 warning / 0 error`、XAML `24/24`，source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`。

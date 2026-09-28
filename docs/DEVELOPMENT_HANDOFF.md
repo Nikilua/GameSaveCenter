@@ -1,5 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 当前交接：Q10-07 滑杆与 Media Inbox 宿主边界
+
+- `main` 代码提交 `e007a339` 修共享 `GscSlider`：透明 32 DIP 轨道命中面/Thumb 命中、保留 4 DIP 细线和 18 DIP 可见圆形，键盘小/大步长 1/10。生产设置页 Light/Dark/FollowPlaynite 实际 WPF `3/3`，包含轨道点击、键盘、标签/源值、禁用负例和短窗可达；Release solution `0/0`、XAML `24/24`，关联类分进程 `13/13+3/3+24/24`。合并类 testhost 的 R09 一次资源污染失败如实记录在 Q10-07 evidence，不能引用为单次全绿。
+- RenderHarness 同身份浅/深设置页 `1040×700 DIP` 截图显示滑杆/百分比无重叠，但不代表真实 Playnite 或物理 DPI。Q10-07 最终仍未完成；下一独立小批量 Q10-08 先盘点密集选项组、帮助文案和窄短窗口行为。当前没有 Playnite 运行/安全隔离宿主日志，Media Inbox 表头后空白根因和修复仍未完成，待宿主条件恢复优先取前后日志。R 表 192 项不变。
+
 ## 2026-09-28 当前交接：Media Inbox 滚动错位诊断
 
 用户报告 Media Center「待归类」表格在滚动后列头下方出现大块空白、数据行下移。下一步先按现有 `scripts/real-host-audit.ps1` 隔离流程检查 Playnite DLL 身份、窗口逻辑尺寸、DPI、主题并尝试复现；必须保存滚动前/后 `[GSC-GRID-DIAGNOSTIC]`。诊断需把 header bottom、`PART_ScrollContentPresenter` top、首个可见 `DataGridRow` top 和外层页面 ScrollViewer offset 换算到同一 grid 坐标系。旧 `extensions.log` 样本只显示历史内部 presenter/row gap 为 0，不能替代本次复现。

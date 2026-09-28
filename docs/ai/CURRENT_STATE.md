@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q10-07 设置滑杆受控行为已收口
+
+- 代码提交 `e007a339` 修复共享 `GscSlider` 4 DIP 轨道只在细线上命中的问题：可见细线/圆形不变，轨道与 Thumb 命中扩大到 32 DIP；键盘小/大步长显式为 1/10。旧生产视图行为用例 Light/Dark `0/2` 实际命中 `none`，修后 Light/Dark/FollowPlaynite `3/3`。
+- 同提交 Release solution `0 warning/0 error`、XAML `24/24`、source validation、WPF 静态 `0 errors`；关联 WPF 类按独立 testhost `13/13 + 3/3 + 24/24`。生产设置页 Light/Dark `1040×700 DIP` 离屏图中滑杆和 `78%` 标签可见；真实 Playnite/package-host、物理输入/DPI/呈现未验，Round2 Q10-07 最终仍未完成。证据：[Q10-07 滑杆行为](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md)。
+- 当前环境下下一独立任务 Q10-08 的密集选项分组；媒体 Inbox 真宿主空白仍等待安全宿主前后日志，一旦可复现优先回到该问题。R 台账 192 项状态不变。
+
 ## 2026-09-28 Media Inbox 真实宿主空白：诊断与回归已就绪，缺陷仍打开
 
 - 当前 `main` 实现提交 `4b7d1e99` 为 `MediaInboxGrid` 日志补充运行中 DLL version/MVID/path、主题、窗口 DIP/DPI、同一表格坐标系下列头/内容视口/首行顶边和外层页面滚动偏移；未改 DataGrid 模板、虚拟化或滚动算法。

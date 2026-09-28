@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q10-07 真实设置滑杆命中与步进
+
+- 生产 `GameSaveCenterSettingsView.GlassStrengthSlider` 使用 `DesignTokens.xaml` 的共享 `GscSlider`，并通过 `Value` 给右侧整数百分比标签。原 Q04–Q12 的 Slider 探针只证明可见，未测轨道命中和键盘。新增实际设置 WPF 用例先在旧模板 Light/Dark `0/2` 复现 `point=76,4,hit=none`；代码提交 `e007a339` 把 4 DIP 可见线放入透明 32 DIP 命中面、保留 18 DIP 可见 Thumb 并把其命中扩至 32 DIP，设小/大步长 1/10。
+- 精确身份 Release solution `0/0`、XAML `24/24`、`validate-source.py` 与 WPF 静态 `0 errors`；Light/Dark/FollowPlaynite 实际设置视图 `3/3`，涵盖上下命中、受控轨道点击、方向键/PageUp/Home/End、数据源/百分比更新、禁用 UIA 拒绝及窄短窗口。关联类需各自 testhost 隔离：`13/13 + 3/3 + 24/24`；同 testhost 混跑 R09 曾因全局资源状态出现 `1` 失败，不能冒称单次全绿。精确范围和 RenderHarness 浅/深图见 `design/reviews/ui-finesse-round3-20260915/evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md`。
+- Round2 Q10-07 仍是最终未完成：真实 Playnite、OS 输入、物理 125%/200% DPI 和呈现未验。下一项 Q10-08 先审设置密集选项已有分组/响应式能力；Media Inbox 空白宿主取证优先级不变，R 账本无变化。
+
 ## 2026-09-28 Q10-03 复选标签与远程测试身份错配
 
 - `11a513efca32cca5d1e13630e7db4b5b811ba36f` 更新生产共享 `GscCheckBox`：字符串使用可换行 `AccessText`，模板根 Grid 提供整块 hit-test 面；绑定与命令不变。隔离 Release 双主题实际 WPF 测试 `Q10CheckBoxHitBehaviorTests 4/4`，覆盖长标签多行、图形/文本/间隔 hit-test、实际 `ButtonBase.OnClick` 单次事件、Space 单次切换和 disabled 焦点/UIA Toggle 拒绝负例。
