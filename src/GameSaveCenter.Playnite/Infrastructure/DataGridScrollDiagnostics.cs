@@ -24,6 +24,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
     public static class DataGridScrollDiagnostics
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
+        private static readonly string RuntimeBuildIdentity = GetRuntimeBuildIdentity();
+        private static readonly string RuntimeAssemblyPath = GetRuntimeAssemblyPath();
         private static readonly DependencyProperty StateProperty = DependencyProperty.RegisterAttached(
             "State",
             typeof(DiagnosticState),
@@ -240,9 +242,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 AttachInternalScroller();
                 var viewer = scrollViewer;
                 var presenter = viewer == null ? null : FindDescendant<ScrollContentPresenter>(viewer);
+                var headersPresenter = FindVisualChildren<DataGridColumnHeadersPresenter>(grid).FirstOrDefault();
+                var outerPageViewer = FindAncestor<ScrollViewer>(grid);
+                var headerRectGrid = headersPresenter == null ? Rect.Empty : GetRect(headersPresenter, grid);
+                var presenterRectGrid = presenter == null ? Rect.Empty : GetRect(presenter, grid);
+                var gridRectInPage = outerPageViewer == null ? Rect.Empty : GetRect(grid, outerPageViewer);
                 var rows = FindVisualChildren<DataGridRow>(grid)
                     .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
-                    .Select(row => DescribeRow(row, presenter, viewer))
+                    .Select(row => DescribeRow(row, presenter, viewer, grid))
                     .OrderBy(row => row.Y)
                     .ToList();
                 var visibleRows = rows.Where(row => row.IntersectsPresenter).ToList();
@@ -257,6 +264,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     && (row.ContentVisualCount == 0
                         || (row.CellCount > 0 && row.ContentTextCount == 0)));
                 var firstGap = visibleRows.Count == 0 ? double.NaN : visibleRows[0].Y - presenterRect.Top;
+                var firstVisibleRowTopGrid = visibleRows.Count == 0 ? double.NaN : visibleRows[0].GridY;
                 var largeGap = visibleRows.Count > 0 && firstGap > Math.Max(32d, visibleRows[0].Height * 1.5d);
                 var lastRowBottom = visibleRows.Count == 0 ? double.NaN : visibleRows[visibleRows.Count - 1].Bottom;
                 var lastVisibleRow = visibleRows.LastOrDefault();
@@ -277,6 +285,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     && lastLoadedRow.ContentTextCount > 0;
                 var atVerticalEnd = viewer != null
                     && viewer.VerticalOffset >= viewer.ScrollableHeight - 0.5d;
+                var outerPageOffset = outerPageViewer?.VerticalOffset ?? double.NaN;
                 var lastLoadedRowIncomplete = atVerticalEnd
                     && grid.Items.Count > 0
                     && lastLoadedRow != null
@@ -291,6 +300,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     grid.Items.Count.ToString(),
                     viewer == null ? "none" : viewer.VerticalOffset.ToString("0.##"),
                     viewer == null ? "none" : viewer.HorizontalOffset.ToString("0.##"),
+                    headerRectGrid.IsEmpty ? "header:none" : headerRectGrid.Bottom.ToString("0.##"),
+                    presenterRectGrid.IsEmpty ? "presenter:none" : presenterRectGrid.Top.ToString("0.##"),
+                    firstVisibleRowTopGrid.ToString("0.##"),
+                    outerPageOffset.ToString("0.##"),
                     visibleRows.Count.ToString(),
                     visibleRows.Count == 0 ? "none" : visibleRows[0].Index.ToString(),
                     visibleRows.Count == 0 ? "none" : visibleRows[0].Y.ToString("0.##"),
@@ -306,11 +319,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
                         .Select(info => info.GetType().Name)
                         .Distinct(StringComparer.Ordinal)
                         .ToArray();
+                var window = Window.GetWindow(grid);
+                var dpi = VisualTreeHelper.GetDpi(grid);
+                var hostContext = $"{ContextProvider?.Invoke() ?? "context=unknown"},build={RuntimeBuildIdentity}"
+                    + $",assemblyPath={RuntimeAssemblyPath}"
+                    + $",windowDip={window?.ActualWidth ?? double.NaN:0.##}x{window?.ActualHeight ?? double.NaN:0.##}"
+                    + $",gridDip={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##},dpi={dpi.DpiScaleX:0.##}x{dpi.DpiScaleY:0.##}";
 
                 return new GridSnapshot(
                     stableName,
                     trigger,
-                    ContextProvider?.Invoke() ?? "context=unknown",
+                    hostContext,
                     grid.Items.Count,
                     viewer,
                     presenter,
@@ -321,9 +340,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     selectedRows,
                     visibleTextRows,
                     firstGap,
+                    firstVisibleRowTopGrid,
                     lastRowBottom,
                     presenterRect,
+                    headerRectGrid,
+                    presenterRectGrid,
                     hBarRect,
+                    outerPageViewer,
+                    gridRectInPage,
+                    outerPageOffset,
                     blank,
                     selectedContentMissing,
                     largeGap,
@@ -340,12 +365,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     scrollInfoTypes);
             }
 
-            private RowSnapshot DescribeRow(DataGridRow row, ScrollContentPresenter? presenter, ScrollViewer? viewer)
+            private RowSnapshot DescribeRow(DataGridRow row, ScrollContentPresenter? presenter, ScrollViewer? viewer, DataGrid grid)
             {
                 var viewportRect = presenter == null || viewer == null
                     ? Rect.Empty
                     : GetRect(presenter, viewer);
                 var rowRect = viewer == null ? Rect.Empty : GetRect(row, viewer);
+                var gridRect = GetRect(row, grid);
                 var cellRows = FindVisualChildren<DataGridCell>(row).ToList();
                 var contentVisualCount = cellRows.Count(cell => HasVisibleContent(cell));
                 var contentTextCount = cellRows.Count(cell => HasVisibleText(cell));
@@ -354,6 +380,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     row.GetIndex(),
                     GetStableId(row.Item),
                     rowRect.Top,
+                    gridRect.Top,
                     row.ActualHeight,
                     rowRect.Bottom,
                     row.IsSelected,
@@ -409,9 +436,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 IReadOnlyList<RowSnapshot> selectedRows,
                 int visibleTextRows,
                 double firstGap,
+                double firstVisibleRowTopGrid,
                 double lastRowBottom,
                 Rect presenterRect,
+                Rect headerRectGrid,
+                Rect presenterRectGrid,
                 Rect horizontalBarRect,
+                ScrollViewer? outerPageViewer,
+                Rect gridRectInPage,
+                double outerPageOffset,
                 bool blank,
                 bool selectedContentMissing,
                 bool largeGap,
@@ -440,9 +473,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 SelectedRows = selectedRows;
                 VisibleTextRows = visibleTextRows;
                 FirstGap = firstGap;
+                FirstVisibleRowTopGrid = firstVisibleRowTopGrid;
                 LastRowBottom = lastRowBottom;
                 PresenterRect = presenterRect;
+                HeaderRectGrid = headerRectGrid;
+                PresenterRectGrid = presenterRectGrid;
                 HorizontalBarRect = horizontalBarRect;
+                OuterPageViewer = outerPageViewer;
+                GridRectInPage = gridRectInPage;
+                OuterPageOffset = outerPageOffset;
                 Blank = blank;
                 SelectedContentMissing = selectedContentMissing;
                 LargeGap = largeGap;
@@ -472,9 +511,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
             internal IReadOnlyList<RowSnapshot> SelectedRows { get; }
             internal int VisibleTextRows { get; }
             internal double FirstGap { get; }
+            internal double FirstVisibleRowTopGrid { get; }
             internal double LastRowBottom { get; }
             internal Rect PresenterRect { get; }
+            internal Rect HeaderRectGrid { get; }
+            internal Rect PresenterRectGrid { get; }
             internal Rect HorizontalBarRect { get; }
+            internal ScrollViewer? OuterPageViewer { get; }
+            internal Rect GridRectInPage { get; }
+            internal double OuterPageOffset { get; }
             internal bool Blank { get; }
             internal bool SelectedContentMissing { get; }
             internal bool LargeGap { get; }
@@ -509,6 +554,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 var presenterText = Presenter == null
                     ? "none"
                     : $"{Presenter.GetType().Name}@{PresenterRect.Left:0.##},{PresenterRect.Top:0.##},{PresenterRect.Width:0.##}x{PresenterRect.Height:0.##}";
+                var headerBottomGrid = HeaderRectGrid.IsEmpty ? double.NaN : HeaderRectGrid.Bottom;
+                var presenterTopGrid = PresenterRectGrid.IsEmpty ? double.NaN : PresenterRectGrid.Top;
+                var pageText = OuterPageViewer == null
+                    ? "none"
+                    : $"{OuterPageViewer.GetType().Name},off={OuterPageOffset:0.##}/{OuterPageViewer.ScrollableHeight:0.##},viewport={OuterPageViewer.ViewportHeight:0.##},gridTop={GridRectInPage.Top:0.##}";
                 var horizontalText = HorizontalBar == null
                     ? "none"
                     : $"{HorizontalBar.Visibility},rect={HorizontalBarRect.Left:0.##},{HorizontalBarRect.Top:0.##},{HorizontalBarRect.Width:0.##}x{HorizontalBarRect.Height:0.##}";
@@ -520,6 +570,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 return $"[GSC-GRID-DIAGNOSTIC] grid={Name} trigger={Trigger} items={ItemCount} context={Context} "
                     + $"scroller={viewerText},iscrollinfo={scrollInfoType},canContentScroll={CanContentScroll},scrollUnit={ScrollUnit}, "
                     + $"presenter={presenterText},hbar={horizontalText},vbar={verticalText},rows={VisibleRows.Count}/{Rows.Count},visibleTextRows={VisibleTextRows}, "
+                    + $"gridGeometryDip=headerBottom:{headerBottomGrid:0.##},presenterTop:{presenterTopGrid:0.##},firstRowTop:{FirstVisibleRowTopGrid:0.##},outerPage={pageText}, "
                     + $"first={firstText},last={lastText},lastLoaded={lastLoadedText},lastVisibleComplete={LastVisibleRowComplete},lastLoadedComplete={LastLoadedRowComplete},selected={selectedText},firstGap={FirstGap:0.##},lastBottom={LastRowBottom:0.##}, {state}";
             }
 
@@ -527,11 +578,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private sealed class RowSnapshot
         {
-            internal RowSnapshot(int index, string id, double y, double height, double bottom, bool selected, bool intersectsPresenter, int contentVisualCount, int contentTextCount, int cellCount, int clippedCellCount)
+            internal RowSnapshot(int index, string id, double y, double gridY, double height, double bottom, bool selected, bool intersectsPresenter, int contentVisualCount, int contentTextCount, int cellCount, int clippedCellCount)
             {
                 Index = index;
                 Id = id;
                 Y = y;
+                GridY = gridY;
                 Height = height;
                 Bottom = bottom;
                 IsSelected = selected;
@@ -545,6 +597,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             internal int Index { get; }
             internal string Id { get; }
             internal double Y { get; }
+            internal double GridY { get; }
             internal double Height { get; }
             internal double Bottom { get; }
             internal bool IsSelected { get; }
@@ -614,6 +667,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 current = VisualTreeHelper.GetParent(current);
             }
             return null;
+        }
+
+        private static string GetRuntimeBuildIdentity()
+        {
+            var assembly = typeof(DataGridScrollDiagnostics).Assembly;
+            var informationalVersion = assembly.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            return $"{System.IO.Path.GetFileName(assembly.Location)}:{informationalVersion ?? assembly.GetName().Version?.ToString() ?? "unknown"};mvid={assembly.ManifestModule.ModuleVersionId:D}";
+        }
+
+        private static string GetRuntimeAssemblyPath()
+        {
+            var location = typeof(DataGridScrollDiagnostics).Assembly.Location;
+            return string.IsNullOrWhiteSpace(location) ? "unknown" : System.IO.Path.GetFullPath(location);
         }
 
         private static string GetStableId(object? item)

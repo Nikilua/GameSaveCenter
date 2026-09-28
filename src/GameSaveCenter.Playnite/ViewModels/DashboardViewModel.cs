@@ -1050,7 +1050,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             => $"taskPage={Interlocked.Read(ref taskPageGeneration)},historyActive={taskHistoryActive},queued={taskHistoryQueryQueued},cursor={(string.IsNullOrEmpty(taskHistoryCursor) ? "empty" : "set")},state={TaskPageState}";
 
         internal string GetMediaScrollDiagnosticContext()
-            => $"mediaPage={Interlocked.Read(ref mediaPageGeneration)},inboxPage={Interlocked.Read(ref mediaInboxLoadGeneration)},details={Interlocked.Read(ref detailsLoadGeneration)}";
+            => $"theme={plugin.Settings.ThemeMode},mediaPage={Interlocked.Read(ref mediaPageGeneration)},inboxPage={Interlocked.Read(ref mediaInboxLoadGeneration)},details={Interlocked.Read(ref detailsLoadGeneration)}";
 
         public bool TaskHasActiveFilters
             => !string.IsNullOrWhiteSpace(TaskSearchText)
