@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
@@ -168,6 +170,212 @@ public sealed class R08PageSwitchBehaviorTests
     }
 
     [Fact]
+    public void CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing()
+    {
+        Exception? exception = null;
+        var summary = string.Empty;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new AcrylicProductionShellView();
+                typeof(AcrylicProductionShellView)
+                    .GetMethod("CreatePages", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(shell, null);
+
+                var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+                typeof(DashboardViewModel)
+                    .GetField("gamePicker", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(dashboard, new GamePickerViewModel());
+                typeof(DashboardViewModel)
+                    .GetField("navigationHistory", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(dashboard, new WorkspaceNavigationStack());
+                typeof(AcrylicProductionShellView)
+                    .GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(shell, dashboard);
+
+                // Bind production controls to a state-only fixture. No worker, repository,
+                // Playnite profile, or query service is attached to these synthetic pages.
+                var state = new NavigationViewState();
+                foreach (var page in shell.WorkspaceViews)
+                    page.DataContext = state;
+
+                var taskPage = shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)!;
+                var mediaPage = shell.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media)!;
+                var savePage = shell.GetWorkspaceView<SaveCenterView>(WorkspaceKind.Saves)!;
+                var maintenancePage = shell.GetWorkspaceView<MaintenanceView>(WorkspaceKind.Maintenance)!;
+                var taskGrid = (DataGrid)typeof(TaskCenterView)
+                    .GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(taskPage)!;
+                var tasks = Enumerable.Range(0, 96)
+                    .Select(index => new TaskStatusDto
+                    {
+                        TaskId = "q11-07-task-" + index,
+                        TaskType = "Validation",
+                        GameName = "合成游戏 " + index,
+                        State = TaskState.Failed,
+                        Message = "保留筛选和选择"
+                    })
+                    .ToList();
+                taskGrid.ItemsSource = tasks;
+
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 1366,
+                    Height = 900,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+
+                shell.NavigateTo(WorkspaceKind.Tasks);
+                window.Show();
+                FlushLayout(window);
+
+                var search = (TextBox)typeof(TaskCenterView)
+                    .GetField("TaskSearchTextBox", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(taskPage)!;
+                var status = (ComboBox)typeof(TaskCenterView)
+                    .GetField("TaskStatusFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(taskPage)!;
+                var type = (ComboBox)typeof(TaskCenterView)
+                    .GetField("TaskTypeFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(taskPage)!;
+                var scope = (ComboBox)typeof(TaskCenterView)
+                    .GetField("TaskHistoryScopeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(taskPage)!;
+                var range = (ComboBox)typeof(TaskCenterView)
+                    .GetField("TaskHistoryRangeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(taskPage)!;
+
+                Assert.Equal(state.TaskSearchText, search.Text);
+                Assert.Equal(state.TaskStatusFilter, status.SelectedItem);
+                Assert.Equal(state.TaskTypeFilter, type.SelectedItem);
+                Assert.Equal(state.TaskHistoryScope, scope.SelectedItem);
+                Assert.Equal(state.TaskHistoryRange, range.SelectedItem);
+
+                search.Text = "失败保留";
+                status.SelectedItem = "失败";
+                type.SelectedItem = "媒体归类";
+                scope.SelectedItem = "全部历史";
+                range.SelectedItem = "近30天";
+                FlushLayout(window);
+                Assert.Equal("失败保留", state.TaskSearchText);
+                Assert.Equal("失败", state.TaskStatusFilter);
+                Assert.Equal("媒体归类", state.TaskTypeFilter);
+                Assert.Equal("全部历史", state.TaskHistoryScope);
+                Assert.Equal("近30天", state.TaskHistoryRange);
+
+                taskGrid.SelectedItem = tasks[55];
+                FlushLayout(window);
+                var taskScrollViewer = FindVisualChild<ScrollViewer>(taskGrid)
+                    ?? throw new InvalidOperationException("The synthetic task grid did not expose its scroll viewer.");
+                if (taskScrollViewer.ScrollableHeight <= 0)
+                    throw new InvalidOperationException("The synthetic task grid did not expose a finite scroll viewport.");
+                taskScrollViewer.ScrollToVerticalOffset(Math.Min(18d, taskScrollViewer.ScrollableHeight));
+                FlushLayout(window);
+                var taskOffsetBefore = taskScrollViewer.VerticalOffset;
+                var taskSelectionBefore = taskGrid.SelectedItem;
+                var taskItemsBefore = taskGrid.ItemsSource;
+                var taskPageBefore = taskPage;
+                var mediaPageBefore = mediaPage;
+                var savePageBefore = savePage;
+                var maintenancePageBefore = maintenancePage;
+                var taskDataContextBefore = taskPage.DataContext;
+
+                shell.NavigateTo(WorkspaceKind.Media);
+                FlushLayout(window);
+                var mediaTabs = (TabControl)typeof(MediaCenterView)
+                    .GetField("MediaTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(mediaPage)!;
+                mediaTabs.SelectedIndex = 2;
+                FlushLayout(window);
+                Assert.Equal(state.MediaTabIndex, mediaTabs.SelectedIndex);
+                Assert.Equal(2, state.MediaTabIndex);
+
+                shell.NavigateTo(WorkspaceKind.Saves);
+                FlushLayout(window);
+                var saveTabs = FindVisualChild<TabControl>(savePage)
+                    ?? throw new InvalidOperationException("The production save page did not expose its workspace tabs.");
+                saveTabs.SelectedIndex = 3;
+                FlushLayout(window);
+                Assert.Equal(state.SaveTabIndex, saveTabs.SelectedIndex);
+                Assert.Equal(3, state.SaveTabIndex);
+
+                shell.NavigateTo(WorkspaceKind.Maintenance);
+                FlushLayout(window);
+                var maintenanceTabs = (TabControl)typeof(MaintenanceView)
+                    .GetField("MaintenanceTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(maintenancePage)!;
+                maintenanceTabs.SelectedIndex = 5;
+                FlushLayout(window);
+                Assert.Equal(state.MaintenanceTabIndex, maintenanceTabs.SelectedIndex);
+                Assert.Equal(5, state.MaintenanceTabIndex);
+
+                shell.NavigateTo(WorkspaceKind.Overview);
+                FlushLayout(window);
+                shell.NavigateTo(WorkspaceKind.Tasks);
+                FlushLayout(window);
+
+                Assert.Same(taskPageBefore, shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks));
+                Assert.Same(taskDataContextBefore, taskPage.DataContext);
+                Assert.Same(taskItemsBefore, taskGrid.ItemsSource);
+                Assert.Same(taskSelectionBefore, taskGrid.SelectedItem);
+                Assert.InRange(Math.Abs(taskOffsetBefore - taskScrollViewer.VerticalOffset), 0, 0.1);
+                Assert.Equal("失败", status.SelectedItem);
+                Assert.Equal("媒体归类", type.SelectedItem);
+                Assert.Equal("全部历史", scope.SelectedItem);
+                Assert.Equal("近30天", range.SelectedItem);
+                Assert.Equal("失败保留", search.Text);
+
+                shell.NavigateTo(WorkspaceKind.Media);
+                FlushLayout(window);
+                Assert.Same(mediaPageBefore, shell.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media));
+                Assert.Equal(state.MediaTabIndex, mediaTabs.SelectedIndex);
+
+                shell.NavigateTo(WorkspaceKind.Saves);
+                FlushLayout(window);
+                Assert.Same(savePageBefore, shell.GetWorkspaceView<SaveCenterView>(WorkspaceKind.Saves));
+                Assert.Same(saveTabs, FindVisualChild<TabControl>(savePage));
+                Assert.Equal(state.SaveTabIndex, saveTabs.SelectedIndex);
+
+                shell.NavigateTo(WorkspaceKind.Maintenance);
+                FlushLayout(window);
+                Assert.Same(maintenancePageBefore, shell.GetWorkspaceView<MaintenanceView>(WorkspaceKind.Maintenance));
+                Assert.Equal(state.MaintenanceTabIndex, maintenanceTabs.SelectedIndex);
+                Assert.Same(dashboard, typeof(AcrylicProductionShellView)
+                    .GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell));
+                Assert.Equal(0, state.RefreshCommand.ExecutionCount);
+                Assert.Equal(96, taskGrid.Items.Count);
+
+                summary = $"task filters retained; tabs media/save/maintenance={mediaTabs.SelectedIndex}/{saveTabs.SelectedIndex}/{maintenanceTabs.SelectedIndex}; "
+                    + $"task selection={((TaskStatusDto)taskGrid.SelectedItem).TaskId}; scroll={taskOffsetBefore:0.##}->{taskScrollViewer.VerticalOffset:0.##}; "
+                    + $"cached pages retained; refresh executions={state.RefreshCommand.ExecutionCount}";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.False(string.IsNullOrWhiteSpace(summary));
+        output.WriteLine(summary);
+    }
+
+    [Fact]
     public void ProductionPageHostDoesNotDeclareFullPageBlurOrEntranceAnimation()
     {
         var root = TestRepositoryContext.Root;
@@ -239,5 +447,34 @@ public sealed class R08PageSwitchBehaviorTests
                 + $"to-media measure/arrange={MeasureToMedia}/{ArrangeToMedia}; "
                 + $"back measure/arrange={MeasureBack}/{ArrangeBack}; "
                 + $"cached={CachedPage}; selection={SelectionPreserved}";
+    }
+
+    private sealed class NavigationViewState
+    {
+        public string TaskSearchText { get; set; } = "初始搜索";
+        public string TaskStatusFilter { get; set; } = "全部";
+        public string TaskTypeFilter { get; set; } = "全部";
+        public string TaskHistoryScope { get; set; } = "最近任务";
+        public string TaskHistoryRange { get; set; } = "全部时间";
+        public int MediaTabIndex { get; set; }
+        public int SaveTabIndex { get; set; }
+        public int MaintenanceTabIndex { get; set; }
+        public ExecutionCountCommand RefreshCommand { get; } = new ExecutionCountCommand();
+        public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "失败", "成功" };
+        public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部", "媒体归类", "Validation" };
+        public ObservableCollection<string> TaskHistoryScopeOptions { get; } = new ObservableCollection<string> { "最近任务", "全部历史" };
+        public ObservableCollection<string> TaskHistoryRangeOptions { get; } = new ObservableCollection<string> { "全部时间", "近30天" };
+    }
+
+    private sealed class ExecutionCountCommand : ICommand
+    {
+        public int ExecutionCount { get; private set; }
+        public bool CanExecute(object? parameter) => true;
+        public void Execute(object? parameter) => ExecutionCount++;
+        public event EventHandler? CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
     }
 }
