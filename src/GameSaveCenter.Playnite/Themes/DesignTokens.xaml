@@ -677,7 +677,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
-                    <Grid>
+                    <ControlTemplate.Resources>
+                        <DataTemplate DataType="{x:Type sys:String}">
+                            <AccessText Text="{Binding}" TextWrapping="Wrap" TextTrimming="None"/>
+                        </DataTemplate>
+                    </ControlTemplate.Resources>
+                    <Grid Background="Transparent">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <Border x:Name="Box" Width="17" Height="17" CornerRadius="5" BorderThickness="1"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}" Background="{DynamicResource GscControlFillBrush}" VerticalAlignment="Center">
