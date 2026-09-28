@@ -1,8 +1,15 @@
+## 2026-09-29 Q13-03 进程映射行内删除目标
+
+- 盘点生产 `MaintenanceView` 后发现行内删除按钮漏传行 DTO，而 DashboardViewModel 读取独立的 `SelectedProcessMapping`；现已由提交 `256a40f2` 传入当前行 DTO，并让命令拒绝缺少目标的调用，实际 Worker 请求仍复用现有 `DeleteProcessMapping` 与 DTO。
+- 生产 WPF 行为测试在 Light/Dark 下保留 A 为选中详情、对 B 行按钮做实际 WPF HitTest 并由 AutomationPeer 执行，捕获目标为 B；Inspector 动作仍指向 A。`ProcessMappingInlineActionBehaviorTests 1/1`，源绑定/既有 Inspector 目标契约 `1/1`。Release solution/XAML `0 warning / 0 error`、XAML `24/24`，source validation/diff check 通过。
+- 未启动真实 Playnite、未发送 OS 鼠标输入或调用 Worker 删除；真实桌面行命中仍属宿主边界，Q13-03 最终状态保持未完成。完整证据：[Q13-03 行内删除目标](evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。同一提交身份 R08 动效 `2/2`，但用户报告的失败方法/堆栈仍缺失，COM 清理噪声另记于[R08 复核](evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+- 下一项 Q13-04 列宽调整命中热区：先查共享表头模板和已有手势测试，真实 Playnite 鼠标输入保持待验。
+
 ## 2026-09-29 Q13-02 多选反馈：已有计数行为与宿主手势边界
 
 - 盘点确认 Media/Task/Save/Maintenance 主表已使用 `SelectionMode=Extended`；Media 批量动作复用 `SelectedItems`，稳定 ID/模式范围与隐藏选择摘要已存在。复用 `R05MultiSelectionSummaryBehaviorTests 3/3` 的 0/1/2 计数、隐藏项、清空且保留模式，以及 `R22BatchCountBehaviorTests 3/3` 的隐藏计数/空选择负例；没有重建功能。`GscCheckBox` 的 tri-state 只是视觉状态，当前批量 DataGrid 无全选/半选消费者，R05-05 已判不适用。
 - 现有测试没有实际 Ctrl/Shift 鼠标修饰键序列；源码 `SelectionMode=Extended` 声明不作为手势通过证据。隔离宿主仍受 WMI Access Denied/CEF `platform_channel 0x5` 限制，本轮不使用 SendInput 抢占桌面，也不绕过门禁；Q13-02 宿主及最终状态保持外部阻塞/未完成。具体真实 host 复核和负例步骤：[Q13-02](evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
-- 下一项 Q13-03 行内按钮命中/稳定 ID：先查既有命令与测试，补生产 WPF 树 HitTest/routed action 行为；主机鼠标命中仍作为单独待验。
+- Q13-03 行内删除目标已完成可控修复与行为验证，结论及宿主边界见上文。
 
 ## 2026-09-29 Q13-01 失焦选中：已有共享实现当前 main 复核
 

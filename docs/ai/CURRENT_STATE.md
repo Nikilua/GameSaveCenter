@@ -1,9 +1,16 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q13-03 行内删除目标修复
+
+- `256a40f2` 修复 Maintenance 进程映射行内按钮漏传行 DTO、旧命令会误用另一选中行的问题。Light/Dark 生产 WPF 行为 `1/1`，源绑定契约 `1/1`；精确身份 Release solution/XAML `0 warning / 0 error`、`24/24`，source validation/diff check 通过。证据：[Q13-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
+- 没有启动真实 Playnite、执行 Worker 删除请求或 OS 级鼠标输入；Q13-03 真实宿主行命中仍待验，最终状态不签收。
+- 用户新提供的 one-click 摘要仍为 R08 `1/2`，但缺失败方法/堆栈/TRX；同身份本机 R08 `2/2`，伴随 TextServicesHost COM 清理噪声。证据：[R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。失败未定位，不标成已解决。
+- 下一项 Q13-04 列宽调整命中热区；Media Inbox 真实滚动错位仍需同进程 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-29 Q13-02 多选反馈核对
 
 - 生产主表已有 `SelectionMode=Extended`，Media 批量命令传入当前 `SelectedItems`；R05/R22 既有 WPF 行为证据覆盖 0/1/2 选择摘要、清空、隐藏 ID、空选负例。tri-state CheckBox 是视觉控件，无当前 DataGrid 批量消费者，不新增全选模型。Q13-02 核对：[证据与边界](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
-- Ctrl/Shift 实际修饰键与范围 anchor 尚未在宿主验证；现有测试只操作 SelectedItems/选择 API，不能代替手势。Playnite 隔离宿主仍受 WMI Access Denied/CEF `0x5` 限制；不以 `SelectionMode` 源码断言签收，也不使用 SendInput 绕开。下一项 Q13-03 行内按钮命中。
+- Ctrl/Shift 实际修饰键与范围 anchor 尚未在宿主验证；现有测试只操作 SelectedItems/选择 API，不能代替手势。Playnite 隔离宿主仍受 WMI Access Denied/CEF `0x5` 限制；不以 `SelectionMode` 源码断言签收，也不使用 SendInput 绕开。Q13-02 仍待宿主手势；Q13-03 已有独立修复与验证。
 
 ## 2026-09-29 Q13-01 失焦选中当前 main 复核
 

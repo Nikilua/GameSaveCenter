@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Q13-03 行内删除目标修复；R08 用户失败未定位
+
+- 提交 `256a40f2` 修复 Maintenance 进程映射删除目标错配：行内按钮把当前行 DTO 传给命令，DashboardViewModel 拒绝缺参且从该 DTO 取 `ExecutableName` 发起既有 IPC；不改 DTO、Worker 或取消/错误管道。
+- 精确提交身份 Release solution/XAML `0/0`、`24/24`；生产 `MaintenanceView` 的 STA WPF Light/Dark 行为 `1/1`：A 保持选中时命中/执行 B 行删除按钮只给 B 参数，Inspector 仍给 A；生产绑定契约 `1/1`。source validation、diff check 通过。[Q13-03 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
+- 不启动真实 Playnite/Worker、无 OS 鼠标/真实桌面命中或用户数据操作；Q13-03 宿主栏仍未完成。下一项 Q13-04 列调整命中热区。
+- 用户再次贴出 R08 `1/2` one-click 汇总但没有失败用例详情；本地 one-click 日志是 9/24 的其它审计。提交 `256a40f2` Release 身份隔离 R08 `2/2`、exit `0`；TextServicesHost `InvalidComObjectException` 是可见清理噪声，根因未知。该轮未复现，不表示故障解决；等待完整失败段/TRX后才能定位。详见[复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+
 ## 2026-09-29 Q11-07 工作区状态保留
 
 - 当前提交 `f9fa47f6` 未改生产代码；共享外壳已有缓存页面和相同页避免重挂接的逻辑。新 STA WPF fixture 在生产页控件上改变 Task 搜索/状态/类型/时间筛选值并切回，再改变 Media/Save/Maintenance Tab 索引到 `2/3/5` 后往返；所有值、同页对象、DataContext state 保留，96 条合成任务中选中第 55 项、滚动 `18→18 DIP`，合成 Task RefreshCommand 执行 `0` 次。

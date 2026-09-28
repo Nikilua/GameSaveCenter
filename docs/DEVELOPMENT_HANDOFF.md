@@ -1,10 +1,17 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q13-03 进程映射删除目标已修正；R08 用户失败未定位
+
+- 提交 `256a40f2` 发现并修正行内删除按钮漏传当前行 DTO、命令却读取独立选中项的问题。`MaintenanceView` 生产 WPF Light/Dark 行为 `1/1`：A 保持选中时对 B 行命中/执行只传入 B，详情选中仍为 A；Inspector 删除指向 A。生产绑定来源测试 `1/1`，隔离 Release solution/XAML `0 warning/0 error`、`24/24`。证据：[Q13-03](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
+- 没有运行真实 Playnite、真实 Worker 删除或 OS 鼠标输入；行命中最终宿主验收仍待环境可用。没有访问真实存档、媒体、云端或外发诊断。
+- 用户再次报告 R08 one-click `1/2` 失败，但没带失败方法/断言/堆栈/TRX。本 checkout 的同名日志仍是 9/24 另一轮审计。当前 `256a40f2` 精确 Release 身份单独复跑 `2/2`；有 `TextServicesHost InvalidComObjectException` 退出噪声但 VSTest exit `0`，无法据此定位或宣称修好用户故障。详见[R08 记录](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+- 下一项 Q13-04 列宽调整命中热区：优先复用共享 DataGrid 模板并补实际拖动/边界行为。Media Inbox 滚动错位仍需同次真实 Playnite `[GSC-GRID-DIAGNOSTIC]`，包括运行 DLL 身份、逻辑尺寸、DPI、主题、header/ScrollContentPresenter/首行坐标和外层 offset。
+
 ## 2026-09-29 当前交接：Q13-02 多选已实现范围与手势待验
 
 - 生产批量模型已存在，不新增第二套：主 DataGrid 使用 Extended，Media 命令接 `SelectedItems`；R05/R22 历史 WPF 行为测试覆盖计数、空选、清空、隐藏选择和负例。Tri-state 复选框当前无生产 DataGrid 消费点。细节与明确未覆盖的实际修饰键手势：[Q13-02 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)。
 - Q13-02 Ctrl/Shift 鼠标手势与跨范围 anchor 未验；不能把程序化 SelectedItems 操作写成真实 Ctrl/Shift 输入。Playnite 隔离启动边界仍是进程命令行 WMI Access Denied / CEF `platform_channel 0x5`；不调用系统级 SendInput、不绕过限制。任务保留外部阻塞/未完成。
-- 下一项 Q13-03 行内按钮命中/稳定 ID：先查当前命令参数、DataTemplate、已有行状态/HitTest 测试，尝试在生产 WPF 视图树做实际坐标 HitTest 与 routed action，宿主鼠标命中继续单列边界。
+- Q13-03 行内删除目标已由上方阶段修正并补证；下一项转 Q13-04 列宽调整命中热区。
 
 ## 2026-09-29 当前交接：Q13-01 已有能力当前身份复核
 
