@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q13-01 已有能力当前身份复核
+
+- Q13-01 没有新增产品代码。当前 `d46d6be5` Release/XAML `0 warning / 0 error`；`R06SelectionStateBehaviorTests 2/2` 实测选中行获得焦点后移到外部控件时 inactive selection 仍可见，`R23ProductionResourceStateBehaviorTests` 的四个生产表格浅/深主题几何 `1/1`，状态变化时 cell/TextBlock 坐标误差 `<=0.25 DIP`。现有 `R06-03` Light/Dark render 与 Media Inbox 212 DIP 门禁见[复核说明](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。
+- 这满足可控自动行为/视觉条件，但未在真实 Playnite 执行 OS 级失焦输入，也没有物理 DPI/UIA/呈现帧证据；Q13-01 仍按账本保留“外部阻塞 / 未完成”。
+- 下一项 Q13-02：先核对现有 `SelectionMode=Extended`、已选数与半选状态实现，再做真实 WPF Ctrl/Shift 手势及拒绝/边界用例；使用合成数据，不操作真实媒体/存档/云端。Media Inbox 真实滚动错位仍等待同进程诊断日志；用户 one-click R08 失败仍缺原始失败方法/TRX。
+
 ## 2026-09-29 当前交接：Q11-08 导航行为已补测
 
 - Q11-08 实现提交 `8e3cc914`：只新增实际生产 RadioButton `Checked` 路由的 WPF 回归，无生产 UI 改动。Overview/Tasks 快速交替七次，`R08PageSwitchBehaviorTests 4/4`；导航来源/历史 `6/6`；R08 反向动画 `2/2`。最终身份 Release solution/XAML build `0 warning / 0 error`、XAML `24/24`；定向共 `12/12`。证据及边界：[Q11-08](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md)。

@@ -1,3 +1,9 @@
+## 2026-09-29 Q13-01 失焦选中：已有共享实现当前 main 复核
+
+- 没有重做样式或增加产品代码。当前身份 `d46d6be5` Release solution/XAML `0 warning / 0 error`、XAML `24/24`；`R06SelectionStateBehaviorTests 2/2` 实际 WPF 测量活动选中→外部失焦后的 inactive brush/muted outline，`R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes 1/1` 在 Task/Media/Save/Maintenance 四表及 Light/Dark 比较状态下 cell/TextBlock 几何，门限 `<=0.25 DIP`。
+- 复用 `R06-03` Light/Dark 357 PNG `render-qa OK` 与 9/24 几何复核；Media Inbox 212 DIP 门禁已有证据。当前自动/视觉条件已有支持，但真实 Playnite OS 失焦输入、UIA、物理 DPI 和 presented frame 未验，Q13-01 最终状态仍为“未完成”。详细复核与 TRX：[Q13-01](evidence/Q13-01-RECHECK-20260929/README.md)。
+- 下一项 Q13-02 多选反馈：盘点 Extended DataGrid、计数与半选绑定，补实际 Ctrl/Shift WPF 手势及负例。
+
 ## 2026-09-29 Q11-08 快速导航过渡
 
 - 当前生产导航本来就同步替换缓存 PageHost 页面、标题和 RadioButton 选中状态，不使用全页入场动画。本阶段只补行为验证，无生产代码修改。提交 `8e3cc914` 的 `R08PageSwitchBehaviorTests 4/4` 中新增七次 Overview/Tasks 快速 Checked 路由；每次实际 WPF 状态核对 workspace、正确页引用、标题、唯一选中项和仍聚焦的导航项，布局刷新后终点一致。观测 `routes=7; final=Tasks; title=任务中心; focus=NavTasks; pageEffects=none`。

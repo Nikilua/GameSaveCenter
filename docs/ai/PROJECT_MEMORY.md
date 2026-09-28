@@ -5812,3 +5812,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - `8e3cc914` 只增加生产 RadioButton `Checked` 路由的 WPF 行为回归，没有生产导航/动画改动。Overview/Tasks 快速交替 7 次，每次核对 workspace、缓存 PageHost 页面引用、标题、唯一选中项及 WPF 焦点；最终 dispatcher 布局后仍是 Tasks。`R08PageSwitchBehaviorTests 4/4`，导航来源/历史 `6/6`，R08 反向动效 `2/2`，定向合计 `12/12`；Release solution `0 warning / 0 error`、XAML `24/24`。
 - R08 反向动效 testhost 的 xUnit 结果与 VSTest exit 明确成功，但退出时输出 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException`，根因未知。用户此前 `1/2` 失败未取得失败方法/堆栈/TRX；当前复跑没有复现，不能关闭或声称修复该报告。
 - 测试为 `1366×900 DIP` 透明 STA WPF 夹具，真实页面使用无业务服务的状态 DataContext；不是真实 Playnite、OS 输入、主题/DPI 或呈现帧验收。Round2 Q11-08 最终保持未完成。证据：`design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md`。下一项核对 Q13 已有交互行为缺口。
+
+# 2026-09-29 Q13-01 失焦选中当前 main 复核
+
+- Q13-01 已有共享实现，复用 `R06-03` 的 active/inactive selection、focus ring、错误行和透明 cell chrome；不新增产品代码。当前 `d46d6be5` Release/XAML `0 warning / 0 error`，`R06SelectionStateBehaviorTests 2/2` 覆盖真实 WPF 焦点从选中行移出后 inactive selection 保留，生产四个 DataGrid 在 Light/Dark 下状态几何 `1/1`、`<=0.25 DIP`。
+- 既有 Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据仍有效；当前复核是隔离 STA/逻辑 DIP，不等同真实 Playnite host/OS 失焦输入/物理 DPI/UIA/presented frame。Q13-01 的可控证据已有，宿主栏仍待验，最终不标完成。TRX/说明在 `design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md`。下一项 Q13-02 Ctrl/Shift 多选手势。

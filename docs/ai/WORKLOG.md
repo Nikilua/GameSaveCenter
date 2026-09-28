@@ -9636,3 +9636,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 检查生产导航后确认页面、标题与导航选中项同步切换，页面直接使用缓存的 UserControl，没有全页入场动画；本阶段只增行为回归，无生产 UI 改动。新用例真实触发 Overview/Tasks RadioButton `Checked` 路由并交替 7 次，逐次验证 workspace、PageHost 缓存页面、标题、唯一选中状态、WPF 焦点及页面无 opacity/effect/transform 动画状态，最终布局刷新后仍为 Tasks。
 - 最终身份 `8e3cc914` Release solution/XAML 构建 `0 warning / 0 error`、XAML `24/24`。`R08PageSwitchBehaviorTests 4/4`、`PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`、`R08MotionReverseBehaviorTests 2/2`，共 `12/12` passed、0 failed/skipped。R08 退出有 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声，xUnit/VSTest 均成功，根因未知。
 - 证据与三份 TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/`。透明 `1366×900 DIP` STA 窗口及 WPF focus API 不代表 Playnite host、OS 输入、主题/物理 DPI 或呈现帧；Q11-08 视觉/宿主待验，Round2 最终未完成。用户 R08 `1/2` 失败缺原始方法/堆栈/TRX，本机复跑未重现，继续保持打开。下一项检查 Q13 已登记交互项的现有行为与缺失负例；Media Inbox 实机滚动根因仍待同进程诊断。
+
+# 2026-09-29 Q13-01 失焦选中当前 main 复核
+
+- 对照 Q13 条件先查已有能力，没有重建共享 selected/focus 模板。当前 `d46d6be5` Release solution/XAML build 成功 `0 warning / 0 error`、XAML `24/24`；`R06SelectionStateBehaviorTests 2/2`、四个生产 DataGrid 浅/深主题状态几何用例 `1/1` 均 exit 0。行为实际从成功行焦点切到外部 TextBox，selection 继续存在且变成 inactive fill/muted border；失败行状态单元格与选中层、透明 cell 内容层保持；生产四表状态下 cell/TextBlock 坐标误差 `<=0.25 DIP`。
+- 结果、当前 test assembly SHA 与两份 TRX：[Q13-01 recheck](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。复用 `R06-03` 的 Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据，但本次没有重跑 screenshot/render，也没有 Playnite OS input/physical DPI/UIA/presented frame；Q13-01 仍保留外部阻塞/最终未完成。下一项 Q13-02 多选：先盘点 Extended/计数/半选现状，再补 Ctrl/Shift 实际 routed input 与负例。

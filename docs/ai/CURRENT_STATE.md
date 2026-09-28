@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q13-01 失焦选中当前 main 复核
+
+- `d46d6be5` Release solution/XAML `0 warning / 0 error`、XAML `24/24`；已有共享实现没有重建。`R06SelectionStateBehaviorTests 2/2` 真实 STA DataGrid 从焦点行移动到外部控件，确认 selection 保留且视觉变为 inactive brush/muted outline；生产四表 Light/Dark 选择/焦点/禁用几何 `1/1`，cell/TextBlock 状态几何误差 `<=0.25 DIP`。测试与边界：[Q13-01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。
+- 此处复核没有启动真实 Playnite 或执行 OS 级失焦操作；物理 DPI、UIA/读屏和呈现帧待验，因此任务表的 Q13-01 宿主/最终状态仍为外部阻塞/未完成。既有 `R06-03` Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据保留引用。下一项 Q13-02 多选反馈。
+
 ## 2026-09-29 Q11-08 快速导航与 R08 当前身份复核
 
 - `8e3cc914` 只增加生产工作区导航的真实 WPF RadioButton `Checked` 行为回归。Overview/Tasks 七次快速交替时逐次核对 workspace、缓存 PageHost、标题、唯一选中 RadioButton 和 WPF 键盘焦点；终态在 dispatcher 布局后仍正确。Q11-08 类 `4/4`，导航来源/历史 `6/6`，R08 反向动效最终身份 `2/2`。Release solution/XAML `0 warning / 0 error`、XAML `24/24`；三个定向组 `12/12`。证据：[Q11-08](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md)。
