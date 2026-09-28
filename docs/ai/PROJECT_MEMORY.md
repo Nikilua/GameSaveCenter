@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q10-03 复选标签与远程测试身份错配
+
+- `11a513efca32cca5d1e13630e7db4b5b811ba36f` 更新生产共享 `GscCheckBox`：字符串使用可换行 `AccessText`，模板根 Grid 提供整块 hit-test 面；绑定与命令不变。隔离 Release 双主题实际 WPF 测试 `Q10CheckBoxHitBehaviorTests 4/4`，覆盖长标签多行、图形/文本/间隔 hit-test、实际 `ButtonBase.OnClick` 单次事件、Space 单次切换和 disabled 焦点/UIA Toggle 拒绝负例。
+- 当前 Release solution `0 warning/0 error`、XAML `24/24`、source validation 通过；KeyboardFocusSource 同当前 checkout clean recheck `5/5`。TRX 和测试边界：[Q10-03 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。受控 WPF 几何/合成键盘/进程内 provider 不是物理鼠标、真实 UIA/Narrator、Playnite 宿主或 presented frame；Q10-03 最终保持未完成。
+- 用户 one-click 日志的三项失败是 `GscBuildCommit=6618de227b888203cf3441b96d24eef7fd2d56c2` 与其源码根 HEAD `8a7a56b56a67dd86c2d1567e63c8913b8a8d03c7` 身份不一致；两条不读源码的 WPF 行为测试通过。身份 guard 正确 fail-closed，失败不是行为回归；旧程序集进入该输出路径的具体原因未知，不绕过 guard，也未更改 runner。
+- 下一项继续按 Round2 表核对 Q10-06 Toggle 过程状态，先审已有绑定/服务；R ledger 仍 192 个唯一 ID、`106/83/1/1/1`，R23-08 无 READY/IN_PROGRESS 的 R 代码项。只用 fake/隔离 WPF，宿主输入/动画仍须如实保留。
+
 ## 2026-09-28 R06 排序崩溃的 clean-main 补证
 
 - `f8a82469` 的 detached `ListCollectionView` 防护与实际 WPF 列头受控 Click/负例在当前代码中未再变化。由于旧 TRX 于提交创建前约 5 分钟运行、身份指向父提交 `ade4b937`，当前完整 HEAD `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 已重新隔离 Release 构建并复跑 `R06SortingBehaviorTests 7/7`，0 failed/skipped，exit 0；solution `0/0`，XAML `24/24`。

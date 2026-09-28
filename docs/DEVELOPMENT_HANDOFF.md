@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 Q10-03 续接与 Q10-06 下一步
+
+当前 main 已包含代码提交 `11a513efca32cca5d1e13630e7db4b5b811ba36f`：`GscCheckBox` 长标签换行和整块命中面有双主题受控行为 `4/4`；KeyboardFocusSource 同类当前身份干净复跑 `5/5`。代码和本轮文档同步提交应推送并核实在 `origin/main`。细节见 [Q10-03 复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。
+
+用户提供的一键安装日志构建与 Core/Worker 均成功，KeyboardFocusSource 的 3 个源码读取用例被 `GscBuildCommit 6618de22` 与源码 HEAD `8a7a56b5` 不一致挡下；当前身份复跑全过。具体生成/复制错配原因尚未确定，身份检查不得绕过。若其他 checkout 的新隔离构建仍失败，保留新鲜日志、assembly/source SHA 和隔离输出路径以定位。
+
+下一项按 Round2 条件推进 Q10-06：先审计现有 ToggleSwitch 绑定、禁用/更新源拒绝和动效完成实现，复用现有 ViewModel/service；只在有可复现行为缺口时改代码，覆盖最终绑定值、连续切换与 disabled 负例。行为检查继续用 fake/隔离窗口，最终仍需真实 Playnite/package-host 与实际输入/动画验收。R ledger 仍 192 项、`106/83/1/1/1`，R23-08 没有 READY/IN_PROGRESS 的 R 类代码项。
+
 ## 2026-09-28 R06 排序崩溃修复的 clean-main 身份复核
 
 用户排序崩溃修复提交 `f8a82469` 的旧 TRX 在提交前运行、绑定父提交 `ade4b937`。本次在干净当前 `main` `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 重建完整 Release solution（`0 warning/0 error`、XAML `24/24`），`R06SortingBehaviorTests 7/7` clean exit；实际 WPF 列头 Click 正例与 detached CollectionView 负例均通过。详细证据及脱敏 TRX：[R06 clean-main 排序复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R06-SORTING-CLEAN-MAIN-RECHECK-20260928.md)。真实 Playnite 鼠标/触屏、用户包、用户库和最终呈现仍未验；没有访问真实数据。

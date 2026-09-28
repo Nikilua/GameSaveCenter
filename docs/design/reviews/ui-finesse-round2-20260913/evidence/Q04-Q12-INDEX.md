@@ -18,6 +18,12 @@
 - `ListContract` 记录 3 个选项、选中索引 0 与虚拟化开关；DataGrid 报告保持 4/4 行完整，压缩 4 DIP 视口负例为 3/4，并与 Q00/Q03 的裁剪门禁一致。
 - 双主题有效文本对比均为 12 个样本 0 violation；按钮 33 个渐变/状态样本、语义层 4 个样本、复杂背景 4 个样本均 0 violation。截图复核确认暗/浅主题下没有黑字、方角漏裁、状态胶囊或半选标记缺失。
 
+## 2026-09-28 Q10-03 复选标签命中
+
+- 生产 `GscCheckBox` 共享模板使用字符串 `AccessText` 模板支持长标签自然换行，并让模板根的透明区域接收 hit-test；实现提交 `11a513ef`，没有改绑定或命令。
+- 隔离 Release `Q10CheckBoxHitBehaviorTests 4/4`，Light/Dark 各覆盖长中文换行、方框/文本/间隔都命中同一模板根、实际 `ButtonBase.OnClick` 单次派发、Space 单次切换，以及禁用后拒绝焦点/UIA Toggle 的负例。细节和 TRX：[Q10-03 受控行为证据](../../ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。
+- 命中几何加 `OnClick` 不是物理 OS 鼠标序列，合成键事件和进程内 Toggle provider 也不是 Narrator/Inspect。真实 Playnite、宿主视觉、物理 DPI、触屏及最终呈现仍待验；Q10-03 最终状态继续保留未完成。
+
 ## 2026-09-15 Q05-05 生产忙态按钮复核
 
 - 提交 `4947539` 为生产按钮忙态阶段基线：`Controls.Button.IsBusy` 由真实 `DashboardViewModel.IsBusy` 驱动，顶部刷新、全部备份、媒体同步按钮共享 `WpfUiProduction` 的 `BusyIndicatorHost`。忙态用 indeterminate 指示层叠加在按钮底部，保留原 ContentPresenter 与测量槽，不通过等待动画延迟命令。

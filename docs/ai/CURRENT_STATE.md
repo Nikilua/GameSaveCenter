@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q10-03 复选标签命中与一键测试身份错配
+
+- 生产复选共享模板在 `11a513ef` 补了字符串标签自然换行及根 hit-test 面；双主题隔离 WPF 行为 `4/4`，涵盖方框/文本/空白区的命中几何、Click 与 Space 单次切换、禁用拒焦和 UIA Toggle 拒绝负例。详细证据与 TRX：[Q10-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。真实 OS 鼠标、Playnite/package-host、物理 DPI 与呈现仍未验，Q10-03 保持最终未完成。
+- 用户的 2026-09-28 one-click 日志：Release build、Core `125/125`、Worker `357/357` 通过；Playnite `KeyboardFocusSourceTests` 有 3 条源码读测试因程序集 commit `6618de22` 与源码 HEAD `8a7a56b5` 不一致而被 identity gate 拒绝，另 2 条 WPF 行为通过。当前 checkout 干净重建复核该类 `5/5`；根因是测试程序集/源码身份错配，产物进入路径的具体原因未确定，不绕过身份保护。证据：[身份错配复核](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。
+- 当前代码提交为 `11a513ef`；本轮文档同步见持续工作日志与交接记录。R ledger 仍 192 项、`106/83/1/1/1`，R23-08 无 R 类 READY/IN_PROGRESS 项；下一可执行 Q 批次为 Q10-06，先核对现有 Toggle 绑定和失败/禁用/连续切换行为。没有运行 Playnite或访问真实存档/媒体/云端。
+
 ## 2026-09-28 R06 表格排序崩溃：干净 main 身份复核
 
 - 用户 `crash.zip` 指向的失效 `ListCollectionView` 排序刷新异常由 `f8a82469` 修复。原 2026-09-24 TRX 早于代码提交约 5 分钟，记录身份为父提交 `ade4b937`；本次在干净当前 `main` 完整身份 `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 重新 Release 构建并运行 `R06SortingBehaviorTests 7/7`，0 fail/skip，exit 0。

@@ -20,6 +20,12 @@
 - TRX 保留 R18 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声 6 次、MediaWindowAnchor 2 次；各 testhost 结果明确全通过且退出 `0`，根因未知。双主题切换/清空/恢复的全局游戏摘要验证、23 项逐项组成、采样和原始 TRX 见[完整证据](evidence/USER-REPORTED-MEDIA-TARGET-AND-R18-RECHECK-20260928.md)。未安装或启动 Playnite，无真实宿主/物理 DPI/presented frame/ETW 结论。
 - R ledger 仍 192 项、`106/83/1/1/1`；R23-08 当前准入仍无 READY/IN_PROGRESS 产品代码项。下一步等待新的可复现产品问题或明确环境门槛变化；不从这组离屏采样自行创建性能缺陷。
 
+## 2026-09-28 Q10-03 复选标签受控行为补证与远程身份错配
+
+- 共享生产 `GscCheckBox` 模板新增字符串 `AccessText` 换行呈现和透明根 hit-test 面；没有变更业务绑定/命令。隔离 Release 双主题行为 `4/4`，包括长标签换行、方框/标签/间隔几何命中、每次 Click/Space 只切换一次，以及禁用后的焦点/UIA Toggle 负例。完整范围和 TRX 见 [Q10-03 证据](evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。Q10-03 仍缺 Playnite 宿主中的实际鼠标与视觉验收。
+- 用户提供的 one-click 日志中 Core `125/125`、Worker `357/357`、编译成功；`KeyboardFocusSourceTests` 的 3 条失败在 `TestRepositoryContext` 源身份门，程序集 commit `6618de22` 对应源码根 HEAD `8a7a56b5`，另两条 WPF 行为通过。当前 checkout 重建后同类 `5/5`（[复核 TRX](evidence/REMOTE-IDENTITY-MISMATCH-KEYBOARD-FOCUS-CLEAN-RECHECK-20260928.trx)）；原因确认是程序集/源码身份不一致，旧身份程序集如何进入该输出路径仍待定位，不放宽 fail-closed 身份检查。
+- 本次没有启动 Playnite，也没有写真实用户数据。离屏逻辑 DIP/STA 和进程内 UIA provider 不代表物理鼠标、Narrator/Inspect、宿主呈现或 DPI。R ledger 仍 192 项、`106/83/1/1/1`；R23-08 的 R 类 READY/IN_PROGRESS 结论不变。后续按 Q10-06 的具体条件先盘点现有开关绑定及拒绝/禁用/连续切换路径，再选择可受控验证的小批量。
+
 # 2026-09-26 SaveHistory summary/action separation
 
 - `ReportedWorkspaceLayoutBehaviorTests` 在 Light/Dark 独立复现摘要正文与动作区 gap `1.6 DIP`（既有目标 `8–14 DIP`）。将紧凑动作区 top margin 从 2 改为 10 DIP 后，两主题实测均为 `9.6 DIP`，断言与行为未放宽/替换。

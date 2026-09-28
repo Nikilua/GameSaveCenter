@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q10-03 复选标签行为与远程测试身份复核
+
+- 生产 `GscCheckBox` 模板新增长字符串 `AccessText` 换行和模板根透明 hit-test 面；行为测试使用真实生产样式/主题资源。双主题 `Q10CheckBoxHitBehaviorTests 4/4`，包含方框、标签、间隔 hit-test，Click/Space 各一次切换，以及 disabled focus/UIA Toggle 负例。Release solution `0 warning/0 error`、XAML `24/24`、source validator 通过。代码提交 `11a513ef`。
+- 用户提供的 one-click 输出中编译/Core `125/125`/Worker `357/357` 成功；KeyboardFocusSource 的三条源码测试在 `GscBuildCommit=6618de22`、源码 HEAD `8a7a56b5` 的不一致身份门失败，两个隔离行为测试通过。当前 checkout 隔离重建后该类 `5/5`；未放松身份校验。程序集为何不匹配当次源码仍未确定，记录于 Q10-03 evidence。
+- 使用合成标签、隔离 STA 窗口；没有启动 Playnite或触碰真实存档/媒体/云端/诊断。OS 鼠标、屏幕呈现和宿主视觉仍待验，Q10-03 最终状态仍未完成。下一项先盘点 Q10-06 现有开关绑定，再决定可验证范围。
+
 ## 2026-09-28 R06 排序崩溃 clean-main 复核
 
 - 审计发现原排序崩溃 TRX 于 `f8a82469` 提交前运行，Git 身份仍为父提交 `ade4b937`；保留原始历史，不把它写成干净提交证据。当前工作树在 `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` clean，且 `f8a82469..HEAD` 的排序控制器/测试源文件无差异。

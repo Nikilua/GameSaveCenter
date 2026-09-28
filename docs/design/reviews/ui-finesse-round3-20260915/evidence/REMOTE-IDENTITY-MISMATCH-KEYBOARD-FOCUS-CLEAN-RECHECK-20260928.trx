@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6b23b3ef-30be-472d-b498-f061cffb4627" name="lopmatu@SULT 2026-09-28 13:22:29" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-28T13:22:29.7098761+08:00" queuing="2026-09-28T13:22:29.7098766+08:00" start="2026-09-28T13:22:24.1710338+08:00" finish="2026-09-28T13:22:47.5602890+08:00" />
+  <TestSettings name="default" id="c2d02c45-b076-4c0e-9eb3-97a42f6b5576">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-28_13_22_29" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="3e3c2ee2-ed03-4812-92c8-9e6023507213" testId="bf221653-53ea-e370-7ed0-a5ed40dba975" testName="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerEscapeActuallyReturnsFocusToContextButton" computerName="SULT" duration="00:00:02.4280000" startTime="2026-09-28T13:22:28.3456696+08:00" endTime="2026-09-28T13:22:30.7591105+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3e3c2ee2-ed03-4812-92c8-9e6023507213" />
+    <UnitTestResult executionId="2acc05db-4406-47c0-a633-70cd5785febd" testId="a35cfc3b-1888-23e9-ad5f-20481d79577d" testName="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.CompactInspectorsDeclareEscapeAndFocusReturnContract" computerName="SULT" duration="00:00:00.1620000" startTime="2026-09-28T13:22:28.1778527+08:00" endTime="2026-09-28T13:22:28.3206702+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2acc05db-4406-47c0-a633-70cd5785febd" />
+    <UnitTestResult executionId="762dd562-541e-468a-bfee-611a369841fe" testId="e0791591-f3fb-aa0b-4ea0-24c95e9a7ae3" testName="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.TaskInspectorIsFocusableWithoutEnteringTabSequence" computerName="SULT" duration="00:00:00.5020000" startTime="2026-09-28T13:22:30.7681049+08:00" endTime="2026-09-28T13:22:31.2688111+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="762dd562-541e-468a-bfee-611a369841fe" />
+    <UnitTestResult executionId="9434fb40-feba-4bd9-b53e-447699bd391c" testId="f4cb4959-5ce4-5d15-f09b-2ab89a1b8546" testName="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerClosesWithEscapeOrEnterAndReturnsFocus" computerName="SULT" duration="00:00:00.0100000" startTime="2026-09-28T13:22:28.3426691+08:00" endTime="2026-09-28T13:22:28.3436696+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9434fb40-feba-4bd9-b53e-447699bd391c" />
+    <UnitTestResult executionId="a87668f6-b8e4-4b87-aef9-bea129ddea5e" testId="f8ac4bf1-cf34-211a-fd92-361920303a10" testName="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionHeaderAndPickerActionsHaveStableAutomationNames" computerName="SULT" duration="00:00:00.0080000" startTime="2026-09-28T13:22:30.7611097+08:00" endTime="2026-09-28T13:22:30.7661060+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a87668f6-b8e4-4b87-aef9-bea129ddea5e" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionHeaderAndPickerActionsHaveStableAutomationNames" storage="d:\workplace\github\gamesavecenter\.tmp\q10-checkbox-11a513ef\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f8ac4bf1-cf34-211a-fd92-361920303a10">
+      <Execution id="a87668f6-b8e4-4b87-aef9-bea129ddea5e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\q10-checkbox-11a513ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests" name="ProductionHeaderAndPickerActionsHaveStableAutomationNames" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.TaskInspectorIsFocusableWithoutEnteringTabSequence" storage="d:\workplace\github\gamesavecenter\.tmp\q10-checkbox-11a513ef\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e0791591-f3fb-aa0b-4ea0-24c95e9a7ae3">
+      <Execution id="762dd562-541e-468a-bfee-611a369841fe" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\q10-checkbox-11a513ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests" name="TaskInspectorIsFocusableWithoutEnteringTabSequence" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerEscapeActuallyReturnsFocusToContextButton" storage="d:\workplace\github\gamesavecenter\.tmp\q10-checkbox-11a513ef\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="bf221653-53ea-e370-7ed0-a5ed40dba975">
+      <Execution id="3e3c2ee2-ed03-4812-92c8-9e6023507213" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\q10-checkbox-11a513ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests" name="ProductionGamePickerEscapeActuallyReturnsFocusToContextButton" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.CompactInspectorsDeclareEscapeAndFocusReturnContract" storage="d:\workplace\github\gamesavecenter\.tmp\q10-checkbox-11a513ef\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a35cfc3b-1888-23e9-ad5f-20481d79577d">
+      <Execution id="2acc05db-4406-47c0-a633-70cd5785febd" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\q10-checkbox-11a513ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests" name="CompactInspectorsDeclareEscapeAndFocusReturnContract" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerClosesWithEscapeOrEnterAndReturnsFocus" storage="d:\workplace\github\gamesavecenter\.tmp\q10-checkbox-11a513ef\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f4cb4959-5ce4-5d15-f09b-2ab89a1b8546">
+      <Execution id="9434fb40-feba-4bd9-b53e-447699bd391c" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\q10-checkbox-11a513ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests" name="ProductionGamePickerClosesWithEscapeOrEnterAndReturnsFocus" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="bf221653-53ea-e370-7ed0-a5ed40dba975" executionId="3e3c2ee2-ed03-4812-92c8-9e6023507213" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a35cfc3b-1888-23e9-ad5f-20481d79577d" executionId="2acc05db-4406-47c0-a633-70cd5785febd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e0791591-f3fb-aa0b-4ea0-24c95e9a7ae3" executionId="762dd562-541e-468a-bfee-611a369841fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f4cb4959-5ce4-5d15-f09b-2ab89a1b8546" executionId="9434fb40-feba-4bd9-b53e-447699bd391c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f8ac4bf1-cf34-211a-fd92-361920303a10" executionId="a87668f6-b8e4-4b87-aef9-bea129ddea5e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.47]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.90]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.07]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

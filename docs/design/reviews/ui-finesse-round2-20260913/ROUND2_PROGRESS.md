@@ -92,7 +92,7 @@
 | Q09-08 | 主题与移屏 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Popup 资源边界](evidence/Q04-Q12-INDEX.md)；移屏/缩放/打开态切换待宿主 |
 | Q10-01 | 复选框勾形 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [半选/复选夹具](evidence/Q04-Q12-INDEX.md)；GscCheckBox 勾形双主题可见 |
 | Q10-02 | 半选状态 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [SelectionControlContract](evidence/Q04-Q12-INDEX.md)；`mark=visible`，真实批量集合待验 |
-| Q10-03 | 复选标签命中 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [复选共享模板](evidence/Q04-Q12-INDEX.md)；标签鼠标/键盘单次切换待宿主 |
+| Q10-03 | 复选标签命中 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [复选共享模板与受控命中/键盘证据](evidence/Q04-Q12-INDEX.md#2026-09-28-q10-03-复选标签命中)；标签/方框/间隔 hit-test、受控 Click 与 Space 单次切换已测；OS 鼠标及宿主视觉待验 |
 | Q10-04 | 单选组区别 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [导航 RadioButton 来源](evidence/Q04-Q12-INDEX.md)；本仓库无额外业务 Radio 组 |
 | Q10-05 | 开关滑块几何 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Toggle/Slider 截图](evidence/Q04-Q12-INDEX.md)；两端几何已受控复核 |
 | Q10-06 | 开关过程状态 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Toggle 来源](evidence/Q04-Q12-INDEX.md)；绑定拒绝/连续切换待宿主 |
