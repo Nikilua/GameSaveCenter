@@ -417,6 +417,32 @@ public sealed class ProductionShellChromeSourceTests
                 shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 shell.UpdateLayout();
 
+                var collapsedNavigation = new[]
+                {
+                    ("NavOverview", "NavOverviewContent", "NavOverviewLabel", "首页", "打开首页"),
+                    ("NavSaves", "NavSavesContent", "NavSavesLabel", "存档中心", "打开存档中心"),
+                    ("NavTrainers", "NavTrainersContent", "NavTrainersLabel", "修改器中心", "打开修改器中心"),
+                    ("NavMedia", "NavMediaContent", "NavMediaLabel", "媒体中心", "打开媒体中心"),
+                    ("NavTasks", "NavTasksContent", "NavTasksLabel", "任务中心", "打开任务中心"),
+                    ("NavMaintenance", "NavMaintenanceContent", "NavMaintenanceLabel", "维护中心", "打开维护中心"),
+                    ("NavSettings", "NavSettingsContent", "NavSettingsLabel", "设置", "打开 GameSaveCenter 设置")
+                };
+                foreach (var (buttonName, contentName, labelName, tooltipText, automationName) in collapsedNavigation)
+                {
+                    var button = Assert.IsType<System.Windows.Controls.RadioButton>(shell.FindName(buttonName));
+                    var content = Assert.IsAssignableFrom<System.Windows.Controls.Panel>(shell.FindName(contentName));
+                    var label = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName(labelName));
+                    var icon = Assert.IsAssignableFrom<FrameworkElement>(content.Children[0]);
+
+                    Assert.Equal(Visibility.Collapsed, label.Visibility);
+                    Assert.Equal(Visibility.Visible, icon.Visibility);
+                    Assert.True(icon.ActualWidth > 0, $"{buttonName} icon was not laid out in the collapsed sidebar");
+                    Assert.True(button.IsEnabled);
+                    Assert.True(button.IsTabStop);
+                    Assert.Equal(tooltipText, button.ToolTip as string);
+                    Assert.Equal(automationName, AutomationProperties.GetName(button));
+                }
+
                 selectedAfterCollapse = taskNav.IsChecked == true;
                 collapsedWidth = shell.SidebarWidthForAudit;
                 taskLabelVisibility = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("NavTasksLabel")).Visibility;
