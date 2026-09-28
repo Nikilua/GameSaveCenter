@@ -1,3 +1,9 @@
+## 2026-09-29 Q11-06 页签溢出行为 / R08 完整 Release 复核
+
+- `1c4c21d537e78ffb9595f5d278410a7d97ca504f` 新增窄窗工作区页签 STA WPF 回归，不改生产 XAML。四个生产页面实际页签数 `4/4/6/4`；Light/Dark 下检查滚动条可见、Tab 键进入、Right/Left 每项可聚焦且滚入视口、PageRight/PageLeft 鼠标滚动路径和页签选择；宽窗六项 Maintenance 的横条应折叠。R23 类 `7/7`，TRX 与夹具限制见 [Q11-06 evidence](evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)。
+- 同提交完整 Release `0 exit`：XAML `24/24`，solution `0 warning / 0 error`，Core `125/125`，Worker `356/1 existing skip`，Playnite source `111` classes、WPF isolated `108` classes 全过；此前用户报告失败的 R08 类在 `[54/108]` 通过。日志 `artifacts/q11-06-release-20260929/full-release-build-1c4c21d5.log`。
+- Q11-06 只获受控 WPF 行为证据，透明 STA 夹具不是 Playnite 呈现；FollowPlaynite、OS 物理输入、有效 per-monitor DPI 和截图未验，最终视觉/宿主栏仍待验。下一项 Q11-07；Media Inbox 等用户报告问题继续等待同进程 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-28 Q11-05 页签内容 Stretch / R08-01 采样稳定
 
 - 当前代码身份 `e467c3b2fe080965c3946f1f3101f707c731472b` 的 Q11-05 受控 STA WPF `380×240 DIP` 三类 Header、浅/深主题均验证内容根元素与 `PART_SelectedContentHost` x/y 对齐、宽高差 `<=0.25 DIP`；R23 类 `6/6`。现有共享 Stretch 实现满足窄页面行为，没有生产 XAML 更改。证据：[Q11-05](evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)。

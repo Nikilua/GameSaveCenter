@@ -1,10 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-09-28 Q11-05 页签内容拉伸；R08 反转测试稳定性
+## 2026-09-29 Q11-06 页签窄窗可达；R08 完整 Release 复核
 
-- `e467c3b2fe080965c3946f1f3101f707c731472b` 在 Release `0 warning / 0 error`。Q11-05 用共享 `GscRedesignWorkspaceTabControl` 于 `380×240 DIP` 真实 STA WPF 窗口切换短中文/长英文/计数页签，Light/Dark 均验证内容根与 `PART_SelectedContentHost` x/y 对齐，宽高差 `<=0.25 DIP`；`R23ProductionResourceStateBehaviorTests 6/6`，TRX 无 COM 清理噪声。没有生产 XAML 修改；证据：[Q11-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)。
-- 用户的一键构建日志报告 R08 动效类 `1/2` 失败；本工作区同名日志仍是 9/24 旧文件，未取得失败断言详情。本地曾在整类复跑中间歇复现一次。R08 测试从固定 100 ms 取样改成有界等待实际动画时钟和中间宽度；修订后完整类连续 `8/8` 轮通过，正在执行完整隔离 Release build 脚本。证据：[R08 测试稳定性](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
-- 下一项 Q11-06 窄窗 Tab 可达性。Media Inbox 滚动缺陷仍待实际 Playnite 同进程日志；未据合成测试猜根因。
+- `1c4c21d537e78ffb9595f5d278410a7d97ca504f` 新增 Q11-06 真实 STA WPF 行为回归，不改生产 UI。读取生产页签数 Save 4、Media 4、Maintenance 6、Trainer 4，在 320×240 DIP 的浅/深主题窗口验证滚动、Tab 进入、方向键往返、焦点页签滚入视口、WPF 鼠标路由选择和宽屏无需滚动；`R23ProductionResourceStateBehaviorTests 7/7`。证据：[Q11-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)。
+- 同提交完整 Release 流程成功：XAML `24/24`，solution `0 warning / 0 error`，Core `125/125`，Worker `356 passed / 1 existing skip / 0 failed`，Playnite source `111` classes、WPF-isolated `108` classes 全部通过。用户此前报告失败的 `R08MotionReverseBehaviorTests` 在完整隔离组 `[54/108]` 通过。日志：[1c4c21d5 Release](../../artifacts/q11-06-release-20260929/full-release-build-1c4c21d5.log)。R08 修订/旧滑杆断言更正详见[稳定性证据](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
+- Q11-06 的 STA 窗口为透明受控夹具，不代表 Playnite 呈现、物理鼠标/键盘、FollowPlaynite 或物理 DPI；没有本次截图。视觉/宿主栏仍待验。下一独立任务 Q11-07；Media Inbox 滚动问题仍需真实宿主同进程日志，不按离屏测试猜修。
 
 ## 2026-09-28 Q11-04 页签内边距和内容视口行为
 

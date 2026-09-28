@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q11-06 页签溢出 / R08 Release 全量验证
+
+- Q11-06 新增共享生产 TabControl 的 STA WPF 行为回归，仅改测试。生产 Header 数量为 Save/Media/Maintenance/Trainer `4/4/6/4`；四页面浅/深主题窄窗中 Tab 进入、方向键往返、焦点项滚入视口、水平滚动条 PageRight/PageLeft 与 WPF 鼠标路由选择均通过，宽窗无需滚动；`R23ProductionResourceStateBehaviorTests 7/7`。没有 Playnite 截图/OS 实际输入/有效 per-monitor DPI，Q11-06 视觉及宿主栏仍待验。详细边界：[Q11-06 evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)。
+- 提交 `1c4c21d537e78ffb9595f5d278410a7d97ca504f` 的完整 Release 门禁退出 `0`：XAML `24/24`、solution `0 warning/0 error`、Core `125/125`、Worker `356 pass/1 existing skip`、Playnite source `111` 类与 WPF isolated `108` 类全通过；用户报告失败的 R08 类在 `[54/108]` 通过。日志 `artifacts/q11-06-release-20260929/full-release-build-1c4c21d5.log`。
+- 下一独立任务 Q11-07 导航状态保存。Media Inbox「待归类」滚动错位仍需真实 Playnite 同进程 `[GSC-GRID-DIAGNOSTIC]`，含 build/MVID、窗口 DIP、DPI、主题、列头底边/ScrollContentPresenter/首行位置和外层页面 offset；没有这些证据，不推测共享模板或虚拟化根因。
+
 ## 2026-09-28 当前交接：Q11-01/02/03/04/05 布局回归、R08 采样稳定性与 Media Inbox 宿主边界
 
 - Q11-05 已在共享 `GscRedesignWorkspaceTabControl` 样式基础上补真实 STA WPF 布局行为，没有生产 XAML 变化。`380×240 DIP` 下短中文/长英文/计数 Header 逐项切换后，内容根 Border 对齐 `PART_SelectedContentHost` 左上角，宽高差 `<=0.25 DIP`；浅/深主题 `R23ProductionResourceStateBehaviorTests 6/6`。Q11-05 Stretch 证据补齐，Playnite host/物理 DPI 仍待验；下一 Q11-06 窄窗页签滚动与键盘可达性。证据：[Q11-05](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q11-06 页签溢出行为与全量 Release 复核
+
+- 检查生产 `GscRedesignWorkspaceTabControl` 已有 `ScrollViewer`/Auto 水平条与生产页签模板，不改生产 UI；由 Save/Media/Maintenance/Trainer 四个页面的 XAML 读取实际顶层页签数 `4/4/6/4`。
+- 提交 `1c4c21d5` 新增 STA WPF 可达性行为回归，四页×Light/Dark 在 320×240 DIP 测试 Tab 进入、方向键全项往返并将焦点项滚入视口、真实 Track PageRight/PageLeft 路径、WPF 鼠标路由选择和内容宽度稳定；另以 1280×280 DIP 六页签负例确认水平条折叠。`R23ProductionResourceStateBehaviorTests 7/7`，0 failed/skipped，exit 0，TRX `[Q11-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)`。
+- 同提交完整 Release 门禁退出 0：XAML 24/24；solution 0 warning/0 error；Core 125/125；Worker 356 pass/1 existing skip/0 fail；Playnite source classes 111、WPF isolated classes 108 全通过。用户先前报告失败的 R08MotionReverseBehaviorTests 在全量序号 `[54/108]` 通过。日志 `artifacts/q11-06-release-20260929/full-release-build-1c4c21d5.log`。
+- WPF 窗口 `WindowStyle=None`、Opacity 0.01，属受控 STA 行为，不是 Playnite 真实页面、屏幕呈现或 OS 物理输入；有效 per-monitor DPI/截图未记录，视觉和宿主门禁仍待验。下一项 Q11-07；Media Inbox 缺陷继续等待同进程诊断证据。
+
 ## 2026-09-28 Q11-05 Stretch 补证、R08 反转采样与滑杆回归校正
 
 - 共享 TabControl 本已有 Stretch setter 和独立星号内容行；增加真实 STA WPF 窄窗行为用例，不改生产 XAML。380×240 DIP，浅/深主题短中文/长英文/计数标签切换均测得页面根边界紧贴内容 Presenter，宽高差 `<=0.25 DIP`。`R23ProductionResourceStateBehaviorTests 6/6`，TRX `artifacts/q11-05-tab-content-stretch-20260928/q11-05-tab-content-stretch-e467c3b2.trx`。

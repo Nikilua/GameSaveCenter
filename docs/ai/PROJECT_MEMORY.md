@@ -1,12 +1,10 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 2026-09-28 Q11-05 内容拉伸 / R08 反转采样修订与回归清理
+## 2026-09-29 Q11-06 页签窄窗可达；R08 完整 Release 复核
 
-- `e467c3b2` 在共享 `GscRedesignWorkspaceTabControl` 上补真实 STA WPF 页面根布局测量：380×240 DIP、三种 Header、Light/Dark；内容根 Border 的 x/y 与内容 Presenter 左上对齐，宽高各差 `<=0.25 DIP`。没有生产 XAML 改动，`R23ProductionResourceStateBehaviorTests 6/6`。
-- 同提交将 `R08MotionReverseBehaviorTests` 的固定 100 ms 取样替换成有界 dispatcher pump，只有观测到仍在运行的动画时钟和内部宽度才反向；保持最终目标/时钟释放断言。修订后完整类 8 次独立 testhost 均 `2/2`，后续完整隔离构建的 `[54/108]` R08 类也通过。用户机器详细 assertion 不可见，因此把原因表述为本地复现并修复的采样时序，不推断用户原失败一定同因。
-- 完整构建末尾发现独立的旧资源结构测试仍锁定 `GscSlider` 22 DIP；这与 `e007a339` 已实测的 32 DIP 命中面冲突。测试现按 XAML 结构核对 32 DIP 外层命中、4 DIP 轨道、18 DIP 可见 Thumb 和生产 Slider 引用。改后结构断言 `1/1`、设置滑杆三主题命中/键盘行为 `3/3`、R08 `2/2` 均通过。R08 testhost 有 TextServicesHost `InvalidComObjectException` 退出清理日志，但结果为成功。
-- 最终提交 `4d0ff11c` clean identity Release 全套成功：XAML `24/24`，solution `0/0`，Core `125/125`，Worker `356 passed / 1 existing skip`；Playnite source group `111` classes 与 WPF-isolated group `108` classes 全部通过。结果细节/边界见 [R08 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md) 与 [build log](../../artifacts/r08-motion-flake-20260928/full-release-build-4d0ff11c.log)。下一任务 Q11-06；Media Inbox 等真实 Playnite 的同进程 DLL/DPI/theme/scroll 诊断。
-- 证据：[Q11-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)、[R08 稳定性](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
+- `1c4c21d5` 仅增加 Q11-06 的 STA WPF 行为回归，无生产 XAML/C# 修改。生产 Header 字串数 Save/Media/Maintenance/Trainer=`4/4/6/4`；320×240 DIP、Light/Dark 下测试 Auto 水平溢出、Tab 导航进入、Right/Left 选择并自动滚入视口、PageRight/PageLeft 往返和鼠标路由选中，宽 1280×280 DIP 下不显示多余横条。`R23ProductionResourceStateBehaviorTests 7/7`。
+- 精确提交身份完整 Release 成功：XAML `24/24`，solution `0 warning / 0 error`，Core `125/125`，Worker `356 passed / 1 existing skip`，Playnite source `111` classes 与 WPF-isolated `108` classes 全通过。用户报告失败的 `R08MotionReverseBehaviorTests` 在 `[54/108]` 通过。测试 TRX 和边界：[Q11-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)；全量日志 `[Release log](../../artifacts/q11-06-release-20260929/full-release-build-1c4c21d5.log)`。
+- 窗口是 opacity 0.01 的 STA WPF 夹具，尚无真实 Playnite 截图、OS 物理输入或有效 per-monitor DPI；Q11-06 视觉/宿主仍待验。下一 Q 项 `Q11-07`；Media Inbox 滚动缺陷仍待同次真实 Playnite 诊断日志，不能以本夹具推断根因。
 
 ## 2026-09-28 Q11-04 页签长短标签和计数内边距
 
