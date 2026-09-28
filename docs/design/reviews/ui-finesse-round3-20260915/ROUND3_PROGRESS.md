@@ -1,3 +1,8 @@
+## 2026-09-29 Q11-07 工作区导航状态往返
+
+- 生产页面缓存与双向筛选/页签绑定已存在；`f9fa47f6` 仅补 STA WPF 回归。TaskCenter 搜索/四筛选改成非默认值、Media/Save/Maintenance 索引设为 `2/3/5`，切过其它页面再回时保留；96 个合成 Task 的第 55 项选择与滚动 `18→18 DIP` 保留；Shell DashboardViewModel 引用及 page/DataContext fixture 引用不变，合成刷新命令 `0` 次。`R08PageSwitchBehaviorTests 3/3`，源码映射及路由栈 `6/6`。详情及 no-service 边界：[Q11-07 evidence](evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。
+- Release Playnite.Tests `0 warning / 0 error`。WPF testhost `1366×900 DIP`、opacity 0.01；没有连接业务查询服务，故只能断言合成刷新命令/集合稳定；没有屏幕截图、真实 Playnite、OS 输入、主题切换或 effective DPI。Q11-07 自动行为通过，最终视觉/宿主待验；下一项 Q11-08。
+
 ## 2026-09-29 Q11-06 页签溢出行为 / R08 完整 Release 复核
 
 - `1c4c21d537e78ffb9595f5d278410a7d97ca504f` 新增窄窗工作区页签 STA WPF 回归，不改生产 XAML。四个生产页面实际页签数 `4/4/6/4`；Light/Dark 下检查滚动条可见、Tab 键进入、Right/Left 每项可聚焦且滚入视口、PageRight/PageLeft 鼠标滚动路径和页签选择；宽窗六项 Maintenance 的横条应折叠。R23 类 `7/7`，TRX 与夹具限制见 [Q11-06 evidence](evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)。

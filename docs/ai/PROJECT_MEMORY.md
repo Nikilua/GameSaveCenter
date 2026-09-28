@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Q11-07 工作区状态保留
+
+- 当前提交 `f9fa47f6` 未改生产代码；共享外壳已有缓存页面和相同页避免重挂接的逻辑。新 STA WPF fixture 在生产页控件上改变 Task 搜索/状态/类型/时间筛选值并切回，再改变 Media/Save/Maintenance Tab 索引到 `2/3/5` 后往返；所有值、同页对象、DataContext state 保留，96 条合成任务中选中第 55 项、滚动 `18→18 DIP`，合成 Task RefreshCommand 执行 `0` 次。
+- `R08PageSwitchBehaviorTests 3/3`；导航源码/route stack `PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`；Release Playnite.Tests build `0 warning/0 error`。TRX 和隔离边界：[Q11-07 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。fixture 未连接真实业务查询服务，未实测 Playnite/OS 输入/主题截图/有效 per-monitor DPI，Q11-07 仍未最终签收。
+- 下一项 Q11-08；Media Inbox 用户滚动缺陷继续等同次真实 Playnite `[GSC-GRID-DIAGNOSTIC]`，不要用本夹具猜根因。
+
 ## 2026-09-29 Q11-06 页签窄窗可达；R08 完整 Release 复核
 
 - `1c4c21d5` 仅增加 Q11-06 的 STA WPF 行为回归，无生产 XAML/C# 修改。生产 Header 字串数 Save/Media/Maintenance/Trainer=`4/4/6/4`；320×240 DIP、Light/Dark 下测试 Auto 水平溢出、Tab 导航进入、Right/Left 选择并自动滚入视口、PageRight/PageLeft 往返和鼠标路由选中，宽 1280×280 DIP 下不显示多余横条。`R23ProductionResourceStateBehaviorTests 7/7`。

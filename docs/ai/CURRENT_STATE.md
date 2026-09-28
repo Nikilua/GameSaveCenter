@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q11-07 工作区状态往返
+
+- 生产外壳已缓存各工作区实例，页签/筛选绑定到共享状态；本阶段只新增真实 WPF 往返测试，没有更改生产行为。`f9fa47f6` 下页切换类 `3/3`、路由/导航状态类 `6/6`，Playnite.Tests Release build `0 warning/0 error`。控件修改筛选后切走再回、Media/Save/Maintenance 索引 `2/3/5`、选中任务与偏移 `18→18 DIP` 保持，页面/视图状态引用保持，合成刷新命令 `0` 次。证据：[Q11-07](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。
+- Fixture 没连业务查询服务；无真实 Playnite、OS 输入、物理 DPI、主题截图，故 Q11-07 自动行为通过但视觉/宿主仍待验。下一项 Q11-08；Media Inbox 滚动错误仍等同进程诊断数据。
+
 ## 2026-09-29 Q11-06 页签窄窗可达；R08 完整 Release 复核
 
 - `1c4c21d537e78ffb9595f5d278410a7d97ca504f` 新增 Q11-06 真实 STA WPF 行为回归，不改生产 UI。读取生产页签数 Save 4、Media 4、Maintenance 6、Trainer 4，在 320×240 DIP 的浅/深主题窗口验证滚动、Tab 进入、方向键往返、焦点页签滚入视口、WPF 鼠标路由选择和宽屏无需滚动；`R23ProductionResourceStateBehaviorTests 7/7`。证据：[Q11-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)。

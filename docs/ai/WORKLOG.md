@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q11-07 工作区状态往返行为
+
+- 复核 `AcrylicProductionShellView` 已缓存工作区 View 实例并只在 Content 引用变化时替换 PageHost；Tab 索引、任务搜索/筛选均已有 TwoWay 绑定，无需重建服务或 DTO。本阶段只补行为覆盖。
+- 提交 `f9fa47f6` 新增 STA WPF 往返行为：TaskCenter 控件修改搜索、状态/类型/历史/时间筛选后切页再回；Media/Save/Maintenance Tab 索引 `2/3/5` 往返；96 条合成任务中的选中行及滚动偏移 `18→18 DIP`、页面和状态引用均保持。合成刷新命令执行为 `0`。`R08PageSwitchBehaviorTests 3/3`，加 `PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`；Playnite.Tests Release build `0/0`。
+- 当前 fixture 未连接真实服务，只证明导航未自动执行绑定刷新命令、没有替换合成集合；并非业务查询计数。没有 Playnite、物理 DPI、OS 输入或截图，因此视觉/宿主未验。详见 [Q11-07](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。下一项 Q11-08。
+
 ## 2026-09-29 Q11-06 页签溢出行为与全量 Release 复核
 
 - 检查生产 `GscRedesignWorkspaceTabControl` 已有 `ScrollViewer`/Auto 水平条与生产页签模板，不改生产 UI；由 Save/Media/Maintenance/Trainer 四个页面的 XAML 读取实际顶层页签数 `4/4/6/4`。

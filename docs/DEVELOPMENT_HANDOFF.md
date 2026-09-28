@@ -1,5 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q11-07 导航状态保持
+
+- 生产 shell 的页面实例缓存和 TwoWay 过滤/页签绑定已存在；提交 `f9fa47f6` 仅增加实际 STA WPF 往返测试。`R08PageSwitchBehaviorTests 3/3`，`PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`；Release Playnite.Tests 构建 `0 warning/0 error`。Task 搜索和四个筛选器、Media/Save/Maintenance 页签索引 `2/3/5`，任务选择和 `18 DIP` 滚动偏移返回时保持。合成 refresh command `0` 次；fixture 没有实际业务服务，因此不代表存储/媒体查询计数。完整边界：[Q11-07 evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。
+- Q11-07 自动行为通过，真实 Playnite、OS 输入、有效物理 DPI/主题截图仍待验。下一独立任务 Q11-08 导航过渡。Media Inbox 用户问题仍需同进程 DLL/MVID、DPI/主题、header/presenter/first-row 及 outer-page 几何诊断，不能拿本次测试代替。
+
 ## 2026-09-29 当前交接：Q11-06 页签溢出 / R08 Release 全量验证
 
 - Q11-06 新增共享生产 TabControl 的 STA WPF 行为回归，仅改测试。生产 Header 数量为 Save/Media/Maintenance/Trainer `4/4/6/4`；四页面浅/深主题窄窗中 Tab 进入、方向键往返、焦点项滚入视口、水平滚动条 PageRight/PageLeft 与 WPF 鼠标路由选择均通过，宽窗无需滚动；`R23ProductionResourceStateBehaviorTests 7/7`。没有 Playnite 截图/OS 实际输入/有效 per-monitor DPI，Q11-06 视觉及宿主栏仍待验。详细边界：[Q11-06 evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md)。
