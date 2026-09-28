@@ -2599,4 +2599,4 @@ git branch --show-current
 
 - `main` 代码提交 `4b7d1e99` 为 `MediaInboxGrid` 生产日志加入运行 DLL version/MVID/path、主题、窗口 DIP/DPI、DataGrid 坐标下 header/presenter/first row、外层 page offset。生产模板/滚动逻辑仍是原实现；无根因确认、无修复结论。
 - 同一提交隔离 Release 构建 `0 warning/0 error`、定向 WPF `11/11`。实际 WPF 测试宿主 DPI 150%；1.25/1.5 是视图 RenderTransform 而非物理 DPI。2,000 合成项的滚动/分页锚点/窗口缩放/末行与页尾操作通过但未复现宿主空白。原始本机 TRX 位于忽略的 `artifacts/ui-media-inbox-scroll-synthetic-20260928/`，可提交的数值、范围与安全宿主待验步骤见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`。
-- 当前无 Playnite 进程，隔离启动前的 WMI 命令行读取仍 Access Denied，历史 CEF `platform_channel 0x5` 未改变；没有用户运行包的身份、真实主题/尺寸/DPI、滚动前后诊断。先恢复安全宿主条件并保存同一进程前后日志；若 presenter 整体离开 header 查共享模板/有限高度，若仅首行离开 presenter 查虚拟化/集合刷新/锚点。环境未变时不要重试 CEF、触碰真实用户数据或宣称修复。192 项 R 台账状态保持原样。
+- 当前无 Playnite 进程，隔离启动前的 WMI 命令行读取仍 Access Denied，历史 CEF `platform_channel 0x5` 未改变；没有用户运行包的身份、真实主题/尺寸/DPI、滚动前后诊断。先恢复安全宿主条件并保存同一进程前后日志；若 presenter 整体离开 header 查共享模板/有限高度，若仅首行离开 presenter 查虚拟化/集合刷新/锚点。环境未变时不要重试 CEF、触碰真实用户数据或宣称修复。192 项 R 台账状态保持原样。当前独立下一任务 `Q10-07`：设置页真实 `GlassStrengthSlider` 的轨道/Thumb 命中、百分比标签及键盘步进行为。
