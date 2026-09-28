@@ -259,6 +259,128 @@ public sealed class MediaInboxScrollBehaviorTests
         }
     }
 
+    [Fact]
+    public void InboxScrollBarsReserveTheCornerAndKeepTheFinalRowAndRightmostCellInsideViewport()
+    {
+        Exception? exception = null;
+        var observations = new List<string>();
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MediaCenterView();
+                var viewType = typeof(MediaCenterView);
+                var tabs = (TabControl)viewType.GetField("MediaTabControl", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                System.Windows.Data.BindingOperations.ClearBinding(tabs, TabControl.SelectedIndexProperty);
+                tabs.SelectedIndex = 0;
+
+                var grid = (DataGrid)viewType.GetField("MediaInboxGrid", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                var pageScroller = (ScrollViewer)viewType.GetField("MediaInboxPageScrollViewer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                grid.ItemsSource = new BatchObservableCollection<MediaItemDto>(CreateSyntheticMedia(2000));
+                grid.Width = 620;
+
+                window = new Window
+                {
+                    Content = view,
+                    Width = 900,
+                    Height = 760,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.CanResize,
+                    Opacity = 0.01
+                };
+                view.ApplyResponsiveLayout(window.Width, window.Height);
+                window.Show();
+                DrainDispatcher(window);
+
+                Assert.True(grid.IsLoaded && grid.ActualWidth > 0 && grid.ActualHeight > 0,
+                    $"the production Media Inbox grid must have a finite loaded viewport: {grid.ActualWidth:0.##}x{grid.ActualHeight:0.##}");
+                Assert.True(grid.EnableRowVirtualization, "the Media Inbox must retain row virtualization");
+                Assert.True(ScrollViewer.GetCanContentScroll(grid), "the Media Inbox must retain logical item scrolling");
+                Assert.Equal(ScrollUnit.Item, VirtualizingPanel.GetScrollUnit(grid));
+                Assert.Equal(VirtualizationMode.Standard, VirtualizingPanel.GetVirtualizationMode(grid));
+
+                var viewer = FindInternalGridViewer(grid);
+                var horizontalBar = FindVisualChildren<ScrollBar>(viewer)
+                    .FirstOrDefault(candidate => candidate.Orientation == Orientation.Horizontal && candidate.Visibility == Visibility.Visible && candidate.ActualWidth > 0);
+                var verticalBar = FindVisualChildren<ScrollBar>(viewer)
+                    .FirstOrDefault(candidate => candidate.Orientation == Orientation.Vertical && candidate.Visibility == Visibility.Visible && candidate.ActualHeight > 0);
+                Assert.NotNull(horizontalBar);
+                Assert.NotNull(verticalBar);
+                Assert.True(viewer.ScrollableWidth > 0.5, $"the narrow production viewport must have horizontal overflow: scrollable={viewer.ScrollableWidth:0.##},actual={viewer.ActualWidth:0.##}");
+                Assert.True(viewer.ScrollableHeight > 0.5, $"the synthetic list must have vertical overflow: scrollable={viewer.ScrollableHeight:0.##},actual={viewer.ActualHeight:0.##}");
+
+                AssertScrollBarRegions("top-left");
+                viewer.ScrollToVerticalOffset(viewer.ScrollableHeight / 2);
+                viewer.ScrollToHorizontalOffset(viewer.ScrollableWidth / 2);
+                DrainDispatcher(window);
+                AssertScrollBarRegions("middle");
+
+                var finalItem = grid.Items[grid.Items.Count - 1];
+                var finalColumn = grid.Columns.OrderBy(column => column.DisplayIndex).Last();
+                grid.ScrollIntoView(finalItem, finalColumn);
+                viewer.ScrollToEnd();
+                viewer.ScrollToHorizontalOffset(viewer.ScrollableWidth);
+                DrainDispatcher(window);
+
+                AssertScrollBarRegions("bottom-right");
+                AssertLastLoadedRowComplete(grid, grid.Items.Count - 1);
+                var finalRow = grid.ItemContainerGenerator.ContainerFromIndex(grid.Items.Count - 1) as DataGridRow;
+                Assert.NotNull(finalRow);
+                var finalCell = FindVisualChildren<DataGridCell>(finalRow!)
+                    .FirstOrDefault(cell => ReferenceEquals(cell.Column, finalColumn));
+                Assert.NotNull(finalCell);
+                var contentPresenter = FindVisualChildren<ScrollContentPresenter>(viewer).First();
+                var viewportRect = GetRect(contentPresenter, viewer);
+                var finalCellRect = GetRect(finalCell!, viewer);
+                Assert.True(finalCell!.ActualWidth > 0
+                    && finalCellRect.Left >= viewportRect.Left - 1
+                    && finalCellRect.Right <= viewportRect.Right + 1,
+                    $"the rightmost production cell must be fully inside the viewport at the horizontal end; cell={finalCellRect},viewport={viewportRect},offset={viewer.HorizontalOffset:0.##}/{viewer.ScrollableWidth:0.##}");
+                Assert.True(FindVisualChildren<DataGridRow>(grid).Count() < 40,
+                    $"2,000 synthetic inbox rows must remain virtualized at both scrollbar ends; realized={FindVisualChildren<DataGridRow>(grid).Count()}");
+
+                void AssertScrollBarRegions(string checkpoint)
+                {
+                    DrainDispatcher(window);
+                    var presenter = FindVisualChildren<ScrollContentPresenter>(viewer).First();
+                    var headers = FindVisualChildren<DataGridColumnHeadersPresenter>(grid).First();
+                    var presenterRect = GetRect(presenter, viewer);
+                    var headerRect = GetRect(headers, viewer);
+                    var hRect = GetRect(horizontalBar!, viewer);
+                    var vRect = GetRect(verticalBar!, viewer);
+                    observations.Add($"{checkpoint}: presenter={presenterRect},header={headerRect},hbar={hRect},vbar={vRect},offset={viewer.HorizontalOffset:0.##}/{viewer.ScrollableWidth:0.##};{DataGridScrollDiagnostics.CaptureNow(grid, checkpoint)}");
+
+                    Assert.True(Math.Abs(presenterRect.Top - headerRect.Bottom) <= 1,
+                        $"the row viewport must begin at the header bottom at {checkpoint}; header={headerRect},presenter={presenterRect}");
+                    Assert.True(presenterRect.Right <= vRect.Left + 1,
+                        $"the vertical scrollbar must occupy its own column outside the content viewport at {checkpoint}; presenter={presenterRect},vbar={vRect}");
+                    Assert.True(presenterRect.Bottom <= hRect.Top + 1,
+                        $"the horizontal scrollbar must occupy its own row below the content viewport at {checkpoint}; presenter={presenterRect},hbar={hRect}");
+                    Assert.True(hRect.Right <= vRect.Left + 1 && !OverlapsWithArea(hRect, vRect),
+                        $"the horizontal and vertical scrollbar corner cells must not overlap at {checkpoint}; hbar={hRect},vbar={vRect}");
+                    Assert.False(OverlapsWithArea(presenterRect, hRect) || OverlapsWithArea(presenterRect, vRect),
+                        $"neither scrollbar may cover the content presenter at {checkpoint}; presenter={presenterRect},hbar={hRect},vbar={vRect}");
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        foreach (var observation in observations)
+            output.WriteLine(observation);
+        Assert.Null(exception);
+    }
+
     private static void AssertLastLoadedRowComplete(DataGrid grid, int lastIndex)
     {
         var row = grid.ItemContainerGenerator.ContainerFromIndex(lastIndex) as DataGridRow;
@@ -271,6 +393,14 @@ public sealed class MediaInboxScrollBehaviorTests
         Assert.True(rowRect.Top >= viewport.Top - 1 && rowRect.Bottom <= viewport.Bottom + 1,
             $"the final media item must be a complete row at the internal grid end; row={rowRect},viewport={viewport}");
         Assert.Equal(grid.Items.Count - 1, row!.GetIndex());
+    }
+
+    private static bool OverlapsWithArea(Rect first, Rect second)
+    {
+        const double roundingTolerance = 0.5;
+        var overlapWidth = Math.Min(first.Right, second.Right) - Math.Max(first.Left, second.Left);
+        var overlapHeight = Math.Min(first.Bottom, second.Bottom) - Math.Max(first.Top, second.Top);
+        return overlapWidth > roundingTolerance && overlapHeight > roundingTolerance;
     }
 
     private static GeometrySnapshot ReadGeometry(DataGrid grid, ScrollViewer viewer)
