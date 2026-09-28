@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 R08 one-click 失败报告重检（未复现）
+
+- 当前 `main` 身份 `97a9b712` Release solution/XAML build 成功（`0 warning / 0 error`、`24/24`）。12 个独立 VSTest 进程各跑 `R08MotionReverseBehaviorTests` 两个用例，共 `24/24`、全部 exit `0`；各有一条 WPF `InvalidComObjectException` 清理输出，根因未知。[12 份 TRX 与范围](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
+- 用户 `1/2` 失败没有方法名/断言/堆栈/TRX；本地同名 one-click 日志仍是 9/24 的旧宿主审计。当前复跑不等于定位或修复，R08 用户故障保持打开。
+- 接续 Q13-06 账本检查；Media Inbox 真实滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
+
 ## 2026-09-29 Q13-05 Thumb 行为；Media Inbox 宿主前置仍受阻
 
 - `ae35be70` 只新增 WPF 行为测试，复核共享 Thumb Light/Dark、纵横向端点、36 DIP 最小长度、单形状端帽和主题 Hover `1/1`；Release solution `0 warning / 0 error`、XAML `24/24`。同身份 Media Inbox 隔离滚动 `3/3`，含 synthetic 输出尺度 `1/1.25/1.5`、顶/中/底、往返与窗口缩放；COM 清理噪声未知根因，TRX/VSTest 通过。[Q13-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。

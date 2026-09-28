@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 R08 one-click 失败摘要再次复核（仍未定位）
+
+- 当前 `97a9b712` Release solution/XAML build `0 warning / 0 error`、`24/24`；R08 类按独立 VSTest 进程串行重跑 12 轮，`24/24` 通过、全部 exit `0`。每轮伴随 WPF `InvalidComObjectException` testhost 清理输出，根因未知；没有生产代码修改。[本次 TRX 与身份](design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)
+- 用户失败仍缺具体失败方法、消息/堆栈及对应 TRX；本机 one-click 日志是 9/24 旧文件，不能拿隔离通过冒充已解决。失败报告继续保持打开。
+- 接续先检查 Round2 Q13-06 当前共享模板与真实行为用例是否已满足，不先按旧状态快照重建实现；随后推进下一项依赖已满足的任务。Media Inbox 真实滚动错位仍等安全隔离宿主及前后诊断日志。
+
 ## 2026-09-29 当前交接：Q13-05 Thumb 行为已补；Media Inbox 宿主未启动
 
 - 提交 `ae35be70` 只增加共享滚动条模板 WPF 行为回归：双主题/纵横端点/36 DIP 下限/无拼接几何/Hover `1/1`；同身份 Media Inbox WPF 滚动 `3/3`。完整证据：[Q13-05](design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。

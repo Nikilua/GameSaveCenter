@@ -1204,3 +1204,9 @@
 - Release RenderHarness build `0/0`; Task responsive/inspector tests `9/9`; source validator, XAML `24/24`, WPF static `0 errors/28 warnings/177 info`, and diff check passed. Offscreen logical DIP only; Playnite was not started. The 192-ID R ledger and `106/83/1/1/1` counts are unchanged. Details: [Task viewport evidence](evidence/TASK-FOUR-ROW-INSPECTOR-VIEWPORT-20260926.md).
 
 # 2026-09-26 Overview empty recent-access viewport
+
+## 2026-09-29 R08-01 one-click 间歇失败报告复核（未复现）
+
+- 用户本次摘要仍只说明 `R08MotionReverseBehaviorTests` `1/2`，没有失败方法、断言或堆栈；checkout 内同名安装日志时间为 9/24，无法代表此轮。当前 `97a9b712` Release solution/XAML build `0 warning / 0 error`、`24/24`。
+- 从同一隔离输出以独立 VSTest 进程串行跑 R08 类 12 轮：每轮两项均通过，共 `24/24`、所有进程 exit `0`。各轮有 `InvalidComObjectException` 清理输出，根因未知；没有修改动画实现或测试断言。逐轮 TRX：[R08-RECHECK-97A9B712](evidence/R08-RECHECK-97A9B712-20260929/README.md)。
+- 这不定位用户侧失败，R08 报告保持打开，不更改账本状态。后续工作回到 Q13-06 已有交角/末行末列证据核验；Media Inbox 真实宿主问题仍按安全边界待验。

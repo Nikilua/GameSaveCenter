@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 R08 one-click 报告重检（未复现）
+
+- 用户提供 `R08MotionReverseBehaviorTests 1/2` 摘要，未带失败方法、断言、堆栈/TRX。本地同名安装日志时间为 9/24，属于旧宿主审计。
+- `97a9b712` 隔离 Release solution/XAML build `0 warning / 0 error`、`24/24`。12 个独立 VSTest 进程每轮 R08 `2/2`，共 `24/24`，全部 exit `0`；每进程有一条 `InvalidComObjectException` 清理输出、原因未知。未更改产品/测试源码。逐轮 TRX 与限制：[R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
+- 用户失败仍未定位；继续核对 Q13-06 现有共享 DataGrid 交角及末行末列证据。Media Inbox 真实 Playnite 滚动复现条件仍未满足。
+
 ## 2026-09-29 Q13-05 共享滚动条 Thumb 与 Media Inbox 重检
 
 - 先复核 `DesignTokens.xaml` 现有双向 ScrollBar 模板：4 DIP 轨道端边距、36 DIP 最小长度、单一圆角 Rectangle 端帽、主题动态 Hover 资源已实现，无需更换系统或调整 ScrollUnit。提交 `ae35be70` 新增双主题生产 Thumb STA WPF 回归 `1/1`，实际检查纵/横轨道值端点、边隙、下限、单形状端帽及 Hover/离开刷恢复。

@@ -33,3 +33,7 @@
 - 本次 console 有 1 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理输出；xUnit/VSTest 结果仍为 `2/2` 且 exit `0`，根因未知。它不是用户报告的失败证据。
 - 本轮 fetch 成功，`origin/main` 与本地 `4a16874d` 相同，没有更晚的 main 提交；`origin/codex/ui-finesse-round2` 指向 `eaee1d20`，该提交已包含在当前 main 历史内。当前本地工作树只有 main checkout，另一个本地 `codex/ui-finesse-round2` 引用并非单独 worktree。
 - 用户失败仍未复现或定位。继续需要失败机器完整 one-click log 的失败段或该轮 TRX（包含失败用例名、消息和堆栈）；本地当前身份的通过结果不能替代它。自动化 STA WPF 夹具也不代表 Playnite 宿主动画或呈现。
+
+## 2026-09-29 `97a9b712` 十二轮复跑
+
+当前 checkout 的 `artifacts/one-click-install.log` 仍是 2026-09-24 旧宿主审计。当前身份重新构建后，R08 两个用例按独立 VSTest 进程跑 12 轮，`24/24` 全通过，所有 exit `0`；各轮的 `InvalidComObjectException` 清理输出与结论见[本轮独立证据](../R08-RECHECK-97A9B712-20260929/README.md)。这没有复现用户的 `1/2`，用户原失败方法/堆栈仍未知。
