@@ -1,9 +1,16 @@
+## 2026-09-29 Q13-04 表格列宽调整与 Auto 恢复
+
+- 复核生产共享 Header 模板和布局控制器后发现，双击原生 resize gripper 虽会将列宽改为 `Auto`，旧 Pixel 持久化键仍留在设置中，下一次布局会再次覆盖用户动作。提交 `c513be3f` 只移除当前视图/当前列的旧键并复用既有延迟保存；没有新增持久化模型或改共享视觉模板。
+- 精确提交 Release solution/XAML `0 warning / 0 error`、XAML `24/24`。真实生产 WPF Header/Thumb 双主题 STA 回归 `Q13ColumnResizeBehaviorTests 1/1`；既有列宽持久化 `6/6` 与排序 `7/7` 均通过。修复前红测与修复后 TRX、程序集 SHA 和用例范围见[Q13-04 证据](evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
+- 测试通过真实 WPF Thumb 的路由拖动事件，不是 OS 物理鼠标；本阶段没有启动真实 Playnite，也没有核验有效 DPI 或最终屏幕呈现。Q13-04 宿主栏及最终状态保持未完成。R08 用户侧 `1/2` 仍缺失败详情，当前隔离 `2/2` 不能定位该故障。
+- 下一项 Q13-05 ScrollBar Thumb hover 状态行为；如隔离 Playnite 启动门禁恢复，优先收集 Media Inbox 用户滚动问题的同进程 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-29 Q13-03 进程映射行内删除目标
 
 - 盘点生产 `MaintenanceView` 后发现行内删除按钮漏传行 DTO，而 DashboardViewModel 读取独立的 `SelectedProcessMapping`；现已由提交 `256a40f2` 传入当前行 DTO，并让命令拒绝缺少目标的调用，实际 Worker 请求仍复用现有 `DeleteProcessMapping` 与 DTO。
 - 生产 WPF 行为测试在 Light/Dark 下保留 A 为选中详情、对 B 行按钮做实际 WPF HitTest 并由 AutomationPeer 执行，捕获目标为 B；Inspector 动作仍指向 A。`ProcessMappingInlineActionBehaviorTests 1/1`，源绑定/既有 Inspector 目标契约 `1/1`。Release solution/XAML `0 warning / 0 error`、XAML `24/24`，source validation/diff check 通过。
 - 未启动真实 Playnite、未发送 OS 鼠标输入或调用 Worker 删除；真实桌面行命中仍属宿主边界，Q13-03 最终状态保持未完成。完整证据：[Q13-03 行内删除目标](evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。同一提交身份 R08 动效 `2/2`，但用户报告的失败方法/堆栈仍缺失，COM 清理噪声另记于[R08 复核](evidence/R08-CURRENT-RECHECK-20260929/README.md)。
-- 下一项 Q13-04 列宽调整命中热区：先查共享表头模板和已有手势测试，真实 Playnite 鼠标输入保持待验。
+- Q13-04 列宽调整热区随后以 `c513be3f` 修正 Auto 恢复持久化并补足 STA WPF 行为；物理鼠标/真实 Playnite 边界详见上方当前阶段。
 
 ## 2026-09-29 Q13-02 多选反馈：已有计数行为与宿主手势边界
 

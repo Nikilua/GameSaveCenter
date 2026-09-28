@@ -42,7 +42,7 @@
 
 | 组 | 已落地/已复核的真实入口 | 自动证据 | 当前宿主边界 |
 | --- | --- | --- | --- |
-| Q13 | DataGridScrollDiagnostics、稳定 ID 锚点、Item ScrollUnit、表头 resize/sort 部件、媒体主表 212 DIP 修复 | `MediaWindowAnchorContractTests`、`UiAuditCaptureContractTests`、`WpfUiResourceDictionaryTests`、全审计 0 HIGH | 真实鼠标拖拽列宽、Ctrl/Shift 跨页手势仍需宿主操作 |
+| Q13 | DataGridScrollDiagnostics、稳定 ID 锚点、Item ScrollUnit、共享 Header resize/sort gripper、媒体主表 212 DIP 修复 | `Q13ColumnResizeBehaviorTests 1/1` 实际 WPF Thumb 拖动/Auto 恢复；`R06ColumnWidthPersistenceBehaviorTests 6/6`、`R06SortingBehaviorTests 7/7`；`MediaWindowAnchorContractTests`、`UiAuditCaptureContractTests`、全审计 0 HIGH；[Q13-04 证据](../../ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md) | OS 物理鼠标拖列宽与 Ctrl/Shift 跨页手势仍需宿主操作；Q13-04 不将 STA 路由输入冒充真实鼠标 |
 | Q14 | Dashboard/各页筛选、批量计数、刷新/更多筛选和响应式布局入口 | `DebouncedRefreshTests`、`TaskFilterOptionsSyncTests`、`ResponsiveLayoutCoordinatorTests`、`UiFinesseRound2ControlSourceTests`、布局矩阵 | 真实 760/980 DIP 屏幕输入序列待宿主复核；当前审计无工具栏 Medium |
 | Q15 | 共享 Tooltip、Combo Popup、菜单/轻浮层资源和复制入口 | `GamePickerShellSourceTests`、`WpfUiResourceDictionaryTests`、`UiFinesseRound2ControlSourceTests`、`KeyboardFocusSourceTests`、源代码审计；Q15-03/Q15-07/Q15-08 自动门禁与窗口级资源隔离见 `Q15-TOOLTIP-POPUP-THEME-20260915.md`；游戏选框关闭/焦点返回见 `Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md` | Combo/菜单边缘定位、独立窗口真实主题 Owner/打开态切换和真实宿主时序仍待复核 |
 | Q16 | Dialog/Inspector/Expander 层级、详情滚动、焦点返回和失败详情顺序 | `KeyboardFocusSourceTests`、`DetailsDisclosureSourceTests`、`DiagnosticSummaryNoClipTests`、`TaskCenterViewResponsiveTests`；`4414f05`/`68b49a1` 的对话框动画代际、完成/取消清理和受控终态门禁见 [`Q18-04-07-MOTION-CLEANUP-20260915.md`](q13-q25/Q18-04-07-MOTION-CLEANUP-20260915.md) | 真窗口模态 Tab 圈和快速开合时序待宿主复核 |

@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Q13-04 列宽 Auto 恢复；R08 用户失败未定位
+
+- `c513be3f` 修复双击生产表头 resize gripper 后，Auto 列宽仍被旧 Pixel 持久化键覆盖的问题。仅删除当前 view/column 键并使用已有 debounce；保留其他列、视图和 Pixel 宽度行为。
+- 精确提交 Release solution/XAML `0 warning / 0 error`、`24/24`；双主题生产 Header/Thumb STA 行为 `1/1`、列宽持久化 `6/6`、排序 `7/7`，source validation/diff check 通过。程序集 SHA、TRX 和修复前失败断言见[Q13-04 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
+- 本阶段只验证真实 WPF 控件的路由事件，不是 OS 物理鼠标/Playnite 最终呈现；宿主栏仍未完成。下一项 Q13-05 ScrollBar Thumb hover。Media Inbox 滚动问题待同进程 `[GSC-GRID-DIAGNOSTIC]`。
+- R08 用户侧 `1/2` 失败缺用例/断言/堆栈/TRX；当前隔离 `2/2` 与可见 COM 清理噪声均不足以定位。见 [R08 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+
 ## 2026-09-29 Q13-03 行内删除目标修复；R08 用户失败未定位
 
 - 提交 `256a40f2` 修复 Maintenance 进程映射删除目标错配：行内按钮把当前行 DTO 传给命令，DashboardViewModel 拒绝缺参且从该 DTO 取 `ExecutableName` 发起既有 IPC；不改 DTO、Worker 或取消/错误管道。

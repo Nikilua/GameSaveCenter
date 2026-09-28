@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q13-04 表格列宽恢复修复
+
+- `c513be3f` 修复生产 DataGrid 表头双击恢复 Auto 后，旧 Pixel 宽度键被下一次布局重新应用的问题；移除范围限定到当前 view/column，并复用既有延迟保存。Release solution/XAML `0 warning / 0 error`、`24/24`；真实 WPF Header/Thumb 双主题行为 `1/1`，列宽持久化 `6/6`、排序 `7/7`，source validation/diff check 通过。[Q13-04](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
+- 使用合成设置和 STA WPF 路由事件，没有真实 Playnite 或 OS 物理鼠标/屏幕呈现；Q13-04 最终宿主状态仍未完成。当前下一项 Q13-05 ScrollBar Thumb hover；Media Inbox 实际滚动错位仍需同进程 `[GSC-GRID-DIAGNOSTIC]` 几何日志。
+- 用户最新贴出的 R08 one-click `1/2` 仍缺失败方法/堆栈/TRX；当前隔离身份 `2/2` 通过且有 TextServicesHost COM 清理噪声，不能据此宣称用户故障已修复。详见 [R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+
 ## 2026-09-29 Q13-03 行内删除目标修复
 
 - `256a40f2` 修复 Maintenance 进程映射行内按钮漏传行 DTO、旧命令会误用另一选中行的问题。Light/Dark 生产 WPF 行为 `1/1`，源绑定契约 `1/1`；精确身份 Release solution/XAML `0 warning / 0 error`、`24/24`，source validation/diff check 通过。证据：[Q13-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q13-04 列宽双击恢复
+
+- 检查生产共享 Header gripper、列布局控制器和已存在的持久化/排序回归。修复前真实生产 WPF 行为红测确认双击原生 gripper 将列宽改成 Auto 后，旧 Pixel 设置未删除，随后会覆盖 Auto 恢复；没有添加重复服务或持久化模型。
+- 提交 `c513be3f` 在列宽变为 Auto 时移除当前视图/列键并复用 debounce。精确身份 Release solution/XAML `0 warning / 0 error`、`24/24`；`Q13ColumnResizeBehaviorTests 1/1`、`R06ColumnWidthPersistenceBehaviorTests 6/6`、`R06SortingBehaviorTests 7/7`；`scripts/validate-source.py` 和 `git diff --check` 通过。双主题 WPF 行为涵盖真实 gripper 命中/路由拖动、64 DIP 最小值、不误排序、Auto 恢复和关闭 resize 负例，证据与 TRX：[Q13-04](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
+- 本阶段未启动真实 Playnite，未发 OS 物理鼠标事件、未采集有效 DPI/屏幕最终帧，也未触及用户数据。Q13-04 宿主未完成；下一项 Q13-05 Thumb hover，Media Inbox 错位仍需要同进程 `[GSC-GRID-DIAGNOSTIC]`。
+- R08 用户 one-click `1/2` 失败缺方法/断言/堆栈/TRX；现有当前身份隔离复跑 `2/2` 不等同定位成功，TextServicesHost COM 清理噪声仍单独如实记录。
+
 ## 2026-09-29 Q13-03 进程映射行内删除目标与 R08 失败复核
 
 - 检查生产命令和 DTO 后发现行内按钮不传当前行参数，旧命令会读取独立选中项。提交 `256a40f2` 让行内删除传入 `ProcessMappingDto`，DashboardViewModel 只接受明确 DTO 并使用其 EXE 名请求既有 Worker 消息；不增加服务/DTO。生产详情仍会切到实际请求目标。

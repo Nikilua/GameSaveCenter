@@ -1,6 +1,12 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-29 当前交接：Q13-03 进程映射删除目标已修正；R08 用户失败未定位
+## 2026-09-29 当前交接：Q13-04 列宽 Auto 恢复已修正；R08 用户失败未定位
+
+- 提交 `c513be3f` 修复生产 DataGrid 双击 Header gripper 后列宽恢复为 Auto 却被旧 Pixel 持久化宽度覆盖的问题；只清当前视图/列键并沿用延迟持久化。Release solution/XAML `0 warning / 0 error`、`24/24`，真实 WPF Header/Thumb 行为 `1/1`、列宽存储 `6/6`、排序 `7/7`。证据及 TRX：[Q13-04](design/reviews/ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
+- 行为测试通过 STA WPF 路由事件；未启动 Playnite、未发送 OS 物理鼠标或核验宿主呈现/DPI，Q13-04 最终宿主状态仍未完成。下一项 Q13-05 ScrollBar Thumb hover；Media Inbox 错位需恢复真实宿主后记录运行 DLL 身份、DPI/主题和 `[GSC-GRID-DIAGNOSTIC]` 几何。
+- 用户 R08 `1/2` 失败仍缺完整失败方法/断言/堆栈/TRX；当前隔离 `2/2` 通过（testhost 有 TextServicesHost COM 清理噪声）不代表已定位或修复用户侧问题。不能把本地 9/24 同名日志当作该轮证据。
+
+## 2026-09-29 Q13-03 进程映射删除目标已修正
 
 - 提交 `256a40f2` 发现并修正行内删除按钮漏传当前行 DTO、命令却读取独立选中项的问题。`MaintenanceView` 生产 WPF Light/Dark 行为 `1/1`：A 保持选中时对 B 行命中/执行只传入 B，详情选中仍为 A；Inspector 删除指向 A。生产绑定来源测试 `1/1`，隔离 Release solution/XAML `0 warning/0 error`、`24/24`。证据：[Q13-03](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-03-PROCESS-MAPPING-ROW-ACTION-20260929/README.md)。
 - 没有运行真实 Playnite、真实 Worker 删除或 OS 鼠标输入；行命中最终宿主验收仍待环境可用。没有访问真实存档、媒体、云端或外发诊断。
@@ -11,7 +17,7 @@
 
 - 用户提供的 R08 `1/2` 仍没有失败用例名、断言或堆栈。本机 9/24 one-click 日志不是该轮记录；在当前 `4a16874d` 精确隔离 Release 构建中，两个用例均通过，TRX 在 `evidence/R08-CURRENT-RECHECK-20260929/R08-4a16874d.trx`。此结果未定位用户失败，需取得失败机器完整日志/TRX。
 - `git fetch origin` 确认 `origin/main=4a16874d`；远端 `codex/ui-finesse-round2` 的 `eaee1d20` 已在 main 祖先链中。当前 repo 只有 main worktree；不要从旧本地 codex ref 覆盖 main。
-- 下一项继续 Q13-04 列宽拖动热区；Media Inbox 真实宿主滚动缺陷仍以同进程几何日志为诊断前置。
+- Q13-04 列宽 Auto 恢复修复与自动行为证据已在上方记录；当前可执行下一项为 Q13-05 ScrollBar Thumb hover。
 
 ## 2026-09-29 当前交接：Q13-02 多选已实现范围与手势待验
 
