@@ -5,6 +5,7 @@
 - Q10-08 已对精确测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` clean 运行 `ReportedWorkspaceLayoutBehaviorTests 16/16`；Release Playnite 测试程序集 `0 warning/0 error`。密集选项在三种主题资源模式、三档 DIP 尺寸检查实际布局、标题/说明归属、媒体来源换行、父子绑定启停和页尾可达；该项没有生产 XAML/C# 更改。证据：[Q10-08](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)。真实 Playnite/package-host 与物理 DPI 尚待验，Round2 Q10-08 仍未完成。
 - 用户报告 Media Center「待归类」表格滚动后表头下出现大块空白、数据行下移，要求在当前真实 Playnite 中核对加载 DLL 身份、窗口 DIP、DPI、主题，并保留滚动前后 `[GSC-GRID-DIAGNOSTIC]`。已有生产诊断补了 header/presenter/首行同坐标几何和外层页面 offset；不可在没有新宿主数据时据离屏回归猜根因。先检查当前进程及既有 `scripts/real-host-audit.ps1` 隔离流程是否已可用；若可启动，按顶部/中段/拖到底/往返/缩放采集，再依视口整体变化或仅行位置变化选择模板/有限高度布局或虚拟化/集合刷新/锚点修复。
 - 目标行为回归须覆盖顶部、中段、拖动到底、反复往返、窗口缩放及真实 125%/150% DPI，并断言首行贴有效内容视口顶部、末行完整、页尾操作可达；Playnite 宿主最终复核不可用离屏结果替代。若隔离 host 继续被进程查询或 CEF bootstrap 阻塞，记录实际错误并转做依赖满足任务；不得绕过权限或改用户存档/媒体/云端。
+- 当前 `main` `43a0fc9d` 的 MediaInbox WPF 滚动类 `3/3`、exit 0；54 个合成 WPF 窗口检查点均为 `headerBottom=presenterTop=firstRowTop=42 DIP`，页偏移采到 `0/62`，2000 条缓存下最多实现 22 行，末项及页尾操作通过。TRX 有 6 条 WPF TextServicesHost COM 清理异常输出，根因未知。物理 WPF DPI 实测只为 `150%`；1.25 是 RenderTransform，不是 125% 显示器。Playnite 进程/EXE 不可用且命令行访问被拒绝，不能据此称实机已复现或已修。细节：[诊断与 WPF 回归证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md)。
 
 ## 2026-09-28 当前交接：Q10-07 滑杆与 Media Inbox 宿主边界
 

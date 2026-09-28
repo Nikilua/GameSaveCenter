@@ -6,6 +6,12 @@
 - 在测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 的 Release Playnite 测试程序集构建 `0/0`，`ReportedWorkspaceLayoutBehaviorTests 16/16` clean exit。TRX 本地留于 `artifacts/q10-08-dense-options-20260928/q10-08-reported-53008d0b.trx`，未提交原始测试宿主路径。
 - 自动证据不等于 Playnite/package-host 或物理 DPI 验收，Q10-08 最终未完成，R 账本不变。下一步优先尝试用户报告的 Media Inbox 滚动空白真实宿主复现；若宿主门槛仍阻塞，记下实测限制并推进其余依赖已满足的小任务。
 
+## 2026-09-28 Media Inbox 当前 main WPF 滚动回归
+
+- 在源码身份 `43a0fc9d3873cb9c00d20a578e4651c366403069` 独立构建 Playnite 测试项目 `0 warning / 0 error`，`MediaInboxScrollBehaviorTests 3/3` clean exit。首次使用全新 `GscBuildOutputRoot` 的 `--no-restore` 构建因该输出目录缺 `project.assets.json` 失败；随后仅用 `.tmp` 空 package source 配置对已有缓存的 HostAuditSeeder 包做离线 restore，沿用仓库既有 intermediate assets/本地 package cache 完成隔离输出构建，没有改用户 NuGet 配置或访问网络。
+- 真实 WPF `Window` 行为回归保留生产 MediaCenterView、DataGrid 滚动器和 2,000 合成项；顶部/中段/四分之三/Thumb 末端/三次往返/追加分页锚点/短窗滚动/窄窗 resize 与恢复共 54 点，全都测得 header/presenter/首行 `42/42/42 DIP`、外页偏移 `0/62`、末项完整、底部操作可达、虚拟化开且最多 22 个容器。WPF DPI 实际 `150%`；`outputScale=1.25/1.5` 为 RenderTransform，不能记作物理 DPI 档位。测试结果 `3/3`、exit 0；TRX 记录 6 条 WPF TextServicesHost COM 清理异常输出、根因未知。TRX 与真实宿主限制已记在 Media Inbox evidence，原始本机路径未提交。
+- 真实 Playnite process/exe 仍不存在，Win32_Process 命令行读取 Access Denied，CEF bootstrap 0x5 状态未变化。未取得用户运行中 DLL、窗口尺寸/DPI/主题或滚动前后日志；未修改共享模板/行虚拟化/锚点业务算法，用户缺陷没有确认根因，仍待真宿主复现。
+
 ## 2026-09-28 Q10-07 设置页毛玻璃强度滑杆
 
 - 查现有生产 `GlassStrengthSlider`、共享样式及旧 Q04–Q12 150 DIP 视觉探针。新增真实设置 WPF 用例先于旧模板 Light/Dark `0/2` 复现轨道上下命中为空；在 `e007a339` 修复共享轨道透明命中面、Thumb 32 DIP 命中及 1/10 键盘步长，不新增 DTO/服务或改保存业务。

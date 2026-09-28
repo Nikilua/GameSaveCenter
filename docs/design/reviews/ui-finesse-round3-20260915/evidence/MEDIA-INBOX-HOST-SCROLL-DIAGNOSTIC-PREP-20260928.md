@@ -30,6 +30,14 @@
 
 当前没有运行中的 Playnite/GameSaveCenter 进程；本次续接再次用 `Get-Process` 核对无 Playnite，并尝试 `Win32_Process` 读取命令行，系统返回“拒绝访问”。在标准 Playnite 路径及 `Program Files`、`Program Files (x86)` 搜索也没有找到 `Playnite.DesktopApp.exe`。安全隔离 runner 因此缺少可执行文件和进程命令行检查权限；先前同样的 CEF bootstrap 曾报 `platform_channel 0x5`，见 [ENV-001](ENV-001-ISOLATED-RUNNER-20260926.md)。CEF/WMI 状态没有变化，本次没有重启相同受阻宿主、绕过检查、安装真实扩展或访问用户库。运行中的 DLL、真实窗口逻辑尺寸/DPI/主题、滚动前后故障日志仍**没有**取得。
 
+## 当前 main 的 WPF 滚动回归复核（2026-09-28）
+
+测试身份 `43a0fc9d3873cb9c00d20a578e4651c366403069` 的 Release Playnite 测试项目构建 `0 warning / 0 error`；`MediaInboxScrollBehaviorTests` `3/3`，VSTest exit `0`。TRX 留在本机 `artifacts/media-inbox-scroll-43a0fc9d-20260928/media-inbox-scroll-43a0fc9d.trx`，未提交原始测试宿主路径。TRX 另有 6 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理输出，未造成用例失败；来源/根因未知。测试程序集报告 `GameSaveCenter.Playnite.dll:0.6.73+43a0fc9d…`、MVID `3d040636-2de8-4c1c-8304-8092f819d900`；这是临时 WPF 测试进程加载的程序集，不是用户运行中 Playnite 的 DLL 身份。
+
+生产 `MediaCenterView` 在每个案例使用 2,000 条合成媒体，经过顶部、中段、四分之三、Thumb 到底、三次往返、分页追加/锚点恢复、短窗页尾、resize 窄窗拖到底和窗口恢复；共 54 个滚动/尺寸检查点。所有检查点的表头底边、`PART_ScrollContentPresenter` 顶边和首行顶边均为 `42 DIP`，包含外层页面 `offset=0` 与 `62`；行虚拟化开启、`VirtualizationMode.Standard`、逻辑项滚动，最多实现 22 个容器，末项完整且页尾操作可达。WPF 测试进程实际 `VisualTreeHelper.GetDpi=1.5×1.5`。测试参数 `outputScale=1.0/1.25/1.5` 是 `RenderTransform` 输出缩放，**不是**三档物理 DPI；测试 `DataContext` 为 `vm=none`，也未绑定真实主题。
+
+该复核说明当前隔离 WPF 窗口中未出现用户描述的 gap，不能由此推断 Playnite 宿主不存在问题或确认根因。物理 125% 显示器、用户真实主题、Playnite 窗口和故障前后运行日志仍待验。
+
 环境恢复后，先用已授权的隔离 profile 和真实 Playnite：
 
 1. 确认进程命令行属于隔离 profile，记录插件实际加载 DLL 的 path、ProductVersion/MVID、窗口 DIP、DPI 和主题；身份必须与候选提交一致才比较代码行为。

@@ -5,6 +5,11 @@
 - 当前源码/测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 的 Release Playnite 测试程序集构建 `0 warning / 0 error`；`ReportedWorkspaceLayoutBehaviorTests` 在该身份下 `16/16` clean exit。生产设置页在 Light/Dark/FollowPlaynite 资源模式、1280×840/920×700/560×640 DIP 下，开关标题/说明归属、媒体子项换行和不重叠、绑定禁用恢复及页尾可达均有实际布局/行为断言。本阶段仅补测试，无生产 UI 修改。证据：[Q10-08 设置密集选项](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)。
 - 真实 Playnite/package-host、OS 输入及物理 DPI 未验，Round2 Q10-08 保持未完成。R 台账不变。媒体 Inbox 滚动空白仍为最高优先的用户缺陷；开始前再次检查当前宿主、DLL 身份及隔离流程，取得前后 `[GSC-GRID-DIAGNOSTIC]` 后再确定根因，不以隔离测试代替实机证据。
 
+## 2026-09-28 Media Inbox 当前身份 WPF 滚动复核
+
+- `43a0fc9d3873cb9c00d20a578e4651c366403069` Release Playnite 测试项目 `0 warning/0 error`；`MediaInboxScrollBehaviorTests 3/3`、VSTest exit 0。合成 2,000 条、顶部/中段/Thumb 底部/三次往返/分页锚点/短窗和 resize 共 54 个检查点，header bottom、presenter top、first row top 均 `42 DIP`；最多已实现 22 行容器，末项完整、页尾操作可达。TRX 有 6 条 WPF `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理输出，根因未知。精确限制和 TRX 路径：[Media Inbox 宿主诊断与当前 WPF 回归](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md)。
+- 这不是 Playnite 实机复现。测试窗口实际 WPF DPI `150%`；参数 `1.25` 是 `RenderTransform` 缩放，物理 125% 未测。当前无 Playnite 进程、常见路径无宿主 EXE，WMI 命令行拒绝访问；此前 CEF bootstrap `platform_channel 0x5` 条件未变化，未重试同一受阻流程。用户 bug 未确认根因/未修复，需真实宿主同身份前后诊断日志。
+
 ## 2026-09-28 Q10-07 设置滑杆受控行为已收口
 
 - 代码提交 `e007a339` 修复共享 `GscSlider` 4 DIP 轨道只在细线上命中的问题：可见细线/圆形不变，轨道与 Thumb 命中扩大到 32 DIP；键盘小/大步长显式为 1/10。旧生产视图行为用例 Light/Dark `0/2` 实际命中 `none`，修后 Light/Dark/FollowPlaynite `3/3`。

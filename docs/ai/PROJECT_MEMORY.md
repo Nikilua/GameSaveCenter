@@ -6,6 +6,11 @@
 - 控件尺寸分别为：媒体子项宽窗 1 行、中/窄窗 2 行；安全模式窄窗 `419.33×50.67 DIP`。标题/说明字号相同，因此通过字重与主题前景色层级区分，不以小字号假设误报。没有生产 UI 改动。详细证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md`。
 - 自动 WPF 证据不证明真实 Playnite/package-host、OS 输入或物理 DPI；Q10-08 仍未最终完成。当前下一步优先 Media Inbox 表头空白真实宿主复现及根因修复，未获得同身份宿主前后诊断日志前不改共享模板/虚拟化。R ledger 不变。
 
+## 2026-09-28 Media Inbox 滚动错位：当前代码的隔离回归
+
+- 当前 main `43a0fc9d` 的生产 Media Inbox 视图在真实 WPF 测试窗口、2,000 条合成记录下，滚动类 `3/3`、VSTest exit 0；54 检查点的 header/presenter/first row 几何始终 `42/42/42 DIP`，`offset=0` 和 `62` 时相同。覆盖 thumb-to-end、反复往返、有限高度、窗口缩放、锚点恢复、末行完整、页尾按钮及最多 22 个已实现行容器；TRX 有 6 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理日志，原因未知。详细步骤和日志在 `MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`。
+- 测试进程真实 DPI 是 150%，但 `1.25`/`1.5` 参数为 RenderTransform，不是物理 DPI；测试无真实主题/VM。其不复现不能否定用户 Playnite 截图。现环境无 Playnite 进程或可执行文件，WMI 命令行 Access Denied，旧 CEF `platform_channel 0x5` 约束未变。只有真实宿主前后日志能选择 DataGrid 视口布局或行锚点修复方向；不得凭此离屏样本改共享模板。
+
 ## 2026-09-28 Q10-07 真实设置滑杆命中与步进
 
 - 生产 `GameSaveCenterSettingsView.GlassStrengthSlider` 使用 `DesignTokens.xaml` 的共享 `GscSlider`，并通过 `Value` 给右侧整数百分比标签。原 Q04–Q12 的 Slider 探针只证明可见，未测轨道命中和键盘。新增实际设置 WPF 用例先在旧模板 Light/Dark `0/2` 复现 `point=76,4,hit=none`；代码提交 `e007a339` 把 4 DIP 可见线放入透明 32 DIP 命中面、保留 18 DIP 可见 Thumb 并把其命中扩至 32 DIP，设小/大步长 1/10。
