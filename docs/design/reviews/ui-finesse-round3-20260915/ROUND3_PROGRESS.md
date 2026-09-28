@@ -1,9 +1,17 @@
+## 2026-09-29 Q13-05 共享 ScrollBar Thumb 行为复核
+
+- 复用 `DesignTokens.xaml` 已有双向模板：纵/横轨道边距 4 DIP、有效 Thumb 下限 36 DIP、每个端帽由一个圆角形状绘制，Hover 刷从当前主题动态资源读取；没有改视觉资源、滚动单位或滚动系统。
+- 提交 `ae35be70` 新增生产控件 STA WPF 双主题行为 `Q13ScrollBarThumbBehaviorTests 1/1`，覆盖纵/横向轨道两端、剩余边隙、最小长度、端帽边距/单形状和 Hover 进入/离开/恢复。精确身份 Release `0 warning / 0 error`、XAML `24/24`。测试与 DLL SHA：[Q13-05 证据](evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。
+- 同身份 Media Inbox 合成滚动回归 `MediaInboxScrollBehaviorTests 3/3`：输出尺度 `1/1.25/1.5`，仍是 RenderTransform，不是物理 DPI；TextServicesHost COM 清理异常只作噪声记录，TRX 明确通过、exit `0`。现有虚拟化、Item ScrollUnit 和页尾断言未变。
+- 当日真实宿主只读前置检查：冲突进程 `0`，`Assert-GscProcessCommandLineInspectionAvailable` 返回 Access Denied，runner 按既有安全协议拒绝启动。无实际 DLL/MVID、window DIP、DPI/主题或滚动日志；用户报告的表头后空白依然未复现、未修复。详情与诊断数据清单：[Media Inbox 宿主复核](evidence/MEDIA-INBOX-HOST-RECHECK-20260929/README.md)。
+- 下一独立代码项 Q13-06 表格滚动条交角/末行末列避让；Media Inbox 保持高优先，隔离启动条件恢复后先复现并按 presenter/首行坐标差定位，不能据合成夹具猜根因。
+
 ## 2026-09-29 Q13-04 表格列宽调整与 Auto 恢复
 
 - 复核生产共享 Header 模板和布局控制器后发现，双击原生 resize gripper 虽会将列宽改为 `Auto`，旧 Pixel 持久化键仍留在设置中，下一次布局会再次覆盖用户动作。提交 `c513be3f` 只移除当前视图/当前列的旧键并复用既有延迟保存；没有新增持久化模型或改共享视觉模板。
 - 精确提交 Release solution/XAML `0 warning / 0 error`、XAML `24/24`。真实生产 WPF Header/Thumb 双主题 STA 回归 `Q13ColumnResizeBehaviorTests 1/1`；既有列宽持久化 `6/6` 与排序 `7/7` 均通过。修复前红测与修复后 TRX、程序集 SHA 和用例范围见[Q13-04 证据](evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
 - 测试通过真实 WPF Thumb 的路由拖动事件，不是 OS 物理鼠标；本阶段没有启动真实 Playnite，也没有核验有效 DPI 或最终屏幕呈现。Q13-04 宿主栏及最终状态保持未完成。R08 用户侧 `1/2` 仍缺失败详情，当前隔离 `2/2` 不能定位该故障。
-- 下一项 Q13-05 ScrollBar Thumb hover 状态行为；如隔离 Playnite 启动门禁恢复，优先收集 Media Inbox 用户滚动问题的同进程 `[GSC-GRID-DIAGNOSTIC]`。
+- Q13-05 Thumb 端点/Hover 自动行为后来已由 `ae35be70` 补证；物理输入与宿主限制见当前阶段记录。
 
 ## 2026-09-29 Q13-03 进程映射行内删除目标
 

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q13-05 共享滚动条 Thumb 与 Media Inbox 重检
+
+- 先复核 `DesignTokens.xaml` 现有双向 ScrollBar 模板：4 DIP 轨道端边距、36 DIP 最小长度、单一圆角 Rectangle 端帽、主题动态 Hover 资源已实现，无需更换系统或调整 ScrollUnit。提交 `ae35be70` 新增双主题生产 Thumb STA WPF 回归 `1/1`，实际检查纵/横轨道值端点、边隙、下限、单形状端帽及 Hover/离开刷恢复。
+- 精确身份 Release solution/XAML `0 warning/0 error`、`24/24`；同身份 `MediaInboxScrollBehaviorTests 3/3` 保持行虚拟化/Item 滚动、滚动锚点、到底末行与窗口缩放/页尾可达。尺度 `1/1.25/1.5` 是 RenderTransform；exit `0` 但测试退出有 TextServicesHost `InvalidComObjectException` 清理噪声，根因未知。TRX 和 SHA：[Q13-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。
+- 为用户真实 Playnite 滚动缺陷做当日只读安全前置：冲突进程 `0`，进程命令行检查仍 Access Denied，runner 按门禁未启动。无当前 loaded DLL、window DIP/DPI/theme 或前后 `[GSC-GRID-DIAGNOSTIC]` 原行；明确未复现未修复。待安全前置恢复后的几何分流步骤和 TRX：[宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-RECHECK-20260929/README.md)。
+- 当前下一独立代码项 Q13-06 交角/末行末列避让；Media Inbox 仍高优先，启动条件恢复后回到真实宿主复现。
+
 ## 2026-09-29 Q13-04 列宽双击恢复
 
 - 检查生产共享 Header gripper、列布局控制器和已存在的持久化/排序回归。修复前真实生产 WPF 行为红测确认双击原生 gripper 将列宽改成 Auto 后，旧 Pixel 设置未删除，随后会覆盖 Auto 恢复；没有添加重复服务或持久化模型。

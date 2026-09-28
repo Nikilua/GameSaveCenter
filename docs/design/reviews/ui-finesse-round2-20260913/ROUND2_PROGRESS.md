@@ -118,7 +118,7 @@
 | Q13-02 | 多选反馈 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [多选当前证据/待验手势](../ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md)：R05/R22 已覆盖计数、空选、清空/隐藏选项；tri-state 仅为控件视觉、无业务消费者；Ctrl/Shift 修饰键序列须隔离 Playnite 宿主 |
 | Q13-03 | 行内按钮命中 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；行内命令/稳定行标识已复核，真实命中序列待宿主 |
 | Q13-04 | 列调整热区 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前行为证据](../ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)：修正双击恢复 Auto 后旧 Pixel 设置覆盖问题；实际 WPF gripper/排序隔离回归已通过，真实 Playnite/物理鼠标仍待宿主 |
-| Q13-05 | 滚动条 Thumb | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；现有 ScrollBar 模板与端点审计通过，真实 Hover 待宿主 |
+| Q13-05 | 滚动条 Thumb | 已复核 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前行为证据](../ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)：共享模板纵横向/Light-Dark端点、36 DIP、单形状端帽与 Hover 回归 `1/1`；物理 Hover/真实宿主仍待验 |
 | Q13-06 | 滚动条交界 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；末行/末列布局审计通过，宿主像素边界待验 |
 | Q13-07 | 滚动链边界 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；页面 Auto 通道与 Inspector 有界滚动已实际修复/分类，触控链待宿主 |
 | Q13-08 | 分页锚点 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；稳定 ID 锚点/刷新恢复测试通过，真实分页操作待宿主 |

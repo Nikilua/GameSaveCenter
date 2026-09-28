@@ -1,9 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-09-29 Q13-04 表格列宽恢复修复
+## 2026-09-29 Q13-05 Thumb 行为；Media Inbox 宿主前置仍受阻
 
-- `c513be3f` 修复生产 DataGrid 表头双击恢复 Auto 后，旧 Pixel 宽度键被下一次布局重新应用的问题；移除范围限定到当前 view/column，并复用既有延迟保存。Release solution/XAML `0 warning / 0 error`、`24/24`；真实 WPF Header/Thumb 双主题行为 `1/1`，列宽持久化 `6/6`、排序 `7/7`，source validation/diff check 通过。[Q13-04](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
-- 使用合成设置和 STA WPF 路由事件，没有真实 Playnite 或 OS 物理鼠标/屏幕呈现；Q13-04 最终宿主状态仍未完成。当前下一项 Q13-05 ScrollBar Thumb hover；Media Inbox 实际滚动错位仍需同进程 `[GSC-GRID-DIAGNOSTIC]` 几何日志。
+- `ae35be70` 只新增 WPF 行为测试，复核共享 Thumb Light/Dark、纵横向端点、36 DIP 最小长度、单形状端帽和主题 Hover `1/1`；Release solution `0 warning / 0 error`、XAML `24/24`。同身份 Media Inbox 隔离滚动 `3/3`，含 synthetic 输出尺度 `1/1.25/1.5`、顶/中/底、往返与窗口缩放；COM 清理噪声未知根因，TRX/VSTest 通过。[Q13-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。
+- Media Inbox 真 Playnite 仍未复现：当日隔离 preflight 枚举冲突进程 `0`，但命令行检查 `Access Denied`，runner 按安全门禁拒绝启动。无已加载 DLL/MVID、窗口 DIP、DPI/主题或真实 `[GSC-GRID-DIAGNOSTIC]` 前后行，根因未判；不能把 1.25/1.5 RenderTransform 当物理 DPI。[当前宿主复核与待验步骤](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-RECHECK-20260929/README.md)。
+- 下一独立可执行项 Q13-06 交角/末行末列避让；Media Inbox 仍为高优先，宿主安全前置恢复后优先抓同进程几何日志。Q13-04 已在前条账本记录；R08 用户侧 `1/2` 失败仍缺原始失败方法/断言/堆栈/TRX，隔离 `2/2` 通过不代表已定位。
 - 用户最新贴出的 R08 one-click `1/2` 仍缺失败方法/堆栈/TRX；当前隔离身份 `2/2` 通过且有 TextServicesHost COM 清理噪声，不能据此宣称用户故障已修复。详见 [R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
 
 ## 2026-09-29 Q13-03 行内删除目标修复

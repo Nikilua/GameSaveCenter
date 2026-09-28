@@ -1,9 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-29 当前交接：Q13-04 列宽 Auto 恢复已修正；R08 用户失败未定位
+## 2026-09-29 当前交接：Q13-05 Thumb 行为已补；Media Inbox 宿主未启动
 
-- 提交 `c513be3f` 修复生产 DataGrid 双击 Header gripper 后列宽恢复为 Auto 却被旧 Pixel 持久化宽度覆盖的问题；只清当前视图/列键并沿用延迟持久化。Release solution/XAML `0 warning / 0 error`、`24/24`，真实 WPF Header/Thumb 行为 `1/1`、列宽存储 `6/6`、排序 `7/7`。证据及 TRX：[Q13-04](design/reviews/ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)。
-- 行为测试通过 STA WPF 路由事件；未启动 Playnite、未发送 OS 物理鼠标或核验宿主呈现/DPI，Q13-04 最终宿主状态仍未完成。下一项 Q13-05 ScrollBar Thumb hover；Media Inbox 错位需恢复真实宿主后记录运行 DLL 身份、DPI/主题和 `[GSC-GRID-DIAGNOSTIC]` 几何。
+- 提交 `ae35be70` 只增加共享滚动条模板 WPF 行为回归：双主题/纵横端点/36 DIP 下限/无拼接几何/Hover `1/1`；同身份 Media Inbox WPF 滚动 `3/3`。完整证据：[Q13-05](design/reviews/ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)。
+- Media Inbox 用户真实 Playnite 滚动问题本日仍未复现、未修。冲突宿主进程 `0`，但隔离 runner 的命令行读取 preflight 再次 Access Denied，按门禁拒绝启动；不能提供运行 DLL identity/window DIP/DPI/theme/真实日志。[当日复核](design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-RECHECK-20260929/README.md)。隔离滚动测试退出时 TextServicesHost COM 清理异常有记载，TRX 通过 `3/3`、exit `0`。
+- 当前可执行下一项 Q13-06 交角/末行末列避让；Media Inbox 仍高优先，在安全隔离前置恢复时先做真实宿主滚动诊断。R08 用户侧 `1/2` 失败依然缺方法/断言/堆栈/TRX，当前隔离 `2/2` 不能当作问题已解决。
 - 用户 R08 `1/2` 失败仍缺完整失败方法/断言/堆栈/TRX；当前隔离 `2/2` 通过（testhost 有 TextServicesHost COM 清理噪声）不代表已定位或修复用户侧问题。不能把本地 9/24 同名日志当作该轮证据。
 
 ## 2026-09-29 Q13-03 进程映射删除目标已修正
@@ -17,7 +18,7 @@
 
 - 用户提供的 R08 `1/2` 仍没有失败用例名、断言或堆栈。本机 9/24 one-click 日志不是该轮记录；在当前 `4a16874d` 精确隔离 Release 构建中，两个用例均通过，TRX 在 `evidence/R08-CURRENT-RECHECK-20260929/R08-4a16874d.trx`。此结果未定位用户失败，需取得失败机器完整日志/TRX。
 - `git fetch origin` 确认 `origin/main=4a16874d`；远端 `codex/ui-finesse-round2` 的 `eaee1d20` 已在 main 祖先链中。当前 repo 只有 main worktree；不要从旧本地 codex ref 覆盖 main。
-- Q13-04 列宽 Auto 恢复修复与自动行为证据已在上方记录；当前可执行下一项为 Q13-05 ScrollBar Thumb hover。
+- Q13-04 列宽 Auto 恢复与 Q13-05 Thumb 自动行为证据已在上方记录；当前可执行下一项为 Q13-06 交角/末行末列避让。
 
 ## 2026-09-29 当前交接：Q13-02 多选已实现范围与手势待验
 
