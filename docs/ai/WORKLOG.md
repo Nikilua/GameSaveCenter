@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q10-06 开关过程行为补证
+
+- 盘点并复用现有 `ToggleSwitch`、Binding 和设置模型；`9ec0ab83` 增加实例独占的滑块位移、当前值接续、动效关闭/高对比度回退，并补默认 motion 资源。没有新增服务、DTO、命令或持久化字段。
+- `9ec0ab83` 提交后 Release solution `0 warning / 0 error`、XAML `24/24`；source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`。精确程序集身份 `0.6.73+9ec0ab8300e3c2ca90d7aaaaf2e3b6eadaa7dd5a`，SHA-256 `F0C628AEF9292AC2FE81BDD1EBFC18DB604C81DD69948E41F5185AF09C91A6BA`。
+- 隔离 WPF 类按各自 testhost 顺序 `1+1+2+1=5/5`：Q10 行为测试覆盖双主题、绑定拒绝、disabled 键盘焦点/UIA 负例、真实动画中间值、连续反向后最新目标、关闭动效清时钟；相邻 R05/R08 和资源契约回归通过。原始 TRX：[Q10-06](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md)。
+- 没有安装或启动真实 Playnite；自动行为不证明宿主最终呈现/物理 DPI，Q10-06 最终视觉仍待验。Round2 进度行和 R ledger 状态按边界保留。
+- 下一步转到用户报告的 Media Inbox 滚动错位，先通过隔离 Playnite 流程复现并记录 build/DPI/theme 和同坐标诊断。旧日志不是这次复现；暂不先验改 DataGrid 模板、虚拟化或锚点恢复。
+
 ## 2026-09-28 Q10-03 复选标签行为与远程测试身份复核
 
 - 生产 `GscCheckBox` 模板新增长字符串 `AccessText` 换行和模板根透明 hit-test 面；行为测试使用真实生产样式/主题资源。双主题 `Q10CheckBoxHitBehaviorTests 4/4`，包含方框、标签、间隔 hit-test，Click/Space 各一次切换，以及 disabled focus/UIA Toggle 负例。Release solution `0 warning/0 error`、XAML `24/24`、source validator 通过。代码提交 `11a513ef`。

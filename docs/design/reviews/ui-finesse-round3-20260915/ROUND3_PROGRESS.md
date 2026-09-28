@@ -1,3 +1,10 @@
+## 2026-09-28 Q10-06 Toggle 过程状态行为补证
+
+- `9ec0ab83` 在共享 Toggle 上复用现有 Binding/设置模型，增加按元素拥有的 Thumb 位移动效与关闭动效/高对比度回退；不新增服务、DTO、命令或存档字段。提交后 Release solution `0 warning / 0 error`、XAML `24/24`，source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`。
+- 精确构建身份 `0.6.73+9ec0ab8300e3c2ca90d7aaaaf2e3b6eadaa7dd5a`，Playnite DLL SHA-256 `F0C628AEF9292AC2FE81BDD1EBFC18DB604C81DD69948E41F5185AF09C91A6BA`。定向隔离 WPF 回归 `5/5`：Q10 行为 `1/1`、R05 持久化 `1/1`、R08 动效反转 `2/2`、共享 Toggle 资源契约 `1/1`。Q10 实测两主题下源更新拒绝、禁用焦点/UIA 负例、连续反转中间值与最新目标、关闭动效即时收敛并释放时钟；TRX 和边界见 [Q10-06 evidence](evidence/Q10-06-TOGGLE-STATE-20260928.md)。
+- 没有把本次程序集安装到用户 Playnite 目录或启动真实宿主。STA WPF 动画及进程内 UIA provider 不代表 package-host、物理 DPI、OS 输入或最终呈现；因此 Q10-06 自动行为已补证，真实宿主视觉项仍待验，Round2 最终状态保持未完成。R ledger 仍 192 项、`106/83/1/1/1`。
+- 当前下一项是用户新报告的 Media Inbox 滚动后表头与数据行错位/空白：先核验隔离宿主构建身份和尺寸/DPI/主题，再补同坐标头部/视口/首行与外层滚动偏移日志；在真实样本区分共享 DataGrid/Page 测量与行锚点原因前不改生产布局。
+
 ## 2026-09-28 R06-02 用户排序崩溃修复的 clean-main 复核
 
 - `f8a82469` 修复 detached `ListCollectionView` 在结束 `DeferRefresh` 时触发 `NullReferenceException`；原 TRX 在提交前运行且身份为父提交 `ade4b937`，现用干净当前 main `3d83d38f9592c01522240fe7f462bf2e52ff0cb3` 重建 Release 并复跑排序类，`7/7`、0 fail/skip、exit 0。

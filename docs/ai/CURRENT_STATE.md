@@ -1,5 +1,12 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q10-06 开关过程行为已自动复核，Media Inbox 用户问题待诊断
+
+- 实现提交 `9ec0ab8300e3c2ca90d7aaaaf2e3b6eadaa7dd5a`：共享 Toggle 现在用元素独占的可变 Thumb transform 接续当前动画到最新绑定值；运行时关闭动效/高对比度时立即清钟并落到最新状态。没有新增服务、DTO、命令或持久化字段。
+- 精确提交身份 Release solution `0 warning/0 error`、XAML `24/24`、source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`。Q10/相邻 WPF 行为类总计 `5/5`，TRX 和逐项范围见 [Q10-06 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md)。
+- Q10-06 的隔离 WPF 行为已补齐，真实 Playnite/package-host 视觉和输入仍待验证，不标为最终验收。R ledger 仍 192 项、`106/83/1/1/1`。
+- 当前优先任务是用户报告的 Media Inbox 表头后空白、行下移：旧 `extensions.log` 只有既往 `[GSC-GRID-DIAGNOSTIC]` 内部视口样本，不能证明这次故障复现。下一步用已授权隔离宿主确认构建身份、逻辑大小/DPI/主题并补同坐标 header/presenter/首行/外层滚动量；确认视口整体移动或行锚点移动后再定向修复。
+
 ## 2026-09-28 Q10-03 复选标签命中与一键测试身份错配
 
 - 生产复选共享模板在 `11a513ef` 补了字符串标签自然换行及根 hit-test 面；双主题隔离 WPF 行为 `4/4`，涵盖方框/文本/空白区的命中几何、Click 与 Space 单次切换、禁用拒焦和 UIA Toggle 拒绝负例。详细证据与 TRX：[Q10-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。真实 OS 鼠标、Playnite/package-host、物理 DPI 与呈现仍未验，Q10-03 保持最终未完成。

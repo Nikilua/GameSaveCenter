@@ -1,6 +1,14 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-28 Q10-03 续接与 Q10-06 下一步
+## 2026-09-28 当前交接：Media Inbox 滚动错位诊断
+
+用户报告 Media Center「待归类」表格在滚动后列头下方出现大块空白、数据行下移。下一步先按现有 `scripts/real-host-audit.ps1` 隔离流程检查 Playnite DLL 身份、窗口逻辑尺寸、DPI、主题并尝试复现；必须保存滚动前/后 `[GSC-GRID-DIAGNOSTIC]`。诊断需把 header bottom、`PART_ScrollContentPresenter` top、首个可见 `DataGridRow` top 和外层页面 ScrollViewer offset 换算到同一 grid 坐标系。旧 `extensions.log` 样本只显示历史内部 presenter/row gap 为 0，不能替代本次复现。
+
+只有确认几何变化发生在整个内容视口还是行本身，才分别查 `Themes/Redesign.xaml`/有限高度页面布局，或 `MediaDataGrid` 虚拟化、集合刷新与锚点恢复。保留 row virtualization、现有滚动条、Playnite/net462、命令/取消/错误/恢复语义；不使用空白填充、负边距或关闭虚拟化遮盖。目标回归应使用合成媒体和隔离 WPF 窗口覆盖顶部/中段/拖动到底/反复往返/resize/125%/150% DPI，检查首行贴近内容视口、末行完整和页尾操作可达，再由 Playnite 宿主复核。实际 root cause 未确认前不改共享模板或生产布局。
+
+Q10-06 已在 `9ec0ab83` 收口自动行为回归：精确提交 Release 构建 `0/0`，相关 WPF 测试 `5/5`，证据为 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md`。真实 package-host/视觉验收仍待做，不标最终完成。远端 `origin/main` 已 fetch 到且当时没有其他设备新提交；本地 `main` 在 `origin/main` 前 1 个代码提交，文档/证据正在同步。R ledger 维持 192 项、`106/83/1/1/1`。
+
+## 2026-09-28 Q10-03 续接与 Q10-06 下一步（历史快照）
 
 当前 main 已包含代码提交 `11a513efca32cca5d1e13630e7db4b5b811ba36f`：`GscCheckBox` 长标签换行和整块命中面有双主题受控行为 `4/4`；KeyboardFocusSource 同类当前身份干净复跑 `5/5`。代码和本轮文档同步提交应推送并核实在 `origin/main`。细节见 [Q10-03 复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-03-CHECKBOX-LABEL-HIT-20260928.md)。
 
