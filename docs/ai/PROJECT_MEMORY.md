@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q10-08 设置密集选项分组行为证据
+
+- 在当前测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 运行 `ReportedWorkspaceLayoutBehaviorTests 16/16` clean exit。生产设置页密集开关用 Light/Dark/FollowPlaynite 资源模式、1280×840、920×700、560×640 DIP 窗口实际布局；标题、帮助文本、行内边界、媒体源 WrapPanel 的组内无重叠换行、`INotifyPropertyChanged` 父子启停以及页尾安全模式可达均有行为/几何断言。
+- 控件尺寸分别为：媒体子项宽窗 1 行、中/窄窗 2 行；安全模式窄窗 `419.33×50.67 DIP`。标题/说明字号相同，因此通过字重与主题前景色层级区分，不以小字号假设误报。没有生产 UI 改动。详细证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md`。
+- 自动 WPF 证据不证明真实 Playnite/package-host、OS 输入或物理 DPI；Q10-08 仍未最终完成。当前下一步优先 Media Inbox 表头空白真实宿主复现及根因修复，未获得同身份宿主前后诊断日志前不改共享模板/虚拟化。R ledger 不变。
+
 ## 2026-09-28 Q10-07 真实设置滑杆命中与步进
 
 - 生产 `GameSaveCenterSettingsView.GlassStrengthSlider` 使用 `DesignTokens.xaml` 的共享 `GscSlider`，并通过 `Value` 给右侧整数百分比标签。原 Q04–Q12 的 Slider 探针只证明可见，未测轨道命中和键盘。新增实际设置 WPF 用例先在旧模板 Light/Dark `0/2` 复现 `point=76,4,hit=none`；代码提交 `e007a339` 把 4 DIP 可见线放入透明 32 DIP 命中面、保留 18 DIP 可见 Thumb 并把其命中扩至 32 DIP，设小/大步长 1/10。

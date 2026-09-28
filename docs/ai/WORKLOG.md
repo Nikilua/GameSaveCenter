@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q10-08 设置密集选项分组
+
+- 复用现有生产设置页、ToggleSwitch 和绑定模型，没有新增服务/DTO 或改生产 UI。新增行为测试检查八个开关在三个主题资源模式及 1280×840、920×700、560×640 DIP 下标题/说明归属、行高和裁切、标题/帮助的字重与色彩层级；媒体来源五个子项窄窗换行不重叠；父同步开关经 `INotifyPropertyChanged` 控制子项禁用/恢复；页尾安全模式 `BringIntoView` 后完整位于视口内。
+- 在测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 的 Release Playnite 测试程序集构建 `0/0`，`ReportedWorkspaceLayoutBehaviorTests 16/16` clean exit。TRX 本地留于 `artifacts/q10-08-dense-options-20260928/q10-08-reported-53008d0b.trx`，未提交原始测试宿主路径。
+- 自动证据不等于 Playnite/package-host 或物理 DPI 验收，Q10-08 最终未完成，R 账本不变。下一步优先尝试用户报告的 Media Inbox 滚动空白真实宿主复现；若宿主门槛仍阻塞，记下实测限制并推进其余依赖已满足的小任务。
+
 ## 2026-09-28 Q10-07 设置页毛玻璃强度滑杆
 
 - 查现有生产 `GlassStrengthSlider`、共享样式及旧 Q04–Q12 150 DIP 视觉探针。新增真实设置 WPF 用例先于旧模板 Light/Dark `0/2` 复现轨道上下命中为空；在 `e007a339` 修复共享轨道透明命中面、Thumb 32 DIP 命中及 1/10 键盘步长，不新增 DTO/服务或改保存业务。

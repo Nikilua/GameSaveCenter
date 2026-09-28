@@ -28,7 +28,7 @@
 
 ## 宿主待验步骤与限制
 
-当前没有运行中的 Playnite/GameSaveCenter 进程；安全隔离启动前置的 `Win32_Process.CommandLine` 查询仍为 Access Denied。先前相同环境的 Playnite CEF bootstrap 报 `platform_channel 0x5`，见 [ENV-001](ENV-001-ISOLATED-RUNNER-20260926.md)。本阶段未重启相同受阻宿主，也未安装到真实扩展目录、读取真实用户库或修改真实媒体。运行中的 DLL、真实窗口逻辑尺寸/DPI/主题、滚动前后故障日志均**没有**取得。
+当前没有运行中的 Playnite/GameSaveCenter 进程；本次续接再次用 `Get-Process` 核对无 Playnite，并尝试 `Win32_Process` 读取命令行，系统返回“拒绝访问”。在标准 Playnite 路径及 `Program Files`、`Program Files (x86)` 搜索也没有找到 `Playnite.DesktopApp.exe`。安全隔离 runner 因此缺少可执行文件和进程命令行检查权限；先前同样的 CEF bootstrap 曾报 `platform_channel 0x5`，见 [ENV-001](ENV-001-ISOLATED-RUNNER-20260926.md)。CEF/WMI 状态没有变化，本次没有重启相同受阻宿主、绕过检查、安装真实扩展或访问用户库。运行中的 DLL、真实窗口逻辑尺寸/DPI/主题、滚动前后故障日志仍**没有**取得。
 
 环境恢复后，先用已授权的隔离 profile 和真实 Playnite：
 

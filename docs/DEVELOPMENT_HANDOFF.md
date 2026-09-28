@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-28 当前交接：Media Inbox 滚动错位与 Q10-08 证据
+
+- Q10-08 已对精确测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` clean 运行 `ReportedWorkspaceLayoutBehaviorTests 16/16`；Release Playnite 测试程序集 `0 warning/0 error`。密集选项在三种主题资源模式、三档 DIP 尺寸检查实际布局、标题/说明归属、媒体来源换行、父子绑定启停和页尾可达；该项没有生产 XAML/C# 更改。证据：[Q10-08](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)。真实 Playnite/package-host 与物理 DPI 尚待验，Round2 Q10-08 仍未完成。
+- 用户报告 Media Center「待归类」表格滚动后表头下出现大块空白、数据行下移，要求在当前真实 Playnite 中核对加载 DLL 身份、窗口 DIP、DPI、主题，并保留滚动前后 `[GSC-GRID-DIAGNOSTIC]`。已有生产诊断补了 header/presenter/首行同坐标几何和外层页面 offset；不可在没有新宿主数据时据离屏回归猜根因。先检查当前进程及既有 `scripts/real-host-audit.ps1` 隔离流程是否已可用；若可启动，按顶部/中段/拖到底/往返/缩放采集，再依视口整体变化或仅行位置变化选择模板/有限高度布局或虚拟化/集合刷新/锚点修复。
+- 目标行为回归须覆盖顶部、中段、拖动到底、反复往返、窗口缩放及真实 125%/150% DPI，并断言首行贴有效内容视口顶部、末行完整、页尾操作可达；Playnite 宿主最终复核不可用离屏结果替代。若隔离 host 继续被进程查询或 CEF bootstrap 阻塞，记录实际错误并转做依赖满足任务；不得绕过权限或改用户存档/媒体/云端。
+
 ## 2026-09-28 当前交接：Q10-07 滑杆与 Media Inbox 宿主边界
 
 - `main` 代码提交 `e007a339` 修共享 `GscSlider`：透明 32 DIP 轨道命中面/Thumb 命中、保留 4 DIP 细线和 18 DIP 可见圆形，键盘小/大步长 1/10。生产设置页 Light/Dark/FollowPlaynite 实际 WPF `3/3`，包含轨道点击、键盘、标签/源值、禁用负例和短窗可达；Release solution `0/0`、XAML `24/24`，关联类分进程 `13/13+3/3+24/24`。合并类 testhost 的 R09 一次资源污染失败如实记录在 Q10-07 evidence，不能引用为单次全绿。

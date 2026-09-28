@@ -1,10 +1,15 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q10-08 设置密集选项自动行为已补证
+
+- 当前源码/测试身份 `53008d0b74670e599670e9c661228cc62d82f68b` 的 Release Playnite 测试程序集构建 `0 warning / 0 error`；`ReportedWorkspaceLayoutBehaviorTests` 在该身份下 `16/16` clean exit。生产设置页在 Light/Dark/FollowPlaynite 资源模式、1280×840/920×700/560×640 DIP 下，开关标题/说明归属、媒体子项换行和不重叠、绑定禁用恢复及页尾可达均有实际布局/行为断言。本阶段仅补测试，无生产 UI 修改。证据：[Q10-08 设置密集选项](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-08-DENSE-SETTINGS-GROUPS-20260928.md)。
+- 真实 Playnite/package-host、OS 输入及物理 DPI 未验，Round2 Q10-08 保持未完成。R 台账不变。媒体 Inbox 滚动空白仍为最高优先的用户缺陷；开始前再次检查当前宿主、DLL 身份及隔离流程，取得前后 `[GSC-GRID-DIAGNOSTIC]` 后再确定根因，不以隔离测试代替实机证据。
+
 ## 2026-09-28 Q10-07 设置滑杆受控行为已收口
 
 - 代码提交 `e007a339` 修复共享 `GscSlider` 4 DIP 轨道只在细线上命中的问题：可见细线/圆形不变，轨道与 Thumb 命中扩大到 32 DIP；键盘小/大步长显式为 1/10。旧生产视图行为用例 Light/Dark `0/2` 实际命中 `none`，修后 Light/Dark/FollowPlaynite `3/3`。
 - 同提交 Release solution `0 warning/0 error`、XAML `24/24`、source validation、WPF 静态 `0 errors`；关联 WPF 类按独立 testhost `13/13 + 3/3 + 24/24`。生产设置页 Light/Dark `1040×700 DIP` 离屏图中滑杆和 `78%` 标签可见；真实 Playnite/package-host、物理输入/DPI/呈现未验，Round2 Q10-07 最终仍未完成。证据：[Q10-07 滑杆行为](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-07-SETTINGS-SLIDER-BEHAVIOR-20260928.md)。
-- 当前环境下下一独立任务 Q10-08 的密集选项分组；媒体 Inbox 真宿主空白仍等待安全宿主前后日志，一旦可复现优先回到该问题。R 台账 192 项状态不变。
+- 当前环境下下一独立任务为复现并修复 Media Inbox 滚动错位；按真实宿主日志判断是视口整体移动还是行锚点偏移。R 台账 192 项状态不变。
 
 ## 2026-09-28 Media Inbox 真实宿主空白：诊断与回归已就绪，缺陷仍打开
 
