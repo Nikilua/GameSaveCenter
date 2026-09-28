@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Media Inbox 真实宿主空白：诊断与回归已就绪，缺陷仍打开
+
+- 当前 `main` 实现提交 `4b7d1e99` 为 `MediaInboxGrid` 日志补充运行中 DLL version/MVID/path、主题、窗口 DIP/DPI、同一表格坐标系下列头/内容视口/首行顶边和外层页面滚动偏移；未改 DataGrid 模板、虚拟化或滚动算法。
+- 同一提交 Release Playnite 测试项目 `0 warning/0 error`，定向 WPF `11/11`：媒体滚动行为 `3`、键盘焦点源码/行为 `5`、媒体有限高度几何 `3`。2,000 条合成媒体的顶部、中段、拖到底、往返、追加分页锚点恢复、窗口缩放和页尾操作可达通过；本机实际 WPF DPI `150%`，参数 `125%/150%` 是 RenderTransform，不能冒称物理 DPI 测试。
+- 当前无 Playnite 进程，隔离宿主所需进程命令行读取仍 Access Denied，既有 CEF `platform_channel 0x5` 环境条件未变。没有运行中插件身份、真实宿主滚动前后日志或根因，因此用户缺陷**未修复**；R 账本不变。证据与下一步见 [Media Inbox 宿主诊断准备](../design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md)。
+
 ## 2026-09-28 Q10-06 开关过程行为已自动复核，Media Inbox 用户问题待诊断
 
 - 实现提交 `9ec0ab8300e3c2ca90d7aaaaf2e3b6eadaa7dd5a`：共享 Toggle 现在用元素独占的可变 Thumb transform 接续当前动画到最新绑定值；运行时关闭动效/高对比度时立即清钟并落到最新状态。没有新增服务、DTO、命令或持久化字段。

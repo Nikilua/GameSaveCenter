@@ -9555,3 +9555,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release 编译持续提示 `MediaCenterView.xaml.cs:703 CS8602`。复核 `ResetSelectedVideoPreview` 的无效/不支持路径发现 fallback 已显示，但命名 `MediaSelectedVideo` 仍无条件解引用；增加 null guard 后，若播放器元素未生成则保留可读 fallback，不再抛空引用。
 - 补充 `R14ClassificationSelectionTests` 回归契约。当前提交 `f1b746d5` 的 Release Playnite 测试项目 build `0 warnings/0 errors`，R14 类 `4/4`；`scripts/validate-source.py` 通过，WPF 静态审查 `0 errors/28 warnings/177 info`，`git diff --check` 通过。
 - 未启动 Playnite或测试真实视频播放；无 XAML/布局变更。192 项 R 基线及 `106/83/1/1/1` 不变。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-PREVIEW-NULL-SAFETY-20260926.md`。
+## 2026-09-28 用户 Media Inbox 滚动空白：取证代码与 WPF 回归
+
+- 核对远端 `origin/main` 与起点 `e32c246b` 一致，快进差 `0/0`；当前代码提交 `4b7d1e99` 已增加真实宿主日志需要的 DLL version/MVID/path、主题、窗口 DIP/DPI、表格同坐标 header/presenter/first row 和外层页面滚动量。没有改视觉模板或关闭虚拟化。
+- 精确代码身份 Release Playnite 测试项目 `0 warning/0 error`；`validate-source.py` 通过；`MediaInboxScrollBehaviorTests 3/3`、`KeyboardFocusSourceTests 5/5`、`MediaInboxGeometryTests 3/3`，总 `11/11`、0 skip。合成 2,000 项下检查 top/mid/Thumb bottom/往返、追加 50 项裁剪并恢复锚点、窗口缩放、末行完整和页尾操作可达。实际测试宿主 DPI 150%，其他 scale 是 RenderTransform；合成结果没有复现空白。
+- 本机没有 Playnite 进程，Win32_Process 命令行查询 Access Denied；已有 CEF `0x5` 条件未改变，不重试同条件隔离启动。用户实际运行 DLL、窗口/DPI/主题、故障前后日志和根因均未取得，因此不签收修复或宿主验收。证据 `evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`；R 台账不变。下一步恢复安全宿主条件后取前后日志，并据同坐标差值选择模板/有限高度或集合/锚点方向。

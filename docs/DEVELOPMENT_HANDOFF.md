@@ -2595,3 +2595,8 @@ git branch --show-current
 - 下一可执行小批量：修 Media Inbox 重复游戏目标选择，复用全局 `SelectedGame`，保留命令可执行条件、确认目标快照、取消/错误语义。排序和行几何的隔离行为证据已分别归档；真实宿主边界照旧。
 - 用户此前指认的媒体/任务/存档/设置窗口问题，不可因 STA 离屏几何通过而标成真实宿主已修复；现行隔离 Playnite仍受 CEF `platform_channel 0x5` 阻挡，不重试绕过。保留真实宿主、最终呈现帧、物理 DPI/跨屏、Windows UIA/IME、ETW 与宿主性能未验边界。Demo 原目录不可用，沿用已恢复生产基线。
 - 2026-09-27 用户 Bug 回归验证与证据提交 `f5997929` 已快进推送至 `origin/main`（`d9d1f563..f5997929`）；源码/测试树未变，当前环境门槛与未验范围维持。
+## 当前交接（2026-09-28 Media Inbox 真实宿主滚动空白）
+
+- `main` 代码提交 `4b7d1e99` 为 `MediaInboxGrid` 生产日志加入运行 DLL version/MVID/path、主题、窗口 DIP/DPI、DataGrid 坐标下 header/presenter/first row、外层 page offset。生产模板/滚动逻辑仍是原实现；无根因确认、无修复结论。
+- 同一提交隔离 Release 构建 `0 warning/0 error`、定向 WPF `11/11`。实际 WPF 测试宿主 DPI 150%；1.25/1.5 是视图 RenderTransform 而非物理 DPI。2,000 合成项的滚动/分页锚点/窗口缩放/末行与页尾操作通过但未复现宿主空白。原始本机 TRX 位于忽略的 `artifacts/ui-media-inbox-scroll-synthetic-20260928/`，可提交的数值、范围与安全宿主待验步骤见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`。
+- 当前无 Playnite 进程，隔离启动前的 WMI 命令行读取仍 Access Denied，历史 CEF `platform_channel 0x5` 未改变；没有用户运行包的身份、真实主题/尺寸/DPI、滚动前后诊断。先恢复安全宿主条件并保存同一进程前后日志；若 presenter 整体离开 header 查共享模板/有限高度，若仅首行离开 presenter 查虚拟化/集合刷新/锚点。环境未变时不要重试 CEF、触碰真实用户数据或宣称修复。192 项 R 台账状态保持原样。

@@ -5742,3 +5742,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - marker schema 升为 `2`，包含规范化绝对 `ProfilePath`；复用时必须同时匹配 profile path、RepositoryRoot 和合法 GUID。旧 schema/异目录副本 fail-closed，不自动迁移、删除或覆盖旧目录。PowerShell helper test 覆盖原目录复用、复制 marker 到带哨兵文件的另一目录时拒绝且保留哨兵。
 - `Test-PlayniteHostIsolation.ps1` 通过；Release `DiagnosticsEvidenceSourceTests 8/8`。Windows PowerShell 5.1 的 junction 测试清理由 `Remove-Item` 改为 `[System.IO.Directory]::Delete(path, $false)`，确保只删 link 本身；scratch `.tmp`/`artifacts` 已清理。
 - 没有启动 Playnite或触碰用户 profile、存档、媒体、云端、剪贴板；WMI 命令行权限/CEF `0x5` 环境门禁不变，ENV-001 继续阻塞。R 总基线 192 项、状态 `106/83/1/1/1` 不变。证据：`ENV-001-PROFILE-MARKER-PATH-BINDING-20260926.md`。
+## 2026-09-28 Media Inbox 宿主滚动空白取证准备
+
+- `4b7d1e99` 只增加 `DataGridScrollDiagnostics` 的 DLL 构建身份、主题、窗口 DIP/DPI、header/presenter/first row 同坐标值和外层页面 offset，以及生产 `MediaCenterView` 合成 2,000 项滚动行为回归。没有对尚未确认的模板或锚点原因做猜测性修复。
+- 精确提交 Release 构建 `0 warning/0 error`、定向 `11/11`。测试宿主实际 DPI 1.5；1.25/1.5 用例通过 RenderTransform 检查输出缩放，不等于切换物理 DPI。顶部/中段/Thumb 底部/反复往返/窗口缩放/有限页追加与锚点恢复/末行与页尾按钮均有行为断言，合成场景 header/presenter/first row 为 `42/42/42 DIP`。完整范围见 `design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`。
+- 本机 Playnite 未运行，隔离 preflight 的 Win32_Process 命令行仍 Access Denied，CEF `platform_channel 0x5` 历史条件未变。运行中 DLL、实际主题/窗口/DPI、滚动前后故障样本尚无证据，用户问题保持打开，192 项 R 状态不变。环境恢复后先按 evidence 的四步在真实隔离宿主复现，区分整体视口移动与仅行移动，再改根因；不以负边距/填充/关闭虚拟化替代。
