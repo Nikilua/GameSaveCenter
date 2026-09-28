@@ -1211,6 +1211,12 @@
 - 从同一隔离输出以独立 VSTest 进程串行跑 R08 类 12 轮：每轮两项均通过，共 `24/24`、所有进程 exit `0`。各轮有 `InvalidComObjectException` 清理输出，根因未知；没有修改动画实现或测试断言。逐轮 TRX：[R08-RECHECK-97A9B712](evidence/R08-RECHECK-97A9B712-20260929/README.md)。
 - 这不定位用户侧失败，R08 报告保持打开，不更改账本状态。后续工作回到 Q13-06 已有交角/末行末列证据核验；Media Inbox 真实宿主问题仍按安全边界待验。
 
+## 2026-09-29 Q13-07 媒体 Inspector 与页面滚动边界
+
+- 盘点后复用现有生产 `ScrollBoundaryRoutingBehavior`、`MediaInboxPageScrollViewer`、`MediaInboxInspectorScrollViewer` 和 R07 通用滚动测试；缺口是它们没有在生产 MediaCenter 页面和真实 compact-details 开启流程中组合断言。本阶段只在 `8e4c32a7` 增加 `ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary`，不改生产布局或路由代码。
+- Release solution/XAML `0 warning / 0 error`、`24/24`，source validation 通过。生产 `MediaInboxScrollBehaviorTests 5/5`，包含 Inspector 中段不转移、底部向下转移、顶部向上转移及双方顶端消费负例；`R07ScrollOwnershipBehaviorTests 2/2`、`R07FineScrollBehaviorTests 2/2` 分别独立运行通过。窗口 `860×620 DIP`；合成 `PreviewMouseWheel` 从 Inspector 边界转给页面恰好 `16 DIP`，详情保持其 `0` 或 `1502/1502 DIP` 端点。完整程序集身份、行为表和 TRX：[Q13-07](evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。
+- 合成 routed event 不代表触控板惯性、OS 物理滚轮或 Playnite 宿主。Q13-07 自动行为栏已有证据；宿主/触控体验仍外部待验，账本状态保留“外部阻塞 / 未完成”。Media Inbox 用户报告的真实表格滚动空白仍需安全隔离宿主及同进程诊断，不能由本次 Inspector 测试推断根因。下一项按账本核对 Q13-08 稳定分页锚点证据。
+
 ## 2026-09-29 Q13-06 DataGrid 滚动交角与末行末列行为
 
 - 先检查已有共享 `GscRedesignDataGridTemplate` 和 `MediaInboxScrollBehaviorTests`：生产模板已有独立 3×3 横纵条布局，旧 2,000 项行为测试覆盖虚拟化/末行完整，但未直接量测两滚动条交角，也没确认最后一列完整位于 viewport。故只补实际生产 DataGrid 的 STA WPF 行为回归，没有改模板。

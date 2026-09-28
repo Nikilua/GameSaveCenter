@@ -9680,3 +9680,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 复用已有生产多选实现和测试，没有因任务标题新增范围选择代码：Media/Task/Save/Maintenance 使用 `SelectionMode=Extended`；`R05MultiSelectionSummaryBehaviorTests 3/3` 覆盖 Media DataGrid 空/单/多选、隐藏项计数及清空保留模式；`R22BatchCountBehaviorTests 3/3` 覆盖策略隐藏选择/空选择负例与当前媒体摘要。两组历史证据已在 `R22-05-BATCH-COUNT-20260921.md` 交叉说明。tri-state 控件目前无 DataGrid 全选消费者，R05-05 已判不适用。
 - 逐项确认真实 Ctrl/Shift 修饰键序列及范围 anchor 未被现有断言覆盖。宿主测试需记录 modifier、focus、anchor、稳定 ID、摘要和普通点击替换/另一模式不串选负例。真实隔离 Playnite 仍受 WMI Access Denied/CEF `0x5` 阻止，本轮不注入系统全局输入、不绕过门禁；具体待验清单见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md`。Q13-02 最终状态仍未完成，转做受控可执行 Q13-03。
+
+# 2026-09-29 Q13-07 Inbox Inspector 滚动边界集成回归
+
+- 先复核已存在的生产 `ScrollBoundaryRoutingBehavior`、MediaCenter Inbox 页面/Inspector 有界滚动及 R07 通用边界测试；缺口是缺少真实生产页面与 compact-details 打开流程的组合行为。提交 `8e4c32a7` 仅补 `ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary`，无生产 UI/业务代码变更。
+- Release solution/XAML `0 warning / 0 error`、XAML `24/24`、source validation 通过；生产 Media Inbox `5/5`、R07 scroll ownership `2/2`、R07 fine-scroll `2/2` 在独立 testhost exit 0。860×620 DIP synthetic WPF window；Inspector 中段不转移，顶/底分别把 16 DIP 步进传给页面，双顶端负例消费事件。证据与三份 TRX：[Q13-07](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。
+- 仅合成 routed PreviewMouseWheel，不代表 OS 鼠标/触控板惯性或真实 Playnite；Q13-07 自动行为补证完成，宿主栏仍外部阻塞/最终未完成。下一步核对 Q13-08 稳定分页锚点既有能力。Media Inbox 用户报告的大块空白仍须取得安全真实宿主滚动前后同进程几何，才能选原因和修复。

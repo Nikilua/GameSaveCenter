@@ -120,7 +120,7 @@
 | Q13-04 | 列调整热区 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前行为证据](../ui-finesse-round3-20260915/evidence/Q13-04-COLUMN-RESIZE-20260929/README.md)：修正双击恢复 Auto 后旧 Pixel 设置覆盖问题；实际 WPF gripper/排序隔离回归已通过，真实 Playnite/物理鼠标仍待宿主 |
 | Q13-05 | 滚动条 Thumb | 已复核 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前行为证据](../ui-finesse-round3-20260915/evidence/Q13-05-SCROLLBAR-THUMB-20260929/README.md)：共享模板纵横向/Light-Dark端点、36 DIP、单形状端帽与 Hover 回归 `1/1`；物理 Hover/真实宿主仍待验 |
 | Q13-06 | 滚动条交界 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前 WPF 行为证据](../ui-finesse-round3-20260915/evidence/Q13-06-DATAGRID-SCROLLBAR-CORNER-20260929/README.md)：2,000 项下实测横纵条不叠内容、右下端末行/最右单元格完整；真实 Playnite 宿主像素边界待验 |
-| Q13-07 | 滚动链边界 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；页面 Auto 通道与 Inspector 有界滚动已实际修复/分类，触控链待宿主 |
+| Q13-07 | 滚动链边界 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [当前行为证据](../ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)：真实生产 MediaCenterView 的 Inspector 中段/顶底边界转移及双顶端负例；触控板/Playnite 宿主仍待验 |
 | Q13-08 | 分页锚点 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；稳定 ID 锚点/刷新恢复测试通过，真实分页操作待宿主 |
 | Q14-01 | 工具栏同高 | 已复核 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；本组源代码/测试与全量离屏审计已复核，宿主或性能边界见索引 |
 | Q14-02 | 筛选标签 | 已复核 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；本组源代码/测试与全量离屏审计已复核，宿主或性能边界见索引 |

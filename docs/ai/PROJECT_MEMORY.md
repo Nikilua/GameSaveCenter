@@ -6,6 +6,11 @@
 - 当前 checkout 的 `artifacts/one-click-install.log` 最后修改于 2026-09-24，不是用户本次失败记录。用户失败仍无具体用例、断言、堆栈或 TRX，不能宣称已定位或修复；当前证据与边界：[R08 97a9b712 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
 - 下一步继续核对 Round2 Q13-06 现有交角/末行末列行为证据，再按账本推进；Media Inbox 真实宿主滚动缺陷仍是外部阻塞。
 
+## 2026-09-29 Q13-07 Inbox Inspector 滚动边界补证
+
+- 复用生产 `ScrollBoundaryRoutingBehavior`、Inbox 页面/Inspector 与通用 R07 测试，`8e4c32a7` 仅加整合回归。独立类运行 `MediaInboxScrollBehaviorTests 5/5`、`R07ScrollOwnershipBehaviorTests 2/2`、`R07FineScrollBehaviorTests 2/2`；Release/XAML `0/0`、`24/24`，source validation 通过。真实 routed-event fixture 检查 Inspector 中段不转移、顶/底转移各 16 DIP 和双方顶端消费负例。[TRX、精确程序集身份与边界](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。物理滚轮、触控板惯性和 Playnite host 未验，Q13-07 仍外部阻塞/未完成。
+- 下一项按账本先审 Q13-08 分页稳定 ID 锚点/刷新恢复现有证据；Media Inbox 表格滚动空白仍需安全真实宿主同进程诊断，不猜共享模板或虚拟化根因。
+
 ## 2026-09-29 Q13-06 交角与末行末列 WPF 行为证据
 
 - 生产共享 3×3 DataGrid ScrollViewer 模板已有独立内容视口/纵条/横条区域；旧 Inbox 滚动行为未直接断言横纵条交界与最右单元格。`b98ea5a2` 只新增测试，未改模板。900×760 DIP STA Window、620×400 DIP grid、2,000 合成媒体，顶部/中段/右下端测量的视口与滚动条共边但无面积重叠；最底索引 `1999` 行完整、最后列在右边界内，虚拟化未退化。

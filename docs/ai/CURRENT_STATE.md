@@ -4,7 +4,12 @@
 
 - 当前 `main` 身份 `97a9b712` Release solution/XAML build 成功（`0 warning / 0 error`、`24/24`）。12 个独立 VSTest 进程各跑 `R08MotionReverseBehaviorTests` 两个用例，共 `24/24`、全部 exit `0`；各有一条 WPF `InvalidComObjectException` 清理输出，根因未知。[12 份 TRX 与范围](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-97A9B712-20260929/README.md)。
 - 用户 `1/2` 失败没有方法名/断言/堆栈/TRX；本地同名 one-click 日志仍是 9/24 的旧宿主审计。当前复跑不等于定位或修复，R08 用户故障保持打开。
-- 接续 Q13-06 账本检查；Media Inbox 真实滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
+- 已完成 Q13-07 生产 Inbox Inspector/页面滚动边界整合行为补证，下一项核对 Q13-08；Media Inbox 真实表格滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
+
+## 2026-09-29 Q13-07 Inbox Inspector 滚动边界补证
+
+- `8e4c32a7` 只新增生产 MediaCenter 页面/Inspector 组合行为用例；没有改生产路由或布局。Media Inbox `5/5`、R07 scroll ownership `2/2`、fine-scroll `2/2`，独立 VSTest 进程均成功；Release/XAML `0/0`、`24/24`，source validation 通过。
+- 860×620 DIP 合成 WPF 窗口下，Inspector 中段滚轮不影响页面；顶/底边界分别把一行 `16 DIP` 交给页面，Inspector 保持 `0`/`1502` 端点；双方顶端的无目标事件被消费。证据含程序集身份与 TRX：[Q13-07](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。真实 Playnite、物理滚轮和触控板惯性未验，Q13-07 仍外部阻塞/未完成。
 
 ## 2026-09-29 Q13-06 滚动条交角自动行为补证
 
