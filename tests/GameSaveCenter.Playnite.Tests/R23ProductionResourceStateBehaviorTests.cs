@@ -247,6 +247,125 @@ public sealed class R23ProductionResourceStateBehaviorTests
     }
 
     [Fact]
+    public void WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            var style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]);
+            var shortHeader = new TextBlock
+            {
+                Text = "历史版本",
+                TextWrapping = TextWrapping.NoWrap,
+                TextTrimming = TextTrimming.None,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            var longHeader = new TextBlock
+            {
+                Text = "Validation and restore history",
+                TextWrapping = TextWrapping.NoWrap,
+                TextTrimming = TextTrimming.None,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            var countHeader = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+            var countLabel = new TextBlock { Text = "待归类", VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 6, 0) };
+            var countBadgeText = new TextBlock { Text = "200", FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center };
+            var countBadge = new Border
+            {
+                Background = Assert.IsAssignableFrom<Brush>(resources["GscAccentTintStrongBrush"]),
+                BorderBrush = Assert.IsAssignableFrom<Brush>(resources["GscAccentBrush"]),
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(8),
+                Padding = new Thickness(5, 1, 5, 1),
+                Child = countBadgeText
+            };
+            countHeader.Children.Add(countLabel);
+            countHeader.Children.Add(countBadge);
+
+            var items = new[]
+            {
+                new TabItem { Style = style, Header = shortHeader, Content = new Border { Height = 24 }, IsSelected = true },
+                new TabItem { Style = style, Header = longHeader, Content = new Border { Height = 24 } },
+                new TabItem { Style = style, Header = countHeader, Content = new Border { Height = 24 } }
+            };
+            var tabs = new TabControl
+            {
+                Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabControl"]),
+                Width = 700,
+                Height = 140,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
+            };
+            foreach (var item in items)
+                tabs.Items.Add(item);
+            root.Children.Add(tabs);
+            var window = CreateWindow(root, 820, 220);
+
+            try
+            {
+                window.Show();
+                FlushLayout(window);
+                var measuredWidthsByTheme = new Dictionary<GameSaveCenterThemeMode, double[]>();
+
+                foreach (var mode in Themes)
+                {
+                    ApplyTheme(root, mode);
+                    FlushLayout(window);
+                    var widths = new double[items.Length];
+
+                    foreach (var item in items)
+                    {
+                        item.ApplyTemplate();
+                        FlushLayout(window);
+                        var chrome = Assert.IsType<Border>(item.Template.FindName("Chrome", item));
+                        var header = Assert.IsAssignableFrom<FrameworkElement>(item.Header);
+                        var headerBounds = BoundsRelativeTo(header, chrome);
+                        var safeLeft = chrome.BorderThickness.Left + chrome.Padding.Left;
+                        var safeRight = chrome.ActualWidth - chrome.BorderThickness.Right - chrome.Padding.Right;
+
+                        Assert.True(item.IsVisible && item.ActualWidth > 0 && item.ActualHeight >= 36);
+                        Assert.Equal(new CornerRadius(11), chrome.CornerRadius);
+                        Assert.False(chrome.ClipToBounds);
+                        Assert.True(headerBounds.Left >= safeLeft - 0.25,
+                            $"{mode}/{item.Header}: header clipped the leading rounded padding; bounds={headerBounds}, safeLeft={safeLeft}.");
+                        Assert.True(headerBounds.Right <= safeRight + 0.25,
+                            $"{mode}/{item.Header}: header clipped the trailing rounded padding; bounds={headerBounds}, safeRight={safeRight}.");
+                        widths[Array.IndexOf(items, item)] = item.ActualWidth;
+
+                        if (header is TextBlock textHeader)
+                        {
+                            Assert.Equal(TextWrapping.NoWrap, textHeader.TextWrapping);
+                            Assert.Equal(TextTrimming.None, textHeader.TextTrimming);
+                            Assert.True(textHeader.ActualWidth + 0.25 >= textHeader.DesiredSize.Width,
+                                $"{mode}/{textHeader.Text}: natural text width was clipped.");
+                        }
+                    }
+
+                    var countLabelBounds = BoundsRelativeTo(countLabel, Assert.IsType<Border>(items[2].Template.FindName("Chrome", items[2])));
+                    var countBadgeBounds = BoundsRelativeTo(countBadge, Assert.IsType<Border>(items[2].Template.FindName("Chrome", items[2])));
+                    var countTextBounds = BoundsRelativeTo(countBadgeText, Assert.IsType<Border>(items[2].Template.FindName("Chrome", items[2])));
+                    Assert.False(countLabelBounds.IntersectsWith(countBadgeBounds), $"{mode}: count badge overlapped its label.");
+                    Assert.True(countBadgeBounds.Contains(countTextBounds), $"{mode}: count text escaped its badge.");
+                    measuredWidthsByTheme[mode] = widths;
+                }
+
+                var lightWidths = measuredWidthsByTheme[GameSaveCenterThemeMode.Light];
+                var darkWidths = measuredWidthsByTheme[GameSaveCenterThemeMode.Dark];
+                for (var index = 0; index < items.Length; index++)
+                {
+                    Assert.True(Math.Abs(lightWidths[index] - darkWidths[index]) <= 0.25,
+                        $"Tab {index} width changed across themes: light={lightWidths[index]}, dark={darkWidths[index]}.");
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
     public void EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes()
     {
         RunSta(() =>
