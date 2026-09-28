@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -373,6 +374,131 @@ public sealed class R08PageSwitchBehaviorTests
         Assert.Null(exception);
         Assert.False(string.IsNullOrWhiteSpace(summary));
         output.WriteLine(summary);
+    }
+
+    [Fact]
+    public void RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem()
+    {
+        Exception? exception = null;
+        var observation = string.Empty;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new AcrylicProductionShellView();
+                typeof(AcrylicProductionShellView)
+                    .GetMethod("CreatePages", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(shell, null);
+
+                var plugin = (GameSaveCenterPlugin)FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin));
+                var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+                typeof(DashboardViewModel)
+                    .GetField("plugin", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(dashboard, plugin);
+                typeof(DashboardViewModel)
+                    .GetField("gamePicker", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(dashboard, new GamePickerViewModel());
+                typeof(DashboardViewModel)
+                    .GetField("navigationHistory", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(dashboard, new WorkspaceNavigationStack());
+                typeof(AcrylicProductionShellView)
+                    .GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(shell, dashboard);
+
+                // Production views remain real, but state-only DataContexts prevent Loaded
+                // hooks from attaching a Worker/repository or issuing business queries.
+                foreach (var page in shell.WorkspaceViews)
+                    page.DataContext = new object();
+
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 1366,
+                    Height = 900,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+
+                shell.NavigateTo(WorkspaceKind.Overview);
+                window.Show();
+                FlushLayout(window);
+
+                var overviewNavigation = (RadioButton)shell.FindName("NavOverview")!;
+                var tasksNavigation = (RadioButton)shell.FindName("NavTasks")!;
+                var navigationItems = new[]
+                {
+                    overviewNavigation,
+                    (RadioButton)shell.FindName("NavSaves")!,
+                    (RadioButton)shell.FindName("NavTrainers")!,
+                    (RadioButton)shell.FindName("NavMedia")!,
+                    tasksNavigation,
+                    (RadioButton)shell.FindName("NavMaintenance")!
+                };
+                var pageHost = (ContentControl)shell.PageHostForAudit;
+                var title = (TextBlock)shell.FindName("PageTitleText")!;
+                var route = new[]
+                {
+                    (WorkspaceKind.Tasks, tasksNavigation, "任务中心"),
+                    (WorkspaceKind.Overview, overviewNavigation, "首页"),
+                    (WorkspaceKind.Tasks, tasksNavigation, "任务中心"),
+                    (WorkspaceKind.Overview, overviewNavigation, "首页"),
+                    (WorkspaceKind.Tasks, tasksNavigation, "任务中心"),
+                    (WorkspaceKind.Overview, overviewNavigation, "首页"),
+                    (WorkspaceKind.Tasks, tasksNavigation, "任务中心")
+                };
+
+                var completedRoutes = 0;
+                foreach (var (workspace, navigation, expectedTitle) in route)
+                {
+                    navigation.Focus();
+                    Keyboard.Focus(navigation);
+                    if (!ReferenceEquals(Keyboard.FocusedElement, navigation))
+                        throw new InvalidOperationException($"Could not establish keyboard focus on {workspace} navigation.");
+
+                    // Changing IsChecked raises the real RadioButton Checked route and
+                    // reaches production OnNavChecked; only Overview/Tasks are used so
+                    // the isolated fixture cannot start game-scoped loads.
+                    navigation.IsChecked = true;
+
+                    Assert.Equal(workspace, dashboard.CurrentWorkspace);
+                    Assert.Same(shell.GetWorkspaceView(workspace), pageHost.Content);
+                    Assert.Equal(expectedTitle, title.Text);
+                    Assert.Single(navigationItems, item => item.IsChecked == true);
+                    Assert.True(navigation.IsChecked);
+                    Assert.Same(navigation, Keyboard.FocusedElement);
+                    Assert.Equal(1, pageHost.Opacity);
+                    Assert.Null(pageHost.Effect);
+                    Assert.True(pageHost.RenderTransform == null || pageHost.RenderTransform == Transform.Identity);
+                    completedRoutes++;
+                }
+
+                FlushLayout(window);
+                Assert.Same(shell.GetWorkspaceView(WorkspaceKind.Tasks), pageHost.Content);
+                Assert.Equal("任务中心", title.Text);
+                Assert.Same(tasksNavigation, Keyboard.FocusedElement);
+                observation = $"routes={completedRoutes}; final={dashboard.CurrentWorkspace}; title={title.Text}; focus=NavTasks; pageEffects=none";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.False(string.IsNullOrWhiteSpace(observation));
+        output.WriteLine(observation);
     }
 
     [Fact]
