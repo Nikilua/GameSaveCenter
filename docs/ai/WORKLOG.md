@@ -9623,3 +9623,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 核对远端 `origin/main` 与起点 `e32c246b` 一致，快进差 `0/0`；当前代码提交 `4b7d1e99` 已增加真实宿主日志需要的 DLL version/MVID/path、主题、窗口 DIP/DPI、表格同坐标 header/presenter/first row 和外层页面滚动量。没有改视觉模板或关闭虚拟化。
 - 精确代码身份 Release Playnite 测试项目 `0 warning/0 error`；`validate-source.py` 通过；`MediaInboxScrollBehaviorTests 3/3`、`KeyboardFocusSourceTests 5/5`、`MediaInboxGeometryTests 3/3`，总 `11/11`、0 skip。合成 2,000 项下检查 top/mid/Thumb bottom/往返、追加 50 项裁剪并恢复锚点、窗口缩放、末行完整和页尾操作可达。实际测试宿主 DPI 150%，其他 scale 是 RenderTransform；合成结果没有复现空白。
 - 本机没有 Playnite 进程，Win32_Process 命令行查询 Access Denied；已有 CEF `0x5` 条件未改变，不重试同条件隔离启动。用户实际运行 DLL、窗口/DPI/主题、故障前后日志和根因均未取得，因此不签收修复或宿主验收。证据 `evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`；R 台账不变。下一步恢复安全宿主条件后取前后日志，并据同坐标差值选择模板/有限高度或集合/锚点方向。
+
+# 2026-09-29 R08 用户失败报告复核
+
+- 用户报告 one-click 中 `R08MotionReverseBehaviorTests` 为 `1/2` 失败、总计约 9 秒，但未附失败方法/堆栈/TRX。本机 `artifacts/one-click-install.log` 是 9 月 24 日的宿主审计，不能误作该轮失败记录。
+- 在 `main`/`c50de56ae9d54995e5bc4834c6bf6d664097bb07` 上用独立输出重新执行 Release solution build：XAML `24/24`，0 warning/error。测试程序集 SHA-256 `39FF75E6744AEC3748BAD7243B0F9D56DA9D8D9250140141655D77F170320811`。
+- 当前 R08 类分 8 个新 testhost、每次串行详细 TRX：每轮 `2/2`，共 `16/16`，0 failed/skipped，全部 exit `0`。每轮均额外输出 WPF TextServicesHost `OnUnregisterTextStore InvalidComObjectException` 清理异常，根因未知；测试结果明确通过。详细复核与 TRX 在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/`。
+- 没有重现用户失败，因此不改生产动画、不宣称用户故障已解决；仍需原始失败 log/TRX 断言定位。仅隔离 STA WPF/合成动画，不是 Playnite 呈现验证。下一项 Q11-08 导航过渡。

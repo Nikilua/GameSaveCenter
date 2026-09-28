@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 R08 隔离构建失败报告复核
+
+- 用户再次报告 `R08MotionReverseBehaviorTests` 为 `1/2` 失败，但未包含失败方法/堆栈/TRX；本 checkout 的同名 one-click 日志实际是 9 月 24 日的宿主审计，不能代表本次失败。
+- 当前 `main` 精确身份 `c50de56a` 的 Release solution/XAML build 成功，XAML `24/24`、0 warning/error；R08 类在 8 个独立 VSTest 进程中每轮 `2/2`，共 `16/16`、0 failed/skipped、全部 exit `0`。每轮额外有 TextServicesHost `InvalidComObjectException` 清理输出，根因未知。测试二进制 SHA 与范围：[R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。
+- 本机未复现用户失败，不据此关闭该报告；完整失败日志/TRX 未取得。下一工作项 Q11-08 导航过渡。Media Inbox 真实宿主滚动错位仍需同进程 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-29 Q11-07 工作区状态往返
 
 - 生产外壳已缓存各工作区实例，页签/筛选绑定到共享状态；本阶段只新增真实 WPF 往返测试，没有更改生产行为。`f9fa47f6` 下页切换类 `3/3`、路由/导航状态类 `6/6`，Playnite.Tests Release build `0 warning/0 error`。控件修改筛选后切走再回、Media/Save/Maintenance 索引 `2/3/5`、选中任务与偏移 `18→18 DIP` 保持，页面/视图状态引用保持，合成刷新命令 `0` 次。证据：[Q11-07](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。

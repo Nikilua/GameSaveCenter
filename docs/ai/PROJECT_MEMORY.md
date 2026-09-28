@@ -5800,3 +5800,9 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - `4b7d1e99` 只增加 `DataGridScrollDiagnostics` 的 DLL 构建身份、主题、窗口 DIP/DPI、header/presenter/first row 同坐标值和外层页面 offset，以及生产 `MediaCenterView` 合成 2,000 项滚动行为回归。没有对尚未确认的模板或锚点原因做猜测性修复。
 - 精确提交 Release 构建 `0 warning/0 error`、定向 `11/11`。测试宿主实际 DPI 1.5；1.25/1.5 用例通过 RenderTransform 检查输出缩放，不等于切换物理 DPI。顶部/中段/Thumb 底部/反复往返/窗口缩放/有限页追加与锚点恢复/末行与页尾按钮均有行为断言，合成场景 header/presenter/first row 为 `42/42/42 DIP`。完整范围见 `design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`。
 - 本机 Playnite 未运行，隔离 preflight 的 Win32_Process 命令行仍 Access Denied，CEF `platform_channel 0x5` 历史条件未变。运行中 DLL、实际主题/窗口/DPI、滚动前后故障样本尚无证据，用户问题保持打开，192 项 R 状态不变。环境恢复后先按 evidence 的四步在真实隔离宿主复现，区分整体视口移动与仅行移动，再改根因；不以负边距/填充/关闭虚拟化替代。
+
+# 2026-09-29 R08 用户失败报告的当前身份复核
+
+- 用户提供 `R08MotionReverseBehaviorTests 1/2` 失败摘要，没有失败方法、断言堆栈或 TRX；仓库同名 one-click 日志是 2026-09-24 的宿主审计，不能用于诊断这次失败。
+- 在 `c50de56a` 精确身份 Release solution build `0 warning / 0 error`、XAML `24/24`。从隔离 DLL 顺序运行 8 个新 testhost，每轮 R08 `2/2`，总 `16/16`、0 failed/skipped、exit `0`；各轮 TextServicesHost COM 清理异常如实记录。未修改生产动画，失败在本机未复现，不能据通过关闭用户报告。TRX/程序集身份/复核范围见 `design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md`。
+- 下一项 Q11-08 导航过渡；若获取用户失败机器的完整 log/TRX，再据真实失败断言继续排查。Media Inbox Playnite 同进程诊断仍未取得。

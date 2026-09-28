@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 R08 用户失败报告复核
+
+- 用户最新 one-click 摘要为 `R08MotionReverseBehaviorTests 1/2`，没有失败方法、堆栈或 TRX；本机 `artifacts/one-click-install.log` 是 2026-09-24 的另一轮宿主审计，不可拿来诊断。
+- `main` 当前身份 `c50de56a` 的 Release solution/XAML build 成功（`24/24`、0 warning/error）；R08 类 8 个新进程逐次复跑，每轮 `2/2`、总 `16/16`、0 failed/skipped、exit `0`。TextServicesHost COM 清理输出每轮存在，根因未知。证据：[R08 current recheck](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-CURRENT-RECHECK-20260929/README.md)。本机未复现不代表用户失败已解决；拿到完整日志后继续按失败断言定位。
+- 下一项 Q11-08 导航过渡：核对切换时页面缓存、选中态、标题/内容顺序和焦点是否在快速来回时保持；先以行为测试确认当前实现，不因任务名增添全页动画。Media Inbox 仍等待同进程滚动诊断。
+
 ## 2026-09-29 当前交接：Q11-07 导航状态保持
 
 - 生产 shell 的页面实例缓存和 TwoWay 过滤/页签绑定已存在；提交 `f9fa47f6` 仅增加实际 STA WPF 往返测试。`R08PageSwitchBehaviorTests 3/3`，`PurposeNavigationSourceTests + R10NavigationBehaviorTests 6/6`；Release Playnite.Tests 构建 `0 warning/0 error`。Task 搜索和四个筛选器、Media/Save/Maintenance 页签索引 `2/3/5`，任务选择和 `18 DIP` 滚动偏移返回时保持。合成 refresh command `0` 次；fixture 没有实际业务服务，因此不代表存储/媒体查询计数。完整边界：[Q11-07 evidence](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)。
