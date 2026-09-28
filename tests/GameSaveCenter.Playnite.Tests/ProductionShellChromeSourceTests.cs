@@ -8,11 +8,16 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class ProductionShellChromeSourceTests
 {
+    private readonly ITestOutputHelper output;
+
+    public ProductionShellChromeSourceTests(ITestOutputHelper output) => this.output = output;
+
     [Fact]
     public void ProductionFooterOwnsWorkerStatusAndSpansTheShell()
     {
@@ -451,6 +456,89 @@ public sealed class ProductionShellChromeSourceTests
     }
 
     [Fact]
+    public void ExpandedAndCollapsedNavigationKeepsEveryIconLabelAndSelectionFrameAligned()
+    {
+        Exception? exception = null;
+        var observations = string.Empty;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => false,
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window
+                {
+                    Content = shell,
+                    Width = 900,
+                    Height = 640,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                window.Show();
+                window.UpdateLayout();
+                shell.UpdateLayout();
+
+                var navigation = new[]
+                {
+                    (Button: "NavOverview", Content: "NavOverviewContent", Label: "NavOverviewLabel"),
+                    (Button: "NavSaves", Content: "NavSavesContent", Label: "NavSavesLabel"),
+                    (Button: "NavTrainers", Content: "NavTrainersContent", Label: "NavTrainersLabel"),
+                    (Button: "NavMedia", Content: "NavMediaContent", Label: "NavMediaLabel"),
+                    (Button: "NavTasks", Content: "NavTasksContent", Label: "NavTasksLabel"),
+                    (Button: "NavMaintenance", Content: "NavMaintenanceContent", Label: "NavMaintenanceLabel"),
+                    (Button: "NavSettings", Content: "NavSettingsContent", Label: "NavSettingsLabel")
+                };
+                var expandedRows = navigation.Select(item => MeasureNavigationRow(shell, item.Button, item.Content, item.Label)).ToArray();
+                AssertNavigationRowRhythm(expandedRows, requireLabel: true, state: "expanded");
+
+                var taskNav = Assert.IsType<System.Windows.Controls.RadioButton>(shell.FindName("NavTasks"));
+                taskNav.IsChecked = true;
+                shell.UpdateLayout();
+                Assert.True(taskNav.IsChecked == true);
+
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                shell.UpdateLayout();
+                Assert.True(taskNav.IsChecked, "collapsing the sidebar must preserve the current workspace");
+                var collapsedRows = navigation.Select(item => MeasureNavigationRow(shell, item.Button, item.Content, item.Label)).ToArray();
+                AssertNavigationRowRhythm(collapsedRows, requireLabel: false, state: "collapsed");
+                for (var index = 0; index < expandedRows.Length; index++)
+                {
+                    Assert.True(Math.Abs(CenterY(expandedRows[index].Button) - CenterY(collapsedRows[index].Button)) <= 1.5,
+                        $"collapse must not make one navigation item drift vertically: {navigation[index].Button},expanded={expandedRows[index]},collapsed={collapsedRows[index]}");
+                }
+
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                shell.UpdateLayout();
+                var restoredRows = navigation.Select(item => MeasureNavigationRow(shell, item.Button, item.Content, item.Label)).ToArray();
+                AssertNavigationRowRhythm(restoredRows, requireLabel: true, state: "restored");
+                Assert.True(taskNav.IsChecked, "expanding the sidebar must preserve the current workspace");
+                observations = $"expanded={SummarizeNavigationRows(expandedRows)};collapsed={SummarizeNavigationRows(collapsedRows)};restored={SummarizeNavigationRows(restoredRows)}";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        output.WriteLine(observations);
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels()
     {
         Exception? exception = null;
@@ -559,6 +647,94 @@ public sealed class ProductionShellChromeSourceTests
 
     private static string ReadSource(params string[] segments)
         => File.ReadAllText(Path.Combine(new[] { TestRepositoryContext.Root }.Concat(segments).ToArray()));
+
+    private static NavigationRow MeasureNavigationRow(
+        GameSaveCenter.Playnite.Views.AcrylicProductionShellView shell,
+        string buttonName,
+        string contentName,
+        string labelName)
+    {
+        var button = Assert.IsType<System.Windows.Controls.RadioButton>(shell.FindName(buttonName));
+        var content = Assert.IsType<System.Windows.Controls.StackPanel>(shell.FindName(contentName));
+        var icon = Assert.IsAssignableFrom<FrameworkElement>(content.Children[0]);
+        var label = Assert.IsType<System.Windows.Controls.TextBlock>(shell.FindName(labelName));
+        button.ApplyTemplate();
+        var chrome = Assert.IsType<System.Windows.Controls.Border>(button.Template!.FindName("NavChrome", button));
+        var buttonBounds = BoundsIn(button, shell);
+        var contentBounds = BoundsIn(content, shell);
+        var iconBounds = BoundsIn(icon, shell);
+        var labelBounds = BoundsIn(label, shell);
+        var chromeBounds = BoundsIn(chrome, shell);
+        Assert.True(buttonBounds.Width > 0 && buttonBounds.Height > 0, $"{buttonName} must have a realized WPF layout slot: {buttonBounds}");
+        Assert.True(Math.Abs(chromeBounds.Left - buttonBounds.Left) <= 1 && Math.Abs(chromeBounds.Right - buttonBounds.Right) <= 1,
+            $"the selected/hover chrome must keep the full navigation hit frame: button={buttonBounds},chrome={chromeBounds}");
+        return new NavigationRow(buttonBounds, contentBounds, iconBounds, labelBounds, label.Visibility);
+    }
+
+    private static void AssertNavigationRowRhythm(NavigationRow[] rows, bool requireLabel, string state)
+    {
+        Assert.Equal(7, rows.Length);
+        var expandedIconLeft = rows[0].Icon.Left;
+        var expandedLabelLeft = rows[0].Label.Left;
+        for (var index = 0; index < rows.Length; index++)
+        {
+            var row = rows[index];
+            Assert.True(Math.Abs(CenterY(row.Content) - CenterY(row.Button)) <= 1.5,
+                $"{state} content must stay vertically centered in each item: index={index},button={row.Button},content={row.Content}");
+            Assert.Equal(requireLabel ? Visibility.Visible : Visibility.Collapsed, row.LabelVisibility);
+            if (requireLabel)
+            {
+                Assert.True(Math.Abs(CenterY(row.Icon) - CenterY(row.Label)) <= 1.5,
+                    $"{state} icon and label must share a visual center: index={index},icon={row.Icon},label={row.Label}");
+                Assert.True(Math.Abs(row.Icon.Left - expandedIconLeft) <= 1.5 && Math.Abs(row.Label.Left - expandedLabelLeft) <= 1.5,
+                    $"{state} labels must not drift between navigation entries: index={index},icon={row.Icon},label={row.Label}");
+                Assert.True(row.Label.Left >= row.Icon.Right - 1,
+                    $"{state} text must stay beside its own icon: index={index},icon={row.Icon},label={row.Label}");
+            }
+            else
+            {
+                Assert.True(Math.Abs(CenterX(row.Icon) - CenterX(row.Button)) <= 1.5,
+                    $"{state} icon must be horizontally centered in each item: index={index},button={row.Button},icon={row.Icon}");
+                Assert.True(Math.Abs(CenterX(row.Content) - CenterX(row.Button)) <= 1.5,
+                    $"{state} icon container must be centered in each item: index={index},button={row.Button},content={row.Content}");
+            }
+        }
+
+        var heights = rows.Select(row => row.Button.Height).ToArray();
+        Assert.True(heights.Max() - heights.Min() <= 1.5,
+            $"{state} navigation entries must keep the same row height without an outlier: heights={string.Join(",", heights.Select(value => value.ToString("0.##")))}");
+        var mainGaps = rows.Skip(1).Take(5).Select((row, index) => CenterY(row.Button) - CenterY(rows[index].Button)).ToArray();
+        var meanGap = mainGaps.Average();
+        Assert.All(mainGaps, gap => Assert.True(Math.Abs(gap - meanGap) <= 1.5,
+            $"{state} main navigation rows must keep a consistent vertical rhythm: gaps={string.Join(",", mainGaps.Select(value => value.ToString("0.##")))}"));
+    }
+
+    private static string SummarizeNavigationRows(NavigationRow[] rows)
+        => $"x={rows[0].Button.Left:0.##}..{rows[0].Button.Right:0.##},y={CenterY(rows[0].Button):0.##},gap={CenterY(rows[1].Button) - CenterY(rows[0].Button):0.##},iconCenterX={string.Join("/", rows.Select(row => CenterX(row.Icon).ToString("0.##")))}";
+
+    private static Rect BoundsIn(FrameworkElement element, Visual ancestor)
+        => element.TransformToAncestor(ancestor).TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+
+    private static double CenterX(Rect bounds) => bounds.Left + bounds.Width / 2;
+    private static double CenterY(Rect bounds) => bounds.Top + bounds.Height / 2;
+
+    private sealed class NavigationRow
+    {
+        public NavigationRow(Rect button, Rect content, Rect icon, Rect label, Visibility labelVisibility)
+        {
+            Button = button;
+            Content = content;
+            Icon = icon;
+            Label = label;
+            LabelVisibility = labelVisibility;
+        }
+
+        public Rect Button { get; }
+        public Rect Content { get; }
+        public Rect Icon { get; }
+        public Rect Label { get; }
+        public Visibility LabelVisibility { get; }
+    }
 
     private static void PumpDispatcher(TimeSpan duration)
     {
