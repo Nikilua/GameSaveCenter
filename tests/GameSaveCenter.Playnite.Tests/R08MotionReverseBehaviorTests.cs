@@ -106,7 +106,9 @@ public sealed class R08MotionReverseBehaviorTests
         var finalWidth = 0d;
         var finalWidthRoundingTolerance = 0d;
         var finalOpacity = 0d;
+        var collapseProgressSampled = false;
         var sidebarTransitionCompleted = false;
+        var reverseProgressSampled = false;
         var sidebarTrace = string.Empty;
 
         var thread = new Thread(() =>
@@ -119,7 +121,7 @@ public sealed class R08MotionReverseBehaviorTests
                     MotionEnabledProvider = () => true,
                     SidebarCollapsedProvider = () => false
                 };
-                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
+                shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(2));
                 window = CreateWindow(shell, 900, 640);
                 window.Show();
                 window.UpdateLayout();
@@ -129,22 +131,31 @@ public sealed class R08MotionReverseBehaviorTests
                 var sidebar = Assert.IsType<ColumnDefinition>(shell.FindName("SidebarColumn"));
                 var layer = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarContentLayer"));
                 shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                PumpDispatcher(TimeSpan.FromMilliseconds(100));
-                window.UpdateLayout();
-                shell.UpdateLayout();
+                collapseProgressSampled = PumpDispatcherUntil(
+                    () =>
+                    {
+                        window.UpdateLayout();
+                        shell.UpdateLayout();
+                        var width = sidebar.ActualWidth;
+                        return width < 269.5
+                            && width > 72.5
+                            && DependencyPropertyHelper.GetValueSource(sidebar, ColumnDefinition.WidthProperty).IsAnimated;
+                    },
+                    TimeSpan.FromMilliseconds(800));
                 collapseMidpoint = sidebar.ActualWidth;
                 sidebarTrace = $"after-collapse collapsed={shell.SidebarCollapsedForAudit}; running={shell.SidebarTransitionRunningForAudit}; base={shell.SidebarWidthForAudit:0.###}; actual={sidebar.ActualWidth:0.###}";
 
                 shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 reversalStart = sidebar.ActualWidth;
-                PumpDispatcherUntil(
+                reverseProgressSampled = PumpDispatcherUntil(
                     () =>
                     {
                         window.UpdateLayout();
                         shell.UpdateLayout();
-                        return sidebar.ActualWidth > reversalStart + 0.1;
+                        return sidebar.ActualWidth > reversalStart + 0.5
+                            && DependencyPropertyHelper.GetValueSource(sidebar, ColumnDefinition.WidthProperty).IsAnimated;
                     },
-                    TimeSpan.FromMilliseconds(600));
+                    TimeSpan.FromMilliseconds(1000));
                 reverseMidpoint = sidebar.ActualWidth;
                 sidebarTrace += $" | after-reverse-progress collapsed={shell.SidebarCollapsedForAudit}; running={shell.SidebarTransitionRunningForAudit}; base={shell.SidebarWidthForAudit:0.###}; actual={sidebar.ActualWidth:0.###}";
                 sidebarTransitionCompleted = PumpDispatcherUntil(
@@ -154,14 +165,16 @@ public sealed class R08MotionReverseBehaviorTests
                         shell.UpdateLayout();
                         return !shell.SidebarTransitionRunningForAudit;
                     },
-                    TimeSpan.FromSeconds(2));
+                    TimeSpan.FromSeconds(3));
                 window.UpdateLayout();
                 shell.UpdateLayout();
                 finalWidth = sidebar.ActualWidth;
                 finalOpacity = layer.Opacity;
 
+                Assert.True(collapseProgressSampled, "sidebar collapse never exposed an in-flight width sample within 800 ms");
                 Assert.InRange(collapseMidpoint, 72.2, 269.8);
                 Assert.InRange(reversalStart, collapseMidpoint - 1.5, collapseMidpoint + 1.5);
+                Assert.True(reverseProgressSampled, "sidebar expansion never exposed an in-flight width sample within 1 second");
                 Assert.True(reverseMidpoint > reversalStart, $"sidebar did not reverse toward expanded target: {reverseMidpoint} <= {reversalStart}");
                 Assert.True(sidebarTransitionCompleted, "sidebar animation did not deliver its completion callback within 2 seconds");
                 Assert.InRange(Math.Abs(270 - finalWidth), 0, finalWidthRoundingTolerance);
