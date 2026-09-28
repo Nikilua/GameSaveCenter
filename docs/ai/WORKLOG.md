@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-28 Q11-03 收起导航 Tooltip 文本与图标
+
+- 扩展生产 `AcrylicProductionShellView` 的 STA WPF collapse 行为测试，收起后七项 label 都为 Collapsed、图标 Visible 且有尺寸，按钮 Enabled/TabStop，Tooltip 和 Automation Name 分别匹配真实页面。没有修改生产样式/XAML。
+- `50865efcd67e3e17bfe32445ef7eab85b298d871` Release 测试项目构建成功；`ProductionShellChromeSourceTests 13/13`，0 fail/skip、exit `0`。TRX `artifacts/q11-03-nav-tooltip-20260928/q11-03-production-shell-50865efc.trx` 记录 1 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声，根因未知。
+- Popup 实际开合、延迟/边缘定位、OS 鼠标和 Playnite host 未验，Q11-03 仍未完成。下一项 Q11-04；用户 Media Inbox 缺陷仍优先等待同进程几何日志。
+
 ## 2026-09-28 Q11-02 当前导航项与键盘焦点叠加
 
 - 检查 `AcrylicNavItem` 模板及现有 R23 状态测试：已有测试分别验证选中和未选中聚焦，却没有覆盖当前页选中与键盘焦点同时成立。`9987dbb10f14519f3da2614215ab298410320149` 仅新增这一组合的 STA WPF 行为测试，没有更改生产样式。

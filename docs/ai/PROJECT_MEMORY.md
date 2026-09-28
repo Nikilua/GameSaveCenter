@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-28 Q11-03 收起侧栏入口名称和图标
+
+- 测试提交 `50865efc` 仅改 `ProductionShellChromeSourceTests`。生产 WPF shell 真实收起/布局后对七入口逐项验证 label Collapsed、icon Visible/ActualWidth>0、RadioButton enabled/TabStop、Tooltip text 和 UIA Name 映射；`ProductionShellChromeSourceTests 13/13` clean test result，Release build 成功。
+- TRX 中仍有 1 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声，xUnit/VSTest 均明确通过和 exit 0，原因未知。该探针没有打开 Popup 或移动 OS 鼠标，不证明 Tooltip delay、实际位置、窗口边缘翻转或 Playnite host；Q11-03 不签收。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-03-COLLAPSED-NAV-TOOLTIPS-20260928.md`。
+- 下一项 Q11-04 tabs padding；Media Inbox 滚动 bug仍等待可审阅的真实宿主同进程日志或隔离访问前置条件恢复。
+
 ## 2026-09-28 Q11-02 当前导航选中态与焦点叠加；Media Inbox 宿主预检复核
 
 - `9987dbb10f14519f3da2614215ab298410320149` 新增一个 STA WPF 行为用例，未改生产 UI。Light/Dark 实际 `AcrylicNavItem` 模板证明选中+键盘焦点时强选中填充仍在且 2-DIP accent focus outline 可见；焦点移出不改变选择；未选中聚焦和禁用拒焦也有正/负断言。`R23ProductionResourceStateBehaviorTests 4/4`，Release 构建成功，无失败/跳过/COM cleanup 噪声。Q11-02 仍缺真实 mouse hover/OS Tab/Playnite/presented frame。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md`。

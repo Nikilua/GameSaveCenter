@@ -1,3 +1,9 @@
+## 2026-09-28 当前续作：Q11-03 收起导航入口状态
+
+- `50865efcd67e3e17bfe32445ef7eab85b298d871` 只补实际 WPF collapse 后的 label/icon/Tooltip/UIA 名称行为，没有生产样式变化。`ProductionShellChromeSourceTests 13/13` 通过；TRX 记录 1 条 WPF TextServicesHost COM 清理噪声，根因未知。
+- 七项收起布局、Tooltip 完整文本与 Automation Name 受控通过；未弹 Popup/驱动 OS 鼠标，因此延迟/定位/边缘翻转/Playnite host 仍未验证，Q11-03 保持未完成。证据见 [Q11-03](evidence/Q11-03-COLLAPSED-NAV-TOOLTIPS-20260928.md)，Round2 账本随本阶段同步。
+- 当前下一独立项 `Q11-04` 页签内边距；Media Inbox 真宿主滚动问题优先等待用户同进程日志或安全隔离前置条件恢复。第三轮 R ledger 192 项统计不变。
+
 ## 2026-09-28 当前续作：Q11-02 状态组合与 Media Inbox 宿主门禁
 
 - Q11-02 新增 `AcrylicNavItem` 真实 WPF selected+keyboard focus 重叠行为，提交 `9987dbb10f14519f3da2614215ab298410320149`，`R23ProductionResourceStateBehaviorTests 4/4` 通过；不改生产样式。Q11-02 保持未完成，OS mouse hover 和 Playnite host 未验；证据见 [Q11-02](evidence/Q11-02-SELECTED-FOCUS-20260928.md)。Round2 账本只更新该项，不改变第三轮 192 行 R 统计。

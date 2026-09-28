@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-28 Q11-03 收起导航可识别性行为复核
+
+- `50865efcd67e3e17bfe32445ef7eab85b298d871` 仅补实际生产 shell WPF 回归：收起导航的七项标签确实折叠、图标有可见布局尺寸、按钮保持启用/TabStop、Tooltip 完整文案与 UIA Name 对应。`ProductionShellChromeSourceTests 13/13`，Release 测试项目构建成功、0 failed/skipped、exit `0`。TRX 有 1 条 TextServicesHost COM 清理异常输出，根因未知。
+- 未实际弹出 Tooltip，也没有 OS 鼠标、边缘定位、延迟或 Playnite 宿主验证；Q11-03 仍未完成。证据：[Q11-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-03-COLLAPSED-NAV-TOOLTIPS-20260928.md)。下一独立任务 `Q11-04` 页签内边距；媒体 Inbox 取得真实滚动诊断后仍优先返回。
+
 ## 2026-09-28 Q11-02 导航当前项与焦点叠加复核；Media Inbox 宿主仍阻塞
 
 - `9987dbb10f14519f3da2614215ab298410320149` 只扩展导航状态测试。Release Playnite 测试项目构建成功；`R23ProductionResourceStateBehaviorTests 4/4`、0 失败/跳过，exit `0`。浅/深主题中测量选中+焦点描边、焦点移出后选中保留、未选中聚焦和禁用拒焦；没有生产 UI 变化。证据：[Q11-02](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-02-SELECTED-FOCUS-20260928.md)。真实鼠标 hover、OS Tab、Playnite host 和呈现未验，Q11-02 仍未完成。
