@@ -1,8 +1,9 @@
 ## 2026-09-28 Q11-05 页签内容 Stretch / R08-01 采样稳定
 
 - 当前代码身份 `e467c3b2fe080965c3946f1f3101f707c731472b` 的 Q11-05 受控 STA WPF `380×240 DIP` 三类 Header、浅/深主题均验证内容根元素与 `PART_SelectedContentHost` x/y 对齐、宽高差 `<=0.25 DIP`；R23 类 `6/6`。现有共享 Stretch 实现满足窄页面行为，没有生产 XAML 更改。证据：[Q11-05](evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)。
-- 用户提供 R08 一键构建失败摘要 `1/2`；本地隔离曾复现一次 `SidebarRapidReversalUsesLatestTargetAndReleasesOldClock` 的间歇失败，但用户机器最新完整堆栈不可见。将固定 100ms 读值修为有界等待真实动画时钟/中段几何，保留反向和终态断言；修复后 8 个独立 testhost 整类运行全通过。完整 Release build 已构建 0 warning/0 error、Core `125/125`、Worker `356/357` (1 existing skip)，Playnite 隔离测试 `108` 类运行中。证据：[R08-01 采样稳定性](evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
-- Q11-05 自动 Stretch 行为已补证但仍未验真实 Playnite/物理 DPI；R08 用户故障机的实际 assertion 仍待其完整 log。下一独立 Q 项为 `Q11-06` 页签溢出/窄窗键盘鼠标可达；Media Inbox host geometry 继续按高优先级等待同进程证据。
+- 用户提供 R08 一键构建失败摘要 `1/2`；本地隔离曾复现一次 `SidebarRapidReversalUsesLatestTargetAndReleasesOldClock` 的间歇失败，但用户机器完整堆栈不可见。将固定 100ms 读值修为有界等待真实动画时钟/中段几何，保留反向和终态断言；修复后 8 个独立 testhost 全通过，后续隔离构建中的 R08 类 `[54/108]` 也通过。证据：[R08-01 采样稳定性](evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。
+- 完整隔离构建通过 solution `0 warning/0 error`、Core `125/125`、Worker `356 passed / 1 existing skip`，但末尾 `WpfUiResourceDictionaryTests` 有一项旧滑杆源断言仍要求 22 DIP。`e007a339` 的真实 WPF 改动已将控件/Thumb 命中区域扩到 32 DIP、保留 4 DIP 轨道和 18 DIP 可见圆头；仅更新结构契约，并用实际设置页用例复测。新结构用例 `1/1`、Light/Dark/FollowPlaynite 命中/键盘行为 `3/3`、R08 当前类 `2/2` 通过。R08 退出打印一条 TextServicesHost `InvalidComObjectException` 清理噪声，测试结果仍为成功。修订提交后的 clean identity 全套 Release 复跑待执行。
+- Q11-05 自动 Stretch 行为仍未验真实 Playnite/物理 DPI；R08 用户故障机的实际 assertion 仍待其完整 log。下一独立 Q 项为 `Q11-06` 页签溢出/窄窗键盘鼠标可达；Media Inbox host geometry 继续按高优先级等待同进程证据。
 
 ## 2026-09-28 当前续作：Q11-04 页签内边距和标签切换稳定性
 

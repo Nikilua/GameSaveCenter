@@ -705,16 +705,37 @@ public sealed class WpfUiResourceDictionaryTests
     }
 
     [Fact]
-    public void SharedSliderKeepsDemoTrackGeometryAndRealValueSurface()
+    public void SharedSliderDeclaresReadableTrackAndExpandedInputTarget()
     {
         var repositoryRoot = FindRepositoryRoot();
-        var tokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        XNamespace presentation = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+        XNamespace xaml = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var tokens = XDocument.Load(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+        var sliderStyle = Assert.Single(tokens.Root!.Elements(presentation + "Style"),
+            style => (string?)style.Attribute(xaml + "Key") == "GscSlider");
+        var controlHeight = Assert.Single(sliderStyle.Elements(presentation + "Setter"),
+            setter => (string?)setter.Attribute("Property") == "Height");
+        Assert.Equal("32", (string?)controlHeight.Attribute("Value"));
 
-        Assert.Contains("x:Key=\"GscSlider\"", tokens);
-        Assert.Contains("<Setter Property=\"Height\" Value=\"22\"/>", tokens);
-        Assert.Contains("<Border Height=\"4\" CornerRadius=\"2\"", tokens);
-        Assert.Contains("<Thumb Width=\"18\" Height=\"18\"", tokens);
-        Assert.Contains("x:Name=\"GlassStrengthSlider\"", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml")));
+        var track = Assert.Single(sliderStyle.Descendants(presentation + "Track"));
+        var railSegments = track.Descendants(presentation + "Border")
+            .Where(border => (string?)border.Attribute("Height") == "4")
+            .ToArray();
+        Assert.Equal(2, railSegments.Length);
+        Assert.All(railSegments, rail => Assert.Equal("2", (string?)rail.Attribute("CornerRadius")));
+
+        var thumb = Assert.Single(track.Descendants(presentation + "Thumb"));
+        Assert.Equal("32", (string?)thumb.Attribute("Width"));
+        Assert.Equal("32", (string?)thumb.Attribute("Height"));
+        var visibleThumb = Assert.Single(thumb.Descendants(presentation + "Border"),
+            border => (string?)border.Attribute(xaml + "Name") == "ThumbChrome");
+        Assert.Equal("18", (string?)visibleThumb.Attribute("Width"));
+        Assert.Equal("18", (string?)visibleThumb.Attribute("Height"));
+
+        var settings = XDocument.Load(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
+        var settingsSlider = Assert.Single(settings.Descendants(presentation + "Slider"),
+            slider => (string?)slider.Attribute(xaml + "Name") == "GlassStrengthSlider");
+        Assert.Equal("{StaticResource GscSlider}", (string?)settingsSlider.Attribute("Style"));
     }
 
     [Fact]

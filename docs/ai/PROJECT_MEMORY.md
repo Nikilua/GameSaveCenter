@@ -1,9 +1,10 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 2026-09-28 Q11-05 内容拉伸 / R08 反转采样修订
+## 2026-09-28 Q11-05 内容拉伸 / R08 反转采样修订与回归清理
 
 - `e467c3b2` 在共享 `GscRedesignWorkspaceTabControl` 上补真实 STA WPF 页面根布局测量：380×240 DIP、三种 Header、Light/Dark；内容根 Border 的 x/y 与内容 Presenter 左上对齐，宽高各差 `<=0.25 DIP`。没有生产 XAML 改动，`R23ProductionResourceStateBehaviorTests 6/6`。
-- 同提交将 `R08MotionReverseBehaviorTests` 的固定 100 ms 取样替换成有界 dispatcher pump，只有观测到仍在运行的动画时钟和内部宽度才反向；保持最终目标/时钟释放断言。修订后完整类 8 次独立 testhost 均 `2/2`；完整 build 正在跑。用户失败机器的详细 stack 不可见，根因结论限于自动化采样时序。
+- 同提交将 `R08MotionReverseBehaviorTests` 的固定 100 ms 取样替换成有界 dispatcher pump，只有观测到仍在运行的动画时钟和内部宽度才反向；保持最终目标/时钟释放断言。修订后完整类 8 次独立 testhost 均 `2/2`，后续完整隔离构建的 `[54/108]` R08 类也通过。用户机器详细 assertion 不可见，因此把原因表述为本地复现并修复的采样时序，不推断用户原失败一定同因。
+- 完整构建末尾发现独立的旧资源结构测试仍锁定 `GscSlider` 22 DIP；这与 `e007a339` 已实测的 32 DIP 命中面冲突。测试现按 XAML 结构核对 32 DIP 外层命中、4 DIP 轨道、18 DIP 可见 Thumb 和生产 Slider 引用。改后结构断言 `1/1`、设置滑杆三主题命中/键盘行为 `3/3`、R08 `2/2` 均通过。R08 testhost 有 TextServicesHost `InvalidComObjectException` 退出清理日志，但结果为成功。最终提交身份下全套 Release build 待复跑。
 - 证据：[Q11-05](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)、[R08 稳定性](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-REVERSAL-TEST-STABILITY-20260928.md)。下一任务 Q11-06；Media Inbox 等当前 Playnite 的 DLL/DPI/theme/scroll 同进程诊断。
 
 ## 2026-09-28 Q11-04 页签长短标签和计数内边距

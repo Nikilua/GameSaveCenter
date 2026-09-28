@@ -15,6 +15,9 @@
 - 代码身份：`e467c3b2fe080965c3946f1f3101f707c731472b`。
 - Release Playnite 测试项目构建：`0 warning / 0 error`。
 - 修改后 R08 完整类在独立 testhost 连续运行 `8/8`，每轮 `2/2`，0 failed/skipped；原始汇总：[8 轮输出](../../../../../artifacts/r08-motion-flake-20260928/r08-fixed-repeat.log)。
-- 当前完整 Release build 脚本正在该身份下运行：solution build、Core 与 Worker 已通过，Playnite/WPF 逐类隔离阶段尚未结束；在取得脚本最终退出码前不记全套构建成功。
+- 用户稍后的一次完整隔离构建在 R08 类序号 `[54/108]` 通过；同轮最终 `WpfUiResourceDictionaryTests` 有另一项滑杆契约测试失败，与 R08 无关。它在 `f8322666` 仍静态要求 `GscSlider` 高度 `22 DIP`，而稍早的 `e007a339` 已经根据真实 WPF 命中行为扩大控件/Thumb 输入区域至 `32 DIP`，保留 `4 DIP` 可见轨道和 `18 DIP` 可见圆头。该旧断言造成构建末尾 `138 passed / 39 skipped / 1 failed`，不是滑杆交互故障。
+- 已更新 `WpfUiResourceDictionaryTests`：解析共享样式并核对控件/Thumb 命中高度 `32`、两段 `4 DIP` 轨道、`18 DIP` 可视 Thumb，以及设置页使用共享样式。当前修订源码编译到隔离 Release 程序集，构建 `0 warning / 0 error`；新结构用例 `1/1`，现有设置滑杆 Light/Dark/FollowPlaynite 命中、值回写和键盘行为 `3/3`，R08 完整类 `2/2`。
+- 上述 R08 复跑时 xUnit 两项均通过且 VSTest exit `0`，退出日志额外出现 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理噪声；根因未知。清理噪声不改变测试结果，但按用户要求保留说明。
+- 修订提交身份下的完整隔离 Release build 尚待执行；在其结束前不宣称全套构建通过。此次定向构建/测试 assembly metadata 基于 `f8322666`，完整堆栈与归档 TRX 仍未取得。
 
 本复核修复并验证的是自动化采样稳定性，不声明用户 Playnite 内实际侧栏动画已验。用户失败机完整日志仍待提供；若日志显示失败点不是采样窗口，需按该断言继续核对。

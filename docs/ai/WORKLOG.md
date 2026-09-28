@@ -1,10 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
-## 2026-09-28 Q11-05 Stretch 补证与 R08 反转采样稳定性
+## 2026-09-28 Q11-05 Stretch 补证、R08 反转采样与滑杆回归校正
 
 - 共享 TabControl 本已有 Stretch setter 和独立星号内容行；增加真实 STA WPF 窄窗行为用例，不改生产 XAML。380×240 DIP，浅/深主题短中文/长英文/计数标签切换均测得页面根边界紧贴内容 Presenter，宽高差 `<=0.25 DIP`。`R23ProductionResourceStateBehaviorTests 6/6`，TRX `artifacts/q11-05-tab-content-stretch-20260928/q11-05-tab-content-stretch-e467c3b2.trx`。
-- 用户报告 R08 类 `1/2` 失败；完整错误日志不在本 checkout，本地同名文件为 9/24。测试代码审查发现首次收起固定等 100 ms 后采实际宽度，可能在首帧尚未布局时误判；改为 bounded dispatcher sampling 真实进行中的宽度/活动时钟，反向同样等方向性进度，并保留终态断言。修订后 R08 完整类连续 8 次 `2/2`，汇总日志 `artifacts/r08-motion-flake-20260928/r08-fixed-repeat.log`。
-- 当前完整隔离 Release build 脚本：solution `0 warning/0 error`，Core `125/125`，Worker `356 passed / 1 existing skip / 0 failed`；Playnite 108 个隔离类仍运行中。最终进度另行补记。生产动画没有变更。下一项 Q11-06；真实 Playnite 媒体滚动诊断仍待同进程数据。
+- 用户报告 R08 类 `1/2` 失败；完整错误日志不在本 checkout，本地同名文件为 9/24。测试代码审查发现首次收起固定等 100 ms 后采实际宽度，可能在首帧尚未布局时误判；改为 bounded dispatcher sampling 真实进行中的宽度/活动时钟，反向同样等方向性进度，并保留终态断言。修订后 R08 完整类连续 8 次 `2/2`；后续完整隔离构建在类序号 `[54/108]` 也通过 R08。汇总日志 `artifacts/r08-motion-flake-20260928/r08-fixed-repeat.log`。
+- 同一完整构建到 WPF 资源类时另报一条旧滑杆结构断言失败；它仍要求高度 22 DIP，而 `e007a339` 已将控件/Thumb 命中面扩至 32 DIP、可见轨道保留 4 DIP、可见圆头保留 18 DIP。实际设置行为用例已验证命中和键盘。将资源断言改为解析当前 XAML 几何与 `GlassStrengthSlider` 的样式引用；隔离验证新结构用例 `1/1`、设置滑杆 Light/Dark/FollowPlaynite 行为 `3/3`、R08 类 `2/2` 均通过。R08 testhost 输出一条 `TextServicesHost InvalidComObjectException` 清理噪声，xUnit/VSTest 明确成功。
+- 该完整构建的 solution、Core `125/125`、Worker `356 passed / 1 existing skip` 均成功；Playnite 最终资源类的旧断言失败，故不记整套成功。修正提交后的 clean identity 全套 Release 复跑仍待执行。生产动画没有变更。下一项 Q11-06；真实 Playnite 媒体滚动诊断仍待同进程数据。
 
 ## 2026-09-28 Q11-04 页签内边距与内容稳定
 
