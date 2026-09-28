@@ -616,8 +616,10 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource GscSharedFocusVisual}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscDividerBrush}"/>
-        <Setter Property="Height" Value="22"/>
+        <Setter Property="Height" Value="32"/>
         <Setter Property="MinWidth" Value="140"/>
+        <Setter Property="SmallChange" Value="1"/>
+        <Setter Property="LargeChange" Value="10"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Slider">
@@ -627,16 +629,18 @@
                                 <RepeatButton Command="Slider.DecreaseLarge" Background="{TemplateBinding Foreground}" IsTabStop="False" Focusable="False">
                                     <RepeatButton.Template>
                                         <ControlTemplate TargetType="RepeatButton">
-                                            <Border Height="4" CornerRadius="2" Background="{TemplateBinding Background}"/>
+                                            <Grid Background="Transparent">
+                                                <Border Height="4" CornerRadius="2" VerticalAlignment="Center" Background="{TemplateBinding Background}"/>
+                                            </Grid>
                                         </ControlTemplate>
                                     </RepeatButton.Template>
                                 </RepeatButton>
                             </Track.DecreaseRepeatButton>
                             <Track.Thumb>
-                                <Thumb Width="18" Height="18" Focusable="False" Background="{DynamicResource GscControlFillBrush}">
+                                <Thumb Width="32" Height="32" Focusable="False" Background="{DynamicResource GscControlFillBrush}">
                                     <Thumb.Template>
                                         <ControlTemplate TargetType="Thumb">
-                                            <Border x:Name="ThumbChrome" CornerRadius="9" Background="{TemplateBinding Background}"
+                                            <Border x:Name="ThumbChrome" Width="18" Height="18" CornerRadius="9" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{TemplateBinding Background}"
                                                     BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1"
                                                     Effect="{DynamicResource GscSliderThumbEffect}">
                                             </Border>
@@ -652,7 +656,9 @@
                                 <RepeatButton Command="Slider.IncreaseLarge" Background="{TemplateBinding Background}" IsTabStop="False" Focusable="False">
                                     <RepeatButton.Template>
                                         <ControlTemplate TargetType="RepeatButton">
-                                            <Border Height="4" CornerRadius="2" Background="{TemplateBinding Background}"/>
+                                            <Grid Background="Transparent">
+                                                <Border Height="4" CornerRadius="2" VerticalAlignment="Center" Background="{TemplateBinding Background}"/>
+                                            </Grid>
                                         </ControlTemplate>
                                     </RepeatButton.Template>
                                 </RepeatButton>

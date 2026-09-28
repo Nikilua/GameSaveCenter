@@ -8,6 +8,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Automation;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
@@ -683,6 +687,173 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.True(saveHintTitleTopDelta <= 36, $"settings save hint is {saveHintTitleTopDelta:0.##} DIP below the title");
         Assert.True(pathControlCenterSpread <= 3, $"path combo/actions centers span {pathControlCenterSpread:0.##} DIP");
         Assert.True(pathControlHeightSpread <= 10, $"path combo/actions heights differ by {pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    [InlineData(GameSaveCenterThemeMode.FollowPlaynite)]
+    public void SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var observations = string.Empty;
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                EnsureApplicationResources();
+                var settings = new SliderProbeSettings();
+                var view = new GameSaveCenterSettingsView { DataContext = settings };
+                ApplyTheme(view, theme);
+                var viewType = view.GetType();
+                var tabs = (ListBox)viewType.GetField("SettingsSectionTabs", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var slider = (Slider)viewType.GetField("GlassStrengthSlider", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var pageScroller = (ScrollViewer)viewType.GetField("SettingsScroller", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                tabs.SelectedIndex = 2;
+
+                window = CreateWindow(view, 1100, 700);
+                window.ShowActivated = true;
+                window.Show();
+                FlushLayout(window);
+                slider.ApplyTemplate();
+                FlushLayout(window);
+                Assert.True(slider.IsVisible, "the production appearance section must show the glass strength slider");
+
+                var track = Assert.IsType<Track>(slider.Template!.FindName("PART_Track", slider));
+                var thumb = Assert.IsType<Thumb>(track.Thumb);
+                var decrease = Assert.IsType<RepeatButton>(track.DecreaseRepeatButton);
+                var increase = Assert.IsType<RepeatButton>(track.IncreaseRepeatButton);
+                var dock = Assert.IsType<DockPanel>(slider.Parent);
+                var label = Assert.Single(dock.Children.OfType<TextBlock>());
+                var sliderBounds = BoundsIn(slider, dock);
+                var labelBounds = BoundsIn(label, dock);
+                var dpi = VisualTreeHelper.GetDpi(slider);
+
+                Assert.True(slider.ActualWidth >= 140 && slider.ActualHeight >= 32,
+                    $"settings slider must have a usable control footprint; size={slider.ActualWidth:0.##}x{slider.ActualHeight:0.##}");
+                Assert.True(thumb.ActualWidth >= 32 && thumb.ActualHeight >= 32,
+                    $"settings thumb must remain a readable target; size={thumb.ActualWidth:0.##}x{thumb.ActualHeight:0.##}");
+                Assert.True(sliderBounds.Right <= labelBounds.Left + 0.5, "value label must not overlap the slider");
+                Assert.Equal("78%", label.Text);
+                Assert.Equal(78, settings.GlassEffectStrength);
+                Assert.Equal("毛玻璃强度", AutomationProperties.GetName(slider));
+
+                foreach (var button in new[] { decrease, increase })
+                {
+                    var bounds = BoundsIn(button, slider);
+                    Assert.True(bounds.Width >= 25, $"track side needs room for precise activation: {bounds}");
+                    foreach (var y in new[] { slider.ActualHeight / 2 - 14, slider.ActualHeight / 2, slider.ActualHeight / 2 + 14 })
+                    {
+                        var hit = VisualTreeHelper.HitTest(slider, new Point(bounds.Left + bounds.Width / 2, y))?.VisualHit;
+                        Assert.True(IsVisualDescendantOf(hit, button),
+                            $"both sides of the visible track must respond across the control height; button={button.Command},point={bounds.Left + bounds.Width / 2:0.##},{y:0.##},hit={hit?.GetType().Name ?? "none"}");
+                    }
+                }
+
+                var peer = UIElementAutomationPeer.CreatePeerForElement(slider);
+                var range = Assert.IsAssignableFrom<IRangeValueProvider>(peer!.GetPattern(PatternInterface.RangeValue));
+                Assert.Equal(78, range.Value);
+                Assert.Equal(1, slider.SmallChange);
+                Assert.Equal(10, slider.LargeChange);
+
+                var invokeTrack = typeof(RepeatButton).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?? throw new InvalidOperationException("WPF RepeatButton.OnClick was not found.");
+                invokeTrack.Invoke(decrease, null);
+                FlushLayout(window);
+                Assert.Equal(68, slider.Value);
+                Assert.Equal(68, settings.GlassEffectStrength);
+                Assert.Equal("68%", label.Text);
+                invokeTrack.Invoke(increase, null);
+                FlushLayout(window);
+                Assert.Equal(78, slider.Value);
+                Assert.Equal(78, settings.GlassEffectStrength);
+
+                window.Activate();
+                Assert.Same(slider, Keyboard.Focus(slider));
+                RaiseSliderKey(slider, window, Key.Right);
+                FlushLayout(window);
+                Assert.Equal(79, slider.Value);
+                Assert.Equal(79, settings.GlassEffectStrength);
+                Assert.Equal("79%", label.Text);
+                RaiseSliderKey(slider, window, Key.PageUp);
+                FlushLayout(window);
+                Assert.Equal(89, slider.Value);
+                Assert.Equal(89, settings.GlassEffectStrength);
+                RaiseSliderKey(slider, window, Key.End);
+                FlushLayout(window);
+                Assert.Equal(100, slider.Value);
+                Assert.Equal("100%", label.Text);
+                RaiseSliderKey(slider, window, Key.Home);
+                FlushLayout(window);
+                Assert.Equal(20, slider.Value);
+                Assert.Equal("20%", label.Text);
+
+                window.Width = 560;
+                FlushLayout(window);
+                sliderBounds = BoundsIn(slider, dock);
+                labelBounds = BoundsIn(label, dock);
+                Assert.True(slider.IsVisible && slider.ActualWidth >= 140, "compact settings must retain the usable slider");
+                Assert.True(sliderBounds.Right <= labelBounds.Left + 0.5, "compact value label must stay beside its own slider");
+
+                window.Height = 640;
+                slider.BringIntoView();
+                FlushLayout(window);
+                var pagePresenter = FindVisualChildren<ScrollContentPresenter>(pageScroller).First();
+                var shortSliderBounds = BoundsIn(slider, pageScroller);
+                var shortViewport = BoundsIn(pagePresenter, pageScroller);
+                Assert.True(shortSliderBounds.Top >= shortViewport.Top - 1 && shortSliderBounds.Bottom <= shortViewport.Bottom + 1,
+                    $"the slider must remain reachable in a short settings window; slider={shortSliderBounds},viewport={shortViewport}");
+
+                Keyboard.ClearFocus();
+                slider.IsEnabled = false;
+                Assert.NotSame(slider, Keyboard.Focus(slider));
+                Assert.Throws<ElementNotEnabledException>(() => range.SetValue(55));
+                Assert.Equal(20, slider.Value);
+                Assert.Equal(20, settings.GlassEffectStrength);
+                observations = $"{theme}:dpi={dpi.DpiScaleX:0.##},slider={slider.ActualWidth:0.##}x{slider.ActualHeight:0.##},thumb={thumb.ActualWidth:0.##}x{thumb.ActualHeight:0.##},track={decrease.ActualWidth:0.##}/{increase.ActualWidth:0.##},value={label.Text},compact={sliderBounds}/{labelBounds}";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine(observations);
+        Assert.Null(exception);
+    }
+
+    private static void RaiseSliderKey(Slider slider, Window window, Key key)
+    {
+        var source = PresentationSource.FromVisual(window)
+            ?? throw new InvalidOperationException("Settings slider is not attached to a WPF presentation source.");
+        slider.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, source, 0, key)
+        {
+            RoutedEvent = Keyboard.KeyDownEvent
+        });
+        slider.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, source, 0, key)
+        {
+            RoutedEvent = Keyboard.KeyUpEvent
+        });
+    }
+
+    private static bool IsVisualDescendantOf(DependencyObject? candidate, DependencyObject ancestor)
+    {
+        for (var current = candidate; current != null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (ReferenceEquals(current, ancestor))
+                return true;
+        }
+        return false;
+    }
+
+    private sealed class SliderProbeSettings
+    {
+        public int GlassEffectStrength { get; set; } = 78;
     }
 
     private static MediaPageContext CreateMediaContext()
