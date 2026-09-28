@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
@@ -379,6 +380,145 @@ public sealed class MediaInboxScrollBehaviorTests
         foreach (var observation in observations)
             output.WriteLine(observation);
         Assert.Null(exception);
+    }
+
+    [Fact]
+    public void ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary()
+    {
+        Exception? exception = null;
+        var observations = new List<string>();
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MediaCenterView();
+                var viewType = typeof(MediaCenterView);
+                var tabs = (TabControl)viewType.GetField("MediaTabControl", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                System.Windows.Data.BindingOperations.ClearBinding(tabs, TabControl.SelectedIndexProperty);
+                tabs.SelectedIndex = 0;
+
+                var grid = (DataGrid)viewType.GetField("MediaInboxGrid", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                var items = new BatchObservableCollection<MediaItemDto>(CreateSyntheticMedia(2000));
+                grid.ItemsSource = items;
+                var page = (ScrollViewer)viewType.GetField("MediaInboxPageScrollViewer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspector = (ScrollViewer)viewType.GetField("MediaInboxInspectorScrollViewer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                var frame = (Border)viewType.GetField("MediaInboxInspectorFrame", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                var compactDetailsButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MediaInboxCompactDetailsButton", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                var inspectorContent = Assert.IsType<StackPanel>(frame.Child);
+                for (var index = 0; index < 24; index++)
+                    inspectorContent.Children.Add(new Border { Height = 42, MinWidth = 120 });
+
+                window = new Window
+                {
+                    Content = view,
+                    Width = 860,
+                    Height = 620,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    WindowStyle = WindowStyle.None,
+                    Opacity = 0.01
+                };
+                view.ApplyResponsiveLayout(window.Width, window.Height);
+                window.Show();
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                DrainDispatcher(window);
+
+                grid.SelectedItem = items[0];
+                DrainDispatcher(window);
+                Assert.True(compactDetailsButton.IsVisible, "a selected item in the stacked inbox layout exposes its details action");
+                compactDetailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, compactDetailsButton));
+                DrainDispatcher(window);
+
+                Assert.True(ScrollBoundaryRoutingBehavior.GetEnabled(page), "the production page scroll surface must use boundary routing");
+                Assert.True(ScrollBoundaryRoutingBehavior.GetEnabled(inspector), "the production inspector must inherit the boundary routing style");
+                Assert.Equal(ScrollBarVisibility.Auto, page.VerticalScrollBarVisibility);
+                Assert.Equal(ScrollBarVisibility.Auto, inspector.VerticalScrollBarVisibility);
+                Assert.True(inspector.Visibility == Visibility.Visible
+                    && !double.IsNaN(inspector.MaxHeight)
+                    && !double.IsInfinity(inspector.MaxHeight)
+                    && inspector.MaxHeight > 0
+                    && inspector.ActualHeight > 0
+                    && inspector.ActualHeight <= inspector.MaxHeight + 0.5,
+                    $"the opened production inspector remains finite and visible: visibility={inspector.Visibility},max={inspector.MaxHeight:0.##},actual={inspector.ActualHeight:0.##}");
+                Assert.True(page.ScrollableHeight > 0.5, $"the page must expose its Auto overflow channel: {page.VerticalOffset}/{page.ScrollableHeight}");
+                Assert.True(inspector.ScrollableHeight > 0.5, $"the bounded inspector fixture must overflow internally: {inspector.VerticalOffset}/{inspector.ScrollableHeight}");
+                observations.Add($"setup: windowDip={window.ActualWidth:0.##}x{window.ActualHeight:0.##},page={page.VerticalOffset:0.##}/{page.ScrollableHeight:0.##},inspector={inspector.Visibility}:{inspector.ActualHeight:0.##}/{inspector.MaxHeight:0.##},inspectorRange={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##}");
+
+                page.ScrollToVerticalOffset(page.ScrollableHeight / 2);
+                inspector.ScrollToVerticalOffset(inspector.ScrollableHeight / 2);
+                DrainDispatcher(window);
+                var pageMiddle = page.VerticalOffset;
+                var inspectorMiddle = inspector.VerticalOffset;
+                var middleWheel = RaisePreviewWheel(inspector, -120);
+                DrainDispatcher(window);
+                Assert.False(middleWheel.Handled, "the page must not take a wheel step while the inspector can scroll in that direction");
+                Assert.Equal(pageMiddle, page.VerticalOffset, 2);
+                Assert.Equal(inspectorMiddle, inspector.VerticalOffset, 2);
+                observations.Add($"middle: page={page.VerticalOffset:0.##}/{page.ScrollableHeight:0.##},inspector={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##},handled={middleWheel.Handled}");
+
+                inspector.ScrollToEnd();
+                page.ScrollToVerticalOffset(page.ScrollableHeight / 2);
+                DrainDispatcher(window);
+                var pageBeforeDownTransfer = page.VerticalOffset;
+                var inspectorAtBottom = inspector.VerticalOffset;
+                var downWheel = RaisePreviewWheel(inspector, -120);
+                DrainDispatcher(window);
+                Assert.True(downWheel.Handled, "a downward wheel step at the inspector bottom must transfer to the page");
+                Assert.True(page.VerticalOffset > pageBeforeDownTransfer,
+                    $"the page must move at the inspector bottom: {pageBeforeDownTransfer:0.##}->{page.VerticalOffset:0.##}");
+                Assert.Equal(inspectorAtBottom, inspector.VerticalOffset, 2);
+                Assert.Equal(inspector.ScrollableHeight, inspector.VerticalOffset, 2);
+                observations.Add($"bottom-transfer: page={pageBeforeDownTransfer:0.##}->{page.VerticalOffset:0.##},inspector={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##},handled={downWheel.Handled}");
+
+                inspector.ScrollToTop();
+                page.ScrollToVerticalOffset(page.ScrollableHeight / 2);
+                DrainDispatcher(window);
+                var pageBeforeUpTransfer = page.VerticalOffset;
+                var upWheel = RaisePreviewWheel(inspector, 120);
+                DrainDispatcher(window);
+                Assert.True(upWheel.Handled, "an upward wheel step at the inspector top must transfer to the page");
+                Assert.True(page.VerticalOffset < pageBeforeUpTransfer,
+                    $"the page must move upward at the inspector top: {pageBeforeUpTransfer:0.##}->{page.VerticalOffset:0.##}");
+                Assert.Equal(0, inspector.VerticalOffset, 2);
+                observations.Add($"top-transfer: page={pageBeforeUpTransfer:0.##}->{page.VerticalOffset:0.##},inspector={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##},handled={upWheel.Handled}");
+
+                inspector.ScrollToTop();
+                page.ScrollToTop();
+                DrainDispatcher(window);
+                var pageAtTop = page.VerticalOffset;
+                var inspectorAtTop = inspector.VerticalOffset;
+                var terminalWheel = RaisePreviewWheel(inspector, 120);
+                DrainDispatcher(window);
+                Assert.True(terminalWheel.Handled, "a no-op wheel step at both top boundaries must be consumed");
+                Assert.Equal(pageAtTop, page.VerticalOffset, 2);
+                Assert.Equal(inspectorAtTop, inspector.VerticalOffset, 2);
+                observations.Add($"both-top: page={page.VerticalOffset:0.##}/{page.ScrollableHeight:0.##},inspector={inspector.VerticalOffset:0.##}/{inspector.ScrollableHeight:0.##},handled={terminalWheel.Handled}");
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        foreach (var observation in observations)
+            output.WriteLine(observation);
+        Assert.Null(exception);
+    }
+
+    private static MouseWheelEventArgs RaisePreviewWheel(UIElement source, int delta)
+    {
+        var args = new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, delta)
+        {
+            RoutedEvent = UIElement.PreviewMouseWheelEvent
+        };
+        source.RaiseEvent(args);
+        return args;
     }
 
     private static void AssertLastLoadedRowComplete(DataGrid grid, int lastIndex)
