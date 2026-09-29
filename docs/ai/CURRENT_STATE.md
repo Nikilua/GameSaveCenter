@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q06 本机失败报告复核（同 DLL 未复现）
+
+- 用户提供的另一工作区 one-click 日志身份为 `dc712445ec4baefd9b1cb3173d176c80b697d050`，与本机 `main` 一致；测试 DLL SHA-256 `9193BC1C08FB20CDE249183246517F23A2334AAD1BF4BA141A5B556F887BC18D`，插件 DLL SHA-256 `F78B4BDC9F3046FDE5F6DF4A8AAA9B8F2851C20709079869B1D8CD505AB7F774`。原日志 `quiet` logger 没有失败断言/堆栈。同 DLL 三个直接 VSTest 加一轮隔离脚本同入口 `dotnet test --no-build`，合计 `4/4` 通过；Light/Dark 五态状态报告均通过，未复现且没有声称已修复。[Q06 重检证据](../design/reviews/ui-finesse-round3-20260915/evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)
+- 隔离 runner 改为在失败时输出详细断言和堆栈、成功时仍隐藏逐项日志；PowerShell 解析通过。下一项 Q14-01 工具栏同高行为证据收口。R08 `1/2` 报告仍另行未定位；Media Inbox 真实宿主滚动日志边界不变。
+
 ## 2026-09-29 Q13-08 分页锚点证据复核
 
 - 当前 main 身份 `2333361e` Release build `0 warning / 0 error`、XAML `24/24`；5 个分页/锚点/缓存测试类共 `29/29`。稳定 ID 视口锚点、裁剪后邻行回退、2,000 项有界去重缓存和 Worker stable cursor/TotalCount 均有当前 TRX。[Q13-08 证据](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)

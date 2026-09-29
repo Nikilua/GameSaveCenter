@@ -35,7 +35,10 @@ function Invoke-PlayniteTestProcess {
         '--no-build',
         '--no-restore',
         '--filter', $Filter,
-        '--logger', 'console;verbosity=quiet',
+        # Capture normal diagnostic detail so a failed isolated WPF class includes
+        # its assertion message and stack when the buffered output is replayed below.
+        # Successful class output remains hidden because only failures are written.
+        '--logger', 'console;verbosity=normal',
         '-m:1',
         '-nodeReuse:false',
         '-p:NuGetAudit=false',

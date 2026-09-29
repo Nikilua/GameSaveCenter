@@ -1,5 +1,10 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Q06 本机失败报告复核（同 DLL 未复现）
+
+- 用户另一工作区日志与本机 `main` 同为 `dc712445ec4baefd9b1cb3173d176c80b697d050`；隔离 Release 测试 DLL SHA-256 `9193BC1C08FB20CDE249183246517F23A2334AAD1BF4BA141A5B556F887BC18D`，插件 DLL SHA-256 `F78B4BDC9F3046FDE5F6DF4A8AAA9B8F2851C20709079869B1D8CD505AB7F774`。复用同一测试 DLL，三个独立 VSTest 和一轮与隔离脚本相同入口的项目级 `dotnet test --no-build` 均通过（`4/4`）；Light/Dark × normal/hover/pressed/focus/disabled 状态探针均通过。原失败因 `quiet` logger 缺断言和堆栈，当前 runner 在类失败时回放 normal logger 详细输出。未复现不等于已解决；四份 TRX/console 和验证边界：[Q06 重检](../design/reviews/ui-finesse-round3-20260915/evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)。
+- 当前下一项 Q14-01 工具栏同高；用户侧 R08 失败仍单独未定位，Media Inbox 用户滚动问题仍需安全真实宿主同进程诊断。
+
 ## 2026-09-29 Q13-08 分页锚点当前身份复核
 
 - `2333361e` 当前精确 main 身份下 Release build 成功（0 warnings/errors、XAML `24/24`）；`MediaInboxScrollBehaviorTests 5/5`、`MediaWindowAnchorContractTests 10/10`、`R07SelectionAnchorBehaviorTests 4/4`、`MediaPageAccumulatorTests 6/6`、Worker `MediaQueryPersistenceTests 4/4`，合计 `29/29`。详细 TRX、console、MVID/SHA 和行为边界：[Q13-08](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。没有生产代码/测试断言修改。

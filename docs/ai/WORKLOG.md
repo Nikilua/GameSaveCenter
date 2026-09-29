@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q06 本机 one-click 失败重检（未复现）
+
+- 用户提供的新鲜外部 `one-click-install.log` 指向 `dc712445ec4baefd9b1cb3173d176c80b697d050`；测试 DLL SHA-256 `9193BC1C08FB20CDE249183246517F23A2334AAD1BF4BA141A5B556F887BC18D`、插件 DLL SHA-256 `F78B4BDC9F3046FDE5F6DF4A8AAA9B8F2851C20709079869B1D8CD505AB7F774`。构建和 Core/Worker 测试通过，Playnite 隔离类 Q06 单例失败。日志只用 `verbosity=quiet`，未包含实际断言、堆栈或 TRX。
+- 同一失败输出测试 DLL 的三次独立 VSTest 重跑加一轮隔离脚本相同入口的项目级 `dotnet test --no-build` 均 `1/1`、exit `0`；首轮状态输出 Light/Dark 五态 `10/10`，图像是 96-DPI 合成窗口。没有找到失败状态根因，不改生产按钮或 Q06 测试。runner 已改为失败时回放 `verbosity=normal` 输出；PowerShell AST 解析成功。详见[证据](../design/reviews/ui-finesse-round3-20260915/evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)。
+- 下一项继续 Q14-01；真实 Playnite/物理输入未验，Q06 外部完成条件不变。
+
 ## 2026-09-29 R08 one-click 报告重检（未复现）
 
 - 用户提供 `R08MotionReverseBehaviorTests 1/2` 摘要，未带失败方法、断言、堆栈/TRX。本地同名安装日志时间为 9/24，属于旧宿主审计。

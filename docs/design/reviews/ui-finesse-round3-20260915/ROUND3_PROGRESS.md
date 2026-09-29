@@ -1,3 +1,8 @@
+## 2026-09-29 Q06 本机失败报告复核；Q14-01 继续收口
+
+- 用户新提供的 one-click 日志构建与当前 main 身份一致（`dc712445`）；原日志未保留断言/堆栈。复用日志中的同一测试 DLL，三次独立 VSTest 和一轮项目级 `dotnet test --no-build` 均 `1/1` 通过；双主题五态探针 `10/10`，未复现、未改生产按钮，也不据此称故障已解决。[Q06 重检证据](evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)
+- 隔离 runner 失败时现在会输出 normal verbosity 断言和堆栈。当前小批次 Q14-01：生产工具栏的受控几何行为证据复核；Playnite 实机和物理输入/其他 DPI 仍不得由 STA 合成窗口代替。
+
 ## 2026-09-29 Q13-08 稳定分页锚点与总数证据复核
 
 - 当前身份 `2333361e` 的 Release solution build 成功，0 warnings / 0 errors，XAML structural checks `24/24`；源码验证通过。Playnite 与 Worker 测试程序集 SHA、MVID、构建日志、5 份 TRX 和 console 均归档在 [Q13-08 证据](evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。
