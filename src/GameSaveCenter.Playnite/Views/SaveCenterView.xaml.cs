@@ -163,7 +163,7 @@ namespace GameSaveCenter.Playnite.Views
                 // Stack only this action strip when its actual table column cannot give
                 // the summary content and all actions a stable side-by-side measure.
                 var historyActionsCompact = ruleCardCompact || historySummaryAvailableWidth < 1240;
-                historyActionRowGap.SetRowGap(historyActionsCompact ? 8 : 0);
+                historyActionRowGap.SetRowGap(historyActionsCompact ? 12 : 0);
                 if (SaveHistorySummaryCard != null)
                 {
                     // The stacked command row otherwise steals roughly two table-row

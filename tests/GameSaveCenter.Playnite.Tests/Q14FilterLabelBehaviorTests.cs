@@ -165,7 +165,7 @@ public sealed class Q14FilterLabelBehaviorTests
                 foreach (var pair in visiblePairs)
                 {
                     Assert.Equal(10d, pair.Group.Margin.Right);
-                    Assert.Equal(8d, pair.Group.Margin.Bottom);
+                    Assert.Equal(12d, pair.Group.Margin.Bottom);
                     var bounds = GetBounds(pair.Group, moreFilters);
                     Assert.True(bounds.Left >= -GeometryTolerance,
                         $"{theme} {width:0} DIP {pair.Name} group left={bounds.Left:0.###}.");
@@ -196,8 +196,8 @@ public sealed class Q14FilterLabelBehaviorTests
                         var slot = System.Windows.Controls.Primitives.LayoutInformation.GetLayoutSlot(pair.Group);
                         return $"{pair.Name}:top={bounds.Top:0.###},height={bounds.Height:0.###},bottomMargin={pair.Group.Margin.Bottom:0.###},slot={slot.Top:0.###}/{slot.Height:0.###}";
                     }));
-                    Assert.True(nextRowTop - firstRowBottom >= 7.25d,
-                        $"{theme} {width:0} DIP wrapped filter rows should retain at least 7.25 DIP clear gap; gap={nextRowTop - firstRowBottom:0.###} DIP; {rowGeometry}.");
+                    Assert.True(nextRowTop - firstRowBottom >= 11.5d,
+                        $"{theme} {width:0} DIP wrapped filter rows should retain at least 11.5 DIP clear gap; gap={nextRowTop - firstRowBottom:0.###} DIP; {rowGeometry}.");
                 }
 
                 // Reparent the live fields across the breakpoint and back. This proves

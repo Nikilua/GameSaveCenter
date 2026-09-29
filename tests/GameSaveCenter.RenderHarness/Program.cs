@@ -7352,17 +7352,26 @@ public static class Program
 
                 var headerRow = shell.GetType().GetField("HeaderRow", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(shell) as RowDefinition;
                 var headerActionsRow = shell.GetType().GetField("HeaderActionsRow", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(shell) as RowDefinition;
+                var headerActionsColumn = shell.GetType().GetField("HeaderActionsColumn", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(shell) as ColumnDefinition;
                 var headerSurface = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderSurface");
                 var title = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderTitlePanel");
                 var actions = FindVisualChildren<FrameworkElement>(shell).FirstOrDefault(x => x.Name == "HeaderActionsPanel");
-                if (headerRow == null || headerActionsRow == null || headerSurface == null || title == null || actions == null)
+                if (headerRow == null || headerActionsRow == null || headerActionsColumn == null || headerSurface == null || title == null || actions == null)
                     throw new InvalidOperationException("Production shell header probe elements are missing.");
 
                 var compact = ResponsiveLayoutCoordinator.Calculate(windowW, windowH).IsCompactShellHeader;
                 if (compact != headerRow.Height.IsAuto)
                     s_problems.Add($"Shell {windowW}x{windowH} header row state disagrees with the coordinator (compact={compact}, row={headerRow.Height}).");
-                if (!headerActionsRow.Height.IsAbsolute || Math.Abs(headerActionsRow.Height.Value) > 0.5)
-                    s_problems.Add($"Shell {windowW}x{windowH} reserved second actions row must remain collapsed (row={headerActionsRow.Height}).");
+                if (compact)
+                {
+                    if (!headerActionsRow.Height.IsAuto || Grid.GetRow(title) != 0 || Grid.GetRow(actions) != 1)
+                        s_problems.Add($"Shell {windowW}x{windowH} compact header must stack title then actions (actionsRow={headerActionsRow.Height}, titleRow={Grid.GetRow(title)}, actionsRowIndex={Grid.GetRow(actions)}).");
+                    if (Grid.GetColumnSpan(title) != 2 || Grid.GetColumnSpan(actions) != 2 || headerActionsColumn.ActualWidth > 0.5)
+                        s_problems.Add($"Shell {windowW}x{windowH} compact header must use one full-width column (spans={Grid.GetColumnSpan(title)}/{Grid.GetColumnSpan(actions)}, trailingColumn={headerActionsColumn.ActualWidth:0.0}).");
+                }
+                else if (!headerActionsRow.Height.IsAbsolute || Math.Abs(headerActionsRow.Height.Value) > 0.5
+                    || Grid.GetRow(actions) != 0 || Grid.GetColumnSpan(title) != 1 || Grid.GetColumnSpan(actions) != 1)
+                    s_problems.Add($"Shell {windowW}x{windowH} expanded header must return title and actions to one row (row={headerActionsRow.Height}, title/action rows={Grid.GetRow(title)}/{Grid.GetRow(actions)}, spans={Grid.GetColumnSpan(title)}/{Grid.GetColumnSpan(actions)}).");
                 if (actions.Visibility == Visibility.Visible)
                 {
                     var actionsBounds = actions.TransformToAncestor(headerSurface).TransformBounds(new Rect(0, 0, actions.ActualWidth, actions.ActualHeight));
@@ -7374,12 +7383,14 @@ public static class Program
                         s_problems.Add($"Shell {windowW}x{windowH} header row clips its title or actions (row={headerRow.ActualHeight:0.0}, title={title.ActualHeight:0.0}, actions={actions.ActualHeight:0.0}).");
                     if (compact && titleBounds.IntersectsWith(actionsBounds))
                         s_problems.Add($"Shell {windowW}x{windowH} compact title/actions overlap in two-dimensional bounds (title={titleBounds.Left:0.0}..{titleBounds.Right:0.0},{titleBounds.Top:0.0}..{titleBounds.Bottom:0.0}; actions={actionsBounds.Left:0.0}..{actionsBounds.Right:0.0},{actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}).");
+                    if (compact && Math.Abs(actionsBounds.Top - titleBounds.Bottom - 8d) > 0.5)
+                        s_problems.Add($"Shell {windowW}x{windowH} compact title/actions need an 8 DIP vertical gap (actual={actionsBounds.Top - titleBounds.Bottom:0.0}).");
                     if (!compact && titleBounds.Right > actionsBounds.Left + 0.5)
                         s_problems.Add($"Shell {windowW}x{windowH} expanded title/actions overlap horizontally (title={titleBounds.Left:0.0}..{titleBounds.Right:0.0}, actions={actionsBounds.Left:0.0}..{actionsBounds.Right:0.0}).");
                 }
 
                 SavePng(host, Path.Combine(outputRoot, $"Shell-{windowW}x{windowH}.png"));
-                report.AppendLine($"  Shell {windowW}x{windowH} compact={compact} header={headerRow.ActualHeight:0.0} actions={actions.ActualWidth:0.0}x{actions.ActualHeight:0.0}");
+                report.AppendLine($"  Shell {windowW}x{windowH} compact={compact} header={headerRow.ActualHeight:0.0} rows={Grid.GetRow(title)}/{Grid.GetRow(actions)} spans={Grid.GetColumnSpan(title)}/{Grid.GetColumnSpan(actions)} actions={actions.ActualWidth:0.0}x{actions.ActualHeight:0.0}");
             }
             catch (Exception ex)
             {

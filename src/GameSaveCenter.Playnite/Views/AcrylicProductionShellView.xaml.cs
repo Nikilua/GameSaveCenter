@@ -766,22 +766,26 @@ namespace GameSaveCenter.Playnite.Views
             var layout = ResponsiveLayoutCoordinator.Calculate(width, ActualHeight);
             var compact = layout.IsCompactShellHeader;
             HeaderRow.Height = compact ? GridLength.Auto : new GridLength(68);
-            Grid.SetRow(HeaderActionsPanel, 0);
-            Grid.SetColumn(HeaderActionsPanel, 1);
-            Grid.SetColumnSpan(HeaderActionsPanel, 1);
+            // Compact hosts use a single-column header: title first, then the global
+            // game picker and commands across the available width. A two-column header
+            // leaves too little room for those controls while the action strip wraps.
+            HeaderActionsRow.Height = compact ? GridLength.Auto : new GridLength(0);
+            Grid.SetRow(HeaderTitlePanel, 0);
+            Grid.SetRow(HeaderActionsPanel, compact ? 1 : 0);
             Grid.SetColumn(HeaderTitlePanel, 0);
-            Grid.SetColumnSpan(HeaderTitlePanel, 1);
-            HeaderTitleColumn.Width = compact ? GridLength.Auto : new GridLength(1, GridUnitType.Star);
-            HeaderActionsColumn.Width = compact ? new GridLength(1, GridUnitType.Star) : GridLength.Auto;
+            Grid.SetColumn(HeaderActionsPanel, compact ? 0 : 1);
+            Grid.SetColumnSpan(HeaderTitlePanel, compact ? 2 : 1);
+            Grid.SetColumnSpan(HeaderActionsPanel, compact ? 2 : 1);
+            HeaderTitleColumn.Width = new GridLength(1, GridUnitType.Star);
+            HeaderActionsColumn.Width = compact ? new GridLength(0) : GridLength.Auto;
             HeaderTitlePanel.HorizontalAlignment = HorizontalAlignment.Left;
             PageSubtitleText.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
-            HeaderActionsRow.Height = new GridLength(0);
-            HeaderActionsPanel.HorizontalAlignment = HorizontalAlignment.Right;
+            HeaderActionsPanel.HorizontalAlignment = compact ? HorizontalAlignment.Left : HorizontalAlignment.Right;
             HeaderActionsPanel.Margin = compact
-                ? new Thickness(10, 0, 0, 0)
+                ? new Thickness(0, 8, 0, 0)
                 : new Thickness(14, 0, 0, 0);
             HeaderActionsPanel.Width = double.NaN;
-            headerActionRowGap.SetRowGap(compact ? 8 : 0);
+            headerActionRowGap.SetRowGap(compact ? 12 : 0);
 
             // Keep the real game picker usable in the compact row while ensuring its
             // desired width plus the action buttons always fits the content column.

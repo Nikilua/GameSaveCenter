@@ -271,7 +271,7 @@ namespace GameSaveCenter.Playnite.Views
                 // The preset row wraps below 657 DIP in the production template.
                 // Keep a visible gap between those rows, then restore the authored
                 // margins as soon as all preset controls fit on one line again.
-                taskFilterPresetRowGap.SetRowGap(width < 657d ? 8d : 0d);
+                taskFilterPresetRowGap.SetRowGap(width < 657d ? 12d : 0d);
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
                 TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);
@@ -450,7 +450,7 @@ namespace GameSaveCenter.Playnite.Views
                 TaskMoreFiltersHost.Children.Add(TaskHistoryScopeFilterGroup);
                 TaskMoreFiltersHost.Children.Add(TaskHistoryRangeFilterGroup);
                 TaskMoreFiltersHost.Children.Add(TaskGameFilterGroup);
-                SetCompactFilterGroupSpacing(bottom: 8d);
+                SetCompactFilterGroupSpacing(bottom: 12d);
                 RestoreFilterSelection(TaskTypeFilterComboBox, typeSelection);
                 RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
                 RestoreFilterSelection(TaskHistoryRangeComboBox, rangeSelection);
@@ -480,6 +480,9 @@ namespace GameSaveCenter.Playnite.Views
             TaskTypeFilterGroup.Margin = margin;
             TaskHistoryScopeFilterGroup.Margin = margin;
             TaskHistoryRangeFilterGroup.Margin = margin;
+            // The game filter remains in the disclosure on wide layouts; when it is
+            // packed into the compact WrapPanel, match the other groups' row gap.
+            TaskGameFilterGroup.Margin = new Thickness(0, 0, 10, bottom > 0 ? bottom : 8d);
         }
 
         private static void RestoreFilterSelection(ComboBox comboBox, object? selectedItem)

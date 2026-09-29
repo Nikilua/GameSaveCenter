@@ -833,7 +833,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactSaveAndInboxActionWrapsKeepAnEightDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
+    public void CompactSaveAndInboxActionWrapsKeepATwelveDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var saveCompactRows = 0;
@@ -908,10 +908,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     var (rows, gap) = MeasureWrapRows(presetRow, mediaView);
                     if (rows > 1)
                     {
-                        Assert.True(gap >= 7.5,
-                            $"{theme} media filter preset rows at {width:0} DIP need at least 7.5 DIP breathing room; actual gap={gap:0.##} DIP.");
+                        Assert.True(gap >= 11.5,
+                            $"{theme} media filter preset rows at {width:0} DIP need at least 11.5 DIP breathing room; actual gap={gap:0.##} DIP.");
                         Assert.All(presetRow.Children.OfType<FrameworkElement>(), child =>
-                            Assert.Equal(8d, child.Margin.Bottom));
+                            Assert.Equal(12d, child.Margin.Bottom));
                     }
                     else
                     {
@@ -927,7 +927,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 700d;
                 mediaView.ApplyResponsiveLayout(700, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 7.5,
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 11.5,
                     "Media filter preset rows should regain their gap after resizing back to 700 DIP.");
                 mediaWindow.Width = 720d;
                 mediaView.ApplyResponsiveLayout(720, 720);
@@ -938,7 +938,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 700d;
                 mediaView.ApplyResponsiveLayout(700, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 7.5,
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 11.5,
                     "Media filter preset row gap should survive a 700→720→700 DIP resize round trip.");
 
                 var secondaryActions = (WrapPanel)typeof(MediaCenterView)
@@ -954,10 +954,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     var (rows, gap) = MeasureWrapRows(secondaryActions, mediaView);
                     if (rows > 1)
                     {
-                        Assert.True(gap >= 7.5,
-                            $"{theme} media secondary action rows at {width:0} DIP need at least 7.5 DIP; actual gap={gap:0.##} DIP.");
+                        Assert.True(gap >= 11.5,
+                            $"{theme} media secondary action rows at {width:0} DIP need at least 11.5 DIP; actual gap={gap:0.##} DIP.");
                         Assert.All(secondaryActions.Children.OfType<FrameworkElement>(), child =>
-                            Assert.Equal(8d, child.Margin.Bottom));
+                            Assert.Equal(12d, child.Margin.Bottom));
                     }
                     else
                     {
@@ -970,8 +970,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 576d;
                 mediaView.ApplyResponsiveLayout(576, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 7.5,
-                    "Media secondary action rows should use the 8 DIP gap at 576 DIP.");
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 11.5,
+                    "Media secondary action rows should use the 12 DIP gap at 576 DIP.");
                 mediaWindow.Width = 577d;
                 mediaView.ApplyResponsiveLayout(577, 720);
                 FlushLayout(mediaWindow);
@@ -981,7 +981,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 576d;
                 mediaView.ApplyResponsiveLayout(576, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 7.5,
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 11.5,
                     "Media secondary action row gap should survive a 576→577→576 DIP resize round trip.");
             }
             catch (Exception caught)
@@ -1002,11 +1002,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             output.WriteLine($"{theme} Media secondary actions {sample}");
         Assert.Null(exception);
         Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
-        Assert.True(saveCompactGap >= 7.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
+        Assert.True(saveCompactGap >= 11.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
         Assert.Equal(1, saveWideRows);
         Assert.InRange(saveWideBottomMargin, 0, 0.5);
         Assert.True(inboxCompactRows >= 2, "the compact synthetic inbox toolbar must exercise a wrapped row");
-        Assert.True(inboxCompactGap >= 7.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
+        Assert.True(inboxCompactGap >= 11.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
         Assert.Equal(1, inboxWideRows);
         Assert.InRange(inboxWideBottomMargin, 0, 4.5);
     }
@@ -1014,13 +1014,96 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactShellKeepsPageTitleAndActionsOnOneRowAndHidesSecondarySubtitle(GameSaveCenterThemeMode theme)
+    public void CompactTaskPresetWrapUsesTwelveDipGapAndRestoresAtBreakpoint(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var compactRows = 0;
+        var compactGap = double.NaN;
+        var wideRows = 0;
+        var restoredRows = 0;
+        var compactMargins = new List<double>();
+        var wideMargins = new List<double>();
+        var restoredMargins = new List<double>();
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new TaskCenterView { DataContext = new TaskSummaryLayoutProbe() };
+                ApplyTheme(view, theme);
+                var row = (WrapPanel)typeof(TaskCenterView)
+                    .GetField("TaskFilterPresetRow", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                foreach (var combo in row.Children.OfType<ComboBox>())
+                {
+                    combo.ItemsSource = new[] { "全部", "失败" };
+                    combo.SelectedIndex = 0;
+                }
+                foreach (var textBox in row.Children.OfType<TextBox>())
+                    textBox.Text = "我的预设";
+
+                window = CreateWindow(view, 620, 700);
+                window.ResizeMode = ResizeMode.NoResize;
+                view.ApplyResponsiveLayout(620, 700);
+                window.Show();
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                FlushLayout(window);
+                (compactRows, compactGap) = MeasureWrapRows(row, view);
+                compactMargins = row.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+
+                window.Width = 660;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                FlushLayout(window);
+                (wideRows, _) = MeasureWrapRows(row, view);
+                wideMargins = row.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+
+                window.Width = 620;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                FlushLayout(window);
+                (restoredRows, compactGap) = MeasureWrapRows(row, view);
+                restoredMargins = row.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} task preset compact rows={compactRows}, gap={compactGap:0.##} DIP, margins=[{string.Join(",", compactMargins)}]; wide rows={wideRows}, margins=[{string.Join(",", wideMargins)}]; restored rows={restoredRows}, margins=[{string.Join(",", restoredMargins)}]");
+        Assert.Null(exception);
+        Assert.True(compactRows > 1, "620 DIP must exercise the task preset WrapPanel's compact path.");
+        Assert.True(compactGap >= 11.5, $"Compact task preset rows need 12 DIP of separation; actual={compactGap:0.##} DIP.");
+        Assert.All(compactMargins, margin => Assert.Equal(12d, margin));
+        Assert.Equal(1, wideRows);
+        Assert.All(wideMargins, margin => Assert.Equal(0d, margin));
+        Assert.True(restoredRows > 1);
+        Assert.All(restoredMargins, margin => Assert.Equal(12d, margin));
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var compactRows = 0;
         var compactSubtitleVisibility = Visibility.Visible;
         var compactTitleText = string.Empty;
         var compactActionRows = 0;
+        var compactTitleColumnSpan = 0;
+        var compactActionsColumnSpan = 0;
+        var compactActionsColumnWidth = double.NaN;
+        var compactTitleActionsGap = double.NaN;
+        var roundTripActionRow = -1;
+        var roundTripTitleColumnSpan = 0;
         var wideSubtitleVisibility = Visibility.Collapsed;
         var compactHelpText = string.Empty;
 
@@ -1044,6 +1127,12 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var actions = (WrapPanel)typeof(AcrylicProductionShellView)
                     .GetField("HeaderActionsPanel", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(shell)!;
+                var titlePanel = (FrameworkElement)typeof(AcrylicProductionShellView)
+                    .GetField("HeaderTitlePanel", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var actionsColumn = (ColumnDefinition)typeof(AcrylicProductionShellView)
+                    .GetField("HeaderActionsColumn", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
                 var backupSelected = (FrameworkElement)typeof(AcrylicProductionShellView)
                     .GetField("HeaderBackupSelectedButton", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(shell)!;
@@ -1056,20 +1145,30 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 backupSelected.Visibility = Visibility.Visible;
                 backupAll.Visibility = Visibility.Visible;
                 mediaSync.Visibility = Visibility.Collapsed;
-                window = CreateWindow(shell, 1120, 720);
+                window = CreateWindow(shell, 1040, 720);
                 window.Show();
-                shell.ApplyResponsiveLayout(1120, 720);
+                shell.ApplyResponsiveLayout(1040, 720);
                 FlushLayout(window);
                 (compactRows, _) = MeasureWrapRows(actions, shell);
                 compactSubtitleVisibility = subtitle.Visibility;
                 compactTitleText = title.Text;
                 compactHelpText = AutomationProperties.GetHelpText(title);
                 compactActionRows = Grid.GetRow(actions);
+                compactTitleColumnSpan = Grid.GetColumnSpan(titlePanel);
+                compactActionsColumnSpan = Grid.GetColumnSpan(actions);
+                compactActionsColumnWidth = actionsColumn.ActualWidth;
+                compactTitleActionsGap = BoundsIn(actions, shell).Top - BoundsIn(titlePanel, shell).Bottom;
 
                 window.Width = 1500;
                 shell.ApplyResponsiveLayout(1500, 720);
                 FlushLayout(window);
                 wideSubtitleVisibility = subtitle.Visibility;
+
+                window.Width = 1040;
+                shell.ApplyResponsiveLayout(1040, 720);
+                FlushLayout(window);
+                roundTripActionRow = Grid.GetRow(actions);
+                roundTripTitleColumnSpan = Grid.GetColumnSpan(titlePanel);
             }
             catch (Exception caught)
             {
@@ -1081,14 +1180,115 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, actionRows={compactRows}; wide subtitle={wideSubtitleVisibility}");
+        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, title/action spans={compactTitleColumnSpan}/{compactActionsColumnSpan}, actionsColumn={compactActionsColumnWidth:0.##} DIP, title/action gap={compactTitleActionsGap:0.##} DIP, actionRows={compactRows}; wide subtitle={wideSubtitleVisibility}; compact round-trip row/span={roundTripActionRow}/{roundTripTitleColumnSpan}");
         Assert.Null(exception);
         Assert.Equal("存档中心", compactTitleText);
         Assert.Equal(Visibility.Collapsed, compactSubtitleVisibility);
-        Assert.Equal(0, compactActionRows);
+        Assert.Equal(1, compactActionRows);
+        Assert.Equal(2, compactTitleColumnSpan);
+        Assert.Equal(2, compactActionsColumnSpan);
+        Assert.InRange(compactActionsColumnWidth, 0, 0.5);
+        Assert.InRange(compactTitleActionsGap, 7.5, 8.5);
+        Assert.Equal(1, roundTripActionRow);
+        Assert.Equal(2, roundTripTitleColumnSpan);
         Assert.Equal(Visibility.Visible, wideSubtitleVisibility);
         Assert.Contains("路径与恢复点状态", compactHelpText);
         Assert.Equal(1, compactRows);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var iconColors = new List<Color>();
+        var labelColors = new List<Color>();
+        var minContrasts = new List<double>();
+        var commandBindingsPreserved = false;
+        var commandExecutionPreserved = false;
+        var automationNamesPreserved = false;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var probe = new ProductionHeaderCommandProbe();
+                var shell = new AcrylicProductionShellView { DataContext = probe };
+                ApplyTheme(shell, theme);
+                var shellType = typeof(AcrylicProductionShellView);
+                var backupSelected = (GameSaveCenter.Playnite.Controls.Button)shellType
+                    .GetField("HeaderBackupSelectedButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var backupAll = (GameSaveCenter.Playnite.Controls.Button)shellType
+                    .GetField("HeaderBackupButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                backupSelected.Visibility = Visibility.Visible;
+                backupAll.Visibility = Visibility.Visible;
+                window = CreateWindow(shell, 1320, 760);
+                window.Show();
+                FlushLayout(window);
+
+                var expectedForeground = Assert.IsType<SolidColorBrush>(shell.TryFindResource("GscOnAccentTextBrush"));
+                var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
+                    shell, glassEnabled: true, strengthPercent: 78, themeMode: theme, highContrastOverride: false);
+                var buttons = new[] { backupSelected, backupAll };
+                foreach (var button in buttons)
+                {
+                    var icon = FindVisualChildren<ThemeAwareIcon>(button).Single();
+                    var iconForeground = Assert.IsType<SolidColorBrush>(icon.Foreground);
+                    var buttonForeground = Assert.IsType<SolidColorBrush>(button.Foreground);
+                    var chrome = Assert.IsType<Border>(button.Template!.FindName("ButtonChrome", button));
+                    var hoverOverlay = Assert.IsType<Border>(button.Template.FindName("HoverOverlay", button));
+                    var focusOverlay = Assert.IsType<Border>(button.Template.FindName("FocusOverlay", button));
+                    var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
+                    iconColors.Add(iconForeground.Color);
+                    labelColors.Add(buttonForeground.Color);
+                    // Primary appearance is rendered by the template's ButtonChrome trigger;
+                    // Button.Background itself can still be the transparent default value.
+                    var stops = GetContrastStops(Assert.IsAssignableFrom<Brush>(chrome.Background));
+                    minContrasts.Add(AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                        "Production primary backup icon",
+                        iconForeground.Color,
+                        palette.Background,
+                        stops,
+                        Assert.IsType<SolidColorBrush>(hoverOverlay.Background).Color,
+                        Assert.IsType<SolidColorBrush>(focusOverlay.Background).Color,
+                        Assert.IsType<SolidColorBrush>(pressedOverlay.Background).Color,
+                        pressedOpacity: 0.96,
+                        minimum: 4.5).Min(measurement => measurement.Actual));
+                }
+
+                commandBindingsPreserved = ReferenceEquals(backupSelected.Command, probe.BackupSelectedCommand)
+                    && ReferenceEquals(backupAll.Command, probe.BackupAllCommand);
+                backupSelected.Command.Execute(backupSelected.CommandParameter);
+                backupAll.Command.Execute(backupAll.CommandParameter);
+                commandExecutionPreserved = probe.BackupSelectedExecutions == 1
+                    && probe.BackupAllExecutions == 1;
+                automationNamesPreserved = AutomationProperties.GetName(backupSelected) == "立即备份当前游戏"
+                    && AutomationProperties.GetName(backupAll) == "备份全部游戏";
+                Assert.Same(expectedForeground, backupSelected.Foreground);
+                Assert.Same(expectedForeground, backupAll.Foreground);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} production backup action icons={string.Join("/", iconColors)} labels={string.Join("/", labelColors)} minimum contrast={string.Join("/", minContrasts.Select(value => value.ToString("0.##")))}:1 commands bound/executed={commandBindingsPreserved}/{commandExecutionPreserved}");
+        Assert.Null(exception);
+        Assert.Equal(2, iconColors.Count);
+        Assert.All(iconColors, color => Assert.Equal(labelColors[0], color));
+        Assert.All(minContrasts, contrast => Assert.True(contrast >= 4.5, $"Primary backup icon and label color must maintain at least 4.5:1 contrast across button states ({contrast:0.##}:1)."));
+        Assert.True(commandBindingsPreserved);
+        Assert.True(commandExecutionPreserved);
+        Assert.True(automationNamesPreserved);
     }
 
     [Theory]
@@ -2307,6 +2507,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public string TaskActiveFiltersSummary { get; } = "当前：状态失败 · 类型全部 · 最近任务 · 全部时间";
         public string TaskPageStatusSummary { get; } = "最近更新：刚刚";
         public string TaskPageStatusSummaryFullDisplay { get; } = "合成布局测试的完整任务状态摘要";
+    }
+
+    private sealed class ProductionHeaderCommandProbe
+    {
+        public int BackupSelectedExecutions { get; private set; }
+        public int BackupAllExecutions { get; private set; }
+        public ICommand BackupSelectedCommand { get; }
+        public ICommand BackupAllCommand { get; }
+
+        public ProductionHeaderCommandProbe()
+        {
+            BackupSelectedCommand = new RelayCommand(_ => BackupSelectedExecutions++);
+            BackupAllCommand = new RelayCommand(_ => BackupAllExecutions++);
+        }
     }
 
     private sealed class MaintenanceEmptyStateCopyProbe : INotifyPropertyChanged
