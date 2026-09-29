@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 用户提供的表格排序崩溃日志复核
+
+- 脱敏归档 ZIP 调用栈，确认其经过 `DataGridStableSortController.ApplyCurrentSort` 到列头点击，但附件没有插件二进制身份；不从日志时间推断用户安装版本。
+- 当前 main HEAD `10626efc` Release 构建 `0/0`、XAML `24/24`；排序、选中行与生产四表状态回归 `7/7 + 2/2 + 1/1`，三份 TRX 和插件/测试 SHA/MVID 归档于 `evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/`。仅文档补证，不改源代码/任务计数。真实 Playnite、截图 DLL 和物理 DPI 未验。
+- 下一项继续用户要求的跨页面数据态静态说明与紧凑控件审计；Media Inbox 实际滚动几何仍需安全宿主同进程日志。
+
 ## 2026-09-29 Q14-03 Task Center 搜索宽度修复
 
 - 用户报告的窄窗搜索框裁切，定位为 `TaskCenterView.ApplyResponsiveLayout` 在 `980 DIP` 提前切换 full-row；`980–1215 DIP` 搜索 cell 的最小宽度挤出状态筛选。提交 `5559b0fb` 将紧凑断点移至 `1216 DIP`，复用现有更多筛选入口，绑定、清除和刷新命令不变。

@@ -1,5 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-29：用户表格排序崩溃日志）
+
+- 用户附件日志记录 `ListCollectionView.Refresh` 经过排序控制器到真实列头点击的 NullReferenceException；附件不含 DLL/SHA/MVID，无法识别触发时的运行版本。当前 HEAD `10626efc` 的排序 `7/7`、行选中几何 `2/2` 和四张生产表格 Light/Dark 状态 `1/1` 通过，Release `0/0`、XAML `24/24`。[TRX、SHA/MVID 与日志摘录](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/README.md)
+- 没有启动 Playnite；当前测试不证明用户原二进制/主题/DPI。下一项继续逐页审核数据存在时的辅助文案与控件紧凑密度。Media Inbox 滚动偏移仍必须用安全隔离宿主同进程诊断。
+
 ## 当前交接补充（2026-09-29：Maintenance 诊断空态）
 
 - 已提交 `4a834135`：两个诊断列表空态统一为“暂无待处理诊断项。”；零项才显示，有行时折叠，移除无证据的备份/媒体正常推断。Release `0/0`、XAML `24/24`、浅/深主题行为 `2/2`、freshness `14/14`。[证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)

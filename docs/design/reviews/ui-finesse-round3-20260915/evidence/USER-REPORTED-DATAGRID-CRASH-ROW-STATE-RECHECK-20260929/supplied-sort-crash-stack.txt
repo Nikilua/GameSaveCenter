@@ -1,0 +1,15 @@
+用户提供的 crash.zip 中 extensions/playnite 日志摘要（2026-09-24 14:01:35，本机时区；已省略用户路径及无关行）：
+
+System.NullReferenceException
+  System.Windows.Data.ListCollectionView.PrepareLocalArray()
+  System.Windows.Data.ListCollectionView.RefreshOverride()
+  System.Windows.Data.CollectionView.Refresh()
+  System.Windows.Data.CollectionView.EndDefer()
+  System.Windows.Data.CollectionView.DeferHelper.Dispose()
+  GameSaveCenter.Playnite.Infrastructure.DataGridStableSortController.ApplyCurrentSort()
+  GameSaveCenter.Playnite.Infrastructure.DataGridStableSortController.ToggleSort(Int32 index)
+  GameSaveCenter.Playnite.Infrastructure.DataGridStableSortController.OnSorting(...)
+  System.Windows.Controls.DataGrid.PerformSort(...)
+  System.Windows.Controls.Primitives.DataGridColumnHeader.OnClick()
+
+压缩包仅含 Playnite/extension 日志，不含插件 DLL、SHA-256 或 MVID；因此无法确认触发崩溃的运行实例对应哪个插件构建。

@@ -1,3 +1,9 @@
+## 2026-09-29 用户表格排序崩溃与选中行复核
+
+- 用户提供的 `crash.zip` 日志显示 `ListCollectionView.Refresh` 经 `DataGridStableSortController.ApplyCurrentSort/ToggleSort` 到真实列头点击时发生 `NullReferenceException`；包内没有 DLL/SHA/MVID，原运行实例身份未知。已有 `f8a82469` 修复 detached CollectionView 排序路径。
+- 当前 `10626efc` Release `0 warning / 0 error`、XAML `24/24`；排序 `7/7`、选中行几何 `2/2`、Save/Task/Media/Maintenance 四网格浅深主题状态 `1/1`，合计 `10/10`。当前插件/测试 DLL 身份、TRX 和限制见[复核证据](evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/README.md)。没有改源码或 192 项状态。
+- 本次只验证当前合成 STA WPF 路径，未启动 Playnite 或还原用户原 DLL/主题/物理 DPI。下一项继续跨页面审计有数据时冗余说明与短窗口控件密度；Media Inbox 滚动空白仍需安全宿主同进程诊断。
+
 ## 2026-09-29 用户报告：Maintenance 诊断空态文案
 
 - `4a834135` 把诊断页和异常审计页重复的两行空态收成“暂无待处理诊断项。”，避免零条问题被当作备份和媒体健康证明；零条仍显示，有数据时折叠。Light/Dark 生产 WPF 两处各做 `Visible → Collapsed → Visible`，TRX `2/2`。[证据](evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)

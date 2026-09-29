@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 用户表格排序崩溃与选中状态
+
+- 用户提供的 crash ZIP 堆栈经过 `ListCollectionView.Refresh` 和 `DataGridStableSortController.ApplyCurrentSort/ToggleSort`。附件没有插件 DLL 身份；已知修复在 `f8a82469`，当前 main 精确 Release 回归为排序 `7/7`、行选中 geometry `2/2`、四个生产 DataGrid 跨 Light/Dark 状态 `1/1`。
+- 当前插件/测试 SHA、MVID、三个 TRX 与限制：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/README.md)。没有启动真实 Playnite，因此不把当前测试结果写成用户原 DLL 已验证。
+- 后续按用户要求继续小批量审计紧凑布局和已加载数据时的静态说明；保护真实任务、取消/错误语义、列表虚拟化和主题资源。Media Inbox 滚动偏移仍需授权隔离宿主的同进程日志。
+
 ## 2026-09-29 Maintenance 诊断空态文案
 
 - `MaintenanceView` 两个诊断列表的空态统一为“暂无待处理诊断项。”；删去无法由诊断计数支持的备份/媒体健康推断。生产视图在浅/深主题下实测零项显示、加一条合成诊断后收起、清空后恢复，`2/2`；安全操作和刷新命令未变。

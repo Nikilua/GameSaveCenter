@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 用户表格排序日志复核
+
+- `crash.zip` 中的堆栈命中已修复的排序控制器分离视图刷新路径，但无 DLL/SHA/MVID，无法确认原运行实例身份。当前 `main` 的真实列头升降序/detached-view 负例 `7/7`；选中行 cell/TextBlock 几何 `2/2`；Save、Task、Media Inbox、Maintenance 网格 Light/Dark 状态 `1/1`。Release `0/0`、XAML `24/24`。[证据和程序集身份](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/README.md)
+- 这些为合成数据的 STA WPF 验证，不代表启动 Playnite、原用户 DLL、主题或物理 DPI。没有源代码变更或改变 192 项计数。下一项逐页审查有数据时常显说明和紧凑间距；Media Inbox 滚动错位仍需安全宿主同进程诊断。
+
 ## 2026-09-29 Maintenance 诊断空态文案
 
 - 诊断/审计两处零项提示统一为“暂无待处理诊断项。”，不再从零条诊断推断备份和媒体正常。浅/深主题生产 WPF 列表行为 `2/2`，两处均验证 `Visible → Collapsed → Visible`；Release `0/0`、XAML `24/24`、source validation 通过。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)
