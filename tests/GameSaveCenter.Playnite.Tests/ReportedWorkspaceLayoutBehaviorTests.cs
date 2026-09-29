@@ -960,6 +960,89 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var emptyHintInitiallyVisible = false;
+        var emptyHintAfterRelease = Visibility.Visible;
+        var countBeforeRelease = string.Empty;
+        var countAfterRelease = string.Empty;
+        var headingText = string.Empty;
+        var helpText = string.Empty;
+        var automationPeerHelpText = string.Empty;
+        var tooltip = string.Empty;
+        var redundantVisibleHelper = true;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var probe = new TrainerImportCopyProbe();
+                var view = new TrainerCenterView { DataContext = probe };
+                ApplyTheme(view, theme);
+                window = CreateWindow(view, 1100, 700);
+                window.Show();
+                var tabs = FindVisualChildren<TabControl>(view).Single();
+                tabs.SelectedIndex = 3;
+                FlushLayout(window);
+
+                var heading = (TextBlock)typeof(TrainerCenterView)
+                    .GetField("TrainerReleasesHeading", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var count = (TextBlock)typeof(TrainerCenterView)
+                    .GetField("TrainerReleasesCount", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var emptyHint = (TextBlock)typeof(TrainerCenterView)
+                    .GetField("TrainerReleaseEmptyHint", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                emptyHintInitiallyVisible = emptyHint.Visibility == Visibility.Visible;
+                countBeforeRelease = count.Text;
+                headingText = heading.Text;
+                helpText = AutomationProperties.GetHelpText(heading) ?? string.Empty;
+                automationPeerHelpText = UIElementAutomationPeer.CreatePeerForElement(heading)?.GetHelpText() ?? string.Empty;
+                tooltip = ToolTipService.GetToolTip(heading) as string ?? string.Empty;
+                redundantVisibleHelper = FindVisualChildren<TextBlock>(view)
+                    .Any(text => text.Visibility == Visibility.Visible
+                        && text.Text == "只在用户选择在线目录结果后按需读取。");
+
+                probe.TrainerReleases.Add(new TrainerReleaseDto
+                {
+                    CatalogId = "synthetic-catalog",
+                    ReleaseId = "synthetic-release",
+                    DisplayName = "Synthetic Trainer v1.2.3"
+                });
+                FlushLayout(window);
+                countAfterRelease = count.Text;
+                emptyHintAfterRelease = emptyHint.Visibility;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} trainer releases header='{headingText}', count={countBeforeRelease}->{countAfterRelease}, emptyHint={emptyHintInitiallyVisible}->{emptyHintAfterRelease}, helperVisible={redundantVisibleHelper}, automationHelp='{automationPeerHelpText}'");
+        Assert.Null(exception);
+        Assert.Equal("可下载版本", headingText);
+        Assert.Equal("0 个版本", countBeforeRelease);
+        Assert.Equal("1 个版本", countAfterRelease);
+        Assert.True(emptyHintInitiallyVisible);
+        Assert.Equal(Visibility.Collapsed, emptyHintAfterRelease);
+        Assert.Equal("选择在线目录结果后，此列表会显示对应版本。", helpText);
+        Assert.Equal(helpText, automationPeerHelpText);
+        Assert.Equal(helpText, tooltip);
+        Assert.False(redundantVisibleHelper);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void CompactSaveAndInboxActionWrapsKeepASixteenDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
@@ -2647,6 +2730,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
 
         public ObservableCollection<string> ImportEntryCandidates { get; } = new() { "Synthetic trainer.exe" };
         public string SelectedImportEntryCandidate { get; set; } = "Synthetic trainer.exe";
+        public ObservableCollection<TrainerReleaseDto> TrainerReleases { get; } = new();
+        public TrainerReleaseDto? SelectedTrainerRelease { get; set; }
+        public bool IsTrainerReleasesLoading { get; set; }
+        public ICommand DownloadTrainerCommand { get; } = new RelayCommand(_ => { });
         public ICommand ConfirmGameToolImportCommand { get; } = new RelayCommand(_ => { });
         public ICommand CancelGameToolImportCommand { get; } = new RelayCommand(_ => { });
 
