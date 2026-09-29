@@ -5897,3 +5897,10 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 - 复核生产 Extended DataGrid 与真实消费者后确认，R05 `3/3`、R22 `3/3` 已验证摘要计数/空选/清空/隐藏 ID；没有测试真实 Ctrl/Shift 鼠标修饰键序列。Tri-state 复选框当前没有 DataGrid 全选消费者，已由 R05-05 判定不适用；不重复造业务模型。
 - 真实手势必须在隔离 Playnite host 记录 modifier/focus/anchor/stable IDs/摘要。当前进程命令行 WMI Access Denied、CEF `platform_channel 0x5`，本轮不抢占桌面键鼠、不绕过启动门禁；Q13-02 自动范围部分已有证据，宿主/最终仍未完成。步骤见 `design/reviews/ui-finesse-round3-20260915/evidence/Q13-02-MULTISELECT-GESTURE-BOUNDARY-20260929.md`。下一项 Q13-03 受控 WPF inline button hit-test。
+
+## 2026-09-29 窄窗 WrapPanel 行距
+
+- 用户报告多页窄窗控件换行后上下贴叠。不要全局机械改全部 `WrapPanel`；先用生产视图量实际换行和宽度恢复，再复用 `WrapPanelRowGapController` 保存/还原作者 margin。
+- 当前已验证并实现：Task Center preset `<657 DIP`、Media Center preset `<720 DIP` 时行距 `8 DIP`，宽态还原 margin；Save History、Media Inbox batch actions 与 shell header 既有动态间距保持。Media 行距新增后重跑 R00-06 700×600 DIP 表格四行/页级回退门禁，未压掉可读视口。
+- 最终源码提交 `4121a47e28aad0701b314c4a81accfc8ef5283e3`，WPF 定向 `16/16`，R00/R01 freshness `14/14`。证据 `design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。
+- 未审完候选：Media Inbox secondary actions、Save current-rule actions、Overview header actions、Dashboard game-header actions；应先量实际换行及上下行距。真实 Playnite Media Inbox 滚动空白仍需安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`，与本次行距测试独立。

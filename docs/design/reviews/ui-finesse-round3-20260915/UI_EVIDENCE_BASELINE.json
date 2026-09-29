@@ -68,8 +68,8 @@
     },
     {
       "id": "R00-06",
-      "evidence": "evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md",
+      "sourceCommit": "4121a47e28aad0701b314c4a81accfc8ef5283e3",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

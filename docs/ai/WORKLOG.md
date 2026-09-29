@@ -9740,3 +9740,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 首次 dirty-tree 保护行为见本批证据。提交 `fc58264e6776b7e021c65e6a8fc11e2eb1032746` 后，完整 Release `scripts/package.ps1` 从 clean source 重跑：XAML `24/24`、solution `0/0`、Core `125/125`、Worker `356/357`（1 个既有硬重启 skip）、Playnite source `111` 类/WPF 隔离 `113/113` 类全过；六份 package assemblies 的 InformationalVersion 同为 `0.6.73+fc58264e6776b7e021c65e6a8fc11e2eb1032746`。`install-dev.ps1` 安装至仓库 `.tmp` 隔离路径；插件 SHA-256 `64BBA6…D71F5D57`、MVID `6f7b0c1e-610d-4590-993b-0d9e28c360d8`，Worker SHA-256 `3CBEBD…C006398`、MVID `22e37b66-7cc1-4796-84a9-461cbe991a53`；真实 Playnite 未启动。随后清理本批 `.tmp/q14-*` 与本地运行日志，仅保留当前版本化 artifacts 暂存包。详见本批 evidence README。
 - 仅 source/WPF/离屏与隔离目录 package 安装证据；没有用户窗口/Playnite 最终呈现、OS 输入或物理 DPI。Media Inbox 空白仍须安全宿主同次 `[GSC-GRID-DIAGNOSTIC]`。Q14/Q/R 台账状态和计数未改变；下一阶段先按最新目标核对 R00/R01 freshness，之后继续依赖已满足的 Q/R 小批。
 - source/WPF/离屏结果均不代表真实 Playnite、OS 输入或 125%/150% 物理 DPI；Media Inbox 空白仍须安全宿主同次 `[GSC-GRID-DIAGNOSTIC]`。Q14/Q/R 台账状态和计数未改变；下一阶段先按最新目标核对 R00/R01 freshness，之后继续依赖已满足的 Q/R 小批。
+
+# 2026-09-29 紧凑筛选预设换行行距与 R00-06 复核
+
+- WPF 实测发现 Task Center preset 在 `<657 DIP` 两行、行距 `0 DIP`；Media Center preset 在 `520/620/700 DIP` 两行、行距 `0 DIP`，`720 DIP` 起单行。提交 `4121a47e` 复用 `WrapPanelRowGapController`，紧凑布局增加 `8 DIP`，单行恢复原始边距；没有更改绑定、命令、列表虚拟化或全局游戏选择。
+- Release solution/XAML `0 warning / 0 error`、XAML `24/24`。隔离 WPF 类逐项：Q14 toolbar `1/1`、用户报告行距 `2/2`、MediaInboxGeometry `3/3`（700×600 DIP）、MediaWindowAnchorContract `10/10`，合计 `16/16`、0 failed/skipped。完整 TRX 和 DLL SHA/范围见 `evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。
+- R00-06 源码 freshness 因 MediaCenterView 路径命中，按影响补跑 700×600 几何和锚点测试，更新证据 source identity 到 `4121a47e28aad0701b314c4a81accfc8ef5283e3`；最终 R00/R01 为 `14 FRESH / 0 STALE`，freshness 自测通过。未重跑完整 RenderHarness 矩阵。
+- 隔离组合多类 VSTest 曾无输出停滞；按项目 WPF 类隔离要求拆分进程后全部通过。一次无 `GSC_BUILD_COMMIT` 的人工测试程序集编译被源码身份门禁正确拒绝，随后按完整构建协议重建并验证。未启动 Playnite；真实 DPI、OS 输入、呈现帧和用户滚动空白宿主诊断未验。
+- 下一阶段继续实测其余候选换行组，并精简过量静态说明/检查主题次级文字；候选包括 Media Inbox secondary actions、Save current-rule、Overview header、Dashboard game-header。用户的 Media Inbox 滚动空白仍需同一安全宿主会话的前后 `[GSC-GRID-DIAGNOSTIC]`。

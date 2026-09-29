@@ -3657,3 +3657,9 @@
 - 行为结果 `60 passed / 6 skipped / 0 failed / 66 total`：Worker 外部进程/云队列/请求 ledger/Rclone `37/37`，内存流 IPC 行边界 `10/10`，Playnite Busy 复位、LatestRequest 取消和取消反馈 `12/12`；Named Pipe 行为 `1 passed / 6 skipped`。
 - 六条 Named Pipe 客户端/写响应重放时序由夹具权限探测明确跳过；没有绕过。真实 Playnite/Worker IPC、外部 Ludusavi/Rclone、远端云写入、DPI/UIA/presented frame 和 ETW 未验。所有定向 TRX 在 `evidence/R19-08-CANCELLABLE-SLOW-CALLS-20260920.md` 中索引。
 - 下一可执行任务：`R20-01 概览下一步`，先核对现有 resolver/状态/真实导航，用四种合成首屏状态补行为证据；设置截图当前安装包身份与真实宿主仍独立待验。
+
+# 2026-09-29 紧凑筛选行距续作
+
+- 当前代码提交 `4121a47e28aad0701b314c4a81accfc8ef5283e3`（`main`）：任务中心筛选预设在 `<657 DIP`、媒体中心筛选预设在 `<720 DIP` 换行时增加 `8 DIP` 行距；宽态恢复作者边距。补了媒体几何 700×600 DIP 窄窗场景，保护四行下限或页级回退。
+- Release/XAML `0 warning / 0 error`、XAML `24/24`；隔离 WPF 定向 `16/16`、0 失败/跳过。R00/R01 当前源码新鲜度 `14 FRESH / 0 STALE`，package identity 未提供。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。
+- 本阶段是生产 WPF STA/合成布局验证，不是真实 Playnite、物理 DPI、OS 输入或最终呈现验证。待验：真实 Media Inbox 滚动空白同进程诊断。下一步继续实测其他可能换行的页面分组，再处理用户提出的说明文字密度与主题次级色一致性。

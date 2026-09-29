@@ -2723,3 +2723,9 @@ git branch --show-current
 - `main` 代码提交 `4b7d1e99` 为 `MediaInboxGrid` 生产日志加入运行 DLL version/MVID/path、主题、窗口 DIP/DPI、DataGrid 坐标下 header/presenter/first row、外层 page offset。生产模板/滚动逻辑仍是原实现；无根因确认、无修复结论。
 - 同一提交隔离 Release 构建 `0 warning/0 error`、定向 WPF `11/11`。实际 WPF 测试宿主 DPI 150%；1.25/1.5 是视图 RenderTransform 而非物理 DPI。2,000 合成项的滚动/分页锚点/窗口缩放/末行与页尾操作通过但未复现宿主空白。原始本机 TRX 位于忽略的 `artifacts/ui-media-inbox-scroll-synthetic-20260928/`，可提交的数值、范围与安全宿主待验步骤见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/MEDIA-INBOX-HOST-SCROLL-DIAGNOSTIC-PREP-20260928.md`。
 - 当前无 Playnite 进程，隔离启动前的 WMI 命令行读取仍 Access Denied，历史 CEF `platform_channel 0x5` 未改变；没有用户运行包的身份、真实主题/尺寸/DPI、滚动前后诊断。先恢复安全宿主条件并保存同一进程前后日志；若 presenter 整体离开 header 查共享模板/有限高度，若仅首行离开 presenter 查虚拟化/集合刷新/锚点。环境未变时不要重试 CEF、触碰真实用户数据或宣称修复。192 项 R 台账状态保持原样。当前独立下一任务 `Q10-07`：设置页真实 `GlassStrengthSlider` 的轨道/Thumb 命中、百分比标签及键盘步进行为。
+
+## 当前续作（2026-09-29 窄窗行距）
+
+- 当前 `main` 代码提交：`4121a47e28aad0701b314c4a81accfc8ef5283e3`。Task Center 与 Media Center 筛选预设在实测换行区间增加 `8 DIP` 行距，回到单行时复原 margin；媒体 700×600 DIP 几何门禁通过。
+- 最终隔离 Release `0/0`、XAML `24/24`、定向 `16/16`；R00/R01 `14 fresh / 0 stale`。细节/TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。本轮 STA WPF 与 synthetic geometry 不等同 Playnite 宿主或物理 DPI验证。
+- 下一项逐屏测其他可换行工具组，再整理说明文字密度和次级颜色。真实 Media Inbox 表格滚动空白仍未复现；需安全 Playnite 会话记录同一 PID 的 DLL 身份及滚动前后 `[GSC-GRID-DIAGNOSTIC]`，不能用离屏结果替代。
