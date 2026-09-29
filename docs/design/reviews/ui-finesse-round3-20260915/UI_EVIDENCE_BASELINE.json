@@ -5,7 +5,7 @@
     {
       "id": "R00-01-02",
       "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-      "sourceCommit": "53e61175fb6dbcbd3776071d1a856698eb309114",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -37,7 +37,7 @@
     {
       "id": "R00-04",
       "evidence": "evidence/R00-04-SEARCH-BENCHMARK-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -53,7 +53,7 @@
     {
       "id": "R00-05",
       "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
-      "sourceCommit": "53e61175fb6dbcbd3776071d1a856698eb309114",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -69,7 +69,7 @@
     {
       "id": "R00-06",
       "evidence": "evidence/R00-06-MEDIA-FOUR-ROWS-20260916.md",
-      "sourceCommit": "53e61175fb6dbcbd3776071d1a856698eb309114",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -101,7 +101,7 @@
     {
       "id": "R00-08",
       "evidence": "evidence/R00-08-PICKER-ENTER-IME-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -148,7 +148,7 @@
     {
       "id": "R01-03",
       "evidence": "evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -179,7 +179,7 @@
     {
       "id": "R01-05",
       "evidence": "evidence/R01-05-NEGATIVE-REGISTRY-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -196,7 +196,7 @@
     {
       "id": "R01-06",
       "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

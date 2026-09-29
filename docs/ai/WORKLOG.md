@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 R00/R01 当前 main freshness 和归档
+
+- clean 源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 下重测 freshness 命中的八项 R00/R01 记录；关联定向 TRX 合计 `39/39`、0 失败/跳过。Release solution `0 warning / 0 error`、XAML `24/24`，RenderHarness 全矩阵 `render-qa OK`。
+- Light/Dark 生产资源探针各 `88` 个状态渐变样本、0 violations；R00-04 原始搜索 `30/30` 集合变化、p50/p95/max `46/47/60 ms`；R00-06 几何/滚动 `8/8`，正常/横条/备用密度四行、短窗 page fallback 和阻断父级负例均有记录；R00-08 受控 WPF 路由 `11/11`。
+- R01-03/R01-06 audit identity 重新生成，索引 `20/20` 校验。摘要仍有 `7 HIGH / 4 MEDIUM`；不声称它们已修复。freshness baseline 全部 `14 FRESH / 0 STALE`，source `9c906cc...`、package 输入 `fc58264...` 分离；R01-08 不在该 baseline 且无本轮全量复测。
+- 证据：[R00/R01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260929/README.md)、[R01-06 当前审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260929/README.md)、[R01-07 当前扫描](../design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260929-current.json)。真实 Playnite host、物理 DPI/跨屏、原生 IME/OS 输入、presented frame/ETW 仍未验；Media Inbox 用户滚动空白未修。
+- 下一项：Q14-03 搜索宽度，先盘点全局 game picker 与现有 760–980 DIP 适配/行为测试。
+
 ## 2026-09-29 Q14-02 Task Center 筛选标签与紧凑行距
 
 - 按任务说明先复核既有标签、筛选项和控件样式；把 Status/Type/Scope/Range/Game 标签做成含 AutomationName 与原 TwoWay 绑定的字段组，用 WrapPanel 承载窄窗次级筛选。标签/控件间隔 4 DIP，统一全角冒号。

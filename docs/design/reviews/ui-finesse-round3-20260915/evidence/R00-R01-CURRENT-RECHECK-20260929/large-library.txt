@@ -1,0 +1,16 @@
+first_set_ms=46
+unchanged_set_ms=2
+changed_set_ms=19
+search_refresh_ms=50
+search_clear_ms=45
+search_warmup_samples=5
+search_measured_samples=30
+search_measurement=SearchText_to_FilteredCount
+search_p50_ms=46
+search_p95_ms=47
+search_max_ms=60
+search_queries=Game 1999|Game 1998|Game 1997|Game 1996|Game 1995|Game 1994|Game 1993|Game 1992|Game 1991|Game 1990|Game 1989|Game 1988|Game 1987|Game 1986|Game 1985|Game 1984|Game 1983|Game 1982|Game 1981|Game 1980|Game 1979|Game 1978|Game 1977|Game 1976|Game 1975|Game 1974|Game 1973|Game 1972|Game 1971|Game 1970
+search_samples_ms=45,45,45,46,45,45,45,45,47,46,43,60,47,45,46,46,46,47,46,46,45,46,45,47,46,47,46,47,46,45
+search_changed_result_sets=30
+task_first_replace_ms=1
+task_unchanged_replace_ms=1

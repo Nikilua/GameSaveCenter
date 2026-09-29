@@ -93,3 +93,9 @@ R01-07 freshness baseline 已在 main 按 f55dce61 审计身份更新，14 条�
 - 当前完整源码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8` 的受控 audit 报告、metadata、layout、manifest、route map、fidelity matrix、evidence index 与六张精选图已更新到 [R01-06 归档](R01-06-controlled-audit-20260923/README.md)。
 - 当前审计统计 `168` snapshots、`118` warnings、`0` Fidelity、`0` failed routes，实际仍有 `7 HIGH / 4 MEDIUM`。索引校验复跑 `20/20` references、identities、samples、boundaries。
 - 当前 `UiAuditSourceTests 6/6`；本次归档证明每项证据可追溯，不把索引校验升级为页面全状态、宿主输入或呈现帧通过。
+
+## 2026-09-29 当前 main 复核
+
+- 当前源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 的全量 UI Audit 生成 20 行 `EVIDENCE_INDEX.md`；校验器实际输出 `rows=20, references=20/20, identities=20/20, samples=20/20, boundaries=20/20`。
+- `UiAuditSourceTests`、`RepositoryIdentityTests`、`BuildIdentityTests` 合计 `11/11`。当前可查阅索引与报告位于 [R01-06 当前审计归档](R01-06-controlled-audit-20260929/README.md)。
+- 索引保证结果可追溯，不代表每个交互和环境风险均已验收；审计保留的 `7 HIGH / 4 MEDIUM` 和宿主边界继续有效。

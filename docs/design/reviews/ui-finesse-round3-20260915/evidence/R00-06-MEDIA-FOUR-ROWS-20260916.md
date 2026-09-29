@@ -67,3 +67,9 @@
 - 媒体批量动作与模式框为 `36 DIP`、中心偏差最大 `0.33 DIP`；表格 `360 DIP`、footer 重叠 `0`；内部滚动条落在表格框内，内部 offset `74/74 DIP` 后页级 offset `107.33/107.33 DIP`，滚轮通道没有穿过 footer。
 - 同一 3a 身份 R18 专测记录 Media Inbox `7/7/7`，并非旧证据中的 `14/14/14`。两者使用不同受控窗口/共享模板测量范围，当前 R18 TRX 值以 [R18-04 当前复采](R18-04-TABLE-CONTAINER-BUDGET-RECHECK-20260923.md) 为准，不混成一个样本。
 - 该证据来自合成媒体条目和离屏 logical DIP，不替代 Playnite 中实际滚轮、物理尺寸或最终呈现验证；用户截图布局的四页复核见 [用户截图布局复核](USER-REPORTED-LAYOUT-20260923.md)。
+
+## 2026-09-29 当前 main 复核
+
+- 当前 `MediaInboxGeometryTests` `3/3` 与 `MediaInboxScrollBehaviorTests` `5/5` 通过。测试分别覆盖表头/行/水平条/表框预算、有效可见行交集、页尾回退，以及末行/末列、滚动条交角、滚轮边界和反复滚动后 resize。
+- Light/Dark normal、horizontal-scroll、alternate-density 均完整可见 `4/4` 行；短窗 `760×340 DIP` 显式进入 page-scroll fallback；故意阻断父级滚动的负例继续报不可达/HIGH。细节与 TRX 见 [当前 R00/R01 复核包](R00-R01-CURRENT-RECHECK-20260929/README.md)。
+- `1.0/1.25/1.5` 是测试窗口内部 RenderTransform 尺度，不是物理显示器 DPI。用户报告的真实宿主滚动现象仍待正常隔离 Playnite 会话复核。

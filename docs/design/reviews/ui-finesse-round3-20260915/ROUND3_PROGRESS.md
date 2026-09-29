@@ -1,3 +1,11 @@
+## 2026-09-29 当前 R00/R01 复核收口
+
+- 对 clean main 源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 完成首轮 freshness 命中复测：R00-01/02、04、05、06、08 与 R01-03、05 的关联证据 `39/39` 通过；Release `0 warning / 0 error`、XAML `24/24`，双主题 RenderHarness `render-qa OK`。
+- 重新生成的 R01-03/R01-06 audit 在 `R01-06-controlled-audit-20260929`，索引 validator `20/20`。当前 audit 168 snapshots、110 warnings（7 HIGH / 4 MEDIUM）、0 Fidelity、0 failed route。风险继续保留。
+- `R01-07` 扫描 14 个登记项为 `14 FRESH / 0 STALE`，报告中 source `9c906cc...` 和独立 package 输入 `fc58264...` 分开；R01-08 未登记于 freshness baseline，本轮不冒称重跑全量 skip 分类。
+- R00-06 的 WPF testhost 自报 DPI `1.5×1.5`；测试 RenderTransform `1.25/1.5` 仅为布局尺度。真实 Playnite 内 Media Inbox 滚动错位仍需同进程 DLL/MVID、DPI/主题/窗口 DIP 与滚动前后行几何；系统跟踪/进程访问被拒绝时不绕过。
+- 下一项转 Q14-03 搜索宽度：先按各组说明、具体完成条件和公共门禁复核已有全局游戏选框及当前 `760–980 DIP` 布局行为，再补最小缺口；外部宿主未验证状态不自动升级。
+
 ## 2026-09-29 用户报告：多页紧凑窗口行距、说明密度与控件对齐
 
 - 补充处理存档历史、媒体待归类和外壳动作 WrapPanel 的 compact 行距：运行 WPF 实际测量两种主题下净行距 `8 DIP`，宽态还原原 margin。compact 外壳标题与全局游戏选择/操作同一行，隐藏副标题并将完整摘要保留在 Automation HelpText。

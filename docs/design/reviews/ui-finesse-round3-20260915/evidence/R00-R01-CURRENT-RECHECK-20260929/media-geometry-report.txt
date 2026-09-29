@@ -1,0 +1,25 @@
+GameSaveCenter media inbox geometry probe
+Generated: 2026-09-29 16:54:11
+EvidenceSource: synthetic WPF production view; no Playnite host or real media paths
+Cases: normal readable viewport, horizontal scrollbar, alternate density, short-window page fallback, intentionally blocked parent
+Scenario: mediageometryprobe
+EvidenceSource: OffscreenRenderHarness
+Commit: 9c906cc0772aad06143bdf3237255effd417e2de
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production MediaCenterView; 20 synthetic media rows; normal/horizontal/alternate-density/short-fallback/blocked-parent
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+  light/normal 760x600: grid=267.33/267.33, header=42/42, rows=4/4, rowHeight=52, horizontalBar=0, framePadding=24, frameBorder=2, required=250/276, pageScroll=True, status=readable, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM
+  light/horizontal-scroll 620x600: grid=262/262, header=42/42, rows=4/4, rowHeight=52, horizontalBar=12, framePadding=24, frameBorder=2, required=262/288, pageScroll=True, status=readable, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM
+  light/alternate-density 760x600: grid=240/240, header=36/36, rows=4/4, rowHeight=44, horizontalBar=0, framePadding=24, frameBorder=2, required=212/238, pageScroll=True, status=readable, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM
+  light/short-fallback 760x340: grid=74/267.33, header=42/42, rows=0/4, rowHeight=52, horizontalBar=0, framePadding=24, frameBorder=2, required=250/276, pageScroll=True, status=short-window-page-fallback, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM,PRIMARY_SCROLL_ACCESS/INFO
+  light/blocked-parent 760x340: grid=74/267.33, header=42/42, rows=0/4, rowHeight=52, horizontalBar=0, framePadding=24, frameBorder=2, required=250/276, pageScroll=False, status=unreachable-or-too-short, warnings=EXPECTED_INTERNAL_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM,TOOLBAR_UNREACHABLE/HIGH,TOOLBAR_UNREACHABLE/HIGH,PRIMARY_VIEWPORT_TOO_SHORT/HIGH,PRIMARY_VIEWPORT_UNREACHABLE/HIGH
+  dark/normal 760x600: grid=267.33/267.33, header=42/42, rows=4/4, rowHeight=52, horizontalBar=0, framePadding=24, frameBorder=2, required=250/276, pageScroll=True, status=readable, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM
+  dark/horizontal-scroll 620x600: grid=262/262, header=42/42, rows=4/4, rowHeight=52, horizontalBar=12, framePadding=24, frameBorder=2, required=262/288, pageScroll=True, status=readable, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM
+  dark/alternate-density 760x600: grid=240/240, header=36/36, rows=4/4, rowHeight=44, horizontalBar=0, framePadding=24, frameBorder=2, required=212/238, pageScroll=True, status=readable, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM
+  dark/short-fallback 760x340: grid=74/267.33, header=42/42, rows=0/4, rowHeight=52, horizontalBar=0, framePadding=24, frameBorder=2, required=250/276, pageScroll=True, status=short-window-page-fallback, warnings=EXPECTED_SIBLING_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM,PRIMARY_SCROLL_ACCESS/INFO
+  dark/blocked-parent 760x340: grid=74/267.33, header=42/42, rows=0/4, rowHeight=52, horizontalBar=0, framePadding=24, frameBorder=2, required=250/276, pageScroll=False, status=unreachable-or-too-short, warnings=EXPECTED_INTERNAL_SCROLL/INFO,TOOLBAR_VERTICAL_EXPANSION/MEDIUM,TOOLBAR_UNREACHABLE/HIGH,TOOLBAR_UNREACHABLE/HIGH,PRIMARY_VIEWPORT_TOO_SHORT/HIGH,PRIMARY_VIEWPORT_UNREACHABLE/HIGH
+mediageometryprobe OK

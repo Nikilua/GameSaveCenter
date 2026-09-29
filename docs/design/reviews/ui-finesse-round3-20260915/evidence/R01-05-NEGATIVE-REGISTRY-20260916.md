@@ -44,3 +44,8 @@ R01-05 当前证据已满足；下一可执行小批量为 R01-07 freshness base
 
 - 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 的 `UiNegativeFixtureRegistryTests` 为 `1/1`；五类 expected-failure 仍分别被对比度、裁切、焦点、层级和状态检测器捕获。
 - 本次只刷新测试侧注册表与隔离构建身份，没有把负例检测结果误写成生产页面缺陷，也没有把源码断言当作交互通过。
+
+## 2026-09-29 当前 main 复核
+
+- 当前 `UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors` `1/1` 通过，并直接核对 N01–N05 五个注册项：对比度、裁切、焦点、层级、状态。
+- 每个夹具均在测试窗口/分析器中制造预期问题，且都被对应检测器捕获；`ProductionEntry=False`，没有接入生产入口。当前 TRX 及审计身份见 [R00/R01 复核包](R00-R01-CURRENT-RECHECK-20260929/README.md)。

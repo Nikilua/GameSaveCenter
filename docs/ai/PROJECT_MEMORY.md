@@ -1,12 +1,19 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 R00/R01 当前 main 证据刷新
+
+- 当前代码源证据身份 `9c906cc0772aad06143bdf3237255effd417e2de`。首轮 freshness 命中的 R00/R01 八项已隔离重跑，定向测试 `39/39`；Release build 0 warning/error，XAML `24/24`，RenderHarness 全矩阵 `render-qa OK`。详见 [当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260929/README.md)。
+- 当前受控审计 `168` snapshots、`20/20` 证据索引；保留真实 `7 HIGH / 4 MEDIUM`、0 Fidelity、0 失败路由。`R01-07` 14 条映射全部 fresh，package commit 与 source commit 分开记录；R01-08 有独立 skip 证据但不在 freshness baseline，本轮没有声称重跑完整 R01-08 分类。
+- Media Inbox 用户报告仍需要真正安全隔离 Playnite 同进程前/中/后 `[GSC-GRID-DIAGNOSTIC]`。当前 testhost 报 `1.5×`，RenderTransform `1.25/1.5` 仅是测试变换；不要写成在物理显示器间完成 DPI 测试。
+- 下一项 Q14-03 搜索宽度。优先复用当前全局 picker 与已有响应式逻辑，盘点真实父级/绑定/边界尺寸后再定向补验；本地完成不改变 Round2 外部阻塞状态。
+
 ## 2026-09-29 用户报告：窄窗行距、标题/说明密度与任务动作高度
 
 - 新增复用控制器 `WrapPanelRowGapController`，仅在 compact 模式给存档历史、媒体待归类和外壳动作换行加 `8 DIP` 底距；宽态精确恢复原始 margin。筛选/滚动系统和命令保持。
 - compact 外壳将标题与全局选择器/动作置于同一行，折叠副标题但把完整摘要放在标题 HelpText；任务离页提示仅在运行数大于零时显示短句，原有不取消/恢复语义在 HelpText。Task 动作按钮不随摘要高度伸展；传输明细 count pill 的文字中心差 `0.33 DIP`。
 - 本批行为、图片、RenderHarness 与限制：[用户紧凑布局证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。clean `fc58264e` 的隔离 Release package/install、Core/Worker 与 Playnite `113` 个 WPF 类均通过；插件 InformationalVersion、SHA/MVID 以及 `.tmp` 安装身份已记录。文件没有经真实 Playnite 加载；物理 DPI、OS 输入、最终呈现未验。Media Inbox 滚动根因仍须同进程日志确认。
 - 辅助文字用主题动态次级文字，语义状态色保留。WCAG 2.2 的颜色/非文字对比要求不能用本次两项令牌检查推导为整站对比度通过。
-- 下一阶段先在当前 `main` 重核 R00/R01 freshness，对命中本批文件的证据补测或记“已满足”；再推进依赖已满足的 Q/R 项（含 Q14-03 搜索 viewport）。Q14/R03 全项状态不变。
+- （此处当时的下一步）重核 R00/R01 freshness 已由本文件上方最新记录收口；Q14/R03 全项状态仍由各自 evidence 决定。
 
 ## 2026-09-29 Q14-02 筛选标签和布局切换
 

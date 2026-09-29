@@ -44,3 +44,9 @@ R01-06 当前身份、摘要、manifest、索引和精选图已满足；下一�
 - 六张图分别为概览 standard/narrow、媒体待归类、维护诊断、存档历史、任务中心。全量 screenshot/JSON 集未入库，按归档 README 在隔离 `.tmp` 中重建。Metadata 不留下机器绝对输出目录或 ZIP 路径。
 - 当前审计 `168` 快照、0 Fidelity、0 路由失败，真实保留 `7 HIGH / 4 MEDIUM`；索引五类校验都是 `20/20`。R01-06 freshness sourceCommit 绑定到该实际 audit commit，不把测试-only `38d5b7b2` 误作审计构建身份。
 - 图像与所有结果仍是 synthetic DTO + WPF offscreen logical DIP；不宣称真实 Playnite 呈现、物理 DPI/跨屏、OS 输入/IME、presented frame、ETW 或宿主性能。
+
+## 2026-09-29 当前 main 归档
+
+- 最新源码身份为 `9c906cc0772aad06143bdf3237255effd417e2de`；summary、layout、manifest、route map、fidelity matrix、20 项 evidence index 与五张精选图已归档到 [R01-06-controlled-audit-20260929](R01-06-controlled-audit-20260929/README.md)。
+- 当前 audit 有 `168` runtime snapshots、`110` 条警告，其中 `7 HIGH / 4 MEDIUM`；Fidelity 警告 `0`、失败路由 `0`。索引/引用/身份/样本/边界校验均 `20/20`。
+- 本目录的来源是合成 DTO、受控 WPF 与 offscreen logical DIP；不是 Playnite 宿主渲染或物理 DPI/OS 输入证据。

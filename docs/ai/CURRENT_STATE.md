@@ -1,12 +1,19 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 R00/R01 freshness 收口（当前阶段）
+
+- 在 clean `main` 源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 下重跑本批路径命中的 8 条证据；定向行为结果合计 `39/39`、0 失败/跳过。Release build `0 warning / 0 error`、XAML `24/24`，RenderHarness 为完整双主题/多尺寸 `render-qa OK`。
+- R00/R01 Audit 完整归档到 [R01-06-controlled-audit-20260929](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260929/README.md)，20 项索引校验 `20/20`。实际风险维持 `7 HIGH / 4 MEDIUM`、0 Fidelity、0 失败路由，未把审计刷新写成风险清零；14 条 baseline freshness 为 `14 fresh / 0 stale`，R01-08 未登记在 baseline，本轮不冒称重跑。
+- R00-06 测试日志中的 WPF testhost 报有效 DPI `1.5×1.5`；另有 `1.0/1.25/1.5` 测试窗口 RenderTransform 尺度。它们都不能代替实际 Playnite 内连续滚动或物理跨屏验证。Media Inbox 用户滚动空白仍待安全隔离宿主同进程 DLL/MVID、窗口 DIP、主题、有效 DPI 和滚动前后坐标日志。
+- 下一独立代码项：Q14-03 搜索宽度；开始前查已有响应式行为，重点核对 `760–980 DIP` 条件并补缺口。Round2 的外部阻塞/未完成状态不因离屏证据自动升级。
+
 ## 2026-09-29 用户报告：紧凑窗口行距、外壳标题、说明文字与计数对齐
 
 - 补充修复证据：[USER-REPORTED-COMPACT-LAYOUT-20260929](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。存档/媒体动作 WrapPanel 窄宽下净行距 `8 DIP`，宽态还原原 Margin；compact 外壳标题与全局游戏选择/动作同一行并隐藏可见副标题；Task 队列摘要不再撑大按钮，离页提示只有运行任务时显示且保留完整 HelpText；传输 count pill 已垂直居中。
 - 定向 STA WPF：布局 `8/8`、离页语义 `2/2`；Release Playnite/tests build `0/0`；XAML `24/24`、source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`，没有新增 error。完整 RenderHarness 更新过时外壳几何门禁后 `render-qa OK`、`PROBLEM=0`，离屏逻辑 DPI `1.00`。
 - clean `fc58264e` Release package/install 通过：XAML `24/24`、solution `0 warning / 0 error`、Core `125/125`、Worker `356/357`（1 个现有硬进程重启测试 skip）、Playnite source `111` 类与 WPF 隔离 `113/113` 类。插件、Worker、Core、Contracts 六份程序集身份均为 `0.6.73+fc58264e6776b7e021c65e6a8fc11e2eb1032746`；插件 SHA-256 `64BBA6…D71F5D57`、MVID `6f7b0c1e-610d-4590-993b-0d9e28c360d8`。安装在仓库 `.tmp` 隔离目录，未启动 Playnite。
 - 没有验证真实宿主/物理 DPI或系统输入；Media Inbox 用户滚动问题仍等同进程 `[GSC-GRID-DIAGNOSTIC]`，不改虚拟化或用 margin 掩盖。
-- 下一阶段按用户最新目标先对当前 `main` 做 R00/R01 freshness，限于命中本批修改路径的记录；再继续依赖已满足的 Q/R 项。Round2 Q14、Round3 R 台账状态保持既有事实，不因本补充批次自动签收。
+- （本节写入时的下一步）按当前 `main` 重核 R00/R01 freshness；该工作已由上方最新记录收口。Round2 Q14、Round3 R 台账状态仍按各自证据记录。
 
 ## 2026-09-29 Q14-02 已完成本地实现与离屏验收
 

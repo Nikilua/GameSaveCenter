@@ -52,3 +52,8 @@ dotnet test tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.cs
 ## 下一步
 
 R00-08 代码与受控行为证据已完成，下一可执行小批量为 R01-01“测试源码根绑定”：修复隔离 `OutputRoot` 下源码测试可能向错误 checkout 回溯的问题，并补清晰的错根诊断。
+
+## 2026-09-29 当前 main 复核
+
+- 当前 `GamePickerKeyboardBehaviorTests` `6/6`、`KeyboardFocusSourceTests` `5/5`，共 `11/11`。覆盖无结果 Enter 保持旧选择和弹层、可见候选 Enter、活动 composition/IME-processed 路由、方向键、Esc、清除及焦点返回。
+- 本轮身份 `9c906cc0772aad06143bdf3237255effd417e2de` 的 TRX 见 [当前 R00/R01 复核包](R00-R01-CURRENT-RECHECK-20260929/README.md)。composition/key 输入由隔离 WPF 测试构造，不是原生输入法候选窗口或 Playnite OS 输入链验证。

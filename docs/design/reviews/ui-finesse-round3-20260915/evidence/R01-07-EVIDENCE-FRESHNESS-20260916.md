@@ -93,3 +93,10 @@ R01-08 跳过测试说明已有独立证据；按主账本继续处理依赖满�
 - 将本轮已实际复核的 R00-01-02、R00-05、R00-06、R00-07、R01-03、R01-06 证据记录绑定到完整源码 SHA `3a1dadd80bae6152dce9c3f684d5d2c745f02bc8`；其余 sourcePaths 未命中的记录保留各自原身份。
 - `check-ui-evidence-freshness.ps1 -HeadCommit HEAD` 输出 `14 fresh / 0 stale`；`package=not-provided`，不构成安装包或 Playnite 宿主验证。`test-ui-evidence-freshness.ps1` 的 docs-only、shared-control、package-identity 用例通过。
 - 当前报告：[2026-09-23 main freshness](R01-07-freshness-report-20260923-current.json)。文档变更不要求重跑/重装；sourceCommit 与 packageCommit 仍分开记录。
+
+## 2026-09-29 当前 main R00/R01 复核
+
+- 本轮源码证据身份 `9c906cc0772aad06143bdf3237255effd417e2de`；将 freshness 首轮命中的 `R00-01-02`、`R00-04`、`R00-05`、`R00-06`、`R00-08`、`R01-03`、`R01-05`、`R01-06` 绑定到其实际复测/重新生成的当前输出。
+- 全部 `14` 条已登记记录现为 `14 FRESH / 0 STALE`。当前扫描输出见 [R01-07 freshness report](R01-07-freshness-report-20260929-current.json)。关联源码身份与 package identity 分开；传入的 package commit `fc58264e...` 是先前放入仓库 `.tmp` 的隔离包，不是已加载 Playnite 的宿主包；这些证据的 `packageCommit` 仍为 null/not-applicable。
+- `scripts/test-ui-evidence-freshness.ps1` 对 docs-only、shared-control 和 package-identity 三种条件均通过。20 项审计索引实际复验 `20/20`。R01-08 有独立 skip inventory，但没有 baseline record，因此不计入 14 条扫描；这里没有声称重跑了 R01-08 全量分类。
+- Fresh 只说明映射到的源路径在对应身份上重新核验，不能推出真实宿主、物理 DPI、OS 输入、呈现帧或 ETW 已验。审计实际仍有 `7 HIGH / 4 MEDIUM`。

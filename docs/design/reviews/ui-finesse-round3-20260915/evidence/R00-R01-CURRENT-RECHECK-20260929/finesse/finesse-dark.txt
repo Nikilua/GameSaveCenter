@@ -1,0 +1,110 @@
+GameSaveCenter UI finesse fixture
+Generated: 2026-09-29 16:54:08
+Scenario: finesseprobe
+EvidenceSource: DevelopmentOnlyProductionResourceProbe
+Commit: 9c906cc0772aad06143bdf3237255effd417e2de
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: dark
+DataVolumes: synthetic mixed-language/status/diagnostic/table rows
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+WindowDip: 1120x980
+Theme: Dark
+Data: synthetic mixed-language, status, diagnostic and table rows
+Palette: accent=#FF7C8CF8 onAccent=#FF000000 primary=#FFFFFFFF
+ContrastGuard: checks=11 violations=0
+  PrimaryText vs Background: actual=18.201 minimum=4.5
+  SecondaryText vs Background: actual=10.234 minimum=4.5
+  MutedText vs Background: actual=6.327 minimum=4.5
+  OnAccentText vs Accent: actual=6.964 minimum=4.5
+  Info vs Background: actual=7.335 minimum=3
+  Success vs Background: actual=10.254 minimum=3
+  Warning vs Background: actual=9.693 minimum=3
+  Error vs Background: actual=6.296 minimum=3
+  ControlStroke vs Surface: actual=13.531 minimum=1.15
+  Surface vs Background: actual=0.02 minimum=0.016
+  ControlFill vs Surface: actual=0.007 minimum=0.005
+NumericReadability: expected=4 realized=4 horizontalFit=4 verticalFit=4 allReadable=True
+  NumericCell row=0 text="1,024 / 99,999" textWidth=88.58 availableWidth=136 textHeight=18.67 cellHeight=52 wrapping=NoWrap trimming=None horizontalFit=True verticalFit=True
+  NumericCell row=1 text="-9,999,999,999" textWidth=93.89 availableWidth=136 textHeight=18.67 cellHeight=52 wrapping=NoWrap trimming=None horizontalFit=True verticalFit=True
+  NumericCell row=2 text="512 GiB" textWidth=46.93 availableWidth=136 textHeight=18.67 cellHeight=52 wrapping=NoWrap trimming=None horizontalFit=True verticalFit=True
+  NumericCell row=3 text="1.25 TiB" textWidth=48.27 availableWidth=136 textHeight=18.67 cellHeight=52 wrapping=NoWrap trimming=None horizontalFit=True verticalFit=True
+NumericNegativeFixture: text="-99,999,999,999,999" textWidth=115.26 availableWidth=56 textHeight=15.33 cellHeight=52 horizontalFit=False verticalFit=True must-fail=passed
+EffectiveColors: source=realized-visual-tree rendered-pixel-samples
+  Numeric: text=AgjQy  Il1 O0  0123456789  1,024 / 99,999  9% → 100% rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF252A34 composite=#FFF2F4F8 contrast=13.068 bounds=41.33,225.33..550,244
+  Button[Primary] 主操作: text=主操作 rawForeground=#FF000000 effectiveOpacity=1 effectiveForeground=#FF000000 backgroundSample=#FF7C8CF8 composite=#FF000000 contrast=6.964 bounds=585.33,337.33..621.33,353.33
+  Button[Secondary] 次要操作: text=次要操作 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2E303A composite=#FFF2F4F8 contrast=11.919 bounds=660,337.33..708,353.33
+  Button[Secondary] 禁用操作: text=禁用操作 rawForeground=#FFF2F4F8 effectiveOpacity=0.72 effectiveForeground=#B8F2F4F8 backgroundSample=#FF2B2E39 composite=#FFBBBDC3 contrast=7.201 bounds=746.67,337.33..794.67,353.33
+  Button[Secondary] <icon-only>: no text label; text contrast not applicable
+  Toggle 开关: text=开关 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF252A34 composite=#FFF2F4F8 contrast=13.068 bounds=616,384..640,400
+  Status 已完成: text=已完成 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF294240 composite=#FFF2F4F8 contrast=9.792 bounds=871.33,510..913.33,530
+  Status 需关注: text=需关注 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF433E39 composite=#FFF2F4F8 contrast=9.599 bounds=957.33,510..999.33,530
+  Status 失败: text=失败 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF433340 composite=#FFF2F4F8 contrast=10.677 bounds=1043.33,510..1071.33,530
+  Status 已完成: text=已完成 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=522,602..564,620.67
+  Status 需关注: text=需关注 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=522,654..564,672.67
+  Status 失败: text=失败 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=522,706..550,724.67
+  Status 已完成: text=已完成 rawForeground=#FFF2F4F8 effectiveOpacity=1 effectiveForeground=#FFF2F4F8 backgroundSample=#FF2D323C composite=#FFF2F4F8 contrast=11.678 bounds=522,758..564,776.67
+EffectiveContrastGuard: samples=12 minimum=4.5 violations=0
+NegativeFixture: invalid-black-on-dark violations=1 must-fail=passed
+RowsEffective: realized=4 completeInsideGrid=4 grid=41.33,543.33..1078.67,793.33 rows=41.33,585.33..1078.67,637.33;41.33,637.33..1078.67,689.33;41.33,689.33..1078.67,741.33;41.33,741.33..1078.67,793.33
+RowsNegativeFixture: viewport=41.33,543.33..1078.67,789.33 completeInsideGrid=3 must-fail=passed
+ControlSurfaceCounts: textboxes=1 combos=1 buttons=4 toggles=1 checkboxes=2 sliders=1 listboxes=1
+TextInputContract: bounds=570,280..818,316 padding=12,3,12,3 caret=#FF7C8CF8 selection=#3D7C8CF8 horizontal=Left vertical=Center
+ComboContract: bounds=830,280..1078.67,316 selectedIndex=0 items=3 maxDropDownHeight=320 popupTemplate=declared
+ButtonGeometry: enabled=570,328..636.67,364 disabled=731.33,328..810,364 enabledPadding=14,7,14,7 minHeight=36
+ButtonStateContract: normal=realized disabled=realized hover/pressed/focus=shared-template-triggers; no command fired by fixture
+SelectionControlContract: indeterminate=True mark=visible checkboxBounds=570,420..620.67,452 sliderBounds=634.67,420..784.67,452
+ListContract: items=3 selectedIndex=0 virtualization=True
+ControlEvidenceBoundary: offscreen realized templates and DIP geometry; IME, real Popup placement, physical DPI and Playnite input remain host checks
+SemanticButtonContrast: samples=88 normal/hover/focus/pressed-combinations=all-stops violations=0
+SemanticLayerContrast: samples=4 violations=0 selection-text=14.443, input-text=14.888, input-placeholder=5.708, danger-button=7.264
+ComplexBackdropContrast: samples=4 violations=0 complex-surface-0=14.888, complex-surface-1=14.888, complex-surface-2=14.888, complex-surface-3=14.888
+Screenshot: <repo-root>\.tmp\r00-r01-current-20260929\probes-clean\finesse-dark\ui-finesse-fixture.png
+ProbeRows: 4
+Buttons: 21
+DataGrid: rows=4 actual=1037.33x250
+CaptionOpacity: 1
+FontChain: Inter -> Segoe UI Variable Text -> Segoe UI -> Noto Sans SC -> Noto Sans CJK SC -> Microsoft YaHei UI -> Microsoft YaHei
+FontCandidate CJK=U+05B58 candidate=Noto Sans SC requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence CJK=U+05B58 level=GlyphRunCaptured candidate=Noto Sans SC final=Noto Sans SC runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Latin=U+00053 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Latin=U+00053 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Digit=U+00039 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Digit=U+00039 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Arrow=U+02192 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Arrow=U+02192 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate RareCJK=U+20BB7 candidate=unresolved requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence RareCJK=U+20BB7 level=GlyphRunCaptured candidate=unresolved final=MingLiU-ExtB runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Combining=U+00301 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Combining=U+00301 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Emoji=U+1F9ED candidate=unresolved requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Emoji=U+1F9ED level=GlyphRunCaptured candidate=unresolved final=Segoe UI Emoji runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontWeightCandidate Chinese requested=Normal family=Noto Sans SC actual=Normal
+FontWeightCandidate Chinese requested=Medium family=Noto Sans SC actual=Medium
+FontWeightCandidate Chinese requested=SemiBold family=Noto Sans SC actual=Bold
+UnicodeMetric text=Café utf16Length=5 width=27.49 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=Ångström utf16Length=8 width=61.01 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=が utf16Length=2 width=11.7 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=🧭 🎮 utf16Length=5 width=42.28 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=𠮷 utf16Length=2 width=14 height=16.8 baseline=12.6 unpairedSurrogate=False
+FontActualGlyphRun: captured per sample with WPF TextFormatter.GetIndexedGlyphRuns
+FontEvidence: FontCandidate is candidate coverage; GlyphRunEvidence is captured WPF layout output; unresolved or .notdef remains non-hit
+NumericMetrics: 1=7.33x15.33, 8=7.33x15.33, 99=14x15.33, 100=21.33x15.33, 00:09=31.33x15.33, 12:59=31.33x15.33, 59 秒=29.33x15.33, 1 分钟=34.67x15.33, 0=7.33x15.33, —=12.67x15.33
+NumericTypography: styleResolved=True tabularSetter=True
+LineMetric text=备份完成，云端校验失败。可以稍后重试。 wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=赛博朋克 2077：往日之影 / Cyberpunk 2077: Phantom Liberty wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=罕见字：𠮷；外文标题：NieR Replicant / Pokémon / 龍が如く wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=组合与代理对：Café / Ångström / が / 🧭 🎮 / 𠮷 wrapping=Wrap lineHeight=20 actual=508.67x20
+LineMetric text=D:\Games\中文目录\Cyberpunk 2077\一个非常长的备份文件名.zip wrapping=Wrap lineHeight=NaN actual=508.67x14
+LineMetric text=任务部分完成  FLING_DOWNLOAD_FORBIDDEN  ✓ × ⚠ wrapping=Wrap lineHeight=18 actual=508.67x18
+LineMetric text=主操作 wrapping=Wrap lineHeight=NaN actual=36x16
+LineMetric text=次要操作 wrapping=Wrap lineHeight=NaN actual=48x16
+PunctuationSamples: preserved=全角引号“存档” | 《存档中心》 | 路径——待检查 | 稍后重试…… containsUnpairedSurrogate=False
+MixedBaseline text=存档中心 Save Center runs=3 glyphs=16 line=11.357 min=0 max=0 spread=0 stable=True unpairedSurrogate=False
+MixedBaseline text=日期：2026-09-17 · 时间 03:02 runs=9 glyphs=24 line=11.357 min=0 max=0 spread=0 stable=True unpairedSurrogate=False
+MixedBaseline text=容量：1.71 GiB · 24.6 MiB runs=3 glyphs=22 line=11.357 min=0 max=0 spread=0 stable=True unpairedSurrogate=False
+MixedBaseline text=中文标点：全角引号“存档”、书名号《中心》…… runs=6 glyphs=23 line=11.357 min=0 max=0 spread=0 stable=True unpairedSurrogate=False
+Samples: mixed CJK/Latin, numeric, path, diagnostic, success/warning/error glyphs
+InteractionStates: normal captured; shared template declares hover/pressed/disabled/focus; input behavior requires a separate probe
+finesse-fixture OK

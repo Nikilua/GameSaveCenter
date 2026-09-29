@@ -41,3 +41,9 @@ R00-04 的代码与受控合成数据验证已完成，账本保持“代码完�
 
 - 当前 `b5c7a6d423a4bf23004c3b080e133b3b0b065fa5` 隔离 testhost 的 `LargeLibraryPerformanceTests` 为 `5/5`；2000 条合成游戏的正式样本仍为 `30` 次，`search_changed_result_sets=30`，原始摘要为 `p50=46ms`、`p95=48ms`、`max=48ms`。
 - 不可能结果的有限超时负例仍通过；每次等待使用运行中的独立 `Stopwatch`。本次只刷新了合成数据和隔离 testhost 证据，未写真实游戏库、未把搜索逻辑样本升级为 IME 或 Playnite 宿主性能结论。
+
+## 2026-09-29 当前 main 复核
+
+- 当前源码 `9c906cc0772aad06143bdf3237255effd417e2de` 的 `LargeLibraryPerformanceTests` 为 `2/2`：30 次不同查询的可见结果 ID 集变化 `30/30`，不可能结果使用运行中的计时器有限退出。
+- 当前原始样本 `p50=46 ms`、`p95=47 ms`、`max=60 ms`；查询序列和 30 个样本见 [当前复核包](R00-R01-CURRENT-RECHECK-20260929/large-library.txt)。
+- 本次只证明合成数据与隔离 WPF/Dispatcher 逻辑，不代表 Playnite 真机输入、连续真实打字、IME 或物理屏幕性能。

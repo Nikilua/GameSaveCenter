@@ -47,3 +47,9 @@ R00-05 的共享样式修正与受控行为验证已完成，账本保持“代�
 - 当前隔离 Release testhost 的 `ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles` Light/Dark `2/2` 通过；实际加载 Context、RemoteRestore、MediaBatch 三类生产派生样式。
 - 本轮继续观察控件 `Opacity=1`、模板 `ButtonChrome.Opacity=0.72`，高度切换差 `<0.01 DIP`；不改变样式、命令、Binding 或安全/错误语义。
 - 当前 build 保留两条已有 `MediaCenterView.xaml.cs:703 CS8602` warning；受控 WPF 资源合成不替代真实宿主像素、物理 DPI 和用户输入。
+
+## 2026-09-29 当前 main 复核
+
+- `9c906cc0772aad06143bdf3237255effd417e2de` 当前隔离 Release 测试 Light/Dark `2/2` 通过；实际派生样式仍覆盖 Context、RemoteRestore、MediaBatch 三类生产按钮。
+- 三类按钮启用/禁用前后高度差 `<0.01 DIP`，控件 opacity `1`、chrome opacity `0.72`；当前 Light/Dark 生产资源探针的对比度违规均为 `0`。结果见 [当前复核包](R00-R01-CURRENT-RECHECK-20260929/README.md)。
+- 未运行真实 Playnite，也没有把逻辑 DIP 结果说成用户显示器的物理像素验证。
