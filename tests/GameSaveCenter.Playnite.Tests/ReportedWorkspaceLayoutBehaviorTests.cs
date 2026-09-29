@@ -313,6 +313,89 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var emptyVisibility = Visibility.Collapsed;
+        var populatedVisibility = Visibility.Visible;
+        var restoredVisibility = Visibility.Collapsed;
+        var auditEmptyVisibility = Visibility.Collapsed;
+        var auditPopulatedVisibility = Visibility.Visible;
+        var auditRestoredVisibility = Visibility.Collapsed;
+        var copy = string.Empty;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var probe = new MaintenanceEmptyStateCopyProbe();
+                var view = new MaintenanceView { DataContext = probe };
+                ApplyTheme(view, theme);
+                var emptyState = (TextBlock)typeof(MaintenanceView)
+                    .GetField("MaintenanceFindingsEmptyStateText", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+
+                window = CreateWindow(view, 1100, 720);
+                window.Show();
+                FlushLayout(window);
+                emptyVisibility = emptyState.Visibility;
+                copy = emptyState.Text;
+
+                probe.Findings.Add(new { Title = "Synthetic diagnostic" });
+                probe.MaintenanceState = "Ready";
+                FlushLayout(window);
+                populatedVisibility = emptyState.Visibility;
+
+                probe.Findings.Clear();
+                probe.MaintenanceState = "Empty";
+                FlushLayout(window);
+                restoredVisibility = emptyState.Visibility;
+
+                var tabs = (TabControl)typeof(MaintenanceView)
+                    .GetField("MaintenanceTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                tabs.SelectedIndex = 4;
+                FlushLayout(window);
+                var auditEmptyState = (TextBlock)typeof(MaintenanceView)
+                    .GetField("MaintenanceAuditFindingsEmptyStateText", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                auditEmptyVisibility = auditEmptyState.Visibility;
+
+                probe.Findings.Add(new { Title = "Synthetic diagnostic" });
+                probe.MaintenanceState = "Ready";
+                FlushLayout(window);
+                auditPopulatedVisibility = auditEmptyState.Visibility;
+
+                probe.Findings.Clear();
+                probe.MaintenanceState = "Empty";
+                FlushLayout(window);
+                auditRestoredVisibility = auditEmptyState.Visibility;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} maintenance diagnostics empty hints main={emptyVisibility}->{populatedVisibility}->{restoredVisibility}, audit={auditEmptyVisibility}->{auditPopulatedVisibility}->{auditRestoredVisibility}; copy=\"{copy}\"");
+        Assert.Null(exception);
+        Assert.Equal("暂无待处理诊断项。", copy);
+        Assert.Equal(Visibility.Visible, emptyVisibility);
+        Assert.Equal(Visibility.Collapsed, populatedVisibility);
+        Assert.Equal(Visibility.Visible, restoredVisibility);
+        Assert.Equal(Visibility.Visible, auditEmptyVisibility);
+        Assert.Equal(Visibility.Collapsed, auditPopulatedVisibility);
+        Assert.Equal(Visibility.Visible, auditRestoredVisibility);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
@@ -2100,6 +2183,33 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public string TaskActiveFiltersSummary { get; } = "当前：状态失败 · 类型全部 · 最近任务 · 全部时间";
         public string TaskPageStatusSummary { get; } = "最近更新：刚刚";
         public string TaskPageStatusSummaryFullDisplay { get; } = "合成布局测试的完整任务状态摘要";
+    }
+
+    private sealed class MaintenanceEmptyStateCopyProbe : INotifyPropertyChanged
+    {
+        private string maintenanceState = "Empty";
+
+        public ObservableCollection<object> Findings { get; } = new();
+        public int MaintenanceTabIndex { get; set; }
+        public bool IsWorkerOffline => false;
+        public string MaintenanceState
+        {
+            get => maintenanceState;
+            set
+            {
+                if (string.Equals(maintenanceState, value, StringComparison.Ordinal)) return;
+                maintenanceState = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MaintenanceState)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MaintenancePresenterState)));
+            }
+        }
+        public string MaintenancePresenterState => MaintenanceState;
+        public string MaintenanceStateTitle => "暂无需要处理的诊断项";
+        public string MaintenanceStateMessage => "没有需要处理的诊断项。";
+        public string MaintenanceStateDetail => string.Empty;
+        public bool MaintenanceStateOverlayVisible => false;
+        public ICommand RefreshDiagnosticsCommand { get; } = new RelayCommand(_ => { });
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 
     private sealed class CloudTransferHeaderProbe
