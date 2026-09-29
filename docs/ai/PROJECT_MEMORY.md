@@ -5910,3 +5910,9 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 生产视图 Light/Dark 实测 `MediaInboxSecondaryActions` 在 `520–576 DIP` 为两行且净距 `4 DIP`，`577 DIP` 起单行。现在仅在 `<577 DIP` 临时设为 `8 DIP`，宽态恢复 XAML authored `4 DIP`；不要扩大到同栏之外。
 - 520×600 DIP 还启用页级 Auto 滚动，MediaInboxGeometry 和 anchor 契约 `3/3 + 10/10` 通过；R00-06 source identity 更新至 `ce12c68d`，R00/R01 全 `14/14 fresh`。详细测量/TRX：`design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
 - 仍待审 Save current-rule actions、Overview header actions、Dashboard game-header actions；用户要求的静态说明密度和主题次级色一致性也未完成。Playnite Media Inbox 真实滚动空白仍需同次安全宿主 `[GSC-GRID-DIAGNOSTIC]`。
+
+### 2026-09-29 剩余可见操作组几何审计
+
+- `SaveCurrentRuleActions` 与 `OverviewHomeToolbarActions` 已在 Light/Dark、520–900 DIP 的真实生产 WrapPanel 中测量：所有采样单行、三个按钮均可见且尺寸非零，暂不需要加行距。测试断言实际行数和可见尺寸；证据 `design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`，隔离 DLL `2/2`。
+- `DashboardView.GameHeaderActions` 处于 `DashboardDemoShell Visibility=Collapsed`，不属于当前可见页面。默认旧 bin 测试被程序集身份门禁拦截后作废；最终用隔离精确 DLL 运行。
+- 下一小批：精简 Overview 有数据时仍显示的静态介绍；对活跃生产 XAML 的 InfoBrush 作语义分类。统计/装饰色走主题 accent/neutral，Info、Success、Warning、Error 继续表达真实语义，维持动态资源并检查浅深主题可读性。

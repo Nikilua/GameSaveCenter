@@ -2735,3 +2735,9 @@ git branch --show-current
 - 当前代码提交 `ce12c68da11069da21cf014a2f8a6f1840fa4603`：媒体次级动作 `<577 DIP` 时两行净距 `8 DIP`，577 DIP 单行恢复作者 margin；双主题阈值扫描与 `576→577→576` 往返通过。
 - 最终隔离 Release/XAML `0/0`、`24/24`；行距/几何/锚点 `15/15`，R00/R01 `14/14 fresh`。520×600 DIP 页尾滚动仍可达。证据与 TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
 - 继续测剩余实际 WrapPanel 组，再清理静态说明与主题次级文字。用户的真实 Media Inbox 滚动空白仍需安全 Playnite 同进程 `[GSC-GRID-DIAGNOSTIC]`；未将 STA 几何当宿主验证。
+
+## 当前续作（2026-09-29 剩余可见操作组审计）
+
+- 当前代码 `main`：`451164f2241f9a13a7d974c72410bcdd4528acb2`。SaveCenter“路径与校验”操作组和 Overview 工作台操作组已在浅/深主题 `520–900 DIP` 实测；均保持单行，三按钮可见有尺寸，无生产修复需要。隔离 Release/XAML `0/0`、`24/24`、行为几何 `2/2`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`。
+- Dashboard 的 legacy `GameHeaderActions` 位于 `DashboardDemoShell Visibility=Collapsed`，不是当前生产可见布局。首次默认 bin 测试遇旧程序集身份并由源码门禁拦截，未计为测试；最终直接执行精确隔离 DLL。
+- 下一可执行小批：删减 Overview 一直显示的静态操作说明；审计当前可见页面的 `GscInfoBrush`，区分语义信息色与纯统计/装饰色，并验证 theme resources。颜色原则参考 Fluent 2：neutral 打底、brand 少量强调、semantic 保留重要状态；文本同时按 WCAG 对比要求核对。真实 Playnite 和物理 DPI仍未验。

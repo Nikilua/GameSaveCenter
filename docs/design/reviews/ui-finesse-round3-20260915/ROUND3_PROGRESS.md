@@ -28,6 +28,14 @@
 - freshness 更新至 `ce12c68d` 后仍为 `14 FRESH / 0 STALE`，自动门禁通过；package identity 未提供。真实 Playnite、物理 DPI、OS 输入和最终屏幕呈现未验；Media Inbox 滚动空白仍需安全宿主同进程诊断，不从本次布局测试推断修复。
 - 下一项：继续实测 Save current-rule、Overview header 和 Dashboard game-header 的换行行距；随后按用户要求精简非必要静态说明、核对次级文字主题色与紫色主题一致性。
 
+## 2026-09-29 用户报告：剩余可见操作组换行审计
+
+- 在 `451164f2241f9a13a7d974c72410bcdd4528acb2` 上为实际生产 `SaveCenterView`“路径与校验”页的 `SaveCurrentRuleActions` 和 `OverviewView` 的 `OverviewHomeToolbarActions` 增加双主题 WPF 几何扫描。两组在全部采样尺寸均是单行，三个按钮均有非零可见尺寸；没有触发行距不足，因此不改生产布局。
+- 存档操作组覆盖 520–900 DIP；工作台操作组覆盖 520–900 DIP，含 699/700/720/760 DIP 的响应式断点。隔离 Release/XAML `0/0`、`24/24`；精确隔离测试 DLL VSTest `2/2`，零失败/跳过。DLL SHA 与完整采样见 [剩余操作组行几何](evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md)。
+- DashboardView 的旧 `GameHeaderActions` 位于 `DashboardDemoShell` 的 `Visibility=Collapsed` 兼容树下，不是当前可见工作区，不按源码存在与否推导用户界面问题。未更改 192 项状态与计数。
+- 首次默认 `bin` test invocation 因程序集身份旧于 checkout 被 `TestRepositoryContext` 拦截并停止，未计入；最终测试直接运行同一隔离 Release 输出 DLL。
+- 下一项：精简 Overview 顶部与已加载数据重复的静态说明，再分类当前生产页 `GscInfoBrush` 用法，只调整非语义装饰/统计色，并检查浅深主题对比。真实 Playnite与物理 DPI仍待验。
+
 ## 2026-09-29 Q14-02 Task Center 筛选标签和紧凑换行
 
 - 将任务筛选标签与控件配成完整组，统一 4 DIP 标签间距/全角标点；窄窗用 WrapPanel 整组换行。实测发现动态换行组原有行距为 0 DIP，现仅在紧凑区增加 8 DIP 底边距，并在返回主行时复位，避免改变 36 DIP 主工具栏高度。

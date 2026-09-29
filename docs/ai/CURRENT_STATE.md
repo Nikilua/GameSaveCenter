@@ -3669,3 +3669,9 @@
 - 当前代码提交 `ce12c68da11069da21cf014a2f8a6f1840fa4603`：Media Inbox 次级动作在 `<=576 DIP` 实测两行，行距从 `4` 提至 `8 DIP`；577 DIP 单行恢复原 margin。Media filter preset `<720 DIP` 与 Task preset `<657 DIP` 行距回归保持。
 - Release/XAML `0/0`、`24/24`；紧凑行距双主题 `2/2`、MediaInboxGeometry `3/3`、MediaWindowAnchor `10/10`，共 `15/15`。R00/R01 `14 FRESH / 0 STALE`，package identity 未提供。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
 - 已验证 `520×600 DIP` 页级滚动仍可达并保留 R00-06 表格高度/回退门禁；没有真实 Playnite/物理 DPI/最终屏幕呈现证据。下一项查 Save current-rule、Overview header、Dashboard game-header 换行，之后继续处理冗余说明与主题次级色。
+
+# 2026-09-29 剩余可见操作组窄窗审计
+
+- 在源码 `451164f2241f9a13a7d974c72410bcdd4528acb2` 上给 SaveCenter“路径与校验”操作组、Overview 工作台操作组增加 WPF 几何回归；Light/Dark、520–900 DIP 扫描均单行，3 个按钮始终有可见的非零尺寸，因此不作生产行距改动。隔离 Release/XAML `0/0`、`24/24`，精确 Release DLL 测试 `2/2`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`。
+- 旧 Dashboard `GameHeaderActions` 属于 Visibility=Collapsed 的兼容树，不当作当前用户可见控件。R00/R01 freshness 记录对本次测试文件没有匹配源码路径，`14 FRESH / 0 STALE` 不变；package identity 未提供。
+- 下一项移除/按数据状态处理 Overview 顶部重复说明，并逐项审查生产页信息色与紫色 accent 的分工。当前几何仍是合成 DTO、STA WPF 逻辑 DIP，不是 Playnite 最终呈现或物理 DPI。

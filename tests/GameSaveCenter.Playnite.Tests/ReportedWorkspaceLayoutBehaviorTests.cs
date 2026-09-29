@@ -304,6 +304,81 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var saveSamples = new List<string>();
+        var overviewSamples = new List<string>();
+
+        RunSta(() =>
+        {
+            Window? saveWindow = null;
+            Window? overviewWindow = null;
+            try
+            {
+                var saveView = new SaveCenterView { DataContext = new SavePageContext { SaveTabIndex = 1 } };
+                ApplyTheme(saveView, theme);
+                var saveActions = (WrapPanel)typeof(SaveCenterView)
+                    .GetField("SaveCurrentRuleActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(saveView)!;
+                saveWindow = CreateWindow(saveView, 900, 700);
+                saveWindow.Show();
+                foreach (var width in new[] { 520d, 560d, 600d, 640d, 680d, 699d, 700d, 760d, 900d })
+                {
+                    saveWindow.Width = width;
+                    saveView.ApplyResponsiveLayout(width, 700);
+                    FlushLayout(saveWindow);
+                    saveView.ApplyResponsiveLayout(width, 700);
+                    FlushLayout(saveWindow);
+                    var (rows, gap) = MeasureWrapRows(saveActions, saveView);
+                    Assert.Equal(1, rows);
+                    Assert.Equal(3, saveActions.Children.OfType<FrameworkElement>()
+                        .Count(child => child.Visibility == Visibility.Visible && child.ActualWidth > 0));
+                    saveSamples.Add($"{width:0} DIP: {rows} rows, gap={gap:0.##} DIP, panel={saveActions.ActualWidth:0.##} DIP");
+                }
+
+                var overviewView = new OverviewView { DataContext = new object() };
+                ApplyTheme(overviewView, theme);
+                var overviewActions = (WrapPanel)typeof(OverviewView)
+                    .GetField("OverviewHomeToolbarActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(overviewView)!;
+                overviewWindow = CreateWindow(overviewView, 900, 700);
+                overviewWindow.Show();
+                foreach (var width in new[] { 520d, 560d, 600d, 640d, 680d, 699d, 700d, 720d, 760d, 900d })
+                {
+                    overviewWindow.Width = width;
+                    overviewView.ApplyResponsiveWidth(width);
+                    FlushLayout(overviewWindow);
+                    overviewView.ApplyResponsiveWidth(width);
+                    FlushLayout(overviewWindow);
+                    var (rows, gap) = MeasureWrapRows(overviewActions, overviewView);
+                    Assert.Equal(1, rows);
+                    Assert.Equal(3, overviewActions.Children.OfType<FrameworkElement>()
+                        .Count(child => child.Visibility == Visibility.Visible && child.ActualWidth > 0));
+                    overviewSamples.Add($"{width:0} DIP: {rows} rows, gap={gap:0.##} DIP, panel={overviewActions.ActualWidth:0.##} DIP");
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                overviewWindow?.Close();
+                saveWindow?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} Save current-rule actions: {string.Join("; ", saveSamples)}");
+        output.WriteLine($"{theme} Overview home toolbar actions: {string.Join("; ", overviewSamples)}");
+        Assert.Null(exception);
+        Assert.Equal(9, saveSamples.Count);
+        Assert.Equal(10, overviewSamples.Count);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void CompactSaveAndInboxActionWrapsKeepAnEightDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;

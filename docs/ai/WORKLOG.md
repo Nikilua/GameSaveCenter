@@ -9756,3 +9756,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R00/R01 freshness 在最终源码 `ce12c68da11069da21cf014a2f8a6f1840fa4603` 为 `14 FRESH / 0 STALE`；freshness 自测通过，package identity 未提供。证据与最终 test DLL SHA/TRX：`evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
 - 初次快速测试只重编 test assembly、错误复用了旧 plugin `bin`，其零间距结果作废；隔离 Release solution 重建插件和测试后最终结果全过。没有启动 Playnite、验证物理 DPI或渲染帧。
 - 下一批继续实测 Save current-rule、Overview header、Dashboard game-header；随后审阅用户提到的说明文字数量与蓝色次级文字对紫色主题的适配。安全 Playnite 同进程 Media Inbox 滚动诊断仍单独待验。
+
+# 2026-09-29 剩余可见操作组窄窗审计
+
+- 新增实际生产 WPF 双主题几何回归：SaveCenter 路径与校验动作组 520–900 DIP、Overview 工作台动作组 520–900 DIP。全部尺寸均单行且 3 个按钮有效可见，所以不需要加生产行距。准确测量与约束见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`。
+- 隔离 Release/XAML `0/0`、`24/24`；直接运行精确隔离 Release net472 测试 DLL，2 个主题各 1 通过。初始默认 bin 命令发现程序集身份是旧 `96bd2c81`，门禁拦截后停止，不计入。
+- Dashboard legacy GameHeaderActions 在 `DashboardDemoShell` 折叠树中，排除于当前用户可见界面。R00/R01 测试改动路径无匹配 sourcePaths，freshness 维持 `14 FRESH / 0 STALE`；没有改变台账计数。
+- 下一小批处理用户要求的冗余说明与色彩：优先移除 Overview 总是显示的静态副标题，再只把非语义统计/装饰色从 info 色移到主题 accent/neutral。Info/Success/Warning/Error 只留真实反馈，并校对 light/dark 对比。安全 Playnite 滚动空白复现仍待同进程诊断。
