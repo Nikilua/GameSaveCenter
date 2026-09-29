@@ -1,5 +1,12 @@
 ## 2026-09-29 用户报告：Trainer 导入确认空态文案
 
+## 2026-09-29 用户报告：Task Center 提示和按钮（已满足）
+
+- 对照当前生产 `TaskCenterView` 与已有能力后确认无需重建：运行时显示短句，空闲时折叠；完整后台任务不中断/恢复提示保留在 UI Automation HelpText。任务列表按钮已采用固定垂直尺寸，摘要换行不再撑开按钮。
+- 当前身份 `f88bcb4d` Release `0 warning / 0 error`、XAML `24/24`、行为 `4/4`。Light/Dark 摘要高 `58 DIP`；按钮高 `30/36 DIP`、垂直中心差 `0/0.33 DIP`；折叠说明后高度不变。辅助文字解析为次级文字色，非 Info 蓝。[证据](evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md)
+- 先前 `98800f1a` 测试程序集被源码身份门禁拒绝，已作废；本结果来自当前 `f88bcb4d` checkout 的新 Release 构建。未安装/启动真实 Playnite，用户截图 DLL/主题/物理 DPI 身份未知。
+- 下一项核验 Media Inbox 批量操作是否仍有重复游戏选框；不改变 192 项状态。Media Inbox 真实滚动空白仍需同进程诊断。
+
 - 源码提交 `98800f1a7cb27bcb6f92c190c7feb5cf3d388c94` 将静态“没有待确认项目”提示绑定为空态：选择待确认 EXE 后提示收起，选择器、选项、确认/取消按钮和真实命令不变。Light/Dark 生产视图行为 `3/3`。
 - 提交后 Release `0 warnings / 0 errors`、XAML `24/24`、`UiAuditSourceTests 6/6`、source validation 通过。compact `904×520 DIP` 与 wide `1596×840 DIP` 几何数据记录工具栏 `44 DIP`、可达且无溢出；R00-07 freshness 更新后 `14 FRESH / 0 STALE`，package identity 未提供。
 - 离屏几何、TRX、插件/测试程序集身份与限制：[Trainer import copy](evidence/USER-REPORTED-TRAINER-IMPORT-COPY-20260929/README.md)。没有启动真实 Playnite、测试物理 125%/150% DPI 或最终呈现；192 项账本计数和状态未变。

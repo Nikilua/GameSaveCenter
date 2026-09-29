@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Task Center 辅助说明与队列按钮（已满足）
+
+- 当前源码已按运行状态显示短句并保留完整 HelpText；`RunningTaskCount==0` 时提示折叠。浅/深主题下队列按钮为 `30/36 DIP`、中心偏差 `≤0.33 DIP`，收起摘要不改变高度，辅助文字使用次级中性色。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md)
+- 当前提交 `f88bcb4d` Release `0/0`、XAML `24/24`、行为 `4/4`。用户截图的宿主 DLL 身份未知，没有据此声称真实 Playnite 复核。下一项核对 Media Inbox 游戏选框是否与全局选框重复。
+
 ## 2026-09-29 Trainer 导入确认空态提示
 
 - 有待确认游戏工具时折叠静态“没有待确认项目”提示；选择器、确认/取消按钮、所选项和命令绑定仍可用。提交后 Release `0/0`、XAML `24/24`、行为 `3/3`、R00-07 源码审计 `6/6`、source validation 通过。

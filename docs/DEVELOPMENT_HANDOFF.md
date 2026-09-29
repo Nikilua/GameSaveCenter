@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-29：Task Center 辅助文字已满足）
+
+- 当前源码已符合 Task Center 截图要求：仅在运行任务时显示短提示，完整安全语义保留在 UIA HelpText；浅/深色队列按钮 `30/36 DIP` 且不会被三行摘要拉伸，提示颜色来自主题次级文字。
+- 当前 HEAD `f88bcb4d` 的 Release/XAML 构建 `0/0`、`24/24`，行为及布局精确测试 `4/4`。隔离程序集身份、逐主题读数和用户截图身份未知限制：[证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md)。
+- 下一项检查 Media Center 全局游戏选择与“待归类”批处理目标选框是否重复，逐项比较绑定与命令后再决定去留。真实宿主截图 DLL 未知；Media Inbox 滚动异常仍待同进程诊断。
+
 ## 当前交接补充（2026-09-29：Trainer 导入提示）
 
 - 已提交源码 `98800f1a`：Trainer 导入确认页在有待确认项目时收起空态提示；浅/深色下选择器、选中项、确认/取消按钮与命令保持有效。Release `0/0`、XAML `24/24`、行为 `3/3`、R00-07 审计源码 `6/6`，证据含 post-commit Release 测试/插件 DLL SHA-256、MVID、compact/wide 几何 JSON 与 TRX。

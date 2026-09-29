@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Task Center 帮助文案已满足
+
+- 当前 `TaskCenterView` 已把常显长句缩短为运行时的一行提示，无运行任务时折叠；完整不取消/返回恢复说明仍通过 `AutomationProperties.HelpText` 提供。队列操作按钮固定在 `30/36 DIP`，不随多行摘要拉高；提示和筛选摘要跟随浅/深主题次级文字色。
+- 精确当前身份 `f88bcb4d` Release 构建，四项行为 `4/4`。证据路径：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md`。用户截图运行实例未知，没有宣称真实宿主复核。
+- 下一项查 Media Inbox 当前批量处理行是否保留冗余游戏选框，并确认主窗口全局选择绑定语义。
+
 ## 2026-09-29 Trainer 导入确认空态文案
 
 - `TrainerCenterView` 的“导入确认”页现在只在无待确认项时显示简短提示；待确认状态折叠它，选框、选择、确认/取消命令保持原样。浅/深色生产视图行为 `3/3`，R00-07 `UiAuditSourceTests` `6/6`。

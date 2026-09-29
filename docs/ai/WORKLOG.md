@@ -9770,3 +9770,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 首页管理游戏数改用主题强调色；Maintenance 动作分类从信息色改用主题次级文字。语义 info 色仍用于云端/运行中等真实状态。实际资源测量对比度为首页大号数值 Light/Dark `4.13/4.77:1`，普通分类文字 `6.43/7.86:1`。
 - Release `0 warnings / 0 errors`，XAML `24/24`，定向 WPF `8/8`；`scripts/validate-source.py` 通过；RenderHarness Light/Dark 全矩阵 `render-qa OK`，无 PROBLEM。WPF 静态审查 `0 errors / 30 warnings / 177 info`。DLL 身份、证据截图和 TRX：[Overview copy/color](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。
 - 未启动 Playnite、未测物理 DPI、OS 输入或宿主呈现；未改变 192 项状态。下一任务跨页审阅数据加载后仍显示的静态说明，只收起确认冗余文本，并保留必要数据解释和真正空状态提示。
+
+# 2026-09-29 Task Center 辅助说明与队列按钮（已满足）
+
+- 对照用户截图和当前生产实现后，已有代码满足要求，不另改控件。离页提示只在 `RunningTaskCount > 0` 时显示为“后台任务会继续运行。”；完整不取消/返回后恢复语义在 UI Automation HelpText。`0` 个运行任务时整行折叠。
+- 在当前源码身份 `f88bcb4dccbac0dc32001f0667de278d7028171a` 的隔离 Release 构建中，行为/布局 `4/4`：Light/Dark 摘要高 `58 DIP`，重试/重置按钮高 `30/36 DIP`，中心差 `0/0.33 DIP`；折叠两条摘要后高度不变。两主题提示文字颜色与 `GscSecondaryTextBrush` 相同，不是 Info 蓝。
+- Release `0 warnings / 0 errors`，XAML `24/24`。测试与插件 DLL SHA/MVID、TRX 和身份失败复跑说明见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md`。
+- 一次旧测试 DLL `98800f1a` 被源代码测试身份门禁正确拒绝；该轮作废。随后从当前 checkout `f88bcb4d` 重建并完成所有四项用例。没有加载真实 Playnite；用户截图运行 DLL/主题/DPI 未知。
+- 下一项核对 Media Inbox 的全局游戏选框与批量目标选框是否重复；先查现有绑定/命令。其他页面的紧凑行距与多余文字仍按小批量继续审阅；Media Inbox 滚动空白未做宿主同进程诊断。
