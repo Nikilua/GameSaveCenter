@@ -45,6 +45,12 @@ public sealed class Q14FilterLabelBehaviorTests
                     (GameSaveCenterThemeMode.Dark, Width: 980d, Height: 700d),
                     (GameSaveCenterThemeMode.Light, Width: 979d, Height: 700d),
                     (GameSaveCenterThemeMode.Dark, Width: 979d, Height: 700d),
+                    (GameSaveCenterThemeMode.Light, Width: 1040d, Height: 700d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1040d, Height: 700d),
+                    (GameSaveCenterThemeMode.Light, Width: 1215d, Height: 700d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1215d, Height: 700d),
+                    (GameSaveCenterThemeMode.Light, Width: 1216d, Height: 700d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1216d, Height: 700d),
                     (GameSaveCenterThemeMode.Light, Width: 760d, Height: 640d),
                     (GameSaveCenterThemeMode.Dark, Width: 760d, Height: 640d),
                     (GameSaveCenterThemeMode.Light, Width: 620d, Height: 640d),
@@ -65,7 +71,7 @@ public sealed class Q14FilterLabelBehaviorTests
         thread.Join();
 
         Assert.Null(failure);
-        Assert.Equal(10, reports.Count);
+        Assert.Equal(16, reports.Count);
         foreach (var report in reports)
             output.WriteLine(report);
     }
@@ -88,7 +94,7 @@ public sealed class Q14FilterLabelBehaviorTests
         var game = CreatePair(view, "Game", "游戏：", "任务游戏筛选", "TaskGameFilterGroup", "TaskGameFilterLabel", "TaskGameFilterComboBox");
         var search = GetField<Grid>(view, "TaskSearchBoxHost");
         var pairs = new[] { status, type, scope, range, game };
-        var compact = width < 980d;
+        var compact = width < 1216d;
 
         var window = new Window
         {

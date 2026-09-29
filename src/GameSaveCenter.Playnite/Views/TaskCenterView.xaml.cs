@@ -260,12 +260,12 @@ namespace GameSaveCenter.Playnite.Views
                 // The primary toolbar is a finite Grid rather than a WrapPanel. The
                 // game selector is intentionally kept in the optional disclosure so
                 // the primary controls never reflow into each other.
-                // The non-fullscreen Playnite pane commonly has 760–980 DIP available.
-                // Keeping all six filters in that width gave the auto columns priority and
-                // clipped the right edge of the search field.  Move secondary filters into
-                // the disclosure before the toolbar overflows, leaving search, status and
-                // refresh as one complete primary row.
-                var compactFilters = width < 980;
+                // The full filter row needs enough room for its four fixed-width filters,
+                // the refresh action, and a 420 DIP search field.  At narrower host widths
+                // the Grid can still arrange its columns while the TextBox overflows its
+                // search cell, hiding the right edge under the next filter.  Keep secondary
+                // filters in the disclosure until the complete row fits.
+                var compactFilters = width < 1216;
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
                 TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);
@@ -289,7 +289,7 @@ namespace GameSaveCenter.Playnite.Views
                 // control's theme default width, which made the search box collapse
                 // to a sliver in the real Playnite host even though no elements
                 // technically overlapped.
-                if (width >= 980)
+                if (!compactFilters)
                 {
                     // Keep the merged search field visibly useful in the real
                     // Playnite host.  The host can measure the filter Grid with

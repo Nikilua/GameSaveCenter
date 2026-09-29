@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -54,6 +56,26 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 {
                     reports.Add(CaptureToolbarGeometry(scenario.Item1, scenario.Width, scenario.Height));
                 }
+                foreach (var scenario in new[]
+                {
+                    (GameSaveCenterThemeMode.Light, Width: 760d),
+                    (GameSaveCenterThemeMode.Dark, Width: 760d),
+                    (GameSaveCenterThemeMode.Light, Width: 979d),
+                    (GameSaveCenterThemeMode.Dark, Width: 979d),
+                    (GameSaveCenterThemeMode.Light, Width: 980d),
+                    (GameSaveCenterThemeMode.Dark, Width: 980d),
+                    (GameSaveCenterThemeMode.Light, Width: 1040d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1040d),
+                    (GameSaveCenterThemeMode.Light, Width: 1215d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1215d),
+                    (GameSaveCenterThemeMode.Light, Width: 1216d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1216d),
+                    (GameSaveCenterThemeMode.Light, Width: 1280d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1280d)
+                })
+                {
+                    reports.Add(MeasureSearchViewport(scenario.Item1, scenario.Width));
+                }
             }
             catch (Exception caught)
             {
@@ -66,9 +88,110 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         thread.Join();
 
         Assert.Null(exception);
-        Assert.Equal(10, reports.Count);
+        Assert.Equal(24, reports.Count);
         foreach (var report in reports)
             output.WriteLine(report);
+    }
+
+    private static string MeasureSearchViewport(GameSaveCenterThemeMode theme, double width)
+    {
+        EnsureApplication();
+        var view = new TaskCenterView { DataContext = new TaskToolbarFixture() };
+        var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled: true, strengthPercent: 78, theme);
+        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
+        var filters = GetField<Grid>(view, "TaskFiltersPanel");
+        var searchHost = GetField<Grid>(view, "TaskSearchBoxHost");
+        var search = GetField<TextBox>(view, "TaskSearchTextBox");
+        var statusGroup = GetField<StackPanel>(view, "TaskStatusFilterGroup");
+        var refresh = GetField<GameSaveCenter.Playnite.Controls.Button>(view, "TaskRefreshButton");
+        var moreFilters = GetField<Expander>(view, "TaskMoreFiltersExpander");
+        search.Text = new string('x', 80);
+
+        var window = new Window
+        {
+            Content = view,
+            Width = width,
+            Height = 700,
+            WindowStyle = WindowStyle.None,
+            ResizeMode = ResizeMode.NoResize,
+            ShowInTaskbar = false,
+            ShowActivated = false,
+            Opacity = 0.01
+        };
+
+        try
+        {
+            view.ApplyResponsiveLayout(width, 700d);
+            window.Show();
+            FlushLayout(window);
+            view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+            FlushLayout(window);
+
+            var compact = width < 1216d;
+            var searchCell = GetBounds(searchHost, filters);
+            var searchBounds = GetBounds(search, filters);
+            var statusBounds = GetBounds(statusGroup, filters);
+            var refreshBounds = GetBounds(refresh, filters);
+            var contentHost = search.Template.FindName("PART_ContentHost", search) as FrameworkElement;
+            var clearButton = FindVisualChildren<ButtonBase>(searchHost)
+                .Single(button => AutomationProperties.GetName(button) == "清除任务搜索");
+            var clearBounds = GetBounds(clearButton, searchHost);
+            var inputBounds = contentHost is null ? Rect.Empty : GetBounds(contentHost, search);
+
+            Assert.Equal(compact, moreFilters.Visibility == Visibility.Visible);
+            Assert.True(searchCell.Width >= 300d,
+                $"{theme} {width:0} DIP search cell is only {searchCell.Width:0.###} DIP.");
+            Assert.True(searchBounds.Left >= searchCell.Left - GeometryTolerance
+                        && searchBounds.Right <= searchCell.Right + GeometryTolerance,
+                $"{theme} {width:0} DIP search box {searchBounds} escapes its cell {searchCell}.");
+            Assert.True(searchCell.Right <= statusBounds.Left + GeometryTolerance,
+                $"{theme} {width:0} DIP search cell right={searchCell.Right:0.###} overlaps status group left={statusBounds.Left:0.###}.");
+            Assert.True(statusBounds.Right <= refreshBounds.Left + GeometryTolerance,
+                $"{theme} {width:0} DIP status filter right={statusBounds.Right:0.###} overlaps refresh left={refreshBounds.Left:0.###}.");
+            Assert.True(refreshBounds.Right <= filters.ActualWidth + GeometryTolerance,
+                $"{theme} {width:0} DIP refresh right={refreshBounds.Right:0.###} exceeds filter viewport {filters.ActualWidth:0.###}.");
+            Assert.NotNull(contentHost);
+            Assert.True(inputBounds.Width >= 200d,
+                $"{theme} {width:0} DIP editable text viewport is only {inputBounds.Width:0.###} DIP.");
+            Assert.True(inputBounds.Left >= -GeometryTolerance
+                        && inputBounds.Right <= search.ActualWidth + GeometryTolerance,
+                $"{theme} {width:0} DIP editable text viewport {inputBounds} escapes the search box width {search.ActualWidth:0.###}.");
+            Assert.True(clearBounds.Left >= searchCell.Left - GeometryTolerance
+                        && clearBounds.Right <= searchCell.Right + GeometryTolerance,
+                $"{theme} {width:0} DIP clear action {clearBounds} escapes search cell {searchCell}.");
+
+            var safeCellWidth = searchCell.Width;
+            var safeSearchWidth = searchBounds.Width;
+            var safeInputViewportWidth = inputBounds.Width;
+            var safeSearchStatusGap = statusBounds.Left - searchCell.Right;
+            var safeStatusRefreshGap = refreshBounds.Left - statusBounds.Right;
+            var safeRefreshRight = refreshBounds.Right;
+            var safeFiltersWidth = filters.ActualWidth;
+            var negativeControlDetected = false;
+            var negativeControlSearchStatusGap = double.NaN;
+            if (width == 1040d)
+            {
+                // Recreate the former too-early full-row placement against the same
+                // narrow window. The geometry gate must detect its search-cell overlap.
+                view.ApplyResponsiveLayout(1280d, 700d);
+                FlushLayout(window);
+                searchCell = GetBounds(searchHost, filters);
+                searchBounds = GetBounds(search, filters);
+                statusBounds = GetBounds(statusGroup, filters);
+                negativeControlSearchStatusGap = statusBounds.Left - searchCell.Right;
+                negativeControlDetected = searchBounds.Right > searchCell.Right + GeometryTolerance
+                                          || searchCell.Right > statusBounds.Left + GeometryTolerance;
+                Assert.True(negativeControlDetected,
+                    "The negative control did not reproduce the full-row search overflow.");
+            }
+
+            return $"theme={theme}; width={width:0} DIP; compact={compact}; searchCell={safeCellWidth:0.##}; box={safeSearchWidth:0.##}; inputViewport={safeInputViewportWidth:0.##}; search/status gap={safeSearchStatusGap:0.##}; status/refresh gap={safeStatusRefreshGap:0.##}; refreshRight={safeRefreshRight:0.##}/{safeFiltersWidth:0.##}; negativeControlGap={negativeControlSearchStatusGap:0.##}; negativeControlDetected={negativeControlDetected}; dpi={VisualTreeHelper.GetDpi(view).DpiScaleX:0.##}x{VisualTreeHelper.GetDpi(view).DpiScaleY:0.##}";
+        }
+        finally
+        {
+            if (window.IsVisible)
+                window.Close();
+        }
     }
 
     private static string CaptureToolbarGeometry(GameSaveCenterThemeMode theme, double width, double height)
