@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-29：Maintenance 诊断空态）
+
+- 已提交 `4a834135`：两个诊断列表空态统一为“暂无待处理诊断项。”；零项才显示，有行时折叠，移除无证据的备份/媒体正常推断。Release `0/0`、XAML `24/24`、浅/深主题行为 `2/2`、freshness `14/14`。[证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)
+- 存档恢复保护、远端只读校验、取消/失败语义没有改；更多维护/存档说明仍按数据态逐项审查。未启动 Playnite 或验证物理 DPI。
+- 下一批继续核对存档/维护页有数据时常显的解释文案。Media Inbox 滚动后错位仍待安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`，不得以本次空态测试代替。
+
 ## 当前交接补充（2026-09-29：Media Inbox 策略说明）
 
 - 已提交 `1e64347d`：待归类说明只在无条目时显示，有数据和“已忽略”页折叠；安全语义留在常驻标题 Tooltip/HelpText。当前状态、R00-06 几何/锚点测试 `15/15`，Release/XAML `0/0`、`24/24`，当前提交 RenderHarness 全矩阵成功。

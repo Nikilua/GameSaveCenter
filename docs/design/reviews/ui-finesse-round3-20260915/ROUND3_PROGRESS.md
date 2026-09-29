@@ -1,3 +1,9 @@
+## 2026-09-29 用户报告：Maintenance 诊断空态文案
+
+- `4a834135` 把诊断页和异常审计页重复的两行空态收成“暂无待处理诊断项。”，避免零条问题被当作备份和媒体健康证明；零条仍显示，有数据时折叠。Light/Dark 生产 WPF 两处各做 `Visible → Collapsed → Visible`，TRX `2/2`。[证据](evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)
+- 当前提交 Release solution `0/0`、XAML `24/24`、source validation 通过；R00/R01 freshness `14/14`，未命中登记源路径。恢复保护、刷新/错误/离线和取消语义未改；不改 192 项完成数。
+- 未启动真实 Playnite、未验物理 DPI或用户截图 DLL。下一项逐项检查存档/维护页的数据态辅助说明，保留安全和故障解释；Media Inbox 滚动偏移仍需宿主同进程日志。
+
 ## 2026-09-29 用户报告：Media Inbox 有数据时收起策略说明
 
 - `1e64347d` 将策略说明缩为“归属不明的媒体会留在待归类中，不会自动猜测。”；只在空的待归类列表显示。有数据或切到“已忽略”时折叠，完整说明转挂到常驻标题的 Tooltip/HelpText。Light/Dark WPF 实测说明行 `0/18/0 DIP` 往返；信息带总高仍由数量胶囊主导，变化仅 `0.67 DIP`，未将其误记成整卡缩高。

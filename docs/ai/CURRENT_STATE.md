@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Maintenance 诊断空态文案
+
+- 诊断/审计两处零项提示统一为“暂无待处理诊断项。”，不再从零条诊断推断备份和媒体正常。浅/深主题生产 WPF 列表行为 `2/2`，两处均验证 `Visible → Collapsed → Visible`；Release `0/0`、XAML `24/24`、source validation 通过。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)
+- 无真实 Playnite、截图 DLL、物理 DPI 或屏幕帧证据。存档/维护页其他提示继续逐条分类，保留恢复、校验、错误和取消语义；Media Inbox 同进程滚动偏移仍未验。
+
 ## 2026-09-29 Media Inbox 有数据时的策略说明
 
 - 待归类策略短句现在只在空列表显示；列表有数据或视图切到“已忽略”时折叠。完整“不猜测所属游戏”说明放在常驻标题的 Tooltip/HelpText。Light/Dark 行为状态 `2/2`，说明行高度 `0/18/0 DIP`；数量胶囊让信息带整体只变 `0.67 DIP`。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-POLICY-COPY-20260929/README.md)

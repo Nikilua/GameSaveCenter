@@ -1,5 +1,10 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Maintenance 诊断空态文案
+
+- `MaintenanceView` 两个诊断列表的空态统一为“暂无待处理诊断项。”；删去无法由诊断计数支持的备份/媒体健康推断。生产视图在浅/深主题下实测零项显示、加一条合成诊断后收起、清空后恢复，`2/2`；安全操作和刷新命令未变。
+- Release solution `0 warnings / 0 errors`、XAML `24/24`、source validation 通过，R00/R01 `14/14` freshness。DLL 身份和 TRX：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md)。不等同于真实 Playnite/物理 DPI；其他静态维护文案仍逐项审查。
+
 ## 2026-09-29 Media Inbox 策略说明数据态
 
 - `MediaInboxInfoDescription` 在非空列表和“已忽略”视图折叠，只对空的待归类列表显示短句。完整安全语义放在常驻页标题 Tooltip/HelpText。浅/深主题状态切换、绑定和 `18 DIP` 行高经生产 WPF 测试验证。

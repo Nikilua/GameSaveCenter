@@ -9795,3 +9795,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - VSTest 成绩为 `15 passed / 0 failed / 0 skipped`、exit `0`，但 TRX 记录两个测试后 `TextServicesHost.OnUnregisterTextStore` 的 `InvalidComObjectException`；根因未知，按清理噪声记录。
 - 没有启动真实 Playnite、验证物理 DPI或最终宿主帧；用户截图 DLL/MVID 未提供。真实滚动偏移仍待安全同进程诊断。Demo 原目录 unavailable，继续遵循恢复生产基线。
 - 下一项审阅存档/维护页的静态文字，并保留恢复保护、错误、取消和危险操作语义；独立滚动诊断仍是未验边界。
+
+# 2026-09-29 Maintenance 诊断空态文案精简
+
+- `4a834135` 将维护页诊断与异常审计列表的零项提示统一为“暂无待处理诊断项。”，去掉从诊断计数推断备份和媒体正常的描述；实际有项时提示折叠，清空列表后恢复。刷新、诊断状态、错误/离线覆盖与业务命令未改。
+- 当前提交 Release solution `0 warnings / 0 errors`、XAML `24/24`、source validation 通过；浅/深主题生产 WPF 双列表状态行为 `2/2`，TRX 和测试/插件 DLL SHA、MVID 见 `USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md`。R00/R01 freshness `14/14`，未命中登记源路径。
+- 使用合成诊断与 `1100×720 DIP` 受控 STA 窗口；没有启动 Playnite、测物理 DPI或验证用户截图 DLL。该提交只精简两个空态，不表示其余存档/维护说明审查结束，也不改变 192 项状态或计数。
+- 下一项审阅存档/维护页在有数据时仍可见的静态说明；恢复保护、远端校验、错误、取消与危险操作文案先保留。真实 Media Inbox 滚动后偏移仍需安全宿主同进程诊断。
