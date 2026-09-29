@@ -127,17 +127,17 @@ public sealed class MediaInboxGeometryTests
                 window = new Window
                 {
                     Content = view,
-                    Width = 700,
+                    Width = 520,
                     Height = 600,
                     ShowInTaskbar = false,
                     ShowActivated = false,
                     WindowStyle = WindowStyle.None,
                     Opacity = 0.01
                 };
-                view.ApplyResponsiveLayout(700, 600);
+                view.ApplyResponsiveLayout(520, 600);
                 window.Show();
                 window.UpdateLayout();
-                view.ApplyResponsiveLayout(700, 600);
+                view.ApplyResponsiveLayout(520, 600);
                 window.UpdateLayout();
 
                 verticalVisibility = pageScroller.VerticalScrollBarVisibility;

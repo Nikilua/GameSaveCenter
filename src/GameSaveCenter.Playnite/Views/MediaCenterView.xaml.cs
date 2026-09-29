@@ -31,6 +31,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
         private readonly WrapPanelRowGapController mediaFilterPresetRowGap;
         private readonly WrapPanelRowGapController mediaInboxActionRowGap;
+        private readonly WrapPanelRowGapController mediaInboxSecondaryActionRowGap;
         private ScrollAnchor? pendingMediaAnchor;
         private ScrollAnchor? pendingInboxAnchor;
         private string? pendingInboxAnchorMode;
@@ -47,6 +48,7 @@ namespace GameSaveCenter.Playnite.Views
             InitializeComponent();
             mediaFilterPresetRowGap = new WrapPanelRowGapController(MediaFilterPresetRow);
             mediaInboxActionRowGap = new WrapPanelRowGapController(MediaInboxBatchActionRow);
+            mediaInboxSecondaryActionRowGap = new WrapPanelRowGapController(MediaInboxSecondaryActions);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
             Loaded += OnLoaded;
@@ -343,6 +345,9 @@ namespace GameSaveCenter.Playnite.Views
                 // The filter preset controls wrap below the measured 720 DIP page width.
                 // Add room between wrapped rows and restore authored margins once they fit.
                 mediaFilterPresetRowGap.SetRowGap(width < 720d ? 8d : 0d);
+                // The secondary inbox actions wrap through 576 DIP. Keep the same
+                // 8-DIP row spacing as the primary batch controls in that range.
+                mediaInboxSecondaryActionRowGap.SetRowGap(width < 577d ? 8d : 0d);
                 var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
                 var compactBatchActions = batchActionWidth > 0
                     ? batchActionWidth < 960

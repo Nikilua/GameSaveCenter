@@ -316,6 +316,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var inboxWideRows = 0;
         var inboxWideBottomMargin = 0d;
         var mediaPresetSamples = new List<string>();
+        var mediaSecondaryActionSamples = new List<string>();
 
         RunSta(() =>
         {
@@ -410,6 +411,49 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 FlushLayout(mediaWindow);
                 Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 7.5,
                     "Media filter preset row gap should survive a 700→720→700 DIP resize round trip.");
+
+                var secondaryActions = (WrapPanel)typeof(MediaCenterView)
+                    .GetField("MediaInboxSecondaryActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(mediaView)!;
+                foreach (var width in new[] { 520d, 540d, 560d, 570d, 575d, 576d, 577d, 578d, 579d, 580d, 620d, 700d, 720d, 800d })
+                {
+                    mediaWindow.Width = width;
+                    mediaView.ApplyResponsiveLayout(width, 720);
+                    FlushLayout(mediaWindow);
+                    mediaView.ApplyResponsiveLayout(width, 720);
+                    FlushLayout(mediaWindow);
+                    var (rows, gap) = MeasureWrapRows(secondaryActions, mediaView);
+                    if (rows > 1)
+                    {
+                        Assert.True(gap >= 7.5,
+                            $"{theme} media secondary action rows at {width:0} DIP need at least 7.5 DIP; actual gap={gap:0.##} DIP.");
+                        Assert.All(secondaryActions.Children.OfType<FrameworkElement>(), child =>
+                            Assert.Equal(8d, child.Margin.Bottom));
+                    }
+                    else
+                    {
+                        Assert.All(secondaryActions.Children.OfType<FrameworkElement>(), child =>
+                            Assert.Equal(4d, child.Margin.Bottom));
+                    }
+                    mediaSecondaryActionSamples.Add($"{width:0} DIP: {rows} rows, gap={gap:0.##} DIP, panel={secondaryActions.ActualWidth:0.##} DIP, margins=[{string.Join(";", secondaryActions.Children.OfType<FrameworkElement>().Select(child => $"{child.Margin.Bottom:0.##}"))}]");
+                }
+
+                mediaWindow.Width = 576d;
+                mediaView.ApplyResponsiveLayout(576, 720);
+                FlushLayout(mediaWindow);
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 7.5,
+                    "Media secondary action rows should use the 8 DIP gap at 576 DIP.");
+                mediaWindow.Width = 577d;
+                mediaView.ApplyResponsiveLayout(577, 720);
+                FlushLayout(mediaWindow);
+                Assert.Equal(1, MeasureWrapRows(secondaryActions, mediaView).RowCount);
+                Assert.All(secondaryActions.Children.OfType<FrameworkElement>(), child =>
+                    Assert.Equal(4d, child.Margin.Bottom));
+                mediaWindow.Width = 576d;
+                mediaView.ApplyResponsiveLayout(576, 720);
+                FlushLayout(mediaWindow);
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 7.5,
+                    "Media secondary action row gap should survive a 576→577→576 DIP resize round trip.");
             }
             catch (Exception caught)
             {
@@ -425,6 +469,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         output.WriteLine($"{theme} Save rows={saveCompactRows}, gap={saveCompactGap:0.##} DIP, wide rows={saveWideRows}, restored bottom={saveWideBottomMargin:0.##}; Inbox rows={inboxCompactRows}, gap={inboxCompactGap:0.##} DIP, wide rows={inboxWideRows}, restored bottom={inboxWideBottomMargin:0.##}");
         foreach (var sample in mediaPresetSamples)
             output.WriteLine($"{theme} Media preset {sample}");
+        foreach (var sample in mediaSecondaryActionSamples)
+            output.WriteLine($"{theme} Media secondary actions {sample}");
         Assert.Null(exception);
         Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
         Assert.True(saveCompactGap >= 7.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
