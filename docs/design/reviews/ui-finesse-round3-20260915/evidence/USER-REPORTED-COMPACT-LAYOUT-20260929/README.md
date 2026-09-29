@@ -32,9 +32,15 @@
 ## 完整 Release 流程结果
 
 - `scripts/dev-install-run.ps1` 使用独立 `.tmp/q14-compact-install/` 构建/测试目录与隔离扩展目标，XAML `24/24`、Release solution build `0 warning / 0 error`、Core `125/125`、Worker `356 passed / 1 existing skip / 0 failed`、Playnite source `111` 类与 WPF 隔离 `113/113` 类全部通过；本批 `ReportedWorkspaceLayoutBehaviorTests` 与 `R22LongTaskLeavePageBehaviorTests` 也在全套隔离中通过。日志末尾确认所有 Playnite 测试通过。
-- 最后的 package/install 阶段因打包脚本检查到本批尚未提交的源码和文档而主动停止：工作树 dirty guard 防止用旧 HEAD 冒充新源，不是构建或测试失败。该次没有生成新包、没有写入隔离扩展目标，也没有启动 Playnite；提交后需从干净身份运行 package/install，并记录最终程序集身份。
+- 首次 package/install 阶段因本批尚未提交的源码和文档而命中 dirty-tree 安全门禁；该门禁防止用旧 HEAD 冒充新源，不是构建或测试失败。
 - 先前新增的 `tests/GameSaveCenter.Playnite.Tests/TestResults/q14-*.trx` 已将所需 TRX 归档到本目录；源码工作树的临时副本完成本阶段记录后清理。
+
+### clean commit package/install 复核
+
+- 提交 `fc58264e6776b7e021c65e6a8fc11e2eb1032746` 后，从 clean `main` 重跑 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/q14-compact-install/build -SkipPackageArchives`。XAML `24/24`、solution `0 warning / 0 error`、Core `125/125`、Worker `356/357`（1 个现有硬进程重启 skip）、Playnite source `111` 类及 WPF 隔离 `113/113` 类通过。package 身份校验确认插件、Worker、Core、Contracts 六个程序集的 InformationalVersion 均为 `0.6.73+fc58264e6776b7e021c65e6a8fc11e2eb1032746`。
+- `scripts/install-dev.ps1` 仅将版本化暂存包复制至仓库 `.tmp/q14-compact-install/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec`。安装清单 `0.6.73`，DLL FileVersion `0.6.73.0`；插件 DLL SHA-256 `64BBA6B451C287544AA65A7E17BC380E0BFBFEA72F17B1F1EE0FFF76D71F5D57`、MVID `6f7b0c1e-610d-4590-993b-0d9e28c360d8`；Worker DLL SHA-256 `3CBEBD86A353060AC3BA57EED21DE43F69A8178D43A9E5C3D11B16295C006398`、MVID `22e37b66-7cc1-4796-84a9-461cbe991a53`。按隔离验证选项跳过 zip/pext 归档，版本化 artifacts 暂存目录为当前包。记录身份后清理了本批 `.tmp/q14-*` 构建/安装/离屏目录和本批本地安装日志；仅保留当前版本化 artifacts 暂存包。
+- 没有启动 Playnite。此处仅验证了文件复制到仓库 `.tmp` 隔离扩展路径；真实宿主载入该 DLL、用户窗口、OS 输入和物理 DPI 仍未验证。
 
 ## 后续
 
-提交本批后，下一阶段先按当前 `main` 重跑 R00/R01 freshness，仅对命中本批修改路径的证据重测或重签“已满足”；再继续依赖已满足的 Q/R 项（包括 Q14-03 搜索宽度）。Q14-01/02/本批并不自动签收其 Round2 项目。
+当前 main 的紧凑窗口补充修复已提交并推送。下一阶段先按当前 `main` 重跑 R00/R01 freshness，仅对命中本批修改路径的证据重测或重签“已满足”；再继续依赖已满足的 Q/R 项（包括 Q14-03 搜索宽度）。Q14-01/02/本批并不自动签收其 Round2 项目。

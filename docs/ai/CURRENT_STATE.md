@@ -4,7 +4,7 @@
 
 - 补充修复证据：[USER-REPORTED-COMPACT-LAYOUT-20260929](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。存档/媒体动作 WrapPanel 窄宽下净行距 `8 DIP`，宽态还原原 Margin；compact 外壳标题与全局游戏选择/动作同一行并隐藏可见副标题；Task 队列摘要不再撑大按钮，离页提示只有运行任务时显示且保留完整 HelpText；传输 count pill 已垂直居中。
 - 定向 STA WPF：布局 `8/8`、离页语义 `2/2`；Release Playnite/tests build `0/0`；XAML `24/24`、source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`，没有新增 error。完整 RenderHarness 更新过时外壳几何门禁后 `render-qa OK`、`PROBLEM=0`，离屏逻辑 DPI `1.00`。
-- 隔离 Release 构建通过，Core `125/125`、Worker `356 passed / 1 existing skip`、Playnite source `111` 类与 WPF 隔离 `113/113` 类通过；XAML `24/24`。打包步骤因工作树尚有未提交改动命中 dirty guard 并主动停止，没有生成包、没有安装、没有启动 Playnite。详细批次证据记录了这一边界；先提交后再从干净源码运行 package/install。
+- clean `fc58264e` Release package/install 通过：XAML `24/24`、solution `0 warning / 0 error`、Core `125/125`、Worker `356/357`（1 个现有硬进程重启测试 skip）、Playnite source `111` 类与 WPF 隔离 `113/113` 类。插件、Worker、Core、Contracts 六份程序集身份均为 `0.6.73+fc58264e6776b7e021c65e6a8fc11e2eb1032746`；插件 SHA-256 `64BBA6…D71F5D57`、MVID `6f7b0c1e-610d-4590-993b-0d9e28c360d8`。安装在仓库 `.tmp` 隔离目录，未启动 Playnite。
 - 没有验证真实宿主/物理 DPI或系统输入；Media Inbox 用户滚动问题仍等同进程 `[GSC-GRID-DIAGNOSTIC]`，不改虚拟化或用 margin 掩盖。
 - 下一阶段按用户最新目标先对当前 `main` 做 R00/R01 freshness，限于命中本批修改路径的记录；再继续依赖已满足的 Q/R 项。Round2 Q14、Round3 R 台账状态保持既有事实，不因本补充批次自动签收。
 

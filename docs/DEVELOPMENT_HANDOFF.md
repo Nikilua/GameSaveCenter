@@ -3,9 +3,9 @@
 ## 当前交接（2026-09-29 用户紧凑窗口问题已受控修复；转入 R00/R01 freshness）
 
 - 本阶段把存档/媒体动作 WrapPanel compact 行距设为 `8 DIP`，宽态还原原 Margin；compact 外壳标题与全局选择/动作同一行、副标题折叠但 HelpText 保留；Task Queue 辅助文字/按钮高度和传输计数垂直中心修正。详情和图片：[用户紧凑布局证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。
-- 已完成的定向证据：Release 项目 build `0/0`、XAML `24/24`、source validation 通过、静态审查 `0 errors / 30 warnings / 177 info`；WPF 行为 `8/8 + 2/2`；修正后的全套 RenderHarness `PROBLEM=0`。完整隔离 Release 测试通过：Core `125/125`、Worker `356 passed / 1 existing skip`、Playnite source `111` 类、WPF 隔离 `113/113` 类。package 阶段由 dirty-tree 安全门禁主动停止；本批提交后须从 clean HEAD 完成 package/install。
+- 已完成的定向证据：Release 项目 build `0/0`、XAML `24/24`、source validation 通过、静态审查 `0 errors / 30 warnings / 177 info`；WPF 行为 `8/8 + 2/2`；修正后的全套 RenderHarness `PROBLEM=0`。clean `fc58264e` 完整隔离 Release package/install 通过：Core `125/125`、Worker `356/357`（1 个既有 skip）、Playnite source `111` 类、WPF 隔离 `113/113` 类；包身份/隔离 DLL 哈希与 MVID 见上方证据链接。
 - 不将离屏截图当作 Playnite 实际呈现；物理 125%/150% DPI、OS 输入与真实用户宿主仍未验。Media Inbox 滚动空白仍需安全真实宿主同次 `[GSC-GRID-DIAGNOSTIC]`。旧源断言的 `LegacyProductionUiBaselineFact` 明确跳过，几何行为由实际 WPF 测试覆盖。
-- 安装目标为新建 `.tmp/q14-compact-install/Extensions`，不触及真实 Playnite 扩展或用户数据；本次不启动 Playnite。
+- 已将包安装到 `.tmp/q14-compact-install/Extensions` 并核对 DLL 身份，随后清理临时构建/安装目录；没有触及真实 Playnite 扩展或用户数据，也没有启动 Playnite。
 - 下一阶段遵从最新 `/goal`：先在当前 `main` 做 R00/R01 freshness，只更新命中本批变更路径的任务证据；之后继续依赖已满足的 Q/R 小批。Q14-01/02 与 R ledger 的外部/未完成状态维持原记录。
 
 ## 2026-09-29 历史交接：Q14-01 受控几何收口，已由上方 Q14-02 接续
