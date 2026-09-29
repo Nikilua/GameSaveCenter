@@ -1,8 +1,13 @@
+## 2026-09-30 R08-01 当前 main 反向动画复测
+
+- 生产源码身份 `dc7f97cf` 的 Release `R08MotionReverseBehaviorTests` 本机复测 `2/2`，0 failed/skip、VSTest exit `0`；当前复测未重现用户 `1/2`。TRX 成功后含 1 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理记录，根因未知。
+- 失败机器仍未提供失败方法、断言、堆栈和对应 DLL 身份；不据本机通过宣称用户问题已修复。插件/测试 SHA、MVID、命令和边界见[证据](evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 下一阶段处理用户最新的跨页面紧凑窗口审计；真实 Playnite/DPI 与 Media Inbox 滚动诊断的既有边界不变。
 ## 2026-09-30 R08-02 当前 main 热关闭动画复核
 
 - 生产源码 `dc7f97cf`；当前 Release `R08MotionHotChangeBehaviorTests 1/1`、exit `0`，Light/Dark RenderHarness 生产侧栏运行中关动画 probe 均通过。应用选项关/开验证入口状态复原且不重播；侧栏动画可即时停止、禁用态重入直接到终点。
 - Dashboard/Settings 已订阅 `SystemParameters.StaticPropertyChanged`，更新主题并归一化活动动效；本次不改变 Windows 系统动画偏好，也不声称真实系统通知/Playnite 宿主已验。TRX 成功后有 8 条 TextServices COM 清理输出，根因未知。详细身份、探针读数与 6 张精选状态图：[R08-02 当前复核](evidence/R08-02-CURRENT-MAIN-RECHECK-20260930/README.md)。
-- 下一可执行工作：为系统偏好通知路径补不修改 OS 设置的受控事件验证；其余真实边界继续保留。R08-01 用户最新失败仍等失败机器原始 log/TRX，Media Inbox 滚动错位仍需同一安全 Playnite 进程诊断。
+- 下一可执行工作：按用户 2026-09-30 截图继续跨页审计紧凑换行行距、缩窄标题、辅助说明密度和主题次级文字。R08-01 本机复测未复现用户 `1/2`；仍需失败机器原始 log/TRX。Media Inbox 滚动错位仍需同一安全 Playnite 进程诊断。
 ## 2026-09-30 R00/R01 当前审计证据与账本校正
 
 - 发现进度表中 R00-06、R00-07、R01-03、R01-06 仍指向 2026-09-28 的 `103 warnings / 0 HIGH / 0 MEDIUM`，与 2026-09-30 当前 audit 不符；已依据 `dc7f97cf` clean-tree 归档把这些行校正为 `168 snapshots / 110 warnings / 0 HIGH / 7 MEDIUM / 0 Fidelity / 0 failed routes`。实际 7 条 MEDIUM 工具栏垂直扩展提示保留。

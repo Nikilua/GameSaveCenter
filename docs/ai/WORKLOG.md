@@ -9849,3 +9849,5 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 RenderHarness `motionhotprobe` 使用生产 AcrylicProductionShellView 实际按钮事件，Light/Dark 活动中途均 `duringAnimated=True`；关闭后 sidebar 达 `72 DIP`、opacity=1、X=0 且无活动 clock；关闭态再次打开直达 `270 DIP`。受控报告与 6 张中途/终点/重入截图和 TRX：[R08-02 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260930/README.md)。
 - test DLL `ProductVersion=0.6.73+dc7f97cfa49724778c4987224c9f736c744b3631`，身份/哈希/MVID见 README。TRX xUnit `1/1` 成功后有 8 条 TextServicesHost `InvalidComObjectException` 清理输出，根因未知。
 - Dashboard/Settings 的 `SystemParameters.StaticPropertyChanged` 订阅和热关闭归一化路径存在；本轮没有修改 Windows 动画偏好或模拟/宣称收到真实系统通知。Playnite宿主、物理 DPI、ETW/presented frame 均未验。下一步为非修改 OS 设置的系统偏好通知注入测试；Media Inbox 同进程滚动、R08-01 用户失败仍按原边界待验。
+
+- 2026-09-30：在当前 `dc7f97cf` Release identity 复跑 `R08MotionReverseBehaviorTests`，本机 `2/2`、0 failed/skip、exit `0`，用户报告的 `1/2` 未复现；TRX 收尾有 1 条 TextServices `InvalidComObjectException` 清理噪声，根因未知。归档测试/插件 DLL SHA、MVID 和 TRX 于 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/`。没有生产代码修改；用户失败机器仍缺原始 log/TRX 与具体堆栈。下一阶段继续最新截图所示的跨页缩窗紧凑布局审计。

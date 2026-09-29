@@ -11,6 +11,12 @@
 - 下一项审阅 R08-02 动画热关闭运行时条件；Media Inbox 真实滚动错位与 R08-01 用户侧失败仍保留原未验边界。
 # GameSaveCenter 当前事实入口
 
+## 2026-09-30 R08-01 当前身份复测
+
+- `dc7f97cf` 的 Release `R08MotionReverseBehaviorTests` 本机重跑 `2/2`，0 failed/skip，exit `0`；未复现用户 `1/2` 失败。成功 TRX 收尾有 1 条 TextServices COM 清理噪声，原因未知。[二进制身份及 TRX](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/README.md)
+- 用户失败机器方法/断言/堆栈、DLL 身份仍缺，R08-01 报告不能关闭。下一项按新截图继续跨页缩窗换行间距、标题单列与辅助文案审计。
+
+
 ## 2026-09-30 窄窗行距与紧凑标题复核
 
 - 已推送 `dc7f97cfa49724778c4987224c9f736c744b3631`：换行操作组间距提高到 `12 DIP` 且宽态复原；紧凑外壳标题/全局选择与操作上下堆叠；主备份图标与按钮字色统一。证据、TRX、DLL SHA/MVID、RenderHarness 报告：[紧凑窗口复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)。

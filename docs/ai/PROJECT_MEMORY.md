@@ -11,6 +11,12 @@
 - 下一项可执行 R08-02：先核对当前 system/app 动效开关订阅与热关闭测试对照；R08-01 用户报告仍缺失败机器原始 log/TRX。不可将受控 WPF 结果写成真实宿主验证。
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 R08-01 当前身份复测
+
+- `dc7f97cf` Release `R08MotionReverseBehaviorTests` 当前本机 `2/2`、exit `0`，未重现用户 `1/2`；TRX 收尾 1 条 TextServices `InvalidComObjectException`，根因未知。证据：[R08-01 当前 main](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 用户失败原始方法/断言/堆栈与运行 DLL 身份仍缺，不要将本机复测写成用户故障已修。当前继续用户新报的全页紧凑窗口审计。
+
+
 ## 2026-09-30 窄窗行距和标题
 
 - 当前生产源码 `dc7f97cfa49724778c4987224c9f736c744b3631` 已推送 main。紧凑换行行距 `12 DIP`，宽态恢复；紧凑标题区为上下单列；备份图标色与主要按钮文字统一。不要把这批离屏/受控 STA 结果称为 Playnite/物理 DPI 验收。

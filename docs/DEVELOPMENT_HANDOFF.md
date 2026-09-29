@@ -11,6 +11,13 @@
 - 下一项核对 R08-02 动效设置热关闭；Media Inbox 同宿主滚动日志和 R08-01 用户失败原始 TRX 仍是独立边界。
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-30：R08-01 当前身份复测）
+
+- `dc7f97cf` Release `R08MotionReverseBehaviorTests` 本机复跑 `2/2`、exit `0`，没有重现用户摘要 `1/2` 失败。TRX 有一条测试成功后的 TextServices COM 清理异常记录，根因未知。
+- 用户失败机器的原始 log/TRX、失败方法/断言/堆栈及 DLL 身份仍待提供；当前结果仅为本机未复现。证据：[R08-01 复测](design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 下一项按最新截图继续跨页面 compact 布局、辅助文案和主题文字颜色审计；真实 Playnite/DPI 与 Media Inbox 宿主滚动边界仍分开保留。
+
+
 ## 当前交接补充（2026-09-30：窄窗换行行距与标题单列）
 
 - `dc7f97cfa49724778c4987224c9f736c744b3631` 已提交并推送 main。存档/媒体/任务/外壳真实生产 `WrapPanel` 的紧凑换行间距改为 `12 DIP` 且宽态可逆恢复；小于 `1280 DIP` 的 shell 标题/全局选择与动作切换为单列上下排布。主备份 icon 改用按钮的 on-accent 文字色，对比度 Light/Dark `5.09/6.96:1`。
