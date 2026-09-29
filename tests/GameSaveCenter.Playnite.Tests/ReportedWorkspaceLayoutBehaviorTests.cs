@@ -564,6 +564,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var themeAccentColor = Colors.Transparent;
         var metricInfoColor = Colors.Transparent;
         var metricMinContrast = 0d;
+        var cloudQueueMetricMinContrast = 0d;
+        var cloudAttentionTitleMinContrast = 0d;
 
         RunSta(() =>
         {
@@ -577,6 +579,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var hint = (TextBlock)viewType.GetField("OverviewHomeEmptyHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var toolbar = (Border)viewType.GetField("OverviewHomeToolbar", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var metric = (TextBlock)viewType.GetField("OverviewManagedGamesValue", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var cloudQueueMetric = (TextBlock)viewType.GetField("OverviewCloudQueueValue", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var priorityTitle = (TextBlock)viewType.GetField("OverviewPriorityTitleText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var cloudStatus = (TextBlock)viewType.GetField("OverviewCloudStatusText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var actionPanel = (WrapPanel)viewType.GetField("OverviewHomeToolbarActions", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                 window = CreateWindow(view, 620, 700);
@@ -598,7 +603,13 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 loadedHeaderHeight = toolbar.ActualHeight;
                 var accent = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscAccentBrush"));
                 var info = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscInfoBrush"));
+                var warning = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscWarningBrush"));
                 var foreground = Assert.IsType<SolidColorBrush>(metric.Foreground);
+                var cloudQueueForeground = Assert.IsType<SolidColorBrush>(cloudQueueMetric.Foreground);
+                var priorityForeground = Assert.IsType<SolidColorBrush>(priorityTitle.Foreground);
+                var cloudStatusForeground = Assert.IsType<SolidColorBrush>(cloudStatus.Foreground);
+                var cloudQueueAction = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(view)
+                    .Single(button => ReferenceEquals(button.Command, probe.OpenCloudQueueCommand));
                 var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
                     view, glassEnabled: true, strengthPercent: 78, themeMode: theme, highContrastOverride: false);
                 var glass = Assert.IsAssignableFrom<Brush>(view.TryFindResource("GscGlassStrongBrush"));
@@ -611,9 +622,34 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     Colors.Transparent,
                     pressedOpacity: 1,
                     minimum: 3.0).Min(measurement => measurement.Actual);
+                cloudQueueMetricMinContrast = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                    "Overview cloud queue metric",
+                    cloudQueueForeground.Color,
+                    palette.Background,
+                    GetContrastStops(glass),
+                    Colors.Transparent,
+                    Colors.Transparent,
+                    pressedOpacity: 1,
+                    minimum: 3.0).Min(measurement => measurement.Actual);
+                cloudAttentionTitleMinContrast = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                    "Overview cloud attention title",
+                    priorityForeground.Color,
+                    palette.Background,
+                    GetContrastStops(glass),
+                    Colors.Transparent,
+                    Colors.Transparent,
+                    pressedOpacity: 1,
+                    minimum: 3.0).Min(measurement => measurement.Actual);
                 metricAccentColor = foreground.Color;
                 themeAccentColor = accent.Color;
                 metricInfoColor = info.Color;
+                Assert.Equal("4", cloudQueueMetric.Text);
+                Assert.Equal(themeAccentColor, cloudQueueForeground.Color);
+                Assert.NotEqual(metricInfoColor, cloudQueueForeground.Color);
+                Assert.Equal("4 项云端任务需要处理", priorityTitle.Text);
+                Assert.Equal(warning.Color, priorityForeground.Color);
+                Assert.Equal(info.Color, cloudStatusForeground.Color);
+                Assert.Same(probe.OpenCloudQueueCommand, cloudQueueAction.Command);
 
                 probe.IsDashboardSnapshotLoaded = false;
                 FlushLayout(window);
@@ -629,7 +665,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} overview hint {initialHintVisibility} -> {loadedHintVisibility} -> {restoredHintVisibility}; toolbar {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; managed-games metric #{metricAccentColor}, accent #{themeAccentColor}, info #{metricInfoColor}, minimum contrast={metricMinContrast:0.##}:1");
+        output.WriteLine($"{theme} overview hint {initialHintVisibility} -> {loadedHintVisibility} -> {restoredHintVisibility}; toolbar {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; cloud queue=4 metric accent=#{themeAccentColor}, attention title warning, status capsule info=#{metricInfoColor}, command retained, contrast={metricMinContrast:0.##}/{cloudQueueMetricMinContrast:0.##}/{cloudAttentionTitleMinContrast:0.##}:1");
         Assert.Null(exception);
         Assert.Equal(Visibility.Visible, initialHintVisibility);
         Assert.Equal(Visibility.Collapsed, loadedHintVisibility);
@@ -640,6 +676,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.NotEqual(metricInfoColor, metricAccentColor);
         Assert.True(metricMinContrast >= 3.0,
             $"Large Overview metric text should maintain at least 3:1 contrast across the card surface ({metricMinContrast:0.##}:1).");
+        Assert.True(cloudQueueMetricMinContrast >= 3.0,
+            $"The cloud queue count should maintain at least 3:1 contrast across the card surface ({cloudQueueMetricMinContrast:0.##}:1).");
+        Assert.True(cloudAttentionTitleMinContrast >= 3.0,
+            $"The large cloud attention title should maintain at least 3:1 contrast across the card surface ({cloudAttentionTitleMinContrast:0.##}:1).");
     }
 
     [Theory]
@@ -2089,6 +2129,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 if (isDashboardSnapshotLoaded == value) return;
                 isDashboardSnapshotLoaded = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDashboardSnapshotLoaded)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewCloudQueueDisplay)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewCloudAttentionDisplay)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewPriorityKind)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewPriorityTitle)));
             }
         }
 
@@ -2096,15 +2140,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         {
             ManagedGames = 1302,
             MatchedGames = 1200,
-            CloudTransfers = new CloudTransferSummaryDto()
+            CloudTransfers = new CloudTransferSummaryDto { FailedCount = 4 }
         };
 
         public string OverviewManagedGamesDisplay => "1,302";
+        public string OverviewCloudQueueDisplay => IsDashboardSnapshotLoaded ? Snapshot.CloudTransfers.QueueCount.ToString() : "—";
+        public string OverviewCloudAttentionDisplay => IsDashboardSnapshotLoaded ? $"{Snapshot.CloudTransfers.AttentionCount} 项需关注" : "— 项需关注";
+        public string OverviewPriorityKind => IsDashboardSnapshotLoaded ? "Cloud" : "Loading";
+        public string OverviewPriorityTitle => IsDashboardSnapshotLoaded ? $"{Snapshot.CloudTransfers.AttentionCount} 项云端任务需要处理" : "正在读取概览数据";
         public string OverviewSnapshotScopeDisplay => "全库 · 合成游戏库";
         public string OverviewSnapshotUpdatedDisplay => "更新于刚刚";
         public ICommand RefreshCommand { get; } = new RelayCommand(_ => { });
         public ICommand BackupAllCommand { get; } = new RelayCommand(_ => { });
         public ICommand SyncMediaCommand { get; } = new RelayCommand(_ => { });
+        public ICommand OpenCloudQueueCommand { get; } = new RelayCommand(_ => { });
 
         public event PropertyChangedEventHandler? PropertyChanged;
     }
