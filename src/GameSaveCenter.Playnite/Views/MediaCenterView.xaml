@@ -189,7 +189,36 @@
                      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Border x:Name="MediaInboxInfoBand" Style="{DynamicResource GscRedesignInfoBand}" Margin="0,0,0,10">
                         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel><TextBlock Text="{Binding MediaInboxTitle, Mode=OneWay}" FontSize="16" FontWeight="SemiBold"/><TextBlock x:Name="MediaInboxInfoDescription" Text="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,12,0"/></StackPanel>
+                            <StackPanel>
+                                <TextBlock x:Name="MediaInboxTitleText"
+                                           Text="{Binding MediaInboxTitle, Mode=OneWay}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           ToolTip="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。"
+                                           AutomationProperties.Name="{Binding MediaInboxTitle, Mode=OneWay}"
+                                           AutomationProperties.HelpText="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。"/>
+                                <TextBlock x:Name="MediaInboxInfoDescription"
+                                           Text="归属不明的媒体会留在待归类中，不会自动猜测。"
+                                           Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="CharacterEllipsis"
+                                           Margin="0,4,12,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding MediaInboxMode, Mode=OneWay}" Value="待归类"/>
+                                                        <Condition Binding="{Binding MediaInboxItems.Count, Mode=OneWay}" Value="0"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
                             <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding MediaInboxItems.Count, Mode=OneWay}" FontSize="18" FontWeight="SemiBold"/></Border>
                         </Grid>
                     </Border>

@@ -223,6 +223,96 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var populatedVisibility = Visibility.Visible;
+        var emptyVisibility = Visibility.Collapsed;
+        var restoredVisibility = Visibility.Visible;
+        var ignoredVisibility = Visibility.Visible;
+        var populatedHintHeight = 0d;
+        var emptyHintHeight = 0d;
+        var restoredHintHeight = 0d;
+        var populatedBandHeight = 0d;
+        var emptyBandHeight = 0d;
+        var restoredBandHeight = 0d;
+        var visibleCopy = string.Empty;
+        var titleAutomationName = string.Empty;
+        var accessibleHelp = string.Empty;
+        var titleToolTip = string.Empty;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var mediaContext = CreateMediaContext();
+                var firstMedia = mediaContext.MediaInboxItems[0];
+                var view = new MediaCenterView { DataContext = mediaContext };
+                ApplyTheme(view, theme);
+                window = CreateWindow(view, 1280, 720);
+                window.Show();
+
+                var viewType = typeof(MediaCenterView);
+                var hint = (TextBlock)viewType.GetField("MediaInboxInfoDescription", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var title = (TextBlock)viewType.GetField("MediaInboxTitleText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var band = (FrameworkElement)viewType.GetField("MediaInboxInfoBand", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                FlushLayout(window);
+                populatedVisibility = hint.Visibility;
+                populatedHintHeight = hint.ActualHeight;
+                populatedBandHeight = band.ActualHeight;
+                titleAutomationName = AutomationProperties.GetName(title) ?? string.Empty;
+                accessibleHelp = AutomationProperties.GetHelpText(title) ?? string.Empty;
+                titleToolTip = title.ToolTip as string ?? string.Empty;
+
+                mediaContext.MediaInboxItems.Clear();
+                FlushLayout(window);
+                emptyVisibility = hint.Visibility;
+                emptyHintHeight = hint.ActualHeight;
+                emptyBandHeight = band.ActualHeight;
+                visibleCopy = hint.Text;
+
+                mediaContext.MediaInboxItems.Add(firstMedia);
+                FlushLayout(window);
+                restoredVisibility = hint.Visibility;
+                restoredHintHeight = hint.ActualHeight;
+                restoredBandHeight = band.ActualHeight;
+
+                mediaContext.MediaInboxItems.Clear();
+                mediaContext.MediaInboxMode = "已忽略";
+                FlushLayout(window);
+                ignoredVisibility = hint.Visibility;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} Media Inbox policy copy: helper={populatedVisibility}/{populatedHintHeight:0.##} DIP -> {emptyVisibility}/{emptyHintHeight:0.##} DIP -> {restoredVisibility}/{restoredHintHeight:0.##} DIP; info band={populatedBandHeight:0.##}->{emptyBandHeight:0.##}->{restoredBandHeight:0.##} DIP; ignored={ignoredVisibility}; text={visibleCopy}; title={titleAutomationName}; UIA={accessibleHelp}; tooltip={titleToolTip}");
+        Assert.Null(exception);
+        Assert.Equal(Visibility.Collapsed, populatedVisibility);
+        Assert.Equal(0, populatedHintHeight);
+        Assert.Equal(Visibility.Visible, emptyVisibility);
+        Assert.True(emptyHintHeight >= 10, $"the no-data policy hint should have a visible line height ({emptyHintHeight:0.##} DIP)");
+        Assert.Equal("归属不明的媒体会留在待归类中，不会自动猜测。", visibleCopy);
+        Assert.Equal("待归类媒体", titleAutomationName);
+        Assert.Contains("公共截图和录像", accessibleHelp, StringComparison.Ordinal);
+        Assert.Contains("不会静默猜测", accessibleHelp, StringComparison.Ordinal);
+        Assert.Contains("不会静默猜测", titleToolTip, StringComparison.Ordinal);
+        Assert.Equal(Visibility.Collapsed, restoredVisibility);
+        Assert.Equal(0, restoredHintHeight);
+        Assert.InRange(Math.Abs(restoredBandHeight - populatedBandHeight), 0, 1);
+        Assert.Equal(Visibility.Collapsed, ignoredVisibility);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
@@ -1723,7 +1813,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         {
             Games = new ObservableCollection<SyntheticGameTarget> { target },
             SelectedGame = target,
-            MediaInboxItems = Enumerable.Range(0, 80).Select(index => new MediaItemDto
+            MediaInboxItems = new ObservableCollection<MediaItemDto>(Enumerable.Range(0, 80).Select(index => new MediaItemDto
             {
                 MediaId = "layout-media-" + index,
                 Kind = MediaKind.Screenshot,
@@ -1734,7 +1824,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 CapturedUtc = DateTime.UtcNow.AddMinutes(-index),
                 ClassificationState = "Inbox",
                 ClassificationReason = "Synthetic layout row"
-            }).ToArray()
+            }))
         };
     }
 
@@ -1885,8 +1975,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedGame)));
             }
         }
-        public MediaItemDto[] MediaInboxItems { get; set; } = Array.Empty<MediaItemDto>();
-        public string MediaInboxMode { get; set; } = "待归类";
+        public ObservableCollection<MediaItemDto> MediaInboxItems { get; set; } = new();
+        private string mediaInboxMode = "待归类";
+        public string MediaInboxMode
+        {
+            get => mediaInboxMode;
+            set
+            {
+                if (string.Equals(mediaInboxMode, value, StringComparison.Ordinal)) return;
+                mediaInboxMode = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MediaInboxMode)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MediaInboxTitle)));
+            }
+        }
+        public string MediaInboxTitle => MediaInboxMode == "已忽略" ? "已忽略媒体" : "待归类媒体";
         public int MediaTabIndex { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
