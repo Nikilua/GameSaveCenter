@@ -1,6 +1,6 @@
 # R01-03 / R01-06 当前 main 受控审计归档
 
-源码提交：`dc7f97cfa49724778c4987224c9f736c744b3631`。RenderHarness 在同一提交 clean tree 上生成审计；`audit-metadata.json` 保留了源码身份、逻辑窗口数据与运行环境字段，删除了仅本机有效的临时输出路径。
+源码提交：`dc7f97cfa49724778c4987224c9f736c744b3631`。RenderHarness 在同一提交 clean tree 上生成审计。归档副本保留源码身份、逻辑窗口数据、运行环境字段和 repo-relative 源码位置；移除了机器专属 `RepositoryRoot` 与生成器临时 `ZipPath`。
 
 ## 当前审计结果
 

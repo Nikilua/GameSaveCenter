@@ -1,3 +1,8 @@
+## 2026-09-30 R00/R01 审计证据校正
+
+- 当前 audit 以 `dc7f97cf` 生产源码身份为准：168 个快照、110 条警告、0 HIGH / 7 MEDIUM / 0 Fidelity / 0 failed routes；账本已修正过期的 103/0 MEDIUM 数字，保留工具栏垂直扩展风险。R01 索引 `20/20`，源码审计测试 `6/6`，R00/R01 freshness `14/14 FRESH`。
+- 归档 JSON 移除了仅本机有效的仓库根路径和已清理的临时 zip 路径。测试仍为受控 WPF/合成数据；没有新做 Playnite/物理 DPI 验收。证据入口：[R01-06 当前审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260930/README.md)。
+- 下一项审阅 R08-02 动画热关闭运行时条件；Media Inbox 真实滚动错位与 R08-01 用户侧失败仍保留原未验边界。
 # GameSaveCenter 当前事实入口
 
 ## 2026-09-30 窄窗行距与紧凑标题复核

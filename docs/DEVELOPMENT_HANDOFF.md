@@ -1,3 +1,8 @@
+## 当前交接补充（2026-09-30：R00/R01 审计证据校正）
+
+- 生产代码审计身份是 `dc7f97cfa49724778c4987224c9f736c744b3631`；当前 168 snapshots、110 warnings、0 HIGH/7 MEDIUM/0 Fidelity/0 failed routes。R00-06/07 与 R01-03/06 的账本行已从旧 `103/0` 数字校正；R01 E01–E20 `20/20`、源码审计 `6/6`、R00/R01 freshness `14/14`。
+- 归档剔除了机器专属 RepositoryRoot 和已清理 `.tmp` ZipPath；保留 repo-relative 源文件路径、身份、报告与精选离屏截图。没有启动真实 Playnite或声称物理 DPI/最终帧通过。[R01-06 当前审计](design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260930/README.md)
+- 下一项核对 R08-02 动效设置热关闭；Media Inbox 同宿主滚动日志和 R08-01 用户失败原始 TRX 仍是独立边界。
 # GameSaveCenter 持续维护交接与开发入口
 
 ## 当前交接补充（2026-09-30：窄窗换行行距与标题单列）

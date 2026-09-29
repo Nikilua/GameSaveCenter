@@ -1,3 +1,8 @@
+## 2026-09-30 R00/R01 证据新鲜度纠正
+
+- `ROUND3_PROGRESS.md` 的 R00-06/07、R01-03/06 旧行曾残留 9/28 的 `103 warnings / 0 HIGH / 0 MEDIUM`。当前 `dc7f97cf` 审计是 168 snapshots、110 warnings、0 HIGH/7 MEDIUM/0 Fidelity/0 failed routes；修正后仍明确保留 7 条工具栏垂直扩展风险。R01 E01–E20 校验 20/20、UiAuditSourceTests 6/6、R00/R01 freshness 14/14。
+- 归档 manifest/metadata 不得携带机器本地 RepositoryRoot 或指向已清理 `.tmp` 的 ZipPath。当前副本已剔除这两项，repo-relative 源路径与代码身份保留。
+- 下一项可执行 R08-02：先核对当前 system/app 动效开关订阅与热关闭测试对照；R08-01 用户报告仍缺失败机器原始 log/TRX。不可将受控 WPF 结果写成真实宿主验证。
 # GameSaveCenter AI/Codex 长期项目记忆
 
 ## 2026-09-30 窄窗行距和标题

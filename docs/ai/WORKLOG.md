@@ -9837,3 +9837,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 行为几何、材料 SHA/MVID、Microsoft 色彩准则链接和精选截图：[用户紧凑布局证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)；审计索引、摘要与图：[R01-06 current audit](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260930/README.md)。
 - R00-06 和 Q14 测试的 TRX 额外分别记录 `2` 和 `18` 条 `TextServicesHost.OnUnregisterTextStore` `InvalidComObjectException` 清理输出；xUnit 仍明确 `13/13`、`1/1`、退出码 `0`，根因未知，不记为产品修复。没有安装/启动 Playnite、触碰用户数据或验证物理 DPI/最终宿主帧；Media Inbox 滚动偏移仍待同一安全宿主进程的前后 `[GSC-GRID-DIAGNOSTIC]`。本轮不改 192 项状态/总数。
 - 下一项继续查剩余可见窄窗 WrapPanel 和已加载数据时的静态说明；按 actual wrapping 和辅助语义逐组处理，不机械全局改动。真实媒体滚动诊断条件可用后先校验 DLL/MVID、窗口 DIP、DPI、主题和同坐标系 header/presenter/首行/页面偏移。
+# 2026-09-30 R00/R01 当前审计证据与账本校正
+
+- 核对代码身份 `dc7f97cfa49724778c4987224c9f736c744b3631` 的 R01-06 archive 与原始 `AUDIT_SUMMARY.md` 后，发现 Round3 状态表 R00-06/07、R01-03/06 仍拷贝旧审计 `103 warnings / 0 HIGH / 0 MEDIUM`。这些行已改为当前实际 `168 snapshots / 110 warnings / 0 HIGH / 7 MEDIUM / 0 Fidelity / 0 failed routes`，不隐藏七条工具栏垂直扩展风险。
+- 依据 post-commit 证据刷新 R00-04/06/08、R01-03/05/06/07 的测试身份和证据直达入口；不改变状态或 192 项总数。当前索引 validator 与 freshness 后续实测结果见本次提交。
+- `audit-metadata.json` 的 ZipPath 指向已清理 `.tmp/user-compact-ui-20260930`，`UI_MANIFEST.json` 含本机 RepositoryRoot。归档副本已分别删除这两个环境路径，保留 repo-relative 源码位置、commit identity 和窗口/主题数据；证据 README 同步说明。
+- 未改生产代码、未启动 Playnite、未访问真实业务数据。下一项先检查 R08-02 当前 system/app motion toggle 的生产订阅与实际状态测试；R08-01 用户侧失败仍无原始断言/堆栈/TRX。
