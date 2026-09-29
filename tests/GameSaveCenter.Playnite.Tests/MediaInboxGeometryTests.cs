@@ -52,17 +52,17 @@ public sealed class MediaInboxGeometryTests
                 window = new Window
                 {
                     Content = view,
-                    Width = 760,
+                    Width = 700,
                     Height = 600,
                     ShowInTaskbar = false,
                     ShowActivated = false,
                     WindowStyle = WindowStyle.None,
                     Opacity = 0.01
                 };
-                view.ApplyResponsiveLayout(760, 600);
+                view.ApplyResponsiveLayout(700, 600);
                 window.Show();
                 window.UpdateLayout();
-                view.ApplyResponsiveLayout(760, 600);
+                view.ApplyResponsiveLayout(700, 600);
                 window.UpdateLayout();
 
                 var row = FindVisualChildren<DataGridRow>(grid)
@@ -127,17 +127,17 @@ public sealed class MediaInboxGeometryTests
                 window = new Window
                 {
                     Content = view,
-                    Width = 760,
+                    Width = 700,
                     Height = 600,
                     ShowInTaskbar = false,
                     ShowActivated = false,
                     WindowStyle = WindowStyle.None,
                     Opacity = 0.01
                 };
-                view.ApplyResponsiveLayout(760, 600);
+                view.ApplyResponsiveLayout(700, 600);
                 window.Show();
                 window.UpdateLayout();
-                view.ApplyResponsiveLayout(760, 600);
+                view.ApplyResponsiveLayout(700, 600);
                 window.UpdateLayout();
 
                 verticalVisibility = pageScroller.VerticalScrollBarVisibility;

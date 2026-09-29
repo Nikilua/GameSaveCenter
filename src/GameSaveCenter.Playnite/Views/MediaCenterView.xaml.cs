@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.Views
         private DashboardViewModel? attachedViewModel;
         private readonly HashSet<string> selectedMediaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
+        private readonly WrapPanelRowGapController mediaFilterPresetRowGap;
         private readonly WrapPanelRowGapController mediaInboxActionRowGap;
         private ScrollAnchor? pendingMediaAnchor;
         private ScrollAnchor? pendingInboxAnchor;
@@ -44,6 +45,7 @@ namespace GameSaveCenter.Playnite.Views
         public MediaCenterView()
         {
             InitializeComponent();
+            mediaFilterPresetRowGap = new WrapPanelRowGapController(MediaFilterPresetRow);
             mediaInboxActionRowGap = new WrapPanelRowGapController(MediaInboxBatchActionRow);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
@@ -338,6 +340,9 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
+                // The filter preset controls wrap below the measured 720 DIP page width.
+                // Add room between wrapped rows and restore authored margins once they fit.
+                mediaFilterPresetRowGap.SetRowGap(width < 720d ? 8d : 0d);
                 var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
                 var compactBatchActions = batchActionWidth > 0
                     ? batchActionWidth < 960

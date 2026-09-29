@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -314,6 +315,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var inboxCompactGap = 0d;
         var inboxWideRows = 0;
         var inboxWideBottomMargin = 0d;
+        var mediaPresetSamples = new List<string>();
 
         RunSta(() =>
         {
@@ -362,6 +364,52 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 FlushLayout(mediaWindow);
                 (inboxWideRows, _) = MeasureWrapRows(inboxActions, mediaView);
                 inboxWideBottomMargin = inboxActions.Children.OfType<FrameworkElement>().Max(child => child.Margin.Bottom);
+
+                var presetRow = (WrapPanel)typeof(MediaCenterView)
+                    .GetField("MediaFilterPresetRow", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(mediaView)!;
+                foreach (var width in new[] { 520d, 620d, 700d, 720d, 800d, 900d, 1040d })
+                {
+                    mediaWindow.Width = width;
+                    mediaView.ApplyResponsiveLayout(width, 720);
+                    FlushLayout(mediaWindow);
+                    mediaView.ApplyResponsiveLayout(width, 720);
+                    FlushLayout(mediaWindow);
+                    var (rows, gap) = MeasureWrapRows(presetRow, mediaView);
+                    if (rows > 1)
+                    {
+                        Assert.True(gap >= 7.5,
+                            $"{theme} media filter preset rows at {width:0} DIP need at least 7.5 DIP breathing room; actual gap={gap:0.##} DIP.");
+                        Assert.All(presetRow.Children.OfType<FrameworkElement>(), child =>
+                            Assert.Equal(8d, child.Margin.Bottom));
+                    }
+                    else
+                    {
+                        Assert.All(presetRow.Children.OfType<FrameworkElement>(), child =>
+                            Assert.Equal(0d, child.Margin.Bottom));
+                    }
+                    var contentWidth = presetRow.Children.OfType<FrameworkElement>()
+                        .Where(child => child.Visibility == Visibility.Visible)
+                        .Sum(child => child.DesiredSize.Width + child.Margin.Left + child.Margin.Right);
+                    mediaPresetSamples.Add($"{width:0} DIP: {rows} rows, gap={gap:0.##} DIP, panel={presetRow.ActualWidth:0.##} DIP, content={contentWidth:0.##} DIP");
+                }
+
+                mediaWindow.Width = 700d;
+                mediaView.ApplyResponsiveLayout(700, 720);
+                FlushLayout(mediaWindow);
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 7.5,
+                    "Media filter preset rows should regain their gap after resizing back to 700 DIP.");
+                mediaWindow.Width = 720d;
+                mediaView.ApplyResponsiveLayout(720, 720);
+                FlushLayout(mediaWindow);
+                Assert.Equal(1, MeasureWrapRows(presetRow, mediaView).RowCount);
+                Assert.All(presetRow.Children.OfType<FrameworkElement>(), child =>
+                    Assert.Equal(0d, child.Margin.Bottom));
+                mediaWindow.Width = 700d;
+                mediaView.ApplyResponsiveLayout(700, 720);
+                FlushLayout(mediaWindow);
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 7.5,
+                    "Media filter preset row gap should survive a 700→720→700 DIP resize round trip.");
             }
             catch (Exception caught)
             {
@@ -375,6 +423,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         });
 
         output.WriteLine($"{theme} Save rows={saveCompactRows}, gap={saveCompactGap:0.##} DIP, wide rows={saveWideRows}, restored bottom={saveWideBottomMargin:0.##}; Inbox rows={inboxCompactRows}, gap={inboxCompactGap:0.##} DIP, wide rows={inboxWideRows}, restored bottom={inboxWideBottomMargin:0.##}");
+        foreach (var sample in mediaPresetSamples)
+            output.WriteLine($"{theme} Media preset {sample}");
         Assert.Null(exception);
         Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
         Assert.True(saveCompactGap >= 7.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");

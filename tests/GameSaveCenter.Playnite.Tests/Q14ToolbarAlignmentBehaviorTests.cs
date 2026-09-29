@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -76,6 +77,48 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 {
                     reports.Add(MeasureSearchViewport(scenario.Item1, scenario.Width));
                 }
+                foreach (var scenario in new[]
+                {
+                    (GameSaveCenterThemeMode.Light, Width: 520d),
+                    (GameSaveCenterThemeMode.Dark, Width: 520d),
+                    (GameSaveCenterThemeMode.Light, Width: 560d),
+                    (GameSaveCenterThemeMode.Dark, Width: 560d),
+                    (GameSaveCenterThemeMode.Light, Width: 620d),
+                    (GameSaveCenterThemeMode.Dark, Width: 620d),
+                    (GameSaveCenterThemeMode.Light, Width: 640d),
+                    (GameSaveCenterThemeMode.Dark, Width: 640d),
+                    (GameSaveCenterThemeMode.Light, Width: 650d),
+                    (GameSaveCenterThemeMode.Dark, Width: 650d),
+                    (GameSaveCenterThemeMode.Light, Width: 654d),
+                    (GameSaveCenterThemeMode.Dark, Width: 654d),
+                    (GameSaveCenterThemeMode.Light, Width: 656d),
+                    (GameSaveCenterThemeMode.Dark, Width: 656d),
+                    (GameSaveCenterThemeMode.Light, Width: 657d),
+                    (GameSaveCenterThemeMode.Dark, Width: 657d),
+                    (GameSaveCenterThemeMode.Light, Width: 658d),
+                    (GameSaveCenterThemeMode.Dark, Width: 658d),
+                    (GameSaveCenterThemeMode.Light, Width: 659d),
+                    (GameSaveCenterThemeMode.Dark, Width: 659d),
+                    (GameSaveCenterThemeMode.Light, Width: 660d),
+                    (GameSaveCenterThemeMode.Dark, Width: 660d),
+                    (GameSaveCenterThemeMode.Light, Width: 680d),
+                    (GameSaveCenterThemeMode.Dark, Width: 680d),
+                    (GameSaveCenterThemeMode.Light, Width: 720d),
+                    (GameSaveCenterThemeMode.Dark, Width: 720d),
+                    (GameSaveCenterThemeMode.Light, Width: 740d),
+                    (GameSaveCenterThemeMode.Dark, Width: 740d),
+                    (GameSaveCenterThemeMode.Light, Width: 760d),
+                    (GameSaveCenterThemeMode.Dark, Width: 760d),
+                    (GameSaveCenterThemeMode.Light, Width: 780d),
+                    (GameSaveCenterThemeMode.Dark, Width: 780d),
+                    (GameSaveCenterThemeMode.Light, Width: 800d),
+                    (GameSaveCenterThemeMode.Dark, Width: 800d),
+                    (GameSaveCenterThemeMode.Light, Width: 820d),
+                    (GameSaveCenterThemeMode.Dark, Width: 820d)
+                })
+                {
+                    reports.Add(MeasurePresetWrapRows(scenario.Item1, scenario.Width));
+                }
             }
             catch (Exception caught)
             {
@@ -88,9 +131,137 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         thread.Join();
 
         Assert.Null(exception);
-        Assert.Equal(24, reports.Count);
+        Assert.Equal(60, reports.Count);
         foreach (var report in reports)
             output.WriteLine(report);
+    }
+
+    private static string MeasurePresetWrapRows(GameSaveCenterThemeMode theme, double width)
+    {
+        EnsureApplication();
+        var view = new TaskCenterView { DataContext = new TaskToolbarFixture() };
+        var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled: true, strengthPercent: 78, theme);
+        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
+        var presetRow = GetField<WrapPanel>(view, "TaskFilterPresetRow");
+
+        foreach (var combo in presetRow.Children.OfType<ComboBox>())
+        {
+            combo.ItemsSource = new[] { "全部", "失败" };
+            combo.SelectedIndex = 0;
+        }
+        foreach (var textBox in presetRow.Children.OfType<TextBox>())
+            textBox.Text = "我的预设";
+
+        var window = new Window
+        {
+            Content = view,
+            Width = width,
+            Height = 700,
+            WindowStyle = WindowStyle.None,
+            ResizeMode = ResizeMode.NoResize,
+            ShowInTaskbar = false,
+            ShowActivated = false,
+            Opacity = 0.01
+        };
+
+        try
+        {
+            view.ApplyResponsiveLayout(width, 700d);
+            window.Show();
+            FlushLayout(window);
+            view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+            FlushLayout(window);
+
+            var bounds = presetRow.Children
+                .OfType<FrameworkElement>()
+                .Select(element => GetBounds(element, presetRow))
+                .Where(rect => rect.Width > 0 && rect.Height > 0)
+                .ToArray();
+            var rows = GroupRectsByRow(bounds);
+
+            Assert.NotEmpty(bounds);
+            Assert.True(presetRow.ActualWidth > 0,
+                $"{theme} {width:0} DIP task preset row was not arranged.");
+            var rowGap = GetMinimumRowGap(rows);
+            if (rows.Count > 1)
+            {
+                Assert.True(rowGap >= 7.25d,
+                    $"{theme} {width:0} DIP wrapped task preset rows need at least 7.25 DIP; actual gap={rowGap:0.###} DIP, rows={string.Join(";", rows.Select(row => string.Join(",", row.Select(rect => $"{rect.Top:0.##}/{rect.Height:0.##}"))))}.");
+                Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
+                    Assert.True(element.Margin.Bottom == 8d,
+                        $"{theme} {width:0} DIP wrapped preset child {element.GetType().Name} needs an 8 DIP row margin, got {element.Margin.Bottom:0.###} DIP."));
+            }
+            else
+            {
+                Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
+                    Assert.True(element.Margin.Bottom == 0d,
+                        $"{theme} {width:0} DIP single-row preset child {element.GetType().Name} should restore its authored margin, got {element.Margin.Bottom:0.###} DIP."));
+            }
+
+            var resizeRoundTrip = string.Empty;
+            if (theme == GameSaveCenterThemeMode.Light && width == 620d)
+            {
+                window.Width = 660d;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                FlushLayout(window);
+                Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
+                    Assert.Equal(0d, element.Margin.Bottom));
+                Assert.Single(GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
+                    .Select(element => GetBounds(element, presetRow)).ToArray()));
+
+                window.Width = 620d;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                FlushLayout(window);
+                Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
+                    Assert.Equal(8d, element.Margin.Bottom));
+                var returnedGap = GetMinimumRowGap(GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
+                    .Select(element => GetBounds(element, presetRow)).ToArray()));
+                Assert.True(returnedGap >= 7.25d,
+                    $"Resize back to 620 DIP restored only {returnedGap:0.###} DIP between wrapped preset rows.");
+                resizeRoundTrip = "; 620→660→620 resize restores row gap and original margins";
+            }
+            var rowSummary = string.Join(";", rows.Select(row =>
+                $"top={row.Min(rect => rect.Top):0.##},bottom={row.Max(rect => rect.Bottom):0.##},items={row.Count}"));
+            var childMargins = string.Join(";", presetRow.Children.OfType<FrameworkElement>().Select(element =>
+                $"{element.GetType().Name}:{element.Margin.Left:0.##},{element.Margin.Top:0.##},{element.Margin.Right:0.##},{element.Margin.Bottom:0.##}"));
+            return $"theme={theme}; width={width:0} DIP; panel={presetRow.ActualWidth:0.##}; rows={rows.Count}; rowGap={rowGap:0.##}; rowBounds=[{rowSummary}]; margins=[{childMargins}]{resizeRoundTrip}";
+        }
+        finally
+        {
+            if (window.IsVisible)
+                window.Close();
+        }
+    }
+
+    private static System.Collections.Generic.List<System.Collections.Generic.List<Rect>> GroupRectsByRow(IEnumerable<Rect> bounds)
+    {
+        var rows = new System.Collections.Generic.List<System.Collections.Generic.List<Rect>>();
+        foreach (var rect in bounds.Where(rect => rect.Width > 0 && rect.Height > 0).OrderBy(rect => rect.Top))
+        {
+            var row = rows.FirstOrDefault(candidate =>
+                Math.Abs(candidate[0].Top + candidate[0].Height / 2 - (rect.Top + rect.Height / 2)) <= GeometryTolerance);
+            if (row is null)
+            {
+                row = new System.Collections.Generic.List<Rect>();
+                rows.Add(row);
+            }
+            row.Add(rect);
+        }
+
+        return rows;
+    }
+
+    private static double GetMinimumRowGap(System.Collections.Generic.List<System.Collections.Generic.List<Rect>> rows)
+    {
+        if (rows.Count < 2)
+            return double.NaN;
+
+        var orderedRows = rows.OrderBy(row => row.Min(rect => rect.Top)).ToArray();
+        return orderedRows.Skip(1)
+            .Select((row, index) => row.Min(rect => rect.Top) - orderedRows[index].Max(rect => rect.Bottom))
+            .Min();
     }
 
     private static string MeasureSearchViewport(GameSaveCenterThemeMode theme, double width)

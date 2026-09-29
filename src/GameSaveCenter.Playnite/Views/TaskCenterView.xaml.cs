@@ -16,6 +16,7 @@ namespace GameSaveCenter.Playnite.Views
     {
         private bool isApplyingLayout;
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
+        private readonly WrapPanelRowGapController taskFilterPresetRowGap;
         private bool taskInspectorOpen;
         private DataGridColumnLayoutController? columnLayout;
         private DataGridStableSortController? sortController;
@@ -26,6 +27,7 @@ namespace GameSaveCenter.Playnite.Views
         public TaskCenterView()
         {
             InitializeComponent();
+            taskFilterPresetRowGap = new WrapPanelRowGapController(TaskFilterPresetRow);
             DataGridScrollDiagnostics.Attach(TaskGrid, "TaskGrid", GetScrollDiagnosticContext);
             TaskGrid.Loaded += OnTaskGridLoaded;
             TaskGrid.Unloaded += OnTaskGridUnloaded;
@@ -266,6 +268,10 @@ namespace GameSaveCenter.Playnite.Views
                 // search cell, hiding the right edge under the next filter.  Keep secondary
                 // filters in the disclosure until the complete row fits.
                 var compactFilters = width < 1216;
+                // The preset row wraps below 657 DIP in the production template.
+                // Keep a visible gap between those rows, then restore the authored
+                // margins as soon as all preset controls fit on one line again.
+                taskFilterPresetRowGap.SetRowGap(width < 657d ? 8d : 0d);
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
                 TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);
