@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Trainer 导入确认空态提示
+
+- 有待确认游戏工具时折叠静态“没有待确认项目”提示；选择器、确认/取消按钮、所选项和命令绑定仍可用。提交后 Release `0/0`、XAML `24/24`、行为 `3/3`、R00-07 源码审计 `6/6`、source validation 通过。
+- R00-07 freshness 基线更新到源码提交 `98800f1a`，14 条记录 `14 fresh / 0 stale`。几何 JSON、TRX、DLL 身份及边界：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-IMPORT-COPY-20260929/README.md)。
+- 离屏/合成 WPF 验证，没有启动真实 Playnite或物理 DPI。下一项审核 Task Center 的辅助说明与蓝色状态文案，保留后台任务语义并缩短视觉占用。
+
 ## 2026-09-29 概览空状态文案与语义颜色
 
 - “今日工作台”加载快照后隐藏泛化说明，未加载时保留短提示；首页统计值改用主题强调色，Maintenance 动作分类改用次级文字色，信息蓝保留给真实语义反馈。Release `0 warning / 0 error`、XAML `24/24`、定向 WPF `8/8`、source validator 通过、RenderHarness 全矩阵 `render-qa OK`。对比度、DLL 身份、截图和 TRX：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。

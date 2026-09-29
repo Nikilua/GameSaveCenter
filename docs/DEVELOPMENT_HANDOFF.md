@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-29：Trainer 导入提示）
+
+- 已提交源码 `98800f1a`：Trainer 导入确认页在有待确认项目时收起空态提示；浅/深色下选择器、选中项、确认/取消按钮与命令保持有效。Release `0/0`、XAML `24/24`、行为 `3/3`、R00-07 审计源码 `6/6`，证据含 post-commit Release 测试/插件 DLL SHA-256、MVID、compact/wide 几何 JSON 与 TRX。
+- freshness baseline 的 R00-07 `sourceCommit` 已更新为 `98800f1a`，检查结果 `14 fresh / 0 stale`。没有变更 192 项任务状态或宣称 R00-07 更高等级的宿主验证。
+- 下一项：核对 Task Center 头部/队列说明的可见状态和主题资源，精简重复静态字句；保留离页后任务继续运行这一必要提示及 UI Automation 帮助语义。真实 Playnite、物理 DPI、Media Inbox 滚动同进程日志仍未验证。
+
 ## 当前交接（2026-09-29：Q14-03 本地验证收口，继续跨页行距审计）
 
 - 当前代码身份 `5559b0fbc9eba2c14207660628860a6f44b30571`，Q14-03 搜索窄窗溢出已修复并归档。Release 定向 TRX `18/18`、双主题 RenderHarness `render-qa OK`；R00/R01 freshness `14/14 FRESH`，无匹配变更源路径。见[Q14-03 证据](design/reviews/ui-finesse-round3-20260915/evidence/Q14-03-SEARCH-WIDTH-20260929/README.md)。

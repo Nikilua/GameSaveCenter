@@ -1,0 +1,62 @@
+{
+  "RouteId": "trainer-center",
+  "RouteSlug": "trainer-center-导入确认",
+  "TabHeader": "导入确认",
+  "ExpectedPrimaryElement": "",
+  "ActualPrimaryElement": "",
+  "SizeKey": "compact",
+  "Width": 904.0,
+  "Height": 520.0,
+  "WorkspaceHeight": 520.0,
+  "MainListHeight": 0.0,
+  "VerticalFillRatio": 0.0,
+  "TopExternalGap": 0.0,
+  "BottomExternalGap": 0.0,
+  "ScrollViewers": [
+    {
+      "Name": "HeaderScrollViewer",
+      "ActualWidth": 902.0,
+      "ActualHeight": 36.0,
+      "ViewportWidth": 902.0,
+      "ViewportHeight": 36.0,
+      "ExtentWidth": 401.33,
+      "ExtentHeight": 36.0,
+      "ScrollableWidth": 0.0,
+      "ScrollableHeight": 0.0,
+      "VerticalOffset": 0.0,
+      "HorizontalOffset": 0.0,
+      "VerticalScrollBarVisibility": "Disabled",
+      "HorizontalScrollBarVisibility": "Auto",
+      "ParentChain": "TrainerCenterView > Border > ContentPresenter > Grid > TabControl > Grid > Border",
+      "ContainsDataGridOrListBox": false,
+      "IsInternalToDataGridOrListBox": false,
+      "Scrollable": false
+    }
+  ],
+  "DataGrids": [],
+  "ListBoxes": [],
+  "Toolbars": [
+    {
+      "Name": "",
+      "Type": "WrapPanel",
+      "Purpose": "action-toolbar",
+      "Excluded": false,
+      "ExclusionReason": "",
+      "ActualWidth": 760.0,
+      "ActualHeight": 44.0,
+      "DesiredWidth": 760.0,
+      "VisibleWidth": 760.0,
+      "VisibleHeight": 44.0,
+      "AvailableWidth": 760.0,
+      "ChildrenCount": 3,
+      "ActionControlCount": 2,
+      "InputControlCount": 0,
+      "HorizontalOverflow": false,
+      "Reachable": true,
+      "ScrollableAncestor": "",
+      "Expanded": false
+    }
+  ],
+  "MediaInboxGeometry": null,
+  "Warnings": []
+}

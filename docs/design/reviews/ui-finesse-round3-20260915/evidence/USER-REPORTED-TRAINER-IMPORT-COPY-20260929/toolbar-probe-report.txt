@@ -1,0 +1,25 @@
+GameSaveCenter toolbar classification probe
+Generated: 2026-09-29 21:36:25
+EvidenceSource: synthetic WPF panels under a named TrainerToolsSettingsScrollViewer
+Cases: normal long form, same-ancestor wide toolbar, same-ancestor unreachable toolbar
+Scenario: toolbarprobe
+EvidenceSource: OffscreenRenderHarness
+Commit: 4279db19dc58549379d4a4fe0f4b700ed90ba3f2
+WorkingTreeClean: False
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: default WPF palette
+DataVolumes: synthetic TextBox/ComboBox form and Button action rows; 440x240 DIP
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+  normal-form/NormalFormRow: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=342.67x28, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=342.67x28, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=342.67x28, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=342.67x28, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=342.67x24, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=0x0, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=0x0, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  normal-form/: purpose=settings-form, excluded=True, reason=表单输入流：包含输入控件但没有命令按钮, layout=342.67x28, desiredWidth=342.67, visible=0x0, availableWidth=342.67, horizontalOverflow=False, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  wide-toolbar/InjectedWideToolbar: purpose=action-toolbar, excluded=False, reason=, layout=700x36, desiredWidth=700, visible=360x36, availableWidth=360, horizontalOverflow=True, reachable=True, scrollableAncestor=TrainerToolsSettingsScrollViewer
+  unreachable-toolbar/InjectedUnreachableToolbar: purpose=action-toolbar, excluded=False, reason=, layout=660x36, desiredWidth=660, visible=0x0, availableWidth=360, horizontalOverflow=True, reachable=False, scrollableAncestor=TrainerToolsSettingsScrollViewer
+toolbarprobe OK

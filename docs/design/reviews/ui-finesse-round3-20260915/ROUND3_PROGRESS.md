@@ -1,3 +1,9 @@
+## 2026-09-29 用户报告：Trainer 导入确认空态文案
+
+- 源码提交 `98800f1a7cb27bcb6f92c190c7feb5cf3d388c94` 将静态“没有待确认项目”提示绑定为空态：选择待确认 EXE 后提示收起，选择器、选项、确认/取消按钮和真实命令不变。Light/Dark 生产视图行为 `3/3`。
+- 提交后 Release `0 warnings / 0 errors`、XAML `24/24`、`UiAuditSourceTests 6/6`、source validation 通过。compact `904×520 DIP` 与 wide `1596×840 DIP` 几何数据记录工具栏 `44 DIP`、可达且无溢出；R00-07 freshness 更新后 `14 FRESH / 0 STALE`，package identity 未提供。
+- 离屏几何、TRX、插件/测试程序集身份与限制：[Trainer import copy](evidence/USER-REPORTED-TRAINER-IMPORT-COPY-20260929/README.md)。没有启动真实 Playnite、测试物理 125%/150% DPI 或最终呈现；192 项账本计数和状态未变。
+- 下一项继续用户要求的页面文案审查：核对 Task Center 中离页任务提示与队列说明；保留后台任务继续执行的安全语义，只减少重复辅助文字和非语义信息色。Media Inbox 同进程滚动诊断仍未验。
 ## 2026-09-29 概览空状态文案与语义颜色
 
 - “今日工作台”未加载时显示短提示；快照加载后自动收起，状态变回未加载时恢复。生产 WPF Light/Dark 回归测得 header `112→92 DIP`，三条刷新/备份/同步命令仍绑定。

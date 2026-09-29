@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Trainer 导入确认空态文案
+
+- `TrainerCenterView` 的“导入确认”页现在只在无待确认项时显示简短提示；待确认状态折叠它，选框、选择、确认/取消命令保持原样。浅/深色生产视图行为 `3/3`，R00-07 `UiAuditSourceTests` `6/6`。
+- 提交后 Release `0 warning / 0 error`、XAML `24/24`、源码检查通过；R00-07 freshness 记录绑定到 `98800f1a`，总计 `14 fresh / 0 stale`。证据位于 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-IMPORT-COPY-20260929/README.md`。
+- 未验证真实 Playnite/物理 DPI。下一项审核 Task Center 辅助文案的必要语义与主题色，不取消后台任务说明。
+
 ## 2026-09-29 概览空状态文案与语义色复核
 
 - 生产 `OverviewView` 只在快照未加载时显示短提示，Loaded 后折叠并节省 `20 DIP`；统计指标使用主题强调色。`MaintenanceView` 动作分类使用次级文字色，信息蓝仍保留给真实状态/信息。

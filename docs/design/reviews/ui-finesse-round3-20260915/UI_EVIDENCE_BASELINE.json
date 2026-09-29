@@ -85,7 +85,7 @@
     {
       "id": "R00-07",
       "evidence": "evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md",
-      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "sourceCommit": "98800f1a7cb27bcb6f92c190c7feb5cf3d388c94",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
