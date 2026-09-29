@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 概览空状态文案与语义颜色
+
+- “今日工作台”加载快照后隐藏泛化说明，未加载时保留短提示；首页统计值改用主题强调色，Maintenance 动作分类改用次级文字色，信息蓝保留给真实语义反馈。Release `0 warning / 0 error`、XAML `24/24`、定向 WPF `8/8`、source validator 通过、RenderHarness 全矩阵 `render-qa OK`。对比度、DLL 身份、截图和 TRX：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。
+- 本地合成 WPF/离屏验证，不是 Playnite 宿主或物理 DPI/屏幕呈现；Media Inbox 真实滚动空白仍待安全同进程诊断。下一项逐页审核其他带真实数据时仍显示的静态说明。
+
 ## 2026-09-29 Q14-03 搜索视口修复与证据归档
 
 - `5559b0fbc9eba2c14207660628860a6f44b30571` 将 Task Center 紧凑筛选断点扩至 `1216 DIP`；760–1215 DIP 保持搜索、状态和刷新主行，更多筛选仍由现有折叠入口提供。Light/Dark × 7 个搜索尺寸实测输入 viewport 完整、最小 200 DIP、相邻间距 10 DIP、清除按钮和刷新按钮不越界。1040 DIP 旧布局负例重现 `-164.67 DIP` 搜索/状态重叠。

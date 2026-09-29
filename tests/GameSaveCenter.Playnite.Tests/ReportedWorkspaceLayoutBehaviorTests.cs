@@ -379,6 +379,171 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void OverviewHeaderCopyHidesAfterDataLoadsAndMetricUsesThemeAccent(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var initialHintVisibility = Visibility.Collapsed;
+        var loadedHintVisibility = Visibility.Visible;
+        var restoredHintVisibility = Visibility.Collapsed;
+        var initialHeaderHeight = 0d;
+        var loadedHeaderHeight = 0d;
+        var metricAccentColor = Colors.Transparent;
+        var themeAccentColor = Colors.Transparent;
+        var metricInfoColor = Colors.Transparent;
+        var metricMinContrast = 0d;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var probe = new OverviewHeaderCopyProbe();
+                var view = new OverviewView { DataContext = probe };
+                ApplyTheme(view, theme);
+                var viewType = typeof(OverviewView);
+                var hint = (TextBlock)viewType.GetField("OverviewHomeEmptyHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var toolbar = (Border)viewType.GetField("OverviewHomeToolbar", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var metric = (TextBlock)viewType.GetField("OverviewManagedGamesValue", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var actionPanel = (WrapPanel)viewType.GetField("OverviewHomeToolbarActions", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                window = CreateWindow(view, 620, 700);
+                window.Show();
+                view.ApplyResponsiveWidth(620);
+                FlushLayout(window);
+                var actionButtons = actionPanel.Children.OfType<GameSaveCenter.Playnite.Controls.Button>().ToArray();
+                Assert.Equal(3, actionButtons.Length);
+                Assert.Same(probe.RefreshCommand, actionButtons[0].Command);
+                Assert.Same(probe.BackupAllCommand, actionButtons[1].Command);
+                Assert.Same(probe.SyncMediaCommand, actionButtons[2].Command);
+                initialHintVisibility = hint.Visibility;
+                initialHeaderHeight = toolbar.ActualHeight;
+                Assert.Contains("刷新", hint.Text, StringComparison.Ordinal);
+
+                probe.IsDashboardSnapshotLoaded = true;
+                FlushLayout(window);
+                loadedHintVisibility = hint.Visibility;
+                loadedHeaderHeight = toolbar.ActualHeight;
+                var accent = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscAccentBrush"));
+                var info = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscInfoBrush"));
+                var foreground = Assert.IsType<SolidColorBrush>(metric.Foreground);
+                var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
+                    view, glassEnabled: true, strengthPercent: 78, themeMode: theme, highContrastOverride: false);
+                var glass = Assert.IsAssignableFrom<Brush>(view.TryFindResource("GscGlassStrongBrush"));
+                metricMinContrast = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                    "Overview managed games metric",
+                    foreground.Color,
+                    palette.Background,
+                    GetContrastStops(glass),
+                    Colors.Transparent,
+                    Colors.Transparent,
+                    pressedOpacity: 1,
+                    minimum: 3.0).Min(measurement => measurement.Actual);
+                metricAccentColor = foreground.Color;
+                themeAccentColor = accent.Color;
+                metricInfoColor = info.Color;
+
+                probe.IsDashboardSnapshotLoaded = false;
+                FlushLayout(window);
+                restoredHintVisibility = hint.Visibility;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} overview hint {initialHintVisibility} -> {loadedHintVisibility} -> {restoredHintVisibility}; toolbar {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; managed-games metric #{metricAccentColor}, accent #{themeAccentColor}, info #{metricInfoColor}, minimum contrast={metricMinContrast:0.##}:1");
+        Assert.Null(exception);
+        Assert.Equal(Visibility.Visible, initialHintVisibility);
+        Assert.Equal(Visibility.Collapsed, loadedHintVisibility);
+        Assert.Equal(Visibility.Visible, restoredHintVisibility);
+        Assert.True(loadedHeaderHeight < initialHeaderHeight - 4,
+            $"Loaded overview data should reclaim the generic helper line ({initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP).");
+        Assert.Equal(themeAccentColor, metricAccentColor);
+        Assert.NotEqual(metricInfoColor, metricAccentColor);
+        Assert.True(metricMinContrast >= 3.0,
+            $"Large Overview metric text should maintain at least 3:1 contrast across the card surface ({metricMinContrast:0.##}:1).");
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void MaintenanceActionCategoryUsesSecondaryThemeColor(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var categoryColor = Colors.Transparent;
+        var secondaryColor = Colors.Transparent;
+        var infoColor = Colors.Transparent;
+        var categoryMinContrast = 0d;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MaintenanceView();
+                ApplyTheme(view, theme);
+                var template = (DataTemplate)view.FindResource("MaintenanceActionItemTemplate");
+                var item = new MaintenanceActionItem
+                {
+                    Title = "待处理动作",
+                    StatusDisplay = "待处理",
+                    CategoryDisplay = "云端队列",
+                    Detail = "合成布局项"
+                };
+                var presenter = new ContentPresenter { Content = item, ContentTemplate = template };
+                ApplyTheme(presenter, theme);
+                var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
+                    presenter, glassEnabled: true, strengthPercent: 78, themeMode: theme, highContrastOverride: false);
+                var glass = Assert.IsAssignableFrom<Brush>(presenter.TryFindResource("GscGlassStrongBrush"));
+                window = CreateWindow(new Border
+                {
+                    Background = glass,
+                    Padding = new Thickness(10),
+                    Child = presenter
+                }, 420, 180);
+                window.Show();
+                FlushLayout(window);
+
+                var category = FindVisualChildren<TextBlock>(presenter).Single(text => text.Text == "云端队列");
+                categoryColor = Assert.IsType<SolidColorBrush>(category.Foreground).Color;
+                secondaryColor = Assert.IsType<SolidColorBrush>(presenter.TryFindResource("GscSecondaryTextBrush")).Color;
+                infoColor = Assert.IsType<SolidColorBrush>(presenter.TryFindResource("GscInfoBrush")).Color;
+                categoryMinContrast = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
+                    "Maintenance action category",
+                    categoryColor,
+                    palette.Background,
+                    GetContrastStops(glass),
+                    Colors.Transparent,
+                    Colors.Transparent,
+                    pressedOpacity: 1,
+                    minimum: 4.5).Min(measurement => measurement.Actual);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} maintenance action category #{categoryColor}; secondary #{secondaryColor}; semantic info #{infoColor}; minimum contrast={categoryMinContrast:0.##}:1");
+        Assert.Null(exception);
+        Assert.Equal(secondaryColor, categoryColor);
+        Assert.NotEqual(infoColor, categoryColor);
+        Assert.True(categoryMinContrast >= 4.5,
+            $"Small Maintenance category text should maintain at least 4.5:1 contrast across the card surface ({categoryMinContrast:0.##}:1).");
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void CompactSaveAndInboxActionWrapsKeepAnEightDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
@@ -1554,6 +1719,22 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     private static Rect BoundsIn(FrameworkElement element, Visual ancestor)
         => element.TransformToAncestor(ancestor).TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
 
+    private static GradientStopCollection GetContrastStops(Brush brush)
+    {
+        if (brush is LinearGradientBrush linearGradient)
+            return linearGradient.GradientStops;
+        if (brush is SolidColorBrush solidColor)
+        {
+            return new GradientStopCollection
+            {
+                new GradientStop(solidColor.Color, 0),
+                new GradientStop(solidColor.Color, 1)
+            };
+        }
+
+        throw new InvalidOperationException($"Unsupported production surface brush for contrast measurement: {brush.GetType().Name}");
+    }
+
     private static (int RowCount, double MinGap) MeasureWrapRows(WrapPanel panel, Visual ancestor)
     {
         var bounds = panel.Children
@@ -1631,6 +1812,38 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public MediaItemDto[] MediaInboxItems { get; set; } = Array.Empty<MediaItemDto>();
         public string MediaInboxMode { get; set; } = "待归类";
         public int MediaTabIndex { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class OverviewHeaderCopyProbe : INotifyPropertyChanged
+    {
+        private bool isDashboardSnapshotLoaded;
+
+        public bool IsDashboardSnapshotLoaded
+        {
+            get => isDashboardSnapshotLoaded;
+            set
+            {
+                if (isDashboardSnapshotLoaded == value) return;
+                isDashboardSnapshotLoaded = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDashboardSnapshotLoaded)));
+            }
+        }
+
+        public DashboardSnapshotDto Snapshot { get; } = new()
+        {
+            ManagedGames = 1302,
+            MatchedGames = 1200,
+            CloudTransfers = new CloudTransferSummaryDto()
+        };
+
+        public string OverviewManagedGamesDisplay => "1,302";
+        public string OverviewSnapshotScopeDisplay => "全库 · 合成游戏库";
+        public string OverviewSnapshotUpdatedDisplay => "更新于刚刚";
+        public ICommand RefreshCommand { get; } = new RelayCommand(_ => { });
+        public ICommand BackupAllCommand { get; } = new RelayCommand(_ => { });
+        public ICommand SyncMediaCommand { get; } = new RelayCommand(_ => { });
 
         public event PropertyChangedEventHandler? PropertyChanged;
     }

@@ -2741,3 +2741,9 @@ git branch --show-current
 - 当前代码 `main`：`451164f2241f9a13a7d974c72410bcdd4528acb2`。SaveCenter“路径与校验”操作组和 Overview 工作台操作组已在浅/深主题 `520–900 DIP` 实测；均保持单行，三按钮可见有尺寸，无生产修复需要。隔离 Release/XAML `0/0`、`24/24`、行为几何 `2/2`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`。
 - Dashboard 的 legacy `GameHeaderActions` 位于 `DashboardDemoShell Visibility=Collapsed`，不是当前生产可见布局。首次默认 bin 测试遇旧程序集身份并由源码门禁拦截，未计为测试；最终直接执行精确隔离 DLL。
 - 下一可执行小批：删减 Overview 一直显示的静态操作说明；审计当前可见页面的 `GscInfoBrush`，区分语义信息色与纯统计/装饰色，并验证 theme resources。颜色原则参考 Fluent 2：neutral 打底、brand 少量强调、semantic 保留重要状态；文本同时按 WCAG 对比要求核对。真实 Playnite 和物理 DPI仍未验。
+
+## 当前续作（2026-09-29 概览空状态文案与主题色）
+
+- Overview 首页泛化提示现在只在快照未加载时显示；加载后隐藏并节省 `20 DIP`。管理游戏数使用主题强调色，Maintenance 动作分类使用主题次级文字色。Release/XAML `0/0`、`24/24`，定向 WPF `8/8`，RenderHarness 双主题 `render-qa OK`。
+- 证据、浅深截图、TRX、对比度值和程序集 SHA/MVID：[Overview copy/color](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。没有真实 Playnite/物理 DPI/呈现帧验证。
+- 下一可执行任务：审计各生产页“有数据后仍显示”的静态说明，确认它绑定的数据态与空状态后，删除明确冗余的行并保留解释数据、安全状态所需的短说明；补可逆 WPF 行为测试。真实 Media Inbox 滚动错位仍须安全同进程 `[GSC-GRID-DIAGNOSTIC]`。

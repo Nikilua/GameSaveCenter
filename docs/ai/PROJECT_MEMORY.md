@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 概览空状态文案与语义色复核
+
+- 生产 `OverviewView` 只在快照未加载时显示短提示，Loaded 后折叠并节省 `20 DIP`；统计指标使用主题强调色。`MaintenanceView` 动作分类使用次级文字色，信息蓝仍保留给真实状态/信息。
+- 当前证据：Release solution `0/0`、XAML `24/24`、定向 WPF `8/8`、source validator 通过、双主题全矩阵 RenderHarness `render-qa OK`。WPF 夹具测量实际资源表面对比度：指标 Light/Dark `4.13/4.77:1`，分类 Light/Dark `6.43/7.86:1`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md`。
+- 没有真实 Playnite 或物理 DPI/最终呈现验证。下一项跨页盘点数据加载后仍可见的静态说明；逐项保留必要语义，检查当前快照/空态绑定，再补可逆行为测试。Media Inbox 同进程 `[GSC-GRID-DIAGNOSTIC]` 仍为真实宿主未验边界。
+
 ## 2026-09-29 Q14-03 Task Center 搜索 viewport
 
 - `5559b0fb` 修复紧凑 Task Center 筛选的搜索区域溢出：`<1216 DIP` 走现有紧凑排列并保留更多筛选入口；`>=1216 DIP` 使用完整工具栏。搜索输入、清除按钮、状态和刷新边界通过双主题 WPF 行为验证，旧 1040 DIP 布局有 `-164.67 DIP` 重叠负例。

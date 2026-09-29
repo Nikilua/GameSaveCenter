@@ -71,7 +71,7 @@
                                     <TextBlock Text="{Binding StatusDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}"/>
                                 </Border>
                             </Grid>
-                            <TextBlock Text="{Binding CategoryDisplay}" Foreground="{DynamicResource GscInfoBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding CategoryDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,4,0,0"/>
                             <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                             <StackPanel x:Name="QuarantinePaths" Visibility="Collapsed" Margin="0,3,0,0">
                                 <Grid>

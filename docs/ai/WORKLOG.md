@@ -9763,3 +9763,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 隔离 Release/XAML `0/0`、`24/24`；直接运行精确隔离 Release net472 测试 DLL，2 个主题各 1 通过。初始默认 bin 命令发现程序集身份是旧 `96bd2c81`，门禁拦截后停止，不计入。
 - Dashboard legacy GameHeaderActions 在 `DashboardDemoShell` 折叠树中，排除于当前用户可见界面。R00/R01 测试改动路径无匹配 sourcePaths，freshness 维持 `14 FRESH / 0 STALE`；没有改变台账计数。
 - 下一小批处理用户要求的冗余说明与色彩：优先移除 Overview 总是显示的静态副标题，再只把非语义统计/装饰色从 info 色移到主题 accent/neutral。Info/Success/Warning/Error 只留真实反馈，并校对 light/dark 对比。安全 Playnite 滚动空白复现仍待同进程诊断。
+
+# 2026-09-29 概览文案与主题次级色
+
+- 用户截图提出数据出现后应收起通用说明，并减少蓝色装饰色。`OverviewView` 的“今日工作台”改成只在快照未加载时显示短句；浅/深色生产 WPF 回归逐步切换状态，验证提示可见→折叠→恢复、header 节省 `20 DIP`，且刷新/备份/媒体同步命令保持绑定。
+- 首页管理游戏数改用主题强调色；Maintenance 动作分类从信息色改用主题次级文字。语义 info 色仍用于云端/运行中等真实状态。实际资源测量对比度为首页大号数值 Light/Dark `4.13/4.77:1`，普通分类文字 `6.43/7.86:1`。
+- Release `0 warnings / 0 errors`，XAML `24/24`，定向 WPF `8/8`；`scripts/validate-source.py` 通过；RenderHarness Light/Dark 全矩阵 `render-qa OK`，无 PROBLEM。WPF 静态审查 `0 errors / 30 warnings / 177 info`。DLL 身份、证据截图和 TRX：[Overview copy/color](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。
+- 未启动 Playnite、未测物理 DPI、OS 输入或宿主呈现；未改变 192 项状态。下一任务跨页审阅数据加载后仍显示的静态说明，只收起确认冗余文本，并保留必要数据解释和真正空状态提示。
