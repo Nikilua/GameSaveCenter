@@ -11,6 +11,13 @@
 - 下一项核对 R08-02 动效设置热关闭；Media Inbox 同宿主滚动日志和 R08-01 用户失败原始 TRX 仍是独立边界。
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-30：窄窗口行距、任务摘要和标题行）
+
+- 生产代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596` 已完成本地窄窗修复：已确认的 Save/Media/Task/shell 换行组在紧凑状态采用 `16 DIP` 间距并可恢复原 margin；外壳标题断点 `<1440 DIP` 改为单列。Task Queue 摘要在按钮行下，重试/重置按钮 `30/36 DIP`，扩展摘要不撑高按钮；Cloud Transfer title/pill 同一行中心误差 `≤0.33 DIP`。
+- 提交后 Release solution `0/0`、XAML `24/24`、source validation 通过；定向布局 `42/42`，R00-04 `5/5`、R00-06 `13/13`、R00-08 `11/11`、R01-05 `1/1`。R00/R01 freshness `14/14 FRESH`；RenderHarness clean-tree Light/Dark `render-qa OK`。程序集身份、TRX、截图、完整报告及限制：[证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 颜色调整只把一般说明放在主题次级/Muted 资源，保留真实 Info/Warning 语义色；全产品色板审计未完成。RenderHarness/WPF testhost 不代表用户安装 DLL、真实 Playnite 或物理显示器 DPI。Media Inbox 滚动错位仍需安全隔离宿主同进程滚动前后 `[GSC-GRID-DIAGNOSTIC]`。
+- 下一项继续其他页面数据态说明密度/颜色语义审计，并推进依赖已满足的 Q/R 小批。R08-01 用户失败仍需原始失败方法、断言、堆栈和 DLL 身份。
+
 ## 当前交接补充（2026-09-30：R08-01 当前身份复测）
 
 - `dc7f97cf` Release `R08MotionReverseBehaviorTests` 本机复跑 `2/2`、exit `0`，没有重现用户摘要 `1/2` 失败。TRX 有一条测试成功后的 TextServices COM 清理异常记录，根因未知。

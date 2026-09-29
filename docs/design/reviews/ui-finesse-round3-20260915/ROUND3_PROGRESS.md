@@ -1,3 +1,12 @@
+## 2026-09-30 用户缩窗布局与 R00/R01 证据复核
+
+- 生产代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596` 将已确认会折行的存档/媒体/任务/shell 操作组间距统一为 `16 DIP`，只在紧凑区间启用并恢复宽态 margin；shell 单列标题断点由 `<1280` 调至 `<1440 DIP`。休眠的折叠 `DashboardDemoShell` 不计入当前可见区域。
+- Task 队列的加载/更新时间移至动作行下方、移除重复筛选摘要；Light/Dark 实测主行 `36 DIP`，三行摘要加长后不变，重试/重置为 `30/36 DIP`。Cloud Transfers 标题/计数胶囊相对行中心偏差 `≤0.33 DIP`。
+- 提交后 Release solution `0 warning / 0 error`、XAML `24/24`、source validation 通过。隔离生产 WPF 行为 `ReportedWorkspaceLayout 42/42`、Q14 toolbar `1/1`、Responsive coordinator `5/5`、Task retry `2/2`；R00-04 搜索 `5/5`（30/30 结果集合改变，p50/p95/max `47/49/49 ms`）、R00-06 几何/锚点 `13/13`、R00-08 键盘/焦点 `11/11`、R01-05 负例 `1/1`。R00/R01 freshness `14/14 FRESH`，旧证据身份按本次确切测试和程序集刷新。
+- 提交身份 `4ebbf81f...` RenderHarness clean-tree 双主题全矩阵 `render-qa OK`；离屏逻辑 DPI `1.00`，不是真实 Playnite/物理 DPI。TRX、精选截图、DLL SHA/MVID、报告和未验边界：[紧凑布局当前 main 复核](evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 用户提到的蓝色说明现以主题次级/Muted 资源显示，语义 Info 状态仍使用 Info 色；参考 Microsoft Windows Color 指引。此批不表示全产品颜色审计完成。没有安装/启动真实 Playnite，Media Inbox 实际滚动错位仍需同一隔离宿主 `[GSC-GRID-DIAGNOSTIC]` 前后日志；192 项状态不变。
+- 下一可执行项：继续逐页核对有数据时冗余说明和活跃 InfoBrush 的语义，随后推进依赖已满足的 Q/R 小批；Media Inbox 同宿主诊断、R08-01 用户失败原始 log/TRX 保持独立待验。
+
 ## 2026-09-30 R08-01 当前 main 反向动画复测
 
 - 生产源码身份 `dc7f97cf` 的 Release `R08MotionReverseBehaviorTests` 本机复测 `2/2`，0 failed/skip、VSTest exit `0`；当前复测未重现用户 `1/2`。TRX 成功后含 1 条 `TextServicesHost.OnUnregisterTextStore InvalidComObjectException` 清理记录，根因未知。

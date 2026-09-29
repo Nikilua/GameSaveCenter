@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="70c303bc-dcfe-4225-9137-70e237146461" name="lopmatu@SULT 2026-09-30 05:55:40" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T05:55:40.9127019+08:00" queuing="2026-09-30T05:55:40.9127022+08:00" start="2026-09-30T05:55:32.5314941+08:00" finish="2026-09-30T05:55:55.6913894+08:00" />
+  <TestSettings name="default" id="9a20a596-88c8-4a58-96e1-76ab9c047b08">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-30_05_55_40" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f3c43d68-2b42-4232-855f-42493286be9f" testId="68edae81-0737-40d5-f22a-246e3dfefe80" testName="GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors" computerName="SULT" duration="00:00:03.5070000" startTime="2026-09-30T05:55:36.3784406+08:00" endTime="2026-09-30T05:55:39.8706153+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f3c43d68-2b42-4232-855f-42493286be9f" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors" storage="REPO\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="68edae81-0737-40d5-f22a-246e3dfefe80">
+      <Execution id="f3c43d68-2b42-4232-855f-42493286be9f" />
+      <TestMethod codeBase="REPO\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests" name="RegisteredNegativeFixturesAreRejectedByTheirDetectors" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="68edae81-0737-40d5-f22a-246e3dfefe80" executionId="f3c43d68-2b42-4232-855f-42493286be9f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.75]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.80]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+N01 [�Աȶ�] detector=AdaptiveThemePaletteContrastGuard.ValidateTextContrast; expected-failure=�������ڰ����ϱ������ violation; detected=True; violations=1, check=negative-black-on-dark&#xD;
+N02 [����] detector=NumericCellReadability.Measure; expected-failure=�и����㹻����ֵ�п��������ʧ��; detected=True; text=-99,999,999,999,999, horizontalFit=False, verticalFit=True, isReadable=False&#xD;
+N03 [����] detector=AcrylicProductionShellView.OnPickerPreviewKeyDown; expected-failure=�޿ɼ���ѡ�� Enter ����ȷ�Ͼ�ѡ���ر�ѡ��; detected=True; handled=False, overlay=Visible, selectionPreserved=True&#xD;
+N04 [�㼶] detector=RealHostUiAuditService.CheckChildLayoutOverflow; expected-failure=�̶������еĳ����Ӽ�����д CHILD_LAYOUT_OVERFLOW; detected=True; gateExists=True&#xD;
+N05 [״̬] detector=WorkspaceStatePresenter; expected-failure=Loading ״̬�����������Բ���ϵײ�����; detected=True; retry=Collapsed, underlyingHit=False, presenterHitTestVisible=True&#xD;
+[xUnit.net 00:00:06.38]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

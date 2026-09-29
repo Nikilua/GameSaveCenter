@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="75f0ad38-140f-4cc1-a130-5687dba1a337" name="lopmatu@SULT 2026-09-30 05:42:48" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T05:42:48.5244375+08:00" queuing="2026-09-30T05:42:48.5244377+08:00" start="2026-09-30T05:42:43.1684357+08:00" finish="2026-09-30T05:43:02.8172454+08:00" />
+  <TestSettings name="default" id="143526e5-be5a-4f74-a69b-32980b6dabc4">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-30_05_42_48" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="827e50ca-fcca-4f66-90e1-8c60507d1105" testId="bf2721de-03e9-449d-ed74-8503e52df269" testName="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.HeaderAndSelectedGameThresholdsRemainIndependent" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-30T05:42:47.0323619+08:00" endTime="2026-09-30T05:42:47.0334965+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="827e50ca-fcca-4f66-90e1-8c60507d1105" />
+    <UnitTestResult executionId="3c72b6cc-be50-4988-b68f-631c28befd11" testId="3bbf9a08-3ffc-2a57-fbed-a434e304a23b" testName="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.HeightBoundariesPreserveTableAndFooterStates" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-30T05:42:47.0405001+08:00" endTime="2026-09-30T05:42:47.0414961+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c72b6cc-be50-4988-b68f-631c28befd11" />
+    <UnitTestResult executionId="76339773-fc04-4931-aa81-e57a951d7557" testId="81b63165-cf79-8f99-9e8f-1ee31d9efdf9" testName="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.CoordinatorIsDeterministicAcrossThemesAndResizeSamples" computerName="SULT" duration="00:00:00.0010000" startTime="2026-09-30T05:42:47.0354967+08:00" endTime="2026-09-30T05:42:47.0364967+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="76339773-fc04-4931-aa81-e57a951d7557" />
+    <UnitTestResult executionId="a1f22aa5-e13f-48db-bb88-4dd98e5b5347" testId="0c973bc1-f2bb-32ab-1bdb-90e5e2afa233" testName="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.WidthBoundariesPreserveTheExistingShellStates" computerName="SULT" duration="00:00:00.0410000" startTime="2026-09-30T05:42:46.9877198+08:00" endTime="2026-09-30T05:42:47.0142248+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a1f22aa5-e13f-48db-bb88-4dd98e5b5347" />
+    <UnitTestResult executionId="2c75d70b-0c4a-4c6a-9cad-487e26ffe797" testId="6086b33f-8a88-b3c7-2ebe-99ca8c7312c9" testName="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.DetailBreakpointDoesNotChatterInsideTheContentBudgetBand" computerName="SULT" duration="00:00:00.0050000" startTime="2026-09-30T05:42:47.0374967+08:00" endTime="2026-09-30T05:42:47.0384967+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c75d70b-0c4a-4c6a-9cad-487e26ffe797" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.DetailBreakpointDoesNotChatterInsideTheContentBudgetBand" storage="REPO\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="6086b33f-8a88-b3c7-2ebe-99ca8c7312c9">
+      <Execution id="2c75d70b-0c4a-4c6a-9cad-487e26ffe797" />
+      <TestMethod codeBase="REPO\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests" name="DetailBreakpointDoesNotChatterInsideTheContentBudgetBand" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.HeightBoundariesPreserveTableAndFooterStates" storage="REPO\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3bbf9a08-3ffc-2a57-fbed-a434e304a23b">
+      <Execution id="3c72b6cc-be50-4988-b68f-631c28befd11" />
+      <TestMethod codeBase="REPO\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests" name="HeightBoundariesPreserveTableAndFooterStates" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.WidthBoundariesPreserveTheExistingShellStates" storage="REPO\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="0c973bc1-f2bb-32ab-1bdb-90e5e2afa233">
+      <Execution id="a1f22aa5-e13f-48db-bb88-4dd98e5b5347" />
+      <TestMethod codeBase="REPO\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests" name="WidthBoundariesPreserveTheExistingShellStates" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.HeaderAndSelectedGameThresholdsRemainIndependent" storage="REPO\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="bf2721de-03e9-449d-ed74-8503e52df269">
+      <Execution id="827e50ca-fcca-4f66-90e1-8c60507d1105" />
+      <TestMethod codeBase="REPO\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests" name="HeaderAndSelectedGameThresholdsRemainIndependent" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests.CoordinatorIsDeterministicAcrossThemesAndResizeSamples" storage="REPO\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="81b63165-cf79-8f99-9e8f-1ee31d9efdf9">
+      <Execution id="76339773-fc04-4931-aa81-e57a951d7557" />
+      <TestMethod codeBase="REPO\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ResponsiveLayoutCoordinatorTests" name="CoordinatorIsDeterministicAcrossThemesAndResizeSamples" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="bf2721de-03e9-449d-ed74-8503e52df269" executionId="827e50ca-fcca-4f66-90e1-8c60507d1105" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3bbf9a08-3ffc-2a57-fbed-a434e304a23b" executionId="3c72b6cc-be50-4988-b68f-631c28befd11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="81b63165-cf79-8f99-9e8f-1ee31d9efdf9" executionId="76339773-fc04-4931-aa81-e57a951d7557" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0c973bc1-f2bb-32ab-1bdb-90e5e2afa233" executionId="a1f22aa5-e13f-48db-bb88-4dd98e5b5347" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6086b33f-8a88-b3c7-2ebe-99ca8c7312c9" executionId="2c75d70b-0c4a-4c6a-9cad-487e26ffe797" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.74]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.79]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.92]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

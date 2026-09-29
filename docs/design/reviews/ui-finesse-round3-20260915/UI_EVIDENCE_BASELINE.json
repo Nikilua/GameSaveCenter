@@ -36,8 +36,8 @@
     },
     {
       "id": "R00-04",
-      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
-      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -68,8 +68,8 @@
     },
     {
       "id": "R00-06",
-      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
-      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -100,8 +100,8 @@
     },
     {
       "id": "R00-08",
-      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
-      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -178,8 +178,8 @@
     },
     {
       "id": "R01-05",
-      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
-      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

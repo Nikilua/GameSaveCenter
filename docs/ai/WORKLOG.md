@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-30 用户缩窗布局与主题文案复核
+
+- 主代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596`：实测会换行的存档、媒体、任务和 shell 操作组紧凑行距设为 `16 DIP`，宽态恢复 margin；shell compact 断点设为 `<1440 DIP`。任务队列说明独立放在按钮行下，避免按钮受摘要高度影响；删掉重复筛选摘要。传输明细标题和计数胶囊按同一标题行居中。
+- 提交后 Release build `0/0`、XAML `24/24`、source validation 通过；行为类 `ReportedWorkspaceLayout 42/42`、Q14 `1/1`、布局协调器 `5/5`、Task source `2/2`。关联 Round3：R00-04 搜索 `5/5`（30/30 query 改变结果集；p50/p95/max `47/49/49 ms`），R00-06 `13/13`，R00-08 `11/11`，R01-05 `1/1`；`WpfUiResourceDictionaryTests` `139 pass / 39 skip`。完整 TRX 与报告：[当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- RenderHarness clean-tree Light/Dark 全矩阵 `render-qa OK`；测试 DLL 与插件 DLL SHA/MVID 归档，freshness `14/14`。`WpfUiResourceDictionaryTests` 的 39 skip 明确属于已撤销的旧今日工作台 UI 架构；归档 TRX 的机器绝对路径已替换为仓库占位符。微软色彩指引用于保持 Accent 克制、语义色表达状态、辅助文字跟随主题资源；没有宣称全产品色板审核完毕。无真实 Playnite/用户安装 DLL/物理 DPI；Media Inbox 同宿主滚动诊断仍未取得。
+- 下一可执行项：继续逐页审核数据态的冗余说明与非语义 Info 色；之后推进已满足依赖的 Q/R 项。安全宿主边界和 192 项状态保留。
+
 ## 2026-09-30 Overview 首页云端队列语义色
 
 - 提交 `74ab0203f77b59ca4c36e749025884d7f2dcc253` 将 Overview 云端数量从 `GscInfoBrush` 改为主题强调色；Cloud 优先标题使用 warning，状态胶囊保留 info。双主题生产 WPF `2/2`，合成 4 项失败队列直接验证实际数字、三种颜色、命令绑定和对比度；没有修改业务或云服务。

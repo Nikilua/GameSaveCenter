@@ -1,0 +1,16 @@
+UI evidence freshness: source=4ebbf81f63882a0b1c1e9e02ee214069bb552596 package=not-provided documentationOnly=False
+R00-01-02|FRESH
+R00-03|FRESH
+R00-04|FRESH|matched=
+R00-05|FRESH
+R00-06|FRESH|matched=
+R00-07|FRESH
+R00-08|FRESH|matched=
+R01-01|FRESH
+R01-02|FRESH
+R01-03|FRESH
+R01-04|FRESH
+R01-05|FRESH|matched=
+R01-06|FRESH
+R01-07|FRESH
+Summary: 14/14 FRESH, 0 STALE; no package identity was supplied.

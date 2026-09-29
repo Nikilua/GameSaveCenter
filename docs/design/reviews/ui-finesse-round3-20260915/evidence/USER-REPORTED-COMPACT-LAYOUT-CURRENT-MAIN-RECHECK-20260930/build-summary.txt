@@ -1,0 +1,8 @@
+Source commit: 4ebbf81f63882a0b1c1e9e02ee214069bb552596
+Command: scripts/build.ps1 -Configuration Release -SkipTests
+Target: GameSaveCenter.Playnite net462; GameSaveCenter.Playnite.Tests net472
+XAML structural validation: 24/24
+Solution build: 0 warnings, 0 errors
+Build duration: 00:01:42.86 (first clean build; captured incremental rerun also succeeded)
+Source validation: python scripts/validate-source.py passed
+No package install or real Playnite launch was performed.

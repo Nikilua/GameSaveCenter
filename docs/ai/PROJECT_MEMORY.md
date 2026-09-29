@@ -5999,3 +5999,12 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - `SaveCurrentRuleActions` 与 `OverviewHomeToolbarActions` 已在 Light/Dark、520–900 DIP 的真实生产 WrapPanel 中测量：所有采样单行、三个按钮均可见且尺寸非零，暂不需要加行距。测试断言实际行数和可见尺寸；证据 `design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`，隔离 DLL `2/2`。
 - `DashboardView.GameHeaderActions` 处于 `DashboardDemoShell Visibility=Collapsed`，不属于当前可见页面。默认旧 bin 测试被程序集身份门禁拦截后作废；最终用隔离精确 DLL 运行。
 - 下一小批：精简 Overview 有数据时仍显示的静态介绍；对活跃生产 XAML 的 InfoBrush 作语义分类。统计/装饰色走主题 accent/neutral，Info、Success、Warning、Error 继续表达真实语义，维持动态资源并检查浅深主题可读性。
+
+## 2026-09-30 窄窗行距、任务摘要与传输标题复核
+
+- 生产代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596` 将当前可见且实测会折行的 Save History、Media presets/Inbox actions、Task presets 和 shell actions 统一为 `16 DIP` 紧凑行距，宽态恢复作者 margin；休眠 `DashboardDemoShell` 不纳入。shell 单列标题断点调整至 `<1440 DIP`，1320 收窄、1440/1500 宽态/回程已测。
+- Task Queue 把加载量/更新时间放到操作行下，去除重复的动态筛选摘要，避免多行文字影响按钮高度；Light/Dark 生产 WPF 几何为 primary row `36 DIP`、重试/重置 `30/36 DIP`，多行摘要变化不改变 primary row。Cloud Transfers title 与 pill 相对标题行中心误差 `0.33 DIP`，pill/text `0.33 DIP`，title/text `0.67 DIP`。
+- 提交后正式 Release build `0 warning/0 error`、XAML `24/24`、source validation 通过；相关行为组：ReportedWorkspaceLayout `42/42`、Q14 `1/1`、ResponsiveCoordinator `5/5`、TaskRetrySource `2/2`、R00-04 `5/5`、R00-06 `13/13`、R00-08 `11/11`、R01-05 `1/1`；资源字典组 `139 passed/39 skipped`。搜索性能使用 2000 个合成游戏、30/30 次查询改变结果集合，p50/p95/max `47/49/49 ms`。
+- R00-04/06/08、R01-05 的 freshness 命中已按准确提交及 post-commit 测试刷新；baseline `14/14 FRESH`。RenderHarness clean-tree 同身份 Light/Dark `render-qa OK`，logical DPI `1.00`。详情见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md`。禁止将隔离 STA/离屏结果写作真实 Playnite、物理 DPI 或用户 DLL 验证。
+- 说明/颜色原则依 Microsoft Windows Color guidance：主题 Accent 作重点/交互提示，Info/Warning/Success/Error 只表示相应语义，普通辅助文案走主题次级色。此批仅验证局部，不代表全产品 InfoBrush 分类结束。
+- 下一可执行任务：继续遍历剩余可见页的有数据说明与活跃 InfoBrush 色彩语义，再推进有已满足依赖的小批 Q/R。Media Inbox 实际滚动后偏移仍需要安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`；R08-01 用户 `1/2` 失败仍缺方法/断言/堆栈/程序集身份。没有读写真实存档/媒体/云端，Demo 源目录缺失继续沿用恢复生产基线。

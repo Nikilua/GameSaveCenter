@@ -1,3 +1,10 @@
+## 2026-09-30 紧凑窗口布局修复与证据校正
+
+- 代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596`：已确认折行的 Save/Media/Task/shell 操作组紧凑行距 `16 DIP` 且宽态恢复；shell 在 `<1440 DIP` 将标题、全局游戏选择和动作按单列上下排布。Task 队列说明移至按钮行下，筛选摘要去重；传输明细标题/计数 pill 居中。
+- Release `0 warning / 0 error`、XAML `24/24`、source validation 通过；定向用户布局 `42/42`、R00-04 `5/5`、R00-06 `13/13`、R00-08 `11/11`、R01-05 `1/1`。RenderHarness clean-tree Light/Dark `render-qa OK`。R00/R01 freshness `14/14 FRESH`。[完整证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md)
+- 以上是 STA WPF、合成数据与离屏逻辑 DIP；没有检查用户安装 DLL、启动真实 Playnite 或物理 125%/150% DPI。Media Inbox 真实滚动错位仍待安全同进程诊断；R08-01 用户侧 `1/2` 失败仍缺原始方法/断言/堆栈/DLL 身份。
+- 下一项：继续缩小范围检查剩余可见说明文案与 InfoBrush 语义；然后按 Round3 账本推进依赖满足的任务。
+
 ## 2026-09-30 R08-02 热关闭行为复核
 
 - 当前生产源码 `dc7f97cf` 下，Settings 动画开关 STA WPF 行为 `1/1`；生产侧栏 Light/Dark `motionhotprobe` 通过，活动变换在关闭时归一化、无动画状态再开合立即到终点。代码已挂接 Dashboard/Settings 的 `SystemParameters.StaticPropertyChanged` 并调用重算/归一化。
