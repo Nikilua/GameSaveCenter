@@ -1,5 +1,12 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 窄窗行距和标题
+
+- 当前生产源码 `dc7f97cfa49724778c4987224c9f736c744b3631` 已推送 main。紧凑换行行距 `12 DIP`，宽态恢复；紧凑标题区为上下单列；备份图标色与主要按钮文字统一。不要把这批离屏/受控 STA 结果称为 Playnite/物理 DPI 验收。
+- Release `0/0`、XAML `24/24`、几何和相关行为 `13/13`；R00/R01 stale 路径对应搜索、Media Inbox、键盘焦点、审计索引及负例均重验，freshness `14/14`。RenderHarness `WorkingTreeClean=True`、`render-qa OK`，但审计仍保留 `7 MEDIUM` 工具栏换行提示。完整 evidence：[USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)、[R01 audit](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260930/README.md)。
+- Media Inbox Grid 在用户真实 Playnite 中滚动后的列头/首行偏移仍未诊断；需要同一安全宿主会话中的 DLL/MVID、逻辑尺寸、DPI、主题、首行/Presenter/外层偏移前后 `[GSC-GRID-DIAGNOSTIC]`。不要用离屏代理、远程系统跟踪或截图替代真实宿主。
+- 下一项：继续按截图检查其他可见窄窗 WrapPanel 的实际换行/行距和有数据时的冗余说明；按证据收口后再推进下一个依赖满足的 Round3 Q/R 小批，不更改总数/状态直至完成条件满足。
+
 ## 2026-09-30 设置页分组图标颜色
 
 - 提交 `c770d37c` 将 Settings 静态分组标题（备份/历史、自动化/安全）统一为主题 Accent；Info/Success 留给真实状态。Light/Dark 生产 WPF 资源读取和 reset action `2/2`，规范 Release solution `0/0`、XAML `24/24`、RenderHarness 全矩阵成功，R00/R01 `14/14`。

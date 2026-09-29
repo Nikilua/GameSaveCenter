@@ -1,3 +1,11 @@
+## 2026-09-30 用户窄窗行距与紧凑标题单列
+
+- `dc7f97cfa49724778c4987224c9f736c744b3631` 已推送 main：所有确认会换行的存档/媒体/任务/shell 操作组采用 `12 DIP` 行距，只在 compact 时启用并在宽态恢复；compact shell `<1280 DIP` 标题行在上、全局游戏选择/操作在下并横跨同一列。用户主备份图标与按钮文字统一使用 on-accent 色。
+- Release `0/0`、XAML `24/24`、source validation 通过；定向布局 `13/13`。R00-04/06/08 与 R01-03/05 stale path 关联行为总计 `55/55`；baseline evidence/source 身份更新后 freshness `14/14 FRESH`、自测通过。当前 clean commit RenderHarness 多主题/多尺寸 `render-qa OK`；audit 索引 `20/20`，摘要仍保留 `7 MEDIUM` 垂直扩展提示。
+- 独立证据：[紧凑布局与颜色](evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)、[R01-03/06 当前 audit](evidence/R01-06-controlled-audit-20260930/README.md)。现有说明密度、任务按钮高度与传输 pill 在同批测试复核，但不表示所有页面文案或色板完成。
+- TRX 在 Media Inbox 几何/锚点与 Q14筛选测试后记录 `InvalidComObjectException` 清理噪声，分别 `2`/`18` 条；xUnit 仍 `13/13` 与 `1/1`、exit `0`，原因未知。离屏/受控 STA 逻辑 DIP 不是 Playnite、物理 DPI、OS 输入或最终呈现验证；Media Inbox 滚动偏移依旧等安全同进程 `[GSC-GRID-DIAGNOSTIC]`。Demo DesignShell 源目录缺失，沿用恢复生产基线；192 项账本未改。
+- 下一项继续逐页审计剩余可见 WrapPanel 行距和有数据时辅助文案，之后推进依赖已满足的 Q/R 小批。
+
 ## 2026-09-30 Overview 首页云端队列语义色
 
 - 提交 `74ab0203f77b59ca4c36e749025884d7f2dcc253` 将 `OverviewCloudQueueValue` 数量指标改为 `GscAccentBrush`；`Cloud` 优先事项明确代表失败、认证或重试等待，改走 warning；云端状态胶囊保留 info。按钮命令、Tooltip/HelpText、DTO 和队列行为没有改动。

@@ -1,5 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-30：窄窗换行行距与标题单列）
+
+- `dc7f97cfa49724778c4987224c9f736c744b3631` 已提交并推送 main。存档/媒体/任务/外壳真实生产 `WrapPanel` 的紧凑换行间距改为 `12 DIP` 且宽态可逆恢复；小于 `1280 DIP` 的 shell 标题/全局选择与动作切换为单列上下排布。主备份 icon 改用按钮的 on-accent 文字色，对比度 Light/Dark `5.09/6.96:1`。
+- 提交后 Release solution `0/0`、XAML `24/24`、定向布局/行为 `13/13`。R00-04 `2/2`、R00-06 `13/13`、R00-08 `33/33`、R01-03 `6/6`、R01-05 `1/1` 均按当前源码重验；证据 freshness `14/14`。clean commit RenderHarness Light/Dark 全矩阵 `render-qa OK`。完整证据和 7 个 TRX：[用户窄窗布局](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)。
+- Current audit E01–E20 校验 `20/20`，168 个快照，真实保留 `7 MEDIUM` 工具栏换行提示。微软色彩/辅助功能指导用于审核 accent 克制、主题适配、对比度与避免仅靠颜色；本批没有宣称全产品色彩审计完成。
+- 未安装或启动真实 Playnite；离屏 logical DPI `1.00` 不代表物理显示器。Media Inbox 滚动错位仍待同一安全 Playnite 进程滚动前后 `[GSC-GRID-DIAGNOSTIC]`。Demo DesignShell 在当前 checkout 缺失，继续用恢复的生产基线，不换设计体系。
+- 下一可执行事项：继续审计剩余真实可见紧凑换行组和有数据时的辅助说明，按任务表每次做小批；宿主滚动诊断可用时优先校验 DLL 身份、尺寸/DPI/主题和同坐标系几何。
+
 ## 当前交接补充（2026-09-30：云端队列摘要说明与颜色）
 
 - `MaintenanceView` 云端队列卡的三个说明行已收至 Tooltip/UIA HelpText；待处理/远端校验数字改主题强调色，需处理仍为警示色。实际 WPF 双主题行为 `1/1`、卡高 `60–80 DIP`；Release `0/0`、XAML `24/24`、render-qa 全矩阵成功。[证据、截图、TRX、SHA/MVID](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)

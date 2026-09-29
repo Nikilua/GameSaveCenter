@@ -9828,3 +9828,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/build.ps1 -Configuration Release -SkipTests` 编译全 solution `0 warning / 0 error`；XAML `24/24`、source validator、diff check 通过。行为 TRX `2/2`；OffscreenRenderHarness 完整 Light/Dark `render-qa OK`，报告 source identity `c770d37c`/`WorkingTreeClean=True`；R00/R01 freshness `14 FRESH / 0 STALE`。完整证据：[Settings semantic color](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-SETTINGS-SEMANTIC-COLOR-20260930/README.md)。
 - 仅合成设置视图、逻辑离屏 DPI `1.00`；未启动 Playnite、未验证用户包、物理 DPI、OS 输入或最终屏幕帧。初次未设置 `GSC_BUILD_COMMIT` 的快速构建不作为证据；最终 build script 为程序集注入正确源提交身份。
 - 下一步审阅 Dashboard 备份数字及主按钮 glyph 的 InfoBrush，逐项区分指标/动作与实际状态；Media Inbox 滚动偏移仍待安全隔离宿主日志，不改变 192 项账本状态。
+
+# 2026-09-30 用户窄窗行距与标题单列
+
+- 生产代码与 RenderHarness 门禁提交 `dc7f97cfa49724778c4987224c9f736c744b3631`（`优化窄窗按钮间距和标题排布`）已推送 `origin/main`。存档、媒体、任务与 shell 的紧凑 WrapPanel 换行间距统一为 `12 DIP`，单行/宽态恢复原 margin；compact shell `<1280 DIP` 标题和操作改上下单列。主备份 icon 与文字用同一动态前景色。命令、绑定、游戏选框和滚动系统未重做。
+- Release solution `0 warning / 0 error`、XAML `24/24`、source validator 通过；WPF static `0 errors / 30 warnings / 177 info`。窄窗行为和布局 `12/12`，Q14 筛选组 `1/1`；R00-04 `2/2`、R00-06 `13/13`、R00-08 `33/33`、R01-03 `6/6`、R01-05 `1/1`。freshness 中 6 条 stale 源路径全部重验并更新证据指针后为 `14/14 FRESH`，Freshness 自测通过。
+- 提交后 RenderHarness clean identity `dc7f97cf`：Light/Dark 多尺寸完整矩阵 `render-qa OK`、`WorkingTreeClean=True`、逻辑离屏 DPI `1.00`。shell `720–1279 DIP` 是 compact 单列，`1280 DIP` 起恢复宽态；R01 audit `168 snapshots`、`20/20` 索引、`0 HIGH / 7 MEDIUM / 0 Fidelity / 0 failed routes`，中等级工具栏换行提示原样保留。
+- 行为几何、材料 SHA/MVID、Microsoft 色彩准则链接和精选截图：[用户紧凑布局证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)；审计索引、摘要与图：[R01-06 current audit](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260930/README.md)。
+- R00-06 和 Q14 测试的 TRX 额外分别记录 `2` 和 `18` 条 `TextServicesHost.OnUnregisterTextStore` `InvalidComObjectException` 清理输出；xUnit 仍明确 `13/13`、`1/1`、退出码 `0`，根因未知，不记为产品修复。没有安装/启动 Playnite、触碰用户数据或验证物理 DPI/最终宿主帧；Media Inbox 滚动偏移仍待同一安全宿主进程的前后 `[GSC-GRID-DIAGNOSTIC]`。本轮不改 192 项状态/总数。
+- 下一项继续查剩余可见窄窗 WrapPanel 和已加载数据时的静态说明；按 actual wrapping 和辅助语义逐组处理，不机械全局改动。真实媒体滚动诊断条件可用后先校验 DLL/MVID、窗口 DIP、DPI、主题和同坐标系 header/presenter/首行/页面偏移。

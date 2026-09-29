@@ -36,8 +36,8 @@
     },
     {
       "id": "R00-04",
-      "evidence": "evidence/R00-04-SEARCH-BENCHMARK-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
+      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -68,8 +68,8 @@
     },
     {
       "id": "R00-06",
-      "evidence": "evidence/USER-REPORTED-MEDIA-INBOX-POLICY-COPY-20260929/README.md",
-      "sourceCommit": "1e64347d7d36e7a83b898f8b0c0c4c613e174d1f",
+      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
+      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -100,8 +100,8 @@
     },
     {
       "id": "R00-08",
-      "evidence": "evidence/R00-08-PICKER-ENTER-IME-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
+      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -147,8 +147,8 @@
     },
     {
       "id": "R01-03",
-      "evidence": "evidence/R01-03-EVIDENCE-INDEX-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
+      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -178,8 +178,8 @@
     },
     {
       "id": "R01-05",
-      "evidence": "evidence/R01-05-NEGATIVE-REGISTRY-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md",
+      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -195,8 +195,8 @@
     },
     {
       "id": "R01-06",
-      "evidence": "evidence/R01-06-HOST-EVIDENCE-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
+      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

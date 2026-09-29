@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-30 窄窗行距与紧凑标题复核
+
+- 已推送 `dc7f97cfa49724778c4987224c9f736c744b3631`：换行操作组间距提高到 `12 DIP` 且宽态复原；紧凑外壳标题/全局选择与操作上下堆叠；主备份图标与按钮字色统一。证据、TRX、DLL SHA/MVID、RenderHarness 报告：[紧凑窗口复核](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-SPACING-STACKED-HEADER-20260930/README.md)。
+- Release `0 warning / 0 error`、XAML `24/24`、定向几何/行为 `13/13`、关联 R00/R01 重验共 `55/55`（分组独立运行）、RenderHarness clean commit `render-qa OK`；R00/R01 freshness `14/14 FRESH`。当前 controlled audit 保留 `7 MEDIUM` 换行/垂直扩展提示，不抹除风险。
+- 未运行 Playnite或物理 125%/150% DPI；Media Inbox 滚动后首行偏移仍需真实同进程 `[GSC-GRID-DIAGNOSTIC]`。下一项继续其他可见换行组/数据态辅助文案审计，再依赖账本推进小批 Q/R。
+
 ## 2026-09-30 设置页分组图标色收敛
 
 - `c770d37c` 将“存档格式与历史版本”的 Info 蓝和“自动化与安全”的 Success 绿改为共享主题 Accent；它们是分组标题而非状态。Light/Dark 实际生产 WPF 资源行为 `2/2`，恢复默认按钮仍可用；规范 Release solution `0/0`、XAML `24/24`、RenderHarness Light/Dark `render-qa OK`、R00/R01 `14/14 FRESH`。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-SETTINGS-SEMANTIC-COLOR-20260930/README.md)
