@@ -1438,6 +1438,81 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        Brush? backupIconForeground = null;
+        Brush? backupIconBackground = null;
+        Brush? automationIconForeground = null;
+        Brush? automationIconBackground = null;
+        Brush? expectedAccent = null;
+        Brush? expectedAccentFill = null;
+        var backupResetActionName = string.Empty;
+        var automationResetActionName = string.Empty;
+        var resetActionsEnabled = false;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                EnsureApplicationResources();
+                var view = new GameSaveCenter.Playnite.Settings.GameSaveCenterSettingsView();
+                ApplyTheme(view, theme);
+                var viewType = view.GetType();
+                var backupPanel = (FrameworkElement)viewType.GetField("SettingsBackupPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var automationPanel = (FrameworkElement)viewType.GetField("SettingsAutomationPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                backupPanel.Visibility = Visibility.Visible;
+                automationPanel.Visibility = Visibility.Visible;
+                window = CreateWindow(view, 1100, 760);
+                window.Show();
+                FlushLayout(window);
+
+                var backupIconBackgroundBorder = (Border)viewType.GetField("SettingsBackupSectionIconBackground", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var backupIcon = (ThemeAwareIcon)viewType.GetField("SettingsBackupSectionIcon", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var automationIconBackgroundBorder = (Border)viewType.GetField("SettingsAutomationSectionIconBackground", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var automationIcon = (ThemeAwareIcon)viewType.GetField("SettingsAutomationSectionIcon", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var backupResetAction = FindVisualChildren<ButtonBase>(backupPanel)
+                    .Single(button => AutomationProperties.GetName(button) == "恢复备份与恢复安全设置默认值");
+                var automationResetAction = FindVisualChildren<ButtonBase>(automationPanel)
+                    .Single(button => AutomationProperties.GetName(button) == "恢复自动化与媒体安全设置默认值");
+
+                backupIconForeground = backupIcon.Foreground;
+                backupIconBackground = backupIconBackgroundBorder.Background;
+                automationIconForeground = automationIcon.Foreground;
+                automationIconBackground = automationIconBackgroundBorder.Background;
+                expectedAccent = view.TryFindResource("GscAccentBrush") as Brush;
+                expectedAccentFill = view.TryFindResource("GscAccentIconFillBrush") as Brush;
+                backupResetActionName = AutomationProperties.GetName(backupResetAction);
+                automationResetActionName = AutomationProperties.GetName(automationResetAction);
+                resetActionsEnabled = backupResetAction.IsEnabled && automationResetAction.IsEnabled;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"Settings headers {theme}: backup={backupIconForeground}/{backupIconBackground}, automation={automationIconForeground}/{automationIconBackground}, reset={backupResetActionName}; {automationResetActionName}, enabled={resetActionsEnabled}");
+        Assert.Null(exception);
+        Assert.NotNull(expectedAccent);
+        Assert.NotNull(expectedAccentFill);
+        Assert.Same(expectedAccent, backupIconForeground);
+        Assert.Same(expectedAccentFill, backupIconBackground);
+        Assert.Same(expectedAccent, automationIconForeground);
+        Assert.Same(expectedAccentFill, automationIconBackground);
+        Assert.Equal("恢复备份与恢复安全设置默认值", backupResetActionName);
+        Assert.Equal("恢复自动化与媒体安全设置默认值", automationResetActionName);
+        Assert.True(resetActionsEnabled);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
