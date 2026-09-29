@@ -18,18 +18,20 @@ public sealed class R22LongTaskLeavePageBehaviorTests
     {
         RunSta(() =>
         {
-            var view = new TaskCenterView();
+            var view = new TaskCenterView { DataContext = new { RunningTaskCount = 1 } };
             var hint = (TextBlock)typeof(TaskCenterView)
                 .GetField("TaskLeavePageHint", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .GetValue(view)!;
             using var host = new WindowHost(view);
 
-            Assert.Equal(
-                "离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。",
-                hint.Text);
+            Assert.Equal("后台任务会继续运行。", hint.Text);
             Assert.Equal("后台任务离页说明", AutomationProperties.GetName(hint));
-            Assert.Equal(hint.Text, AutomationProperties.GetHelpText(hint));
+            Assert.Equal("离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。", AutomationProperties.GetHelpText(hint));
             Assert.Equal(Visibility.Visible, hint.Visibility);
+
+            view.DataContext = new { RunningTaskCount = 0 };
+            view.UpdateLayout();
+            Assert.Equal(Visibility.Collapsed, hint.Visibility);
         });
     }
 

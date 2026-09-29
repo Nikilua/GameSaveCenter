@@ -1,5 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 用户报告：窄窗行距、标题/说明密度与任务动作高度
+
+- 新增复用控制器 `WrapPanelRowGapController`，仅在 compact 模式给存档历史、媒体待归类和外壳动作换行加 `8 DIP` 底距；宽态精确恢复原始 margin。筛选/滚动系统和命令保持。
+- compact 外壳将标题与全局选择器/动作置于同一行，折叠副标题但把完整摘要放在标题 HelpText；任务离页提示仅在运行数大于零时显示短句，原有不取消/恢复语义在 HelpText。Task 动作按钮不随摘要高度伸展；传输明细 count pill 的文字中心差 `0.33 DIP`。
+- 本批行为、图片、RenderHarness 与限制：[用户紧凑布局证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。离屏 `render-qa OK/PROBLEM=0`；隔离 Release build、Core/Worker 与 Playnite `113` 个 WPF 隔离类均通过。package/install 因未提交源码触发安全 dirty guard 而停止，没有生成包或启动 Playnite；提交后要从 clean HEAD 完成 package/install。物理 DPI、OS 输入、真实 Playnite 最终呈现未验。Media Inbox 滚动根因仍须同进程日志确认。
+- 辅助文字用主题动态次级文字，语义状态色保留。WCAG 2.2 的颜色/非文字对比要求不能用本次两项令牌检查推导为整站对比度通过。
+- 下一阶段先在当前 `main` 重核 R00/R01 freshness，对命中本批文件的证据补测或记“已满足”；再推进依赖已满足的 Q/R 项（含 Q14-03 搜索 viewport）。Q14/R03 全项状态不变。
+
 ## 2026-09-29 Q14-02 筛选标签和布局切换
 
 - TaskCenter 标签与下拉框应保持一个水平组；紧凑区用 WrapPanel 成组换行，垂直间距由各组底 Margin 提供。当前 8 DIP 底距只在紧凑模式启用，宽主行要恢复为 0，否则会把搜索输入框一同撑到 44 DIP。

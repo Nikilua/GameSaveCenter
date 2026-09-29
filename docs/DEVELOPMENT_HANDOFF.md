@@ -1,11 +1,12 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 当前交接（2026-09-29 Q14-02 收口；下一项用户紧凑窗口问题）
+## 当前交接（2026-09-29 用户紧凑窗口问题已受控修复；转入 R00/R01 freshness）
 
-- Task Center 标签/控件成组和窄窗换行实现完成；释放主行高度的 8 DIP 底距只应用在紧凑筛选区。额外修复响应式 reparent 丢失用户筛选值的问题，四组选择在布局切换前后保留。
-- Release solution `0/0`、XAML `24/24`，源码校验通过；相关 WPF 类 `13/13`，新 Fact 覆盖双主题×5 个 DIP 尺寸。完整 RenderHarness 报告 `PROBLEM=0`。原始 TRX、离屏报告与真实宿主边界见 [Q14-02 evidence](design/reviews/ui-finesse-round3-20260915/evidence/Q14-02-FILTER-LABELS-20260929/README.md)。Round2 账本仍标宿主外部阻塞/未完成。
-- 下一可执行批次：按用户最新截图检查多页按钮换行垂直间距、Save Center 窄窗标题/游戏选择器栏合并、Task Queue 动作按钮是否被说明区撑高、辅助文字和语义色，以及 Transfer Details 数量 badge 垂直中心。先盘点共享样式与现有状态/数据源，删减只读死文案时保留错误/取消/安全解释。完成此小批后继续 Q 任务。
-- 当前未验边界：真实 Playnite 物理呈现/125% 与 150% DPI/系统输入仍未在本批验证；RenderHarness 不替代真实宿主。Media Inbox 用户滚动空白仍要安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`。WPF TextServices 退出清理异常原因未知。
+- 本阶段把存档/媒体动作 WrapPanel compact 行距设为 `8 DIP`，宽态还原原 Margin；compact 外壳标题与全局选择/动作同一行、副标题折叠但 HelpText 保留；Task Queue 辅助文字/按钮高度和传输计数垂直中心修正。详情和图片：[用户紧凑布局证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。
+- 已完成的定向证据：Release 项目 build `0/0`、XAML `24/24`、source validation 通过、静态审查 `0 errors / 30 warnings / 177 info`；WPF 行为 `8/8 + 2/2`；修正后的全套 RenderHarness `PROBLEM=0`。完整隔离 Release 测试通过：Core `125/125`、Worker `356 passed / 1 existing skip`、Playnite source `111` 类、WPF 隔离 `113/113` 类。package 阶段由 dirty-tree 安全门禁主动停止；本批提交后须从 clean HEAD 完成 package/install。
+- 不将离屏截图当作 Playnite 实际呈现；物理 125%/150% DPI、OS 输入与真实用户宿主仍未验。Media Inbox 滚动空白仍需安全真实宿主同次 `[GSC-GRID-DIAGNOSTIC]`。旧源断言的 `LegacyProductionUiBaselineFact` 明确跳过，几何行为由实际 WPF 测试覆盖。
+- 安装目标为新建 `.tmp/q14-compact-install/Extensions`，不触及真实 Playnite 扩展或用户数据；本次不启动 Playnite。
+- 下一阶段遵从最新 `/goal`：先在当前 `main` 做 R00/R01 freshness，只更新命中本批变更路径的任务证据；之后继续依赖已满足的 Q/R 小批。Q14-01/02 与 R ledger 的外部/未完成状态维持原记录。
 
 ## 2026-09-29 历史交接：Q14-01 受控几何收口，已由上方 Q14-02 接续
 

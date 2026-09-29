@@ -37,12 +37,14 @@ namespace GameSaveCenter.Playnite.Views
         private bool gameSearchCompositionActive;
         private bool pickerKeyboardNavigationActive;
         private int pickerKeyboardNavigationGeneration;
+        private readonly WrapPanelRowGapController headerActionRowGap;
         private int measurePasses;
         private int arrangePasses;
 
         public AcrylicProductionShellView()
         {
             InitializeComponent();
+            headerActionRowGap = new WrapPanelRowGapController(HeaderActionsPanel);
             FocusWorkspaceSearchCommand = new RelayCommand(
                 _ => FocusWorkspaceSearchRequested?.Invoke(),
                 _ => FocusWorkspaceSearchRequested != null);
@@ -587,6 +589,7 @@ namespace GameSaveCenter.Playnite.Views
                 workspace,
                 viewModel?.SelectedGame?.Name,
                 viewModel?.OverviewPriorityTitle);
+            AutomationProperties.SetHelpText(PageTitleText, PageSubtitleText.Text);
         }
 
         internal static string GetPageSubtitle(
@@ -763,33 +766,22 @@ namespace GameSaveCenter.Playnite.Views
             var layout = ResponsiveLayoutCoordinator.Calculate(width, ActualHeight);
             var compact = layout.IsCompactShellHeader;
             HeaderRow.Height = compact ? GridLength.Auto : new GridLength(68);
-            Grid.SetRow(HeaderActionsPanel, compact ? 1 : 0);
-            Grid.SetColumn(HeaderActionsPanel, compact ? 0 : 1);
-            Grid.SetColumnSpan(HeaderActionsPanel, compact ? 2 : 1);
+            Grid.SetRow(HeaderActionsPanel, 0);
+            Grid.SetColumn(HeaderActionsPanel, 1);
+            Grid.SetColumnSpan(HeaderActionsPanel, 1);
             Grid.SetColumn(HeaderTitlePanel, 0);
-            Grid.SetColumnSpan(HeaderTitlePanel, compact ? 2 : 1);
+            Grid.SetColumnSpan(HeaderTitlePanel, 1);
+            HeaderTitleColumn.Width = compact ? GridLength.Auto : new GridLength(1, GridUnitType.Star);
+            HeaderActionsColumn.Width = compact ? new GridLength(1, GridUnitType.Star) : GridLength.Auto;
             HeaderTitlePanel.HorizontalAlignment = HorizontalAlignment.Left;
-            HeaderActionsRow.Height = compact ? GridLength.Auto : new GridLength(0);
-            HeaderActionsPanel.HorizontalAlignment = compact
-                ? HorizontalAlignment.Stretch
-                : HorizontalAlignment.Right;
+            PageSubtitleText.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            HeaderActionsRow.Height = new GridLength(0);
+            HeaderActionsPanel.HorizontalAlignment = HorizontalAlignment.Right;
             HeaderActionsPanel.Margin = compact
-                ? new Thickness(0, 8, 0, 0)
+                ? new Thickness(10, 0, 0, 0)
                 : new Thickness(14, 0, 0, 0);
-            if (compact)
-            {
-                var sidebarWidth = SidebarColumn.ActualWidth > 0
-                    ? SidebarColumn.ActualWidth
-                    : SidebarColumn.Width.Value;
-                var layoutWidth = HeaderLayoutGrid.ActualWidth > 0
-                    ? HeaderLayoutGrid.ActualWidth
-                    : Math.Max(0, width - 8 - sidebarWidth - 38);
-                HeaderActionsPanel.Width = layoutWidth;
-            }
-            else
-            {
-                HeaderActionsPanel.Width = double.NaN;
-            }
+            HeaderActionsPanel.Width = double.NaN;
+            headerActionRowGap.SetRowGap(compact ? 8 : 0);
 
             // Keep the real game picker usable in the compact row while ensuring its
             // desired width plus the action buttons always fits the content column.

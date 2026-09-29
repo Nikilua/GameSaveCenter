@@ -1,3 +1,11 @@
+## 2026-09-29 用户报告：多页紧凑窗口行距、说明密度与控件对齐
+
+- 补充处理存档历史、媒体待归类和外壳动作 WrapPanel 的 compact 行距：运行 WPF 实际测量两种主题下净行距 `8 DIP`，宽态还原原 margin。compact 外壳标题与全局游戏选择/操作同一行，隐藏副标题并将完整摘要保留在 Automation HelpText。
+- Task Queue 实测 `58 DIP` 摘要不再拉伸 `30/36 DIP` 的重试/重置动作按钮；文字摘要从信息蓝改用动态次级文字，仅在有运行任务时显示离页提示；传输明细 pill/text 中心差 `0.33 DIP`。安全、命令、过滤和绑定语义不变。
+- 定向 WPF 几何 `8/8`、离页语义 `2/2`；Release build `0 warning / 0 error`、XAML `24/24`、source validation 通过；WPF skill checker `0 error / 30 warning / 177 info`，本批无新增 error。RenderHarness 的旧第二行假设更新为一行/矩形交叠门禁后，完整矩阵 `render-qa OK`、`PROBLEM=0`。[证据、TRX 和截图](evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。
+- 隔离 Release 构建、XAML `24/24`、Core `125/125`、Worker `356 passed / 1 existing skip`、Playnite source `111` 类与 WPF 隔离 `113/113` 类通过。package 阶段因未提交源码触发 dirty-tree 安全门禁而停止，没有生成包或启动 Playnite；提交后从干净 HEAD 补 package/install 身份。此补充阶段不对应 Round2 的单一 Q 行或 R03 全组签收，Q/R ledger 数字保持不变；没有 Playnite 实际启动、125%/150% 物理 DPI、OS 输入或用户资料目录写入。
+- 下一阶段按最新目标先在当前 main 核对 R00/R01 freshness，仅对命中本批路径的项目补证或标记“已满足”；之后推进依赖已满足的 Q/R 任务。Media Inbox 滚动问题继续等待同进程 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-29 Q14-02 Task Center 筛选标签和紧凑换行
 
 - 将任务筛选标签与控件配成完整组，统一 4 DIP 标签间距/全角标点；窄窗用 WrapPanel 整组换行。实测发现动态换行组原有行距为 0 DIP，现仅在紧凑区增加 8 DIP 底边距，并在返回主行时复位，避免改变 36 DIP 主工具栏高度。

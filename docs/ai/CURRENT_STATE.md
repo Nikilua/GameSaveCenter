@@ -1,11 +1,19 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 用户报告：紧凑窗口行距、外壳标题、说明文字与计数对齐
+
+- 补充修复证据：[USER-REPORTED-COMPACT-LAYOUT-20260929](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md)。存档/媒体动作 WrapPanel 窄宽下净行距 `8 DIP`，宽态还原原 Margin；compact 外壳标题与全局游戏选择/动作同一行并隐藏可见副标题；Task 队列摘要不再撑大按钮，离页提示只有运行任务时显示且保留完整 HelpText；传输 count pill 已垂直居中。
+- 定向 STA WPF：布局 `8/8`、离页语义 `2/2`；Release Playnite/tests build `0/0`；XAML `24/24`、source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`，没有新增 error。完整 RenderHarness 更新过时外壳几何门禁后 `render-qa OK`、`PROBLEM=0`，离屏逻辑 DPI `1.00`。
+- 隔离 Release 构建通过，Core `125/125`、Worker `356 passed / 1 existing skip`、Playnite source `111` 类与 WPF 隔离 `113/113` 类通过；XAML `24/24`。打包步骤因工作树尚有未提交改动命中 dirty guard 并主动停止，没有生成包、没有安装、没有启动 Playnite。详细批次证据记录了这一边界；先提交后再从干净源码运行 package/install。
+- 没有验证真实宿主/物理 DPI或系统输入；Media Inbox 用户滚动问题仍等同进程 `[GSC-GRID-DIAGNOSTIC]`，不改虚拟化或用 margin 掩盖。
+- 下一阶段按用户最新目标先对当前 `main` 做 R00/R01 freshness，限于命中本批修改路径的记录；再继续依赖已满足的 Q/R 项。Round2 Q14、Round3 R 台账状态保持既有事实，不因本补充批次自动签收。
+
 ## 2026-09-29 Q14-02 已完成本地实现与离屏验收
 
 - TaskCenter 筛选字段目前按完整组移动；紧凑 WrapPanel 的筛选行留 8 DIP 底距，宽布局主行复位，保持 36 DIP 工具栏。WPF reparent 时选择曾被首项覆盖，现对类型/范围/时间/游戏选择做快照恢复。
 - Release solution `0 warning / 0 error`、XAML `24/24`、source validator 通过；4 个隔离类 `13/13`。新几何测试双主题 5 个尺寸共 10 场景，验证标签 4 DIP 关联、换行净距 ≥7.25 DIP、非默认选择跨宽窄往返保留。`render-qa OK`、`PROBLEM=0`。
 - 测试 host `1.5×1.5`，清理阶段有 TextServices `InvalidComObjectException`、根因未知。RenderHarness 为离屏逻辑 DPI `1.00`，不代表 Playnite/物理 DPI/OS 输入。Round2 Q14-02 仍外部阻塞/未完成。[证据及 TRX](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-02-FILTER-LABELS-20260929/README.md)
-- 下一项：先处理用户补充的跨页面紧凑布局问题（换行间距、存档中心单行顶栏、任务按钮高度/辅助文案、传输表头计数对齐），再核对颜色是否使用浅/深主题语义资源。Media Inbox 真实宿主滚动空白仍需安全宿主同进程日志。
+- 用户报告的跨页面紧凑布局问题已由独立补充批次完成受控修复和行为/离屏证据；详见上方事实入口。下一项转为 Q14-03 搜索宽度，先核对现存响应式行为与 760–980 DIP 条件。Media Inbox 真实宿主滚动空白仍需安全宿主同进程日志。
 
 ## 2026-09-29 历史记录：Q14-01 Task Center 工具栏同高行为复核
 

@@ -213,8 +213,8 @@
                         <RowDefinition x:Name="HeaderActionsRow" Height="0"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition x:Name="HeaderTitleColumn" Width="*"/>
+                        <ColumnDefinition x:Name="HeaderActionsColumn" Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel x:Name="HeaderTitlePanel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1"
                                 HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="0">
@@ -224,7 +224,8 @@
                         <TextBlock x:Name="PageSubtitleText" Text="今日工作台 · 正在读取概览状态"
                                    FontFamily="{StaticResource UiFont}"
                                    FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                   Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                   Margin="0,2,0,0" TextTrimming="CharacterEllipsis"
+                                   AutomationProperties.Name="页面摘要"/>
                     </StackPanel>
                     <WrapPanel x:Name="HeaderActionsPanel" Grid.Row="0" Grid.Column="1"
                                Orientation="Horizontal" VerticalAlignment="Center"

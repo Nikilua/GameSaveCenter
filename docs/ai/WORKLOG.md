@@ -9717,3 +9717,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `2333361ecc38b16d00559a8fb91e551c89e0a17c` Release solution build `0 warning / 0 error`、XAML `24/24`、源码验证通过；MediaInboxScroll `5/5`、MediaWindowAnchorContract `10/10`、R07SelectionAnchor `4/4`、MediaPageAccumulator `6/6`、Worker MediaQueryPersistence `4/4`，共 `29/29`、0 failed/skipped、各独立 VSTest 进程 exit 0。五份 TRX/console、构建日志与二进制 SHA/MVID：[Q13-08 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。
 - 已覆盖稳定锚点滚动位置、行被淘汰时邻项负例、有界/去重/选中项缓存，以及 fake SQLite 下稳定游标与实际 TotalCount。没有测真实 Playnite 的追加/刷新/删项端到端及 VM 绑定总数；“返回最新”主动回顶为预期。Q13-08 仍保留外部阻塞/未完成，不将离屏行为冒充宿主呈现。
 - 下一可执行项 Q14-01 工具栏同高。Media Inbox 用户滚动缺陷仍需安全真实宿主同进程几何诊断；R08 用户 `1/2` 失败仍缺失败方法/错误/堆栈和构建身份。
+
+# 2026-09-29 用户报告：多页紧凑窗口排版与信息密度
+
+- 依据实际生产视图与共享主题实现跨页紧凑修复：存档历史、媒体待归类和外壳 WrapPanel 窄态行距为 `8 DIP`，宽态还原原 margin；compact 外壳标题与全局选择/操作同一行，副标题折叠但 HelpText 保留完整信息。Task Queue 不再让三行摘要拉高动作按钮，离页提示只在有运行任务时显示短文案且完整语义仍在 HelpText；筛选/说明文本使用主题次级文字；传输明细计数 pill 文字垂直居中。未改媒体游戏选择、命令、筛选、取消语义或虚拟化。
+- 新增可逆 `WrapPanelRowGapController` 与真实 WPF 布局行为：存档/媒体两行净距 `8 DIP`、返回宽态恢复 margin；shell 标题/动作同一行、副标题紧凑时折叠；Task 摘要 `58 DIP` 时按钮仍为 `30/36 DIP` 且中心差不大于 `0.33 DIP`；计数文字中心差 `0.33 DIP`。双主题共 `8/8`，`R22LongTaskLeavePageBehaviorTests 2/2`；RenderHarness 全矩阵 `PROBLEM=0`。具体 TRX、截图和 DPI/宿主边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-20260929/README.md`。
+- 完整隔离 Release runner：XAML `24/24`，solution build `0 warning / 0 error`，Core `125/125`，Worker `356 passed / 1 existing skip / 0 failed`，Playnite source `111` 类及 WPF 按进程隔离 `113/113` 类全部通过；新增布局行为类和 R22 离页行为类也通过。末尾的 package/install 未执行：`scripts/package.ps1` 的 dirty-tree guard 发现源文件尚未提交后主动终止，防止把 HEAD 伪称为 dirty source 的程序集身份。没有生成包、写入隔离扩展目标或启动 Playnite。提交后先从 clean HEAD 完成 package/install 并记录 DLL/包身份，再进入 R00/R01 freshness。
+- source/WPF/离屏结果均不代表真实 Playnite、OS 输入或 125%/150% 物理 DPI；Media Inbox 空白仍须安全宿主同次 `[GSC-GRID-DIAGNOSTIC]`。Q14/Q/R 台账状态和计数未改变；下一阶段先按最新目标核对 R00/R01 freshness，之后继续依赖已满足的 Q/R 小批。

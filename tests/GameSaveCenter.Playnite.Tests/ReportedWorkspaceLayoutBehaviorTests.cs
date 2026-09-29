@@ -19,6 +19,7 @@ using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
+using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -297,6 +298,304 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.InRange(summaryActionsContentGap, 8, 14);
         Assert.InRange(summaryTrailingWhitespace, 0, 18);
         Assert.InRange(summaryToGridGap, -1, 18);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void CompactSaveAndInboxActionWrapsKeepAnEightDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var saveCompactRows = 0;
+        var saveCompactGap = 0d;
+        var saveWideRows = 0;
+        var saveWideBottomMargin = 0d;
+        var inboxCompactRows = 0;
+        var inboxCompactGap = 0d;
+        var inboxWideRows = 0;
+        var inboxWideBottomMargin = 0d;
+
+        RunSta(() =>
+        {
+            Window? saveWindow = null;
+            Window? mediaWindow = null;
+            try
+            {
+                var saveView = new SaveCenterView { DataContext = new SavePageContext() };
+                ApplyTheme(saveView, theme);
+                var saveActions = (WrapPanel)typeof(SaveCenterView)
+                    .GetField("SaveHistorySummaryActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(saveView)!;
+                saveWindow = CreateWindow(saveView, 1100, 720);
+                saveWindow.Show();
+                saveView.ApplyResponsiveLayout(1100, 720);
+                FlushLayout(saveWindow);
+                saveView.ApplyResponsiveLayout(1100, 720);
+                FlushLayout(saveWindow);
+                (saveCompactRows, saveCompactGap) = MeasureWrapRows(saveActions, saveView);
+
+                saveWindow.Width = 1800;
+                saveView.ApplyResponsiveLayout(1800, 720);
+                FlushLayout(saveWindow);
+                (saveWideRows, _) = MeasureWrapRows(saveActions, saveView);
+                saveWideBottomMargin = saveActions.Children.OfType<FrameworkElement>().Max(child => child.Margin.Bottom);
+
+                var mediaView = new MediaCenterView { DataContext = CreateMediaContext() };
+                ApplyTheme(mediaView, theme);
+                var tabs = (TabControl)typeof(MediaCenterView)
+                    .GetField("MediaTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(mediaView)!;
+                tabs.SelectedIndex = 0;
+                var inboxActions = (WrapPanel)typeof(MediaCenterView)
+                    .GetField("MediaInboxBatchActionRow", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(mediaView)!;
+                mediaWindow = CreateWindow(mediaView, 700, 720);
+                mediaWindow.Show();
+                mediaView.ApplyResponsiveLayout(700, 720);
+                FlushLayout(mediaWindow);
+                mediaView.ApplyResponsiveLayout(700, 720);
+                FlushLayout(mediaWindow);
+                (inboxCompactRows, inboxCompactGap) = MeasureWrapRows(inboxActions, mediaView);
+
+                mediaWindow.Width = 1600;
+                mediaView.ApplyResponsiveLayout(1600, 720);
+                FlushLayout(mediaWindow);
+                (inboxWideRows, _) = MeasureWrapRows(inboxActions, mediaView);
+                inboxWideBottomMargin = inboxActions.Children.OfType<FrameworkElement>().Max(child => child.Margin.Bottom);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                mediaWindow?.Close();
+                saveWindow?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} Save rows={saveCompactRows}, gap={saveCompactGap:0.##} DIP, wide rows={saveWideRows}, restored bottom={saveWideBottomMargin:0.##}; Inbox rows={inboxCompactRows}, gap={inboxCompactGap:0.##} DIP, wide rows={inboxWideRows}, restored bottom={inboxWideBottomMargin:0.##}");
+        Assert.Null(exception);
+        Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
+        Assert.True(saveCompactGap >= 7.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
+        Assert.Equal(1, saveWideRows);
+        Assert.InRange(saveWideBottomMargin, 0, 0.5);
+        Assert.True(inboxCompactRows >= 2, "the compact synthetic inbox toolbar must exercise a wrapped row");
+        Assert.True(inboxCompactGap >= 7.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
+        Assert.Equal(1, inboxWideRows);
+        Assert.InRange(inboxWideBottomMargin, 0, 4.5);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void CompactShellKeepsPageTitleAndActionsOnOneRowAndHidesSecondarySubtitle(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var compactRows = 0;
+        var compactSubtitleVisibility = Visibility.Visible;
+        var compactTitleText = string.Empty;
+        var compactActionRows = 0;
+        var wideSubtitleVisibility = Visibility.Collapsed;
+        var compactHelpText = string.Empty;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new AcrylicProductionShellView();
+                ApplyTheme(shell, theme);
+                typeof(AcrylicProductionShellView)
+                    .GetMethod("UpdatePageHeader", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(shell, new object[] { WorkspaceKind.Saves });
+
+                var title = (TextBlock)typeof(AcrylicProductionShellView)
+                    .GetField("PageTitleText", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var subtitle = (TextBlock)typeof(AcrylicProductionShellView)
+                    .GetField("PageSubtitleText", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var actions = (WrapPanel)typeof(AcrylicProductionShellView)
+                    .GetField("HeaderActionsPanel", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var backupSelected = (FrameworkElement)typeof(AcrylicProductionShellView)
+                    .GetField("HeaderBackupSelectedButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var backupAll = (FrameworkElement)typeof(AcrylicProductionShellView)
+                    .GetField("HeaderBackupButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                var mediaSync = (FrameworkElement)typeof(AcrylicProductionShellView)
+                    .GetField("HeaderMediaButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(shell)!;
+                backupSelected.Visibility = Visibility.Visible;
+                backupAll.Visibility = Visibility.Visible;
+                mediaSync.Visibility = Visibility.Collapsed;
+                window = CreateWindow(shell, 1120, 720);
+                window.Show();
+                shell.ApplyResponsiveLayout(1120, 720);
+                FlushLayout(window);
+                (compactRows, _) = MeasureWrapRows(actions, shell);
+                compactSubtitleVisibility = subtitle.Visibility;
+                compactTitleText = title.Text;
+                compactHelpText = AutomationProperties.GetHelpText(title);
+                compactActionRows = Grid.GetRow(actions);
+
+                window.Width = 1500;
+                shell.ApplyResponsiveLayout(1500, 720);
+                FlushLayout(window);
+                wideSubtitleVisibility = subtitle.Visibility;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, actionRows={compactRows}; wide subtitle={wideSubtitleVisibility}");
+        Assert.Null(exception);
+        Assert.Equal("存档中心", compactTitleText);
+        Assert.Equal(Visibility.Collapsed, compactSubtitleVisibility);
+        Assert.Equal(0, compactActionRows);
+        Assert.Equal(Visibility.Visible, wideSubtitleVisibility);
+        Assert.Contains("路径与恢复点状态", compactHelpText);
+        Assert.Equal(1, compactRows);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void TaskQueueActionsKeepTheirOwnHeightWhenThreeLineSummaryAppears(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var summaryHeight = 0d;
+        var retryHeight = 0d;
+        var resetHeight = 0d;
+        var retryCenterDelta = 0d;
+        var resetCenterDelta = 0d;
+        var retryAfterSummaryCollapse = 0d;
+        var resetAfterSummaryCollapse = 0d;
+        var leaveHintForeground = Colors.Transparent;
+        var queueFilterForeground = Colors.Transparent;
+        var secondaryForeground = Colors.Transparent;
+        var infoForeground = Colors.Transparent;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new TaskCenterView { DataContext = new TaskSummaryLayoutProbe() };
+                ApplyTheme(view, theme);
+                var viewType = typeof(TaskCenterView);
+                var summary = (StackPanel)viewType.GetField("TaskQueueSummaryStack", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var retry = (FrameworkElement)viewType.GetField("TaskQueueRetryAllButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var reset = (FrameworkElement)viewType.GetField("TaskQueueResetColumnWidthButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var hint = (TextBlock)viewType.GetField("TaskLeavePageHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var filterSummary = (TextBlock)viewType.GetField("TaskQueueFilterSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                window = CreateWindow(view, 1280, 800);
+                view.ApplyResponsiveLayout(1280, 800);
+                window.Show();
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(1280, 800);
+                FlushLayout(window);
+
+                summaryHeight = summary.ActualHeight;
+                retryHeight = retry.ActualHeight;
+                resetHeight = reset.ActualHeight;
+                retryCenterDelta = Math.Abs(CenterY(retry, window) - CenterY(summary, window));
+                resetCenterDelta = Math.Abs(CenterY(reset, window) - CenterY(summary, window));
+                leaveHintForeground = (hint.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
+                queueFilterForeground = (filterSummary.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
+                secondaryForeground = (view.FindResource("GscSecondaryTextBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
+                infoForeground = (view.FindResource("GscInfoBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
+
+                filterSummary.Visibility = Visibility.Collapsed;
+                ((TextBlock)summary.Children[2]).Visibility = Visibility.Collapsed;
+                FlushLayout(window);
+                retryAfterSummaryCollapse = retry.ActualHeight;
+                resetAfterSummaryCollapse = reset.ActualHeight;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} Task queue summary={summaryHeight:0.##} DIP, retry/reset={retryHeight:0.##}/{resetHeight:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}, after summaries hide={retryAfterSummaryCollapse:0.##}/{resetAfterSummaryCollapse:0.##}, hint/filter brushes={leaveHintForeground}/{queueFilterForeground}, secondary/info={secondaryForeground}/{infoForeground}");
+        Assert.Null(exception);
+        Assert.True(summaryHeight >= 42, "the fixture needs a genuinely multi-line task summary to expose the previous stretch behavior");
+        Assert.InRange(retryHeight, 28, 40);
+        Assert.InRange(resetHeight, 32, 40);
+        Assert.InRange(retryCenterDelta, 0, 1);
+        Assert.InRange(resetCenterDelta, 0, 1);
+        Assert.InRange(Math.Abs(retryAfterSummaryCollapse - retryHeight), 0, 0.5);
+        Assert.InRange(Math.Abs(resetAfterSummaryCollapse - resetHeight), 0, 0.5);
+        Assert.Equal(secondaryForeground, leaveHintForeground);
+        Assert.Equal(secondaryForeground, queueFilterForeground);
+        Assert.NotEqual(infoForeground, leaveHintForeground);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var pillTextCenterDelta = 0d;
+        var pillTitleCenterDelta = 0d;
+        var pillHeight = 0d;
+        var pillTextHeight = 0d;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MaintenanceView { DataContext = new CloudTransferHeaderProbe() };
+                ApplyTheme(view, theme);
+                var tabs = (TabControl)typeof(MaintenanceView)
+                    .GetField("MaintenanceTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                tabs.SelectedIndex = 1;
+                var frame = (Border)typeof(MaintenanceView)
+                    .GetField("CloudTransferTableFrame", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                window = CreateWindow(view, 1280, 800);
+                window.Show();
+                FlushLayout(window);
+
+                var countText = FindBoundText(frame, "CloudTransferLoadedSummary");
+                var pill = FindVisualAncestor<Border>(countText, frame);
+                var title = FindVisualChildren<TextBlock>(frame).Single(text => text.Text == "传输明细");
+                pillTextCenterDelta = Math.Abs(CenterY(countText, pill) - pill.ActualHeight / 2);
+                pillTitleCenterDelta = Math.Abs(CenterY(countText, frame) - CenterY(title, frame));
+                pillHeight = pill.ActualHeight;
+                pillTextHeight = countText.ActualHeight;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} Cloud transfer title/count center delta={pillTitleCenterDelta:0.##} DIP; pill text center delta={pillTextCenterDelta:0.##} DIP; pill={pillHeight:0.##}, text={pillTextHeight:0.##}");
+        Assert.Null(exception);
+        Assert.True(pillHeight > 0 && pillTextHeight > 0, "the active cloud table header must render the count pill");
+        Assert.InRange(pillTextCenterDelta, 0, 0.75);
+        Assert.InRange(pillTitleCenterDelta, 0, 1.5);
     }
 
     [Theory]
@@ -1084,6 +1383,49 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     private static Rect BoundsIn(FrameworkElement element, Visual ancestor)
         => element.TransformToAncestor(ancestor).TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
 
+    private static (int RowCount, double MinGap) MeasureWrapRows(WrapPanel panel, Visual ancestor)
+    {
+        var bounds = panel.Children
+            .OfType<FrameworkElement>()
+            .Where(child => child.Visibility == Visibility.Visible && child.ActualHeight > 0)
+            .Select(child => BoundsIn(child, ancestor))
+            .OrderBy(rect => rect.Top)
+            .ToArray();
+        var rows = new System.Collections.Generic.List<Rect>();
+        foreach (var rect in bounds)
+        {
+            var rowIndex = rows.FindIndex(row => row.Top < rect.Bottom - 0.5 && rect.Top < row.Bottom - 0.5);
+            if (rowIndex < 0)
+                rows.Add(rect);
+            else
+            {
+                var row = rows[rowIndex];
+                rows[rowIndex] = new Rect(
+                    Math.Min(row.Left, rect.Left),
+                    Math.Min(row.Top, rect.Top),
+                    Math.Max(row.Right, rect.Right) - Math.Min(row.Left, rect.Left),
+                    Math.Max(row.Bottom, rect.Bottom) - Math.Min(row.Top, rect.Top));
+            }
+        }
+
+        rows.Sort((left, right) => left.Top.CompareTo(right.Top));
+        var gaps = rows.Zip(rows.Skip(1), (previous, next) => next.Top - previous.Bottom).ToArray();
+        return (rows.Count, gaps.Length == 0 ? double.PositiveInfinity : gaps.Min());
+    }
+
+    private static T FindVisualAncestor<T>(DependencyObject child, DependencyObject stopAt)
+        where T : DependencyObject
+    {
+        for (var current = VisualTreeHelper.GetParent(child); current != null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (current is T match)
+                return match;
+            if (ReferenceEquals(current, stopAt))
+                break;
+        }
+        throw new InvalidOperationException($"Could not find {typeof(T).Name} ancestor before the supplied visual root.");
+    }
+
     private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
         where T : DependencyObject
     {
@@ -1163,6 +1505,23 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             Summary = "合成备份已保留本地版本；云端镜像失败，当前 UI 仅用于验证长说明与多操作行的布局。",
             Remediation = "可在网络恢复并完成认证后单独重试云端上传；本地备份不会被覆盖。"
         };
+    }
+
+    private sealed class TaskSummaryLayoutProbe
+    {
+        public int RunningTaskCount { get; } = 2;
+        public bool TaskHasActiveFilters { get; } = true;
+        public string TaskLoadedSummary { get; } = "最近加载 50 条 · 全部任务 4,557 条";
+        public string TaskActiveFiltersSummary { get; } = "当前：状态失败 · 类型全部 · 最近任务 · 全部时间";
+        public string TaskPageStatusSummary { get; } = "最近更新：刚刚";
+        public string TaskPageStatusSummaryFullDisplay { get; } = "合成布局测试的完整任务状态摘要";
+    }
+
+    private sealed class CloudTransferHeaderProbe
+    {
+        public string CloudTransferLoadedSummary { get; } = "全局 1 项 · 已加载全部 1 项";
+        public string CloudTransferStateDetail { get; } = "合成传输数据";
+        public object CloudTransferViewSummary { get; } = new { QueueControlDisplay = "自动队列运行中" };
     }
 }
 

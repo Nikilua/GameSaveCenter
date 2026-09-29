@@ -7361,10 +7361,8 @@ public static class Program
                 var compact = ResponsiveLayoutCoordinator.Calculate(windowW, windowH).IsCompactShellHeader;
                 if (compact != headerRow.Height.IsAuto)
                     s_problems.Add($"Shell {windowW}x{windowH} header row state disagrees with the coordinator (compact={compact}, row={headerRow.Height}).");
-                if (compact != headerActionsRow.Height.IsAuto)
-                    s_problems.Add($"Shell {windowW}x{windowH} action row state disagrees with the coordinator (compact={compact}, row={headerActionsRow.Height}).");
-                if (compact && headerRow.ActualHeight <= 68)
-                    s_problems.Add($"Shell {windowW}x{windowH} compact header did not grow beyond the original 68 DIP row.");
+                if (!headerActionsRow.Height.IsAbsolute || Math.Abs(headerActionsRow.Height.Value) > 0.5)
+                    s_problems.Add($"Shell {windowW}x{windowH} reserved second actions row must remain collapsed (row={headerActionsRow.Height}).");
                 if (actions.Visibility == Visibility.Visible)
                 {
                     var actionsBounds = actions.TransformToAncestor(headerSurface).TransformBounds(new Rect(0, 0, actions.ActualWidth, actions.ActualHeight));
@@ -7372,8 +7370,10 @@ public static class Program
                     if (actionsBounds.Left < -0.5 || actionsBounds.Right > headerSurface.ActualWidth + 0.5
                         || actionsBounds.Top < -0.5 || actionsBounds.Bottom > headerSurface.ActualHeight + 0.5)
                         s_problems.Add($"Shell {windowW}x{windowH} header actions exceed HeaderSurface bounds ({actionsBounds.Left:0.0}..{actionsBounds.Right:0.0}, {actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}/{headerSurface.ActualWidth:0.0}x{headerSurface.ActualHeight:0.0}).");
-                    if (compact && titleBounds.Bottom > actionsBounds.Top + 0.5)
-                        s_problems.Add($"Shell {windowW}x{windowH} compact title/actions overlap vertically (title={titleBounds.Top:0.0}..{titleBounds.Bottom:0.0}, actions={actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}).");
+                    if (headerRow.ActualHeight + 0.5 < Math.Max(title.ActualHeight, actions.ActualHeight))
+                        s_problems.Add($"Shell {windowW}x{windowH} header row clips its title or actions (row={headerRow.ActualHeight:0.0}, title={title.ActualHeight:0.0}, actions={actions.ActualHeight:0.0}).");
+                    if (compact && titleBounds.IntersectsWith(actionsBounds))
+                        s_problems.Add($"Shell {windowW}x{windowH} compact title/actions overlap in two-dimensional bounds (title={titleBounds.Left:0.0}..{titleBounds.Right:0.0},{titleBounds.Top:0.0}..{titleBounds.Bottom:0.0}; actions={actionsBounds.Left:0.0}..{actionsBounds.Right:0.0},{actionsBounds.Top:0.0}..{actionsBounds.Bottom:0.0}).");
                     if (!compact && titleBounds.Right > actionsBounds.Left + 0.5)
                         s_problems.Add($"Shell {windowW}x{windowH} expanded title/actions overlap horizontally (title={titleBounds.Left:0.0}..{titleBounds.Right:0.0}, actions={actionsBounds.Left:0.0}..{actionsBounds.Right:0.0}).");
                 }

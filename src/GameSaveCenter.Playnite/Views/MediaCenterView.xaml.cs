@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.Views
         private DashboardViewModel? attachedViewModel;
         private readonly HashSet<string> selectedMediaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
+        private readonly WrapPanelRowGapController mediaInboxActionRowGap;
         private ScrollAnchor? pendingMediaAnchor;
         private ScrollAnchor? pendingInboxAnchor;
         private string? pendingInboxAnchorMode;
@@ -43,6 +44,7 @@ namespace GameSaveCenter.Playnite.Views
         public MediaCenterView()
         {
             InitializeComponent();
+            mediaInboxActionRowGap = new WrapPanelRowGapController(MediaInboxBatchActionRow);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
             Loaded += OnLoaded;
@@ -336,6 +338,11 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
+                var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
+                var compactBatchActions = batchActionWidth > 0
+                    ? batchActionWidth < 960
+                    : width < 1040;
+                mediaInboxActionRowGap.SetRowGap(compactBatchActions ? 8 : 0);
                 // Keep the Demo's four metrics in one continuous strip. Do not discard
                 // summary information at short heights. Local list/inspector surfaces own
                 // overflow so the whole workspace does not become a scroll canvas.
