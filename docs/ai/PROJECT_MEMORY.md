@@ -1,6 +1,13 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 2026-09-29 Q14-01 Task Center 混合工具栏几何
+## 2026-09-29 Q14-02 筛选标签和布局切换
+
+- TaskCenter 标签与下拉框应保持一个水平组；紧凑区用 WrapPanel 成组换行，垂直间距由各组底 Margin 提供。当前 8 DIP 底距只在紧凑模式启用，宽主行要恢复为 0，否则会把搜索输入框一同撑到 44 DIP。
+- 在生产视图实际重排控件会短暂改变继承 DataContext，TwoWay ComboBox 可能写回“全部”。响应式重排需在脱离父容器前保存选择、回挂后恢复并保留现有绑定。`TaskCenterView.SetCompactFilterPlacement` 现覆盖 Type/Scope/Range/Game 四个选择。
+- 当前行为/离屏 evidence：[Q14-02](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-02-FILTER-LABELS-20260929/README.md)。Q14-02 仍等真实 Playnite 与物理 DPI 验证；WPF testhost 清理异常根因未知。
+- 最近用户补充下一优先项：逐页核对窄窗换行间距与大按钮被说明文字撑高；存档中心缩小时合并顶栏；任务队列减少纯说明/状态色回归语义调色板；传输明细计数标记对准表头行中心。先查已有共享样式和业务绑定，别仅看源断言；外部真实呈现需隔离宿主。
+
+## 2026-09-29 历史记录：Q14-01 Task Center 混合工具栏几何
 
 - `591f07be7c30e3ee3a44f84078938b21effeafcb` 下 Release solution/XAML `0/0`、`24/24`；source validator 通过。新增 `Q14ToolbarAlignmentBehaviorTests`，production `TaskCenterView` Light/Dark × 五档窗口，共 10 组；混合工具同高 `36 DIP`、框中心最大差 `≤0.75 DIP`、预设内容中心差 `0.67 DIP`，错误/焦点/禁用/忙碌态布局保持。没有改生产 UI。MVID/SHA、TRX 与完整几何：[Q14-01](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)。
 - WPF testhost 当前报告 `150%`，exit `0`；xUnit 完成后出现 21 条 `TextServicesHost.InvalidComObjectException` 清理噪声，根因未知。未运行 Playnite/OS 输入、未切换物理 DPI，也未验所有页面工具栏；Round2 Q14-01 仍外部阻塞/未完成。下一项 Q14-02 筛选标签。Media Inbox 实际滚动问题仍需安全宿主同进程诊断。

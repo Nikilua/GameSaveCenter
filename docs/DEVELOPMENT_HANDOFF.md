@@ -1,6 +1,13 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-29 当前交接：Q14-01 受控几何收口，下一项 Q14-02
+## 当前交接（2026-09-29 Q14-02 收口；下一项用户紧凑窗口问题）
+
+- Task Center 标签/控件成组和窄窗换行实现完成；释放主行高度的 8 DIP 底距只应用在紧凑筛选区。额外修复响应式 reparent 丢失用户筛选值的问题，四组选择在布局切换前后保留。
+- Release solution `0/0`、XAML `24/24`，源码校验通过；相关 WPF 类 `13/13`，新 Fact 覆盖双主题×5 个 DIP 尺寸。完整 RenderHarness 报告 `PROBLEM=0`。原始 TRX、离屏报告与真实宿主边界见 [Q14-02 evidence](design/reviews/ui-finesse-round3-20260915/evidence/Q14-02-FILTER-LABELS-20260929/README.md)。Round2 账本仍标宿主外部阻塞/未完成。
+- 下一可执行批次：按用户最新截图检查多页按钮换行垂直间距、Save Center 窄窗标题/游戏选择器栏合并、Task Queue 动作按钮是否被说明区撑高、辅助文字和语义色，以及 Transfer Details 数量 badge 垂直中心。先盘点共享样式与现有状态/数据源，删减只读死文案时保留错误/取消/安全解释。完成此小批后继续 Q 任务。
+- 当前未验边界：真实 Playnite 物理呈现/125% 与 150% DPI/系统输入仍未在本批验证；RenderHarness 不替代真实宿主。Media Inbox 用户滚动空白仍要安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`。WPF TextServices 退出清理异常原因未知。
+
+## 2026-09-29 历史交接：Q14-01 受控几何收口，已由上方 Q14-02 接续
 
 - `591f07be` Release solution/XAML `0/0`、`24/24`，source validator 通过；`Q14ToolbarAlignmentBehaviorTests 1/1`。TaskCenterView Light/Dark × 五档 DIP 窗口实测混合控件 `36 DIP` 同高，键盘焦点/错误/禁用/忙碌态布局稳定。[Q14-01 evidence](design/reviews/ui-finesse-round3-20260915/evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)
 - 当前 WPF testhost 报告 `1.5×`；退出 xUnit 后有 21 条 TextServicesHost 清理异常、根因未知。不是 Playnite 宿主或真实视觉帧；物理 125%/其他 DPI、OS 输入和其他页面工具栏未验证。Q14-01 Round2 最终状态仍外部阻塞/未完成。

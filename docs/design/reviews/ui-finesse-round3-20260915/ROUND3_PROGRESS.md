@@ -1,7 +1,14 @@
+## 2026-09-29 Q14-02 Task Center 筛选标签和紧凑换行
+
+- 将任务筛选标签与控件配成完整组，统一 4 DIP 标签间距/全角标点；窄窗用 WrapPanel 整组换行。实测发现动态换行组原有行距为 0 DIP，现仅在紧凑区增加 8 DIP 底边距，并在返回主行时复位，避免改变 36 DIP 主工具栏高度。
+- 同次 WPF 布局回归发现筛选控件被重排时可能写回首项；修复时保存/恢复现有选择，不改变业务命令或过滤语义。Release solution `0 warning / 0 error`、XAML `24/24`、source validation 通过；4 个隔离测试类 `13/13`，新几何 Fact 覆盖 Light/Dark × 5 个尺寸共 10 场景，窄窗换行净距 `≥7.25 DIP`。
+- `render-qa` 完成且 `PROBLEM=0`；证据、四份 TRX 和完整报告见 [Q14-02 筛选标签](evidence/Q14-02-FILTER-LABELS-20260929/README.md)。测试 host 的 DPI 为 `1.5×1.5`，退出有 TextServices `InvalidComObjectException` 清理噪声、原因未知。离屏报告是逻辑 DPI `1.0`，没有真实 Playnite/物理 DPI/OS 输入验收，Q14-02 在 Round2 账本继续保持外部阻塞/未完成。
+- 下一任务先处理用户补充的窗口紧凑布局：跨页面换行行距、存档中心顶栏、任务队列辅助说明与动作按钮高度、传输明细计数标记对齐；同时检查说明文字和状态色是否来自浅/深主题语义资源。Media Inbox 用户滚动问题继续等待安全宿主同进程诊断。
+
 ## 2026-09-29 Q14-01 Task Center 工具栏同高实测补证
 
 - 当前代码身份 `591f07be` Release build `0 warning / 0 error`、XAML `24/24`，source validation 通过；新增的生产视图 WPF 几何 Fact `1/1`。Light/Dark × `980×640`、`1040×700`、`1280×720`、`1600×900`、`760×640 DIP` 共 10 组，参与主行/预设行控件高均为 `36 DIP`，主行框中心差 `≤0.75 DIP`，预设内容中心差 `0.67 DIP`。校验错误、键盘焦点、禁用刷新和忙碌状态均无超过 `0.75 DIP` 布局变化。没有生产 UI 改动。[几何、TRX、构建与限制](evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)
-- WPF testhost 实测 `1.5×1.5`；xUnit/TRX 明确 `1/1` 且 VSTest exit `0`，关闭时出现 21 条 TextServicesHost `InvalidComObjectException` 清理噪声，根因未知。没有在真实 Playnite 或物理 125% DPI/OS 输入下验证。Round2 Q14-01 保持外部阻塞/未完成。下一项 Q14-02 筛选标签。
+- WPF testhost 实测 `1.5×1.5`；xUnit/TRX 明确 `1/1` 且 VSTest exit `0`，关闭时出现 21 条 TextServicesHost `InvalidComObjectException` 清理噪声，根因未知。没有在真实 Playnite 或物理 125% DPI/OS 输入下验证。Round2 Q14-01 保持外部阻塞/未完成；后续 Q14-02 已补齐本地行为证据，见本文件上方。
 
 ## 2026-09-29 Q06 本机失败报告复核（先于 Q14-01 实测）
 

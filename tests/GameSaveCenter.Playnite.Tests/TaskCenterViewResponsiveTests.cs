@@ -182,26 +182,25 @@ namespace GameSaveCenter.Playnite.Tests
                     var view = new TaskCenterView();
                     var viewType = typeof(TaskCenterView);
                     var filters = (Grid)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var more = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var typeLabel = (TextBlock)viewType.GetField("TaskTypeFilterLabel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var typeCombo = (ComboBox)viewType.GetField("TaskTypeFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var scopeCombo = (ComboBox)viewType.GetField("TaskHistoryScopeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var rangeCombo = (ComboBox)viewType.GetField("TaskHistoryRangeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var more = (WrapPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var typeGroup = (StackPanel)viewType.GetField("TaskTypeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var scopeGroup = (StackPanel)viewType.GetField("TaskHistoryScopeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var rangeGroup = (StackPanel)viewType.GetField("TaskHistoryRangeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var search = (Grid)viewType.GetField("TaskSearchBoxHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                     view.ApplyResponsiveLayout(700, 640);
-                    compactMainHasType = filters.Children.Contains(typeLabel) || filters.Children.Contains(typeCombo);
-                    compactMainHasScope = filters.Children.Contains(scopeCombo);
-                    compactMainHasRange = filters.Children.Contains(rangeCombo);
-                    compactMoreHasType = more.Children.Contains(typeLabel) && more.Children.Contains(typeCombo);
-                    compactMoreHasScope = more.Children.Contains(scopeCombo);
-                    compactMoreHasRange = more.Children.Contains(rangeCombo);
+                    compactMainHasType = filters.Children.Contains(typeGroup);
+                    compactMainHasScope = filters.Children.Contains(scopeGroup);
+                    compactMainHasRange = filters.Children.Contains(rangeGroup);
+                    compactMoreHasType = more.Children.Contains(typeGroup);
+                    compactMoreHasScope = more.Children.Contains(scopeGroup);
+                    compactMoreHasRange = more.Children.Contains(rangeGroup);
                     compactSearchSpan = Grid.GetColumnSpan(search);
 
                     view.ApplyResponsiveLayout(1280, 720);
-                    wideMainHasType = filters.Children.Contains(typeLabel) && filters.Children.Contains(typeCombo);
-                    wideMainHasScope = filters.Children.Contains(scopeCombo);
-                    wideMainHasRange = filters.Children.Contains(rangeCombo);
+                    wideMainHasType = filters.Children.Contains(typeGroup);
+                    wideMainHasScope = filters.Children.Contains(scopeGroup);
+                    wideMainHasRange = filters.Children.Contains(rangeGroup);
                 }
                 catch (Exception caught)
                 {
@@ -220,7 +219,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(compactMoreHasType);
             Assert.True(compactMoreHasScope);
             Assert.True(compactMoreHasRange);
-            Assert.Equal(4, compactSearchSpan);
+            Assert.Equal(1, compactSearchSpan);
             Assert.True(wideMainHasType);
             Assert.True(wideMainHasScope);
             Assert.True(wideMainHasRange);

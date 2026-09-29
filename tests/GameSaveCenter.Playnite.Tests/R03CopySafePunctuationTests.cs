@@ -26,7 +26,8 @@ public sealed class R03CopySafePunctuationTests
                     ((TextBlock)viewType.GetField("TaskStatusFilterLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!).Text,
                     ((TextBlock)viewType.GetField("TaskTypeFilterLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!).Text,
                     ((TextBlock)viewType.GetField("TaskHistoryScopeLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!).Text,
-                    ((TextBlock)viewType.GetField("TaskHistoryRangeLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!).Text
+                    ((TextBlock)viewType.GetField("TaskHistoryRangeLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!).Text,
+                    ((TextBlock)viewType.GetField("TaskGameFilterLabel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!).Text
                 };
             }
             catch (Exception caught)
@@ -39,7 +40,7 @@ public sealed class R03CopySafePunctuationTests
         thread.Join();
 
         Assert.Null(failure);
-        Assert.Equal(new[] { "状态：", "类型：", "范围：", "时间：" }, labels);
+        Assert.Equal(new[] { "状态：", "类型：", "范围：", "时间：", "游戏：" }, labels);
     }
 
     [Fact]

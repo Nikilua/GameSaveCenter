@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2f9ffbd6-8a16-44f9-91cb-185ae7fc54fa" name="lopmatu@SULT 2026-09-29 11:27:41" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-29T11:27:41.3831169+08:00" queuing="2026-09-29T11:27:41.3831172+08:00" start="2026-09-29T11:27:28.4639689+08:00" finish="2026-09-29T11:27:51.9206508+08:00" />
+  <TestSettings name="default" id="f0e98ea3-69c2-414f-85a0-127fcb1c3848">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-29_11_27_41" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="a785aecf-82ba-462f-900b-9b5dd78b0d70" testId="0a2ebcf3-4c54-3219-78ac-fd22a3aa0647" testName="GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups" computerName="SULT" duration="00:00:08.4840000" startTime="2026-09-29T11:27:32.3241547+08:00" endTime="2026-09-29T11:27:40.7981435+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a785aecf-82ba-462f-900b-9b5dd78b0d70">
+      <Output>
+        <StdOut>theme=Light; requestedWindow=1280x720 DIP; wpfDpi=1.5x1.5; compact=False; panelWidth=0; rows=0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Dark; requestedWindow=1280x720 DIP; wpfDpi=1.5x1.5; compact=False; panelWidth=0; rows=0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Light; requestedWindow=980x700 DIP; wpfDpi=1.5x1.5; compact=False; panelWidth=0; rows=0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Dark; requestedWindow=980x700 DIP; wpfDpi=1.5x1.5; compact=False; panelWidth=0; rows=0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Light; requestedWindow=979x700 DIP; wpfDpi=1.5x1.5; compact=True; panelWidth=952.67; rows=0,0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Dark; requestedWindow=979x700 DIP; wpfDpi=1.5x1.5; compact=True; panelWidth=952.67; rows=0,0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Light; requestedWindow=760x640 DIP; wpfDpi=1.5x1.5; compact=True; panelWidth=733.33; rows=0,0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Dark; requestedWindow=760x640 DIP; wpfDpi=1.5x1.5; compact=True; panelWidth=733.33; rows=0,0,0,0; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Light; requestedWindow=620x640 DIP; wpfDpi=1.5x1.5; compact=True; panelWidth=593.33; rows=0,0,0,44; label/control gaps=4 DIP; bindings and selections survive resize&#xD;
+theme=Dark; requestedWindow=620x640 DIP; wpfDpi=1.5x1.5; compact=True; panelWidth=593.33; rows=0,0,0,44; label/control gaps=4 DIP; bindings and selections survive resize</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups" storage="d:\workplace\github\gamesavecenter\.tmp\q14-02-labels-038640e3\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0a2ebcf3-4c54-3219-78ac-fd22a3aa0647">
+      <Execution id="a785aecf-82ba-462f-900b-9b5dd78b0d70" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\q14-02-labels-038640e3\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests" name="ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0a2ebcf3-4c54-3219-78ac-fd22a3aa0647" executionId="a785aecf-82ba-462f-900b-9b5dd78b0d70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.74]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.79]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:11.35]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

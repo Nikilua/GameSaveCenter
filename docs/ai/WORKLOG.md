@@ -1,5 +1,13 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q14-02 Task Center 筛选标签与紧凑行距
+
+- 按任务说明先复核既有标签、筛选项和控件样式；把 Status/Type/Scope/Range/Game 标签做成含 AutomationName 与原 TwoWay 绑定的字段组，用 WrapPanel 承载窄窗次级筛选。标签/控件间隔 4 DIP，统一全角冒号。
+- 生产 `TaskCenterView` WPF 回归抓到两个实际问题并按根因收口：控件 reparent 会把非默认选择改成样式首项，现移动前缓存四组 ComboBox SelectedItem、回挂后复原；换行行间距实测 0 DIP，现 8 DIP 底距只对紧凑筛选组启用，宽主行复位。加入非默认选项宽→窄→宽负/正序列和实际 7.25 DIP 最小行距断言。
+- Release solution `0/0`、XAML `24/24`、source validation 通过；WPF 静态审查 `0 error/30 warning/177 info`。`Q14FilterLabelBehaviorTests 1/1`（10 场景）、Q14ToolbarAlignment `1/1`、Task responsive `8/8`、标点 `3/3`，共 `13/13`。测试输出有 WPF TextServices `InvalidComObjectException` 清理噪声，xUnit/TRX 明确通过，原因未知。
+- `render-qa` 最终运行成功，离屏 report 无 `PROBLEM`；完整报告和四份 TRX：[Q14-02 evidence](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-02-FILTER-LABELS-20260929/README.md)。没有启动真实 Playnite或切换物理 DPI；RenderHarness 只用于离屏窗口尺寸矩阵。Round2 Q14-02 继续标未完成/外部阻塞。
+- 下一批为用户补充的跨页面紧凑布局/文案问题：Save/Media 工具栏换行行距、存档中心缩小时单行标题、Task Queue 按钮被描述文字撑高、说明文字和状态色主题资源，以及传输表格计数标记纵向对齐。先遍历实际父布局与复用样式，再逐项补运行时行为测试。
+
 ## 2026-09-29 Q14-01 Task Center 工具栏同高行为复核
 
 - 没有生产 UI 变化；新增生产 `TaskCenterView` STA WPF 几何回归。当前 `591f07be` Release solution `0 warning / 0 error`、XAML `24/24`，`validate-source.py` 通过；Q14 测试 `1/1`、exit `0`。10 个 Light/Dark × 窗口尺寸样本，主行按钮/筛选器 `36 DIP`，框中心差不超过 `0.75 DIP`，预设行文本中心最大差 `0.67 DIP`；校验错误、焦点、禁用和忙碌刷新前后几何稳定。

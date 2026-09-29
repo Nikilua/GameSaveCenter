@@ -1,6 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-09-29 Q14-01 Task Center 工具栏同高行为复核
+## 2026-09-29 Q14-02 已完成本地实现与离屏验收
+
+- TaskCenter 筛选字段目前按完整组移动；紧凑 WrapPanel 的筛选行留 8 DIP 底距，宽布局主行复位，保持 36 DIP 工具栏。WPF reparent 时选择曾被首项覆盖，现对类型/范围/时间/游戏选择做快照恢复。
+- Release solution `0 warning / 0 error`、XAML `24/24`、source validator 通过；4 个隔离类 `13/13`。新几何测试双主题 5 个尺寸共 10 场景，验证标签 4 DIP 关联、换行净距 ≥7.25 DIP、非默认选择跨宽窄往返保留。`render-qa OK`、`PROBLEM=0`。
+- 测试 host `1.5×1.5`，清理阶段有 TextServices `InvalidComObjectException`、根因未知。RenderHarness 为离屏逻辑 DPI `1.00`，不代表 Playnite/物理 DPI/OS 输入。Round2 Q14-02 仍外部阻塞/未完成。[证据及 TRX](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-02-FILTER-LABELS-20260929/README.md)
+- 下一项：先处理用户补充的跨页面紧凑布局问题（换行间距、存档中心单行顶栏、任务按钮高度/辅助文案、传输表头计数对齐），再核对颜色是否使用浅/深主题语义资源。Media Inbox 真实宿主滚动空白仍需安全宿主同进程日志。
+
+## 2026-09-29 历史记录：Q14-01 Task Center 工具栏同高行为复核
 
 - 当前源码身份 `591f07be7c30e3ee3a44f84078938b21effeafcb` 的 Release solution build `0 warnings / 0 errors`、XAML `24/24`；`Q14ToolbarAlignmentBehaviorTests 1/1`。生产 `TaskCenterView` 在 Light/Dark × 五种 DIP 窗口尺寸中检查混合控件同为 `36 DIP`、行框中心误差 `≤0.75 DIP`、预设内容中心差 `0.67 DIP`，并逐项复核校验错误/键盘焦点/禁用/忙碌态前后几何稳定。没有生产 UI 修改。[Q14-01 实测与边界](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)
 - WPF testhost 报告 `1.5×1.5` DPI；xUnit/TRX `1/1`、VSTest exit `0`，退出清理有 21 条 TextServicesHost `InvalidComObjectException`，原因未知。没有真实 Playnite、系统输入、物理 125% 切换或其他页面工具栏验证，Round2 Q14-01 保持外部阻塞/未完成。下一项 Q14-02 筛选标签；Media Inbox 用户滚动缺陷仍等安全宿主同进程几何日志。

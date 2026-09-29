@@ -147,8 +147,6 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <!-- The search hint belongs inside the field. Keeping the label as a
                      separate Auto column made the real host give the input only a
@@ -182,15 +180,25 @@
                         </Button.Style>
                     </Button>
                 </Grid>
-                <TextBlock x:Name="TaskStatusFilterLabel" Grid.Row="0" Grid.Column="1" Text="状态：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <ComboBox x:Name="TaskStatusFilterComboBox" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" AutomationProperties.Name="任务状态筛选" Margin="0,0,10,0"/>
-                <TextBlock x:Name="TaskTypeFilterLabel" Grid.Row="0" Grid.Column="3" Text="类型：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <ComboBox x:Name="TaskTypeFilterComboBox" Grid.Row="0" Grid.Column="4" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" MaxWidth="180" ItemsSource="{Binding TaskTypeFilterOptions}" SelectedItem="{Binding TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务类型" AutomationProperties.Name="任务类型筛选" Margin="0,0,10,0"/>
-                <ComboBox x:Name="TaskHistoryScopeComboBox" Grid.Row="0" Grid.Column="5" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" ItemsSource="{Binding TaskHistoryScopeOptions}" SelectedItem="{Binding TaskHistoryScope, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="任务范围" AutomationProperties.Name="任务范围" Margin="0,0,10,0"/>
-                <ComboBox x:Name="TaskHistoryRangeComboBox" Grid.Row="0" Grid.Column="6" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="100" ItemsSource="{Binding TaskHistoryRangeOptions}" SelectedItem="{Binding TaskHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="时间范围" AutomationProperties.Name="任务时间范围" Margin="0,0,10,0"/>
+                <StackPanel x:Name="TaskStatusFilterGroup" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <TextBlock x:Name="TaskStatusFilterLabel" Text="状态：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="TaskStatusFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="112" MaxWidth="160" ItemsSource="{Binding TaskStatusFilterOptions}" SelectedItem="{Binding TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务状态" AutomationProperties.Name="任务状态筛选"/>
+                </StackPanel>
+                <StackPanel x:Name="TaskTypeFilterGroup" Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <TextBlock x:Name="TaskTypeFilterLabel" Text="类型：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="TaskTypeFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" MaxWidth="180" ItemsSource="{Binding TaskTypeFilterOptions}" SelectedItem="{Binding TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="任务类型" AutomationProperties.Name="任务类型筛选"/>
+                </StackPanel>
+                <StackPanel x:Name="TaskHistoryScopeFilterGroup" Grid.Row="0" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <TextBlock x:Name="TaskHistoryScopeLabel" Text="范围：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="TaskHistoryScopeComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="110" ItemsSource="{Binding TaskHistoryScopeOptions}" SelectedItem="{Binding TaskHistoryScope, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="任务范围" AutomationProperties.Name="任务范围"/>
+                </StackPanel>
+                <StackPanel x:Name="TaskHistoryRangeFilterGroup" Grid.Row="0" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <TextBlock x:Name="TaskHistoryRangeLabel" Text="时间：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="TaskHistoryRangeComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="100" ItemsSource="{Binding TaskHistoryRangeOptions}" SelectedItem="{Binding TaskHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="时间范围" AutomationProperties.Name="任务时间范围"/>
+                </StackPanel>
                 <!-- Icon-only: toolbar refresh remains discoverable by tooltip and UI Automation. -->
-                <ui:Button x:Name="TaskRefreshButton" Grid.Row="0" Grid.Column="7" Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshCommand}" ToolTip="刷新任务列表" AutomationProperties.Name="刷新任务列表"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
-                <WrapPanel x:Name="TaskFilterPresetRow" Grid.Row="1" Grid.ColumnSpan="8" Margin="0,8,0,0" VerticalAlignment="Center">
+                <ui:Button x:Name="TaskRefreshButton" Grid.Row="0" Grid.Column="5" Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding RefreshCommand}" ToolTip="刷新任务列表" AutomationProperties.Name="刷新任务列表"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
+                <WrapPanel x:Name="TaskFilterPresetRow" Grid.Row="1" Grid.ColumnSpan="6" Margin="0,8,0,0" VerticalAlignment="Center">
                     <TextBlock Text="筛选预设" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <ComboBox x:Name="TaskFilterPresetComboBox" Width="180" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding TaskFilterPresets}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedTaskFilterPreset, Mode=TwoWay}" ToolTip="选择已保存的任务筛选组合" AutomationProperties.Name="任务筛选预设" Margin="0,0,8,0"/>
                     <ui:Button x:Name="TaskFilterPresetApplyButton" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ApplyTaskFilterPresetCommand}" Content="应用" ToolTip="应用选中的任务筛选预设" AutomationProperties.Name="应用任务筛选预设" Margin="0,0,8,0"/>
@@ -199,7 +207,7 @@
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameTaskFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的任务筛选预设" AutomationProperties.Name="重命名任务筛选预设" Margin="0,0,8,0"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteTaskFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的任务筛选预设" AutomationProperties.Name="删除任务筛选预设"/>
                 </WrapPanel>
-                <Border x:Name="TaskNavigationSourceBanner" Grid.Row="2" Grid.ColumnSpan="8" Margin="0,8,0,0">
+                <Border x:Name="TaskNavigationSourceBanner" Grid.Row="2" Grid.ColumnSpan="6" Margin="0,8,0,0">
                     <Border.Style>
                         <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -217,7 +225,7 @@
                         <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ClearTaskNavigationContextCommand}" Content="清除带入条件" ToolTip="仅清除带入的游戏条件，保留其他任务筛选" AutomationProperties.Name="清除带入的任务筛选" Margin="12,0,0,0"/>
                     </Grid>
                 </Border>
-                <TextBlock x:Name="TaskLeavePageHint" Grid.Row="3" Grid.ColumnSpan="8" Text="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="后台任务离页说明" AutomationProperties.HelpText="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。"/>
+                <TextBlock x:Name="TaskLeavePageHint" Grid.Row="3" Grid.ColumnSpan="6" Text="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscInfoBrush}" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="后台任务离页说明" AutomationProperties.HelpText="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。"/>
             </Grid>
         </Border>
         <Expander x:Name="TaskMoreFiltersExpander" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource GscDisclosureCard}" Visibility="Collapsed" Margin="0,0,0,8">
@@ -241,12 +249,12 @@
                     </ui:Button>
                 </Grid>
             </Expander.Header>
-            <StackPanel x:Name="TaskMoreFiltersHost" Orientation="Horizontal" Margin="0,4,0,0">
-                <TextBlock x:Name="TaskGameFilterLabel" Text="游戏" Style="{DynamicResource GscBodyStyle}" VerticalAlignment="Center"/>
-                <ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" AutomationProperties.Name="任务游戏筛选" Margin="10,0,6,0"/>
-                <TextBlock x:Name="TaskHistoryScopeLabel" Text="范围：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="6,0,4,0"/>
-                <TextBlock x:Name="TaskHistoryRangeLabel" Text="时间：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="6,0,4,0"/>
-            </StackPanel>
+            <WrapPanel x:Name="TaskMoreFiltersHost" Orientation="Horizontal" Margin="0,4,0,0">
+                <StackPanel x:Name="TaskGameFilterGroup" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,8">
+                    <TextBlock x:Name="TaskGameFilterLabel" Text="游戏：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" AutomationProperties.Name="任务游戏筛选"/>
+                </StackPanel>
+            </WrapPanel>
         </Expander>
         <Border x:Name="TaskQueuePanel" Grid.Row="3" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,10">
             <Grid>

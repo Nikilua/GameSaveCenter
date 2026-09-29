@@ -272,23 +272,16 @@ namespace GameSaveCenter.Playnite.Views
                 TaskQueuePanel.Padding = stack ? new Thickness(6, 6, 6, 6) : new Thickness(6, 10, 6, 10);
                 TaskQueueLastUpdatedSummary.Visibility = stack ? Visibility.Collapsed : Visibility.Visible;
                 SetCompactFilterPlacement(compactFilters);
-                TaskMoreFiltersHost.Orientation = compactFilters && width < 660
-                    ? Orientation.Vertical
-                    : Orientation.Horizontal;
                 // The second row hosts the named filter presets. Keep it measurable
                 // after every responsive pass; collapsing it would silently remove
                 // the save/apply controls on the compact host path.
                 TaskFiltersPanel.RowDefinitions[1].Height = GridLength.Auto;
                 Grid.SetRow(TaskSearchBoxHost, 0);
                 Grid.SetColumn(TaskSearchBoxHost, 0);
-                Grid.SetRow(TaskStatusFilterLabel, 0);
-                Grid.SetColumn(TaskStatusFilterLabel, compactFilters ? 4 : 1);
-                Grid.SetRow(TaskStatusFilterComboBox, 0);
-                Grid.SetColumn(TaskStatusFilterComboBox, compactFilters ? 5 : 2);
                 Grid.SetRow(TaskRefreshButton, 0);
-                Grid.SetColumn(TaskRefreshButton, compactFilters ? 6 : 7);
+                Grid.SetColumn(TaskRefreshButton, compactFilters ? 2 : 5);
 
-                Grid.SetColumnSpan(TaskSearchBoxHost, compactFilters ? 4 : 1);
+                Grid.SetColumnSpan(TaskSearchBoxHost, 1);
                 Grid.SetRow(TaskSearchBoxHost, 0);
 
                 // Give the common desktop width a stable rhythm like the Demo's
@@ -427,39 +420,66 @@ namespace GameSaveCenter.Playnite.Views
 
         private void SetCompactFilterPlacement(bool compact)
         {
+            var alreadyCompact = ReferenceEquals(TaskTypeFilterGroup.Parent, TaskMoreFiltersHost);
+            if (compact == alreadyCompact)
+                return;
+
+            // These live controls inherit their DataContext from different parents
+            // before and after the move. Snapshot their selections first so the
+            // transient null inherited context cannot push the style's first item
+            // back into the task filter state through the TwoWay bindings.
+            var typeSelection = TaskTypeFilterComboBox.SelectedItem;
+            var scopeSelection = TaskHistoryScopeComboBox.SelectedItem;
+            var rangeSelection = TaskHistoryRangeComboBox.SelectedItem;
+            var gameSelection = TaskGameFilterComboBox.SelectedItem;
+
             if (compact)
             {
-                RemoveChild(TaskFiltersPanel, TaskTypeFilterLabel);
-                RemoveChild(TaskFiltersPanel, TaskTypeFilterComboBox);
-                RemoveChild(TaskFiltersPanel, TaskHistoryScopeComboBox);
-                RemoveChild(TaskFiltersPanel, TaskHistoryRangeComboBox);
+                RemoveChild(TaskFiltersPanel, TaskTypeFilterGroup);
+                RemoveChild(TaskFiltersPanel, TaskHistoryScopeFilterGroup);
+                RemoveChild(TaskFiltersPanel, TaskHistoryRangeFilterGroup);
 
                 TaskMoreFiltersHost.Children.Clear();
-                TaskMoreFiltersHost.Children.Add(TaskTypeFilterLabel);
-                TaskMoreFiltersHost.Children.Add(TaskTypeFilterComboBox);
-                TaskMoreFiltersHost.Children.Add(TaskHistoryScopeLabel);
-                TaskMoreFiltersHost.Children.Add(TaskHistoryScopeComboBox);
-                TaskMoreFiltersHost.Children.Add(TaskHistoryRangeLabel);
-                TaskMoreFiltersHost.Children.Add(TaskHistoryRangeComboBox);
-                TaskMoreFiltersHost.Children.Add(TaskGameFilterLabel);
-                TaskMoreFiltersHost.Children.Add(TaskGameFilterComboBox);
+                TaskMoreFiltersHost.Children.Add(TaskTypeFilterGroup);
+                TaskMoreFiltersHost.Children.Add(TaskHistoryScopeFilterGroup);
+                TaskMoreFiltersHost.Children.Add(TaskHistoryRangeFilterGroup);
+                TaskMoreFiltersHost.Children.Add(TaskGameFilterGroup);
+                SetCompactFilterGroupSpacing(bottom: 8d);
+                RestoreFilterSelection(TaskTypeFilterComboBox, typeSelection);
+                RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
+                RestoreFilterSelection(TaskHistoryRangeComboBox, rangeSelection);
+                RestoreFilterSelection(TaskGameFilterComboBox, gameSelection);
                 return;
             }
 
-            RemoveChild(TaskMoreFiltersHost, TaskTypeFilterLabel);
-            RemoveChild(TaskMoreFiltersHost, TaskTypeFilterComboBox);
-            RemoveChild(TaskMoreFiltersHost, TaskHistoryScopeComboBox);
-            RemoveChild(TaskMoreFiltersHost, TaskHistoryRangeComboBox);
+            RemoveChild(TaskMoreFiltersHost, TaskTypeFilterGroup);
+            RemoveChild(TaskMoreFiltersHost, TaskHistoryScopeFilterGroup);
+            RemoveChild(TaskMoreFiltersHost, TaskHistoryRangeFilterGroup);
             TaskMoreFiltersHost.Children.Clear();
-            TaskMoreFiltersHost.Children.Add(TaskGameFilterLabel);
-            TaskMoreFiltersHost.Children.Add(TaskGameFilterComboBox);
-            TaskMoreFiltersHost.Children.Add(TaskHistoryScopeLabel);
-            TaskMoreFiltersHost.Children.Add(TaskHistoryRangeLabel);
+            TaskMoreFiltersHost.Children.Add(TaskGameFilterGroup);
 
-            AddChild(TaskFiltersPanel, TaskTypeFilterLabel);
-            AddChild(TaskFiltersPanel, TaskTypeFilterComboBox);
-            AddChild(TaskFiltersPanel, TaskHistoryScopeComboBox);
-            AddChild(TaskFiltersPanel, TaskHistoryRangeComboBox);
+            AddChild(TaskFiltersPanel, TaskTypeFilterGroup);
+            AddChild(TaskFiltersPanel, TaskHistoryScopeFilterGroup);
+            AddChild(TaskFiltersPanel, TaskHistoryRangeFilterGroup);
+            SetCompactFilterGroupSpacing(bottom: 0d);
+            RestoreFilterSelection(TaskTypeFilterComboBox, typeSelection);
+            RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
+            RestoreFilterSelection(TaskHistoryRangeComboBox, rangeSelection);
+            RestoreFilterSelection(TaskGameFilterComboBox, gameSelection);
+        }
+
+        private void SetCompactFilterGroupSpacing(double bottom)
+        {
+            var margin = new Thickness(0, 0, 10, bottom);
+            TaskTypeFilterGroup.Margin = margin;
+            TaskHistoryScopeFilterGroup.Margin = margin;
+            TaskHistoryRangeFilterGroup.Margin = margin;
+        }
+
+        private static void RestoreFilterSelection(ComboBox comboBox, object? selectedItem)
+        {
+            if (selectedItem == null || comboBox.Items.Contains(selectedItem))
+                comboBox.SetCurrentValue(ComboBox.SelectedItemProperty, selectedItem);
         }
 
         private static void RemoveChild(Panel parent, UIElement child)

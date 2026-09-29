@@ -88,6 +88,9 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         var type = GetField<ComboBox>(view, "TaskTypeFilterComboBox");
         var scope = GetField<ComboBox>(view, "TaskHistoryScopeComboBox");
         var range = GetField<ComboBox>(view, "TaskHistoryRangeComboBox");
+        var typeGroup = GetField<StackPanel>(view, "TaskTypeFilterGroup");
+        var scopeGroup = GetField<StackPanel>(view, "TaskHistoryScopeFilterGroup");
+        var rangeGroup = GetField<StackPanel>(view, "TaskHistoryRangeFilterGroup");
         var refresh = GetField<GameSaveCenter.Playnite.Controls.Button>(view, "TaskRefreshButton");
         var presetRow = GetField<WrapPanel>(view, "TaskFilterPresetRow");
         var presetControls = presetRow.Children.OfType<Control>().ToArray();
@@ -127,10 +130,15 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             FlushLayout(window);
 
             var mainRow = new System.Collections.Generic.List<Control> { search, status, refresh };
-            foreach (var combo in new[] { type, scope, range })
+            foreach (var filter in new[]
             {
-                if (ReferenceEquals(combo.Parent, filters) && Grid.GetRow(combo) == 0)
-                    mainRow.Add(combo);
+                (Combo: type, Group: typeGroup),
+                (Combo: scope, Group: scopeGroup),
+                (Combo: range, Group: rangeGroup)
+            })
+            {
+                if (ReferenceEquals(filter.Group.Parent, filters) && Grid.GetRow(filter.Group) == 0)
+                    mainRow.Add(filter.Combo);
             }
 
             Assert.Contains(searchHost, filters.Children.Cast<UIElement>());
