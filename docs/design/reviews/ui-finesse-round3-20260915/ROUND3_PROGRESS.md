@@ -1299,6 +1299,12 @@
 - 首次 seed runner 在 Release build 后、package 前失败：`dev-install-run.ps1` 对 `package.ps1` 使用参数字符串数组 splat，导致 `-Configuration` 被位置绑定。失败前没有部署正式扩展或 seeder，没有启动 Playnite，也没有 manifest；不记为 CEF/宿主结果。
 - 修为 hashtable 具名 splat，新增 source guard。Release solution `0 errors`、两条既有 CS8602；定向 guard test `1/1`，XAML `24/24`、source validator、PowerShell AST、diff check 通过。深 `.tmp` 的首个 test invocation 被 net472 260 字符路径限制挡住；短 `.tmp/r3b24` 重建后测试通过。
 - 证据：[R23-04 runner 参数修正](evidence/R23-04-RUNNER-PACKAGE-ARGUMENT-FIX-20260924.md)。下一步提交后对未曾启动的同一隔离 seed 流程重试一次，检查 run ID manifest 与实际 Playnite/CEF；不触碰真实 profile，不绕过 CEF。R23-04 保持开放。
+
+## 2026-09-30 用户报告：设置页分组色彩语义
+
+- `c770d37c` 将静态 Settings 分组“存档格式与历史版本”和“自动化与安全”标题的 Info/Success 装饰色统一为主题 Accent；真实状态色未做全局替换。浅/深主题实际生产 WPF 资源行为 `2/2`，复位按钮名称和启用状态保持；规范 Release solution `0 warning / 0 error`、XAML `24/24`。
+- OffscreenRenderHarness 全矩阵 Light/Dark `render-qa OK`，Settings `1040×700` 两主题通过；只是逻辑离屏 `1.00 DPI`，并非 Playnite 最终帧。R00/R01 freshness `14 FRESH / 0 STALE`。程序集 SHA/MVID、TRX、截图和官方色彩依据：[证据包](evidence/USER-REPORTED-SETTINGS-SEMANTIC-COLOR-20260930/README.md)。没有真实 host/package/物理 DPI，192 项任务状态与计数不变。
+- 下一小批核对 Dashboard 游戏备份统计和主操作图标的 InfoBrush 是否为状态语义，再继续跨页文案/色彩审计。Media Inbox 滚动问题仍要求安全隔离宿主同进程 `[GSC-GRID-DIAGNOSTIC]`。
 # 2026-09-24 用户反馈：R06 表格排序崩溃修复
 
 - 用户日志实际命中 `DataGridStableSortController.ApplyCurrentSort()` 的 `ListCollectionView.DeferRefresh` 清理路径。已在当前 main 修复 stale/detached `SourceCollection` 检查，防止失效 view 刷新，并恢复 DataGrid 先行清除后的 controller-owned 箭头。

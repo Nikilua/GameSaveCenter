@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 设置页分组图标颜色
+
+- 提交 `c770d37c` 将 Settings 静态分组标题（备份/历史、自动化/安全）统一为主题 Accent；Info/Success 留给真实状态。Light/Dark 生产 WPF 资源读取和 reset action `2/2`，规范 Release solution `0/0`、XAML `24/24`、RenderHarness 全矩阵成功，R00/R01 `14/14`。
+- 精确程序集、TRX、console、构建与截图：[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-SETTINGS-SEMANTIC-COLOR-20260930/README.md)。未运行 Playnite/物理 DPI/用户包；深色图片是离屏捕获。
+- 继续审阅 Dashboard 主按钮和游戏统计的 InfoBrush；不要全局机械替换语义色。Media Inbox 用户滚动空白仍需真实隔离宿主同进程诊断。
+
 ## 2026-09-30 Overview 云端优先级与计数语义色
 
 - 提交 `74ab0203`：云端数量指标走主题 Accent；Cloud 优先标题表示失败/认证/待重试，走 Warning；状态胶囊保留 Info。双主题 WPF 生产行为 `2/2`，覆盖可见数字、警告标题、Info 状态、对比度和队列命令绑定。

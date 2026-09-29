@@ -1,0 +1,11 @@
+GameSaveCenter render QA report
+Generated: 2026-09-30 01:29:58
+Scenario: render-qa
+EvidenceSource: OffscreenRenderHarness
+Commit: c770d37c478fe447241b65fc35934a093345022f
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+Themes: light,dark
+render-qa OK
+  light/Settings/1040x700 OK
+  dark/Settings/1040x700 OK

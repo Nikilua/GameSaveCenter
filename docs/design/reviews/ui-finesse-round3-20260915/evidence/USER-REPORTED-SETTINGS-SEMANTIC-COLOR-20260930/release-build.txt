@@ -1,0 +1,67 @@
+.NET SDK:
+ Version:           9.0.302
+ Commit:            bb2550b9af
+ Workload version:  9.0.300-manifests.183aaee6
+ MSBuild version:   17.14.13+65391c53b
+
+运行时环境:
+ OS Name:     Windows
+ OS Version:  10.0.22000
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   C:\Program Files\dotnet\sdk\9.0.302\
+
+已安装 .NET 工作负载:
+没有要显示的已安装工作负载。
+配置为在安装新清单时使用 loose manifests。
+
+Host:
+  Version:      9.0.7
+  Architecture: x64
+  Commit:       3c298d9f00
+
+.NET SDKs installed:
+  9.0.302 [C:\Program Files\dotnet\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.18 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.18 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 8.0.18 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  Not set
+
+global.json file:
+  D:\workplace\github\GameSaveCenter\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+  正在确定要还原的项目…
+  已还原 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (用时 167 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (用时 167 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (用时 214 毫秒)。
+  5 个项目(共 8 个)是最新的，无法还原。
+  GameSaveCenter.Contracts -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Worker\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:02:02.40

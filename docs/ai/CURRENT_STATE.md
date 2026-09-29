@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-30 设置页分组图标色收敛
+
+- `c770d37c` 将“存档格式与历史版本”的 Info 蓝和“自动化与安全”的 Success 绿改为共享主题 Accent；它们是分组标题而非状态。Light/Dark 实际生产 WPF 资源行为 `2/2`，恢复默认按钮仍可用；规范 Release solution `0/0`、XAML `24/24`、RenderHarness Light/Dark `render-qa OK`、R00/R01 `14/14 FRESH`。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-SETTINGS-SEMANTIC-COLOR-20260930/README.md)
+- 该结果不表示全产品 InfoBrush 盘点完成；Dashboard 备份指标/主按钮图标还需分类。无真实 Playnite、用户包、物理 DPI 或屏幕帧证据。Media Inbox 滚动错位仍待安全宿主日志。
+
 ## 2026-09-30 首页云端队列语义色
 
 - `OverviewCloudQueueValue` 作为统计计数使用主题强调色；标为 `Cloud` 的优先标题表示失败/认证/待重试，使用警示色；状态胶囊仍保留信息色。生产 WPF 双主题行为 `2/2`，命令仍绑定，对比度 Light `4.13/4.13/4.72:1`、Dark `4.77/4.77/7.66:1`。[提交后证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-CLOUD-SEMANTIC-COLOR-20260930/README.md)

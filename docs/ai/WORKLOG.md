@@ -9821,3 +9821,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前提交 Release solution `0 warnings / 0 errors`、XAML `24/24`、source validation 通过；浅/深主题生产 WPF 双列表状态行为 `2/2`，TRX 和测试/插件 DLL SHA、MVID 见 `USER-REPORTED-MAINTENANCE-EMPTY-DIAGNOSTIC-COPY-20260929/README.md`。R00/R01 freshness `14/14`，未命中登记源路径。
 - 使用合成诊断与 `1100×720 DIP` 受控 STA 窗口；没有启动 Playnite、测物理 DPI或验证用户截图 DLL。该提交只精简两个空态，不表示其余存档/维护说明审查结束，也不改变 192 项状态或计数。
 - 下一项审阅存档/维护页在有数据时仍可见的静态说明；恢复保护、远端校验、错误、取消与危险操作文案先保留。真实 Media Inbox 滚动后偏移仍需安全宿主同进程诊断。
+
+# 2026-09-30 设置页分组图标色收敛
+
+- `c770d37c` 将“存档格式与历史版本”的装饰 Info 蓝、“自动化与安全”的装饰 Success 绿改为 Accent；两个 reset action 保留原 UI Automation Name 并启用。Production `GameSaveCenterSettingsView` 双主题 WPF 资源行为 `2/2`，测试从当前身份 DLL 运行。
+- `scripts/build.ps1 -Configuration Release -SkipTests` 编译全 solution `0 warning / 0 error`；XAML `24/24`、source validator、diff check 通过。行为 TRX `2/2`；OffscreenRenderHarness 完整 Light/Dark `render-qa OK`，报告 source identity `c770d37c`/`WorkingTreeClean=True`；R00/R01 freshness `14 FRESH / 0 STALE`。完整证据：[Settings semantic color](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-SETTINGS-SEMANTIC-COLOR-20260930/README.md)。
+- 仅合成设置视图、逻辑离屏 DPI `1.00`；未启动 Playnite、未验证用户包、物理 DPI、OS 输入或最终屏幕帧。初次未设置 `GSC_BUILD_COMMIT` 的快速构建不作为证据；最终 build script 为程序集注入正确源提交身份。
+- 下一步审阅 Dashboard 备份数字及主按钮 glyph 的 InfoBrush，逐项区分指标/动作与实际状态；Media Inbox 滚动偏移仍待安全隔离宿主日志，不改变 192 项账本状态。
