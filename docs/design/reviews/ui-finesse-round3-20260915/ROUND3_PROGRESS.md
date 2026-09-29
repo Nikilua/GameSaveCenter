@@ -1,5 +1,12 @@
 ## 2026-09-29 用户报告：Trainer 导入确认空态文案
 
+## 2026-09-29 用户报告：Media Inbox 局部游戏选择器（已满足）
+
+- 核对当前代码确认已有 `4f778e9b` 实现：待归类批量操作只读显示全局 `SelectedGame`，没有重复 ComboBox；批量命令使用同一目标 Playnite ID。现存摘要 `220×36 DIP` 用于确认上下文，不创建第二份可编辑状态。
+- 当前最近源码构建 `f88bcb4d` 的 Light/Dark 生产 WPF 行为 `2/2`：全局目标切换、清空、恢复同步到操作区与 Inspector；按钮/摘要 `36 DIP` 高且垂直中心差 `0 DIP`。`src/` 与 `tests/` 自该源码身份至当前 HEAD 无差异。[证据](evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md)
+- 未启动 Playnite；用户截图运行 DLL/主题/DPI 未知。该确认不覆盖 Media Inbox 滚动行偏移，它仍待同进程前后诊断。
+- 下一项继续其它页面的紧凑动作行距/静态辅助说明审计，不改 192 项计数。
+
 ## 2026-09-29 用户报告：Task Center 提示和按钮（已满足）
 
 - 对照当前生产 `TaskCenterView` 与已有能力后确认无需重建：运行时显示短句，空闲时折叠；完整后台任务不中断/恢复提示保留在 UI Automation HelpText。任务列表按钮已采用固定垂直尺寸，摘要换行不再撑开按钮。

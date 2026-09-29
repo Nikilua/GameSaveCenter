@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-29：Media Inbox 全局目标）
+
+- 核对后记“已满足”：待归类批量行使用全局选中游戏，不再有局部游戏选择器；`220×36 DIP` 只读目标摘要与确认目标、Worker 请求 Playnite ID 一致。Light/Dark 生产视图行为 `2/2`，清空/恢复和两处上下文跟随均通过。
+- 当前证据身份 `f88bcb4d`；其后的生产源码无变化。[证据及 TRX](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md)。没有启动真实 Playnite，用户截图对应 DLL 未知。
+- 下一项继续逐页检查窄窗动作间距和可见辅助文字。Media Inbox 滚动空白仍须安全同进程复现并记录 `[GSC-GRID-DIAGNOSTIC]` 前后几何，未处理虚拟化/锚点。
+
 ## 当前交接补充（2026-09-29：Task Center 辅助文字已满足）
 
 - 当前源码已符合 Task Center 截图要求：仅在运行任务时显示短提示，完整安全语义保留在 UIA HelpText；浅/深色队列按钮 `30/36 DIP` 且不会被三行摘要拉伸，提示颜色来自主题次级文字。

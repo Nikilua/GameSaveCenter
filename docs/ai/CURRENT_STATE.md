@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Media Inbox 游戏目标选择（已满足）
+
+- 当前待归类操作行无第二个游戏选择器；只读 `220×36 DIP` 目标摘要绑定全局 `SelectedGame`，批量命令/确认请求也使用同一 Playnite ID。Light/Dark 行为 `2/2`，目标切换/清空/恢复联动、按钮与目标中心对齐。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md)
+- 当前宿主截图 DLL 身份未知；源码视图与行为验证不等同于真实 Playnite 呈现。Media Inbox 滚动后行偏移仍待同进程诊断。下一项继续审计其他页面紧凑排布和数据态说明。
+
 ## 2026-09-29 Task Center 辅助说明与队列按钮（已满足）
 
 - 当前源码已按运行状态显示短句并保留完整 HelpText；`RunningTaskCount==0` 时提示折叠。浅/深主题下队列按钮为 `30/36 DIP`、中心偏差 `≤0.33 DIP`，收起摘要不改变高度，辅助文字使用次级中性色。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md)

@@ -9778,3 +9778,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Release `0 warnings / 0 errors`，XAML `24/24`。测试与插件 DLL SHA/MVID、TRX 和身份失败复跑说明见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TASK-CENTER-HELPER-20260929/README.md`。
 - 一次旧测试 DLL `98800f1a` 被源代码测试身份门禁正确拒绝；该轮作废。随后从当前 checkout `f88bcb4d` 重建并完成所有四项用例。没有加载真实 Playnite；用户截图运行 DLL/主题/DPI 未知。
 - 下一项核对 Media Inbox 的全局游戏选框与批量目标选框是否重复；先查现有绑定/命令。其他页面的紧凑行距与多余文字仍按小批量继续审阅；Media Inbox 滚动空白未做宿主同进程诊断。
+
+# 2026-09-29 Media Inbox 游戏目标选择（已满足）
+
+- 对照用户截图检查当前代码、绑定、真实命令及现有能力。待归类批量行无第二个游戏选择 `ComboBox`；只读 `MediaInboxGlobalTargetSummary` 从全局 `SelectedGame` 显示目标，批量归类命令也从同一实例取得目标 ID。现存摘要仅用于批量操作前核对目标，用户仍只需使用右上全局选框。
+- 当前源码身份 `f88bcb4d` 下的 `CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow` 双主题 `2/2`。目标切换/清空/恢复同步至操作区和 Inspector，批量动作/模式/目标均 `36 DIP` 且中心偏差 `0`；TRX 与程序集 SHA/MVID 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md`。
+- 后续到当前 HEAD 仅有文档/证据改动，`src/` 与 `tests/` 无差异。本次未安装/启动 Playnite，用户截图宿主 DLL 身份未知；Media Inbox 滚动后行偏移仍是未完成真实宿主诊断，不用本证据代替。
+- 下一项按用户的跨页要求继续审计窄窗动作行距与不必要的静态辅助说明；真实滚动日志仍需安全同进程 `[GSC-GRID-DIAGNOSTIC]`。

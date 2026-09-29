@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Media Inbox 目标选框已核对
+
+- `MediaCenterView` 待归类操作区没有局部游戏选择 `ComboBox`；现存 `MediaInboxGlobalTargetSummary` 是只读摘要，展示全局 `SelectedGame.Name` 与身份。`AssignInboxMediaBatchCommand` 从同一 `SelectedGame` 取 Playnite ID，保留批量选择/确认/错误语义。
+- Light/Dark 生产视图行为 `2/2`：全局目标切换、清空、恢复同步到操作区与 Inspector；按钮/摘要高 `36 DIP`、中心差 `0 DIP`。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md`。
+- 用户截图运行 DLL 未核实，未做真实 Playnite/物理 DPI 呈现；滚动空白/行偏移仍需同进程 `[GSC-GRID-DIAGNOSTIC]`。下一项继续紧凑布局文案复核。
+
 ## 2026-09-29 Task Center 帮助文案已满足
 
 - 当前 `TaskCenterView` 已把常显长句缩短为运行时的一行提示，无运行任务时折叠；完整不取消/返回恢复说明仍通过 `AutomationProperties.HelpText` 提供。队列操作按钮固定在 `30/36 DIP`，不随多行摘要拉高；提示和筛选摘要跟随浅/深主题次级文字色。
