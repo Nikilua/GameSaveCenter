@@ -1,3 +1,9 @@
+## 2026-09-30 R08-02 热关闭复核
+
+- `dc7f97cf` 生产源码的应用动效关/开已经当前身份 STA 测试 `1/1`；生产 shell Light/Dark `motionhotprobe` 测到活动 transition 即时归一化和关闭态重入直达终点。Dashboard 与 Settings 已订阅 `SystemParameters.StaticPropertyChanged`，但真实 Windows 动画偏好没有改动/触发，不能记录成实机系统通知通过。
+- 当前 TRX xUnit `1/1`、exit `0`；有 8 条 TextServices COM 清理噪声、根因未知。离屏逻辑 DIP 不代表真实 Playnite、物理 DPI或 presented frame。证据：[R08-02 2026-09-30](../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 下一步可以为 SystemParameters 事件源加隔离注入测试而不更改 OS 偏好；另有 R08-01 用户失败需原始日志、Media Inbox 需同宿主前后 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-30 R00/R01 证据新鲜度纠正
 
 - `ROUND3_PROGRESS.md` 的 R00-06/07、R01-03/06 旧行曾残留 9/28 的 `103 warnings / 0 HIGH / 0 MEDIUM`。当前 `dc7f97cf` 审计是 168 snapshots、110 warnings、0 HIGH/7 MEDIUM/0 Fidelity/0 failed routes；修正后仍明确保留 7 条工具栏垂直扩展风险。R01 E01–E20 校验 20/20、UiAuditSourceTests 6/6、R00/R01 freshness 14/14。

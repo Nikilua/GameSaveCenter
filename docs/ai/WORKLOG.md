@@ -9843,3 +9843,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 依据 post-commit 证据刷新 R00-04/06/08、R01-03/05/06/07 的测试身份和证据直达入口；不改变状态或 192 项总数。当前索引 validator 与 freshness 后续实测结果见本次提交。
 - `audit-metadata.json` 的 ZipPath 指向已清理 `.tmp/user-compact-ui-20260930`，`UI_MANIFEST.json` 含本机 RepositoryRoot。归档副本已分别删除这两个环境路径，保留 repo-relative 源码位置、commit identity 和窗口/主题数据；证据 README 同步说明。
 - 未改生产代码、未启动 Playnite、未访问真实业务数据。下一项先检查 R08-02 当前 system/app motion toggle 的生产订阅与实际状态测试；R08-01 用户侧失败仍无原始断言/堆栈/TRX。
+# 2026-09-30 R08-02 当前 main 热关闭动画复核
+
+- 在 clean 文档身份 `63b0c198` 下执行当前 Release `R08MotionHotChangeBehaviorTests 1/1`、exit `0`。实测生产 SettingsShell 入场 opacity/Y clocks 在应用动画选项关闭后立即清理为 opacity=1/Y=0；重开并等待原时长不会重播旧入场。
+- 当前 RenderHarness `motionhotprobe` 使用生产 AcrylicProductionShellView 实际按钮事件，Light/Dark 活动中途均 `duringAnimated=True`；关闭后 sidebar 达 `72 DIP`、opacity=1、X=0 且无活动 clock；关闭态再次打开直达 `270 DIP`。受控报告与 6 张中途/终点/重入截图和 TRX：[R08-02 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- test DLL `ProductVersion=0.6.73+dc7f97cfa49724778c4987224c9f736c744b3631`，身份/哈希/MVID见 README。TRX xUnit `1/1` 成功后有 8 条 TextServicesHost `InvalidComObjectException` 清理输出，根因未知。
+- Dashboard/Settings 的 `SystemParameters.StaticPropertyChanged` 订阅和热关闭归一化路径存在；本轮没有修改 Windows 动画偏好或模拟/宣称收到真实系统通知。Playnite宿主、物理 DPI、ETW/presented frame 均未验。下一步为非修改 OS 设置的系统偏好通知注入测试；Media Inbox 同进程滚动、R08-01 用户失败仍按原边界待验。

@@ -1,3 +1,9 @@
+## 当前交接补充（2026-09-30：R08-02 热关闭复核）
+
+- 生产源码 `dc7f97cf` 的应用设置热关闭：`R08MotionHotChangeBehaviorTests 1/1`；Light/Dark 生产 shell probe 在活动动画中切换为关闭后时钟立即释放，opacity/X 回到稳定状态，之后的关闭态交互不残留旧动画。详见 [R08-02 当前复核](design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- Dashboard/Settings 代码监听 `SystemParameters.StaticPropertyChanged`，但本次未修改系统“显示动画”设置或触发真实系统通知；Playnite 与物理 DPI 仍未验。TRX 在 xUnit 成功后有 8 条 TextServices 清理日志，根因未知。
+- 下一项为系统偏好通知的隔离可注入验证；R08-01 仍需失败机器完整 log/TRX，Media Inbox 偏移仍需安全宿主同进程诊断。
+
 ## 当前交接补充（2026-09-30：R00/R01 审计证据校正）
 
 - 生产代码审计身份是 `dc7f97cfa49724778c4987224c9f736c744b3631`；当前 168 snapshots、110 warnings、0 HIGH/7 MEDIUM/0 Fidelity/0 failed routes。R00-06/07 与 R01-03/06 的账本行已从旧 `103/0` 数字校正；R01 E01–E20 `20/20`、源码审计 `6/6`、R00/R01 freshness `14/14`。

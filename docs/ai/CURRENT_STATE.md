@@ -1,3 +1,9 @@
+## 2026-09-30 R08-02 热关闭行为复核
+
+- 当前生产源码 `dc7f97cf` 下，Settings 动画开关 STA WPF 行为 `1/1`；生产侧栏 Light/Dark `motionhotprobe` 通过，活动变换在关闭时归一化、无动画状态再开合立即到终点。代码已挂接 Dashboard/Settings 的 `SystemParameters.StaticPropertyChanged` 并调用重算/归一化。
+- 当前轮没有改 Windows 系统动画偏好或实触真实通知，故该边界与 Playnite 宿主复核仍未验；测试 xUnit `1/1`、exit `0` 后有 8 条根因未知的 TextServices 清理日志。[身份与截图](../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 下一可执行项：用可注入的通知源在不改 OS 设置的情况下补验证系统偏好事件路由；R08-01 用户侧失败原始 log/TRX 和 Media Inbox 同宿主滚动诊断保持未验。
+
 ## 2026-09-30 R00/R01 审计证据校正
 
 - 当前 audit 以 `dc7f97cf` 生产源码身份为准：168 个快照、110 条警告、0 HIGH / 7 MEDIUM / 0 Fidelity / 0 failed routes；账本已修正过期的 103/0 MEDIUM 数字，保留工具栏垂直扩展风险。R01 索引 `20/20`，源码审计测试 `6/6`，R00/R01 freshness `14/14 FRESH`。
