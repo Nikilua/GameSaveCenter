@@ -1,10 +1,16 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 2026-09-29 当前交接：Q06 未复现重检已记录，继续 Q14-01
+## 2026-09-29 当前交接：Q14-01 受控几何收口，下一项 Q14-02
+
+- `591f07be` Release solution/XAML `0/0`、`24/24`，source validator 通过；`Q14ToolbarAlignmentBehaviorTests 1/1`。TaskCenterView Light/Dark × 五档 DIP 窗口实测混合控件 `36 DIP` 同高，键盘焦点/错误/禁用/忙碌态布局稳定。[Q14-01 evidence](design/reviews/ui-finesse-round3-20260915/evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)
+- 当前 WPF testhost 报告 `1.5×`；退出 xUnit 后有 21 条 TextServicesHost 清理异常、根因未知。不是 Playnite 宿主或真实视觉帧；物理 125%/其他 DPI、OS 输入和其他页面工具栏未验证。Q14-01 Round2 最终状态仍外部阻塞/未完成。
+- 下一任务 Q14-02 筛选标签：按组说明/表格门禁核对当前共享资源和真实使用页，再补行为缺口。Media Inbox 用户滚动错位仍待安全 Playnite 同进程 `[GSC-GRID-DIAGNOSTIC]`；R08 用户侧失败仍未定位。
+
+## 2026-09-29 当前交接：Q06 同 DLL 失败未复现重检（历史阶段）
 
 - 用户新提供的另一工作区 one-click 日志属于 `dc712445ec4baefd9b1cb3173d176c80b697d050`，与当前 `main` 相同身份；测试 DLL/插件 DLL SHA-256 分别为 `9193BC1C08FB20CDE249183246517F23A2334AAD1BF4BA141A5B556F887BC18D` 与 `F78B4BDC9F3046FDE5F6DF4A8AAA9B8F2851C20709079869B1D8CD505AB7F774`。三个独立 VSTest 加一轮与隔离脚本一致的项目级 `dotnet test --no-build` 均 `1/1`，目前未复现；原日志没有失败断言/堆栈。
 - 隔离 runner 已由 `verbosity=quiet` 改为失败时缓冲并打印 `verbosity=normal`，成功路径仍保持安静。若再失败，保留原 one-click 完整输出及 class TRX，依据新断言定位。详细证据：[Q06 重检](design/reviews/ui-finesse-round3-20260915/evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)。
-- 当前收口 Q14-01 工具栏同高：检查实际 TRX 几何、补证据和账本；真实 Playnite/系统输入仍需单独验证。Media Inbox `[GSC-GRID-DIAGNOSTIC]` 宿主滚动和 R08 用户失败仍未解决/未验。
+- 随后已收口 Q14-01 的受控几何证据，当前下一项 Q14-02。真实 Playnite/系统输入仍需单独验证；Media Inbox `[GSC-GRID-DIAGNOSTIC]` 宿主滚动和 R08 用户失败仍未解决/未验。
 
 ## 2026-09-29 当前交接：Q13-08 证据收口，下一项 Q14-01
 

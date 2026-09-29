@@ -1,9 +1,14 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
-## 2026-09-29 Q06 本机失败报告复核（同 DLL 未复现）
+## 2026-09-29 Q14-01 Task Center 混合工具栏几何
+
+- `591f07be7c30e3ee3a44f84078938b21effeafcb` 下 Release solution/XAML `0/0`、`24/24`；source validator 通过。新增 `Q14ToolbarAlignmentBehaviorTests`，production `TaskCenterView` Light/Dark × 五档窗口，共 10 组；混合工具同高 `36 DIP`、框中心最大差 `≤0.75 DIP`、预设内容中心差 `0.67 DIP`，错误/焦点/禁用/忙碌态布局保持。没有改生产 UI。MVID/SHA、TRX 与完整几何：[Q14-01](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)。
+- WPF testhost 当前报告 `150%`，exit `0`；xUnit 完成后出现 21 条 `TextServicesHost.InvalidComObjectException` 清理噪声，根因未知。未运行 Playnite/OS 输入、未切换物理 DPI，也未验所有页面工具栏；Round2 Q14-01 仍外部阻塞/未完成。下一项 Q14-02 筛选标签。Media Inbox 实际滚动问题仍需安全宿主同进程诊断。
+
+## 2026-09-29 Q06 本机失败报告复核（同 DLL 未复现；随后收口 Q14-01）
 
 - 用户另一工作区日志与本机 `main` 同为 `dc712445ec4baefd9b1cb3173d176c80b697d050`；隔离 Release 测试 DLL SHA-256 `9193BC1C08FB20CDE249183246517F23A2334AAD1BF4BA141A5B556F887BC18D`，插件 DLL SHA-256 `F78B4BDC9F3046FDE5F6DF4A8AAA9B8F2851C20709079869B1D8CD505AB7F774`。复用同一测试 DLL，三个独立 VSTest 和一轮与隔离脚本相同入口的项目级 `dotnet test --no-build` 均通过（`4/4`）；Light/Dark × normal/hover/pressed/focus/disabled 状态探针均通过。原失败因 `quiet` logger 缺断言和堆栈，当前 runner 在类失败时回放 normal logger 详细输出。未复现不等于已解决；四份 TRX/console 和验证边界：[Q06 重检](../design/reviews/ui-finesse-round3-20260915/evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)。
-- 当前下一项 Q14-01 工具栏同高；用户侧 R08 失败仍单独未定位，Media Inbox 用户滚动问题仍需安全真实宿主同进程诊断。
+- Q06 复核后推进 Q14-01 受控工具栏几何并已归档；当前下一项 Q14-02。用户侧 R08 失败仍单独未定位，Media Inbox 用户滚动问题仍需安全真实宿主同进程诊断。
 
 ## 2026-09-29 Q13-08 分页锚点当前身份复核
 

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="aaedde4f-fe1c-4423-be5f-9f7e7d8f88ac" name="isolated-runner 2026-09-29 09:58:27" runUser="redacted" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-29T09:58:27.1489832+08:00" queuing="2026-09-29T09:58:27.1489836+08:00" start="2026-09-29T09:58:15.6242728+08:00" finish="2026-09-29T09:58:37.6562976+08:00" />
+  <TestSettings name="default" id="209e5a5d-372a-4458-a1ff-4beb080dff27">
+    <Deployment runDeploymentRoot="isolated_2026-09-29_09_58_27" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d43432a3-9730-431d-a3a9-605655b75d30" testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" testName="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" computerName="local-runner" duration="00:00:06.7700000" startTime="2026-09-29T09:58:19.5857993+08:00" endTime="2026-09-29T09:58:26.3398326+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d43432a3-9730-431d-a3a9-605655b75d30">
+      <Output>
+        <StdOut>theme=Light; window=980x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,420,36,17.67; ComboBox:315.33,0,140,36,18; Button:915.33,0,36,36,18.33; ComboBox:505.33,0,140,36,18; ComboBox:655.33,0,120,36,18; ComboBox:785.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Dark; window=980x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,420,36,17.67; ComboBox:315.33,0,140,36,18; Button:915.33,0,36,36,18.33; ComboBox:505.33,0,140,36,18; ComboBox:655.33,0,120,36,18; ComboBox:785.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Light; window=1040x700 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,420,36,17.67; ComboBox:375.33,0,140,36,18; Button:975.33,0,36,36,18.33; ComboBox:565.33,0,140,36,18; ComboBox:715.33,0,120,36,18; ComboBox:845.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Dark; window=1040x700 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,420,36,17.67; ComboBox:375.33,0,140,36,18; Button:975.33,0,36,36,18.33; ComboBox:565.33,0,140,36,18; ComboBox:715.33,0,120,36,18; ComboBox:845.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Light; window=1280x720 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,565.33,36,17.67; ComboBox:615.33,0,140,36,18; Button:1215.33,0,36,36,18.33; ComboBox:805.33,0,140,36,18; ComboBox:955.33,0,120,36,18; ComboBox:1085.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Dark; window=1280x720 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,565.33,36,17.67; ComboBox:615.33,0,140,36,18; Button:1215.33,0,36,36,18.33; ComboBox:805.33,0,140,36,18; ComboBox:955.33,0,120,36,18; ComboBox:1085.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Light; window=1600x900 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,885.33,36,17.67; ComboBox:935.33,0,140,36,18; Button:1535.33,0,36,36,18.33; ComboBox:1125.33,0,140,36,18; ComboBox:1275.33,0,120,36,18; ComboBox:1405.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Dark; window=1600x900 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,885.33,36,17.67; ComboBox:935.33,0,140,36,18; Button:1535.33,0,36,36,18.33; ComboBox:1125.33,0,140,36,18; ComboBox:1275.33,0,120,36,18; ComboBox:1405.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Light; window=760x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,527.33,36,17.67; ComboBox:577.33,0,112,36,18; Button:699.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable&#xD;
+theme=Dark; window=760x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,527.33,36,17.67; ComboBox:577.33,0,112,36,18; Button:699.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" storage="q14-isolated-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157">
+      <Execution id="d43432a3-9730-431d-a3a9-605655b75d30" />
+      <TestMethod codeBase="q14-isolated-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests" name="ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" executionId="d43432a3-9730-431d-a3a9-605655b75d30" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.79]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:09.68]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

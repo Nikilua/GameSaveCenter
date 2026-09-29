@@ -1,7 +1,12 @@
-## 2026-09-29 Q06 本机失败报告复核；Q14-01 继续收口
+## 2026-09-29 Q14-01 Task Center 工具栏同高实测补证
+
+- 当前代码身份 `591f07be` Release build `0 warning / 0 error`、XAML `24/24`，source validation 通过；新增的生产视图 WPF 几何 Fact `1/1`。Light/Dark × `980×640`、`1040×700`、`1280×720`、`1600×900`、`760×640 DIP` 共 10 组，参与主行/预设行控件高均为 `36 DIP`，主行框中心差 `≤0.75 DIP`，预设内容中心差 `0.67 DIP`。校验错误、键盘焦点、禁用刷新和忙碌状态均无超过 `0.75 DIP` 布局变化。没有生产 UI 改动。[几何、TRX、构建与限制](evidence/Q14-01-TOOLBAR-ALIGNMENT-20260929/README.md)
+- WPF testhost 实测 `1.5×1.5`；xUnit/TRX 明确 `1/1` 且 VSTest exit `0`，关闭时出现 21 条 TextServicesHost `InvalidComObjectException` 清理噪声，根因未知。没有在真实 Playnite 或物理 125% DPI/OS 输入下验证。Round2 Q14-01 保持外部阻塞/未完成。下一项 Q14-02 筛选标签。
+
+## 2026-09-29 Q06 本机失败报告复核（先于 Q14-01 实测）
 
 - 用户新提供的 one-click 日志构建与当前 main 身份一致（`dc712445`）；原日志未保留断言/堆栈。复用日志中的同一测试 DLL，三次独立 VSTest 和一轮项目级 `dotnet test --no-build` 均 `1/1` 通过；双主题五态探针 `10/10`，未复现、未改生产按钮，也不据此称故障已解决。[Q06 重检证据](evidence/Q06-BUTTON-STATE-RECHECK-DC712445-20260929/README.md)
-- 隔离 runner 失败时现在会输出 normal verbosity 断言和堆栈。当前小批次 Q14-01：生产工具栏的受控几何行为证据复核；Playnite 实机和物理输入/其他 DPI 仍不得由 STA 合成窗口代替。
+- 隔离 runner 失败时现在会输出 normal verbosity 断言和堆栈；当时下一小批为 Q14-01，现已补入受控几何证据。Playnite 实机和物理输入/其他 DPI 仍不得由 STA 合成窗口代替。
 
 ## 2026-09-29 Q13-08 稳定分页锚点与总数证据复核
 
