@@ -1,11 +1,17 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Q14-03 Task Center 搜索 viewport
+
+- `5559b0fb` 修复紧凑 Task Center 筛选的搜索区域溢出：`<1216 DIP` 走现有紧凑排列并保留更多筛选入口；`>=1216 DIP` 使用完整工具栏。搜索输入、清除按钮、状态和刷新边界通过双主题 WPF 行为验证，旧 1040 DIP 布局有 `-164.67 DIP` 重叠负例。
+- 两个 Q14 WPF Fact 覆盖 24 个主工具栏+搜索几何场景、16 个标签/筛选场景；另有恢复基线 `16/16`。post-commit Release TRX 合计 `18/18`；RenderHarness 双主题 `render-qa OK`。证据：[Q14-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-03-SEARCH-WIDTH-20260929/README.md)。
+- R00/R01 freshness 当前 14/14 fresh，且没有匹配本次改动路径。该结果不代表 Playnite host：真实宿主和物理 DPI/OS 输入/最终呈现帧没有验证，Round2 最终状态保留外部阻塞/未完成。下一步继续用户要求的跨页 WrapPanel 实测间距审计。
+
 ## 2026-09-29 R00/R01 当前 main 证据刷新
 
 - 当前代码源证据身份 `9c906cc0772aad06143bdf3237255effd417e2de`。首轮 freshness 命中的 R00/R01 八项已隔离重跑，定向测试 `39/39`；Release build 0 warning/error，XAML `24/24`，RenderHarness 全矩阵 `render-qa OK`。详见 [当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260929/README.md)。
 - 当前受控审计 `168` snapshots、`20/20` 证据索引；保留真实 `7 HIGH / 4 MEDIUM`、0 Fidelity、0 失败路由。`R01-07` 14 条映射全部 fresh，package commit 与 source commit 分开记录；R01-08 有独立 skip 证据但不在 freshness baseline，本轮没有声称重跑完整 R01-08 分类。
 - Media Inbox 用户报告仍需要真正安全隔离 Playnite 同进程前/中/后 `[GSC-GRID-DIAGNOSTIC]`。当前 testhost 报 `1.5×`，RenderTransform `1.25/1.5` 仅是测试变换；不要写成在物理显示器间完成 DPI 测试。
-- 下一项 Q14-03 搜索宽度。优先复用当前全局 picker 与已有响应式逻辑，盘点真实父级/绑定/边界尺寸后再定向补验；本地完成不改变 Round2 外部阻塞状态。
+- 上方 Q14-03 已按该协议完成本地复核与最小修复。本地完成不改变 Round2 外部阻塞状态。
 
 ## 2026-09-29 用户报告：窄窗行距、标题/说明密度与任务动作高度
 

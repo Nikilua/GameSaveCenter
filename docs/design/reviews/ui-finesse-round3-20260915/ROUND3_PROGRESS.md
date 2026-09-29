@@ -1,10 +1,17 @@
+## 2026-09-29 Q14-03 Task Center 搜索宽度
+
+- 当前源码提交 `5559b0fbc9eba2c14207660628860a6f44b30571` 将紧凑筛选断点调整为 `<1216 DIP`，修复 980–1215 DIP 搜索 viewport 和状态筛选布局争用；保留现有更多筛选折叠入口、绑定、清除与刷新行为。
+- 双主题 7 档搜索尺寸、旧布局 1040 DIP 负例、完整搜索/状态/刷新边界均通过；测试 DLL 内含真实生产 `TaskCenterView`，三个 Release TRX `18/18`。RenderHarness 全矩阵 `render-qa OK`。证据：[Q14-03 搜索宽度](evidence/Q14-03-SEARCH-WIDTH-20260929/README.md)。
+- R00/R01 freshness 对当前代码仍为 `14 FRESH / 0 STALE`，本次 TaskCenter 源/测试路径未命中既有记录。真实 Playnite/物理 DPI/OS 输入/屏幕呈现未验证，Round2 Q14-03 保留外部阻塞/未完成。
+- 下一项按用户要求继续审计跨页面窄窗 WrapPanel 行距，避免对未触发行换行的组做机械修改。Media Inbox 宿主滚动错位的同进程诊断仍未满足安全启动条件。
+
 ## 2026-09-29 当前 R00/R01 复核收口
 
 - 对 clean main 源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 完成首轮 freshness 命中复测：R00-01/02、04、05、06、08 与 R01-03、05 的关联证据 `39/39` 通过；Release `0 warning / 0 error`、XAML `24/24`，双主题 RenderHarness `render-qa OK`。
 - 重新生成的 R01-03/R01-06 audit 在 `R01-06-controlled-audit-20260929`，索引 validator `20/20`。当前 audit 168 snapshots、110 warnings（7 HIGH / 4 MEDIUM）、0 Fidelity、0 failed route。风险继续保留。
 - `R01-07` 扫描 14 个登记项为 `14 FRESH / 0 STALE`，报告中 source `9c906cc...` 和独立 package 输入 `fc58264...` 分开；R01-08 未登记于 freshness baseline，本轮不冒称重跑全量 skip 分类。
 - R00-06 的 WPF testhost 自报 DPI `1.5×1.5`；测试 RenderTransform `1.25/1.5` 仅为布局尺度。真实 Playnite 内 Media Inbox 滚动错位仍需同进程 DLL/MVID、DPI/主题/窗口 DIP 与滚动前后行几何；系统跟踪/进程访问被拒绝时不绕过。
-- 下一项转 Q14-03 搜索宽度：先按各组说明、具体完成条件和公共门禁复核已有全局游戏选框及当前 `760–980 DIP` 布局行为，再补最小缺口；外部宿主未验证状态不自动升级。
+- 本次 R00/R01 收口后的下一项为 Q14-03；该项现已完成本地行为补证与最小修复，见本文件上方记录。
 
 ## 2026-09-29 用户报告：多页紧凑窗口行距、说明密度与控件对齐
 

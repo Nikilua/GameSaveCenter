@@ -1,11 +1,17 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q14-03 搜索视口修复与证据归档
+
+- `5559b0fbc9eba2c14207660628860a6f44b30571` 将 Task Center 紧凑筛选断点扩至 `1216 DIP`；760–1215 DIP 保持搜索、状态和刷新主行，更多筛选仍由现有折叠入口提供。Light/Dark × 7 个搜索尺寸实测输入 viewport 完整、最小 200 DIP、相邻间距 10 DIP、清除按钮和刷新按钮不越界。1040 DIP 旧布局负例重现 `-164.67 DIP` 搜索/状态重叠。
+- post-commit Release TRX `18/18`（Q14 搜索/筛选几何两条 Fact 与 16 项恢复基线）；完整双主题 RenderHarness `render-qa OK`，离屏 1040×700 截图和完整报告归档于 [Q14-03 证据](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-03-SEARCH-WIDTH-20260929/README.md)。R00/R01 freshness 仍为 `14 FRESH / 0 STALE`，本次没有命中这些记录的 sourcePaths。
+- 本地受控行为/离屏布局验证通过；未启动真实 Playnite、未做物理 DPI/OS 输入/呈现帧验证。Q14-03 的 Round2 最终结论保留“外部阻塞/未完成”。下一项按用户的跨页面要求，逐个审计窄窗会换行的控件组，量出净垂直间距并只修有行为缺口的组。
+
 ## 2026-09-29 R00/R01 freshness 收口（当前阶段）
 
 - 在 clean `main` 源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 下重跑本批路径命中的 8 条证据；定向行为结果合计 `39/39`、0 失败/跳过。Release build `0 warning / 0 error`、XAML `24/24`，RenderHarness 为完整双主题/多尺寸 `render-qa OK`。
 - R00/R01 Audit 完整归档到 [R01-06-controlled-audit-20260929](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260929/README.md)，20 项索引校验 `20/20`。实际风险维持 `7 HIGH / 4 MEDIUM`、0 Fidelity、0 失败路由，未把审计刷新写成风险清零；14 条 baseline freshness 为 `14 fresh / 0 stale`，R01-08 未登记在 baseline，本轮不冒称重跑。
 - R00-06 测试日志中的 WPF testhost 报有效 DPI `1.5×1.5`；另有 `1.0/1.25/1.5` 测试窗口 RenderTransform 尺度。它们都不能代替实际 Playnite 内连续滚动或物理跨屏验证。Media Inbox 用户滚动空白仍待安全隔离宿主同进程 DLL/MVID、窗口 DIP、主题、有效 DPI 和滚动前后坐标日志。
-- 下一独立代码项：Q14-03 搜索宽度；开始前查已有响应式行为，重点核对 `760–980 DIP` 条件并补缺口。Round2 的外部阻塞/未完成状态不因离屏证据自动升级。
+- 本轮随后完成 Q14-03 搜索宽度修复，详见上方当前记录。Round2 的外部阻塞/未完成状态不因离屏证据自动升级。
 
 ## 2026-09-29 用户报告：紧凑窗口行距、外壳标题、说明文字与计数对齐
 

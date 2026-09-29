@@ -1,11 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
-## 当前交接（2026-09-29：R00/R01 已重验，继续 Q14-03）
+## 当前交接（2026-09-29：Q14-03 本地验证收口，继续跨页行距审计）
 
-- 当前源码复核身份 `9c906cc0772aad06143bdf3237255effd417e2de`；freshness 首轮命中的 8 项已补行为/报告证据，39 个定向 xUnit case 全部通过，Release `0/0`、XAML `24/24`、RenderHarness `render-qa OK`。14 条映射 freshness 为 `14/14` fresh；独立 R01-08 skip inventory 不在 baseline，本轮未宣称重跑它。
-- 详细证据：[R00/R01 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260929/README.md)、[R01-06 当前审计](design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260929/README.md)。Audit 保留 `7 HIGH / 4 MEDIUM`，没有归零结论。
-- 下一可执行代码项为 Q14-03 搜索宽度。先读对应实施提示/门禁与任务详细完成条件，盘点已有全局 game picker 及 760–980 DIP 响应式测量，不重建选择框。
-- Media Inbox 用户报告仍需正常安全隔离 Playnite 中收集当前 DLL/MVID、DPI/主题、窗口逻辑尺寸和同坐标系 `[GSC-GRID-DIAGNOSTIC]`；同进程访问检查被拒绝时不绕过。当前 testhost 自报 150%，RenderTransform 1.25/1.5 不代替物理 DPI 切换。
+- 当前代码身份 `5559b0fbc9eba2c14207660628860a6f44b30571`，Q14-03 搜索窄窗溢出已修复并归档。Release 定向 TRX `18/18`、双主题 RenderHarness `render-qa OK`；R00/R01 freshness `14/14 FRESH`，无匹配变更源路径。见[Q14-03 证据](design/reviews/ui-finesse-round3-20260915/evidence/Q14-03-SEARCH-WIDTH-20260929/README.md)。
+- Q14-03 仅完成本地源码 WPF 行为与离屏门禁；无真实 Playnite host、物理 DPI、OS 输入和 presented-frame 证据，Round2 仍为“外部阻塞/未完成”。原 R00/R01 审计的 `7 HIGH / 4 MEDIUM` 风险保持，详见[R00/R01 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260929/README.md)与[R01-06 当前审计](design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260929/README.md)。
+- 下一项执行用户要求的跨页面 WrapPanel 窄窗行距检查：先按真实窗口宽度定位可触发换行的组，采集两主题行框几何，只修没有适当行间距者并加负例/往返验证。Media Inbox 的真实滚动问题仍需安全隔离 Playnite 同进程 DLL/MVID、DPI/主题、窗口 DIP 和 `[GSC-GRID-DIAGNOSTIC]`；访问前置被拒绝时不绕过。
 
 ## 当前交接（2026-09-29 用户紧凑窗口问题已受控修复；转入 R00/R01 freshness）
 

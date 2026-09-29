@@ -1,12 +1,19 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-29 Q14-03 Task Center 搜索宽度修复
+
+- 用户报告的窄窗搜索框裁切，定位为 `TaskCenterView.ApplyResponsiveLayout` 在 `980 DIP` 提前切换 full-row；`980–1215 DIP` 搜索 cell 的最小宽度挤出状态筛选。提交 `5559b0fb` 将紧凑断点移至 `1216 DIP`，复用现有更多筛选入口，绑定、清除和刷新命令不变。
+- 生产视图 STA WPF 行为在 Light/Dark × `760/979/980/1040/1215/1216/1280 DIP` 实测；搜索 viewport 至少 `200 DIP`，搜索/状态、状态/刷新净距均 `10 DIP`，清除按钮和刷新按钮均在父界限内。1040 DIP 的旧布局负例明确检测到 `-164.67 DIP` 重叠。原 Q14 toolbar 几何 10 场景和 Q14 筛选标签 16 场景保留，恢复基线 `16/16`；三份 Release TRX 合计 `18/18`。
+- 当前提交后 RenderHarness 双主题/11 窗口/合成列表数据量 `render-qa OK`，选取 1040×700 Light/Dark 截图。R00/R01 freshness 检查 `14 FRESH / 0 STALE`，没有 sourcePath 命中，无需重跑。完整证据：[Q14-03](../design/reviews/ui-finesse-round3-20260915/evidence/Q14-03-SEARCH-WIDTH-20260929/README.md)。
+- 没有真实 Playnite、物理 DPI、OS 输入或呈现帧证据，因此 Q14-03 Round2 最终状态继续外部阻塞/未完成。下一批开始跨页面 WrapPanel 行距审计；Media Inbox 用户滚动错位仍须安全宿主同进程诊断。
+
 ## 2026-09-29 R00/R01 当前 main freshness 和归档
 
 - clean 源码身份 `9c906cc0772aad06143bdf3237255effd417e2de` 下重测 freshness 命中的八项 R00/R01 记录；关联定向 TRX 合计 `39/39`、0 失败/跳过。Release solution `0 warning / 0 error`、XAML `24/24`，RenderHarness 全矩阵 `render-qa OK`。
 - Light/Dark 生产资源探针各 `88` 个状态渐变样本、0 violations；R00-04 原始搜索 `30/30` 集合变化、p50/p95/max `46/47/60 ms`；R00-06 几何/滚动 `8/8`，正常/横条/备用密度四行、短窗 page fallback 和阻断父级负例均有记录；R00-08 受控 WPF 路由 `11/11`。
 - R01-03/R01-06 audit identity 重新生成，索引 `20/20` 校验。摘要仍有 `7 HIGH / 4 MEDIUM`；不声称它们已修复。freshness baseline 全部 `14 FRESH / 0 STALE`，source `9c906cc...`、package 输入 `fc58264...` 分离；R01-08 不在该 baseline 且无本轮全量复测。
 - 证据：[R00/R01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20260929/README.md)、[R01-06 当前审计](../design/reviews/ui-finesse-round3-20260915/evidence/R01-06-controlled-audit-20260929/README.md)、[R01-07 当前扫描](../design/reviews/ui-finesse-round3-20260915/evidence/R01-07-freshness-report-20260929-current.json)。真实 Playnite host、物理 DPI/跨屏、原生 IME/OS 输入、presented frame/ETW 仍未验；Media Inbox 用户滚动空白未修。
-- 下一项：Q14-03 搜索宽度，先盘点全局 game picker 与现有 760–980 DIP 适配/行为测试。
+- 当时下一项为 Q14-03；该项已完成本地修复与证据归档，见本文件上方最新工作记录。
 
 ## 2026-09-29 Q14-02 Task Center 筛选标签与紧凑行距
 
