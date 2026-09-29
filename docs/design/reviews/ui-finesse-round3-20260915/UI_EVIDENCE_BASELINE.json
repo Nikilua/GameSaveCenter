@@ -84,8 +84,8 @@
     },
     {
       "id": "R00-07",
-      "evidence": "evidence/R00-07-TOOLBAR-EXCLUSION-20260916.md",
-      "sourceCommit": "98800f1a7cb27bcb6f92c190c7feb5cf3d388c94",
+      "evidence": "evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "sourceCommit": "22c55647799e732a770e6b16a93af4a9e83056f6",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

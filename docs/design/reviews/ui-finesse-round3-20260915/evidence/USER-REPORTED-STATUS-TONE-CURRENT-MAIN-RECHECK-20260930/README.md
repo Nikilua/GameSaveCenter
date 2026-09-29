@@ -14,7 +14,7 @@
 - `python scripts/validate-source.py` 通过；WPF UI 静态检查为 `0 errors / 30 warnings / 177 info`，与本批之前扫描计数一致。
 - R00/R01 freshness 检查 `14/14 FRESH`；freshness 自测通过（docs-only、shared-control、package-identity）。
 
-测试记录：[ReportedWorkspaceLayoutBehaviorTests.trx](ReportedWorkspaceLayoutBehaviorTests.trx)、[StatusToneAndTypographyTests.trx](StatusToneAndTypographyTests.trx)。TRX 中机器仓库路径已替换为 `REPO`。
+测试记录：[ReportedWorkspaceLayoutBehaviorTests.trx](ReportedWorkspaceLayoutBehaviorTests.trx)、[StatusToneAndTypographyTests.trx](StatusToneAndTypographyTests.trx)。TRX 中机器仓库路径已替换为 `REPO`，本机名、账户名和部署目录标识已移除。
 
 ## 离屏视觉抽查
 

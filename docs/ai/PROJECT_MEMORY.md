@@ -11,6 +11,12 @@
 - 下一项可执行 R08-02：先核对当前 system/app 动效开关订阅与热关闭测试对照；R08-01 用户报告仍缺失败机器原始 log/TRX。不可将受控 WPF 结果写成真实宿主验证。
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 Trainer 可下载版本页文案
+
+- 搜索结果副标题缩为“选择结果查看版本。”；已加载版本列表移除常驻技术说明，短提示留在标题 Tooltip/UIA HelpText。实际 WPF 双主题行为验证标题帮助文本、版本计数 `0→1` 和空态显示/收起；业务命令、DTO 和虚拟化未变。
+- 当前身份 `22c55647` Release `0/0`、XAML `24/24`；布局行为 `46/46`，关联空态/辅助功能源用例及审计分类复核均通过。R00-07 stale 路径已按三场景 toolbarprobe 重验并更新 baseline，R00/R01 freshness `14/14 FRESH`。完整边界与证据：[Trainer copy recheck](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 下一步继续盘点有数据时仍显示的帮助文字，保留必要安全/错误/取消语义。真实 Playnite、物理 DPI、Media Inbox 同宿主滚动和 R08-01 用户原始失败继续待验。
+
 ## 2026-09-30 多页状态颜色映射
 
 - 已修正活跃视图中过度固定的 Info 蓝：概览云队列与环境检查现在从结果状态选择中性/Info/成功/警示/错误资源；备份比较精确度是中性属性，估算与无效清单分别用警示/错误。继续按状态语义逐实例审，不全局替换真实运行/Info 状态。

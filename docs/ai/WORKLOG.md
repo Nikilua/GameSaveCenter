@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-30 Trainer 版本列表辅助文案收敛
+
+- `22c55647799e732a770e6b16a93af4a9e83056f6` 通过后移除“只在用户选择在线目录结果后按需读取”常驻副标题，将提示留在可下载版本标题的 Tooltip/UIA HelpText；搜索结果副标题缩为一行短指令。零版本/加载态切换、计数绑定和业务行为保留。
+- 提交后 Release `0/0`、XAML `24/24`；行为/辅助功能关联 `58 pass / 1 skipped`（WPF 布局 `46/46`），UiAuditSource `6/6`，source validation 通过。当前 RenderHarness clean-tree `render-qa OK`，精选 1366×768 Trainer 已加载列表截图、报告、脱敏 TRX、程序集 SHA/MVID 均归档[此处](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- R00-07 因命中 TrainerCenterView 路径重跑当前 UiAuditSource 与 toolbarprobe 正常/超宽/不可达三场景，通过后更新 baseline；R00/R01 freshness `14/14 FRESH`。没有启动真实 Playnite或声称物理 DPI 通过。下一项继续跨页重复帮助文案审查。
+
 ## 2026-09-30 多页状态颜色语义
 
 - 概览云端状态摘要从队列 DTO 的失败、认证、重试、进行中、完成计数解析语义 tone；普通等待/暂停回到次级色。Maintenance 环境检查总摘要和单项图标同步 Passed/Warning/Failed/Checking/Skipped 状态。Save Center 的比较质量改为精确中性、估算警示、Manifest 无效错误；不让“精确”伪装操作成功。

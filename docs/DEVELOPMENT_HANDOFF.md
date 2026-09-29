@@ -11,6 +11,12 @@
 - 下一项核对 R08-02 动效设置热关闭；Media Inbox 同宿主滚动日志和 R08-01 用户失败原始 TRX 仍是独立边界。
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-30：Trainer 可下载版本页文案）
+
+- `22c55647` 已推送计划中的文案收敛代码：搜索结果说明简短化；可下载版本已加载时标题区不再显示按需读取技术说明，提示保留在 Tooltip 与 UIA HelpText；版本空态、数量绑定和真实业务行为不变。
+- 同身份 Release 构建 `0/0`、XAML `24/24`，WPF/辅助功能关联用例 `58 通过 / 1 跳过`，UiAuditSource `6/6`；RenderHarness clean-tree `render-qa OK`。R00-07 最新 toolbarprobe 三场景复验通过，R00/R01 freshness `14/14 FRESH`。身份与限制见 [证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md)。
+- 下一项继续查找有数据时重复保留的辅助说明。没有真实 Playnite、用户 DLL 或物理 DPI 证据；Media Inbox 滚动诊断、R08-01 用户端失败仍待实际日志。
+
 ## 当前交接补充（2026-09-30：多页状态颜色语义）
 
 - 当前未提交批次按状态降低通用信息蓝：概览云队列错误/警示/运行/成功/中性状态分别绑定语义资源；环境检查总计和单项图标使用状态结果；备份比较的“精确”不着成功色，估算为警示、无效 Manifest 为错误。没有替换共享色板，也没动命令/DTO/业务语义。

@@ -1,3 +1,9 @@
+## 2026-09-30 Trainer 可下载版本页说明精简
+
+- 提交 `22c55647799e732a770e6b16a93af4a9e83056f6`：搜索结果副标题缩短；有版本时不再常驻显示按需读取说明，操作提示保留在 Tooltip 与 UIA HelpText。零版本且非加载时仍显示原空态，计数与列表命令保持。
+- Release `0 warning / 0 error`、XAML `24/24`；关联 WPF/辅助功能行为 `58 通过 / 1 跳过 / 0 失败`，布局 `46/46`，UiAuditSource `6/6`。RenderHarness clean-tree 通过，当前截图、TRX、程序集身份、R00-07 复核及 freshness `14/14`：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md)。离屏 logical DIP，没有真实 Playnite 或物理 DPI 验证。
+- 下一项：继续审查有数据时重复的常驻说明。Media Inbox 同宿主滚动诊断和 R08-01 用户端原始失败仍未取得；Round3 总项数/状态不变。
+
 ## 2026-09-30 多页状态颜色校正
 
 - 活跃颜色按数据语义映射：概览云队列失败/认证=错误、重试=警示、传输/校验=信息、上传/验证完成=成功、普通待办/暂停=中性；环境检查总结果和单项 glyph 按真实状态着色；备份比较“精确”保持中性，“估算”警示，“Manifest 无效”错误。
