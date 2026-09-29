@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-30 Overview 首页云端队列语义色
+
+- 提交 `74ab0203f77b59ca4c36e749025884d7f2dcc253` 将 Overview 云端数量从 `GscInfoBrush` 改为主题强调色；Cloud 优先标题使用 warning，状态胶囊保留 info。双主题生产 WPF `2/2`，合成 4 项失败队列直接验证实际数字、三种颜色、命令绑定和对比度；没有修改业务或云服务。
+- 提交后隔离 Release solution `0 warnings / 0 errors`，XAML `24/24`，`UiAuditSourceTests 6/6`，source validation 通过，RenderHarness 双主题全矩阵 `render-qa OK`；R00/R01 `14/14 FRESH`。测试/插件 SHA、MVID、截图和完整边界：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-CLOUD-SEMANTIC-COLOR-20260930/README.md)。最终测试 console 没有 `InvalidComObjectException` 清理噪声。
+- 颜色原则来自 Microsoft color guidance 与 WCAG 2.2 Use of Color。结果限于 Overview 实例和离屏逻辑 DPI；没有启动 Playnite、验证用户安装 DLL、窗口化或物理 DPI；未改 R03/R22 全组状态。
+- 下一可执行任务：按真实绑定逐项检查仍活跃的 `GscInfoBrush` 用法，区分状态胶囊、错误信息、数值、图标装饰，只改有证据的非语义蓝色；Media Inbox 表格滚动错位仍需同一安全宿主的滚动前后 `[GSC-GRID-DIAGNOSTIC]`。
+
 ## 2026-09-30 云端队列摘要说明与计数色
 
 - Maintenance 云端队列统计卡移除 3 行常显解释，完整文字保留在标题 Tooltip/UIA HelpText；远端只读/不覆盖存档的安全说明仍在。普通计数使用主题强调色，需要处理计数继续用警示色。

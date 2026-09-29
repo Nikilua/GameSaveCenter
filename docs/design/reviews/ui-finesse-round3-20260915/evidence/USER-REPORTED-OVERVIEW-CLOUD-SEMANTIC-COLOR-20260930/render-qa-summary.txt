@@ -1,0 +1,17 @@
+GameSaveCenter render QA report
+Generated: 2026-09-30 00:49:35
+Scenario: render-qa
+EvidenceSource: OffscreenRenderHarness
+Commit: 74ab0203f77b59ca4c36e749025884d7f2dcc253
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: workspace fixtures; scroll probes include 50/400/2000/4468
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+Overview 1040x700 DIP:
+  Overview layout_ms=672 render_ms=103 window_dip=1040x700 content_dip=744x460
+
+Final matrix result:
+render-qa OK

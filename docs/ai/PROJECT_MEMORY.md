@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 Overview 云端优先级与计数语义色
+
+- 提交 `74ab0203`：云端数量指标走主题 Accent；Cloud 优先标题表示失败/认证/待重试，走 Warning；状态胶囊保留 Info。双主题 WPF 生产行为 `2/2`，覆盖可见数字、警告标题、Info 状态、对比度和队列命令绑定。
+- Release solution `0/0`、XAML `24/24`、UiAuditSource `6/6`、完整 RenderHarness `render-qa OK`；R00/R01 freshness `14/14`。详细截图、TRX、程序集身份和来源依据：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-CLOUD-SEMANTIC-COLOR-20260930/README.md)。
+- 这是合成视图/离屏矩阵，不代表真实 Playnite、物理 DPI 或用户安装包。不要机械全局替换 `GscInfoBrush`；逐实例区分状态、数据和装饰。下一项盘点活跃 InfoBrush 的非语义用途；Media Inbox 滚动空白仍需安全宿主同进程诊断。
+
 ## 2026-09-30 云端队列说明密度与语义色
 
 - Maintenance 云端队列统计卡不再常显三行解释；ToolTip/UIA HelpText 保留说明和只读远端校验的保护语义。普通计数使用主题强调色；需要处理仍使用警示色，文本标签保留，不能仅靠颜色区分。

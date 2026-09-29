@@ -1,0 +1,15 @@
+UI evidence freshness: source=74ab0203f77b59ca4c36e749025884d7f2dcc253 package=not-provided documentationOnly=False
+R00-01-02|FRESH|scopes=shared-controls,all-pages|matched=|package=not-applicable|reinstall=False
+R00-03|FRESH|scopes=shell,all-pages|matched=|package=not-applicable|reinstall=False
+R00-04|FRESH|scopes=shell,game-picker|matched=|package=not-applicable|reinstall=False
+R00-05|FRESH|scopes=shared-controls,all-pages|matched=|package=not-applicable|reinstall=False
+R00-06|FRESH|scopes=media-center|matched=|package=not-applicable|reinstall=False
+R00-07|FRESH|scopes=trainer-center,audit|matched=|package=not-applicable|reinstall=False
+R00-08|FRESH|scopes=shell,game-picker|matched=|package=not-applicable|reinstall=False
+R01-01|FRESH|scopes=test-infrastructure|matched=|package=not-applicable|reinstall=False
+R01-02|FRESH|scopes=dev-probe,numeric-cells|matched=|package=not-applicable|reinstall=False
+R01-03|FRESH|scopes=audit,evidence-index|matched=|package=not-applicable|reinstall=False
+R01-04|FRESH|scopes=shell,motion|matched=|package=not-applicable|reinstall=False
+R01-05|FRESH|scopes=negative-fixtures,all-pages|matched=|package=not-applicable|reinstall=False
+R01-06|FRESH|scopes=audit,host-evidence|matched=|package=not-applicable|reinstall=False
+R01-07|FRESH|scopes=audit,evidence-freshness|matched=|package=not-applicable|reinstall=False

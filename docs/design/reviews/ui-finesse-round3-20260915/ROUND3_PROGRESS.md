@@ -1,3 +1,10 @@
+## 2026-09-30 Overview 首页云端队列语义色
+
+- 提交 `74ab0203f77b59ca4c36e749025884d7f2dcc253` 将 `OverviewCloudQueueValue` 数量指标改为 `GscAccentBrush`；`Cloud` 优先事项明确代表失败、认证或重试等待，改走 warning；云端状态胶囊保留 info。按钮命令、Tooltip/HelpText、DTO 和队列行为没有改动。
+- Light/Dark 生产 WPF 合成 `FailedCount=4` 行为 `2/2`：可见计数 `4`、priority title/warning、cloud status/info 与队列命令均逐项验证；对比度最低值 Light `4.13/4.13/4.72:1`、Dark `4.77/4.77/7.66:1`。Release solution `0/0`，XAML `24/24`，UiAuditSource `6/6`，source validation 与 diff check 通过。
+- 提交后 RenderHarness 双主题完整矩阵 `WorkingTreeClean=True` / 离屏逻辑 DPI `1.00` / `render-qa OK`；R00/R01 freshness `14/14 FRESH`。插件/测试 DLL SHA、MVID、TRX、截图及限制：[证据](evidence/USER-REPORTED-OVERVIEW-CLOUD-SEMANTIC-COLOR-20260930/README.md)。最终隔离测试没有观察到 WPF `InvalidComObjectException` 清理噪声。
+- 本批使用合成队列状态，没有联网、读写真实存档或启动 Playnite；没验证用户安装 DLL、物理 DPI 或真实宿主渲染。这只覆盖 R03-02/R22-08 的一个用例，不改变 192 项状态。下一项逐实例审查活跃 InfoBrush，先分清语义状态与装饰色；Media Inbox 表格滚动错位继续等待安全同进程诊断。
+
 ## 2026-09-30 Maintenance 云端队列摘要精简与计数主题色
 
 - 统计卡删去“待上传与排队中的本地任务”“只读远端校验正在执行”“认证、失败或等待重试”三条常显说明；原信息移至标题 Tooltip/UIA HelpText，远端只读/不覆盖本地存档语义保留。待处理和校验数字改用主题紫色强调，需处理仍用警示色。

@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-30 首页云端队列语义色
+
+- `OverviewCloudQueueValue` 作为统计计数使用主题强调色；标为 `Cloud` 的优先标题表示失败/认证/待重试，使用警示色；状态胶囊仍保留信息色。生产 WPF 双主题行为 `2/2`，命令仍绑定，对比度 Light `4.13/4.13/4.72:1`、Dark `4.77/4.77/7.66:1`。[提交后证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-CLOUD-SEMANTIC-COLOR-20260930/README.md)
+- 提交 `74ab0203` 的 Release build `0/0`、XAML `24/24`、UiAudit source `6/6`、RenderHarness Light/Dark 全矩阵成功；R00/R01 `14/14 FRESH`。未启动 Playnite或验证物理 DPI/用户安装 DLL。这是一个视图实例，不代表 R03-02/R22-08 整组完成。下一项审阅余下活跃 InfoBrush 的用途，区分真实状态、指标与纯装饰。
+
 ## 2026-09-30 云端队列统计摘要
 
 - 已有 `MaintenanceView.CloudTransfersSurface` 摘要卡把 3 条说明常显的问题已修：说明转 Tooltip/UIA HelpText，统计行只保留类别标签和计数；普通计数走主题强调色，“需要处理”警示色不变。实际生产 WPF 双主题 `1/1`，卡片高度 `60–80 DIP`；Release `0/0`、XAML `24/24`、RenderHarness `render-qa OK`。[证据与截图](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)
