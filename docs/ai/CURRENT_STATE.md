@@ -1,10 +1,16 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Q13-08 分页锚点证据复核
+
+- 当前 main 身份 `2333361e` Release build `0 warning / 0 error`、XAML `24/24`；5 个分页/锚点/缓存测试类共 `29/29`。稳定 ID 视口锚点、裁剪后邻行回退、2,000 项有界去重缓存和 Worker stable cursor/TotalCount 均有当前 TRX。[Q13-08 证据](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)
+- 没有生产代码变化。组件测试未闭合 DashboardViewModel 刷新/删除后的绑定总数，也未在真实 Playnite 完成端到端分页；Round2 Q13-08 保持外部阻塞/未完成。下一项 Q14-01 工具栏同高。
+- Media Inbox 表格滚动空白仍待受控真实宿主的 DLL/MVID、窗口 DIP、DPI/主题及滚动前后 `[GSC-GRID-DIAGNOSTIC]`；现有隔离夹具不能替代该证据。R08 `1/2` 用户失败仍未定位，缺失败方法、断言/堆栈和原始构建身份。
+
 ## 2026-09-29 R08 one-click 失败报告重检（未复现）
 
 - 用户再次提供 R08 `1/2` 失败摘要，仍没有失败用例名/断言/堆栈/TRX；本机同名 one-click 日志仍是 9/24 的旧宿主审计。
 - 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`；12 个独立 VSTest 进程各运行该类两条用例，合计 `24/24`、全部 exit `0`。每轮有 WPF `InvalidComObjectException` 清理输出，根因未知。未修改动画/测试或声称解决用户失败。[12 份 TRX、console 与边界](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
-- 已完成 Q13-07 生产 Inbox Inspector/页面滚动边界整合行为补证，下一项核对 Q13-08；Media Inbox 真实表格滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
+- 已完成 Q13-07 生产 Inbox Inspector/页面滚动边界整合行为补证，Q13-08 现身份证据复核已归档；下一项 Q14-01。Media Inbox 真实表格滚动仍待安全 Playnite 宿主条件恢复后采集同进程诊断。
 
 ## 2026-09-29 Q13-07 Inbox Inspector 滚动边界补证
 

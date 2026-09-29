@@ -1,10 +1,17 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 2026-09-29 当前交接：Q13-08 证据收口，下一项 Q14-01
+
+- Q13-08 当前身份 `2333361e` 五个定向类 `29/29`，Release build/XAML `0/0`、`24/24`；证据归档于 [Q13-08](design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。生产代码无改动，账本仍外部阻塞/未完成，缺真实 Playnite 的分页/刷新/删项与 VM 总数绑定闭环。
+- 下一可执行项 Q14-01 工具栏同高：先检查当前共享能力、组说明、行具体条件和公共门禁，再只补缺证或明确行为缺口。Demo-first，复用现有模板与命令；遵循 WPF skill 质量检查。
+- Media Inbox 用户报告的表头后大块空白仍未查明：等待可用的安全隔离 Playnite 宿主，需同一次运行 DLL/MVID、逻辑尺寸、DPI/主题、header/presenter/首行坐标和外层滚动 offset 前后日志；WMI Access Denied 不绕过。
+- R08 用户 one-click `1/2` 失败仍未定位。`8e4c32a7` 的 12 轮隔离复跑 `24/24`，退出清理噪声根因未知；未拿到用户失败用例、断言、堆栈、TRX 和构建身份前不据此宣称修复。
+
 ## 2026-09-29 R08 one-click 失败摘要再次复核（仍未定位）
 
 - 用户再次提供 `R08MotionReverseBehaviorTests 1/2` 汇总但未附方法名、断言、堆栈或 TRX；checkout 中同名日志仍是 9/24 的其他宿主审计。[当前身份复跑记录](design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
 - 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`；独立 R08 testhost 12 轮均 `2/2`、总 `24/24`、exit `0`。每轮伴随 WPF `InvalidComObjectException` 清理输出，根因未知；没有动画/测试代码修改。当前复跑未定位/解决用户侧故障。
-- Q13-07 已补 Inbox Inspector/页面滚动边界生产整合回归；详情见 [Q13-07](design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。下一项核对 Q13-08 稳定分页锚点；Media Inbox 真实表格滚动错位仍等安全隔离宿主及前后诊断日志。
+- Q13-07 已补 Inbox Inspector/页面滚动边界生产整合回归；详情见 [Q13-07](design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。Q13-08 当前身份证据已收口，下一项 Q14-01；Media Inbox 真实表格滚动错位仍等安全隔离宿主及前后诊断日志。
 
 ## 2026-09-29 Q13-06 已补交角/末行末列自动证据
 

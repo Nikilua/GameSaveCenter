@@ -1,3 +1,10 @@
+## 2026-09-29 Q13-08 稳定分页锚点与总数证据复核
+
+- 当前身份 `2333361e` 的 Release solution build 成功，0 warnings / 0 errors，XAML structural checks `24/24`；源码验证通过。Playnite 与 Worker 测试程序集 SHA、MVID、构建日志、5 份 TRX 和 console 均归档在 [Q13-08 证据](evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。
+- 复跑 `MediaInboxScrollBehaviorTests 5/5`、`MediaWindowAnchorContractTests 10/10`、`R07SelectionAnchorBehaviorTests 4/4`、`MediaPageAccumulatorTests 6/6`、`MediaQueryPersistenceTests 4/4`，共 `29/29`。已有行为覆盖加载更多时稳定 ID/视口恢复、裁剪锚点时邻行回退、有界 2,000 项缓存去重与选中保留，以及隔离 fake 数据库中的稳定游标/实际总数。
+- 没有生产实现或断言修改。“返回最新”按既有产品语义回到顶部；组件测试未覆盖真实 DashboardViewModel/fake service 刷新/删项后的绑定总数端到端，也没有 Playnite 宿主真实分页操作。Q13-08 继续保持外部阻塞/未完成；RenderTransform 缩放没有冒充物理 DPI。
+- 下一项 Q14-01 工具栏同高，按既有共享样式和行为证据逐条对账。Media Inbox 用户滚动空白仍需真实 Playnite 的运行 DLL 身份、DPI/主题和同坐标系滚动前后诊断；WMI Access Denied 不绕过。R08 用户侧 `1/2` 失败仍缺方法、断言/堆栈与原始构建身份。
+
 ## 2026-09-29 Q13-05 共享 ScrollBar Thumb 行为复核
 
 - 复用 `DesignTokens.xaml` 已有双向模板：纵/横轨道边距 4 DIP、有效 Thumb 下限 36 DIP、每个端帽由一个圆角形状绘制，Hover 刷从当前主题动态资源读取；没有改视觉资源、滚动单位或滚动系统。

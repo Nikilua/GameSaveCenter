@@ -1,10 +1,16 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Q13-08 分页锚点当前身份复核
+
+- `2333361e` 当前精确 main 身份下 Release build 成功（0 warnings/errors、XAML `24/24`）；`MediaInboxScrollBehaviorTests 5/5`、`MediaWindowAnchorContractTests 10/10`、`R07SelectionAnchorBehaviorTests 4/4`、`MediaPageAccumulatorTests 6/6`、Worker `MediaQueryPersistenceTests 4/4`，合计 `29/29`。详细 TRX、console、MVID/SHA 和行为边界：[Q13-08](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。没有生产代码/测试断言修改。
+- 稳定锚点在头部裁剪后仍留在视口，缺失 ID 回退邻项；分页缓存 2,000 上限/按 ID 去重/选中保留；fake Worker SQLite 测试保留稳定游标与实际总数。返回最新主动回顶属于产品语义。没有端到端验证 DashboardViewModel refresh/delete 与总数绑定，也没有 Playnite 实际分页；状态仍外部阻塞/未完成。下一项 Q14-01 工具栏同高。
+- Media Inbox 真实滚动错位继续待安全宿主同进程前后几何；R08 用户侧 `1/2` 失败依旧没有失败方法和堆栈，隔离全通过与 COM 清理噪声不能解释它。
+
 ## 2026-09-29 R08 one-click `1/2` 报告再复核（未复现）
 
 - 在代码身份 `8e4c32a7` Release solution/XAML build 成功，`0 warning / 0 error`、XAML `24/24`。从该隔离输出启动 12 个串行独立 VSTest 进程，每轮 `R08MotionReverseBehaviorTests 2/2`，共 `24/24`、均 exit `0`。两方法为 Translate 中途反向与 Sidebar 快速反向；每轮在 xUnit 完成后有 WPF `InvalidComObjectException` 清理输出，根因未知。
 - 用户再次提供 `1/2` 失败计数，没有具体失败用例、断言、堆栈或 TRX；本机 `artifacts/one-click-install.log` 仍为 9/24 的旧宿主审计。当前连续复跑没有定位或解决用户故障；精确身份、逐轮 TRX/console 与结论：[R08 8e4c32a7 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
-- Q13-07 滚动边界行为已补证；下一步按账本审 Q13-08 稳定 ID 分页锚点。Media Inbox 用户表格滚动空白仍需安全真实 Playnite 同进程诊断。
+- Q13-07 滚动边界和 Q13-08 分页锚点自动行为已有当前证据；下一项 Q14-01 工具栏同高。Media Inbox 用户表格滚动空白仍需安全真实 Playnite 同进程诊断。
 
 ## 2026-09-29 Q13-07 Inbox Inspector 滚动边界补证
 

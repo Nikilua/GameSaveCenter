@@ -9692,3 +9692,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户再次提供 `R08MotionReverseBehaviorTests 1 passed / 1 failed / 2 total` 摘要，没有失败用例名、断言、堆栈或 TRX。本机 `artifacts/one-click-install.log` 最后修改于 9/24，不能用来诊断这次输出。
 - 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`。在该精确隔离输出中独立串行启动 12 个 VSTest 进程，每轮单跑 R08 类；12 轮均 `2/2`，总 `24/24`、0 failed/skipped、所有 exit `0`。每个 console 都在 xUnit 完成后出现 TextServicesHost `InvalidComObjectException` 清理异常，TRX 随后为通过；根因未知。逐轮原始日志/TRX：[R08 复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
 - 本机未复现，未改动画/测试或放宽断言，不宣称已解决用户失败。继续定位需要失败机器完整 R08 log 段或 TRX（具体测试、错误消息/堆栈及构建身份）。下项按账本核对 Q13-08；Media Inbox 真实滚动空白仍待同进程宿主诊断。
+# 2026-09-29 Q13-08 分页锚点与总数当前身份复核
+
+- 复查既有实现后未发现应新增生产功能的证据：加载更多已捕获/恢复稳定 ID、MediaPageAccumulator 使用有界 ID 去重窗口并保留选中项、Worker 返回分页 TotalCount/HasMore。没有修改生产代码或放宽测试。
+- `2333361ecc38b16d00559a8fb91e551c89e0a17c` Release solution build `0 warning / 0 error`、XAML `24/24`、源码验证通过；MediaInboxScroll `5/5`、MediaWindowAnchorContract `10/10`、R07SelectionAnchor `4/4`、MediaPageAccumulator `6/6`、Worker MediaQueryPersistence `4/4`，共 `29/29`、0 failed/skipped、各独立 VSTest 进程 exit 0。五份 TRX/console、构建日志与二进制 SHA/MVID：[Q13-08 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。
+- 已覆盖稳定锚点滚动位置、行被淘汰时邻项负例、有界/去重/选中项缓存，以及 fake SQLite 下稳定游标与实际 TotalCount。没有测真实 Playnite 的追加/刷新/删项端到端及 VM 绑定总数；“返回最新”主动回顶为预期。Q13-08 仍保留外部阻塞/未完成，不将离屏行为冒充宿主呈现。
+- 下一可执行项 Q14-01 工具栏同高。Media Inbox 用户滚动缺陷仍需安全真实宿主同进程几何诊断；R08 用户 `1/2` 失败仍缺失败方法/错误/堆栈和构建身份。
