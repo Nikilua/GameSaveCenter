@@ -1,5 +1,10 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-30：云端队列摘要说明与颜色）
+
+- `MaintenanceView` 云端队列卡的三个说明行已收至 Tooltip/UIA HelpText；待处理/远端校验数字改主题强调色，需处理仍为警示色。实际 WPF 双主题行为 `1/1`、卡高 `60–80 DIP`；Release `0/0`、XAML `24/24`、render-qa 全矩阵成功。[证据、截图、TRX、SHA/MVID](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)
+- 本次仅收口一个用户报告实例，R03-02/R22-08 未整组签收。未启动 Playnite/物理 DPI。下一项继续跨页精简已加载数据时的静态解释；Media Inbox 滚动错位仍需授权隔离宿主同进程诊断。
+
 ## 当前交接补充（2026-09-29：用户表格排序崩溃日志）
 
 - 用户附件日志记录 `ListCollectionView.Refresh` 经过排序控制器到真实列头点击的 NullReferenceException；附件不含 DLL/SHA/MVID，无法识别触发时的运行版本。当前 HEAD `10626efc` 的排序 `7/7`、行选中几何 `2/2` 和四张生产表格 Light/Dark 状态 `1/1` 通过，Release `0/0`、XAML `24/24`。[TRX、SHA/MVID 与日志摘录](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/README.md)

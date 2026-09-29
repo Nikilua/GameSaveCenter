@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 云端队列说明密度与语义色
+
+- Maintenance 云端队列统计卡不再常显三行解释；ToolTip/UIA HelpText 保留说明和只读远端校验的保护语义。普通计数使用主题强调色；需要处理仍使用警示色，文本标签保留，不能仅靠颜色区分。
+- 当前阶段实际生产 WPF 双主题 `1/1`，Release/XAML `0/0`、`24/24`，RenderHarness 全矩阵成功。完整 TRX、截图、程序集 SHA/MVID 与 W3C/Microsoft 依据：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)。只用合成 DTO，无 Playnite/物理 DPI 验证；R00/R01 `14/14 FRESH`。
+- 这不是 R03-02 或 R22-08 的整组验收。继续逐页检查数据态静态说明与语义色；滚动偏移问题必须由安全宿主的同进程日志解决。
+
 ## 2026-09-29 用户表格排序崩溃与选中状态
 
 - 用户提供的 crash ZIP 堆栈经过 `ListCollectionView.Refresh` 和 `DataGridStableSortController.ApplyCurrentSort/ToggleSort`。附件没有插件 DLL 身份；已知修复在 `f8a82469`，当前 main 精确 Release 回归为排序 `7/7`、行选中 geometry `2/2`、四个生产 DataGrid 跨 Light/Dark 状态 `1/1`。

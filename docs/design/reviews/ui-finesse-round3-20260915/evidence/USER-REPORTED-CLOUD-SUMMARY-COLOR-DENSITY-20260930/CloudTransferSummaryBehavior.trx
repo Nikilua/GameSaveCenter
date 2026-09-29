@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="49ab243f-be6f-4363-bb43-e6825c816156" name="lopmatu@SULT 2026-09-29 23:54:29" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-29T23:54:29.0258805+08:00" queuing="2026-09-29T23:54:29.0258808+08:00" start="2026-09-29T23:54:20.4913133+08:00" finish="2026-09-29T23:54:43.2857865+08:00" />
+  <TestSettings name="default" id="7723973d-f9f1-4656-be16-833f85410f8e">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-09-29_23_54_29" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="bd4f849a-042a-4f4e-8a8b-9e97d3db4ae9" testId="911d5ff1-e58a-c0cc-7eda-63325ee8bf53" testName="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.CloudTransferSummaryUsesThemeAccentAndKeepsExplanationsAccessibleWithoutExtraRowsInBothThemes" computerName="SULT" duration="00:00:03.0430000" startTime="2026-09-29T23:54:24.4885770+08:00" endTime="2026-09-29T23:54:27.5081553+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd4f849a-042a-4f4e-8a8b-9e97d3db4ae9" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.CloudTransferSummaryUsesThemeAccentAndKeepsExplanationsAccessibleWithoutExtraRowsInBothThemes" storage="d:\workplace\github\gamesavecenter\.tmp\cloud-summary-copy-verified-20260929\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="911d5ff1-e58a-c0cc-7eda-63325ee8bf53">
+      <Execution id="bd4f849a-042a-4f4e-8a8b-9e97d3db4ae9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\cloud-summary-copy-verified-20260929\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests" name="CloudTransferSummaryUsesThemeAccentAndKeepsExplanationsAccessibleWithoutExtraRowsInBothThemes" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="911d5ff1-e58a-c0cc-7eda-63325ee8bf53" executionId="bd4f849a-042a-4f4e-8a8b-9e97d3db4ae9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.89]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.00]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

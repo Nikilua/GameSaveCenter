@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-30 云端队列统计摘要
+
+- 已有 `MaintenanceView.CloudTransfersSurface` 摘要卡把 3 条说明常显的问题已修：说明转 Tooltip/UIA HelpText，统计行只保留类别标签和计数；普通计数走主题强调色，“需要处理”警示色不变。实际生产 WPF 双主题 `1/1`，卡片高度 `60–80 DIP`；Release `0/0`、XAML `24/24`、RenderHarness `render-qa OK`。[证据与截图](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)
+- 只验证该页实例，不表示 R03-02/R22-08 全组完成。未运行真实 Playnite或物理 DPI。Media Inbox 滚动后行偏移仍待安全同进程诊断；下一项继续跨页面说明/颜色审计。
+
 ## 2026-09-29 用户表格排序日志复核
 
 - `crash.zip` 中的堆栈命中已修复的排序控制器分离视图刷新路径，但无 DLL/SHA/MVID，无法确认原运行实例身份。当前 `main` 的真实列头升降序/detached-view 负例 `7/7`；选中行 cell/TextBlock 几何 `2/2`；Save、Task、Media Inbox、Maintenance 网格 Light/Dark 状态 `1/1`。Release `0/0`、XAML `24/24`。[证据和程序集身份](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-DATAGRID-CRASH-ROW-STATE-RECHECK-20260929/README.md)

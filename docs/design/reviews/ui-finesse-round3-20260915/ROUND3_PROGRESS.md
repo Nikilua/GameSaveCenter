@@ -1,3 +1,9 @@
+## 2026-09-30 Maintenance 云端队列摘要精简与计数主题色
+
+- 统计卡删去“待上传与排队中的本地任务”“只读远端校验正在执行”“认证、失败或等待重试”三条常显说明；原信息移至标题 Tooltip/UIA HelpText，远端只读/不覆盖本地存档语义保留。待处理和校验数字改用主题紫色强调，需处理仍用警示色。
+- Release `0 warning / 0 error`、XAML `24/24`、WPF 数据/主题/高度行为 `1/1`、RenderHarness 全矩阵 `render-qa OK`、source validation 通过，R00/R01 freshness `14/14 FRESH`。[双主题截图、TRX、程序集 SHA/MVID](evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)
+- 这是云端队列一个界面实例的修整，不签收 R03-02/R22-08 整组且不改 192 项计数。未启动真实 Playnite或验证物理 DPI。下一项逐页审查剩余数据态静态说明与状态色；Media Inbox 实际滚动空白仍须安全宿主同进程几何日志。
+
 ## 2026-09-29 用户表格排序崩溃与选中行复核
 
 - 用户提供的 `crash.zip` 日志显示 `ListCollectionView.Refresh` 经 `DataGridStableSortController.ApplyCurrentSort/ToggleSort` 到真实列头点击时发生 `NullReferenceException`；包内没有 DLL/SHA/MVID，原运行实例身份未知。已有 `f8a82469` 修复 detached CollectionView 排序路径。

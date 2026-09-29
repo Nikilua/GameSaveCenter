@@ -1,5 +1,11 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-30 云端队列摘要说明与计数色
+
+- Maintenance 云端队列统计卡移除 3 行常显解释，完整文字保留在标题 Tooltip/UIA HelpText；远端只读/不覆盖存档的安全说明仍在。普通计数使用主题强调色，需要处理计数继续用警示色。
+- Production WPF 双主题测试 `1/1`：三组合成动态数值、辅助文本、警示色、两行结构和 `60–80 DIP` 卡片高度均通过。Release `0/0`、XAML `24/24`、RenderHarness `render-qa OK`；WPF scanner `0/30/177`，与既有总数一致。[证据、截图与程序集身份](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-CLOUD-SUMMARY-COLOR-DENSITY-20260930/README.md)
+- R00/R01 `14/14 FRESH`，没有匹配源路径；没有改 192 项任务计数。未运行真实 Playnite或物理 DPI。下一项继续跨页静态说明与状态色审查；Media Inbox 滚动偏移仍待同进程日志。
+
 ## 2026-09-29 用户提供的表格排序崩溃日志复核
 
 - 脱敏归档 ZIP 调用栈，确认其经过 `DataGridStableSortController.ApplyCurrentSort` 到列头点击，但附件没有插件二进制身份；不从日志时间推断用户安装版本。
