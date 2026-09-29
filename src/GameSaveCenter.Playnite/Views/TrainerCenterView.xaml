@@ -119,7 +119,18 @@
                         <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
                         <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding ConfirmGameToolImportCommand}" Content="确认导入" Margin="0,0,8,8" AutomationProperties.Name="确认导入游戏工具"/>
                         <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CancelGameToolImportCommand}" Content="取消" Margin="0,0,8,8" AutomationProperties.Name="取消导入游戏工具"/>
-                        <TextBlock Text="如果当前没有待确认项目，请先从“已绑定工具”页导入 EXE、ZIP 或目录。" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="TrainerImportEmptyHint" Text="没有待确认项目；请从“已绑定工具”页导入 EXE、ZIP 或目录。" VerticalAlignment="Center" Margin="0,0,0,8" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasPendingGameToolEntrySelection, Mode=OneWay}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         </WrapPanel>
                     </Grid>
                 </StackPanel>

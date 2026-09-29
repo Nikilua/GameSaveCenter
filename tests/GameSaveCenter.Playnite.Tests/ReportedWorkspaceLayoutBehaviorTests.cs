@@ -544,6 +544,82 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var emptyHintVisibility = Visibility.Collapsed;
+        var pendingHintVisibility = Visibility.Visible;
+        var selectorVisibility = Visibility.Collapsed;
+        var confirmVisibility = Visibility.Collapsed;
+        var cancelVisibility = Visibility.Collapsed;
+        var selectionPreserved = false;
+        var actionBindingsPreserved = false;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var probe = new TrainerImportCopyProbe();
+                var view = new TrainerCenterView { DataContext = probe };
+                ApplyTheme(view, theme);
+                window = CreateWindow(view, 1100, 700);
+                window.Show();
+                var tabs = FindVisualChildren<TabControl>(view).Single();
+                Assert.Equal(4, tabs.Items.Count);
+                tabs.SelectedIndex = 1;
+                FlushLayout(window);
+
+                var hint = (TextBlock)typeof(TrainerCenterView)
+                    .GetField("TrainerImportEmptyHint", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var selector = (ComboBox)typeof(TrainerCenterView)
+                    .GetField("TrainerImportEntryComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var confirm = FindVisualChildren<ButtonBase>(view)
+                    .Single(button => button is ContentControl content && Equals(content.Content, "确认导入"));
+                var cancel = FindVisualChildren<ButtonBase>(view)
+                    .Single(button => button is ContentControl content && Equals(content.Content, "取消"));
+
+                emptyHintVisibility = hint.Visibility;
+                Assert.Contains("已绑定工具", hint.Text, StringComparison.Ordinal);
+                Assert.Same(probe.ConfirmGameToolImportCommand, confirm.Command);
+                Assert.Same(probe.CancelGameToolImportCommand, cancel.Command);
+
+                probe.HasPendingGameToolEntrySelection = true;
+                FlushLayout(window);
+                pendingHintVisibility = hint.Visibility;
+                selectorVisibility = selector.Visibility;
+                confirmVisibility = confirm.Visibility;
+                cancelVisibility = cancel.Visibility;
+                selectionPreserved = Equals(selector.SelectedItem, probe.SelectedImportEntryCandidate);
+                actionBindingsPreserved = ReferenceEquals(probe.ConfirmGameToolImportCommand, confirm.Command)
+                    && ReferenceEquals(probe.CancelGameToolImportCommand, cancel.Command);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} trainer import empty hint {emptyHintVisibility} -> {pendingHintVisibility}; selector={selectorVisibility}; confirm={confirmVisibility}; cancel={cancelVisibility}; selectionPreserved={selectionPreserved}; actionsBound={actionBindingsPreserved}");
+        Assert.Null(exception);
+        Assert.Equal(Visibility.Visible, emptyHintVisibility);
+        Assert.Equal(Visibility.Collapsed, pendingHintVisibility);
+        Assert.Equal(Visibility.Visible, selectorVisibility);
+        Assert.Equal(Visibility.Visible, confirmVisibility);
+        Assert.Equal(Visibility.Visible, cancelVisibility);
+        Assert.True(selectionPreserved);
+        Assert.True(actionBindingsPreserved);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void CompactSaveAndInboxActionWrapsKeepAnEightDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
@@ -1844,6 +1920,29 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public ICommand RefreshCommand { get; } = new RelayCommand(_ => { });
         public ICommand BackupAllCommand { get; } = new RelayCommand(_ => { });
         public ICommand SyncMediaCommand { get; } = new RelayCommand(_ => { });
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class TrainerImportCopyProbe : INotifyPropertyChanged
+    {
+        private bool hasPendingGameToolEntrySelection;
+
+        public bool HasPendingGameToolEntrySelection
+        {
+            get => hasPendingGameToolEntrySelection;
+            set
+            {
+                if (hasPendingGameToolEntrySelection == value) return;
+                hasPendingGameToolEntrySelection = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasPendingGameToolEntrySelection)));
+            }
+        }
+
+        public ObservableCollection<string> ImportEntryCandidates { get; } = new() { "Synthetic trainer.exe" };
+        public string SelectedImportEntryCandidate { get; set; } = "Synthetic trainer.exe";
+        public ICommand ConfirmGameToolImportCommand { get; } = new RelayCommand(_ => { });
+        public ICommand CancelGameToolImportCommand { get; } = new RelayCommand(_ => { });
 
         public event PropertyChangedEventHandler? PropertyChanged;
     }
