@@ -23,7 +23,9 @@ public sealed class ResponsiveLayoutCoordinatorTests
             (width: 1199d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
             (width: 1200d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
             (width: 1279d, mode: LayoutMode.Standard, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 330d, shellCompact: true, shellPicker: 220d),
-            (width: 1280d, mode: LayoutMode.Expanded, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 380d, shellCompact: false, shellPicker: 300d)
+            (width: 1280d, mode: LayoutMode.Expanded, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 380d, shellCompact: true, shellPicker: 220d),
+            (width: 1439d, mode: LayoutMode.Expanded, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 380d, shellCompact: true, shellPicker: 220d),
+            (width: 1440d, mode: LayoutMode.Expanded, sidebar: 228d, gutter: 0d, pickerOnTopBar: true, pickerWidth: 380d, shellCompact: false, shellPicker: 300d)
         };
 
         foreach (var testCase in cases)

@@ -268,9 +268,11 @@
         <Border x:Name="TaskQueuePanel" Grid.Row="3" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="6,10">
             <Grid>
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="12,2,12,8">
-                    <TextBlock Text="任务队列" FontSize="15" FontWeight="SemiBold"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Grid x:Name="TaskQueueHeaderLayoutGrid" Grid.Row="0" Margin="12,2,12,8">
+                    <Grid.RowDefinitions><RowDefinition x:Name="TaskQueuePrimaryHeaderRow" Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="任务队列" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <ui:Button x:Name="TaskQueueRetryAllButton" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="只处理当前已加载且符合筛选的记录；按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试当前结果中的可恢复任务" Margin="0,0,10,0" VerticalAlignment="Center"/>
                         <ui:Button Command="{Binding LoadMoreTasksCommand}" Content="加载更多" ToolTip="按稳定游标继续加载历史任务" VerticalAlignment="Center">
                             <ui:Button.Style>
@@ -281,21 +283,12 @@
                             </ui:Button.Style>
                         </ui:Button>
                         <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置列宽" ToolTip="恢复任务表格的默认列宽" AutomationProperties.Name="重置任务表格列宽" Click="OnResetColumnLayoutClick" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                        <StackPanel x:Name="TaskQueueSummaryStack" VerticalAlignment="Center" Margin="10,0,0,0" MaxWidth="320">
-                            <TextBlock Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskLoadedSummary}"/>
-                            <TextBlock x:Name="TaskQueueFilterSummary" Text="{Binding TaskActiveFiltersSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskActiveFiltersSummary}" Margin="0,2,0,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskHasActiveFilters}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock x:Name="TaskQueueLastUpdatedSummary" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,2,0,0" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}"/>
-                        </StackPanel>
                     </StackPanel>
+                    <Grid x:Name="TaskQueueSummaryGrid" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock x:Name="TaskQueueLoadedSummaryText" Grid.Column="0" Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskLoadedSummary}" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TaskQueueLastUpdatedSummary" Grid.Column="1" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="12,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" VerticalAlignment="Center"/>
+                    </Grid>
                 </Grid>
                 <Border x:Name="TaskStaleDataBanner" Grid.Row="1" Padding="10,7" Margin="0,0,0,8">
                     <Border.Style>

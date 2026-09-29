@@ -21,7 +21,8 @@ public sealed class TaskRetrySourceTests
         Assert.Contains("Content=\"重试可恢复\"", view);
         Assert.Contains("当前已加载且符合筛选", view);
         Assert.Contains("AutomationProperties.Name=\"批量重试当前结果中的可恢复任务\"", view);
-        Assert.Contains("TaskQueueFilterSummary", view);
+        Assert.DoesNotContain("TaskQueueFilterSummary", view);
+        Assert.Contains("TaskQueueSummaryGrid", view);
         Assert.Contains("TaskActiveFiltersSummary", view);
         Assert.Contains("TaskWaitingSummary", view);
         Assert.Contains("TaskRetrySummary", view);

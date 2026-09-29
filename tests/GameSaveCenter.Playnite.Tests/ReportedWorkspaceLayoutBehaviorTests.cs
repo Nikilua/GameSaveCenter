@@ -833,7 +833,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactSaveAndInboxActionWrapsKeepATwelveDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
+    public void CompactSaveAndInboxActionWrapsKeepASixteenDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var saveCompactRows = 0;
@@ -908,10 +908,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     var (rows, gap) = MeasureWrapRows(presetRow, mediaView);
                     if (rows > 1)
                     {
-                        Assert.True(gap >= 11.5,
-                            $"{theme} media filter preset rows at {width:0} DIP need at least 11.5 DIP breathing room; actual gap={gap:0.##} DIP.");
+                        Assert.True(gap >= 15.5,
+                            $"{theme} media filter preset rows at {width:0} DIP need at least 15.5 DIP breathing room; actual gap={gap:0.##} DIP.");
                         Assert.All(presetRow.Children.OfType<FrameworkElement>(), child =>
-                            Assert.Equal(12d, child.Margin.Bottom));
+                            Assert.Equal(16d, child.Margin.Bottom));
                     }
                     else
                     {
@@ -927,7 +927,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 700d;
                 mediaView.ApplyResponsiveLayout(700, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 11.5,
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 15.5,
                     "Media filter preset rows should regain their gap after resizing back to 700 DIP.");
                 mediaWindow.Width = 720d;
                 mediaView.ApplyResponsiveLayout(720, 720);
@@ -938,7 +938,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 700d;
                 mediaView.ApplyResponsiveLayout(700, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 11.5,
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 15.5,
                     "Media filter preset row gap should survive a 700→720→700 DIP resize round trip.");
 
                 var secondaryActions = (WrapPanel)typeof(MediaCenterView)
@@ -954,10 +954,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     var (rows, gap) = MeasureWrapRows(secondaryActions, mediaView);
                     if (rows > 1)
                     {
-                        Assert.True(gap >= 11.5,
-                            $"{theme} media secondary action rows at {width:0} DIP need at least 11.5 DIP; actual gap={gap:0.##} DIP.");
+                        Assert.True(gap >= 15.5,
+                            $"{theme} media secondary action rows at {width:0} DIP need at least 15.5 DIP; actual gap={gap:0.##} DIP.");
                         Assert.All(secondaryActions.Children.OfType<FrameworkElement>(), child =>
-                            Assert.Equal(12d, child.Margin.Bottom));
+                            Assert.Equal(16d, child.Margin.Bottom));
                     }
                     else
                     {
@@ -970,8 +970,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 576d;
                 mediaView.ApplyResponsiveLayout(576, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 11.5,
-                    "Media secondary action rows should use the 12 DIP gap at 576 DIP.");
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 15.5,
+                    "Media secondary action rows should use the 16 DIP gap at 576 DIP.");
                 mediaWindow.Width = 577d;
                 mediaView.ApplyResponsiveLayout(577, 720);
                 FlushLayout(mediaWindow);
@@ -981,7 +981,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 576d;
                 mediaView.ApplyResponsiveLayout(576, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 11.5,
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 15.5,
                     "Media secondary action row gap should survive a 576→577→576 DIP resize round trip.");
             }
             catch (Exception caught)
@@ -1002,11 +1002,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             output.WriteLine($"{theme} Media secondary actions {sample}");
         Assert.Null(exception);
         Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
-        Assert.True(saveCompactGap >= 11.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
+        Assert.True(saveCompactGap >= 15.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
         Assert.Equal(1, saveWideRows);
         Assert.InRange(saveWideBottomMargin, 0, 0.5);
         Assert.True(inboxCompactRows >= 2, "the compact synthetic inbox toolbar must exercise a wrapped row");
-        Assert.True(inboxCompactGap >= 11.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
+        Assert.True(inboxCompactGap >= 15.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
         Assert.Equal(1, inboxWideRows);
         Assert.InRange(inboxWideBottomMargin, 0, 4.5);
     }
@@ -1014,7 +1014,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactTaskPresetWrapUsesTwelveDipGapAndRestoresAtBreakpoint(GameSaveCenterThemeMode theme)
+    public void CompactTaskPresetWrapUsesSixteenDipGapAndRestoresAtBreakpoint(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var compactRows = 0;
@@ -1080,12 +1080,12 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         output.WriteLine($"{theme} task preset compact rows={compactRows}, gap={compactGap:0.##} DIP, margins=[{string.Join(",", compactMargins)}]; wide rows={wideRows}, margins=[{string.Join(",", wideMargins)}]; restored rows={restoredRows}, margins=[{string.Join(",", restoredMargins)}]");
         Assert.Null(exception);
         Assert.True(compactRows > 1, "620 DIP must exercise the task preset WrapPanel's compact path.");
-        Assert.True(compactGap >= 11.5, $"Compact task preset rows need 12 DIP of separation; actual={compactGap:0.##} DIP.");
-        Assert.All(compactMargins, margin => Assert.Equal(12d, margin));
+        Assert.True(compactGap >= 15.5, $"Compact task preset rows need 16 DIP of separation; actual={compactGap:0.##} DIP.");
+        Assert.All(compactMargins, margin => Assert.Equal(16d, margin));
         Assert.Equal(1, wideRows);
         Assert.All(wideMargins, margin => Assert.Equal(0d, margin));
         Assert.True(restoredRows > 1);
-        Assert.All(restoredMargins, margin => Assert.Equal(12d, margin));
+        Assert.All(restoredMargins, margin => Assert.Equal(16d, margin));
     }
 
     [Theory]
@@ -1104,6 +1104,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var compactTitleActionsGap = double.NaN;
         var roundTripActionRow = -1;
         var roundTripTitleColumnSpan = 0;
+        var middleCompactSubtitleVisibility = Visibility.Visible;
+        var middleCompactActionRow = -1;
+        var middleCompactTitleColumnSpan = 0;
         var wideSubtitleVisibility = Visibility.Collapsed;
         var compactHelpText = string.Empty;
 
@@ -1159,13 +1162,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 compactActionsColumnWidth = actionsColumn.ActualWidth;
                 compactTitleActionsGap = BoundsIn(actions, shell).Top - BoundsIn(titlePanel, shell).Bottom;
 
+                window.Width = 1320;
+                shell.ApplyResponsiveLayout(1320, 720);
+                FlushLayout(window);
+                middleCompactSubtitleVisibility = subtitle.Visibility;
+                middleCompactActionRow = Grid.GetRow(actions);
+                middleCompactTitleColumnSpan = Grid.GetColumnSpan(titlePanel);
+
                 window.Width = 1500;
                 shell.ApplyResponsiveLayout(1500, 720);
                 FlushLayout(window);
                 wideSubtitleVisibility = subtitle.Visibility;
 
-                window.Width = 1040;
-                shell.ApplyResponsiveLayout(1040, 720);
+                window.Width = 1320;
+                shell.ApplyResponsiveLayout(1320, 720);
                 FlushLayout(window);
                 roundTripActionRow = Grid.GetRow(actions);
                 roundTripTitleColumnSpan = Grid.GetColumnSpan(titlePanel);
@@ -1180,7 +1190,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, title/action spans={compactTitleColumnSpan}/{compactActionsColumnSpan}, actionsColumn={compactActionsColumnWidth:0.##} DIP, title/action gap={compactTitleActionsGap:0.##} DIP, actionRows={compactRows}; wide subtitle={wideSubtitleVisibility}; compact round-trip row/span={roundTripActionRow}/{roundTripTitleColumnSpan}");
+        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, title/action spans={compactTitleColumnSpan}/{compactActionsColumnSpan}, actionsColumn={compactActionsColumnWidth:0.##} DIP, title/action gap={compactTitleActionsGap:0.##} DIP, actionRows={compactRows}; 1320 DIP subtitle/row/titleSpan={middleCompactSubtitleVisibility}/{middleCompactActionRow}/{middleCompactTitleColumnSpan}; wide subtitle={wideSubtitleVisibility}; compact round-trip row/span={roundTripActionRow}/{roundTripTitleColumnSpan}");
         Assert.Null(exception);
         Assert.Equal("存档中心", compactTitleText);
         Assert.Equal(Visibility.Collapsed, compactSubtitleVisibility);
@@ -1189,6 +1199,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.Equal(2, compactActionsColumnSpan);
         Assert.InRange(compactActionsColumnWidth, 0, 0.5);
         Assert.InRange(compactTitleActionsGap, 7.5, 8.5);
+        Assert.Equal(Visibility.Collapsed, middleCompactSubtitleVisibility);
+        Assert.Equal(1, middleCompactActionRow);
+        Assert.Equal(2, middleCompactTitleColumnSpan);
         Assert.Equal(1, roundTripActionRow);
         Assert.Equal(2, roundTripTitleColumnSpan);
         Assert.Equal(Visibility.Visible, wideSubtitleVisibility);
@@ -1294,34 +1307,42 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void TaskQueueActionsKeepTheirOwnHeightWhenThreeLineSummaryAppears(GameSaveCenterThemeMode theme)
+    public void TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var summaryHeight = 0d;
+        var primaryRowHeight = 0d;
+        var primaryRowHeightAfterExpansion = 0d;
         var retryHeight = 0d;
         var resetHeight = 0d;
+        var retryAfterExpansion = 0d;
+        var resetAfterExpansion = 0d;
         var retryCenterDelta = 0d;
         var resetCenterDelta = 0d;
-        var retryAfterSummaryCollapse = 0d;
-        var resetAfterSummaryCollapse = 0d;
         var leaveHintForeground = Colors.Transparent;
-        var queueFilterForeground = Colors.Transparent;
+        var summaryForeground = Colors.Transparent;
         var secondaryForeground = Colors.Transparent;
+        var mutedForeground = Colors.Transparent;
         var infoForeground = Colors.Transparent;
+        var activeFilterSummaryWasDuplicated = false;
 
         RunSta(() =>
         {
             Window? window = null;
             try
             {
-                var view = new TaskCenterView { DataContext = new TaskSummaryLayoutProbe() };
+                var probe = new TaskSummaryLayoutProbe();
+                var view = new TaskCenterView { DataContext = probe };
                 ApplyTheme(view, theme);
                 var viewType = typeof(TaskCenterView);
-                var summary = (StackPanel)viewType.GetField("TaskQueueSummaryStack", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var header = (Grid)viewType.GetField("TaskQueueHeaderLayoutGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var summary = (Grid)viewType.GetField("TaskQueueSummaryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var loadedSummary = (TextBlock)viewType.GetField("TaskQueueLoadedSummaryText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var statusSummary = (TextBlock)viewType.GetField("TaskQueueLastUpdatedSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var title = FindVisualChildren<TextBlock>(header).Single(text => text.Text == "任务队列");
                 var retry = (FrameworkElement)viewType.GetField("TaskQueueRetryAllButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var reset = (FrameworkElement)viewType.GetField("TaskQueueResetColumnWidthButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var hint = (TextBlock)viewType.GetField("TaskLeavePageHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                var filterSummary = (TextBlock)viewType.GetField("TaskQueueFilterSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 window = CreateWindow(view, 1280, 800);
                 view.ApplyResponsiveLayout(1280, 800);
                 window.Show();
@@ -1330,20 +1351,24 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 FlushLayout(window);
 
                 summaryHeight = summary.ActualHeight;
+                primaryRowHeight = header.RowDefinitions[0].ActualHeight;
                 retryHeight = retry.ActualHeight;
                 resetHeight = reset.ActualHeight;
-                retryCenterDelta = Math.Abs(CenterY(retry, window) - CenterY(summary, window));
-                resetCenterDelta = Math.Abs(CenterY(reset, window) - CenterY(summary, window));
+                retryCenterDelta = Math.Abs(CenterY(retry, header) - CenterY(title, header));
+                resetCenterDelta = Math.Abs(CenterY(reset, header) - CenterY(title, header));
                 leaveHintForeground = (hint.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
-                queueFilterForeground = (filterSummary.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
+                summaryForeground = (loadedSummary.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
                 secondaryForeground = (view.FindResource("GscSecondaryTextBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
+                mutedForeground = (view.FindResource("GscMutedTextBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
                 infoForeground = (view.FindResource("GscInfoBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
+                activeFilterSummaryWasDuplicated = summary.Children.OfType<TextBlock>().Any(text => text.Text == probe.TaskActiveFiltersSummary);
 
-                filterSummary.Visibility = Visibility.Collapsed;
-                ((TextBlock)summary.Children[2]).Visibility = Visibility.Collapsed;
+                loadedSummary.Text = "最近加载 50 条\n全部任务 4,557 条\n只保留当前已加载的有限页面";
+                statusSummary.Text = "最近更新：刚刚\n刷新时仍保留旧数据\n失败后可以重试读取";
                 FlushLayout(window);
-                retryAfterSummaryCollapse = retry.ActualHeight;
-                resetAfterSummaryCollapse = reset.ActualHeight;
+                primaryRowHeightAfterExpansion = header.RowDefinitions[0].ActualHeight;
+                retryAfterExpansion = retry.ActualHeight;
+                resetAfterExpansion = reset.ActualHeight;
             }
             catch (Exception caught)
             {
@@ -1355,17 +1380,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Task queue summary={summaryHeight:0.##} DIP, retry/reset={retryHeight:0.##}/{resetHeight:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}, after summaries hide={retryAfterSummaryCollapse:0.##}/{resetAfterSummaryCollapse:0.##}, hint/filter brushes={leaveHintForeground}/{queueFilterForeground}, secondary/info={secondaryForeground}/{infoForeground}");
+        output.WriteLine($"{theme} Task queue metadata={summaryHeight:0.##} DIP below primary row={primaryRowHeight:0.##} DIP; expanded primary row={primaryRowHeightAfterExpansion:0.##}; retry/reset={retryHeight:0.##}/{resetHeight:0.##}, expanded={retryAfterExpansion:0.##}/{resetAfterExpansion:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}, hint/summary/muted/info={leaveHintForeground}/{summaryForeground}/{mutedForeground}/{infoForeground}; filter summary duplicated={activeFilterSummaryWasDuplicated}");
         Assert.Null(exception);
-        Assert.True(summaryHeight >= 42, "the fixture needs a genuinely multi-line task summary to expose the previous stretch behavior");
+        Assert.True(summaryHeight > 0);
+        Assert.InRange(primaryRowHeight, 28, 44);
         Assert.InRange(retryHeight, 28, 40);
         Assert.InRange(resetHeight, 32, 40);
         Assert.InRange(retryCenterDelta, 0, 1);
         Assert.InRange(resetCenterDelta, 0, 1);
-        Assert.InRange(Math.Abs(retryAfterSummaryCollapse - retryHeight), 0, 0.5);
-        Assert.InRange(Math.Abs(resetAfterSummaryCollapse - resetHeight), 0, 0.5);
+        Assert.InRange(Math.Abs(primaryRowHeightAfterExpansion - primaryRowHeight), 0, 0.5);
+        Assert.InRange(Math.Abs(retryAfterExpansion - retryHeight), 0, 0.5);
+        Assert.InRange(Math.Abs(resetAfterExpansion - resetHeight), 0, 0.5);
+        Assert.False(activeFilterSummaryWasDuplicated, "the selected filter is already visible in the filter controls or compact disclosure header");
         Assert.Equal(secondaryForeground, leaveHintForeground);
-        Assert.Equal(secondaryForeground, queueFilterForeground);
+        Assert.Equal(mutedForeground, summaryForeground);
         Assert.NotEqual(infoForeground, leaveHintForeground);
     }
 
@@ -1379,6 +1407,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var pillTitleCenterDelta = 0d;
         var pillHeight = 0d;
         var pillTextHeight = 0d;
+        var pillRowCenterDelta = double.MaxValue;
+        var titleRowCenterDelta = double.MaxValue;
 
         RunSta(() =>
         {
@@ -1401,8 +1431,13 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var countText = FindBoundText(frame, "CloudTransferLoadedSummary");
                 var pill = FindVisualAncestor<Border>(countText, frame);
                 var title = FindVisualChildren<TextBlock>(frame).Single(text => text.Text == "传输明细");
+                var titleRow = (Grid)typeof(MaintenanceView)
+                    .GetField("CloudTransferTableTitleRow", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
                 pillTextCenterDelta = Math.Abs(CenterY(countText, pill) - pill.ActualHeight / 2);
-                pillTitleCenterDelta = Math.Abs(CenterY(countText, frame) - CenterY(title, frame));
+                pillRowCenterDelta = Math.Abs(CenterY(pill, titleRow) - titleRow.ActualHeight / 2);
+                titleRowCenterDelta = Math.Abs(CenterY(title, titleRow) - titleRow.ActualHeight / 2);
+                pillTitleCenterDelta = Math.Abs(CenterY(countText, titleRow) - CenterY(title, titleRow));
                 pillHeight = pill.ActualHeight;
                 pillTextHeight = countText.ActualHeight;
             }
@@ -1416,11 +1451,13 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Cloud transfer title/count center delta={pillTitleCenterDelta:0.##} DIP; pill text center delta={pillTextCenterDelta:0.##} DIP; pill={pillHeight:0.##}, text={pillTextHeight:0.##}");
+        output.WriteLine($"{theme} Cloud transfer title/count center delta={pillTitleCenterDelta:0.##} DIP; title/pill row center delta={titleRowCenterDelta:0.##}/{pillRowCenterDelta:0.##}; pill text center delta={pillTextCenterDelta:0.##} DIP; pill={pillHeight:0.##}, text={pillTextHeight:0.##}");
         Assert.Null(exception);
         Assert.True(pillHeight > 0 && pillTextHeight > 0, "the active cloud table header must render the count pill");
         Assert.InRange(pillTextCenterDelta, 0, 0.75);
         Assert.InRange(pillTitleCenterDelta, 0, 1.5);
+        Assert.InRange(titleRowCenterDelta, 0, 0.75);
+        Assert.InRange(pillRowCenterDelta, 0, 0.75);
     }
 
     [Theory]

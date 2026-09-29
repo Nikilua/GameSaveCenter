@@ -185,11 +185,11 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             var rowGap = GetMinimumRowGap(rows);
             if (rows.Count > 1)
             {
-                Assert.True(rowGap >= 11.5d,
-                    $"{theme} {width:0} DIP wrapped task preset rows need at least 11.5 DIP; actual gap={rowGap:0.###} DIP, rows={string.Join(";", rows.Select(row => string.Join(",", row.Select(rect => $"{rect.Top:0.##}/{rect.Height:0.##}"))))}.");
+                Assert.True(rowGap >= 15.5d,
+                    $"{theme} {width:0} DIP wrapped task preset rows need at least 15.5 DIP; actual gap={rowGap:0.###} DIP, rows={string.Join(";", rows.Select(row => string.Join(",", row.Select(rect => $"{rect.Top:0.##}/{rect.Height:0.##}"))))}.");
                 Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
-                    Assert.True(element.Margin.Bottom == 12d,
-                        $"{theme} {width:0} DIP wrapped preset child {element.GetType().Name} needs a 12 DIP row margin, got {element.Margin.Bottom:0.###} DIP."));
+                    Assert.True(element.Margin.Bottom == 16d,
+                        $"{theme} {width:0} DIP wrapped preset child {element.GetType().Name} needs a 16 DIP row margin, got {element.Margin.Bottom:0.###} DIP."));
             }
             else
             {
@@ -215,10 +215,10 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
                 FlushLayout(window);
                 Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
-                    Assert.Equal(12d, element.Margin.Bottom));
+                    Assert.Equal(16d, element.Margin.Bottom));
                 var returnedGap = GetMinimumRowGap(GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
                     .Select(element => GetBounds(element, presetRow)).ToArray()));
-                Assert.True(returnedGap >= 11.5d,
+                Assert.True(returnedGap >= 15.5d,
                     $"Resize back to 620 DIP restored only {returnedGap:0.###} DIP between wrapped preset rows.");
                 resizeRoundTrip = "; 620→660→620 resize restores row gap and original margins";
             }

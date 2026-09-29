@@ -344,15 +344,15 @@ namespace GameSaveCenter.Playnite.Views
                 responsiveHeight = height;
                 // The filter preset controls wrap below the measured 720 DIP page width.
                 // Add room between wrapped rows and restore authored margins once they fit.
-                mediaFilterPresetRowGap.SetRowGap(width < 720d ? 12d : 0d);
+                mediaFilterPresetRowGap.SetRowGap(width < 720d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
                 // The secondary inbox actions wrap through 576 DIP. Keep the same
-                // 8-DIP row spacing as the primary batch controls in that range.
-                mediaInboxSecondaryActionRowGap.SetRowGap(width < 577d ? 12d : 0d);
+                // 16-DIP spacing as the other compact action rows in that range.
+                mediaInboxSecondaryActionRowGap.SetRowGap(width < 577d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
                 var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
                 var compactBatchActions = batchActionWidth > 0
                     ? batchActionWidth < 960
                     : width < 1040;
-                mediaInboxActionRowGap.SetRowGap(compactBatchActions ? 12 : 0);
+                mediaInboxActionRowGap.SetRowGap(compactBatchActions ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0);
                 // Keep the Demo's four metrics in one continuous strip. Do not discard
                 // summary information at short heights. Local list/inspector surfaces own
                 // overflow so the whole workspace does not become a scroll canvas.

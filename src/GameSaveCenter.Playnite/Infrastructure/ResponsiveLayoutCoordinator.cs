@@ -35,7 +35,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             IsComfortableHeight = height >= 760;
             IsShortFooter = height < 700;
             IsFooterHintVisible = width >= 900;
-            IsCompactShellHeader = width < 1280;
+            IsCompactShellHeader = width < ResponsiveLayoutCoordinator.CompactShellHeaderThreshold;
             IsVeryCompactShellHeader = width < 720;
             ShellPickerWidth = IsCompactShellHeader
                 ? (IsVeryCompactShellHeader ? 190 : 220)
@@ -73,6 +73,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     public static class ResponsiveLayoutCoordinator
     {
+        public const double CompactShellHeaderThreshold = 1440d;
+        public const double CompactActionRowGap = 16d;
+
         // The detail inspector needs a small content-budget hysteresis band. Without it,
         // a host that reports 979/980 DIP while the user drags its edge repeatedly
         // moves the same inspector between a column and a drawer on every render pass.

@@ -785,7 +785,7 @@ namespace GameSaveCenter.Playnite.Views
                 ? new Thickness(0, 8, 0, 0)
                 : new Thickness(14, 0, 0, 0);
             HeaderActionsPanel.Width = double.NaN;
-            headerActionRowGap.SetRowGap(compact ? 12 : 0);
+            headerActionRowGap.SetRowGap(compact ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0);
 
             // Keep the real game picker usable in the compact row while ensuring its
             // desired width plus the action buttons always fits the content column.

@@ -589,10 +589,10 @@
                         <Border x:Name="CloudTransferTableFrame" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignTableFrame}">
                             <Grid>
                                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                                <Grid Grid.Row="0" Margin="12,2,12,8">
+                                <Grid x:Name="CloudTransferTableTitleRow" Grid.Row="0" Margin="12,5,12,5">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="传输明细" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                        <TextBlock Text="传输明细" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                                         <Border Style="{DynamicResource GscRedesignContextPill}" Margin="10,0,0,0" Padding="8,3" VerticalAlignment="Center" ToolTip="{Binding CloudTransferStateDetail}"><TextBlock Text="{Binding CloudTransferLoadedSummary}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/></Border>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1" Text="{Binding CloudTransferViewSummary.QueueControlDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CloudTransferViewSummary.QueueControlDisplay}"/>
