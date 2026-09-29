@@ -9748,3 +9748,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R00-06 源码 freshness 因 MediaCenterView 路径命中，按影响补跑 700×600 几何和锚点测试，更新证据 source identity 到 `4121a47e28aad0701b314c4a81accfc8ef5283e3`；最终 R00/R01 为 `14 FRESH / 0 STALE`，freshness 自测通过。未重跑完整 RenderHarness 矩阵。
 - 隔离组合多类 VSTest 曾无输出停滞；按项目 WPF 类隔离要求拆分进程后全部通过。一次无 `GSC_BUILD_COMMIT` 的人工测试程序集编译被源码身份门禁正确拒绝，随后按完整构建协议重建并验证。未启动 Playnite；真实 DPI、OS 输入、呈现帧和用户滚动空白宿主诊断未验。
 - 下一阶段继续实测其余候选换行组，并精简过量静态说明/检查主题次级文字；候选包括 Media Inbox secondary actions、Save current-rule、Overview header、Dashboard game-header。用户的 Media Inbox 滚动空白仍需同一安全宿主会话的前后 `[GSC-GRID-DIAGNOSTIC]`。
+
+# 2026-09-29 Media Inbox 次级动作行距
+
+- 生产 MediaCenterView 浅/深主题量测 `MediaInboxSecondaryActions`：`520–576 DIP` 两行，旧 gap `4 DIP`；`577 DIP` 起单行。提交 `ce12c68d` 复用可逆 `WrapPanelRowGapController`，只在真实换行范围设 `8 DIP`，单行恢复 authored margin。
+- Release/XAML `0/0`、`24/24`；Reported compact rows `2/2`（含 Task/Media preset 旧修复和本组行距往返）、MediaInboxGeometry `3/3`、MediaWindowAnchor `10/10`，合计 `15/15`。窄窗测试实际为 `520×600 DIP`，页级滚动条 Auto 且 ScrollableHeight>0；R00-06 的 700 DIP 表格高度 floor/四行或 fallback 门禁仍过。
+- R00/R01 freshness 在最终源码 `ce12c68da11069da21cf014a2f8a6f1840fa4603` 为 `14 FRESH / 0 STALE`；freshness 自测通过，package identity 未提供。证据与最终 test DLL SHA/TRX：`evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
+- 初次快速测试只重编 test assembly、错误复用了旧 plugin `bin`，其零间距结果作废；隔离 Release solution 重建插件和测试后最终结果全过。没有启动 Playnite、验证物理 DPI或渲染帧。
+- 下一批继续实测 Save current-rule、Overview header、Dashboard game-header；随后审阅用户提到的说明文字数量与蓝色次级文字对紫色主题的适配。安全 Playnite 同进程 Media Inbox 滚动诊断仍单独待验。

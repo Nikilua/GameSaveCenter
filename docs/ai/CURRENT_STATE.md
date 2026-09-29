@@ -3663,3 +3663,9 @@
 - 当前代码提交 `4121a47e28aad0701b314c4a81accfc8ef5283e3`（`main`）：任务中心筛选预设在 `<657 DIP`、媒体中心筛选预设在 `<720 DIP` 换行时增加 `8 DIP` 行距；宽态恢复作者边距。补了媒体几何 700×600 DIP 窄窗场景，保护四行下限或页级回退。
 - Release/XAML `0 warning / 0 error`、XAML `24/24`；隔离 WPF 定向 `16/16`、0 失败/跳过。R00/R01 当前源码新鲜度 `14 FRESH / 0 STALE`，package identity 未提供。证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。
 - 本阶段是生产 WPF STA/合成布局验证，不是真实 Playnite、物理 DPI、OS 输入或最终呈现验证。待验：真实 Media Inbox 滚动空白同进程诊断。下一步继续实测其他可能换行的页面分组，再处理用户提出的说明文字密度与主题次级色一致性。
+
+# 2026-09-29 媒体次级动作行距续作
+
+- 当前代码提交 `ce12c68da11069da21cf014a2f8a6f1840fa4603`：Media Inbox 次级动作在 `<=576 DIP` 实测两行，行距从 `4` 提至 `8 DIP`；577 DIP 单行恢复原 margin。Media filter preset `<720 DIP` 与 Task preset `<657 DIP` 行距回归保持。
+- Release/XAML `0/0`、`24/24`；紧凑行距双主题 `2/2`、MediaInboxGeometry `3/3`、MediaWindowAnchor `10/10`，共 `15/15`。R00/R01 `14 FRESH / 0 STALE`，package identity 未提供。证据在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
+- 已验证 `520×600 DIP` 页级滚动仍可达并保留 R00-06 表格高度/回退门禁；没有真实 Playnite/物理 DPI/最终屏幕呈现证据。下一项查 Save current-rule、Overview header、Dashboard game-header 换行，之后继续处理冗余说明与主题次级色。

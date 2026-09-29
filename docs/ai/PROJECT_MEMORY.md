@@ -5904,3 +5904,9 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 当前已验证并实现：Task Center preset `<657 DIP`、Media Center preset `<720 DIP` 时行距 `8 DIP`，宽态还原 margin；Save History、Media Inbox batch actions 与 shell header 既有动态间距保持。Media 行距新增后重跑 R00-06 700×600 DIP 表格四行/页级回退门禁，未压掉可读视口。
 - 最终源码提交 `4121a47e28aad0701b314c4a81accfc8ef5283e3`，WPF 定向 `16/16`，R00/R01 freshness `14/14`。证据 `design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。
 - 未审完候选：Media Inbox secondary actions、Save current-rule actions、Overview header actions、Dashboard game-header actions；应先量实际换行及上下行距。真实 Playnite Media Inbox 滚动空白仍需安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`，与本次行距测试独立。
+
+### 2026-09-29 Media Inbox secondary actions 续修
+
+- 生产视图 Light/Dark 实测 `MediaInboxSecondaryActions` 在 `520–576 DIP` 为两行且净距 `4 DIP`，`577 DIP` 起单行。现在仅在 `<577 DIP` 临时设为 `8 DIP`，宽态恢复 XAML authored `4 DIP`；不要扩大到同栏之外。
+- 520×600 DIP 还启用页级 Auto 滚动，MediaInboxGeometry 和 anchor 契约 `3/3 + 10/10` 通过；R00-06 source identity 更新至 `ce12c68d`，R00/R01 全 `14/14 fresh`。详细测量/TRX：`design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
+- 仍待审 Save current-rule actions、Overview header actions、Dashboard game-header actions；用户要求的静态说明密度和主题次级色一致性也未完成。Playnite Media Inbox 真实滚动空白仍需同次安全宿主 `[GSC-GRID-DIAGNOSTIC]`。

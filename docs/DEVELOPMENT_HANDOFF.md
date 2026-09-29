@@ -2729,3 +2729,9 @@ git branch --show-current
 - 当前 `main` 代码提交：`4121a47e28aad0701b314c4a81accfc8ef5283e3`。Task Center 与 Media Center 筛选预设在实测换行区间增加 `8 DIP` 行距，回到单行时复原 margin；媒体 700×600 DIP 几何门禁通过。
 - 最终隔离 Release `0/0`、XAML `24/24`、定向 `16/16`；R00/R01 `14 fresh / 0 stale`。细节/TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-WRAP-ROW-SPACING-20260929/README.md`。本轮 STA WPF 与 synthetic geometry 不等同 Playnite 宿主或物理 DPI验证。
 - 下一项逐屏测其他可换行工具组，再整理说明文字密度和次级颜色。真实 Media Inbox 表格滚动空白仍未复现；需安全 Playnite 会话记录同一 PID 的 DLL 身份及滚动前后 `[GSC-GRID-DIAGNOSTIC]`，不能用离屏结果替代。
+
+## 当前续作（2026-09-29 Media Inbox 次级动作）
+
+- 当前代码提交 `ce12c68da11069da21cf014a2f8a6f1840fa4603`：媒体次级动作 `<577 DIP` 时两行净距 `8 DIP`，577 DIP 单行恢复作者 margin；双主题阈值扫描与 `576→577→576` 往返通过。
+- 最终隔离 Release/XAML `0/0`、`24/24`；行距/几何/锚点 `15/15`，R00/R01 `14/14 fresh`。520×600 DIP 页尾滚动仍可达。证据与 TRX：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-SECONDARY-ROW-GAP-20260929/README.md`。
+- 继续测剩余实际 WrapPanel 组，再清理静态说明与主题次级文字。用户的真实 Media Inbox 滚动空白仍需安全 Playnite 同进程 `[GSC-GRID-DIAGNOSTIC]`；未将 STA 几何当宿主验证。
