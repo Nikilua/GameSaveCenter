@@ -1,9 +1,10 @@
 ## 2026-09-30 活跃状态颜色语义校正
 
 - 按实际 DTO 状态核对并修复三类通用 Info 蓝：Overview 云队列 tone 按认证/校验失败/上传失败、重试等待、传输/远端校验、已上传/验证和普通待办区分；Maintenance 环境检查总摘要与单项 glyph 按真实检查结果区分；Save Center 比较精度标签改为精确中性、估算警示、无效 Manifest 错误。
-- 不改 DTO、命令、队列/环境/比较业务流程。Release `0 warning / 0 error`，XAML `24/24`，source validation 通过；实际 Light/Dark WPF 行为 `ReportedWorkspaceLayoutBehaviorTests 44/44`，状态 resolver + Typography diagnostics `13/13`；技能静态检查 `0 errors / 30 warnings / 177 info`。改动后的完整离屏 render-qa 通过，但报告在提交前生成、`WorkingTreeClean=False`，需代码提交后复跑并归档清洁身份。
+- 不改 DTO、命令、队列/环境/比较业务流程。Release `0 warning / 0 error`，XAML `24/24`，source validation 通过；实际 Light/Dark WPF 行为 `ReportedWorkspaceLayoutBehaviorTests 44/44`，状态 resolver + Typography diagnostics `13/13`；技能静态检查 `0 errors / 30 warnings / 177 info`；R00/R01 freshness `14/14 FRESH`，freshness 自测通过。
+- 提交后 RenderHarness `render-qa OK`，报告记录 `e27eab0465714dbfc9b75aa5006916460bfcfce7`、`WorkingTreeClean=True`、离屏逻辑 DPI `1.00`；插件/测试/RenderHarness 程序集身份、精选截图、脱敏 TRX 和完整报告见[复核证据](evidence/USER-REPORTED-STATUS-TONE-CURRENT-MAIN-RECHECK-20260930/README.md)。离屏结果不是实际 Playnite、用户安装 DLL 或物理 DPI 验证；此批不改变 192 项总数/状态。
 - 不将颜色样例扩展成 R03-02 或 R22-08 整组完成，不改 192 项总数/状态。没有真实 Playnite、用户 DLL 或物理 DPI 复核。仍待用户同进程 Media Inbox 滚动诊断；R08-01 用户机失败需原始方法/断言/堆栈/DLL 身份。
-- 下一可执行项：提交源码后用 clean-tree 运行 RenderHarness 并归档证据；随后按数据态清单继续缩短与空态/标题重复的常驻说明。
+- 下一可执行项：按数据态清单继续缩短与空态/标题重复的常驻说明。
 
 ## 2026-09-30 用户缩窗布局与 R00/R01 证据复核
 

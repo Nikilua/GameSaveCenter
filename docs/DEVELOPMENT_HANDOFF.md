@@ -14,7 +14,7 @@
 ## 当前交接补充（2026-09-30：多页状态颜色语义）
 
 - 当前未提交批次按状态降低通用信息蓝：概览云队列错误/警示/运行/成功/中性状态分别绑定语义资源；环境检查总计和单项图标使用状态结果；备份比较的“精确”不着成功色，估算为警示、无效 Manifest 为错误。没有替换共享色板，也没动命令/DTO/业务语义。
-- Release build `0/0`、XAML `24/24`、source validation 通过；`ReportedWorkspaceLayoutBehaviorTests 44/44`，状态解析和 Typography diagnostics `13/13`。技能扫描 `0 errors / 30 warnings / 177 info`，warning/info 是已有集合。离屏 RenderHarness `render-qa OK`，但本次树不干净/报告头对应改动前 HEAD；代码提交后重跑 clean-tree 证据再签收。
+- Release build `0/0`、XAML `24/24`、source validation 通过；`ReportedWorkspaceLayoutBehaviorTests 44/44`，状态解析和 Typography diagnostics `13/13`。技能扫描 `0 errors / 30 warnings / 177 info`，warning/info 是已有集合。提交后离屏 RenderHarness `render-qa OK`，报告对应 `e27eab0465714dbfc9b75aa5006916460bfcfce7` 且工作树干净；R00/R01 freshness `14/14 FRESH`。程序集身份、TRX 和截图见[证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STATUS-TONE-CURRENT-MAIN-RECHECK-20260930/README.md)。仅离屏 logical DIP，没有真实 Playnite/用户 DLL/物理 DPI 复核。
 - 192 项 Round3 状态未改。下一项继续把与标题/空态重复的常驻帮助文案缩短或移入 Tooltip/UIA HelpText；恢复、删除、取消、只读及错误语义保留。真实 Playnite 下 Media Inbox 滚动偏移仍待同进程日志；R08-01 用户机失败仍缺原始 TRX/断言/堆栈/DLL 身份。
 
 ## 当前交接补充（2026-09-30：窄窗口行距、任务摘要和标题行）

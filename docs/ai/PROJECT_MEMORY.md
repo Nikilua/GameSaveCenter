@@ -14,7 +14,7 @@
 ## 2026-09-30 多页状态颜色映射
 
 - 已修正活跃视图中过度固定的 Info 蓝：概览云队列与环境检查现在从结果状态选择中性/Info/成功/警示/错误资源；备份比较精确度是中性属性，估算与无效清单分别用警示/错误。继续按状态语义逐实例审，不全局替换真实运行/Info 状态。
-- Release `0/0`、XAML `24/24`；双主题 WPF `ReportedWorkspaceLayoutBehaviorTests 44/44`，状态映射与文本诊断 `13/13`。已有离屏 render QA 通过，但工作树有代码改动，需在代码提交后再跑 clean-tree 并记录真实提交 SHA。此阶段不改变业务流程或 192 项状态。
+- Release `0/0`、XAML `24/24`；双主题 WPF `ReportedWorkspaceLayoutBehaviorTests 44/44`，状态映射与文本诊断 `13/13`。提交后离屏 RenderHarness 报告身份为 `e27eab0465714dbfc9b75aa5006916460bfcfce7` 且 `WorkingTreeClean=True`；R00/R01 freshness `14/14 FRESH`。构建身份和精选截图见[状态颜色复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STATUS-TONE-CURRENT-MAIN-RECHECK-20260930/README.md)。仅离屏逻辑 DIP，不是 Playnite/物理 DPI 验证；本批不改变业务流程或 192 项状态。
 - 用户要减少已加载内容旁边的常驻辅助文字；优先找与列表空态/操作标签重复的字句，把必要细节放在现有 Tooltip/UIA HelpText，保留安全边界、错误/取消语义。
 
 ## 2026-09-30 R08-01 当前身份复测

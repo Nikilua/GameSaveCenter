@@ -1,9 +1,9 @@
 ## 2026-09-30 多页状态颜色校正
 
 - 活跃颜色按数据语义映射：概览云队列失败/认证=错误、重试=警示、传输/校验=信息、上传/验证完成=成功、普通待办/暂停=中性；环境检查总结果和单项 glyph 按真实状态着色；备份比较“精确”保持中性，“估算”警示，“Manifest 无效”错误。
-- 不改云端/环境检查/备份比较 DTO、命令或操作流程。Release `0 warning / 0 error`、XAML `24/24`、source validation 通过；`ReportedWorkspaceLayoutBehaviorTests 44/44`，`StatusToneResolverTests + TypographyDiagnosticsTests 13/13`；技能静态检查 `0 errors / 30 warnings / 177 info`，warning/info 总量与既有扫描一致。
-- 修改后离屏 RenderHarness `render-qa OK`，但本次截图运行时工作树未清洁且报告身份仍是修改前提交；需要在代码提交后复跑 clean-tree 矩阵并归档。本结果不是 Playnite 或物理 DPI 验证。Round3 192 项的组状态与计数不变。
-- 下一项：提交后复跑 RenderHarness 并补证据；再继续检查跨页常驻说明是否与空态重复。Media Inbox 真宿主滚动错位仍待同进程 `[GSC-GRID-DIAGNOSTIC]`；R08 用户侧失败仍缺原始方法/断言/堆栈/DLL 身份。
+- 不改云端/环境检查/备份比较 DTO、命令或操作流程。Release solution `0 warning / 0 error`、XAML `24/24`、source validation 通过；`ReportedWorkspaceLayoutBehaviorTests 44/44`，`StatusToneResolverTests + TypographyDiagnosticsTests 13/13`；技能静态检查 `0 errors / 30 warnings / 177 info`，计数与本批之前扫描一致。R00/R01 freshness `14/14 FRESH`，freshness 自测通过。
+- 提交后 RenderHarness `render-qa OK`，报告身份为 `e27eab0465714dbfc9b75aa5006916460bfcfce7`、`WorkingTreeClean=True`、`DpiScale=1.00`（离屏逻辑 DIP）。Release 插件、测试、RenderHarness 程序集 SHA/MVID 已归档；测试与渲染加载的插件副本哈希一致。[状态颜色复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-STATUS-TONE-CURRENT-MAIN-RECHECK-20260930/README.md)。这不是 Playnite 或物理 DPI 验证，Round3 192 项组状态与计数不变。
+- 下一项：继续检查有数据时跨页常驻说明是否与空态/标签重复。Media Inbox 真宿主滚动错位仍待同进程 `[GSC-GRID-DIAGNOSTIC]`；R08 用户侧失败仍缺原始方法/断言/堆栈/DLL 身份。
 
 ## 2026-09-30 紧凑窗口布局修复与证据校正
 
