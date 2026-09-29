@@ -1,5 +1,10 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-09-29 Media Inbox 有数据时的策略说明
+
+- 待归类策略短句现在只在空列表显示；列表有数据或视图切到“已忽略”时折叠。完整“不猜测所属游戏”说明放在常驻标题的 Tooltip/HelpText。Light/Dark 行为状态 `2/2`，说明行高度 `0/18/0 DIP`；数量胶囊让信息带整体只变 `0.67 DIP`。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-POLICY-COPY-20260929/README.md)
+- R00-06 滚动/锚点/四行相关测试 `13/13`；连同文案状态共 `15/15`。提交后 RenderHarness 双主题矩阵 `render-qa OK`。真实 Playnite滚动行偏移未验。下一项继续审阅存档/维护页的静态解释文案。
+
 ## 2026-09-29 Media Inbox 游戏目标选择（已满足）
 
 - 当前待归类操作行无第二个游戏选择器；只读 `220×36 DIP` 目标摘要绑定全局 `SelectedGame`，批量命令/确认请求也使用同一 Playnite ID。Light/Dark 行为 `2/2`，目标切换/清空/恢复联动、按钮与目标中心对齐。[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md)

@@ -1,0 +1,15 @@
+GameSaveCenter render QA report
+Generated: 2026-09-29 22:38:11
+Scenario: render-qa
+EvidenceSource: OffscreenRenderHarness
+Commit: 1e64347d7d36e7a83b898f8b0c0c4c613e174d1f
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: workspace fixtures; scroll probes include 50/400/2000/4468
+  Media tab0 MediaInboxPageScrollViewer: size=728x325, viewport=319, extent=600, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Media tab0 MediaInboxGrid: size=681x267, rows=6, readableRows=4/4
+  Media tab0 MediaInboxModeCombo: selected=待归类, index=0, items=2
+PROBLEM_COUNT=0
+render-qa OK

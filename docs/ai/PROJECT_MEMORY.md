@@ -1,5 +1,11 @@
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-29 Media Inbox 策略说明数据态
+
+- `MediaInboxInfoDescription` 在非空列表和“已忽略”视图折叠，只对空的待归类列表显示短句。完整安全语义放在常驻页标题 Tooltip/HelpText。浅/深主题状态切换、绑定和 `18 DIP` 行高经生产 WPF 测试验证。
+- 当前提交 `1e64347d` 的 Release/XAML `0/0`、`24/24`，媒体状态+几何+锚点 `15/15`；RenderHarness 全矩阵 `render-qa OK`。R00-06 freshness 复核为 `14 fresh / 0 stale`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-POLICY-COPY-20260929/README.md`。
+- TRX 有两条测试结束后 WPF TextServices COM 清理噪声，xUnit 明确 `15/15`、exit `0`，根因未知。无真实 Playnite/物理 DPI 验证；滚动偏移问题仍待同进程日志。下一项审阅存档/维护说明文案。
+
 ## 2026-09-29 Media Inbox 目标选框已核对
 
 - `MediaCenterView` 待归类操作区没有局部游戏选择 `ComboBox`；现存 `MediaInboxGlobalTargetSummary` 是只读摘要，展示全局 `SelectedGame.Name` 与身份。`AssignInboxMediaBatchCommand` 从同一 `SelectedGame` 取 Playnite ID，保留批量选择/确认/错误语义。

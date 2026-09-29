@@ -9785,3 +9785,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前源码身份 `f88bcb4d` 下的 `CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow` 双主题 `2/2`。目标切换/清空/恢复同步至操作区和 Inspector，批量动作/模式/目标均 `36 DIP` 且中心偏差 `0`；TRX 与程序集 SHA/MVID 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-GLOBAL-TARGET-20260929/README.md`。
 - 后续到当前 HEAD 仅有文档/证据改动，`src/` 与 `tests/` 无差异。本次未安装/启动 Playnite，用户截图宿主 DLL 身份未知；Media Inbox 滚动后行偏移仍是未完成真实宿主诊断，不用本证据代替。
 - 下一项按用户的跨页要求继续审计窄窗动作行距与不必要的静态辅助说明；真实滚动日志仍需安全同进程 `[GSC-GRID-DIAGNOSTIC]`。
+
+# 2026-09-29 Media Inbox 有数据时收起策略说明
+
+- `1e64347d` 将 `MediaInboxInfoDescription` 限定在“待归类且 Count=0”时显示短句；有媒体数据即折叠，切到“已忽略”也折叠。完整“不静默猜测”策略保留在可见标题的 ToolTip/UI Automation HelpText。归类命令、全局目标、虚拟化、滚动锚点和有限页缓存未改。
+- 提交后 Release solution `0 warnings / 0 errors`、XAML `24/24`、source validation 通过。定向测试 `15/15`：新状态 Light/Dark `2/2`、MediaInboxGeometry `3/3`、MediaWindowAnchor `10/10`。测试 DLL ProductVersion `0.6.73+1e64347d7d36e7a83b898f8b0c0c4c613e174d1f`，完整 SHA/MVID 见 `USER-REPORTED-MEDIA-INBOX-POLICY-COPY-20260929/README.md`。
+- 完整 RenderHarness `1e64347d` / `WorkingTreeClean=True`，Light/Dark、多尺寸、逻辑离屏 DPI `1.00`，`PROBLEM=0`、`render-qa OK`；截图显示有行时政策行不存在。实测 hint `Collapsed/0 → Visible/18 → Collapsed/0 DIP`；数量胶囊主导色带，因此整体高度只在 `67.33–68 DIP` 间变化，不夸大垂直节省。
+- R00-06 因 `MediaCenterView.xaml` 命中 stale path，提交后重新跑关联几何/锚点与行为共 `15/15`，更新基线 sourceCommit 到 `1e64347d` 后 freshness `14/14`。状态仍“已满足”，未更改 192 项计数。
+- VSTest 成绩为 `15 passed / 0 failed / 0 skipped`、exit `0`，但 TRX 记录两个测试后 `TextServicesHost.OnUnregisterTextStore` 的 `InvalidComObjectException`；根因未知，按清理噪声记录。
+- 没有启动真实 Playnite、验证物理 DPI或最终宿主帧；用户截图 DLL/MVID 未提供。真实滚动偏移仍待安全同进程诊断。Demo 原目录 unavailable，继续遵循恢复生产基线。
+- 下一项审阅存档/维护页的静态文字，并保留恢复保护、错误、取消和危险操作语义；独立滚动诊断仍是未验边界。

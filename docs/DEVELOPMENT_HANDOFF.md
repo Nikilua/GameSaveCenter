@@ -1,5 +1,11 @@
 # GameSaveCenter 持续维护交接与开发入口
 
+## 当前交接补充（2026-09-29：Media Inbox 策略说明）
+
+- 已提交 `1e64347d`：待归类说明只在无条目时显示，有数据和“已忽略”页折叠；安全语义留在常驻标题 Tooltip/HelpText。当前状态、R00-06 几何/锚点测试 `15/15`，Release/XAML `0/0`、`24/24`，当前提交 RenderHarness 全矩阵成功。
+- R00-06 freshness 更新为 `14 fresh / 0 stale`；数量胶囊主导总带高，所以只记录说明行释放 `18 DIP`，不宣称信息带整体缩高。详细状态和 WPF 清理噪声边界：[证据](design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-MEDIA-INBOX-POLICY-COPY-20260929/README.md)。
+- 下一项审阅存档中心/维护中心有数据时的静态解释。真实 Playnite 滚动后行偏移仍待同进程 `[GSC-GRID-DIAGNOSTIC]`；用户截图实例 DLL/MVID 未知。
+
 ## 当前交接补充（2026-09-29：Media Inbox 全局目标）
 
 - 核对后记“已满足”：待归类批量行使用全局选中游戏，不再有局部游戏选择器；`220×36 DIP` 只读目标摘要与确认目标、Worker 请求 Playnite ID 一致。Light/Dark 生产视图行为 `2/2`，清空/恢复和两处上下文跟随均通过。
