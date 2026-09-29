@@ -11,6 +11,12 @@
 - 下一项可执行 R08-02：先核对当前 system/app 动效开关订阅与热关闭测试对照；R08-01 用户报告仍缺失败机器原始 log/TRX。不可将受控 WPF 结果写成真实宿主验证。
 # GameSaveCenter AI/Codex 长期项目记忆
 
+## 2026-09-30 多页状态颜色映射
+
+- 已修正活跃视图中过度固定的 Info 蓝：概览云队列与环境检查现在从结果状态选择中性/Info/成功/警示/错误资源；备份比较精确度是中性属性，估算与无效清单分别用警示/错误。继续按状态语义逐实例审，不全局替换真实运行/Info 状态。
+- Release `0/0`、XAML `24/24`；双主题 WPF `ReportedWorkspaceLayoutBehaviorTests 44/44`，状态映射与文本诊断 `13/13`。已有离屏 render QA 通过，但工作树有代码改动，需在代码提交后再跑 clean-tree 并记录真实提交 SHA。此阶段不改变业务流程或 192 项状态。
+- 用户要减少已加载内容旁边的常驻辅助文字；优先找与列表空态/操作标签重复的字句，把必要细节放在现有 Tooltip/UIA HelpText，保留安全边界、错误/取消语义。
+
 ## 2026-09-30 R08-01 当前身份复测
 
 - `dc7f97cf` Release `R08MotionReverseBehaviorTests` 当前本机 `2/2`、exit `0`，未重现用户 `1/2`；TRX 收尾 1 条 TextServices `InvalidComObjectException`，根因未知。证据：[R08-01 当前 main](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/README.md)。

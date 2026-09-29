@@ -1,3 +1,10 @@
+## 2026-09-30 活跃状态颜色语义校正
+
+- 按实际 DTO 状态核对并修复三类通用 Info 蓝：Overview 云队列 tone 按认证/校验失败/上传失败、重试等待、传输/远端校验、已上传/验证和普通待办区分；Maintenance 环境检查总摘要与单项 glyph 按真实检查结果区分；Save Center 比较精度标签改为精确中性、估算警示、无效 Manifest 错误。
+- 不改 DTO、命令、队列/环境/比较业务流程。Release `0 warning / 0 error`，XAML `24/24`，source validation 通过；实际 Light/Dark WPF 行为 `ReportedWorkspaceLayoutBehaviorTests 44/44`，状态 resolver + Typography diagnostics `13/13`；技能静态检查 `0 errors / 30 warnings / 177 info`。改动后的完整离屏 render-qa 通过，但报告在提交前生成、`WorkingTreeClean=False`，需代码提交后复跑并归档清洁身份。
+- 不将颜色样例扩展成 R03-02 或 R22-08 整组完成，不改 192 项总数/状态。没有真实 Playnite、用户 DLL 或物理 DPI 复核。仍待用户同进程 Media Inbox 滚动诊断；R08-01 用户机失败需原始方法/断言/堆栈/DLL 身份。
+- 下一可执行项：提交源码后用 clean-tree 运行 RenderHarness 并归档证据；随后按数据态清单继续缩短与空态/标题重复的常驻说明。
+
 ## 2026-09-30 用户缩窗布局与 R00/R01 证据复核
 
 - 生产代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596` 将已确认会折行的存档/媒体/任务/shell 操作组间距统一为 `16 DIP`，只在紧凑区间启用并恢复宽态 margin；shell 单列标题断点由 `<1280` 调至 `<1440 DIP`。休眠的折叠 `DashboardDemoShell` 不计入当前可见区域。

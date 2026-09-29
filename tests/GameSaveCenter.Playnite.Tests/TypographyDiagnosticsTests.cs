@@ -268,7 +268,8 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("ToolTip=\"{Binding CapturedFullDisplay, Mode=OneWay}\"", media);
             Assert.Contains("Text=\"{Binding TaskTypeDisplay, Mode=OneWay}\" Foreground=\"{DynamicResource GscPrimaryTextBrush}\" FontSize=\"{DynamicResource GscBodyFontSize}\"", overview);
             Assert.Contains("Text=\"{Binding DetailMessage, Mode=OneWay}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", overview);
-            Assert.Contains("ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}\" Foreground=\"{DynamicResource GscInfoBrush}\" FontSize=\"{DynamicResource GscCaptionFontSize}\"", save);
+            Assert.Contains("x:Name=\"SaveComparisonQualityText\" Text=\"{Binding LastBackupDiff.ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}\"", save);
+            Assert.DoesNotContain("ComparisonQualityDisplay, TargetNullValue=等待比较, FallbackValue=等待比较}\" Foreground=\"{DynamicResource GscInfoBrush}\"", save);
         }
 
         private static string FindRepositoryRoot()

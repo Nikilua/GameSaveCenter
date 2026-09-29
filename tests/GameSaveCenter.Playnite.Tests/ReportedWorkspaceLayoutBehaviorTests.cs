@@ -604,6 +604,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var accent = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscAccentBrush"));
                 var info = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscInfoBrush"));
                 var warning = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscWarningBrush"));
+                var error = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscErrorBrush"));
                 var foreground = Assert.IsType<SolidColorBrush>(metric.Foreground);
                 var cloudQueueForeground = Assert.IsType<SolidColorBrush>(cloudQueueMetric.Foreground);
                 var priorityForeground = Assert.IsType<SolidColorBrush>(priorityTitle.Foreground);
@@ -648,7 +649,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 Assert.NotEqual(metricInfoColor, cloudQueueForeground.Color);
                 Assert.Equal("4 项云端任务需要处理", priorityTitle.Text);
                 Assert.Equal(warning.Color, priorityForeground.Color);
-                Assert.Equal(info.Color, cloudStatusForeground.Color);
+                Assert.Equal(error.Color, cloudStatusForeground.Color);
                 Assert.Same(probe.OpenCloudQueueCommand, cloudQueueAction.Command);
 
                 probe.IsDashboardSnapshotLoaded = false;
@@ -665,7 +666,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} overview hint {initialHintVisibility} -> {loadedHintVisibility} -> {restoredHintVisibility}; toolbar {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; cloud queue=4 metric accent=#{themeAccentColor}, attention title warning, status capsule info=#{metricInfoColor}, command retained, contrast={metricMinContrast:0.##}/{cloudQueueMetricMinContrast:0.##}/{cloudAttentionTitleMinContrast:0.##}:1");
+        output.WriteLine($"{theme} overview hint {initialHintVisibility} -> {loadedHintVisibility} -> {restoredHintVisibility}; toolbar {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; cloud queue=4 metric accent=#{themeAccentColor}, attention title warning, failed status error (info token #{metricInfoColor}), command retained, contrast={metricMinContrast:0.##}/{cloudQueueMetricMinContrast:0.##}/{cloudAttentionTitleMinContrast:0.##}:1");
         Assert.Null(exception);
         Assert.Equal(Visibility.Visible, initialHintVisibility);
         Assert.Equal(Visibility.Collapsed, loadedHintVisibility);
@@ -681,6 +682,132 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.True(cloudAttentionTitleMinContrast >= 3.0,
             $"The large cloud attention title should maintain at least 3:1 contrast across the card surface ({cloudAttentionTitleMinContrast:0.##}:1).");
     }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var summaryTones = new List<Color>();
+        var itemStateTones = new List<Color>();
+        var comparisonTones = new List<Color>();
+        var comparisonSurfaceTones = new List<Color>();
+
+        RunSta(() =>
+        {
+            Window? maintenanceWindow = null;
+            Window? checkStateWindow = null;
+            Window? saveWindow = null;
+            try
+            {
+                var maintenanceProbe = new SemanticStatusProbe();
+                var maintenance = new MaintenanceView { DataContext = maintenanceProbe };
+                ApplyTheme(maintenance, theme);
+                var maintenanceType = typeof(MaintenanceView);
+                var summary = (TextBlock)maintenanceType.GetField("EnvironmentCheckSummaryText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(maintenance)!;
+                var items = (ItemsControl)maintenanceType.GetField("EnvironmentCheckItems", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(maintenance)!;
+                var disclosure = (Expander)maintenanceType.GetField("EnvironmentCheckDisclosure", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(maintenance)!;
+                disclosure.IsExpanded = true;
+                var checkStatePresenter = new ContentPresenter { ContentTemplate = items.ItemTemplate };
+                foreach (var dictionary in maintenance.Resources.MergedDictionaries)
+                    checkStatePresenter.Resources.MergedDictionaries.Add(dictionary);
+                ApplyTheme(checkStatePresenter, theme);
+                checkStateWindow = CreateWindow(checkStatePresenter, 520, 150);
+                checkStateWindow.Show();
+                maintenanceWindow = CreateWindow(maintenance, 1280, 760);
+                maintenanceWindow.Show();
+                FlushLayout(maintenanceWindow);
+
+                var secondary = Assert.IsType<SolidColorBrush>(maintenance.TryFindResource("GscSecondaryTextBrush")).Color;
+                var info = Assert.IsType<SolidColorBrush>(maintenance.TryFindResource("GscInfoBrush")).Color;
+                var success = Assert.IsType<SolidColorBrush>(maintenance.TryFindResource("GscSuccessBrush")).Color;
+                var warning = Assert.IsType<SolidColorBrush>(maintenance.TryFindResource("GscWarningBrush")).Color;
+                var error = Assert.IsType<SolidColorBrush>(maintenance.TryFindResource("GscErrorBrush")).Color;
+                var muted = Assert.IsType<SolidColorBrush>(maintenance.TryFindResource("GscMutedStatusBrush")).Color;
+
+                summaryTones.Add(ReadForeground(summary));
+                Assert.Equal(secondary, summaryTones[summaryTones.Count - 1]);
+                maintenanceProbe.EnvironmentCheck = new EnvironmentCheckReportDto { Summary = "3 项通过", PassedCount = 3 };
+                FlushLayout(maintenanceWindow);
+                summaryTones.Add(ReadForeground(summary));
+                Assert.Equal(success, summaryTones[summaryTones.Count - 1]);
+                maintenanceProbe.EnvironmentCheck = new EnvironmentCheckReportDto { Summary = "1 项注意", PassedCount = 2, WarningCount = 1 };
+                FlushLayout(maintenanceWindow);
+                summaryTones.Add(ReadForeground(summary));
+                Assert.Equal(warning, summaryTones[summaryTones.Count - 1]);
+                maintenanceProbe.EnvironmentCheck = new EnvironmentCheckReportDto { Summary = "1 项失败", WarningCount = 1, FailedCount = 1 };
+                FlushLayout(maintenanceWindow);
+                summaryTones.Add(ReadForeground(summary));
+                Assert.Equal(error, summaryTones[summaryTones.Count - 1]);
+
+                foreach (var (state, expectedColor) in new[]
+                {
+                    (EnvironmentCheckState.Checking, info),
+                    (EnvironmentCheckState.Passed, success),
+                    (EnvironmentCheckState.Warning, warning),
+                    (EnvironmentCheckState.Failed, error),
+                    (EnvironmentCheckState.Skipped, muted)
+                })
+                {
+                    var item = new EnvironmentCheckItemDto { Key = "synthetic", Title = "合成检查", Summary = "不访问用户目录", State = state };
+                    checkStatePresenter.Content = item;
+                    FlushLayout(checkStateWindow);
+                    var glyph = FindVisualChildren<TextBlock>(checkStatePresenter).Single(text => text.Text == item.StateGlyph);
+                    itemStateTones.Add(ReadForeground(glyph));
+                    Assert.Equal(expectedColor, itemStateTones[itemStateTones.Count - 1]);
+                }
+
+                var save = new SaveCenterView { DataContext = maintenanceProbe };
+                ApplyTheme(save, theme);
+                var saveType = typeof(SaveCenterView);
+                var comparison = (TextBlock)saveType.GetField("SaveComparisonQualityText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(save)!;
+                var comparisonPill = (Border)saveType.GetField("SaveComparisonQualityPill", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(save)!;
+                saveWindow = CreateWindow(save, 1280, 760);
+                saveWindow.Show();
+                FlushLayout(saveWindow);
+                comparisonTones.Add(ReadForeground(comparison));
+                comparisonSurfaceTones.Add(Assert.IsType<SolidColorBrush>(comparisonPill.Background).Color);
+                Assert.Equal(Assert.IsType<SolidColorBrush>(save.TryFindResource("GscSecondaryTextBrush")).Color, comparisonTones[comparisonTones.Count - 1]);
+                Assert.Equal(Assert.IsType<SolidColorBrush>(save.TryFindResource("GscControlFillBrush")).Color, comparisonSurfaceTones[comparisonSurfaceTones.Count - 1]);
+
+                foreach (var (quality, expectedColor, expectedSurface) in new[]
+                {
+                    ("Exact", Assert.IsType<SolidColorBrush>(save.TryFindResource("GscSecondaryTextBrush")).Color, Assert.IsType<SolidColorBrush>(save.TryFindResource("GscControlFillBrush")).Color),
+                    ("Estimated", Assert.IsType<SolidColorBrush>(save.TryFindResource("GscWarningBrush")).Color, Assert.IsType<SolidColorBrush>(save.TryFindResource("GscSafetyFillBrush")).Color),
+                    ("InvalidManifest", Assert.IsType<SolidColorBrush>(save.TryFindResource("GscErrorBrush")).Color, Assert.IsType<SolidColorBrush>(save.TryFindResource("GscErrorTintBrush")).Color)
+                })
+                {
+                    maintenanceProbe.LastBackupDiff = new BackupDiffDto { ComparisonQuality = quality };
+                    FlushLayout(saveWindow);
+                    comparisonTones.Add(ReadForeground(comparison));
+                    comparisonSurfaceTones.Add(Assert.IsType<SolidColorBrush>(comparisonPill.Background).Color);
+                    Assert.Equal(expectedColor, comparisonTones[comparisonTones.Count - 1]);
+                    Assert.Equal(expectedSurface, comparisonSurfaceTones[comparisonSurfaceTones.Count - 1]);
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                saveWindow?.Close();
+                checkStateWindow?.Close();
+                maintenanceWindow?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} environment summary colors={string.Join("/", summaryTones)}; check state colors={string.Join("/", itemStateTones)}; backup comparison text/surface colors={string.Join("/", comparisonTones)}/{string.Join("/", comparisonSurfaceTones)}");
+        Assert.Null(exception);
+        Assert.Equal(4, summaryTones.Count);
+        Assert.Equal(5, itemStateTones.Count);
+        Assert.Equal(4, comparisonTones.Count);
+        Assert.Equal(4, comparisonSurfaceTones.Count);
+    }
+
+    private static Color ReadForeground(TextBlock text)
+        => Assert.IsType<SolidColorBrush>(text.Foreground).Color;
 
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
@@ -2443,6 +2570,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDashboardSnapshotLoaded)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewCloudQueueDisplay)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewCloudAttentionDisplay)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewCloudStatusTone)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewPriorityKind)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OverviewPriorityTitle)));
             }
@@ -2458,6 +2586,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public string OverviewManagedGamesDisplay => "1,302";
         public string OverviewCloudQueueDisplay => IsDashboardSnapshotLoaded ? Snapshot.CloudTransfers.QueueCount.ToString() : "—";
         public string OverviewCloudAttentionDisplay => IsDashboardSnapshotLoaded ? $"{Snapshot.CloudTransfers.AttentionCount} 项需关注" : "— 项需关注";
+        public string OverviewCloudStatusTone => IsDashboardSnapshotLoaded ? StatusToneResolver.CloudTransfers(Snapshot.CloudTransfers) : "Neutral";
         public string OverviewPriorityKind => IsDashboardSnapshotLoaded ? "Cloud" : "Loading";
         public string OverviewPriorityTitle => IsDashboardSnapshotLoaded ? $"{Snapshot.CloudTransfers.AttentionCount} 项云端任务需要处理" : "正在读取概览数据";
         public string OverviewSnapshotScopeDisplay => "全库 · 合成游戏库";
@@ -2466,6 +2595,37 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public ICommand BackupAllCommand { get; } = new RelayCommand(_ => { });
         public ICommand SyncMediaCommand { get; } = new RelayCommand(_ => { });
         public ICommand OpenCloudQueueCommand { get; } = new RelayCommand(_ => { });
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class SemanticStatusProbe : INotifyPropertyChanged
+    {
+        private EnvironmentCheckReportDto environmentCheck = new();
+        private BackupDiffDto? lastBackupDiff;
+
+        public EnvironmentCheckReportDto EnvironmentCheck
+        {
+            get => environmentCheck;
+            set
+            {
+                environmentCheck = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EnvironmentCheck)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EnvironmentCheckTone)));
+            }
+        }
+
+        public string EnvironmentCheckTone => StatusToneResolver.EnvironmentCheck(EnvironmentCheck);
+
+        public BackupDiffDto? LastBackupDiff
+        {
+            get => lastBackupDiff;
+            set
+            {
+                lastBackupDiff = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LastBackupDiff)));
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
     }

@@ -1,5 +1,12 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-30 多页状态颜色语义
+
+- 概览云端状态摘要从队列 DTO 的失败、认证、重试、进行中、完成计数解析语义 tone；普通等待/暂停回到次级色。Maintenance 环境检查总摘要和单项图标同步 Passed/Warning/Failed/Checking/Skipped 状态。Save Center 的比较质量改为精确中性、估算警示、Manifest 无效错误；不让“精确”伪装操作成功。
+- 没有更换设计令牌、业务 DTO、命令或数据读写。Release solution `0 warning / 0 error`、XAML `24/24`、source validation 通过；实际 WPF Light/Dark `ReportedWorkspaceLayoutBehaviorTests 44/44`，另 `StatusToneResolverTests + TypographyDiagnosticsTests 13/13`；WPF scanner `0 error / 30 warning / 177 info`。
+- 当前离屏 RenderHarness `render-qa OK`，但 `WorkingTreeClean=False` 且记录的是修改前 HEAD，不能作为提交后终验。代码提交后需复跑完整矩阵，归档 clean report、精选图、TRX 与程序集身份。没有真实 Playnite、用户安装 DLL 或物理 DPI 证据。
+- 下一项为继续过量常驻说明审计；独立未验边界保持 Media Inbox 宿主滚动、R08-01 用户失败原始信息。Round3 总计 192 项不动。
+
 ## 2026-09-30 用户缩窗布局与主题文案复核
 
 - 主代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596`：实测会换行的存档、媒体、任务和 shell 操作组紧凑行距设为 `16 DIP`，宽态恢复 margin；shell compact 断点设为 `<1440 DIP`。任务队列说明独立放在按钮行下，避免按钮受摘要高度影响；删掉重复筛选摘要。传输明细标题和计数胶囊按同一标题行居中。

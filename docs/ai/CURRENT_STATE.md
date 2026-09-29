@@ -1,3 +1,10 @@
+## 2026-09-30 多页状态颜色校正
+
+- 活跃颜色按数据语义映射：概览云队列失败/认证=错误、重试=警示、传输/校验=信息、上传/验证完成=成功、普通待办/暂停=中性；环境检查总结果和单项 glyph 按真实状态着色；备份比较“精确”保持中性，“估算”警示，“Manifest 无效”错误。
+- 不改云端/环境检查/备份比较 DTO、命令或操作流程。Release `0 warning / 0 error`、XAML `24/24`、source validation 通过；`ReportedWorkspaceLayoutBehaviorTests 44/44`，`StatusToneResolverTests + TypographyDiagnosticsTests 13/13`；技能静态检查 `0 errors / 30 warnings / 177 info`，warning/info 总量与既有扫描一致。
+- 修改后离屏 RenderHarness `render-qa OK`，但本次截图运行时工作树未清洁且报告身份仍是修改前提交；需要在代码提交后复跑 clean-tree 矩阵并归档。本结果不是 Playnite 或物理 DPI 验证。Round3 192 项的组状态与计数不变。
+- 下一项：提交后复跑 RenderHarness 并补证据；再继续检查跨页常驻说明是否与空态重复。Media Inbox 真宿主滚动错位仍待同进程 `[GSC-GRID-DIAGNOSTIC]`；R08 用户侧失败仍缺原始方法/断言/堆栈/DLL 身份。
+
 ## 2026-09-30 紧凑窗口布局修复与证据校正
 
 - 代码提交 `4ebbf81f63882a0b1c1e9e02ee214069bb552596`：已确认折行的 Save/Media/Task/shell 操作组紧凑行距 `16 DIP` 且宽态恢复；shell 在 `<1440 DIP` 将标题、全局游戏选择和动作按单列上下排布。Task 队列说明移至按钮行下，筛选摘要去重；传输明细标题/计数 pill 居中。

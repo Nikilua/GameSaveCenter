@@ -812,6 +812,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string OverviewWarningGamesDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.WarningGames);
         public string OverviewCloudQueueDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.CloudTransfers?.QueueCount ?? 0);
         public string OverviewCloudAttentionDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.CloudTransfers?.AttentionCount ?? 0);
+        public string OverviewCloudStatusTone => IsDashboardSnapshotLoaded
+            ? StatusToneResolver.CloudTransfers(Snapshot.CloudTransfers)
+            : "Neutral";
         public string OverviewUnassignedMediaDisplay => OverviewSnapshotDisplay.Count(IsDashboardSnapshotLoaded, Snapshot.UnassignedMediaCount);
         public string OverviewHealthBreakdownDisplay => IsDashboardSnapshotLoaded
             ? $"健康 {Snapshot.HealthyGames} · 注意 {Snapshot.AttentionGames} · 风险 {Snapshot.RiskGames} · 未知 {Snapshot.UnknownGames}"
@@ -848,7 +851,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(3, value))); } }
         /// <summary>Remembers the ordinary save tab; diagnostics can route directly to paths.</summary>
         public int SaveTabIndex { get => saveTabIndex; set { SetValue(ref saveTabIndex, Math.Max(0, Math.Min(3, value))); } }
-        public EnvironmentCheckReportDto EnvironmentCheck { get => environmentCheck; private set { SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto()); RaiseCommandStates(); } }
+        public EnvironmentCheckReportDto EnvironmentCheck
+        {
+            get => environmentCheck;
+            private set
+            {
+                SetValue(ref environmentCheck, value ?? new EnvironmentCheckReportDto());
+                OnPropertyChanged(nameof(EnvironmentCheckTone));
+                RaiseCommandStates();
+            }
+        }
+        public string EnvironmentCheckTone => StatusToneResolver.EnvironmentCheck(EnvironmentCheck);
         public bool IsOnboardingPending => !plugin.Settings.OnboardingCompleted;
         /// <summary>Provides the existing Playnite settings store to view-local UI preference controllers.</summary>
         internal GameSaveCenterSettings PluginSettings => plugin.Settings;
@@ -901,6 +914,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(OverviewWarningGamesDisplay));
             OnPropertyChanged(nameof(OverviewCloudQueueDisplay));
             OnPropertyChanged(nameof(OverviewCloudAttentionDisplay));
+            OnPropertyChanged(nameof(OverviewCloudStatusTone));
             OnPropertyChanged(nameof(OverviewUnassignedMediaDisplay));
             OnPropertyChanged(nameof(OverviewHealthBreakdownDisplay));
             OnPropertyChanged(nameof(OverviewRecentAccessCountDisplay));
