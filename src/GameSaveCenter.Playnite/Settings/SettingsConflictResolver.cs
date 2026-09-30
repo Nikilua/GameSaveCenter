@@ -145,7 +145,7 @@ namespace GameSaveCenter.Playnite.Settings
 
         public SettingsConflictResolution Resolution { get; }
         public string Summary => "设置保存冲突：后台或另一个设置入口已修改字段「"
-                                 + string.Join("、", Resolution.Conflicts.Select(field => field.DisplayName))
+                                 + string.Join("、", Resolution.Conflicts.Select(conflictField => conflictField.DisplayName))
                                  + "」。当前草稿未写入，请检查后再次保存或取消。";
     }
 

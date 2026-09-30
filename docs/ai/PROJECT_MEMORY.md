@@ -6032,3 +6032,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - R00-04/06/08、R01-05 的 freshness 命中已按准确提交及 post-commit 测试刷新；baseline `14/14 FRESH`。RenderHarness clean-tree 同身份 Light/Dark `render-qa OK`，logical DPI `1.00`。详情见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md`。禁止将隔离 STA/离屏结果写作真实 Playnite、物理 DPI 或用户 DLL 验证。
 - 说明/颜色原则依 Microsoft Windows Color guidance：主题 Accent 作重点/交互提示，Info/Warning/Success/Error 只表示相应语义，普通辅助文案走主题次级色。此批仅验证局部，不代表全产品 InfoBrush 分类结束。
 - 下一可执行任务：继续遍历剩余可见页的有数据说明与活跃 InfoBrush 色彩语义，再推进有已满足依赖的小批 Q/R。Media Inbox 实际滚动后偏移仍需要安全宿主同进程 `[GSC-GRID-DIAGNOSTIC]`；R08-01 用户 `1/2` 失败仍缺方法/断言/堆栈/程序集身份。没有读写真实存档/媒体/云端，Demo 源目录缺失继续沿用恢复生产基线。
+
+## 2026-09-30 SDK 10 编译失败修复
+
+- CI 日志的 C# 14 `field` 关键字冲突由重命名 lambda 参数为 `conflictField` 消除；R16 测试精确验证冲突摘要完整内容。原始日志为 SDK 10.0.401；本机只有 SDK 9.0.302，因此只记录本地 Release 成功，不声称本机复现 SDK 10 编译器。
+- 同一工作树的 Release 编译 `0 warnings/0 errors`，行为 TRX `7/7`。具体日志片段、TRX 与限制见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SDK10-COMPILE-IDENTIFIER-FIX-20260930/README.md`。

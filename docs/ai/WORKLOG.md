@@ -9891,3 +9891,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Dashboard/Settings 的 `SystemParameters.StaticPropertyChanged` 订阅和热关闭归一化路径存在；本轮没有修改 Windows 动画偏好或模拟/宣称收到真实系统通知。Playnite宿主、物理 DPI、ETW/presented frame 均未验。下一步为非修改 OS 设置的系统偏好通知注入测试；Media Inbox 同进程滚动、R08-01 用户失败仍按原边界待验。
 
 - 2026-09-30：在当前 `dc7f97cf` Release identity 复跑 `R08MotionReverseBehaviorTests`，本机 `2/2`、0 failed/skip、exit `0`，用户报告的 `1/2` 未复现；TRX 收尾有 1 条 TextServices `InvalidComObjectException` 清理噪声，根因未知。归档测试/插件 DLL SHA、MVID 和 TRX 于 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20260930/`。没有生产代码修改；用户失败机器仍缺原始 log/TRX 与具体堆栈。下一阶段继续最新截图所示的跨页缩窗紧凑布局审计。
+
+## 2026-09-30 SDK 10 编译失败修复
+
+- 用户提供的 .NET SDK 10.0.401 / C# 14 构建日志显示 `SettingsConflictResolver.cs:148` 的 lambda 参数 `field` 与新 `field` 关键字冲突，触发 CS9273、CS9258、CS1061。改名为 `conflictField`，并把冲突摘要测试收紧为完整字符串断言。
+- 本机 .NET 9.0.302 Release solution 构建通过（0 warnings/0 errors，XAML 24/24），R16 冲突行为 3/3；同次 WPF 行为 TRX 汇总 7/7。SDK 10.0.401 没有安装在本机，GitHub 新提交后的 Actions 结果未核实。细节见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SDK10-COMPILE-IDENTIFIER-FIX-20260930/README.md`。

@@ -47,8 +47,7 @@ public sealed class R16SettingsConflictBehaviorTests
             new SettingsConflictField[0]);
         var args = new SettingsConflictDetectedEventArgs(resolution);
 
-        Assert.Contains("主题", args.Summary);
-        Assert.Contains("当前草稿未写入", args.Summary);
+        Assert.Equal("设置保存冲突：后台或另一个设置入口已修改字段「主题」。当前草稿未写入，请检查后再次保存或取消。", args.Summary);
         Assert.Throws<SettingsConflictException>(() => ThrowConflict(args.Summary));
     }
 
