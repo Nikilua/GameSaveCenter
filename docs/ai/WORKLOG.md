@@ -9907,10 +9907,17 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 本机完整 Release 脚本在 WPF 隔离到 `R05PopupBoundaryBehaviorTests` 时，短窗测试失败：overlay/panel `142 DIP`、列表 ScrollViewer `19.33 DIP`，而完整选中行 `68.67 DIP`；工作区边缘 ComboBox 用例通过。另发现 `MainPageHost` 被放在不存在的 row 2，而正文星号行是 row 1。
 - `MainPageHost` 改放 row 1；选择器 overlay `<200 DIP` 时收起可选筛选行并将面板 padding 暂调为 `8 DIP`，高度恢复后筛选与作者 padding `14 DIP` 都恢复。虚拟化列表与搜索/游戏选择保持。R05 定向隔离 `2/2`，包含短→高→短往返和选中整行可见断言。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。
-- 修改后的完整 Release 脚本仍需重跑；SDK 10.0.401 本机不可用，真 Playnite 与物理 DPI未验。首轮全跑到该失败后停止。
+- 修改后的完整 Release 脚本已于 `c5aad677` 源码身份通过，详见下方全量复核；SDK10.0.401 本机不可用，真 Playnite 与物理 DPI未验。首轮失败是缺陷发现证据，不能再作为当前结果。
 
 ## 2026-09-30 完整 Release 复跑与 R08 测试夹具校正
 
 - R08 页面缓存测试的失败值为 `TaskTypeFilter source=null / control=全部`；生产 `DashboardViewModel` setter 对空值归一为“全部”，测试 fixture 原自动属性不符合该合同。将 fixture 补齐任务筛选默认归一与游戏筛选项，给失败增加阶段/字段诊断；未修改生产 TaskCenter 行为。
 - 定向 R08 `1/1`；最终 `./scripts/build.ps1 -Configuration Release` exit `0`，solution `0 warning/0 error`、XAML `24/24`、Core `125/125`、Worker `356 passed / 1 skipped / 0 failed`，Playnite 112 source + 113 WPF isolated classes 全部通过。完整详情与 R08 TRX：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md)。
 - 本机仅 SDK `9.0.302`，SDK 10.0.401/C#14 未实机复跑；R05 使用合成 WPF 窗口，Playnite 实例和物理 DPI未验。Media Inbox 真实滚动诊断与 R00/R01 账本不在本批内。
+
+## 2026-09-30 SDK10 CI 关注点与暂停前检查点
+
+- 用户所附 runner 日志经核对确实运行 .NET SDK `10.0.401` / C#14；`SettingsConflictResolver` lambda 的 `field` 参数与新关键字冲突，产生 CS9273、CS9258 和 CS1061。改名为 `conflictField` 的修复已提交 `d1b81ceb`；提交前用附带原始日志定位，不把 SDK9 结果冒充 SDK10。
+- 完成窄窗 Trainer/Media 行距（`3b9c8e1c`）、短窗口游戏选框完整行视口（`f89b1609`）和 R08 测试 fixture 归一（`c5aad677`）。完整 Release 脚本第三次运行 exit `0`：XAML 24/24，solution 0 warning/error，Core 125/125，Worker 356 passed/1 skipped/0 failed，Playnite 112 source + 113 WPF isolated classes 全通过。R05 2/2，R08 1/1。
+- `c5aad677` RenderHarness clean tree `render-qa OK`，Light/Dark 全矩阵和短窗/媒体截图已检查；离屏 logical DPI 1.00。source validator passed，WPF static 0 error/29 warning/177 info。真实 Playnite、SDK10 本机重编、物理 DPI和 Media Inbox 同宿主滚动偏移仍未验证。
+- 暂停检查点：`origin/main` fetch 后仍在 `065b9b4b`，本地 4 个代码提交可快进；本轮文档将同步并一起推送。恢复后先 fetch，再优先取得 Media Inbox 同进程 `[GSC-GRID-DIAGNOSTIC]`；用户机 Q06/R08 原始失败测试方法/断言/栈/DLL 信息仍缺。Round3 ledger 的 192 项数与状态未改。

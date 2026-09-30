@@ -3781,3 +3781,10 @@
 - 在源码 `451164f2241f9a13a7d974c72410bcdd4528acb2` 上给 SaveCenter“路径与校验”操作组、Overview 工作台操作组增加 WPF 几何回归；Light/Dark、520–900 DIP 扫描均单行，3 个按钮始终有可见的非零尺寸，因此不作生产行距改动。隔离 Release/XAML `0/0`、`24/24`，精确 Release DLL 测试 `2/2`。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-ACTION-WRAP-AUDIT-20260929/README.md`。
 - 旧 Dashboard `GameHeaderActions` 属于 Visibility=Collapsed 的兼容树，不当作当前用户可见控件。R00/R01 freshness 记录对本次测试文件没有匹配源码路径，`14 FRESH / 0 STALE` 不变；package identity 未提供。
 - 下一项移除/按数据状态处理 Overview 顶部重复说明，并逐项审查生产页信息色与紫色 accent 的分工。当前几何仍是合成 DTO、STA WPF 逻辑 DIP，不是 Playnite 最终呈现或物理 DPI。
+## 2026-09-30 暂停前检查点：SDK 10 构建与短窗回归
+
+- 用户提供的 GitHub Runner 日志明确使用 SDK `10.0.401` / C# 14；源码中的 lambda 参数 `field` 与 C#14 accessor keyword 冲突（CS9273、CS9258，连带 CS1061）。提交 `d1b81ceb` 将参数改名为 `conflictField`，并强化冲突摘要测试。日志已读并归档于 SDK10 修复证据。
+- 本轮 `main` 上的代码提交依次为 `d1b81ceb`、`3b9c8e1c`、`f89b1609`、`c5aad677`：包括设置编译修复、窄窗 Trainer/Media 行距、短窗口游戏选框视口与 R08 state-only fixture 校正。`git fetch origin main` 未发现新远端提交；本检查点将与上述提交一并推送。
+- 最终完整 `./scripts/build.ps1 -Configuration Release` 在本机 SDK `9.0.302` 下 exit `0`：XAML `24/24`，Release 编译 `0/0`，Core `125/125`，Worker `356/357`（1 项既有 skip、0 fail），Playnite 隔离流程 112 source + 113 WPF classes 全通过。第三次完整运行在 R05 短窗修复及 R08 测试 fixture 校正后通过。不要把本机 SDK9 结果写成 SDK10 本机复现。
+- 源身份 `c5aad677` 的 RenderHarness `render-qa OK`，Light/Dark、有限列表及多尺寸矩阵通过；离屏 `DpiScale=1.00`。已查看紧凑媒体与短窗 shell 截图；没有运行真实 Playnite或 125%/150% 物理 DPI。完整结果：[Release 与 RenderHarness 证据](../design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md)。
+- 下一项可执行：恢复后先 `git fetch origin main` 并确认当前 main，再优先在隔离真实 Playnite 宿主记录 Media Inbox 滚动前后的 DLL/MVID、窗口 DIP/DPI/主题、列头边缘、`PART_ScrollContentPresenter` 顶边、首行顶边和页面滚动偏移。用户失败机 R08-01/Q06 原始断言、栈与 DLL 身份仍未取得；Round3 192 项 ledger 状态/计数未改。本轮不宣称真实宿主滚动或物理 DPI已验。

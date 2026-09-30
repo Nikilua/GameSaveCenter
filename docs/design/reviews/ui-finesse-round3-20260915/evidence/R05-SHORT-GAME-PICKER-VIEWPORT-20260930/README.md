@@ -20,4 +20,4 @@
 | `src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs` | `C585775FB6CA2CECA7814342E4FFF7F5C1EAD2822DBF5150B66775EBE6154566` |
 | `tests/GameSaveCenter.Playnite.Tests/R05PopupBoundaryBehaviorTests.cs` | `0D48F357B4C58A20A6BEDDB631B45F1ACC5509485C48C71FDC583219B870A5D9` |
 
-测试使用合成列表和隔离 STA WPF 窗口。没有启动 Playnite，也未验证物理 DPI 或用户显示器最终帧。全量 Release 脚本首次运行在该用例处停止；修复后的完整 Release 结果待本轮最终重跑记录。
+测试使用合成列表和隔离 STA WPF 窗口。没有启动 Playnite，也未验证物理 DPI 或用户显示器最终帧。首次完整 Release 脚本运行在本用例暴露缺陷；修复后完整脚本已于 `c5aad677` 源码身份通过。完整计数、SDK 限制与最终 RenderHarness 结果见 [全量 Release 复核](../FULL-RELEASE-RECHECK-20260930/README.md)。

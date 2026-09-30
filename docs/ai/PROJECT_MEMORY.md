@@ -6046,9 +6046,15 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 ## 2026-09-30 R05 短窗口游戏选择器
 
 - 全量脚本首次复现现有 R05 测试失败：360 DIP 壳体中选中行高 68.67 DIP，但 ScrollViewer 仅 19.33 DIP。检查发现正文宿主在缺失的 Grid.Row 2，而实际正文星号行是 row 1；更正后仍在短视口内按 `<200 DIP` 收起可选筛选并减小 padding，以确保一条完整游戏行可见。空间恢复即还原筛选行/padding。
-- 定向 R05 隔离测试 `2/2`，短→900 DIP→短往返后保持选择可见；正常游戏选择、搜索和列表虚拟化保留。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。修改后的全量脚本仍需复跑。
+- 定向 R05 隔离测试 `2/2`，短→900 DIP→短往返后保持选择可见；正常游戏选择、搜索和列表虚拟化保留。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。修改后的完整脚本已在 `c5aad677` 源码身份通过，结果汇总见 FULL-RELEASE-RECHECK 证据。
 
 ## 2026-09-30 完整 Release 复跑
 
 - 首轮 R08 页面往返测试报 `TaskTypeFilter source=null / UI=全部`。生产 setter 将 null/空白归一到“全部”，原 state-only fixture 的自动属性没有该合同；将测试 fixture 改为匹配生产筛选归一规则，并保留实际 UI 状态断言。不是生产 TaskCenter 代码缺陷。
 - 目标方法定向 `1/1`；最终完整 Release 脚本 exit `0`：编译 `0/0`，XAML `24/24`，Core `125/125`，Worker `356 passed/1 skipped`，Playnite 112 source + 113 WPF isolated 类全过。R08 TRX 和全脚本记录 `docs/design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md`。本机 SDK 9.0.302，未安装 SDK10，真实 Playnite/DPI未验。
+
+## 2026-09-30 暂停前的 SDK10 与全量门禁检查点
+
+- 用户提供的 CI 日志确认为 SDK `10.0.401` / C#14；`field` lambda 参数冲突已以 `conflictField` 修复并单独提交 `d1b81ceb`。不把本机 SDK9 的全量成功等同于 SDK10 本机重放。
+- 同轮提交 `3b9c8e1c`（窄窗 Trainer/Media 行距）、`f89b1609`（短视口选择器/正文行布局）、`c5aad677`（使 R08 测试 fixture 匹配生产的 filter normalization）。`./scripts/build.ps1 -Configuration Release` 最终 exit 0：solution 0/0、XAML 24/24、Core 125/125、Worker 356 passed / 1 skipped / 0 failed、112 source + 113 WPF isolated classes 全通过。
+- RenderHarness clean identity `c5aad677` `render-qa OK`；逻辑离屏 DPI 1.00。未验真实 Playnite、用户安装 DLL、物理 125%/150% DPI或 SDK10 本机编译。下一任务保持 Media Inbox 同进程滚动几何日志和 R08-01/Q06 用户端原始失败细节；192 项账本不变。恢复时先 fetch main。

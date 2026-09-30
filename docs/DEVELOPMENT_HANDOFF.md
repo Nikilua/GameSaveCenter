@@ -2832,3 +2832,9 @@ git branch --show-current
 - Overview 首页泛化提示现在只在快照未加载时显示；加载后隐藏并节省 `20 DIP`。管理游戏数使用主题强调色，Maintenance 动作分类使用主题次级文字色。Release/XAML `0/0`、`24/24`，定向 WPF `8/8`，RenderHarness 双主题 `render-qa OK`。
 - 证据、浅深截图、TRX、对比度值和程序集 SHA/MVID：[Overview copy/color](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。没有真实 Playnite/物理 DPI/呈现帧验证。
 - 下一可执行任务：审计各生产页“有数据后仍显示”的静态说明，确认它绑定的数据态与空状态后，删除明确冗余的行并保留解释数据、安全状态所需的短说明；补可逆 WPF 行为测试。真实 Media Inbox 滚动错位仍须安全同进程 `[GSC-GRID-DIAGNOSTIC]`。
+## 当前交接补充（2026-09-30：暂停前的 SDK10 修复与 Release 复核）
+
+- 用户附带的 CI 日志是 .NET SDK `10.0.401` / C# 14；`SettingsConflictResolver` lambda 的 `field` 参数触发 CS9273、CS9258，并导致 CS1061。已在 `d1b81ceb` 改名 `conflictField`。此前 R05 短窗选择器缺完整行高及 R08 state-only test fixture 与生产归一行为不一致，也已分别修复；代码提交为 `d1b81ceb`、`3b9c8e1c`、`f89b1609`、`c5aad677`。
+- 本机完整 `./scripts/build.ps1 -Configuration Release` 最终 exit `0`（SDK `9.0.302`）：XAML 24/24，solution 0 warning/error，Core 125/125，Worker 356 passed / 1 skipped / 0 failed，Playnite 112 source + 113 WPF isolated classes 全过。R05 2/2，R08 页面缓存 1/1。RenderHarness clean source identity `c5aad677` 为 `render-qa OK`，离屏 logical DPI 1.00；没有在本机 SDK10 重编，也未启动真实 Playnite或验物理 DPI。细节见 [全量证据](design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md)。
+- `git fetch origin main` 在本检查点前完成，`origin/main` 仍为 `065b9b4b`，相对本地 `main` 落后 4 个已验证代码提交；推送后必须读取新 GitHub Actions 结果，当前公开 commits 页面缓存仅到 2026-08-15，不能作为新构建状态。
+- 下一可执行任务：同安全隔离 Playnite 进程记录 Media Inbox 滚动前后 DLL/MVID、窗口 DIP/DPI/主题、Header/ScrollContentPresenter/首可见 DataGridRow 和外层页面偏移；R08-01/Q06 用户机原始失败方法/断言/堆栈与二进制身份仍缺，Round3 192 项账本状态未变。恢复本目标时先 fetch main。
