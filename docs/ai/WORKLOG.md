@@ -9896,3 +9896,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 用户提供的 .NET SDK 10.0.401 / C# 14 构建日志显示 `SettingsConflictResolver.cs:148` 的 lambda 参数 `field` 与新 `field` 关键字冲突，触发 CS9273、CS9258、CS1061。改名为 `conflictField`，并把冲突摘要测试收紧为完整字符串断言。
 - 本机 .NET 9.0.302 Release solution 构建通过（0 warnings/0 errors，XAML 24/24），R16 冲突行为 3/3；同次 WPF 行为 TRX 汇总 7/7。SDK 10.0.401 没有安装在本机，GitHub 新提交后的 Actions 结果未核实。细节见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SDK10-COMPILE-IDENTIFIER-FIX-20260930/README.md`。
+
+## 2026-09-30 Trainer / Media 窄窗操作折行
+
+- Trainer 已安装工具检查器按钮行在 Light/Dark 桌面场景实测两行、20 DIP；620 DIP 抽屉单行并恢复作者边距。媒体中心当前游戏动作行在 620–680 DIP 为两行/20 DIP，700 DIP 起单行并还原边距。只复用行距控制器，没有改变命令或游戏选择。
+- Release solution 0 warnings/0 errors，XAML 24/24，source validator 通过；相关行为测试 7/7。详细几何与源码哈希：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-MEDIA-ACTION-ROW-GAP-20260930/README.md)。
+- RenderHarness `render-qa OK` 是离屏逻辑 DPI 1.00；真实 Playnite、物理 DPI 未验。Media Inbox 真实滚动偏移仍待安全宿主同进程诊断。其他任务依赖、账本和 192 项总数未在本批变更。

@@ -30,6 +30,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly HashSet<string> selectedMediaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
         private readonly WrapPanelRowGapController mediaFilterPresetRowGap;
+        private readonly WrapPanelRowGapController mediaCurrentBatchActionRowGap;
         private readonly WrapPanelRowGapController mediaInboxActionRowGap;
         private readonly WrapPanelRowGapController mediaInboxSecondaryActionRowGap;
         private ScrollAnchor? pendingMediaAnchor;
@@ -47,6 +48,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             mediaFilterPresetRowGap = new WrapPanelRowGapController(MediaFilterPresetRow);
+            mediaCurrentBatchActionRowGap = new WrapPanelRowGapController(MediaCurrentBatchActions);
             mediaInboxActionRowGap = new WrapPanelRowGapController(MediaInboxBatchActionRow);
             mediaInboxSecondaryActionRowGap = new WrapPanelRowGapController(MediaInboxSecondaryActions);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
@@ -530,6 +532,11 @@ namespace GameSaveCenter.Playnite.Views
                 // inspector at ordinary 1040 DIP layouts.
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var stack = detailBreakpoint.Evaluate(width);
+                // The current-game batch summary and three actions wrap in compact
+                // workspaces below 700 DIP; restore authored margins once they fit.
+                mediaCurrentBatchActionRowGap.SetRowGap(width < 700d
+                    ? ResponsiveLayoutCoordinator.CompactActionRowGap
+                    : 0d);
                 if (wasWideDetailLayout && stack
                     && MediaGrid.SelectedItem != null
                     && MediaInspectorScrollViewer.Visibility == Visibility.Visible)

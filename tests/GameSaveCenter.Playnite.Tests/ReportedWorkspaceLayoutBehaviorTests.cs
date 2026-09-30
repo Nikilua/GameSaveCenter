@@ -1374,6 +1374,156 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var desktopRows = 0;
+        var desktopGap = double.NaN;
+        var compactRows = 0;
+        var compactGap = double.NaN;
+        var originalBottomMargins = new List<double>();
+        var compactBottomMargins = new List<double>();
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var version = new GameToolVersionDto
+                {
+                    VersionId = "synthetic-version",
+                    VersionName = "1.0",
+                    EntryPath = @"C:\Synthetic\trainer.exe",
+                    IsAvailable = true
+                };
+                var tool = new GameToolDto
+                {
+                    ToolId = "synthetic-tool",
+                    ToolType = GameToolType.CustomExecutable,
+                    DisplayName = "Synthetic trainer",
+                    ActiveVersionId = version.VersionId,
+                    Versions = new List<GameToolVersionDto> { version }
+                };
+                var view = new TrainerCenterView { DataContext = new TrainerInstalledToolActionProbe(tool) };
+                ApplyTheme(view, theme);
+                var actions = (WrapPanel)typeof(TrainerCenterView)
+                    .GetField("TrainerInstalledToolActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                originalBottomMargins = actions.Children.OfType<FrameworkElement>()
+                    .Select(child => child.Margin.Bottom)
+                    .ToList();
+                window = CreateWindow(view, 1280, 720);
+                window.Show();
+                FindVisualChildren<TabControl>(view).Single().SelectedIndex = 0;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(1280, 720);
+                FlushLayout(window);
+                (desktopRows, desktopGap) = MeasureWrapRows(actions, view);
+
+                window.Width = 620;
+                view.ApplyResponsiveLayout(620, 720);
+                FlushLayout(window);
+                var compactDetailsButton = (ButtonBase)typeof(TrainerCenterView)
+                    .GetField("TrainerToolsCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                compactDetailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                FlushLayout(window);
+                (compactRows, compactGap) = MeasureWrapRows(actions, view);
+                compactBottomMargins = actions.Children.OfType<FrameworkElement>()
+                    .Where(child => child.Visibility == Visibility.Visible)
+                    .Select(child => child.Margin.Bottom)
+                    .ToList();
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} installed-tool action rows desktop={desktopRows}, gap={desktopGap:0.##} DIP; compact drawer={compactRows}, gap={compactGap:0.##} DIP, bottom margins=[{string.Join(",", compactBottomMargins)}]");
+        Assert.Null(exception);
+        Assert.True(desktopRows > 1, "The fixed-width installed-tool inspector must exercise its wrapped action row.");
+        Assert.True(desktopGap >= 19.5, $"Wrapped inspector actions need 20 DIP row separation; actual={desktopGap:0.##} DIP.");
+        Assert.True(compactRows >= 1);
+        if (compactRows > 1)
+            Assert.True(compactGap >= 19.5, $"A wrapped compact drawer still needs 20 DIP separation; actual={compactGap:0.##} DIP.");
+        else
+            Assert.Equal(originalBottomMargins, compactBottomMargins);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void CurrentGameMediaBatchActionRowReportsWrappedGeometry(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var samples = new List<(double HostWidth, double PanelWidth, int Rows, double Gap, List<double> BottomMargins)>();
+        var authoredBottomMargins = new List<double>();
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MediaCenterView { DataContext = CreateMediaContext() };
+                ApplyTheme(view, theme);
+                var tabs = (TabControl)typeof(MediaCenterView)
+                    .GetField("MediaTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var actions = (WrapPanel)typeof(MediaCenterView)
+                    .GetField("MediaCurrentBatchActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                authoredBottomMargins = actions.Children.OfType<FrameworkElement>()
+                    .Select(child => child.Margin.Bottom)
+                    .ToList();
+                tabs.SelectedIndex = 1;
+                window = CreateWindow(view, 620, 720);
+                window.Show();
+                tabs.SelectedIndex = 1;
+                foreach (var width in new[] { 620d, 640d, 660d, 680d, 700d, 800d, 900d, 1040d, 1280d, 1600d })
+                {
+                    window.Width = width;
+                    view.ApplyResponsiveLayout(width, 720);
+                    FlushLayout(window);
+                    var (rows, gap) = MeasureWrapRows(actions, actions);
+                    var bottomMargins = actions.Children.OfType<FrameworkElement>()
+                        .Select(child => child.Margin.Bottom)
+                        .ToList();
+                    samples.Add((width, actions.ActualWidth, rows, gap, bottomMargins));
+                }
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} current-game media action rows: {string.Join("; ", samples.Select(sample => $"host {sample.HostWidth:0}, panel {sample.PanelWidth:0.##}, rows {sample.Rows}, gap {sample.Gap:0.##} DIP"))}");
+        Assert.Null(exception);
+        var compact = samples.Single(sample => sample.HostWidth == 620d);
+        Assert.True(compact.Rows > 1);
+        Assert.Equal(1, samples.Single(sample => sample.HostWidth == 700d).Rows);
+        Assert.Equal(1, samples.Single(sample => sample.HostWidth == 1280d).Rows);
+        foreach (var sample in samples)
+        {
+            if (sample.Rows > 1)
+                Assert.True(sample.Gap >= 19.5, $"Wrapped current-game actions at {sample.HostWidth:0} DIP need 20 DIP separation; actual={sample.Gap:0.##} DIP.");
+            else
+                Assert.Equal(authoredBottomMargins, sample.BottomMargins);
+        }
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
@@ -2890,6 +3040,43 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         public ICommand DownloadTrainerCommand { get; } = new RelayCommand(_ => { });
         public ICommand ConfirmGameToolImportCommand { get; } = new RelayCommand(_ => { });
         public ICommand CancelGameToolImportCommand { get; } = new RelayCommand(_ => { });
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class TrainerInstalledToolActionProbe : INotifyPropertyChanged
+    {
+        private GameToolDto selectedGameTool;
+
+        public TrainerInstalledToolActionProbe(GameToolDto tool)
+        {
+            selectedGameTool = tool;
+            SelectedGameToolVersion = tool.ActiveVersion;
+            GameTools.Add(tool);
+        }
+
+        public ObservableCollection<GameToolDto> GameTools { get; } = new();
+        public GameToolDto SelectedGameTool
+        {
+            get => selectedGameTool;
+            set
+            {
+                if (ReferenceEquals(selectedGameTool, value)) return;
+                selectedGameTool = value;
+                SelectedGameToolVersion = value.ActiveVersion;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedGameTool)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedGameToolVersion)));
+            }
+        }
+
+        public GameToolVersionDto SelectedGameToolVersion { get; set; }
+        public bool IsTrainerToolsLoading => false;
+        public ICommand LaunchGameToolCommand { get; } = new RelayCommand(_ => { });
+        public ICommand SaveGameToolCommand { get; } = new RelayCommand(_ => { });
+        public ICommand OpenGameToolDirectoryCommand { get; } = new RelayCommand(_ => { });
+        public ICommand RelocateGameToolCommand { get; } = new RelayCommand(_ => { });
+        public ICommand DeleteGameToolCommand { get; } = new RelayCommand(_ => { });
+        public ICommand CopyPathCommand { get; } = new RelayCommand(_ => { });
 
         public event PropertyChangedEventHandler? PropertyChanged;
     }

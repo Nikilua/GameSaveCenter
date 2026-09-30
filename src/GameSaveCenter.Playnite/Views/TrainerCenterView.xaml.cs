@@ -15,11 +15,13 @@ namespace GameSaveCenter.Playnite.Views
         private bool isApplyingLayout;
         private bool trainerInspectorOpen;
         private readonly WrapPanelRowGapController trainerPendingImportActionRowGap;
+        private readonly WrapPanelRowGapController trainerInstalledToolActionRowGap;
 
         public TrainerCenterView()
         {
             InitializeComponent();
             trainerPendingImportActionRowGap = new WrapPanelRowGapController(TrainerPendingImportActions);
+            trainerInstalledToolActionRowGap = new WrapPanelRowGapController(TrainerInstalledToolActions);
             TrainerToolsSettingsScrollViewer.IsVisibleChanged += OnTrainerInspectorIsVisibleChanged;
         }
 
@@ -114,6 +116,12 @@ namespace GameSaveCenter.Playnite.Views
                 // as unrelated blocks below the main list. Only the genuinely narrow
                 // layout (below the shared 980 DIP breakpoint) should stack them.
                 var stackInstalled = width < 980;
+                // The desktop inspector stays fixed-width, so its five action buttons
+                // wrap even when the overall workspace is wide. The compact drawer
+                // expands with its host and only needs extra spacing below 520 DIP.
+                trainerInstalledToolActionRowGap.SetRowGap(!stackInstalled || width < 520d
+                    ? ResponsiveLayoutCoordinator.CompactActionRowGap
+                    : 0d);
                 // This confirmation strip remains two rows even in a very wide host
                 // because its prompt and selector retain their own reading width.
                 // Keep the vertical breathing room whenever the pending strip exists.

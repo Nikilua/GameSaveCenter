@@ -6037,3 +6037,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 - CI 日志的 C# 14 `field` 关键字冲突由重命名 lambda 参数为 `conflictField` 消除；R16 测试精确验证冲突摘要完整内容。原始日志为 SDK 10.0.401；本机只有 SDK 9.0.302，因此只记录本地 Release 成功，不声称本机复现 SDK 10 编译器。
 - 同一工作树的 Release 编译 `0 warnings/0 errors`，行为 TRX `7/7`。具体日志片段、TRX 与限制见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SDK10-COMPILE-IDENTIFIER-FIX-20260930/README.md`。
+
+## 2026-09-30 Trainer / Media 折行操作间距
+
+- 已安装 Trainer 操作栏在固定桌面检查器中两行/20 DIP，620 DIP 紧凑抽屉单行并恢复边距；Media 当前游戏操作栏在 620–680 DIP 两行/20 DIP，700 DIP 起单行并恢复边距。Light/Dark 几何行为均覆盖，生产命令与选择未变。
+- Release solution/XAML/source validator 通过；合并的隔离 WPF 行为 TRX 为 7/7。真实 Playnite、物理 DPI 与屏幕呈现未验；Media Inbox 滚动后列头/首行间距须另在真实安全宿主同进程记录诊断。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-MEDIA-ACTION-ROW-GAP-20260930/README.md`。
