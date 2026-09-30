@@ -1043,7 +1043,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactSaveAndInboxActionWrapsKeepASixteenDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
+    public void CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var saveCompactRows = 0;
@@ -1118,10 +1118,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     var (rows, gap) = MeasureWrapRows(presetRow, mediaView);
                     if (rows > 1)
                     {
-                        Assert.True(gap >= 15.5,
-                            $"{theme} media filter preset rows at {width:0} DIP need at least 15.5 DIP breathing room; actual gap={gap:0.##} DIP.");
+                        Assert.True(gap >= 19.5,
+                            $"{theme} media filter preset rows at {width:0} DIP need at least 19.5 DIP breathing room; actual gap={gap:0.##} DIP.");
                         Assert.All(presetRow.Children.OfType<FrameworkElement>(), child =>
-                            Assert.Equal(16d, child.Margin.Bottom));
+                            Assert.Equal(20d, child.Margin.Bottom));
                     }
                     else
                     {
@@ -1137,7 +1137,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 700d;
                 mediaView.ApplyResponsiveLayout(700, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 15.5,
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 19.5,
                     "Media filter preset rows should regain their gap after resizing back to 700 DIP.");
                 mediaWindow.Width = 720d;
                 mediaView.ApplyResponsiveLayout(720, 720);
@@ -1148,7 +1148,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 700d;
                 mediaView.ApplyResponsiveLayout(700, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 15.5,
+                Assert.True(MeasureWrapRows(presetRow, mediaView).MinGap >= 19.5,
                     "Media filter preset row gap should survive a 700→720→700 DIP resize round trip.");
 
                 var secondaryActions = (WrapPanel)typeof(MediaCenterView)
@@ -1164,10 +1164,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     var (rows, gap) = MeasureWrapRows(secondaryActions, mediaView);
                     if (rows > 1)
                     {
-                        Assert.True(gap >= 15.5,
-                            $"{theme} media secondary action rows at {width:0} DIP need at least 15.5 DIP; actual gap={gap:0.##} DIP.");
+                        Assert.True(gap >= 19.5,
+                            $"{theme} media secondary action rows at {width:0} DIP need at least 19.5 DIP; actual gap={gap:0.##} DIP.");
                         Assert.All(secondaryActions.Children.OfType<FrameworkElement>(), child =>
-                            Assert.Equal(16d, child.Margin.Bottom));
+                            Assert.Equal(20d, child.Margin.Bottom));
                     }
                     else
                     {
@@ -1180,8 +1180,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 576d;
                 mediaView.ApplyResponsiveLayout(576, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 15.5,
-                    "Media secondary action rows should use the 16 DIP gap at 576 DIP.");
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 19.5,
+                    "Media secondary action rows should use the 20 DIP gap at 576 DIP.");
                 mediaWindow.Width = 577d;
                 mediaView.ApplyResponsiveLayout(577, 720);
                 FlushLayout(mediaWindow);
@@ -1191,7 +1191,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 mediaWindow.Width = 576d;
                 mediaView.ApplyResponsiveLayout(576, 720);
                 FlushLayout(mediaWindow);
-                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 15.5,
+                Assert.True(MeasureWrapRows(secondaryActions, mediaView).MinGap >= 19.5,
                     "Media secondary action row gap should survive a 576→577→576 DIP resize round trip.");
             }
             catch (Exception caught)
@@ -1212,11 +1212,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             output.WriteLine($"{theme} Media secondary actions {sample}");
         Assert.Null(exception);
         Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
-        Assert.True(saveCompactGap >= 15.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
+        Assert.True(saveCompactGap >= 19.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
         Assert.Equal(1, saveWideRows);
         Assert.InRange(saveWideBottomMargin, 0, 0.5);
         Assert.True(inboxCompactRows >= 2, "the compact synthetic inbox toolbar must exercise a wrapped row");
-        Assert.True(inboxCompactGap >= 15.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
+        Assert.True(inboxCompactGap >= 19.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
         Assert.Equal(1, inboxWideRows);
         Assert.InRange(inboxWideBottomMargin, 0, 4.5);
     }
@@ -1224,7 +1224,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void CompactTaskPresetWrapUsesSixteenDipGapAndRestoresAtBreakpoint(GameSaveCenterThemeMode theme)
+    public void CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var compactRows = 0;
@@ -1290,12 +1290,12 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         output.WriteLine($"{theme} task preset compact rows={compactRows}, gap={compactGap:0.##} DIP, margins=[{string.Join(",", compactMargins)}]; wide rows={wideRows}, margins=[{string.Join(",", wideMargins)}]; restored rows={restoredRows}, margins=[{string.Join(",", restoredMargins)}]");
         Assert.Null(exception);
         Assert.True(compactRows > 1, "620 DIP must exercise the task preset WrapPanel's compact path.");
-        Assert.True(compactGap >= 15.5, $"Compact task preset rows need 16 DIP of separation; actual={compactGap:0.##} DIP.");
-        Assert.All(compactMargins, margin => Assert.Equal(16d, margin));
+        Assert.True(compactGap >= 19.5, $"Compact task preset rows need 20 DIP of separation; actual={compactGap:0.##} DIP.");
+        Assert.All(compactMargins, margin => Assert.Equal(20d, margin));
         Assert.Equal(1, wideRows);
         Assert.All(wideMargins, margin => Assert.Equal(0d, margin));
         Assert.True(restoredRows > 1);
-        Assert.All(restoredMargins, margin => Assert.Equal(16d, margin));
+        Assert.All(restoredMargins, margin => Assert.Equal(20d, margin));
     }
 
     [Theory]

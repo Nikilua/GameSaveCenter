@@ -346,7 +346,7 @@ namespace GameSaveCenter.Playnite.Views
                 // Add room between wrapped rows and restore authored margins once they fit.
                 mediaFilterPresetRowGap.SetRowGap(width < 720d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
                 // The secondary inbox actions wrap through 576 DIP. Keep the same
-                // 16-DIP spacing as the other compact action rows in that range.
+                // 20-DIP spacing as the other compact action rows in that range.
                 mediaInboxSecondaryActionRowGap.SetRowGap(width < 577d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
                 var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
                 var compactBatchActions = batchActionWidth > 0

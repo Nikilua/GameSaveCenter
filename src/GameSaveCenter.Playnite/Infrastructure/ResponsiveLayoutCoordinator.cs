@@ -74,7 +74,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
     public static class ResponsiveLayoutCoordinator
     {
         public const double CompactShellHeaderThreshold = 1440d;
-        public const double CompactActionRowGap = 16d;
+        public const double CompactActionRowGap = 20d;
 
         // The detail inspector needs a small content-budget hysteresis band. Without it,
         // a host that reports 979/980 DIP while the user drags its edge repeatedly
