@@ -6047,3 +6047,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 - 全量脚本首次复现现有 R05 测试失败：360 DIP 壳体中选中行高 68.67 DIP，但 ScrollViewer 仅 19.33 DIP。检查发现正文宿主在缺失的 Grid.Row 2，而实际正文星号行是 row 1；更正后仍在短视口内按 `<200 DIP` 收起可选筛选并减小 padding，以确保一条完整游戏行可见。空间恢复即还原筛选行/padding。
 - 定向 R05 隔离测试 `2/2`，短→900 DIP→短往返后保持选择可见；正常游戏选择、搜索和列表虚拟化保留。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。修改后的全量脚本仍需复跑。
+
+## 2026-09-30 完整 Release 复跑
+
+- 首轮 R08 页面往返测试报 `TaskTypeFilter source=null / UI=全部`。生产 setter 将 null/空白归一到“全部”，原 state-only fixture 的自动属性没有该合同；将测试 fixture 改为匹配生产筛选归一规则，并保留实际 UI 状态断言。不是生产 TaskCenter 代码缺陷。
+- 目标方法定向 `1/1`；最终完整 Release 脚本 exit `0`：编译 `0/0`，XAML `24/24`，Core `125/125`，Worker `356 passed/1 skipped`，Playnite 112 source + 113 WPF isolated 类全过。R08 TRX 和全脚本记录 `docs/design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md`。本机 SDK 9.0.302，未安装 SDK10，真实 Playnite/DPI未验。

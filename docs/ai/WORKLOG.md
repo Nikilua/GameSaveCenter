@@ -9908,3 +9908,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机完整 Release 脚本在 WPF 隔离到 `R05PopupBoundaryBehaviorTests` 时，短窗测试失败：overlay/panel `142 DIP`、列表 ScrollViewer `19.33 DIP`，而完整选中行 `68.67 DIP`；工作区边缘 ComboBox 用例通过。另发现 `MainPageHost` 被放在不存在的 row 2，而正文星号行是 row 1。
 - `MainPageHost` 改放 row 1；选择器 overlay `<200 DIP` 时收起可选筛选行并将面板 padding 暂调为 `8 DIP`，高度恢复后筛选与作者 padding `14 DIP` 都恢复。虚拟化列表与搜索/游戏选择保持。R05 定向隔离 `2/2`，包含短→高→短往返和选中整行可见断言。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。
 - 修改后的完整 Release 脚本仍需重跑；SDK 10.0.401 本机不可用，真 Playnite 与物理 DPI未验。首轮全跑到该失败后停止。
+
+## 2026-09-30 完整 Release 复跑与 R08 测试夹具校正
+
+- R08 页面缓存测试的失败值为 `TaskTypeFilter source=null / control=全部`；生产 `DashboardViewModel` setter 对空值归一为“全部”，测试 fixture 原自动属性不符合该合同。将 fixture 补齐任务筛选默认归一与游戏筛选项，给失败增加阶段/字段诊断；未修改生产 TaskCenter 行为。
+- 定向 R08 `1/1`；最终 `./scripts/build.ps1 -Configuration Release` exit `0`，solution `0 warning/0 error`、XAML `24/24`、Core `125/125`、Worker `356 passed / 1 skipped / 0 failed`，Playnite 112 source + 113 WPF isolated classes 全部通过。完整详情与 R08 TRX：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md)。
+- 本机仅 SDK `9.0.302`，SDK 10.0.401/C#14 未实机复跑；R05 使用合成 WPF 窗口，Playnite 实例和物理 DPI未验。Media Inbox 真实滚动诊断与 R00/R01 账本不在本批内。

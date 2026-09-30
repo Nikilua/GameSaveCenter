@@ -177,6 +177,7 @@ public sealed class R08PageSwitchBehaviorTests
         var summary = string.Empty;
         var thread = new Thread(() =>
         {
+            var phase = "initialize cached pages";
             Window? window = null;
             try
             {
@@ -252,11 +253,12 @@ public sealed class R08PageSwitchBehaviorTests
                     .GetField("TaskHistoryRangeComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(taskPage)!;
 
-                Assert.Equal(state.TaskSearchText, search.Text);
-                Assert.Equal(state.TaskStatusFilter, status.SelectedItem);
-                Assert.Equal(state.TaskTypeFilter, type.SelectedItem);
-                Assert.Equal(state.TaskHistoryScope, scope.SelectedItem);
-                Assert.Equal(state.TaskHistoryRange, range.SelectedItem);
+                phase = "verify initial task filter values";
+                Assert.True(object.Equals(state.TaskSearchText, search.Text), $"TaskSearchText: source='{state.TaskSearchText ?? "<null>"}', control='{search.Text ?? "<null>"}'.");
+                Assert.True(object.Equals(state.TaskStatusFilter, status.SelectedItem), $"TaskStatusFilter: source='{state.TaskStatusFilter ?? "<null>"}', control='{status.SelectedItem ?? "<null>"}'.");
+                Assert.True(object.Equals(state.TaskTypeFilter, type.SelectedItem), $"TaskTypeFilter: source='{state.TaskTypeFilter ?? "<null>"}', control='{type.SelectedItem ?? "<null>"}'.");
+                Assert.True(object.Equals(state.TaskHistoryScope, scope.SelectedItem), $"TaskHistoryScope: source='{state.TaskHistoryScope ?? "<null>"}', control='{scope.SelectedItem ?? "<null>"}'.");
+                Assert.True(object.Equals(state.TaskHistoryRange, range.SelectedItem), $"TaskHistoryRange: source='{state.TaskHistoryRange ?? "<null>"}', control='{range.SelectedItem ?? "<null>"}'.");
 
                 search.Text = "失败保留";
                 status.SelectedItem = "失败";
@@ -321,6 +323,7 @@ public sealed class R08PageSwitchBehaviorTests
                 shell.NavigateTo(WorkspaceKind.Tasks);
                 FlushLayout(window);
 
+                phase = "verify task filter values after page round trip";
                 Assert.Same(taskPageBefore, shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks));
                 Assert.Same(taskDataContextBefore, taskPage.DataContext);
                 Assert.Same(taskItemsBefore, taskGrid.ItemsSource);
@@ -359,7 +362,7 @@ public sealed class R08PageSwitchBehaviorTests
             }
             catch (Exception caught)
             {
-                exception = caught;
+                exception = new InvalidOperationException($"Page navigation verification failed during: {phase}.", caught);
             }
             finally
             {
@@ -371,7 +374,7 @@ public sealed class R08PageSwitchBehaviorTests
         thread.Start();
         thread.Join();
 
-        Assert.Null(exception);
+        Assert.True(exception == null, exception?.ToString());
         Assert.False(string.IsNullOrWhiteSpace(summary));
         output.WriteLine(summary);
     }
@@ -577,17 +580,26 @@ public sealed class R08PageSwitchBehaviorTests
 
     private sealed class NavigationViewState
     {
-        public string TaskSearchText { get; set; } = "初始搜索";
-        public string TaskStatusFilter { get; set; } = "全部";
-        public string TaskTypeFilter { get; set; } = "全部";
-        public string TaskHistoryScope { get; set; } = "最近任务";
-        public string TaskHistoryRange { get; set; } = "全部时间";
+        private string taskSearchText = "初始搜索";
+        private string taskStatusFilter = "全部";
+        private string taskTypeFilter = "全部";
+        private string taskGameFilter = "全部";
+        private string taskHistoryScope = "最近任务";
+        private string taskHistoryRange = "全部时间";
+
+        public string TaskSearchText { get => taskSearchText; set => taskSearchText = value ?? string.Empty; }
+        public string TaskStatusFilter { get => taskStatusFilter; set => taskStatusFilter = string.IsNullOrWhiteSpace(value) ? "全部" : value; }
+        public string TaskTypeFilter { get => taskTypeFilter; set => taskTypeFilter = string.IsNullOrWhiteSpace(value) ? "全部" : value; }
+        public string TaskGameFilter { get => taskGameFilter; set => taskGameFilter = string.IsNullOrWhiteSpace(value) ? "全部" : value; }
+        public string TaskHistoryScope { get => taskHistoryScope; set => taskHistoryScope = value == "全部历史" ? "全部历史" : "最近任务"; }
+        public string TaskHistoryRange { get => taskHistoryRange; set => taskHistoryRange = TaskHistoryRangeOptions.Contains(value) ? value : "全部时间"; }
         public int MediaTabIndex { get; set; }
         public int SaveTabIndex { get; set; }
         public int MaintenanceTabIndex { get; set; }
         public ExecutionCountCommand RefreshCommand { get; } = new ExecutionCountCommand();
         public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "失败", "成功" };
         public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部", "媒体归类", "Validation" };
+        public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
         public ObservableCollection<string> TaskHistoryScopeOptions { get; } = new ObservableCollection<string> { "最近任务", "全部历史" };
         public ObservableCollection<string> TaskHistoryRangeOptions { get; } = new ObservableCollection<string> { "全部时间", "近30天" };
     }
