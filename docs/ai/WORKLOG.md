@@ -9902,3 +9902,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Trainer 已安装工具检查器按钮行在 Light/Dark 桌面场景实测两行、20 DIP；620 DIP 抽屉单行并恢复作者边距。媒体中心当前游戏动作行在 620–680 DIP 为两行/20 DIP，700 DIP 起单行并还原边距。只复用行距控制器，没有改变命令或游戏选择。
 - Release solution 0 warnings/0 errors，XAML 24/24，source validator 通过；相关行为测试 7/7。详细几何与源码哈希：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-MEDIA-ACTION-ROW-GAP-20260930/README.md)。
 - RenderHarness `render-qa OK` 是离屏逻辑 DPI 1.00；真实 Playnite、物理 DPI 未验。Media Inbox 真实滚动偏移仍待安全宿主同进程诊断。其他任务依赖、账本和 192 项总数未在本批变更。
+
+## 2026-09-30 Release 全跑发现的 R05 短窗口选择器问题
+
+- 本机完整 Release 脚本在 WPF 隔离到 `R05PopupBoundaryBehaviorTests` 时，短窗测试失败：overlay/panel `142 DIP`、列表 ScrollViewer `19.33 DIP`，而完整选中行 `68.67 DIP`；工作区边缘 ComboBox 用例通过。另发现 `MainPageHost` 被放在不存在的 row 2，而正文星号行是 row 1。
+- `MainPageHost` 改放 row 1；选择器 overlay `<200 DIP` 时收起可选筛选行并将面板 padding 暂调为 `8 DIP`，高度恢复后筛选与作者 padding `14 DIP` 都恢复。虚拟化列表与搜索/游戏选择保持。R05 定向隔离 `2/2`，包含短→高→短往返和选中整行可见断言。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。
+- 修改后的完整 Release 脚本仍需重跑；SDK 10.0.401 本机不可用，真 Playnite 与物理 DPI未验。首轮全跑到该失败后停止。

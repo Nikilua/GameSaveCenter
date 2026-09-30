@@ -28,7 +28,8 @@ public sealed class R05PopupBoundaryBehaviorTests
             overlay.Visibility = Visibility.Visible;
             host.Window.UpdateLayout();
 
-            var panel = (FrameworkElement)shell.FindName("PickerPanel")!;
+            var panel = (Border)shell.FindName("PickerPanel")!;
+            var filterRow = (UniformGrid)shell.FindName("PickerFilterRow")!;
             var scrollViewer = FindVisualChild<ScrollViewer>(list);
             Assert.NotNull(scrollViewer);
             Assert.True(panel.ActualHeight <= overlay.ActualHeight + 1,
@@ -36,12 +37,32 @@ public sealed class R05PopupBoundaryBehaviorTests
             Assert.True(panel.ActualWidth <= overlay.ActualWidth + 1,
                 $"Picker panel exceeds short shell width (panel={panel.ActualWidth}, overlay={overlay.ActualWidth}).");
             Assert.True(scrollViewer!.ScrollableHeight > 0);
+            Assert.Equal(Visibility.Collapsed, filterRow.Visibility);
+            Assert.Equal(new Thickness(8), panel.Padding);
 
             list.ScrollIntoView(list.SelectedItem);
             host.Window.UpdateLayout();
+            var selectedContainer = list.ItemContainerGenerator.ContainerFromIndex(list.SelectedIndex) as ListBoxItem;
+            var selectedTop = selectedContainer?.TransformToAncestor(scrollViewer).Transform(new Point(0, 0)).Y ?? double.NaN;
             Assert.True(IsItemVisible(list, list.SelectedIndex),
-                $"The selected item must remain visible after short-window layout (index={list.SelectedIndex}, scroll={scrollViewer.VerticalOffset}, extent={scrollViewer.ExtentHeight}, viewport={scrollViewer.ViewportHeight}, actual={scrollViewer.ActualHeight}, realized={list.ItemContainerGenerator.ContainerFromIndex(list.SelectedIndex) != null}).");
-            Assert.True(scrollViewer.VerticalScrollBarVisibility == ScrollBarVisibility.Auto);
+                $"The selected item must remain visible after short-window layout (index={list.SelectedIndex}, scroll={scrollViewer.VerticalOffset}, extent={scrollViewer.ExtentHeight}, viewport={scrollViewer.ViewportHeight}, scrollViewer={scrollViewer.ActualWidth}x{scrollViewer.ActualHeight}, list={list.ActualWidth}x{list.ActualHeight}, itemTop={selectedTop}, itemHeight={selectedContainer?.ActualHeight}, panel={panel.ActualWidth}x{panel.ActualHeight}, overlay={overlay.ActualWidth}x{overlay.ActualHeight}, window={host.Window.ActualWidth}x{host.Window.ActualHeight}, realized={selectedContainer != null}).");
+            Assert.Equal(ScrollBarVisibility.Auto, scrollViewer.VerticalScrollBarVisibility);
+
+            host.Window.Height = 900;
+            host.Window.UpdateLayout();
+            Assert.Equal(Visibility.Visible, filterRow.Visibility);
+            Assert.Equal(new Thickness(14), panel.Padding);
+            list.ScrollIntoView(list.SelectedItem);
+            host.Window.UpdateLayout();
+            Assert.True(IsItemVisible(list, list.SelectedIndex), "The selected item should stay visible when the full filter row returns.");
+
+            host.Window.Height = 360;
+            host.Window.UpdateLayout();
+            Assert.Equal(Visibility.Collapsed, filterRow.Visibility);
+            Assert.Equal(new Thickness(8), panel.Padding);
+            list.ScrollIntoView(list.SelectedItem);
+            host.Window.UpdateLayout();
+            Assert.True(IsItemVisible(list, list.SelectedIndex), "Repeated compact sizing should retain the selected item in view.");
         });
     }
 

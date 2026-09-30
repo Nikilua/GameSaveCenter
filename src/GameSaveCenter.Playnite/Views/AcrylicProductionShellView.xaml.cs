@@ -630,6 +630,20 @@ namespace GameSaveCenter.Playnite.Views
             e.Handled = true;
         }
 
+        private void OnPickerOverlaySizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!e.HeightChanged)
+                return;
+
+            // Preserve room for at least one complete virtualized game row when a short
+            // shell leaves less than 200 DIP for the picker. Search remains available;
+            // the optional three-filter row and authored card padding return as soon as
+            // the overlay has room.
+            var compact = e.NewSize.Height < 200d;
+            PickerFilterRow.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+            PickerPanel.Padding = compact ? new Thickness(8) : new Thickness(14);
+        }
+
         private void OnPickerListPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             // A pointer selection is the explicit commit gesture. Reset the short-lived

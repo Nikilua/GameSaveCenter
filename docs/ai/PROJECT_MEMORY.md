@@ -6042,3 +6042,8 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 
 - 已安装 Trainer 操作栏在固定桌面检查器中两行/20 DIP，620 DIP 紧凑抽屉单行并恢复边距；Media 当前游戏操作栏在 620–680 DIP 两行/20 DIP，700 DIP 起单行并恢复边距。Light/Dark 几何行为均覆盖，生产命令与选择未变。
 - Release solution/XAML/source validator 通过；合并的隔离 WPF 行为 TRX 为 7/7。真实 Playnite、物理 DPI 与屏幕呈现未验；Media Inbox 滚动后列头/首行间距须另在真实安全宿主同进程记录诊断。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-TRAINER-MEDIA-ACTION-ROW-GAP-20260930/README.md`。
+
+## 2026-09-30 R05 短窗口游戏选择器
+
+- 全量脚本首次复现现有 R05 测试失败：360 DIP 壳体中选中行高 68.67 DIP，但 ScrollViewer 仅 19.33 DIP。检查发现正文宿主在缺失的 Grid.Row 2，而实际正文星号行是 row 1；更正后仍在短视口内按 `<200 DIP` 收起可选筛选并减小 padding，以确保一条完整游戏行可见。空间恢复即还原筛选行/padding。
+- 定向 R05 隔离测试 `2/2`，短→900 DIP→短往返后保持选择可见；正常游戏选择、搜索和列表虚拟化保留。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-SHORT-GAME-PICKER-VIEWPORT-20260930/README.md`。修改后的全量脚本仍需复跑。

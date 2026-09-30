@@ -334,7 +334,7 @@
                 </Border>
             </Popup>
 
-            <Grid x:Name="MainPageHost" Grid.Row="2" Margin="24,0,20,8">
+            <Grid x:Name="MainPageHost" Grid.Row="1" Margin="24,0,20,8">
                 <Border Background="Transparent">
                     <ContentControl x:Name="PageHost" Focusable="False"/>
                 </Border>
@@ -345,6 +345,7 @@
                       KeyboardNavigation.TabNavigation="Cycle"
                       KeyboardNavigation.DirectionalNavigation="Contained"
                       PreviewKeyDown="OnPickerPreviewKeyDown"
+                      SizeChanged="OnPickerOverlaySizeChanged"
                       AutomationProperties.Name="游戏选择器">
                     <Rectangle Fill="{DynamicResource GscPickerScrimBrush}" MouseLeftButtonDown="OnPickerScrimMouseDown"/>
                     <Border x:Name="PickerPanel" Style="{DynamicResource GscRedesignFloatingPickerCard}"
@@ -377,7 +378,7 @@
                                      </Button.Style>
                                  </Button>
                              </Grid>
-                            <UniformGrid Grid.Row="1" Columns="3" Margin="0,8,0,0">
+                            <UniformGrid x:Name="PickerFilterRow" Grid.Row="1" Columns="3" Margin="0,8,0,0">
                                 <ComboBox x:Name="GamePickerStatusComboBox" Style="{DynamicResource GscWpfUiPickerFilterComboBox}"
                                           ItemsSource="{Binding GamePicker.StatusFilterOptions}"
                                           SelectedItem="{Binding GamePicker.StatusFilter, Mode=OneWay, TargetNullValue=全部, FallbackValue=全部}"
