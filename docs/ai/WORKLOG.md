@@ -2,7 +2,7 @@
 
 ## 2026-09-30 跨页窄窗 WrapPanel 行距审计
 
-- 在 `85ec95cb` 的当前工作树上，将维护页首次检查、诊断操作、目录/日志、游戏来源诊断四个操作 WrapPanel 与 Trainer 待确认导入行接入共享 20 DIP 行距控制。维护页 1400 DIP 单行恢复原 8 DIP margin；Trainer 行在 620/1400/2200 DIP 都确实是两行，所以即使超宽仍保留间距。命令与业务状态未变。
+- 代码提交 `bffc1ae1` 已推送到 `origin/main`。在 `85ec95cb` 基线上，将维护页首次检查、诊断操作、目录/日志、游戏来源诊断四个操作 WrapPanel 与 Trainer 待确认导入行接入共享 20 DIP 行距控制。维护页 1400 DIP 单行恢复原 8 DIP margin；Trainer 行在 620/1400/2200 DIP 都确实是两行，所以即使超宽仍保留间距。命令与业务状态未变。
 - 双主题真实 WPF 几何回归覆盖维护、Trainer 与已有 Save/Media/Task 行距行为，共 `8/8`。维护组 620×720 DIP 实测 2 行、20 DIP 行距、WrapPanel 564×112 DIP；1400 DIP 为一行，回到 620 DIP 后再次为 20 DIP。Trainer 三档宽度均为 2 行/20 DIP。
 - Release solution build `0 warnings / 0 errors`，XAML `24/24`，source validation 和 `git diff --check` 通过。源码、插件/测试 DLL SHA/MVID、测量明细及 TRX：[跨页操作行距证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ACTION-ROW-COVERAGE-20260930/README.md)。测试使用合成 ViewModel / 假命令、隔离 WPF STA；不是 Playnite、物理 DPI 或真实屏幕呈现验收。
 - Round3 任务状态/总数未改。下一步继续逐页实测尚未覆盖的动态行内操作组和已加载数据时的静态辅助文案。未验边界：Media Inbox 真实 Playnite 滚动前后 `[GSC-GRID-DIAGNOSTIC]`，以及 Q06/R08 用户失败机器的原始失败堆栈/程序集身份。

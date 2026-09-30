@@ -19,7 +19,7 @@
 
 ## 运行身份
 
-测试由 Release WPF STA testhost 运行，使用逻辑 DIP 测量真实生产 View 和 WrapPanel。构建的 `AssemblyInformationalVersion` 是 `0.6.73+85ec95cb315f7f7e09e75b0cedafd98eea447c85`；该值反映构建时 Git HEAD。源码来自该 HEAD 上的工作树修改，以下源码 SHA-256 可用于复核实际编译输入：
+测试由 Release WPF STA testhost 运行，使用逻辑 DIP 测量真实生产 View 和 WrapPanel。构建的 `AssemblyInformationalVersion` 是 `0.6.73+85ec95cb315f7f7e09e75b0cedafd98eea447c85`；该值反映构建时 Git HEAD。源码来自该 HEAD 上的工作树修改，随后以相同文件内容提交为 `bffc1ae1` 并推送 `main`，以下源码 SHA-256 可用于复核实际编译输入：
 
 | 文件 | SHA-256 |
 |---|---|
