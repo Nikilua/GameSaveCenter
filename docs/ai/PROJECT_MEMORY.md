@@ -1,3 +1,9 @@
+## 2026-09-30 跨页 WrapPanel 窄窗行距
+
+- 在生产维护页四组多按钮操作栏与 Trainer 待确认导入提示上复用 `WrapPanelRowGapController`。维护诊断行 620 DIP 实测两行/20 DIP，1400 DIP 单行还原 8 DIP 原距，往返缩放稳定；Trainer 导入栏在 620/1400/2200 DIP 仍然都是两行，故保持 20 DIP 间距，不按窗口尺寸误撤。
+- 相关生产 WPF 双主题行为 `8/8`，Release `0 warning / 0 error`，XAML `24/24`，source validation 通过。源码/程序集身份与 TRX：[本轮证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ACTION-ROW-COVERAGE-20260930/README.md)。合成 STA WPF 几何不能冒充 Playnite、物理 DPI 或最终帧验证。
+- 后续继续核对数据模板中的动态按钮行距与有数据时的常驻说明。Media Inbox 用户真实宿主滚动前后诊断和 Q06/R08 原失败证据仍缺；Round3 状态/总数不变。
+
 ## 2026-09-30 当前紧凑布局身份
 
 - `main` 当前紧凑操作行距提交为 `af915a2d637dc4901e1c81e2e2cdd097c958a002`，实测折行净距 `20 DIP`，宽态恢复 margin；验证详情、脱敏证据和 R00-06 基线在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md`。

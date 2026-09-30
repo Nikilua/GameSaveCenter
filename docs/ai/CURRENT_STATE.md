@@ -1,3 +1,9 @@
+## 2026-09-30 跨页窄窗 WrapPanel 行距审计
+
+- 基于当前 `main` 工作树进一步审阅 WrapPanel：维护页四组多按钮操作栏与 Trainer 待确认导入栏加入共享 `20 DIP` 折行间距。维护 620→1400→620 DIP 实测行数 `2→1→2`，行距 `20 DIP`，宽态还原原 margin；Trainer 在 620/1400/2200 DIP 均保持两行/20 DIP。
+- Release solution `0 warning / 0 error`、XAML `24/24`、source validation 通过；相关 WPF 几何/行为 `8/8`。精确工作树源文件 SHA、程序集 SHA/MVID 和 TRX：[证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ACTION-ROW-COVERAGE-20260930/README.md)。这些是合成数据 STA WPF 测量，未验证 Playnite/物理 DPI/最终呈现。
+- 下一可执行批次：继续实测其它尚未覆盖的动态行内操作组和有数据状态下多余说明。未完成：Media Inbox 同宿主滚动偏移诊断、Q06/R08 原失败机的具体断言/堆栈/DLL 身份；Round3 账本状态与 192 项总数未改。
+
 ## 2026-09-30 窄窗折行行距阶段
 
 - 当前 `main` / `origin/main` 源码为 `af915a2d637dc4901e1c81e2e2cdd097c958a002`。紧凑操作行距现为 `20 DIP`；仅折行时生效，宽态恢复原 margin。

@@ -17,6 +17,7 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveHeight;
         private bool isApplyingLayout;
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
+        private readonly WrapPanelRowGapController[] compactActionRowGaps;
         private bool deviceInspectorOpen;
         private bool cloudTransferInspectorOpen;
         private bool diagnosticsInspectorOpen;
@@ -28,6 +29,13 @@ namespace GameSaveCenter.Playnite.Views
         public MaintenanceView()
         {
             InitializeComponent();
+            compactActionRowGaps = new[]
+            {
+                new WrapPanelRowGapController(MaintenanceOnboardingActions),
+                new WrapPanelRowGapController(MaintenanceDiagnosticActions),
+                new WrapPanelRowGapController(MaintenanceDirectoryActions),
+                new WrapPanelRowGapController(MaintenanceGameDiscoveryActions)
+            };
 
             // Loaded is a direct WPF event. Re-assert the explicit local header styles once
             // per grid so generated headers never fall back to a Playnite host default.
@@ -378,6 +386,11 @@ namespace GameSaveCenter.Playnite.Views
             }
             var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
             var compact = detailBreakpoint.Evaluate(width);
+            // These action groups use WrapPanel so their real commands remain visible
+            // in narrow hosts. Keep a clear gap when the page enters its compact layout;
+            // the controller restores each authored margin when returning to desktop.
+            foreach (var actionRowGap in compactActionRowGaps)
+                actionRowGap.SetRowGap(compact ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
             if (wasWideDetailLayout && compact)
             {
                 // Keep any visible desktop inspector open when it moves below its

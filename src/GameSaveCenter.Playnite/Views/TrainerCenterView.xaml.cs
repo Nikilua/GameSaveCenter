@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -13,10 +14,12 @@ namespace GameSaveCenter.Playnite.Views
         private double responsiveHeight;
         private bool isApplyingLayout;
         private bool trainerInspectorOpen;
+        private readonly WrapPanelRowGapController trainerPendingImportActionRowGap;
 
         public TrainerCenterView()
         {
             InitializeComponent();
+            trainerPendingImportActionRowGap = new WrapPanelRowGapController(TrainerPendingImportActions);
             TrainerToolsSettingsScrollViewer.IsVisibleChanged += OnTrainerInspectorIsVisibleChanged;
         }
 
@@ -111,6 +114,10 @@ namespace GameSaveCenter.Playnite.Views
                 // as unrelated blocks below the main list. Only the genuinely narrow
                 // layout (below the shared 980 DIP breakpoint) should stack them.
                 var stackInstalled = width < 980;
+                // This confirmation strip remains two rows even in a very wide host
+                // because its prompt and selector retain their own reading width.
+                // Keep the vertical breathing room whenever the pending strip exists.
+                trainerPendingImportActionRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);
 
                 // The four real import commands must remain reachable in the same narrow
                 // host that stacks the inspector. Keeping them in the title row makes the

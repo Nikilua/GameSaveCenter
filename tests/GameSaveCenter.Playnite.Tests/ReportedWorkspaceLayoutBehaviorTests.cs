@@ -1301,6 +1301,160 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var compactRows = 0;
+        var compactGap = double.NaN;
+        var compactMargins = new List<double>();
+        var compactGeometry = string.Empty;
+        var wideRows = 0;
+        var wideMargins = new List<double>();
+        var restoredRows = 0;
+        var restoredGap = double.NaN;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MaintenanceView { DataContext = new MaintenanceEmptyStateCopyProbe() };
+                ApplyTheme(view, theme);
+                var actions = (WrapPanel)typeof(MaintenanceView)
+                    .GetField("MaintenanceDiagnosticActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                window = CreateWindow(view, 620, 720);
+                view.ApplyResponsiveLayout(620, 720);
+                window.Show();
+                ((TabControl)typeof(MaintenanceView)
+                    .GetField("MaintenanceTabControl", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!).SelectedIndex = 0;
+                ((TabControl)typeof(MaintenanceView)
+                    .GetField("MaintenanceDiagnosticsSubTabs", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!).SelectedIndex = 1;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(620, 720);
+                FlushLayout(window);
+                (compactRows, compactGap) = MeasureWrapRows(actions, actions);
+                compactMargins = actions.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+                compactGeometry = $"panel={actions.ActualWidth:0.##}x{actions.ActualHeight:0.##}, visible={actions.IsVisible}, children=[{string.Join(";", actions.Children.OfType<FrameworkElement>().Select(child => $"{child.Visibility}:{child.ActualWidth:0.##}x{child.ActualHeight:0.##}"))}]";
+
+                window.Width = 1400;
+                view.ApplyResponsiveLayout(1400, 720);
+                FlushLayout(window);
+                (wideRows, _) = MeasureWrapRows(actions, actions);
+                wideMargins = actions.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+
+                window.Width = 620;
+                view.ApplyResponsiveLayout(620, 720);
+                FlushLayout(window);
+                (restoredRows, restoredGap) = MeasureWrapRows(actions, actions);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} maintenance actions compact={compactRows} rows, gap={compactGap:0.##} DIP, {compactGeometry}, margins=[{string.Join(",", compactMargins)}]; wide={wideRows} rows, margins=[{string.Join(",", wideMargins)}]; restored={restoredRows} rows, gap={restoredGap:0.##} DIP");
+        Assert.Null(exception);
+        Assert.True(compactRows > 1, "The six-button maintenance action group must exercise the compact wrapped layout.");
+        Assert.True(compactGap >= 19.5, $"Compact maintenance action rows need 20 DIP separation; actual={compactGap:0.##} DIP.");
+        Assert.All(compactMargins, margin => Assert.Equal(20d, margin));
+        Assert.Equal(1, wideRows);
+        Assert.All(wideMargins, margin => Assert.InRange(margin, 7.5, 8.5));
+        Assert.True(restoredRows > 1);
+        Assert.True(restoredGap >= 19.5);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var compactRows = 0;
+        var compactGap = double.NaN;
+        var compactMargins = new List<double>();
+        var intermediateRows = 0;
+        var intermediateGap = double.NaN;
+        var intermediateMargins = new List<double>();
+        var wideRows = 0;
+        var wideGap = double.NaN;
+        var wideMargins = new List<double>();
+        var restoredRows = 0;
+        var restoredGap = double.NaN;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var probe = new TrainerImportCopyProbe { HasPendingGameToolEntrySelection = true };
+                var view = new TrainerCenterView { DataContext = probe };
+                ApplyTheme(view, theme);
+                var actions = (WrapPanel)typeof(TrainerCenterView)
+                    .GetField("TrainerPendingImportActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                window = CreateWindow(view, 620, 720);
+                view.ApplyResponsiveLayout(620, 720);
+                window.Show();
+                FindVisualChildren<TabControl>(view).Single().SelectedIndex = 1;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(620, 720);
+                FlushLayout(window);
+                (compactRows, compactGap) = MeasureWrapRows(actions, actions);
+                compactMargins = actions.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+
+                window.Width = 1400;
+                view.ApplyResponsiveLayout(1400, 720);
+                FlushLayout(window);
+                (intermediateRows, intermediateGap) = MeasureWrapRows(actions, actions);
+                intermediateMargins = actions.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+
+                window.Width = 2200;
+                view.ApplyResponsiveLayout(2200, 720);
+                FlushLayout(window);
+                (wideRows, wideGap) = MeasureWrapRows(actions, actions);
+                wideMargins = actions.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
+
+                window.Width = 620;
+                view.ApplyResponsiveLayout(620, 720);
+                FlushLayout(window);
+                (restoredRows, restoredGap) = MeasureWrapRows(actions, actions);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} trainer import actions compact={compactRows} rows, gap={compactGap:0.##} DIP, margins=[{string.Join(",", compactMargins)}]; 1400 DIP={intermediateRows} rows, gap={intermediateGap:0.##} DIP, margins=[{string.Join(",", intermediateMargins)}]; 2200 DIP={wideRows} rows, gap={wideGap:0.##} DIP, margins=[{string.Join(",", wideMargins)}]; restored={restoredRows} rows, gap={restoredGap:0.##} DIP");
+        Assert.Null(exception);
+        Assert.True(compactRows > 1, "A narrow pending import must wrap its selector and both confirmation commands.");
+        Assert.True(compactGap >= 19.5, $"Compact trainer import action rows need 20 DIP separation; actual={compactGap:0.##} DIP.");
+        Assert.All(compactMargins, margin => Assert.Equal(20d, margin));
+        Assert.True(intermediateRows > 1, "The pending import notice must exercise the still-wrapped 1400 DIP workspace.");
+        Assert.True(intermediateGap >= 19.5, $"The pending import notice needs row spacing while still wrapped at 1400 DIP; actual={intermediateGap:0.##} DIP.");
+        Assert.All(intermediateMargins, margin => Assert.Equal(20d, margin));
+        Assert.True(wideRows > 1, "The pending import notice remains a two-row strip even at 2200 DIP.");
+        Assert.True(wideGap >= 19.5, $"The pending import notice must retain row spacing at 2200 DIP; actual={wideGap:0.##} DIP.");
+        Assert.All(wideMargins, margin => Assert.Equal(20d, margin));
+        Assert.True(restoredRows > 1);
+        Assert.True(restoredGap >= 19.5);
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
     public void CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
