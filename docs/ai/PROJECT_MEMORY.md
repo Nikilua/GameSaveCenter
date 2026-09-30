@@ -6058,3 +6058,9 @@ Q06-06 的受控 Enter/Space 与 Q06-07 的 busy gate/动效逆转行为证据�
 - 用户提供的 CI 日志确认为 SDK `10.0.401` / C#14；`field` lambda 参数冲突已以 `conflictField` 修复并单独提交 `d1b81ceb`。不把本机 SDK9 的全量成功等同于 SDK10 本机重放。
 - 同轮提交 `3b9c8e1c`（窄窗 Trainer/Media 行距）、`f89b1609`（短视口选择器/正文行布局）、`c5aad677`（使 R08 测试 fixture 匹配生产的 filter normalization）。`./scripts/build.ps1 -Configuration Release` 最终 exit 0：solution 0/0、XAML 24/24、Core 125/125、Worker 356 passed / 1 skipped / 0 failed、112 source + 113 WPF isolated classes 全通过。
 - RenderHarness clean identity `c5aad677` `render-qa OK`；逻辑离屏 DPI 1.00。未验真实 Playnite、用户安装 DLL、物理 125%/150% DPI或 SDK10 本机编译。下一任务保持 Media Inbox 同进程滚动几何日志和 R08-01/Q06 用户端原始失败细节；192 项账本不变。恢复时先 fetch main。
+
+## 2026-09-30 推送后 GitHub Actions SDK10 失败
+
+- 当前推送 SHA `a6b6dfc9430662e3cc5b7fe00862bce95ac5ebb5` 的 GitHub Actions run `36675309812` 失败，`编译与测试` exit `1`，耗时约 13 分钟。历史用户附件的 SDK10.0.401 `field` 关键字编译错误另已修复；新 run 用时较长且实际日志不可读，不推断为同一问题。
+- GitHub REST run logs 下载拒绝 HTTP 403 `Must have admin rights to Repository.`；check annotations 无详细原因。下次恢复首先取得完整日志，按真实失败构建最小复现和 SDK10.0.401 修复。当前本机完整 SDK9 Release 成功不能替代 CI 结果。
+- 目标依用户明确要求暂停。Media Inbox 同宿主滚动、物理 DPI、R08-01/Q06 用户原始失败和 Round3 账本状态依旧未验/未改。

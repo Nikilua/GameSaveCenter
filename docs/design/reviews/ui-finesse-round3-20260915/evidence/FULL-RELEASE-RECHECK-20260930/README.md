@@ -30,4 +30,10 @@
 
 ## 限制
 
-本机 SDK 只有 `9.0.302`；没有在本机重放用户 CI 的 SDK `10.0.401` / C# 14。SDK 10 `field` 关键字冲突的源码修复和原始诊断另见 [C# 14 编译修复证据](../SDK10-COMPILE-IDENTIFIER-FIX-20260930/README.md)。这里的 WPF 测试运行在隔离 testhost；不是 Playnite 安装实例或 125%/150% 物理 DPI 呈现验证。新的 GitHub Actions 运行需在推送当前检查点后确认。
+本机 SDK 只有 `9.0.302`；没有在本机重放用户 CI 的 SDK `10.0.401` / C# 14。SDK 10 `field` 关键字冲突的源码修复和原始诊断另见 [C# 14 编译修复证据](../SDK10-COMPILE-IDENTIFIER-FIX-20260930/README.md)。这里的 WPF 测试运行在隔离 testhost；不是 Playnite 安装实例或 125%/150% 物理 DPI 呈现验证。
+
+## 推送后 GitHub Actions 结果
+
+- 推送检查点 `a6b6dfc9430662e3cc5b7fe00862bce95ac5ebb5` 的 [GitHub Actions run 36675309812](https://github.com/Nikilua/GameSaveCenter/actions/runs/36675309812) 已结束为 `failure`；唯一 job `编译、测试与打包` 的 `编译与测试` 步骤以 exit code `1` 结束，运行约 13 分钟。
+- 当前无权下载该 run 的完整日志：GitHub REST `GET /actions/runs/36675309812/logs` 返回 HTTP 403 `Must have admin rights to Repository.`；Check Run annotations 只显示 `Process completed with exit code 1`。因此失败的具体阶段、测试类/断言或编译诊断仍未知，不能称 SDK10 CI 已通过，也不能把它归因于先前已修的 C#14 `field` 错误。
+- 恢复后第一项应让仓库管理员/用户提供该 run 的完整 `编译与测试` 日志或授予日志只读权限，按实际失败定位并重跑 SDK10.0.401。先前本机 SDK9 全量通过只是独立证据。

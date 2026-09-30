@@ -9921,3 +9921,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 完成窄窗 Trainer/Media 行距（`3b9c8e1c`）、短窗口游戏选框完整行视口（`f89b1609`）和 R08 测试 fixture 归一（`c5aad677`）。完整 Release 脚本第三次运行 exit `0`：XAML 24/24，solution 0 warning/error，Core 125/125，Worker 356 passed/1 skipped/0 failed，Playnite 112 source + 113 WPF isolated classes 全通过。R05 2/2，R08 1/1。
 - `c5aad677` RenderHarness clean tree `render-qa OK`，Light/Dark 全矩阵和短窗/媒体截图已检查；离屏 logical DPI 1.00。source validator passed，WPF static 0 error/29 warning/177 info。真实 Playnite、SDK10 本机重编、物理 DPI和 Media Inbox 同宿主滚动偏移仍未验证。
 - 暂停检查点：`origin/main` fetch 后仍在 `065b9b4b`，本地 4 个代码提交可快进；本轮文档将同步并一起推送。恢复后先 fetch，再优先取得 Media Inbox 同进程 `[GSC-GRID-DIAGNOSTIC]`；用户机 Q06/R08 原始失败测试方法/断言/栈/DLL 信息仍缺。Round3 ledger 的 192 项数与状态未改。
+
+## 2026-09-30 推送后 SDK10 Actions 复核失败与暂停
+
+- `a6b6dfc9430662e3cc5b7fe00862bce95ac5ebb5` 已推送；Actions run `36675309812` 最终失败，`编译、测试与打包` job 的 `编译与测试` 步骤退出码 `1`，持续约 13 分钟。此前附件的 C#14 `field` 编译修复已在 `d1b81ceb`，不能把新 run 的失败归因于同处。
+- 未取得完整远端日志：公开日志下载 API 返回 403 `Must have admin rights to Repository.`；check-run annotation 只有通用 exit code。失败阶段/测试名/错误文本仍未确认，未作盲修。run 链接与恢复路径记在 `CURRENT_STATE.md`、`DEVELOPMENT_HANDOFF.md` 和 full-release evidence README。
+- 本机 SDK 9.0.302 完整 Release 仍通过，但 SDK10.0.401 GitHub 构建当前必须标记失败/未诊断。用户要求本窗口完成记录后暂停；恢复后先取日志并定位该 run，再决定修复。Media Inbox 同宿主滚动等独立未验项保留。

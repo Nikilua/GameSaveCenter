@@ -3788,3 +3788,9 @@
 - 最终完整 `./scripts/build.ps1 -Configuration Release` 在本机 SDK `9.0.302` 下 exit `0`：XAML `24/24`，Release 编译 `0/0`，Core `125/125`，Worker `356/357`（1 项既有 skip、0 fail），Playnite 隔离流程 112 source + 113 WPF classes 全通过。第三次完整运行在 R05 短窗修复及 R08 测试 fixture 校正后通过。不要把本机 SDK9 结果写成 SDK10 本机复现。
 - 源身份 `c5aad677` 的 RenderHarness `render-qa OK`，Light/Dark、有限列表及多尺寸矩阵通过；离屏 `DpiScale=1.00`。已查看紧凑媒体与短窗 shell 截图；没有运行真实 Playnite或 125%/150% 物理 DPI。完整结果：[Release 与 RenderHarness 证据](../design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md)。
 - 下一项可执行：恢复后先 `git fetch origin main` 并确认当前 main，再优先在隔离真实 Playnite 宿主记录 Media Inbox 滚动前后的 DLL/MVID、窗口 DIP/DPI/主题、列头边缘、`PART_ScrollContentPresenter` 顶边、首行顶边和页面滚动偏移。用户失败机 R08-01/Q06 原始断言、栈与 DLL 身份仍未取得；Round3 192 项 ledger 状态/计数未改。本轮不宣称真实宿主滚动或物理 DPI已验。
+
+## 2026-09-30 暂停前 CI 复核：新 SDK10 run 仍失败
+
+- 推送的检查点 `a6b6dfc9430662e3cc5b7fe00862bce95ac5ebb5` 触发 [Actions run 36675309812](https://github.com/Nikilua/GameSaveCenter/actions/runs/36675309812)，约 13 分钟后 `编译与测试` exit `1`。这不同于附件中快速暴露的 `SettingsConflictResolver` C#14 `field` 冲突；不可猜成同一根因。
+- 下载完整 Actions 日志的公开 REST 请求返回 403 `Must have admin rights to Repository.`；可读 Check Run 仅给一般 exit code annotation。当前失败类/断言/编译输出未知，SDK10 CI 不能标为已通过。本机 SDK9 完整 Release 通过不能替代。
+- 恢复目标时第一步取得 run 36675309812 完整日志（由用户/仓库管理员导出或授予只读权限），按真实失败做最小复现，再跑 SDK10.0.401。检查点已推送；用户明确要求本窗口结束时暂停目标。Media Inbox 同宿主滚动和物理 DPI仍未验，192 项账本不动。

@@ -2838,3 +2838,9 @@ git branch --show-current
 - 本机完整 `./scripts/build.ps1 -Configuration Release` 最终 exit `0`（SDK `9.0.302`）：XAML 24/24，solution 0 warning/error，Core 125/125，Worker 356 passed / 1 skipped / 0 failed，Playnite 112 source + 113 WPF isolated classes 全过。R05 2/2，R08 页面缓存 1/1。RenderHarness clean source identity `c5aad677` 为 `render-qa OK`，离屏 logical DPI 1.00；没有在本机 SDK10 重编，也未启动真实 Playnite或验物理 DPI。细节见 [全量证据](design/reviews/ui-finesse-round3-20260915/evidence/FULL-RELEASE-RECHECK-20260930/README.md)。
 - `git fetch origin main` 在本检查点前完成，`origin/main` 仍为 `065b9b4b`，相对本地 `main` 落后 4 个已验证代码提交；推送后必须读取新 GitHub Actions 结果，当前公开 commits 页面缓存仅到 2026-08-15，不能作为新构建状态。
 - 下一可执行任务：同安全隔离 Playnite 进程记录 Media Inbox 滚动前后 DLL/MVID、窗口 DIP/DPI/主题、Header/ScrollContentPresenter/首可见 DataGridRow 和外层页面偏移；R08-01/Q06 用户机原始失败方法/断言/堆栈与二进制身份仍缺，Round3 192 项账本状态未变。恢复本目标时先 fetch main。
+
+## 最新交接（2026-09-30：暂停前 SDK10 Actions 失败）
+
+- 检查点 `a6b6dfc9430662e3cc5b7fe00862bce95ac5ebb5` 已推送到 `main`。对应 [GitHub Actions run 36675309812](https://github.com/Nikilua/GameSaveCenter/actions/runs/36675309812) 最终 `failure`；唯一 job 的 `编译与测试` 步骤 exit `1`，运行约 13 分钟。不能因为本机 SDK9 Release 成功就报告 GitHub CI 通过。
+- REST 日志下载因权限返回 403 `Must have admin rights to Repository.`，Check Run annotation 不含实际编译/测试错误。失败的测试类/断言或编译行未知，当前先不要猜测或在生产代码上盲改。
+- 恢复的第一可执行工作：取得 run 完整日志（请用户/仓库管理员导出日志或提供只读权限），找出 13 分钟 run 与以前快速 C#14 编译失败的差异，按实际失败修复后跑 SDK10.0.401。其后再继续 Media Inbox 同进程滚动诊断、R08-01/Q06 用户机失败信息和其他依赖满足的 Round3 工作。物理 DPI/真实 Playnite尚未验；192 项账本不变。
