@@ -1,3 +1,9 @@
+## 2026-09-30 当前紧凑布局身份
+
+- `main` 当前紧凑操作行距提交为 `af915a2d637dc4901e1c81e2e2cdd097c958a002`，实测折行净距 `20 DIP`，宽态恢复 margin；验证详情、脱敏证据和 R00-06 基线在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md`。
+- 后续跨页审查继续以当前生产视图和可见布局为准；Demo 目录不可用时沿用恢复生产基线。STA WPF/RenderHarness 离屏读数不能冒充 Playnite、物理 DPI 或最终呈现。
+- Q06 按钮五态用户报告在当前 `af915a2d` 本机直接 VSTest 与 one-click 同参数复跑各 `1/1`，未重现；用户侧日志/堆栈和 DLL 身份缺失，不能标成解决。证据入口：`docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-BUTTON-STATE-RECHECK-AF915A2D-20260930/README.md`。
+
 ## 2026-09-30 R08-02 热关闭复核
 
 - `dc7f97cf` 生产源码的应用动效关/开已经当前身份 STA 测试 `1/1`；生产 shell Light/Dark `motionhotprobe` 测到活动 transition 即时归一化和关闭态重入直达终点。Dashboard 与 Settings 已订阅 `SystemParameters.StaticPropertyChanged`，但真实 Windows 动画偏好没有改动/触发，不能记录成实机系统通知通过。

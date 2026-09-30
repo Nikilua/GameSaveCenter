@@ -1,3 +1,9 @@
+## 2026-09-30 窄窗折行行距阶段
+
+- 当前 `main` / `origin/main` 源码为 `af915a2d637dc4901e1c81e2e2cdd097c958a002`。紧凑操作行距现为 `20 DIP`；仅折行时生效，宽态恢复原 margin。
+- 提交后关联 WPF 几何/行为 `46/46 + 1/1 + 13/13`，正式 Release `0 warning / 0 error`，XAML `24/24`，source validation 与 RenderHarness 通过。R00-06 baseline 已移至此身份；完整截图、TRX、MVID/SHA 和限制见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md`。
+- 下一步继续审查可见窄窗 WrapPanel 与有数据时冗余说明。未完成：真实 Playnite Media Inbox 滚动前后诊断；用户报告的 Q06 失败目前只在当前本机两种入口各重跑一次均未复现，原始断言/堆栈仍缺，复测证据在 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-BUTTON-STATE-RECHECK-AF915A2D-20260930/README.md`。
+
 ## 2026-09-30 Trainer 可下载版本页说明精简
 
 - 提交 `22c55647799e732a770e6b16a93af4a9e83056f6`：搜索结果副标题缩短；有版本时不再常驻显示按需读取说明，操作提示保留在 Tooltip 与 UIA HelpText。零版本且非加载时仍显示原空态，计数与列表命令保持。

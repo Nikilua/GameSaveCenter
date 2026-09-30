@@ -63,6 +63,12 @@
 - 截图均标明激活方式，完整状态报告与 TRX 同目录。离屏图片以 96-DPI logical WPF Window 输出；Hover 来自 `MouseDevice.ChangeMouseOver`，不是物理鼠标。Space、程序化焦点和假命令各自只证明受控路由行为。
 - 当前补齐受控状态的自动和视觉证据；物理输入、Playnite 宿主、UIA/读屏、物理 DPI、真实屏幕帧和动画像素序列未验，Q06-08 最终仍未完成。
 
+## 2026-09-30 Q06-08 当前 main 用户失败复测
+
+- 用户报告 one-click 的 `Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark` 为 `1 failed`，但消息摘要未包含断言/堆栈/程序集身份；本 checkout 找不到该报告引用的 `artifacts/one-click-install.log`。
+- 当前 `af915a2d` Release 程序集按直接 VSTest 和 one-click 隔离 `dotnet test --no-build` 参数各重跑一次，均 `1/1` 成功。五个状态 × Light/Dark 的十个状态读数与截图都通过；不能由此声称用户机器故障已解决。
+- [本次身份、TRX、状态读数和截图](Q06-BUTTON-STATE-RECHECK-AF915A2D-20260930/README.md)。没有真实 Playnite/物理输入复核；Q06-08 仍保留宿主和物理输入边界。若再次失败，需对应失败机器的断言/堆栈和 DLL SHA/MVID。
+
 ## 2026-09-15 Q12-07 排序箭头双状态复核
 
 - 在提交 `2f3d17b8a34780546039aa6b7b07ecbb1c6a2ec6` 的 clean tree 上运行 `finesseprobe <output> dark sorted` 与 `light sorted`；报告身份均为 `WorkingTreeClean=True`、`DpiScale=1.00`，并记录 `SortFixture: ascending="名称" visible=True width=14; descending="数值" visible=True width=14 angle=180`。

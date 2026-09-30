@@ -68,8 +68,8 @@
     },
     {
       "id": "R00-06",
-      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
-      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "evidence": "evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md",
+      "sourceCommit": "af915a2d637dc4901e1c81e2e2cdd097c958a002",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

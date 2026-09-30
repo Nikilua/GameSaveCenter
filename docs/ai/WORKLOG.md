@@ -1,5 +1,18 @@
 # GameSaveCenter AI 开发工作日志
 
+## 2026-09-30 窄窗折行操作组 20 DIP 间距
+
+- 已推送代码提交 `af915a2d637dc4901e1c81e2e2cdd097c958a002`：共享紧凑行间距由 `16` 调为 `20 DIP`。作用于存档历史、媒体批量/次级动作、任务预设与 shell 操作；宽态和未折行面板保留原布局。
+- 当前身份 Release solution build `0 warning / 0 error`、XAML `24/24`、source validation 通过。定向 WPF `ReportedWorkspaceLayoutBehaviorTests 46/46`、Q14 `1/1`、R00-06 几何/锚点 `13/13`；RenderHarness clean-tree `render-qa OK`。TRX 中 Q14/MediaWindowAnchor 在测试成功后分别有 13/2 条 `InvalidComObjectException` 清理输出，根因未知。
+- R00-06 在 `MediaCenterView.xaml.cs` 命中 freshness 后已按精确源身份重跑并换成该证据入口。屏幕图/报告、程序集 SHA/MVID、隐私脱敏 TRX 和宿主边界：[窄窗行距证据](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md)。隔离 STA WPF 及离屏逻辑 DIP 不代表真实 Playnite/物理 DPI；Media Inbox 滚动错位仍待同进程日志。
+- 下一项继续广泛检查可见换行行距和已加载数据时的冗余说明；同时保留用户报告 Q06 当前复跑未复现、失败机器详细堆栈未取得的边界。
+
+## 2026-09-30 Q06 五态用户失败复测
+
+- 用户给出的 one-click 摘要称 Q06 五态测试 `1 failed`，没有断言/堆栈；仓库当前没有该消息引用的 `artifacts/one-click-install.log`。因此不能对其根因下结论。
+- 在 `af915a2d` 当前 Release 程序集上，直接 VSTest 与 one-click 隔离 `dotnet test --no-build` 参数组各跑同一测试一次，均 `1/1`、exit `0`；十张 Light/Dark 五态截图及逐态读数均通过。测试为 STA WPF 合成 hover/键盘/程序化焦点，不是物理输入。
+- [Q06 当前身份复测](../design/reviews/ui-finesse-round2-20260913/evidence/Q06-BUTTON-STATE-RECHECK-AF915A2D-20260930/README.md)。当前本机未重现不等于用户失败已修复；需要原失败断言/堆栈和运行 DLL 身份才能继续针对性定位。
+
 ## 2026-09-30 Trainer 版本列表辅助文案收敛
 
 - `22c55647799e732a770e6b16a93af4a9e83056f6` 通过后移除“只在用户选择在线目录结果后按需读取”常驻副标题，将提示留在可下载版本标题的 Tooltip/UIA HelpText；搜索结果副标题缩为一行短指令。零版本/加载态切换、计数绑定和业务行为保留。
