@@ -1,3 +1,13 @@
+## 2026-10-05 完成度复核与活动文档收口（GOV-003）
+
+- 用户授权审阅完成度、改进点及文档/任务。基线main `77de7f450431d267026ce2169aa30525b18bf528`，fetch后与origin/main一致，初始工作树干净；生产代码和版本不改。
+- 重算正式R192/Q208账本；R08-01从旧106受控汇总中单列用户故障，成为105/83/1用户失败/1外部阻塞/1部分/1不适用。Q最终5已验收/203未完成；不将两轮相加或给出无分母完成率。修复两条R行的缺失宿主列及代码内竖线的Markdown转义，状态和证据含义未改。
+- CURRENT_STATE原3796行、PROJECT_MEMORY原6066行、HANDOFF原2846行改为短入口，原文逐字节复制到同目录HISTORY_THROUGH_20260930快照；完成度旧评估也完整保留。当前任务统一到AUTONOMOUS_BACKLOG收口队列，修正历史禁止push与当前AGENTS的冲突。
+- 本轮SDK8.0.423 Release：XAML24/24，编译0/0，Core125/125、Worker357/357；Playnite source465 passed/2 failed/18 skipped，全脚本exit1，后续WPF类未执行。两条Named Pipe失败的同DLL专项复跑7/7，仍不能关闭初始失败。完整脱敏console/TRX/二进制身份在审阅证据。
+- 最新核查远端run36677346317失败，完整日志403；CI安装9.0.x而global.json latestMajor，需统一SDK并完善失败产物，不能把本机失败猜成远端根因。
+- 当前freshness9 fresh/5 stale：R00-04/06/07/08、R01-05，baseline保持原样。Source validator、链接/归档/计数/diff检查结果随审阅包保存。没有运行真实Playnite或物理DPI，也未解决用户Media Inbox/Q06/R08问题。
+- 下一项优先CLOSE-IPC-01，再处理CLOSE-CI-01/CLOSE-SDK-01及5项精确补证；环境门禁满足后才推进真实宿主与发布矩阵。证据：[本轮审阅](evidence/completion-review-20261005/README.md)。按AGENTS单独commit并push当前main。
+
 # GameSaveCenter AI 开发工作日志
 
 ## 2026-09-30 跨页窄窗 WrapPanel 行距审计

@@ -1,3 +1,5 @@
+> 2026-10-05 导航：本文件保留早期历史。当前长期规则使用 [docs/ai/PROJECT_MEMORY.md](ai/PROJECT_MEMORY.md)，当前状态使用 [CURRENT_STATE.md](ai/CURRENT_STATE.md)。不要按本文件旧“下一步”领取任务。
+
 # 项目记忆与不可丢失约束
 
 > 当前事实入口已迁移到 [`docs/ai/CURRENT_STATE.md`](ai/CURRENT_STATE.md)。本文件是历史约束与证据归档；新开发先读当前事实入口，冲突时以当前事实入口、`AGENTS.md` 和最新代码为准。

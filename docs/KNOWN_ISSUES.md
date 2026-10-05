@@ -1,3 +1,18 @@
+## 2026-10-05 当前开放问题入口
+
+当前基线 77de7f45 / 0.6.73。以下使用唯一 CLOSE 编号，避免沿用下方重复 GSC 编号。任务状态/关闭条件以 [活动积压清单](AUTONOMOUS_BACKLOG.md) 为准；[审阅证据](ai/evidence/completion-review-20261005/README.md) 保留实际失败。
+
+| 跟踪项 | 当前事实 | 状态 |
+| --- | --- | --- |
+| CLOSE-IPC-01 | 本轮 Playnite source 两条 Named Pipe 取消/重放用例失败，异常类型不符和管道实例占用 | OPEN，待归因；不先断言生产缺陷 |
+| CLOSE-CI-01 | run36677346317 编译/测试失败，后续步骤跳过，完整日志 HTTP403 | OPEN；本地与远端根因尚未关联 |
+| CLOSE-SDK-01 | CI安装9.0.x、global.json latestMajor、本机8.0.423，实际选择可漂移 | READY |
+| CLOSE-EVID-01 | R00-04/06/07/08、R01-05 当前 stale | READY；旧14/14已过时 |
+| CLOSE-HOST-01 / ENV-001 | 用户Media Inbox滚动偏移仍缺当前同宿主诊断；历史WMI/CEF隔离阻塞 | BLOCKED_ENVIRONMENT |
+| CLOSE-REG-01 | Q06/R08用户原失败缺断言、堆栈和DLL身份 | BLOCKED_ENVIRONMENT；未关闭 |
+
+下面条目为历史实现/回归记录；“已修复待验证”不能直接解释为当前候选验证通过。
+
 # 已知缺陷与回归状态
 
 更新时间：2026-09-05

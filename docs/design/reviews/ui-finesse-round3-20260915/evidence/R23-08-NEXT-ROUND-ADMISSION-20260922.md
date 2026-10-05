@@ -1,3 +1,5 @@
+> 2026-10-05：本文件保留2026-09阶段准入证据，不再作为当前领取顺序。当前收口队列见 [AUTONOMOUS_BACKLOG.md](../../../../AUTONOMOUS_BACKLOG.md)，当前评估见 [FEATURE_COMPLETION_ASSESSMENT.md](../../../../FEATURE_COMPLETION_ASSESSMENT.md)。既有环境/真实宿主证据边界继续有效；历史分支和“不得合并main”不覆盖当前AGENTS的commit/push要求。
+
 # R23-08 下一轮准入清单
 
 ## 2026-09-24 当前 main 补充

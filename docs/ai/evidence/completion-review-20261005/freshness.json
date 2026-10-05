@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "generatedUtc": "2026-10-04T11:43:30.6124135Z",
+  "currentSourceCommit": "77de7f450431d267026ce2169aa30525b18bf528",
+  "currentPackageCommit": "not-provided",
+  "packageIdentityStatus": "not-provided",
+  "documentationOnlyChange": false,
+  "records": [
+    {
+      "id": "R00-01-02",
+      "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
+      "scopes": [
+        "shared-controls",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 259
+    },
+    {
+      "id": "R00-03",
+      "evidence": "evidence/R00-03-MOTION-LIFECYCLE-20260916.md",
+      "scopes": [
+        "shell",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 677
+    },
+    {
+      "id": "R00-04",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "scopes": [
+        "shell",
+        "game-picker"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ],
+      "documentationOnlyChange": false,
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 97
+    },
+    {
+      "id": "R00-05",
+      "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
+      "scopes": [
+        "shared-controls",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 259
+    },
+    {
+      "id": "R00-06",
+      "evidence": "evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md",
+      "scopes": [
+        "media-center"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "af915a2d637dc4901e1c81e2e2cdd097c958a002",
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs"
+      ],
+      "documentationOnlyChange": false,
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 53
+    },
+    {
+      "id": "R00-07",
+      "evidence": "evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "scopes": [
+        "trainer-center",
+        "audit"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "22c55647799e732a770e6b16a93af4a9e83056f6",
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml.cs"
+      ],
+      "documentationOnlyChange": false,
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 66
+    },
+    {
+      "id": "R00-08",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "scopes": [
+        "shell",
+        "game-picker"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ],
+      "documentationOnlyChange": false,
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 97
+    },
+    {
+      "id": "R01-01",
+      "evidence": "evidence/R01-01-REPOSITORY-IDENTITY-20260916.md",
+      "scopes": [
+        "test-infrastructure"
+      ],
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 451
+    },
+    {
+      "id": "R01-02",
+      "evidence": "evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md",
+      "scopes": [
+        "dev-probe",
+        "numeric-cells"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 677
+    },
+    {
+      "id": "R01-03",
+      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
+      "scopes": [
+        "audit",
+        "evidence-index"
+      ],
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 138
+    },
+    {
+      "id": "R01-04",
+      "evidence": "evidence/R01-04-MOTION-BEHAVIOR-20260916.md",
+      "scopes": [
+        "shell",
+        "motion"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 677
+    },
+    {
+      "id": "R01-05",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "scopes": [
+        "negative-fixtures",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ],
+      "documentationOnlyChange": false,
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 97
+    },
+    {
+      "id": "R01-06",
+      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
+      "scopes": [
+        "audit",
+        "host-evidence"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 138
+    },
+    {
+      "id": "R01-07",
+      "evidence": "evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
+      "scopes": [
+        "audit",
+        "evidence-freshness"
+      ],
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "e1324fe",
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable",
+      "changedPathsSinceEvidenceCount": 1279
+    }
+  ],
+  "reportProjection": "Compact projection of check-ui-evidence-freshness.ps1 output: unmatched changed path lists replaced by counts; source identities, matchedSourcePaths and all verdicts retained.",
+  "rawReportSha256": "987B00A57F83EE0074AF67D4DFC565193C164B446E685358200C1B10B3ECBB6F",
+  "changedPathCount": 1279
+}
