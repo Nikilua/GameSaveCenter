@@ -1,3 +1,12 @@
+## 2026-10-05 CLOSE-IPC-01：取消IO/EOF竞争与失败夹具释放
+
+- 从main226bce6b、干净工作树开始，按启动协议fetch后与origin/main一致。版本不变。每测试独立管道、异步连接、服务握手、IAsyncLifetime释放和两个受控场景失败清理负例先排除夹具干扰。
+- 夹具修复后专项第5轮仍精确复现WorkerRequestException；先处理取消dispose的IOException/ObjectDisposedException后，第4轮再复现EOF管道异常。最终仅对已取消token的transport路径保留host/caller/timeout分类，不放宽异常断言，不改skip/timeout/重放次数，RequestId和MayHaveBeenAccepted语义保持。
+- 最终同DLL专项20轮200/200；完整source470 passed/18原有skipped/0 failed，Core125/Worker357；SDK8.0.423 Release0 warning/error，XAML24/24。全量WPF前23类通过，第24类Q14 Light654 DIP单行残留20 DIP bottom margin失败，后89类未执行；独立同DLLQ14再失败。新增CLOSE-WRAP-01，整体门禁不宣称通过。
+- 取得CI run37329446647 / 226bce6b完整失败日志，实际SDK10.0.401；两条侧栏动画启动断言失败，与IPC分账，COM收尾不解释断言。CI/SDK任务继续READY，5项freshness未改，Q/R账本和真实宿主问题未关闭。
+- TRX/console、复现与最终DLL SHA/MVID、源码hash及验证边界见 [本轮证据](evidence/close-ipc-20261005/README.md)。source validator/diff check通过，fsck仅既有dangling。因dirty-tree打包被正确拒绝；提交后才重建/打包，不绕过身份门禁。
+- 本轮没有启动/安装真实Playnite、修改OS偏好、操作用户数据；只终止命令行确认归属本轮.tmp隔离目录的旧测试进程，终止运行不记通过。源码与当前入口同步，按AGENTS单独commit/push main；后续优先CI/SDK，再Q14修复与精确补证。
+
 ## 2026-10-05 完成度复核与活动文档收口（GOV-003）
 
 - 用户授权审阅完成度、改进点及文档/任务。基线main `77de7f450431d267026ce2169aa30525b18bf528`，fetch后与origin/main一致，初始工作树干净；生产代码和版本不改。

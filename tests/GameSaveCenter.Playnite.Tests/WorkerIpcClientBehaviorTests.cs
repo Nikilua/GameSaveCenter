@@ -10,9 +10,43 @@ using Xunit;
 namespace GameSaveCenter.Playnite.Tests;
 
 [Collection("WorkerPipe")]
-public sealed class WorkerIpcClientBehaviorTests
+public sealed class WorkerIpcClientBehaviorTests : IAsyncLifetime
 {
-    private static readonly string TestPipeName = "GameSaveCenterTest" + Guid.NewGuid().ToString("N");
+    // xUnit creates one instance per test. A failed scenario cannot occupy the next
+    // scenario's pipe, and DisposeAsync also closes servers when an assertion fails.
+    private readonly string TestPipeName = "GameSaveCenterTest" + Guid.NewGuid().ToString("N");
+    private readonly List<NamedPipeServerStream> servers = new();
+    private readonly List<Task> serverTasks = new();
+    private readonly TaskCompletionSource<bool> releaseServer = NewSignal();
+    private bool disposing;
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
+        lock (servers)
+        {
+            disposing = true;
+            releaseServer.TrySetResult(true);
+            foreach (var server in servers) server.Dispose();
+        }
+        var cleanup = Task.WhenAll(serverTasks);
+        if (await Task.WhenAny(cleanup, Task.Delay(TimeSpan.FromSeconds(3))) != cleanup)
+            throw new TimeoutException("Test pipe server did not stop during cleanup.");
+        await cleanup;
+    }
+
+    private Task StartServer(Func<Task> handle)
+    {
+        var task = Task.Run(async () =>
+        {
+            try { await handle(); }
+            catch (IOException) when (disposing) { }
+            catch (ObjectDisposedException) when (disposing) { }
+        });
+        serverTasks.Add(task);
+        return task;
+    }
 
     [Fact]
     public void IsolatedAuditEnvironmentOverridesTheProductionPipePair()
@@ -66,7 +100,7 @@ public sealed class WorkerIpcClientBehaviorTests
             connected.TrySetResult(true);
             await ReadRequestAsync(pipe);
             received.TrySetResult(true);
-            await Task.Delay(450);
+            await releaseServer.Task;
         });
 
         using var cancelled = new CancellationTokenSource();
@@ -83,6 +117,7 @@ public sealed class WorkerIpcClientBehaviorTests
 
         var exception = await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "cancelled read"));
         stopwatch.Stop();
+        releaseServer.TrySetResult(true);
         await WaitForSignalAsync(server, "server shutdown");
 
         Assert.Equal(WorkerIpcCancellationReason.Caller, exception.Reason);
@@ -98,7 +133,7 @@ public sealed class WorkerIpcClientBehaviorTests
         {
             connected.TrySetResult(true);
             await ReadRequestAsync(pipe);
-            await Task.Delay(300);
+            await releaseServer.Task;
         });
 
         using var hostStopping = new CancellationTokenSource();
@@ -112,6 +147,7 @@ public sealed class WorkerIpcClientBehaviorTests
         hostStopping.Cancel();
 
         var exception = await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "host-cancelled read"));
+        releaseServer.TrySetResult(true);
         await WaitForSignalAsync(server, "server shutdown");
 
         Assert.Equal(WorkerIpcCancellationReason.HostShutdown, exception.Reason);
@@ -124,7 +160,7 @@ public sealed class WorkerIpcClientBehaviorTests
         var firstConnected = NewSignal();
         var secondConnected = NewSignal();
         var seenRequestIds = new List<string>();
-        var server = Task.Run(async () =>
+        var server = StartServer(async () =>
         {
             using (var first = CreateServer())
             {
@@ -173,21 +209,21 @@ public sealed class WorkerIpcClientBehaviorTests
     public async Task CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome()
     {
         var replayConnected = NewSignal();
-        var server = Task.Run(async () =>
+        var seenRequestIds = new List<string>();
+        var server = StartServer(async () =>
         {
             using (var first = CreateServer())
             {
                 await WaitForConnectionAsync(first);
-                await ReadRequestAsync(first);
+                seenRequestIds.Add((await ReadRequestAsync(first)).RequestId);
             }
 
             using (var replay = CreateServer())
             {
                 await WaitForConnectionAsync(replay);
-                await ReadRequestAsync(replay);
+                seenRequestIds.Add((await ReadRequestAsync(replay)).RequestId);
                 replayConnected.TrySetResult(true);
-                try { await Task.Delay(1000); }
-                catch (IOException) { }
+                await releaseServer.Task;
             }
         });
 
@@ -201,21 +237,30 @@ public sealed class WorkerIpcClientBehaviorTests
         cancelled.Cancel();
 
         var exception = await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "cancelled replay"));
+        releaseServer.TrySetResult(true);
         await WaitForSignalAsync(server, "server shutdown");
 
         Assert.Equal(WorkerIpcCancellationReason.Caller, exception.Reason);
         Assert.True(exception.MayHaveBeenAccepted);
         Assert.False(string.IsNullOrWhiteSpace(exception.RequestId));
+        Assert.Equal(2, seenRequestIds.Count);
+        Assert.All(seenRequestIds, id => Assert.Equal(exception.RequestId, id));
     }
 
     [NamedPipeFact]
     public async Task CancellationDuringLargeWriteIsReportedAsAmbiguousAndIsNotRetried()
     {
         var connected = NewSignal();
+        var writing = NewSignal();
         var server = RunServerAsync(async pipe =>
         {
             connected.TrySetResult(true);
-            await Task.Delay(450);
+            // Consume one byte to prove the write started, then keep the small
+            // pipe buffer blocked until cancellation has returned to the caller.
+            var firstByte = new byte[1];
+            Assert.Equal(1, await pipe.ReadAsync(firstByte, 0, firstByte.Length));
+            writing.TrySetResult(true);
+            await releaseServer.Task;
         });
         using var cancelled = new CancellationTokenSource();
         var payload = new { Value = new string('x', 3_000_000) };
@@ -225,14 +270,107 @@ public sealed class WorkerIpcClientBehaviorTests
             TimeSpan.FromSeconds(5),
             cancelled.Token);
         await WaitForSignalAsync(connected.Task, "server connection", server, pending);
-        await Task.Delay(40);
+        await WaitForSignalAsync(writing.Task, "write started", server, pending);
         cancelled.Cancel();
 
         var exception = await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "cancelled write"));
+        releaseServer.TrySetResult(true);
         await WaitForSignalAsync(server, "server shutdown");
 
         Assert.Equal(WorkerIpcCancellationReason.Caller, exception.Reason);
         Assert.True(exception.MayHaveBeenAccepted);
+        Assert.False(string.IsNullOrWhiteSpace(exception.RequestId));
+    }
+
+    [NamedPipeFact]
+    public async Task ReplayDisconnectBeforeCallerCancellationRemainsAnAmbiguousTransportFailure()
+    {
+        var seenRequestIds = new List<string>();
+        var server = StartServer(async () =>
+        {
+            // A server that closes before the caller cancels reproduces the old
+            // fixed-delay fixture's alternative outcome without a scheduler race.
+            for (var index = 0; index < 2; index++)
+            {
+                using var pipe = CreateServer();
+                await WaitForConnectionAsync(pipe);
+                seenRequestIds.Add((await ReadRequestAsync(pipe)).RequestId);
+            }
+        });
+        using var cancelled = new CancellationTokenSource();
+        var pending = CreateClient().RequestAsync<WorkerPingDto>(
+            MessageTypes.BackupGame, new { }, TimeSpan.FromSeconds(2), cancelled.Token);
+        var exception = await Assert.ThrowsAsync<WorkerRequestException>(() => AwaitWithTimeout(pending, "disconnected replay"));
+        cancelled.Cancel();
+        await WaitForSignalAsync(server, "server shutdown");
+
+        Assert.Equal(WorkerIpcFailureKind.PipeDisconnected, exception.FailureKind);
+        Assert.True(exception.MayHaveBeenAccepted);
+        Assert.Equal(2, seenRequestIds.Count);
+        Assert.All(seenRequestIds, id => Assert.Equal(exception.RequestId, id));
+    }
+
+    [NamedPipeFact]
+    public async Task FixtureCleanupReleasesAnUnconnectedServerAfterScenarioFailure()
+    {
+        var scenario = new WorkerIpcClientBehaviorTests();
+        var ready = NewSignal();
+        var server = scenario.StartServer(async () =>
+        {
+            using var pipe = scenario.CreateServer();
+            ready.TrySetResult(true);
+            await WaitForConnectionAsync(pipe);
+        });
+        try
+        {
+            await WaitForSignalAsync(ready.Task, "fixture server ready", server);
+            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            {
+                await Task.Yield();
+                throw new InvalidOperationException("Controlled scenario failure before connecting.");
+            });
+        }
+        finally
+        {
+            await scenario.DisposeAsync();
+        }
+
+        Assert.True(server.IsCompleted);
+        // The same name and single-instance limit must be available immediately.
+        using var replacement = new NamedPipeServerStream(scenario.TestPipeName, PipeDirection.InOut);
+    }
+
+    [NamedPipeFact]
+    public async Task FixtureCleanupReleasesAConnectedServerAfterScenarioFailure()
+    {
+        var scenario = new WorkerIpcClientBehaviorTests();
+        var received = NewSignal();
+        var server = scenario.RunServerAsync(async pipe =>
+        {
+            await ReadRequestAsync(pipe);
+            received.TrySetResult(true);
+            await scenario.releaseServer.Task;
+        });
+        using var cancelled = new CancellationTokenSource();
+        var pending = scenario.CreateClient().RequestAsync<WorkerPingDto>(
+            MessageTypes.GetDashboard, new { }, TimeSpan.FromSeconds(2), cancelled.Token);
+        try
+        {
+            await WaitForSignalAsync(received.Task, "fixture request receipt", server, pending);
+            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            {
+                await Task.Yield();
+                throw new InvalidOperationException("Controlled scenario failure after connecting.");
+            });
+        }
+        finally
+        {
+            cancelled.Cancel();
+            await scenario.DisposeAsync();
+        }
+        await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "fixture request cleanup"));
+        Assert.True(server.IsCompleted);
+        using var replacement = new NamedPipeServerStream(scenario.TestPipeName, PipeDirection.InOut);
     }
 
     private static TaskCompletionSource<bool> NewSignal()
@@ -259,11 +397,20 @@ public sealed class WorkerIpcClientBehaviorTests
         return await operation;
     }
 
-    private static WorkerIpcClient CreateClient()
+    private WorkerIpcClient CreateClient()
         => new(TestPipeName, TestPipeName + ".Events");
 
-    private static NamedPipeServerStream CreateServer()
-        => new(TestPipeName, PipeDirection.InOut);
+    private NamedPipeServerStream CreateServer()
+    {
+        lock (servers)
+        {
+            if (disposing) throw new ObjectDisposedException(nameof(WorkerIpcClientBehaviorTests));
+            var server = new NamedPipeServerStream(TestPipeName, PipeDirection.InOut, 1,
+                PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 4096, 4096);
+            servers.Add(server);
+            return server;
+        }
+    }
 
     private static async Task<IpcEnvelope> ReadRequestAsync(NamedPipeServerStream pipe)
     {
@@ -273,17 +420,18 @@ public sealed class WorkerIpcClientBehaviorTests
                ?? throw new InvalidOperationException("Test server received an invalid request.");
     }
 
-    private static async Task RunServerAsync(Func<NamedPipeServerStream, Task> handle)
+    private Task RunServerAsync(Func<NamedPipeServerStream, Task> handle)
+        => StartServer(async () =>
     {
         using var server = CreateServer();
         await WaitForConnectionAsync(server);
         try { await handle(server); }
         catch (IOException) { }
         catch (ObjectDisposedException) { }
-    }
+    });
 
     private static Task WaitForConnectionAsync(NamedPipeServerStream server)
-        => Task.Run(() => server.WaitForConnection());
+        => server.WaitForConnectionAsync();
 
 }
 

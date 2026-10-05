@@ -1,0 +1,45 @@
+{
+  "Baseline": "226bce6bf8b76c216cd7c5c4092adc74c59d20da",
+  "DirtySource": true,
+  "SDK": "8.0.423",
+  "SourceFiles": [
+    {
+      "Path": "src/GameSaveCenter.Playnite/Ipc/WorkerIpcClient.cs",
+      "SHA256": "981F0155E49E93BE35143200E6396C4B15C317FAB49F12FDE5A501E2D81AC6C5"
+    },
+    {
+      "Path": "tests/GameSaveCenter.Playnite.Tests/WorkerIpcClientBehaviorTests.cs",
+      "SHA256": "71EE5DC711B8CF70699C6718E500B0284EC8F8CC210A517756AC494315586778"
+    }
+  ],
+  "Assemblies": [
+    {
+      "File": "GameSaveCenter.Playnite.dll",
+      "SHA256": "124C0F996848BE787B60F52844D8DBFBD49C6E09C3956B4F6260F499C48F73CC",
+      "MVID": "64159b1c-173d-491e-a23c-e0a6adf275ae",
+      "ProductVersion": "0.6.73+226bce6bf8b76c216cd7c5c4092adc74c59d20da"
+    },
+    {
+      "File": "GameSaveCenter.Playnite.Tests.dll",
+      "SHA256": "B6CA8111D58A445EC4690003C70A17FE6C4354E026B3E7A8B62D33FBC5EC0FB1",
+      "MVID": "b48742e4-ad85-4274-8318-72db9f71914c",
+      "ProductVersion": "0.6.73+226bce6bf8b76c216cd7c5c4092adc74c59d20da"
+    }
+  ],
+  "ReproductionPluginAssemblies": [
+    {
+      "Stage": "build",
+      "FailureTrx": "ipc-5.trx",
+      "SHA256": "C4D844E6C6342F9A627FBAF6835426E86964920520E5D494F1D712BC009E3199",
+      "MVID": "917e96ab-bd3c-4536-b4be-b75ba8a053a7",
+      "ProductVersion": "0.6.73+226bce6bf8b76c216cd7c5c4092adc74c59d20da"
+    },
+    {
+      "Stage": "final-build",
+      "FailureTrx": "final-ipc-4.trx",
+      "SHA256": "810553572700D51F088546582C1B45032330EAB68E945D0AB999B4CB59507CD1",
+      "MVID": "e72c056b-5f69-4fe4-bc64-5d5e53e5a9ac",
+      "ProductVersion": "0.6.73+226bce6bf8b76c216cd7c5c4092adc74c59d20da"
+    }
+  ]
+}

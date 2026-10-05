@@ -1,0 +1,96 @@
+当前可用 SDK：
+  8.0.423 [C:\Program Files\dotnet\sdk]
+隔离构建输出：[repo]\.tmp\close-ipc-20261005\verified-build
+测试临时目录：[repo]\.tmp\close-ipc-20261005\verified-build\test-temp
+
+==> 检查 XAML 结构
+XAML structural validation passed for 24 file(s).
+
+==> 显示当前 SDK 信息
+.NET SDK:
+ Version:           8.0.423
+ Commit:            62e3aa2c1f
+ Workload version:  8.0.400-manifests.a04bdf47
+ MSBuild version:   17.11.48+02bf66295
+
+运行时环境:
+ OS Name:     Windows
+ OS Version:  10.0.26200
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   C:\Program Files\dotnet\sdk\8.0.423\
+
+已安装 .NET 工作负载:
+配置为在安装新清单时使用 loose manifests。
+没有要显示的已安装工作负载。
+
+Host:
+  Version:      9.0.8
+  Architecture: x64
+  Commit:       aae90fa090
+
+.NET SDKs installed:
+  8.0.423 [C:\Program Files\dotnet\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.29 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 3.1.8 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 3.1.28 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 6.0.16 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 6.0.33 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 8.0.13 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 8.0.14 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 8.0.19 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 8.0.29 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 9.0.7 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 9.0.8 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 3.1.8 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 6.0.33 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 8.0.19 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 8.0.29 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 9.0.8 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  Not set
+
+global.json file:
+  [repo]\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+==> 还原 NuGet 依赖
+  正在确定要还原的项目…
+  已还原 [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (用时 466 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (用时 466 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (用时 467 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 466 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 466 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 466 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (用时 571 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (用时 566 毫秒)。
+
+==> 编译解决方案（Release）
+  GameSaveCenter.Contracts -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:29.38
+
+构建与测试全部成功。下一步可运行 scripts/package.ps1

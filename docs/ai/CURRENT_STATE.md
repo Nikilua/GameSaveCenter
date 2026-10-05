@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-05；审阅源码：`77de7f450431d267026ce2169aa30525b18bf528`，分支 `main`，版本 `0.6.73-development-preview`。
+更新：2026-10-05；开发基线：`226bce6bf8b76c216cd7c5c4092adc74c59d20da`；IPC 修复的源码/DLL 身份见本轮证据，分支 `main`，版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -11,20 +11,20 @@
 | 维度 | 当前可核查事实 |
 | --- | --- |
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
-| 本轮测试 | Core `125/125`、Worker `357/357`；Playnite source `465 passed / 2 failed / 18 skipped`，全脚本失败，WPF 类阶段未执行 |
-| 远端 CI | 审阅时最新 run `36677346317`（源码 77de7f45）失败于“编译与测试”；渲染和打包被跳过；日志下载 HTTP 403，实际失败方法未知 |
+| 本轮测试 | Core `125/125`、Worker `357/357`；source `470 passed / 0 failed / 18 skipped`；IPC 20轮 `200/200`；WPF前23类通过，第24类Q14失败，后89类未执行 |
+| 远端 CI | 最新已核查 run `37329446647`（226bce6b / SDK10.0.401）两条侧栏活动动画断言失败；完整日志已取得，后续步骤跳过 |
 | R00/R01 证据 | 2026-10-04 当前身份检查为 `9 FRESH / 5 STALE`；过期项 R00-04/06/07/08、R01-05；未提供候选包身份 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 
-本轮构建日志、失败摘要、统计与复核结论统一在 [审阅证据](evidence/completion-review-20261005/README.md)。9 月 30 日 SDK9 全量通过是历史结果，不能覆盖本轮失败；本轮 SDK8 也不能替代 SDK10 CI。
+IPC修复、复现失败、最终专项/source/Worker与Q14失败统一在 [本轮证据](evidence/close-ipc-20261005/README.md)；[原完成度审阅](evidence/completion-review-20261005/README.md)保持历史原样。IPC任务已完成，整体门禁仍失败；SDK8不能替代SDK10 CI。
 
 ## 当前执行顺序
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. P0 `CLOSE-IPC-01`：定位本轮两条 Named Pipe 行为失败，核对时序、同名管道和失败清理，保留真实取消/未知提交语义。
-2. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：保存 CI 失败诊断，统一明确的 SDK 选择；依据日志定位远端失败，不猜测与本机相同。
-3. P1 `CLOSE-EVID-01`：按 5 项 sourcePaths 重跑对应行为/负例并更新 baseline，不能只改哈希使报告转绿。
+1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：依据已取得的侧栏动画断言核对系统偏好/测试前提，保存失败产物并统一明确SDK。
+2. P1 `CLOSE-WRAP-01`：修复已两次复现的Q14/654 DIP单行20 DIP边距残留，保留折行和往返负例。
+3. P1 `CLOSE-EVID-01`：上述回归修复后按5项sourcePaths精确补证，不能只改哈希转绿。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。
 

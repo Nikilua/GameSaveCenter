@@ -1,27 +1,23 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-05。审阅基线 main `77de7f450431d267026ce2169aa30525b18bf528`；版本 0.6.73。当前结论见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧 2846 行记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-05；开发基线main `226bce6b`，版本0.6.73。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 本轮完成
 
-- 按用户要求审阅完成度、任务与文档，重算两个正式任务表；不更改生产源码、版本、Q/R 单项验收或用户安装。
-- 删除无可重算口径的旧完成度百分比，区分实现、受控验证、当前缺陷与发布验收。
-- 当前事实/长期记忆/交接拆成简短入口与完整历史；任务统一到 [活动队列](AUTONOMOUS_BACKLOG.md)，修正旧“不得推送”规则与当前 AGENTS 的冲突。
-- 最新远端 run 36677346317 仍失败、日志 403；本机复跑另外发现 IPC 两条失败，不能推断与远端同根因。
-- freshness 复核 9 fresh/5 stale，保留 stale 原样并安排精确补证。
+- CLOSE-IPC-01已完成：独立管道、握手与失败清理先排除夹具干扰，再受控复现生产取消dispose的IOException/EOF竞争；修复取消分类，保留RequestId、有限重放和未知提交语义。
+- 同一最终DLL专项20轮200/200；source470通过/18原有跳过/零失败，Core125/Worker357通过，SDK8 Release 0 warning/error、XAML24/24。源码/DLL SHA、MVID、复现和负例见 [本轮证据](ai/evidence/close-ipc-20261005/README.md)。提交前dirty构建身份明确分账。
+- 全量WPF在第24类Q14失败：654 DIP单行预设控件残留20 DIP bottom margin，同DLL独立复核再失败。前23类通过，后89类未执行；新增CLOSE-WRAP-01，整体门禁不通过。
+- 取得最新CI run37329446647完整失败步骤：实际SDK10.0.401，两条ProductionShellChromeSourceTests活动动画断言失败，与IPC分开；旧run日志403仍是历史事实。
 
 ## 下一项如何开始
 
-1. fetch main、核对工作树；读取本轮 [审阅证据](ai/evidence/completion-review-20261005/README.md)。若远端已有新证据，先更新状态再领取任务。
-2. 先领取 `CLOSE-IPC-01`：从本轮失败方法、同 DLL 定向复核和 fixture 的共享管道/时序/清理入手。不要将异常类型断言放宽或把失败转 skip。
-3. `CLOSE-CI-01` 与 `CLOSE-SDK-01` 是可独立推进的工程工作：失败产物应在失败时也可下载；SDK 安装与实际选择需一致且可核查。
-4. `CLOSE-EVID-01` 重跑 R00-04/06/07/08、R01-05 的受影响范围，再更新原 baseline。无需重做已有业务。
-5. ENV-001 解除后优先 `CLOSE-HOST-01`，再执行当前候选的恢复/回滚/Undo、云端失败恢复、Worker 重启、主题/DPI/键盘与升级回退矩阵。
+1. fetch main并核对工作树；活动任务以 [AUTONOMOUS_BACKLOG](AUTONOMOUS_BACKLOG.md) 为唯一入口。
+2. 优先CLOSE-CI-01/CLOSE-SDK-01：根据已归档日志核对动画测试是否混淆应用开关与系统ClientAreaAnimation/HighContrast；补受控测试前提与默认生产策略负例，不改系统设置、不改skip，不把COM收尾输出当断言根因。统一SDK选择并保存失败console/TRX/退出码。
+3. CLOSE-WRAP-01：核对共享行距、DPI/测量和响应式更新；654 DIP失败必须有修复前后证据，保留620→660→620往返和Light/Dark。修好后再推进CLOSE-EVID-01的5项stale。
+4. ENV-001门禁满足后做Media Inbox同PID/DLL/MVID滚动几何；用户Q06/R08仍需原始日志与运行身份；最后执行同候选恢复/回滚/Undo与发布矩阵。
 
-## 已知验证边界
+## 验证边界
 
-本轮 SDK8 Release 编译 0/0、XAML 24/24，Core 125/125、Worker 357/357；Playnite source 465 passed/2 failed/18 skipped，全脚本失败，WPF 类阶段未执行。详细复核与证据身份在审阅包。SDK9 的历史通过、SDK8 的本轮结果和 SDK10 的历史 CI 必须分开。
+本轮没有启动真实Playnite、改变Windows动画偏好、安装到用户Extensions或触及真实存档/媒体/云端；没有验证物理DPI/读屏/最终呈现帧。SDK8本机与SDK10 CI分别记录。测试期间只终止已核对命令行归属本轮隔离目录的测试进程；被终止的运行不记为通过。
 
-真实宿主未在本轮启动，用户存档/媒体/云端未动；Media Inbox 必须记录同一 PID 的加载 DLL/MVID、主题、DIP/DPI、列头/Presenter/首行与页面偏移。用户 Q06/R08 原失败仍缺日志；不能凭本机复测关闭。
-
-本轮不启动新长期目标或自动化；后续根据用户请求与活动队列推进。每个独立阶段按当前 AGENTS 完成 commit/push，勿重新启用历史交接的 main 禁令。
+每独立阶段编译、测试、同步文档并commit/push当前main。正式包须通过clean-tree身份门禁，不从提交前dirty DLL假称发布包；打包和提交后核验结果在同一证据入口补记。

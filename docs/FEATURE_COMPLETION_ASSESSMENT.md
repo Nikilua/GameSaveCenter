@@ -6,6 +6,8 @@
 
 本轮核对了源码入口、构建配置、近期 Git、现有测试与证据、两个 UI 账本，并实际运行 Release 构建/测试和 freshness。不是逐行审计全部业务或重新完成真机验收。旧评估的 95%/98%/35% 等估算缺统一分母，停止用于决策；[原文完整归档](FEATURE_COMPLETION_ASSESSMENT_HISTORY_THROUGH_20260930.md)。
 
+2026-10-05后续：CLOSE-IPC-01已修复且200专项/source470通过；Core125/Worker357通过。全量WPF在第24类Q14失败，CI最新侧栏动画失败日志已取得。下方“本轮审阅”数字保留为原审阅事实，最新结果以 [当前入口](ai/CURRENT_STATE.md) 与 [修复证据](ai/evidence/close-ipc-20261005/README.md) 为准；整体正式发布结论不变。
+
 ## 1. 实现覆盖
 
 | 模块 | 当前实现依据 | 仍需闭环 |
@@ -13,7 +15,7 @@
 | 存档备份与恢复 | Worker `BackupOrchestrator` / `RestoreOrchestrator` / `RestoreReadinessService`；版本、校验、PreRestore、回滚/撤销恢复已有实现与隔离测试 | 当前候选配合真实 Ludusavi、可丢弃存档的恢复/失败回滚/Undo 全流程；异常中断与身份核查 |
 | 云端与多设备 | `CloudTransferCoordinator` / `CloudRetryService` / `RemoteBackupStagingService` / `DeviceStateService` | 独立测试远端断网、取消、认证失败、重试与分叉人工决策；不自动覆盖 |
 | 媒体 | `MediaSyncService`、分页/稳定 ID、收件箱、人工归类、撤销批次、异步缩略图 | 用户真实 Playnite 滚动后首行/列头偏移、大库/编解码器与真实时序 |
-| 任务与 IPC | `TaskCoordinator`、ledger、取消/超时、任务事件和恢复 | 本轮两条 IPC 自动测试失败；当前候选 Worker 断连/重启与未知提交结果的宿主回归 |
+| 任务与 IPC | `TaskCoordinator`、ledger、取消/超时、任务事件和恢复 | 原两条 IPC 失败已归因修复；当前候选 Worker 断连/重启与未知提交结果的宿主回归 |
 | 修改器与游戏工具 | `GameToolService` / `FlingTrainerCatalogSource` / `GameToolSessionTracker` | 外部工具下载/导入/启动/退出与各类 loader 的真实环境回归 |
 | 设置、维护与 UI | 六工作区、Settings、导入导出、环境检查、诊断、共享主题/响应式/无障碍已有源码与受控测试 | 当前宿主主题/DPI、物理输入/读屏、跨屏、长会话与实际帧性能 |
 

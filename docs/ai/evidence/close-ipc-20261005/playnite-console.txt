@@ -1,0 +1,185 @@
+Playnite test isolation: source classes 112, WPF classes 113
+    source test group
+  WPF isolated process [1/113] GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+    class GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+  WPF isolated process [2/113] GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+    class GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+  WPF isolated process [3/113] GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+    class GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+  WPF isolated process [4/113] GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+    class GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+  WPF isolated process [5/113] GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+    class GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+  WPF isolated process [6/113] GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+    class GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+  WPF isolated process [7/113] GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+    class GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+  WPF isolated process [8/113] GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+    class GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+  WPF isolated process [9/113] GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+    class GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+  WPF isolated process [10/113] GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+    class GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+  WPF isolated process [11/113] GameSaveCenter.Playnite.Tests.NumericInputTests
+    class GameSaveCenter.Playnite.Tests.NumericInputTests
+  WPF isolated process [12/113] GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+    class GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+  WPF isolated process [13/113] GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+    class GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+  WPF isolated process [14/113] GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+    class GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+  WPF isolated process [15/113] GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+    class GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+  WPF isolated process [16/113] GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+    class GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+  WPF isolated process [17/113] GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests
+  WPF isolated process [18/113] GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests
+  WPF isolated process [19/113] GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests
+  WPF isolated process [20/113] GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests
+  WPF isolated process [21/113] GameSaveCenter.Playnite.Tests.Q13ColumnResizeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q13ColumnResizeBehaviorTests
+  WPF isolated process [22/113] GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests
+  WPF isolated process [23/113] GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests
+  WPF isolated process [24/113] GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests
+[repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:06.62]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:09.07]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:09.17]   Starting:    GameSaveCenter.Playnite.Tests
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+[xUnit.net 00:00:49.90]     GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [FAIL]
+[xUnit.net 00:00:49.90]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:49.91]       Expected: null
+[xUnit.net 00:00:49.91]       Actual:   Xunit.Sdk.AllException: Assert.All() Failure: 7 out of 7 items in the collection did not pass.
+[xUnit.net 00:00:49.91]       [0]: Item:  TextBlock { ActualHeight = 18.399999999999999, ActualWidth = 48, AllowDrop = False, AreAnyTouchesCaptured = False, AreAnyTouchesCapturedWithin = False, ··· }
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child TextBlock should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]       [1]: Item:  System.Windows.Controls.ComboBox Items.Count:2
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child ComboBox should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]       [2]: Item:  GameSaveCenter.Playnite.Controls.Button: 应用
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]       [3]: Item:  System.Windows.Controls.TextBox: 我的预设
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child TextBox should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]       [4]: Item:  GameSaveCenter.Playnite.Controls.Button: 保存
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]       [5]: Item:  GameSaveCenter.Playnite.Controls.Button: 重命名
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]       [6]: Item:  GameSaveCenter.Playnite.Controls.Button: 删除
+[xUnit.net 00:00:49.91]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[xUnit.net 00:00:49.91]          在 Xunit.Assert.All[T](IEnumerable`1 collection, Action`2 action) 位置 /_/src/xunit.assert/Asserts/CollectionAsserts.cs:行号 90
+[xUnit.net 00:00:49.91]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.MeasurePresetWrapRows(GameSaveCenterThemeMode theme, Double width) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 196
+[xUnit.net 00:00:49.91]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.<>c__DisplayClass4_0.<ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 120
+[xUnit.net 00:00:49.91]       Stack Trace:
+[xUnit.net 00:00:49.91]            在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 133
+  失败 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [40 s]
+  错误消息:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   Xunit.Sdk.AllException: Assert.All() Failure: 7 out of 7 items in the collection did not pass.
+[0]: Item:  TextBlock { ActualHeight = 18.399999999999999, ActualWidth = 48, AllowDrop = False, AreAnyTouchesCaptured = False, AreAnyTouchesCapturedWithin = False, ··· }
+     Error: Light 654 DIP single-row preset child TextBlock should restore its authored margin, got 20 DIP.
+[1]: Item:  System.Windows.Controls.ComboBox Items.Count:2
+     Error: Light 654 DIP single-row preset child ComboBox should restore its authored margin, got 20 DIP.
+[2]: Item:  GameSaveCenter.Playnite.Controls.Button: 应用
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[3]: Item:  System.Windows.Controls.TextBox: 我的预设
+     Error: Light 654 DIP single-row preset child TextBox should restore its authored margin, got 20 DIP.
+[4]: Item:  GameSaveCenter.Playnite.Controls.Button: 保存
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[5]: Item:  GameSaveCenter.Playnite.Controls.Button: 重命名
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+[6]: Item:  GameSaveCenter.Playnite.Controls.Button: 删除
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.
+   在 Xunit.Assert.All[T](IEnumerable`1 collection, Action`2 action) 位置 /_/src/xunit.assert/Asserts/CollectionAsserts.cs:行号 90
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.MeasurePresetWrapRows(GameSaveCenterThemeMode theme, Double width) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 196
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.<>c__DisplayClass4_0.<ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 120
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 133
+[xUnit.net 00:00:49.96]   Finished:    GameSaveCenter.Playnite.Tests
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+
+测试总数: 1
+     失败数: 1
+测试运行失败。
+总时间: 1.1241 分钟

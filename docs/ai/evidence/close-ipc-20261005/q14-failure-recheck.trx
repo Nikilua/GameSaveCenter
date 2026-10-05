@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="24ff384e-9863-42ab-8c71-5c040f82bdb1" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-05T23:41:58.6028323+08:00" queuing="2026-10-05T23:41:58.6028327+08:00" start="2026-10-05T23:41:15.0463956+08:00" finish="2026-10-05T23:42:13.4253220+08:00" />
+  <TestSettings name="default" id="553b1bc7-260f-4ae0-8fd2-b2df07150598">
+    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-05_23_41_58" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="56da292f-1f41-4016-9cc9-5e9147666016" testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" testName="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" computerName="redacted-host" duration="00:00:37.8610000" startTime="2026-10-05T23:41:19.4415340+08:00" endTime="2026-10-05T23:41:57.2834628+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56da292f-1f41-4016-9cc9-5e9147666016">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Null() Failure: Value is not null&#xD;
+Expected: null&#xD;
+Actual:   Xunit.Sdk.AllException: Assert.All() Failure: 7 out of 7 items in the collection did not pass.&#xD;
+[0]: Item:  TextBlock { ActualHeight = 18.399999999999999, ActualWidth = 48, AllowDrop = False, AreAnyTouchesCaptured = False, AreAnyTouchesCapturedWithin = False, ··· }&#xD;
+     Error: Light 654 DIP single-row preset child TextBlock should restore its authored margin, got 20 DIP.&#xD;
+[1]: Item:  System.Windows.Controls.ComboBox Items.Count:2&#xD;
+     Error: Light 654 DIP single-row preset child ComboBox should restore its authored margin, got 20 DIP.&#xD;
+[2]: Item:  GameSaveCenter.Playnite.Controls.Button: 应用&#xD;
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[3]: Item:  System.Windows.Controls.TextBox: 我的预设&#xD;
+     Error: Light 654 DIP single-row preset child TextBox should restore its authored margin, got 20 DIP.&#xD;
+[4]: Item:  GameSaveCenter.Playnite.Controls.Button: 保存&#xD;
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[5]: Item:  GameSaveCenter.Playnite.Controls.Button: 重命名&#xD;
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[6]: Item:  GameSaveCenter.Playnite.Controls.Button: 删除&#xD;
+     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+   在 Xunit.Assert.All[T](IEnumerable`1 collection, Action`2 action) 位置 /_/src/xunit.assert/Asserts/CollectionAsserts.cs:行号 90&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.MeasurePresetWrapRows(GameSaveCenterThemeMode theme, Double width) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 196&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.&lt;&gt;c__DisplayClass4_0.&lt;ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 120</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 133</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" storage="d:\workplace\github\gamesavecenter\.tmp\close-ipc-20261005\verified-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157">
+      <Execution id="56da292f-1f41-4016-9cc9-5e9147666016" />
+      <TestMethod codeBase="[repo]\.tmp\close-ipc-20261005\verified-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests" name="ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" executionId="56da292f-1f41-4016-9cc9-5e9147666016" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.01]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.93]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.03]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+libpng warning: iCCP: known incorrect sRGB profile&#xD;
+[xUnit.net 00:00:40.98]       Assert.Null() Failure: Value is not null&#xD;
+[xUnit.net 00:00:40.98]       Expected: null&#xD;
+[xUnit.net 00:00:40.98]       Actual:   Xunit.Sdk.AllException: Assert.All() Failure: 7 out of 7 items in the collection did not pass.&#xD;
+[xUnit.net 00:00:40.98]       [0]: Item:  TextBlock { ActualHeight = 18.399999999999999, ActualWidth = 48, AllowDrop = False, AreAnyTouchesCaptured = False, AreAnyTouchesCapturedWithin = False, ··· }&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child TextBlock should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]       [1]: Item:  System.Windows.Controls.ComboBox Items.Count:2&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child ComboBox should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]       [2]: Item:  GameSaveCenter.Playnite.Controls.Button: 应用&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]       [3]: Item:  System.Windows.Controls.TextBox: 我的预设&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child TextBox should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]       [4]: Item:  GameSaveCenter.Playnite.Controls.Button: 保存&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]       [5]: Item:  GameSaveCenter.Playnite.Controls.Button: 重命名&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]       [6]: Item:  GameSaveCenter.Playnite.Controls.Button: 删除&#xD;
+[xUnit.net 00:00:40.98]            Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.&#xD;
+[xUnit.net 00:00:40.98]          在 Xunit.Assert.All[T](IEnumerable`1 collection, Action`2 action) 位置 /_/src/xunit.assert/Asserts/CollectionAsserts.cs:行号 90&#xD;
+[xUnit.net 00:00:40.98]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.MeasurePresetWrapRows(GameSaveCenterThemeMode theme, Double width) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 196&#xD;
+[xUnit.net 00:00:40.98]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.&lt;&gt;c__DisplayClass4_0.&lt;ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 120&#xD;
+[xUnit.net 00:00:40.98]       Stack Trace:&#xD;
+[xUnit.net 00:00:40.98]            在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 133&#xD;
+[xUnit.net 00:00:41.02]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-05T23:41:57.2905611+08:00">
+        <Text>[xUnit.net 00:00:40.98]     GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

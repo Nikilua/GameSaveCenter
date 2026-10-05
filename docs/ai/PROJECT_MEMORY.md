@@ -50,8 +50,8 @@
 ## 证据规则和当前风险
 
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
-- 当前活动缺口：IPC 两条本地 source 失败、远端 CI 失败未取日志、SDK 选择漂移、5 项 evidence stale、Media Inbox 宿主滚动、Q06/R08 原用户失败、发布恢复矩阵。
-- 2026-10-04/05 本轮 SDK8 Release 编译成功；Core 125、Worker 357 全通过；source 465/2/18 导致脚本失败，WPF 类未执行。不要沿用 9 月 30 日 SDK9 全量成功覆盖它。
+- IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
+- 当前活动缺口：已取日志的CI侧栏动画断言、SDK选择漂移、Q14/654 DIP单行边距残留、5项evidence stale、Media Inbox宿主滚动、Q06/R08原用户失败、发布恢复矩阵。IPC已实现且200专项/source470通过，Core125/Worker357通过；WPF第24类Q14失败、后89类未执行，整体仍未通过。证据见CURRENT_STATE，不沿用SDK9历史绿灯。
 - R00/R01 当前 freshness 是 9 fresh/5 stale；只改 baseline 身份无效，必须补相应行为/负例。包身份未给出，不能宣称已安装最新版本。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

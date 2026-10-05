@@ -1,0 +1,43 @@
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:05.65]     GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.ChipAndCellSpacingUseSharedTokens [SKIP]
+[xUnit.net 00:00:05.66]     GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.FiltersAndSearchControlsHaveSemanticPrefixes [SKIP]
+[xUnit.net 00:00:05.72]     GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.OverviewUsesOnlyTheRootPageScrollSurface [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.ChipAndCellSpacingUseSharedTokens [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.FiltersAndSearchControlsHaveSemanticPrefixes [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightClosureV6Tests.OverviewUsesOnlyTheRootPageScrollSurface [1 ms]
+[xUnit.net 00:00:06.34]     GameSaveCenter.Playnite.Tests.OvernightV4SaveFormTests.SaveBackupAutomationFormHasLabelsUnitsAndHelpers [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.OvernightV4SaveFormTests.SaveBackupAutomationFormHasLabelsUnitsAndHelpers [1 ms]
+[xUnit.net 00:00:06.51]     GameSaveCenter.Playnite.Tests.WorkspaceStateSourceTests.SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WorkspaceStateSourceTests.SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages [1 ms]
+[xUnit.net 00:00:11.34]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow [SKIP]
+[xUnit.net 00:00:11.36]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport [SKIP]
+[xUnit.net 00:00:11.36]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsOwnADedicatedActionRow [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsOwnADedicatedActionRow [1 ms]
+[xUnit.net 00:00:11.39]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents [SKIP]
+[xUnit.net 00:00:11.40]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow [SKIP]
+[xUnit.net 00:00:11.40]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport [SKIP]
+[xUnit.net 00:00:11.41]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain [SKIP]
+[xUnit.net 00:00:11.42]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewPrioritySummaryHidesDuplicateStatusPills [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewPrioritySummaryHidesDuplicateStatusPills [1 ms]
+[xUnit.net 00:00:11.43]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled [SKIP]
+[xUnit.net 00:00:11.43]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters [SKIP]
+[xUnit.net 00:00:11.43]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn [1 ms]
+[xUnit.net 00:00:11.57]     GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.OnboardingUsesMaintenanceWorkspaceAndExplicitCommands [SKIP]
+[xUnit.net 00:00:11.60]     GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.AutoSelectUsesEventsAndResolverWithoutPolling [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.OnboardingUsesMaintenanceWorkspaceAndExplicitCommands [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.SettingsAndAutoSelectSourceTests.AutoSelectUsesEventsAndResolverWithoutPolling [1 ms]
+结果文件: [repo]\.tmp\close-ipc-20261005\results\source.trx
+
+已通过! - 失败:     0，通过:   470，已跳过:    18，总计:   488，持续时间: 10 s - GameSaveCenter.Playnite.Tests.dll (net472)

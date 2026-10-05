@@ -1,0 +1,53 @@
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:05.50]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome [37 ms]
+  错误消息:
+   Assert.Throws() Failure: Exception type was not an exact match
+Expected: typeof(GameSaveCenter.Playnite.Ipc.WorkerIpcCancellationException)
+Actual:   typeof(GameSaveCenter.Playnite.Ipc.WorkerRequestException)
+---- GameSaveCenter.Playnite.Ipc.WorkerRequestException : Worker 管道已断开；请求可能已提交，不能据此判断业务回滚。
+-------- GameSaveCenter.Playnite.Ipc.WorkerRequestException : Worker 管道已断开；请求可能已提交，不能据此判断业务回滚。
+  堆栈跟踪:
+     在 Xunit.Assert.Throws(Type exceptionType, Exception exception) 位置 /_/src/xunit.assert/Asserts/ExceptionAsserts.cs:行号 47
+   在 Xunit.Assert.<ThrowsAsync>d__120`1.MoveNext() 位置 /_/src/xunit.assert/Asserts/ExceptionAsserts.cs:行号 272
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.<CallerCancellationDuringReplayWaitStopsWithAmbiguousOutcome>d__13.MoveNext() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WorkerIpcClientBehaviorTests.cs:行号 239
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 Xunit.Sdk.TestInvoker`1.<>c__DisplayClass47_0.<<InvokeTestMethodAsync>b__1>d.MoveNext() 位置 /_/src/xunit.execution/Sdk/Frameworks/Runners/TestInvoker.cs:行号 259
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 Xunit.Sdk.ExecutionTimer.<AggregateAsync>d__4.MoveNext() 位置 /_/src/xunit.execution/Sdk/Frameworks/ExecutionTimer.cs:行号 48
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 Xunit.Sdk.ExceptionAggregator.<RunAsync>d__9.MoveNext() 位置 /_/src/xunit.core/Sdk/ExceptionAggregator.cs:行号 90
+----- Inner Stack Trace -----
+   在 GameSaveCenter.Playnite.Ipc.WorkerIpcClient.<RequestWithTrackingAsync>d__12`1.MoveNext() 位置 [repo]\src\GameSaveCenter.Playnite\Ipc\WorkerIpcClient.cs:行号 241
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 GameSaveCenter.Playnite.Ipc.WorkerIpcClient.<RequestAsync>d__11`1.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.<AwaitWithTimeout>d__20`1.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 Xunit.Assert.<RecordExceptionAsync>d__141.MoveNext() 位置 /_/src/xunit.assert/Asserts/Record.cs:行号 115
+----- Inner Stack Trace -----
+   在 GameSaveCenter.Playnite.Ipc.WorkerIpcClient.<ExecuteRequestAsync>d__15`1.MoveNext() 位置 [repo]\src\GameSaveCenter.Playnite\Ipc\WorkerIpcClient.cs:行号 388
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 GameSaveCenter.Playnite.Ipc.WorkerIpcClient.<RequestWithTrackingAsync>d__12`1.MoveNext()
+结果文件: [repo]\.tmp\close-ipc-20261005\results\ipc-5.trx
+
+失败!  - 失败:     1，通过:     9，已跳过:     0，总计:    10，持续时间: 1 s - GameSaveCenter.Playnite.Tests.dll (net472)

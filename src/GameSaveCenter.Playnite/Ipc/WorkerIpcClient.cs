@@ -383,9 +383,26 @@ namespace GameSaveCenter.Playnite.Ipc
                 {
                     throw CreateTimeoutException(request, mayHaveBeenAccepted, ex);
                 }
+                catch (WorkerRequestException ex) when (ex.FailureKind == WorkerIpcFailureKind.PipeDisconnected
+                                                        && linkedCancellation.IsCancellationRequested)
+                {
+                    // A disposed pending read can also complete as EOF instead of
+                    // throwing IOException. Apply the same cancellation priority.
+                    ThrowIfCancellationRequested(request, callerToken, hostToken, mayHaveBeenAccepted);
+                    throw CreateTimeoutException(request, mayHaveBeenAccepted, ex);
+                }
                 catch (WorkerRequestException)
                 {
                     throw;
+                }
+                catch (Exception ex) when ((ex is IOException || ex is ObjectDisposedException)
+                                           && linkedCancellation.IsCancellationRequested)
+                {
+                    // Cancellation disposes the pipe to unblock Framework IO. The IO
+                    // task may fault before WhenAny observes the cancellation task;
+                    // that disposal race must retain caller/host/timeout semantics.
+                    ThrowIfCancellationRequested(request, callerToken, hostToken, mayHaveBeenAccepted);
+                    throw CreateTimeoutException(request, mayHaveBeenAccepted, ex);
                 }
                 catch (IOException ex)
                 {

@@ -11,9 +11,10 @@
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |
 | GOV-003 | P1 | IMPLEMENTED | 当前审阅 Agent | 本次文档/账本审阅；证据见下 |
-| CLOSE-IPC-01 | P0 | READY | 开发/测试 Agent | 本轮 SDK8 source 两条失败；R19-08/R01-08 |
+| CLOSE-IPC-01 | P0 | IMPLEMENTED | 开发/测试 Agent | 取消 IO/EOF 分类与夹具释放已修复；R19-08/R01-08 |
 | CLOSE-CI-01 | P0 | READY | 构建维护 Agent | 当前 CI 失败；诊断产物部分不依赖历史日志 |
 | CLOSE-SDK-01 | P0 | READY | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
+| CLOSE-WRAP-01 | P1 | READY | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
 | CLOSE-EVID-01 | P1 | READY | UI 验证 Agent | 先修影响该验证的测试失败；5 项 stale |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
@@ -29,6 +30,7 @@
 
 ### CLOSE-IPC-01：Named Pipe 取消/重放行为失败
 
+- **2026-10-05 完成**：握手/独立管道/IAsyncLifetime 排除夹具干扰后仍复现取消引发的 IOException/EOF 竞争，生产分类现保留 host/caller/timeout 与未知提交语义；20 轮专项 200/200，source 470 passed/18 原有 skipped/0 failed，Core125/Worker357。全量 WPF 在第24类 Q14 失败，不能称整体通过。修复前后 TRX、DLL SHA/MVID、负例和限制见 [证据](ai/evidence/close-ipc-20261005/README.md)。下方保留原任务范围与完成定义。
 - **范围**：复核 `WorkerIpcClientBehaviorTests` 两个失败方法，区分测试服务时序/共享管道/失败清理与生产取消分类；同一 DLL 独立复测，并在失败路径确保测试服务被释放。
 - **证据**：本轮 SDK8 全量 source 465/2/18；一条预期 `WorkerIpcCancellationException` 实得 `WorkerRequestException`，另一条“所有的管道范例都在使用中”。这是观测事实，尚非生产根因。
 - **完成条件**：保留 RequestId、MayHaveBeenAccepted、有限重放和 caller/host 取消的正负例；问题能由受控触发或清晰时序解释，修复后全量 source 和相关套件通过。一次复跑变绿不能抹除初始失败。
@@ -37,7 +39,7 @@
 ### CLOSE-CI-01：失败诊断产物与 CI 恢复
 
 - **范围**：为 build/source/WPF 分类阶段保存实际退出码、SDK/源码/DLL 身份、console 与 TRX；CI 使用失败时也执行的上传步骤。构建失败时无需伪造不存在的 TRX；日志需脱敏。
-- **前置**：历史 run 日志目前 HTTP 403；先推进可执行的诊断产物，再由可访问的旧日志或新失败产物定位。保留当前失败，不臆测是 SDK 或 IPC。
+- **前置/最新诊断**：旧 run 日志 HTTP403 是历史事实；本轮取得 run37329446647 / 226bce6b 的完整失败步骤。实际 SDK10.0.401；Core/Worker通过，两条 ProductionShellChromeSourceTests 活动动画断言失败。先核对系统动画偏好与测试前提，再补失败产物；不归因于 IPC。[日志](ai/evidence/close-ipc-20261005/ci-log-37329446647.txt)。
 - **完成条件**：受控失败也能取得完整方法/断言/堆栈与非零退出码；每个 WPF 类有独立结果、不相互覆盖；成功路径 artifact 正常；修复实际根因后当前候选 CI 编译/测试/渲染/打包均通过。单做上传只算部分完成。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
@@ -52,6 +54,12 @@
 - **范围**：R00-04/06/07/08、R01-05 的 shell、游戏选框、Media、Trainer 受影响行为和负例；复用现有测试/toolbarprobe/render 入口，不重建审计系统。
 - **完成条件**：记录源码身份、测试 DLL SHA/MVID、TRX、具体测量、负例与失败边界；重跑通过后更新原 baseline，freshness 14/14 且 package 身份仍独立核对。
 - **非目标**：不仅改 baseline SHA，不把本任务变成整轮视觉或真实宿主验收。
+
+### CLOSE-WRAP-01：任务预设单行残留折行边距
+
+- **范围**：Q14ToolbarAlignmentBehaviorTests 在 Light/654 DIP 实测为单行，但七个控件 Margin.Bottom 仍20 DIP；原全量和同DLL独立复核均失败。定位 WrapPanel 测量、DPI边界、响应式更新和行距恢复时序，修复共享路径；不放宽断言或固定跳过654 DIP。
+- **完成条件**：保留620→660→620往返、边界宽度和Light/Dark真实STA布局；单行恢复作者margin，折行保持20 DIP；关联Task/Save/Media/Trainer共享行距无回归。补修复前后DLL身份/TRX/几何，并完成全量门禁。
+- **依赖/证据**：CLOSE-EVID-01先完成此回归修复再更新baseline；[本轮失败与复核](ai/evidence/close-ipc-20261005/README.md)。这是新发现的受控失败，不替代用户Q06/R08或真实Playnite故障。
 
 ### CLOSE-HOST-01：Media Inbox 真实滚动诊断
 

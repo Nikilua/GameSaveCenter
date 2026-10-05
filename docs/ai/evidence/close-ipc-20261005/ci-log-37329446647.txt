@@ -1,0 +1,289 @@
+编译、测试与打包	编译与测试	﻿2026-10-05T15:01:46.5567795Z ##[group]Run ./scripts/build.ps1 -Configuration Release
+编译、测试与打包	编译与测试	2026-10-05T15:01:46.5568122Z ^[[36;1m./scripts/build.ps1 -Configuration Release^[[0m
+编译、测试与打包	编译与测试	2026-10-05T15:01:46.5618030Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+编译、测试与打包	编译与测试	2026-10-05T15:01:46.5618235Z env:
+编译、测试与打包	编译与测试	2026-10-05T15:01:46.5618357Z   DOTNET_ROOT: C:\Program Files\dotnet
+编译、测试与打包	编译与测试	2026-10-05T15:01:46.5618522Z ##[endgroup]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.0969049Z 当前可用 SDK：
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.0988221Z   8.0.131 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.0992025Z   8.0.206 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.0995695Z   8.0.319 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1000154Z   8.0.425 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1003635Z   9.0.121 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1006931Z   9.0.205 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1010123Z   9.0.318 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1013504Z   10.0.112 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1016949Z   10.0.204 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1020159Z   10.0.303 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1023335Z   10.0.401 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1038704Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.1039073Z ==> 检查 XAML 结构
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.3790744Z XAML structural validation passed for 24 file(s).
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.3820195Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:47.3820822Z ==> 显示当前 SDK 信息
+编译、测试与打包	编译与测试	2026-10-05T15:01:49.6199201Z .NET SDK:
+编译、测试与打包	编译与测试	2026-10-05T15:01:49.6199423Z  Version:           10.0.401
+编译、测试与打包	编译与测试	2026-10-05T15:01:49.6199591Z  Commit:            e34a38d2ae
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.6488789Z  Workload version:  10.0.400-manifests.b0700452
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7566086Z  MSBuild version:   18.9.11+e34a38d2a
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7566512Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7566686Z Runtime Environment:
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7573975Z  OS Name:     Windows
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7574622Z  OS Version:  10.0.26100
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7581731Z  OS Platform: Windows
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7782183Z  RID:         win-x64
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7782774Z  Base Path:   C:\Program Files\dotnet\sdk\10.0.401\
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7782993Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.7783132Z .NET workloads installed:
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9455608Z  [maui-windows]
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9457448Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9457904Z    Manifest Version:    10.0.20/10.0.100
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9458356Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.maui\10.0.20\WorkloadManifest.json
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9459304Z    Install Type:              Msi
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9459818Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9459891Z  [maccatalyst]
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9460060Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9460305Z    Manifest Version:    26.5.10301/10.0.100
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9461124Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.maccatalyst\26.5.10301\WorkloadManifest.json
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9461811Z    Install Type:              Msi
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9461971Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9462151Z  [ios]
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9462316Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9462544Z    Manifest Version:    26.5.10301/10.0.100
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9462999Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.ios\26.5.10301\WorkloadManifest.json
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9463453Z    Install Type:              Msi
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9463578Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9463643Z  [android]
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9463796Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9464013Z    Manifest Version:    36.1.69/10.0.100
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9464444Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.android\36.1.69\WorkloadManifest.json
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9464880Z    Install Type:              Msi
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9465012Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9465068Z  [wasm-tools]
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9465235Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9467962Z    Manifest Version:    10.0.112/10.0.100
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9468512Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.workload.mono.toolchain.current\10.0.112\WorkloadManifest.json
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9469050Z    Install Type:              Msi
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9469186Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9469375Z Configured to use workload sets when installing new manifests.
+编译、测试与打包	编译与测试	2026-10-05T15:01:51.9469816Z No workload sets are installed. Run "dotnet workload restore" to install a workload set.
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5714186Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5714711Z Host:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5714983Z   Version:      10.0.12
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5716249Z   Architecture: x64
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5716504Z   Commit:       95017c711e
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5716698Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5716791Z .NET SDKs installed:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5717002Z   8.0.131 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5717253Z   8.0.206 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5717491Z   8.0.319 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5717741Z   8.0.425 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5717977Z   9.0.121 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5718207Z   9.0.205 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5718441Z   9.0.318 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5718677Z   10.0.112 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5718898Z   10.0.204 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5719121Z   10.0.303 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5719350Z   10.0.401 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5719459Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5719516Z .NET runtimes installed:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5719832Z   Microsoft.AspNetCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5720336Z   Microsoft.AspNetCore.App 8.0.22 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5720834Z   Microsoft.AspNetCore.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5721295Z   Microsoft.AspNetCore.App 9.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5721743Z   Microsoft.AspNetCore.App 9.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5722197Z   Microsoft.AspNetCore.App 10.0.8 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5722656Z   Microsoft.AspNetCore.App 10.0.11 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5723132Z   Microsoft.AspNetCore.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5723457Z   Microsoft.NETCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5723992Z   Microsoft.NETCore.App 8.0.22 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5724280Z   Microsoft.NETCore.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5724564Z   Microsoft.NETCore.App 9.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5724852Z   Microsoft.NETCore.App 9.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5725137Z   Microsoft.NETCore.App 10.0.8 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5725419Z   Microsoft.NETCore.App 10.0.11 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5725702Z   Microsoft.NETCore.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5726060Z   Microsoft.WindowsDesktop.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5726483Z   Microsoft.WindowsDesktop.App 8.0.22 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5726874Z   Microsoft.WindowsDesktop.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5727406Z   Microsoft.WindowsDesktop.App 9.0.6 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5729192Z   Microsoft.WindowsDesktop.App 9.0.20 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5729572Z   Microsoft.WindowsDesktop.App 10.0.8 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5729932Z   Microsoft.WindowsDesktop.App 10.0.11 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5730285Z   Microsoft.WindowsDesktop.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5730490Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5730562Z Other architectures found:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5730707Z   x86   [C:\Program Files (x86)\dotnet]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5730932Z     registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731115Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731170Z Environment variables:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731307Z   DOTNET_MULTILEVEL_LOOKUP                 [0]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731469Z   DOTNET_NOLOGO                            [1]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731651Z   DOTNET_ROOT                              [C:\Program Files\dotnet]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731862Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE        [1]
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5731968Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732010Z global.json file:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732145Z   D:\a\GameSaveCenter\GameSaveCenter\global.json
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732255Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732299Z Learn more:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732422Z   https://aka.ms/dotnet/info
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732515Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732560Z Download .NET:
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5732674Z   https://aka.ms/dotnet/download
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5837090Z 
+编译、测试与打包	编译与测试	2026-10-05T15:01:52.5837537Z ==> 还原 NuGet 依赖
+编译、测试与打包	编译与测试	2026-10-05T15:01:55.3118100Z   Determining projects to restore...
+编译、测试与打包	编译与测试	2026-10-05T15:02:11.8721158Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (in 15.71 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:11.8735038Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (in 15.71 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:22.2824886Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (in 10.4 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:23.6062791Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (in 27.52 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:23.6070635Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (in 1.32 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:23.6119847Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (in 11.73 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:23.6144546Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (in 6 ms).
+编译、测试与打包	编译与测试	2026-10-05T15:02:24.0568872Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (in 27.97 sec).
+编译、测试与打包	编译与测试	2026-10-05T15:02:24.0910642Z 
+编译、测试与打包	编译与测试	2026-10-05T15:02:24.0919070Z ==> 编译解决方案（Release）
+编译、测试与打包	编译与测试	2026-10-05T15:02:28.6350944Z   GameSaveCenter.Contracts -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:28.9024099Z   GameSaveCenter.Core -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:33.9426990Z   GameSaveCenter.Worker -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Worker\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:39.7660299Z   GameSaveCenter.Playnite -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:40.1690573Z   GameSaveCenter.Core.Tests -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:41.6940993Z   GameSaveCenter.Worker.Tests -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:41.8438057Z   GameSaveCenter.Playnite.HostAuditSeeder -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9429465Z   GameSaveCenter.Playnite.Tests -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9487158Z 
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9492070Z Build succeeded.
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9492716Z     0 Warning(s)
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9492874Z     0 Error(s)
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9493926Z 
+编译、测试与打包	编译与测试	2026-10-05T15:02:45.9494212Z Time Elapsed 00:00:21.63
+编译、测试与打包	编译与测试	2026-10-05T15:02:46.2489338Z 
+编译、测试与打包	编译与测试	2026-10-05T15:02:46.2490125Z ==> 运行核心单元测试
+编译、测试与打包	编译与测试	2026-10-05T15:02:46.7177669Z Test run for D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll (.NETCoreApp,Version=v8.0)
+编译、测试与打包	编译与测试	2026-10-05T15:02:47.2144313Z A total of 1 test files matched the specified pattern.
+编译、测试与打包	编译与测试	2026-10-05T15:02:50.3204865Z 
+编译、测试与打包	编译与测试	2026-10-05T15:02:50.3242971Z Passed!  - Failed:     0, Passed:   125, Skipped:     0, Total:   125, Duration: 110 ms - GameSaveCenter.Core.Tests.dll (net8.0)
+编译、测试与打包	编译与测试	2026-10-05T15:02:50.6341674Z 
+编译、测试与打包	编译与测试	2026-10-05T15:02:50.6342606Z ==> 运行 Worker 集成测试
+编译、测试与打包	编译与测试	2026-10-05T15:02:51.0967413Z Test run for D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll (.NETCoreApp,Version=v8.0)
+编译、测试与打包	编译与测试	2026-10-05T15:02:51.2396654Z A total of 1 test files matched the specified pattern.
+编译、测试与打包	编译与测试	2026-10-05T15:04:24.5044935Z 
+编译、测试与打包	编译与测试	2026-10-05T15:04:24.5075351Z Passed!  - Failed:     0, Passed:   357, Skipped:     0, Total:   357, Duration: 1 m 32 s - GameSaveCenter.Worker.Tests.dll (net8.0)
+编译、测试与打包	编译与测试	2026-10-05T15:04:24.8228374Z 
+编译、测试与打包	编译与测试	2026-10-05T15:04:24.8229426Z ==> 运行 Playnite 测试（WPF 类隔离）
+编译、测试与打包	编译与测试	2026-10-05T15:04:30.1520138Z Playnite test isolation: source classes 112, WPF classes 113
+编译、测试与打包	编译与测试	2026-10-05T15:04:30.1558067Z     source test group
+编译、测试与打包	编译与测试	2026-10-05T15:04:43.0722164Z   WPF isolated process [1/113] GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:43.0726667Z     class GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:48.8860600Z   WPF isolated process [2/113] GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:48.8864417Z     class GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:53.1093675Z   WPF isolated process [3/113] GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:53.1098795Z     class GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:59.2267220Z   WPF isolated process [4/113] GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:04:59.2272571Z     class GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:13.8501236Z   WPF isolated process [5/113] GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:13.8506173Z     class GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:20.9752343Z   WPF isolated process [6/113] GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:20.9756890Z     class GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:27.7506752Z   WPF isolated process [7/113] GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:27.7512035Z     class GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:37.7401653Z   WPF isolated process [8/113] GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:37.7408863Z     class GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:41.8645283Z   WPF isolated process [9/113] GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:41.8648841Z     class GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:51.9003102Z   WPF isolated process [10/113] GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+编译、测试与打包	编译与测试	2026-10-05T15:05:51.9007054Z     class GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:06.1629508Z   WPF isolated process [11/113] GameSaveCenter.Playnite.Tests.NumericInputTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:06.1633423Z     class GameSaveCenter.Playnite.Tests.NumericInputTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:17.1230317Z   WPF isolated process [12/113] GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:17.1234641Z     class GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:25.6451218Z   WPF isolated process [13/113] GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:25.6454787Z     class GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:31.0148316Z   WPF isolated process [14/113] GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:31.0152694Z     class GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:35.1848131Z   WPF isolated process [15/113] GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:35.1851849Z     class GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:41.6073712Z   WPF isolated process [16/113] GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:41.6079427Z     class GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0141367Z Test run for D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0143548Z A total of 1 test files matched the specified pattern.
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0147958Z [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0149596Z [xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0155824Z [xUnit.net 00:00:02.25]   Discovered:  GameSaveCenter.Playnite.Tests
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0159097Z [xUnit.net 00:00:02.29]   Starting:    GameSaveCenter.Playnite.Tests
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0162377Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SettingsViewRequestsAUsableDefaultWindowSize [61 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0165599Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundPreferenceControlsDecodeAndMaterialFallback [9 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0168956Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionHeaderUsesRoundedSharedChrome [1 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0172446Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundCoversTheWholeShellWithoutAColumnGutter [1 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0175202Z [xUnit.net 00:00:04.68]       Assert.Null() Failure: Value is not null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0178151Z [xUnit.net 00:00:04.68]       Expected: null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0181275Z [xUnit.net 00:00:04.68]       Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0184013Z [xUnit.net 00:00:04.68]       Expected: True
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0186734Z [xUnit.net 00:00:04.68]       Actual:   False
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0189846Z [xUnit.net 00:00:04.68]          at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0193423Z [xUnit.net 00:00:04.68]          at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass8_0.<ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 234
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0196028Z [xUnit.net 00:00:04.68]       Stack Trace:
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0201019Z [xUnit.net 00:00:04.68]     GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites [FAIL]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0204351Z [xUnit.net 00:00:04.68]         ProductionShellChromeSourceTests.cs(269,0): at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites()
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0206929Z [xUnit.net 00:00:04.97]       Assert.Null() Failure: Value is not null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0209898Z [xUnit.net 00:00:04.97]       Expected: null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0213109Z [xUnit.net 00:00:04.97]       Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0216870Z [xUnit.net 00:00:04.97]       Expected: True
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0220040Z [xUnit.net 00:00:04.97]       Actual:   False
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0223187Z [xUnit.net 00:00:04.97]          at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0226503Z [xUnit.net 00:00:04.97]          at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass9_0.<SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 319
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0228841Z [xUnit.net 00:00:04.97]       Stack Trace:
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0232415Z [xUnit.net 00:00:04.97]         ProductionShellChromeSourceTests.cs(345,0): at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow()
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0235779Z [xUnit.net 00:00:04.97]     GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow [FAIL]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0238344Z [xUnit.net 00:00:05.17]   Finished:    GameSaveCenter.Playnite.Tests
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0241278Z   Failed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites [2 s]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0244442Z   Error Message:
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0249025Z    Assert.Null() Failure: Value is not null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0253022Z Expected: null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0256851Z Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0259993Z Expected: True
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0262799Z Actual:   False
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0265580Z    at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0268873Z    at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass8_0.<ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 234
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0271712Z   Stack Trace:
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0275208Z      at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 269
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0279293Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedAndCollapsedNavigationKeepsEveryIconLabelAndSelectionFrameAligned [102 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0282156Z   Failed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow [190 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0284749Z   Error Message:
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0287689Z    Assert.Null() Failure: Value is not null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0290721Z Expected: null
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0293499Z Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0296296Z Expected: True
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0298978Z Actual:   False
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0301758Z    at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0304936Z    at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass9_0.<SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 319
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0307419Z   Stack Trace:
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0310550Z      at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 345
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0313206Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionNormalizesSidebarToItsFinalStateInAnActualWpfWindow [67 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0316097Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionFooterOwnsWorkerStatusAndSpansTheShell [4 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0318847Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionSidebarCollapseIsAnIntegratedBoundaryAffordance [5 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0321683Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionUsesTheCurrentWidthAndKeepsTheLatestTarget [1 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0324476Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation [64 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0327379Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels [51 ms]
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0330243Z Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0332836Z    at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0335506Z    at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0338457Z    at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0341180Z    at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0344126Z Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0346759Z    at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0349688Z    at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0352456Z    at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0355429Z    at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0358188Z 
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0361137Z Test Run Failed.
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0394430Z Total tests: 13
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0394771Z      Passed: 11
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0395081Z      Failed: 2
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.0395398Z  Total time: 7.5394 Seconds
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.1268140Z ^[[31;1mException: ^[[0mD:\a\GameSaveCenter\GameSaveCenter\scripts\run-playnite-tests-isolated.ps1:56^[[0m
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.1268651Z ^[[31;1m^[[0m^[[36;1mLine |^[[0m
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.1269000Z ^[[31;1m^[[0m^[[36;1m^[[36;1m  56 | ^[[0m         ^[[36;1mthrow "$Label failed; dotnet exit code: $exitCode"^[[0m
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.1269420Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m     | ^[[31;1m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^[[0m
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.1269988Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m^[[31;1m^[[31;1m^[[36;1m     | ^[[31;1mclass GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests failed; dotnet exit code: 1^[[0m
+编译、测试与打包	编译与测试	2026-10-05T15:06:50.1483853Z ##[error]Process completed with exit code 1.
