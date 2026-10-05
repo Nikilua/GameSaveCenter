@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-05；开发基线main `226bce6b`，版本0.6.73。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-05；已交付源码main `d57a613f`，版本0.6.73。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 本轮完成
 
@@ -20,4 +20,4 @@
 
 本轮没有启动真实Playnite、改变Windows动画偏好、安装到用户Extensions或触及真实存档/媒体/云端；没有验证物理DPI/读屏/最终呈现帧。SDK8本机与SDK10 CI分别记录。测试期间只终止已核对命令行归属本轮隔离目录的测试进程；被终止的运行不记为通过。
 
-每独立阶段编译、测试、同步文档并commit/push当前main。正式包须通过clean-tree身份门禁，不从提交前dirty DLL假称发布包；打包和提交后核验结果在同一证据入口补记。
+每独立阶段编译、测试、同步文档并commit/push当前main。d57a613f提交后clean重建0/0、IPC10/10、本地ZIP/PEXT身份/结构检查通过，六个共享程序集均同commit，未安装。freshness仍9/5。新CI run37335412450记录时运行中；整体门禁仍受Q14/CI阻塞。本地包不冒称稳定发布；证据与包hash在同一入口。

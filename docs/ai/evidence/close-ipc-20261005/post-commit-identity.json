@@ -1,0 +1,40 @@
+{
+  "Commit": "d57a613fc800714e5b0718b1603b8c797ac5c810",
+  "WorkingTreeCleanAtBuild": true,
+  "Assemblies": [
+    {
+      "File": "GameSaveCenter.Playnite.dll",
+      "SHA256": "4F3AB35A587B407B9A0EDB9D9672B45019E036C35004CE12EC856901AB98984F",
+      "MVID": "c11a66e2-4c4e-4779-897a-2433c3336a5b",
+      "ProductVersion": "0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810"
+    },
+    {
+      "File": "GameSaveCenter.Playnite.Tests.dll",
+      "SHA256": "8ECAB547EC729E465C0B67D895B41A7866761E8DD4FBE723A7D6731C4F38B833",
+      "MVID": "aebcf61b-bd5e-46ee-aff4-f224488ed897",
+      "ProductVersion": "0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810"
+    }
+  ],
+  "Packages": [
+    {
+      "File": "GameSaveCenter-0.6.73-playnite.zip",
+      "Bytes": 45488948,
+      "SHA256": "988FA1D8591966DB4414DA9890B82361B78BC58B72E6002857A18B5C8BE98A35"
+    },
+    {
+      "File": "GameSaveCenter-0.6.73.pext",
+      "Bytes": 45488948,
+      "SHA256": "988FA1D8591966DB4414DA9890B82361B78BC58B72E6002857A18B5C8BE98A35"
+    }
+  ],
+  "SourceFiles": [
+    {
+      "Path": "src/GameSaveCenter.Playnite/Ipc/WorkerIpcClient.cs",
+      "SHA256": "981F0155E49E93BE35143200E6396C4B15C317FAB49F12FDE5A501E2D81AC6C5"
+    },
+    {
+      "Path": "tests/GameSaveCenter.Playnite.Tests/WorkerIpcClientBehaviorTests.cs",
+      "SHA256": "71EE5DC711B8CF70699C6718E500B0284EC8F8CC210A517756AC494315586778"
+    }
+  ]
+}

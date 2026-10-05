@@ -1,0 +1,5 @@
+[Worker] [repo]\artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.exe
+  文件版本：0.6.73.0
+Ludusavi 未配置
+Rclone 未配置
+基础可执行文件检查完成。实际备份/恢复请按 docs/WINDOWS_TEST_PLAN.md。

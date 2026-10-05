@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-05；开发基线：`226bce6bf8b76c216cd7c5c4092adc74c59d20da`；IPC 修复的源码/DLL 身份见本轮证据，分支 `main`，版本 `0.6.73-development-preview`。
+更新：2026-10-05；已交付源码：`d57a613fc800714e5b0718b1603b8c797ac5c810`；IPC 修复的源码/DLL 身份见本轮证据，分支 `main`，版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -13,7 +13,7 @@
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
 | 本轮测试 | Core `125/125`、Worker `357/357`；source `470 passed / 0 failed / 18 skipped`；IPC 20轮 `200/200`；WPF前23类通过，第24类Q14失败，后89类未执行 |
 | 远端 CI | 最新已核查 run `37329446647`（226bce6b / SDK10.0.401）两条侧栏活动动画断言失败；完整日志已取得，后续步骤跳过 |
-| R00/R01 证据 | 2026-10-04 当前身份检查为 `9 FRESH / 5 STALE`；过期项 R00-04/06/07/08、R01-05；未提供候选包身份 |
+| R00/R01 证据 | d57a613f clean身份仍 `9 FRESH / 5 STALE`；过期项 R00-04/06/07/08、R01-05；本地ZIP/PEXT已核对hash/构建身份，未安装 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 
 IPC修复、复现失败、最终专项/source/Worker与Q14失败统一在 [本轮证据](evidence/close-ipc-20261005/README.md)；[原完成度审阅](evidence/completion-review-20261005/README.md)保持历史原样。IPC任务已完成，整体门禁仍失败；SDK8不能替代SDK10 CI。

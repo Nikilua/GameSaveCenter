@@ -1,0 +1,24 @@
+
+==> 还原 Worker 发布运行时（win-x64）
+  ����ȷ��Ҫ��ԭ����Ŀ��
+  �ѻ�ԭ [repo]\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (��ʱ 519 ����)��
+  �ѻ�ԭ [repo]\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (��ʱ 527 ����)��
+  �ѻ�ԭ [repo]\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (��ʱ 519 ����)��
+
+==> 发布 Worker（win-x64）
+  GameSaveCenter.Contracts -> [repo]\.tmp\close-ipc-20261005\post-commit-build\bin\GameSaveCenter.Contracts\Release\netstandard2.0\win-x64\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\close-ipc-20261005\post-commit-build\bin\GameSaveCenter.Core\Release\netstandard2.0\win-x64\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\.tmp\close-ipc-20261005\post-commit-build\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\win-x64\GameSaveCenter.Worker.dll
+  GameSaveCenter.Worker -> [repo]\artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\
+
+==> 校验插件、Worker 与共享程序集构建身份
+  PluginCore 构建身份：0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810
+  Plugin 构建身份：0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810
+  WorkerContracts 构建身份：0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810
+  PluginContracts 构建身份：0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810
+  WorkerCore 构建身份：0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810
+  Worker 构建身份：0.6.73+d57a613fc800714e5b0718b1603b8c797ac5c810
+
+打包成功：[repo]\artifacts\GameSaveCenter-0.6.73-playnite.zip
+Playnite 安装包：[repo]\artifacts\GameSaveCenter-0.6.73.pext
+若当前 Playnite 拒绝直接安装 .pext，请使用 scripts/install-dev.ps1。

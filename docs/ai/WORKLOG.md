@@ -1,5 +1,6 @@
 ## 2026-10-05 CLOSE-IPC-01：取消IO/EOF竞争与失败夹具释放
 
+- 提交后核验：代码d57a613f已推送main；clean重建Release0/0、XAML24/24、新身份IPC10/10；package结构及六个程序集同commit检查通过，本地ZIP/PEXT hash归档，未安装；verify仅Worker文件版本0.6.73.0，Ludusavi/Rclone未配置。d57a613f freshness仍9/5；run37335412450记录时运行中，不冒称全量/CI/发布通过。归档后清理本阶段.tmp中间产物，仅保留最新本地包。
 - 从main226bce6b、干净工作树开始，按启动协议fetch后与origin/main一致。版本不变。每测试独立管道、异步连接、服务握手、IAsyncLifetime释放和两个受控场景失败清理负例先排除夹具干扰。
 - 夹具修复后专项第5轮仍精确复现WorkerRequestException；先处理取消dispose的IOException/ObjectDisposedException后，第4轮再复现EOF管道异常。最终仅对已取消token的transport路径保留host/caller/timeout分类，不放宽异常断言，不改skip/timeout/重放次数，RequestId和MayHaveBeenAccepted语义保持。
 - 最终同DLL专项20轮200/200；完整source470 passed/18原有skipped/0 failed，Core125/Worker357；SDK8.0.423 Release0 warning/error，XAML24/24。全量WPF前23类通过，第24类Q14 Light654 DIP单行残留20 DIP bottom margin失败，后89类未执行；独立同DLLQ14再失败。新增CLOSE-WRAP-01，整体门禁不宣称通过。

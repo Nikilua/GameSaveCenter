@@ -31,3 +31,13 @@
 [脱敏完整失败步骤日志](ci-log-37329446647.txt) 确认实际 SDK `10.0.401`，Core 125、Worker 357 通过；失败发生于 ProductionShellChromeSourceTests 的 `ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites`（234 行）和 `SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`（319 行），断言均为活动动画应存在。COM 清理异常出现在这些明确断言之后，不替代根因定位。该问题与 IPC 分类竞态分账，后续 CLOSE-CI-01/CLOSE-SDK-01 继续处理。
 
 真实 Playnite、物理 DPI、系统动画设置切换、Media Inbox 同进程滚动与用户 Q06/R08 原故障未在本任务验收；当前候选 CI、证据 freshness 和正式发布矩阵均不能从这些 IPC 成绩推断通过。
+
+## 提交后的 clean 身份核验
+
+源码提交 `d57a613fc800714e5b0718b1603b8c797ac5c810` 已推送origin/main。clean工作树重新restore/build（[日志](post-commit-build-console.txt)）仍XAML24/24、Release0 warning/error；新DLL的IPC [10/10](post-commit-ipc.trx)，exit0。两个源文件hash与20轮专项的源文件hash完全相同；[clean DLL/包身份](post-commit-identity.json) 单独保存SHA、MVID和ProductVersion，不与提交前dirty DLL混用。
+
+`package.ps1 -SkipBuild -BuildOutputRoot <隔离clean输出>` 成功生成本地ZIP/PEXT；[包日志](post-commit-package-console.txt) 核对六个插件/Worker/Core/Contracts身份均 `0.6.73+d57a613f…`，包哈希见上表链接。`verify.ps1` 仅核对Worker文件版本0.6.73.0；[日志](package-smoke.txt) 明确Ludusavi/Rclone未配置，没有实际调用这些工具或宣称真实恢复链验收。
+
+[clean源码freshness复核](post-commit-freshness.json) 仍9 fresh/5 stale，未更新baseline。报告只将changedPaths/unmatchedChangedPaths缩成数量，保留全部记录、命中路径、状态与package独立输入；package输入由实际本地包身份支持，**没有安装/加载身份**。本地开发预览包通过结构/身份检查不等于整体测试通过或稳定版可发布。
+
+推送触发run37335412450；记录时处于编译/测试中，不能称绿色CI。当前优先级仍为CI/SDK、Q14、精确补证及环境依赖验收。本阶段临时构建/一次性脚本在归档后清理，仅保留最新本地包；生成物不提交Git。
