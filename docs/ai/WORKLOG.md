@@ -1,5 +1,6 @@
 ## 2026-10-05 CLOSE-IPC-01：取消IO/EOF竞争与失败夹具释放
 
+- 最终CI/清理：源码d57a613f的run37335412450失败步骤已归档，仍为SDK10侧栏活动动画两条断言；Core125/Worker357和IPC source均已通过。freshness报告将全量路径缩为数量但保留14记录全部判定，原完整列表在bc190166可追溯。阶段.tmp已全部删除，残余shadow分析器缓存按模块路径确认归属后释放本轮编译器再清理；不按名称停用户进程。CI/SDK/Q14继续开放。
 - 提交后核验：代码d57a613f已推送main；clean重建Release0/0、XAML24/24、新身份IPC10/10；package结构及六个程序集同commit检查通过，本地ZIP/PEXT hash归档，未安装；verify仅Worker文件版本0.6.73.0，Ludusavi/Rclone未配置。d57a613f freshness仍9/5；run37335412450记录时运行中，不冒称全量/CI/发布通过。归档后清理本阶段.tmp中间产物，仅保留最新本地包。
 - 从main226bce6b、干净工作树开始，按启动协议fetch后与origin/main一致。版本不变。每测试独立管道、异步连接、服务握手、IAsyncLifetime释放和两个受控场景失败清理负例先排除夹具干扰。
 - 夹具修复后专项第5轮仍精确复现WorkerRequestException；先处理取消dispose的IOException/ObjectDisposedException后，第4轮再复现EOF管道异常。最终仅对已取消token的transport路径保留host/caller/timeout分类，不放宽异常断言，不改skip/timeout/重放次数，RequestId和MayHaveBeenAccepted语义保持。

@@ -38,6 +38,8 @@
 
 `package.ps1 -SkipBuild -BuildOutputRoot <隔离clean输出>` 成功生成本地ZIP/PEXT；[包日志](post-commit-package-console.txt) 核对六个插件/Worker/Core/Contracts身份均 `0.6.73+d57a613f…`，包哈希见上表链接。`verify.ps1` 仅核对Worker文件版本0.6.73.0；[日志](package-smoke.txt) 明确Ludusavi/Rclone未配置，没有实际调用这些工具或宣称真实恢复链验收。
 
-[clean源码freshness复核](post-commit-freshness.json) 仍9 fresh/5 stale，未更新baseline。报告只将changedPaths/unmatchedChangedPaths缩成数量，保留全部记录、命中路径、状态与package独立输入；package输入由实际本地包身份支持，**没有安装/加载身份**。本地开发预览包通过结构/身份检查不等于整体测试通过或稳定版可发布。
+[clean源码freshness复核](post-commit-freshness.json) 仍9 fresh/5 stale，未更新baseline。报告将全量changedPaths/changedPathsSinceEvidence列表缩成数量，保留全部记录、命中路径、状态与package独立输入；projectionInputSha256绑定缩减前归档报告（Git bc190166中保留原完整逐记录列表）。package输入由实际本地包身份支持，**没有安装/加载身份**。本地开发预览包通过结构/身份检查不等于整体测试通过或稳定版可发布。
 
-推送触发run37335412450；记录时处于编译/测试中，不能称绿色CI。当前优先级仍为CI/SDK、Q14、精确补证及环境依赖验收。本阶段临时构建/一次性脚本在归档后清理，仅保留最新本地包；生成物不提交Git。
+推送触发的 [run37335412450](https://github.com/Nikilua/GameSaveCenter/actions/runs/37335412450) 最终失败。完整 [失败步骤日志](ci-log-37335412450.txt) 确认SDK10.0.401，Core125/Worker357通过，仍是相同两条ProductionShellChromeSourceTests活动动画断言失败（13条中11通过/2失败）。IPC已过source分组；后续渲染/打包跳过，不能称绿色CI。当前优先级仍为CI/SDK、Q14、精确补证及环境依赖验收。
+
+本阶段临时构建/一次性脚本全部清理，仅保留最新本地包；最后残留的分析器shadow缓存先通过进程模块路径确认归属，再释放本轮编译器并等待退出后删除。生成物不提交Git。

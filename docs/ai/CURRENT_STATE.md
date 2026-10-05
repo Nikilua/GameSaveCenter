@@ -12,7 +12,7 @@
 | --- | --- |
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
 | 本轮测试 | Core `125/125`、Worker `357/357`；source `470 passed / 0 failed / 18 skipped`；IPC 20轮 `200/200`；WPF前23类通过，第24类Q14失败，后89类未执行 |
-| 远端 CI | 最新已核查 run `37329446647`（226bce6b / SDK10.0.401）两条侧栏活动动画断言失败；完整日志已取得，后续步骤跳过 |
+| 远端 CI | 源码提交 run `37335412450`（d57a613f / SDK10.0.401）仍两条侧栏活动动画断言失败；完整日志已取得，后续步骤跳过 |
 | R00/R01 证据 | d57a613f clean身份仍 `9 FRESH / 5 STALE`；过期项 R00-04/06/07/08、R01-05；本地ZIP/PEXT已核对hash/构建身份，未安装 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 

@@ -5,7 +5,7 @@
 | 跟踪项 | 当前事实 | 状态 |
 | --- | --- | --- |
 | CLOSE-IPC-01 | 修复取消dispose的IOException/EOF竞争分类与失败夹具释放；200专项/source470通过 | IMPLEMENTED；不代表整体门禁通过 |
-| CLOSE-CI-01 | run37329446647 / SDK10侧栏活动动画两条断言失败，已取得完整日志 | OPEN；与本地IPC分账 |
+| CLOSE-CI-01 | 源码提交run37335412450 / SDK10仍侧栏活动动画两条断言失败，已取得完整日志 | OPEN；与已修复本地IPC分账 |
 | CLOSE-WRAP-01 | Q14在Light/654 DIP单行七控件残留20 DIP边距，全量及独立复核均失败 | READY；完整WPF门禁仍失败 |
 | CLOSE-SDK-01 | CI安装9.0.x、global.json latestMajor、本机8.0.423，实际选择可漂移 | READY |
 | CLOSE-EVID-01 | R00-04/06/07/08、R01-05 当前 stale | READY；旧14/14已过时 |
