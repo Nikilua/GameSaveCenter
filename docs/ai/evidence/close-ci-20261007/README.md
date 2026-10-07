@@ -1,5 +1,7 @@
 # CLOSE-CI-01 诊断与侧栏测试前提（2026-10-07）
 
+后续SDK阶段归档复查补齐TRX runUser/runDeploymentRoot脱敏；本目录仅用户/主机元数据更正，原测试GUID、方法、断言、计数与DLL身份保留。补修负例与最终验证见[SDK阶段](../close-sdk-20261007/README.md)。
+
 本阶段从 main `0e92f82b397da81d98156009ff9fef0d7190ca36` 开始。版本仍为 `0.6.73-development-preview`，没有用户安装或正式发布。提交前测试使用 dirty build；InformationalVersion 中的基线提交不能代替本阶段源码身份。最终源码逐文件 SHA 与测试 DLL SHA/MVID 见 [身份快照](final-source-and-dll-identity.json)。
 
 ## 本阶段变更

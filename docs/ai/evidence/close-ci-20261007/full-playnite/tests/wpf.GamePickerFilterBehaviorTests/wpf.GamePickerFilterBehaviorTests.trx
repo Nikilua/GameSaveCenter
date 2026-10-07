@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="825e46dd-0c55-42f4-a915-63479ed8a6b8" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="825e46dd-0c55-42f4-a915-63479ed8a6b8" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:54:37.7574456+08:00" queuing="2026-10-07T10:54:37.7574461+08:00" start="2026-10-07T10:54:24.4595847+08:00" finish="2026-10-07T10:54:56.4116926+08:00" />
   <TestSettings name="default" id="8e46e00d-3ae5-4ac0-af15-809dc848febe">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_54_37" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="ad75d863-8c38-4f4d-a30e-a92c7e535290" testId="ce095740-c366-4267-5cc5-d6c975479d94" testName="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.SelectionCommittedWhenTheDropdownClosesAfterUserFlow" computerName="redacted-host" duration="00:00:03.0300000" startTime="2026-10-07T10:54:37.7389118+08:00" endTime="2026-10-07T10:54:40.6798647+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad75d863-8c38-4f4d-a30e-a92c7e535290" />

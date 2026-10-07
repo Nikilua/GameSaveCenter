@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="d5451500-6711-49d9-ac56-ce4efe9f0c89" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="d5451500-6711-49d9-ac56-ce4efe9f0c89" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:00:16.4844802+08:00" queuing="2026-10-07T11:00:16.4844808+08:00" start="2026-10-07T11:00:04.5216545+08:00" finish="2026-10-07T11:00:17.6736003+08:00" />
   <TestSettings name="default" id="fd9a8c7a-0e0e-46e1-900b-37eb86cded65">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_00_16" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="51f94398-1e02-4911-9304-a7ce5f8398e2" testId="1c093db2-dcc3-5528-446c-4ebc28f6ede6" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.DirectoryPasteTrimsOuterWhitespaceQuotesAndTrailingShellNewline" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T11:00:17.3774782+08:00" endTime="2026-10-07T11:00:17.3797640+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="51f94398-1e02-4911-9304-a7ce5f8398e2" />

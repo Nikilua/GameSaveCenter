@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="99da2b19-7b04-40f1-ad2f-0280611290d5" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="99da2b19-7b04-40f1-ad2f-0280611290d5" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:51:16.7418105+08:00" queuing="2026-10-07T10:51:16.7418108+08:00" start="2026-10-07T10:51:14.0487697+08:00" finish="2026-10-07T10:51:16.8661077+08:00" />
   <TestSettings name="default" id="ff5e8837-493e-4945-aad5-9a3afeff13ef">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_51_16" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="9e626f6d-38d2-48c3-a9d3-57cc30c27037" testId="230d6baf-ec01-910b-07b9-88339bbae007" testName="GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 0, expected: &quot;0 B&quot;)" computerName="redacted-host" duration="00:00:00.0002583" startTime="2026-10-07T10:51:16.7391331+08:00" endTime="2026-10-07T10:51:16.7405801+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e626f6d-38d2-48c3-a9d3-57cc30c27037" />

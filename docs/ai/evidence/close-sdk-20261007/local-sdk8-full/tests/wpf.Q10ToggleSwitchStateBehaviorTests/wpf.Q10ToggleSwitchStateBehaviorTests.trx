@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="d6469805-7575-4b86-acf9-1498bea63f20" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="d6469805-7575-4b86-acf9-1498bea63f20" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:51:32.7633140+08:00" queuing="2026-10-07T11:51:32.7633144+08:00" start="2026-10-07T11:51:12.7949122+08:00" finish="2026-10-07T11:51:47.2819014+08:00" />
   <TestSettings name="default" id="a6432d79-ee3e-453c-aedf-f21c9cdc57f2">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_51_32" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="4bb497a4-bfe2-4c05-913a-dfb2000b43ae" testId="034299c9-dd26-51dd-c356-d6a10d5b4829" testName="GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates" computerName="redacted-host" duration="00:00:13.8900000" startTime="2026-10-07T11:51:17.6665420+08:00" endTime="2026-10-07T11:51:31.5356353+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4bb497a4-bfe2-4c05-913a-dfb2000b43ae" />

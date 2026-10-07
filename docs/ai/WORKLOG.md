@@ -1,3 +1,11 @@
+## 2026-10-07 SDK提交后核验与Actions自测退出码补修
+
+- SDK工程源码91bfb6e1已commit/push main；clean Release0/0、XAML24/24、SDK8.0.423、五个诊断程序集SHA/MVID/版本同commit；testsRequested=false，不重复宣称clean全量测试。clean SDK自测通过，freshness实际6/8，baseline未改。
+- 新CI run37569191845终态失败：SDK安装/源码检查成功，自测日志断言全通过但外层步骤非零；SDK自测/编译/WPF/渲染/包未执行。APIartifact数量0，自测原输出.tmp不被上传；always步骤success不足以证明有产物。
+- 同Actions dot-source与LASTEXITCODE传播入口在本地复现非零。采集器正确保留预期7，不修改实际负例码；两个自测入口于finally后显式exit0，异常路径不执行。PS5.1/7Actions包装后退出0，负例/脱敏保持；SDK包装也退出0。
+- 自测标明runType并进入诊断上传目录，仅JSON/TXT/TRX排除原生夹具/脚手架。补修后Release、源码/AST/diff检查留证；新CI尚待核对，CLOSE-CI/SDK仍IN_PROGRESS。没有UI、版本、包或用户数据操作。补修前后上下文、实际CI日志和clean身份追加到[SDK证据](evidence/close-sdk-20261007/README.md)。
+- 归档复查补齐TRX runUser/runDeploymentRoot元数据脱敏；新增合成字段负例先实际失败，异常路径仍非零，修复后PS5.1/7Actions包装均通过。两个10月7日证据目录共87个文件补齐字段脱敏，原断言/计数/GUID和DLL身份未改；没有重写Git历史。
+
 ## 2026-10-07 CLOSE-SDK-01工程阶段：SDK与编译器一致性
 
 - 从main c7f2a368干净工作树启动，按规定依次阅读当前入口/记忆/日志/交接及Git状态，fetch后领取SDK任务。没有升级目标框架、运行时、NuGet或0.6.73版本。

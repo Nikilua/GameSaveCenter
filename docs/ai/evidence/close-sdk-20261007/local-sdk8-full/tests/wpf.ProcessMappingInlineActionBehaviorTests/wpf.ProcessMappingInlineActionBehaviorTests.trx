@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="4cde9a59-4542-48d2-b0fc-26958730ad77" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="4cde9a59-4542-48d2-b0fc-26958730ad77" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:49:06.0712232+08:00" queuing="2026-10-07T11:49:06.0712235+08:00" start="2026-10-07T11:48:53.5983360+08:00" finish="2026-10-07T11:49:21.6344196+08:00" />
   <TestSettings name="default" id="edf2618d-9411-4b4d-b421-24c95f9f8e8d">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_49_06" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="a715f64d-dd1c-4aee-b205-6da23bf33226" testId="c6c7e8d6-e580-745f-ff57-77c0303d771c" testName="GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests.InlineDeleteTargetsTheHitRowInsteadOfASeparateSelectedRowInBothThemes" computerName="redacted-host" duration="00:00:07.1640000" startTime="2026-10-07T11:48:58.4978155+08:00" endTime="2026-10-07T11:49:05.6409674+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a715f64d-dd1c-4aee-b205-6da23bf33226" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="90430ac8-268a-4a96-9a2c-304ef99aa22d" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="90430ac8-268a-4a96-9a2c-304ef99aa22d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:00:01.0648502+08:00" queuing="2026-10-07T11:00:01.0648506+08:00" start="2026-10-07T10:59:45.8242462+08:00" finish="2026-10-07T11:00:02.9793111+08:00" />
   <TestSettings name="default" id="eeeefd0b-ab67-455d-b6cd-69855e6a65ba">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_00_01" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="1b9ef088-0e29-40a7-bd7a-b7d2aa15168e" testId="ef85d836-4407-b03d-1b58-abe1dead025e" testName="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.OverviewKeepsLegacyActivityHiddenAndMetricCommandWiredBehindCollapsedStrip" computerName="redacted-host" duration="00:00:00.0730000" startTime="2026-10-07T11:00:01.2882248+08:00" endTime="2026-10-07T11:00:01.3856610+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1b9ef088-0e29-40a7-bd7a-b7d2aa15168e" />

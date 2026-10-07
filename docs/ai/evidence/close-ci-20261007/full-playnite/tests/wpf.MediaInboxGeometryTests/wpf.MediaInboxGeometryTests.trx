@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="4dea0300-55b7-4dfc-9b67-b006cc1f1848" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="4dea0300-55b7-4dfc-9b67-b006cc1f1848" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:56:48.4467220+08:00" queuing="2026-10-07T10:56:48.4467224+08:00" start="2026-10-07T10:56:30.2114439+08:00" finish="2026-10-07T10:57:05.3860790+08:00" />
   <TestSettings name="default" id="7d3dd728-9128-4be6-a469-bdebb94f6d7e">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_56_48" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="10aec5ab-2b90-42a2-80f4-e46be0413277" testId="2b1bd52c-eae4-fa9a-03f5-5680e0a5546d" testName="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ProductionInboxKeepsFourRowsOrExposesThePageFallback" computerName="redacted-host" duration="00:00:05.4560000" startTime="2026-10-07T10:56:42.9023497+08:00" endTime="2026-10-07T10:56:48.3401473+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="10aec5ab-2b90-42a2-80f4-e46be0413277" />

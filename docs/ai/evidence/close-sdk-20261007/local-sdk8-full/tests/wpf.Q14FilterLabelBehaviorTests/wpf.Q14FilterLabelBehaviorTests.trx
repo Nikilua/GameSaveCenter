@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="9614b67b-61ca-45cc-acce-d1f533da25d2" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="9614b67b-61ca-45cc-acce-d1f533da25d2" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:53:11.1155785+08:00" queuing="2026-10-07T11:53:11.1155789+08:00" start="2026-10-07T11:52:42.2634829+08:00" finish="2026-10-07T11:53:22.0760331+08:00" />
   <TestSettings name="default" id="b9a0dedc-248c-4987-bb0a-1be73041d1a6">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_53_11" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="a59dc3b1-43bf-49e4-bd7f-e63b4178d275" testId="0a2ebcf3-4c54-3219-78ac-fd22a3aa0647" testName="GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups" computerName="redacted-host" duration="00:00:23.6990000" startTime="2026-10-07T11:52:46.9811240+08:00" endTime="2026-10-07T11:53:10.6605013+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a59dc3b1-43bf-49e4-bd7f-e63b4178d275">

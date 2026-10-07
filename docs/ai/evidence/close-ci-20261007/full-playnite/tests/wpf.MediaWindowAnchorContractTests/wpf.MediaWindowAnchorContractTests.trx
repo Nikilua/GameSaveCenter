@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="9fd41f8e-4d74-4795-be87-728c26b64249" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="9fd41f8e-4d74-4795-be87-728c26b64249" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:58:17.9651453+08:00" queuing="2026-10-07T10:58:17.9651459+08:00" start="2026-10-07T10:58:06.5643973+08:00" finish="2026-10-07T10:58:40.3995419+08:00" />
   <TestSettings name="default" id="94f9d4ed-574a-4f1d-8e4e-cc324f418e97">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_58_17" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="270c175f-afa5-44eb-b7e5-45940dfcabe4" testId="b5f26fce-fe51-4706-ca59-31156fdc3098" testName="GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests.LoadMoreSurfacesCaptureAndRestoreTheMediaAnchor" computerName="redacted-host" duration="00:00:00.0090000" startTime="2026-10-07T10:58:22.6712938+08:00" endTime="2026-10-07T10:58:22.6779376+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="270c175f-afa5-44eb-b7e5-45940dfcabe4" />

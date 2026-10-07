@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="a7e95498-91fc-4263-9fac-f5661c29b6dc" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="a7e95498-91fc-4263-9fac-f5661c29b6dc" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:20:22.0489036+00:00" queuing="2026-10-07T03:20:22.0489038+00:00" start="2026-10-07T03:20:17.2509744+00:00" finish="2026-10-07T03:20:22.1431356+00:00" />
   <TestSettings name="default" id="5dea5f07-93ac-44c7-b1a4-58ef5b9e8dcc">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_20_22" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="90258af7-64b4-44a7-b0e0-c8ac206da304" testId="cf69981d-bda0-38b1-37ab-e5f77b2e300f" testName="GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests.SourcePathSetBeforeLoadDoesNotStartUntilTheImageIsVisible" computerName="redacted-host" duration="00:00:00.0340000" startTime="2026-10-07T03:20:22.0343065+00:00" endTime="2026-10-07T03:20:22.0451654+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90258af7-64b4-44a7-b0e0-c8ac206da304" />

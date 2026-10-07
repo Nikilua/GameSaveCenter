@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "reportKind": "freshness-projection",
+  "generatedUtc": "2026-10-07T04:00:29.6112261Z",
+  "currentSourceCommit": "91bfb6e1e38fa0f5c986517bfd8625b6467c42d5",
+  "currentPackageCommit": "not-provided",
+  "packageIdentityStatus": "not-provided",
+  "fresh": 6,
+  "stale": 8,
+  "note": "All 14 decisions and matched paths retained; repeated historical compared-path lists replaced by counts. Baseline unchanged.",
+  "records": [
+    {
+      "id": "R00-01-02",
+      "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "changedPathsSinceEvidenceCount": 586,
+      "matchedSourcePaths": [],
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-03",
+      "evidence": "evidence/R00-03-MOTION-LIFECYCLE-20260916.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "changedPathsSinceEvidenceCount": 998,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-04",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "changedPathsSinceEvidenceCount": 425,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-05",
+      "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "changedPathsSinceEvidenceCount": 586,
+      "matchedSourcePaths": [],
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-06",
+      "evidence": "evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "af915a2d637dc4901e1c81e2e2cdd097c958a002",
+      "changedPathsSinceEvidenceCount": 381,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-07",
+      "evidence": "evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "22c55647799e732a770e6b16a93af4a9e83056f6",
+      "changedPathsSinceEvidenceCount": 394,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-08",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "changedPathsSinceEvidenceCount": 425,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-01",
+      "evidence": "evidence/R01-01-REPOSITORY-IDENTITY-20260916.md",
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "changedPathsSinceEvidenceCount": 776,
+      "matchedSourcePaths": [
+        "scripts/build.ps1"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-02",
+      "evidence": "evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "changedPathsSinceEvidenceCount": 998,
+      "matchedSourcePaths": [],
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-03",
+      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "changedPathsSinceEvidenceCount": 466,
+      "matchedSourcePaths": [],
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-04",
+      "evidence": "evidence/R01-04-MOTION-BEHAVIOR-20260916.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "changedPathsSinceEvidenceCount": 998,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-05",
+      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "changedPathsSinceEvidenceCount": 425,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ],
+      "needsRerun": true,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-06",
+      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "changedPathsSinceEvidenceCount": 466,
+      "matchedSourcePaths": [],
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-07",
+      "evidence": "evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "e1324fe",
+      "changedPathsSinceEvidenceCount": 1598,
+      "matchedSourcePaths": [],
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageStatus": "not-applicable"
+    }
+  ]
+}

@@ -45,6 +45,7 @@
 - **2026-10-07阶段**：已接入console/TRX/实际退出码/SDK/源码与DLL身份及always上传，PS5.1/7受控失败与启动错误自测通过；侧栏22/22、source470/18、WPF前23类通过，第24类Q14两次先失败于错误态高度36→37 DIP，后89类未执行。全CI恢复未验，保持IN_PROGRESS。[证据](ai/evidence/close-ci-20261007/README.md)。
 - **提交后**：48b78b3b已推送main，clean构建0/0与侧栏22/22；run37565955357记录时编译/测试进行中，先取该run终态与产物再统一SDK。freshness实算6/8，未更新baseline。
 - **终态复核（SDK阶段）**：run37565955357与37566483862失败时均实际上传且已下载诊断；SDK10侧栏22/22通过，native ClientAreaAnimation=false有TRX记录；均在Q14错误态36→37 DIP失败，后89类未执行。补修诊断器多PATH匹配拼接，PS5.1/7正负例通过。完整CI仍未恢复。[SDK阶段](ai/evidence/close-sdk-20261007/README.md)。
+- **入口补修**：91bfb6e1/run37569191845自测断言通过后仍退出非零，后续全部未执行/实际artifact0；同Actions包装本地复现。自测在finally后显式exit0、日志纳入artifact并只上传JSON/TXT/TRX；PS5.1/7包装退出0且负例保留。新CI待验，不提前关闭。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
 ### CLOSE-SDK-01：明确 SDK 与编译器基线

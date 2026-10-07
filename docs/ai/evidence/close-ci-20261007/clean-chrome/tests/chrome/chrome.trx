@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="93f8ac21-1826-42a1-a5ec-f103539ced9c" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="93f8ac21-1826-42a1-a5ec-f103539ced9c" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:19:16.4545685+08:00" queuing="2026-10-07T11:19:16.4545688+08:00" start="2026-10-07T11:19:08.6403883+08:00" finish="2026-10-07T11:19:41.9141839+08:00" />
   <TestSettings name="default" id="0c26060c-1703-4120-ab90-5aca659a65c9">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_19_16" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="2f37bccc-8975-460e-85ff-7d544c14a319" testId="c90e4bce-3003-f281-0ef5-5b8a4fd1825b" testName="GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation" computerName="redacted-host" duration="00:00:00.2930000" startTime="2026-10-07T11:19:25.8082883+08:00" endTime="2026-10-07T11:19:26.0930941+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f37bccc-8975-460e-85ff-7d544c14a319" />

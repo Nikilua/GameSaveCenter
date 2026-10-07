@@ -1,3 +1,7 @@
+## 2026-10-07 SDK提交后核验与自测入口补修
+
+91bfb6e1已推送，clean重建0/0、SDK自测通过，freshness6/8。新CI诊断自测断言通过但外层退出非零，后续未执行且artifact0；同Actions包装已本地复现并以入口finally后exit0修复。PS5.1/7包装退出0、真实负例保留；自测也进入上传目录，只保留JSON/TXT/TRX。新CI待验，完整门禁/任务状态不提前转绿；[证据](ai/evidence/close-sdk-20261007/README.md)。
+
 ## 2026-10-07 SDK与编译器基线工程阶段
 
 global.json/CI精确SDK8.0.423、disable，C#12.0；构建和独立runner实际版本校验，PS5.1/7真实缺失旧SDK与latestMajor对照通过。Release0/0、XAML24/24、Core125/Worker357/source470通过；WPF前23类通过、第24类Q14错误态36→37 DIP失败、后89类未执行，build退出1。前阶段两条SDK10 CI侧栏22/22通过，native动画偏好false有TRX记录，always失败上传已下载；仍在同一Q14失败。多PATH诊断命令优先级回归已修复/测试，UI两处根因已取得隔离测量。SDK/CI保持IN_PROGRESS，当前runner与包门禁、版本、用户安装及Q/R验收不变。证据：[SDK阶段](ai/evidence/close-sdk-20261007/README.md)。

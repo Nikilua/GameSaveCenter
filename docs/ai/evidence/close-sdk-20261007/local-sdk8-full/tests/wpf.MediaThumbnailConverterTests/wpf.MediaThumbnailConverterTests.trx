@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="57aeb097-c557-40dd-bb0f-80a4abe3f555" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="57aeb097-c557-40dd-bb0f-80a4abe3f555" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:47:11.3125966+08:00" queuing="2026-10-07T11:47:11.3125969+08:00" start="2026-10-07T11:47:04.1470185+08:00" finish="2026-10-07T11:47:11.3260258+08:00" />
   <TestSettings name="default" id="aaa446e7-1aee-46ca-b3df-c2d52a1141b0">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_47_11" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="d554fb9d-ef0c-4297-9fef-7c4e578384c3" testId="2c60ced9-32c7-8a35-823b-2449774bf618" testName="GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests.Convert_UsesBoundedFrozenCacheAndReleasesFiles" computerName="redacted-host" duration="00:00:01.8940000" startTime="2026-10-07T11:47:09.1734376+08:00" endTime="2026-10-07T11:47:11.0472737+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d554fb9d-ef0c-4297-9fef-7c4e578384c3" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="363f0aca-ae53-4518-b411-c1a3dbd20239" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="363f0aca-ae53-4518-b411-c1a3dbd20239" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:20:51.5596378+00:00" queuing="2026-10-07T03:20:51.5596379+00:00" start="2026-10-07T03:20:46.2951392+00:00" finish="2026-10-07T03:20:52.4541679+00:00" />
   <TestSettings name="default" id="8a4ecf36-d640-4bab-b32d-51ab44f6cb35">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_20_51" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="c8c795cf-73bc-483d-af27-9f5f13142253" testId="6fee876a-0e57-e7b4-851c-4a1af830dee0" testName="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.NarrowInboxKeepsThePageScrollChannelWhenFooterWraps" computerName="redacted-host" duration="00:00:00.1440000" startTime="2026-10-07T03:20:51.5416574+00:00" endTime="2026-10-07T03:20:51.6562108+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c8c795cf-73bc-483d-af27-9f5f13142253" />

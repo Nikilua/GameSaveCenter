@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="dd189d19-33bb-4a17-b4a8-041864d28faa" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="dd189d19-33bb-4a17-b4a8-041864d28faa" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:20:09.5993148+00:00" queuing="2026-10-07T03:20:09.5993150+00:00" start="2026-10-07T03:20:06.4890605+00:00" finish="2026-10-07T03:20:16.3363276+00:00" />
   <TestSettings name="default" id="ca0ad714-f6b9-4a42-b0d8-8e757014f0d3">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_20_09" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="b660f81c-996a-400c-a51a-0b0d235c6c4c" testId="34c06b6a-8ad4-924c-7c84-9b16bf86241c" testName="GameSaveCenter.Playnite.Tests.UiFinesseRound2ControlSourceTests.TransientSurfacesKeepThemeSensitiveResourcesDynamic" computerName="redacted-host" duration="00:00:00.0060000" startTime="2026-10-07T03:20:15.1169823+00:00" endTime="2026-10-07T03:20:15.1189912+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b660f81c-996a-400c-a51a-0b0d235c6c4c" />

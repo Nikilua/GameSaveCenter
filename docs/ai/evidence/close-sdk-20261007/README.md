@@ -31,6 +31,18 @@
 - `git fsck --full`本阶段实际退出0，仅既有dangling对象；源码、PowerShell AST、MSBuild语言属性与diff结果在验证目录归档。构建源身份是c7f2a368加明确dirty修改，不能当成下一提交的clean DLL。
 - 全量build开始后只精炼采集/SDK自测/runner脚本与workflow，编译的C#/XAML/项目配置输入未变；[最终快照对照](source-snapshot-comparison.json)列出全部变更路径。构建起始与最终[验证快照](verification/summary.json)分别保留，不能把早期脚本hash当最终交付源码。
 
+## 提交后身份与CI入口补修
+
+SDK源码`91bfb6e1e38fa0f5c986517bfd8625b6467c42d5`已推送main。提交后[clean Release摘要](clean-build-91bfb6e1/summary.json)记录SDK8.0.423、workingTreeClean=true、0 warning/error、testsRequested=false及新DLL SHA/MVID；[clean SDK自测](clean-sdk-test-91bfb6e1/summary.json)同身份通过。没有重新宣称全量clean测试或包门禁通过。[91bfb6e1 freshness](freshness-91bfb6e1.json)实际6 fresh/8 stale，baseline未改，package未提供。
+
+[run37569191845](https://github.com/Nikilua/GameSaveCenter/actions/runs/37569191845)终态失败：SDK安装和源码检查成功，诊断自测日志显示全部断言通过，但步骤返回非零；SDK自测/编译/后续全部未执行。[实际失败日志](ci-37569191845-failed.txt)。API确认该运行artifact数量0，不能把always上传步骤success误认为取得产物：自测此前输出在.tmp，尚未进入build。
+
+本地按Actions相同的dot-source入口与LASTEXITCODE传播复现“自测通过、外层退出非零”，见[修复前上下文](actions-wrapper-before/summary.json)。受控失败7是采集器正确保留的输入；自测入口需要显式报告自身成功。两项入口现在在finally之后`exit 0`，异常路径不走该行。PS5.1/7相同包装入口实际退出0，全部真实7/0/缺程序/双PATH及脱敏断言仍通过，[PS5](actions-wrapper-ps5-after/summary.json)、[PS7](actions-wrapper-ps7-after/summary.json)；[SDK包装入口](actions-wrapper-sdk-after/summary.json)也退出0且保留真实缺失SDK负例。
+
+CI诊断自测也写入artifacts/build-diagnostics并标明runType；上传只匹配JSON/TXT/TRX，保留上下文结构，排除临时原生程序和自测脚手架。自测摘要故意failed用于验证失败持久化，不等于自测步骤失败。补修后Release和源码门禁结果另存[构建](wrapper-fixed-build/summary.json)；编译输入未变。待新CI实际验证包装修复与SDK版本，不能以本地包装通过签收远端。
+
+归档复查另外发现TRX的runUser和runDeploymentRoot尚含用户/主机元数据；合成字段负例先实际失败，见[补修前上下文](privacy-before-fix/summary.json)，证明异常路径没有被新增exit0吞掉。脱敏器现覆盖这两个字段，PS5.1/7最终包装自测通过；两个10月7日诊断目录共87个文件补齐脱敏，测试GUID/方法、断言、堆栈、计数及源码/DLL身份保留。最终[Release摘要](privacy-fixed-build/summary.json)记录0 warning/error、SDK8.0.423、testsRequested=false及最终源码hash。没有改Git历史。
+
 ## 后续与边界
 
 先完成Q14共享错误态测量和654 DIP单行边距修复，再跑所有113类、完整CI渲染/包门禁以及精确8项freshness补证。固定SDK不能解释或关闭Q14；baseline未改，本地旧d57a613f包未安装。没有修改系统动画偏好、运行真实Playnite或操作真实存档、媒体、云端。ENV-001、用户Q06/R08原失败和同候选发布矩阵继续开放。

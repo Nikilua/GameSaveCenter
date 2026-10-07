@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="ab63ae48-e120-477a-8dab-2dd79d134ae3" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="ab63ae48-e120-477a-8dab-2dd79d134ae3" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:59:05.0928193+08:00" queuing="2026-10-07T10:59:05.0928195+08:00" start="2026-10-07T10:58:42.2878875+08:00" finish="2026-10-07T10:59:21.8857740+08:00" />
   <TestSettings name="default" id="ef41fde8-098d-42bc-884e-791b4038d82f">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_59_05" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="3fac1d02-d1b9-4985-92bf-76e019a6f132" testId="3e302ef1-059e-1014-d93e-0612821d2776" testName="GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests.DevelopmentFixtureKeepsNumericSamplesFullyReadable" computerName="redacted-host" duration="00:00:07.0940000" startTime="2026-10-07T10:58:57.9411435+08:00" endTime="2026-10-07T10:59:05.0241841+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fac1d02-d1b9-4985-92bf-76e019a6f132" />

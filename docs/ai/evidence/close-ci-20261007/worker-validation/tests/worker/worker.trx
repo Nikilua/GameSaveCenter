@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="3210a25e-f931-45ee-a971-ead535a2931f" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="3210a25e-f931-45ee-a971-ead535a2931f" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:51:49.8978786+08:00" queuing="2026-10-07T10:51:49.8978792+08:00" start="2026-10-07T10:51:46.5424431+08:00" finish="2026-10-07T11:14:18.6594400+08:00" />
   <TestSettings name="default" id="94427160-efce-4e8e-ab1b-5d6c7a2b71d8">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_51_49" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="7dd557ea-315d-4252-8977-47091b4de438" testId="26807d43-a19c-f22e-db07-733edb032970" testName="GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.SyncCopiesVerifiesAndNeverDeletesMirrorOnlyFiles" computerName="redacted-host" duration="00:00:00.0237469" startTime="2026-10-07T11:00:21.2309637+08:00" endTime="2026-10-07T11:00:21.2554495+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7dd557ea-315d-4252-8977-47091b4de438" />

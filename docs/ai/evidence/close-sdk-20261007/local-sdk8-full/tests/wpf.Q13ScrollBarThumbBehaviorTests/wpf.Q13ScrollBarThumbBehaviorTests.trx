@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="16533823-ee2f-460d-8c60-9f8b718c9fd7" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="16533823-ee2f-460d-8c60-9f8b718c9fd7" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:52:25.8407321+08:00" queuing="2026-10-07T11:52:25.8407329+08:00" start="2026-10-07T11:52:16.7258686+08:00" finish="2026-10-07T11:52:40.7650087+08:00" />
   <TestSettings name="default" id="67487a83-67f6-45a4-890b-ea135f1ec150">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_52_25" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="c8b866a0-3719-4421-89d2-7db3c62dbc5d" testId="194138ca-7b60-1f77-a303-7227b637927f" testName="GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests.ProductionThumbCapsStaySymmetricAndHoverFollowsThemeInBothOrientations" computerName="redacted-host" duration="00:00:03.5580000" startTime="2026-10-07T11:52:21.2152393+08:00" endTime="2026-10-07T11:52:24.7589459+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c8b866a0-3719-4421-89d2-7db3c62dbc5d" />

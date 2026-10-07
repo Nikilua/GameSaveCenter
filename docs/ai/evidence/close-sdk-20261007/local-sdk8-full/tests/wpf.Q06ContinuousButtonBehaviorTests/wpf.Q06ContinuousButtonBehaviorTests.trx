@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="a62254f5-d780-44ae-83d8-8d0981b8fb53" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="a62254f5-d780-44ae-83d8-8d0981b8fb53" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:50:26.7915307+08:00" queuing="2026-10-07T11:50:26.7915317+08:00" start="2026-10-07T11:50:15.6922863+08:00" finish="2026-10-07T11:50:41.3828940+08:00" />
   <TestSettings name="default" id="3733561b-86c1-4e6a-b48f-aecd044622ed">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_50_26" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="f340bf56-d391-4a32-b81e-f82422af2d15" testId="0220a805-0927-3581-041d-9b3fffb8714a" testName="GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests.RapidFrameworkClicksRespectBusyGateAndKeepSiblingActionEnabled" computerName="redacted-host" duration="00:00:04.6330000" startTime="2026-10-07T11:50:20.6103217+08:00" endTime="2026-10-07T11:50:25.2179418+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f340bf56-d391-4a32-b81e-f82422af2d15" />

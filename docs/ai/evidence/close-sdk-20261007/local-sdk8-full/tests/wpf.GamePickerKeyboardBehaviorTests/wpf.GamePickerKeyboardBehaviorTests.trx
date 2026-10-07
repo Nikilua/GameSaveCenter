@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="3702ef7e-e650-4d5e-ba2d-2d0f46e4d82a" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="3702ef7e-e650-4d5e-ba2d-2d0f46e4d82a" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:45:08.5130512+08:00" queuing="2026-10-07T11:45:08.5130514+08:00" start="2026-10-07T11:44:59.0750515+08:00" finish="2026-10-07T11:45:30.4453217+08:00" />
   <TestSettings name="default" id="e5b21dd9-e50c-4d7d-94e7-b001cc7e8dd9">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_45_08" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="a081811b-fc5d-46db-af4e-1a6e0f0e8bc4" testId="ae894b52-3ecf-9c15-f90c-e32eb12650b7" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ActiveTextCompositionKeepsPickerOpenUntilCompositionCommits" computerName="redacted-host" duration="00:00:00.9580000" startTime="2026-10-07T11:45:13.6963385+08:00" endTime="2026-10-07T11:45:14.6539528+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a081811b-fc5d-46db-af4e-1a6e0f0e8bc4" />

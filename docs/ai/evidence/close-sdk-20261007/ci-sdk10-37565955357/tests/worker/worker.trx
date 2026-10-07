@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="63c43795-044f-461b-bde6-b5502516ce34" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="63c43795-044f-461b-bde6-b5502516ce34" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:17:40.2097233+00:00" queuing="2026-10-07T03:17:40.2097235+00:00" start="2026-10-07T03:17:38.3669615+00:00" finish="2026-10-07T03:20:00.1992145+00:00" />
   <TestSettings name="default" id="e16954d7-3084-4f50-b4ca-9c67587738d0">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_17_40" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="0d2e323e-84ea-4389-a7f0-75c6d92a588f" testId="0b8e0c91-66ef-3ff2-2de7-5b3e0fec8779" testName="GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta" computerName="redacted-host" duration="00:00:00.6680135" startTime="2026-10-07T03:19:20.5733952+00:00" endTime="2026-10-07T03:19:21.2412010+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d2e323e-84ea-4389-a7f0-75c6d92a588f" />

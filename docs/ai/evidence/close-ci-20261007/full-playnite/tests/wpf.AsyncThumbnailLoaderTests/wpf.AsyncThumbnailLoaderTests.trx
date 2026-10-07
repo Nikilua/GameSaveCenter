@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="8fac4ec2-e175-4d4b-9d0a-4bb28548dfd2" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="8fac4ec2-e175-4d4b-9d0a-4bb28548dfd2" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:54:22.5173606+08:00" queuing="2026-10-07T10:54:22.5173612+08:00" start="2026-10-07T10:54:08.0663408+08:00" finish="2026-10-07T10:54:22.7520327+08:00" />
   <TestSettings name="default" id="7a6c34af-7d44-494a-993a-0c3463f49b12">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_54_22" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="bb5b4495-ab8d-4de8-abe8-6eb8fced7c8e" testId="13250a28-0620-515f-9f94-dd31d6506f9e" testName="GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_InvalidImageReturnsNullAndDoesNotKeepTheFileOpen" computerName="redacted-host" duration="00:00:00.0380000" startTime="2026-10-07T10:54:22.4946602+08:00" endTime="2026-10-07T10:54:22.5013763+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb5b4495-ab8d-4de8-abe8-6eb8fced7c8e" />

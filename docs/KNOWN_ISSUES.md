@@ -5,7 +5,7 @@
 | 跟踪项 | 当前事实 | 状态 |
 | --- | --- | --- |
 | CLOSE-IPC-01 | 修复取消dispose的IOException/EOF竞争分类与失败夹具释放；200专项/source470通过 | IMPLEMENTED；不代表整体门禁通过 |
-| CLOSE-CI-01 | 两条修复后SDK10 CI侧栏22/22通过且失败诊断实际上传/下载；Q14错误态36→37 DIP失败 | IN_PROGRESS；完整CI/渲染/包门禁仍未过 |
+| CLOSE-CI-01 | 前阶段SDK10侧栏22/22、Q14失败已归档；91bfb6e1自测外层退出码导致后续未执行/artifact0，入口已补修且本地Actions包装通过 | IN_PROGRESS；新CI与完整渲染/包门禁仍未过 |
 | CLOSE-WRAP-01 | 原654 DIP单行边距失败仍在；10月7日独立/全量Q14先在错误态高度36→37 DIP失败 | READY；后89类未执行 |
 | CLOSE-SDK-01 | global.json/CI精确8.0.423、disable、C#12.0；PS5.1/7实际缺失SDK与原策略对照通过 | IN_PROGRESS；当前runner与完整包门禁待验 |
 | CLOSE-EVID-01 | 原R00-04/06/07/08、R01-05 stale；本阶段还命中R00-03/R01-01/R01-04 | READY；提交后复算，baseline未改 |

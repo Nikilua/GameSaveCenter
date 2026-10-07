@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="b6f4232e-47e3-455a-846b-fafbbf25c142" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="b6f4232e-47e3-455a-846b-fafbbf25c142" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:55:20.4669921+08:00" queuing="2026-10-07T10:55:20.4669924+08:00" start="2026-10-07T10:54:57.8091693+08:00" finish="2026-10-07T10:55:41.5504231+08:00" />
   <TestSettings name="default" id="3cc0bfe3-4072-420a-87c3-fa9e5c39f397">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_55_20" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="9c753287-0d6c-4537-b8f5-205b27cb1a45" testId="5e1c5085-98fd-7b9c-bc97-57b223f0dd74" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterWithNoVisibleResultKeepsThePreviouslySelectedGameAndPickerOpen" computerName="redacted-host" duration="00:00:01.0850000" startTime="2026-10-07T10:55:22.5392940+08:00" endTime="2026-10-07T10:55:23.6223599+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c753287-0d6c-4537-b8f5-205b27cb1a45" />

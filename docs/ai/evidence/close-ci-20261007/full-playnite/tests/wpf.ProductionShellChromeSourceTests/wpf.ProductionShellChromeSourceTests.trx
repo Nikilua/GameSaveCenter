@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="71b79c48-92f9-4d1a-93e0-3b4c1d2a3580" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="71b79c48-92f9-4d1a-93e0-3b4c1d2a3580" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:01:20.4167814+08:00" queuing="2026-10-07T11:01:20.4167821+08:00" start="2026-10-07T11:01:07.7932027+08:00" finish="2026-10-07T11:01:45.2448311+08:00" />
   <TestSettings name="default" id="ba5ee74c-76ae-49cd-9a6f-b75dcade7bc8">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_01_20" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="32998333-f420-46d3-84e2-8e1c37f6db76" testId="f309897d-c6b0-d19b-520c-32b89a8f6a8d" testName="GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionFooterOwnsWorkerStatusAndSpansTheShell" computerName="redacted-host" duration="00:00:00.0190000" startTime="2026-10-07T11:01:28.7180718+08:00" endTime="2026-10-07T11:01:28.7268435+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="32998333-f420-46d3-84e2-8e1c37f6db76" />

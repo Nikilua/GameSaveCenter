@@ -15,6 +15,8 @@ function ConvertTo-GscDiagnosticText {
     $value = $value -replace '(?i)(https?://)[^/\s:@]+:[^/\s@]+@', '$1[credentials]@'
     $value = $value -replace '(?i)([?&](?:access_token|token|sig|api_key|key|password)=)[^&\s"<>]+', '$1[redacted]'
     $value = $value -replace 'computerName="[^"]*"', 'computerName="redacted-host"'
+    $value = $value -replace 'runUser="[^"]*"', 'runUser="redacted-user"'
+    $value = $value -replace 'runDeploymentRoot="[^"]*"', 'runDeploymentRoot="redacted-deployment"'
     $value = $value -replace '(<TestRun\b[^>]*\bname=)"[^"]*"', '$1"redacted-test-run"'
     return $value
 }

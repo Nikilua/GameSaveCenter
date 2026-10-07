@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="8bdd824d-386e-4175-bf01-98d70d23edce" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="8bdd824d-386e-4175-bf01-98d70d23edce" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:50:14.1804186+08:00" queuing="2026-10-07T11:50:14.1804190+08:00" start="2026-10-07T11:49:56.7764875+08:00" finish="2026-10-07T11:50:14.1946002+08:00" />
   <TestSettings name="default" id="52911194-1215-48c1-83ed-dc311e5a2702">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_50_14" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="26ed1f1c-8e1b-4dae-8046-4d4ed1cb0fde" testId="eb4ef714-a033-d773-df25-3d35298457a4" testName="GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark" computerName="redacted-host" duration="00:00:12.1530000" startTime="2026-10-07T11:50:01.6762705+08:00" endTime="2026-10-07T11:50:13.8155045+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26ed1f1c-8e1b-4dae-8046-4d4ed1cb0fde" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="b20d7162-1023-4a0d-82c1-cca5348e03ae" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="b20d7162-1023-4a0d-82c1-cca5348e03ae" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:17:37.2711427+00:00" queuing="2026-10-07T03:17:37.2711428+00:00" start="2026-10-07T03:17:34.5038570+00:00" finish="2026-10-07T03:17:37.3507659+00:00" />
   <TestSettings name="default" id="27a1e3be-88f8-4540-a6ae-1b7cb0084cb5">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_17_37" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="2f1457a8-cbb7-4b12-b050-ce55f0ccbf16" testId="9f1c7725-23e1-c577-7dc0-1edadf7d55db" testName="GameSaveCenter.Core.Tests.SaveCandidateScorerTests.XboxWgsAndRepeatedChangesScoreHighly" computerName="redacted-host" duration="00:00:00.0001759" startTime="2026-10-07T03:17:37.2879093+00:00" endTime="2026-10-07T03:17:37.2879749+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f1457a8-cbb7-4b12-b050-ce55f0ccbf16" />

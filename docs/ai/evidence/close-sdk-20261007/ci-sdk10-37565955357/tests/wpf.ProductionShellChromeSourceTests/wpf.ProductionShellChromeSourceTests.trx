@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="c48d529b-ac16-4f3e-bc4a-ed4c191a5e1b" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="c48d529b-ac16-4f3e-bc4a-ed4c191a5e1b" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:21:55.5823279+00:00" queuing="2026-10-07T03:21:55.5823281+00:00" start="2026-10-07T03:21:51.2702617+00:00" finish="2026-10-07T03:22:03.2223648+00:00" />
   <TestSettings name="default" id="d3a25c78-b027-41c8-9196-50c2e691a0b4">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_21_55" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="3582f586-1d5a-4c27-8ade-9ea549450602" testId="db8f5900-7a9f-01fc-ca1c-4d5845918f01" testName="GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels" computerName="redacted-host" duration="00:00:00.0650000" startTime="2026-10-07T03:21:58.3435431+00:00" endTime="2026-10-07T03:21:58.4075432+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3582f586-1d5a-4c27-8ade-9ea549450602" />

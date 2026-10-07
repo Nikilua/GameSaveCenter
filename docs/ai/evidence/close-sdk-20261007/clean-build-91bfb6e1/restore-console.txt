@@ -1,0 +1,9 @@
+  正在确定要还原的项目…
+  已还原 [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (用时 334 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (用时 340 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 334 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (用时 344 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 334 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 334 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (用时 478 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (用时 485 毫秒)。

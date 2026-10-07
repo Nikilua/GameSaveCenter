@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="e213c4b9-bb07-437a-b03c-0b98543d89b0" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="e213c4b9-bb07-437a-b03c-0b98543d89b0" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:44:30.0556989+08:00" queuing="2026-10-07T11:44:30.0556996+08:00" start="2026-10-07T11:44:23.9580546+08:00" finish="2026-10-07T11:44:30.3234802+08:00" />
   <TestSettings name="default" id="fdae60e3-31e3-4413-a9a9-5fe980ccb7a3">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_44_30" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="7c1a96f3-019e-4489-bed0-d108baf17c07" testId="cfe1a877-fe23-7355-1910-af2901ce9ec3" testName="GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_CancelledRequestDoesNotReturnAnImage" computerName="redacted-host" duration="00:00:00.0130000" startTime="2026-10-07T11:44:30.0549716+08:00" endTime="2026-10-07T11:44:30.0614354+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c1a96f3-019e-4489-bed0-d108baf17c07" />

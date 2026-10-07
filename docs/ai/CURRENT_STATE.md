@@ -12,9 +12,9 @@
 | --- | --- |
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
 | 本轮测试 | Core125/125、Worker357/357；source470 passed/18原有skipped/0 failed；侧栏22/22；WPF前23类通过、第24类Q14错误态36→37 DIP失败，后89类未执行，脚本exit1；IPC历史200/200单独保留 |
-| 远端 CI | run37565955357/37566483862终态失败且always诊断上传已实际下载；SDK10侧栏22/22已通过，Q14错误态36→37 DIP失败，后89类未执行 |
+| 远端 CI | 前阶段两条SDK10侧栏22/22通过，Q14失败且产物已下载；91bfb6e1/run37569191845在自测成功日志后的外层退出码失败，后续未执行/artifact0；入口已补修，本地Actions包装PS5.1/7退出0，新CI待验 |
 | SDK契约 | global.json/CI精确8.0.423、rollForward=disable、C#12.0；PS5.1/7真实缺失旧SDK与latestMajor对照通过；当前基线runner与完整包门禁待验 |
-| R00/R01 证据 | 48b78b3b复算6 fresh/8 stale：R00-03/04/06/07/08、R01-01/04/05；baseline未改。本地包仍为历史d57a613f，未安装 |
+| R00/R01 证据 | 91bfb6e1实际复算6 fresh/8 stale：R00-03/04/06/07/08、R01-01/04/05；baseline未改。本地包仍为历史d57a613f，未安装 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 
 SDK与远端结果在[本阶段证据](evidence/close-sdk-20261007/README.md)；[CI诊断阶段](evidence/close-ci-20261007/README.md)、[IPC证据](evidence/close-ipc-20261005/README.md)与[原审阅](evidence/completion-review-20261005/README.md)保留历史。SDK10的真实ClientAreaAnimation=false路径已验证，侧栏通过；Q14仍失败。STA探针确认2 DIP错误边框增加内容测量，同时独立复现Light/Dark654 DIP单行残留20 DIP margin；620/660正例通过。整体门禁不通过，固定SDK不关闭布局问题。

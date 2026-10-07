@@ -61,3 +61,5 @@ try {
     finally { Pop-Location }
 }
 finally { Complete-GscDiagnostics $context $succeeded }
+# Expected negative resolver steps must not leak into an outer pwsh CI step.
+exit 0

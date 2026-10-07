@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="0aeddb5d-c025-44ab-8125-a00be45c68d4" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="0aeddb5d-c025-44ab-8125-a00be45c68d4" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:20:32.0852406+00:00" queuing="2026-10-07T03:20:32.0852407+00:00" start="2026-10-07T03:20:27.7825059+00:00" finish="2026-10-07T03:20:32.5179389+00:00" />
   <TestSettings name="default" id="5d27f413-1bb2-4bdd-912e-e2ab17ecdded">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_20_32" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="44e18c1c-0b10-480c-acb5-7bc6872b1e14" testId="aa36af0c-acda-a0ca-1f85-a8550c55aac7" testName="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.ProgrammaticSelectionDoesNotCommitWhileTheDropdownIsClosed" computerName="redacted-host" duration="00:00:00.6170000" startTime="2026-10-07T03:20:30.5561148+00:00" endTime="2026-10-07T03:20:31.1717556+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="44e18c1c-0b10-480c-acb5-7bc6872b1e14" />

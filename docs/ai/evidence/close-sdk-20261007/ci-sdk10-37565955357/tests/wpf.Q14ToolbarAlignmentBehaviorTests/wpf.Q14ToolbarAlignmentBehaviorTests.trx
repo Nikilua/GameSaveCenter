@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="c1915d2d-7724-40a3-a080-34a7bb0652b8" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="c1915d2d-7724-40a3-a080-34a7bb0652b8" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:23:06.2983137+00:00" queuing="2026-10-07T03:23:06.2983138+00:00" start="2026-10-07T03:23:00.4983657+00:00" finish="2026-10-07T03:23:06.3035352+00:00" />
   <TestSettings name="default" id="e8d7a885-d0ce-4701-acfb-2dbe7708826c">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_23_06" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="18e77b9d-0864-4b4d-9793-9f54441b3a1c" testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" testName="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" computerName="redacted-host" duration="00:00:02.5860000" startTime="2026-10-07T03:23:03.2783765+00:00" endTime="2026-10-07T03:23:05.8642635+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="18e77b9d-0864-4b4d-9793-9f54441b3a1c">

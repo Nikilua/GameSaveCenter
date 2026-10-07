@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="5b950b32-d447-46d0-bc3e-554b0ddf6b76" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="5b950b32-d447-46d0-bc3e-554b0ddf6b76" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:50:51.8214350+08:00" queuing="2026-10-07T11:50:51.8214354+08:00" start="2026-10-07T11:50:42.6962304+08:00" finish="2026-10-07T11:51:11.0974025+08:00" />
   <TestSettings name="default" id="ebe49f03-8367-4fc8-89d2-73d6067e2c4f">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_50_51" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="5fbd6736-d095-4518-a33f-5d28f25a3024" testId="e10a2f12-b3d7-83de-676c-16db2d8ae066" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Dark)" computerName="redacted-host" duration="00:00:04.1800000" startTime="2026-10-07T11:50:47.5473984+08:00" endTime="2026-10-07T11:50:51.7143888+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5fbd6736-d095-4518-a33f-5d28f25a3024" />

@@ -4,6 +4,8 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 . (Join-Path $repoRoot 'scripts/build-diagnostics.ps1')
 $context = New-GscDiagnosticContext $repoRoot $OutputRoot
+$context.RunType = 'build-diagnostics-tests'
+$context.TestsRequested = $true
 $engine = (Get-Process -Id $PID).Path
 $child = Join-Path $context.RunRoot 'controlled-failure.ps1'
 [IO.File]::WriteAllText($child, @'
@@ -42,7 +44,7 @@ try {
     $results = Join-Path $context.RunRoot 'tests'
     New-Item -ItemType Directory -Path $results -Force | Out-Null
     $trx = Join-Path $results 'controlled.trx'
-    [IO.File]::WriteAllText($trx, '<TestRun name="private-user@private-host"><UnitTestResult computerName="private-host"><ErrorInfo><Message>Assert.Equal() Failure</Message><StackTrace>at ExampleTests.ControlledFailure():line 42</StackTrace></ErrorInfo><Path>' + [Security.SecurityElement]::Escape($env:GSC_DIAGNOSTIC_TEST_PATH) + '</Path></UnitTestResult></TestRun>')
+    [IO.File]::WriteAllText($trx, '<TestRun name="private-user@private-host" runUser="private-host\private-user"><Deployment runDeploymentRoot="private-user_private-host"/><UnitTestResult computerName="private-host"><ErrorInfo><Message>Assert.Equal() Failure</Message><StackTrace>at ExampleTests.ControlledFailure():line 42</StackTrace></ErrorInfo><Path>' + [Security.SecurityElement]::Escape($env:GSC_DIAGNOSTIC_TEST_PATH) + '</Path></UnitTestResult></TestRun>')
     Complete-GscTestDiagnostics $context $results
     Complete-GscDiagnostics $context $false
     $summaryText = [IO.File]::ReadAllText((Join-Path $context.RunRoot 'summary.json'))
@@ -63,3 +65,6 @@ try {
     Write-Host "Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON and TRX redaction. Evidence: $($context.RunRoot)"
 }
 finally { [Environment]::SetEnvironmentVariable('GSC_DIAGNOSTIC_TEST_PATH', $previous, 'Process') }
+# Controlled native failures are expected inputs. Report the selftest's result,
+# not their last exit code inherited by GitHub Actions' pwsh wrapper.
+exit 0

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="5adeb976-75a9-4b53-9ace-33f680ccca2c" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="5adeb976-75a9-4b53-9ace-33f680ccca2c" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:48:52.2326173+08:00" queuing="2026-10-07T11:48:52.2326176+08:00" start="2026-10-07T11:48:46.8070526+08:00" finish="2026-10-07T11:48:52.2447821+08:00" />
   <TestSettings name="default" id="888f610c-0be6-49b7-8196-e16e20ce634e">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_48_52" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="0cbd985e-7198-420f-80ab-0f60429f85c4" testId="241bea8d-9a7e-115b-1aaf-9c82d99fd479" testName="GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests.DecodeLocalImageUsesSmallFrozenBitmap" computerName="redacted-host" duration="00:00:00.5360000" startTime="2026-10-07T11:48:51.5400435+08:00" endTime="2026-10-07T11:48:52.0405148+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0cbd985e-7198-420f-80ab-0f60429f85c4" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="809bc5c2-21d6-4989-99ed-85dc84e7840d" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="809bc5c2-21d6-4989-99ed-85dc84e7840d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:21:25.3738584+00:00" queuing="2026-10-07T03:21:25.3738586+00:00" start="2026-10-07T03:21:22.4595111+00:00" finish="2026-10-07T03:21:27.1425972+00:00" />
   <TestSettings name="default" id="961d60ad-a5cf-4690-b951-d9b3b59a3885">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_21_25" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="bb827d02-0496-4a8a-80c9-19c333ca7d4b" testId="1763ee5f-fbcd-c86a-0072-e352563f3501" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1440&quot;, expectedValid: True)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T03:21:25.3435326+00:00" endTime="2026-10-07T03:21:25.3438861+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb827d02-0496-4a8a-80c9-19c333ca7d4b" />

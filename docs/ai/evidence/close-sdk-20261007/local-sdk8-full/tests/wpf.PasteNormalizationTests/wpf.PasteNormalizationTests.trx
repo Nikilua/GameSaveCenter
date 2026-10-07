@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="493fe838-ee09-487b-bcbc-c4870a446b79" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="493fe838-ee09-487b-bcbc-c4870a446b79" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:48:43.6605158+08:00" queuing="2026-10-07T11:48:43.6605162+08:00" start="2026-10-07T11:48:34.7846704+08:00" finish="2026-10-07T11:48:44.9161955+08:00" />
   <TestSettings name="default" id="956a9916-b87f-44e9-91b7-7ba4d22901ed">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_48_43" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="97e87d2f-9089-4405-96b9-86a4f9096932" testId="ff4c1069-f292-5caa-a585-9c88e909a784" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  '*.png'  &quot;, kind: ExcludePattern, expected: &quot;*.png&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T11:48:43.6380345+08:00" endTime="2026-10-07T11:48:43.6401976+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97e87d2f-9089-4405-96b9-86a4f9096932" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="19c0bd31-93a2-4807-8aa7-3d0257a4e589" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="19c0bd31-93a2-4807-8aa7-3d0257a4e589" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:22:23.6994873+00:00" queuing="2026-10-07T03:22:23.6994875+00:00" start="2026-10-07T03:22:19.1451496+00:00" finish="2026-10-07T03:22:23.9566809+00:00" />
   <TestSettings name="default" id="f64cb3a0-32aa-4dc1-835e-a0883c193446">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_22_23" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="c15c321b-edce-43cc-bd3b-cb08287de948" testId="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light)" computerName="redacted-host" duration="00:00:00.0910000" startTime="2026-10-07T03:22:23.7075828+00:00" endTime="2026-10-07T03:22:23.7951874+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c15c321b-edce-43cc-bd3b-cb08287de948" />

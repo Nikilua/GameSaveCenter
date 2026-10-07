@@ -22,6 +22,7 @@
 1. fetch main并核对工作树；活动任务以 [AUTONOMOUS_BACKLOG](AUTONOMOUS_BACKLOG.md) 为唯一入口。
    两条前阶段CI终态及诊断已经归档，不再重复查询；SDK阶段隔离build身份是c7f2a368加dirty源码hash，后续提交需重建。freshness6/8，baseline未改；不要复用旧DLL假称当前候选。
 2. 继续CLOSE-CI-01/CLOSE-SDK-01：当前源码runner须实际选择8.0.423；Q14修复后完整CI编译/测试/渲染/包门禁通过才关闭。 SDK10侧栏实际通过，不再视为当前失败，不改OS偏好或skip。
+   SDK源码91bfb6e1已推送并clean重建0/0、SDK自测通过；run37569191845在自测日志通过后的外层退出码失败，API产物0。已补显式自测exit0/自测日志上传及过滤脚手架；PS5.1/7同Actions包装入口退出0。先核对补修后的新CI，不重复查旧两条远端。
 3. CLOSE-WRAP-01：先核对共享TextBox错误态BorderThickness的测量变化，同时解决原654 DIP单行残留20 DIP margin；保留620→660→620往返和Light/Dark，不放宽几何容差。修好后补原5项及R00-03/R01-01/R01-04。
 4. ENV-001门禁满足后做Media Inbox同PID/DLL/MVID滚动几何；用户Q06/R08仍需原始日志与运行身份；最后执行同候选恢复/回滚/Undo与发布矩阵。
 

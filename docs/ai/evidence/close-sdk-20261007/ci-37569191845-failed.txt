@@ -1,0 +1,8 @@
+编译、测试与打包	诊断采集自测	﻿2026-10-07T03:59:12.7091126Z ##[group]Run ./scripts/tests/Test-BuildDiagnostics.ps1
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:12.7091457Z ^[[36;1m./scripts/tests/Test-BuildDiagnostics.ps1^[[0m
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:12.7141390Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:12.7141602Z env:
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:12.7141729Z   DOTNET_ROOT: C:\Program Files\dotnet
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:12.7141890Z ##[endgroup]
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:14.3406124Z Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON and TRX redaction. Evidence: [repo]\.tmp\build-diagnostics-tests\20261007T035912990Z-4b4a9684
+编译、测试与打包	诊断采集自测	2026-10-07T03:59:14.3900784Z ##[error]Process completed with exit code 1.

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="f19b98b1-3b73-46ae-9d24-194536e2a412" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="f19b98b1-3b73-46ae-9d24-194536e2a412" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T11:47:19.5268681+08:00" queuing="2026-10-07T11:47:19.5268684+08:00" start="2026-10-07T11:47:13.0332902+08:00" finish="2026-10-07T11:47:41.1938438+08:00" />
   <TestSettings name="default" id="307ca2d0-9e0f-4c75-a916-0ee8d8b34288">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_11_47_19" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="a1f6fc61-4b36-44a8-b192-2b3a733d4eb9" testId="0e7bbd94-7b93-72de-8c0f-5ea0dcee19be" testName="GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests.StaleRestoreCallbackCannotSurfaceEvictedAnchorAfterContextInvalidation" computerName="redacted-host" duration="00:00:05.1370000" startTime="2026-10-07T11:47:18.3164316+08:00" endTime="2026-10-07T11:47:23.4190295+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a1f6fc61-4b36-44a8-b192-2b3a733d4eb9" />

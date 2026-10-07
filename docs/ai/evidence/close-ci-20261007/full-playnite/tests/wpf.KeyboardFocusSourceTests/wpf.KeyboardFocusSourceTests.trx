@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="a8c38739-5f84-445a-84c9-da39e1beefa7" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="a8c38739-5f84-445a-84c9-da39e1beefa7" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T10:56:06.3501953+08:00" queuing="2026-10-07T10:56:06.3501957+08:00" start="2026-10-07T10:55:43.2537361+08:00" finish="2026-10-07T10:56:28.2538454+08:00" />
   <TestSettings name="default" id="1cd461ec-01ff-4856-aa58-c1fcf959d482">
-    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_56_06" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="b797d03f-68c4-4ad8-93a1-7edaa9aaf517" testId="f4cb4959-5ce4-5d15-f09b-2ab89a1b8546" testName="GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerClosesWithEscapeOrEnterAndReturnsFocus" computerName="redacted-host" duration="00:00:00.0500000" startTime="2026-10-07T10:56:05.5374426+08:00" endTime="2026-10-07T10:56:05.5420315+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b797d03f-68c4-4ad8-93a1-7edaa9aaf517" />

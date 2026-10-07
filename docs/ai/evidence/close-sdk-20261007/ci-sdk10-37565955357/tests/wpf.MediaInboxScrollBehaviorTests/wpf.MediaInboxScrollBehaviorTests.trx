@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestRun id="e5ffaad0-91e0-498a-8c4e-d34caaeecb24" name="redacted-test-run" runUser="runnervmfi6oq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="e5ffaad0-91e0-498a-8c4e-d34caaeecb24" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-07T03:20:59.2225743+00:00" queuing="2026-10-07T03:20:59.2225745+00:00" start="2026-10-07T03:20:53.3167728+00:00" finish="2026-10-07T03:21:02.8490947+00:00" />
   <TestSettings name="default" id="159fe189-199b-4390-8494-32a54c56220d">
-    <Deployment runDeploymentRoot="runneradmin_runnervmfi6oq_2026-10-07_03_20_59" />
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="3b09e397-397b-43fd-b5d6-b152fa51f683" testId="47dfbdf9-36ae-df81-7679-29c8812d8417" testName="GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1)" computerName="redacted-host" duration="00:00:00.7150000" startTime="2026-10-07T03:20:59.2088574+00:00" endTime="2026-10-07T03:20:59.8997929+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b09e397-397b-43fd-b5d6-b152fa51f683">
