@@ -1,0 +1,17 @@
+{
+  "releaseDate": "2026-07-14",
+  "sdkVersion": "8.0.423",
+  "runtimeVersion": "8.0.29",
+  "files": [
+    {
+      "name": "dotnet-sdk-win-x64.exe",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.423/dotnet-sdk-8.0.423-win-x64.exe",
+      "hash": "c365dd24c04ee88e4c7af34165c2fbcff6cb2b551bc8cd921221b5774b10eb7e119a5056c33b36fea8d1bc494f71f3246e0c66f4b69c1d17b7e7804b922346d5"
+    },
+    {
+      "name": "dotnet-sdk-win-x64.zip",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.423/dotnet-sdk-8.0.423-win-x64.zip",
+      "hash": "063fcc35c136277e6fd767c66579f3b92db22a078a7f0c7177b6af1edb2c9afae1613f6cfdc01acf7421773d9ac77f0ef73a7fd8b37f469e7e3505e5c1361ba0"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.50]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.25]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.30]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterConfirmsTheVisibleListCandidateAndReturnsFocusToTheContextButton [2 s]
+[xUnit.net 00:00:05.23]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EscapeClosesTheProductionPickerAndReturnsFocusToTheContextButton [119 ms]
+  Passed GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ImeProcessedAndArrowKeysRemainInThePickerInputRoute [79 ms]
+  Passed GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterWithNoVisibleResultKeepsThePreviouslySelectedGameAndPickerOpen [103 ms]
+  Passed GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ProductionSearchClearButtonClearsTextAndReturnsFocusToTheSearchBox [153 ms]
+  Passed GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ActiveTextCompositionKeepsPickerOpenUntilCompositionCommits [73 ms]
+
+Test Run Successful.
+Total tests: 6
+     Passed: 6
+ Total time: 5.7256 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T031624961Z-945172ac\tests\wpf.GamePickerKeyboardBehaviorTests\wpf.GamePickerKeyboardBehaviorTests.trx

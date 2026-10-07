@@ -1,0 +1,18 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.50]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.75]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.80]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.CompactInspectorsDeclareEscapeAndFocusReturnContract [73 ms]
+  Passed GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerClosesWithEscapeOrEnterAndReturnsFocus [4 ms]
+[xUnit.net 00:00:04.31]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionGamePickerEscapeActuallyReturnsFocusToContextButton [1 s]
+  Passed GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.ProductionHeaderAndPickerActionsHaveStableAutomationNames [4 ms]
+  Passed GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests.TaskInspectorIsFocusableWithoutEnteringTabSequence [424 ms]
+
+Test Run Successful.
+Total tests: 5
+     Passed: 5
+ Total time: 5.4780 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T031624961Z-945172ac\tests\wpf.KeyboardFocusSourceTests\wpf.KeyboardFocusSourceTests.trx

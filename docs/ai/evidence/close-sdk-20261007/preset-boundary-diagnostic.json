@@ -1,0 +1,50 @@
+{
+    "kind":  "isolated-WPF-preset-boundary-diagnostic",
+    "sourceCommit":  "c7f2a3689293c35e1ad98faff05e821b12d22070",
+    "sdk":  "8.0.423",
+    "scenarios":  [
+                      {
+                          "theme":  "Light",
+                          "width":  620,
+                          "outcome":  "passed",
+                          "report":  "theme=Light; width=620 DIP; panel=602; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]; 620→660→620 resize restores row gap and original margins",
+                          "failure":  null
+                      },
+                      {
+                          "theme":  "Light",
+                          "width":  654,
+                          "outcome":  "failed",
+                          "report":  null,
+                          "failure":  "Assert.All() Failure: 7 out of 7 items in the collection did not pass.\r\n[0]: Item:  TextBlock { ActualHeight = 18, ActualWidth = 48, AllowDrop = False, AreAnyTouchesCaptured = False, AreAnyTouchesCapturedWithin = False, ··· }\r\n     Error: Light 654 DIP single-row preset child TextBlock should restore its authored margin, got 20 DIP.\r\n[1]: Item:  System.Windows.Controls.ComboBox Items.Count:2\r\n     Error: Light 654 DIP single-row preset child ComboBox should restore its authored margin, got 20 DIP.\r\n[2]: Item:  GameSaveCenter.Playnite.Controls.Button: 应用\r\n     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.\r\n[3]: Item:  System.Windows.Controls.TextBox: 我的预设\r\n     Error: Light 654 DIP single-row preset child TextBox should restore its authored margin, got 20 DIP.\r\n[4]: Item:  GameSaveCenter.Playnite.Controls.Button: 保存\r\n     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.\r\n[5]: Item:  GameSaveCenter.Playnite.Controls.Button: 重命名\r\n     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.\r\n[6]: Item:  GameSaveCenter.Playnite.Controls.Button: 删除\r\n     Error: Light 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP."
+                      },
+                      {
+                          "theme":  "Light",
+                          "width":  660,
+                          "outcome":  "passed",
+                          "report":  "theme=Light; width=660 DIP; panel=642; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]",
+                          "failure":  null
+                      },
+                      {
+                          "theme":  "Dark",
+                          "width":  620,
+                          "outcome":  "passed",
+                          "report":  "theme=Dark; width=620 DIP; panel=602; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]",
+                          "failure":  null
+                      },
+                      {
+                          "theme":  "Dark",
+                          "width":  654,
+                          "outcome":  "failed",
+                          "report":  null,
+                          "failure":  "Assert.All() Failure: 7 out of 7 items in the collection did not pass.\r\n[0]: Item:  TextBlock { ActualHeight = 18, ActualWidth = 48, AllowDrop = False, AreAnyTouchesCaptured = False, AreAnyTouchesCapturedWithin = False, ··· }\r\n     Error: Dark 654 DIP single-row preset child TextBlock should restore its authored margin, got 20 DIP.\r\n[1]: Item:  System.Windows.Controls.ComboBox Items.Count:2\r\n     Error: Dark 654 DIP single-row preset child ComboBox should restore its authored margin, got 20 DIP.\r\n[2]: Item:  GameSaveCenter.Playnite.Controls.Button: 应用\r\n     Error: Dark 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.\r\n[3]: Item:  System.Windows.Controls.TextBox: 我的预设\r\n     Error: Dark 654 DIP single-row preset child TextBox should restore its authored margin, got 20 DIP.\r\n[4]: Item:  GameSaveCenter.Playnite.Controls.Button: 保存\r\n     Error: Dark 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.\r\n[5]: Item:  GameSaveCenter.Playnite.Controls.Button: 重命名\r\n     Error: Dark 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP.\r\n[6]: Item:  GameSaveCenter.Playnite.Controls.Button: 删除\r\n     Error: Dark 654 DIP single-row preset child Button should restore its authored margin, got 20 DIP."
+                      },
+                      {
+                          "theme":  "Dark",
+                          "width":  660,
+                          "outcome":  "passed",
+                          "report":  "theme=Dark; width=660 DIP; panel=642; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]",
+                          "failure":  null
+                      }
+                  ],
+    "note":  "Calls existing private geometry fixture independently of earlier validation-state failure; no production edits, physical DPI or Playnite claim."
+}

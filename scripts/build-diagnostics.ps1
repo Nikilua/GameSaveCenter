@@ -103,7 +103,9 @@ function Invoke-GscRecordedCommand {
     # Read the real code ourselves so the failure report is written before throwing.
     $PSNativeCommandUseErrorActionPreference = $false
     try {
-        $nativeCommand = Get-Command $FilePath -CommandType Application -ErrorAction Stop
+        # PATH may expose the same executable name more than once. Match native
+        # shell precedence rather than passing an array of paths as one command.
+        $nativeCommand = Get-Command $FilePath -CommandType Application -ErrorAction Stop | Select-Object -First 1
         # Windows PowerShell 5.1 surfaces native stderr as ErrorRecord even when
         # the process launches correctly. It must not abort collection before
         # LASTEXITCODE is available. Resolve the executable first so a missing

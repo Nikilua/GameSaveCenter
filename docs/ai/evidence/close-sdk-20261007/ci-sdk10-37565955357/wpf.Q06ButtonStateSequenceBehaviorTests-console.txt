@@ -1,0 +1,14 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.60]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.22]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.27]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:07.24]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark [4 s]
+
+Test Run Successful.
+Total tests: 1
+     Passed: 1
+ Total time: 7.7704 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T031624961Z-945172ac\tests\wpf.Q06ButtonStateSequenceBehaviorTests\wpf.Q06ButtonStateSequenceBehaviorTests.trx

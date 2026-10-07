@@ -1,0 +1,14 @@
+  GameSaveCenter.Contracts -> [repo]\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\src\GameSaveCenter.Worker\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:23.94

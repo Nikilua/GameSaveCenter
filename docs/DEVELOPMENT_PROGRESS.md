@@ -1,3 +1,7 @@
+## 2026-10-07 SDK与编译器基线工程阶段
+
+global.json/CI精确SDK8.0.423、disable，C#12.0；构建和独立runner实际版本校验，PS5.1/7真实缺失旧SDK与latestMajor对照通过。Release0/0、XAML24/24、Core125/Worker357/source470通过；WPF前23类通过、第24类Q14错误态36→37 DIP失败、后89类未执行，build退出1。前阶段两条SDK10 CI侧栏22/22通过，native动画偏好false有TRX记录，always失败上传已下载；仍在同一Q14失败。多PATH诊断命令优先级回归已修复/测试，UI两处根因已取得隔离测量。SDK/CI保持IN_PROGRESS，当前runner与包门禁、版本、用户安装及Q/R验收不变。证据：[SDK阶段](ai/evidence/close-sdk-20261007/README.md)。
+
 ## 2026-10-07 CI诊断与侧栏测试前提
 
 CI工程部分已实现：实际退出码、分步console/TRX、SDK/源码/DLL身份、失败时上传与PS5.1/7自测。应用/系统动效策略有8组合与默认真实偏好验证；侧栏22/22、source470/18、Core125通过，Release0/0。WPF前23类通过，第24类Q14错误态36→37 DIP失败，后89类未执行；原654 DIP边距仍开放，完整CI未签收。证据：[CI阶段](ai/evidence/close-ci-20261007/README.md)。版本及用户安装不变。

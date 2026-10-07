@@ -14,6 +14,7 @@ $previousSourceRoot = [Environment]::GetEnvironmentVariable('GSC_SOURCE_ROOT', '
 $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
 $previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
 . (Join-Path $PSScriptRoot 'build-diagnostics.ps1')
+. (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
 $diagnostics = New-GscDiagnosticContext -RepoRoot $root -DiagnosticsRoot $DiagnosticsRoot
 $diagnostics.RunType = 'solution-build'
 $diagnostics.TestsRequested = -not $SkipTests
@@ -49,9 +50,10 @@ try {
     # A non-Git build remains visibly unknown; package.ps1 rejects it before output.
     $env:GSC_BUILD_COMMIT = Get-CurrentBuildCommit
     $env:GSC_SOURCE_ROOT = $root
+    $requiredSdk = Get-GscSdkBaseline $root
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
     if (-not $dotnet) {
-        throw '未找到 dotnet。请安装 .NET 8 或更高版本的稳定版 SDK，并确认 dotnet 在 PATH 中。'
+        throw "未找到 dotnet。请安装 global.json 要求的 .NET SDK $requiredSdk，并确认 dotnet 在 PATH 中。"
     }
 
     $sdkResult = Invoke-GscRecordedCommand $diagnostics 'sdk-list' dotnet @('--list-sdks')
@@ -60,20 +62,10 @@ try {
         throw "读取 .NET SDK 列表失败，退出码：$($sdkResult.ExitCode)"
     }
     $selectedSdk = Invoke-GscRecordedCommand $diagnostics 'sdk-version' dotnet @('--version')
-    if ($selectedSdk.ExitCode -ne 0) { throw "选择 SDK 失败，退出码：$($selectedSdk.ExitCode)" }
-    $diagnostics.Sdk = ($selectedSdk.Output -join '').Trim()
+    $selectedVersion = if ($selectedSdk.ExitCode -eq 0) { ($selectedSdk.Output -join '').Trim() } else { '' }
+    Assert-GscSdkSelection $requiredSdk $selectedVersion $selectedSdk.ExitCode $sdkLines
+    $diagnostics.Sdk = $selectedVersion
     Write-GscDiagnosticSummary $diagnostics
-
-    $sdkVersions = @($sdkLines | ForEach-Object {
-        if ($_ -match '^([0-9]+)\.([0-9]+)\.([0-9]+)') {
-            [version]("{0}.{1}.{2}" -f $Matches[1], $Matches[2], $Matches[3])
-        }
-    })
-
-    if (-not ($sdkVersions | Where-Object { $_.Major -ge 8 })) {
-        $installed = if ($sdkLines) { $sdkLines -join [Environment]::NewLine } else { '未检测到任何 SDK' }
-        throw "需要 .NET 8 或更高版本的稳定版 SDK。当前检测结果：`n$installed"
-    }
 
     Write-Host '当前可用 SDK：' -ForegroundColor DarkCyan
     $sdkLines | ForEach-Object { Write-Host "  $_" }

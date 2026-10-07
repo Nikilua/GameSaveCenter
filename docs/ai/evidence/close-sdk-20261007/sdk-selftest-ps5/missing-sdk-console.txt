@@ -1,0 +1,16 @@
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application '--version' does not exist.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+System.Management.Automation.RemoteException
+Requested SDK version: 1.0.100
+global.json file: [repo]\.tmp\close-sdk-20261007\sdk-final-ps5\20261007T035038966Z-aedd4f33\missing-sdk\global.json
+System.Management.Automation.RemoteException
+Installed SDKs:
+System.Management.Automation.RemoteException
+Install the [1.0.100] .NET SDK or update [[repo]\.tmp\close-sdk-20261007\sdk-final-ps5\20261007T035038966Z-aedd4f33\missing-sdk\global.json] to match an installed SDK.
+System.Management.Automation.RemoteException
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+8.0.423 [C:\Program Files\dotnet\sdk]

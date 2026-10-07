@@ -1,0 +1,25 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.48]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.24]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.30]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown [64 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "1441", expectedValid: False) [22 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "2147483648", expectedValid: False) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "1440", expectedValid: True) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "1", expectedValid: True) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "-2147483649", expectedValid: False) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "12x", expectedValid: False) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "0", expectedValid: False) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: "", expectedValid: False) [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary [1 s]
+[xUnit.net 00:00:04.15]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange [7 ms]
+  Passed GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues [8 ms]
+
+Test Run Successful.
+Total tests: 12
+     Passed: 12
+ Total time: 4.6732 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T031624961Z-945172ac\tests\wpf.NumericInputTests\wpf.NumericInputTests.trx

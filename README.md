@@ -101,7 +101,7 @@ GameSaveCenter-一键构建安装运行.cmd
 
 - Windows 10/11 x64；
 - Playnite 10.56 或兼容的 Playnite 10 稳定版；
-- .NET 8 或更高版本的稳定版 SDK；已验证配置允许使用 .NET 9 SDK 构建 .NET 8 目标；
+- .NET SDK `8.0.423`（由 `global.json` 精确指定，禁止自动使用其他 SDK；C# `12.0`）。CI 从同一文件安装 SDK；缺少时先安装该版本。目标框架仍为现有 Playnite/net462 和 Worker/net8；
 - .NET Framework 4.6.2 Developer Pack；
 - Ludusavi 最新稳定版；
 - Rclone 最新稳定版（仅云端复制需要）。

@@ -21,7 +21,7 @@ jobs:
       - name: 安装 .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          global-json-file: global.json
 
       - name: 源码结构检查
         run: python scripts/validate-source.py
@@ -29,6 +29,10 @@ jobs:
       - name: 诊断采集自测
         shell: pwsh
         run: ./scripts/tests/Test-BuildDiagnostics.ps1
+
+      - name: SDK 基线与缺失负例
+        shell: pwsh
+        run: ./scripts/tests/Test-SdkBaseline.ps1 -OutputRoot artifacts/build-diagnostics
 
       - name: 编译与测试
         shell: pwsh

@@ -1,0 +1,17 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.52]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.18]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.24]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Dark) [1 s]
+[xUnit.net 00:00:04.23]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Light) [43 ms]
+  Passed GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light) [91 ms]
+  Passed GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Dark) [60 ms]
+
+Test Run Successful.
+Total tests: 4
+     Passed: 4
+ Total time: 4.8010 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T031624961Z-945172ac\tests\wpf.Q10CheckBoxHitBehaviorTests\wpf.Q10CheckBoxHitBehaviorTests.trx

@@ -1,0 +1,1 @@
+4/4 PowerShell scripts parsed without errors. UTF-8 BOM checked by source validator.

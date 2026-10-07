@@ -1,0 +1,16 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.52]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.24]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.29]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ProductionInboxKeepsFourRowsOrExposesThePageFallback [2 s]
+[xUnit.net 00:00:04.94]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ReadableFloorUsesTableChromeAndFrameChromeIndependently [19 ms]
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.NarrowInboxKeepsThePageScrollChannelWhenFooterWraps [144 ms]
+
+Test Run Successful.
+Total tests: 3
+     Passed: 3
+ Total time: 6.1496 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T031624961Z-945172ac\tests\wpf.MediaInboxGeometryTests\wpf.MediaInboxGeometryTests.trx

@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <!-- Keep the compiler language contract stable when another SDK is installed. -->
+    <LangVersion>12.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>

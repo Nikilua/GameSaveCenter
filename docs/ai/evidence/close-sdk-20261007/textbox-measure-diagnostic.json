@@ -1,0 +1,22 @@
+{
+    "kind":  "isolated-WPF-measure-diagnostic",
+    "sourceCommit":  "c7f2a3689293c35e1ad98faff05e821b12d22070",
+    "sdk":  "8.0.423",
+    "hasValidationError":  true,
+    "before":  {
+                   "width":  734,
+                   "border":  "1,1,1,1",
+                   "height":  36
+               },
+    "invalid":  {
+                    "width":  734,
+                    "border":  "2,2,2,2",
+                    "height":  37
+                },
+    "intervention":  {
+                         "width":  734,
+                         "border":  "1,1,1,1",
+                         "height":  36
+                     },
+    "note":  "Runtime intervention in an isolated synthetic Window; production source unchanged. No physical DPI or Playnite claim."
+}

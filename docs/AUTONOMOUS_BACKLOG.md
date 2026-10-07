@@ -13,7 +13,7 @@
 | GOV-003 | P1 | IMPLEMENTED | 当前审阅 Agent | 本次文档/账本审阅；证据见下 |
 | CLOSE-IPC-01 | P0 | IMPLEMENTED | 开发/测试 Agent | 取消 IO/EOF 分类与夹具释放已修复；R19-08/R01-08 |
 | CLOSE-CI-01 | P0 | IN_PROGRESS | 构建维护 Agent | 当前 CI 失败；诊断产物部分不依赖历史日志 |
-| CLOSE-SDK-01 | P0 | READY | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
+| CLOSE-SDK-01 | P0 | IN_PROGRESS | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
 | CLOSE-WRAP-01 | P1 | READY | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
 | CLOSE-EVID-01 | P1 | READY | UI 验证 Agent | 先修测试失败；原5项stale及本阶段新增受影响的3项 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
@@ -44,10 +44,12 @@
 - **完成条件**：受控失败也能取得完整方法/断言/堆栈与非零退出码；每个 WPF 类有独立结果、不相互覆盖；成功路径 artifact 正常；修复实际根因后当前候选 CI 编译/测试/渲染/打包均通过。单做上传只算部分完成。
 - **2026-10-07阶段**：已接入console/TRX/实际退出码/SDK/源码与DLL身份及always上传，PS5.1/7受控失败与启动错误自测通过；侧栏22/22、source470/18、WPF前23类通过，第24类Q14两次先失败于错误态高度36→37 DIP，后89类未执行。全CI恢复未验，保持IN_PROGRESS。[证据](ai/evidence/close-ci-20261007/README.md)。
 - **提交后**：48b78b3b已推送main，clean构建0/0与侧栏22/22；run37565955357记录时编译/测试进行中，先取该run终态与产物再统一SDK。freshness实算6/8，未更新baseline。
+- **终态复核（SDK阶段）**：run37565955357与37566483862失败时均实际上传且已下载诊断；SDK10侧栏22/22通过，native ClientAreaAnimation=false有TRX记录；均在Q14错误态36→37 DIP失败，后89类未执行。补修诊断器多PATH匹配拼接，PS5.1/7正负例通过。完整CI仍未恢复。[SDK阶段](ai/evidence/close-sdk-20261007/README.md)。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
 ### CLOSE-SDK-01：明确 SDK 与编译器基线
 
+- **2026-10-07工程阶段**：global.json/CI精确8.0.423、disable、C#12.0，build/独立runner校验实际版本；PS5.1/7真实缺失旧SDK与原latestMajor对照通过。Release0/0、Core125/Worker357/source470通过；当前runner与完整包门禁待签收，保持IN_PROGRESS。暂不新增SDK10兼容通道，未来升级须显式修改并完整验证。[证据](ai/evidence/close-sdk-20261007/README.md)。
 - **范围**：统一 `global.json` 与 `setup-dotnet` 的 SDK 选择，记录实际 `dotnet --version`；明确是否需要独立的更新 SDK 兼容通道；评估 `LangVersion=latest` 与选定 SDK 的关系。
 - **完成条件**：干净机器与 runner 使用同一已声明基线，完整 Release 和包门禁通过；另一预装大版本不能静默改变基线；缺 SDK 时给可理解错误。目标框架仍保持现有 Playnite/net462 与 Worker/net8 合同。
 - **非目标**：不把“固定 SDK 后通过”当成已解释所有历史失败，不顺便升级运行时或所有 NuGet 包。
@@ -63,6 +65,7 @@
 
 - **范围**：Q14ToolbarAlignmentBehaviorTests 在 Light/654 DIP 实测为单行，但七个控件 Margin.Bottom 仍20 DIP；原全量和同DLL独立复核均失败。定位 WrapPanel 测量、DPI边界、响应式更新和行距恢复时序，修复共享路径；不放宽断言或固定跳过654 DIP。
 - **追加失败（2026-10-07）**：当前独立及全量Q14先在验证错误态TextBox高度36→37 DIP失败，未到654 DIP。需同时修复共享错误态测量与原单行边距；不能把未执行的后半段计为通过。
+- **SDK阶段定位**：STA保持Validation.HasError=true，参与测量的边框2→1 DIP后高度37→36；生产尚未改。调用同DLL既有私有边距夹具，Light/Dark654 DIP七项单行margin20均失败，620/660通过。须共享模板及真实折行状态修复，不写死654或放宽容差。
 - **完成条件**：保留620→660→620往返、边界宽度和Light/Dark真实STA布局；单行恢复作者margin，折行保持20 DIP；关联Task/Save/Media/Trainer共享行距无回归。补修复前后DLL身份/TRX/几何，并完成全量门禁。
 - **依赖/证据**：CLOSE-EVID-01先完成此回归修复再更新baseline；[本轮失败与复核](ai/evidence/close-ipc-20261005/README.md)。这是新发现的受控失败，不替代用户Q06/R08或真实Playnite故障。
 

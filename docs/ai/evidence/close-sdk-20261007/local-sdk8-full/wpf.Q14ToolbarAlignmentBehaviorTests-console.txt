@@ -1,0 +1,47 @@
+[repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.07]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.04]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.12]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:09.37]     GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [FAIL]
+[xUnit.net 00:00:09.37]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:09.37]       Expected: null
+[xUnit.net 00:00:09.37]       Actual:   Xunit.Sdk.TrueException: validation error changed TextBox geometry component 3: 36 -> 37 DIP (limit 0.75).
+[xUnit.net 00:00:09.37]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:09.37]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.AssertSnapshotWithin(String expected, String actual, Double tolerance, String state) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 535
+[xUnit.net 00:00:09.37]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.CaptureToolbarGeometry(GameSaveCenterThemeMode theme, Double width, Double height) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 474
+[xUnit.net 00:00:09.37]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.<>c__DisplayClass4_0.<ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 58
+[xUnit.net 00:00:09.38]       Stack Trace:
+[xUnit.net 00:00:09.38]            在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 133
+[xUnit.net 00:00:09.41]   Finished:    GameSaveCenter.Playnite.Tests
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+  失败 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [6 s]
+  错误消息:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   Xunit.Sdk.TrueException: validation error changed TextBox geometry component 3: 36 -> 37 DIP (limit 0.75).
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.AssertSnapshotWithin(String expected, String actual, Double tolerance, String state) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 535
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.CaptureToolbarGeometry(GameSaveCenterThemeMode theme, Double width, Double height) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 474
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.<>c__DisplayClass4_0.<ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 58
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 133
+
+测试运行失败。
+测试总数: 1
+     失败数: 1
+总时间: 27.1463 秒
+结果文件: [repo]\.tmp\close-sdk-20261007\validation\20261007T032746653Z-f445e04e\tests\wpf.Q14ToolbarAlignmentBehaviorTests\wpf.Q14ToolbarAlignmentBehaviorTests.trx

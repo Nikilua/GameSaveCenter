@@ -1,0 +1,55 @@
+[repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.51]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.50]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.61]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.25) [7 s]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.5) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary [700 ms]
+[xUnit.net 00:00:17.63]   Finished:    GameSaveCenter.Playnite.Tests
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxScrollBarsReserveTheCornerAndKeepTheFinalRowAndRightmostCellInsideViewport [1 s]
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+
+测试运行成功。
+测试总数: 5
+     通过数: 5
+总时间: 36.6310 秒
+结果文件: [repo]\.tmp\close-sdk-20261007\validation\20261007T032746653Z-f445e04e\tests\wpf.MediaInboxScrollBehaviorTests\wpf.MediaInboxScrollBehaviorTests.trx

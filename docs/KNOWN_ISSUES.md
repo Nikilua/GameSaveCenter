@@ -1,13 +1,13 @@
 ## 2026-10-07 当前开放问题入口
 
-当前开发基线226bce6b / 0.6.73；本轮修复与精确身份见 [IPC证据](ai/evidence/close-ipc-20261005/README.md)。以下使用唯一 CLOSE 编号，避免沿用下方重复 GSC 编号。任务状态/关闭条件以 [活动积压清单](AUTONOMOUS_BACKLOG.md) 为准；[审阅证据](ai/evidence/completion-review-20261005/README.md) 保留实际失败。
+当前版本0.6.73；SDK与远端终态见 [本阶段证据](ai/evidence/close-sdk-20261007/README.md)，[IPC证据](ai/evidence/close-ipc-20261005/README.md)保留前阶段身份。以下使用唯一 CLOSE 编号，避免沿用下方重复 GSC 编号。任务状态/关闭条件以 [活动积压清单](AUTONOMOUS_BACKLOG.md) 为准；历史审阅保留实际失败。
 
 | 跟踪项 | 当前事实 | 状态 |
 | --- | --- | --- |
 | CLOSE-IPC-01 | 修复取消dispose的IOException/EOF竞争分类与失败夹具释放；200专项/source470通过 | IMPLEMENTED；不代表整体门禁通过 |
-| CLOSE-CI-01 | 已接入失败诊断/上传；本机侧栏22/22，基线远端37336829173仍两条动画断言失败，修复提交远端结果待验 | IN_PROGRESS；单做诊断不等于恢复CI |
+| CLOSE-CI-01 | 两条修复后SDK10 CI侧栏22/22通过且失败诊断实际上传/下载；Q14错误态36→37 DIP失败 | IN_PROGRESS；完整CI/渲染/包门禁仍未过 |
 | CLOSE-WRAP-01 | 原654 DIP单行边距失败仍在；10月7日独立/全量Q14先在错误态高度36→37 DIP失败 | READY；后89类未执行 |
-| CLOSE-SDK-01 | CI安装9.0.x、global.json latestMajor、本机8.0.423，实际选择可漂移 | READY |
+| CLOSE-SDK-01 | global.json/CI精确8.0.423、disable、C#12.0；PS5.1/7实际缺失SDK与原策略对照通过 | IN_PROGRESS；当前runner与完整包门禁待验 |
 | CLOSE-EVID-01 | 原R00-04/06/07/08、R01-05 stale；本阶段还命中R00-03/R01-01/R01-04 | READY；提交后复算，baseline未改 |
 | CLOSE-HOST-01 / ENV-001 | 用户Media Inbox滚动偏移仍缺当前同宿主诊断；历史WMI/CEF隔离阻塞 | BLOCKED_ENVIRONMENT |
 | CLOSE-REG-01 | Q06/R08用户原失败缺断言、堆栈和DLL身份 | BLOCKED_ENVIRONMENT；未关闭 |

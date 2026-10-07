@@ -1,3 +1,13 @@
+## 2026-10-07 CLOSE-SDK-01工程阶段：SDK与编译器一致性
+
+- 从main c7f2a368干净工作树启动，按规定依次阅读当前入口/记忆/日志/交接及Git状态，fetch后领取SDK任务。没有升级目标框架、运行时、NuGet或0.6.73版本。
+- 取得run37565955357/37566483862终态及always上传的真实产物：SDK10侧栏22/22通过，TRX记录HighContrast=false/ClientAreaAnimation=false；两条运行均在Q14错误态36→37 DIP失败，后89类未执行。旧动画失败的偏好不能补造，COM收尾不解释断言。
+- global.json与setup-dotnet统一精确8.0.423/disable，不接受其他SDK替代；C#12.0，build/独立runner校验实际版本。PS5.1/7真实缺失旧SDK1.0.100失败，原latestMajor同机对照选择8.0.423；合成10输入拒绝。暂不新增兼容通道，未来升级须明确契约和完整门禁。
+- 采集器遇到多个PATH中的git.exe拼接启动失败，先保存非零诊断后修复首路径选择；两个不同原生程序的同名夹具在PS5.1/7验证返回7而非次路径错误，PATH于finally恢复。受控缺程序、stderr、0/7、TRX/URL/路径脱敏仍通过。
+- 基线Release0 warning/error、XAML24/24；Core125/125、Worker357/357（14.8737分钟）、source470 passed/18原有skip/0 failed，侧栏22/22。WPF前23类通过、第24类Q14仍在错误态36→37 DIP失败，后89类未执行，完整脚本exit1；dirty基线c7源码hash/DLL SHA/MVID与最终脚本快照分账，不称clean下一提交。
+- STA探针先排除脚本保留变量与Decimal反射参数问题，再取得实际几何：错误边框2→1 DIP使高度37→36且Validation.HasError=true；独立Light/Dark654 DIP七项单行margin20失败，620/660正例与Light往返通过。生产UI未改，不替代Playnite/物理DPI验收。
+- MSBuild语言属性12.0、源码检查、PowerShell AST、diff检查通过；fsck退出0仅既有dangling。当前SDK/CI完整Release/runner/渲染/包门禁未签收，两任务保持IN_PROGRESS；8项freshness与宿主/用户原失败/发布矩阵继续开放。证据：[SDK阶段](evidence/close-sdk-20261007/README.md)。
+
 ## 2026-10-07 CLOSE-CI-01阶段：完整诊断与动画测试前提
 
 - 源码48b78b3b已推送main；clean重建Release0/0、XAML24/24、新身份侧栏22/22；不重复宣称全量clean测试通过。freshness实际6/8，baseline未改。run37565955357记录时源码检查/诊断自测通过、编译与测试进行中；须下一阶段先读取其终态/产物。旧dirty build/诊断/一次性脚手架已清理，仅保留最新final-build供SDK/Q14。提交前后证据已归档。

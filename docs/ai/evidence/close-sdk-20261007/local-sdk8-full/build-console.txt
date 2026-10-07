@@ -1,0 +1,14 @@
+  GameSaveCenter.Contracts -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\.tmp\close-sdk-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:36.11

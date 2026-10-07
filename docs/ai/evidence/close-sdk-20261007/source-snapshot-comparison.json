@@ -1,0 +1,12 @@
+{
+  "baselineCommit": "c7f2a3689293c35e1ad98faff05e821b12d22070",
+  "compiledInputsUnchanged": true,
+  "changedAfterBuildSnapshot": [
+    ".github/workflows/windows-build.yml",
+    "scripts/build-diagnostics.ps1",
+    "scripts/run-playnite-tests-isolated.ps1",
+    "scripts/tests/Test-BuildDiagnostics.ps1",
+    "scripts/tests/Test-SdkBaseline.ps1"
+  ],
+  "note": "Final scripts refined during Core/Worker run; compiled C#/XAML/config inputs identical. Full build snapshot and final verification snapshot are retained separately."
+}

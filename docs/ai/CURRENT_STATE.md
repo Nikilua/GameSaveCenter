@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-07；已交付源码`48b78b3beb0465083f420b1df23cd4c973a06ea8`，CI诊断/侧栏策略输入及提交前后DLL身份见[本阶段证据](evidence/close-ci-20261007/README.md)，分支 `main`，版本 `0.6.73-development-preview`。
+更新：2026-10-07；本阶段统一SDK/编译器基线并核对远端终态，源码/DLL身份与结果见[SDK阶段证据](evidence/close-sdk-20261007/README.md)，分支 `main`，版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -11,19 +11,20 @@
 | 维度 | 当前可核查事实 |
 | --- | --- |
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
-| 本轮测试 | Core125/125、Worker357/357；source470 passed/18原有skipped/0 failed；侧栏22/22；WPF前23类通过，第24类Q14错误态高度36→37 DIP失败，后89类未执行；IPC历史200/200单独保留 |
-| 远端 CI | 当前源码run37565955357已通过源码检查/诊断自测，记录时编译与测试进行中；终态、偏好记录及上传未验。基线两条SDK10活动动画失败另保留 |
+| 本轮测试 | Core125/125、Worker357/357；source470 passed/18原有skipped/0 failed；侧栏22/22；WPF前23类通过、第24类Q14错误态36→37 DIP失败，后89类未执行，脚本exit1；IPC历史200/200单独保留 |
+| 远端 CI | run37565955357/37566483862终态失败且always诊断上传已实际下载；SDK10侧栏22/22已通过，Q14错误态36→37 DIP失败，后89类未执行 |
+| SDK契约 | global.json/CI精确8.0.423、rollForward=disable、C#12.0；PS5.1/7真实缺失旧SDK与latestMajor对照通过；当前基线runner与完整包门禁待验 |
 | R00/R01 证据 | 48b78b3b复算6 fresh/8 stale：R00-03/04/06/07/08、R01-01/04/05；baseline未改。本地包仍为历史d57a613f，未安装 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 
-当前CI诊断、PowerShell5.1/7自测、侧栏22项及Q14失败在[10月7日证据](evidence/close-ci-20261007/README.md)；[IPC证据](evidence/close-ipc-20261005/README.md)与[原完成度审阅](evidence/completion-review-20261005/README.md)保持历史。整体门禁仍失败；SDK8不能替代SDK10 CI。Q14本次先失败于错误态高度，原654 DIP边距失败仍未解决。
+SDK与远端结果在[本阶段证据](evidence/close-sdk-20261007/README.md)；[CI诊断阶段](evidence/close-ci-20261007/README.md)、[IPC证据](evidence/close-ipc-20261005/README.md)与[原审阅](evidence/completion-review-20261005/README.md)保留历史。SDK10的真实ClientAreaAnimation=false路径已验证，侧栏通过；Q14仍失败。STA探针确认2 DIP错误边框增加内容测量，同时独立复现Light/Dark654 DIP单行残留20 DIP margin；620/660正例通过。整体门禁不通过，固定SDK不关闭布局问题。
 
 ## 当前执行顺序
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：依据已取得的侧栏动画断言核对系统偏好/测试前提，保存失败产物并统一明确SDK。
-2. P1 `CLOSE-WRAP-01`：修复已两次复现的Q14/654 DIP单行20 DIP边距残留，保留折行和往返负例。
+1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：工程基线与失败上传已接入；按当前源码runner实际结果签收，完整门禁通过前保持IN_PROGRESS。
+2. P1 `CLOSE-WRAP-01`：修复共享TextBox错误边框的内容测量及Q14/654 DIP单行20 DIP边距残留，保留折行、双主题和往返负例。
 3. P1 `CLOSE-EVID-01`：上述回归修复后按8项sourcePaths精确补证，不能只改哈希转绿。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。

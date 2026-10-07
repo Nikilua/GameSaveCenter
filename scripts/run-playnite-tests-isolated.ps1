@@ -12,6 +12,7 @@ $ErrorActionPreference = 'Stop'
 $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
 $previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
 . (Join-Path $PSScriptRoot 'build-diagnostics.ps1')
+. (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
 $ownsDiagnostics = $null -eq $DiagnosticsContext
 if ($ownsDiagnostics) {
     $DiagnosticsContext = New-GscDiagnosticContext $ProjectRoot $DiagnosticsRoot
@@ -75,9 +76,11 @@ function Invoke-PlayniteTestProcess {
 Push-Location $ProjectRoot
 try {
     if ($ownsDiagnostics) {
+        $requiredSdk = Get-GscSdkBaseline $ProjectRoot
         $sdk = Invoke-GscRecordedCommand $DiagnosticsContext 'sdk-version' dotnet @('--version')
-        if ($sdk.ExitCode -ne 0) { throw "SDK selection failed; exit code: $($sdk.ExitCode)" }
-        $DiagnosticsContext.Sdk = ($sdk.Output -join '').Trim()
+        $selectedVersion = if ($sdk.ExitCode -eq 0) { ($sdk.Output -join '').Trim() } else { '' }
+        Assert-GscSdkSelection $requiredSdk $selectedVersion $sdk.ExitCode @()
+        $DiagnosticsContext.Sdk = $selectedVersion
         Set-GscDiagnosticAssemblies $DiagnosticsContext $OutputRoot $Configuration
     }
     $testProject = Join-Path $ProjectRoot 'tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj'
