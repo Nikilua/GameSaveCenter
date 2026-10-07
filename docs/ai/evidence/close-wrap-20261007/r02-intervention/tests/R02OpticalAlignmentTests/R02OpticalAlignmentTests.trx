@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="74c7a01e-fce6-4286-84b7-6fa0fd24fd1e" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T13:05:24.7997072+08:00" queuing="2026-10-07T13:05:24.7997081+08:00" start="2026-10-07T13:05:16.7735070+08:00" finish="2026-10-07T13:05:25.3377673+08:00" />
+  <TestSettings name="default" id="c259eb70-2ece-423e-ada4-c825a5c78e23">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9db43832-03d3-45d8-b579-4b26c9f4fbe4" testId="c0182d72-690e-3540-4dbc-34c0792ae0e7" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree" computerName="redacted-host" duration="00:00:03.3370000" startTime="2026-10-07T13:05:21.4104919+08:00" endTime="2026-10-07T13:05:24.7275546+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9db43832-03d3-45d8-b579-4b26c9f4fbe4" />
+    <UnitTestResult executionId="0a754386-926b-407c-9cb1-27ce46cba20b" testId="4f860cd9-a721-97c5-965c-3506c541e6bc" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20)" computerName="redacted-host" duration="00:00:00.0290000" startTime="2026-10-07T13:05:25.0560922+08:00" endTime="2026-10-07T13:05:25.0581508+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a754386-926b-407c-9cb1-27ce46cba20b">
+      <Output>
+        <StdOut>icon=20; dpi=1,1; gap=9; centers=0.5; columns=21,17; content=134/36; iconBounds=13,8,20,20; countBounds=42,9,9,19; iconSlot=0,0,21,18; countSlot=21,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal&#xD;
+diagnostic center intervention: content=36; columns=20,16; gap=8</StdOut>
+        <ErrorInfo>
+          <Message>Assert.InRange() Failure: Value not in range&#xD;
+Range:  (7.5 - 8.5)&#xD;
+Actual: 9</Message>
+          <StackTrace>   在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61&#xD;
+   在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d33bae16-0aa2-487b-a208-410d8371d3a7" testId="4474835d-4c26-cb79-fb97-fee0427e0ebf" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels" computerName="redacted-host" duration="00:00:00.0390000" startTime="2026-10-07T13:05:25.0626288+08:00" endTime="2026-10-07T13:05:25.0960851+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d33bae16-0aa2-487b-a208-410d8371d3a7" />
+    <UnitTestResult executionId="d3690b8e-eb03-4736-a643-f630b8fec54e" testId="496e2d48-4754-ad8c-ef70-f895cd09878f" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16)" computerName="redacted-host" duration="00:00:00.1540000" startTime="2026-10-07T13:05:24.7698865+08:00" endTime="2026-10-07T13:05:25.0389387+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d3690b8e-eb03-4736-a643-f630b8fec54e">
+      <Output>
+        <StdOut>icon=16; dpi=1,1; gap=9; centers=0.5; columns=17,17; content=134/32; iconBounds=13,10,16,16; countBounds=38,9,9,19; iconSlot=0,0,17,18; countSlot=17,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal&#xD;
+diagnostic center intervention: content=32; columns=16,16; gap=8</StdOut>
+        <ErrorInfo>
+          <Message>Assert.InRange() Failure: Value not in range&#xD;
+Range:  (7.5 - 8.5)&#xD;
+Actual: 9</Message>
+          <StackTrace>   在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61&#xD;
+   在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4f860cd9-a721-97c5-965c-3506c541e6bc">
+      <Execution id="0a754386-926b-407c-9cb1-27ce46cba20b" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c0182d72-690e-3540-4dbc-34c0792ae0e7">
+      <Execution id="9db43832-03d3-45d8-b579-4b26c9f4fbe4" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="SharedButtonRendersVisualContentWithoutStringifyingTheControlTree" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4474835d-4c26-cb79-fb97-fee0427e0ebf">
+      <Execution id="d33bae16-0aa2-487b-a208-410d8371d3a7" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="496e2d48-4754-ad8c-ef70-f895cd09878f">
+      <Execution id="d3690b8e-eb03-4736-a643-f630b8fec54e" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c0182d72-690e-3540-4dbc-34c0792ae0e7" executionId="9db43832-03d3-45d8-b579-4b26c9f4fbe4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4f860cd9-a721-97c5-965c-3506c541e6bc" executionId="0a754386-926b-407c-9cb1-27ce46cba20b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4474835d-4c26-cb79-fb97-fee0427e0ebf" executionId="d33bae16-0aa2-487b-a208-410d8371d3a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="496e2d48-4754-ad8c-ef70-f895cd09878f" executionId="d3690b8e-eb03-4736-a643-f630b8fec54e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="4" executed="4" passed="2" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.36]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.38]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.47]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:07.21]       Assert.InRange() Failure: Value not in range&#xD;
+[xUnit.net 00:00:07.21]       Range:  (7.5 - 8.5)&#xD;
+[xUnit.net 00:00:07.21]       Actual: 9&#xD;
+[xUnit.net 00:00:07.21]       Stack Trace:&#xD;
+[xUnit.net 00:00:07.21]            在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61&#xD;
+[xUnit.net 00:00:07.21]            在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230&#xD;
+[xUnit.net 00:00:07.21]       Output:&#xD;
+[xUnit.net 00:00:07.21]         icon=16; dpi=1,1; gap=9; centers=0.5; columns=17,17; content=134/32; iconBounds=13,10,16,16; countBounds=38,9,9,19; iconSlot=0,0,17,18; countSlot=17,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal&#xD;
+[xUnit.net 00:00:07.21]         diagnostic center intervention: content=32; columns=16,16; gap=8&#xD;
+[xUnit.net 00:00:07.22]       Assert.InRange() Failure: Value not in range&#xD;
+[xUnit.net 00:00:07.22]       Range:  (7.5 - 8.5)&#xD;
+[xUnit.net 00:00:07.22]       Actual: 9&#xD;
+[xUnit.net 00:00:07.22]       Stack Trace:&#xD;
+[xUnit.net 00:00:07.22]            在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61&#xD;
+[xUnit.net 00:00:07.22]            在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230&#xD;
+[xUnit.net 00:00:07.22]       Output:&#xD;
+[xUnit.net 00:00:07.22]         icon=20; dpi=1,1; gap=9; centers=0.5; columns=21,17; content=134/36; iconBounds=13,8,20,20; countBounds=42,9,9,19; iconSlot=0,0,21,18; countSlot=21,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal&#xD;
+[xUnit.net 00:00:07.22]         diagnostic center intervention: content=36; columns=20,16; gap=8&#xD;
+[xUnit.net 00:00:07.27]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-07T13:05:25.0455841+08:00">
+        <Text>[xUnit.net 00:00:07.21]     GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-07T13:05:25.0591466+08:00">
+        <Text>[xUnit.net 00:00:07.22]     GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20) [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

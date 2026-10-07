@@ -28,6 +28,21 @@ namespace GameSaveCenter.Playnite.Controls
             Unloaded += OnButtonUnloaded;
         }
 
+        private static readonly DependencyPropertyKey HasVisualContentPropertyKey =
+            DependencyProperty.RegisterReadOnly(
+                nameof(HasVisualContent), typeof(bool), typeof(Button), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty HasVisualContentProperty = HasVisualContentPropertyKey.DependencyProperty;
+
+        /// <summary>Lets the shared template honor alignment for an authored visual tree.</summary>
+        public bool HasVisualContent => (bool)GetValue(HasVisualContentProperty);
+
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            base.OnContentChanged(oldContent, newContent);
+            SetValue(HasVisualContentPropertyKey, newContent is UIElement || newContent is FrameworkContentElement);
+        }
+
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.RegisterAttached("CornerRadius", typeof(CornerRadius), typeof(Button), new FrameworkPropertyMetadata(new CornerRadius(0)));
 

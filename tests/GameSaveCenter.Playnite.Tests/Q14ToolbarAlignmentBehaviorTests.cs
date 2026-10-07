@@ -199,7 +199,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             }
 
             var resizeRoundTrip = string.Empty;
-            if (theme == GameSaveCenterThemeMode.Light && width == 620d)
+            if (width == 620d)
             {
                 window.Width = 660d;
                 FlushLayout(window);
@@ -470,12 +470,21 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 new ExceptionValidationRule(), searchExpression, "synthetic toolbar validation error", null));
             FlushLayout(window);
             Assert.True(Validation.GetHasError(search));
+            var validationStroke = Assert.IsType<Border>(search.Template.FindName("ValidationStroke", search));
+            Assert.Equal(new Thickness(2d), validationStroke.BorderThickness);
+            Assert.Equal(1d, validationStroke.Opacity);
+            Assert.False(validationStroke.IsHitTestVisible);
+            Assert.Equal(((SolidColorBrush)view.FindResource("GscErrorBrush")).Color,
+                Assert.IsType<SolidColorBrush>(validationStroke.BorderBrush).Color);
+            AssertGeometryNear(validationStroke.ActualHeight, search.ActualHeight, GeometryTolerance, "validation stroke height");
+            AssertGeometryNear(validationStroke.ActualWidth, search.ActualWidth, GeometryTolerance, "validation stroke width");
             AssertSnapshotWithin(baseSnapshot, Snapshot(mainRow, search, filters, presetControls, presetRow), GeometryTolerance, "validation error");
             Validation.ClearInvalid(searchExpression!);
 
             Assert.Same(search, Keyboard.Focus(search));
             FlushLayout(window);
             Assert.True(search.IsKeyboardFocusWithin);
+            Assert.Equal(0d, validationStroke.Opacity);
             AssertSnapshotWithin(baseSnapshot, Snapshot(mainRow, search, filters, presetControls, presetRow), GeometryTolerance, "keyboard focus");
 
             refresh.IsEnabled = false;

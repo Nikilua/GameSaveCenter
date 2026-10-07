@@ -2,6 +2,13 @@
 
 更新：2026-10-07；SDK工程阶段、远端终态与当前源码/DLL身份见[SDK阶段证据](ai/evidence/close-sdk-20261007/README.md)，版本0.6.73。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
+## 2026-10-07共享UI阶段检查点（优先于下方历史下一步）
+
+输入错误覆盖描边、实际Arrange行距和共享复合按钮对齐已修复；联合专项64/64、焦点可见获焦/紧凑负例4/4、完整render/source/XAML通过，Core125/Worker357/source470 passed/18原有skip。前两轮全量R02/R05失败、旧DLL/同candidate对照及干预均保留，未放宽原断言。
+
+第三轮完整入口前36类WPF含Q14/R02/R05焦点通过，第37类R05OptionVirtualizationBehaviorTests删除回退期望Game 0000、实际Game 0020，2 passed/1 failed，后77类未执行。旧clean c35与同candidate独立均3/3；新增CLOSE-PICKER-01，先受控核对排序/20ms防抖刷新线程及集合重建，尚不归因具体修改或改断言。UI阶段源码/证据单独commit/push，完整门禁和任务仍IN_PROGRESS；下一阶段构建必须使用提交后的真实HEAD，不能把c35 dirty DLL冒充新提交。
+
+c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独立render-qa未注入env时MSBuild身份unknown已实际查询，当前render显式注入c35并核对DLL；后续修脚本注入/恢复。共享模板另命中R00-01-02/R00-05，共10项补证，baseline不改。证据：[共享UI阶段](ai/evidence/close-wrap-20261007/README.md)。
 ## 本轮完成
 
 - global.json与CI固定SDK8.0.423/disable，C#12.0，构建和独立runner验证实际选择；PS5.1/7真实缺失旧SDK失败、原latestMajor对照返回8.0.423通过。Release0/0、Core125/Worker357/source470通过；完整WPF、runner与包门禁仍须按最新终态签收，SDK/CI任务不关闭。

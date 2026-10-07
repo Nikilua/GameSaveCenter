@@ -1,0 +1,2 @@
+Source validation passed: JSON/XML/YAML, XAML semantics/resources, C# delimiters, solution, IPC constants, version consistency, delivery guards, media/game-tool SQLite guards, large-library performance guards and Windows launchers.
+Note: this does not replace dotnet build/test on Windows with Playnite installed.

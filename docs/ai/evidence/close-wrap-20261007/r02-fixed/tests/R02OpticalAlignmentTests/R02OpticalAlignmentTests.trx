@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="739e0cb0-5dca-4d32-88c5-5556bcaeba2e" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T13:08:44.2690033+08:00" queuing="2026-10-07T13:08:44.2690036+08:00" start="2026-10-07T13:08:36.4568202+08:00" finish="2026-10-07T13:08:44.5885047+08:00" />
+  <TestSettings name="default" id="918af220-d7aa-4b9d-a4ca-62ed26cd6262">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="580f1cda-4aa7-4ab6-8a16-c123951adef8" testId="496e2d48-4754-ad8c-ef70-f895cd09878f" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16)" computerName="redacted-host" duration="00:00:00.1470000" startTime="2026-10-07T13:08:44.2506311+08:00" endTime="2026-10-07T13:08:44.3611527+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="580f1cda-4aa7-4ab6-8a16-c123951adef8">
+      <Output>
+        <StdOut>icon=16; dpi=1,1; gap=8; centers=0.5; columns=16,16; content=32/32; iconBounds=64,10,16,16; countBounds=88,9,8,19; iconSlot=0,0,16,18; countSlot=16,0,16,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ea805188-26c7-48e9-9bec-24c2a75bd6f9" testId="4474835d-4c26-cb79-fb97-fee0427e0ebf" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels" computerName="redacted-host" duration="00:00:00.0320000" startTime="2026-10-07T13:08:44.3908031+08:00" endTime="2026-10-07T13:08:44.4209182+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ea805188-26c7-48e9-9bec-24c2a75bd6f9" />
+    <UnitTestResult executionId="4aa29dc7-df94-4d73-8e33-f42701449d06" testId="4f860cd9-a721-97c5-965c-3506c541e6bc" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20)" computerName="redacted-host" duration="00:00:00.0270000" startTime="2026-10-07T13:08:44.3746561+08:00" endTime="2026-10-07T13:08:44.3886323+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4aa29dc7-df94-4d73-8e33-f42701449d06">
+      <Output>
+        <StdOut>icon=20; dpi=1,1; gap=8; centers=0.5; columns=20,16; content=36/36; iconBounds=62,8,20,20; countBounds=90,9,8,19; iconSlot=0,0,20,18; countSlot=20,0,16,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="317a6ac3-a15d-4bb7-a796-0813fa400126" testId="c0182d72-690e-3540-4dbc-34c0792ae0e7" testName="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree" computerName="redacted-host" duration="00:00:03.0120000" startTime="2026-10-07T13:08:41.2246249+08:00" endTime="2026-10-07T13:08:44.2150824+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="317a6ac3-a15d-4bb7-a796-0813fa400126" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4f860cd9-a721-97c5-965c-3506c541e6bc">
+      <Execution id="4aa29dc7-df94-4d73-8e33-f42701449d06" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c0182d72-690e-3540-4dbc-34c0792ae0e7">
+      <Execution id="317a6ac3-a15d-4bb7-a796-0813fa400126" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="SharedButtonRendersVisualContentWithoutStringifyingTheControlTree" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4474835d-4c26-cb79-fb97-fee0427e0ebf">
+      <Execution id="ea805188-26c7-48e9-9bec-24c2a75bd6f9" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="496e2d48-4754-ad8c-ef70-f895cd09878f">
+      <Execution id="580f1cda-4aa7-4ab6-8a16-c123951adef8" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests" name="CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="496e2d48-4754-ad8c-ef70-f895cd09878f" executionId="580f1cda-4aa7-4ab6-8a16-c123951adef8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4474835d-4c26-cb79-fb97-fee0427e0ebf" executionId="ea805188-26c7-48e9-9bec-24c2a75bd6f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4f860cd9-a721-97c5-965c-3506c541e6bc" executionId="4aa29dc7-df94-4d73-8e33-f42701449d06" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0182d72-690e-3540-4dbc-34c0792ae0e7" executionId="317a6ac3-a15d-4bb7-a796-0813fa400126" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.43]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.52]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.84]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -6,9 +6,12 @@
 | --- | --- | --- |
 | CLOSE-IPC-01 | 修复取消dispose的IOException/EOF竞争分类与失败夹具释放；200专项/source470通过 | IMPLEMENTED；不代表整体门禁通过 |
 | CLOSE-CI-01 | 前阶段SDK10侧栏22/22、Q14失败已归档；91bfb6e1自测外层退出码导致后续未执行/artifact0，入口已补修且本地Actions包装通过 | IN_PROGRESS；新CI与完整渲染/包门禁仍未过 |
-| CLOSE-WRAP-01 | 原654 DIP单行边距失败仍在；10月7日独立/全量Q14先在错误态高度36→37 DIP失败 | READY；后89类未执行 |
+| CLOSE-WRAP-01 | 共享错误覆盖描边与实际Arrange行距已修复；Q14 60组、控制器2/2、跨页54/54及render-qa通过 | IN_PROGRESS；第三轮全量Q14通过，后续第37类删除回退失败另案，见[本轮证据](ai/evidence/close-wrap-20261007/README.md) |
+| CLOSE-OPTICAL-01 | 第29类R02间距9 DIP旧clean DLL也复现；共享presenter已修复，原4项及新增3项7/7 | IN_PROGRESS；第三轮本类通过，完整门禁仍未过 |
+| CLOSE-FOCUS-01 | 联合全量/同candidate独立R05 Popup关闭断言均失败；旧clean独立3/3 | IN_PROGRESS；夹具隐藏/Focus失败已证明，修正前提与紧凑负例4/4，第三轮本类4/4；完整门禁仍未过 |
+| CLOSE-PICKER-01 | 第37类删除回退期望Game 0000、实际Game 0020；旧clean/同candidate独立均3/3 | IN_PROGRESS；线程/防抖/排序受控归因待办 |
 | CLOSE-SDK-01 | global.json/CI精确8.0.423、disable、C#12.0；PS5.1/7实际缺失SDK与原策略对照通过 | IN_PROGRESS；当前runner与完整包门禁待验 |
-| CLOSE-EVID-01 | 原R00-04/06/07/08、R01-05 stale；本阶段还命中R00-03/R01-01/R01-04 | READY；提交后复算，baseline未改 |
+| CLOSE-EVID-01 | 原8项及共享输入模板追加R00-01-02/R00-05；candidate 4 fresh/10 stale | READY；全量回归后补证，baseline未改 |
 | CLOSE-HOST-01 / ENV-001 | 用户Media Inbox滚动偏移仍缺当前同宿主诊断；历史WMI/CEF隔离阻塞 | BLOCKED_ENVIRONMENT |
 | CLOSE-REG-01 | Q06/R08用户原失败缺断言、堆栈和DLL身份 | BLOCKED_ENVIRONMENT；未关闭 |
 

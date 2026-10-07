@@ -1,0 +1,27 @@
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application '--version' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 1.0.100
+global.json file: [repo]\artifacts\build-diagnostics\20261007T041650438Z-bf6d6671\missing-sdk\global.json
+
+Installed SDKs:
+
+Install the [1.0.100] .NET SDK or update [[repo]\artifacts\build-diagnostics\20261007T041650438Z-bf6d6671\missing-sdk\global.json] to match an installed SDK.
+8.0.131 [C:\Program Files\dotnet\sdk]
+8.0.206 [C:\Program Files\dotnet\sdk]
+8.0.319 [C:\Program Files\dotnet\sdk]
+8.0.423 [C:\Program Files\dotnet\sdk]
+8.0.425 [C:\Program Files\dotnet\sdk]
+
+9.0.121 [C:\Program Files\dotnet\sdk]
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+9.0.205 [C:\Program Files\dotnet\sdk]
+9.0.318 [C:\Program Files\dotnet\sdk]
+10.0.112 [C:\Program Files\dotnet\sdk]
+10.0.204 [C:\Program Files\dotnet\sdk]
+10.0.303 [C:\Program Files\dotnet\sdk]
+10.0.401 [C:\Program Files\dotnet\sdk]

@@ -1,0 +1,20 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.42]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.43]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.52]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree [3 s]
+[xUnit.net 00:00:06.84]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16) [147 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20) [27 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels [32 ms]
+
+测试运行成功。
+测试总数: 4
+     通过数: 4
+总时间: 8.1171 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\r02-fixed\20261007T050833835Z-a281fcbc\tests\R02OpticalAlignmentTests\R02OpticalAlignmentTests.trx

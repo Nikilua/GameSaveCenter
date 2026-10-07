@@ -1,0 +1,48 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.48]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.56]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.63]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SettingsViewRequestsAUsableDefaultWindowSize [72 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundPreferenceControlsDecodeAndMaterialFallback [11 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: False, clientAnimation: False, expected: False) [2 s]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: True, clientAnimation: True, expected: False) [63 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: False, clientAnimation: True, expected: True) [79 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: False, clientAnimation: True, expected: False) [69 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: False, clientAnimation: False, expected: False) [65 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: True, clientAnimation: True, expected: False) [59 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: True, clientAnimation: False, expected: False) [55 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: True, clientAnimation: False, expected: False) [50 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionHeaderUsesRoundedSharedChrome [7 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundCoversTheWholeShellWithoutAColumnGutter [3 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites [1 s]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedAndCollapsedNavigationKeepsEveryIconLabelAndSelectionFrameAligned [112 ms]
+[xUnit.net 00:00:07.83]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow [747 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionNormalizesSidebarToItsFinalStateInAnActualWpfWindow [57 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionFooterOwnsWorkerStatusAndSpansTheShell [6 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.DefaultSidebarPolicyUsesRealSystemPreferences [23 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionSidebarCollapseIsAnIntegratedBoundaryAffordance [7 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionUsesTheCurrentWidthAndKeepsTheLatestTarget [2 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation [63 ms]
+  Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels [68 ms]
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+
+Test Run Successful.
+Total tests: 22
+     Passed: 22
+ Total time: 13.2714 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T041655074Z-9c86120b\tests\wpf.ProductionShellChromeSourceTests\wpf.ProductionShellChromeSourceTests.trx

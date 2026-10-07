@@ -1,0 +1,23 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.47]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.56]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.63]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfTextBoxKeepsSelectionAcrossUndoAndSupportsRedoForOrdinaryEditing [1 s]
+[xUnit.net 00:00:04.74]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: "  '*.png'  ", kind: ExcludePattern, expected: "*.png") [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: "  \"myremote:GameSaveCenter\"  ", kind: RemoteTarget, expected: "myremote:GameSaveCenter") [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: "  '8080'  ", kind: Port, expected: "8080") [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfPasteKeepsUndoForNormalizedTextAndLeavesRejectedTextUntouched [48 ms]
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.DirectoryPasteTrimsOuterWhitespaceQuotesAndTrailingShellNewline [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.PasteNormalizationTests.MultiLinePasteIsRejectedWithoutChangingTheValue [1 ms]
+
+Test Run Successful.
+Total tests: 7
+     Passed: 7
+ Total time: 5.4791 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T041655074Z-9c86120b\tests\wpf.PasteNormalizationTests\wpf.PasteNormalizationTests.trx

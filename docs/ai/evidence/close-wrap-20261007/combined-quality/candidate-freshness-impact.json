@@ -1,0 +1,129 @@
+{
+  "sourceCommit": "c35d9047659a32ff3ae012a5c56c3a08a2a7edfc",
+  "workingTreeClean": false,
+  "pendingPaths": [
+    "docs/AUTONOMOUS_BACKLOG.md",
+    "docs/DEVELOPMENT_HANDOFF.md",
+    "docs/KNOWN_ISSUES.md",
+    "docs/ai/CURRENT_STATE.md",
+    "docs/ai/PROJECT_MEMORY.md",
+    "docs/ai/WORKLOG.md",
+    "src/GameSaveCenter.Playnite/Controls/NativeWpfControls.cs",
+    "src/GameSaveCenter.Playnite/Infrastructure/WrapPanelRowGapController.cs",
+    "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+    "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs",
+    "tests/GameSaveCenter.Playnite.Tests/Q14ToolbarAlignmentBehaviorTests.cs",
+    "tests/GameSaveCenter.Playnite.Tests/R02OpticalAlignmentTests.cs",
+    "tests/GameSaveCenter.Playnite.Tests/WrapPanelRowGapControllerBehaviorTests.cs"
+  ],
+  "records": [
+    {
+      "id": "R00-01-02",
+      "evidenceSourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Controls/NativeWpfControls.cs",
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "id": "R00-03",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs"
+      ]
+    },
+    {
+      "id": "R00-04",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ]
+    },
+    {
+      "id": "R00-05",
+      "evidenceSourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Controls/NativeWpfControls.cs",
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "id": "R00-06",
+      "evidenceSourceCommit": "af915a2d637dc4901e1c81e2e2cdd097c958a002",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs"
+      ]
+    },
+    {
+      "id": "R00-07",
+      "evidenceSourceCommit": "22c55647799e732a770e6b16a93af4a9e83056f6",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml.cs"
+      ]
+    },
+    {
+      "id": "R00-08",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ]
+    },
+    {
+      "id": "R01-01",
+      "evidenceSourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "scripts/build.ps1"
+      ]
+    },
+    {
+      "id": "R01-02",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "needsRerun": false,
+      "matchedSourcePaths": []
+    },
+    {
+      "id": "R01-03",
+      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "needsRerun": false,
+      "matchedSourcePaths": []
+    },
+    {
+      "id": "R01-04",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs"
+      ]
+    },
+    {
+      "id": "R01-05",
+      "evidenceSourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "needsRerun": true,
+      "matchedSourcePaths": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ]
+    },
+    {
+      "id": "R01-06",
+      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "needsRerun": false,
+      "matchedSourcePaths": []
+    },
+    {
+      "id": "R01-07",
+      "evidenceSourceCommit": "e1324fe",
+      "needsRerun": false,
+      "matchedSourcePaths": []
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-07；本阶段统一SDK/编译器基线并核对远端终态，源码/DLL身份与结果见[SDK阶段证据](evidence/close-sdk-20261007/README.md)，分支 `main`，版本 `0.6.73-development-preview`。
+更新：2026-10-07；本阶段修复共享输入测量/折行，并定位修复共享按钮对齐；当前在途门禁与身份见[共享UI证据](evidence/close-wrap-20261007/README.md)，分支 `main`，版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -11,21 +11,21 @@
 | 维度 | 当前可核查事实 |
 | --- | --- |
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
-| 本轮测试 | Core125/125、Worker357/357；source470 passed/18原有skipped/0 failed；侧栏22/22；WPF前23类通过、第24类Q14错误态36→37 DIP失败，后89类未执行，脚本exit1；IPC历史200/200单独保留 |
-| 远端 CI | 前阶段两条SDK10侧栏22/22通过，Q14失败且产物已下载；91bfb6e1/run37569191845在自测成功日志后的外层退出码失败，后续未执行/artifact0；入口已补修，本地Actions包装PS5.1/7退出0，新CI待验 |
-| SDK契约 | global.json/CI精确8.0.423、rollForward=disable、C#12.0；PS5.1/7真实缺失旧SDK与latestMajor对照通过；当前基线runner与完整包门禁待验 |
-| R00/R01 证据 | 91bfb6e1实际复算6 fresh/8 stale：R00-03/04/06/07/08、R01-01/04/05；baseline未改。本地包仍为历史d57a613f，未安装 |
+| 本轮测试 | 联合专项64/64，焦点4/4；当前Core125/Worker357/source470 passed/18原有skip；完整render/source/XAML通过。第三轮WPF前36类含Q14/R02/R05焦点通过，第37类删除回退2 passed/1 failed、后77类未执行，完整门禁未通过 |
+| 远端 CI | 前阶段两条SDK10侧栏22/22通过，Q14失败且产物已下载；91bfb6e1/run37569191845在自测成功日志后的外层退出码失败，后续未执行/artifact0；c35/run37570629705两项自测success，SDK8.0.423及失败artifact已实际验证，仍停修复前Q14，联合候选新CI待验 |
+| SDK契约 | global.json/CI精确8.0.423、rollForward=disable、C#12.0；PS5.1/7真实缺失旧SDK与latestMajor对照通过；当前runner确选8.0.423且预装9/10未漂移；完整门禁/包待验 |
+| R00/R01 证据 | 联合候选实际影响4 fresh/10 stale：原8项加R00-01-02/R00-05；baseline未改。本地包仍为历史d57a613f，未安装 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 
-SDK与远端结果在[本阶段证据](evidence/close-sdk-20261007/README.md)；[CI诊断阶段](evidence/close-ci-20261007/README.md)、[IPC证据](evidence/close-ipc-20261005/README.md)与[原审阅](evidence/completion-review-20261005/README.md)保留历史。SDK10的真实ClientAreaAnimation=false路径已验证，侧栏通过；Q14仍失败。STA探针确认2 DIP错误边框增加内容测量，同时独立复现Light/Dark654 DIP单行残留20 DIP margin；620/660正例通过。整体门禁不通过，固定SDK不关闭布局问题。
+SDK与远端结果在[本阶段证据](evidence/close-sdk-20261007/README.md)；[CI诊断阶段](evidence/close-ci-20261007/README.md)、[IPC证据](evidence/close-ipc-20261005/README.md)与[原审阅](evidence/completion-review-20261005/README.md)保留历史。SDK10的真实ClientAreaAnimation=false路径已验证，侧栏通过；Q14现已通过定向及首轮全量入口：双主题654 DIP单行margin恢复0，错误态几何稳定，60组测量及往返通过；初轮完整render通过。随后发现R02内容拉伸导致图标间距9，独立旧DLL复现；共享按钮修复后原4项及新增内容切换3项通过，最终联合render和静态门禁通过，第二轮全量第35类R05失败；日志证明隐藏ComboBox/Focus失败的夹具前提，修正并补紧凑负例4/4。第三轮source470/18、WPF前36类通过，第37类删除回退实际Game 0020而期望Game 0000，后77类未执行；旧clean与同candidate独立均3/3，CLOSE-PICKER-01需要受控归因，不能抹除失败。整体门禁尚未通过。
 
 ## 当前执行顺序
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
 1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：工程基线与失败上传已接入；按当前源码runner实际结果签收，完整门禁通过前保持IN_PROGRESS。
-2. P1 `CLOSE-WRAP-01`：修复共享TextBox错误边框的内容测量及Q14/654 DIP单行20 DIP边距残留，保留折行、双主题和往返负例。
-3. P1 `CLOSE-EVID-01`：上述回归修复后按8项sourcePaths精确补证，不能只改哈希转绿。
+2. P1 `CLOSE-WRAP-01`：输入/行距修复已通过专项及Q14全量入口；CLOSE-OPTICAL-01及CLOSE-FOCUS-01专项与全量入口已通过，第三轮新CLOSE-PICKER-01优先定位；完整114类门禁通过才签收。
+3. P1 `CLOSE-EVID-01`：上述回归修复后按10项sourcePaths精确补证，不能只改哈希转绿。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。
 

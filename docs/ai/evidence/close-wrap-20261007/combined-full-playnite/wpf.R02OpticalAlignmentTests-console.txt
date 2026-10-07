@@ -1,0 +1,23 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:01.99]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.99]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.08]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.VisualContentTracksAlignmentAndTextRestoresTheBoundedPresenter(alignment: Left) [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.VisualContentTracksAlignmentAndTextRestoresTheBoundedPresenter(alignment: Center) [20 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.VisualContentTracksAlignmentAndTextRestoresTheBoundedPresenter(alignment: Right) [40 ms]
+[xUnit.net 00:00:06.80]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree [40 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16) [147 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20) [14 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels [51 ms]
+
+测试运行成功。
+测试总数: 7
+     通过数: 7
+总时间: 8.2289 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\combined-full-playnite\20261007T051949163Z-4a98ed69\tests\wpf.R02OpticalAlignmentTests\wpf.R02OpticalAlignmentTests.trx

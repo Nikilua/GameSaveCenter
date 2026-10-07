@@ -14,18 +14,24 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R05FocusBoundaryBehaviorTests
 {
-    [Fact]
-    public void OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay()
+    private readonly ITestOutputHelper output;
+
+    public R05FocusBoundaryBehaviorTests(ITestOutputHelper output) => this.output = output;
+    [Theory]
+    [InlineData(640d, false)]
+    [InlineData(320d, true)]
+    public void OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(double height, bool compact)
     {
         RunSta(() =>
         {
             using var picker = CreatePicker("旧游戏", "目标游戏");
-            using var host = CreatePickerHost(picker, out var shell, out var overlay, out var search, out var list);
+            using var host = CreatePickerHost(picker, out var shell, out var overlay, out var search, out var list, height);
             var contextButton = (Button)shell.FindName("GameContextButton")!;
             var status = (ComboBox)shell.FindName("GamePickerStatusComboBox")!;
             var platform = (ComboBox)shell.FindName("GamePickerPlatformComboBox")!;
@@ -41,6 +47,14 @@ public sealed class R05FocusBoundaryBehaviorTests
 
             Assert.Equal(Visibility.Visible, overlay.Visibility);
             Assert.Same(search, Keyboard.FocusedElement);
+            Assert.Equal(compact ? Visibility.Collapsed : Visibility.Visible, ((FrameworkElement)shell.FindName("PickerFilterRow")!).Visibility);
+            if (compact)
+            {
+                Assert.False(status.IsVisible);
+                Assert.False(status.Focus());
+                Assert.False(status.IsKeyboardFocusWithin);
+                Assert.Same(search, Keyboard.FocusedElement);
+            }
 
             var visited = new List<IInputElement>();
             var returnedToSearch = false;
@@ -114,8 +128,8 @@ public sealed class R05FocusBoundaryBehaviorTests
             var host = new Window
             {
                 Content = shell,
-                Width = 260,
-                Height = 180,
+                Width = 900,
+                Height = 640,
                 ShowInTaskbar = false,
                 ShowActivated = true,
                 WindowStyle = WindowStyle.None,
@@ -129,8 +143,13 @@ public sealed class R05FocusBoundaryBehaviorTests
                 var overlay = (Grid)shell.FindName("PickerOverlay")!;
                 overlay.Visibility = Visibility.Visible;
                 host.UpdateLayout();
-                combo.Focus();
-                Keyboard.Focus(combo);
+                var focused = combo.Focus();
+                var keyboardFocus = Keyboard.Focus(combo);
+                output.WriteLine("Before open: Focus()={0}, keyboard={1}, visible={2}, focusWithin={3}, combo={4}x{5}, overlay={6}x{7}, filterRow={8}", focused, (keyboardFocus as FrameworkElement)?.Name, combo.IsVisible, combo.IsKeyboardFocusWithin, combo.ActualWidth, combo.ActualHeight, overlay.ActualWidth, overlay.ActualHeight, ((FrameworkElement)shell.FindName("PickerFilterRow")!).Visibility);
+                Assert.True(combo.IsVisible);
+                Assert.True(focused);
+                Assert.Same(combo, keyboardFocus);
+                Assert.True(combo.IsKeyboardFocusWithin);
                 combo.IsDropDownOpen = true;
                 Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
 
@@ -142,7 +161,9 @@ public sealed class R05FocusBoundaryBehaviorTests
                 Assert.NotEmpty(items);
                 Assert.All(items, item => Assert.False(KeyboardNavigation.GetIsTabStop(item)));
 
+                output.WriteLine("After open: {0}, focusWithin={1}", DescribeFocus(Keyboard.FocusedElement, overlay), combo.IsKeyboardFocusWithin);
                 Assert.True(combo.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)));
+                output.WriteLine("After traversal: {0}, focusWithin={1}, open={2}", DescribeFocus(Keyboard.FocusedElement, overlay), combo.IsKeyboardFocusWithin, combo.IsDropDownOpen);
                 Assert.False(combo.IsDropDownOpen);
                 Assert.False(Keyboard.FocusedElement is ComboBoxItem);
                 Assert.True(IsDescendantOf(Keyboard.FocusedElement, overlay), DescribeFocus(Keyboard.FocusedElement, overlay));
@@ -177,14 +198,15 @@ public sealed class R05FocusBoundaryBehaviorTests
         out AcrylicProductionShellView shell,
         out Grid overlay,
         out TextBox search,
-        out ListBox list)
+        out ListBox list,
+        double height = 640d)
     {
         shell = new AcrylicProductionShellView();
         var window = new Window
         {
             Content = shell,
             Width = 900,
-            Height = 640,
+            Height = height,
             ShowInTaskbar = false,
             ShowActivated = true,
             WindowStyle = WindowStyle.None,

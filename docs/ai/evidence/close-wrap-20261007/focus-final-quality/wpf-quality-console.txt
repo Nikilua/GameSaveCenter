@@ -1,0 +1,191 @@
+WARNING Themes\AcrylicReferenceControls.xaml:700  Canvas found; do not use it for primary application layout.
+WARNING Themes\AcrylicReferenceControls.xaml:712  Canvas found; do not use it for primary application layout.
+WARNING Themes\AcrylicReferenceControls.xaml:718  Ellipse near Thumb template; avoid overlapping translucent end caps.
+WARNING Views\Development\UiFrameworkProbeView.xaml:57  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\Development\UiFrameworkProbeView.xaml:119  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:166  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:294  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:458  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:595  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:721  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:1003  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:1041  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MaintenanceView.xaml:1093  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:162  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:270  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:385  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:440  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:836  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:865  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:930  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\MediaCenterView.xaml:945  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\OverviewView.xaml:510  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\OverviewView.xaml:775  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\SaveCenterView.xaml:192  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\SaveCenterView.xaml:434  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\TrainerCenterView.xaml:79  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Views\TrainerCenterView.xaml:170  Large scrollable control may be inside StackPanel; verify finite remaining size.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:8  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:9  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:10  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:14  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:15  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:17  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:18  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:19  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:20  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:21  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:22  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:23  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:24  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:25  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:26  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:27  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:29  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:32  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:33  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:34  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:35  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:38  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:39  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:42  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:43  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:44  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:45  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:48  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:49  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:50  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:53  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:54  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:55  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:58  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:59  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:62  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:63  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:64  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:65  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:66  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:67  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:68  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:69  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:70  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:71  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:74  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:75  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:78  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:79  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:82  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:83  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:84  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:85  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:86  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceColorsDark.xaml:87  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceControls.xaml:223  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceControls.xaml:225  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceControls.xaml:308  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceControls.xaml:656  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceControls.xaml:721  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\AcrylicReferenceControls.xaml:721  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:15  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:17  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:18  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:19  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:20  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:21  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:22  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:23  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:24  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:25  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:26  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:27  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:29  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:30  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:31  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:32  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:33  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:34  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:35  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:36  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:37  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:38  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:39  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:40  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:41  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:42  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:47  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:48  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:50  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:52  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:53  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:55  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:56  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:65  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:69  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:70  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:75  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:76  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:77  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:78  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:96  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:97  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:98  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:99  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:100  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:101  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:102  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:103  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:105  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:106  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:108  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:109  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:110  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:111  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:112  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:113  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:114  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:115  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:116  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:117  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:118  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:119  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:120  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:121  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:122  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:126  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:127  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:128  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:133  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:134  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:135  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:136  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\DesignTokens.xaml:137  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:17  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:18  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:19  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:20  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:21  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:22  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:23  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:24  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:25  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:26  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:27  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:29  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:30  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:31  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:32  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:33  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:34  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:35  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:36  Hardcoded color found; views should usually use shared theme resources.
+INFO    Themes\WpfUiBase.xaml:37  Hardcoded color found; views should usually use shared theme resources.
+INFO    Views\MediaCenterView.xaml:686  Hardcoded color found; views should usually use shared theme resources.
+INFO    Views\MediaCenterView.xaml:686  Hardcoded color found; views should usually use shared theme resources.
+
+Scanned 24 XAML files: 0 errors, 27 warnings, 162 info.

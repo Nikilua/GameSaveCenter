@@ -1,0 +1,26 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.11]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.21]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.39]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.ProductionTimeAndPercentColumnsUseSharedSemanticCellStyles [384 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 100, expected: "100%") [8 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 0, progress: 0, expected: "—") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 10, expected: "10%") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 99, expected: "99%") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: -1, expected: "—") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 9, expected: "9%") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 120, expected: "100%") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 0, expected: "0%") [1 ms]
+[xUnit.net 00:00:06.32]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.SharedNumericCellStyleKeepsRightAnchorAcrossDigitBoundaries [2 s]
+
+测试运行成功。
+测试总数: 10
+     通过数: 10
+总时间: 7.8020 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\focus-fixed-full-playnite\20261007T055837447Z-c8e1f725\tests\wpf.R03NumericAlignmentTests\wpf.R03NumericAlignmentTests.trx

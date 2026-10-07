@@ -1,0 +1,20 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.06]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.12]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.58]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests.ResolveLocalPath_RemoteUrlFallsBackWithoutNetwork [22 ms]
+  Passed GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests.DecodeLocalImageUsesSmallFrozenBitmap [353 ms]
+  Passed GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests.ResolveLocalPath_NullOrMissingFallsBack [1 ms]
+  Passed GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests.ResolveLocalPath_ReturnsExistingLocalFile [5 ms]
+
+Test Run Successful.
+Total tests: 4
+     Passed: 4
+ Total time: 3.3288 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T041655074Z-9c86120b\tests\wpf.PlayniteGameIconProviderTests\wpf.PlayniteGameIconProviderTests.trx

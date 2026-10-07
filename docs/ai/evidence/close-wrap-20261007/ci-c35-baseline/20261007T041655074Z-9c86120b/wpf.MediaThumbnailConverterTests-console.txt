@@ -1,0 +1,17 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.52]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.58]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.64]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.18]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests.Convert_UsesBoundedFrozenCacheAndReleasesFiles [463 ms]
+
+Test Run Successful.
+Total tests: 1
+     Passed: 1
+ Total time: 3.9532 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T041655074Z-9c86120b\tests\wpf.MediaThumbnailConverterTests\wpf.MediaThumbnailConverterTests.trx

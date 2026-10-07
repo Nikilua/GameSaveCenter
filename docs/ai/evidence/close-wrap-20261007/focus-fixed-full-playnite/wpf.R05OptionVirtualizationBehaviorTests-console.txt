@@ -1,0 +1,42 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.01] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.24]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.28]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.42]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:04.59]     GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.FilteringRetainsAHiddenSelectionProvidesRecoveryAndFallsBackAfterDeletion [FAIL]
+[xUnit.net 00:00:04.59]       Xunit.Sdk.EqualException: Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:04.59]                         ↓ (pos 7)
+[xUnit.net 00:00:04.59]       Expected: "Game 0000"
+[xUnit.net 00:00:04.59]       Actual:   "Game 0020"
+[xUnit.net 00:00:04.59]                         ↑ (pos 7)
+[xUnit.net 00:00:04.59]          在 Xunit.Assert.Equal(String expected, String actual, Boolean ignoreCase, Boolean ignoreLineEndingDifferences, Boolean ignoreWhiteSpaceDifferences, Boolean ignoreAllWhiteSpace) 位置 /_/src/xunit.assert/Asserts/StringAsserts.cs:行号 909
+[xUnit.net 00:00:04.59]          在 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.<>c.<FilteringRetainsAHiddenSelectionProvidesRecoveryAndFallsBackAfterDeletion>b__1_0()
+[xUnit.net 00:00:04.59]          在 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.<>c__DisplayClass13_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05OptionVirtualizationBehaviorTests.cs:行号 255
+[xUnit.net 00:00:04.59]       Stack Trace:
+[xUnit.net 00:00:04.61]            在 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05OptionVirtualizationBehaviorTests.cs:行号 267
+  失败 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.FilteringRetainsAHiddenSelectionProvidesRecoveryAndFallsBackAfterDeletion [1 s]
+  错误消息:
+   Xunit.Sdk.EqualException: Assert.Equal() Failure: Strings differ
+                  ↓ (pos 7)
+Expected: "Game 0000"
+Actual:   "Game 0020"
+                  ↑ (pos 7)
+   在 Xunit.Assert.Equal(String expected, String actual, Boolean ignoreCase, Boolean ignoreLineEndingDifferences, Boolean ignoreWhiteSpaceDifferences, Boolean ignoreAllWhiteSpace) 位置 /_/src/xunit.assert/Asserts/StringAsserts.cs:行号 909
+   在 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.<>c.<FilteringRetainsAHiddenSelectionProvidesRecoveryAndFallsBackAfterDeletion>b__1_0()
+   在 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.<>c__DisplayClass13_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05OptionVirtualizationBehaviorTests.cs:行号 255
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05OptionVirtualizationBehaviorTests.cs:行号 267
+  已通过 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.ProductionPickerKeepsVirtualizedItemsBoundToTheFilteredView [4 s]
+[xUnit.net 00:00:10.52]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests.ProductionPickerKeepsA2000ItemListOpenWhileKeyboardNavigationScrollsTheActiveItem [1 s]
+
+测试总数: 3
+     通过数: 2
+     失败数: 1
+测试运行失败。
+总时间: 27.6711 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\focus-fixed-full-playnite\20261007T055837447Z-c8e1f725\tests\wpf.R05OptionVirtualizationBehaviorTests\wpf.R05OptionVirtualizationBehaviorTests.trx

@@ -14,8 +14,11 @@
 | CLOSE-IPC-01 | P0 | IMPLEMENTED | 开发/测试 Agent | 取消 IO/EOF 分类与夹具释放已修复；R19-08/R01-08 |
 | CLOSE-CI-01 | P0 | IN_PROGRESS | 构建维护 Agent | 当前 CI 失败；诊断产物部分不依赖历史日志 |
 | CLOSE-SDK-01 | P0 | IN_PROGRESS | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
-| CLOSE-WRAP-01 | P1 | READY | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
-| CLOSE-EVID-01 | P1 | READY | UI 验证 Agent | 先修测试失败；原5项stale及本阶段新增受影响的3项 |
+| CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
+| CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 第29类R02复合按钮间距9 DIP；旧clean DLL也复现，保持8 DIP断言 |
+| CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
+| CLOSE-PICKER-01 | P1 | IN_PROGRESS | 开发/测试 Agent | 第37类删除回退Game 0000→0020；旧clean/同candidate独立均3/3，防抖并发嫌疑待证明 |
+| CLOSE-EVID-01 | P1 | READY | UI 验证 Agent | 先修测试失败；当前8项及共享输入模板追加2项，共10项待补证 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
 | CLOSE-REL-01 | P1 | BLOCKED_ENVIRONMENT | 发布验证 Agent | CI 绿、ENV-001、独立可丢弃存档/测试远端、当前候选包 |
@@ -46,6 +49,8 @@
 - **提交后**：48b78b3b已推送main，clean构建0/0与侧栏22/22；run37565955357记录时编译/测试进行中，先取该run终态与产物再统一SDK。freshness实算6/8，未更新baseline。
 - **终态复核（SDK阶段）**：run37565955357与37566483862失败时均实际上传且已下载诊断；SDK10侧栏22/22通过，native ClientAreaAnimation=false有TRX记录；均在Q14错误态36→37 DIP失败，后89类未执行。补修诊断器多PATH匹配拼接，PS5.1/7正负例通过。完整CI仍未恢复。[SDK阶段](ai/evidence/close-sdk-20261007/README.md)。
 - **入口补修**：91bfb6e1/run37569191845自测断言通过后仍退出非零，后续全部未执行/实际artifact0；同Actions包装本地复现。自测在finally后显式exit0、日志纳入artifact并只上传JSON/TXT/TRX；PS5.1/7包装退出0且负例保留。新CI待验，不提前关闭。
+- **入口实际runner复核**：c35d9047/run37570629705两项自测步骤success，实际选择SDK8.0.423，预装SDK9/10未改变基线；失败artifact已下载，只有JSON/TXT/TRX。Core125/Worker357/source470通过，仍在修复前Q14错误态高度失败，CI整体尚未恢复。见[行距阶段证据](ai/evidence/close-wrap-20261007/README.md)。
+- **后续身份补口**：独立scripts/render-qa.ps1未主动注入GSC_BUILD_COMMIT；实际只读MSBuild查询（未注入env）得到GscBuildCommit=unknown、InformationalVersion=0.6.73+unknown。本轮render显式传入c35身份且DLL已核对，不能据此声称独立脚本/CI同样绑定；当前UI全量结束并提交后，再修脚本环境保存/恢复与同HEAD身份验证。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
 ### CLOSE-SDK-01：明确 SDK 与编译器基线
@@ -59,14 +64,38 @@
 
 - **范围**：R00-04/06/07/08、R01-05 的 shell、游戏选框、Media、Trainer 受影响行为和负例；复用现有测试/toolbarprobe/render 入口，不重建审计系统。
 - **2026-10-07追加**：本阶段GscMotion与build脚本修改还命中R00-03、R01-01、R01-04。补齐动效完成/重入/清钟、源码根身份及对应负例；提交后按实际HEAD重算，不沿用9/5或只更新SHA。
+- **共享输入模板影响**：CLOSE-WRAP-01改动WpfUiProduction.xaml另命中R00-01-02/R00-05；candidate逐项合并历史与待提交路径后为4 fresh/10 stale。补双主题对比/变换及上下文禁用状态，原baseline未改；不得只把原8项改SHA转绿。
 - **完成条件**：记录源码身份、测试 DLL SHA/MVID、TRX、具体测量、负例与失败边界；重跑通过后更新原 baseline，freshness 14/14 且 package 身份仍独立核对。
 - **非目标**：不仅改 baseline SHA，不把本任务变成整轮视觉或真实宿主验收。
 
+### CLOSE-OPTICAL-01：复合按钮内容拉伸与固定图标列间距
+
+- **发现**：CLOSE-WRAP全量首次跨过Q14后，第29类R02OpticalAlignmentTests 2 passed/2 failed，16/20 DIP图标两项严格8±0.5 DIP间距都实测9；其后85类未执行。独立旧clean c35 DLL也复现同两项，属于既有缺口，不归因本轮输入/行距修复。
+- **根因与实现**：实际testhost中内容desired32/36 DIP却被共享presenter拉伸到134，图标固定列16/20变17/21；合成夹具只改变presenter为Center后列宽恢复16/20、间距8，原失败断言保留。共享按钮现在跟踪HasVisualContent并让真实UIElement/FrameworkContentElement遵循HorizontalContentAlignment，文本保持Stretch有限测量。联合候选原4项及新增3项动态对齐/文本-视觉内容往返7/7；连同Q14/控制器/跨页专项共64/64，完整门禁待验。
+- **阶段终态**：R02 7/7、联合专项64/64、完整render/source/XAML通过；第三轮全量本类7/7，后续第37类删除回退失败另案，完整门禁仍未过。
+- **完成条件**：原16/20尺寸8 DIP严格间距/中心与36 DIP高度通过，Left/Center/Right动态切换和文本有限宽度不回归；保留命令/绑定/忙碌/焦点/禁用与ellipsis，双主题全量WPF/render/source门禁通过。与CLOSE-WRAP分别记录，不放宽容差。
+- **证据**：[共享UI阶段](ai/evidence/close-wrap-20261007/README.md)保留首次全量失败、旧DLL对照、STA干预及修复后TRX/源码和DLL身份；整体CI/发布未签收。
+
+### CLOSE-FOCUS-01：ComboBox Popup离开焦点后的关闭路径
+
+- **发现**：联合候选全量source470/18、前34类WPF含Q14/R02通过，第35类R05 2 passed/1 failed，后79类未执行。GamePickerStatusComboBox在MoveFocus(Next)后IsDropDownOpen仍true（147行），原生exit1；COM收尾文本不替代该实际断言。
+- **当前对照**：旧clean c35 DLL独立3/3；同联合candidate DLL独立再复现2/1。新增日志保留原失败，证明260×180中筛选行Collapsed、Focus()=false；900×640可见且获焦后原断言通过。最终强制前置断言并补900×320紧凑负例4/4，生产Popup未改；第三轮全量本类4/4，后续第37类删除回退另案，完整门禁仍未过。
+- **完成条件**：保留真实ComboBox/方向选择、Tab/Shift+Tab回表单/overlay边界、DropDownClosed提交语义与焦点恢复；稳定复现后根因修复及正负例，完整114类/source/render无回归。不能以直接关闭夹具Popup、放宽断言或skip代替修复。
+- **证据**：[联合UI证据](ai/evidence/close-wrap-20261007/README.md)记录全量失败、clean旧DLL与同candidate独立结果及源码/DLL SHA/MVID。任务不等同真实Playnite输入/物理DPI验收。
+
+### CLOSE-PICKER-01：删除回退与防抖刷新时序
+
+- **发现**：第三轮全量source470/18、WPF前36类含Q14/R02/R05焦点通过；第37类删除后期望Game 0000、实际Game 0020，其余虚拟化/键盘两项通过，后77类未执行。原断言/exit1保留。
+- **对照/边界**：旧clean c35与同candidate独立均3/3；失败方法不实例化生产视图，GamePickerViewModel本阶段未改。默认名称排序、ItemsView首项回退及20ms防抖路径需受控核对。SynchronizationContext为空时直接在异步延续线程刷新存在并发嫌疑，尚未确定性证明；不把独立变绿当作关闭。
+- **完成条件**：确定性线程/排序/集合负例及修复后正例；保留隐藏选择、显示当前游戏、删除后的有序可见首项回退、虚拟化和20ms合并语义；source/大库/完整WPF/渲染门禁通过，才签收。
+- **证据**：[UI阶段第三轮终态及独立对照](ai/evidence/close-wrap-20261007/README.md)。不盲增timeout、放宽名称断言、skip或改变真实选择语义。
 ### CLOSE-WRAP-01：任务预设单行残留折行边距
 
 - **范围**：Q14ToolbarAlignmentBehaviorTests 在 Light/654 DIP 实测为单行，但七个控件 Margin.Bottom 仍20 DIP；原全量和同DLL独立复核均失败。定位 WrapPanel 测量、DPI边界、响应式更新和行距恢复时序，修复共享路径；不放宽断言或固定跳过654 DIP。
 - **追加失败（2026-10-07）**：当前独立及全量Q14先在验证错误态TextBox高度36→37 DIP失败，未到654 DIP。需同时修复共享错误态测量与原单行边距；不能把未执行的后半段计为通过。
 - **SDK阶段定位**：STA保持Validation.HasError=true，参与测量的边框2→1 DIP后高度37→36；生产尚未改。调用同DLL既有私有边距夹具，Light/Dark654 DIP七项单行margin20均失败，620/660通过。须共享模板及真实折行状态修复，不写死654或放宽容差。
+- **实现与在途验证**：共享TextBox用独立2 DIP错误覆盖描边，内容测量不变；行距控制器按实际Arrange slot多行判定，单行恢复作者margin，并处理resize/内容/可见性/卸载重入。Release0/0、XAML24/24；Q14 1/1含60组双主题几何、控制器2/2、跨页54/54与完整render-qa通过。全量source470/18通过，WPF前28类（含Q14）通过，第29类R02两项失败，其后85类未执行；CLOSE-OPTICAL-01另行修复，任务保持IN_PROGRESS。[修复前后身份与证据](ai/evidence/close-wrap-20261007/README.md)。
+- **阶段终态**：第三轮全量Q14与控制器通过，Core125/Worker357/source470/18及联合render通过；第37类删除回退失败另案，完整门禁仍未过，本阶段源码/证据单独提交。
 - **完成条件**：保留620→660→620往返、边界宽度和Light/Dark真实STA布局；单行恢复作者margin，折行保持20 DIP；关联Task/Save/Media/Trainer共享行距无回归。补修复前后DLL身份/TRX/几何，并完成全量门禁。
 - **依赖/证据**：CLOSE-EVID-01先完成此回归修复再更新baseline；[本轮失败与复核](ai/evidence/close-ipc-20261005/README.md)。这是新发现的受控失败，不替代用户Q06/R08或真实Playnite故障。
 

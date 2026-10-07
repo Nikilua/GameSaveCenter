@@ -6,11 +6,16 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Markup;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R02OpticalAlignmentTests
 {
+    private readonly ITestOutputHelper output;
+
+    public R02OpticalAlignmentTests(ITestOutputHelper output) => this.output = output;
+
     [Fact]
     public void SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels()
     {
@@ -197,6 +202,8 @@ public sealed class R02OpticalAlignmentTests
                 centerDifference = Math.Abs(iconBounds.Top + iconBounds.Height / 2
                                             - (countBounds.Top + countBounds.Height / 2));
                 buttonHeight = button.ActualHeight;
+                var dpi = VisualTreeHelper.GetDpi(button);
+                output.WriteLine($"icon={iconSize}; dpi={dpi.DpiScaleX},{dpi.DpiScaleY}; gap={gap}; centers={centerDifference}; columns={content.ColumnDefinitions[0].ActualWidth},{content.ColumnDefinitions[1].ActualWidth}; content={content.ActualWidth}/{content.DesiredSize.Width}; iconBounds={iconBounds}; countBounds={countBounds}; iconSlot={System.Windows.Controls.Primitives.LayoutInformation.GetLayoutSlot(icon)}; countSlot={System.Windows.Controls.Primitives.LayoutInformation.GetLayoutSlot(count)}; iconRounding={icon.UseLayoutRounding}; countRounding={count.UseLayoutRounding}; font={count.FontFamily}; fontWeight={count.FontWeight}");
             }
             catch (Exception caught)
             {
@@ -214,6 +221,66 @@ public sealed class R02OpticalAlignmentTests
         Assert.InRange(centerDifference, 0, 1.5);
     }
 
+    [Theory]
+    [InlineData(HorizontalAlignment.Left)]
+    [InlineData(HorizontalAlignment.Center)]
+    [InlineData(HorizontalAlignment.Right)]
+    public void VisualContentTracksAlignmentAndTextRestoresTheBoundedPresenter(HorizontalAlignment alignment)
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var resources = LoadProductionResources();
+                var button = new GameSaveCenter.Playnite.Controls.Button
+                {
+                    Style = Assert.IsType<Style>(resources["GscRedesignHeaderVisualButton"]),
+                    Width = 160,
+                    Height = 36,
+                    Content = "A long text label that must keep a bounded measure"
+                };
+                var host = new Border { Resources = resources, Child = button };
+                host.Measure(new Size(180, 60));
+                host.Arrange(new Rect(0, 0, 180, 60));
+                host.UpdateLayout();
+                button.ApplyTemplate();
+                host.UpdateLayout();
+                var presenter = Assert.IsType<ContentPresenter>(button.Template.FindName("ButtonContentPresenter", button));
+                var visual = new Grid { Width = 40, Height = 16 };
+                visual.Children.Add(new TextBlock { Text = "8" });
+                for (var cycle = 0; cycle < 2; cycle++)
+                {
+                    Assert.False(button.HasVisualContent);
+                    Assert.Equal(HorizontalAlignment.Stretch, presenter.HorizontalAlignment);
+                    Assert.InRange(presenter.ActualWidth, 1, button.ActualWidth);
+                    button.Content = visual;
+                    host.UpdateLayout();
+                    Assert.True(button.HasVisualContent);
+                    button.HorizontalContentAlignment = alignment;
+                    host.UpdateLayout();
+                    Assert.Equal(alignment, presenter.HorizontalAlignment);
+                    Assert.Same(visual, button.Content);
+                    Assert.Equal(40, visual.ActualWidth);
+                    Assert.InRange(presenter.ActualWidth, 1, button.ActualWidth);
+                    button.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    host.UpdateLayout();
+                    Assert.Equal(HorizontalAlignment.Center, presenter.HorizontalAlignment);
+                    button.Content = "Another long text label after the visual content";
+                    host.UpdateLayout();
+                    Assert.False(button.HasVisualContent);
+                    Assert.Equal(HorizontalAlignment.Stretch, presenter.HorizontalAlignment);
+                    Assert.Equal(36, button.ActualHeight);
+                }
+            }
+            catch (Exception caught) { exception = caught; }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        Assert.Null(exception);
+    }
     private static ResourceDictionary LoadProductionResources()
         => (ResourceDictionary)XamlReader.Parse(@"
 <ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""

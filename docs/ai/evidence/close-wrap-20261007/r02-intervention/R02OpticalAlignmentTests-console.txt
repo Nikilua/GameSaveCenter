@@ -1,0 +1,65 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.36]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.38]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.47]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedButtonRendersVisualContentWithoutStringifyingTheControlTree [3 s]
+[xUnit.net 00:00:07.21]     GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16) [FAIL]
+[xUnit.net 00:00:07.21]       Assert.InRange() Failure: Value not in range
+[xUnit.net 00:00:07.21]       Range:  (7.5 - 8.5)
+[xUnit.net 00:00:07.21]       Actual: 9
+[xUnit.net 00:00:07.21]       Stack Trace:
+[xUnit.net 00:00:07.21]            在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61
+[xUnit.net 00:00:07.21]            在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230
+[xUnit.net 00:00:07.21]       Output:
+[xUnit.net 00:00:07.21]         icon=16; dpi=1,1; gap=9; centers=0.5; columns=17,17; content=134/32; iconBounds=13,10,16,16; countBounds=38,9,9,19; iconSlot=0,0,17,18; countSlot=17,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal
+[xUnit.net 00:00:07.21]         diagnostic center intervention: content=32; columns=16,16; gap=8
+[xUnit.net 00:00:07.22]     GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20) [FAIL]
+[xUnit.net 00:00:07.22]       Assert.InRange() Failure: Value not in range
+[xUnit.net 00:00:07.22]       Range:  (7.5 - 8.5)
+[xUnit.net 00:00:07.22]       Actual: 9
+[xUnit.net 00:00:07.22]       Stack Trace:
+[xUnit.net 00:00:07.22]            在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61
+[xUnit.net 00:00:07.22]            在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230
+[xUnit.net 00:00:07.22]       Output:
+[xUnit.net 00:00:07.22]         icon=20; dpi=1,1; gap=9; centers=0.5; columns=21,17; content=134/36; iconBounds=13,8,20,20; countBounds=42,9,9,19; iconSlot=0,0,21,18; countSlot=21,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal
+[xUnit.net 00:00:07.22]         diagnostic center intervention: content=36; columns=20,16; gap=8
+[xUnit.net 00:00:07.27]   Finished:    GameSaveCenter.Playnite.Tests
+  失败 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 16) [154 ms]
+  错误消息:
+   Assert.InRange() Failure: Value not in range
+Range:  (7.5 - 8.5)
+Actual: 9
+  堆栈跟踪:
+     在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61
+   在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230
+  标准输出消息:
+ icon=16; dpi=1,1; gap=9; centers=0.5; columns=17,17; content=134/32; iconBounds=13,10,16,16; countBounds=38,9,9,19; iconSlot=0,0,17,18; countSlot=17,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal
+ diagnostic center intervention: content=32; columns=16,16; gap=8
+
+
+  失败 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(iconSize: 20) [29 ms]
+  错误消息:
+   Assert.InRange() Failure: Value not in range
+Range:  (7.5 - 8.5)
+Actual: 9
+  堆栈跟踪:
+     在 Xunit.Assert.InRange[T](T actual, T low, T high, IComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/RangeAsserts.cs:行号 61
+   在 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.CompositeIconAndCountButtonsKeepAnEightDipGapAndSharedCenter(Double iconSize) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R02OpticalAlignmentTests.cs:行号 230
+  标准输出消息:
+ icon=20; dpi=1,1; gap=9; centers=0.5; columns=21,17; content=134/36; iconBounds=13,8,20,20; countBounds=42,9,9,19; iconSlot=0,0,21,18; countSlot=21,0,17,18; iconRounding=True; countRounding=True; font=Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei; fontWeight=Normal
+ diagnostic center intervention: content=36; columns=20,16; gap=8
+
+
+  已通过 GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests.SharedTextButtonsKeepTheSameBaselineForChineseAndEnglishLabels [39 ms]
+
+测试运行失败。
+测试总数: 4
+     通过数: 2
+     失败数: 2
+总时间: 8.5509 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\r02-intervention\20261007T050514157Z-cf41eb8e\tests\R02OpticalAlignmentTests\R02OpticalAlignmentTests.trx

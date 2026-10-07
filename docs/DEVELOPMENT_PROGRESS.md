@@ -1,3 +1,6 @@
+## 2026-10-07 共享UI与焦点夹具阶段
+
+共享TextBox错误覆盖描边保持36 DIP测量，行距按实际Arrange行顶判断并恢复作者margin，复合按钮视觉内容遵循原HorizontalContentAlignment。联合专项64/64、补强焦点前提与紧凑负例4/4、完整render/source/XAML通过；SDK8.0.423 Release0/0、XAML24/24、Core125/Worker357/source470 passed/18原有skip。三轮全量失败与旧DLL/同candidate/干预分别保留；第三轮前36类WPF含Q14/R02/R05焦点通过，第37类删除回退实际Game 0020而期望Game 0000，后77类未执行。新增CLOSE-PICKER-01，完整门禁/任务仍IN_PROGRESS，阶段源码与证据独立提交；[证据](ai/evidence/close-wrap-20261007/README.md)。不修改版本或用户安装，不签收Playnite/物理DPI/发布。
 ## 2026-10-07 SDK提交后核验与自测入口补修
 
 91bfb6e1已推送，clean重建0/0、SDK自测通过，freshness6/8。新CI诊断自测断言通过但外层退出非零，后续未执行且artifact0；同Actions包装已本地复现并以入口finally后exit0修复。PS5.1/7包装退出0、真实负例保留；自测也进入上传目录，只保留JSON/TXT/TRX。新CI待验，完整门禁/任务状态不提前转绿；[证据](ai/evidence/close-sdk-20261007/README.md)。

@@ -1,0 +1,9 @@
+  Determining projects to restore...
+  Restored [repo]\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (in 5.2 sec).
+  Restored [repo]\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (in 5.25 sec).
+  Restored [repo]\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (in 19.18 sec).
+  Restored [repo]\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (in 16.48 sec).
+  Restored [repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (in 21.76 sec).
+  Restored [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (in 2.56 sec).
+  Restored [repo]\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (in 8 ms).
+  Restored [repo]\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (in 18.25 sec).

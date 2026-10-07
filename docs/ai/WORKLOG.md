@@ -1,3 +1,15 @@
+## 2026-10-07共享UI与焦点夹具阶段（完整门禁未过）
+
+- 从clean main c35按启动协议读取当前入口/记忆/日志/交接/Git；c35 CI终态失败，实际artifact已下载，两项自测success/SDK8.0.423，预装9/10未漂移。Core125/Worker357/source470通过，仍在原Q14错误态失败，原日志/身份保留。
+- 共享TextBox独立2 DIP错误覆盖描边保持内容测量；WrapPanelRowGapController按实际Arrange slot多行判定，单行恢复作者margin，处理尺寸/内容/可见性/成员/卸载重入；Task移除657 DIP猜测。编译0/0、XAML24，Q14 60组双主题/620→660→620、控制器2/2、跨页54/54与初次完整render通过；未放宽0.75容差或更改skip。
+- 首次全量source470 passed/18原有skip，WPF前28类含Q14通过；第29类R02 2 passed/2 failed，16/20图标gap9而期望8±0.5，后85类未执行/脚本exit1。旧clean c35 DLL独立同两项失败，排除本轮引入回归；actual content134而desired32/36，固定列16/20变17/21。临时Center干预恢复gap8，随后恢复原断言仍失败，证据不计通过。
+- 新增CLOSE-OPTICAL-01：Button只读HasVisualContent跟踪内容，真实视觉树遵循HorizontalContentAlignment，文本仍Stretch有限测量。原4/4通过；新增3项动态Left/Center/Right及两次文本/视觉内容往返，联合编译0/0，R02 7/7、Q14 1/1、控制器2/2已通过，跨页/联合render/source/114类仍按实际终态续记。
+- 共享主题/控件修改另命中R00-01-02/R00-05，candidate合并历史与dirty路径4 fresh/10 stale，baseline未改。源码/DLL SHA/MVID、原CI失败、初次全量失败、对照/干预/修复后TRX和初次render归档于[共享UI证据](evidence/close-wrap-20261007/README.md)。本阶段构建身份c35加明确dirty源码hash；源码和证据单独commit/push，下一阶段必须按真实新HEAD重建。当前CI/包/安装未签收。
+- 已按绝对路径/.tmp边界与reparse检查清理5个过期渲染/探针目录；最新联合render、当前build与后续仍需的旧clean对照保留，curated原始失败证据不删。
+- 未改变OS偏好或操作用户Playnite/Worker、Extensions、真实存档/媒体/云端。逻辑DIP/STA不签收物理DPI、宿主或用户Q06/R08原失败；ENV/发布矩阵仍待完成。
+- R05日志证明旧夹具260×180下ComboBox隐藏且Focus失败；900×640可见获焦原断言通过，新增强制前提及900×320紧凑负例最终4/4。生产Popup未改，关闭断言未放宽；Core125/Worker357当前DLL通过；第三轮source470/18、WPF前36类含Q14/R02/R05焦点通过，第37类删除回退2/1，后77类未执行；旧clean和同candidate独立均3/3，新增CLOSE-PICKER-01受控定位。
+- 联合64/64、最终render/source/XAML均通过；新全量source470/18、WPF前34类含Q14/R02通过，第35类R05 Popup关闭失败/后79类未执行/exit1。旧clean R05独立3/3，同candidate独立2/1，新增CLOSE-FOCUS-01定位；全量上下文/失败与对照另存，该轮结束时尚无阶段commit/push/包签收。
+
 ## 2026-10-07 SDK提交后核验与Actions自测退出码补修
 
 - SDK工程源码91bfb6e1已commit/push main；clean Release0/0、XAML24/24、SDK8.0.423、五个诊断程序集SHA/MVID/版本同commit；testsRequested=false，不重复宣称clean全量测试。clean SDK自测通过，freshness实际6/8，baseline未改。

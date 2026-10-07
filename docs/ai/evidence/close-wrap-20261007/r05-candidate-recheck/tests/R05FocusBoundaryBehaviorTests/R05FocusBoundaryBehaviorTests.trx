@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1db5fe10-9f10-4b44-bdc5-ffb1b816a9d7" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T13:43:24.1616273+08:00" queuing="2026-10-07T13:43:24.1616280+08:00" start="2026-10-07T13:43:14.2476761+08:00" finish="2026-10-07T13:43:42.1837263+08:00" />
+  <TestSettings name="default" id="cca454bc-006c-412a-87a4-87a091586c3d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="31e7bf87-603b-48eb-8aa1-22df53d49b01" testId="ba256fc8-57ec-ef54-bf2b-71cdeb834c25" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DetailOverlayDeclaresLocalTabCycleAndRestoresTheOpeningTrigger" computerName="redacted-host" duration="00:00:00.1260000" startTime="2026-10-07T13:43:24.1327280+08:00" endTime="2026-10-07T13:43:24.2042188+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="31e7bf87-603b-48eb-8aa1-22df53d49b01" />
+    <UnitTestResult executionId="3b862ef2-0b4a-4d97-bb96-2f0bda8cbc46" testId="61930ed0-d89f-f828-eb5a-6b9327a903b1" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay" computerName="redacted-host" duration="00:00:05.1410000" startTime="2026-10-07T13:43:18.9740695+08:00" endTime="2026-10-07T13:43:24.0786113+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b862ef2-0b4a-4d97-bb96-2f0bda8cbc46" />
+    <UnitTestResult executionId="292a0c49-83df-436f-8501-d97649b7b041" testId="3cb82896-2027-3305-fb5d-420590cb8e06" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm" computerName="redacted-host" duration="00:00:01.7750000" startTime="2026-10-07T13:43:24.2063020+08:00" endTime="2026-10-07T13:43:25.9852935+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="292a0c49-83df-436f-8501-d97649b7b041">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.FalseException: Assert.False() Failure&#xD;
+Expected: False&#xD;
+Actual:   True&#xD;
+   在 Xunit.Assert.False(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 83&#xD;
+   在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c.&lt;ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm&gt;b__2_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 147&#xD;
+   在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c__DisplayClass9_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 236</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 248</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="61930ed0-d89f-f828-eb5a-6b9327a903b1">
+      <Execution id="3b862ef2-0b4a-4d97-bb96-2f0bda8cbc46" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3cb82896-2027-3305-fb5d-420590cb8e06">
+      <Execution id="292a0c49-83df-436f-8501-d97649b7b041" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DetailOverlayDeclaresLocalTabCycleAndRestoresTheOpeningTrigger" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ba256fc8-57ec-ef54-bf2b-71cdeb834c25">
+      <Execution id="31e7bf87-603b-48eb-8aa1-22df53d49b01" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="DetailOverlayDeclaresLocalTabCycleAndRestoresTheOpeningTrigger" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ba256fc8-57ec-ef54-bf2b-71cdeb834c25" executionId="31e7bf87-603b-48eb-8aa1-22df53d49b01" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="61930ed0-d89f-f828-eb5a-6b9327a903b1" executionId="3b862ef2-0b4a-4d97-bb96-2f0bda8cbc46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3cb82896-2027-3305-fb5d-420590cb8e06" executionId="292a0c49-83df-436f-8501-d97649b7b041" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="2" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.31]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.35]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.44]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:10.59]       Xunit.Sdk.FalseException: Assert.False() Failure&#xD;
+[xUnit.net 00:00:10.59]       Expected: False&#xD;
+[xUnit.net 00:00:10.59]       Actual:   True&#xD;
+[xUnit.net 00:00:10.59]          在 Xunit.Assert.False(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 83&#xD;
+[xUnit.net 00:00:10.59]          在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c.&lt;ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm&gt;b__2_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 147&#xD;
+[xUnit.net 00:00:10.59]          在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c__DisplayClass9_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 236&#xD;
+[xUnit.net 00:00:10.59]       Stack Trace:&#xD;
+[xUnit.net 00:00:10.59]            在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 248&#xD;
+[xUnit.net 00:00:10.62]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-07T13:43:25.9928275+08:00">
+        <Text>[xUnit.net 00:00:10.59]     GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

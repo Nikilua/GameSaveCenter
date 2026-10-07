@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d4aad509-1fb3-4687-98f5-20a7ba6d1a57" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T12:55:41.9569068+08:00" queuing="2026-10-07T12:55:41.9569074+08:00" start="2026-10-07T12:55:31.7043224+08:00" finish="2026-10-07T12:55:58.4792878+08:00" />
+  <TestSettings name="default" id="33ef3e50-9091-4c82-ae4d-6742c1ae436d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="815a9faa-1522-4628-a4ea-7669a9090017" testId="b810a73f-9905-1a47-f22c-6dc12edb2d6d" testName="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests.InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView" computerName="redacted-host" duration="00:00:05.2360000" startTime="2026-10-07T12:55:36.5744580+08:00" endTime="2026-10-07T12:55:41.8025174+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="815a9faa-1522-4628-a4ea-7669a9090017" />
+    <UnitTestResult executionId="49a43836-4789-4103-98b8-c666ef7f8a53" testId="9e99c9ce-dde6-2828-5f8c-4030160862fd" testName="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests.PrimaryRegionsUseOnePrimaryRoleAndMutuallyExclusiveInboxModes" computerName="redacted-host" duration="00:00:00.2320000" startTime="2026-10-07T12:55:41.9224157+08:00" endTime="2026-10-07T12:55:42.0312376+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49a43836-4789-4103-98b8-c666ef7f8a53" />
+    <UnitTestResult executionId="b6e34148-d497-42e2-b3e7-c56b8007e0d5" testId="f37ec02f-d8fd-27eb-e5b3-24ad71539aa5" testName="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests.SharedDangerVariantsResolveAppearanceWithoutChangingActionGeometry" computerName="redacted-host" duration="00:00:00.1440000" startTime="2026-10-07T12:55:42.0334035+08:00" endTime="2026-10-07T12:55:42.1759312+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b6e34148-d497-42e2-b3e7-c56b8007e0d5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests.InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b810a73f-9905-1a47-f22c-6dc12edb2d6d">
+      <Execution id="815a9faa-1522-4628-a4ea-7669a9090017" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests" name="InboxModeSwitchKeepsExactlyOneModeSpecificPrimaryActionVisibleInProductionView" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests.SharedDangerVariantsResolveAppearanceWithoutChangingActionGeometry" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f37ec02f-d8fd-27eb-e5b3-24ad71539aa5">
+      <Execution id="b6e34148-d497-42e2-b3e7-c56b8007e0d5" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests" name="SharedDangerVariantsResolveAppearanceWithoutChangingActionGeometry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests.PrimaryRegionsUseOnePrimaryRoleAndMutuallyExclusiveInboxModes" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9e99c9ce-dde6-2828-5f8c-4030160862fd">
+      <Execution id="49a43836-4789-4103-98b8-c666ef7f8a53" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02ActionPriorityTests" name="PrimaryRegionsUseOnePrimaryRoleAndMutuallyExclusiveInboxModes" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b810a73f-9905-1a47-f22c-6dc12edb2d6d" executionId="815a9faa-1522-4628-a4ea-7669a9090017" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9e99c9ce-dde6-2828-5f8c-4030160862fd" executionId="49a43836-4789-4103-98b8-c666ef7f8a53" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f37ec02f-d8fd-27eb-e5b3-24ad71539aa5" executionId="b6e34148-d497-42e2-b3e7-c56b8007e0d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.35]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.47]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.59]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:09.31]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,15 @@
+UI evidence freshness: source=c35d9047659a32ff3ae012a5c56c3a08a2a7edfc package=not-provided documentationOnly=False
+R00-01-02|FRESH|scopes=shared-controls,all-pages|matched=|package=not-applicable|reinstall=False
+R00-03|STALE|scopes=shell,all-pages|matched=src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs|package=not-applicable|reinstall=False
+R00-04|STALE|scopes=shell,game-picker|matched=src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml,src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs|package=not-applicable|reinstall=False
+R00-05|FRESH|scopes=shared-controls,all-pages|matched=|package=not-applicable|reinstall=False
+R00-06|STALE|scopes=media-center|matched=src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs|package=not-applicable|reinstall=False
+R00-07|STALE|scopes=trainer-center,audit|matched=src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml,src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml.cs|package=not-applicable|reinstall=False
+R00-08|STALE|scopes=shell,game-picker|matched=src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs|package=not-applicable|reinstall=False
+R01-01|STALE|scopes=test-infrastructure|matched=scripts/build.ps1|package=not-applicable|reinstall=False
+R01-02|FRESH|scopes=dev-probe,numeric-cells|matched=|package=not-applicable|reinstall=False
+R01-03|FRESH|scopes=audit,evidence-index|matched=|package=not-applicable|reinstall=False
+R01-04|STALE|scopes=shell,motion|matched=src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs|package=not-applicable|reinstall=False
+R01-05|STALE|scopes=negative-fixtures,all-pages|matched=src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs|package=not-applicable|reinstall=False
+R01-06|FRESH|scopes=audit,host-evidence|matched=|package=not-applicable|reinstall=False
+R01-07|FRESH|scopes=audit,evidence-freshness|matched=|package=not-applicable|reinstall=False

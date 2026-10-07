@@ -268,10 +268,9 @@ namespace GameSaveCenter.Playnite.Views
                 // search cell, hiding the right edge under the next filter.  Keep secondary
                 // filters in the disclosure until the complete row fits.
                 var compactFilters = width < 1216;
-                // The preset row wraps below 657 DIP in the production template.
-                // Keep a 20-DIP gap between those rows, then restore the authored
-                // margins as soon as all preset controls fit on one line again.
-                taskFilterPresetRowGap.SetRowGap(width < 657d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
+                // The shared controller uses arranged rows, including changes to
+                // text, visibility and host sizing, rather than a guessed breakpoint.
+                taskFilterPresetRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
                 TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);

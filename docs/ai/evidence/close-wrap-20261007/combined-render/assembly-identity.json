@@ -1,0 +1,24 @@
+{
+  "sourceCommit": "c35d9047659a32ff3ae012a5c56c3a08a2a7edfc",
+  "workingTreeClean": false,
+  "sourceSnapshot": "../combined-quality/summary.json",
+  "boundary": "OffscreenRenderHarness; logical DIP; DpiScale=1.00",
+  "capturedUtc": "2026-10-07T05:20:01.7986052Z",
+  "renderLocalPluginMatchesNormalBuild": true,
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.RenderHarness.exe",
+      "sha256": "75380D673518014188ABE93EABF05E57E95090E59BFF588430FEC9E59901FE56",
+      "mvid": "ed3ba527-ef11-45eb-ba28-50b551fb6800",
+      "productVersion": "0.6.73+c35d9047659a32ff3ae012a5c56c3a08a2a7edfc",
+      "bytes": 582656
+    },
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "A1F87832AB480D14892343E50A8BE01F5B0781B07D00BEA3EEB1F40FB3C4D1E6",
+      "mvid": "8a860e80-5b65-4e9e-968b-22d4c0b373ee",
+      "productVersion": "0.6.73+c35d9047659a32ff3ae012a5c56c3a08a2a7edfc",
+      "bytes": 1810432
+    }
+  ]
+}

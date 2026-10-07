@@ -1,0 +1,18 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.57]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.62]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.ProgrammaticSelectionDoesNotCommitWhileTheDropdownIsClosed [723 ms]
+[xUnit.net 00:00:04.79]   Finished:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.SelectionCommittedWhenTheDropdownClosesAfterUserFlow [1 s]
+
+Test Run Successful.
+Total tests: 2
+     Passed: 2
+ Total time: 5.6115 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T041655074Z-9c86120b\tests\wpf.GamePickerFilterBehaviorTests\wpf.GamePickerFilterBehaviorTests.trx

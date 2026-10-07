@@ -1,0 +1,55 @@
+Test run for [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+[xUnit.net 00:00:00.52]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.55]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.62]   Starting:    GameSaveCenter.Playnite.Tests
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.25) [3 s]
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1) [944 ms]
+[xUnit.net 00:00:09.02]   Finished:    GameSaveCenter.Playnite.Tests
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.5) [1 s]
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary [404 ms]
+  Passed GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxScrollBarsReserveTheCornerAndKeepTheFinalRowAndRightmostCellInsideViewport [248 ms]
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Input.TextServicesContext.StopTransitoryExtension()
+   at System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+   at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+
+Test Run Successful.
+Total tests: 5
+     Passed: 5
+ Total time: 11.3944 Seconds
+Results File: [repo]\artifacts\build-diagnostics\20261007T041655074Z-9c86120b\tests\wpf.MediaInboxScrollBehaviorTests\wpf.MediaInboxScrollBehaviorTests.trx

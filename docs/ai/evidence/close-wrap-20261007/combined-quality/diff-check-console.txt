@@ -1,0 +1,3 @@
+warning: in the working copy of 'docs/AUTONOMOUS_BACKLOG.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'docs/KNOWN_ISSUES.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'docs/ai/PROJECT_MEMORY.md', CRLF will be replaced by LF the next time Git touches it

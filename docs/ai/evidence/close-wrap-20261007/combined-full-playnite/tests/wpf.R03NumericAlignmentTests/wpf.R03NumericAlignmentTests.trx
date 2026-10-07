@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a0c88332-6207-487d-ada8-054a009beb72" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T13:34:33.0038869+08:00" queuing="2026-10-07T13:34:33.0038876+08:00" start="2026-10-07T13:34:28.0319508+08:00" finish="2026-10-07T13:34:35.6156695+08:00" />
+  <TestSettings name="default" id="510d6740-9b3a-49a3-9beb-7c70bd29228d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d2f8bd37-f13e-4b5e-bec3-96c712f869a4" testId="319ddf89-f928-bcba-bf15-1037d33f8be0" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.SharedNumericCellStyleKeepsRightAnchorAcrossDigitBoundaries" computerName="redacted-host" duration="00:00:02.3820000" startTime="2026-10-07T13:34:32.9723162+08:00" endTime="2026-10-07T13:34:35.2869548+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d2f8bd37-f13e-4b5e-bec3-96c712f869a4" />
+    <UnitTestResult executionId="62442ae7-3168-48d4-adf5-f9bd5ce1aa5d" testId="9bbaf34e-cbfc-a6e7-3d7f-1257d8d5fdc6" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: -1, expected: &quot;—&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9420450+08:00" endTime="2026-10-07T13:34:32.9517243+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62442ae7-3168-48d4-adf5-f9bd5ce1aa5d" />
+    <UnitTestResult executionId="3fc76e55-f12c-4f7b-ba62-cac8dd76e512" testId="2627fbde-c5e8-c043-6b9d-dec26b37cb3c" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 99, expected: &quot;99%&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9389303+08:00" endTime="2026-10-07T13:34:32.9400086+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fc76e55-f12c-4f7b-ba62-cac8dd76e512" />
+    <UnitTestResult executionId="eb6cc899-de4c-4a0d-a17a-ba1ee639323f" testId="8174a16b-6359-8ea3-505f-31f5f76edabf" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 0, expected: &quot;0%&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9581922+08:00" endTime="2026-10-07T13:34:32.9592720+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb6cc899-de4c-4a0d-a17a-ba1ee639323f" />
+    <UnitTestResult executionId="3a25dd65-813f-46e8-8793-df7fb17d576b" testId="f6b63d91-0cc1-aea8-aa00-89af612c9fbb" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 0, progress: 0, expected: &quot;—&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9333535+08:00" endTime="2026-10-07T13:34:32.9343533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3a25dd65-813f-46e8-8793-df7fb17d576b" />
+    <UnitTestResult executionId="8d341010-5cba-46b5-a57b-676e068c0606" testId="0fc563b9-cfcd-b221-9558-9430431e2d50" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 120, expected: &quot;100%&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9571214+08:00" endTime="2026-10-07T13:34:32.9571214+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d341010-5cba-46b5-a57b-676e068c0606" />
+    <UnitTestResult executionId="448c8f6b-3472-487f-99c2-c07aecd906cf" testId="0b498aab-e891-e6c9-1c10-2d88f132ae52" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 9, expected: &quot;9%&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9539114+08:00" endTime="2026-10-07T13:34:32.9549423+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="448c8f6b-3472-487f-99c2-c07aecd906cf" />
+    <UnitTestResult executionId="d18bcafa-174e-4288-b398-ad3b6eeeacf6" testId="820542d5-6dbe-c268-0c0a-be24507a7e53" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 100, expected: &quot;100%&quot;)" computerName="redacted-host" duration="00:00:00.0060000" startTime="2026-10-07T13:34:32.9303539+08:00" endTime="2026-10-07T13:34:32.9313534+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d18bcafa-174e-4288-b398-ad3b6eeeacf6" />
+    <UnitTestResult executionId="6eb278ef-30ac-4c1a-b27d-9bc246222bd0" testId="ba971aa0-5357-06dd-fc00-67fd7eac86d1" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 10, expected: &quot;10%&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-07T13:34:32.9367612+08:00" endTime="2026-10-07T13:34:32.9367612+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6eb278ef-30ac-4c1a-b27d-9bc246222bd0" />
+    <UnitTestResult executionId="2ab5e200-fbd4-4905-8c23-9389e85810d0" testId="571ca611-95ca-b82d-62a7-fc17721343fb" testName="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.ProductionTimeAndPercentColumnsUseSharedSemanticCellStyles" computerName="redacted-host" duration="00:00:00.3160000" startTime="2026-10-07T13:34:32.6138049+08:00" endTime="2026-10-07T13:34:32.8973451+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2ab5e200-fbd4-4905-8c23-9389e85810d0" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 10, expected: &quot;10%&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ba971aa0-5357-06dd-fc00-67fd7eac86d1">
+      <Execution id="6eb278ef-30ac-4c1a-b27d-9bc246222bd0" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 9, expected: &quot;9%&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0b498aab-e891-e6c9-1c10-2d88f132ae52">
+      <Execution id="448c8f6b-3472-487f-99c2-c07aecd906cf" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: -1, expected: &quot;—&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9bbaf34e-cbfc-a6e7-3d7f-1257d8d5fdc6">
+      <Execution id="62442ae7-3168-48d4-adf5-f9bd5ce1aa5d" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 0, progress: 0, expected: &quot;—&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f6b63d91-0cc1-aea8-aa00-89af612c9fbb">
+      <Execution id="3a25dd65-813f-46e8-8793-df7fb17d576b" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 99, expected: &quot;99%&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2627fbde-c5e8-c043-6b9d-dec26b37cb3c">
+      <Execution id="3fc76e55-f12c-4f7b-ba62-cac8dd76e512" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 0, expected: &quot;0%&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="8174a16b-6359-8ea3-505f-31f5f76edabf">
+      <Execution id="eb6cc899-de4c-4a0d-a17a-ba1ee639323f" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.SharedNumericCellStyleKeepsRightAnchorAcrossDigitBoundaries" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="319ddf89-f928-bcba-bf15-1037d33f8be0">
+      <Execution id="d2f8bd37-f13e-4b5e-bec3-96c712f869a4" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="SharedNumericCellStyleKeepsRightAnchorAcrossDigitBoundaries" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 100, expected: &quot;100%&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="820542d5-6dbe-c268-0c0a-be24507a7e53">
+      <Execution id="d18bcafa-174e-4288-b398-ad3b6eeeacf6" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder(state: 1, progress: 120, expected: &quot;100%&quot;)" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0fc563b9-cfcd-b221-9558-9430431e2d50">
+      <Execution id="8d341010-5cba-46b5-a57b-676e068c0606" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="TaskProgressUsesStablePercentTextAndExplicitUnknownPlaceholder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests.ProductionTimeAndPercentColumnsUseSharedSemanticCellStyles" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="571ca611-95ca-b82d-62a7-fc17721343fb">
+      <Execution id="2ab5e200-fbd4-4905-8c23-9389e85810d0" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests" name="ProductionTimeAndPercentColumnsUseSharedSemanticCellStyles" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="319ddf89-f928-bcba-bf15-1037d33f8be0" executionId="d2f8bd37-f13e-4b5e-bec3-96c712f869a4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9bbaf34e-cbfc-a6e7-3d7f-1257d8d5fdc6" executionId="62442ae7-3168-48d4-adf5-f9bd5ce1aa5d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2627fbde-c5e8-c043-6b9d-dec26b37cb3c" executionId="3fc76e55-f12c-4f7b-ba62-cac8dd76e512" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8174a16b-6359-8ea3-505f-31f5f76edabf" executionId="eb6cc899-de4c-4a0d-a17a-ba1ee639323f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f6b63d91-0cc1-aea8-aa00-89af612c9fbb" executionId="3a25dd65-813f-46e8-8793-df7fb17d576b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0fc563b9-cfcd-b221-9558-9430431e2d50" executionId="8d341010-5cba-46b5-a57b-676e068c0606" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0b498aab-e891-e6c9-1c10-2d88f132ae52" executionId="448c8f6b-3472-487f-99c2-c07aecd906cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="820542d5-6dbe-c268-0c0a-be24507a7e53" executionId="d18bcafa-174e-4288-b398-ad3b6eeeacf6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ba971aa0-5357-06dd-fc00-67fd7eac86d1" executionId="6eb278ef-30ac-4c1a-b27d-9bc246222bd0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="571ca611-95ca-b82d-62a7-fc17721343fb" executionId="2ab5e200-fbd4-4905-8c23-9389e85810d0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="10" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.26]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.23]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.34]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.14]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

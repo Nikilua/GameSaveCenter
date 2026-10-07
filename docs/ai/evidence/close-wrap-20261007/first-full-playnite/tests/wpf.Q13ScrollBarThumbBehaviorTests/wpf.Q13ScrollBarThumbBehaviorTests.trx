@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="85aa38fe-6678-48b1-87b5-dca8b3c24778" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T12:52:48.0702564+08:00" queuing="2026-10-07T12:52:48.0702568+08:00" start="2026-10-07T12:52:38.6291669+08:00" finish="2026-10-07T12:53:03.4756764+08:00" />
+  <TestSettings name="default" id="6f714987-cf79-4fed-ac04-4277ae511db1">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="255863c9-7416-4132-8472-2ae161265ed4" testId="194138ca-7b60-1f77-a303-7227b637927f" testName="GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests.ProductionThumbCapsStaySymmetricAndHoverFollowsThemeInBothOrientations" computerName="redacted-host" duration="00:00:04.1860000" startTime="2026-10-07T12:52:43.4562969+08:00" endTime="2026-10-07T12:52:47.6254014+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="255863c9-7416-4132-8472-2ae161265ed4" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests.ProductionThumbCapsStaySymmetricAndHoverFollowsThemeInBothOrientations" storage="[repo]\.tmp\close-wrap-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="194138ca-7b60-1f77-a303-7227b637927f">
+      <Execution id="255863c9-7416-4132-8472-2ae161265ed4" />
+      <TestMethod codeBase="[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests" name="ProductionThumbCapsStaySymmetricAndHoverFollowsThemeInBothOrientations" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="194138ca-7b60-1f77-a303-7227b637927f" executionId="255863c9-7416-4132-8472-2ae161265ed4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:02.39]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.45]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.53]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:07.85]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

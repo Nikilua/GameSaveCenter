@@ -1,0 +1,43 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.08]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.12]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.22]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SettingsViewRequestsAUsableDefaultWindowSize [332 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundPreferenceControlsDecodeAndMaterialFallback [11 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: False, clientAnimation: False, expected: False) [4 s]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: True, clientAnimation: True, expected: False) [253 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: False, clientAnimation: True, expected: True) [249 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: False, clientAnimation: True, expected: False) [266 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: False, clientAnimation: False, expected: False) [264 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: True, clientAnimation: True, expected: False) [265 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: False, highContrast: True, clientAnimation: False, expected: False) [262 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarRespectsAppAndSystemMotionPolicy(requested: True, highContrast: True, clientAnimation: False, expected: False) [247 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionHeaderUsesRoundedSharedChrome [15 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundCoversTheWholeShellWithoutAColumnGutter [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedAndCollapsedNavigationKeepsEveryIconLabelAndSelectionFrameAligned [284 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow [436 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionNormalizesSidebarToItsFinalStateInAnActualWpfWindow [260 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionFooterOwnsWorkerStatusAndSpansTheShell [18 ms]
+[xUnit.net 00:00:13.03]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.DefaultSidebarPolicyUsesRealSystemPreferences [61 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionSidebarCollapseIsAnIntegratedBoundaryAffordance [24 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionUsesTheCurrentWidthAndKeepsTheLatestTarget [24 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation [423 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels [254 ms]
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+
+测试运行成功。
+测试总数: 22
+     通过数: 22
+总时间: 29.5817 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\full-playnite\20261007T044340620Z-bed482bb\tests\wpf.ProductionShellChromeSourceTests\wpf.ProductionShellChromeSourceTests.trx

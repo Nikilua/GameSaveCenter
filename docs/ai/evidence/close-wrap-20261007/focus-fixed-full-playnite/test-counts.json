@@ -1,0 +1,15 @@
+{
+  "source": [
+    {
+      "step": "playnite-source",
+      "total": 488,
+      "passed": 470,
+      "failed": 0,
+      "skipped": 18
+    }
+  ],
+  "completedWpfClasses": 37,
+  "wpfPassed": 152.0,
+  "wpfFailed": 1.0,
+  "wpfSkipped": 0.0
+}

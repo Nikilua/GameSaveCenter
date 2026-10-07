@@ -61,29 +61,40 @@
          unpadded; applying the same Thickness here would subtract the vertical padding twice
          and leave short fields with a clipped text viewport. -->
     <ControlTemplate x:Key="GscWpfUiTextBoxTemplate" TargetType="TextBox">
-        <Border x:Name="Chrome"
-                CornerRadius="10"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                SnapsToDevicePixels="True">
-            <ScrollViewer x:Name="PART_ContentHost"
-                          Margin="0"
-                          Padding="0"
-                          BorderThickness="0"
-                          VerticalAlignment="Stretch"
-                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                          HorizontalAlignment="Stretch"
-                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          TextElement.Foreground="{TemplateBinding Foreground}"
-                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                          TextElement.FontSize="{TemplateBinding FontSize}"
-                          TextElement.FontWeight="{TemplateBinding FontWeight}"
-                          Focusable="False"
-                          HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
-                          VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
-                          CanContentScroll="True"/>
-        </Border>
+        <Grid x:Name="InputChromeRoot">
+            <Border x:Name="Chrome"
+                    CornerRadius="10"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="True">
+                <ScrollViewer x:Name="PART_ContentHost"
+                              Margin="0"
+                              Padding="0"
+                              BorderThickness="0"
+                              VerticalAlignment="Stretch"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              TextElement.Foreground="{TemplateBinding Foreground}"
+                              TextElement.FontFamily="{TemplateBinding FontFamily}"
+                              TextElement.FontSize="{TemplateBinding FontSize}"
+                              TextElement.FontWeight="{TemplateBinding FontWeight}"
+                              Focusable="False"
+                              HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                              VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
+                              CanContentScroll="True"/>
+            </Border>
+            <!-- Keep the two-DIP validation stroke out of content measurement.
+                 Opacity changes rendering only; padding and the native host stay fixed. -->
+            <Border x:Name="ValidationStroke"
+                    CornerRadius="10"
+                    BorderBrush="{DynamicResource GscErrorBrush}"
+                    BorderThickness="2"
+                    Opacity="0"
+                    IsHitTestVisible="False"
+                    SnapsToDevicePixels="True"/>
+        </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
@@ -95,10 +106,10 @@
             <Trigger Property="Validation.HasError" Value="True">
                 <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
                 <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                <Setter TargetName="Chrome" Property="BorderThickness" Value="2"/>
+                <Setter TargetName="ValidationStroke" Property="Opacity" Value="1"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Chrome" Property="Opacity" Value="0.45"/>
+                <Setter TargetName="InputChromeRoot" Property="Opacity" Value="0.45"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -907,7 +918,8 @@
                             </Border>
                             <!-- Stretch gives the shared text template a bounded measure so
                                  its ellipsis can work at narrow responsive widths. -->
-                            <ContentPresenter Content="{TemplateBinding Content}"
+                            <ContentPresenter x:Name="ButtonContentPresenter"
+                                              Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
@@ -919,6 +931,12 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <!-- Text stays bounded for ellipsis. Authored visual content must
+                             honor alignment instead of stretching fixed/auto Grid columns. -->
+                        <Trigger Property="HasVisualContent" Value="True">
+                            <Setter TargetName="ButtonContentPresenter" Property="HorizontalAlignment"
+                                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
                         <Trigger Property="Appearance" Value="Primary">
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscPrimaryButtonBrush}"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscPrimaryButtonBorderBrush}"/>

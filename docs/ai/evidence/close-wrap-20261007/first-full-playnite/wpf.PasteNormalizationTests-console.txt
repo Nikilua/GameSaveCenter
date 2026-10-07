@@ -1,0 +1,23 @@
+[repo]\.tmp\close-wrap-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:02.85]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:04.73]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:04.92]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfTextBoxKeepsSelectionAcrossUndoAndSupportsRedoForOrdinaryEditing [3 s]
+[xUnit.net 00:00:09.82]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: "  '*.png'  ", kind: ExcludePattern, expected: "*.png") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: "  \"myremote:GameSaveCenter\"  ", kind: RemoteTarget, expected: "myremote:GameSaveCenter") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: "  '8080'  ", kind: Port, expected: "8080") [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfPasteKeepsUndoForNormalizedTextAndLeavesRejectedTextUntouched [887 ms]
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.DirectoryPasteTrimsOuterWhitespaceQuotesAndTrailingShellNewline [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.PasteNormalizationTests.MultiLinePasteIsRejectedWithoutChangingTheValue [8 ms]
+
+测试运行成功。
+测试总数: 7
+     通过数: 7
+总时间: 11.1889 秒
+结果文件: [repo]\.tmp\close-wrap-20261007\full-playnite\20261007T044340620Z-bed482bb\tests\wpf.PasteNormalizationTests\wpf.PasteNormalizationTests.trx

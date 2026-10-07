@@ -1,0 +1,15 @@
+Required .NET SDK 8.0.423 (global.json, exact match). Install that version; another SDK cannot substitute. dotnet --version exit=0; selected=10.0.401; installed:
+10.0.401 [fixture]
+Required .NET SDK 1.0.100 (global.json, exact match). Install that version; another SDK cannot substitute. dotnet --version exit=-2147450725; selected=unavailable; installed:
+8.0.131 [C:\Program Files\dotnet\sdk]
+8.0.206 [C:\Program Files\dotnet\sdk]
+8.0.319 [C:\Program Files\dotnet\sdk]
+8.0.423 [C:\Program Files\dotnet\sdk]
+8.0.425 [C:\Program Files\dotnet\sdk]
+9.0.121 [C:\Program Files\dotnet\sdk]
+9.0.205 [C:\Program Files\dotnet\sdk]
+9.0.318 [C:\Program Files\dotnet\sdk]
+10.0.112 [C:\Program Files\dotnet\sdk]
+10.0.204 [C:\Program Files\dotnet\sdk]
+10.0.303 [C:\Program Files\dotnet\sdk]
+10.0.401 [C:\Program Files\dotnet\sdk]
