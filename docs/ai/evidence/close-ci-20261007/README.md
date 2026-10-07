@@ -31,4 +31,10 @@
 
 ## 后续
 
-先处理CLOSE-SDK-01与CLOSE-WRAP-01，再补证。当前修改还命中R00-03、R01-01、R01-04，除原5项stale外需精确重验这3项；baseline未改，提交后按实际HEAD重新计算。受控WPF不代表真实Playnite、物理DPI、OS输入或最终呈现帧；宿主Media Inbox、用户Q06/R08及恢复/发布矩阵继续开放。
+源码提交`48b78b3beb0465083f420b1df23cd4c973a06ea8`已推送main。提交后clean重建Release0/0、XAML24/24，[clean-build摘要](clean-build/summary.json)记录真实源码commit与DLL SHA/MVID；只重跑侧栏类，22/22、exit0，[TRX](clean-chrome/tests/chrome/chrome.trx)。定向测试时仅新增freshness文档使dirtyPaths非空，未重新宣称全量clean测试通过。
+
+源码run[37565955357](https://github.com/Nikilua/GameSaveCenter/actions/runs/37565955357)记录时已通过源码结构检查/诊断自测，编译与测试进行中；没有取得终态或always上传产物，不宣称恢复，后续应先取得该run结果。
+
+[48b78b3b freshness](post-commit-freshness.json)是实际工具结果的投影：保留14项全部判定/命中路径，历史比较全路径列表缩为数量。当前6 fresh/8 stale（R00-03/04/06/07/08、R01-01/04/05），baseline未改，package identity仍not-provided。
+
+旧dirty构建、一次性脚手架、旧诊断/selftest输出已清理；仅保留本阶段最新隔离final-build供紧接的SDK/Q14工作使用，证据均在本目录，未提交临时产物。先处理CLOSE-SDK-01与CLOSE-WRAP-01，再补8项证据。受控WPF不代表真实Playnite、物理DPI、OS输入或最终呈现帧；宿主Media Inbox、用户Q06/R08及恢复/发布矩阵继续开放。

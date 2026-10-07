@@ -1,0 +1,2778 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "48b78b3beb0465083f420b1df23cd4c973a06ea8",
+  "workingTreeClean": true,
+  "dirtyPaths": [],
+  "sdk": "8.0.423",
+  "startedUtc": "2026-10-07T03:17:04.1326104Z",
+  "completedUtc": "2026-10-07T03:17:43.4226552Z",
+  "outcome": "passed",
+  "steps": [
+    {
+      "id": "sdk-list",
+      "command": "dotnet",
+      "arguments": [
+        "--list-sdks"
+      ],
+      "startedUtc": "2026-10-07T03:17:04.4231416Z",
+      "completedUtc": "2026-10-07T03:17:04.4900821Z",
+      "exitCode": 0,
+      "console": "sdk-list-console.txt",
+      "launchError": null
+    },
+    {
+      "id": "sdk-version",
+      "command": "dotnet",
+      "arguments": [
+        "--version"
+      ],
+      "startedUtc": "2026-10-07T03:17:04.5533711Z",
+      "completedUtc": "2026-10-07T03:17:04.8108254Z",
+      "exitCode": 0,
+      "console": "sdk-version-console.txt",
+      "launchError": null
+    },
+    {
+      "id": "sdk-info",
+      "command": "dotnet",
+      "arguments": [
+        "--info"
+      ],
+      "startedUtc": "2026-10-07T03:17:05.3978495Z",
+      "completedUtc": "2026-10-07T03:17:05.9730859Z",
+      "exitCode": 0,
+      "console": "sdk-info-console.txt",
+      "launchError": null
+    },
+    {
+      "id": "restore",
+      "command": "dotnet",
+      "arguments": [
+        "restore",
+        ".\\GameSaveCenter.sln",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MSBuildEnableWorkloadResolver=false",
+        "-p:GscBuildOutputRoot=[repo]\\.tmp\\close-ci-20261007\\final-build"
+      ],
+      "startedUtc": "2026-10-07T03:17:06.0169662Z",
+      "completedUtc": "2026-10-07T03:17:07.7530415Z",
+      "exitCode": 0,
+      "console": "restore-console.txt",
+      "launchError": null
+    },
+    {
+      "id": "build",
+      "command": "dotnet",
+      "arguments": [
+        "build",
+        ".\\GameSaveCenter.sln",
+        "-c",
+        "Release",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MSBuildEnableWorkloadResolver=false",
+        "-p:GscBuildOutputRoot=[repo]\\.tmp\\close-ci-20261007\\final-build"
+      ],
+      "startedUtc": "2026-10-07T03:17:07.8093308Z",
+      "completedUtc": "2026-10-07T03:17:42.4742072Z",
+      "exitCode": 0,
+      "console": "build-console.txt",
+      "launchError": null
+    }
+  ],
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\final-build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+      "sha256": "F028DF1F9CBA1A8A557C36BC5EF285A7A8FE246FD6BE9C14040CD708528A9510",
+      "productVersion": "0.6.73+48b78b3beb0465083f420b1df23cd4c973a06ea8",
+      "bytes": 1808384,
+      "mvid": "73fe338c-9a66-423d-a289-dc04d1ee5403"
+    },
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\final-build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "DDD0DF6A24C0F6B831E53DD288A7A7291CC12017AB1C28BC6E4318AD5C16241E",
+      "productVersion": "0.6.73+48b78b3beb0465083f420b1df23cd4c973a06ea8",
+      "bytes": 1689088,
+      "mvid": "2caae0b7-839b-4181-aaa7-e27fe856a518"
+    },
+    {
+      "file": "GameSaveCenter.Worker.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\final-build\\bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll",
+      "sha256": "45659E6D8096A1DF680FC0AA0A3ECC8FB38B6192CD6831F62A871302628A0F3B",
+      "productVersion": "0.6.73+48b78b3beb0465083f420b1df23cd4c973a06ea8",
+      "bytes": 1437696,
+      "mvid": "c3062b4b-45f2-4b5f-95bd-6501b897e761"
+    },
+    {
+      "file": "GameSaveCenter.Worker.Tests.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\final-build\\bin\\GameSaveCenter.Worker.Tests\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.Tests.dll",
+      "sha256": "45F63064A90D2C3D3145FB77EF6DD21FBB398FB903FF5298B3A7C4304935E32A",
+      "productVersion": "0.6.73+48b78b3beb0465083f420b1df23cd4c973a06ea8",
+      "bytes": 734720,
+      "mvid": "8d039ace-870c-4afc-b798-b9f239dd9f8e"
+    },
+    {
+      "file": "GameSaveCenter.Core.Tests.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\final-build\\bin\\GameSaveCenter.Core.Tests\\Release\\net8.0\\GameSaveCenter.Core.Tests.dll",
+      "sha256": "79A16133E70CE871226F9C0E52BEB9002181463BA10EE94F5E2C5A02E829E2C4",
+      "productVersion": "0.6.73+48b78b3beb0465083f420b1df23cd4c973a06ea8",
+      "bytes": 50176,
+      "mvid": "33edb496-56b4-4dde-bf85-88ab963e7b2e"
+    }
+  ],
+  "runType": "solution-build",
+  "testsRequested": false,
+  "failureMessage": null,
+  "sourceFiles": [
+    {
+      "path": ".github/workflows/windows-build.yml",
+      "sha256": "10480379D3A08BF285FFF86CF0A263BD975DAEDFAC6A0D17ED6671C1475A5EE4"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "B397D6036B2E97BBC48C5FCF5864C94AFC0BE733B816702D3A52F3F61E6AD165"
+    },
+    {
+      "path": "global.json",
+      "sha256": "546B7A626451526A3D390B862254CB0D15F62042AD1B4E40ECCBB44168BA8F7C"
+    },
+    {
+      "path": "scripts/build-diagnostics.ps1",
+      "sha256": "F1A877A2BAE3D08E33DFF0D9ACA4D6C9FA97A7F295B98C2342FB6DF995F4B172"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "BDD2996C05ED53CA95749104A34CB342DF03343F3A5E41F5B93057DE3C1766C0"
+    },
+    {
+      "path": "scripts/capture-ui-audit.ps1",
+      "sha256": "473F63BF34B895D26D0136C5FFCCC945A33C6ED774034AB026DB20A6E31C9A28"
+    },
+    {
+      "path": "scripts/capture-v3-shots.ps1",
+      "sha256": "F985C3F9D132671150845CDAB980E71B7BF12F603FC454AC5AE1DB349AA52BC9"
+    },
+    {
+      "path": "scripts/capture-v4-shots.ps1",
+      "sha256": "A3454A374A30EF578C21D7D041684DD2E5E0FFA171339AF1596C33D1EE3B8D66"
+    },
+    {
+      "path": "scripts/capture-v6-2-shots.ps1",
+      "sha256": "A119CC9EB06D686A094EF231B0DB2DAFA755796F2D26EF7A69D30E4E7AFD4369"
+    },
+    {
+      "path": "scripts/capture-v6-shots.ps1",
+      "sha256": "315DA09F5AD317E949C67401E4D3A2F444C74CBB37D2E47FEC5B93D9AD9FA625"
+    },
+    {
+      "path": "scripts/check-ui-evidence-freshness.ps1",
+      "sha256": "D313196EF43EF4505E63B54FD2308FA41404703FD2748626772565AE1EC67B52"
+    },
+    {
+      "path": "scripts/check-xaml.ps1",
+      "sha256": "77B80397CFD0B2DEE6EF12CD0CC6A3E74CF127ACCF2455264A1E208D9E3764CB"
+    },
+    {
+      "path": "scripts/dev-install-run.ps1",
+      "sha256": "A878F2890BA956A6E7EBA94E29B76E4F825276E086D2C047000DEC81A8B6D0ED"
+    },
+    {
+      "path": "scripts/e01-behavior-matrix.ps1",
+      "sha256": "97024A680A7751E3B96DB7D816420CD204C9F638E3A90825E31CC6ECC2D8C144"
+    },
+    {
+      "path": "scripts/e01-scale-baseline.ps1",
+      "sha256": "2E247831CDCED115B388775C583F164443BD75BEE47A4BED8977A39D4ADE7031"
+    },
+    {
+      "path": "scripts/fault-injection-test.ps1",
+      "sha256": "2C0D4C2442DD59EC82B9381C416DF761EC88367B9CB1A25EE22B4B84604F3A55"
+    },
+    {
+      "path": "scripts/install-dev.ps1",
+      "sha256": "4282B4E896DFDC17C0AECE11014238410E8F88ADFCE3DDF8347E0974E99E19D9"
+    },
+    {
+      "path": "scripts/package-source.ps1",
+      "sha256": "4EB86B81AECB219013B0F68B5C381CA6F599735D5F5FCAC498FF3A90A192B437"
+    },
+    {
+      "path": "scripts/package.ps1",
+      "sha256": "03843B69536126D296B6180D7B81A837C86612C647E51924DCE7913E24738B26"
+    },
+    {
+      "path": "scripts/PlayniteHostIsolation.ps1",
+      "sha256": "8F0590F1DB5E5986DED9E7474EE331821D7A57FD7770FF1978C6D5CA48E7BEC4"
+    },
+    {
+      "path": "scripts/real-host-audit.ps1",
+      "sha256": "C933150E7F27FD413393FD3328B08FABAF9E20C7FE722680E175A878E0171877"
+    },
+    {
+      "path": "scripts/render-qa.ps1",
+      "sha256": "F0E94BFE8D37285918C7573534D1B848CF68A1ED52610FFD05BBA3DDB69704F6"
+    },
+    {
+      "path": "scripts/run-playnite-tests-isolated.ps1",
+      "sha256": "F2B80D73F651025F945A1B6324C801AAB740F15329DBB558555D39BCCC6FAC58"
+    },
+    {
+      "path": "scripts/soak-test.ps1",
+      "sha256": "CA096B735D04CA10DD103CB14AB171A044867793F44603007F08411EA37E48EF"
+    },
+    {
+      "path": "scripts/test-ui-evidence-freshness.ps1",
+      "sha256": "433074EDE5B4B85934058C373222523B4200581E4AD19074F3CE4BB9ECDFEB3F"
+    },
+    {
+      "path": "scripts/tests/Test-BuildDiagnostics.ps1",
+      "sha256": "7279FF7C2E0AE8B27F41BE119A25B0E9DE3FD7C4302A383BAFD0F64ADE5509F8"
+    },
+    {
+      "path": "scripts/tests/Test-PlayniteHostIsolation.ps1",
+      "sha256": "D5B84EB6F7B19E5319C6F3A09A3E83CDA29905FB3172603C990BBC93140F5EDE"
+    },
+    {
+      "path": "scripts/validate-source.py",
+      "sha256": "9ABB83058EEA57BE7FD6187D7E5400B2D1BCA9C965BD38B7F413059EF81DA978"
+    },
+    {
+      "path": "scripts/validate-ui-evidence-index.ps1",
+      "sha256": "FEF975686B68BD3677739D219EA6F92BADECEA17695A8074CE8CF3909D9EEFA0"
+    },
+    {
+      "path": "scripts/verify.ps1",
+      "sha256": "623BE84A47A89AB23AB13805D993870EAA61734DBCD67DECD2DCD52B674F771D"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/BoundedIpcLineReader.cs",
+      "sha256": "43C591A208D1AE321DD93F451DB55B69E7B68A6A8059CF53272522ACB906B6A1"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/BuildIdentity.cs",
+      "sha256": "74C5CFB6E8C7DD5163FD582A56B1A9C32423954A039B752534DDF82D5F91A0A8"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/ByteSizeFormatter.cs",
+      "sha256": "D8A2EB6380ADB4937E9E4B7ED0D381088F2083792C198401BCA6ED76EE205E73"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/ClipboardTextSanitizer.cs",
+      "sha256": "C29B3B5E073D5707CB774873C828C89F3A7476D2C4506C5C0B2D35604DED353D"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/CloudFailureExplanation.cs",
+      "sha256": "26BA152B3B0D16689273CDC181F0F3711E335ADA1B6000DE6C12A818BE364046"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/CloudRemoteDisplay.cs",
+      "sha256": "C4E3386D6F13C6EACEA1C151CA73FEEA14CB3ABCEE0A5F4BC62BBD78DEC835D2"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/CloudTransferDtos.cs",
+      "sha256": "E1D7C24385F37AE367A7C3C80B24ECF67E10B81DFE3D9F4AE8EA112E91E9684C"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/DashboardDtos.cs",
+      "sha256": "EC89626A82BFB5915DB3C838F250CD3BDE9D9FE41DA7EA47093C3FEA0B893D49"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/DeviceStateDtos.cs",
+      "sha256": "F0E01D334BE09668AA253EF5CEBE9BF242A61B4A2AFE0DC3D244150023CFB797"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/DiagnosticsDtos.cs",
+      "sha256": "86F3538FBC038A703D1EB522F7046BF04D32EE54EA22FDD2C1B4DE998E61DDD8"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/Enums.cs",
+      "sha256": "025852AF97CFCEFEA69E8372ABA08F28E5E757D81A314E48BE80A492AF28E600"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/EnvironmentCheckDtos.cs",
+      "sha256": "11F07D6EFA0AFCC8ECE8936C3C31D0168833A4C6B2630E4C2364F92C12EB4363"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/GameDiscoveryDtos.cs",
+      "sha256": "9D2B0C0D7B466C1D52508B2DFF6A674B4C1DCAE39DB106A9C8E6851DA034FB22"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/GameDtos.cs",
+      "sha256": "657B6CF4B5598EB2663F4D26E4BD5924CABA3DBFC992F51824D78D43A1370E4F"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/GameSaveCenter.Contracts.csproj",
+      "sha256": "B3EE451772CBAD51F32C785B636DC7F090A5C40DC53620CFE4D53037E7D0533A"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/HealthInspectionDtos.cs",
+      "sha256": "73A3C9C9899FF61A7A31A42D76C1CDB9B5F7F116BFAAB1D6CBB7D99E5121BC87"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/IntegrityDtos.cs",
+      "sha256": "5C267ABCB4CD64F41E51658B3BBDC5CF0493E730D87BF8B539B4C900A866FAAA"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/IpcEnvelope.cs",
+      "sha256": "125C395FFDA13674E58CECBCC1A396B7A7F0CC12A5C2722DA07F6B141EFDC17B"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/IpcRequestSemantics.cs",
+      "sha256": "E177E2C8FB63B33AEA808DB4A34F86E18072DE1A3295382B67757223DB2C8A44"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/LocalMirrorDtos.cs",
+      "sha256": "42839022DD164C7748C8D2902D98DA6A289866383761F0A2420977437FF83E13"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MaintenanceReportDtos.cs",
+      "sha256": "A3CB0F6FAB5C96CF8BE963B1448D39D4FA04EA13827659071D3FF35AC33B0BEA"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MediaClassificationDtos.cs",
+      "sha256": "919A51E68DF48F05B8F292170EA2DE5C595DF7313EED2B756C531CAB3D26D360"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MediaDuplicateDtos.cs",
+      "sha256": "9A8CCF5A270A3EA065509BA5D4E62AD1BFB8D4A159177D54CA36374E0215CFBB"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MediaQueryDtos.cs",
+      "sha256": "08216CBD9A8FE54ECE70CE9744AA85C5FDA15BEAE53F6224F4D528AEA4247B04"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MediaSourcePreviewDtos.cs",
+      "sha256": "54717DAF3162D7E2BE2D800CCCE08D3FA750E26E5CE1E8AED39FFCBCCAB0098B"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MessageTypes.cs",
+      "sha256": "9C99F5C0738CAADEFC41DA6D82042223AA6BCDDDD06195FE359388A50236AA29"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MetadataBackupDtos.cs",
+      "sha256": "85EE09C41CDFC8EF5FB0571B134545BE379A25DD67B189423AB1600BA8F30698"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MonotonicTaskClock.cs",
+      "sha256": "6F7E92EE65BA21918F5E54EB4481211E0BB597AE69B0E419E260CF2286C69C01"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/OperationDtos.cs",
+      "sha256": "8B45047C63FCA5DA5BD17003ED4B51EAA2CFB8B31817E9887B136820AF1896A1"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/PathRemapDtos.cs",
+      "sha256": "8AB8DBD484376704DEB78534BD248339C60644CC4B916348FD5B0F2F603869A0"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/ProcessMappingDtos.cs",
+      "sha256": "3E50CC869D7BBDE2CC6D605D7D020C745E7EC3DA0FC7E2AA528661C3B25FD920"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/ProtocolCompatibility.cs",
+      "sha256": "1E8523B5A2F3236EB68CDD267B0E780589C18CA03A721F77F795E56A8F411787"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/ProtocolConstants.cs",
+      "sha256": "6A4C94D6CBB4421C23E42FD697F8E85288C982BF30E02D29AE8D23281E60E5F2"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/RepositoryRebuildDtos.cs",
+      "sha256": "E0E4A717F066B89DA6FF6F397369421243EE7C9270934C847AFDDA4534A27DB5"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/RetentionSimulationDtos.cs",
+      "sha256": "8C0784144B0D07A8EBEE8002B0DB98B7F2907602CC768C3D8488E8FAA9D0DA7C"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/StorageAnalysisDtos.cs",
+      "sha256": "030DF05E6EF217C2B8DBED3D6A251A38D4955F40E08F1CD1650EF291C0EE318D"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskCancellationStates.cs",
+      "sha256": "40F9D242ABF6918E013018A8A63D58D89536DBC637E5735672ED3C1DE93971DD"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskQueryDtos.cs",
+      "sha256": "06516DA6BE5B2408837AA1765C97E909EC421EE43EC46DEA6D6282644F95D2C7"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskReconcileDtos.cs",
+      "sha256": "5DBBA0044F2BE6632391D73BA88A70AEEDFAA4F24A0107E4E92E05FEE916D4E9"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskSourceReference.cs",
+      "sha256": "B9208EAC788FE3C4E0B9F46EDD85CD685E096E3A93C0267CBAA85856357F73D7"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskStageResolver.cs",
+      "sha256": "2BE0124E9202898F30AB02D3E9C4F84A1023283F0D496296F0A45429DD222582"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskTimeline.cs",
+      "sha256": "54AFB452AE76F7CBCA845E457A18A4EDEEDF6F87D1A6B7FB8604B26DB12DDC95"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TimeDisplayFormatter.cs",
+      "sha256": "6DD69838C3FFAE7C6382A75561DC6714673110A7EE8A9822D22B5DDEF5B905D0"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/TrainerDtos.cs",
+      "sha256": "923126EFA4E5590DC4663DB0203F102795130C50CBE7EF14E1BDF1FBD9D03F09"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/WorkerDtos.cs",
+      "sha256": "C54968DE3D12743DA1B5633996E93A9677C94032907B403BAA4F36F8285C6832"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/GameSaveCenter.Core.csproj",
+      "sha256": "B87E86F17D8F15A975004596A2CB1C5F70841840F8E0104D3FD9ED2001FB9618"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Models/DomainModels.cs",
+      "sha256": "CC91AF5F34D4350A9089431FCE4849139B29FAA00ADDFA9F31472DBCCAC500BD"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/ActivityTimelineMapper.cs",
+      "sha256": "B3F1A1A97A276B99B5EDA98AECB2F75242ADFE25D09ECDA6C4781B9A9BAE8EB5"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/ArchivePathGuard.cs",
+      "sha256": "B621BDF09104342E63563D497B960658F31F6DDFC413F9308B6C590BB3025D61"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/BackupContentFingerprint.cs",
+      "sha256": "AC6C1298F056D87F6A97E7C3779BE826BC4E3EDB81DB3DD924302163592F752C"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/BackupPolicyDiff.cs",
+      "sha256": "AF787264568148D2FB0AB3FF527B2743374136EBA4397F31A74EC5479AA895DB"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/BackupPolicyTemplateCatalog.cs",
+      "sha256": "ECB2F05106450A1801D68AB5B3E8FD261D49FB1B378166C92BDFEEF422C0292E"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/BackupValidationService.cs",
+      "sha256": "389AF8F7171C28B397E63D2EAF729F71BDFE9F4362FE548734BA4DFD2460E79F"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/DeviceConflictDetector.cs",
+      "sha256": "DA10D8392FFC7654EE3EEB3619678F8CBF781F7E4AABFD3710946D7A0F00171C"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/FileManifestDiffService.cs",
+      "sha256": "40E40520737E7D0C6A9860069B6F0AFE82C597550B27C1DA14EB981BBD59E329"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/GameHealthAssessmentService.cs",
+      "sha256": "D094124FF0F145D696A87A10F5CDB1017BB68D52F706CF2A31F605E8BB90CA65"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/GameMatcher.cs",
+      "sha256": "BB67545A9EEBB8D2F479A06412A089C4BE9C902D44D076BCBE9CF137AE91C351"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/GameSessionSummaryBuilder.cs",
+      "sha256": "BD06E7B14BAF6C24DF408E63B41981F549FBF315A2AA17601731FCDE85CC2C3C"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/NameNormalizer.cs",
+      "sha256": "22E1198235D62AD9C92807EBC95CCAD7FACBAA2AFAE58AE6A60827DCB9D3F2C0"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/NotificationLevelPolicy.cs",
+      "sha256": "7185D8F0FCE467418DCD5CAB0F9880343F98D5A06C3A9D4FCD6CE96EF040981E"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/PolicyTemplateBatchPreview.cs",
+      "sha256": "AAF855A061EE87309905CE2F5DE7C3FE7A7D23D0E68952AB5DC90D5F4D375038"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/ProtectionRecommendationPreview.cs",
+      "sha256": "EFACC05B51D6092BEF9DEA2FDDCFD8E1C79AB94F0DD4DDA3EAD7980548E5E531"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/RecentProtectionAssessmentService.cs",
+      "sha256": "28CDC1B911B8FD9A4DFA34FF95E62D9F596698A76CA66E9443F0D611FDFB0150"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/RetentionPlanner.cs",
+      "sha256": "7EAED7447E461C8F4C414F9C7294DD735E77D28E8CACF526E033B74FC1B6D6BA"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/SaveCandidateScorer.cs",
+      "sha256": "3B929BA2B43E3E6DFB1FD0C2318953CC8098FA7D9AEC8A1EAD7A025251C3047F"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/AmbientMaterialLayer.xaml",
+      "sha256": "863039D1FE3A5D257B08D078DC28670AE1240543658DB9E881CC172EDF4E96E4"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/AmbientMaterialLayer.xaml.cs",
+      "sha256": "B510CB9C8E1B8D516322ED5CFB6D20E99D549B0D93C618540F43F00A9C56AE53"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/AsyncThumbnailImage.cs",
+      "sha256": "6F535117EAD5B401686F701FBE2AC88F0188D08F6087E23DD9C666548C69DE76"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/GridLengthAnimation.cs",
+      "sha256": "CC13C425F8AAA2631C3C543240075D4D242E77BC0C1551BBEC4817DE21BAB90A"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/IndeterminateProgressBehavior.cs",
+      "sha256": "B86F8F1626797764DEA4AE68338EACA40697416E1B0192E736D30C39A32370E2"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/MediaThumbnailPreview.cs",
+      "sha256": "B9CBE3DB09156C12232B7CD3D9AAF39366CAA4B3F22A7C97EED341AC5CE82383"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/NativeWpfControls.cs",
+      "sha256": "6CD48B92251E7517F37E3E52C1D6E1C3622F3D01E3AA47B728C2A395F89A63E2"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/StatusGlyphConverter.cs",
+      "sha256": "012C4F74980C44C635BAAEA0F29ECFD3957103795999432091E5EC9F3910645D"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/ThemeAwareIcon.cs",
+      "sha256": "0C97EE2F7A42A58D8212B228E0046688B534F7C96E22FB741F96ED89B1318265"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/VirtualizingWrapPanel.cs",
+      "sha256": "D6121E53BD786640A58BC447745873AC926AED5A88331D0450D6A04E1D3E3A0C"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/WorkspaceStatePresenter.cs",
+      "sha256": "2A27F5A0218516480F18DB2444F2F4B1E875564DE3A7F9D6A900F01C5DBC7186"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Converters/AsyncThumbnailLoader.cs",
+      "sha256": "362D93751265B9D28AF4B8091C1368E2CCE342122A5AB76C45B45C0050891359"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Converters/MediaThumbnailConverter.cs",
+      "sha256": "B811CC52688F9B7F9613BAFB2CC9C2CF1AC656005277829FFECEA3886344C882"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Converters/PathDisplayConverter.cs",
+      "sha256": "BD0BBFF3DA304F323096A7B822FF1E83D0A7848FE6BFBAD518776DC205135338"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Diagnostics/RealHostUiAuditService.cs",
+      "sha256": "9E8DD782EDB96DE16914EEF906630B88AA815B0A440F1619609AA7C4643F7117"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Diagnostics/UiDiagnosticsExporters.cs",
+      "sha256": "5FDF47E6E4EC712ED651D6C2A24BB8A32DBEE15247F4AFDB2DAE9632C0335971"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/GameSaveCenter.Playnite.csproj",
+      "sha256": "B52F75FE3CCACF1EAE78F2AA6F8232A93DA2C89767AFAACA879EAAF45022BB0E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs",
+      "sha256": "284DFE71A35ADB76AD59722A14924F79D6FB157A6874BD927D196C4C0F038FF5"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePalette.cs",
+      "sha256": "0B2C0AE94F53478E1C0DBA7148AD82E9A15765F18C90E62EE8658C701C405773"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePaletteContrastGuard.cs",
+      "sha256": "4DC1595902B81E833E35350425A644543785D28D8A00AA27B579CEAC7911BB66"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/BackupHistoryDateRange.cs",
+      "sha256": "9003425BC1C7D32C7D887A3B6BED7F1562D9FF776410EF319CD7D8087CC4E7FA"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/BatchObservableCollection.cs",
+      "sha256": "C0BC7BD6E664535577C13A228928257B19CBDAB643F883EE1CE3AD413AFA967B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/BoundedTaskIdSet.cs",
+      "sha256": "350B2038D0EA7B6718C1C77F0423CDDA8F33D34194E67BCB96B90E616D26A9BB"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/ClipboardFeedback.cs",
+      "sha256": "0777BF32E639E82F6A0F544A47561D235752FA7D1FF63E971F1488AC84F1E849"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridClipboardBehavior.cs",
+      "sha256": "ABC3CDD61AD247BC3AFB9C24E3ECCD0E381896BDA366A8833C90469A216FFB82"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridColumnHeaderHelpBehavior.cs",
+      "sha256": "0C388792D4D1FDB84487F82DB24AC203FFDC434778DE4E162C7F8657CEAA9E1E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridColumnLayoutController.cs",
+      "sha256": "AD070507AD7BB8F512AED3E42130A757D703778AEA21732882D1FF2123D9D958"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridScrollDiagnostics.cs",
+      "sha256": "28006125254C9CCA6BDF62500DF49122733AF120343F73099EA176BD05DBA544"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridStableSortController.cs",
+      "sha256": "7C319EDB5111B3A3CD9E76733B7896E1F44A66ED24DF5BBABD885731F2AD6036"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridStarFill.cs",
+      "sha256": "09C250D8A30CCC81C4B6BD9A7BF1337289E8CAA78C1555D2B8E3A3053682929B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DebouncedRefresh.cs",
+      "sha256": "A720BBE78A0361FCE7D9AD8DEE587E66CD4452B285156B06AA6B2F75B7C71120"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DialogConfirmationPolicy.cs",
+      "sha256": "DB729D0F4EAC3263A09C6FF50CA3AA23C1881DB48C45A440C79F7434492BFC32"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DialogLifecycleStateMachine.cs",
+      "sha256": "CEB53E5A982562BA097F6EF7A59910954593E3C8979A952CADE1D622EEE72D67"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DialogOverlayMotion.cs",
+      "sha256": "E45C9F407E971822711C0ADB20982482CFA74EF10FB2D366EC528F160C1106F6"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/GameMenuActionContext.cs",
+      "sha256": "74590F47E7371902F1238F7213591D6FA7B0B4D7929E7D87393DF31819E589A0"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/GameSelectionResolver.cs",
+      "sha256": "F7943CEFC8C0B02FAF8DAE916AF1737403D7A4E62FE50FEBE4130ED6EAAF3876"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs",
+      "sha256": "FBB9D765718E9D50763EDFE1E27455FD7ADBEB5655EF26266842A257222D2F85"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/GscToolTipBehavior.cs",
+      "sha256": "FE51C73ACFF0564DF701AB9A404ED91FCB989234894A8A9839EF9C8A633D4055"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/LatestAsyncValidationCoordinator.cs",
+      "sha256": "9ADF0D8FCDE18659D61598D71F28DE9C110BB54986A076DF23D766D9A8AA21F5"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/LatestRequestCoordinator.cs",
+      "sha256": "F8E42026312E8870F0732006F0F47607BD54377A72F58B2299A2AA45D8CBCBE8"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/MediaInboxGeometry.cs",
+      "sha256": "156968116CF69D7F1B7E49540563955EE6198A5D86CCD883A9DE5D8A3A293F70"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/MediaPageAccumulator.cs",
+      "sha256": "933A1F115CFCF59347F15FDDD637035FDC579D0E3BB24F47C0AECF0F2EA444EA"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/NumericCellReadability.cs",
+      "sha256": "13E500089E737523260456E5ED575B3537EC8BA536AD5816D6FCC8EC57497462"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/NumericChangeFeedback.cs",
+      "sha256": "7BEF0E0973179CACEDF189BD05165ECE97DC47E381D55A7D561ABD9DB5C1C12B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/NumericInput.cs",
+      "sha256": "789CEAAD76EF4522D5458DD1A9440D77AE760C41E457C7A52C560997F8CA3F11"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/PasteNormalization.cs",
+      "sha256": "0B95E2DFD7594E7AF440D56710918F5A99DC5521C99B45748AE48B35C1038A75"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/PlayniteGameAdapter.cs",
+      "sha256": "AA3093C6EA1EAD47FC8FB7FAD92207F0C029035BB99E72A74268659BBE2EA1C3"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/PlayniteGameBackgroundProvider.cs",
+      "sha256": "996D6690317177F7B1F1E16A50F984980052D22F960BC7D6B19AA7A949DD79E7"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/PlayniteGameIconProvider.cs",
+      "sha256": "15ADA04F0646B75F6726047653007EF8EF07DFA410AC21BBC3109DB4371FA9BD"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/ResponsiveLayoutCoordinator.cs",
+      "sha256": "78626E7D98129C764B43960313DEE56F9862C8B59C28C389BFD59E38AE3E8326"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/ScrollBoundaryRoutingBehavior.cs",
+      "sha256": "AE44BD9634FDF26CE764BA47E60C2A8E6CF1CAF87CD6EA8CC1E83C864EA6A1DE"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/SelectionAnchorResolver.cs",
+      "sha256": "7F31A0D5B051A161E7EC45531878C7CDD0F354EB78FA4017020E19F7A6E88940"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/SessionNotificationAccumulator.cs",
+      "sha256": "6D4FE5D4717BC05B56DFF4F9DF3F58DB430C7C8311E88C6E82B800166EF95AF1"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/SettingsPathEditorService.cs",
+      "sha256": "D2E30DDE7C1BD917E2217D2D12FDF8FA7410F532351730FE1781F29C8A09D215"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/SettingsPathValidationService.cs",
+      "sha256": "A9D5C3663B7FE04EDF457EBB5945A396A5CBC0B00110ECD0C4FF711622CD6F6B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/SnapshotComparers.cs",
+      "sha256": "D7E3CE01E67EA8FFA9531A69C6B3898C77DB6D9634B1243B4B6FA292089A1746"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/TaskEventUiBatcher.cs",
+      "sha256": "81A740AE7B0AFD8FC4C12BC84FA8C0EC45157746009E7BE83328E994F25B21BA"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/TaskFailureClipboard.cs",
+      "sha256": "9439B8A65F6B0E32927BD1AD4B47667EA509E5AE094FAD77085AE5C471F77EC4"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/TaskFilterOptionsSync.cs",
+      "sha256": "BD57D86F4BD162CBEE7D9A40FF210A7C23007EE59DB1A4567010A296FF547B96"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/TaskIndexedCollection.cs",
+      "sha256": "7D1BA598A770A57880F83270D69E9DDD6DDF263DB77EB71437FBC69DF9CE187C"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/TaskNotificationDeduper.cs",
+      "sha256": "A3546CC9EE2133694030460FF72072A5D6C43D8BD5727E8A820EEF37094EF8D9"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/TypographyDiagnostics.cs",
+      "sha256": "3F9C7BA1FE6FB238C590C77EEF316B05A1F97769B156D7E9EF317AA1F11CFD95"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/UiFeedback.cs",
+      "sha256": "2324B8454D129005F8E1880C9C44C85B14B6ACB4DF63D60DB32B0AD1AC4748AB"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/UiFilterSelection.cs",
+      "sha256": "5622B8541177A751601C684D74266F4E14F7F07989F087A6560F7940EE54D711"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/UiFrameworkProbeFeedback.cs",
+      "sha256": "90ED6ACE3C6EC8F5AC6795CF5EBCAB1FC63C04288F6DD099ACEE7188A83D9D48"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/UiFrameworkProbeLoader.cs",
+      "sha256": "784F575F1E7511387D11EADD1CC341365C01D4F3349A3FA51527DFD875376620"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/WorkerLauncher.cs",
+      "sha256": "57BD054488B6A22E4C2F21C8FD7C92B5C74BD848959E9483603A45345730EFC2"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/WorkspaceRevisitLoadGate.cs",
+      "sha256": "9484F5D074A53897613862AC1D9C29199E123BB505935A8E72C91B0E39C30AA2"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/WpfUiThemeScope.cs",
+      "sha256": "BE452F6DCC31EB6B397F2512BC86819DE33037A1FFBBB9F9587DF2BD66C57EED"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/WrapPanelRowGapController.cs",
+      "sha256": "6060E28E1E9E40DB50654E9120223CF29F1A0D570854E8FA40EA502CCBD6447F"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/XamlEnumValues.cs",
+      "sha256": "AB80FADB65CC0C11659896D007A17A5439D4B2014A1A85D15B3B5A6C7E604889"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Ipc/WorkerIpcClient.cs",
+      "sha256": "981F0155E49E93BE35143200E6396C4B15C317FAB49F12FDE5A501E2D81AC6C5"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Services/MetadataRestoreCoordinator.cs",
+      "sha256": "85E2721A4F23A98E972EAA7DFC25A2BD98C6487FDEA57E3BEC794CE470FF9D4E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/FilterPresetDefinition.cs",
+      "sha256": "41CA85AC24D002A0996EC75E6D00AFF2665FC9965C09D25185A3927E1CC237A8"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettings.cs",
+      "sha256": "4C1D01668403FEBF21D2C55CB0F955A251FA34B44943873E3AC67077D721AEB0"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml",
+      "sha256": "36075E7639A01133EB415CBBD0E56359CEB67AFB3898C43F9F8369AB94070C72"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs",
+      "sha256": "6BC0192381C1F0CB0F749ADC589A47660BA44439F9B95662057282ED660B8E1F"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterThemeMode.cs",
+      "sha256": "BAEEDC37C1931693C8D5731B2815155A81D5F95C1F49ACC91739B6D192DADF38"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/RecentAccessRecord.cs",
+      "sha256": "43E6517710AAAF50F0739094587400BC2171FC209E46F77821499F0E5E915A09"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsConflictResolver.cs",
+      "sha256": "E07E22C034D30C34046F10CAA7E85C496593C02AC29293403D13ADD5B5E4F54B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsImportPreview.cs",
+      "sha256": "2C377F12D80151975D5F3DDBBD965F57DDF232735831B1BE717B4DFCA34021C1"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsPathEditorOption.cs",
+      "sha256": "A52E46E27D730ECBAD0A5C50FF7F74A57ED6FAEFBF6DE152CA32501D5C80DA10"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsPathValidationSnapshot.cs",
+      "sha256": "96F13466787B9AA12C5EEC0F2C586F45A577EFC55DF0A9778F2EF354DAF45BE9"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsResetCatalog.cs",
+      "sha256": "1B9CE0179461B8A8B51936865D999E37D9F621888462F618D852E830DE495B37"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsSaveFailedEventArgs.cs",
+      "sha256": "772828831D127EC85BD6C8140C00113D99E30BE5E75A6EBBDA7A42EF743D62C7"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsSaveFeedbackState.cs",
+      "sha256": "0B2A962E87E683B67EFE47FA98480680C7460A3597C7C6D47EA556BE95C6EBFA"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/AcrylicProductionResources.xaml",
+      "sha256": "943BD53C17042E10382F35731784C0942CCE3896E6E35593E08E6B04F6550870"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceColorsDark.xaml",
+      "sha256": "854F0E018ABBA969CB27A618F6007879A27D9874EB8866A196886D0C94C6726B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceControls.xaml",
+      "sha256": "E257F131667D9ABA780F46C5CB33247181F3BCFE733ABB6A76787A8F32EBD32C"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceTokens.xaml",
+      "sha256": "3CB0CB70792550C219B7208C23A460AE4C3FB00B60FB13C8371FD8F9A8111957"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/ButtonStyles.xaml",
+      "sha256": "CDF1F82C1ACCD80921FA80A37F7B5658F00A0B30905C729DF8F6717051C8B54B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml",
+      "sha256": "2FB7931D4F5C7E741484F5F7D59A68785CCD9F7F69C85BC9D2C8AE26CC4EE31B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/GscIconButtonPack.xaml",
+      "sha256": "693BC6D8E68A513344677FE4BBED7A540E8E8DCDC593803C5F107F3E883CA362"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/GscIconPack.xaml",
+      "sha256": "92B32A1BCE31A4D2020A074C1D933D8F02451C8680E1C359138A8A3A395B8C57"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/MotionTokens.xaml",
+      "sha256": "013BEEF1E30F1177B2A0F11118938F6807336A5D6A6B65C4B56B42F7FD5F29CA"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/Redesign.xaml",
+      "sha256": "0E9B2FA1EB88C33A0DFCDFB0B0FFEDE1293CD96C6A73CED61D5F7889772B8A43"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/Typography.xaml",
+      "sha256": "B617DDAC8DBD95F5BB998ED559270B4F5B83682D369460D1325E3273DB90D75E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/WpfUiBase.xaml",
+      "sha256": "859AFC22F75510CE4D6D222A5B4BF9A07E157D2A6F24666A20AA949FC1EF8AB0"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+      "sha256": "01B38DFEDAC8D5A41FE296234E499FE959034A92B0A7E1B53D6651B40DE9BCB0"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/ActionAvailabilityHints.cs",
+      "sha256": "AB2882A76B6461DA1AC2077B6711CEE8E61F8DBD73BEAC2C993893FBB2E02472"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/BackupDiffPathFilter.cs",
+      "sha256": "11E1294DFC21AD434C964E584376815318368B56E6E9C00E92AEA20A6D7E5DF0"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/BusyOperationCoordinator.cs",
+      "sha256": "83D03F57F32399BF3CE51832CF3657C6EEC1C044863F4019F778741D109DDF92"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.BackupHistory.cs",
+      "sha256": "18356553A008DD88E59690D01CB456517BB7519487F8E7F735709C8E268B64DE"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.CloudTransfers.cs",
+      "sha256": "0A0E762F64A5A30102E449F3803D4E70B040EAE57A276A36D1FAFB7B691514D4"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "sha256": "D285103396CA66D4B7B986807039F5895A861CE3A07A61DF39686722FE1B118F"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.FilterPresets.cs",
+      "sha256": "2557C583A8C1C0230C6EDDC417ABDA26F3909BA366C8C3A960DBF72A5C617581"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.FindingTriage.cs",
+      "sha256": "8EDE7839790A020636D710E9EBA8FFF48D390E98FC1F043C503D292761A336D4"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.GameDiscovery.cs",
+      "sha256": "68EB59C7244832AA769B33E25C08716860E6A61113430BED8F41FF5F4217A2F8"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.MaintenanceActions.cs",
+      "sha256": "D64710FD556EF23E8EBF03D72E4A002E74202003A60C2F8938C1459A9E40C5FF"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.Media.cs",
+      "sha256": "9010C9CC1929232B0C3200D738CABC1C5556D9038348E8BCF1E5A27489F06B43"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.MediaClassification.cs",
+      "sha256": "6B8C6EF361203227AC223FA9953F44D98808C10F94F6C914A32D8BC9BE196FEA"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.MediaSources.cs",
+      "sha256": "DFA820F5FD8BB2E44AE4681502B8909AF4C55E9119B44EF5BF2F2E98574CBA45"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.Navigation.cs",
+      "sha256": "C95DCC3A544320CAC91DF6688EEF42E0C0A4A8A02657621616CB3F7BAE5CCD62"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.RecentAccess.cs",
+      "sha256": "6F8895E40C915034273C7FC887C28E755EFD90868F552BF9D6817DCBBDC97F57"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.RemoteStage.cs",
+      "sha256": "D3EB0B569171B2660FAEF3A506E0AF461C4070935E53C41B7D18CC92FB9D3D40"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.RestoreWorkflow.cs",
+      "sha256": "740AC6F15F9A6CF45493FCA4DF10404D1602BAECF42AF429180014353F502713"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.TaskPageState.cs",
+      "sha256": "372A0A47C28C723ACBB82C4245A3670C8A6849BB1B7E3A086CF50C2AF9E4EFEB"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.WorkspaceStates.cs",
+      "sha256": "266077E66146D9B3BFCEBF3EEF7EF96A13395F833F7BBDFF1848C120ADC03579"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/FilterConditionSummary.cs",
+      "sha256": "0B3FE84C1FD9FF1B746983E7F4CD1DBD2B9426D47C7CA3124C077B1966D23CF2"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/FindingNavigationResolver.cs",
+      "sha256": "0AEA478A3E58FDD23948D80826F34A567AAAA4DF1144BDBCFB6FE48F9128BA5B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/FindingTriageResolver.cs",
+      "sha256": "241FEB723AE1E4A0BBCC5CB0F2C97F8B55693F1D5442DE818EBF715AC9EC51A6"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/GamePickerItem.cs",
+      "sha256": "C29BDAD8B5D552AE009249FFAF41076DFC37C94FC59AC7F1EC7D93513A99729C"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/GamePickerPerformanceDiagnostics.cs",
+      "sha256": "7F773E80E16BD8A4BA20314F31F3B4C04356DE02D0D8B0098EDBBD175919CCE0"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs",
+      "sha256": "ABABA55C9257934370C53FCBD3E613B03AA3602FBDC8F48806C307B705AD6743"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/OverviewPriorityResolver.cs",
+      "sha256": "C94D9794E6607996537B88D19AB4ED9220B7912FAD024E8CAFDBAC82422284C5"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/OverviewSnapshotDisplay.cs",
+      "sha256": "6491B05CBD1E19B6333C6679C9DE3F1E3E5D7201C3EEE3F6B833FF75DE5AD5D8"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/PlayniteGameStartedSubscription.cs",
+      "sha256": "4F43C6516A4DFA2CE4A44A394F6D1C9CA8C42FD694989427CEBFA61B038113F1"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/RecentAccessItem.cs",
+      "sha256": "1D1F36395D9C631FDFDB5AD206A289B5AD531F2F0A28BF863FF7548529AF5772"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/RelayCommand.cs",
+      "sha256": "E346BB26B6AA369107CE9B8FB7292720948E20F22E2B05A1367CE793958B5545"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/RestoreConfirmationGuard.cs",
+      "sha256": "8F36792DACA0B075DBBD8941F564C263A53F80D99A7AD40F1D9B09621089CA67"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/RestoreFailureExplanation.cs",
+      "sha256": "8768DDA6E39F171FBA46932459020D638CD9319FCB1CD53FCF893A577F1FF8A7"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/RestoreWorkflowProgress.cs",
+      "sha256": "C520BD5A7F3909F43351142C67D44B6D3E5AAA3BE54270FC32001F5BC021AE4F"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/StatusToneResolver.cs",
+      "sha256": "6CAC967FB3937DF560D6599076F245F2DFB85D63FAAC0D890C9C620DACC3C4D9"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/TaskSourceNavigationResolver.cs",
+      "sha256": "BE4ED8AC36C6B8B5B5727B7BB35B81F3003049A57E8DD44FF3F8D0C65696BBF6"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/WorkspaceKind.cs",
+      "sha256": "1B7668184A04B4FA55DB342944971847F796C2D2E115392995821D9BF5AE7673"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/WorkspaceNavigationState.cs",
+      "sha256": "8BCE3CC09690800CF01C59073747BC56E14B7099E8B0530CB656713B1DF4C038"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+      "sha256": "6E264F527B69CC2021BFC5F58D879E46557303BAE4C740C741834FE14D01E410"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+      "sha256": "736C1554D06C8B67E753F68FBFB0E2F63935F007414BA9F45BB1E29D35AE39C7"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/DashboardView.xaml",
+      "sha256": "9ECA407DBB20CC90772B344F1261FB2A483F214311492B72A69A303B14BE1966"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs",
+      "sha256": "E0FC89B11A71181E2DF0FFDD7C09ECCF0D0698D31E4848BBE5D996FBE342F6B1"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/Development/UiFrameworkProbeView.xaml",
+      "sha256": "5A67C2195C663DB99A675E2CD029CE6ED8D0E4DA90CC1DB9C8ED050140358E3D"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/Development/UiFrameworkProbeView.xaml.cs",
+      "sha256": "41B91331872BBBF8232B19F184FC5E1156486D871066DA4FE1BD19BA16A4D715"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/KeyboardShortcutHelpCatalog.cs",
+      "sha256": "0B0F38BFD6C999D80BC21B3742B8276B44968BB1D1266168719ECF842656BE23"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml",
+      "sha256": "2273999BE114E925F9B6A473159A982FD34BE0D940BBE363445F94FDFA99FD2E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml.cs",
+      "sha256": "264CC3F4AAD92F44D4C32BCCCD83BD3D07FBAFB7C6B09CC47AC74042F96AEF9B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml",
+      "sha256": "31E8EC467E5FF4BC5C79617C4406C60D0E4DD4E81BC466D7A89A9448DE791C08"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs",
+      "sha256": "704E7301967C209A649D7286F2B662FE6AEDA1210AFC15282F5D14284A223666"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/OverviewView.xaml",
+      "sha256": "46937BDC33D1AD68B18DC3659D65904CA863E0FED5E7F510DF7A8BC8B3DB776B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/OverviewView.xaml.cs",
+      "sha256": "9B8E8D32782FF60A4B5540DDA93A958A35EFEF4AC27B5952D4290B0D69A35F31"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/SafeViewFactory.cs",
+      "sha256": "AB81AA3CE53C943738618C6D8C12CAD71AB9BA483EDF5E2F000157CBB752158A"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml",
+      "sha256": "A99B8AE3C4898C6CEBCA7BA2FD44E6614FFE57E8B7203A45458F5644E9E963D7"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+      "sha256": "4EEB811FCC51EF268BC8C7295CECAE5E39AC0C9ABC444AF81D20C01053EAF7DE"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/SearchShortcutPolicy.cs",
+      "sha256": "A14CD33D339074DB3A0998C997BC86C548B9886190236DC339B22BE952747D2D"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml",
+      "sha256": "F61CFB7D45F8D0E8D0EE008657D5B19E8212762DB7D938DB538B68B76AB7A47B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs",
+      "sha256": "D8F750E6296E60D4BB48632E3727F93042D2390C23C06997E863AE982E396735"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml",
+      "sha256": "9AD6B82E97B6DFF86E3E5634B971D1B7CBB06614AFAAE1441227663EF3516440"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml.cs",
+      "sha256": "C9615A81E53A18ECEB0328AF6AEBC4E5747FACB5AF6D845ABDF77DAA84FAA98E"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/appsettings.json",
+      "sha256": "34E652A2D32CD175F3FA917161B4F02422BCA5BCB24BB92C89489C955F6F94ED"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Configuration/WorkerOptions.cs",
+      "sha256": "B01F9A467EE4082C20F8BF1B4B770F732C066D7687000BFA086A6B4613A483DB"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/GameSaveCenter.Worker.csproj",
+      "sha256": "406013990EDE823D01EEAC599F6EEC3FCBC5AD87120EE59C8A34D464FD7EC51B"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/AtomicFileWriter.cs",
+      "sha256": "BC5ABC869EF575F1441E41124C1AC5FA18354C3C7C67935CC484BE2078F542F0"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/DiagnosticRedactor.cs",
+      "sha256": "508BF8D871E3E5A5EAE0CB546494672515F965936D9281F765D7AE9BDE30F2FC"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/ExternalProcessRunner.cs",
+      "sha256": "5EF9F9931D5F85BD2E7666D64F05EF3B5AAFA38E37DCB60CF15047FBFCEC455C"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/IRestoreClient.cs",
+      "sha256": "34974CF61F3284EA58337288CF71F700EF7F18636EE200BB0580373B85CDC95F"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/LudusaviClient.cs",
+      "sha256": "6CE94527B3862F87EBC5532E5776F158EAB01961F6799051F3C432591576A2EB"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/ProcessExecutionLimits.cs",
+      "sha256": "2C7A8B666FC4EBCE2C93D8B119D2F259D59C2C39FC05B67F6A1B1DB6F4C4D530"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/RcloneClient.cs",
+      "sha256": "E8189766689E32F7D10F8F0B62051913F0F3C65CDF3AF8F47E7B4316B9B657F4"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Infrastructure/RcloneFailureClassifier.cs",
+      "sha256": "A7558CEFB8C13B0C5E64EC1072AEE9BD36A518FD2357439B6A9DDC628B870BD0"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Ipc/IpcRequestDispatcher.cs",
+      "sha256": "8150A76A2AF161B1ABFAE99D3E42210ADA9C7EC474F73BF529E52F29622CE33C"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Ipc/IpcRequestPolicy.cs",
+      "sha256": "C3612B4E8F1ABD359308D3912A4E2AA1EF994637E5E51747D6880B4B20537F7D"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Ipc/NamedPipeServerService.cs",
+      "sha256": "1B828AEA2C3DCEEA7F74CCAEF8797616EF55FD4F57741A9AC9ADCA96CDC69CE9"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Ipc/TaskEventBroadcaster.cs",
+      "sha256": "C0C3AF05B67047070B79672EA3C2BDF4D35A08813DE7BD56AE9163D8B7823CC4"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Ipc/TaskEventPipeServerService.cs",
+      "sha256": "3AF0484588B1C4E992D55AB1C23AFC458E4C991CCC471BDB60965451FA6D2432"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/IpcPayloadFingerprint.cs",
+      "sha256": "B19481DC93642150C5B95A2D8511E710906F8C8ED770B4C2AECB4A3FF4081C7F"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/IpcRequestLedger.cs",
+      "sha256": "B5D2F0EB7E54D9E7C699781CC13651B9D040DEB4712875B9D190316A4DF78666"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.BackupAllJobs.cs",
+      "sha256": "686293E8975E8D33FB7485D0019A04E31CEC035FEC77B20B2E103257B0CAC8AD"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.CloudRetries.cs",
+      "sha256": "C40593AF9B6B2A2E47DC12DADA9D7E1631B391DE1E4FDD10E0F164E9535EF071"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.CloudTransfers.cs",
+      "sha256": "DE1EA3CA824DEEC16AF2B54E70F569DBE6B697BD93C24C860E5C9F3AFF69B7CF"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.cs",
+      "sha256": "1CB366B74038E7987A57E50D82CA7361BEFA5243C43DCE75810CBE659AFA1F43"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.HealthInspection.cs",
+      "sha256": "9BF7ECA15D6F7223AFD989C4F6356E3283E2BFB2ABC05BF10814BEA225F5A6EA"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.Integrity.cs",
+      "sha256": "72CCE40262F7A6A8041E0DB07250E696F02D3E2D0385E9366BC26215A19F124B"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.Media.cs",
+      "sha256": "2BDF400117164D1887985F0032C24FFEE426774A0ECD29EDD48A7D3B8341B919"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.MediaClassification.cs",
+      "sha256": "C450881DC2B940D6606BFCC770DAD4250998F87934F8F343B613D69BCB997B48"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.MediaQueries.cs",
+      "sha256": "B77F060FD0D77A56D955F526F95CB21512EA09CC33A3336D9027DFCD2FAF4E9D"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.MediaSignatures.cs",
+      "sha256": "524BAE1605FACEA7C7E0B7A39C736BCC06AB6A575A5640AA64925E47B75F6231"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.PathRemap.cs",
+      "sha256": "8FD9BC3617E8D7F472A5F254AFE639B26506B69641DD7172251B519D2FF8926B"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.PolicyTemplates.cs",
+      "sha256": "C03F9E306F6A82B113A7F8ED92765417F27ECFD0D3C7E994A6BABF9044F1D6AE"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.QueryRevisions.cs",
+      "sha256": "679E51B209CC50811554A64F5CC9110D6A6B5138EDBE72B73F496B9275B85192"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.RetentionQuarantine.cs",
+      "sha256": "98C7203CA442C0A09C57B3D379BE5C7A2AA93CF544B654A6AFE84904D36232E6"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.TaskQueries.cs",
+      "sha256": "15A4830DEA30B6D80F137CD3A5DFBE928F872EE281A4B9212468DA9D83DBDF2C"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Program.cs",
+      "sha256": "96F1F367E7AA7345D14531CAA56FFBA5A511EC3134509AE1EE7292280948A863"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/BackupOrchestrator.cs",
+      "sha256": "B04C71CA0B0567D5D3884948D2586B060C4B6C2F5D6DF7069EFCC79A14E51B41"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/CloudRetryPolicy.cs",
+      "sha256": "18C7E618D8CEAFBEB70639C1D92BE084FBB824DDB8A6AB24C89F2D384F0CB469"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/CloudRetryService.cs",
+      "sha256": "0965B14F1CF08E4F7CBF354FEFDF3C506AE608A9152CF628F7E2142FBF002F56"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/CloudTransferCoordinator.cs",
+      "sha256": "0076F97EDD092AE098A3555824E78AA0774CA7BD690C67517A853D6F8388BEE3"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/CloudTransferStateService.cs",
+      "sha256": "58D7C06D7598743DB8CB37D04C908C951B70E463AF6B15EB5399EE9CD628D6CF"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/CloudUploadWindowPolicy.cs",
+      "sha256": "A10F946463265A3E7FA3EAD59F221406B9DD57E176144C376C26EA08236ED4A8"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/DashboardService.cs",
+      "sha256": "20B2179A2A0BE4728E7D3A7A0A1D162876BA364A66A27F4ABBB45AEBD2172D60"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/DeviceStateService.cs",
+      "sha256": "DB3C24273B0BCCB27F52A51D5E7B606B3C629A5300BD2B04DE1F257DAEF7FBE3"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/DiagnosticsPackageService.cs",
+      "sha256": "6D55536D95B3D9B3F55FAEF0770813C91F733B0F200D8E2825ADAB3CC13B4CDE"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/EnvironmentCheckService.cs",
+      "sha256": "4DFBC941C88A44744AB200534276EC2D3B039C8C666E2272BDA3EB1119789727"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/ExternalGameProcessDetector.cs",
+      "sha256": "8AA089838E9AFBBB7A324C386D93D0E9F75E18619C7FA3742D9BB32E6BF8F183"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/FlingTrainerCatalogSource.cs",
+      "sha256": "F6F200591EC0F32C913C39CD0C96EE9DB9FBA3CF2C865B7A4E4344B4ADFD3807"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameCatalogService.cs",
+      "sha256": "61703871168DAC7730753E27182BBBEF8B688DF12D79D7AA9A9E37FD70627790"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameMatchInput.cs",
+      "sha256": "34564903D4EB110D486F6AC645CEA750F2B781831BB809DB0B88B08DC3C7C033"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameOperationLock.cs",
+      "sha256": "DA36F0847D6BD0B34CCAE9750B6C560CF874CE1668FF1D1C924B67E14A15C039"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameSessionCoordinator.cs",
+      "sha256": "E9D58B05BE3051A209909FD0FCDA0D5EBF647D3E9806DC5A6A8D05F575E72E72"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameToolAutoStartPolicy.cs",
+      "sha256": "5FEB0BA55A49551FBF8533A97B2EC693841AE8CD1C45B8B1F937E2ED4B17F1B5"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameToolLauncher.cs",
+      "sha256": "2911A17312CDBE0260265BFAE1437EBAFFFAC8E4BDE40FEF3F91038748BA587F"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameToolProcessGuard.cs",
+      "sha256": "F75DF9708AD9B271C0A2E2D3543D69E5227C4FABF99A867258D7FD9B3BA913DA"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameToolService.cs",
+      "sha256": "BCF18CFA43830EAE21C7DA4CDA356E28941BBE9243D817B6906034B90EB82893"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/GameToolSessionTracker.cs",
+      "sha256": "2B9C5D3504785E2176E80FB8BF4809878E8AC86DDB9D1C0BCA623098F8DF1AEF"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/HealthInspectionService.cs",
+      "sha256": "D31FC4F28713FD4D02FC3F1D1D42878931E1BDBCDA0DFA6D5346113367F2385A"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/IntegrityCheckService.cs",
+      "sha256": "F4BC856FCF21B9ECC7B244E7D138F089B91C63F5F2E95F117951D7D2E73A82E2"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/ITaskStatusStore.cs",
+      "sha256": "FC207836BAD8A01BD6D3839EA1DD9886916434257BCE0586FC591651343BB402"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/LocalMirrorService.cs",
+      "sha256": "C5BF5D370A4C4CCA3418DD97C6C0564FA6F98BE78BAAEA1EDB4DACEBB8395132"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/LudusaviResultParser.cs",
+      "sha256": "2BEF77C469153559D369377386DC44B0DDB883FF97FD0199D10ABB7B2CBBF91B"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/MaintenanceReportService.cs",
+      "sha256": "C0052A926EF8872314B871DE66D277B6C72DFF449C1C3F1C29FA1C8C2F6AAAEF"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/MediaSyncService.cs",
+      "sha256": "AB15C12A04BD98EB87DC567CE981DB8ABE59826DA2B1C5FC100615DB36A19ED2"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/MetadataBackupService.cs",
+      "sha256": "344534730779124A3EB4934A4F7443A66FDC687B09ECEEB61BFB86B1CA27D4A2"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/PathRemapService.cs",
+      "sha256": "484E80F2A56FD7DA68B19294F75893F3A352049ABE10864C914F0AEB85CB0C7F"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/RemoteBackupStagingService.cs",
+      "sha256": "A083ADE6FFC104D1EA78CF429286C40ACA25EF1AE54C6B1C4154EEE9D3C90155"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/RepositoryRebuildService.cs",
+      "sha256": "CB8A5A4711B1A7B37434A44A7D022C23A164720388BCF14038899C643E1BA495"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/RestoreDependencies.cs",
+      "sha256": "CC68ACDB9BC76E29DC23A386D227497B77E1BD98F44EACBDF445DF9E4A7A4C55"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/RestoreOrchestrator.cs",
+      "sha256": "7C58FD0EF18C19E034ADAF992E2CE706654F876E31111D6D326AF8F9764CF76D"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/RestoreReadinessService.cs",
+      "sha256": "749415CE665A43A77E10F95DDF997CFFA61E29CCD586C5F918C3EF8DAF2A24AF"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/RetentionSimulationService.cs",
+      "sha256": "209129D4A77AA9D35880A6A3949515C8ED682F7F098EBE7B32F3BCBF5B7ED71F"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/SavePathDetectionService.cs",
+      "sha256": "F66F7D8707BEC95058BAEA7E906852D78AEC68D22C388571B3C6B3351B811D57"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/StorageAnalysisService.cs",
+      "sha256": "63D65885D9844CE9BF2417A5B729C6535383839F8FC5E3731737EDCD609B52A4"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/TaskCoordinator.cs",
+      "sha256": "2D23D2894CBCA80B9E562CD448F275905FBA21557C10C9905F4939F93983DC83"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/TaskReconcileService.cs",
+      "sha256": "EBCABCE50DBB58F2B34D76797F634CF81F84D8AE1FAEBA9223B0B0F26B53BC3B"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/WorkerInitializationService.cs",
+      "sha256": "FA53A657499AAFA7423920401B276C354A216C1F8DE7A230D11BEBFE9316B789"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/WorkerOperationException.cs",
+      "sha256": "387CDFD2C28DFF68F3D710B68B2FF531D378C9A527DCD52CABCEA114D907174D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/ActivityTimelineMapperTests.cs",
+      "sha256": "5C42CC8AE530B185B8B6E832A6365C855E1E99CDBDA4BE231FEE8119608780F9"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/ArchivePathGuardTests.cs",
+      "sha256": "BAF8538199F86AD3B1D9D927C74F5233BD61BF631DBC33095F36701B60C35DBE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/BackupContentFingerprintTests.cs",
+      "sha256": "A4843CD3E3D3158F9D2FFB09DD68852C6BE8DAF168B1519D7D8DC6A433C61A4B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/BackupPolicyTemplateCatalogTests.cs",
+      "sha256": "21FCFC858056EB93C33A082C1357A57ED1DD09AB72B05A83172C3B5D414EA5D7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/BackupValidationTests.cs",
+      "sha256": "143D11DE755DA0755AF24AE98F3650F1983AA7B692E2F6BA462F6B7C3737188F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/DeviceConflictDetectorTests.cs",
+      "sha256": "3704B53BB2DA02F20CE6DCFFBE8C1BF0D352EB47F45CD7EFF25458F572E861F0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/FileManifestDiffTests.cs",
+      "sha256": "9686A01B64CB61C64D1BFC214D72CCEC5EB08BBBAA5949FB7A6C571B0849BF11"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/GameHealthAssessmentTests.cs",
+      "sha256": "9C304BBEFE1C7277FDF9C8957864C9E686DAC7196C0F5C5C8261FBAD99D0DA53"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/GameMatcherTests.cs",
+      "sha256": "750F56EDA092016D565AD344FDCA8651F193B2D8AE962071480845B788ED2BEA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/GameSaveCenter.Core.Tests.csproj",
+      "sha256": "2863F335E77699D1DE9366712F75887A323B1EFECBC3D1F2E82D5EAD7E0A34E1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/GameSessionSummaryBuilderTests.cs",
+      "sha256": "27DACD5E6323F464840636E8A5BA4EF5D92CF51B6610D46F213D79AC3DF27BE1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/MediaDisplayTests.cs",
+      "sha256": "3CA39500E05F7EE84703A9A4C9817D5D4D8BD9746A09D34B6195B0E510AF804A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/NotificationLevelPolicyTests.cs",
+      "sha256": "69933FD738A181380147DD109BB33580F86078A6B431A0C363E6CBF2FF602C7E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/PolicyTemplateBatchPreviewTests.cs",
+      "sha256": "67DDEF1042AB647472AF49E52B0376F17D77BBD5F664EC684ADC3ACB9C9E46EA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/ProtocolCompatibilityTests.cs",
+      "sha256": "FA059653DD504B8C7658DFC489F0BEE3756B72C6F6A68FA00EC711BB45C9382B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/R22CapacityUnitBehaviorTests.cs",
+      "sha256": "ED561DD477429481DF54178D3BB18838A131D22F60D0A71A3FBB9A373FAAE1A3"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/RecentProtectionAssessmentTests.cs",
+      "sha256": "DBA3F2F6EACD4971B19C2369BA86383AC2369ACA5F8FC9E8D01D3920A7B4A314"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/RetentionPlannerTests.cs",
+      "sha256": "CBD4974BFD297E45C1EB59F04C5409F9B65867E2F13F34558499B17F054B1571"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/SaveCandidateScorerTests.cs",
+      "sha256": "89DEB6B1B7A1E8233B51C0A3B3ABA73C997464DAAB9553E7C169EA3C1DE2FD2D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/UiDisplayMappingTests.cs",
+      "sha256": "0AC6DDF8BA38E343C319273AB7ED4385233EC49DC97627D7C5C18FBDE88947C8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.HostAuditSeeder/GameSaveCenter.Playnite.HostAuditSeeder.csproj",
+      "sha256": "D9969D3BD507776B42E98D7643C1E56FD8569D5D79DDD4D3A2A86B8ECE1C4BFF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.HostAuditSeeder/HostAuditSeederPlugin.cs",
+      "sha256": "3CDFA8BC6717F0F21FEA1AF401B8EC4D58531EA3FCBA490EEA0EDDAA74BC9A51"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.HostAuditSeeder/SyntheticGameCatalog.cs",
+      "sha256": "260FEE87EF79995C9D25EA1CA1E58C1C2E3F7392BFF822B6CE7222B130B92ED8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/AccessibilitySourceTests.cs",
+      "sha256": "C019C4E4D0D5C5A7A073846E897AF901347018D3F8C2B3A2BBCC419A1F198748"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/AssemblyInfo.cs",
+      "sha256": "3F7EDD72EAC91614FCF49F709DD4E560C74EBEF8DA68A53A02947E5611CD1869"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/AsyncThumbnailImageTests.cs",
+      "sha256": "72474601421BDE4AE08211B84882D8BF4D15C3FEF2DE8219FBF6B9A624031A61"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/AsyncThumbnailLoaderTests.cs",
+      "sha256": "5F516FD00FDEDE353371BBA1322B658C6BE1D34E83CB768172D32FE17F1138FA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/BatchObservableCollectionTests.cs",
+      "sha256": "6D9DCDC95C77F77E72B8101E8E8AE797D858A5637DCE03B9BA5AF409CF0B755E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/BoundedTaskIdSetTests.cs",
+      "sha256": "F3E9B45EC709D5C7DC70E375DBC70044326C6BCFB3D96668C483B684FAFCF439"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/BuildIdentityTests.cs",
+      "sha256": "B9DDB9BE63BEC5847769F19B372A71E7EB94006A94347B67A492CE4024EEBB9B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DebouncedRefreshTests.cs",
+      "sha256": "B4DA92FFDEDCF29CF127AE93AE47258CCFD5061C1EC11E4B7E4C2069762B3D8D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DetailsDisclosureSourceTests.cs",
+      "sha256": "02C1479A0D9C345DCD0643C88D786BBE588DE9F141F8874B903B4A89A2DB96A4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DeviceConflictStateSourceTests.cs",
+      "sha256": "F46CBF5D18F25C91302A4A842DCDAD794E4E6BC2146BB7185CCCE1659C8CFE39"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DiagnosticsEvidenceSourceTests.cs",
+      "sha256": "541EC0F9599F999C042D6CB90153247E6CA3B17494AE8997ECC7CA9A10856880"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DiagnosticSummaryNoClipTests.cs",
+      "sha256": "2899CF782C7F92DE891668BDAC68446CE595FC302F7F7B87A4D9247FE00F77EA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DragDropImportSourceTests.cs",
+      "sha256": "D7F02C2994320215B62588EB182BC13DD0318F5A3441105D849EE8E5F023D9C5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/FilterConditionSummaryTests.cs",
+      "sha256": "24FA4FD66B2E24C347B05D1265D1A4D7ABC66205D8AA22C3F853E7A9666D4901"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/FindingNavigationResolverTests.cs",
+      "sha256": "6A4F4B3F305F15695C09EE63990005C5DB01DE73CFE80A115179F2CF2A8E3BB2"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/GamePickerFilterBehaviorTests.cs",
+      "sha256": "58805909C5A648720DA064914631B60FB76A0F06C897BFAED1B7E3776229C165"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/GamePickerKeyboardBehaviorTests.cs",
+      "sha256": "D930DE267A6903DDA3280C13C2247391418587EC6DBFDD83B0E3A497AAC0319D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/GamePickerShellSourceTests.cs",
+      "sha256": "40625FE9A2A14ECD9EF4282F7459B237094CC2A3181C966D59E336104890AE7B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/GamePickerViewModelTests.cs",
+      "sha256": "66B3C989A1AA26806AB2BA34CA2A044A0D9BD9986531CF2333CFA7701ED5C3AC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj",
+      "sha256": "79BC1FBE2EF460826AB2A156DE0E2FA54BC08B8AA8E87907F1F7904DAF4493BF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/GameSelectionResolverTests.cs",
+      "sha256": "6894EA40CFF89C9A23DDEF9B6C188EABF223D9A241EFABE5143376D71DD80316"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/KeyboardFocusSourceTests.cs",
+      "sha256": "2EA8B84ED823028333C2DB74C0E313142B54345D4CE7DFCF743D9A3417510269"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/LargeLibraryPerformanceTests.cs",
+      "sha256": "1BA710F71F7CB4629690374591D32AA1AB2FEDE30C9DE38594B28DC0D7EE54F2"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/LatestRequestCoordinatorTests.cs",
+      "sha256": "2A29A2EB58A023149A228A0493BC99BE37578A093F13BE9E151F4AC233087A07"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/LegacyProductionUiBaselineFactAttribute.cs",
+      "sha256": "7FF36856B743EB4665AAF9EEF79383BDBB73775D1A3831816F5C6337E6B20045"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MaintenanceCloudTransferResolverTests.cs",
+      "sha256": "9C545C7423FC3C6656AD7E145CA088775A9B47C212D9ED83E65695E1E17EC4A4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MaintenanceReportSourceTests.cs",
+      "sha256": "0F9B397D6DCB150C0C250F9462ADAB46127932DEB3605E0B4A43195A32C68CBF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaCloudRetryContractTests.cs",
+      "sha256": "2590C5531F85A75409D2F5D390976971D966323383B657DCEC633BB8C8542FA9"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaInboxGeometryTests.cs",
+      "sha256": "0BF806E6373853BA8E67EC783F7428510E64A47F75610804111C5091F5A8AF94"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaInboxScrollBehaviorTests.cs",
+      "sha256": "143A8DB74B970A967744E9DAF01C05C646B332400302DBE4F3ED9E752213EA72"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaPageAccumulatorTests.cs",
+      "sha256": "F310F11C63DB30BED9012A86723F4E22C49F59065A454D33D771A032D42E5E6E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaThumbnailConverterTests.cs",
+      "sha256": "DE374A8C9D3110F2BDC941DF9879F12A41D51AD700236859159B2AC1281256AC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaWindowAnchorContractTests.cs",
+      "sha256": "925A866F96DAE23F5B97670C36274A7A3B5003A5E7BB220328928071A2F26215"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MediaWorkspaceStateCacheTests.cs",
+      "sha256": "4CDF16823BF1A1B5AC8358285159F58F038D935E6BF956DA69AE1DDCF2267404"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MetadataBackupSourceTests.cs",
+      "sha256": "BEEE1812D03C13A82E7602FB9FEEC8F68BD3B68E4DB8523085E68BECCF2C896C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/MetadataRestoreCoordinatorTests.cs",
+      "sha256": "B4C16C44417FCFB5BD286AD1787452646C53850DE711F85A9B908F100101F013"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/NotificationFeedbackSourceTests.cs",
+      "sha256": "95A2395D1DB07702BAFC62187151292E9C3CD4E9A3A812588A15A02A7DB73775"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/NumericCellReadabilityTests.cs",
+      "sha256": "452AF534E660D5895B43AEA58045688960F0538718E4FEB4654F74080844B361"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/NumericInputTests.cs",
+      "sha256": "6508EEC64542451BFE1F9045D8B12E7C261DB17DB27E23C82E85D9A0095B8E96"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OvernightClosureV6Tests.cs",
+      "sha256": "C47C58BF2D5E21E1399144CE6519C8B18CD7AE50C20565E6BFF9A3C4742FB4BC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OvernightV4MaintenanceTests.cs",
+      "sha256": "64F2345583BD872B2FA3FB5DE0BD068A3116A75E3DB399A8D077EA04A6ABB499"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OvernightV4SaveFormTests.cs",
+      "sha256": "460AA6BBD5D16BB4B669AFE3FDB245AE96CE14E61016D80A15DCD979259C3F6D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OvernightV4SharedTests.cs",
+      "sha256": "45EA51F69D3D7415F4299243DC83C4E7D82AD4B7C65BD5FB4E9E77EFDE80A4EE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OverviewInteractionTests.cs",
+      "sha256": "FF8E827656CD9D739BD59CD3DCBD156FE2F2B9E14E999B217E447E7EF1D39CC7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OverviewPriorityResolverTests.cs",
+      "sha256": "D582BE194E2E7D0188B8F2D1D3EB56FA48E9BBA99C4D59C76E10A8F98A0C7A99"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/OverviewSnapshotDisplayTests.cs",
+      "sha256": "7C57AEF93BE2FB995B6BE432B95B58B5715441DA893718BCD9DF898027A4C54E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PasteNormalizationSourceTests.cs",
+      "sha256": "CB544878FD0626162D7658CAD21C99E274FE1A3B1B444E2BB63307C5CC8E867E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PasteNormalizationTests.cs",
+      "sha256": "8F28EEB1B9E0C8364DAA49A48B1EE8988B746702DF670958E0FEBFC72ACCA205"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PlayniteGameAdapterTests.cs",
+      "sha256": "E4E409BBA4792209C44A27C52391E484A14A8A11C3FCF335AC76FFA4D1A4BC8B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PlayniteGameBackgroundProviderTests.cs",
+      "sha256": "D3F5F672A50DE4E10BBEA676D15DA62FB737983710353E5254492B79C97A1CA8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PlayniteGameIconProviderTests.cs",
+      "sha256": "57889833D40D35CF458BF523077660794D8D6A4310833709E283FEB3FA29E751"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PlayniteGameStartedSubscriptionTests.cs",
+      "sha256": "A635938BC23331FE1923A290E2E23FC7B390C090AF84AF75827786C6D59E4A17"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PortableSettingsTests.cs",
+      "sha256": "4853A27DF3B0C8A6FDF7474A810AFF20F2AE98E903EBA6D11486279544CF945F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/ProcessMappingInlineActionBehaviorTests.cs",
+      "sha256": "422C618D38EF098C94F0E9286A458212063AD3C037C0B163193480A9EE1D6907"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/ProductionShellChromeSourceTests.cs",
+      "sha256": "33879158CDE26DDB40451D5751DC55DCF93064CDD86BE1C062B47D1721B7CB06"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PurposeNavigationSourceTests.cs",
+      "sha256": "72CE11819A302D7361C3088ED77B012BBE52B6549B1657BD0FB85CB3EDDDC55C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q06ButtonStateSequenceBehaviorTests.cs",
+      "sha256": "B10122A9151EB3E22DD1467ED3ACA89B7609C944CF13BC49BAF2E321D5A65AA8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q06ContinuousButtonBehaviorTests.cs",
+      "sha256": "27C47448A075CF0F3146479474D6D210B1FD1AD91B1493B7E57F3AEDF281A951"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q10CheckBoxHitBehaviorTests.cs",
+      "sha256": "9EC2395DC17781CB67F75A3639917C06825673E76F4C15CF18B1DDDC0B9E7226"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q10ToggleSwitchStateBehaviorTests.cs",
+      "sha256": "644C49ACFDC127EA6ABA6F86313D9A01AEE23902616C6BD4970B9CE81D6B2805"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q13ColumnResizeBehaviorTests.cs",
+      "sha256": "54D7A9A04C213FA60B26D5633B9CD3EEC6C2DBDF003D173AD8B852C39C5C36D3"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q13ScrollBarThumbBehaviorTests.cs",
+      "sha256": "45709CFAE6B277EC21A4A2E323F14C89CEE6192A447D389F2809CA6C39EC8A34"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q14FilterLabelBehaviorTests.cs",
+      "sha256": "3B4DC9403F3334EE34ECBA01DC9E6907FB164E0130182E6A820A27F601C7A8FD"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/Q14ToolbarAlignmentBehaviorTests.cs",
+      "sha256": "49B8F6A269E37D57DA6CC0F9DEEDF62E7ED3FF2B10FECDB9F25FA15DA7CE051A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/QuickActionSourceTests.cs",
+      "sha256": "718524A55804B922181981FA9B6685C6FD695AC057E1A97E76DE00E5B5B00931"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02ActionAvailabilityHintTests.cs",
+      "sha256": "D80C9A5C9DCC3F18A22E1CA34385F6BB3F0A3DCB4C616481D3FD8A55264DF27B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02ActionCopyTests.cs",
+      "sha256": "AA5352F41F6D28E7B829B94DD58F76D9B0C40EE8DABC29C55ED0B12C7B5A4FE4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02ActionPriorityTests.cs",
+      "sha256": "72023BE1A4F97B771A5E56D7923C1B18E165568626D185DC15F54D7AF76AB0CC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02BusyStateTests.cs",
+      "sha256": "1537C5CC18C768C43F1BE9F8D0A9D610B6F3B61F5A4EDC6C5B49FBC9FE9EEF1B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02HitAreaSpacingTests.cs",
+      "sha256": "1D189F8F6B93695C79B5B38430E0A461C2CC999EF7DC61285C2C0D7ED8E5DE7D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02MenuActionContextTests.cs",
+      "sha256": "CA41B80821F00286C707DF1DA5A004E3D535900D47DC4CC1430974A43AF368F4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02MenuHostContractTests.cs",
+      "sha256": "D8283F6E77A920D3612C617F3A18AF0EA7D0025AAE81FF41C1ECB2E5D29721E4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R02OpticalAlignmentTests.cs",
+      "sha256": "B8BDC66D3EBAA717DC2CF331183D750A299D433B5BABC862E013B9B390092A86"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R03BilingualLengthTests.cs",
+      "sha256": "A6DC00150D6D2495310D3CE78FB7EE3B809E55A77024B05C22C9F9FBF7B2FB04"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R03CopySafePunctuationTests.cs",
+      "sha256": "A00F42FB24C01F5E3D861ECBE7349142E7B3D16F680DDD5A7E1A57E36038EAF0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R03LongPathTests.cs",
+      "sha256": "9E3B54073F52EA93467F24ED499E85AE201C9A80DDFBE6F5AA820F26D8AD06B5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R03NumericAlignmentTests.cs",
+      "sha256": "08C2DADF7F901AC0D78B6AE3875404D6AEEE179C53EA86C4D0E55DD6CA4CB6DF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R03TextScaleTests.cs",
+      "sha256": "277969CC6E780C332FA158126BE4B6F47B7BF6E7CE87D48874C78236B922034D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05FocusBoundaryBehaviorTests.cs",
+      "sha256": "97F5CFA76DEC2AC40BBDEF719C43788362B7AB29829E6CA6547F38F5EB3514A0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05MultiSelectionSummaryBehaviorTests.cs",
+      "sha256": "72AA1B5E02F8D4151DB3AE0066B3395A646508B187E8DC35BAC0C7971E70A75C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05OptionVirtualizationBehaviorTests.cs",
+      "sha256": "4B33002830919F3C94C80923A1CD38757DD6F2E18E994C4BCF56678EE2C573E5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05PopupBoundaryBehaviorTests.cs",
+      "sha256": "0D48F357B4C58A20A6BEDDB631B45F1ACC5509485C48C71FDC583219B870A5D9"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05PopupLifecycleBehaviorTests.cs",
+      "sha256": "A0E4479CDA20C66D5AB44447055DC04A29AF97E03C9757820D962EBAE969EE69"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05TogglePersistenceBehaviorTests.cs",
+      "sha256": "EE923C6F1508B97A656251411B8A2AF568E673BE82F28240E252EC9830CE0C1A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R05TooltipTimingBehaviorTests.cs",
+      "sha256": "ED27B0E68AC1DA3C85B010B00065112FA3DCFB12BA602E6B543BAAA71FC0B6BE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06ClipboardBehaviorTests.cs",
+      "sha256": "DF8D089ECE9637DDF88973306BE870C0BB7790EC727C6F6654C333287C8320C1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06ColumnHeaderHelpTests.cs",
+      "sha256": "9BFF86A3EF83B88EB14D694DFC6773897D15563B041193E1DE9C4A5D25232BC1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06ColumnWidthPersistenceBehaviorTests.cs",
+      "sha256": "CB41E6A518AE63F4D35D8BC345CCCF2D2A2C02F9860DE6B7E547D1C90E64BC18"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06DetailsBudgetBehaviorTests.cs",
+      "sha256": "EACEEFB8131E725AB3BBEF65EC5D5CC410B95248D1175E7DB26D2F5BE710D2B4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06EmptyStateBehaviorTests.cs",
+      "sha256": "5BE2033173409EFFAFE9C2E7264A6BC66E486CD23E87CC295C57A0059170EE04"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06SelectionStateBehaviorTests.cs",
+      "sha256": "933E616E09B350D998EA5B9EA289F6DB13C65C94A2AED4EA75F82B88C45B68A2"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06SortingBehaviorTests.cs",
+      "sha256": "453CB93ECD6E5611011BD22F5E04A0ECD524D1ACD90484A3DC91486EEA08049E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R06TaskProgressBehaviorTests.cs",
+      "sha256": "A570B15411F4C7F7A02DCA064E5667051245AEF293FA4B2E83295A2B8A4C0ED5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R07DetailsBreakpointBehaviorTests.cs",
+      "sha256": "58B7EAB0452D1A190BCC8A49CEA9F81C6011881ECEDAF2E06F931A7873AB51BB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R07FineScrollBehaviorTests.cs",
+      "sha256": "EBA6E609887FDD1B0231EEA387560F9E654AC62091463D3581FB549B426CE128"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R07ResizeStressBehaviorTests.cs",
+      "sha256": "32662ADFE6CAD0BBB66F4AA49D09848FF3E295A783123D6CA70B01CB6E2FAE16"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R07ScrollOwnershipBehaviorTests.cs",
+      "sha256": "481DAD73EF10D39AB5732B24B385035712D3BA591EA7A259F4A1860E9ABBAF72"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R07SelectionAnchorBehaviorTests.cs",
+      "sha256": "D1C5AD0F1FF9396745416B33874F8ED466D22779DB7B32F572A4640C207FA4AA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R07StatusBannerBudgetBehaviorTests.cs",
+      "sha256": "15D748E6D807FD577B9AD5E38AFB9ACA053BA98FCA59C8530F10D8CD71C67B6D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08BusinessFeedbackBehaviorTests.cs",
+      "sha256": "80BDE3C667EAB030B56046012DA175FDF605DABE6E864177016AE7BC6D1ED6B4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08DialogOverlayBehaviorTests.cs",
+      "sha256": "93E069336E111E6954FAE5B425A31A2774187D3DB7A30118605DB04EE9607D3A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08MotionHotChangeBehaviorTests.cs",
+      "sha256": "62071E28C020E466D27FE78B841A406264D9BB7DD8905006B2047D83FE04DD5C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08MotionReverseBehaviorTests.cs",
+      "sha256": "6F82F3FC432E50F682C889367F801DCCCC7E55AADBB6182362DB5FBEBA9A84A8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08NumericChangeBehaviorTests.cs",
+      "sha256": "5C0F5F48228BEFF1E91269F52E68360970F3B0122334FA7DD38FC173FEE68E27"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08OffscreenMotionBehaviorTests.cs",
+      "sha256": "0DDEB27D8785984712D736A2014F79642C2495340D17E7DD67B932AD413774D5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R08PageSwitchBehaviorTests.cs",
+      "sha256": "6114F75DA1107D2FCDC5E600DFB20CFDBC235AE139D0953C6D600738F327A918"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09BackgroundPressureBehaviorTests.cs",
+      "sha256": "C8E1CC1F9C296EA968155BCA6F87B8F7093B060665596981DB21A2460A0D7301"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09FocusOutlineBehaviorTests.cs",
+      "sha256": "D995C8BB5F9BCE268E19528C8C0A83611539BC9FD292A043C1D91A06DEB14C9B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09HighContrastBehaviorTests.cs",
+      "sha256": "FBE25ABEF5D6C2D26C7AFC25EA44675F6E6122FE47AA1FAA7025AB03B603BEBD"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09IconSemanticBehaviorTests.cs",
+      "sha256": "19C7E181E218A8982FCEE5F2F36E402121B2628035355D79C2F928AF295BA57A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09PixelStrokeBehaviorTests.cs",
+      "sha256": "A46E0C5B4848499F95122EB675A6E99E59009D80ED11D937FF0440A0072BE88E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09ShadowBudgetBehaviorTests.cs",
+      "sha256": "B85FB0775D10503D1FAD537E23FCC4A3FDCED3EEA56D23ED56D2CC44FE489DA0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09ThemeSwitchBehaviorTests.cs",
+      "sha256": "A51D3B1EDB5EF9738373DCDB5DB5C7D1347F42F2684D73312C04307E4912B39D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09ThumbnailPlaceholderBehaviorTests.cs",
+      "sha256": "B72E3C4F05E9FB13540AD93227D609478F1C09337F4810DC9CB5892FC7742C45"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10ContextGameBehaviorTests.cs",
+      "sha256": "5516BF35230B2003E7D898D22C889EE17A4CA116CF5323EB5A5AA42F676BD914"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10FilterPresetBehaviorTests.cs",
+      "sha256": "F54F7DF420E337C984D528C5C211C3A72609D10B803610F30D7BA1539739543E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10FilterSourceBehaviorTests.cs",
+      "sha256": "345D34D8E6B37CCEA838CA8DFD2A07388D39FBA9F947C57A7AB398746ACF1176"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10KeyboardShortcutHelpBehaviorTests.cs",
+      "sha256": "230455A7A45067F2865603BD34209E7F64D1A852C15ED9DAA81A489DAFFB85C7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10NavigationBehaviorTests.cs",
+      "sha256": "4011BE4C8E65178B474C31F89508D15E47637AFC7678C9E3453162A33BA9F6BC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10RecentAccessBehaviorTests.cs",
+      "sha256": "59E50FA4183198B9F849F6350BE02D0CBBE5ED21E61A697138D7F2562C6FFB94"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10SearchShortcutBehaviorTests.cs",
+      "sha256": "245ED68698BEB39EAA655A5DC1D7EC6E5D81C5CDF892A6C98198F6C36A891788"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11BackupPreviewBehaviorTests.cs",
+      "sha256": "8C60B15184A72D3D7C633D951A6A3FE2EB09A32050292FD7C46F078E723F9FF6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11DiffListSearchBehaviorTests.cs",
+      "sha256": "D523F87D50820D6C3EE0D1CFAAB10C6DCF0FD1976B2A21102E19BF63F496FD73"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+      "sha256": "F87F63D0FF68960D33553B71F47B5923677999B31CE519478CCF5D4D01F5F0E1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11ProtectionBehaviorTests.cs",
+      "sha256": "834A370465D63A464D7FCCAA75C4CE702DB6F2F71CF2127CC1622A990D6A0585"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11SaveWpfCollection.cs",
+      "sha256": "F25BC8FAFDB3029AF1040E8401A944DA7624149A239D96F73B7DE701158F1977"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11VersionComparisonBehaviorTests.cs",
+      "sha256": "FEFE9F7C563F46DFC213918E90CBB61AEFAD32266E896DB37EB4D5B61A720444"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11VersionNoteBehaviorTests.cs",
+      "sha256": "AB6B79B5B05B83C69014FBB4391AA34C328FD4479D65B0C371C3E9C3C4D4DBB0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R11VersionSummaryBehaviorTests.cs",
+      "sha256": "8636B5533CCE1B527D74041C5ABE8B07EB0938648C6B2448A28573F6574DE831"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R12PathRemapBehaviorTests.cs",
+      "sha256": "7C3AB27E01A6D60DCAED9C208C3568ABC40C300A2673F85E0A8CB339EAF0BD5D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R12RemoteStageProgressBehaviorTests.cs",
+      "sha256": "74365188F1C3BC4CD31E2360BE58745917ABDEFBF91072D46D6DBF994BF37B7D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R12RestoreConflictExplanationBehaviorTests.cs",
+      "sha256": "B0C70D5191D1AFD3C510A1DAFA1874DEC20615D6B5CFD621FF87F516E8E1CF66"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R12RestoreReportBehaviorTests.cs",
+      "sha256": "236BF08F179BA192624E024AF57920C40FF9E985E101B46D6D567C79CA47989C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R12RestoreRevalidationBehaviorTests.cs",
+      "sha256": "9B898B0A7CB4588DA8E488483E652DFD65B4DB5CBA0A4FB4DBCE372F83102965"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R12RestoreWorkflowBehaviorTests.cs",
+      "sha256": "1EC151D6F1D5B1CCAA6958DDE525ADFB57A3A6537422282376C853D56F549BDF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs",
+      "sha256": "3837161E7CD02DB66BACFEF042144FC7609A43C252E5D4CEEA2BABD1E3C95D4A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R14ClassificationEvidenceTests.cs",
+      "sha256": "E0E55C267FC66A2B8756091F828E940F263274E11EABE1AEFE63236B5836676E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R14ClassificationSelectionTests.cs",
+      "sha256": "876152461CD07C8F765B93584540C83D3B962793D751794D282F4DE82C884F18"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R14SourceRulePreviewTests.cs",
+      "sha256": "69DB18FEE2707C3034E9C329E692E4698EE241010C147A2BC363A594140D36C1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R15TaskCancellationTests.cs",
+      "sha256": "120B227E4477440430DBE487AF4C94A713B5FA388AFCADFFB74FC84B5CC4953B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R15TaskFailureCopyTests.cs",
+      "sha256": "6DAA884726FC11BD9247BA331E91CC2518D3000C055347CE8F47282D8F04F048"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R15TaskProgressMetricsTests.cs",
+      "sha256": "CF6D2F4F34B5951D787E625CFF4E3B159D8CB51BB5B7D04F302740AB846BED29"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R15TaskSourceNavigationTests.cs",
+      "sha256": "26F17B98916AD669C299A80A544372E2D06034F10653D45A65D4AA2D29539BDA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R15TaskStageTests.cs",
+      "sha256": "06746E94059561694185F76D35F96FD93ADA82C21487000D40D3E86D8416EFE9"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R15TaskTimelineTests.cs",
+      "sha256": "43BE0C208E105D884D39841002BBCD7727477923EFDD1B40CE505E91C8AE9CB5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16PolicyDiffSourceTests.cs",
+      "sha256": "7B9C30AB616144F4609D0AF1F3484B424971C1C1449872B5727039707EDB0F0B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16PolicyTemplateBatchSourceTests.cs",
+      "sha256": "36A993838AE262ED9188AFBF08A46F157AEFE2C3451995FCE732856EE2057D08"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsConflictBehaviorTests.cs",
+      "sha256": "B6B620ADFE9F5D8F06DF78CA65D274504384A194722561024A0C3C12851EF634"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsConflictSourceTests.cs",
+      "sha256": "E2A53218CE2C8151D2863D6274999CC4CD15556D0470F250A5B88691D6B79462"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsDefaultsBehaviorTests.cs",
+      "sha256": "DA2FF5F7BE81F6C306A508538FDB3AFF6F10CDD1E0870009214F476EDD1194F7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsDefaultsSourceTests.cs",
+      "sha256": "37D69E43AD5C72DB9252D8622098B8953CA4BFEBD7259395FCC7F052E3AB266A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsEffectSourceTests.cs",
+      "sha256": "09CB7919B0854BD592C4809BF32E0B4A413B55FC2442EBFCFB997B07A504060A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsImportPreviewBehaviorTests.cs",
+      "sha256": "7AD12BBFED837CF55D6F4EDCECE19BE5ECF08F31BBFBDF8C5DDEC39FA582A3CE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsImportPreviewSourceTests.cs",
+      "sha256": "9AEAF7A4FDA7641BF70D5B057AD53FB984201F9AFFD8F1B19C6026371A1BDEBD"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsPathEditorBehaviorTests.cs",
+      "sha256": "76E31033DCF4C8CDAD442F5F640BB0C10D3C37D3D761554C1E962002E8C8E939"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsPathEditorSourceTests.cs",
+      "sha256": "488A46185FF354D35EEC40102D5CF07A577AC7559FC7F608F97571872CB36A61"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsSearchBehaviorTests.cs",
+      "sha256": "87BACE6E8692EABBA2A665D6BDBBB5D06763137BD3A0CA7C3FF052A2D47BF2A5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17DiagnosticsPackagePreviewSourceTests.cs",
+      "sha256": "B26038751AA65455C619B801783D072C7B1D98412BEAD9F9C52641B854098C93"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17DiagnosticsPackagePreviewTests.cs",
+      "sha256": "08FCCA39F06BB2ABD488160F82B63C202CEB79745EF434F555DA0D45D679F4EE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17FindingTriageBehaviorTests.cs",
+      "sha256": "9CEB3BA19708FA2E7A657DB757FCABCEDD45E9C89C93211D47F9223A6A8B1484"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17FindingTriageSourceTests.cs",
+      "sha256": "6F7FF8B299A92E95CD86245F81421D41FBBA81355410592394BC37191AAA5935"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17HealthInspectionBudgetTests.cs",
+      "sha256": "F523F97F5407C6A0A16AAF27CC9F6C29869EB8B1AD45CEBAC4C4D894A8A0F3B0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17QuarantineLedgerSourceTests.cs",
+      "sha256": "1A579EA584DD84D503DE6A9DEF72EAEC8508485A99FECC56D5FBCB82419557D8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R17StorageAnalysisNavigationTests.cs",
+      "sha256": "EDC3E71ADF9F73C4E880B013D75BF953B3DE66A5A68B89B54209FEECC5158DDB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R18ContinuousInputBenchmarkTests.cs",
+      "sha256": "82ABB103C349A36AC236005BE56F144E257AC7F7744D285BB7878BDE6887CBE9"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R18DispatcherVisibilityBenchmarkTests.cs",
+      "sha256": "B59913875F64B61CAA9B17636B82CD7AA54EB4AE780AFC4D933CDB58EEC55319"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R18TableContainerBudgetTests.cs",
+      "sha256": "F920F1B85B31D1E476D05B8FBAE27229E879B735C311B0E20E3F881B4801E70E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R18ThumbnailBudgetTests.cs",
+      "sha256": "659400829FD0FBBF979ADFA561F3FE3ED3FF591F7AA936BBCFD14C2304A988B4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R18WorkspaceRevisitSourceTests.cs",
+      "sha256": "50D14B33014307F520EBBC0A2F854791F9BF18835C515EF0E30BA0F33BF56D4C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R19AsyncContextSourceTests.cs",
+      "sha256": "C4D1EFAA1FE5CF8F5E5DC30F8883412B4ADB140B9BED19835D7E2B8E09D07C16"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R19DraftRefreshBehaviorTests.cs",
+      "sha256": "30E091A0F0253F37C03C7DAEE17BC299644A2297012D6DABDC5E323040B0DF58"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R21AsyncCompletionAnnouncementBehaviorTests.cs",
+      "sha256": "5369E1FF3F47E08A8614C9C9D1AE94FEA83B62D985CDF4F6C0588A752A4B7271"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R21AutomationValueBehaviorTests.cs",
+      "sha256": "B1F2079C2006BA469F3347A7CD6E786A3D990645F21AEC5F58058E3A2164A0DA"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R21DisabledHiddenBehaviorTests.cs",
+      "sha256": "E2AEA524560B94738C6A60F54C2CF3C7390BBE41843EE533A212F8A896AC8D20"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R21FocusVisualRegressionBehaviorTests.cs",
+      "sha256": "25BC1B18C44A6EE51B3F7FE493640C3F36C6641F4BA5D7F668B4EE66104FC316"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R21KeyboardNavigationTraceTests.cs",
+      "sha256": "2B3B32EBA02320BE4D3FDBA5241D6963B6847F90DE6249A6B1258DA0D1CA20BB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R21SelectableTechnicalTextBehaviorTests.cs",
+      "sha256": "9AE92B4232AF41329B86D373868387EDD33C73273D0A15E722D53F5A358D53C5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22BatchCountBehaviorTests.cs",
+      "sha256": "4D4B8BC5001C106C5BBC72A0962A27B3136E8B89E3B089426011F7D0068ADE98"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22ConfirmationStructureBehaviorTests.cs",
+      "sha256": "AEB3436339C37A7924B511DCE0BAA4C82CFCDB32E9EEBB925810FFA140DDFBB6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22CopyFeedbackBehaviorTests.cs",
+      "sha256": "04CEC418758D6A6347EBCFED0E9A5A339CF04ED04654CC4AB1EBAC03F6AE74E3"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22LongTaskLeavePageBehaviorTests.cs",
+      "sha256": "862445081D209F6C1661923B201DA05EC29915A7AF09AB6C9C7E0BEC832F6528"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22MaintenanceActionTimeBehaviorTests.cs",
+      "sha256": "04159070F6F08890379A1483E20BC610BBD6D4AEC310F67D6F15703207F6D2D6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22RemoteStageTimeBehaviorTests.cs",
+      "sha256": "79A5A31CD5880F6609A53F1FDFF841DFE71CB31FF84BAE031B33C48927C37E9C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22RestoreConfirmationTimeBehaviorTests.cs",
+      "sha256": "17DC26DB168B36713BF0C821DACC579BA920310E2340C0697D782FBFD71D894C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22StatusStyleIndexBehaviorTests.cs",
+      "sha256": "F77A27AC0BDDC3E56806E43FFF2E153974B5911355A14E62AE8C93C93B7E209C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R22TimeDisplayBehaviorTests.cs",
+      "sha256": "16FDDCBC626C5E6E523AF6BD2169E67117BD3DCA6A180895AD7E57C403D18987"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R23ProductionResourceStateBehaviorTests.cs",
+      "sha256": "0EB409C1624C26F919901AB38CCA32F6CC92364F548EFE852CE2A28B1CE996C8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/ReportedWorkspaceLayoutBehaviorTests.cs",
+      "sha256": "3553390ED8B95A39000077CF1204E59298D93EF894FD9BE4C4DD4EED5518456C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/RepositoryIdentityTests.cs",
+      "sha256": "FA68568A3E2B851D2296218BBFA09FB39CC7ADA5A1CBC6D91CD58E2C19DE4787"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/ResponsiveLayoutCoordinatorTests.cs",
+      "sha256": "0D16F4B8D8B73D7FAA2E3FB8F74F9C408FC31D3110266C144EC9DDB6B09C2C21"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/RestoredAcrylicForkBaselineTests.cs",
+      "sha256": "1362DB7C2487BE9548EED24A97946DDFA06E155DA93934FD75F286770B5CADB8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SessionNavigationStateTests.cs",
+      "sha256": "553006003B95508881D308FBE2FA2191769DD1787640989EC9738EC14558EC7F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SessionNotificationAccumulatorTests.cs",
+      "sha256": "376995C4196FE6A6CC3322B2B403271FB0DD609E88854438B4EA556A574F454E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsAndAutoSelectSourceTests.cs",
+      "sha256": "E126EA86434D16321E3A2B2DD2979981A1F655ED09EB1A057C910019757AAB99"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsAsyncValidationTests.cs",
+      "sha256": "7A01C854A4FB0EA8CE933087060E610896215CB3537C7D6742A3895DB09B88E5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsDraftLifecycleBehaviorTests.cs",
+      "sha256": "71D3B4F206FA43447F9731C3BE8E2304D5D360421A28D3E32A05ACF7233E6B11"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsPathValidationTests.cs",
+      "sha256": "D930EC07386F0DFB0A2CDD20E785A24981884CCFB77520B4E1B7A672043494F6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsSaveFeedbackTests.cs",
+      "sha256": "28801A2047EEE70325736BF24447F4D24594A4AB537CD41B2503158A24387454"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsSelectionStateSourceTests.cs",
+      "sha256": "047913DE0F5273B189FA06BC19A31B9BC1548781A83780278653430D591DBEA1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsValidationNavigationBehaviorTests.cs",
+      "sha256": "594F234D09638AD4BBE8D276E75DD307511197CB6DAF81440030DA32B7D54B78"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/SettingsValidationSourceTests.cs",
+      "sha256": "9AFD00AACB5AAE9C36C1F6276199A9BD089041AAEBB3B4924C5A4C0A35861542"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/StatusGlyphConverterTests.cs",
+      "sha256": "D66070D118C45797659FAFFD97A0BDB0C55A8A56E6CAFC7A7453459B3071586F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/StatusToneResolverTests.cs",
+      "sha256": "621C4DAF5C217ECBB3AEA3469399500215CF70988E5965A998B571DFC6CA4B57"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskCenterViewResponsiveTests.cs",
+      "sha256": "F1A481EA5264CCF82A91A58A3A3F528D076C70296D4841D37478F1501F1D12CB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskEventUiBatcherTests.cs",
+      "sha256": "2D2EB201287BC9D37DF48CD89767A5A9EB1AEE1CFFE82E75828B003EC654E951"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskFilterDefaultsSourceTests.cs",
+      "sha256": "3D54FD477971CF126CB1DB28616679C3FB1ADE016C24ACFEA0B29F7E192B2436"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskFilterOptionsSyncTests.cs",
+      "sha256": "F622360402978571AEFD58E5D4CBD5AFFD8E8558B6A58742042E79DD2655115A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskIndexedCollectionTests.cs",
+      "sha256": "D7AC3CD91C776CC1F819101544AABE0C258DB00F8A5C22B832F872E0ACD996C2"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskNotificationDeduperTests.cs",
+      "sha256": "241A6EDA8F43FB4E6C04515393AE3C28348FEC68A0D7154784BA9A272255FC69"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskRetrySourceTests.cs",
+      "sha256": "E31B861E3AB107E03B646415644D5EC450CA882F2E3ADBA56E7F76340BB7B222"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TestRepositoryContext.cs",
+      "sha256": "39DE53C169123058DAE485F8EC4B47DB152566860EB8D9B100DA7D5FDD113AE2"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/ThumbnailLoaderCollection.cs",
+      "sha256": "02F5EEE0B05986F1718044941FFA036D01AD02652BCBDF471F73B3EACAAF4ED0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TypographyDiagnosticsTests.cs",
+      "sha256": "1706B3BCC5A51EE646ED774C37E99E7D749CED5BE67EE6F21D4DC42DAEB784B8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiAuditBlockerTests.cs",
+      "sha256": "DB04CC33ED4FC3C2ECE4E4C1724BF4FAF23A8BDCF81B90925B417161BCD433E1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiAuditCaptureContractTests.cs",
+      "sha256": "303C9A675CF19C49701B04C30DF5ECC7912DBE37F8CA44915FB35E3DCDE67E29"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiAuditSourceTests.cs",
+      "sha256": "AB5AA8AF98DE066635961F5D0437973EDAFDB72231BE0DA080469CB8D93D95DC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiAuditTruthfulnessTests.cs",
+      "sha256": "6C00262AB6493399F9DC0CE5C87C2405C3C54C963811EBD3B303B00B4F70CC29"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiDiagnosticsExporterTests.cs",
+      "sha256": "D2A7C5216C4A6918CDB5F27C528690047C64175D3598D6FFBAD6243E45146A47"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiFeedbackTests.cs",
+      "sha256": "1010BAC0638055F5559AE08957752C3226865D8FD45EC5BDA636E0F5BA727378"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiFinesseFoundationTests.cs",
+      "sha256": "8E8DED7DA91BFDC95DF92FA79C797497C224D07781F02114AF71FCFB4430CBBB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiFinesseRound2ControlSourceTests.cs",
+      "sha256": "B2717D805C550ADB789F77D4E47BF130ABB0458FBCB41A977DEF3637D6FB557C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiFrameworkProbeFeedbackTests.cs",
+      "sha256": "9D755A5875816ECAA3B2665184379F3C2480B8F74D72ACD80A2F869C69CFFF2B"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiLayoutRegressionTests.cs",
+      "sha256": "76799A4C5D17C92927889891A407DF825E0040E1A6F7021C6FB323481BF2A9C1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiNegativeFixtureRegistryTests.cs",
+      "sha256": "E002C83BC035E9F28985A230E71A3D4A01FEFC06BF7D066E5F6E295A0BA8D563"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/UiStatePersistenceSourceTests.cs",
+      "sha256": "885A9C93ECC0036394023290EB7DDECBA316601C50D30759513DF9B0C0346596"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/WorkerIpcClientBehaviorTests.cs",
+      "sha256": "71EE5DC711B8CF70699C6718E500B0284EC8F8CC210A517756AC494315586778"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/WorkspaceRevisitLoadGateTests.cs",
+      "sha256": "10BF0ED4F952A7848D6A75B2843A90C463EAA2C03D47BE50618B03F0DC6C7E83"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/WorkspaceStatePresenterBehaviorTests.cs",
+      "sha256": "3A87CCDFBD40E0B23A3409A338B215235BCEE1F1BF9EC35956E27FFFA2E426AD"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/WorkspaceStateSourceTests.cs",
+      "sha256": "30DA838D460265BB3F3074B0F3920338B0C1487D7C337CFD468CD61826E5D68A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/WorkspaceTreeGovernanceTests.cs",
+      "sha256": "32664CFB6FA4A0B9889E67AF7884A518805D68F1FD0E26FC1EAD36FCCE3706D3"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs",
+      "sha256": "790B91791DF84C49217EA385D8D35CA2968862E62F109D324C391F11FE7B9FCF"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs",
+      "sha256": "5F7701AEEF8DA0EEC87FAFE24F376236043840853E363CD68FB52B6D77B367B7"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj",
+      "sha256": "1081CF9A43B0931E5995004FE51CD61793A536A3BCD3180A205A13B196450A0F"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/Program.cs",
+      "sha256": "7F86D057CC87CEE890EEFE332FD5597E603F3AD83923839417EC870EF3328835"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiAuditModels.cs",
+      "sha256": "F24D9A0287E01C3CFB0E21BF75879664A905A45C3AD7DB05F0C20E8E4B35112C"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiAuditRunner.cs",
+      "sha256": "921AAF29932898303863032AEBAE485C2635B2F1587351B481573BE7ACF0FAD5"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiAuditSanitizer.cs",
+      "sha256": "EB05174FE564C1BCBC91749B218D2DE01CE45F0F49B27C3B42AEAA3C13350A91"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiEvidenceIndexBuilder.cs",
+      "sha256": "53DD2E84F1CC54CC4BBAFD874328A7C76006EF3DCC83616461F81278702EF1FB"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiLayoutAnalyzer.cs",
+      "sha256": "18D0A58C0B3BC3D85A842F40855A3AFA3A972BEC9B9D31B22A0EAA0D1C802909"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiPageRouteFactory.cs",
+      "sha256": "B5A3DD10C46FBEED3220E65EEC5E930B51D3F273652BD7E6C1E6E8EACDB752E3"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiReportWriter.cs",
+      "sha256": "23AF452A1E92042F231AA29E87BF879BF33DF5EEB59ED6BD6EEE9755AE061E53"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiScreenshotService.cs",
+      "sha256": "DF3434993B67192CC0D2117EC6A89AFF25D2F00EFEE6475859F2000E5540C8D0"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiStaticManifestBuilder.cs",
+      "sha256": "6BEB3DBE64088C877C77FAE821C1435BB2DBBD81B9BB05FD24FD5001CD8AE8B8"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/UiAudit/UiVisualTreeInspector.cs",
+      "sha256": "271CC84985C55B0124DCF459C33430C66354FB3D95BBBD73359CD856DCFABE6E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/AssemblyInfo.cs",
+      "sha256": "3F7EDD72EAC91614FCF49F709DD4E560C74EBEF8DA68A53A02947E5611CD1869"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/AtomicFileWriterTests.cs",
+      "sha256": "6F248929F25120DE1CCA452F769C6D0CE6E7FDDBF8731982A54F9F04C111B4C6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/BackupPreviewBehaviorTests.cs",
+      "sha256": "7A36E7127C1F2FF5B9A53CF45D1EEF531AF013F2154C49C6BE3E603709AA9940"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/BackupResultLayerTests.cs",
+      "sha256": "8D1886F475AA17FEE6C06F533698A605FC1A66BF23E7AF78FC22267AEFBB96D0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/CloudRetryPersistenceTests.cs",
+      "sha256": "ACD581435BFE863830C1AFD59EB70D82BE4DDFFE17759D890BB2AB212038BFDF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/CloudTransferStateTests.cs",
+      "sha256": "101E166C81038530347B2F4715D6B8CCF214B256ACE43BCB0D45EA139C8CA557"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/DashboardHealthPersistenceTests.cs",
+      "sha256": "C23A8AEC73393D6600F12975BA6E036D1724B490A37058AA12DCA4BC953CC91C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/DatabaseMigrationHarnessTests.cs",
+      "sha256": "8D4B2A23F3100FDFEB620BCC3B3B5B64A088EE5B6E54973E09001B0188A4FE57"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/DeviceIdentityTests.cs",
+      "sha256": "C54FD03FBC903174087DFA960F90BE30E09050F5D1BACBEB669147081E698EB5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/DiagnosticsPackageServiceTests.cs",
+      "sha256": "FE8B2AC2C7879B97DE5C99559960149CE785791487B9231D7DF2D39FDCF9B485"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/EnvironmentCheckServiceTests.cs",
+      "sha256": "9DC05B9D46919E8F89F7AA3D4ED9952890E26648EFBEA20805C95EFB3D02981A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/ExternalProcessRunnerTests.cs",
+      "sha256": "3C47F58F58BEDCCF232DAB2DF5437724B30D7134AA9B45CCAA371BE69B78C42E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/FaultInjectionTests.cs",
+      "sha256": "00E11C3D7681C531C7BD3EC720A50EAB315131C8C551FA4BDCAB6ED4A4D215ED"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/FlingTrainerCatalogSourceTests.cs",
+      "sha256": "CB2E4A0DB869C29A46A9F1DB1C573AC6C13FBCB1DC8DFA3A1A6990C3EFB5C326"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameCatalogPersistenceTests.cs",
+      "sha256": "DCE91CFC10F94D11D547884194CBD75F666194C5D592B4DD84E36B29301B3819"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameOperationLockTests.cs",
+      "sha256": "00421010291FFFD65C72420385BC1CB3AAB65C47578C5BE1EC6D7887830F7235"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameSaveCenter.Worker.Tests.csproj",
+      "sha256": "452F61A43235CD29453988A738DB653A21E828EA9C0CD1504BB807D1DF331674"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameSessionCoordinatorSourceTests.cs",
+      "sha256": "4ED36BC1281E03AED6A691E80948A0C0E8C9E3CBD4B3D5937528129BAC0B4AD1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameToolLauncherTests.cs",
+      "sha256": "5B94BC8F218A876190F37C91D2C23EF735EDC594DCA7C9B386DF2C7B5976228A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameToolLaunchKindsTests.cs",
+      "sha256": "295C27C2EA24B45F749C2465A4C0F9357C2994847BAE3657AB098922E73C5CD1"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameToolLifecycleSourceTests.cs",
+      "sha256": "CB6676DF3A1FBB46B30EDBC497A0AF5B763B2C7CF0817196AC92DAE468DCCC12"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameToolPolicyPersistenceTests.cs",
+      "sha256": "D66D51C2038D5F73E801D2A3C6CC5CBE9AED6978E985585468F68020FC332347"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameToolServiceImportTests.cs",
+      "sha256": "2F1A339B0F41BBFA08CDD94AB2A02129B82CDCED599870CAC8104BA4D4419339"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/GameToolSessionTrackerTests.cs",
+      "sha256": "52537C166E6E1F0E833C9A6500EFD61F82FAF10FD9036BFAB326F08731692F6A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/HealthInspectionServiceTests.cs",
+      "sha256": "B2BAA64131D6CD7FEE0DB0542214645011560CFF8E9305EA8FE1CD6C074FA573"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/Infrastructure/DatabaseMigrationHarness.cs",
+      "sha256": "B8B4D7B7C8F9494F05BE557A21BCE79695B749D95A824CE2C3AFB1EB71775F0D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/Infrastructure/FaultInjectionHarness.cs",
+      "sha256": "552B03269C8A0BFF23F01675A627E5B62198C12CAA076631A3DFFF64D4243955"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/Infrastructure/SoakDataScaleHarness.cs",
+      "sha256": "9FDF459F856FADD289B7374444BD0D8A963E52D81C5C6A6BB65B0A2007D3869F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/Infrastructure/SoakStabilityHarness.cs",
+      "sha256": "46587BF1DA264A87D3DB63235531D94516876B19888E1170A8E640E0417376AE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/IntegrityCheckServiceTests.cs",
+      "sha256": "42F4C41AB473AC8988F385BD168AE7FBE11A620ACB7E5BFE67F69B5CE81BF5AC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/IpcMessageBoundaryTests.cs",
+      "sha256": "3AFA91B3F664AE2B0F4F0D7154EF6C80F393036625089D4A00BC2FE7F4FCFDB4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/IpcRequestLedgerTests.cs",
+      "sha256": "6D8D9F60B22406D1A3695D4A717DF3715CB9702CA36653D282EBF002AE6A833C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/LocalMirrorServiceTests.cs",
+      "sha256": "C877DAE34B76880B99AEE66C7E9EBB0BDF448316DA777817E4E44FECA0F16F0C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/MaintenanceReportServiceTests.cs",
+      "sha256": "4E7E99A53E2943C81EFFD5716C7DFC3E0B858D54931EA9F482856F6925E96C63"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/MediaQueryPersistenceTests.cs",
+      "sha256": "35B187B7DABC2E853A0B24639697694D247D944A86113AB36600D5FACC0FBF55"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/MediaSyncServiceTests.cs",
+      "sha256": "B70FB2177E2062648481958143D37FB7D2C58E7B996D0B1737BAD1061368D8BB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/MetadataBackupServiceTests.cs",
+      "sha256": "AECE8CE88D0AFB1E7050EE3B1587151E094A9113E127D3263B8B530292BDD531"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/PathRemapServiceTests.cs",
+      "sha256": "BEDBB878793000A267FE0F7669C72CE4554822C187D67E118FC1A564BFEE7DA6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/PolicyTemplatePersistenceTests.cs",
+      "sha256": "7155320BE6BF769A7785C3E43D176470CF5D159BCDC12C3F817BA01150FBB7A8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/ProtectionPromptPersistenceTests.cs",
+      "sha256": "F7A08F9C9CF51A7D38FCCDAF1A1EB9774887C832487AB7EFD6724E67253B96CC"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/R11VersionMetadataPersistenceTests.cs",
+      "sha256": "542475CF0F4ABB6B37110CC56DBB7124769AF21E3266E95BCA27A79644DC8D6A"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/R17DiagnosticsPackagePreviewTests.cs",
+      "sha256": "2D6466438EC907806003C3EFA59FDFE152D682A84BA1FB0690E628906F281050"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/R17FindingPersistenceTests.cs",
+      "sha256": "69382D93803CBEC7CF97C48B45F02239E1D53E1F6D5030F17163976345698CA8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/R22TaskDurationBehaviorTests.cs",
+      "sha256": "B7E693790A122C5C2757D0DAC955D8921D8A743C2216E60F5C82D1318CFEC947"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RcloneClientSourceTests.cs",
+      "sha256": "75250D01496E90EE77E5E335A9ECFD9E327A88DFDE40D6FEEEF6F6C52CA1EFA7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RemoteBackupStagingSafetyTests.cs",
+      "sha256": "A46616386E73EE3A0A56851A6E6C6C412A40B0E2FD1398758C8990BAFB9761C4"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RepositoryRebuildServiceTests.cs",
+      "sha256": "1D8428F378453657C7081565A3EEEBE81F14886C49F6172EB005619872A82A30"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RestoreOrchestratorTests.cs",
+      "sha256": "99F93F7528CAF497EC24656966479FD2306DCCDD6B3D56D2B098DCD9F10B83A3"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RestoreReadinessTests.cs",
+      "sha256": "B594F7F05112E85B4F63092701F94CB49C0E5DF74C4C0FD0D0814CACE021950E"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RetentionQuarantineRecoveryTests.cs",
+      "sha256": "BF110D16C0116C6225499B1DF065DAF376F6C89FCC115244A5C060D0DCA9B4BE"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/RetentionSimulationServiceTests.cs",
+      "sha256": "47792CC43BD5FE2EDEFC0318C2EEBF6319996C797FB163DAAFF9CC854DDDC728"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SafeModeStartupTests.cs",
+      "sha256": "DF759584A7C264E917328421F92794D333CE32FCD78E0EA392192D23FC848B33"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SavePathDetectionServiceTests.cs",
+      "sha256": "CB03808850F76B25AFA4DBDA0328D0F9CF931A8BC49500CC3FB5150638CFFAA5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SoakDataScaleTests.cs",
+      "sha256": "2BA56BFFA3895F0245B3966D57C13D652B99B6E830EF412B8659951C8672FECD"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SoakStabilityTests.cs",
+      "sha256": "F6A1B7AB354DF267E6E56273BE5B3530DB9CF54D71ECA71F2E964D1E7D51EB57"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SqliteBackupAllJobTests.cs",
+      "sha256": "29326E530AB3861D8C02886C07555C9C6BB107CCFA4EB39F0FC69968221C75D7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SqliteMediaMetadataTests.cs",
+      "sha256": "E0BD1E5E468DEDC3664399C1FBF26E5FF0EB870728E1E3E3EF068AF2A751F4D9"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/SqliteMediaSignatureTests.cs",
+      "sha256": "9D20C9B214E94401285212B71A927362E943BC222AF2938EBAD88F0CF078A9D3"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/StorageAnalysisServiceTests.cs",
+      "sha256": "62FF1934555F905B6EAF7708BBD18BBF7E3739330A5645A52744B12B3373D181"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TaskCoordinatorFailureTests.cs",
+      "sha256": "8C0CACC47BFFA952A10FE6028274BB75DA5DD9D7D80A060D2EBF68ED7EFA524C"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TaskEventBroadcasterTests.cs",
+      "sha256": "4231B9BB333097210FDFCF1FC8A321F4E6C0B0B8D6292426F252A2E3D2FFA5FD"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TaskProgressMetricsTests.cs",
+      "sha256": "7DE3D93734792CBD2F997A102FB5F353164D5379BFB4E735D65864A8004D8D7D"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TaskQueryPersistenceTests.cs",
+      "sha256": "04A2FF0C7007898E0E57D1E8652656992B17FFDCA1F21D364286A642C271A6F8"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TaskReconcileServiceTests.cs",
+      "sha256": "19EE23D76E62A6423BA3A11188394C15BE76C67A71191FE11BA699B4ABB9481F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TestRepositoryContext.cs",
+      "sha256": "163232673627D970F20EC712642616E384D61CE989D541A9714705E37A18C191"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/WorkerProcessRestartTests.cs",
+      "sha256": "E93A11367270F29BF833E42D690988471D4DB4797AB8DFBD9FB06F4A900D8310"
+    }
+  ]
+}

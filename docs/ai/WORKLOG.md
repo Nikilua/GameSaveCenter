@@ -1,5 +1,6 @@
 ## 2026-10-07 CLOSE-CI-01阶段：完整诊断与动画测试前提
 
+- 源码48b78b3b已推送main；clean重建Release0/0、XAML24/24、新身份侧栏22/22；不重复宣称全量clean测试通过。freshness实际6/8，baseline未改。run37565955357记录时源码检查/诊断自测通过、编译与测试进行中；须下一阶段先读取其终态/产物。旧dirty build/诊断/一次性脚手架已清理，仅保留最新final-build供SDK/Q14。提交前后证据已归档。
 - 从main0e92f82b干净工作树按启动协议阅读/fetch，领取CLOSE-CI-01。取得基线run37336829173失败日志，仍为SDK10两条活动侧栏动画断言；未把本机IPC或COM清理当根因。
 - 加入实例内系统偏好测试输入、8组合及默认native偏好验证；生产仍读Windows设置。诊断保存实际退出码、独立console/TRX、SDK、源码hash/dirty路径与DLL SHA/MVID；CI always上传，权限不扩张。PS5.1 stderr和缺失exe负例先暴露问题后修复；PS5.1/7自测均通过。
 - SDK8.0.423 Release0/0、XAML24/24，两种PowerShell实际构建与TEMP/TMP恢复通过；Core125/125、Worker357/357（本轮22.535分钟）、侧栏22/22、source470/18/0。WPF全量前23类通过，第24类Q14两次先因错误态高度36→37 DIP超0.75失败，后89类未执行；原654 DIP边距仍未验。

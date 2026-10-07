@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-07；当前CI阶段从main0e92f82b验证，版本0.6.73，源码/DLL身份及实际结果见[CI阶段证据](ai/evidence/close-ci-20261007/README.md)。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-07；已交付源码main48b78b3b，版本0.6.73，源码/DLL身份及实际结果见[CI阶段证据](ai/evidence/close-ci-20261007/README.md)。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 本轮完成
 
@@ -14,6 +14,7 @@
 ## 下一项如何开始
 
 1. fetch main并核对工作树；活动任务以 [AUTONOMOUS_BACKLOG](AUTONOMOUS_BACKLOG.md) 为唯一入口。
+   源码48b78b3b的run37565955357仍进行中，先取得终态/诊断产物；提交后clean构建0/0、侧栏22/22，freshness6/8。当前最新隔离final-build保留，旧中间产物已清理；不要复用基线commit的旧DLL。
 2. 继续CLOSE-CI-01/CLOSE-SDK-01：取得本阶段提交后的真实CI产物和默认native偏好记录，再统一明确SDK；本机22/22不能代替远端结果。不改系统设置或skip，不把COM收尾当根因。
 3. CLOSE-WRAP-01：先核对共享TextBox错误态BorderThickness的测量变化，同时解决原654 DIP单行残留20 DIP margin；保留620→660→620往返和Light/Dark，不放宽几何容差。修好后补原5项及R00-03/R01-01/R01-04。
 4. ENV-001门禁满足后做Media Inbox同PID/DLL/MVID滚动几何；用户Q06/R08仍需原始日志与运行身份；最后执行同候选恢复/回滚/Undo与发布矩阵。
