@@ -1,0 +1,419 @@
+编译、测试与打包	UNKNOWN STEP	﻿2026-10-05T15:56:12.9863124Z Current runner version: '2.337.0'
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9898557Z ##[group]Runner Image Provisioner
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9900119Z Hosted Compute Agent
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9901011Z Version: 20260901.588
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9901996Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9903109Z Build Date: 2026-09-01T19:56:44Z
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9904205Z Worker ID: {698d4882-582e-4a1a-93ac-dd1f07f3096d}
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9905279Z Azure Region: northcentralus
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9906147Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9908263Z ##[group]Operating System
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9909184Z Microsoft Windows Server 2025
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9910112Z 10.0.26100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9910934Z Datacenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9911697Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9912499Z ##[group]Runner Image
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9913407Z Image: windows-2025-vs2026
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9914409Z Version: 20260925.250.1
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9916768Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9919537Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9921447Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9923144Z ##[group]GITHUB_TOKEN Permissions
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9925697Z Contents: read
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9926587Z Metadata: read
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9927430Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9931192Z Secret source: Actions
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9932620Z Cache mode: write
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:12.9933603Z Prepare workflow directory
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:13.0345015Z Prepare all required actions
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:13.0395931Z Getting action download info
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:13.2931436Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:13.4088312Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:13.8006730Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.1506336Z Complete job name: 编译、测试与打包
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3100891Z ##[group]Run actions/checkout@v4
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3102203Z with:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3102666Z   repository: Nikilua/GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3107334Z   token: ***
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3107806Z   ssh-strict: true
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3108257Z   ssh-user: git
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3108711Z   persist-credentials: true
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3109227Z   clean: true
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3109678Z   sparse-checkout-cone-mode: true
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3110208Z   fetch-depth: 1
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3110633Z   fetch-tags: false
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3111079Z   show-progress: true
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3111534Z   lfs: false
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3111957Z   submodules: false
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3112443Z   set-safe-directory: true
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3112981Z   allow-unsafe-pr-checkout: false
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.3113824Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.4635275Z Syncing repository: Nikilua/GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.4637268Z ##[group]Getting Git version info
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.4638134Z Working directory is 'D:\a\GameSaveCenter\GameSaveCenter'
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.5225458Z [command]"C:\Program Files\Git\bin\git.exe" version
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.6952547Z git version 2.55.0.windows.5
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.6999398Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7019146Z Temporarily overriding HOME='D:\a\_temp\e494338d-d0c6-4589-8e8a-a4c152eb932b' before making global git config changes
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7020551Z Adding repository directory to the temporary git global config as a safe directory
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7029655Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\GameSaveCenter\GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7363371Z Deleting the contents of 'D:\a\GameSaveCenter\GameSaveCenter'
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7369477Z ##[group]Initializing the repository
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7379164Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\GameSaveCenter\GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7912711Z Initialized empty Git repository in D:/a/GameSaveCenter/GameSaveCenter/.git/
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.7959092Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/Nikilua/GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.8327290Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.8328677Z ##[group]Disabling automatic garbage collection
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.8329853Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.8668007Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.8669056Z ##[group]Setting up auth
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.8682036Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:14.9015668Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:16.1448714Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:16.1761271Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:16.7390760Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:16.7700097Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:17.3382228Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:17.3702946Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:17.3703516Z ##[group]Fetching the repository
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:17.3717719Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +0e92f82b397da81d98156009ff9fef0d7190ca36:refs/remotes/origin/main
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1081421Z From https://github.com/Nikilua/GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1123344Z  * [new ref]         0e92f82b397da81d98156009ff9fef0d7190ca36 -> origin/main
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1124938Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1125309Z ##[group]Determining the checkout info
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1126566Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1135803Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1502554Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1819056Z ##[group]Checking out the ref
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.1828235Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B main refs/remotes/origin/main
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.9154448Z Switched to a new branch 'main'
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.9177025Z branch 'main' set up to track 'origin/main'.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.9269578Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.9639723Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:20.9933080Z 0e92f82b397da81d98156009ff9fef0d7190ca36
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.0488235Z ##[group]Run actions/setup-dotnet@v4
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.0488739Z with:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.0488948Z   dotnet-version: 9.0.x
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.0489194Z   cache: false
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.0489388Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.2277210Z (node:3928) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.2278479Z (Use `node --trace-deprecation ...` to show where the warning was created)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:21.3219243Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v4\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Runtime dotnet -Channel LTS
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:22.9475186Z dotnet-install: .NET Core Runtime with version '10.0.12' is already installed.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:23.0848908Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v4\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Channel 9.0
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.0250554Z dotnet-install: .NET Core SDK with version '9.0.318' is already installed.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.1356059Z ##[group]Run python scripts/validate-source.py
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.1356507Z ^[[36;1mpython scripts/validate-source.py^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.1495476Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.1495850Z env:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.1496057Z   DOTNET_ROOT: C:\Program Files\dotnet
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:24.1496314Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:28.9226088Z Source validation passed: JSON/XML/YAML, XAML semantics/resources, C# delimiters, solution, IPC constants, version consistency, delivery guards, media/game-tool SQLite guards, large-library performance guards and Windows launchers.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:28.9227255Z Note: this does not replace dotnet build/test on Windows with Playnite installed.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.0484695Z ##[group]Run ./scripts/build.ps1 -Configuration Release
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.0485190Z ^[[36;1m./scripts/build.ps1 -Configuration Release^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.0552517Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.0552853Z env:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.0553048Z   DOTNET_ROOT: C:\Program Files\dotnet
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.0553311Z ##[endgroup]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5939564Z 当前可用 SDK：
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5968766Z   8.0.131 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5974358Z   8.0.206 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5979935Z   8.0.319 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5985022Z   8.0.425 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5991066Z   9.0.121 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.5997496Z   9.0.205 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6003875Z   9.0.318 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6009670Z   10.0.112 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6015203Z   10.0.204 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6020727Z   10.0.303 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6027116Z   10.0.401 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6048451Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:29.6048947Z ==> 检查 XAML 结构
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:30.0004255Z XAML structural validation passed for 24 file(s).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:30.0053205Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:30.0053938Z ==> 显示当前 SDK 信息
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:32.3901307Z .NET SDK:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:32.3901669Z  Version:           10.0.401
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:32.3902059Z  Commit:            e34a38d2ae
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.3176945Z  Workload version:  10.0.400-manifests.b0700452
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4455757Z  MSBuild version:   18.9.11+e34a38d2a
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4456010Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4456397Z Runtime Environment:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4465246Z  OS Name:     Windows
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4465502Z  OS Version:  10.0.26100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4476263Z  OS Platform: Windows
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4675119Z  RID:         win-x64
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4675422Z  Base Path:   C:\Program Files\dotnet\sdk\10.0.401\
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4676013Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.4676755Z .NET workloads installed:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6611454Z  [maui-windows]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6615113Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6615529Z    Manifest Version:    10.0.20/10.0.100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6616270Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.maui\10.0.20\WorkloadManifest.json
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6617779Z    Install Type:              Msi
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6618085Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6618219Z  [maccatalyst]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6618516Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6619711Z    Manifest Version:    26.5.10301/10.0.100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6621090Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.maccatalyst\26.5.10301\WorkloadManifest.json
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6622030Z    Install Type:              Msi
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6622580Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6622861Z  [ios]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6623309Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6623743Z    Manifest Version:    26.5.10301/10.0.100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6624507Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.ios\26.5.10301\WorkloadManifest.json
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6625298Z    Install Type:              Msi
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6625536Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6625656Z  [android]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6625915Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6626318Z    Manifest Version:    36.1.69/10.0.100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6627057Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.android\36.1.69\WorkloadManifest.json
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6627874Z    Install Type:              Msi
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6628109Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6628215Z  [wasm-tools]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6630971Z    Installation Source: VS 18.10.12217.157
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6631330Z    Manifest Version:    10.0.112/10.0.100
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6632190Z    Manifest Path:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.workload.mono.toolchain.current\10.0.112\WorkloadManifest.json
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6633243Z    Install Type:              Msi
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6633504Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6633829Z Configured to use workload sets when installing new manifests.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.6634686Z No workload sets are installed. Run "dotnet workload restore" to install a workload set.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9861221Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9862501Z Host:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9862895Z   Version:      10.0.12
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9863203Z   Architecture: x64
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9863482Z   Commit:       95017c711e
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9863717Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9863857Z .NET SDKs installed:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9864154Z   8.0.131 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9864517Z   8.0.206 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9864865Z   8.0.319 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9865198Z   8.0.425 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9865514Z   9.0.121 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9865850Z   9.0.205 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9866188Z   9.0.318 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9866522Z   10.0.112 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9866863Z   10.0.204 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9867211Z   10.0.303 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9867552Z   10.0.401 [C:\Program Files\dotnet\sdk]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9867782Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9867924Z .NET runtimes installed:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9868480Z   Microsoft.AspNetCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9869399Z   Microsoft.AspNetCore.App 8.0.22 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9870244Z   Microsoft.AspNetCore.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9871056Z   Microsoft.AspNetCore.App 9.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9871878Z   Microsoft.AspNetCore.App 9.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9872700Z   Microsoft.AspNetCore.App 10.0.8 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9874003Z   Microsoft.AspNetCore.App 10.0.11 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9874845Z   Microsoft.AspNetCore.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9875644Z   Microsoft.NETCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9876900Z   Microsoft.NETCore.App 8.0.22 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9877698Z   Microsoft.NETCore.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9878444Z   Microsoft.NETCore.App 9.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9879178Z   Microsoft.NETCore.App 9.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9879921Z   Microsoft.NETCore.App 10.0.8 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9880681Z   Microsoft.NETCore.App 10.0.11 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9881385Z   Microsoft.NETCore.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9882312Z   Microsoft.WindowsDesktop.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9883280Z   Microsoft.WindowsDesktop.App 8.0.22 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9884271Z   Microsoft.WindowsDesktop.App 8.0.31 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9886412Z   Microsoft.WindowsDesktop.App 9.0.6 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9887441Z   Microsoft.WindowsDesktop.App 9.0.20 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9888382Z   Microsoft.WindowsDesktop.App 10.0.8 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9889349Z   Microsoft.WindowsDesktop.App 10.0.11 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9890324Z   Microsoft.WindowsDesktop.App 10.0.12 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9890873Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9891044Z Other architectures found:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9891387Z   x86   [C:\Program Files (x86)\dotnet]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9891985Z     registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9892491Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9892631Z Environment variables:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9892973Z   DOTNET_MULTILEVEL_LOOKUP                 [0]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9893676Z   DOTNET_NOLOGO                            [1]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9894144Z   DOTNET_ROOT                              [C:\Program Files\dotnet]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9894670Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE        [1]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9894961Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9895069Z global.json file:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9895396Z   D:\a\GameSaveCenter\GameSaveCenter\global.json
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9895697Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9895800Z Learn more:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9896090Z   https://aka.ms/dotnet/info
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9896313Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9896417Z Download .NET:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:34.9896717Z   https://aka.ms/dotnet/download
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:35.0010240Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:35.0011013Z ==> 还原 NuGet 依赖
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:37.8932801Z   Determining projects to restore...
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:56.0393012Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (in 17.16 sec).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:56:57.7044173Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (in 1.66 sec).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:03.6466677Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (in 24.82 sec).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:03.6513171Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (in 24.82 sec).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:03.6515096Z   Restored D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (in 5.94 sec).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:03.8976674Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (in 25.07 sec).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:04.6168219Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (in 961 ms).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:04.6170031Z   Restored D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (in 967 ms).
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:04.6604225Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:04.6605103Z ==> 编译解决方案（Release）
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:11.6275889Z   GameSaveCenter.Contracts -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:12.1362309Z   GameSaveCenter.Core -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:19.2282375Z   GameSaveCenter.Worker -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Worker\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:29.9991322Z   GameSaveCenter.Playnite -> D:\a\GameSaveCenter\GameSaveCenter\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:30.6165377Z   GameSaveCenter.Core.Tests -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:33.1497726Z   GameSaveCenter.Worker.Tests -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:33.2946843Z   GameSaveCenter.Playnite.HostAuditSeeder -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4708944Z   GameSaveCenter.Playnite.Tests -> D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4793189Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4800344Z Build succeeded.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4801112Z     0 Warning(s)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4801602Z     0 Error(s)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4802859Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.4803091Z Time Elapsed 00:00:34.46
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.7963920Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:39.7965212Z ==> 运行核心单元测试
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:40.6153873Z Test run for D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll (.NETCoreApp,Version=v8.0)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:41.3855201Z A total of 1 test files matched the specified pattern.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:44.6436246Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:44.6510827Z Passed!  - Failed:     0, Passed:   125, Skipped:     0, Total:   125, Duration: 173 ms - GameSaveCenter.Core.Tests.dll (net8.0)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:44.9765009Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:44.9765877Z ==> 运行 Worker 集成测试
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:45.7794652Z Test run for D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll (.NETCoreApp,Version=v8.0)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T15:57:46.0088314Z A total of 1 test files matched the specified pattern.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:29.3909536Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:29.3957389Z Passed!  - Failed:     0, Passed:   357, Skipped:     0, Total:   357, Duration: 2 m 42 s - GameSaveCenter.Worker.Tests.dll (net8.0)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:29.7254491Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:29.7255577Z ==> 运行 Playnite 测试（WPF 类隔离）
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:36.4991722Z Playnite test isolation: source classes 112, WPF classes 113
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:36.5072427Z     source test group
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:50.6684169Z   WPF isolated process [1/113] GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:50.6691549Z     class GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:57.6246257Z   WPF isolated process [2/113] GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:00:57.6253161Z     class GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:03.2196106Z   WPF isolated process [3/113] GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:03.2204408Z     class GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:11.2310533Z   WPF isolated process [4/113] GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:11.2318783Z     class GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:20.1148738Z   WPF isolated process [5/113] GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:20.1155589Z     class GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:29.2192013Z   WPF isolated process [6/113] GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:29.2200603Z     class GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:38.7407601Z   WPF isolated process [7/113] GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:38.7414636Z     class GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:53.0606157Z   WPF isolated process [8/113] GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:53.0614470Z     class GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:58.5610603Z   WPF isolated process [9/113] GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:01:58.5621470Z     class GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:08.2510364Z   WPF isolated process [10/113] GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:08.2518300Z     class GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:17.4148165Z   WPF isolated process [11/113] GameSaveCenter.Playnite.Tests.NumericInputTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:17.4154004Z     class GameSaveCenter.Playnite.Tests.NumericInputTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:24.7537978Z   WPF isolated process [12/113] GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:24.7545099Z     class GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:33.7122535Z   WPF isolated process [13/113] GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:33.7128902Z     class GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:41.0220135Z   WPF isolated process [14/113] GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:41.0226405Z     class GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:46.2931389Z   WPF isolated process [15/113] GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:46.2937329Z     class GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:55.1360583Z   WPF isolated process [16/113] GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:02:55.1366185Z     class GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5417237Z Test run for D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5420605Z A total of 1 test files matched the specified pattern.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5427301Z [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9345.0)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5430407Z [xUnit.net 00:00:00.66]   Discovering: GameSaveCenter.Playnite.Tests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5435227Z [xUnit.net 00:00:02.61]   Discovered:  GameSaveCenter.Playnite.Tests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5440353Z [xUnit.net 00:00:02.67]   Starting:    GameSaveCenter.Playnite.Tests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5445123Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SettingsViewRequestsAUsableDefaultWindowSize [91 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5449794Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundPreferenceControlsDecodeAndMaterialFallback [8 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5454275Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionHeaderUsesRoundedSharedChrome [1 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5459676Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.GameBackgroundCoversTheWholeShellWithoutAColumnGutter [2 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5463536Z [xUnit.net 00:00:05.89]       Assert.Null() Failure: Value is not null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5468509Z [xUnit.net 00:00:05.89]       Expected: null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5475591Z [xUnit.net 00:00:05.89]     GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites [FAIL]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5479809Z [xUnit.net 00:00:05.89]       Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5484752Z [xUnit.net 00:00:05.89]       Expected: True
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5489069Z [xUnit.net 00:00:05.89]       Actual:   False
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5493934Z [xUnit.net 00:00:05.89]          at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5499919Z [xUnit.net 00:00:05.89]          at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass8_0.<ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 234
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5504352Z [xUnit.net 00:00:05.89]       Stack Trace:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5509077Z [xUnit.net 00:00:05.89]         ProductionShellChromeSourceTests.cs(269,0): at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites()
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5513291Z   Failed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites [3 s]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5517791Z   Error Message:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5522509Z    Assert.Null() Failure: Value is not null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5527289Z Expected: null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5531636Z Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5537488Z Expected: True
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5541918Z Actual:   False
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5546614Z    at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5551639Z    at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass8_0.<ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 234
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5556190Z   Stack Trace:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5561538Z      at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 269
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5566146Z [xUnit.net 00:00:06.23]     GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow [FAIL]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5570962Z [xUnit.net 00:00:06.23]       Assert.Null() Failure: Value is not null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5576842Z [xUnit.net 00:00:06.23]       Expected: null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5582361Z [xUnit.net 00:00:06.23]       Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5586923Z [xUnit.net 00:00:06.23]       Expected: True
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5591776Z [xUnit.net 00:00:06.23]       Actual:   False
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5597531Z [xUnit.net 00:00:06.23]          at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5602743Z [xUnit.net 00:00:06.23]          at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass9_0.<SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 319
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5606202Z [xUnit.net 00:00:06.23]       Stack Trace:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5611899Z [xUnit.net 00:00:06.23]         ProductionShellChromeSourceTests.cs(345,0): at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow()
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5615767Z [xUnit.net 00:00:06.52]   Finished:    GameSaveCenter.Playnite.Tests
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5620456Z Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5624600Z    at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5628850Z    at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5634112Z    at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5638076Z    at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5642855Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedAndCollapsedNavigationKeepsEveryIconLabelAndSelectionFrameAligned [142 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5702908Z   Failed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow [207 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5704280Z   Error Message:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5704690Z    Assert.Null() Failure: Value is not null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5705229Z Expected: null
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5705777Z Actual:   Xunit.Sdk.TrueException: Assert.True() Failure
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5706349Z Expected: True
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5706707Z Actual:   False
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5707514Z    at Xunit.Assert.True(Nullable`1 condition, String userMessage) in /_/src/xunit.assert/Asserts/BooleanAsserts.cs:line 142
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5710133Z    at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.<>c__DisplayClass9_0.<SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow>b__0() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 319
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5711861Z   Stack Trace:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5713409Z      at GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow() in D:\a\GameSaveCenter\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\ProductionShellChromeSourceTests.cs:line 345
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5715467Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ReducedMotionNormalizesSidebarToItsFinalStateInAnActualWpfWindow [85 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5716670Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionFooterOwnsWorkerStatusAndSpansTheShell [8 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5717873Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ProductionSidebarCollapseIsAnIntegratedBoundaryAffordance [16 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5719475Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.SidebarTransitionUsesTheCurrentWidthAndKeepsTheLatestTarget [4 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5720838Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.CollapsedSidebarPreservesSelectedWorkspaceAndAccessibleNavigation [85 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5722254Z   Passed GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests.ExpandedSidebarKeepsBrandBadgeClearAndLeavesMainAreaAvailableForLongLabels [82 ms]
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5724537Z Unhandled Exception: System.Runtime.InteropServices.InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5729181Z    at System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5734022Z    at System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5738600Z    at System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5742814Z    at MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5747433Z 
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5752204Z Test Run Failed.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5756449Z Total tests: 13
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5761111Z      Passed: 11
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5765343Z      Failed: 2
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.5769533Z  Total time: 9.1776 Seconds
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7233222Z ^[[31;1mException: ^[[0mD:\a\GameSaveCenter\GameSaveCenter\scripts\run-playnite-tests-isolated.ps1:56^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7233924Z ^[[31;1m^[[0m^[[36;1mLine |^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7234495Z ^[[31;1m^[[0m^[[36;1m^[[36;1m  56 | ^[[0m         ^[[36;1mthrow "$Label failed; dotnet exit code: $exitCode"^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7235262Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m     | ^[[31;1m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7236316Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m^[[31;1m^[[31;1m^[[36;1m     | ^[[31;1mclass GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests failed; dotnet exit code: 1^[[0m
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7502837Z ##[error]Process completed with exit code 1.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.7806292Z Post job cleanup.
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.9575557Z [command]"C:\Program Files\Git\bin\git.exe" version
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.9857494Z git version 2.55.0.windows.5
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.9924741Z Temporarily overriding HOME='D:\a\_temp\79520bb1-642d-4dc5-9409-a08f31345cda' before making global git config changes
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.9925916Z Adding repository directory to the temporary git global config as a safe directory
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:05.9935455Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\GameSaveCenter\GameSaveCenter
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:06.0266159Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:06.0580964Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:06.6450046Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:06.6734742Z http.https://github.com/.extraheader
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:06.6784898Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:06.7113613Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:07.2540320Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:07.2859925Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:07.8471501Z Cleaning up orphan processes
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:07.8750890Z Terminate orphan process: pid (8080) (VBCSCompiler)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:07.8825846Z Terminate orphan process: pid (5148) (conhost)
+编译、测试与打包	UNKNOWN STEP	2026-10-05T16:03:07.9008372Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-dotnet@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

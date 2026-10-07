@@ -1,3 +1,7 @@
+## 2026-10-07 CI诊断与侧栏测试前提
+
+CI工程部分已实现：实际退出码、分步console/TRX、SDK/源码/DLL身份、失败时上传与PS5.1/7自测。应用/系统动效策略有8组合与默认真实偏好验证；侧栏22/22、source470/18、Core125通过，Release0/0。WPF前23类通过，第24类Q14错误态36→37 DIP失败，后89类未执行；原654 DIP边距仍开放，完整CI未签收。证据：[CI阶段](ai/evidence/close-ci-20261007/README.md)。版本及用户安装不变。
+
 ## 2026-10-05 IPC取消竞态修复与新失败定位
 
 CLOSE-IPC-01已完成：生产IOException/EOF取消分类、独立管道握手和失败清理；IPC20轮200/200，source470通过/18原有skip，Core125/Worker357，Release0/0。WPF前23类通过，第24类Q14单行边距失败、后89类未执行；CI侧栏动画失败日志已取得，SDK/CI/真实宿主和发布验收仍开放。详见 [本轮证据](ai/evidence/close-ipc-20261005/README.md)。没有UI布局/版本/用户安装或Q/R验收变化。

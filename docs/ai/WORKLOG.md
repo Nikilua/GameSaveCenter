@@ -1,3 +1,11 @@
+## 2026-10-07 CLOSE-CI-01阶段：完整诊断与动画测试前提
+
+- 从main0e92f82b干净工作树按启动协议阅读/fetch，领取CLOSE-CI-01。取得基线run37336829173失败日志，仍为SDK10两条活动侧栏动画断言；未把本机IPC或COM清理当根因。
+- 加入实例内系统偏好测试输入、8组合及默认native偏好验证；生产仍读Windows设置。诊断保存实际退出码、独立console/TRX、SDK、源码hash/dirty路径与DLL SHA/MVID；CI always上传，权限不扩张。PS5.1 stderr和缺失exe负例先暴露问题后修复；PS5.1/7自测均通过。
+- SDK8.0.423 Release0/0、XAML24/24，两种PowerShell实际构建与TEMP/TMP恢复通过；Core125/125、Worker357/357（本轮22.535分钟）、侧栏22/22、source470/18/0。WPF全量前23类通过，第24类Q14两次先因错误态高度36→37 DIP超0.75失败，后89类未执行；原654 DIP边距仍未验。
+- 源码检查首次仅报新helper缺PS5.1要求的UTF8 BOM，修正后最终通过；AST/diff通过，fsck退出0仅既有dangling；提交后CI结果另记。GscMotion/build改动另命中R00-03/R01-01/R01-04，CLOSE-EVID范围追加3项，baseline未改。
+- 本阶段是CLOSE-CI-01部分工程交付，完整CI/SDK/布局/发布门禁仍开放；不安装真实Playnite、改OS偏好或触及用户数据。证据：[CI阶段](evidence/close-ci-20261007/README.md)。
+
 ## 2026-10-05 CLOSE-IPC-01：取消IO/EOF竞争与失败夹具释放
 
 - 最终CI/清理：源码d57a613f的run37335412450失败步骤已归档，仍为SDK10侧栏活动动画两条断言；Core125/Worker357和IPC source均已通过。freshness报告将全量路径缩为数量但保留14记录全部判定，原完整列表在bc190166可追溯。阶段.tmp已全部删除，残余shadow分析器缓存按模块路径确认归属后释放本轮编译器再清理；不按名称停用户进程。CI/SDK/Q14继续开放。

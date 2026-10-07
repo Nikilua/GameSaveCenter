@@ -3,12 +3,22 @@ param(
     [ValidateSet('Debug', 'Release')][string]$Configuration = 'Release',
     [string]$OutputRoot = '',
     [string]$TestTempRoot = '',
-    [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot)
+    [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot),
+    [string]$DiagnosticsRoot = '',
+    [hashtable]$DiagnosticsContext
 )
 
 $ErrorActionPreference = 'Stop'
 $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
 $previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
+. (Join-Path $PSScriptRoot 'build-diagnostics.ps1')
+$ownsDiagnostics = $null -eq $DiagnosticsContext
+if ($ownsDiagnostics) {
+    $DiagnosticsContext = New-GscDiagnosticContext $ProjectRoot $DiagnosticsRoot
+    $DiagnosticsContext.RunType = 'playnite-tests'
+    $DiagnosticsContext.TestsRequested = $true
+}
+$playniteSucceeded = $false
 
 if ($OutputRoot) {
     $isolatedTestTempRoot = if ([string]::IsNullOrWhiteSpace($TestTempRoot)) {
@@ -25,7 +35,8 @@ if ($OutputRoot) {
 function Invoke-PlayniteTestProcess {
     param(
         [Parameter(Mandatory = $true)][string]$Filter,
-        [Parameter(Mandatory = $true)][string]$Label
+        [Parameter(Mandatory = $true)][string]$Label,
+        [Parameter(Mandatory = $true)][string]$StepId
     )
 
     $testProject = Join-Path $ProjectRoot 'tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj'
@@ -37,8 +48,10 @@ function Invoke-PlayniteTestProcess {
         '--filter', $Filter,
         # Capture normal diagnostic detail so a failed isolated WPF class includes
         # its assertion message and stack when the buffered output is replayed below.
-        # Successful class output remains hidden because only failures are written.
+        # Every process also keeps a console log and TRX, including successful classes.
         '--logger', 'console;verbosity=normal',
+        '--logger', ('trx;LogFileName=' + $StepId + '.trx'),
+        '--results-directory', (Join-Path $DiagnosticsContext.RunRoot ('tests/' + $StepId)),
         '-m:1',
         '-nodeReuse:false',
         '-p:NuGetAudit=false',
@@ -49,8 +62,10 @@ function Invoke-PlayniteTestProcess {
     }
 
     Write-Host "    $Label" -ForegroundColor DarkCyan
-    $output = @(& dotnet @arguments 2>&1)
-    $exitCode = $LASTEXITCODE
+    $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments
+    $output = $result.Output
+    $exitCode = $result.ExitCode
+    Complete-GscTestDiagnostics $DiagnosticsContext (Join-Path $DiagnosticsContext.RunRoot ('tests/' + $StepId))
     if ($exitCode -ne 0) {
         $output | ForEach-Object { Write-Host $_ }
         throw "$Label failed; dotnet exit code: $exitCode"
@@ -59,6 +74,12 @@ function Invoke-PlayniteTestProcess {
 
 Push-Location $ProjectRoot
 try {
+    if ($ownsDiagnostics) {
+        $sdk = Invoke-GscRecordedCommand $DiagnosticsContext 'sdk-version' dotnet @('--version')
+        if ($sdk.ExitCode -ne 0) { throw "SDK selection failed; exit code: $($sdk.ExitCode)" }
+        $DiagnosticsContext.Sdk = ($sdk.Output -join '').Trim()
+        Set-GscDiagnosticAssemblies $DiagnosticsContext $OutputRoot $Configuration
+    }
     $testProject = Join-Path $ProjectRoot 'tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj'
     $discoveryArguments = @(
         'test', $testProject,
@@ -75,10 +96,11 @@ try {
         $discoveryArguments += ('-p:GscBuildOutputRoot=' + [System.IO.Path]::GetFullPath($OutputRoot))
     }
 
-    $discovery = @(& dotnet @discoveryArguments 2>&1)
-    if ($LASTEXITCODE -ne 0) {
+    $discoveryResult = Invoke-GscRecordedCommand $DiagnosticsContext 'playnite-discovery' dotnet $discoveryArguments
+    $discovery = $discoveryResult.Output
+    if ($discoveryResult.ExitCode -ne 0) {
         $discovery | ForEach-Object { Write-Host $_ }
-        throw 'Playnite test discovery failed.'
+        throw "Playnite test discovery failed; exit code: $($discoveryResult.ExitCode)"
     }
 
     $classes = @()
@@ -106,29 +128,33 @@ try {
     Write-Host "Playnite test isolation: source classes $($sourceClasses.Count), WPF classes $($wpfClasses.Count)" -ForegroundColor DarkCyan
     if ($sourceClasses.Count -gt 0) {
         $sourceFilter = ($sourceClasses | ForEach-Object { "FullyQualifiedName~$_" }) -join '|'
-        Invoke-PlayniteTestProcess -Filter $sourceFilter -Label 'source test group'
+        Invoke-PlayniteTestProcess -Filter $sourceFilter -Label 'source test group' -StepId 'playnite-source'
     }
 
     for ($index = 0; $index -lt $wpfClasses.Count; $index++) {
         $class = $wpfClasses[$index]
         Write-Host "  WPF isolated process [$($index + 1)/$($wpfClasses.Count)] $class" -ForegroundColor DarkCyan
-        Invoke-PlayniteTestProcess -Filter ("FullyQualifiedName~$class") -Label "class $class"
+        Invoke-PlayniteTestProcess -Filter ("FullyQualifiedName~$class") -Label "class $class" -StepId ('wpf.' + $class.Substring($class.LastIndexOf('.') + 1))
     }
 
     Write-Host 'All Playnite tests passed with WPF classes isolated by process.' -ForegroundColor Green
+    $playniteSucceeded = $true
+}
+catch {
+    $DiagnosticsContext.FailureMessage = ConvertTo-GscDiagnosticText $_.Exception.ToString() $DiagnosticsContext
+    throw
 }
 finally {
-    if ($null -eq $previousTemp) {
-        Remove-Item Env:TEMP -ErrorAction SilentlyContinue
+    try {
+        Complete-GscTestDiagnostics $DiagnosticsContext (Join-Path $DiagnosticsContext.RunRoot 'tests')
+        if ($ownsDiagnostics) {
+            Complete-GscDiagnostics $DiagnosticsContext $playniteSucceeded
+            Write-Host "Diagnostics: $($DiagnosticsContext.RunRoot)" -ForegroundColor DarkCyan
+        }
     }
-    else {
-        $env:TEMP = $previousTemp
+    finally {
+        [Environment]::SetEnvironmentVariable('TEMP', $previousTemp, 'Process')
+        [Environment]::SetEnvironmentVariable('TMP', $previousTmp, 'Process')
+        Pop-Location
     }
-    if ($null -eq $previousTmp) {
-        Remove-Item Env:TMP -ErrorAction SilentlyContinue
-    }
-    else {
-        $env:TMP = $previousTmp
-    }
-    Pop-Location
 }

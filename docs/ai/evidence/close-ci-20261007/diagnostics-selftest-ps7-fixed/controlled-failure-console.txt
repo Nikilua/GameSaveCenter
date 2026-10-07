@@ -1,0 +1,5 @@
+Failed ExampleTests.ControlledFailure
+Assert.Equal() Failure: Expected: 1 Actual: 2
+Stack Trace: at ExampleTests.ControlledFailure():line 42
+[repo] [user-profile]
+https://[credentials]@example.invalid/test?token=[redacted]&ok=true

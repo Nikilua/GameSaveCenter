@@ -1,14 +1,14 @@
-## 2026-10-05 当前开放问题入口
+## 2026-10-07 当前开放问题入口
 
 当前开发基线226bce6b / 0.6.73；本轮修复与精确身份见 [IPC证据](ai/evidence/close-ipc-20261005/README.md)。以下使用唯一 CLOSE 编号，避免沿用下方重复 GSC 编号。任务状态/关闭条件以 [活动积压清单](AUTONOMOUS_BACKLOG.md) 为准；[审阅证据](ai/evidence/completion-review-20261005/README.md) 保留实际失败。
 
 | 跟踪项 | 当前事实 | 状态 |
 | --- | --- | --- |
 | CLOSE-IPC-01 | 修复取消dispose的IOException/EOF竞争分类与失败夹具释放；200专项/source470通过 | IMPLEMENTED；不代表整体门禁通过 |
-| CLOSE-CI-01 | 源码提交run37335412450 / SDK10仍侧栏活动动画两条断言失败，已取得完整日志 | OPEN；与已修复本地IPC分账 |
-| CLOSE-WRAP-01 | Q14在Light/654 DIP单行七控件残留20 DIP边距，全量及独立复核均失败 | READY；完整WPF门禁仍失败 |
+| CLOSE-CI-01 | 已接入失败诊断/上传；本机侧栏22/22，基线远端37336829173仍两条动画断言失败，修复提交远端结果待验 | IN_PROGRESS；单做诊断不等于恢复CI |
+| CLOSE-WRAP-01 | 原654 DIP单行边距失败仍在；10月7日独立/全量Q14先在错误态高度36→37 DIP失败 | READY；后89类未执行 |
 | CLOSE-SDK-01 | CI安装9.0.x、global.json latestMajor、本机8.0.423，实际选择可漂移 | READY |
-| CLOSE-EVID-01 | R00-04/06/07/08、R01-05 当前 stale | READY；旧14/14已过时 |
+| CLOSE-EVID-01 | 原R00-04/06/07/08、R01-05 stale；本阶段还命中R00-03/R01-01/R01-04 | READY；提交后复算，baseline未改 |
 | CLOSE-HOST-01 / ENV-001 | 用户Media Inbox滚动偏移仍缺当前同宿主诊断；历史WMI/CEF隔离阻塞 | BLOCKED_ENVIRONMENT |
 | CLOSE-REG-01 | Q06/R08用户原失败缺断言、堆栈和DLL身份 | BLOCKED_ENVIRONMENT；未关闭 |
 

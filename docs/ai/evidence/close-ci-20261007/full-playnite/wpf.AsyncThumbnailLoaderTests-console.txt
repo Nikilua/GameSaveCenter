@@ -1,0 +1,22 @@
+[repo]\.tmp\close-ci-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:06.34]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:08.75]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:08.85]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_ConcurrentScrollWindowStaysWithinDecodeAndCacheBounds [3 s]
+[xUnit.net 00:00:13.05]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_ServesCachedInstanceForUnchangedFile [45 ms]
+  已通过 GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_InvalidImageReturnsNullAndDoesNotKeepTheFileOpen [38 ms]
+  已通过 GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_MissingFile_ReturnsNull [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_ReturnsFrozenBoundedImage [13 ms]
+  已通过 GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests.LoadAsync_CancelledRequestDoesNotReturnAnImage [14 ms]
+
+测试运行成功。
+测试总数: 6
+     通过数: 6
+总时间: 14.6697 秒
+结果文件: [repo]\.tmp\close-ci-20261007\full-playnite\20261007T025219391Z-f80b78ed\tests\wpf.AsyncThumbnailLoaderTests\wpf.AsyncThumbnailLoaderTests.trx

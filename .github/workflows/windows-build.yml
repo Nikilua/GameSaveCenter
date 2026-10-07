@@ -26,9 +26,13 @@ jobs:
       - name: 源码结构检查
         run: python scripts/validate-source.py
 
+      - name: 诊断采集自测
+        shell: pwsh
+        run: ./scripts/tests/Test-BuildDiagnostics.ps1
+
       - name: 编译与测试
         shell: pwsh
-        run: ./scripts/build.ps1 -Configuration Release
+        run: ./scripts/build.ps1 -Configuration Release -DiagnosticsRoot artifacts/build-diagnostics
 
       - name: 离屏渲染 QA
         shell: pwsh
@@ -53,3 +57,12 @@ jobs:
             artifacts/GameSaveCenter-*-playnite.zip
             artifacts/GameSaveCenter-*.pext
           if-no-files-found: error
+
+      - name: 保留构建与测试诊断（包括失败）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameSaveCenter-build-diagnostics
+          path: artifacts/build-diagnostics/
+          if-no-files-found: warn
+          retention-days: 14

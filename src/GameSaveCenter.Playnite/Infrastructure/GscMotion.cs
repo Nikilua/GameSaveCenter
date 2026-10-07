@@ -103,7 +103,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
         }
 
         internal static bool IsEnabled(bool requested)
-            => requested && !SystemParameters.HighContrast && SystemParameters.ClientAreaAnimation;
+            => IsEnabled(requested, SystemParameters.HighContrast, SystemParameters.ClientAreaAnimation);
+
+        internal static bool IsEnabled(bool requested, bool highContrast, bool clientAreaAnimation)
+            => requested && !highContrast && clientAreaAnimation;
 
         internal static EasingFunctionBase CreateEaseOut()
             => new CubicEase { EasingMode = EasingMode.EaseOut };

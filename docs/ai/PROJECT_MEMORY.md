@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-05。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，其中旧版本、优先级与下一项不是当前指令。
+更新：2026-10-07。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，其中旧版本、优先级与下一项不是当前指令。
 
 ## AI/Codex 启动协议
 
@@ -49,10 +49,13 @@
 
 ## 证据规则和当前风险
 
+- 活动动画测试需显式控制应用与系统偏好两个前提；生产默认必须保留HighContrast/ClientAreaAnimation，测试用实例内internal输入，不修改OS/全局开关。CI无动画偏好不能与“动画应启动”混淆；默认真实偏好路径必须单独验证。
+- build-diagnostics保存native实际退出码、分步console/TRX/SDK/dirty源码hash/DLL身份。PS5.1会将stderr包装成ErrorRecord，采集过程需继续至LASTEXITCODE；缺失exe必须有launchError而不能继承0。摘要标注testsRequested；诊断异常也不能阻止恢复环境。
+- 2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
 - 当前活动缺口：已取日志的CI侧栏动画断言、SDK选择漂移、Q14/654 DIP单行边距残留、5项evidence stale、Media Inbox宿主滚动、Q06/R08原用户失败、发布恢复矩阵。IPC已实现且200专项/source470通过，Core125/Worker357通过；WPF第24类Q14失败、后89类未执行，整体仍未通过。证据见CURRENT_STATE，不沿用SDK9历史绿灯。
-- R00/R01 当前freshness是9 fresh/5 stale；只改baseline身份无效，必须补行为/负例。d57a613f本地包已有独立hash/程序集身份，未安装；包结构通过不代替整体WPF/CI/宿主验收。
+- R00/R01在10月5日基线是9 fresh/5 stale；10月7日另命中R00-03/R01-01/R01-04，提交后重新计算。只改baseline身份无效，必须补行为/负例。d57a613f本地包已有独立hash/程序集身份，未安装；包结构通过不代替整体WPF/CI/宿主验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
 - 当前任务状态和完成定义只维护在 [活动积压清单](../AUTONOMOUS_BACKLOG.md)；Q/R 账本是证据矩阵，不能合并为产品完成率。

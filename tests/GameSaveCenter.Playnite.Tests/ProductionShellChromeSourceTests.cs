@@ -7,6 +7,7 @@ using System.Windows.Automation;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
+using GameSaveCenter.Playnite.Infrastructure;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -213,6 +214,7 @@ public sealed class ProductionShellChromeSourceTests
                 var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
                 {
                     MotionEnabledProvider = () => motionEnabled,
+                    SystemMotionEnabledProviderForAudit = () => true,
                     SidebarCollapsedProvider = () => false
                 };
                 shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
@@ -282,6 +284,7 @@ public sealed class ProductionShellChromeSourceTests
                 var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
                 {
                     MotionEnabledProvider = () => true,
+                    SystemMotionEnabledProviderForAudit = () => true,
                     SidebarCollapsedProvider = () => false
                 };
                 shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(30));
@@ -342,6 +345,77 @@ public sealed class ProductionShellChromeSourceTests
         thread.Start();
         thread.Join();
 
+        Assert.Null(exception);
+    }
+
+    [Theory]
+    [InlineData(false, false, false, false)]
+    [InlineData(false, false, true, false)]
+    [InlineData(false, true, false, false)]
+    [InlineData(false, true, true, false)]
+    [InlineData(true, false, false, false)]
+    [InlineData(true, false, true, true)]
+    [InlineData(true, true, false, false)]
+    [InlineData(true, true, true, false)]
+    public void SidebarRespectsAppAndSystemMotionPolicy(bool requested, bool highContrast, bool clientAnimation, bool expected)
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView
+                {
+                    MotionEnabledProvider = () => requested,
+                    SystemMotionEnabledProviderForAudit = () => GscMotion.IsEnabled(true, highContrast, clientAnimation),
+                    SidebarCollapsedProvider = () => false
+                };
+                window = new Window { Content = shell, Width = 900, Height = 640,
+                    ShowInTaskbar = false, ShowActivated = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
+                window.Show();
+                window.UpdateLayout();
+                Assert.Equal(expected, shell.SidebarMotionEnabledForAudit);
+                shell.SidebarCollapseButtonForAudit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                Assert.Equal(expected, shell.SidebarTransitionRunningForAudit);
+                if (!expected)
+                {
+                    Assert.Equal(72d, shell.SidebarWidthForAudit);
+                    var layer = Assert.IsAssignableFrom<FrameworkElement>(shell.FindName("SidebarContentLayer"));
+                    Assert.False(DependencyPropertyHelper.GetValueSource(layer, UIElement.OpacityProperty).IsAnimated);
+                    Assert.Equal(1, layer.Opacity);
+                }
+            }
+            catch (Exception caught) { exception = caught; }
+            finally { window?.Close(); }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        Assert.Null(exception);
+    }
+
+    [Fact]
+    public void DefaultSidebarPolicyUsesRealSystemPreferences()
+    {
+        Exception? exception = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var shell = new GameSaveCenter.Playnite.Views.AcrylicProductionShellView { MotionEnabledProvider = () => true };
+                Assert.Null(shell.SystemMotionEnabledProviderForAudit);
+                var expected = !SystemParameters.HighContrast && SystemParameters.ClientAreaAnimation;
+                output.WriteLine($"Native motion policy: highContrast={SystemParameters.HighContrast}; clientAreaAnimation={SystemParameters.ClientAreaAnimation}; expected={expected}");
+                Assert.Equal(expected, shell.SidebarMotionEnabledForAudit);
+                shell.MotionEnabledProvider = () => false;
+                Assert.False(shell.SidebarMotionEnabledForAudit);
+            }
+            catch (Exception caught) { exception = caught; }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
         Assert.Null(exception);
     }
 

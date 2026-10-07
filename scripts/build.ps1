@@ -3,13 +3,21 @@ param(
     [ValidateSet('Debug','Release')][string]$Configuration = 'Release',
     [switch]$SkipTests,
     [string]$OutputRoot = '',
-    [string]$TestTempRoot = ''
+    [string]$TestTempRoot = '',
+    [string]$DiagnosticsRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
 $previousSourceRoot = [Environment]::GetEnvironmentVariable('GSC_SOURCE_ROOT', 'Process')
+$previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
+$previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
+. (Join-Path $PSScriptRoot 'build-diagnostics.ps1')
+$diagnostics = New-GscDiagnosticContext -RepoRoot $root -DiagnosticsRoot $DiagnosticsRoot
+$diagnostics.RunType = 'solution-build'
+$diagnostics.TestsRequested = -not $SkipTests
+$succeeded = $false
 
 function Get-CurrentBuildCommit {
     try {
@@ -23,12 +31,13 @@ function Get-CurrentBuildCommit {
 function Invoke-DotNet {
     param(
         [Parameter(Mandatory = $true)][string[]]$Arguments,
-        [Parameter(Mandatory = $true)][string]$StepName
+        [Parameter(Mandatory = $true)][string]$StepName,
+        [Parameter(Mandatory = $true)][string]$StepId
     )
 
     Write-Host "`n==> $StepName" -ForegroundColor Cyan
-    & dotnet @Arguments
-    $exitCode = $LASTEXITCODE
+    $result = Invoke-GscRecordedCommand -Context $diagnostics -StepId $StepId -FilePath dotnet -Arguments $Arguments -EchoOutput
+    $exitCode = $result.ExitCode
     if ($exitCode -ne 0) {
         throw "$StepName 失败，dotnet 退出码：$exitCode"
     }
@@ -45,10 +54,15 @@ try {
         throw '未找到 dotnet。请安装 .NET 8 或更高版本的稳定版 SDK，并确认 dotnet 在 PATH 中。'
     }
 
-    $sdkLines = & dotnet --list-sdks
-    if ($LASTEXITCODE -ne 0) {
-        throw "读取 .NET SDK 列表失败，退出码：$LASTEXITCODE"
+    $sdkResult = Invoke-GscRecordedCommand $diagnostics 'sdk-list' dotnet @('--list-sdks')
+    $sdkLines = $sdkResult.Output
+    if ($sdkResult.ExitCode -ne 0) {
+        throw "读取 .NET SDK 列表失败，退出码：$($sdkResult.ExitCode)"
     }
+    $selectedSdk = Invoke-GscRecordedCommand $diagnostics 'sdk-version' dotnet @('--version')
+    if ($selectedSdk.ExitCode -ne 0) { throw "选择 SDK 失败，退出码：$($selectedSdk.ExitCode)" }
+    $diagnostics.Sdk = ($selectedSdk.Output -join '').Trim()
+    Write-GscDiagnosticSummary $diagnostics
 
     $sdkVersions = @($sdkLines | ForEach-Object {
         if ($_ -match '^([0-9]+)\.([0-9]+)\.([0-9]+)') {
@@ -97,48 +111,56 @@ try {
     Write-Host "`n==> 检查 XAML 结构" -ForegroundColor Cyan
     & (Join-Path $PSScriptRoot 'check-xaml.ps1') -ProjectRoot $root
 
-    Invoke-DotNet -StepName '显示当前 SDK 信息' -Arguments @('--info')
-    Invoke-DotNet -StepName '还原 NuGet 依赖' -Arguments (@('restore', '.\GameSaveCenter.sln') + $msbuildArguments)
-    Invoke-DotNet -StepName "编译解决方案（$Configuration）" -Arguments (@('build', '.\GameSaveCenter.sln', '-c', $Configuration, '--no-restore') + $msbuildArguments)
+    Invoke-DotNet -StepId 'sdk-info' -StepName '显示当前 SDK 信息' -Arguments @('--info')
+    Invoke-DotNet -StepId 'restore' -StepName '还原 NuGet 依赖' -Arguments (@('restore', '.\GameSaveCenter.sln') + $msbuildArguments)
+    Invoke-DotNet -StepId 'build' -StepName "编译解决方案（$Configuration）" -Arguments (@('build', '.\GameSaveCenter.sln', '-c', $Configuration, '--no-restore') + $msbuildArguments)
+    Set-GscDiagnosticAssemblies $diagnostics $OutputRoot $Configuration
 
     if (-not $SkipTests) {
-        Invoke-DotNet -StepName '运行核心单元测试' -Arguments (@(
+        Invoke-DotNet -StepId 'core' -StepName '运行核心单元测试' -Arguments (@(
             'test',
             '.\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj',
             '-c', $Configuration,
-            '--no-build'
+            '--no-build', '--no-restore',
+            '--logger', 'console;verbosity=normal', '--logger', 'trx;LogFileName=core.trx',
+            '--results-directory', (Join-Path $diagnostics.RunRoot 'tests/core')
         ) + $msbuildArguments)
-        Invoke-DotNet -StepName '运行 Worker 集成测试' -Arguments (@(
+        Invoke-DotNet -StepId 'worker' -StepName '运行 Worker 集成测试' -Arguments (@(
             'test',
             '.\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj',
             '-c', $Configuration,
-            '--no-build'
+            '--no-build', '--no-restore',
+            '--logger', 'console;verbosity=normal', '--logger', 'trx;LogFileName=worker.trx',
+            '--results-directory', (Join-Path $diagnostics.RunRoot 'tests/worker')
         ) + $msbuildArguments)
         Write-Host "`n==> 运行 Playnite 测试（WPF 类隔离）" -ForegroundColor Cyan
         & (Join-Path $PSScriptRoot 'run-playnite-tests-isolated.ps1') `
             -Configuration $Configuration `
             -OutputRoot $OutputRoot `
             -TestTempRoot $TestTempRoot `
-            -ProjectRoot $root
-        if ($LASTEXITCODE -ne 0) {
-            throw "运行 Playnite 测试失败，dotnet 退出码：$LASTEXITCODE"
-        }
+            -ProjectRoot $root `
+            -DiagnosticsContext $diagnostics
     }
 
-    Write-Host "`n构建与测试全部成功。下一步可运行 scripts/package.ps1" -ForegroundColor Green
+    $succeeded = $true
+    if ($SkipTests) { Write-Host "`n构建成功；本次跳过测试。" -ForegroundColor Green }
+    else { Write-Host "`n构建与测试全部成功。下一步可运行 scripts/package.ps1" -ForegroundColor Green }
+}
+catch {
+    $diagnostics.FailureMessage = ConvertTo-GscDiagnosticText $_.Exception.ToString() $diagnostics
+    throw
 }
 finally {
-    if ($null -eq $previousBuildCommit) {
-        Remove-Item Env:GSC_BUILD_COMMIT -ErrorAction SilentlyContinue
+    try {
+        Complete-GscTestDiagnostics $diagnostics (Join-Path $diagnostics.RunRoot 'tests')
+        Complete-GscDiagnostics $diagnostics $succeeded
+        Write-Host "诊断目录：$($diagnostics.RunRoot)" -ForegroundColor DarkCyan
     }
-    else {
-        $env:GSC_BUILD_COMMIT = $previousBuildCommit
+    finally {
+        [Environment]::SetEnvironmentVariable('TEMP', $previousTemp, 'Process')
+        [Environment]::SetEnvironmentVariable('TMP', $previousTmp, 'Process')
+        [Environment]::SetEnvironmentVariable('GSC_BUILD_COMMIT', $previousBuildCommit, 'Process')
+        [Environment]::SetEnvironmentVariable('GSC_SOURCE_ROOT', $previousSourceRoot, 'Process')
+        Pop-Location
     }
-    if ($null -eq $previousSourceRoot) {
-        Remove-Item Env:GSC_SOURCE_ROOT -ErrorAction SilentlyContinue
-    }
-    else {
-        $env:GSC_SOURCE_ROOT = $previousSourceRoot
-    }
-    Pop-Location
 }

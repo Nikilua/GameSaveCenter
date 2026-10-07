@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="825e46dd-0c55-42f4-a915-63479ed8a6b8" name="redacted-test-run" runUser="DESKTOP-JQSHHCV\lopmatuse" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-07T10:54:37.7574456+08:00" queuing="2026-10-07T10:54:37.7574461+08:00" start="2026-10-07T10:54:24.4595847+08:00" finish="2026-10-07T10:54:56.4116926+08:00" />
+  <TestSettings name="default" id="8e46e00d-3ae5-4ac0-af15-809dc848febe">
+    <Deployment runDeploymentRoot="lopmatuse_DESKTOP-JQSHHCV_2026-10-07_10_54_37" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ad75d863-8c38-4f4d-a30e-a92c7e535290" testId="ce095740-c366-4267-5cc5-d6c975479d94" testName="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.SelectionCommittedWhenTheDropdownClosesAfterUserFlow" computerName="redacted-host" duration="00:00:03.0300000" startTime="2026-10-07T10:54:37.7389118+08:00" endTime="2026-10-07T10:54:40.6798647+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad75d863-8c38-4f4d-a30e-a92c7e535290" />
+    <UnitTestResult executionId="96e67abe-1d59-485a-bdcb-552ac4c87724" testId="aa36af0c-acda-a0ca-1f85-a8550c55aac7" testName="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.ProgrammaticSelectionDoesNotCommitWhileTheDropdownIsClosed" computerName="redacted-host" duration="00:00:01.4750000" startTime="2026-10-07T10:54:36.2062153+08:00" endTime="2026-10-07T10:54:37.6495602+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="96e67abe-1d59-485a-bdcb-552ac4c87724" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.ProgrammaticSelectionDoesNotCommitWhileTheDropdownIsClosed" storage="[repo]\.tmp\close-ci-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="aa36af0c-acda-a0ca-1f85-a8550c55aac7">
+      <Execution id="96e67abe-1d59-485a-bdcb-552ac4c87724" />
+      <TestMethod codeBase="[repo]\.tmp\close-ci-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests" name="ProgrammaticSelectionDoesNotCommitWhileTheDropdownIsClosed" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests.SelectionCommittedWhenTheDropdownClosesAfterUserFlow" storage="[repo]\.tmp\close-ci-20261007\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ce095740-c366-4267-5cc5-d6c975479d94">
+      <Execution id="ad75d863-8c38-4f4d-a30e-a92c7e535290" />
+      <TestMethod codeBase="[repo]\.tmp\close-ci-20261007\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests" name="SelectionCommittedWhenTheDropdownClosesAfterUserFlow" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ce095740-c366-4267-5cc5-d6c975479d94" executionId="ad75d863-8c38-4f4d-a30e-a92c7e535290" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa36af0c-acda-a0ca-1f85-a8550c55aac7" executionId="96e67abe-1d59-485a-bdcb-552ac4c87724" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.02] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)&#xD;
+[xUnit.net 00:00:07.86]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:10.30]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:10.39]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:15.00]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

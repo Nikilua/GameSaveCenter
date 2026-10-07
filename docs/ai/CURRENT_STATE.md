@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-05；已交付源码：`d57a613fc800714e5b0718b1603b8c797ac5c810`；IPC 修复的源码/DLL 身份见本轮证据，分支 `main`，版本 `0.6.73-development-preview`。
+更新：2026-10-07；本阶段验证基线`0e92f82b`，CI诊断/侧栏策略输入的dirty源码与DLL身份见[本阶段证据](evidence/close-ci-20261007/README.md)，分支 `main`，版本 `0.6.73-development-preview`。IPC源码d57a613f已交付。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -11,12 +11,12 @@
 | 维度 | 当前可核查事实 |
 | --- | --- |
 | 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
-| 本轮测试 | Core `125/125`、Worker `357/357`；source `470 passed / 0 failed / 18 skipped`；IPC 20轮 `200/200`；WPF前23类通过，第24类Q14失败，后89类未执行 |
-| 远端 CI | 源码提交 run `37335412450`（d57a613f / SDK10.0.401）仍两条侧栏活动动画断言失败；完整日志已取得，后续步骤跳过 |
-| R00/R01 证据 | d57a613f clean身份仍 `9 FRESH / 5 STALE`；过期项 R00-04/06/07/08、R01-05；本地ZIP/PEXT已核对hash/构建身份，未安装 |
+| 本轮测试 | Core125/125、Worker357/357；source470 passed/18原有skipped/0 failed；侧栏22/22；WPF前23类通过，第24类Q14错误态高度36→37 DIP失败，后89类未执行；IPC历史200/200单独保留 |
+| 远端 CI | 基线 run37336829173（0e92f82b / SDK10.0.401）仍两条活动动画断言失败；本阶段新增实例内偏好测试输入与失败诊断上传，提交后远端结果另记，不宣称恢复 |
+| R00/R01 证据 | 基线9 fresh/5 stale；本阶段另命中R00-03、R01-01、R01-04，待提交后按实际HEAD复算。baseline未改；本地包仍为历史d57a613f，未安装 |
 | 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
 
-IPC修复、复现失败、最终专项/source/Worker与Q14失败统一在 [本轮证据](evidence/close-ipc-20261005/README.md)；[原完成度审阅](evidence/completion-review-20261005/README.md)保持历史原样。IPC任务已完成，整体门禁仍失败；SDK8不能替代SDK10 CI。
+当前CI诊断、PowerShell5.1/7自测、侧栏22项及Q14失败在[10月7日证据](evidence/close-ci-20261007/README.md)；[IPC证据](evidence/close-ipc-20261005/README.md)与[原完成度审阅](evidence/completion-review-20261005/README.md)保持历史。整体门禁仍失败；SDK8不能替代SDK10 CI。Q14本次先失败于错误态高度，原654 DIP边距失败仍未解决。
 
 ## 当前执行顺序
 

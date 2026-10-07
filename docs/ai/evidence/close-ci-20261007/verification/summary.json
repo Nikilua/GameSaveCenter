@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "0e92f82b397da81d98156009ff9fef0d7190ca36",
+  "workingTreeClean": false,
+  "dirtyPaths": [
+    " M .github/workflows/windows-build.yml",
+    " M docs/AUTONOMOUS_BACKLOG.md",
+    " M scripts/build.ps1",
+    " M scripts/run-playnite-tests-isolated.ps1",
+    " M src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs",
+    " M src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+    " M tests/GameSaveCenter.Playnite.Tests/ProductionShellChromeSourceTests.cs",
+    "?? scripts/build-diagnostics.ps1",
+    "?? scripts/tests/Test-BuildDiagnostics.ps1"
+  ],
+  "sdk": "8.0.423",
+  "startedUtc": "2026-10-07T02:51:12.0961963Z",
+  "completedUtc": "2026-10-07T02:52:18.2031687Z",
+  "outcome": "failed",
+  "steps": [
+    {
+      "id": "core",
+      "command": "dotnet",
+      "arguments": [
+        "test",
+        "[repo]\\tests\\GameSaveCenter.Core.Tests\\GameSaveCenter.Core.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MSBuildEnableWorkloadResolver=false",
+        "-p:GscBuildOutputRoot=[repo]\\.tmp\\close-ci-20261007\\build",
+        "--logger",
+        "console;verbosity=normal",
+        "--logger",
+        "trx;LogFileName=core.trx",
+        "--results-directory",
+        "[repo]\\.tmp\\close-ci-20261007\\verification\\20261007T025111854Z-95b4ce2e\\tests\\core"
+      ],
+      "startedUtc": "2026-10-07T02:51:12.8920681Z",
+      "completedUtc": "2026-10-07T02:51:16.9839108Z",
+      "exitCode": 0,
+      "console": "core-console.txt",
+      "launchError": null
+    },
+    {
+      "id": "chrome",
+      "command": "dotnet",
+      "arguments": [
+        "test",
+        "[repo]\\tests\\GameSaveCenter.Playnite.Tests\\GameSaveCenter.Playnite.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MSBuildEnableWorkloadResolver=false",
+        "-p:GscBuildOutputRoot=[repo]\\.tmp\\close-ci-20261007\\build",
+        "--logger",
+        "console;verbosity=normal",
+        "--logger",
+        "trx;LogFileName=chrome.trx",
+        "--results-directory",
+        "[repo]\\.tmp\\close-ci-20261007\\verification\\20261007T025111854Z-95b4ce2e\\tests\\chrome",
+        "--filter",
+        "FullyQualifiedName~ProductionShellChromeSourceTests"
+      ],
+      "startedUtc": "2026-10-07T02:51:17.0815124Z",
+      "completedUtc": "2026-10-07T02:51:49.2214387Z",
+      "exitCode": 0,
+      "console": "chrome-console.txt",
+      "launchError": null
+    },
+    {
+      "id": "q14-before",
+      "command": "dotnet",
+      "arguments": [
+        "test",
+        "[repo]\\tests\\GameSaveCenter.Playnite.Tests\\GameSaveCenter.Playnite.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:NuGetAudit=false",
+        "-p:MSBuildEnableWorkloadResolver=false",
+        "-p:GscBuildOutputRoot=[repo]\\.tmp\\close-ci-20261007\\build",
+        "--logger",
+        "console;verbosity=normal",
+        "--logger",
+        "trx;LogFileName=q14-before.trx",
+        "--results-directory",
+        "[repo]\\.tmp\\close-ci-20261007\\verification\\20261007T025111854Z-95b4ce2e\\tests\\q14-before",
+        "--filter",
+        "FullyQualifiedName~Q14ToolbarAlignmentBehaviorTests"
+      ],
+      "startedUtc": "2026-10-07T02:51:49.2519363Z",
+      "completedUtc": "2026-10-07T02:52:18.1410553Z",
+      "exitCode": 1,
+      "console": "q14-before-console.txt",
+      "launchError": null
+    }
+  ],
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+      "sha256": "BE47BA6464F0ADA3A1188AC1F9399007C3CF13DB1E43BE30F32152E89217097B",
+      "productVersion": "0.6.73+0e92f82b397da81d98156009ff9fef0d7190ca36",
+      "bytes": 1808384,
+      "mvid": "ca924c28-428d-4521-83a2-00e119b3545a"
+    },
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "A58E38A3EFFC5428007F9A4B64A9EA586C6C0CA1C713AA95666B474E3ECE57FC",
+      "productVersion": "0.6.73+0e92f82b397da81d98156009ff9fef0d7190ca36",
+      "bytes": 1689088,
+      "mvid": "a3163f52-aa65-40a1-a2a1-bade7c5054cb"
+    },
+    {
+      "file": "GameSaveCenter.Worker.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\build\\bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll",
+      "sha256": "91A9A96C878C719EA5A2D4FD14DB5BF3FD570129A39185117CC2D43CFB1F7DC3",
+      "productVersion": "0.6.73+0e92f82b397da81d98156009ff9fef0d7190ca36",
+      "bytes": 1437696,
+      "mvid": "cebb3847-60c7-442c-a0b7-2a353789c82f"
+    },
+    {
+      "file": "GameSaveCenter.Worker.Tests.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\build\\bin\\GameSaveCenter.Worker.Tests\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.Tests.dll",
+      "sha256": "B61165D6486BDDD8954017566B11BFE2CCC5FBE2EA08B1D02828B41BCCAB04F9",
+      "productVersion": "0.6.73+0e92f82b397da81d98156009ff9fef0d7190ca36",
+      "bytes": 734720,
+      "mvid": "6d15dc73-a42d-4a66-9678-1e42626e9aa1"
+    },
+    {
+      "file": "GameSaveCenter.Core.Tests.dll",
+      "path": "[repo]\\.tmp\\close-ci-20261007\\build\\bin\\GameSaveCenter.Core.Tests\\Release\\net8.0\\GameSaveCenter.Core.Tests.dll",
+      "sha256": "FE35F73D58834058F4B9D95E3EB1F5A87171BB11F1B9A83D35FE49C2A4D4271A",
+      "productVersion": "0.6.73+0e92f82b397da81d98156009ff9fef0d7190ca36",
+      "bytes": 50176,
+      "mvid": "77be94aa-479c-41c9-b82b-c8daf8939080"
+    }
+  ]
+}

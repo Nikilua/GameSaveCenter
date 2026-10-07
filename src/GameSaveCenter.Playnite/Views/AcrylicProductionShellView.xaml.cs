@@ -436,8 +436,14 @@ namespace GameSaveCenter.Playnite.Views
             ApplySidebarLayout();
         }
 
+        // Instance-scoped preference input lets STA tests exercise both policy branches
+        // on headless runners without changing Windows settings or a global test flag.
+        // Production leaves it unset and always uses the real system preferences.
+        internal Func<bool>? SystemMotionEnabledProviderForAudit { get; set; }
+
         private bool IsSidebarMotionEnabled
-            => GscMotion.IsEnabled(MotionEnabledProvider?.Invoke() ?? true);
+            => (MotionEnabledProvider?.Invoke() ?? true)
+               && (SystemMotionEnabledProviderForAudit?.Invoke() ?? GscMotion.IsEnabled(true));
 
         internal bool SidebarMotionEnabledForAudit => IsSidebarMotionEnabled;
         internal GameSaveCenter.Playnite.Controls.Button SidebarCollapseButtonForAudit => SidebarCollapseButton;
