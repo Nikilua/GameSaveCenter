@@ -34,8 +34,14 @@
 - 当前测试源码 SHA-256 `F527025A86BD105A7D8E960FF42DEB33C5FD8CF4E2A111D7BC2102CC35FA5B53`；Playnite DLL SHA/MVID `A602B8F77EA4B983C28BB9CA4840D87DD94DEE2ACEEF7581F58A232CB99140A8` / `6bba8de6-5002-4886-ba04-9650d01eca0b`；tests DLL SHA/MVID `2AAEB335A9ED08C1B8BDD5142121DCCAECDA239E651BD06809A82E5E379B794B` / `0cd8cbed-538c-4f4d-bffd-7f5533f9647e`。
 - 本轮脱敏 TRX：[首次 Tooltip 复跑 `2/2`](tests/R05-07-tooltip-ci951-local-recheck.trx)，SHA-256 `76174A2255E8B76AA61E6E77B08B72BA02DD06A60B3D439A9061E81C81DC2A9B`；[重复 Tooltip 复跑 `2/2`](tests/R05-07-tooltip-ci951-repeat.trx)，SHA-256 `EC97F5284ACE187105457E6ED923A361A6C4F579788896DDB4BF4949E3A1F369`。
 
+## 2026-10-13 Actions #952 终态与日志限制
+
+- Actions #952（run `38309632982`，commit `4572118f3c671981c3d6f93a66820910bc3b94b2`，job `115011915461`）已失败；公开 job 页面显示用时 `12m 7s`，失败步骤为“编译与测试”，annotation 仅为 `Process completed with exit code 1`。页面另有 Node.js 20→24 弃用 warning。此摘要未说明实际失败命令、测试方法、断言或堆栈。
+- 诊断 artifact `11774606363`（556 KB），页面记录 SHA-256 `9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a`。本次无法读取内容：job 页日志入口要求登录；匿名 artifact API 请求被 GitHub 限流为 HTTP 403；`/actions/runs/38309632982/artifacts/11774606363` 跳转后的匿名路由返回 HTTP 404。没有声称下载或检查 artifact。
+- 仓库 `global.json` 配置 SDK `8.0.423`，但因 run 日志不可读，本次 runner 实际 SDK 未确认；本机 `8.0.423` Tooltip 两轮通过不能替代 CI。失败根因保持未知，不据摘要或耗时改代码。待取得有权限的完整日志后再按真实失败复现；在此期间可继续不依赖该失败的 R00/R01 复核。
+
 ## 未验证边界
 
-行为夹具加载生产 Tooltip 样式和行为代码，但没有启动 Playnite 宿主或完整应用 Dashboard 页面；没有验证 OS UI Automation/Narrator、真实物理 DPI/多屏边缘放置、操作系统字体渲染或已呈现帧、ETW 和宿主性能。未运行全量测试。系统指针仅在短时受控夹具期间移动并已恢复。CI 使用的 SDK 与本机 SDK 分开追踪；本机结果不替代 SDK `10.0.401` CI 门禁。
+行为夹具加载生产 Tooltip 样式和行为代码，但没有启动 Playnite 宿主或完整应用 Dashboard 页面；没有验证 OS UI Automation/Narrator、真实物理 DPI/多屏边缘放置、操作系统字体渲染或已呈现帧、ETW 和宿主性能。未运行全量测试。系统指针仅在短时受控夹具期间移动并已恢复。#952 的 runner SDK 尚未由日志确认；global.json 配置为 `8.0.423`，用户指定的 `10.0.401` 历史结果与本次运行分开记录。本机结果不替代远端 CI 门禁。
 
-下一项：R05-08 和 R06-01 当前 main 均已有满足证据；继续推进 R06-02 排序提示与稳定性。
+下一项：R05-07/R06-04 的 CI 失败原因尚待完整日志，保持未收口；依用户执行顺序先复核 R00/R01 freshness 命中项，再继续依赖满足的 Q/R 小批量。

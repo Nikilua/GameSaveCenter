@@ -39,12 +39,12 @@
 - #951（run `38306094571`，commit `2f546d06`，job `115000392485`）已终态失败；CI SDK `8.0.423`、Windows `10.0.26100`。完整 log SHA-256 `96BCAC239C2E6BB25DA54E725319FA9AB6EC6964C3662D2C4AFAAB0A266406DE`（128,002 bytes / 1,015 lines）。隔离序列从 `[24/114] Q14ToolbarAlignmentBehaviorTests` 继续到 `[25/114] R02ActionAvailabilityHintTests`，据此 Q14 类已通过；后续失败位于 `R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt`，预期 Tooltip 开启计数 `1`、实测 `0`，不是 Q14 断点回归。
 - Artifact `11773198841` 页面摘要 SHA-256 `fd4cdd6972f4b5d80c606b14ffdb3d3c259d4dcc8f1e9c7c3b24ebb76b5fa222`；匿名 artifact 下载 HTTP 401，未声称检查产物内容。失败测试夹具与本机诊断见[R05-07 复核包](../R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 当前 Q14 本机复跑 `1/1`，TRX 文件名、测试计数和 SHA 见上表；最新隔离程序集包含 R05 测试夹具修正，Playnite SHA/MVID `A602B8F77EA4B983C28BB9CA4840D87DD94DEE2ACEEF7581F58A232CB99140A8` / `6bba8de6-5002-4886-ba04-9650d01eca0b`，tests SHA/MVID `2AAEB335A9ED08C1B8BDD5142121DCCAECDA239E651BD06809A82E5E379B794B` / `0cd8cbed-538c-4f4d-bffd-7f5533f9647e`。
-- R05 测试夹具修正尚未提交/推送；新 Actions 仍需跟到终态。R06-04 不能在后续 CI 成功前收口，本节其他本机 TRX仍不替代远端门禁。
+- R05 测试夹具修正已提交至 main `4572118f3c671981c3d6f93a66820910bc3b94b2` 并推送。对应 Actions #952（run `38309632982`，job `115011915461`）已失败：公开页面标记“编译与测试”exit1，job 用时 `12m 7s`，未显示具体测试/命令。诊断 artifact `11774606363`（556 KB，SHA-256 `9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a`）；job 日志要求登录，匿名 artifact API HTTP403 rate limit，匿名下载路由 HTTP404，未读取 artifact 内容。仓库 `global.json` 配置 SDK `8.0.423`，本次 runner 实际 SDK 未确认。该 run 未提供 Q14 是否通过的可读日志；不以 #951 的通过结果推断 #952。R06-04 与 R05-07 暂不收口，取得完整日志前不改代码；本机 TRX 不替代 CI 门禁。
 
 ## 验证边界与下一步
 
 快捷键测试在显示的隔离 STA 窗口中对真实生产 DataGrid 触发 WPF routed event；modifier 通过仅供测试使用的内部 seam 提供，clipboard 写入使用 fake setter。它不代表真实 OS 键盘、系统剪贴板或 Playnite 宿主输入。没有视觉布局改动或当前 RenderHarness 截图；双主题渲染证据仍绑定原实现 `afe4aa55`。真实 Playnite、系统剪贴板占用、物理 DPI/跨屏、IME、UIA/Narrator 和宿主性能仍未验，也未触碰真实存档、媒体、云端或诊断数据。
 
-旧阶段的 CI 结果与 SDK差异、完整日志哈希和本轮校正过程见上方“Actions 失败复核与当前 main 校正”；Tooltip 测试夹具修正推送后仍需远端 Actions 成功，才能收口 R06-04。
+旧阶段的 CI 结果与 SDK差异、完整日志哈希和本轮校正过程见上方“Actions 失败复核与当前 main 校正”；#952 的 CI 失败根因受日志访问限制尚未知，R06-04 暂不收口。
 
-CI 校正成功后，先按用户要求复核 R00/R01 问题修复与证据，再推进依赖已满足的 Q/R 项；R06-05 列头说明已有满足证据，届时按当前 main 复核是否需要补充。
+按用户顺序先复核 R00/R01 问题与证据，再推进依赖已满足的 Q/R 项；R06-05 列头说明已有满足证据，届时按当前 main 复核是否需要补充。R05-07/R06-04 的 CI 失败根因仍待有权限日志，不因继续独立任务而收口。

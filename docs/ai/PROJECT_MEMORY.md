@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准。R00/R01 freshness 此前为 `14 fresh / 0 stale`，本轮仍需按用户要求复核问题与证据。R06-04 快捷键行为 `5/5`、复制反馈 `2/2`；Q14 实际宽度断点校正已在 main `2f546d06`，本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。CI #951 确认 Q14 通过，之后 R05 Tooltip dwell 用例失败；当前只修正隔离窗口置顶、激活与 hover 到达门禁，本机 Tooltip `2/2` 连续两轮，新 CI 待 push 后跟到终态。用户指定 #919/#920 完整日志：CI SDK `10.0.401`，两项旧侧栏 transition 测试断言失败；当前 main 对应类 SDK8 `22/22` 不代表 SDK10 当前分支结果。下一步先结束当前 CI 门禁，再复核 R00/R01，随后推进依赖已满足的 Q/R 任务。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 4572118f 下 R00/R01 freshness 为 12 fresh / 2 stale，当前复查 R00-03、R00-04。R06-04 本机快捷键行为 5/5、复制反馈 2/2；Q14 实际宽度断点校正已在 main 2f546d06，本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、ProductionShellChromeSource 22/22、R06Clipboard 5/5、R22 2/2。R05-07 夹具修正 main 4572118f，本机 Tooltip 2/2 两轮；Actions #952 于编译与测试失败，12m07s，日志要求登录、artifact 内容不可读，失败根因和实际 runner SDK未知，不盲改。#919/#920 实际 SDK 10.0.401 的旧侧栏失败与当前 main SDK8 结果分开记录。当前顺序：记录 #952 外部日志限制，先处理 R00-03/R00-04，再推进依赖满足的 Q/R；R05-07/R06-04 仍待有权限完整日志。
 
 ## AI/Codex 启动协议
 

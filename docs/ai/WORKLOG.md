@@ -1,3 +1,8 @@
+## 2026-10-13 R05-07 / R06-04 Actions #952 终态复核
+
+- main commit 4572118f3c671981c3d6f93a66820910bc3b94b2 对应 Actions #952（run 38309632982，job 115011915461）已失败；公开 job 页显示 12m07s、“编译与测试”exit1，另有 Node.js 20→24 弃用 warning。页面未给出失败命令、测试或堆栈。
+- 诊断 artifact 11774606363（556 KB，SHA-256 9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a）。job 日志需登录；匿名 artifact API 403 rate limit，匿名下载路由 404，未读取 artifact。global.json 配置 SDK 8.0.423，但本次 runner 实际 SDK未知；本机 Tooltip 2/2 不替代 CI。
+- R05-07/R06-04 不收口，不盲改。当前 main freshness 脚本已发现 R00-03、R00-04 两条 stale，按用户顺序先复核这两条，再继续独立且依赖满足的 Q/R。R05-07 复核包和 R06-04 CI 证据已同步；未验真实 Playnite、OS UIA/IME、物理跨屏/呈现帧、ETW与宿主性能。
 ## 2026-10-13 CI 失败证据校正与 Q14 断点复核
 
 - 按用户暂停点重新查询 Actions：#919 (`36675309812`, `a6b6dfc`) 与 #920 (`36677346317`, `77de7f4`) 均已完成失败；完整日志可经当前登录凭据读取。两次实际 CI SDK 均为 `10.0.401`，失败于 `ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites` 与 `SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`：活动 transition 断言为 True，实测 False。日志 SHA-256 分别为 `69AC5DF7900AA0122B3D55E02436AFF9515C8FD829C15240D4014AE86649B25E`、`8EB5989E08ED940D7C9E9CB1CF870A20F91FD94DB933704A220D490D80C08FFF`。
