@@ -143,7 +143,7 @@ public sealed class UiFinesseRound2ControlSourceTests
         foreach (var view in new[] { dashboard, shell, settings })
         {
             Assert.Contains("ToolTipService.InitialShowDelay=\"350\"", view);
-            Assert.Contains("ToolTipService.BetweenShowDelay=\"100\"", view);
+            Assert.Contains("ToolTipService.BetweenShowDelay=\"0\"", view);
         }
 
         Assert.Contains("ToolTipService.ShowDuration=\"18000\"", dashboard);

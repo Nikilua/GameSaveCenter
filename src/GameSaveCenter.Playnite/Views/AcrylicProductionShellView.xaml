@@ -14,7 +14,7 @@
              TextOptions.TextHintingMode="Fixed"
              RenderOptions.ClearTypeHint="Enabled"
              ToolTipService.InitialShowDelay="350"
-             ToolTipService.BetweenShowDelay="100"
+             ToolTipService.BetweenShowDelay="0"
              infra:GscToolTipBehavior.EnableEscapeClose="True"
              SizeChanged="OnShellSizeChanged">
     <UserControl.Resources>

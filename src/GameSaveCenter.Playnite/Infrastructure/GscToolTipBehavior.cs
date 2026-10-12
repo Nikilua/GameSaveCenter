@@ -25,6 +25,16 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 typeof(GscToolTipBehavior),
                 new PropertyMetadata(false, OnEnableEscapeCloseChanged));
 
+        private static readonly DependencyProperty ToolTipTimingScopeProperty =
+            DependencyProperty.RegisterAttached(
+                "ToolTipTimingScope",
+                typeof(FrameworkElement),
+                typeof(GscToolTipBehavior),
+                new FrameworkPropertyMetadata(
+                    null,
+                    FrameworkPropertyMetadataOptions.Inherits,
+                    OnToolTipTimingScopeChanged));
+
         public static bool GetEnableEscapeClose(DependencyObject element)
             => (bool)element.GetValue(EnableEscapeCloseProperty);
 
@@ -40,6 +50,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
             if ((bool)args.NewValue)
             {
+                element.SetValue(ToolTipTimingScopeProperty, element);
                 element.PreviewKeyDown += OnPreviewKeyDown;
                 element.IsVisibleChanged += OnIsVisibleChanged;
                 element.Unloaded += OnUnloaded;
@@ -48,6 +59,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
             else
             {
+                element.ClearValue(ToolTipTimingScopeProperty);
                 element.PreviewKeyDown -= OnPreviewKeyDown;
                 element.IsVisibleChanged -= OnIsVisibleChanged;
                 element.Unloaded -= OnUnloaded;
@@ -55,6 +67,36 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 element.RemoveHandler(ToolTipService.ToolTipOpeningEvent, new ToolTipEventHandler(OnToolTipOpening));
                 UnregisterToolTipHandlers(element);
             }
+        }
+
+        private static void OnToolTipTimingScopeChanged(
+            DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs args)
+        {
+            if ((!(dependencyObject is FrameworkElement)
+                    && !(dependencyObject is FrameworkContentElement))
+                || !(args.NewValue is FrameworkElement scope))
+            {
+                return;
+            }
+
+            ApplyScopedTimingValue(
+                dependencyObject,
+                ToolTipService.InitialShowDelayProperty,
+                ToolTipService.GetInitialShowDelay(scope));
+            ApplyScopedTimingValue(
+                dependencyObject,
+                ToolTipService.BetweenShowDelayProperty,
+                ToolTipService.GetBetweenShowDelay(scope));
+        }
+
+        private static void ApplyScopedTimingValue(
+            DependencyObject element,
+            DependencyProperty property,
+            int value)
+        {
+            if (DependencyPropertyHelper.GetValueSource(element, property).BaseValueSource == BaseValueSource.Default)
+                element.SetValue(property, value);
         }
 
         private static void OnLoaded(object sender, RoutedEventArgs args)

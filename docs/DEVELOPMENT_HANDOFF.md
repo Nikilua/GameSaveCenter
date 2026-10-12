@@ -1,6 +1,13 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 main `1c39e909` 定向 `11/11`；R05-03 定向 `7/7`，几何通过但无闪屏未验、状态部分满足；R05-04 行为复核 `3/3`；R05-05 当前 main 消费点复核不适用；R05-06 当前 main 开关语义定向 `28/28`，补同值重复通知负例，无生产代码修改。Actions #944（`38286603033`）对 main `0fcb44f8` failure，7m22s，job annotation 为 exit1；日志 API HTTP403，公开页没有失败命令或断言，根因与实际 runner SDK未知，不猜修。本机 SDK `8.0.423` 与待核 CI SDK `10.0.401` 分开。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。下一项复核 R05-07 Tooltip 时序当前 main 行为。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main STA 行为/负例及 Popup、焦点、源契约定向 `34/34`；隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`。证据见[R05-07复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #945（run `38288546362`，parent commit `2662cdbb`）终态 failure，完整日志/API匿名 HTTP403；失败步骤内部原因与 runner SDK未知，不猜修。CI目标 SDK `10.0.401` 和本机 SDK8分开。R05-08、R06-01 已有账本“已满足”记录；下一步核 R06-01 当前实现后推进 R06-02。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite Tooltip、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+
+## 2026-10-13 R05-07 Tooltip 时序当前 main 复核
+
+- 发现根节点 `ToolTipService` 附加值不会自动应用到其子 owner；此外 `BetweenShowDelay=100` 允许刚显示过 tooltip 后快速移动到下一项时再次立即打开。复用并扩展现有 `GscToolTipBehavior`，通过继承 timing scope 对默认后代应用根级 `350/0`，保留 owner 显式值；壳层、设置页、Dashboard 根值统一 `350/0`。
+- 当前工作树 Release build (SDK `8.0.423`) `0 warning / 0 error`、XAML `24/24`；Tooltip `2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、source contracts `24/24`，总计 `34/34`。源码 validator、`git diff --check` 通过；WPF 静态审查 `0 errors/29 warnings/177 info`。长路径 Wrap、Esc 关闭保留焦点、实际鼠标快速扫过正负例、动态 owner 和显式时序覆盖见[R05-07证据包](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 用户指定 run #920（`36677346317`）现为 failure；main parent `2662cdbb` 对应 #945（`38288546362`）也终态 failure。“编译与测试”显示 exit1，匿名日志/API HTTP403；失败内部命令、断言、CI SDK 与根因未知，不盲改。SDK8本机结果不替代目标CI SDK10.0.401。
+- 没有启动真实 Playnite或加载完整 Dashboard。OS UIA/Narrator、物理 DPI/多屏边缘放置、呈现帧、ETW、宿主性能未验；全量 WPF 尝试中途停止在第19/114类，不计通过。下一项核对账本已满足的 R06-01 当前 main 实现/证据，再推进 R06-02。
 
 ## 2026-10-13 R05-04 当前 main 多选摘要复核
 

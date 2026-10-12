@@ -1,0 +1,32 @@
+# R05-07 当前 main Tooltip 行为复核
+
+日期：2026-10-13（Asia/Shanghai）。代码改动基于 `main` 父提交 `2662cdbb3ab635e19b364d6797db1d7506fef615`；构建输入包含本轮列出的六个已修改源文件，不能称为 clean checkout。Playnite 目标仍为 `net462`，测试目标为 `net472`。
+
+## 现有实现与本轮修正
+
+已有 `GscToolTipBehavior` 负责壳层/设置页 Esc 关闭；已有生产 Tooltip 样式负责 `Focusable=False`、`Placement=Mouse`、`MaxWidth=420`、长说明换行。检查发现 WPF 的 `ToolTipService.InitialShowDelay` / `BetweenShowDelay` 是 owner 上的附加属性，设置 UserControl 根节点并不会让任意子控件自动取得该值；且 `BetweenShowDelay=100` 允许刚显示过的 tooltip 在快速移到下一 owner 时立即再开。
+
+本轮在共享 `GscToolTipBehavior` 中增加 inheritable timing scope：将根节点 350ms 初始延迟和 0ms 连续显示延迟应用到默认值的后代 owner；显式 Style/Local 值保持原样。壳层、设置页和 Dashboard 根值统一为 `350/0`。未新增服务、DTO 或命令。
+
+实际 STA WPF 行为测试用合成按钮、真实系统指针移动和隔离 Window 验证：
+
+1. 连续快速划过四个 owner 后停留 420ms，未打开 tooltip；在一个 owner 停留 420ms，恰好打开一个。
+2. 首个 tooltip 已打开后快速移动至另外两个 owner，再离开 420ms，`Opened` 总数仍为 1，所有 tooltip 均关闭，覆盖“上一泡显示后快速划过”的负例。
+3. Window 加载后动态添加的 owner 取得 `350/0`；显式设置 `900/250` 的 owner 保持该值。
+4. 长合成路径的实际 Tooltip 文本布局为 Wrap、无 trimming，文本高度超过一行且宽度不超过 420 DIP；`Esc` 关闭 tooltip 并保持原键盘焦点。
+5. 指针位置在夹具开始时读取，并在 `finally` 恢复；没有访问真实存档或媒体路径。
+
+## 本机验证与产物身份
+
+- 本机隔离 SDK `8.0.423`（`D:\GameSaveCenterTools\dotnet-sdk-8.0.423`）。官方 `scripts/build.ps1 -Configuration Release -SkipTests`：XAML `24/24`，Release solution `0 warning / 0 error`。本次工具目录中的 Release 插件程序集为 `net462`，测试程序集为 `net472`。
+- 定向行为/回归 `34 passed / 0 failed / 0 skipped`：Tooltip `2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、Round2 source contracts `24/24`。这不是完整测试套件通过声明；一次较早的全量 WPF 尝试在第 `19/114` 类时停止，不计为通过。
+- `python scripts/validate-source.py` 通过；WPF 静态审查 `36 XAML / 0 errors / 29 warnings / 177 info`；`git diff --check` 通过。
+- 插件 DLL SHA-256：`CAB1A9F5D8FA3BE0E9E0B25BA6C6EA66E6E8720C527D7892A806A0FFA4CFD278`；测试 DLL SHA-256：`36FB96003B2AEE5DAA7E29DE6EC39C162F769EFA58F1E4B685C6B076B707F1F5`。
+- 本轮源码 SHA-256：`GscToolTipBehavior.cs` `71704B589F71274493BEFDB639DA80FA04AFCE660C7F62AEF20C1D1153A52699`；`AcrylicProductionShellView.xaml` `B9E7A777B84F4AC3DD08FEF69643D7F64D7632466F3DC0271239F8792B756089`；`GameSaveCenterSettingsView.xaml` `A095AFFCA0AA9B9A154D8147E7DCC7462DC8FBA10C83B72E13BA77C67E56078F`；`DashboardView.xaml` `278DE939D67F6AF247E7DD0623DA65B8FF8DF1E28E716C510B2B3D4369C64DE6`；`R05TooltipTimingBehaviorTests.cs` `D233248B04BE314B8BBB0FA3DBD736DF030D63C91092E4997D184A9C547AC608`；`UiFinesseRound2ControlSourceTests.cs` `F77BF80A4D94C91E0F64754F74BA87B652785AE4AED128E84D7AAD9F09D56F44`。
+- 脱敏 TRX：[`Tooltip 2/2`](tests/R05-07-tooltip-timing.trx) SHA-256 `B7CB4EA4FEA1CD8F6B26F985B6C1755FC21D3E7C7208B1C414D77B9347150B9E`；[`Popup lifecycle 1/1`](tests/R05-07-popup-lifecycle.trx) `6BF5975AAFB41BD0FD2B5B65B34A89BB64EDB08BBED4108C6048EC7F3707DB28`；[`Popup boundary 2/2`](tests/R05-07-popup-boundary.trx) `86607E7E1D0A59BA66D4EFDD9E62BAA2F5EF59216FEC0E82B0F1F0EE120DA457`；[`focus boundary 5/5`](tests/R05-07-focus-boundary.trx) `AB1C37F05CF57BADD5648D012246076008FB62B6EEF21531A59FA0CE63A84D99`；[`source contracts 24/24`](tests/R05-07-source-contracts.trx) `5C30CEDBE65E33762F4579475EA1C1887667E0C1709C8C9367CB507E0B462275`。
+
+## 未验证边界
+
+行为夹具加载生产 Tooltip 样式和行为代码，但没有启动 Playnite 宿主或完整应用 Dashboard 页面；没有验证 OS UI Automation/Narrator、真实物理 DPI/多屏边缘放置、操作系统字体渲染或已呈现帧、ETW 和宿主性能。未运行全量测试。系统指针仅在短时受控夹具期间移动并已恢复。CI 使用的 SDK 与本机 SDK 分开追踪；本机结果不替代 SDK `10.0.401` CI 门禁。
+
+下一项：R05-08 已在当前账本标为已满足；继续检查 R06-01 当前 main 证据与依赖，再推进首个未满足的 R06/Q/R 项。

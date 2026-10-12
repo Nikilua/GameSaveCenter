@@ -10110,3 +10110,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 补充负例实测：生产 ToggleSwitch 从 true 改到 false 时发布一次属性通知；重复赋 false 不增加通知、不改变模板 Track Brush 或 dirty 提示；`CancelEdit` 恢复 true 后通知计数只增加一次。现有测试另覆盖 Portable JSON 隔离快照、依赖面板、保存写入失败/Worker apply 失败反馈和关闭“否/是”草稿生命周期。
 - 推送前已核对 main 的 #944（run `38286603033`，commit `0fcb44f8`）终态 failure、7m22s；GitHub 公开 annotation 仅显示 job exit1 与 Node 20 弃用告警，完整日志需登录，匿名日志/API HTTP403；artifact 页面可见摘要哈希但内容不可读。失败步骤内部错误、CI 实际 SDK与根因仍未知；本机 SDK8 结果不替代待核 CI SDK10.0.401，不盲改。
 - 合成设置和隔离临时目录；历史 RenderHarness 图绑定 `cf9a250f`，不作为当前 main 像素证据。本轮仅检查当前默认主题的实际 Track Brush 状态；未验证 Playnite 原生保存/MessageBox、真实 Worker 故障注入、OS UIA/Narrator/IME、物理 DPI/多屏、最终呈现帧、ETW与宿主性能。下一项 R05-07 Tooltip 时序当前 main 适用性与行为复核。
+
+## 2026-10-13 R05-07 Tooltip 时序当前 main 行为复核
+
+- 基线 `main` parent `2662cdbb3ab635e19b364d6797db1d7506fef615`。发现根级 ToolTipService 时序值未传给任意子 owner；WPF `BetweenShowDelay=100` 还会让前一 tooltip 显示后快速移到新 owner 时立即再开。扩展现有 `GscToolTipBehavior` 的 inheritable timing scope，对后代默认值应用 `InitialShowDelay=350`、`BetweenShowDelay=0`，明确 Style/Local 值优先；三个生产根节点同步为 `350/0`。
+- 在 STA WPF Window 通过 `SetCursorPos` 实际移动系统指针：首次快速划过后 420ms 无 Tooltip，停留 420ms 后打开一只；第一只已打开后快速移过两只并离开，Opened 仍为1且所有 Tooltip 关闭。动态后代实际继承默认时序，owner 的 `900/250` Local 覆盖保持。长路径实际 `Wrap`/无 trimming/最大420 DIP；Esc 关闭且键盘焦点不变。测试 finally 恢复指针位置。
+- 官方 SDK8隔离路径 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；`scripts/build.ps1 -Configuration Release -SkipTests` Release `0/0`、XAML `24/24`。定向 `R05TooltipTimingBehaviorTests 2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、source contracts `24/24`，共 `34/34`。`validate-source.py` 与 `git diff --check` 通过；WPF static review `0 errors/29 warnings/177 info`。六个本轮源文件 SHA、插件/测试 DLL SHA 和脱敏 TRX 哈希见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 全量 WPF 的较早尝试在第19/114类停止，不计通过。没有启动真实 Playnite或载入完整 Dashboard；真实 UIA/Narrator、物理 DPI/多屏边缘显示、OS字体显示、presented frame、ETW、宿主性能未验。合成路径不读写真实存档/媒体/云端。
+- 用户指定 Actions #920（`36677346317`）现为 failure。parent `2662cdbb` 对应最新已查 run #945（`38288546362`）亦 failure，约7m22s；公开步骤“编译与测试”exit1，匿名完整日志/API HTTP403，失败命令、根因与实际 runner SDK未知，不凭退出码盲修。本机 SDK8不替代目标 CI SDK10.0.401。
+- R00/R01 freshness `14 fresh / 0 stale` 已在此前独立校正。R05-08 与 R06-01 账本已有满足证据；下一项核 R06-01 当前 main 实现/证据，仍适用则推进 R06-02。
