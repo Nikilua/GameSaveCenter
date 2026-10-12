@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8c9cbdee-b059-4623-9c63-bd66718d956b" name="GSC-redacted-run" runUser="[REDACTED]" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-13T05:05:32.6624912+08:00" queuing="2026-10-13T05:05:32.6624917+08:00" start="2026-10-13T05:05:27.5828758+08:00" finish="2026-10-13T05:05:50.9625161+08:00" />
+  <TestSettings name="default" id="bc625270-5fe7-4ae5-a31c-0fb7e065523d">
+    <Deployment runDeploymentRoot="[REDACTED]" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="18757b81-ec07-4ef5-b82e-34d86b8e4192" testId="8f49a204-503a-5541-eb75-eca8d3bfd764" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt" computerName="[REDACTED]" duration="00:00:02.6690000" startTime="2026-10-13T05:05:32.6425864+08:00" endTime="2026-10-13T05:05:35.2782707+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="18757b81-ec07-4ef5-b82e-34d86b8e4192" />
+    <UnitTestResult executionId="25b141ac-8586-42f9-9902-6b5e942f0935" testId="4b20bb36-6c63-2e84-ae4c-aac7c00ea927" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus" computerName="[REDACTED]" duration="00:00:03" startTime="2026-10-13T05:05:29.5984428+08:00" endTime="2026-10-13T05:05:32.6101330+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25b141ac-8586-42f9-9902-6b5e942f0935" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus" storage="[ABSOLUTE_PATH]" id="4b20bb36-6c63-2e84-ae4c-aac7c00ea927">
+      <Execution id="25b141ac-8586-42f9-9902-6b5e942f0935" />
+      <TestMethod codeBase="[ISOLATED_TEST_ROOT]\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt" storage="[ABSOLUTE_PATH]" id="8f49a204-503a-5541-eb75-eca8d3bfd764">
+      <Execution id="18757b81-ec07-4ef5-b82e-34d86b8e4192" />
+      <TestMethod codeBase="[ISOLATED_TEST_ROOT]\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8f49a204-503a-5541-eb75-eca8d3bfd764" executionId="18757b81-ec07-4ef5-b82e-34d86b8e4192" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b20bb36-6c63-2e84-ae4c-aac7c00ea927" executionId="25b141ac-8586-42f9-9902-6b5e942f0935" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.02]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.07]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:06.80]   Finished:    GameSaveCenter.Playnite.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

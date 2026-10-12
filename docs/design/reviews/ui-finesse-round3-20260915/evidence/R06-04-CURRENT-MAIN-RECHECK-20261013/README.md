@@ -24,6 +24,7 @@
 | [R06-04-clipboard-route.trx](tests/R06-04-clipboard-route.trx) | 5/5 | `56D98AA6D7C9161D9969F8D6CA7346FAB90405DB2B0E308927D1C147D020E3F4` |
 | [R06-04-copy-feedback-regression.trx](tests/R06-04-copy-feedback-regression.trx) | 2/2 | `8D39BA678E2A169FA367ED321024C287F255FAEA585D89C6C8D3FCEEB030A49B` |
 | [Q14ToolbarAlignmentBehaviorTests-sdk8423-current-main.trx](tests/Q14ToolbarAlignmentBehaviorTests-sdk8423-current-main.trx) | 1/1 | `3CBD5118E065B57F32A53730B5760ACE959AA26E221B7C970CDC7A8F27A8F016` |
+| [Q14ToolbarAlignmentBehaviorTests-sdk8423-main2f546-recheck.trx](tests/Q14ToolbarAlignmentBehaviorTests-sdk8423-main2f546-recheck.trx) | 1/1 | `25787A2B2962847E2FB33C6AB94BCD84423B7F16EEFD668ED554F4D6EA6EC79F` |
 | [ProductionShellChromeSourceTests-current-main-sdk8423.trx](tests/ProductionShellChromeSourceTests-current-main-sdk8423.trx) | 22/22 | `EDCBB94F2D46A1E76A7FF8FAE71BD7CC62EFB83F3FA57DCC491717B74A92B8FE` |
 | [R06ClipboardBehaviorTests-sdk8423-current-main.trx](tests/R06ClipboardBehaviorTests-sdk8423-current-main.trx) | 5/5 | `AF531439D36DACE30632601A257795114A2B9240A1FF6EA787A9741060F0B051` |
 | [R22CopyFeedbackBehaviorTests-sdk8423-current-main.trx](tests/R22CopyFeedbackBehaviorTests-sdk8423-current-main.trx) | 2/2 | `1567374318B576B7DCA51A92ACB9C291A311C873BD7B10E88E39DD2B722A33F7` |
@@ -35,12 +36,15 @@
 - 校正仅触及测试：保存第二次 `ApplyResponsiveLayout` 的 `appliedWidth`，用其判断 compact，并在断言失败信息中记录 requested/applied/arranged width 与 DPI。没有改生产布局或断点。
 - 本机 Windows `10.0.22000`，Pinned SDK `8.0.423`。校正后的 Q14 `1/1`、`ProductionShellChromeSourceTests 22/22`、R06Clipboard `5/5`、R22 `2/2`；完整 Release build `0 warnings / 0 errors`、XAML `24/24`，source validation/diff check 通过。VSTest 为 .NET Framework 4.8.9345.0。进程有 TextServices `InvalidComObjectException` teardown 输出，但各 TRX 和进程退出码均通过。
 - 校正构建的源码身份为 main `0e031b12` 加 Q14 测试工作树差异；Q14 测试源 SHA-256 `5FAE90542DDBC41A96F56C77B06905B352115CC192666BD36D581B88BCBAC8C7`，侧栏测试源 SHA-256 `33879158CDE26DDB40451D5751DC55DCF93064CDD86BE1C062B47D1721B7CB06`。Playnite DLL SHA/MVID `9737C86C62373FF5586BB8266745FA7480EE5B255D05372A284F6005F03F4C87` / `5368efe3-c19a-4278-9adf-2479358bcb90`；tests DLL SHA/MVID `AFF10C272E772BB7011EE2DA3941974FFE770873F9BB37491B37DBDF092B8DD8` / `2d754f5c-3683-4ed0-90b0-ab599c481331`。
-- 当前工作树测试校正尚未提交，#950 是最近已推送检查点且为失败；新 commit 的 Actions 结果待生成并跟到终态。本节本机 TRX 的脱敏文件名、测试计数和哈希见上表。
+- #951（run `38306094571`，commit `2f546d06`，job `115000392485`）已终态失败；CI SDK `8.0.423`、Windows `10.0.26100`。完整 log SHA-256 `96BCAC239C2E6BB25DA54E725319FA9AB6EC6964C3662D2C4AFAAB0A266406DE`（128,002 bytes / 1,015 lines）。隔离序列从 `[24/114] Q14ToolbarAlignmentBehaviorTests` 继续到 `[25/114] R02ActionAvailabilityHintTests`，据此 Q14 类已通过；后续失败位于 `R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt`，预期 Tooltip 开启计数 `1`、实测 `0`，不是 Q14 断点回归。
+- Artifact `11773198841` 页面摘要 SHA-256 `fd4cdd6972f4b5d80c606b14ffdb3d3c259d4dcc8f1e9c7c3b24ebb76b5fa222`；匿名 artifact 下载 HTTP 401，未声称检查产物内容。失败测试夹具与本机诊断见[R05-07 复核包](../R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 当前 Q14 本机复跑 `1/1`，TRX 文件名、测试计数和 SHA 见上表；最新隔离程序集包含 R05 测试夹具修正，Playnite SHA/MVID `A602B8F77EA4B983C28BB9CA4840D87DD94DEE2ACEEF7581F58A232CB99140A8` / `6bba8de6-5002-4886-ba04-9650d01eca0b`，tests SHA/MVID `2AAEB335A9ED08C1B8BDD5142121DCCAECDA239E651BD06809A82E5E379B794B` / `0cd8cbed-538c-4f4d-bffd-7f5533f9647e`。
+- R05 测试夹具修正尚未提交/推送；新 Actions 仍需跟到终态。R06-04 不能在后续 CI 成功前收口，本节其他本机 TRX仍不替代远端门禁。
 
 ## 验证边界与下一步
 
 快捷键测试在显示的隔离 STA 窗口中对真实生产 DataGrid 触发 WPF routed event；modifier 通过仅供测试使用的内部 seam 提供，clipboard 写入使用 fake setter。它不代表真实 OS 键盘、系统剪贴板或 Playnite 宿主输入。没有视觉布局改动或当前 RenderHarness 截图；双主题渲染证据仍绑定原实现 `afe4aa55`。真实 Playnite、系统剪贴板占用、物理 DPI/跨屏、IME、UIA/Narrator 和宿主性能仍未验，也未触碰真实存档、媒体、云端或诊断数据。
 
-旧阶段的 CI 结果与 SDK差异、完整日志哈希和本轮校正过程见上方“Actions 失败复核与当前 main 校正”；新测试提交仍待远端 Actions 终态。
+旧阶段的 CI 结果与 SDK差异、完整日志哈希和本轮校正过程见上方“Actions 失败复核与当前 main 校正”；Tooltip 测试夹具修正推送后仍需远端 Actions 成功，才能收口 R06-04。
 
-CI校正 commit 成功后，下一项 R06-05 列头说明；先核对单位、缩写、排序箭头与现有列头行为，再决定是否只需补当前 main 证据。
+CI 校正成功后，先按用户要求复核 R00/R01 问题修复与证据，再推进依赖已满足的 Q/R 项；R06-05 列头说明已有满足证据，届时按当前 main 复核是否需要补充。

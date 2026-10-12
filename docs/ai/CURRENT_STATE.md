@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 已归档。R05-01/02 `11/11`、R05-03 `7/7`（无闪屏帧证据，部分满足）、R05-04 `3/3`、R05-05 不适用、R05-06 `28/28`、R05-07 `34/34`；R06-01 `6/6`、R06-02 `7/7`、R06-03 当前 main `6/6`。R06-04 生产快捷键路由 `5/5`、复制反馈 `2/2`；本轮本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。[R06-04 当前 main/CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。CI #947–#950 均失败于旧 Q14 compact 断言；当前工作树已按第二次布局实际使用的 `ActualWidth` 修正，尚未提交推送，远端验证待新 Actions 终态。用户指定 #919/#920 完整日志已取回：实际 SDK `10.0.401`，两项旧侧栏 transition 测试的启动断言失败；当前 main 同类 `22/22` 是 SDK8 本机结果，不代表 SDK10 CI。版本 `0.6.73-development-preview`。真实 Playnite、OS 输入/剪贴板、UIA/Narrator、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能与真实数据写入均未验证。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 已归档，待本轮按用户要求再核对问题与证据。R05-01/02 `11/11`、R05-03 `7/7`（无闪屏帧证据，部分满足）、R05-04 `3/3`、R05-05 不适用、R05-06 `28/28`。R05-07 生产 Tooltip 行为不变；本机补强夹具后 Tooltip `2/2` 连续两轮，CI #951 曾在旧夹具的 dwell 用例失败，修正待新 run。R06-01 `6/6`、R06-02 `7/7`、R06-03 当前 main `6/6`。R06-04 生产快捷键路由 `5/5`、复制反馈 `2/2`；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。[R06-04 当前 main/CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。Q14 修正已在 main `2f546d06`；#951 日志确认 Q14 已通过，整轮之后失败于 R05 Tooltip 测试。当前只改测试夹具并待 push 后 Actions 终态。用户指定 #919/#920 完整日志已取回：CI SDK `10.0.401`，两项旧侧栏 transition 测试启动断言失败；当前 main 同类 `22/22` 为 SDK8 本机结果，不代表 SDK10 CI。版本 `0.6.73-development-preview`。真实 Playnite、OS 输入/剪贴板、UIA/Narrator、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能与真实数据写入均未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -24,26 +24,25 @@
 | R05-04 当前工作树 | 基于 main `903525be`，测试源 SHA `B6D804AD...`；本机 SDK `8.0.423` Release solution `0/0`，`R05MultiSelectionSummaryBehaviorTests 3/3`。验证 0/1/2 摘要、隐藏 ID 例外、清空“已忽略”选择同时保留“待归类”选择并保持模式；未改生产视觉。身份/边界见当前复核包 |
 | R05-05 当前 main | `fbf504d2a7aabcd322c3c735959a31c7e1679fc9`；媒体批量选择用 Extended DataGrid + `SelectedItems`；唯一显式三态样例在开发校对页。XAML `24/24`、Release `0/0`、源契约 `24/24`；源测试为字符串断言，不覆盖 Space/UIA/集合行为。维持不适用，见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R05-06 当前 main | 生产基线 `0fcb44f8`，只补同值重复赋值负例；隔离 SDK `8.0.423`、官方 Release build `0/0`、XAML `24/24`，定向 `28/28`。当前行为、TRX 与源码/程序集身份见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-06-CURRENT-MAIN-RECHECK-20261013/README.md) |
-| R05-07 当前 main | commit `afade3cd`；隔离 SDK `8.0.423`、Release `0/0`、XAML `24/24`；Tooltip `2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、source contracts `24/24`，合计 `34/34`。快速通过和“前一 Tooltip 已显示后继续快速移动”均用实际系统指针与 STA WPF 行为验证；动态后代取 `350/0`，显式时序值保留。见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md) |
+| R05-07 当前 main | commit `afade3cd` 的生产时序行为复核仍成立；本轮只补测试夹具：置顶/激活临时窗口，先确认 WPF hover 后再计驻留。SDK `8.0.423`，Release `0/0`、XAML `24/24`；Tooltip `2/2` 连续两轮，Q14 `1/1`。CI #951 的旧 Tooltip dwell 失败与完整 log、修正证据见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)；新 CI 待终态 |
 | R06-01 当前 main | 同一 `afade3cd` 最新 main 重建 SDK `8.0.423` Release `0/0`、XAML `24/24`；`R06ColumnWidthPersistenceBehaviorTests 6/6`，含 Task 列键/生产列定义一致性；当前代码和程序集 SHA、TRX 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。旧双主题截图不绑定当前 commit |
 | R06-02 当前 main | `90454586` 隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`；`R06SortingBehaviorTests 7/7`。实际 WPF 列头双向点击/箭头、乱序重加稳定次键、未知值和失效视图负例见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。历史 RenderHarness 图绑定 `c577afc5`，未当作当前截图 |
 | R06-03 当前 main | 生产实现沿用 `d83c7378`；本轮以 `fdeeec8` 生产源加单项测试差异构建，SDK `8.0.423` Release `0/0`、XAML `24/24`；R06Selection `2/2`、四表双主题状态几何 `1/1`、Task 双主题受控 hover/错误徽章 InputHitTest/Failed 终态禁用与 Running 取消按钮 UIA Invoke `1/1`、共享资源契约 `2/2`。测试仅证明隔离 WPF 状态与逻辑 DIP，不是实际 OS 指针或 Playnite 呈现。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md) |
-| R06-04 当前 main | 复用 `afe4aa55` 已有 `DataGridClipboardBehavior` 和五类 profile；生产行为复核 `5/5`，复制反馈 `2/2`。本机 SDK `8.0.423` 最新 Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。工作树 Q14 修正使用第二次布局的实际 `ActualWidth`，未改生产；新 CI 待提交/推送后验证。详情见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md) |
-| 远端 CI | #947–#950 已终止失败；#949/#950 完整日志均定位到 Q14 compact 断言 Expected False/Actual True（SDK `8.0.423`），同一测试修正在当前工作树，尚无新 run。用户指定 #919 (`36675309812`, `a6b6dfc`) 与 #920 (`36677346317`, `77de7f4`) 完整日志已取回，实际 SDK `10.0.401`；两项侧栏 transition 测试启动断言失败。当前 main 侧栏类本机 SDK8 `22/22`，不是旧提交复现或 SDK10 CI。#946 是更早且日志/artifact仍不可访问的失败，保留为历史限制。下一步推送 Q14 校正并跟踪最新 Actions 直到终态 |
-| R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
+| R06-04 当前 main | 复用 `afe4aa55` 已有 `DataGridClipboardBehavior` 和五类 profile；生产行为复核 `5/5`，复制反馈 `2/2`。本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、侧栏 `22/22`、R06Clipboard `5/5`、R22 `2/2`。Q14 修正在 main `2f546d06`；#951 已确认 Q14 通过，后续失败于 R05 Tooltip 测试夹具。当前补强夹具并待新 CI 终态，不能收口。详情见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md) |
+| 远端 CI | #947–#950 完整日志均定位到旧 Q14 compact 断言 Expected False/Actual True；Q14 修正在 main `2f546d06`。#951 (`38306094571`) 终态失败，实际 SDK `8.0.423`，Q14 类已运行通过，失败为 R05 Tooltip dwell `expected 1 / actual 0`；完整 log SHA/实测及修正见 R05-07 复核包。新夹具待 push 和新 Actions 终态。用户指定 #919 (`36675309812`, `a6b6dfc`) 与 #920 (`36677346317`, `77de7f4`) 完整日志已取回，实际 SDK `10.0.401`；两项旧侧栏 transition 测试启动断言失败。当前 main 侧栏类 SDK8 `22/22` 不是 SDK10 CI。#946 是更早且日志/artifact仍不可访问的失败，保留为历史限制 |
+| R00/R01 证据 | 先前 `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径，freshness `14 fresh / 0 stale`，package identity 未提供。本轮按用户新要求，在当前 CI 阶段通过后重新核对质量审查、账本和仍待修问题，不以历史结论代替复查。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
 仓库锁定 SDK `8.0.423` 已由官方安装脚本安装到 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；通过临时进程 PATH 前缀选择，系统 SDK/PATH 未改。历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932、#934、#935 与 #936 的失败原因均未取得完整日志；访问受限期间不盲修。
 
 ## 当前执行顺序
 
-唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
+当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新已终态 run `38270923668`（#939）失败；run/job logs 与 artifact API 403，job 页要求登录，根因未知，不盲修。按任务补充跟踪 CI SDK `10.0.401` 与本机 SDK `8.0.423`；当前 workflow/global.json 有版本差异，真实 run SDK 未证实。
-2. 当前 Q14 测试修正提交推送并等待新 Actions 终态；成功后检查已实现的 R06-05 列头说明，先核对现有能力和任务证据，再决定仅补证还是实施。
-3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
-4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
-5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。
+1. 修正 R05 Tooltip 隔离测试的 hover 到达检测，推送后跟踪 Actions 到终态；远端成功后收口当前 R06-04 阶段。
+2. 重新审查 R00/R01 质量审查与账本中仍需处理的问题和证据路径，逐条补实际证据/修复；不得以此前 `14 fresh / 0 stale` 替代本轮核对。
+3. 按 Round3 依赖继续 Q/R 小批次；对已实现项先做当前 main 证据校正，R06-05 已有实现证据，复核来源身份后再决定补证。
+4. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`；未解决的用户失败与发布门禁仍保留。
 
 ## 架构与生产 UI
 

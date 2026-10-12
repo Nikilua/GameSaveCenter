@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 已归档。R06-03 `6/6`；R06-04 生产快捷键 routed-event `5/5`、反馈 `2/2`。本轮校正 Q14 响应式测试后，本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。CI #949/#950 在旧 Q14 断言失败，校正尚待提交推送及新 Actions 终态。用户指定 #919/#920 的完整日志已取回，CI SDK `10.0.401`，两项旧侧栏 transition 测试期望启动而实测未启动；当前 main 对应类在 SDK8 下通过，SDK 不同且源码已有后续改动。下一步推送校正并跟踪 CI，之后检查 R06-05。详情见 [CURRENT_STATE](ai/CURRENT_STATE.md)、[PROJECT_MEMORY](ai/PROJECT_MEMORY.md)、[WORKLOG](ai/WORKLOG.md) 与 [R06-04 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。真实 Playnite、OS 输入/剪贴板、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本 `0.6.73`。旧记录见 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness 此前 `14 fresh / 0 stale`，本轮仍需按用户要求复核。R06-03 `6/6`；R06-04 生产快捷键 routed-event `5/5`、反馈 `2/2`。Q14 响应式测试校正已在 main `2f546d06`；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。Actions #951 已确认 Q14 通过，后续失败于 R05 Tooltip dwell 测试；当前仅补隔离窗口 hover 命中门禁，本机 Tooltip `2/2` 连续两轮，新 Actions 待提交推送并跟到终态。用户指定 #919/#920 完整日志已取回，CI SDK `10.0.401`，两项旧侧栏 transition 测试期望启动而实测未启动；当前 main 对应类 SDK8 通过，不代表 SDK10 当前分支结果。下一步先收口当前 CI，再复核 R00/R01，随后继续依赖满足的 Q/R。详情见 [CURRENT_STATE](ai/CURRENT_STATE.md)、[PROJECT_MEMORY](ai/PROJECT_MEMORY.md)、[WORKLOG](ai/WORKLOG.md) 与 [R06-04 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。真实 Playnite、OS 输入/剪贴板、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本 `0.6.73`。旧记录见 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 2026-10-13 R06-04 当前 main 复制快捷键行为复核
 
@@ -8,7 +8,7 @@
 - 本机隔离 SDK `8.0.423`；官方 Release build `0 warning / 0 error`、XAML `24/24`，Playnite `net462`、测试 `net472`。`R06ClipboardBehaviorTests 5/5`、`R22CopyFeedbackBehaviorTests 2/2`，0 失败/跳过；`python scripts/validate-source.py` 与 `git diff --check` 通过。
 - 对实际生产 DataGrid 触发 `PreviewKeyDown` routed event，验证 Ctrl+C 复制选中行、Ctrl+Shift+C 复制当前单元格，并测试 Ctrl+Alt+C、Ctrl+X、解绑后 Ctrl+C 与无选择负例。既有测试继续覆盖显示顺序、稳定 TSV、稳定 ID 去重、完整原值和凭据脱敏。详情、源码/DLL SHA/MVID 与脱敏 TRX 见[R06-04 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - modifiers 经内部测试 seam 注入，clipboard 使用 fake setter；受控 WPF 路由不代表真实 OS 键盘、系统剪贴板或 Playnite 输入。未改布局、主题、DTO 或业务动作；历史双主题 RenderHarness 357 PNG 仍绑定 `afe4aa55`。真实 OS 剪贴板占用、宿主快捷键冲突、IME、UIA/Narrator、物理 DPI/跨屏和宿主性能仍待验。
-- CI #949/#950 已完成失败，具体 Q14 断点断言、完整日志哈希和本机校正见本文件更新摘要与复核包。用户指定 #919/#920 实际使用 SDK `10.0.401`，完整日志已读取；当前源码下相同侧栏类本机 SDK8 `22/22`，仍缺当前提交 SDK10 远端复核。下一步推送 Q14 测试校正并等待新 Actions 终态，之后再开始 R06-05。
+- #951（`38306094571`，commit `2f546d06`）完整 log SHA-256 `96BCAC239C2E6BB25DA54E725319FA9AB6EC6964C3662D2C4AFAAB0A266406DE`，CI SDK `8.0.423`、Windows `10.0.26100`；Q14 类通过，后续 R05 Tooltip dwell 测试 expected1/actual0。已定位本机旧夹具会出现“系统指针到位但 WPF 未命中”；新测试夹具置顶/激活并有界等待实际 hover，本机连续两轮 `2/2`。当前测试修改与脱敏证据待 commit/push，下一 run 需跟到终态；成功后先按用户要求复核 R00/R01，再继续 Q/R。
 
 ## 2026-10-13 R06-03 当前 main 选中/焦点行为复核
 

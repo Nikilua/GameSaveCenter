@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f1a670e8-dd50-4329-aff2-7e69126073ce" name="GSC-redacted-run" runUser="[REDACTED]" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-13T05:06:44.1284438+08:00" queuing="2026-10-13T05:06:44.1284441+08:00" start="2026-10-13T05:06:19.1587902+08:00" finish="2026-10-13T05:06:59.5079737+08:00" />
+  <TestSettings name="default" id="1db7a48d-52c1-4b28-8f2a-e80dc3f01c63">
+    <Deployment runDeploymentRoot="[REDACTED]" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="44356c35-174f-479c-8073-c12c7d63fc1a" testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" testName="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" computerName="[REDACTED]" duration="00:00:22.2580000" startTime="2026-10-13T05:06:21.1670293+08:00" endTime="2026-10-13T05:06:43.4536789+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="44356c35-174f-479c-8073-c12c7d63fc1a">
+      <Output>
+        <StdOut>theme=Light; window=980x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,747.33,36,17.67; ComboBox:797.33,0,112,36,18; Button:919.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Dark; window=980x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,747.33,36,17.67; ComboBox:797.33,0,112,36,18; Button:919.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Light; window=1040x700 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,807.33,36,17.67; ComboBox:857.33,0,112,36,18; Button:979.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Dark; window=1040x700 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,807.33,36,17.67; ComboBox:857.33,0,112,36,18; Button:979.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Light; window=1280x720 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,485.33,36,17.67; ComboBox:535.33,0,140,36,18; Button:1215.33,0,36,36,18.33; ComboBox:725.33,0,140,36,18; ComboBox:915.33,0,120,36,18; ComboBox:1085.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Dark; window=1280x720 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,485.33,36,17.67; ComboBox:535.33,0,140,36,18; Button:1215.33,0,36,36,18.33; ComboBox:725.33,0,140,36,18; ComboBox:915.33,0,120,36,18; ComboBox:1085.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Light; window=1600x900 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,805.33,36,17.67; ComboBox:855.33,0,140,36,18; Button:1535.33,0,36,36,18.33; ComboBox:1045.33,0,140,36,18; ComboBox:1235.33,0,120,36,18; ComboBox:1405.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Dark; window=1600x900 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,805.33,36,17.67; ComboBox:855.33,0,140,36,18; Button:1535.33,0,36,36,18.33; ComboBox:1045.33,0,140,36,18; ComboBox:1235.33,0,120,36,18; ComboBox:1405.33,0,120,36,18]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Light; window=760x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,527.33,36,17.67; ComboBox:577.33,0,112,36,18; Button:699.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Dark; window=760x640 DIP; wpfDpi=1.5x1.5; main=[TextBox:0,0,527.33,36,17.67; ComboBox:577.33,0,112,36,18; Button:699.33,0,36,36,18.33]; presets=[ComboBox:56,0,180,36,18; Button:244,0,54.67,36,17.33; TextBox:306.67,0,132,36,17.67; Button:446.67,0,54.67,36,17.33; Button:509.33,0,66.67,36,17.33; Button:584,0,54.67,36,17.33]; error/focus/disabled/busy geometry stable
+theme=Light; requestedWidth=760 DIP; appliedWidth=760 DIP; arrangedWidth=760 DIP; compact=True; searchCell=527.33; box=527.33; inputViewport=524.67; search/status gap=10; status/refresh gap=10; refreshRight=735.33/741.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Dark; requestedWidth=760 DIP; appliedWidth=760 DIP; arrangedWidth=760 DIP; compact=True; searchCell=527.33; box=527.33; inputViewport=524.67; search/status gap=10; status/refresh gap=10; refreshRight=735.33/741.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Light; requestedWidth=979 DIP; appliedWidth=979.33 DIP; arrangedWidth=979.33 DIP; compact=True; searchCell=746.67; box=746.67; inputViewport=744; search/status gap=10; status/refresh gap=10; refreshRight=954.67/960.67; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Dark; requestedWidth=979 DIP; appliedWidth=979.33 DIP; arrangedWidth=979.33 DIP; compact=True; searchCell=746.67; box=746.67; inputViewport=744; search/status gap=10; status/refresh gap=10; refreshRight=954.67/960.67; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Light; requestedWidth=980 DIP; appliedWidth=980 DIP; arrangedWidth=980 DIP; compact=True; searchCell=747.33; box=747.33; inputViewport=744.67; search/status gap=10; status/refresh gap=10; refreshRight=955.33/961.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Dark; requestedWidth=980 DIP; appliedWidth=980 DIP; arrangedWidth=980 DIP; compact=True; searchCell=747.33; box=747.33; inputViewport=744.67; search/status gap=10; status/refresh gap=10; refreshRight=955.33/961.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Light; requestedWidth=1040 DIP; appliedWidth=1040 DIP; arrangedWidth=1040 DIP; compact=True; searchCell=807.33; box=807.33; inputViewport=804.67; search/status gap=10; status/refresh gap=10; refreshRight=1015.33/1021.33; negativeControlGap=-164.67; negativeControlDetected=True; dpi=1.5x1.5
+theme=Dark; requestedWidth=1040 DIP; appliedWidth=1040 DIP; arrangedWidth=1040 DIP; compact=True; searchCell=807.33; box=807.33; inputViewport=804.67; search/status gap=10; status/refresh gap=10; refreshRight=1015.33/1021.33; negativeControlGap=-164.67; negativeControlDetected=True; dpi=1.5x1.5
+theme=Light; requestedWidth=1215 DIP; appliedWidth=1215.33 DIP; arrangedWidth=1215.33 DIP; compact=True; searchCell=982.67; box=982.67; inputViewport=980; search/status gap=10; status/refresh gap=10; refreshRight=1190.67/1196.67; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Dark; requestedWidth=1215 DIP; appliedWidth=1215.33 DIP; arrangedWidth=1215.33 DIP; compact=True; searchCell=982.67; box=982.67; inputViewport=980; search/status gap=10; status/refresh gap=10; refreshRight=1190.67/1196.67; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Light; requestedWidth=1216 DIP; appliedWidth=1216 DIP; arrangedWidth=1216 DIP; compact=False; searchCell=421.33; box=421.33; inputViewport=418.67; search/status gap=10; status/refresh gap=540; refreshRight=1187.33/1193.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Dark; requestedWidth=1216 DIP; appliedWidth=1216 DIP; arrangedWidth=1216 DIP; compact=False; searchCell=421.33; box=421.33; inputViewport=418.67; search/status gap=10; status/refresh gap=540; refreshRight=1187.33/1193.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Light; requestedWidth=1280 DIP; appliedWidth=1280 DIP; arrangedWidth=1280 DIP; compact=False; searchCell=485.33; box=485.33; inputViewport=482.67; search/status gap=10; status/refresh gap=540; refreshRight=1251.33/1257.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Dark; requestedWidth=1280 DIP; appliedWidth=1280 DIP; arrangedWidth=1280 DIP; compact=False; searchCell=485.33; box=485.33; inputViewport=482.67; search/status gap=10; status/refresh gap=540; refreshRight=1251.33/1257.33; negativeControlGap=NaN; negativeControlDetected=False; dpi=1.5x1.5
+theme=Light; width=520 DIP; panel=501.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=4;top=56,bottom=92,items=3]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Dark; width=520 DIP; panel=501.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=4;top=56,bottom=92,items=3]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Light; width=560 DIP; panel=541.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=5;top=56,bottom=92,items=2]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Dark; width=560 DIP; panel=541.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=5;top=56,bottom=92,items=2]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Light; width=620 DIP; panel=601.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]; 620→660→620 resize restores row gap and original margins
+theme=Dark; width=620 DIP; panel=601.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]; 620→660→620 resize restores row gap and original margins
+theme=Light; width=640 DIP; panel=621.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Dark; width=640 DIP; panel=621.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Light; width=650 DIP; panel=631.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Dark; width=650 DIP; panel=631.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Light; width=654 DIP; panel=635.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Dark; width=654 DIP; panel=635.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Light; width=656 DIP; panel=637.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Dark; width=656 DIP; panel=637.33; rows=2; rowGap=20; rowBounds=[top=0,bottom=36,items=6;top=56,bottom=92,items=1]; margins=[TextBlock:0,0,8,20;ComboBox:0,0,8,20;Button:0,0,8,20;TextBox:0,0,8,20;Button:0,0,8,20;Button:0,0,8,20;Button:0,0,0,20]
+theme=Light; width=657 DIP; panel=638.67; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=657 DIP; panel=638.67; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=658 DIP; panel=639.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=658 DIP; panel=639.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=659 DIP; panel=640.67; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=659 DIP; panel=640.67; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=660 DIP; panel=641.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=660 DIP; panel=641.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=680 DIP; panel=661.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=680 DIP; panel=661.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=720 DIP; panel=701.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=720 DIP; panel=701.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=740 DIP; panel=721.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=740 DIP; panel=721.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=760 DIP; panel=741.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=760 DIP; panel=741.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=780 DIP; panel=761.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=780 DIP; panel=761.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=800 DIP; panel=781.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=800 DIP; panel=781.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Light; width=820 DIP; panel=801.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]
+theme=Dark; width=820 DIP; panel=801.33; rows=1; rowGap=NaN; rowBounds=[top=0,bottom=36,items=7]; margins=[TextBlock:0,0,8,0;ComboBox:0,0,8,0;Button:0,0,8,0;TextBox:0,0,8,0;Button:0,0,8,0;Button:0,0,8,0;Button:0,0,0,0]</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" storage="[ABSOLUTE_PATH]" id="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157">
+      <Execution id="44356c35-174f-479c-8073-c12c7d63fc1a" />
+      <TestMethod codeBase="[ISOLATED_TEST_ROOT]\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests" name="ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" executionId="44356c35-174f-479c-8073-c12c7d63fc1a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.01]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.06]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:23.41]   Finished:    GameSaveCenter.Playnite.Tests
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

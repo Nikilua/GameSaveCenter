@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准。R00/R01 freshness `14 fresh / 0 stale`。R06-04 快捷键行为 `5/5`、复制反馈 `2/2`；当前工作树另修 Q14 compact 断点测试的预期宽度，SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。CI #949/#950 在旧 Q14 断言失败，当前校正尚未提交。用户指定 #919/#920 的完整日志现已读取：两次 CI 实际 SDK `10.0.401`，侧栏 transition 测试断言失败；当前 main 对应测试类 SDK8 `22/22`，不代表 SDK10 当前分支结果。下一步提交推送、追踪 Actions 到终态，再核对 R06-05 当前 main 能力。
+更新：2026-10-13。稳定规则见本文件，当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准。R00/R01 freshness 此前为 `14 fresh / 0 stale`，本轮仍需按用户要求复核问题与证据。R06-04 快捷键行为 `5/5`、复制反馈 `2/2`；Q14 实际宽度断点校正已在 main `2f546d06`，本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。CI #951 确认 Q14 通过，之后 R05 Tooltip dwell 用例失败；当前只修正隔离窗口置顶、激活与 hover 到达门禁，本机 Tooltip `2/2` 连续两轮，新 CI 待 push 后跟到终态。用户指定 #919/#920 完整日志：CI SDK `10.0.401`，两项旧侧栏 transition 测试断言失败；当前 main 对应类 SDK8 `22/22` 不代表 SDK10 当前分支结果。下一步先结束当前 CI 门禁，再复核 R00/R01，随后推进依赖已满足的 Q/R 任务。
 
 ## AI/Codex 启动协议
 

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -63,7 +64,8 @@ public sealed class R05TooltipTimingBehaviorTests
                 ShowInTaskbar = false,
                 ShowActivated = true,
                 WindowStyle = WindowStyle.None,
-                Opacity = 0.01
+                Opacity = 0.01,
+                Topmost = true
             };
 
             var originalCursor = new NativePoint();
@@ -72,6 +74,7 @@ public sealed class R05TooltipTimingBehaviorTests
             try
             {
                 window.Show();
+                window.Activate();
                 window.UpdateLayout();
                 var source = PresentationSource.FromVisual(window) as HwndSource;
                 Assert.NotNull(source);
@@ -296,8 +299,42 @@ public sealed class R05TooltipTimingBehaviorTests
     private static void MoveCursorTo(UIElement target, Point point)
     {
         var screenPoint = target.PointToScreen(point);
-        Assert.True(SetCursorPos((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y)));
-        DrainDispatcher();
+        var expectedX = (int)Math.Round(screenPoint.X);
+        var expectedY = (int)Math.Round(screenPoint.Y);
+        Assert.True(SetCursorPos(expectedX, expectedY), "应能将隔离 Tooltip 行为测试的系统指针移至目标控件。 ");
+
+        var timeout = Stopwatch.StartNew();
+        while (timeout.Elapsed < TimeSpan.FromSeconds(2))
+        {
+            PumpDispatcherFor(TimeSpan.FromMilliseconds(10));
+            if (!target.IsMouseOver)
+                continue;
+
+            var current = new NativePoint();
+            if (GetCursorPos(ref current) &&
+                Math.Abs(current.X - expectedX) <= 2 &&
+                Math.Abs(current.Y - expectedY) <= 2)
+            {
+                return;
+            }
+        }
+
+        var actual = new NativePoint();
+        var cursorAvailable = GetCursorPos(ref actual);
+        var directTarget = Mouse.DirectlyOver;
+        var source = PresentationSource.FromVisual(target) as HwndSource;
+        var pointWindow = cursorAvailable ? WindowFromPoint(new NativePoint { X = actual.X, Y = actual.Y }) : IntPtr.Zero;
+        var foregroundWindow = GetForegroundWindow();
+        var windowRect = source != null && GetWindowRect(source.Handle, out var bounds)
+            ? $"{bounds.Left},{bounds.Top}-{bounds.Right},{bounds.Bottom}"
+            : "<unavailable>";
+        throw new Xunit.Sdk.XunitException(
+            $"等待系统指针进入 Tooltip 目标控件超时。目标={target.GetType().Name}; IsMouseOver={target.IsMouseOver}; " +
+            $"DirectlyOver={directTarget?.GetType().Name ?? "<null>"}; " +
+            $"Cursor={(cursorAvailable ? $"{actual.X},{actual.Y}" : "unavailable")}; 期望={expectedX},{expectedY}; " +
+            $"WindowHandle={(source?.Handle.ToInt64().ToString("X") ?? "<none>")}; " +
+            $"WindowFromPoint={pointWindow.ToInt64():X}; ForegroundWindow={foregroundWindow.ToInt64():X}; Bounds={windowRect}; " +
+            $"Dpi={(source == null ? "<none>" : $"{source.CompositionTarget.TransformToDevice.M11:0.###}x{source.CompositionTarget.TransformToDevice.M22:0.###}")}");
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -312,6 +349,24 @@ public sealed class R05TooltipTimingBehaviorTests
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool SetCursorPos(int x, int y);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr WindowFromPoint(NativePoint point);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool GetWindowRect(IntPtr windowHandle, out NativeRect rectangle);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NativeRect
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
 
     private static void RunSta(Action action)
     {

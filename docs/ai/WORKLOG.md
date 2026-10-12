@@ -9,6 +9,16 @@
 
 ## 2026-10-13 R06-04 当前 main 复制快捷键行为复核
 
+## 2026-10-13 R05-07 CI #951 Tooltip hover 到达夹具复核
+
+- Actions #951（run `38306094571`，commit `2f546d06`，job `115000392485`）终态失败于既有 `R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt`：停留 420ms 后预期 `Opened=1`、实测 `0`；长路径 Wrap/Esc 用例通过。完整 job log SHA-256 `96BCAC239C2E6BB25DA54E725319FA9AB6EC6964C3662D2C4AFAAB0A266406DE`（128,002 bytes / 1,015 lines），CI SDK `8.0.423`、Windows `10.0.26100`。隔离日志从 `[24/114] Q14ToolbarAlignmentBehaviorTests` 继续至 `[25/114] R02ActionAvailabilityHintTests`，因此 Q14 类通过。Artifact `11773198841` 页面摘要 SHA-256 `fd4cdd6972f4b5d80c606b14ffdb3d3c259d4dcc8f1e9c7c3b24ebb76b5fa222`；匿名下载 HTTP 401，未读取内容。
+- 在本机 Windows `10.0.22000`、SDK `8.0.423` 增加 hover 到达门禁时，旧非置顶测试窗口的一次复跑记录到系统指针坐标已到目标但 `IsMouseOver=False`、`Mouse.DirectlyOver=null`，DPI `1.5x1.5`。CI 未记录相同坐标/命中状态，不断言两者同根因。
+- 仅改测试 fixture：Window 短暂 `Topmost` 并 `Activate()`；真实系统指针移动后最多等待 2 秒，要求 WPF `IsMouseOver` 与系统坐标都匹配。超时诊断记录目标、命中窗口、前台窗口、窗口矩形和 DPI；quick-pass取消与驻留开启正负行为仍保留，生产 Tooltip 代码不变。
+- 官方 `scripts/build.ps1 -Configuration Release -SkipTests`：XAML `24/24`、Release `0 warning / 0 error`，Playnite `net462`/tests `net472`。Tooltip `2/2` 连续两次，Q14 `1/1`；`python scripts/validate-source.py` 与 `git diff --check` 通过。测试源码 SHA `F527025A86BD105A7D8E960FF42DEB33C5FD8CF4E2A111D7BC2102CC35FA5B53`；Playnite DLL SHA/MVID `A602B8F77EA4B983C28BB9CA4840D87DD94DEE2ACEEF7581F58A232CB99140A8` / `6bba8de6-5002-4886-ba04-9650d01eca0b`；tests DLL SHA/MVID `2AAEB335A9ED08C1B8BDD5142121DCCAECDA239E651BD06809A82E5E379B794B` / `0cd8cbed-538c-4f4d-bffd-7f5533f9647e`。脱敏 TRX SHA、历史 CI 证据和未验边界见[R05-07复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 当前源修改尚未 commit/push；远端新 run 尚不存在，故当前 R06-04 阶段未收口。待新 Actions 成功后先复核 R00/R01 问题与证据，再推进依赖满足的 Q/R 项。
+
+## 2026-10-13 R06-04 当前 main 复制快捷键行为复核
+
 - 复用初始实现 `afe4aa55` 的 `DataGridClipboardBehavior`、五类 profile、现有 DTO 和凭据脱敏。main 源码基线 `e277a804bd4774cd32ad0bde0dfe2b8f76bc3308`；本轮只增加一个 modifiers 测试 seam 与一项 routed-event 行为测试，没有改快捷键或剪贴板生产行为。
 - Pinned SDK `8.0.423` 下官方 Release build `0 warnings / 0 errors`、XAML `24/24`；Playnite `net462`、测试 `net472`。`R06ClipboardBehaviorTests 5/5`、`R22CopyFeedbackBehaviorTests 2/2`，0 失败/跳过。`python scripts/validate-source.py` 与 `git diff --check` 通过。
 - 对实际生产 DataGrid 触发 WPF `PreviewKeyDown` routed event，覆盖 Ctrl+C 选中行、Ctrl+Shift+C 当前单元格；Ctrl+Alt+C、Ctrl+X、解绑后 Ctrl+C 与无选择负例不复制，无选择时显示失败反馈且事件未吞。既有用例继续验证显示顺序、稳定 TSV、ID 去重、完整原值和凭据脱敏。modifier 由内部 test seam 控制，clipboard 通过 fake setter，不接触 OS 键盘或系统剪贴板。
