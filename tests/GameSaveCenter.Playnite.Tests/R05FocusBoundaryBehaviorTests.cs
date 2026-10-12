@@ -10,7 +10,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -103,16 +105,120 @@ public sealed class R05FocusBoundaryBehaviorTests
     }
 
     [Fact]
-    public void DetailOverlayDeclaresLocalTabCycleAndRestoresTheOpeningTrigger()
+    public void DashboardConfirmationKeepsTabFocusInsideAndRestoresItsTriggerAfterClose()
+    {
+        RunSta(() =>
+        {
+            var plugin = (GameSaveCenterPlugin)FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin));
+            var animationsEnabled = false;
+            var dashboard = new DashboardView(plugin, () => animationsEnabled, useMinimalDialogBehaviorFixture: true);
+            var overlay = (Grid)dashboard.FindName("DialogOverlay")!;
+            var dialogHost = Assert.IsType<Grid>(VisualTreeHelper.GetParent(overlay));
+            var trigger = new Button
+            {
+                Content = "Synthetic dialog trigger",
+                Width = 160,
+                Height = 36,
+                Focusable = true,
+                IsTabStop = true,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(16)
+            };
+            Panel.SetZIndex(trigger, 50);
+            dialogHost.Children.Insert(0, trigger);
+            var card = (Border)dashboard.FindName("DialogCard")!;
+            var cancel = (Button)dashboard.FindName("DialogCancelButton")!;
+            var confirm = (Button)dashboard.FindName("DialogConfirmButton")!;
+            card.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromMilliseconds(240));
+
+            var host = new Window
+            {
+                Content = dashboard,
+                Width = 1100,
+                Height = 760,
+                ShowInTaskbar = false,
+                ShowActivated = true,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+
+            try
+            {
+                host.Show();
+                host.UpdateLayout();
+                Assert.True(trigger.IsVisible);
+                Assert.True(trigger.IsEnabled);
+                Assert.True(trigger.Focusable);
+                Assert.True(trigger.Focus());
+                Assert.Same(trigger, Keyboard.Focus(trigger));
+
+                var reducedMotionRequest = new UiConfirmationEventArgs("确认", "合成测试", "继续", "取消", true);
+                RaiseConfirmationRequest(dashboard, plugin, reducedMotionRequest);
+
+                Assert.True(reducedMotionRequest.Handled);
+                Assert.True(WaitFor(host, () => ReferenceEquals(Keyboard.FocusedElement, cancel)));
+                Assert.Equal(Visibility.Visible, overlay.Visibility);
+                Assert.Same(cancel, Keyboard.FocusedElement);
+
+                Assert.True(cancel.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)));
+                Assert.Same(confirm, Keyboard.FocusedElement);
+                Assert.True(IsDescendantOf(Keyboard.FocusedElement, overlay));
+                Assert.True(confirm.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)));
+                Assert.Same(cancel, Keyboard.FocusedElement);
+                Assert.True(IsDescendantOf(Keyboard.FocusedElement, overlay));
+                Assert.True(cancel.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous)));
+                Assert.Same(confirm, Keyboard.FocusedElement);
+                Assert.True(IsDescendantOf(Keyboard.FocusedElement, overlay));
+
+                cancel.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                Assert.Equal(Visibility.Collapsed, overlay.Visibility);
+                Assert.True(WaitFor(host, () => ReferenceEquals(Keyboard.FocusedElement, trigger)));
+                Assert.False(reducedMotionRequest.Completion.Task.Result);
+
+                animationsEnabled = true;
+                Assert.True(trigger.Focus());
+                Assert.Same(trigger, Keyboard.Focus(trigger));
+                var animatedRequest = new UiConfirmationEventArgs("确认", "合成测试", "继续", "取消", true);
+                RaiseConfirmationRequest(dashboard, plugin, animatedRequest);
+
+                Assert.True(WaitFor(host, () =>
+                    ReferenceEquals(Keyboard.FocusedElement, cancel)
+                    && !DependencyPropertyHelper.GetValueSource(card, UIElement.OpacityProperty).IsAnimated));
+                Assert.Equal(Visibility.Visible, overlay.Visibility);
+
+                cancel.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                Assert.Equal(Visibility.Visible, overlay.Visibility);
+                Assert.True(IsDescendantOf(Keyboard.FocusedElement, overlay));
+                Assert.True(WaitFor(host, () =>
+                    overlay.Visibility == Visibility.Collapsed
+                    && ReferenceEquals(Keyboard.FocusedElement, trigger)));
+                Assert.False(animatedRequest.Completion.Task.Result);
+            }
+            finally
+            {
+                host.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void DashboardDialogDeclaresAnOverlayFocusScopeAndReturnFocusPath()
     {
         var root = TestRepositoryContext.Root;
         var xaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml"));
         var code = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+        var document = XDocument.Parse(xaml);
+        XNamespace xamlNamespace = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var cancelButton = document.Descendants().Single(element => (string?)element.Attribute(xamlNamespace + "Name") == "DialogCancelButton");
+        var confirmButton = document.Descendants().Single(element => (string?)element.Attribute(xamlNamespace + "Name") == "DialogConfirmButton");
 
         Assert.Contains("x:Name=\"DialogOverlay\"", xaml);
         Assert.Contains("FocusManager.IsFocusScope=\"True\"", xaml);
         Assert.Contains("KeyboardNavigation.TabNavigation=\"Cycle\"", xaml);
         Assert.Contains("KeyboardNavigation.DirectionalNavigation=\"Contained\"", xaml);
+        Assert.Equal("OnDialogCancelClick", (string?)cancelButton.Attribute("Click"));
+        Assert.Equal("OnDialogConfirmClick", (string?)confirmButton.Attribute("Click"));
         Assert.Contains("dialogReturnFocus", code);
         Assert.Contains("Keyboard.Focus(returnFocus);", code);
     }
@@ -247,6 +353,37 @@ public sealed class R05FocusBoundaryBehaviorTests
 
     private static string DescribeFocus(IInputElement? element, DependencyObject ancestor)
         => $"Focus={element?.GetType().Name ?? "null"}, inside={IsDescendantOf(element, ancestor)}";
+
+    private static void RaiseConfirmationRequest(
+        DashboardView dashboard,
+        GameSaveCenterPlugin plugin,
+        UiConfirmationEventArgs request)
+    {
+        var handler = typeof(DashboardView).GetMethod("OnUiConfirmationRequested", BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(handler);
+        handler!.Invoke(dashboard, new object[] { plugin, request });
+    }
+
+    private static bool WaitFor(Window window, Func<bool> predicate)
+    {
+        var frame = new DispatcherFrame();
+        var deadline = DateTime.UtcNow.AddSeconds(3);
+        var timer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+        {
+            Interval = TimeSpan.FromMilliseconds(10)
+        };
+        timer.Tick += (_, __) =>
+        {
+            if (predicate() || DateTime.UtcNow >= deadline)
+            {
+                timer.Stop();
+                frame.Continue = false;
+            }
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
+        return predicate();
+    }
 
     private static void RunSta(Action action)
     {

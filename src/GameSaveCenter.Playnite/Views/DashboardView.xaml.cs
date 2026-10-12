@@ -25,6 +25,7 @@ namespace GameSaveCenter.Playnite.Views
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly GameSaveCenterPlugin plugin;
         private readonly DispatcherTimer refreshTimer;
+        private readonly Func<bool>? motionEnabledOverrideForBehaviorTest;
         private readonly Dictionary<Border, DispatcherTimer> toastTimers = new Dictionary<Border, DispatcherTimer>();
         private DashboardViewModel viewModel;
         private bool hasPlayedEntrance;
@@ -47,11 +48,31 @@ namespace GameSaveCenter.Playnite.Views
         private bool activeGlassEnabled;
 
         public DashboardView(GameSaveCenterPlugin plugin)
+            : this(plugin, null, false)
+        {
+        }
+
+        internal DashboardView(
+            GameSaveCenterPlugin plugin,
+            Func<bool>? motionEnabledOverrideForBehaviorTest,
+            bool useMinimalDialogBehaviorFixture)
         {
             this.plugin = plugin;
+            this.motionEnabledOverrideForBehaviorTest = motionEnabledOverrideForBehaviorTest;
+            refreshTimer = new DispatcherTimer(DispatcherPriority.Background);
+
+            // Focus behavior tests exercise the production dialog handlers without
+            // constructing a Playnite service graph or subscribing to host lifecycle events.
+            if (useMinimalDialogBehaviorFixture)
+            {
+                InitializeDialogBehaviorFixture();
+                dialogMotion = new DialogOverlayMotion(DialogOverlay, DialogCard);
+                viewModel = null!;
+                return;
+            }
+
             InitializeComponent();
             dialogMotion = new DialogOverlayMotion(DialogOverlay, DialogCard);
-
             viewModel = new DashboardViewModel(plugin);
             DataContext = viewModel;
             ProductionShellView.Attach(viewModel);
@@ -66,7 +87,6 @@ namespace GameSaveCenter.Playnite.Views
             };
             ProductionShellView.SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id);
 
-            refreshTimer = new DispatcherTimer(DispatcherPriority.Background);
             refreshTimer.Tick += OnRefreshTimerTick;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -75,7 +95,70 @@ namespace GameSaveCenter.Playnite.Views
             PreviewKeyDown += OnPreviewKeyDown;
         }
 
-        private bool MotionEnabled => GscMotion.IsEnabled(plugin.Settings.EnableUiAnimations);
+        private void InitializeDialogBehaviorFixture()
+        {
+            var root = new Grid();
+            NameScope.SetNameScope(this, new NameScope());
+
+            DialogOverlay = new Grid
+            {
+                Visibility = Visibility.Collapsed,
+                Background = Brushes.Transparent
+            };
+            FocusManager.SetIsFocusScope(DialogOverlay, true);
+            KeyboardNavigation.SetTabNavigation(DialogOverlay, KeyboardNavigationMode.Cycle);
+            KeyboardNavigation.SetDirectionalNavigation(DialogOverlay, KeyboardNavigationMode.Contained);
+
+            DialogTitleText = new TextBlock();
+            DialogMessageText = new TextBlock();
+            DialogCopyButton = new Button { Content = "复制详情", Visibility = Visibility.Collapsed };
+            DialogNeverButton = new Button { Content = "不再提醒", Visibility = Visibility.Collapsed };
+            DialogLaterButton = new Button { Content = "以后再说", Visibility = Visibility.Collapsed };
+            DialogCancelButton = new Button { Content = "取消" };
+            DialogConfirmButton = new Button { Content = "确认" };
+            DialogCard = new Border
+            {
+                Width = 420,
+                Padding = new Thickness(24),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+            buttons.Children.Add(DialogCopyButton);
+            buttons.Children.Add(DialogNeverButton);
+            buttons.Children.Add(DialogLaterButton);
+            buttons.Children.Add(DialogCancelButton);
+            buttons.Children.Add(DialogConfirmButton);
+
+            var content = new StackPanel();
+            content.Children.Add(DialogTitleText);
+            content.Children.Add(DialogMessageText);
+            content.Children.Add(buttons);
+            DialogCard.Child = content;
+            DialogOverlay.Children.Add(DialogCard);
+            root.Children.Add(DialogOverlay);
+            Content = root;
+
+            DialogCopyButton.Click += OnDialogCopyClick;
+            DialogNeverButton.Click += OnDialogNeverClick;
+            DialogLaterButton.Click += OnDialogLaterClick;
+            DialogCancelButton.Click += OnDialogCancelClick;
+            DialogConfirmButton.Click += OnDialogConfirmClick;
+
+            RegisterName(nameof(DialogOverlay), DialogOverlay);
+            RegisterName(nameof(DialogCard), DialogCard);
+            RegisterName(nameof(DialogTitleText), DialogTitleText);
+            RegisterName(nameof(DialogMessageText), DialogMessageText);
+            RegisterName(nameof(DialogCopyButton), DialogCopyButton);
+            RegisterName(nameof(DialogNeverButton), DialogNeverButton);
+            RegisterName(nameof(DialogLaterButton), DialogLaterButton);
+            RegisterName(nameof(DialogCancelButton), DialogCancelButton);
+            RegisterName(nameof(DialogConfirmButton), DialogConfirmButton);
+        }
+
+        private bool MotionEnabled => motionEnabledOverrideForBehaviorTest?.Invoke()
+            ?? GscMotion.IsEnabled(plugin.Settings.EnableUiAnimations);
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

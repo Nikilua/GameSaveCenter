@@ -1,6 +1,15 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-12；R04-03 当前 main 设置草稿关闭分支补证 `12/12` 已完成，R00/R01 freshness 14 条记录未命中该代码路径。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。当前在 main `746eaf6a` 基线上收口 R05-01/02：未提交工作树定向测试 `11/11`，精确提交复跑、push 与 CI 仍待完成。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+
+## 2026-10-13 R05-01/02 当前 main 候选与 Actions 检查点
+
+- 工作树基于已推送 main `746eaf6a6bb644564e89afaa2c2d08929bc32c45`，本阶段尚未提交。隔离 SDK `8.0.423` 下 Release 测试构建插件 `net462` 与测试 `net472`；`R05FocusBoundaryBehaviorTests`、`R05OptionVirtualizationBehaviorTests`、`R21FocusVisualRegressionBehaviorTests` 合计 `11/11`，VSTest exit0。测试宿主 .NET Framework `4.8.9181.0`。
+- Dashboard 行为证据由最小 STA WPF fixture 调用生产确认处理器并通过 routed Click 走生产取消处理器；覆盖焦点进入、Tab/Shift+Tab 环绕、减少动效即时关闭、240ms 动画关闭期间焦点仍留在 overlay、取消后回到合成触发器。XML 检查另核对生产 XAML 的 Cancel/Confirm Click 接线。fixture 没有加载完整 Dashboard XAML 或 Playnite 宿主。
+- `python scripts/validate-source.py` 通过，`git diff --check` 通过（仍打印测试源码 CRLF 提示）。进程退出时输出三条 WPF TextServicesHost/TextStore `InvalidComObjectException` 清理异常；测试为 `11/11`、exit0，异常根因未知。用 PowerShell 清理本轮试验 TRX 的命令被执行策略拒绝，相关文件保留在 evidence 本地目录，未尝试其他删除路径。
+- Actions #940 (`38274288024`, commit `746eaf6a`) 的公开页最新为 `In progress`；匿名 API rate-limit HTTP403、剩余 `0/60`，日志不可读取。#939 完整日志同样不可访问、失败根因未知。本机 SDK `8.0.423` 与待核 CI SDK `10.0.401` 分开记录。下一步：提交本阶段代码/测试/文档后按精确 SHA 复跑并推送，等待该 run 与新 run 终态；完成后推进 R05-03 当前 main 弹层边缘复核。真实 Playnite、完整 Dashboard XAML 加载、IME/UIA/Narrator、物理 DPI/跨屏、呈现帧与宿主性能仍待验。
+- 用户补充的旧检查点 `77de7f450431d267026ce2169aa30525b18bf528` 对应 Actions `36677346317`（#920），现已终态 failure，7m04s 后“编译、测试与打包”exit1；job 页要求登录，完整日志下载 HTTP403，根因未知。此状态属于早于当前 main `746eaf6a` 的历史提交，不替代 #940 或本轮新 run。
+- 用户要求优先取得的旧 run `36675309812`（#919，commit `a6b6dfc`）也已终态 failure，总耗时13m02s，“编译与测试”步骤exit1。公开 job 展开仅有加载失败/登录提示，完整日志下载 HTTP403；根因未知，没有日志前不基于 exit code 猜测修复。
 
 ## 2026-10-12 R04-03 本机复核与最新已推送 CI
 

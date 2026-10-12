@@ -1,3 +1,12 @@
+## 2026-10-13 R05-01/02 当前 main 行为复核候选（提交前）
+
+- 基于 main `746eaf6a6bb644564e89afaa2c2d08929bc32c45` 的未提交工作树；隔离 .NET SDK `8.0.423`，Release 测试构建插件 `net462`、测试 `net472`。定向运行 `R05FocusBoundaryBehaviorTests`、`R05OptionVirtualizationBehaviorTests` 与 `R21FocusVisualRegressionBehaviorTests`，`11 passed / 0 failed / 0 skipped`；测试宿主 .NET Framework `4.8.9181.0`。
+- R05-01 增加 Dashboard 焦点行为 fixture：调用生产确认事件处理器，实际 routed Click 调用生产取消处理器；验证焦点进入、Tab/Shift+Tab 环绕、减少动效即时关闭、240ms 关闭动画期间 overlay 与焦点继续留层内、取消后焦点回到触发器；检查 completion 为取消。另用 XML 解析核对生产 XAML Cancel/Confirm 按钮 Click 接线。未加载完整 Dashboard XAML 或启动 Playnite。
+- `python scripts/validate-source.py` 通过；`git diff --check` exit0（PowerShell 报测试源码 CRLF 提示）。VSTest 结束时仍显示三条 WPF TextServicesHost/TextStore `InvalidComObjectException` 清理消息，exit0 且 TRX `11/11`，原因未知。PowerShell 删除本轮生成的试验 TRX 文件被执行策略拒绝，保留原文件且未通过其他方式删除。
+- Actions #940 (`38274288024`, commit `746eaf6a`) 公开页面截至 2026-10-13 仍为 `In progress`；匿名 API rate-limit HTTP403（0/60），日志无法读取。完整提交后精确身份测试、push 和新 Actions 终态待完成。本机 SDK8 不替代待核 CI SDK10.0.401。下一步完成提交与推送检查，之后推进 R05-03 弹层边缘适配复核。
+- 用户补充的旧检查点 `77de7f450431d267026ce2169aa30525b18bf528` 对应 Actions run `36677346317`（#920），当前页面已显示 failure，7m04s 后“编译、测试与打包”exit1；job 页要求登录且完整日志 HTTP403，原因未知。这早于当前 main 的 run，不以其替代 #940 状态，也不凭未知失败原因盲改。
+- 按暂停点要求检查的 `a6b6dfc` 对应 run `36675309812`（#919）当前也已终态 failure，总耗时13m02s，“编译与测试”步骤exit1；公开 job 摘要无法加载，要求登录，完整日志HTTP403，失败原因未知。继续等待有权限日志，暂不归因或盲修。
+
 ## 2026-10-12 R04-02 当前 main 错误摘要导航复核；R04-01 Actions #938 终态
 
 - 基于当前源码/测试身份 `32c0e1e21d1fbfe0b8e46d765b4d2bd3161c46ed`，自完整源码身份 `4d166f0` 后 src/tests 无变化。隔离 SDK `8.0.423` 下 Playnite net472 测试项目已重建；`SettingsValidationSourceTests 1/1`、`SettingsPathValidationTests 3/3`、`SettingsValidationNavigationBehaviorTests 1/1`，合计 `5/5`。脱敏 TRX SHA-256 `5F6FEFB5D90D8F41AA0B788125A3D46572370954A21A3A5D6127EF458EC07151`，DLL 身份与[R04-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/README.md)相同。
