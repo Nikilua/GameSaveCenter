@@ -1,0 +1,5 @@
+Command: RenderHarness Release build into isolated OutputRoot, then run default render-qa scenario.
+Build identity: da6388e814309825141fb530ecda702cb7e11eab; test-only dirty path recorded separately.
+Report: EvidenceSource=OffscreenRenderHarness; WorkingTreeClean=False; DpiScale=1.00 logical DIP.
+Themes: light,dark. Rendered PNG count: 372. Final report status: render-qa OK.
+Scope: general workspace/layout smoke. Default fixtures did not force every disabled-action explanation; these screenshots are not direct R02-03 disabled-state evidence.

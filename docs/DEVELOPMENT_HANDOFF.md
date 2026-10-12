@@ -1,13 +1,15 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-12；picker 修复已推送 main，R00/R01 受影响源码证据已复核。最新源码/CI状态见下方检查点及[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-12；picker 修复、R00/R01 源码证据校正已推送 main；R02-03 当前焦点/UIA peer 复验完成。最新 R02 证据见[R02-03当前复验包](design/reviews/ui-finesse-round3-20260915/evidence/R02-03-CURRENT-RECHECK-20261012/README.md)，此前 R00/R01 见[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。最新 CI 状态见下方检查点。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 2026-10-12 当前检查点（优先于下方10月7日历史记录）
 
 - picker Dispatcher 修复提交 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f` 已推送 `main`。无 `SynchronizationContext` 的 STA 旧实现线程负例失败；修复后的 R05 picker 类 `5/5`。前一候选完整 Release/WPF 脚本在本机 SDK `8.0.423` 下 exit `0`（XAML24/24、0 warning/error、合计1550 passed/67 skipped/0 failed），其构建诊断来自 e12119b 加三项 dirty 源码/测试；不能称为 clean post-commit 全量身份。
 - 本次对确切提交 f13b9e05 的 R00/R01 定向复核 `40/40`，RenderHarness 0 warning/error；媒体几何与工具栏负例探针均通过，证据身份、SHA/MVID、原始30搜索样本见[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。freshness 已校正为14 fresh/0 stale；包未构建，package identity 未提供。
 - 当前 Actions run `38222818374`（run930）已终态 failure，失败步骤“编译与测试”。CI workflow SDK10.0.401与本机 SDK8.0.423分开记录。下载完整日志API返回403 `Must have admin rights to Repository.`；artifact列表可读但下载返回401，根因未知。不得按退出码猜测或盲改；需取得有权限的完整日志后复现。
-- 下一项先围绕当前 CI 失败取完整日志并排查；权限阻塞期间继续不依赖该日志的独立 Q/R 小批次，不把CI标绿。CLOSE-HOST-01仍受ENV-001限制；Q06/R08用户原始失败日志与DLL identity仍缺。真实Playnite、物理DPI、IME/UIA、ETW和最终呈现帧均未验。
+- 文档证据提交 `da6388e814309825141fb530ecda702cb7e11eab` 对应 run `38226955461`（run931）已终态 failure，失败步骤仍为“编译与测试”，SDK10.0.401。完整日志 HTTP403；diagnostic artifact ID `11735869371`（488,867 bytes）下载 HTTP401。根因未知，尚无失败命令/断言/堆栈，不凭 exit code 盲改。
+- R02-03 当前 main 定向 `5/5`，隔离 Release0/0、XAML24/24，RenderHarness双主题 `render-qa OK`；其中 RenderHarness 是一般布局回归，未强制禁用原因 fixture。WPF静态检查36 XAML `0 errors/29 warnings/177 info`。本阶段只强化测试，没有改生产 UI。当前测试和证据变更尚待单独提交推送并核对其 Actions；随后下一项 R02-04 当前 main 图文光学对齐复验。
+- 权限受限时继续不依赖该日志的独立 Q/R 小批次，不把CI标绿。CLOSE-HOST-01仍受ENV-001限制；Q06/R08用户原始失败日志与DLL identity仍缺。真实Playnite、物理DPI、IME/UIA、ETW和最终呈现帧均未验。
 
 ## 2026-10-07共享UI阶段检查点（历史记录）
 

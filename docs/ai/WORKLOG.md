@@ -1,3 +1,10 @@
+## 2026-10-12 R02-03 当前 main WPF/UIA 复验
+
+- R02-03 已有状态提示、维护导航、命令门禁和共享样式；本阶段未改生产 UI/VM/命令，只强化 `R02ActionAvailabilityHintTests` 的 STA 行为检查：实际 `Focus()` 后核对 `Keyboard.FocusedElement`，并从 WPF Automation peer 读取 `Name`/`HelpText` 与屏幕提示比较。结合生产 `SaveCenterView` 紧凑布局提示移动行为，定向合计 `5/5`，0 skip。
+- 当前 main `da6388e814309825141fb530ecda702cb7e11eab` 隔离 Release solution 构建：SDK `8.0.423`、XAML `24/24`、`0 warning / 0 error`。构建时唯一 dirty path 是该测试文件，SHA-256 及各 DLL SHA/MVID 见证据；不称 clean-tree。RenderHarness 另建隔离 Release `0/0`，双主题全量 `render-qa OK`（372 PNG、logical DPI 1.00），仅作为通用布局烟测；默认样例没有强制禁用原因状态，不冒充本项截图证明。`validate-source.py` 通过；WPF 静态审查 `36 XAML / 0 errors / 29 warnings / 177 info`。
+- 推送 `da6388e8` 的 run `38226955461`（run931）终态 failure，失败步骤“编译与测试”，CI SDK `10.0.401`。Jobs API 没有更细的根因；完整日志 HTTP403 `Must have admin rights to Repository.`，诊断 artifact ID `11735869371`（488,867 bytes）下载 HTTP401，CI失败原因未知，未凭退出码盲改。
+- 证据：[R02-03 当前 main 复验](../design/reviews/ui-finesse-round3-20260915/evidence/R02-03-CURRENT-RECHECK-20261012/README.md)。R02-03 受控条件继续记“已满足”；真实 Playnite/package-host、Narrator/OS UIA、OS 输入/IME、物理 DPI/跨屏、ETW/最终呈现帧未验。下一可执行项 R02-04 当前 main 图文光学对齐复验；本轮临时 RenderHarness 输出在证据整理后清理。
+
 ## 2026-10-12 R00/R01 证据校正收口
 
 - 在已推送 `main` 提交 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f` 上完成当前受影响源码证据复核。9 份定向 TRX 共 `40/40`；RenderHarness 构建无警告/错误；双主题对比/可读性、工具栏正常与两种负例、Media Inbox 五种几何双主题场景、30 个不同搜索及有限超时负例均通过。证据包保留原始 TRX、探针与搜索样本，不包含未被引用的截图。

@@ -17,7 +17,7 @@
 | CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
 | CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 第29类R02复合按钮间距9 DIP；旧clean DLL也复现，保持8 DIP断言 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
-| CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例通过；本机完整 Release/WPF 门禁通过，推送后 Actions 仍需核对 |
+| CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例、本机完整 Release/WPF 门禁已通过；run `38222818374` 终态失败，根因并入 CLOSE-CI-01 |
 | CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | f13b9e05 下 10 项受影响记录完成复核与校正，freshness 14/14；包身份未提供并继续单独待验 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
@@ -51,6 +51,7 @@
 - **入口补修**：91bfb6e1/run37569191845自测断言通过后仍退出非零，后续全部未执行/实际artifact0；同Actions包装本地复现。自测在finally后显式exit0、日志纳入artifact并只上传JSON/TXT/TRX；PS5.1/7包装退出0且负例保留。新CI待验，不提前关闭。
 - **入口实际runner复核**：c35d9047/run37570629705两项自测步骤success，实际选择SDK8.0.423，预装SDK9/10未改变基线；失败artifact已下载，只有JSON/TXT/TRX。Core125/Worker357/source470通过，仍在修复前Q14错误态高度失败，CI整体尚未恢复。见[行距阶段证据](ai/evidence/close-wrap-20261007/README.md)。
 - **2026-10-12 最新 Actions**：main `f13b9e05` 对应 run `38222818374` 已失败，失败步骤为“编译与测试”。下载 workflow logs 返回 HTTP403 `Must have admin rights to Repository.`；诊断 artifact 可列出但匿名下载 HTTP401。没有完整日志，CI 失败根因未知；不得按 exit code 猜测或修改代码。
+- **2026-10-12 后续 run**：文档提交 `da6388e8` 对应 run `38226955461`（run931）也终态 failure 于“编译与测试”。Jobs API 未提供更细根因；完整日志仍 HTTP403，唯一诊断 artifact `11735869371`（488,867 bytes）下载 HTTP401。该提交不含生产代码改动；CI 根因仍未知，待取得完整日志后处理。
 - **后续身份补口**：独立scripts/render-qa.ps1未主动注入GSC_BUILD_COMMIT；实际只读MSBuild查询（未注入env）得到GscBuildCommit=unknown、InformationalVersion=0.6.73+unknown。本轮render显式传入c35身份且DLL已核对，不能据此声称独立脚本/CI同样绑定；当前UI全量结束并提交后，再修脚本环境保存/恢复与同HEAD身份验证。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
@@ -70,6 +71,11 @@
 - **状态**：本任务的源码证据复核、负例、身份和 freshness 更新已完成。未提供的 package identity、真实宿主验收与远端 CI 根因分别留在发布/宿主/CI 队列，不阻止本项收口。
 - **完成条件**：记录源码身份、测试 DLL SHA/MVID、TRX、具体测量、负例与失败边界；重跑通过后更新原 baseline，freshness 14/14 且 package 身份仍独立核对。
 - **非目标**：不仅改 baseline SHA，不把本任务变成整轮视觉或真实宿主验收。
+
+### R02-03：当前 main 焦点与 UIA peer 复验
+
+- **2026-10-12**：已实现的禁用原因提示继续满足受控条件。测试只强化可达性证据：STA `Focus()` 后确认 `Keyboard.FocusedElement`；从 UIA peer 读取 Name/HelpText；与生产 Save 紧凑布局提示移入检查器行为合计 `5/5`。没有生产 UI/命令变更。本机 SDK8.0.423 隔离 Release `0 warning / 0 error`、XAML `24/24`；完整 RenderHarness 双主题通用布局 QA `render-qa OK`，不作为禁用状态直接截图证明。[当前复验](design/reviews/ui-finesse-round3-20260915/evidence/R02-03-CURRENT-RECHECK-20261012/README.md)
+- **CI 边界**：此前推送 `da6388e8` 的 run931 已失败于“编译与测试”；完整日志403、artifact `11735869371` 下载401。失败命令未知，不对其做推断。下一项 R02-04 当前 main 对齐复验。
 
 ### CLOSE-OPTICAL-01：复合按钮内容拉伸与固定图标列间距
 

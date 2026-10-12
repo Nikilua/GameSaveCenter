@@ -1,0 +1,4 @@
+scripts/validate-source.py: passed.
+.codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .: scanned 36 XAML files; 0 errors, 29 warnings, 177 info.
+No production XAML/resource changed in this test-only stage. Static warnings were not attributed to the added behavior assertions.
+git diff --check is rerun before commit.

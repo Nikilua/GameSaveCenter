@@ -71,7 +71,11 @@ public sealed class R02ActionAvailabilityHintTests
         var focusable = false;
         var tabStop = false;
         var hasPeer = false;
+        var keyboardFocused = false;
         var automationName = string.Empty;
+        var automationHelpText = string.Empty;
+        var peerName = string.Empty;
+        var peerHelpText = string.Empty;
 
         RunSta(() =>
         {
@@ -93,8 +97,13 @@ public sealed class R02ActionAvailabilityHintTests
                 focusable = hint.Focusable;
                 tabStop = KeyboardNavigation.GetIsTabStop(hint);
                 focused = hint.Focus();
-                hasPeer = UIElementAutomationPeer.CreatePeerForElement(hint) != null;
+                keyboardFocused = ReferenceEquals(Keyboard.FocusedElement, hint);
                 automationName = AutomationProperties.GetName(hint);
+                automationHelpText = AutomationProperties.GetHelpText(hint);
+                var peer = UIElementAutomationPeer.CreatePeerForElement(hint);
+                hasPeer = peer != null;
+                peerName = peer?.GetName() ?? string.Empty;
+                peerHelpText = peer?.GetHelpText() ?? string.Empty;
             }
             catch (Exception caught)
             {
@@ -110,8 +119,12 @@ public sealed class R02ActionAvailabilityHintTests
         Assert.True(focusable);
         Assert.True(tabStop);
         Assert.True(focused);
+        Assert.True(keyboardFocused);
         Assert.True(hasPeer);
         Assert.Equal("请先选择目标游戏，归类按钮才会启用。", automationName);
+        Assert.Equal("请先选择目标游戏，归类按钮才会启用。", automationHelpText);
+        Assert.Equal(automationName, peerName);
+        Assert.Equal(automationHelpText, peerHelpText);
     }
 
     private static CloudTransferStatusDto Transfer(string state)

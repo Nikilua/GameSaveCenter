@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "da6388e814309825141fb530ecda702cb7e11eab",
+  "sdk": "8.0.423",
+  "workingTreeClean": false,
+  "dirtyPaths": [
+    "tests/GameSaveCenter.Playnite.Tests/R02ActionAvailabilityHintTests.cs"
+  ],
+  "dirtyTestSha256": "9AE4C53C0705D1D60EE9ABAA10BBB289F4B3BFE4142C595CB4D2D6B73565D0F7",
+  "releaseSolution": {
+    "xamlPassed": 24,
+    "xamlTotal": 24,
+    "warnings": 0,
+    "errors": 0,
+    "testsRequestedByBuildScript": false
+  },
+  "targetedTests": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "trx": "tests/R02-03-current.trx"
+  },
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "F4C2024784005E10093F786E9CBB973C386E96D787DF2B50DECABD50D663A19F",
+      "mvid": "0e99b215-c73d-41ea-866c-80a2adf311f6"
+    },
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "03625032DF089F9FC66125CABB5011C98D674286EC7B0B77678CD29CF33AB1C8",
+      "mvid": "64193ba3-5183-4738-8892-ed8755ace64a"
+    },
+    {
+      "file": "GameSaveCenter.RenderHarness.exe",
+      "sha256": "80BB5EE0F4B649104F78B4658549C89BF9CFA421B0E8006E500B38B80085232D",
+      "mvid": "6967e303-1a67-4792-b306-5f2e272fd47a"
+    }
+  ],
+  "packageIdentity": "not-provided"
+}
