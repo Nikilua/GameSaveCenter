@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-01/02 `11/11`；R05-03 `7/7`（缺呈现帧，部分满足）；R05-04 `3/3`；R05-05 不适用；R05-06 `28/28`；R05-07 当前 main 定向行为 `34/34`，包括前一 tooltip 已出现后快速移动的实际鼠标负例。Tooltip 时序由共享行为 scope 应用到默认 owner，`350/0`，显式 owner 值不覆盖；当前证据见 CURRENT_STATE。Actions #945 failure、完整日志/API HTTP403，根因与 CI runner SDK未知；用户指定追踪 SDK `10.0.401`，本机 `8.0.423` 独立记录。真实 Playnite/UIA/物理 DPI/呈现帧未验。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，旧下一项不是当前指令。
+更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-07 当前 main `afade3cd` 定向行为 `34/34`，包括前一 tooltip 已出现后快速移动的实际鼠标负例；共享 timing scope 对默认 owner 应用 `350/0` 并保留显式值。R06-01 同一 main 的列布局行为 `6/6`，Task Grid 列键也核对到生产定义。Actions #946 failure；匿名 logs/artifact API HTTP403，artifact内容不可读，根因与 runner SDK未知；用户指定追踪 SDK `10.0.401`，本机 `8.0.423` 独立记录。真实 Playnite、UIA/读屏、物理 DPI、呈现帧未验。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，旧下一项不是当前指令。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：R05-07 本机 `34/34` 通过但真实 Playnite Tooltip、OS UIA/Narrator、物理 DPI/多屏、呈现帧与宿主性能仍待验。R05-08、R06-01 在账本有历史“已满足”证据；先核 R06-01 当前实现身份，再推进 R06-02。R02-06 仍受 ENV-001 宿主阻塞；Q06/R08 仍需原始失败方法、堆栈和 DLL 身份。Actions #945 终态失败；匿名日志 HTTP403，根因未知，不盲改；本机 SDK8不替代目标 CI SDK10.0.401。
+- 当前活动缺口：R05-07 与 R06-01 本机当前 main 定向测试分别 `34/34`、`6/6`，但真实 Playnite Tooltip/表格、OS UIA/Narrator、物理 DPI/多屏、呈现帧与宿主性能仍待验。R05-08 已有满足证据；下一项推进 R06-02 并先检查当前代码是否有新变化。R02-06 仍受 ENV-001 宿主阻塞；Q06/R08 仍需原始失败方法、堆栈和 DLL 身份。Actions #946 终态失败；匿名日志/artifact API HTTP403，根因未知，不盲改；本机 SDK8不替代目标 CI SDK10.0.401。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

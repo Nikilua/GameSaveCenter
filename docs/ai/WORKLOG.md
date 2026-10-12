@@ -10117,5 +10117,14 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在 STA WPF Window 通过 `SetCursorPos` 实际移动系统指针：首次快速划过后 420ms 无 Tooltip，停留 420ms 后打开一只；第一只已打开后快速移过两只并离开，Opened 仍为1且所有 Tooltip 关闭。动态后代实际继承默认时序，owner 的 `900/250` Local 覆盖保持。长路径实际 `Wrap`/无 trimming/最大420 DIP；Esc 关闭且键盘焦点不变。测试 finally 恢复指针位置。
 - 官方 SDK8隔离路径 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；`scripts/build.ps1 -Configuration Release -SkipTests` Release `0/0`、XAML `24/24`。定向 `R05TooltipTimingBehaviorTests 2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、source contracts `24/24`，共 `34/34`。`validate-source.py` 与 `git diff --check` 通过；WPF static review `0 errors/29 warnings/177 info`。六个本轮源文件 SHA、插件/测试 DLL SHA 和脱敏 TRX 哈希见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 全量 WPF 的较早尝试在第19/114类停止，不计通过。没有启动真实 Playnite或载入完整 Dashboard；真实 UIA/Narrator、物理 DPI/多屏边缘显示、OS字体显示、presented frame、ETW、宿主性能未验。合成路径不读写真实存档/媒体/云端。
-- 用户指定 Actions #920（`36677346317`）现为 failure。parent `2662cdbb` 对应最新已查 run #945（`38288546362`）亦 failure，约7m22s；公开步骤“编译与测试”exit1，匿名完整日志/API HTTP403，失败命令、根因与实际 runner SDK未知，不凭退出码盲修。本机 SDK8不替代目标 CI SDK10.0.401。
-- R00/R01 freshness `14 fresh / 0 stale` 已在此前独立校正。R05-08 与 R06-01 账本已有满足证据；下一项核 R06-01 当前 main 实现/证据，仍适用则推进 R06-02。
+- 用户指定 Actions #920（`36677346317`）现为 failure。提交 `afade3cd` 对应 run #946（`38294361061`）亦 failure，4m18s；公开步骤“编译与测试”exit1，artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。匿名 run/log/artifact API HTTP403，完整日志和artifact内容不可读；失败命令、根因与实际 runner SDK未知，不凭退出码盲修。本机 SDK8不替代目标 CI SDK10.0.401。
+- R00/R01 freshness `14 fresh / 0 stale` 已在此前独立校正。R05-08 与 R06-01 均已有当前适用证据；下一项 R06-02 排序提示与稳定性。
+
+## 2026-10-13 R06-01 列宽用户记忆当前 main 复核
+
+- 当前 main `afade3cd39eab31de97f204aa76e9dc590ba3083` 的源码仍含既有 `GameSaveCenterSettings.DataGridColumnWidths` 持久化字典和 `DataGridColumnLayoutController`；四个消费视图区与原有设置链吻合，无需改生产代码或测试。
+- 隔离 SDK `8.0.423` 下官方 `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot ...` 成功：Release solution `0 warnings / 0 errors`、XAML `24/24`；Playnite输出 `net462`、测试 `net472`。`R06ColumnWidthPersistenceBehaviorTests 6/6`，0 skip/fail。测试覆盖控制器重建/视图区隔离、版本及未知列拒绝、最小列、重置持久化、窄窗横向滚动、生产 scope/reset 接线和 Task 列键逐项匹配生产 DataGrid。
+- 本轮没有生产或测试源改动。当前 DLL/source SHA、TRX SHA-256 `CF964D93CB84511D6F261505B7B7DF87354002EE810D1B1914E9FBC30481AD0A` 与限制见[R06-01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。此前 RenderHarness 双主题357图只绑定实现提交 `75a6e6d8`，未冒充当前图像证据。
+- 官方构建在 `artifacts/build-diagnostics/20261012T185759181Z-55cf6b0e` 生成了临时诊断目录；已逐项核实目标位于仓库 `artifacts/` 内，按要求发起精确 PowerShell 删除，但执行器拒绝。该目录仍留在本地、未暂存；没有改用其他 shell 或清理路径。
+- 最新代码提交 #946（run `38294361061`）为终态 failure、4m18s；摘要标注“编译与测试”exit1，1 error/1 Node.js弃用warning。artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。完整run/log/artifact API匿名HTTP403；页面需登录，artifact内容不可读；失败步骤内部原因、CI SDK和根因未知，不盲改。目标CI SDK10.0.401与本机SDK8.0.423分别记录。
+- 行为基于合成 DataGrid、隔离设置对象和 STA 窗口，不等价 Playnite 进程重启/用户拖拽/物理 DPI/宿主渲染。下一项 R06-02 排序提示与稳定性，先确认当前 main 测试身份与排序实现再复用已有逻辑。

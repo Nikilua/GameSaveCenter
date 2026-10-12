@@ -1,13 +1,21 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main STA 行为/负例及 Popup、焦点、源契约定向 `34/34`；隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`。证据见[R05-07复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #945（run `38288546362`，parent commit `2662cdbb`）终态 failure，完整日志/API匿名 HTTP403；失败步骤内部原因与 runner SDK未知，不猜修。CI目标 SDK `10.0.401` 和本机 SDK8分开。R05-08、R06-01 已有账本“已满足”记录；下一步核 R06-01 当前实现后推进 R06-02。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite Tooltip、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main `afade3cd` STA 行为/负例及 Popup、焦点、源契约 `34/34`；R06-01 同一 main 当前行为 `6/6`。隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`。证据分别见[R05-07复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)与[R06-01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #946（run `38294361061`，`afade3cd`）终态 failure，“编译与测试”exit1；artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`，匿名完整日志/artifact API HTTP403，失败命令、根因与 runner SDK未知，不猜修。CI目标 SDK `10.0.401` 和本机 SDK8分开。R05-08、R06-01 保持已满足；下一项 R06-02。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite Tooltip/表格、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+
+## 2026-10-13 R06-01 列宽用户记忆当前 main 复核
+
+- 当前 main `afade3cd39eab31de97f204aa76e9dc590ba3083` 已包含 R06-01 实现；复用既有 `GameSaveCenterSettings.DataGridColumnWidths` 和 `DataGridColumnLayoutController`，本轮无生产代码或测试改动。
+- 本机 SDK `8.0.423` 官方 Release rebuild `0 warning / 0 error`、XAML `24/24`；当前 `R06ColumnWidthPersistenceBehaviorTests 6/6`。第六条验证 Task Queue 稳定列键逐项匹配生产 DataGrid 列定义。当前 source/DLL SHA、TRX 和边界见[R06-01当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 原双主题 RenderHarness/代表图仍绑定实现提交 `75a6e6d8`，本轮没有重跑渲染。测试仅用隔离 STA/合成 DataGrid/设置对象；不等价真实 Playnite 进程重启、用户拖拽、物理 DPI/跨屏、UIA/Narrator、presented frame、ETW或宿主性能。
+- Actions #946 对 `afade3cd` 终态 failure；公共页面只给出“编译与测试”exit1和Node.js弃用warning，完整日志与artifact API匿名 HTTP403，artifact内容不可读。失败原因与CI SDK未知，不凭退出码推断。
+- 下一项：R06-02 排序提示与稳定性；先检查当前 main 相关实现/测试身份，复用已有代码与历史证据。
 
 ## 2026-10-13 R05-07 Tooltip 时序当前 main 复核
 
 - 发现根节点 `ToolTipService` 附加值不会自动应用到其子 owner；此外 `BetweenShowDelay=100` 允许刚显示过 tooltip 后快速移动到下一项时再次立即打开。复用并扩展现有 `GscToolTipBehavior`，通过继承 timing scope 对默认后代应用根级 `350/0`，保留 owner 显式值；壳层、设置页、Dashboard 根值统一 `350/0`。
 - 当前工作树 Release build (SDK `8.0.423`) `0 warning / 0 error`、XAML `24/24`；Tooltip `2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、source contracts `24/24`，总计 `34/34`。源码 validator、`git diff --check` 通过；WPF 静态审查 `0 errors/29 warnings/177 info`。长路径 Wrap、Esc 关闭保留焦点、实际鼠标快速扫过正负例、动态 owner 和显式时序覆盖见[R05-07证据包](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
-- 用户指定 run #920（`36677346317`）现为 failure；main parent `2662cdbb` 对应 #945（`38288546362`）也终态 failure。“编译与测试”显示 exit1，匿名日志/API HTTP403；失败内部命令、断言、CI SDK 与根因未知，不盲改。SDK8本机结果不替代目标CI SDK10.0.401。
-- 没有启动真实 Playnite或加载完整 Dashboard。OS UIA/Narrator、物理 DPI/多屏边缘放置、呈现帧、ETW、宿主性能未验；全量 WPF 尝试中途停止在第19/114类，不计通过。下一项核对账本已满足的 R06-01 当前 main 实现/证据，再推进 R06-02。
+- 用户指定 run #920（`36677346317`）现为 failure；提交 `afade3cd` 对应 run #946（`38294361061`）亦 failure，4m18s；公开步骤“编译与测试”exit1，artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。匿名 run/log/artifact API HTTP403，完整日志和artifact内容不可读；失败命令、根因与实际 runner SDK未知，不凭退出码盲修。本机 SDK8不替代目标 CI SDK10.0.401。
+- 没有启动真实 Playnite或加载完整 Dashboard。OS UIA/Narrator、物理 DPI/多屏边缘放置、呈现帧、ETW、宿主性能未验；全量 WPF 尝试中途停止在第19/114类，不计通过。下一项 R06-02 排序提示与稳定性，先核对当前 main 排序实现及测试。
 
 ## 2026-10-13 R05-04 当前 main 多选摘要复核
 

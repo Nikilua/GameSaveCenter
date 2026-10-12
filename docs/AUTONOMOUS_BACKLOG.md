@@ -27,7 +27,7 @@
 
 ### 用户持续授权的 Round3 Q/R 执行线（2026-10-13）
 
-用户已明确要求持续推进 `UI_FINESSE_ROUND3_192_TASKS_2026-09-15.md`，每阶段无需再次询问。R04-03 当前 main 关闭分支补证已完成；R04-04 至 R04-08 已有满足证据。R05-01/02 `11/11`；R05-03 `7/7`（无闪屏呈现帧，部分满足）；R05-04 `3/3`；R05-05 不适用；R05-06 `28/28`；R05-07 当前 main Tooltip/Popup/焦点/源契约 `34/34`，含真实系统指针快速移动正负例。[R05-07 当前证据](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #945 (`38288546362`, parent `2662cdbb`) 已终态 failure，公开摘要为“编译与测试”exit1；完整日志/API匿名 HTTP403，失败方法、根因和实际 runner SDK未知，不盲改。用户要求追踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 单独记录。R05-08 与 R06-01 在账本已满足；先核 R06-01 当前 main 实现/证据仍适用，再推进 R06-02。
+用户已明确要求持续推进 `UI_FINESSE_ROUND3_192_TASKS_2026-09-15.md`，每阶段无需再次询问。R04-03 当前 main 关闭分支补证已完成；R04-04 至 R04-08 已有满足证据。R05-01/02 `11/11`；R05-03 `7/7`（无闪屏呈现帧，部分满足）；R05-04 `3/3`；R05-05 不适用；R05-06 `28/28`；R05-07 当前 main `34/34`，含真实系统指针快速移动正负例；R06-01 当前 main `6/6`，Task Queue 列键逐项核对生产定义。[R05-07 证据](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)；[R06-01 当前证据](design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #946 (`38294361061`, `afade3cd`) 已终态 failure；公开摘要“编译与测试”exit1，artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。完整日志及 artifact内容不可读，匿名 API HTTP403，失败根因/CI SDK未知，不盲改。本机 SDK `8.0.423` 不代替目标 CI SDK `10.0.401`。R05-08、R06-01 账本均已满足；下一项 R06-02 排序提示与稳定性。
 
 ### GOV-003：完成度与活动入口校准
 

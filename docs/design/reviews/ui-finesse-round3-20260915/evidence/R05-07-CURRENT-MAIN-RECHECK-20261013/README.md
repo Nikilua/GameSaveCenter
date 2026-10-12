@@ -1,6 +1,6 @@
 # R05-07 当前 main Tooltip 行为复核
 
-日期：2026-10-13（Asia/Shanghai）。代码改动基于 `main` 父提交 `2662cdbb3ab635e19b364d6797db1d7506fef615`；构建输入包含本轮列出的六个已修改源文件，不能称为 clean checkout。Playnite 目标仍为 `net462`，测试目标为 `net472`。
+日期：2026-10-13（Asia/Shanghai）。实现提交为 `afade3cd39eab31de97f204aa76e9dc590ba3083`，父提交 `2662cdbb3ab635e19b364d6797db1d7506fef615`；构建输入绑定本轮列出的六个源码 SHA，未声称 clean checkout。Playnite 目标仍为 `net462`，测试目标为 `net472`。
 
 ## 现有实现与本轮修正
 
@@ -24,9 +24,10 @@
 - 插件 DLL SHA-256：`CAB1A9F5D8FA3BE0E9E0B25BA6C6EA66E6E8720C527D7892A806A0FFA4CFD278`；测试 DLL SHA-256：`36FB96003B2AEE5DAA7E29DE6EC39C162F769EFA58F1E4B685C6B076B707F1F5`。
 - 本轮源码 SHA-256：`GscToolTipBehavior.cs` `71704B589F71274493BEFDB639DA80FA04AFCE660C7F62AEF20C1D1153A52699`；`AcrylicProductionShellView.xaml` `B9E7A777B84F4AC3DD08FEF69643D7F64D7632466F3DC0271239F8792B756089`；`GameSaveCenterSettingsView.xaml` `A095AFFCA0AA9B9A154D8147E7DCC7462DC8FBA10C83B72E13BA77C67E56078F`；`DashboardView.xaml` `278DE939D67F6AF247E7DD0623DA65B8FF8DF1E28E716C510B2B3D4369C64DE6`；`R05TooltipTimingBehaviorTests.cs` `D233248B04BE314B8BBB0FA3DBD736DF030D63C91092E4997D184A9C547AC608`；`UiFinesseRound2ControlSourceTests.cs` `F77BF80A4D94C91E0F64754F74BA87B652785AE4AED128E84D7AAD9F09D56F44`。
 - 脱敏 TRX：[`Tooltip 2/2`](tests/R05-07-tooltip-timing.trx) SHA-256 `B7CB4EA4FEA1CD8F6B26F985B6C1755FC21D3E7C7208B1C414D77B9347150B9E`；[`Popup lifecycle 1/1`](tests/R05-07-popup-lifecycle.trx) `6BF5975AAFB41BD0FD2B5B65B34A89BB64EDB08BBED4108C6048EC7F3707DB28`；[`Popup boundary 2/2`](tests/R05-07-popup-boundary.trx) `86607E7E1D0A59BA66D4EFDD9E62BAA2F5EF59216FEC0E82B0F1F0EE120DA457`；[`focus boundary 5/5`](tests/R05-07-focus-boundary.trx) `AB1C37F05CF57BADD5648D012246076008FB62B6EEF21531A59FA0CE63A84D99`；[`source contracts 24/24`](tests/R05-07-source-contracts.trx) `5C30CEDBE65E33762F4579475EA1C1887667E0C1709C8C9367CB507E0B462275`。
+- Actions run #946（`38294361061`，提交 `afade3cd`）终态 failure，4m18s；公开 annotation 标记“编译与测试”exit1及Node.js弃用warning。诊断 artifact 239 KB，SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`；匿名完整日志和artifact API HTTP403，artifact内容不可读。失败命令、测试断言、实际CI SDK与根因未知，不凭exit code推断。
 
 ## 未验证边界
 
 行为夹具加载生产 Tooltip 样式和行为代码，但没有启动 Playnite 宿主或完整应用 Dashboard 页面；没有验证 OS UI Automation/Narrator、真实物理 DPI/多屏边缘放置、操作系统字体渲染或已呈现帧、ETW 和宿主性能。未运行全量测试。系统指针仅在短时受控夹具期间移动并已恢复。CI 使用的 SDK 与本机 SDK 分开追踪；本机结果不替代 SDK `10.0.401` CI 门禁。
 
-下一项：R05-08 已在当前账本标为已满足；继续检查 R06-01 当前 main 证据与依赖，再推进首个未满足的 R06/Q/R 项。
+下一项：R05-08 和 R06-01 当前 main 均已有满足证据；继续推进 R06-02 排序提示与稳定性。
