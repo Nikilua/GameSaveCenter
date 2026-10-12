@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-07 当前 main `afade3cd` 定向行为 `34/34`，包括前一 tooltip 已出现后快速移动的实际鼠标负例；共享 timing scope 对默认 owner 应用 `350/0` 并保留显式值。R06-01 同一 main 的列布局行为 `6/6`，Task Grid 列键也核对到生产定义。Actions #946 failure；匿名 logs/artifact API HTTP403，artifact内容不可读，根因与 runner SDK未知；用户指定追踪 SDK `10.0.401`，本机 `8.0.423` 独立记录。真实 Playnite、UIA/读屏、物理 DPI、呈现帧未验。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，旧下一项不是当前指令。
+更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-07 当前 main `afade3cd` 定向行为 `34/34`；R06-01 同一 main `6/6`；R06-02 `90454586` 当前源码身份定向行为 `7/7`，复用现有稳定排序控制器/DTO。Actions #947（run `38295749414`）截至2026-10-12 19:24 UTC 仍在运行，公开日志需登录；#946 已失败且匿名日志/artifact HTTP403，根因与 runner SDK未知。用户指定追踪 CI SDK `10.0.401`，本机 SDK `8.0.423` 独立记录。真实 Playnite、UIA/读屏、物理 DPI、呈现帧未验。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，旧下一项不是当前指令。
 
 ## AI/Codex 启动协议
 

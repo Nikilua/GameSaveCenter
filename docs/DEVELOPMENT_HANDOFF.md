@@ -1,6 +1,14 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main `afade3cd` STA 行为/负例及 Popup、焦点、源契约 `34/34`；R06-01 同一 main 当前行为 `6/6`。隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`。证据分别见[R05-07复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md)与[R06-01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #946（run `38294361061`，`afade3cd`）终态 failure，“编译与测试”exit1；artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`，匿名完整日志/artifact API HTTP403，失败命令、根因与 runner SDK未知，不猜修。CI目标 SDK `10.0.401` 和本机 SDK8分开。R05-08、R06-01 保持已满足；下一项 R06-02。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite Tooltip/表格、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main `afade3cd` 定向 `34/34`，R06-01 `6/6`，R06-02 当前 main `90454586` `7/7`；SDK `8.0.423` Release `0/0`、XAML `24/24`。排序证据见[R06-02复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #947（run `38295749414`，`90454586`）截至2026-10-12 19:24 UTC 仍在运行，公开日志需登录；此前 #946 failure 的完整日志和 artifact 内容不可读，匿名 API HTTP403。目标 CI SDK `10.0.401` 与本机 SDK8分开；实际 runner SDK未证实。R05-08、R06-01、R06-02 保持已满足；下一项 R06-03。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite Tooltip/表格、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+
+## 2026-10-13 R06-02 当前 main 排序行为复核
+
+- R06-02 实现及测试源码当前与 clean-main `3d83d38f` 无差异；本轮复核身份为 `90454586d702f6a2b413bfcc386ac599424f8bc1`，无生产/测试源码改动。
+- 隔离 SDK `8.0.423` Release rebuild `0 warning / 0 error`、XAML `24/24`，定向 `R06SortingBehaviorTests 7/7`。首次复用 `afade3cd` DLL 被源码身份保护拦下，随后从当前 HEAD 重建；失败身份试次不纳入通过数。排序/unknown/刷新/实际列头/失效视图负例、源/DLL SHA/MVID 和 TRX 见[R06-02复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 既有双主题 RenderHarness 图绑定 `c577afc5`；当前只补当前源码行为证据，没有重跑渲染或将旧图冒充新截图。合成 DTO/隔离 CollectionView/STA；真实 Playnite、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能未验。
+- Actions #947（`38295749414`，commit `90454586`）截至2026-10-12 19:24 UTC 仍为 In progress；job 页提示登录查看日志，实际 runner SDK未知。CI目标 SDK `10.0.401` 与本机 `8.0.423` 分开记录。此前 #946 failure 日志/artifact匿名HTTP403、artifact内容不可读，根因未知，不按摘要盲改。
+- 下一项：R06-03 选中焦点区分，先核共享选中/焦点/悬停/错误态资源及现有行为测试，再确定是否只需补当前 main 证据。
 
 ## 2026-10-13 R06-01 列宽用户记忆当前 main 复核
 

@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已归档。R05-01/02 `11/11`；R05-03 `7/7`（无闪屏帧证据，部分满足）；R05-04 `3/3`；R05-05 维持不适用；R05-06 `28/28`；R05-07 commit `afade3cd` 当前 main Tooltip/Popup/焦点/源契约 `34/34`，包含前一泡已显示后真实鼠标快速划过负例；R06-01 同一当前 main `6/6`。本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，这些定向结果不代表完整套件或远端 CI 通过。Actions #946（run `38294361061`，commit `afade3cd`）终态 failure：公开摘要“编译与测试”exit1，1 error/1 Node.js 弃用 warning，artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`；匿名 logs、run、artifact API HTTP403，artifact 内容不可读，失败命令、根因和 runner SDK未知。用户指定追踪 CI SDK `10.0.401`，不得以本机 SDK替代。#920（`36677346317`）仍为 failure且旧日志不可读。最近完整 clean Release 源码身份仍为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已归档。R05-01/02 `11/11`；R05-03 `7/7`（无闪屏帧证据，部分满足）；R05-04 `3/3`；R05-05 维持不适用；R05-06 `28/28`；R05-07 commit `afade3cd` 当前 main Tooltip/Popup/焦点/源契约 `34/34`；R06-01 同一 main `6/6`；R06-02 当前 main `90454586` SDK `8.0.423` Release `0/0`、XAML `24/24`、排序行为 `7/7`。这些定向结果不代表完整套件或远端 CI 通过。Actions #947（run `38295749414`，commit `90454586`）截至 2026-10-12 19:24 UTC 仍为 `In progress`；公开 job 页面要求登录查看日志，runner SDK/步骤未知。前一代码提交 #946（run `38294361061`，commit `afade3cd`）终态 failure：公开摘要“编译与测试”exit1，1 error/1 Node.js 弃用 warning，artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`；匿名 logs、run、artifact API HTTP403，artifact 内容不可读，失败命令、根因和 runner SDK未知。用户指定追踪 CI SDK `10.0.401`，不得以本机 SDK替代。#920（`36677346317`）仍为 failure且旧日志不可读。最近完整 clean Release 源码身份仍为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -26,7 +26,8 @@
 | R05-06 当前 main | 生产基线 `0fcb44f8`，只补同值重复赋值负例；隔离 SDK `8.0.423`、官方 Release build `0/0`、XAML `24/24`，定向 `28/28`。当前行为、TRX 与源码/程序集身份见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-06-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R05-07 当前 main | commit `afade3cd`；隔离 SDK `8.0.423`、Release `0/0`、XAML `24/24`；Tooltip `2/2`、Popup lifecycle `1/1`、Popup boundary `2/2`、focus boundary `5/5`、source contracts `24/24`，合计 `34/34`。快速通过和“前一 Tooltip 已显示后继续快速移动”均用实际系统指针与 STA WPF 行为验证；动态后代取 `350/0`，显式时序值保留。见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-07-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R06-01 当前 main | 同一 `afade3cd` 最新 main 重建 SDK `8.0.423` Release `0/0`、XAML `24/24`；`R06ColumnWidthPersistenceBehaviorTests 6/6`，含 Task 列键/生产列定义一致性；当前代码和程序集 SHA、TRX 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-01-CURRENT-MAIN-RECHECK-20261013/README.md)。旧双主题截图不绑定当前 commit |
-| 远端 CI | #946（`38294361061`，commit `afade3cd`）failure，总计4m18s；公开摘要“编译与测试”exit1，job 1 error + Node.js 20 弃用 warning；artifact 239 KB，SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。匿名 run/log/artifact API HTTP403；job 页要求登录，完整日志与 artifact内容不可读。失败命令、测试/断言、实际 runner SDK与根因未知，不盲改。#945 至 #941 及指定 #920 仍为 failure；目标CI SDK `10.0.401` 与本机SDK `8.0.423` 分开记录 |
+| R06-02 当前 main | `90454586` 隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`；`R06SortingBehaviorTests 7/7`。实际 WPF 列头双向点击/箭头、乱序重加稳定次键、未知值和失效视图负例见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。历史 RenderHarness 图绑定 `c577afc5`，未当作当前截图 |
+| 远端 CI | #947（run `38295749414`，commit `90454586`）截至2026-10-12 19:24 UTC 仍 `In progress`；公开 job 页要求登录，日志/实际 runner SDK不可见。#946（`38294361061`，commit `afade3cd`）failure，总计4m18s；公开摘要“编译与测试”exit1，job 1 error + Node.js 20 弃用 warning；artifact 239 KB，SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。匿名 run/log/artifact API HTTP403；完整日志与 artifact内容不可读。失败命令、测试/断言、实际 runner SDK与根因未知，不盲改。#945 至 #941 及指定 #920 仍为 failure；目标CI SDK `10.0.401` 与本机SDK `8.0.423` 分开记录 |
 | R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -37,7 +38,7 @@
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
 1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新已终态 run `38270923668`（#939）失败；run/job logs 与 artifact API 403，job 页要求登录，根因未知，不盲修。按任务补充跟踪 CI SDK `10.0.401` 与本机 SDK `8.0.423`；当前 workflow/global.json 有版本差异，真实 run SDK 未证实。
-2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R05-07、R06-01 当前 main 已分别 `34/34`、`6/6` 复核；R05-08 也已有满足证据。下一项 R06-02 排序提示与稳定性。CI #946 已失败但完整日志/artifact 不可读，API HTTP403，不凭摘要盲改。真实 Playnite Tooltip/表格和完整 Dashboard XAML/宿主行为仍待验。
+2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R05-07、R06-01、R06-02 当前 main 复核分别 `34/34`、`6/6`、`7/7`。下一项 R06-03 选中焦点区分。CI #947 尚在运行；此前 #946 失败且完整日志/artifact 不可读，API HTTP403，不凭摘要盲改。真实 Playnite Tooltip/表格和完整 Dashboard XAML/宿主行为仍待验。
 3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。

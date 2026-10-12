@@ -1,3 +1,13 @@
+## 2026-10-13 R06-02 当前 main 排序行为复核
+
+- 当前 main 复核提交 `90454586d702f6a2b413bfcc386ac599424f8bc1`；`DataGridStableSortController.cs` 与 `R06SortingBehaviorTests.cs` 相对 clean-main `3d83d38f` 无差异。发现当前代码已有排序 profile 和完整行为覆盖，本阶段没有生产或测试源码改动。
+- 隔离 SDK `8.0.423` 下运行官方 `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot D:\GameSaveCenterTools\R06-02-current-main-20261013`：Release solution `0 warnings / 0 errors`、XAML `24/24`；Playnite `net462`、测试 `net472`。随后 `R06SortingBehaviorTests` `7 passed / 0 failed / 0 skipped`。
+- 首次复用 `afade3cd` 构建产物时有 `6/7` 通过；`ProductionTablesAttachStableProfilesAndKeepSharedArrowContract` 被 `TestRepositoryContext` 阻止读取源码，因程序集 commit `afade3cd` 与 checkout `90454586` 不一致。该试次不是代码行为失败，且不纳入最终结果；从 `90454586` 重建后整组 `7/7`。脱敏 TRX SHA `D553AC764D23B5DE2F2FFD9962BABDB450F6EC2C78B75BBFAD4F621AAA9927E7`，插件/测试 DLL SHA+MVID、源码 SHA 见[R06-02 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 实测包括同值稳定次键及乱序清空/重加、数字/时间排序、Task 进度/阶段未知值、Media 来源双向未知值末尾、真实 WPF 列头点击的升降序/箭头、视图 detach 后点击负例，以及生产 profiles/共享箭头接线。历史 RenderHarness 双主题 357 PNG 绑定 `c577afc5`；当前未重跑渲染或把旧图当新图。
+- 测试用合成 DTO、隔离 CollectionView 和 STA Window。没有启动真实 Playnite，未验 UIA/Narrator、物理 DPI/跨屏、presented frame、ETW/宿主性能；未读写真实存档、媒体、用户云端或诊断数据。
+- docs/evidence commit `90454586` 对应 Actions #947（run `38295749414`，job `114966280669`）截至2026-10-12 19:24 UTC 仍 `In progress`，公开页面要求登录看日志，实际 runner SDK未知。用户目标 CI SDK `10.0.401` 与本机 SDK8分开记录；不能因耗时推断失败。
+- 下一项：R06-03 选中焦点区分；检查共享资源和实际行为测试，按当前 main 证据决定是否已满足或存在需修的边界。
+
 ## 2026-10-13 R05-04 当前 main 多选摘要复核
 
 - 当前 main 父基线为 `903525becdb679e9a4aae7bb04e73c98c1cb25dc`。先复用已有生产 `MediaCenterView`、按模式保存的稳定媒体 ID 和批量命令；没有新增生产 UI、VM、服务或 DTO。
