@@ -52,14 +52,14 @@
 
 - 活动动画测试需显式控制应用与系统偏好两个前提；生产默认必须保留HighContrast/ClientAreaAnimation，测试用实例内internal输入，不修改OS/全局开关。CI无动画偏好不能与“动画应启动”混淆；默认真实偏好路径必须单独验证。
 - build-diagnostics保存native实际退出码、分步console/TRX/SDK/dirty源码hash/DLL身份。PS5.1会将stderr包装成ErrorRecord，采集过程需继续至LASTEXITCODE；缺失exe必须有launchError而不能继承0。摘要标注testsRequested；诊断异常也不能阻止恢复环境。
-- SDK声明以global.json精确8.0.423/disable/不允许preview为准，CI通过global-json-file安装；C#12.0而非latest。缺失版本须明确失败，不能以另一预装SDK替代。SDK升级另做完整编译/测试/包验证；本阶段不新增兼容通道。原生Get-Command可能返回多个PATH匹配，必须选首个Application；PS5.1/7用两个不同原生程序的同名夹具验证优先级与环境恢复。
+- SDK声明以global.json精确8.0.423/disable/不允许preview为准，CI通过global-json-file安装；C#12.0而非latest。缺失版本须明确失败，不能以另一预装SDK替代。SDK升级另做完整编译/测试/包验证；本阶段不新增兼容通道。2026-10-12 已将 SDK8 安装到隔离路径 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；运行时临时将此目录前置到进程 PATH，未更改系统 SDK/PATH；CI SDK10 仍须独立验证。原生Get-Command可能返回多个PATH匹配，必须选首个Application；PS5.1/7用两个不同原生程序的同名夹具验证优先级与环境恢复。
 - 带预期非零native负例的自测入口须在finally之后显式exit0；Actions pwsh外层会继承LASTEXITCODE，出现断言全部通过但步骤失败。不能在采集器清零实际负例；异常路径仍非零。自测诊断也纳入artifact目录，上传只JSON/TXT/TRX，不能以always步骤success当作artifact存在。
 - TRX脱敏除TestRun.name/computerName/路径，还须覆盖runUser和runDeploymentRoot；保留GUID、方法/断言/堆栈/计数和DLL身份。合成元数据负例同时检验异常路径仍非零。
 - run37565955357/37566483862已实际失败上传并下载：SDK10侧栏22/22通过，native偏好记录ClientAreaAnimation=false；仍在Q14错误态36→37 DIP失败。STA干预确认2 DIP错误边框改变测量；独立私有几何夹具复现Light/Dark654 DIP单行20 DIP margin，620/660通过。探针不是生产修复或宿主验收。
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 `5/5`、R02-04 `7/7`、R02-05 当前main生产资源 STA 命中/间距 `2/2`，各自双主题 RenderHarness `372` 图通过（证据在 current-recheck 包），这些复验未修改生产 UI。提交 `90099a09` 的 Actions run `38247748056` 已失败于“编译与测试”；后续 docs-only 提交 `3df542af` 的 run `38249983091` 也失败于该步骤，完整日志均不可读，根因未知。CI SDK10.0.401；当前机器仅装SDK9.0.302，`global.json` 固定SDK8.0.423并禁用roll-forward，因此当前HEAD构建在预检阶段停止；`validate-source.py`通过但本轮没有编译/测试。源码自 `90099a09` 起未变。最新run日志HTTP403、artifact `11747469284` 下载HTTP401，不猜修。R02-06仍受ENV-001宿主阻塞；R02-07源码/测试自 `c55f7a9` 未变，既有4/4证据保留，当前HEAD未重跑。Media Inbox宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
+- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 `5/5`、R02-04 `7/7`、R02-05 `2/2`、R02-08 `4/4` 当前 main 行为与双主题渲染证据已归档，未修改生产 UI。当前 `4d166f01` SDK8.0.423 Release 全量 `1560 passed / 57 skipped / 0 failed`，source `470/18 skipped`，WPF `608/39 skipped`；RenderHarness `372` 图通过。对应 Actions run `38253621689`（#935，CI SDK10.0.401）仍失败于“编译与测试”，日志 HTTP403、artifact HTTP401，根因未知；不以 SDK8 结果替代 CI10 或猜修。R02-06仍受ENV-001宿主阻塞；R02-07复用 `c55f7a9` 下既有 `4/4` 证据。下一项可执行 Q/R 是 R03-01 当前 main `finesseprobe`，同身份 `TypographyDiagnosticsTests 11/11` 已过。Media Inbox宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

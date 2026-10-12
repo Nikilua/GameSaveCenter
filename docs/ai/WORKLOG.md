@@ -1,3 +1,11 @@
+## 2026-10-12 R02-08 当前 main 复核与证据校正
+
+- 从 `main` clean HEAD `4d166f017dcba8fbb07980ec21b690267b9ff377` 复查已实现的动作文案能力；复用原生产命令、DTO、状态消息与 `R02ActionCopyTests`，当前 Release source 组该类 `4/4`。没有生产代码或命令绑定改动。
+- 官方安装脚本隔离安装 SDK `8.0.423`；Release 构建 `0 warning / 0 error`、XAML `24/24`，Core `125/125`、Worker `357/357`、Playnite source `470 passed / 18 skipped`、WPF `608 passed / 39 skipped`，合计 `1560 passed / 57 skipped / 0 failed`。`validate-source.py` 通过。
+- RenderHarness 当前身份 Light/Dark `372` 张图 `render-qa OK`；人工检查 Save 1040×700 双主题动作标签，CloudQueue 图仅作页面上下文。保留四张截图、全 source 组脱敏 TRX 与程序集身份；没有把离屏 logical DPI 1.00 写成真实 Playnite、物理 DPI或最终呈现证据。
+- run #935（`38253621689`，CI SDK `10.0.401`）终态失败于“编译与测试”，完整 job logs HTTP403、diagnostic artifact 下载 HTTP401，根因未知；本机 SDK8 结果不替代 CI10，不盲改。真实云端、恢复与存档操作未执行。R02-08 插件可控文案项满足；下一项 R03-01 当前 main `finesseprobe`，同身份 `TypographyDiagnosticsTests 11/11` 已通过。阶段证据：[R02-08 当前复验包](../design/reviews/ui-finesse-round3-20260915/evidence/R02-08-CURRENT-MAIN-RECHECK-20261012/README.md)。
+- 临时输出清理仅请求删除本轮精确 build diagnostics、build 与 render 目录；PowerShell `Remove-Item` 被执行器策略拒绝，输出仍是本机可再生文件且未纳入提交。未尝试其他删除路径。
+
 ## 2026-10-12 R02-04 当前 main 图文光学对齐复验
 
 - 当前 `main` 身份 `a21440834865551cdb6894830548af51ad1d8e78`。已存在的共享按钮修复没有重建；本阶段未改生产 XAML/控件/命令，仅按当前提交 Release build 并复验现有 `R02OpticalAlignmentTests`。本机 SDK8.0.423，solution build `0 warning / 0 error`、XAML24/24；定向 STA WPF 测试 `7/7`。16/20 DIP 图标与数字间距都实测8 DIP、垂直中心差0；中文/英文基线差≤0.5 DIP断言、Left/Center/Right对齐以及文字/视觉内容往返均通过。TRX和DLL SHA/MVID见[R02-04当前复验包](../design/reviews/ui-finesse-round3-20260915/evidence/R02-04-CURRENT-RECHECK-20261012/README.md)。
