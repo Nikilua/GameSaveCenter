@@ -1,3 +1,12 @@
+## 2026-10-13 CI 失败证据校正与 Q14 断点复核
+
+- 按用户暂停点重新查询 Actions：#919 (`36675309812`, `a6b6dfc`) 与 #920 (`36677346317`, `77de7f4`) 均已完成失败；完整日志可经当前登录凭据读取。两次实际 CI SDK 均为 `10.0.401`，失败于 `ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites` 与 `SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow`：活动 transition 断言为 True，实测 False。日志 SHA-256 分别为 `69AC5DF7900AA0122B3D55E02436AFF9515C8FD829C15240D4014AE86649B25E`、`8EB5989E08ED940D7C9E9CB1CF870A20F91FD94DB933704A220D490D80C08FFF`。
+- 当前 main 相对 `77de7f4` 的生产侧栏与测试文件已有后续改动（8 行生产、74 行测试）。以当前 main SDK `8.0.423` 定向复跑 `ProductionShellChromeSourceTests` 为 `22/22`；这既不是旧提交的精确重现，也不是当前分支 SDK10 验证，因此未据旧日志改生产行为。进程退出有 WPF `TextServicesHost.InvalidComObjectException` 清理噪声，但 xUnit/TRX 与退出码均通过。
+- #947 (`90454586`)、#948 (`fdeeec8`)、#949 (`e277a804`)、#950 (`0e031b12`) 的完整日志都确认同一 Q14 compact 断言失败。测试按原请求宽度决定预期，第二次布局却把窗口实际 `ActualWidth` 传给生产布局；Expected False / Actual True 与两者分处 1216 DIP 断点两侧相符，但旧断言没有记录请求/实际宽度或 DPI，具体测量值未知，不能断定 DPI 是根因。
+- 本轮只改 Q14 测试：保存第二次 `ApplyResponsiveLayout` 实际使用的 `appliedWidth`，以其决定 compact 期望，并在断言中输出请求/应用/排列宽度及 DPI。没有改生产布局。SDK `8.0.423` 完整 Release build `0 warning / 0 error`、XAML `24/24`；Q14 `1/1`、侧栏类 `22/22`、R06Clipboard `5/5`、R22 `2/2`，`python scripts/validate-source.py` 与 `git diff --check` 通过。6 份脱敏 TRX 及 SHA 见 [R06-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 当前测试修正在工作树，尚未 commit/push，故没有它对应的 Actions run。下一步提交中文 commit 并 push main；检查新 run 实际 SDK、完整失败日志及终态，成功后再复核 R06-05。真实 Playnite、物理 DPI/跨屏、呈现帧、ETW/宿主性能仍未验证。
+
+
 ## 2026-10-13 R06-04 当前 main 复制快捷键行为复核
 
 - 复用初始实现 `afe4aa55` 的 `DataGridClipboardBehavior`、五类 profile、现有 DTO 和凭据脱敏。main 源码基线 `e277a804bd4774cd32ad0bde0dfe2b8f76bc3308`；本轮只增加一个 modifiers 测试 seam 与一项 routed-event 行为测试，没有改快捷键或剪贴板生产行为。
@@ -5,7 +14,7 @@
 - 对实际生产 DataGrid 触发 WPF `PreviewKeyDown` routed event，覆盖 Ctrl+C 选中行、Ctrl+Shift+C 当前单元格；Ctrl+Alt+C、Ctrl+X、解绑后 Ctrl+C 与无选择负例不复制，无选择时显示失败反馈且事件未吞。既有用例继续验证显示顺序、稳定 TSV、ID 去重、完整原值和凭据脱敏。modifier 由内部 test seam 控制，clipboard 通过 fake setter，不接触 OS 键盘或系统剪贴板。
 - `DataGridClipboardBehavior.cs` SHA-256 `A16229D66427BA77F2BF2F44D841D0D026AB0A018D9082E40F4F73D7D0208A5A7`；`R06ClipboardBehaviorTests.cs` SHA-256 `99381AD3D4147881DC6C02DCE72F61831A1A073072BA407F755B89D0DD55FA79`；Playnite DLL SHA/MVID `63FA4310CC8295EA58E76B79EDEF2B76CD32046152A91705A529A11CB50265EA` / `d1ab9447-edbe-434a-9d4d-98300a29848b`；tests DLL SHA/MVID `6DA620E1ED0E749D7CF5ABC4BDE27BBDC7DA519AB0909E2993C613881CA042BE` / `c3e76dff-fedb-47f8-9cfc-4db12727e098`。两份脱敏 TRX 的哈希、受控输入边界见[R06-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 没有视觉布局变化；历史 RenderHarness 双主题图仍绑定 `afe4aa55`，本轮未重跑或当作当前截图。真实 Playnite、OS 键盘/剪贴板、UIA/Narrator、IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验，未触碰真实存档、媒体、云端或诊断数据。
-- `e277a804` commit checks 于 2026-10-12 20:04 UTC 启动，截至 20:11 UTC 仍显示 `Re-running jobs...`，没有可见终态或 run ID；完整日志需登录、匿名 REST API 限流拒绝。#947/#948 同时仍 `In progress`；用户指定 #920 (`36677346317`) 现为 failure，公开只显示构建/测试 exit 1，完整日志需登录且根因未知。本机 SDK `8.0.423` 不替代目标 CI SDK `10.0.401`。下一项 R06-05 列头说明。
+- 后续 CI 状态由本文件前部的“CI 失败证据校正与 Q14 断点复核”记录：#949/#950 已失败于 Q14 测试，用户指定 #919/#920 SDK10.0.401 的旧侧栏失败日志也已取回；本机 SDK8 的当前复核不替代目标 CI。Q14 修正提交后须先等新 Actions 终态，再开始 R06-05。
 
 ## 2026-10-13 R06-03 当前 main 选中焦点与徽章/危险动作复核
 
@@ -14,7 +23,7 @@
 - 新探针在隔离生产 `TaskCenterView` 中使用合成 Failed/Running DTO 与 fake Cancel 命令。通过受控 `MouseDevice.ChangeMouseOver` 触发 WPF hover/leave，检查共享 RowBackground 在两主题变化并恢复；选中失败行时验证 error pill 与 inactive selection 的颜色不同、徽章可见且 InputHitTest 命中其模板；选中运行行并键盘聚焦后，AutomationPeer Invoke 实际 Raise Click 且执行 fake command。四页 geometry 用例另保留选中、焦点、禁用的正负状态检查。
 - Release 本机 SDK `8.0.423`（目标 CI SDK `10.0.401` 另行跟踪）；Playnite `net462`、测试 `net472`。测试源 SHA-256 `663FF65E6EDF569D05D51D002C45C74D4D125AA2F281617F02BD8081AA84B3FC`；插件 DLL SHA/MVID `A486B9B34CFB5614E24797F39E2D09CEBFAE51E251299F0F4C5EC8A67AA1BF50` / `354dc807-4006-4a7d-b9ef-59dc034f3420`；测试 DLL SHA/MVID `CB3F3FB068EDAF7E880F146AF892769D4384448F34AEB0DA1AB62FD3AAC0B148` / `d3eadb88-2bc6-470c-8ab5-6d0053b8c5fd`。四份脱敏 TRX 与 SHA 在[R06-03 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - SetCursorPos 尝试未使隔离测试行进入 `IsMouseOver`，该次不计为通过，具体原因未知；最终验证使用 WPF MouseDevice 受控状态，不代表实际 OS 指针或 Playnite 宿主。没有当前 RenderHarness 截图；历史图仍绑定 `d83c7378`。真实 Playnite输入、UIA/Narrator、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验，未写真实存档/媒体/云端/诊断。
-- Actions #947（`38295749414`，`90454586`）和 #948（`38298023983`，`fdeeec8`）截至2026-10-12 20:00 UTC 仍 `In progress`；job 页需登录，日志和实际 runner SDK不可见。用户指定检查点 #920（run `36677346317`，`77de7f4`）现为 `Failure`，公开页显示编译/测试步骤 exit 1，完整日志需登录且不可取得，根因未知；不能盲改。本机 SDK8 不替代 CI SDK10.0.401。下一项 R06-04 复制单元格与整行。
+- 后续 CI #947–#950 已终止失败；#949/#950 的完整日志确认 Q14 compact 断言失败。用户指定 #919/#920 的完整 SDK10.0.401 日志也已取回，详情见本文件前部“CI 失败证据校正与 Q14 断点复核”。当前工作树修正尚待 push 和新 Actions 终态；本机 SDK8 结果不替代远端结果。
 
 ## 2026-10-13 R06-02 当前 main 排序行为复核
 

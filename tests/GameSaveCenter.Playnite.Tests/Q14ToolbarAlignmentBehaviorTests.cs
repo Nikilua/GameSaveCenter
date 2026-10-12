@@ -295,10 +295,12 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             view.ApplyResponsiveLayout(width, 700d);
             window.Show();
             FlushLayout(window);
-            view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+            var appliedWidth = view.ActualWidth;
+            view.ApplyResponsiveLayout(appliedWidth, view.ActualHeight);
             FlushLayout(window);
 
-            var compact = width < 1216d;
+            var compact = appliedWidth < 1216d;
+            var arrangedWidth = view.ActualWidth;
             var searchCell = GetBounds(searchHost, filters);
             var searchBounds = GetBounds(search, filters);
             var statusBounds = GetBounds(statusGroup, filters);
@@ -309,7 +311,8 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             var clearBounds = GetBounds(clearButton, searchHost);
             var inputBounds = contentHost is null ? Rect.Empty : GetBounds(contentHost, search);
 
-            Assert.Equal(compact, moreFilters.Visibility == Visibility.Visible);
+            Assert.True(compact == (moreFilters.Visibility == Visibility.Visible),
+                $"{theme} requested width={width:0.###} DIP; responsive width={appliedWidth:0.###} DIP; arranged width={arrangedWidth:0.###} DIP; DPI={VisualTreeHelper.GetDpi(view).DpiScaleX:0.###}x{VisualTreeHelper.GetDpi(view).DpiScaleY:0.###}.");
             Assert.True(searchCell.Width >= 300d,
                 $"{theme} {width:0} DIP search cell is only {searchCell.Width:0.###} DIP.");
             Assert.True(searchBounds.Left >= searchCell.Left - GeometryTolerance
@@ -356,7 +359,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                     "The negative control did not reproduce the full-row search overflow.");
             }
 
-            return $"theme={theme}; width={width:0} DIP; compact={compact}; searchCell={safeCellWidth:0.##}; box={safeSearchWidth:0.##}; inputViewport={safeInputViewportWidth:0.##}; search/status gap={safeSearchStatusGap:0.##}; status/refresh gap={safeStatusRefreshGap:0.##}; refreshRight={safeRefreshRight:0.##}/{safeFiltersWidth:0.##}; negativeControlGap={negativeControlSearchStatusGap:0.##}; negativeControlDetected={negativeControlDetected}; dpi={VisualTreeHelper.GetDpi(view).DpiScaleX:0.##}x{VisualTreeHelper.GetDpi(view).DpiScaleY:0.##}";
+            return $"theme={theme}; requestedWidth={width:0} DIP; appliedWidth={appliedWidth:0.##} DIP; arrangedWidth={arrangedWidth:0.##} DIP; compact={compact}; searchCell={safeCellWidth:0.##}; box={safeSearchWidth:0.##}; inputViewport={safeInputViewportWidth:0.##}; search/status gap={safeSearchStatusGap:0.##}; status/refresh gap={safeStatusRefreshGap:0.##}; refreshRight={safeRefreshRight:0.##}/{safeFiltersWidth:0.##}; negativeControlGap={negativeControlSearchStatusGap:0.##}; negativeControlDetected={negativeControlDetected}; dpi={VisualTreeHelper.GetDpi(view).DpiScaleX:0.##}x{VisualTreeHelper.GetDpi(view).DpiScaleY:0.##}";
         }
         finally
         {

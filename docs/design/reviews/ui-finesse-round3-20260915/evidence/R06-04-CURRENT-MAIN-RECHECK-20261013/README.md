@@ -7,10 +7,10 @@
 ## 构建与测试
 
 - 构建源码基线：main `e277a804bd4774cd32ad0bde0dfe2b8f76bc3308`，本轮工作树仅改测试 seam 和测试。Pinned SDK `8.0.423` 位于隔离目录；系统默认 dotnet 只发现 `9.0.302`，没有用它替代项目要求的 SDK。
-- 官方 `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot ... -DiagnosticsRoot ...`：Release `0 warnings / 0 errors`，XAML `24/24`；Playnite `net462`、tests `net472`。隔离输出位于 `D:\GameSaveCenterTools\R06-04-current-main-20261013`，诊断目录 `20261012T200738463Z-ac6c4219`。
+- 官方 `scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot ... -DiagnosticsRoot ...`：Release `0 warnings / 0 errors`，XAML `24/24`；Playnite `net462`、tests `net472`。隔离输出与诊断目录均在仓库外的可再生目录。
 - `R06ClipboardBehaviorTests`：`5 passed / 0 failed / 0 skipped`。包括既有格式化/多选显示顺序/ID 去重/完整路径/凭据脱敏/五类 profile 接线，以及本轮实际对生产 `DataGrid` 触发 `PreviewKeyDown` 路由的 Ctrl+C 行复制、Ctrl+Shift+C 单元格复制。负例覆盖 Ctrl+Alt+C、Ctrl+X、解绑后的 Ctrl+C 与没有选中行；未复制时保持 clipboard seam 内容不变，无选择时呈现失败提示且不吞事件。
 - `R22CopyFeedbackBehaviorTests`：`2 passed / 0 failed / 0 skipped`，复核剪贴板占用失败提示和重试反馈。
-- `python scripts/validate-source.py` 与 `git diff --check` 通过。两份脱敏 TRX 保留在 `tests/`，去掉本机路径、用户名和机器名，并按仓库约定规范为 LF。
+- `python scripts/validate-source.py` 与 `git diff --check` 通过。测试 TRX 去掉本机路径、用户名、机器名、run name 和 deployment root，并规范为 LF。
 
 ## 身份
 
@@ -21,13 +21,26 @@
 
 | TRX | 结果 | SHA-256 |
 | --- | --- | --- |
-| [R06-04-clipboard-route.trx](tests/R06-04-clipboard-route.trx) | 5/5 | `BD079EBE93F7BA9837F6509C27242264BC7CE5C46B68888983D3A9B5BB8EFFC9` |
-| [R06-04-copy-feedback-regression.trx](tests/R06-04-copy-feedback-regression.trx) | 2/2 | `5F1E8433FA5D3FCB196D7F9459125A2AA57B20ED175A0332F30EE39DEBF26298` |
+| [R06-04-clipboard-route.trx](tests/R06-04-clipboard-route.trx) | 5/5 | `56D98AA6D7C9161D9969F8D6CA7346FAB90405DB2B0E308927D1C147D020E3F4` |
+| [R06-04-copy-feedback-regression.trx](tests/R06-04-copy-feedback-regression.trx) | 2/2 | `8D39BA678E2A169FA367ED321024C287F255FAEA585D89C6C8D3FCEEB030A49B` |
+| [Q14ToolbarAlignmentBehaviorTests-sdk8423-current-main.trx](tests/Q14ToolbarAlignmentBehaviorTests-sdk8423-current-main.trx) | 1/1 | `3CBD5118E065B57F32A53730B5760ACE959AA26E221B7C970CDC7A8F27A8F016` |
+| [ProductionShellChromeSourceTests-current-main-sdk8423.trx](tests/ProductionShellChromeSourceTests-current-main-sdk8423.trx) | 22/22 | `EDCBB94F2D46A1E76A7FF8FAE71BD7CC62EFB83F3FA57DCC491717B74A92B8FE` |
+| [R06ClipboardBehaviorTests-sdk8423-current-main.trx](tests/R06ClipboardBehaviorTests-sdk8423-current-main.trx) | 5/5 | `AF531439D36DACE30632601A257795114A2B9240A1FF6EA787A9741060F0B051` |
+| [R22CopyFeedbackBehaviorTests-sdk8423-current-main.trx](tests/R22CopyFeedbackBehaviorTests-sdk8423-current-main.trx) | 2/2 | `1567374318B576B7DCA51A92ACB9C291A311C873BD7B10E88E39DD2B722A33F7` |
+
+## Actions 失败复核与当前 main 校正
+
+- #919 (`36675309812`, `a6b6dfc`) 与 #920 (`36677346317`, `77de7f4`) 的完整日志已取回；二者实际 SDK `10.0.401`，均显示 `ProductionShellChromeSourceTests.ReducedMotionCancelsAnActiveSidebarTransitionWithoutLateClockWrites` 和 `SidebarTransitionReleasesClocksOnCompletionAndUnloadInAnActualWpfWindow` 的 transition-running `Assert.True` 失败（实际为 `false`）。日志 SHA-256：#919 `69AC5DF7900AA0122B3D55E02436AFF9515C8FD829C15240D4014AE86649B25E`；#920 `8EB5989E08ED940D7C9E9CB1CF870A20F91FD94DB933704A220D490D80C08FFF`。当前 main 相对该检查点已有侧栏代码与测试变化；当前测试类在本机 SDK `8.0.423` `22/22`，不能视作 SDK10/CI 重跑。
+- #947 (`90454586`)、#948 (`fdeeec8`)、#949 (`e277a804`) 与 #950 (`0e031b12`) 的 CI job log 均取回。#949 SHA-256 `9E4332A7DE8D73F9735AE6AF5CAEE684DC56FED534AF6402643C1B9741468A32`；#950 SHA-256 `8C9C3EE938A2F3181B7ACF1DFD308E1B4D375CF8D37A36E702903E05805C2E2A`。#949/#950 实际 SDK `8.0.423`，相同失败为 Q14 `ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters` 的 compact 断言：测试按原请求宽度决定预期，随后却把窗口实际 `ActualWidth` 传给第二次布局。Expected False / Actual True 与两者分处 1216 DIP 断点两侧相符；但旧断言没有记录请求/实际宽度或 DPI，无法恢复具体测量值，也不能断定 DPI 是根因。
+- 校正仅触及测试：保存第二次 `ApplyResponsiveLayout` 的 `appliedWidth`，用其判断 compact，并在断言失败信息中记录 requested/applied/arranged width 与 DPI。没有改生产布局或断点。
+- 本机 Windows `10.0.22000`，Pinned SDK `8.0.423`。校正后的 Q14 `1/1`、`ProductionShellChromeSourceTests 22/22`、R06Clipboard `5/5`、R22 `2/2`；完整 Release build `0 warnings / 0 errors`、XAML `24/24`，source validation/diff check 通过。VSTest 为 .NET Framework 4.8.9345.0。进程有 TextServices `InvalidComObjectException` teardown 输出，但各 TRX 和进程退出码均通过。
+- 校正构建的源码身份为 main `0e031b12` 加 Q14 测试工作树差异；Q14 测试源 SHA-256 `5FAE90542DDBC41A96F56C77B06905B352115CC192666BD36D581B88BCBAC8C7`，侧栏测试源 SHA-256 `33879158CDE26DDB40451D5751DC55DCF93064CDD86BE1C062B47D1721B7CB06`。Playnite DLL SHA/MVID `9737C86C62373FF5586BB8266745FA7480EE5B255D05372A284F6005F03F4C87` / `5368efe3-c19a-4278-9adf-2479358bcb90`；tests DLL SHA/MVID `AFF10C272E772BB7011EE2DA3941974FFE770873F9BB37491B37DBDF092B8DD8` / `2d754f5c-3683-4ed0-90b0-ab599c481331`。
+- 当前工作树测试校正尚未提交，#950 是最近已推送检查点且为失败；新 commit 的 Actions 结果待生成并跟到终态。本节本机 TRX 的脱敏文件名、测试计数和哈希见上表。
 
 ## 验证边界与下一步
 
 快捷键测试在显示的隔离 STA 窗口中对真实生产 DataGrid 触发 WPF routed event；modifier 通过仅供测试使用的内部 seam 提供，clipboard 写入使用 fake setter。它不代表真实 OS 键盘、系统剪贴板或 Playnite 宿主输入。没有视觉布局改动或当前 RenderHarness 截图；双主题渲染证据仍绑定原实现 `afe4aa55`。真实 Playnite、系统剪贴板占用、物理 DPI/跨屏、IME、UIA/Narrator 和宿主性能仍未验，也未触碰真实存档、媒体、云端或诊断数据。
 
-上一阶段提交 `e277a804` 的 GitHub commit checks 页面截至 2026-10-12 20:11 UTC 仍显示 `Re-running jobs...`，没有可见终态或完整日志；REST API 匿名请求受限流拒绝。该 CI 状态不由本机 SDK `8.0.423` 结果替代，目标 CI SDK `10.0.401` 尚待确认。
+旧阶段的 CI 结果与 SDK差异、完整日志哈希和本轮校正过程见上方“Actions 失败复核与当前 main 校正”；新测试提交仍待远端 Actions 终态。
 
-下一项：R06-05 列头说明；先核对单位、缩写、排序箭头与现有列头行为，再决定是否只需补当前 main 证据。
+CI校正 commit 成功后，下一项 R06-05 列头说明；先核对单位、缩写、排序箭头与现有列头行为，再决定是否只需补当前 main 证据。

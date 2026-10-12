@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-07 当前 main `afade3cd` 定向行为 `34/34`；R06-01 同一 main `6/6`；R06-02 `90454586` 当前源码身份定向行为 `7/7`，复用现有稳定排序控制器/DTO。Actions #947（run `38295749414`）截至2026-10-12 19:24 UTC 仍在运行，公开日志需登录；#946 已失败且匿名日志/artifact HTTP403，根因与 runner SDK未知。用户指定追踪 CI SDK `10.0.401`，本机 SDK `8.0.423` 独立记录。真实 Playnite、UIA/读屏、物理 DPI、呈现帧未验。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，旧下一项不是当前指令。
+更新：2026-10-13。稳定规则见本文件，当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准。R00/R01 freshness `14 fresh / 0 stale`。R06-04 快捷键行为 `5/5`、复制反馈 `2/2`；当前工作树另修 Q14 compact 断点测试的预期宽度，SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。CI #949/#950 在旧 Q14 断言失败，当前校正尚未提交。用户指定 #919/#920 的完整日志现已读取：两次 CI 实际 SDK `10.0.401`，侧栏 transition 测试断言失败；当前 main 对应测试类 SDK8 `22/22`，不代表 SDK10 当前分支结果。下一步提交推送、追踪 Actions 到终态，再核对 R06-05 当前 main 能力。
 
 ## AI/Codex 启动协议
 
@@ -52,14 +52,14 @@
 
 - 活动动画测试需显式控制应用与系统偏好两个前提；生产默认必须保留HighContrast/ClientAreaAnimation，测试用实例内internal输入，不修改OS/全局开关。CI无动画偏好不能与“动画应启动”混淆；默认真实偏好路径必须单独验证。
 - build-diagnostics保存native实际退出码、分步console/TRX/SDK/dirty源码hash/DLL身份。PS5.1会将stderr包装成ErrorRecord，采集过程需继续至LASTEXITCODE；缺失exe必须有launchError而不能继承0。摘要标注testsRequested；诊断异常也不能阻止恢复环境。
-- SDK声明以global.json精确8.0.423/disable/不允许preview为准，CI通过global-json-file安装；C#12.0而非latest。缺失版本须明确失败，不能以另一预装SDK替代。SDK升级另做完整编译/测试/包验证；本阶段不新增兼容通道。2026-10-12 已将 SDK8 安装到隔离路径 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；运行时临时将此目录前置到进程 PATH，未更改系统 SDK/PATH；CI SDK10 仍须独立验证。原生Get-Command可能返回多个PATH匹配，必须选首个Application；PS5.1/7用两个不同原生程序的同名夹具验证优先级与环境恢复。
+- SDK声明以 `global.json` 精确 `8.0.423/disable/不允许preview` 为准；CI 每个 run 按日志记录实际选中版本。当前 main #947–#950 选中 SDK `8.0.423`；用户指定旧 run #919/#920 选中 SDK `10.0.401`，版本结果不可互相替代。缺失版本须明确失败，不能用其他预装 SDK 替代；升级另做完整编译/测试/包验证。2026-10-12 将 SDK8 安装在隔离路径 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`，仅临时调整进程 PATH，不改系统 PATH；C#12.0 而非 latest。
 - 带预期非零native负例的自测入口须在finally之后显式exit0；Actions pwsh外层会继承LASTEXITCODE，出现断言全部通过但步骤失败。不能在采集器清零实际负例；异常路径仍非零。自测诊断也纳入artifact目录，上传只JSON/TXT/TRX，不能以always步骤success当作artifact存在。
 - TRX脱敏除TestRun.name/computerName/路径，还须覆盖runUser和runDeploymentRoot；保留GUID、方法/断言/堆栈/计数和DLL身份。合成元数据负例同时检验异常路径仍非零。
 - run37565955357/37566483862已实际失败上传并下载：SDK10侧栏22/22通过，native偏好记录ClientAreaAnimation=false；仍在Q14错误态36→37 DIP失败。STA干预确认2 DIP错误边框改变测量；独立私有几何夹具复现Light/Dark654 DIP单行20 DIP margin，620/660通过。探针不是生产修复或宿主验收。
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：R06-03 已在当前 main 上补齐受控 WPF 行为复核，定向合计 `6/6`；R06-04 当前 main 复核 `5/5`，复制反馈回归 `2/2`；下一可执行任务 R06-05 列头说明。R06-04 复用现有剪贴板实现，实际触发生产 DataGrid 的 WPF PreviewKeyDown 路由，覆盖 Ctrl+C/Ctrl+Shift+C、无效组合、解绑和无选择负例；测试 modifiers seam 与 fake clipboard 不代表真实 OS 键盘/剪贴板。SDK `8.0.423` Release `0/0`、XAML `24/24`；真实 Playnite表格、UIA/Narrator、物理 DPI/多屏、呈现帧与宿主性能仍待验。Actions #947/#948 截至2026-10-12 20:11 UTC 仍 In progress；`e277a804` commit checks 于20:04 UTC启动，截至20:11显示 `Re-running jobs...`，没有可见终态或run ID；匿名REST API限流。用户指定 #920 已 failure，构建/测试步骤 exit 1，完整日志需登录、根因未知；#946 终态失败且匿名日志/artifact API HTTP403，根因未知，不盲改；本机 SDK8不替代目标 CI SDK10.0.401。R02-06 仍受 ENV-001 宿主阻塞；Q06/R08 仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：R06-03 当前 main 受控 WPF 复核 `6/6`；R06-04 生产快捷键路由 `5/5`、反馈回归 `2/2`。当前待收口的是 Q14 compact 断点测试在 CI #947–#950 的宽度期望不一致；工作树已按第二次布局真实使用的 `ActualWidth` 修正，并在断言加入宽度/DPI 信息。本机 SDK `8.0.423` Release `0/0`、XAML `24/24`，Q14 `1/1`、ProductionShellChromeSource `22/22`、R06Clipboard `5/5`、R22 `2/2`。用户指定 #919/#920 的完整日志已获取：旧 CI 实际 SDK `10.0.401`，侧栏 transition 两项断言未启动；当前 main 对应类 SDK8 通过，源码已变化，不冒充为旧 SDK/旧提交重现。当前工作树修正尚无远端 Actions 结果；先 commit/push 并等新 run 终态，再复核 R06-05。R02-06 仍受 ENV-001 宿主阻塞；Q06/R08 仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
