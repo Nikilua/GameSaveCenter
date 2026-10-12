@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-12；picker Dispatcher 修复已推送，R00/R01 证据已校正；R02-03 焦点/UIA peer 复验与 R02-04 图文几何/双主题复验均已归档，未改生产 UI。当前分支 `main`，最新本地证据身份 `a21440834865551cdb6894830548af51ad1d8e78`，版本 `0.6.73-development-preview`。
+更新：2026-10-12；picker Dispatcher 修复已推送，R00/R01 证据已校正；R02-03、R02-04 与 R02-05 当前 main 复验均已归档，未改生产 UI。当前分支 `main`，最新本地证据身份 `90099a09104677708a5829cf7e6a5d22b6b414ff`，版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -15,18 +15,19 @@
 | 当前实现阶段 | `CLOSE-PICKER-01` 本机代码和自动化门禁已实现；新增 STA Dispatcher 线程负例证明旧实现线程错误，删除回退/虚拟化全量通过。R09 测试已校正为检查独立 `ValidationStroke` 两 DIP 覆盖层，不错误断言 Chrome 改为两 DIP |
 | R02-03 当前复验 | 生产实现未变；加强后的 STA 提示焦点/UIA peer行为与Save紧凑布局定向 `5/5`。本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；WPF 静态审查 `0 errors/29 warnings/177 info`；RenderHarness 通用双主题 `render-qa OK`，未作为禁用提示截图证明 |
 | R02-04 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 几何 `7/7`，16/20 DIP 图标间距各 `8 DIP`、中心差 `0`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已人工对照并归档 Save 1040×700 两主题截图。未改生产 UI |
-| 远端 CI | 推送 `a2144083` 的 run `38244963620` 已终态 failure，失败步骤“编译与测试”，页面只显示 `Process completed with exit code 1`。CI SDK `10.0.401` 与本机 `8.0.423` 独立记录。未认证 API 受 rate limit HTTP403；job 页面要求登录查看日志；诊断 artifact `11745496487`（478 KB，SHA-256已记）路由404。失败根因未知 |
+| R02-05 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 命中/间距/82 DIP 换行 `2/2`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已检查并归档 Media 1040×700 两主题截图。未改生产 UI |
+| 远端 CI | 最新推送 `90099a09` 的 run `38247748056` 已终态 failure，步骤“编译与测试”只显示 exit code 1。CI SDK `10.0.401` 与本机 `8.0.423` 独立记录。未认证 jobs/log API rate-limit HTTP403；诊断artifact `11747310690`（479 KB，SHA-256见R02-05包）下载404；完整日志和根因未知 |
 | R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
-历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930–run932 的失败原因仍需完整日志；访问受限期间不盲修。
+历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932及最新run的失败原因仍需完整日志；访问受限期间不盲修。
 
 ## 当前执行顺序
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新 run `38244963620` 已失败；公开页面仅给出 exit 1，未认证 API rate-limit 403，artifact 下载路由404，根因未知，不盲修。SDK10.0.401结果单列。
-2. 按依赖推进可独立验证的 Q/R 小批次；下一项 R02-05 命中区与间距，先检查原测试覆盖与共享控件实现，再按需补行为/负例。
+1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新 run `38247748056` 已失败；job页面仅确认“编译与测试”exit 1，未认证API rate-limit403，artifact下载404，根因未知，不盲修。SDK10.0.401结果单列。
+2. 按依赖推进可独立验证的 Q/R 小批次；R02-05当前main复验已 `2/2`。先确认R02-06插件/宿主菜单边界；若宿主验证仍受ENV-001阻塞，记录步骤后继续独立R02-07。
 3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。

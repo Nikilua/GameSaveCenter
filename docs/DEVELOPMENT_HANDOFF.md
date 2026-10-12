@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-12；picker 修复、R00/R01 源码证据校正已推送 main；R02-03 与 R02-04 当前 main 复验已归档。R02-04 几何、RenderHarness、身份及两张主题截图见[R02-04当前复验包](design/reviews/ui-finesse-round3-20260915/evidence/R02-04-CURRENT-RECHECK-20261012/README.md)；R02-03 见[R02-03当前复验包](design/reviews/ui-finesse-round3-20260915/evidence/R02-03-CURRENT-RECHECK-20261012/README.md)，R00/R01 见[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。最新 CI 状态见下方检查点。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-12；picker 修复、R00/R01 源码证据校正已推送 main；R02-03、R02-04、R02-05 当前 main 复验已归档。R02-05 命中区、双主题截图和身份见[R02-05当前复验包](design/reviews/ui-finesse-round3-20260915/evidence/R02-05-CURRENT-RECHECK-20261012/README.md)；此前 R02-04 与 R02-03 见对应 current-recheck 包，R00/R01 见[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。最新 CI 状态见下方检查点。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 2026-10-12 当前检查点（优先于下方10月7日历史记录）
 
@@ -10,8 +10,12 @@
 - 文档证据提交 `da6388e814309825141fb530ecda702cb7e11eab` 对应 run `38226955461`（run931）已终态 failure，失败步骤仍为“编译与测试”，SDK10.0.401。完整日志 HTTP403；diagnostic artifact ID `11735869371`（488,867 bytes）下载 HTTP401。根因未知，尚无失败命令/断言/堆栈，不凭 exit code 盲改。
 - R02-03 复验已提交 `a2144083`；随后当前 main `a21440834865551cdb6894830548af51ad1d8e78` 的 Release 构建 SDK8.0.423 `0/0`、XAML24/24，R02-04 STA 几何测试 `7/7`，16/20 DIP 图标间距各8 DIP、中心差0；双主题 RenderHarness `372` 图 `render-qa OK`，Save 1040×700 两张截图已核对并归档。`validate-source.py` 通过，WPF静态审查36 XAML `0 errors/29 warnings/177 info`。该复验未改生产 UI。
 - `a2144083` 对应 Actions run `38244963620` 已失败于“编译与测试”，页面仅显示 `Process completed with exit code 1`。CI SDK10.0.401；未认证 API rate limit HTTP403，GitHub job 页完整日志要求登录，diagnostic artifact `11745496487`（478 KB，SHA-256 `11de81935473ce3da60739d481c768eba2af589d2c76cc819cf3977fd4daea1e`）下载路由404。根因未知，不按退出码修复。
-- 下一项 R02-05 命中区与间距；需先查现有行为测试、生产资源及负例覆盖，再决定是否新增实现。`.tmp/r02-03-current-recheck-20261012` 与 `.tmp/r02-04-current-main-20261012` 均为本轮生成输出；按仓库规则验证范围后请求递归清理时，执行器拒绝 `Remove-Item -Recurse`，目录暂留，未改走其他删除路径。没有 `.tmp/` 或 `artifacts/` 输出提交。
-- 权限受限时继续不依赖该日志的独立 Q/R 小批次，不把CI标绿。CLOSE-HOST-01仍受ENV-001限制；Q06/R08用户原始失败日志与DLL identity仍缺。真实Playnite、物理DPI、IME/UIA、ETW和最终呈现帧均未验。
+- `90099a09` 对应最新 Actions run `38247748056` 也终态 failure 于“编译与测试”，页面只有 `Process completed with exit code 1`。CI SDK10.0.401；未认证 Jobs/log API rate-limit HTTP403；diagnostic artifact `11747310690`（479 KB，SHA-256 `8586bcace066ca779c72dbf9fbea1843c19a49133d619b9a6000e6e8dc6e79c5`）下载路由404。失败命令、断言、堆栈未知，不按退出码猜修。
+- R02-05 当前 main `90099a09104677708a5829cf7e6a5d22b6b414ff` 已重建 Release `0/0`、XAML24/24；生产资源 STA 几何命中测试 `2/2`，包含6 DIP间距负例、中心命中独立按钮及82 DIP换行；双主题RenderHarness `372` 图 `render-qa OK`，已归档Media 1040×700浅/深截图。源码门禁通过，WPF静态审查36 XAML `0 errors/29 warnings/177 info`。没有生产UI变更。
+- 下一项先核对 R02-06 菜单的插件/Playnite宿主边界和安全验证步骤；若真实宿主前置仍被ENV-001挡住，记录具体限制并继续独立R02-07。CLOSE-HOST-01仍受ENV-001限制；Q06/R08用户原始失败日志与DLL identity仍缺。真实Playnite、物理DPI、IME/UIA、ETW和最终呈现帧均未验。
+- 下一可执行项是 R02-06：只读盘点插件 `GameMenuItem` 契约与 Playnite 宿主拥有的菜单行为；若隔离宿主仍受 ENV-001 阻塞，记录具体步骤后推进独立 R02-07。R02-05 保持“已满足”，复验证据见上方链接。
+- `.tmp/r02-03-current-recheck-20261012`、`.tmp/r02-04-current-main-20261012`、`.tmp/r02-05-current-main-20261012` 及 `artifacts/build-diagnostics` 下本轮三个诊断目录均已确认是仓库临时输出且所需证据已复制至 docs；递归清理请求被执行器拒绝，暂时留在本机，未尝试其他删除路径，也未提交任何生成物。
+- Actions 权限受限期间继续不依赖该日志的独立 Q/R 小批次，不把 CI 标绿。CLOSE-HOST-01 仍受 ENV-001 限制；Q06/R08 用户原始失败日志与 DLL identity 仍缺。真实 Playnite、物理 DPI、IME/UIA、ETW 和最终呈现帧均未验。
 
 ## 2026-10-07共享UI阶段检查点（历史记录）
 

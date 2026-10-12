@@ -1,0 +1,82 @@
+{
+  "sourceCommit": "90099a09104677708a5829cf7e6a5d22b6b414ff",
+  "workingTreeClean": true,
+  "dirtyPaths": [],
+  "localSdk": "8.0.423",
+  "releaseSolution": {
+    "outcome": "passed",
+    "xamlPassed": 24,
+    "xamlTotal": 24,
+    "warnings": 0,
+    "errors": 0,
+    "testsRequestedByBuildScript": false
+  },
+  "targetedTests": {
+    "filter": "FullyQualifiedName~R02HitAreaSpacingTests",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "sourceSha256": "1D189F8F6B93695C79B5B38430E0A461C2CC999EF7DC61285C2C0D7ED8E5DE7D",
+    "trx": "tests/R02-05-current.trx",
+    "trxSha256": "376926693FB5A71760C49EDEF4BF94041A5C5F83A9D41767C233E739CCC797A6",
+    "checks": [
+      "34x34 DIP icon targets within half physical pixel",
+      "6 DIP nominal margin; 5.5-6.5 DIP measured gap",
+      "independent center hits for copy and delete",
+      "gap hit test returns no button",
+      "82 DIP wrap retains copy/delete group; third action wraps",
+      "no positive-area overlap"
+    ]
+  },
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "F5240C331D4D6AB1553133810D87164C7FE82273E4644C757EFCF157A3E52B13",
+      "mvid": "a03d6088-7464-454b-be8e-b0cb2e42e14b"
+    },
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "94DBE854183939642EC07073A41077783329945DD9AF482410E4252FD9F0A156",
+      "mvid": "5951330e-405e-443a-8d71-420398488338"
+    },
+    {
+      "file": "GameSaveCenter.RenderHarness.exe",
+      "sha256": "AB88DC1F4DF59BE2A271BBC8BAA7DB65C58A0D942852F7D6B0D98CFD2C5724EF",
+      "mvid": "80a61851-fdf7-4a1e-a23b-b77ac0078fbd"
+    }
+  ],
+  "renderQa": {
+    "scenario": "render-qa",
+    "outcome": "passed",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "pngCount": 372,
+    "dpiScale": 1.0,
+    "dpiBasis": "offscreen logical DIP",
+    "workingTreeClean": true
+  },
+  "sourceValidation": "passed",
+  "wpfStaticReview": {
+    "xamlFiles": 36,
+    "errors": 0,
+    "warnings": 29,
+    "info": 177
+  },
+  "packageIdentity": "not-provided",
+  "ci": {
+    "runId": "38247748056",
+    "outcome": "failure",
+    "sdk": "10.0.401",
+    "failedStep": "编译与测试",
+    "stepAnnotation": "Process completed with exit code 1.",
+    "fullLogs": "unavailable: unauthenticated Jobs/log API rate limit HTTP 403",
+    "artifactId": "11747310690",
+    "artifactName": "GameSaveCenter-build-diagnostics",
+    "artifactSize": "479 KB",
+    "artifactSha256": "8586bcace066ca779c72dbf9fbea1843c19a49133d619b9a6000e6e8dc6e79c5",
+    "artifactDownload": "unavailable: GitHub artifact route returned HTTP 404"
+  }
+}
