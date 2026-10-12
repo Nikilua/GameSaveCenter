@@ -10197,3 +10197,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `validate-source.py` 与 `git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`，未处理其他页面警告。VSTest cleanup 出现 TextServicesHost `InvalidComObjectException`，测试 exit0，原因未知。
 - R07 代码/证据提交 `55d3df19` 已推送。对应 #955（run `38317008652`，SDK `8.0.423`）终态 failure：`scripts/validate-source.py` 在源码结构检查发现 CURRENT_STATE 缺少必需 `0.6.73` 标记，后续编译与测试被跳过。完整日志 ZIP SHA-256 `c022325198c2c1f4245b7462fc0e5111ac7502fd0832dbfa70d1c25f52acd3e3` 已放入证据包；版本事实已在工作树恢复，待本机校验和后续提交触发新 Actions。
 - R07-08 仍未完成远端复核。测试证据只证明受控 STA WPF 布局面积，不证明真实 Playnite、物理 resize/DPI/跨屏、OS UIA或最终呈现帧。下一步是通过本机 source validation，推送日志/事实校正，再等新 Actions 终态；通过后才单独完成 R06-05 列头行为与当前视觉证据阶段。
+
+## 2026-10-13 R07-08 loaded-grid 选择夹具补充
+
+- Actions #956（run `38317512412`，commit `494e7a6e`）用 CI SDK `8.0.423` 完成源码检查和 Release build，后在 R07 初始判据失败：详情 ScrollViewer `Visibility=Collapsed`、尺寸 `0×0`，TaskView 与 Window 可见。完整日志 ZIP SHA-256 `7fd0c14a71f738fc9a415473c26d230c5338e6d065b954b95e3993a53d4d381e`；旧夹具没有输出 grid 与 view-model 选择身份，不将观察值解释为生产代码根因。
+- 测试夹具调整为先显示/布局窗口，再用已加载的 Task DataGrid 选择并滚入合成任务，要求 `TaskGrid.SelectedItem` 与绑定 `SelectedTask` 引用相同对象；再验证详情 Visibility/正尺寸和五个 resize 阶段。没有生产代码或 XAML 改动。
+- 本机官方 SDK `8.0.423` Release 重建 `0 warning / 0 error`、XAML `24/24`；最终 R07 行为 `1/1`，脱敏 TRX SHA-256 `C924EB10916994468833B80F892B156EA2241E312E06BEF9CFD07B212B1E1C14`。`python scripts/validate-source.py` 通过。SDK8 结果不替代 CI SDK10；当前改动等待新 Actions 到终态后才决定是否收口。
+- 七个 Actions 完整日志 ZIP 及 SHA、本机 DLL/TRX/源 SHA与验证边界见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。当前下一步是提交 R07 夹具及其阶段记录、推送、追踪新 Actions；远端成功后再独立处理 R06-05。真实 Playnite、presented frame、物理 DPI/跨屏、UIA/Narrator、ETW/宿主性能仍未验证。

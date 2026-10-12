@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；main HEAD `55d3df19`；R00-03/R00-04 source identity `5762c874` 行为 `25/25`、freshness `14/14`。R07-08 本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、定向 `1/1`；#955 在源码结构检查因 CURRENT_STATE 缺少 `0.6.73` 标记失败，编译与测试跳过，完整日志已归档。标记已在工作树补回，需源码校验、提交推送后再等新 Actions 运行 R07 测试。#952/#953/#954 的 SDK8 完整日志均指向旧 resize `IsVisible` 初始断言；用户指定 #919/#920 实际 SDK `10.0.401`，失败在旧侧栏过渡断言。完整日志、SHA、本机 TRX见[R07-08证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。未验证真实 Playnite、OS UIA/IME、物理跨屏/呈现帧、ETW/宿主性能。
+更新：2026-10-13；R07-08 最新失败 CI 源码 commit `494e7a6e`；R00-03/R00-04 source identity `5762c874` 行为 `25/25`、freshness `14/14`。R07 本机官方 SDK `8.0.423` Release build `0 warning / 0 error`、XAML `24/24`；窗口加载后经 Task DataGrid 选择的修正版重编 `1/1`。#955 因 CURRENT_STATE 缺少 `0.6.73` 标记在源码检查失败，标记已补回。#956 SDK8 源码检查及 build 成功，但 R07 发现详情区 `Collapsed/0×0`；夹具现改为加载后选择并核对 grid/bound selection identity，本机通过，推送后等新 Actions。#952/#953/#954 旧 R07 判据日志及 #956 完整失败日志、SHA、本机 TRX见[R07-08证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。用户指定 #919/#920 实际 SDK `10.0.401`，失败在旧侧栏过渡断言；不能用 SDK8替代 SDK10。未验证真实 Playnite、OS UIA/IME、物理跨屏/呈现帧、ETW/宿主性能。
 
 ## 2026-10-13 R00-03 / R00-04 当前 main freshness 复核
 
@@ -128,9 +128,9 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 
 ## 下一项如何开始
 
-1. 当前保持 `main`，保留其他任务的 R04/R05 未跟踪 TRX；本轮只提交 R07-08 测试、其 CI 日志/本机证据与对应入口文档。R06-05 测试修改仍未暂存，保持下一阶段独立。
-2. 先运行 `python scripts/validate-source.py` 验证恢复的 `0.6.73` 标记，然后只提交 #955 日志与文档事实校正并推送；跟踪新的 Actions 到终态。#955 已在源码检查提前失败，不能作为 R07 远端测试结果。
-3. R07 CI 终态成功后，收口 R06-05：复用生产列头帮助/Automation HelpText/排序能力，检查现有测试覆盖和新行为负例，更新 Round3 账本，再单独提交推送。
+1. 保持 `main`，保留其他任务的 R04/R05 未跟踪 TRX；R06-05 测试修改保持独立，不能并入 R07 修正提交。
+2. 本阶段 R07 新改动已本机 SDK8 重编/定向通过；提交推送后等待新 Actions 终态。#955/#956 不能算 R07 远端通过。
+3. R07 CI 成功后，收口 R06-05：复用生产列头帮助/Automation HelpText/排序能力；现有双主题图绑定 `7527e638`，相关生产 XAML 后续有变化且旧 `.tmp` 渲染目录已不存在，需生成当前身份代表图和布局证据；补行为/负例并更新 Round3 账本，之后单独提交推送。
 4. 真实宿主与物理呈现证据仍独立待验；R05-07/R06-04 需由新 CI 实际覆盖后再签收。R02-06 仍需 ENV-001 条件解除，Q06/R08 用户失败仍需原始日志和运行身份。
 
 ## 验证边界

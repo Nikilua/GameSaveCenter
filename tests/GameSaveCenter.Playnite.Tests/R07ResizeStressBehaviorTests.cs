@@ -60,8 +60,6 @@ public sealed class R07ResizeStressBehaviorTests
                 var context = new ResizeTaskContext(selected);
                 taskView.DataContext = context;
                 taskGrid.ItemsSource = context.Tasks;
-                taskGrid.SelectedItem = selected;
-                context.SelectedTask = selected;
 
                 var pickerOverlay = (Grid)typeof(AcrylicProductionShellView)
                     .GetField("PickerOverlay", BindingFlags.Instance | BindingFlags.NonPublic)!
@@ -85,8 +83,16 @@ public sealed class R07ResizeStressBehaviorTests
                 };
                 window.Show();
                 ApplySize(window, 1366, 900);
+                // Select through the loaded production grid. Assigning SelectedItem
+                // before attaching this page to a Window can be cleared when the
+                // DataGrid's SelectedItem binding and row containers first load.
+                taskGrid.SelectedItem = selected;
+                taskGrid.ScrollIntoView(selected);
+                FlushLayout(window);
                 var taskDetail = taskView.TaskDetailScrollViewerElement;
-                if (taskDetail.Visibility != Visibility.Visible
+                if (!ReferenceEquals(taskGrid.SelectedItem, selected)
+                    || !ReferenceEquals(context.SelectedTask, selected)
+                    || taskDetail.Visibility != Visibility.Visible
                     || !(taskDetail.ActualWidth > 0)
                     || !(taskDetail.ActualHeight > 0))
                 {
@@ -94,7 +100,9 @@ public sealed class R07ResizeStressBehaviorTests
                         "selected task detail had no visible layout area at the wide baseline: "
                         + $"visibility={taskDetail.Visibility}, isVisible={taskDetail.IsVisible}, "
                         + $"actual={taskDetail.ActualWidth:0.###}x{taskDetail.ActualHeight:0.###}, "
-                        + $"taskViewIsVisible={taskView.IsVisible}, windowIsVisible={window.IsVisible}.");
+                        + $"taskViewIsVisible={taskView.IsVisible}, windowIsVisible={window.IsVisible}, "
+                        + $"gridSelected={(taskGrid.SelectedItem as TaskStatusDto)?.TaskId ?? "<null>"}, "
+                        + $"viewModelSelected={context.SelectedTask?.TaskId ?? "<null>"}, gridItems={taskGrid.Items.Count}.");
                 }
 
                 shell.GameSearchBoxForFocus.Focus();

@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="479964ce-5b78-48cc-bbca-bcf79609b15b" name="lopmatu@SULT 2026-10-13 06:18:11" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Times creation="2026-10-13T06:18:11.1587858+08:00" queuing="2026-10-13T06:18:11.1587859+08:00" start="2026-10-13T06:18:02.7370281+08:00" finish="2026-10-13T06:18:21.1306695+08:00" />
-  <TestSettings name="default" id="2baef20c-4014-44be-a55d-f742d795e570">
-    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-13_06_18_11" />
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ebc625aa-50a5-4ea0-915b-c4b76eaccdd1" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-13T06:54:33.1281646+08:00" queuing="2026-10-13T06:54:33.1281650+08:00" start="2026-10-13T06:54:24.7061070+08:00" finish="2026-10-13T06:54:43.2009256+08:00" />
+  <TestSettings name="default" id="8117511f-7262-4553-9582-228141bb9480">
+    <Deployment runDeploymentRoot="redacted-deployment" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="b9740497-2150-4374-9854-04a22d4c6d9a" testId="ab754d1e-09cf-1ffa-e513-f2be768dcb25" testName="GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests.ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable" computerName="SULT" duration="00:00:04.9030000" startTime="2026-10-13T06:18:04.8841243+08:00" endTime="2026-10-13T06:18:09.8052292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9740497-2150-4374-9854-04a22d4c6d9a">
+    <UnitTestResult executionId="6ef7e754-e94d-43f9-85a0-39357c2505ce" testId="ab754d1e-09cf-1ffa-e513-f2be768dcb25" testName="GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests.ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable" computerName="redacted-host" duration="00:00:04.9280000" startTime="2026-10-13T06:54:26.9608400+08:00" endTime="2026-10-13T06:54:31.9019592+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ef7e754-e94d-43f9-85a0-39357c2505ce">
       <Output>
         <StdOut>wide: shell=1352.667x886.667; detail=Visible/360x476; picker=Visible; focus=True; gridActual=382.667; gridMax=∞; detailMax=∞; pickerActual=122.667; pickerMax=759.333&#xD;
 narrow: shell=946.667x686.667; detail=Visible/632.667x136; picker=Visible; focus=True; gridActual=200; gridMax=∞; detailMax=136; pickerActual=122.667; pickerMax=559.333&#xD;
@@ -17,13 +17,13 @@ shellSizeChangedCount=7</StdOut>
     </UnitTestResult>
   </Results>
   <TestDefinitions>
-    <UnitTest name="GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests.ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="ab754d1e-09cf-1ffa-e513-f2be768dcb25">
-      <Execution id="b9740497-2150-4374-9854-04a22d4c6d9a" />
-      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests" name="ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable" />
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests.ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable" storage="[repo]\.tmp\r07-08-corrected-selection-20261013\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ab754d1e-09cf-1ffa-e513-f2be768dcb25">
+      <Execution id="6ef7e754-e94d-43f9-85a0-39357c2505ce" />
+      <TestMethod codeBase="[repo]\.tmp\r07-08-corrected-selection-20261013\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests" name="ResizeSequenceKeepsOpenTaskDetailsAndPickerFocusReachable" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
-    <TestEntry testId="ab754d1e-09cf-1ffa-e513-f2be768dcb25" executionId="b9740497-2150-4374-9854-04a22d4c6d9a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ab754d1e-09cf-1ffa-e513-f2be768dcb25" executionId="6ef7e754-e94d-43f9-85a0-39357c2505ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestEntries>
   <TestLists>
     <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
@@ -33,10 +33,10 @@ shellSizeChangedCount=7</StdOut>
     <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
     <Output>
       <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
-[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
-[xUnit.net 00:00:01.06]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
-[xUnit.net 00:00:01.11]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
-[xUnit.net 00:00:06.10]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.16]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.22]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.24]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
 δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
    �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
    �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
