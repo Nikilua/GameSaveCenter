@@ -1,0 +1,6 @@
+Command: current-main RenderHarness Release build, then default full render-qa.
+Build identity: a21440834865551cdb6894830548af51ad1d8e78; WorkingTreeClean=True.
+Outcome: render-qa OK; 372 PNG across Light/Dark; offscreen logical DPI 1.00.
+Visual comparison: Save-1040x700 light and dark screenshots opened and inspected.
+Scope: production Save page with synthetic records; layout/color comparison only.
+Limit: no Playnite host, physical DPI, OS reader/input, or final presented-frame claim.

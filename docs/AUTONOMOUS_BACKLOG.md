@@ -15,7 +15,7 @@
 | CLOSE-CI-01 | P0 | IN_PROGRESS | 构建维护 Agent | 当前 CI 失败；诊断产物部分不依赖历史日志 |
 | CLOSE-SDK-01 | P0 | IN_PROGRESS | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
 | CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
-| CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 第29类R02复合按钮间距9 DIP；旧clean DLL也复现，保持8 DIP断言 |
+| CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main R02几何7/7，间距8 DIP/中心差0；整体共享回归与CI run932仍未收口 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
 | CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例、本机完整 Release/WPF 门禁已通过；run `38222818374` 终态失败，根因并入 CLOSE-CI-01 |
 | CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | f13b9e05 下 10 项受影响记录完成复核与校正，freshness 14/14；包身份未提供并继续单独待验 |
@@ -52,6 +52,7 @@
 - **入口实际runner复核**：c35d9047/run37570629705两项自测步骤success，实际选择SDK8.0.423，预装SDK9/10未改变基线；失败artifact已下载，只有JSON/TXT/TRX。Core125/Worker357/source470通过，仍在修复前Q14错误态高度失败，CI整体尚未恢复。见[行距阶段证据](ai/evidence/close-wrap-20261007/README.md)。
 - **2026-10-12 最新 Actions**：main `f13b9e05` 对应 run `38222818374` 已失败，失败步骤为“编译与测试”。下载 workflow logs 返回 HTTP403 `Must have admin rights to Repository.`；诊断 artifact 可列出但匿名下载 HTTP401。没有完整日志，CI 失败根因未知；不得按 exit code 猜测或修改代码。
 - **2026-10-12 后续 run**：文档提交 `da6388e8` 对应 run `38226955461`（run931）也终态 failure 于“编译与测试”。Jobs API 未提供更细根因；完整日志仍 HTTP403，唯一诊断 artifact `11735869371`（488,867 bytes）下载 HTTP401。该提交不含生产代码改动；CI 根因仍未知，待取得完整日志后处理。
+- **2026-10-12 最新 run**：提交 `a21440834865551cdb6894830548af51ad1d8e78` 对应 run `38244963620` 终态 failure 于“编译与测试”。GitHub 页面只显示 `Process completed with exit code 1`；未认证 jobs/log API 受 rate limit HTTP403，job 页面完整日志需登录。artifact `11745496487`（478 KB，SHA-256 `11de81935473ce3da60739d481c768eba2af589d2c76cc819cf3977fd4daea1e`）可从页面确认元数据，下载路由404。无完整日志，根因未知，不猜测修复。
 - **后续身份补口**：独立scripts/render-qa.ps1未主动注入GSC_BUILD_COMMIT；实际只读MSBuild查询（未注入env）得到GscBuildCommit=unknown、InformationalVersion=0.6.73+unknown。本轮render显式传入c35身份且DLL已核对，不能据此声称独立脚本/CI同样绑定；当前UI全量结束并提交后，再修脚本环境保存/恢复与同HEAD身份验证。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
@@ -75,7 +76,13 @@
 ### R02-03：当前 main 焦点与 UIA peer 复验
 
 - **2026-10-12**：已实现的禁用原因提示继续满足受控条件。测试只强化可达性证据：STA `Focus()` 后确认 `Keyboard.FocusedElement`；从 UIA peer 读取 Name/HelpText；与生产 Save 紧凑布局提示移入检查器行为合计 `5/5`。没有生产 UI/命令变更。本机 SDK8.0.423 隔离 Release `0 warning / 0 error`、XAML `24/24`；完整 RenderHarness 双主题通用布局 QA `render-qa OK`，不作为禁用状态直接截图证明。[当前复验](design/reviews/ui-finesse-round3-20260915/evidence/R02-03-CURRENT-RECHECK-20261012/README.md)
-- **CI 边界**：此前推送 `da6388e8` 的 run931 已失败于“编译与测试”；完整日志403、artifact `11735869371` 下载401。失败命令未知，不对其做推断。下一项 R02-04 当前 main 对齐复验。
+- **CI 边界**：推送 `da6388e8` 的 run931 已失败于“编译与测试”；其完整日志403、artifact `11735869371` 下载401。后续 `a2144083` 的 run932也失败，页面仅有 exit1；未认证API rate-limit403，artifact `11745496487` 下载路由404。两次根因均未知，不做推断。下一项 R02-04 当前 main 图文复验已完成。
+
+### R02-04：当前 main 图文光学对齐复验
+
+- **2026-10-12 当前 main `a21440834865551cdb6894830548af51ad1d8e78`**：沿用既有共享按钮修复，没有改生产 UI；Release0/0、XAML24/24、`R02OpticalAlignmentTests 7/7`。真实生产资源 STA 几何输出：16/20 DIP 图标与数字 gap 各8 DIP、中心差各0；中英文基线差≤0.5 DIP，对齐切换及文本/视觉内容往返通过。
+- **主题视觉**：当前身份 RenderHarness双主题全量 `render-qa OK`，372 PNG、logical DPI1.00；已核对 Save 1040×700 Light/Dark，并归档两张图。合成离屏数据不证明Playnite宿主、物理DPI或最终呈现。源码门禁通过，WPF静态审查36 XAML/0 errors/29 warnings/177 info。证据及身份见[当前复验包](design/reviews/ui-finesse-round3-20260915/evidence/R02-04-CURRENT-RECHECK-20261012/README.md)。
+- **状态**：R02-04继续“已满足”。CLOSE-OPTICAL-01仍 `IN_PROGRESS`，因为整体共享回归/Actions需收口；run932仅知“编译与测试”step exit1，完整日志不可读，不能归因该定向测试。下一项R02-05命中区与间距。
 
 ### CLOSE-OPTICAL-01：复合按钮内容拉伸与固定图标列间距
 
@@ -84,6 +91,7 @@
 - **阶段终态**：R02 7/7、联合专项64/64、完整render/source/XAML通过；第三轮全量本类7/7，后续第37类删除回退失败另案，完整门禁仍未过。
 - **完成条件**：原16/20尺寸8 DIP严格间距/中心与36 DIP高度通过，Left/Center/Right动态切换和文本有限宽度不回归；保留命令/绑定/忙碌/焦点/禁用与ellipsis，双主题全量WPF/render/source门禁通过。与CLOSE-WRAP分别记录，不放宽容差。
 - **证据**：[共享UI阶段](ai/evidence/close-wrap-20261007/README.md)保留首次全量失败、旧DLL对照、STA干预及修复后TRX/源码和DLL身份；整体CI/发布未签收。
+- **2026-10-12 当前 main 复验**：上方历史“间距9 DIP”对应修复前的失败身份；当前确切 main 用真实生产 ResourceDictionary 重建后，R02 optical类7/7，16/20 DIP实际间距8、中心差0；Release0/0、XAML24/24、双主题全量render-qa 372图通过。R02任务行为与视觉条件当前满足。整体队列仍 `IN_PROGRESS`，不把 run932“编译与测试”exit1猜成此项回归，也不覆盖无法读取的CI失败。
 
 ### CLOSE-FOCUS-01：ComboBox Popup离开焦点后的关闭路径
 

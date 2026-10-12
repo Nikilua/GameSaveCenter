@@ -1,0 +1,88 @@
+{
+  "sourceCommit": "a21440834865551cdb6894830548af51ad1d8e78",
+  "workingTreeClean": true,
+  "dirtyPaths": [],
+  "localSdk": "8.0.423",
+  "ciSdk": "10.0.401",
+  "releaseSolution": {
+    "outcome": "passed",
+    "xamlPassed": 24,
+    "xamlTotal": 24,
+    "warnings": 0,
+    "errors": 0,
+    "testsRequestedByBuildScript": false
+  },
+  "targetedTests": {
+    "filter": "FullyQualifiedName~R02OpticalAlignmentTests",
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "sourceSha256": "DCE576D5ABAC3E766AD7011F4FF8E093E654932342ED9CBDABFD527C51A02685",
+    "trx": "tests/R02-04-current.trx",
+    "trxSha256": "2080BD137C8777495FD4C6B82C1D568D19C6A796AFEE8FD770B3AAC3F0013193",
+    "geometry": [
+      {
+        "iconSizeDip": 16,
+        "reportedWpfDpiScale": 1.5,
+        "gapDip": 8,
+        "centerDifferenceDip": 0
+      },
+      {
+        "iconSizeDip": 20,
+        "reportedWpfDpiScale": 1.5,
+        "gapDip": 8,
+        "centerDifferenceDip": 0
+      }
+    ]
+  },
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "FA867C27CAF95103A066D623831A48D96A4BDA4F476A88A892A4AF4D0FC997C8",
+      "mvid": "094f71c0-4ba9-4820-a159-494faa577a0e"
+    },
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "7863F8835D64F9B7B9EE8B450DA67C6238B5B7A58741E4507A36D3F04E9D969A",
+      "mvid": "d0f87343-d3e8-4371-a603-0ac1da9edb05"
+    },
+    {
+      "file": "GameSaveCenter.RenderHarness.exe",
+      "sha256": "5E2532872B4D1A2CCF5842EE627E8915EB35C5D87C9F0ED16BB8B686FA31CC2F",
+      "mvid": "b7a78298-d982-43bb-944d-7d364f65516b"
+    }
+  ],
+  "renderQa": {
+    "scenario": "render-qa",
+    "outcome": "passed",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "pngCount": 372,
+    "dpiScale": 1.0,
+    "dpiBasis": "offscreen logical DIP",
+    "report": "full output kept in ignored .tmp; selected Light/Dark Save screenshots archived"
+  },
+  "sourceValidation": "passed",
+  "wpfStaticReview": {
+    "xamlFiles": 36,
+    "errors": 0,
+    "warnings": 29,
+    "info": 177
+  },
+  "packageIdentity": "not-provided",
+  "ci": {
+    "runId": "38244963620",
+    "outcome": "failure",
+    "failedStep": "编译与测试",
+    "stepAnnotation": "Process completed with exit code 1.",
+    "fullLogs": "unavailable: unauthenticated API rate limit HTTP 403; web log view requires sign-in",
+    "artifactId": "11745496487",
+    "artifactName": "GameSaveCenter-build-diagnostics",
+    "artifactSize": "478 KB",
+    "artifactSha256": "11de81935473ce3da60739d481c768eba2af589d2c76cc819cf3977fd4daea1e",
+    "artifactDownload": "unavailable: GitHub artifact route returned HTTP 404"
+  }
+}

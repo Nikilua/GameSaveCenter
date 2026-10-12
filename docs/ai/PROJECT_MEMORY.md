@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 当前受控焦点/UIA peer 行为复验 `5/5`（证据 `evidence/R02-03-CURRENT-RECHECK-20261012/README.md`），未改生产 UI。推送 `da6388e8` 对应 Actions run `38226955461` 已失败于“编译与测试”；run930/run931 完整日志 API 均受 HTTP403 `Must have admin rights to Repository.` 限制，run931 artifact `11735869371` 匿名下载401，根因未知。没有完整日志不得猜测修复。本机 SDK8.0.423 与 CI SDK10.0.401分开。Media Inbox 宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
+- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 焦点/UIA peer 复验 `5/5`，R02-04 当前 main 生产资源 STA 几何 `7/7`，双主题 RenderHarness `372` 图通过（证据分别在两个 current-recheck 包），均未修改生产 UI。提交 `a2144083` 的 Actions run `38244963620` 已失败于“编译与测试”；页面只显示 exit 1，未认证 API rate-limit HTTP403，artifact `11745496487`（478 KB）路由404，完整日志和根因未知。没有日志不得猜测修复。本机 SDK8.0.423 与 CI SDK10.0.401分开。下一项 R02-05 命中区与间距。Media Inbox 宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

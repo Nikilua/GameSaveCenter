@@ -1,3 +1,10 @@
+## 2026-10-12 R02-04 当前 main 图文光学对齐复验
+
+- 当前 `main` 身份 `a21440834865551cdb6894830548af51ad1d8e78`。已存在的共享按钮修复没有重建；本阶段未改生产 XAML/控件/命令，仅按当前提交 Release build 并复验现有 `R02OpticalAlignmentTests`。本机 SDK8.0.423，solution build `0 warning / 0 error`、XAML24/24；定向 STA WPF 测试 `7/7`。16/20 DIP 图标与数字间距都实测8 DIP、垂直中心差0；中文/英文基线差≤0.5 DIP断言、Left/Center/Right对齐以及文字/视觉内容往返均通过。TRX和DLL SHA/MVID见[R02-04当前复验包](../design/reviews/ui-finesse-round3-20260915/evidence/R02-04-CURRENT-RECHECK-20261012/README.md)。
+- 当前身份 RenderHarness Release `0 warning / 0 error`；完整 Light/Dark `render-qa OK`，372 PNG、logical DPI1.00、`WorkingTreeClean=True`。已人工对照 Save 1040×700 浅/深主题截图，仅说明合成状态下离屏布局，不表示真机、物理DPI或最终呈现。`scripts/validate-source.py`通过；WPF静态审查36 XAML、0 errors/29 warnings/177 info。截图、TRX、选定身份摘要已归档；package identity未提供。
+- 同提交 Actions run `38244963620` 已失败于“编译与测试”；网页 annotation 只有 `Process completed with exit code 1`。CI SDK10.0.401与本机SDK8.0.423分开。未认证 Jobs/log API rate-limit HTTP403，job页完整日志要求登录；诊断artifact `11745496487`、478 KB、SHA256 `11de81935473ce3da60739d481c768eba2af589d2c76cc819cf3977fd4daea1e`，下载路由404。未推断根因。
+- R02-04账本状态维持“已满足”；CLOSE-OPTICAL-01仍记录完整共享门禁/CI待核。下一项R02-05命中区与间距。两阶段 RenderHarness 临时目录和 build diagnostics 位于忽略的`.tmp/`与`artifacts/`；PowerShell递归清理已被执行器策略拒绝，未用其他方式删除，也没有提交这些输出。
+
 ## 2026-10-12 R02-03 当前 main WPF/UIA 复验
 
 - R02-03 已有状态提示、维护导航、命令门禁和共享样式；本阶段未改生产 UI/VM/命令，只强化 `R02ActionAvailabilityHintTests` 的 STA 行为检查：实际 `Focus()` 后核对 `Keyboard.FocusedElement`，并从 WPF Automation peer 读取 `Name`/`HelpText` 与屏幕提示比较。结合生产 `SaveCenterView` 紧凑布局提示移动行为，定向合计 `5/5`，0 skip。
