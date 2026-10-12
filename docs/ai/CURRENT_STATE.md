@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；R00/R01 freshness 校正已归档。当前分支 `main`，已推送基线 `746eaf6a6bb644564e89afaa2c2d08929bc32c45`；R05-01 Dashboard 焦点行为与 R05-02 当前 main 复核在未提交工作树上定向 `11/11`，提交后精确身份复跑、push 和 Actions 尚待完成。当前修改包含 Dashboard 测试 seam 与 R05 焦点行为/XML 接线测试。最近完整 clean Release 源码身份仍为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
+更新：2026-10-13；R00/R01 freshness 校正已归档。当前分支 `main` 已推送 commit `1c39e909856faa736b32224ee196ef0bac6ca460`；R05-01/02 精确提交定向重建 `11/11`，R05-03 当前 main 边界复核 `7/7` 并校正为部分满足（翻转无闪屏未验）。TRX/程序集身份已归档。Actions #941 仍运行；#940 已失败但完整日志访问 HTTP403、根因未知。最近完整 clean Release 源码身份仍为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -19,8 +19,9 @@
 | R03-01 当前复核 | main `8e71feb4`；RenderHarness Release `0 warning / 0 error`、`TypographyDiagnosticsTests 11/11`、双主题 `finesseprobe` exit 0；中文/英文/数字/𠮷/组合重音均有实际 GlyphRun。报告 `WorkingTreeClean=False` 是证据目录已在工作树的真实记录；自 `4d166f0` 以来 src/tests 无变化。截图/报告与 identity negative 见[R03-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R03-01-CURRENT-MAIN-RECHECK-20261012/README.md) |
 | R04-02 当前复核 | main 源码/测试身份 `32c0e1e2`；Playnite net472 定向行为 `5/5`，覆盖摘要链接跨 Tab 后字段可见、键盘焦点、HelpText/滚动，以及禁用巡检字段旧非法值和路径负例。结构检查仅作补充；没有执行真实 Playnite 设置保存/Worker 应用。详见[R04-02 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-02-CURRENT-MAIN-RECHECK-20261012/README.md) |
 | R04-03 当前复核 | `e952c414` 工作树上的插件 net462 / 测试 net472 定向构建，隔离 SDK `8.0.423`，`SettingsDraftLifecycleBehaviorTests + PortableSettingsTests + SettingsValidationSourceTests` 为 `12/12`；关闭事件实际选择“否”保留草稿并恢复焦点、“是”后才关闭/回滚。真实 Playnite 原生确认框、宿主保存和 Worker 应用仍待验。详见[R04-03 当前 main 补充证据](../design/reviews/ui-finesse-round3-20260915/evidence/R04-03-CURRENT-MAIN-RECHECK-20261012/README.md) |
-| R05-01/02 当前候选 | 基于 `746eaf6a` 的未提交工作树，隔离 SDK `8.0.423`，Playnite 插件 `net462`、测试 `net472`；R05Focus/R05Option/R21 定向合计 `11/11`。Dashboard 受控 STA fixture 覆盖焦点进入、Tab 环绕、即时/动画关闭和取消回焦；另以 XML 解析断言核对真实 XAML Cancel/Confirm Click 接线。精确提交身份和当前 main 证据包待提交后复跑。完整 Dashboard XAML/Playnite 宿主未加载；VSTest 收尾有三条 TextServicesHost `InvalidComObjectException` 消息但 exit0，原因未知 |
-| 远端 CI | 当前 main 对应 run `38274288024`（#940，commit `746eaf6a`）公开页面截至 2026-10-13 仍显示 `In progress`；匿名 API rate-limit HTTP403（0/60），日志不可访问。用户补充旧检查点 `77de7f450431d267026ce2169aa30525b18bf528` 对应 run `36677346317`（#920）现为 failure，7m04s 后“编译、测试与打包”exit1；job 要求登录，完整日志 HTTP403。优先取回的 run `36675309812`（#919，commit `a6b6dfc`）也失败，13m02s 后“编译与测试”步骤 exit1；job 展开只显示加载/登录提示，完整日志 HTTP403。两次失败根因均未知。#939（`38270923668`）也失败且完整日志不可读。用户指定跟踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 单独记录，不替代 CI 门禁 |
+| R05-01/02 当前 main | commit `1c39e909856faa736b32224ee196ef0bac6ca460`，隔离 SDK `8.0.423`，Playnite 插件 `net462`、测试 `net472`；R05Focus/R05Option/R21 定向合计 `11/11`。TRX SHA/MVID、插件 SHA/MVID 已归档。Dashboard 受控 STA fixture 覆盖焦点进入、Tab 环绕、即时/动画关闭和取消回焦；XML 解析断言核对真实 XAML Click 接线。完整 Dashboard XAML/Playnite 宿主未加载；VSTest 收尾有三条 TextServicesHost `InvalidComObjectException` 消息但 exit0，原因未知 |
+| R05-03 当前 main | 同一 commit 和隔离 SDK 下 `R05PopupBoundaryBehaviorTests + R05OptionVirtualizationBehaviorTests 7/7`。短窗 Picker 边界、当前桌面 ComboBox Popup 翻转后的工作区几何/MaxHeight/滚动/选定项可见通过。状态为部分满足：“翻转无闪屏”尚无呈现帧证据；未复核 420×220 负例或真实 Playnite/多屏 |
+| 远端 CI | 当前 main commit `1c39e909` 对应 run `38279606113`（#941，job `114913381368`）仍 `in_progress`，“编译与测试”在运行。上一 run `38274288024`（#940，commit `746eaf6a`）已 failure，job `114895863386` 耗时10m30s，失败步骤“编译与测试”；完整日志 API HTTP403 `Must have admin rights to Repository.`，根因未知。用户补充旧检查点 `77de7f4` 的 #920 与 `a6b6dfc` 的 #919 也失败，完整日志 HTTP403，根因未知。用户指定跟踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 单独记录，不替代 CI 门禁，实际 runner SDK仍需日志核实 |
 | R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -31,7 +32,7 @@
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
 1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新已终态 run `38270923668`（#939）失败；run/job logs 与 artifact API 403，job 页要求登录，根因未知，不盲修。按任务补充跟踪 CI SDK `10.0.401` 与本机 SDK `8.0.423`；当前 workflow/global.json 有版本差异，真实 run SDK 未证实。
-2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R04-01 输入事件 `37/37`、R04-02 错误导航 `5/5`、R04-03 关闭分支与草稿生命周期 `12/12` 已归档。R05-01/02 当前工作树候选 `11/11`，需先提交、按精确 SHA 复跑并跟踪 Actions 到终态；之后推进 R05-03 弹层边缘适配当前 main 复核。完整 Dashboard XAML/Playnite 宿主行为仍待验。
+2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R04-01 输入事件 `37/37`、R04-02 错误导航 `5/5`、R04-03 关闭分支与草稿生命周期 `12/12` 已归档。R05-01/02 commit `1c39e909` 已推送，精确 SHA 定向 `11/11`；R05-03 当前 main 复核 `7/7`，几何/选定项通过但“翻转无闪屏”未验、状态部分满足。#941 终态后推送当前证据更正，再推进 R05-04 多选摘要当前 main 复核。完整 Dashboard XAML/Playnite 宿主行为仍待验。
 3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。

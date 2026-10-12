@@ -10,6 +10,7 @@
 - 使用隔离 .NET SDK `8.0.423` 构建插件 `net462` 和 Playnite 测试 `net472`；测试宿主为 .NET Framework `4.8.9181.0`。
 - 定向运行 `R05OptionVirtualizationBehaviorTests`，结果 `5 passed / 0 failed / 0 skipped`。脱敏 TRX：[R05-02-current-main.trx](tests/R05-02-current-main.trx)，SHA-256 `D00DD5BD7588FE85E5895CBE45F4FCBD2B819EC6272121FB534D17F99F1A7F9C`。
 - 同一候选工作树随后合并运行 R05Focus、R05Option 与 R21 focus visual 三个行为类，结果 `11 passed / 0 failed / 0 skipped`；其中 R05Option 为 `5/5`。测试基于 main `746eaf6a6bb644564e89afaa2c2d08929bc32c45` 的未提交候选，`GSC_BUILD_COMMIT` 指向基线。合并预提交脱敏 TRX：[R05-01-02-dashboard-precommit.trx](../R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-02-dashboard-precommit.trx)，SHA-256 `A8F4E8A68177017A1782B5F60814BC6865073A2190AA4D79762DB9C289333004`；精确提交身份复跑待完成。
+- commit `1c39e909856faa736b32224ee196ef0bac6ca460` 的 post-commit 合并运行仍为 `11/11`（R05Option `5/5`），TRX：[R05-01-02-dashboard-postcommit.trx](../R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-02-dashboard-postcommit.trx)，SHA-256 `DE45C3F9462F44665BDCD2F068E00630377C413D8669B54F4944F3E988312554`。精确程序集 SHA/MVID 见 [R05-01 复核包](../R05-01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 首轮 clean main 测试程序集 SHA-256 `2ABE260B7635432904C8D063ABADE88508E076FB0052DD29692FFC680D0688B8`，MVID `7a4e4767-6370-4e45-bc69-e74c00284a65`；插件程序集 SHA-256 `FE385B5E23F72BB9AB0803AC20D4D0CFD608ABE7B79B73FE944BEA6B6B8FDA88`，MVID `ed3d4875-5409-4f3e-97ef-9a1107f560d2`。两个程序集的 ProductVersion 为 `0.6.73+746eaf6a6bb644564e89afaa2c2d08929bc32c45`。这些值属于首轮 clean main 运行，不代表新增 Dashboard fixture 的候选程序集；后者待精确提交复跑采集身份。
 
 ## 实际行为

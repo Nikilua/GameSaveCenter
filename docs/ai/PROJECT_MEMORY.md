@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。当前 main 的 R05-01/02 工作树候选定向 `11/11`（本机 SDK `8.0.423`），精确提交复跑和 CI #940 `38274288024` 终态仍待确认；真实 Playnite/完整 Dashboard XAML 未验，#939 失败根因仍未知。不得把本机结果视为 CI 通过。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，其中旧版本、优先级与下一项不是当前指令。
+更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。main `1c39e909` 的 R05-01/02 精确提交定向 `11/11`、R05-03 边界复核 `7/7`（本机 SDK `8.0.423`）；R05-03 因无呈现帧证明“翻转无闪屏”记部分满足。CI #941 `38279606113` 仍运行，#940 失败日志 HTTP403、根因未知。真实 Playnite/完整 Dashboard XAML未验，不得把本机结果视为 CI 通过。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，其中旧版本、优先级与下一项不是当前指令。
 
 ## AI/Codex 启动协议
 

@@ -1,13 +1,13 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。当前在 main `746eaf6a` 基线上收口 R05-01/02：未提交工作树定向测试 `11/11`，精确提交复跑、push 与 CI 仍待完成。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 已提交并推送到 main：`1c39e909856faa736b32224ee196ef0bac6ca460`，精确身份 Release 定向测试 `11/11`；R05-03 当前 main 定向复核 `7/7`，工作区几何已验、翻转无闪屏未验，账本已校正为部分满足。对应 run #941 仍在运行，不能报告阶段 CI 完成。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
-## 2026-10-13 R05-01/02 当前 main 候选与 Actions 检查点
+## 2026-10-13 R05-01/02 当前 main 提交后复核与 Actions 检查点
 
-- 工作树基于已推送 main `746eaf6a6bb644564e89afaa2c2d08929bc32c45`，本阶段尚未提交。隔离 SDK `8.0.423` 下 Release 测试构建插件 `net462` 与测试 `net472`；`R05FocusBoundaryBehaviorTests`、`R05OptionVirtualizationBehaviorTests`、`R21FocusVisualRegressionBehaviorTests` 合计 `11/11`，VSTest exit0。测试宿主 .NET Framework `4.8.9181.0`。
+- 推送的 main commit 为 `1c39e909856faa736b32224ee196ef0bac6ca460`。隔离 SDK `8.0.423` 下 Release 测试构建插件 `net462` 与测试 `net472`；`R05FocusBoundaryBehaviorTests`、`R05OptionVirtualizationBehaviorTests`、`R21FocusVisualRegressionBehaviorTests` 合计 `11/11`，VSTest exit0。TRX SHA-256 `DE45C3F9462F44665BDCD2F068E00630377C413D8669B54F4944F3E988312554`；测试 DLL SHA/MVID `9A509F12BBA20BD826ECC3D900DFD21752F0AAA498B9E10A7BE1CF683C52F063` / `8c8895de-7c96-4fe3-bdcb-fc0455c400e4`，插件 DLL SHA/MVID `8EB2BCE95E6959F3F4F794B26E1CE565CD59ADEF86F4A5B4EEB29133615E7F33` / `0477b734-38ce-4897-8ea4-6bb904b4d2ec`；测试宿主 .NET Framework `4.8.9181.0`。
 - Dashboard 行为证据由最小 STA WPF fixture 调用生产确认处理器并通过 routed Click 走生产取消处理器；覆盖焦点进入、Tab/Shift+Tab 环绕、减少动效即时关闭、240ms 动画关闭期间焦点仍留在 overlay、取消后回到合成触发器。XML 检查另核对生产 XAML 的 Cancel/Confirm Click 接线。fixture 没有加载完整 Dashboard XAML 或 Playnite 宿主。
 - `python scripts/validate-source.py` 通过，`git diff --check` 通过（仍打印测试源码 CRLF 提示）。进程退出时输出三条 WPF TextServicesHost/TextStore `InvalidComObjectException` 清理异常；测试为 `11/11`、exit0，异常根因未知。用 PowerShell 清理本轮试验 TRX 的命令被执行策略拒绝，相关文件保留在 evidence 本地目录，未尝试其他删除路径。
-- Actions #940 (`38274288024`, commit `746eaf6a`) 的公开页最新为 `In progress`；匿名 API rate-limit HTTP403、剩余 `0/60`，日志不可读取。#939 完整日志同样不可访问、失败根因未知。本机 SDK `8.0.423` 与待核 CI SDK `10.0.401` 分开记录。下一步：提交本阶段代码/测试/文档后按精确 SHA 复跑并推送，等待该 run 与新 run 终态；完成后推进 R05-03 当前 main 弹层边缘复核。真实 Playnite、完整 Dashboard XAML 加载、IME/UIA/Narrator、物理 DPI/跨屏、呈现帧与宿主性能仍待验。
+- Actions #940 (`38274288024`, commit `746eaf6a`) 已失败：job `114895863386` 耗时10m30s，“编译与测试”exit1；日志 API 返回403 `Must have admin rights to Repository.`，根因未知。当前 commit 的 run #941 (`38279606113`, job `114913381368`) 仍 `in_progress`，“编译与测试”在运行。用户跟踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 分开记录，#941 实际 runner SDK未由可读日志证实。下一步等待 #941 终态，更新并推送证据记录后推进 R05-04 多选摘要当前 main 复核。真实 Playnite、完整 Dashboard XAML 加载、IME/UIA/Narrator、物理 DPI/跨屏、翻转呈现帧与宿主性能仍待验。
 - 用户补充的旧检查点 `77de7f450431d267026ce2169aa30525b18bf528` 对应 Actions `36677346317`（#920），现已终态 failure，7m04s 后“编译、测试与打包”exit1；job 页要求登录，完整日志下载 HTTP403，根因未知。此状态属于早于当前 main `746eaf6a` 的历史提交，不替代 #940 或本轮新 run。
 - 用户要求优先取得的旧 run `36675309812`（#919，commit `a6b6dfc`）也已终态 failure，总耗时13m02s，“编译与测试”步骤exit1。公开 job 展开仅有加载失败/登录提示，完整日志下载 HTTP403；根因未知，没有日志前不基于 exit code 猜测修复。
 
