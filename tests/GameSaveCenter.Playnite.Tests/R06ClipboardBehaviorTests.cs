@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 using GameSaveCenter.Contracts;
@@ -99,6 +100,84 @@ public sealed class R06ClipboardBehaviorTests
     }
 
     [Fact]
+    public void AttachedPreviewKeyDownRoutesRowAndCellShortcutsAndRejectsInvalidInputs()
+    {
+        RunSta(() =>
+        {
+            var task = Task("routed-copy-task", "实际路由任务", "不含凭据的详情");
+            var grid = CreateGrid(new[] { "本地时间", "任务", "阶段", "游戏", "状态", "进度", "详情" });
+            DataGridClipboardBehavior.SetProfile(grid, "Task");
+            grid.ItemsSource = new ObservableCollection<TaskStatusDto> { task };
+            grid.SelectedItems.Add(task);
+            grid.CurrentCell = new DataGridCellInfo(task, grid.Columns[3]);
+            DataGridClipboardBehavior.SetEnabled(grid, true);
+
+            var window = new Window
+            {
+                Width = 640,
+                Height = 260,
+                WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Content = grid
+            };
+
+            string? copied = null;
+            DataGridClipboardBehavior.ClipboardSetterForVerification = text => copied = text;
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                window.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
+
+                DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control;
+                var rowCopy = RaisePreviewKeyDown(grid, Key.C);
+                Assert.True(rowCopy.Handled);
+                Assert.Contains("实际路由任务", copied, StringComparison.Ordinal);
+                Assert.Contains("\t", copied, StringComparison.Ordinal);
+
+                copied = null;
+                DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control | ModifierKeys.Shift;
+                var cellCopy = RaisePreviewKeyDown(grid, Key.C);
+                Assert.True(cellCopy.Handled);
+                Assert.Equal("实际路由任务", copied);
+
+                var copiedCell = copied;
+                DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control | ModifierKeys.Alt;
+                var unsupportedModifier = RaisePreviewKeyDown(grid, Key.C);
+                Assert.False(unsupportedModifier.Handled);
+                Assert.Equal(copiedCell, copied);
+
+                DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control;
+                var unsupportedKey = RaisePreviewKeyDown(grid, Key.X);
+                Assert.False(unsupportedKey.Handled);
+                Assert.Equal(copiedCell, copied);
+
+                DataGridClipboardBehavior.SetEnabled(grid, false);
+                var detached = RaisePreviewKeyDown(grid, Key.C);
+                Assert.False(detached.Handled);
+                Assert.Equal(copiedCell, copied);
+
+                DataGridClipboardBehavior.SetEnabled(grid, true);
+                grid.SelectedItems.Clear();
+                grid.SelectedItem = null;
+                var noSelection = RaisePreviewKeyDown(grid, Key.C);
+                Assert.False(noSelection.Handled);
+                Assert.Equal(copiedCell, copied);
+                Assert.Contains("没有可复制内容", ClipboardFeedback.GetMessageForVerification(grid), StringComparison.Ordinal);
+            }
+            finally
+            {
+                ClipboardFeedback.CloseForVerification(grid);
+                DataGridClipboardBehavior.SetEnabled(grid, false);
+                DataGridClipboardBehavior.ClipboardSetterForVerification = null;
+                DataGridClipboardBehavior.KeyboardModifiersForVerification = null;
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
     public void ProductionTablesExposeExplicitCopyProfilesAndShortcutContract()
     {
         TestRepositoryContext.AssertAssemblyMatchesSource();
@@ -154,6 +233,21 @@ public sealed class R06ClipboardBehaviorTests
             });
         }
         return grid;
+    }
+
+    private static KeyEventArgs RaisePreviewKeyDown(DataGrid grid, Key key)
+    {
+        var args = new KeyEventArgs(
+            Keyboard.PrimaryDevice,
+            PresentationSource.FromVisual(grid),
+            Environment.TickCount,
+            key)
+        {
+            RoutedEvent = Keyboard.PreviewKeyDownEvent
+        };
+
+        grid.RaiseEvent(args);
+        return args;
     }
 
     private static void RunSta(Action action)

@@ -1,3 +1,12 @@
+## 2026-10-13 R06-04 当前 main 复制快捷键行为复核
+
+- 复用初始实现 `afe4aa55` 的 `DataGridClipboardBehavior`、五类 profile、现有 DTO 和凭据脱敏。main 源码基线 `e277a804bd4774cd32ad0bde0dfe2b8f76bc3308`；本轮只增加一个 modifiers 测试 seam 与一项 routed-event 行为测试，没有改快捷键或剪贴板生产行为。
+- Pinned SDK `8.0.423` 下官方 Release build `0 warnings / 0 errors`、XAML `24/24`；Playnite `net462`、测试 `net472`。`R06ClipboardBehaviorTests 5/5`、`R22CopyFeedbackBehaviorTests 2/2`，0 失败/跳过。`python scripts/validate-source.py` 与 `git diff --check` 通过。
+- 对实际生产 DataGrid 触发 WPF `PreviewKeyDown` routed event，覆盖 Ctrl+C 选中行、Ctrl+Shift+C 当前单元格；Ctrl+Alt+C、Ctrl+X、解绑后 Ctrl+C 与无选择负例不复制，无选择时显示失败反馈且事件未吞。既有用例继续验证显示顺序、稳定 TSV、ID 去重、完整原值和凭据脱敏。modifier 由内部 test seam 控制，clipboard 通过 fake setter，不接触 OS 键盘或系统剪贴板。
+- `DataGridClipboardBehavior.cs` SHA-256 `A16229D66427BA77F2BF2F44D841D0D026AB0A018D9082E40F4F73D7D0208A5A7`；`R06ClipboardBehaviorTests.cs` SHA-256 `99381AD3D4147881DC6C02DCE72F61831A1A073072BA407F755B89D0DD55FA79`；Playnite DLL SHA/MVID `63FA4310CC8295EA58E76B79EDEF2B76CD32046152A91705A529A11CB50265EA` / `d1ab9447-edbe-434a-9d4d-98300a29848b`；tests DLL SHA/MVID `6DA620E1ED0E749D7CF5ABC4BDE27BBDC7DA519AB0909E2993C613881CA042BE` / `c3e76dff-fedb-47f8-9cfc-4db12727e098`。两份脱敏 TRX 的哈希、受控输入边界见[R06-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 没有视觉布局变化；历史 RenderHarness 双主题图仍绑定 `afe4aa55`，本轮未重跑或当作当前截图。真实 Playnite、OS 键盘/剪贴板、UIA/Narrator、IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验，未触碰真实存档、媒体、云端或诊断数据。
+- `e277a804` commit checks 于 2026-10-12 20:04 UTC 启动，截至 20:11 UTC 仍显示 `Re-running jobs...`，没有可见终态或 run ID；完整日志需登录、匿名 REST API 限流拒绝。#947/#948 同时仍 `In progress`；用户指定 #920 (`36677346317`) 现为 failure，公开只显示构建/测试 exit 1，完整日志需登录且根因未知。本机 SDK `8.0.423` 不替代目标 CI SDK `10.0.401`。下一项 R06-05 列头说明。
+
 ## 2026-10-13 R06-03 当前 main 选中焦点与徽章/危险动作复核
 
 - 以 main `fdeeec8a9d3a7742a63ccbee21c55a50752326c8` 为生产基线，盘点后复用共享 DataGridRow/ListBoxItem、`TaskStatusDto` 与现有 Task 绑定；本轮只新增一项行为测试，不改生产代码、命令或 DTO。原 `R06SelectionStateBehaviorTests` 只有实际行状态/几何和一个资源源码契约，不能单独证明生产徽章命中、危险操作可用或双主题 hover。

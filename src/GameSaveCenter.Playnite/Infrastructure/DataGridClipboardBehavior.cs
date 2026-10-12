@@ -72,7 +72,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             if (!(sender is DataGrid grid) || args.Key != Key.C) return;
 
-            var modifiers = Keyboard.Modifiers;
+            var modifiers = KeyboardModifiersForVerification ?? Keyboard.Modifiers;
             if (modifiers != ModifierKeys.Control && modifiers != (ModifierKeys.Control | ModifierKeys.Shift)) return;
 
             var copyCell = modifiers == (ModifierKeys.Control | ModifierKeys.Shift);
@@ -123,6 +123,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         /// <summary>Test-only seam; production leaves this null and uses the OS clipboard.</summary>
         internal static Action<string>? ClipboardSetterForVerification { get; set; }
+
+        /// <summary>Test-only seam for routing keyboard modifiers through the real WPF handler.</summary>
+        internal static ModifierKeys? KeyboardModifiersForVerification { get; set; }
 
         internal static string BuildCopyTextForVerification(DataGrid grid, bool copyCell)
             => BuildCopyText(grid, copyCell);
