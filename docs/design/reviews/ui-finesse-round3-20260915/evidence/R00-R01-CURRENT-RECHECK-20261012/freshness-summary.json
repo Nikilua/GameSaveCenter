@@ -1,0 +1,24 @@
+{
+  "generatedUtc": "2026-10-12T08:48:00.5552765Z",
+  "currentSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+  "currentPackageCommit": "not-provided",
+  "packageIdentityStatus": "not-provided",
+  "freshCount": 14,
+  "staleCount": 0,
+  "records": [
+    { "id": "R00-01-02", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R00-03", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R00-04", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R00-05", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R00-06", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R00-07", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R00-08", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-01", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-02", "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-03", "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-04", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-05", "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-06", "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631", "rerun": false, "matchedSourcePaths": [] },
+    { "id": "R01-07", "sourceCommit": "e1324fe", "rerun": false, "matchedSourcePaths": [] }
+  ]
+}

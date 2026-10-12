@@ -1,14 +1,13 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-12；本机完整 Release/WPF 隔离门禁现已通过，当前实现与 R00/R01 补证顺序见下方最新检查点及[CLOSE-PICKER证据](ai/evidence/close-picker-20261012/README.md)。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-12；picker 修复已推送 main，R00/R01 受影响源码证据已复核。最新源码/CI状态见下方检查点及[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 2026-10-12 当前检查点（优先于下方10月7日历史记录）
 
-- 当前 main 候选基于 `e12119bffc6d66faee44cfc89e555461fe89205b`。本阶段为 STA picker 无同步上下文时将 debounce 刷新回投所属 Dispatcher，并取消即时刷新前的旧 debounce；旧实现线程负例失败，修复后 picker 类 5/5。
-- 完整 Release 脚本 exit `0`：本机 SDK `8.0.423`，XAML24/24，0 warning/error；Core125/125，Worker356 passed/1环境skip，Playnite source461 passed/27 skipped，WPF114类608 passed/39 skipped，合计1550 passed/67 skipped/0 failed。R09测试也校正为真实断言独立 `ValidationStroke` overlay，不要求 Chrome 改为2 DIP。
-- 诊断与 DLL 身份来自 `e12119b` 加三个 dirty 源码/测试文件，ProductVersion仍含 `+e12119b`；不可当作 clean post-commit 身份。测试为合成数据及隔离 STA，无真实 Playnite、物理 DPI、IME/UIA、ETW或presented frame验收。
-- 推送前复核旧 Actions run `36677346317` 未能读取（页面/API无内容，应用内页面查询超时）；历史失败 run `36675309812` 的完整日志仍为403。提交推送后需检查当前 SHA 对应新 run，SDK10.0.401终态单独记录；CI running或unknown时不得报告阶段完成。
-- 下一步先核对本次推送 Actions；随后在修复提交后的 `main` 上执行 CLOSE-EVID-01，重算并逐项补齐 R00/R01 的10条 stale evidence。不要只改 baseline 哈希；完成后推进依赖满足的 Q/R 小批次。CLOSE-HOST-01仍受 ENV-001 限制，用户 Q06/R08 原始失败日志与 DLL identity仍缺。
+- picker Dispatcher 修复提交 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f` 已推送 `main`。无 `SynchronizationContext` 的 STA 旧实现线程负例失败；修复后的 R05 picker 类 `5/5`。前一候选完整 Release/WPF 脚本在本机 SDK `8.0.423` 下 exit `0`（XAML24/24、0 warning/error、合计1550 passed/67 skipped/0 failed），其构建诊断来自 e12119b 加三项 dirty 源码/测试；不能称为 clean post-commit 全量身份。
+- 本次对确切提交 f13b9e05 的 R00/R01 定向复核 `40/40`，RenderHarness 0 warning/error；媒体几何与工具栏负例探针均通过，证据身份、SHA/MVID、原始30搜索样本见[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。freshness 已校正为14 fresh/0 stale；包未构建，package identity 未提供。
+- 当前 Actions run `38222818374`（run930）已终态 failure，失败步骤“编译与测试”。CI workflow SDK10.0.401与本机 SDK8.0.423分开记录。下载完整日志API返回403 `Must have admin rights to Repository.`；artifact列表可读但下载返回401，根因未知。不得按退出码猜测或盲改；需取得有权限的完整日志后复现。
+- 下一项先围绕当前 CI 失败取完整日志并排查；权限阻塞期间继续不依赖该日志的独立 Q/R 小批次，不把CI标绿。CLOSE-HOST-01仍受ENV-001限制；Q06/R08用户原始失败日志与DLL identity仍缺。真实Playnite、物理DPI、IME/UIA、ETW和最终呈现帧均未验。
 
 ## 2026-10-07共享UI阶段检查点（历史记录）
 

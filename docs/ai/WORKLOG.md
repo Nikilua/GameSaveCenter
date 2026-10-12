@@ -1,3 +1,10 @@
+## 2026-10-12 R00/R01 证据校正收口
+
+- 在已推送 `main` 提交 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f` 上完成当前受影响源码证据复核。9 份定向 TRX 共 `40/40`；RenderHarness 构建无警告/错误；双主题对比/可读性、工具栏正常与两种负例、Media Inbox 五种几何双主题场景、30 个不同搜索及有限超时负例均通过。证据包保留原始 TRX、探针与搜索样本，不包含未被引用的截图。
+- 复核旧 freshness 后确认原状态为 `4 fresh / 10 stale`。按 source paths 精确更新 10 条记录并重跑 freshness，结果 `14 fresh / 0 stale`；另 4 条没有关联路径命中而保留旧证据身份。package identity 为 `not-provided`，未生成包，不据此签收 package-host 或真实 Playnite。
+- Actions run `38222818374`（run930，`f13b9e05`）已终态 failure，失败步骤“编译与测试”，workflow SDK `10.0.401`；本机 SDK `8.0.423` 单独记录。完整日志 API HTTP403 `Must have admin rights to Repository.`，artifact 可枚举但匿名下载 HTTP401，CI 根因未知；在获得完整日志前不盲目修改。
+- `CLOSE-EVID-01` 源码证据范围收口；CLOSE-CI/SKD、Media Inbox 同进程滚动、Q06/R08 用户原始失败和 package identity 仍未验证。R00/R01 当前复核：[证据目录](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。下一步按活动队列选择不依赖 CI 失败日志的 Q/R 小批量。
+
 ## 2026-10-07共享UI与焦点夹具阶段（完整门禁未过）
 
 - 从clean main c35按启动协议读取当前入口/记忆/日志/交接/Git；c35 CI终态失败，实际artifact已下载，两项自测success/SDK8.0.423，预装9/10未漂移。Core125/Worker357/source470通过，仍在原Q14错误态失败，原日志/身份保留。

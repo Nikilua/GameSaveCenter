@@ -1,0 +1,15 @@
+Actions run: 38222818374 (run 930)
+Commit: f13b9e05de0cf502ac61e97b0fbad8433b339b3f
+Conclusion: failure
+Failed job/step: 编译、测试与打包 / 编译与测试
+CI SDK configured by workflow: 10.0.401
+
+GET /repos/Nikilua/GameSaveCenter/actions/runs/38222818374/logs
+HTTP 403
+{"message":"Must have admin rights to Repository.","documentation_url":"https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-logs","status":"403"}
+
+Artifact listing returned GameSaveCenter-build-diagnostics (id 11735486836, 488578 bytes, not expired).
+GET /repos/Nikilua/GameSaveCenter/actions/artifacts/11735486836/zip
+HTTP 401 (anonymous download denied)
+
+Failure command, stack, assertion, and actual runner SDK diagnostics are unavailable. Root cause is unknown; no code change is inferred from the step exit code.

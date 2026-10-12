@@ -13,19 +13,19 @@
 | 本轮构建 | 本机 SDK `8.0.423`；Release `0 warning / 0 error`；XAML `24/24`。SDK10.0.401 属于远端 Actions，单独核验 |
 | 本轮测试 | Core `125/125`；Worker `356 passed / 1 skipped`；Playnite source `461 passed / 27 skipped`；WPF `114 classes, 608 passed / 39 skipped`；合计 `1,550 passed / 67 skipped / 0 failed`，完整脚本 exit `0` |
 | 当前实现阶段 | `CLOSE-PICKER-01` 本机代码和自动化门禁已实现；新增 STA Dispatcher 线程负例证明旧实现线程错误，删除回退/虚拟化全量通过。R09 测试已校正为检查独立 `ValidationStroke` 两 DIP 覆盖层，不错误断言 Chrome 改为两 DIP |
-| 远端 CI | 旧检查点 run `36677346317` 本次无法读取，状态未知；run `36675309812` 仍失败且完整日志 API 返回403。当前修改提交推送后要检查新 Actions run 直至终态；CI SDK10.0.401 不以本机 SDK8结果替代 |
-| R00/R01 证据 | e121 基线 freshness 上次为 `4 fresh / 10 stale`；当前阶段源码尚未提交后的 freshness 尚未重算，baseline 未更新。CLOSE-EVID-01 下一步按受影响路径逐项补行为/负例证据 |
+| 远端 CI | commit `f13b9e05` 的 run `38222818374`（run930）已终态 failure，失败步骤为“编译与测试”。CI workflow SDK10.0.401独立于本机SDK8.0.423；完整日志下载403 `Must have admin rights to Repository.`，artifact下载401，根因未知 |
+| R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
-历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。本地完整运行现已通过，R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。完整候选仍需远端 Actions 终态和后续 R00/R01 freshness 校正。
+历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。当前CI失败原因需完整日志；日志权限受限期间不盲修。
 
 ## 当前执行顺序
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. 推送本阶段 main 提交并核对对应 Actions；状态未知/运行中时不宣称阶段完成，SDK10.0.401 结果单列。
-2. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：取得可用的当前 Actions 终态与完整日志；旧 run 403/页面不可读时记录限制，不盲修。
-3. P1 `CLOSE-EVID-01`：在修复提交后重算 freshness，针对 R00/R01 的10条 stale sourcePaths 补行为、负例与身份，不能只改哈希转绿。
+1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：run `38222818374` 已失败；取得完整日志或确认权限限制后按真实错误复现，CI原因未知时不盲修。SDK10.0.401结果单列。
+2. 按依赖推进可独立验证的 Q/R 小批次；每次仍需本机构建/测试、commit/push和新 Actions 终态。
+3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。
 

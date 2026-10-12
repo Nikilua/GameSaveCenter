@@ -18,7 +18,7 @@
 | CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 第29类R02复合按钮间距9 DIP；旧clean DLL也复现，保持8 DIP断言 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
 | CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例通过；本机完整 Release/WPF 门禁通过，推送后 Actions 仍需核对 |
-| CLOSE-EVID-01 | P1 | READY | UI 验证 Agent | 先修测试失败；当前8项及共享输入模板追加2项，共10项待补证 |
+| CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | f13b9e05 下 10 项受影响记录完成复核与校正，freshness 14/14；包身份未提供并继续单独待验 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
 | CLOSE-REL-01 | P1 | BLOCKED_ENVIRONMENT | 发布验证 Agent | CI 绿、ENV-001、独立可丢弃存档/测试远端、当前候选包 |
@@ -50,6 +50,7 @@
 - **终态复核（SDK阶段）**：run37565955357与37566483862失败时均实际上传且已下载诊断；SDK10侧栏22/22通过，native ClientAreaAnimation=false有TRX记录；均在Q14错误态36→37 DIP失败，后89类未执行。补修诊断器多PATH匹配拼接，PS5.1/7正负例通过。完整CI仍未恢复。[SDK阶段](ai/evidence/close-sdk-20261007/README.md)。
 - **入口补修**：91bfb6e1/run37569191845自测断言通过后仍退出非零，后续全部未执行/实际artifact0；同Actions包装本地复现。自测在finally后显式exit0、日志纳入artifact并只上传JSON/TXT/TRX；PS5.1/7包装退出0且负例保留。新CI待验，不提前关闭。
 - **入口实际runner复核**：c35d9047/run37570629705两项自测步骤success，实际选择SDK8.0.423，预装SDK9/10未改变基线；失败artifact已下载，只有JSON/TXT/TRX。Core125/Worker357/source470通过，仍在修复前Q14错误态高度失败，CI整体尚未恢复。见[行距阶段证据](ai/evidence/close-wrap-20261007/README.md)。
+- **2026-10-12 最新 Actions**：main `f13b9e05` 对应 run `38222818374` 已失败，失败步骤为“编译与测试”。下载 workflow logs 返回 HTTP403 `Must have admin rights to Repository.`；诊断 artifact 可列出但匿名下载 HTTP401。没有完整日志，CI 失败根因未知；不得按 exit code 猜测或修改代码。
 - **后续身份补口**：独立scripts/render-qa.ps1未主动注入GSC_BUILD_COMMIT；实际只读MSBuild查询（未注入env）得到GscBuildCommit=unknown、InformationalVersion=0.6.73+unknown。本轮render显式传入c35身份且DLL已核对，不能据此声称独立脚本/CI同样绑定；当前UI全量结束并提交后，再修脚本环境保存/恢复与同HEAD身份验证。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
@@ -65,6 +66,8 @@
 - **范围**：R00-04/06/07/08、R01-05 的 shell、游戏选框、Media、Trainer 受影响行为和负例；复用现有测试/toolbarprobe/render 入口，不重建审计系统。
 - **2026-10-07追加**：本阶段GscMotion与build脚本修改还命中R00-03、R01-01、R01-04。补齐动效完成/重入/清钟、源码根身份及对应负例；提交后按实际HEAD重算，不沿用9/5或只更新SHA。
 - **共享输入模板影响**：CLOSE-WRAP-01改动WpfUiProduction.xaml另命中R00-01-02/R00-05；candidate逐项合并历史与待提交路径后为4 fresh/10 stale。补双主题对比/变换及上下文禁用状态，原baseline未改；不得只把原8项改SHA转绿。
+- **2026-10-12 当前复核**：在推送身份 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f`、本机 SDK `8.0.423` 下，受影响 WPF/source 测试 `40/40`，对比/搜索/媒体几何/工具栏受控探针通过；原始 30 搜索样本和 9 份 TRX 已归档。10 条 stale 记录更新到当前证据，freshness 为 `14 fresh / 0 stale`；另 4 条无匹配源码变化，保留原证据与身份。包未生成，package identity 仍未提供；远端 CI failure 日志受 403/401 限制，CLOSE-EVID 与 CLOSE-CI 不合并签收。[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。
+- **状态**：本任务的源码证据复核、负例、身份和 freshness 更新已完成。未提供的 package identity、真实宿主验收与远端 CI 根因分别留在发布/宿主/CI 队列，不阻止本项收口。
 - **完成条件**：记录源码身份、测试 DLL SHA/MVID、TRX、具体测量、负例与失败边界；重跑通过后更新原 baseline，freshness 14/14 且 package 身份仍独立核对。
 - **非目标**：不仅改 baseline SHA，不把本任务变成整轮视觉或真实宿主验收。
 

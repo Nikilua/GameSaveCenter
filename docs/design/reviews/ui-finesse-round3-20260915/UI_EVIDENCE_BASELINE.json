@@ -4,8 +4,8 @@
   "records": [
     {
       "id": "R00-01-02",
-      "evidence": "evidence/R00-01-02-CONTRAST-SCALE-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -21,8 +21,8 @@
     },
     {
       "id": "R00-03",
-      "evidence": "evidence/R00-03-MOTION-LIFECYCLE-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -36,8 +36,8 @@
     },
     {
       "id": "R00-04",
-      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
-      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -52,8 +52,8 @@
     },
     {
       "id": "R00-05",
-      "evidence": "evidence/R00-05-CONTEXT-DISABLED-20260916.md",
-      "sourceCommit": "9c906cc0772aad06143bdf3237255effd417e2de",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -68,8 +68,8 @@
     },
     {
       "id": "R00-06",
-      "evidence": "evidence/USER-REPORTED-COMPACT-ROW-GAP-20260930/README.md",
-      "sourceCommit": "af915a2d637dc4901e1c81e2e2cdd097c958a002",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -84,8 +84,8 @@
     },
     {
       "id": "R00-07",
-      "evidence": "evidence/USER-REPORTED-TRAINER-COPY-CURRENT-MAIN-RECHECK-20260930/README.md",
-      "sourceCommit": "22c55647799e732a770e6b16a93af4a9e83056f6",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -100,8 +100,8 @@
     },
     {
       "id": "R00-08",
-      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
-      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -116,8 +116,8 @@
     },
     {
       "id": "R01-01",
-      "evidence": "evidence/R01-01-REPOSITORY-IDENTITY-20260916.md",
-      "sourceCommit": "59afd8f4bd81039e1e8150d0ccc35e608b357113",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -163,8 +163,8 @@
     },
     {
       "id": "R01-04",
-      "evidence": "evidence/R01-04-MOTION-BEHAVIOR-20260916.md",
-      "sourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -178,8 +178,8 @@
     },
     {
       "id": "R01-05",
-      "evidence": "evidence/USER-REPORTED-COMPACT-LAYOUT-CURRENT-MAIN-RECHECK-20260930/README.md",
-      "sourceCommit": "4ebbf81f63882a0b1c1e9e02ee214069bb552596",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

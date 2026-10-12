@@ -1,8 +1,15 @@
-## 2026-10-05 完成度复核（当前汇总口径）
+## 2026-10-12 R00/R01 当前证据复核
+
+- 在 main 提交 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f` 上复核了 10 条 stale 源码关联记录：定向 TRX `40/40`，RenderHarness 构建 `0 warning / 0 error`；浅/深主题对比和数字可读性、工具栏正常/超宽/不可达负例、Media Inbox 双主题几何、R00-04 30 个不同查询与超时负例均有当前身份的实际证据。原始 TRX、探针和性能样本见 [当前 R00/R01 复核包](evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。
+- `UI_EVIDENCE_BASELINE.json` 的 freshness 现为 `14 fresh / 0 stale`：10 条命中当前源码变化的记录指向本复核包；4 条没有关联源码路径命中，保留其原证据身份。包未生成，package identity `not-provided`；freshness 不表示包、真实宿主或整项 192 任务已验收。
+- 对应 Actions run `38222818374`（commit `f13b9e05`，SDK `10.0.401`）终态为 failure，步骤“编译与测试”失败。本机 SDK `8.0.423` 与 CI 基线分别记录。workflow logs 下载 HTTP 403 `Must have admin rights to Repository.`，诊断 artifact 下载 HTTP 401；根因未知，不根据退出码猜测或盲改。真实 Playnite、Media Inbox 同进程滚动、IME/UIA、物理 DPI/跨屏、ETW、最终呈现帧和 package-host 仍未验。
+- `CLOSE-EVID-01` 的源码证据复核与校正已收口；CI/SDK、宿主和发布身份仍各自开放。下一步在保留 CI 日志权限限制的同时，推进活动队列中不依赖这份日志的 Q/R 小批量。
+
+## 2026-10-05 完成度复核（历史统计）
 
 正式8列表192个唯一R ID，表前10条R13/R14摘要不重复计数。状态列归纳为：受控满足105、环境待验83、用户失败未定位1（R08-01）、外部阻塞1（R02-06）、部分满足1（R23-05）、不适用1（R05-05）。旧106/83/1/1/1把R08-01归入受控满足，本轮单列用户故障；逐行状态未改。
 
-当前R00/R01 freshness为9 fresh/5 stale，旧14/14不是当前结果。状态汇总不证明证据新鲜或整项宿主验收。当前下一任务统一见 [活动队列](../../../AUTONOMOUS_BACKLOG.md)，统计与实际构建失败见 [完成度评估](../../../FEATURE_COMPLETION_ASSESSMENT.md)；下方阶段“下一项”为历史记录。
+该日期核算时 R00/R01 freshness 为 9 fresh/5 stale；已由 2026-10-12 的当前源码复核更新为 14 fresh/0 stale。历史状态汇总不证明证据新鲜或整项宿主验收。当前活动队列见 [活动积压清单](../../../AUTONOMOUS_BACKLOG.md)，统计与实际构建失败见 [完成度评估](../../../FEATURE_COMPLETION_ASSESSMENT.md)；下方阶段“下一项”为历史记录。
 
 ## 2026-09-30 窄窗换行行距上调
 
