@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 `5/5`、R02-04 `7/7`、R02-05 当前main生产资源 STA 命中/间距 `2/2`，各自双主题 RenderHarness `372` 图通过（证据在 current-recheck 包），这些复验未修改生产 UI。提交 `90099a09` 的 Actions run `38247748056` 已失败于“编译与测试”；页面只显示 exit 1，未认证API rate-limit HTTP403，artifact `11747310690`（479 KB）路由404，完整日志和根因未知。没有日志不得猜测修复。本机 SDK8.0.423 与 CI SDK10.0.401分开。下一项先记录R02-06的宿主菜单边界，再继续独立R02-07。Media Inbox宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
+- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 `5/5`、R02-04 `7/7`、R02-05 当前main生产资源 STA 命中/间距 `2/2`，各自双主题 RenderHarness `372` 图通过（证据在 current-recheck 包），这些复验未修改生产 UI。提交 `90099a09` 的 Actions run `38247748056` 已失败于“编译与测试”；后续 docs-only 提交 `3df542af` 的 run `38249983091` 也失败于该步骤，完整日志均不可读，根因未知。CI SDK10.0.401；当前机器仅装SDK9.0.302，`global.json` 固定SDK8.0.423并禁用roll-forward，因此当前HEAD构建在预检阶段停止；`validate-source.py`通过但本轮没有编译/测试。源码自 `90099a09` 起未变。最新run日志HTTP403、artifact `11747469284` 下载HTTP401，不猜修。R02-06仍受ENV-001宿主阻塞；R02-07源码/测试自 `c55f7a9` 未变，既有4/4证据保留，当前HEAD未重跑。Media Inbox宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

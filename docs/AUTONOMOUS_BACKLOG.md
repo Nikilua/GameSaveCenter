@@ -15,7 +15,7 @@
 | CLOSE-CI-01 | P0 | IN_PROGRESS | 构建维护 Agent | 当前 CI 失败；诊断产物部分不依赖历史日志 |
 | CLOSE-SDK-01 | P0 | IN_PROGRESS | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
 | CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
-| CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main R02几何7/7，间距8 DIP/中心差0；整体共享回归与CI run `38247748056` 仍未收口 |
+| CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main R02几何7/7，间距8 DIP/中心差0；整体共享回归与CI run `38249983091` 仍未收口 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
 | CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例、本机完整 Release/WPF 门禁已通过；run `38222818374` 终态失败，根因并入 CLOSE-CI-01 |
 | CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | f13b9e05 下 10 项受影响记录完成复核与校正，freshness 14/14；包身份未提供并继续单独待验 |
@@ -54,6 +54,8 @@
 - **2026-10-12 后续 run**：文档提交 `da6388e8` 对应 run `38226955461`（run931）也终态 failure 于“编译与测试”。Jobs API 未提供更细根因；完整日志仍 HTTP403，唯一诊断 artifact `11735869371`（488,867 bytes）下载 HTTP401。该提交不含生产代码改动；CI 根因仍未知，待取得完整日志后处理。
 - **2026-10-12 最新 run**：提交 `a21440834865551cdb6894830548af51ad1d8e78` 对应 run `38244963620` 终态 failure 于“编译与测试”。GitHub 页面只显示 `Process completed with exit code 1`；未认证 jobs/log API 受 rate limit HTTP403，job 页面完整日志需登录。artifact `11745496487`（478 KB，SHA-256 `11de81935473ce3da60739d481c768eba2af589d2c76cc819cf3977fd4daea1e`）可从页面确认元数据，下载路由404。无完整日志，根因未知，不猜测修复。
 - **2026-10-12 后续 run**：提交 `90099a09104677708a5829cf7e6a5d22b6b414ff` 对应 run `38247748056` 终态 failure 于“编译与测试”；其他结构、SDK和诊断自测步骤成功，render/static/package跳过。页面 annotation仅 `Process completed with exit code 1`；未认证Jobs/log API rate-limit HTTP403。artifact `11747310690`（479 KB，SHA-256 `8586bcace066ca779c72dbf9fbea1843c19a49133d619b9a6000e6e8dc6e79c5`）路由404。失败命令/断言未知，不盲修。
+- **2026-10-12 后续 run**：文档/证据提交 `3df542af` 对应 run `38249983091`（#934）终态 failure，job `114813463440`。SDK安装、源码结构、诊断自测和 SDK 基线步骤成功；“编译与测试”失败，后续渲染/静态审查/打包跳过。CI SDK10.0.401；页面仅 `Process completed with exit code 1`。Jobs/artifact 元数据API可读，完整日志HTTP403；artifact `11747469284`（488,428 bytes，SHA-256 `662aba958e53e7a6d8ccd837a319fd93e8df91d2309f7977b0af1a84935f79fa`）下载HTTP401。失败命令/断言/堆栈未知，不猜修。
+- **本机 SDK 缺失（2026-10-12）**：`global.json` 固定 `8.0.423` 且 `rollForward=disable`；当前只发现 `9.0.302`。对 `3df542af` 的 `scripts/build.ps1` 在 `sdk-baseline.ps1` 预检退出，未编译/测试；`validate-source.py` 通过。没有用 SDK9 替代。本机 SDK8 恢复前不开展需要 Release build 的 Q/R 修复。
 - **后续身份补口**：独立scripts/render-qa.ps1未主动注入GSC_BUILD_COMMIT；实际只读MSBuild查询（未注入env）得到GscBuildCommit=unknown、InformationalVersion=0.6.73+unknown。本轮render显式传入c35身份且DLL已核对，不能据此声称独立脚本/CI同样绑定；当前UI全量结束并提交后，再修脚本环境保存/恢复与同HEAD身份验证。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
 
@@ -90,6 +92,11 @@
 - **2026-10-12 当前 main `90099a09104677708a5829cf7e6a5d22b6b414ff`**：原有生产资源行为测试当前复验 `2/2`；按钮中心命中独立实例、空隙命中负例、34 DIP 命中区/6 DIP间距及82 DIP WrapPanel同排/换行/无重叠均有实际 STA WPF几何和 `VisualTreeHelper.HitTest` 断言。未改生产代码。
 - **双主题与门禁**：Release `0/0`、XAML24/24、双主题RenderHarness全量 `372 PNG / render-qa OK`；Media1040×700浅/深截图已核对，源码校验通过，WPF静态审查36 XAML/0 errors/29 warnings/177 info。截图为合成数据离屏布局，不代表真实OS输入或Playnite。
 - **当前边界**：R02-05保持“已满足”，未操作真实复制/删除命令；package-host、真实鼠标/触控、物理DPI仍未验。run `38247748056` 失败日志不可读，不能归因该定向测试。下一项R02-06先检查菜单的插件/宿主所有权；外部宿主验收若仍受ENV-001阻塞，继续独立R02-07。
+
+### R02-06 / R02-07：当前 main 菜单边界复核
+
+- 当前 `main` `3df542af` 相对最近成功本机源码构建 `90099a09` 是 docs/evidence-only。`GetGameMenuItems`、`GameMenuActionContext` 与菜单测试自 `c55f7a9` 的 R02 menu `4/4` 证据以来没有源文件变化；该历史行为结果不冒称为本轮新运行。
+- R02-06 的插件契约继续有空选择0项和合成多选有序6项、Action非空的既有测试；Playnite拥有菜单 visual tree 与键盘/翻转/关闭行为，ENV-001 的 WMI访问拒绝与CEF0x5前置未变，本轮不重试宿主。R02-06 保持“外部阻塞”；R02-07 插件可控身份快照保持“已满足”。边界、CI和本机SDK限制见[当前复核](design/reviews/ui-finesse-round3-20260915/evidence/R02-06-07-CURRENT-MAIN-REVIEW-20261012/README.md)。
 
 ### CLOSE-OPTICAL-01：复合按钮内容拉伸与固定图标列间距
 

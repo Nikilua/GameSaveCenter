@@ -10023,3 +10023,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前身份 RenderHarness `0/0`、双主题 `render-qa OK`、372 PNG、logical DPI1.00。人工检查Media 1040×700 Light/Dark截图，确认页面级批量动作仍成组；截图不证明实际OS鼠标或宿主命中。`validate-source.py`通过；WPF静态审查36 XAML/0 errors/29 warnings/177 info。
 - 推送 `90099a09` 的run `38247748056` 已失败于“编译与测试”。CI SDK10.0.401；GitHub步骤仅报 exit1，未认证 Jobs/log API rate-limit403；artifact `11747310690`、479 KB、SHA256 `8586bcace066ca779c72dbf9fbea1843c19a49133d619b9a6000e6e8dc6e79c5` 下载404。根因未知，不推断或盲修。
 - R02-05继续“已满足”。下一步 R02-06 只读盘点插件菜单项和宿主控制边界；如真实菜单UI验收依赖ENV-001，就记录无法验证的具体状态后继续独立R02-07。临时输出已归档所需证据；`.tmp/r02-03-current-recheck-20261012`、`.tmp/r02-04-current-main-20261012`、`.tmp/r02-05-current-main-20261012` 和 `artifacts/build-diagnostics` 下三个本轮诊断目录的递归清理请求被执行器拒绝，暂留本机；未尝试其他删除路径，也未提交生成物。
+
+## 2026-10-12 R02-06/07 菜单边界与当前 SDK/CI 复核
+
+- 当前 HEAD `3df542af20089ca91733f93d814df5b4c6373169` 相对最近成功的 R02-05 Release 源码身份 `90099a09104677708a5829cf7e6a5d22b6b414ff` 仅有 docs/evidence 改动；`GetGameMenuItems`、`GameMenuActionContext` 与 R02Menu 测试自 `c55f7a9f16276fe651f3e9ae845a8e5687cb21e9` 以来未改。原有 R02 menu 定向结果 `4/4` 覆盖宿主契约和上下文刷新/删除正负例；这是复用旧结果，不冒称本轮重跑。当前源码边界与待验步骤见[R02-06/07复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R02-06-07-CURRENT-MAIN-REVIEW-20261012/README.md)。
+- R02-06 插件生成契约仍满足；菜单 UI、键盘和关闭行为由 Playnite 宿主持有。ENV-001 当前拒绝读取进程命令行，已有 CEF `platform_channel 0x5` 启动失败且条件未变，本轮不重试。R02-06 状态仍“外部阻塞”，R02-07 插件可控身份快照仍“已满足”。
+- 本机执行 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp\r02-menu-current-main-20261012` 在 `sdk-baseline.ps1` 预检失败：`global.json` 要求 SDK8.0.423 并禁用 roll-forward，系统只有9.0.302；编译与测试未启动。官方SDK8压缩包下载等待无进度后已中止，未改系统SDK或 PATH。`python scripts/validate-source.py` 在当前HEAD通过。
+- 推送 `3df542af` 的 Actions run `38249983091`（#934）已失败于“编译与测试”，job `114813463440`。CI SDK10.0.401；前置结构/诊断/基线成功，后续渲染/静态审查/打包跳过。Jobs/log API日志HTTP403；artifact `11747469284`（488,428 bytes，SHA256 `662aba958e53e7a6d8ccd837a319fd93e8df91d2309f7977b0af1a84935f79fa`）下载HTTP401。没有失败命令、断言或堆栈，根因未知，不猜修。
+- `.tmp` 与 `artifacts` 递归清理仍被执行器拒绝；本轮SDK预检诊断目录保留在忽略的 `artifacts/build-diagnostics/20261012T123814433Z-853a4720`，未提交。SDK下载中断后留下的工具路径为空，尝试精确非递归清理也被执行器拒绝。下一步需先恢复仓库要求的SDK8.0.423，再跑R02Menu `4/4` 与CLOSE-WRAP-01复测；R02-06宿主只有在ENV-001前置变化后再按隔离runner的fail-closed步骤执行。
