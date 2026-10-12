@@ -1,6 +1,15 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main `afade3cd` 定向 `34/34`，R06-01 `6/6`，R06-02 当前 main `90454586` `7/7`；SDK `8.0.423` Release `0/0`、XAML `24/24`。排序证据见[R06-02复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #947（run `38295749414`，`90454586`）截至2026-10-12 19:24 UTC 仍在运行，公开日志需登录；此前 #946 failure 的完整日志和 artifact 内容不可读，匿名 API HTTP403。目标 CI SDK `10.0.401` 与本机 SDK8分开；实际 runner SDK未证实。R05-08、R06-01、R06-02 保持已满足；下一项 R06-03。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite Tooltip/表格、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-07 当前 main 定向 `34/34`，R06-01 `6/6`，R06-02 `7/7`，R06-03 当前 main 定向行为 `6/6`。R06-03 证据见[R06-03复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md)。Actions #947（run `38295749414`，`90454586`）和 #948（run `38298023983`，`fdeeec8`）截至2026-10-12 20:00 UTC 仍在运行，公开日志需登录；用户指定检查点 #920（run `36677346317`，`77de7f4`）现为 failure，公开页显示构建/测试步骤 exit 1，完整日志需登录且根因未知。#946 failure 的完整日志和 artifact 内容不可读，匿名 API HTTP403。目标 CI SDK `10.0.401` 与本机 SDK `8.0.423` 分开；实际 runner SDK未证实。下一项 R06-04 复制单元格与整行。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。真实 Playnite表格、OS指针、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能仍待验。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+
+## 2026-10-13 R06-03 当前 main 选中/焦点行为复核
+
+- 复核基线为 main `fdeeec8a9d3a7742a63ccbee21c55a50752326c8`，复用共享 `DataGridRow`、`ListBoxItem`、现有 DTO 与绑定。本轮只增加一项生产 Task 页面行为测试；未改生产资源、命令或 DTO。
+- 本机隔离 SDK `8.0.423`，官方 `scripts/build.ps1 -Configuration Release -SkipTests` Release `0 warning / 0 error`、XAML `24/24`，Playnite `net462`、测试 `net472`。R06Selection `2/2`；四个生产表格 Light/Dark 选中/焦点/禁用几何 `1/1`；Task Light/Dark hover 进出、错误徽章命中与取消命令 UIA Invoke `1/1`；共享 DataGrid/ListBox 资源契约 `2/2`。
+- 新行为探针使用 fake Cancel 命令与合成 Failed/Running Task DTO；通过受控 `MouseDevice.ChangeMouseOver` 产生 WPF hover/leave 状态，检查生产 RowBackground 颜色变化；selected Failed row 实际测 `InputHitTest` 仍落到状态徽章，并确认终态取消按钮禁用；选中 Running row 后用 AutomationPeer Invoke 触发真实 Button Click 与 fake command。没有用源码断言代替状态/事件行为。
+- 测试源码 SHA-256 `663FF65E6EDF569D05D51D002C45C74D4D125AA2F281617F02BD8081AA84B3FC`；插件 DLL SHA/MVID `A486B9B34CFB5614E24797F39E2D09CEBFAE51E251299F0F4C5EC8A67AA1BF50` / `354dc807-4006-4a7d-b9ef-59dc034f3420`；测试 DLL SHA/MVID `CB3F3FB068EDAF7E880F146AF892769D4384448F34AEB0DA1AB62FD3AAC0B148` / `d3eadb88-2bc6-470c-8ab5-6d0053b8c5fd`。四份脱敏 TRX、SHA 和限制见[R06-03复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- WPF hover 是受控 MouseDevice 状态，不代表实际 OS 鼠标；一次 `SetCursorPos` 尝试未令测试行进入 `IsMouseOver`，未作为通过证据，原因未知。没有重跑 RenderHarness 或新截图；历史截图仍绑定 `d83c7378`。真实 Playnite 输入、UIA/Narrator、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能未验。
+- Actions #947/#948 截至2026-10-12 20:00 UTC 仍 `In progress`；日志要求登录、实际 runner SDK 未知。用户指定的 #920（run `36677346317`）现为 failure，公开页仅显示构建/测试步骤 exit 1，完整日志需要登录，根因未知。本机 SDK8 结果不代替 CI SDK10.0.401。下一项 R06-04 复制单元格与整行。
 
 ## 2026-10-13 R06-02 当前 main 排序行为复核
 
@@ -8,7 +17,7 @@
 - 隔离 SDK `8.0.423` Release rebuild `0 warning / 0 error`、XAML `24/24`，定向 `R06SortingBehaviorTests 7/7`。首次复用 `afade3cd` DLL 被源码身份保护拦下，随后从当前 HEAD 重建；失败身份试次不纳入通过数。排序/unknown/刷新/实际列头/失效视图负例、源/DLL SHA/MVID 和 TRX 见[R06-02复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 既有双主题 RenderHarness 图绑定 `c577afc5`；当前只补当前源码行为证据，没有重跑渲染或将旧图冒充新截图。合成 DTO/隔离 CollectionView/STA；真实 Playnite、UIA/Narrator、物理 DPI/多屏、presented frame、ETW/宿主性能未验。
 - Actions #947（`38295749414`，commit `90454586`）截至2026-10-12 19:24 UTC 仍为 In progress；job 页提示登录查看日志，实际 runner SDK未知。CI目标 SDK `10.0.401` 与本机 `8.0.423` 分开记录。此前 #946 failure 日志/artifact匿名HTTP403、artifact内容不可读，根因未知，不按摘要盲改。
-- 下一项：R06-03 选中焦点区分，先核共享选中/焦点/悬停/错误态资源及现有行为测试，再确定是否只需补当前 main 证据。
+- 当时下一项：R06-03 选中焦点区分（现已完成当前 main 行为复核）。
 
 ## 2026-10-13 R06-01 列宽用户记忆当前 main 复核
 

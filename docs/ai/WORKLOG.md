@@ -1,3 +1,12 @@
+## 2026-10-13 R06-03 当前 main 选中焦点与徽章/危险动作复核
+
+- 以 main `fdeeec8a9d3a7742a63ccbee21c55a50752326c8` 为生产基线，盘点后复用共享 DataGridRow/ListBoxItem、`TaskStatusDto` 与现有 Task 绑定；本轮只新增一项行为测试，不改生产代码、命令或 DTO。原 `R06SelectionStateBehaviorTests` 只有实际行状态/几何和一个资源源码契约，不能单独证明生产徽章命中、危险操作可用或双主题 hover。
+- 本机隔离 SDK `8.0.423`，官方 Release build `0 warning / 0 error`、XAML `24/24`；R06Selection `2/2`，四个生产 DataGrid Light/Dark selected/focus/disabled geometry `1/1`，Task 双主题 hover 进出/失败徽章实际 `InputHitTest`/取消按钮 UIA Invoke `1/1`，共享资源契约 `2/2`，共 `6/6`（分独立 VSTest 进程执行）。`python scripts/validate-source.py` 与 `git diff --check` 通过。
+- 新探针在隔离生产 `TaskCenterView` 中使用合成 Failed/Running DTO 与 fake Cancel 命令。通过受控 `MouseDevice.ChangeMouseOver` 触发 WPF hover/leave，检查共享 RowBackground 在两主题变化并恢复；选中失败行时验证 error pill 与 inactive selection 的颜色不同、徽章可见且 InputHitTest 命中其模板；选中运行行并键盘聚焦后，AutomationPeer Invoke 实际 Raise Click 且执行 fake command。四页 geometry 用例另保留选中、焦点、禁用的正负状态检查。
+- Release 本机 SDK `8.0.423`（目标 CI SDK `10.0.401` 另行跟踪）；Playnite `net462`、测试 `net472`。测试源 SHA-256 `663FF65E6EDF569D05D51D002C45C74D4D125AA2F281617F02BD8081AA84B3FC`；插件 DLL SHA/MVID `A486B9B34CFB5614E24797F39E2D09CEBFAE51E251299F0F4C5EC8A67AA1BF50` / `354dc807-4006-4a7d-b9ef-59dc034f3420`；测试 DLL SHA/MVID `CB3F3FB068EDAF7E880F146AF892769D4384448F34AEB0DA1AB62FD3AAC0B148` / `d3eadb88-2bc6-470c-8ab5-6d0053b8c5fd`。四份脱敏 TRX 与 SHA 在[R06-03 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- SetCursorPos 尝试未使隔离测试行进入 `IsMouseOver`，该次不计为通过，具体原因未知；最终验证使用 WPF MouseDevice 受控状态，不代表实际 OS 指针或 Playnite 宿主。没有当前 RenderHarness 截图；历史图仍绑定 `d83c7378`。真实 Playnite输入、UIA/Narrator、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验，未写真实存档/媒体/云端/诊断。
+- Actions #947（`38295749414`，`90454586`）和 #948（`38298023983`，`fdeeec8`）截至2026-10-12 20:00 UTC 仍 `In progress`；job 页需登录，日志和实际 runner SDK不可见。用户指定检查点 #920（run `36677346317`，`77de7f4`）现为 `Failure`，公开页显示编译/测试步骤 exit 1，完整日志需登录且不可取得，根因未知；不能盲改。本机 SDK8 不替代 CI SDK10.0.401。下一项 R06-04 复制单元格与整行。
+
 ## 2026-10-13 R06-02 当前 main 排序行为复核
 
 - 当前 main 复核提交 `90454586d702f6a2b413bfcc386ac599424f8bc1`；`DataGridStableSortController.cs` 与 `R06SortingBehaviorTests.cs` 相对 clean-main `3d83d38f` 无差异。发现当前代码已有排序 profile 和完整行为覆盖，本阶段没有生产或测试源码改动。

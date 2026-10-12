@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -827,6 +829,133 @@ public sealed class R23ProductionResourceStateBehaviorTests
         });
     }
 
+    [Fact]
+    public void TaskSelectionKeepsFailureBadgeAndCancelActionUsableAcrossThemes()
+    {
+        RunSta(() =>
+        {
+            foreach (var theme in Themes)
+            {
+                var failed = new TaskStatusDto
+                {
+                    TaskId = "synthetic-failed",
+                    TaskType = "Backup",
+                    GameName = "Synthetic Game",
+                    State = TaskState.Failed,
+                    ErrorCode = "SYNTHETIC_FAILURE",
+                    ErrorMessage = "Synthetic failure for selection-state verification.",
+                    CreatedUtc = new DateTime(2026, 10, 1)
+                };
+                var running = new TaskStatusDto
+                {
+                    TaskId = "synthetic-running",
+                    TaskType = "Backup",
+                    GameName = "Synthetic Game",
+                    State = TaskState.Running,
+                    StageMessage = "正在执行",
+                    ProgressPercent = 25,
+                    CreatedUtc = new DateTime(2026, 10, 2)
+                };
+                var fixture = new TaskSelectionFixture(null);
+                var page = new TaskCenterView { DataContext = fixture };
+                var grid = Assert.IsType<DataGrid>(page.FindName("TaskGrid"));
+                grid.ItemsSource = new ObservableCollection<TaskStatusDto> { failed, running };
+                ApplyTheme(page, theme);
+
+                var root = new Grid();
+                root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                Grid.SetRow(page, 0);
+                root.Children.Add(page);
+                var externalFocus = new TextBox { Height = 28, Text = "Synthetic focus target" };
+                Grid.SetRow(externalFocus, 1);
+                root.Children.Add(externalFocus);
+                var window = CreateWindow(root, 1280, 900);
+
+                try
+                {
+                    window.Show();
+                    FlushLayout(window);
+                    Assert.True(grid.IsVisible && grid.ActualWidth > 0 && grid.ActualHeight > 0,
+                        $"{theme}: the production task table was not realized.");
+
+                    var hoverRow = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromItem(running));
+                    var hoverBackground = Assert.IsType<Border>(hoverRow.Template.FindName("RowBackground", hoverRow));
+                    ChangeMouseOverForTest(hoverRow);
+                    FlushLayout(window);
+                    Assert.True(hoverRow.IsMouseOver, $"{theme}: the controlled hover state was not applied to the production task row.");
+                    Assert.Equal(BrushColor(page.Resources["GscRowHoverBrush"]), BrushColor(hoverBackground.Background));
+                    ChangeMouseOverForTest(externalFocus);
+                    FlushLayout(window);
+                    Assert.False(hoverRow.IsMouseOver, $"{theme}: the controlled hover state did not clear.");
+                    Assert.Equal(BrushColor(page.Resources["GscTableRowBrush"]), BrushColor(hoverBackground.Background));
+
+                    grid.SelectedItem = failed;
+                    Assert.Same(externalFocus, Keyboard.Focus(externalFocus));
+                    FlushLayout(window);
+                    var failedRow = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromItem(failed));
+                    var statusCell = Assert.Single(FindVisualChildren<DataGridCell>(failedRow),
+                        cell => Equals(cell.Column.Header, "状态"));
+                    var statusPresenter = Assert.Single(FindVisualChildren<ContentPresenter>(statusCell),
+                        presenter => presenter.ContentTemplate != null);
+                    var statusPill = Assert.IsType<Border>(statusPresenter.ContentTemplate!.FindName("TaskStatusPill", statusPresenter));
+                    var statusText = Assert.IsType<TextBlock>(statusPill.Child);
+                    var failedRowBackground = Assert.IsType<Border>(failedRow.Template.FindName("RowBackground", failedRow));
+
+                    Assert.True(failedRow.IsSelected);
+                    Assert.False(Selector.GetIsSelectionActive(failedRow));
+                    Assert.True(statusPill.IsVisible && statusPill.ActualWidth > 0 && statusPill.ActualHeight > 0,
+                        $"{theme}: the failed task status pill was not visible inside its selected row.");
+                    Assert.Contains("失败", statusText.Text, StringComparison.Ordinal);
+                    Assert.Equal(BrushColor(page.Resources["GscErrorTintBrush"]), BrushColor(statusPill.Background));
+                    Assert.Equal(BrushColor(page.Resources["GscErrorBrush"]), BrushColor(statusPill.BorderBrush));
+                    Assert.Equal(BrushColor(page.Resources["GscSelectionInactiveBrush"]), BrushColor(failedRowBackground.Background));
+                    Assert.NotEqual(BrushColor(statusPill.Background), BrushColor(failedRowBackground.Background));
+                    var failedCancel = Assert.Single(FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(page),
+                        button => AutomationProperties.GetName(button) == "取消任务");
+                    Assert.True(failedCancel.IsVisible);
+                    Assert.False(failedCancel.IsEnabled,
+                        $"{theme}: a failed terminal task must not enable the cancel action.");
+                    var statusPoint = statusPill.TransformToAncestor(grid).Transform(
+                        new Point(statusPill.ActualWidth / 2, statusPill.ActualHeight / 2));
+                    var statusHit = grid.InputHitTest(statusPoint) as DependencyObject;
+                    Assert.NotNull(statusHit);
+                    Assert.True(ReferenceEquals(statusPill, FindVisualAncestor<Border>(statusHit!)),
+                        $"{theme}: hit testing the failed status badge landed on '{(statusHit as FrameworkElement)?.Name ?? statusHit.GetType().Name}'.");
+
+                    grid.SelectedItem = running;
+                    Assert.Same(externalFocus, Keyboard.Focus(externalFocus));
+                    FlushLayout(window);
+                    var runningRow = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromItem(running));
+                    var runningCell = FindVisualChildren<DataGridCell>(runningRow)
+                        .First(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0);
+                    Assert.Same(runningCell, Keyboard.Focus(runningCell));
+                    FlushLayout(window);
+                    var cancel = Assert.Single(FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(page),
+                        button => AutomationProperties.GetName(button) == "取消任务");
+                    Assert.True(runningRow.IsKeyboardFocusWithin);
+                    Assert.True(cancel.IsVisible && cancel.IsEnabled,
+                        $"{theme}: the enabled task-cancel action was hidden or disabled while a task row was selected.");
+                    Assert.Same(fixture.CancelCommand, cancel.Command);
+
+                    var clickCount = 0;
+                    cancel.Click += (_, _) => clickCount++;
+                    var peer = FrameworkElementAutomationPeer.CreatePeerForElement(cancel);
+                    Assert.NotNull(peer);
+                    var invoke = Assert.IsAssignableFrom<IInvokeProvider>(peer!.GetPattern(PatternInterface.Invoke));
+                    invoke.Invoke();
+                    cancel.Dispatcher.Invoke(DispatcherPriority.Background, new Action(cancel.UpdateLayout));
+                    Assert.True(fixture.CancelCommand.ExecutionCount == 1 && clickCount == 1,
+                        $"{theme}: cancel Invoke should execute its bound command and raise Click (command={fixture.CancelCommand.ExecutionCount}, click={clickCount}).");
+                }
+                finally
+                {
+                    window.Close();
+                }
+            }
+        });
+    }
+
     private static readonly GameSaveCenterThemeMode[] Themes =
     {
         GameSaveCenterThemeMode.Light,
@@ -1018,6 +1147,13 @@ public sealed class R23ProductionResourceStateBehaviorTests
         window.UpdateLayout();
     }
 
+    private static void ChangeMouseOverForTest(System.Windows.IInputElement target)
+    {
+        var changeMouseOver = typeof(MouseDevice).GetMethod("ChangeMouseOver", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("WPF MouseDevice.ChangeMouseOver was not found.");
+        changeMouseOver.Invoke(Mouse.PrimaryDevice, new object[] { target, Environment.TickCount });
+    }
+
     private static void RunSta(Action action)
     {
         Exception? failure = null;
@@ -1045,6 +1181,50 @@ public sealed class R23ProductionResourceStateBehaviorTests
         public ProbeRow(string name) => Name = name;
         public string Name { get; }
     }
+
+    private sealed class TaskSelectionFixture
+    {
+        private TaskStatusDto? selectedTask;
+
+        public TaskSelectionFixture(TaskStatusDto? selectedTask)
+        {
+            this.selectedTask = selectedTask;
+            CancelCommand = new SelectionCancelCommand(() => SelectedTask?.CanCancel == true);
+        }
+
+        public TaskStatusDto? SelectedTask
+        {
+            get => selectedTask;
+            set
+            {
+                selectedTask = value;
+                CancelCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public SelectionCancelCommand CancelCommand { get; }
+        public System.Windows.Input.ICommand CancelTaskCommand => CancelCommand;
+        public System.Windows.Input.ICommand RetryTaskCommand { get; } = new SelectionCancelCommand(() => false);
+        public System.Windows.Input.ICommand CopyTaskErrorCommand { get; } = new SelectionCancelCommand(() => false);
+        public bool IsCancellingTask => false;
+    }
+
+    private sealed class SelectionCancelCommand : System.Windows.Input.ICommand
+    {
+        private readonly Func<bool> canExecute;
+
+        public SelectionCancelCommand(Func<bool> canExecute) => this.canExecute = canExecute;
+
+        public int ExecutionCount { get; private set; }
+        public event EventHandler? CanExecuteChanged;
+
+        public bool CanExecute(object? parameter) => canExecute();
+
+        public void Execute(object? parameter) => ExecutionCount++;
+
+        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    }
+
 }
 
 [CollectionDefinition("R23ProductionResourcesWpf", DisableParallelization = true)]
