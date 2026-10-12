@@ -85,8 +85,17 @@ public sealed class R07ResizeStressBehaviorTests
                 };
                 window.Show();
                 ApplySize(window, 1366, 900);
-                if (!taskView.TaskDetailScrollViewerElement.IsVisible)
-                    throw new InvalidOperationException("selected task detail was not visible at the wide baseline.");
+                var taskDetail = taskView.TaskDetailScrollViewerElement;
+                if (taskDetail.Visibility != Visibility.Visible
+                    || !(taskDetail.ActualWidth > 0)
+                    || !(taskDetail.ActualHeight > 0))
+                {
+                    throw new InvalidOperationException(
+                        "selected task detail had no visible layout area at the wide baseline: "
+                        + $"visibility={taskDetail.Visibility}, isVisible={taskDetail.IsVisible}, "
+                        + $"actual={taskDetail.ActualWidth:0.###}x{taskDetail.ActualHeight:0.###}, "
+                        + $"taskViewIsVisible={taskView.IsVisible}, windowIsVisible={window.IsVisible}.");
+                }
 
                 shell.GameSearchBoxForFocus.Focus();
                 Keyboard.Focus(shell.GameSearchBoxForFocus);
@@ -109,6 +118,8 @@ public sealed class R07ResizeStressBehaviorTests
                         shell.ActualWidth,
                         shell.ActualHeight,
                         taskView.TaskDetailScrollViewerElement.Visibility,
+                        taskView.TaskDetailScrollViewerElement.ActualWidth,
+                        taskView.TaskDetailScrollViewerElement.ActualHeight,
                         pickerOverlay.Visibility,
                         shell.GameSearchBoxForFocus.IsKeyboardFocusWithin,
                         taskGrid.ActualHeight,
@@ -129,6 +140,8 @@ public sealed class R07ResizeStressBehaviorTests
                     Assert.InRange(Math.Abs((sample.RequestedWidth - sample.ShellActualWidth) - shellWidthInset), 0, 1);
                     Assert.InRange(Math.Abs((sample.RequestedHeight - sample.ShellActualHeight) - shellHeightInset), 0, 1);
                     Assert.Equal(Visibility.Visible, sample.DetailVisibility);
+                    Assert.True(sample.DetailActualWidth > 0, $"task details had no laid out width during {sample.Label}: {sample.DetailActualWidth}");
+                    Assert.True(sample.DetailActualHeight > 0, $"task details had no laid out height during {sample.Label}: {sample.DetailActualHeight}");
                     Assert.Equal(Visibility.Visible, sample.PickerVisibility);
                     Assert.True(sample.SearchHasFocus, $"search focus was lost during {sample.Label}");
                     Assert.True(sample.TaskGridActualHeight > 0, $"task grid became blank during {sample.Label}");
@@ -221,6 +234,8 @@ public sealed class R07ResizeStressBehaviorTests
             double shellActualWidth,
             double shellActualHeight,
             Visibility detailVisibility,
+            double detailActualWidth,
+            double detailActualHeight,
             Visibility pickerVisibility,
             bool searchHasFocus,
             double taskGridActualHeight,
@@ -235,6 +250,8 @@ public sealed class R07ResizeStressBehaviorTests
             ShellActualWidth = shellActualWidth;
             ShellActualHeight = shellActualHeight;
             DetailVisibility = detailVisibility;
+            DetailActualWidth = detailActualWidth;
+            DetailActualHeight = detailActualHeight;
             PickerVisibility = pickerVisibility;
             SearchHasFocus = searchHasFocus;
             TaskGridActualHeight = taskGridActualHeight;
@@ -250,6 +267,8 @@ public sealed class R07ResizeStressBehaviorTests
         public double ShellActualWidth { get; }
         public double ShellActualHeight { get; }
         public Visibility DetailVisibility { get; }
+        public double DetailActualWidth { get; }
+        public double DetailActualHeight { get; }
         public Visibility PickerVisibility { get; }
         public bool SearchHasFocus { get; }
         public double TaskGridActualHeight { get; }
@@ -259,7 +278,7 @@ public sealed class R07ResizeStressBehaviorTests
         public double PickerMaxHeight { get; }
 
         public override string ToString()
-            => $"{Label}: shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; detail={DetailVisibility}; picker={PickerVisibility}; focus={SearchHasFocus}; "
+            => $"{Label}: shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; detail={DetailVisibility}/{DetailActualWidth:0.###}x{DetailActualHeight:0.###}; picker={PickerVisibility}; focus={SearchHasFocus}; "
                 + $"gridActual={TaskGridActualHeight:0.###}; gridMax={TaskGridMaxHeight:0.###}; "
                 + $"detailMax={DetailMaxHeight:0.###}; pickerActual={PickerActualHeight:0.###}; pickerMax={PickerMaxHeight:0.###}";
     }

@@ -10188,3 +10188,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 2000项合成库搜索含5次预热和30次测量；30/30不同输入改变可见集合，超时负例通过；p50/p95/max `46/63/75 ms`。证据包归档六份去标识TRX、样本和freshness报告；新 baseline 下14/14 fresh。R01与未命中源码的12条记录不作本轮重跑声明。
 - 未构建/安装Playnite包，package identity `not-provided`；没有 OS UIA/Narrator/IME、物理DPI/跨屏、presented frame、ETW或宿主性能证据。本机SDK8不替代CI SDK10.0.401。#952失败根因需可读完整日志；#953 docs-only run最近仍运行中。
 - 下一项：先核对R06-05列头说明的现有实现与测试覆盖，只有实际缺口才改代码；继续记录远端 Actions 到终态。
+
+## 2026-10-13 R07-08 resize CI 判据修正
+
+- 检查用户指定的 #920 后确认 run `36677346317` 已失败，完整日志显示 SDK `10.0.401`；#919 同样在旧侧栏过渡测试失败。随后取回 #952/#953/#954 完整日志，确认当时 SDK `8.0.423`，三次都在 R07 resize 测试的初始 `IsVisible` 断言失败。旧错误信息没有输出 `IsVisible`、祖先可见性或详情尺寸，具体 runner 状态仍未知。
+- 修正 `R07ResizeStressBehaviorTests`：基线检查详情 ScrollViewer 的本地 `Visibility` 和正的实际宽高；五个宽→窄→短→宽→恢复样本都检查详情布局宽高，同时保留 picker、焦点、任务表可见面积、MaxHeight 恢复和 shell resize 路由断言。没有生产代码改动。
+- 本机官方 SDK `8.0.423` Release 构建 `0 warning / 0 error`、XAML `24/24`；R07 定向 `1/1`。样本详情区域依次为 `360×476`、`632.667×136`、`632.667×136`、`360×476`、`360×476` DIP，shell `SizeChanged=7`。TRX 与五个 Actions 日志 ZIP/SHA、源 SHA及边界见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。
+- `validate-source.py` 与 `git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`，未处理其他页面警告。VSTest cleanup 出现 TextServicesHost `InvalidComObjectException`，测试 exit0，原因未知。
+- 当前提交尚未推送，修正后的 Actions 结果待触发，因此 R07-08 仍未收口。此次测试只证明受控 STA WPF 布局面积，不证明真实 Playnite、物理 resize/DPI/跨屏、OS UIA或最终呈现帧。下一项等待 R07 Actions 终态后，单独完成 R06-05 列头行为证据阶段；其测试修改未纳入本阶段。
