@@ -1,3 +1,10 @@
+## 2026-10-12 R03-01 当前 main 落字复核；R02-08 Actions #936 终态
+
+- R02-08 文档/证据提交 `8e71feb4` 的 Actions run `38262296773`（#936）已终态 failure，6m19s 后“编译与测试”exit1。CI SDK10.0.401；logs API403 rate limit、job页要求登录；artifact `11752913387`（476 KB，SHA-256 `d78fb86cee5d81520fa81cebe65434cded562c18bd6fda46af0a91b8081bb021`）匿名suite下载404。失败命令/断言/堆栈仍不可读，根因未知，未盲改。
+- 当前 main `8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af` 上重建 RenderHarness Release `0 warning / 0 error`，Light/Dark `finesseprobe` 均 exit0并输出实际 GlyphRun。中文、英文、数字、罕见字 `𠮷`、组合重音均逐项区分候选与最终 Typeface；`𠮷` 候选 unresolved 但最终 MingLiU-ExtB 含码点、非 `.notdef`。实际截图已查看，边界为合成 STA/offscreen logical DIP，不代表 Playnite 或物理 DPI。
+- `TypographyDiagnosticsTests` 首个 `--no-build` 运行读取到旧 f89b160 测试程序集，6个源码读取检查因 root/assembly identity mismatch 按现有 fail-closed 守卫拒绝；保留脱敏 `5 passed/6 failed` TRX 作为身份负例。显式绑定当前 `GSC_BUILD_COMMIT` / `GSC_SOURCE_ROOT` 重建 Playnite 测试项目后，当前类 `11/11` 通过，测试 DLL/ProductVersion/MVID 已归档。source/tests 从完整 Release 身份 `4d166f0` 到当前 `8e71feb4` 无变化；RenderHarness 报告 `WorkingTreeClean=False` 是当时证据目录已在工作树的真实状态。
+- R03-01 满足候选/最终落字区分及证据等级完成条件；真实宿主字体、IME/OS 输入、物理 DPI/跨屏、屏幕阅读器、最终呈现帧、ETW/宿主性能仍未验。下一项 R04-01 当前 main 行为类 `6/6` 已复跑，证据包待同步；Playnite 嵌入输入与 Windows IME 候选 UI仍待宿主验证。详见[R03-01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R03-01-CURRENT-MAIN-RECHECK-20261012/README.md)。
+
 ## 2026-10-12 R02-08 当前 main 复核与证据校正
 
 - 从 `main` clean HEAD `4d166f017dcba8fbb07980ec21b690267b9ff377` 复查已实现的动作文案能力；复用原生产命令、DTO、状态消息与 `R02ActionCopyTests`，当前 Release source 组该类 `4/4`。没有生产代码或命令绑定改动。

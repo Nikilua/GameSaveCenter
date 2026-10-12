@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7ac567d6-4412-40e7-a3bd-95bdefa57142" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T22:26:35.4823184+08:00" queuing="2026-10-12T22:26:35.4823188+08:00" start="2026-10-12T22:26:33.1038130+08:00" finish="2026-10-12T22:26:36.0754305+08:00" />
+  <TestSettings name="default" id="6717ab86-3d4b-42fd-a726-683a136f9586">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f75986c2-a38a-40c9-b4ab-b13b29559ad4" testId="3bc7c7ea-3c61-bfc6-cc86-c36721e0a5e3" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.FontChainNamesCoverChineseAndWindowsFallbackFamilies" computerName="redacted-host" duration="00:00:00.0230000" startTime="2026-10-12T22:26:35.2255776+08:00" endTime="2026-10-12T22:26:35.2590015+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f75986c2-a38a-40c9-b4ab-b13b29559ad4" />
+    <UnitTestResult executionId="4d4ae0ad-4799-43e4-8e8d-99b81dfaf65e" testId="c9602e3e-a941-e656-dc1f-b5c8b3006677" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers" computerName="redacted-host" duration="00:00:00.0050000" startTime="2026-10-12T22:26:35.9156197+08:00" endTime="2026-10-12T22:26:35.9166174+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4d4ae0ad-4799-43e4-8e8d-99b81dfaf65e">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 121</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="57c5cd01-f4b5-426c-94b8-820c5069892e" testId="89a07538-6f4f-f756-4f7c-d147c6d7517e" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles" computerName="redacted-host" duration="00:00:00.1120000" startTime="2026-10-12T22:26:35.6920399+08:00" endTime="2026-10-12T22:26:35.8426235+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57c5cd01-f4b5-426c-94b8-820c5069892e">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 187</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fabbd401-c749-4766-bad3-5dfeb88dc1ae" testId="89fbf490-0d70-7ae6-3a10-a145958108d0" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence" computerName="redacted-host" duration="00:00:00.0640000" startTime="2026-10-12T22:26:35.8536182+08:00" endTime="2026-10-12T22:26:35.9046196+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fabbd401-c749-4766-bad3-5dfeb88dc1ae" />
+    <UnitTestResult executionId="777e0be5-0007-41a4-94da-6267d051aac4" testId="4633e249-d7ea-e914-6f3a-cdbee993d4b8" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.TypographyMetricsReportBaselineAndNonZeroWidth" computerName="redacted-host" duration="00:00:00.0420000" startTime="2026-10-12T22:26:35.9236182+08:00" endTime="2026-10-12T22:26:35.9586183+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="777e0be5-0007-41a4-94da-6267d051aac4" />
+    <UnitTestResult executionId="8ae6c141-3847-4d47-8d73-cd73c8fa6962" testId="141dc5b1-0892-57c4-249a-7e2564d72342" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-12T22:26:35.9606220+08:00" endTime="2026-10-12T22:26:35.9616199+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ae6c141-3847-4d47-8d73-cd73c8fa6962">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 153</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7089f434-d5df-419e-87cd-38d8c15f419f" testId="b5ab4b84-8c63-13fc-52a8-fdbc856e8184" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T22:26:35.9706193+08:00" endTime="2026-10-12T22:26:35.9716190+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7089f434-d5df-419e-87cd-38d8c15f419f">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 135</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="30d5ce8e-f18f-4216-8d01-ed05d918dd71" testId="3e73f9ff-b5a1-6497-a8c7-bd6313ba149f" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.UnicodeProbeKeepsValidSurrogatePairsAndRejectsDanglingUnits" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T22:26:35.9216200+08:00" endTime="2026-10-12T22:26:35.9226176+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30d5ce8e-f18f-4216-8d01-ed05d918dd71" />
+    <UnitTestResult executionId="da481a64-2273-4348-949a-868c4dc70d9d" testId="3eaa1898-1558-d668-f249-e8626ebe5274" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.MixedChineseLatinDateAndCapacityRunsShareOneBaseline" computerName="redacted-host" duration="00:00:00.4310000" startTime="2026-10-12T22:26:35.2870012+08:00" endTime="2026-10-12T22:26:35.6900406+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da481a64-2273-4348-949a-868c4dc70d9d" />
+    <UnitTestResult executionId="70523fd9-4a58-4a35-97dc-6636bc9d8847" testId="e2f06edd-29eb-c834-2e69-d7045f92ea12" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-12T22:26:35.9186202+08:00" endTime="2026-10-12T22:26:35.9196178+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="70523fd9-4a58-4a35-97dc-6636bc9d8847">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 238</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="76e4ee30-e168-46f0-bd2a-c2c4efd98884" testId="4139147b-5821-8b65-1432-d258fb85cc36" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken" computerName="redacted-host" duration="00:00:00.0030000" startTime="2026-10-12T22:26:35.9076233+08:00" endTime="2026-10-12T22:26:35.9136206+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="76e4ee30-e168-46f0-bd2a-c2c4efd98884">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 204</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="89fbf490-0d70-7ae6-3a10-a145958108d0">
+      <Execution id="fabbd401-c749-4766-bad3-5dfeb88dc1ae" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.MixedChineseLatinDateAndCapacityRunsShareOneBaseline" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3eaa1898-1558-d668-f249-e8626ebe5274">
+      <Execution id="da481a64-2273-4348-949a-868c4dc70d9d" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="MixedChineseLatinDateAndCapacityRunsShareOneBaseline" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.FontChainNamesCoverChineseAndWindowsFallbackFamilies" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3bc7c7ea-3c61-bfc6-cc86-c36721e0a5e3">
+      <Execution id="f75986c2-a38a-40c9-b4ab-b13b29559ad4" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="FontChainNamesCoverChineseAndWindowsFallbackFamilies" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.TypographyMetricsReportBaselineAndNonZeroWidth" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4633e249-d7ea-e914-6f3a-cdbee993d4b8">
+      <Execution id="777e0be5-0007-41a4-94da-6267d051aac4" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="TypographyMetricsReportBaselineAndNonZeroWidth" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="141dc5b1-0892-57c4-249a-7e2564d72342">
+      <Execution id="8ae6c141-3847-4d47-8d73-cd73c8fa6962" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ProductionColumnsKeepNumericAndPathSemantics" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b5ab4b84-8c63-13fc-52a8-fdbc856e8184">
+      <Execution id="7089f434-d5df-419e-87cd-38d8c15f419f" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ControlledReportsKeepPunctuationAndWeightEvidenceTruthful" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="89a07538-6f4f-f756-4f7c-d147c6d7517e">
+      <Execution id="57c5cd01-f4b5-426c-94b8-820c5069892e" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ImportantTrainerDiagnosticsUseReadableSharedStyles" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="e2f06edd-29eb-c834-2e69-d7045f92ea12">
+      <Execution id="70523fd9-4a58-4a35-97dc-6636bc9d8847" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="c9602e3e-a941-e656-dc1f-b5c8b3006677">
+      <Execution id="4d4ae0ad-4799-43e4-8e8d-99b81dfaf65e" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.UnicodeProbeKeepsValidSurrogatePairsAndRejectsDanglingUnits" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3e73f9ff-b5a1-6497-a8c7-bd6313ba149f">
+      <Execution id="30d5ce8e-f18f-4216-8d01-ed05d918dd71" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="UnicodeProbeKeepsValidSurrogatePairsAndRejectsDanglingUnits" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4139147b-5821-8b65-1432-d258fb85cc36">
+      <Execution id="76e4ee30-e168-46f0-bd2a-c2c4efd98884" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ProductionTenAndElevenPointTextUsesSharedCaptionToken" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3bc7c7ea-3c61-bfc6-cc86-c36721e0a5e3" executionId="f75986c2-a38a-40c9-b4ab-b13b29559ad4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9602e3e-a941-e656-dc1f-b5c8b3006677" executionId="4d4ae0ad-4799-43e4-8e8d-99b81dfaf65e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89a07538-6f4f-f756-4f7c-d147c6d7517e" executionId="57c5cd01-f4b5-426c-94b8-820c5069892e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89fbf490-0d70-7ae6-3a10-a145958108d0" executionId="fabbd401-c749-4766-bad3-5dfeb88dc1ae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4633e249-d7ea-e914-6f3a-cdbee993d4b8" executionId="777e0be5-0007-41a4-94da-6267d051aac4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="141dc5b1-0892-57c4-249a-7e2564d72342" executionId="8ae6c141-3847-4d47-8d73-cd73c8fa6962" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5ab4b84-8c63-13fc-52a8-fdbc856e8184" executionId="7089f434-d5df-419e-87cd-38d8c15f419f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e73f9ff-b5a1-6497-a8c7-bd6313ba149f" executionId="30d5ce8e-f18f-4216-8d01-ed05d918dd71" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3eaa1898-1558-d668-f249-e8626ebe5274" executionId="da481a64-2273-4348-949a-868c4dc70d9d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e2f06edd-29eb-c834-2e69-d7045f92ea12" executionId="70523fd9-4a58-4a35-97dc-6636bc9d8847" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4139147b-5821-8b65-1432-d258fb85cc36" executionId="76e4ee30-e168-46f0-bd2a-c2c4efd98884" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="11" executed="11" passed="5" failed="6" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.05]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.11]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.77]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.77]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.77]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:01.77]            在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 187&#xD;
+[xUnit.net 00:00:01.83]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.83]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.83]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:01.83]            在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 204&#xD;
+[xUnit.net 00:00:01.83]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.83]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.83]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:01.83]            在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 121&#xD;
+[xUnit.net 00:00:01.84]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.84]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.84]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:01.84]            在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 238&#xD;
+[xUnit.net 00:00:01.88]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.88]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.88]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:01.88]            在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 153&#xD;
+[xUnit.net 00:00:01.89]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=f89b160967f8e267eca406bdacacf3f57508d2dc，源码根 HEAD=8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af，源码根=[repo]，程序集=[user-profile]\AppData\Local\Temp\72b11169-158e-48d3-b821-237c2073c04c\72b11169-158e-48d3-b821-237c2073c04c\assembly\dl3\c97006d2\03c1e845_8b50dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.89]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.89]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:01.89]            在 GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TypographyDiagnosticsTests.cs:行号 135&#xD;
+[xUnit.net 00:00:01.90]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-12T22:26:35.8486109+08:00">
+        <Text>[xUnit.net 00:00:01.77]     GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-12T22:26:35.9141958+08:00">
+        <Text>[xUnit.net 00:00:01.83]     GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-12T22:26:35.9173112+08:00">
+        <Text>[xUnit.net 00:00:01.83]     GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-12T22:26:35.9200826+08:00">
+        <Text>[xUnit.net 00:00:01.84]     GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-12T22:26:35.9622194+08:00">
+        <Text>[xUnit.net 00:00:01.88]     GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-12T22:26:35.9752647+08:00">
+        <Text>[xUnit.net 00:00:01.89]     GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

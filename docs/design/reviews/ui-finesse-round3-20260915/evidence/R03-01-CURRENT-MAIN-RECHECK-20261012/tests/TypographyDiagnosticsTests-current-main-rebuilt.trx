@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c12dd410-74fb-4fb0-9d80-2c5a90d8bb15" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T22:27:24.6413540+08:00" queuing="2026-10-12T22:27:24.6413543+08:00" start="2026-10-12T22:27:21.4171088+08:00" finish="2026-10-12T22:27:24.7434241+08:00" />
+  <TestSettings name="default" id="91c29fb4-17fd-4cc2-a8ff-d9c61baf466d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="0c080e2e-1738-41cf-8888-f176809af85e" testId="3eaa1898-1558-d668-f249-e8626ebe5274" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.MixedChineseLatinDateAndCapacityRunsShareOneBaseline" computerName="redacted-host" duration="00:00:00.4660000" startTime="2026-10-12T22:27:23.8418663+08:00" endTime="2026-10-12T22:27:24.2670997+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c080e2e-1738-41cf-8888-f176809af85e" />
+    <UnitTestResult executionId="679d62e8-f155-4968-8943-6b472b16ac3a" testId="89a07538-6f4f-f756-4f7c-d147c6d7517e" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles" computerName="redacted-host" duration="00:00:00.1310000" startTime="2026-10-12T22:27:24.2690920+08:00" endTime="2026-10-12T22:27:24.3980384+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="679d62e8-f155-4968-8943-6b472b16ac3a" />
+    <UnitTestResult executionId="6e3d9786-6c0d-4240-b55b-9a6d2928b76b" testId="4139147b-5821-8b65-1432-d258fb85cc36" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken" computerName="redacted-host" duration="00:00:00.0550000" startTime="2026-10-12T22:27:24.4720412+08:00" endTime="2026-10-12T22:27:24.5256156+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e3d9786-6c0d-4240-b55b-9a6d2928b76b" />
+    <UnitTestResult executionId="29ebf901-0921-42b1-a6fe-6e1b205c70b8" testId="3e73f9ff-b5a1-6497-a8c7-bd6313ba149f" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.UnicodeProbeKeepsValidSurrogatePairsAndRejectsDanglingUnits" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T22:27:24.5656139+08:00" endTime="2026-10-12T22:27:24.5706161+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29ebf901-0921-42b1-a6fe-6e1b205c70b8" />
+    <UnitTestResult executionId="04b0f2d6-2303-403d-a808-886c76b8df23" testId="e2f06edd-29eb-c834-2e69-d7045f92ea12" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift" computerName="redacted-host" duration="00:00:00.0370000" startTime="2026-10-12T22:27:24.5326144+08:00" endTime="2026-10-12T22:27:24.5636132+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04b0f2d6-2303-403d-a808-886c76b8df23" />
+    <UnitTestResult executionId="f1889696-79c3-4a42-9321-2eda16a4a711" testId="4633e249-d7ea-e914-6f3a-cdbee993d4b8" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.TypographyMetricsReportBaselineAndNonZeroWidth" computerName="redacted-host" duration="00:00:00.0500000" startTime="2026-10-12T22:27:24.5726139+08:00" endTime="2026-10-12T22:27:24.6145283+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1889696-79c3-4a42-9321-2eda16a4a711" />
+    <UnitTestResult executionId="20e5d9a4-2f46-4ab6-82f5-f6f0a304bbf4" testId="3bc7c7ea-3c61-bfc6-cc86-c36721e0a5e3" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.FontChainNamesCoverChineseAndWindowsFallbackFamilies" computerName="redacted-host" duration="00:00:00.0250000" startTime="2026-10-12T22:27:23.7659852+08:00" endTime="2026-10-12T22:27:23.8019017+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="20e5d9a4-2f46-4ab6-82f5-f6f0a304bbf4" />
+    <UnitTestResult executionId="e8973b6d-36f9-45ef-8658-88db91d9bb2c" testId="141dc5b1-0892-57c4-249a-7e2564d72342" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics" computerName="redacted-host" duration="00:00:00.0140000" startTime="2026-10-12T22:27:24.6225279+08:00" endTime="2026-10-12T22:27:24.6285328+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8973b6d-36f9-45ef-8658-88db91d9bb2c" />
+    <UnitTestResult executionId="1427b9a5-a3ce-4a26-86a5-385ad82d56db" testId="89fbf490-0d70-7ae6-3a10-a145958108d0" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence" computerName="redacted-host" duration="00:00:00.0720000" startTime="2026-10-12T22:27:24.4010417+08:00" endTime="2026-10-12T22:27:24.4700410+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1427b9a5-a3ce-4a26-86a5-385ad82d56db" />
+    <UnitTestResult executionId="cbb51aa4-8fce-4267-8030-f43a9a749526" testId="c9602e3e-a941-e656-dc1f-b5c8b3006677" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T22:27:24.5276138+08:00" endTime="2026-10-12T22:27:24.5316141+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cbb51aa4-8fce-4267-8030-f43a9a749526" />
+    <UnitTestResult executionId="56733f39-3f99-49d0-bd4c-b04b45d4e8c3" testId="b5ab4b84-8c63-13fc-52a8-fdbc856e8184" testName="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful" computerName="redacted-host" duration="00:00:00.0030000" startTime="2026-10-12T22:27:24.6305314+08:00" endTime="2026-10-12T22:27:24.6315311+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56733f39-3f99-49d0-bd4c-b04b45d4e8c3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="89fbf490-0d70-7ae6-3a10-a145958108d0">
+      <Execution id="1427b9a5-a3ce-4a26-86a5-385ad82d56db" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="GlyphRunProbeSeparatesCandidateCoverageFromFinalLayoutEvidence" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.MixedChineseLatinDateAndCapacityRunsShareOneBaseline" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3eaa1898-1558-d668-f249-e8626ebe5274">
+      <Execution id="0c080e2e-1738-41cf-8888-f176809af85e" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="MixedChineseLatinDateAndCapacityRunsShareOneBaseline" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.FontChainNamesCoverChineseAndWindowsFallbackFamilies" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3bc7c7ea-3c61-bfc6-cc86-c36721e0a5e3">
+      <Execution id="20e5d9a4-2f46-4ab6-82f5-f6f0a304bbf4" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="FontChainNamesCoverChineseAndWindowsFallbackFamilies" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.TypographyMetricsReportBaselineAndNonZeroWidth" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4633e249-d7ea-e914-6f3a-cdbee993d4b8">
+      <Execution id="f1889696-79c3-4a42-9321-2eda16a4a711" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="TypographyMetricsReportBaselineAndNonZeroWidth" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionColumnsKeepNumericAndPathSemantics" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="141dc5b1-0892-57c4-249a-7e2564d72342">
+      <Execution id="e8973b6d-36f9-45ef-8658-88db91d9bb2c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ProductionColumnsKeepNumericAndPathSemantics" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ControlledReportsKeepPunctuationAndWeightEvidenceTruthful" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b5ab4b84-8c63-13fc-52a8-fdbc856e8184">
+      <Execution id="56733f39-3f99-49d0-bd4c-b04b45d4e8c3" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ControlledReportsKeepPunctuationAndWeightEvidenceTruthful" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ImportantTrainerDiagnosticsUseReadableSharedStyles" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="89a07538-6f4f-f756-4f7c-d147c6d7517e">
+      <Execution id="679d62e8-f155-4968-8943-6b472b16ac3a" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ImportantTrainerDiagnosticsUseReadableSharedStyles" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="e2f06edd-29eb-c834-2e69-d7045f92ea12">
+      <Execution id="04b0f2d6-2303-403d-a808-886c76b8df23" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ProductionTypographyUsesSharedHierarchyWithoutMicroSizeDrift" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="c9602e3e-a941-e656-dc1f-b5c8b3006677">
+      <Execution id="cbb51aa4-8fce-4267-8030-f43a9a749526" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="SharedTypographyResourcesDeclareReadableLineSpacingAndTabularNumbers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.UnicodeProbeKeepsValidSurrogatePairsAndRejectsDanglingUnits" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3e73f9ff-b5a1-6497-a8c7-bd6313ba149f">
+      <Execution id="29ebf901-0921-42b1-a6fe-6e1b205c70b8" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="UnicodeProbeKeepsValidSurrogatePairsAndRejectsDanglingUnits" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests.ProductionTenAndElevenPointTextUsesSharedCaptionToken" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4139147b-5821-8b65-1432-d258fb85cc36">
+      <Execution id="6e3d9786-6c0d-4240-b55b-9a6d2928b76b" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TypographyDiagnosticsTests" name="ProductionTenAndElevenPointTextUsesSharedCaptionToken" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3eaa1898-1558-d668-f249-e8626ebe5274" executionId="0c080e2e-1738-41cf-8888-f176809af85e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89a07538-6f4f-f756-4f7c-d147c6d7517e" executionId="679d62e8-f155-4968-8943-6b472b16ac3a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4139147b-5821-8b65-1432-d258fb85cc36" executionId="6e3d9786-6c0d-4240-b55b-9a6d2928b76b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e73f9ff-b5a1-6497-a8c7-bd6313ba149f" executionId="29ebf901-0921-42b1-a6fe-6e1b205c70b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e2f06edd-29eb-c834-2e69-d7045f92ea12" executionId="04b0f2d6-2303-403d-a808-886c76b8df23" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4633e249-d7ea-e914-6f3a-cdbee993d4b8" executionId="f1889696-79c3-4a42-9321-2eda16a4a711" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3bc7c7ea-3c61-bfc6-cc86-c36721e0a5e3" executionId="20e5d9a4-2f46-4ab6-82f5-f6f0a304bbf4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="141dc5b1-0892-57c4-249a-7e2564d72342" executionId="e8973b6d-36f9-45ef-8658-88db91d9bb2c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89fbf490-0d70-7ae6-3a10-a145958108d0" executionId="1427b9a5-a3ce-4a26-86a5-385ad82d56db" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9602e3e-a941-e656-dc1f-b5c8b3006677" executionId="cbb51aa4-8fce-4267-8030-f43a9a749526" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5ab4b84-8c63-13fc-52a8-fdbc856e8184" executionId="56733f39-3f99-49d0-bd4c-b04b45d4e8c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="11" executed="11" passed="11" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.52]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.19]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.25]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.16]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
