@@ -1,7 +1,12 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；main 4572118f 下 R00/R01 freshness 只读复查 12 fresh / 2 stale，待核 R00-03/R00-04。R06-03 6/6；R06-04 生产快捷键 routed-event 5/5、反馈 2/2。本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、ProductionShellChromeSource 22/22、R06Clipboard 5/5、R22 2/2。Tooltip 测试夹具已 commit/push 到 main 4572118f；Actions #952 失败于编译与测试，job 用时12m07s，只有exit1 annotation。artifact 11774606363（556 KB，SHA-256 9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a）内容不可读；日志要求登录，匿名 API限流403、下载路由404。global.json 配置SDK8.0.423，实际runner SDK和失败根因未知，不盲改。下一步先处理R00-03/R00-04证据，然后独立Q/R；R05-07/R06-04待有权限完整日志。真实 Playnite、OS输入/剪贴板、UIA/Narrator、IME、物理DPI/多屏、presented frame、ETW/宿主性能仍待验。
+更新：2026-10-13；main `5762c874` 上 R00-03/R00-04 行为复核 `25/25`，freshness `14/14`，合成搜索样本 p50/p95/max `46/63/75 ms`；R01 其余路径无变更、沿用原证据。Release SDK `8.0.423` `0 warning / 0 error`、XAML `24/24`，package identity 未提供。Actions #952 仍为 exit1 且完整日志/根因不可读；#953（commit `5762c87`）最近状态 `In progress`。本机 SDK8 不能替代CI SDK10.0.401。R05-07/R06-04 仍待可读 CI 根因；下一项检查 R06-05。真实宿主、UIA/IME、物理跨屏/呈现帧、ETW/宿主性能仍待验。
 
+## 2026-10-13 R00-03 / R00-04 当前 main freshness 复核
+
+- Release SDK `8.0.423` 构建 `0 warning / 0 error`、XAML `24/24`，Playnite `net462`、测试 `net472`；定向动画、overlay、Dashboard焦点与2000项搜索行为共 `25/25`。搜索30/30不同查询改变结果集，p50/p95/max `46/63/75 ms`，超时负例通过。TRX、原始查询与freshness报告见[R00-03/R00-04复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- R00-03命中源变化为Dashboard测试构造/override seam（默认生产路径仍使用设置值）；R00-04命中源变化仅是Shell XAML Tooltip BetweenShowDelay。R01及其余12项没有命中本轮路径，本次未重跑。baseline freshness `14/14`；package identity未提供。
+- Actions #953 docs-only run 最近仍在运行；#952代码run exit1但日志/根因不可读，不据此盲改。下一项先审查R06-05现有能力与完成条件。真实Playnite、OS UIA/Narrator/IME、物理DPI/多屏、最终呈现帧、ETW和宿主性能未验。
 ## 2026-10-13 R06-04 当前 main 复制快捷键行为复核
 
 - 复用 `afe4aa55` 已实现的共享 `DataGridClipboardBehavior`、五类 profile 和凭据脱敏。本轮以 main `e277a804bd4774cd32ad0bde0dfe2b8f76bc3308` 为源码基线，仅添加 modifiers 测试 seam 与一项 WPF routed-event 行为测试。

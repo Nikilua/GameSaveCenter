@@ -21,8 +21,8 @@
     },
     {
       "id": "R00-03",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "evidence": "evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "sourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -36,8 +36,8 @@
     },
     {
       "id": "R00-04",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "evidence": "evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "sourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

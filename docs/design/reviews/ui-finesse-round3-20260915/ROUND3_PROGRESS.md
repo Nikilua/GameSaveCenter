@@ -1,6 +1,12 @@
+## 2026-10-13 R00-03 / R00-04 当前 main freshness 复核
+
+- 本轮前 freshness 为12 fresh / 2 stale。R00-03 关联的 DashboardView 变化加入了默认路径不启用的测试构造/动效 override；R00-04 命中的 Shell XAML 变化仅为 Tooltip BetweenShowDelay `100`→`0`，搜索代码未变。仍按审查要求复核行为，不把不相关差异改写为产品缺陷。
+- main `5762c874ef9c1ee2e92692a61c71d17cc9c0f371`：官方 Release build SDK `8.0.423`，0 warning/0 error、XAML 24/24、Playnite net462、测试 net472。动画/overlay/Dashboard 焦点及搜索定向组共25/25；2000项合成搜索30/30不同查询改变结果集，超时负例通过，p50/p95/max为46/63/75 ms。六份脱敏TRX与原始测量见[R00-03/R00-04当前复核包](evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 更新两条 baseline sourceCommit 后 freshness 为14/14。其余12项和R01没有命中本轮源路径，继续保留此前证据；package identity仍未提供，freshness不表示完整宿主验收。
+- Actions #953（docs-only commit `5762c87`）最近检查仍为In progress；#952代码run失败根因仍不可读。下一项审查R06-05现有列头实现和行为证据，再按依赖推进Q/R。
 ## 2026-10-13 最新 main/CI 检查点
 - Actions #952（run 38309632982，commit 4572118f，job 115011915461）已终态失败；job 用时12m07s，“编译与测试”仅有exit1 annotation。诊断artifact 11774606363（556 KB，SHA-256 9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a）；日志要求登录，匿名artifact API 403限流、匿名下载路由404，未读取内容。本次runner SDK和失败根因未知，不盲改。
-- main 4572118f 的freshness为12 fresh / 2 stale；质量审查列出的R00-03、R00-04关联源路径需复查行为覆盖后再更新baseline。顺序：先处理这两项，再推进依赖满足的Q/R；R05-07/R06-04仍待可读日志。
+- main `5762c874` 的 R00-03/R00-04 定向行为复核为25/25；baseline freshness现为14 fresh / 0 stale。其他12条记录未命中本轮源路径，原证据保持不变；下一项审查R06-05。R05-07/R06-04仍待CI失败根因。
 
 - 最近完整 clean Release 源码身份为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。SDK `8.0.423` 全量 Release `1560 passed / 57 skipped / 0 failed` 仍绑定该源码身份；后续增量验证按对应源码/测试范围记录，不冒充全量 clean Release。
 - 当前身份 RenderHarness 构建 `0/0`、Light/Dark `372` PNG `render-qa OK`、`WorkingTreeClean=True`、offscreen logical DPI `1.00`；R02-08 Save 1040×700 两主题动作标签图与 CloudQueue 页面上下文图已归档。[R02-08 当前 main 复核](evidence/R02-08-CURRENT-MAIN-RECHECK-20261012/README.md)

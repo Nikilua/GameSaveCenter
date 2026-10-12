@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 4572118f 下 R00/R01 freshness 为 12 fresh / 2 stale，当前复查 R00-03、R00-04。R06-04 本机快捷键行为 5/5、复制反馈 2/2；Q14 实际宽度断点校正已在 main 2f546d06，本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、ProductionShellChromeSource 22/22、R06Clipboard 5/5、R22 2/2。R05-07 夹具修正 main 4572118f，本机 Tooltip 2/2 两轮；Actions #952 于编译与测试失败，12m07s，日志要求登录、artifact 内容不可读，失败根因和实际 runner SDK未知，不盲改。#919/#920 实际 SDK 10.0.401 的旧侧栏失败与当前 main SDK8 结果分开记录。当前顺序：记录 #952 外部日志限制，先处理 R00-03/R00-04，再推进依赖满足的 Q/R；R05-07/R06-04 仍待有权限完整日志。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main `5762c874` 下 R00-03/R00-04 定向行为 `25/25`、freshness `14/14`；其余 R00/R01 记录沿用未命中源码路径的既有证据。SDK `8.0.423` Release `0/0`、XAML `24/24`，合成 2000 项搜索 30/30、p50/p95/max `46/63/75 ms`。Actions #952 失败日志和根因不可读；#953 docs-only run 最近仍运行中，均不能由本机 SDK 推断 CI SDK10.0.401。R05-07/R06-04 保持待CI根因。下一项先审查 R06-05 既有实现和证据，再选依赖已满足的 Q/R。
 
 ## AI/Codex 启动协议
 

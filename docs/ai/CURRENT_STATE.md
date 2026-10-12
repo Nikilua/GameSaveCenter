@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；main 4572118f freshness 只读复核为 12 fresh / 2 stale，R00-03 与 R00-04 待按质量审查复验，历史 f13b9e05 的 14/14 不能代替当前身份。R05-01/02 11/11、R05-03 7/7（无闪屏帧证据，部分满足）、R05-04 3/3、R05-05 不适用、R05-06 28/28。R05-07 测试夹具修正在 main 4572118f；本机 Tooltip 2/2 连续两轮，但 Actions #952 已失败于“编译与测试”（12m07s），完整日志与 artifact 内容不可读，具体根因及本次 runner SDK 未知。R06-01 6/6、R06-02 7/7、R06-03 当前 main 6/6。R06-04 生产快捷键路由 5/5、复制反馈 2/2；本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、ProductionShellChromeSource 22/22、R06Clipboard 5/5、R22 2/2。#951 完整日志确认旧 Tooltip dwell 用例失败、Q14 类通过；#952 不可读日志不能继承该结论。用户指定 #919/#920 完整日志已取回：CI SDK 10.0.401，两项旧侧栏 transition 测试启动断言失败；当前 main 同类 22/22 是 SDK8 本机结果，不代表 SDK10 CI。版本 0.6.73-development-preview。真实 Playnite、OS 输入/剪贴板、UIA/Narrator、IME、物理 DPI/跨屏、presented frame、ETW、宿主性能与真实数据写入均未验证。
+更新：2026-10-13；main 源码身份 `5762c874` 下 R00-03/R00-04 定向行为复核 `25/25`，freshness `14/14`（其余 12 条源路径未命中，沿用既有证据，不称本轮重跑）。R00-04 合成 2000 项搜索 30/30 次改变结果集，p50/p95/max `46/63/75 ms`，超时负例通过；本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`，Playnite `net462`、测试 `net472`，package identity `not-provided`。R05-07/R06-04 因 #952 CI exit1 且无可读根因暂不收口；#953（docs-only commit `5762c87`）最近快照仍运行中，CI SDK 未由日志确认。本机结果不替代远端。版本 `0.6.73-development-preview`；真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -30,7 +30,7 @@
 | R06-03 当前 main | 生产实现沿用 `d83c7378`；本轮以 `fdeeec8` 生产源加单项测试差异构建，SDK `8.0.423` Release `0/0`、XAML `24/24`；R06Selection `2/2`、四表双主题状态几何 `1/1`、Task 双主题受控 hover/错误徽章 InputHitTest/Failed 终态禁用与 Running 取消按钮 UIA Invoke `1/1`、共享资源契约 `2/2`。测试仅证明隔离 WPF 状态与逻辑 DIP，不是实际 OS 指针或 Playnite 呈现。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R06-04 当前 main | 复用 afe4aa55 已有 DataGridClipboardBehavior 和五类 profile；生产行为复核 5/5，复制反馈 2/2。本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、侧栏 22/22、R06Clipboard 5/5、R22 2/2。#952 在“编译与测试”失败，具体失败不可见；不把 #951 的 Q14 通过推为 #952 通过。详情见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | 远端 CI | #947–#950 完整日志均定位到旧 Q14 compact 断言 Expected False/Actual True；Q14 修正在 main 2f546d06。#951（38306094571）完整 log 确认实际 SDK 8.0.423、Q14 类通过，后续 R05 Tooltip dwell expected 1 / actual 0；修正夹具后 #952（38309632982，commit 4572118f，job 115011915461）已在 12m07s 后于“编译与测试”失败。#952 artifact 11774606363 页面摘要 SHA-256 9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a；job 页要求登录，匿名 artifact API 返回 403 限流、匿名下载路由 404，完整日志/内容和 runner 实际 SDK 未知。用户指定 #919/#920 完整日志实际 SDK 10.0.401，旧侧栏 transition 测试启动断言失败；当前 main 侧栏类 SDK8 22/22 不是 SDK10 CI。#946 仍为更早日志/artifact不可访问的失败 |
-| R00/R01 证据 | 历史 CLOSE-EVID-01 在 f13b9e05 的 14 fresh / 0 stale 不代表当前身份。本轮 4572118f freshness 为 12 fresh / 2 stale，需先按 quality review 复查 R00-03、R00-04 关联变化及行为证据，再根据实际覆盖更新 baseline；package identity 未提供。详见[历史复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
+| R00/R01 证据 | 2026-10-13 main `5762c874` 下复核 R00-03/R00-04 `25/25`，将两条 baseline sourceCommit 更新为当前证据；freshness `14 fresh / 0 stale`。R01 与其他 R00 条目未命中本轮变更，沿用既有证据；package identity 未提供。详见[当前 R00-03/R00-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
 仓库锁定 SDK `8.0.423` 已由官方安装脚本安装到 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；通过临时进程 PATH 前缀选择，系统 SDK/PATH 未改。历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932、#934、#935 与 #936 的失败原因均未取得完整日志；访问受限期间不盲修。
@@ -39,10 +39,10 @@
 
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. 修正 R05 Tooltip 隔离测试的 hover 到达检测，推送后跟踪 Actions 到终态；远端成功后收口当前 R06-04 阶段。
-2. 重新审查 R00/R01 质量审查与账本中仍需处理的问题和证据路径，逐条补实际证据/修复；不得以此前 `14 fresh / 0 stale` 替代本轮核对。
-3. 按 Round3 依赖继续 Q/R 小批次；对已实现项先做当前 main 证据校正，R06-05 已有实现证据，复核来源身份后再决定补证。
-4. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`；未解决的用户失败与发布门禁仍保留。
+1. R00-03/R00-04 本机当前身份复核和证据校正已完成；跟踪 #953 到终态，远端状态不以本机结果代替。
+2. 按执行账本推进 R06-05：先核对列头说明的现有生产能力、已满足证据与依赖，再补当前 main 行为或明确保留未验项。
+3. Actions #952 的失败日志仍需仓库管理员可读访问；SDK 10.0.401 CI 结果未知。R05-07/R06-04 不因 SDK8 本机通过而签收；继续可独立的 Q/R 小批次。
+4. package identity、真实宿主与发布矩阵继续单列；没有实际包或宿主证据不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`。
 
 ## 架构与生产 UI
 

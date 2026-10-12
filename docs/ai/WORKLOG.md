@@ -10180,3 +10180,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 官方构建在 `artifacts/build-diagnostics/20261012T185759181Z-55cf6b0e` 生成了临时诊断目录；已逐项核实目标位于仓库 `artifacts/` 内，按要求发起精确 PowerShell 删除，但执行器拒绝。该目录仍留在本地、未暂存；没有改用其他 shell 或清理路径。
 - 最新代码提交 #946（run `38294361061`）为终态 failure、4m18s；摘要标注“编译与测试”exit1，1 error/1 Node.js弃用warning。artifact 239 KB / SHA-256 `083b3f72bcacb1fdd36c413517d075fe5f27a921d1fb79024ad13882e3cc2cf7`。完整run/log/artifact API匿名HTTP403；页面需登录，artifact内容不可读；失败步骤内部原因、CI SDK和根因未知，不盲改。目标CI SDK10.0.401与本机SDK8.0.423分别记录。
 - 行为基于合成 DataGrid、隔离设置对象和 STA 窗口，不等价 Playnite 进程重启/用户拖拽/物理 DPI/宿主渲染。下一项 R06-02 排序提示与稳定性，先确认当前 main 测试身份与排序实现再复用已有逻辑。
+
+## 2026-10-13 R00-03 / R00-04 当前 main freshness 校正
+
+- 在 main `5762c874ef9c1ee2e92692a61c71d17cc9c0f371` 上按质量审查复核两条 stale 记录。Dashboard 命中变化是可选行为测试构造和动效 override，默认生产构造仍传 `null / false`；Shell XAML 命中变化仅为 `ToolTipService.BetweenShowDelay` `100`→`0`。不据此声称生产动画或搜索逻辑缺陷。
+- 官方 Release 构建 SDK `8.0.423`：XAML `24/24`，0 warning/error；Playnite `net462`、测试 `net472`。`UiFinesseFoundationTests 9/9`、R08 reverse `2/2`、hot-change `1/1`、dialog overlay `3/3`、Dashboard focus `5/5`、`LargeLibraryPerformanceTests 5/5`，总计25/25，0 skip/fail。
+- 2000项合成库搜索含5次预热和30次测量；30/30不同输入改变可见集合，超时负例通过；p50/p95/max `46/63/75 ms`。证据包归档六份去标识TRX、样本和freshness报告；新 baseline 下14/14 fresh。R01与未命中源码的12条记录不作本轮重跑声明。
+- 未构建/安装Playnite包，package identity `not-provided`；没有 OS UIA/Narrator/IME、物理DPI/跨屏、presented frame、ETW或宿主性能证据。本机SDK8不替代CI SDK10.0.401。#952失败根因需可读完整日志；#953 docs-only run最近仍运行中。
+- 下一项：先核对R06-05列头说明的现有实现与测试覆盖，只有实际缺口才改代码；继续记录远端 Actions 到终态。
