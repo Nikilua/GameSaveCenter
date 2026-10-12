@@ -1,14 +1,14 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-12；picker 修复、R00/R01 校正、R02-08、R03-01、R04-01 与 R04-02 当前 main 证据已归档，未改生产 UI。R04-01 输入行为 `37/37`、R04-02 导航行为 `5/5` 及各自宿主边界见复核包；R03 GlyphRun 与 R02-08 证据见对应目录，R02-05/04/03、R00/R01 见下方链接。最新 CI 检查点在下方最前段。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-12；R04-03 当前 main 设置草稿关闭分支补证 `12/12` 已完成，R00/R01 freshness 14 条记录未命中该代码路径。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
-## 2026-10-12 最新检查点（main `8d0e2f66` / Actions #938）
+## 2026-10-12 R04-03 本机复核与最新已推送 CI
 
-- R03-01 GlyphRun 当前 main 证据已归档；R04-01 当前身份输入行为复核 `37/37`，合成 WPF composition events 不代表真实 Windows IME 候选 UI/Playnite 输入链；R04-02 当前身份设置错误摘要导航 `5/5` 已归档。下一独立小批次为 R04-03 未保存离开保护。
-- R04-01 证据提交 `8d0e2f66` 对应 Actions run `38268914513`（#938，job `114878000993`）终态 failure，7m54s 后“编译与测试”exit 1。Node.js 20→24 弃用警告；诊断 artifact `GameSaveCenter-build-diagnostics` 477 KB，SHA-256 `473d9f10342ba88b696d884576e6fcdeeef3a81f8e54c0102419ea0ea17687dd`。Run/job logs 与 artifact 列表 API均HTTP403 rate limit；job页要求登录，未取得artifact ID/完整日志，根因未知。
-- CI SDK 待核：任务补充给出 CI `10.0.401`，但当前 workflow 的 setup-dotnet 使用 `global-json-file: global.json`，仓库 global.json 固定 `8.0.423`；#938 实际 dotnet 版本无法从受限日志核实。本机 SDK8 的结果不替代 CI 门禁，不凭退出码盲改。
-- R04-02 当前 main 行为 `5/5`：实际 STA Hyperlink 跨 Tab、字段可见/键盘焦点/滚动/HelpText，禁用巡检字段非法旧值和路径负例；结构断言仅为辅助。未操作真实 Playnite 保存或 Worker 应用流程。
-- 下一独立小批次为 R04-03 未保存离开保护。Playnite、系统 IME、OS 读屏、物理 DPI/跨屏、ETW、最终 presented frame 和宿主性能仍有边界。
+- 最近已推送基线为 main `e952c414a3941491543ecf558f6f6ab2a68bbf6e`。R04-03 测试工作树基于该源码/测试基线并含本阶段关闭确认 test seam 与行为测试；插件 net462、测试 net472 定向构建及 `SettingsDraftLifecycleBehaviorTests + PortableSettingsTests + SettingsValidationSourceTests` 为 `12/12`。详细 TRX、程序集身份和范围见[R04-03 当前 main 补充证据](design/reviews/ui-finesse-round3-20260915/evidence/R04-03-CURRENT-MAIN-RECHECK-20261012/README.md)。未跑完整 Release/RenderHarness，也未修改 XAML/布局。
+- 最新已推送 run `38270923668`（#939，commit `e952c414`，job `114884678634`）终态 failure：7m11s 后“编译与测试”exit 1；Node.js 20→24 弃用警告；artifact `GameSaveCenter-build-diagnostics` 478 KB、SHA-256 `660a09c2217195c1e1db44d96887d4f3c674c32f0c02bb3a0385e03dcafc29dc`。GitHub job 页面要求登录，run/job logs 与 artifact API 返回 HTTP403，未取得完整日志或根因，不凭退出码盲修。
+- 本机隔离 SDK `8.0.423` 与用户任务补充要求跟踪的 CI SDK `10.0.401` 分开记录；#939 实际 SDK 尚未通过日志核实。仓库 workflow 通过 global.json 选择 `8.0.423`，与用户补充信息有待核差，本机结果不替代 CI。
+- R04-03 的“否”路径通过实际 STA WPF `Window.Closing` 事件保留草稿并把键盘焦点恢复到编辑框；“是”路径才调用现有 `CancelEdit` 并关闭。test seam 默认仍走原生 MessageBox。真实 Playnite 原生确认框、保存/Worker 应用与宿主关闭时序仍待验。R04-04 至 R04-08 已有账本证据，下一项 R05-01 当前 main 复核。
+- 使用合成设置、fake Worker 和隔离目录；未碰真实存档/媒体/云端。Narrator/UIA、物理 DPI/跨屏、最终 presented frame、ETW 与宿主性能仍未验证。
 
 ## 2026-10-12 早期检查点（前序记录）
 

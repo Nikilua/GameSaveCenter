@@ -10062,3 +10062,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机执行 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp\r02-menu-current-main-20261012` 在 `sdk-baseline.ps1` 预检失败：`global.json` 要求 SDK8.0.423 并禁用 roll-forward，系统只有9.0.302；编译与测试未启动。官方SDK8压缩包下载等待无进度后已中止，未改系统SDK或 PATH。`python scripts/validate-source.py` 在当前HEAD通过。
 - 推送 `3df542af` 的 Actions run `38249983091`（#934）已失败于“编译与测试”，job `114813463440`。CI SDK10.0.401；前置结构/诊断/基线成功，后续渲染/静态审查/打包跳过。Jobs/log API日志HTTP403；artifact `11747469284`（488,428 bytes，SHA256 `662aba958e53e7a6d8ccd837a319fd93e8df91d2309f7977b0af1a84935f79fa`）下载HTTP401。没有失败命令、断言或堆栈，根因未知，不猜修。
 - `.tmp` 与 `artifacts` 递归清理仍被执行器拒绝；本轮SDK预检诊断目录保留在忽略的 `artifacts/build-diagnostics/20261012T123814433Z-853a4720`，未提交。SDK下载中断后留下的工具路径为空，尝试精确非递归清理也被执行器拒绝。下一步需先恢复仓库要求的SDK8.0.423，再跑R02Menu `4/4` 与CLOSE-WRAP-01复测；R02-06宿主只有在ENV-001前置变化后再按隔离runner的fail-closed步骤执行。
+
+## 2026-10-12 R04-03 当前 main 草稿关闭行为补证
+
+- 按质量审查和 R04 组公共验收复核已有编辑克隆、CancelEdit、视图卸载/重挂与关闭保护；没有重建服务或改保存协议。为测试真实 `Window.Closing` 分支，在设置视图加了仅 internal 的确认结果提供器，默认仍调用原生 `MessageBox.Show`；把新交互并入现有 STA 用例，避免一个 AppDomain 跨测试重复创建 `Application`。
+- 本机隔离 SDK8.0.423 构建插件 `net462` 和 Playnite tests `net472`，定向 `SettingsDraftLifecycleBehaviorTests + PortableSettingsTests + SettingsValidationSourceTests` 最终 `12 passed / 0 failed / 0 skipped`。独立关闭路径验证“No”取消关闭、草稿 `60` 保留、回到原输入框；“Yes”才关闭且 `CancelEdit` 回滚到 `30`。还验证 dirty 状态跨 Settings 分类切换与视图分离/重挂不丢失。第一次把行为放在另一 Fact 导致同 AppDomain 创建第二个 WPF Application 失败；复用 Application 又暴露不同 STA 线程的 dispatcher 归属，最终将两段行为放到同一 STA/Application 中运行。最终 TRX 与 DLL SHA/MVID 见 [R04-03 补充复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-03-CURRENT-MAIN-RECHECK-20261012/README.md)。
+- `python scripts/validate-source.py` 通过；WPF validator 扫描36个XAML，0 errors/29 warnings/177 info（未改XAML）；R00/R01 freshness 检查14条记录，设置关闭路径0命中、0条需要重跑。未重跑完整 Release/RenderHarness/真实 Playnite。
+- main `e952c414` 对应 Actions #939（run `38270923668`，job `114884678634`）已终态 failure，7m11s，“编译与测试”exit1；artifact 478 KB，SHA-256 `660a09c2217195c1e1db44d96887d4f3c674c32f0c02bb3a0385e03dcafc29dc`。GitHub job 页要求登录，run/job logs 与 artifact API HTTP403，完整日志/失败根因不可得。用户补充指定 CI SDK10.0.401；本机 SDK8.0.423 分开记录，#939实际 SDK未确认；不凭exit1盲改。
+- 有界面但无视觉布局改动；没有触碰真实配置、存档、媒体、云端或诊断发送。真实 Playnite原生确认框、宿主设置保存/Worker apply、UIA/Narrator、物理DPI/跨屏、presented frame、ETW和宿主性能仍未验。R04-04至R04-08已有满足证据；下一项R05-01当前main复核。

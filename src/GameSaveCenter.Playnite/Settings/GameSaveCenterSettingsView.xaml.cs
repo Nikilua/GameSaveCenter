@@ -1080,6 +1080,9 @@ namespace GameSaveCenter.Playnite.Settings
             observedHostWindow = null;
         }
 
+        // Tests can exercise the real Closing handler without opening a modal dialog; production leaves this unset.
+        internal Func<Window?, string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>? CloseConfirmationPromptForTesting { get; set; }
+
         private void OnHostWindowClosing(object? sender, CancelEventArgs e)
         {
             if (settingsClosePromptOpen || !HasUnsavedSettings) return;
@@ -1090,12 +1093,12 @@ namespace GameSaveCenter.Playnite.Settings
             {
                 // Reuse the existing native settings feedback path. Yes is the destructive
                 // choice; No keeps the window open and returns the user to the edited field.
-                var result = MessageBox.Show(
-                    observedHostWindow,
-                    "设置有未保存更改。选择“否”继续编辑并返回当前字段；选择“是”放弃更改并关闭设置窗口。",
-                    "GameSaveCenter 设置",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+                const string message = "设置有未保存更改。选择“否”继续编辑并返回当前字段；选择“是”放弃更改并关闭设置窗口。";
+                const string title = "GameSaveCenter 设置";
+                const MessageBoxButton buttons = MessageBoxButton.YesNo;
+                const MessageBoxImage image = MessageBoxImage.Warning;
+                var result = CloseConfirmationPromptForTesting?.Invoke(observedHostWindow, message, title, buttons, image)
+                    ?? MessageBox.Show(observedHostWindow, message, title, buttons, image);
                 if (result == MessageBoxResult.Yes)
                 {
                     CurrentSettings?.CancelEdit();

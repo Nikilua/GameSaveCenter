@@ -13,12 +13,11 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class SettingsDraftLifecycleBehaviorTests
 {
     [Fact]
-    public void DirtyDraftSurvivesDetachedViewAndRestoresTheFocusedField()
+    public void DraftSurvivesDetachAndWindowCloseChoicesPreserveOrDiscardIt()
     {
         RunSta(() =>
         {
-            var application = new Application();
-            application.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            EnsureApplicationResources();
             var root = Path.Combine(Path.GetTempPath(), "gsc-settings-draft-ui-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(root);
             try
@@ -84,17 +83,133 @@ public sealed class SettingsDraftLifecycleBehaviorTests
                 Assert.Equal(60, settings.DefaultBackupIntervalMinutes);
                 Assert.True(field.IsKeyboardFocusWithin);
 
+                tabs.SelectedIndex = 2;
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+                Assert.True(settings.HasPendingEdit);
+                Assert.Equal(60, settings.DefaultBackupIntervalMinutes);
+                tabs.SelectedIndex = 3;
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+                Assert.True(settings.HasPendingEdit);
+                Assert.Equal(60, settings.DefaultBackupIntervalMinutes);
+
                 settings.CancelEdit();
                 Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
                 Assert.Equal(30, settings.DefaultBackupIntervalMinutes);
                 Assert.False(settings.HasPendingEdit);
                 window.Close();
+                AssertDirtyWindowCloseReturnsToDraftOnNoAndDiscardsOnlyOnYes();
             }
             finally
             {
                 try { Directory.Delete(root, true); } catch { }
             }
         });
+    }
+
+    private static void AssertDirtyWindowCloseReturnsToDraftOnNoAndDiscardsOnlyOnYes()
+    {
+        var root = Path.Combine(Path.GetTempPath(), "gsc-settings-close-draft-ui-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(root);
+        try
+        {
+            var worker = Path.Combine(root, "GameSaveCenter.Worker.exe");
+            File.WriteAllText(worker, "worker");
+            var saves = Path.Combine(root, "Saves");
+            var media = Path.Combine(root, "Media");
+            Directory.CreateDirectory(saves);
+            Directory.CreateDirectory(media);
+            var settings = new GameSaveCenterSettings
+            {
+                WorkerExecutable = worker,
+                LudusaviBackupDirectory = saves,
+                MediaArchiveDirectory = media,
+                HealthInspectionEnabled = false
+            };
+            settings.BeginEdit();
+
+            var view = new GameSaveCenterSettingsView { DataContext = settings };
+            var window = new Window
+            {
+                Content = view,
+                Width = 1040,
+                Height = 720,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            var promptResult = MessageBoxResult.No;
+            var promptCalls = 0;
+            Window? promptOwner = null;
+            string? promptMessage = null;
+            string? promptTitle = null;
+            MessageBoxButton promptButtons = default;
+            MessageBoxImage promptImage = default;
+            view.CloseConfirmationPromptForTesting = (owner, message, title, buttons, image) =>
+            {
+                promptCalls++;
+                promptOwner = owner;
+                promptMessage = message;
+                promptTitle = title;
+                promptButtons = buttons;
+                promptImage = image;
+                return promptResult;
+            };
+
+            window.Show();
+            window.UpdateLayout();
+            var tabs = (ListBox)view.FindName("SettingsSectionTabs")!;
+            var field = (TextBox)view.FindName("DefaultBackupIntervalMinutesTextBox")!;
+            tabs.SelectedIndex = 3;
+            window.UpdateLayout();
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+
+            Assert.True(field.Focus());
+            Keyboard.Focus(field);
+            settings.DefaultBackupIntervalMinutes = 60;
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+            window.UpdateLayout();
+            Assert.True(settings.HasPendingEdit);
+            Assert.Equal(60, settings.DefaultBackupIntervalMinutes);
+
+            window.Close();
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ContextIdle, new Action(() => { }));
+            window.UpdateLayout();
+
+            Assert.Equal(1, promptCalls);
+            Assert.Same(window, promptOwner);
+            Assert.Equal("GameSaveCenter 设置", promptTitle);
+            Assert.Equal(MessageBoxButton.YesNo, promptButtons);
+            Assert.Equal(MessageBoxImage.Warning, promptImage);
+            Assert.Contains("继续编辑并返回当前字段", promptMessage!);
+            Assert.Contains("放弃更改并关闭设置窗口", promptMessage!);
+            Assert.True(window.IsVisible);
+            Assert.True(settings.HasPendingEdit);
+            Assert.Equal(60, settings.DefaultBackupIntervalMinutes);
+            Assert.Equal(3, tabs.SelectedIndex);
+            Assert.Same(field, Keyboard.FocusedElement);
+            Assert.True(field.IsKeyboardFocusWithin);
+
+            promptResult = MessageBoxResult.Yes;
+            window.Close();
+
+            Assert.Equal(2, promptCalls);
+            Assert.False(window.IsVisible);
+            Assert.Equal(30, settings.DefaultBackupIntervalMinutes);
+            Assert.False(settings.HasPendingEdit);
+        }
+        finally
+        {
+            try { Directory.Delete(root, true); } catch { }
+        }
+    }
+
+    private static void EnsureApplicationResources()
+    {
+        var application = Application.Current ?? new Application();
+        application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        if (!application.Resources.Contains("BaseTextBlockStyle"))
+            application.Resources.Add("BaseTextBlockStyle", new Style(typeof(TextBlock)));
     }
 
     private static void RunSta(Action action)

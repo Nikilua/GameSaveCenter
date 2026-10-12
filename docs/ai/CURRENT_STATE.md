@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-12；picker Dispatcher 修复、R00/R01 校正、R02-08/R03-01/R04-01/R04-02 当前 main 证据已推送/归档，未改生产 UI。当前分支 `main`，当前源码/测试复核身份 `32c0e1e21d1fbfe0b8e46d765b4d2bd3161c46ed`；最近完整 Release 源码身份 `4d166f017dcba8fbb07980ec21b690267b9ff377`，此后只有文档/证据改动。版本 `0.6.73-development-preview`。
+更新：2026-10-12；picker Dispatcher 修复、R00/R01 校正、R02-08/R03-01/R04-01/R04-02 当前 main 证据已推送/归档，R04-03 插件可控关闭分支补充验证 `12/12`。当前分支 `main`；R04-03 测试工作树基于已推送源码/测试基线 `e952c414a3941491543ecf558f6f6ab2a68bbf6e`，并含本阶段设置关闭 test seam 与行为测试改动。最近完整 Release 源码身份 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -18,7 +18,8 @@
 | R02-05 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 命中/间距/82 DIP 换行 `2/2`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已检查并归档 Media 1040×700 两主题截图。未改生产 UI |
 | R03-01 当前复核 | main `8e71feb4`；RenderHarness Release `0 warning / 0 error`、`TypographyDiagnosticsTests 11/11`、双主题 `finesseprobe` exit 0；中文/英文/数字/𠮷/组合重音均有实际 GlyphRun。报告 `WorkingTreeClean=False` 是证据目录已在工作树的真实记录；自 `4d166f0` 以来 src/tests 无变化。截图/报告与 identity negative 见[R03-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R03-01-CURRENT-MAIN-RECHECK-20261012/README.md) |
 | R04-02 当前复核 | main 源码/测试身份 `32c0e1e2`；Playnite net472 定向行为 `5/5`，覆盖摘要链接跨 Tab 后字段可见、键盘焦点、HelpText/滚动，以及禁用巡检字段旧非法值和路径负例。结构检查仅作补充；没有执行真实 Playnite 设置保存/Worker 应用。详见[R04-02 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-02-CURRENT-MAIN-RECHECK-20261012/README.md) |
-| 远端 CI | main `8d0e2f66` 对应 run `38268914513`（#938，job `114878000993`）终态 failure，7m54s 后“编译与测试”exit 1；页面有 Node.js 20→24 弃用警告。诊断 artifact `GameSaveCenter-build-diagnostics` 477 KB、SHA-256 `473d9f10342ba88b696d884576e6fcdeeef3a81f8e54c0102419ea0ea17687dd`。Run/job logs 与 artifact 列表 API HTTP403 rate limit；job 页要求登录，未取得 artifact ID/完整日志，根因未知。workflow 使用 `global-json-file: global.json`，仓库 global.json 为 8.0.423；任务补充的 CI SDK 10.0.401 与当前声明有待核对，本 run 实际 SDK 未核实 |
+| R04-03 当前复核 | `e952c414` 工作树上的插件 net462 / 测试 net472 定向构建，隔离 SDK `8.0.423`，`SettingsDraftLifecycleBehaviorTests + PortableSettingsTests + SettingsValidationSourceTests` 为 `12/12`；关闭事件实际选择“否”保留草稿并恢复焦点、“是”后才关闭/回滚。真实 Playnite 原生确认框、宿主保存和 Worker 应用仍待验。详见[R04-03 当前 main 补充证据](../design/reviews/ui-finesse-round3-20260915/evidence/R04-03-CURRENT-MAIN-RECHECK-20261012/README.md) |
+| 远端 CI | `e952c414` 对应 run `38270923668`（#939，job `114884678634`）终态 failure，7m11s 后“编译与测试”exit 1；页面有 Node.js 20→24 弃用警告。诊断 artifact `GameSaveCenter-build-diagnostics` 478 KB、SHA-256 `660a09c2217195c1e1db44d96887d4f3c674c32f0c02bb3a0385e03dcafc29dc`。run/job logs 与 artifact API HTTP403，job 页要求登录，完整日志和根因未知。用户任务补充指定 CI SDK `10.0.401`；本次实际 SDK 无法证实，本机 `8.0.423` 不替代 CI。仓库 workflow 以 `global.json` 选择 SDK，该版本为 `8.0.423`，配置差异仍需有权限日志厘清 |
 | R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -28,8 +29,8 @@
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新 run `38268914513`（#938）失败；run/job logs 与 artifact 列表 API 403 rate limit，job 页要求登录，根因未知，不盲修。CI SDK 版本需从有权限日志确认：当前 workflow 指向 global.json `8.0.423`，与任务补充中的 `10.0.401` 有待核差异；本机 SDK8 结果不替代 CI 门禁。
-2. 按依赖推进可独立验证的 Q/R 小批次：R03-01 当前 main GlyphRun 证据已归档；R04-01 插件输入事件在源码/测试身份 `32c0e1e2` 复核 37/37（GamePickerKeyboardBehavior 6、PickerViewModel 22、DebouncedRefresh 4、R05 虚拟化 5）；合成 TextComposition routed events 不代表真实 Windows IME 候选 UI/Playnite 输入链。R04-02 错误摘要导航当前身份行为 `5/5` 已归档；真实 Playnite 设置保存/Worker 应用、屏幕阅读器朗读仍待宿主验证。下一可执行项 R04-03 未保存离开保护。
+1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新已终态 run `38270923668`（#939）失败；run/job logs 与 artifact API 403，job 页要求登录，根因未知，不盲修。按任务补充跟踪 CI SDK `10.0.401` 与本机 SDK `8.0.423`；当前 workflow/global.json 有版本差异，真实 run SDK 未证实。
+2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R04-01 输入事件 `37/37`、R04-02 错误导航 `5/5` 已归档；R04-03 当前 STA 关闭分支与草稿生命周期 `12/12`，真实 Playnite 原生确认/保存/Worker 应用未验。R04-04 至 R04-08 已在账本标记满足，下一项 R05-01 当前 main 证据复核。
 3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。

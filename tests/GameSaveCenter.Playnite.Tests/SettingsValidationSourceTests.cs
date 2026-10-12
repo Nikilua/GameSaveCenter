@@ -68,6 +68,10 @@ public sealed class SettingsValidationSourceTests
         Assert.Contains("SettingsReverted", code);
         Assert.Contains("OnHostWindowClosing", code);
         Assert.Contains("继续编辑并返回当前字段", code);
+        Assert.Contains("CloseConfirmationPromptForTesting?.Invoke", code);
+        Assert.Contains("MessageBoxButton.YesNo", code);
+        Assert.Contains("MessageBoxImage.Warning", code);
+        Assert.Contains("?? MessageBox.Show(observedHostWindow, message, title, buttons, image)", code);
         Assert.Contains("CurrentSettings?.CancelEdit();", code);
         Assert.Contains("RestoreDraftFocus", code);
         Assert.Contains("GetEditBaselineFingerprint", code);
