@@ -36,6 +36,6 @@
 
 随后推送本复验文档的提交 `8e71feb4` 对应 Actions run [#936](https://github.com/Nikilua/GameSaveCenter/actions/runs/38262296773) 也已终态失败，`6m19s` 后“编译与测试”exit `1`。CI SDK `10.0.401`；job logs API HTTP403（rate limit）、job 页要求登录；diagnostic artifact `11752913387`（476 KB，SHA-256 `d78fb86cee5d81520fa81cebe65434cded562c18bd6fda46af0a91b8081bb021`）匿名下载路由 HTTP404。失败命令/断言/堆栈仍不可读，根因未知；不盲改，归入 CLOSE-CI-01。
 
-R03-01 当前 main 落字复核已完成，报告和 `TypographyDiagnosticsTests 11/11` 见[R03-01 当前复核包](../R03-01-CURRENT-MAIN-RECHECK-20261012/README.md)。下一可执行项为 R04-01 当前 main 复核；受影响行为类已实跑 `GamePickerKeyboardBehaviorTests 6/6`，证据包待同步。真实 Windows IME 候选 UI、Playnite 嵌入输入链仍未验；R02-06 菜单宿主行为继续受 ENV-001 阻塞。
+R03-01 当前 main 落字复核已归档，报告和 `TypographyDiagnosticsTests 11/11` 见[R03-01 当前复核包](../R03-01-CURRENT-MAIN-RECHECK-20261012/README.md)。R04-01 当前 main 插件可控输入行为 `37/37` 已复核，证据见[R04-01 当前复核包](../R04-01-CURRENT-MAIN-RECHECK-20261012/README.md)；下一项 R04-02 当前 main 错误摘要导航 `5/5` 已跑，证据待同步。真实 Windows IME 候选 UI、Playnite 嵌入输入链仍未验；R02-06 菜单宿主行为继续受 ENV-001 阻塞。
 
 本轮生成的 `artifacts/build-diagnostics/20261012T132040130Z-adf3b397`、`D:\GameSaveCenterTools\build-r02-08-current-main-20261012` 和 `D:\GameSaveCenterTools\render-r02-08-current-main-20261012` 已请求按精确路径清理；执行器拒绝了 PowerShell `Remove-Item` 请求，因此仍留在本机且未纳入提交。可复现的截图与 TRX 已保存在本证据目录。

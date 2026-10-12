@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：picker 修复提交 `f13b9e05` 已推送 main；R02-03 `5/5`、R02-04 `7/7`、R02-05 `2/2`、R02-08 `4/4` 当前 main 行为与双主题渲染证据已归档，未修改生产 UI。当前 `4d166f01` SDK8.0.423 Release 全量 `1560 passed / 57 skipped / 0 failed`，source `470/18 skipped`，WPF `608/39 skipped`；RenderHarness `372` 图通过。R03-01 在 main `8e71feb4` 上 RenderHarness `0/0`、TypographyDiagnosticsTests `11/11`、Light/Dark `finesseprobe` 均通过；旧 `f89b160` 测试程序集被身份守卫拒绝后已按当前身份重建。对应 Actions run `38262296773`（#936，CI SDK10.0.401）终态失败于“编译与测试”，logs API403、artifact下载404，根因未知；不以SDK8结果替代CI10或猜修。R02-06仍受ENV-001宿主阻塞；R02-07复用 `c55f7a9` 下既有 `4/4`。下一项 R04-01 当前 main 行为类 `6/6` 已复跑，待同步当前证据；真实 Windows IME 候选 UI/Playnite 输入链、Media Inbox宿主滚动、Q06/R08原始失败证据和发布恢复矩阵仍未验。
+- 当前活动缺口：main `32c0e1e2` 下 R03-01 GlyphRun 复核已归档；R04-01 当前身份行为类 37/37 已归档，真实 Windows IME 候选 UI/Playnite 输入仍待宿主验证。下一项按账本推进 R04-02 错误摘要导航独立复核。R02-06 仍受 ENV-001 宿主阻塞。#937（run `38265390606`）终态 failure，logs 与 artifact 列表 API403、job 页要求登录，根因未知；当前 workflow 指向 global.json8.0.423，与任务补充中的CI10.0.401有待核差异，run级SDK未证实。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

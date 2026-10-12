@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-12；picker Dispatcher 修复、R00/R01 校正、R02-08 与 R03-01 当前 main 证据已推送/归档，未改生产 UI。当前分支 `main`，当前身份 `8e71feb41aeb20738aa80f0cbb5d05d0c6aeb0af`；最近完整 Release 源码身份 `4d166f017dcba8fbb07980ec21b690267b9ff377`，其后只有文档/证据改动。版本 `0.6.73-development-preview`。
+更新：2026-10-12；picker Dispatcher 修复、R00/R01 校正、R02-08/R03-01/R04-01 当前 main 证据已推送/归档，未改生产 UI。当前分支 `main`，当前身份 `32c0e1e21d1fbfe0b8e46d765b4d2bd3161c46ed`；最近完整 Release 源码身份 `4d166f017dcba8fbb07980ec21b690267b9ff377`，其后只有文档/证据改动。版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -17,7 +17,7 @@
 | R02-04 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 几何 `7/7`，16/20 DIP 图标间距各 `8 DIP`、中心差 `0`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已人工对照并归档 Save 1040×700 两主题截图。未改生产 UI |
 | R02-05 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 命中/间距/82 DIP 换行 `2/2`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已检查并归档 Media 1040×700 两主题截图。未改生产 UI |
 | R03-01 当前复核 | main `8e71feb4`；RenderHarness Release `0 warning / 0 error`、`TypographyDiagnosticsTests 11/11`、双主题 `finesseprobe` exit 0；中文/英文/数字/𠮷/组合重音均有实际 GlyphRun。报告 `WorkingTreeClean=False` 是证据目录已在工作树的真实记录；自 `4d166f0` 以来 src/tests 无变化。截图/报告与 identity negative 见[R03-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R03-01-CURRENT-MAIN-RECHECK-20261012/README.md) |
-| 远端 CI | 最新推送 `8e71feb4` 的 run `38262296773`（#936）终态 failure，6m19s 后“编译与测试”exit 1。CI SDK `10.0.401`；job logs API HTTP403（rate limit）、job 页面要求登录；artifact `11752913387`（476 KB，SHA-256 `d78fb86cee5d81520fa81cebe65434cded562c18bd6fda46af0a91b8081bb021`）匿名下载路由HTTP404。失败命令/断言/堆栈未知，不能盲改 |
+| 远端 CI | main `32c0e1e2` 对应 run `38265390606`（#937，job `114866141338`）终态 failure，8m06s 后“编译与测试”exit 1；页面有 Node.js 20→24 弃用警告。诊断 artifact `GameSaveCenter-build-diagnostics` 478 KB、SHA-256 `31fa1b2bf29661b435ede1c749f854dc358e0e2c2279eb0c72d0a51eb50cd47e`。Run/job logs API、artifact 列表 API均 HTTP403；job 页要求登录，未取得 artifact ID、完整日志或失败根因。当前 workflow 以 `global-json-file: global.json` 配置，仓库 global.json 为 8.0.423；任务补充的 CI SDK 10.0.401 与当前声明有待核对，本 run 实际 SDK 因日志不可读未核实 |
 | R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -27,8 +27,8 @@
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新 run `38262296773`（#936）失败；job logs API 403、artifact 下载404，根因未知，不盲修。CI SDK10.0.401与本机 SDK8.0.423 分账；本机精确 SDK 已恢复，clean main 全量 Release 基线在4d166f0，不替代CI10。
-2. 按依赖推进可独立验证的 Q/R 小批次：R03-01 当前 main `8e71feb4` 已补 `11/11` 与双主题 GlyphRun 报告。下一项 R04-01 当前 main 复核（受影响行为类 `6/6` 已跑，证据同步中）；真实 Windows IME 候选 UI 和 Playnite 嵌入输入链仍待宿主验证。R02-06 继续受 ENV-001 阻塞。
+1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新 run `38265390606`（#937）失败；logs 和 artifact 列表 API 403，job 页需登录，根因未知，不盲修。CI SDK 版本需从有权限日志确认：当前 workflow 指向 global.json `8.0.423`，与任务补充中的 `10.0.401` 有待核差异；本机 SDK8 结果不替代 CI 门禁。
+2. 按依赖推进可独立验证的 Q/R 小批次：R03-01 当前 main GlyphRun 证据已归档；R04-01 插件输入事件在 main `32c0e1e2` 当前身份复核 37/37（GamePickerKeyboardBehavior 6、PickerViewModel 22、DebouncedRefresh 4、R05 虚拟化 5）；合成 TextComposition routed events 不代表真实 Windows IME 候选 UI/Playnite 输入链。当前复核包已归档。下一可执行小批次为 R04-02 错误摘要导航，按独立阶段归档。
 3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。

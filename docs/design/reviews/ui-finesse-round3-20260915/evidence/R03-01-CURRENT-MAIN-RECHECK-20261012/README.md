@@ -41,4 +41,6 @@ Light/Dark `finesseprobe` 均 exit `0`、报告 `finesse-fixture OK`。两份报
 
 推送 R02-08 证据提交 `8e71feb4` 后，Actions run [#936](https://github.com/Nikilua/GameSaveCenter/actions/runs/38262296773) 终态 failure，耗时 `6m19s`，失败 job `114855606547` 的“编译与测试”步骤 exit `1`；CI SDK `10.0.401`，本机 SDK8 结果不替代 CI。annotation 另有 Node.js 20→24 弃用警告。完整 job logs API HTTP403（当前 API rate limit）；job 页要求登录。diagnostic artifact `11752913387`（476 KB，SHA-256 `d78fb86cee5d81520fa81cebe65434cded562c18bd6fda46af0a91b8081bb021`）页面可见，但匿名下载从 suite artifact 路由返回 HTTP404；失败命令、断言和堆栈仍不可读，根因未知，不盲改。
 
-下一可执行复核：R04-01 当前 main。其实现/测试自 `40c7f9a` 后又有游戏选框和 Shell 变更，本轮当前身份行为类 `GamePickerKeyboardBehaviorTests` 已复跑 `6/6`，详细复核包待同步。真实 Windows IME 候选 UI 与 Playnite 嵌入输入链仍待宿主验证。
+随后 R03 证据提交 `32c0e1e2` 对应 Actions run [#937](https://github.com/Nikilua/GameSaveCenter/actions/runs/38265390606)（job `114866141338`）终态 failure，8m06s 后“编译与测试”exit 1。页面 annotation 仅提供 exit code，并有 Node.js 20→24 弃用警告；artifact 元数据 `GameSaveCenter-build-diagnostics` 478 KB、SHA-256 `31fa1b2bf29661b435ede1c749f854dc358e0e2c2279eb0c72d0a51eb50cd47e`。run/job logs API、artifact 列表 API均HTTP403，job页要求登录；未获得 artifact ID/完整日志，根因未知。当前 workflow 指向 global.json8.0.423，而任务补充基线为CI10.0.401；本run实际SDK未证实，先取得日志再核查，不盲改。
+
+下一可执行复核：按账本推进 R04-02 错误摘要导航独立阶段。R04-01 当前身份行为 `37/37` 已归档，真实 Windows IME 候选翻页与 Playnite 嵌入输入仍待宿主验证。

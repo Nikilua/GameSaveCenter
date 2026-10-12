@@ -1,8 +1,15 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-12；picker 修复、R00/R01 源码证据校正已推送 main；R02-03、R02-04、R02-05、R02-08、R03-01 当前 main 复验已归档，未改生产 UI。R03-01 GlyphRun 报告与定向测试、R02-08 动作文案/全量 Release 与双主题证据分别见当前复验包；R02-05 命中区复验见[R02-05当前复验包](design/reviews/ui-finesse-round3-20260915/evidence/R02-05-CURRENT-RECHECK-20261012/README.md)，R02-04、R02-03、R00/R01 见对应复核包。最新 CI 状态见下方检查点。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-12；picker 修复、R00/R01 校正、R02-08、R03-01 与 R04-01 当前 main 证据已归档，未改生产 UI。R04-01 37/37 复核及真实 IME 边界见复核包；R03 GlyphRun 与 R02-08 证据见对应目录，R02-05/04/03、R00/R01 见下方链接。最新 CI 检查点在下方最前段。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
-## 2026-10-12 当前检查点（优先于下方10月7日历史记录）
+## 2026-10-12 最新检查点（main `32c0e1e2` / Actions #937）
+
+- R03-01 GlyphRun 当前 main 证据已归档；R04-01 当前身份输入行为复核 `37/37`，合成 WPF composition events 不代表真实 Windows IME 候选 UI/Playnite 输入链。下一独立小批次按账本推进 R04-02 错误摘要导航。
+- R03 证据提交 `32c0e1e2` 对应 Actions run `38265390606`（#937，job `114866141338`）终态 failure，8m06s 后“编译与测试”exit 1。Node.js 20→24 弃用警告；诊断 artifact `GameSaveCenter-build-diagnostics` 478 KB，SHA-256 `31fa1b2bf29661b435ede1c749f854dc358e0e2c2279eb0c72d0a51eb50cd47e`。Run/job logs 和 artifact 列表 API HTTP403，job 页要求登录，未取得 artifact ID/完整日志，失败根因未知。
+- CI SDK 待核：任务补充给出 CI `10.0.401`，但当前 workflow 的 setup-dotnet 使用 `global-json-file: global.json`，仓库 global.json 固定 `8.0.423`；#937 实际 dotnet 版本无法从受限日志核实。本机 SDK8 的结果不替代 CI 门禁，不凭退出码盲改。
+- 下一可执行项为 R04-02 错误摘要导航的独立证据归档。Playnite、系统 IME、OS 读屏、物理 DPI/跨屏、ETW、最终 presented frame 和宿主性能仍有边界。
+
+## 2026-10-12 早期检查点（前序记录）
 
 - R02-08 当前 main 行为测试 `4/4`，source TRX、Light/Dark Save 动作文案截图及 CloudQueue 页面上下文图已归档；RenderHarness `372` 图 `render-qa OK`。插件文案行为满足，真实 Playnite 与云端/恢复操作未执行。[证据包](design/reviews/ui-finesse-round3-20260915/evidence/R02-08-CURRENT-MAIN-RECHECK-20261012/README.md)
 - 本轮 build diagnostics 及 `D:\GameSaveCenterTools` 下 build/render 输出已请求按精确路径清理，但执行器拒绝 PowerShell `Remove-Item`；它们仍留在本机且未纳入提交，没有尝试其他删除路径。

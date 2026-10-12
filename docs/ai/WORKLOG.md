@@ -1,3 +1,11 @@
+## 2026-10-12 R04-01 当前 main 输入行为复核；Actions #937 终态
+
+- 复核当前 main `32c0e1e21d1fbfe0b8e46d765b4d2bd3161c46ed`。自完整源码身份 `4d166f0` 后 src/tests 无变化；SDK `8.0.423` 下 Playnite net472 Release 测试项目重新构建，`GamePickerKeyboardBehaviorTests 6/6`、`GamePickerViewModelTests 22/22`、`DebouncedRefreshTests 4/4`、`R05OptionVirtualizationBehaviorTests 5/5`，总计 `37/37`。组合期间 Enter 不提交旧游戏，提交后 Enter 确认当前可见候选；空结果、ImeProcessed/方向键、清空/Escape 焦点和本地筛选/防抖/2k虚拟化均复用既有行为证据。
+- 事件夹具构造 `TextCompositionEventArgs` 并走生产 Shell WPF routed-event handlers；未启动 Windows IME，未测真实候选翻页、系统文本/FilteredCount变化或 Playnite 嵌入输入链。插件可控范围保持已满足；物理 IME、宿主时序、实际英文键盘端到端反馈继续待验。TRX、DLL SHA/MVID 和覆盖边界见[R04-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/README.md)。
+- R03 证据提交 `32c0e1e2` 对应 Actions run `38265390606`（#937，job `114866141338`）终态 failure，8m06s 后“编译与测试”exit 1。页面有 Node.js 20→24 弃用警告；诊断 artifact `GameSaveCenter-build-diagnostics` 478 KB，SHA-256 `31fa1b2bf29661b435ede1c749f854dc358e0e2c2279eb0c72d0a51eb50cd47e`。Run/job logs API、artifact 列表 API均 HTTP403；job 页要求登录，未获得 artifact ID、完整日志或失败根因，不盲改。
+- CI SDK有一处待核差异：任务补充给出的基线是 `10.0.401`，但当前 workflow 的 `setup-dotnet` 输入为 `global-json-file: global.json`，仓库 global.json 固定 `8.0.423`；#937 的实际 dotnet 版本因日志不可读未验证。记录为待核实，不将本机 SDK8 结果替代 CI 门禁。
+- 下一项按账本推进 R04-02 错误摘要导航独立复核。真实宿主、OS 读屏、物理 DPI/跨屏、presented frame、ETW 未验。
+
 ## 2026-10-12 R03-01 当前 main 落字复核；R02-08 Actions #936 终态
 
 - R02-08 文档/证据提交 `8e71feb4` 的 Actions run `38262296773`（#936）已终态 failure，6m19s 后“编译与测试”exit1。CI SDK10.0.401；logs API403 rate limit、job页要求登录；artifact `11752913387`（476 KB，SHA-256 `d78fb86cee5d81520fa81cebe65434cded562c18bd6fda46af0a91b8081bb021`）匿名suite下载404。失败命令/断言/堆栈仍不可读，根因未知，未盲改。
