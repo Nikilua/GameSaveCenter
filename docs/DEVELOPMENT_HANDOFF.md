@@ -1,13 +1,20 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 已提交并推送到 main：`1c39e909856faa736b32224ee196ef0bac6ca460`，精确身份 Release 定向测试 `11/11`；R05-03 当前 main 定向复核 `7/7`，工作区几何已验、翻转无闪屏未验，账本已校正为部分满足。对应 run #941 仍在运行，不能报告阶段 CI 完成。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 已推送到 main：`1c39e909856faa736b32224ee196ef0bac6ca460`，定向 `11/11`；R05-03 定向 `7/7`，几何通过但无闪屏未验、状态部分满足；R05-04 当前工作树复核 `3/3`，清空负例现验证实际模式和跨模式保留 ID。#941 与 #942 已终态失败，日志/artifact API 403 rate limit，根因未知。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。下一项复核 R05-05 当前 main 三态复选框消费点。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+
+## 2026-10-13 R05-04 当前 main 多选摘要复核
+
+- 在 main 父基线 `903525becdb679e9a4aae7bb04e73c98c1cb25dc` 上复用已有生产多选摘要，没有改生产 UI/VM/命令/DTO。原清空测试没有实际挂接 `MediaInboxMode`，本次补强 fixture：生产清空处理器清理当前“已忽略”可见与隐藏 ID、保留“待归类”集合，ViewModel 与 ComboBox 模式保持原值。
+- 固定本机 SDK `8.0.423` 下完整 Release solution build `0/0`，定向 `R05MultiSelectionSummaryBehaviorTests 3/3`；源校验与 diff check 通过。确切 TRX、源码与程序集身份见[R05-04 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-04-CURRENT-MAIN-RECHECK-20261013/README.md)。没有生产视觉变化，未重跑 RenderHarness。
+- #941 (`38279606113`, `1c39e909`) failure，8m31s；#942 (`38281199307`, `903525be`) failure，9m00s。job 页面显示登录后可看 logs；匿名 logs/artifacts API 403 rate limit。根因、失败步骤、实际 CI SDK 未知；不得按 exit code 猜修。本机 SDK8不替代用户要求单独跟踪的CI SDK10.0.401。新测试 fixture 与上述 CI 根因无关，未据其失败状态更改生产实现。
+- 未运行真实 Playnite，也未访问真实媒体/存档/云端。OS UIA/Narrator/IME、物理DPI/多屏、呈现帧、ETW/宿主性能仍未验证。下一项 R05-05 当前 main 适用性核验。
 
 ## 2026-10-13 R05-01/02 当前 main 提交后复核与 Actions 检查点
 
 - 推送的 main commit 为 `1c39e909856faa736b32224ee196ef0bac6ca460`。隔离 SDK `8.0.423` 下 Release 测试构建插件 `net462` 与测试 `net472`；`R05FocusBoundaryBehaviorTests`、`R05OptionVirtualizationBehaviorTests`、`R21FocusVisualRegressionBehaviorTests` 合计 `11/11`，VSTest exit0。TRX SHA-256 `DE45C3F9462F44665BDCD2F068E00630377C413D8669B54F4944F3E988312554`；测试 DLL SHA/MVID `9A509F12BBA20BD826ECC3D900DFD21752F0AAA498B9E10A7BE1CF683C52F063` / `8c8895de-7c96-4fe3-bdcb-fc0455c400e4`，插件 DLL SHA/MVID `8EB2BCE95E6959F3F4F794B26E1CE565CD59ADEF86F4A5B4EEB29133615E7F33` / `0477b734-38ce-4897-8ea4-6bb904b4d2ec`；测试宿主 .NET Framework `4.8.9181.0`。
 - Dashboard 行为证据由最小 STA WPF fixture 调用生产确认处理器并通过 routed Click 走生产取消处理器；覆盖焦点进入、Tab/Shift+Tab 环绕、减少动效即时关闭、240ms 动画关闭期间焦点仍留在 overlay、取消后回到合成触发器。XML 检查另核对生产 XAML 的 Cancel/Confirm Click 接线。fixture 没有加载完整 Dashboard XAML 或 Playnite 宿主。
 - `python scripts/validate-source.py` 通过，`git diff --check` 通过（仍打印测试源码 CRLF 提示）。进程退出时输出三条 WPF TextServicesHost/TextStore `InvalidComObjectException` 清理异常；测试为 `11/11`、exit0，异常根因未知。用 PowerShell 清理本轮试验 TRX 的命令被执行策略拒绝，相关文件保留在 evidence 本地目录，未尝试其他删除路径。
-- Actions #940 (`38274288024`, commit `746eaf6a`) 已失败：job `114895863386` 耗时10m30s，“编译与测试”exit1；日志 API 返回403 `Must have admin rights to Repository.`，根因未知。当前 commit 的 run #941 (`38279606113`, job `114913381368`) 仍 `in_progress`，“编译与测试”在运行。用户跟踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 分开记录，#941 实际 runner SDK未由可读日志证实。下一步等待 #941 终态，更新并推送证据记录后推进 R05-04 多选摘要当前 main 复核。真实 Playnite、完整 Dashboard XAML 加载、IME/UIA/Narrator、物理 DPI/跨屏、翻转呈现帧与宿主性能仍待验。
+- Actions #940 (`38274288024`, commit `746eaf6a`) 终态 failure，job `114895863386` 耗时10m30s；日志 API 返回403 `Must have admin rights to Repository.`，根因未知。#941 和 #942 当前都已失败，具体状态见本交接顶部 R05-04 段；当时实际 runner SDK均未由可读日志证实。用户跟踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 分开记录。真实 Playnite、完整 Dashboard XAML 加载、IME/UIA/Narrator、物理 DPI/跨屏、翻转呈现帧与宿主性能仍待验。
 - 用户补充的旧检查点 `77de7f450431d267026ce2169aa30525b18bf528` 对应 Actions `36677346317`（#920），现已终态 failure，7m04s 后“编译、测试与打包”exit1；job 页要求登录，完整日志下载 HTTP403，根因未知。此状态属于早于当前 main `746eaf6a` 的历史提交，不替代 #940 或本轮新 run。
 - 用户要求优先取得的旧 run `36675309812`（#919，commit `a6b6dfc`）也已终态 failure，总耗时13m02s，“编译与测试”步骤exit1。公开 job 展开仅有加载失败/登录提示，完整日志下载 HTTP403；根因未知，没有日志前不基于 exit code 猜测修复。
 

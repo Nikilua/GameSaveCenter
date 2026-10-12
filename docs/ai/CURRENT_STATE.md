@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；R00/R01 freshness 校正已归档。当前分支 `main` 已推送 commit `1c39e909856faa736b32224ee196ef0bac6ca460`；R05-01/02 精确提交定向重建 `11/11`，R05-03 当前 main 边界复核 `7/7` 并校正为部分满足（翻转无闪屏未验）。TRX/程序集身份已归档。Actions #941 仍运行；#940 已失败但完整日志访问 HTTP403、根因未知。最近完整 clean Release 源码身份仍为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
+更新：2026-10-13；R00/R01 freshness 校正已归档。R05-01/02 精确提交定向重建 `11/11`，R05-03 当前 main 边界复核 `7/7` 并校正为部分满足（翻转无闪屏未验）；R05-04 当前工作树复核 `3/3`，只补强已有行为测试 fixture。Actions #941（`38279606113`）与 #942（`38281199307`）现均失败，日志/artifact API HTTP403 rate limit、根因未知。R05-04 测试源码 SHA、TRX/程序集身份见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-04-CURRENT-MAIN-RECHECK-20261013/README.md)。最近完整 clean Release 源码身份仍为 `4d166f017dcba8fbb07980ec21b690267b9ff377`。版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -21,7 +21,8 @@
 | R04-03 当前复核 | `e952c414` 工作树上的插件 net462 / 测试 net472 定向构建，隔离 SDK `8.0.423`，`SettingsDraftLifecycleBehaviorTests + PortableSettingsTests + SettingsValidationSourceTests` 为 `12/12`；关闭事件实际选择“否”保留草稿并恢复焦点、“是”后才关闭/回滚。真实 Playnite 原生确认框、宿主保存和 Worker 应用仍待验。详见[R04-03 当前 main 补充证据](../design/reviews/ui-finesse-round3-20260915/evidence/R04-03-CURRENT-MAIN-RECHECK-20261012/README.md) |
 | R05-01/02 当前 main | commit `1c39e909856faa736b32224ee196ef0bac6ca460`，隔离 SDK `8.0.423`，Playnite 插件 `net462`、测试 `net472`；R05Focus/R05Option/R21 定向合计 `11/11`。TRX SHA/MVID、插件 SHA/MVID 已归档。Dashboard 受控 STA fixture 覆盖焦点进入、Tab 环绕、即时/动画关闭和取消回焦；XML 解析断言核对真实 XAML Click 接线。完整 Dashboard XAML/Playnite 宿主未加载；VSTest 收尾有三条 TextServicesHost `InvalidComObjectException` 消息但 exit0，原因未知 |
 | R05-03 当前 main | 同一 commit 和隔离 SDK 下 `R05PopupBoundaryBehaviorTests + R05OptionVirtualizationBehaviorTests 7/7`。短窗 Picker 边界、当前桌面 ComboBox Popup 翻转后的工作区几何/MaxHeight/滚动/选定项可见通过。状态为部分满足：“翻转无闪屏”尚无呈现帧证据；未复核 420×220 负例或真实 Playnite/多屏 |
-| 远端 CI | 当前 main commit `1c39e909` 对应 run `38279606113`（#941，job `114913381368`）仍 `in_progress`，“编译与测试”在运行。上一 run `38274288024`（#940，commit `746eaf6a`）已 failure，job `114895863386` 耗时10m30s，失败步骤“编译与测试”；完整日志 API HTTP403 `Must have admin rights to Repository.`，根因未知。用户补充旧检查点 `77de7f4` 的 #920 与 `a6b6dfc` 的 #919 也失败，完整日志 HTTP403，根因未知。用户指定跟踪 CI SDK `10.0.401`；本机 SDK `8.0.423` 单独记录，不替代 CI 门禁，实际 runner SDK仍需日志核实 |
+| R05-04 当前工作树 | 基于 main `903525be`，测试源 SHA `B6D804AD...`；本机 SDK `8.0.423` Release solution `0/0`，`R05MultiSelectionSummaryBehaviorTests 3/3`。验证 0/1/2 摘要、隐藏 ID 例外、清空“已忽略”选择同时保留“待归类”选择并保持模式；未改生产视觉。身份/边界见当前复核包 |
+| 远端 CI | #941（`38279606113`，commit `1c39e909`）failure，耗时8m31s；#942（`38281199307`，commit `903525be`）failure，耗时9m00s。job页提示登录后查看日志；匿名 logs/artifacts API HTTP403 rate limit。失败步骤、实际 runner SDK及根因未知。用户指定跟踪CI SDK `10.0.401`；本机SDK `8.0.423` 单独记录，不替代CI门禁。历史 #940、#920、#919 也失败且根因未由完整日志确认 |
 | R00/R01 证据 | `CLOSE-EVID-01` 已收口：`f13b9e05` 下 10 条受影响记录已补实际行为/负例证据并更新 source identity；4 条未命中登记源码路径。freshness `14 fresh / 0 stale`，package identity 未提供。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md) |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -32,7 +33,7 @@
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
 1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：最新已终态 run `38270923668`（#939）失败；run/job logs 与 artifact API 403，job 页要求登录，根因未知，不盲修。按任务补充跟踪 CI SDK `10.0.401` 与本机 SDK `8.0.423`；当前 workflow/global.json 有版本差异，真实 run SDK 未证实。
-2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R04-01 输入事件 `37/37`、R04-02 错误导航 `5/5`、R04-03 关闭分支与草稿生命周期 `12/12` 已归档。R05-01/02 commit `1c39e909` 已推送，精确 SHA 定向 `11/11`；R05-03 当前 main 复核 `7/7`，几何/选定项通过但“翻转无闪屏”未验、状态部分满足。#941 终态后推送当前证据更正，再推进 R05-04 多选摘要当前 main 复核。完整 Dashboard XAML/Playnite 宿主行为仍待验。
+2. 按用户授权持续推进依赖已满足的 Round3 Q/R 小批次：R04-01 输入事件 `37/37`、R04-02 错误导航 `5/5`、R04-03 关闭分支与草稿生命周期 `12/12` 已归档。R05-01/02 精确 SHA 定向 `11/11`；R05-03 当前 main `7/7`，但无闪屏未验、状态部分满足；R05-04 当前工作树 `3/3`，清空测试已补当前模式与保留其他模式的负例。下一步核对 R05-05 三态复选框当前消费点；CI #941/#942 失败原因需完整日志，当前访问 403，不凭摘要盲改。完整 Dashboard XAML/Playnite 宿主行为仍待验。
 3. package identity、真实宿主与发布矩阵继续单列；未生成包或宿主时不写成通过。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。
