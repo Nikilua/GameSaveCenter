@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-01/02 main `1c39e909` 定向 `11/11`；R05-03 边界复核 `7/7`，无呈现帧证据故部分满足；R05-04 当前工作树 `R05MultiSelectionSummaryBehaviorTests 3/3`，只补测试 fixture，TRX/程序集身份见当前复核包。CI #941/#942 现均失败，完整日志/artifacts API 403 rate limit，根因和实际 runner SDK未知；本机 `8.0.423` 不替代用户要求追踪的 CI `10.0.401`。真实 Playnite/完整 Dashboard XAML未验，不得把本机结果视为 CI 通过。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，其中旧版本、优先级与下一项不是当前指令。
+更新：2026-10-13。本文件保留稳定规则、架构和已知陷阱；当前结果以 [CURRENT_STATE.md](CURRENT_STATE.md) 为准，逐阶段历史见 [WORKLOG.md](WORKLOG.md)。R05-01/02 main `1c39e909` 定向 `11/11`；R05-03 边界复核 `7/7`，无呈现帧证据故部分满足；R05-04 行为复核 `3/3`；R05-05 当前 main 源码消费点无批量三态 CheckBox，维持不适用，XAML `24/24`、Release `0/0`、源契约 `24/24`。Actions #941/#942/#943 失败，公开摘要及日志访问限制、artifact 身份见当前工作日志；完整日志 HTTP403，根因和实际 runner SDK未知；本机 `8.0.423` 不替代用户要求追踪的 CI `10.0.401`。真实 Playnite/完整 Dashboard XAML未验，不得把本机结果视为 CI 通过。原 6066 行完整原文已保留于 [历史记忆快照](PROJECT_MEMORY_HISTORY_THROUGH_20260930.md)，其中旧版本、优先级与下一项不是当前指令。
 
 ## AI/Codex 启动协议
 

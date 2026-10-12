@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 已推送到 main：`1c39e909856faa736b32224ee196ef0bac6ca460`，定向 `11/11`；R05-03 定向 `7/7`，几何通过但无闪屏未验、状态部分满足；R05-04 当前工作树复核 `3/3`，清空负例现验证实际模式和跨模式保留 ID。#941 与 #942 已终态失败，日志/artifact API 403 rate limit，根因未知。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。下一项复核 R05-05 当前 main 三态复选框消费点。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 main `1c39e909` 定向 `11/11`；R05-03 定向 `7/7`，几何通过但无闪屏未验、状态部分满足；R05-04 行为复核 `3/3`；R05-05 当前 main 消费点复核仍不适用，源契约 `24/24`，没有批量三态 CheckBox。Actions #943（`38284177732`）对 main `fbf504d2` failure，6m13s，“编译与测试”exit1；日志/artifacts API HTTP403，根因与实际 CI SDK未知，不猜修。本机 SDK `8.0.423` 与待核 CI SDK `10.0.401` 分开。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。下一项复核 R05-06 已有开关保存实现的当前 main 行为与视觉证据。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 2026-10-13 R05-04 当前 main 多选摘要复核
 
@@ -8,6 +8,12 @@
 - 固定本机 SDK `8.0.423` 下完整 Release solution build `0/0`，定向 `R05MultiSelectionSummaryBehaviorTests 3/3`；源校验与 diff check 通过。确切 TRX、源码与程序集身份见[R05-04 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-04-CURRENT-MAIN-RECHECK-20261013/README.md)。没有生产视觉变化，未重跑 RenderHarness。
 - #941 (`38279606113`, `1c39e909`) failure，8m31s；#942 (`38281199307`, `903525be`) failure，9m00s。job 页面显示登录后可看 logs；匿名 logs/artifacts API 403 rate limit。根因、失败步骤、实际 CI SDK 未知；不得按 exit code 猜修。本机 SDK8不替代用户要求单独跟踪的CI SDK10.0.401。新测试 fixture 与上述 CI 根因无关，未据其失败状态更改生产实现。
 - 未运行真实 Playnite，也未访问真实媒体/存档/云端。OS UIA/Narrator/IME、物理DPI/多屏、呈现帧、ETW/宿主性能仍未验证。下一项 R05-05 当前 main 适用性核验。
+
+## 2026-10-13 R05-05 当前 main 三态复选框适用性复核
+
+- main `fbf504d2a7aabcd322c3c735959a31c7e1679fc9` 上，媒体批量仍由 Extended DataGrid + `SelectedItems` 表达；显式三态样例只存在于开发校对页。共享模板的 `IndeterminateMark` 和源字符串测试不是集合/Space/UIA 行为证据，R05-05 维持不适用。XAML `24/24`、SDK8 Release build `0/0`、源契约 `24/24`；脱敏 TRX 与源文件 SHA 见[R05-05 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- #943 终态 failure；摘要标明“编译与测试”exit1，run `38284177732`、job `114928442567`。artifact `11762189156` 477 KB，SHA-256 `bb2ffc75a4f111adffa061f46440af303131d14bfd6b52f2d6642b6b9a76176d`。页面提示登录查看完整日志；匿名 logs/artifacts API HTTP403，CI SDK和根因仍未知，不凭摘要猜修。用户要求跟踪的CI SDK10.0.401与本机8.0.423分开记录。
+- 没有启动真实 Playnite、OS Space 输入或触碰真实数据；UIA/Narrator、物理 DPI/跨屏、presented frame、ETW、宿主性能仍待验。下一项 R05-06 当前 main 开关模型、视觉、持久化和回滚行为复核。
 
 ## 2026-10-13 R05-01/02 当前 main 提交后复核与 Actions 检查点
 

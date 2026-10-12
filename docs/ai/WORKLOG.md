@@ -10095,3 +10095,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `python scripts/validate-source.py` 通过；WPF validator 扫描36个XAML，0 errors/29 warnings/177 info（未改XAML）；R00/R01 freshness 检查14条记录，设置关闭路径0命中、0条需要重跑。未重跑完整 Release/RenderHarness/真实 Playnite。
 - main `e952c414` 对应 Actions #939（run `38270923668`，job `114884678634`）已终态 failure，7m11s，“编译与测试”exit1；artifact 478 KB，SHA-256 `660a09c2217195c1e1db44d96887d4f3c674c32f0c02bb3a0385e03dcafc29dc`。GitHub job 页要求登录，run/job logs 与 artifact API HTTP403，完整日志/失败根因不可得。用户补充指定 CI SDK10.0.401；本机 SDK8.0.423 分开记录，#939实际 SDK未确认；不凭exit1盲改。
 - 有界面但无视觉布局改动；没有触碰真实配置、存档、媒体、云端或诊断发送。真实 Playnite原生确认框、宿主设置保存/Worker apply、UIA/Narrator、物理DPI/跨屏、presented frame、ETW和宿主性能仍未验。R04-04至R04-08已有满足证据；下一项R05-01当前main复核。
+
+## 2026-10-13 R05-05 当前 main 三态复选框适用性复核
+
+- 在 main `fbf504d2a7aabcd322c3c735959a31c7e1679fc9` 核对 `MediaCenterView`、共享 CheckBox 模板和仓库三态消费点。媒体批量仍使用 Extended DataGrid + `SelectedItems`；唯一显式 `IsThreeState=True` 是开发校对控件，故本项继续记“不适用”。未改生产代码、UI、服务或 DTO。
+- 本机隔离 SDK `8.0.423`：官方 `scripts/build.ps1 -Configuration Release -SkipTests` 下 XAML `24/24`、Release `0 warning / 0 error`；定向源契约 `UiFinesseRound2ControlSourceTests 24/24`。脱敏 TRX SHA-256 `52D16DC97AF112A18CA38007F6F330562FE79DD445AA778B18C7FD3873501A79`。其中半选测试只有字符串断言，不覆盖 Space/UIA/批量集合；具体文件 SHA、方法边界与复用约束见[R05-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CURRENT-MAIN-RECHECK-20261013/README.md)。首次未带 `GscBuildCommit` 的直接 dotnet build 导致 0/24 执行，按项目脚本重建后 24/24 通过；首次失败不是产品断言失败。
+- Actions #943（run `38284177732`，job `114928442567`，commit `fbf504d2`）已终态 failure，6m13s；公开摘要显示“编译与测试”exit1，artifact `11762189156` 477 KB / SHA-256 `bb2ffc75a4f111adffa061f46440af303131d14bfd6b52f2d6642b6b9a76176d`。job 页要求登录；匿名 logs/artifacts API HTTP403。完整失败命令、实际 CI SDK 与根因未知，不盲改；本机 SDK8 与待核 CI SDK10.0.401 分开记录。
+- 未启动真实 Playnite/OS Space 输入；UIA/Narrator、物理 DPI/多屏、presented frame、ETW 与宿主性能仍未验。未触碰真实存档、媒体、云端或用户配置。下一项复核 R05-06 已有开关保存实现的当前 main 行为与视觉证据。
