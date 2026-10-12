@@ -1,4 +1,12 @@
-## 2026-10-12 R04-01 当前 main 输入行为复核；Actions #937 终态
+## 2026-10-12 R04-02 当前 main 错误摘要导航复核；R04-01 Actions #938 终态
+
+- 基于当前源码/测试身份 `32c0e1e21d1fbfe0b8e46d765b4d2bd3161c46ed`，自完整源码身份 `4d166f0` 后 src/tests 无变化。隔离 SDK `8.0.423` 下 Playnite net472 测试项目已重建；`SettingsValidationSourceTests 1/1`、`SettingsPathValidationTests 3/3`、`SettingsValidationNavigationBehaviorTests 1/1`，合计 `5/5`。脱敏 TRX SHA-256 `5F6FEFB5D90D8F41AA0B788125A3D46572370954A21A3A5D6127EF458EC07151`，DLL 身份与[R04-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/README.md)相同。
+- 实际 STA Window 点击生产错误摘要 Hyperlink 后验证自动化分类切换、目标字段可见并获得键盘焦点、ScrollViewer 偏移大于 0、Automation Name/HelpText 包含错误原因。路径指向文件会拒绝、缺失子目录不会自动创建；禁用巡检后保留的无效巡检值不阻止 VerifySettings。源码结构断言只作接线检查补充，不作焦点/滚动行为证据。
+- 使用合成设置、fake Worker 文件、隔离目录与 STA Window；未执行真实 Playnite Settings API 保存或 Worker 应用，没有验证宿主/OS 屏幕阅读器朗读、物理 DPI/跨屏、presented frame、ETW 或宿主性能。证据见[R04-02 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-02-CURRENT-MAIN-RECHECK-20261012/README.md)。
+- R04-01 证据提交 `8d0e2f66` 对应 Actions run `38268914513`（#938，job `114878000993`）终态 failure，7m54s 后“编译与测试”exit 1；页面有 Node.js 20→24 弃用警告，诊断 artifact 477 KB、SHA-256 `473d9f10342ba88b696d884576e6fcdeeef3a81f8e54c0102419ea0ea17687dd`。run/job logs 与 artifact 列表 API均 HTTP403 rate limit，job 页要求登录；未获 artifact ID或完整日志，根因未知，不盲改。
+- CI SDK差异仍待有权限日志核实：当前 workflow 指向 global.json `8.0.423`，任务补充基线为 CI `10.0.401`，#938 实际 SDK 未证实；本机 SDK8 不替代 CI门禁。下一项按账本推进 R04-03 未保存离开保护。
+
+## 2026-10-12 R04-01 当前 main 输入行为复核
 
 - 复核当前 main `32c0e1e21d1fbfe0b8e46d765b4d2bd3161c46ed`。自完整源码身份 `4d166f0` 后 src/tests 无变化；SDK `8.0.423` 下 Playnite net472 Release 测试项目重新构建，`GamePickerKeyboardBehaviorTests 6/6`、`GamePickerViewModelTests 22/22`、`DebouncedRefreshTests 4/4`、`R05OptionVirtualizationBehaviorTests 5/5`，总计 `37/37`。组合期间 Enter 不提交旧游戏，提交后 Enter 确认当前可见候选；空结果、ImeProcessed/方向键、清空/Escape 焦点和本地筛选/防抖/2k虚拟化均复用既有行为证据。
 - 事件夹具构造 `TextCompositionEventArgs` 并走生产 Shell WPF routed-event handlers；未启动 Windows IME，未测真实候选翻页、系统文本/FilteredCount变化或 Playnite 嵌入输入链。插件可控范围保持已满足；物理 IME、宿主时序、实际英文键盘端到端反馈继续待验。TRX、DLL SHA/MVID 和覆盖边界见[R04-01 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/README.md)。

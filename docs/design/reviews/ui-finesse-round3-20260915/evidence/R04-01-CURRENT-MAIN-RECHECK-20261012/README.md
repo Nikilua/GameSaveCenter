@@ -26,3 +26,11 @@
 - 仅使用合成游戏 DTO 与隔离窗口；没有读取或写入真实存档、媒体、用户云端，也没有发送诊断。
 
 原始实现证据仍见 [R04-01-IME-COMPOSITION-20260917.md](../R04-01-IME-COMPOSITION-20260917.md)。当前 main 复核没有扩大原结论：插件事件处理与候选提交顺序有行为证据，真实系统 IME/Playnite 输入链需在可用宿主中单独验证。
+
+## 推送后 CI
+
+本复核包提交 `8d0e2f66` 对应 Actions [#938](https://github.com/Nikilua/GameSaveCenter/actions/runs/38268914513)，run `38268914513`、job `114878000993`，终态 failure；运行 `7m54s` 后“编译与测试”exit `1`。页面另有 Node.js 20→24 弃用告警。诊断 artifact `GameSaveCenter-build-diagnostics` 为 477 KB，SHA-256 `473d9f10342ba88b696d884576e6fcdeeef3a81f8e54c0102419ea0ea17687dd`。
+
+获取完整日志受权限限制：run logs、job logs 与 artifact 列表 API 均返回 HTTP403 rate limit；job 页面显示需登录才能看日志，未获得 artifact ID 或完整诊断。失败根因未知，未按 exit code 猜修。当前 workflow 的 setup-dotnet 使用 `global-json-file: global.json`，仓库 global.json 固定 `8.0.423`；任务补充提到的 CI SDK `10.0.401` 与当前声明有待核实，本次 run 实际 SDK 未证实。本机 SDK8 的定向测试不替代 CI 门禁。
+
+R04-02 错误摘要导航当前 main 行为 `5/5` 已归档，证据见[R04-02 当前 main 复核包](../R04-02-CURRENT-MAIN-RECHECK-20261012/README.md)。下一可执行小批次为 R04-03 未保存离开保护。
