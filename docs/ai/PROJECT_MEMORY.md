@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。R07 最新失败 CI 源码 `494e7a6e` 在 #956（CI SDK `8.0.423`）失败：详情区实际 `Collapsed/0×0`，TaskView/Window 可见；#955 的 `0.6.73` 文档门禁问题已修复。R07 夹具改为窗口加载后选择并校验 DataGrid.SelectedItem 与绑定 SelectedTask 相同，本机 SDK8 build `0/0`、定向 `1/1`；修正推送后待新 CI。#919/#920 的 SDK `10.0.401` 旧侧栏失败与当前 SDK8 不混用。后续才收口 R06-05。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。CI #957 source commit `063550b6`（SDK `8.0.423`）build 成功而 R07 失败：详情区 `Collapsed/0×0`，TaskView/Window 可见，DataGrid 与 bound `SelectedTask` 已匹配。源代码在 compact layout 要求通过“查看任务详情”打开抽屉；原 fixture 没有驱动此 Click。当前工作树从未选择状态加载，实际选择后核对关闭态，再 routed Click 打开；本机 SDK8 Release `0/0`、XAML `24/24`、定向 `1/1`。该修正待提交/推送及新 Actions。#955 `0.6.73` 文档门禁问题已修复。#919/#920 的 SDK `10.0.401` 旧侧栏失败与当前 SDK8 不混用。后续才收口 R06-05。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：R07-08 需先推送 loaded-grid selection 修正并等待新 Actions；#956 已给出 `Collapsed/0×0` 的具体失败状态，旧 #952–#954 只记录到 IsVisible false。R07 新夹具现在在本机通过但远端未验证。R06-05 测试修改保持独立，待 R07 CI 终态后推进。R00/R01 freshness 14/14（source identity 5762c874）；package identity 与真实宿主验收仍独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：R07-08 新夹具需提交/推送并等 Actions 终态。#957 证明选择对象身份正确但紧凑抽屉尚未打开；测试现从未选中状态实选，再通过生产 routed Click 打开并验证按钮状态，本机通过，远端未验。R06-05 测试修改保持独立。R00/R01 freshness 14/14（source identity 5762c874）；package identity 与真实宿主验收仍独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

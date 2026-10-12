@@ -10204,3 +10204,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 测试夹具调整为先显示/布局窗口，再用已加载的 Task DataGrid 选择并滚入合成任务，要求 `TaskGrid.SelectedItem` 与绑定 `SelectedTask` 引用相同对象；再验证详情 Visibility/正尺寸和五个 resize 阶段。没有生产代码或 XAML 改动。
 - 本机官方 SDK `8.0.423` Release 重建 `0 warning / 0 error`、XAML `24/24`；最终 R07 行为 `1/1`，脱敏 TRX SHA-256 `C924EB10916994468833B80F892B156EA2241E312E06BEF9CFD07B212B1E1C14`。`python scripts/validate-source.py` 通过。SDK8 结果不替代 CI SDK10；当前改动等待新 Actions 到终态后才决定是否收口。
 - 七个 Actions 完整日志 ZIP 及 SHA、本机 DLL/TRX/源 SHA与验证边界见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。当前下一步是提交 R07 夹具及其阶段记录、推送、追踪新 Actions；远端成功后再独立处理 R06-05。真实 Playnite、presented frame、物理 DPI/跨屏、UIA/Narrator、ETW/宿主性能仍未验证。
+
+## 2026-10-13 R07-08 compact drawer 实际打开行为
+
+- #957（run `38319864960`，SDK `8.0.423`）完整日志确认 Release build、Core/Worker 通过，R07 在详情 `Collapsed/0×0` 处失败；grid 和绑定 `SelectedTask` 都是 `r07-resize-task`。日志 ZIP SHA-256 `36491ec7689e9483521124edb4af470d4255e771e40893fc8ac8ee2a5bc22576`，完整堆栈/远端 SDK已归档。此日志说明选择身份一致仍不等于 compact drawer 已打开。
+- 对照生产逻辑后，compact layout 下的 drawer 默认关闭，需经 `TaskCompactDetailsButton` 的 Click 打开。旧夹具在加载前预设 `SelectedTask`，加载后重赋同一个对象，未稳定驱动真实选择事件和 open action。现从未选中开始，在已加载的表格选中任务，先检查按钮可用/详情关闭，再路由 `Button.ClickEvent` 并核对详情面积及开/关按钮互换；再执行完整 resize 序列。生产实现未改。
+- 最终本机官方 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；定向 R07 `1/1`，脱敏 TRX含 `compactDetailsAction=clicked` 和 `632.667×136 DIP` compact 详情。五段尺寸、插件/测试 DLL与源 SHA、CI ZIP 哈希见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。测试后仍有 TextServicesHost COM cleanup 输出，原因未知。
+- 当前 R07 修正尚未提交/推送，无最新 CI 通过结果。下一步提交测试/证据/本阶段事实，推送 main 并跟踪 Actions 到终态；随后再单独推进 R06-05。受控 WPF 不代表真实 Playnite、物理 DPI/跨屏、UIA/Narrator、presented frame、ETW或宿主性能。

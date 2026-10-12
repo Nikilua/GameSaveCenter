@@ -48,6 +48,8 @@ public sealed class R07ResizeStressBehaviorTests
                 var taskView = shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)!;
                 var taskType = typeof(TaskCenterView);
                 var taskGrid = (DataGrid)taskType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
+                var compactDetailsButton = (Button)taskType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
+                var compactCloseDetailsButton = (Button)taskType.GetField("TaskCompactCloseDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
                 var selected = new TaskStatusDto
                 {
                     TaskId = "r07-resize-task",
@@ -68,6 +70,8 @@ public sealed class R07ResizeStressBehaviorTests
                     .GetField("PickerPanel", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(shell)!;
                 var pageHost = (ContentControl)shell.PageHostForAudit;
+                var taskPageScrollSurface = (Grid)taskType.GetField("TaskPageScrollSurface", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
+                var detailBreakpoint = taskType.GetField("detailBreakpoint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
                 pageHost.Content = taskView;
                 pickerOverlay.Visibility = Visibility.Visible;
 
@@ -82,33 +86,74 @@ public sealed class R07ResizeStressBehaviorTests
                     Opacity = 0.01
                 };
                 window.Show();
-                ApplySize(window, 1366, 900);
-                // Select through the loaded production grid. Assigning SelectedItem
-                // before attaching this page to a Window can be cleared when the
-                // DataGrid's SelectedItem binding and row containers first load.
+                ApplySize(window, 960, 700);
+                // Select through the loaded production grid. On compact layouts the
+                // production selection handler closes the detail drawer, so reopen it
+                // through its routed button click before measuring the resize sequence.
                 taskGrid.SelectedItem = selected;
                 taskGrid.ScrollIntoView(selected);
                 FlushLayout(window);
                 var taskDetail = taskView.TaskDetailScrollViewerElement;
+                if (compactDetailsButton.Visibility != Visibility.Visible
+                    || !compactDetailsButton.IsVisible
+                    || !(compactDetailsButton.ActualWidth > 0)
+                    || !(compactDetailsButton.ActualHeight > 0)
+                    || taskDetail.Visibility != Visibility.Collapsed)
+                {
+                    throw new InvalidOperationException(
+                        "compact selection did not start with the details drawer closed and its open action available: "
+                        + $"detail={taskDetail.Visibility}, openButton={compactDetailsButton.Visibility}, "
+                        + $"gridSelected={(taskGrid.SelectedItem as TaskStatusDto)?.TaskId ?? "<null>"}, "
+                        + $"viewModelSelected={context.SelectedTask?.TaskId ?? "<null>"}, "
+                        + $"requestedWindow={window.Width:0.###}x{window.Height:0.###}, actualWindow={window.ActualWidth:0.###}x{window.ActualHeight:0.###}, "
+                        + $"shell={shell.ActualWidth:0.###}x{shell.ActualHeight:0.###}, pageHost={pageHost.ActualWidth:0.###}x{pageHost.ActualHeight:0.###}, "
+                        + $"taskView={taskView.ActualWidth:0.###}x{taskView.ActualHeight:0.###}, pageSurface={taskPageScrollSurface.ActualWidth:0.###}x{taskPageScrollSurface.ActualHeight:0.###}, "
+                        + $"breakpointInitialized={detailBreakpoint.GetType().GetProperty("IsInitialized")!.GetValue(detailBreakpoint)}, "
+                        + $"breakpointCompact={detailBreakpoint.GetType().GetProperty("IsCompact")!.GetValue(detailBreakpoint)}.");
+                }
+
+                compactDetailsButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                FlushLayout(window);
+                if (taskDetail.Visibility != Visibility.Visible
+                    || !taskDetail.IsVisible
+                    || !(taskDetail.ActualWidth > 0)
+                    || !(taskDetail.ActualHeight > 0)
+                    || compactDetailsButton.Visibility != Visibility.Collapsed
+                    || compactCloseDetailsButton.Visibility != Visibility.Visible)
+                {
+                    throw new InvalidOperationException(
+                        "routed compact details action did not open the selected task drawer: "
+                        + $"detail={taskDetail.Visibility} {taskDetail.ActualWidth:0.###}x{taskDetail.ActualHeight:0.###}, "
+                        + $"openButton={compactDetailsButton.Visibility}, closeButton={compactCloseDetailsButton.Visibility}.");
+                }
+                output.WriteLine(
+                    $"compactDetailsAction=clicked, openButton={compactDetailsButton.Visibility}, "
+                    + $"closeButton={compactCloseDetailsButton.Visibility}, "
+                    + $"detail={taskDetail.Visibility} {taskDetail.ActualWidth:0.###}x{taskDetail.ActualHeight:0.###} DIP");
+
+                ApplySize(window, 1366, 900);
+                taskDetail = taskView.TaskDetailScrollViewerElement;
                 if (!ReferenceEquals(taskGrid.SelectedItem, selected)
                     || !ReferenceEquals(context.SelectedTask, selected)
                     || taskDetail.Visibility != Visibility.Visible
+                    || !taskDetail.IsVisible
                     || !(taskDetail.ActualWidth > 0)
                     || !(taskDetail.ActualHeight > 0))
                 {
                     throw new InvalidOperationException(
-                        "selected task detail had no visible layout area at the wide baseline: "
+                        "selected task detail did not remain visible at the wide baseline: "
                         + $"visibility={taskDetail.Visibility}, isVisible={taskDetail.IsVisible}, "
                         + $"actual={taskDetail.ActualWidth:0.###}x{taskDetail.ActualHeight:0.###}, "
                         + $"taskViewIsVisible={taskView.IsVisible}, windowIsVisible={window.IsVisible}, "
                         + $"gridSelected={(taskGrid.SelectedItem as TaskStatusDto)?.TaskId ?? "<null>"}, "
-                        + $"viewModelSelected={context.SelectedTask?.TaskId ?? "<null>"}, gridItems={taskGrid.Items.Count}.");
+                        + $"viewModelSelected={context.SelectedTask?.TaskId ?? "<null>"}, gridItems={taskGrid.Items.Count}, "
+                        + $"compactButton={compactDetailsButton.Visibility}, closeButton={compactCloseDetailsButton.Visibility}, "
+                        + "the compact drawer had been opened through its routed action.");
                 }
 
                 shell.GameSearchBoxForFocus.Focus();
                 Keyboard.Focus(shell.GameSearchBoxForFocus);
                 FlushLayout(window);
-
                 foreach (var size in new[]
                 {
                     (width: 1366d, height: 900d, label: "wide"),
@@ -213,7 +258,8 @@ public sealed class R07ResizeStressBehaviorTests
         public ResizeTaskContext(TaskStatusDto selectedTask)
         {
             Tasks = new ObservableCollection<TaskStatusDto> { selectedTask };
-            this.selectedTask = selectedTask;
+            // Let the loaded DataGrid selection drive the production binding and handler.
+            this.selectedTask = null;
         }
 
         public ObservableCollection<TaskStatusDto> Tasks { get; }
