@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e39199cc-72fa-4bee-a370-5dbb1c141cfd" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T15:51:57.9919010+08:00" queuing="2026-10-12T15:51:57.9919017+08:00" start="2026-10-12T15:51:51.2510229+08:00" finish="2026-10-12T15:52:13.6260539+08:00" />
+  <TestSettings name="default" id="e59bf0cc-70fc-4e62-9ac8-2c9b187d19f3">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="85f6e9f0-7fb8-480f-9de2-99923fdbce49" testId="719b1e5e-267d-9a31-cac3-3fb3c1415e29" testName="GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests.MaintenanceViewBindsActionTimingBodyAndFullAutomationEvidence" computerName="redacted-host" duration="00:00:02.8700000" startTime="2026-10-12T15:51:55.1027082+08:00" endTime="2026-10-12T15:51:57.9461294+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="85f6e9f0-7fb8-480f-9de2-99923fdbce49" />
+    <UnitTestResult executionId="37011090-d394-4977-b5ab-a21274d557c5" testId="babd42aa-49d1-8c84-5ff8-679473b0f170" testName="GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests.MaintenanceActionKeepsRelativeBodyAndFullEvidenceForHealthAndQuarantine" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:51:57.9842086+08:00" endTime="2026-10-12T15:51:57.9862175+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="37011090-d394-4977-b5ab-a21274d557c5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests.MaintenanceActionKeepsRelativeBodyAndFullEvidenceForHealthAndQuarantine" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="babd42aa-49d1-8c84-5ff8-679473b0f170">
+      <Execution id="37011090-d394-4977-b5ab-a21274d557c5" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests" name="MaintenanceActionKeepsRelativeBodyAndFullEvidenceForHealthAndQuarantine" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests.MaintenanceViewBindsActionTimingBodyAndFullAutomationEvidence" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="719b1e5e-267d-9a31-cac3-3fb3c1415e29">
+      <Execution id="85f6e9f0-7fb8-480f-9de2-99923fdbce49" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests" name="MaintenanceViewBindsActionTimingBodyAndFullAutomationEvidence" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="719b1e5e-267d-9a31-cac3-3fb3c1415e29" executionId="85f6e9f0-7fb8-480f-9de2-99923fdbce49" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="babd42aa-49d1-8c84-5ff8-679473b0f170" executionId="37011090-d394-4977-b5ab-a21274d557c5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.37]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.75]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.81]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.78]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="730c551a-d142-4d20-97f3-3a7dc31299e4" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T15:37:56.6262025+08:00" queuing="2026-10-12T15:37:56.6262031+08:00" start="2026-10-12T15:37:50.6453601+08:00" finish="2026-10-12T15:38:07.8367725+08:00" />
+  <TestSettings name="default" id="d31374bd-18f5-4bcb-b20c-537f4781a909">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="34580132-71b8-480c-8532-d85868046507" testId="6e7a4ecf-cdce-bc94-afde-bc14c350cc43" testName="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests.CounterChangeUsesRealRenderPulseAndSuppressesHighFrequencyBounce" computerName="redacted-host" duration="00:00:00.1800000" startTime="2026-10-12T15:37:56.6103520+08:00" endTime="2026-10-12T15:37:56.7636334+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="34580132-71b8-480c-8532-d85868046507" />
+    <UnitTestResult executionId="328cd5c2-0c82-4cbd-a9e8-b21a0c75d725" testId="49bbe309-404c-e686-b913-50856c737f35" testName="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests.ReducedMotionUpdatesImmediatelyWithoutNumericPulse" computerName="redacted-host" duration="00:00:01.7870000" startTime="2026-10-12T15:37:54.8706456+08:00" endTime="2026-10-12T15:37:56.5837064+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="328cd5c2-0c82-4cbd-a9e8-b21a0c75d725" />
+    <UnitTestResult executionId="9bb1aec1-bcb0-4d62-b340-cf954f865788" testId="6b9d7d0a-dd5a-98ee-fe6f-29a6220f84bf" testName="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests.OverviewOptInScopeExcludesProgressAndTechnicalText" computerName="redacted-host" duration="00:00:00.1180000" startTime="2026-10-12T15:37:56.7656279+08:00" endTime="2026-10-12T15:37:56.8814759+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9bb1aec1-bcb0-4d62-b340-cf954f865788" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests.CounterChangeUsesRealRenderPulseAndSuppressesHighFrequencyBounce" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6e7a4ecf-cdce-bc94-afde-bc14c350cc43">
+      <Execution id="34580132-71b8-480c-8532-d85868046507" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests" name="CounterChangeUsesRealRenderPulseAndSuppressesHighFrequencyBounce" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests.OverviewOptInScopeExcludesProgressAndTechnicalText" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6b9d7d0a-dd5a-98ee-fe6f-29a6220f84bf">
+      <Execution id="9bb1aec1-bcb0-4d62-b340-cf954f865788" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests" name="OverviewOptInScopeExcludesProgressAndTechnicalText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests.ReducedMotionUpdatesImmediatelyWithoutNumericPulse" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="49bbe309-404c-e686-b913-50856c737f35">
+      <Execution id="328cd5c2-0c82-4cbd-a9e8-b21a0c75d725" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests" name="ReducedMotionUpdatesImmediatelyWithoutNumericPulse" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="6e7a4ecf-cdce-bc94-afde-bc14c350cc43" executionId="34580132-71b8-480c-8532-d85868046507" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49bbe309-404c-e686-b913-50856c737f35" executionId="328cd5c2-0c82-4cbd-a9e8-b21a0c75d725" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b9d7d0a-dd5a-98ee-fe6f-29a6220f84bf" executionId="9bb1aec1-bcb0-4d62-b340-cf954f865788" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.56]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.99]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.05]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.22]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

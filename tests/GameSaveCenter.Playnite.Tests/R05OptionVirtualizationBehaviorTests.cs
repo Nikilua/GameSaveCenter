@@ -109,6 +109,69 @@ public sealed class R05OptionVirtualizationBehaviorTests
     }
 
     [Fact]
+    public void DebouncedRefreshWithoutSynchronizationContextRunsOnOwningDispatcher()
+    {
+        RunStaWithDispatcher(dispatcher =>
+        {
+            SynchronizationContext.SetSynchronizationContext(null);
+            using var picker = CreatePicker(40);
+            var ownerThreadId = Environment.CurrentManagedThreadId;
+            var refreshThreadId = 0;
+            picker.PropertyChanged += (_, args) =>
+            {
+                if (args.PropertyName == nameof(GamePickerViewModel.FilteredCount))
+                    Interlocked.Exchange(ref refreshThreadId, Environment.CurrentManagedThreadId);
+            };
+
+            picker.SearchText = "Game 0017";
+            var frame = new DispatcherFrame();
+            var poll = new DispatcherTimer(DispatcherPriority.Background, dispatcher)
+            {
+                Interval = TimeSpan.FromMilliseconds(5)
+            };
+            poll.Tick += (_, _) =>
+            {
+                if (Volatile.Read(ref refreshThreadId) != 0)
+                    frame.Continue = false;
+            };
+            var timeout = new DispatcherTimer(DispatcherPriority.Send, dispatcher)
+            {
+                Interval = TimeSpan.FromSeconds(2)
+            };
+            timeout.Tick += (_, _) => frame.Continue = false;
+            poll.Start();
+            timeout.Start();
+            Dispatcher.PushFrame(frame);
+            poll.Stop();
+            timeout.Stop();
+
+            Assert.NotEqual(0, Volatile.Read(ref refreshThreadId));
+            Assert.Equal(ownerThreadId, Volatile.Read(ref refreshThreadId));
+            Assert.Equal(1, picker.FilteredCount);
+            Assert.Equal("Game 0017", picker.ItemsView.Cast<GamePickerItem>().Single().Name);
+        });
+    }
+
+    [Fact]
+    public void ImmediateRefreshCancelsPendingDebounce()
+    {
+        RunStaWithDispatcher(dispatcher =>
+        {
+            SynchronizationContext.SetSynchronizationContext(null);
+            using var picker = CreatePicker(40);
+            picker.SearchText = "Game 0017";
+            picker.RefreshNow();
+            var refreshCountAfterImmediateUpdate = picker.PerformanceDiagnostics.RefreshCount;
+
+            PumpDispatcherFor(dispatcher, TimeSpan.FromMilliseconds(100));
+
+            Assert.Equal(refreshCountAfterImmediateUpdate, picker.PerformanceDiagnostics.RefreshCount);
+            Assert.Equal(1, picker.FilteredCount);
+            Assert.Equal("Game 0017", picker.ItemsView.Cast<GamePickerItem>().Single().Name);
+        });
+    }
+
+    [Fact]
     public void ProductionPickerKeepsVirtualizedItemsBoundToTheFilteredView()
     {
         RunSta(() =>
@@ -265,6 +328,43 @@ public sealed class R05OptionVirtualizationBehaviorTests
         thread.Join();
         if (failure != null)
             throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
+    private static void RunStaWithDispatcher(Action<Dispatcher> action)
+    {
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                SynchronizationContext.SetSynchronizationContext(null);
+                var dispatcher = Dispatcher.CurrentDispatcher;
+                action(dispatcher);
+                dispatcher.InvokeShutdown();
+            }
+            catch (Exception exception)
+            {
+                failure = exception;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        if (failure != null)
+            throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
+    private static void PumpDispatcherFor(Dispatcher dispatcher, TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Send, dispatcher)
+        {
+            Interval = duration
+        };
+        timer.Tick += (_, _) => frame.Continue = false;
+        timer.Start();
+        Dispatcher.PushFrame(frame);
+        timer.Stop();
     }
 
     private sealed class WindowHost : IDisposable

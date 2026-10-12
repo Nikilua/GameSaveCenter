@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Data;
+using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using Playnite.SDK;
@@ -24,6 +25,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private static readonly TimeSpan SearchDebounceDelay = TimeSpan.FromMilliseconds(20);
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly SynchronizationContext? synchronizationContext;
+        private readonly Dispatcher? owningDispatcher;
         private CancellationTokenSource? refreshCancellation;
         private GamePickerItem? selectedItem;
         private string searchText = string.Empty;
@@ -44,6 +46,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public GamePickerViewModel()
         {
             synchronizationContext = SynchronizationContext.Current;
+            owningDispatcher = Thread.CurrentThread.GetApartmentState() == ApartmentState.STA
+                ? Dispatcher.CurrentDispatcher
+                : null;
             ItemsView = CollectionViewSource.GetDefaultView(Items);
             ItemsView.Filter = FilterItem;
             Items.CollectionChanged += OnItemsChanged;
@@ -269,6 +274,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void RefreshNow()
         {
             if (disposed) return;
+            CancelPendingRefresh();
             ApplyViewRefresh();
         }
 
@@ -278,13 +284,17 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (disposed) return;
             foreach (var item in Items)
                 item.RefreshBindings();
-            ApplyViewRefresh();
+            RefreshNow();
         }
 
         /// <summary>Stops a pending debounce when the owning WPF view is unloaded.</summary>
         public void CancelPendingRefresh()
         {
-            refreshCancellation?.Cancel();
+            var pending = refreshCancellation;
+            refreshCancellation = null;
+            if (pending == null) return;
+            pending.Cancel();
+            pending.Dispose();
         }
 
         public bool MatchesCurrentFilter(GamePickerItem item) => FilterItem(item);
@@ -338,8 +348,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (disposed) return;
             disposed = true;
-            refreshCancellation?.Cancel();
-            refreshCancellation?.Dispose();
+            CancelPendingRefresh();
             Items.CollectionChanged -= OnItemsChanged;
             itemCache.Clear();
         }
@@ -427,8 +436,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void ScheduleRefresh()
         {
-            refreshCancellation?.Cancel();
-            refreshCancellation?.Dispose();
+            CancelPendingRefresh();
             refreshCancellation = new CancellationTokenSource();
             var token = refreshCancellation.Token;
             _ = DebouncedRefreshAsync(token);
@@ -443,11 +451,33 @@ namespace GameSaveCenter.Playnite.ViewModels
                 // immediate without refreshing once per key in a large library.
                 await Task.Delay(SearchDebounceDelay, token).ConfigureAwait(false);
                 if (token.IsCancellationRequested || disposed) return;
-                if (synchronizationContext == null) ApplyViewRefresh();
-                else synchronizationContext.Post(_ =>
+                if (synchronizationContext != null)
                 {
-                    if (!token.IsCancellationRequested) ApplyViewRefresh();
-                }, null);
+                    synchronizationContext.Post(_ =>
+                    {
+                        if (!token.IsCancellationRequested && !disposed) ApplyViewRefresh();
+                    }, null);
+                    return;
+                }
+
+                if (owningDispatcher == null)
+                {
+                    ApplyViewRefresh();
+                    return;
+                }
+
+                if (owningDispatcher.HasShutdownStarted || owningDispatcher.HasShutdownFinished) return;
+                try
+                {
+                    _ = owningDispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() =>
+                    {
+                        if (!token.IsCancellationRequested && !disposed) ApplyViewRefresh();
+                    }));
+                }
+                catch (InvalidOperationException) when (owningDispatcher.HasShutdownStarted || owningDispatcher.HasShutdownFinished)
+                {
+                    // The owning WPF loop is closing; an unloaded picker has no view to refresh.
+                }
             }
             catch (OperationCanceledException) { }
         }

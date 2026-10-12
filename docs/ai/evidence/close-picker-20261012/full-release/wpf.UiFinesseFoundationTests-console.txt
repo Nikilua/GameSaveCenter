@@ -1,0 +1,25 @@
+[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.77]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.ProductionMotionCallsResolveDurationsFromTheirVisualHost [142 ms]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.MotionHostResourceOverridesTheCanonicalTokenWithoutChangingFallbacks [544 ms]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.ExternalMutableTransformsAreOwnedPerElement [34 ms]
+[xUnit.net 00:00:05.69]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.EntranceMotionReentryKeepsTheRenderedBaseWhenLatestClockIsCancelled [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.CSharpMotionMatchesTheMotionTokenContract [2 ms]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.MotionAnimationsReleaseClocksAtTheirFinalValues [326 ms]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.EntranceMotionReentryKeepsTheCurrentDispatcherValue [630 ms]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.EntranceMotionTakesOverFromTheCurrentEffectiveValue [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.UiFinesseFoundationTests.ScaleTransformIsReusedInAStableCompositeTree [24 ms]
+
+测试运行成功。
+测试总数: 9
+     通过数: 9
+总时间: 17.6542 秒
+结果文件: [repo]\.tmp\round3-before-picker-e121\diagnostics\20261012T071031838Z-28139e10\tests\wpf.UiFinesseFoundationTests\wpf.UiFinesseFoundationTests.trx

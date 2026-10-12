@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="21d8de25-e91f-4f2d-9d72-65fcc70952ec" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T15:36:27.2196677+08:00" queuing="2026-10-12T15:36:27.2196680+08:00" start="2026-10-12T15:36:21.8309127+08:00" finish="2026-10-12T15:36:41.3531911+08:00" />
+  <TestSettings name="default" id="0d65497e-b4fa-4a00-8e4e-7b0b9137694c">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c356fdb5-2015-4f29-b4e7-4dc621717fa3" testId="d161e0d6-512a-5144-9ace-dd83d32d1bbd" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Failed, stateDisplay: &quot;失败&quot;, expectedDetail: &quot;失败&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:36:26.1271625+08:00" endTime="2026-10-12T15:36:26.1281638+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c356fdb5-2015-4f29-b4e7-4dc621717fa3" />
+    <UnitTestResult executionId="acb59f1e-9d20-4f1a-8e60-69f95a7570a4" testId="e8116738-8462-3af9-7b75-85fe47f404ec" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Succeeded, stateDisplay: &quot;成功&quot;, expectedDetail: &quot;完成&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:36:26.1221702+08:00" endTime="2026-10-12T15:36:26.1231650+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="acb59f1e-9d20-4f1a-8e60-69f95a7570a4" />
+    <UnitTestResult executionId="515425d1-3408-4a48-b214-b9e3a25bd589" testId="15cb493b-927f-ccb8-d81c-ad9546a9512a" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Cancelled, stateDisplay: &quot;已取消&quot;, expectedDetail: &quot;已取消&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:36:26.1241623+08:00" endTime="2026-10-12T15:36:26.1251633+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="515425d1-3408-4a48-b214-b9e3a25bd589" />
+    <UnitTestResult executionId="c24c877d-db29-45ec-805a-c222c64f0b96" testId="1e4688d9-43f0-24ad-4599-bca38b465ec0" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TaskToastAutomationPeerCarriesTheFinalStateText" computerName="redacted-host" duration="00:00:00.4210000" startTime="2026-10-12T15:36:25.6992082+08:00" endTime="2026-10-12T15:36:26.1041671+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c24c877d-db29-45ec-805a-c222c64f0b96" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Succeeded, stateDisplay: &quot;成功&quot;, expectedDetail: &quot;完成&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e8116738-8462-3af9-7b75-85fe47f404ec">
+      <Execution id="acb59f1e-9d20-4f1a-8e60-69f95a7570a4" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TerminalTaskDtoKeepsReaderStateAndDetailAligned" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Cancelled, stateDisplay: &quot;已取消&quot;, expectedDetail: &quot;已取消&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="15cb493b-927f-ccb8-d81c-ad9546a9512a">
+      <Execution id="515425d1-3408-4a48-b214-b9e3a25bd589" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TerminalTaskDtoKeepsReaderStateAndDetailAligned" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Failed, stateDisplay: &quot;失败&quot;, expectedDetail: &quot;失败&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d161e0d6-512a-5144-9ace-dd83d32d1bbd">
+      <Execution id="c356fdb5-2015-4f29-b4e7-4dc621717fa3" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TerminalTaskDtoKeepsReaderStateAndDetailAligned" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TaskToastAutomationPeerCarriesTheFinalStateText" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1e4688d9-43f0-24ad-4599-bca38b465ec0">
+      <Execution id="c24c877d-db29-45ec-805a-c222c64f0b96" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TaskToastAutomationPeerCarriesTheFinalStateText" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d161e0d6-512a-5144-9ace-dd83d32d1bbd" executionId="c356fdb5-2015-4f29-b4e7-4dc621717fa3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8116738-8462-3af9-7b75-85fe47f404ec" executionId="acb59f1e-9d20-4f1a-8e60-69f95a7570a4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="15cb493b-927f-ccb8-d81c-ad9546a9512a" executionId="515425d1-3408-4a48-b214-b9e3a25bd589" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e4688d9-43f0-24ad-4599-bca38b465ec0" executionId="c24c877d-db29-45ec-805a-c222c64f0b96" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.77]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.33]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

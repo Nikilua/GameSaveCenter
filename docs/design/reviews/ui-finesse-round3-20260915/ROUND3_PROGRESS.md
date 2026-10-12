@@ -1050,6 +1050,15 @@
 - 真实 Playnite、物理 DPI/跨屏、IME/UIA、presented frame、ETW、宿主性能和 package-host 仍未验；Demo 原目录仍不可用，继续以恢复生产资源基线为视觉依据。main 工作树现有用户改动未合并、未覆盖。
 - 下一可执行小批量：R08-08，检查并收口 `GscMotion` 的变换所有权与 Freezable 生命周期。
 
+## 2026-10-12 CLOSE-PICKER 本机全量复验
+
+- 对原删除回退 `Game 0000` 期望/`Game 0020` 实际的全量失败新增确定性 STA Dispatcher 负例；旧 `GamePickerViewModel` 在无 `SynchronizationContext` 时确实把 WPF 刷新执行在线程池。修复回投所属 Dispatcher，并让立即刷新、状态刷新、Dispose 取消 pending debounce；20ms 合并、选择回退、虚拟化和键盘路径保留。picker 类最终 `5/5`，完整隔离 WPF `114` 类中该类通过。
+- R09-05 行为测试和生产模板的实际结构已对齐：错误描边是独立 `ValidationStroke` 两 DIP overlay，输入 `Chrome` 保持一 DIP。测试检查 overlay 的显示、厚度、命中状态及清除错误后的隐藏，不要求 Chrome 改两 DIP。原失败与最终通过 TRX 分别保留在 [CLOSE-PICKER 证据](../../../ai/evidence/close-picker-20261012/README.md)。R09-05 状态与 192 项总数不变。
+- 完整 Release `0 warnings / 0 errors`、XAML `24/24`；Core `125/125`，Worker `356 passed / 1 skipped`，Playnite source `461 passed / 27 skipped`，WPF `608 passed / 39 skipped`、114 类全过；总计 `1,550 passed / 67 skipped / 0 failed`，脚本 exit0。本机 SDK8.0.423；Worker Named Pipe skip 保持环境限制。
+- 测试程序集是 `e12119b` 加三个 dirty 源码/测试文件构建，摘要保留 dirty 状态与程序集 SHA/MVID，不冒充 clean post-commit。没有真实 Playnite、物理 DPI/跨屏、IME/UIA、ETW或最终帧验证；Demo 原目录不可用，继续沿用恢复生产基线。
+- 最近 e121 基线 freshness 是 `4 fresh / 10 stale`，baseline 本轮未改；修复提交后重跑 freshness，并按 R00/R01 关联行为/负例逐项更新。推送后 Actions 新 run 未核验前不可报告远端阶段完成；旧 run `36677346317` 本次不可读，`36675309812` 日志仍403。Round3 任务状态/总数未变。
+- 下一可执行批次：CLOSE-EVID-01，对 R00/R01 十条 stale sourcePaths 做精确补证和证据直达校正；真实宿主滚动、CI SDK10 与用户Q06/R08原始失败仍单列。
+
 ## 2026-09-19 R00/R01 合并后门禁纠偏
 
 - main DEV-INSTALL-008 的真实结果仍是 Release `0/0`、Core `83/83`、Worker `311/311`、Playnite `73 failed / 588 passed / 57 skipped`、安装器退出 `1`，未进入打包/安装。首个 `SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi` 失败来自列帮助属性插入后过期的连续字符串断言，不把它写成命令实际不可达。

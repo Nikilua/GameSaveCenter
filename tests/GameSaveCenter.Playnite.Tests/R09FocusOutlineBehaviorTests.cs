@@ -146,9 +146,13 @@ public sealed class R09FocusOutlineBehaviorTests
                 FlushLayout(window);
 
                 var errorChrome = Assert.IsType<Border>(textBox.Template.FindName("Chrome", textBox));
+                var validationStroke = Assert.IsType<Border>(textBox.Template.FindName("ValidationStroke", textBox));
                 Assert.Equal(BrushColor(resources["GscErrorTintBrush"]), BrushColor(errorChrome.Background));
                 Assert.Equal(BrushColor(resources["GscErrorBrush"]), BrushColor(errorChrome.BorderBrush));
-                Assert.Equal(new Thickness(2), errorChrome.BorderThickness);
+                Assert.Equal(new Thickness(1), errorChrome.BorderThickness);
+                Assert.Equal(1d, validationStroke.Opacity);
+                Assert.Equal(new Thickness(2), validationStroke.BorderThickness);
+                Assert.False(validationStroke.IsHitTestVisible);
                 Assert.NotNull(textBox.FocusVisualStyle);
 
                 textBox.Text = "2";
@@ -159,6 +163,7 @@ public sealed class R09FocusOutlineBehaviorTests
                 Assert.Equal(BrushColor(resources["GscControlFocusFillBrush"]), BrushColor(recoveredChrome.Background));
                 Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(recoveredChrome.BorderBrush));
                 Assert.Equal(new Thickness(1), recoveredChrome.BorderThickness);
+                Assert.Equal(0d, validationStroke.Opacity);
             }
             finally
             {

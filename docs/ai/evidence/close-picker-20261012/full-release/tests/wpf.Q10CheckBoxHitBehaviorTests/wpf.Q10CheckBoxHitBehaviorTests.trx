@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4bf4965a-9293-4b7c-a7e3-ec4c6013c1a3" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T15:21:31.7330723+08:00" queuing="2026-10-12T15:21:31.7330726+08:00" start="2026-10-12T15:21:25.8355388+08:00" finish="2026-10-12T15:21:47.8979639+08:00" />
+  <TestSettings name="default" id="333e9ad5-102e-4e61-b40f-3a557dcdd78e">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f39d1d03-ad54-4b4e-b9d9-ca63451a1246" testId="e10a2f12-b3d7-83de-676c-16db2d8ae066" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Dark)" computerName="redacted-host" duration="00:00:02.0480000" startTime="2026-10-12T15:21:29.6599217+08:00" endTime="2026-10-12T15:21:31.6936113+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f39d1d03-ad54-4b4e-b9d9-ca63451a1246" />
+    <UnitTestResult executionId="55ed216e-4d24-4a39-aacc-a23967f1e4bd" testId="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light)" computerName="redacted-host" duration="00:00:00.3300000" startTime="2026-10-12T15:21:32.0226975+08:00" endTime="2026-10-12T15:21:32.3503460+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55ed216e-4d24-4a39-aacc-a23967f1e4bd" />
+    <UnitTestResult executionId="2b910f5e-46ed-4b5f-bc49-3094465b1bd2" testId="f27795b9-8d89-7349-0cdd-0adbe1dc170b" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Light)" computerName="redacted-host" duration="00:00:00.3260000" startTime="2026-10-12T15:21:31.7156114+08:00" endTime="2026-10-12T15:21:32.0197007+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b910f5e-46ed-4b5f-bc49-3094465b1bd2" />
+    <UnitTestResult executionId="8d96125e-30b9-4268-91c3-088cdff7a9f6" testId="c9992fb5-fa9b-dfee-f70a-93be3fe3053a" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Dark)" computerName="redacted-host" duration="00:00:00.3020000" startTime="2026-10-12T15:21:32.3513457+08:00" endTime="2026-10-12T15:21:32.6524764+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d96125e-30b9-4268-91c3-088cdff7a9f6" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8">
+      <Execution id="55ed216e-4d24-4a39-aacc-a23967f1e4bd" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Light)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f27795b9-8d89-7349-0cdd-0adbe1dc170b">
+      <Execution id="2b910f5e-46ed-4b5f-bc49-3094465b1bd2" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Dark)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e10a2f12-b3d7-83de-676c-16db2d8ae066">
+      <Execution id="f39d1d03-ad54-4b4e-b9d9-ca63451a1246" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Dark)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c9992fb5-fa9b-dfee-f70a-93be3fe3053a">
+      <Execution id="8d96125e-30b9-4268-91c3-088cdff7a9f6" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e10a2f12-b3d7-83de-676c-16db2d8ae066" executionId="f39d1d03-ad54-4b4e-b9d9-ca63451a1246" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8" executionId="55ed216e-4d24-4a39-aacc-a23967f1e4bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f27795b9-8d89-7349-0cdd-0adbe1dc170b" executionId="2b910f5e-46ed-4b5f-bc49-3094465b1bd2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9992fb5-fa9b-dfee-f70a-93be3fe3053a" executionId="8d96125e-30b9-4268-91c3-088cdff7a9f6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.37]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.76]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.81]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.88]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -17,7 +17,7 @@
 | CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
 | CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 第29类R02复合按钮间距9 DIP；旧clean DLL也复现，保持8 DIP断言 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
-| CLOSE-PICKER-01 | P1 | IN_PROGRESS | 开发/测试 Agent | 第37类删除回退Game 0000→0020；旧clean/同candidate独立均3/3，防抖并发嫌疑待证明 |
+| CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例通过；本机完整 Release/WPF 门禁通过，推送后 Actions 仍需核对 |
 | CLOSE-EVID-01 | P1 | READY | UI 验证 Agent | 先修测试失败；当前8项及共享输入模板追加2项，共10项待补证 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
@@ -85,10 +85,11 @@
 
 ### CLOSE-PICKER-01：删除回退与防抖刷新时序
 
-- **发现**：第三轮全量source470/18、WPF前36类含Q14/R02/R05焦点通过；第37类删除后期望Game 0000、实际Game 0020，其余虚拟化/键盘两项通过，后77类未执行。原断言/exit1保留。
-- **对照/边界**：旧clean c35与同candidate独立均3/3；失败方法不实例化生产视图，GamePickerViewModel本阶段未改。默认名称排序、ItemsView首项回退及20ms防抖路径需受控核对。SynchronizationContext为空时直接在异步延续线程刷新存在并发嫌疑，尚未确定性证明；不把独立变绿当作关闭。
-- **完成条件**：确定性线程/排序/集合负例及修复后正例；保留隐藏选择、显示当前游戏、删除后的有序可见首项回退、虚拟化和20ms合并语义；source/大库/完整WPF/渲染门禁通过，才签收。
-- **证据**：[UI阶段第三轮终态及独立对照](ai/evidence/close-wrap-20261007/README.md)。不盲增timeout、放宽名称断言、skip或改变真实选择语义。
+- **发现与确定性复现**：第三轮完整入口原在第37类删除回退期望 `Game 0000`、实际 `Game 0020`。旧三项独立测试没有实例化生产视图/没有线程归属断言，不能排除 Dispatcher 竞态。新增无 SynchronizationContext 的 STA WPF 负例在旧实现中确定复现：刷新线程不是 owner Dispatcher。
+- **实现**：STA 创建的 picker 捕获所属 Dispatcher；缺少 SynchronizationContext 时以 DataBind 优先级回投刷新。有正常同步上下文仍沿用原路径。立即刷新、游戏状态刷新和 Dispose 会取消并释放 pending debounce；保留20ms合并、选择回退、过滤和虚拟化语义。
+- **本机门禁**：SDK8.0.423 Release 0 warnings/0 errors、XAML24/24；Core125/125、Worker356 passed/1 environment skip、Playnite source461 passed/27 skipped、WPF 114 classes 608 passed/39 skipped，无失败；picker 类5/5，R09焦点类2/2。完整证据和各项 skip/身份见[本阶段证据](ai/evidence/close-picker-20261012/README.md)。`IMPLEMENTED` 仅表示本机代码与自动化门禁，不代表 CI、真实 Playnite 或发布通过。
+- **后续边界**：推送后检查新 Actions run 的终态；随后 CLOSE-EVID-01 在修复提交后的 `main` 上重算 freshness，逐条补 R00/R01 stale 项。旧 run `36677346317` 无法读取；run `36675309812` 完整日志仍为403，不能猜测远端结果。Demo原目录不可用，不更换视觉体系。
+- **非目标**：不盲增 timeout、放宽名称断言、skip 或改变真实选择语义；不触碰用户存档/媒体/云端，不冒称已验证真实宿主、物理 DPI、IME、UIA、ETW 或最终呈现帧。
 ### CLOSE-WRAP-01：任务预设单行残留折行边距
 
 - **范围**：Q14ToolbarAlignmentBehaviorTests 在 Light/654 DIP 实测为单行，但七个控件 Margin.Bottom 仍20 DIP；原全量和同DLL独立复核均失败。定位 WrapPanel 测量、DPI边界、响应式更新和行距恢复时序，修复共享路径；不放宽断言或固定跳过654 DIP。

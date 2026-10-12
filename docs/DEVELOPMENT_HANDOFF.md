@@ -1,8 +1,16 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-07；SDK工程阶段、远端终态与当前源码/DLL身份见[SDK阶段证据](ai/evidence/close-sdk-20261007/README.md)，版本0.6.73。当前结果见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-12；本机完整 Release/WPF 隔离门禁现已通过，当前实现与 R00/R01 补证顺序见下方最新检查点及[CLOSE-PICKER证据](ai/evidence/close-picker-20261012/README.md)。版本0.6.73。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
-## 2026-10-07共享UI阶段检查点（优先于下方历史下一步）
+## 2026-10-12 当前检查点（优先于下方10月7日历史记录）
+
+- 当前 main 候选基于 `e12119bffc6d66faee44cfc89e555461fe89205b`。本阶段为 STA picker 无同步上下文时将 debounce 刷新回投所属 Dispatcher，并取消即时刷新前的旧 debounce；旧实现线程负例失败，修复后 picker 类 5/5。
+- 完整 Release 脚本 exit `0`：本机 SDK `8.0.423`，XAML24/24，0 warning/error；Core125/125，Worker356 passed/1环境skip，Playnite source461 passed/27 skipped，WPF114类608 passed/39 skipped，合计1550 passed/67 skipped/0 failed。R09测试也校正为真实断言独立 `ValidationStroke` overlay，不要求 Chrome 改为2 DIP。
+- 诊断与 DLL 身份来自 `e12119b` 加三个 dirty 源码/测试文件，ProductVersion仍含 `+e12119b`；不可当作 clean post-commit 身份。测试为合成数据及隔离 STA，无真实 Playnite、物理 DPI、IME/UIA、ETW或presented frame验收。
+- 推送前复核旧 Actions run `36677346317` 未能读取（页面/API无内容，应用内页面查询超时）；历史失败 run `36675309812` 的完整日志仍为403。提交推送后需检查当前 SHA 对应新 run，SDK10.0.401终态单独记录；CI running或unknown时不得报告阶段完成。
+- 下一步先核对本次推送 Actions；随后在修复提交后的 `main` 上执行 CLOSE-EVID-01，重算并逐项补齐 R00/R01 的10条 stale evidence。不要只改 baseline 哈希；完成后推进依赖满足的 Q/R 小批次。CLOSE-HOST-01仍受 ENV-001 限制，用户 Q06/R08 原始失败日志与 DLL identity仍缺。
+
+## 2026-10-07共享UI阶段检查点（历史记录）
 
 输入错误覆盖描边、实际Arrange行距和共享复合按钮对齐已修复；联合专项64/64、焦点可见获焦/紧凑负例4/4、完整render/source/XAML通过，Core125/Worker357/source470 passed/18原有skip。前两轮全量R02/R05失败、旧DLL/同candidate对照及干预均保留，未放宽原断言。
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6c41d28f-2dfe-47c3-9dc8-f83e885df05a" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T15:48:05.2344691+08:00" queuing="2026-10-12T15:48:05.2344698+08:00" start="2026-10-12T15:47:57.2922681+08:00" finish="2026-10-12T15:48:18.2521599+08:00" />
+  <TestSettings name="default" id="c10c952e-a5c4-41ec-a668-d688b16cb84a">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fc33ec5b-fb72-481a-9b1f-59aa37253f58" testId="2fbc98c4-552a-47dd-91ef-0756965c8955" testName="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TaskPageLoadingCompletionReplacesTheReadableStatusSurface" computerName="redacted-host" duration="00:00:01.4650000" startTime="2026-10-12T15:48:05.2159546+08:00" endTime="2026-10-12T15:48:06.6470269+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc33ec5b-fb72-481a-9b1f-59aa37253f58" />
+    <UnitTestResult executionId="17b6503f-6acf-4d95-88a7-cad183ab1ad8" testId="33412565-e202-3605-2eca-d95c88a151c4" testName="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TerminalToastIsReadableWithoutTakingFocus" computerName="redacted-host" duration="00:00:03.9480000" startTime="2026-10-12T15:48:01.2640877+08:00" endTime="2026-10-12T15:48:05.1819525+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17b6503f-6acf-4d95-88a7-cad183ab1ad8" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TaskPageLoadingCompletionReplacesTheReadableStatusSurface" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2fbc98c4-552a-47dd-91ef-0756965c8955">
+      <Execution id="fc33ec5b-fb72-481a-9b1f-59aa37253f58" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests" name="TaskPageLoadingCompletionReplacesTheReadableStatusSurface" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TerminalToastIsReadableWithoutTakingFocus" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="33412565-e202-3605-2eca-d95c88a151c4">
+      <Execution id="17b6503f-6acf-4d95-88a7-cad183ab1ad8" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests" name="TerminalToastIsReadableWithoutTakingFocus" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2fbc98c4-552a-47dd-91ef-0756965c8955" executionId="fc33ec5b-fb72-481a-9b1f-59aa37253f58" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33412565-e202-3605-2eca-d95c88a151c4" executionId="17b6503f-6acf-4d95-88a7-cad183ab1ad8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.84]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.90]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.38]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-07；本阶段修复共享输入测量/折行，并定位修复共享按钮对齐；当前在途门禁与身份见[共享UI证据](evidence/close-wrap-20261007/README.md)，分支 `main`，版本 `0.6.73-development-preview`。
+更新：2026-10-12；本地已收口 picker Dispatcher 刷新与 R09 错误描边测试校正，完整 Release/WPF 隔离门禁通过。阶段证据：[CLOSE-PICKER-01](evidence/close-picker-20261012/README.md)。当前分支 `main`，版本 `0.6.73-development-preview`。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -10,22 +10,22 @@
 
 | 维度 | 当前可核查事实 |
 | --- | --- |
-| 本轮构建 | SDK `8.0.423`，Release `0 warning / 0 error`，XAML `24/24` |
-| 本轮测试 | 联合专项64/64，焦点4/4；当前Core125/Worker357/source470 passed/18原有skip；完整render/source/XAML通过。第三轮WPF前36类含Q14/R02/R05焦点通过，第37类删除回退2 passed/1 failed、后77类未执行，完整门禁未通过 |
-| 远端 CI | 前阶段两条SDK10侧栏22/22通过，Q14失败且产物已下载；91bfb6e1/run37569191845在自测成功日志后的外层退出码失败，后续未执行/artifact0；c35/run37570629705两项自测success，SDK8.0.423及失败artifact已实际验证，仍停修复前Q14，联合候选新CI待验 |
-| SDK契约 | global.json/CI精确8.0.423、rollForward=disable、C#12.0；PS5.1/7真实缺失旧SDK与latestMajor对照通过；当前runner确选8.0.423且预装9/10未漂移；完整门禁/包待验 |
-| R00/R01 证据 | 联合候选实际影响4 fresh/10 stale：原8项加R00-01-02/R00-05；baseline未改。本地包仍为历史d57a613f，未安装 |
-| 真实宿主 | 历史存在隔离 EmbeddedPlaynite 样本，但当前候选的 Media Inbox 滚动、主题/DPI/输入等未闭环，`MANUAL QA REQUIRED` |
+| 本轮构建 | 本机 SDK `8.0.423`；Release `0 warning / 0 error`；XAML `24/24`。SDK10.0.401 属于远端 Actions，单独核验 |
+| 本轮测试 | Core `125/125`；Worker `356 passed / 1 skipped`；Playnite source `461 passed / 27 skipped`；WPF `114 classes, 608 passed / 39 skipped`；合计 `1,550 passed / 67 skipped / 0 failed`，完整脚本 exit `0` |
+| 当前实现阶段 | `CLOSE-PICKER-01` 本机代码和自动化门禁已实现；新增 STA Dispatcher 线程负例证明旧实现线程错误，删除回退/虚拟化全量通过。R09 测试已校正为检查独立 `ValidationStroke` 两 DIP 覆盖层，不错误断言 Chrome 改为两 DIP |
+| 远端 CI | 旧检查点 run `36677346317` 本次无法读取，状态未知；run `36675309812` 仍失败且完整日志 API 返回403。当前修改提交推送后要检查新 Actions run 直至终态；CI SDK10.0.401 不以本机 SDK8结果替代 |
+| R00/R01 证据 | e121 基线 freshness 上次为 `4 fresh / 10 stale`；当前阶段源码尚未提交后的 freshness 尚未重算，baseline 未更新。CLOSE-EVID-01 下一步按受影响路径逐项补行为/负例证据 |
+| 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
-SDK与远端结果在[本阶段证据](evidence/close-sdk-20261007/README.md)；[CI诊断阶段](evidence/close-ci-20261007/README.md)、[IPC证据](evidence/close-ipc-20261005/README.md)与[原审阅](evidence/completion-review-20261005/README.md)保留历史。SDK10的真实ClientAreaAnimation=false路径已验证，侧栏通过；Q14现已通过定向及首轮全量入口：双主题654 DIP单行margin恢复0，错误态几何稳定，60组测量及往返通过；初轮完整render通过。随后发现R02内容拉伸导致图标间距9，独立旧DLL复现；共享按钮修复后原4项及新增内容切换3项通过，最终联合render和静态门禁通过，第二轮全量第35类R05失败；日志证明隐藏ComboBox/Focus失败的夹具前提，修正并补紧凑负例4/4。第三轮source470/18、WPF前36类通过，第37类删除回退实际Game 0020而期望Game 0000，后77类未执行；旧clean与同candidate独立均3/3，CLOSE-PICKER-01需要受控归因，不能抹除失败。整体门禁尚未通过。
+历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。本地完整运行现已通过，R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。完整候选仍需远端 Actions 终态和后续 R00/R01 freshness 校正。
 
 ## 当前执行顺序
 
 唯一活动队列为 [AUTONOMOUS_BACKLOG.md](../AUTONOMOUS_BACKLOG.md) 的“2026-10-05 收口队列”，不是历史文档散落的下一项。
 
-1. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：工程基线与失败上传已接入；按当前源码runner实际结果签收，完整门禁通过前保持IN_PROGRESS。
-2. P1 `CLOSE-WRAP-01`：输入/行距修复已通过专项及Q14全量入口；CLOSE-OPTICAL-01及CLOSE-FOCUS-01专项与全量入口已通过，第三轮新CLOSE-PICKER-01优先定位；完整114类门禁通过才签收。
-3. P1 `CLOSE-EVID-01`：上述回归修复后按10项sourcePaths精确补证，不能只改哈希转绿。
+1. 推送本阶段 main 提交并核对对应 Actions；状态未知/运行中时不宣称阶段完成，SDK10.0.401 结果单列。
+2. P0 `CLOSE-CI-01` / `CLOSE-SDK-01`：取得可用的当前 Actions 终态与完整日志；旧 run 403/页面不可读时记录限制，不盲修。
+3. P1 `CLOSE-EVID-01`：在修复提交后重算 freshness，针对 R00/R01 的10条 stale sourcePaths 补行为、负例与身份，不能只改哈希转绿。
 4. `ENV-001` 条件满足后执行 `CLOSE-HOST-01`：同一隔离 Playnite 进程记录 Media Inbox 滚动前后几何与 DLL 身份。
 5. `CLOSE-REG-01` / `CLOSE-REL-01`：用户失败证据、恢复/撤销恢复和当前候选发布矩阵；未满足前不扩充纯视觉任务。
 

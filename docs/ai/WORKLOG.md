@@ -9987,3 +9987,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `a6b6dfc9430662e3cc5b7fe00862bce95ac5ebb5` 已推送；Actions run `36675309812` 最终失败，`编译、测试与打包` job 的 `编译与测试` 步骤退出码 `1`，持续约 13 分钟。此前附件的 C#14 `field` 编译修复已在 `d1b81ceb`，不能把新 run 的失败归因于同处。
 - 未取得完整远端日志：公开日志下载 API 返回 403 `Must have admin rights to Repository.`；check-run annotation 只有通用 exit code。失败阶段/测试名/错误文本仍未确认，未作盲修。run 链接与恢复路径记在 `CURRENT_STATE.md`、`DEVELOPMENT_HANDOFF.md` 和 full-release evidence README。
 - 本机 SDK 9.0.302 完整 Release 仍通过，但 SDK10.0.401 GitHub 构建当前必须标记失败/未诊断。用户要求本窗口完成记录后暂停；恢复后先取日志并定位该 run，再决定修复。Media Inbox 同宿主滚动等独立未验项保留。
+
+## 2026-10-12 CLOSE-PICKER-01 与完整本机 Release 复验
+
+- R05 全量删除回退失败曾被单独的 3/3 测试掩盖；该旧测试不实例化生产 view。新增 STA Dispatcher/no-SynchronizationContext 负例，在旧 ViewModel 上稳定失败：预期 owner thread、实际刷新发生在线程池。`GamePickerViewModel` 现捕获 STA `Dispatcher` 并在缺少同步上下文时回投 DataBind 刷新；即时刷新、状态刷新和 Dispose 取消/释放 debounce。修复后 R05 类 5/5。
+- 第一次完整复跑暴露 R09 测试陈旧断言：当前 TextBox 模板使用独立 `ValidationStroke` 两 DIP overlay，Chrome 保持一 DIP；测试误期望错误时 Chrome 变成两 DIP。修正为验证 overlay 显示/非命中、Chrome 不改布局，错误恢复后 overlay opacity 为0；R09 类 2/2。
+- 第二次 `scripts/build.ps1 -Configuration Release` exit `0`：SDK8.0.423、XAML24/24、solution 0 warnings/0 errors；Core125/125，Worker356 passed/1 skipped，Playnite source461 passed/27 skipped，WPF 114类608 passed/39 skipped，117 TRX 总计1550 passed/67 skipped/0 failed。`python scripts/validate-source.py` 通过。Named Pipe 独立 Worker 测试为环境 skip，未冒称通过。完整诊断、逐类CSV、修复前后 TRX、SDK与 dirty-tree DLL身份见 [CLOSE-PICKER 证据](evidence/close-picker-20261012/README.md)。
+- 测试在 `e12119b` 加三个 dirty 源码/测试文件上运行；诊断真实标记 `workingTreeClean=false`，ProductVersion 仍为 `+e12119b`，不能当成 clean post-commit 身份。无真实 Playnite/物理 DPI/IME/UIA/ETW/presented frame 验证；使用合成数据和隔离目录，未触碰用户存档/媒体/云端。
+- 远端 Actions 尚未核实：旧 run `36677346317` 本次页面/API不可读；`36675309812` 完整日志仍返回403。当前 main 提交推送后检查新 run 直至终态，SDK10.0.401 与本机SDK8结果分账。下一项为 CLOSE-EVID-01：修复提交后重算 R00/R01 freshness，逐项补齐10条 stale 证据，不只更新 baseline 哈希。

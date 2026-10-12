@@ -1,0 +1,22 @@
+[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.78]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.84]   Starting:    GameSaveCenter.Playnite.Tests
+N01 [�Աȶ�] detector=AdaptiveThemePaletteContrastGuard.ValidateTextContrast; expected-failure=�������ڰ����ϱ������ violation; detected=True; violations=1, check=negative-black-on-dark
+N02 [����] detector=NumericCellReadability.Measure; expected-failure=�и����㹻����ֵ�п��������ʧ��; detected=True; text=-99,999,999,999,999, horizontalFit=False, verticalFit=True, isReadable=False
+N03 [����] detector=AcrylicProductionShellView.OnPickerPreviewKeyDown; expected-failure=�޿ɼ���ѡ�� Enter ����ȷ�Ͼ�ѡ���ر�ѡ��; detected=True; handled=False, overlay=Visible, selectionPreserved=True
+N04 [�㼶] detector=RealHostUiAuditService.CheckChildLayoutOverflow; expected-failure=�̶������еĳ����Ӽ�����д CHILD_LAYOUT_OVERFLOW; detected=True; gateExists=True
+N05 [״̬] detector=WorkspaceStatePresenter; expected-failure=Loading ״̬�����������Բ���ϵײ�����; detected=True; retry=Collapsed, underlyingHit=False, presenterHitTestVisible=True
+[xUnit.net 00:00:06.46]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors [3 s]
+
+测试运行成功。
+测试总数: 1
+     通过数: 1
+总时间: 22.6412 秒
+结果文件: [repo]\.tmp\round3-before-picker-e121\diagnostics\20261012T071031838Z-28139e10\tests\wpf.UiNegativeFixtureRegistryTests\wpf.UiNegativeFixtureRegistryTests.trx

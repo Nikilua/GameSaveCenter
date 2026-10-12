@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="05ff1bf7-be90-406b-8d98-779d18a3362d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T15:55:37.3925735+08:00" queuing="2026-10-12T15:55:37.3925739+08:00" start="2026-10-12T15:55:31.6264522+08:00" finish="2026-10-12T15:55:51.1354877+08:00" />
+  <TestSettings name="default" id="a934bac1-7294-4829-828f-8d31ab9444f5">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4e7d2676-67e3-4123-92c4-fcdd54ee7b83" testId="04929262-6084-f858-98e7-d3161af25658" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.UnknownOrAlreadyDecoratedStatusesPassThrough(status: &quot;✓ 已完成&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.9195570+08:00" endTime="2026-10-12T15:55:35.9205573+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4e7d2676-67e3-4123-92c4-fcdd54ee7b83" />
+    <UnitTestResult executionId="40d0cb1d-ac60-4e45-9ea8-40127e857a7e" testId="37a007f3-699e-182c-56a6-167262d90176" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;设备冲突&quot;, expected: &quot;⚠ 设备冲突&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.9035574+08:00" endTime="2026-10-12T15:55:35.9125595+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40d0cb1d-ac60-4e45-9ea8-40127e857a7e" />
+    <UnitTestResult executionId="6cd18006-2c4b-4cb3-8aa5-dd6d9e63ad9d" testId="1d6b3cff-dacd-578d-a1ca-20ec93df6943" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.UnknownOrAlreadyDecoratedStatusesPassThrough(status: &quot;&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.9175572+08:00" endTime="2026-10-12T15:55:35.9185599+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6cd18006-2c4b-4cb3-8aa5-dd6d9e63ad9d" />
+    <UnitTestResult executionId="512d37f4-5a03-41ab-915f-b816eb404682" testId="d4662fce-9bb3-dbca-fd28-38aa65a9ebfc" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.UnknownOrAlreadyDecoratedStatusesPassThrough(status: &quot;自定义状态&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.9155571+08:00" endTime="2026-10-12T15:55:35.9165582+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="512d37f4-5a03-41ab-915f-b816eb404682" />
+    <UnitTestResult executionId="9bc6055b-0205-4fc2-8ae3-76ddec2bca4e" testId="689af7fd-6aaf-4afb-a551-831f11a0694c" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;已锁定&quot;, expected: &quot;✓ 已锁定&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.8985586+08:00" endTime="2026-10-12T15:55:35.8995608+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9bc6055b-0205-4fc2-8ae3-76ddec2bca4e" />
+    <UnitTestResult executionId="1540e408-4b29-46d0-a8bd-334fdbddc121" testId="440a27bc-1883-2197-f0fc-0fe7435a037a" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.ConvertBackNeverWritesBusinessState" computerName="redacted-host" duration="00:00:00.0570000" startTime="2026-10-12T15:55:35.9225572+08:00" endTime="2026-10-12T15:55:35.9345569+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1540e408-4b29-46d0-a8bd-334fdbddc121" />
+    <UnitTestResult executionId="fc0870f7-82f6-4829-8cfa-ad817d5a3716" testId="e8dc69dc-1f77-0b2a-641e-a667cc5d99fa" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;备份失败&quot;, expected: &quot;× 备份失败&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.9005578+08:00" endTime="2026-10-12T15:55:35.9015598+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc0870f7-82f6-4829-8cfa-ad817d5a3716" />
+    <UnitTestResult executionId="6ab1ea4e-0a83-43e1-b893-02127a2b16af" testId="7025e106-01f9-10e4-c368-ae60ae4b95e3" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;待处理&quot;, expected: &quot;⚠ 待处理&quot;)" computerName="redacted-host" duration="00:00:00.0250000" startTime="2026-10-12T15:55:35.8685577+08:00" endTime="2026-10-12T15:55:35.8775574+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ab1ea4e-0a83-43e1-b893-02127a2b16af" />
+    <UnitTestResult executionId="26efbf35-f2a6-4bea-91ad-933fa08ad955" testId="7853f864-0ecb-8cd9-9b70-64caa9c648d8" testName="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;成功&quot;, expected: &quot;✓ 成功&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-12T15:55:35.8955572+08:00" endTime="2026-10-12T15:55:35.8965582+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26efbf35-f2a6-4bea-91ad-933fa08ad955" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.UnknownOrAlreadyDecoratedStatusesPassThrough(status: &quot;✓ 已完成&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="04929262-6084-f858-98e7-d3161af25658">
+      <Execution id="4e7d2676-67e3-4123-92c4-fcdd54ee7b83" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="UnknownOrAlreadyDecoratedStatusesPassThrough" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;待处理&quot;, expected: &quot;⚠ 待处理&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7025e106-01f9-10e4-c368-ae60ae4b95e3">
+      <Execution id="6ab1ea4e-0a83-43e1-b893-02127a2b16af" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="KnownStatusesReceiveAccessibleTextCue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;设备冲突&quot;, expected: &quot;⚠ 设备冲突&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="37a007f3-699e-182c-56a6-167262d90176">
+      <Execution id="40d0cb1d-ac60-4e45-9ea8-40127e857a7e" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="KnownStatusesReceiveAccessibleTextCue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;成功&quot;, expected: &quot;✓ 成功&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7853f864-0ecb-8cd9-9b70-64caa9c648d8">
+      <Execution id="26efbf35-f2a6-4bea-91ad-933fa08ad955" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="KnownStatusesReceiveAccessibleTextCue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.ConvertBackNeverWritesBusinessState" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="440a27bc-1883-2197-f0fc-0fe7435a037a">
+      <Execution id="1540e408-4b29-46d0-a8bd-334fdbddc121" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="ConvertBackNeverWritesBusinessState" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;备份失败&quot;, expected: &quot;× 备份失败&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e8dc69dc-1f77-0b2a-641e-a667cc5d99fa">
+      <Execution id="fc0870f7-82f6-4829-8cfa-ad817d5a3716" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="KnownStatusesReceiveAccessibleTextCue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.UnknownOrAlreadyDecoratedStatusesPassThrough(status: &quot;&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1d6b3cff-dacd-578d-a1ca-20ec93df6943">
+      <Execution id="6cd18006-2c4b-4cb3-8aa5-dd6d9e63ad9d" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="UnknownOrAlreadyDecoratedStatusesPassThrough" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.KnownStatusesReceiveAccessibleTextCue(status: &quot;已锁定&quot;, expected: &quot;✓ 已锁定&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="689af7fd-6aaf-4afb-a551-831f11a0694c">
+      <Execution id="9bc6055b-0205-4fc2-8ae3-76ddec2bca4e" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="KnownStatusesReceiveAccessibleTextCue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests.UnknownOrAlreadyDecoratedStatusesPassThrough(status: &quot;自定义状态&quot;)" storage="[repo]\.tmp\round3-before-picker-e121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d4662fce-9bb3-dbca-fd28-38aa65a9ebfc">
+      <Execution id="512d37f4-5a03-41ab-915f-b816eb404682" />
+      <TestMethod codeBase="[repo]\.tmp\round3-before-picker-e121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.StatusGlyphConverterTests" name="UnknownOrAlreadyDecoratedStatusesPassThrough" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="04929262-6084-f858-98e7-d3161af25658" executionId="4e7d2676-67e3-4123-92c4-fcdd54ee7b83" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37a007f3-699e-182c-56a6-167262d90176" executionId="40d0cb1d-ac60-4e45-9ea8-40127e857a7e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d6b3cff-dacd-578d-a1ca-20ec93df6943" executionId="6cd18006-2c4b-4cb3-8aa5-dd6d9e63ad9d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d4662fce-9bb3-dbca-fd28-38aa65a9ebfc" executionId="512d37f4-5a03-41ab-915f-b816eb404682" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="689af7fd-6aaf-4afb-a551-831f11a0694c" executionId="9bc6055b-0205-4fc2-8ae3-76ddec2bca4e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="440a27bc-1883-2197-f0fc-0fe7435a037a" executionId="1540e408-4b29-46d0-a8bd-334fdbddc121" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8dc69dc-1f77-0b2a-641e-a667cc5d99fa" executionId="fc0870f7-82f6-4829-8cfa-ad817d5a3716" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7025e106-01f9-10e4-c368-ae60ae4b95e3" executionId="6ab1ea4e-0a83-43e1-b893-02127a2b16af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7853f864-0ecb-8cd9-9b70-64caa9c648d8" executionId="26efbf35-f2a6-4bea-91ad-933fa08ad955" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="9" executed="9" passed="9" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.94]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.00]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.14]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
