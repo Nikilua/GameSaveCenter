@@ -10195,4 +10195,5 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 修正 `R07ResizeStressBehaviorTests`：基线检查详情 ScrollViewer 的本地 `Visibility` 和正的实际宽高；五个宽→窄→短→宽→恢复样本都检查详情布局宽高，同时保留 picker、焦点、任务表可见面积、MaxHeight 恢复和 shell resize 路由断言。没有生产代码改动。
 - 本机官方 SDK `8.0.423` Release 构建 `0 warning / 0 error`、XAML `24/24`；R07 定向 `1/1`。样本详情区域依次为 `360×476`、`632.667×136`、`632.667×136`、`360×476`、`360×476` DIP，shell `SizeChanged=7`。TRX 与五个 Actions 日志 ZIP/SHA、源 SHA及边界见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。
 - `validate-source.py` 与 `git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`，未处理其他页面警告。VSTest cleanup 出现 TextServicesHost `InvalidComObjectException`，测试 exit0，原因未知。
-- 当前提交尚未推送，修正后的 Actions 结果待触发，因此 R07-08 仍未收口。此次测试只证明受控 STA WPF 布局面积，不证明真实 Playnite、物理 resize/DPI/跨屏、OS UIA或最终呈现帧。下一项等待 R07 Actions 终态后，单独完成 R06-05 列头行为证据阶段；其测试修改未纳入本阶段。
+- R07 代码/证据提交 `55d3df19` 已推送。对应 #955（run `38317008652`，SDK `8.0.423`）终态 failure：`scripts/validate-source.py` 在源码结构检查发现 CURRENT_STATE 缺少必需 `0.6.73` 标记，后续编译与测试被跳过。完整日志 ZIP SHA-256 `c022325198c2c1f4245b7462fc0e5111ac7502fd0832dbfa70d1c25f52acd3e3` 已放入证据包；版本事实已在工作树恢复，待本机校验和后续提交触发新 Actions。
+- R07-08 仍未完成远端复核。测试证据只证明受控 STA WPF 布局面积，不证明真实 Playnite、物理 resize/DPI/跨屏、OS UIA或最终呈现帧。下一步是通过本机 source validation，推送日志/事实校正，再等新 Actions 终态；通过后才单独完成 R06-05 列头行为与当前视觉证据阶段。

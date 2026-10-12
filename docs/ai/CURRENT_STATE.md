@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；当前 main HEAD `a2f8883c`，生产源未变化；工作树有独立的 R07-08 和 R06-05 测试修改。R00-03/R00-04 在源码身份 `5762c874` 下定向行为 `25/25`、freshness `14/14`；R00-04 合成 2000 项搜索 30/30 次改变结果集，p50/p95/max `46/63/75 ms`。本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；R07 修正后定向 `1/1`。Actions #952/#953/#954 的 SDK `8.0.423` 完整日志均定位到旧 R07 `IsVisible` 初始断言；修正后的 Actions 尚未触发。用户指定 #919/#920 的旧提交实际 SDK `10.0.401`，侧栏过渡断言失败；不能用本机 SDK8替代当前 SDK10结果。详细日志与本机 TRX见[R07-08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；当前 main HEAD `55d3df19`，生产源未变化；工作树有独立的 R06-05 测试修改。R00-03/R00-04 在源码身份 `5762c874` 下定向行为 `25/25`、freshness `14/14`；R00-04 合成 2000 项搜索 30/30 次改变结果集，p50/p95/max `46/63/75 ms`。本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；R07 修正后本机定向 `1/1`。#955（SDK `8.0.423`）在源码结构检查失败，完整日志确认是 CURRENT_STATE 缺少必需的 `0.6.73` 事实标记，编译与测试已跳过；已在工作树补回，源码校验待重跑。#952/#953/#954 的 SDK `8.0.423` 完整日志均定位到旧 R07 `IsVisible` 初始断言。用户指定 #919/#920 的旧提交实际 SDK `10.0.401`，侧栏过渡断言失败；不能用本机 SDK8替代当前 SDK10结果。详细日志与本机 TRX见[R07-08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
