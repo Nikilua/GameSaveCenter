@@ -77,6 +77,14 @@ public sealed class R05TogglePersistenceBehaviorTests
                 var controlStroke = (Brush)toggle.FindResource("GscControlStrokeBrush");
                 var hint = (TextBlock)view.FindName("SettingsSaveHintText")!;
                 var baseline = settings.GetEditBaselineFingerprint();
+                var animationValueNotifications = 0;
+                settings.PropertyChanged += (_, args) =>
+                {
+                    if (string.Equals(args.PropertyName, nameof(GameSaveCenterSettings.EnableUiAnimations), StringComparison.Ordinal))
+                    {
+                        animationValueNotifications++;
+                    }
+                };
 
                 Assert.True(toggle.IsChecked);
                 AssertBrushColor(accent, track.Background);
@@ -88,7 +96,16 @@ public sealed class R05TogglePersistenceBehaviorTests
                 Assert.False(settings.EnableUiAnimations);
                 Assert.False(toggle.IsChecked);
                 AssertBrushColor(controlStroke, track.Background);
+                Assert.Equal(1, animationValueNotifications);
                 Assert.NotEqual(baseline, settings.CreateSettingsFingerprint());
+                Assert.Contains("未保存更改", hint.Text);
+
+                // Re-applying the same scalar value must not publish another UI update.
+                settings.EnableUiAnimations = false;
+                DrainDispatcher();
+                window.UpdateLayout();
+                Assert.Equal(1, animationValueNotifications);
+                AssertBrushColor(controlStroke, track.Background);
                 Assert.Contains("未保存更改", hint.Text);
 
                 var persisted = new GameSaveCenterSettings();
@@ -102,6 +119,7 @@ public sealed class R05TogglePersistenceBehaviorTests
                 Assert.True(settings.EnableUiAnimations);
                 Assert.True(toggle.IsChecked);
                 AssertBrushColor(accent, track.Background);
+                Assert.Equal(2, animationValueNotifications);
                 Assert.False(settings.HasPendingEdit);
                 Assert.Contains("已保存", hint.Text);
                 Assert.DoesNotContain("未保存更改", hint.Text);

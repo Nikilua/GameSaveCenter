@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="b6dcc87f-fa5c-428f-ba14-96f6b91c8a1e" name="redacted-test-run" runUser="redacted-user">
+  <Times creation="2026-10-13T01:55:13.3392642+08:00" queuing="2026-10-13T01:55:13.3392644+08:00" start="2026-10-13T01:55:11.1464442+08:00" finish="2026-10-13T01:55:13.3435509+08:00" />
+  <TestSettings name="default" id="562a7122-a78e-4bf9-b1bd-1966819aa1e4">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-13_01_55_13" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="36e95f2e-7a07-4185-8634-ecbb13b213c2" testId="dc23d9b7-5175-8d6d-1faf-ecbd1062890b" testName="GameSaveCenter.Playnite.Tests.SettingsSaveFeedbackTests.SaveFeedbackDistinguishesWriteFailureFromWorkerApplyFailure" computerName="redacted-host" duration="00:00:00.0280000" startTime="2026-10-13T01:55:13.1430776+08:00" endTime="2026-10-13T01:55:13.1802006+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="36e95f2e-7a07-4185-8634-ecbb13b213c2" />
+    <UnitTestResult executionId="96dbe4ca-12b6-4c66-a03d-b11cdff1bb59" testId="39e46868-e78a-b425-4f2e-47d2de94b7cb" testName="GameSaveCenter.Playnite.Tests.SettingsSaveFeedbackTests.SuccessfulWorkerApplyReturnsToIdleAndClearsFailureText" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-13T01:55:13.1982022+08:00" endTime="2026-10-13T01:55:13.1991996+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="96dbe4ca-12b6-4c66-a03d-b11cdff1bb59" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.SettingsSaveFeedbackTests.SuccessfulWorkerApplyReturnsToIdleAndClearsFailureText" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="39e46868-e78a-b425-4f2e-47d2de94b7cb">
+      <Execution id="96dbe4ca-12b6-4c66-a03d-b11cdff1bb59" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.SettingsSaveFeedbackTests" name="SuccessfulWorkerApplyReturnsToIdleAndClearsFailureText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.SettingsSaveFeedbackTests.SaveFeedbackDistinguishesWriteFailureFromWorkerApplyFailure" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="dc23d9b7-5175-8d6d-1faf-ecbd1062890b">
+      <Execution id="36e95f2e-7a07-4185-8634-ecbb13b213c2" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.SettingsSaveFeedbackTests" name="SaveFeedbackDistinguishesWriteFailureFromWorkerApplyFailure" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="dc23d9b7-5175-8d6d-1faf-ecbd1062890b" executionId="36e95f2e-7a07-4185-8634-ecbb13b213c2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="39e46868-e78a-b425-4f2e-47d2de94b7cb" executionId="96dbe4ca-12b6-4c66-a03d-b11cdff1bb59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.00]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.05]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.15]   Finished:    GameSaveCenter.Playnite.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

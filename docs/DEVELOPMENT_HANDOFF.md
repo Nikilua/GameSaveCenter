@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 main `1c39e909` 定向 `11/11`；R05-03 定向 `7/7`，几何通过但无闪屏未验、状态部分满足；R05-04 行为复核 `3/3`；R05-05 当前 main 消费点复核仍不适用，源契约 `24/24`，没有批量三态 CheckBox。Actions #943（`38284177732`）对 main `fbf504d2` failure，6m13s，“编译与测试”exit1；日志/artifacts API HTTP403，根因与实际 CI SDK未知，不猜修。本机 SDK `8.0.423` 与待核 CI SDK `10.0.401` 分开。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。下一项复核 R05-06 已有开关保存实现的当前 main 行为与视觉证据。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
+更新：2026-10-13；R00/R01 freshness `14 fresh / 0 stale` 校正已完成。R05-01/02 main `1c39e909` 定向 `11/11`；R05-03 定向 `7/7`，几何通过但无闪屏未验、状态部分满足；R05-04 行为复核 `3/3`；R05-05 当前 main 消费点复核不适用；R05-06 当前 main 开关语义定向 `28/28`，补同值重复通知负例，无生产代码修改。Actions #944（`38286603033`）对 main `0fcb44f8` failure，7m22s，job annotation 为 exit1；日志 API HTTP403，公开页没有失败命令或断言，根因与实际 runner SDK未知，不猜修。本机 SDK `8.0.423` 与待核 CI SDK `10.0.401` 分开。当前事实见 [CURRENT_STATE](ai/CURRENT_STATE.md)，持久规则见 [PROJECT_MEMORY](ai/PROJECT_MEMORY.md)，阶段记录见 [WORKLOG](ai/WORKLOG.md)。下一项复核 R05-07 Tooltip 时序当前 main 行为。版本0.6.73。旧记录完整保留在 [历史交接](DEVELOPMENT_HANDOFF_HISTORY_THROUGH_20260930.md)。
 
 ## 2026-10-13 R05-04 当前 main 多选摘要复核
 
@@ -14,6 +14,13 @@
 - main `fbf504d2a7aabcd322c3c735959a31c7e1679fc9` 上，媒体批量仍由 Extended DataGrid + `SelectedItems` 表达；显式三态样例只存在于开发校对页。共享模板的 `IndeterminateMark` 和源字符串测试不是集合/Space/UIA 行为证据，R05-05 维持不适用。XAML `24/24`、SDK8 Release build `0/0`、源契约 `24/24`；脱敏 TRX 与源文件 SHA 见[R05-05 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - #943 终态 failure；摘要标明“编译与测试”exit1，run `38284177732`、job `114928442567`。artifact `11762189156` 477 KB，SHA-256 `bb2ffc75a4f111adffa061f46440af303131d14bfd6b52f2d6642b6b9a76176d`。页面提示登录查看完整日志；匿名 logs/artifacts API HTTP403，CI SDK和根因仍未知，不凭摘要猜修。用户要求跟踪的CI SDK10.0.401与本机8.0.423分开记录。
 - 没有启动真实 Playnite、OS Space 输入或触碰真实数据；UIA/Narrator、物理 DPI/跨屏、presented frame、ETW、宿主性能仍待验。下一项 R05-06 当前 main 开关模型、视觉、持久化和回滚行为复核。
+
+## 2026-10-13 R05-06 当前 main 开关保存语义复核
+
+- main `0fcb44f851257504d867401dab92a74b3807899a` 已有完整设置值/显示/保存/回滚实现；本轮复用现有 DTO、ToggleSwitch、Portable JSON 与 R04-08 反馈状态机，只补 `R05TogglePersistenceBehaviorTests` 同值重复赋值负例，不改生产实现。
+- 本机隔离 SDK `8.0.423` 官方 Release build `0/0`、XAML `24/24`；开关、保存反馈、草稿生命周期与源契约定向 `28/28`。实际覆盖和源码/程序集/TRX SHA 见[R05-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R05-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- #944（run `38286603033`，commit `0fcb44f8`）failure，7m22s；公开页面 annotation 只有 job exit1，需登录看完整日志，匿名日志 API HTTP403。失败命令/断言、实际 CI SDK和根因未证实；页面 artifact 摘要可见，但内容不可读。不凭摘要盲改，本机 SDK8 不替代待核 CI SDK10.0.401。
+- 合成设置/隔离路径；没有真实 Playnite、原生 MessageBox、Worker 故障注入、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW或宿主性能证据。下一项 R05-07 Tooltip 时序当前 main 行为复核。
 
 ## 2026-10-13 R05-01/02 当前 main 提交后复核与 Actions 检查点
 

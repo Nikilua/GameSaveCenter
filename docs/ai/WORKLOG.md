@@ -10102,3 +10102,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机隔离 SDK `8.0.423`：官方 `scripts/build.ps1 -Configuration Release -SkipTests` 下 XAML `24/24`、Release `0 warning / 0 error`；定向源契约 `UiFinesseRound2ControlSourceTests 24/24`。脱敏 TRX SHA-256 `52D16DC97AF112A18CA38007F6F330562FE79DD445AA778B18C7FD3873501A79`。其中半选测试只有字符串断言，不覆盖 Space/UIA/批量集合；具体文件 SHA、方法边界与复用约束见[R05-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-05-CURRENT-MAIN-RECHECK-20261013/README.md)。首次未带 `GscBuildCommit` 的直接 dotnet build 导致 0/24 执行，按项目脚本重建后 24/24 通过；首次失败不是产品断言失败。
 - Actions #943（run `38284177732`，job `114928442567`，commit `fbf504d2`）已终态 failure，6m13s；公开摘要显示“编译与测试”exit1，artifact `11762189156` 477 KB / SHA-256 `bb2ffc75a4f111adffa061f46440af303131d14bfd6b52f2d6642b6b9a76176d`。job 页要求登录；匿名 logs/artifacts API HTTP403。完整失败命令、实际 CI SDK 与根因未知，不盲改；本机 SDK8 与待核 CI SDK10.0.401 分开记录。
 - 未启动真实 Playnite/OS Space 输入；UIA/Narrator、物理 DPI/多屏、presented frame、ETW 与宿主性能仍未验。未触碰真实存档、媒体、云端或用户配置。下一项复核 R05-06 已有开关保存实现的当前 main 行为与视觉证据。
+
+## 2026-10-13 R05-06 当前 main 开关保存语义复核
+
+- main 生产代码基线 `0fcb44f851257504d867401dab92a74b3807899a` 已包含设置值/显示/保存/回滚闭环；复用现有设置 DTO、ToggleSwitch 模板、Portable JSON 与 R04-08 保存反馈状态机，本轮只为 `R05TogglePersistenceBehaviorTests` 补同值重复赋值负例，不改生产代码。
+- 本机隔离 SDK `8.0.423`，官方 Release build `0 warning / 0 error`、XAML `24/24`；`R05TogglePersistenceBehaviorTests 1/1`、`SettingsSaveFeedbackTests 2/2`、`SettingsDraftLifecycleBehaviorTests 1/1`、`UiFinesseRound2ControlSourceTests 24/24`，合计 `28/28`。当前源码与程序集身份、脱敏 TRX SHA、行为覆盖和限制见[R05-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 补充负例实测：生产 ToggleSwitch 从 true 改到 false 时发布一次属性通知；重复赋 false 不增加通知、不改变模板 Track Brush 或 dirty 提示；`CancelEdit` 恢复 true 后通知计数只增加一次。现有测试另覆盖 Portable JSON 隔离快照、依赖面板、保存写入失败/Worker apply 失败反馈和关闭“否/是”草稿生命周期。
+- 推送前已核对 main 的 #944（run `38286603033`，commit `0fcb44f8`）终态 failure、7m22s；GitHub 公开 annotation 仅显示 job exit1 与 Node 20 弃用告警，完整日志需登录，匿名日志/API HTTP403；artifact 页面可见摘要哈希但内容不可读。失败步骤内部错误、CI 实际 SDK与根因仍未知；本机 SDK8 结果不替代待核 CI SDK10.0.401，不盲改。
+- 合成设置和隔离临时目录；历史 RenderHarness 图绑定 `cf9a250f`，不作为当前 main 像素证据。本轮仅检查当前默认主题的实际 Track Brush 状态；未验证 Playnite 原生保存/MessageBox、真实 Worker 故障注入、OS UIA/Narrator/IME、物理 DPI/多屏、最终呈现帧、ETW与宿主性能。下一项 R05-07 Tooltip 时序当前 main 适用性与行为复核。
