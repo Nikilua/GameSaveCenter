@@ -10211,3 +10211,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 对照生产逻辑后，compact layout 下的 drawer 默认关闭，需经 `TaskCompactDetailsButton` 的 Click 打开。旧夹具在加载前预设 `SelectedTask`，加载后重赋同一个对象，未稳定驱动真实选择事件和 open action。现从未选中开始，在已加载的表格选中任务，先检查按钮可用/详情关闭，再路由 `Button.ClickEvent` 并核对详情面积及开/关按钮互换；再执行完整 resize 序列。生产实现未改。
 - 最终本机官方 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；定向 R07 `1/1`，脱敏 TRX含 `compactDetailsAction=clicked` 和 `632.667×136 DIP` compact 详情。五段尺寸、插件/测试 DLL与源 SHA、CI ZIP 哈希见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。测试后仍有 TextServicesHost COM cleanup 输出，原因未知。
 - 当前 R07 修正尚未提交/推送，无最新 CI 通过结果。下一步提交测试/证据/本阶段事实，推送 main 并跟踪 Actions 到终态；随后再单独推进 R06-05。受控 WPF 不代表真实 Playnite、物理 DPI/跨屏、UIA/Narrator、presented frame、ETW或宿主性能。
+
+## 2026-10-13 R07-08 实测窗口判据与 #958 失败定位
+
+- #958（run `38322407969`，commit `1c08196d98966a3761ebefd5db232acd55fd41c7`，CI SDK `8.0.423`）的完整日志确认 routed compact-details Click 和按钮状态互换均通过；随后旧测试以 `RequestedWidth - ShellActualWidth` 计算视口 inset，runner 实测 `336 DIP`，超出断言 `32 DIP`。完整日志 SHA-256 `84d55e58c4bec5c34b10d9e2e1eec569c912b99b96529bae4bbf395414918dce`，已加入证据包。
+- 夹具现记录 `Window.ActualWidth/Height`、`PageHost.ActualWidth`、生产 detail breakpoint 状态；shell inset 由实测窗口尺寸计算，compact/wide 与 MaxHeight 断言按实测页面断点状态判断。没有改生产布局或交互。
+- 找到之前未在 PATH 中的隔离 SDK `8.0.423`（`D:\GameSaveCenterTools\dotnet-sdk-8.0.423`），仅为当前进程前置 PATH。官方 Release 脚本 `0 warning / 0 error`、XAML `24/24`，R07 定向 `1/1`；本机宽屏 `PageHost=1038.667 DIP`、紧凑 `632.667 DIP`，五次详情持续可见、搜索焦点与 picker 可达，shell size-change `11`。脱敏 TRX SHA-256 `eb4e645f8e4c7ab8d93efeab3adb6cdef4601aa3f1e88e18f6e3bd9d0f3844d7`，源码与 DLL 哈希见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。测试结束后仍有 TextServicesHost COM cleanup 噪声，进程 exit `0`，原因未知。
+- 源码 validator 与 diff check 通过；本阶段证据已同步，待提交推送并追踪新 Actions 到终态。真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW与宿主性能未验；R06-05 独立工作树改动保留，不纳入本阶段。

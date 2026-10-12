@@ -168,8 +168,12 @@ public sealed class R07ResizeStressBehaviorTests
                         size.label,
                         size.width,
                         size.height,
+                        window.ActualWidth,
+                        window.ActualHeight,
                         shell.ActualWidth,
                         shell.ActualHeight,
+                        pageHost.ActualWidth,
+                        (bool)detailBreakpoint.GetType().GetProperty("IsCompact")!.GetValue(detailBreakpoint)!,
                         taskView.TaskDetailScrollViewerElement.Visibility,
                         taskView.TaskDetailScrollViewerElement.ActualWidth,
                         taskView.TaskDetailScrollViewerElement.ActualHeight,
@@ -183,15 +187,22 @@ public sealed class R07ResizeStressBehaviorTests
                 }
 
                 var wideSample = samples.Single(sample => sample.Label == "wide");
-                var shellWidthInset = wideSample.RequestedWidth - wideSample.ShellActualWidth;
-                var shellHeightInset = wideSample.RequestedHeight - wideSample.ShellActualHeight;
+                var shellWidthInset = wideSample.WindowActualWidth - wideSample.ShellActualWidth;
+                var shellHeightInset = wideSample.WindowActualHeight - wideSample.ShellActualHeight;
                 Assert.InRange(shellWidthInset, 0, 32);
                 Assert.InRange(shellHeightInset, 0, 32);
 
                 Assert.All(samples, sample =>
                 {
-                    Assert.InRange(Math.Abs((sample.RequestedWidth - sample.ShellActualWidth) - shellWidthInset), 0, 1);
-                    Assert.InRange(Math.Abs((sample.RequestedHeight - sample.ShellActualHeight) - shellHeightInset), 0, 1);
+                    Assert.True(sample.WindowActualWidth > 0, $"window had no laid out width during {sample.Label}");
+                    Assert.True(sample.WindowActualHeight > 0, $"window had no laid out height during {sample.Label}");
+                    Assert.True(sample.PageHostActualWidth > 0, $"page host had no laid out width during {sample.Label}");
+                    Assert.InRange(Math.Abs((sample.WindowActualWidth - sample.ShellActualWidth) - shellWidthInset), 0, 1);
+                    Assert.InRange(Math.Abs((sample.WindowActualHeight - sample.ShellActualHeight) - shellHeightInset), 0, 1);
+                    if (sample.PageHostActualWidth < ResponsiveLayoutCoordinator.DetailCompactThreshold)
+                        Assert.True(sample.DetailBreakpointCompact, $"page host was below the compact breakpoint but detail layout was wide during {sample.Label}: {sample.PageHostActualWidth:0.###} DIP");
+                    if (sample.PageHostActualWidth >= ResponsiveLayoutCoordinator.DetailWideExitThreshold)
+                        Assert.False(sample.DetailBreakpointCompact, $"page host was above the wide breakpoint but detail layout was compact during {sample.Label}: {sample.PageHostActualWidth:0.###} DIP");
                     Assert.Equal(Visibility.Visible, sample.DetailVisibility);
                     Assert.True(sample.DetailActualWidth > 0, $"task details had no laid out width during {sample.Label}: {sample.DetailActualWidth}");
                     Assert.True(sample.DetailActualHeight > 0, $"task details had no laid out height during {sample.Label}: {sample.DetailActualHeight}");
@@ -202,10 +213,10 @@ public sealed class R07ResizeStressBehaviorTests
                     Assert.True(IsFiniteOrPositiveInfinity(sample.DetailMaxHeight), $"detail MaxHeight became invalid during {sample.Label}: {sample.DetailMaxHeight}");
                     Assert.True(sample.PickerActualHeight > 0, $"picker menu became blank during {sample.Label}");
                     Assert.True(IsFiniteOrPositiveInfinity(sample.PickerMaxHeight), $"picker MaxHeight became invalid during {sample.Label}: {sample.PickerMaxHeight}");
-                    if (sample.Label == "wide-again" || sample.Label == "restored")
-                        Assert.True(double.IsPositiveInfinity(sample.DetailMaxHeight), $"wide detail retained a finite MaxHeight during {sample.Label}: {sample.DetailMaxHeight}");
-                    if (sample.Label == "narrow" || sample.Label == "short")
+                    if (sample.DetailBreakpointCompact)
                         Assert.True(sample.DetailMaxHeight > 0 && !double.IsPositiveInfinity(sample.DetailMaxHeight), $"compact detail did not receive its finite height budget during {sample.Label}: {sample.DetailMaxHeight}");
+                    else
+                        Assert.True(double.IsPositiveInfinity(sample.DetailMaxHeight), $"wide detail retained a finite MaxHeight during {sample.Label}: {sample.DetailMaxHeight}");
                 });
 
                 Assert.True(shellSizeChangedCount >= 4, $"window resize did not reach the production shell SizeChanged route enough times: {shellSizeChangedCount}");
@@ -285,8 +296,12 @@ public sealed class R07ResizeStressBehaviorTests
             string label,
             double requestedWidth,
             double requestedHeight,
+            double windowActualWidth,
+            double windowActualHeight,
             double shellActualWidth,
             double shellActualHeight,
+            double pageHostActualWidth,
+            bool detailBreakpointCompact,
             Visibility detailVisibility,
             double detailActualWidth,
             double detailActualHeight,
@@ -301,8 +316,12 @@ public sealed class R07ResizeStressBehaviorTests
             Label = label;
             RequestedWidth = requestedWidth;
             RequestedHeight = requestedHeight;
+            WindowActualWidth = windowActualWidth;
+            WindowActualHeight = windowActualHeight;
             ShellActualWidth = shellActualWidth;
             ShellActualHeight = shellActualHeight;
+            PageHostActualWidth = pageHostActualWidth;
+            DetailBreakpointCompact = detailBreakpointCompact;
             DetailVisibility = detailVisibility;
             DetailActualWidth = detailActualWidth;
             DetailActualHeight = detailActualHeight;
@@ -318,8 +337,12 @@ public sealed class R07ResizeStressBehaviorTests
         public string Label { get; }
         public double RequestedWidth { get; }
         public double RequestedHeight { get; }
+        public double WindowActualWidth { get; }
+        public double WindowActualHeight { get; }
         public double ShellActualWidth { get; }
         public double ShellActualHeight { get; }
+        public double PageHostActualWidth { get; }
+        public bool DetailBreakpointCompact { get; }
         public Visibility DetailVisibility { get; }
         public double DetailActualWidth { get; }
         public double DetailActualHeight { get; }
@@ -332,7 +355,7 @@ public sealed class R07ResizeStressBehaviorTests
         public double PickerMaxHeight { get; }
 
         public override string ToString()
-            => $"{Label}: shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; detail={DetailVisibility}/{DetailActualWidth:0.###}x{DetailActualHeight:0.###}; picker={PickerVisibility}; focus={SearchHasFocus}; "
+            => $"{Label}: requested={RequestedWidth:0.###}x{RequestedHeight:0.###}; window={WindowActualWidth:0.###}x{WindowActualHeight:0.###}; shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; pageHostWidth={PageHostActualWidth:0.###}; detailCompact={DetailBreakpointCompact}; detail={DetailVisibility}/{DetailActualWidth:0.###}x{DetailActualHeight:0.###}; picker={PickerVisibility}; focus={SearchHasFocus}; "
                 + $"gridActual={TaskGridActualHeight:0.###}; gridMax={TaskGridMaxHeight:0.###}; "
                 + $"detailMax={DetailMaxHeight:0.###}; pickerActual={PickerActualHeight:0.###}; pickerMax={PickerMaxHeight:0.###}";
     }

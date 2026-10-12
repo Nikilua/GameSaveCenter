@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；R07-08 上一推送源码基线 `063550b6`；R00-03/R00-04 source identity `5762c874` 行为 `25/25`、freshness `14/14`。#957 CI SDK `8.0.423` Release build 成功，R07 因详情区 `Collapsed/0×0` 失败，但 grid 与绑定选择 ID 一致。生产 compact inspector 在按钮打开前保持关闭。工作树夹具现从未选中起步，经已加载 Task DataGrid 实际选择，触发生产 open-button Click 并断言抽屉及开/关按钮变化；本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`、R07 `1/1`。该修正待提交/推送和新 Actions。#952–#957 完整日志及本机 TRX/DLL 哈希见[R07-08证据](design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。#919/#920 是旧侧栏测试且使用 SDK `10.0.401`，不能用 SDK8替代 SDK10。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW与宿主性能仍未验证。
+更新：2026-10-13；R07-08 上一推送源码基线 `1c08196d`；R00-03/R00-04 source identity `5762c874` 行为 `25/25`、freshness `14/14`。#958 CI SDK `8.0.423` build/早前测试通过；R07 的 compact drawer routed Click 和开/关按钮变化通过，随后旧视口断言用 requested width 减 actual shell width 得 `336 DIP` 而失败。当前夹具仍从未选中起步，经已加载 Task DataGrid 实际选择并触发生产 Click；缩放样本现保存 actual Window/PageHost 尺寸与 breakpoint 状态。本机用隔离路径 SDK `8.0.423` 的官方 Release 脚本 `0 warning / 0 error`、XAML `24/24`、R07 `1/1`，宽屏与紧凑样本均通过。新修正待提交/推送和对应 Actions 终态。#952–#958 完整日志及当前 TRX/DLL 哈希见[R07-08证据](design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。#919/#920 是旧侧栏测试且使用 SDK `10.0.401`，不能用当前 SDK8结果替代。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW与宿主性能仍未验证。下一步等待新 R07 CI 成功，再独立收口 R06-05。
 
 ## 2026-10-13 R00-03 / R00-04 当前 main freshness 复核
 

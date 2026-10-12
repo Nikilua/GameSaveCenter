@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；R07-08 上一推送基线 `063550b6`；生产源未变化，工作树含 R07-08 紧凑详情交互夹具修正和独立 R06-05 测试修改。R00-03/R00-04 在源码身份 `5762c874` 下定向行为 `25/25`、freshness `14/14`；合成 2000 项搜索 `30/30` 次改变结果集，p50/p95/max `46/63/75 ms`。本机官方 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；最终 R07 定向 `1/1`，确认 routed Click 打开 compact drawer、开/关按钮状态互换。#955 因缺 `0.6.73` 标记在源码检查失败；#956/#957 build 成功，但 R07 详情区仍 `Collapsed/0×0`。#957 还确认 DataGrid 与绑定对象 ID 相同；根因在夹具没有打开紧凑详情抽屉。新夹具从未选中状态加载，再选择并点击生产按钮，本机通过，待提交推送后新 CI。完整日志、本机 TRX/DLL SHA见[R07-08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。#919/#920 是旧代码下 CI SDK `10.0.401` 的侧栏测试失败，不用 SDK8替代。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；R07-08 上一推送基线 `1c08196d`；工作树含 R07-08 测试判据修正与独立 R06-05 测试修改。R00-03/R00-04 在源码身份 `5762c874` 下定向行为 `25/25`、freshness `14/14`；合成 2000 项搜索 `30/30` 次改变结果集，p50/p95/max `46/63/75 ms`。本机从隔离路径选择 SDK `8.0.423`，Release `0 warning / 0 error`、XAML `24/24`，R07 定向 `1/1`；实测窗口/页面宽度覆盖宽屏与紧凑分支。CI #958（run `38322407969`，SDK `8.0.423`）先确认 compact drawer Click 通过，再因旧测试将请求宽度与实际 shell 宽度相减得 `336 DIP` 而失败。新判据改用 `Window.ActualWidth/Height` 与实测 `PageHost` 断点，尚待提交推送后 Actions。完整日志、本机 TRX/DLL SHA见[R07-08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。#919/#920 是更早源码下 CI SDK `10.0.401` 的侧栏测试失败；版本和源码结论分开记录。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -29,8 +29,8 @@
 | R06-02 当前 main | `90454586` 隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`；`R06SortingBehaviorTests 7/7`。实际 WPF 列头双向点击/箭头、乱序重加稳定次键、未知值和失效视图负例见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。历史 RenderHarness 图绑定 `c577afc5`，未当作当前截图 |
 | R06-03 当前 main | 生产实现沿用 `d83c7378`；本轮以 `fdeeec8` 生产源加单项测试差异构建，SDK `8.0.423` Release `0/0`、XAML `24/24`；R06Selection `2/2`、四表双主题状态几何 `1/1`、Task 双主题受控 hover/错误徽章 InputHitTest/Failed 终态禁用与 Running 取消按钮 UIA Invoke `1/1`、共享资源契约 `2/2`。测试仅证明隔离 WPF 状态与逻辑 DIP，不是实际 OS 指针或 Playnite 呈现。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R06-04 当前 main | 复用 afe4aa55 已有 DataGridClipboardBehavior 和五类 profile；生产行为复核 5/5，复制反馈 2/2。本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、侧栏 22/22、R06Clipboard 5/5、R22 2/2。#952 完整日志显示其失败发生在旧 R07 resize 初始断言；本轮修正尚无 CI 结果，R06-04 不因本机定向通过签收。详情见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md) |
-| R07-08 当前 main | #952–#957 的判据/夹具问题已由完整日志定位；#957 为 SDK `8.0.423`，build 成功，R07 仍观察 `Collapsed/0×0`，但 DataGrid 与 bound `SelectedTask` 均为同一合成任务。源代码要求 compact drawer 经“查看任务详情”按钮打开；当前夹具从未选中状态加载，实选后点 routed Button.Click 并核对开/关按钮互换。本机 SDK8 Release `0/0`、XAML `24/24`、R07 `1/1`，修正版待推送后 CI。详见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
-| 远端 CI | #955 SDK8 源码检查因缺 `0.6.73` 失败，build/test 跳过；#956/#957 SDK `8.0.423` build 成功但 R07 失败。#957 完整日志显示详情 `Collapsed/0×0`、Window/TaskView 可见，grid 与 view-model 选择对象 ID 相同；测试未驱动 compact drawer 的 open action。修正后的 loaded unselected→grid select→routed Click 尚无远端结果。用户指定 #919/#920 实际 SDK `10.0.401`，失败于旧侧栏 transition；不同 SDK/源码结论分开记录。日志 ZIP 与 SHA见[R07-08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
+| R07-08 当前 main | #958 完整日志显示 routed drawer Click 与开/关按钮互换已通过；其后失败来自测试把 requested width 当成 actual window width，CI 实测差 336 DIP。修正现采集 Window 实际尺寸、PageHost 宽度和生产 breakpoint 状态，按实测状态验证布局；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`，宽/紧凑两分支均有样本。新修正待推送后 CI。详见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
+| 远端 CI | #958（run `38322407969`，commit `1c08196d`，SDK `8.0.423`）build 及先前测试通过，R07 抽屉交互通过后失败于旧的请求宽度/实际 shell 宽度断言，完整日志 SHA见[R07-08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。使用 measured Window/PageHost 判据的修正版尚无 Actions 结果。旧 #919/#920 SDK `10.0.401` 侧栏失败仍绑定旧源码，不能由新 SDK8 run 代替。 |
 | R00/R01 证据 | 2026-10-13 main `5762c874` 下复核 R00-03/R00-04 `25/25`，将两条 baseline sourceCommit 更新为当前证据；freshness `14 fresh / 0 stale`。R01 与其他 R00 条目未命中本轮变更，沿用既有证据；package identity 未提供。详见[当前 R00-03/R00-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -41,7 +41,7 @@
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
 1. R00/R01 freshness 校正已随 `a2f8883c` 提交；其余未命中路径沿用既有证据，不扩大为全量重跑。
-2. 先提交并推送当前 R07-08 测试判据/证据阶段，等待对应 Actions 终态；失败时取得新完整日志再修。
+2. 提交并推送当前 R07-08 实测窗口判据/证据阶段，等待对应 Actions 终态；失败时先取得新完整日志再修。
 3. R07 Actions 成功后收口 R06-05：复用现有列头说明与排序实现，核对新行为测试实际覆盖，再更新账本。
 4. 用户指定旧 #919/#920 的 SDK10.0.401 失败属于已变化源码；当前工作流 SDK8 结果不得冒充 SDK10 复核。R05-07/R06-04 仍需当前远端门禁覆盖后再签收。
 4. package identity、真实宿主与发布矩阵继续单列；没有实际包或宿主证据不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`。
