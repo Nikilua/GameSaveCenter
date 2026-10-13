@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前顺序是修复并收口 #967 的 CI 门禁，再复核 R00/R01，之后推进依赖满足的 Q/R。#965 布局测试主机尺寸修正已在 `5eaa12bf`，#966 SDK8 run 成功。新增 SDK10 job 在 #967 对 `983fee5` 用 SDK `10.0.401` 全步骤成功（用户 ZIP SHA 与 artifact `11795654027` 一致）；同一 run 的 SDK8 源码结构检查失败，`python scripts/validate-source.py` 本机复现为新建 `verify-sdk-build.ps1` 缺 UTF-8 BOM，添加 BOM 后通过。SDK8 原始日志仍未读到，新的 CI 必须验证该修正；SDK10 成功不得替代 SDK8 终态。R00/R01 上次 freshness 为旧源身份，后续需重跑并只记录新事实。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 的代码门禁已在 #968（SDK8 `8.0.423`、SDK10 `10.0.401`）成功，#969 文档同步 run 也成功；R00/R01 freshness `14 fresh / 0 stale`。#967 用户 ZIP 是绿色 SDK10 job，不能代表整个 workflow；独立 SDK8 源码门禁同 guard 已在本机复现并以 BOM 修复，#968 验证了修正。当前 R05-03 隔离 Playnite bootstrap 被 graceful-shutdown 保护挡下；运行中的 PID `34512` 与 4 个 CefSharp 子进程仍使用隔离 profile，不能强杀、删除 profile 或重跑。继续依赖已满足的 Q/R；用户 R08-01 `1/2` 故障仍需原始错误材料。详见 CURRENT_STATE 与最新工作日志。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：#968 当前源码的 SDK8/SDK10 门禁已成功；#960/#961 的旧 run 状态和历史失败根因仍按原证据保留，不再阻塞当前候选。下一项 R05-03 先做隔离 Playnite fail-closed 预检。R00/R01 freshness 为 14/14（source identity 4aa1ec7），package identity 与真实宿主验收独立待验。R02-06 仍受 ENV-001 限制；Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：#968 当前源码的 SDK8/SDK10 门禁已成功；#960 terminal failure 日志不可读，根因未知，不盲改。R00/R01 freshness 为 14/14（source identity 4aa1ec7），package identity 与真实宿主验收独立待验。R05-03 隔离 Playnite fail-closed bootstrap 未关闭，PID `34512` 与 4 个 CefSharp 子进程仍使用隔离 profile，不强杀或重跑。下一项 Round2 Q23-06 目录编辑器离屏视觉复核，使用 RenderHarness 与合成路径/状态；R08-01 用户故障仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
@@ -93,4 +93,12 @@ CURRENT_STATE 保持短摘要，PROJECT_MEMORY 保持稳定规则，HANDOFF 保�
 
 ### 2026-10-13 当前 CI 与 R00/R01 检查点
 
-`4aa1ec7` 对应 #968/run `38366158855` 已终态成功。SDK8 `8.0.423` 与 SDK10 `10.0.401` 是两个独立 job，分别记录，不互相替代。#967 的 SDK8 源码门禁因 `verify-sdk-build.ps1` 缺 UTF-8 BOM 失败；本机用同一 `validate-source.py` guard 复现后补 BOM。#967 SDK8 原始日志仍不可读，用户上传的 ZIP 是绿色 SDK10 job。R00/R01 freshness 为 14/14，package identity 未提供；此数值不代表 Playnite 宿主、IME、物理 DPI/跨屏或最终呈现已验证。下一项按 backlog 先检查 R05-03 的隔离宿主预检，不满足条件就记录真实阻塞并继续其他 Q/R 工作。相关证据：[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+`4aa1ec7` 对应 #968/run `38366158855` 已终态成功；SDK8 `8.0.423` 和 SDK10 `10.0.401` 是独立 job。#969/run `38377673615` 是随后的文档同步并成功。#967 的 SDK8 源码门禁因 `verify-sdk-build.ps1` 缺 UTF-8 BOM 失败；同一 `validate-source.py` guard 在本机复现后补 BOM。用户 ZIP 对应绿色 SDK10 job `115178885908`，SHA 与 artifact `11795654027` 一致，SDK `10.0.401`，117 TRX、1566 passed/0 failed。R00/R01 freshness 为 14/14，package identity 未提供；不代表 Playnite 宿主、IME、物理 DPI/跨屏或最终呈现已验证。证据：[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+
+### 2026-10-13 R05-03 隔离宿主保护点
+
+既有 `scripts/real-host-audit.ps1` 在独立 `--userdatadir` 下未于关闭请求后 20 秒退出，准确错误为 `Playnite isolated profile bootstrap did not exit gracefully; refusing to force-stop it and leave a safe-start marker.` Runner 在扩展安装前退出；配置文件已创建，无 safe-start marker，无插件安装或合成库，真实 Popup 交互/呈现帧没有运行。PID `34512` 是本次 exe/profile；当前观察到 4 个 CefSharp 子进程仍绑定隔离 profile，host 本身仍 responding、HWND 为 0。不要强制终止或删除 profile；等整个树自行退出后再判断是否可重试。证据摘要在 `evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/host-preflight-20261013.json`，runner 原始输出由对应 README 引用。
+
+### 2026-10-13 #967 R08-01 自动证据
+
+用户给的 SDK10 ZIP 内独立 `R08MotionReverseBehaviorTests` TRX 为 `2/2`，已复制该 5.5 KB 精确 TRX 到 `evidence/R08-01-CURRENT-MAIN-RECHECK-20261013/`；包 SDK `10.0.401`。测试 source SHA 与当前相同。此自动证据不解释用户机器 `1/2`；未取得具体失败方法/断言/堆栈/DLL 身份，不能说该故障已修复。

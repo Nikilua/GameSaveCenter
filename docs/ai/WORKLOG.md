@@ -10301,3 +10301,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 freshness summary `14 fresh / 0 stale`，源码检查点 `4aa1ec7`，package identity `not-provided`。#968 本阶段没有按类导出 R00/R01 计数；没有把完整测试步骤通过改写为逐类计数。
 - #967 SDK8 结构检查失败由 `verify-sdk-build.ps1` 缺 UTF-8 BOM 引起；本机同 guard 复现并补标记。SDK8 原始 job log 仍不可读；用户上传 ZIP 绑定绿色 SDK10 job。完整元数据与限制见[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 下一项 R05-03：先执行既有隔离 Playnite fail-closed 预检，确认可用后再采集实际弹层翻转帧。真实 Playnite、package identity、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能仍未验证。
+
+## 2026-10-13 #967 诊断包、R08-01 证据与隔离宿主预检
+
+- 用户提供的 #967 ZIP SHA-256 `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409` 对应 SDK10 job `115178885908` / artifact `11795654027`：SDK `10.0.401`，全步骤通过，包含 117 TRX、1566 passed/0 failed。截图中 workflow 红灯来自 SDK8 job `115178885652` 的源码结构检查失败；该 job 原始日志仍为匿名 API 403 / log endpoint 404。对应 guard 本机复现并于 `4aa1ec7` 修复 BOM，#968 的 SDK8 `8.0.423` 与 SDK10 `10.0.401` jobs 已成功。
+- 从用户 ZIP 提取 R08-01 独立 TRX，`R08MotionReverseBehaviorTests 2/2`，原 TRX SHA-256 `409D39AB7377E28AE83C16EB1FEBF74645CEDD6187A53A6C8C35DC418FA56F7F`。测试 source SHA 与当前一致；这不能解释用户机器 `1/2` 的具体失败，因为未收到该轮方法、断言、堆栈或 DLL 身份。
+- `scripts/real-host-audit.ps1` 在 Playnite 插件安装之前退出 `1`，分类 `isolated-profile-bootstrap-failed-before-host-install`。精确错误为 runner 拒绝强行结束未优雅退出的隔离启动进程。到 `2026-10-13T10:35:50Z`，PID `34512` 与 4 个 CefSharp 子进程仍使用本次 profile；host responding、HWND `0`，无 safe-start marker，未装扩展/Worker、未播种合成库、未执行 Popup 或视觉采样。进程树与 profile 保留，不强杀/删目录/重试。摘要与原始日志引用见 R05-03 复核包。
+- #960/run `38327521241` 公开状态已更新为 terminal failure：13m54s，job `115069541561`“编译与测试”exit 1；full-log endpoint 404、REST 403，SDK 和实际命令/原因未知。只校正事实，不猜测失败根因。
+- HEAD `d56d23e` 的文档 run #969/run `38377673615` 已终态成功（43m27s）。本轮同步了 R05-03/R08-01/#960 的证据边界；当前 package identity 仍未提供。真实 Playnite 呈现、OS 输入/UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。

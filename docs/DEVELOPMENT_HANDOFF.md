@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；当前分支 `main`，本阶段基线 `983fee5cae51f0f9fbe4b100620ab156e3a723f1`。用户提供的 SDK10 ZIP 匹配 artifact `11795654027`，确认 SDK `10.0.401` 全步骤成功；#967 SDK8 job 在源码结构检查失败。原始 SDK8 log/API 访问分别 HTTP404/403，但本机同 commit 跑同一 validator 复现新脚本缺 UTF-8 BOM；补 BOM 后源码检查通过。该修正与证据正在本地整理，尚未推送。下一步 commit/push main，等新 Actions 的 SDK8 和 SDK10 两 job 到终态；随后复核 R00/R01 freshness，再做依赖满足的 Q/R 小批。保护其他任务 R04/R05/R07 未跟踪证据。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
+更新：2026-10-13；当前分支 `main`，代码检查点 `4aa1ec7ef9bafa95758027a9c9ea4f0c43be8c80`；上一文档提交 `d56d23e` 对应 #969/run `38377673615` 已成功。#968 SDK8 `8.0.423`/SDK10 `10.0.401` jobs 成功；R00/R01 freshness `14 fresh / 0 stale`。#967 用户 ZIP 是 SDK10 job `115178885908` 的通过诊断包，SDK8 `115178885652` 源码门禁失败由同 guard 本机复现并在 `4aa1ec7` 修复。R05-03 隔离 Playnite bootstrap 在扩展安装前按保护规则失败；PID `34512` 和 4 个隔离 CefSharp 子进程仍活跃，profile 不能删或重跑。下一项 Round2 Q23-06：用生产资源/RenderHarness 检查目录编辑器的长路径、只读、错误态和按钮位置，使用合成数据，离屏证据不代表真实宿主。R08-01 用户 `1/2` 失败仍无原始 log/TRX/断言/程序集身份。#960 的失败原因仍未知（log 404/API 403）。保留其他任务 R04/R05/R07 未跟踪证据。真实 Playnite 呈现、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
@@ -176,3 +176,10 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - R00/R01 freshness summary 为 `14 fresh / 0 stale`；没有按类重跑；package identity `not-provided`。#967 SDK8 日志仍受匿名 HTTP403/404 限制，上传 ZIP 只代表绿色 SDK10 job；helper BOM 修正已在 `4aa1ec7`。
 - 下一项 R05-03：从已授权隔离 Playnite的 fail-closed 预检开始，只有通过后才采集真实弹层翻转帧；如果预检阻塞，保存精确错误与后续手工步骤并转其他独立 Q/R。
 - 真实 Playnite/Worker、package identity、物理 DPI/跨屏、OS 输入/UIA/IME、最终呈现帧、ETW 与宿主性能均未验。保留其他任务未跟踪 R04/R05/R07 TRX，不纳入提交；不下载或安装 86.1 MB workflow preview artifact，也不触碰真实存档/媒体/云端。
+
+## 2026-10-13 当前恢复点：#969 文档门禁与 R05-03 bootstrap 阻塞
+
+- HEAD `d56d23e` 对应 #969/run `38377673615` 已成功；最新代码阶段仍为 `4aa1ec7`，#968 的 SDK8/SDK10 jobs 都通过。R00/R01 `14 fresh / 0 stale` 未因文档同步变化。
+- #967 ZIP 是 SDK10 job `115178885908`，不是 workflow 的 SDK8 失败 job。对应 R08-01 TRX 已提取并复核 `2/2`；用户机原始 `1/2` 故障仍未定位。
+- R05-03 runner 在 Playnite 扩展安装前因隔离启动进程未优雅退出而停止。到 `2026-10-13T10:35:50Z`，PID `34512` 与 4 个 CefSharp 子进程仍使用 `.tmp/r05-03-popup-profile-20261013`。不得强杀、删除该 profile 或在进程活跃时重跑；没有产生 popup/呈现证据。详见 R05-03 README 与 `host-preflight-20261013.json`。
+- #960/run `38327521241` 为 terminal failure、job `115069541561` exit 1；完整 log 404、API 403，SDK/根因未知。下一项 Round2 Q23-06：用 RenderHarness 在生产基线上检查目录编辑器长路径、只读检测、错误说明和 Browse 按钮布局，合成数据仅用隔离路径，不写真实目录；离屏结果不代表真实宿主/物理跨屏/最终呈现。

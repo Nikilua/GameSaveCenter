@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "scenario": "R05-03 isolated Playnite host preflight",
+  "observedUtc": "2026-10-13T10:35:50Z",
+  "repositoryHead": "d56d23e52b8d560861aedc6cea8056ce0a9a8e0b",
+  "actions": {
+    "runId": "38377673615",
+    "status": "success",
+    "duration": "43m27s"
+  },
+  "preflight": {
+    "conflictingProcesses": 0,
+    "processCommandLineInspection": "available",
+    "playniteExecutable": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "authenticode": "Valid",
+    "displayCount": 1,
+    "primaryWorkArea": "2560x1368"
+  },
+  "runner": {
+    "script": "scripts/real-host-audit.ps1",
+    "exitCode": 1,
+    "classification": "isolated-profile-bootstrap-failed-before-host-install",
+    "error": "Playnite isolated profile bootstrap did not exit gracefully; refusing to force-stop it and leave a safe-start marker.",
+    "isolatedConfigCreated": true,
+    "safeStartFlagPresent": false,
+    "extensionInstalled": false,
+    "syntheticLibrarySeeded": false
+  },
+  "bootstrapProcess": {
+    "processId": 34512,
+    "executableVerified": true,
+    "isolatedUserDataProfile": ".tmp/r05-03-popup-profile-20261013",
+    "gracefulCloseRequested": true,
+    "exited": false,
+    "responding": true,
+    "mainWindowHandle": 0,
+    "forcedStop": false,
+    "isolatedCefSubprocesses": [38904, 27052, 37216, 38220],
+    "profileRetainedWhileProcessesAlive": true
+  },
+  "evidence": {
+    "visualEvidenceCaptured": false,
+    "popupInteractionPerformed": false,
+    "flickerRequirementVerified": false,
+    "cefAccessDeniedMatches": 0,
+    "rawLocalOutput": "artifacts/ui-host-audit-r05-03-popup-20261013/host-startup-blocker.json and runner-metadata.json"
+  },
+  "boundary": "Underlying reason the isolated Playnite process remained alive is unknown. The runner stopped before extension installation; no R05-03 presented-frame evidence was produced."
+}
