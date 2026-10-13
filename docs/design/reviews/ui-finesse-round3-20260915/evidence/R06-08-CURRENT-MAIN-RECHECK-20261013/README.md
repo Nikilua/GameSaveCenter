@@ -36,4 +36,6 @@
 
 当前源 checkout 仍不含 Demo 原始 `DesignShellView.xaml`/`Pages`；沿用恢复生产基线，不切换设计体系。没有启动真实 Playnite/Worker，未验宿主 UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW、宿主性能或真实服务失败时序；没有操作真实存档、媒体、云端或诊断数据。
 
-本机 SDK8 与 CI SDK分别记录，不互相替代。上一个文档提交对应 #963/run `38338090417` 已 Failure；公开 job `115102664699` 只显示“编译与测试”失败，后续步骤跳过。Logs API 403 rate limit、artifact partial 404，CI SDK与失败命令/断言/堆栈未知。#962 同样只显示该步骤失败。R06-08 本次代码/测试提交推送后还需查询新的 Actions；没有完整日志前不猜修。下一项为 `R07-01 滚动所有权` 当前 main 复核，先核对多层 ScrollViewer 所有权与边界传递测试，复用现有行为实现。
+用户提供了 #962/#963 诊断包：两次 Release build 都通过，实际 CI SDK `8.0.423`、VSTest `17.11.1`；失败步骤是无关的 R08 数字动效夹具，反馈计数实际 `0`、期望 `1`。原始包摘要和测试输出、失败解释见 [R08-06 当前 main / CI 门控复核](../R08-06-CURRENT-MAIN-RECHECK-20261013/README.md)。#964/run `38339686245`（job `115107636301`）在 R06-08 提交 `83fbee97` 上也终态失败于“编译与测试”；匿名 artifact partial 返回 404，尚无该 run 的完整日志。已按 #962/#963 的实际断言修正数字动效测试输入；本次修正提交推送后仍须跟踪新 Actions 至终态。
+
+下一项仍为 `R07-01 滚动所有权` 当前 main 复核：先核对页面/表格/详情/弹层多层 ScrollViewer 的所有权及边界传递测试，复用现有实现。真实 Playnite、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能与真实服务失败时序仍未验。

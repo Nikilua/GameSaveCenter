@@ -39,6 +39,7 @@ public sealed class R08NumericChangeBehaviorTests
                 };
                 value.Resources["GscMotionFast"] = new Duration(TimeSpan.FromSeconds(1));
                 NumericChangeFeedback.SetIsEnabled(value, true);
+                NumericChangeFeedback.SetSystemMotionEnabledForAudit(value, true);
                 Grid.SetColumn(value, 0);
                 grid.Children.Add(value);
 
@@ -66,7 +67,9 @@ public sealed class R08NumericChangeBehaviorTests
                 GscMotion.NormalizeAll();
                 FlushLayout(window);
                 Assert.Equal(1, NumericChangeFeedback.GetFeedbackCountForAudit(value));
-                Assert.Equal(1d, scale?.ScaleX ?? 1d, 3);
+                Assert.NotNull(scale);
+                Assert.True(scaleWasAnimated, "The numeric change must exercise a real WPF render animation.");
+                Assert.Equal(1d, scale!.ScaleX, 3);
             }
             catch (Exception caught)
             {
@@ -84,7 +87,6 @@ public sealed class R08NumericChangeBehaviorTests
 
         Assert.Null(failure);
         Assert.Equal(1, feedbackCount);
-        Assert.True(scaleWasAnimated, "The numeric change must exercise a real WPF render animation.");
         Assert.Equal(siblingLeftBefore, siblingLeftAfter, 3);
     }
 
@@ -140,6 +142,120 @@ public sealed class R08NumericChangeBehaviorTests
         Assert.Equal("100", finalText);
         Assert.Equal(0, feedbackCount);
         Assert.False(animated);
+    }
+
+    [Fact]
+    public void SystemMotionPreferenceSuppressesNumericPulse()
+    {
+        Exception? failure = null;
+        int feedbackCount = 0;
+        bool animated = false;
+        string? finalText = null;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var value = new TextBlock
+                {
+                    Text = "99",
+                    Width = 96,
+                    Height = 40,
+                    RenderTransformOrigin = new Point(0.5, 0.5)
+                };
+                NumericChangeFeedback.SetIsEnabled(value, true);
+                NumericChangeFeedback.SetSystemMotionEnabledForAudit(value, false);
+                window = CreateWindow(value);
+                window.Show();
+                FlushLayout(window);
+
+                value.Text = "100";
+                FlushLayout(window);
+                feedbackCount = NumericChangeFeedback.GetFeedbackCountForAudit(value);
+                finalText = value.Text;
+                var scale = FindScale(value.RenderTransform);
+                animated = scale != null
+                    && DependencyPropertyHelper.GetValueSource(scale, ScaleTransform.ScaleXProperty).IsAnimated;
+            }
+            catch (Exception caught)
+            {
+                failure = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(failure);
+        Assert.Equal("100", finalText);
+        Assert.Equal(0, feedbackCount);
+        Assert.False(animated);
+    }
+
+    [Fact]
+    public void DefaultSystemMotionPreferenceControlsNumericPulse()
+    {
+        Exception? failure = null;
+        int feedbackCount = 0;
+        bool animated = false;
+        bool systemMotionEnabled = false;
+        string? finalText = null;
+
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var value = new TextBlock
+                {
+                    Text = "99",
+                    Width = 96,
+                    Height = 40,
+                    RenderTransformOrigin = new Point(0.5, 0.5)
+                };
+                NumericChangeFeedback.SetIsEnabled(value, true);
+                window = CreateWindow(value);
+                window.Show();
+                FlushLayout(window);
+                systemMotionEnabled = GscMotion.IsEnabled(true);
+
+                value.Text = "100";
+                FlushLayout(window);
+                feedbackCount = NumericChangeFeedback.GetFeedbackCountForAudit(value);
+                finalText = value.Text;
+                var scale = FindScale(value.RenderTransform);
+                animated = scale != null
+                    && DependencyPropertyHelper.GetValueSource(scale, ScaleTransform.ScaleXProperty).IsAnimated;
+                GscMotion.NormalizeAll();
+                FlushLayout(window);
+            }
+            catch (Exception caught)
+            {
+                failure = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(failure);
+        Assert.Equal("100", finalText);
+        Assert.Equal(systemMotionEnabled ? 1 : 0, feedbackCount);
+        if (systemMotionEnabled)
+            Assert.True(animated, "The default system motion preference must allow the real numeric pulse when enabled.");
+        else
+            Assert.False(animated, "The default system motion preference must suppress the numeric pulse when disabled.");
     }
 
     [Fact]

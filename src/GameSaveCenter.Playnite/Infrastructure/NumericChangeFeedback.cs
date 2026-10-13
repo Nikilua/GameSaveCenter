@@ -70,6 +70,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 state.LastText = textBlock.Text ?? string.Empty;
                 state.LastFeedbackUtc = DateTime.MinValue;
                 state.FeedbackCount = 0;
+                state.SystemMotionEnabledForAudit = null;
                 return;
             }
 
@@ -96,7 +97,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 || !TryParseCounter(currentText, out var currentValue)
                 || previousValue == currentValue
                 || !GetMotionEnabled(textBlock)
-                || !GscMotion.IsEnabled(true))
+                || !(state.SystemMotionEnabledForAudit ?? GscMotion.IsEnabled(true)))
             {
                 return;
             }
@@ -123,12 +124,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
         internal static int GetFeedbackCountForAudit(TextBlock textBlock)
             => States.TryGetValue(textBlock, out var state) ? state.FeedbackCount : 0;
 
+        internal static void SetSystemMotionEnabledForAudit(TextBlock textBlock, bool? enabled)
+        {
+            var state = States.GetOrCreateValue(textBlock);
+            state.SystemMotionEnabledForAudit = enabled;
+        }
+
         private sealed class State
         {
             internal bool HasObservedText;
             internal string LastText = string.Empty;
             internal DateTime LastFeedbackUtc;
             internal int FeedbackCount;
+            internal bool? SystemMotionEnabledForAudit;
         }
     }
 }

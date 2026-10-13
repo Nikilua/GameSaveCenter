@@ -36,5 +36,5 @@
 
 ## 远端门禁与下一步
 
-- commit `87d27592086bbef355b9426a00614b5bb9856e8c` 对应 Actions #962 / run `38335989087`，状态 Failure。公开 job 页可见失败步骤名为“编译与测试”，job id `115096054544`；日志页要求登录，无认证 Logs API 返回 HTTP `403 rate limit exceeded`，artifact partial 返回 `404`。失败命令/断言/堆栈、CI SDK、根因仍未知；不根据摘要或 exit code 猜测，也不改代码绕过。
-- 下一项：复核已满足的 `R06-08 详情与行高预算` 当前 main 绑定与行为覆盖，检查选中对象同步及四行门禁；同时继续寻找 #962 完整日志的可用权限入口。远端日志仍不可得时，记录阻塞并推进不依赖该根因的任务。
+- 用户随后提供 #962 诊断包。该 run 的 Release 构建成功，CI SDK `8.0.423`、VSTest `17.11.1`；失败位于无关的 `R08NumericChangeBehaviorTests.CounterChangeUsesRealRenderPulseAndSuppressesHighFrequencyBounce`：反馈计数实际 `0`、期望 `1`。摘要和原始测试输出已核对，详见 [R08-06 CI 门控复核](../R08-06-CURRENT-MAIN-RECHECK-20261013/README.md)。这不是 R06-07 失败。
+- 下一步：等待 R08-06 修正提交的 Actions 终态，再继续 `R07-01 滚动所有权` 当前 main 复核。R06-07 本机行为结论不变；真实 Playnite、物理 DPI/跨屏、UIA/读屏等边界仍未验证。
