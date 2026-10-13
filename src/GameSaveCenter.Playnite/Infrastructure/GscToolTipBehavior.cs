@@ -157,10 +157,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private static bool CloseOpenTooltips(DependencyObject scope)
         {
             var openTooltips = new List<ToolTip>();
-            foreach (PresentationSource source in PresentationSource.CurrentSources)
+            foreach (var root in EnumeratePresentationRoots(scope))
             {
-                if (source.RootVisual is DependencyObject root)
-                    CollectOpenTooltips(root, openTooltips);
+                CollectOpenTooltips(root, openTooltips);
             }
 
             var closed = false;
@@ -181,10 +180,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             CloseOpenTooltips(scope);
 
             var openPopups = new List<Popup>();
-            foreach (PresentationSource source in PresentationSource.CurrentSources)
+            foreach (var root in EnumeratePresentationRoots(scope))
             {
-                if (source.RootVisual is DependencyObject root)
-                    CollectOpenPopups(root, openPopups);
+                CollectOpenPopups(root, openPopups);
             }
 
             foreach (var popup in openPopups)
@@ -202,13 +200,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             var openTooltips = new List<ToolTip>();
             var openPopups = new List<Popup>();
-            foreach (PresentationSource source in PresentationSource.CurrentSources)
+            foreach (var root in EnumeratePresentationRoots(scope))
             {
-                if (source.RootVisual is DependencyObject root)
-                {
-                    CollectOpenTooltips(root, openTooltips);
-                    CollectOpenPopups(root, openPopups);
-                }
+                CollectOpenTooltips(root, openTooltips);
+                CollectOpenPopups(root, openPopups);
             }
 
             foreach (var tooltip in openTooltips)
@@ -225,6 +220,22 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 {
                     ApplyScopedThemeResources(popup, scope);
                 }
+            }
+        }
+
+        private static IEnumerable<DependencyObject> EnumeratePresentationRoots(DependencyObject scope)
+        {
+            var scopeDispatcher = scope.Dispatcher;
+            foreach (PresentationSource source in PresentationSource.CurrentSources)
+            {
+                // PresentationSource.CurrentSources can include roots created by another STA
+                // dispatcher. Reading those visual trees here throws VerifyAccess during the
+                // next WPF test window load (and can affect hosts with independent dispatchers).
+                if (!ReferenceEquals(source.Dispatcher, scopeDispatcher))
+                    continue;
+
+                if (source.RootVisual is DependencyObject root)
+                    yield return root;
             }
         }
 

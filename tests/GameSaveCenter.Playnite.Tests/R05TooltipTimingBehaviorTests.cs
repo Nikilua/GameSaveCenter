@@ -19,6 +19,65 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R05TooltipTimingBehaviorTests
 {
     [Fact]
+    public void RefreshIgnoresPresentationRootsOwnedByAnotherDispatcher()
+    {
+        using var sourceReady = new ManualResetEventSlim();
+        Dispatcher? foreignDispatcher = null;
+        Exception? foreignSourceFailure = null;
+        var sourceThread = new Thread(() =>
+        {
+            try
+            {
+                using (var source = new HwndSource(new HwndSourceParameters("GSC synthetic tooltip dispatcher")
+                {
+                    Width = 80,
+                    Height = 60,
+                    WindowStyle = 0,
+                    ExtendedWindowStyle = 0x80
+                }))
+                {
+                    source.RootVisual = new Grid { Width = 80, Height = 60 };
+                    foreignDispatcher = Dispatcher.CurrentDispatcher;
+                    sourceReady.Set();
+                    Dispatcher.Run();
+                }
+            }
+            catch (Exception exception)
+            {
+                foreignSourceFailure = exception;
+                sourceReady.Set();
+            }
+        })
+        {
+            IsBackground = true
+        };
+        sourceThread.SetApartmentState(ApartmentState.STA);
+        sourceThread.Start();
+
+        var sourceThreadStopped = false;
+        try
+        {
+            Assert.True(sourceReady.Wait(TimeSpan.FromSeconds(5)), "synthetic foreign WPF presentation source did not become ready");
+            Assert.Null(foreignSourceFailure);
+            Assert.NotNull(foreignDispatcher);
+
+            RunSta(() =>
+            {
+                Assert.NotSame(Dispatcher.CurrentDispatcher, foreignDispatcher);
+                GscToolTipBehavior.RefreshOpenTransientSurfaces(new Grid());
+            });
+        }
+        finally
+        {
+            foreignDispatcher?.BeginInvokeShutdown(DispatcherPriority.Send);
+            sourceThreadStopped = sourceThread.Join(TimeSpan.FromSeconds(5));
+        }
+
+        Assert.True(sourceThreadStopped, "synthetic foreign WPF dispatcher did not stop after the tooltip refresh check");
+        Assert.Null(foreignSourceFailure);
+    }
+
+    [Fact]
     public void QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt()
     {
         RunSta(() =>
