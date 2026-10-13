@@ -173,6 +173,7 @@ public sealed class R07ResizeStressBehaviorTests
                         shell.ActualWidth,
                         shell.ActualHeight,
                         pageHost.ActualWidth,
+                        pageHost.ActualHeight,
                         (bool)detailBreakpoint.GetType().GetProperty("IsCompact")!.GetValue(detailBreakpoint)!,
                         taskView.TaskDetailScrollViewerElement.Visibility,
                         taskView.TaskDetailScrollViewerElement.ActualWidth,
@@ -187,16 +188,26 @@ public sealed class R07ResizeStressBehaviorTests
                 }
 
                 var wideSample = samples.Single(sample => sample.Label == "wide");
+                var restoredSample = samples.Single(sample => sample.Label == "restored");
+                var narrowSample = samples.Single(sample => sample.Label == "narrow");
+                var shortSample = samples.Single(sample => sample.Label == "short");
                 var shellWidthInset = wideSample.WindowActualWidth - wideSample.ShellActualWidth;
                 var shellHeightInset = wideSample.WindowActualHeight - wideSample.ShellActualHeight;
                 Assert.InRange(shellWidthInset, 0, 32);
                 Assert.InRange(shellHeightInset, 0, 32);
+                Assert.True(Math.Abs(restoredSample.PageHostActualWidth - wideSample.PageHostActualWidth) <= 1,
+                    $"restoring the original window size must restore the measured PageHost width: wide={wideSample.PageHostActualWidth:0.###}, restored={restoredSample.PageHostActualWidth:0.###}");
+                Assert.True(Math.Abs(restoredSample.PageHostActualHeight - wideSample.PageHostActualHeight) <= 1,
+                    $"restoring the original window size must restore the measured PageHost height: wide={wideSample.PageHostActualHeight:0.###}, restored={restoredSample.PageHostActualHeight:0.###}");
+                Assert.True(shortSample.PageHostActualHeight < narrowSample.PageHostActualHeight,
+                    $"the PageHost height must shrink in the shorter window: narrow={narrowSample.PageHostActualHeight:0.###}, short={shortSample.PageHostActualHeight:0.###} DIP");
 
                 Assert.All(samples, sample =>
                 {
                     Assert.True(sample.WindowActualWidth > 0, $"window had no laid out width during {sample.Label}");
                     Assert.True(sample.WindowActualHeight > 0, $"window had no laid out height during {sample.Label}");
                     Assert.True(sample.PageHostActualWidth > 0, $"page host had no laid out width during {sample.Label}");
+                    Assert.True(sample.PageHostActualHeight > 0, $"page host had no laid out height during {sample.Label}");
                     Assert.InRange(Math.Abs((sample.WindowActualWidth - sample.ShellActualWidth) - shellWidthInset), 0, 1);
                     Assert.InRange(Math.Abs((sample.WindowActualHeight - sample.ShellActualHeight) - shellHeightInset), 0, 1);
                     if (sample.PageHostActualWidth < ResponsiveLayoutCoordinator.DetailCompactThreshold)
@@ -301,6 +312,7 @@ public sealed class R07ResizeStressBehaviorTests
             double shellActualWidth,
             double shellActualHeight,
             double pageHostActualWidth,
+            double pageHostActualHeight,
             bool detailBreakpointCompact,
             Visibility detailVisibility,
             double detailActualWidth,
@@ -321,6 +333,7 @@ public sealed class R07ResizeStressBehaviorTests
             ShellActualWidth = shellActualWidth;
             ShellActualHeight = shellActualHeight;
             PageHostActualWidth = pageHostActualWidth;
+            PageHostActualHeight = pageHostActualHeight;
             DetailBreakpointCompact = detailBreakpointCompact;
             DetailVisibility = detailVisibility;
             DetailActualWidth = detailActualWidth;
@@ -342,6 +355,7 @@ public sealed class R07ResizeStressBehaviorTests
         public double ShellActualWidth { get; }
         public double ShellActualHeight { get; }
         public double PageHostActualWidth { get; }
+        public double PageHostActualHeight { get; }
         public bool DetailBreakpointCompact { get; }
         public Visibility DetailVisibility { get; }
         public double DetailActualWidth { get; }
@@ -355,7 +369,7 @@ public sealed class R07ResizeStressBehaviorTests
         public double PickerMaxHeight { get; }
 
         public override string ToString()
-            => $"{Label}: requested={RequestedWidth:0.###}x{RequestedHeight:0.###}; window={WindowActualWidth:0.###}x{WindowActualHeight:0.###}; shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; pageHostWidth={PageHostActualWidth:0.###}; detailCompact={DetailBreakpointCompact}; detail={DetailVisibility}/{DetailActualWidth:0.###}x{DetailActualHeight:0.###}; picker={PickerVisibility}; focus={SearchHasFocus}; "
+            => $"{Label}: requested={RequestedWidth:0.###}x{RequestedHeight:0.###}; window={WindowActualWidth:0.###}x{WindowActualHeight:0.###}; shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; pageHost={PageHostActualWidth:0.###}x{PageHostActualHeight:0.###}; detailCompact={DetailBreakpointCompact}; detail={DetailVisibility}/{DetailActualWidth:0.###}x{DetailActualHeight:0.###}; picker={PickerVisibility}; focus={SearchHasFocus}; "
                 + $"gridActual={TaskGridActualHeight:0.###}; gridMax={TaskGridMaxHeight:0.###}; "
                 + $"detailMax={DetailMaxHeight:0.###}; pickerActual={PickerActualHeight:0.###}; pickerMax={PickerMaxHeight:0.###}";
     }
