@@ -1585,3 +1585,13 @@
 - Playnite 定向回归 `209 total / 170 passed / 0 failed`；控制台标记 `39 skipped`，未计为通过。`validate-source.py`、XAML `24/24` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`；完整 Render QA `render-qa OK`，报告 `0 PROBLEM` 行。截图、probe 报告、TRX、全量 Render QA 报告与 SHA 见[Q23-06 当前主线复核包](../ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - Round2 Q23-06 视觉栏更新为“通过”；宿主仍“外部阻塞”，最终仍“未完成”。离屏 `1.00 DIP` 不是 Playnite/OS 呈现；真实 ACL 拒绝/网络共享、Explorer/剪贴板、宿主键盘/UIA/IME、物理 DPI/跨屏尚未验。Demo 源目录仍不可用，沿用恢复生产基线。
 - 截至 `2026-10-13 11:44 UTC`，前置文档提交 #970/run `38386326043` 页面仍显示 `In progress`。Q23-06 变更尚待中文提交/push，推送后需另跟对应 Actions 至终态，区分本机 SDK8 与 CI SDK10。下一项可执行任务为 Round2 Q23-08 底部动作栏：先核对现有保存/取消/恢复默认/导入导出命令、短窗可达和危险/迁移确认，再决定是否只补当前证据。
+
+## 2026-10-13 Q23-08 设置底部动作当前 main 复核
+
+- 先核对现有实现：Playnite 管 Save/Cancel；`SettingsResetCatalog` 管单字段/分类/全部默认；portable settings 已有 preview/confirm/apply；导入/导出与确认、错误语义已存在。本批没有增造保存/取消按钮或替换服务/DTO。
+- 只把 Reset All 确认接到共用提示方法，为实际按钮加测试名，并以内部 delegate 驱动原生 Yes/No 分支。实际按钮Click的No不改fingerprint；Yes仅修改安全草稿、路径和云端目标不动；`CancelEdit`能恢复进入本轮前的未提交草稿。导入提示No/Yes通过同一生产确认方法验证；已有source/preview测试锁定preview→confirm→apply。
+- 隔离 SDK `8.0.423`，Playnite `net462`、tests `net472`。测试项目 Release build `0 warning / 0 error`；相关 filter `10/10`、取消回归`1/1`，共`12/12`；XAML `24/24`、`validate-source.py`、`git diff --check`通过。合成 RenderHarness Light/Dark × `1040×700`/`720×640 DIP` 四态均验证Reset All展开、四类重置动作滚动可达和迁移导入/导出完整可达。证据：[Q23-08复核包](evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 代码提交 main `本阶段代码提交哈希见证据同步记录` 的首次提交后重跑曾传错 `GSC_BUILD_COMMIT`，源码身份守卫阻止3项源码测试（其余7项通过）；使用精确HEAD重建后，10/10 filter、确认1/1、取消1/1通过。WPF静态审查0 errors/29 warnings/177 info。README记录拦截和精确构建身份，当前TRX替换旧身份结果。
+- Round2 Q23-08 视觉栏已更新为通过；宿主 external、final incomplete。真实 Playnite Save/Cancel footer、原生文件对话框、实际导入/导出、physical DPI/跨屏、OS UIA/IME、呈现帧未验。Demo 源目录不可用，沿用恢复生产基线；没有使用真实设置或用户路径。
+- 用户表示目前只能提供 #967，已给包对应成功 SDK10 job。之后 #970 SDK10 workflow job失败，#971 SDK8 主 job和SDK10 job均失败；只有exit code 1，匿名API 403、job页需登录且没有artifact。未获详细日志，实际选中SDK/根因仍未知，不据摘要盲改。推送Q23-08代码后继续跟新Actions到terminal，并分别记录SDK8/SDK10。
+- 下一可执行项 Q24-01：查现有 fractional-DPI 字形/边线/图标能力，做有边界的逻辑缩放行为检查；真实物理屏与跨屏维持独立待验。保留其他任务未跟踪文件，当前证据目录的每张截图/TRX均由README索引；旧`.tmp/`清理受安全执行器拒绝，本轮不绕过。

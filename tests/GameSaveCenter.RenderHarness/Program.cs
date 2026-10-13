@@ -387,6 +387,19 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("settingsactionsprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "settings-actions-probe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunSettingsActionsProbe(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("buttonbusyprobe", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -6897,6 +6910,215 @@ public static class Program
             window?.Close();
             if (application != null && previousShutdownMode.HasValue)
                 application.ShutdownMode = previousShutdownMode.Value;
+        }
+    }
+
+    private static int RunSettingsActionsProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("Q23-08 production Settings actions visual probe");
+        report.AppendLine($"Generated: {DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}");
+        report.AppendLine("Scope: synthetic settings; a temporary empty Worker marker is created under the evidence output so existing path validation stays clear, checked for existence only, never launched, and deleted after capture. Missing synthetic Saves/Media leaf paths are not created. No save, cancel, reset, import, export, or file-dialog action is invoked.");
+        report.AppendLine("Playnite Save/Cancel remain host-owned and are not represented by synthetic buttons in this UserControl probe.");
+
+        var problems = new List<string>();
+        const string sandboxVariable = "GSC_Q23_08_SYNTHETIC_ROOT";
+        var sandboxDirectory = Path.Combine(outputRoot, "q23-08-synthetic-paths-" + Guid.NewGuid().ToString("N"));
+        var workerMarker = Path.Combine(sandboxDirectory, "GameSaveCenter.Worker.exe");
+        var previousSandboxEnvironment = Environment.GetEnvironmentVariable(sandboxVariable, EnvironmentVariableTarget.Process);
+        var workerMarkerCreated = false;
+        var sandboxDirectoryCreated = false;
+        const string sandbox = "%GSC_Q23_08_SYNTHETIC_ROOT%";
+        var workerPath = Path.Combine(sandbox, "GameSaveCenter.Worker.exe");
+        var savesPath = Path.Combine(sandbox, "Saves");
+        var mediaPath = Path.Combine(sandbox, "Media");
+        var sizes = new[] { (Width: 1040, Height: 700), (Width: 720, Height: 640) };
+        var themes = new[]
+        {
+            (Name: "light", Mode: GameSaveCenterThemeMode.Light),
+            (Name: "dark", Mode: GameSaveCenterThemeMode.Dark)
+        };
+
+        try
+        {
+            Directory.CreateDirectory(sandboxDirectory);
+            sandboxDirectoryCreated = true;
+            File.WriteAllBytes(workerMarker, Array.Empty<byte>());
+            workerMarkerCreated = true;
+            Environment.SetEnvironmentVariable(sandboxVariable, sandboxDirectory, EnvironmentVariableTarget.Process);
+
+            var app = Application.Current ?? new Application();
+            app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            var apply = typeof(GameSaveCenterSettingsView).GetMethod(
+                "ApplyResponsiveLayout",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            if (apply == null)
+                throw new InvalidOperationException("Settings responsive layout method not found.");
+
+            foreach (var theme in themes)
+            foreach (var size in sizes)
+            {
+                var settings = new GameSaveCenterSettings
+                {
+                    ThemeMode = theme.Mode,
+                    WorkerExecutable = workerPath,
+                    LudusaviExecutable = string.Empty,
+                    LudusaviBackupDirectory = savesPath,
+                    RcloneExecutable = string.Empty,
+                    MediaArchiveDirectory = mediaPath,
+                    RcloneDestination = "synthetic:profile"
+                };
+                var view = new GameSaveCenterSettingsView { DataContext = settings };
+                view.ApplyThemeForAudit(theme.Mode);
+                var host = new Grid
+                {
+                    Width = size.Width,
+                    Height = size.Height,
+                    Background = CreateHarnessBackground(view),
+                    ClipToBounds = true
+                };
+                host.Children.Add(view);
+
+                apply.Invoke(view, new object[] { (double)size.Width, (double)size.Height });
+                host.Measure(new Size(size.Width, size.Height));
+                host.Arrange(new Rect(0, 0, size.Width, size.Height));
+                host.UpdateLayout();
+                apply.Invoke(view, new object[] { (double)size.Width, (double)size.Height });
+                host.UpdateLayout();
+
+                var shell = FindVisualChildren<FrameworkElement>(host)
+                    .FirstOrDefault(element => element.Name == "SettingsShell");
+                if (shell != null)
+                {
+                    shell.BeginAnimation(UIElement.OpacityProperty, null);
+                    shell.Opacity = 1;
+                    host.UpdateLayout();
+                }
+
+                var resetExpander = (Expander)view.FindName("SettingsResetDefaultsExpander")
+                    ?? throw new InvalidOperationException("Settings reset expander not found.");
+                var resetAllButton = (FrameworkElement)view.FindName("SettingsResetAllButton")
+                    ?? throw new InvalidOperationException("Settings reset action not found.");
+                if (!resetExpander.IsExpanded)
+                {
+                    report.AppendLine($"{theme.Name}/{size.Width}x{size.Height}: reset details start collapsed.");
+                    SavePng(host, Path.Combine(outputRoot, $"settings-actions-{theme.Name}-{size.Width}x{size.Height}-reset-collapsed.png"));
+                }
+                else if (size.Height < 760)
+                {
+                    problems.Add($"{theme.Name}/{size.Width}x{size.Height}: short-height settings reset actions unexpectedly start expanded.");
+                }
+
+                resetExpander.IsExpanded = true;
+                host.UpdateLayout();
+                var resetButtonBounds = resetAllButton.TransformToAncestor(host)
+                    .TransformBounds(new Rect(new Point(0, 0), resetAllButton.RenderSize));
+                if (resetAllButton.Visibility != Visibility.Visible || resetButtonBounds.Top < -0.5
+                    || resetButtonBounds.Bottom > host.ActualHeight + 0.5
+                    || resetButtonBounds.Left < -0.5
+                    || resetButtonBounds.Right > host.ActualWidth + 0.5)
+                    problems.Add($"{theme.Name}/{size.Width}x{size.Height}: all-default action is not visible within the short-window host ({resetButtonBounds}).");
+                var resetSingleButton = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(host)
+                    .SingleOrDefault(button => string.Equals(button.Content as string, "恢复单字段", StringComparison.Ordinal));
+                var resetFieldSelector = (FrameworkElement)view.FindName("SettingsResetFieldComboBox")
+                    ?? throw new InvalidOperationException("Settings single-field reset selector not found.");
+                if (resetSingleButton == null || resetSingleButton.Visibility != Visibility.Visible
+                    || resetFieldSelector.Visibility != Visibility.Visible)
+                    problems.Add($"{theme.Name}/{size.Width}x{size.Height}: single-field reset controls are not visible after expanding the reset section.");
+                SavePng(host, Path.Combine(outputRoot, $"settings-actions-{theme.Name}-{size.Width}x{size.Height}-reset-expanded.png"));
+
+                resetExpander.IsExpanded = false;
+                var tabs = (ListBox)view.FindName("SettingsSectionTabs")
+                    ?? throw new InvalidOperationException("Settings category navigation not found.");
+                var settingsScroller = (ScrollViewer)view.FindName("SettingsScroller")
+                    ?? throw new InvalidOperationException("Settings page scroller not found.");
+                var categoryPanelNames = new[]
+                {
+                    "SettingsGeneralPanel",
+                    "SettingsBackupPanel",
+                    "SettingsAppearancePanel",
+                    "SettingsAutomationPanel"
+                };
+                for (var categoryIndex = 0; categoryIndex < 4; categoryIndex++)
+                {
+                    tabs.SelectedIndex = categoryIndex;
+                    host.UpdateLayout();
+                    var categoryPanel = (FrameworkElement)view.FindName(categoryPanelNames[categoryIndex])
+                        ?? throw new InvalidOperationException($"Settings category panel {categoryPanelNames[categoryIndex]} not found.");
+                    var categoryReset = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(categoryPanel)
+                        .SingleOrDefault(button => string.Equals(button.Content as string, "恢复本类默认", StringComparison.Ordinal));
+                    if (categoryPanel.Visibility != Visibility.Visible)
+                        problems.Add($"{theme.Name}/{size.Width}x{size.Height}: category {categoryIndex} panel remained hidden after selection.");
+                    if (categoryReset == null)
+                    {
+                        problems.Add($"{theme.Name}/{size.Width}x{size.Height}: category {categoryIndex} reset action is missing or hidden.");
+                        continue;
+                    }
+                    categoryReset.BringIntoView();
+                    host.UpdateLayout();
+                    var bounds = categoryReset.TransformToAncestor(settingsScroller)
+                        .TransformBounds(new Rect(new Point(0, 0), categoryReset.RenderSize));
+                    var categoryViewport = new Rect(0, 0, settingsScroller.ViewportWidth, settingsScroller.ViewportHeight);
+                    if (bounds.Left < categoryViewport.Left - 0.5
+                        || bounds.Top < categoryViewport.Top - 0.5
+                        || bounds.Right > categoryViewport.Right + 0.5
+                        || bounds.Bottom > categoryViewport.Bottom + 0.5)
+                        problems.Add($"{theme.Name}/{size.Width}x{size.Height}: category {categoryIndex} reset action is not reachable ({bounds} vs {categoryViewport}).");
+                }
+
+                tabs.SelectedIndex = 4;
+                host.UpdateLayout();
+                var migrationPanel = (FrameworkElement)view.FindName("SettingsMigrationPanel")
+                    ?? throw new InvalidOperationException("Settings migration panel not found.");
+                var migrationActions = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(host)
+                    .Where(button => button.Content is string label && (label == "导出设置" || label == "导入设置"))
+                    .ToDictionary(button => (string)button.Content, StringComparer.Ordinal);
+                if (migrationActions.Count != 2 || migrationPanel.Visibility != Visibility.Visible)
+                    throw new InvalidOperationException("Settings migration actions were not exposed by the migration category.");
+
+                migrationActions["导入设置"].BringIntoView();
+                host.UpdateLayout();
+                var viewport = new Rect(0, 0, settingsScroller.ViewportWidth, settingsScroller.ViewportHeight);
+                foreach (var pair in migrationActions)
+                {
+                    var bounds = pair.Value.TransformToAncestor(settingsScroller)
+                        .TransformBounds(new Rect(new Point(0, 0), pair.Value.RenderSize));
+                    if (pair.Value.Visibility != Visibility.Visible
+                        || bounds.Left < viewport.Left - 0.5
+                        || bounds.Top < viewport.Top - 0.5
+                        || bounds.Right > viewport.Right + 0.5
+                        || bounds.Bottom > viewport.Bottom + 0.5)
+                        problems.Add($"{theme.Name}/{size.Width}x{size.Height}: {pair.Key} is not fully reachable after scrolling ({bounds} vs {viewport}).");
+                }
+                report.AppendLine($"{theme.Name}/{size.Width}x{size.Height}: migration scroll offset={settingsScroller.VerticalOffset:0.##}, viewport={settingsScroller.ViewportWidth:0.##}x{settingsScroller.ViewportHeight:0.##} DIP, export/import both fully reachable.");
+                SavePng(host, Path.Combine(outputRoot, $"settings-actions-{theme.Name}-{size.Width}x{size.Height}-migration.png"));
+            }
+
+            report.AppendLine(problems.Count == 0 ? "settingsactionsprobe OK" : "settingsactionsprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "settings-actions-probe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception exception)
+        {
+            report.AppendLine("settingsactionsprobe FAILED");
+            report.AppendLine(exception.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "settings-actions-probe-report.txt"), report.ToString());
+            Console.Error.WriteLine(exception);
+            return 1;
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable(sandboxVariable, previousSandboxEnvironment, EnvironmentVariableTarget.Process);
+            if (workerMarkerCreated && File.Exists(workerMarker))
+                File.Delete(workerMarker);
+            if (sandboxDirectoryCreated && Directory.Exists(sandboxDirectory))
+                Directory.Delete(sandboxDirectory, false);
         }
     }
 

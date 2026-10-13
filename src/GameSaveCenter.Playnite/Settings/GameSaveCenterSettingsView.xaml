@@ -90,7 +90,7 @@
                                 <WrapPanel>
                                     <ComboBox x:Name="SettingsResetFieldComboBox" Width="260" Style="{StaticResource GscWpfUiComboBox}" DisplayMemberPath="DisplayName" SelectedValuePath="Key" VerticalAlignment="Center" ToolTip="只列出不会清除工具路径、存档/媒体路径或云端目标的安全字段" AutomationProperties.Name="选择要恢复默认的单个设置字段"/>
                                     <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="恢复单字段" Click="OnResetSingleFieldClick" Margin="8,0,8,0" VerticalAlignment="Center" AutomationProperties.Name="恢复选中的单个设置字段默认值"/>
-                                    <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
+                                    <ui:Button x:Name="SettingsResetAllButton" Style="{StaticResource GscWpfUiPrimaryButton}" Content="恢复全部默认" Click="OnResetAllDefaultsClick" VerticalAlignment="Center" AutomationProperties.Name="恢复全部安全设置默认值"/>
                                 </WrapPanel>
                             </StackPanel>
                         </Expander>

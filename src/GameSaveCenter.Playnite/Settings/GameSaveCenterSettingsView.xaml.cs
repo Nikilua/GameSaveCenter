@@ -823,8 +823,20 @@ namespace GameSaveCenter.Playnite.Settings
         private bool ConfirmSettingsReset(string title, string impact)
         {
             var host = Window.GetWindow(this);
-            return MessageBox.Show(host, impact, title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+            return ShowSettingsActionConfirmation(host, impact, title) == MessageBoxResult.Yes;
         }
+
+        private MessageBoxResult ShowSettingsActionConfirmation(Window? host, string message, string title)
+            => SettingsActionConfirmationPromptForTesting?.Invoke(
+                   host,
+                   message,
+                   title,
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Warning)
+               ?? MessageBox.Show(host, message, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+        // Tests drive the real confirmation branch without opening a native modal dialog.
+        internal Func<Window?, string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>? SettingsActionConfirmationPromptForTesting { get; set; }
 
         private void RefreshSettingsAfterDraftReset()
         {
@@ -1405,13 +1417,14 @@ namespace GameSaveCenter.Playnite.Settings
         private bool ConfirmSettingsImport(SettingsImportPreview preview)
         {
             var host = Window.GetWindow(this);
-            return MessageBox.Show(
+            return ShowSettingsActionConfirmation(
                        host,
                        preview.BuildConfirmationMessage(),
-                       "确认导入 GameSaveCenter 设置",
-                       MessageBoxButton.YesNo,
-                       MessageBoxImage.Warning) == MessageBoxResult.Yes;
+                       "确认导入 GameSaveCenter 设置") == MessageBoxResult.Yes;
         }
+
+        internal bool ConfirmSettingsImportForTesting(SettingsImportPreview preview)
+            => ConfirmSettingsImport(preview);
 
         private Task ShowImportReportAsync(string summary, bool hasMissingPaths)
         {

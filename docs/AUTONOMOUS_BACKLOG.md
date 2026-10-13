@@ -47,6 +47,14 @@ R05-03 已按既有隔离 Playnite 流程执行 fail-closed 预检，bootstrap �
 
 Q23-06 已完成本机代码、测试与视觉核查：Settings ComboBox 的选中路径显示修复；RenderHarness 双主题/两尺寸/两路径状态 `8/8`；Playnite 定向结果 `170 passed / 0 failed`（39 skipped）；XAML、source、WPF 静态与 full Render QA 均已记录。视觉列更新为通过，真实 Playnite/物理 DPI/OS 输入与 ACL/网络共享仍未验证，宿主 external、最终 incomplete。证据：[Q23-06 复核包](design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。前置 #970/run `38386326043` 于 2026-10-13 11:44 UTC 仍显示 In progress；本阶段尚待 push/新 Actions。下一可执行任务 Q23-08：先核对设置底部动作栏既有命令、短窗可达和危险/导入迁移确认，不假设计划表所列功能缺失。
 
+### 2026-10-13 Q23-08 当前 main 复核
+
+Q23-08 代码提交 main `本阶段代码提交哈希见证据同步记录` 复用现有 `SettingsResetCatalog`、portable import preview/apply 和 Playnite Save/Cancel 宿主契约。没有重复绘制 Save/Cancel，也没有重写 DTO、服务或迁移流程；只为现有 Reset All 按钮增加测试定位名，并通过内部测试 delegate 驱动原 Yes/No Warning 分支。Reset All 实际 Click：No 不改 fingerprint，Yes 只改安全设置草稿并保留路径/云端目标，之后 `CancelEdit` 恢复既有草稿。导入确认 No/Yes 与兼容预览由行为测试覆盖，handler 的 preview→confirm→apply 顺序由源/预览测试核对。
+
+本机 SDK `8.0.423`，Playnite `net462` / tests `net472` Release build `0/0`；Q23 confirmation/import/reset filter `10/10`，Settings draft-cancel `1/1`，合计 `12/12`；XAML `24/24`、`validate-source.py` 通过，WPF 静态审查 `0 errors / 29 warnings / 177 info`。RenderHarness Light/Dark × `1040×700`/`720×640 DIP` 检查短窗默认折叠、展开后的全部/单字段重置、四分类动作经滚动可达及迁移页导入/导出可达。报告与图在[复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。视觉栏“通过”；真实 Playnite host Save/Cancel、文件对话框、物理 DPI/OS UIA/IME/presented frame 未验证，Host “外部阻塞”，Final “未完成”。Demo 原目录不可用，沿用恢复生产基线。
+
+用户确认目前只提供到 #967，ZIP 绑定 SDK10 通过 job，不包含较新的运行。#970 的 SDK10 workflow job 失败而 SDK8 主 job成功；#971 的 SDK8 主 job和 SDK10 job均失败。匿名 API 403、页面要求登录、无 artifact，公开步骤只报 exit code 1，实际 SDK选择、命令和失败根因未知；不猜修复。Q23-08 代码阶段提交推送后仍须查询新 Actions 至终态并分开记录两 SDK job。下一可执行小批 Q24-01：查已有 fractional-DPI 字形实现与夹具，优先做有限逻辑缩放核验；不以离屏模拟代表真实物理显示器 DPI/跨屏。
+
 ### GOV-003：完成度与活动入口校准
 
 - **范围/结果**：重新统计 R192/Q208，R08-01 用户故障单列；撤下旧无分母百分比；三份当前入口精简并完整归档；补当前 CI、本地 IPC 失败、SDK 漂移与 freshness。

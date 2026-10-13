@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，Q23-06 代码提交 `9e84dba305a252fea116f1c5e918f7cf15f2c89f`。本机 SDK `8.0.423` 下 RenderHarness Release `0 warning / 0 error`、路径探针 `8/8`；Playnite 定向测试 `209 total / 170 passed / 0 failed`（控制台 39 skipped），完整 Render QA `render-qa OK`、0 PROBLEM。Q23-06 视觉条件通过，宿主仍外部阻塞、最终未完成。前置 #970/run `38386326043` 在 `2026-10-13 11:44 UTC` 仍为 `In progress`；本提交的 Actions 必须在推送后查询并跟到终态，SDK8 本机结果不能替代 CI SDK10 `10.0.401`。用户补交的 #967 ZIP SHA `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409` 是 SDK10 job `115178885908`、源码 `983fee5` 的通过包；截图红灯来自独立 SDK8 job `115178885652` 源码结构门禁，后由 `4aa1ec7` 修复且 #968 双 SDK jobs 均成功。R00/R01 freshness `14 fresh / 0 stale`；package identity 未提供。R05-03 隔离 Playnite bootstrap 仍按保护规则失败，PID `34512` 与 4 个 CefSharp 子进程保留，不重跑。R08-01 用户机 `1/2` 仍缺原始断言/堆栈/DLL 身份；#960 的 SDK/根因因日志 404/API 403 未知。下一项为 Round2 Q23-08 底部动作栏：先查现有命令、短窗可达性和危险/迁移确认；待本阶段 Actions 终态后开始。真实 Playnite 呈现、OS UIA/Narrator/IME、物理 DPI/多屏、ETW 与宿主性能仍未验证。证据见[Q23-06 当前主线复核](../design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+更新：2026-10-13；版本 `0.6.73-development-preview`；分支 `main`，Q23-08 代码提交 `本阶段代码提交哈希见证据同步记录`。本机 SDK `8.0.423` 下 Playnite 测试构建 `0 warning / 0 error`，相关行为 `12/12`，XAML `24/24`、源码检查通过；RenderHarness Light/Dark × `1040×700`/`720×640 DIP` 四场景通过。视觉条件已通过，宿主外部阻塞、最终未完成。证据见[Q23-08 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。用户确认目前只提供了 #967 SDK10 诊断 ZIP（SHA `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`；job `115178885908` 成功），不含后续 run 日志。#970/run `38386326043` 的 SDK10 workflow job `115258911065` 失败，SDK8 主 job成功；#971/run `38393317198` 的两个 job `115282209775`/`115282209412` 均失败，日志仅有 exit code 1，匿名 API 403、页面要求登录、无可用 artifact；无法核实其实际选中 SDK 与失败根因，不猜修复。Q23-08 代码/证据提交推送后仍需跟随新 Actions 至终态，分别记录 SDK8 与 SDK10。R00/R01 freshness `14 fresh / 0 stale`（source `4aa1ec7`）；R05-03 隔离宿主 profile 仍受保护规则约束；R08-01 用户机 `1/2` 仍缺原始断言/堆栈/DLL 身份。下一项可执行任务 Q24-01 分数 DPI 字形：先查已有能力，做有限逻辑缩放行为核对；真实物理 DPI/跨屏不冒称已验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -32,7 +32,8 @@
 | R06-05 当前 main | 复用现有共享列头说明、排序与单位格式；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、`R06ColumnHeaderHelpTests 2/2`。当前身份 RenderHarness `372 PNG`、`render-qa OK`；代表图和 header contract 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-05-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮未改生产 UI；受控 STA 与离屏逻辑 DIP 不等价真实 Playnite/OS 输入 |
 | R06-06 当前 main | 复用 `TaskStatusDto`、`TaskIndexedCollection`、现有事件合批与 `TaskSummary`；SDK `8.0.423` Release `0/0`、XAML `24/24`，Playnite 隔离 `34/34`、Worker 合成 SQLite `9/9`；真实 DataGrid 验证 80 行更新只发生 `Replace`、选择/行数/滚动偏移保持，未知/0/钳制进度、取消状态与服务端分页总数各有行为证据。TRX 哈希/程序集身份见[R06-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-06-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮无当前身份截图，旧图仍绑定 `72fd6d9a`。混合非隔离试次 `22/23` 的单一失败在滚动 viewer 查找，已披露且未混入通过数。#961 是旧 run；当前代码检查点 #968 的 SDK8/SDK10 全门禁已成功；真实 Playnite/取消竞争、UIA、物理跨屏、presented frame、ETW 和宿主性能未验 |
 | R07-08 / R08 当前 main | #959 CI 的 R07 resize `1/1` 通过，R08 fixture 的系统动效前提已在 `d60e472d` 修正；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`、R08 `2/2`、native motion policy `22/22`。#960/run `38327521241` 已确认 terminal failure、job `115069541561` “编译与测试” exit 1；完整日志 endpoint 404/API 403，SDK/根因未知。#968 当前源码自动门禁成功；真实宿主仍待验。历史日志/证据见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
-| 远端 CI | #919/#920 的 SDK `10.0.401` 日志及历史失败仍绑定旧源码；#960/#961 等旧 run 的终态/根因按其原证据保留。当前代码检查点 `4aa1ec7` 的 #968/run `38366158855` 已由 SDK8 `8.0.423` 与 SDK10 `10.0.401` 两个独立 job 全部验证成功；SDK8 还通过 Render QA、WPF 静态审查、扩展包和诊断上传。不能据此反推历史不可读 run 的根因。详情见[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。 |
+| Q23-08 当前 main | 复用现有 ResetCatalog、导入预览/确认、Playnite Save/Cancel；SDK `8.0.423` 本机 build `0/0`、行为 `12/12`、XAML `24/24`、source validation 通过；Light/Dark × `1040×700`/`720×640 DIP` 的四场景动作可达性通过。视觉栏通过，宿主外部阻塞、最终未完成。证据见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md) |
+| 远端 CI | #968 对 `4aa1ec7` 的 SDK8 `8.0.423` 与 SDK10 `10.0.401` 两 job 成功；#970 SDK8 主 job成功、SDK10 workflow job失败；#971 两 job均失败。后两 run 的日志只有 exit code 1，job 页需登录、匿名 API 403、无 artifact；实际选中 SDK与根因未知。用户提供的 #967 ZIP 仅绑定通过的 SDK10 job，不解释这些失败；不凭摘要猜修。 |
 | R00/R01 证据 | main `4aa1ec7` 的 freshness summary 为 `14 fresh / 0 stale`；没有 R00/R01 源路径被本次 SDK helper BOM 变更命中，因此不重跑按类套件或改写其历史行为身份。#968 全套 CI 成功，但未提取按类计数。R00-08 的真实 OS IME/Playnite 输入链、package identity 仍待验。详见[R00/R01 当前 main 与 CI 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。 |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
@@ -42,11 +43,11 @@
 
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. #968 已验证代码检查点 `4aa1ec7` 的 SDK8/SDK10 current-source 门禁；R00/R01 freshness 在同一检查点为 `14 fresh / 0 stale`。
-2. R05-03 隔离 Playnite bootstrap 仍受保护性退出阻塞；保留当前 profile，不强杀、不删除、不重跑，继续等待环境条件变化。
-3. Q23-06 已在 main 提交 `9e84dba3` 完成本机路径显示修复和证据。记录的本机 SDK 是 `8.0.423`；推送后跟踪对应 Actions，不能用本机结果代替 CI SDK `10.0.401`。
-4. 前置 #970/run `38386326043` 于 `2026-10-13 11:44 UTC` 仍为 `In progress`；同步刷新它和 Q23-06 新 run，状态终止前不签收代码阶段。
-5. 下一可执行小批为 Q23-08 底部动作栏：盘点保存/取消/恢复/导入导出入口与短窗动作可达、危险/迁移确认。外部宿主条件仍阻塞时继续合成数据/fake 服务可独立验证项；ETW、物理跨屏、OS 输入/UIA/IME 与宿主性能单列，真实数据不作写入。
+1. #968 对 SDK8 `8.0.423` 与 SDK10 `10.0.401` 的成功结果已收口；R00/R01 freshness 为 `14 fresh / 0 stale`，source identity `4aa1ec7`。
+2. #967 用户提供的 ZIP 对应通过的 SDK10 job `115178885908`，不能用于解释后续运行。用户说明目前只能提供到 #967。
+3. #970/run `38386326043` 的 SDK10 job 失败、SDK8 主 job成功；#971/run `38393317198` 的 SDK8 主 job和 SDK10 job均失败。日志只有 exit code 1，匿名 API 403、页面要求登录、无 artifact；SDK 实际选择与根因未知，不盲改。
+4. Q23-08 代码提交 `本阶段代码提交哈希见证据同步记录` 已用确切身份重建复核；阶段证据文档已同步。代码/证据提交推送后跟新 Actions 到终态并区分 SDK8/SDK10。
+5. 下一项 Q24-01 分数 DPI 字形：先复用现有 WPF 和渲染能力核对可控逻辑缩放；实体物理 DPI/跨屏另列待验。真实 Playnite Save/Cancel、文件对话框、OS 输入/UIA/IME、presented frame、ETW/宿主性能仍按各自边界记录，合成数据不写用户配置。
 
 ## 架构与生产 UI
 

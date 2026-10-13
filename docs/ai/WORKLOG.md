@@ -10318,3 +10318,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Round2 Q23-06 visual 由待验改通过；Host 仍外部阻塞、final 未完成。当前无真实 Playnite/OS 输入/UIA/IME、物理 DPI/跨屏、真实 ACL/网络路径或 Explorer/clipboard 动作证据。
 - 用户补交的 #967 SDK10 ZIP 已复核：SHA `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`，job `115178885908`、SDK `10.0.401`、source `983fee5`、summary 全部通过；workflow 红灯是独立 SDK8 job `115178885652` 源码结构门禁。修复已由 #968 两 SDK jobs 通过，不将 #967 当作当前 Q23 源码验证。
 - 截至 `2026-10-13 11:44 UTC`，前置 #970/run `38386326043` 仍在 In progress；本阶段代码等待中文 commit/push。推送后需跟新 run 到终态并记录 SDK8/SDK10 差异。下一项 Q23-08：盘点现有底部保存/取消/恢复/迁移入口及短窗动作可达/确认行为，先补证，不凭计划表推断缺功能。
+
+## 2026-10-13 Q23-08 底部动作栏当前 main 复核
+
+- 盘点后复用设置重置目录、portable import preview/apply 和 Playnite Save/Cancel 宿主契约。页面没有单独 Save/Cancel 控件；没有重建 DTO、服务或命令。XAML 给现有 Reset All 按钮补测试定位名；统一确认提示仅增加内部可注入测试口，生产仍是原 owner、Yes/No 和 Warning MessageBox。
+- 通过真实 Reset All Click 覆盖拒绝/确认：No 不改 fingerprint，Yes 只写安全默认草稿且保留工具/存档/媒体路径与云端目标；随后 CancelEdit 恢复到用户原有草稿。导入提示行为的 No/Yes 与兼容预览字段通过生产确认方法覆盖；现有源测试验证 handler 仍按 preview→confirm→apply 顺序。Playnite 相关过滤 `10/10`，SettingsDraftLifecycle 独立 `1/1`，总 `12/12`。
+- 一次提交后测试重跑传入了错误的 `GSC_BUILD_COMMIT`，仓库身份门禁将 3 个源码测试 fail-closed，其余 7 项通过；不是产品断言失败。改用实际 HEAD `本阶段代码提交哈希见证据同步记录` 重建后，相关过滤 `10/10`、确认行为 `1/1`、独立取消 `1/1` 均通过。当前 README/TRX 绑定重跑身份。
+- RenderHarness 在 Light/Dark × `1040×700`/`720×640 DIP` 共四场景确认短窗默认折叠，展开后可见全局/单字段重置，四分类默认操作可滚动到并完整显示，迁移页的导入/导出也可达。报告与十二张图在 [Q23-08 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。视觉只属离屏 WPF 逻辑 DIP；没有点击危险操作或触碰用户文件，探针短暂创建并清理一个空的合成 Worker 标记文件以通过现有路径验证。
+- 代码身份 `本阶段代码提交哈希见证据同步记录`；本机隔离 SDK `8.0.423`（VSTest `17.11.1`），Playnite net462 / tests net472。Release build `0 warnings / 0 errors`；XAML `24/24`、`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`。真实 Playnite Save/Cancel footer、原生文件对话框、实际物理 DPI/OS UIA/IME/presented frame 仍未验，宿主 external/final incomplete；Demo 原目录不可用，沿用恢复生产基线。
+- 用户说明手头最新仅到 #967，所给 ZIP 对应 SDK10 job 的通过材料。#970/run `38386326043` SDK8 主 job成功、SDK10 job `115258911065` 失败；#971/run `38393317198` jobs `115282209775`/`115282209412` 失败。详细日志需要登录，匿名 API 403，无 artifact；实际选定 SDK、命令与失败根因未知。没有据此猜修复。Q23-08 代码阶段提交推送后仍须查询新 Actions 到终态。
+- 保留其他任务 R04/R05/R07 未跟踪证据。当前 Q23-08 的截图与 TRX 均被 README 引用；旧 `.tmp/` 递归清理曾被安全执行器拒绝，本轮不绕过清理限制。下一可执行任务 Q24-01：先查现有能力和依赖，跑有限的 fractional logical scale 字体/边线行为核对；真实显示器 DPI/跨屏明确待验。
