@@ -1603,3 +1603,11 @@
 - `599d2fd` 精确身份本机隔离 SDK `8.0.423`：Worker 完整 `357/357`、Q14 `1/1`；R00/R01 受影响类 `UiFinesseFoundationTests 9/9`、`WpfUiResourceDictionaryTests 139 passed / 39 skipped / 0 failed`、`UiAuditSourceTests 6/6`。39 个 skip 未计入通过。
 - 当前 RenderHarness audit `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes`，E01–E20 引用/身份/样本/边界 `20/20`。13 条 MEDIUM 为窄布局自然换行与垂直扩展提示，作为真实风险保留。因 shared `WpfUiProduction.xaml` 与 `RenderHarness/Program.cs` 变更而 stale 的四个 R00/R01 记录，已在当前精确复跑后更新 baseline 到 `599d2fd`；freshness `14/14`。详见[R00/R01 当前复核包](evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)与[CI 诊断映射](evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。
 - #971 SDK10 job 的最终状态与失败根因仍待取证；用户到明天 09:00 无法回应期间，独立任务继续推进。下一项 Q24-01：核查 fractional-scale 字形/边线现有能力和任务条件，再做受控逻辑 scale 验证；physical DPI/跨屏继续待验。
+
+## 2026-10-14 Q24-01 分数 DPI 受控离屏复核
+
+- 先确认现有 Typography/ThemeAwareIcon/图标 Geometry 和 `RenderTargetBitmap` 能力；没有改生产 UI。新增 `Q24FractionalDpiTypographyBehaviorTests`：生产资源下用 STA WPF Visual 检查中英文字、16 DIP 图标与 1 DIP 描边，对目标 96/120/144/168/192 DPI 原生栅格化；正例检查文本 fit、目标 Bitmap DPI/像素尺寸与文字/图标/边线像素，负例覆盖裁切与永久 1.25 倍 RenderTransform。
+- 代码提交 `3ca41ec9a5a3f3c6888db72ba3a6254b046dcd40` 后，以精确 HEAD 使用本机隔离 SDK `8.0.423` Release 重跑 `ProductionTypographyIconAndOneDipBorderRenderAtFiveExplicitTargetDpis`，结果 `1 passed / 0 failed / 0 skipped`；Playnite `net462`、测试 `net472`，VSTest `17.11.1`。当前工作台 Windows 11 `10.0.22000`，系统 DPI 144（150%）、只枚举 `DISPLAY1`。
+- 五档 PNG 人工检查均可见中英文字、生产图标和边线，无明显裁字/消失；TRX、每张 PNG SHA、程序集 SHA 和计数见[Q24-01 证据包](evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)。控件 Visual 继承源 DPI `1.5`；目标 DPI 是离屏 `RenderTargetBitmap` 参数，并非真实物理显示器切换，也不是缩放原尺寸截图。
+- 本项受控视觉栏可记“受控通过”，Host 仍外部阻塞，最终仍未完成。未验证真实 Playnite、物理显示器 DPI、Popup/跨屏、OS 字体缩放、最终呈现帧、UIA/IME/读屏；无真实配置/存档/媒体/云端操作。#972/run `38421480496`（前置 SHA `8546acab`）现已终态成功：SDK8 `8.0.423` 与 SDK10 `10.0.401` jobs 均通过。Q24 代码 `3ca41ec9` 未包含在 #972 中；推送本批后仍需跟新 SDK8/SDK10 jobs 到终态。
+- 下一可执行小批 Q24-02：复核当前 main 的真实 PageHost 短窗尺寸、首尾可达与宽窗恢复，记录内容区而非外层请求尺寸；沿用生产基线，不因离屏结果改换设计体系。

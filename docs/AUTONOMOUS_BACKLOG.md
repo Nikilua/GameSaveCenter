@@ -57,7 +57,13 @@ Q23-08 代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97` 复用现有 `Set
 
 本阶段同步证据的当前 main 身份为 `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa`。R00/R01 中受 `WpfUiProduction.xaml` 与 RenderHarness 源变更影响的四条 baseline 已在定向行为和审计复核后更新；freshness `14/14`，审计仍有 `13 MEDIUM` 窄布局提示。详情及未验边界见[R00/R01 当前 main 证据](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 
-下一可执行小批 Q24-01：先查 fractional-DPI 字形现状和现有夹具，完成可复现的逻辑 scale 行为复核；专项条件要求实际 `100/125/150/175/200%` 显示比例，故离屏结果只记模拟证据，物理 DPI/跨屏保留待验并继续其他独立任务。
+下一可执行小批 Q24-02：复核当前 main 生产 PageHost 在常见短窗下的实际内容几何、列表首尾可达和恢复宽窗；使用内容区实测值，不拿外层请求尺寸替代。Q24-01 的物理 DPI/Playnite 实机部分仍待验，不阻塞独立任务。
+
+### 2026-10-14 Q24-01 当前 main 分数 DPI 复核
+
+代码提交 `3ca41ec9a5a3f3c6888db72ba3a6254b046dcd40` 新增受控 WPF 行为夹具，没有生产 UI 改动。隔离 SDK `8.0.423` Release 定向测试 `1/1`；生产资源下以 RenderTargetBitmap 指定 96/120/144/168/192 DPI，核对中英文字 fit、图标/1 DIP 边线像素及裁切/永久缩放负例。五张目标尺寸 PNG 已人工查看，受控视觉列记为“受控通过”。具体 TRX、PNG、产物 SHA 和测试范围见[Q24-01 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)。
+
+该证据仅是目标 DPI 离屏模拟：WPF Visual 继承本机系统 `DpiScale=1.5`，系统 DPI 为 144，只有 `DISPLAY1`；未改变物理显示设置、移动真实窗口或启动 Playnite。物理 DPI/跨屏、真实宿主/Popup、最终呈现帧仍待验，Q24-01 Final 保持“未完成”。#972/run `38421480496`（前置 SHA `8546acab`）已终态成功；SDK8 `8.0.423` 与 SDK10 `10.0.401` 两 jobs 均通过。Q24 代码 `3ca41ec9` 尚未包含于 #972，推送后需跟新 SDK8/SDK10 Actions 终态。
 
 ### GOV-003：完成度与活动入口校准
 

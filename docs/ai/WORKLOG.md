@@ -10346,3 +10346,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 代码身份 `c377ab218dad54d81d7dd22202f0bf283f250f97`；本机隔离 SDK `8.0.423`（VSTest `17.11.1`），Playnite net462 / tests net472。Release build `0 warnings / 0 errors`；XAML `24/24`、`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`。真实 Playnite Save/Cancel footer、原生文件对话框、实际物理 DPI/OS UIA/IME/presented frame 仍未验，宿主 external/final incomplete；Demo 原目录不可用，沿用恢复生产基线。
 - 用户说明手头最新仅到 #967，所给 ZIP 对应 SDK10 job 的通过材料。#970/run `38386326043` SDK8 主 job成功、SDK10 job `115258911065` 失败；#971/run `38393317198` jobs `115282209775`/`115282209412` 失败。详细日志需要登录，匿名 API 403，无 artifact；实际选定 SDK、命令与失败根因未知。没有据此猜修复。Q23-08 代码阶段提交推送后仍须查询新 Actions 到终态。
 - 保留其他任务 R04/R05/R07 未跟踪证据。当前 Q23-08 的截图与 TRX 均被 README 引用；旧 `.tmp/` 递归清理曾被安全执行器拒绝，本轮不绕过清理限制。下一可执行任务 Q24-01：先查现有能力和依赖，跑有限的 fractional logical scale 字体/边线行为核对；真实显示器 DPI/跨屏明确待验。
+
+## 2026-10-14 Q24-01 分数 DPI 受控离屏复核
+
+- 盘点后复用生产 `GscBodyStyle`、`ThemeAwareIcon`、`GscIconActionVerify` 与共享主题资源，没有生产 UI 改动。新增真实 WPF 控件行为测试：以五个显式 `RenderTargetBitmap` DPI（96/120/144/168/192）栅格化 320×68 DIP 的中英文字、图标和 1 DIP 边框，验证 fit、边界、像素内容、目标 DPI/尺寸，并以裁切与永久缩放负例检查检测器。
+- 测试夹具的初版编译错误已修正；初版要求 detached Visual 源 DPI 固定 1.0 失败，运行时证明它继承本机 `1.5`。现将继承 DPI 如实记录；不假定或伪造源树 100%。本机当前 OS API DPI `144`，屏幕枚举仅 `DISPLAY1`。
+- 代码先提交 `3ca41ec9a5a3f3c6888db72ba3a6254b046dcd40`，随后以该精确 HEAD、本机 SDK `8.0.423` Release 重跑 `ProductionTypographyIconAndOneDipBorderRenderAtFiveExplicitTargetDpis`：`1/1`；VSTest `17.11.1`，Playnite `net462`、tests `net472`。五档 PNG 经人工查看，无明显裁字/图标缺失/边线消失；逐项像素和 PNG/TRX/DLL SHA 见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)。
+- 证据只证明受控离屏目标 DPI，不证明真实物理屏变化、Playnite 渲染/主题、Popup/跨屏、OS 字体放大、presented frame、UIA、IME 或读屏。Round2 Q24-01 视觉栏更新“受控通过”，Host external、Final incomplete。未访问真实设置、存档、媒体或云端。
+- #972/run `38421480496` 已终态成功：SDK8 job `115379639786` 使用 `global.json` 的 `8.0.423`，SDK10 job `115379639572` 为 `10.0.401`，两 lane 均成功。该 run 的 SHA 是前置 `8546acab`，不覆盖 Q24 代码 `3ca41ec9`；Q24 代码及证据尚未推送，推送后跟新两 lane 到终态。下一项 Q24-02：复核真实 PageHost 短窗尺寸、首尾可达、宽窗恢复，不能用外层尺寸替代内容区。其他任务 R04/R05/R07 未跟踪文件继续保留；没有新增 `.tmp` 中间产物。

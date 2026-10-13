@@ -199,3 +199,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 用户 #970/#971 ZIP 已复核并记录在[CI 诊断及本机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)：#970 SDK10 cancel test race、#971 SDK8 Q14 fixture 类型错误均是测试问题；`599d2fd` 的 SDK8 本机复跑通过。#971 SDK10 diagnostics 仍缺；公开匿名日志/API 无法确认 workflow 终态，推送后检查本次新 run。
 - 未验证真实 Playnite host Save/Cancel footer、原生文件对话框/文件操作、物理 DPI/跨屏、OS UIA/IME、presented frame。Demo 原目录不可用，本阶段沿用恢复生产基线。证据中的合成窗口未执行操作；未修改真实配置或用户数据。
 - 下一项可执行任务：Q24-01 分数 DPI 字形。先查现有能力与验收条件，再测有限逻辑 scale；物理 DPI/跨屏单列待验。其他任务 R04/R05/R07 未跟踪文件需保留。旧 `.tmp/` 清理命令先前被拒是历史事实；本轮只清理本轮自己生成且不被证据引用的临时目录。
+
+## 2026-10-14 当前恢复点：Q24-01 受控 DPI 验证
+
+- main 代码提交 `3ca41ec9a5a3f3c6888db72ba3a6254b046dcd40` 新增 `Q24FractionalDpiTypographyBehaviorTests`，没有生产代码或视觉改动。隔离 SDK `8.0.423`、Playnite `net462`、测试 `net472`，提交后精确身份定向结果 `1/1`；五个目标 DPI PNG、TRX、源码/程序集 hash 在[证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)。
+- 五档只由 RenderTargetBitmap 的目标 DPI 栅格化；源 WPF Visual 继承本机 150% (`DpiScale=1.5`)，系统 DPI API `144`，物理桌面只枚举 `DISPLAY1`。因此只更新 Q24-01 视觉为受控通过；真实物理 DPI/窗口迁移、Playnite/Popup 与最终呈现仍待验，Host external、最终未完成。
+- #972/run `38421480496` 对前置 SHA `8546acab` 已终态成功，SDK8 `8.0.423` job `115379639786` 与 SDK10 `10.0.401` job `115379639572` 均通过。该 run 不含 Q24 代码 `3ca41ec9`；推送 Q24 本批后分别跟踪新 SDK8/SDK10 jobs 到终态，CI 未结束前不报告代码阶段完成。
+- 下一可执行小批 Q24-02：用当前 main 生产 `PageHost` 记录短窗真实内容几何、首尾可达和恢复宽窗；不以窗口请求尺寸代替内容区。用户至明早 09:00 不可回复，独立任务继续推进，不发问题等待。
+- 保持游戏选框/滚动条、Playnite `net462`、命令/取消/错误/恢复保护和大列表性能语义。其他任务 R04/R05/R07 未跟踪 evidence 原样保留；本轮生成的 PNG/TRX 均由 README 引用，未产生新 `.tmp` 目录。

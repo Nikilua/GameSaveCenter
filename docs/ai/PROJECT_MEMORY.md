@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。Q23-08 代码提交 `c377ab2`，最新测试修正 `599d2fd`；本机隔离 SDK `8.0.423` 下 Playnite build `0/0`、相关行为 `12/12`、R00/R01 受影响测试类 `154 passed / 39 skipped / 0 failed`。R00/R01 freshness `14 fresh / 0 stale`（source `599d2fd`）；当前 RenderHarness audit 为 `168` snapshots、`13 MEDIUM` 垂直扩展提示。用户提供 #970 SDK10、#970 SDK8、#971 SDK8 诊断包；两项测试根因已修，#971 SDK10 diagnostics 仍缺。用户今天无法回复期间继续独立任务，不等待补件。新 push CI 需分别查 SDK8、SDK10 终态。下一项 Q24-01 逻辑 fractional-scale 字形复核；physical DPI/跨屏和真实宿主继续独立待验。详见 CURRENT_STATE 与最新工作日志。
+更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。Q24-01 验证夹具代码提交 `3ca41ec9`；隔离 SDK `8.0.423`、Playnite `net462`/tests `net472` Release 定向测试 `1/1`，以生产资源对 96/120/144/168/192 DPI 的 RenderTargetBitmap 进行原尺寸离屏栅格检查，受控视觉通过、物理显示器/真实 Playnite 未验。前置 #972/run `38421480496`（`8546acab`）已成功：SDK8 `8.0.423` 与 SDK10 `10.0.401` 两 lane 均通过；新 Q24 提交尚未推送，推送后仍要跟对应 Actions。#970/#971 ZIP 根因与本机修复见 CI 诊断包；#971 SDK10 diagnostics 仍缺，用户暂不可答期间继续独立工作。R00/R01 freshness `14/14`（source `599d2fd`），audit 保留 `13 MEDIUM`。下一项 Q24-02 短窗真实 PageHost/首尾可达复核；physical DPI/跨屏、真实宿主与最终呈现帧仍各自待验。详见 CURRENT_STATE 与最新工作日志。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：Q23-08 的离屏行为与视觉已复核；真实 Playnite Settings Owner 的 Save/Cancel 序列、文件对话框、物理 DPI、OS UIA/IME 和 presented frame 仍待验。#970 SDK10 取消竞态和 #971 SDK8 Q14 fixture 根因已据 ZIP 修复并通过当前 SDK8 复跑；#971 SDK10 根因/完整 log 仍未知，用户暂不可回复期间不等待。新 push 的 SDK8/SDK10 CI 必须分别等到 terminal。R00/R01 freshness 已在当前 `599d2fd` 精确复跑 `14/14 fresh`；audit 保留 `13 MEDIUM`。package identity 未提供。R05-03 隔离 Playnite bootstrap 失败关闭，历史 profile 不强杀、不删除；R08-01 用户 `1/2` 仍需原始失败方法/堆栈/DLL 身份。下一项 Q24-01 先查现有 fractional-scale 字形能力；物理屏验证单列待验。
+- 当前活动缺口：Q24-01 受控离屏五档 DPI 输出已通过并记录，物理屏/真实 Playnite DPI、Popup/跨屏和最终呈现仍待验；下个独立 Q24-02 复核 PageHost 短窗几何与首尾可达。#970 SDK10 取消竞态和 #971 SDK8 Q14 fixture 根因已据 ZIP 修复并通过本机复跑；#971 SDK10 根因/log 仍未知。前置 #972 的 SDK8 `8.0.423` 与 SDK10 `10.0.401` jobs 均成功；Q24 推送后的新 CI 尚待终态。R00/R01 freshness `14/14`（source `599d2fd`），audit 保留 `13 MEDIUM`。package identity 未提供。R05-03 隔离 Playnite bootstrap 失败关闭，历史 profile 不强杀、不删除；R08-01 用户 `1/2` 仍需原始失败方法/堆栈/DLL 身份。
 - R00/R01 当前 freshness 为 `14 fresh / 0 stale`，source `599d2fd`；本轮刷新四条曾 stale 的记录，受影响测试与 audit 报告绑定当前身份。package identity 未提供。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
