@@ -10250,3 +10250,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - #954（run `38313448857`，R00/R01 证据校正 commit `a2f8883c`）完整日志已归档，SHA-256 `CAB266AD735E3E145B4A31C4AA50A641F2FC4DD4371EDA30AF29972A7AE82807`，CI SDK `8.0.423`；失败仍是旧 R07 `IsVisible` 初始断言，日志没有记录 Visibility/祖先/几何值，不能归因 R00/R01。当前匿名 artifact 页不可读，但完整 job log ZIP 已有。
 - 本阶段本机 R06-05 行为与受控离屏视觉条件满足，代码/证据/记忆已同步，推送后仍需等对应 Actions 终态。真实 Playnite、真实 OS 鼠标/键盘/剪贴板、UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验；无真实存档、媒体、云端或诊断操作。下一独立项继续 R06-06：先检查 `TaskStatusDto.ProgressPercent/ProgressValue/ProgressDisplay` 与刷新/选择/滚动实现，再补合成/fake 行为及不重置表格上下文的负例。
 - 清理本阶段可再生输出时，已先核对目录均在仓库 `.tmp/` 或 `artifacts/build-diagnostics/` 下，但自动安全策略拒绝 `Remove-Item -LiteralPath -Recurse -Force`。没有改走其他删除方式。当前仍留在本机且未跟踪/未提交：`.tmp/r06-05-main-20261013`、`.tmp/r06-05-render-current-20261013`（372 PNG，约 47.8 MB）、`artifacts/build-diagnostics/20261013T005136220Z-e660c089`、旧本阶段目录 `.tmp/r08-postcommit-d60e472d`。后续需在允许删除时按仓库路径规则清理；不得把这些临时文件加入提交。
+
+## 2026-10-13 R06-07 当前 main 行为证据校正
+
+- main `87d27592` 与可复用 Release/net472 测试程序集的源码提交 `73d0f6e6` 在 `src tests` 无差异；本机 SDK `8.0.423` / VSTest `17.11.1` 隔离复跑 Save 实际 WPF 空/加载/错误/完成状态 `1/1`、共享 presenter 输入与禁用负例 `8/8`、媒体缓存 stale/错误/取消 `7/7`，共 `16/16`。没有重编译文档提交；同源构建 Release `0/0`、XAML `24/24` 归在上一 R06-06 记录。
+- 当前测试证明表头和失败恢复命令绑定/键盘输入，不以源码包含断言签收交互。旧 R06-07 RenderHarness `.tmp` 已缺失且旧报告绑定 `5046bf8f`，本轮未生成新截图；当前 WPF 行为证据不冒称当前 main 图像/真实 Playnite 呈现。原 Demo 目录仍缺失，沿用恢复生产基线。
+- commit `87d27592` 对应 Actions #962 / run `38335989087` 已 Failure。公开页给出 job `115096054544`，要求登录；匿名 logs API HTTP403 rate limit，artifact partial HTTP404。CI SDK、失败步骤与根因未知，不能猜修。先保留该边界，推进下一项 R06-08 当前 main 复核，并继续寻求日志可读入口。
+- 新增脱敏 TRX 与说明见 [R06-07 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md)。

@@ -62,3 +62,9 @@
 - 不把离屏 logical DIP、合成 WPF、进程内 UIA provider 当成 Playnite、物理 DPI、OS 输入或最终呈现帧。
 - 每个独立阶段同步文档、记录构建/测试实际结果，单独 commit 并 push 当前远端分支；本次不安装到用户真实 Extensions，不操作真实存档、媒体或云端。
 - 后续依次阅读 [PROJECT_MEMORY.md](PROJECT_MEMORY.md)、[WORKLOG.md](WORKLOG.md)、[DEVELOPMENT_HANDOFF.md](../DEVELOPMENT_HANDOFF.md) 与 Git 状态。只在追溯具体问题时读历史大文件。
+
+## 2026-10-13 当前检查点
+
+- main 当前源 HEAD `87d27592086bbef355b9426a00614b5bb9856e8c`；R06-07 实现/测试与复用构建提交 `73d0f6e6` 的 `src tests` 无差异。本机 SDK8.0.423 实际 WPF/state 行为复核 `16/16`，结果与边界见 [证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md)。旧空表渲染目录缺失，当前没有截图。
+- Actions #962 / run `38335989087` 为 Failure。job `115096054544` 页面要求登录；匿名 Jobs/Logs API 403 rate limit，SDK和根因未知。没有依据 exit code 改代码；取得完整日志前保留 CI 未收口状态。
+- 下一可执行项 R06-08 当前 main 详情/行高行为复核。工作树应保留其他任务已有 R04/R05/R07 未跟踪测试结果；不要纳入本阶段提交。临时目录清理此前被安全执行器拒绝，未通过其他手段绕过。

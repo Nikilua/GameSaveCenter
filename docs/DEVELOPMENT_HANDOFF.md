@@ -140,3 +140,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 本轮没有启动真实Playnite、改变Windows动画偏好、安装到用户Extensions或触及真实存档/媒体/云端；没有验证物理DPI/读屏/最终呈现帧。SDK8本机与SDK10 CI分别记录。测试期间只终止已核对命令行归属本轮隔离目录的测试进程；被终止的运行不记为通过。
 
 每独立阶段编译、测试、同步文档并commit/push当前main。历史d57a613f包的clean构建/IPC/结构及六个程序集身份已记录，未安装；不能签收当前源码。当前freshness6/8，baseline未改，完整SDK/CI门禁仍受Q14阻塞。本地包不冒称稳定发布，当前阶段中间产物归档后按仓库规则清理。
+
+## 2026-10-13 当前恢复点：R06-07
+
+- 当前分支 `main`，当前基线 `87d27592086bbef355b9426a00614b5bb9856e8c`。R06-07 源/测试与 `73d0f6e6` 完全相同；本机 SDK `8.0.423` 用同源 Release/net472 输出隔离执行当前行为用例 `16/16`，详情及 TRX SHA 在 [R06-07 当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md)。这是行为/结构复核，不包含新截图。
+- 对应当前提交 Actions #962 / run `38335989087` 已 Failure，build job `115096054544`。GitHub 公开 job/log 页要求登录；匿名 Logs API 403 rate limit，artifact partial 404。完整错误、CI SDK和根因未知；先继续取得实际日志再考虑修复，不猜测失败步骤。此前 #919/#920 日志是旧源码结果，不能替代本次日志。
+- 当前 R06-07 ledger 记为本机行为已满足、CI 原因待日志；原 Demo `DesignShellView.xaml`/`Pages` 路径缺失，沿用恢复生产基线。旧 `.tmp/r06-07-emptytables` 当前不可用，旧报告绑定 `5046bf8f`，不作为当前截图。真实 Playnite、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。
+- 下一项执行 `R06-08 详情与行高预算` 当前 main 复核：先复核已有详情区/选择对象同步/四行门禁，再跑相关行为夹具；不要添加重建功能。继续保留其他任务的 R04/R05/R07 未跟踪 TRX。
+- 磁盘清理：四个旧生成目录仍在仓库 `.tmp/` 或 `artifacts/build-diagnostics/` 且被忽略；PowerShell 精确递归删除被安全策略拒绝，未尝试改走其他删除接口。不要提交生成物。新增本阶段证据仅是三份脱敏 TRX 与 README。
