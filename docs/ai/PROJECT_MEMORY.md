@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。#958（commit `1c08196d`，CI SDK `8.0.423`）确认 R07 compact drawer routed Click 及按钮互换通过，随后旧测试因 `RequestedWidth - ShellActualWidth = 336 DIP` 的假设失败。当前测试改为记录 `Window.ActualWidth/Height`、PageHost 宽度和生产 breakpoint 状态，以实际窗口/页面值校验 inset 与布局分支；本机隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`，宽屏/紧凑样本均通过。修正待提交/推送和新 Actions。#955 `0.6.73` 文档门禁问题已修复。#919/#920 的 SDK `10.0.401` 旧侧栏失败与当前 SDK8 不混用。后续再收口 R06-05。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。#958（commit `1c08196d`，CI SDK `8.0.423`）确认 R07 compact drawer routed Click 及按钮互换通过，旧宽度判据随后失败；R07 现采集 Window/PageHost 实测尺寸，且 #959 的 CI R07 测试 `1/1` 通过。#959 后续失败在 R08：runner `ClientAreaAnimation=False`，动画正例 fixture 只覆盖了 app motion provider，生产正确即时归一到 72 DIP。测试现显式设定并断言 app 与 system motion 两项输入；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R08 `2/2`、native motion policy `22/22`、R07 `1/1`。修正待提交/推送并等新 Actions。#955 `0.6.73` 文档门禁问题已修复。#919/#920 的 SDK `10.0.401` 旧侧栏失败与当前 SDK8 不混用。后续收口 R06-05。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：R07-08 实测窗口判据修正需提交/推送并等 Actions 终态。#958 已定位 336 DIP 是旧测试用 requested width 减 actual shell width 的失败；drawer routed Click 本身已通过。当前 fixture 从未选中状态实际选择、经生产 routed Click 打开，再基于 Window/PageHost 实测宽度验证 wide/compact 布局；本机通过，远端未验。R06-05 测试修改保持独立。R00/R01 freshness 14/14（source identity 5762c874）；package identity 与真实宿主验收仍独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：R07 的 Window/PageHost 实测布局判据已由 #959 的 CI 测试通过；#959 完整工作流后续在 R08 动画正例失败，根因是 fixture 未控制 CI 关闭的系统动效偏好。双输入显式控制及 `SidebarMotionEnabledForAudit` 前置断言已在本机验证，尚待提交/推送和新 Actions。R06-05 测试修改保持独立。R00/R01 freshness 14/14（source identity 5762c874）；package identity 与真实宿主验收仍独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

@@ -1,3 +1,10 @@
+## 2026-10-13 R07-08 / R08 #959 CI 失败定位与动效前提修正
+
+- Actions #959（run `38324971243`，commit `be2881e19cfca549b39c17732119aca129044c59`，CI SDK `8.0.423`）Release 构建及先前测试通过；R07 resize 类 `1/1` 通过。随后 R08 `SidebarRapidReversalUsesLatestTargetAndReleasesOldClock` 失败。完整日志显示原生策略为 `HighContrast=False; ClientAreaAnimation=False; expected=False`，失败夹具观测 `running=False; base=72; actual=72`。生产按系统偏好禁用动画并归一到 72 DIP，日志指向动画正例夹具没有显式控制系统输入，而非生产故障。完整日志 SHA-256 `6ABB957DDDE4AF6C6BED8909387D172325B39E97A66936495A50EF07C9ABB428`；diagnostic artifact ID `11781132337`、590,570 bytes、SHA-256 `0A17ACE44C551EF65FE236FB7D433F517DFFB843959EC38A1790424EFDDA58CB`，均归档于[证据包](evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。
+- `R08MotionReverseBehaviorTests` 现同时固定 `MotionEnabledProvider` 与 `SystemMotionEnabledProviderForAudit` 为 true，并在开始采样前断言 `SidebarMotionEnabledForAudit`，确保在系统关闭客户端动画的 runner 上仍测试真实动画正/反向生命周期；原生系统偏好行为仍由 `ProductionShellChromeSourceTests` 的独立矩阵检查。无生产代码改动。
+- 本机隔离 SDK `8.0.423` Release 重建 `0 warning / 0 error`、XAML `24/24`；R08 `2/2`、原生动效偏好组 `22/22`、R07 `1/1`。R08/TRX/源/DLL SHA 及完整 CI 日志已入包。R07 Window/PageHost 实测宽度修正由 #959 单项测试通过；R07-08/R08 整体阶段需待本修正推送后的 Actions 成功再收口。
+- 没有改生产 XAML/视图模型/命令/DTO，也未切换操作系统偏好。受控 STA WPF 逻辑时间/布局不是真实 Playnite 最终呈现、物理 DPI/跨屏或 ETW 证据。下一步仅提交本阶段测试、日志与事实同步，推送并持续检查新 Actions；新 run 成功后独立核对 R06-05。
+
 ## 2026-10-13 R07-08 实测窗口宽度断言校正
 
 - Actions #958（run `38322407969`，commit `1c08196d`，CI SDK `8.0.423`）确认紧凑详情按钮 Click、抽屉显示及开/关按钮互换通过；随后旧宽度判据失败：测试计算 `RequestedWidth - ShellActualWidth` 并要求不超过 `32 DIP`，runner 实测差值 `336 DIP`。完整日志 ZIP SHA-256 `84d55e58c4bec5c34b10d9e2e1eec569c912b99b96529bae4bbf395414918dce` 已归档。失败发生在测试把请求尺寸当作实际窗口尺寸，不是生产控件失败。

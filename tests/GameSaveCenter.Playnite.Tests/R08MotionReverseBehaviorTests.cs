@@ -119,6 +119,9 @@ public sealed class R08MotionReverseBehaviorTests
                 var shell = new AcrylicProductionShellView
                 {
                     MotionEnabledProvider = () => true,
+                    // Keep the animation premise deterministic when the runner disables
+                    // client-area animations. Native preference handling has its own tests.
+                    SystemMotionEnabledProviderForAudit = () => true,
                     SidebarCollapsedProvider = () => false
                 };
                 shell.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(2));
@@ -126,6 +129,8 @@ public sealed class R08MotionReverseBehaviorTests
                 window.Show();
                 window.UpdateLayout();
                 shell.UpdateLayout();
+                Assert.True(shell.SidebarMotionEnabledForAudit,
+                    "the reversal fixture must explicitly enable both app and system motion inputs");
                 finalWidthRoundingTolerance = 0.5 / VisualTreeHelper.GetDpi(shell).DpiScaleX + 0.001;
 
                 var sidebar = Assert.IsType<ColumnDefinition>(shell.FindName("SidebarColumn"));
