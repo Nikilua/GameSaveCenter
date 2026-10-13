@@ -1,3 +1,11 @@
+## 2026-10-13 SDK 10.0.401 CI 编译与测试复核门禁
+
+- #965 用户诊断包对应源码 `d0dbaea00dc620545524236c55444748d43d6540`，CI 选中 SDK `8.0.423`；TRX 确认 `ReportedWorkspaceLayoutBehaviorTests` 54 项中 4 项失败（Settings 与收件箱布局各自的 Light/Dark 用例），已由 `5eaa12bf` 的逻辑测量宿主校正。#966/run `38352437420` 对 `5eaa12bf` 已终态成功，但原 workflow 仍只用基线 SDK8。
+- 用户补充要求 CI 必须单独给出 SDK `10.0.401` 结果；加入隔离验证 job，在临时 detached worktree 仅切换其 `global.json`，运行 Release 全量 `scripts/build.ps1`，并在失败时上传独立诊断包。仓库 SDK8 基线与原 job 保持原样。
+- 本机 wrapper 复核：SDK `9.0.302` / MSBuild `17.14.13`，提交身份 `5eaa12bf`；Release 构建、Core `125/125`、Worker `357/357` 均成功；Playnite `1566` 通过、`0` 失败。TRX 另有 `57` 个 `NotExecuted`，均带有项目既有的已撤销“今日工作台 UI 架构”断言说明。`ReportedWorkspaceLayoutBehaviorTests 54/54`。脚本 AST、workflow YAML、越界输出路径负例和 `git diff --check` 通过。
+- 本机 SDK9 仅为交叉检查，不能替代 SDK10 CI。工作树当前新增 SDK10 job 尚待提交推送；后续必须等其 Actions run 成功或失败终态。若失败，先取完整日志/独立诊断 ZIP，再按实际错误处理。R00/R01 freshness 将在此门禁终态后对新 HEAD 重跑。
+- 隔离测试没有启动真实 Playnite；物理 DPI/多屏、实际呈现帧、UIA/IME、ETW、宿主性能仍未验。仅使用合成测试夹具，没有访问真实存档、媒体或云端。
+
 ## 2026-10-13 #965 布局测试宿主尺寸校正
 
 - 用户提供的诊断包 SHA-256 `328C86FE4C908C469D84995F9B01114E9FF89BCD1692362FBDA7B9520E461D36` 与 Actions artifact `11788460821` 相符，源码为 main `d0dbaea0`。CI SDK `8.0.423`、VSTest `17.11.1`；Release build `0/0`，R08Numeric `5/5`，`ReportedWorkspaceLayoutBehaviorTests` `50/54`。

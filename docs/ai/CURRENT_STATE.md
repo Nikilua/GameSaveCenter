@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；本阶段提交前 main `d0dbaea00dc620545524236c55444748d43d6540`。用户提供的 #965/run `38342488530` 诊断包 SHA 与 artifact `11788460821` 一致：CI SDK `8.0.423`、VSTest `17.11.1`，Release 构建 `0/0`；R08Numeric `5/5`，但布局行为类 `50/54`，4 项失败是两项双主题测试把窗口请求尺寸当成实际布局宽度。当前只校正测试逻辑宿主，不改生产 UI；本机隔离 SDK `8.0.423` Release solution `0/0`、同类 `54/54`。详见 [#965 布局宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。当前阶段仍须等修正推送后的 Actions 明确成功，之后先复核 R00/R01，再推进依赖满足的 Q/R。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，SDK10 CI 门禁待推送；代码基线 `5eaa12bfaee40e7a254813ea1df6d67c8a3dcbce`。#965 用户诊断包对应 SDK `8.0.423`，布局类 4/54 失败已由 `5eaa12bf` 校正；#966/run `38352437420` 对该提交成功但仍使用 SDK8。当前新增 SDK `10.0.401` 单独 CI job；本机 SDK `9.0.302` 全量 Release build 成功，Core125/125、Worker357/357、Playnite1566通过/0失败，57条旧架构断言按现有说明 NotExecuted。证据见 [SDK10 CI 复核门禁](../design/reviews/ui-finesse-round3-20260915/evidence/CI-SDK10-BUILD-VERIFY-20261013/README.md)。下一步提交并追踪 SDK10 job 到终态，随后重跑 R00/R01 freshness 并继续依赖满足的 Q/R。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -63,8 +63,9 @@
 - 每个独立阶段同步文档、记录构建/测试实际结果，单独 commit 并 push 当前远端分支；本次不安装到用户真实 Extensions，不操作真实存档、媒体或云端。
 - 后续依次阅读 [PROJECT_MEMORY.md](PROJECT_MEMORY.md)、[WORKLOG.md](WORKLOG.md)、[DEVELOPMENT_HANDOFF.md](../DEVELOPMENT_HANDOFF.md) 与 Git 状态。只在追溯具体问题时读历史大文件。
 
-## 2026-10-13 当前检查点
+## 2026-10-13 SDK 10.0.401 CI 门禁待推送
 
-- #965/run `38342488530` 的用户诊断包确认 CI SDK `8.0.423`、VSTest `17.11.1`；Release build `0/0`，R08Numeric `5/5`；布局类 `50/54`。失败为两项测试在双主题下读到收件箱中心差 `42 DIP` 和 Settings 壳宽 `952 DIP`。由于包未记录 Window.ActualWidth/runner 分辨率，不将其归因生产 UI。
-- 本阶段测试夹具已用显式 Grid 逻辑宿主固定 WPF Measure/Arrange 尺寸，保留原几何、滚动和负例断言；未改生产 XAML/VM/命令/DTO。隔离 SDK `8.0.423` Release solution `0 warning / 0 error`，完整 `ReportedWorkspaceLayoutBehaviorTests 54/54`；测试运行时 .NET Framework `4.8.9181.0`，CI 为 `4.8.9345.0`。详见 [#965 布局宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。
-- 提交/推送后跟踪新 Actions 到终态；只有成功才收口此门禁。随后重跑 freshness，再先复核 R00/R01，之后推进依赖满足的 Q/R。保留其他任务 R04/R05/R07 未跟踪证据。原 Demo 设计目录仍缺；真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW及宿主性能未验。
+- #965 用户诊断包确认 CI SDK `8.0.423`；布局类 54 项中 4 项失败，均已在 `5eaa12bf` 以显式逻辑 Grid 宿主修正。#966/run `38352437420` 对该提交已终态成功；其 SDK 仍为 `8.0.423`。
+- 已新增 SDK `10.0.401` 独立 Actions job 和隔离 worktree 验证脚本。仓库 `global.json` 与原 SDK8 job 保持不变。本机 SDK `9.0.302` 全量 Release 编译成功；Core `125/125`、Worker `357/357`、Playnite `1566` 通过/0失败；另有 57 条旧 UI 架构断言以既有规则 NotExecuted。布局类 `54/54`。
+- 本阶段改动待中文 commit/push；必须跟踪新 SDK10 job 到终态，不能以 SDK9 本机结果或 SDK8 的 #966 替代。SDK10 CI 成功后，对新 HEAD 重跑 freshness 并校正 R00/R01 证据，再推进依赖满足的 Q/R 小批。
+- 保留其他任务 R04/R05/R07 未跟踪证据。真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW及宿主性能未验；Demo 原目录不可用，沿用恢复的生产基线。

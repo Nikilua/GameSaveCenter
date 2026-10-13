@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；当前分支 `main`，本阶段提交前基线 `d0dbaea00dc620545524236c55444748d43d6540`。#965 用户诊断包已核验：CI SDK `8.0.423`/VSTest `17.11.1`；Release build 成功，但布局类因窗口请求尺寸假设失败 `4/54`，R08Numeric `5/5`。本机隔离 SDK8 Release `0/0`，布局类在修正后 `54/54`。测试宿主改动及完整边界见 [#965 布局宿主复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。先提交/推送并检查新 Actions 到终态；成功后按用户顺序复核 R00/R01，再续做 Q/R。保留其他任务的未跟踪证据；真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
+更新：2026-10-13；当前分支 `main`，本阶段基线 `5eaa12bfaee40e7a254813ea1df6d67c8a3dcbce`。#965 诊断 ZIP 确认 CI SDK `8.0.423`，布局类 4/54 失败；测试尺寸宿主已在 `5eaa12bf` 修正。#966/run `38352437420` 对该提交已终态成功，但该 workflow 仍选 SDK8。已新增 SDK `10.0.401` 独立 CI job 和隔离 build helper；本机 SDK9.0.302 Release 全量 build 成功、Core125/125、Worker357/357、Playnite1566 passed/0 failed，57 条旧架构测试按既有 reason NotExecuted，布局类54/54。工作树改动及本机证据见 [SDK10 CI复核门禁](design/reviews/ui-finesse-round3-20260915/evidence/CI-SDK10-BUILD-VERIFY-20261013/README.md)。下一步只提交本阶段文件并 push main，追踪 SDK10 job 终态；终态后重跑 R00/R01 freshness，再做依赖已满足的 Q/R 小批。保护其他任务的 R04/R05/R07 未跟踪证据。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

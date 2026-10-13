@@ -73,3 +73,36 @@ jobs:
             artifacts/build-diagnostics/**/*.trx
           if-no-files-found: warn
           retention-days: 14
+
+  sdk10-build:
+    name: .NET SDK 10.0.401 编译与测试复核
+    runs-on: windows-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 .NET SDK 10.0.401
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.401
+
+      - name: 隔离工作树并运行 Release 编译与测试
+        shell: pwsh
+        run: |
+          ./scripts/verify-sdk-build.ps1 `
+            -SdkVersion 10.0.401 `
+            -WorktreePath "$env:RUNNER_TEMP\gsc-sdk10-worktree" `
+            -OutputRoot "$env:RUNNER_TEMP\gsc-sdk10-output" `
+            -DiagnosticsRoot "$env:RUNNER_TEMP\gsc-sdk10-diagnostics"
+
+      - name: 保留 SDK 10.0.401 构建诊断（包括失败）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameSaveCenter-sdk10-build-diagnostics
+          path: |
+            ${{ runner.temp }}\gsc-sdk10-diagnostics\**\*.json
+            ${{ runner.temp }}\gsc-sdk10-diagnostics\**\*.txt
+            ${{ runner.temp }}\gsc-sdk10-diagnostics\**\*.trx
+          if-no-files-found: warn
+          retention-days: 14
