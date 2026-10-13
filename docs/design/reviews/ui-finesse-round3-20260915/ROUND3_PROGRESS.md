@@ -1629,3 +1629,13 @@
 - 因 `*Keyboard*.cs` 是 R00-08 登记源码，本次按精确身份重跑 GamePicker 和焦点轨迹后只更新 R00-08 baseline 到 `87070909`；freshness 重算 `14 records / 0 needsRerun`。其他 R00/R01 source commit 未改变，package identity 仍为 `not-provided`。
 - 这只证明受控 STA 窗口里当前默认内容的 WPF 键盘焦点遍历，不证明完整数据状态下每一行/详情命令、按屏幕阅读顺序是否正确、物理 Tab 输入或 Playnite 嵌入。Q24-04 视觉栏仍待验，真实六页走查与宿主验收未完成。#973/run `38429051152` 在本次检查仍 `In progress`；本批代码与前两项代码提交尚待推送并跟 SDK8/SDK10 CI 至终态。
 - 下一可执行项 Q24-05：核对现有 Focus/Selected/Current 状态与弹层关闭后的焦点返回；复用现有状态服务与 WPF 行为夹具，真实宿主仍单独标记。
+## 2026-10-14 Q24-05 当前 main 焦点语义复核
+
+- 用户新附加的 #970/#971 三份 ZIP 经 SHA-256 核对为已审包的完全相同副本：#970 SDK10、#970 SDK8、#971 SDK8；没有新增 #971 SDK10 diagnostics。独立工作不等待缺失包。
+- 核对已有实现后复用 b20f1a4b 的 R21-07 回归及现有生产状态模板。当前 main 精确身份 cb31947b1148195e2b8750dbfc75ae0269b1978a；没有生产 UI/VM/XAML 变更。
+- 本机隔离 SDK 8.0.423，插件 net462、tests net472、VSTest 17.11.1；Release build 0 warning / 0 error。R21FocusVisualRegressionBehaviorTests 1/1、R09FocusOutlineBehaviorTests 2/2、R23 navigation/settings tabs/production grids 4/4，合计 7/7。程序集 ProductVersion 与源 SHA 相符；TRX、MVID、source hashes 见 [Q24-05 证据包](evidence/Q24-05-CURRENT-MAIN-FOCUS-RECHECK-20261014/README.md)。
+- 实际覆盖当前导航页选中态在焦点移出后保留、表格选中行和键盘焦点分离、浅/深主题、失焦/禁用及错误恢复负例；游戏选择层以 2,000 条合成游戏在滚动末端/主题切换后保留可定位焦点，关闭后回到可见触发按钮。因没有生产视觉变更，无截图或 RenderHarness 结果。
+- 首个 STA WPF 测试进程关闭时输出 TextServicesContext/TextStore InvalidComObjectException 清理异常；测试进程 exit 0，TRX 通过，根因未知，未归因于产品。
+- Q24-05 当前 main 受控行为记为已满足。真实 Playnite、Windows UIA/读屏、OS 级键盘、焦点环最终像素、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+- CI 检查：#973/run 38429051152 页面仍 In progress；#974/run 38436999880 的 SDK8 job 115433489365 与 SDK10-labeled job 115433489872 页均显示 Re-running jobs，logs 需要登录，实际 runner SDK 与终态未知。新提交后继续跟踪所有相关 Actions。
+- 下一可执行项 Q24-06：复核当前 main UIA Name/HelpText/LabeledBy/原生 Pattern；Narrator 和真实 Playnite 另列外部待验。Q24-03 仍受第二物理显示器阻塞。

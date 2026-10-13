@@ -1,3 +1,12 @@
+## 2026-10-14 Q24-05 焦点语义当前 main 补证
+
+- 先审现有实现：b20f1a4b 已增加 R21-07 游戏选择层焦点可视回归；R23 状态行为覆盖导航 IsChecked 当前页、表格选择、键盘焦点与禁用，故本阶段复用生产代码，没有重建状态服务或改生产 XAML。
+- 精确 main 源身份 cb31947b1148195e2b8750dbfc75ae0269b1978a，隔离 SDK 8.0.423；Release 构建插件 net462 和测试 net472，0 warning / 0 error。VSTest 17.11.1，测试程序集 ProductVersion 与完整 SHA 一致。
+- R21FocusVisualRegressionBehaviorTests 1/1、R09FocusOutlineBehaviorTests 2/2、R23 导航/页签/生产表格状态 4/4，合计 7/7。覆盖选框滚动到 2,000 项末尾、Light/Dark 切换和关闭后回到可见触发器；导航/表格选中态在焦点移走后保留；焦点轮廓移动、禁用失焦与错误恢复负例。TRX、MVID、SHA、覆盖边界见 Q24-05 证据包。
+- 首个 WPF 测试进程退出时记录 TextServicesContext/TextStore InvalidComObjectException 清理噪声；进程 exit 0、TRX 1/1，通过原因未确认，不将其解释为焦点行为失败。
+- Q24-05 当前 main 受控行为已满足；真实 Playnite、Windows UIA/读屏、OS 级键盘、焦点环像素和最终呈现仍未验。未改用户配置、存档、媒体或云端。
+- 用户 #970/#971 三包与既有 SHA 一致，缺少 #971 SDK10 原始诊断；#973 仍 In progress，#974 两个 job 页仍显示 Re-running jobs、需登录查看日志、运行 SDK 未确认。独立任务继续，不等待用户补档。
+- 下一项 Q24-06：当前 main 复核 UIA Name/HelpText/LabeledBy 与原生 Pattern；真实 Narrator/Playnite 另列未验。Q24-03 需要第二物理显示器。
 ## 2026-10-14 Q24-04 键盘遍历断言补强
 
 - 复核既有行为后发现 `R21KeyboardNavigationTraceTests` 原断言仅要求每入口至少两个焦点点、前向命中一个预期名称并且焦点留在页面；不能证明所有当前可见控件可达，也不能证明反向顺序。

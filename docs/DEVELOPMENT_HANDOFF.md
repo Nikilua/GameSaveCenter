@@ -208,10 +208,12 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 下一可执行小批 Q24-02：用当前 main 生产 `PageHost` 记录短窗真实内容几何、首尾可达和恢复宽窗；不以窗口请求尺寸代替内容区。用户至明早 09:00 不可回复，独立任务继续推进，不发问题等待。
 - 保持游戏选框/滚动条、Playnite `net462`、命令/取消/错误/恢复保护和大列表性能语义。其他任务 R04/R05/R07 未跟踪 evidence 原样保留；本轮生成的 PNG/TRX 均由 README 引用，未产生新 `.tmp` 目录。
 
-## 2026-10-14 当前恢复点：Q24-04 键盘遍历门禁
+## 2026-10-14 当前恢复点：Q24-05 焦点语义已满足
 
-- 当前本地代码身份 `8707090901a3ee1e424c8bced9c79a170b9631bc`，main 上有三项未推送代码提交：PageHost 几何 `5fcd6856`、Tooltip 跨 Dispatcher 修复 `74815b2b`、键盘焦点遍历测试增强 `87070909`。对应 #973/run `38429051152` 的上一已推送基线仍 `In progress`；页面日志需要登录，只有 run 页面可读。
-- Q24-02 精确身份定向 `9/9`；R05 Popup/焦点扩展组 `8/16` 的失败边界保留，不猜根因。Q24-04 精确身份 SDK8 `8/8`，覆盖 GamePicker 6 项及八生产入口两方向焦点轨迹；90 个当前窗口内可见/启用/可 Tab 的控件双向可达，反向序列与正向互逆。
-- 本机 SDK `8.0.423`；测试程序集 ProductVersion 与 SHA、脱敏 TRX、当前焦点轨迹均在 [Q24-04 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-CURRENT-MAIN-KEYBOARD-RECHECK-20261014/README.md)。`validate-source.py` 通过；R00-08 freshness 重跑后 14 条 `0 needsRerun`，package identity 未提供。
-- Q24-04 夹具没有真实 Playnite、OS 级键盘注入、完整业务数据行或按物理屏幕核对正向阅读顺序；不签收视觉/宿主/最终。Q24-02 的真实宿主、Popup 失败根因、第二屏和 CI SDK10 仍待验证。下一项 Q24-05 焦点语义；用户至 09:00 无法回复期间不等待补充日志。
-- `.tmp/q24-04-current-main-20261014` 和 Q24-02 证据目录内未被 README 引用的本轮迭代 TRX 是本轮临时输出。精确文件清理命令遭执行器拒绝；不改用其他删除接口。已归档 TRX 才会提交，其他任务现有未跟踪文件保持原样。
+- 当前分支 main，代码与证据推送于 cb31947b1148195e2b8750dbfc75ae0269b1978a；对应 origin/main。Q24-02 的 5fcd6856/74815b2b 与 Q24-04 的 87070909 均已包含在此 HEAD。
+- Q24-05 复用 b20f1a4b 以来的生产实现；当前 main 隔离 SDK 8.0.423 Release 构建 0 warning / 0 error，R21 picker、R09 focus outline、R23 navigation/settings tabs/production grids 共 7/7。证据、TRX 与程序集身份见 Q24-05 复核包。
+- Q24-05 受控行为已满足：Current/Selected 与键盘焦点分离、失焦/禁用负例、双主题状态，以及游戏选择层滚动/切主题/关闭回焦。真实 Playnite、Windows UIA/读屏、OS 输入、焦点环最终像素与宿主呈现仍待验。
+- #970/#971 新附件均为已有 ZIP 的相同 SHA；#971 SDK10 诊断仍缺，不等待用户补充。#973/run 38429051152 页面仍 In progress；#974/run 38436999880 的 SDK8/SDK10 job 页仍显示 Re-running jobs，日志要求登录，实际 SDK/终态未核实。新提交后继续跟旧/新 run 直到状态明确。
+- 用户明日 09:00 前无法回复；继续独立任务。下一项 Q24-06 当前 main UIA Name/HelpText/LabeledBy/Pattern 复核；Q24-03 仍需第二物理屏。
+- Q24-04 之前自己产生且未被证据引用的 TRX 仍在 Q24-02 证据 tests 目录；.tmp/q24-04-current-main-20261014 也曾登记为本轮临时目录。精确清理请求被执行策略拒绝，保留原状，不用其他删除接口。R04/R05/R07 等其它任务的未跟踪证据保持原样。
+- C 盘隔离临时构建约 46 MB。按精确路径清理时执行策略拒绝 Remove-Item，文件仍留在 C:\Users\lopmatu\AppData\Local\Temp\gsc-q24-05-build-20261014；未尝试其他删除接口。新 TRX 已脱敏并由 README 引用，其他未跟踪证据保持原样。

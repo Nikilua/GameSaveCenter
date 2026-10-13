@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前本地代码 HEAD `87070909`；Q24-02 PageHost/收件箱受控行为 `9/9`，扩展 Popup/焦点 `8/16` 的失败边界未解；Q24-04 当前精确身份 SDK `8.0.423` 定向 `8/8`，八入口 90 个当前可见交互控件双向可达且 Shift+Tab 顺序互逆。freshness 14 条 `0 needsRerun`，R00-08 只更新至实测 `87070909`，其他 R00/R01 证据仍按原 SHA；RenderHarness 仍有 `13 MEDIUM`。`5fcd6856`、`74815b2b`、`87070909` 待 push，#973 对 `bee29749` 最近仍 `In progress`。用户已说明至 09:00 无法回复；#970/#971 新附件是已审 SHA 副本，#971 SDK10 原始诊断缺失不阻塞独立任务。下一项 Q24-05 焦点语义；Q24-03 物理跨屏需第二显示器。真实 Playnite、完整业务行态、OS UIA/IME、最终呈现和宿主性能仍未验。
+更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前 main 与 origin 对齐于 cb31947b。Q24-02 受控行为 9/9，扩展 Popup/焦点夹具 8/16 的失败边界未解；Q24-04 精确 SDK8 8/8，八入口 90 个可见交互控件双向可达；Q24-05 复用既有生产模板与 GamePicker，当前 main Focus/Selected/Current 状态和回焦行为 7/7，Release build 0/0，按当前受控范围记为已满足。R00/R01 freshness 14 条 0 needsRerun，R00-08 source 为 87070909，RenderHarness 保留 13 MEDIUM。#973 仍 In progress；#974 两 job 页面仍 Re-running jobs，日志要求登录、runner SDK 未确认。用户到明日 09:00 前无法回复；#970/#971 三包是已审 SHA 副本，#971 SDK10 原始日志缺失不阻塞独立任务。下一项 Q24-06 UIA Name/HelpText/LabeledBy/Pattern 当前 main 复核；Q24-03 物理跨屏需第二显示器。真实 Playnite、OS UIA/读屏输入、物理呈现和宿主性能仍未验。
 
 ## AI/Codex 启动协议
 
