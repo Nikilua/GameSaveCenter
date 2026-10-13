@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；当前分支 `main`，本阶段基线 `5eaa12bfaee40e7a254813ea1df6d67c8a3dcbce`。#965 诊断 ZIP 确认 CI SDK `8.0.423`，布局类 4/54 失败；测试尺寸宿主已在 `5eaa12bf` 修正。#966/run `38352437420` 对该提交已终态成功，但该 workflow 仍选 SDK8。已新增 SDK `10.0.401` 独立 CI job 和隔离 build helper；本机 SDK9.0.302 Release 全量 build 成功、Core125/125、Worker357/357、Playnite1566 passed/0 failed，57 条旧架构测试按既有 reason NotExecuted，布局类54/54。工作树改动及本机证据见 [SDK10 CI复核门禁](design/reviews/ui-finesse-round3-20260915/evidence/CI-SDK10-BUILD-VERIFY-20261013/README.md)。下一步只提交本阶段文件并 push main，追踪 SDK10 job 终态；终态后重跑 R00/R01 freshness，再做依赖已满足的 Q/R 小批。保护其他任务的 R04/R05/R07 未跟踪证据。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
+更新：2026-10-13；当前分支 `main`，本阶段基线 `983fee5cae51f0f9fbe4b100620ab156e3a723f1`。用户提供的 SDK10 ZIP 匹配 artifact `11795654027`，确认 SDK `10.0.401` 全步骤成功；#967 SDK8 job 在源码结构检查失败。原始 SDK8 log/API 访问分别 HTTP404/403，但本机同 commit 跑同一 validator 复现新脚本缺 UTF-8 BOM；补 BOM 后源码检查通过。该修正与证据正在本地整理，尚未推送。下一步 commit/push main，等新 Actions 的 SDK8 和 SDK10 两 job 到终态；随后复核 R00/R01 freshness，再做依赖满足的 Q/R 小批。保护其他任务 R04/R05/R07 未跟踪证据。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

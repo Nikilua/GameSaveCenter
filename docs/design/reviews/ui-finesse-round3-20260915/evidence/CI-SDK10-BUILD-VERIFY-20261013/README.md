@@ -14,6 +14,10 @@ The PowerShell AST parsed cleanly, the workflow YAML parsed successfully, an out
 
 ## CI status and limits
 
-The preceding run #966 (`38352437420`) for commit `5eaa12bfaee40e7a254813ea1df6d67c8a3dcbce` completed successfully using SDK `8.0.423`. The new SDK `10.0.401` job has not run yet; this evidence must be updated after its Actions run reaches a terminal state. If it fails, retain the complete job log and uploaded diagnostic ZIP before changing code.
+Run #967 (`38362229559`) for commit `983fee5cae51f0f9fbe4b100620ab156e3a723f1` reached `Failure`. The SDK8 baseline job (`115178885652`) stopped at “源码结构检查”; its raw job log was not available from the public log endpoint (HTTP 404) or anonymous API (HTTP 403), and the run exposed no SDK8 diagnostics artifact.
+
+The user-provided `GameSaveCenter-sdk10-build-diagnostics.zip` is the separate SDK10 job artifact (`11795654027`, 737,570 bytes; SHA-256 `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`). Its `summary.json` identifies source commit `983fee5cae51f0f9fbe4b100620ab156e3a723f1`, SDK `10.0.401`, outcome `passed`, and exit code 0 for every recorded step. It contains 117 TRX files with 1,566 passed and 0 failed tests. This confirms the SDK10 build/test job only; it does not include the failed SDK8 source-check output.
+
+The exact SDK8 check was reproduced locally on commit `983fee5`: `python scripts/validate-source.py` reported that `scripts/verify-sdk-build.ps1` lacked the UTF-8 BOM required by the repository's Windows PowerShell 5.1 source guard. Adding only that BOM made the same validator pass. The raw CI log remains unavailable, so the diagnosis is supported by reproducing its exact failing command and guard locally. The correction is pending commit/push and a fresh Actions run.
 
 This work uses isolated synthetic test fixtures. It does not verify a live Playnite host, physical DPI or multi-monitor behavior, a presented frame, UI Automation/IME, ETW, or host performance. It does not access real saves, media, cloud data, or send diagnostics externally.

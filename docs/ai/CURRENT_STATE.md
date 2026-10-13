@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，SDK10 CI 门禁待推送；代码基线 `5eaa12bfaee40e7a254813ea1df6d67c8a3dcbce`。#965 用户诊断包对应 SDK `8.0.423`，布局类 4/54 失败已由 `5eaa12bf` 校正；#966/run `38352437420` 对该提交成功但仍使用 SDK8。当前新增 SDK `10.0.401` 单独 CI job；本机 SDK `9.0.302` 全量 Release build 成功，Core125/125、Worker357/357、Playnite1566通过/0失败，57条旧架构断言按现有说明 NotExecuted。证据见 [SDK10 CI 复核门禁](../design/reviews/ui-finesse-round3-20260915/evidence/CI-SDK10-BUILD-VERIFY-20261013/README.md)。下一步提交并追踪 SDK10 job 到终态，随后重跑 R00/R01 freshness 并继续依赖满足的 Q/R。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，本地修正待提交；基线 `983fee5cae51f0f9fbe4b100620ab156e3a723f1`。#967/run `38362229559` 对该提交终态失败：SDK8 job 在源码结构检查因新脚本缺 UTF-8 BOM 而退出；本机复现相同 guard 后补 BOM，`python scripts/validate-source.py` 通过。SDK8 原始 job log 匿名访问 HTTP403/404，未获得 SDK8 诊断包。用户提供的独立 SDK10 诊断 ZIP 与 artifact `11795654027` 哈希一致，确认 SDK `10.0.401`、全步骤成功、117 个 TRX、1566 通过/0失败。证据及限制见 [SDK10 CI 复核门禁](../design/reviews/ui-finesse-round3-20260915/evidence/CI-SDK10-BUILD-VERIFY-20261013/README.md)。下一步提交推送 BOM 修正并追踪新 run 的 SDK8 与 SDK10 两 job 至终态；成功后重跑 R00/R01 freshness，再推进依赖满足的 Q/R。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 

@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前 Round3 顺序为先修复 #965 暴露的布局测试宿主尺寸假设并跟踪新 Actions，再复核 R00/R01，之后推进依赖满足的 Q/R。#965 用户诊断包核验 SHA `328C86FE…` 与 artifact `11788460821` 相符，CI SDK `8.0.423` / VSTest `17.11.1`；Release build 成功，R08Numeric `5/5`，布局类 `50/54`，4 项失败来自两项测试的 Window/逻辑宽度不一致。本机隔离 SDK8.0.423 solution `0/0`、修正后布局类 `54/54`；与 CI 的 .NET Framework runtime build 不同，须以新 Actions 终态收口。旧 #919/#920 SDK10.0.401 日志属于旧源码。R00/R01 最近 freshness 为 d0dbaea 的 `14/14`；测试路径变更后需重跑并只记录新事实。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前顺序是修复并收口 #967 的 CI 门禁，再复核 R00/R01，之后推进依赖满足的 Q/R。#965 布局测试主机尺寸修正已在 `5eaa12bf`，#966 SDK8 run 成功。新增 SDK10 job 在 #967 对 `983fee5` 用 SDK `10.0.401` 全步骤成功（用户 ZIP SHA 与 artifact `11795654027` 一致）；同一 run 的 SDK8 源码结构检查失败，`python scripts/validate-source.py` 本机复现为新建 `verify-sdk-build.ps1` 缺 UTF-8 BOM，添加 BOM 后通过。SDK8 原始日志仍未读到，新的 CI 必须验证该修正；SDK10 成功不得替代 SDK8 终态。R00/R01 上次 freshness 为旧源身份，后续需重跑并只记录新事实。
 
 ## AI/Codex 启动协议
 

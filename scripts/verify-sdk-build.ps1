@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+$')][string]$SdkVersion = '10.0.401',
     [string]$WorktreePath = '',

@@ -10288,3 +10288,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `NumericChangeFeedback` 生产默认遵循 `GscMotion.IsEnabled(true)`，系统 High Contrast / `ClientAreaAnimation` 可能禁用动效。参考同 runner #959 已证实的 `ClientAreaAnimation=False` 情况，旧正例未固定系统动效输入导致把关闭动效误判为失败；#962/#963 包本身未打印系统标志，不扩大为直接实测结论。新增 per-TextBlock 内部审计覆盖默认 null 保持真实系统门控，正例固定 true 实际采样 WPF 动画/节流/归一/相邻位置，false 负例验证即时更新/无动画；另验证默认系统分支与应用 reduced-motion。
 - 使用隔离 SDK `8.0.423`（PATH 默认9.0.302）；VSTest `17.11.1`，本机 .NET Framework `4.8.9181.0`（CI日志 `4.8.9345.0`）。Release solution `0 warning / 0 error`，`R08NumericChangeBehaviorTests 5/5`，源码校验与 diff check 通过，脱敏 TRX SHA/程序集身份归档在当前证据包。生产界面及绑定无改动。
 - #964/run `38339686245` 对 pre-fix 提交 `83fbee97` 终态 Failure 于“编译与测试”；job `115107636301`，匿名 artifact partial HTTP404，完整日志不可读。当前修正尚待提交；推送后等待新 run 终态，门禁收口后先按当前续跑顺序复核 R00/R01，再推进依赖已满足的 Q/R。真实 Playnite/物理呈现/跨屏/UIA/ETW/宿主性能未验；继续保护其他任务 R04/R05/R07 未跟踪证据。
+
+## 2026-10-13 SDK8 源码结构门禁复现与 BOM 修正
+
+- 用户提供的 `GameSaveCenter-sdk10-build-diagnostics.zip` 对应 #967/run `38362229559` 中绿色 SDK10 job，不是失败的 SDK8 job。ZIP SHA-256 `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`；`summary.json` 源 commit `983fee5cae51f0f9fbe4b100620ab156e3a723f1`、SDK `10.0.401`、outcome `passed`，117 个 TRX、1566 通过、0 失败。SDK8 job `115178885652` 在“源码结构检查”失败，原始日志匿名 API HTTP403、log endpoint HTTP404，run 无 SDK8 artifact。
+- 在相同 checkout 执行 CI 的 `python scripts/validate-source.py`，准确复现 `scripts/verify-sdk-build.ps1` 缺 UTF-8 BOM 的 guard 失败（Windows PowerShell 5.1 兼容门禁）；只为该脚本增加 UTF-8 BOM 后重跑，完整源码验证通过。此为同命令/同源码门禁复现，原始 SDK8 CI log 仍未取得。
+- 阶段改动仅限 PowerShell 脚本编码标记及本节证据/当前状态文档；未改产品 UI、绑定或业务行为。`python scripts/validate-source.py`、PowerShell AST 解析与 `git diff --check` 均通过。提交推送后必须跟踪新 run 中 SDK8 与 SDK10 两个 job 到终态，成功后重跑 R00/R01 freshness，再继续依赖满足的 Q/R。真实 Playnite、物理呈现/多屏、OS UIA/IME、ETW/宿主性能和真实数据仍未验证。
