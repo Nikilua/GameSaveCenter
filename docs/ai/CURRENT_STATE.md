@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，本地修正待提交；基线 `983fee5cae51f0f9fbe4b100620ab156e3a723f1`。#967/run `38362229559` 对该提交终态失败：SDK8 job 在源码结构检查因新脚本缺 UTF-8 BOM 而退出；本机复现相同 guard 后补 BOM，`python scripts/validate-source.py` 通过。SDK8 原始 job log 匿名访问 HTTP403/404，未获得 SDK8 诊断包。用户提供的独立 SDK10 诊断 ZIP 与 artifact `11795654027` 哈希一致，确认 SDK `10.0.401`、全步骤成功、117 个 TRX、1566 通过/0失败。证据及限制见 [SDK10 CI 复核门禁](../design/reviews/ui-finesse-round3-20260915/evidence/CI-SDK10-BUILD-VERIFY-20261013/README.md)。下一步提交推送 BOM 修正并追踪新 run 的 SDK8 与 SDK10 两 job 至终态；成功后重跑 R00/R01 freshness，再推进依赖满足的 Q/R。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`。代码检查点 `4aa1ec7ef9bafa95758027a9c9ea4f0c43be8c80` 的 #968/run `38366158855` 已终态成功：SDK8 job `115191682311` 实际 `8.0.423`，SDK10 job `115191682644` 实际 `10.0.401`；各自 build/test 成功，SDK8 另完成 Render QA、WPF 静态审查和扩展包。#967 SDK8 源码门禁失败由缺 UTF-8 BOM 引起，本机同 guard 复现并在 `4aa1ec7` 修正；#967 SDK8 原始日志仍受匿名 403/404 限制，用户给的 ZIP 只对应绿色 SDK10 job。R00/R01 freshness 为 `14 fresh / 0 stale`。证据见 [R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。下一项 R05-03：先走隔离 Playnite fail-closed 预检，再判断能否采集真实弹层翻转帧。package identity、真实宿主呈现、OS UIA/Narrator/IME、物理 DPI/多屏、ETW 与宿主性能仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -30,10 +30,10 @@
 | R06-03 当前 main | 生产实现沿用 `d83c7378`；本轮以 `fdeeec8` 生产源加单项测试差异构建，SDK `8.0.423` Release `0/0`、XAML `24/24`；R06Selection `2/2`、四表双主题状态几何 `1/1`、Task 双主题受控 hover/错误徽章 InputHitTest/Failed 终态禁用与 Running 取消按钮 UIA Invoke `1/1`、共享资源契约 `2/2`。测试仅证明隔离 WPF 状态与逻辑 DIP，不是实际 OS 指针或 Playnite 呈现。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R06-04 当前 main | 复用 afe4aa55 已有 DataGridClipboardBehavior 和五类 profile；生产行为复核 5/5，复制反馈 2/2。本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、侧栏 22/22、R06Clipboard 5/5、R22 2/2。#952 完整日志显示其失败发生在旧 R07 resize 初始断言；本轮修正尚无 CI 结果，R06-04 不因本机定向通过签收。详情见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R06-05 当前 main | 复用现有共享列头说明、排序与单位格式；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、`R06ColumnHeaderHelpTests 2/2`。当前身份 RenderHarness `372 PNG`、`render-qa OK`；代表图和 header contract 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-05-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮未改生产 UI；受控 STA 与离屏逻辑 DIP 不等价真实 Playnite/OS 输入 |
-| R06-06 当前 main | 复用 `TaskStatusDto`、`TaskIndexedCollection`、现有事件合批与 `TaskSummary`；SDK `8.0.423` Release `0/0`、XAML `24/24`，Playnite 隔离 `34/34`、Worker 合成 SQLite `9/9`；真实 DataGrid 验证 80 行更新只发生 `Replace`、选择/行数/滚动偏移保持，未知/0/钳制进度、取消状态与服务端分页总数各有行为证据。TRX 哈希/程序集身份见[R06-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-06-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮无当前身份截图，旧图仍绑定 `72fd6d9a`。混合非隔离试次 `22/23` 的单一失败在滚动 viewer 查找，已披露且未混入通过数。#961 仍运行中；真实 Playnite/取消竞争、UIA、物理跨屏、presented frame、ETW 和宿主性能未验 |
-| R07-08 / R08 当前 main | #959 CI 的 R07 resize `1/1` 通过，R08 fixture 的系统动效前提已在 `d60e472d` 修正；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`、R08 `2/2`、native motion policy `22/22`。#960 此前记录为终态失败，但最新公开页面现显示 `In progress`，状态待核实；R07/R08 不签收。历史日志/证据见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
-| 远端 CI | #919/#920 的完整日志 ZIP 已归档并按 SHA 校验（见 R07-08 证据包）：两 run 由 SDK `10.0.401` 构建，失败于旧源码的两项侧栏 transition 活动时钟断言；这是历史源码结果。#959（run `38324971243`，SDK `8.0.423`）日志确认 `HighContrast=False; ClientAreaAnimation=False`；R07 通过，R08 动画正例未覆盖系统偏好。#960（commit `d60e472d`）先前证据记录为失败且诊断 artifact `11781543273`、580 KB、SHA-256 `113893ceea28078586cad28dc98fff77bcb402d08457a979b862d4a227bdfc51`，但 2026-10-13 最新公开页面现显示 `In progress`，与历史记录冲突；待可信终态复核，SDK/失败根因未知。#961（commit `73d0f6e6`，R06-05）最新公开页面 `In progress`，CI SDK未知。#954（commit `a2f8883c`）完整日志 ZIP 已归档，SDK `8.0.423`，失败是旧 R07 初始 `IsVisible` 断言且缺实际几何数据。 |
-| R00/R01 证据 | 2026-10-13 main `5762c874` 下 R00-03/R00-04 行为 `25/25`、freshness `14 fresh / 0 stale`。R00/R01 证据校正随 `a2f8883c` 提交；该 commit 的 #954 CI 失败位于旧 R07 `IsVisible` 断言，不是 R00/R01 回归证据。R01 与未命中源路径条目沿用既有证据；package identity 未提供。详见[当前 R00-03/R00-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
+| R06-06 当前 main | 复用 `TaskStatusDto`、`TaskIndexedCollection`、现有事件合批与 `TaskSummary`；SDK `8.0.423` Release `0/0`、XAML `24/24`，Playnite 隔离 `34/34`、Worker 合成 SQLite `9/9`；真实 DataGrid 验证 80 行更新只发生 `Replace`、选择/行数/滚动偏移保持，未知/0/钳制进度、取消状态与服务端分页总数各有行为证据。TRX 哈希/程序集身份见[R06-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-06-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮无当前身份截图，旧图仍绑定 `72fd6d9a`。混合非隔离试次 `22/23` 的单一失败在滚动 viewer 查找，已披露且未混入通过数。#961 是旧 run；当前代码检查点 #968 的 SDK8/SDK10 全门禁已成功；真实 Playnite/取消竞争、UIA、物理跨屏、presented frame、ETW 和宿主性能未验 |
+| R07-08 / R08 当前 main | #959 CI 的 R07 resize `1/1` 通过，R08 fixture 的系统动效前提已在 `d60e472d` 修正；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`、R08 `2/2`、native motion policy `22/22`。#960 此前记录为终态失败，但最新公开页面现显示 `In progress`，状态待核实；#968 当前源码自动门禁成功；真实宿主仍待验。历史日志/证据见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
+| 远端 CI | #919/#920 的 SDK `10.0.401` 日志及历史失败仍绑定旧源码；#960/#961 等旧 run 的终态/根因按其原证据保留。当前代码检查点 `4aa1ec7` 的 #968/run `38366158855` 已由 SDK8 `8.0.423` 与 SDK10 `10.0.401` 两个独立 job 全部验证成功；SDK8 还通过 Render QA、WPF 静态审查、扩展包和诊断上传。不能据此反推历史不可读 run 的根因。详情见[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。 |
+| R00/R01 证据 | main `4aa1ec7` 的 freshness summary 为 `14 fresh / 0 stale`；没有 R00/R01 源路径被本次 SDK helper BOM 变更命中，因此不重跑按类套件或改写其历史行为身份。#968 全套 CI 成功，但未提取按类计数。R00-08 的真实 OS IME/Playnite 输入链、package identity 仍待验。详见[R00/R01 当前 main 与 CI 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。 |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
 仓库锁定 SDK `8.0.423` 已由官方安装脚本安装到 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；通过临时进程 PATH 前缀选择，系统 SDK/PATH 未改。历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932、#934、#935 与 #936 的失败原因均未取得完整日志；访问受限期间不盲修。
@@ -42,11 +42,11 @@
 
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. 提交并推送 #965 布局测试宿主校正及其证据；只提交本阶段文件，保留其他任务的 R04/R05/R07 未跟踪证据。
-2. 追踪新 Actions 到终态。CI 仍运行时不签收；失败时先读该 run 的完整 diagnostics，再按实际错误处理。#965 原 run 的 SDK8.0.423 日志已由用户提供；历史 SDK10.0.401 run 只代表旧源码。
-3. Actions 成功后重跑 UI evidence freshness；再按任务要求复核 R00/R01 问题与证据。之前在 d0dbaea 下为 `14/14`，本阶段测试路径变更需重新确认。
-4. 之后推进依赖已满足的 Q/R 小批；每个阶段构建、测试、同步文档、中文 commit/push，并跟踪其 Actions。
-5. package identity、真实宿主与发布矩阵继续单列；没有实际包或宿主证据不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`。
+1. #968 已验证代码检查点 `4aa1ec7` 的 SDK8/SDK10 current-source 门禁；R00/R01 freshness 在同一检查点为 14/14。
+2. 下一小批从 R05-03 开始：只在既有隔离 Playnite 流程 fail-closed 预检成功后采集弹层翻转帧；不把离屏代理写成最终呈现。
+3. 若宿主条件仍阻塞，记录脚本实际返回、具体环境限制和手工待验步骤，继续选择可由合成数据/fake 服务与隔离行为验证的 Q/R 项。
+4. 每阶段只提交边界清楚的代码、证据和文档；本阶段没有生成包身份，未下载或安装 workflow preview artifact。
+5. ETW/系统跟踪、物理 DPI/跨屏、真实 OS 输入/UIA/IME 与宿主性能继续单列；真实业务数据不作写入。
 
 ## 架构与生产 UI
 

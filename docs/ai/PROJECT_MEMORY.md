@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：#960 状态现有记录与最新公开页冲突（历史记录为 failure、当前页为 In progress），#961（main `73d0f6e6`）仍 In progress；都需到终态。#919/#920 的日志 ZIP 已在仓库证据包，可确认实际 SDK `10.0.401` 与两项旧侧栏 transition 测试失败；此结果绑定旧源码。R06-05 不能在 #961 仍运行时签收；R06-06 本机复核与脱敏证据已归档，文档提交后的 Actions 仍需核查。下一项先复核已实现的 R06-07 当前 main 证据，再按账本继续。R00/R01 freshness `14/14`（source identity `5762c874`）；package identity 与真实宿主验收独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：#968 当前源码的 SDK8/SDK10 门禁已成功；#960/#961 的旧 run 状态和历史失败根因仍按原证据保留，不再阻塞当前候选。下一项 R05-03 先做隔离 Playnite fail-closed 预检。R00/R01 freshness 为 14/14（source identity 4aa1ec7），package identity 与真实宿主验收独立待验。R02-06 仍受 ENV-001 限制；Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
@@ -90,3 +90,7 @@ CURRENT_STATE 保持短摘要，PROJECT_MEMORY 保持稳定规则，HANDOFF 保�
 ### SDK 版本复核边界
 
 仓库 `global.json` 固定 SDK `8.0.423`；记录 CI 结果时必须写明实际 `dotnet --version`，不能把 workflow 中的 `setup-dotnet` 版本当作已选版本。若要求 SDK `10.0.401` 而仓库仍锁 SDK8，应使用单独 CI job，在临时 detached worktree 中仅改该 worktree 的 `global.json` 并运行同一 Release build/test 脚本；保留 SDK8 基线 job。SDK9 本机完整构建只算交叉检查，不能替代 SDK10 CI。CI 失败先取完整日志与失败诊断包，不凭摘要猜测。隔离 WPF TRX 中旧架构断言可能标为 `NotExecuted`，应读取其具体 reason 并与通过数分开记录。
+
+### 2026-10-13 当前 CI 与 R00/R01 检查点
+
+`4aa1ec7` 对应 #968/run `38366158855` 已终态成功。SDK8 `8.0.423` 与 SDK10 `10.0.401` 是两个独立 job，分别记录，不互相替代。#967 的 SDK8 源码门禁因 `verify-sdk-build.ps1` 缺 UTF-8 BOM 失败；本机用同一 `validate-source.py` guard 复现后补 BOM。#967 SDK8 原始日志仍不可读，用户上传的 ZIP 是绿色 SDK10 job。R00/R01 freshness 为 14/14，package identity 未提供；此数值不代表 Playnite 宿主、IME、物理 DPI/跨屏或最终呈现已验证。下一项按 backlog 先检查 R05-03 的隔离宿主预检，不满足条件就记录真实阻塞并继续其他 Q/R 工作。相关证据：[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。

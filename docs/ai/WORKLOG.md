@@ -10294,3 +10294,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户提供的 `GameSaveCenter-sdk10-build-diagnostics.zip` 对应 #967/run `38362229559` 中绿色 SDK10 job，不是失败的 SDK8 job。ZIP SHA-256 `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`；`summary.json` 源 commit `983fee5cae51f0f9fbe4b100620ab156e3a723f1`、SDK `10.0.401`、outcome `passed`，117 个 TRX、1566 通过、0 失败。SDK8 job `115178885652` 在“源码结构检查”失败，原始日志匿名 API HTTP403、log endpoint HTTP404，run 无 SDK8 artifact。
 - 在相同 checkout 执行 CI 的 `python scripts/validate-source.py`，准确复现 `scripts/verify-sdk-build.ps1` 缺 UTF-8 BOM 的 guard 失败（Windows PowerShell 5.1 兼容门禁）；只为该脚本增加 UTF-8 BOM 后重跑，完整源码验证通过。此为同命令/同源码门禁复现，原始 SDK8 CI log 仍未取得。
 - 阶段改动仅限 PowerShell 脚本编码标记及本节证据/当前状态文档；未改产品 UI、绑定或业务行为。`python scripts/validate-source.py`、PowerShell AST 解析与 `git diff --check` 均通过。提交推送后必须跟踪新 run 中 SDK8 与 SDK10 两个 job 到终态，成功后重跑 R00/R01 freshness，再继续依赖满足的 Q/R。真实 Playnite、物理呈现/多屏、OS UIA/IME、ETW/宿主性能和真实数据仍未验证。
+
+## 2026-10-13 #968 终态与 R00/R01 freshness 校正
+
+- #968/run `38366158855` 对应代码提交 `4aa1ec7`，已终态成功。SDK8 job `115191682311` 选中 `8.0.423`，SDK10 job `115191682644` 选中 `10.0.401`；两 job 的 build/test 成功，SDK8 另完成 Render QA、WPF 静态审查、扩展包及诊断上传。
+- 当前 freshness summary `14 fresh / 0 stale`，源码检查点 `4aa1ec7`，package identity `not-provided`。#968 本阶段没有按类导出 R00/R01 计数；没有把完整测试步骤通过改写为逐类计数。
+- #967 SDK8 结构检查失败由 `verify-sdk-build.ps1` 缺 UTF-8 BOM 引起；本机同 guard 复现并补标记。SDK8 原始 job log 仍不可读；用户上传 ZIP 绑定绿色 SDK10 job。完整元数据与限制见[R00/R01 当前 main 与 CI 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 下一项 R05-03：先执行既有隔离 Playnite fail-closed 预检，确认可用后再采集实际弹层翻转帧。真实 Playnite、package identity、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能仍未验证。

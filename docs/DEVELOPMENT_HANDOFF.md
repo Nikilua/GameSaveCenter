@@ -169,3 +169,10 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - #962/#963 用户上传诊断包已核验：CI SDK `8.0.423`，两次 Release 构建成功，失败是 R08 数字反馈计数 `0`/期望`1`；此前 #959 日志证明同 runner `ClientAreaAnimation=False`。修正增加按 TextBlock 隔离的内部审计 provider，默认生产行为仍服从真实系统动效偏好；正例强制开、系统负例关、另验默认路径。
 - #964/run `38339686245`（提交 `83fbee97`）在“编译与测试”失败，job `115107636301`，artifact partial 404；该提交早于当前修正。推送当前小批后继续查询新 Actions，直到成功或失败并按实际日志处理。完成 CI 门禁后先复核 R00/R01，再推进依赖已满足的 Q/R 小批。
 - 未验真实 Playnite、UIA/读屏、OS 输入、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能；未触及真实数据。清理仍受先前安全执行器拒绝限制，不绕过；未提交 `artifacts/`、`.tmp/` 或其他任务 TRX。
+
+## 2026-10-13 当前恢复点：#968 成功与 R00/R01 校正
+
+- 当前代码检查点 main `4aa1ec7ef9bafa95758027a9c9ea4f0c43be8c80`；#968/run `38366158855` 已终态成功。SDK8 job `115191682311` 实际 `8.0.423`，SDK10 job `115191682644` 实际 `10.0.401`。详细步骤、artifact 元数据与证据边界见 [R00/R01 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- R00/R01 freshness summary 为 `14 fresh / 0 stale`；没有按类重跑；package identity `not-provided`。#967 SDK8 日志仍受匿名 HTTP403/404 限制，上传 ZIP 只代表绿色 SDK10 job；helper BOM 修正已在 `4aa1ec7`。
+- 下一项 R05-03：从已授权隔离 Playnite的 fail-closed 预检开始，只有通过后才采集真实弹层翻转帧；如果预检阻塞，保存精确错误与后续手工步骤并转其他独立 Q/R。
+- 真实 Playnite/Worker、package identity、物理 DPI/跨屏、OS 输入/UIA/IME、最终呈现帧、ETW 与宿主性能均未验。保留其他任务未跟踪 R04/R05/R07 TRX，不纳入提交；不下载或安装 86.1 MB workflow preview artifact，也不触碰真实存档/媒体/云端。

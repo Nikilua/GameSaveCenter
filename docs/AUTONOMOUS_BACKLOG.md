@@ -12,13 +12,13 @@
 | --- | --- | --- | --- | --- |
 | GOV-003 | P1 | IMPLEMENTED | 当前审阅 Agent | 本次文档/账本审阅；证据见下 |
 | CLOSE-IPC-01 | P0 | IMPLEMENTED | 开发/测试 Agent | 取消 IO/EOF 分类与夹具释放已修复；R19-08/R01-08 |
-| CLOSE-CI-01 | P0 | IN_PROGRESS | 构建维护 Agent | 当前 CI 失败；诊断产物部分不依赖历史日志 |
-| CLOSE-SDK-01 | P0 | IN_PROGRESS | 构建维护 Agent | global.json / workflow / LangVersion 一致性 |
+| CLOSE-CI-01 | P0 | IMPLEMENTED | 构建维护 Agent | #968 当前源码 SDK8/SDK10 构建、测试、Render QA、静态审查、扩展包和诊断上传均成功；历史不可读失败仍单列，不猜测根因 |
+| CLOSE-SDK-01 | P0 | IMPLEMENTED | 构建维护 Agent | #968 分别验证仓库 SDK8 `8.0.423` 与 SDK10 `10.0.401` job；本地 helper 失败由源码门禁复现后补 BOM |
 | CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 SDK8 全量与独立 Q14 均复现 654 DIP 单行 margin 残留 |
 | CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main R02几何7/7，间距8 DIP/中心差0；整体共享回归与CI run `38249983091` 仍未收口 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
 | CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例、本机完整 Release/WPF 门禁已通过；run `38222818374` 终态失败，根因并入 CLOSE-CI-01 |
-| CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | f13b9e05 下 10 项受影响记录完成复核与校正，freshness 14/14；包身份未提供并继续单独待验 |
+| CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | main `4aa1ec7` freshness 14/14；package identity 未提供并继续单独待验，证据见 R00/R01 当前 main 复核包 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
 | CLOSE-REL-01 | P1 | BLOCKED_ENVIRONMENT | 发布验证 Agent | CI 绿、ENV-001、独立可丢弃存档/测试远端、当前候选包 |
@@ -32,6 +32,12 @@
 ### 2026-10-13 R00/R01 当前 main 证据校正
 
 R00-03/R00-04 在 main `5762c874` 上定向行为 `25/25`，更新 baseline 后 freshness `14 fresh / 0 stale`；其余 12 条源路径未命中，R01 既有证据不重跑。package identity 未提供，真实 Playnite/物理呈现仍未验。详情：[R00-03/R00-04 证据](design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。下一项按用户持续授权检查 R06-05 已有列头能力与依赖。
+
+### 2026-10-13 #968 当前 main 复核（覆盖上述历史“下一项”）
+
+代码提交 `4aa1ec7` 对应 #968 / run `38366158855` 已成功，SDK8 `8.0.423` 与 SDK10 `10.0.401` 两 job 分开验证。SDK8 完成 Render QA、WPF 静态审查和扩展包门禁；两个版本的 build/test 均成功。R00/R01 freshness summary 在该 source identity 下为 `14 fresh / 0 stale`。本阶段不重跑按类 suite，也没有包身份；历史 run 的不可读失败根因继续保留为未知，不由新绿 run 反推。完整范围、artifact hash 和边界见 [复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+
+当前可执行小批量转为 R05-03 弹层快速翻转真实帧检查：先走已授权隔离 Playnite 的 fail-closed 预检；若前置仍受限，记录实际错误并转到仍可自动行为验证的 Q/R 项。R00-08 OS IME/真实输入、package identity、实际 Playnite呈现、物理 DPI/跨屏、UIA/Narrator、ETW/宿主性能仍是独立边界。
 ### GOV-003：完成度与活动入口校准
 
 - **范围/结果**：重新统计 R192/Q208，R08-01 用户故障单列；撤下旧无分母百分比；三份当前入口精简并完整归档；补当前 CI、本地 IPC 失败、SDK 漂移与 freshness。
@@ -70,6 +76,7 @@ R00-03/R00-04 在 main `5762c874` 上定向行为 `25/25`，更新 baseline 后 
 - **历史本机 SDK 缺失**：在安装前 `global.json` 固定 `8.0.423` 且 `rollForward=disable`，机器当时只发现 `9.0.302`；对 `3df542af` 的 build 于 `sdk-baseline.ps1` 预检退出，未编译/测试；`validate-source.py` 通过。没有以 SDK9 替代。
 - **后续身份补口**：独立scripts/render-qa.ps1未主动注入GSC_BUILD_COMMIT；实际只读MSBuild查询（未注入env）得到GscBuildCommit=unknown、InformationalVersion=0.6.73+unknown。本轮render显式传入c35身份且DLL已核对，不能据此声称独立脚本/CI同样绑定；当前UI全量结束并提交后，再修脚本环境保存/恢复与同HEAD身份验证。
 - **非目标**：不授予宽泛仓库权限、不隐藏失败、不重复无限触发 CI。
+- **2026-10-13 当前候选收口**：`4aa1ec7` 对应 #968/run `38366158855` 终态成功。SDK8 job 实际 `8.0.423`，SDK10 job 实际 `10.0.401`；build/test 成功，SDK8 的 Render QA、WPF 静态审查、扩展包及诊断上传也成功。#967 SDK8 原始日志仍不可读；其源码结构失败由本机同 guard 复现后修复 BOM。新 run 证明当前候选门禁恢复，不反向解释旧 run 的未知根因。详见 [R00/R01 当前 main 与 CI 复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 
 ### CLOSE-SDK-01：明确 SDK 与编译器基线
 
@@ -77,6 +84,7 @@ R00-03/R00-04 在 main `5762c874` 上定向行为 `25/25`，更新 baseline 后 
 - **范围**：统一 `global.json` 与 `setup-dotnet` 的 SDK 选择，记录实际 `dotnet --version`；明确是否需要独立的更新 SDK 兼容通道；评估 `LangVersion=latest` 与选定 SDK 的关系。
 - **完成条件**：干净机器与 runner 使用同一已声明基线，完整 Release 和包门禁通过；另一预装大版本不能静默改变基线；缺 SDK 时给可理解错误。目标框架仍保持现有 Playnite/net462 与 Worker/net8 合同。
 - **非目标**：不把“固定 SDK 后通过”当成已解释所有历史失败，不顺便升级运行时或所有 NuGet 包。
+- **2026-10-13 收口**：#968 的 SDK8 `8.0.423` job 采用仓库锁定基线并完成 Release/test/包门禁；独立 SDK10 job 实际选择 `10.0.401` 并通过 Release/test。没有改变 `global.json`、目标框架或生产 SDK 声明；SDK9 本机结果未用于替代任一 CI job。工作流结果与 helper BOM 修复见 [复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 
 ### CLOSE-EVID-01：精确补齐当前受影响证据
 
@@ -87,6 +95,7 @@ R00-03/R00-04 在 main `5762c874` 上定向行为 `25/25`，更新 baseline 后 
 - **状态**：本任务的源码证据复核、负例、身份和 freshness 更新已完成。未提供的 package identity、真实宿主验收与远端 CI 根因分别留在发布/宿主/CI 队列，不阻止本项收口。
 - **完成条件**：记录源码身份、测试 DLL SHA/MVID、TRX、具体测量、负例与失败边界；重跑通过后更新原 baseline，freshness 14/14 且 package 身份仍独立核对。
 - **非目标**：不仅改 baseline SHA，不把本任务变成整轮视觉或真实宿主验收。
+- **2026-10-13 当前 main 复核**：代码检查点 `4aa1ec7` 的 freshness summary 为 `14 fresh / 0 stale`；本次 SDK helper BOM 变更没有命中登记的 R00/R01 源路径，因此没有重复跑按类测试或只改 baseline。package identity `not-provided`，真实宿主与呈现仍独立待验。详见 [当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 
 ### R02-03：当前 main 焦点与 UIA peer 复验
 
