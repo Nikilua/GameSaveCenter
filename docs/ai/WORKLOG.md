@@ -10255,5 +10255,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - main `87d27592` 与可复用 Release/net472 测试程序集的源码提交 `73d0f6e6` 在 `src tests` 无差异；本机 SDK `8.0.423` / VSTest `17.11.1` 隔离复跑 Save 实际 WPF 空/加载/错误/完成状态 `1/1`、共享 presenter 输入与禁用负例 `8/8`、媒体缓存 stale/错误/取消 `7/7`，共 `16/16`。没有重编译文档提交；同源构建 Release `0/0`、XAML `24/24` 归在上一 R06-06 记录。
 - 当前测试证明表头和失败恢复命令绑定/键盘输入，不以源码包含断言签收交互。旧 R06-07 RenderHarness `.tmp` 已缺失且旧报告绑定 `5046bf8f`，本轮未生成新截图；当前 WPF 行为证据不冒称当前 main 图像/真实 Playnite 呈现。原 Demo 目录仍缺失，沿用恢复生产基线。
-- commit `87d27592` 对应 Actions #962 / run `38335989087` 已 Failure。公开页给出 job `115096054544`，要求登录；匿名 logs API HTTP403 rate limit，artifact partial HTTP404。CI SDK、失败步骤与根因未知，不能猜修。先保留该边界，推进下一项 R06-08 当前 main 复核，并继续寻求日志可读入口。
+- commit `87d27592` 对应 Actions #962 / run `38335989087` 已 Failure；公开 job 标出“编译与测试”失败，job `115096054544`。日志要求登录，匿名 Logs API HTTP403 rate limit，artifact partial HTTP404；失败命令/断言/堆栈、CI SDK与根因未知，不能猜修。先保留该边界并继续独立任务。
 - 新增脱敏 TRX 与说明见 [R06-07 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md)。
+
+## 2026-10-13 R06-08 当前 main 详情/行高复核
+
+- 对照组要求核实详情对象更新、长诊断留在详情区和至少四行；原 `R06DetailsBudgetBehaviorTests` 只有两条任务且仅断言 `readableRows >= 2`。只加强合成 WPF 夹具：保留首项/失败项，新增 8 条队列任务，在 1120×700 STA 窗口实际展开 160 段错误诊断并断言至少 4 行完整可见，同时继续核对选中任务、错误码、旧详情不残留、独立滚动及最大行高60 DIP。未改生产布局/滚动或业务命令。
+- 隔离 SDK `8.0.423`，仓库 Release 构建脚本 `-SkipTests` 完成 `0 warning / 0 error`、XAML `24/24`；随后同一 build identity 执行 `R06DetailsBudgetBehaviorTests 2/2`、`MediaInboxGeometryTests 3/3`、`TaskCenterViewResponsiveTests 8/8`、`DetailsDisclosureSourceTests 1/1`，共 `14/14`。`python scripts/validate-source.py`、`git diff --check` 通过；测试程序集源码身份核对通过。源码/程序集 SHA、MVID 和脱敏 TRX 在 [R06-08 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-08-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 当前实际 STA WPF 几何用例证明长详情打开后四行完整可见；旧 `.tmp/r06-08-render-final` 不存在，旧截图绑定 `07376adb`，没有把它当当前截图。本轮未另生成渲染矩阵。Demo `DesignShellView.xaml`/`Pages` 路径仍缺，继续沿用恢复生产基线。
+- 上一文档推送 #963/run `38338090417` 已 Failure；公开 job `115102664699` 标出“编译与测试”失败，后续步骤跳过。日志要求登录，匿名 Logs API HTTP403 rate limit，artifact partial HTTP404；失败命令/断言/堆栈、CI SDK与根因未知，不猜修。R06-08 本次提交推送后仍需查新 Actions 至明确终态。真实 Playnite、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能与真实服务时序仍未验；未触及真实用户数据。
+- 下一可执行项 R07-01 滚动所有权当前 main 复核；先盘点页面/表格/详情的 ScrollViewer 所有权与真实边界传递行为，复用现有实现。

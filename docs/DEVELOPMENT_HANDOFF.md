@@ -144,7 +144,15 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 ## 2026-10-13 当前恢复点：R06-07
 
 - 当前分支 `main`，当前基线 `87d27592086bbef355b9426a00614b5bb9856e8c`。R06-07 源/测试与 `73d0f6e6` 完全相同；本机 SDK `8.0.423` 用同源 Release/net472 输出隔离执行当前行为用例 `16/16`，详情及 TRX SHA 在 [R06-07 当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md)。这是行为/结构复核，不包含新截图。
-- 对应当前提交 Actions #962 / run `38335989087` 已 Failure，build job `115096054544`。GitHub 公开 job/log 页要求登录；匿名 Logs API 403 rate limit，artifact partial 404。完整错误、CI SDK和根因未知；先继续取得实际日志再考虑修复，不猜测失败步骤。此前 #919/#920 日志是旧源码结果，不能替代本次日志。
+- 对应当前提交 Actions #962 / run `38335989087` 已 Failure，公开 job `115096054544` 显示“编译与测试”失败，其余后续步骤跳过。GitHub 日志页要求登录；匿名 Logs API 403 rate limit，artifact partial 404。失败命令/断言/堆栈、CI SDK和根因未知；先继续取得实际日志再考虑修复。此前 #919/#920 日志是旧源码结果，不能替代本次日志。
 - 当前 R06-07 ledger 记为本机行为已满足、CI 原因待日志；原 Demo `DesignShellView.xaml`/`Pages` 路径缺失，沿用恢复生产基线。旧 `.tmp/r06-07-emptytables` 当前不可用，旧报告绑定 `5046bf8f`，不作为当前截图。真实 Playnite、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。
 - 下一项执行 `R06-08 详情与行高预算` 当前 main 复核：先复核已有详情区/选择对象同步/四行门禁，再跑相关行为夹具；不要添加重建功能。继续保留其他任务的 R04/R05/R07 未跟踪 TRX。
 - 磁盘清理：四个旧生成目录仍在仓库 `.tmp/` 或 `artifacts/build-diagnostics/` 且被忽略；PowerShell 精确递归删除被安全策略拒绝，未尝试改走其他删除接口。不要提交生成物。新增本阶段证据仅是三份脱敏 TRX 与 README。
+
+## 2026-10-13 当前恢复点：R06-08
+
+- 最新代码阶段在 main `dc8f26ee` 基线完成；R06-08 只改行为夹具，SDK8.0.423 Release `0 warning / 0 error`、XAML `24/24`，定向 WPF/geometry/source suites `14/14`。长诊断展开后 10 条合成任务中至少 4 行完整可见；用户选中项、详情内容和独立详情滚动保持有效。测试源 hash、DLL SHA/MVID 与脱敏 TRX 见 [当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R06-08-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮没有 production UI 改动或新渲染矩阵。
+- 上个证据推送的 #963/run `38338090417` 已 Failure（build job `115102664699`），公开 job 只显示“编译与测试”失败、后续步骤跳过；Logs API 403 rate limit、artifact partial 404，CI SDK与根因仍未知，不能猜修。本阶段提交推送后必须查询新 Actions。#962 同样失败在“编译与测试”。此前 #919/#920 的 SDK10.0.401 日志绑定旧源码，不能代替这两个运行的日志。
+- R06-07 与 R06-08 本机行为条件已复核；CI #962 原因未取得，整体门禁未收口。Demo 原始目录缺失，沿用恢复生产基线。旧 `.tmp/r06-07-emptytables`、`.tmp/r06-08-render-final` 不在；当前行为测试没有截图证据。真实 Playnite/Worker、UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能和真实服务失败时序未验。
+- 下一项执行 R07-01 当前 main 滚动所有权复核：盘点页面/表格/详情/弹层的 ScrollViewer 所有权，再跑现有滚动边界行为测试；先复用服务、DTO与控件，不替换当前滚动条系统。保留其他任务未跟踪 R04/R05/R07 证据。
+- 清理：本阶段沿用 `.tmp/r06-05-main-20261013` 构建输出以避免新建大型输出；已生成证据仅四份脱敏 TRX 与 README。旧 `.tmp`/`artifacts` 目录的递归删除仍被安全执行器拒绝，保持原状，不绕过。

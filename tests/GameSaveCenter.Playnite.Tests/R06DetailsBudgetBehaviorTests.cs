@@ -94,6 +94,19 @@ public sealed class R06DetailsBudgetBehaviorTests
                     ErrorMessage = string.Join("；", Enumerable.Repeat("远端校验失败，保留本地版本并等待用户确认", 160))
                 };
                 var items = new ObservableCollection<TaskStatusDto> { first, second };
+                for (var index = 0; index < 8; index++)
+                {
+                    items.Add(new TaskStatusDto
+                    {
+                        TaskId = $"task-extra-{index}",
+                        TaskType = "Backup",
+                        GameId = "game-1",
+                        GameName = $"队列任务 {index + 1}",
+                        State = TaskState.Queued,
+                        CreatedUtc = DateTime.UtcNow.AddMinutes(index + 1),
+                        Message = "等待执行"
+                    });
+                }
                 var probe = new TaskDetailsProbe(items, first);
                 var view = new TaskCenterView { DataContext = probe };
                 var viewType = typeof(TaskCenterView);
@@ -154,7 +167,7 @@ public sealed class R06DetailsBudgetBehaviorTests
         Assert.DoesNotContain("task-a", detailText);
         Assert.True(detailExpanderExpanded);
         Assert.True(detailScrolls, "long diagnostic text must use the independent detail scroller");
-        Assert.True(readableRows >= 2, $"only {readableRows} task rows stayed fully inside the list");
+        Assert.True(readableRows >= 4, $"only {readableRows} task rows stayed fully inside the list after opening long details");
         Assert.InRange(maximumRowHeight, 1, 60);
     }
 

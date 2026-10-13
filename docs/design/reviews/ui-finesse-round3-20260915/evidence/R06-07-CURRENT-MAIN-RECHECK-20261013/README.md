@@ -36,5 +36,5 @@
 
 ## 远端门禁与下一步
 
-- commit `87d27592086bbef355b9426a00614b5bb9856e8c` 对应 Actions #962 / run `38335989087`，状态 Failure。公开 run 页可见 build job id `115096054544`，日志页要求登录；无认证 GitHub Actions Jobs/Logs API 返回 HTTP `403 rate limit exceeded`，artifact partial 返回 `404`。失败步骤内部日志、CI SDK、根因均未知；不根据摘要或 exit code 猜测，也不改代码绕过。
+- commit `87d27592086bbef355b9426a00614b5bb9856e8c` 对应 Actions #962 / run `38335989087`，状态 Failure。公开 job 页可见失败步骤名为“编译与测试”，job id `115096054544`；日志页要求登录，无认证 Logs API 返回 HTTP `403 rate limit exceeded`，artifact partial 返回 `404`。失败命令/断言/堆栈、CI SDK、根因仍未知；不根据摘要或 exit code 猜测，也不改代码绕过。
 - 下一项：复核已满足的 `R06-08 详情与行高预算` 当前 main 绑定与行为覆盖，检查选中对象同步及四行门禁；同时继续寻找 #962 完整日志的可用权限入口。远端日志仍不可得时，记录阻塞并推进不依赖该根因的任务。

@@ -65,6 +65,7 @@
 
 ## 2026-10-13 当前检查点
 
-- main 当前源 HEAD `87d27592086bbef355b9426a00614b5bb9856e8c`；R06-07 实现/测试与复用构建提交 `73d0f6e6` 的 `src tests` 无差异。本机 SDK8.0.423 实际 WPF/state 行为复核 `16/16`，结果与边界见 [证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md)。旧空表渲染目录缺失，当前没有截图。
-- Actions #962 / run `38335989087` 为 Failure。job `115096054544` 页面要求登录；匿名 Jobs/Logs API 403 rate limit，SDK和根因未知。没有依据 exit code 改代码；取得完整日志前保留 CI 未收口状态。
-- 下一可执行项 R06-08 当前 main 详情/行高行为复核。工作树应保留其他任务已有 R04/R05/R07 未跟踪测试结果；不要纳入本阶段提交。临时目录清理此前被安全执行器拒绝，未通过其他手段绕过。
+- 当前生产基线在 R06-08 构建时为 main `dc8f26ee972c08976ca8cfbe7531e5c68c5a0559`；只加强了测试源，SDK8.0.423 Release `0/0`、XAML24/24；实际 WPF /几何相关行为 `14/14`，在长详情打开时验证 4 行完整可见。当前 R06-07/08 证据分别见 [R06-07](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md) 与 [R06-08](../design/reviews/ui-finesse-round3-20260915/evidence/R06-08-CURRENT-MAIN-RECHECK-20261013/README.md)。没有当前 screenshot；历史 RenderHarness 绑定旧实现。
+- Actions #962 / run `38335989087` 为 Failure；job `115096054544` 只显示“编译与测试”失败，页面要求登录；匿名 Logs API 403 rate limit、artifact partial 404。命令/断言/堆栈、SDK和根因未知。没有依据 exit code 改代码；取得完整日志前保留 CI 未收口状态。
+- 上一文档提交 #963/run `38338090417` 已 Failure；job `115102664699` 同样只显示“编译与测试”失败，后续步骤跳过；Logs API 403 rate limit、artifact partial 404，完整日志/CI SDK/根因未知。R06-08 提交推送后另查询对应 run。工作树应保留其他任务已有 R04/R05/R07 未跟踪测试结果；不要纳入本阶段提交。临时目录清理此前被安全执行器拒绝，未通过其他手段绕过。
+- 下一可执行项 R07-01 当前 main 滚动所有权复核。原 Demo 设计目录仍缺；真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW及宿主性能未验。
