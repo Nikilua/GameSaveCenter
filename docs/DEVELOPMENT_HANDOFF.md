@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；main 已推送源码基线 `d60e472d`；R00-03/R00-04 source identity `5762c874` 行为 `25/25`、freshness `14/14`。R00/R01 校正 #954（run `38313448857`）失败；完整日志已归档，CI SDK `8.0.423`，失败是旧 R07 `IsVisible` 初始断言，日志缺实测可见性/几何值，不是 R00/R01 回归证据。#959 完整日志确认 R07 resize `1/1` 通过，R08 失败是动画正例 fixture 未固定系统 `ClientAreaAnimation=False`；测试修正已在 `d60e472d` 提交。其后 #960（run `38327521241`）终态失败，公开页面提示登录查看完整日志，匿名 API HTTP403、artifact 页面 HTTP404；SDK、错误命令和根因未知，不据摘要盲改。本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`、R08 `2/2`、系统偏好矩阵 `22/22`、R07 `1/1`。R06-05 当前 main 行为测试 `2/2`、RenderHarness `372 PNG` 已复核，证据见[R06-05 当前 main 复核](design/reviews/ui-finesse-round3-20260915/evidence/R06-05-CURRENT-MAIN-RECHECK-20261013/README.md)。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW与宿主性能仍未验证。下一步推送 R06-05 行为/证据并跟踪 Actions；随后推进 R06-06。
+更新：2026-10-13；main/origin 当前为 `73d0f6e6f94cd87b4b575a3663b76e4989ee8fcd`。R06-05 本机复核已完成，但 Actions #961 页面仍为 `In progress`；R06-06 当前 main 本机 Release/XAML 和逐类隔离测试合计 `43/43`，当前证据包及 TRX 已补齐。#919/#920 完整 SDK `10.0.401` 日志已从仓库归档包核验，旧源码有两项侧栏 transition 活动时钟断言失败；本机 SDK8 不能替代。#960 当前公开页显示 `In progress`，与此前记录终态 failure 冲突；状态、SDK和根因待重新确认。下一步提交/推送本证据并跟踪新 Actions，同时跟踪 #961 到终态；两者明确前不签收相关阶段，再复核已有 R06-07。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
 
 ## 2026-10-13 R00-03 / R00-04 当前 main freshness 复核
 
@@ -129,11 +129,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 ## 下一项如何开始
 
 1. 保持 `main`；保留其他任务的 R04/R05/R07 未跟踪 TRX 和证据，不把它们并入本阶段。
-2. R08 fixture 修正已经 push；#960 终态失败但日志/CI SDK不可见。R00/R01 校正 #954 的完整日志已归档，确认失败在旧 R07 初始 `IsVisible` 断言，未记录实际几何值。#954 不指向 R00/R01 问题。
-3. R06-05 当前 main 复核已完成：Release `0/0`、XAML `24/24`、行为 `2/2`；当前源码长表头换行、双向排序和四页双主题代表图见证据包。提交测试/证据与账本更新、推送并跟踪新 Actions 到终态。
-4. 接着核对 R06-06：先检查 `TaskStatusDto` 与现有刷新/选择/滚动服务；用 fake 任务测试完成值、未知总量、取消状态，确保更新不重置选择或滚动。
+2. R08 fixture 修正已经 push；#960 run `38327521241` 最新公开页面显示 `In progress`，与之前终态失败记录冲突，日志与 CI SDK不可见。R00/R01 校正 #954 的完整日志已归档，确认失败在旧 R07 初始 `IsVisible` 断言，未记录实际几何值；#954 不指向 R00/R01 问题。用户指定的 #919/#920 SDK `10.0.401` 日志已在证据包归档并核验 SHA，绑定旧源码。
+3. R06-05 当前 main 本机复核已完成：Release `0/0`、XAML `24/24`、行为 `2/2`，当前源码长表头换行、双向排序和四页双主题代表图见证据包；其 #961 页面仍为 `In progress`，不能收口。
+4. R06-06 当前 main 本机复核为 Release `0/0`、XAML `24/24`、逐类隔离行为 `43/43`，详见本轮复核包。证据/账本文档已准备提交；推送后跟踪新 Actions 到终态。随后复核已实现的 R06-07，不重建已有功能。
 5. 真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍独立待验；R05-07/R06-04 需当前远端门禁覆盖，R02-06 仍需 ENV-001 条件解除。
-6. 本机临时输出尚未清理：自动策略拒绝了在已校验仓库内的 `Remove-Item -LiteralPath -Recurse -Force`，未使用其他删除办法。仅 `.tmp/r06-05-main-20261013`、`.tmp/r06-05-render-current-20261013`、`artifacts/build-diagnostics/20261013T005136220Z-e660c089`、`.tmp/r08-postcommit-d60e472d` 四个生成目录待清理；全部被 `.gitignore` 忽略，不可提交。
+6. 本机临时输出尚未清理：已确认绝对路径均在仓库的 `.tmp/` 或 `artifacts/build-diagnostics/`，被 `.gitignore` 忽略且无已跟踪文件；执行器安全策略拒绝 `Remove-Item -LiteralPath -Recurse -Force`，没有改用其他删除方式。以下四个生成目录仍存在、不可提交：`.tmp/r06-05-main-20261013`、`.tmp/r06-05-render-current-20261013`、`artifacts/build-diagnostics/20261013T005136220Z-e660c089`、`.tmp/r08-postcommit-d60e472d`。
 
 ## 验证边界
 

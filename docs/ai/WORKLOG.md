@@ -1,5 +1,19 @@
-## 2026-10-13 R05-07 / R06-04 Actions #952 终态复核
+## 2026-10-13 R06-06 当前 main 行为复核与 CI 状态刷新
 
+- main `73d0f6e6f94cd87b4b575a3663b76e4989ee8fcd`；生产实现沿用既有 `TaskStatusDto`、`TaskIndexedCollection`、事件合批、任务选择/滚动与服务端 `TaskSummary`。本阶段未改生产或测试源码，仅补当前 main 证据。
+
+- 本机 SDK `8.0.423`，官方 Release solution build `0 warning / 0 error`、XAML `24/24`；Playnite net462、测试 net472。逐类隔离 Playnite `34/34`、Worker 合成 SQLite `9/9`，共 `43 passed / 0 failed / 0 skipped`。R06TaskProgress 行为用例实际验证 80 行 DataGrid 的 Replace/no Reset、选择和 logical scroll offset、unknown/0/clamped progress、取消/成功状态及生产视图取消提示；Worker 查询验证分页总数/摘要。身份与 TRX SHA 见[R06-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+
+- 一次未隔离的混合 WPF 诊断 `22/23`，唯一失败在 `FindScrollViewer(grid)` 返回 null，后续 Replace/选择/滚动断言未运行；未计入通过数，根因未确定。当前证据没有新截图；历史 RenderHarness 图仍绑定 `72fd6d9a`，不代表当前 main 或真实 Playnite。
+
+- 旧 run #919/#920 的完整日志 ZIP 已在 CI/R07-08 证据包内并核验 SHA；SDK `10.0.401`，两项旧源码侧栏活动时钟测试失败。最初下载遇 HTTP403 的记录是归档前状态，当前仓库已有可复查副本。#961（73d0f6e6）公开页仍 `In progress`；#960 页面当前显示 `In progress`，与先前记录的失败状态冲突，均待重新确认。当前阶段本机 SDK8 不替代 CI SDK10。
+
+- 此证据/账本提交仍需 push 并跟踪其 Actions 至终态。下一项：待前序 CI 明确后，复核已实现的 R06-07 当前 main 证据；不重建已存在功能。真实 Playnite、UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能及真实数据均未验证。
+
+- 清理核验：上述四个 R06-05/R08 本机生成目录均位于仓库 `.tmp/` 或 `artifacts/build-diagnostics/`，被 `.gitignore` 忽略且没有已跟踪文件；尝试按仓库要求执行 PowerShell `Remove-Item -LiteralPath -Recurse -Force` 时被执行器安全策略拒绝。目录复查仍存在；未尝试其他删除方式，未加入提交。
+
+
+## 2026-10-13 R05-07 / R06-04 Actions #952 终态复核
 - main commit 4572118f3c671981c3d6f93a66820910bc3b94b2 对应 Actions #952（run 38309632982，job 115011915461）已失败；公开 job 页显示 12m07s、“编译与测试”exit1，另有 Node.js 20→24 弃用 warning。页面未给出失败命令、测试或堆栈。
 - 诊断 artifact 11774606363（556 KB，SHA-256 9686cc633488c860c9dd8021690986abfff69129f1420ced7b433ff062490a3a）。job 日志需登录；匿名 artifact API 403 rate limit，匿名下载路由 404，未读取 artifact。global.json 配置 SDK 8.0.423，但本次 runner 实际 SDK未知；本机 Tooltip 2/2 不替代 CI。
 - R05-07/R06-04 不收口，不盲改。当前 main freshness 脚本已发现 R00-03、R00-04 两条 stale，按用户顺序先复核这两条，再继续独立且依赖满足的 Q/R。R05-07 复核包和 R06-04 CI 证据已同步；未验真实 Playnite、OS UIA/IME、物理跨屏/呈现帧、ETW与宿主性能。
