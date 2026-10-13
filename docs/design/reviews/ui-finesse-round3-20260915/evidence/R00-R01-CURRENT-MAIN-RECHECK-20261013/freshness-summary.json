@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedUtc": "2026-10-13T08:46:50.4096399Z",
-  "currentSourceCommit": "4aa1ec7ef9bafa95758027a9c9ea4f0c43be8c80",
+  "generatedUtc": "2026-10-13T14:52:41.4513902Z",
+  "currentSourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
   "currentPackageCommit": "not-provided",
   "packageIdentityStatus": "not-provided",
-  "changedPathCount": 2491,
+  "changedPathCount": 2524,
   "documentationOnlyChange": false,
   "records": [
     {
       "id": "R00-01-02",
-      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "evidenceSourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "changedPathCount": 0,
       "matchedSourcePathCount": 0,
-      "documentationOnlyChange": false,
+      "documentationOnlyChange": true,
       "needsRerun": false,
       "reinstallRequired": false,
       "packageStatus": "not-applicable"
@@ -20,7 +20,7 @@
     {
       "id": "R00-03",
       "evidenceSourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371",
-      "changedPathCount": 76,
+      "changedPathCount": 119,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -30,7 +30,7 @@
     {
       "id": "R00-04",
       "evidenceSourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371",
-      "changedPathCount": 76,
+      "changedPathCount": 119,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -39,10 +39,10 @@
     },
     {
       "id": "R00-05",
-      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "evidenceSourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "changedPathCount": 0,
       "matchedSourcePathCount": 0,
-      "documentationOnlyChange": false,
+      "documentationOnlyChange": true,
       "needsRerun": false,
       "reinstallRequired": false,
       "packageStatus": "not-applicable"
@@ -50,7 +50,7 @@
     {
       "id": "R00-06",
       "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "changedPathCount": 231,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -60,7 +60,7 @@
     {
       "id": "R00-07",
       "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "changedPathCount": 231,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -70,7 +70,7 @@
     {
       "id": "R00-08",
       "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "changedPathCount": 231,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -80,7 +80,7 @@
     {
       "id": "R01-01",
       "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "changedPathCount": 231,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -90,7 +90,7 @@
     {
       "id": "R01-02",
       "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
-      "changedPathCount": 1911,
+      "changedPathCount": 1946,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -99,10 +99,10 @@
     },
     {
       "id": "R01-03",
-      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
-      "changedPathCount": 1388,
+      "evidenceSourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "changedPathCount": 0,
       "matchedSourcePathCount": 0,
-      "documentationOnlyChange": false,
+      "documentationOnlyChange": true,
       "needsRerun": false,
       "reinstallRequired": false,
       "packageStatus": "not-applicable"
@@ -110,7 +110,7 @@
     {
       "id": "R01-04",
       "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "changedPathCount": 231,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -120,7 +120,7 @@
     {
       "id": "R01-05",
       "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
-      "changedPathCount": 192,
+      "changedPathCount": 231,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,
@@ -129,10 +129,10 @@
     },
     {
       "id": "R01-06",
-      "evidenceSourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
-      "changedPathCount": 1388,
+      "evidenceSourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "changedPathCount": 0,
       "matchedSourcePathCount": 0,
-      "documentationOnlyChange": false,
+      "documentationOnlyChange": true,
       "needsRerun": false,
       "reinstallRequired": false,
       "packageStatus": "not-applicable"
@@ -140,7 +140,7 @@
     {
       "id": "R01-07",
       "evidenceSourceCommit": "e1324fe",
-      "changedPathCount": 2491,
+      "changedPathCount": 2524,
       "matchedSourcePathCount": 0,
       "documentationOnlyChange": false,
       "needsRerun": false,

@@ -4,8 +4,8 @@
   "records": [
     {
       "id": "R00-01-02",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -52,8 +52,8 @@
     },
     {
       "id": "R00-05",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -147,8 +147,8 @@
     },
     {
       "id": "R01-03",
-      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
-      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -195,8 +195,8 @@
     },
     {
       "id": "R01-06",
-      "evidence": "evidence/R01-06-controlled-audit-20260930/README.md",
-      "sourceCommit": "dc7f97cfa49724778c4987224c9f736c744b3631",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

@@ -1,5 +1,5 @@
 Q23-08 production Settings actions visual probe
-Generated: 2026-10-13T13:23:29Z
+Generated: 2026-10-13T13:44:26Z
 Scope: synthetic settings; a temporary empty Worker marker is created under the evidence output so existing path validation stays clear, checked for existence only, never launched, and deleted after capture. Missing synthetic Saves/Media leaf paths are not created. No save, cancel, reset, import, export, or file-dialog action is invoked.
 Playnite Save/Cancel remain host-owned and are not represented by synthetic buttons in this UserControl probe.
 light/1040x700: reset details start collapsed.

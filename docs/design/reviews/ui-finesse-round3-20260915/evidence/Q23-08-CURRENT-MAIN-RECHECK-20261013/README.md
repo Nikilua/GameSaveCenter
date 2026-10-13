@@ -15,7 +15,7 @@ Round2 台账：视觉条件 **通过**，宿主 **外部阻塞**，最终 **未
 
 ## 本机行为与构建
 
-源码提交哈希及最终测试身份由本阶段证据同步记录。本机使用隔离 SDK `8.0.423`（`D:\GameSaveCenterTools\dotnet-sdk-8.0.423\dotnet.exe`），VSTest `17.11.1`；Playnite 插件目标 `net462`，Playnite 测试目标 `net472`。测试/程序集构建绑定当前仓库身份；不替代 CI SDK10 job。
+代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97`；最终测试身份 `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa`。本机使用隔离 SDK `8.0.423`（`D:\GameSaveCenterTools\dotnet-sdk-8.0.423\dotnet.exe`），VSTest `17.11.1`；Playnite 插件目标 `net462`，Playnite 测试目标 `net472`，Worker `net8.0-windows10.0.19041.0`。
 
 - Playnite 测试项目 Release build：`0 warning / 0 error`。
 - `Q23SettingsActionConfirmationBehaviorTests`：`1/1`。通过实际 Reset All 按钮 Click 和生产确认方法，验证 No 后 fingerprint/编辑值不变；Yes 只重置安全字段；工具/存档/媒体路径与云端目标保留；随后 `CancelEdit` 恢复原草稿。导入确认 No 保持 fingerprint 不变，Yes 返回确认通过；正向 payload 语义仍由现有 `ApplyPortableJson` 行为覆盖。原生导入文件对话框未被调用。
@@ -44,7 +44,7 @@ RenderHarness 使用合成设置。为让既有路径验证保持有效，探针
 
 | 文件 | SHA-256 |
 | --- | --- |
-| `settings-actions-probe-report.txt` | `EC13589FA7D720F6A51FC0DB19A8743792028D59A689FC9F0428D5B24C1AFB08` |
+| `settings-actions-probe-report.txt` | `B81AB40A5402F562787A1C0AF58D50AD831FEC8D0EB920B74F02B9DF87969E6F` |
 | `settings-actions-dark-1040x700-migration.png` | `365A329C9623F3C55E8250794235D9BF05852668D6A2F4ABF3587C1F695D97D2` |
 | `settings-actions-dark-1040x700-reset-collapsed.png` | `0CE87A0D92C04C6B47131A66A44716A3FB9A9A60973D7158166D5F30E5481374` |
 | `settings-actions-dark-1040x700-reset-expanded.png` | `48F2319B4A4DD8FF8A8952BC874C41D18483AD1E92F07369199A9A83678772AF` |
@@ -57,15 +57,15 @@ RenderHarness 使用合成设置。为让既有路径验证保持有效，探针
 | `settings-actions-light-720x640-migration.png` | `57ACD85B13002ECE8BDB0B5B7EE7CFEA7FFC9957E8EF2B18E14F98B09EF47E23` |
 | `settings-actions-light-720x640-reset-collapsed.png` | `E46DBDBDF95DAE6AEDE2E3126DB7AB85663A2ACC9B9A9B08B6D2B3725CD2A0AD` |
 | `settings-actions-light-720x640-reset-expanded.png` | `BD88C8DE2821E48F1BE74E3C0276D213AA1AACC32B8CDB5ECF36A9A4968B77B5` |
-| `tests/Q23-08-cancel-regression.trx` | 更新代码身份复核后补录 |
-| `tests/Q23-08-related-regression.trx` | 更新代码身份复核后补录 |
-| `tests/Q23SettingsActionConfirmationBehaviorTests.trx` | 更新代码身份复核后补录 |
+| `tests/Q23-08-cancel-regression.trx` | `8918CDC936EEC2904942D4B90332EDCC3CA32EDA5AD4589162C5799A6C07D660` |
+| `tests/Q23-08-related-regression.trx` | `19C3921903F3573462FC2EAB6A832DBA18D31303D7E8A42907A172C4540E7E61` |
+| `tests/Q23SettingsActionConfirmationBehaviorTests.trx` | `A84D4CCB3CD548E9EB7FE88CE54DD1A97685909BADD9E715A3DDC084058B454D` |
 
 ## 未验证边界与 CI 状态
 
 - 没有运行真实 Playnite Settings Owner；宿主底部 Save/Cancel 的真实呈现与提交/回滚序列尚未现场复核。
 - 没有实际打开原生文件选择框、读写导入/导出文件、调用剪贴板或操作用户配置；合成窗口与逻辑 DIP 不代表物理 DPI、OS UIA/IME 或最终显示帧。
 - Demo 原始目录在本机不可用，本轮沿用恢复后的生产基线；没有据此另换设计体系。
-- 用户提供的 `GameSaveCenter-sdk10-build-diagnostics.zip` 对应 #967 的 SDK10 job：SDK `10.0.401`，`summary.json` outcome `passed`，构建与测试步骤均 exit 0，117 个 TRX 为 `1566 passed / 57 NotExecuted / 0 failed`。#967 workflow 红叉来自独立 SDK8 job 的源码结构检查失败；这个 ZIP 不包含该 SDK8 job 日志。用户说明手头目前只到 #967。之后 #970、#971 的失败步骤只有 exit code 1，匿名日志/API 不可访问（API 403，job 页面要求登录），也没有可用 artifact；未取得完整日志前不推测根因或修复。当前 Q23-08 代码推送后，仍须检查新 Actions 至明确终态，并分别记录 SDK8 与 SDK10 job。
+- #970/#971 用户诊断 ZIP 补齐了两项测试根因：#970 SDK10 (`10.0.401`) Worker 取消回调竞态，#971 SDK8 (`8.0.423`) Q14 测试夹具误把 `TaskFilterPreset` 对象换成字符串；只修正测试夹具，精确身份 `599d2fd` 本机 Worker 全量 `357/357`、Q14 `1/1` 通过。ZIP SHA、失败栈和根因见[CI #970/#971 诊断及本机复核](../CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。#971 SDK10 lane 的 diagnostics ZIP 仍缺，匿名页面不能确认整个 workflow 终态；Q23 与测试修正推送后须跟新 Actions 到终态，分别记录 SDK8、SDK10。本机 SDK8 不替代 SDK10。
 
 真实宿主和系统级证据未取得前，Q23-08 保持最终“未完成”。

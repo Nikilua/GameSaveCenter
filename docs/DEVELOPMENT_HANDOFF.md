@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；分支 `main`，Q23-08 代码提交 `本阶段代码提交哈希见证据同步记录` 已用精确身份重建，测试与视觉证据更新完成。本机 SDK `8.0.423`：Playnite测试项目 Release `0/0`，相关确认/重置/导入/取消行为 `12/12`，XAML `24/24`、源码校验通过；Light/Dark × `1040×700`/`720×640 DIP` 短窗动作可达通过。证据：[Q23-08 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。Q23-08视觉通过，宿主外部阻塞/最终未完成。用户确认手头最多 #967 并已提供该 SDK10成功 job 的包；不能据此解释 #970/#971。#970 SDK10 workflow job失败；#971 SDK8主job和SDK10 job均失败，只有 exit code 1，匿名 API403/页面需登录/没有 artifact，SDK选取和根因未知，不盲修。R00/R01 freshness `14 fresh / 0 stale`（source `4aa1ec7`）；#968 两 SDK jobs曾成功，但不替代当前代码对应 Actions。R05-03 隔离 Playnite profile仍按保护规则保留，不强杀/删除/重跑；R08-01用户`1/2`仍缺原始材料。阶段提交推送后检查新 Actions 至 terminal，分开记 SDK8/SDK10。下一任务 Q24-01：核查 fractional-scale 字形现有实现和可控逻辑缩放；物理 DPI/跨屏保持待验。保留其他任务 R04/R05/R07 未跟踪证据。真实宿主 footer、原生文件框、OS UIA/IME、物理多屏、presented frame、ETW/宿主性能未验。
+更新：2026-10-13；分支 `main`。Q23-08 代码提交 `c377ab2`、测试修正 `599d2fd`，隔离 SDK `8.0.423` 下 Playnite build `0/0`、Q23 行为 `12/12`、R00/R01 受影响类 `154 passed / 39 skipped / 0 failed`、XAML `24/24`。R00/R01 freshness `14/14 FRESH`，当前 RenderHarness audit `168` snapshots、`13 MEDIUM`、E01–E20 `20/20`。#970 SDK10 与 #971 SDK8 两个测试根因已据用户 ZIP 定位并修正；#971 SDK10 diagnostics ZIP/根因仍缺。用户到明天 09:00 无法回复，继续独立工作，不等材料。新 Actions 尚待本次 main 推送后跟到 SDK8/SDK10 终态。下一项 Q24-01：核查已有 fractional-scale 字形/边线实现并做逻辑缩放验证；真实 Playnite footer、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能未验。Demo 原目录不可用，沿用恢复生产基线；保留其他 R04/R05/R07 用户文件。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
@@ -189,13 +189,13 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 代码提交 `9e84dba305a252fea116f1c5e918f7cf15f2c89f`：修复设置路径 ComboBox 选中项显示并加入双主题/窄窗合成路径探针。证据：[Q23-06 复核包](design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - 本机 SDK `8.0.423`：RenderHarness Release `0/0`、probe `8/8`、Playnite 定向 `170 passed / 0 failed / 39 skipped`、source/XAML 检查通过、WPF 静态 `0 errors / 29 warnings / 177 info`、full Render QA `0 PROBLEM`。
 - #967 用户 ZIP 对应 SDK10 `10.0.401` 的单 job 通过包；整次红灯为另一 SDK8 job 源码门禁，已由 `4aa1ec7` 修复且 #968 双 job 成功。这不替代本次 Q23 代码的后续 CI。
-- #970/run `38386326043` 截至 `2026-10-13 11:44 UTC` 仍显示 In progress；推送后查询 Q23 当前代码对应 run，到 success/failure 终态再签收。保持其他任务的 8 个未跟踪 R04/R05/R07 文件。
-- Q23-08已在本机完成复核，细节见下方新交接段。本次阶段视觉通过，宿主external/final incomplete；代码提交为main `本阶段代码提交哈希见证据同步记录`。精确身份重建后的证据/TRX复核更新提交后推送并查新Actions终态。
+- #970/run `38386326043` 和 #971/run `38393317198` 的用户 ZIP 已补齐部分失败材料：#970 SDK10 取消测试竞态、#971 SDK8 Q14 fixture 类型错误；已仅修测试并在 `599d2fd` 本机分别全量 Worker `357/357` 与 Q14 `1/1` 通过。SDK8/SDK10 CI 终态和 #971 SDK10 根因仍待复核。保持其他任务 R04/R05/R07 未跟踪文件。
+- Q23-08 本机复核详见下方交接段；代码 `c377ab2`、测试修正 `599d2fd`。代码与证据推送后检查新 Actions 两个 SDK lane 到终态。
 
 ## 2026-10-13 当前恢复点：Q23-08 底部动作栏
 
 - 本轮改动：`GameSaveCenterSettingsView.xaml` 只加 Reset All 测试定位名；视图代码将已有 reset/import 确认转到共享方法，并用内部测试 delegate 代替测试里的原生模态框；新增 Reset All/导入确认实际行为回归和 `settingsactionsprobe`。业务重置目录、portable DTO、导入/导出文件流程、Playnite 保存/取消没有重建。
-- 本机 SDK `8.0.423`；Playnite `net462`/tests `net472` Release `0 warning / 0 error`；使用代码提交 `本阶段代码提交哈希见证据同步记录` 的准确构建身份后，相关行为 `10/10`、确认 `1/1`、取消 `1/1`；XAML `24/24`、`validate-source.py`、WPF static `0 errors / 29 warnings / 177 info`、diff check通过。双主题、两尺寸四场景确认四类重置动作和迁移导入/导出滚动可达；证据及 TRX 在[Q23-08复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。证据文件/报告已按新运行更新，文档补记提交 SHA 与命令身份拦截事实。
-- #967 用户 ZIP 只覆盖成功 SDK10 job；用户明确目前只可给到 #967。后续 #970 SDK10 job失败，#971 SDK8/SDK10 两个 job失败；公开注解为 exit1，详细日志 API 403/需登录且无 artifact，实际 SDK selection 与根因未知。禁止猜修；后续代码 push 后查新 Actions 至 terminal。
+- 本机 SDK `8.0.423`；Playnite `net462`/tests `net472` Release `0 warning / 0 error`；`599d2fd` 精确身份下 Q23 行为 `12/12`；R00/R01 受影响类 `154 passed / 39 skipped / 0 failed`，XAML `24/24`、`validate-source.py`、WPF static `0 errors / 29 warnings / 177 info`、diff check通过。R00/R01 freshness `14/14 FRESH`，current audit `168 snapshots / 116 warnings / 13 MEDIUM / 0 HIGH / 0 failed routes`，E01–E20 `20/20`。证据见对应 Q23 与 R00/R01 README。
+- 用户 #970/#971 ZIP 已复核并记录在[CI 诊断及本机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)：#970 SDK10 cancel test race、#971 SDK8 Q14 fixture 类型错误均是测试问题；`599d2fd` 的 SDK8 本机复跑通过。#971 SDK10 diagnostics 仍缺；公开匿名日志/API 无法确认 workflow 终态，推送后检查本次新 run。
 - 未验证真实 Playnite host Save/Cancel footer、原生文件对话框/文件操作、物理 DPI/跨屏、OS UIA/IME、presented frame。Demo 原目录不可用，本阶段沿用恢复生产基线。证据中的合成窗口未执行操作；未修改真实配置或用户数据。
-- 下一项可执行任务：Q24-01 分数 DPI 字形。先盘点既有实现和自动夹具，验证有限逻辑 scale 下文本/边线/图标行为；实体显示器 DPI 另行验收。其他任务 R04/R05/R07 未跟踪文件需保留。旧 `.tmp/` 清理命令之前被拒，本轮未绕过；本次证据产物均由 README 引用。
+- 下一项可执行任务：Q24-01 分数 DPI 字形。先查现有能力与验收条件，再测有限逻辑 scale；物理 DPI/跨屏单列待验。其他任务 R04/R05/R07 未跟踪文件需保留。旧 `.tmp/` 清理命令先前被拒是历史事实；本轮只清理本轮自己生成且不被证据引用的临时目录。

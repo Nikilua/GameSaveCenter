@@ -4,8 +4,17 @@
 - #970 SDK8 诊断包 SHA-256 `598C2CA619F0CAC37E3E6877B5CBC0EE45AEFC3371DAAACA0F122AE0BC64A8B6`，绑定同一 `c9f9179`、SDK `8.0.423`；两个完整 solution-build summary 均为 passed。它不能替代失败的 SDK10 job。
 - #971 当前用户 ZIP SHA-256 `6AC19F269A3B2FDF3618BF9153C313245AE742EADB6E389A5DACDAEE486ADA4C`，包含 SDK `8.0.423` 的完整 build diagnostics，源码提交 `5a6647cbf8b40b30bc11bf8c6c32015545896967`。唯一 solution-build 失败为 `Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters`：Light `980×640 DIP` 的 preset text centers `6,18,18,18,18,18`。测试把 `DisplayMemberPath=Name` 的对象 ComboBox 改成字符串集合，选择文本为空并使隐藏 presenter 被错误纳入测量；本轮夹具改为真实 `TaskFilterPreset` 对象，明确选择“默认”并只测可见的实际选择文本/呈现器。
 - #970 的 Worker 测试原先在发出 `started` 信号后才注册取消回调，允许测试在回调就绪前取消；现改为注册完成后发出 `cancellationReady`，再执行同一双重取消与终态断言。没有改变生产取消实现。
-- 本机隔离 SDK `8.0.423` 下，修正工作树的完整 Worker 测试 `357/357`、Q14 toolbar behavior `1/1` 通过。此次本地复跑不替代 CI SDK10；提交后会以新完整 SHA 重建并重跑，再同步 TRX/哈希。用户附件只覆盖 #971 SDK8 lane；#971 SDK10 job 的完整日志/诊断包仍缺，匿名日志 API 403、页面要求登录，失败根因未确认。
-- #970/#971 的公开 run 页仍只显示登录提示/通用状态，故不把页面字样当作 Actions 终态。待本轮 main 推送后跟踪新 run 的 SDK8、SDK10 job 至明确 success/failure。
+- 本机隔离 SDK `8.0.423` 下，精确身份 `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa` 的 Worker 全量 `357/357`、Q14 toolbar behavior `1/1` 通过。TRX、程序集 SHA/ProductVersion 见[CI #970/#971 复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。本机 SDK8 不替代 CI SDK10；新 main push 后分别跟两个 lane 到终态。#971 SDK10 job 的完整日志与诊断包仍缺，根因未知。
+- 新 run 在本轮 main push 前尚不存在；push 后读取最新 Actions 状态到明确 success/failure，CI 仍运行时不报告阶段完成。用户暂不能回复期间继续独立任务，不等待 #971 SDK10 diagnostics。
+- 本轮尝试删除自己已归档证据的旧 `.tmp` 重跑目录（`ci-repro-q14*`、`ci-repro-worker*`、`ci-run970971-*`、`r00-r01-current-599d2fd`、`r01-06-audit-current-599d2fd` 和 freshness 临时 JSON）；PowerShell `Remove-Item -Recurse` 被执行策略拒绝，文件仍在 `.tmp/`，未改用其他删除路径。
+
+## 2026-10-13 R00/R01 stale 证据当前身份复核
+
+- 当前 `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa` 的 freshness 初检发现 4 条 stale：R00-01-02/R00-05 命中 `WpfUiProduction.xaml`，R01-03/R01-06 命中 `RenderHarness/Program.cs`。核对受影响范围并完成实际复核后，才把这四个 baseline sourceCommit/evidence 更新到当前 SHA。复跑 freshness `14 fresh / 0 stale`，未通过只改哈希放行。
+- Playnite tests 与 RenderHarness Release build `0 warning / 0 error`。三类完整测试为 `UiFinesseFoundationTests 9/9`、`WpfUiResourceDictionaryTests 139 passed / 39 skipped / 0 failed`、`UiAuditSourceTests 6/6`；39 个 skip 未计通过。另按 R00-01/02、R00-05 具体验收 filter 精确 `6/6`：contrast/composite & stop behavior `1`、Light/Dark state `2`、ScaleTransform reuse `1`、disabled shared chrome Light/Dark `2`。
+- 当前身份 Light/Dark `finesseprobe` 各输出 88 个 hover/focus/pressed+stop 样本、0 violations，palette 11 checks、有效文本对比 12 samples、数字可读 `4/4`；窄列与深底负例均预期失败并被识别。报告绑定 `599d2fd`，`WorkingTreeClean=False` 是当时文档/证据和其它用户文件存在，未冒称 clean。
+- 当前 RenderHarness audit `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes`；E01–E20 的引用/身份/样本/边界 `20/20`。新增/既有共 13 条窄布局工具栏垂直扩展提示按实际风险记录。完整 84MB audit 临时输出只归档了必要文本、manifest/route JSON、5 张精选图、运行文本和测试 TRX，证据约 8MB，避免把所有重复截图/树快照入库。
+- 当前证据：[R00/R01 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)；CI #970/#971 用户附件映射和测试修正见[诊断复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。本轮未改生产 WPF 源码/业务行为；真实 Playnite、physical DPI/跨屏、OS UIA/IME、presented frame、ETW 与宿主性能仍待验。
 
 ## 2026-10-13 SDK 10.0.401 CI 编译与测试复核门禁
 
@@ -10332,8 +10341,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 盘点后复用设置重置目录、portable import preview/apply 和 Playnite Save/Cancel 宿主契约。页面没有单独 Save/Cancel 控件；没有重建 DTO、服务或命令。XAML 给现有 Reset All 按钮补测试定位名；统一确认提示仅增加内部可注入测试口，生产仍是原 owner、Yes/No 和 Warning MessageBox。
 - 通过真实 Reset All Click 覆盖拒绝/确认：No 不改 fingerprint，Yes 只写安全默认草稿且保留工具/存档/媒体路径与云端目标；随后 CancelEdit 恢复到用户原有草稿。导入提示行为的 No/Yes 与兼容预览字段通过生产确认方法覆盖；现有源测试验证 handler 仍按 preview→confirm→apply 顺序。Playnite 相关过滤 `10/10`，SettingsDraftLifecycle 独立 `1/1`，总 `12/12`。
-- 一次提交后测试重跑传入了错误的 `GSC_BUILD_COMMIT`，仓库身份门禁将 3 个源码测试 fail-closed，其余 7 项通过；不是产品断言失败。改用实际 HEAD `本阶段代码提交哈希见证据同步记录` 重建后，相关过滤 `10/10`、确认行为 `1/1`、独立取消 `1/1` 均通过。当前 README/TRX 绑定重跑身份。
+- 一次提交后测试重跑传入了错误的 `GSC_BUILD_COMMIT`，仓库身份门禁将 3 个源码测试 fail-closed，其余 7 项通过；不是产品断言失败。改用实际 HEAD `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa` 重建后，相关过滤 `10/10`、确认行为 `1/1`、独立取消 `1/1` 均通过。当前 README/TRX 绑定重跑身份。
 - RenderHarness 在 Light/Dark × `1040×700`/`720×640 DIP` 共四场景确认短窗默认折叠，展开后可见全局/单字段重置，四分类默认操作可滚动到并完整显示，迁移页的导入/导出也可达。报告与十二张图在 [Q23-08 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。视觉只属离屏 WPF 逻辑 DIP；没有点击危险操作或触碰用户文件，探针短暂创建并清理一个空的合成 Worker 标记文件以通过现有路径验证。
-- 代码身份 `本阶段代码提交哈希见证据同步记录`；本机隔离 SDK `8.0.423`（VSTest `17.11.1`），Playnite net462 / tests net472。Release build `0 warnings / 0 errors`；XAML `24/24`、`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`。真实 Playnite Save/Cancel footer、原生文件对话框、实际物理 DPI/OS UIA/IME/presented frame 仍未验，宿主 external/final incomplete；Demo 原目录不可用，沿用恢复生产基线。
+- 代码身份 `c377ab218dad54d81d7dd22202f0bf283f250f97`；本机隔离 SDK `8.0.423`（VSTest `17.11.1`），Playnite net462 / tests net472。Release build `0 warnings / 0 errors`；XAML `24/24`、`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`。真实 Playnite Save/Cancel footer、原生文件对话框、实际物理 DPI/OS UIA/IME/presented frame 仍未验，宿主 external/final incomplete；Demo 原目录不可用，沿用恢复生产基线。
 - 用户说明手头最新仅到 #967，所给 ZIP 对应 SDK10 job 的通过材料。#970/run `38386326043` SDK8 主 job成功、SDK10 job `115258911065` 失败；#971/run `38393317198` jobs `115282209775`/`115282209412` 失败。详细日志需要登录，匿名 API 403，无 artifact；实际选定 SDK、命令与失败根因未知。没有据此猜修复。Q23-08 代码阶段提交推送后仍须查询新 Actions 到终态。
 - 保留其他任务 R04/R05/R07 未跟踪证据。当前 Q23-08 的截图与 TRX 均被 README 引用；旧 `.tmp/` 递归清理曾被安全执行器拒绝，本轮不绕过清理限制。下一可执行任务 Q24-01：先查现有能力和依赖，跑有限的 fractional logical scale 字体/边线行为核对；真实显示器 DPI/跨屏明确待验。

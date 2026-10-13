@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="1f360f67-e01f-4e25-ade8-22ca2407181f" name="lopmatu@SULT 2026-10-13 20:29:59" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Times creation="2026-10-13T20:29:59.5345701+08:00" queuing="2026-10-13T20:29:59.5345705+08:00" start="2026-10-13T20:29:49.4418782+08:00" finish="2026-10-13T20:30:13.8431926+08:00" />
-  <TestSettings name="default" id="377c1fe7-fa2a-4249-be61-592ba8a1ffe6">
-    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-13_20_29_59" />
+<TestRun id="46729d4d-2930-4cfd-a430-c22915a3040c" name="lopmatu@SULT 2026-10-13 21:52:30" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-13T21:52:30.3592894+08:00" queuing="2026-10-13T21:52:30.3592899+08:00" start="2026-10-13T21:52:21.9130378+08:00" finish="2026-10-13T21:52:45.4729490+08:00" />
+  <TestSettings name="default" id="b78a2843-ea30-498a-a556-61d1186b8989">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-13_21_52_30" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="52d1a98d-7e71-4512-880e-5e70c41a9987" testId="b1b0d2e3-0fa1-3444-c39c-a1f6f2c3dd03" testName="GameSaveCenter.Playnite.Tests.SettingsDraftLifecycleBehaviorTests.DraftSurvivesDetachAndWindowCloseChoicesPreserveOrDiscardIt" computerName="SULT" duration="00:00:06.2540000" startTime="2026-10-13T20:29:51.9607757+08:00" endTime="2026-10-13T20:29:58.1858354+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="52d1a98d-7e71-4512-880e-5e70c41a9987" />
+    <UnitTestResult executionId="3636d741-0aca-43d9-a200-cd23cdec4738" testId="b1b0d2e3-0fa1-3444-c39c-a1f6f2c3dd03" testName="GameSaveCenter.Playnite.Tests.SettingsDraftLifecycleBehaviorTests.DraftSurvivesDetachAndWindowCloseChoicesPreserveOrDiscardIt" computerName="SULT" duration="00:00:05.7980000" startTime="2026-10-13T21:52:24.1193060+08:00" endTime="2026-10-13T21:52:29.9365411+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3636d741-0aca-43d9-a200-cd23cdec4738" />
   </Results>
   <TestDefinitions>
     <UnitTest name="GameSaveCenter.Playnite.Tests.SettingsDraftLifecycleBehaviorTests.DraftSurvivesDetachAndWindowCloseChoicesPreserveOrDiscardIt" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b1b0d2e3-0fa1-3444-c39c-a1f6f2c3dd03">
-      <Execution id="52d1a98d-7e71-4512-880e-5e70c41a9987" />
+      <Execution id="3636d741-0aca-43d9-a200-cd23cdec4738" />
       <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.SettingsDraftLifecycleBehaviorTests" name="DraftSurvivesDetachAndWindowCloseChoicesPreserveOrDiscardIt" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
-    <TestEntry testId="b1b0d2e3-0fa1-3444-c39c-a1f6f2c3dd03" executionId="52d1a98d-7e71-4512-880e-5e70c41a9987" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b1b0d2e3-0fa1-3444-c39c-a1f6f2c3dd03" executionId="3636d741-0aca-43d9-a200-cd23cdec4738" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestEntries>
   <TestLists>
     <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
@@ -24,10 +24,10 @@
     <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
     <Output>
       <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
-[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
-[xUnit.net 00:00:01.19]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
-[xUnit.net 00:00:01.25]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
-[xUnit.net 00:00:07.60]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.10]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.16]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:07.05]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
 </StdOut>
     </Output>
   </ResultSummary>

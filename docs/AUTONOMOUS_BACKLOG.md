@@ -18,7 +18,7 @@
 | CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main R02几何7/7，间距8 DIP/中心差0；整体共享回归与CI run `38249983091` 仍未收口 |
 | CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
 | CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例、本机完整 Release/WPF 门禁已通过；run `38222818374` 终态失败，根因并入 CLOSE-CI-01 |
-| CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | main `4aa1ec7` freshness 14/14；package identity 未提供并继续单独待验，证据见 R00/R01 当前 main 复核包 |
+| CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | main `599d2fd` freshness 14/14；package identity 未提供并继续单独待验，四条受影响基线记录已按当前证据校正，见 R00/R01 当前 main 复核包 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
 | CLOSE-REG-01 | P1 | BLOCKED_ENVIRONMENT | 回归验证 Agent | 用户原 Q06/R08 日志、断言和 DLL 身份 |
 | CLOSE-REL-01 | P1 | BLOCKED_ENVIRONMENT | 发布验证 Agent | CI 绿、ENV-001、独立可丢弃存档/测试远端、当前候选包 |
@@ -49,11 +49,15 @@ Q23-06 已完成本机代码、测试与视觉核查：Settings ComboBox 的选�
 
 ### 2026-10-13 Q23-08 当前 main 复核
 
-Q23-08 代码提交 main `本阶段代码提交哈希见证据同步记录` 复用现有 `SettingsResetCatalog`、portable import preview/apply 和 Playnite Save/Cancel 宿主契约。没有重复绘制 Save/Cancel，也没有重写 DTO、服务或迁移流程；只为现有 Reset All 按钮增加测试定位名，并通过内部测试 delegate 驱动原 Yes/No Warning 分支。Reset All 实际 Click：No 不改 fingerprint，Yes 只改安全设置草稿并保留路径/云端目标，之后 `CancelEdit` 恢复既有草稿。导入确认 No/Yes 与兼容预览由行为测试覆盖，handler 的 preview→confirm→apply 顺序由源/预览测试核对。
+Q23-08 代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97` 复用现有 `SettingsResetCatalog`、portable import preview/apply 和 Playnite Save/Cancel 宿主契约。没有重复绘制 Save/Cancel，也没有重写 DTO、服务或迁移流程；只为现有 Reset All 按钮增加测试定位名，并通过内部测试 delegate 驱动原 Yes/No Warning 分支。Reset All 实际 Click：No 不改 fingerprint，Yes 只改安全设置草稿并保留路径/云端目标，之后 `CancelEdit` 恢复既有草稿。导入确认 No/Yes 与兼容预览由行为测试覆盖，handler 的 preview→confirm→apply 顺序由源/预览测试核对。
 
 本机 SDK `8.0.423`，Playnite `net462` / tests `net472` Release build `0/0`；Q23 confirmation/import/reset filter `10/10`，Settings draft-cancel `1/1`，合计 `12/12`；XAML `24/24`、`validate-source.py` 通过，WPF 静态审查 `0 errors / 29 warnings / 177 info`。RenderHarness Light/Dark × `1040×700`/`720×640 DIP` 检查短窗默认折叠、展开后的全部/单字段重置、四分类动作经滚动可达及迁移页导入/导出可达。报告与图在[复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)。视觉栏“通过”；真实 Playnite host Save/Cancel、文件对话框、物理 DPI/OS UIA/IME/presented frame 未验证，Host “外部阻塞”，Final “未完成”。Demo 原目录不可用，沿用恢复生产基线。
 
-用户确认目前只提供到 #967，ZIP 绑定 SDK10 通过 job，不包含较新的运行。#970 的 SDK10 workflow job 失败而 SDK8 主 job成功；#971 的 SDK8 主 job和 SDK10 job均失败。匿名 API 403、页面要求登录、无 artifact，公开步骤只报 exit code 1，实际 SDK选择、命令和失败根因未知；不猜修复。Q23-08 代码阶段提交推送后仍须查询新 Actions 至终态并分开记录两 SDK job。下一可执行小批 Q24-01：查已有 fractional-DPI 字形实现与夹具，优先做有限逻辑缩放核验；不以离屏模拟代表真实物理显示器 DPI/跨屏。
+用户提供了 #970 与 #971 的 diagnostics ZIP。#970 SDK10 (`10.0.401`) 绑定源码 `c9f9179`，Release build `0/0`，Worker 取消终态用例因测试未等待 token callback 注册而出现 `expected 1, actual 0`；测试已加 registration-ready 握手，生产协调器未变。#970 SDK8 (`8.0.423`) 同源 solution build summaries 通过。#971 SDK8 (`8.0.423`) 绑定源码 `5a6647c`，Q14 toolbar 测试把 `TaskFilterPreset` DTO 换成字符串，导致 `DisplayMemberPath=Name` 无选中文本并测到隐藏 presenter；测试已恢复真实 DTO、选中态和可见/有尺寸的 presenter，未改生产布局。ZIP SHA、栈与本机复核见[诊断复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。#971 SDK10 diagnostics ZIP 仍未提供，workflow 当前终态也未从可读日志确认；不据 SDK8 结果推断。提交 `c377ab2` 与 `599d2fd` 当前尚待 push，推送后须分别跟踪 SDK8/SDK10 Actions 至终态。本机 SDK8 不替代 SDK10。
+
+本阶段同步证据的当前 main 身份为 `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa`。R00/R01 中受 `WpfUiProduction.xaml` 与 RenderHarness 源变更影响的四条 baseline 已在定向行为和审计复核后更新；freshness `14/14`，审计仍有 `13 MEDIUM` 窄布局提示。详情及未验边界见[R00/R01 当前 main 证据](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+
+下一可执行小批 Q24-01：先查 fractional-DPI 字形现状和现有夹具，完成可复现的逻辑 scale 行为复核；专项条件要求实际 `100/125/150/175/200%` 显示比例，故离屏结果只记模拟证据，物理 DPI/跨屏保留待验并继续其他独立任务。
 
 ### GOV-003：完成度与活动入口校准
 
@@ -109,6 +113,7 @@ Q23-08 代码提交 main `本阶段代码提交哈希见证据同步记录` 复�
 - **2026-10-07追加**：本阶段GscMotion与build脚本修改还命中R00-03、R01-01、R01-04。补齐动效完成/重入/清钟、源码根身份及对应负例；提交后按实际HEAD重算，不沿用9/5或只更新SHA。
 - **共享输入模板影响**：CLOSE-WRAP-01改动WpfUiProduction.xaml另命中R00-01-02/R00-05；candidate逐项合并历史与待提交路径后为4 fresh/10 stale。补双主题对比/变换及上下文禁用状态，原baseline未改；不得只把原8项改SHA转绿。
 - **2026-10-12 当前复核**：在推送身份 `f13b9e05de0cf502ac61e97b0fbad8433b339b3f`、本机 SDK `8.0.423` 下，受影响 WPF/source 测试 `40/40`，对比/搜索/媒体几何/工具栏受控探针通过；原始 30 搜索样本和 9 份 TRX 已归档。10 条 stale 记录更新到当前证据，freshness 为 `14 fresh / 0 stale`；另 4 条无匹配源码变化，保留原证据与身份。包未生成，package identity 仍未提供；远端 CI failure 日志受 403/401 限制，CLOSE-EVID 与 CLOSE-CI 不合并签收。[R00/R01复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-RECHECK-20261012/README.md)。
+- **2026-10-13 当前 main 校正**：source/test identity `599d2fd38dd5c9af523a0890a33e73fc78ac0bfa` 下重跑受影响行为类、RenderHarness probes 和 source audit；针对 `WpfUiProduction.xaml` 与 `RenderHarness/Program.cs` 命中的四项 stale baseline 逐条更换证据后，freshness `14/14`。完整测试计数、审计中保留的 13 条 MEDIUM 与 physical/host/package 边界见[当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - **状态**：本任务的源码证据复核、负例、身份和 freshness 更新已完成。未提供的 package identity、真实宿主验收与远端 CI 根因分别留在发布/宿主/CI 队列，不阻止本项收口。
 - **完成条件**：记录源码身份、测试 DLL SHA/MVID、TRX、具体测量、负例与失败边界；重跑通过后更新原 baseline，freshness 14/14 且 package 身份仍独立核对。
 - **非目标**：不仅改 baseline SHA，不把本任务变成整轮视觉或真实宿主验收。
