@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；当前已推送基线 `be2881e1`。R00-03/R00-04 在源码身份 `5762c874` 下定向行为 `25/25`、freshness `14/14`；合成 2000 项搜索 `30/30` 次改变结果集，p50/p95/max `46/63/75 ms`。本机隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；R07 `1/1`。CI #959（run `38324971243`，SDK `8.0.423`）确认 R07 测试通过，随后 R08 反向动画测试失败：实际系统 ClientAreaAnimation 为 false，生产按策略关闭动效；动画正例 fixture 没有显式固定系统动效输入。现已补双输入控制及正向前置断言，本机 R08 `2/2`、native motion policy `22/22`、R07 `1/1`；待提交推送和新 Actions。完整日志、诊断 artifact、本机 TRX/DLL SHA 见[R07-08/R08 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)。#919/#920 的 SDK `10.0.401` 旧侧栏结果仍绑定旧源码，不能与当前 SDK8 混用。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；本轮复核生产源码基线为 main `d60e472d`。R00-03/R00-04 在源码身份 `5762c874` 下定向行为 `25/25`、freshness `14/14`；合成 2000 项搜索 `30/30` 次改变结果集，p50/p95/max `46/63/75 ms`。R00/R01 校正提交 `a2f8883c` 对应 #954（run `38313448857`）终态失败，完整日志已在 R07-08 证据包，CI SDK `8.0.423`；失败是旧 R07 `IsVisible` 初始断言，缺少实际可见性/尺寸值，不能推断为 R00/R01 问题。#959（run `38324971243`，CI SDK `8.0.423`）的 R07 `1/1` 通过；R08 系统动效 fixture 原因已由完整日志定位并在 `d60e472d` 修正。其后 #960（run `38327521241`）终态失败，但公开页面要求登录查看日志，匿名 API 返回 HTTP 403、附件页 HTTP 404；CI SDK和根因未知，不据摘要盲改。本机 R08 `2/2`、native motion policy `22/22`、R07 `1/1`。R06-05 当前 main 本机 Release `0 warning / 0 error`、XAML `24/24`、行为 `2/2`、双主题 RenderHarness `372 PNG` 通过，证据见[R06-05 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R06-05-CURRENT-MAIN-RECHECK-20261013/README.md)。本机 SDK `8.0.423` 不替代需单独核实的 CI SDK `10.0.401`。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -29,9 +29,10 @@
 | R06-02 当前 main | `90454586` 隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`；`R06SortingBehaviorTests 7/7`。实际 WPF 列头双向点击/箭头、乱序重加稳定次键、未知值和失效视图负例见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-02-CURRENT-MAIN-RECHECK-20261013/README.md)。历史 RenderHarness 图绑定 `c577afc5`，未当作当前截图 |
 | R06-03 当前 main | 生产实现沿用 `d83c7378`；本轮以 `fdeeec8` 生产源加单项测试差异构建，SDK `8.0.423` Release `0/0`、XAML `24/24`；R06Selection `2/2`、四表双主题状态几何 `1/1`、Task 双主题受控 hover/错误徽章 InputHitTest/Failed 终态禁用与 Running 取消按钮 UIA Invoke `1/1`、共享资源契约 `2/2`。测试仅证明隔离 WPF 状态与逻辑 DIP，不是实际 OS 指针或 Playnite 呈现。详情见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-03-CURRENT-MAIN-RECHECK-20261013/README.md) |
 | R06-04 当前 main | 复用 afe4aa55 已有 DataGridClipboardBehavior 和五类 profile；生产行为复核 5/5，复制反馈 2/2。本机 SDK 8.0.423 Release 0/0、XAML 24/24，Q14 1/1、侧栏 22/22、R06Clipboard 5/5、R22 2/2。#952 完整日志显示其失败发生在旧 R07 resize 初始断言；本轮修正尚无 CI 结果，R06-04 不因本机定向通过签收。详情见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-04-CURRENT-MAIN-RECHECK-20261013/README.md) |
-| R07-08 / R08 当前 main | #959 的 CI R07 resize 测试 `1/1` 通过。完整日志显示后续 R08 失败是 animation-positive fixture 未显式开启系统动效输入，CI 实测 `ClientAreaAnimation=False`；生产即时收敛到 72 DIP 符合系统策略。fixture 已设置应用与系统输入并断言最终门控状态；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`、R08 `2/2`、native motion policy `22/22`。R07/R08 整体 Actions 尚待重新运行，详见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
-| 远端 CI | #959（run `38324971243`，commit `be2881e1`，SDK `8.0.423`）Release 与前序测试通过，R07 测试通过；随后 R08 `SidebarRapidReversalUsesLatestTargetAndReleasesOldClock` 失败。日志确认 `HighContrast=False; ClientAreaAnimation=False; expected=False`，fixture 因系统输入未覆盖而观察 `running=False; actual=72`。完整日志 SHA-256 `6ABB957DDDE4AF6C6BED8909387D172325B39E97A66936495A50EF07C9ABB428`、诊断包 SHA-256 `0A17ACE44C551EF65FE236FB7D433F517DFFB843959EC38A1790424EFDDA58CB`，均已归档。修复后的代码尚无新 Actions 结果。旧 #919/#920 SDK `10.0.401` 失败仍绑定旧源码，不能由新 SDK8 run 代替。 |
-| R00/R01 证据 | 2026-10-13 main `5762c874` 下复核 R00-03/R00-04 `25/25`，将两条 baseline sourceCommit 更新为当前证据；freshness `14 fresh / 0 stale`。R01 与其他 R00 条目未命中本轮变更，沿用既有证据；package identity 未提供。详见[当前 R00-03/R00-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
+| R06-05 当前 main | 复用现有共享列头说明、排序与单位格式；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、`R06ColumnHeaderHelpTests 2/2`。当前身份 RenderHarness `372 PNG`、`render-qa OK`；代表图和 header contract 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-05-CURRENT-MAIN-RECHECK-20261013/README.md)。本轮未改生产 UI；受控 STA 与离屏逻辑 DIP 不等价真实 Playnite/OS 输入 |
+| R07-08 / R08 当前 main | #959 CI 的 R07 resize `1/1` 通过，R08 fixture 的系统动效前提已由日志定位并在 `d60e472d` 修正；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R07 `1/1`、R08 `2/2`、native motion policy `22/22`。修正后 #960（run `38327521241`）终态失败，完整日志不可读，R07/R08 不签收，详见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md) |
+| 远端 CI | #959（run `38324971243`，commit `be2881e1`，SDK `8.0.423`）日志确认 `HighContrast=False; ClientAreaAnimation=False`；R07 通过，R08 动画正例未覆盖系统偏好。#960（commit `d60e472d`）终态失败；诊断 artifact `11781543273`、580 KB、SHA-256 `113893ceea28078586cad28dc98fff77bcb402d08457a979b862d4a227bdfc51`。GitHub 公开页要求登录，匿名 API HTTP 403、附件页 HTTP 404；#960 实际 SDK、失败步骤和根因未知。#954（commit `a2f8883c`）完整日志已归档，SDK `8.0.423`；失败仍是旧 R07 `IsVisible` 初始断言，缺少有效几何值。附件 `11775967579`、557 KB、SHA-256 `2de2ab3f1140c692f62ffc1fadb7c2c57a85f4059627f556fd65aed38e5b11a9` 当前匿名不可读，但完整日志 ZIP 可用。 |
+| R00/R01 证据 | 2026-10-13 main `5762c874` 下 R00-03/R00-04 行为 `25/25`、freshness `14 fresh / 0 stale`。R00/R01 证据校正随 `a2f8883c` 提交；该 commit 的 #954 CI 失败位于旧 R07 `IsVisible` 断言，不是 R00/R01 回归证据。R01 与未命中源路径条目沿用既有证据；package identity 未提供。详见[当前 R00-03/R00-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md)。
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
 仓库锁定 SDK `8.0.423` 已由官方安装脚本安装到 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；通过临时进程 PATH 前缀选择，系统 SDK/PATH 未改。历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932、#934、#935 与 #936 的失败原因均未取得完整日志；访问受限期间不盲修。
@@ -40,11 +41,11 @@
 
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. R00/R01 freshness 校正已随 `a2f8883c` 提交；其余未命中路径沿用既有证据，不扩大为全量重跑。
-2. 提交并推送 R08 双动效输入 fixture 修正及 #959 完整证据，等待新 Actions 终态；失败时先取完整日志再按实际错误复现。
-3. 新 Actions 成功后收口 R06-05：复用现有列头说明与排序实现，核对新行为测试实际覆盖，再更新账本。
-4. 用户指定旧 #919/#920 的 SDK10.0.401 失败属于已变化源码；当前工作流 SDK8 结果不得冒充 SDK10 复核。R05-07/R06-04 仍需当前远端门禁覆盖后再签收。
-4. package identity、真实宿主与发布矩阵继续单列；没有实际包或宿主证据不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`。
+1. #960 已终态失败，当前完整日志/API访问受限；取得日志后按真实命令和错误复现，不凭摘要修改代码。#954 的完整日志已归档，CI SDK `8.0.423`，它是旧 R07 初始 `IsVisible` 断言失败，不能归因 R00/R01。
+2. R06-05 本地行为和双主题布局复核已完成，阶段代码/证据推送后跟踪对应 Actions 到终态。
+3. 继续 R06-06：先复用 `TaskStatusDto.ProgressPercent/ProgressValue/ProgressDisplay` 与现有刷新、选择、滚动路径，验证进度更新不重置表格上下文；对未知总量和取消状态补行为/负例。
+4. 用户指定旧 #919/#920 的 SDK `10.0.401` 失败属于旧源码；当前 SDK8 的本机结果不得冒充 CI SDK10复核。R05-07/R06-04 仍需当前远端门禁覆盖。
+5. package identity、真实宿主与发布矩阵继续单列；没有实际包或宿主证据不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`。
 
 ## 架构与生产 UI
 

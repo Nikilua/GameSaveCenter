@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。#958（commit `1c08196d`，CI SDK `8.0.423`）确认 R07 compact drawer routed Click 及按钮互换通过，旧宽度判据随后失败；R07 现采集 Window/PageHost 实测尺寸，且 #959 的 CI R07 测试 `1/1` 通过。#959 后续失败在 R08：runner `ClientAreaAnimation=False`，动画正例 fixture 只覆盖了 app motion provider，生产正确即时归一到 72 DIP。测试现显式设定并断言 app 与 system motion 两项输入；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、R08 `2/2`、native motion policy `22/22`、R07 `1/1`。修正待提交/推送并等新 Actions。#955 `0.6.73` 文档门禁问题已修复。#919/#920 的 SDK `10.0.401` 旧侧栏失败与当前 SDK8 不混用。后续收口 R06-05。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。R00/R01 校正提交 `a2f8883c` 对应 #954 的完整日志已归档，CI SDK `8.0.423`；它在旧 R07 `IsVisible` 初始断言失败，缺实际可见性/尺寸值，不能据此归因 R00/R01。#959 的 R07 `1/1` 通过，R08 失败原因已确认是动画正例 fixture 未固定 `ClientAreaAnimation` 系统输入，生产正确即时归一到 72 DIP；`d60e472d` 已补 app/system motion fixture 输入，本机 R08 `2/2`、native motion policy `22/22`、R07 `1/1`。但 #960 已终态失败，完整日志和实际 SDK尚不可访问，不能推断根因或称 R07/R08 收口。R06-05 当前 main 已用实际 WPF 事件、升降序、长表头布局及双主题离屏截图复核；Release `0/0`、XAML `24/24`、定向 `2/2`、RenderHarness 372 PNG。#960 日志受登录/API访问限制，详见当前证据。#955 `0.6.73` 文档门禁问题已修复；#919/#920 SDK `10.0.401` 结果仍绑定旧源码，不与 SDK8 混用。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：R07 的 Window/PageHost 实测布局判据已由 #959 的 CI 测试通过；#959 完整工作流后续在 R08 动画正例失败，根因是 fixture 未控制 CI 关闭的系统动效偏好。双输入显式控制及 `SidebarMotionEnabledForAudit` 前置断言已在本机验证，尚待提交/推送和新 Actions。R06-05 测试修改保持独立。R00/R01 freshness 14/14（source identity 5762c874）；package identity 与真实宿主验收仍独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：R07/R08 代码基线 `d60e472d` 的修正后 run #960 失败，日志要求登录且匿名 API 受限；失败原因与 runner SDK未知，不能签收或盲修。R00/R01 的 #954 日志可用，显示旧 R07 `IsVisible` 初始断言失败，不是 R00/R01 回归证据。R06-05 当前 main 本机行为/视觉复核已完成，需 push 并查新 Actions 终态；下一独立项是 R06-06 行内进度，复用 `TaskStatusDto` 与现有刷新/选择/滚动路径。R00/R01 freshness `14/14`（source identity 5762c874）；package identity 与真实宿主验收独立待验。R02-06 受 ENV-001 阻塞，Q06/R08 用户故障仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

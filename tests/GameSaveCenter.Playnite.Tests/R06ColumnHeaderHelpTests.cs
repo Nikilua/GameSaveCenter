@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -9,6 +11,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Views;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -20,24 +23,44 @@ public sealed class R06ColumnHeaderHelpTests
     {
         RunSta(() =>
         {
+            var shell = new AcrylicProductionShellView();
+            var rows = new ObservableCollection<HeaderRow>
+            {
+                new HeaderRow { Value = "b" },
+                new HeaderRow { Value = "a" }
+            };
+            var view = new System.Windows.Data.ListCollectionView(rows);
             var grid = new DataGrid
             {
                 AutoGenerateColumns = false,
                 HeadersVisibility = DataGridHeadersVisibility.Column,
                 CanUserSortColumns = true,
                 CanUserResizeColumns = true,
-                ItemsSource = new[] { new HeaderRow { Value = "512 MiB" } }
+                ItemsSource = view
             };
-            var column = new DataGridTextColumn { Header = "大小", Binding = new System.Windows.Data.Binding("Value") };
+            var column = new DataGridTextColumn
+            {
+                Header = "大小",
+                Binding = new System.Windows.Data.Binding("Value"),
+                SortMemberPath = nameof(HeaderRow.Value),
+                Width = 144
+            };
             var description = "总大小；按 1024 进制显示 B、KiB、MiB 或 GiB。";
             DataGridColumnHeaderHelpBehavior.SetDescription(column, description);
             grid.Columns.Add(column);
 
-            var headerStyle = new Style(typeof(DataGridColumnHeader));
-            headerStyle.Setters.Add(new Setter(DataGridColumnHeaderHelpBehavior.EnabledProperty, true));
-            grid.ColumnHeaderStyle = headerStyle;
+            var longHeaderColumn = new DataGridTextColumn
+            {
+                Header = "任务生命周期状态和完成进度",
+                Binding = new System.Windows.Data.Binding("Value"),
+                Width = 128
+            };
+            DataGridColumnHeaderHelpBehavior.SetDescription(longHeaderColumn, "任务当前阶段与完成比例。");
+            grid.Columns.Add(longHeaderColumn);
+            grid.ColumnHeaderStyle = (Style)shell.FindResource(typeof(DataGridColumnHeader));
+            shell.Content = grid;
 
-            var host = CreateHost(grid);
+            var host = CreateHost(shell);
             try
             {
                 host.Show();
@@ -49,9 +72,36 @@ public sealed class R06ColumnHeaderHelpTests
                 Assert.Equal("大小", header.Column.Header as string);
                 Assert.Equal(description, header.ToolTip as string);
                 Assert.Equal(description, AutomationProperties.GetHelpText(header));
-                Assert.True(header.Column.CanUserSort);
-                Assert.True(header.Column.CanUserReorder);
-                Assert.Empty(FindVisualChildren<ButtonBase>(header));
+                if (!header.Column.CanUserSort)
+                    throw new Xunit.Sdk.XunitException("The production header unexpectedly disabled its native sorting target.");
+                Assert.Equal(grid.CanUserReorderColumns, header.Column.CanUserReorder);
+                var nestedButtons = FindVisualChildren<ButtonBase>(header)
+                    .Select(button => button.GetType().FullName + " (" + button.Name + ")")
+                    .ToArray();
+                if (nestedButtons.Length > 0)
+                    throw new Xunit.Sdk.XunitException("Nested ButtonBase descendants: " + string.Join(", ", nestedButtons));
+                Assert.NotNull(header.Template.FindName("PART_LeftHeaderGripper", header) as Thumb);
+                Assert.NotNull(header.Template.FindName("PART_RightHeaderGripper", header) as Thumb);
+
+                var longHeader = FindVisualChildren<DataGridColumnHeader>(grid)
+                    .Single(candidate => ReferenceEquals(candidate.Column, longHeaderColumn));
+                var headerText = Assert.Single(FindVisualChildren<TextBlock>(longHeader));
+                Assert.Equal(TextWrapping.Wrap, headerText.TextWrapping);
+                Assert.Equal(TextTrimming.None, headerText.TextTrimming);
+                Assert.True(headerText.ActualHeight >= headerText.FontSize * 1.5,
+                    $"Expected the long production header to wrap; measured {headerText.ActualHeight:0.##} DIP at {headerText.FontSize:0.##} DIP font size.");
+                Assert.Equal("任务当前阶段与完成比例。", longHeader.ToolTip as string);
+                Assert.Equal("任务当前阶段与完成比例。", AutomationProperties.GetHelpText(longHeader));
+
+                var onClick = typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?? throw new Xunit.Sdk.XunitException("WPF ButtonBase.OnClick was not found.");
+                onClick.Invoke(header, null);
+                Assert.Equal(System.ComponentModel.ListSortDirection.Ascending, column.SortDirection);
+                Assert.Equal(new[] { "a", "b" }, GetVisibleValues(view));
+
+                onClick.Invoke(header, null);
+                Assert.Equal(System.ComponentModel.ListSortDirection.Descending, column.SortDirection);
+                Assert.Equal(new[] { "b", "a" }, GetVisibleValues(view));
             }
             finally
             {
@@ -95,6 +145,13 @@ public sealed class R06ColumnHeaderHelpTests
             Opacity = 0.01,
             Content = content
         };
+
+    private static string[] GetVisibleValues(System.Windows.Data.ListCollectionView view)
+        => Enumerable.Range(0, view.Count)
+            .Select(index => view.GetItemAt(index))
+            .OfType<HeaderRow>()
+            .Select(row => row.Value)
+            .ToArray();
 
     private static IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
         where T : DependencyObject

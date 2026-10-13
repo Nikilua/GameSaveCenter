@@ -1,0 +1,28 @@
+Current main R06-05 RenderHarness summary
+Generated: 2026-10-13 08:55:11 (Asia/Shanghai)
+Source HEAD: d60e472de8c1f52c9eedc348f0274562c06d7e53
+WorkingTreeClean: False (tracked R06-05 test edit and unrelated untracked R04/R05/R07 evidence were present)
+EvidenceSource: OffscreenRenderHarness
+Themes: light,dark
+DpiScale: 1.00 (offscreen logical DIP only)
+PNG count: 372
+PNG bytes: 47762936
+Result: render-qa OK
+Full ephemeral report SHA-256: C76F2CE67A5A6034588349AA1E00A77ECD851D735189349C690EC06F298F2728
+
+Production header contracts observed in the report:
+Save SaveHistoryGrid: resize=true headers=7 sort-arrow=visible
+Task TaskGrid: resize=true headers=7 sort-arrow=visible
+Media-Inbox MediaInboxGrid: resize=true headers=5 sort-arrow=visible
+Maintenance-Diagnostics FindingsGrid: resize=true headers=3 sort-arrow=visible
+Maintenance-Audit MaintenanceAuditFindingsGrid: resize=true headers=4 sort-arrow=visible
+Maintenance-AuditLog MaintenanceAuditLogGrid: resize=true headers=3 sort-arrow=visible
+
+1040x700 logical-DIP geometry:
+Workspace content: 744x460
+SaveHistoryGrid: 741x260, 8 rows, readableRows=4/4
+MediaInboxGrid: 681x267, 6 rows, readableRows=4/4
+Maintenance FindingsGrid: 741x308, 8 rows, readableRows=5/4
+TaskGrid: 727x200, 8 rows, readableRows=4/4
+
+No production XAML or view-model change was made for this stage. The complete 372 PNG set remained in .tmp during inspection; only the eight referenced 1040x700 Save/Task/Media/Maintenance images are retained in this evidence directory.
