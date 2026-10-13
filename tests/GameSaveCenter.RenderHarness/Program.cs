@@ -374,6 +374,19 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("settingspathprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "settings-path-probe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunSettingsPathEditorProbe(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("buttonbusyprobe", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -6884,6 +6897,274 @@ public static class Program
             window?.Close();
             if (application != null && previousShutdownMode.HasValue)
                 application.ShutdownMode = previousShutdownMode.Value;
+        }
+    }
+
+    private static int RunSettingsPathEditorProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("Q23-06 production Settings path editor visual probe");
+        report.AppendLine($"Generated: {DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}");
+        report.AppendLine("Scope: synthetic directory only; no Browse/Open/Save action is invoked.");
+
+        var problems = new List<string>();
+        var sandbox = Path.Combine(outputRoot, "synthetic-readonly-sandbox");
+        Directory.CreateDirectory(sandbox);
+        var sentinelPath = Path.Combine(sandbox, "keep.txt");
+        const string sentinel = "synthetic Q23-06 probe marker";
+        File.WriteAllText(sentinelPath, sentinel, Encoding.UTF8);
+        var syntheticWorkerPath = Path.Combine(sandbox, "GameSaveCenter.Worker.exe");
+        const string syntheticWorker = "synthetic Q23-06 placeholder; never executed";
+        File.WriteAllText(syntheticWorkerPath, syntheticWorker, Encoding.UTF8);
+        var longPathPrefix = "GSC-Q23-06-no-create-" + Guid.NewGuid().ToString("N").Substring(0, 12) + "-";
+        var longPathPaddingLength = Math.Max(1, 171 - sandbox.Length - longPathPrefix.Length);
+        var longPath = Path.Combine(sandbox, longPathPrefix + new string('x', longPathPaddingLength));
+        if (Directory.Exists(longPath))
+            throw new InvalidOperationException("The unique synthetic long-path target unexpectedly exists; refusing to inspect it.");
+
+        var refresh = typeof(GameSaveCenterSettingsView).GetMethod(
+            "RefreshSettingsPathEditorStatus",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        var apply = typeof(GameSaveCenterSettingsView).GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        if (refresh == null || apply == null)
+            throw new InvalidOperationException("Settings path editor probe methods not found.");
+
+        var stableActions = new Dictionary<string, Rect>(StringComparer.Ordinal);
+        var originalSentinelWriteUtc = File.GetLastWriteTimeUtc(sentinelPath);
+        var originalWorkerWriteUtc = File.GetLastWriteTimeUtc(syntheticWorkerPath);
+        var sizes = new[] { (Width: 1040, Height: 700), (Width: 720, Height: 640) };
+        var themes = new[]
+        {
+            (Name: "light", Mode: GameSaveCenterThemeMode.Light),
+            (Name: "dark", Mode: GameSaveCenterThemeMode.Dark)
+        };
+        var states = new[]
+        {
+            (Name: "valid", Path: sandbox, ExpectedStatus: "有效"),
+            (Name: "long-missing", Path: longPath, ExpectedStatus: "目录不存在")
+        };
+
+        try
+        {
+            var app = Application.Current ?? new Application();
+            app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+
+            foreach (var theme in themes)
+            foreach (var size in sizes)
+            foreach (var state in states)
+            {
+                var settings = new GameSaveCenterSettings
+                {
+                    ThemeMode = theme.Mode,
+                    WorkerExecutable = syntheticWorkerPath,
+                    LudusaviBackupDirectory = state.Path,
+                    MediaArchiveDirectory = sandbox
+                };
+                var view = new GameSaveCenterSettingsView { DataContext = settings };
+                view.ApplyThemeForAudit(theme.Mode);
+                var host = new Grid
+                {
+                    Width = size.Width,
+                    Height = size.Height,
+                    Background = CreateHarnessBackground(view),
+                    ClipToBounds = true
+                };
+                host.Children.Add(view);
+
+                apply.Invoke(view, new object[] { (double)size.Width, (double)size.Height });
+                host.Measure(new Size(size.Width, size.Height));
+                host.Arrange(new Rect(0, 0, size.Width, size.Height));
+                host.UpdateLayout();
+                apply.Invoke(view, new object[] { (double)size.Width, (double)size.Height });
+                host.UpdateLayout();
+
+                var shell = FindVisualChildren<FrameworkElement>(host)
+                    .FirstOrDefault(element => element.Name == "SettingsShell");
+                if (shell != null)
+                {
+                    shell.BeginAnimation(UIElement.OpacityProperty, null);
+                    shell.Opacity = 1;
+                    host.UpdateLayout();
+                }
+
+                var selector = FindVisualChildren<ComboBox>(host)
+                    .SingleOrDefault(element => element.Name == "SettingsPathEditorComboBox");
+                var pathBox = FindVisualChildren<TextBox>(host)
+                    .SingleOrDefault(element => element.Name == "LudusaviBackupDirectoryTextBox");
+                var status = FindVisualChildren<TextBlock>(host)
+                    .SingleOrDefault(element => element.Name == "SettingsPathEditorStatus");
+                if (selector == null || pathBox == null || status == null)
+                    throw new InvalidOperationException("The production path editor controls were not found.");
+
+                selector.SelectedValue = "LudusaviBackupDirectory";
+                var selectedKey = selector.SelectedItem?.GetType()
+                    .GetProperty("Key", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    ?.GetValue(selector.SelectedItem) as string;
+                var selectedDisplayName = selector.SelectedItem?.GetType()
+                    .GetProperty("DisplayName", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    ?.GetValue(selector.SelectedItem) as string;
+                var selectorVisualText = string.Join("|", FindVisualChildren<TextBlock>(selector)
+                    .Where(element =>
+                    {
+                        DependencyObject? current = element;
+                        while (current != null && !ReferenceEquals(current, selector))
+                        {
+                            if (current is UIElement visual && visual.Visibility != Visibility.Visible)
+                                return false;
+                            current = VisualTreeHelper.GetParent(current);
+                        }
+                        return true;
+                    })
+                    .Select(element => element.Text)
+                    .Where(value => !string.IsNullOrWhiteSpace(value))
+                    .Distinct(StringComparer.Ordinal));
+                var selectionPresenter = FindVisualChildren<ContentPresenter>(selector)
+                    .FirstOrDefault(element => ReferenceEquals(element.Content, selector.SelectedItem));
+                var selectorDisplayText = FindVisualChildren<TextBlock>(selector)
+                    .FirstOrDefault(element => string.Equals(element.Text, "存档目录", StringComparison.Ordinal));
+                if (!string.Equals(selector.SelectedValue as string, "LudusaviBackupDirectory", StringComparison.Ordinal)
+                    || !string.Equals(selectedKey, "LudusaviBackupDirectory", StringComparison.Ordinal))
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: SelectedValuePath did not choose the backup-directory option (value={selector.SelectedValue ?? "<null>"}).");
+                if (!string.Equals(selectedDisplayName, "存档目录", StringComparison.Ordinal))
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: path selector display name is not available through WPF binding (got '{selectedDisplayName ?? "<null>"}').");
+                if (!string.Equals(selectorVisualText, "存档目录", StringComparison.Ordinal)
+                    || selectionPresenter?.Visibility != Visibility.Collapsed
+                    || selectorDisplayText?.Visibility != Visibility.Visible)
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: selected path option is not rendered with its human-readable label (visualText='{selectorVisualText}', presenterContent='{selectionPresenter?.Content}').");
+                refresh.Invoke(view, new object[] { true });
+                pathBox.ApplyTemplate();
+                host.UpdateLayout();
+                var pathContentHost = pathBox.Template.FindName("PART_ContentHost", pathBox) as ScrollViewer;
+                if (pathContentHost == null)
+                    throw new InvalidOperationException("The production path textbox did not expose its native content host.");
+                pathBox.CaretIndex = state.Path.Length;
+                pathContentHost.ScrollToHorizontalOffset(double.MaxValue);
+                host.UpdateLayout();
+
+                if (!string.Equals(pathBox.Text, state.Path, StringComparison.Ordinal))
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: path text changed during the read-only probe.");
+                if (pathBox.ActualWidth <= 0 || pathBox.ActualHeight <= 0)
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: path input is not laid out.");
+                if (state.Name == "long-missing" && pathContentHost.HorizontalOffset <= 0)
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: path input did not scroll to expose its end.");
+                if (status.Visibility != Visibility.Visible || status.ActualWidth <= 0 || status.ActualHeight <= 0)
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: status explanation is not visible.");
+                var statusRenderedHeight = status.ActualHeight + status.Margin.Top + status.Margin.Bottom;
+                if (statusRenderedHeight + 0.5 < status.DesiredSize.Height)
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: status explanation is clipped ({statusRenderedHeight:0.##}/{status.DesiredSize.Height:0.##} DIP including margins).");
+                if (status.Text.IndexOf(state.ExpectedStatus, StringComparison.Ordinal) < 0)
+                    problems.Add($"{theme.Name}/{size.Width}/{state.Name}: expected status '{state.ExpectedStatus}', got '{status.Text}'.");
+
+                var actionBounds = new Dictionary<string, Rect>(StringComparer.Ordinal);
+                foreach (var label in new[] { "浏览", "校验", "打开", "复制" })
+                {
+                    var button = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(host)
+                        .SingleOrDefault(candidate => string.Equals(candidate.Content as string, label, StringComparison.Ordinal));
+                    if (button == null || button.Visibility != Visibility.Visible || button.ActualWidth <= 0 || button.ActualHeight <= 0)
+                    {
+                        problems.Add($"{theme.Name}/{size.Width}/{state.Name}: '{label}' action is not visible.");
+                        continue;
+                    }
+                    var bounds = button.TransformToAncestor(host).TransformBounds(new Rect(new Point(0, 0), button.RenderSize));
+                    actionBounds[label] = bounds;
+                }
+
+                var caseKey = theme.Name + "/" + size.Width;
+                if (state.Name == "valid")
+                {
+                    foreach (var pair in actionBounds)
+                        stableActions[caseKey + "/" + pair.Key] = pair.Value;
+                }
+                else
+                {
+                    foreach (var pair in actionBounds)
+                    {
+                        if (stableActions.TryGetValue(caseKey + "/" + pair.Key, out var previous)
+                            && (Math.Abs(previous.X - pair.Value.X) > 0.5
+                                || Math.Abs(previous.Y - pair.Value.Y) > 0.5
+                                || Math.Abs(previous.Width - pair.Value.Width) > 0.5
+                                || Math.Abs(previous.Height - pair.Value.Height) > 0.5))
+                            problems.Add($"{theme.Name}/{size.Width}/{state.Name}: '{pair.Key}' action moved as the path length changed ({previous} -> {pair.Value}).");
+                    }
+                }
+
+                var imagePath = Path.Combine(outputRoot, $"settings-path-{theme.Name}-{size.Width}x{size.Height}-{state.Name}.png");
+                SavePng(host, imagePath);
+                report.AppendLine(
+                    $"  {theme.Name}/{size.Width}x{size.Height}/{state.Name}: selector={selector.Text}, selectorVisualText={selectorVisualText}, selectedDisplay={selectedDisplayName}, presenterContent={selectionPresenter?.Content}, presenterVisibility={selectionPresenter?.Visibility}/{selectionPresenter?.IsVisible}, labelVisibility={selectorDisplayText?.Visibility}/{selectorDisplayText?.IsVisible}, itemTemplate={selector.ItemTemplate ?? null}, itemTemplateSelector={selector.ItemTemplateSelector ?? null}, displayMemberPath={selector.DisplayMemberPath}, chars={pathBox.Text.Length}, input={pathBox.ActualWidth:0.##}x{pathBox.ActualHeight:0.##}, inputOffset={pathContentHost.HorizontalOffset:0.##}, status={status.ActualWidth:0.##}x{status.ActualHeight:0.##}/{status.DesiredSize.Height:0.##}, statusText={status.Text}, images={Path.GetFileName(imagePath)}");
+                foreach (var pair in actionBounds)
+                    report.AppendLine($"    {pair.Key}: {pair.Value.X:0.##},{pair.Value.Y:0.##},{pair.Value.Width:0.##},{pair.Value.Height:0.##} DIP");
+
+                var pathCard = FindVisualChildren<FrameworkElement>(host)
+                    .Single(element => element.Name == "SettingsPathEditorCard");
+                var settingsScroller = FindVisualChildren<ScrollViewer>(host)
+                    .Single(element => element.Name == "SettingsScroller");
+                pathCard.BringIntoView();
+                host.UpdateLayout();
+                var settingsViewport = new Rect(0, 0, settingsScroller.ViewportWidth, settingsScroller.ViewportHeight);
+                foreach (var label in new[] { "浏览", "校验", "打开", "复制" })
+                {
+                    var button = FindVisualChildren<GameSaveCenter.Playnite.Controls.Button>(host)
+                        .Single(candidate => string.Equals(candidate.Content as string, label, StringComparison.Ordinal));
+                    var scrolledBounds = button.TransformToAncestor(settingsScroller)
+                        .TransformBounds(new Rect(new Point(0, 0), button.RenderSize));
+                    if (scrolledBounds.Left < settingsViewport.Left - 0.5
+                        || scrolledBounds.Top < settingsViewport.Top - 0.5
+                        || scrolledBounds.Right > settingsViewport.Right + 0.5
+                        || scrolledBounds.Bottom > settingsViewport.Bottom + 0.5)
+                        problems.Add($"{theme.Name}/{size.Width}/{state.Name}: '{label}' action is not fully reachable after scrolling the settings page ({scrolledBounds} vs {settingsViewport}).");
+                }
+                var cardImagePath = Path.Combine(outputRoot, $"settings-path-{theme.Name}-{size.Width}x{size.Height}-{state.Name}-card.png");
+                SavePng(host, cardImagePath);
+                report.AppendLine($"    settings card after BringIntoView: pageOffset={settingsScroller.VerticalOffset:0.##}, viewport={settingsScroller.ViewportWidth:0.##}x{settingsScroller.ViewportHeight:0.##}, screenshot={Path.GetFileName(cardImagePath)}");
+
+                pathBox.BringIntoView();
+                host.UpdateLayout();
+                var fieldImagePath = Path.Combine(outputRoot, $"settings-path-{theme.Name}-{size.Width}x{size.Height}-{state.Name}-field.png");
+                SavePng(host, fieldImagePath);
+                var fieldBounds = pathBox.TransformToAncestor(host).TransformBounds(new Rect(new Point(0, 0), pathBox.RenderSize));
+                report.AppendLine($"    field viewport after BringIntoView: {fieldBounds.X:0.##},{fieldBounds.Y:0.##},{fieldBounds.Width:0.##},{fieldBounds.Height:0.##} DIP; screenshot={Path.GetFileName(fieldImagePath)}");
+            }
+
+            var finalSentinelFiles = Directory.GetFiles(sandbox).Select(Path.GetFileName).OrderBy(name => name, StringComparer.Ordinal).ToArray();
+            if (File.ReadAllText(sentinelPath, Encoding.UTF8) != sentinel
+                || File.GetLastWriteTimeUtc(sentinelPath) != originalSentinelWriteUtc
+                || File.ReadAllText(syntheticWorkerPath, Encoding.UTF8) != syntheticWorker
+                || File.GetLastWriteTimeUtc(syntheticWorkerPath) != originalWorkerWriteUtc
+                || finalSentinelFiles.Length != 2
+                || finalSentinelFiles[0] != "GameSaveCenter.Worker.exe"
+                || finalSentinelFiles[1] != "keep.txt")
+                problems.Add("The read-only path check changed the synthetic sandbox contents.");
+            if (Directory.Exists(longPath))
+                problems.Add("The long-path negative fixture unexpectedly created its target directory.");
+
+            report.AppendLine("Synthetic sandbox: unchanged after path validation; no Browse/Open/Save button was invoked.");
+            report.AppendLine(problems.Count == 0 ? "settingspathprobe OK" : "settingspathprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "settings-path-probe-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception exception)
+        {
+            report.AppendLine("settingspathprobe FAILED");
+            report.AppendLine(exception.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "settings-path-probe-report.txt"), report.ToString());
+            Console.Error.WriteLine(exception);
+            return 1;
+        }
+        finally
+        {
+            try
+            {
+                Directory.Delete(sandbox, true);
+            }
+            catch { }
         }
     }
 

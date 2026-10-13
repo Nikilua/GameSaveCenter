@@ -1,0 +1,61 @@
+Q23-06 production Settings path editor visual probe
+Generated: 2026-10-13T11:41:00Z
+Scope: synthetic directory only; no Browse/Open/Save action is invoked.
+  light/1040x700/valid: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=110, input=540.67x36, inputOffset=392.37, status=668x16/22.67, statusText=存档目录：当前目录有效，可打开目录或复制完整路径。, images=settings-path-light-1040x700-valid.png
+    浏览: 544,462.67,54.67,36 DIP
+    校验: 606.67,462.67,54.67,36 DIP
+    打开: 669.33,462.67,54.67,36 DIP
+    复制: 732,462.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=0, viewport=739.33x412.67, screenshot=settings-path-light-1040x700-valid-card.png
+    field viewport after BringIntoView: 414.67,618.67,540.67,36 DIP; screenshot=settings-path-light-1040x700-valid-field.png
+  light/1040x700/long-missing: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=172, input=540.67x36, inputOffset=900.97, status=668x16/22.67, statusText=存档目录：目录不存在；保存时的全量校验仍会按现有规则判断是否可创建。, images=settings-path-light-1040x700-long-missing.png
+    浏览: 544,462.67,54.67,36 DIP
+    校验: 606.67,462.67,54.67,36 DIP
+    打开: 669.33,462.67,54.67,36 DIP
+    复制: 732,462.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=0, viewport=739.33x412.67, screenshot=settings-path-light-1040x700-long-missing-card.png
+    field viewport after BringIntoView: 414.67,618.67,540.67,36 DIP; screenshot=settings-path-light-1040x700-long-missing-field.png
+  light/720x640/valid: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=110, input=220.67x36, inputOffset=712.37, status=348x16/22.67, statusText=存档目录：当前目录有效，可打开目录或复制完整路径。, images=settings-path-light-720x640-valid.png
+    浏览: 544,542.67,54.67,36 DIP
+    校验: 284,578.67,54.67,36 DIP
+    打开: 346.67,578.67,54.67,36 DIP
+    复制: 409.33,578.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=54, viewport=419.33x352.67, screenshot=settings-path-light-720x640-valid-card.png
+    field viewport after BringIntoView: 414.67,558.67,220.67,36 DIP; screenshot=settings-path-light-720x640-valid-field.png
+  light/720x640/long-missing: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=172, input=220.67x36, inputOffset=1220.97, status=348x32/38.67, statusText=存档目录：目录不存在；保存时的全量校验仍会按现有规则判断是否可创建。, images=settings-path-light-720x640-long-missing.png
+    浏览: 544,542.67,54.67,36 DIP
+    校验: 284,578.67,54.67,36 DIP
+    打开: 346.67,578.67,54.67,36 DIP
+    复制: 409.33,578.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=70, viewport=419.33x352.67, screenshot=settings-path-light-720x640-long-missing-card.png
+    field viewport after BringIntoView: 414.67,558.67,220.67,36 DIP; screenshot=settings-path-light-720x640-long-missing-field.png
+  dark/1040x700/valid: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=110, input=540.67x36, inputOffset=392.37, status=668x16/22.67, statusText=存档目录：当前目录有效，可打开目录或复制完整路径。, images=settings-path-dark-1040x700-valid.png
+    浏览: 544,462.67,54.67,36 DIP
+    校验: 606.67,462.67,54.67,36 DIP
+    打开: 669.33,462.67,54.67,36 DIP
+    复制: 732,462.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=0, viewport=739.33x412.67, screenshot=settings-path-dark-1040x700-valid-card.png
+    field viewport after BringIntoView: 414.67,618.67,540.67,36 DIP; screenshot=settings-path-dark-1040x700-valid-field.png
+  dark/1040x700/long-missing: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=172, input=540.67x36, inputOffset=900.97, status=668x16/22.67, statusText=存档目录：目录不存在；保存时的全量校验仍会按现有规则判断是否可创建。, images=settings-path-dark-1040x700-long-missing.png
+    浏览: 544,462.67,54.67,36 DIP
+    校验: 606.67,462.67,54.67,36 DIP
+    打开: 669.33,462.67,54.67,36 DIP
+    复制: 732,462.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=0, viewport=739.33x412.67, screenshot=settings-path-dark-1040x700-long-missing-card.png
+    field viewport after BringIntoView: 414.67,618.67,540.67,36 DIP; screenshot=settings-path-dark-1040x700-long-missing-field.png
+  dark/720x640/valid: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=110, input=220.67x36, inputOffset=712.37, status=348x16/22.67, statusText=存档目录：当前目录有效，可打开目录或复制完整路径。, images=settings-path-dark-720x640-valid.png
+    浏览: 544,542.67,54.67,36 DIP
+    校验: 284,578.67,54.67,36 DIP
+    打开: 346.67,578.67,54.67,36 DIP
+    复制: 409.33,578.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=54, viewport=419.33x352.67, screenshot=settings-path-dark-720x640-valid-card.png
+    field viewport after BringIntoView: 414.67,558.67,220.67,36 DIP; screenshot=settings-path-dark-720x640-valid-field.png
+  dark/720x640/long-missing: selector=存档目录, selectorVisualText=存档目录, selectedDisplay=存档目录, presenterContent=GameSaveCenter.Playnite.Settings.SettingsPathEditorOption, presenterVisibility=Collapsed/False, labelVisibility=Visible/False, itemTemplate=, itemTemplateSelector=MS.Internal.Data.DisplayMemberTemplateSelector, displayMemberPath=DisplayName, chars=172, input=220.67x36, inputOffset=1220.97, status=348x32/38.67, statusText=存档目录：目录不存在；保存时的全量校验仍会按现有规则判断是否可创建。, images=settings-path-dark-720x640-long-missing.png
+    浏览: 544,542.67,54.67,36 DIP
+    校验: 284,578.67,54.67,36 DIP
+    打开: 346.67,578.67,54.67,36 DIP
+    复制: 409.33,578.67,54.67,36 DIP
+    settings card after BringIntoView: pageOffset=70, viewport=419.33x352.67, screenshot=settings-path-dark-720x640-long-missing-card.png
+    field viewport after BringIntoView: 414.67,558.67,220.67,36 DIP; screenshot=settings-path-dark-720x640-long-missing-field.png
+Synthetic sandbox: unchanged after path validation; no Browse/Open/Save button was invoked.
+settingspathprobe OK

@@ -18,8 +18,8 @@ namespace GameSaveCenter.Playnite.Settings
             Kind = kind;
         }
 
-        internal string Key { get; }
-        internal string DisplayName { get; }
+        public string Key { get; }
+        public string DisplayName { get; }
         internal SettingsPathEditorKind Kind { get; }
     }
 

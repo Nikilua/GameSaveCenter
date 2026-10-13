@@ -1576,3 +1576,12 @@
 - R05-03 隔离 Playnite bootstrap 在扩展安装前停止。到 `2026-10-13T10:35:50Z`，PID `34512` 和 4 个 CefSharp 子进程仍占用本次 profile；不强杀、不删目录、不重跑。没有 Worker、popup 或视觉/呈现帧证据。隔离记录见 [R05-03 当前复核](evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - #960/run `38327521241` 已确认为 terminal failure，job `115069541561` “编译与测试” exit 1、13m54s；日志 endpoint 404/API 403，SDK 和根因仍未知。
 - R08-01 的 SDK10 单类自动证据是当前 source-identical 复核；用户故障保持独立待验。Round3 中其余自动行为已满足，真实宿主/最终呈现/OS 输入、物理跨屏和 ETW/宿主性能边界仍按原状态保留。下一项执行 Round2 Q23-06 目录编辑器视觉复核，使用合成数据和现有 RenderHarness。
+
+## 2026-10-13 Q23-06 目录编辑器复核与 #967 诊断确认
+
+- 用户这次提供的 SDK10 diagnostics ZIP SHA-256 为 `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`，对应 #967 SDK10 job `115178885908`、artifact `11795654027`、源码提交 `983fee5`。`summary.json` 记录 SDK `10.0.401`、`outcome=passed`，恢复、编译及全部记录的测试步骤 exit 0。截图中的 workflow 红灯属于独立 SDK8 job `115178885652` 源码结构检查；其原始日志仍不可读。这个附件没有提供 #983 的日志，#968 已验证 SDK helper BOM 修复后的 SDK8/SDK10 两 job 成功。
+- Q23-06 复用现有 `SettingsPathEditorService` 与字段/命令契约。RenderHarness 发现选中设置路径时共享 ComboBox 显示 DTO 类型名；内部 DTO 的 `Key`/`DisplayName` getter 改为 public，模板改用公开 `ItemTemplate` API，并按 `DisplayMemberPath` 显示 ComboBox.Text，保留自定义 ItemTemplate。
+- 本机 SDK `8.0.423`，RenderHarness/依赖 Release build `0/0`。最终 synthetic `settingspathprobe` 在 Light/Dark、`1040×700`/`720×640 DIP`、有效/172 字符缺失路径下 `8/8`；完整输入和尾部滚动、错误说明尺寸、状态变化时四动作无位移、短窗滚动后动作完全可达均有运行时断言。合成哨兵和占位 Worker 内容/时间戳/目录清单不变，缺失目录未创建；未打开 Browse/Explorer、Open、Clipboard 或 Save。
+- Playnite 定向回归 `209 total / 170 passed / 0 failed`；控制台标记 `39 skipped`，未计为通过。`validate-source.py`、XAML `24/24` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`；完整 Render QA `render-qa OK`，报告 `0 PROBLEM` 行。截图、probe 报告、TRX、全量 Render QA 报告与 SHA 见[Q23-06 当前主线复核包](../ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- Round2 Q23-06 视觉栏更新为“通过”；宿主仍“外部阻塞”，最终仍“未完成”。离屏 `1.00 DIP` 不是 Playnite/OS 呈现；真实 ACL 拒绝/网络共享、Explorer/剪贴板、宿主键盘/UIA/IME、物理 DPI/跨屏尚未验。Demo 源目录仍不可用，沿用恢复生产基线。
+- 截至 `2026-10-13 11:44 UTC`，前置文档提交 #970/run `38386326043` 页面仍显示 `In progress`。Q23-06 变更尚待中文提交/push，推送后需另跟对应 Actions 至终态，区分本机 SDK8 与 CI SDK10。下一项可执行任务为 Round2 Q23-08 底部动作栏：先核对现有保存/取消/恢复默认/导入导出命令、短窗可达和危险/迁移确认，再决定是否只补当前证据。

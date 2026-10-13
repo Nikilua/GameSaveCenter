@@ -10309,3 +10309,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `scripts/real-host-audit.ps1` 在 Playnite 插件安装之前退出 `1`，分类 `isolated-profile-bootstrap-failed-before-host-install`。精确错误为 runner 拒绝强行结束未优雅退出的隔离启动进程。到 `2026-10-13T10:35:50Z`，PID `34512` 与 4 个 CefSharp 子进程仍使用本次 profile；host responding、HWND `0`，无 safe-start marker，未装扩展/Worker、未播种合成库、未执行 Popup 或视觉采样。进程树与 profile 保留，不强杀/删目录/重试。摘要与原始日志引用见 R05-03 复核包。
 - #960/run `38327521241` 公开状态已更新为 terminal failure：13m54s，job `115069541561`“编译与测试”exit 1；full-log endpoint 404、REST 403，SDK 和实际命令/原因未知。只校正事实，不猜测失败根因。
 - HEAD `d56d23e` 的文档 run #969/run `38377673615` 已终态成功（43m27s）。本轮同步了 R05-03/R08-01/#960 的证据边界；当前 package identity 仍未提供。真实 Playnite 呈现、OS 输入/UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。
+
+## 2026-10-13 Q23-06 目录编辑器当前 main 复核
+
+- 在 main `c9f9179` 的工作树复用路径探测服务、设置 Binding 与四个既有命令。实际生产资源探针发现嵌套 ComboBox 模板无法可靠绑定内部 `SelectionBoxItemTemplate`，因此选中路径项显示 DTO 类型；修复 DTO 公开 `Key`/`DisplayName` getters，并在共享模板采用公开 `ItemTemplate` API，`DisplayMemberPath` 通过 ComboBox.Text 呈现。未重写路径服务或安全语义。
+- 最终隔离 SDK `8.0.423`：RenderHarness Release `0 warning / 0 error`；双主题 × `1040×700`/`720×640 DIP` × 有效/172 字符缺失路径探针 `8/8`。实际验证输入尾部可滚动、错误说明不裁切、按钮状态变化不位移、窄窗滚动后四动作完整可达。仅使用合成沙箱，检查哨兵和占位 Worker 的内容/时间戳/目录清单未变且缺失路径未创建；未调用 Browse/Open/Copy/Save。
+- 相关 Playnite tests TRX 为 `209 total / 170 passed / 0 failed`，VSTest 控制台显示 39 skipped；`validate-source.py`、XAML `24/24`；WPF 静态 `0 errors / 29 warnings / 177 info`；full Render QA `render-qa OK`、0 PROBLEM，报告标记 offscreen DPI 1.00 和 WorkingTreeClean False。完整材料见[Q23-06 当前主线证据](../design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- Round2 Q23-06 visual 由待验改通过；Host 仍外部阻塞、final 未完成。当前无真实 Playnite/OS 输入/UIA/IME、物理 DPI/跨屏、真实 ACL/网络路径或 Explorer/clipboard 动作证据。
+- 用户补交的 #967 SDK10 ZIP 已复核：SHA `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409`，job `115178885908`、SDK `10.0.401`、source `983fee5`、summary 全部通过；workflow 红灯是独立 SDK8 job `115178885652` 源码结构门禁。修复已由 #968 两 SDK jobs 通过，不将 #967 当作当前 Q23 源码验证。
+- 截至 `2026-10-13 11:44 UTC`，前置 #970/run `38386326043` 仍在 In progress；本阶段代码等待中文 commit/push。推送后需跟新 run 到终态并记录 SDK8/SDK10 差异。下一项 Q23-08：盘点现有底部保存/取消/恢复/迁移入口及短窗动作可达/确认行为，先补证，不凭计划表推断缺功能。

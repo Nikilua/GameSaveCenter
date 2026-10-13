@@ -42,6 +42,11 @@ R05-03 已按既有隔离 Playnite 流程执行 fail-closed 预检，bootstrap �
 ### 2026-10-13 #969 后续状态校正
 
 文档 HEAD `d56d23e` 对应 #969/run `38377673615` 已成功，代码基线 `4aa1ec7` 对应 #968 的 SDK8 `8.0.423` 与 SDK10 `10.0.401` jobs 也都成功。用户提供的 #967 ZIP 是 SDK10 job `115178885908`、artifact `11795654027`，不是失败的 SDK8 job `115178885652`；其独立 R08-01 TRX 为 `2/2`，但用户机报告 `1/2` 仍待原始失败日志。#960/run `38327521241` 当前已确认 terminal failure：13m54s，job `115069541561` “编译与测试” exit 1；日志 endpoint 404、REST 403，SDK/根因未知。R05-03 isolated bootstrap blocker 与仍存活的 PID `34512`/4 个 CefSharp children 见[预检记录](design/reviews/ui-finesse-round3-20260915/evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/README.md)；保持 profile，不强杀或重跑。下一项 Round2 Q23-06，使用生产基线、RenderHarness 和合成目录路径/只读/错误状态完成离屏双主题核查；不把离屏结果表述成宿主验收。
+
+### 2026-10-13 Q23-06 当前 main 复核
+
+Q23-06 已完成本机代码、测试与视觉核查：Settings ComboBox 的选中路径显示修复；RenderHarness 双主题/两尺寸/两路径状态 `8/8`；Playnite 定向结果 `170 passed / 0 failed`（39 skipped）；XAML、source、WPF 静态与 full Render QA 均已记录。视觉列更新为通过，真实 Playnite/物理 DPI/OS 输入与 ACL/网络共享仍未验证，宿主 external、最终 incomplete。证据：[Q23-06 复核包](design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。前置 #970/run `38386326043` 于 2026-10-13 11:44 UTC 仍显示 In progress；本阶段尚待 push/新 Actions。下一可执行任务 Q23-08：先核对设置底部动作栏既有命令、短窗可达和危险/导入迁移确认，不假设计划表所列功能缺失。
+
 ### GOV-003：完成度与活动入口校准
 
 - **范围/结果**：重新统计 R192/Q208，R08-01 用户故障单列；撤下旧无分母百分比；三份当前入口精简并完整归档；补当前 CI、本地 IPC 失败、SDK 漂移与 freshness。
