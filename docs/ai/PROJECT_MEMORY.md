@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。R00-03/R00-04 仍以源码身份 `5762c874` 证据为准，freshness `14/14`。#919/#920 的 SDK `10.0.401` job log 已在 R07-08 证据包归档并按 SHA 核验；两项均失败于旧源码侧栏 transition 活动时钟断言，不能代替当前 main 验证。R06-05 main `73d0f6e6` 本机 Release `0/0`、XAML `24/24`、行为 `2/2`、RenderHarness `372 PNG`，Actions #961 页面仍显示 `In progress`。R06-06 当前 main SDK `8.0.423` 隔离行为复核 `43/43`，见当前证据包；本机结果不替代 CI SDK `10.0.401`。#960 页面最新显示 `In progress`，与此前失败记录矛盾，SDK/根因待重新确认。#954 完整日志已归档且显示失败在旧 R07 初始 `IsVisible` 断言；不能归因 R00/R01。#955 `0.6.73` 文档门禁问题已修复。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前 Round3 顺序为先修复 #965 暴露的布局测试宿主尺寸假设并跟踪新 Actions，再复核 R00/R01，之后推进依赖满足的 Q/R。#965 用户诊断包核验 SHA `328C86FE…` 与 artifact `11788460821` 相符，CI SDK `8.0.423` / VSTest `17.11.1`；Release build 成功，R08Numeric `5/5`，布局类 `50/54`，4 项失败来自两项测试的 Window/逻辑宽度不一致。本机隔离 SDK8.0.423 solution `0/0`、修正后布局类 `54/54`；与 CI 的 .NET Framework runtime build 不同，须以新 Actions 终态收口。旧 #919/#920 SDK10.0.401 日志属于旧源码。R00/R01 最近 freshness 为 d0dbaea 的 `14/14`；测试路径变更后需重跑并只记录新事实。
 
 ## AI/Codex 启动协议
 

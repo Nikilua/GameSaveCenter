@@ -1,3 +1,11 @@
+## 2026-10-13 #965 布局测试宿主尺寸校正
+
+- 用户提供的诊断包 SHA-256 `328C86FE4C908C469D84995F9B01114E9FF89BCD1692362FBDA7B9520E461D36` 与 Actions artifact `11788460821` 相符，源码为 main `d0dbaea0`。CI SDK `8.0.423`、VSTest `17.11.1`；Release build `0/0`，R08Numeric `5/5`，`ReportedWorkspaceLayoutBehaviorTests` `50/54`。
+- 两项失败各覆盖 Light/Dark：收件箱按钮中心差 `42/42/0 DIP`，Settings 宽布局请求 `1880×1200` 却测得壳宽 `952 DIP`。诊断未记录 Window.ActualWidth/runner 分辨率，不将之归因为生产 UI 缺陷；根因是布局行为测试依赖 Window 请求尺寸，而没有固定逻辑测量宿主。
+- 测试现用尺寸明确的 Grid 逻辑宿主；隐藏 Window 只提供 WPF PresentationSource。生产 XAML/VM/命令/DTO 未改。隔离 SDK `8.0.423` Release solution `0 warning / 0 error`、该类 `54/54`（VSTest `17.11.1`）；SDK `9.0.302` 对照也为 `54/54`（VSTest `17.14.1`）。本机 .NET Framework `4.8.9181.0`，CI `4.8.9345.0`。`validate-source.py`、`git diff --check` 通过。
+- 脱敏 TRX、源码及 DLL SHA 和范围边界见 [#965 布局宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。TRX 不含机器名或用户名；用户原始诊断 ZIP 未复制入仓库。
+- 本阶段待中文 commit/push，随后检查新 Actions 到成功或失败终态；成功后重跑 freshness 并继续 R00/R01。无真实 Playnite、真实呈现/物理 DPI 验证。
+
 ## 2026-10-13 R06-06 当前 main 行为复核与 CI 状态刷新
 
 - main `73d0f6e6f94cd87b4b575a3663b76e4989ee8fcd`；生产实现沿用既有 `TaskStatusDto`、`TaskIndexedCollection`、事件合批、任务选择/滚动与服务端 `TaskSummary`。本阶段未改生产或测试源码，仅补当前 main 证据。

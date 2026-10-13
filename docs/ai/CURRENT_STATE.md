@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；当前 main `73d0f6e6f94cd87b4b575a3663b76e4989ee8fcd`。R00-03/R00-04 在源码身份 `5762c874` 下行为 `25/25`、freshness `14/14`；2000 项合成搜索 `30/30` 次改变结果集，p50/p95/max `46/63/75 ms`。R00/R01 校正提交 `a2f8883c` 的 #954（run `38313448857`，CI SDK `8.0.423`）失败于旧 R07 `IsVisible` 初始断言，完整日志没有实际可见性/尺寸值，不能归因 R00/R01。#959（run `38324971243`，SDK `8.0.423`）R07 `1/1` 通过；R08 fixture 已在 `d60e472d` 固定应用与系统动效输入，本机 R08 `2/2`、native motion policy `22/22`。#919/#920（run `36675309812`/`36677346317`）完整 job log 已在证据包归档并核验 SHA；CI SDK 均为 `10.0.401`，旧源码两项侧栏 transition 测试失败，当前 main 的 SDK8 结果不替代 SDK10。#960 的上次状态记录为失败，但最新公开 run 页面现显示 `In progress`；状态有冲突，SDK/失败根因未知，待重新确认。R06-05 当前 main 本机 Release `0 warning / 0 error`、XAML `24/24`、行为 `2/2`、RenderHarness 双主题 `372 PNG`；其 Actions #961 仍 `In progress`。R06-06 当前 main 的 Release/XAML 与隔离行为复核 `43/43` 见[当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-06-CURRENT-MAIN-RECHECK-20261013/README.md)。本机 SDK `8.0.423` 不替代 CI SDK `10.0.401`。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；本阶段提交前 main `d0dbaea00dc620545524236c55444748d43d6540`。用户提供的 #965/run `38342488530` 诊断包 SHA 与 artifact `11788460821` 一致：CI SDK `8.0.423`、VSTest `17.11.1`，Release 构建 `0/0`；R08Numeric `5/5`，但布局行为类 `50/54`，4 项失败是两项双主题测试把窗口请求尺寸当成实际布局宽度。当前只校正测试逻辑宿主，不改生产 UI；本机隔离 SDK `8.0.423` Release solution `0/0`、同类 `54/54`。详见 [#965 布局宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。当前阶段仍须等修正推送后的 Actions 明确成功，之后先复核 R00/R01，再推进依赖满足的 Q/R。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/多屏、presented frame、ETW、宿主性能与真实数据写入仍未验证。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -42,10 +42,10 @@
 
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. #919/#920 的 SDK `10.0.401` 完整日志现已在仓库证据包并按 SHA 校验；两 run 的旧源码侧栏 transition 断言失败，不作为当前 main SDK8 通过或失败的替代。
-2. #960 上次记录终态失败，但最新公开页面显示 `In progress`；状态冲突，待重新核对。#961（main `73d0f6e6`，R06-05）最新页面仍 `In progress`，两者均不得报告已收口。
-3. R06-05 本机行为与双主题布局复核已完成；必须跟进 #961 到明确终态。
-4. R06-06 当前 main 本机复核 `43/43` 已归档；证据/账本提交触发的 Actions 也须跟到终态。下一项先复核已实现的 R06-07 当前 main 证据，沿用已有能力，不因账本文字重建。
+1. 提交并推送 #965 布局测试宿主校正及其证据；只提交本阶段文件，保留其他任务的 R04/R05/R07 未跟踪证据。
+2. 追踪新 Actions 到终态。CI 仍运行时不签收；失败时先读该 run 的完整 diagnostics，再按实际错误处理。#965 原 run 的 SDK8.0.423 日志已由用户提供；历史 SDK10.0.401 run 只代表旧源码。
+3. Actions 成功后重跑 UI evidence freshness；再按任务要求复核 R00/R01 问题与证据。之前在 d0dbaea 下为 `14/14`，本阶段测试路径变更需重新确认。
+4. 之后推进依赖已满足的 Q/R 小批；每个阶段构建、测试、同步文档、中文 commit/push，并跟踪其 Actions。
 5. package identity、真实宿主与发布矩阵继续单列；没有实际包或宿主证据不写成通过。`ENV-001` 前置条件改变后，才在隔离宿主执行 `CLOSE-HOST-01`。
 
 ## 架构与生产 UI
@@ -65,7 +65,6 @@
 
 ## 2026-10-13 当前检查点
 
-- 当前生产基线在 R06-08 构建时为 main `dc8f26ee972c08976ca8cfbe7531e5c68c5a0559`；只加强了测试源，SDK8.0.423 Release `0/0`、XAML24/24；实际 WPF /几何相关行为 `14/14`，在长详情打开时验证 4 行完整可见。当前 R06-07/08 证据分别见 [R06-07](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-CURRENT-MAIN-RECHECK-20261013/README.md) 与 [R06-08](../design/reviews/ui-finesse-round3-20260915/evidence/R06-08-CURRENT-MAIN-RECHECK-20261013/README.md)。没有当前 screenshot；历史 RenderHarness 绑定旧实现。
-- 用户提供 #962/#963 完整诊断包：两次 Release build 成功，实际 CI SDK `8.0.423`、VSTest `17.11.1`；失败均为 `R08NumericChangeBehaviorTests.CounterChangeUsesRealRenderPulseAndSuppressesHighFrequencyBounce` 反馈计数 `0`/期望 `1`，不是 R06-07/08 代码失败。证据与哈希见 [R08-06 CI 门控复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-06-CURRENT-MAIN-RECHECK-20261013/README.md)。旧 #919/#920 的 SDK10.0.401 日志绑定旧源码，不替代这些运行。
-- #964/run `38339686245`（source `83fbee97`，job `115107636301`）已终态 Failure 于“编译与测试”；该提交尚未含本修正，公开 artifact partial 404。当前本机 SDK `8.0.423` solution Release `0/0`、R08Numeric `5/5`、源码校验通过；修正仍待提交/推送并检查新 Actions 终态。当前工作树须保留其他任务 R04/R05/R07 未跟踪证据，不要纳入本阶段提交；临时目录清理此前被安全执行器拒绝，没有绕过。
-- 新 Actions 终态后按当前续跑顺序先复核 R00/R01 问题与证据，再推进依赖已满足的 Q/R 小批。原 Demo 设计目录仍缺；真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW及宿主性能未验。
+- #965/run `38342488530` 的用户诊断包确认 CI SDK `8.0.423`、VSTest `17.11.1`；Release build `0/0`，R08Numeric `5/5`；布局类 `50/54`。失败为两项测试在双主题下读到收件箱中心差 `42 DIP` 和 Settings 壳宽 `952 DIP`。由于包未记录 Window.ActualWidth/runner 分辨率，不将其归因生产 UI。
+- 本阶段测试夹具已用显式 Grid 逻辑宿主固定 WPF Measure/Arrange 尺寸，保留原几何、滚动和负例断言；未改生产 XAML/VM/命令/DTO。隔离 SDK `8.0.423` Release solution `0 warning / 0 error`，完整 `ReportedWorkspaceLayoutBehaviorTests 54/54`；测试运行时 .NET Framework `4.8.9181.0`，CI 为 `4.8.9345.0`。详见 [#965 布局宿主复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。
+- 提交/推送后跟踪新 Actions 到终态；只有成功才收口此门禁。随后重跑 freshness，再先复核 R00/R01，之后推进依赖满足的 Q/R。保留其他任务 R04/R05/R07 未跟踪证据。原 Demo 设计目录仍缺；真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW及宿主性能未验。

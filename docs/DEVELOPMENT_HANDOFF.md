@@ -1,6 +1,12 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；main/origin 当前为 `73d0f6e6f94cd87b4b575a3663b76e4989ee8fcd`。R06-05 本机复核已完成，但 Actions #961 页面仍为 `In progress`；R06-06 当前 main 本机 Release/XAML 和逐类隔离测试合计 `43/43`，当前证据包及 TRX 已补齐。#919/#920 完整 SDK `10.0.401` 日志已从仓库归档包核验，旧源码有两项侧栏 transition 活动时钟断言失败；本机 SDK8 不能替代。#960 当前公开页显示 `In progress`，与此前记录终态 failure 冲突；状态、SDK和根因待重新确认。下一步提交/推送本证据并跟踪新 Actions，同时跟踪 #961 到终态；两者明确前不签收相关阶段，再复核已有 R06-07。真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
+更新：2026-10-13；当前分支 `main`，本阶段提交前基线 `d0dbaea00dc620545524236c55444748d43d6540`。#965 用户诊断包已核验：CI SDK `8.0.423`/VSTest `17.11.1`；Release build 成功，但布局类因窗口请求尺寸假设失败 `4/54`，R08Numeric `5/5`。本机隔离 SDK8 Release `0/0`，布局类在修正后 `54/54`。测试宿主改动及完整边界见 [#965 布局宿主复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。先提交/推送并检查新 Actions 到终态；成功后按用户顺序复核 R00/R01，再续做 Q/R。保留其他任务的未跟踪证据；真实 Playnite、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
+
+## 2026-10-13 #965 CI 布局测试宿主修正
+
+- 用户提供的 ZIP 哈希与 Actions artifact 一致。CI 实际 SDK `8.0.423`，构建 `0 warning / 0 error`；R08Numeric `5/5`。整次失败在两项 WPF 布局测试的 Light/Dark 实例（收件箱中心差 `42 DIP`；Settings 壳宽实测 `952 DIP`，测试却要求 `1320–1360 DIP`）。完整观察与摘要见上述证据包。
+- 两项测试现以显式 Grid 逻辑宿主设置实际测量尺寸，保留原有行为与负例；本机隔离 SDK8.0.423 下 Release solution `0/0`、布局类 `54/54`。真实 host render、窗口物理面积、物理 DPI/跨屏未验。
+- 下一步：提交此阶段（仅测试、证据、当前事实文档），推送 main，追踪对应 Actions 到成功或失败终态；随后先重跑 freshness 并复核 R00/R01。若 CI 再失败，先读完整日志再改。
 
 ## 2026-10-13 R00-03 / R00-04 当前 main freshness 复核
 

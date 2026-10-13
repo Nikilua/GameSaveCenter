@@ -1,3 +1,10 @@
+## 2026-10-13 Actions #965 布局测试宿主校正
+
+- 用户提供的 `GameSaveCenter-build-diagnostics (2).zip` 哈希与 #965/run `38342488530` artifact `11788460821` 匹配；CI 源码 `d0dbaea00dc620545524236c55444748d43d6540`、SDK `8.0.423`、VSTest `17.11.1`。Release solution 构建成功 `0/0`，R08Numeric `5/5`；布局类 `50/54`，失败是 `CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow` 和 `SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther` 的浅/深主题实例。
+- 原始值：收件箱按钮中心对全局目标为 `42/42/0 DIP`；Settings 宽布局实测 shell `952 DIP`，旧断言要求 `1320–1360 DIP`。诊断没有记录 Window.ActualWidth 或 runner 分辨率，不能据此断言生产 UI 缺陷或具体系统限宽；测试将请求窗口尺寸当成逻辑布局尺寸。
+- 两项测试现使用显式尺寸 Grid 逻辑宿主，Window 只提供 PresentationSource。没有改生产 UI。隔离 SDK `8.0.423` Release solution `0/0`，`ReportedWorkspaceLayoutBehaviorTests 54/54`；SDK9.0.302 对照 `54/54`。SDK8本机 VSTest `17.11.1`，测试宿主 .NET Framework `4.8.9181.0`，CI 为 `4.8.9345.0`。测试源码、程序集身份、脱敏 TRX 与完整范围见 [#965 布局宿主复核](evidence/CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。
+- 本阶段提交推送后必须检查新 Actions 到终态；成功后重跑 freshness，先复核 R00/R01 再推进依赖满足的 Q/R。当前逻辑几何不代表屏幕最终呈现、真实 Playnite或物理 DPI/跨屏。
+
 ## 2026-10-13 R06-05 当前 main 列头说明复核
 
 - 当前生产源码基线 main `d60e472de8c1f52c9eedc348f0274562c06d7e53`。没有改生产 XAML、视图模型、命令或 DTO；先盘点既有 `DataGridColumnHeaderHelpBehavior`、共享 header 模板、容量格式化及各生产表列宽，再增强此前保留的 R06 测试改动。

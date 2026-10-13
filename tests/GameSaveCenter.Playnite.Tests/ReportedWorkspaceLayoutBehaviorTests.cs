@@ -88,12 +88,25 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var pageScroller = (ScrollViewer)viewType.GetField("MediaInboxPageScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 tabs.SelectedIndex = 0;
 
-                window = CreateWindow(view, 1280, 720);
+                // Keep the logical client size deterministic even on CI agents whose
+                // desktop work area is narrower than the requested test window. The
+                // window provides a PresentationSource for real WPF templates and
+                // scrolling; this explicit layout host controls the measured viewport.
+                var layoutHost = new Grid
+                {
+                    Width = 1280,
+                    Height = 720,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top
+                };
+                layoutHost.Children.Add(view);
+                window = CreateWindow(layoutHost, 960, 720);
                 view.ApplyResponsiveLayout(1280, 720);
                 window.Show();
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(1280, 720);
                 FlushLayout(window);
+                Assert.InRange(layoutHost.ActualWidth, 1279, 1281);
 
                 var targetSummary = (FrameworkElement)viewType.GetField("MediaInboxGlobalTargetSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var inspectorTargetSummary = (FrameworkElement)viewType.GetField("MediaInboxInspectorGlobalTargetSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -2280,13 +2293,14 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var compactSearchRightOverflow = 0d;
         var compactSearchTitleLeftDelta = 0d;
         var wideSearchTitleLeftDelta = 0d;
-        var windowedIconTitleTopDelta = 0d;
-        var windowedSearchTitleLeftDelta = 0d;
-        var windowedSearchIconTopGap = 0d;
-        var windowedResetControlCenterSpread = 0d;
-        var windowedResetControlHeightSpread = 0d;
+        var logical1254IconTitleTopDelta = 0d;
+        var logical1254SearchTitleLeftDelta = 0d;
+        var logical1254SearchIconTopGap = 0d;
+        var logical1254ResetControlCenterSpread = 0d;
+        var logical1254ResetControlHeightSpread = 0d;
         var centeredRegressionDelta = 0d;
         var wideShellWidth = 0d;
+        var wideLogicalHostWidth = 0d;
         var compactSaveHintRow = -1;
         var restoredSaveHintRow = -1;
         var resetTitleLeftDelta = 0d;
@@ -2315,7 +2329,19 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var pathCombo = (FrameworkElement)viewType.GetField("SettingsPathEditorComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCard = (FrameworkElement)viewType.GetField("SettingsPathEditorCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
-                window = CreateWindow(view, 1280, 840);
+                // Drive the page's logical viewport directly. Window dimensions can
+                // be clipped to the CI desktop work area, which would turn this wide
+                // layout probe into a narrow one while still reporting the requested
+                // Window.Width value.
+                var layoutHost = new Grid
+                {
+                    Width = 1280,
+                    Height = 840,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top
+                };
+                layoutHost.Children.Add(view);
+                window = CreateWindow(layoutHost, 960, 720);
                 window.Show();
                 FlushLayout(window);
 
@@ -2351,30 +2377,31 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 search.HorizontalAlignment = HorizontalAlignment.Left;
                 FlushLayout(window);
 
-                window.Width = 1880;
-                window.Height = 1200;
+                layoutHost.Width = 1880;
+                layoutHost.Height = 1200;
                 FlushLayout(window);
+                wideLogicalHostWidth = layoutHost.ActualWidth;
                 var wideTitleBounds = BoundsIn(title, headerGrid);
                 var wideSearchBounds = BoundsIn(search, headerGrid);
                 wideSearchTitleLeftDelta = Math.Abs(wideSearchBounds.Left - wideTitleBounds.Left);
                 wideShellWidth = ((FrameworkElement)viewType.GetField("SettingsShell", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!).ActualWidth;
 
-                // The latest user screenshot is 1881×1208 px; the 36-DIP controls appear
-                // about 54 px tall, suggesting roughly 150% scaling. Probe the equivalent
-                // 1254×800-DIP window as a reproduction hypothesis, not a DPI claim.
-                window.Width = 1254;
-                window.Height = 800;
+                // The latest user screenshot suggests a 1254×800-DIP layout hypothesis
+                // if interpreted at 150%. Measure that logical size in the Grid host;
+                // this is not a physical-DPI or on-screen window simulation.
+                layoutHost.Width = 1254;
+                layoutHost.Height = 800;
                 FlushLayout(window);
-                var windowedIconBounds = BoundsIn(icon, headerGrid);
-                var windowedTitleBounds = BoundsIn(title, headerGrid);
-                var windowedSearchBounds = BoundsIn(search, headerGrid);
-                windowedIconTitleTopDelta = Math.Abs(windowedIconBounds.Top - windowedTitleBounds.Top);
-                windowedSearchTitleLeftDelta = Math.Abs(windowedSearchBounds.Left - windowedTitleBounds.Left);
-                windowedSearchIconTopGap = windowedSearchBounds.Top - windowedIconBounds.Top;
-                var windowedResetCenters = resetControls.Select(control => CenterY(control, resetCard)).ToArray();
-                var windowedResetHeights = resetControls.Select(control => control.ActualHeight).ToArray();
-                windowedResetControlCenterSpread = windowedResetCenters.Max() - windowedResetCenters.Min();
-                windowedResetControlHeightSpread = windowedResetHeights.Max() - windowedResetHeights.Min();
+                var logical1254IconBounds = BoundsIn(icon, headerGrid);
+                var logical1254TitleBounds = BoundsIn(title, headerGrid);
+                var logical1254SearchBounds = BoundsIn(search, headerGrid);
+                logical1254IconTitleTopDelta = Math.Abs(logical1254IconBounds.Top - logical1254TitleBounds.Top);
+                logical1254SearchTitleLeftDelta = Math.Abs(logical1254SearchBounds.Left - logical1254TitleBounds.Left);
+                logical1254SearchIconTopGap = logical1254SearchBounds.Top - logical1254IconBounds.Top;
+                var logical1254ResetCenters = resetControls.Select(control => CenterY(control, resetCard)).ToArray();
+                var logical1254ResetHeights = resetControls.Select(control => control.ActualHeight).ToArray();
+                logical1254ResetControlCenterSpread = logical1254ResetCenters.Max() - logical1254ResetCenters.Min();
+                logical1254ResetControlHeightSpread = logical1254ResetHeights.Max() - logical1254ResetHeights.Min();
 
                 var buttons = FindVisualChildren<ButtonBase>(pathCard)
                     .Where(button => button.Content is string label && label is "浏览" or "校验" or "打开" or "复制")
@@ -2387,7 +2414,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 pathControlHeightSpread = pathHeights.Max() - pathHeights.Min();
                 pathHeightDetails = string.Join(", ", pathControls.Select(control => $"{control.GetType().Name}/{(control is ContentControl content ? content.Content : "combo")}: {control.ActualHeight:0.##}"));
 
-                window.Width = 560;
+                layoutHost.Width = 560;
                 FlushLayout(window);
                 var compactSearchBounds = BoundsIn(search, headerGrid);
                 compactSearchWidth = search.ActualWidth;
@@ -2395,8 +2422,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 compactSearchTitleLeftDelta = Math.Abs(compactSearchBounds.Left - BoundsIn(title, headerGrid).Left);
                 compactSaveHintRow = Grid.GetRow(saveHint);
 
-                window.Width = 1280;
-                window.Height = 840;
+                layoutHost.Width = 1280;
+                layoutHost.Height = 840;
                 FlushLayout(window);
                 restoredSaveHintRow = Grid.GetRow(saveHint);
             }
@@ -2410,7 +2437,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, horizontal gap={iconTitleHorizontalGap:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, centered-negative Δ={centeredRegressionDelta:0.##} DIP, wide shell/search={wideShellWidth:0.##}/{wideSearchTitleLeftDelta:0.##} DIP, windowed 1254×800 icon/title topΔ={windowedIconTitleTopDelta:0.##} DIP, search/title leftΔ={windowedSearchTitleLeftDelta:0.##} DIP, search/icon top gap={windowedSearchIconTopGap:0.##} DIP, reset center/height spread={windowedResetControlCenterSpread:0.##}/{windowedResetControlHeightSpread:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, reset controls center/height spread={resetControlCenterSpread:0.##}/{resetControlHeightSpread:0.##} DIP ({resetControlDetails}), compact search width/overflow/leftΔ={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##}/{compactSearchTitleLeftDelta:0.##} DIP, save-hint row={compactSaveHintRow}->{restoredSaveHintRow}, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
+        output.WriteLine($"{theme} Settings: icon/title topΔ={iconTitleTopDelta:0.##} DIP, horizontal gap={iconTitleHorizontalGap:0.##} DIP, search/title leftΔ={searchTitleLeftDelta:0.##} DIP, centered-negative Δ={centeredRegressionDelta:0.##} DIP, wide logical host/shell/search={wideLogicalHostWidth:0.##}/{wideShellWidth:0.##}/{wideSearchTitleLeftDelta:0.##} DIP, logical 1254×800 host icon/title topΔ={logical1254IconTitleTopDelta:0.##} DIP, search/title leftΔ={logical1254SearchTitleLeftDelta:0.##} DIP, search/icon top gap={logical1254SearchIconTopGap:0.##} DIP, reset center/height spread={logical1254ResetControlCenterSpread:0.##}/{logical1254ResetControlHeightSpread:0.##} DIP, search size={searchWidth:0.##}×{searchHeight:0.##} DIP, reset/title leftΔ={resetTitleLeftDelta:0.##} DIP, reset/search gap={resetAfterSearchGap:0.##} DIP, reset controls center/height spread={resetControlCenterSpread:0.##}/{resetControlHeightSpread:0.##} DIP ({resetControlDetails}), compact search width/overflow/leftΔ={compactSearchWidth:0.##}/{compactSearchRightOverflow:0.##}/{compactSearchTitleLeftDelta:0.##} DIP, save-hint row={compactSaveHintRow}->{restoredSaveHintRow}, hint/title topΔ={saveHintTitleTopDelta:0.##} DIP, path control center spread={pathControlCenterSpread:0.##} DIP, height spread={pathControlHeightSpread:0.##} DIP ({pathHeightDetails})");
         Assert.Null(exception);
         Assert.True(iconTitleTopDelta <= 12, $"settings icon top is {iconTitleTopDelta:0.##} DIP from the title top");
         Assert.InRange(iconTitleHorizontalGap, 11, 13);
@@ -2419,13 +2446,14 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.InRange(resetControlCenterSpread, 0, 1);
         Assert.InRange(resetControlHeightSpread, 0, 1);
         Assert.True(centeredRegressionDelta >= 40, $"centered search negative control should expose the old alignment defect; measured {centeredRegressionDelta:0.##} DIP");
+        Assert.InRange(wideLogicalHostWidth, 1879, 1881);
         Assert.InRange(wideShellWidth, 1320, 1360);
         Assert.InRange(wideSearchTitleLeftDelta, 0, 2);
-        Assert.True(windowedIconTitleTopDelta <= 12, $"windowed settings icon top is {windowedIconTitleTopDelta:0.##} DIP from the title top");
-        Assert.InRange(windowedSearchTitleLeftDelta, 0, 2);
-        Assert.True(windowedSearchIconTopGap >= 36, $"windowed search begins only {windowedSearchIconTopGap:0.##} DIP below the header icon; expected a separate header row");
-        Assert.InRange(windowedResetControlCenterSpread, 0, 1);
-        Assert.InRange(windowedResetControlHeightSpread, 0, 1);
+        Assert.True(logical1254IconTitleTopDelta <= 12, $"logical 1254-DIP settings icon top is {logical1254IconTitleTopDelta:0.##} DIP from the title top");
+        Assert.InRange(logical1254SearchTitleLeftDelta, 0, 2);
+        Assert.True(logical1254SearchIconTopGap >= 36, $"logical 1254-DIP search begins only {logical1254SearchIconTopGap:0.##} DIP below the header icon; expected a separate header row");
+        Assert.InRange(logical1254ResetControlCenterSpread, 0, 1);
+        Assert.InRange(logical1254ResetControlHeightSpread, 0, 1);
         Assert.InRange(searchWidth, 500, 520);
         Assert.InRange(searchHeight, 35, 37);
         Assert.InRange(compactSearchWidth, 260, 520);

@@ -4,16 +4,17 @@
 
 任务：`R08-06 | 数字变化动效`
 
-状态：本机 SDK 8.0.423 构建与行为测试通过；#962/#963 完整日志已由用户提供并定位到旧测试夹具没有固定系统动效输入。#964 在修正前终态失败。当前修正需提交推送并等待新 Actions 终态后再收口。
+状态：R08 数字反馈在 #965 的 CI 诊断包中 `5/5` 通过；整次 run 仍因无关布局测试失败。#962/#963 的旧失败已由系统动效输入修正覆盖；本轮补齐 #965 的布局测试宿主校正后，须以推送后的新 Actions 终态收口门禁。
 
 ## CI 失败证据
 
-用户提供的两个诊断压缩包与 run 的源码提交相符：
+用户提供的诊断压缩包与各 run 的源码提交相符：
 
 | 压缩包 | run / 源码提交 | CI SDK / VSTest | 失败 |
 |---|---|---|---|
 | `GameSaveCenter-build-diagnostics.zip` | #963 / `38338090417` / `dc8f26ee972c08976ca8cfbe7531e5c68c5a0559` | SDK `8.0.423` / VSTest `17.11.1` | `R08NumericChangeBehaviorTests.CounterChangeUsesRealRenderPulseAndSuppressesHighFrequencyBounce` 的反馈计数为 `0`，期望 `1`；该类另外 2 项通过 |
 | `GameSaveCenter-build-diagnostics (1).zip` | #962 / `38335989087` / `87d27592086bbef355b9426a00614b5bb9856e8c` | SDK `8.0.423` / VSTest `17.11.1` | 同一方法、同一 `expected 1 / actual 0`；该类另外 2 项通过 |
+| `GameSaveCenter-build-diagnostics (2).zip` | #965 / `38342488530` / `d0dbaea00dc620545524236c55444748d43d6540` | SDK `8.0.423` / VSTest `17.11.1` | Release build 成功、`R08NumericChangeBehaviorTests` `5/5`；布局类 `50/54`，另两项测试在双主题下失败：收件箱中心偏差 `42 DIP`、Settings 壳宽 `952 DIP`，详见 [#965 布局宿主校正](../CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md) |
 
 两份 summary 都记录 Release 构建成功，随后只在 `R08NumericChangeBehaviorTests` 失败。该失败不是 ScaleX 归零：TRX 的源行 `69` 映射到源码第一条内部反馈计数断言（源码第 68 行）；本机临时制造该断言失败后复核了 PDB 行映射。压缩包 SHA-256：#963 `ACCD264B84772BAD13FE9B09EFD973420CE7125506CD0213B1E6C67DBF5C0B8B`；#962 `1DA9613A6B35CDBCD7461A5C374260150C4D9A132F848AF6EF4A00C3E7E5E157`。
 
@@ -42,4 +43,4 @@
 
 当前行为证据是合成输入和隔离 STA WPF；没有启动真实 Playnite/Worker，也没有验物理 DPI/跨屏、UIA/读屏、真实 OS 输入、最终呈现帧、ETW 或宿主性能。Demo 原始 `DesignShellView.xaml`/`Pages` 目录在当前 checkout 缺失，沿用恢复生产基线。
 
-提交本修正后推送 main，检查新 Actions 直到终态。若失败，先取得该 run 的完整诊断日志，再按实际断言处理。门禁收口后按本轮续跑顺序先复核 R00/R01 问题与证据，再推进依赖已满足的 Q/R；后续具体任务以该复核结果为准。
+R08 测试本身已在 #965 通过；整次 run 的具体布局失败和测试宿主改动见 [#965 布局宿主校正](../CI-965-LAYOUT-HOST-CURRENT-MAIN-20261013/README.md)。修正提交并推送 main 后，仍要检查新 Actions 直到终态。只有 CI 成功才收口当前门禁；随后先复核 R00/R01 问题与证据，再推进依赖已满足的 Q/R。
