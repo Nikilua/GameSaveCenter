@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Views;
 using NativeToggleSwitch = GameSaveCenter.Playnite.Controls.ToggleSwitch;
 using Xunit;
 
@@ -123,9 +124,12 @@ public sealed class R21AutomationValueBehaviorTests
             };
             progress.DataContext = running;
 
-            using var host = new PeerHost(progress);
+            var focusTarget = new TextBox { Text = "保持当前输入焦点" };
+            using var host = new PeerHost(focusTarget, progress);
+            Assert.True(focusTarget.Focus());
             var peer = GetPeer(progress);
             Assert.Equal("任务进度", peer.GetName());
+            Assert.Equal(AutomationLiveSetting.Off, AutomationProperties.GetLiveSetting(progress));
             var range = Assert.IsAssignableFrom<IRangeValueProvider>(peer.GetPattern(PatternInterface.RangeValue));
             Assert.Equal(42, range.Value);
             Assert.Equal(0, range.Minimum);
@@ -141,6 +145,7 @@ public sealed class R21AutomationValueBehaviorTests
             host.Pump();
             Assert.Equal(0, range.Value);
             Assert.Equal("—", peer.GetHelpText());
+            Assert.True(focusTarget.IsKeyboardFocusWithin, "progress updates must not move keyboard focus");
 
             progress.DataContext = new TaskStatusDto
             {
@@ -151,6 +156,7 @@ public sealed class R21AutomationValueBehaviorTests
             host.Pump();
             Assert.Equal(100, range.Value);
             Assert.Equal("100%", peer.GetHelpText());
+            Assert.True(focusTarget.IsKeyboardFocusWithin, "progress updates must not move keyboard focus");
         });
     }
 
@@ -390,6 +396,104 @@ public sealed class R21AutomationValueBehaviorTests
             host.Pump();
             Assert.Equal("媒体 B", list.SelectedItem);
             Assert.Single(selection.GetSelection());
+        });
+    }
+
+    [Fact]
+    public void ProductionDataGridsExposeNamesAndNativeAutomationPatterns()
+    {
+        RunSta(() =>
+        {
+            var cases = new (UserControl View, (string Field, string Name)[] Grids)[]
+            {
+                (new TaskCenterView(), new[] { ("TaskGrid", "任务列表") }),
+                (new MediaCenterView(), new[] { ("MediaInboxGrid", "媒体收件箱") }),
+                (new SaveCenterView(), new[] { ("SaveHistoryGrid", "存档历史"), ("SaveCandidateGrid", "存档候选") }),
+                (new MaintenanceView(), new[]
+                {
+                    ("FindingsGrid", "维护诊断结果"),
+                    ("PathRemapPreviewGrid", "路径迁移预览"),
+                    ("CloudTransferGrid", "云端传输队列"),
+                    ("MaintenanceDeviceGrid", "设备对比结果"),
+                    ("MaintenanceAuditFindingsGrid", "维护审核结果"),
+                    ("MaintenanceAuditLogGrid", "维护审计记录"),
+                    ("MaintenanceProcessGrid", "进程映射")
+                })
+            };
+
+            foreach (var item in cases)
+            {
+                using var host = new PeerHost(item.View);
+                foreach (var entry in item.Grids)
+                {
+                    var grid = Assert.IsType<DataGrid>(item.View.FindName(entry.Field));
+                    var peer = GetPeer(grid);
+
+                    Assert.Equal(entry.Name, AutomationProperties.GetName(grid));
+                    Assert.Equal(entry.Name, peer.GetName());
+                    Assert.False(string.IsNullOrWhiteSpace(AutomationProperties.GetHelpText(grid)));
+                    Assert.False(string.IsNullOrWhiteSpace(peer.GetHelpText()));
+                    Assert.Null(AutomationProperties.GetLabeledBy(grid));
+                    Assert.IsAssignableFrom<IGridProvider>(peer.GetPattern(PatternInterface.Grid));
+                    var table = Assert.IsAssignableFrom<ITableProvider>(peer.GetPattern(PatternInterface.Table));
+                    Assert.Equal(RowOrColumnMajor.RowMajor, table.RowOrColumnMajor);
+                    Assert.IsAssignableFrom<ISelectionProvider>(peer.GetPattern(PatternInterface.Selection));
+                }
+            }
+        });
+    }
+
+    [Fact]
+    public void ProductionIconOnlyActionExposesItsSemanticNameToAutomation()
+    {
+        RunSta(() =>
+        {
+            var view = new TaskCenterView();
+            using var host = new PeerHost(view);
+            var button = Assert.IsAssignableFrom<Button>(view.FindName("TaskCompactCloseDetailsButton"));
+            var peer = GetPeer(button);
+
+            Assert.Equal("收起所选任务详情", AutomationProperties.GetName(button));
+            Assert.Equal("收起所选任务详情", peer.GetName());
+            Assert.NotEqual(button.Content?.ToString(), peer.GetName());
+        });
+    }
+
+    [Fact]
+    public void ProductionMediaInboxSelectionPatternTracksTheSelectedRow()
+    {
+        RunSta(() =>
+        {
+            var view = new MediaCenterView();
+            var tabControl = Assert.IsType<TabControl>(view.FindName("MediaTabControl"));
+            System.Windows.Data.BindingOperations.ClearBinding(tabControl, TabControl.SelectedIndexProperty);
+            tabControl.SelectedIndex = 0;
+
+            var grid = Assert.IsType<DataGrid>(view.FindName("MediaInboxGrid"));
+            grid.ItemsSource = new System.Collections.ObjectModel.ObservableCollection<object>
+            {
+                new AutomationTestRow("媒体 A"),
+                new AutomationTestRow("媒体 B")
+            };
+
+            using var host = new PeerHost(view);
+            host.Pump();
+            grid.SelectedIndex = 0;
+            host.Pump();
+
+            var selection = Assert.IsAssignableFrom<ISelectionProvider>(GetPeer(grid).GetPattern(PatternInterface.Selection));
+            Assert.True(selection.CanSelectMultiple);
+            var firstSelection = Assert.Single(selection.GetSelection());
+            var firstName = firstSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);
+            Assert.Equal("媒体 A", firstName);
+
+            grid.SelectedIndex = 1;
+            host.Pump();
+
+            var nextSelection = Assert.Single(selection.GetSelection());
+            var nextName = nextSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);
+            Assert.Equal("媒体 B", nextName);
+            Assert.Equal("媒体 B", grid.SelectedItem is AutomationTestRow row ? row.Label : null);
         });
     }
 
@@ -761,6 +865,15 @@ public sealed class R21AutomationValueBehaviorTests
     private static AutomationPeer GetPeer(FrameworkElement element)
         => FrameworkElementAutomationPeer.CreatePeerForElement(element)
             ?? throw new Xunit.Sdk.XunitException(element.GetType().Name + " did not create an AutomationPeer.");
+
+    private sealed class AutomationTestRow
+    {
+        public AutomationTestRow(string label) => Label = label;
+
+        public string Label { get; }
+
+        public override string ToString() => Label;
+    }
 
     private static NativeToggleSwitch CreateNamedToggle(string name)
     {
