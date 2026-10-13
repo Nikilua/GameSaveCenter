@@ -12,11 +12,19 @@ using System.Windows.Threading;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R21KeyboardNavigationTraceTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public R21KeyboardNavigationTraceTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public void EightProductionEntrancesRecordForwardAndReverseKeyboardFocusTraces()
     {
@@ -40,7 +48,43 @@ public sealed class R21KeyboardNavigationTraceTests
             Assert.True(trace.Forward.Any(stop => trace.ExpectedNames.Contains(stop.AutomationName, StringComparer.Ordinal)), trace.ToFailureMessage());
             Assert.True(trace.Reverse.All(stop => stop.IsInsideEntry), trace.ToFailureMessage());
             Assert.True(trace.Forward.All(stop => stop.IsInsideEntry), trace.ToFailureMessage());
+
+            foreach (var target in trace.VisibleInteractiveTargets)
+            {
+                Assert.True(
+                    trace.Forward.Any(stop => ReferenceEquals(stop.Target, target.Target)),
+                    trace.Name + " forward Tab cannot reach " + target.Description + "; " + trace.ToFailureMessage());
+                Assert.True(
+                    trace.Reverse.Any(stop => ReferenceEquals(stop.Target, target.Target)),
+                    trace.Name + " reverse Shift+Tab cannot reach " + target.Description + "; " + trace.ToFailureMessage());
+            }
+
+            var forwardTargets = GetInteractiveTrace(trace, trace.Forward);
+            var reverseTargets = GetInteractiveTrace(trace, trace.Reverse);
+            var pivotIndex = forwardTargets.FindIndex(target => ReferenceEquals(target.Target, trace.Forward[0].Target));
+            var expectedReverse = pivotIndex >= 0
+                ? new[] { forwardTargets[pivotIndex] }.Concat(forwardTargets.Skip(pivotIndex + 1).Reverse()).ToList()
+                : forwardTargets.AsEnumerable().Reverse().ToList();
+            Assert.True(
+                expectedReverse.Select(target => target.Target).SequenceEqual(reverseTargets.Select(target => target.Target)),
+                trace.Name + " Shift+Tab order is not the reverse of Tab order; " + trace.ToFailureMessage());
         });
+
+        foreach (var trace in traces)
+            _output.WriteLine(trace.ToFailureMessage());
+    }
+
+    private static List<InteractiveTarget> GetInteractiveTrace(EntryTrace trace, IEnumerable<FocusStop> stops)
+    {
+        var result = new List<InteractiveTarget>();
+        foreach (var stop in stops)
+        {
+            var target = trace.VisibleInteractiveTargets.FirstOrDefault(candidate => ReferenceEquals(candidate.Target, stop.Target));
+            if (target != null && !result.Any(existing => ReferenceEquals(existing.Target, target.Target)))
+                result.Add(target);
+        }
+
+        return result;
     }
 
     private static void EnsureHostTextBlockStyle()
@@ -127,7 +171,20 @@ public sealed class R21KeyboardNavigationTraceTests
         host.Pump();
         var reverse = WalkFocus(host.Scope, FocusNavigationDirection.Previous, entry.Name);
 
-        return new EntryTrace(entry.Name, entry.ExpectedNames, forward, reverse);
+        var visibleInteractiveTargets = EnumerateElements(host.Scope)
+            .Where(element => element.IsVisible
+                && element.IsEnabled
+                && element.Focusable
+                && KeyboardNavigation.GetIsTabStop(element)
+                && (element is ButtonBase || element is TextBoxBase || element is Selector))
+            .Select(element => new InteractiveTarget(
+                element,
+                AutomationProperties.GetName(element) is { Length: > 0 } automationName
+                    ? automationName
+                    : !string.IsNullOrWhiteSpace(element.Name) ? element.Name : element.GetType().Name))
+            .ToList();
+
+        return new EntryTrace(entry.Name, entry.ExpectedNames, forward, reverse, visibleInteractiveTargets);
     }
 
     private static List<FocusStop> WalkFocus(
@@ -173,7 +230,8 @@ public sealed class R21KeyboardNavigationTraceTests
         return new FocusStop(
             automationName,
             element?.GetType().Name ?? "null",
-            IsDescendantOf(dependencyObject, scope));
+            IsDescendantOf(dependencyObject, scope),
+            element);
     }
 
     private static IEnumerable<FrameworkElement> EnumerateFocusable(DependencyObject root)
@@ -261,37 +319,59 @@ public sealed class R21KeyboardNavigationTraceTests
 
     private sealed class EntryTrace
     {
-        public EntryTrace(string name, IReadOnlyList<string> expectedNames, List<FocusStop> forward, List<FocusStop> reverse)
+        public EntryTrace(
+            string name,
+            IReadOnlyList<string> expectedNames,
+            List<FocusStop> forward,
+            List<FocusStop> reverse,
+            List<InteractiveTarget> visibleInteractiveTargets)
         {
             Name = name;
             ExpectedNames = expectedNames;
             Forward = forward;
             Reverse = reverse;
+            VisibleInteractiveTargets = visibleInteractiveTargets;
         }
 
         public string Name { get; }
         public IReadOnlyList<string> ExpectedNames { get; }
         public List<FocusStop> Forward { get; }
         public List<FocusStop> Reverse { get; }
+        public List<InteractiveTarget> VisibleInteractiveTargets { get; }
 
         public string ToFailureMessage()
             => Name + " forward=[" + string.Join(" > ", Forward.Select(stop => stop.AutomationName))
                 + "] reverse=[" + string.Join(" > ", Reverse.Select(stop => stop.AutomationName))
+                + "] visible-interactive=[" + string.Join(", ", VisibleInteractiveTargets.Select(target => target.Description))
                 + "] expected=[" + string.Join(", ", ExpectedNames) + "]";
     }
 
     private sealed class FocusStop
     {
-        public FocusStop(string automationName, string typeName, bool isInsideEntry)
+        public FocusStop(string automationName, string typeName, bool isInsideEntry, IInputElement? target)
         {
             AutomationName = automationName;
             TypeName = typeName;
             IsInsideEntry = isInsideEntry;
+            Target = target;
         }
 
         public string AutomationName { get; }
         public string TypeName { get; }
         public bool IsInsideEntry { get; }
+        public IInputElement? Target { get; }
+    }
+
+    private sealed class InteractiveTarget
+    {
+        public InteractiveTarget(FrameworkElement target, string description)
+        {
+            Target = target;
+            Description = description;
+        }
+
+        public FrameworkElement Target { get; }
+        public string Description { get; }
     }
 
     private sealed class TraceHost : IDisposable
