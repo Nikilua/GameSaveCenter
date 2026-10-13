@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 的代码门禁已在 #968（SDK8 `8.0.423`、SDK10 `10.0.401`）成功，#969 文档同步 run 也成功；R00/R01 freshness `14 fresh / 0 stale`。#967 用户 ZIP 是绿色 SDK10 job，不能代表整个 workflow；独立 SDK8 源码门禁同 guard 已在本机复现并以 BOM 修复，#968 验证了修正。当前 R05-03 隔离 Playnite bootstrap 被 graceful-shutdown 保护挡下；运行中的 PID `34512` 与 4 个 CefSharp 子进程仍使用隔离 profile，不能强杀、删除 profile 或重跑。继续依赖已满足的 Q/R；用户 R08-01 `1/2` 故障仍需原始错误材料。详见 CURRENT_STATE 与最新工作日志。
+更新：2026-10-13。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main Q23-06 代码提交 `9e84dba305a252fea116f1c5e918f7cf15f2c89f` 的本机 SDK `8.0.423` RenderHarness build `0/0`、合成路径探针 `8/8`、定向 Playnite `170 passed / 0 failed / 39 skipped`、Render QA `0 PROBLEM` 已记录；推送后的 CI SDK `10.0.401` 结果仍待确认。前置 #970/run `38386326043` 在 11:44 UTC 仍为 In progress。#967 用户 ZIP 是通过的 SDK10 单 job，整个 workflow 的红灯来自独立 SDK8 源码门禁；已由 BOM 修复并在 #968 两 SDK jobs 验证。R00/R01 freshness 仍是 `14 fresh / 0 stale`。R05-03 隔离 Playnite bootstrap 被 graceful-shutdown 保护挡下；运行中的 PID `34512` 与 4 个 CefSharp 子进程仍使用隔离 profile，不能强杀、删除 profile 或重跑。下一项 Q23-08 先核对底部动作现有命令和短窗可达行为；R08-01 用户 `1/2` 故障仍需原始错误材料。详见 CURRENT_STATE 与最新工作日志。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：#968 当前源码的 SDK8/SDK10 门禁已成功；#960 terminal failure 日志不可读，根因未知，不盲改。R00/R01 freshness 为 14/14（source identity 4aa1ec7），package identity 与真实宿主验收独立待验。R05-03 隔离 Playnite fail-closed bootstrap 未关闭，PID `34512` 与 4 个 CefSharp 子进程仍使用隔离 profile，不强杀或重跑。下一项 Round2 Q23-06 目录编辑器离屏视觉复核，使用 RenderHarness 与合成路径/状态；R08-01 用户故障仍需原始失败方法、堆栈和 DLL 身份。
+- 当前活动缺口：Q23-06 的视觉列已补当前 main 证据并通过；宿主 external/final incomplete，真实 Playnite/ACL/网络路径/Explorer/剪贴板/OS 输入/UIA/IME/物理 DPI 仍待验。新代码对应 CI SDK `10.0.401` pending；#970/run `38386326043` 截至 `2026-10-13 11:44 UTC` 仍 In progress。#960 terminal failure 的日志不可读、根因未知，不盲改。R00/R01 freshness 为 `14 fresh / 0 stale`（source identity `4aa1ec7`），package identity 未提供。R05-03 隔离 Playnite fail-closed bootstrap 未关闭，PID `34512` 与 4 个 CefSharp 子进程仍使用隔离 profile，不强杀或重跑。下一项 Round2 Q23-08 底部动作栏；先核对命令、短窗可达与确认语义。R08-01 用户故障仍需原始失败方法、堆栈和 DLL 身份。
 - R00/R01 当前 freshness 为14 fresh/0 stale：10条匹配源码变更的记录已按当前源码提交更新证据；4条无匹配源路径，继续引用原证据。package identity 未提供。source freshness 不表示包、真实宿主或全部任务验收。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

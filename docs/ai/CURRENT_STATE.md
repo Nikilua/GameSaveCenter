@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，当前代码检查点 `4aa1ec7ef9bafa95758027a9c9ea4f0c43be8c80`；此前文档提交 `d56d23e` 对应 #969/run `38377673615` 已成功。#968/run `38366158855` 的 SDK8 `8.0.423` 与 SDK10 `10.0.401` job 均成功。用户给的 #967 ZIP 是绿色 SDK10 job `115178885908`（`10.0.401`），独立 SDK8 job `115178885652` 因源码结构门禁失败；同一 guard 已在本机复现并于 `4aa1ec7` 修复 BOM。R00/R01 freshness 为 `14 fresh / 0 stale`，package identity 未提供。R05-03 隔离 Playnite bootstrap 在安装插件前失败，保护脚本拒绝强杀；PID `34512` 与 4 个隔离 CefSharp 子进程仍占用 profile，保持目录，不重跑。R08-01 的 #967 SDK10 单类 TRX 为 `2/2`，但用户机器 `1/2` 故障仍缺原始断言/堆栈/DLL 身份。下一项是 Round2 Q23-06 目录编辑器视觉复核：复用现有 RenderHarness 与生产基线，只用合成长路径/只读/错误状态；不要把离屏结果写成真实宿主验收。#960 的 CI SDK/内部失败原因因日志 404/API 403 仍未知。package identity、真实宿主呈现、OS UIA/Narrator/IME、物理 DPI/多屏、ETW 与宿主性能仍未验证。
+更新：2026-10-13；版本 `0.6.73-development-preview`；当前分支 `main`，Q23-06 代码提交 `9e84dba305a252fea116f1c5e918f7cf15f2c89f`。本机 SDK `8.0.423` 下 RenderHarness Release `0 warning / 0 error`、路径探针 `8/8`；Playnite 定向测试 `209 total / 170 passed / 0 failed`（控制台 39 skipped），完整 Render QA `render-qa OK`、0 PROBLEM。Q23-06 视觉条件通过，宿主仍外部阻塞、最终未完成。前置 #970/run `38386326043` 在 `2026-10-13 11:44 UTC` 仍为 `In progress`；本提交的 Actions 必须在推送后查询并跟到终态，SDK8 本机结果不能替代 CI SDK10 `10.0.401`。用户补交的 #967 ZIP SHA `A4D13BB58AC343DFDCFFA6FB4DA31257080F1E5128AF151C946B0AEB0E3BC409` 是 SDK10 job `115178885908`、源码 `983fee5` 的通过包；截图红灯来自独立 SDK8 job `115178885652` 源码结构门禁，后由 `4aa1ec7` 修复且 #968 双 SDK jobs 均成功。R00/R01 freshness `14 fresh / 0 stale`；package identity 未提供。R05-03 隔离 Playnite bootstrap 仍按保护规则失败，PID `34512` 与 4 个 CefSharp 子进程保留，不重跑。R08-01 用户机 `1/2` 仍缺原始断言/堆栈/DLL 身份；#960 的 SDK/根因因日志 404/API 403 未知。下一项为 Round2 Q23-08 底部动作栏：先查现有命令、短窗可达性和危险/迁移确认；待本阶段 Actions 终态后开始。真实 Playnite 呈现、OS UIA/Narrator/IME、物理 DPI/多屏、ETW 与宿主性能仍未验证。证据见[Q23-06 当前主线复核](../design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
 
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
@@ -42,11 +42,11 @@
 
 当前用户明确续跑 Round3 192 项任务；本轮执行顺序为：
 
-1. #968 已验证代码检查点 `4aa1ec7` 的 SDK8/SDK10 current-source 门禁；R00/R01 freshness 在同一检查点为 14/14。
-2. 下一小批从 R05-03 开始：只在既有隔离 Playnite 流程 fail-closed 预检成功后采集弹层翻转帧；不把离屏代理写成最终呈现。
-3. 若宿主条件仍阻塞，记录脚本实际返回、具体环境限制和手工待验步骤，继续选择可由合成数据/fake 服务与隔离行为验证的 Q/R 项。
-4. 每阶段只提交边界清楚的代码、证据和文档；本阶段没有生成包身份，未下载或安装 workflow preview artifact。
-5. ETW/系统跟踪、物理 DPI/跨屏、真实 OS 输入/UIA/IME 与宿主性能继续单列；真实业务数据不作写入。
+1. #968 已验证代码检查点 `4aa1ec7` 的 SDK8/SDK10 current-source 门禁；R00/R01 freshness 在同一检查点为 `14 fresh / 0 stale`。
+2. R05-03 隔离 Playnite bootstrap 仍受保护性退出阻塞；保留当前 profile，不强杀、不删除、不重跑，继续等待环境条件变化。
+3. Q23-06 已在 main 提交 `9e84dba3` 完成本机路径显示修复和证据。记录的本机 SDK 是 `8.0.423`；推送后跟踪对应 Actions，不能用本机结果代替 CI SDK `10.0.401`。
+4. 前置 #970/run `38386326043` 于 `2026-10-13 11:44 UTC` 仍为 `In progress`；同步刷新它和 Q23-06 新 run，状态终止前不签收代码阶段。
+5. 下一可执行小批为 Q23-08 底部动作栏：盘点保存/取消/恢复/导入导出入口与短窗动作可达、危险/迁移确认。外部宿主条件仍阻塞时继续合成数据/fake 服务可独立验证项；ETW、物理跨屏、OS 输入/UIA/IME 与宿主性能单列，真实数据不作写入。
 
 ## 架构与生产 UI
 
@@ -63,9 +63,9 @@
 - 每个独立阶段同步文档、记录构建/测试实际结果，单独 commit 并 push 当前远端分支；本次不安装到用户真实 Extensions，不操作真实存档、媒体或云端。
 - 后续依次阅读 [PROJECT_MEMORY.md](PROJECT_MEMORY.md)、[WORKLOG.md](WORKLOG.md)、[DEVELOPMENT_HANDOFF.md](../DEVELOPMENT_HANDOFF.md) 与 Git 状态。只在追溯具体问题时读历史大文件。
 
-## 2026-10-13 SDK 10.0.401 CI 门禁待推送
+## 历史：2026-10-13 SDK 10.0.401 CI 门禁实现（后续由 #968 收口）
 
 - #965 用户诊断包确认 CI SDK `8.0.423`；布局类 54 项中 4 项失败，均已在 `5eaa12bf` 以显式逻辑 Grid 宿主修正。#966/run `38352437420` 对该提交已终态成功；其 SDK 仍为 `8.0.423`。
 - 已新增 SDK `10.0.401` 独立 Actions job 和隔离 worktree 验证脚本。仓库 `global.json` 与原 SDK8 job 保持不变。本机 SDK `9.0.302` 全量 Release 编译成功；Core `125/125`、Worker `357/357`、Playnite `1566` 通过/0失败；另有 57 条旧 UI 架构断言以既有规则 NotExecuted。布局类 `54/54`。
-- 本阶段改动待中文 commit/push；必须跟踪新 SDK10 job 到终态，不能以 SDK9 本机结果或 SDK8 的 #966 替代。SDK10 CI 成功后，对新 HEAD 重跑 freshness 并校正 R00/R01 证据，再推进依赖满足的 Q/R 小批。
+- 该门禁后来在 #968 对 SDK8 `8.0.423` 与 SDK10 `10.0.401` 两个 job 验证成功；#967 SDK8 源码结构检查的 BOM 修正随 `4aa1ec7` 提交。此处 SDK9 本机记录只作历史交叉检查；当前执行顺序见本页上方。
 - 保留其他任务 R04/R05/R07 未跟踪证据。真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW及宿主性能未验；Demo 原目录不可用，沿用恢复的生产基线。

@@ -10312,7 +10312,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 ## 2026-10-13 Q23-06 目录编辑器当前 main 复核
 
-- 在 main `c9f9179` 的工作树复用路径探测服务、设置 Binding 与四个既有命令。实际生产资源探针发现嵌套 ComboBox 模板无法可靠绑定内部 `SelectionBoxItemTemplate`，因此选中路径项显示 DTO 类型；修复 DTO 公开 `Key`/`DisplayName` getters，并在共享模板采用公开 `ItemTemplate` API，`DisplayMemberPath` 通过 ComboBox.Text 呈现。未重写路径服务或安全语义。
+- Q23-06 源码以 main `c9f9179` 为基线，已提交为 `9e84dba305a252fea116f1c5e918f7cf15f2c89f`。复用路径探测服务、设置 Binding 与四个既有命令。实际生产资源探针发现嵌套 ComboBox 模板无法可靠绑定内部 `SelectionBoxItemTemplate`，因此选中路径项显示 DTO 类型；修复 DTO 公开 `Key`/`DisplayName` getters，并在共享模板采用公开 `ItemTemplate` API，`DisplayMemberPath` 通过 ComboBox.Text 呈现。未重写路径服务或安全语义。
 - 最终隔离 SDK `8.0.423`：RenderHarness Release `0 warning / 0 error`；双主题 × `1040×700`/`720×640 DIP` × 有效/172 字符缺失路径探针 `8/8`。实际验证输入尾部可滚动、错误说明不裁切、按钮状态变化不位移、窄窗滚动后四动作完整可达。仅使用合成沙箱，检查哨兵和占位 Worker 的内容/时间戳/目录清单未变且缺失路径未创建；未调用 Browse/Open/Copy/Save。
 - 相关 Playnite tests TRX 为 `209 total / 170 passed / 0 failed`，VSTest 控制台显示 39 skipped；`validate-source.py`、XAML `24/24`；WPF 静态 `0 errors / 29 warnings / 177 info`；full Render QA `render-qa OK`、0 PROBLEM，报告标记 offscreen DPI 1.00 和 WorkingTreeClean False。完整材料见[Q23-06 当前主线证据](../design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - Round2 Q23-06 visual 由待验改通过；Host 仍外部阻塞、final 未完成。当前无真实 Playnite/OS 输入/UIA/IME、物理 DPI/跨屏、真实 ACL/网络路径或 Explorer/clipboard 动作证据。

@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；当前分支 `main`，代码检查点 `4aa1ec7ef9bafa95758027a9c9ea4f0c43be8c80`；上一文档提交 `d56d23e` 对应 #969/run `38377673615` 已成功。#968 SDK8 `8.0.423`/SDK10 `10.0.401` jobs 成功；R00/R01 freshness `14 fresh / 0 stale`。#967 用户 ZIP 是 SDK10 job `115178885908` 的通过诊断包，SDK8 `115178885652` 源码门禁失败由同 guard 本机复现并在 `4aa1ec7` 修复。R05-03 隔离 Playnite bootstrap 在扩展安装前按保护规则失败；PID `34512` 和 4 个隔离 CefSharp 子进程仍活跃，profile 不能删或重跑。下一项 Round2 Q23-06：用生产资源/RenderHarness 检查目录编辑器的长路径、只读、错误态和按钮位置，使用合成数据，离屏证据不代表真实宿主。R08-01 用户 `1/2` 失败仍无原始 log/TRX/断言/程序集身份。#960 的失败原因仍未知（log 404/API 403）。保留其他任务 R04/R05/R07 未跟踪证据。真实 Playnite 呈现、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。
+更新：2026-10-13；当前分支 `main`，Q23-06 代码提交 `9e84dba305a252fea116f1c5e918f7cf15f2c89f`。本机 SDK `8.0.423` 下 RenderHarness `0/0`、`settingspathprobe 8/8`、Playnite 定向 `170 passed / 0 failed / 39 skipped`，Full Render QA `0 PROBLEM`；视觉栏通过，宿主栏仍外部阻塞/最终未完成。前置 #970/run `38386326043` 于 `2026-10-13 11:44 UTC` 仍为 `In progress`，本阶段推送后还要查对应 Actions 到终态并记录实际 CI SDK。#967 ZIP 是通过的 SDK10 job `115178885908` (`10.0.401`)；截图红灯来自 SDK8 job `115178885652` 源码结构门禁，该修复在 `4aa1ec7` 并由 #968 两 job 验证。R00/R01 freshness `14 fresh / 0 stale`。R05-03 隔离 Playnite bootstrap 仍按保护规则在插件安装前失败；PID `34512` 和 4 个隔离 CefSharp 子进程及 profile 保留，不能删/强杀/重跑。R08-01 用户 `1/2` 故障仍无原始 log/TRX/断言/程序集身份；#960 的失败原因仍未知（log 404/API 403）。保留其他任务 R04/R05/R07 未跟踪证据。下一项 Q23-08 底部动作栏：先核对现有命令、短窗可达、危险/导入迁移确认，再决定是否只补证。真实 Playnite 呈现、OS UIA/IME、物理多屏/呈现帧、ETW/宿主性能仍未验。详见 Q23-06 证据包与最新工作日志。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
@@ -183,3 +183,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - #967 ZIP 是 SDK10 job `115178885908`，不是 workflow 的 SDK8 失败 job。对应 R08-01 TRX 已提取并复核 `2/2`；用户机原始 `1/2` 故障仍未定位。
 - R05-03 runner 在 Playnite 扩展安装前因隔离启动进程未优雅退出而停止。到 `2026-10-13T10:35:50Z`，PID `34512` 与 4 个 CefSharp 子进程仍使用 `.tmp/r05-03-popup-profile-20261013`。不得强杀、删除该 profile 或在进程活跃时重跑；没有产生 popup/呈现证据。详见 R05-03 README 与 `host-preflight-20261013.json`。
 - #960/run `38327521241` 为 terminal failure、job `115069541561` exit 1；完整 log 404、API 403，SDK/根因未知。下一项 Round2 Q23-06：用 RenderHarness 在生产基线上检查目录编辑器长路径、只读检测、错误说明和 Browse 按钮布局，合成数据仅用隔离路径，不写真实目录；离屏结果不代表真实宿主/物理跨屏/最终呈现。
+
+## 2026-10-13 Q23-06 当前 main 交接
+
+- 代码提交 `9e84dba305a252fea116f1c5e918f7cf15f2c89f`：修复设置路径 ComboBox 选中项显示并加入双主题/窄窗合成路径探针。证据：[Q23-06 复核包](design/reviews/ui-finesse-round2-20260913/evidence/Q23-06-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- 本机 SDK `8.0.423`：RenderHarness Release `0/0`、probe `8/8`、Playnite 定向 `170 passed / 0 failed / 39 skipped`、source/XAML 检查通过、WPF 静态 `0 errors / 29 warnings / 177 info`、full Render QA `0 PROBLEM`。
+- #967 用户 ZIP 对应 SDK10 `10.0.401` 的单 job 通过包；整次红灯为另一 SDK8 job 源码门禁，已由 `4aa1ec7` 修复且 #968 双 job 成功。这不替代本次 Q23 代码的后续 CI。
+- #970/run `38386326043` 截至 `2026-10-13 11:44 UTC` 仍显示 In progress；推送后查询 Q23 当前代码对应 run，到 success/failure 终态再签收。保持其他任务的 8 个未跟踪 R04/R05/R07 文件。
+- 下一可执行项：Q23-08 底部动作栏。先盘点保存/取消/恢复/导入导出命令、短窗可达与危险/迁移确认；在新代码 CI 终态前只做独立只读核对。真实 Playnite、UIA/IME、物理 DPI/跨屏、真实 ACL/网络路径、Explorer/剪贴板、presented frame 与 ETW/宿主性能仍未验。
