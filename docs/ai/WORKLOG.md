@@ -1,3 +1,12 @@
+## 2026-10-13 #970/#971 用户诊断包复核与测试根因定位
+
+- 用户提供的 #970 SDK10 包 SHA-256 `155612D3A083821531E04D07F57CCAE2CF403647741996395B335FD98AE43EAE`，summary 绑定 `c9f9179d9b8d38e506dbb1402ae7030eafebea6c` 和 CI SDK `10.0.401`。Release build 为 `0 warning / 0 error`；Worker 全量测试唯一失败为 `TaskCoordinatorFailureTests.CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled`，取消回调数预期 1、实际 0，栈指向测试 `TaskCoordinatorFailureTests.cs:128`。
+- #970 SDK8 诊断包 SHA-256 `598C2CA619F0CAC37E3E6877B5CBC0EE45AEFC3371DAAACA0F122AE0BC64A8B6`，绑定同一 `c9f9179`、SDK `8.0.423`；两个完整 solution-build summary 均为 passed。它不能替代失败的 SDK10 job。
+- #971 当前用户 ZIP SHA-256 `6AC19F269A3B2FDF3618BF9153C313245AE742EADB6E389A5DACDAEE486ADA4C`，包含 SDK `8.0.423` 的完整 build diagnostics，源码提交 `5a6647cbf8b40b30bc11bf8c6c32015545896967`。唯一 solution-build 失败为 `Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters`：Light `980×640 DIP` 的 preset text centers `6,18,18,18,18,18`。测试把 `DisplayMemberPath=Name` 的对象 ComboBox 改成字符串集合，选择文本为空并使隐藏 presenter 被错误纳入测量；本轮夹具改为真实 `TaskFilterPreset` 对象，明确选择“默认”并只测可见的实际选择文本/呈现器。
+- #970 的 Worker 测试原先在发出 `started` 信号后才注册取消回调，允许测试在回调就绪前取消；现改为注册完成后发出 `cancellationReady`，再执行同一双重取消与终态断言。没有改变生产取消实现。
+- 本机隔离 SDK `8.0.423` 下，修正工作树的完整 Worker 测试 `357/357`、Q14 toolbar behavior `1/1` 通过。此次本地复跑不替代 CI SDK10；提交后会以新完整 SHA 重建并重跑，再同步 TRX/哈希。用户附件只覆盖 #971 SDK8 lane；#971 SDK10 job 的完整日志/诊断包仍缺，匿名日志 API 403、页面要求登录，失败根因未确认。
+- #970/#971 的公开 run 页仍只显示登录提示/通用状态，故不把页面字样当作 Actions 终态。待本轮 main 推送后跟踪新 run 的 SDK8、SDK10 job 至明确 success/failure。
+
 ## 2026-10-13 SDK 10.0.401 CI 编译与测试复核门禁
 
 - #965 用户诊断包对应源码 `d0dbaea00dc620545524236c55444748d43d6540`，CI 选中 SDK `8.0.423`；TRX 确认 `ReportedWorkspaceLayoutBehaviorTests` 54 项中 4 项失败（Settings 与收件箱布局各自的 Light/Dark 用例），已由 `5eaa12bf` 的逻辑测量宿主校正。#966/run `38352437420` 对 `5eaa12bf` 已终态成功，但原 workflow 仍只用基线 SDK8。

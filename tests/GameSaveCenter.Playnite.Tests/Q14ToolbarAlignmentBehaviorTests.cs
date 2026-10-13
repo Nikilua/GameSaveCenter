@@ -139,16 +139,12 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
     private static string MeasurePresetWrapRows(GameSaveCenterThemeMode theme, double width)
     {
         EnsureApplication();
-        var view = new TaskCenterView { DataContext = new TaskToolbarFixture() };
+        var fixture = new TaskToolbarFixture();
+        fixture.SelectedTaskFilterPreset = fixture.TaskFilterPresets[0];
+        var view = new TaskCenterView { DataContext = fixture };
         var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled: true, strengthPercent: 78, theme);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
         var presetRow = GetField<WrapPanel>(view, "TaskFilterPresetRow");
-
-        foreach (var combo in presetRow.Children.OfType<ComboBox>())
-        {
-            combo.ItemsSource = new[] { "全部", "失败" };
-            combo.SelectedIndex = 0;
-        }
         foreach (var textBox in presetRow.Children.OfType<TextBox>())
             textBox.Text = "我的预设";
 
@@ -371,9 +367,11 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
     private static string CaptureToolbarGeometry(GameSaveCenterThemeMode theme, double width, double height)
     {
         EnsureApplication();
+        var fixture = new TaskToolbarFixture();
+        fixture.SelectedTaskFilterPreset = fixture.TaskFilterPresets[0];
         var view = new TaskCenterView
         {
-            DataContext = new TaskToolbarFixture()
+            DataContext = fixture
         };
         var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled: true, strengthPercent: 78, theme);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
@@ -398,11 +396,6 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         type.SelectedIndex = 0;
         scope.SelectedIndex = 0;
         range.SelectedIndex = 0;
-        foreach (var combo in presetControls.OfType<ComboBox>())
-        {
-            combo.ItemsSource = new[] { "全部", "失败" };
-            combo.SelectedIndex = 0;
-        }
         foreach (var textBox in presetControls.OfType<TextBox>())
             textBox.Text = "我的预设";
 
@@ -453,6 +446,8 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 $"{theme} {width}x{height}: main row centers={string.Join(",", mainCenters.Select(x => x.ToString("0.###")))}");
 
             var presetBounds = presetControls.Select(control => GetBounds(control, presetRow)).ToArray();
+            var presetCombo = Assert.Single(presetControls.OfType<ComboBox>());
+            Assert.Equal("默认", presetCombo.Text);
             Assert.NotEmpty(presetBounds);
             Assert.All(presetBounds, bounds =>
                 AssertGeometryNear(bounds.Height, ExpectedControlHeight, GeometryTolerance,
@@ -571,14 +566,20 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         }
         else if (control is ComboBox comboBox)
         {
-            var selectedText = FindVisualChildren<TextBlock>(comboBox).FirstOrDefault(block => !string.IsNullOrWhiteSpace(block.Text));
+            var selectedText = FindVisualChildren<TextBlock>(comboBox).FirstOrDefault(block =>
+                block.IsVisible
+                && block.ActualWidth > 0
+                && block.ActualHeight > 0
+                && !string.IsNullOrWhiteSpace(comboBox.Text)
+                && string.Equals(block.Text, comboBox.Text, StringComparison.Ordinal));
             if (selectedText is not null)
             {
                 var selectedTextBounds = GetBounds(selectedText, ancestor);
                 return selectedTextBounds.Top + selectedTextBounds.Height / 2;
             }
 
-            var presenter = FindVisualChildren<ContentPresenter>(comboBox).FirstOrDefault();
+            var presenter = FindVisualChildren<ContentPresenter>(comboBox).FirstOrDefault(item =>
+                item.IsVisible && item.ActualWidth > 0 && item.ActualHeight > 0);
             Assert.True(presenter is not null, "The production filter ComboBox did not apply its selection content presenter.");
             var presenterBounds = GetBounds(presenter!, ancestor);
             return presenterBounds.Top + presenterBounds.Height / 2;

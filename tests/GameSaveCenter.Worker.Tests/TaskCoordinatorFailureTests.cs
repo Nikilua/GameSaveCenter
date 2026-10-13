@@ -104,7 +104,7 @@ public sealed class TaskCoordinatorFailureTests
     {
         var store = new RecordingTaskStatusStore();
         var coordinator = new TaskCoordinator(store, new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
-        var started = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var cancellationReady = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         var callbackCount = 0;
 
         var run = coordinator.RunAsync(
@@ -113,14 +113,14 @@ public sealed class TaskCoordinatorFailureTests
             "Synthetic Game",
             async (_, token) =>
             {
-                started.TrySetResult(true);
                 using var callback = token.Register(() => Interlocked.Increment(ref callbackCount));
+                cancellationReady.TrySetResult(true);
                 await Task.Delay(Timeout.InfiniteTimeSpan, token);
             },
             CancellationToken.None,
             taskId: "cancel-once");
 
-        await started.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        await cancellationReady.Task.WaitAsync(TimeSpan.FromSeconds(2));
         var responses = await Task.WhenAll(coordinator.CancelAsync("cancel-once"), coordinator.CancelAsync("cancel-once"));
         var result = await run.WaitAsync(TimeSpan.FromSeconds(2));
 
