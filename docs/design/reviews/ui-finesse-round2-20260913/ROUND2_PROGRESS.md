@@ -1,6 +1,6 @@
 ## 2026-10-14 统计口径复核
 
-正式表208个唯一Q ID：实现129代码完成/79已复核；自动207通过/1待验；视觉156通过/5受控通过/44待验/3不适用；宿主4通过/8待验/195外部阻塞/1不适用；最终5已验收/203未完成。本次只将 Q24-01 的视觉证据从待验更新为受控通过；物理 DPI 仍待验，Q/R不能相加为产品完成率。当前执行入口见 [活动积压清单](../../../AUTONOMOUS_BACKLOG.md)。
+正式表208个唯一Q ID：实现129代码完成/79已复核；自动207通过/1待验；视觉156通过/5受控通过/44待验/3不适用；宿主4通过/8待验/195外部阻塞/1不适用；最终5已验收/203未完成。本次将 Q24-01 的视觉证据从待验更新为受控通过，并为 Q24-04 补当前 main 自动行为证据但未改变其视觉/宿主/Final状态；物理 DPI 仍待验，Q/R不能相加为产品完成率。当前执行入口见 [活动积压清单](../../../AUTONOMOUS_BACKLOG.md)。
 
 # UI 精修第二轮任务账本
 
@@ -207,9 +207,9 @@
 | Q23-07 | 视觉设置预览 | 已复核 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q21/Q23 页面视觉证据](evidence/q13-q25/Q21-Q23-RENDER-20260915.md) 与 [Q03-07 打开态夹具](evidence/q03/Q03-THEME-SWITCH-COVERAGE.md#打开态运行时夹具)；真实 Settings Owner 的 Popup/ToolTip 在 Light→Dark 切换中保持可读，Playnite 保存/取消、宿主主题跟随和物理 DPI 仍待验 |
 | Q23-08 | 底部动作栏 | 已复核 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q23-08 当前 main 复核](../ui-finesse-round3-20260915/evidence/Q23-08-CURRENT-MAIN-RECHECK-20261013/README.md)；Light/Dark × `1040×700`/`720×640 DIP` 均核对 Reset All 展开、四类重置动作滚动可达和迁移导入/导出可达；Yes/No 行为与 CancelEdit 回滚 `12/12`。真实 Playnite Save/Cancel、原生文件框及物理呈现仍待验 |
 | Q24-01 | 分数 DPI 字形 | 已复核 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [Q24-01 当前 main 受控 DPI 复核](../ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)；使用生产样式与图标以 RenderTargetBitmap 在 96/120/144/168/192 DPI 原生栅格化；五档文本/图标/1 DIP 描边可见且文本 fit/负例通过。源 Visual 继承系统 DPI 1.5；这是受控离屏模拟，不是物理屏/Playnite；物理 DPI 与宿主待验 |
-| Q24-02 | 逻辑短窗矩阵 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；本组源代码/测试与全量离屏审计已复核，宿主或性能边界见索引 |
+| Q24-02 | 逻辑短窗矩阵 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [Q24-02 当前 main PageHost/滚动复核](../ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/README.md)；真实 `PageHost.ActualWidth/ActualHeight` 覆盖宽/窄/短/恢复，2,000 行合成收件箱首尾可达、锚点/虚拟化门禁通过。受控 WPF 行为/几何，不是截图或真实 Playnite 呈现；完整 Popup/焦点扩展组 `8/16`，失败边界见证据 |
 | Q24-03 | 物理跨屏 | 代码完成 | 待验 | 待验 | 外部阻塞 | 未完成 | [Q24-03 物理跨屏前置与宿主边界证据](evidence/q13-q25/Q24-03-PHYSICAL-CROSS-SCREEN-20260915.md)；运行器已记录显示器拓扑并锁定宿主内浮层/Popup 契约，当前复核仍仅有 `DISPLAY1` 单屏，源契约 `17/17` 通过，真实迁移证据待第二物理屏幕后执行 |
-| Q24-04 | 键盘次序 | 已复核 | 通过 | 待验 | 外部阻塞 | 未完成 | [键盘、焦点与自动化证据](evidence/q13-q25/Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md)；游戏选框关闭路径已覆盖，完整六页 Tab/Shift+Tab 走查仍待宿主 |
+| Q24-04 | 键盘次序 | 已复核 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q24-04 当前 main 键盘复核](../ui-finesse-round3-20260915/evidence/Q24-04-CURRENT-MAIN-KEYBOARD-RECHECK-20261014/README.md)；精确 `87070909` 受控 STA `8/8`，八入口当前可见交互目标共 90 个均可 Tab/Shift+Tab 到达且反向顺序互逆。完整业务数据行、逐页阅读顺序人工对照、真实 Playnite/OS 键盘仍待验，视觉栏保持待验 |
 | Q24-05 | 焦点语义 | 已复核 | 通过 | 待验 | 外部阻塞 | 未完成 | [键盘、焦点与自动化证据](evidence/q13-q25/Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md)；真实 WPF 已验证选框 Esc 后焦点返回当前游戏按钮，其他弹层/宿主路径仍待验 |
 | Q24-06 | UI Automation | 已复核 | 通过 | 待验 | 外部阻塞 | 未完成 | [键盘、焦点与自动化证据](evidence/q13-q25/Q09-Q24-KEYBOARD-FOCUS-AUTOMATION-20260915.md)；壳层/Overview 自动化名称已补齐并由契约测试锁定，真实 UIA Pattern/读屏仍待宿主 |
 | Q24-07 | 高对比组合 | 已复核 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q13–Q25 证据索引](evidence/Q13-Q25-INDEX.md#q13q25-覆盖映射)；本组源代码/测试与全量离屏审计已复核，宿主或性能边界见索引 |

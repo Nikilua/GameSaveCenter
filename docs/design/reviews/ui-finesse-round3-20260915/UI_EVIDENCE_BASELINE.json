@@ -101,7 +101,7 @@
     {
       "id": "R00-08",
       "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "sourceCommit": "8707090901a3ee1e424c8bced9c79a170b9631bc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

@@ -1611,3 +1611,21 @@
 - 五档 PNG 人工检查均可见中英文字、生产图标和边线，无明显裁字/消失；TRX、每张 PNG SHA、程序集 SHA 和计数见[Q24-01 证据包](evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)。控件 Visual 继承源 DPI `1.5`；目标 DPI 是离屏 `RenderTargetBitmap` 参数，并非真实物理显示器切换，也不是缩放原尺寸截图。
 - 本项受控视觉栏可记“受控通过”，Host 仍外部阻塞，最终仍未完成。未验证真实 Playnite、物理显示器 DPI、Popup/跨屏、OS 字体缩放、最终呈现帧、UIA/IME/读屏；无真实配置/存档/媒体/云端操作。#972/run `38421480496`（前置 SHA `8546acab`）现已终态成功：SDK8 `8.0.423` 与 SDK10 `10.0.401` jobs 均通过。Q24 代码 `3ca41ec9` 未包含在 #972 中；推送本批后仍需跟新 SDK8/SDK10 jobs 到终态。
 - 下一可执行小批 Q24-02：复核当前 main 的真实 PageHost 短窗尺寸、首尾可达与宽窗恢复，记录内容区而非外层请求尺寸；沿用生产基线，不因离屏结果改换设计体系。
+
+## 2026-10-14 Q24-02 PageHost 短窗/滚动与 Dispatcher 回归
+
+- `5fcd68562ee79ef819af054fb14a189c2610d890` 补测生产 PageHost 的实际宽高。1366×900 DIP 窗口中 PageHost `1038.667×759.333`；960×700 为 `632.667×559.333`；960×560 为 `632.667×419.333`；1440×900 为 `1112.667×759.333`；恢复 1366×900 后与初始差异不超过 `1 DIP`。详情、选框和焦点保持可见。
+- 合并运行重现 Tooltip behavior 遍历其他 STA Dispatcher 的 PresentationSource root 后抛 `VerifyAccess`。`74815b2b` 让 Tooltip/Popup 扫描只访问当前 scope dispatcher，并新增双 STA `HwndSource` 回归。隔离 SDK `8.0.423`、Release、Playnite `net462`/tests `net472` 精确身份 `9/9`：MediaInboxScroll `5`、R07 resize `1`、R05 Tooltip timing `3`。2,000 个合成收件箱条目保持虚拟化/有限视口，thumb-end 最后一行完整，页追加锚点和缩窗页尾动作可达。证据、TRX SHA 和实际 DIP 见[Q24-02 证据包](evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/README.md)。
+- Popup/焦点/选框扩展过滤 `8/16`：Tooltip timing `3/3`、Popup lifecycle `1/1`；其余 8 项的 Popup 或焦点对象未建立，失败现场在[精确身份 TRX](evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/R05-transient-surface-regression-74815b2b-exact.trx)。该组不视作通过，未确认失败根因，也未归因到 Dispatcher 修复。
+- 本机使用隔离 SDK `8.0.423`；系统 SDK `9.0.302` 未用于本次验证。#973/run `38429051152` 对先前推送的 `bee29749` 检查时仍为 `In progress`。`5fcd6856`/`74815b2b` 本地提交与证据尚待该 run 终态后推送。
+- 受控几何和 WPF 行为不等于真实 Playnite、第二物理显示器、UIA/IME/Narrator、最终 presented frame 或 ETW/宿主性能。#970/#971 三个补传 ZIP 经 SHA 确认是已审内容的相同副本；#971 SDK10 原始 diagnostics 仍缺，用户离线期间继续不依赖它的工作。
+- 下一项：Q24-04 复核现有键盘次序/焦点路径。Q24-03 物理跨屏需要第二显示器，本机单屏条件下保持外部待验。
+
+## 2026-10-14 Q24-04 键盘顺序行为补证
+
+- 先检查已有行为：GamePicker 生产键盘处理与 R21 八入口真实 WPF `MoveFocus` 轨迹已存在。原断言只保证每入口至少两个焦点点、前向命中一个预期名称并且焦点留在页面，不能证明全部当前可见控件可达或反向顺序正确。
+- 提交 `8707090901a3ee1e424c8bced9c79a170b9631bc` 仅增强 `R21KeyboardNavigationTraceTests`：对 Dashboard Shell、Overview、Save、Trainer、Media、Task、Maintenance、Settings 的 STA 窗口，逐一验证所有可见、启用、可 Tab 的 Button/TextBox/Selector 都在 Tab 与 Shift+Tab 轨迹内；反向交互控件顺序须与前向互逆；成功轨迹写入 TRX。没有生产 UI/命令/布局变化。
+- 本机隔离 SDK `8.0.423`、VSTest `17.11.1`、Playnite `net462`/tests `net472`，精确提交身份 Release 定向 `8/8`：`GamePickerKeyboardBehaviorTests 6/6`、`R21KeyboardNavigationTraceTests 2/2`。八入口实际记录 90 个当前可见交互目标，两方向全部可达；TRX、程序集 SHA 与断言边界见[Q24-04 证据包](evidence/Q24-04-CURRENT-MAIN-KEYBOARD-RECHECK-20261014/README.md)。`validate-source.py` 与 `git diff --check` 通过。
+- 因 `*Keyboard*.cs` 是 R00-08 登记源码，本次按精确身份重跑 GamePicker 和焦点轨迹后只更新 R00-08 baseline 到 `87070909`；freshness 重算 `14 records / 0 needsRerun`。其他 R00/R01 source commit 未改变，package identity 仍为 `not-provided`。
+- 这只证明受控 STA 窗口里当前默认内容的 WPF 键盘焦点遍历，不证明完整数据状态下每一行/详情命令、按屏幕阅读顺序是否正确、物理 Tab 输入或 Playnite 嵌入。Q24-04 视觉栏仍待验，真实六页走查与宿主验收未完成。#973/run `38429051152` 在本次检查仍 `In progress`；本批代码与前两项代码提交尚待推送并跟 SDK8/SDK10 CI 至终态。
+- 下一可执行项 Q24-05：核对现有 Focus/Selected/Current 状态与弹层关闭后的焦点返回；复用现有状态服务与 WPF 行为夹具，真实宿主仍单独标记。

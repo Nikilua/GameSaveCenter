@@ -1,3 +1,21 @@
+## 2026-10-14 Q24-04 键盘遍历断言补强
+
+- 复核既有行为后发现 `R21KeyboardNavigationTraceTests` 原断言仅要求每入口至少两个焦点点、前向命中一个预期名称并且焦点留在页面；不能证明所有当前可见控件可达，也不能证明反向顺序。
+- 提交 `8707090901a3ee1e424c8bced9c79a170b9631bc` 只改测试：对 Dashboard Shell、Overview、Save、Trainer、Media、Task、Maintenance、Settings 逐页从真实 WPF `MoveFocus(Next/Previous)` 收集轨迹；所有当前可见/启用/可 Tab 的 Button/TextBox/Selector 必须两方向都出现，Shift+Tab 交互顺序需与 Tab 互逆，并把成功轨迹写入 TRX。生产 UI、命令、绑定未改。
+- 隔离 SDK `8.0.423`、Release、Playnite `net462`/tests `net472` 精确身份下 `GamePickerKeyboardBehaviorTests 6/6` + `R21KeyboardNavigationTraceTests 2/2`，合计 `8/8`；90 个当前视图样例里的交互目标双向可达。TRX/DLL SHA 与覆盖边界见[Q24-04 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-CURRENT-MAIN-KEYBOARD-RECHECK-20261014/README.md)。`validate-source.py`、`git diff --check` 通过。
+- 键盘测试文件命中 R00-08 freshness 路径；当前 SHA 的相关两组已重跑后只更新 R00-08 baseline 至 `87070909`，freshness `14 records / 0 needsRerun`。其他 R00/R01 基线未改。
+- 受控默认 WPF Window 不覆盖真实 Playnite/OS 输入、完整数据行、每个业务状态或按屏幕阅读顺序人工审查；视觉/宿主/Final 不签收。#973 对 `bee29749` 最近仍 `In progress`，三项代码提交待推送。下一项 Q24-05 焦点语义；Q24-03 第二屏仍外部待验。
+
+## 2026-10-14 Q24-02 PageHost/滚动复核与 Tooltip Dispatcher 修复
+
+- `5fcd68562ee79ef819af054fb14a189c2610d890` 扩展现有 `R07ResizeStressBehaviorTests`，量 `PageHost.ActualWidth/ActualHeight`，覆盖 1366×900、960×700、960×560、1440×900 与恢复 1366×900。恢复几何误差 ≤1 DIP，选框/详情/焦点在 resize 中保持可用。
+- 在合跑中确定性复现 `GscToolTipBehavior` 的跨 Dispatcher Visual 树访问：MediaInbox 的 STA 窗口结束后，后续 WPF `Loaded` 扫描了另一个 Dispatcher 的 root 并在 `VisualTreeHelper.GetChildrenCount` 处触发 `VerifyAccess()`。修复与双 STA 专用行为回归提交 `74815b2bccd3fe89e123538f038c552ae47a068b`，只遍历与 scope 同 Dispatcher 的 roots。
+- 本机隔离 SDK `8.0.423`、VSTest `17.11.1`、Playnite `net462`/tests `net472`：精确 HEAD 合并 Q24 组 `9/9`（MediaInboxScroll 5、PageHost resize 1、Tooltip timing 3），包含新跨 Dispatcher 回归和既有 Tooltip 行为。TRX/程序集身份见[Q24-02 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/README.md)。`validate-source.py`、`git diff --check` 通过；freshness check source `74815b2b` 为 `0 stale`。
+- 补跑 Popup/焦点/选框虚拟化组精确 `8 passed / 8 failed`。Tooltip timing `3/3`、Popup lifecycle `1/1`；另 8 项有 WPF 窗口未获焦点/Popup 未实现等测试前提缺失，精确 TRX 保留，不算通过，根因未确认。之前一次输入构建 SHA 错误导致源码身份守卫拒绝相应断言；该无效 TRX 未纳入证据，随后用 Git 精确 SHA 重跑。
+- PageHost DIP 记录、2,000 条合成收件箱、thumb-end 末行完整、锚点/页脚 reachability 与虚拟化结果只证明受控 WPF 行为/几何，不是实际 Playnite、物理 DPI/跨屏、用户输入、presented frame 或性能测试。无真实配置/存档/媒体/云端数据。
+- 用户当天补传 #970/#971 三个 ZIP 的 SHA 分别为 `155612D3…43EAE`、`598C2CA6…4A8B6`、`6AC19F26…ADA4C`，与已审 #970 SDK10、#970 SDK8、#971 SDK8 ZIP 完全相同；没有新增 #971 SDK10 日志。#973/run `38429051152` 对 `bee29749` 截至本条更新仍在运行；本地 commits `5fcd6856`/`74815b2b` 待其终态后推送，再分别跟新 CI SDK8/SDK10 lane。
+- 下一可执行项 Q24-04 键盘次序；Q24-03 需第二物理显示器而本机目前只记录单屏，留作外部待验。
+
 ## 2026-10-13 #970/#971 用户诊断包复核与测试根因定位
 
 - 用户提供的 #970 SDK10 包 SHA-256 `155612D3A083821531E04D07F57CCAE2CF403647741996395B335FD98AE43EAE`，summary 绑定 `c9f9179d9b8d38e506dbb1402ae7030eafebea6c` 和 CI SDK `10.0.401`。Release build 为 `0 warning / 0 error`；Worker 全量测试唯一失败为 `TaskCoordinatorFailureTests.CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled`，取消回调数预期 1、实际 0，栈指向测试 `TaskCoordinatorFailureTests.cs:128`。

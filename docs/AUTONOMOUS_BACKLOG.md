@@ -65,6 +65,14 @@ Q23-08 代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97` 复用现有 `Set
 
 该证据仅是目标 DPI 离屏模拟：WPF Visual 继承本机系统 `DpiScale=1.5`，系统 DPI 为 144，只有 `DISPLAY1`；未改变物理显示设置、移动真实窗口或启动 Playnite。物理 DPI/跨屏、真实宿主/Popup、最终呈现帧仍待验，Q24-01 Final 保持“未完成”。#972/run `38421480496`（前置 SHA `8546acab`）已终态成功；SDK8 `8.0.423` 与 SDK10 `10.0.401` 两 jobs 均通过。Q24 代码 `3ca41ec9` 尚未包含于 #972，推送后需跟新 SDK8/SDK10 Actions 终态。
 
+### 2026-10-14 Q24-02 当前 PageHost 与 Q24-04 键盘路径
+
+- Q24-02 当前代码 `5fcd6856`/`74815b2b`：PageHost 实际宽高矩阵、短窗滚动与 Tooltip Dispatcher 回归 `9/9`；扩展 Popup/焦点夹具仍 `8/16`，不计通过，根因未确认。受控几何/合成数据不等于真实 Playnite或物理跨屏；证据在 [Q24-02 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/README.md)。
+- Q24-04 当前代码 `87070909`：本机 SDK `8.0.423`、Release 定向 `8/8`，八入口当前可见交互目标 90 个都能双向遍历，Shift+Tab 顺序与 Tab 互逆。测试通过实际 WPF `MoveFocus` 并保存轨迹；没有检查每个数据行态或以屏幕阅读语义核对顺序。真实 Playnite/OS 键盘和视觉栏仍待验，证据在 [Q24-04 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-CURRENT-MAIN-KEYBOARD-RECHECK-20261014/README.md)。
+- 为匹配键盘测试源的变化，R00-08 已在精确 `87070909` 重跑后更新 freshness baseline；14 条记录 `0 needsRerun`，package identity `not-provided`。
+- #973/run `38429051152` 对 `bee29749` 在 2026-10-14 最近检查仍 `In progress`；当前 Q24-02/Q24-04 代码提交已本机验证但尚未推送。推送后分别跟新 SDK8/SDK10 jobs 到成功或失败；不能用本机 SDK8 替代 CI SDK10。#971 SDK10 原始诊断仍缺，不阻塞独立任务。
+- 下一项 Q24-05：先复核已有 Focus/Selected/Current 与弹层关闭焦点语义，扩充行为证据时同时加入失焦/不可见负例；Q24-03 物理跨屏仍需要第二台物理显示器。
+
 ### GOV-003：完成度与活动入口校准
 
 - **范围/结果**：重新统计 R192/Q208，R08-01 用户故障单列；撤下旧无分母百分比；三份当前入口精简并完整归档；补当前 CI、本地 IPC 失败、SDK 漂移与 freshness。

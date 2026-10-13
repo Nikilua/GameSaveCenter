@@ -4,6 +4,8 @@
 
 附件按内部 `summary.json` 的源码提交与 SDK 映射到 run；没有复制 ZIP 到仓库。
 
+2026-10-14 用户再次附加的三个文件均与本证据包已校验的 ZIP 内容相同：`GameSaveCenter-sdk10-build-diagnostics (1).zip` SHA-256 `155612D3A083821531E04D07F57CCAE2CF403647741996395B335FD98AE43EAE`（#970 SDK10）、`GameSaveCenter-build-diagnostics (4).zip` SHA-256 `598C2CA619F0CAC37E3E6877B5CBC0EE45AEFC3371DAAACA0F122AE0BC64A8B6`（#970 SDK8）、`GameSaveCenter-build-diagnostics (3).zip` SHA-256 `6AC19F269A3B2FDF3618BF9153C313245AE742EADB6E389A5DACDAEE486ADA4C`（#971 SDK8）。ZIP 未复制进仓库，也没有新增 #971 SDK10 lane 日志。
+
 | Run / lane | 来源提交、CI SDK | 诊断结论 | ZIP SHA-256 |
 | --- | --- | --- | --- |
 | #970 SDK10（run `38386326043`） | `c9f9179d9b8d38e506dbb1402ae7030eafebea6c`，`10.0.401` | Release build `0 warning / 0 error`；Worker 全量测试中 `CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled` 失败，期望回调数 `1`、实测 `0`，栈指向测试第 128 行。 | `155612D3A083821531E04D07F57CCAE2CF403647741996395B335FD98AE43EAE` |
