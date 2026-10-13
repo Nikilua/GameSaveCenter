@@ -1,3 +1,13 @@
+## 2026-10-14 Q24-06 UI Automation 当前 main 复核
+
+- 先盘点已有 R21 peer 测试和生产表格；此前媒体 Selection Pattern 只验合成 ListBox，11 个具名生产 DataGrid 中多个 Name 缺失。生产 XAML 未使用 `AutomationProperties.LabeledBy`，已命名字段直接声明 Name；本轮保留此做法并逐表检查直接 Name/HelpText。
+- `af8ed430373c5e52dba77af534c689f6727bb91f` 为四个生产视图的 11 个 DataGrid 增加语义 Name；仅给原无 HelpText 的维护表补充用途说明。未改数据契约、命令、SelectionMode、虚拟化或布局。
+- 本机隔离 SDK `8.0.423`，Playnite `net462` / tests `net472`，VSTest `17.11.1`、testhost .NET Framework `4.8.9181.0`；精确提交 Release build `0 warning / 0 error`。生产页 DataGrid Name/HelpText、Grid/Table/Selection peer、媒体表格选中行切换、Task 图标关闭按钮名称及进度负例合计 R21Automation `24/24`。
+- 修改命中 R00-06 的 MediaCenterView.xaml。完整 freshness 初检只有 R00-06 stale；精确复跑 MediaWindowAnchorContractTests + MediaInboxGeometryTests `13/13` 后更新该 baseline 到 `af8ed430`，引用[Q24-06 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md)。其他 R00/R01 记录不变；`validate-source.py` 与 `git diff --check` 通过，WPF 静态审查 `0 errors / 29 warnings / 177 info`。
+- `TaskProgressPeerExposesBoundValueAndUnknownStatus` 使用合成 DTO，现验证 live setting 关闭、未知/越界 value 和输入焦点不转移；未连接真实 Narrator。实际 Playnite/Windows UIA/读屏尚待隔离宿主抽查，故 Q24-06 记“代码完成待验收”，不记已满足。
+- 用户 #970/#971 附件与已审 ZIP SHA 一致，#971 SDK10 原始日志仍缺，独立工作继续。最近公开 Actions 检查时 #973/run `38429051152`、#974/run `38436999880` 和 #975/run `38439253014` 均未有可见终态；日志访问要求登录，实际 runner SDK 未核实。推送本阶段后仍须跟新 SDK8 与 SDK10.0.401 lanes 到终态，CI 未终止不报告完成。
+- 下一项 Q24-07 高对比组合；Q24-06 实际读屏/Playnite 为外部待验，Q24-03 仍需第二物理显示器。测试输出脱敏 TRX 见 README；没有新增截图或 `.tmp` 构建目录。
+
 ## 2026-10-14 Q24-05 焦点语义当前 main 补证
 
 - 先审现有实现：b20f1a4b 已增加 R21-07 游戏选择层焦点可视回归；R23 状态行为覆盖导航 IsChecked 当前页、表格选择、键盘焦点与禁用，故本阶段复用生产代码，没有重建状态服务或改生产 XAML。

@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。当前 main 与 origin 对齐于 cb31947b。Q24-02 受控行为 9/9，扩展 Popup/焦点夹具 8/16 的失败边界未解；Q24-04 精确 SDK8 8/8，八入口 90 个可见交互控件双向可达；Q24-05 复用既有生产模板与 GamePicker，当前 main Focus/Selected/Current 状态和回焦行为 7/7，Release build 0/0，按当前受控范围记为已满足。R00/R01 freshness 14 条 0 needsRerun，R00-08 source 为 87070909，RenderHarness 保留 13 MEDIUM。#973 仍 In progress；#974 两 job 页面仍 Re-running jobs，日志要求登录、runner SDK 未确认。用户到明日 09:00 前无法回复；#970/#971 三包是已审 SHA 副本，#971 SDK10 原始日志缺失不阻塞独立任务。下一项 Q24-06 UIA Name/HelpText/LabeledBy/Pattern 当前 main 复核；Q24-03 物理跨屏需第二显示器。真实 Playnite、OS UIA/读屏输入、物理呈现和宿主性能仍未验。
+更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 代码提交 af8ed430 已完成精确 SDK8 Release 复核：Q24-06 生产 UIA peer 行为 24/24，受影响 R00-06 媒体锚点/几何 13/13，baseline 校正后 freshness 14 records / 0 needsRerun。Q24-02 受控行为 9/9、扩展 Popup/焦点 8/16 失败边界未解；Q24-04 8/8；Q24-05 7/7 已满足。RenderHarness 保留 13 MEDIUM。#973/#974/#975 最近公开状态仍无终态，日志要求登录、runner SDK 未确认；本机 SDK8 不代替 CI SDK10.0.401。用户到明日 09:00 前无法回复；#970/#971 附件为已审 SHA 副本，#971 SDK10 原始诊断仍缺但不阻塞独立任务。Q24-06 的真实 Narrator/Playnite 读屏待抽查；下一项 Q24-07 高对比组合，Q24-03 需第二物理显示器。物理呈现、OS 输入和宿主性能仍未验。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：Q24-01 五档目标 DPI 是离屏栅格，不是物理 DPI；Q24-02 PageHost/滚动 `9/9`，真实宿主仍待验；R05 扩展 Popup/焦点 `8/16`，未通过部分的夹具边界未确认。Q24-04 当前默认视图焦点轨迹 `8/8`，90 个当前可见交互控件双向可达且顺序互逆；完整业务数据行、正向视觉阅读顺序及 Playnite 宿主仍待验。#970/#971 新 ZIP 是已审副本，#971 SDK10 根因未知。#973 对 `bee29749` 仍运行；三项代码提交待 push 并跟新 SDK8/SDK10 jobs。R00/R01 freshness 在 `87070909` 为 14 条 `0 needsRerun`，package identity 未提供，audit 保留 `13 MEDIUM`。下一 Q24-05；Q24-03 需第二物理显示器。R05-03隔离 Playnite bootstrap 失败关闭；R08-01用户 `1/2` 仍需原始失败方法/堆栈/DLL身份。
+- 当前活动缺口：Q24-06 的真实 Narrator/Playnite 读屏仍待隔离宿主抽查；进程内 AutomationPeer 不能代表实际口播。R00/R01 freshness 已在 `af8ed430` 校正至 14 records / 0 needsRerun，package identity 未提供，audit 保留 `13 MEDIUM`。#973/#974/#975 最近均无可见终态，CI 日志受登录限制、实际 runner SDK 未确认；#971 SDK10 日志仍缺。下一项 Q24-07 高对比组合；Q24-03 仍需第二物理显示器。R05-03 bootstrap、R08-01 用户失败复现仍保持各自边界。
 - R00/R01 当前 freshness 为 `14 fresh / 0 stale`，source `599d2fd`；本轮刷新四条曾 stale 的记录，受影响测试与 audit 报告绑定当前身份。package identity 未提供。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

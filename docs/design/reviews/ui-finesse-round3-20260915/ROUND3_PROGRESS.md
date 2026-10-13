@@ -1639,3 +1639,14 @@
 - Q24-05 当前 main 受控行为记为已满足。真实 Playnite、Windows UIA/读屏、OS 级键盘、焦点环最终像素、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
 - CI 检查：#973/run 38429051152 页面仍 In progress；#974/run 38436999880 的 SDK8 job 115433489365 与 SDK10-labeled job 115433489872 页均显示 Re-running jobs，logs 需要登录，实际 runner SDK 与终态未知。新提交后继续跟踪所有相关 Actions。
 - 下一可执行项 Q24-06：复核当前 main UIA Name/HelpText/LabeledBy/原生 Pattern；Narrator 和真实 Playnite 另列外部待验。Q24-03 仍受第二物理显示器阻塞。
+
+## 2026-10-14 Q24-06 UI Automation 当前 main 复核
+
+- 先复核已有能力：R21 有 RangeValue/Toggle/Selector peer 行为，但生产 DataGrid 只在合成 ListBox 上验证 Selection pattern；11 个具名生产 DataGrid 中多个没有 Name/HelpText。没有发现任何生产 `AutomationProperties.LabeledBy`，现有输入控件使用直接 Name。没有为满足属性清单虚构表格标签关联。
+- 提交 `af8ed430373c5e52dba77af534c689f6727bb91f` 给四页 11 个 DataGrid 增加语义 Name，并给原先无帮助文本的维护表增加简短 HelpText；原复制提示、命令、绑定、选中模式和滚动/虚拟化未动。新测试从实际生产 UserControl 获取所有表格 peer，运行时验证 Name/HelpText、Grid/Table/Selection Pattern、RowMajor；对生产媒体收件箱改变所选合成行并通过 Selection provider 读回新行名称。实际 Task 页图标关闭动作 peer 名称也通过。
+- 进度行为复用现有绑定测试并增加 `AutomationLiveSetting.Off`、未知/越界值和更新时键盘焦点不转移负例。它证明受控 WPF 属性/焦点行为，不等于 Narrator 实际播报。
+- 本机精确身份隔离 SDK `8.0.423`；Playnite net462 / Tests net472、VSTest 17.11.1、.NET Framework testhost 4.8.9181.0。Release build `0 warning / 0 error`，R21AutomationValueBehaviorTests `24/24`；R00-06 关联 MediaWindowAnchorContractTests + MediaInboxGeometryTests `13/13`。`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 29 warnings / 177 info`。DLL SHA/MVID、脱敏 TRX 和具体范围见[Q24-06 证据包](evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md)。
+- 改动命中 `MediaCenterView.xaml` 后，完整 freshness 初检只有 R00-06 需要复跑；其余 R00/R01 记录未命中。完成对应 `13/13` 后，将 R00-06 baseline 源身份更新至 `af8ed430` 并引用本证据；完整 freshness 应为 `14 records / 0 needsRerun`。package identity 未提供。
+- Q24-06 状态为“代码完成待验收”：用户验收条件中的实际 Narrator/Playnite 读屏还未做，当前只验证了进程内 WPF peers。准确待验步骤、合成数据边界和 SDK8/CI SDK10 分账见证据 README。无布局改动，不跑 RenderHarness/截图。
+- 用户 #970/#971 新附 ZIP 与此前已审包 SHA 一致；#971 SDK10 原始日志仍缺，不等待材料。推送后查新 SDK8/SDK10 Actions 至终态；本机 SDK8 不能代表 SDK10.0.401。
+- 下一项 Q24-07 高对比组合；Q24-06 实际读屏/Playnite 留作外部待验。Q24-03 仍需第二物理显示器。

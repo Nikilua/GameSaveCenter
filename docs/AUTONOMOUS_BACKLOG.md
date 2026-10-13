@@ -71,6 +71,13 @@ Q23-08 代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97` 复用现有 `Set
 - 测试宿主与程序集身份、TRX、真实未验边界见 [Q24-05 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-05-CURRENT-MAIN-FOCUS-RECHECK-20261014/README.md)。Q24-05 控制行为记为已满足；真实 Playnite、OS UIA/读屏输入、焦点环像素、物理 DPI/呈现帧仍待验。
 - #970/#971 三个用户 ZIP 为已审 SHA 副本，未增加 #971 SDK10 日志。#973/run 38429051152 仍 In progress；#974/run 38436999880 的两个 job 页仍为 Re-running jobs、日志需登录、runner SDK 未核实。跟 CI 至成功或失败终态，不以本机 SDK8 替代 SDK10。
 - 下一项 Q24-06：当前 main UIA Name/HelpText/LabeledBy/native Pattern 行为复核；真实 Narrator/Playnite 外部验收另列。Q24-03 需要第二台物理显示器。
+
+### 2026-10-14 Q24-06 UI Automation 当前 main 复核
+
+- `af8ed430` 更新 11 个生产 DataGrid 的直接 Name，并补齐缺失的维护表 HelpText；R21Automation 的实际生产 peer 与 Selection 行切换测试 `24/24`。R00-06 关联媒体几何/锚点 `13/13`，baseline 更新后 R00/R01 freshness `14/14`。
+- Q24-06 当前为 `IMPLEMENTED`：进程内 WPF peer 的 Name/HelpText/Grid/Table/Selection、生产图标按钮语义和进度 LiveSetting/焦点负例已验。实际 Narrator/Playnite 口播仍待隔离宿主验收；不可将 peer 测试描述成真实读屏。
+- 证据：[Q24-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md)。本机 SDK `8.0.423`；推送后的 SDK8/SDK10 Actions 仍待终态，#971 SDK10 日志缺失不阻塞独立任务。
+- 下一项 Q24-07 高对比组合；Q24-06 实际读屏待验，Q24-03 需第二物理显示器。
 ### GOV-003：完成度与活动入口校准
 
 - **范围/结果**：重新统计 R192/Q208，R08-01 用户故障单列；撤下旧无分母百分比；三份当前入口精简并完整归档；补当前 CI、本地 IPC 失败、SDK 漂移与 freshness。

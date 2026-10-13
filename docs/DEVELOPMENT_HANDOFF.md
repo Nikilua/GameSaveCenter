@@ -1,6 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-13；分支 `main`。Q23-08 代码提交 `c377ab2`、测试修正 `599d2fd`，隔离 SDK `8.0.423` 下 Playnite build `0/0`、Q23 行为 `12/12`、R00/R01 受影响类 `154 passed / 39 skipped / 0 failed`、XAML `24/24`。R00/R01 freshness `14/14 FRESH`，当前 RenderHarness audit `168` snapshots、`13 MEDIUM`、E01–E20 `20/20`。#970 SDK10 与 #971 SDK8 两个测试根因已据用户 ZIP 定位并修正；#971 SDK10 diagnostics ZIP/根因仍缺。用户到明天 09:00 无法回复，继续独立工作，不等材料。新 Actions 尚待本次 main 推送后跟到 SDK8/SDK10 终态。下一项 Q24-01：核查已有 fractional-scale 字形/边线实现并做逻辑缩放验证；真实 Playnite footer、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能未验。Demo 原目录不可用，沿用恢复生产基线；保留其他 R04/R05/R07 用户文件。
+更新：2026-10-14；分支 `main`。本地代码提交 `af8ed430373c5e52dba77af534c689f6727bb91f` 已按隔离 SDK `8.0.423` 精确重建：Playnite `net462`、tests `net472`、VSTest `17.11.1`，Release `0/0`；Q24-06 R21Automation `24/24`，R00-06 关联媒体几何/锚点 `13/13`。freshness baseline 仅更新 R00-06 至该 SHA，完整校验为 `14 records / 0 needsRerun`。证据见[Q24-06 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md)。本地代码/证据在本交接更新时尚待推送；推送后必须查 SDK8 与 SDK10 Actions 直至明确终态，不得用本机 SDK8 替代 SDK10.0.401。
+
+Q24-06 状态为代码完成待验收：所有 11 个生产 DataGrid 的进程内 WPF Name/HelpText 与 Grid/Table/Selection Pattern、生产图标按钮名称、进度 LiveSetting/焦点负例均通过；生产 XAML 未使用 LabeledBy，表格直接命名。未运行 Playnite、Narrator 或 OS UIA 客户端，实际读屏播报频率仍待隔离宿主人工抽查。用户到明日 09:00 无法回复，继续独立工作，不等 #971 SDK10 原始诊断；新附件与已审包 SHA 相同。
+
+最近检查的 #973/run `38429051152`、#974/run `38436999880`、#975/run `38439253014` 页面都没有可见终态，日志要求登录查看，实际 SDK 未核实。Q24-06 推送后继续更新 run/job 编号和状态。下一项 Q24-07 高对比组合；Q24-03 跨屏仍需第二物理显示器。没有改 Demo 视觉体系；Demo 原目录当前不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件。C 盘既有隔离 build 目录约 46 MB，精确删除遭执行策略拒绝，未换接口重试。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
