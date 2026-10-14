@@ -91,3 +91,11 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 - `GameSaveCenter-build-diagnostics (3).zip` 的 source commit 为 `5a6647cbf8b40b30bc11bf8c6c32015545896967`；SDK8.0.423 WPF 运行失败于 `Q14ToolbarAlignmentBehaviorTests`，Light 980×640 的 preset text centers 为 `6,18,18,18,18,18`。该运行也不是外机所报的 R09 测试。ZIP SHA-256：`6AC19F269A3B2FDF3618BF9153C313245AE742EADB6E389A5DACDAEE486ADA4C`。
 
 这些附件建立了“相同 R09 源码曾在 SDK8 CI 通过”的证据，也显示 SDK10 包内的失败属于 Worker 测试；它们没有外机本次失败对应的 HEAD、工作树、测试 DLL 或 PDB，因而不确认具体故障原因。用户片段的 `libpng iCCP` warning 与失败断言调用栈无关；WPF COM 异常是在失败后的 teardown 中报告。没有更改生产模板或弱化断言。独立 UI 任务继续进行，待用户可回复后再按需核对外机身份。
+
+## 2026-10-15 当前 main SDK8 对照（`2b423737`）
+
+针对用户新贴的外机输出，再以仓库锁定 SDK `8.0.423` / VSTest `17.11.1` 隔离 Release 重建 Playnite `net462` 与测试 `net472` 后，单独串行运行 `R09FocusOutlineBehaviorTests`：`2/2` 通过、0 失败、0 跳过。脱敏 TRX：[R09FocusOutlineBehaviorTests-sdk8423-main-2b423737.trx](tests/R09FocusOutlineBehaviorTests-sdk8423-main-2b423737.trx)，SHA-256 `5DBE53D9A91CD3503137E611A75343670B174429A0BADA7A21410C6E82DD77E7`。这只是定向项目构建，不是完整 solution build。
+
+本次测试 DLL SHA-256 `A5D5C72BF7103505E548720EDD4C65A6DB04945A41033D276AC291D172FF000E`、PDB SHA-256 `9074BFECE11AFC107AEC6BD8AB86D91C338C7E52257B7040766084742CCF02C5`；插件 DLL SHA-256 `B3EF985AD75168D1BD0379EC831C5485E8EF90424465196274C5D82BF8224D51`、PDB SHA-256 `BE17BC36AF81DBA10826623F9A5A274316FC7D836515C581AFB14285DFD8E81B`。测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；生产 `WpfUiProduction.xaml` SHA-256 `FD212D59A0244DF8CABF33A3926FB5CE80CF930E4A0B587692D2DC9D3B15EC6E`。当前源码第 151 行检查错误态边框颜色，第 152 行检查 Chrome `1 DIP`，第 154 行检查独立 ValidationStroke `2 DIP`。
+
+本机当前 main 对照仍不能识别外机实际 checkout、工作树、DLL 或 PDB。外机报告的 `Expected 2 / Actual 1` 与旧厚度断言形态相符，但错配原因尚未证实；没有依据修改生产模板或削弱断言。`libpng iCCP` warning 不在失败调用栈中，TextServices COM 清理异常发生在断言失败之后，二者都不能解释厚度比较结果。SDK8 本机复核不替代 SDK10.0.401 CI。

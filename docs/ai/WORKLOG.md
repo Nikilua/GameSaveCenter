@@ -1,3 +1,11 @@
+## 2026-10-15 R07-07 当前 main 触控板小增量复核，并对照外机 R09 失败
+
+- 当前 main 源码身份 `2b42373771e950d087f393c0894380530d5eb227`；R07-07 只复跑既有行为，没有生产或测试源码改动。使用仓库锁定 SDK `8.0.423` / VSTest `17.11.1`，WPF testhost `.NET Framework 4.8.9181.0`；Playnite `net462`、测试 `net472`。隔离 restore/测试项目与引用 Release build `0 warning / 0 error`，`scripts/check-xaml.ps1` `24/24`。
+- `R07FineScrollBehaviorTests 2/2`、`R07ScrollOwnershipBehaviorTests 2/2`、`MediaInboxGeometryTests 3/3`、`ResponsiveLayoutCoordinatorTests 5/5`、`TaskCenterViewResponsiveTests 8/8`、`DataGridHorizontalWheelBehaviorTests 1/1`，总计 `21/21`、0 failed/skip。12 个合成 `-30` routed wheel 将 offset 从 `0→36 DIP`，每步 `+3`；反向 `33→30→27`；末端 `154/154`；20 个事件记录 `17` 次 LayoutUpdated，5 个末端 no-op 事件新增布局 `0`，可见 DataGridRow `6–9`。嵌套 `-360` 将外层 `32→80/432`、内层 `628→628`，布局 `1`、可见容器 `2`。证据与 SHA 见[R07-07 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 对用户外机新贴的 R09 输出，以同一锁定 SDK8 从当前源码隔离 Release 重建后重跑 R09 类 `2/2`。测试 DLL SHA `A5D5C72BF7103505E548720EDD4C65A6DB04945A41033D276AC291D172FF000E`、PDB `9074BFECE11AFC107AEC6BD8AB86D91C338C7E52257B7040766084742CCF02C5`；脱敏 TRX 与生产/测试源 SHA 已追加到[R09 外机复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。外机 checkout、工作树、DLL、PDB 仍未知，旧断言/符号错配未确认；未改样式或弱化断言。`libpng iCCP` 不在测试失败栈；TextServices COM 异常发生于断言失败后的 teardown。
+- CI：#1010/run `38636778462` 与 #1011/run `38638331563` 均 Failure，SDK8/SDK10 jobs 的编译/测试步骤 exit 1、匿名 logs API 403。#1010 artifact IDs `11929597360` / `11928647581`，SHA `3c2bd19e16b0cef0dc54ba1c57e19b71a8be664e84dfa222e0d496e11a81660b` / `a9fb5a96607f5625c1699bf29a1447eb7616f1e424ac4dcb8bf8e4e0254fe746`；#1011 IDs `11928784541` / `11928968878`，SHA `88170a28f0a19480eff989216674cbc0e3637d2bb80e35dfdbe2ea3e6bb352ac` / `f7abb468be15448673b2ba31f38ae3e48f69af2cfc6114fec4a9e9737cb4f1c5`。#1012/run `38640644812`（commit `2b423737`）上次检查为 In progress；当前 REST 读取被本机代理拒绝，公开页面 cache miss，终态待确认。SDK8 本机结果不替代 CI SDK10.0.401。没有完整日志前不推断 CI 根因。
+- 未验物理触控板/OS 输入、真实 Playnite、物理 DPI/跨屏、presented frame、ETW或宿主性能。下一项 R07-08 当前 main resize 压力序列复核；新证据 commit 的 Actions 仍需追踪到终态。
+
 ## 2026-10-15 R07-06 当前 main 状态横幅预算复核
 
 - 当前 `main` 为 `85609395809bfd7f8312362b26c96ba517aefed6`。上次 `2e591b9f` 后 TaskCenter XAML/响应式测试变化，且共享 DataGrid 样式本轮调整，故重建并复跑状态横幅及空态、详情、滚动相邻行为；无生产或测试源码改动。
