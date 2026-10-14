@@ -10564,3 +10564,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 实际 SaveCenterView/STA Window 与合成 DTO 验证七列、未知来源/未知恢复状态、Ready 文案和锁定不显示安全绿；邻接类覆盖空态区分、排序正负路径、列宽最小值/保存恢复/选择性重置。
 - TRX已去除本机绝对路径；保存测试源/XAML/DTO及插件与测试DLL/PDB SHA、MVID和版本于 evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md。无视觉改动，不生成截图；真实 Playnite、归档服务、UIA/读屏/IME、物理 DPI/跨屏、呈现帧、ETW/宿主性能未验。
 - 58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。SDK9不替代SDK8/SDK10.0.401；前序#992/#993失败日志限制仍记录。下一项R11-02当前main复核；间隔回查Actions，不把未知记成成功或失败。
+
+## 2026-10-14 R11-02 当前 main 复核与 R09 外机失败复查
+
+- 当前 `main` 已具备 R11-02 实现，本批没有因计划表条目重建服务/DTO，也没有修改生产或测试代码。A/B 仍复用 `BackupVersionDto`、`BackupCompareRequestDto`、`MessageTypes.CompareBackups` 与 `FileManifestDiffService`。
+- 逐项 Release 编译 Contracts、Core、HostAuditSeeder、Playnite（net462）和 Playnite.Tests（net472），均 `0 warning / 0 error`；本机 SDK `9.0.302`、VSTest `17.14.1`。仓库 `global.json` 暂时选择本机 SDK 后 finally 按原始字节恢复。首次直接构建测试项目在项目引用框架发现阶段失败，SDK9 日志列出缺少 workload locator 目录但无编译错误；随后采用已有 restore assets，以 `--no-restore -p:BuildProjectReferences=false` 按依赖顺序单项目构建通过，因此不声称完整 solution build。
+- `R11VersionComparisonBehaviorTests 2/2`：合成 manifest 调用真实差异服务并验证 A/B 反向后新增、删除、修改和字节增量方向变化；真实 `SaveCenterView` 在隔离 STA Window 检查两个 ComboBox 选择、完整 Tooltip/Automation HelpText、方向摘要、比较/交换绑定与执行、同版本禁用及 `CanExecute=false`。UI 测试 DataContext 使用 fake 命令；生产 `DashboardViewModel.CompareBackupAsync` 的同 ID 拦截位于 `RequestAsync<BackupDiffDto>` 之前，本次未启动 Worker，也未发起真实恢复/比较。
+- 针对用户贴出的外机 R09 错误，在上述同一 current main Release 构建下独立串行复跑 `R09FocusOutlineBehaviorTests 2/2`。当前第151行检查错误色，第152行要求 Chrome 为1 DIP，第154行要求独立 ValidationStroke 为2 DIP；旧提交 `3f7d0b30` 第151行曾错误要求 Chrome 为2，`f13b9e05` 已校正。外机输出“期望2、实际1、第151行”与旧断言吻合，因此旧源/测试 DLL/PDB 错配是合理推断但仍未确认；缺外机 HEAD、源文件和二进制身份。`libpng iCCP` 不在失败调用栈；WPF TextServicesContext COM 异常出现在断言失败后的清理阶段，不能解释厚度断言。未改生产样式或降低断言。
+- XAML 检查 `24/24`，source validator 通过；`git diff --check` 提交前执行。源码、生产 XAML、程序集与脱敏 TRX SHA、真实测试范围/边界见 `evidence/R11-02-CURRENT-MAIN-RECHECK-20261014/README.md`；R09 当前测试 TRX 也同步到其失败复核包。无视觉源码变动，未制作截图。
+- 本机 SDK9 不能替代 SDK8.0.423 / CI SDK10.0.401。#992/#993 仍是已失败且日志受权限限制、根因未知；当前公开 Actions 页仍只有旧快照 #972（8546aca）In progress 并报加载错误，其他抓取曾见 #979。匿名 API 403；58090d99/3a2d1163 对应 Actions run/终态未确认，不声称 CI 通过。
+- 下一项 R11-03 先盘点当前过滤/有限加载/计数/完整路径复制能力，已有实现先复用并补实际负例，不按任务名推断缺失。

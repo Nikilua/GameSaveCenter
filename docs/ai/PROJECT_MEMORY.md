@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-07 ProductionShellChromeSourceTests 22/22，R10-08 最近访问入口 2/2，R11-01 当前 main 行为与 Save 空态/排序/列宽合计 17/17；本机 SDK9.0.302 Release build 0/0、XAML 24/24、source validation/diff check 通过。R11-01 当前证据含源/DLL/MVID/PDB SHA 和脱敏 TRX。#992/#993 已失败且根因因日志限制未知，不猜修。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。58090d99 已推送；匿名 GitHub Actions API 返回 403 rate limit；公开 Actions 页面是旧快照，显示 972 results、最新可见 #972（8546aca）In progress，早先抓取曾显示 #979；两份快照都不含 58090d99，run 是否创建/终态未知。下一项 R11-02 当前 main 复核；用户至 2026-10-15 09:00 无法回复，独立任务继续。外机 R09 HEAD/DLL/PDB 未知，不阻塞主线。
+更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-07 22/22，R10-08 2/2，R11-01 17/17；R11-02 当前 main 合成 manifest / 生产 FileManifestDiffService / STA SaveCenterView 行为 2/2，R09 当前 Release 复跑 2/2。SDK9.0.302、VSTest17.14.1；Contracts/Core/HostAuditSeeder/Playnite net462/Tests net472 分项目 Release 编译均 0/0，XAML 24/24、source validator 通过。详细身份与 TRX 见 R11-02 当前 main 复核包。#992/#993 已失败且根因因日志限制未知，不猜修。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。58090d99 与 3a2d1163 已推送；公开 Actions 页面目前只载入旧快照 #972（8546aca）In progress，并报加载错误；另一次旧抓取曾显示 #979，匿名 API 曾返回 403。两个新提交 run 状态未知，不报告 CI 完成。外机 R09 仍缺 HEAD、源码和 DLL/PDB 身份；当前 main 2/2 只说明本机不复现，不确认外机根因。用户至 2026-10-15 09:00 无法回复，继续独立任务。下一项先盘点 R11-03 现有差异列表能力。
 
 ## AI/Codex 启动协议
 

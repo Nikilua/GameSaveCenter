@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 main。R10-07 当前 main 侧栏复核 22/22；R10-08 最近访问入口与焦点/列表切换 2/2；R11-01 当前 main 复核 17/17（R11VersionSummary 2、Save 空态2、排序7、列宽6）。本机 SDK9.0.302 Release build 0 warning/0 error，XAML 24/24，source validator/diff check 通过。源/DLL/MVID/PDB 哈希、TRX 与边界见 [R11-01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9 不替代仓库 SDK8.0.423/CI SDK10.0.401。
+更新：2026-10-14；分支 main。R10-07 侧栏复核 22/22，R10-08 最近访问 2/2，R11-01 17/17。R11-02 当前 main 定向行为 2/2，R09 当前 Release 复跑 2/2；Contracts/Core/HostAuditSeeder/Playnite net462/Tests net472 按序 Release 构建各为 0 warning/0 error。XAML 24/24，source validator 通过。SDK9.0.302/VSTest17.14.1 不替代仓库 SDK8.0.423/CI SDK10.0.401。R11-02 源码/程序集身份、脱敏 TRX 与行为边界见[R11-02 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
 
-58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。前序 #992/#993 失败日志仍需登录，根因未知，不按摘要猜修。用户至 2026-10-15 09:00 无法回复，不等用户补信息，继续独立任务。外机 R09 源/HEAD/DLL/PDB 身份仍待验。
+58090d99 与 3a2d1163 已推送，但匿名 GitHub Actions 页面载入报错且只显示旧提交快照：#972（8546aca）In progress；此前还抓到不同的旧快照 #979。匿名 API 返回过 HTTP 403；页面中没有这两个提交的 run，run 是否创建及终态未知。不得声称 SDK8/SDK10 CI 已通过；继续间隔查询，失败先取完整日志。#992/#993 失败日志仍需仓库登录，根因未知，不按摘要猜修。用户至 2026-10-15 09:00 无法回复，不等用户补信息，继续独立任务。外机 R09 HEAD/源码/DLL/PDB 身份仍待验；当前本机通过不确认外机根因。
 
-下一项：R11-02 当前 main 复核；先查现有 A/B 版本选择、方向交换、相同版本禁用/不执行真实恢复的行为证据，复用 CompareBackups。持续查询 58090d99 Actions 至明确终态；任何新提交推送后也跟对应 SDK8/SDK10.0.401 run 到终态。失败先拿完整日志；日志受限时记录未知原因继续其他依赖已满足任务。外机 R09 HEAD/DLL/PDB、Q24-03 第二物理显示器、真实 Playnite/UIA/IME/物理 DPI/最终呈现/ETW/宿主性能仍待验。
+下一项：R11-03 当前 main 盘点；先核实现有 BackupDiffPathFilter、分页、类型/路径筛选、计数和完整路径复制行为，再决定只补证据还是修改。持续检查 58090d99/3a2d1163 Actions；新代码提交 push 后跟 SDK8 与 SDK10.0.401 job 到终态。CI 日志不可取得时记录限制并推进其他依赖已满足项。外机 R09 HEAD/DLL/PDB、Q24-03 第二物理显示器、真实 Playnite/UIA/IME/物理 DPI/最终呈现/ETW/宿主性能仍待验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
