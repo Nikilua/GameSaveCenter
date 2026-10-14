@@ -23,4 +23,4 @@
 
 ## 下一步
 
-截至 2026-10-15，旧 Actions #1008/run `38630493740` 与 #1009/run `38631425713` 均已 Failure；公开 job 页只显示状态，匿名 log API 返回 403、step-log 路由 404，主机未安装 `gh` CLI。用户附加的 #970/#971 diagnostics ZIP 来自更早 source commits，不是这两次 run 的日志，故失败根因未知。R07-04 提交 `aa49a569` 新触发的 #1010/run `38636778462` 含 job `116101841201`、`116101841930`，当前为 In progress，需继续跟 SDK8/SDK10 至终态；若失败先取得完整 job log，不凭摘要猜因。下一项 R07-06 当前 main 复核。
+截至 2026-10-15，Actions #1008/run `38630493740` 与 #1009/run `38631425713` 均 Failure，匿名日志 API 403、step-log 404，附件 #970/#971 来自更早 source commits，失败根因未知。R07-04 提交 `aa49a569` 的 #1010/run `38636778462` 现为 Failure：SDK8 job `116101841201` 与 SDK10 job `116101841930` 均在编译/测试步骤失败；公开 job 注解只显示 `Process completed with exit code 1`，API 日志 403，不能推测根因或记作通过。该 run 页面列出两个 diagnostics artifact：SDK8 ID `11929597360`（582 KB，SHA-256 `3c2bd19e16b0cef0dc54ba1c57e19b71a8be664e84dfa222e0d496e11a81660b`），SDK10 ID `11928647581`（508 KB，SHA-256 `a9fb5a96607f5625c1699bf29a1447eb7616f1e424ac4dcb8bf8e4e0254fe746`）；匿名 ZIP/API 下载返回 403，猜测网页下载地址返回 404，尚未读取包内日志。R07-05 证据提交 `85609395` 的 #1011/run `38638331563` 在本记录时仍为 `In progress`。下一项 R07-07 当前 main 触控板小增量复核。

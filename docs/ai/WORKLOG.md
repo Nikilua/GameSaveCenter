@@ -1,10 +1,19 @@
+## 2026-10-15 R07-06 当前 main 状态横幅预算复核
+
+- 当前 `main` 为 `85609395809bfd7f8312362b26c96ba517aefed6`。上次 `2e591b9f` 后 TaskCenter XAML/响应式测试变化，且共享 DataGrid 样式本轮调整，故重建并复跑状态横幅及空态、详情、滚动相邻行为；无生产或测试源码改动。
+- 本机 SDK `9.0.302`、VSTest `17.14.1`、WPF testhost `.NET Framework 4.8.9181.0`。显式注入当前 `GSC_BUILD_COMMIT`/`GSC_SOURCE_ROOT` 后，Playnite 测试项目和引用项目 Release build `0 warning / 0 error`（插件 `net462`、测试 `net472`）；XAML `24/24`。
+- `R07StatusBannerBudgetBehaviorTests 4/4`、`R06EmptyStateBehaviorTests 2/2`、`TaskCenterViewResponsiveTests 8/8`、`R06DetailsBudgetBehaviorTests 2/2`、`R07ScrollOwnershipBehaviorTests 2/2`，合计 `18/18`、0 fail/skip。实际生产 Task/Save/Maintenance 控件中用 AutomationPeer Invoke 和 fake command counters 观察重试/安全恢复动作；旧行失败横幅、空态错误 presenter 与数据表 viewport 分别验证。五份脱敏 TRX、DLL 和源 hash 见[R07-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 首次手工构建没设置 `GSC_BUILD_COMMIT`，触发源码身份保护测试失败；修正构建身份并重建后，最终存档结果全部通过。该夹具失败没有导致代码改动。R07Status 的 WPF testhost 收尾仍打印 `TextServicesHost.InvalidComObjectException`，VSTest exit `0`，根因未知。
+- #1010/run `38636778462`（R07-04 code `aa49a569`）现为 Failure：SDK8 job `116101841201`“编译与测试”、SDK10 job `116101841930`“.NET SDK 10.0.401 编译与测试复核”均在对应编译/测试步骤失败。公开注解仅有 exit code 1，日志 API 403，具体错误未知，未盲改；#1011/run `38638331563`（R07-05 证据提交 `85609395`）在本记录时仍 In progress。SDK9 不能替代两个 CI SDK。
+- 边界：合成数据、fake、隔离 STA WPF 和 logical DIP；未验真实宿主 UIA/读屏、物理 DPI/跨屏、OS 输入、最终呈现帧、ETW 或 Playnite 性能。下一项 R07-07 当前 main 触控板小增量复核。
+
 ## 2026-10-15 R07-05 当前 main 详情断点复核
 
 - 复查旧 `ec9b0a21` 之后的 6 个详情断点相关源码/测试文件均有变化，因此重建当前 main 程序集并复跑本项与相邻行为；没有改 R07-05 生产布局或测试源码。
 - 当前 commit `aa49a5698492faf847cd4385e1647f6eb1b01683`，本机 SDK `9.0.302` / VSTest `17.14.1`。隔离 Playnite 测试项目及引用 Release build `0 warning / 0 error`，Playnite `net462`、测试 `net472`；`ResponsiveLayoutCoordinator 5/5`、详情断点 `1/1`、滚动所有权 `2/2`、TaskCenter responsive `8/8`、R06 详情 `2/2`，共 `18/18`。
 - 生产 TaskCenter 的 STA WPF 夹具按 `1000→979→981→971→979→988 DIP` 检查选择、焦点、offset 与紧凑详情可见；内容预算带内无重复切换，越过 `972/988 DIP` 滞回阈值只完成预期转换。TRX/DLL 哈希与真实宿主待验边界见[R07-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20261015/README.md)。
 - WPF testhost teardown 输出一次 `TextServicesContext.InvalidComObjectException`，VSTest exit `0`、测试 `18/18`；根因未知。测试是合成 DTO、隔离 STA 和逻辑 DIP，不代表真实 Playnite 拖窗、物理 DPI/跨屏、设备输入、UIA/读屏、最终呈现、ETW 或宿主性能。
-- R07-04 提交 `aa49a569` 的 Actions #1010/run `38636778462` 当前 In progress（jobs `116101841201`、`116101841930`）；不能当作终态通过。先继续追 CI，同时下一项推进 R07-06 当前 main 状态横幅复核。
+- R07-04 提交 `aa49a569` 的 Actions #1010/run `38636778462` 现为 Failure；SDK8 job `116101841201` 与 SDK10 job `116101841930` 的编译/测试步骤失败，公开页面仅有 exit code 1，匿名日志 API 403，根因未知。#1011/run `38638331563` 对应证据提交 `85609395`，当前 In progress。下一项推进 R07-07。
 
 ## 2026-10-15 R07-04 横向滚动输入与端点补强
 
@@ -14,7 +23,7 @@
 - 本机 SDK `9.0.302`（仓库固定 `8.0.423` 本机缺失）、VSTest `17.14.1`；Playnite 测试项目/引用与 RenderHarness Release build 均 `0 warning / 0 error`；Light/Dark × Save/Task/Media/Maintenance 端点探针 `8/8`、XAML `24/24`、source validation 和 diff check 通过。不是完整 solution build，不能替代 SDK8/SDK10 CI。
 - `WM_MOUSEHWHEEL` 是合成参数直达生产 handler，没有做真实操作系统输入注入；真实触控板/鼠标、Playnite 宿主、物理 DPI/跨屏、presented frame、UIA/读屏与 ETW/性能仍待验。TRX 与范围见[R07-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-04-CURRENT-MAIN-RECHECK-20261015/README.md)。初次红测暴露的是共享样式漏接，已在 `GscRedesignWorkspaceDataGrid` 共享 setter 修正；最终回归均通过。
 - 用户附加的 #970/#971 diagnostics ZIP 已核对：SDK8.0.423/source `c9f9179` 包内 R09 类 `2/2` 且测试源 SHA 与当前相同；SDK10.0.401 包失败点为 Worker 取消用例 `Expected 1 / Actual 0`；另一 SDK8 包失败点为 Q14 toolbar 中心差异，均不等于外机当前 R09 栈。详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
-- 已完成的下一项 R07-05 当前 main 复核记录在本文件顶部；接续 R07-06 状态横幅预算。#1008/#1009 于 2026-10-15 均 Failure，公开 job 页仅有状态，匿名日志 API 403、step-log 404、主机无 gh CLI；附件属于更早 source commits，不能作为新 run 的失败日志。根因未知，不盲修；R07-04 新 run #1010 仍需跟 SDK8/SDK10 到终态。
+- R07-05 当前 main 复核 `18/18` 已记录于本文件；接续 R07-06 状态横幅预算复核 `18/18`，下一项 R07-07。#1008/#1009 根因未知；附件属于更早 source commits，不能作为这些 run 的日志。R07-04 新 run #1010 已失败但没有可读完整日志，不盲修。
 
 ## 2026-10-15 R00/R01 当前 main freshness 与完成条件复核
 
