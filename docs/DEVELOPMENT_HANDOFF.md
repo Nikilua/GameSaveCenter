@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 main。R10-07 侧栏当前 main 复核 22/22；R10-08 恢复最近访问的用户入口，STA Window 验证按钮焦点、自动化名称、列表切换和操作命令，2/2。相邻 R09 2/2，XAML 24/24，Light/Dark RenderHarness 0 PROBLEM；本机 SDK9.0.302，Playnite net462、测试 net472。证据、程序集身份与未验证边界见 R10-07 (design/reviews/ui-finesse-round3-20260915/evidence/R10-07-CURRENT-MAIN-RECHECK-20261014/README.md) 和 R10-08 (design/reviews/ui-finesse-round3-20260915/evidence/R10-08-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9 不替代 SDK8.0.423 或 CI SDK10.0.401。
+更新：2026-10-14；分支 main。R10-07 当前 main 侧栏复核 22/22；R10-08 最近访问入口与焦点/列表切换 2/2；R11-01 当前 main 复核 17/17（R11VersionSummary 2、Save 空态2、排序7、列宽6）。本机 SDK9.0.302 Release build 0 warning/0 error，XAML 24/24，source validator/diff check 通过。源/DLL/MVID/PDB 哈希、TRX 与边界见 [R11-01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9 不替代仓库 SDK8.0.423/CI SDK10.0.401。
 
-前序 #992 (38564273828) 和 #993 (38570078343) 都已失败；SDK10 和默认 build job 均 exit1。完整 logs API 403、公开 job 页面要求登录，根因未知，不凭摘要猜修。本批尚待 commit/push；推送后追踪对应 Actions 到终态，日志受限时继续独立任务。用户至 2026-10-15 09:00 无法回复。外机 R09 的断言值与当前源不符，错配只是推测，HEAD/DLL/PDB 仍待核验；不阻塞。
+58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。前序 #992/#993 失败日志仍需登录，根因未知，不按摘要猜修。用户至 2026-10-15 09:00 无法回复，不等用户补信息，继续独立任务。外机 R09 源/HEAD/DLL/PDB 身份仍待验。
 
-下一项：本批完成文档同步后提交并推送 main，跟踪本次 SDK8/SDK10.0.401 Actions 到成功或失败终态；失败先取完整日志，#993 原因仍未知，受访问限制时不猜修。之后复核已有 R11-01 版本摘要行为，不因任务表方向重建 DTO。外机 R09 HEAD/DLL/PDB、Q24-03 第二物理显示器仍待验。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍待验。
+下一项：R11-02 当前 main 复核；先查现有 A/B 版本选择、方向交换、相同版本禁用/不执行真实恢复的行为证据，复用 CompareBackups。持续查询 58090d99 Actions 至明确终态；任何新提交推送后也跟对应 SDK8/SDK10.0.401 run 到终态。失败先拿完整日志；日志受限时记录未知原因继续其他依赖已满足任务。外机 R09 HEAD/DLL/PDB、Q24-03 第二物理显示器、真实 Playnite/UIA/IME/物理 DPI/最终呈现/ETW/宿主性能仍待验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

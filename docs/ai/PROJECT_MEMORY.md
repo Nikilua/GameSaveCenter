@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-07 侧栏当前 main 复核 22/22；R10-08 恢复最近访问入口，真实 STA Window 验证切换、键盘焦点、列表可见性/隔离与操作命令，SDK9.0.302 2/2；相邻 R09 2/2、XAML 24/24、双主题离屏 RenderHarness 0 PROBLEM。证据和源/DLL/PDB 身份见 R10-07/R10-08 复核包。前序 #992/#993 SDK10 与默认 build jobs 都 exit1，完整日志 API 403、网页需登录，根因未知；禁止盲改。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。本批推送后跟 Actions 至终态，再推进独立 R11-01；用户至 2026-10-15 09:00 无法回复。外机 R09 HEAD/DLL/PDB 仍未知，旧断言错配仅为推测，不阻塞主线。
+更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-07 ProductionShellChromeSourceTests 22/22，R10-08 最近访问入口 2/2，R11-01 当前 main 行为与 Save 空态/排序/列宽合计 17/17；本机 SDK9.0.302 Release build 0/0、XAML 24/24、source validation/diff check 通过。R11-01 当前证据含源/DLL/MVID/PDB SHA 和脱敏 TRX。#992/#993 已失败且根因因日志限制未知，不猜修。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。58090d99 已推送；匿名 GitHub Actions API 返回 403 rate limit；公开 Actions 页面是旧快照，显示 972 results、最新可见 #972（8546aca）In progress，早先抓取曾显示 #979；两份快照都不含 58090d99，run 是否创建/终态未知。下一项 R11-02 当前 main 复核；用户至 2026-10-15 09:00 无法回复，独立任务继续。外机 R09 HEAD/DLL/PDB 未知，不阻塞主线。
 
 ## AI/Codex 启动协议
 
@@ -160,3 +160,11 @@ R07 resize 回归应按已加载 PageHost/DataGrid 的实际窗口与内容区�
 - 本轮本机 SDK 9.0.302、VSTest 17.14.1；Playnite net462 与测试 net472 Release build 成功；R10-08 2/2、R09 2/2、R10-07 22/22；source validation、XAML 24/24、RenderHarness Light/Dark render-qa OK/0 PROBLEM、diff check 通过。WPF 静态检查 0 errors/29 warnings/177 info，Overview 的 scroll/StackPanel warning 是静态审查命中；本轮未改滚动模型。离屏截图仅覆盖默认最近任务模式。
 - 外机 R09 日志的旧 Chrome 2 DIP 期望与当前 Chrome 1 DIP、独立 ValidationStroke 2 DIP 区分；外机 HEAD、源、DLL/PDB 身份仍未知，错配只是推测。libpng warning 不在失败调用栈；TextServices COM 异常在 WPF 失败后的收尾阶段。
 - #993/run 38570078343 对 e0a72c9 终态失败：SDK10 job 115872658151、默认 build job 115872658675 均 exit1；日志 API 403、公开 job 页面要求登录，失败根因未知。SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。当前批次待提交推送后跟踪新 Actions；CI 日志受限时记录限制并推进 R11-01。真实 Playnite/host、物理 DPI/跨屏、最终呈现、外部 UIA/读屏/IME、ETW/宿主性能仍未验。
+
+## 2026-10-14 R11-01 当前 main 复核
+
+- R10-07 侧栏 ProductionShellChromeSourceTests 22/22，R10-08 最近访问入口 2/2。R11-01 复用已有实现，Release 当前 main 行为及 Save 邻接类 17/17；本轮不重建 DTO、DataGrid 或命令。
+- SDK9.0.302/VSTest17.14.1 重建 Playnite net462 与测试 net472，0 warning/0 error；source validator、XAML 24/24、git diff --check 通过。
+- 真实 SaveCenterView/隔离 STA Window+合成 DTO 验证七列、未知来源/恢复状态、Ready 文案和锁定不显示安全绿；邻接类覆盖空态区分、排序正/负路径、列宽最小值/保存恢复/选择性重置。脱敏 TRX、源/DLL/MVID/PDB SHA 在 evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md。
+- 无视觉源码改动，不生成截图；真实 Playnite/package-host、UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能未验。
+- 58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。 SDK9 不替代 SDK8.0.423/SDK10.0.401。下一项 R11-02 当前 main 复核。

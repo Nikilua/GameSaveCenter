@@ -1,8 +1,8 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R10-07 现有侧栏行为当前 main 复核 `22/22`；R10-08 最近访问卡片原本被 GSC-058 隐藏且测试曾手动显现，本批在概览同一栏加入最近任务/最近访问切换，并用真实 STA WPF Window 验证焦点、可见性、列表隔离与操作命令。SDK9.0.302 Release 重建后 R10-08 `2/2`、R09 焦点 `2/2`、R10-07 `22/22`；XAML `24/24`、RenderHarness 双主题 `render-qa OK`/0 PROBLEM，source/WPF 静态/diff 检查通过。证据与程序集身份见 R10-07/R10-08 复核包。SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R10-07 侧栏当前 main 复核 22/22；R10-08 最近访问入口已恢复并由真实 STA WPF Window 验证切换/焦点/列表隔离，2/2；R11-01 当前 main 已复核为 17/17（R11 行为2、Save 空态2、排序7、列宽6），本机 SDK9.0.302 Release build 0 warning/0 error，XAML 24/24、source validator/diff check 通过。R09 相邻焦点类 2/2。R11-01 证据与源/DLL/MVID/TRX 身份见当前 main 复核包。SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
 
-前序 Actions #992/run `38564273828` 与 #993/run `38570078343` 均终态失败，SDK10 与默认 build job 都 exit1；完整日志 API 403、公开 job 日志需登录，根因未知。没有据摘要猜修；新提交推送后必须跟踪对应 Actions 至终态。外机 R09 失败与当前断言/边框值不符，旧测试源码或 DLL/PDB 错配只是推测；外机 HEAD 与二进制身份仍待验。用户至 2026-10-15 09:00 无法回复，不阻塞独立任务。当前下一项为提交推送并跟新 CI；之后推进 R11-01 当前 main 复核。真实 Playnite/package-host、物理 DPI/跨屏、最终呈现、外部 UIA/读屏/IME、ETW/宿主性能仍未验证。
+前序 Actions #992/run 38564273828 与 #993/run 38570078343 均终态失败，SDK10 与默认 build job 都 exit1；完整日志 API 403、公开 job 日志需登录，根因未知。58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。外机 R09 的旧断言/源码/DLL/PDB 错配只是推测，外机 HEAD 与二进制身份仍待验。用户至 2026-10-15 09:00 无法回复，不阻塞独立任务。下一项 R11-02 当前 main 复核；失败需先取完整日志再决定修复。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断
@@ -56,7 +56,7 @@
 2. Q24-08 当前 main 受控行为 15/15；Q25-01 当前 main 13/13。R08-01 按钮反向 3/3；R08-02 热关闭/策略/订阅行为已有隔离证据；R08-03 隐藏 Tab/最小化停机 1/1；R08-04 忙态/反馈 9/9；R08-05 已满足，下一项 R07-08 resize 复核。Q24-03 第二显示器、真实 Windows 设置通知/高对比开关、真实 Playnite、ETW/宿主性能仍待验。
 3. R09 外机焦点失败日志期望 2 DIP、实测 1 DIP，与历史旧 Chrome 2 DIP 断言一致；当前 main 检查错误颜色、Chrome 1 DIP、独立 ValidationStroke 2 DIP，SDK9 定向 2/2。外机 HEAD/DLL/PDB 未知，错配解释未确认；libpng 警告不在调用栈，COM shutdown 噪声发生于断言失败后。详见 R09 外机复核记录。
 4. R10-06 生产来源清除行为 3/3；R10-07 当前 main 22/22；R10-08 最近访问入口/键盘焦点/切换和列表隔离 2/2。本轮相邻 R09 类 2/2、XAML 24/24、双主题 RenderHarness 0 PROBLEM。前序 #992/#993 已失败，完整 logs API 403、公开 job 页面需登录，根因未知；本轮代码待 commit/push 后另跟对应 run。
-5. 下一项：提交推送并跟踪新 Actions 至终态；遇失败先取得完整 job log，若访问限制仍存在，明确记录未知原因并继续独立 R11-01 当前 main 复核。Demo 原目录不可用，沿用恢复生产基线；离屏图不等同真实 Playnite 呈现或物理跨屏验证。
+5. R11-01 已在当前 main 实际复核通过（17/17），见 evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md。下一项 R11-02：先核对 A/B 版本选择、方向交换、相同版本禁止比较的现有实现与负例，复用 CompareBackups，不执行真实恢复。提交 58090d99 Actions 终态仍受 GitHub API 403/页面缓存限制，继续查询并不得声称 SDK10/SDK8 CI 通过；之后的证据提交也要跟新 run 到终态。
 
 ## 架构与生产 UI
 

@@ -10555,3 +10555,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R09 外机失败的旧 2 DIP Chrome 期望与当前 Chrome 1 DIP/ValidationStroke 2 DIP 区分；本机 R09 2/2。外机 HEAD、测试源、DLL/PDB 未知，旧源或产物错配只是推测。libpng warning 不在调用栈，COM shutdown 异常发生在断言失败后的清理阶段。
 - 前序 #993/run 38570078343 对 e0a72c9 已失败：SDK10 job 115872658151 和默认 build 115872658675 都 exit1。完整日志 API 403、页面要求登录，原因未知；未盲修。#992 同样失败且日志不可读。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。
 - 当前代码、证据和阶段账本已同步；提交推送后跟踪新 Actions 至终态。真实 Playnite/package-host、物理 DPI/跨屏、最终呈现、外部 UIA/读屏/IME、ETW/宿主性能未验。下一项 R11-01 当前 main 复核。
+
+## 2026-10-14 R11-01 当前 main 复核
+
+- 任务代码与 DTO、SaveCenterView、状态样式早已满足完成条件。本轮不修改生产/测试代码，基线为当前 main 58090d99。
+- 临时将仓库 SDK 选择改为本机已有 SDK 9.0.302，并在 finally 恢复原 global.json 字节。Release 重建 Playnite net462 和测试 net472 成功，0 warning/0 error；VSTest 17.14.1，Framework testhost 4.8.9181.0。
+- 四个 WPF 类独立进程运行：R11VersionSummary 2/2；R06EmptyState 2/2；R06Sorting 7/7；R06ColumnWidthPersistence 6/6；合计 17/17。source validator、XAML 24/24、git diff --check 通过。
+- 实际 SaveCenterView/STA Window 与合成 DTO 验证七列、未知来源/未知恢复状态、Ready 文案和锁定不显示安全绿；邻接类覆盖空态区分、排序正负路径、列宽最小值/保存恢复/选择性重置。
+- TRX已去除本机绝对路径；保存测试源/XAML/DTO及插件与测试DLL/PDB SHA、MVID和版本于 evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md。无视觉改动，不生成截图；真实 Playnite、归档服务、UIA/读屏/IME、物理 DPI/跨屏、呈现帧、ETW/宿主性能未验。
+- 58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。SDK9不替代SDK8/SDK10.0.401；前序#992/#993失败日志限制仍记录。下一项R11-02当前main复核；间隔回查Actions，不把未知记成成功或失败。
