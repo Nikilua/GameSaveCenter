@@ -1,10 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R11-03 现有差异筛选/分页/摘要实现已复用，并补生产 DashboardViewModel 行为覆盖；当前基线 fd853380 上 R11 三类测试 7/7、同一 Release 测试程序集的 R09 焦点类 2/2。SDK9.0.302、VSTest17.14.1；Playnite net462 与 Tests net472 定向 Release 构建 0 warning/0 error，source validator 通过、XAML 24/24。证据见[R11-03 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-03-CURRENT-MAIN-RECHECK-20261014/README.md)；本机 SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R11-04 复用了已有元数据编辑/SQLite upsert 与稳定 BackupId，补取消草稿、重复说明选中恢复、解析并重启读回行为；SDK8.0.423 下 Playnite 4/4、Worker 1/1，SDK9.0.302 下相同用例 5/5。当前基线 `40b0a980` 的 R09 焦点类也以 SDK8.0.423 重建并通过 2/2。证据见[R11-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-04-CURRENT-MAIN-RECHECK-20261014/README.md)；本机 SDK不替代 CI SDK8/10.0.401，当前提交推送后的 CI 仍需另查。
 
-用户外机 R09 输出为 Expected 2/2/2/2、Actual 1/1/1/1，定位 `R09FocusOutlineBehaviorTests.cs:151`；当前 main 第151行是错误边框颜色断言，第152行要求 Chrome 1 DIP、第154行要求独立 ValidationStroke 2 DIP。厚度数值和旧版 Chrome 2 DIP 断言相符，但没有外机 HEAD/源码/DLL/PDB，旧测试材料或符号错配仍未确认。`libpng iCCP` 警告不在断言栈；WPF COM 异常在断言失败后的收尾阶段。当前 main 定向复跑 R09 为2/2，没有因此改模板或弱化断言。
+用户外机 R09 输出为 Expected 2/2/2/2、Actual 1/1/1/1，定位 `R09FocusOutlineBehaviorTests.cs:151`；历史 `3f7d0b30` 第151行正是 Chrome 2 DIP 断言，当前 main 则检查错误色，第152/154行分别要求 Chrome 1 DIP 与独立 ValidationStroke 2 DIP。SDK8.0.423 当前 main 定向复跑 R09 为2/2。数值/行号与旧断言相符，但缺外机 HEAD/源码/DLL/PDB，不能确认错配根因。`libpng iCCP` 不在断言栈；WPF COM 异常出现在失败后收尾阶段。没有因此改模板或弱化断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-CI：#992/run 38564273828 与 #993/run 38570078343 失败，SDK10 和默认 job 均 exit1；完整日志受登录/API 403 限制，根因未知。58090d99、3a2d1163、fd853380 的对应 run/终态此前未能从匿名页面确认；推送 R11-03 后继续逐个核查 SDK8 与 SDK10.0.401 状态，不能用 SDK9 结果替代。用户至 2026-10-15 09:00 无法回复，不等待外机身份材料，独立任务继续。下一项 R11-04：先盘点版本备注/元数据、取消语义和稳定 BackupId 选择，再决定需要补的行为证据。
+CI：#992/run 38564273828 与 #993/run 38570078343 失败，SDK10 和默认 job 均 exit1；完整日志受登录/API 403 限制，根因未知。当前 R11-04 变更待提交后按新提交追踪 SDK8 和 SDK10.0.401 两条 lane，CI 未到终态不签收阶段。用户至 2026-10-15 09:00 无法回复，不等待外机身份材料，独立任务继续。下一项 R11-05：核对保护元数据、保留预览与执行路径，再补跳过受保护版本的实际行为正例/负例。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

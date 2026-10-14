@@ -10584,3 +10584,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户至明日 09:00 无法回复，外机身份信息不阻塞。SDK9结果不替代SDK8.0.423或CI SDK10.0.401。#992/#993 job log API 403/需登录，真实失败原因未知；推送本阶段后查最新 Actions/SDK8 与 SDK10 状态，再继续任务。
 - 清理边界：本轮原始数据仅 `.tmp/r11-03-current-main-fd853380`；脱敏 TRX 已由 README 引用，测试程序集身份已提取。清理前只解析并检查该精确目录位于仓库 `.tmp` 下；其他未跟踪证据与用户文件保留。
 - 下一项 R11-04：盘点已有版本备注/命名存储、取消/错误/重启读取路径和稳定 BackupId 选择行为，优先复用已有能力，再补正负行为。
+
+## 2026-10-14 R11-04 版本备注行为证据
+
+- 生产 `BackupComment`/锁定编辑、Ludusavi EditBackup、历史刷新和 SQLite `(PlayniteId, BackupId)` upsert 已存在，本轮没有重建服务/DTO或改生产逻辑。测试补了生产取消方法恢复 dirty 草稿、隔离 STA 的 SaveCenter 绑定路径、重复备注按 BackupId 还原、Ludusavi JSON parser 到 SQLite 重启读取及归档路径/锁定状态保持。
+- SDK `8.0.423` / VSTest `17.11.1`：Playnite `net462`/Tests `net472` 定向 Release 构建 0 warning / 0 error，R11-04 4/4；Worker Tests `net8.0-windows10.0.19041.0` 1/1。SDK `9.0.302` / VSTest `17.14.1` 相同两类 4/4 + 1/1。SDK8 本机 R09 外机故障对照在当前基线 `40b0a980` 重建后 2/2。
+- 无 XAML/生产 UI 变更，所以不生成截图或离屏视觉报告；真实 Playnite 与真实 Ludusavi 写入没有执行，Worker 使用合成 JSON 和隔离 SQLite。测试身份与脱敏 TRX 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-04-CURRENT-MAIN-RECHECK-20261014/README.md`。
+- 外机新日志第151行、Expected 2/Actual 1 与历史 `3f7d0b30` Chrome 2 DIP 断言吻合；当前源码第151行是错误色，第152/154行测试 1 DIP Chrome 与 2 DIP ValidationStroke。SDK8 当前 main 重跑2/2，仍无外机 HEAD/DLL/PDB，错配只是推断；libpng warning 不在断言栈，COM 异常在 WPF 失败后清理中出现。没有改模板/弱化断言。详见 R09 外机复核包。
+- SDK8/SDK9 是分开的本机工具链证据；阶段提交推送后另追踪 CI SDK8 与 SDK10.0.401 两条 lane 至终态，未确认前不签收阶段。下一项 R11-05：先盘点保护元数据、RetentionPlanner 与执行端的真实关系，再补锁定项跳过策略的正反行为。

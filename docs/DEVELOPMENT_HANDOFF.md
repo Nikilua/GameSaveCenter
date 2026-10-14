@@ -293,3 +293,12 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 外机用户日志：Expected/Actual均为四边厚度2/1，stack line151；当前 main line151为颜色检查，line152 Chrome厚度1，line154 ValidationStroke厚度2。旧测试源或DLL/PDB错配只是推断；缺外机HEAD、源码和程序集身份。libpng warning与断言无关，WPF COM错误在失败后收尾阶段。当前本机 R09 2/2，未更改模板或弱化断言。
 - #992/#993 失败原因未知，job日志/diagnostics API受403/登录权限阻挡。检查 R11-03 推送后的当前提交 SDK8/SDK10.0.401 Actions 并持续到终态；CI未明确成功/失败前不能宣称阶段完成。旧 Actions 列表快照不应当作新提交状态。
 - 下一可执行项 R11-04：检查现有备注机制、取消及错误语义、重启读回和稳定 BackupId 选择；合成数据/隔离目录，禁止动真实存档。用户明日09:00前无法回复，不等待其外机信息，先推进独立任务。
+
+## 2026-10-14 当前恢复点：R11-04 本机完成，待推送/CI
+
+- 当前 `main` HEAD `40b0a980`；本阶段只改 `R11VersionNoteBehaviorTests.cs`、`R11VersionMetadataPersistenceTests.cs` 和对应证据/记忆文档。生产备注、锁定、Ludusavi metadata update、历史刷新、SQLite upsert 原有能力已确认。
+- SDK `8.0.423`/VSTest `17.11.1`：Playnite `net462` 与 Tests `net472` 定向 Release 构建 `0 warning / 0 error`，R11 行为 `4/4`；Worker Tests `net8.0-windows10.0.19041.0` `1/1`。SDK `9.0.302`/VSTest `17.14.1` 相同测试 `4/4 + 1/1`。SDK8 重新构建当前 `40b0a980` 后 R09 焦点类 `2/2`。这些都是本机 SDK结果，不替代 CI SDK8/SDK10.0.401。
+- R11-04 证据、TRX和程序集身份见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-04-CURRENT-MAIN-RECHECK-20261014/README.md`；R09 用户新日志和 SDK8 对照追加在 `evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md`。无 XAML/生产 UI 改动，不做截图/Render QA。
+- 用户外机日志的行号/值匹配旧 `3f7d0b30` Chrome 2 DIP 断言；当前第151行是错误色，第152/154行检查 Chrome 1 DIP/ValidationStroke 2 DIP。缺外机 HEAD、源码与测试 DLL/PDB，不能确诊旧源/符号错配；libpng warning 不在断言调用栈，COM 异常在断言失败后的 WPF cleanup。不要为此改生产样式或放宽断言；用户不可回复前也不等待身份材料。
+- R11-04 推送后检查新提交的 SDK8 和 SDK10.0.401 Actions 到明确终态；日志不可读时记录权限限制，继续其它已满足依赖任务。下一项 R11-05：检查保护 DTO、RetentionPlanner 与删除执行器/刷新顺序，使用合成数据和隔离目录证明保护版本总被跳过并有失效 ID 负例。
+- 保留其它任务的未跟踪证据和 `TestResults` 内容；本轮自己生成的 TRX 只保留脱敏且 README 引用的证据副本。本轮 `.tmp/r11-04-current-main-sdk9302` 在确认副本后按绝对路径清理。

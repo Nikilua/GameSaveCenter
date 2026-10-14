@@ -1,6 +1,8 @@
+using System.Text.Json;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
+using GameSaveCenter.Worker.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
@@ -24,37 +26,61 @@ public sealed class R11VersionMetadataPersistenceTests : IDisposable
 
         var firstStore = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
         await firstStore.InitializeAsync(CancellationToken.None);
-        await firstStore.AddBackupVersionAsync(new BackupVersionDto
-        {
-            BackupId = "stable-backup-id",
-            PlayniteId = "game-1",
-            LudusaviName = "Demo Game",
-            CreatedUtc = DateTime.UtcNow,
-            ArchivePath = Path.Combine(options.LudusaviBackupDirectory, "stable-backup-id"),
-            Comment = "原始说明",
-            IsLocked = false
-        }, "{}", CancellationToken.None);
+        foreach (var version in ParseVersions(options, "原始说明", false))
+            await firstStore.AddBackupVersionAsync(version, "{}", CancellationToken.None);
 
-        // This is the same upsert contract used after Ludusavi edit + history refresh.
-        await firstStore.AddBackupVersionAsync(new BackupVersionDto
-        {
-            BackupId = "stable-backup-id",
-            PlayniteId = "game-1",
-            LudusaviName = "Demo Game",
-            CreatedUtc = DateTime.UtcNow,
-            ArchivePath = string.Empty,
-            Comment = "重启后仍可读的说明",
-            IsLocked = true
-        }, "{}", CancellationToken.None);
+        // Model Ludusavi's response after editing metadata and refreshing history.
+        // Both backup IDs receive the same comment so display text cannot stand in for identity.
+        foreach (var version in ParseVersions(options, "重启后仍可读的同名说明", true))
+            await firstStore.AddBackupVersionAsync(version, "{}", CancellationToken.None);
 
         var restartedStore = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
         await restartedStore.InitializeAsync(CancellationToken.None);
-        var loaded = Assert.Single(await restartedStore.GetBackupVersionsAsync("game-1", CancellationToken.None));
+        var loaded = await restartedStore.GetBackupVersionsAsync("game-1", CancellationToken.None);
 
-        Assert.Equal("stable-backup-id", loaded.BackupId);
-        Assert.Equal("重启后仍可读的说明", loaded.Comment);
-        Assert.True(loaded.IsLocked);
-        Assert.Equal(Path.Combine(options.LudusaviBackupDirectory, "stable-backup-id"), loaded.ArchivePath);
+        Assert.Equal(2, loaded.Count);
+        var first = Assert.Single(loaded, version => version.BackupId == "backup-a");
+        var second = Assert.Single(loaded, version => version.BackupId == "backup-b");
+        Assert.Equal("重启后仍可读的同名说明", first.Comment);
+        Assert.Equal("重启后仍可读的同名说明", second.Comment);
+        Assert.False(first.IsLocked);
+        Assert.True(second.IsLocked);
+        Assert.Equal(Path.Combine(options.LudusaviBackupDirectory, "backup-a"), first.ArchivePath);
+        Assert.Equal(Path.Combine(options.LudusaviBackupDirectory, "backup-b"), second.ArchivePath);
+    }
+
+    private static List<BackupVersionDto> ParseVersions(WorkerOptions options, string comment, bool lockSecond)
+    {
+        var listing = JsonSerializer.Serialize(new
+        {
+            games = new Dictionary<string, object>
+            {
+                ["Demo Game"] = new
+                {
+                    backupPath = options.LudusaviBackupDirectory,
+                    backups = new[]
+                    {
+                        new
+                        {
+                            name = "backup-a",
+                            when = new DateTime(2026, 10, 14, 8, 0, 0, DateTimeKind.Utc),
+                            comment,
+                            locked = false
+                        },
+                        new
+                        {
+                            name = "backup-b",
+                            when = new DateTime(2026, 10, 14, 9, 0, 0, DateTimeKind.Utc),
+                            comment,
+                            locked = lockSecond
+                        }
+                    }
+                }
+            }
+        });
+
+        using var document = JsonDocument.Parse(listing);
+        return LudusaviResultParser.ParseBackupList(document.RootElement, "game-1", "Demo Game");
     }
 
     public void Dispose()

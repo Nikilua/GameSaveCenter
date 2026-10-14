@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-03 在 fd853380 当前主线补齐生产 DashboardViewModel 筛选/有限加载/计数行为验证，R11 定向回归7/7；同一新建 Release 测试程序集上的 R09 定向复跑2/2。本机 SDK9.0.302、VSTest17.14.1；Playnite net462 与 Tests net472 定向 Release 构建0 warning/0 error，XAML 24/24、source validator 通过。完整哈希、TRX 和边界见 R11-03 当前 main 复核包。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。#992/#993 已失败且日志受限、根因未知；58090d99/3a2d1163/fd853380 对应 CI 终态仍需新查。外机 R09 的 Expected 2/Actual 1 与旧 Chrome 两 DIP 断言相符，但外机 HEAD、源码与 DLL/PDB 缺失，仍是待验推断；本机2/2不确认其根因。用户至2026-10-15 09:00无法回复，不等待材料。下一项 R11-04，检查现有备注机制、取消与 BackupId 稳定选择后再决定实施缺口。
+更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-04 复用已有元数据编辑与 SQLite 持久化，补当前 main 取消/重启/重复说明稳定 BackupId 行为证据；SDK8 Playnite 4/4、Worker 1/1，SDK9 同类 5/5。SDK8 对当前 main R09 复跑2/2；外机 Expected 2/Actual 1 的行号和值吻合历史 Chrome 2 DIP 断言，但缺其 HEAD、源、DLL/PDB，错配仍未确认。#992/#993 失败且 logs/API 受限，根因未知；本阶段推送后的 SDK8/SDK10.0.401 Actions 另行追踪，SDK结果不可互代。用户至2026-10-15 09:00无法回复，不等待材料。下一项 R11-05，复用保护和保留策略已有能力，补受保护版本跳过保留的行为正反例。
 
 ## AI/Codex 启动协议
 
@@ -168,3 +168,9 @@ R07 resize 回归应按已加载 PageHost/DataGrid 的实际窗口与内容区�
 - 真实 SaveCenterView/隔离 STA Window+合成 DTO 验证七列、未知来源/恢复状态、Ready 文案和锁定不显示安全绿；邻接类覆盖空态区分、排序正/负路径、列宽最小值/保存恢复/选择性重置。脱敏 TRX、源/DLL/MVID/PDB SHA 在 evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md。
 - 无视觉源码改动，不生成截图；真实 Playnite/package-host、UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能未验。
 - 58090d99 已推送；匿名 GitHub Actions API 查询返回 HTTP 403 rate limit。最新公开 Actions 页面是旧缓存快照：显示 972 workflow results，最新可见 #972（head 8546aca）In progress；较早抓取又曾显示 #979。两个快照均不含 58090d99，不能确认该提交的 run 是否创建、也不知道终态。继续间隔查询；在结果明确前不报 CI 完成。 SDK9 不替代 SDK8.0.423/SDK10.0.401。下一项 R11-02 当前 main 复核。
+
+### 2026-10-14 R11-04 版本备注与外机焦点日志
+
+R11 版本说明已有 Dashboard 编辑/取消、Ludusavi 元数据更新与 SQLite 按 `(PlayniteId, BackupId)` upsert。取消必须由生产 `CancelBackupMetadataEdit` 恢复备注/锁定值并保持 DTO 和 BackupId；页面夹具若用测试 ICommand 适配器，应明确只证明真实 View/Binding 到生产方法的路径，不称为真实生产 RelayCommand 实例。重复备注只能由稳定 BackupId 选中；重启读取测试应从真实生产 parser 解析合成 Ludusavi JSON、在隔离数据库 upsert 后由新 Store 实例读回，而非仅手工构造 DTO。
+
+外机 R09 `Expected Thickness(2)` / `Actual Thickness(1)`、行151与旧 commit `3f7d0b30` 的 Chrome 两 DIP 断言吻合。当前应检查 Chrome 1 DIP 和独立 ValidationStroke 2 DIP；仅本机复验无法得知外机 source/DLL/PDB。将旧源/程序集或 PDB 错配保留为未证实推断。`libpng iCCP` warning 和失败后的 TextServices COM shutdown 异常不能解释厚度断言。SDK8 当前 main 复跑用于本机对照，不替代 SDK10 CI。

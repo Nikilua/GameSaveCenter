@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
@@ -11,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
 
@@ -31,7 +34,8 @@ public sealed class R11VersionNoteBehaviorTests
                 IsLocked = true,
                 CreatedUtc = new DateTime(2026, 9, 19, 10, 0, 0, DateTimeKind.Utc)
             };
-            var state = new NotePageState(backup);
+            var viewModel = CreateBareDashboardViewModel(backup);
+            var state = new NotePageState(viewModel);
             var view = new SaveCenterView { DataContext = state, Width = 1040, Height = 700 };
             var window = new Window
             {
@@ -89,6 +93,48 @@ public sealed class R11VersionNoteBehaviorTests
         Assert.Same(versions[1], restored);
         Assert.Equal("backup-b", restored!.BackupId);
         Assert.Equal("同一个版本说明", restored.Comment);
+
+        var refreshedVersionsWithRemovedIdentity = new List<BackupVersionDto>
+        {
+            new() { BackupId = "backup-a", Comment = "同一个版本说明" },
+            new() { BackupId = "backup-c", Comment = "同一个版本说明" }
+        };
+        var missingIdentityFallback = SelectionAnchorResolver.Restore(
+            refreshedVersionsWithRemovedIdentity,
+            "backup-b",
+            1,
+            version => version.BackupId);
+
+        Assert.Same(refreshedVersionsWithRemovedIdentity[1], missingIdentityFallback);
+        Assert.Equal("backup-c", missingIdentityFallback!.BackupId);
+        Assert.Equal("同一个版本说明", missingIdentityFallback.Comment);
+    }
+
+    [Fact]
+    public void ProductionDashboardCancelRestoresPersistedCommentAndLockWithoutChangingBackup()
+    {
+        var selectedBackup = new BackupVersionDto
+        {
+            BackupId = "stable-backup-id",
+            Comment = "已保存备注",
+            IsLocked = true
+        };
+        var viewModel = CreateBareDashboardViewModel(selectedBackup);
+        SetField(viewModel, "backupComment", "编辑中的草稿");
+        SetField(viewModel, "lockSelectedBackup", false);
+        SetField(viewModel, "backupCommentDirty", true);
+        SetField(viewModel, "backupLockDirty", true);
+
+        Invoke(viewModel, "CancelBackupMetadataEdit");
+
+        Assert.Same(selectedBackup, viewModel.SelectedBackup);
+        Assert.Equal("stable-backup-id", viewModel.SelectedBackup.BackupId);
+        Assert.Equal("已保存备注", viewModel.BackupComment);
+        Assert.True(viewModel.LockSelectedBackup);
+        Assert.False(viewModel.HasBackupMetadataChanges);
+        Assert.Equal("已保存备注", selectedBackup.Comment);
+        Assert.True(selectedBackup.IsLocked);
+        Assert.Equal("已取消版本备注修改，恢复为原值。", viewModel.StatusMessage);
     }
 
     [Fact]
@@ -128,6 +174,32 @@ public sealed class R11VersionNoteBehaviorTests
         window.UpdateLayout();
     }
 
+    private static DashboardViewModel CreateBareDashboardViewModel(BackupVersionDto backup)
+    {
+        var viewModel = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+        SetField(viewModel, "selectedBackup", backup);
+        SetField(viewModel, "backupComment", backup.Comment);
+        SetField(viewModel, "lockSelectedBackup", backup.IsLocked);
+        SetField(viewModel, "backupCommentDirty", false);
+        SetField(viewModel, "backupLockDirty", false);
+        SetField(viewModel, "commandRefreshScheduled", true);
+        return viewModel;
+    }
+
+    private static void Invoke(object target, string methodName)
+    {
+        var method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(method);
+        method!.Invoke(target, null);
+    }
+
+    private static void SetField(object target, string name, object? value)
+    {
+        var field = target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        field!.SetValue(target, value);
+    }
+
     private static void RunSta(Action action)
     {
         Exception? failure = null;
@@ -151,31 +223,30 @@ public sealed class R11VersionNoteBehaviorTests
 
     private sealed class NotePageState
     {
-        private readonly BackupVersionDto original;
+        private readonly DashboardViewModel viewModel;
 
-        public NotePageState(BackupVersionDto backup)
+        public NotePageState(DashboardViewModel viewModel)
         {
-            original = backup;
-            Backups.Add(backup);
-            SelectedBackup = backup;
-            BackupComment = backup.Comment;
-            LockSelectedBackup = backup.IsLocked;
-            CancelBackupMetadataCommand = new TestCommand(() =>
-            {
-                BackupComment = original.Comment;
-                LockSelectedBackup = original.IsLocked;
-                StatusMessage = "已取消版本备注修改，恢复为原值。";
-            });
+            this.viewModel = viewModel;
+            Backups.Add(viewModel.SelectedBackup);
+            CancelBackupMetadataCommand = new TestCommand(() => Invoke(viewModel, "CancelBackupMetadataEdit"));
         }
 
         public ObservableCollection<BackupVersionDto> Backups { get; } = new();
         public ObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new();
-        public BackupVersionDto SelectedBackup { get; set; }
+        public BackupVersionDto SelectedBackup
+        {
+            get => viewModel.SelectedBackup;
+            set
+            {
+                if (value != null) SetField(viewModel, "selectedBackup", value);
+            }
+        }
         public object? SelectedGame => null;
         public SavePathCandidateDto? SelectedCandidate { get; set; }
-        public string BackupComment { get; set; }
-        public bool LockSelectedBackup { get; set; }
-        public string StatusMessage { get; private set; } = "准备就绪";
+        public string BackupComment { get => viewModel.BackupComment; set => viewModel.BackupComment = value; }
+        public bool LockSelectedBackup { get => viewModel.LockSelectedBackup; set => viewModel.LockSelectedBackup = value; }
+        public string StatusMessage => viewModel.StatusMessage;
         public ICommand CancelBackupMetadataCommand { get; }
         public ICommand UpdateBackupMetadataCommand { get; } = new TestCommand(() => { });
         public ICommand CompareBackupCommand { get; } = new TestCommand(() => { });

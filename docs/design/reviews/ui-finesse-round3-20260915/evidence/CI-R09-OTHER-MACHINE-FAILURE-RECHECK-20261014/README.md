@@ -63,3 +63,11 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 测试源 SHA-256 仍为 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；生产 `WpfUiProduction.xaml` SHA-256 为 `7CFCBEE2720F3C8960FA9B54D8B86562C87D17D0E44F679FCF846F05ACDCEB2B`。测试程序集 ProductVersion `0.6.73+fd853380ec888ef94c112e255996b53106a0ddea`、SHA-256 `EFB50B83FCC5FA0E999209B6ED0C9AABD4ED5F2231E5E7652B1466E2CEA179B0`；MVID及 PDB 身份见[当前 R11-03 复核包](../R11-03-CURRENT-MAIN-RECHECK-20261014/README.md)。插件 DLL SHA-256 `D71DD6CDC3B96A9A3B9E89BABC5ACBED66F17F73CB5BB02A9FCFB4E9145357C2`。
 
 用户最新外机日志仍是 Expected `2,2,2,2` / Actual `1,1,1,1`，stack line151。当前 main 的同名测试第151行断言错误边框颜色，第152行才要求 Chrome `1 DIP`，第154行要求独立 `ValidationStroke 2 DIP`。数值与历史 Chrome `2 DIP` 断言相同，但外机 HEAD、实际源、DLL 和 PDB 未提供；旧源码/程序集或符号错配仅为待验证假设。`libpng iCCP` 不在失败调用栈，TextServicesContext COM exception 出现在断言失败后的 teardown，均不能解释边框厚度不符。未改模板或弱化断言。本机 SDK9结果不替代SDK8/CI SDK10.0.401。
+
+## 2026-10-14 新日志与 SDK8 当前 main 对照
+
+用户又提供另一台机器的一键构建/安装失败片段：同一测试名，Expected `2,2,2,2`、Actual `1,1,1,1`，堆栈源文件第151行；随后输出 `libpng iCCP` warning 和 `TextServicesContext.StopTransitoryExtension` 的 `InvalidComObjectException`。逐一对照源历史后，`3f7d0b30` 的第151行正是 `Assert.Equal(new Thickness(2), errorChrome.BorderThickness)`；`f13b9e05` 已将错误态厚度拆为 Chrome `1 DIP` 与 ValidationStroke `2 DIP`。当前 main 第151行是错误色断言，第152/154行分别断言 Chrome `1 DIP` 与 ValidationStroke `2 DIP`。
+
+在当前 main 基线 `40b0a980` 上用本机 SDK `8.0.423` / VSTest `17.11.1` 重新 Release 构建 Playnite `net462` 和 Tests `net472`，R09 类 `2/2`，exit 0；插件 DLL ProductVersion `0.6.73+40b0a980`，测试 DLL SHA-256 `544BC3C5C124538B79D6C1178C84B2C9B41470259EE10DA42B316B68573D336B`、MVID `28b50be7-adfd-400c-bb7d-ebd709f2741c`，PDB SHA-256 `CFB5CC4EC4B3EF53FF1768AD3BC11BD59E8A371D12C63E01E5E054EB3EAD32D2`。脱敏 TRX 为 [`R09FocusOutlineBehaviorTests-sdk8423-main-40b0a980.trx`](tests/R09FocusOutlineBehaviorTests-sdk8423-main-40b0a980.trx)，SHA-256 `D886C0967EBE969BAC7F384AF1C8FB1EDECB2312636280374AA425BE33499D53`。
+
+这次 SDK8 当前 main 对照仍不能确认外机实际 checkout、工作树、测试 DLL 或 PDB。日志数值/行号与旧断言吻合，可能来自旧测试源/程序集或符号映射，但不是已证实的根因；在取得外机身份前不改生产模板或放宽断言。`libpng iCCP` 不在断言调用栈；COM 错误出现在失败后的 WPF 收尾，不能解释边框厚度断言。SDK8 本机结果不替代 CI SDK10.0.401。
