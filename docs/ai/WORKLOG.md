@@ -10414,3 +10414,18 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机隔离 SDK `8.0.423`、MSBuild `17.11.48`、Release solution `0 warning / 0 error`、XAML `24/24`；四类逐类隔离 `15/15`，`validate-source.py`、diff check 通过。源/程序集身份和脱敏 TRX SHA 见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。
 - 合成 WPF TextComposition 覆盖中文“中”提交和 Enter 前后选择行为，但不是 Windows 中文 IME；fake clipboard 不写系统剪贴板；命令为记录器替身，不触发真实业务动作。真实 Playnite、Narrator/OS UIA、运行时 Tooltip 几何、物理 DPI/跨屏、最终呈现、ETW/宿主性能未验。视觉与 Final 仍待验，不生成截图。
 - #978 两个命名 lane 失败但日志需登录、实际 SDK/根因未知；#979 是前一文档提交 Actions，需确认终态。Q24-08 push 后的 SDK8/SDK10 CI 另查到终态，本机 SDK8 不替代 SDK10.0.401。下一步核对 Q25-01 当前 main 既有热态响应证据，不重建已有实现。
+
+## 2026-10-14 Q25-01 当前 main 热态响应复核
+
+- 当前 main `a78c46b59836bb4dfb408e4bdd467b6e1597e1e4` 已有后续强化的热态基准；构建前核实无 tracked source 修改。隔离 SDK `8.0.423` Release solution `0 warning / 0 error`、XAML `24/24`，插件 `net462`、测试 `net472`。
+- `LargeLibraryPerformanceTests 5/5`、`R18ContinuousInputBenchmarkTests 1/1`、`R18DispatcherVisibilityBenchmarkTests 1/1`、`GamePickerKeyboardBehaviorTests 6/6`，合计 `13/13`。2000项基准预热5次、30不同查询产生30/30结果集变化，输入到 FilteredCount p50/p95/max=`45/60/60ms`；R18 2k/10k 输入 p95/max=`2.466/7.788ms`、`7.009/11.059ms`。受控 Window 20样本输入到可见容器 p50/p95/max=`46.214/75.782/76.334ms`，由同组配对 VM/增量样本求和；没有作为 presented frame。详细 DLL/MVID、源/脱敏 TRX SHA 和 raw benchmark 见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q25-01-CURRENT-MAIN-HOT-RESPONSE-RECHECK-20261014/README.md)。
+- Q25-01 的本机受控自动条件已满足；视觉不适用（无视觉改动），真实 Playnite、物理输入、屏幕帧和低 Tier 仍未验，Final incomplete。`a78c46b5` 已 push，公开 Actions 最后列表仍停在 #979 queued、commit checks 404，没有可核实的当前 run 状态；须继续查询，SDK8 不替代 SDK10.0.401。
+- 下一项 R08-01：核对当前 main 中途反向输入已有实现和行为证据。用户报告失败原始日志缺失，先独立复核本地正负路径，不从未知失败猜修。
+
+## 2026-10-14 #970/#971 CI 诊断归因与当前 main 定向复核
+
+- 三个用户附件与已审 ZIP 完全一致。#970/run `38386326043` 终态 Failure；SDK `10.0.401` 诊断显示 build/Core 成功，Worker `357` 项中仅取消 callback 计数测试失败（Expected 1 / Actual 0，测试第128行）。同一源提交 `c9f9179` 的 SDK `8.0.423` 两个完整 solution-build summary 均通过。
+- #971/run `38393317198` 公开页面仍显示 In progress。用户提供的 #971 SDK8 `8.0.423` diagnostics summary（源码 `5a6647c`）唯一生产 suite failure 为 Q14 toolbar geometry，`Light 980x640: preset text centers=6,18,18,18,18,18`；没有 #971 SDK10 原始日志，SDK8 summary 不代表整个 workflow 终态。
+- 两个问题均为测试夹具前提错误，并已在历史提交 `599d2fd3` 修正：取消测试把同步信号移到 token callback 注册之后；Q14 fixture 选择真实默认 `TaskFilterPreset`，只测量可见的真实选中文本/presenter。当前 main `a78c46b5` 上对应两份测试源与 `599d2fd3` 相同，无生产代码修复。
+- 本机当前环境只有 SDK `9.0.302`；从仓库父目录执行当前 main 定向重跑，取消测试 `1/1`、Q14 `1/1` 通过。SDK9 不是仓库锁定 SDK8，也不替代 CI SDK `10.0.401`。Q14 pass 后 runner 仍有 TextServicesContext/TextStore `InvalidComObjectException` 收尾输出，TRX 与退出码通过；根因未查。脱敏 TRX 和附件 SHA 见[诊断复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。
+- #970/#971 CI root cause 与本机测试已记录，未改生产代码。当前 main SDK8/SDK10 CI 仍需等实际 run 并分别确认终态；当前 Actions 页仍是 #979 queued，`a78c46b5` run 未显示。没有启动真实 Playnite或访问真实存档/媒体/用户云端。下一步 R08-01：先检查反向输入既有实现、现有测试涵盖面和负例；不以缺失的用户原始日志推测故障。

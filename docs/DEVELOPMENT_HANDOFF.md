@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 `main`。Q24-08 本机隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`、定向 WPF 行为 `15/15`；没有生产 UI 改动。构建以 `ae3c565` 源码提交加两份本阶段测试源变更为准；TRX/DLL SHA、命令与覆盖边界见[Q24-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。R00/R01 freshness 为 `14 fresh / 0 stale`，详见[R00/R01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。
+更新：2026-10-14；分支 `main`，最近代码提交 `a78c46b59836bb4dfb408e4bdd467b6e1597e1e4`。Q24-08 行为 `15/15`；Q25-01 当前身份隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`、四类 `13/13`。热搜索30样本 p50/p95/max=`45/60/60ms`，输入到受控 WPF 可见容器20样本=`46.214/75.782/76.334ms`。没有生产 UI/性能代码变化。源码/程序集 SHA 与范围见[Q25-01 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q25-01-CURRENT-MAIN-HOT-RESPONSE-RECHECK-20261014/README.md)；Q24-08 见[输入/长文案包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。#970/#971 已定位为旧测试竞态/fixture 错误，当前 main SDK9 定向复核各 `1/1`，详见[诊断复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。
 
-CI 门禁分开跟踪：#978/run `38509928015` 两个命名 lane 在编译/测试步骤失败；完整日志需登录，实际 runner SDK 和根因未知，不按摘要盲改。#979 是前一文档提交的 run，检查时仍排队；Q24-08 代码推送后必须再分别查 SDK8 与 SDK `10.0.401` lane，CI 未终态前不签收。#970/#971 新附件与已审 ZIP 哈希一致，#971 SDK10 原始诊断仍缺但不阻塞独立工作。用户到 `2026-10-15 09:00` 前无法回复。
+CI 门禁分开跟踪：#970/run `38386326043` 为 Failure，SDK10.0.401 失败在旧取消测试竞态；#971/run `38393317198` 当前仍 In progress，所附 SDK8 failure 是旧 Q14 fixture 错误。修正 `599d2fd3` 后，本机 SDK9 两项各 `1/1`，不能替代 CI。#978/run `38509928015` 两个命名 lane 编译/测试失败，完整日志需登录、runner SDK/根因未知。最近公开 Actions 仍只显示 #979 queued；`a78c46b5` 的 run 尚未显示。继续检查 #971、#979 与当前提交的 SDK8/SDK `10.0.401` lanes 到终态；CI 未终态前不签收。用户到 `2026-10-15 09:00` 前无法回复。
 
-Q24-08 的受控行为已补证：双主题长标签换行/Name/HelpText、Space/命令参数、合成 TextComposition、窄列完整值复制和负例均通过；OS 中文 IME、Playnite/Narrator、系统剪贴板与运行时 Tooltip 仍待验。下一项先核对 Q25-01 当前 main 的既有热态响应实现和证据，按差距补证，不重建已有能力。Q24-03 需要第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件及生成证据。
+Q24-08 的受控行为已补证：双主题长标签/Name/HelpText、Space/命令参数、合成 TextComposition、窄列完整值复制和负例通过；OS 中文 IME、Playnite/Narrator、系统剪贴板与 Tooltip 运行时仍待验。Q25-01 当前 main 热响应/键盘/可见容器行为 `13/13`，没有改性能实现；实际宿主/物理输入/呈现帧外部边界保留。下一项检查 R08-01 当前 main 的反向输入路径并记录可独立复现证据；用户报告的原始失败日志缺失时不猜修。Q24-03 需第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件及生成证据。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
