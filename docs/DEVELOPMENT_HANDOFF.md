@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 `main`。本地代码提交 `af8ed430373c5e52dba77af534c689f6727bb91f` 已按隔离 SDK `8.0.423` 精确重建：Playnite `net462`、tests `net472`、VSTest `17.11.1`，Release `0/0`；Q24-06 R21Automation `24/24`，R00-06 关联媒体几何/锚点 `13/13`。freshness baseline 仅更新 R00-06 至该 SHA，完整校验为 `14 records / 0 needsRerun`。证据见[Q24-06 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md)。本地代码/证据在本交接更新时尚待推送；推送后必须查 SDK8 与 SDK10 Actions 直至明确终态，不得用本机 SDK8 替代 SDK10.0.401。
+更新：2026-10-14；分支 `main`。Q24-07 代码提交 `0243c108eaa7f3d63430475dd87d292cfcfeb950` 已由仓库 `scripts/build.ps1 -SkipTests` 使用隔离 SDK `8.0.423` 精确 Release 重建：XAML `24/24`、0 warning/error；Playnite `net462` 和 tests `net472` 对应七个 WPF 类逐类 `13/13`，VSTest `17.11.1`。证据见[Q24-07 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。本地构建与行为栏通过，CI/真实宿主仍待验。
 
-Q24-06 状态为代码完成待验收：所有 11 个生产 DataGrid 的进程内 WPF Name/HelpText 与 Grid/Table/Selection Pattern、生产图标按钮名称、进度 LiveSetting/焦点负例均通过；生产 XAML 未使用 LabeledBy，表格直接命名。未运行 Playnite、Narrator 或 OS UIA 客户端，实际读屏播报频率仍待隔离宿主人工抽查。用户到明日 09:00 无法回复，继续独立工作，不等 #971 SDK10 原始诊断；新附件与已审包 SHA 相同。
+Q24-07 状态为代码完成待 CI/外部验收：高对比系统语义色、玻璃/Popup/阴影关闭、按钮与 Disclosure 动画清理、普通模式恢复均在受控 WPF 控件上验证。没有切换真实 Windows 高对比、没有 Playnite/OS UIA/Narrator 或最终呈现证据。相邻 R05 Tooltip 测试在 `GetCursorPos` 保存初始指针处失败 `2/3`，测试未走到 hover/dwell；保留原 TRX，不绕过系统限制。freshness 当前 4 项 stale：R00-01-02、R00-03、R00-05、R01-05。
 
-最近检查的 #973/run `38429051152`、#974/run `38436999880`、#975/run `38439253014` 页面都没有可见终态，日志要求登录查看，实际 SDK 未核实。Q24-06 推送后继续更新 run/job 编号和状态。下一项 Q24-07 高对比组合；Q24-03 跨屏仍需第二物理显示器。没有改 Demo 视觉体系；Demo 原目录当前不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件。C 盘既有隔离 build 目录约 46 MB，精确删除遭执行策略拒绝，未换接口重试。
+前置 #976/run `38443177308` 在 `7189f33` 上两 lane 均失败：job `115454717004` 和 SDK10-labeled job `115454717105` 的编译/测试步骤 exit 1；完整日志/API 匿名访问受限（403），实际 SDK 与根因未知。用户补充的 #970/#971 三份 ZIP 经 SHA 核对是已审副本；缺失 #971 SDK10 原始诊断不阻塞当前工作。Q24-07 推送后跟新 SDK8/SDK10 Actions 至终态。下一项先复核 freshness 命中的 R00-01-02、R00-03、R00-05、R01-05，再推进依赖满足的 Q/R。Q24-03 仍需第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

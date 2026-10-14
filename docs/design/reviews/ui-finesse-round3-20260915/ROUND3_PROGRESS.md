@@ -1650,3 +1650,12 @@
 - Q24-06 状态为“代码完成待验收”：用户验收条件中的实际 Narrator/Playnite 读屏还未做，当前只验证了进程内 WPF peers。准确待验步骤、合成数据边界和 SDK8/CI SDK10 分账见证据 README。无布局改动，不跑 RenderHarness/截图。
 - 用户 #970/#971 新附 ZIP 与此前已审包 SHA 一致；#971 SDK10 原始日志仍缺，不等待材料。推送后查新 SDK8/SDK10 Actions 至终态；本机 SDK8 不能代表 SDK10.0.401。
 - 下一项 Q24-07 高对比组合；Q24-06 实际读屏/Playnite 留作外部待验。Q24-03 仍需第二物理显示器。
+
+## 2026-10-14 Q24-07 高对比组合与动效行为复核
+
+- 复用现有 `AdaptiveThemePaletteFactory`、Light/Dark/Follow 模式、资源字典和生产 Button/ComboBox/Disclosure 模板；没有新增服务、DTO 或命令。为生产根节点补充可继承的高对比/有效动效状态，设置页与 Dashboard 将状态传到各自生产视觉树。高对比压制玻璃/透明 Popup/阴影和动画；系统语义色应用于按钮、禁用选项、焦点与选中状态；恢复后按原主题、玻璃与动效设置恢复。
+- 修正 Q06 行为夹具初始化新继承动效属性，避免 fixture 与真实 Dashboard/Settings 根状态不一致。R09 行为矩阵先确认正常模式动画时钟，再切换高对比检查按钮/Disclosure 时钟清除、稳定终态与恢复；另覆盖 Follow/Light/Dark、宿主深浅色、玻璃/动效请求开关、禁用/选中/焦点/Popup 正负例。WPF 直接构造的 KeyUp 不更新 KeyboardDevice，测试改为 routed KeyDown 正例及明确标注的受控释放态探针，不声称物理键盘输入。
+- 提交 `0243c108eaa7f3d63430475dd87d292cfcfeb950`。本机隔离 SDK `8.0.423`，官方 `scripts/build.ps1 -SkipTests` Release solution `0 warning / 0 error`、XAML `24/24`；SDK 的隔离安装路径、VSTest `17.11.1`、net462/net472 与程序集 SHA 见[Q24-07 证据包](evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。七个类逐类隔离合计 `13/13`，无失败/跳过。
+- 相邻的 R05 Tooltip 类在提交身份下单独执行 `2/3`：唯一失败发生于显示合成窗口前，`GetCursorPos` 无法保存系统指针位置；没有启动 Tooltip 行为断言。失败 TRX 已单列，未绕过系统限制。它不纳入 Q24-07 的 13/13 分母。
+- freshness 检查 `14` 项中 `4 needsRerun`：R00-01-02、R00-03、R00-05、R01-05；其他 10 项未命中，下一小批先重验并校正这四条。
+- 受控 WPF 结果不是 Playnite 真实渲染/视觉签收。未真实切换 Windows 高对比、未验证原生输入、UIA/读屏、物理 DPI/跨屏、最终呈现帧或宿主性能；Demo 原目录不可用，沿用恢复生产基线。未接触真实用户数据。CI SDK8/SDK10 需随推送新提交持续查到终态；当前 Q24-07 为代码完成待 CI/外部验收。

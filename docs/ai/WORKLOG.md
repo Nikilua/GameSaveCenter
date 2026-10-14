@@ -1,3 +1,12 @@
+## 2026-10-14 Q24-07 高对比与动效行为复核
+
+- 复用现有自适应调色板、生产资源与控件模板，给 Dashboard/Settings 根树传播高对比和有效动效状态；未改命令、DTO、列表性能、游戏选框或滚动系统。按仓库隔离 SDK `8.0.423` Release build `0 warning / 0 error`、XAML `24/24`；Playnite `net462` / tests `net472`，七个 WPF 类逐类 `13/13`。
+- 高对比组合覆盖 Follow/Light/Dark、宿主明暗、玻璃和动效请求开关、禁用按钮/选项、选中项、焦点框、Popup，以及动画活动→清钟→稳定终态→恢复。WPF 直接构造 KeyUp 不会更新 KeyboardDevice；按压正例路由 KeyDown，测试释放由受控 `IsPressed` 子类探针完成，不声称物理键盘 KeyUp。没有真实系统高对比/Playnite呈现/OS输入证据。
+- 精确源码 `0243c108eaa7f3d63430475dd87d292cfcfeb950` 的程序集 ProductVersion、SHA、逐类 TRX 见[Q24-07 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。`python scripts/validate-source.py` 和 `git diff --check` 通过。
+- R05 Tooltip 相邻类在同身份 `2/3`，唯一失败发生在建立合成窗口前：`GetCursorPos` 无法保存系统指针；TRX 单列，不计入 Q24-07，不绕过系统限制。freshness 有 4 项 stale（R00-01-02、R00-03、R00-05、R01-05），另 10 项未命中。
+- #970/#971 新附件经 SHA-256 确认为此前已审包副本，#971 SDK10 原始诊断仍缺；用户至明日 09:00 不可回复，不等待材料。前置 #976/run `38443177308`、source `7189f33` 两 lane 均失败于公开摘要的编译/测试步骤 exit 1；完整日志匿名 API 403，实际 CI SDK/失败根因未知，不盲改。推送本阶段后继续查 SDK8/SDK10 新 runs 至终态。
+- 下一项：R00/R01 freshness stale 的四条行为/负例复核与 baseline 校正；真实 Playnite、高对比系统开关、UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+
 ## 2026-10-14 Q24-06 UI Automation 当前 main 复核
 
 - 先盘点已有 R21 peer 测试和生产表格；此前媒体 Selection Pattern 只验合成 ListBox，11 个具名生产 DataGrid 中多个 Name 缺失。生产 XAML 未使用 `AutomationProperties.LabeledBy`，已命名字段直接声明 Name；本轮保留此做法并逐表检查直接 Name/HelpText。

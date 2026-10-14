@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 代码提交 af8ed430 已完成精确 SDK8 Release 复核：Q24-06 生产 UIA peer 行为 24/24，受影响 R00-06 媒体锚点/几何 13/13，baseline 校正后 freshness 14 records / 0 needsRerun。Q24-02 受控行为 9/9、扩展 Popup/焦点 8/16 失败边界未解；Q24-04 8/8；Q24-05 7/7 已满足。RenderHarness 保留 13 MEDIUM。#973/#974/#975 最近公开状态仍无终态，日志要求登录、runner SDK 未确认；本机 SDK8 不代替 CI SDK10.0.401。用户到明日 09:00 前无法回复；#970/#971 附件为已审 SHA 副本，#971 SDK10 原始诊断仍缺但不阻塞独立任务。Q24-06 的真实 Narrator/Playnite 读屏待抽查；下一项 Q24-07 高对比组合，Q24-03 需第二物理显示器。物理呈现、OS 输入和宿主性能仍未验。
+更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main 代码 `0243c108` 已完成官方隔离 SDK8 Release `0/0`、XAML `24/24` 与 Q24-07 定向 WPF `13/13`；高对比语义色、禁用/焦点/选中/Popup、动画清理和恢复通过。Q24-07 仍待新推送 SDK8/SDK10 CI 终态和真实宿主验收。freshness 当前 14 项中 4 stale（R00-01-02、R00-03、R00-05、R01-05），下一批先复验/校正。#976 前置 `7189f33` 两 lane failure，日志 API 403，实际 SDK和根因未知。用户提供 #970/#971 ZIP 是已审副本；#971 SDK10 原始诊断仍缺但不阻塞独立工作，用户到明日 09:00 前无法回复。Q24-06 Narrator/Playnite 读屏、Q24-03 第二物理显示器、真实宿主呈现、OS 输入、ETW/宿主性能仍未验。
 
 ## AI/Codex 启动协议
 
@@ -59,8 +59,8 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：Q24-06 的真实 Narrator/Playnite 读屏仍待隔离宿主抽查；进程内 AutomationPeer 不能代表实际口播。R00/R01 freshness 已在 `af8ed430` 校正至 14 records / 0 needsRerun，package identity 未提供，audit 保留 `13 MEDIUM`。#973/#974/#975 最近均无可见终态，CI 日志受登录限制、实际 runner SDK 未确认；#971 SDK10 日志仍缺。下一项 Q24-07 高对比组合；Q24-03 仍需第二物理显示器。R05-03 bootstrap、R08-01 用户失败复现仍保持各自边界。
-- R00/R01 当前 freshness 为 `14 fresh / 0 stale`，source `599d2fd`；本轮刷新四条曾 stale 的记录，受影响测试与 audit 报告绑定当前身份。package identity 未提供。
+- 当前活动缺口：Q24-07 已在 `0243c108` 完成本机代码/行为栏，真实 Windows 高对比、Playnite 呈现、OS UIA/Narrator 仍未验证；推送 CI 待 SDK8/SDK10 分别终态。当前 freshness 因 Q24-07 共享主题/动效变化为 14 records / 4 stale（R00-01-02、R00-03、R00-05、R01-05）；下一项先复核这些记录，其余10项未命中。package identity 未提供，旧 audit 保留 `13 MEDIUM`。#976 前置两 lane failure 的实际 SDK/根因未知且日志匿名 API 403；#971 SDK10 原始诊断仍缺，不阻塞独立任务。Q24-03 仍需第二物理显示器；R05-03 bootstrap、R08-01 用户失败复现仍保持各自边界。
+- `599d2fd` 的 R00/R01 freshness `14 fresh / 0 stale` 是此前已签基线，不代表 `0243c108`；只能在当前受影响行为/负例复验后更新来源身份。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
 - 当前任务状态和完成定义只维护在 [活动积压清单](../AUTONOMOUS_BACKLOG.md)；Q/R 账本是证据矩阵，不能合并为产品完成率。
@@ -68,6 +68,10 @@
 - 2026-10-07共享UI阶段：错误描边不得改变原生内容测量；行距按Arrange后的layout slot判断实际多行并恢复作者margin，Unload释放LayoutUpdated。Q14已通过定向及首轮全量入口；随后R02失败由旧clean DLL同样复现。共享按钮须区分文本的有限Stretch测量与视觉树的HorizontalContentAlignment，避免拉伸固定/Auto列产生额外DIP。原4项已过，联合完整门禁待验；当前受影响证据为10项，旧渲染不能签收新增按钮模板。
 
 - 2026-10-12 CLOSE-PICKER 复验：在 STA WPF ViewModel 测试夹具中没有 `SynchronizationContext` 时，`Task.Delay(...).ConfigureAwait(false)` 的延续可能运行在线程池；刷新 WPF `CollectionView` 必须回到创建它的 Dispatcher。保留 20 ms 输入合并，取消的旧 Dispatcher 回调还要在执行时检查 cancellation token。新负例先在旧实现失败、修复后 R05 全量类通过。生产 TextBox 错误态两 DIP 描边采用独立 `ValidationStroke` overlay，因此行为测试应检查 overlay 的 Opacity/Thickness，并断言布局 Chrome 仍为 1 DIP；不能要求 Chrome 为 2 DIP。
+
+### 2026-10-14 Q24-07 当前行为证据
+
+高对比行为应通过生产资源字典与真实 WPF 控件模板状态验证，不以资源键或 XAML 字符串存在作为完成依据。当前测试覆盖 Follow/Light/Dark、宿主明暗、玻璃/动效开关、禁用按钮和选项、选中态、焦点框、Popup、活动动画时钟移除和恢复。WPF 合成 KeyDown 可证明模板 pressed 状态；直接构造 KeyUp 不更新 `KeyboardDevice`，当前释放使用明示的受控 `IsPressed` 状态探针，不得记为物理键盘输入。证据链接：[Q24-07 高对比复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。本机 Release SDK8 不是 SDK10 CI 或真实 Playnite 视觉证据。当前 freshness stale 的四项按计划下一批重跑，不提前把旧基线签为 fresh。
 
 ## 文档维护约定
 

@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main。本地代码提交 af8ed430373c5e52dba77af534c689f6727bb91f 已精确 SDK8 复核：Playnite net462 / Tests net472 Release build 0/0，Q24-06 R21Automation 24/24、R00-06 关联媒体几何/锚点 13/13，baseline 更新后 freshness 14 records / 0 needsRerun。代码与证据待本轮推送。Q24-02 受控 9/9、Popup/焦点 8/16；Q24-04 8/8、Q24-05 7/7 已分别按受控范围记录。Q24-06 进程内 peer Name/HelpText/Pattern 与图标/进度负例通过，但真实 Narrator/Playnite 读屏未验，状态为代码完成待验收。R00-08 source 仍为 87070909；RenderHarness 保留 13 MEDIUM，E01–E20 为 20/20。用户提供的 #970/#971 新 ZIP 均为已审副本；#971 SDK10 原始诊断仍缺。#973/run 38429051152、#974/run 38436999880、#975/run 38439253014 最近页面均没有可见终态，日志需登录且实际 SDK 未确认。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 `main`。Q24-07 代码提交 `0243c108eaa7f3d63430475dd87d292cfcfeb950`：官方隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`，七个相关 WPF 测试类逐类 `13/13`；证据见[Q24-07 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。真实 Playnite、Windows 高对比切换、OS 输入与最终呈现未验。该提交的 freshness 初检为 14 条中 4 条 stale：R00-01-02、R00-03、R00-05、R01-05；下一步重跑并校正这些记录。#976/run `38443177308` 在前置 `7189f33` 上两 lane 均失败；公开摘要的两个编译/测试步骤 exit 1，完整日志 API 403，CI SDK/失败根因未知。#970/#971 新附 ZIP 与已审包 SHA 相同；#971 SDK10 原始诊断仍缺，但用户离线期间继续独立工作。新推送后的 SDK8/SDK10 Actions 仍待终态。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断
@@ -37,21 +37,21 @@
 | Q24-04 当前 main | `87070909` 加强 R21 键盘轨迹测试；SDK `8.0.423`、Playnite `net462`/tests `net472` 定向 `8/8`。八入口 90 个当前可见交互控件双向可达、反向顺序互逆，选框行为 6/6。没有完整业务行态或真实 Playnite/OS 键盘；视觉/宿主/最终仍未验。详见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-CURRENT-MAIN-KEYBOARD-RECHECK-20261014/README.md) |
 | Q24-05 当前 main | 复用 b20f1a4b 及现有状态模板；隔离 SDK 8.0.423 Release 构建 0/0，焦点/选中/当前态与选框关闭回焦行为 7/7。选中与键盘焦点区分、双主题及禁用/失焦负例通过；真实 Playnite、OS UIA/读屏、物理焦点像素仍待验。详见[Q24-05 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-05-CURRENT-MAIN-FOCUS-RECHECK-20261014/README.md) |
 | Q24-06 当前 main | `af8ed430` 更新 11 个生产 DataGrid 的 Name/HelpText；进程内 peer 验证 Grid/Table/Selection pattern 与选中行变化，Task 图标按钮名称、进度 Off live setting/焦点负例通过。Release 0/0，R21Automation 24/24，R00-06 freshness 行为 13/13，freshness 14/14。实际 Narrator/Playnite/OS UIA 未验，因此代码完成待验收。详见[Q24-06 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md) |
-| 远端 CI | #970/run 38386326043 diagnostics: SDK10 10.0.401 Worker cancellation test failed; SDK8 8.0.423 build summaries passed. #971/run 38393317198 SDK8 Q14 fixture failed，已在 599d2fd 修正；新 ZIP 是已审副本，#971 SDK10 log 仍缺。#972/run 38421480496 两 lane 成功。#973/run 38429051152、#974/run 38436999880、#975/run 38439253014 最近公开页均没有可见终态；日志需要登录，实际 runner SDK 未确认。本机 SDK8 不能替代 CI SDK10.0.401。推送 Q24-06 后继续跟新 runs/jobs 至终态。 |
-| R00/R01 证据 | 当前 source `599d2fd` freshness `14 fresh / 0 stale`；R00-01/02、R00-05 定向 `6/6`，Light/Dark finesseprobe 各 88 状态样本、0 违规；受影响完整类 `154 passed / 39 skipped / 0 failed`。当前 audit `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes`，E01–E20 `20/20`。物理 DPI/跨屏、OS IME/Playnite 输入、package identity仍待验。详见[R00/R01 当前复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md)。
+| Q24-07 当前 main | `0243c108` 将高对比与有效动效状态沿视觉树继承；系统语义色、禁用/焦点/选中/Popup、活动动画时钟清理与恢复行为通过。SDK `8.0.423`，Release `0/0`，XAML `24/24`，WPF `13/13`。当前状态为代码完成待 CI/外部验收。真实 Playnite、Windows 高对比切换、OS 键鼠/UIA/Narrator、物理 DPI/跨屏和最终呈现未验。R05 Tooltip 相邻类因 GetCursorPos 无法保存系统指针而 `2/3`，失败 TRX 已与 Q24 结果分开。详见[Q24-07 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md) |
+| 远端 CI | #970/run 38386326043 diagnostics: SDK10 `10.0.401` Worker cancellation test failed；SDK8 `8.0.423` build summaries passed。#971/run 38393317198 SDK8 Q14 fixture failed，已在 `599d2fd` 修正；本次附件是已审副本，#971 SDK10 原始诊断仍缺。#972/run `38421480496` 两 lane 成功。前置 #976/run `38443177308`（source `7189f33`）两 lane 均 terminal failure：SDK8 job `115454717004`、SDK10-labeled job `115454717105` 的编译/测试步骤 exit 1；完整日志匿名 API 403，实际 SDK/失败根因未知。不能由本机 SDK8 替代 CI SDK10.0.401。Q24-07 新推送的两个 lane 仍待终态。 |
+| R00/R01 证据 | 最新已签 baseline `599d2fd` freshness 为 `14 fresh / 0 stale`；R00-01/02、R00-05 定向 `6/6`，双主题 finesseprobe 各 88 状态样本、0 违规；当时受影响完整类 `154 passed / 39 skipped / 0 failed`。当前 `0243c108` 因共享主题/动效资源改变，freshness 初检有 4 项待复验：R00-01-02、R00-03、R00-05、R01-05；未复验前不沿用旧基线。旧 audit 为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes`、E01–E20 `20/20`。物理 DPI/跨屏、OS IME/Playnite 输入、package identity仍待验。 |
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
 仓库锁定 SDK `8.0.423` 已由官方安装脚本安装到 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；通过临时进程 PATH 前缀选择，系统 SDK/PATH 未改。历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932、#934、#935 与 #936 的失败原因均未取得完整日志；访问受限期间不盲修。
 
 ## 当前执行顺序
 
-当前用户明确续跑 Round3 192 项任务，并在 2026-10-14 09:00 前无法回复；不要因缺少补充 ZIP 停住独立工作。
+当前用户明确续跑 Round3 192 项任务，并在 2026-10-15 09:00 前无法回复；不因缺少补充 ZIP 停住独立工作。
 
-1. #970/#971 用户本次三个诊断包经 SHA-256 验证为此前已审包的副本；#970 两 lane 内容已具备，#971 SDK10 原始诊断仍缺。已知 #970 SDK10 Worker 取消竞态、#971 SDK8 Q14 fixture 问题及 `599d2fd` 本机修复见[诊断记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。用户到 09:00 前无法回复，不等补充材料。
-2. R00/R01 freshness 初检的 4 条 stale（R00-01-02、R00-05、R01-03、R01-06）已重跑受影响 WPF 测试/RenderHarness audit 后校正 baseline；当前 14/14 fresh，source `599d2fd`。Audit 风险摘要保留 `13 MEDIUM`，不是零风险。
-3. 旧 #973/run `38429051152`、#974/run `38436999880`、#975/run `38439253014` 最近页面均无可见终态；日志要求登录，runner SDK 未确认。推送当前 `af8ed430` 阶段与文档后查询新 SDK8/SDK10 runs，等待明确终态并确认实际 SDK/日志；本机 SDK8 不能替代 SDK10，CI 未结束前不报告代码阶段完成。
-4. Q24-01 五档目标 DPI 仅为受控离屏栅格；Q24-02 PageHost 几何与收件箱行为在受控 WPF harness 下 `9/9`，二者 Host/final 仍未完成。扩展 Popup/焦点组 `8/16` 的失败边界已单列，不算通过。
-5. 下一项 Q24-07：复核高对比、无玻璃、无动画与 Light/Dark/Follow 组合；Q24-06 当前受控 UIA peer 行为已复核，但实际 Narrator/Playnite 读屏仍待抽查。Q24-03 需第二物理显示器；#971 SDK10 诊断、OS IME/最终呈现帧/ETW/宿主性能仍未验证。
+1. #970/#971 的新附件经 SHA-256 确认为此前已审包副本；#971 SDK10 原始诊断仍缺，但用户到明日 09:00 前无法回复，不等待补件。已知 #970 SDK10 Worker cancellation 和 #971 SDK8 Q14 fixture 失败均有实际诊断并分别修正；见[诊断记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。
+2. Q24-07 代码提交 `0243c108` 已本机官方 Release `0/0`、XAML `24/24`、WPF `13/13`；证据包已收录。前置 #976 两 lane failure 的完整日志仍不可读，公开摘要不足以判因；Q24-07 推送后继续检查新 SDK8/SDK10 runs 到终态，实际 SDK分别记录，CI 未结束前不报告代码阶段完成。
+3. 当前下一项是 R00/R01 受影响证据复核：R00-01-02、R00-03、R00-05、R01-05 freshness stale；先比对原断言和真实行为，再跑对应正/负例并更新 baseline。其他 10 条 freshness 未命中，不扩大重跑范围。
+4. 真实 Playnite/高对比系统开关、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验；R05 Tooltip 测试需能安全读取初始系统指针。Q24-03 需要第二物理显示器。#971 SDK10 诊断并非独立任务的前置条件。
 ## 架构与生产 UI
 
 - Playnite 插件 `net462`，Core/Contracts `netstandard2.0`，Worker `net8.0-windows10.0.19041.0`，Playnite 测试 `net472`。插件与 Worker 经 Named Pipe 协作，SQLite 由 Worker 持久化。
