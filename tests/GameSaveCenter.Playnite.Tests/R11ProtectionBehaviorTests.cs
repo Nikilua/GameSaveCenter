@@ -100,6 +100,69 @@ public sealed class R11ProtectionBehaviorTests
         });
     }
 
+    [Fact]
+    public void ProtectionCellTemplateBindsGlyphAndExplanationForProtectedAndUnprotectedVersions()
+    {
+        RunSta(() =>
+        {
+            var state = new SavePageState();
+            var view = new SaveCenterView { DataContext = state, Width = 1040, Height = 700 };
+            var window = new Window
+            {
+                Width = 1040,
+                Height = 700,
+                Content = view,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None
+            };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                var history = (DataGrid)view.GetType()
+                    .GetField("SaveHistoryGrid", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var protectionColumn = Assert.IsType<DataGridTemplateColumn>(history.Columns.Single(column =>
+                    string.Equals(column.Header?.ToString(), "状态", StringComparison.Ordinal)));
+                var template = Assert.IsType<DataTemplate>(protectionColumn.CellTemplate);
+
+                var cases = new[]
+                {
+                    Version("locked", isLocked: true, fileCount: 4, totalBytes: 4096),
+                    Version("ordinary", fileCount: 4, totalBytes: 4096),
+                    Version("invalid-ready", readiness: RestoreReadinessStatus.Ready)
+                };
+
+                foreach (var backup in cases)
+                {
+                    var content = Assert.IsAssignableFrom<FrameworkElement>(template.LoadContent());
+                    content.DataContext = backup;
+                    content.ApplyTemplate();
+                    content.UpdateLayout();
+                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
+
+                    var textBlocks = FindVisualChildren<TextBlock>(content).ToList();
+                    Assert.Equal(2, textBlocks.Count);
+                    var glyph = textBlocks.Single(textBlock =>
+                        textBlock.GetBindingExpression(TextBlock.TextProperty)?.ParentBinding.Path.Path == "RetentionProtectionGlyphDisplay");
+                    var status = textBlocks.Single(textBlock =>
+                        textBlock.GetBindingExpression(TextBlock.TextProperty)?.ParentBinding.Path.Path == "ProtectionAndReadinessDisplay");
+
+                    Assert.Equal(backup.RetentionProtectionGlyphDisplay, glyph.Text);
+                    Assert.Equal(backup.ProtectionAndReadinessDisplay, status.Text);
+                    Assert.Equal("RetentionProtectionExplanationDisplay",
+                        status.GetBindingExpression(FrameworkElement.ToolTipProperty)?.ParentBinding.Path.Path);
+                    Assert.Equal(backup.RetentionProtectionExplanationDisplay, status.ToolTip as string);
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     private static BackupVersionDto Version(
         string id,
         bool isLocked = false,
