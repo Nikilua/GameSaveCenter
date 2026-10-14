@@ -1,3 +1,11 @@
+## 2026-10-15 R11-05 保护操作解释当前 main 复核
+
+- 已检查现有 `BackupVersionDto` 保护解释、SaveCenter 状态列、Core `RetentionPlanner` 和 Worker 预览/应用；实现已满足可控任务条件，本轮没有重建服务或改生产 XAML。
+- `884e826e` 只增加生产状态列 `DataTemplate` 的绑定行为测试：从真实 `SaveCenterView` 取模板，加载后核对锁定/普通 glyph、状态和解释 Tooltip，并检查 `Ready` 但无内容负例。Playnite `R11ProtectionBehaviorTests 3/3`，Core `RetentionPlannerTests 3/3`（解锁后候选正例且其它保护继续排除），Worker `RetentionSimulationServiceTests 12/12`（合成预览/应用只处理未保护候选及取消、过期/变更/确认边界）。提交后以相同身份重跑仍 18/18。
+- 本机 SDK `8.0.423`、VSTest `17.11.1`；Playnite 插件 `net462`、Tests `net472`；Core/Worker 测试为 net8。各相关 Release 项目与引用在 `dotnet test` 中编译通过；本阶段未跑完整 solution build。`python scripts/validate-source.py` 与 `git diff --check` 通过。程序集身份、TRX 和限制见[R11-05 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-05-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 外机又报告 R09 `Expected 2 / Actual 1`、line151；当前 main `884e826e` 同类 SDK8 重建 2/2。当前 line151 是错误色，第152行 Chrome为1 DIP，第154行独立错误描边为2 DIP；历史 `3f7d0b30` line151才是 Chrome厚度2 DIP。已核对当前一键脚本为每次随机隔离输出根目录，并在同根编译后 `--no-build` 跑测试；外机 summary/TRX/DLL/PDB身份仍缺，根因未知。libpng warning和失败后COM清理异常不解释厚度断言；没有修改模板/放宽断言。异机取证与请求文件见[R09复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 推送后 CI 尚待分别查 SDK8 与 SDK10.0.401。当前公开 Actions snapshot停在#979、commit page cache miss，gh CLI不可用；#992/#993旧 run 失败且完整日志/API访问受限，不能推断新提交状态。真实 Playnite/presented frame/物理 DPI/跨屏/UIA/读屏/IME/ETW/宿主性能未验，没有访问用户存档/媒体/云端。下一项 R11-06 先复核已有只读预览与执行重校验。
+
 ## 2026-10-14 Q24-07 高对比与动效行为复核
 
 - 复用现有自适应调色板、生产资源与控件模板，给 Dashboard/Settings 根树传播高对比和有效动效状态；未改命令、DTO、列表性能、游戏选框或滚动系统。按仓库隔离 SDK `8.0.423` Release build `0 warning / 0 error`、XAML `24/24`；Playnite `net462` / tests `net472`，七个 WPF 类逐类 `13/13`。

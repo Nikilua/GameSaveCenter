@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-04 复用已有元数据编辑与 SQLite 持久化，补当前 main 取消/重启/重复说明稳定 BackupId 行为证据；SDK8 Playnite 4/4、Worker 1/1，SDK9 同类 5/5。SDK8 对当前 main R09 复跑2/2；外机 Expected 2/Actual 1 的行号和值吻合历史 Chrome 2 DIP 断言，但缺其 HEAD、源、DLL/PDB，错配仍未确认。#992/#993 失败且 logs/API 受限，根因未知；本阶段推送后的 SDK8/SDK10.0.401 Actions 另行追踪，SDK结果不可互代。用户至2026-10-15 09:00无法回复，不等待材料。下一项 R11-05，复用保护和保留策略已有能力，补受保护版本跳过保留的行为正反例。
+更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-05 复用保护 DTO、保留规划和 Worker 应用路径；`884e826e` 补生产保护列 DataTemplate 的实际绑定行为证据，本机 SDK8/VSTest17.11.1 Playnite 3/3、Core 3/3、Worker 12/12。外机 R09 Expected 2/Actual 1 仍指向旧 Chrome 2 DIP 断言，但当前一键脚本使用每次独立输出目录，外机源码/DLL/PDB/脚本身份未知，根因未确认；不改模板或减弱断言。#992/#993 CI 已失败、日志/API受限；公开 Actions snapshot落后且 `gh` 不可用，本阶段推送后须分别追踪 SDK8/SDK10.0.401。SDK结果不可互代。下一项 R11-06，先复核现有预览与安全行为。
 
 ## AI/Codex 启动协议
 

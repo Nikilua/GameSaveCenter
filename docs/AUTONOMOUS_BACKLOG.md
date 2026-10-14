@@ -8,7 +8,12 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
-### 2026-10-14 当前续跑点（覆盖下方历史下一项）
+### 2026-10-15 当前续跑点（覆盖下方历史下一项）
+
+- R11-05 当前 main `884e826e` 已补证：本机 SDK8.0.423 / VSTest17.11.1 下保护状态与生产 DataTemplate 绑定 3/3、Core 解锁/保护规划 3/3、Worker 合成预览/应用 12/12。复用既有实现；未运行完整 solution build、未触碰用户数据。证据：[R11-05 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-05-CURRENT-MAIN-RECHECK-20261015/README.md)。提交后跟踪 SDK8/SDK10.0.401 Actions 至终态，再继续 R11-06。
+- 外机 R09 再次报同一 `Expected 2 / Actual 1`、stack line151。`884e826e` 当前源第151行为错误色；仓库一键脚本用唯一输出根目录并从该输出执行隔离测试，然而缺外机 `summary.json`/TRX/DLL/PDB 身份，根因未确定。若复发，取该次 `artifacts/build-diagnostics/<run>/summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/`。详见[R09复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+
+### 2026-10-14 当前续跑点（历史记录）
 
 - 用户附加的 #970/#971 三个 diagnostics ZIP SHA 与已审副本一致：#970 SDK10.0.401 是取消测试竞态，#971 所附 SDK8.0.423 summary 是 Q14 fixture 前提错误；两者都已由 `599d2fd3` 修正。当前 main 在 SDK9.0.302 定向重跑各 `1/1`，详见[复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。#970 Actions 已失败；#971 官方 run 仍显示 In progress，无 SDK10 原始日志。SDK9 结果不替代 CI SDK8/10。
 - R00/R01 受 Q24-07 共享资源改动影响的四条 freshness 已在 `ae8f3be9` 上复核；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、相关 WPF `163 passed / 39 skipped / 0 failed`，baseline `14 fresh / 0 stale`。证据：[当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。
@@ -22,7 +27,7 @@
 - R10-03 搜索快捷键已有实现复核通过：最新 main SDK `9.0.302`、VSTest `17.14.1`，筛选相关行为与接线 `12/12`；隔离 testhost 中复核 Ctrl+F 作用域和 Ctrl+Z/C/未修饰 F 负例。未验证真实 Playnite、物理输入/IME、UIA 或呈现。证据：[R10-03 当前 main 包](design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261014/README.md)。
 - R10-04 当前 main 补证 `17/17`：真实 Shell 帮助 Popup 正例与生产命令禁用时空列表负例通过；SDK9 Release 测试项目/引用构建 0/0，无生产 UI 变更。前置提交 e3a12753 的 run #991 `38556833749` 最近仍 pending；R10-04 代码推送后另追踪该 run。证据：[R10-04 当前 main 包](design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261014/README.md)。
 - R11-04 当前 main 本机行为证据：复用备注元数据、解析、SQLite upsert 和稳定 BackupId；SDK8 Playnite 4/4、Worker 1/1，SDK9 同类 5/5。没有真实存档或 Playnite Host 写入。R09 新外机日志仍缺 HEAD/DLL/PDB；当前 SDK8 `40b0a980` 本机对照 2/2，日志仍不能确诊外机根因。见[R11-04 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R11-04-CURRENT-MAIN-RECHECK-20261014/README.md)和[R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
-- 下一项 R11-05：先核对保护状态、保留预览和执行已有实现，再补锁定版本始终被保留的行为正例/负例。R11-04 推送后 SDK8/SDK10.0.401 Actions 未到明确终态前不签收阶段；用户暂不可回复不阻塞独立工作。
+- 历史下一项 R11-05 已由 2026-10-15 当前 main 复核记录覆盖；当前继续 R11-06。此前 CI 对应状态和日志访问限制保留为历史，不作为新提交状态。
 
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |

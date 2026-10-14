@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 main。R10-07 侧栏复核 22/22，R10-08 最近访问 2/2，R11-01 17/17。R11-02 当前 main 定向行为 2/2，R09 当前 Release 复跑 2/2；Contracts/Core/HostAuditSeeder/Playnite net462/Tests net472 按序 Release 构建各为 0 warning/0 error。XAML 24/24，source validator 通过。SDK9.0.302/VSTest17.14.1 不替代仓库 SDK8.0.423/CI SDK10.0.401。R11-02 源码/程序集身份、脱敏 TRX 与行为边界见[R11-02 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
+更新：2026-10-15；分支 main。代码提交 `884e826e` 为 R11-05 保护列绑定测试；本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite/Core/Worker 定向结果 `3/3 + 3/3 + 12/12`。证据在[R11-05 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-05-CURRENT-MAIN-RECHECK-20261015/README.md)。相关测试项目构建通过但不是完整 solution build；没有真实 Playnite、用户数据写入或像素呈现验收。
 
-58090d99 与 3a2d1163 已推送，但匿名 GitHub Actions 页面载入报错且只显示旧提交快照：#972（8546aca）In progress；此前还抓到不同的旧快照 #979。匿名 API 返回过 HTTP 403；页面中没有这两个提交的 run，run 是否创建及终态未知。不得声称 SDK8/SDK10 CI 已通过；继续间隔查询，失败先取完整日志。#992/#993 失败日志仍需仓库登录，根因未知，不按摘要猜修。用户至 2026-10-15 09:00 无法回复，不等用户补信息，继续独立任务。外机 R09 HEAD/源码/DLL/PDB 身份仍待验；当前本机通过不确认外机根因。
+用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。当前 `884e826e` line151 是错误色、line152要求 Chrome 1 DIP、line154要求独立 ValidationStroke 2 DIP；SDK8当前程序集 R09 `2/2`。当前一键脚本生成随机隔离输出并从同一输出跑测试，但外机 `summary.json`/TRX/DLL/PDB identity 缺失，根因仍未知。不要改生产模板/减弱断言；若复发，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
 
-下一项：R11-03 当前 main 盘点；先核实现有 BackupDiffPathFilter、分页、类型/路径筛选、计数和完整路径复制行为，再决定只补证据还是修改。持续检查 58090d99/3a2d1163 Actions；新代码提交 push 后跟 SDK8 与 SDK10.0.401 job 到终态。CI 日志不可取得时记录限制并推进其他依赖已满足项。外机 R09 HEAD/DLL/PDB、Q24-03 第二物理显示器、真实 Playnite/UIA/IME/物理 DPI/最终呈现/ETW/宿主性能仍待验。
+CI：#992/run `38564273828` 与 #993/run `38570078343` 已失败，完整日志受登录/API 403 限制。匿名 Actions 页面快照仍在 #979，commit page cache miss，`gh` 不可用；新 R11-05 提交的 CI 未查到终态，SDK8/SDK10.0.401需分开追踪。下一项 R11-06；先审预览 DTO、服务和过期预览/重新校验行为，再补当前 main 证据。真实 Playnite/UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

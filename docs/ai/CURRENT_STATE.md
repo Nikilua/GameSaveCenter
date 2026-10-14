@@ -1,10 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R11-04 复用了已有元数据编辑/SQLite upsert 与稳定 BackupId，补取消草稿、重复说明选中恢复、解析并重启读回行为；SDK8.0.423 下 Playnite 4/4、Worker 1/1，SDK9.0.302 下相同用例 5/5。当前基线 `40b0a980` 的 R09 焦点类也以 SDK8.0.423 重建并通过 2/2。证据见[R11-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-04-CURRENT-MAIN-RECHECK-20261014/README.md)；本机 SDK不替代 CI SDK8/10.0.401，当前提交推送后的 CI 仍需另查。
+更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R11-05 复用已有保护 DTO、保留规划与 Worker 流程，新增生产保护列 DataTemplate 绑定行为测试；代码提交 `884e826e`。本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite 3/3、Core 3/3、Worker 12/12，source validation 通过；不是完整 solution build。证据见[R11-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-05-CURRENT-MAIN-RECHECK-20261015/README.md)。
 
-用户外机 R09 输出为 Expected 2/2/2/2、Actual 1/1/1/1，定位 `R09FocusOutlineBehaviorTests.cs:151`；历史 `3f7d0b30` 第151行正是 Chrome 2 DIP 断言，当前 main 则检查错误色，第152/154行分别要求 Chrome 1 DIP 与独立 ValidationStroke 2 DIP。SDK8.0.423 当前 main 定向复跑 R09 为2/2。数值/行号与旧断言相符，但缺外机 HEAD/源码/DLL/PDB，不能确认错配根因。`libpng iCCP` 不在断言栈；WPF COM 异常出现在失败后收尾阶段。没有因此改模板或弱化断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+外机 R09 再次报 Expected 2/2/2/2、Actual 1/1/1/1、stack line 151。当前 main `884e826e` 同一 R09 类 SDK8 重建后 2/2；当前行 151 检查错误色，Chrome 1 DIP 在152，独立 ValidationStroke 2 DIP 在154。仓库一键脚本使用每次唯一输出根目录，并从该次根目录执行 `--no-build` 测试；外机实际 checkout/脚本和 DLL/PDB identity 仍缺，无法确认根因。`libpng iCCP` 不在失败栈，WPF COM 异常发生于失败后收尾。没有更改生产模板或放宽断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-CI：#992/run 38564273828 与 #993/run 38570078343 失败，SDK10 和默认 job 均 exit1；完整日志受登录/API 403 限制，根因未知。当前 R11-04 变更待提交后按新提交追踪 SDK8 和 SDK10.0.401 两条 lane，CI 未到终态不签收阶段。用户至 2026-10-15 09:00 无法回复，不等待外机身份材料，独立任务继续。下一项 R11-05：核对保护元数据、保留预览与执行路径，再补跳过受保护版本的实际行为正例/负例。
+CI：#992/run `38564273828` 与 #993/run `38570078343` 已失败，SDK10 与默认 job 均 exit1；完整日志受登录/API 403 限制，根因未知。公开 Actions 页面快照仍停在 #979，commit 页面 cache miss，`gh` CLI 不可用，不能据此报告 `884e826e` 或本阶段 CI 终态。文档/证据整理后推送，再分别跟踪 SDK8 与 SDK10.0.401。用户到 2026-10-15 09:00 前无法回复时，独立工作继续，不等待异机材料。下一项 R11-06：核对已有备份前预览及立即备份重新校验行为。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

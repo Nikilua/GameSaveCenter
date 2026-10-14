@@ -71,3 +71,11 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 在当前 main 基线 `40b0a980` 上用本机 SDK `8.0.423` / VSTest `17.11.1` 重新 Release 构建 Playnite `net462` 和 Tests `net472`，R09 类 `2/2`，exit 0；插件 DLL ProductVersion `0.6.73+40b0a980`，测试 DLL SHA-256 `544BC3C5C124538B79D6C1178C84B2C9B41470259EE10DA42B316B68573D336B`、MVID `28b50be7-adfd-400c-bb7d-ebd709f2741c`，PDB SHA-256 `CFB5CC4EC4B3EF53FF1768AD3BC11BD59E8A371D12C63E01E5E054EB3EAD32D2`。脱敏 TRX 为 [`R09FocusOutlineBehaviorTests-sdk8423-main-40b0a980.trx`](tests/R09FocusOutlineBehaviorTests-sdk8423-main-40b0a980.trx)，SHA-256 `D886C0967EBE969BAC7F384AF1C8FB1EDECB2312636280374AA425BE33499D53`。
 
 这次 SDK8 当前 main 对照仍不能确认外机实际 checkout、工作树、测试 DLL 或 PDB。日志数值/行号与旧断言吻合，可能来自旧测试源/程序集或符号映射，但不是已证实的根因；在取得外机身份前不改生产模板或放宽断言。`libpng iCCP` 不在断言调用栈；COM 错误出现在失败后的 WPF 收尾，不能解释边框厚度断言。SDK8 本机结果不替代 CI SDK10.0.401。
+
+## 2026-10-15 新一键构建失败与最新 main 对照
+
+用户再次从另一台机器提供相同失败：Expected `2,2,2,2`、Actual `1,1,1,1`，栈指向第 151 行。当前 main `884e826e` 的第 151 行仍是错误边框颜色断言；Chrome `1 DIP` 在第 152 行，独立 `ValidationStroke 2 DIP` 在第 154 行。测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`，与此前复核一致；当前提交 SDK8.0.423 / VSTest 17.11.1 从同一 Release 测试程序集执行该类 `2/2` 通过。脱敏 TRX：[`R09FocusOutlineBehaviorTests-sdk8423-main-884e826e.trx`](tests/R09FocusOutlineBehaviorTests-sdk8423-main-884e826e.trx)，SHA-256 `78AEA96E3D734F69B742B84ECE0726633A7ED298D2CA07D19FD2B29A9107BCDE`。测试 DLL SHA-256 `922B3F64028BC2B2086B87190DC6D105E887A143AC1A22DC9590E8077D335511`、MVID `7aa94665-4e61-4124-a6ca-2e88cfbea5e2`、PDB SHA-256 `5F461BCB7524F481C62562CF8446FB4D9D2AA6605D3B92D583C39887238FB7FB`；插件 DLL SHA-256 `93F1DB4077141F7FBCC079BC4AA4335713F229D36D9E3F643153950704C481F5`、MVID `dafdeff7-e58d-4237-8830-80d976456775`。
+
+同时检查了当前仓库一键脚本：`dev-install-run.ps1` 默认每次生成新的 `artifacts/gsc-b/<token>` 输出根目录；`build.ps1` 先把解决方案编译到该根目录，再将同一个根目录交给 `run-playnite-tests-isolated.ps1`，后者用 `--no-build` 从该次输出执行。因此，若外机实际运行的是这套当前脚本，单纯复用上一次随机输出目录不能解释失败。旧 checkout/旧脚本或实际源码、DLL、PDB 不一致仍是可能方向，但外机身份未提供，根因没有确认。
+
+若下次仍失败，优先附加该次 `artifacts/build-diagnostics/<run>/` 目录；最低限度需要 `summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/` 下的 console/TRX，以比较源码哈希、ProductVersion、DLL/PDB 和实际断言。当前没有更改生产模板，也没有放宽断言。`libpng iCCP` 不在厚度断言的调用栈；COM 异常仍只出现在失败后的 WPF 收尾。
