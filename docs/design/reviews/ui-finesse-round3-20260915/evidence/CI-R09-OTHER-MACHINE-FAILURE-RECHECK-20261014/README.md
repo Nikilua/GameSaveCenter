@@ -99,3 +99,13 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 本次测试 DLL SHA-256 `A5D5C72BF7103505E548720EDD4C65A6DB04945A41033D276AC291D172FF000E`、PDB SHA-256 `9074BFECE11AFC107AEC6BD8AB86D91C338C7E52257B7040766084742CCF02C5`；插件 DLL SHA-256 `B3EF985AD75168D1BD0379EC831C5485E8EF90424465196274C5D82BF8224D51`、PDB SHA-256 `BE17BC36AF81DBA10826623F9A5A274316FC7D836515C581AFB14285DFD8E81B`。测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；生产 `WpfUiProduction.xaml` SHA-256 `FD212D59A0244DF8CABF33A3926FB5CE80CF930E4A0B587692D2DC9D3B15EC6E`。当前源码第 151 行检查错误态边框颜色，第 152 行检查 Chrome `1 DIP`，第 154 行检查独立 ValidationStroke `2 DIP`。
 
 本机当前 main 对照仍不能识别外机实际 checkout、工作树、DLL 或 PDB。外机报告的 `Expected 2 / Actual 1` 与旧厚度断言形态相符，但错配原因尚未证实；没有依据修改生产模板或削弱断言。`libpng iCCP` warning 不在失败调用栈中，TextServices COM 清理异常发生在断言失败之后，二者都不能解释厚度比较结果。SDK8 本机复核不替代 SDK10.0.401 CI。
+
+## 2026-10-15 当前 main 对照（`95109c22`）与 #967 附件
+
+用户最新外机日志仍报告相同测试、`Expected 2,2,2,2 / Actual 1,1,1,1` 和第 151 行。当前 main 第 151 行是错误边框颜色，第 152 行检查 Chrome `1 DIP`，第 154 行检查独立 `ValidationStroke 2 DIP`；历史 `3f7d0b30` 的第 151 行曾断言 Chrome 厚度应为 `2 DIP`。这支持旧测试源/测试 DLL/PDB 与插件资源不一致的推断，但外机实际 HEAD、源文件、DLL 和 PDB 仍未知，根因未确认。
+
+重新用 SDK `8.0.423` / VSTest `17.11.1` 对当前 main 工作树构建 Playnite `net462` 与测试 `net472`，Release 定向 build `0 warning / 0 error`；R09 类单独执行 `2/2` 通过、0 失败、0 跳过。脱敏 TRX：[R09FocusOutlineBehaviorTests-sdk8423-main-95109c22.trx](tests/R09FocusOutlineBehaviorTests-sdk8423-main-95109c22.trx)，SHA-256 `AB238844DBB77270BE90149315ADAE165530996D7A7E543400F8B9FA5B45F434`。测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；测试 DLL SHA-256 `82F254D315FC321149660F564A291EE105D476657E34F73D93AADFE08B388FF4`、MVID `87452ef3-7a89-44c1-81a4-afabda485a79`、PDB SHA-256 `1AD27C066FDDFD5A8988057D34F7656AA6E4CA1787825F01BF172957C716D7C9`；插件 DLL SHA-256 `9393C5258058D684B330048351172C7EC0202E5755721B62231BF3F9EC2F75BB`、MVID `d05bfaa3-0633-47a7-98c6-fdc07c8302c1`、PDB SHA-256 `36528A42E8A7425D01397BD0811C4A273DB2A6DB997222B3706295D9203C06C8`。该构建的 ProductVersion 元数据是 `0.6.73+95109c221ec85a52c61c51c0a119a2f3d97efacf`；源码 SHA 和二进制哈希共同区分含本阶段工作树改动的构建。
+
+用户附加的 `GameSaveCenter-sdk10-build-diagnostics.zip` 对应 #967/source commit `983fee5cae51f0f9fbe4b100620ab156e3a723f1`、SDK `10.0.401`，包内 R09 测试也是 `2/2` 通过。它证明该历史 SDK10 运行没有此失败，但不能确认本次外机使用了同一提交或程序集。`libpng iCCP` 不在失败断言调用栈；TextServicesContext COM 异常发生在断言失败后的 WPF 收尾，也不能解释厚度比较。
+
+若外机后续能复现，请从同一失败运行提供 `artifacts/build-diagnostics/<run>/summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/` 下的完整 console/TRX，并记录 `git rev-parse HEAD`、`git status --short`、测试源码第 145–160 行及实际加载的测试 DLL/PDB 和插件 DLL SHA-256。先保留现有文件，不通过更改断言或模板来掩盖程序集身份差异。

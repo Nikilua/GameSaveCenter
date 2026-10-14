@@ -180,3 +180,9 @@ R07 resize 回归应按已加载 PageHost/DataGrid 的实际窗口与内容区�
 R11 版本说明已有 Dashboard 编辑/取消、Ludusavi 元数据更新与 SQLite 按 `(PlayniteId, BackupId)` upsert。取消必须由生产 `CancelBackupMetadataEdit` 恢复备注/锁定值并保持 DTO 和 BackupId；页面夹具若用测试 ICommand 适配器，应明确只证明真实 View/Binding 到生产方法的路径，不称为真实生产 RelayCommand 实例。重复备注只能由稳定 BackupId 选中；重启读取测试应从真实生产 parser 解析合成 Ludusavi JSON、在隔离数据库 upsert 后由新 Store 实例读回，而非仅手工构造 DTO。
 
 外机 R09 `Expected Thickness(2)` / `Actual Thickness(1)`、行151与旧 commit `3f7d0b30` 的 Chrome 两 DIP 断言吻合。当前应检查 Chrome 1 DIP 和独立 ValidationStroke 2 DIP；仅本机复验无法得知外机 source/DLL/PDB。将旧源/程序集或 PDB 错配保留为未证实推断。`libpng iCCP` warning 和失败后的 TextServices COM shutdown 异常不能解释厚度断言。SDK8 当前 main 复跑用于本机对照，不替代 SDK10 CI。
+
+### 2026-10-15 R10-03 搜索快捷键当前 main
+
+R10-03 复用现有 `SearchShortcutPolicy`、PreviewKeyDown、Shell 搜索命令和工作区 TextBox 映射；当前 main `95109c2` 的生产路由行为补为真实 WPF routed-event，Media 页选中时实际把键盘焦点移到 `MediaSearchTextBox`。弹层占用、Ctrl+Z/C、普通 F 负例确认事件未消费且焦点不变。SDK8.0.423/VSTest17.11.1 定向 Release build `0/0`，相关 R10 组 `13/13`；R09 同身份对照 `2/2`。脱敏 TRX、二进制身份与边界见 [R10-03 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261015/README.md)。真实 Playnite、全局热键协作、物理键盘/IME、UIA、呈现、DPI/跨屏/ETW/宿主性能未验。
+
+`95109c2` 对应 run `38645600070` 上次为 In progress；本次 API 连接被拒绝，浏览器读取超时，本机无 `gh`，所以终态未确认。推送新的 R10-03 阶段后另查新 Actions run；SDK8 结果不得替代 SDK10.0.401。下一项 R10-04 快捷键帮助。外机 R09 仍需要相同失败运行的 `summary.json`、完整 console/TRX 与实际测试 DLL/PDB 身份；截至用户可回复前继续其他任务。

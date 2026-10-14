@@ -10722,3 +10722,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Playnite `net462`/Tests `net472` Release 定向构建 `0 warning / 0 error`；SDK `8.0.423`、VSTest `17.11.1`。XAML `24/24`、`validate-source.py`、`git diff --check` 通过；不是完整 solution build。脱敏 TRX、程序集 SHA/MVID/PDB 与范围见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md`。
 - 外机重复贴出的 R09 `Expected 2 / Actual 1` 片段仍无 HEAD/工作树/源/DLL/PDB 身份；当前 main 同类旧测试断言已在 SDK8 `2/2` 通过。本轮没有改生产模板或放宽断言；旧源/测试程序集不一致仍未确认。libpng 警告不在失败栈，COM 清理异常不解释厚度断言。
 - SDK8 本机不替代 CI SDK10.0.401；源码基线 `6eac7b90` 与本轮证据提交对应 Actions run ID/终态待查询。测试只用合成 DTO 与隔离 WPF/testhost，没有真实 Playnite、媒体 Worker、物理输入/DPI、UIA/读屏或呈现验证。下一项 R10-03 当前 main 焦点/弹层作用域复核。
+
+## 2026-10-15 R10-03 当前 main 搜索快捷键行为复核
+
+- 复用了既有 `SearchShortcutPolicy`、`DashboardView.OnPreviewKeyDown`、`FocusWorkspaceSearchCommand` 与工作区 TextBox 映射。旧用例有策略正/负例和源码接线，但没有直接观察 routed event 执行命令后的 WPF 焦点；本阶段仅提取 `TryHandleWorkspaceSearchShortcut` / `FocusWorkspaceSearchTarget` 共享入口，添加行为夹具，没有改快捷键规则、命令语义或视觉。
+- 新测试在 STA Window 中实例化生产 `AcrylicProductionShellView` 和 `MediaCenterView` 当前游戏媒体页，派发真实 WPF `PreviewKeyDown` routed event。Ctrl+F 经生产 Shell 命令把焦点移到 `MediaSearchTextBox` 且设置 Handled；对话框、游戏选框、紧凑浏览器、Ctrl+Z/C、普通 F 均未聚焦或消费输入。R10 相关组 `13/13`；本机当前 R09 焦点类 `2/2`。
+- 本机 SDK `8.0.423` / VSTest `17.11.1`；Playnite `net462`/Tests `net472` 定向 Release build `0 warning / 0 error`。`validate-source.py`、`git diff --check` 通过；WPF 静态扫描 `0 error / 29 warning / 177 info`，仅全仓既有 XAML/临时目录项，本阶段无 XAML 变更。脱敏 TRX/源/DLL/PDB SHA、MVID 与未验范围见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261015/README.md`。
+- 外机 R09 同一日志仍显示旧行号/旧断言特征；#967 SDK10.0.401、source `983fee5` 的附件 R09 `2/2`。本机 `95109c2` 同身份对照 `2/2`。libpng warning 不在厚度断言栈，TextServices COM 异常发生于失败后收尾；外机 HEAD/工作树/DLL/PDB 仍缺，错配只是推断，未改模板或放宽断言。
+- `95109c2` 的 Actions run `38645600070` 上次观测 In progress；本轮 API 连接被拒绝（127.0.0.1:9）、`gh` 不存在、浏览器读取超时，状态当前未知。阶段推送后继续检查对应 SDK8/SDK10.0.401 run；CI 未到终态前不签收。下一项 R10-04 快捷键帮助；真实 Playnite/物理输入/IME/UIA/呈现/物理 DPI 和宿主性能仍待验。

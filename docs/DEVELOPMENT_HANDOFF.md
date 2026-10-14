@@ -317,3 +317,10 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 本机受控窗口使用合成 DTO；真实 Playnite、媒体后端、物理输入/IME、UIA/读屏、物理 DPI/跨屏、最终呈现与宿主性能未验证。外机 R09 断言仍无实际 HEAD、源码、DLL/PDB 身份，根因未确认。
 - SDK8 不替代 CI SDK10.0.401。此前 #1010/#1011 的日志 API 为 403、根因未知；#1012 上次观察 In progress；`6eac7b90` 和文档提交的 run ID/终态待查。
 - 下一项 R10-03：复核搜索快捷键在输入框、当前游戏选框、紧凑浏览器和对话框中的焦点/弹层作用域，先复用已有实现并补实际行为正负例。用户至明早 09:00 无法回复，不等待外机信息。
+
+## 2026-10-15 当前恢复点：R10-03 本机通过，CI 终态待确认
+
+- 基线 `main` / `95109c221ec85a52c61c51c0a119a2f3d97efacf`。R10-03 保留现有快捷键策略和生产命令；新增 routed-event 行为夹具验证 Media 工作区 Ctrl+F 真实移动键盘焦点到 `MediaSearchTextBox`，并验证弹层/编辑键负例。SDK `8.0.423` / VSTest `17.11.1`，Playnite `net462` / Tests `net472` Release 定向 build `0/0`，R10 邻接组 `13/13`，R09 类 `2/2`。证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261015/README.md`。
+- 用户外机 R09 栈指向 line151、厚度 `Expected 2 / Actual 1`；当前源码第151行是错误色，第152/154行是 Chrome 1 DIP 与外置验证环 2 DIP。历史旧断言吻合，但外机提交、工作树、测试源/DLL/PDB 仍未知，不能确认错配根因。#967 SDK10 附件对应 `983fee5`，R09 `2/2`；本机当前对照也 `2/2`。不改生产模板/测试断言。
+- `95109c2` 的 Actions run `38645600070` 上次 In progress；API 请求被本机代理拒绝，`gh` CLI 缺失，Actions 页读取超时，当前状态未知。本阶段新提交的 run 也要单独跟到成功或失败；SDK8 不替代 SDK10.0.401。真实 Playnite 全局热键、物理键/IME、UIA/读屏、最终呈现和物理 DPI/跨屏未验。
+- 下一项可执行任务 R10-04：先核对快捷键帮助现有命令元数据及禁用过滤，再补真实命令可用/禁用行为。外机 R09 下一次可提供的最小证据为该次 `summary.json`、`tests/wpf.R09FocusOutlineBehaviorTests/` console/TRX、HEAD/status 和实际 DLL/PDB hashes；其余工作不等待回复。

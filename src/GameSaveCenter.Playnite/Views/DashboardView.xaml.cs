@@ -1453,17 +1453,14 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (SearchShortcutPolicy.ShouldFocusWorkspaceSearch(
-                    e.Key,
+            if (TryHandleWorkspaceSearchShortcut(
+                    e,
                     Keyboard.Modifiers,
                     DialogOverlay.Visibility == Visibility.Visible,
                     ProductionShellView.IsGamePickerOpen,
-                    compactGameBrowserOpen))
-            {
-                ProductionShellView.FocusWorkspaceSearchCommand.Execute(null);
-                e.Handled = true;
+                    compactGameBrowserOpen,
+                    ProductionShellView.FocusWorkspaceSearchCommand))
                 return;
-            }
             if (e.Key == Key.Escape && compactGameBrowserOpen)
             {
                 CloseGameBrowser();
@@ -1479,22 +1476,50 @@ namespace GameSaveCenter.Playnite.Views
             }
         }
 
+        internal static bool TryHandleWorkspaceSearchShortcut(
+            KeyEventArgs e,
+            ModifierKeys modifiers,
+            bool dialogVisible,
+            bool gamePickerOpen,
+            bool compactGameBrowserOpen,
+            ICommand focusWorkspaceSearchCommand)
+        {
+            if (!SearchShortcutPolicy.ShouldFocusWorkspaceSearch(
+                    e.Key,
+                    modifiers,
+                    dialogVisible,
+                    gamePickerOpen,
+                    compactGameBrowserOpen))
+                return false;
+
+            focusWorkspaceSearchCommand.Execute(null);
+            e.Handled = true;
+            return true;
+        }
+
         private void FocusWorkspaceSearch()
         {
             if (DataContext is not DashboardViewModel viewModel) return;
-            var trainer = ProductionShellView.GetWorkspaceView<TrainerCenterView>(WorkspaceKind.Trainers);
-            var tasks = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
-            var media = ProductionShellView.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media);
-            var maintenance = ProductionShellView.GetWorkspaceView<MaintenanceView>(WorkspaceKind.Maintenance);
-            FrameworkElement? target = viewModel.CurrentWorkspace switch
+            FocusWorkspaceSearchTarget(
+                viewModel.CurrentWorkspace,
+                workspace => ProductionShellView.GetWorkspaceView(workspace),
+                GameSearchTextBox);
+        }
+
+        internal static void FocusWorkspaceSearchTarget(
+            WorkspaceKind workspace,
+            Func<WorkspaceKind, UserControl?> getWorkspaceView,
+            TextBox defaultTarget)
+        {
+            FrameworkElement? target = workspace switch
             {
-                WorkspaceKind.Trainers => trainer?.FindName("TrainerSearchTextBox") as FrameworkElement,
-                WorkspaceKind.Tasks => tasks?.FindName("TaskSearchTextBox") as FrameworkElement,
-                WorkspaceKind.Media => media?.FindName("MediaSearchTextBox") as FrameworkElement,
-                WorkspaceKind.Maintenance => maintenance?.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
-                _ => GameSearchTextBox
+                WorkspaceKind.Trainers => getWorkspaceView(WorkspaceKind.Trainers)?.FindName("TrainerSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Tasks => getWorkspaceView(WorkspaceKind.Tasks)?.FindName("TaskSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Media => getWorkspaceView(WorkspaceKind.Media)?.FindName("MediaSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Maintenance => getWorkspaceView(WorkspaceKind.Maintenance)?.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
+                _ => defaultTarget
             };
-            if (target == null) target = GameSearchTextBox;
+            if (target == null) target = defaultTarget;
             target.Focus();
             if (target is TextBox textBox) textBox.SelectAll();
         }
