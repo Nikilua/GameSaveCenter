@@ -10738,3 +10738,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - XAML 结构检查 24/24，scripts/validate-source.py 与 git diff --check 通过。脱敏 TRX、源/程序集哈希、MVID、构建身份及行为边界见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261015/README.md；R09 同源对照见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md。
 - 用户提供的外机 R09 失败仍缺该次 HEAD、工作树、测试源、DLL/PDB 和资源身份。本机当前同源隔离输出通过只能排除当前构建中的复现，不能诊断外机；没有改模板或弱化断言。外机若继续复现，下一次取同次运行 summary.json、R09 console/TRX、HEAD/status 和实际程序集哈希。用户暂时无法回复，独立任务继续。
 - Actions run ID/终态未知：本机代理拒绝匿名 API，已知 GitHub run 链接返回 cache miss。CI 门禁未签收；下一项 R10-05，先盘点已有筛选预设服务/DTO/持久化与确认/取消行为。
+## 2026-10-15 R10-05 当前 main 筛选预设行为补证
+
+- 复用了现有 FilterPresetDefinition、GameSaveCenterSettings.FilterPresets 规范化、任务/媒体 preset 命令和 Playnite 确认逻辑，没有重建服务或改生产代码/XAML。
+- 审查原行为覆盖后发现：工具栏按钮测试使用测试 ICommand；生产 DashboardViewModel 的快照和应用映射仅被源码断言覆盖。为补齐行为证据，新增 R10FilterPresetBehaviorTests.ProductionTaskPresetSnapshotAppliesFiltersAndFallsBackWhenDynamicOptionsExpire。测试在 STA 中调用生产 CreateTaskFilterPreset 和 ApplyTaskFilterPreset 方法：搜索/状态/游戏/类型值从合成当前状态进入标量快照并恢复；状态/游戏/类型选项过期时实际映射回“全部”。
+- 同类旧配置/非法值/重复 ID 回退、字符串 DTO 属性、JSON roundtrip、生产重命名/删除方法的取消负例、对象/顺序/选择/草稿保持继续通过。取消时未调用 SavePluginSettings；不访问用户 settings。
+- main 代码测试基线 e2353aa38e8c125d49ab1a1a37d67d37e1cbca8c；本机仅 SDK9.0.302/VSTest17.14.1，global.json 固定 SDK8.0.423 不可用。从仓库外启动 dotnet，隔离目录执行全解方案 Release restore/build，0 warning / 0 error。预设类 6/6、TaskCenterViewResponsive 8/8、Q14ToolbarAlignment 1/1，共 15/15；XAML 24/24、validate-source.py 与 diff check 通过。SDK9 不替代 SDK8/CI SDK10.0.401。
+- Q14 1/1 通过且 exit 0，结束后 testhost 输出 WPF COM teardown InvalidComObjectException；没有断言失败，记录为 teardown 观察。TRX/构建身份/范围/未验事实见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-05-CURRENT-MAIN-RECHECK-20261015/README.md。
+- 没有真实 Playnite host、用户设置写入、媒体/云/存档访问；没有视觉变化。CI 对前一推送 e2353aa3 的 run ID/终态未知；本轮测试/文档提交推送后需继续追踪 Actions 直至成功或失败。前置 #991 SDK8/SDK10 全日志仍不可读，不据 exit code 猜根因。
+- 下一项 R10-06：复用来源提示/清除命令，验证只清导航带入条件、保留其他筛选和草稿。

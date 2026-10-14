@@ -7,8 +7,11 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
@@ -123,6 +126,88 @@ public sealed class R10FilterPresetBehaviorTests
     }
 
     [Fact]
+    public void ProductionTaskPresetSnapshotAppliesFiltersAndFallsBackWhenDynamicOptionsExpire()
+    {
+        RunSta(() =>
+        {
+            var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+            var tasks = new BatchObservableCollection<TaskStatusDto>();
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.Tasks), tasks);
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TasksView), CollectionViewSource.GetDefaultView(tasks));
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TaskStatusFilterOptions), new[] { "全部", "运行中", "等待中", "失败", "已完成" });
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TaskHistoryRangeOptions), new[] { "全部时间", "今天", "昨天", "近7天", "近30天" });
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TaskGameFilterOptions), new ObservableCollection<string> { "全部", "星界边境" });
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TaskTypeFilterOptions), new ObservableCollection<string> { "全部", "备份" });
+            var searchRefresh = new DebouncedRefresh(() => { }, TimeSpan.FromHours(1));
+            SetField(dashboard, "taskSearchRefresh", searchRefresh);
+            SetField(dashboard, "taskHistoryQueryRefresh", new DebouncedRefresh(() => { }, TimeSpan.FromHours(1)));
+            SetField(dashboard, "taskPageRequests", new LatestRequestCoordinator());
+            SetField(dashboard, "taskHistoryActive", false);
+            SetField(dashboard, "isBusy", true);
+            SetField(dashboard, "taskNavigationGameName", string.Empty);
+
+            try
+            {
+                SetField(dashboard, "taskSearchText", "capture");
+                SetField(dashboard, "taskStatusFilter", "失败");
+                SetField(dashboard, "taskGameFilter", "星界边境");
+                SetField(dashboard, "taskTypeFilter", "备份");
+                SetField(dashboard, "taskHistoryScope", "最近任务");
+                SetField(dashboard, "taskHistoryRange", "全部时间");
+
+                var snapshotMethod = typeof(DashboardViewModel).GetMethod("CreateTaskFilterPreset", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(snapshotMethod);
+                var snapshot = Assert.IsType<FilterPresetDefinition>(snapshotMethod!.Invoke(dashboard, new object[] { "失败备份" }));
+                Assert.Equal(FilterPresetDefinition.TasksWorkspace, snapshot.Workspace);
+                Assert.Equal("capture", snapshot.TaskSearchText);
+                Assert.Equal("失败", snapshot.TaskStatusFilter);
+                Assert.Equal("星界边境", snapshot.TaskGameFilter);
+                Assert.Equal("备份", snapshot.TaskTypeFilter);
+
+                SetField(dashboard, "taskSearchText", string.Empty);
+                SetField(dashboard, "taskStatusFilter", "全部");
+                SetField(dashboard, "taskGameFilter", "全部");
+                SetField(dashboard, "taskTypeFilter", "全部");
+                SetField(dashboard, "selectedTaskFilterPreset", snapshot);
+                var applyMethod = typeof(DashboardViewModel).GetMethod("ApplyTaskFilterPreset", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(applyMethod);
+                applyMethod!.Invoke(dashboard, null);
+
+                Assert.Equal("capture", dashboard.TaskSearchText);
+                Assert.Equal("失败", dashboard.TaskStatusFilter);
+                Assert.Equal("星界边境", dashboard.TaskGameFilter);
+                Assert.Equal("备份", dashboard.TaskTypeFilter);
+                Assert.Equal("已应用任务筛选预设“失败备份”", dashboard.StatusMessage);
+
+                var stale = new FilterPresetDefinition
+                {
+                    Name = "旧选项",
+                    Workspace = FilterPresetDefinition.TasksWorkspace,
+                    TaskStatusFilter = "已移除状态",
+                    TaskGameFilter = "已移除游戏",
+                    TaskTypeFilter = "已移除类型"
+                };
+                SetField(dashboard, "taskSearchText", string.Empty);
+                SetField(dashboard, "taskStatusFilter", "全部");
+                SetField(dashboard, "taskGameFilter", "全部");
+                SetField(dashboard, "taskTypeFilter", "全部");
+                SetField(dashboard, "selectedTaskFilterPreset", stale);
+                applyMethod.Invoke(dashboard, null);
+
+                Assert.Equal("全部", dashboard.TaskStatusFilter);
+                Assert.Equal("全部", dashboard.TaskGameFilter);
+                Assert.Equal("全部", dashboard.TaskTypeFilter);
+            }
+            finally
+            {
+                searchRefresh.Cancel();
+                ((LatestRequestCoordinator)GetField(dashboard, "taskPageRequests")!).Dispose();
+                ((DebouncedRefresh)GetField(dashboard, "taskHistoryQueryRefresh")!).Cancel();
+            }
+        });
+    }
+
+    [Fact]
     public async Task CancellingPresetRenameOrDeleteLeavesSelectionAndStoredPresetUntouched()
     {
         await AssertCancelledPresetMutationIsUnchanged("RenameTaskFilterPresetAsync", "重命名筛选预设", "重命名", false, "新名称");
@@ -201,6 +286,13 @@ public sealed class R10FilterPresetBehaviorTests
         var field = typeof(DashboardViewModel).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(field);
         field!.SetValue(target, value);
+    }
+
+    private static object? GetField(object target, string fieldName)
+    {
+        var field = typeof(DashboardViewModel).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        return field!.GetValue(target);
     }
 
     private sealed class TestPresetBinding

@@ -189,3 +189,8 @@ R10-03 复用现有 `SearchShortcutPolicy`、PreviewKeyDown、Shell 搜索命令
 ## 2026-10-15 R10-04 当前 main 快捷键帮助复核
 
 R10-04 已复用现有 KeyboardShortcutHelpCatalog、FocusWorkspaceSearchCommand 和 CanExecute(null)，没有重复实现。基线 main 6cf279238d55fe3d139fa2cb0eb7b09229a7478a；本机只有 SDK9.0.302/VSTest17.14.1，仓库固定 SDK8.0.423 不可用。本轮隔离全解方案 Release build 0 warning / 0 error，R10帮助和相邻行为 18/18，R09 2/2，XAML 24/24、source validation/diff check 通过。实际 Shell Popup 开闭、当前媒体页 Ctrl+F 条目、生产命令禁用后的空列表均通过；没有生产代码或 XAML 改动。CI run ID/终态未知，SDK9 不替代 SDK8/SDK10.0.401。外机 R09 根因仍未知，需外机实际 HEAD/source/DLL/PDB 身份。证据：docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261015/README.md。下一项 R10-05 筛选预设；先检查已有模型和持久化，不重建服务。
+## 2026-10-15 R10-05 当前 main 筛选预设行为补证
+
+R10-05 沿用现有 FilterPresetDefinition、设置规范化、任务/媒体 preset 命令及确认流程。原工具栏按钮用测试命令，生产快照/应用方法此前只有源码接线断言，因此新增一个 STA 行为用例调用生产 CreateTaskFilterPreset 和 ApplyTaskFilterPreset，验证标量筛选状态恢复，以及状态/游戏/类型动态项过期后回退“全部”。非法/旧配置回退、JSON scalar roundtrip、真实重命名/删除取消保护继续通过。只改测试，无生产代码/XAML变更。
+
+基线 e2353aa38e8c125d49ab1a1a37d67d37e1cbca8c，本机 SDK9.0.302/VSTest17.14.1（SDK8.0.423未安装）；全解方案 Release build 0/0，R10 preset 6/6、TaskCenterViewResponsive 8/8、Q14 toolbar 1/1，合计15/15，XAML24/24、source validation/diff check通过。Q14通过后出现testhost COM teardown诊断但exit0。SDK9不替代SDK8/CI SDK10.0.401。用户设置和真实Playnite未触碰。CI run待确认；下一项 R10-06 来源条件清除行为。证据：docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-05-CURRENT-MAIN-RECHECK-20261015/README.md。
