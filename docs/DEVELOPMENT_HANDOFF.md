@@ -266,3 +266,9 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - ShellChrome 22 项均通过、TRX exit 0；testhost 收尾出现 TextServices COM 异常输出，根因未知。误用类名的零测试筛选器未计入 44/44。
 - 本机 SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。公开 Actions 仍只显示 #979（ae3c565），#971 In progress，#978 Failure 且日志需登录；推送的 R09 文档提交 8dda9995 尚未显示 run。真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、ETW/宿主性能仍待验。
 - R08-05 当前 main 受控条件已满足，视觉不适用，不生成截图。下一可执行任务 R07-08 当前 main resize 复核；先查现有实现/测试及 #960/#968 的提交边界，不凭旧失败摘要猜修。
+## 2026-10-14 R07-08 当前 main 复核与继续点
+
+- d7f6fc42 已推送到 main；R08-05 SDK9 隔离 solution 0/0、行为 44/44，CI 公共页尚未列出该提交 run。R07-08 复用同源码基线 552b8168 的 Release test assembly，当前精确 R07 行为 1/1，TRX、DLL SHA/MVID/ProductVersion、源 SHA 和实际 PageHost 尺寸见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20261014/README.md。
+- R07 当前本机受控行为覆盖生产详情打开、GamePicker、任务表、焦点与五次 resize；不证明真实 Playnite 拖动、物理 DPI/呈现帧/宿主耗时。#960/run 38327521241 已失败但完整日志 API 403/404，CI SDK与内部根因未知；不能用 #968 历史双 lane 或 SDK9 结果替代当前 CI。
+- Actions 页面最近可见 #979（ae3c565）；按 d7f6fc42 head SHA 查询公开 REST API 返回 HTTP 403 rate limit。R08/R07 当前推送 SDK8.0.423 与 SDK10.0.401 终态未确认，不能据此判断 run 不存在。继续查到成功/失败后按完整日志处理；CI 运行时不宣称阶段完成。其他任务的未跟踪证据保留。
+- 下一可执行项 R10-02。R09-05 外机提交、工作树和 DLL/PDB 身份待用户 2026-10-15 09:00 后补充；期间继续独立工作。

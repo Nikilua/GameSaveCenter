@@ -10478,3 +10478,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - ShellChrome 22 项均通过、TRX exit 0；testhost 收尾出现 TextServices COM 异常输出，根因未知。误用类名的零测试筛选器未计入 44/44。
 - 本机 SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。公开 Actions 仍只显示 #979（ae3c565），#971 In progress，#978 Failure 且日志需登录；推送的 R09 文档提交 8dda9995 尚未显示 run。真实 Playnite、物理 DPI/跨屏、presented frame、UIA/读屏、ETW/宿主性能仍待验。
 - R08-05 当前 main 受控条件已满足，视觉不适用，不生成截图。下一可执行任务 R07-08 当前 main resize 复核；先查现有实现/测试及 #960/#968 的提交边界，不凭旧失败摘要猜修。
+## 2026-10-14 R07-08 当前 main resize 行为复核
+
+- 查明并复用已有 TaskCenterView 详情断点、AcrylicProductionShellView PageHost 尺寸传播和 GamePicker 覆盖层。没有生产代码/XAML/VM/命令/DTO 改动；测试从已加载 DataGrid 选择任务，按生产按钮 Click 打开 compact 详情，再执行宽→窄→短→宽→恢复。
+- 当前 main 的代码/测试源码与已构建的 552b8168 基线相同，552 后到 d7f6fc42 的 src/tests 差异为空。使用 R08-05 同源码隔离 Release 输出中 test assembly 定向重跑 R07ResizeStressBehaviorTests：SDK 9.0.302、VSTest 17.14.1、1/1 passed、0 fail/skip、exit 0；同一代码基线完整 solution build 为 0 warning/0 error、XAML 24/24。TRX 已脱敏归档，插件/测试 DLL SHA、ProductVersion、MVID 与五个受影响源文件 SHA 见 R07-08 当前 main 证据包。
+- 五个逻辑 DIP 阶段测得 PageHost：1038.667×759.333 → 632.667×559.333 → 632.667×419.333 → 1112.667×759.333 → 1038.667×759.333。详情保持 Visible，窄/短 MaxHeight 为 136，宽态回到 Infinity；picker 和搜索焦点保持可见/焦点内，任务表正高度且 MaxHeight 不残留有限值，shell 共收到 11 次 SizeChanged。
+- #968 双 SDK lane 的历史成功与 #960/run 38327521241 的终态失败分开记载；#960 完整日志 403/404，CI SDK、内部失败命令和根因仍未知。最新公开 Actions 列表在 #979/ae3c565，未见 d7f6fc42 run；按 head SHA 查询公开 REST API 返回 HTTP 403 rate limit，不能据此判断 run 不存在。R08-05/R07-08 SDK8/SDK10 当前提交 CI 尚未到可确认终态。SDK9 本机结果不替代 CI。受控 STA Window 不证明真实 Playnite 拖动、物理 DPI、presented frame、UIA、ETW 或宿主布局耗时。
+- R07-08 当前受控行为证据已补齐，任务 CI/真实宿主边界保持未收口。下一独立项 R10-02；R09-05 外机 HEAD/DLL/PDB 等用户明早可回复后补证，不阻塞。
