@@ -4,10 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -61,12 +65,86 @@ public sealed class R11BackupPreviewBehaviorTests
                 Assert.Contains(text, value => value.IndexOf("profiles/save-01.dat", StringComparison.Ordinal) >= 0);
                 Assert.Contains(text, value => value.IndexOf("settings/user.json", StringComparison.Ordinal) >= 0);
 
+                var buttons = FindVisualChildren<ButtonBase>(view).ToArray();
+                var previewButton = Assert.Single(buttons, button => AutomationProperties.GetName(button) == "预览当前游戏备份范围");
+                Assert.Same(state.PreviewBackupCommand, previewButton.Command);
+                Assert.True(previewButton.IsEnabled);
+                Assert.NotSame(previewButton.Command, state.BackupSelectedCommand);
+
+                var previewPeer = FrameworkElementAutomationPeer.CreatePeerForElement(previewButton);
+                Assert.NotNull(previewPeer);
+                var previewInvoke = Assert.IsAssignableFrom<IInvokeProvider>(previewPeer!.GetPattern(PatternInterface.Invoke));
+                previewInvoke.Invoke();
+                previewButton.Dispatcher.Invoke(DispatcherPriority.Background, new Action(previewButton.UpdateLayout));
+                Assert.Equal(1, state.PreviewBackupCommand.ExecutionCount);
+                Assert.Equal(0, state.BackupSelectedCommand.ExecutionCount);
+
                 var xaml = System.IO.File.ReadAllText(System.IO.Path.Combine(
                     TestRepositoryContext.Root,
                     "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml"));
                 Assert.Contains("PreviewBackupCommand", xaml);
                 Assert.Contains("预览不产生归档", xaml);
                 Assert.Contains("BackupPreview.IdentifiedPathsDisplay", xaml);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void EmptyPreviewDoesNotPretendScanningFinishedAndNoDataStaysExplicit()
+    {
+        RunSta(() =>
+        {
+            var view = new SaveCenterView { DataContext = new SavePageState(), Width = 1040, Height = 700 };
+            var window = new Window
+            {
+                Width = 1040,
+                Height = 700,
+                Content = view,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None
+            };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                var card = Assert.IsType<Border>(view.FindName("SaveBackupPreviewCard"));
+                Assert.Equal(Visibility.Collapsed, card.Visibility);
+
+                var loadingState = new SavePageState
+                {
+                    BackupPreview = new BackupPreviewDto
+                    {
+                        State = "Loading",
+                        Summary = "正在扫描本次备份范围；不会创建归档。"
+                    }
+                };
+                view.DataContext = loadingState;
+                PumpLayout(window);
+                Assert.Equal(Visibility.Visible, card.Visibility);
+                var loadingText = FindVisualChildren<TextBlock>(card).Select(textBlock => textBlock.Text).ToArray();
+                Assert.Contains(loadingText, text => text == "扫描中");
+                Assert.Contains(loadingText, text => text.IndexOf("正在扫描本次备份范围", StringComparison.Ordinal) >= 0);
+                Assert.DoesNotContain(loadingText, text => text.IndexOf("0 个路径", StringComparison.Ordinal) >= 0);
+
+                view.DataContext = new SavePageState
+                {
+                    BackupPreview = new BackupPreviewDto
+                    {
+                        State = "NoData",
+                        Summary = "扫描已完成，但当前没有识别到可纳入备份的路径。"
+                    }
+                };
+                PumpLayout(window);
+                Assert.Equal(Visibility.Visible, card.Visibility);
+                var noDataText = FindVisualChildren<TextBlock>(card).Select(textBlock => textBlock.Text).ToArray();
+                Assert.Contains(noDataText, text => text == "没有可纳入路径");
+                Assert.Contains(noDataText, text => text.IndexOf("扫描已完成", StringComparison.Ordinal) >= 0);
+                Assert.DoesNotContain(noDataText, text => text.IndexOf("正在扫描", StringComparison.Ordinal) >= 0);
             }
             finally
             {
@@ -223,16 +301,20 @@ public sealed class R11BackupPreviewBehaviorTests
         public bool SaveDetailsStaleVisible => false;
         public bool SaveHistoryStateOverlayVisible => false;
         public bool SaveCandidateStateOverlayVisible => false;
+        public int SaveTabIndex { get; set; }
         public string RestoreAvailabilityHint => string.Empty;
         public bool RestoreAvailabilityNeedsMaintenance => false;
         public ICommand LoadDetailsCommand { get; } = new CommandStub();
+        public CommandStub PreviewBackupCommand { get; } = new CommandStub();
+        public CommandStub BackupSelectedCommand { get; } = new CommandStub();
         public ICommand RetrySelectedGameCloudUploadCommand { get; } = new CommandStub();
     }
 
     private sealed class CommandStub : ICommand
     {
+        public int ExecutionCount { get; private set; }
         public event EventHandler? CanExecuteChanged { add { } remove { } }
         public bool CanExecute(object? parameter) => true;
-        public void Execute(object? parameter) { }
+        public void Execute(object? parameter) => ExecutionCount++;
     }
 }
