@@ -4,8 +4,8 @@
   "records": [
     {
       "id": "R00-01-02",
-      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
-      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -21,8 +21,8 @@
     },
     {
       "id": "R00-03",
-      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
-      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -52,8 +52,8 @@
     },
     {
       "id": "R00-05",
-      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
-      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -100,8 +100,8 @@
     },
     {
       "id": "R00-08",
-      "evidence": "evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md",
-      "sourceCommit": "e221feb35a4f7ca796dc348c2c5cde247a5b58ed",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -147,8 +147,8 @@
     },
     {
       "id": "R01-03",
-      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
-      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
       "packageCommit": null,
       "runtimeKind": "infrastructure",
       "scopes": [
@@ -195,8 +195,8 @@
     },
     {
       "id": "R01-06",
-      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
-      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

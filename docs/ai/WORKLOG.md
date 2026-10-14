@@ -10747,3 +10747,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Q14 1/1 通过且 exit 0，结束后 testhost 输出 WPF COM teardown InvalidComObjectException；没有断言失败，记录为 teardown 观察。TRX/构建身份/范围/未验事实见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-05-CURRENT-MAIN-RECHECK-20261015/README.md。
 - 没有真实 Playnite host、用户设置写入、媒体/云/存档访问；没有视觉变化。CI 对前一推送 e2353aa3 的 run ID/终态未知；本轮测试/文档提交推送后需继续追踪 Actions 直至成功或失败。前置 #991 SDK8/SDK10 全日志仍不可读，不据 exit code 猜根因。
 - 下一项 R10-06：复用来源提示/清除命令，验证只清导航带入条件、保留其他筛选和草稿。
+
+## 2026-10-15 R00/R01 freshness 与 R09 外机日志当前 main 复核
+
+- 先从 `origin` fetch 确认远端 `main` 仍为 `88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc`；没有重置或覆盖工作树。freshness 初始有 6 条过期记录：R00-01-02、R00-03、R00-05、R00-08、R01-03、R01-06。本轮按登记源码重新验证后仅更新这六条 `sourceCommit/evidence`，最终 `14/14 fresh / 0 stale`，package identity `not-provided`。
+- 本机 SDK `8.0.423`、MSBuild `17.11.48`、VSTest `17.11.1`。完整 solution Release `0 warning / 0 error`，Playnite `net462`、测试 `net472`；XAML `24/24`、`validate-source.py` 通过。目标类分进程串行运行：UiDiagnosticsExporter `11/11`、UiFinesseFoundation `9/9`、R09HighContrast `3/3`、WpfUiResourceDictionary `139 passed / 39 skipped / 0 failed`、GamePickerKeyboard `7/7`、UiAuditSource `6/6`，共 `175 passed / 39 skipped / 0 failed`。skip 未计通过。
+- 当前 RenderHarness 在 SDK8 Release `0/0`；当前源码 `88b8eb57` audit 有 `168` snapshots、`116` warnings、`0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes`；E01–E20 校验 `20/20`。13 条 MEDIUM 仍是窄布局 toolbar 垂直扩展风险。归档完整摘要、索引、manifest/route JSON、layout/fidelity 报告与五张合成代表图；没有保留 88 MB 临时 ZIP 或 746 张临时图。所有本阶段新 `.tmp` 隔离输出在证据核对后清理；其他未跟踪用户/任务 TRX 和 testhost 文件未触碰。
+- 用户贴出的外机 R09 厚度失败在同一 SDK8 完整隔离构建输出下单独复跑 `2/2`。当前源码第151行是错误色断言，第152行是 Chrome `1 DIP`，第154行才是 `ValidationStroke 2 DIP`；外机报告的 `Expected 2 / Actual 1` 与第151行不对应。旧源/测试 DLL/PDB 映射是线索但未确认，libpng iCCP 不在断言调用栈，COM 异常出现在外机失败后的 WPF 收尾。没有改生产模板或放宽断言；详细同输出 SHA/MVID/TRX 见[R00/R01复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)及[R09外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- GitHub Actions：公开页 loading 错误，当前可见 #979 指向短 SHA `ae3c565` 且 queued，#978 指向 `ae8f3be`；均不能匹配已 fetch 的当前 `main=88b8eb57`。#979 run 页面 cache miss、匿名 API 访问限制；当前提交对应 SDK8/SDK10.0.401 run ID 与终态未知。SDK8 本机结果不替代 SDK10.0.401；推送本阶段证据后继续检查新 run 至明确成功或失败。
+- 没有运行真实 Playnite/package-host、OS UIA/IME/读屏、物理 DPI/跨屏、屏幕 presented frame、ETW 或宿主性能；只使用合成 DTO/受控离屏 WPF，没有读写真实存档、媒体、设置或云端。Demo 原目录不可用，沿用恢复生产基线。
+- 下一项 Q24-02：先重新核对 `74815b2` transient Popup/焦点/选框虚拟化失败 TRX 与当前 main 测试源，逐个验证窗口可见、焦点成功及 dispatcher 前提，再决定是否有产品缺口或仅需修夹具；Q24-03 物理跨屏、Q25 ETW/宿主采样继续作为外部阻塞，不绕过系统拒绝。

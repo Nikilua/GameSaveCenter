@@ -82,6 +82,12 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 
 用户随后说明这次外机已从 Git 拉取最新版本，并再次贴出同一失败片段。该信息保留为用户报告；片段仍显示旧测试断言对应的 `2` 对 `1` 和第 151 行，但未包含机器实际 `HEAD`、工作树状态、诊断目录、测试源 SHA、DLL/PDB identity，因此不能据此断定 Git checkout 确实对应本轮最新 main，也不能确认根因。当前仍无依据改动生产模板或放宽断言；问题不阻塞独立 Q/R 任务。
 
+## 2026-10-15 最新 main `88b8eb57` 同输出 SDK8 复核
+
+本机从当前 main `88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc` 执行完整 Release solution build（SDK `8.0.423`、VSTest `17.11.1`、Playnite `net462`、测试 `net472`）为 `0 warning / 0 error`。使用该次完整解决方案构建的同一隔离输出单独运行 `R09FocusOutlineBehaviorTests`：`2/2` 通过。脱敏 TRX 位于 [当前 main R00/R01 复核包](../R00-R01-CURRENT-MAIN-RECHECK-20261015/tests/R09FocusOutlineBehaviorTests.trx)。该测试程序集 SHA-256 `BAF74B8A177F498BED63F3F3F47E1BDFB7E85DDFD48D0811590CCF8E7ACB17CB`、MVID `54831945-8a8b-42f8-b602-07abd8258a9c`、PDB SHA-256 `22EC1B1BD010FB4445230ECFA70308CCFA0B87E44A1DB6C97097E988296D5A47`；插件 DLL SHA-256 `CB6D7DA5613A36065BD8541AABF2BD68318A4B9D312666A0B73DF049273F8D97`、MVID `24135592-de2e-4198-8ac6-930f120226ea`。
+
+当前 main 第 151 行是错误色断言，第 154 行才是 `ValidationStroke` 2 DIP 断言。该同输出复跑进一步说明本机不能复现，但仍不能识别外机那次实际测试源、DLL/PDB 或样式资源身份；行号和值的差异仍只是 source/symbol/build-output 不一致线索，没有确认根因。未改生产模板或放宽测试。外机如再次出现，需要同一失败运行的 `summary.json`、R09 console/TRX、HEAD/status 和实际 DLL/PDB 哈希；用户无法回复期间继续其他独立工作。
+
 ## 2026-10-15 用户附加 #970/#971 diagnostics 对照
 
 用户附加了 SDK10 与常规 build diagnostics ZIP，并说明来自 #970/#971。按 ZIP 内 `summary.json`、TRX 和 console 原文复核：
