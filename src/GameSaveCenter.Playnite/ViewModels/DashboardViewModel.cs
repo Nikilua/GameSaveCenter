@@ -4057,6 +4057,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public void RequestWorkspaceLoad()
         {
             var workspace = CurrentWorkspace;
+            if (WorkspaceLoadSchedulerOverrideForAudit != null)
+            {
+                WorkspaceLoadSchedulerOverrideForAudit(workspace);
+                return;
+            }
+
             var contextKey = GetWorkspaceLoadContextKey(workspace);
             if (workspace == WorkspaceKind.Media)
                 RunWorkspaceLoad(workspace, contextKey, LoadMediaWorkspaceAsync);
@@ -4065,6 +4071,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             else if (IsGameScopedWorkspace(workspace))
                 RunWorkspaceLoad(workspace, contextKey, () => LoadDetailsAsync());
         }
+
+        /// <summary>Lets interaction tests observe routing without starting Worker-backed reads.</summary>
+        internal Action<WorkspaceKind>? WorkspaceLoadSchedulerOverrideForAudit { get; set; }
 
         private string GetWorkspaceLoadContextKey(WorkspaceKind workspace)
         {
