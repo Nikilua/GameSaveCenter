@@ -1,10 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R11-05 复用已有保护 DTO、保留规划与 Worker 流程，新增生产保护列 DataTemplate 绑定行为测试；代码提交 `884e826e`。本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite 3/3、Core 3/3、Worker 12/12，source validation 通过；不是完整 solution build。证据见[R11-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-05-CURRENT-MAIN-RECHECK-20261015/README.md)。
+更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R11-06 在 `40af39c8` 当前 main 复核：只增强测试，无生产代码变更；本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite `R11BackupPreviewBehaviorTests 4/4`、Worker `BackupPreviewBehaviorTests 2/2`，XAML `24/24`、source validation 通过。相关测试项目及引用在隔离输出内构建通过，不是完整 solution build。证据见[R11-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。
 
 外机 R09 再次报 Expected 2/2/2/2、Actual 1/1/1/1、stack line 151。当前 main `884e826e` 同一 R09 类 SDK8 重建后 2/2；当前行 151 检查错误色，Chrome 1 DIP 在152，独立 ValidationStroke 2 DIP 在154。仓库一键脚本使用每次唯一输出根目录，并从该次根目录执行 `--no-build` 测试；外机实际 checkout/脚本和 DLL/PDB identity 仍缺，无法确认根因。`libpng iCCP` 不在失败栈，WPF COM 异常发生于失败后收尾。没有更改生产模板或放宽断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-CI：#992/run `38564273828` 与 #993/run `38570078343` 已失败，SDK10 与默认 job 均 exit1；完整日志受登录/API 403 限制，根因未知。公开 Actions 页面快照仍停在 #979，commit 页面 cache miss，`gh` CLI 不可用，不能据此报告 `884e826e` 或本阶段 CI 终态。文档/证据整理后推送，再分别跟踪 SDK8 与 SDK10.0.401。用户到 2026-10-15 09:00 前无法回复时，独立工作继续，不等待异机材料。下一项 R11-06：核对已有备份前预览及立即备份重新校验行为。
+CI：#992/run `38564273828` 与 #993/run `38570078343` 是旧提交，均失败；完整日志受登录/API 403 限制，根因未知。`40af39c8` 尚未推送，不能报告其 Actions 终态；推送后分别跟踪 SDK8 与 SDK10.0.401 至终态。当前 R00/R01 freshness `13 fresh / 1 stale`，唯一 stale 为 R00-08（`R10KeyboardShortcutHelpBehaviorTests.cs` 命中键盘证据范围）；下一步先复跑并校正该项，再推进依赖满足的 Q/R。真实 Ludusavi IPC/归档副作用、真实 Playnite、系统 UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。外机 R09 原因仍未知，不改模板或放宽断言。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

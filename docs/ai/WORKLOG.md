@@ -1,3 +1,10 @@
+## 2026-10-15 R11-06 备份前变更摘要当前 main 复核
+
+- 先复用现有 `BackupPreviewDto`、`backup.preview`、`BackupOrchestrator.PreviewAsync`、SaveCenter 预览卡与立即备份链路，没有改生产实现。`40af39c8` 仅增强 `R11BackupPreviewBehaviorTests`：从生产 SaveCenter 的按钮 Automation Peer 调用预览命令，断言只分派预览、不执行立即备份；另覆盖未扫描时卡片收起、Loading 不显示 0 路径、NoData 明确表示扫描完成但无可纳入路径。
+- 本机隔离 SDK `8.0.423`、VSTest `17.11.1`：Playnite `net462/net472` 的 `R11BackupPreviewBehaviorTests 4/4`；Worker `net8.0-windows10.0.19041.0` 的 `BackupPreviewBehaviorTests 2/2`。相关项目及引用编译通过，非完整 solution build。XAML `24/24`、source validation、`git diff --check` 通过。源、程序集 SHA/MVID 和脱敏 TRX 见[R11-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 证据边界：预览 UI 命令行为与 Worker JSON 解析有自动化证明；Worker 预览 orchestration/真实 Ludusavi IPC、真实归档目录前后状态没有端到端运行。只从当前代码核对 preview 参数跳过备份目录创建，立即备份重读游戏与匹配并使用非 preview 执行。未访问用户数据/云端，也未验 Playnite host、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW 或宿主性能。
+- 当前 R00/R01 freshness 为 `13 fresh / 1 stale`；唯一 stale 是 R00-08，因为新近提交的 `R10KeyboardShortcutHelpBehaviorTests.cs` 命中键盘证据范围。下一步先逐类复跑 R00-08 相关行为并按结果更新 baseline；之后再推进依赖满足的 Q/R。R11-06 新提交推送后的 SDK8/SDK10.0.401 Actions 终态另行跟踪。
+
 ## 2026-10-15 R11-05 保护操作解释当前 main 复核
 
 - 已检查现有 `BackupVersionDto` 保护解释、SaveCenter 状态列、Core `RetentionPlanner` 和 Worker 预览/应用；实现已满足可控任务条件，本轮没有重建服务或改生产 XAML。

@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-05 复用保护 DTO、保留规划和 Worker 应用路径；`884e826e` 补生产保护列 DataTemplate 的实际绑定行为证据，本机 SDK8/VSTest17.11.1 Playnite 3/3、Core 3/3、Worker 12/12。外机 R09 Expected 2/Actual 1 仍指向旧 Chrome 2 DIP 断言，但当前一键脚本使用每次独立输出目录，外机源码/DLL/PDB/脚本身份未知，根因未确认；不改模板或减弱断言。#992/#993 CI 已失败、日志/API受限；公开 Actions snapshot落后且 `gh` 不可用，本阶段推送后须分别追踪 SDK8/SDK10.0.401。SDK结果不可互代。下一项 R11-06，先复核现有预览与安全行为。
+更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-06 `40af39c8` 仅增强备份预览行为测试，本机 SDK8.0.423/VSTest17.11.1 Playnite 4/4、Worker 2/2；程序行为和证据边界见当前复核包。R00/R01 freshness 此后因 `R10KeyboardShortcutHelpBehaviorTests.cs` 唯一命中 R00-08，当前为 13 fresh/1 stale，需先复核该键盘项。外机 R09 Expected 2/Actual 1 与旧 Chrome 2 DIP 断言吻合，但外机源码/DLL/PDB/脚本身份未知，根因未确认；不改模板或减弱断言。旧 CI #992/#993 失败与日志/API受限不能推断新提交状态；`40af39c8` 推送后须分别跟踪 SDK8/SDK10.0.401 至终态，SDK结果不可互代。下一项 R00-08 证据复核。
 
 ## AI/Codex 启动协议
 

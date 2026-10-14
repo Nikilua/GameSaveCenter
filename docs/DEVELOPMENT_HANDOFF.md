@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。代码提交 `884e826e` 为 R11-05 保护列绑定测试；本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite/Core/Worker 定向结果 `3/3 + 3/3 + 12/12`。证据在[R11-05 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-05-CURRENT-MAIN-RECHECK-20261015/README.md)。相关测试项目构建通过但不是完整 solution build；没有真实 Playnite、用户数据写入或像素呈现验收。
+更新：2026-10-15；分支 main。R11-06 代码测试提交 `40af39c8` 已完成本机复核：SDK `8.0.423` / VSTest `17.11.1`，Playnite `4/4`、Worker `2/2`、XAML `24/24`、source validation 通过；相关测试及引用项目构建通过，不是完整 solution build。新证据在[R11-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。代码提交尚待与本次文档同步推送，Actions 尚无新终态。
 
 用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。当前 `884e826e` line151 是错误色、line152要求 Chrome 1 DIP、line154要求独立 ValidationStroke 2 DIP；SDK8当前程序集 R09 `2/2`。当前一键脚本生成随机隔离输出并从同一输出跑测试，但外机 `summary.json`/TRX/DLL/PDB identity 缺失，根因仍未知。不要改生产模板/减弱断言；若复发，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
 
-CI：#992/run `38564273828` 与 #993/run `38570078343` 已失败，完整日志受登录/API 403 限制。匿名 Actions 页面快照仍在 #979，commit page cache miss，`gh` 不可用；新 R11-05 提交的 CI 未查到终态，SDK8/SDK10.0.401需分开追踪。下一项 R11-06；先审预览 DTO、服务和过期预览/重新校验行为，再补当前 main 证据。真实 Playnite/UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。
+CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 失败，完整日志受登录/API 403 限制；`40af39c8` 的新 Actions 尚未产生（待推送），之后 SDK8 与 SDK10.0.401 必须分别追踪到终态。当前 freshness `13/14 fresh`，R00-08 因键盘测试文件路径命中而 stale。下一步复跑 R00-08 的搜索框 Enter/IME/焦点返回行为类，按事实更新该 baseline，再推进依赖已满足的 Q/R。R11-06 没有执行真实 Ludusavi IPC/归档、Playnite宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能验证；外机 R09 断言身份仍待核实。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
