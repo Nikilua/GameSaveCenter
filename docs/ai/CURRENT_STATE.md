@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main；本轮R10-05测试身份为 `GscBuildCommit=0b4e64a72e2ec6d282fd935745accec5544551f4`，更改源由复核包SHA固定。R00/R01 freshness 14/14；Q24-08 15/15；Q25-01 13/13；R08-05 44/44、R07-08 1/1。R09外机焦点失败当前main SDK9定向2/2未复现；外机HEAD/DLL/PDB未知。R10-02 SDK9 5/5、相邻25/25；#990 `38553608412` SDK8/SDK10 jobs失败，API logs 403。R10-03 12/12；R10-04 17/17。#991 `38556833749`已终态失败：SDK10 job `115827968247`、SDK8默认job `115827968644`均“编译与测试”exit1；job logs/artifact API 403，匿名下载404；artifact ID/哈希见交接文档。R10-05 SDK9.0.302定向5/5，响应式/工具栏相关合计14/14，validate-source与diff check通过；当前改动尚无远端CI结果。SDK9不替代SDK8.0.423/CI SDK10.0.401。用户至2026-10-15 09:00无法回复；完成当前阶段推送并追踪CI后继续R10-06。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R10-06 生产来源提示已存在；本轮补真实 TaskCenterView 按钮→生产 ViewModel 命令→筛选刷新/请求取消/草稿保留行为，SDK9.0.302 定向 `3/3`；相邻 R09 焦点类 `2/2`，当前 1 DIP 主 Chrome 与 2 DIP ValidationStroke 均通过。证据源/程序集身份见 R10-06 复核包。Actions #992/run `38564273828` 对父提交 `a2fdb4f6` 已终态失败：SDK10.0.401 job `115852859775`、默认 build job `115852860137` 均为 exit 1。完整 logs API 403；两个诊断 artifact API 403、匿名下载404，根因未知，不猜修。SDK9 不替代 SDK8.0.423 或 SDK10.0.401。用户至 2026-10-15 09:00 无法回复；当前阶段提交推送后跟踪新 run，再推进独立 R10-07。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

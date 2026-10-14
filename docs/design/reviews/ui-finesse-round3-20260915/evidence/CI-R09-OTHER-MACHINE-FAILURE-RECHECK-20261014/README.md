@@ -30,6 +30,12 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 
 此前用户提供的 SDK10.0.401 诊断包在提交 983fee5 下、SDK8.0.423 诊断包在提交 c9f9179 下，R09 类也各有 2/2 通过记录；这些旧提交上的运行不替代当前 Actions 结果。相关 ZIP 不代表当前外机失败所用的测试程序集身份。
 
+## a2fdb4f 当前 main 复核
+
+2026-10-14 再次在当前 main 的父提交 `a2fdb4f647552d31def33aeee641917a049a77d2` 构建 Playnite 测试项目与引用项目，并单独串行运行 R09 类：本机 SDK `9.0.302`、VSTest `17.14.1`、Release、`2/2` 通过，0 失败/跳过。当前 `R09FocusOutlineBehaviorTests.cs` SHA-256 仍为 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；`WpfUiProduction.xaml` SHA-256 为 `7CFCBEE2720F3C8960FA9B54D8B86562C87D17D0E44F679FCF846F05ACDCEB2B`。测试 DLL SHA-256 `2990F7BD310999879237D65D1BAC687394C72E2E8F6C5B05EAC503E02F6D5E94`、MVID `abbb878a-622d-4920-96a1-5f1bf66fb609`；插件 DLL SHA-256 `8DACAD7EBD415A9A7DD02D40DD2BE80FA9F2F548193032194DC3CC20C94C85C2`、MVID `239c14b9-4b7b-40b9-bcb2-2e070d4e91c2`。脱敏 TRX 见[当前 R10-06/R09 复核包](../R10-06-CURRENT-MAIN-RECHECK-20261014/tests/R09FocusOutlineBehaviorTests-current-main.trx)。
+
+该运行再次证明仓库当前测试断言通过，不证明外机使用了同一源、DLL、PDB 或分支；外机身份缺失，旧断言/二进制错配的解释仍未证实。本机 SDK9 结果不替代 SDK8/CI SDK10。
+
 ## 结论与下一步
 
-没有改生产样式，也没有放宽断言；当前 main SDK9 复核未复现失败。外机所用 HEAD、工作树状态、R09 源码第 145–160 行及测试 DLL/PDB 身份仍待用户可回复后核实。libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常发生于断言失败后的 WPF 收尾，不能解释边框厚度值。SDK9 本机结果不替代 SDK8.0.423 或 CI SDK10.0.401；真实 Playnite、OS 输入、物理 DPI、读屏和最终呈现未在本次验证。下一项 Round3 任务为 R10-04。
+没有改生产样式，也没有放宽断言；当前 main SDK9 复核未复现失败。外机所用 HEAD、工作树状态、R09 源码第 145–160 行及测试 DLL/PDB 身份仍待用户可回复后核实。libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常发生于断言失败后的 WPF 收尾，不能解释边框厚度值。SDK9 本机结果不替代 SDK8.0.423 或 CI SDK10.0.401；真实 Playnite、OS 输入、物理 DPI、读屏和最终呈现未在本次验证。当前主线本地已推进 R10-06，下一可执行项为 R10-07。

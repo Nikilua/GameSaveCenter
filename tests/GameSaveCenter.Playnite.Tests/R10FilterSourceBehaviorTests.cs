@@ -1,11 +1,17 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -48,6 +54,98 @@ public sealed class R10FilterSourceBehaviorTests
             host.Window.UpdateLayout();
             Assert.Equal(Visibility.Collapsed, banner.Visibility);
             Assert.False(clear.Command.CanExecute(null));
+        });
+    }
+
+    [Fact]
+    public void ProductionClearButtonRemovesOnlyNavigationFilterAndCancelsActivePageRequest()
+    {
+        RunSta(() =>
+        {
+            var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+            var tasks = new BatchObservableCollection<TaskStatusDto>
+            {
+                new()
+                {
+                    TaskId = "source-task",
+                    TaskType = "Backup",
+                    GameId = "game-source",
+                    GameName = "合成来源游戏",
+                    State = TaskState.Failed,
+                    Message = "存档备份失败"
+                },
+                new()
+                {
+                    TaskId = "other-task",
+                    TaskType = "Backup",
+                    GameId = "game-other",
+                    GameName = "合成其他游戏",
+                    State = TaskState.Failed,
+                    Message = "存档备份失败"
+                }
+            };
+
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.Tasks), tasks);
+            SetField(dashboard, "taskSearchText", "存档");
+            SetField(dashboard, "taskStatusFilter", "失败");
+            SetField(dashboard, "taskGameFilter", "全部");
+            SetField(dashboard, "taskTypeFilter", "存档备份");
+            SetField(dashboard, "taskHistoryScope", "最近任务");
+            SetField(dashboard, "taskHistoryRange", "全部时间");
+            SetField(dashboard, "taskNavigationGameId", "game-source");
+            SetField(dashboard, "taskNavigationGameName", "合成来源游戏");
+            SetField(dashboard, "taskHistoryActive", false);
+
+            var taskView = CollectionViewSource.GetDefaultView(tasks);
+            var filterTask = typeof(DashboardViewModel).GetMethod("FilterTask", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(filterTask);
+            taskView.Filter = item => (bool)filterTask!.Invoke(dashboard, new[] { item })!;
+            SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TasksView), taskView);
+
+            var pageRequests = new LatestRequestCoordinator();
+            SetField(dashboard, "taskPageRequests", pageRequests);
+            var activeRequest = pageRequests.Begin();
+
+            var initializeNavigation = typeof(DashboardViewModel).GetMethod("OnNavigationStateInitialize", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(initializeNavigation);
+            initializeNavigation!.Invoke(dashboard, null);
+
+            var view = new TaskCenterView();
+            var loadedIntegration = typeof(TaskCenterView).GetMethod(
+                "OnLoaded",
+                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+            Assert.NotNull(loadedIntegration);
+            view.Loaded -= (RoutedEventHandler)Delegate.CreateDelegate(typeof(RoutedEventHandler), view, loadedIntegration!);
+            view.DataContext = dashboard;
+            using var host = new WindowHost(view);
+            host.Window.UpdateLayout();
+
+            var banner = (Border)view.FindName("TaskNavigationSourceBanner")!;
+            var sourceText = (TextBlock)view.FindName("TaskNavigationSourceText")!;
+            var clear = FindButton(banner, "清除带入的任务筛选");
+            Assert.Equal(Visibility.Visible, banner.Visibility);
+            Assert.Contains("合成来源游戏", sourceText.Text, StringComparison.Ordinal);
+            Assert.Same(dashboard.ClearTaskNavigationContextCommand, clear.Command);
+            Assert.True(clear.Command!.CanExecute(null));
+            Assert.Equal(new[] { "source-task" }, taskView.Cast<TaskStatusDto>().Select(task => task.TaskId));
+
+            clear.Command.Execute(null);
+            host.Window.UpdateLayout();
+
+            Assert.True(activeRequest.Token.IsCancellationRequested);
+            Assert.False(dashboard.HasTaskNavigationTarget);
+            Assert.Equal(string.Empty, dashboard.TaskNavigationSourceSummary);
+            Assert.Equal(Visibility.Collapsed, banner.Visibility);
+            Assert.False(clear.Command.CanExecute(null));
+            Assert.Equal(new[] { "source-task", "other-task" }, taskView.Cast<TaskStatusDto>().Select(task => task.TaskId));
+            Assert.Equal("存档", dashboard.TaskSearchText);
+            Assert.Equal("失败", dashboard.TaskStatusFilter);
+            Assert.Equal("全部", dashboard.TaskGameFilter);
+            Assert.Equal("存档备份", dashboard.TaskTypeFilter);
+            Assert.Equal("最近任务", dashboard.TaskHistoryScope);
+            Assert.Equal("全部时间", dashboard.TaskHistoryRange);
+
+            pageRequests.Dispose();
         });
     }
 
@@ -101,6 +199,20 @@ public sealed class R10FilterSourceBehaviorTests
         }
 
         return null;
+    }
+
+    private static void SetAutoPropertyBackingField(object target, string propertyName, object value)
+    {
+        var field = typeof(DashboardViewModel).GetField($"<{propertyName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        field!.SetValue(target, value);
+    }
+
+    private static void SetField(object target, string fieldName, object value)
+    {
+        var field = typeof(DashboardViewModel).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        field!.SetValue(target, value);
     }
 
     private sealed class TestNavigationBinding : INotifyPropertyChanged

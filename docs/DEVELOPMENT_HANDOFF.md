@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 main；R10-05测试 `GscBuildCommit`=`0b4e64a72e2ec6d282fd935745accec5544551f4`，源文件身份见复核包。R08-05当前main 44/44，R07-08 1/1；R09外机焦点错误期望2/实际1，当前main SDK9 R09类2/2，但外机HEAD/DLL/PDB未知。R10-02当前main SDK9 5/5、邻接25/25；#990/run `38553608412` 两SDK lanes失败且API logs 403。R10-03 12/12、R10-04 17/17。#991/run `38556833749` 已终态Failure：SDK10.0.401 job `115827968247`、SDK8默认 job `115827968644` 的“编译与测试”均exit1；job页只有通用错误，logs/artifacts API 403。页面列出普通diagnostics artifact `11891870507`（582 KB，SHA-256 `3e7c7f32b58ee82b3ffbe088b52d7ac8831cf765c1ba1add721857c605693d19`）和SDK10 artifact `11890810960`（505 KB，SHA-256 `4db5f65e1af318547d8c0184e6b0ef126ad7c2d3dda9c514c13c61bb2b85e49c`）；匿名下载404。完整日志仍缺。
+更新：2026-10-14；分支 main。R10-06 来源提示既有实现已补实际生产页面/命令行为，SDK9.0.302 `3/3`；R09 焦点类当前 main `2/2`，外机 HEAD/DLL/PDB 未知。父提交 `a2fdb4f6` 对应 #992/run `38564273828` 已终态失败：SDK10.0.401 job `115852859775` 的“SDK 10.0.401 编译与测试复核”和默认 build job `115852860137` 的“编译、测试与打包”均 exit1。完整 logs 与两个 artifact API 返回403，匿名下载404；失败根因未知，不能按摘要猜修。artifact ID/SHA、当前本机测试身份与日志限制见 [R10-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R10-06-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9不替代SDK8.0.423/SDK10.0.401。
 
-SDK9 本地结果不替代仓库 SDK8.0.423 或 CI SDK10.0.401。用户到 2026-10-15 09:00 前无法回复；继续本地独立任务，不因 #991 日志阻断 R10-06 盘点。#990/#991 的完整日志与 artifact 限制均已记录；没有日志时不猜根因。每个阶段仍需中文提交、推送并跟踪对应 Actions 至终态。
+SDK9 本地结果不替代仓库 SDK8.0.423 或 CI SDK10.0.401。用户到 2026-10-15 09:00 前无法回复；#991/#992 完整日志仍受访问限制，没有日志时不猜根因，继续推进独立任务。每个阶段仍需中文提交、推送并跟踪对应 Actions 至终态。
 
-下一项 R10-06：先审查当前 main 已有筛选来源提示 VM、命令和测试覆盖，补实际清除/保留草稿行为证据，不按计划表推断功能缺失。完成本阶段提交推送后跟踪 Actions 至终态；同时继续尝试获取 #991 完整日志，取得后按真实错误复现与修复。外机 R09 HEAD/DLL/PDB 和 Q24-03 第二物理显示器仍待验。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍待验。
+本地下一项 R10-07：先核对侧栏折叠/展开和入口可达性现有证据，补当前 main 适用性，不重建已有能力。本轮 R10-06 本机门禁后提交推送并跟踪新 Actions 至成功或失败终态；失败优先取完整日志，访问受限时不猜修并继续依赖已满足的任务。外机 R09 HEAD/DLL/PDB 和 Q24-03 第二物理显示器仍待验。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍待验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
@@ -279,3 +279,9 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - SDK `9.0.302` 本机编译 Playnite `net462` / tests `net472`；R10 behavior `5/5`，相邻导航/来源组 `25/25`；source validator、diff check 通过。TRX、DLL SHA/MVID、源身份与边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。本机 SDK9 不替代 SDK8.0.423/CI SDK10.0.401。
 - 用户指定 run #920（`36677346317`，`77de7f4`）当前 Failure：7m04s、无 artifact，公开页面仅显示“编译、测试与打包”exit1；logs 需登录，实际 SDK 与失败根因未知。当前公共列表最新 #972（`8546aca`）为 In progress；本阶段代码尚未推送。推送后逐一跟踪 SDK8 和 SDK10.0.401 到终态；失败先尝试取得完整 job log，不能凭摘要盲修。
 - R10-02 本机条件完成但阶段仍等本次 CI 终态；未运行真实 Playnite/媒体 Worker、未验证真实呈现、物理 DPI/跨屏、OS UIA/读屏、ETW/宿主性能。CI 收口后下一可执行任务 R10-03 搜索快捷键；先核对搜索绑定、焦点、弹层/dialog 作用域并补实际正/负行为。R09 外机 HEAD/DLL/PDB 暂待用户明早回复，不阻塞。
+
+## 2026-10-14 R10-06 筛选来源清除行为复核
+
+- 生产来源提示与清除命令沿用 `5403d797`。本轮补实际 `TaskCenterView` 按钮调用生产 ViewModel 命令，验证来源条件清除、提示/命令状态、第二条合成任务恢复、其余任务草稿保留和当前页请求 token 取消。Release 项目构建成功；R10-06 定向 `3/3`，相邻 R09 焦点 `2/2`，本机 SDK9.0.302/VSTest17.14.1。详细源/程序集身份见 `evidence/R10-06-CURRENT-MAIN-RECHECK-20261014/README.md`。
+- 最新前序 run #992（父提交 `a2fdb4f6`）Failure。SDK10.0.401 job `115852859775` 的“SDK 10.0.401 编译与测试复核”与默认 build job `115852860137` 的“编译、测试与打包”均 exit1；完整 logs/API 403，两个 artifact API 403、网页下载404，根因未知。此 run 不包含本轮 R10-06 测试。不得按通用 exit code 猜修；本轮提交触发的 Actions 必须另行跟到终态。
+- 用户到明日 09:00 前无法回复。即便 logs 暂不可获取，推送后跟完新 Actions，再继续 R10-07 侧栏信息密度；等待外机 R09 HEAD/DLL/PDB 不阻塞主队列。真实 Playnite、任务服务、UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。

@@ -10535,3 +10535,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK `9.0.302`、VSTest `17.14.1`；仓库 SDK pin `8.0.423` 本机未安装。标准 restore 长时间无输出，基于已有 assets 以单节点 `--no-restore` 构建和测试；未更改依赖。Release 插件 `net462`、测试 `net472` 与引用项目构建成功。`R10FilterPresetBehaviorTests` `5/5`；与 `TaskCenterViewResponsiveTests`、`Q14ToolbarAlignmentBehaviorTests` 合计 `14/14`；`validate-source.py`、`git diff --check` 通过。证据/脱敏TRX、source/DLL/PDB SHA 与 MVID 见 `evidence/R10-05-CURRENT-MAIN-RECHECK-20261014/README.md`。
 - 前置 run #991 (`38556833749`, source `e3a12753`) 已终态失败：SDK10 `115827968247`、SDK8默认 `115827968644` 均在“编译与测试”exit1。公开页只有通用 exit code；logs/artifacts API HTTP403 rate limit。页面列出普通包 `11891870507`（SHA-256 `3e7c7f32b58ee82b3ffbe088b52d7ac8831cf765c1ba1add721857c605693d19`）和SDK10包 `11890810960`（SHA-256 `4db5f65e1af318547d8c0184e6b0ef126ad7c2d3dda9c514c13c61bb2b85e49c`）；匿名网页下载404，包内容未取得，不能归因失败。
 - SDK9结果不替代SDK8/CI SDK10；本阶段完成本机实现、测试与证据后提交推送，跟踪新Actions至终态。前置#991的根因仍未知，取得完整日志后按真实错误复现与修复；本地独立下一项为R10-06。
+
+## 2026-10-14 R10-06 筛选来源清除生产行为复核
+
+- 复核 `5403d797` 现有实现与测试：真实 `TaskCenterView` 按钮/绑定以前连接到 fake VM 命令；生产清除方法仅有源码字符串断言。没有依据计划表认定实现缺失，也没有新增服务或 DTO。
+- 新增 STA 合成行为用例：实际页面按钮执行生产 `ClearTaskNavigationContextCommand`，使用生产 `FilterTask` 与 `LatestRequestCoordinator`；清除后来源 banner 折叠/命令禁用、第二个匹配任务重新出现、活动请求 token 取消，搜索/状态/游戏/类型/历史筛选值保持。未初始化 VM 显式设置隔离字段，移除仅依赖真实插件设置的页面 Loaded 集成回调；没有调用 Worker、真实服务或设置持久化。
+- 本机从仓库外目录选择 SDK `9.0.302`，VSTest `17.14.1`；Release Playnite `net462`、测试 `net472` 与引用项目构建成功，未输出编译警告/错误。`R10FilterSourceBehaviorTests` `3/3`，R09 焦点相邻类独立串行 `2/2`；`validate-source.py`、`git diff --check` 通过。SDK9 不能替代仓库 pin `8.0.423` 或 CI `10.0.401`。
+- 用户再次提供 R09 外机失败行：当前 main 的 `Chrome` 1 DIP 和独立 `ValidationStroke` 2 DIP 均通过。旧 `3f7d0b30` 主 Chrome 2 DIP 断言与日志特征相符，旧测试源/程序集/PDB 不一致仍只是推断；外机 HEAD、源和 DLL/PDB 身份缺失。没有改生产样式或降低断言。当前复核 TRX/源 SHA/插件及测试 DLL MVID/哈希归档在 `evidence/R10-06-CURRENT-MAIN-RECHECK-20261014/`，R09 对照文档同步。
+- #992/run `38564273828`（父提交 `a2fdb4f6`）现终态失败：SDK10.0.401 job `115852859775` 步骤“SDK 10.0.401 编译与测试复核”exit1；默认 `build` job `115852860137` 步骤“编译、测试与打包”exit1。Jobs/log API 和两个 artifact API 返回 HTTP403 rate limit；网页下载返回404。artifact ID/SHA 及真实限制见本轮证据包。没有完整日志，不推断根因或盲修；该 run 不包含本轮尚未提交的 R10-06 测试。
+- 本地 R10-06 代码/测试/证据完成后提交推送并跟踪新 Actions；如果日志仍不可取得，R10-07 侧栏信息密度可独立推进。真实 Playnite 和外部呈现/物理 DPI/UIA/IME/ETW/宿主性能仍未验。
