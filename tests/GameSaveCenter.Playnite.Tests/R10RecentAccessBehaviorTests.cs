@@ -66,7 +66,7 @@ public sealed class R10RecentAccessBehaviorTests
     }
 
     [Fact]
-    public void OverviewRecentAccessCommandRemainsWiredInCollapsedCompatibilityCardAndTaskHistoryStaysSeparate()
+    public void RecentAccessSwitchIsKeyboardReachableAndKeepsTaskHistorySeparate()
     {
         Exception? exception = null;
         var clicks = 0;
@@ -101,17 +101,11 @@ public sealed class R10RecentAccessBehaviorTests
                     Height = 980
                 };
                 var recentAccessCard = Assert.IsType<Border>(overview.FindName("OverviewRecentAccessCard"));
+                var recentTasksCard = Assert.IsType<Border>(overview.FindName("OverviewRecentActivityCard"));
                 Assert.Equal(Visibility.Collapsed, recentAccessCard.Visibility);
-                // GSC-058 removes recent-access from the default home hierarchy. Reveal
-                // this retained compatibility surface only in the test to verify its
-                // existing command, without restoring it in production UI.
-                recentAccessCard.Visibility = Visibility.Visible;
-
-                var host = new Grid { Width = 1280, Height = 980 };
-                host.Children.Add(overview);
-                host.Measure(new Size(1280, 980));
-                host.Arrange(new Rect(0, 0, 1280, 980));
-                overview.UpdateLayout();
+                Assert.Equal(Visibility.Visible, recentTasksCard.Visibility);
+                using var host = new WindowHost(overview);
+                host.Window.UpdateLayout();
 
                 var recentAccessList = Assert.IsType<ListBox>(overview.FindName("OverviewRecentAccessList"));
                 var taskHistoryList = Assert.IsType<ListBox>(overview.FindName("OverviewActivityList"));
@@ -119,15 +113,48 @@ public sealed class R10RecentAccessBehaviorTests
                 Assert.Same(data.OverviewTasks, taskHistoryList.ItemsSource);
                 Assert.NotSame(recentAccessList.ItemsSource, taskHistoryList.ItemsSource);
 
+                var showRecentAccess = Assert.IsType<PlayniteButton>(overview.FindName("OverviewShowRecentAccessButton"));
+                Assert.Equal("查看最近访问", AutomationProperties.GetName(showRecentAccess));
+                Assert.True(showRecentAccess.IsTabStop);
+                Assert.NotNull(showRecentAccess.FocusVisualStyle);
+                Assert.True(showRecentAccess.Focus());
+                Assert.Same(showRecentAccess, Keyboard.FocusedElement);
+                typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(showRecentAccess, Array.Empty<object>());
+                host.Window.UpdateLayout();
+
+                Assert.Equal(Visibility.Visible, recentAccessCard.Visibility);
+                Assert.Equal(Visibility.Collapsed, recentTasksCard.Visibility);
+                Assert.True(recentAccessList.IsVisible);
+                Assert.False(taskHistoryList.IsVisible);
+
                 var button = FindVisualDescendants<PlayniteButton>(overview)
                     .SingleOrDefault(candidate => AutomationProperties.GetName(candidate) == "打开最近访问对象");
-                Assert.True(button is not null, "The test-revealed recent-access card should realize its action row.");
+                Assert.True(button is not null, "The recent-access view should realize its action row.");
                 Assert.Same(data.OpenRecentAccessCommand, button!.Command);
                 Assert.Equal("game-1", ((RecentAccessItem)button.CommandParameter!).PlayniteId);
                 Assert.True(button.Command!.CanExecute(button.CommandParameter));
+                Assert.True(button.IsVisible);
 
                 typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(button, Array.Empty<object>());
+
+                var showRecentTasks = Assert.IsType<PlayniteButton>(overview.FindName("OverviewShowRecentTasksButton"));
+                Assert.Equal("返回最近任务", AutomationProperties.GetName(showRecentTasks));
+                Assert.True(showRecentTasks.IsTabStop);
+                Assert.NotNull(showRecentTasks.FocusVisualStyle);
+                Assert.True(showRecentTasks.Focus());
+                Assert.Same(showRecentTasks, Keyboard.FocusedElement);
+                typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(showRecentTasks, Array.Empty<object>());
+                host.Window.UpdateLayout();
+
+                Assert.Equal(Visibility.Collapsed, recentAccessCard.Visibility);
+                Assert.Equal(Visibility.Visible, recentTasksCard.Visibility);
+                Assert.False(recentAccessList.IsVisible);
+                Assert.True(taskHistoryList.IsVisible);
+                Assert.Same(data.RecentAccessItems, recentAccessList.ItemsSource);
+                Assert.Same(data.OverviewTasks, taskHistoryList.ItemsSource);
             }
             catch (Exception caught)
             {
@@ -140,6 +167,30 @@ public sealed class R10RecentAccessBehaviorTests
 
         Assert.True(exception is null, exception?.ToString());
         Assert.Equal(1, clicks);
+    }
+
+    private sealed class WindowHost : IDisposable
+    {
+        public WindowHost(FrameworkElement content)
+        {
+            Window = new Window
+            {
+                Content = content,
+                Width = 1280,
+                Height = 980,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            Window.Show();
+            Window.UpdateLayout();
+            content.UpdateLayout();
+        }
+
+        public Window Window { get; }
+
+        public void Dispose() => Window.Close();
     }
 
     private static List<T> FindVisualDescendants<T>(DependencyObject root)

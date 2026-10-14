@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 main。R10-06 来源提示既有实现已补实际生产页面/命令行为，SDK9.0.302 `3/3`；R09 焦点类当前 main `2/2`，外机 HEAD/DLL/PDB 未知。父提交 `a2fdb4f6` 对应 #992/run `38564273828` 已终态失败：SDK10.0.401 job `115852859775` 的“SDK 10.0.401 编译与测试复核”和默认 build job `115852860137` 的“编译、测试与打包”均 exit1。完整 logs 与两个 artifact API 返回403，匿名下载404；失败根因未知，不能按摘要猜修。artifact ID/SHA、当前本机测试身份与日志限制见 [R10-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R10-06-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9不替代SDK8.0.423/SDK10.0.401。
+更新：2026-10-14；分支 main。R10-07 侧栏当前 main 复核 22/22；R10-08 恢复最近访问的用户入口，STA Window 验证按钮焦点、自动化名称、列表切换和操作命令，2/2。相邻 R09 2/2，XAML 24/24，Light/Dark RenderHarness 0 PROBLEM；本机 SDK9.0.302，Playnite net462、测试 net472。证据、程序集身份与未验证边界见 R10-07 (design/reviews/ui-finesse-round3-20260915/evidence/R10-07-CURRENT-MAIN-RECHECK-20261014/README.md) 和 R10-08 (design/reviews/ui-finesse-round3-20260915/evidence/R10-08-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9 不替代 SDK8.0.423 或 CI SDK10.0.401。
 
-SDK9 本地结果不替代仓库 SDK8.0.423 或 CI SDK10.0.401。用户到 2026-10-15 09:00 前无法回复；#991/#992 完整日志仍受访问限制，没有日志时不猜根因，继续推进独立任务。每个阶段仍需中文提交、推送并跟踪对应 Actions 至终态。
+前序 #992 (38564273828) 和 #993 (38570078343) 都已失败；SDK10 和默认 build job 均 exit1。完整 logs API 403、公开 job 页面要求登录，根因未知，不凭摘要猜修。本批尚待 commit/push；推送后追踪对应 Actions 到终态，日志受限时继续独立任务。用户至 2026-10-15 09:00 无法回复。外机 R09 的断言值与当前源不符，错配只是推测，HEAD/DLL/PDB 仍待核验；不阻塞。
 
-本地下一项 R10-07：先核对侧栏折叠/展开和入口可达性现有证据，补当前 main 适用性，不重建已有能力。本轮 R10-06 本机门禁后提交推送并跟踪新 Actions 至成功或失败终态；失败优先取完整日志，访问受限时不猜修并继续依赖已满足的任务。外机 R09 HEAD/DLL/PDB 和 Q24-03 第二物理显示器仍待验。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍待验。
+下一项：本批完成文档同步后提交并推送 main，跟踪本次 SDK8/SDK10.0.401 Actions 到成功或失败终态；失败先取完整日志，#993 原因仍未知，受访问限制时不猜修。之后复核已有 R11-01 版本摘要行为，不因任务表方向重建 DTO。外机 R09 HEAD/DLL/PDB、Q24-03 第二物理显示器仍待验。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍待验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

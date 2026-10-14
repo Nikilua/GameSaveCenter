@@ -221,6 +221,18 @@ namespace GameSaveCenter.Playnite.Views
             }
         }
 
+        private void OnShowRecentAccessClick(object sender, RoutedEventArgs e)
+        {
+            OverviewRecentAccessCard.Visibility = Visibility.Visible;
+            OverviewRecentActivityCard.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnShowRecentTasksClick(object sender, RoutedEventArgs e)
+        {
+            OverviewRecentAccessCard.Visibility = Visibility.Collapsed;
+            OverviewRecentActivityCard.Visibility = Visibility.Visible;
+        }
+
         private static double Clamp(double value, double minimum, double maximum)
             => value < minimum ? minimum : value > maximum ? maximum : value;
     }

@@ -39,3 +39,11 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 ## 结论与下一步
 
 没有改生产样式，也没有放宽断言；当前 main SDK9 复核未复现失败。外机所用 HEAD、工作树状态、R09 源码第 145–160 行及测试 DLL/PDB 身份仍待用户可回复后核实。libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常发生于断言失败后的 WPF 收尾，不能解释边框厚度值。SDK9 本机结果不替代 SDK8.0.423 或 CI SDK10.0.401；真实 Playnite、OS 输入、物理 DPI、读屏和最终呈现未在本次验证。当前主线本地已推进 R10-06，下一可执行项为 R10-07。
+
+## e0a72c9 当前 main 再复核
+
+用户于 2026-10-14 再次提供同一特征的外机失败输出：`SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError`，期望 `2,2,2,2`、实际 `1,1,1,1`、栈指向第 151 行。当前 main 对应行仍是错误边框颜色；主 Chrome `1 DIP` 在第 152 行，独立 ValidationStroke `2 DIP` 在第 154 行。本机 Release 重建后串行执行 `R09FocusOutlineBehaviorTests` 为 `2/2`，0 失败、0 跳过；SDK `9.0.302`、VSTest `17.14.1`，测试目标 `net472`、插件目标 `net462`。
+
+当前测试源 SHA-256 仍为 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`，生产 `WpfUiProduction.xaml` SHA-256 仍为 `7CFCBEE2720F3C8960FA9B54D8B86562C87D17D0E44F679FCF846F05ACDCEB2B`。构建元数据 ProductVersion `0.6.73+e0a72c93774610110100d7ead0ab59108689d1eb`；测试 DLL SHA `39DD3668B86A3782AA6C76DF01305D45108F39FDAE5D6AEAC685123034DFAF4B`、MVID `eeee7482-78a5-4357-93b5-2ad1f85b1057`、PDB SHA `296F1E8F2932DA3AA4F9A972C8D5DD9A7BBEC0114010D55275B2CDD6AE561A80`；插件 DLL SHA `D42A07426F001B5FE20F6168B00E6C51DCD1AF5838AC158CDB91B92E15FE61A4`、MVID `40cdb240-f202-47c8-a438-60820e0e78c3`、PDB SHA `9BD887A95DA0EA83336092D05F698DB877815CD71F4CA86AC0B35AA412197C65`。脱敏 TRX 见[当前 R10-08 复核包](../R10-08-CURRENT-MAIN-RECHECK-20261014/tests/R09FocusOutlineBehaviorTests-current-main.trx)。
+
+外机当前 HEAD、源文件内容、工作树状态和测试 DLL/PDB 身份仍未提供，因此“旧测试源码/程序集或 PDB 错配”仍是与历史断言吻合的推断，未确认。`libpng iCCP` 不在断言调用栈；`TextServicesContext` COM 异常出现在断言失败后的 WPF 收尾，不能解释厚度值。没有更改生产样式或弱化断言。用户到 2026-10-15 09:00 前无法回复，外机身份信息继续作为待验事实，不阻塞独立任务。

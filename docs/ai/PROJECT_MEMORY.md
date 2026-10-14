@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-06 现有来源提示/清除逻辑已用生产 TaskCenterView 命令及合成任务补齐行为证据，本机 SDK9.0.302 `3/3`；R09 焦点类当前 main `2/2`，外机 HEAD/DLL/PDB 仍未知。#992/run `38564273828` 对父提交 `a2fdb4f6` 已失败，SDK10.0.401 job `115852859775` 与默认 build job `115852860137` 均 exit1；完整 logs/artifact API 403、匿名 artifact 路由404，失败根因未知，未据摘要猜修。R10-06 证据包固定本轮源 SHA、程序集身份与脱敏 TRX。SDK9不替代 SDK8.0.423 或 CI SDK10.0.401；用户至2026-10-15 09:00无法回复。完成当前阶段推送并跟踪新 Actions 后继续 R10-07，外部日志限制不阻塞独立工作。
+更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-07 侧栏当前 main 复核 22/22；R10-08 恢复最近访问入口，真实 STA Window 验证切换、键盘焦点、列表可见性/隔离与操作命令，SDK9.0.302 2/2；相邻 R09 2/2、XAML 24/24、双主题离屏 RenderHarness 0 PROBLEM。证据和源/DLL/PDB 身份见 R10-07/R10-08 复核包。前序 #992/#993 SDK10 与默认 build jobs 都 exit1，完整日志 API 403、网页需登录，根因未知；禁止盲改。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。本批推送后跟 Actions 至终态，再推进独立 R11-01；用户至 2026-10-15 09:00 无法回复。外机 R09 HEAD/DLL/PDB 仍未知，旧断言错配仅为推测，不阻塞主线。
 
 ## AI/Codex 启动协议
 
@@ -152,3 +152,11 @@ R07 resize 回归应按已加载 PageHost/DataGrid 的实际窗口与内容区�
 - 本机 SDK `9.0.302`，Playnite `net462`、测试 `net472`，Release 编译成功；R10 context `5/5`，含同名重名选框正例、缺失 ID 不回退负例、生产任务命令准确路由与缺失目标保护。相邻导航/来源组 `25/25`，无失败/跳过。source validator、diff check 通过。
 - 源码/DLL/MVID/TRX 哈希、命令与行为结果在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。构建 ProductVersion 带前置 hash `a94819b`，因此以源码/DLL SHA/MVID 标识实际构建，不冒称 SDK10 CI。
 - Actions 列表最新可读 #972（`8546aca`）仍 In progress；本轮尚未推送。用户指定旧 run #920/`36677346317`（`77de7f4`）现 Failure、7m04s、无 artifact，日志登录限制，实际 SDK/根因未知。真实 Playnite/媒体服务、presented frame、物理 DPI/跨屏、OS UIA/读屏、ETW/宿主性能未验。CI 终态后下一项 R10-03 搜索快捷键。
+
+## 2026-10-14 R10-07 / R10-08 当前 main 复核
+
+- R10-07 复用现有侧栏实现，Release STA 行为 22/22；首次未设置 GSC_BUILD_COMMIT 的身份检查失败不是产品回归。有效测试设置仓库约定的构建身份、重建后执行，源/DLL/MVID/TRX 见 evidence/R10-07-CURRENT-MAIN-RECHECK-20261014/README.md。
+- R10-08 复核发现 GSC-058 把首页最近访问卡片永久折叠，历史测试手动改可见性后才点命令，无法证明入口可达。复用已有卡片、DTO、共享按钮模板，增加同一概览区域内最近任务/最近访问切换；通过 STA Window 验证焦点、Automation 名称、双方可见性与列表分离，以及合成访问行命令。R10RecentAccessBehaviorTests 2/2，没有新增服务/DTO/选框/滚动条或用户设置访问。
+- 本轮本机 SDK 9.0.302、VSTest 17.14.1；Playnite net462 与测试 net472 Release build 成功；R10-08 2/2、R09 2/2、R10-07 22/22；source validation、XAML 24/24、RenderHarness Light/Dark render-qa OK/0 PROBLEM、diff check 通过。WPF 静态检查 0 errors/29 warnings/177 info，Overview 的 scroll/StackPanel warning 是静态审查命中；本轮未改滚动模型。离屏截图仅覆盖默认最近任务模式。
+- 外机 R09 日志的旧 Chrome 2 DIP 期望与当前 Chrome 1 DIP、独立 ValidationStroke 2 DIP 区分；外机 HEAD、源、DLL/PDB 身份仍未知，错配只是推测。libpng warning 不在失败调用栈；TextServices COM 异常在 WPF 失败后的收尾阶段。
+- #993/run 38570078343 对 e0a72c9 终态失败：SDK10 job 115872658151、默认 build job 115872658675 均 exit1；日志 API 403、公开 job 页面要求登录，失败根因未知。SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。当前批次待提交推送后跟踪新 Actions；CI 日志受限时记录限制并推进 R11-01。真实 Playnite/host、物理 DPI/跨屏、最终呈现、外部 UIA/读屏/IME、ETW/宿主性能仍未验。

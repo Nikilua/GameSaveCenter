@@ -10544,3 +10544,14 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户再次提供 R09 外机失败行：当前 main 的 `Chrome` 1 DIP 和独立 `ValidationStroke` 2 DIP 均通过。旧 `3f7d0b30` 主 Chrome 2 DIP 断言与日志特征相符，旧测试源/程序集/PDB 不一致仍只是推断；外机 HEAD、源和 DLL/PDB 身份缺失。没有改生产样式或降低断言。当前复核 TRX/源 SHA/插件及测试 DLL MVID/哈希归档在 `evidence/R10-06-CURRENT-MAIN-RECHECK-20261014/`，R09 对照文档同步。
 - #992/run `38564273828`（父提交 `a2fdb4f6`）现终态失败：SDK10.0.401 job `115852859775` 步骤“SDK 10.0.401 编译与测试复核”exit1；默认 `build` job `115852860137` 步骤“编译、测试与打包”exit1。Jobs/log API 和两个 artifact API 返回 HTTP403 rate limit；网页下载返回404。artifact ID/SHA 及真实限制见本轮证据包。没有完整日志，不推断根因或盲修；该 run 不包含本轮尚未提交的 R10-06 测试。
 - 本地 R10-06 代码/测试/证据完成后提交推送并跟踪新 Actions；如果日志仍不可取得，R10-07 侧栏信息密度可独立推进。真实 Playnite 和外部呈现/物理 DPI/UIA/IME/ETW/宿主性能仍未验。
+
+
+## 2026-10-14 R10-07 侧栏与 R10-08 最近访问入口复核
+
+- 核对 R10-07 当前生产侧栏已有完整行为实现，本批不改侧栏；Release ProductionShellChromeSourceTests 22/22，记录真实 STA WPF Window 覆盖、源/DLL/MVID 与脱敏 TRX。
+- R10-08 复核到 GSC-058 将已有“最近访问”卡片永久折叠，旧测试在测试中手动显现卡片才验证命令，未满足用户入口条件。复用已有记录模型、卡片和共享按钮模板，在概览同一栏切换“最近任务/最近访问”；默认仍为最近任务，同一时刻只占一个卡片位置。
+- R10RecentAccessBehaviorTests 覆盖真实 STA Window 按钮行为：默认可见状态、键盘焦点/FocusVisualStyle/Automation 名称、切换后列表独立及隐藏态、访问行命令只执行一次、返回任务模式后的绑定/可见性。使用合成数据与 fake ICommand，不读写用户设置/存档，不启动 Playnite/Worker。
+- 本机 SDK 9.0.302、VSTest 17.14.1，Playnite net462/测试 net472 Release 构建成功；R10RecentAccess 2/2、R09 focus 2/2、R10-07 22/22；XAML 24/24，source/WPF static/diff 检查通过。RenderHarness Light/Dark render-qa OK、PROBLEM_COUNT=0；仅查看默认任务模式 1040x700 截图。WPF 静态审查全仓库 0 errors/29 warnings/177 info；Overview 既有 StackPanel/scroll warning 命中，不代表真实滚动性能。
+- R09 外机失败的旧 2 DIP Chrome 期望与当前 Chrome 1 DIP/ValidationStroke 2 DIP 区分；本机 R09 2/2。外机 HEAD、测试源、DLL/PDB 未知，旧源或产物错配只是推测。libpng warning 不在调用栈，COM shutdown 异常发生在断言失败后的清理阶段。
+- 前序 #993/run 38570078343 对 e0a72c9 已失败：SDK10 job 115872658151 和默认 build 115872658675 都 exit1。完整日志 API 403、页面要求登录，原因未知；未盲修。#992 同样失败且日志不可读。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。
+- 当前代码、证据和阶段账本已同步；提交推送后跟踪新 Actions 至终态。真实 Playnite/package-host、物理 DPI/跨屏、最终呈现、外部 UIA/读屏/IME、ETW/宿主性能未验。下一项 R11-01 当前 main 复核。
