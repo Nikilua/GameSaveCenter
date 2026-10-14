@@ -14,6 +14,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskFilterPresetNameDraft = string.Empty;
         private string mediaFilterPresetNameDraft = string.Empty;
 
+        /// <summary>Lets isolated interaction tests answer preset confirmations without opening host UI.</summary>
+        internal Func<string, string, string, string, bool, Task<bool>>? FilterPresetConfirmationOverrideForAudit { get; set; }
+
         public ObservableCollection<FilterPresetDefinition> TaskFilterPresets { get; } = new ObservableCollection<FilterPresetDefinition>();
         public ObservableCollection<FilterPresetDefinition> MediaFilterPresets { get; } = new ObservableCollection<FilterPresetDefinition>();
 
@@ -144,7 +147,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var existing = TaskFilterPresets.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
                 if (existing != null)
                 {
-                    if (!await plugin.ConfirmAsync("覆盖筛选预设", $"已存在同名任务筛选预设“{name}”。是否覆盖？", "覆盖", "取消").ConfigureAwait(true))
+                    if (!await ConfirmFilterPresetMutationAsync("覆盖筛选预设", $"已存在同名任务筛选预设“{name}”。是否覆盖？", "覆盖", "取消").ConfigureAwait(true))
                         return;
                     snapshot.Id = existing.Id;
                     ReplacePreset(TaskFilterPresets, existing, snapshot);
@@ -181,7 +184,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var existing = MediaFilterPresets.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
                 if (existing != null)
                 {
-                    if (!await plugin.ConfirmAsync("覆盖筛选预设", $"已存在同名媒体筛选预设“{name}”。是否覆盖？", "覆盖", "取消").ConfigureAwait(true))
+                    if (!await ConfirmFilterPresetMutationAsync("覆盖筛选预设", $"已存在同名媒体筛选预设“{name}”。是否覆盖？", "覆盖", "取消").ConfigureAwait(true))
                         return;
                     snapshot.Id = existing.Id;
                     ReplacePreset(MediaFilterPresets, existing, snapshot);
@@ -234,7 +237,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     StatusMessage = $"已有同名{workspaceName}筛选预设，请使用其他名称。";
                     return;
                 }
-                if (!await plugin.ConfirmAsync("重命名筛选预设", $"是否将“{selected.Name}”重命名为“{name}”？", "重命名", "取消").ConfigureAwait(true))
+                if (!await ConfirmFilterPresetMutationAsync("重命名筛选预设", $"是否将“{selected.Name}”重命名为“{name}”？", "重命名", "取消").ConfigureAwait(true))
                     return;
 
                 var renamed = selected.Clone();
@@ -269,7 +272,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             try
             {
                 if (selected == null) return;
-                if (!await plugin.ConfirmAsync("删除筛选预设", $"是否删除{workspaceName}筛选预设“{selected.Name}”？此操作不可自动恢复。", "删除", "取消", true).ConfigureAwait(true))
+                if (!await ConfirmFilterPresetMutationAsync("删除筛选预设", $"是否删除{workspaceName}筛选预设“{selected.Name}”？此操作不可自动恢复。", "删除", "取消", true).ConfigureAwait(true))
                     return;
 
                 var index = presets.IndexOf(selected);
@@ -288,6 +291,14 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             plugin.Settings.FilterPresets = TaskFilterPresets.Concat(MediaFilterPresets).Select(x => x.Clone()).ToList();
             plugin.SavePluginSettings(plugin.Settings);
+        }
+
+        private Task<bool> ConfirmFilterPresetMutationAsync(string title, string message, string confirmText, string cancelText, bool isDangerous = false)
+        {
+            var confirmationOverride = FilterPresetConfirmationOverrideForAudit;
+            return confirmationOverride != null
+                ? confirmationOverride(title, message, confirmText, cancelText, isDangerous)
+                : plugin.ConfirmAsync(title, message, confirmText, cancelText, isDangerous);
         }
 
         private static void ReplacePreset(ObservableCollection<FilterPresetDefinition> presets, FilterPresetDefinition oldValue, FilterPresetDefinition newValue)

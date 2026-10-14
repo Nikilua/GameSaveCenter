@@ -10527,3 +10527,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK `9.0.302`、VSTest `17.14.1`；Release 插件 `net462`、测试 `net472` 与引用项目构建成功，0 warning/error。筛选 R10 help/search、AccessibilitySource、R10 context/navigation 共 `17/17`，0 failed/skip；分组为 5+2+3+5+2。TRX、源/DLL/PDB SHA、MVID 和范围见 `evidence/R10-04-CURRENT-MAIN-RECHECK-20261014/README.md`。`validate-source.py` 通过，diff check 待提交前复核。
 - 仅隔离 STA WPF 和合成 Workspace 状态；真实 Playnite、全局键盘协作、IME、OS UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验证。`validate-source.py` 与 `git diff --check` 通过。SDK9 不替代 SDK8.0.423 或 CI SDK10.0.401。
 - R10-04 推送前依赖 run #991/`38556833749` 的终态；最近从公开 Actions 页面读取仍是 pending。下一项 R10-05 先审现有预设服务/DTO和确认取消语义。
+
+## 2026-10-14 R10-05 筛选预设取消行为当前 main 复核
+
+- 复核确认 `005dc2c5` 已具备标量 `FilterPresetDefinition`、配置规范化、任务/媒体预设保存/应用/重命名/删除入口；没有重建服务或DTO。原本的重命名/删除确认测试只有 `Assert.Contains`，不能证明取消时不变更。
+- 增加内部确认 override，默认仍走 `plugin.ConfirmAsync`。新负例调用真实 DashboardViewModel 重命名和删除方法并返回取消，检查集合成员/顺序、名称、选择和草稿均保持；删除参数保留危险标记。没有实例化持久化插件或触碰用户设置。
+- 本机 SDK `9.0.302`、VSTest `17.14.1`；仓库 SDK pin `8.0.423` 本机未安装。标准 restore 长时间无输出，基于已有 assets 以单节点 `--no-restore` 构建和测试；未更改依赖。Release 插件 `net462`、测试 `net472` 与引用项目构建成功。`R10FilterPresetBehaviorTests` `5/5`；与 `TaskCenterViewResponsiveTests`、`Q14ToolbarAlignmentBehaviorTests` 合计 `14/14`；`validate-source.py`、`git diff --check` 通过。证据/脱敏TRX、source/DLL/PDB SHA 与 MVID 见 `evidence/R10-05-CURRENT-MAIN-RECHECK-20261014/README.md`。
+- 前置 run #991 (`38556833749`, source `e3a12753`) 已终态失败：SDK10 `115827968247`、SDK8默认 `115827968644` 均在“编译与测试”exit1。公开页只有通用 exit code；logs/artifacts API HTTP403 rate limit。页面列出普通包 `11891870507`（SHA-256 `3e7c7f32b58ee82b3ffbe088b52d7ac8831cf765c1ba1add721857c605693d19`）和SDK10包 `11890810960`（SHA-256 `4db5f65e1af318547d8c0184e6b0ef126ad7c2d3dda9c514c13c61bb2b85e49c`）；匿名网页下载404，包内容未取得，不能归因失败。
+- SDK9结果不替代SDK8/CI SDK10；本阶段完成本机实现、测试与证据后提交推送，跟踪新Actions至终态。前置#991的根因仍未知，取得完整日志后按真实错误复现与修复；本地独立下一项为R10-06。

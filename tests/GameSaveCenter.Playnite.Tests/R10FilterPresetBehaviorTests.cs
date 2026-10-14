@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -122,19 +123,84 @@ public sealed class R10FilterPresetBehaviorTests
     }
 
     [Fact]
-    public void PresetMutationUsesConfirmationForRenameAndDelete()
+    public async Task CancellingPresetRenameOrDeleteLeavesSelectionAndStoredPresetUntouched()
+    {
+        await AssertCancelledPresetMutationIsUnchanged("RenameTaskFilterPresetAsync", "重命名筛选预设", "重命名", false, "新名称");
+        await AssertCancelledPresetMutationIsUnchanged("DeleteTaskFilterPresetAsync", "删除筛选预设", "删除", true, "原名称");
+    }
+
+    [Fact]
+    public void PresetBindingsAndApplicationRemainConnected()
     {
         var root = TestRepositoryContext.Root;
         var implementation = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.FilterPresets.cs"));
         var taskXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var mediaXaml = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
-        Assert.Contains("plugin.ConfirmAsync(\"重命名筛选预设\"", implementation, StringComparison.Ordinal);
-        Assert.Contains("plugin.ConfirmAsync(\"删除筛选预设\"", implementation, StringComparison.Ordinal);
         Assert.Contains("TaskFilterPresetApplyButton", taskXaml, StringComparison.Ordinal);
         Assert.Contains("Command=\"{Binding DeleteTaskFilterPresetCommand}\"", taskXaml, StringComparison.Ordinal);
         Assert.Contains("Command=\"{Binding ApplyMediaFilterPresetCommand}\"", mediaXaml, StringComparison.Ordinal);
         Assert.Contains("MediaInboxMode = preset.MediaInboxMode", implementation, StringComparison.Ordinal);
+    }
+
+    private static async Task AssertCancelledPresetMutationIsUnchanged(string methodName, string expectedTitle, string expectedConfirmText, bool expectedDangerous, string draft)
+    {
+        var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+        var selected = new FilterPresetDefinition
+        {
+            Name = "原名称",
+            Workspace = FilterPresetDefinition.TasksWorkspace,
+            TaskStatusFilter = "失败"
+        };
+        var other = new FilterPresetDefinition
+        {
+            Name = "另一个预设",
+            Workspace = FilterPresetDefinition.TasksWorkspace
+        };
+        var presets = new ObservableCollection<FilterPresetDefinition> { selected, other };
+        SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TaskFilterPresets), presets);
+        SetField(dashboard, "selectedTaskFilterPreset", selected);
+        SetField(dashboard, "taskFilterPresetNameDraft", draft);
+
+        var confirmationCalled = false;
+        dashboard.FilterPresetConfirmationOverrideForAudit = (title, message, confirmText, cancelText, isDangerous) =>
+        {
+            confirmationCalled = true;
+            Assert.Equal(expectedTitle, title);
+            Assert.Contains("原名称", message, StringComparison.Ordinal);
+            Assert.Equal(expectedConfirmText, confirmText);
+            Assert.Equal("取消", cancelText);
+            Assert.Equal(expectedDangerous, isDangerous);
+            return Task.FromResult(false);
+        };
+
+        var mutation = typeof(DashboardViewModel).GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(mutation);
+        var pending = (Task?)mutation!.Invoke(dashboard, null);
+        Assert.NotNull(pending);
+        await pending!;
+
+        Assert.True(confirmationCalled);
+        Assert.Equal(2, presets.Count);
+        Assert.Same(selected, presets[0]);
+        Assert.Same(other, presets[1]);
+        Assert.Equal("原名称", selected.Name);
+        Assert.Same(selected, dashboard.SelectedTaskFilterPreset);
+        Assert.Equal(draft, dashboard.TaskFilterPresetNameDraft);
+    }
+
+    private static void SetAutoPropertyBackingField(object target, string propertyName, object value)
+    {
+        var field = typeof(DashboardViewModel).GetField($"<{propertyName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        field!.SetValue(target, value);
+    }
+
+    private static void SetField(object target, string fieldName, object value)
+    {
+        var field = typeof(DashboardViewModel).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        field!.SetValue(target, value);
     }
 
     private sealed class TestPresetBinding
