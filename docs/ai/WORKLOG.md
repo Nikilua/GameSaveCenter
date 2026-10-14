@@ -1,3 +1,10 @@
+## 2026-10-15 R00/R01 freshness 当前 main 复核
+
+- 在 `4078f23d2d78a06ad1ff371978cebfee1931c309` 运行 `scripts/check-ui-evidence-freshness.ps1 -HeadCommit HEAD -AsJson`：14 records、14 fresh、0 stale，新增追踪路径未命中 R00/R01 登记源路径。`0243c108` 的四项 stale 已被 `599d2fd3` 后续行为复验与基线更新取代；本次不重跑未受影响的行为/视觉套件。
+- 修正 CURRENT_STATE、PROJECT_MEMORY、活动积压、交接与证据包里过时的 stale 状态，并保留 package identity 缺失、真实 Playnite/物理 DPI/跨屏/IME/最终呈现仍未验以及旧 audit 13 MEDIUM。source validator 与 `git diff --check` 通过；此阶段只改文档，不做代码构建或测试。
+- 推送检查：GitHub Actions 页面抓取到的列表显示 #979（`ae3c565`）Queued，页面主体报告加载错误；未能确认 `4078f23d` 对应 run ID/终态。匿名 API 请求返回内部错误，本机 `git ls-remote` 也因 Git for Windows 无法创建 signal pipe 失败；不报告 CI 成功/失败。后续提交仍按 SDK8 与 SDK10.0.401 分开跟踪。
+- 下一项 R12-03：复用现有目标路径解析与预览服务，完成合成长路径、虚拟化/可选择复制的实际生产视图验证；隔离 Playnite 测试 restore 当前仍在运行，不能推断结果。没有访问真实存档、媒体或云端。
+
 ## 2026-10-15 R12-02 校验结果解释当前 main 复核
 
 - 复用 `6cc3a618` 的 `RestoreReadinessService`、DTO、SQLite 持久化、Core 显示映射及现有 `SaveCenterView` 详情卡。`d6640887` 只新增 WPF 行为测试，没有生产服务/DTO/IPC/XAML/恢复命令变更。
