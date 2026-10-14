@@ -1,0 +1,16 @@
+[
+  {
+    "file": "GameSaveCenter.Playnite.dll",
+    "sha256": "5ED985EF9F9A283B5EBD663A2531EE96BE2BA14EB6B6A07DEA6BCDDE1891094C",
+    "productVersion": "0.6.73+37bd3c97",
+    "bytes": 1821696,
+    "mvid": "9e878e5e-0940-4f1d-ac8d-a32e6faade6c"
+  },
+  {
+    "file": "GameSaveCenter.Playnite.Tests.dll",
+    "sha256": "7E2B583E7384DCE169C257497F524A87FCCA8035C7A30F7690AD20DCB2F55EBC",
+    "productVersion": "0.6.73+37bd3c97",
+    "bytes": 1832448,
+    "mvid": "68ce7e5a-a85a-4c5c-865a-63d7af6c0b2c"
+  }
+]

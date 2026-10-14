@@ -242,3 +242,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 
 - 生产 `IndeterminateProgressBehavior` 与共享 ProgressBar 模板已存在；核对 `0243c108` 之后有共享主题/布局变化，故刷新实际行为测试而未复建服务。隐藏 Tab、窗口最小化各等待 `360ms` 时 `TranslateTransform.X` 保持三位小数不变，`IsIndeterminate` 一直 true；可见/还原均恢复移动。测试 `1/1`，脱敏 TRX 与源/程序集 SHA 见 [R08-03 当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20261014/README.md)。
 - 当前测试程序集 ProductVersion 是 `0.6.73+d3cb0b2d`（在提交前构建），源哈希与当前 `31d64e42` 一致。提交后新隔离 build 两次失败于 MSBuild ProjectReference 发现/目标阶段，exit1、无 warning/error 诊断；不将其声称为新 build pass。R08-02 代码阶段的隔离 Release build 对相同源码内容通过 `0/0`。当前 Actions 公共页只见 #979 queued、#971 In progress、#978 Failure（完整日志需登录），无当前提交 run 可核；CI 未收口。下一项 R08-04，保留真实 Playnite、Windows 动效通知、呈现帧/物理最小化、UIA/读屏、ETW 与宿主性能边界。
+
+## 2026-10-14 当前恢复点：R08-04 本机验证完成，CI 待核
+
+- checkout 在 `main`，阶段基线 `37bd3c97`。只新增/加强两个行为测试与对应证据/记忆，没有修改生产逻辑；完整 Release solution 在本机唯一 SDK `9.0.302` 下隔离构建 `0 warning / 0 error`。`R02BusyStateTests 5/5`、`R08BusinessFeedbackBehaviorTests 4/4`，共 `9/9`；源校验与 diff check 通过。构建和 TRX 对应文件 SHA/MVID 见 [R08-04 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20261014/README.md)。global.json SDK `8.0.423` 未安装；SDK8/SDK10.0.401 CI 门禁尚未核实。
+- WPF 静态检查 `0 errors/29 warnings/177 info`，本阶段没有 XAML 变化；检查扫到未改动的 `.tmp/r12-04-stage` 一条历史布局 warning。隔离 WPF 窗口/合成 DTO 不是 Playnite host、真实 Worker 长请求、Narrator/外部 UIA、自动通知宿主时序、呈现帧或宿主性能证明。
+- 用户提供外机 R09 log 的期望/实际吻合历史 Chrome 2 DIP 断言；当前源码同一行是颜色检查，独立 `ValidationStroke` 才期望 2 DIP。`libpng iCCP` 不在失败调用栈，`TextServicesContext` COM 异常发生于失败后的 WPF 收尾；外机 HEAD/DLL/PDB 未提供，具体错配仍未证实，当前 main 未改样式/降低断言。
+- 公共 Actions 页最新可见仍为 #979 queued；#971/run `38393317198` 页面仍 In progress；#978/run `38509928015` 为 Failure，完整 logs 需登录。没有 `gh` CLI；匿名浏览拿不到新提交 SDK8/SDK10 终态。用户至 2026-10-15 09:00 无法回复，不等新材料，继续独立任务并在有访问权限时再查 CI；不因 SDK9 本机通过称 CI 收口。
+- 本轮生成的 `.tmp/r08-04-current-main-sdk9302` 在脱敏 TRX/程序集身份校验并归档后清理；只清理已确认归属本轮的 R08 `.tmp`，保留其他任务未跟踪证据与 WPF 临时项目。下一项 R08-05 页面切换轻量化；先复用现有页面 transition/绑定/滚动实现，分析布局与容器重建行为后再补小批行为验证。

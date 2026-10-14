@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8b41b065-2997-41d7-84c6-8fb23ec56926" name="R08-04 local test run" runUser="sanitized" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-14T16:39:41.1719740+08:00" queuing="2026-10-14T16:39:41.1719746+08:00" start="2026-10-14T16:39:35.8262155+08:00" finish="2026-10-14T16:39:55.6396288+08:00" />
+  <TestSettings name="default" id="62d06e20-3b04-47bf-810f-e674a31b752f">
+    <Deployment runDeploymentRoot="[isolated]" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="26b773b4-bd17-401d-a68e-c9b9b8c2a288" testId="cfb2bbaf-e1be-1805-6ded-f8bfa5a49f7b" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Failed, stateDisplay: &quot;失败&quot;, message: &quot;失败阶段&quot;, errorCode: &quot;E_SYNTHETIC&quot;, errorMessage: &quot;合成失败详情&quot;, expectedDetail: &quot;错误码：E_SYNTHETIC；合成失败详情&quot;)" computerName="[local]" duration="00:00:00.0020000" startTime="2026-10-14T16:39:40.0591939+08:00" endTime="2026-10-14T16:39:40.0601993+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26b773b4-bd17-401d-a68e-c9b9b8c2a288" />
+    <UnitTestResult executionId="ca279b08-7d25-4cbc-8cd3-00eac00596b3" testId="5224ff8f-110a-a69c-531b-91b657c10a49" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Succeeded, stateDisplay: &quot;成功&quot;, message: &quot;备份完成&quot;, errorCode: &quot;&quot;, errorMessage: &quot;&quot;, expectedDetail: &quot;备份完成&quot;)" computerName="[local]" duration="00:00:00.0010000" startTime="2026-10-14T16:39:40.0615089+08:00" endTime="2026-10-14T16:39:40.0625148+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca279b08-7d25-4cbc-8cd3-00eac00596b3" />
+    <UnitTestResult executionId="ed45861e-5778-4c2d-a8cb-e58c4a1f4e76" testId="3eaa4886-15c5-6342-bf10-07a93c73da41" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Cancelled, stateDisplay: &quot;已取消&quot;, message: &quot;用户取消请求&quot;, errorCode: &quot;&quot;, errorMessage: &quot;&quot;, expectedDetail: &quot;用户取消请求&quot;)" computerName="[local]" duration="00:00:00.0010000" startTime="2026-10-14T16:39:40.0639550+08:00" endTime="2026-10-14T16:39:40.0644609+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ed45861e-5778-4c2d-a8cb-e58c4a1f4e76" />
+    <UnitTestResult executionId="f8902055-f8f4-477a-98f5-879f8c288d56" testId="1e4688d9-43f0-24ad-4599-bca38b465ec0" testName="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TaskToastAutomationPeerCarriesTheFinalStateText" computerName="[local]" duration="00:00:00.4090000" startTime="2026-10-14T16:39:39.6455867+08:00" endTime="2026-10-14T16:39:40.0414449+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8902055-f8f4-477a-98f5-879f8c288d56" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Failed, stateDisplay: &quot;失败&quot;, message: &quot;失败阶段&quot;, errorCode: &quot;E_SYNTHETIC&quot;, errorMessage: &quot;合成失败详情&quot;, expectedDetail: &quot;错误码：E_SYNTHETIC；合成失败详情&quot;)" storage="[test-assembly]" id="cfb2bbaf-e1be-1805-6ded-f8bfa5a49f7b">
+      <Execution id="26b773b4-bd17-401d-a68e-c9b9b8c2a288" />
+      <TestMethod codeBase="[test-assembly]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TerminalTaskDtoKeepsReaderStateAndDetailAligned" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Succeeded, stateDisplay: &quot;成功&quot;, message: &quot;备份完成&quot;, errorCode: &quot;&quot;, errorMessage: &quot;&quot;, expectedDetail: &quot;备份完成&quot;)" storage="[test-assembly]" id="5224ff8f-110a-a69c-531b-91b657c10a49">
+      <Execution id="ca279b08-7d25-4cbc-8cd3-00eac00596b3" />
+      <TestMethod codeBase="[test-assembly]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TerminalTaskDtoKeepsReaderStateAndDetailAligned" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TaskToastAutomationPeerCarriesTheFinalStateText" storage="[test-assembly]" id="1e4688d9-43f0-24ad-4599-bca38b465ec0">
+      <Execution id="f8902055-f8f4-477a-98f5-879f8c288d56" />
+      <TestMethod codeBase="[test-assembly]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TaskToastAutomationPeerCarriesTheFinalStateText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests.TerminalTaskDtoKeepsReaderStateAndDetailAligned(state: Cancelled, stateDisplay: &quot;已取消&quot;, message: &quot;用户取消请求&quot;, errorCode: &quot;&quot;, errorMessage: &quot;&quot;, expectedDetail: &quot;用户取消请求&quot;)" storage="[test-assembly]" id="3eaa4886-15c5-6342-bf10-07a93c73da41">
+      <Execution id="ed45861e-5778-4c2d-a8cb-e58c4a1f4e76" />
+      <TestMethod codeBase="[test-assembly]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests" name="TerminalTaskDtoKeepsReaderStateAndDetailAligned" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="cfb2bbaf-e1be-1805-6ded-f8bfa5a49f7b" executionId="26b773b4-bd17-401d-a68e-c9b9b8c2a288" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5224ff8f-110a-a69c-531b-91b657c10a49" executionId="ca279b08-7d25-4cbc-8cd3-00eac00596b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3eaa4886-15c5-6342-bf10-07a93c73da41" executionId="ed45861e-5778-4c2d-a8cb-e58c4a1f4e76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e4688d9-43f0-24ad-4599-bca38b465ec0" executionId="f8902055-f8f4-477a-98f5-879f8c288d56" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.37]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.76]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.30]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -10455,3 +10455,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 提交后另起的全新隔离 build 以 exit1 失败在 `_GenerateRestoreProjectPathWalk` / `_GetProjectReferenceTargetFrameworkProperties`，完整诊断无 MSB/NU 根因且 0 warnings/errors；未把它记为成功，也未猜修。前一阶段成功 build 的 ProductVersion 保留父哈希 `d3cb0b2d`，但相关源码 SHA 与 `31d64e42` 相同。SDK9 不替代 SDK8/CI SDK10.0.401。合成 STA Window/逻辑 DIP 不证明 Playnite 真实呈现、宿主 CPU、电量、物理 DPI 或实际最小化输入；无视觉改动/截图。
 - Actions 公开页可见仍停于 #979 `ae3c565` queued；#971/run `38393317198` 仍 In Progress；#978/run `38509928015` Failure，完整日志需登录，SDK/根因未知。页面未显示 `31d64e42` 当前提交 run；继续核对 SDK8 与 SDK10 lanes，不因此阻塞其他独立工作。
 - R08-03 当前 main 受控条件已满足，下一项 R08-04 业务完成节奏：盘点现有 DTO 与实际取消/失败/成功时序，补行为和负例，仅在真实缺口时改动。
+
+## 2026-10-14 R08-04 当前 main 业务完成节奏复核
+
+- 复用现有 `BusyOperationCoordinator`、生产按钮 `IsBusy`、Toast AutomationPeer 和 `TaskStatusDto`，未改生产代码。增加未完成成功 action 的忙态/结束回调行为断言；终态 DTO 的成功、失败（错误码/错误详情覆盖阶段文本）、取消详情改为精确比较。
+- 本机 SDK `9.0.302`、隔离 Release solution `0 warning / 0 error`，Playnite `net462`/tests `net472`；`R02BusyStateTests 5/5`、`R08BusinessFeedbackBehaviorTests 4/4`，共 `9/9`。`validate-source.py` 与 `git diff --check` 通过。WPF 技能静态分析 `0 errors/29 warnings/177 info`，扫描包含无关 `.tmp/r12-04-stage` 历史 warning；本轮没有 XAML 改动。
+- 首次隔离测试因构建时漏设 `GSC_BUILD_COMMIT` 被源码身份门禁拒绝一个结构契约用例；补齐当前 HEAD 身份重新构建并运行，完整两类通过。只把后一次 `9/9` 计为成功。源码/程序集 SHA、MVID、脱敏 TRX 在[R08-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20261014/README.md)。本机只装 SDK9，不能替代 global.json SDK8 或 CI SDK10.0.401。
+- 公共 Actions 页面仍只列到 #979 queued，#971/run `38393317198` 仍 In progress、#978/run `38509928015` Failure 且完整日志需登录；本轮提交的两条 SDK lane 尚未核实。真实 Playnite/Worker 长任务、Narrator/外部 UIA、自动通知宿主时序、物理 DPI/呈现、ETW/宿主性能未验。下一项 R08-05 页面切换轻量化；不等待用户补 #978 日志，独立推进。

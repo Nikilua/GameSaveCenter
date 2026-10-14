@@ -20,6 +20,52 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R02BusyStateTests
 {
     [Fact]
+    public async Task BusyCoordinatorKeepsSuccessfulOperationPendingUntilActionCompletes()
+    {
+        var coordinator = new BusyOperationCoordinator();
+        var actionCompletion = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var transitions = new List<bool>();
+        var busy = false;
+        var actionCount = 0;
+        var finishedCount = 0;
+        Exception? failure = null;
+        string? cancellation = null;
+
+        var operation = coordinator.TryRunAsync(
+            () => Task.CompletedTask,
+            () =>
+            {
+                actionCount++;
+                return actionCompletion.Task;
+            },
+            value =>
+            {
+                busy = value;
+                transitions.Add(value);
+            },
+            message => cancellation = message,
+            error => failure = error,
+            () => finishedCount++);
+
+        Assert.False(operation.IsCompleted);
+        Assert.True(busy);
+        Assert.Equal(1, actionCount);
+        Assert.Equal(0, finishedCount);
+        Assert.Equal(new[] { true }, transitions);
+        Assert.Null(failure);
+        Assert.Null(cancellation);
+
+        actionCompletion.SetResult(null);
+        Assert.True(await operation);
+
+        Assert.False(busy);
+        Assert.Equal(1, finishedCount);
+        Assert.Equal(new[] { true, false }, transitions);
+        Assert.Null(failure);
+        Assert.Null(cancellation);
+    }
+
+    [Fact]
     public async Task BusyCoordinatorRejectsDuplicateAndRestoresAfterFailureAndCancellation()
     {
         var coordinator = new BusyOperationCoordinator();

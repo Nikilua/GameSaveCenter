@@ -43,10 +43,16 @@ public sealed class R08BusinessFeedbackBehaviorTests
     }
 
     [Theory]
-    [InlineData(TaskState.Succeeded, "成功", "完成")]
-    [InlineData(TaskState.Failed, "失败", "失败")]
-    [InlineData(TaskState.Cancelled, "已取消", "已取消")]
-    public void TerminalTaskDtoKeepsReaderStateAndDetailAligned(TaskState state, string stateDisplay, string expectedDetail)
+    [InlineData(TaskState.Succeeded, "成功", "备份完成", "", "", "备份完成")]
+    [InlineData(TaskState.Failed, "失败", "失败阶段", "E_SYNTHETIC", "合成失败详情", "错误码：E_SYNTHETIC；合成失败详情")]
+    [InlineData(TaskState.Cancelled, "已取消", "用户取消请求", "", "", "用户取消请求")]
+    public void TerminalTaskDtoKeepsReaderStateAndDetailAligned(
+        TaskState state,
+        string stateDisplay,
+        string message,
+        string errorCode,
+        string errorMessage,
+        string expectedDetail)
     {
         var task = new TaskStatusDto
         {
@@ -54,11 +60,13 @@ public sealed class R08BusinessFeedbackBehaviorTests
             TaskType = "Backup",
             GameName = "合成游戏",
             State = state,
-            Message = state == TaskState.Succeeded ? "完成" : expectedDetail
+            Message = message,
+            ErrorCode = errorCode,
+            ErrorMessage = errorMessage
         };
 
         Assert.Equal(stateDisplay, task.StateDisplay);
-        Assert.Contains(expectedDetail, task.DetailMessage);
+        Assert.Equal(expectedDetail, task.DetailMessage);
         Assert.False(task.CanCancel);
     }
 
