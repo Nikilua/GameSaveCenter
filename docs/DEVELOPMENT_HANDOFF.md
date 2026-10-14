@@ -230,10 +230,15 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - CI：#971/run 38393317198 公开状态仍 In progress（所附 ZIP 只有 SDK8 job）；#978/run 38509928015 Failure，完整日志登录限制、根因未知；#979 当前 queued。main 066b9a6 对应 run 尚未在公开列表显示。推送后逐一查 SDK8 与 SDK10.0.401 至终态；日志未取到时不盲改，继续独立 Q/R。
 - 保留他任务未跟踪证据与 WPF 临时项目；只清理本轮 .tmp/r08-01-production-button-sdk9-20261014，且在 TRX/身份已复制和哈希核对后执行。真实 Playnite、物理鼠标/键盘、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
 
-## 2026-10-14 当前恢复点：R08-02 已复核，R08-03 待刷新证据
+## 2026-10-14 当前恢复点：R08-02 已推送，R08-03 当前 main 已复核
 
-- 工作树在 main，父提交 `d3cb0b2d` 已推送。R08-02 本地 SDK `9.0.302` Release 构建 `0 warning / 0 error`；应用开关测试 `1/1`、真实 SettingsShell 系统参数处理回调的受控策略模拟 `1/1`、生产侧栏 reduced-motion `2/2`、回调订阅/卸载保护门禁 `1/1`。详细 TRX、source/assembly identity 和边界见 [R08-02 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- 工作树在 main，当前提交 `31d64e42` 已推送。R08-02 本地 SDK `9.0.302` Release 构建 `0 warning / 0 error`；应用开关测试 `1/1`、真实 SettingsShell 系统参数处理回调的受控策略模拟 `1/1`、生产侧栏 reduced-motion `2/2`、回调订阅/卸载保护门禁 `1/1`。详细 TRX、source/assembly identity 和边界见 [R08-02 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
 - 系统模拟使用实例级内部 provider；未修改 Windows 动画偏好，也未触发 `SystemParameters.StaticPropertyChanged`。真实设置通知待隔离宿主；UIA/读屏、Playnite、物理 DPI/呈现帧、ETW/宿主性能仍未验。R08-02 测试 exit 0 后仍有 TextServices COM shutdown 清理异常，根因未知。
 - 外机 R09 最新日志的第 151 行对应历史 `3f7d0b30` 中 `Chrome.BorderThickness == 2`；当前 main 第 151 行断言错误边框颜色，第 154 行才断言 `ValidationStroke.BorderThickness == 2`。当前 main R09 `2/2`，日志中的 `libpng iCCP` 是独立 warning；没有外机 HEAD/DLL/PDB，不能具体归因旧分支、旧二进制或 PDB 错配。
-- 公开 Actions 页面仍只列到 #979 (`ae3c565`) queued；#971/run `38393317198` In Progress，#978/run `38509928015` Failure 且完整日志需登录。`d3cb0b2d` 对应 run 尚未在公开页出现。R08-02 提交推送后必须再查两条 SDK lane 到终态；SDK9 结果不替代 SDK8/CI SDK10.0.401。
-- 下一步按“已有能力优先复用”复核 R08-03：针对当前生产 `IndeterminateProgressBehavior`/模板，在活动 spinner 的隐藏 Tab 与最小化窗口路径上跑定向隔离测试；旧证据为 `378ceb13`，先核源/测试 SHA 与当前 main，再决定复用或刷新。若当前 main 行为证据一致，标“已满足”并推进 R08-04。保留他任务未跟踪证据与 WPF 临时项目；只清理本轮已验明归属的 `.tmp`。
+- 公开 Actions 页面仍只列到 #979 (`ae3c565`) queued；#971/run `38393317198` In Progress，#978/run `38509928015` Failure 且完整日志需登录。`31d64e42` 对应 run 尚未在公开页出现。继续查 SDK8 与 SDK10.0.401 两条 lane 到终态；SDK9 结果不替代 CI。
+- R08-03 已按当前 main 刷新行为证据并满足受控条件；下一项 R08-04 业务完成节奏，先核查 DTO 与现有取消/成功/失败时序再补缺口。保留他任务未跟踪证据与 WPF 临时项目；只清理本轮已验明归属的 `.tmp`。
+
+## 2026-10-14 R08-03 当前 main 隐藏/最小化 spinner 复核
+
+- 生产 `IndeterminateProgressBehavior` 与共享 ProgressBar 模板已存在；核对 `0243c108` 之后有共享主题/布局变化，故刷新实际行为测试而未复建服务。隐藏 Tab、窗口最小化各等待 `360ms` 时 `TranslateTransform.X` 保持三位小数不变，`IsIndeterminate` 一直 true；可见/还原均恢复移动。测试 `1/1`，脱敏 TRX 与源/程序集 SHA 见 [R08-03 当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- 当前测试程序集 ProductVersion 是 `0.6.73+d3cb0b2d`（在提交前构建），源哈希与当前 `31d64e42` 一致。提交后新隔离 build 两次失败于 MSBuild ProjectReference 发现/目标阶段，exit1、无 warning/error 诊断；不将其声称为新 build pass。R08-02 代码阶段的隔离 Release build 对相同源码内容通过 `0/0`。当前 Actions 公共页只见 #979 queued、#971 In progress、#978 Failure（完整日志需登录），无当前提交 run 可核；CI 未收口。下一项 R08-04，保留真实 Playnite、Windows 动效通知、呈现帧/物理最小化、UIA/读屏、ETW 与宿主性能边界。

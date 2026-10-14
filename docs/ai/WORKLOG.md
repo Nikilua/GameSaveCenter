@@ -10446,4 +10446,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `validate-source.py`、XAML `24/24`、`git diff --check` 通过；四份脱敏 TRX、source hashes、DLL SHA/MVID/ProductVersion 在[R08-02 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md)。成功退出后仍有 TextServices COM shutdown 清理噪声，根因未知。无视觉改动，不生成截图；真实 Windows 偏好通知、Playnite、UIA/读屏、物理 DPI/跨屏、呈现帧、ETW/宿主性能未验。
 - 用户新贴 R09 外机日志的 Expected/Actual 与历史 Chrome 2 DIP 断言吻合；其行 151 在当前源码是颜色断言，2 DIP 断言位于行 154 的独立 `ValidationStroke`。因此失败日志使用的断言/PDB 与当前 main 源码版本不一致，具体旧分支/二进制/PDB 仍待外机身份；`libpng iCCP` 与失败调用栈无关。无需改生产样式或降低当前断言。
 - 当前公开 Actions 页面暂未显示 `d3cb0b2d` 之后的新 run；#971 In progress、#978 Failure（日志需登录）、#979 queued。推送 R08-02 后再跟 SDK8/SDK10.0.401 到终态，SDK9 本机不能代替 CI。
-- 下一项复核已有 R08-03 隐藏/最小化 spinner 停机能力，先核当前 main 源/测试身份并刷新实际行为证据；若条件一致则标“已满足”后推进 R08-04。用户至明日 09:00 无法回复，不等待补充材料。
+- R08-03 已按当前 main 刷新行为证据并满足受控条件；下一项 R08-04 业务完成节奏。用户至明日 09:00 无法回复，不等待补充材料。
+
+## 2026-10-14 R08-03 当前 main 隐藏/最小化 spinner 复核
+
+- 先确认当前生产已有 `IndeterminateProgressBehavior`、共享 `ProgressBar` 模板与 storyboard；没有重建服务或改生产代码。因 `0243c108` 后主题/布局和测试断言曾变化，复核当前 main 源、模板及实际行为。
+- R08-02 代码阶段对 `31d64e42` 的相同源码内容完成隔离 Release build，SDK `9.0.302`、0 warning/0 error；提交后 `R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes` 在 hash-identified 测试程序集 `1/1`、exit0。实际检查 spinner 可见时移动超过 `0.5 DIP`，隐藏 Tab/minimize 等待 `360ms` 位移稳定到小数后三位且 `IsIndeterminate` 不清除，恢复后重新移动。证据与源/DLL/TRX SHA、MVID 见[R08-03 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R08-03-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- 提交后另起的全新隔离 build 以 exit1 失败在 `_GenerateRestoreProjectPathWalk` / `_GetProjectReferenceTargetFrameworkProperties`，完整诊断无 MSB/NU 根因且 0 warnings/errors；未把它记为成功，也未猜修。前一阶段成功 build 的 ProductVersion 保留父哈希 `d3cb0b2d`，但相关源码 SHA 与 `31d64e42` 相同。SDK9 不替代 SDK8/CI SDK10.0.401。合成 STA Window/逻辑 DIP 不证明 Playnite 真实呈现、宿主 CPU、电量、物理 DPI 或实际最小化输入；无视觉改动/截图。
+- Actions 公开页可见仍停于 #979 `ae3c565` queued；#971/run `38393317198` 仍 In Progress；#978/run `38509928015` Failure，完整日志需登录，SDK/根因未知。页面未显示 `31d64e42` 当前提交 run；继续核对 SDK8 与 SDK10 lanes，不因此阻塞其他独立工作。
+- R08-03 当前 main 受控条件已满足，下一项 R08-04 业务完成节奏：盘点现有 DTO 与实际取消/失败/成功时序，补行为和负例，仅在真实缺口时改动。

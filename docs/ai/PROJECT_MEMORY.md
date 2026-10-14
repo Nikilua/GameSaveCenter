@@ -117,4 +117,8 @@ CURRENT_STATE 保持短摘要，PROJECT_MEMORY 保持稳定规则，HANDOFF 保�
 
 ### 2026-10-14 R08-02 应用与系统动效热关闭复核
 
-当前 main 的应用设置开关与系统策略变更均复用 `GscMotion.NormalizeAll` 清除活动时钟，不重建动画服务。SDK `9.0.302` Release `0/0`；应用 ToggleSwitch `1/1`、调用真实 `OnSystemParametersChanged` 的实例级系统策略模拟 `1/1`、生产侧栏 reduced-motion `2/2`、Dashboard/Settings 订阅与卸载保护门禁 `1/1`。两种热关闭均验证活动入场时钟清理、稳定值 `Opacity/Y=1/0`，重新开启后不重播旧动画。系统策略通过实例级内部测试 provider 输入；未改 Windows 设置或触发真实静态系统事件。证据见 `evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md`。WPF 测试退出仍有 TextServices COM 清理异常噪声，根因未知、退出码成功。本机 SDK9 不替代 SDK8.0.423/CI SDK10.0.401；CI 推送后须分别追踪终态。下一步复核已有 R08-03 隐藏/最小化 spinner 停机，实际 Windows 动效通知、Playnite、UIA/读屏、物理 DPI/呈现帧/ETW/宿主性能仍未验。
+当前 main 的应用设置开关与系统策略变更均复用 `GscMotion.NormalizeAll` 清除活动时钟，不重建动画服务。SDK `9.0.302` Release `0/0`；应用 ToggleSwitch `1/1`、调用真实 `OnSystemParametersChanged` 的实例级系统策略模拟 `1/1`、生产侧栏 reduced-motion `2/2`、Dashboard/Settings 订阅与卸载保护门禁 `1/1`。两种热关闭均验证活动入场时钟清理、稳定值 `Opacity/Y=1/0`，重新开启后不重播旧动画。系统策略通过实例级内部测试 provider 输入；未改 Windows 设置或触发真实静态系统事件。证据见 `evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md`。WPF 测试退出仍有 TextServices COM 清理异常噪声，根因未知、退出码成功。本机 SDK9 不替代 SDK8.0.423/CI SDK10.0.401；CI 推送后须分别追踪终态。R08-03 隐藏/最小化 spinner 停机已按当前 main 刷新复核，实际 Windows 动效通知、Playnite、UIA/读屏、物理 DPI/呈现帧/ETW/宿主性能仍未验。下一项 R08-04。
+
+### 2026-10-14 R08-03 当前 main 隐藏与最小化停机复核
+
+R08-03 生产服务、模板与 storyboard 已存在，未改生产代码。R08-02 代码阶段在提交前对最终 `31d64e42` 源内容完成 SDK `9.0.302` 隔离 Release build `0/0`；构建 ProductVersion 是父提交 `d3cb0b2d`，源码/程序集 SHA 与 MVID 独立记录。提交后对同一 hash-identified 测试程序集执行 `IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes`，实际运动、隐藏暂停、忙态保留、恢复运动和最小化暂停均通过 `1/1`。新隔离 build 尝试在 MSBuild ProjectReference target 以 exit 1/0 warning/0 error 失败，根因日志无 MSB/NU 信息；不记为 build pass。证据见 `evidence/R08-03-CURRENT-MAIN-RECHECK-20261014/README.md`。当前 Actions 公开页仍只列到 #979，没显示 `31d64e42` run；#971 仍 In Progress、#978 Failure 且日志需登录，须继续查 SDK8/SDK10.0.401 到终态。下一项 R08-04 业务完成节奏；真实 Playnite/呈现/物理最小化/ETW/宿主性能仍未验。
