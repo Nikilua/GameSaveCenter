@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
@@ -9,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -43,6 +46,77 @@ public sealed class R11DiffListSearchBehaviorTests
         Assert.Empty(removedOnly.Modified);
         Assert.Equal(new[] { "slot/old.sav" }, removedOnly.Removed);
         Assert.False(removedOnly.HasMore);
+    }
+
+    [Fact]
+    public void ProductionDashboardFiltersLoadsMoreAndKeepsUnknownSeparateFromZeroChanges()
+    {
+        var diff = new BackupDiffDto
+        {
+            Added = Enumerable.Range(0, 123).Select(index => $"slot/new-{index:D3}.sav").ToList(),
+            Modified = new System.Collections.Generic.List<string> { "slot/current.sav" },
+            Removed = new System.Collections.Generic.List<string> { "slot/old.sav" },
+            UnchangedCount = 0,
+            ComparisonQuality = "Estimated"
+        };
+        var dashboard = CreateDetachedDiffDashboard(diff, visibleLimit: 2, searchText: "slot");
+
+        Assert.Equal(123, dashboard.DiffAddedMatchCount);
+        Assert.Equal(1, dashboard.DiffModifiedMatchCount);
+        Assert.Equal(1, dashboard.DiffRemovedMatchCount);
+        Assert.Equal(4, dashboard.DiffPathVisibleCount);
+        Assert.Equal(2, dashboard.DiffAddedPaths.Count);
+        Assert.True(dashboard.DiffPathHasMore);
+        Assert.Contains("匹配 125 条，当前显示 4 条", dashboard.DiffPathFilterSummary);
+        Assert.Contains("未知差异：", dashboard.DiffUnknownSummary);
+        Assert.Contains("零变化：0 条", dashboard.DiffUnknownSummary);
+
+        InvokeDashboardMethod(dashboard, "LoadMoreDiffPaths");
+        Assert.Equal(124, dashboard.DiffPathVisibleCount);
+        Assert.Equal(122, dashboard.DiffAddedPaths.Count);
+        Assert.True(dashboard.DiffPathHasMore);
+        InvokeDashboardMethod(dashboard, "LoadMoreDiffPaths");
+        Assert.Equal(125, dashboard.DiffPathVisibleCount);
+        Assert.False(dashboard.DiffPathHasMore);
+
+        dashboard.DiffPathSearchText = "slot/old";
+        dashboard.DiffPathKindFilter = "删除";
+        Assert.Empty(dashboard.DiffAddedPaths);
+        Assert.Empty(dashboard.DiffModifiedPaths);
+        Assert.Equal(new[] { "slot/old.sav" }, dashboard.DiffRemovedPaths);
+        Assert.Equal(0, dashboard.DiffAddedMatchCount);
+        Assert.Equal(0, dashboard.DiffModifiedMatchCount);
+        Assert.Equal(1, dashboard.DiffRemovedMatchCount);
+        Assert.Equal(1, dashboard.DiffPathVisibleCount);
+        Assert.False(dashboard.DiffPathHasMore);
+
+        InvokeDashboardMethod(dashboard, "LoadMoreDiffPaths");
+        Assert.Equal(1, dashboard.DiffPathVisibleCount);
+        Assert.Equal(new[] { "slot/old.sav" }, dashboard.DiffRemovedPaths);
+        InvokeDashboardMethod(dashboard, "ClearDiffPathFilters");
+        Assert.Equal(string.Empty, dashboard.DiffPathSearchText);
+        Assert.Equal("全部", dashboard.DiffPathKindFilter);
+        Assert.Equal(125, dashboard.DiffAddedMatchCount + dashboard.DiffModifiedMatchCount + dashboard.DiffRemovedMatchCount);
+        Assert.Equal(122, dashboard.DiffPathVisibleCount);
+        Assert.True(dashboard.DiffPathHasMore);
+
+        SetDashboardField(dashboard, "lastBackupDiff", new BackupDiffDto
+        {
+            ComparisonQuality = "Exact",
+            UnchangedCount = 0
+        });
+        InvokeDashboardMethod(dashboard, "RefreshDiffPathResults");
+        Assert.Equal(0, dashboard.DiffPathVisibleCount);
+        Assert.False(dashboard.DiffPathHasMore);
+        Assert.DoesNotContain("未知差异", dashboard.DiffUnknownSummary);
+        Assert.Contains("差异质量：精确比较", dashboard.DiffUnknownSummary);
+        Assert.Contains("零变化：0 条", dashboard.DiffUnknownSummary);
+
+        SetDashboardField(dashboard, "lastBackupDiff", null);
+        InvokeDashboardMethod(dashboard, "RefreshDiffPathResults");
+        Assert.Equal("比较两个版本后，可按类型和路径筛选。", dashboard.DiffPathFilterSummary);
+        Assert.Equal("差异质量和未变化数量会在比较后单独显示。", dashboard.DiffUnknownSummary);
+        Assert.Equal(0, dashboard.DiffAddedMatchCount + dashboard.DiffModifiedMatchCount + dashboard.DiffRemovedMatchCount);
     }
 
     [Fact]
@@ -125,6 +199,38 @@ public sealed class R11DiffListSearchBehaviorTests
         thread.Start();
         thread.Join();
         if (failure != null) throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
+    private static DashboardViewModel CreateDetachedDiffDashboard(BackupDiffDto diff, int visibleLimit, string searchText)
+    {
+        // Exercise the production projection and command methods without constructing a
+        // Playnite plugin, starting Worker IPC, or touching the real clipboard.
+        var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+        SetDashboardField(dashboard, "<DiffAddedPaths>k__BackingField", new BatchObservableCollection<string>());
+        SetDashboardField(dashboard, "<DiffModifiedPaths>k__BackingField", new BatchObservableCollection<string>());
+        SetDashboardField(dashboard, "<DiffRemovedPaths>k__BackingField", new BatchObservableCollection<string>());
+        SetDashboardField(dashboard, "<DiffPathKindOptions>k__BackingField", new[] { "全部", "新增", "修改", "删除" });
+        SetDashboardField(dashboard, "lastBackupDiff", diff);
+        SetDashboardField(dashboard, "diffPathVisibleLimit", visibleLimit);
+        SetDashboardField(dashboard, "diffPathSearchText", searchText);
+        SetDashboardField(dashboard, "diffPathKindFilter", "全部");
+        SetDashboardField(dashboard, "commandRefreshScheduled", true);
+        InvokeDashboardMethod(dashboard, "RefreshDiffPathResults");
+        return dashboard;
+    }
+
+    private static void SetDashboardField(DashboardViewModel dashboard, string name, object? value)
+    {
+        var field = typeof(DashboardViewModel).GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException($"Missing DashboardViewModel field {name}.");
+        field.SetValue(dashboard, value);
+    }
+
+    private static void InvokeDashboardMethod(DashboardViewModel dashboard, string name)
+    {
+        var method = typeof(DashboardViewModel).GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException($"Missing DashboardViewModel method {name}.");
+        method.Invoke(dashboard, null);
     }
 
     private sealed class DiffPageState

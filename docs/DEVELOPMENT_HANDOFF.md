@@ -285,3 +285,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 生产来源提示与清除命令沿用 `5403d797`。本轮补实际 `TaskCenterView` 按钮调用生产 ViewModel 命令，验证来源条件清除、提示/命令状态、第二条合成任务恢复、其余任务草稿保留和当前页请求 token 取消。Release 项目构建成功；R10-06 定向 `3/3`，相邻 R09 焦点 `2/2`，本机 SDK9.0.302/VSTest17.14.1。详细源/程序集身份见 `evidence/R10-06-CURRENT-MAIN-RECHECK-20261014/README.md`。
 - 最新前序 run #992（父提交 `a2fdb4f6`）Failure。SDK10.0.401 job `115852859775` 的“SDK 10.0.401 编译与测试复核”与默认 build job `115852860137` 的“编译、测试与打包”均 exit1；完整 logs/API 403，两个 artifact API 403、网页下载404，根因未知。此 run 不包含本轮 R10-06 测试。不得按通用 exit code 猜修；本轮提交触发的 Actions 必须另行跟到终态。
 - 用户到明日 09:00 前无法回复。即便 logs 暂不可获取，推送后跟完新 Actions，再继续 R10-07 侧栏信息密度；等待外机 R09 HEAD/DLL/PDB 不阻塞主队列。真实 Playnite、任务服务、UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
+
+## 2026-10-14 R11-03 恢复点
+
+- 当前 checkout `main`，阶段基线/程序集源码版本为 `fd853380ec888ef94c112e255996b53106a0ddea`。R11-03 生产实现已存在，只增加生产 DashboardViewModel 筛选/分页/摘要行为测试与证据；R11 定向 7/7、同一 Release 测试程序集 R09 定向 2/2。SDK9.0.302/VSTest17.14.1，本机 Playnite net462/Tests net472 单项 Release 构建 0 warning / 0 error，不是完整 solution build；SDK9不得替代SDK8或CI SDK10.0.401。
+- 当前阶段变更包括 `tests/GameSaveCenter.Playnite.Tests/R11DiffListSearchBehaviorTests.cs`、R11-03证据目录、R09复核记录和当前状态/记忆/日志。文档同步并提交后只纳入上述本阶段文件，保留 status 中所有其它未跟踪证据和 WPF 临时项目。
+- 外机用户日志：Expected/Actual均为四边厚度2/1，stack line151；当前 main line151为颜色检查，line152 Chrome厚度1，line154 ValidationStroke厚度2。旧测试源或DLL/PDB错配只是推断；缺外机HEAD、源码和程序集身份。libpng warning与断言无关，WPF COM错误在失败后收尾阶段。当前本机 R09 2/2，未更改模板或弱化断言。
+- #992/#993 失败原因未知，job日志/diagnostics API受403/登录权限阻挡。检查 R11-03 推送后的当前提交 SDK8/SDK10.0.401 Actions 并持续到终态；CI未明确成功/失败前不能宣称阶段完成。旧 Actions 列表快照不应当作新提交状态。
+- 下一可执行项 R11-04：检查现有备注机制、取消及错误语义、重启读回和稳定 BackupId 选择；合成数据/隔离目录，禁止动真实存档。用户明日09:00前无法回复，不等待其外机信息，先推进独立任务。

@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R10-07 22/22，R10-08 2/2，R11-01 17/17；R11-02 当前 main 合成 manifest / 生产 FileManifestDiffService / STA SaveCenterView 行为 2/2，R09 当前 Release 复跑 2/2。SDK9.0.302、VSTest17.14.1；Contracts/Core/HostAuditSeeder/Playnite net462/Tests net472 分项目 Release 编译均 0/0，XAML 24/24、source validator 通过。详细身份与 TRX 见 R11-02 当前 main 复核包。#992/#993 已失败且根因因日志限制未知，不猜修。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。58090d99 与 3a2d1163 已推送；公开 Actions 页面目前只载入旧快照 #972（8546aca）In progress，并报加载错误；另一次旧抓取曾显示 #979，匿名 API 曾返回 403。两个新提交 run 状态未知，不报告 CI 完成。外机 R09 仍缺 HEAD、源码和 DLL/PDB 身份；当前 main 2/2 只说明本机不复现，不确认外机根因。用户至 2026-10-15 09:00 无法回复，继续独立任务。下一项先盘点 R11-03 现有差异列表能力。
+更新：2026-10-14。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-03 在 fd853380 当前主线补齐生产 DashboardViewModel 筛选/有限加载/计数行为验证，R11 定向回归7/7；同一新建 Release 测试程序集上的 R09 定向复跑2/2。本机 SDK9.0.302、VSTest17.14.1；Playnite net462 与 Tests net472 定向 Release 构建0 warning/0 error，XAML 24/24、source validator 通过。完整哈希、TRX 和边界见 R11-03 当前 main 复核包。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。#992/#993 已失败且日志受限、根因未知；58090d99/3a2d1163/fd853380 对应 CI 终态仍需新查。外机 R09 的 Expected 2/Actual 1 与旧 Chrome 两 DIP 断言相符，但外机 HEAD、源码与 DLL/PDB 缺失，仍是待验推断；本机2/2不确认其根因。用户至2026-10-15 09:00无法回复，不等待材料。下一项 R11-04，检查现有备注机制、取消与 BackupId 稳定选择后再决定实施缺口。
 
 ## AI/Codex 启动协议
 

@@ -10574,3 +10574,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - XAML 检查 `24/24`，source validator 通过；`git diff --check` 提交前执行。源码、生产 XAML、程序集与脱敏 TRX SHA、真实测试范围/边界见 `evidence/R11-02-CURRENT-MAIN-RECHECK-20261014/README.md`；R09 当前测试 TRX 也同步到其失败复核包。无视觉源码变动，未制作截图。
 - 本机 SDK9 不能替代 SDK8.0.423 / CI SDK10.0.401。#992/#993 仍是已失败且日志受权限限制、根因未知；当前公开 Actions 页仍只有旧快照 #972（8546aca）In progress 并报加载错误，其他抓取曾见 #979。匿名 API 403；58090d99/3a2d1163 对应 Actions run/终态未确认，不声称 CI 通过。
 - 下一项 R11-03 先盘点当前过滤/有限加载/计数/完整路径复制能力，已有实现先复用并补实际负例，不按任务名推断缺失。
+
+## 2026-10-14 R11-03 当前 main 差异列表行为复核
+
+- 当前 `main` 基线 `fd853380ec888ef94c112e255996b53106a0ddea` 已有 `BackupDiffDto`、`BackupDiffPathFilter`、路径复制命令及每类有限窗口。没有重建生产服务或 DTO。本轮仅在 `R11DiffListSearchBehaviorTests` 增加生产 `DashboardViewModel` 方法级行为验证。
+- 新行为用合成差异直接执行生产 Refresh/LoadMore/Clear 路径，验证 123 条新增加修改/删除的分类型计数、有限窗口、加载至末尾与末尾 no-op、类型和路径筛选、清除筛选恢复，以及 Estimated 未知差异与精确零变化/未比较占位分离。隔离夹具不启动 Worker/Playnite host；R11Diff 3/3、R11VersionComparison 2/2、R11VersionSummary 2/2，合计 7/7。同一 Release 测试程序集 R09 焦点类 2/2。
+- 本机 SDK `9.0.302`、VSTest `17.14.1`；Playnite `net462` 与 tests `net472` 按依赖顺序、已有 restore assets 单项 Release 构建均 0 warning / 0 error，非完整 solution build。source validation 通过、XAML 24/24、diff check 通过。身份/TRX及范围见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-03-CURRENT-MAIN-RECHECK-20261014/README.md`。
+- 用户报告另一台机器 R09 失败：Expected `2,2,2,2`、Actual `1,1,1,1`，stack 指向第151行。当前 main 第151行为错误边框颜色，第152行是 Chrome 1 DIP，第154行才是单独 ValidationStroke 2 DIP；数值/旧行号吻合历史 Chrome 两 DIP 断言。旧测试源/程序集或 PDB 错配是线索，不是确认根因；外机 HEAD、源文件和 DLL/PDB 未知。libpng iCCP warning 不在失败调用栈，TextServicesContext COM exception 出现在断言失败后的 WPF teardown。当前 main 本机 R09 2/2；没有改生产样式或放宽测试。
+- 用户至明日 09:00 无法回复，外机身份信息不阻塞。SDK9结果不替代SDK8.0.423或CI SDK10.0.401。#992/#993 job log API 403/需登录，真实失败原因未知；推送本阶段后查最新 Actions/SDK8 与 SDK10 状态，再继续任务。
+- 清理边界：本轮原始数据仅 `.tmp/r11-03-current-main-fd853380`；脱敏 TRX 已由 README 引用，测试程序集身份已提取。清理前只解析并检查该精确目录位于仓库 `.tmp` 下；其他未跟踪证据与用户文件保留。
+- 下一项 R11-04：盘点已有版本备注/命名存储、取消/错误/重启读取路径和稳定 BackupId 选择行为，优先复用已有能力，再补正负行为。

@@ -1,8 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R10-07 侧栏 22/22、R10-08 最近访问 2/2、R11-01 当前 main 复核 17/17。R11-02 当前 main 复核使用合成 manifest、真实 FileManifestDiffService 和 STA SaveCenterView，2/2；同一当前 Release 构建下 R09 焦点类 2/2。Contracts、Core、HostAuditSeeder、Playnite net462、测试 net472 按依赖顺序构建，SDK9.0.302、VSTest17.14.1，各项目 0 warning/0 error；XAML 24/24、source validator 通过。当前 R11-02 无生产/测试代码变更，证据见[R11-02 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-02-CURRENT-MAIN-RECHECK-20261014/README.md)。SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 main。R11-03 现有差异筛选/分页/摘要实现已复用，并补生产 DashboardViewModel 行为覆盖；当前基线 fd853380 上 R11 三类测试 7/7、同一 Release 测试程序集的 R09 焦点类 2/2。SDK9.0.302、VSTest17.14.1；Playnite net462 与 Tests net472 定向 Release 构建 0 warning/0 error，source validator 通过、XAML 24/24。证据见[R11-03 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-03-CURRENT-MAIN-RECHECK-20261014/README.md)；本机 SDK9 不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
 
-前序 Actions #992/run 38564273828 与 #993/run 38570078343 均终态失败，SDK10 与默认 build job 都 exit1；完整日志 API 403、公开 job 日志需登录，根因未知。58090d99 与 3a2d1163 已推送，但当前匿名 Actions 页面仍报加载错误，只显示 972 条结果及旧提交 #972（8546aca）In progress；此前另一次抓取又显示 #979。没有可确认这两个提交 CI run 的终态，匿名 API 曾返回 HTTP 403 rate limit。不得把本机 SDK9 通过当作 SDK8/SDK10 CI 通过；继续间隔查询。外机 R09 的旧测试源或 DLL/PDB 错配仍是推测；当前 main 定向重建及复跑 2/2，外机 HEAD 与程序集身份仍待验。用户至 2026-10-15 09:00 无法回复，不阻塞独立任务。下一项先盘点 R11-03 现有差异过滤/分页/复制行为；CI 失败先取完整日志再决定修复。
+用户外机 R09 输出为 Expected 2/2/2/2、Actual 1/1/1/1，定位 `R09FocusOutlineBehaviorTests.cs:151`；当前 main 第151行是错误边框颜色断言，第152行要求 Chrome 1 DIP、第154行要求独立 ValidationStroke 2 DIP。厚度数值和旧版 Chrome 2 DIP 断言相符，但没有外机 HEAD/源码/DLL/PDB，旧测试材料或符号错配仍未确认。`libpng iCCP` 警告不在断言栈；WPF COM 异常在断言失败后的收尾阶段。当前 main 定向复跑 R09 为2/2，没有因此改模板或弱化断言。
+
+CI：#992/run 38564273828 与 #993/run 38570078343 失败，SDK10 和默认 job 均 exit1；完整日志受登录/API 403 限制，根因未知。58090d99、3a2d1163、fd853380 的对应 run/终态此前未能从匿名页面确认；推送 R11-03 后继续逐个核查 SDK8 与 SDK10.0.401 状态，不能用 SDK9 结果替代。用户至 2026-10-15 09:00 无法回复，不等待外机身份材料，独立任务继续。下一项 R11-04：先盘点版本备注/元数据、取消语义和稳定 BackupId 选择，再决定需要补的行为证据。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断
