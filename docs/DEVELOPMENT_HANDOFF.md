@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。R00/R01 freshness 在 source HEAD `4eb778e9` 为 14/14 fresh / 0 stale；R00-01..07、R01-01..08 维持已满足，R00-08 受控行为已满足，package identity 未提供。R07-04 `8/8`；R07-05 `18/18`；R07-06 `18/18`、XAML `24/24`、项目引用 Release build `0/0`；R07-07 `2b423737` 上锁定 SDK8/VSTest `21/21`；R07-08 当前 main `d190f7ea` 上 SDK8/VSTest `9/9`、XAML `24/24`、项目引用 Release build `0/0`。证据见[R07-04](design/reviews/ui-finesse-round3-20260915/evidence/R07-04-CURRENT-MAIN-RECHECK-20261015/README.md)、[R07-05](design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20261015/README.md)、[R07-06](design/reviews/ui-finesse-round3-20260915/evidence/R07-06-CURRENT-MAIN-RECHECK-20261015/README.md)、[R07-07](design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20261015/README.md)、[R07-08](design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20261015/README.md)。受控条件通过，真实设备/宿主验证及对应 CI 终态仍待验；下一项 R10-02 当前 main 复核。
+更新：2026-10-15；分支 main。R10-02 源码基线 `6eac7b90` 的 SDK8.0.423 / VSTest17.11.1 定向 Release 构建 `0/0`、行为 `32/32`、XAML `24/24`；证据 `design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md`。生产 Shell 在 STA 中实际打开同名游戏选框并按目标 PlayniteId 选择；未改生产实现。Actions run ID/终态仍待查询，SDK8 结果不替代 SDK10.0.401。外机 R09 仍缺 HEAD/DLL/PDB 身份、根因未确认。下一项 R10-03 搜索快捷键当前 main 复核。
 
 CI：#1006–#1009 已失败且完整日志不可读；#1010/run `38636778462`（`aa49a569`）和 #1011/run `38638331563`（`85609395`）均已 Failure，SDK8/SDK10 jobs 的编译与测试步骤 exit 1、公开注解未提供实际错误，匿名日志 API 403。#1010 artifacts ID `11929597360` / `11928647581`，SHA-256 `3c2bd19e16b0cef0dc54ba1c57e19b71a8be664e84dfa222e0d496e11a81660b` / `a9fb5a96607f5625c1699bf29a1447eb7616f1e424ac4dcb8bf8e4e0254fe746`；#1011 IDs `11928784541` / `11928968878`，SHA-256 `88170a28f0a19480eff989216674cbc0e3637d2bb80e35dfdbe2ea3e6bb352ac` / `f7abb468be15448673b2ba31f38ae3e48f69af2cfc6114fec4a9e9737cb4f1c5`。#1012/run `38640644812`（`2b423737`）上次观察为 In progress；d190f7ea 已推送，但当前 REST 连接被本机代理拒绝、公开页 cache miss，浏览器标签读取超时，新的 run ID/终态未知。当前本机 SDK8/SDK9结果不能替代 CI SDK10.0.401；无完整日志不猜根因。
 
@@ -309,3 +309,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 用户外机日志的行号/值匹配旧 `3f7d0b30` Chrome 2 DIP 断言；当前第151行是错误色，第152/154行检查 Chrome 1 DIP/ValidationStroke 2 DIP。缺外机 HEAD、源码与测试 DLL/PDB，不能确诊旧源/符号错配；libpng warning 不在断言调用栈，COM 异常在断言失败后的 WPF cleanup。不要为此改生产样式或放宽断言；用户不可回复前也不等待身份材料。
 - R11-04 推送后检查新提交的 SDK8 和 SDK10.0.401 Actions 到明确终态；日志不可读时记录权限限制，继续其它已满足依赖任务。下一项 R11-05：检查保护 DTO、RetentionPlanner 与删除执行器/刷新顺序，使用合成数据和隔离目录证明保护版本总被跳过并有失效 ID 负例。
 - 保留其它任务的未跟踪证据和 `TestResults` 内容；本轮自己生成的 TRX 只保留脱敏且 README 引用的证据副本。本轮 `.tmp/r11-04-current-main-sdk9302` 在确认副本后按绝对路径清理。
+
+## 2026-10-15 当前恢复点：R10-02 本机复核完成，Actions 待确认
+
+- main 源码基线 `6eac7b90bbbc0511ef3ed942422ef0b10b54a03b`；生产导航与游戏选框未改，本阶段只增加生产 Shell 同名游戏选择交互测试及其证据/状态文档。
+- 本机 SDK `8.0.423`、VSTest `17.11.1`；Playnite `net462` 和测试 `net472` 定向 Release build `0 warning / 0 error`。R10 context `5/5`、导航 `20/20`、Shell GamePicker STA `7/7`，共 `32/32`；XAML `24/24`、source validation、diff check 通过。完整 TRX、身份和边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md`。
+- 本机受控窗口使用合成 DTO；真实 Playnite、媒体后端、物理输入/IME、UIA/读屏、物理 DPI/跨屏、最终呈现与宿主性能未验证。外机 R09 断言仍无实际 HEAD、源码、DLL/PDB 身份，根因未确认。
+- SDK8 不替代 CI SDK10.0.401。此前 #1010/#1011 的日志 API 为 403、根因未知；#1012 上次观察 In progress；`6eac7b90` 和文档提交的 run ID/终态待查。
+- 下一项 R10-03：复核搜索快捷键在输入框、当前游戏选框、紧凑浏览器和对话框中的焦点/弹层作用域，先复用已有实现并补实际行为正负例。用户至明早 09:00 无法回复，不等待外机信息。

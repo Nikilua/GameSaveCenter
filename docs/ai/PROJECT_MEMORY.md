@@ -153,6 +153,12 @@ R07 resize 回归应按已加载 PageHost/DataGrid 的实际窗口与内容区�
 - 源码/DLL/MVID/TRX 哈希、命令与行为结果在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。构建 ProductVersion 带前置 hash `a94819b`，因此以源码/DLL SHA/MVID 标识实际构建，不冒称 SDK10 CI。
 - Actions 列表最新可读 #972（`8546aca`）仍 In progress；本轮尚未推送。用户指定旧 run #920/`36677346317`（`77de7f4`）现 Failure、7m04s、无 artifact，日志登录限制，实际 SDK/根因未知。真实 Playnite/媒体服务、presented frame、物理 DPI/跨屏、OS UIA/读屏、ETW/宿主性能未验。CI 终态后下一项 R10-03 搜索快捷键。
 
+## 2026-10-15 R10-02 当前 main 复核
+
+- R10-02 延用任务稳定 ID 路由与全局 GamePicker。本机 SDK `8.0.423` / VSTest `17.11.1`，Playnite `net462` 与测试 `net472` 的 Release 项目/引用构建 `0 warning / 0 error`；R10 及相邻导航行为 `25/25`，新增生产 Shell 同名选框 STA 交互后合计 `32/32`。XAML `24/24`，source validation/diff check 通过。
+- 新交互测试从生产顶部按钮打开当前游戏选框，在相同显示名中选择具体 ListBox 项，验证选框关闭、焦点归还、对象引用和 `PlayniteId` 均准确，且当前游戏名称绑定显示。任务命令已有按 `GameId` 导航正例和目标缺失时保持原状态的负例；未增加生产功能代码。
+- SDK8 本机不替代 SDK10.0.401 CI；`6eac7b90` 与证据文档提交的 Actions run ID/终态尚未读取。当前证据包保存六份脱敏 TRX、程序集身份与边界。真实 Playnite、媒体后端、IME/物理输入、UIA/读屏、物理 DPI/跨屏和呈现帧未验。
+
 ## 2026-10-14 R10-07 / R10-08 当前 main 复核
 
 - R10-07 复用现有侧栏实现，Release STA 行为 22/22；首次未设置 GSC_BUILD_COMMIT 的身份检查失败不是产品回归。有效测试设置仓库约定的构建身份、重建后执行，源/DLL/MVID/TRX 见 evidence/R10-07-CURRENT-MAIN-RECHECK-20261014/README.md。

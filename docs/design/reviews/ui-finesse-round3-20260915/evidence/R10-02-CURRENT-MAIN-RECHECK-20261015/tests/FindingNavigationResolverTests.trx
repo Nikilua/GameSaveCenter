@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4e4e5d79-5462-47f5-9c19-4e7d9b291023" name="R10-02-current-main-FindingNavigationResolverTests" runUser="[redacted]" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-15T06:04:23.2764927+08:00" queuing="2026-10-15T06:04:23.2764931+08:00" start="2026-10-15T06:04:19.3774104+08:00" finish="2026-10-15T06:04:38.9157598+08:00" />
+  <TestSettings name="default" id="9ac59c62-9355-47bf-9f9e-0f3b0f9dc372">
+    <Deployment runDeploymentRoot="[redacted]" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="febfba03-7756-458d-b161-1ee2d25d235b" testId="183f68d8-f251-e049-4fc3-5e2477905d6a" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskTargetUsesExactGameIdentityWhenSnapshotContainsIt" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2485162+08:00" endTime="2026-10-15T06:04:23.2495158+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="febfba03-7756-458d-b161-1ee2d25d235b" />
+    <UnitTestResult executionId="eb9aecd5-a3f9-4105-8a12-cc4b31c6db7b" testId="cdd0684b-c663-acdc-ca92-bac2199e723e" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.HealthFindingWithoutVersionIdentityKeepsTheDiagnosticWithoutTaskFallback" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2319236+08:00" endTime="2026-10-15T06:04:23.2329243+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb9aecd5-a3f9-4105-8a12-cc4b31c6db7b" />
+    <UnitTestResult executionId="f9bb6197-0431-467f-b2a6-43b03fba5095" testId="e8c87601-1b56-317e-881c-34e6a8045409" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.MissingSaveTargetDoesNotFallBackToCurrentGame" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2625161+08:00" endTime="2026-10-15T06:04:23.2715142+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9bb6197-0431-467f-b2a6-43b03fba5095" />
+    <UnitTestResult executionId="d5737d41-6738-4927-a9a2-6ca9c5859b8c" testId="13a5b75d-9874-d6c7-58c6-2c11df4d2810" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.FindingWithoutIdentityHasNoNavigation" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2435158+08:00" endTime="2026-10-15T06:04:23.2445156+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5737d41-6738-4927-a9a2-6ca9c5859b8c" />
+    <UnitTestResult executionId="443f5594-cac7-484a-9e1b-8948d28d04bf" testId="e9c961a6-09ce-f8a2-7858-0abd8a105596" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskTargetWithoutAnyIdentityIsReportedAsUnavailable" computerName="[redacted]" duration="00:00:00.0150000" startTime="2026-10-15T06:04:23.2029244+08:00" endTime="2026-10-15T06:04:23.2079249+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="443f5594-cac7-484a-9e1b-8948d28d04bf" />
+    <UnitTestResult executionId="2c38bb43-d4b3-40f2-b52d-9f74d92520c6" testId="3e041166-1536-8a78-1542-2c4912a9eee1" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.LegacyHealthFindingUsesTitleIdentityButMissingVersionDoesNotSelectNeighbor" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2605159+08:00" endTime="2026-10-15T06:04:23.2615160+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c38bb43-d4b3-40f2-b52d-9f74d92520c6" />
+    <UnitTestResult executionId="9d855217-89ef-4f63-908c-3f9f4bdf3340" testId="63abf9f3-f8f5-9b84-f371-ac7f2f95bfb7" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskTargetFallsBackToDiagnosticNameWithoutChangingCurrentGame" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2369239+08:00" endTime="2026-10-15T06:04:23.2415142+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d855217-89ef-4f63-908c-3f9f4bdf3340" />
+    <UnitTestResult executionId="d32d1a54-e579-4401-a2b0-410da2ece30d" testId="1d553881-66f6-debf-8d4e-f71acc83c44a" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.GameFindingRoutesToSaveWorkspace" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2349238+08:00" endTime="2026-10-15T06:04:23.2359239+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d32d1a54-e579-4401-a2b0-410da2ece30d" />
+    <UnitTestResult executionId="cd6a73ae-308e-4c1d-9f18-7b0392ec54d3" testId="4a4f37b6-611c-b81e-8963-716886056919" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.HealthFindingRoutesToItsExactBackupVersion" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2455157+08:00" endTime="2026-10-15T06:04:23.2475162+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd6a73ae-308e-4c1d-9f18-7b0392ec54d3" />
+    <UnitTestResult executionId="ec714338-6e96-4f9f-907d-3e55d3f997bb" testId="3c00075f-0d9c-fa06-342d-97bcd5cdd464" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.CloudFindingRoutesToCloudQueueBeforeGameFallback" computerName="[redacted]" duration="00:00:00.0160000" startTime="2026-10-15T06:04:23.2289260+08:00" endTime="2026-10-15T06:04:23.2299248+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec714338-6e96-4f9f-907d-3e55d3f997bb" />
+    <UnitTestResult executionId="7c853bc2-2b5f-454e-9451-3067607a323e" testId="d2a44e5e-dc52-10b5-3a4b-9d97fcc94a0a" testName="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskHintRoutesToFailedTasks" computerName="[redacted]" duration="00:00:00.0010000" startTime="2026-10-15T06:04:23.2515158+08:00" endTime="2026-10-15T06:04:23.2515158+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c853bc2-2b5f-454e-9451-3067607a323e" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskHintRoutesToFailedTasks" storage="[redacted]" id="d2a44e5e-dc52-10b5-3a4b-9d97fcc94a0a">
+      <Execution id="7c853bc2-2b5f-454e-9451-3067607a323e" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="TaskHintRoutesToFailedTasks" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.GameFindingRoutesToSaveWorkspace" storage="[redacted]" id="1d553881-66f6-debf-8d4e-f71acc83c44a">
+      <Execution id="d32d1a54-e579-4401-a2b0-410da2ece30d" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="GameFindingRoutesToSaveWorkspace" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskTargetUsesExactGameIdentityWhenSnapshotContainsIt" storage="[redacted]" id="183f68d8-f251-e049-4fc3-5e2477905d6a">
+      <Execution id="febfba03-7756-458d-b161-1ee2d25d235b" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="TaskTargetUsesExactGameIdentityWhenSnapshotContainsIt" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.FindingWithoutIdentityHasNoNavigation" storage="[redacted]" id="13a5b75d-9874-d6c7-58c6-2c11df4d2810">
+      <Execution id="d5737d41-6738-4927-a9a2-6ca9c5859b8c" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="FindingWithoutIdentityHasNoNavigation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.MissingSaveTargetDoesNotFallBackToCurrentGame" storage="[redacted]" id="e8c87601-1b56-317e-881c-34e6a8045409">
+      <Execution id="f9bb6197-0431-467f-b2a6-43b03fba5095" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="MissingSaveTargetDoesNotFallBackToCurrentGame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.HealthFindingRoutesToItsExactBackupVersion" storage="[redacted]" id="4a4f37b6-611c-b81e-8963-716886056919">
+      <Execution id="cd6a73ae-308e-4c1d-9f18-7b0392ec54d3" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="HealthFindingRoutesToItsExactBackupVersion" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.LegacyHealthFindingUsesTitleIdentityButMissingVersionDoesNotSelectNeighbor" storage="[redacted]" id="3e041166-1536-8a78-1542-2c4912a9eee1">
+      <Execution id="2c38bb43-d4b3-40f2-b52d-9f74d92520c6" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="LegacyHealthFindingUsesTitleIdentityButMissingVersionDoesNotSelectNeighbor" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.HealthFindingWithoutVersionIdentityKeepsTheDiagnosticWithoutTaskFallback" storage="[redacted]" id="cdd0684b-c663-acdc-ca92-bac2199e723e">
+      <Execution id="eb9aecd5-a3f9-4105-8a12-cc4b31c6db7b" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="HealthFindingWithoutVersionIdentityKeepsTheDiagnosticWithoutTaskFallback" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.CloudFindingRoutesToCloudQueueBeforeGameFallback" storage="[redacted]" id="3c00075f-0d9c-fa06-342d-97bcd5cdd464">
+      <Execution id="ec714338-6e96-4f9f-907d-3e55d3f997bb" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="CloudFindingRoutesToCloudQueueBeforeGameFallback" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskTargetFallsBackToDiagnosticNameWithoutChangingCurrentGame" storage="[redacted]" id="63abf9f3-f8f5-9b84-f371-ac7f2f95bfb7">
+      <Execution id="9d855217-89ef-4f63-908c-3f9f4bdf3340" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="TaskTargetFallsBackToDiagnosticNameWithoutChangingCurrentGame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests.TaskTargetWithoutAnyIdentityIsReportedAsUnavailable" storage="[redacted]" id="e9c961a6-09ce-f8a2-7858-0abd8a105596">
+      <Execution id="443f5594-cac7-484a-9e1b-8948d28d04bf" />
+      <TestMethod codeBase="[redacted]" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.FindingNavigationResolverTests" name="TaskTargetWithoutAnyIdentityIsReportedAsUnavailable" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="183f68d8-f251-e049-4fc3-5e2477905d6a" executionId="febfba03-7756-458d-b161-1ee2d25d235b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cdd0684b-c663-acdc-ca92-bac2199e723e" executionId="eb9aecd5-a3f9-4105-8a12-cc4b31c6db7b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8c87601-1b56-317e-881c-34e6a8045409" executionId="f9bb6197-0431-467f-b2a6-43b03fba5095" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="13a5b75d-9874-d6c7-58c6-2c11df4d2810" executionId="d5737d41-6738-4927-a9a2-6ca9c5859b8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e9c961a6-09ce-f8a2-7858-0abd8a105596" executionId="443f5594-cac7-484a-9e1b-8948d28d04bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e041166-1536-8a78-1542-2c4912a9eee1" executionId="2c38bb43-d4b3-40f2-b52d-9f74d92520c6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="63abf9f3-f8f5-9b84-f371-ac7f2f95bfb7" executionId="9d855217-89ef-4f63-908c-3f9f4bdf3340" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d553881-66f6-debf-8d4e-f71acc83c44a" executionId="d32d1a54-e579-4401-a2b0-410da2ece30d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a4f37b6-611c-b81e-8963-716886056919" executionId="cd6a73ae-308e-4c1d-9f18-7b0392ec54d3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3c00075f-0d9c-fa06-342d-97bcd5cdd464" executionId="ec714338-6e96-4f9f-907d-3e55d3f997bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d2a44e5e-dc52-10b5-3a4b-9d97fcc94a0a" executionId="7c853bc2-2b5f-454e-9451-3067607a323e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="11" executed="11" passed="11" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.36]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.74]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.79]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.94]   Finished:    GameSaveCenter.Playnite.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

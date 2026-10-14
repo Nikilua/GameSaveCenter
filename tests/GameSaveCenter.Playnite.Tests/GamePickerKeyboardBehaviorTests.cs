@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
@@ -16,6 +17,42 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class GamePickerKeyboardBehaviorTests
 {
+    [Fact]
+    public void ProductionGamePickerOpensAndSelectsTheExactDuplicateNameById()
+    {
+        RunSta(() =>
+        {
+            var first = Game("playnite-a", "同名游戏");
+            var target = Game("playnite-b", "同名游戏");
+            using var picker = CreatePicker(first, target);
+            using var host = CreatePickerHost(picker, out var shell, out var overlay, out var search, out var list);
+            var dashboard = AttachPickerForInput(shell, picker);
+            shell.DataContext = dashboard;
+            host.Window.UpdateLayout();
+
+            var contextButton = (Button)shell.FindName("GameContextButton")!;
+            contextButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            Assert.Equal(Visibility.Visible, overlay.Visibility);
+            Assert.Same(search, Keyboard.FocusedElement);
+            var targetItem = picker.Items.Single(item => item.PlayniteId == "playnite-b");
+            Assert.Equal("同名游戏", picker.Items.Single(item => item.PlayniteId == "playnite-a").Name);
+            Assert.Equal(targetItem.Name, picker.Items.Single(item => item.PlayniteId == "playnite-b").Name);
+
+            list.SelectedItem = targetItem;
+            host.Window.UpdateLayout();
+
+            Assert.Equal(Visibility.Collapsed, overlay.Visibility);
+            Assert.Same(target, dashboard.SelectedGame);
+            Assert.Equal("playnite-b", dashboard.SelectedGame.PlayniteId);
+            Assert.Same(contextButton, Keyboard.FocusedElement);
+            var displayedName = GetVisualDescendants(contextButton)
+                .OfType<TextBlock>()
+                .First(block => block.GetBindingExpression(TextBlock.TextProperty)?.ParentBinding.Path?.Path == "SelectedGame.Name");
+            Assert.Equal("同名游戏", displayedName.Text);
+        });
+    }
+
     [Fact]
     public void EnterWithNoVisibleResultKeepsThePreviouslySelectedGameAndPickerOpen()
     {
@@ -174,6 +211,24 @@ public sealed class GamePickerKeyboardBehaviorTests
         return picker;
     }
 
+    private static GamePickerViewModel CreatePicker(params GameStatusDto[] games)
+    {
+        var picker = new GamePickerViewModel();
+        picker.StatusFilter = "全部";
+        picker.SetItems(games, games[0].PlayniteId);
+        return picker;
+    }
+
+    private static GameStatusDto Game(string playniteId, string name)
+        => new GameStatusDto
+        {
+            PlayniteId = playniteId,
+            Name = name,
+            Platform = GamePlatformKind.Other,
+            IsInstalled = true,
+            LudusaviMatched = true
+        };
+
     private static GameStatusDto Game(string name)
         => new GameStatusDto
         {
@@ -213,7 +268,7 @@ public sealed class GamePickerKeyboardBehaviorTests
         return new WindowHost(window);
     }
 
-    private static void AttachPickerForInput(AcrylicProductionShellView shell, GamePickerViewModel picker)
+    private static DashboardViewModel AttachPickerForInput(AcrylicProductionShellView shell, GamePickerViewModel picker)
     {
         var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
         var pickerField = typeof(DashboardViewModel).GetField("gamePicker", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -223,6 +278,19 @@ public sealed class GamePickerKeyboardBehaviorTests
         var viewModelField = typeof(AcrylicProductionShellView).GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(viewModelField);
         viewModelField!.SetValue(shell, dashboard);
+        return dashboard;
+    }
+
+    private static IEnumerable<DependencyObject> GetVisualDescendants(DependencyObject root)
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+        for (var index = 0; index < count; index++)
+        {
+            var child = VisualTreeHelper.GetChild(root, index);
+            yield return child;
+            foreach (var descendant in GetVisualDescendants(child))
+                yield return descendant;
+        }
     }
 
     private static KeyEventArgs RaisePreviewKey(FrameworkElement source, Window host, Key keyValue)

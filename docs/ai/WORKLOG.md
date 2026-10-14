@@ -10714,3 +10714,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 无 XAML/生产 UI 变更，所以不生成截图或离屏视觉报告；真实 Playnite 与真实 Ludusavi 写入没有执行，Worker 使用合成 JSON 和隔离 SQLite。测试身份与脱敏 TRX 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R11-04-CURRENT-MAIN-RECHECK-20261014/README.md`。
 - 外机新日志第151行、Expected 2/Actual 1 与历史 `3f7d0b30` Chrome 2 DIP 断言吻合；当前源码第151行是错误色，第152/154行测试 1 DIP Chrome 与 2 DIP ValidationStroke。SDK8 当前 main 重跑2/2，仍无外机 HEAD/DLL/PDB，错配只是推断；libpng warning 不在断言栈，COM 异常在 WPF 失败后清理中出现。没有改模板/弱化断言。详见 R09 外机复核包。
 - SDK8/SDK9 是分开的本机工具链证据；阶段提交推送后另追踪 CI SDK8 与 SDK10.0.401 两条 lane 至终态，未确认前不签收阶段。下一项 R11-05：先盘点保护元数据、RetentionPlanner 与执行端的真实关系，再补锁定项跳过策略的正反行为。
+
+## 2026-10-15 R10-02 当前 main 复核与选框行为补证
+
+- 复用既有任务 `GameId` 路由、`GamePickerViewModel` 和生产 Shell 当前游戏选框；没有增加生产命令、DTO、服务或模板。既有 R10 context `5/5`、导航快照 `2/2`、来源接线 `4/4`、Finding resolver `11/11`、task source `3/3` 在当前 main 锁定 SDK8.0.423 下重新构建测试项目及引用并通过，共 `25/25`。
+- 确认旧 R10 测试只有 ViewModel 重名正/负例及 Shell 接线断言，没有实际打开生产选框并选择同名项的 UI 行为。补充 `GamePickerKeyboardBehaviorTests.ProductionGamePickerOpensAndSelectsTheExactDuplicateNameById`：STA WPF 中点击顶部游戏按钮，验证焦点进入搜索框；在两个显示名相同的条目中选择 `playnite-b`，验证当前游戏对象和 ID 正确、选框关闭、焦点返回、当前名称绑定有值。该类 `7/7`，合计 `32/32`。
+- Playnite `net462`/Tests `net472` Release 定向构建 `0 warning / 0 error`；SDK `8.0.423`、VSTest `17.11.1`。XAML `24/24`、`validate-source.py`、`git diff --check` 通过；不是完整 solution build。脱敏 TRX、程序集 SHA/MVID/PDB 与范围见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md`。
+- 外机重复贴出的 R09 `Expected 2 / Actual 1` 片段仍无 HEAD/工作树/源/DLL/PDB 身份；当前 main 同类旧测试断言已在 SDK8 `2/2` 通过。本轮没有改生产模板或放宽断言；旧源/测试程序集不一致仍未确认。libpng 警告不在失败栈，COM 清理异常不解释厚度断言。
+- SDK8 本机不替代 CI SDK10.0.401；源码基线 `6eac7b90` 与本轮证据提交对应 Actions run ID/终态待查询。测试只用合成 DTO 与隔离 WPF/testhost，没有真实 Playnite、媒体 Worker、物理输入/DPI、UIA/读屏或呈现验证。下一项 R10-03 当前 main 焦点/弹层作用域复核。
