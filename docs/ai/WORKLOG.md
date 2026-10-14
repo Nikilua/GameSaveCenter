@@ -1,3 +1,11 @@
+## 2026-10-15 R12-01 恢复分步摘要当前 main 复核
+
+- 先复用 `BackupVersionDto.RestoreReadiness`、`TaskStatusDto`、`RestoreWorkflowProgress`、`DashboardViewModel.RestoreWorkflow.cs` 与现有 `SaveCenterView` 恢复入口；生产四阶段实现已在 `e1a8da0c` 完成。本轮只在 `3f6b355f` 增加真实视图绑定行为，没有修改生产代码或恢复安全路径。
+- 新 WPF 用例在隔离 STA 窗口实际加载 `SaveCenterView`：选中合成备份后验证失败目标阶段、错误码/消息和执行阶段 pending/未写入文本；更新 `ObservableCollection` 与摘要后验证警告、进行中阶段和 `PreRestore` 显示。建模覆盖无 readiness、成功、目标失败、恢复后回滚、PreRestore 中止；R12 主类 `8/8`、冲突解释 `4/4`、确认重验 `2/2`，合计 `14/14`。
+- 本机 SDK `8.0.423` / VSTest `17.11.1`，Playnite `net462` / 测试 `net472` / testhost .NET Framework `4.8.9181.0`。隔离 Release 测试项目及引用 build `0 warning / 0 error`；不是完整 solution build。XAML `24/24`、source validator 和 diff check 通过。一次额外 build 命令误传相对 `GscBuildOutputRoot` 导致在项目子目录查找 `project.assets.json`；改为绝对隔离路径后 build 成功。误生成路径与本阶段主 `.tmp` 已逐一确认位于仓库并清理，仅保留 README 引用的 3 份通过 TRX。
+- 证据与 DLL/PDB/MVID、源/XAML/TRX SHA、真实未验边界见[R12-01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R12-01-CURRENT-MAIN-RECHECK-20261015/README.md)。未执行真实 Playnite、Worker IPC 或真实恢复/存档写入；STA 窗口和合成数据不代表物理 DPI、最终呈现、OS UIA/IME、ETW 或宿主性能。
+- 新 Actions 尚无终态；公开 Actions 页仍停在 #979，匿名 API rate limit `403`。CI SDK8/SDK10.0.401 分开追踪，不用本机 SDK8 替代。下一项 R12-02，先盘点已有 readiness 结果/哈希覆盖/检查时间映射再补负例。
+
 ## 2026-10-15 R00-08 当前 main 证据与 freshness 校正
 
 - freshness 初检在 source `40af39c80d904bd6306a4d5433e1356e367925ca` 发现唯一 stale 为 R00-08，原因是 `R10KeyboardShortcutHelpBehaviorTests.cs` 命中登记的键盘路径。本阶段未改生产代码，仅对当前 main 的相关行为重新建立证据。

@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。R11-06 代码 `40af39c8` 与证据文档 `55ed3a17` 已推送；SDK `8.0.423` / VSTest `17.11.1`，Playnite `4/4`、Worker `2/2`、XAML `24/24`、source validation 通过；相关测试及引用项目构建通过，不是完整 solution build。证据在[R11-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。新 Actions 终态尚未确认。
+更新：2026-10-15；分支 main。R12-01 当前 main `3f6b355f` 仅补行为测试，既有恢复分步实现已存在；SDK `8.0.423` / VSTest `17.11.1`，主类 `8/8`、冲突 `4/4`、重验 `2/2`，生产 `SaveCenterView` 四阶段绑定在隔离 STA 中实际加载。测试项目及引用 Release 构建 `0 warning / 0 error`，不是完整 solution build；XAML `24/24`、source validation 通过。证据在[R12-01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R12-01-CURRENT-MAIN-RECHECK-20261015/README.md)。新 Actions 终态尚未确认。
 
 用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。该断言对应旧提交 `3f7d0b30`；`f13b9e05` 已拆为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP，提交 `983fee5` 含新断言。当前 main 第151行是错误色，152/154行检查两种厚度；旧测试 DLL/源码映射最吻合，但外机 HEAD、工作树和 DLL/PDB identity 缺失，根因未确认。不要改生产模板/减弱断言；若可提供，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
 
-CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 失败，完整日志受登录/API 403 限制；`40af39c8`/`55ed3a17` 新 Actions 终态尚未确认。当前可读 Actions 页面仅显示到 #979 (`ae3c565`)，无法据此推断新提交的成功或失败；SDK8 与 SDK10.0.401 必须分别追踪。R00-08 已完成当前 source 行为复核，R00/R01 freshness `14/14 fresh`；证据见[R00-08 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md)。下一项 R12-01，先盘点恢复摘要已有能力再补行为证据。未验真实 Ludusavi IPC/归档、Playnite宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能；外机 R09 身份仍待核实。
+CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 失败，完整日志受登录/API 403 限制；`40af39c8`、`55ed3a17` 与 `3f6b355f` 新 Actions 终态未确认。当前可读页面仍显示到 #979 (`ae3c565`)，匿名 Actions API rate limit `403`；SDK8 与 SDK10.0.401 必须分别追踪。R00/R01 freshness `14/14 fresh`，R00-08 复核包见对应 README。下一项 R12-02：先盘点已有 readiness 状态、哈希覆盖和时间字段，再补分层校验行为。未验真实 Worker IPC/存档写入、Playnite 宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能；外机 R09 身份仍待核实。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 
