@@ -10501,3 +10501,21 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 代码提交 `13704e75`；TRX、程序集及当前源码哈希、边界见 `evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。SDK9 本地结果不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
 - 指定 #920/run `36677346317` 已查为 Failure、7m04s、无 artifacts；公开摘要只有“编译、测试与打包”exit 1，完整 logs 要求登录，实际 SDK/内部根因未知。公开 Actions 列表最新 #972（`8546aca`）In progress。本轮 push 后追踪对应 SDK8/SDK10 lanes 到成功或失败；失败先拿完整日志，不凭 exit code 修。
 - 下一可执行小项 R10-03 搜索快捷键；先审已有搜索/命令和弹层焦点作用域。R09 外机 HEAD/DLL/PDB 待用户明早补充但不阻塞。
+
+## 2026-10-14 R09 最新 main 外机失败复核
+
+- 最新 main `8822e32c0966794e715aaa943e19b802cf6f75ca` 下，本机 SDK `9.0.302`、VSTest `17.14.1`、Release 定向构建并运行 `R09FocusOutlineBehaviorTests`：`2/2` 通过，0 失败/跳过。测试源 SHA `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98` 与 `965fe1b2` 相同；R09 测试和生产模板源未改变。TRX、插件/测试程序集身份和 PDB 哈希见 `evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/`。
+- 外机仍报告 line 151、Expected 2 / Actual 1；当前 line 151 为错误态边框颜色断言，Chrome 1 DIP 在 line 152，独立 ValidationStroke 2 DIP 在 line 154。历史 `3f7d0b30` 曾在 line 151 断言 Chrome 为 2 DIP；旧源/程序集/PDB 错配符合现象但未确认。libpng 警告不在失败调用栈，COM 异常在失败后 WPF 收尾。没有改生产模板或放宽断言。
+- 本机 NuGet 漏洞数据源不可达，构建产生 NU1900 提示；C# 构建与测试执行成功。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。
+
+## 2026-10-14 R10-03 搜索快捷键当前 main 复核
+
+- 已有实现沿用 `563e6862` 的策略 helper、Dashboard PreviewKeyDown 和现有工作区搜索框；没有新增或重写功能。主线 SDK `9.0.302`、VSTest `17.14.1` 下 Release 测试项目与项目引用构建，`R10SearchShortcutBehaviorTests|AccessibilitySourceTests|R10ContextGameBehaviorTests|R10NavigationBehaviorTests` 共 `12/12`，0 失败/跳过。
+- Ctrl+F 无弹层正例、对话框/选框/紧凑浏览器负例，Ctrl+Z/C 和无修饰 F 负例均执行策略方法；AccessibilitySourceTests 检查生产事件路由接线。证据限制：隔离 net472 host，不等同真实 Playnite、物理输入/IME/UIA/最终呈现。
+- 当前 main TRX、源码哈希、插件/测试 DLL ProductVersion/SHA/MVID、PDB SHA 见 `evidence/R10-03-CURRENT-MAIN-RECHECK-20261014/README.md`。构建时 NuGet 漏洞数据源不可达有 NU1900；没有编译错误。无 UI 视觉变更。
+
+## 2026-10-14 #990 Actions 终态与日志限制
+
+- 提交 `8822e32c0966794e715aaa943e19b802cf6f75ca` 对应 run #990 / `38553608412` 已在 GitHub 页面终态 Failure。SDK8 默认 job `115817208147` 的“编译与测试”和 SDK10.0.401 job `115817208303` 的“隔离工作树并运行 Release 编译与测试”都 exit 1；页面作业耗时分别约 14m54s 和 8m41s。
+- job 页只展示 Process completed with exit code 1；公开日志 API 对两个 job 均返回 HTTP 403 rate limit，页面没有诊断包下载链接。没有完整日志前不猜测具体失败原因、不进行针对性修复。SDK9 本地通过不能替代 CI SDK8/SDK10结果。
+- 阶段交接继续 R10-04。#990 的完整日志限制、外机 R09 HEAD/DLL/PDB 缺失待可获取时补核；均不阻塞已授权的独立任务。

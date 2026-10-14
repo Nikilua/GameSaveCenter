@@ -15,11 +15,12 @@
 - #978/run `38509928015` 已失败：SDK8 命名 job `115675846585` 与 SDK10.0.401 命名 job `115675846886` 均在编译/测试失败；完整日志页面要求登录，当前无包内容，runner SDK 与根因未知。保持不盲改；SDK8 本机证据不替代 SDK10。
 - Q24-08 长文案/辅助输入当前 main 受控行为 `15/15`，见[证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)；真实 Windows 中文 IME、Playnite/Narrator/系统剪贴板与 Tooltip 视觉仍待验。
 - Q25-01 当前 main 热态响应 `13/13`，SDK `8.0.423` Release `0/0`、XAML `24/24`；2000项预热5+30样本，p50/p95/max=`45/60/60ms`，输入到受控可见容器20样本=`46.214/75.782/76.334ms`。本机自动条件满足、无视觉改动、Host external/Final incomplete，见[当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q25-01-CURRENT-MAIN-HOT-RESPONSE-RECHECK-20261014/README.md)。
-- 公开 Actions 列表目前可见 972 个 run，最新 #972（`8546aca`）为 In progress；当前 #13704e75 尚未推送。用户指定 run #920/`36677346317`（`77de7f4`）现为 Failure、7m04s、无 artifact；日志需登录，根因和实际 runner SDK未知。SDK9 结果不替代 SDK8/SDK10.0.401。
-- R09-05 外机失败复核：当前 main 965fe1b2 在带提交身份的 SDK9 隔离测试项目构建中 2/2；外机第151行对应历史 Chrome 2 DIP 断言，错配是最符合证据的推断，外机 HEAD/DLL/PDB 仍未知。证据：[R09 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- Actions #990/run `38553608412` 对应 main `8822e32c`，已失败：SDK8 默认 job `115817208147` 的“编译与测试”及 SDK10.0.401 job `115817208303` 的“隔离工作树并运行 Release 编译与测试”均 exit 1。公开 job 页只有通用摘要，日志 API 返回 403 rate limit，页面没有诊断 ZIP 下载入口；根因未知，不凭摘要或 SDK9 结果修复。SDK9 结果不替代 SDK8/SDK10.0.401。
+- R09-05 外机失败复核：当前 main `8822e32c` 带提交身份的 SDK9 定向构建 2/2；最新测试源码与 965fe1b2 一致。外机第151行与历史 Chrome 2 DIP 断言特征吻合，但 HEAD/DLL/PDB 未知，错配仅为合理推断。证据：[R09 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 - R08-05 页面切换和 R07-08 resize 的当前 main 受控行为证据已完成；R08-05 为 SDK9 44/44，R07-08 为 1/1。真实 Playnite、物理 DPI/跨屏、最终呈现、UIA/读屏、ETW/宿主性能仍待外部验收；SDK8/SDK10.0.401 CI 另行追踪。
-- R10-02 本机复核结果已完成：代码提交 `13704e75`，SDK `9.0.302` 下插件 `net462`/测试 `net472` Release 编译；R10 behavior `5/5`，相邻导航 `25/25`，无失败/跳过。真实 Playnite/媒体后端未执行，Actions 待推送后追踪；证据：[当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md)。阶段须等本轮 SDK8/SDK10.0.401 CI 到终态再收口；CI 失败先取完整日志，不凭摘要盲修。
-- 下一独立小批 R10-03：先查现有搜索命令、焦点与弹层作用域，再用实际命令行为/负例复核快捷键边界。R09 外机 HEAD/DLL/PDB 待用户 2026-10-15 09:00 后补，不阻塞。
+- R10-02 本机复核结果：代码提交 `13704e75`，SDK `9.0.302` 下 R10 behavior `5/5`、相邻导航 `25/25`；真实 Playnite/媒体后端未执行。对应 #990 两 SDK CI lanes 已失败，完整日志下载受 403 rate limit 阻塞；阶段 CI 根因未收口，禁止按 exit code 盲修。证据：[当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- R10-03 搜索快捷键已有实现复核通过：最新 main SDK `9.0.302`、VSTest `17.14.1`，筛选相关行为与接线 `12/12`；隔离 testhost 中复核 Ctrl+F 作用域和 Ctrl+Z/C/未修饰 F 负例。未验证真实 Playnite、物理输入/IME、UIA 或呈现。证据：[R10-03 当前 main 包](design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- 下一独立小批 R10-04：先查已有快捷键帮助和 command 元数据，再补禁用项负例与当前 main 证据。用户至 2026-10-15 09:00 无法回复；R09 外机身份及 #990 日志限制不阻塞。
 
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |
