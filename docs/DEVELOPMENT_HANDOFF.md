@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 `main`。Q24-07 代码提交 `0243c108eaa7f3d63430475dd87d292cfcfeb950` 已由仓库 `scripts/build.ps1 -SkipTests` 使用隔离 SDK `8.0.423` 精确 Release 重建：XAML `24/24`、0 warning/error；Playnite `net462` 和 tests `net472` 对应七个 WPF 类逐类 `13/13`，VSTest `17.11.1`。证据见[Q24-07 复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。本地构建与行为栏通过，CI/真实宿主仍待验。
+更新：2026-10-14；分支 `main`，HEAD `ae8f3be9969fe8baa649d7ae39bb88f7c6498484`。Q24-07 与 R00/R01 当前本地受控证据已复核：隔离 SDK `8.0.423`、Release `0 warning / 0 error`、XAML `24/24`、R00/R01 五个相关 WPF 类 `163 passed / 39 skipped / 0 failed`；baseline freshness `14 fresh / 0 stale`。证据见[R00/R01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。
 
-Q24-07 状态为代码完成待 CI/外部验收：高对比系统语义色、玻璃/Popup/阴影关闭、按钮与 Disclosure 动画清理、普通模式恢复均在受控 WPF 控件上验证。没有切换真实 Windows 高对比、没有 Playnite/OS UIA/Narrator 或最终呈现证据。相邻 R05 Tooltip 测试在 `GetCursorPos` 保存初始指针处失败 `2/3`，测试未走到 hover/dwell；保留原 TRX，不绕过系统限制。freshness 当前 4 项 stale：R00-01-02、R00-03、R00-05、R01-05。
+Q24-07 受控行为与 R00/R01 freshness 校正已完成本机验证，但 CI 门禁未通过：#978/run `38509928015` 的 SDK8 命名 job `115675846585` 和 SDK10.0.401 命名 job `115675846886` 均在编译/测试步骤失败。完整日志要求登录且未取得，实际 runner SDK 和根因未知；不要按摘要盲改，也不要以本机 SDK8 代替 SDK10。#970/#971 新附件与已审 ZIP 哈希一致，#971 SDK10 原始诊断仍缺但不阻塞独立工作。用户到 `2026-10-15 09:00` 前无法回复。
 
-前置 #976/run `38443177308` 在 `7189f33` 上两 lane 均失败：job `115454717004` 和 SDK10-labeled job `115454717105` 的编译/测试步骤 exit 1；完整日志/API 匿名访问受限（403），实际 SDK 与根因未知。用户补充的 #970/#971 三份 ZIP 经 SHA 核对是已审副本；缺失 #971 SDK10 原始诊断不阻塞当前工作。Q24-07 推送后跟新 SDK8/SDK10 Actions 至终态。下一项先复核 freshness 命中的 R00-01-02、R00-03、R00-05、R01-05，再推进依赖满足的 Q/R。Q24-03 仍需第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件。
+下一项按依赖推进 Q24-08 长文案与辅助输入：先查复用现有文案绑定、键盘/IME 提交、焦点与复制原值能力，使用合成数据和隔离 WPF 验证可控制的行为；真实 OS 中文 IME、Playnite 宿主和最终呈现仍独立待验。Q24-03 需要第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件及生成证据。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

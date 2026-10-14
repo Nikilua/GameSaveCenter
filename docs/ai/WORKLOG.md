@@ -10400,3 +10400,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 代码先提交 `3ca41ec9a5a3f3c6888db72ba3a6254b046dcd40`，随后以该精确 HEAD、本机 SDK `8.0.423` Release 重跑 `ProductionTypographyIconAndOneDipBorderRenderAtFiveExplicitTargetDpis`：`1/1`；VSTest `17.11.1`，Playnite `net462`、tests `net472`。五档 PNG 经人工查看，无明显裁字/图标缺失/边线消失；逐项像素和 PNG/TRX/DLL SHA 见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/README.md)。
 - 证据只证明受控离屏目标 DPI，不证明真实物理屏变化、Playnite 渲染/主题、Popup/跨屏、OS 字体放大、presented frame、UIA、IME 或读屏。Round2 Q24-01 视觉栏更新“受控通过”，Host external、Final incomplete。未访问真实设置、存档、媒体或云端。
 - #972/run `38421480496` 已终态成功：SDK8 job `115379639786` 使用 `global.json` 的 `8.0.423`，SDK10 job `115379639572` 为 `10.0.401`，两 lane 均成功。该 run 的 SHA 是前置 `8546acab`，不覆盖 Q24 代码 `3ca41ec9`；Q24 代码及证据尚未推送，推送后跟新两 lane 到终态。下一项 Q24-02：复核真实 PageHost 短窗尺寸、首尾可达、宽窗恢复，不能用外层尺寸替代内容区。其他任务 R04/R05/R07 未跟踪文件继续保留；没有新增 `.tmp` 中间产物。
+
+## 2026-10-14 R00/R01 复核、CI 终态与下一任务
+
+- 用户附加的 #970/#971 三个 ZIP SHA 与先前审阅包相同：#970 SDK10 Worker cancellation race、#970 SDK8 build summary、#971 SDK8 Q14 fixture 问题；已知问题在先前提交中修正。#971 SDK10 完整诊断仍缺，用户至 2026-10-15 09:00 前无法回复，不等待补件。
+- `ae8f3be9969fe8baa649d7ae39bb88f7c6498484` 本机隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；五个受影响 WPF 类 `163 passed / 39 skipped / 0 failed`。已按实际行为覆盖校正测试断言，更新四条 baseline；freshness `14 fresh / 0 stale`。TRX 与哈希见 R00/R01 证据包。
+- #978/run `38509928015` 已终态失败，SDK8 命名 job `115675846585` 和 SDK10.0.401 命名 job `115675846886` 的编译/测试步骤失败。公开页面只给通用 exit code、诊断包 SHA 和登录提示；完整日志/包内容没取到，实际 runner SDK及失败根因未知，不盲改。本机 SDK8 不替代 SDK10。
+- R00/R01 受控证据与 freshness 校正已记录；远端 CI 门禁未通过，不把阶段报告为完成。下一项依赖可独立推进 Q24-08：先盘点长文案、辅助输入/焦点与复制原值现有行为，使用合成数据/隔离 WPF 验证；真实 Playnite、OS 中文 IME/读屏、物理 DPI/跨屏、最终呈现与 ETW/宿主性能留作外部边界。

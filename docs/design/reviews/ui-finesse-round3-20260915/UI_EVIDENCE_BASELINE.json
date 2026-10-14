@@ -4,8 +4,8 @@
   "records": [
     {
       "id": "R00-01-02",
-      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
-      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
+      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -21,8 +21,8 @@
     },
     {
       "id": "R00-03",
-      "evidence": "evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md",
-      "sourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371",
+      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
+      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -52,8 +52,8 @@
     },
     {
       "id": "R00-05",
-      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261013/README.md",
-      "sourceCommit": "599d2fd38dd5c9af523a0890a33e73fc78ac0bfa",
+      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
+      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -178,8 +178,8 @@
     },
     {
       "id": "R01-05",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
+      "sourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [

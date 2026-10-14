@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 `main`。Q24-07 代码提交 `0243c108eaa7f3d63430475dd87d292cfcfeb950`：官方隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`，七个相关 WPF 测试类逐类 `13/13`；证据见[Q24-07 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-07-CURRENT-MAIN-HIGH-CONTRAST-RECHECK-20261014/README.md)。真实 Playnite、Windows 高对比切换、OS 输入与最终呈现未验。该提交的 freshness 初检为 14 条中 4 条 stale：R00-01-02、R00-03、R00-05、R01-05；下一步重跑并校正这些记录。#976/run `38443177308` 在前置 `7189f33` 上两 lane 均失败；公开摘要的两个编译/测试步骤 exit 1，完整日志 API 403，CI SDK/失败根因未知。#970/#971 新附 ZIP 与已审包 SHA 相同；#971 SDK10 原始诊断仍缺，但用户离线期间继续独立工作。新推送后的 SDK8/SDK10 Actions 仍待终态。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 `main`，当前 HEAD `ae8f3be9969fe8baa649d7ae39bb88f7c6498484`。Q24-07 高对比受控行为已完成本机验证；R00/R01 四条受影响 freshness 已复测校正，当前 `14 fresh / 0 stale`。SDK `8.0.423` Release `0/0`、XAML `24/24`，R00/R01 相关 5 类 `163 passed / 39 skipped / 0 failed`；证据见[R00/R01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。#978/run `38509928015` 已终态失败：SDK8 与 SDK10 命名 job 均在编译/测试步骤失败；完整日志需登录且当前未取得，实际 SDK/根因未知，不盲改。#970/#971 新附 ZIP 与已审包 SHA 相同；#971 SDK10 原始诊断仍缺。用户至 2026-10-15 09:00 无法回复，不等待补件；下一项 Q24-08 先复核长文案、辅助输入与复制路径现有实现，再补可独立验证行为。真实 Playnite/高对比开关、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现帧与宿主性能仍待验。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断
@@ -48,10 +48,10 @@
 
 当前用户明确续跑 Round3 192 项任务，并在 2026-10-15 09:00 前无法回复；不因缺少补充 ZIP 停住独立工作。
 
-1. #970/#971 的新附件经 SHA-256 确认为此前已审包副本；#971 SDK10 原始诊断仍缺，但用户到明日 09:00 前无法回复，不等待补件。已知 #970 SDK10 Worker cancellation 和 #971 SDK8 Q14 fixture 失败均有实际诊断并分别修正；见[诊断记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。
-2. Q24-07 代码提交 `0243c108` 已本机官方 Release `0/0`、XAML `24/24`、WPF `13/13`；证据包已收录。前置 #976 两 lane failure 的完整日志仍不可读，公开摘要不足以判因；Q24-07 推送后继续检查新 SDK8/SDK10 runs 到终态，实际 SDK分别记录，CI 未结束前不报告代码阶段完成。
-3. 当前下一项是 R00/R01 受影响证据复核：R00-01-02、R00-03、R00-05、R01-05 freshness stale；先比对原断言和真实行为，再跑对应正/负例并更新 baseline。其他 10 条 freshness 未命中，不扩大重跑范围。
-4. 真实 Playnite/高对比系统开关、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验；R05 Tooltip 测试需能安全读取初始系统指针。Q24-03 需要第二物理显示器。#971 SDK10 诊断并非独立任务的前置条件。
+1. #970/#971 新附件 SHA-256 与已审包相同；对应问题已在先前提交分别修正，#971 SDK10 原始诊断仍缺但非独立任务前置。见[诊断记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。
+2. R00/R01 当前受控证据已在 `ae8f3be9` 上复核，freshness `14 fresh / 0 stale`；本机 SDK `8.0.423` Release `0/0`、5 类 `163 passed / 39 skipped / 0 failed`。新证据包已归档。
+3. #978/run `38509928015` 两 lane 终态失败。SDK8 与 SDK10.0.401 命名 job 都在编译/测试步骤失败；日志需登录，根因和实际 runner SDK 未核实。不凭通用 exit code 猜修；本机 SDK8 不替代 SDK10。该远端门禁仍开放，其他独立 Q/R 工作继续。
+4. 下一项 Q24-08：先复用现有长文案绑定、键盘/IME 提交、焦点与复制原值路径，再用合成数据/隔离 WPF 验证安全可复现行为；OS 中文 IME 与真实 Playnite宿主证据单独待验。Demo 原目录不可用，沿用恢复生产基线。Q24-03 第二显示器、真实高对比开关、presented frame、ETW/宿主性能仍待验。
 ## 架构与生产 UI
 
 - Playnite 插件 `net462`，Core/Contracts `netstandard2.0`，Worker `net8.0-windows10.0.19041.0`，Playnite 测试 `net472`。插件与 Worker 经 Named Pipe 协作，SQLite 由 Worker 持久化。
