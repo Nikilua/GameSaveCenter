@@ -70,6 +70,34 @@ public sealed class R10KeyboardShortcutHelpBehaviorTests
     }
 
     [Fact]
+    public void ClickingHelpButtonOmitsSearchWhenActualShellCommandCannotExecute()
+    {
+        RunSta(() =>
+        {
+            var shell = new AcrylicProductionShellView();
+            var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+            var workspaceField = typeof(DashboardViewModel).GetField("currentWorkspace", BindingFlags.Instance | BindingFlags.NonPublic);
+            var viewModelField = typeof(AcrylicProductionShellView).GetField("viewModel", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(workspaceField);
+            Assert.NotNull(viewModelField);
+            workspaceField!.SetValue(dashboard, WorkspaceKind.Tasks);
+            viewModelField!.SetValue(shell, dashboard);
+            Assert.False(shell.FocusWorkspaceSearchCommand.CanExecute(null));
+
+            using var host = new WindowHost(shell);
+            var button = (Button)shell.FindName("HeaderKeyboardHelpButton")!;
+            var popup = (System.Windows.Controls.Primitives.Popup)shell.FindName("KeyboardShortcutHelpPopup")!;
+            var items = (ItemsControl)shell.FindName("KeyboardShortcutHelpItemsControl")!;
+
+            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            host.Window.UpdateLayout();
+
+            Assert.True(popup.IsOpen);
+            Assert.Empty(items.Items.Cast<KeyboardShortcutHelpItem>());
+        });
+    }
+
+    [Fact]
     public void ProductionHelpUsesShellEntryAndActualSearchCommand()
     {
         var root = TestRepositoryContext.Root;

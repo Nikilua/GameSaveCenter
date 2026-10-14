@@ -20,7 +20,8 @@
 - R08-05 页面切换和 R07-08 resize 的当前 main 受控行为证据已完成；R08-05 为 SDK9 44/44，R07-08 为 1/1。真实 Playnite、物理 DPI/跨屏、最终呈现、UIA/读屏、ETW/宿主性能仍待外部验收；SDK8/SDK10.0.401 CI 另行追踪。
 - R10-02 本机复核结果：代码提交 `13704e75`，SDK `9.0.302` 下 R10 behavior `5/5`、相邻导航 `25/25`；真实 Playnite/媒体后端未执行。对应 #990 两 SDK CI lanes 已失败，完整日志下载受 403 rate limit 阻塞；阶段 CI 根因未收口，禁止按 exit code 盲修。证据：[当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
 - R10-03 搜索快捷键已有实现复核通过：最新 main SDK `9.0.302`、VSTest `17.14.1`，筛选相关行为与接线 `12/12`；隔离 testhost 中复核 Ctrl+F 作用域和 Ctrl+Z/C/未修饰 F 负例。未验证真实 Playnite、物理输入/IME、UIA 或呈现。证据：[R10-03 当前 main 包](design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261014/README.md)。
-- 下一独立小批 R10-04：先查已有快捷键帮助和 command 元数据，再补禁用项负例与当前 main 证据。用户至 2026-10-15 09:00 无法回复；R09 外机身份及 #990 日志限制不阻塞。
+- R10-04 当前 main 补证 `17/17`：真实 Shell 帮助 Popup 正例与生产命令禁用时空列表负例通过；SDK9 Release 测试项目/引用构建 0/0，无生产 UI 变更。前置提交 e3a12753 的 run #991 `38556833749` 最近仍 pending；R10-04 代码推送后另追踪该 run。证据：[R10-04 当前 main 包](design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- 下一独立小批 R10-05：先查已有预设持久化、确认与撤销流程，再补当前 main 行为缺口。用户至 2026-10-15 09:00 无法回复；R09 外机身份及 #990 日志限制不阻塞。
 
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |

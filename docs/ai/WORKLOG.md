@@ -10519,3 +10519,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 提交 `8822e32c0966794e715aaa943e19b802cf6f75ca` 对应 run #990 / `38553608412` 已在 GitHub 页面终态 Failure。SDK8 默认 job `115817208147` 的“编译与测试”和 SDK10.0.401 job `115817208303` 的“隔离工作树并运行 Release 编译与测试”都 exit 1；页面作业耗时分别约 14m54s 和 8m41s。
 - job 页只展示 Process completed with exit code 1；公开日志 API 对两个 job 均返回 HTTP 403 rate limit，页面没有诊断包下载链接。没有完整日志前不猜测具体失败原因、不进行针对性修复。SDK9 本地通过不能替代 CI SDK8/SDK10结果。
 - 阶段交接继续 R10-04。#990 的完整日志限制、外机 R09 HEAD/DLL/PDB 缺失待可获取时补核；均不阻塞已授权的独立任务。
+
+## 2026-10-14 R10-04 快捷键帮助当前 main 复核
+
+- 既有 `KeyboardShortcutHelpCatalog` 使用 Shell 实际 `FocusWorkspaceSearchCommand.CanExecute(null)` 过滤条目；既有 STA 测试覆盖帮助入口点击后 Popup 打开、显示当前媒体页 Ctrl+F、再次点击关闭。复核后发现禁用命令负例仅经过 helper 的 fake `ICommand`，尚未穿过真实 Shell Popup 更新路径。
+- 新增单项 WPF 行为负例：Shell 搜索回调保持 null，确认实际 `FocusWorkspaceSearchCommand.CanExecute(null)==false`；点击帮助后 Popup 实际打开且条目为空。生产代码与 XAML 无变更。
+- 本机 SDK `9.0.302`、VSTest `17.14.1`；Release 插件 `net462`、测试 `net472` 与引用项目构建成功，0 warning/error。筛选 R10 help/search、AccessibilitySource、R10 context/navigation 共 `17/17`，0 failed/skip；分组为 5+2+3+5+2。TRX、源/DLL/PDB SHA、MVID 和范围见 `evidence/R10-04-CURRENT-MAIN-RECHECK-20261014/README.md`。`validate-source.py` 通过，diff check 待提交前复核。
+- 仅隔离 STA WPF 和合成 Workspace 状态；真实 Playnite、全局键盘协作、IME、OS UIA/读屏、物理 DPI/跨屏、presented frame、ETW、宿主性能仍未验证。`validate-source.py` 与 `git diff --check` 通过。SDK9 不替代 SDK8.0.423 或 CI SDK10.0.401。
+- R10-04 推送前依赖 run #991/`38556833749` 的终态；最近从公开 Actions 页面读取仍是 pending。下一项 R10-05 先审现有预设服务/DTO和确认取消语义。
