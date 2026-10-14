@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。R10-02 源码基线 `6eac7b90` 的 SDK8.0.423 / VSTest17.11.1 定向 Release 构建 `0/0`、行为 `32/32`、XAML `24/24`；证据 `design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md`。生产 Shell 在 STA 中实际打开同名游戏选框并按目标 PlayniteId 选择；未改生产实现。Actions run ID/终态仍待查询，SDK8 结果不替代 SDK10.0.401。外机 R09 仍缺 HEAD/DLL/PDB 身份、根因未确认。下一项 R10-03 搜索快捷键当前 main 复核。
+更新：2026-10-15；分支 `main` 当前提交 `6cf279238d55fe3d139fa2cb0eb7b09229a7478a`。R10-04 已沿用现有快捷键帮助实现并在当前 main 验证：本机 SDK9.0.302/VSTest17.14.1 全解方案 Release build `0/0`，R10相关行为 `18/18`，R09焦点类 `2/2`、XAML `24/24`、源码验证通过。实际 Shell Popup 开闭、当前媒体页条目及生产命令禁用后的空列表均有行为证据；没有生产 UI 改动。Actions run ID/终态未知，匿名 API 被本机代理拒绝、已知页面 cache miss；SDK9 结果不替代仓库固定 SDK8.0.423 或 CI SDK10.0.401。外机 R09 仍缺 HEAD、工作树、源文件、DLL/PDB 身份，根因未确认；本机同源隔离输出为 `2/2`。下一项 R10-05 筛选预设，先查现有模型与持久化，再补确认/取消行为。
 
 CI：#1006–#1009 已失败且完整日志不可读；#1010/run `38636778462`（`aa49a569`）和 #1011/run `38638331563`（`85609395`）均已 Failure，SDK8/SDK10 jobs 的编译与测试步骤 exit 1、公开注解未提供实际错误，匿名日志 API 403。#1010 artifacts ID `11929597360` / `11928647581`，SHA-256 `3c2bd19e16b0cef0dc54ba1c57e19b71a8be664e84dfa222e0d496e11a81660b` / `a9fb5a96607f5625c1699bf29a1447eb7616f1e424ac4dcb8bf8e4e0254fe746`；#1011 IDs `11928784541` / `11928968878`，SHA-256 `88170a28f0a19480eff989216674cbc0e3637d2bb80e35dfdbe2ea3e6bb352ac` / `f7abb468be15448673b2ba31f38ae3e48f69af2cfc6114fec4a9e9737cb4f1c5`。#1012/run `38640644812`（`2b423737`）上次观察为 In progress；d190f7ea 已推送，但当前 REST 连接被本机代理拒绝、公开页 cache miss，浏览器标签读取超时，新的 run ID/终态未知。当前本机 SDK8/SDK9结果不能替代 CI SDK10.0.401；无完整日志不猜根因。
 
@@ -324,3 +324,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 用户外机 R09 栈指向 line151、厚度 `Expected 2 / Actual 1`；当前源码第151行是错误色，第152/154行是 Chrome 1 DIP 与外置验证环 2 DIP。历史旧断言吻合，但外机提交、工作树、测试源/DLL/PDB 仍未知，不能确认错配根因。#967 SDK10 附件对应 `983fee5`，R09 `2/2`；本机当前对照也 `2/2`。不改生产模板/测试断言。
 - `95109c2` 的 Actions run `38645600070` 上次 In progress；API 请求被本机代理拒绝，`gh` CLI 缺失，Actions 页读取超时，当前状态未知。本阶段新提交的 run 也要单独跟到成功或失败；SDK8 不替代 SDK10.0.401。真实 Playnite 全局热键、物理键/IME、UIA/读屏、最终呈现和物理 DPI/跨屏未验。
 - 下一项可执行任务 R10-04：先核对快捷键帮助现有命令元数据及禁用过滤，再补真实命令可用/禁用行为。外机 R09 下一次可提供的最小证据为该次 `summary.json`、`tests/wpf.R09FocusOutlineBehaviorTests/` console/TRX、HEAD/status 和实际 DLL/PDB hashes；其余工作不等待回复。
+
+## 2026-10-15 R10-04 当前 main 快捷键帮助复核
+
+- R10-04 生产帮助目录沿用真实 FocusWorkspaceSearchCommand、CanExecute 与当前工作区文案。本轮只复核现有实现；Shell Popup 实际点击开闭、媒体工作区 Ctrl+F 条目和生产命令 CanExecute=false 时空列表都通过，没有生产 UI/XAML 改动。
+- main 基线 6cf279238d55fe3d139fa2cb0eb7b09229a7478a。本机仅 SDK9.0.302/VSTest17.14.1，global.json 固定 SDK8.0.423；用隔离输出全解方案 Release restore/build 0 warning / 0 error。R10 帮助/邻接行为 18/18，R09 焦点类 2/2；XAML 24/24、validate-source.py、diff check 通过。SDK9 不能替代 SDK8 或 CI SDK10.0.401。
+- 脱敏 TRX、DLL/PDB SHA/MVID 与未验范围见 design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261015/README.md。
+- 外机 R09 仍报 Expected 2 / Actual 1、line 151。本机同源隔离输出 2/2；当前源码 line 151 是错误边框颜色，line 152 为 Chrome 1 DIP，line 154 为独立 ValidationStroke 2 DIP。外机 HEAD、工作树、测试源码、DLL/PDB/资源未知，因此旧断言/符号错配仍只是推断，未更改模板或断言。iCCP 警告不在断言栈，COM teardown 异常发生在断言失败之后。外机复核见 design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md。
+- 当前提交对应 Actions run ID/终态未知；本机代理拒绝匿名 API，已知 run 页面 cache miss。未关闭 CI 门禁。真实 Playnite、UIA/读屏、IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。下一项 R10-05：盘点既有筛选预设 DTO、持久化和删除/重命名确认取消路径，再补行为。

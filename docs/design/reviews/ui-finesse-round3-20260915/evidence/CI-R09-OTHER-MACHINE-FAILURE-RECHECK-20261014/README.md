@@ -109,3 +109,9 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 用户附加的 `GameSaveCenter-sdk10-build-diagnostics.zip` 对应 #967/source commit `983fee5cae51f0f9fbe4b100620ab156e3a723f1`、SDK `10.0.401`，包内 R09 测试也是 `2/2` 通过。它证明该历史 SDK10 运行没有此失败，但不能确认本次外机使用了同一提交或程序集。`libpng iCCP` 不在失败断言调用栈；TextServicesContext COM 异常发生在断言失败后的 WPF 收尾，也不能解释厚度比较。
 
 若外机后续能复现，请从同一失败运行提供 `artifacts/build-diagnostics/<run>/summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/` 下的完整 console/TRX，并记录 `git rev-parse HEAD`、`git status --short`、测试源码第 145–160 行及实际加载的测试 DLL/PDB 和插件 DLL SHA-256。先保留现有文件，不通过更改断言或模板来掩盖程序集身份差异。
+
+## 2026-10-15 当前 main SDK9 隔离对照
+
+当前 main 基线 6cf279238d55fe3d139fa2cb0eb7b09229a7478a 的隔离 Release 全解方案 build 为 0 warning / 0 error；R09FocusOutlineBehaviorTests 在同一输出目录中 2/2 通过。脱敏结果、程序集 hashes 与 MVID 见 [本轮 R09 对照](../R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md)。本机只有 SDK9.0.302/VSTest17.14.1，仓库固定 SDK8.0.423 不可用，结果不替代 SDK8/SDK10.0.401。
+
+该结果只能证明当前同源隔离构建通过，无法识别用户另一台机器的实际 HEAD、测试源、PDB、测试程序集或资源程序集。当前源码行 151 检查错误色，line 152 检查 Chrome 1 DIP，line 154 检查 ValidationStroke 2 DIP；旧断言/符号映射错配仍未证实。没有生产 UI 改动。

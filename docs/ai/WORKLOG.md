@@ -10730,3 +10730,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK `8.0.423` / VSTest `17.11.1`；Playnite `net462`/Tests `net472` 定向 Release build `0 warning / 0 error`。`validate-source.py`、`git diff --check` 通过；WPF 静态扫描 `0 error / 29 warning / 177 info`，仅全仓既有 XAML/临时目录项，本阶段无 XAML 变更。脱敏 TRX/源/DLL/PDB SHA、MVID 与未验范围见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-03-CURRENT-MAIN-RECHECK-20261015/README.md`。
 - 外机 R09 同一日志仍显示旧行号/旧断言特征；#967 SDK10.0.401、source `983fee5` 的附件 R09 `2/2`。本机 `95109c2` 同身份对照 `2/2`。libpng warning 不在厚度断言栈，TextServices COM 异常发生于失败后收尾；外机 HEAD/工作树/DLL/PDB 仍缺，错配只是推断，未改模板或放宽断言。
 - `95109c2` 的 Actions run `38645600070` 上次观测 In progress；本轮 API 连接被拒绝（127.0.0.1:9）、`gh` 不存在、浏览器读取超时，状态当前未知。阶段推送后继续检查对应 SDK8/SDK10.0.401 run；CI 未到终态前不签收。下一项 R10-04 快捷键帮助；真实 Playnite/物理输入/IME/UIA/呈现/物理 DPI 和宿主性能仍待验。
+## 2026-10-15 R10-04 当前 main 快捷键帮助复核
+
+- R10-04 的生产能力已存在：KeyboardShortcutHelpCatalog 复用真实 FocusWorkspaceSearchCommand 与 CanExecute(null)，按当前工作区给出已接线的 Ctrl+F。历史帮助测试有目录 fake-command 正负例和 Popup 启用正例；上一轮已补生产 Shell 命令禁用时的 Popup 空列表行为。本轮只更新当前 main 的基线证据，没有改生产代码或 XAML。
+- 当前 main 源码基线 6cf279238d55fe3d139fa2cb0eb7b09229a7478a。本机只安装 .NET SDK 9.0.302 / VSTest 17.14.1，仓库 global.json 固定 SDK 8.0.423；从仓库外启动并使用隔离输出完成全解方案 Release restore/build，0 warning / 0 error。SDK9 结果不替代 SDK8 或 CI SDK10.0.401。
+- 按 WPF 类分别进程运行：快捷键帮助 5/5、搜索策略 2/2、生产 routed-event 搜索焦点 1/1、AccessibilitySource 3/3、当前游戏路由 5/5、返回导航 2/2，R10 相邻合计 18/18；R09 焦点轮廓单独 2/2。生产 Popup 实际开闭、媒体页 Ctrl+F 展示、真实 Shell 命令禁用后空列表均有行为证据。
+- XAML 结构检查 24/24，scripts/validate-source.py 与 git diff --check 通过。脱敏 TRX、源/程序集哈希、MVID、构建身份及行为边界见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261015/README.md；R09 同源对照见 docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md。
+- 用户提供的外机 R09 失败仍缺该次 HEAD、工作树、测试源、DLL/PDB 和资源身份。本机当前同源隔离输出通过只能排除当前构建中的复现，不能诊断外机；没有改模板或弱化断言。外机若继续复现，下一次取同次运行 summary.json、R09 console/TRX、HEAD/status 和实际程序集哈希。用户暂时无法回复，独立任务继续。
+- Actions run ID/终态未知：本机代理拒绝匿名 API，已知 GitHub run 链接返回 cache miss。CI 门禁未签收；下一项 R10-05，先盘点已有筛选预设服务/DTO/持久化与确认/取消行为。
