@@ -1,3 +1,10 @@
+## 2026-10-15 R00/R01 当前 main freshness 与完成条件复核
+
+- 先复读第三轮质量审查、任务组说明、16 项具体完成条件及公共门禁，再核对 Round3 账本、共享证据索引和 `UI_EVIDENCE_BASELINE.json`。R00-01..07、R01-01..08 在账本均已满足；R00-08 仅受控行为已满足，真实 Playnite/OS IME/实体输入仍待验。R01-06 保留 `13 MEDIUM` 布局风险，不把它写成零问题。
+- 在 main source HEAD `4eb778e992b6f6f76048309f42c2811d6a791815` 运行 `scripts/check-ui-evidence-freshness.ps1 -HeadCommit HEAD -AsJson`：14 records / 14 fresh / 0 stale，所有记录 `matchedSourcePaths=[]`。各自证据提交到当前 HEAD 的比较汇总 2,727 个路径，包含非文档变化；因此结论是 R00/R01 登记源路径未改变，不是“仅文档变更”。`package identity=not-provided`。
+- 未触发 R00/R01 行为或渲染测试重跑：当前基线没有命中相关源码/测试路径；沿用可追溯的行为证据并在 [freshness 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-FRESHNESS-RECHECK-20261015/README.md) 记录本次 source HEAD。没有发现可复现的新 R00/R01 问题，也没有修改生产代码或标记新的完成项。
+- CI #1006/#1007 的失败摘要不能归因到 R00/R01；完整日志/ZIP 当前不可匿名读取，根因未知。#1008/run `38630493740` 对应 `4eb778e9` 最新查询仍为 In progress；SDK8/SDK10 分开跟踪，本机 SDK9 不能替代 CI。下一项 R07-04 横向滚动端点复核，先确认现有能力与当前源差异，不重建功能。
+
 ## 2026-10-15 R06-07/R06-08 当前 main、Q24-06 与 R09 复核
 
 - 复核既有 Save 空态/重试、WorkspaceStatePresenter、Media 状态缓存、详情选择同步/滚动、四行门禁、生产 UI Automation peers 与共享焦点描边；没有改生产服务、DTO、XAML、滚动条或命令。

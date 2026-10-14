@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。当前 main `cd27c8c0` 的 R06-07/R06-08 行为 `31/31`、Q24-06 UI Automation `24/24`、R09 焦点描边 `2/2`，本机 SDK `9.0.302` / VSTest `17.14.1`；Playnite `net462` 测试项目及引用 Release build `0/0`，非完整 solution build。复核包记录源码、DLL、PDB 和脱敏 TRX SHA；没有生产 UI 变化或截图。R09 外机仍报告 Expected 2/Actual 1、line151，用户称已拉最新，但故障机 HEAD/源/DLL/PDB 未知，根因未确认。#1006/run `38624032938` 与 #1007/run `38625232841` 的 SDK8.0.423 和 SDK10.0.401 job 均已 Failure；失败步骤可读，完整日志/诊断包无法匿名取得，根因未知，本机 SDK9 不替代 CI。下一项按用户要求先复核 R00/R01 问题与证据，再推进依赖已满足的 Q/R。真实 Playnite、Narrator/外部 UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能待验。
+更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。当前 main `cd27c8c0` 的 R06-07/R06-08 行为 `31/31`、Q24-06 UI Automation `24/24`、R09 焦点描边 `2/2`，本机 SDK `9.0.302` / VSTest `17.14.1`；Playnite `net462` 测试项目及引用 Release build `0/0`，非完整 solution build。复核包记录源码、DLL、PDB 和脱敏 TRX SHA；没有生产 UI 变化或截图。R09 外机仍报告 Expected 2/Actual 1、line151，用户称已拉最新，但故障机 HEAD/源/DLL/PDB 未知，根因未确认。#1006/run `38624032938` 与 #1007/run `38625232841` 的 SDK8.0.423 和 SDK10.0.401 job 均已 Failure；完整日志/诊断包无法匿名取得，根因未知。本机 SDK9 不替代 CI。R00/R01 freshness 在 source HEAD `4eb778e9` 为 `14/14 fresh`、0 stale；R00-01..07、R01-01..08 已满足，R00-08 仅受控行为已满足，真实宿主/OS 输入仍待验。#1008/run `38630493740` 当前 In progress。下一项 R07-04 横向滚动端点复核，再推进依赖满足的 Q/R。真实 Playnite、Narrator/外部 UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能待验。
 
 ## AI/Codex 启动协议
 
