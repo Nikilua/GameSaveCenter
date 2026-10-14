@@ -272,3 +272,10 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - R07 当前本机受控行为覆盖生产详情打开、GamePicker、任务表、焦点与五次 resize；不证明真实 Playnite 拖动、物理 DPI/呈现帧/宿主耗时。#960/run 38327521241 已失败但完整日志 API 403/404，CI SDK与内部根因未知；不能用 #968 历史双 lane 或 SDK9 结果替代当前 CI。
 - Actions 页面最近可见 #979（ae3c565）；按 d7f6fc42 head SHA 查询公开 REST API 返回 HTTP 403 rate limit。R08/R07 当前推送 SDK8.0.423 与 SDK10.0.401 终态未确认，不能据此判断 run 不存在。继续查到成功/失败后按完整日志处理；CI 运行时不宣称阶段完成。其他任务的未跟踪证据保留。
 - 下一可执行项 R10-02。R09-05 外机提交、工作树和 DLL/PDB 身份待用户 2026-10-15 09:00 后补充；期间继续独立工作。
+
+## 2026-10-14 R10-02 当前游戏定位与 CI 继续点
+
+- 代码提交 `13704e75234e7f8d943e15ae8380a728a277375e`。复用现有 `TaskSourceNavigationResolver`、DTO、选框与命令；测试通过实际任务命令覆盖同名 ID 正例和过期 ID 安全负例，并验证缺失 ID 的同名选框不回退。`WorkspaceLoadSchedulerOverrideForAudit` 默认 null，仅允许 fixture 拦截 Worker 加载启动，正常生产路径不变。
+- SDK `9.0.302` 本机编译 Playnite `net462` / tests `net472`；R10 behavior `5/5`，相邻导航/来源组 `25/25`；source validator、diff check 通过。TRX、DLL SHA/MVID、源身份与边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。本机 SDK9 不替代 SDK8.0.423/CI SDK10.0.401。
+- 用户指定 run #920（`36677346317`，`77de7f4`）当前 Failure：7m04s、无 artifact，公开页面仅显示“编译、测试与打包”exit1；logs 需登录，实际 SDK 与失败根因未知。当前公共列表最新 #972（`8546aca`）为 In progress；本阶段代码尚未推送。推送后逐一跟踪 SDK8 和 SDK10.0.401 到终态；失败先尝试取得完整 job log，不能凭摘要盲修。
+- R10-02 本机条件完成但阶段仍等本次 CI 终态；未运行真实 Playnite/媒体 Worker、未验证真实呈现、物理 DPI/跨屏、OS UIA/读屏、ETW/宿主性能。CI 收口后下一可执行任务 R10-03 搜索快捷键；先核对搜索绑定、焦点、弹层/dialog 作用域并补实际正/负行为。R09 外机 HEAD/DLL/PDB 暂待用户明早回复，不阻塞。

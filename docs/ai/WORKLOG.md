@@ -10493,3 +10493,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 外机日志 line 151 与历史 3f7d0b30 Chrome 2 DIP 断言对应；当前 line 151 为颜色断言、line 154 为独立 ValidationStroke 2 DIP。旧测试二进制或 PDB 错配最符合现有线索，但缺外机身份，未确认；libpng warning 无关，COM 异常发生在失败后收尾。未改 UI 或放宽断言。
 - CI 页面仍只列 #979 queued，#971 In Progress、#978 Failure 且日志需登录；当前 HEAD run 未核实，SDK9 不替代 SDK8/SDK10.0.401。
 - 下一项 R10-02 当前 main 交互行为复核；外机身份待用户 2026-10-15 09:00 后补充，暂不阻塞。
+
+## 2026-10-14 R10-02 当前游戏定位行为复核
+
+- 查明并复用任务 GameId 稳定导航、`GamePickerViewModel` 与 Shell 当前游戏选框。新增真实命令正/负行为：同名任务定位准确 ID；ID 已从快照移除时不切换同名游戏、不改变工作区/返回历史/加载请求并提示刷新。选框也补了目标 ID 缺失但名称相同的“不选任何对象”负例。内部加载回调只用于隔离测试，默认 null，不改变生产调度。
+- 本机 SDK `9.0.302`，Playnite `net462`、tests `net472`。定向 R10 `5/5`，相邻导航组 `25/25`（R10 context 5、R10 navigation 2、purpose navigation 4、finding navigation 11、R15 source 3），0 failed/skip；源码门禁与 `git diff --check` 通过。Media/Shell 源接线仅是辅助结构证据；本轮未运行真实媒体 Worker/Playnite，无视觉改动。
+- 代码提交 `13704e75`；TRX、程序集及当前源码哈希、边界见 `evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。SDK9 本地结果不替代仓库 SDK8.0.423 或 CI SDK10.0.401。
+- 指定 #920/run `36677346317` 已查为 Failure、7m04s、无 artifacts；公开摘要只有“编译、测试与打包”exit 1，完整 logs 要求登录，实际 SDK/内部根因未知。公开 Actions 列表最新 #972（`8546aca`）In progress。本轮 push 后追踪对应 SDK8/SDK10 lanes 到成功或失败；失败先拿完整日志，不凭 exit code 修。
+- 下一可执行小项 R10-03 搜索快捷键；先审已有搜索/命令和弹层焦点作用域。R09 外机 HEAD/DLL/PDB 待用户明早补充但不阻塞。

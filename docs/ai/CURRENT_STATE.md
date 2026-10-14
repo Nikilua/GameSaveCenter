@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-14；版本 0.6.73-development-preview；分支 main，最新提交 965fe1b2（文档证据提交）。R00/R01 freshness 14 fresh / 0 stale；Q24-08 受控行为 15/15；Q25-01 受控响应 13/13。R08-05 页面切换 SDK9 定向相关类 44/44，R07-08 resize 1/1，证据均已归档。R09 外机焦点失败在当前 main 带提交身份的 SDK9 定向构建中 2/2；外机第151行与历史 Chrome 2 DIP 断言对应，但其 HEAD/DLL/PDB 未知，根因仍未确认。最新公开 Actions 快照只显示 #979 queued；#971 In Progress、#978 Failure 且完整日志需登录；当前提交 run 未核实，API 查询受 403 rate limit。SDK9 本机结果不替代 SDK8.0.423/CI SDK10.0.401。下一项 R10-02：复核稳定游戏 ID 的生产命令行为与负例；用户至 2026-10-15 09:00 无法回复，外机身份待补但不阻塞。
+更新：2026-10-14；版本 0.6.73-development-preview；分支 main，本轮代码提交 `13704e75`。R00/R01 freshness 14 fresh / 0 stale；Q24-08 受控行为 15/15；Q25-01 受控响应 13/13。R08-05 页面切换 SDK9 定向相关类 44/44，R07-08 resize 1/1。R09 外机焦点失败在当前主线定向复核中 2/2；外机第151行对应历史 Chrome 2 DIP 断言，但 HEAD/DLL/PDB 未知，根因未确认。R10-02 本机 SDK 9.0.302 定向类 5/5、相邻导航 25/25，source validator 通过；本轮提交待推送，CI 尚未启动。公开 Actions 列表最新可读为 #972（`8546aca`）In progress；用户指定 #920/run `36677346317`（`77de7f4`）当前为 Failure、7m04s、无 artifact，日志需登录，根因/runner SDK 未知。SDK9 不替代 SDK8.0.423/CI SDK10.0.401。下一项 R10-03，须先收口本轮推送 CI；R09 外机身份待用户明早补充，不阻塞。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

@@ -145,3 +145,10 @@ R08-03 生产服务、模板与 storyboard 已存在，未改生产代码。R08-
 ### 2026-10-14 R07-08 当前主线复核
 
 R07 resize 回归应按已加载 PageHost/DataGrid 的实际窗口与内容区尺寸验收；compact 详情关闭后须路由生产 open button 才能证明详情可在 resize 中保持。复核五阶段的 PageHost 实际几何、picker/焦点/任务表可达、详情/picker MaxHeight 清理和恢复误差。SDK9 单机行为通过不能解释或覆盖 #960 未知 CI 失败，也不等同真实拖动帧时间/Playnite。当前证据与程序集身份见 evidence/R07-08-CURRENT-MAIN-RECHECK-20261014。
+
+## 2026-10-14 R10-02 当前游戏定位行为复核
+
+- 复用 `TaskSourceNavigationResolver`、`TaskStatusDto`、`GamePickerViewModel` 和 Shell 当前游戏选框。代码提交 `13704e75` 仅增加默认关闭的内部工作区加载审计回调与行为用例；正常生产 Worker 调度路径不变。
+- 本机 SDK `9.0.302`，Playnite `net462`、测试 `net472`，Release 编译成功；R10 context `5/5`，含同名重名选框正例、缺失 ID 不回退负例、生产任务命令准确路由与缺失目标保护。相邻导航/来源组 `25/25`，无失败/跳过。source validator、diff check 通过。
+- 源码/DLL/MVID/TRX 哈希、命令与行为结果在 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261014/README.md`。构建 ProductVersion 带前置 hash `a94819b`，因此以源码/DLL SHA/MVID 标识实际构建，不冒称 SDK10 CI。
+- Actions 列表最新可读 #972（`8546aca`）仍 In progress；本轮尚未推送。用户指定旧 run #920/`36677346317`（`77de7f4`）现 Failure、7m04s、无 artifact，日志登录限制，实际 SDK/根因未知。真实 Playnite/媒体服务、presented frame、物理 DPI/跨屏、OS UIA/读屏、ETW/宿主性能未验。CI 终态后下一项 R10-03 搜索快捷键。
