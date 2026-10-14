@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="106bff78-39da-4b1a-b3c9-b182a3406f70" name="lopmatu@SULT 2026-10-15 01:59:31" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-15T01:59:31.8781270+08:00" queuing="2026-10-15T01:59:31.8781274+08:00" start="2026-10-15T01:59:26.4589403+08:00" finish="2026-10-15T01:59:49.8482803+08:00" />
+  <TestSettings name="default" id="bf6fb000-6015-4d03-9c3f-32775424383c">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-15_01_59_31" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e61553e3-3b6c-4ee3-b85f-552cfb981dab" testId="e58307dd-d3f7-b9bf-3149-cac5104fc575" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SaveCenterProjectsTheFourStagesWithoutReplacingExistingEntryPoints" computerName="SULT" duration="00:00:00.1130000" startTime="2026-10-15T01:59:33.2673230+08:00" endTime="2026-10-15T01:59:33.3667357+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e61553e3-3b6c-4ee3-b85f-552cfb981dab" />
+    <UnitTestResult executionId="dde05831-0a87-4420-9901-02f750c3e70c" testId="321ca786-bf1d-c0a6-829f-ad19f3b6a954" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.ReadinessWarningAndActiveExecutionExposeRealSafetyBoundary" computerName="SULT" duration="00:00:00.0380000" startTime="2026-10-15T01:59:30.3372328+08:00" endTime="2026-10-15T01:59:30.3602345+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dde05831-0a87-4420-9901-02f750c3e70c" />
+    <UnitTestResult executionId="89737e5e-3b41-46f8-8f40-ebcf993496d4" testId="44bfe31d-90d9-3e77-a21c-cef7955d03c7" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.TargetFailureStopsBeforeExecution" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-15T01:59:33.2643234+08:00" endTime="2026-10-15T01:59:33.2653225+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89737e5e-3b41-46f8-8f40-ebcf993496d4" />
+    <UnitTestResult executionId="d21ff60d-fc0d-48a3-99ed-9af76e3f424c" testId="461ba616-1d07-c416-40d4-aff5cae6ef38" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SuccessfulTaskCompletesAllStages" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-15T01:59:33.2613220+08:00" endTime="2026-10-15T01:59:33.2623237+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d21ff60d-fc0d-48a3-99ed-9af76e3f424c" />
+    <UnitTestResult executionId="a8dc6158-a5e7-4047-b26c-d7fa8cd1e0d6" testId="53f39432-d519-1c6c-3368-a8e6ad1fe6fc" testName="GameSaveCenter.Playnite.Tests.R12RestoreReadinessViewBehaviorTests.SaveCenterDisplaysUnknownPartialStaleAndCorruptReadinessFromBoundBackup" computerName="SULT" duration="00:00:00.4400000" startTime="2026-10-15T01:59:33.3707344+08:00" endTime="2026-10-15T01:59:33.8086400+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8dc6158-a5e7-4047-b26c-d7fa8cd1e0d6" />
+    <UnitTestResult executionId="67858807-b55a-485d-b6a5-797efa8858d4" testId="cce7e30a-3cc0-17ec-5e9a-7699bb326da8" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SaveCenterRendersBoundFailureAndActiveStageDetails" computerName="SULT" duration="00:00:02.8870000" startTime="2026-10-15T01:59:30.3822312+08:00" endTime="2026-10-15T01:59:33.2503230+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="67858807-b55a-485d-b6a5-797efa8858d4" />
+    <UnitTestResult executionId="dbf68fd2-0780-4bb1-bb40-b31077625f59" testId="caabad25-7500-1f01-6a88-58607a32d123" testName="GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests.SaveHistoryRowRendersSourceAndNeutralUnknownReadinessWithoutGreenSafetyState" computerName="SULT" duration="00:00:00.3530000" startTime="2026-10-15T01:59:33.8116369+08:00" endTime="2026-10-15T01:59:34.1622646+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dbf68fd2-0780-4bb1-bb40-b31077625f59" />
+    <UnitTestResult executionId="b65c109d-5c96-4f8a-a20f-f75777ab5d76" testId="8c933182-97f3-a73d-161a-fb9be94195aa" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.PostRestoreFailureRetainsExecutionFailure" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-15T01:59:33.2543217+08:00" endTime="2026-10-15T01:59:33.2553224+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b65c109d-5c96-4f8a-a20f-f75777ab5d76" />
+    <UnitTestResult executionId="5436dfc6-8cc9-4107-83c0-322f0b20daca" testId="2f81eb38-40eb-0fa8-1055-8fe5102aaf58" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.PreRestoreFailureStopsDangerousExecutionAndExplainsProtectionStage" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-15T01:59:30.3792313+08:00" endTime="2026-10-15T01:59:30.3802312+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5436dfc6-8cc9-4107-83c0-322f0b20daca" />
+    <UnitTestResult executionId="a95a0d54-17ae-4363-9d05-b48dac40218d" testId="3ade3676-7189-28e5-68ac-c9a8d7688670" testName="GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests.BackupVersionSummarySeparatesSourceAndUnknownReadiness" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-15T01:59:34.1652650+08:00" endTime="2026-10-15T01:59:34.1662639+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a95a0d54-17ae-4363-9d05-b48dac40218d" />
+    <UnitTestResult executionId="c5a1b892-6d74-4539-805f-946b7f931718" testId="1cd62346-2f64-7a9f-d339-e7d166524883" testName="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SelectionWithoutReadinessKeepsExecutionPending" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-15T01:59:33.2513216+08:00" endTime="2026-10-15T01:59:33.2533218+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5a1b892-6d74-4539-805f-946b7f931718" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.PostRestoreFailureRetainsExecutionFailure" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="8c933182-97f3-a73d-161a-fb9be94195aa">
+      <Execution id="b65c109d-5c96-4f8a-a20f-f75777ab5d76" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="PostRestoreFailureRetainsExecutionFailure" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.PreRestoreFailureStopsDangerousExecutionAndExplainsProtectionStage" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2f81eb38-40eb-0fa8-1055-8fe5102aaf58">
+      <Execution id="5436dfc6-8cc9-4107-83c0-322f0b20daca" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="PreRestoreFailureStopsDangerousExecutionAndExplainsProtectionStage" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SuccessfulTaskCompletesAllStages" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="461ba616-1d07-c416-40d4-aff5cae6ef38">
+      <Execution id="d21ff60d-fc0d-48a3-99ed-9af76e3f424c" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="SuccessfulTaskCompletesAllStages" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.ReadinessWarningAndActiveExecutionExposeRealSafetyBoundary" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="321ca786-bf1d-c0a6-829f-ad19f3b6a954">
+      <Execution id="dde05831-0a87-4420-9901-02f750c3e70c" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="ReadinessWarningAndActiveExecutionExposeRealSafetyBoundary" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreReadinessViewBehaviorTests.SaveCenterDisplaysUnknownPartialStaleAndCorruptReadinessFromBoundBackup" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="53f39432-d519-1c6c-3368-a8e6ad1fe6fc">
+      <Execution id="a8dc6158-a5e7-4047-b26c-d7fa8cd1e0d6" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreReadinessViewBehaviorTests" name="SaveCenterDisplaysUnknownPartialStaleAndCorruptReadinessFromBoundBackup" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SaveCenterProjectsTheFourStagesWithoutReplacingExistingEntryPoints" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e58307dd-d3f7-b9bf-3149-cac5104fc575">
+      <Execution id="e61553e3-3b6c-4ee3-b85f-552cfb981dab" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="SaveCenterProjectsTheFourStagesWithoutReplacingExistingEntryPoints" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests.SaveHistoryRowRendersSourceAndNeutralUnknownReadinessWithoutGreenSafetyState" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="caabad25-7500-1f01-6a88-58607a32d123">
+      <Execution id="dbf68fd2-0780-4bb1-bb40-b31077625f59" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests" name="SaveHistoryRowRendersSourceAndNeutralUnknownReadinessWithoutGreenSafetyState" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.TargetFailureStopsBeforeExecution" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="44bfe31d-90d9-3e77-a21c-cef7955d03c7">
+      <Execution id="89737e5e-3b41-46f8-8f40-ebcf993496d4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="TargetFailureStopsBeforeExecution" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SelectionWithoutReadinessKeepsExecutionPending" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1cd62346-2f64-7a9f-d339-e7d166524883">
+      <Execution id="c5a1b892-6d74-4539-805f-946b7f931718" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="SelectionWithoutReadinessKeepsExecutionPending" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests.SaveCenterRendersBoundFailureAndActiveStageDetails" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cce7e30a-3cc0-17ec-5e9a-7699bb326da8">
+      <Execution id="67858807-b55a-485d-b6a5-797efa8858d4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests" name="SaveCenterRendersBoundFailureAndActiveStageDetails" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests.BackupVersionSummarySeparatesSourceAndUnknownReadiness" storage="d:\workplace\github\gamesavecenter\.tmp\r12-02-current-main-d6640887-20261015\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3ade3676-7189-28e5-68ac-c9a8d7688670">
+      <Execution id="a95a0d54-17ae-4363-9d05-b48dac40218d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-02-current-main-d6640887-20261015\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests" name="BackupVersionSummarySeparatesSourceAndUnknownReadiness" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e58307dd-d3f7-b9bf-3149-cac5104fc575" executionId="e61553e3-3b6c-4ee3-b85f-552cfb981dab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="321ca786-bf1d-c0a6-829f-ad19f3b6a954" executionId="dde05831-0a87-4420-9901-02f750c3e70c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="44bfe31d-90d9-3e77-a21c-cef7955d03c7" executionId="89737e5e-3b41-46f8-8f40-ebcf993496d4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="461ba616-1d07-c416-40d4-aff5cae6ef38" executionId="d21ff60d-fc0d-48a3-99ed-9af76e3f424c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="53f39432-d519-1c6c-3368-a8e6ad1fe6fc" executionId="a8dc6158-a5e7-4047-b26c-d7fa8cd1e0d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cce7e30a-3cc0-17ec-5e9a-7699bb326da8" executionId="67858807-b55a-485d-b6a5-797efa8858d4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="caabad25-7500-1f01-6a88-58607a32d123" executionId="dbf68fd2-0780-4bb1-bb40-b31077625f59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8c933182-97f3-a73d-161a-fb9be94195aa" executionId="b65c109d-5c96-4f8a-a20f-f75777ab5d76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2f81eb38-40eb-0fa8-1055-8fe5102aaf58" executionId="5436dfc6-8cc9-4107-83c0-322f0b20daca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3ade3676-7189-28e5-68ac-c9a8d7688670" executionId="a95a0d54-17ae-4363-9d05-b48dac40218d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1cd62346-2f64-7a9f-d339-e7d166524883" executionId="c5a1b892-6d74-4539-805f-946b7f931718" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="11" executed="11" passed="11" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.76]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

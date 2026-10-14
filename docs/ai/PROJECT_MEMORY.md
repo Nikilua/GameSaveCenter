@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R12-01 既有实现已在当前 main 复核，仅加生产 `SaveCenterView` 运行时绑定行为；SDK8.0.423/VSTest17.11.1 的四阶段、失败/重验相关类 `14/14`，项目构建 `0/0`，边界见 R12-01 复核包。R00/R01 freshness `14/14`，R00-08 当前行为类 `13/13`。外机 R09 的旧断言特征匹配 `3f7d0b30`，`983fee5` 已含 Chrome 1 DIP + ValidationStroke 2 DIP 新源码；旧测试 DLL/源码映射是推断而非确诊，外机身份缺失，不改模板/减弱断言。旧 CI #992/#993 失败且日志/API受限；`40af39c8`、`55ed3a17`、`3f6b355f` 新 Actions 终态未确认，Actions API 当前 rate limit `403`，SDK8/SDK10.0.401 分别追踪。下一项 R12-02。
+更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R12-02 复用 `6cc3a618` readiness 实现；`d6640887` 只补真实 `SaveCenterView` 行为测试。SDK9.0.302/VSTest17.14.1 下 Worker `15/15`、Core `40/40`、Playnite `11/11`，合计 `66/66`；XAML/source/diff 通过，非完整 solution build。暂停检查点 #920/run `36677346317` 与 #919/run `36675309812` 均 Failure；已读既有 SDK10.0.401 完整日志，根因是旧侧栏动画测试夹具未固定系统动效策略，`48b78b3b` 只修测试前提，生产策略未改。日志归档与 SHA 在 R07-08 证据包；SDK8/SDK10.0.401 CI 分开追踪。R00/R01 freshness `14/14`。外机 R09 的 Expected 2/Actual 1 与旧 `3f7d0b30` 主 Chrome 2 DIP 断言相符；`f13b9e05` 后当前 Chrome 为 1 DIP、错误态独立 ValidationStroke 为 2 DIP。旧源/程序集仍只是可能解释，外机身份缺失，不改模板/减弱断言。下一项 R12-03。
 
 ## AI/Codex 启动协议
 

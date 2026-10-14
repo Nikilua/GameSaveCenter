@@ -1,12 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R12-01 既有生产实现来自 `e1a8da0c`，当前 main `3f6b355f` 仅增强恢复摘要行为测试；本机 SDK `8.0.423` / VSTest `17.11.1` 下 `R12RestoreWorkflowBehaviorTests 8/8`、冲突解释 `4/4`、确认重验 `2/2`，总计 `14/14`。生产 `SaveCenterView` 隔离 STA 绑定验证失败/待写入状态与活动 PreRestore 阶段；测试项目及引用 Release 构建 `0 warning / 0 error`，非完整 solution build。XAML `24/24`、source validation 通过。证据见[R12-01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R12-01-CURRENT-MAIN-RECHECK-20261015/README.md)。Actions 终态待核查。
+更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R12-02 生产实现沿用 `6cc3a618`；`d6640887` 只补生产 `SaveCenterView` 运行时状态行为。当前主机仅安装 SDK `9.0.302` / VSTest `17.14.1`，Worker `15/15`、Core `40/40`、Playnite `11/11`，共 `66/66`；真实详情卡隔离 STA 显示无哈希、部分覆盖/过期、损坏三个状态和完整时间辅助文本。定向 Release 测试项目/引用均成功构建，非完整 solution build；XAML `24/24`、source validation/diff check 通过。SDK8/SDK10 CI 独立追踪，Actions 终态尚未核实。证据见[R12-02 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R12-02-CURRENT-MAIN-RECHECK-20261015/README.md)。
 
 R00-08 在 `55ed3a17f14087859319b350297132c7fcb3f79c` 上复核 `GamePickerKeyboardBehaviorTests 6/6`、`R21KeyboardNavigationTraceTests 2/2`、`R10KeyboardShortcutHelpBehaviorTests 5/5`；只更新 R00-08 证据身份，R00/R01 freshness 为 `14/14 fresh`。测试使用隔离 STA 和合成输入，不代表真实 Playnite/OS IME。证据见[R00-08 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md)。
 
 外机 R09 再次报 Expected 2/2/2/2、Actual 1/1/1/1、stack line 151。失败断言与历史 `3f7d0b30` 的旧 Chrome 2 DIP 检查吻合；`f13b9e05` 已拆为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP，提交 `983fee5` 已包含新测试源码。当前 main 第 151 行检查错误色，第 152/154 行检查厚度。旧测试程序集/源映射仍是最符合线索的推断，外机 HEAD、工作树和 DLL/PDB 身份缺失，根因未确认。`libpng iCCP` 不在失败栈；WPF COM 异常发生在断言失败后的收尾。没有更改生产模板或放宽断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 均失败；完整日志受登录/API 403 限制，根因未知。`40af39c8`、`55ed3a17` 与当前 `3f6b355f` 的新 Actions 终态未确认；公开页面仍只列到 #979 (`ae3c565`)，匿名 Actions API 返回 rate limit `403`。SDK8 与 SDK10.0.401 必须分别跟踪。R00/R01 freshness 为 `14/14 fresh`，R00-08 已按行为复核更新。下一项 R12-02。真实 Worker IPC/存档写入、Playnite 宿主、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。
+CI：暂停检查点 #920/run `36677346317`（commit `77de7f4`）现在为 Failure，7m04s；#919/run `36675309812` 也为 Failure，13m02s。两个 SDK `10.0.401` 完整日志已从既有归档读取：旧 `ProductionShellChromeSourceTests` 动画正例未固定系统动效策略，runner 关闭系统动画时，生产代码正确不启动动画时钟；测试前提已在 `48b78b3b` 修正，生产策略未改。日志和 SHA 见 R07-08 证据包；失败后的 COM 清理消息不是断言原因。`40af39c8`、`55ed3a17`、`3f6b355f`、`22e4b286` 的新 Actions 终态未确认；`d6640887` 正在本地阶段、推送前。Actions 列表仍只列到 #979 (`ae3c565`) 且加载报错。SDK8 与 SDK10.0.401 必须分别跟踪。R00/R01 freshness 为 `14/14 fresh`，R00-08 已按行为复核更新。下一项 R12-03。真实 Worker IPC/存档写入、Playnite 宿主、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

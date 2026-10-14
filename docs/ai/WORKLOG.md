@@ -1,3 +1,12 @@
+## 2026-10-15 R12-02 校验结果解释当前 main 复核
+
+- 复用 `6cc3a618` 的 `RestoreReadinessService`、DTO、SQLite 持久化、Core 显示映射及现有 `SaveCenterView` 详情卡。`d6640887` 只新增 WPF 行为测试，没有生产服务/DTO/IPC/XAML/恢复命令变更。
+- 新测试在隔离 STA 窗口加载生产 `SaveCenterView`，切换选中合成版本后实际核对无 readiness（未验证、无哈希不冒充成功、未检查）、部分哈希且过期（覆盖比例、较旧提示、完整时间进入 Tooltip 与 UI Automation HelpText）、损坏（单独状态/摘要/计数/哈希失败）。Worker 合成 ZIP/Manifest 保持隔离路径及不写真实存档的负例。
+- 当前主机只有 SDK `9.0.302`；`global.json` 要求 `8.0.423`，所以从仓库外选择 SDK9，并为每个测试使用绝对隔离输出根和当前源码提交身份。VSTest `17.14.1`；Worker `15/15`、Core `40/40`、Playnite（R12 readiness view/workflow + R11 summary）`11/11`，合计 `66/66`，0 failed/skipped。相关 Release 测试项目和引用均构建成功，非完整 solution build；XAML `24/24`、source validation、diff check 通过。
+- TRX、源/XAML/DLL 哈希、MVID 和未验边界见[R12-02 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R12-02-CURRENT-MAIN-RECHECK-20261015/README.md)。本机 SDK9 不替代 SDK8 或 SDK10.0.401 CI；公共 Actions 页面旧至 #979 且加载失败，API 403，相关 Actions 终态未确认。
+- 恢复时指定的 #920/run `36677346317`（commit `77de7f4`）现为 Failure（7m04s）；#919/run `36675309812` Failure（13m02s）。两个 SDK `10.0.401` 完整日志已从既有归档读取，显示旧 `ProductionShellChromeSourceTests` 动画正例没有固定系统动效策略；runner 关闭系统动画后生产代码按策略无动画时钟。`48b78b3b` 已在夹具增加系统策略输入并验证前提，生产策略未改。归档路径、哈希和具体失败断言见[R07-08 CI 失败复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/README.md)；后续 CI 仍按 SDK 分开跟踪。
+- 未启动真实 Playnite/Worker IPC/用户存档恢复；没有改用户媒体、存档或云端。未验最终呈现帧、物理 DPI/跨屏、OS UIA/读屏/IME、ETW/宿主性能。下一项 R12-03，先核查现有路径映射、目标解析和预览，再补路径辨识与无写入行为。
+
 ## 2026-10-15 R12-01 恢复分步摘要当前 main 复核
 
 - 先复用 `BackupVersionDto.RestoreReadiness`、`TaskStatusDto`、`RestoreWorkflowProgress`、`DashboardViewModel.RestoreWorkflow.cs` 与现有 `SaveCenterView` 恢复入口；生产四阶段实现已在 `e1a8da0c` 完成。本轮只在 `3f6b355f` 增加真实视图绑定行为，没有修改生产代码或恢复安全路径。
