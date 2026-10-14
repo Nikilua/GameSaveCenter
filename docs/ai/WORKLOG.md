@@ -1,3 +1,11 @@
+## 2026-10-15 R12-03 目标路径核对当前 main 复核
+
+- 先复核现有 `PathRemapService`、路径 DTO、SQLite 映射和 `MaintenanceView`，生产能力在 `c0adb1b7` 已完成；本轮没有重建/修改生产实现，仅增强 Playnite 行为测试。
+- SDK `9.0.302` / VSTest `17.14.1`：Playnite `R12PathRemapBehaviorTests 3/3`，Worker `PathRemapServiceTests 4/4`。Production `MaintenanceView` 隔离 STA 窗口展开真实父级 Expander 后，80 行列表的有限高度/Recycling 生效、末行未实例化；210 字符段原/目标路径可全选且 Copy 命令可执行。测试不写系统剪贴板。Worker 合成负例覆盖异盘/相似根、缺失目标跳过和未确认拒绝，原索引路径保持且新目标未创建。
+- Playnite/Worker 定向 Release 测试各构建对应测试项目及引用，非完整 solution build；使用分离 `.tmp` 输出和本机 NuGet 缓存的串行 restore。XAML `24/24`、source validation、`git diff --check` 通过。TRX、DLL/MVID、源/XAML SHA 与未验边界见[R12-03 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R12-03-CURRENT-MAIN-RECHECK-20261015/README.md)。初次 UI 用例因夹具未展开生产“更多维护操作”而得到 0×0；修正测试选择状态后最终 `3/3` 通过，不是生产布局缺陷。
+- `750349f3` 的 GitHub Actions 页面仍只显示加载失败的 #979 queued 快照，没有当前 run ID；commit checks cache miss、匿名 API 内部错误，CI 终态未知。本阶段本机 SDK9 不能替代 SDK8/SDK10.0.401 CI。未启动真实 Playnite/Worker IPC，未执行路径迁移或真实归档写入。
+- 下一项 Q24-04：检查当前键盘遍历测试未覆盖的筛选、表格、详情和页尾业务状态，先复用现有焦点/命令实现再补行为/负例；Q24-03 第二显示器、Q24-04 Playnite/OS 键盘视觉仍是独立外部边界。
+
 ## 2026-10-15 R00/R01 freshness 当前 main 复核
 
 - 在 `4078f23d2d78a06ad1ff371978cebfee1931c309` 运行 `scripts/check-ui-evidence-freshness.ps1 -HeadCommit HEAD -AsJson`：14 records、14 fresh、0 stale，新增追踪路径未命中 R00/R01 登记源路径。`0243c108` 的四项 stale 已被 `599d2fd3` 后续行为复验与基线更新取代；本次不重跑未受影响的行为/视觉套件。

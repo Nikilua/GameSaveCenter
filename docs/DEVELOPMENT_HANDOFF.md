@@ -1,10 +1,17 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。R12-02 当前 main `d6640887` 只补行为测试，既有实现来自 `6cc3a618`；本机仅 SDK `9.0.302` / VSTest `17.14.1`，Worker `15/15`、Core `40/40`、Playnite `11/11`，合计 `66/66`。隔离 STA 实际加载生产 `SaveCenterView` 验证无哈希、部分覆盖/过期和损坏详情；定向 Release 测试项目/引用构建成功，不是完整 solution build；XAML `24/24`、source validation 通过。证据在[R12-02 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R12-02-CURRENT-MAIN-RECHECK-20261015/README.md)。SDK8/SDK10.0.401 Actions 终态另行追踪。
+更新：2026-10-15；分支 main。R12-03 生产路径预览已由 `c0adb1b7` 满足，本批仅补实际视图行为测试。SDK9.0.302/VSTest17.14.1：Playnite `3/3`、Worker `4/4`；生产 `MaintenanceView` 隔离 STA 长路径完整选择/Copy 可执行状态、80 项 Recycling 有限视口及 Worker 无写入负例通过。XAML `24/24`、source validation/diff check 通过，非完整 solution build。证据见[R12-03 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R12-03-CURRENT-MAIN-RECHECK-20261015/README.md)。下一项 Q24-04 补完整业务状态键盘行为。
 
 用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。该断言对应旧提交 `3f7d0b30`；`f13b9e05` 已拆为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP，提交 `983fee5` 含新断言。当前 main 第151行是错误色，152/154行检查两种厚度；旧测试 DLL/源码映射最吻合，但外机 HEAD、工作树和 DLL/PDB identity 缺失，根因未确认。不要改生产模板/减弱断言；若可提供，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
 
-CI：暂停检查点 #920/run `36677346317`（`77de7f4`）与 #919/run `36675309812` 现均 Failure，分别 7m04s/13m02s；两个 SDK `10.0.401` 完整日志已从归档读取。失败是旧 `ProductionShellChromeSourceTests` 动画正例只固定应用动效开关，runner 系统动效关闭后生产代码按策略停用时钟；`48b78b3b` 后续只修正测试前提并补系统策略覆盖，未改生产策略。日志归档与 SHA 见 R07-08 证据包。R12-02 测试提交 `d6640887` 与证据提交 `4078f23d` 已推送；当前 tip Actions run ID/终态未知，公开列表有加载错误且只到旧 #945 快照，匿名 API 返回 `403 rate limit exceeded`，不得报 CI 通过或失败。SDK8 与 SDK10.0.401 分别追踪。R00/R01 freshness 在 `4078f23d` 为 `14/14 fresh`，package identity 未提供。下一项 R12-03：复用路径映射/目标解析和预览，补长路径可选择、有限视口运行时行为证据并保留服务无写入负例。未验真实 Worker IPC/存档写入、Playnite 宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能；外机 R09 身份仍待核实。
+CI：暂停检查点 #920/run `36677346317`（`77de7f4`）与 #919/run `36675309812` 现均 Failure，分别 7m04s/13m02s；两个 SDK `10.0.401` 完整日志已从归档读取。失败是旧 `ProductionShellChromeSourceTests` 动画正例只固定应用动效开关，runner 系统动效关闭后生产代码按策略停用时钟；`48b78b3b` 后续只修正测试前提并补系统策略覆盖，未改生产策略。日志归档与 SHA 见 R07-08 证据包。文档提交 `750349f3` 已推送，Actions 页面最新仍是加载失败的旧快照 #979 queued，未显示该提交对应 run；匿名 API 返回内部错误，run ID/终态未知。不得报 CI 通过或失败；SDK8 与 SDK10.0.401 分别追踪。R00/R01 freshness 在 `4078f23d` 为 `14/14 fresh`，package identity 未提供。当前 R12-03 测试与证据阶段尚待提交/推送，后续 CI 也须跟到明确终态。真实 Worker IPC/存档写入、Playnite 宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能仍待验；外机 R09 身份仍待核实。
+
+## 2026-10-15 R12-03 当前 main 行为复核
+
+- 现有 `PathRemapService`、DTO、隔离索引与生产 `MaintenanceView` 已满足目标路径核对方向；没有重建业务服务或改生产 XAML。
+- Playnite 测试实际加载生产 `MaintenanceView`：展开父级维护操作后验证 80 条列表、有限高度、Recycling、末行未实例化，以及长原/目标路径完整选择和 Copy `CanExecute`。Worker `PathRemapServiceTests 4/4` 覆盖异盘/相似根、确认门禁、缺失目标及索引/文件无写入。
+- 自动证据与具体 SHA、TRX、未验边界见[R12-03 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R12-03-CURRENT-MAIN-RECHECK-20261015/README.md)。本次 WPF 测试初跑发现夹具未展开“更多维护操作”Expander，修正的是测试选择状态，未改生产实现。最终 `3/3` 与 `4/4` 通过。
+- 下一项 Q24-04 键盘次序完整业务状态行为补证；Q24-03 第二显示器及真实 Playnite/OS 输入仍保持外部待验。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

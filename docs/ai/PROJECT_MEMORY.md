@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：Q24-07 已在 `0243c108` 完成本机代码/行为栏，真实 Windows 高对比、Playnite 呈现、OS UIA/Narrator 仍未验证；推送 CI 待 SDK8/SDK10 分别终态。R00/R01 在 `599d2fd` 对四项 stale 复验并更新基线后，`4078f23d` 的当前 freshness 再查为 14 records / 0 stale，未命中登记源路径；package identity 未提供，旧 audit 保留 `13 MEDIUM`。#976 前置两 lane failure 的实际 SDK/根因未知且日志匿名 API 403；#971 SDK10 原始诊断仍缺，不阻塞独立任务。Q24-03 仍需第二物理显示器；R05-03 bootstrap、R08-01 用户失败复现仍保持各自边界。
+- 当前活动缺口：R12-03 复用 `c0adb1b7` 的路径映射服务/DTO/预览，当前 main 实际生产视图 Playnite `3/3`、Worker `4/4`、XAML `24/24`；长路径选择/Copy 可执行状态、Recycling 有界视口、异盘/相似根与无写入负例通过。本轮未改生产实现，真实 Playnite、系统剪贴板、IPC/存档、物理 DPI/跨屏、UIA/IME、最终呈现和宿主性能未验。下一项 Q24-04 补筛选/表格/详情/页尾数据状态的焦点轨迹。R00/R01 的四项 stale 已在 `599d2fd` 经行为复验更新 baseline；`4078f23d` freshness 为 14 records / 0 stale，package identity 未提供，旧 audit 保留 `13 MEDIUM`。文档提交 `750349f3` 已推送，但 Actions 页面仅有旧 #979 queued 加载失败快照，匿名 API 内部错误，run ID/终态未知；SDK8/SDK10.0.401 分开记录。#976 前置两 lane failure 根因未知；#971 SDK10 原始诊断仍缺，不阻塞独立任务。Q24-03 仍需第二物理显示器；R05-03 bootstrap、R08-01 用户失败复现仍保持各自边界。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

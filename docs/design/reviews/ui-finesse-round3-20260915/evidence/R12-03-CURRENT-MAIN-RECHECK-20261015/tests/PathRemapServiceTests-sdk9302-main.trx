@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="22e4db9c-2456-42bf-a289-36dc93029899" name="lopmatu@SULT 2026-10-15 02:43:40" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-15T02:43:40.3395217+08:00" queuing="2026-10-15T02:43:40.3395220+08:00" start="2026-10-15T02:43:38.2372920+08:00" finish="2026-10-15T02:43:40.3502488+08:00" />
+  <TestSettings name="default" id="f9c6f6c7-914b-4af9-b858-8833e2aaa757">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-15_02_43_40" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="48061fa6-9f8e-455b-8a0d-90d4e33c2bf6" testId="0decd2b3-40f7-1428-63c1-3b102fd923f0" testName="GameSaveCenter.Worker.Tests.PathRemapServiceTests.UnconfirmedRemapIsRejected" computerName="SULT" duration="00:00:00.1649252" startTime="2026-10-15T02:43:39.8854643+08:00" endTime="2026-10-15T02:43:40.0504570+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="48061fa6-9f8e-455b-8a0d-90d4e33c2bf6" />
+    <UnitTestResult executionId="9c502bd7-0850-4c54-8ac0-e5e3fde633d6" testId="1546341c-9543-0627-6217-7dd2f0e178c6" testName="GameSaveCenter.Worker.Tests.PathRemapServiceTests.PreviewKeepsFullPathsAndDoesNotMatchSimilarRootsAcrossDrives" computerName="SULT" duration="00:00:00.4097821" startTime="2026-10-15T02:43:39.1775329+08:00" endTime="2026-10-15T02:43:39.5930442+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c502bd7-0850-4c54-8ac0-e5e3fde633d6" />
+    <UnitTestResult executionId="ce085120-65e3-4872-a3e7-5c5335c2d5c9" testId="864cf5b9-1c53-0b34-d681-577961d690b5" testName="GameSaveCenter.Worker.Tests.PathRemapServiceTests.RemapUpdatesDatabaseRowsAndPersistedSettings" computerName="SULT" duration="00:00:00.2850905" startTime="2026-10-15T02:43:39.6008493+08:00" endTime="2026-10-15T02:43:39.8843801+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce085120-65e3-4872-a3e7-5c5335c2d5c9" />
+    <UnitTestResult executionId="0c0506b6-02e3-4f84-9d18-3762fa053f08" testId="4e248a41-8dd7-8663-48d7-ef3d31059e5e" testName="GameSaveCenter.Worker.Tests.PathRemapServiceTests.PreviewFlagsMissingTargetsAndDefaultPolicySkips" computerName="SULT" duration="00:00:00.1924553" startTime="2026-10-15T02:43:40.0507987+08:00" endTime="2026-10-15T02:43:40.2463254+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c0506b6-02e3-4f84-9d18-3762fa053f08" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Worker.Tests.PathRemapServiceTests.RemapUpdatesDatabaseRowsAndPersistedSettings" storage="d:\workplace\github\gamesavecenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="864cf5b9-1c53-0b34-d681-577961d690b5">
+      <Execution id="ce085120-65e3-4872-a3e7-5c5335c2d5c9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.PathRemapServiceTests" name="RemapUpdatesDatabaseRowsAndPersistedSettings" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.PathRemapServiceTests.PreviewFlagsMissingTargetsAndDefaultPolicySkips" storage="d:\workplace\github\gamesavecenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="4e248a41-8dd7-8663-48d7-ef3d31059e5e">
+      <Execution id="0c0506b6-02e3-4f84-9d18-3762fa053f08" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.PathRemapServiceTests" name="PreviewFlagsMissingTargetsAndDefaultPolicySkips" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.PathRemapServiceTests.PreviewKeepsFullPathsAndDoesNotMatchSimilarRootsAcrossDrives" storage="d:\workplace\github\gamesavecenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="1546341c-9543-0627-6217-7dd2f0e178c6">
+      <Execution id="9c502bd7-0850-4c54-8ac0-e5e3fde633d6" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.PathRemapServiceTests" name="PreviewKeepsFullPathsAndDoesNotMatchSimilarRootsAcrossDrives" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.PathRemapServiceTests.UnconfirmedRemapIsRejected" storage="d:\workplace\github\gamesavecenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\gamesavecenter.worker.tests\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="0decd2b3-40f7-1428-63c1-3b102fd923f0">
+      <Execution id="48061fa6-9f8e-455b-8a0d-90d4e33c2bf6" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r12-03-worker-offline-4078f23d-20261015\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.PathRemapServiceTests" name="UnconfirmedRemapIsRejected" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0decd2b3-40f7-1428-63c1-3b102fd923f0" executionId="48061fa6-9f8e-455b-8a0d-90d4e33c2bf6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1546341c-9543-0627-6217-7dd2f0e178c6" executionId="9c502bd7-0850-4c54-8ac0-e5e3fde633d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="864cf5b9-1c53-0b34-d681-577961d690b5" executionId="ce085120-65e3-4872-a3e7-5c5335c2d5c9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e248a41-8dd7-8663-48d7-ef3d31059e5e" executionId="0c0506b6-02e3-4f84-9d18-3762fa053f08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.18)&#xD;
+[xUnit.net 00:00:00.09]   Discovering: GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.18]   Discovered:  GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.20]   Starting:    GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:01.29]   Finished:    GameSaveCenter.Worker.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
