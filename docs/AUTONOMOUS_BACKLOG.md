@@ -13,7 +13,9 @@
 - 用户附加的 #970/#971 三个 diagnostics ZIP SHA 与先前已审副本完全一致。#970 SDK10 Worker cancellation race 与 #971 SDK8 Q14 fixture 问题已按其实际日志修正；#971 SDK10 原始日志仍缺，但不阻塞独立任务。
 - R00/R01 受 Q24-07 共享资源改动影响的四条 freshness 已在 `ae8f3be9` 上复核；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、相关 WPF `163 passed / 39 skipped / 0 failed`，baseline `14 fresh / 0 stale`。证据：[当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。
 - #978/run `38509928015` 已失败：SDK8 命名 job `115675846585` 与 SDK10.0.401 命名 job `115675846886` 均在编译/测试失败；完整日志页面要求登录，当前无包内容，runner SDK 与根因未知。保持不盲改；SDK8 本机证据不替代 SDK10。
-- 下一项 Q24-08 长文案与辅助输入：先盘点现有长文案绑定、键盘/IME 提交、焦点和复制原值能力，再做隔离 WPF 行为验证。真实 Playnite、Windows 中文 IME、OS UIA/Narrator、物理 DPI/跨屏、最终呈现、ETW/宿主性能各自保留待验；用户至 2026-10-15 09:00 前无法回复，不等待补件。
+- Q24-08 长文案与辅助输入已完成本机受控行为复核 `15/15`，SDK `8.0.423` Release `0/0`、XAML `24/24`，见[当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。未改生产 UI；视觉栏待验、宿主 external、Final incomplete。真实 Playnite、Windows 中文 IME、OS UIA/Narrator、系统剪贴板、Tooltip 几何及物理 DPI/跨屏仍待验。
+- #978/run `38509928015` 两个命名 job 均在编译/测试失败，完整日志需登录，实际 runner SDK/根因未知；不猜修。本轮之前文档提交 #979 检查时仍 queued；Q24-08 代码 push 后新 SDK8/SDK10.0.401 两 lane 需独立跟踪到终态。#970/#971 附件是已审哈希副本，#971 SDK10 原始日志仍缺，不阻塞独立任务。用户至 2026-10-15 09:00 前无法回复，继续自主推进。
+- 下一步先检查 Q25-01 当前 main 上已有热态响应实现与证据是否相符；按任务验收补行为/负例，不重建已存在功能。Q24-03 第二物理显示器、真实 Playnite/OS IME/UIA、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍保留其真实外部边界。
 
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |

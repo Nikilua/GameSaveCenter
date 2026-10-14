@@ -10407,3 +10407,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `ae8f3be9969fe8baa649d7ae39bb88f7c6498484` 本机隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；五个受影响 WPF 类 `163 passed / 39 skipped / 0 failed`。已按实际行为覆盖校正测试断言，更新四条 baseline；freshness `14 fresh / 0 stale`。TRX 与哈希见 R00/R01 证据包。
 - #978/run `38509928015` 已终态失败，SDK8 命名 job `115675846585` 和 SDK10.0.401 命名 job `115675846886` 的编译/测试步骤失败。公开页面只给通用 exit code、诊断包 SHA 和登录提示；完整日志/包内容没取到，实际 runner SDK及失败根因未知，不盲改。本机 SDK8 不替代 SDK10。
 - R00/R01 受控证据与 freshness 校正已记录；远端 CI 门禁未通过，不把阶段报告为完成。下一项依赖可独立推进 Q24-08：先盘点长文案、辅助输入/焦点与复制原值现有行为，使用合成数据/隔离 WPF 验证；真实 Playnite、OS 中文 IME/读屏、物理 DPI/跨屏、最终呈现与 ETW/宿主性能留作外部边界。
+
+## 2026-10-14 Q24-08 长文案与辅助输入复核
+
+- 盘点后复用现有长文本样式、游戏选择合成输入、`DataGridClipboardBehavior` 与 WPF CheckBox。只加强两份测试：双主题双倍标签实际换行、完整 AutomationPeer Name/HelpText、Space 单次触发和 `CommandParameter`、禁用负例；82 DIP 列宽下 Ctrl+C/Ctrl+Shift+C 复制完整合成中文路径及无选中/无效输入负例。没有生产代码改动。
+- 本机隔离 SDK `8.0.423`、MSBuild `17.11.48`、Release solution `0 warning / 0 error`、XAML `24/24`；四类逐类隔离 `15/15`，`validate-source.py`、diff check 通过。源/程序集身份和脱敏 TRX SHA 见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。
+- 合成 WPF TextComposition 覆盖中文“中”提交和 Enter 前后选择行为，但不是 Windows 中文 IME；fake clipboard 不写系统剪贴板；命令为记录器替身，不触发真实业务动作。真实 Playnite、Narrator/OS UIA、运行时 Tooltip 几何、物理 DPI/跨屏、最终呈现、ETW/宿主性能未验。视觉与 Final 仍待验，不生成截图。
+- #978 两个命名 lane 失败但日志需登录、实际 SDK/根因未知；#979 是前一文档提交 Actions，需确认终态。Q24-08 push 后的 SDK8/SDK10 CI 另查到终态，本机 SDK8 不替代 SDK10.0.401。下一步核对 Q25-01 当前 main 既有热态响应证据，不重建已有实现。

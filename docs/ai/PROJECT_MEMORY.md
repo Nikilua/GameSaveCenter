@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。main HEAD `ae8f3be9`；Q24-07 生产高对比/动效组合及 R00/R01 受影响行为已本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、5 类 `163 passed / 39 skipped / 0 failed` 复核；freshness `14 fresh / 0 stale`。证据包已归档。#978/run `38509928015` 两个 CI lane 终态失败，均在编译/测试步骤；完整日志需登录且当前不可读，实际 SDK/根因未知，不盲改。本机 SDK8 不替代 CI SDK10.0.401。#970/#971 新附 ZIP 是已审哈希副本；#971 SDK10 原始诊断仍缺，但不阻塞独立任务。用户至 2026-10-15 09:00 前无法回复，继续自主推进。下一项 Q24-08 长文案与辅助输入，先复用现有实现、验证安全可控行为；真实 Playnite/OS UIA/Narrator/中文 IME、Q24-03 第二显示器、最终呈现、ETW/宿主性能仍待验。
+更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。Q24-07 生产高对比/动效组合与 R00/R01 受影响行为已复核；R00/R01 freshness `14 fresh / 0 stale`。Q24-08 本机隔离 SDK `8.0.423` Release `0/0`、XAML `24/24`、行为 `15/15`；未改生产 UI，长文本/辅助输入边界见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。#978/run `38509928015` 两 lane 编译/测试失败，完整日志需登录，根因未知；#979 和 Q24-08 新推送 CI 均需分别检查终态。SDK8 本机不替代 SDK10.0.401。#970/#971 新附件 SHA 与已审包一致；#971 SDK10 原始诊断仍缺，不阻塞独立任务。用户至 2026-10-15 09:00 前无法回复，继续自主推进。下一步检查 Q25-01 当前 main 既有实现/证据是否匹配，不重建功能；真实 Playnite/OS UIA/Narrator/中文 IME、Q24-03 第二显示器、最终呈现、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 

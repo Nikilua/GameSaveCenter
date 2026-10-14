@@ -104,9 +104,14 @@ public sealed class R06ClipboardBehaviorTests
     {
         RunSta(() =>
         {
-            var task = Task("routed-copy-task", "实际路由任务", "不含凭据的详情");
+            const string longOriginalValue = "D:\\GameSaveCenter\\profiles\\" +
+                "very-long-save-directory-name-2026\\中文游戏备份-原始文件名-0001.dat" +
+                "\\recovery-source-without-display-ellipsis";
+            var task = Task("routed-copy-task", longOriginalValue, "不含凭据的详情");
             var grid = CreateGrid(new[] { "本地时间", "任务", "阶段", "游戏", "状态", "进度", "详情" });
             DataGridClipboardBehavior.SetProfile(grid, "Task");
+            ((DataGridTextColumn)grid.Columns[3]).Binding = new Binding(nameof(TaskStatusDto.GameName));
+            grid.Columns[3].Width = new DataGridLength(82);
             grid.ItemsSource = new ObservableCollection<TaskStatusDto> { task };
             grid.SelectedItems.Add(task);
             grid.CurrentCell = new DataGridCellInfo(task, grid.Columns[3]);
@@ -133,14 +138,15 @@ public sealed class R06ClipboardBehaviorTests
                 DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control;
                 var rowCopy = RaisePreviewKeyDown(grid, Key.C);
                 Assert.True(rowCopy.Handled);
-                Assert.Contains("实际路由任务", copied, StringComparison.Ordinal);
+                Assert.Contains(longOriginalValue, copied, StringComparison.Ordinal);
+                Assert.DoesNotContain("...", copied, StringComparison.Ordinal);
                 Assert.Contains("\t", copied, StringComparison.Ordinal);
 
                 copied = null;
                 DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control | ModifierKeys.Shift;
                 var cellCopy = RaisePreviewKeyDown(grid, Key.C);
                 Assert.True(cellCopy.Handled);
-                Assert.Equal("实际路由任务", copied);
+                Assert.Equal(longOriginalValue, copied);
 
                 var copiedCell = copied;
                 DataGridClipboardBehavior.KeyboardModifiersForVerification = ModifierKeys.Control | ModifierKeys.Alt;

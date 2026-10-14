@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-14；分支 `main`，HEAD `ae8f3be9969fe8baa649d7ae39bb88f7c6498484`。Q24-07 与 R00/R01 当前本地受控证据已复核：隔离 SDK `8.0.423`、Release `0 warning / 0 error`、XAML `24/24`、R00/R01 五个相关 WPF 类 `163 passed / 39 skipped / 0 failed`；baseline freshness `14 fresh / 0 stale`。证据见[R00/R01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。
+更新：2026-10-14；分支 `main`。Q24-08 本机隔离 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`、定向 WPF 行为 `15/15`；没有生产 UI 改动。构建以 `ae3c565` 源码提交加两份本阶段测试源变更为准；TRX/DLL SHA、命令与覆盖边界见[Q24-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。R00/R01 freshness 为 `14 fresh / 0 stale`，详见[R00/R01 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md)。
 
-Q24-07 受控行为与 R00/R01 freshness 校正已完成本机验证，但 CI 门禁未通过：#978/run `38509928015` 的 SDK8 命名 job `115675846585` 和 SDK10.0.401 命名 job `115675846886` 均在编译/测试步骤失败。完整日志要求登录且未取得，实际 runner SDK 和根因未知；不要按摘要盲改，也不要以本机 SDK8 代替 SDK10。#970/#971 新附件与已审 ZIP 哈希一致，#971 SDK10 原始诊断仍缺但不阻塞独立工作。用户到 `2026-10-15 09:00` 前无法回复。
+CI 门禁分开跟踪：#978/run `38509928015` 两个命名 lane 在编译/测试步骤失败；完整日志需登录，实际 runner SDK 和根因未知，不按摘要盲改。#979 是前一文档提交的 run，检查时仍排队；Q24-08 代码推送后必须再分别查 SDK8 与 SDK `10.0.401` lane，CI 未终态前不签收。#970/#971 新附件与已审 ZIP 哈希一致，#971 SDK10 原始诊断仍缺但不阻塞独立工作。用户到 `2026-10-15 09:00` 前无法回复。
 
-下一项按依赖推进 Q24-08 长文案与辅助输入：先查复用现有文案绑定、键盘/IME 提交、焦点与复制原值能力，使用合成数据和隔离 WPF 验证可控制的行为；真实 OS 中文 IME、Playnite 宿主和最终呈现仍独立待验。Q24-03 需要第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件及生成证据。
+Q24-08 的受控行为已补证：双主题长标签换行/Name/HelpText、Space/命令参数、合成 TextComposition、窄列完整值复制和负例均通过；OS 中文 IME、Playnite/Narrator、系统剪贴板与运行时 Tooltip 仍待验。下一项先核对 Q25-01 当前 main 的既有热态响应实现和证据，按差距补证，不重建已有能力。Q24-03 需要第二物理显示器；Demo 原目录不可用，沿用恢复生产基线。保留 R04/R05/R07 与其他用户文件及生成证据。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

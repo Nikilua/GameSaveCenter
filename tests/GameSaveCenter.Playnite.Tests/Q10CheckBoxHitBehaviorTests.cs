@@ -89,7 +89,19 @@ public sealed class Q10CheckBoxHitBehaviorTests
         RunSta(() =>
         {
             TestRepositoryContext.AssertAssemblyMatchesSource();
-            var checkBox = new CheckBox { Content = "合成选项", Width = 180 };
+            const string baseLabel = "启用第二本地镜像并保留恢复副本";
+            var longLabel = baseLabel + "；" + baseLabel + "；执行校验并说明无法恢复的具体原因";
+            const string helpText = "此操作只影响之后创建的备份，不会改写已有存档；关闭后仍可从主备份恢复。";
+            var command = new RecordingCommand();
+            var checkBox = new CheckBox
+            {
+                Content = longLabel,
+                Width = 180,
+                Command = command,
+                CommandParameter = "local-mirror"
+            };
+            AutomationProperties.SetName(checkBox, longLabel);
+            AutomationProperties.SetHelpText(checkBox, helpText);
             var window = CreateWindow(checkBox, mode);
             var clickCount = 0;
             checkBox.Click += (_, _) => clickCount++;
@@ -99,24 +111,34 @@ public sealed class Q10CheckBoxHitBehaviorTests
                 ShowAndLayout(window, checkBox);
                 window.Activate();
                 Assert.Same(checkBox, Keyboard.Focus(checkBox));
+                Assert.True(longLabel.Length >= baseLabel.Length * 2, "The fixture must exercise at least double-length text.");
+                var contentPresenter = FindVisualChild<ContentPresenter>(checkBox);
+                var renderedLabel = FindVisualChild<AccessText>(contentPresenter);
+                Assert.True(renderedLabel.ActualHeight > renderedLabel.FontSize * 2);
+                var peer = UIElementAutomationPeer.CreatePeerForElement(checkBox);
+                Assert.Equal(longLabel, peer!.GetName());
+                Assert.Equal(helpText, peer.GetHelpText());
 
                 RaiseSpaceKeyPress(checkBox, window);
                 Assert.True(checkBox.IsChecked);
                 Assert.Equal(1, clickCount);
+                Assert.Equal(1, command.ExecutionCount);
+                Assert.Equal("local-mirror", command.LastParameter);
 
                 RaiseSpaceKeyPress(checkBox, window);
                 Assert.False(checkBox.IsChecked);
                 Assert.Equal(2, clickCount);
+                Assert.Equal(2, command.ExecutionCount);
 
                 Keyboard.ClearFocus();
                 checkBox.IsEnabled = false;
                 Assert.False(checkBox.IsKeyboardFocused);
                 Assert.NotSame(checkBox, Keyboard.Focus(checkBox));
-                var peer = UIElementAutomationPeer.CreatePeerForElement(checkBox);
                 var toggle = Assert.IsAssignableFrom<IToggleProvider>(peer!.GetPattern(PatternInterface.Toggle));
                 Assert.Throws<ElementNotEnabledException>(() => toggle.Toggle());
                 Assert.False(checkBox.IsChecked);
                 Assert.Equal(2, clickCount);
+                Assert.Equal(2, command.ExecutionCount);
             }
             finally
             {
@@ -202,6 +224,26 @@ public sealed class Q10CheckBoxHitBehaviorTests
         {
             RoutedEvent = Keyboard.KeyUpEvent
         });
+    }
+
+    private sealed class RecordingCommand : ICommand
+    {
+        public event EventHandler? CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public int ExecutionCount { get; private set; }
+        public object? LastParameter { get; private set; }
+
+        public bool CanExecute(object? parameter) => true;
+
+        public void Execute(object? parameter)
+        {
+            ExecutionCount++;
+            LastParameter = parameter;
+        }
     }
 
     private static void RunSta(Action action)

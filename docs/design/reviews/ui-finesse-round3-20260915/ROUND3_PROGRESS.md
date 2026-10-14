@@ -1667,3 +1667,11 @@
 - 用户新附的 #970/#971 三个 ZIP 哈希与此前已审材料完全一致：#970 SDK10 Worker cancellation 测试竞态、#970 SDK8 build summary、#971 SDK8 Q14 夹具 DTO/可见性错误；修复已在先前提交，归档映射见[诊断复核包](evidence/CI-RUN-970-971-TEST-RECHECK-20261013/README.md)。没有新增 #971 SDK10 日志。
 - #978 / run `38509928015`（commit `ae8f3be9`）已终态失败。SDK8 命名 job `115675846585` 的“编译与测试”及 SDK10.0.401 命名 job `115675846886` 的隔离 Release 编译/测试步骤均失败；CI 页面显示诊断包 digest `11108fca…637e64` 与 `9a722711…eb5d18`。job 页要求登录，完整日志/包内容尚未取得，实际 runner SDK 与根因未知；Node.js 20 弃用告警不作为根因。未凭摘要盲改，本机 SDK8 不替代 SDK10。
 - 本地 R00/R01 证据与 freshness 校正已齐；因 #978 CI 失败且根因未取得，代码阶段仍未通过远端门禁。受控证据不代表 Playnite 最终呈现。Demo 原目录仍不可用，未验真实高对比切换、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能；真实存档、媒体、云端均未访问。用户 2026-10-15 09:00 前无法回复，不等待其补件；下一项按依赖推进 Q24-08 长文案与辅助输入，先查现有绑定/焦点/复制能力并复用。
+
+## 2026-10-14 Q24-08 长文案与辅助输入当前 main 复核
+
+- 先盘点并复用现有生产 `GscCheckBox`、游戏选择 WPF composition/keyboard 路径、`DataGridClipboardBehavior` 和 `GscLongTextCell` 样式；未加服务/DTO/生产代码。只加强 `Q10CheckBoxHitBehaviorTests` 的双主题长标签/命令/UIA 正负例，以及 `R06ClipboardBehaviorTests` 的窄列长原值复制。
+- 构建源基线 `ae3c565ed9cee48c2b8bbdf19bb20610c3a7d068` 加两份本批测试源 SHA；本机隔离 SDK `8.0.423`、MSBuild `17.11.48`、VSTest `17.11.1`，插件 `net462`/测试 `net472`；Release `0 warning / 0 error`，XAML `24/24`，四类隔离行为 `15/15`，`validate-source.py` 与 `git diff --check` 通过。程序集身份、TRX SHA 和覆盖边界见[Q24-08 复核包](evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)。
+- 受控覆盖：双主题长标签换行及完整 AutomationPeer Name/HelpText、Space 单次翻转/命令及参数、禁用态拒绝；合成 WPF TextComposition 的中文“中”提交/Enter 前后路径；82 DIP 列宽下 fake clipboard 收到完整原值，以及无选择/禁用/不支持输入负例。共享 DataGrid 样式测试仍仅作 XAML/resource 契约，不冒充 Tooltip 运行时视觉。
+- 没有生产 UI 改动，不生成截图。未验真实 Playnite、Windows 中文 IME、Narrator/OS UIA、系统剪贴板、真实 Tooltip 像素、物理 DPI/跨屏、presented frame、ETW/宿主性能。Demo 目录缺失，沿用恢复生产基线；仅用合成数据，未访问真实用户配置、存档、媒体或云端。
+- Q24-08 当前本机自动行为证据补齐，视觉与最终状态维持待验/未完成，宿主为外部阻塞。当前下一可执行项是检查 Q25-01 已有热态响应实现和证据在 main 上是否仍匹配；按现有门禁补证，不重建已存在功能。#978 两 lane 失败根因仍未知且日志需登录；#979 为前一文档提交的 Actions，须与本次代码提交的 SDK8/SDK10 新 run 分开跟踪到终态。
