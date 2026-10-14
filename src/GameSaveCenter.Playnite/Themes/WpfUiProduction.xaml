@@ -337,6 +337,7 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="infra:DataGridHorizontalWheelBehavior.Enabled" Value="True"/>
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalOnly"/>
         <!-- A finite list with only a few realized items must measure from its
              leading edge. Some host/theme templates otherwise center the ItemsPresenter

@@ -8173,7 +8173,7 @@ public static class Program
         report.AppendLine("GameSaveCenter horizontal scroll endpoint probe");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         AppendRunMetadata(report, "horizontalprobe", "OffscreenRenderHarness", "light,dark", "synthetic long tables; production DataGrid template; left/right endpoint and clamp checks");
-        report.AppendLine("InputBoundary: endpoint replay uses the real production ScrollViewer; physical Ctrl/Shift modifier timing and trackpad hardware remain host checks");
+        report.AppendLine("InputBoundary: Shift-wheel modifier routing and synthetic WM_MOUSEHWHEEL handling are covered by DataGridHorizontalWheelBehaviorTests; this probe uses the production ScrollViewer for endpoints; physical mouse/touchpad and Playnite host input remain unverified");
         report.AppendLine();
         s_problems.Clear();
 
@@ -8303,7 +8303,7 @@ public static class Program
                     if (returnedOffset > 0.5 || Math.Abs(returnedFirst.Left - leftFirst.Left) > 0.5)
                         s_problems.Add($"{fixture.Name}/{themeName} left return drifted (offset={returnedOffset:0.##}, before={leftFirst.Left:0.##}, after={returnedFirst.Left:0.##}).");
 
-                    var diagnosticLine = DataGridScrollDiagnostics.CaptureNow(grid, "Ctrl+Shift/触控板等效:水平左端");
+                    var diagnosticLine = DataGridScrollDiagnostics.CaptureNow(grid, "R07-04:水平左端程序化复位");
                     var rowsPresenter = FindVisualChildren<DataGridRowsPresenter>(grid).FirstOrDefault();
                     var headersPresenter = FindVisualChildren<DataGridColumnHeadersPresenter>(grid).FirstOrDefault();
                     var cellsPanelOffset = ReadInternalDouble(grid, "CellsPanelHorizontalOffset");

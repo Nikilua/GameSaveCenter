@@ -1,3 +1,13 @@
+## 2026-10-15 R07-04 横向滚动输入与端点补强
+
+- 依据 R07-04 表格条件重审 2026-09-18 证据：原探针的 8 组合几何与端点验证有效，但 Ctrl/Shift/触控板输入未覆盖；旧诊断字符串“Ctrl+Shift/触控板等效”超过实际证据，本轮改为“水平左端程序化复位”。
+- 复用已有 `GscRedesignWorkspaceDataGrid` 与 Dashboard `GscDataGrid` 样式，新增共享 `DataGridHorizontalWheelBehavior`：Shift+wheel 水平移动；Ctrl 与 Ctrl+Shift 保留给既有滚轮路径；对命中可见 DataGrid 的 `WM_MOUSEHWHEEL` 使用其内部 `DG_ScrollViewer`；加载/卸载配对挂接/移除 HwndSource hook。滚动条模板、现有选框、命令/Binding、DTO、业务服务和 Media 专用虚拟化没有改变。
+- 新 STA WPF 测试使用实际生产 Media 视图、2,000 条合成数据和真实滚动视口：Shift `0→48→0`、合成高精度 horizontal-wheel delta `4.8 DIP`、端点 `0→680→0`、再次越界无漂移、表格外消息不处理；Control/Control+Shift/None 不被 Shift 转换处理。2000 项仅 6 个行容器，Media `Standard/Item/column=False` 保持。行为 `1/1`；MediaInboxScrollBehavior 与 R07FineScroll 邻近回归 `7/7`。
+- 本机 SDK `9.0.302`（仓库固定 `8.0.423` 本机缺失）、VSTest `17.14.1`；Playnite 测试项目/引用与 RenderHarness Release build 均 `0 warning / 0 error`；Light/Dark × Save/Task/Media/Maintenance 端点探针 `8/8`、XAML `24/24`、source validation 和 diff check 通过。不是完整 solution build，不能替代 SDK8/SDK10 CI。
+- `WM_MOUSEHWHEEL` 是合成参数直达生产 handler，没有做真实操作系统输入注入；真实触控板/鼠标、Playnite 宿主、物理 DPI/跨屏、presented frame、UIA/读屏与 ETW/性能仍待验。TRX 与范围见[R07-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-04-CURRENT-MAIN-RECHECK-20261015/README.md)。初次红测暴露的是共享样式漏接，已在 `GscRedesignWorkspaceDataGrid` 共享 setter 修正；最终回归均通过。
+- 用户附加的 #970/#971 diagnostics ZIP 已核对：SDK8.0.423/source `c9f9179` 包内 R09 类 `2/2` 且测试源 SHA 与当前相同；SDK10.0.401 包失败点为 Worker 取消用例 `Expected 1 / Actual 0`；另一 SDK8 包失败点为 Q14 toolbar 中心差异，均不等于外机当前 R09 栈。详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 下一项 R07-05 详情断点当前 main 复核。#1008/run 38630493740 与 #1009/run 38631425713 于 2026-10-15 均 Failure，公开 job 页仅有状态，匿名日志 API 403、step-log 404、主机无 gh CLI；附件属于更早 source commits，不能作为新 run 的失败日志。根因未知，不盲修；继续跟踪本阶段新 SDK8/SDK10 run。
+
 ## 2026-10-15 R00/R01 当前 main freshness 与完成条件复核
 
 - 先复读第三轮质量审查、任务组说明、16 项具体完成条件及公共门禁，再核对 Round3 账本、共享证据索引和 `UI_EVIDENCE_BASELINE.json`。R00-01..07、R01-01..08 在账本均已满足；R00-08 仅受控行为已满足，真实 Playnite/OS IME/实体输入仍待验。R01-06 保留 `13 MEDIUM` 布局风险，不把它写成零问题。

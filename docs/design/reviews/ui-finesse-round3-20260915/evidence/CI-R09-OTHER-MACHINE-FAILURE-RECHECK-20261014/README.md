@@ -81,3 +81,13 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 若下次仍失败，优先附加该次 `artifacts/build-diagnostics/<run>/` 目录；最低限度需要 `summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/` 下的 console/TRX，以比较源码哈希、ProductVersion、DLL/PDB 和实际断言。当前没有更改生产模板，也没有放宽断言。`libpng iCCP` 不在厚度断言的调用栈；COM 异常仍只出现在失败后的 WPF 收尾。
 
 用户随后说明这次外机已从 Git 拉取最新版本，并再次贴出同一失败片段。该信息保留为用户报告；片段仍显示旧测试断言对应的 `2` 对 `1` 和第 151 行，但未包含机器实际 `HEAD`、工作树状态、诊断目录、测试源 SHA、DLL/PDB identity，因此不能据此断定 Git checkout 确实对应本轮最新 main，也不能确认根因。当前仍无依据改动生产模板或放宽断言；问题不阻塞独立 Q/R 任务。
+
+## 2026-10-15 用户附加 #970/#971 diagnostics 对照
+
+用户附加了 SDK10 与常规 build diagnostics ZIP，并说明来自 #970/#971。按 ZIP 内 `summary.json`、TRX 和 console 原文复核：
+
+- `GameSaveCenter-build-diagnostics (4).zip` 包含 source commit `c9f9179d9b8d38e506dbb1402ae7030eafebea6c`、SDK `8.0.423`、干净工作树的 Release solution build 记录；两个完整 solution 运行中的 `R09FocusOutlineBehaviorTests` 均为 `2/2`。两者记录的 `R09FocusOutlineBehaviorTests.cs` SHA-256 都是 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`，与当前 main 相同。该测试源码第 151 行仍是错误边框颜色，第 152 行是 Chrome `1 DIP`，第 154 行是独立 ValidationStroke `2 DIP`。ZIP SHA-256：`598C2CA619F0CAC37E3E6877B5CBC0EE45AEFC3371DAAACA0F122AE0BC64A8B6`。
+- `GameSaveCenter-sdk10-build-diagnostics (1).zip` 的 source commit 同为 `c9f9179`，SDK `10.0.401`，失败发生在 Worker 集成测试：357 项中 356 通过；`TaskCoordinatorFailureTests.CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled` 在第 128 行期望 `1`、实际 `0`。包内没有 R09 WPF 测试运行记录，因此不能用它解释外机 R09 失败。ZIP SHA-256：`155612D3A083821531E04D07F57CCAE2CF403647741996395B335FD98AE43EAE`。
+- `GameSaveCenter-build-diagnostics (3).zip` 的 source commit 为 `5a6647cbf8b40b30bc11bf8c6c32015545896967`；SDK8.0.423 WPF 运行失败于 `Q14ToolbarAlignmentBehaviorTests`，Light 980×640 的 preset text centers 为 `6,18,18,18,18,18`。该运行也不是外机所报的 R09 测试。ZIP SHA-256：`6AC19F269A3B2FDF3618BF9153C313245AE742EADB6E389A5DACDAEE486ADA4C`。
+
+这些附件建立了“相同 R09 源码曾在 SDK8 CI 通过”的证据，也显示 SDK10 包内的失败属于 Worker 测试；它们没有外机本次失败对应的 HEAD、工作树、测试 DLL 或 PDB，因而不确认具体故障原因。用户片段的 `libpng iCCP` warning 与失败断言调用栈无关；WPF COM 异常是在失败后的 teardown 中报告。没有更改生产模板或弱化断言。独立 UI 任务继续进行，待用户可回复后再按需核对外机身份。
