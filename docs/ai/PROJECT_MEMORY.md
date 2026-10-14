@@ -126,3 +126,11 @@ R08-03 生产服务、模板与 storyboard 已存在，未改生产代码。R08-
 ### 2026-10-14 R08-04 当前 main 业务完成节奏复核
 
 先复用 `BusyOperationCoordinator`、共享按钮忙态/延时 spinner、`FeedbackToast` AutomationPeer、`DashboardView.ApplyToastAutomation` 和 `TaskStatusDto`；生产代码、命令绑定和安全语义未改。新增一条成功慢任务行为：未完成的 action 保持忙态且不触发完成，放行后回调一次、恢复忙态，不触发失败/取消反馈；成功、失败（错误码与详情优先）、取消 DTO 的状态和详情使用精确值断言。隔离 SDK `9.0.302` Release solution `0 warning / 0 error`，`R02BusyStateTests 5/5` + `R08BusinessFeedbackBehaviorTests 4/4`，共 `9/9`；本机缺 global.json 的 `8.0.423`，该结果不替代 SDK8/CI SDK `10.0.401`。源校验和 diff check 通过；WPF 静态检查 `0 errors/29 warnings/177 info`（扫描包含无关 `.tmp/r12-04-stage` 历史布局 warning）。完整测试/程序集身份和限制见 `evidence/R08-04-CURRENT-MAIN-RECHECK-20261014/README.md`。第一次没有传 `GSC_BUILD_COMMIT` 的源契约用例拒绝未知身份程序集；按仓库构建约定重建后完整定向类通过。公共 Actions 页仍停到 #979 queued；#971 In progress，#978 Failure 且需登录获取日志；当前 R08 提交的 SDK8/SDK10 CI 尚未可见。真实 Playnite/Worker/Narrator、外部 UIA、宿主通知、呈现帧/物理 DPI、ETW 与宿主性能仍待验。下一项 R08-05。
+
+## 2026-10-14 R09-05 外机失败当前 main 复核
+
+- 当前 main 552b8168 的隔离 SDK 9.0.302 Release solution build 为 0 warning/0 error，R09FocusOutlineBehaviorTests 2/2。用户所附 SDK10.0.401 ZIP（commit 983fee5）与 SDK8.0.423 ZIP（commit c9f9179）内对应 R09 结果也为 2/2；commit 5a6647c 的另一 ZIP 不含 R09 TRX。
+- 当前 test source SHA 为 A5AAB9E…B2CBC98；插件/测试 DLL SHA、MVID、ProductVersion 以及脱敏 TRX 已记录在 CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014。没有更改生产模板或降低断言。
+- 外机日志第 151 行、Expected 2/Actual 1 对应历史 Chrome 2 DIP 断言；当前第 151 行是错误色、第 154 行读取 ValidationStroke 2 DIP。旧测试程序集/分支或 PDB 与源码错配是推断，缺少外机 HEAD/DLL/PDB 身份，不能确认。libpng iCCP 与该断言无关；TextServices COM 异常发生在失败后的 WPF 收尾。
+- #971/run 38393317198 公开页仍为 In progress，日志需登录；#978/run 38509928015 为 Failure，完整日志需登录。Actions 列表仅到 #979（ae3c565），未显示当前 HEAD run；SDK9 本机结果不替代 SDK8/SDK10.0.401 CI。
+- 用户暂时不可回复，所需的外机提交、工作树、测试 DLL SHA/ProductVersion 与源码 145–160 行记录为待验，不阻塞当前 R08-05。

@@ -10462,3 +10462,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK `9.0.302`、隔离 Release solution `0 warning / 0 error`，Playnite `net462`/tests `net472`；`R02BusyStateTests 5/5`、`R08BusinessFeedbackBehaviorTests 4/4`，共 `9/9`。`validate-source.py` 与 `git diff --check` 通过。WPF 技能静态分析 `0 errors/29 warnings/177 info`，扫描包含无关 `.tmp/r12-04-stage` 历史 warning；本轮没有 XAML 改动。
 - 首次隔离测试因构建时漏设 `GSC_BUILD_COMMIT` 被源码身份门禁拒绝一个结构契约用例；补齐当前 HEAD 身份重新构建并运行，完整两类通过。只把后一次 `9/9` 计为成功。源码/程序集 SHA、MVID、脱敏 TRX 在[R08-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R08-04-CURRENT-MAIN-RECHECK-20261014/README.md)。本机只装 SDK9，不能替代 global.json SDK8 或 CI SDK10.0.401。
 - 公共 Actions 页面仍只列到 #979 queued，#971/run `38393317198` 仍 In progress、#978/run `38509928015` Failure 且完整日志需登录；本轮提交的两条 SDK lane 尚未核实。真实 Playnite/Worker 长任务、Narrator/外部 UIA、自动通知宿主时序、物理 DPI/呈现、ETW/宿主性能未验。下一项 R08-05 页面切换轻量化；不等待用户补 #978 日志，独立推进。
+
+## 2026-10-14 R09-05 外机失败当前 main 复核
+
+- 当前 main 552b8168 的隔离 SDK 9.0.302 Release solution build 为 0 warning/0 error，R09FocusOutlineBehaviorTests 2/2。用户所附 SDK10.0.401 ZIP（commit 983fee5）与 SDK8.0.423 ZIP（commit c9f9179）内对应 R09 结果也为 2/2；commit 5a6647c 的另一 ZIP 不含 R09 TRX。
+- 当前 test source SHA 为 A5AAB9E…B2CBC98；插件/测试 DLL SHA、MVID、ProductVersion 以及脱敏 TRX 已记录在 CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014。没有更改生产模板或降低断言。
+- 外机日志第 151 行、Expected 2/Actual 1 对应历史 Chrome 2 DIP 断言；当前第 151 行是错误色、第 154 行读取 ValidationStroke 2 DIP。旧测试程序集/分支或 PDB 与源码错配是推断，缺少外机 HEAD/DLL/PDB 身份，不能确认。libpng iCCP 与该断言无关；TextServices COM 异常发生在失败后的 WPF 收尾。
+- #971/run 38393317198 公开页仍为 In progress，日志需登录；#978/run 38509928015 为 Failure，完整日志需登录。Actions 列表仅到 #979（ae3c565），未显示当前 HEAD run；SDK9 本机结果不替代 SDK8/SDK10.0.401 CI。
+- 用户暂时不可回复，所需的外机提交、工作树、测试 DLL SHA/ProductVersion 与源码 145–160 行记录为待验，不阻塞当前 R08-05。
