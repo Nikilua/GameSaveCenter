@@ -446,6 +446,25 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.True(Assert.IsType<bool>(localResources["GscPopupAllowsTransparency"]));
                 Assert.Equal(PopupAnimation.Fade, Assert.IsType<PopupAnimation>(localResources["GscPopupAnimation"]));
 
+                var runtimeResources = new ResourceDictionary();
+                var createControlledPalette = factoryType.GetMethod("CreateWithHighContrastOverride", BindingFlags.Public | BindingFlags.Static)!;
+                var applyRuntimeTheme = factoryType.GetMethod("ApplyRuntimeThemeResources", BindingFlags.Public | BindingFlags.Static)!;
+                var normalRuntimePalette = createControlledPalette.Invoke(
+                    null,
+                    new object[] { host, true, 78, GameSaveCenterThemeMode.FollowPlaynite, false })!;
+                var highContrastRuntimePalette = createControlledPalette.Invoke(
+                    null,
+                    new object[] { host, true, 78, GameSaveCenterThemeMode.FollowPlaynite, true })!;
+
+                applyRuntimeTheme.Invoke(null, new[] { runtimeResources, normalRuntimePalette, true, true });
+                Assert.Equal(PopupAnimation.Fade, Assert.IsType<PopupAnimation>(runtimeResources["GscPopupAnimation"]));
+                applyRuntimeTheme.Invoke(null, new[] { runtimeResources, normalRuntimePalette, true, false });
+                Assert.Equal(PopupAnimation.None, Assert.IsType<PopupAnimation>(runtimeResources["GscPopupAnimation"]));
+                applyRuntimeTheme.Invoke(null, new[] { runtimeResources, highContrastRuntimePalette, true, true });
+                Assert.Equal(PopupAnimation.None, Assert.IsType<PopupAnimation>(runtimeResources["GscPopupAnimation"]));
+                applyRuntimeTheme.Invoke(null, new[] { runtimeResources, normalRuntimePalette, true, true });
+                Assert.Equal(PopupAnimation.Fade, Assert.IsType<PopupAnimation>(runtimeResources["GscPopupAnimation"]));
+
                 var gameGlass = factoryType.GetMethod("ApplyGameBackgroundGlassResources", BindingFlags.Public | BindingFlags.Static)!;
                 var ambientBrush = new LinearGradientBrush
                 {
@@ -538,7 +557,6 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ApplySettingsMaterialResources", paletteSource);
         Assert.Contains("resources[\"GscPickerScrimBrush\"]", paletteSource);
         Assert.Contains("resources[\"GscPopupAllowsTransparency\"] = glassEnabled", paletteSource);
-        Assert.Contains("resources[\"GscPopupAnimation\"] = motionEnabled && !palette.IsHighContrast ? PopupAnimation.Fade : PopupAnimation.None", paletteSource);
         Assert.Contains("if (!enabled) return null;", paletteSource);
         Assert.Contains("highContrast ? accent", paletteSource);
         Assert.DoesNotContain("{StaticResource GscAccentShadowColor}", dashboard);
@@ -1946,10 +1964,15 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Header=\"发现的问题\"", maintenanceText);
         Assert.Contains("Header=\"审计记录\"", maintenanceText);
         Assert.Contains("Style=\"{StaticResource GscInternalTabControl}\"", maintenanceText);
-        Assert.Contains("x:Name=\"MaintenanceAuditLayout\"", maintenanceText);
-        Assert.Contains("x:Name=\"MaintenanceAuditInspector\"", maintenanceText);
-        Assert.Contains("x:Name=\"MaintenanceAuditFindingsGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
-        Assert.Contains("x:Name=\"MaintenanceAuditLogGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        Assert.Contains(maintenance.Descendants(), element => (string?)element.Attribute(xamlName) == "MaintenanceAuditLayout");
+        Assert.Contains(maintenance.Descendants(), element => (string?)element.Attribute(xamlName) == "MaintenanceAuditInspector");
+        var findingsGrid = Assert.Single(maintenance.Descendants(), element =>
+            element.Name.LocalName == "DataGrid" && (string?)element.Attribute(xamlName) == "MaintenanceAuditFindingsGrid");
+        var logGrid = Assert.Single(maintenance.Descendants(), element =>
+            element.Name.LocalName == "DataGrid" && (string?)element.Attribute(xamlName) == "MaintenanceAuditLogGrid");
+        Assert.Equal("{StaticResource MaintenanceDataGrid}", (string?)findingsGrid.Attribute("Style"));
+        Assert.Equal("{StaticResource MaintenanceDataGrid}", (string?)logGrid.Attribute("Style"));
         var auditInspector = maintenance.Descendants().Single(element =>
             element.Name.LocalName == "ScrollViewer" && element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "MaintenanceAuditInspector");
         Assert.Equal("Auto", auditInspector.Attribute("VerticalScrollBarVisibility")?.Value);
@@ -2132,11 +2155,15 @@ public sealed class WpfUiResourceDictionaryTests
         var repositoryRoot = FindRepositoryRoot();
         var maintenancePath = Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml");
         var maintenanceText = File.ReadAllText(maintenancePath);
+        var maintenance = XDocument.Parse(maintenanceText);
         var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
 
-        Assert.Contains("x:Name=\"MaintenanceProcessTable\"", maintenanceText);
-        Assert.Contains("x:Name=\"MaintenanceProcessGrid\" Style=\"{StaticResource MaintenanceDataGrid}\"", maintenanceText);
-        Assert.Contains("x:Name=\"MaintenanceProcessInspector\"", maintenanceText);
+        Assert.Contains(maintenance.Descendants(), element => (string?)element.Attribute(xamlName) == "MaintenanceProcessTable");
+        var processGrid = Assert.Single(maintenance.Descendants(), element =>
+            element.Name.LocalName == "DataGrid" && (string?)element.Attribute(xamlName) == "MaintenanceProcessGrid");
+        Assert.Equal("{StaticResource MaintenanceDataGrid}", (string?)processGrid.Attribute("Style"));
+        Assert.Contains(maintenance.Descendants(), element => (string?)element.Attribute(xamlName) == "MaintenanceProcessInspector");
         Assert.Contains("MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d)", maintenanceCode);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedProcessMapping}\" Value=\"{x:Null}\">", maintenanceText);
         Assert.Contains("Command=\"{Binding DeleteProcessMappingCommand}\" CommandParameter=\"{Binding SelectedProcessMapping}\"", maintenanceText);
