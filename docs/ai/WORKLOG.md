@@ -10485,3 +10485,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 五个逻辑 DIP 阶段测得 PageHost：1038.667×759.333 → 632.667×559.333 → 632.667×419.333 → 1112.667×759.333 → 1038.667×759.333。详情保持 Visible，窄/短 MaxHeight 为 136，宽态回到 Infinity；picker 和搜索焦点保持可见/焦点内，任务表正高度且 MaxHeight 不残留有限值，shell 共收到 11 次 SizeChanged。
 - #968 双 SDK lane 的历史成功与 #960/run 38327521241 的终态失败分开记载；#960 完整日志 403/404，CI SDK、内部失败命令和根因仍未知。最新公开 Actions 列表在 #979/ae3c565，未见 d7f6fc42 run；按 head SHA 查询公开 REST API 返回 HTTP 403 rate limit，不能据此判断 run 不存在。R08-05/R07-08 SDK8/SDK10 当前提交 CI 尚未到可确认终态。SDK9 本机结果不替代 CI。受控 STA Window 不证明真实 Playnite 拖动、物理 DPI、presented frame、UIA、ETW 或宿主布局耗时。
 - R07-08 当前受控行为证据已补齐，任务 CI/真实宿主边界保持未收口。下一独立项 R10-02；R09-05 外机 HEAD/DLL/PDB 等用户明早可回复后补证，不阻塞。
+
+## 2026-10-14 R09 外机失败续查
+
+- 当前 main 965fe1b2 在 SDK 9.0.302 隔离环境中带显式提交/源码根身份构建 Playnite 测试项目及引用项目；R09FocusOutlineBehaviorTests 2/2，exit 0。此轮不是全解决方案 build；源文件与 552b8168 相同，552b8168 已有完整 SDK9 Release 0/0 证据。
+- 当前测试源 SHA A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98；测试/插件 DLL ProductVersion、SHA/MVID、PDB SHA 与脱敏 TRX 在 CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/tests。
+- 外机日志 line 151 与历史 3f7d0b30 Chrome 2 DIP 断言对应；当前 line 151 为颜色断言、line 154 为独立 ValidationStroke 2 DIP。旧测试二进制或 PDB 错配最符合现有线索，但缺外机身份，未确认；libpng warning 无关，COM 异常发生在失败后收尾。未改 UI 或放宽断言。
+- CI 页面仍只列 #979 queued，#971 In Progress、#978 Failure 且日志需登录；当前 HEAD run 未核实，SDK9 不替代 SDK8/SDK10.0.401。
+- 下一项 R10-02 当前 main 交互行为复核；外机身份待用户 2026-10-15 09:00 后补充，暂不阻塞。

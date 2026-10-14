@@ -1,37 +1,27 @@
-# R09FocusOutlineBehaviorTests 外机失败复核
+# R09 外机焦点轮廓失败复核
 
-日期：2026-10-14  
-当前 main：`066b9a6c01057c044ddc0d7c63ff70ce3dd7a6b3`  
-本机 SDK：`9.0.302`；Playnite `net462`，测试 `net472`  
-测试源 SHA-256：`A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`  
-生产资源 SHA-256：`7CFCBEE2720F3C8960FA9B54D8B86562C87D17D0E44F679FCF846F05ACDCEB2B`
+更新：2026-10-14；当前 main 提交 965fe1b2f8c8a6c840f4864d1ca47873e64d843c。
 
-## 用户提供的失败
+## 外机失败
 
-另一台机器的 `R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError` 失败，日志为 `Expected: 2,2,2,2; Actual: 1,1,1,1`。同次输出中的 `libpng warning: iCCP` 不在这条断言的调用栈中。用户提供片段没有附该机器的 commit、测试源/DLL/PDB 身份或 diagnostics 包。
+用户提供的测试输出显示 SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError 失败，Expected 2,2,2,2、Actual 1,1,1,1，堆栈报告源文件第 151 行。日志同时有 libpng iCCP 警告与 WPF TextServicesContext 收尾时的 COM 异常。
 
-## 当前 main 对照
+## 当前实现与断言
 
-当前生产 `GscWpfUiTextBoxTemplate` 有两层：`Chrome` 始终保留 `BorderThickness=1`；独立 `ValidationStroke` 设置 `BorderThickness=2`、`IsHitTestVisible=false`，仅在 `Validation.HasError` 时显示。验证错误边框不参与内容测量，错误恢复后该层应归零。
+生产模板 WpfUiProduction.xaml 的输入 Chrome 始终为 1 DIP；独立 ValidationStroke 为 2 DIP、不可命中，只在 Validation.HasError 时显示。错误清除后该描边隐藏，错误态不改变内容测量。
 
-历史提交 `3f7d0b30` 中的测试确实断言 `errorChrome.BorderThickness == 2`。提交 `f13b9e05` 已按生产模板改为分别断言 Chrome 为 1、可见 ValidationStroke 为 2 且不可命中，并检查错误恢复后描边隐藏。用户日志中的 `2` 对 `1` 与这条旧 Chrome 断言相符；结合栈中行号与当前源文件布局不一致，当前证据倾向于该机器仍运行旧测试源码/程序集、旧分支或源码与 PDB 不匹配。由于没有那台机器的 HEAD 和二进制身份，不能区分具体是哪一种，也不将其写成已确认原因。
+历史提交 3f7d0b30 的第 151 行断言曾要求 errorChrome.BorderThickness 为 2，和外机的期望/实际值吻合。修正提交 f13b9e05 后，当前测试分别验证 Chrome 为 1 DIP、可见 ValidationStroke 为 2 DIP。当前 main 第 151 行检查错误色，第 154 行检查 ValidationStroke 厚度。基于行号和值，外机执行的断言/符号与当前文件不一致；旧测试产物或源码/PDB 错配最符合现有证据，但外机提交、源文件和 DLL/PDB 身份缺失，具体根因仍未确认。
 
-逐行核对后，用户日志里的第 151 行正好对应历史 `3f7d0b30` 测试的 `Assert.Equal(new Thickness(2), errorChrome.BorderThickness)`；而当前 main 第 151 行断言的是错误边框颜色，2 DIP 断言已移到第 154 行并读取 `validationStroke.BorderThickness`。因此失败日志运行的测试断言不是当前 main 的版本：可能是旧分支/旧 DLL，或旧 PDB 与新源码错配；没有外机 HEAD/DLL/PDB 身份，无法再区分。
+libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断言失败后的 WPF 收尾中出现，不能解释厚度断言。
 
-当前 main 的 `R09FocusOutlineBehaviorTests` 使用隔离 Release 输出复跑 `2/2` 通过。构建基于 `066b9a6`，期间只有 R08-01 测试文件有工作树测试增量；本机 SDK9 结果不替代 SDK8/CI SDK10。脱敏 TRX 和当前 build DLL SHA/MVID 在同目录 `tests/`。
+## 当前 main 复核
+
+在当前提交 965fe1b2 上，用隔离 SDK 9.0.302 与显式 GSC_BUILD_COMMIT/GSC_SOURCE_ROOT 构建 Playnite 测试项目及其引用项目，定向执行 R09FocusOutlineBehaviorTests：2/2 通过，退出码 0；Playnite 目标 net462，测试目标 net472，VSTest 17.14.1。此轮是测试项目和引用项目构建，不是完整解决方案构建。代码与测试相对 552b8168 没有变化；552b8168 的完整 SDK9 Release 解决方案构建此前为 0 warning / 0 error，同一 R09 类为 2/2。
+
+本次 test DLL 的 ProductVersion 为 0.6.73+965fe1b2f8c8a6c840f4864d1ca47873e64d843c；测试源 SHA-256 为 A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98。程序集 SHA、MVID、PDB SHA、XAML SHA 和脱敏 TRX 见本目录 tests 下的 assemblies-current-main-965fe1b2.json、hashes-current-main-965fe1b2.txt 和 R09FocusOutlineBehaviorTests-sdk9302-main-965fe1b2.trx。
+
+此前用户提供的 SDK10.0.401 诊断包在提交 983fee5 下、SDK8.0.423 诊断包在提交 c9f9179 下，R09 类也各有 2/2 通过记录；这些旧提交上的运行不替代当前 Actions 结果。相关 ZIP 不代表当前外机失败所用的测试程序集身份。
 
 ## 结论与下一步
 
-当前 main 的生产层级和测试断言相互一致，本机复核未复现外机失败；没有改生产 UI，也没有放宽测试。`f13b9e05` 的历史修正已解释最吻合的断言差异，但外机版本身份仍待确认。用户恢复可回复后，如仍需确认，请只补该机 `git rev-parse HEAD`、`git status --short`、`R09FocusOutlineBehaviorTests.cs` 第 145–160 行及测试 DLL/PDB 时间或 SHA；不需要再传整仓库。
-
-该复核不涉及视觉变化，未生成截图；未运行真实 Playnite或物理输入。R08-01 小批仍按独立行为证据继续；这条 R09 外机记录单独保留，不阻塞其他依赖已满足的 Q/R 工作。
-
-## 2026-10-14 当前 main 与用户诊断包复核
-
-- 当前 main `552b8168f5ace1051cce9ebe7d39ee971c2d97e0` 的隔离 Release solution build 成功，SDK `9.0.302`、`0 warning / 0 error`；Playnite `net462`、测试 `net472`。R09FocusOutlineBehaviorTests `2/2` 通过。脱敏 TRX、当前程序集 SHA/MVID/ProductVersion 和源文件 SHA 见本目录 `tests/` 下 `R09FocusOutlineBehaviorTests-sdk9302-main-552b8168.trx`、`assemblies-current-main-552b8168.json`、`hashes-current-main-552b8168.txt`。
-- 用户提供的 SDK10.0.401 诊断 ZIP 在提交 `983fee5` 下也记录了 R09FocusOutlineBehaviorTests `2/2`；`GameSaveCenter-build-diagnostics (4).zip` 的 SDK8.0.423 产物在 `c9f9179` 下有两次 R09 `2/2`。对应测试源码 SHA 均为 `A5AAB9E…B2CBC98`。SDK10 当前 ZIP 的整包构建失败发生在 Worker 用例，不是 R09；含提交 `5a6647c` 的另一 ZIP 没有 R09 TRX。以上历史运行不能代替当前 CI 终态，但没有复现用户贴出的 R09 断言。
-- 用户日志中的第 151 行与历史 `3f7d0b30` 的 `errorChrome.BorderThickness == 2` 断言精确对应；当前 main 的第 151 行是错误色断言，第 154 行才检查独立 ValidationStroke 的 2 DIP。基于行号与期望/实际值，最符合旧测试源码/程序集或源码与 PDB 混用；因为缺外机 HEAD、DLL/PDB SHA，这仍是推断，未写成确定根因。当前 `dev-install-run.ps1` 默认每次生成新的隔离构建输出目录，但用户是否运行了该版本脚本、是否传入自定义输出路径仍未知。
-- `libpng warning: iCCP` 不在断言调用栈。TextServicesContext/COM 异常出现在断言失败后的 WPF 收尾，不能解释边框厚度为何为 1。
-- Actions 当前公开快照：#971/run `38393317198` 页面仍为 In progress，日志要求登录；#978/run `38509928015` 为 Failure，页面只有通用 exit code；列表只到 #979（提交 `ae3c565`），未显示当前 HEAD 的 run。SDK9 本机通过不替代 SDK8 或 CI SDK10.0.401。
-
-下一步：用户恢复可回复后，只需补该机 `git rev-parse HEAD`、`git status --short`、测试 DLL 的 ProductVersion/SHA，以及 R09 源码 145–160 行；在此之前不改模板或降低断言。该诊断不阻塞独立 Q/R 任务。
+没有改生产样式，也没有放宽断言；当前 main 本地复核未复现失败。外机所用 HEAD、工作树状态、R09 源码第 145–160 行及测试 DLL/PDB 身份仍待核实。用户暂时无法回复期间继续处理独立任务，下一项为 R10-02 当前 main 交互行为复核。SDK9 本机结果不替代 SDK8.0.423 或 CI SDK10.0.401；真实 Playnite、OS 输入、物理 DPI、读屏和最终呈现未在本次验证。

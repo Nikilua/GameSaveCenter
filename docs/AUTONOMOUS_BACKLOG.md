@@ -16,7 +16,9 @@
 - Q24-08 长文案/辅助输入当前 main 受控行为 `15/15`，见[证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)；真实 Windows 中文 IME、Playnite/Narrator/系统剪贴板与 Tooltip 视觉仍待验。
 - Q25-01 当前 main 热态响应 `13/13`，SDK `8.0.423` Release `0/0`、XAML `24/24`；2000项预热5+30样本，p50/p95/max=`45/60/60ms`，输入到受控可见容器20样本=`46.214/75.782/76.334ms`。本机自动条件满足、无视觉改动、Host external/Final incomplete，见[当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q25-01-CURRENT-MAIN-HOT-RESPONSE-RECHECK-20261014/README.md)。
 - #978/run `38509928015` 两个命名 job 均在编译/测试失败，完整日志需登录，实际 runner SDK/根因未知；不猜修。最近公开 Actions 页面仍显示 #979 (`ae3c565`) queued；`31d64e42` 已推送但页面暂未显示其对应 run。推送当前阶段后继续核对 SDK8 与 SDK10.0.401 门禁，不把本机 SDK9 当 SDK10。
-- R08-01 当前 main 按钮 hover/press 反向行为已补充并本机通过，用户 R08 1/2 故障仍待其原始失败身份；外机 R09 日志的行号与历史 Chrome 2 DIP 断言完全对应，当前 main 断言已改为 Chrome 1 / ValidationStroke 2，本机 `2/2`；外机 HEAD/DLL/PDB 未知。R08-02 当前 main 应用热关闭 `1/1`、系统回调模拟 `1/1`、侧栏 reduced-motion `2/2`、生命周期门禁 `1/1`；真实 Windows 设置通知未触发。R08-03 当前 main 隐藏 Tab/最小化停机行为 `1/1` 已复核；下一项 R08-04 业务完成节奏。#971/run `38393317198` 仍 In Progress；#978/run `38509928015` Failure、日志需登录且根因未知；#979 queued。用户至 2026-10-15 09:00 前无法回复，继续自主推进。Q24-03 第二物理显示器、真实 Playnite/OS IME/UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能保留外部边界。
+- R09-05 外机失败复核：当前 main 965fe1b2 在带提交身份的 SDK9 隔离测试项目构建中 2/2；外机第151行对应历史 Chrome 2 DIP 断言，错配是最符合证据的推断，外机 HEAD/DLL/PDB 仍未知。证据：[R09 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- R08-05 页面切换和 R07-08 resize 的当前 main 受控行为证据已完成；R08-05 为 SDK9 44/44，R07-08 为 1/1。真实 Playnite、物理 DPI/跨屏、最终呈现、UIA/读屏、ETW/宿主性能仍待外部验收；SDK8/SDK10.0.401 CI 另行追踪。
+- 下一独立小批 R10-02：复核现有稳定游戏 ID 路由在最新代码中的真实命令行为与负例。相关生产源文件相对旧 R10 证据已有变化，先审实现和现有覆盖，再决定是否只补当前证据或增加行为用例。用户至 2026-10-15 09:00 前无法回复，外机身份不阻塞。
 
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |

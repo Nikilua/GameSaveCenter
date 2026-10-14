@@ -1,0 +1,53 @@
+{
+  "sourceCommit": "965fe1b2f8c8a6c840f4864d1ca47873e64d843c",
+  "repositorySdkBaseline": "8.0.423",
+  "selectedSdk": "9.0.302",
+  "vstest": "17.14.1",
+  "targetFrameworks": [
+    "Playnite net462",
+    "tests net472"
+  ],
+  "buildScope": "Release Playnite test project plus project references; not a full solution build in this run",
+  "testFilter": "FullyQualifiedName~R09FocusOutlineBehaviorTests",
+  "result": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0
+  },
+  "sourceFiles": [
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09FocusOutlineBehaviorTests.cs",
+      "sha256": "A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+      "sha256": "7CFCBEE2720F3C8960FA9B54D8B86562C87D17D0E44F679FCF846F05ACDCEB2B"
+    }
+  ],
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "path": "[isolated]/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "FA1ABFBD53CD5C97D68268FDF3F02E8E173DA15643C62E0C64EFFF079F6A330F",
+      "productVersion": "0.6.73+965fe1b2f8c8a6c840f4864d1ca47873e64d843c",
+      "fileVersion": "0.6.73.0",
+      "bytes": 1832960,
+      "mvid": "32bc009d-d61d-4944-8502-11b7459271cf"
+    },
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "path": "[isolated]/GameSaveCenter.Playnite.dll",
+      "sha256": "EA00F035EF7FFCAC8AEC82632723C763246169927AF246492BCB9407A71044FE",
+      "productVersion": "0.6.73+965fe1b2f8c8a6c840f4864d1ca47873e64d843c",
+      "fileVersion": "0.6.73.0",
+      "bytes": 1822208,
+      "mvid": "851b5a59-230b-4b7c-8dd6-b768358d1453"
+    }
+  ],
+  "pdb": {
+    "file": "GameSaveCenter.Playnite.Tests.pdb",
+    "sha256": "FBFD4747ABC4D89AA399601D1974B5F970D6C6C4F597164F0E54077465B9817B"
+  }
+}

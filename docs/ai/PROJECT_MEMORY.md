@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。Q24-08 行为 `15/15`；Q25-01 当前 main 行为/性能 `13/13`，2000项搜索 `5 warmup + 30 samples` p50/p95/max=`45/60/60ms`，20样本输入到受控可见容器=`46.214/75.782/76.334ms`，实现记“已满足”、视觉不适用、宿主/Final 待验。#970 SDK10.0.401 的取消测试竞态与 #971 所附 SDK8 Q14 fixture 前提问题已由 `599d2fd3` 修正；当前 main 066b9a6 上 R08 行为 3/3、Q06 1/1、R09 2/2 的定向复核均为本机 SDK9.0.302，不能替代 SDK8/CI SDK10。#971 官方 run 仍 In progress 且没有所需 SDK10 日志；诊断与脱敏 TRX 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。#978 两命名 lane 均失败，完整日志需登录，实际 runner SDK/根因未知；公开 #979（`ae3c565`）仍 queued，当前 HEAD `066b9a6` 尚未 push。用户至 2026-10-15 09:00 前无法回复，继续推进。R08-01 按钮 hover/press 反向行为本机 `3/3`，Q06 `1/1`；用户 R08 `1/2` 原始失败仍待定位。外机 R09 预期 2 DIP / 实际 1 DIP 对应旧断言，当前 main `2/2`，外机版本身份未知。下一步 R08-02 当前 main 复核。真实 Playnite/OS UIA/Narrator/IME、Q24-03 第二显示器、最终呈现、ETW/宿主性能仍待验。
+更新：2026-10-14。长期规则见本文件；当前证据入口为 CURRENT_STATE.md。main 最新 HEAD 为 965fe1b2。R08-05 当前 main 受控行为 44/44、R07-08 1/1；R09 外机焦点失败在带身份 SDK9 定向构建中 2/2 未复现。日志行号吻合旧 Chrome 2 DIP 断言，外机 HEAD/DLL/PDB 缺失，因此只记为最符合证据的错配推断。Actions 页面仍只显示 #979 queued，#971 In Progress、#978 Failure 且日志需登录；SDK9 不替代 SDK8/SDK10.0.401。用户至 2026-10-15 09:00 无法回复，继续独立工作。下一项 R10-02 当前 main 稳定游戏 ID 路由复核，先查现有命令与行为覆盖。
 
 ## AI/Codex 启动协议
 
