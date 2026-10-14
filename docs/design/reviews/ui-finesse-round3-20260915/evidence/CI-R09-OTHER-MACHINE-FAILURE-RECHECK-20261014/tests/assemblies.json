@@ -1,0 +1,18 @@
+[
+  {
+    "file": "GameSaveCenter.Playnite.dll",
+    "path": "[repo]\\.tmp\\r08-01-production-button-sdk9-20261014\\build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+    "sha256": "FFD3754330380B4BA3AA30EA2ED4DA282AF46FE3C2E81F858AC9C6A296E6069E",
+    "productVersion": "0.6.73+066b9a6c01057c044ddc0d7c63ff70ce3dd7a6b3",
+    "bytes": 1821696,
+    "mvid": "2e65ae9b-8367-415c-ad67-2bccc061aec6"
+  },
+  {
+    "file": "GameSaveCenter.Playnite.Tests.dll",
+    "path": "[repo]\\.tmp\\r08-01-production-button-sdk9-20261014\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+    "sha256": "69E2F5F0E5C1DC78AB0E5DFC5B112423C1D7D9BEEF76A9615C82C58E2C69745E",
+    "productVersion": "0.6.73+066b9a6c01057c044ddc0d7c63ff70ce3dd7a6b3",
+    "bytes": 1827328,
+    "mvid": "5230a356-aa40-45bc-89c8-ad991442429a"
+  }
+]

@@ -10429,3 +10429,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 两个问题均为测试夹具前提错误，并已在历史提交 `599d2fd3` 修正：取消测试把同步信号移到 token callback 注册之后；Q14 fixture 选择真实默认 `TaskFilterPreset`，只测量可见的真实选中文本/presenter。当前 main `a78c46b5` 上对应两份测试源与 `599d2fd3` 相同，无生产代码修复。
 - 本机当前环境只有 SDK `9.0.302`；从仓库父目录执行当前 main 定向重跑，取消测试 `1/1`、Q14 `1/1` 通过。SDK9 不是仓库锁定 SDK8，也不替代 CI SDK `10.0.401`。Q14 pass 后 runner 仍有 TextServicesContext/TextStore `InvalidComObjectException` 收尾输出，TRX 与退出码通过；根因未查。脱敏 TRX 和附件 SHA 见[诊断复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。
 - #970/#971 CI root cause 与本机测试已记录，未改生产代码。当前 main SDK8/SDK10 CI 仍需等实际 run 并分别确认终态；当前 Actions 页仍是 #979 queued，`a78c46b5` run 未显示。没有启动真实 Playnite或访问真实存档/媒体/用户云端。下一步 R08-01：先检查反向输入既有实现、现有测试涵盖面和负例；不以缺失的用户原始日志推测故障。
+
+## 2026-10-14 R08-01 按钮反向行为与外机 R09 失败复核
+
+- R08 既有测试只覆盖 Translate 和生产侧栏的中途反向，不覆盖生产共享按钮模板的 hover/press 过渡。新增 ProductionButtonHoverAndPressReverseFromTheirRenderedValues，使用真实生产 GscWpfUiPrimaryButton，在隔离 STA Window 下合成鼠标/pressed 状态；连续采样并检查 hover 退出/重入、press 释放/重按的当前值连续、目标方向、最后输入终态。没有改产品模板、动效、绑定、命令或业务代码。
+- 本机 SDK 9.0.302、MSBuild 17.14.13、VSTest 17.14.1、.NET Framework 4.8.9181.0；隔离 Release 插件 net462/tests net472 0 warning/0 error。R08 3/3、Q06 五状态双主题 1/1、validate-source.py、XAML 24/24、git diff --check 通过。采样值、源/程序集身份与脱敏 TRX 在[R08-01 当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20261014/README.md)。VSTest 成功后仍有 TextServices COM shutdown 异常输出，根因未知。
+- 用户报告 R08 1/2 失败没有对应的失败方法/断言/堆栈/DLL，当前自动通过不解释此故障。真实 Playnite、物理输入、物理 DPI/跨屏、presented frame、ETW/宿主性能未验；没有生成视觉截图或触及用户数据。
+- 用户另附外机失败日志：R09 方法期望 2,2,2,2、实际 1,1,1,1。当前生产模板的 Chrome 是 1 DIP，独立 ValidationStroke 在错误态显示 2 DIP。历史 3f7d0b30 测试曾把 Chrome 断言为 2；f13b9e05 已改为分别核对 Chrome 1 与验证描边 2。当前 main SDK9 的 R09 类复跑 2/2。因此优先怀疑外机旧测试源/旧程序集、旧分支或源码/PDB错配，尚无该机 HEAD/DLL/PDB 可确认哪一项；没有改生产样式、也没有降低当前断言。脱敏 TRX、当前源码 SHA 与 DLL 身份见[R09 外机失败对照](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。日志中的 libpng iCCP warning 不在该断言调用栈中。
+- 最新公开 Actions：#971/run 38393317198 仍 In progress，附件只有 SDK8 诊断；#978/run 38509928015 Failure，annotations 只有通用 exit code，完整日志需要登录，runner SDK/根因未知。公开列表最新 #979 queued，未显示 main 066b9a6 对应 run。CI 终态前不签 SDK 门禁；本机 SDK9 不替代 SDK8/CI SDK10.0.401。
+- 下一可执行任务 R08-02 热关闭动画。外机需待用户恢复响应后补 git rev-parse HEAD、工作树状态、R09 测试源第 145–160 行及 DLL/PDB SHA/时间；该信息用于确认外机版本，不阻塞独立任务。

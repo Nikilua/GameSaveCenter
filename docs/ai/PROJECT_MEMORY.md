@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。Q24-08 行为 `15/15`；Q25-01 当前 main 行为/性能 `13/13`，2000项搜索 `5 warmup + 30 samples` p50/p95/max=`45/60/60ms`，20样本输入到受控可见容器=`46.214/75.782/76.334ms`，实现记“已满足”、视觉不适用、宿主/Final 待验。#970 SDK10.0.401 的取消测试竞态与 #971 所附 SDK8 Q14 fixture 前提问题已由 `599d2fd3` 修正；当前 main `a78c46b5` 两项定向复核在 SDK9.0.302 各 `1/1`，不能替代 SDK8/CI SDK10。#970 Actions 为 Failure，#971 官方 run 仍 In progress 且没有所需 SDK10 日志；诊断与脱敏 TRX 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。`#978` 根因仍未知，#979 尚排队，`a78c46b5` 对应 run 仍未在公开列表出现。用户至 2026-10-15 09:00 前无法回复，继续推进。下一步检查 R08-01 当前 main 反向输入行为；用户原始失败日志缺失时不猜修。真实 Playnite/OS UIA/Narrator/IME、Q24-03 第二显示器、最终呈现、ETW/宿主性能仍待验。
+更新：2026-10-14。稳定规则见本文件，当前结果以 CURRENT_STATE.md 为准。Q24-08 行为 `15/15`；Q25-01 当前 main 行为/性能 `13/13`，2000项搜索 `5 warmup + 30 samples` p50/p95/max=`45/60/60ms`，20样本输入到受控可见容器=`46.214/75.782/76.334ms`，实现记“已满足”、视觉不适用、宿主/Final 待验。#970 SDK10.0.401 的取消测试竞态与 #971 所附 SDK8 Q14 fixture 前提问题已由 `599d2fd3` 修正；当前 main 066b9a6 上 R08 行为 3/3、Q06 1/1、R09 2/2 的定向复核均为本机 SDK9.0.302，不能替代 SDK8/CI SDK10。#971 官方 run 仍 In progress 且没有所需 SDK10 日志；诊断与脱敏 TRX 见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-970-971-DIAGNOSTIC-TRIAGE-20261014/README.md)。#978 两命名 lane 均失败，完整日志需登录，实际 runner SDK/根因未知；公开 #979（`ae3c565`）仍 queued，当前 HEAD `066b9a6` 尚未 push。用户至 2026-10-15 09:00 前无法回复，继续推进。R08-01 按钮 hover/press 反向行为本机 `3/3`，Q06 `1/1`；用户 R08 `1/2` 原始失败仍待定位。外机 R09 预期 2 DIP / 实际 1 DIP 对应旧断言，当前 main `2/2`，外机版本身份未知。下一步 R08-02 当前 main 复核。真实 Playnite/OS UIA/Narrator/IME、Q24-03 第二显示器、最终呈现、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 
@@ -106,3 +106,11 @@ CURRENT_STATE 保持短摘要，PROJECT_MEMORY 保持稳定规则，HANDOFF 保�
 ### 2026-10-13 #967 R08-01 自动证据
 
 用户给的 SDK10 ZIP 内独立 `R08MotionReverseBehaviorTests` TRX 为 `2/2`，已复制该 5.5 KB 精确 TRX 到 `evidence/R08-01-CURRENT-MAIN-RECHECK-20261013/`；包 SDK `10.0.401`。测试 source SHA 与当前相同。此自动证据不解释用户机器 `1/2`；未取得具体失败方法/断言/堆栈/DLL 身份，不能说该故障已修复。
+
+### 2026-10-14 R08-01 按钮反向与 R09 外机失败对照
+
+当前 main 基线 066b9a6c01057c044ddc0d7c63ff70ce3dd7a6b3 仅新增 R08 测试夹具，实际生产按钮模板 hover/press 动画现覆盖切换瞬间、方向推进与最后目标；R08 类 3/3、Q06 按钮状态 1/1。本机 SDK 为 9.0.302，不等价 global.json SDK 8.0.423 或 CI SDK 10.0.401。用户机器 R08 1/2 的原始方法/堆栈/DLL 仍缺，不能声称已修复。
+
+外机 R09 日志的 Expected 2 / Actual 1 与历史 3f7d0b30 的 Chrome 2 DIP 断言相符；f13b9e05 已根据生产 ValidationStroke 分层将测试改为 Chrome 1 DIP + 错误层 2 DIP。当前 main R09 本机 SDK9 2/2；未取得外机 HEAD 与 DLL/PDB 身份，故旧分支、旧构建产物或源码/PDB错配仍只是最可能解释。证据分别见 R08-01 与 CI-R09 外机复核包。
+
+截至 2026-10-14，公开 run 38393317198 (#971) 仍 In progress；#978/run 38509928015 Failure，完整日志需登录且 runner SDK/根因未知。推送本批后继续跟踪当前 SDK8/SDK10 lanes；CI 未终态前不记门禁完成。下一项 R08-02。真实 Playnite、OS 输入/读屏、物理 DPI/跨屏、呈现帧、ETW 与宿主性能仍待验。

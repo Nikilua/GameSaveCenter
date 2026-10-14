@@ -1,16 +1,21 @@
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
 using Xunit.Abstractions;
+using UiButton = GameSaveCenter.Playnite.Controls.Button;
 
 namespace GameSaveCenter.Playnite.Tests;
 
@@ -205,6 +210,221 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.Null(exception);
     }
 
+    [Fact]
+    public void ProductionButtonHoverAndPressReverseFromTheirRenderedValues()
+    {
+        Exception? exception = null;
+        var hoverMidpoint = 0d;
+        var hoverAfterLeave = 0d;
+        var hoverExitProgress = 0d;
+        var hoverBeforeReenter = 0d;
+        var hoverAfterReenter = 0d;
+        var hoverReenterProgress = 0d;
+        var hoverFinal = 0d;
+        var hoverMidpointSampled = false;
+        var hoverExitProgressSampled = false;
+        var hoverReenterProgressSampled = false;
+        var pressMidpoint = 0d;
+        var pressedOverlayMidpoint = 0d;
+        var pressAfterRelease = 0d;
+        var pressedOverlayAfterRelease = 0d;
+        var pressedOverlayReleaseProgress = 0d;
+        var pressBeforeRepress = 0d;
+        var pressAfterRepress = 0d;
+        var pressedOverlayBeforeRepress = 0d;
+        var pressedOverlayAfterRepress = 0d;
+        var pressedOverlayRepressProgress = 0d;
+        var pressedOverlayFinal = 0d;
+        var pressedOverlayReleasedFinal = 0d;
+        var pressFinal = 0d;
+        var pressMidpointSampled = false;
+        var pressReleasedContinuously = false;
+        var pressedOverlayReleasedContinuously = false;
+        var pressReleaseProgressSampled = false;
+        var pressReversedContinuously = false;
+        var pressedOverlayReversedContinuously = false;
+        var pressRepressProgressSampled = false;
+        var pressReleasedFinal = 0d;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                EnsureApplication();
+                var resources = LoadProductionResources();
+                var root = new Grid
+                {
+                    Width = 420,
+                    Height = 128,
+                    Resources = resources,
+                    Background = Brushes.Transparent
+                };
+                var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, GameSaveCenterThemeMode.Light);
+                AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
+                AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, !palette.IsHighContrast);
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(root.Resources, palette, true, true);
+
+                var button = new UiButton
+                {
+                    Content = "执行安全操作",
+                    Style = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]),
+                    Width = 220,
+                    Height = 44,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                root.Children.Add(button);
+                window = CreateWindow(root, 460, 156);
+                window.ShowActivated = true;
+                window.Show();
+                window.UpdateLayout();
+                root.UpdateLayout();
+                button.ApplyTemplate();
+
+                var hoverOverlay = Assert.IsType<Border>(button.Template!.FindName("HoverOverlay", button));
+                var chrome = Assert.IsType<Border>(button.Template.FindName("ButtonChrome", button));
+                var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
+                var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
+
+                Assert.True(SetMouseOverProbe(button, true));
+                hoverMidpointSampled = PumpDispatcherUntilFast(
+                    () => hoverOverlay.Opacity > 0.05 && hoverOverlay.Opacity < 0.95,
+                    TimeSpan.FromMilliseconds(500));
+                hoverMidpoint = hoverOverlay.Opacity;
+                Assert.True(SetMouseOverProbe(button, false));
+                hoverAfterLeave = hoverOverlay.Opacity;
+                hoverExitProgressSampled = PumpDispatcherUntilFast(
+                    () => hoverOverlay.Opacity < hoverAfterLeave - 0.002 && hoverOverlay.Opacity > 0,
+                    TimeSpan.FromMilliseconds(250));
+                hoverExitProgress = hoverOverlay.Opacity;
+                Assert.True(SetMouseOverProbe(button, true));
+                hoverBeforeReenter = hoverOverlay.Opacity;
+                hoverAfterReenter = hoverOverlay.Opacity;
+                hoverReenterProgressSampled = PumpDispatcherUntilFast(
+                    () => hoverOverlay.Opacity > hoverAfterReenter + 0.002 && hoverOverlay.Opacity < 1,
+                    TimeSpan.FromMilliseconds(250));
+                hoverReenterProgress = hoverOverlay.Opacity;
+                PumpDispatcherUntilFast(() => Math.Abs(hoverOverlay.Opacity - 1) < 0.001, TimeSpan.FromMilliseconds(500));
+                hoverFinal = hoverOverlay.Opacity;
+
+                SetPressedStateProbe(button, true);
+                Assert.True(button.IsPressed, "synthetic state probe did not enter the production button's pressed state.");
+                pressMidpointSampled = PumpDispatcherUntilFast(
+                    () => scale.ScaleX < 0.999 && scale.ScaleX > 0.9701
+                        && pressedOverlay.Opacity > 0.01 && pressedOverlay.Opacity < 0.99,
+                    TimeSpan.FromMilliseconds(1000));
+                pressMidpoint = scale.ScaleX;
+                pressedOverlayMidpoint = pressedOverlay.Opacity;
+                SetPressedStateProbe(button, false);
+                Assert.False(button.IsPressed, "synthetic state probe did not leave the production button's pressed state.");
+                pressAfterRelease = scale.ScaleX;
+                pressedOverlayAfterRelease = pressedOverlay.Opacity;
+                pressReleasedContinuously = Math.Abs(pressAfterRelease - pressMidpoint) <= 0.01;
+                pressedOverlayReleasedContinuously = Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint) <= 0.08;
+
+                pressReleaseProgressSampled = PumpDispatcherUntilFast(
+                    () => scale.ScaleX > pressAfterRelease + 0.002 && scale.ScaleX < 1
+                        && pressedOverlay.Opacity < pressedOverlayAfterRelease - 0.002 && pressedOverlay.Opacity > 0,
+                    TimeSpan.FromMilliseconds(250));
+                pressedOverlayReleaseProgress = pressedOverlay.Opacity;
+                pressBeforeRepress = scale.ScaleX;
+                pressedOverlayBeforeRepress = pressedOverlay.Opacity;
+                SetPressedStateProbe(button, true);
+                pressAfterRepress = scale.ScaleX;
+                pressedOverlayAfterRepress = pressedOverlay.Opacity;
+                pressReversedContinuously = Math.Abs(pressAfterRepress - pressBeforeRepress) <= 0.01;
+                pressedOverlayReversedContinuously = Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress) <= 0.08;
+                Assert.True(button.IsPressed, "Second Space key down did not re-enter the pressed state.");
+                pressRepressProgressSampled = PumpDispatcherUntilFast(
+                    () => scale.ScaleX < pressAfterRepress - 0.002 && scale.ScaleX > 0.97
+                        && pressedOverlay.Opacity > pressedOverlayAfterRepress + 0.002 && pressedOverlay.Opacity < 1,
+                    TimeSpan.FromMilliseconds(250));
+                pressedOverlayRepressProgress = pressedOverlay.Opacity;
+                PumpDispatcherUntilFast(
+                    () => Math.Abs(scale.ScaleX - 0.97) < 0.001 && Math.Abs(pressedOverlay.Opacity - 1) < 0.001,
+                    TimeSpan.FromMilliseconds(500));
+                pressFinal = scale.ScaleX;
+                pressedOverlayFinal = pressedOverlay.Opacity;
+                SetPressedStateProbe(button, false);
+                PumpDispatcherUntil(() => Math.Abs(scale.ScaleX - 1) < 0.001, TimeSpan.FromMilliseconds(500));
+                pressReleasedFinal = scale.ScaleX;
+                PumpDispatcherUntil(() => Math.Abs(pressedOverlay.Opacity) < 0.001, TimeSpan.FromMilliseconds(500));
+                pressedOverlayReleasedFinal = pressedOverlay.Opacity;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; afterLeave={hoverAfterLeave:0.###}; exitProgress={hoverExitProgress:0.###}; beforeReenter={hoverBeforeReenter:0.###}; afterReenter={hoverAfterReenter:0.###}; reenterProgress={hoverReenterProgress:0.###}; final={hoverFinal:0.###}; midpointSampled={hoverMidpointSampled}; exitProgressSampled={hoverExitProgressSampled}; reenterProgressSampled={hoverReenterProgressSampled}; press scale midpoint={pressMidpoint:0.###}; afterRelease={pressAfterRelease:0.###}; releaseProgress={pressReleaseProgressSampled}; beforeRepress={pressBeforeRepress:0.###}; afterRepress={pressAfterRepress:0.###}; re-pressProgress={pressRepressProgressSampled}; finalPressed={pressFinal:0.###}; finalReleased={pressReleasedFinal:0.###}; overlay midpoint={pressedOverlayMidpoint:0.###}; afterRelease={pressedOverlayAfterRelease:0.###}; releaseProgress={pressedOverlayReleaseProgress:0.###}; beforeRepress={pressedOverlayBeforeRepress:0.###}; afterRepress={pressedOverlayAfterRepress:0.###}; re-pressProgress={pressedOverlayRepressProgress:0.###}; finalPressed={pressedOverlayFinal:0.###}; finalReleased={pressedOverlayReleasedFinal:0.###}; sampled={pressMidpointSampled}; scaleReleaseContinuous={pressReleasedContinuously}; overlayReleaseContinuous={pressedOverlayReleasedContinuously}; scaleRepressContinuous={pressReversedContinuously}; overlayRepressContinuous={pressedOverlayReversedContinuously}");
+        Assert.Null(exception);
+        Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
+        Assert.InRange(Math.Abs(hoverAfterLeave - hoverMidpoint), 0, 0.08);
+        Assert.InRange(Math.Abs(hoverAfterReenter - hoverBeforeReenter), 0, 0.08);
+        Assert.True(hoverExitProgressSampled, "production hover exit did not expose an in-flight sample");
+        Assert.True(hoverReenterProgressSampled, "production hover re-entry did not expose an in-flight sample");
+        Assert.True(hoverExitProgress < hoverAfterLeave, "hover exit did not continue toward zero");
+        Assert.True(hoverReenterProgress > hoverAfterReenter, "hover re-entry did not continue toward one");
+        Assert.Equal(1, hoverFinal, 2);
+        Assert.True(pressMidpointSampled, "production press scale did not expose an in-flight sample");
+        Assert.True(pressReleasedContinuously, "production press release jumped away from the rendered scale");
+        Assert.True(pressReleaseProgressSampled, "production press release did not expose an in-flight return sample");
+        Assert.True(pressBeforeRepress > pressAfterRelease, "press release did not continue toward the neutral scale");
+        Assert.True(pressReversedContinuously, "production rapid re-press jumped away from the rendered scale");
+        Assert.True(pressRepressProgressSampled, "production rapid re-press did not expose an in-flight sample");
+        Assert.Equal(0.97, pressFinal, 2);
+        Assert.Equal(1, pressReleasedFinal, 2);
+        Assert.True(pressedOverlayMidpoint > 0 && pressedOverlayMidpoint < 1, "production pressed overlay did not expose an in-flight sample");
+        Assert.True(pressedOverlayReleasedContinuously, "production pressed overlay release jumped away from its rendered opacity");
+        Assert.InRange(Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint), 0, 0.08);
+        Assert.True(pressedOverlayReleaseProgress < pressedOverlayAfterRelease, "pressed overlay release did not continue toward zero");
+        Assert.True(pressedOverlayReversedContinuously, "production pressed overlay re-press jumped away from its rendered opacity");
+        Assert.InRange(Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress), 0, 0.08);
+        Assert.True(pressedOverlayRepressProgress > pressedOverlayAfterRepress, "pressed overlay re-press did not continue toward one");
+        Assert.Equal(1, pressedOverlayFinal, 2);
+        Assert.Equal(0, pressedOverlayReleasedFinal, 2);
+    }
+
+    private static ResourceDictionary LoadProductionResources()
+        => Assert.IsType<ResourceDictionary>(XamlReader.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""><ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/AcrylicProductionResources.xaml""/>
+</ResourceDictionary.MergedDictionaries></ResourceDictionary>"));
+
+    private static void EnsureApplication()
+    {
+        var application = Application.Current ?? new Application();
+        application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+    }
+
+    private static bool SetMouseOverProbe(UIElement element, bool value)
+    {
+        var changeMouseOver = typeof(MouseDevice).GetMethod("ChangeMouseOver", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("WPF MouseDevice.ChangeMouseOver is unavailable.");
+        changeMouseOver.Invoke(Mouse.PrimaryDevice, new object?[] { value ? element : null, Environment.TickCount });
+        return element.IsMouseOver == value;
+    }
+
+    private static void SetPressedStateProbe(ButtonBase button, bool value)
+    {
+        var setIsPressed = typeof(ButtonBase).GetMethod("SetIsPressed", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new InvalidOperationException("WPF ButtonBase.SetIsPressed is unavailable.");
+        setIsPressed.Invoke(button, new object[] { value });
+    }
+
     private static Window CreateWindow(UIElement content, double width, double height)
         => new Window
         {
@@ -239,6 +459,20 @@ public sealed class R08MotionReverseBehaviorTests
                 return true;
 
             PumpDispatcher(TimeSpan.FromMilliseconds(40));
+        }
+
+        return condition();
+    }
+
+    private static bool PumpDispatcherUntilFast(Func<bool> condition, TimeSpan timeout)
+    {
+        var timeoutWatch = Stopwatch.StartNew();
+        while (timeoutWatch.Elapsed < timeout)
+        {
+            if (condition())
+                return true;
+
+            PumpDispatcher(TimeSpan.FromMilliseconds(5));
         }
 
         return condition();

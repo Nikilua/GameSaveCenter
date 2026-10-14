@@ -221,3 +221,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 用户明日 09:00 前无法回复；继续独立任务。下一项 Q24-06 当前 main UIA Name/HelpText/LabeledBy/Pattern 复核；Q24-03 仍需第二物理屏。
 - Q24-04 之前自己产生且未被证据引用的 TRX 仍在 Q24-02 证据 tests 目录；.tmp/q24-04-current-main-20261014 也曾登记为本轮临时目录。精确清理请求被执行策略拒绝，保留原状，不用其他删除接口。R04/R05/R07 等其它任务的未跟踪证据保持原样。
 - C 盘隔离临时构建约 46 MB。按精确路径清理时执行策略拒绝 Remove-Item，文件仍留在 C:\Users\lopmatu\AppData\Local\Temp\gsc-q24-05-build-20261014；未尝试其他删除接口。新 TRX 已脱敏并由 README 引用，其他未跟踪证据保持原样。
+
+## 2026-10-14 当前恢复点：R08-02
+
+- 当前分支 main，本批基线 066b9a6c01057c044ddc0d7c63ff70ce3dd7a6b3。R08-01 仅新增生产按钮 hover/press 中途反向行为测试；本机 SDK9.0.302 Release 0/0，R08 3/3、Q06 1/1、source validation、XAML 24/24、diff check 通过。详细输入与采样证据在 [R08-01 当前 main 包](design/reviews/ui-finesse-round3-20260915/evidence/R08-01-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- R08-01 用户机 1/2 失败仍没有具体方法、断言、堆栈/DLL；当前行为通过不能代替该问题定位。下一项 R08-02：先检查运行中的热关闭已有服务/模板与正负行为覆盖，再决定是否只补行为证据；保留系统/应用取消与错误语义、Playnite/net462 及动画时钟释放。
+- 用户报告另一台机器的 R09 失败为 Expected 2 / Actual 1。当前模板分离 Chrome 1 DIP 与 ValidationStroke 2 DIP；旧测试期望 Chrome 2 已在 f13b9e05 修正；本机当前 R09 2/2。未知外机 HEAD/PDB，因此把使用旧测试源/程序集或分支记为待确认而不是已证实；材料见 [R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- CI：#971/run 38393317198 公开状态仍 In progress（所附 ZIP 只有 SDK8 job）；#978/run 38509928015 Failure，完整日志登录限制、根因未知；#979 当前 queued。main 066b9a6 对应 run 尚未在公开列表显示。推送后逐一查 SDK8 与 SDK10.0.401 至终态；日志未取到时不盲改，继续独立 Q/R。
+- 保留他任务未跟踪证据与 WPF 临时项目；只清理本轮 .tmp/r08-01-production-button-sdk9-20261014，且在 TRX/身份已复制和哈希核对后执行。真实 Playnite、物理鼠标/键盘、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
