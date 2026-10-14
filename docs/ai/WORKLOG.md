@@ -1,3 +1,11 @@
+## 2026-10-15 R07-08 当前 main resize 压力复核
+
+- 当前 main commit `d190f7eac4d85e81193080a2ff4f73105cec9b45`。与旧 R07-08 证据基线 `552b8168` 相比，TaskCenter 与 resize 测试源未改，但共享 `WpfUiProduction.xaml`、`Redesign.xaml` 和 DataGrid 输入接线有更新，因此按当前源码隔离重建并实跑。
+- 本机锁定 SDK `8.0.423` / VSTest `17.11.1`、WPF testhost .NET Framework `4.8.9181.0`。Playnite 测试项目及引用 Release build `0 warning / 0 error`（插件 `net462`、测试 `net472`）；`scripts/check-xaml.ps1` `24/24`。R07 Resize `1/1` 与 Task 响应式 `8/8`，共 `9/9`、0 fail/skip。当前程序集、PDB、源与共享模板 hash 见[R07-08 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 使用实际生产 shell、TaskCenter、Task DataGrid、详情滚动器、GamePicker overlay 与 routed compact-details 按钮，五阶段 `1366×900→960×700→960×560→1440×900→1366×900 DIP`。任务表、详情、Picker 和搜索焦点始终可达；详情 MaxHeight 在窄/短样本收紧至 `136 DIP`，恢复宽窗回到 `∞`；恢复 PageHost 宽高与起点一致（误差≤`1 DIP`）；shell SizeChanged `11` 次。每阶段经 Dispatcher ApplicationIdle 和 UpdateLayout 后测量，不代表实际拖动帧耗时。
+- testhost 在成功结果之后打印多条 WPF TextServices `InvalidComObjectException` 收尾消息，exit `0`、9/9 通过，原因未知。真实 Playnite、真实鼠标拖动/稳定帧、物理 DPI/跨屏、UIA/读屏、presented frame、ETW/宿主性能仍待验。
+- d190f7ea 已推送；对应 Actions run ID/终态无法从当前通道读取。#1012/run `38640644812` 对父提交 `2b423737` 的最后观察为 In progress；不能据此推断 d190f7ea 的 CI 状态，也不能用本机 SDK8 替代 SDK10.0.401。下一项 R10-02 当前 main 复核，外机 R09 身份信息后续可取得时再核对。
+
 ## 2026-10-15 R07-07 当前 main 触控板小增量复核，并对照外机 R09 失败
 
 - 当前 main 源码身份 `2b42373771e950d087f393c0894380530d5eb227`；R07-07 只复跑既有行为，没有生产或测试源码改动。使用仓库锁定 SDK `8.0.423` / VSTest `17.11.1`，WPF testhost `.NET Framework 4.8.9181.0`；Playnite `net462`、测试 `net472`。隔离 restore/测试项目与引用 Release build `0 warning / 0 error`，`scripts/check-xaml.ps1` `24/24`。
