@@ -79,3 +79,5 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 同时检查了当前仓库一键脚本：`dev-install-run.ps1` 默认每次生成新的 `artifacts/gsc-b/<token>` 输出根目录；`build.ps1` 先把解决方案编译到该根目录，再将同一个根目录交给 `run-playnite-tests-isolated.ps1`，后者用 `--no-build` 从该次输出执行。因此，若外机实际运行的是这套当前脚本，单纯复用上一次随机输出目录不能解释失败。旧 checkout/旧脚本或实际源码、DLL、PDB 不一致仍是可能方向，但外机身份未提供，根因没有确认。
 
 若下次仍失败，优先附加该次 `artifacts/build-diagnostics/<run>/` 目录；最低限度需要 `summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/` 下的 console/TRX，以比较源码哈希、ProductVersion、DLL/PDB 和实际断言。当前没有更改生产模板，也没有放宽断言。`libpng iCCP` 不在厚度断言的调用栈；COM 异常仍只出现在失败后的 WPF 收尾。
+
+用户随后说明这次外机已从 Git 拉取最新版本，并再次贴出同一失败片段。该信息保留为用户报告；片段仍显示旧测试断言对应的 `2` 对 `1` 和第 151 行，但未包含机器实际 `HEAD`、工作树状态、诊断目录、测试源 SHA、DLL/PDB identity，因此不能据此断定 Git checkout 确实对应本轮最新 main，也不能确认根因。当前仍无依据改动生产模板或放宽断言；问题不阻塞独立 Q/R 任务。

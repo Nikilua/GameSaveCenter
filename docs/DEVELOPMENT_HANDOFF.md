@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。R12-03 生产路径预览已由 `c0adb1b7` 满足，本批仅补实际视图行为测试。SDK9.0.302/VSTest17.14.1：Playnite `3/3`、Worker `4/4`；生产 `MaintenanceView` 隔离 STA 长路径完整选择/Copy 可执行状态、80 项 Recycling 有限视口及 Worker 无写入负例通过。XAML `24/24`、source validation/diff check 通过，非完整 solution build。证据见[R12-03 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R12-03-CURRENT-MAIN-RECHECK-20261015/README.md)。下一项 Q24-04 补完整业务状态键盘行为。
+更新：2026-10-15；分支 main。当前阶段 Q24-04 在既有键盘焦点实现上补充失败任务业务状态轨迹：本机 SDK9.0.302/VSTest17.14.1 下 R21 `3/3`、R06 `2/2`、R23 `9/9`，合计 `14/14`。使用合成任务 DTO 和 no-op commands；没有改生产 UI 或执行操作。精确测试源、程序集与脱敏 TRX SHA/边界见[Q24-04 业务状态键盘补证](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。这不是完整 solution build；R00-08 baseline 待代码 commit 后按真实 SHA 更新。下一项 Q24-06 UI Automation；Q24-05 已有当前 main 焦点语义证据。
 
-用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。该断言对应旧提交 `3f7d0b30`；`f13b9e05` 已拆为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP，提交 `983fee5` 含新断言。当前 main 第151行是错误色，152/154行检查两种厚度；旧测试 DLL/源码映射最吻合，但外机 HEAD、工作树和 DLL/PDB identity 缺失，根因未确认。不要改生产模板/减弱断言；若可提供，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
+CI：暂停检查点 #920/run `36677346317`（`77de7f4`）与 #919/run `36675309812` 失败日志已归档，原因是旧测试夹具没有固定系统动效策略，不代表后续提交 CI。当前 Q24-04 代码推送后，须查询新 run 并分别跟踪仓库 SDK8 与 SDK10.0.401 job 到终态；本机 SDK9 不能替代 CI。外机 R09 用户称已拉最新，但提供的 log 没有 checkout/source/DLL/PDB identity；只保留为未确诊故障，不改生产模板。真实 Playnite、OS UIA/IME/Narrator、物理 DPI/跨屏、呈现帧、ETW 或宿主性能仍待验。
 
-CI：暂停检查点 #920/run `36677346317`（`77de7f4`）与 #919/run `36675309812` 现均 Failure，分别 7m04s/13m02s；两个 SDK `10.0.401` 完整日志已从归档读取。失败是旧 `ProductionShellChromeSourceTests` 动画正例只固定应用动效开关，runner 系统动效关闭后生产代码按策略停用时钟；`48b78b3b` 后续只修正测试前提并补系统策略覆盖，未改生产策略。日志归档与 SHA 见 R07-08 证据包。文档提交 `750349f3` 已推送，Actions 页面最新仍是加载失败的旧快照 #979 queued，未显示该提交对应 run；匿名 API 返回内部错误，run ID/终态未知。不得报 CI 通过或失败；SDK8 与 SDK10.0.401 分别追踪。R00/R01 freshness 在 `4078f23d` 为 `14/14 fresh`，package identity 未提供。当前 R12-03 测试与证据阶段尚待提交/推送，后续 CI 也须跟到明确终态。真实 Worker IPC/存档写入、Playnite 宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能仍待验；外机 R09 身份仍待核实。
+外机 R09 本次仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151；用户称该机已从 Git 拉取最新。当前 main line151 是 brush color assertion，故障片段没有实际 HEAD、工作树、测试源/DLL/PDB identity；旧测试源或符号错配只是线索，根因未确认。`libpng iCCP` 不在断言栈，COM teardown 出现在失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
 ## 2026-10-15 R12-03 当前 main 行为复核
 

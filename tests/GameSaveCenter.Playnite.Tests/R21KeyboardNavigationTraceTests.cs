@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -52,10 +56,10 @@ public sealed class R21KeyboardNavigationTraceTests
             foreach (var target in trace.VisibleInteractiveTargets)
             {
                 Assert.True(
-                    trace.Forward.Any(stop => ReferenceEquals(stop.Target, target.Target)),
+                    IsTargetReached(target, trace.Forward),
                     trace.Name + " forward Tab cannot reach " + target.Description + "; " + trace.ToFailureMessage());
                 Assert.True(
-                    trace.Reverse.Any(stop => ReferenceEquals(stop.Target, target.Target)),
+                    IsTargetReached(target, trace.Reverse),
                     trace.Name + " reverse Shift+Tab cannot reach " + target.Description + "; " + trace.ToFailureMessage());
             }
 
@@ -80,12 +84,20 @@ public sealed class R21KeyboardNavigationTraceTests
         foreach (var stop in stops)
         {
             var target = trace.VisibleInteractiveTargets.FirstOrDefault(candidate => ReferenceEquals(candidate.Target, stop.Target));
+            if (target == null
+                && stop.DataGrid is { } owner
+                && trace.VisibleInteractiveTargets.FirstOrDefault(candidate => ReferenceEquals(candidate.Target, owner)) is { } dataGrid)
+                target = dataGrid;
             if (target != null && !result.Any(existing => ReferenceEquals(existing.Target, target.Target)))
                 result.Add(target);
         }
 
         return result;
     }
+
+    private static bool IsTargetReached(InteractiveTarget target, IEnumerable<FocusStop> stops)
+        => stops.Any(stop => ReferenceEquals(stop.Target, target.Target)
+            || (target.Target is DataGrid && ReferenceEquals(stop.DataGrid, target.Target)));
 
     private static void EnsureHostTextBlockStyle()
     {
@@ -139,6 +151,184 @@ public sealed class R21KeyboardNavigationTraceTests
             });
         });
     }
+
+    [Fact]
+    public void SelectedFailedTaskKeepsFiltersTableDetailsAndFooterInKeyboardOrder()
+    {
+        EntryTrace? trace = null;
+        TaskStatusDto? selectedTask = null;
+        TaskStatusDto? selectedGridItem = null;
+        var visibleRowCount = 0;
+        var detailText = string.Empty;
+        var taskGridHadKeyboardFocus = false;
+        var selectedCellWasReached = false;
+        var selectedCellWasReachedReverse = false;
+        var retryActionEnabled = false;
+        var cancelActionEnabled = true;
+        var retryCommandStayedBound = false;
+        var focusStops = string.Empty;
+
+        RunSta(() =>
+        {
+            var succeeded = new TaskStatusDto
+            {
+                TaskId = "keyboard-success",
+                TaskType = "Backup",
+                GameId = "synthetic-game-1",
+                GameName = "成功任务样例",
+                State = TaskState.Succeeded,
+                ProgressPercent = 100,
+                CreatedUtc = DateTime.UtcNow.AddMinutes(-3),
+                Message = "合成备份完成"
+            };
+            var running = new TaskStatusDto
+            {
+                TaskId = "keyboard-running",
+                TaskType = "MediaSync",
+                GameId = "synthetic-game-2",
+                GameName = "运行任务样例",
+                State = TaskState.Running,
+                ProgressPercent = 42,
+                StageMessage = "正在执行",
+                CreatedUtc = DateTime.UtcNow.AddMinutes(-2),
+                StartedUtc = DateTime.UtcNow.AddMinutes(-1),
+                Message = "合成任务仍在运行"
+            };
+            var failed = new TaskStatusDto
+            {
+                TaskId = "keyboard-failed",
+                TaskType = "Validation",
+                GameId = "synthetic-game-3",
+                GameName = "失败任务样例",
+                State = TaskState.Failed,
+                ProgressPercent = 64,
+                CreatedUtc = DateTime.UtcNow.AddMinutes(-1),
+                StartedUtc = DateTime.UtcNow.AddSeconds(-50),
+                FinishedUtc = DateTime.UtcNow.AddSeconds(-5),
+                ErrorCode = "E_KEYBOARD_SAMPLE",
+                ErrorMessage = "仅用于任务中心焦点顺序复核的合成错误详情。"
+            };
+            var fixture = new TaskKeyboardFixture(new[] { succeeded, running, failed }, failed);
+            var view = new TaskCenterView { DataContext = fixture };
+            using var host = new TraceHost(view, 1280, 760);
+            view.ApplyResponsiveLayout(1280, 760);
+            host.Pump();
+
+            var grid = Assert.IsType<DataGrid>(view.FindName("TaskGrid"));
+            var technicalDetails = Assert.IsType<Expander>(view.FindName("TaskTechnicalDetailsExpander"));
+            grid.ScrollIntoView(failed);
+            technicalDetails.IsExpanded = true;
+            host.Pump();
+
+            selectedTask = fixture.SelectedTask;
+            selectedGridItem = grid.SelectedItem as TaskStatusDto;
+            visibleRowCount = grid.Items.Count;
+            var retryButton = FindNamedButton(view, "安全重试任务");
+            var cancelButton = FindNamedButton(view, "取消任务");
+            retryActionEnabled = retryButton.IsEnabled;
+            cancelActionEnabled = cancelButton.IsEnabled;
+            retryCommandStayedBound = ReferenceEquals(retryButton.Command, fixture.RetryTaskCommand);
+            detailText = string.Join(" ", EnumerateElements(view)
+                .OfType<TextBlock>()
+                .Select(text => text.Text));
+            Keyboard.Focus(grid);
+            taskGridHadKeyboardFocus = grid.IsKeyboardFocusWithin;
+
+            var selectedRow = EnumerateElements(grid)
+                .OfType<DataGridRow>()
+                .FirstOrDefault(row => ReferenceEquals(row.Item, failed));
+            var selectedCell = selectedRow == null
+                ? null
+                : EnumerateElements(selectedRow)
+                    .OfType<DataGridCell>()
+                    .FirstOrDefault(cell => cell.IsVisible && cell.ActualWidth > 0 && cell.ActualHeight > 0);
+
+            var entry = new EntrySpec("TaskCenter failed selection", () => view, new[]
+            {
+                "搜索任务", "任务状态筛选", "任务列表", "任务可选择技术详情", "安全重试任务"
+            });
+            trace = TraceEntry(entry, host);
+            if (!trace.VisibleInteractiveTargets.Any(target => ReferenceEquals(target.Target, grid)))
+                trace.VisibleInteractiveTargets.Add(new InteractiveTarget(grid, "任务列表"));
+            selectedCellWasReached = selectedCell != null
+                && trace.Forward.Any(stop => ReferenceEquals(stop.Target, selectedCell));
+            selectedCellWasReachedReverse = selectedCell != null
+                && trace.Reverse.Any(stop => ReferenceEquals(stop.Target, selectedCell));
+            focusStops = string.Join(" > ", trace.Forward.Select(stop => stop.AutomationName + ":" + stop.TypeName));
+        });
+
+        Assert.NotNull(trace);
+        Assert.Equal("keyboard-failed", selectedTask?.TaskId);
+        Assert.Same(selectedTask, selectedGridItem);
+        Assert.Equal(3, visibleRowCount);
+        Assert.Contains("E_KEYBOARD_SAMPLE", detailText, StringComparison.Ordinal);
+        Assert.True(taskGridHadKeyboardFocus, "the populated task grid must accept keyboard focus");
+        Assert.True(retryActionEnabled, "the failed task keeps its retry action available");
+        Assert.False(cancelActionEnabled, "a terminal failed task must not expose cancellation as an enabled action");
+        Assert.True(retryCommandStayedBound, "the inspector retry button must retain its bound command");
+        Assert.True(selectedCellWasReached, "Tab must reach a cell in the selected task row; stops=[" + focusStops + "]");
+        Assert.True(selectedCellWasReachedReverse, "Shift+Tab must reach a cell in the selected task row; stops=[" + focusStops + "]");
+        Assert.All(trace!.Forward.Concat(trace.Reverse), stop =>
+            Assert.True(stop.IsInsideEntry, "focus escaped the TaskCenter host at " + stop.AutomationName));
+
+        var forward = GetInteractiveTrace(trace!, trace!.Forward);
+        var reverse = GetInteractiveTrace(trace!, trace!.Reverse);
+        foreach (var target in trace.VisibleInteractiveTargets)
+        {
+            Assert.True(IsTargetReached(target, trace.Forward), "forward Tab cannot reach " + target.Description + "; " + trace.ToFailureMessage());
+            Assert.True(IsTargetReached(target, trace.Reverse), "reverse Shift+Tab cannot reach " + target.Description + "; " + trace.ToFailureMessage());
+        }
+        var expectedSequence = new[]
+        {
+            "搜索任务",
+            "任务状态筛选",
+            "任务类型筛选",
+            "任务时间范围",
+            "任务列表",
+            "任务可选择技术详情",
+            "查看关联游戏详情",
+            "复制任务摘要和错误码",
+            "安全重试任务"
+        };
+        AssertInOrder(forward, expectedSequence, "forward Tab");
+
+        var forwardTargets = forward.Select(target => target.Target).ToArray();
+        var reverseTargets = reverse.Select(target => target.Target).ToArray();
+        var pivotIndex = forwardTargets.Length == 0
+            ? -1
+            : Array.FindIndex(forwardTargets, target => ReferenceEquals(target, trace!.Forward[0].Target));
+        var expectedReverse = pivotIndex >= 0
+            ? new[] { forwardTargets[pivotIndex] }.Concat(forwardTargets.Skip(pivotIndex + 1).Reverse()).ToArray()
+            : forwardTargets.Reverse().ToArray();
+        Assert.Equal(expectedReverse, reverseTargets);
+        _output.WriteLine(trace.ToFailureMessage());
+        _output.WriteLine("selected={0}; rows={1}; failed details present={2}; retry enabled={3}; cancel enabled={4}; selected row cell reached both ways={5}",
+            selectedTask?.TaskId,
+            visibleRowCount,
+            detailText.Contains("E_KEYBOARD_SAMPLE"),
+            retryActionEnabled,
+            cancelActionEnabled,
+            selectedCellWasReached && selectedCellWasReachedReverse);
+    }
+
+    private static void AssertInOrder(
+        IReadOnlyList<InteractiveTarget> trace,
+        IReadOnlyList<string> expectedNames,
+        string direction)
+    {
+        var previousIndex = -1;
+        foreach (var name in expectedNames)
+        {
+            var index = trace.ToList().FindIndex(previousIndex + 1, target => target.Description == name);
+            Assert.True(index > previousIndex, direction + " skips or reorders " + name + "; reached=["
+                + string.Join(" > ", trace.Select(target => target.Description)) + "]");
+            previousIndex = index;
+        }
+    }
+
+    private static ButtonBase FindNamedButton(FrameworkElement root, string automationName)
+        => Assert.Single(EnumerateElements(root).OfType<ButtonBase>(),
+            button => AutomationProperties.GetName(button) == automationName);
 
     private static IReadOnlyList<EntrySpec> CreateEntries()
         => new[]
@@ -231,7 +421,21 @@ public sealed class R21KeyboardNavigationTraceTests
             automationName,
             element?.GetType().Name ?? "null",
             IsDescendantOf(dependencyObject, scope),
-            element);
+            element,
+            FindAncestorDataGrid(dependencyObject));
+    }
+
+    private static DataGrid? FindAncestorDataGrid(DependencyObject? element)
+    {
+        var current = element;
+        while (current != null)
+        {
+            if (current is DataGrid grid)
+                return grid;
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        return null;
     }
 
     private static IEnumerable<FrameworkElement> EnumerateFocusable(DependencyObject root)
@@ -348,18 +552,20 @@ public sealed class R21KeyboardNavigationTraceTests
 
     private sealed class FocusStop
     {
-        public FocusStop(string automationName, string typeName, bool isInsideEntry, IInputElement? target)
+        public FocusStop(string automationName, string typeName, bool isInsideEntry, IInputElement? target, DataGrid? dataGrid)
         {
             AutomationName = automationName;
             TypeName = typeName;
             IsInsideEntry = isInsideEntry;
             Target = target;
+            DataGrid = dataGrid;
         }
 
         public string AutomationName { get; }
         public string TypeName { get; }
         public bool IsInsideEntry { get; }
         public IInputElement? Target { get; }
+        public DataGrid? DataGrid { get; }
     }
 
     private sealed class InteractiveTarget
@@ -374,9 +580,98 @@ public sealed class R21KeyboardNavigationTraceTests
         public string Description { get; }
     }
 
+    private sealed class TaskKeyboardFixture : INotifyPropertyChanged
+    {
+        private TaskStatusDto? selectedTask;
+
+        public TaskKeyboardFixture(IEnumerable<TaskStatusDto> tasks, TaskStatusDto selectedTask)
+        {
+            TasksView = CollectionViewSource.GetDefaultView(new ObservableCollection<TaskStatusDto>(tasks));
+            this.selectedTask = selectedTask;
+            OpenSelectedTaskGameCommand = new NoOpCommand(() => !string.IsNullOrWhiteSpace(SelectedTask?.GameId));
+            CopyTaskErrorCommand = new NoOpCommand(() => SelectedTask?.State == TaskState.Failed);
+            RetryTaskCommand = new NoOpCommand(() => SelectedTask?.State == TaskState.Failed);
+            CancelTaskCommand = new NoOpCommand(() => SelectedTask?.CanCancel == true);
+        }
+
+        public ICollectionView TasksView { get; }
+        public TaskStatusDto? SelectedTask
+        {
+            get => selectedTask;
+            set
+            {
+                if (ReferenceEquals(selectedTask, value)) return;
+                selectedTask = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTask)));
+            }
+        }
+
+        public string TaskSearchText { get; set; } = "合成任务";
+        public string TaskStatusFilter { get; set; } = "全部";
+        public string TaskTypeFilter { get; set; } = "全部";
+        public string TaskHistoryScope { get; set; } = "全部时间";
+        public string TaskHistoryRange { get; set; } = "全部时间";
+        public string TaskFilterPresetNameDraft { get; set; } = "复核预设";
+        public string TaskPageState { get; } = "Loaded";
+        public string TaskLoadedSummary { get; } = "3 条合成记录";
+        public string TaskPageStatusSummary { get; } = "测试数据已加载";
+        public string TaskPageStatusSummaryFullDisplay { get; } = "键盘顺序测试的合成任务状态";
+        public string TaskActiveFiltersSummary { get; } = "全部任务";
+        public bool TaskPageHasItems => true;
+        public bool TaskPageLoadFailed => false;
+        public bool IsTaskPageLoading => false;
+        public bool TaskHistoryHasMore => false;
+        public bool TaskHasActiveFilters => false;
+        public bool HasTaskNavigationTarget => false;
+        public int TaskTotalCount => 3;
+        public int RunningTaskCount => TasksView.Cast<TaskStatusDto>().Count(task => task.State == TaskState.Running);
+        public int RetryableTaskCount => TasksView.Cast<TaskStatusDto>().Count(task => task.State == TaskState.Failed);
+        public int CompletedTaskCount => TasksView.Cast<TaskStatusDto>().Count(task => task.State == TaskState.Succeeded);
+        public int TaskWaitingSummary => 0;
+        public string TaskRetrySummary => "失败 1";
+        public ObservableCollection<string> TaskStatusFilterOptions { get; } = new() { "全部", "失败", "运行中" };
+        public ObservableCollection<string> TaskTypeFilterOptions { get; } = new() { "全部", "存档校验", "媒体同步" };
+        public ObservableCollection<string> TaskHistoryScopeOptions { get; } = new() { "全部时间", "最近" };
+        public ObservableCollection<string> TaskHistoryRangeOptions { get; } = new() { "全部时间", "30 天" };
+        public ObservableCollection<TaskFilterPresetProbe> TaskFilterPresets { get; } = new() { new TaskFilterPresetProbe("默认") };
+        public TaskFilterPresetProbe? SelectedTaskFilterPreset { get; set; }
+
+        public ICommand RefreshCommand { get; } = new NoOpCommand();
+        public ICommand RetryAllTasksCommand { get; } = new NoOpCommand();
+        public ICommand LoadMoreTasksCommand { get; } = new NoOpCommand();
+        public ICommand ClearTaskFiltersCommand { get; } = new NoOpCommand();
+        public ICommand ClearTaskNavigationContextCommand { get; } = new NoOpCommand();
+        public ICommand ApplyTaskFilterPresetCommand { get; } = new NoOpCommand();
+        public ICommand SaveTaskFilterPresetCommand { get; } = new NoOpCommand();
+        public ICommand RenameTaskFilterPresetCommand { get; } = new NoOpCommand();
+        public ICommand DeleteTaskFilterPresetCommand { get; } = new NoOpCommand();
+        public ICommand OpenSelectedTaskGameCommand { get; }
+        public ICommand CopyTaskErrorCommand { get; }
+        public ICommand RetryTaskCommand { get; }
+        public ICommand CancelTaskCommand { get; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class TaskFilterPresetProbe
+    {
+        public TaskFilterPresetProbe(string name) => Name = name;
+        public string Name { get; }
+    }
+
+    private sealed class NoOpCommand : ICommand
+    {
+        private readonly Func<bool> canExecute;
+
+        public NoOpCommand(Func<bool>? canExecute = null) => this.canExecute = canExecute ?? (() => true);
+        public bool CanExecute(object? parameter) => canExecute();
+        public void Execute(object? parameter) { }
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+    }
+
     private sealed class TraceHost : IDisposable
     {
-        public TraceHost(UserControl entry)
+        public TraceHost(UserControl entry, double width = 1040, double height = 700)
         {
             Entry = entry;
             Scope = new Grid();
@@ -388,8 +683,8 @@ public sealed class R21KeyboardNavigationTraceTests
             Window = new Window
             {
                 Content = Scope,
-                Width = 1040,
-                Height = 700,
+                Width = width,
+                Height = height,
                 ShowInTaskbar = false,
                 ShowActivated = true,
                 WindowStyle = WindowStyle.None,

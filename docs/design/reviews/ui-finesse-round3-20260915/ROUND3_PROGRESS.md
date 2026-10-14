@@ -1629,6 +1629,14 @@
 - 因 `*Keyboard*.cs` 是 R00-08 登记源码，本次按精确身份重跑 GamePicker 和焦点轨迹后只更新 R00-08 baseline 到 `87070909`；freshness 重算 `14 records / 0 needsRerun`。其他 R00/R01 source commit 未改变，package identity 仍为 `not-provided`。
 - 这只证明受控 STA 窗口里当前默认内容的 WPF 键盘焦点遍历，不证明完整数据状态下每一行/详情命令、按屏幕阅读顺序是否正确、物理 Tab 输入或 Playnite 嵌入。Q24-04 视觉栏仍待验，真实六页走查与宿主验收未完成。#973/run `38429051152` 在本次检查仍 `In progress`；本批代码与前两项代码提交尚待推送并跟 SDK8/SDK10 CI 至终态。
 - 下一可执行项 Q24-05：核对现有 Focus/Selected/Current 状态与弹层关闭后的焦点返回；复用现有状态服务与 WPF 行为夹具，真实宿主仍单独标记。
+
+## 2026-10-15 Q24-04 失败任务状态键盘路径补证
+
+- 核对已有 `TaskCenterView`、筛选器、DataGrid、技术详情和页尾命令后，仅补 `R21KeyboardNavigationTraceTests`，没有新建业务服务/DTO或生产 UI。合成成功、运行中、失败 `TaskStatusDto` 中选择失败项，加载生产视图、展开技术详情，并执行 Tab/Shift+Tab 轨迹与反向顺序核对；Retry 可用、Cancel 不可用，命令 fixture 为 no-op 且未执行。
+- 基于 `5838bb51` 的本机源工作树定向 Release 构建：SDK `9.0.302`、VSTest `17.14.1`、Playnite `net462`、tests `net472`，测试项目与引用构建成功，非完整 solution build。R21 `3/3`、R06 `2/2`、R23 `9/9`，共 `14/14`。测试源 SHA、DLL ProductVersion/SHA、脱敏 TRX 及行为边界见[Q24-04 业务状态键盘证据](evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。
+- 不改生产 XAML/VM/服务/DTO，无截图或真实呈现声明。Q24-04 的受控业务状态自动行为已补证；真实 Playnite、OS 键盘、完整页面阅读顺序、UIA/Narrator、视觉验收仍未完成，因此 Round2 总体状态保持未完成。R00-08 freshness 因测试源登记路径被改动，须在代码 commit 后按真实 SHA 更新 baseline 再报告新 freshness。
+- 外机 R09 用户称已从 Git 拉取最新，仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、line151；片段缺少 HEAD/source/DLL/PDB identity。当前 main 同名测试第151行是颜色断言；旧断言或符号映射错配仍未确诊，不改生产模板/放宽断言。
+- Q24-05 已在当前 main 有受控焦点语义证据；下一依赖项为 Q24-06 UI Automation，先复用并核对现有 Name/HelpText/LabeledBy/AutomationPeer。
 ## 2026-10-14 Q24-05 当前 main 焦点语义复核
 
 - 用户新附加的 #970/#971 三份 ZIP 经 SHA-256 核对为已审包的完全相同副本：#970 SDK10、#970 SDK8、#971 SDK8；没有新增 #971 SDK10 diagnostics。独立工作不等待缺失包。

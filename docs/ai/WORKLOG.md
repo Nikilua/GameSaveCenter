@@ -1,3 +1,11 @@
+## 2026-10-15 Q24-04 失败任务状态键盘路径补证
+
+- 先核对 R21 原测试能力：它遍历八个生产视图默认状态，但没有构造 Task Center 的失败任务、筛选、数据行、展开错误详情与页尾动作状态。复用生产 `TaskCenterView`、`TaskStatusDto` 和现有 no-op 命令 fixture；仅改 `R21KeyboardNavigationTraceTests.cs`，没有新建业务服务/DTO或改生产 XAML。
+- 新行为加载三条合成成功/运行中/失败任务并选择失败项，实际展开技术详情；核对筛选器、DataGrid行/单元格、错误详情与页尾按钮的 Tab/Shift+Tab 顺序，以及 Retry enabled / Cancel disabled。绑定保留且没有调用任何命令。
+- SDK9.0.302、VSTest17.14.1、WPF testhost .NET Framework 4.8.9181.0：Playnite net462 / tests net472 定向 Release 项目与引用成功构建；R21 `3/3`、R06 `2/2`、R23 `9/9`，`14/14` 通过。不是完整 solution build。TRX、test/plugin DLL SHA、源 SHA 和真实宿主边界见[Q24-04 业务状态键盘补证](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。
+- 无生产 UI 变化，不做截图或把受控焦点测试说成 Playnite/OS 键盘/视觉验收。R00-08 freshness 路径命中该测试源；代码 commit 后再用精确提交 SHA 更新 baseline 并运行 freshness。当前 CI 尚须在推送后分别核对 SDK8 和 SDK10.0.401 job 到明确终态；本机 SDK9 不能替代 CI。
+- 用户提供的外机 R09 log 再次报 Expected `2,2,2,2` / Actual `1,1,1,1`、line151，并称从 Git 拉取最新。current main line151仍是 brush color assertion；故障片段不含 HEAD/working tree/source/DLL/PDB身份。旧源码/符号映射仍是推断；`libpng iCCP` 和失败后的 COM teardown 均不能解释厚度断言。没有改模板或降低测试门禁。
+- 下一项 Q24-06 UI Automation：先核查已有生产 Name/HelpText/LabeledBy/AutomationPeer 和模式，再补缺失行为；Q24-05 已有焦点语义证据，避免重复实现。真实 Playnite/Narrator/UIA仍单列待验。
 ## 2026-10-15 R12-03 目标路径核对当前 main 复核
 
 - 先复核现有 `PathRemapService`、路径 DTO、SQLite 映射和 `MaintenanceView`，生产能力在 `c0adb1b7` 已完成；本轮没有重建/修改生产实现，仅增强 Playnite 行为测试。
