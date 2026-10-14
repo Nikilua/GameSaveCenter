@@ -23,4 +23,4 @@
 
 ## 下一步
 
-截至 2026-10-15，旧 Actions #1008/run `38630493740` 与 #1009/run `38631425713` 均已 Failure；公开 job 页只显示状态，匿名 log API 返回 403、step-log 路由 404，主机未安装 `gh` CLI。用户附加的 #970/#971 diagnostics ZIP 来自更早 source commits，不是这两次 run 的日志，故失败根因未知。代码阶段推送后跟踪本阶段 SDK8/SDK10 CI 到终态；若失败先取得完整 job log，不凭摘要猜因。随后推进 R07-05 当前 main 复核。
+截至 2026-10-15，旧 Actions #1008/run `38630493740` 与 #1009/run `38631425713` 均已 Failure；公开 job 页只显示状态，匿名 log API 返回 403、step-log 路由 404，主机未安装 `gh` CLI。用户附加的 #970/#971 diagnostics ZIP 来自更早 source commits，不是这两次 run 的日志，故失败根因未知。R07-04 提交 `aa49a569` 新触发的 #1010/run `38636778462` 含 job `116101841201`、`116101841930`，当前为 In progress，需继续跟 SDK8/SDK10 至终态；若失败先取得完整 job log，不凭摘要猜因。下一项 R07-06 当前 main 复核。

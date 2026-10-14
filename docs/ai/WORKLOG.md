@@ -1,3 +1,11 @@
+## 2026-10-15 R07-05 当前 main 详情断点复核
+
+- 复查旧 `ec9b0a21` 之后的 6 个详情断点相关源码/测试文件均有变化，因此重建当前 main 程序集并复跑本项与相邻行为；没有改 R07-05 生产布局或测试源码。
+- 当前 commit `aa49a5698492faf847cd4385e1647f6eb1b01683`，本机 SDK `9.0.302` / VSTest `17.14.1`。隔离 Playnite 测试项目及引用 Release build `0 warning / 0 error`，Playnite `net462`、测试 `net472`；`ResponsiveLayoutCoordinator 5/5`、详情断点 `1/1`、滚动所有权 `2/2`、TaskCenter responsive `8/8`、R06 详情 `2/2`，共 `18/18`。
+- 生产 TaskCenter 的 STA WPF 夹具按 `1000→979→981→971→979→988 DIP` 检查选择、焦点、offset 与紧凑详情可见；内容预算带内无重复切换，越过 `972/988 DIP` 滞回阈值只完成预期转换。TRX/DLL 哈希与真实宿主待验边界见[R07-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-05-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- WPF testhost teardown 输出一次 `TextServicesContext.InvalidComObjectException`，VSTest exit `0`、测试 `18/18`；根因未知。测试是合成 DTO、隔离 STA 和逻辑 DIP，不代表真实 Playnite 拖窗、物理 DPI/跨屏、设备输入、UIA/读屏、最终呈现、ETW 或宿主性能。
+- R07-04 提交 `aa49a569` 的 Actions #1010/run `38636778462` 当前 In progress（jobs `116101841201`、`116101841930`）；不能当作终态通过。先继续追 CI，同时下一项推进 R07-06 当前 main 状态横幅复核。
+
 ## 2026-10-15 R07-04 横向滚动输入与端点补强
 
 - 依据 R07-04 表格条件重审 2026-09-18 证据：原探针的 8 组合几何与端点验证有效，但 Ctrl/Shift/触控板输入未覆盖；旧诊断字符串“Ctrl+Shift/触控板等效”超过实际证据，本轮改为“水平左端程序化复位”。
@@ -6,7 +14,7 @@
 - 本机 SDK `9.0.302`（仓库固定 `8.0.423` 本机缺失）、VSTest `17.14.1`；Playnite 测试项目/引用与 RenderHarness Release build 均 `0 warning / 0 error`；Light/Dark × Save/Task/Media/Maintenance 端点探针 `8/8`、XAML `24/24`、source validation 和 diff check 通过。不是完整 solution build，不能替代 SDK8/SDK10 CI。
 - `WM_MOUSEHWHEEL` 是合成参数直达生产 handler，没有做真实操作系统输入注入；真实触控板/鼠标、Playnite 宿主、物理 DPI/跨屏、presented frame、UIA/读屏与 ETW/性能仍待验。TRX 与范围见[R07-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R07-04-CURRENT-MAIN-RECHECK-20261015/README.md)。初次红测暴露的是共享样式漏接，已在 `GscRedesignWorkspaceDataGrid` 共享 setter 修正；最终回归均通过。
 - 用户附加的 #970/#971 diagnostics ZIP 已核对：SDK8.0.423/source `c9f9179` 包内 R09 类 `2/2` 且测试源 SHA 与当前相同；SDK10.0.401 包失败点为 Worker 取消用例 `Expected 1 / Actual 0`；另一 SDK8 包失败点为 Q14 toolbar 中心差异，均不等于外机当前 R09 栈。详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
-- 下一项 R07-05 详情断点当前 main 复核。#1008/run 38630493740 与 #1009/run 38631425713 于 2026-10-15 均 Failure，公开 job 页仅有状态，匿名日志 API 403、step-log 404、主机无 gh CLI；附件属于更早 source commits，不能作为新 run 的失败日志。根因未知，不盲修；继续跟踪本阶段新 SDK8/SDK10 run。
+- 已完成的下一项 R07-05 当前 main 复核记录在本文件顶部；接续 R07-06 状态横幅预算。#1008/#1009 于 2026-10-15 均 Failure，公开 job 页仅有状态，匿名日志 API 403、step-log 404、主机无 gh CLI；附件属于更早 source commits，不能作为新 run 的失败日志。根因未知，不盲修；R07-04 新 run #1010 仍需跟 SDK8/SDK10 到终态。
 
 ## 2026-10-15 R00/R01 当前 main freshness 与完成条件复核
 
