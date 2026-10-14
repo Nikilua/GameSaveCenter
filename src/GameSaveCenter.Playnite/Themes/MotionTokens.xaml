@@ -9,5 +9,7 @@
     <Duration x:Key="GscMotionPress">0:0:0.10</Duration>
     <Duration x:Key="GscMotionNormal">0:0:0.22</Duration>
     <Duration x:Key="GscMotionSlow">0:0:0.30</Duration>
+    <sys:Double x:Key="GscButtonHoverOverlayOpacity">1</sys:Double>
+    <sys:Double x:Key="GscButtonPressedOverlayOpacity">1</sys:Double>
     <CubicEase x:Key="GscMotionEaseOut" EasingMode="EaseOut"/>
 </ResourceDictionary>

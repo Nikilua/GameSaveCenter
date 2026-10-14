@@ -87,6 +87,8 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             Background = Brushes.Transparent
         };
         var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, theme);
+        AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
+        AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, !palette.IsHighContrast);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(root.Resources, palette, true, true);
         root.Background = CreateOpaqueSampleBackground(palette);
 

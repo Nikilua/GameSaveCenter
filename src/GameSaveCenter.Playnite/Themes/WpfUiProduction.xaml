@@ -246,6 +246,16 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.46"/>
             </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="False"/>
+                    <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Opacity" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+            </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -293,6 +303,25 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.42"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="2"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -379,6 +408,25 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ItemChrome" Property="Opacity" Value="0.42"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemChrome" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="2"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -1001,45 +1049,87 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
+                            <Setter TargetName="HoverOverlay" Property="Opacity" Value="{DynamicResource GscButtonHoverOverlayOpacity}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonHoverOutStoryboard"/>
+                                <BeginStoryboard x:Name="GscButtonHoverInStoryboard">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonHoverInStoryboard"/>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonHoverInStoryboard"/>
+                                <BeginStoryboard x:Name="GscButtonHoverOutStoryboard">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonHoverOutStoryboard"/>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
                         <Trigger Property="IsPressed" Value="True">
                             <!-- Keep the pressed dim subtle: the overlay and scale already
                                  carry the tactile state, while a large parent opacity can
                                  push black OnAccent text below the light-theme threshold. -->
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.96"/>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
+                            <Setter TargetName="PressedOverlay" Property="Opacity" Value="{DynamicResource GscButtonPressedOverlayOpacity}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonPressOutStoryboard"/>
+                                <BeginStoryboard x:Name="GscButtonPressInStoryboard">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                         <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0.97" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                         <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="0.97" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonPressInStoryboard"/>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed" Value="False"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonPressInStoryboard"/>
+                                <BeginStoryboard x:Name="GscButtonPressOutStoryboard">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                         <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                         <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="GscButtonPressOutStoryboard"/>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="FocusOverlay" Property="Opacity" Value="1"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
@@ -1054,6 +1144,16 @@
                                  its own rather than relying on a second control opacity. -->
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.72"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ButtonChrome" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                            <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

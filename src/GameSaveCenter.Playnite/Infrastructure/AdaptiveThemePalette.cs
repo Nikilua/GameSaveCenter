@@ -55,6 +55,30 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     internal static class AdaptiveThemePaletteFactory
     {
+        public static readonly DependencyProperty HighContrastActiveProperty = DependencyProperty.RegisterAttached(
+            "HighContrastActive",
+            typeof(bool),
+            typeof(AdaptiveThemePaletteFactory),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+
+        public static readonly DependencyProperty MotionEnabledActiveProperty = DependencyProperty.RegisterAttached(
+            "MotionEnabledActive",
+            typeof(bool),
+            typeof(AdaptiveThemePaletteFactory),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+
+        public static bool GetHighContrastActive(DependencyObject element)
+            => (bool)element.GetValue(HighContrastActiveProperty);
+
+        public static void SetHighContrastActive(DependencyObject element, bool value)
+            => element.SetValue(HighContrastActiveProperty, value);
+
+        public static bool GetMotionEnabledActive(DependencyObject element)
+            => (bool)element.GetValue(MotionEnabledActiveProperty);
+
+        public static void SetMotionEnabledActive(DependencyObject element, bool value)
+            => element.SetValue(MotionEnabledActiveProperty, value);
+
         private static readonly string[] BackgroundResourceKeys =
         {
             // Dune and other current Desktop themes use the correctly spelled key. Keep the
@@ -366,6 +390,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public static void ApplyMaterialResources(ResourceDictionary resources, AdaptiveThemePalette palette, bool glassEnabled, bool motionEnabled)
         {
             glassEnabled = glassEnabled && palette.GlassEnabled;
+            var effectiveMotionEnabled = motionEnabled && !palette.IsHighContrast;
+            resources["GscMotionFast"] = new Duration(effectiveMotionEnabled
+                ? GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Fast)
+                : TimeSpan.Zero);
+            resources["GscMotionPress"] = new Duration(effectiveMotionEnabled
+                ? GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Press)
+                : TimeSpan.Zero);
+            resources["GscMotionNormal"] = new Duration(effectiveMotionEnabled
+                ? GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Normal)
+                : TimeSpan.Zero);
+            resources["GscMotionSlow"] = new Duration(effectiveMotionEnabled
+                ? GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Slow)
+                : TimeSpan.Zero);
+            resources["GscButtonHoverOverlayOpacity"] = effectiveMotionEnabled ? 0d : 1d;
+            resources["GscButtonPressedOverlayOpacity"] = effectiveMotionEnabled ? 0d : 1d;
             resources["GscSurfaceEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 14, 2, palette.IsDark ? 0.34 : 0.24);
             resources["GscPrimaryButtonEffect"] = CreateShadowEffect(glassEnabled, palette.Accent, 18, 0, 0.40);
             resources["GscSidebarEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 24, 3, palette.IsDark ? 0.42 : 0.30);
@@ -373,8 +412,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscDialogEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 34, 8, palette.IsDark ? 0.52 : 0.44);
             resources["GscSliderThumbEffect"] = CreateShadowEffect(glassEnabled, Colors.Black, 6, 1, 0.26);
             resources["GscPopupAllowsTransparency"] = glassEnabled;
-            resources["GscPopupAnimation"] = motionEnabled && !palette.IsHighContrast ? PopupAnimation.Fade : PopupAnimation.None;
-            var toggleMotionEnabled = motionEnabled && !palette.IsHighContrast && GscMotion.IsEnabled(true);
+            resources["GscPopupAnimation"] = effectiveMotionEnabled ? PopupAnimation.Fade : PopupAnimation.None;
+            var toggleMotionEnabled = effectiveMotionEnabled && GscMotion.IsEnabled(true);
             resources["GscToggleMotionEnabled"] = toggleMotionEnabled;
             resources["GscToggleMotionFast"] = new Duration(
                 toggleMotionEnabled
@@ -482,7 +521,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscTableDividerBrush"] = Brush(Color.FromArgb(
                 palette.IsDark ? (byte)16 : (byte)13, palette.PrimaryText.R, palette.PrimaryText.G, palette.PrimaryText.B));
             resources["GscPopupBrush"] = Brush(Color.FromArgb(
-                250, palette.StrongSurfaceTop.R, palette.StrongSurfaceTop.G, palette.StrongSurfaceTop.B));
+                palette.IsHighContrast ? (byte)255 : (byte)250,
+                palette.StrongSurfaceTop.R, palette.StrongSurfaceTop.G, palette.StrongSurfaceTop.B));
             resources["GscGlassFillBrush"] = Gradient(palette.SurfaceTop, palette.SurfaceBottom);
             resources["GscGlassStrongBrush"] = Gradient(palette.StrongSurfaceTop, palette.StrongSurfaceBottom);
             resources["GscSidebarBrush"] = Gradient(palette.SidebarTop, palette.SidebarBottom);

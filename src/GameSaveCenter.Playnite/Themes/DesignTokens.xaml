@@ -459,28 +459,71 @@
                                         </Trigger>
                                         <Trigger Property="IsChecked" Value="True">
                                             <Setter TargetName="HeaderChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsChecked" Value="True"/>
+                                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="False"/>
+                                            </MultiTrigger.Conditions>
                                             <Setter TargetName="Chevron" Property="RenderTransform">
                                                 <Setter.Value><RotateTransform Angle="0"/></Setter.Value>
                                             </Setter>
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
+                                            <MultiTrigger.EnterActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsChecked" Value="True"/>
+                                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
+                                                <BeginStoryboard x:Name="GscExpanderOpenStoryboard">
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="Chevron"
                                                                          Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                                          To="0" Duration="0:0:0.15"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
+                                            </MultiTrigger.EnterActions>
+                                            <MultiTrigger.ExitActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
+                                            </MultiTrigger.ExitActions>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsChecked" Value="False"/>
+                                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
+                                                <BeginStoryboard x:Name="GscExpanderCloseStoryboard">
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="Chevron"
                                                                          Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
                                                                          To="-90" Duration="0:0:0.15"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
+                                            </MultiTrigger.EnterActions>
+                                            <MultiTrigger.ExitActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
+                                            </MultiTrigger.ExitActions>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsChecked" Value="False"/>
+                                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="Chevron" Property="RenderTransform">
+                                                <Setter.Value><RotateTransform Angle="-90"/></Setter.Value>
+                                            </Setter>
+                                            <MultiTrigger.EnterActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
                                         <Trigger Property="IsEnabled" Value="False">
                                             <Setter TargetName="HeaderChrome" Property="Opacity" Value="0.45"/>
                                         </Trigger>

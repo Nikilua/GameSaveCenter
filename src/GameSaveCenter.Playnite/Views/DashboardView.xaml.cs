@@ -1676,9 +1676,13 @@ namespace GameSaveCenter.Playnite.Views
             activePalette = palette;
             activeGlassEnabled = glassEnabled;
 
+            AdaptiveThemePaletteFactory.SetHighContrastActive(this, palette.IsHighContrast);
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(this, MotionEnabled && !palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
             foreach (var workspaceView in GetLegacyCompatibilityWorkspaceViews())
             {
+                AdaptiveThemePaletteFactory.SetHighContrastActive(workspaceView, palette.IsHighContrast);
+                AdaptiveThemePaletteFactory.SetMotionEnabledActive(workspaceView, MotionEnabled && !palette.IsHighContrast);
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
             }
 
@@ -1689,9 +1693,13 @@ namespace GameSaveCenter.Playnite.Views
             // in the real pages, so icon tiles, accent chips and primary buttons fell back to
             // the host's black/transparent defaults.  Keep both trees coherent; this is also
             // required when the user changes the theme while a production page is open.
+            AdaptiveThemePaletteFactory.SetHighContrastActive(ProductionShellView, palette.IsHighContrast);
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(ProductionShellView, MotionEnabled && !palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(ProductionShellView.Resources, palette, glassEnabled, MotionEnabled);
             foreach (var workspaceView in ProductionShellView.WorkspaceViews)
             {
+                AdaptiveThemePaletteFactory.SetHighContrastActive(workspaceView, palette.IsHighContrast);
+                AdaptiveThemePaletteFactory.SetMotionEnabledActive(workspaceView, MotionEnabled && !palette.IsHighContrast);
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
             }
             ApplySelectedGameGlassResources();
