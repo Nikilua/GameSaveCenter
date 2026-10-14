@@ -1,10 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R11-06 在 `40af39c8` 当前 main 复核：只增强测试，无生产代码变更；本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite `R11BackupPreviewBehaviorTests 4/4`、Worker `BackupPreviewBehaviorTests 2/2`，XAML `24/24`、source validation 通过。相关测试项目及引用在隔离输出内构建通过，不是完整 solution build。证据见[R11-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。
+更新：2026-10-15；版本 0.6.73-development-preview；分支 main。R11-06 代码 `40af39c8` 与证据同步提交 `55ed3a17` 已推送；只增强测试，无生产代码变更。本机 SDK `8.0.423` / VSTest `17.11.1` 下 Playnite `R11BackupPreviewBehaviorTests 4/4`、Worker `BackupPreviewBehaviorTests 2/2`，XAML `24/24`、source validation 通过；相关测试项目及引用在隔离输出内构建通过，不是完整 solution build。新 Actions 终态尚未确认。
 
-外机 R09 再次报 Expected 2/2/2/2、Actual 1/1/1/1、stack line 151。当前 main `884e826e` 同一 R09 类 SDK8 重建后 2/2；当前行 151 检查错误色，Chrome 1 DIP 在152，独立 ValidationStroke 2 DIP 在154。仓库一键脚本使用每次唯一输出根目录，并从该次根目录执行 `--no-build` 测试；外机实际 checkout/脚本和 DLL/PDB identity 仍缺，无法确认根因。`libpng iCCP` 不在失败栈，WPF COM 异常发生于失败后收尾。没有更改生产模板或放宽断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+R00-08 在 `55ed3a17f14087859319b350297132c7fcb3f79c` 上复核 `GamePickerKeyboardBehaviorTests 6/6`、`R21KeyboardNavigationTraceTests 2/2`、`R10KeyboardShortcutHelpBehaviorTests 5/5`；只更新 R00-08 证据身份，R00/R01 freshness 为 `14/14 fresh`。测试使用隔离 STA 和合成输入，不代表真实 Playnite/OS IME。证据见[R00-08 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md)。
 
-CI：#992/run `38564273828` 与 #993/run `38570078343` 是旧提交，均失败；完整日志受登录/API 403 限制，根因未知。`40af39c8` 尚未推送，不能报告其 Actions 终态；推送后分别跟踪 SDK8 与 SDK10.0.401 至终态。当前 R00/R01 freshness `13 fresh / 1 stale`，唯一 stale 为 R00-08（`R10KeyboardShortcutHelpBehaviorTests.cs` 命中键盘证据范围）；下一步先复跑并校正该项，再推进依赖满足的 Q/R。真实 Ludusavi IPC/归档副作用、真实 Playnite、系统 UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。外机 R09 原因仍未知，不改模板或放宽断言。
+外机 R09 再次报 Expected 2/2/2/2、Actual 1/1/1/1、stack line 151。失败断言与历史 `3f7d0b30` 的旧 Chrome 2 DIP 检查吻合；`f13b9e05` 已拆为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP，提交 `983fee5` 已包含新测试源码。当前 main 第 151 行检查错误色，第 152/154 行检查厚度。旧测试程序集/源映射仍是最符合线索的推断，外机 HEAD、工作树和 DLL/PDB 身份缺失，根因未确认。`libpng iCCP` 不在失败栈；WPF COM 异常发生在断言失败后的收尾。没有更改生产模板或放宽断言，详见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+
+CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 均失败；完整日志受登录/API 403 限制，根因未知。`40af39c8` 与 `55ed3a17` 的新 Actions 尚未确认终态；当前可读 Actions 页面仅列到 #979（`ae3c565`），无法据此判定新提交状态，SDK8 与 SDK10.0.401 必须分别跟踪。R00/R01 freshness 已恢复 `14/14 fresh`，唯一此前 stale 的 R00-08 已按行为复核更新。下一项按账本执行依赖满足的 R12-01。真实 Ludusavi IPC/归档副作用、真实 Playnite、系统 UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。
 本页只保留当前结论与下一步，不再累加阶段日志。9 月 30 日及以前完整原文移至 [历史快照](CURRENT_STATE_HISTORY_THROUGH_20260930.md)，旧记录中的“当前”“下一项”只代表当时状态。
 
 ## 当前判断

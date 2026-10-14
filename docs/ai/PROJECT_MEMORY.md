@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-06 `40af39c8` 仅增强备份预览行为测试，本机 SDK8.0.423/VSTest17.11.1 Playnite 4/4、Worker 2/2；程序行为和证据边界见当前复核包。R00/R01 freshness 此后因 `R10KeyboardShortcutHelpBehaviorTests.cs` 唯一命中 R00-08，当前为 13 fresh/1 stale，需先复核该键盘项。外机 R09 Expected 2/Actual 1 与旧 Chrome 2 DIP 断言吻合，但外机源码/DLL/PDB/脚本身份未知，根因未确认；不改模板或减弱断言。旧 CI #992/#993 失败与日志/API受限不能推断新提交状态；`40af39c8` 推送后须分别跟踪 SDK8/SDK10.0.401 至终态，SDK结果不可互代。下一项 R00-08 证据复核。
+更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R11-06 `40af39c8` 代码与 `55ed3a17` 证据提交已推送；本机 SDK8.0.423/VSTest17.11.1 Playnite 4/4、Worker 2/2。R00-08 在 `55ed3a17f14087859319b350297132c7fcb3f79c` 上搜索/焦点相关类共 13/13，freshness `14/14`；细节见复核包。外机 R09 的旧断言特征匹配 `3f7d0b30`，而提交 `983fee5` 已含 Chrome 1 DIP + ValidationStroke 2 DIP 新源码；旧测试 DLL/源码映射是推断而非确诊，外机身份缺失，不改模板或减弱断言。旧 CI #992/#993 失败且日志/API受限；`40af39c8`/`55ed3a17` 新 Actions 终态未确认，SDK8/SDK10.0.401 分别追踪且不可互代。下一项 R12-01。
 
 ## AI/Codex 启动协议
 

@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。R11-06 代码测试提交 `40af39c8` 已完成本机复核：SDK `8.0.423` / VSTest `17.11.1`，Playnite `4/4`、Worker `2/2`、XAML `24/24`、source validation 通过；相关测试及引用项目构建通过，不是完整 solution build。新证据在[R11-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。代码提交尚待与本次文档同步推送，Actions 尚无新终态。
+更新：2026-10-15；分支 main。R11-06 代码 `40af39c8` 与证据文档 `55ed3a17` 已推送；SDK `8.0.423` / VSTest `17.11.1`，Playnite `4/4`、Worker `2/2`、XAML `24/24`、source validation 通过；相关测试及引用项目构建通过，不是完整 solution build。证据在[R11-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。新 Actions 终态尚未确认。
 
-用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。当前 `884e826e` line151 是错误色、line152要求 Chrome 1 DIP、line154要求独立 ValidationStroke 2 DIP；SDK8当前程序集 R09 `2/2`。当前一键脚本生成随机隔离输出并从同一输出跑测试，但外机 `summary.json`/TRX/DLL/PDB identity 缺失，根因仍未知。不要改生产模板/减弱断言；若复发，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
+用户异机再次报 R09 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。该断言对应旧提交 `3f7d0b30`；`f13b9e05` 已拆为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP，提交 `983fee5` 含新断言。当前 main 第151行是错误色，152/154行检查两种厚度；旧测试 DLL/源码映射最吻合，但外机 HEAD、工作树和 DLL/PDB identity 缺失，根因未确认。不要改生产模板/减弱断言；若可提供，取得 `artifacts/build-diagnostics/<run>/summary.json` 和 `tests/wpf.R09FocusOutlineBehaviorTests/`。
 
-CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 失败，完整日志受登录/API 403 限制；`40af39c8` 的新 Actions 尚未产生（待推送），之后 SDK8 与 SDK10.0.401 必须分别追踪到终态。当前 freshness `13/14 fresh`，R00-08 因键盘测试文件路径命中而 stale。下一步复跑 R00-08 的搜索框 Enter/IME/焦点返回行为类，按事实更新该 baseline，再推进依赖已满足的 Q/R。R11-06 没有执行真实 Ludusavi IPC/归档、Playnite宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能验证；外机 R09 断言身份仍待核实。
+CI：旧 #992/run `38564273828` 与 #993/run `38570078343` 失败，完整日志受登录/API 403 限制；`40af39c8`/`55ed3a17` 新 Actions 终态尚未确认。当前可读 Actions 页面仅显示到 #979 (`ae3c565`)，无法据此推断新提交的成功或失败；SDK8 与 SDK10.0.401 必须分别追踪。R00-08 已完成当前 source 行为复核，R00/R01 freshness `14/14 fresh`；证据见[R00-08 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md)。下一项 R12-01，先盘点恢复摘要已有能力再补行为证据。未验真实 Ludusavi IPC/归档、Playnite宿主、OS UIA/IME、物理 DPI/跨屏、呈现帧、ETW 或宿主性能；外机 R09 身份仍待核实。
 
 ## 2026-10-13 #965 CI 布局测试宿主修正
 

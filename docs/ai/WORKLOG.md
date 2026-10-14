@@ -1,9 +1,18 @@
+## 2026-10-15 R00-08 当前 main 证据与 freshness 校正
+
+- freshness 初检在 source `40af39c80d904bd6306a4d5433e1356e367925ca` 发现唯一 stale 为 R00-08，原因是 `R10KeyboardShortcutHelpBehaviorTests.cs` 命中登记的键盘路径。本阶段未改生产代码，仅对当前 main 的相关行为重新建立证据。
+- 隔离 SDK `8.0.423` / VSTest `17.11.1`，Playnite `net462`/测试 `net472`，依赖 Release 构建后分别串行运行：`GamePickerKeyboardBehaviorTests 6/6`、`R21KeyboardNavigationTraceTests 2/2`、`R10KeyboardShortcutHelpBehaviorTests 5/5`。测试覆盖无可见结果 Enter 不更换选择、输入组合保持 picker、合成 IME/方向键路由、候选确认、Esc/清空焦点回返、8 个入口正反向 Tab 轨迹，以及帮助弹层当前命令/禁用命令空列表。
+- `scripts/check-xaml.ps1 24/24`、`python scripts/validate-source.py` 与 `git diff --check` 通过；本轮不是完整 solution build。三个类用隔离 STA 和合成输入，不代表真实 Playnite、Windows OS IME/实体输入或最终屏幕呈现。程序集身份、TRX 与 freshness JSON 见[R00-08 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 仅将 R00-08 baseline evidence/sourceCommit 更新到本轮测试身份 `55ed3a17f14087859319b350297132c7fcb3f79c`；freshness 重算 `14/14 fresh`，其他 R00/R01 条目未改。现行下一项 R12-01，先检查已有恢复摘要能力，再按具体条件补证。
+- 外机 R09 输出的“第151行 Chrome 厚度期望2、实际1”与历史 `3f7d0b30` 旧断言吻合；`f13b9e05` 及 `983fee5` 已使用 Chrome 1 DIP + 独立 `ValidationStroke` 2 DIP。旧程序集/源码映射最符合线索但未确诊，缺外机 HEAD、工作树与 DLL/PDB identity；未改生产模板或放宽断言。`libpng iCCP` 不在断言栈，COM 异常出现在 WPF 失败收尾。
+- 提交后 Actions 状态必须另行核查。当前可读页面停在 #979 (`ae3c565`)，不能据此确认 SDK8 或 SDK10.0.401 新 run 终态。
+
 ## 2026-10-15 R11-06 备份前变更摘要当前 main 复核
 
 - 先复用现有 `BackupPreviewDto`、`backup.preview`、`BackupOrchestrator.PreviewAsync`、SaveCenter 预览卡与立即备份链路，没有改生产实现。`40af39c8` 仅增强 `R11BackupPreviewBehaviorTests`：从生产 SaveCenter 的按钮 Automation Peer 调用预览命令，断言只分派预览、不执行立即备份；另覆盖未扫描时卡片收起、Loading 不显示 0 路径、NoData 明确表示扫描完成但无可纳入路径。
 - 本机隔离 SDK `8.0.423`、VSTest `17.11.1`：Playnite `net462/net472` 的 `R11BackupPreviewBehaviorTests 4/4`；Worker `net8.0-windows10.0.19041.0` 的 `BackupPreviewBehaviorTests 2/2`。相关项目及引用编译通过，非完整 solution build。XAML `24/24`、source validation、`git diff --check` 通过。源、程序集 SHA/MVID 和脱敏 TRX 见[R11-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。
 - 证据边界：预览 UI 命令行为与 Worker JSON 解析有自动化证明；Worker 预览 orchestration/真实 Ludusavi IPC、真实归档目录前后状态没有端到端运行。只从当前代码核对 preview 参数跳过备份目录创建，立即备份重读游戏与匹配并使用非 preview 执行。未访问用户数据/云端，也未验 Playnite host、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW 或宿主性能。
-- 当前 R00/R01 freshness 为 `13 fresh / 1 stale`；唯一 stale 是 R00-08，因为新近提交的 `R10KeyboardShortcutHelpBehaviorTests.cs` 命中键盘证据范围。下一步先逐类复跑 R00-08 相关行为并按结果更新 baseline；之后再推进依赖满足的 Q/R。R11-06 新提交推送后的 SDK8/SDK10.0.401 Actions 终态另行跟踪。
+- R00-08 后续复核已将 freshness 校正至 `14/14 fresh`；完整测试身份和边界见独立 WORKLOG 记录与复核包。R11-06 新提交推送后的 SDK8/SDK10.0.401 Actions 终态仍须分别跟踪。下一项 R12-01。
 
 ## 2026-10-15 R11-05 保护操作解释当前 main 复核
 

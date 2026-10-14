@@ -10,9 +10,9 @@
 
 ### 2026-10-15 当前续跑点（覆盖下方历史下一项）
 
-- R11-06 当前 main `40af39c8` 已补备份预览行为证据：SDK8.0.423 / VSTest17.11.1，Playnite `4/4`、Worker `2/2`、XAML `24/24`、source validation 通过；只改测试，未完整构建 solution。证据：[R11-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。提交待本次文档同步推送，CI 尚无新终态。
-- R00/R01 freshness 当前 `13 fresh / 1 stale`。唯一 stale 为 R00-08，来源是 `R10KeyboardShortcutHelpBehaviorTests.cs` 命中登记的键盘测试路径；下一步按当前 source commit 复跑 R00-08 搜索框/焦点相关行为类，必要时只更新 R00-08 baseline。历史 `14/14` 不能覆盖此新 freshness 结果。
-- 外机 R09 再次报同一 `Expected 2 / Actual 1`、stack line151。`884e826e` 当前源第151行为错误色；仓库一键脚本用唯一输出根目录并从该输出执行隔离测试，然而缺外机 `summary.json`/TRX/DLL/PDB 身份，根因未确定。若复发，取该次 `artifacts/build-diagnostics/<run>/summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/`。详见[R09复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- R11-06 代码 `40af39c8` 与证据文档 `55ed3a17` 已推送：SDK8.0.423 / VSTest17.11.1，Playnite `4/4`、Worker `2/2`、XAML `24/24`、source validation 通过；只改测试，未完整构建 solution。证据：[R11-06 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R11-06-CURRENT-MAIN-RECHECK-20261015/README.md)。Actions 终态未确认。
+- R00-08 已在 source `55ed3a17f14087859319b350297132c7fcb3f79c` 重跑搜索/焦点类 `13/13`，仅更新 R00-08 baseline；freshness `14 fresh / 0 stale`。证据：[R00-08 当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md)。下一项 R12-01，先盘点现有摘要状态和恢复命令路径，再对照任务条件补证。
+- 外机 R09 再次报同一 `Expected 2 / Actual 1`、stack line151。该断言只存在于历史 `3f7d0b30`；提交 `983fee5` 已包含新 Chrome 1 DIP + ValidationStroke 2 DIP 断言。旧测试程序集/符号映射是最吻合现有证据的假设，外机 `summary.json`/TRX/DLL/PDB 身份仍缺，根因未确认。若用户可提供，检查 `artifacts/build-diagnostics/<run>/summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/`。详见[R09复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
 ### 2026-10-14 当前续跑点（历史记录）
 

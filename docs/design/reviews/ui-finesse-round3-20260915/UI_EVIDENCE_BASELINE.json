@@ -100,8 +100,8 @@
     },
     {
       "id": "R00-08",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "8707090901a3ee1e424c8bced9c79a170b9631bc",
+      "evidence": "evidence/R00-08-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "sourceCommit": "55ed3a17f14087859319b350297132c7fcb3f79c",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
