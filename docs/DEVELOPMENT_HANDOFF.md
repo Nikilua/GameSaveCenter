@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。当前阶段 Q24-04 在既有键盘焦点实现上补充失败任务业务状态轨迹：本机 SDK9.0.302/VSTest17.14.1 下 R21 `3/3`、R06 `2/2`、R23 `9/9`，合计 `14/14`。使用合成任务 DTO 和 no-op commands；没有改生产 UI 或执行操作。精确测试源、程序集与脱敏 TRX SHA/边界见[Q24-04 业务状态键盘补证](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。这不是完整 solution build；R00-08 baseline 已绑定 `e221feb3`，freshness `14/14 fresh`，package identity 未提供。下一项 Q24-06 UI Automation；Q24-05 已有当前 main 焦点语义证据。
+更新：2026-10-15；分支 main。当前阶段在 main `cd27c8c0` 重验已实现项：R06-07/R06-08 `31/31`、Q24-06 UI Automation `24/24`、R09 焦点描边 `2/2`。本机 SDK `9.0.302` / VSTest `17.14.1`；Playnite `net462`、测试 `net472` 的测试项目及引用 Release build `0 warning / 0 error`，非完整 solution build。只补行为证据，没有改生产 UI。源码、XAML、DLL/PDB 与脱敏 TRX 身份见[当前 main 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R06-07-08-Q24-06-R09-CURRENT-MAIN-RECHECK-20261015/README.md)。Q24-06 实际 Narrator/Playnite UIA、R06/R09 真实宿主和最终呈现仍待验。下一项先复核 R00/R01。
 
-CI：Q24-04 代码提交 `e221feb3` 的 Actions run `38624032938` 在最近检查仍运行：主 workflow job `116058522011` 使用仓库 global.json SDK `8.0.423`，复核 job `116058522588` 使用 SDK `10.0.401`。仍须跟踪两者到终态；SDK9 本机结果不替代任一 CI lane。
+CI：Q24-04 代码提交 `e221feb3` 的 #1006/run `38624032938` 已 Failure：SDK8.0.423 job `116058522011`“编译与测试”失败，SDK10.0.401 job `116058522588`“隔离工作树并运行 Release 编译与测试”失败。文档提交 `cd27c8c0` 的 #1007/run `38625232841` 同样 Failure：SDK8 job `116062580362`、SDK10 job `116062580995` 的对应测试步骤失败。完整 logs ZIP/API 匿名读取受限，artifact ID/SHA 与实际限制见当前 main 复核包；根因未知，先取得完整日志再修，不用本机 SDK9 替代。
 
-外机 R09 本次仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151；用户称该机已从 Git 拉取最新。当前 main line151 是 brush color assertion，故障片段没有实际 HEAD、工作树、测试源/DLL/PDB identity；旧测试源或符号错配只是线索，根因未确认。`libpng iCCP` 不在断言栈，COM teardown 出现在失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+外机 R09 本次仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151；用户称该机已从 Git 拉取最新。当前 main line151 是错误色断言，line154 才检查 `ValidationStroke` 2 DIP；报告的行号和预期/实际值形态与历史厚度断言吻合，但外机 HEAD、测试源/DLL/PDB 未知，旧源/符号错配只是假设，根因未确认。`libpng iCCP` 不在断言栈，COM teardown 出现在失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
 ## 2026-10-15 R12-03 当前 main 行为复核
 

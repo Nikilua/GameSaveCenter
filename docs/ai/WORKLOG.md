@@ -1,3 +1,11 @@
+## 2026-10-15 R06-07/R06-08 当前 main、Q24-06 与 R09 复核
+
+- 复核既有 Save 空态/重试、WorkspaceStatePresenter、Media 状态缓存、详情选择同步/滚动、四行门禁、生产 UI Automation peers 与共享焦点描边；没有改生产服务、DTO、XAML、滚动条或命令。
+- 当前 main `cd27c8c0aba8616331867a58af13376f44e958f0`，本机 SDK `9.0.302` / VSTest `17.14.1`，Playnite 测试项目及引用 Release build `0 warning / 0 error`（非完整 solution build）。R06-07 `17/17`、R06-08 `14/14`、Q24-06 `24/24`、R09 `2/2`，共 `57/57`、0 failed/skipped。Build commit metadata、源/XAML/DLL/PDB SHA 与脱敏 TRX 在[R06/Q24/R09 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R06-07-08-Q24-06-R09-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 用户附加的 #962/#963/#967/#970/#971 diagnostics ZIP 已按已有 triage 核对：#962/#963 失败属于 R08 数字动效夹具；#967 SDK10 包中 R09 两项 Passed；#970 SDK10 Worker 取消测试在 callback 注册前发出 started 信号，`599d2fd3` 已用 registration-ready 握手修正；#971 所附 SDK8 Q14 fixture 失败也由 `599d2fd3` 恢复真实 DTO/可见 presenter 修正。#971 SDK10 原始日志不在用户附件中，不能据 SDK8 结果推断。
+- 外机 R09 用户称从 Git 拉了最新，但仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、line151。当前 main line151检查错误色、line152检查 Chrome 1 DIP、line154检查独立 ValidationStroke 2 DIP；本机当前 main `2/2`。没有外机HEAD/源码/DLL/PDB身份，错配假说未证实；未改生产模板/放宽断言。libpng warning不在断言栈，COM异常是失败后的WPF收尾输出。
+- #1006/run `38624032938`（代码 `e221feb3`）与 #1007/run `38625232841`（文档 `cd27c8c0`）现均 Failure；SDK8.0.423 job `116058522011`/`116062580362` 失败于“编译与测试”，SDK10.0.401 job `116058522588`/`116062580995` 失败于隔离 Release 编译/测试步骤。匿名 API 返回403、step-log路由404，四个 artifact 只读到页面 ID/SHA，ZIP未取得，根因未知。不可凭本机SDK9或exit code猜修，CI SDK身份分别记录于证据 README。
+- 隔离 STA/offscreen 状态测试不代表 Playnite/Narrator/OS UIA、物理DPI/跨屏、presented frame、ETW/宿主性能。无截图，未访问用户存档/媒体/云端。当前小批无生产视觉变化；下一项按用户顺序先做 R00/R01 问题修复与证据校正，再推进依赖满足的 Q/R。
 ## 2026-10-15 Q24-04 失败任务状态键盘路径补证
 
 - 先核对 R21 原测试能力：它遍历八个生产视图默认状态，但没有构造 Task Center 的失败任务、筛选、数据行、展开错误详情与页尾动作状态。复用生产 `TaskCenterView`、`TaskStatusDto` 和现有 no-op 命令 fixture；仅改 `R21KeyboardNavigationTraceTests.cs`，没有新建业务服务/DTO或改生产 XAML。
