@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="b69606bb-0bb9-4f06-ac69-fd1d07962def" name="lopmatu@SULT 2026-10-14 17:21:22" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-14T17:21:22.7756337+08:00" queuing="2026-10-14T17:21:22.7756341+08:00" start="2026-10-14T17:21:15.6122744+08:00" finish="2026-10-14T17:21:41.1650869+08:00" />
+  <TestSettings name="default" id="54acca1a-5e43-44e8-9044-37a9e823928e">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-14_17_21_22" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b8ade4a2-3bb7-49b5-b109-792f972a19e9" testId="43cbde27-d306-37d2-87df-958880702032" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation" computerName="redacted-host" duration="00:00:00.7520000" startTime="2026-10-14T17:21:22.7594385+08:00" endTime="2026-10-14T17:21:23.4873640+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8ade4a2-3bb7-49b5-b109-792f972a19e9">
+      <Output>
+        <StdOut>offset=10-&gt;10; to-media measure/arrange=1/1; back measure/arrange=1/1; cached=True; selection=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c6b6f120-5389-47c5-a29d-1938fcf7e67d" testId="edbdd5a8-4691-6c46-69f4-f315a3caeea5" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.ProductionPageHostDoesNotDeclareFullPageBlurOrEntranceAnimation" computerName="redacted-host" duration="00:00:00.1090000" startTime="2026-10-14T17:21:24.5354742+08:00" endTime="2026-10-14T17:21:24.6415934+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c6b6f120-5389-47c5-a29d-1938fcf7e67d" />
+    <UnitTestResult executionId="1c95687a-cd2e-47e4-a737-4c3f2c7a6862" testId="095ea878-c6a9-f6c6-aad3-3c54a0b9631b" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" computerName="redacted-host" duration="00:00:03.2700000" startTime="2026-10-14T17:21:19.4795162+08:00" endTime="2026-10-14T17:21:22.7344368+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1c95687a-cd2e-47e4-a737-4c3f2c7a6862">
+      <Output>
+        <StdOut>routes=7; final=Tasks; title=任务中心; focus=NavTasks; pageEffects=none</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d48872cc-7385-4e19-b39c-9640f83947bb" testId="54a6e7db-ab8b-639f-11b1-02ffa0506136" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing" computerName="redacted-host" duration="00:00:01.0460000" startTime="2026-10-14T17:21:23.4893642+08:00" endTime="2026-10-14T17:21:24.5334752+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d48872cc-7385-4e19-b39c-9640f83947bb">
+      <Output>
+        <StdOut>task filters retained; tabs media/save/maintenance=2/3/5; task selection=q11-07-task-55; scroll=18-&gt;18; cached pages retained; refresh executions=0</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation" storage="d:\workplace\github\gamesavecenter\.tmp\r09-cross-machine-recheck-20261014\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="43cbde27-d306-37d2-87df-958880702032">
+      <Execution id="b8ade4a2-3bb7-49b5-b109-792f972a19e9" />
+      <TestMethod codeBase="[repo]\.tmp\r09-cross-machine-recheck-20261014\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" storage="d:\workplace\github\gamesavecenter\.tmp\r09-cross-machine-recheck-20261014\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="095ea878-c6a9-f6c6-aad3-3c54a0b9631b">
+      <Execution id="1c95687a-cd2e-47e4-a737-4c3f2c7a6862" />
+      <TestMethod codeBase="[repo]\.tmp\r09-cross-machine-recheck-20261014\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing" storage="d:\workplace\github\gamesavecenter\.tmp\r09-cross-machine-recheck-20261014\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="54a6e7db-ab8b-639f-11b1-02ffa0506136">
+      <Execution id="d48872cc-7385-4e19-b39c-9640f83947bb" />
+      <TestMethod codeBase="[repo]\.tmp\r09-cross-machine-recheck-20261014\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.ProductionPageHostDoesNotDeclareFullPageBlurOrEntranceAnimation" storage="d:\workplace\github\gamesavecenter\.tmp\r09-cross-machine-recheck-20261014\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="edbdd5a8-4691-6c46-69f4-f315a3caeea5">
+      <Execution id="c6b6f120-5389-47c5-a29d-1938fcf7e67d" />
+      <TestMethod codeBase="[repo]\.tmp\r09-cross-machine-recheck-20261014\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="ProductionPageHostDoesNotDeclareFullPageBlurOrEntranceAnimation" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="43cbde27-d306-37d2-87df-958880702032" executionId="b8ade4a2-3bb7-49b5-b109-792f972a19e9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="edbdd5a8-4691-6c46-69f4-f315a3caeea5" executionId="c6b6f120-5389-47c5-a29d-1938fcf7e67d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="095ea878-c6a9-f6c6-aad3-3c54a0b9631b" executionId="1c95687a-cd2e-47e4-a737-4c3f2c7a6862" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="54a6e7db-ab8b-639f-11b1-02ffa0506136" executionId="d48872cc-7385-4e19-b39c-9640f83947bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.78]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.07]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
