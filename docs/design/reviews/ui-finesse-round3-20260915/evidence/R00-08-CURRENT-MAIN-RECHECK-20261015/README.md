@@ -32,6 +32,7 @@ XAML 结构检查 `24/24`、`python scripts/validate-source.py`、`git diff --ch
 | Playnite.Tests.dll | `37241F7564A54BD44096285BD75A4EC01A6644E98BDF50B113EF3607C498B28F` | MVID `c29141cd-850d-48a5-8fd0-865144d9180d` |
 | Playnite.Tests.pdb | `00D244E089BAF9FDB8986D3D64603618F66A9CC413BB064DFAB9CEB5F52340C8` | 测试符号 |
 | Playnite.dll | `1EE257AA527D2D0B33A4326CC68DE694BB698C916B29C98DA4CBB365C8128BB5` | MVID `52ada672-a2a4-4d82-ba9c-c965323a8fe7` |
+
 | `R10KeyboardShortcutHelpBehaviorTests` TRX | `846589AFFE9A029BF4CB4E8EB047C5F596A802A856C04B003127F4005743BD96` | [5/5](tests/R10KeyboardShortcutHelpBehaviorTests-sdk8423-55ed3a17.trx) |
 | `GamePickerKeyboardBehaviorTests` TRX | `171A2A1004FDEA93B61D5B071F47D4243359ECF8D13B1A49924C4BA64028EBAA` | [6/6](tests/GamePickerKeyboardBehaviorTests-sdk8423-55ed3a17.trx) |
 | `R21KeyboardNavigationTraceTests` TRX | `F8A7D44831305AB19EFACF27345C4F476DF56BDF38F932064386714EF574BFA4` | [2/2](tests/R21KeyboardNavigationTraceTests-sdk8423-55ed3a17.trx) |
@@ -43,3 +44,9 @@ XAML 结构检查 `24/24`、`python scripts/validate-source.py`、`git diff --ch
 [复核前 freshness JSON](freshness-before-summary.json) 精确绑定 `40af39c80d904bd6306a4d5433e1356e367925ca`，显示唯一 stale 为 R00-08，匹配路径 `tests/GameSaveCenter.Playnite.Tests/R10KeyboardShortcutHelpBehaviorTests.cs`。本轮三个相关类全部通过后，R00-08 baseline 的 `sourceCommit` 更新到被测试的 `55ed3a17f14087859319b350297132c7fcb3f79c`，`evidence` 更新到本文件；其余 R00/R01 记录未改。更新后的 [freshness summary](freshness-summary.json) 记录 14 项、14 项 fresh、0 项需重跑。
 
 未验边界：真实 Playnite/OS 输入设备、中文 IME 候选 UI、读屏、物理 DPI/跨屏、presented frame、ETW 和宿主性能。没有读取或修改用户存档、媒体或云端。
+
+## 2026-10-15 Q24-04 键盘源 freshness 补充
+
+提交 `e221feb35a4f7ca796dc348c2c5cde247a5b58ed` 在 R00-08 登记路径中只改了 R21 键盘测试源。最终源文件 SHA-256 为 `13EA3A03BA4CCF4D26049916F78ECCCB0625D4C79E82FFDF4EB8D4E62AD9885A`；新增失败任务行为和原有 R21 轨迹 `3/3` 通过。TRX、测试/插件程序集身份见[Q24-04 业务状态键盘证据](../Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。测试在代码提交前从 `5838bb51` 基础的工作树构建；程序集 ProductVersion 标记 `5838bb51`，所以不声称二进制是在 `e221feb3` 之后构建。提交中的源码内容与受测 SHA 一致。
+
+上文未改变的 `GamePickerKeyboardBehaviorTests 6/6` 与 `R10KeyboardShortcutHelpBehaviorTests 5/5` 仍适用；其登记源码未改。合并 R00-08 行为证据为 `14/14`，由上述历史两类和更新后的 R21 组成。baseline `sourceCommit` 已更新为 `e221feb3`；最新 freshness 结果见 [freshness-summary.json](freshness-summary.json)：14 records、14 fresh、0 needsRerun。package identity 仍为 `not-provided`。

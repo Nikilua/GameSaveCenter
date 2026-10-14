@@ -1,8 +1,8 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-15；分支 main。当前阶段 Q24-04 在既有键盘焦点实现上补充失败任务业务状态轨迹：本机 SDK9.0.302/VSTest17.14.1 下 R21 `3/3`、R06 `2/2`、R23 `9/9`，合计 `14/14`。使用合成任务 DTO 和 no-op commands；没有改生产 UI 或执行操作。精确测试源、程序集与脱敏 TRX SHA/边界见[Q24-04 业务状态键盘补证](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。这不是完整 solution build；R00-08 baseline 待代码 commit 后按真实 SHA 更新。下一项 Q24-06 UI Automation；Q24-05 已有当前 main 焦点语义证据。
+更新：2026-10-15；分支 main。当前阶段 Q24-04 在既有键盘焦点实现上补充失败任务业务状态轨迹：本机 SDK9.0.302/VSTest17.14.1 下 R21 `3/3`、R06 `2/2`、R23 `9/9`，合计 `14/14`。使用合成任务 DTO 和 no-op commands；没有改生产 UI 或执行操作。精确测试源、程序集与脱敏 TRX SHA/边界见[Q24-04 业务状态键盘补证](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。这不是完整 solution build；R00-08 baseline 已绑定 `e221feb3`，freshness `14/14 fresh`，package identity 未提供。下一项 Q24-06 UI Automation；Q24-05 已有当前 main 焦点语义证据。
 
-CI：暂停检查点 #920/run `36677346317`（`77de7f4`）与 #919/run `36675309812` 失败日志已归档，原因是旧测试夹具没有固定系统动效策略，不代表后续提交 CI。当前 Q24-04 代码推送后，须查询新 run 并分别跟踪仓库 SDK8 与 SDK10.0.401 job 到终态；本机 SDK9 不能替代 CI。外机 R09 用户称已拉最新，但提供的 log 没有 checkout/source/DLL/PDB identity；只保留为未确诊故障，不改生产模板。真实 Playnite、OS UIA/IME/Narrator、物理 DPI/跨屏、呈现帧、ETW 或宿主性能仍待验。
+CI：Q24-04 代码提交 `e221feb3` 的 Actions run `38624032938` 在最近检查仍运行：主 workflow job `116058522011` 使用仓库 global.json SDK `8.0.423`，复核 job `116058522588` 使用 SDK `10.0.401`。仍须跟踪两者到终态；SDK9 本机结果不替代任一 CI lane。
 
 外机 R09 本次仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151；用户称该机已从 Git 拉取最新。当前 main line151 是 brush color assertion，故障片段没有实际 HEAD、工作树、测试源/DLL/PDB identity；旧测试源或符号错配只是线索，根因未确认。`libpng iCCP` 不在断言栈，COM teardown 出现在失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 

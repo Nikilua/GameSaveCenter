@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R12-02/03 已有当前 main 行为证据并复用既有服务与 DTO。Q24-04 本轮只扩展 `R21KeyboardNavigationTraceTests`：隔离 SDK9.0.302/VSTest17.14.1、Playnite net462/测试 net472 的 Release 定向项目构建后 R21 `3/3`、R06 `2/2`、R23 `9/9`，共 `14/14`；测试任务为合成 DTO、命令 no-op，未执行业务操作。证据与源码/DLL/TRX SHA 在 Q24-04 supplement；R00-08 freshness 因登记键盘源码改动待代码提交后更新 baseline。CI SDK8/SDK10.0.401 需逐个检查新提交的 Actions 终态，不用本机结果替代。外机 R09 仍报 Expected 2/Actual 1、line151；用户称已拉最新，但 HEAD/源/DLL/PDB 未知。旧源或符号错配只是推测，不改生产模板或降低断言。下一项 Q24-06 UI Automation；Q24-05 有现成当前 main 焦点语义证据，复用核实。
+更新：2026-10-15。长期规则见本文件；当前事实入口为 CURRENT_STATE.md。R12-02/03 已有当前 main 行为证据并复用既有服务与 DTO。Q24-04 本轮只扩展 `R21KeyboardNavigationTraceTests`：隔离 SDK9.0.302/VSTest17.14.1、Playnite net462/测试 net472 的 Release 定向项目构建后 R21 `3/3`、R06 `2/2`、R23 `9/9`，共 `14/14`；测试任务为合成 DTO、命令 no-op，未执行业务操作。证据与源码/DLL/TRX SHA 在 Q24-04 supplement；R00-08 baseline 已按 `e221feb3` 更新，freshness `14 records / 14 fresh / 0 stale`，package identity 未提供。CI SDK8/SDK10.0.401 需逐个检查新提交的 Actions 终态，不用本机结果替代。外机 R09 仍报 Expected 2/Actual 1、line151；用户称已拉最新，但 HEAD/源/DLL/PDB 未知。旧源或符号错配只是推测，不改生产模板或降低断言。下一项 Q24-06 UI Automation；Q24-05 有现成当前 main 焦点语义证据，复用核实。
 
 ## AI/Codex 启动协议
 

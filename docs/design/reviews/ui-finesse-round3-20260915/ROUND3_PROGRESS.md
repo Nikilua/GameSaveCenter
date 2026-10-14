@@ -1634,7 +1634,7 @@
 
 - 核对已有 `TaskCenterView`、筛选器、DataGrid、技术详情和页尾命令后，仅补 `R21KeyboardNavigationTraceTests`，没有新建业务服务/DTO或生产 UI。合成成功、运行中、失败 `TaskStatusDto` 中选择失败项，加载生产视图、展开技术详情，并执行 Tab/Shift+Tab 轨迹与反向顺序核对；Retry 可用、Cancel 不可用，命令 fixture 为 no-op 且未执行。
 - 基于 `5838bb51` 的本机源工作树定向 Release 构建：SDK `9.0.302`、VSTest `17.14.1`、Playnite `net462`、tests `net472`，测试项目与引用构建成功，非完整 solution build。R21 `3/3`、R06 `2/2`、R23 `9/9`，共 `14/14`。测试源 SHA、DLL ProductVersion/SHA、脱敏 TRX 及行为边界见[Q24-04 业务状态键盘证据](evidence/Q24-04-BUSINESS-STATE-KEYBOARD-RECHECK-20261015/README.md)。
-- 不改生产 XAML/VM/服务/DTO，无截图或真实呈现声明。Q24-04 的受控业务状态自动行为已补证；真实 Playnite、OS 键盘、完整页面阅读顺序、UIA/Narrator、视觉验收仍未完成，因此 Round2 总体状态保持未完成。R00-08 freshness 因测试源登记路径被改动，须在代码 commit 后按真实 SHA 更新 baseline 再报告新 freshness。
+- 不改生产 XAML/VM/服务/DTO，无截图或真实呈现声明。Q24-04 的受控业务状态自动行为已补证；真实 Playnite、OS 键盘、完整页面阅读顺序、UIA/Narrator、视觉验收仍未完成，因此 Round2 总体状态保持未完成。R00-08 baseline 已绑定 `e221feb3`；freshness `14 records / 14 fresh / 0 stale`，package identity 未提供。run `38624032938` 的 SDK8.0.423 与 SDK10.0.401 jobs 仍在运行，未报本阶段远端完成。
 - 外机 R09 用户称已从 Git 拉取最新，仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、line151；片段缺少 HEAD/source/DLL/PDB identity。当前 main 同名测试第151行是颜色断言；旧断言或符号映射错配仍未确诊，不改生产模板/放宽断言。
 - Q24-05 已在当前 main 有受控焦点语义证据；下一依赖项为 Q24-06 UI Automation，先复用并核对现有 Name/HelpText/LabeledBy/AutomationPeer。
 ## 2026-10-14 Q24-05 当前 main 焦点语义复核
