@@ -114,3 +114,7 @@ CURRENT_STATE 保持短摘要，PROJECT_MEMORY 保持稳定规则，HANDOFF 保�
 外机 R09 日志的 Expected 2 / Actual 1 与历史 3f7d0b30 的 Chrome 2 DIP 断言相符；f13b9e05 已根据生产 ValidationStroke 分层将测试改为 Chrome 1 DIP + 错误层 2 DIP。当前 main R09 本机 SDK9 2/2；未取得外机 HEAD 与 DLL/PDB 身份，故旧分支、旧构建产物或源码/PDB错配仍只是最可能解释。证据分别见 R08-01 与 CI-R09 外机复核包。
 
 截至 2026-10-14，公开 run 38393317198 (#971) 仍 In progress；#978/run 38509928015 Failure，完整日志需登录且 runner SDK/根因未知。推送本批后继续跟踪当前 SDK8/SDK10 lanes；CI 未终态前不记门禁完成。下一项 R08-02。真实 Playnite、OS 输入/读屏、物理 DPI/跨屏、呈现帧、ETW 与宿主性能仍待验。
+
+### 2026-10-14 R08-02 应用与系统动效热关闭复核
+
+当前 main 的应用设置开关与系统策略变更均复用 `GscMotion.NormalizeAll` 清除活动时钟，不重建动画服务。SDK `9.0.302` Release `0/0`；应用 ToggleSwitch `1/1`、调用真实 `OnSystemParametersChanged` 的实例级系统策略模拟 `1/1`、生产侧栏 reduced-motion `2/2`、Dashboard/Settings 订阅与卸载保护门禁 `1/1`。两种热关闭均验证活动入场时钟清理、稳定值 `Opacity/Y=1/0`，重新开启后不重播旧动画。系统策略通过实例级内部测试 provider 输入；未改 Windows 设置或触发真实静态系统事件。证据见 `evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md`。WPF 测试退出仍有 TextServices COM 清理异常噪声，根因未知、退出码成功。本机 SDK9 不替代 SDK8.0.423/CI SDK10.0.401；CI 推送后须分别追踪终态。下一步复核已有 R08-03 隐藏/最小化 spinner 停机，实际 Windows 动效通知、Playnite、UIA/读屏、物理 DPI/呈现帧/ETW/宿主性能仍未验。

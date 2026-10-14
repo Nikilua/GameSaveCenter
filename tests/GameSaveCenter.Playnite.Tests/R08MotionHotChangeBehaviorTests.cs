@@ -48,8 +48,12 @@ public sealed class R08MotionHotChangeBehaviorTests
                 var translate = GscMotion.GetMutableTranslateTransform(shell);
                 GscMotion.AnimateEntrance(shell, 12);
                 PumpDispatcher(TimeSpan.FromMilliseconds(55));
-                Assert.True(DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated);
-                Assert.True(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.True(
+                    DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated,
+                    $"app-motion test did not start opacity animation; opacity={shell.Opacity}; loaded={view.IsLoaded}");
+                Assert.True(
+                    DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated,
+                    $"app-motion test did not start translation animation; y={translate.Y}; loaded={view.IsLoaded}");
 
                 var toggle = FindToggle(view, "启用界面动画");
                 toggle.IsChecked = false;
@@ -57,8 +61,12 @@ public sealed class R08MotionHotChangeBehaviorTests
                 window.UpdateLayout();
 
                 Assert.False(settings.EnableUiAnimations);
-                Assert.False(DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated);
-                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.False(
+                    DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated,
+                    $"app animation toggle left opacity clock active; opacity={shell.Opacity}; y={translate.Y}");
+                Assert.False(
+                    DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated,
+                    $"app animation toggle left translation clock active; opacity={shell.Opacity}; y={translate.Y}");
                 Assert.Equal(1, shell.Opacity);
                 Assert.Equal(0, translate.Y);
 

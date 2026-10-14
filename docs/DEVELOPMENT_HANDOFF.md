@@ -229,3 +229,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 用户报告另一台机器的 R09 失败为 Expected 2 / Actual 1。当前模板分离 Chrome 1 DIP 与 ValidationStroke 2 DIP；旧测试期望 Chrome 2 已在 f13b9e05 修正；本机当前 R09 2/2。未知外机 HEAD/PDB，因此把使用旧测试源/程序集或分支记为待确认而不是已证实；材料见 [R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 - CI：#971/run 38393317198 公开状态仍 In progress（所附 ZIP 只有 SDK8 job）；#978/run 38509928015 Failure，完整日志登录限制、根因未知；#979 当前 queued。main 066b9a6 对应 run 尚未在公开列表显示。推送后逐一查 SDK8 与 SDK10.0.401 至终态；日志未取到时不盲改，继续独立 Q/R。
 - 保留他任务未跟踪证据与 WPF 临时项目；只清理本轮 .tmp/r08-01-production-button-sdk9-20261014，且在 TRX/身份已复制和哈希核对后执行。真实 Playnite、物理鼠标/键盘、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
+
+## 2026-10-14 当前恢复点：R08-02 已复核，R08-03 待刷新证据
+
+- 工作树在 main，父提交 `d3cb0b2d` 已推送。R08-02 本地 SDK `9.0.302` Release 构建 `0 warning / 0 error`；应用开关测试 `1/1`、真实 SettingsShell 系统参数处理回调的受控策略模拟 `1/1`、生产侧栏 reduced-motion `2/2`、回调订阅/卸载保护门禁 `1/1`。详细 TRX、source/assembly identity 和边界见 [R08-02 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md)。
+- 系统模拟使用实例级内部 provider；未修改 Windows 动画偏好，也未触发 `SystemParameters.StaticPropertyChanged`。真实设置通知待隔离宿主；UIA/读屏、Playnite、物理 DPI/呈现帧、ETW/宿主性能仍未验。R08-02 测试 exit 0 后仍有 TextServices COM shutdown 清理异常，根因未知。
+- 外机 R09 最新日志的第 151 行对应历史 `3f7d0b30` 中 `Chrome.BorderThickness == 2`；当前 main 第 151 行断言错误边框颜色，第 154 行才断言 `ValidationStroke.BorderThickness == 2`。当前 main R09 `2/2`，日志中的 `libpng iCCP` 是独立 warning；没有外机 HEAD/DLL/PDB，不能具体归因旧分支、旧二进制或 PDB 错配。
+- 公开 Actions 页面仍只列到 #979 (`ae3c565`) queued；#971/run `38393317198` In Progress，#978/run `38509928015` Failure 且完整日志需登录。`d3cb0b2d` 对应 run 尚未在公开页出现。R08-02 提交推送后必须再查两条 SDK lane 到终态；SDK9 结果不替代 SDK8/CI SDK10.0.401。
+- 下一步按“已有能力优先复用”复核 R08-03：针对当前生产 `IndeterminateProgressBehavior`/模板，在活动 spinner 的隐藏 Tab 与最小化窗口路径上跑定向隔离测试；旧证据为 `378ceb13`，先核源/测试 SHA 与当前 main，再决定复用或刷新。若当前 main 行为证据一致，标“已满足”并推进 R08-04。保留他任务未跟踪证据与 WPF 临时项目；只清理本轮已验明归属的 `.tmp`。

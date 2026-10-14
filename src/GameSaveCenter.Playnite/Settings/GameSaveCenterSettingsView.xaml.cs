@@ -273,7 +273,13 @@ namespace GameSaveCenter.Playnite.Settings
 
         private GameSaveCenterSettings? CurrentSettings => DataContext as GameSaveCenterSettings;
 
-        private bool MotionEnabled => GscMotion.IsEnabled(CurrentSettings?.EnableUiAnimations ?? true);
+        // Instance-scoped policy input lets STA behavior tests simulate Windows motion
+        // preference notifications without changing the user's actual system settings.
+        // Production leaves it unset and reads the live system policy.
+        internal Func<bool>? MotionEnabledOverrideForBehaviorTest { get; set; }
+
+        private bool MotionEnabled => MotionEnabledOverrideForBehaviorTest?.Invoke()
+            ?? GscMotion.IsEnabled(CurrentSettings?.EnableUiAnimations ?? true);
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

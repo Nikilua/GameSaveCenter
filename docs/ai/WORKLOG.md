@@ -10438,3 +10438,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户另附外机失败日志：R09 方法期望 2,2,2,2、实际 1,1,1,1。当前生产模板的 Chrome 是 1 DIP，独立 ValidationStroke 在错误态显示 2 DIP。历史 3f7d0b30 测试曾把 Chrome 断言为 2；f13b9e05 已改为分别核对 Chrome 1 与验证描边 2。当前 main SDK9 的 R09 类复跑 2/2。因此优先怀疑外机旧测试源/旧程序集、旧分支或源码/PDB错配，尚无该机 HEAD/DLL/PDB 可确认哪一项；没有改生产样式、也没有降低当前断言。脱敏 TRX、当前源码 SHA 与 DLL 身份见[R09 外机失败对照](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。日志中的 libpng iCCP warning 不在该断言调用栈中。
 - 最新公开 Actions：#971/run 38393317198 仍 In progress，附件只有 SDK8 诊断；#978/run 38509928015 Failure，annotations 只有通用 exit code，完整日志需要登录，runner SDK/根因未知。公开列表最新 #979 queued，未显示 main 066b9a6 对应 run。CI 终态前不签 SDK 门禁；本机 SDK9 不替代 SDK8/CI SDK10.0.401。
 - 下一可执行任务 R08-02 热关闭动画。外机需待用户恢复响应后补 git rev-parse HEAD、工作树状态、R09 测试源第 145–160 行及 DLL/PDB SHA/时间；该信息用于确认外机版本，不阻塞独立任务。
+
+## 2026-10-14 R08-02 应用/系统动效热关闭复核
+
+- 先核对已有 `SystemParameters.StaticPropertyChanged` 订阅、Dispatcher 合并、`GscMotion.NormalizeAll` 时钟清理和现存 ToggleSwitch 行为；只为安全模拟当前 Windows 系统策略新增实例级内部 provider，生产默认仍读取真实策略。没有重建动效服务、改 Windows 设置或触发全局静态系统事件。
+- SDK `9.0.302` Release 插件 `net462`/测试 `net472` 构建 `0 warning / 0 error`；应用热关闭 `1/1`、生产 SettingsShell 经真实系统参数处理回调的策略 off/on 模拟 `1/1`、侧栏 reduced-motion `2/2`、Dashboard/Settings 回调订阅/卸载门禁 `1/1`。活动时钟关闭后立即归一 `Opacity/Y=1/0`，恢复后等待超过旧动画时长仍无重播。WPF 类分进程串行运行。
+- `validate-source.py`、XAML `24/24`、`git diff --check` 通过；四份脱敏 TRX、source hashes、DLL SHA/MVID/ProductVersion 在[R08-02 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R08-02-CURRENT-MAIN-RECHECK-20261014/README.md)。成功退出后仍有 TextServices COM shutdown 清理噪声，根因未知。无视觉改动，不生成截图；真实 Windows 偏好通知、Playnite、UIA/读屏、物理 DPI/跨屏、呈现帧、ETW/宿主性能未验。
+- 用户新贴 R09 外机日志的 Expected/Actual 与历史 Chrome 2 DIP 断言吻合；其行 151 在当前源码是颜色断言，2 DIP 断言位于行 154 的独立 `ValidationStroke`。因此失败日志使用的断言/PDB 与当前 main 源码版本不一致，具体旧分支/二进制/PDB 仍待外机身份；`libpng iCCP` 与失败调用栈无关。无需改生产样式或降低当前断言。
+- 当前公开 Actions 页面暂未显示 `d3cb0b2d` 之后的新 run；#971 In progress、#978 Failure（日志需登录）、#979 queued。推送 R08-02 后再跟 SDK8/SDK10.0.401 到终态，SDK9 本机不能代替 CI。
+- 下一项复核已有 R08-03 隐藏/最小化 spinner 停机能力，先核当前 main 源/测试身份并刷新实际行为证据；若条件一致则标“已满足”后推进 R08-04。用户至明日 09:00 无法回复，不等待补充材料。

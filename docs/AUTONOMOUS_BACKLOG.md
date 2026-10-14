@@ -15,8 +15,8 @@
 - #978/run `38509928015` 已失败：SDK8 命名 job `115675846585` 与 SDK10.0.401 命名 job `115675846886` 均在编译/测试失败；完整日志页面要求登录，当前无包内容，runner SDK 与根因未知。保持不盲改；SDK8 本机证据不替代 SDK10。
 - Q24-08 长文案/辅助输入当前 main 受控行为 `15/15`，见[证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md)；真实 Windows 中文 IME、Playnite/Narrator/系统剪贴板与 Tooltip 视觉仍待验。
 - Q25-01 当前 main 热态响应 `13/13`，SDK `8.0.423` Release `0/0`、XAML `24/24`；2000项预热5+30样本，p50/p95/max=`45/60/60ms`，输入到受控可见容器20样本=`46.214/75.782/76.334ms`。本机自动条件满足、无视觉改动、Host external/Final incomplete，见[当前 main 证据包](design/reviews/ui-finesse-round3-20260915/evidence/Q25-01-CURRENT-MAIN-HOT-RESPONSE-RECHECK-20261014/README.md)。
-- #978/run `38509928015` 两个命名 job 均在编译/测试失败，完整日志需登录，实际 runner SDK/根因未知；不猜修。最近公开 Actions 列表仍显示 #979 (`ae3c565`) queued；当前 HEAD `066b9a6` 尚未 push。提交后继续核对 #971 与新 SDK8/SDK10.0.401 门禁，不把本机 SDK8/9 当 SDK10。
-- R08-01 当前 main 按钮 hover/press 反向行为已补充并本机通过，用户 R08 1/2 故障仍待其原始失败身份；外机 R09 的 2 DIP/1 DIP 日志与旧测试断言吻合，当前 main 复核 2/2，外机 HEAD/DLL/PDB 未知。下一项 R08-02；推送后跟 SDK8 与 SDK10.0.401 Actions 至终态。#971/run 38393317198 仍 In Progress；#978/run 38509928015 Failure、日志需登录且根因未知；#979 queued，main 066b9a6 run 未在公开列表出现。用户至 2026-10-15 09:00 前无法回复，继续自主推进。Q24-03 第二物理显示器、真实 Playnite/OS IME/UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能保留外部边界。
+- #978/run `38509928015` 两个命名 job 均在编译/测试失败，完整日志需登录，实际 runner SDK/根因未知；不猜修。最近公开 Actions 列表仍显示 #979 (`ae3c565`) queued；`d3cb0b2d` 已推送但页面暂未显示其对应 run。推送当前阶段后继续核对 SDK8 与 SDK10.0.401 门禁，不把本机 SDK9 当 SDK10。
+- R08-01 当前 main 按钮 hover/press 反向行为已补充并本机通过，用户 R08 1/2 故障仍待其原始失败身份；外机 R09 日志的行号与历史 Chrome 2 DIP 断言完全对应，当前 main 断言已改为 Chrome 1 / ValidationStroke 2，本机 `2/2`；外机 HEAD/DLL/PDB 未知。R08-02 当前 main 应用热关闭 `1/1`、系统回调模拟 `1/1`、侧栏 reduced-motion `2/2`、生命周期门禁 `1/1`；真实 Windows 设置通知未触发。下一项复核已实现的 R08-03 隐藏/最小化 spinner 停机，再推进 R08-04。#971/run `38393317198` 仍 In Progress；#978/run `38509928015` Failure、日志需登录且根因未知；#979 queued。用户至 2026-10-15 09:00 前无法回复，继续自主推进。Q24-03 第二物理显示器、真实 Playnite/OS IME/UIA、物理 DPI/跨屏、呈现帧、ETW/宿主性能保留外部边界。
 
 | ID | 优先级 | 状态 | 负责角色 | 依赖/关联 |
 | --- | --- | --- | --- | --- |
