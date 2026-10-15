@@ -217,3 +217,7 @@ Actions #1025 (`38687483121`) 的 SDK10.0.401 日志指向 R08 system-motion 测
 ### 2026-10-15 R00/R01 freshness on 5862856e
 
 `check-ui-evidence-freshness.ps1` 对 `5862856e508fdb0abf2478fbbc54c34b34075692` 的 14 条 R00/R01 记录给出 `14 fresh / 0 stale`，没有命中登记源路径，package identity 为 `not-provided`。该脚本只证明相关源路径未失效，不能证明重新构建、安装包或 Playnite 宿主。R00/R01 行为和负例证据此前已经满足；Worker `TaskCoordinator` 修复不触及登记范围，因此不重建功能。
+
+### 2026-10-15 R09 high-contrast press fixture
+
+Actions #1027 (`38698959702`) 与 #1028 (`38701408503`) 的 SDK8.0.423/SDK10.0.401 完整 job logs 都在 R09 high-contrast matrix 的合成 `RaiseSpaceKey` 路径后报告 bare `Assert.True` Expected True/Actual False；后续 `TextServicesContext` COM 异常也会在通过的本机测试退出时出现，不能当成该 xUnit 断言的根因。现用 `HighContrastStateProbeButton.SetPressedStateForProbe(true/false)` 驱动按钮模板状态，再检查 overlay、动画时钟与释放后的负例。生产样式不变。SDK8.0.423 本机 Release 测试项目 build 成功，R09 `3/3`、Q06 routed Space 状态类 `1/1`；物理键盘仍未验。证据与 CI artifact 元信息见 `evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md`。修正提交推送后必须确认 SDK8 与 SDK10.0.401 Actions 终态。

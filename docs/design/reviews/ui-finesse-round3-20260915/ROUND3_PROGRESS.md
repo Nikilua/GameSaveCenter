@@ -1853,3 +1853,11 @@
 - R00/R01 表中“已满足”状态依据各自已有构建、行为、负例和审计证据保持不变；没有因 freshness 自动签收缺失条件，也没有重建已存在功能。
 - 最新 Worker 提交 `5862856e` 的 Actions run ID/终态当前未从 GitHub 插件状态接口取得，公开 Actions 页缓存只到 #979 并报加载错误；CI 门禁保持未确认，后续继续跟踪。
 - 下一项按已记录依赖推进 R12-04：先查已有 PreRestore 保护备份 service/DTO 和 game lock；使用 fake service、隔离目录/合成状态验证失败阻断、重试、取消与锁，不触碰真实存档。
+
+## 2026-10-15 R09 高对比按压状态 CI 修正
+
+- GitHub 插件取得 #1027/run `38698959702` 与 #1028/run `38701408503` 的 SDK8/SDK10 完整 logs。两次两条 SDK lane 都在 `R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion` 报 `Assert.True` Expected True/Actual False，栈为测试源 line 195；Core `125/125` 与 Worker `357/357` 通过。失败后出现的 WPF TextServices COM shutdown 异常也会在本机 pass 后出现，不是断言根因。
+- 失败发生在用 `RaiseSpaceKey` 构造的合成 routed `KeyDown` 后。夹具改用现有 `HighContrastStateProbeButton` 确定驱动 `IsPressed`，仍检查生产模板 press/release、overlay、focus ring、动效状态、disabled/selected/popup 对比。未改生产样式。Q06 独立类仍检查合成 Space routed state；物理键盘仍未验。
+- 本机 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 Release 测试项目 build 成功；R09 `3/3`，Q06 `1/1`。TRX、源/产物 SHA 与 #1027/#1028 artifact ID/SHA 在[证据包](evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。没有在工作区保留诊断 ZIP、DLL/PDB 或离屏图。
+- 修正提交推送后仍须追踪对应 SDK8 与 SDK10.0.401 CI 至成功/失败终态；本机 SDK8 不可替代 SDK10。
+- 下一项：R12-04 的 ledger 行与 `e4e42f40` 证据已经标为“已满足”。先核对当前 main 相关源码与测试是否发生变化；无变化时沿用已有 fake/隔离证据并补 freshness 结论，若当前依赖改变则只针对实际缺口复验。真实存档不触碰。

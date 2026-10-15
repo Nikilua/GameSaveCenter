@@ -20,6 +20,8 @@ freshness 扫描发现 `R10KeyboardShortcutHelpBehaviorTests.cs` 命中 R00-08 �
 
 本机隔离 SDK `8.0.423`（`D:\GameSaveCenterTools\dotnet-sdk-8.0.423\dotnet.exe`），VSTest `17.11.1`；Playnite 目标 `net462`，测试目标 `net472`，testhost 为 .NET Framework `4.8.9181.0`。首个过滤构建在隔离 `.tmp/r00-08-55ed3a17-20261015` 下编译测试项目与引用，随后两个类使用同一精确输出 `--no-build` 顺序执行。不是完整 solution build，也没有运行真实 Playnite/package-host。
 
+清理检查（2026-10-15）：3 个 TRX 已归档在本证据目录；`.tmp/r00-08-55ed3a17-20261015` 的 bin/obj 暂未删除，检查时存在来源不明的活动 `dotnet` 进程，无法确认缓存未被占用。DLL/PDB 不作为持久产物保留。
+
 XAML 结构检查 `24/24`、`python scripts/validate-source.py`、`git diff --check` 通过。CI SDK8 / SDK10.0.401 是独立门禁；本机 SDK8 不替代推送后 Actions 终态。package identity 没有提供。
 
 ## 文件身份

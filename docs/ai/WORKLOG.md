@@ -10825,3 +10825,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在已推送 `5862856e508fdb0abf2478fbbc54c34b34075692` 上运行 `scripts/check-ui-evidence-freshness.ps1`：14 条登记记录 `14 fresh / 0 stale`，没有记录命中 source path，package identity `not-provided`。完整 JSON 与 SHA-256 在 [R00/R01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)。Worker `TaskCoordinator` 改动不触及 R00/R01 登记源范围；各任务既有行为、负例和审计证据维持“已满足”，本次不重复重建。
 - 新提交 Actions 尚未取得可核实终态：GitHub 插件 combined status 暂无 checks，公开 Actions 页快照只到 #979 且列表报错。该边界不作为成功或失败判断；后续重试读取准确 run/job 状态。
 - 下一项 R12-04：复用现有保护备份流程和 DTO，以 fake service、合成状态和隔离目录核对失败即阻断危险恢复、同游戏锁、重试及取消；不操作真实存档。
+
+## 2026-10-15 R09 高对比按压态 CI 夹具修正
+
+- GitHub 插件取得 #1027/run `38698959702` 与 #1028/run `38701408503` 的 SDK8.0.423、SDK10.0.401 完整 job logs。两次均在 `R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion` 的 line 195 报 `Assert.True` Expected True/Actual False；Core `125/125`、Worker `357/357` 已通过。失败后的 TextServices COM 清理异常也在本机通过的 WPF 测试后出现，不是 xUnit 失败原因。
+- 失败位于合成 routed `KeyDown` 后的按压态检查。测试现在用既有 `HighContrastStateProbeButton` 确定驱动 `IsPressed`，并继续检查生产按钮模板的 press/release、overlay、focus ring、无动效/恢复动效、disabled/selected/popup 视觉状态。没有改生产样式、命令或绑定；独立 Q06 用例保留合成 Space routed-path 检查。
+- 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`：Release 测试项目及引用 build 成功；R09 高对比类 `3/3`、Q06 按钮状态类 `1/1`。TRX、源码/程序集哈希和 CI artifact 元信息见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。没有保存 CI ZIP、DLL/PDB 或离屏截图到仓库。
+- `.tmp` 本轮移除 12 个过期日志、403/401 API 错误响应、旧 freshness 临时 JSON 与临时审计 ZIP，释放约 `37.3 MB`。证据目录保留的两个小 TRX 已归档。清理旧 bin/obj 前复查发现来源不明的活动 PID `32408`（`dotnet`，进程启动时间/路径不可读），因此没有删除可能正在使用的缓存；本次检查 D 盘余量约 `8.2 GB`，已将所有先前误写的“缓存已删除”说明修正为“暂缓清理”。SDK8 工具、R12 patch 输入和其余证据保留；其他任务未跟踪文件未动。
+- 当前修正仍须提交推送并追踪新 Actions 至终态；SDK8 本机结果不替代 SDK10.0.401 CI。CI 收口后按既有清单复核 R12-04；ledger 已有满足状态，若源与证据未失效则补实际证据，不重建功能。

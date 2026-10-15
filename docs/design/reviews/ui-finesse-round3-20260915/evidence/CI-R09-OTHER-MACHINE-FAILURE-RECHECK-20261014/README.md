@@ -137,3 +137,5 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 在刚推送的 `main` 提交 `6b946540e634eacde4c64e50a5b187e8e085e9bc` 上，用固定 SDK `8.0.423` 重建完整 Release solution（MSBuild `17.11.48`、XAML `24/24`、`0 warning / 0 error`），然后从该隔离输出单独运行 `R09FocusOutlineBehaviorTests`：`2/2` 通过。该提交只更新文档；生产源基线仍为 `88b8eb57`。脱敏 TRX：[当前 6b946540 R09 测试](tests/R09FocusOutlineBehaviorTests-sdk8423-main-6b946540.trx)，SHA-256 `AC026DE2B6BE77A5B9F944526765B33D7AA0B96F2857FE5D71F912C1D26F60F6`。源、插件/测试 DLL、测试 PDB 的 SHA-256 与 DLL MVID 见[6b946540 身份清单](tests/hashes-current-main-6b946540.txt)。
 
 这再次确认当前 main 的同一构建输出不能复现外机报告，不会推断外机根因。SDK8 本机结果不替代 GitHub Actions 的 SDK10.0.401 lane；`6b946540` 对应 Actions run ID/终态暂不可核实（公开页加载错误且显示不同 SHA 的缓存项，匿名 API 返回 HTTP `403` rate limit）。
+
+清理检查（2026-10-15）：源文件、程序集 SHA/MVID、脱敏 TRX 与 build/test logs 已保存在本证据目录。`.tmp/r09-current-main-retry-20261015` 的构建缓存暂未删除：检查时发现来源不明的活动 `dotnet` 进程，无法确认缓存未被占用；DLL/PDB 不作为持久证据。

@@ -13,6 +13,7 @@
 - 命令：`scripts/build.ps1 -Configuration Release -SkipTests -OutputRoot .tmp/q24-07-official-postcommit-0243c108`
 - XAML 结构门禁：`24/24`；Release solution build：`0 warning / 0 error`
 - Playnite 插件目标 `net462`，测试目标 `net472`；VSTest `17.11.1`
+- 清理检查（2026-10-15）：完整复核已归档 8 个 TRX；`.tmp/q24-07-official-postcommit-0243c108` 的 bin/obj 暂未删除，检查时存在来源不明的活动 `dotnet` 进程，无法确认缓存未被占用。本地 DLL/PDB 不归档。
 - 插件 `ProductVersion=0.6.73+0243c108eaa7f3d63430475dd87d292cfcfeb950`，SHA-256 `68CE14E34F913DBC4BF801150F72334A8AAE696CC7A3D4ACA6AF883A66B093E6`
 - 测试程序集同一 `ProductVersion`，SHA-256 `585415A96279B3024E9A9AC023A3B30037558CB71EBCC4A23D0B091C21D16454`
 - `python scripts/validate-source.py`、`git diff --check` 通过。

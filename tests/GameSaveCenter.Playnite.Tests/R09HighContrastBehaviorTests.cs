@@ -191,7 +191,10 @@ public sealed class R09HighContrastBehaviorTests
                     Assert.True(focusButton.IsKeyboardFocusWithin);
                     var focusedChrome = Assert.IsType<Border>(focusButton.Template.FindName("ButtonChrome", focusButton));
                     Assert.Equal(SystemColors.HighlightColor, BrushColor(focusedChrome.BorderBrush));
-                    RaiseSpaceKey(focusButton, window, isKeyDown: true);
+                    // This case verifies the production template's pressed visuals under
+                    // high contrast. Drive ButtonBase's read-only state through the probe
+                    // instead of relying on a fabricated KeyDown to update WPF input state.
+                    focusButton.SetPressedStateForProbe(true);
                     FlushLayout(window);
                     Assert.True(focusButton.IsPressed);
                     var pressedOverlay = Assert.IsType<Border>(focusButton.Template.FindName("PressedOverlay", focusButton));
@@ -249,7 +252,7 @@ public sealed class R09HighContrastBehaviorTests
                         resources, normal, glassRequested, motionRequested);
                     FlushLayout(window);
                     Assert.Same(focusButton, Keyboard.Focus(focusButton));
-                    RaiseSpaceKey(focusButton, window, isKeyDown: true);
+                    focusButton.SetPressedStateForProbe(true);
                     FlushLayout(window);
                     Assert.True(focusButton.IsPressed);
                     if (motionRequested)

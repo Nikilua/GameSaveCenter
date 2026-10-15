@@ -355,6 +355,14 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - `.tmp` 清理已释放约 588 MB；SDK8.0.423 必须保留供后续验证。未跟踪的其他 Q/R TRX、临时 WPF 项目和 TestResults 保持原样。
 - 下一步：同步最终事实后中文 commit/push 到 `main`，通过 GitHub 插件跟踪新 SDK8 与 SDK10.0.401 Actions 至明确终态；如果失败先取完整日志。CI 阶段收口后重跑 R00/R01 freshness，再处理其行为缺口。R09 高对比 CI 断言在本机未复现，真实 Playnite、物理跨屏/呈现帧/ETW仍未验。
 
+## 2026-10-15 当前恢复点：R09 高对比按压态夹具修正
+
+- 当前分支 `main`；前一推送 `c0a98906` 对应 #1028/run `38701408503` 失败。#1027/run `38698959702` 与 #1028 的 SDK8.0.423 和 SDK10.0.401 jobs 都在 R09 high-contrast matrix 的合成 Space KeyDown 后报 bare `Assert.True` Expected True/Actual False。两轮完整 logs 已通过 GitHub 插件读取；diagnostics artifact ID/SHA 和本机复核见 `design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md`。
+- 当前代码阶段只修测试夹具：用现有 `HighContrastStateProbeButton` 稳定改变 `IsPressed`，保留生产模板 press/release、overlay、focus、动效/高对比组合断言；没有改生产 UI。SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 本机 Release 测试项目 build 成功，R09 `3/3`，Q06 routed Space state `1/1`。TextServices COM 清理输出在本机 pass 后仍可见，故不归为测试失败根因。
+- 当前阶段提交/推送后，先用 GitHub 插件定位新 run，检查 SDK8 与 SDK10.0.401 jobs；只有明确终态才结束阶段。失败时读取完整 log，不能用本机 SDK8 代替 SDK10。
+- CI 收口后继续 R12-04 复核：`ROUND3_PROGRESS.md` 已有“已满足”行和 2026-09-19 行为证据；先确认当前源/测试/DTO 与证据基线，再复用已有 fake/隔离夹具做需要的当前 main 复验。不得访问真实存档。后续未验证边界：真实 Playnite/package-host、物理键鼠、UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能。
+- 临时复测 TRX 已复制进证据目录；本阶段结束时删除自己创建的 `.tmp/r09-highcontrast-ci-fix-20261015`。保留已跟踪证据和其他任务未跟踪文件。
+
 ## 2026-10-15 当前恢复点：5862856e / R00-R01 fresh
 
 - `main` 最新推送 `5862856e508fdb0abf2478fbbc54c34b34075692`。#1026/run `38690846810` 旧提交两条 CI lane 均失败；SDK10 日志根因为取消期间释放已 Dispose 的 Gate，已修复并本机 SDK8.0.423 验证。该新提交 Actions 尚无可读终态：GitHub 插件 combined status 返回空 checks，公开列表缓存只到 #979 并报加载错误，run ID 未取得，不判断为成功或失败。
