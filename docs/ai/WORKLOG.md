@@ -10780,3 +10780,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户新贴的外机日志 line151 `Expected 2 / Actual 1` 和历史 `3f7d0b30` 旧 Chrome 2 DIP 断言吻合；当前 line151 是错误色、line152 Chrome 1 DIP、line154 独立 ValidationStroke 2 DIP。外机 HEAD、status、源、DLL、PDB 仍未知，所以构建产物/源码映射只是线索、根因未确认。`libpng iCCP` 不在断言栈，COM teardown 是失败后的 WPF 收尾。没有更改样式或弱化断言。
 - 前次 R05-03 bootstrap profile 的 PID 与进程树当前均不存在；验证精确 profile 位于仓库 `.tmp`、marker 匹配、无重解析点及冲突进程后，按清理规则删除 `.tmp/r05-03-popup-profile-20261013`，释放 `134,054,425` bytes。没有重试真实 Playnite、安装扩展或生成宿主截图。R05-03 仍部分满足，因没有呈现帧而不能签收“翻转无闪屏”。
 - 下一项按当前积压继续 R10-03；推送本阶段证据后需分别追踪 SDK8 与 SDK10.0.401 Actions 至成功/失败终态。若 SDK10 CI 失败，先取完整日志后再定位，不能以本机 SDK9 猜因。
+
+
+## 2026-10-15 CLOSE-WRAP 当前 main 完整门禁与附件复核
+
+- 当前 main 基线 b04660e0。WorkspaceTreeGovernanceTests 对 Trainer/Media 的显式 typed getter 检查已与生产通用 registry 路由对齐；R08 PageHost 导航与 R10 Ctrl+F 行为定向合计 8/8。生产 UI 未改。
+- SDK8.0.423 / VSTest17.11.1：Release solution build 0 warning / 0 error、XAML24/24、Core125/125、Worker356/357（一项 skip）。修改测试契约后 Playnite source group 110 类为455 passed/27 skipped/0 failed。WPF122类为648 passed/39 skipped/1 failed，全部类已执行；其中R05TooltipTiming的系统鼠标用例在窗口显示前因GetCursorPos=false失败，类中另外2项通过。余下78类以单类进程执行，481 passed/39 skipped/0 failed。总数1584 passed/67 skipped/1 failed。
+- Q14 当前测试1/1，654 DIP 单行 margin 不再复现；测试记录的620/654/660 DIP边界均覆盖。源码验证和git diff --check通过。Release本机总门禁仍非全绿，不把Win32指针API失败归因于生产或隐藏为skip。
+- 附件ZIP哈希与已有 #962/#963/#965/#967/#970/#971 triage一致；#962/#963数字动效测试、#965窗口几何、#970取消回调竞态、#971 Q14夹具各有现存的复核记录，本轮没有盲改生产代码。#967 SDK10包通过只证明其SDK10 job，不替代run中SDK8红灯。
+- 证据：docs/design/reviews/ui-finesse-round3-20260915/evidence/CLOSE-WRAP-CURRENT-MAIN-RECHECK-20261015/README.md。工作树其他未跟踪证据及生成文件均保留。下一步推送后核查两条Actions；独立进行b046当前R00/R01 freshness复核，再继续CLOSE-OPTICAL-01。

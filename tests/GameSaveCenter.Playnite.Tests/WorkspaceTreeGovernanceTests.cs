@@ -33,8 +33,9 @@ public sealed class WorkspaceTreeGovernanceTests
 
         Assert.Contains("ProductionShellView.GetWorkspaceView<MaintenanceView>(WorkspaceKind.Maintenance)", dashboardCode);
         Assert.Contains("ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)", dashboardCode);
-        Assert.Contains("ProductionShellView.GetWorkspaceView<TrainerCenterView>(WorkspaceKind.Trainers)", dashboardCode);
-        Assert.Contains("ProductionShellView.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media)", dashboardCode);
+        Assert.Contains("WorkspaceKind.Trainers => getWorkspaceView(WorkspaceKind.Trainers)", dashboardCode);
+        Assert.Contains("WorkspaceKind.Media => getWorkspaceView(WorkspaceKind.Media)", dashboardCode);
+        Assert.Contains("workspace => ProductionShellView.GetWorkspaceView(workspace)", dashboardCode);
         Assert.Contains("ProductionShellView.ApplyResponsiveLayout(width, height)", dashboardCode);
         Assert.DoesNotContain("MaintenanceWorkspaceView.FindingsGridElement", dashboardCode);
         Assert.DoesNotContain("TaskWorkspaceView.TaskDetailCardElement", dashboardCode);

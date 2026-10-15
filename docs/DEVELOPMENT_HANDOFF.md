@@ -332,3 +332,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 脱敏 TRX、DLL/PDB SHA/MVID 与未验范围见 design/reviews/ui-finesse-round3-20260915/evidence/R10-04-CURRENT-MAIN-RECHECK-20261015/README.md。
 - 外机 R09 仍报 Expected 2 / Actual 1、line 151。本机同源隔离输出 2/2；当前源码 line 151 是错误边框颜色，line 152 为 Chrome 1 DIP，line 154 为独立 ValidationStroke 2 DIP。外机 HEAD、工作树、测试源码、DLL/PDB/资源未知，因此旧断言/符号错配仍只是推断，未更改模板或断言。iCCP 警告不在断言栈，COM teardown 异常发生在断言失败之后。外机复核见 design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md。
 - 当前提交对应 Actions run ID/终态未知；本机代理拒绝匿名 API，已知 run 页面 cache miss。未关闭 CI 门禁。真实 Playnite、UIA/读屏、IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。下一项 R10-05：盘点既有筛选预设 DTO、持久化和删除/重命名确认取消路径，再补行为。
+
+
+## 2026-10-15 当前恢复点：CLOSE-WRAP 已复测，单项系统指针环境失败
+
+- 分支 main，基线 b04660e0af2d17daae8c7dec426598e90de738b2。只改 WorkspaceTreeGovernanceTests 的过时 registry 源码契约；定向 WorkspaceTree/R08 PageHost/R10 Search focus 共8/8，生产UI未改。Q14 654 DIP 行距测试1/1通过。
+- SDK8.0.423、VSTest17.11.1 的完整 Release build 0/0、XAML24/24、Core125/125、Worker356 passed/1 skipped、Playnite source455 passed/27 skipped。122 WPF类总648 passed/39 skipped/1 failed；R05TooltipTiming系统指针用例在window显示前GetCursorPos返回false，另外2/3通过。全套1584 passed/67 skipped/1 failed，本机门禁未绿。
+- 完整证据与TRX在 docs/design/reviews/ui-finesse-round3-20260915/evidence/CLOSE-WRAP-CURRENT-MAIN-RECHECK-20261015/README.md。外机R09的Expected2/Actual1仍因实际HEAD、source、DLL/PDB身份缺失而未定因。用户所附CI ZIP与#962/#963/#965/#967/#970/#971现有复核包一致。
+- 提交推送本阶段后查询准确Actions runs，分别跟SDK8和SDK10.0.401到success/failure；CI日志不完整时不猜根因。随后重查当前main的R00/R01 freshness并只校正有证据的条目，再推进CLOSE-OPTICAL-01。未验：交互式系统指针、真实Playnite、物理DPI/跨屏、最终呈现帧、ETW/宿主性能。

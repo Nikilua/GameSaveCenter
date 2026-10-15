@@ -97,3 +97,11 @@ CI：暂停检查点 #920/run 36677346317 与 #919/run 36675309812 的 SDK 10.0.
 - `main` 源码基线 `95109c221ec85a52c61c51c0a119a2f3d97efacf`。R10-03 使用已存在的搜索策略、Dashboard 路由、Shell 命令和工作区搜索框映射；只提取可测路由/目标解析入口并增加 WPF routed-event 行为用例。SDK `8.0.423` / VSTest `17.11.1`，Playnite `net462` / tests `net472` Release 定向 build `0/0`，R10 相关组 `13/13`。当前媒体页焦点实际移到 `MediaSearchTextBox`；弹层占用和编辑按键负例保留焦点。
 - 当前 R09 外机断言对照在本机 `2/2` 通过；#967 附件的 SDK10.0.401/#983fee5 包也含 R09 `2/2`，但都不能确认外机所用源码/DLL/PDB。旧源或产物错配仍是推断，见[R09 复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 - `95109c2` 的 run `38645600070` 上次观察为 In progress；本轮 API 连接被拒绝、`gh` CLI 不存在、Actions 浏览器读取超时，当前终态未确认。新阶段提交推送后要继续跟踪两条 CI lane 至明确终态；SDK8 本机结果不替代 SDK10.0.401。下一项 R10-04 快捷键帮助。
+
+
+## 2026-10-15 当前恢复点：CLOSE-WRAP / SDK8 全量门禁
+
+- 当前 main 基线为 b04660e0af2d17daae8c7dec426598e90de738b2。唯一 tracked 源改动是 WorkspaceTreeGovernanceTests 中 Trainer/Media 的旧 typed getter 断言，已更新为通用 workspace registry 路由；Production PageHost、缓存导航和焦点路由由行为测试覆盖，定向 8/8。没有生产 UI 改动。
+- 隔离 SDK 8.0.423 / VSTest 17.11.1：完整 Release solution build 0 warning / 0 error、XAML 24/24；Core 125/125，Worker 356 passed / 1 skipped，Playnite source 455 passed / 27 skipped。WPF 122 类 648 passed / 39 skipped / 1 failed；Q14 654 DIP 行距当前 1/1。详见 CLOSE-WRAP 当前 main 证据包。
+- 唯一失败是 R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt 在窗口显示前调用 GetCursorPos 返回 false；该类其余 2/2 通过。全体合计 1584 passed / 67 skipped / 1 failed；本机门禁未全绿。系统输入限制保持未验，不伪装为通过。
+- 新提供的 #962/#963/#965/#967/#970/#971 ZIP 与既有归档 SHA/提交/SDK 记录相符；其中旧测试修正有单独证据，不替代当前提交 Actions。推送后分别追踪 SDK8 与 SDK10.0.401 到终态。下一步重查当前 main 的 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。真实 Playnite、物理指针/DPI/跨屏、呈现帧、ETW/宿主性能仍未验。

@@ -1,0 +1,978 @@
+[
+  {
+    "class": "AsyncThumbnailImageTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "AsyncThumbnailLoaderTests",
+    "exitCode": 0,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "total": 6
+  },
+  {
+    "class": "DataGridHorizontalWheelBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "GamePickerFilterBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "GamePickerKeyboardBehaviorTests",
+    "exitCode": 0,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "total": 7
+  },
+  {
+    "class": "KeyboardFocusSourceTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "MediaInboxGeometryTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "MediaInboxScrollBehaviorTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "MediaThumbnailConverterTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "MediaWindowAnchorContractTests",
+    "exitCode": 0,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "total": 10
+  },
+  {
+    "class": "NumericCellReadabilityTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "NumericInputTests",
+    "exitCode": 0,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "total": 12
+  },
+  {
+    "class": "OverviewInteractionTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "PasteNormalizationTests",
+    "exitCode": 0,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "total": 7
+  },
+  {
+    "class": "PlayniteGameIconProviderTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "ProcessMappingInlineActionBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "ProductionShellChromeSourceTests",
+    "exitCode": 0,
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "total": 22
+  },
+  {
+    "class": "Q06ButtonStateSequenceBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q06ContinuousButtonBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q10CheckBoxHitBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "Q10ToggleSwitchStateBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q13ColumnResizeBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q13ScrollBarThumbBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q14FilterLabelBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q14ToolbarAlignmentBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q23SettingsActionConfirmationBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "Q24FractionalDpiTypographyBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R02ActionAvailabilityHintTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R02ActionPriorityTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R02BusyStateTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "R02HitAreaSpacingTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R02OpticalAlignmentTests",
+    "exitCode": 0,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "total": 7
+  },
+  {
+    "class": "R03BilingualLengthTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R03CopySafePunctuationTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R03LongPathTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R03NumericAlignmentTests",
+    "exitCode": 0,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "total": 10
+  },
+  {
+    "class": "R03TextScaleTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R05FocusBoundaryBehaviorTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "R05MultiSelectionSummaryBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R05OptionVirtualizationBehaviorTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "R05PopupBoundaryBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R05PopupLifecycleBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R05TogglePersistenceBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R05TooltipTimingBehaviorTests",
+    "exitCode": 1,
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R06ClipboardBehaviorTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "R06ColumnHeaderHelpTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R06ColumnWidthPersistenceBehaviorTests",
+    "exitCode": 0,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "total": 6
+  },
+  {
+    "class": "R06DetailsBudgetBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R06EmptyStateBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R06SelectionStateBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R06SortingBehaviorTests",
+    "exitCode": 0,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "total": 7
+  },
+  {
+    "class": "R06TaskProgressBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R07DetailsBreakpointBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R07FineScrollBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R07ResizeStressBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R07ScrollOwnershipBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R07SelectionAnchorBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R07StatusBannerBudgetBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R08BusinessFeedbackBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R08DialogOverlayBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R08MotionHotChangeBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R08MotionReverseBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R08NumericChangeBehaviorTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "R08OffscreenMotionBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R08PageSwitchBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R08SystemMotionHotChangeBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R09BackgroundPressureBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R09FocusOutlineBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R09HighContrastBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R09IconSemanticBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R09PixelStrokeBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R09ShadowBudgetBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R09ThemeSwitchBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R09ThumbnailPlaceholderBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R10FilterPresetBehaviorTests",
+    "exitCode": 0,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "total": 6
+  },
+  {
+    "class": "R10FilterSourceBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R10KeyboardShortcutHelpBehaviorTests",
+    "exitCode": 0,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "total": 5
+  },
+  {
+    "class": "R10RecentAccessBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R10SearchShortcutBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R10SearchShortcutFocusBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R11BackupPreviewBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R11DiffListSearchBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R11ProtectionBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R11VersionComparisonBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R11VersionNoteBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R11VersionSummaryBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R12PathRemapBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R12RestoreReadinessViewBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R12RestoreWorkflowBehaviorTests",
+    "exitCode": 0,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "total": 8
+  },
+  {
+    "class": "R15TaskFailureCopyTests",
+    "exitCode": 0,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "total": 6
+  },
+  {
+    "class": "R16SettingsSearchBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R18DispatcherVisibilityBenchmarkTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R18TableContainerBudgetTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R18ThumbnailBudgetTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R21AsyncCompletionAnnouncementBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R21AutomationValueBehaviorTests",
+    "exitCode": 0,
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "total": 24
+  },
+  {
+    "class": "R21DisabledHiddenBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R21FocusVisualRegressionBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "R21KeyboardNavigationTraceTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R21SelectableTechnicalTextBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R22BatchCountBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R22ConfirmationStructureBehaviorTests",
+    "exitCode": 0,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  },
+  {
+    "class": "R22CopyFeedbackBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R22LongTaskLeavePageBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R22MaintenanceActionTimeBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  },
+  {
+    "class": "R22RemoteStageTimeBehaviorTests",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "total": 3
+  },
+  {
+    "class": "R23ProductionResourceStateBehaviorTests",
+    "exitCode": 0,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "total": 9
+  },
+  {
+    "class": "ReportedWorkspaceLayoutBehaviorTests",
+    "exitCode": 0,
+    "passed": 54,
+    "failed": 0,
+    "skipped": 0,
+    "total": 54
+  },
+  {
+    "class": "SettingsDraftLifecycleBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "SettingsValidationNavigationBehaviorTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "StatusGlyphConverterTests",
+    "exitCode": 0,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "total": 9
+  },
+  {
+    "class": "TaskCenterViewResponsiveTests",
+    "exitCode": 0,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "total": 8
+  },
+  {
+    "class": "TypographyDiagnosticsTests",
+    "exitCode": 0,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "total": 11
+  },
+  {
+    "class": "UiAuditBlockerTests",
+    "exitCode": 0,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "total": 9
+  },
+  {
+    "class": "UiAuditCaptureContractTests",
+    "exitCode": 0,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "total": 8
+  },
+  {
+    "class": "UiAuditTruthfulnessTests",
+    "exitCode": 0,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "total": 9
+  },
+  {
+    "class": "UiDiagnosticsExporterTests",
+    "exitCode": 0,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "total": 11
+  },
+  {
+    "class": "UiFinesseFoundationTests",
+    "exitCode": 0,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "total": 9
+  },
+  {
+    "class": "UiNegativeFixtureRegistryTests",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "total": 1
+  },
+  {
+    "class": "WorkspaceStatePresenterBehaviorTests",
+    "exitCode": 0,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "total": 8
+  },
+  {
+    "class": "WpfUiResourceDictionaryTests",
+    "exitCode": 0,
+    "passed": 139,
+    "failed": 0,
+    "skipped": 39,
+    "total": 178
+  },
+  {
+    "class": "WrapPanelRowGapControllerBehaviorTests",
+    "exitCode": 0,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "total": 2
+  }
+]

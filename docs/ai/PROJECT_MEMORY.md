@@ -194,3 +194,10 @@ R10-04 已复用现有 KeyboardShortcutHelpCatalog、FocusWorkspaceSearchCommand
 R10-05 沿用现有 FilterPresetDefinition、设置规范化、任务/媒体 preset 命令及确认流程。原工具栏按钮用测试命令，生产快照/应用方法此前只有源码接线断言，因此新增一个 STA 行为用例调用生产 CreateTaskFilterPreset 和 ApplyTaskFilterPreset，验证标量筛选状态恢复，以及状态/游戏/类型动态项过期后回退“全部”。非法/旧配置回退、JSON scalar roundtrip、真实重命名/删除取消保护继续通过。只改测试，无生产代码/XAML变更。
 
 基线 e2353aa38e8c125d49ab1a1a37d67d37e1cbca8c，本机 SDK9.0.302/VSTest17.14.1（SDK8.0.423未安装）；全解方案 Release build 0/0，R10 preset 6/6、TaskCenterViewResponsive 8/8、Q14 toolbar 1/1，合计15/15，XAML24/24、source validation/diff check通过。Q14通过后出现testhost COM teardown诊断但exit0。SDK9不替代SDK8/CI SDK10.0.401。用户设置和真实Playnite未触碰。CI run待确认；下一项 R10-06 来源条件清除行为。证据：docs/design/reviews/ui-finesse-round3-20260915/evidence/R10-05-CURRENT-MAIN-RECHECK-20261015/README.md。
+
+
+### 2026-10-15 CLOSE-WRAP SDK8 全量门禁与外部输入边界
+
+当前 main b04660e0 的 WorkspaceTreeGovernanceTests 旧 Trainer/Media typed getter 断言改为 generic registry 路由；实际 PageHost/导航/焦点行为由 WPF 测试覆盖，定向 8/8。只改测试，不改生产 UI。隔离 SDK8.0.423/VSTest17.11.1 完整 Release solution build 0/0、XAML24/24、Core125/125、Worker356 passed/1 skipped、Playnite source455 passed/27 skipped。122 个 WPF 类已全部执行，648 passed/39 skipped/1 failed；Q14 654 DIP 行距1/1。
+
+唯一失败 R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt 在窗口显示前 GetCursorPos 返回 false；该类2/3，余下78个类另行单类隔离均通过。总计1584 passed/67 skipped/1 failed，不把系统指针输入未用计为产品缺陷，也不将其改成跳过。证据 docs/design/reviews/ui-finesse-round3-20260915/evidence/CLOSE-WRAP-CURRENT-MAIN-RECHECK-20261015/README.md。推送后追踪SDK8/SDK10 CI；下一本机任务重查R00/R01 freshness，之后CLOSE-OPTICAL-01。

@@ -1809,3 +1809,12 @@
 - 同一 `6b946540` 完整构建输出中的外机 R09 焦点描边类另行 `2/2` 通过；当前第151行颜色断言与外机的 `Expected 2 / Actual 1` 仍不匹配。外机 HEAD/DLL/PDB 未知，根因未确认；见[R09 外机对照](evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 - `6b946540` 对应 GitHub Actions run ID/终态未知：公开列表报加载错误且展示不同 SHA 的缓存项 `8546aca`，匿名 API 返回 `403 rate limit`。SDK8 本机结果不替代 CI SDK10.0.401。没有视觉代码改动；真实 Playnite、系统鼠标/键盘输入、UIA/Narrator、物理 DPI/跨屏、presented frame、ETW 与宿主性能仍未验。Q24-03 等第二物理屏，Q25 真实呈现/跟踪权限不绕过。
 - 下一可执行动作：可用交互桌面恢复后单独重跑 Tooltip 系统鼠标测试；用户明早可回复后，对照外机同一次失败的 `HEAD`、工作树、测试源码与 DLL/PDB SHA。当前没有证据支持进一步生产模板或行为修改。
+
+
+## 2026-10-15 CLOSE-WRAP 当前 main SDK8 全量门禁复核
+
+- 基线 main b04660e0；生产 UI 没有变更。唯一源码改动将 WorkspaceTreeGovernanceTests 中 Trainer/Media 的过时 getter 字符串检查更新为通用 registry callback 与 workspace 路由。实际 PageHost、导航、焦点测试8/8。
+- 本机隔离 SDK8.0.423、MSBuild17.11.48、VSTest17.11.1。Release solution build 0 warning/0 error，XAML24/24；Core125/125、Worker356 passed/1 skipped、Playnite source455 passed/27 skipped。WPF122类648 passed/39 skipped/1 failed，121类无失败。类结果表见 [manifest](evidence/CLOSE-WRAP-CURRENT-MAIN-RECHECK-20261015/tests/wpf-class-results.json)。
+- Q14 654 DIP 单行无额外gap当前1/1通过，旧 backlog 的复现描述过期。唯一失败R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt在调用window.Show()前GetCursorPos返回false；没有实际显示窗口或执行光标/tooltip动作。其余78类隔离为481 passed/39 skipped/0 failed。全体计数1584 passed/67 skipped/1 failed，本机门禁未全绿。
+- 不改Win32 API、不把该项记skip、不写成通过；需交互式桌面重新执行真实系统指针用例。SDK8结果不能替代SDK10.0.401。用户附加CI ZIP确认与既有归档相符，详细失败修正见R08-06、CI-965、CI-SDK10-BUILD-VERIFY与CI-970-971证据。
+- 下一可执行动作：本阶段提交推送后查询两条Actions至终态；并按授权在当前main重新核对R00/R01 freshness，然后继续CLOSE-OPTICAL-01。未验证Playnite宿主、物理DPI/跨屏、呈现帧和ETW权限。
