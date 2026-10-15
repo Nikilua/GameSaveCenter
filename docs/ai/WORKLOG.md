@@ -10766,3 +10766,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户外机 R09 仍报告 Expected `2,2,2,2` / Actual `1,1,1,1` 与 line151；当前 main 第151行是颜色断言。本次 `6b946540` 完整构建同输出 R09 `2/2`，插件/测试 DLL/PDB 和源 hash 已归档，不能据此确认外机实际载入物或根因；没有改模板、放宽断言。`libpng iCCP` 不在断言堆栈，COM 异常在失败后收尾。
 - GitHub Actions：`6b946540` 对应 run ID/终态仍未知；公开页报加载错误并缓存不同 SHA `8546aca`，匿名 API `403 rate limit`，`gh` CLI 不存在。本机 SDK8 不替代 SDK10.0.401；未把阶段记为 CI 完成。相关构建日志、脱敏 TRX、源码/程序集 SHA 与边界见[Q24-02 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-RERUN-20261015/README.md)和[R09 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 - 下一可执行动作：在系统指针 API 可用的交互桌面重跑 Tooltip 鼠标行为；用户明早可回复后，对照外机同次失败的 HEAD、status、测试源码、DLL/PDB SHA。真实 Playnite、UIA/Narrator、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+
+## 2026-10-15 R09 外机行号映射核实与当前 Actions 状态
+
+- 直接读取历史提交 `3f7d0b30` 的 `R09FocusOutlineBehaviorTests.cs` 并按源行号核对：第 151 行正是 Chrome 边框厚度 `2 DIP` 旧断言；当前 main 第 151 行是错误边框颜色，第 152 行为 Chrome `1 DIP`，第 154 行为外置 `ValidationStroke 2 DIP`。用户日志的断言行与当前源不同已确认；实际是旧测试 DLL/PDB、不同 checkout 或构建输出复用仍无法区分。
+- 当前 main R09 本机同输出复核为 `2/2`，未改模板或弱化断言；`libpng iCCP` 警告不在失败栈，COM teardown 在断言失败后，不解释厚度比较。
+- 当前推送 HEAD 为 `1f59591e`。精确 Actions API 查询返回 HTTP `403`、匿名额度 `0`，reset epoch `1792025122`；公开页仍展示不同 SHA 的缓存项，当前 run ID/终态未知。额度恢复后继续查询并跟相应 CI lanes 到终态。
