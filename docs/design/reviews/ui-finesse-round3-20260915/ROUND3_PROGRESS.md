@@ -1,3 +1,10 @@
+## 2026-10-15 R05-03 Popup 复核与外机 R09 断言映射
+
+- 当前 `main` 源码检查点 `91bc88ad2f865c760469c8ad68fc6bf061c4a97b` 上，本机 SDK `9.0.302` / VSTest `17.14.1` 定向 Release 构建 Playnite 测试项目及引用；R05 Popup 边界与选框虚拟化 `7/7`，R09 焦点描边 `2/2`。本机缺仓库锁定的 SDK `8.0.423`，因此这不是 SDK8、SDK10.0.401 CI 或完整 solution build。脱敏 TRX、源码/程序集/PDB SHA 与行为边界见 [R05-03](evidence/R05-03-CURRENT-MAIN-RECHECK-20261015/README.md) 和 [R09](evidence/CI-R09-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- R05-03 现有测试证明 Popup 最终几何在当前桌面工作区内、最大高度与滚动生效、选定项可见；未捕获呈现帧，“翻转无闪屏”仍未验，任务保持部分满足。前次隔离 Playnite profile 的宿主进程现在已退出；确认 profile 位于仓库 `.tmp`、审计 marker 匹配、无重解析点与冲突进程后，清理精确目录并回收 `134,054,425` bytes。本轮没有重试真实宿主。
+- 用户新贴的外机 R09 日志仍是 `Expected 2 / Actual 1`、stack line 151。当前源码 line 151 检查错误色、line 152 检查 Chrome `1 DIP`、line 154 检查独立 `ValidationStroke 2 DIP`；历史 `3f7d0b30` line 151 是旧 Chrome `2 DIP` 断言。当前 main 本机 SDK9 同输出 `2/2`。外机实际 HEAD、工作树、DLL 与 PDB 未知，因此旧测试源/二进制映射只是证据线索，根因未确认；没有更改生产样式或放宽断言。`libpng iCCP` 不在断言调用栈，COM teardown 出现在断言失败之后。
+- 下一独立工作继续按 Round3/当前 backlog 选依赖已满足的 Q/R；R05-03 只在得到真实呈现帧证据后再验收。新文档推送后分别跟踪 SDK8 与 SDK10.0.401 Actions 至明确终态。
+
 ## 2026-10-15 R07-08 当前 main resize 压力复核
 
 - 复核 R07-08 的五阶段正常→窄→短→宽→恢复序列。旧 `552b8168` 基线之后共享 `WpfUiProduction.xaml`、`Redesign.xaml` 和 DataGrid 输入接线更新，虽 TaskCenter 页面/测试源未改，仍按当前 main 隔离重建。源码 `d190f7eac4d85e81193080a2ff4f73105cec9b45`。

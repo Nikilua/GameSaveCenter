@@ -10772,3 +10772,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 直接读取历史提交 `3f7d0b30` 的 `R09FocusOutlineBehaviorTests.cs` 并按源行号核对：第 151 行正是 Chrome 边框厚度 `2 DIP` 旧断言；当前 main 第 151 行是错误边框颜色，第 152 行为 Chrome `1 DIP`，第 154 行为外置 `ValidationStroke 2 DIP`。用户日志的断言行与当前源不同已确认；实际是旧测试 DLL/PDB、不同 checkout 或构建输出复用仍无法区分。
 - 当前 main R09 本机同输出复核为 `2/2`，未改模板或弱化断言；`libpng iCCP` 警告不在失败栈，COM teardown 在断言失败后，不解释厚度比较。
 - 当前推送 HEAD 为 `1f59591e`。精确 Actions API 查询返回 HTTP `403`、匿名额度 `0`，reset epoch `1792025122`；公开页仍展示不同 SHA 的缓存项，当前 run ID/终态未知。额度恢复后继续查询并跟相应 CI lanes 到终态。
+
+## 2026-10-15 R05-03 当前 main 复核与外机 R09 日志续查
+
+- 源码检查点 `91bc88ad2f865c760469c8ad68fc6bf061c4a97b`、分支 `main`。本机实际安装 SDK9.0.302 / VSTest17.14.1；仓库 `global.json` 要求 SDK8.0.423，本机没有该版本。本轮从仓库外工作目录隔离构建 Playnite 测试项目与引用，不是完整 solution build 或 SDK8/SDK10 CI。
+- `R05PopupBoundaryBehaviorTests` + `R05OptionVirtualizationBehaviorTests` 为 `7/7`，R09 焦点描边类在相同输出 `2/2`。Playnite `net462`、测试 `net472`、testhost .NET Framework 4.8.9181.0。TRX、源/程序集/PDB 身份与适用边界见[R05-03 当前复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-03-CURRENT-MAIN-RECHECK-20261015/README.md)和[R09 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-CURRENT-MAIN-RECHECK-20261015/README.md)。没有生产或测试源码变更。
+- 用户新贴的外机日志 line151 `Expected 2 / Actual 1` 和历史 `3f7d0b30` 旧 Chrome 2 DIP 断言吻合；当前 line151 是错误色、line152 Chrome 1 DIP、line154 独立 ValidationStroke 2 DIP。外机 HEAD、status、源、DLL、PDB 仍未知，所以构建产物/源码映射只是线索、根因未确认。`libpng iCCP` 不在断言栈，COM teardown 是失败后的 WPF 收尾。没有更改样式或弱化断言。
+- 前次 R05-03 bootstrap profile 的 PID 与进程树当前均不存在；验证精确 profile 位于仓库 `.tmp`、marker 匹配、无重解析点及冲突进程后，按清理规则删除 `.tmp/r05-03-popup-profile-20261013`，释放 `134,054,425` bytes。没有重试真实 Playnite、安装扩展或生成宿主截图。R05-03 仍部分满足，因没有呈现帧而不能签收“翻转无闪屏”。
+- 下一项按当前积压继续 R10-03；推送本阶段证据后需分别追踪 SDK8 与 SDK10.0.401 Actions 至成功/失败终态。若 SDK10 CI 失败，先取完整日志后再定位，不能以本机 SDK9 猜因。
