@@ -10804,3 +10804,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 对照生产代码后确认测试在 `Window.Show` 前设定 1 秒资源，初次 `ApplyAdaptiveTheme` 仍按 runner 的 Windows 动效策略重写 duration。只把测试资源设定移动到初次主题应用后；应用动效开关仍用既有实例级 override，系统策略测试仍走 fake provider 与生产回调。未改生产 UI/行为。
 - 本机锁定 SDK8.0.423 / VSTest17.11.1 Release 测试项目 build `0 warning / 0 error`，Playnite `net462`、测试 `net472`；应用设置类 `1/1`、系统策略类 `1/1`，source validation 和 `git diff --check` 通过。脱敏 TRX 与 SHA-256 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md`。本机 SDK8 不替代 SDK10.0.401 CI。
 - 新阶段 commit/push 后要用 GitHub 插件查 SDK8 与 SDK10.0.401 新 run，取得完整失败日志（若失败），并跟踪到终态。后续在修正后的 source checkout 重跑 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。外机 R09 实际 HEAD/DLL/PDB 仍缺；真实 Playnite、系统通知、物理 DPI/跨屏、呈现帧和 ETW/宿主性能仍未验。
+
+## 2026-10-15 R08 system-motion CI 复测修正
+
+- #1025/run `38687483121` 对应已推送 `676be4f3`，两条 Actions lane 均 Failure。SDK10.0.401 job `116265550450` 完整日志显示 `R08SystemMotionHotChangeBehaviorTests` 第56行未观察到 opacity 动画时钟；测试在 `Show/UpdateLayout` 后立即改资源，Loaded 队列仍可能随后执行初始入场/主题应用。修正夹具先 drain dispatcher 并再完成 layout，再设置确定时长并触发待取消动画；生产代码未改，断言未弱化。
+- 同一 run 的 SDK8.0.423 job `116265550259` 后段在 `R09HighContrastBehaviorTests` 报告第195行 Assert.True（Expected True / Actual False）。完整日志未给出定制断言上下文；本机 SDK8 同类 `3/3` 通过，暂不推定根因。Artifact `11951095969` SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。SDK10 artifact `11951470215` SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`；两条完整 job log 由 GitHub 插件取得。
+- 锁定本机 SDK8.0.423 / VSTest17.11.1 重建测试项目 `0 warning / 0 error`；R08SystemMotion `1/1`、R08 app-motion `1/1`、R09HighContrast `3/3`。源码校验和 `git diff --check` 通过。TRX 已复制到 R08 证据包；后续清理仅删除本阶段可再生 `.tmp` build，不动其他 untracked 文件。
+- 下一步提交/推送本次 R08 夹具修复，跟踪新 SDK8/SDK10.0.401 Actions 到终态。若 SDK8 高对比失败再次出现，先取得对应完整日志并定位断言；R08 CI 收口后按用户要求重查 R00/R01 freshness，再做 CLOSE-OPTICAL-01。外机 R09 仍缺实际 HEAD/DLL/PDB。

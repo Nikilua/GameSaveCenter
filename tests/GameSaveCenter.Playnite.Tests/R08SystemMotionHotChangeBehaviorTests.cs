@@ -45,9 +45,11 @@ public sealed class R08SystemMotionHotChangeBehaviorTests
                 };
                 window.Show();
                 window.UpdateLayout();
+                DrainDispatcher();
+                window.UpdateLayout();
 
-                // Initial adaptive-theme application reads the real OS preference before
-                // the fake system-policy provider takes over this behavior test.
+                // Finish the Loaded handler and its entrance scheduling before installing
+                // deterministic durations, so this test controls the animation it cancels.
                 view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
                 view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
 
@@ -55,8 +57,12 @@ public sealed class R08SystemMotionHotChangeBehaviorTests
                 var translate = GscMotion.GetMutableTranslateTransform(shell);
                 GscMotion.AnimateEntrance(shell, 12);
                 PumpDispatcher(TimeSpan.FromMilliseconds(55));
-                Assert.True(DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated);
-                Assert.True(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+                Assert.True(
+                    DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated,
+                    $"system-motion test did not start opacity animation; opacity={shell.Opacity}; loaded={view.IsLoaded}");
+                Assert.True(
+                    DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated,
+                    $"system-motion test did not start translation animation; y={translate.Y}; loaded={view.IsLoaded}");
 
                 systemAllowsMotion = false;
                 RaiseSystemParametersChanged(view);

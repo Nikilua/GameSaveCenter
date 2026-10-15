@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15；分支 `main`，当前源码 `db073461994062d6b1849948f105f97f3ff15f53`。R00/R01 freshness `14/14`；仓库 pin SDK8.0.423，本轮用隔离 SDK8 测试 R09 `2/2`，DLL/PDB/MVID/TRX 已归档。外机 R09 line 151 `Expected 2 / Actual 1` 与当前断言不匹配，但缺外机 HEAD、测试源、DLL/PDB 和生产资源身份，根因未确认。Actions #1023/run `38671542992` 的 SDK8/SDK10.0.401 jobs 均失败，完整日志不可读；本机结果不替代 SDK10。CLOSE-WRAP 完整门禁仍有 `GetCursorPos=false` 的系统鼠标前提失败。下一独立 Q/R 项 R12-04；真实宿主、OS 输入/UIA、物理 DPI/跨屏、presented frame、ETW/宿主性能仍是边界。详见 [当前交接](../DEVELOPMENT_HANDOFF.md)、[R00/R01](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md) 与 [R09](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+更新：2026-10-15；分支 `main`，已推送源码 `676be4f3349d439198e834aa28341b3ca2883040`。当前修正 R08 system-motion 行为夹具：SDK8.0.423/VSTest17.11.1 Release 测试项目 build `0/0`，R08 app/system 两类 `1/1`，R09 高对比定向类 `3/3`；新夹具补丁已本机通过但尚待提交与 CI。Actions #1025/run `38687483121` 终态 Failure：SDK10 job `116265550450` 在 R08SystemMotion 入场动画断言失败；SDK8 job `116265550259` 在 R09HighContrast 矩阵第195行 Assert.True 失败（Expected True / Actual False），同 SDK本机定向复测 `3/3`，原因未确认。完整 job logs 已从 GitHub 插件取得；artifact SHA 分别 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`、`8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。R00/R01 freshness 最近 `14/14`，R08 CI 收口后重核当前 source。外机 R09 line151 `Expected 2 / Actual 1` 仍缺同一次 HEAD/DLL/PDB；CLOSE-WRAP 鼠标前提 `GetCursorPos=false` 仍待交互桌面。真实宿主、OS 输入/UIA、物理 DPI/跨屏、presented frame、ETW/宿主性能继续单独记账。详见[当前交接](../DEVELOPMENT_HANDOFF.md)、[R00/R01](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)、[R09外机对照](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)与[R08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md)。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。截至 `db073461`，R00/R01 freshness 14/14；外机 R09 同样式测试在锁定 SDK8 的同源隔离构建中为 2/2，但外机 HEAD/DLL/PDB 未知。CLOSE-WRAP 全套仍有 `GetCursorPos=false` 的系统输入前提失败；#1023 两条 Actions lane 均 Failure、根因未知，不能由本机 SDK8 定向结果替代 SDK10。下一独立 Q/R 项按积压推进 R12-04；用 fake service/隔离目录验证保护备份失败阻断危险恢复，不访问真实存档。真实宿主、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍各自记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。先收口 R08 CI：已在 SDK8 本机修正 Loaded 调度时序并通过两个 R08 动效类；推送后查 SDK8/SDK10.0.401 Actions 至终态。#1025 的 SDK8 R09HighContrast 失败在同身份本机复测未复现（3/3），保留其日志行/断言差异，若新 CI 再现则按具体失败继续定位。之后按用户顺序重验 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。外机 R09 的 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
@@ -205,3 +205,7 @@ R10-05 沿用现有 FilterPresetDefinition、设置规范化、任务/媒体 pre
 ### 2026-10-15 R08 hosted motion test fixture
 
 Actions #1024 (`38677622085`) 的 SDK8.0.423 与 SDK10.0.401 job logs 都证明 `R08MotionHotChangeBehaviorTests` 没启动 opacity entrance（`opacity=1; loaded=True`）。测试在 `Window.Show` 前设置时长，但初次 `ApplyAdaptiveTheme` 会基于真实 Windows 动效策略重写资源。夹具应在初次主题应用后注入测试时长；应用开关和系统策略仍分开由各自测试覆盖。此轮本机 SDK8.0.423 build `0/0`、两类行为 `1/1`、source validation/diff check 通过；不要把它当成新提交的 SDK10 CI 结果。证据：`docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md`。
+
+### 2026-10-15 R08 system-motion fixture follow-up
+
+Actions #1025 (`38687483121`) 的 SDK10.0.401 日志指向 R08 system-motion 测试第56行没有检测到 opacity 动画时钟。仅等 `Show/UpdateLayout` 不保证 Loaded 队列已完成；测试现在先 drain dispatcher 并重新布局，再注入测试时长并触发被测入场动画。SDK10 artifact `11951470215` SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`。同 run SDK8 job `116265550259` 报 R09HighContrast 第195行 Assert.True（Expected True / Actual False）；同身份本机 SDK8 3/3 未复现，先保留为未定位的独立 CI 失败，不将它归到 R08。artifact `11951095969` SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。本机锁定 SDK8.0.423/VSTest17.11.1 build `0/0`，R08 system/app `1/1`、R09 high-contrast `3/3`；两个完整 CI log 已取得。新补丁推送后跟踪双 SDK Actions 至终态；其后按用户顺序重验 R00/R01。

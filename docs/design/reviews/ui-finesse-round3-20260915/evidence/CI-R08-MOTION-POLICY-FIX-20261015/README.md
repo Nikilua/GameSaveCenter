@@ -33,3 +33,23 @@ GitHub Actions run [#1024 / `38677622085`](https://github.com/Nikilua/GameSaveCe
 | `R08SystemMotionHotChangeBehaviorTests-sdk8423.trx` | `BBE4470611CD08C09240E61099831AD9B4923BBA244E3D8B8442F0C267DAB778` |
 
 TRX 位于本目录 `tests/`。本机 SDK8 结果不替代代码提交后的 SDK8/SDK10.0.401 Actions。物理系统偏好通知、真实 Playnite 宿主、DPI/跨屏、最终呈现帧、UIA/读屏和 ETW/宿主性能仍未验证。
+
+## CI #1025 复核与第二次夹具修正
+
+`main` 提交 `676be4f3349d439198e834aa28341b3ca2883040` 的 Actions [#1025 / `38687483121`](https://github.com/Nikilua/GameSaveCenter/actions/runs/38687483121) 已终态失败。通过 GitHub 插件取得两个完整 job log，并核对 artifact 元信息：
+
+- SDK `10.0.401` job `116265550450` 在 `R08SystemMotionHotChangeBehaviorTests.SystemAnimationPreferenceChangeEndsEntranceAndReenableDoesNotReplayIt` 失败。日志指向第56行 opacity 动画时钟断言（`Assert.True`：Expected `True` / Actual `False`）。首轮 `Show` 和 `UpdateLayout` 后 Loaded 队列仍可能有主题/入场处理尚未执行；旧夹具立即覆盖时长并手动启动动画，后续 Loaded 工作会与观察时序竞争。测试现在先 drain dispatcher 并完成 layout，再注入确定时长、触发要被系统偏好变化取消的入场动画；断言保留，并补充失败时的 opacity/loaded 与 translate 观察值。生产代码未改。
+- SDK `8.0.423` job `116265550259` 已执行到第66/122个隔离 WPF 类，在 `R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion` 报告源第195行 `Assert.True`，Expected `True` / Actual `False`。返回的完整日志没有该断言的定制状态上下文；本机锁定同 SDK 的当前源码定向复测 `3/3`，没有复现。暂不将它归因于 R08 或 WPF 清理异常；若新 Actions 再现，需继续按对应失败行和 TRX 诊断。
+- SDK10 artifact `11951470215`，536,544 bytes，SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`；SDK8 artifact `11951095969`，619,731 bytes，SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。两份完整 job log 已读取；没有把 `exit 1`、耗时或 COM shutdown 噪声当作根因。
+
+### 本机第二次复核
+
+锁定 SDK `8.0.423` / VSTest `17.11.1`，Playnite `net462`、测试 `net472`。Release 测试项目构建 `0 warning / 0 error`；R08 system-motion `1/1`、R08 app-motion `1/1`、R09 high-contrast `3/3`。`python scripts/validate-source.py` 与 `git diff --check` 通过。新 TRX：
+
+| 文件 | SHA-256 |
+|---|---|
+| `R08SystemMotionHotChangeBehaviorTests-sdk8423-ci1025-fix.trx` | `62CFDE690878989F8549CEF0F98C33119A632EE5A186FC6AC61D88C731E8578B` |
+| `R08MotionHotChangeBehaviorTests-sdk8423-ci1025-fix.trx` | `38C7EC09393C317A9A16A0078AC32BDE22E6421463CC3C6477DB3281C4C265E8` |
+| `R09HighContrastBehaviorTests-sdk8423-ci1025-local-repro.trx` | `8CACBA8EFD485855EA2328BD9231C081C93654544FDBE5F28064DBEE3143B7AB` |
+
+本机测试只说明同身份夹具的受控 STA 行为；不替代新提交的 SDK8/SDK10 CI，也不证明真实 Playnite、物理系统输入或最终呈现帧。新夹具提交后仍须把对应 Actions 跟到成功或失败终态。

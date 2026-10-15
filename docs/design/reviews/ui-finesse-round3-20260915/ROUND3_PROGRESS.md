@@ -1832,3 +1832,10 @@
 - #1024/run `38677622085` 对应 `c30b89e2`，SDK8 job `116234717488` 与 SDK10.0.401 job `116234717135` 都在相同 R08 app motion 行为测试失败；完整日志通过已配置 GitHub 插件取得。失败位置报告 `opacity=1; loaded=True`，不是断言之后的 TextServices COM 清理异常导致。
 - 初次 Settings 主题应用依赖真实 Windows 动效策略并会重写 duration 资源；两个测试夹具现在在初次显示/主题应用后再注入确定时长。生产代码未改。锁定 SDK8.0.423 Release test project build `0/0`；R08 应用设置和系统偏好行为各 `1/1`；source validation、diff check 通过。源/产物 SHA 与 TRX 见[本阶段证据包](evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md)。
 - 新提交的 SDK8/SDK10.0.401 Actions 仍须查询并跟到终态；本机 SDK8 结果不替代 CI。真实 Windows motion notification、Playnite host、物理 DPI/跨屏、呈现帧、UIA/读屏、ETW/宿主性能未验。
+
+## 2026-10-15 R08-02 system-motion 加载时序复核
+
+- #1025/run `38687483121` 已终态失败。SDK10.0.401 job `116265550450` 完整 log 指向 system-motion 测试第56行 opacity animation clock 未启动；`Show/UpdateLayout` 后仍有 Loaded handler 与测试时长设置的时序竞争。测试现在先 drain dispatcher、重做 layout，再设置测试时长并触发实际动画，然后通过生产 `OnSystemParametersChanged` 路径验证关停和不重播。只改测试夹具，不改生产代码，不弱化断言。
+- SDK8.0.423 job `116265550259` 同 run 在 R09HighContrast 行为矩阵报告第195行 Assert.True（Expected True / Actual False）；完整 log 无定制状态上下文，本机当前源码同 SDK 类测试 `3/3`，没有复现，根因未证实，不能将其记为通过或归因于此轮改动。
+- 锁定 SDK8.0.423/VSTest17.11.1 Release test project build `0/0`；R08 system/app-motion `1/1` 各通过；R09 high-contrast `3/3`。source validation/diff check 通过；TRX 与 #1025 artifacts 的身份见[本阶段证据包](evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md)。
+- 下一步提交推送当前夹具修复并追踪新 SDK8/SDK10.0.401 Actions 至终态。R08 CI 收口后按用户顺序更新 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。外机 R09 `Expected 2 / Actual 1` 仍缺同次 HEAD/DLL/PDB；真实 Playnite、OS 输入/UIA、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
