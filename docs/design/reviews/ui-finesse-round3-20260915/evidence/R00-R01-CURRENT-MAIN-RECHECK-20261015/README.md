@@ -55,3 +55,9 @@ SDK 8.0.423 的本机结果不替代 GitHub Actions SDK 10.0.401 lane。推送�
 对当前 `main` 源码提交 `db073461994062d6b1849948f105f97f3ff15f53` 重新运行 `check-ui-evidence-freshness.ps1`：14 条 R00/R01 记录全部 `needsRerun=false`，没有匹配到需要重跑的已登记源路径；当前包身份仍为 `not-provided`。原有 88b8 生产源码构建/测试及审计数据保持历史证据，本次仅确认后续变更未使这 14 条记录过期。
 
 完整扫描结果见 [`ui-evidence-freshness-db073461.json`](ui-evidence-freshness-db073461.json)。该 freshness 结论不代表安装包、真实 Playnite 宿主或外部呈现已验证。
+
+## 2026-10-15 `5862856e` freshness 续核
+
+在当前已推送 main 提交 `5862856e508fdb0abf2478fbbc54c34b34075692` 上运行 `scripts/check-ui-evidence-freshness.ps1`。14 条登记记录均为 `FRESH`，`needsRerun=false` 共 14 条，0 条匹配源路径；package identity 为 `not-provided`。本次对比区间包含 Worker 源码与文档改动（`documentationOnly=false`），但均未命中 R00/R01 登记的来源范围，因此维持各任务既有“已满足”状态，不重复重建已有实现。
+
+这是源码路径失效检查，不是本次行为回归、安装包、真实 Playnite、物理呈现或宿主验收。完整报告：[`ui-evidence-freshness-5862856e.json`](ui-evidence-freshness-5862856e.json)，SHA-256 `BEB818A0F90B8AD00C27DD7D58CEB2E8705B70F84D0A2A26F4B55451F018BA38`。

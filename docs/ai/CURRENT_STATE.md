@@ -1,4 +1,6 @@
 # GameSaveCenter 当前事实入口
+更新：2026-10-15；分支 `main`，最新推送提交 `5862856e508fdb0abf2478fbbc54c34b34075692`。#1026/run `38690846810` 的旧 SDK8 与 SDK10.0.401 jobs 均失败；SDK10 完整日志确认 Worker 取消 Gate 生命周期竞态，已在 `5862856e` 修复并推送。该新提交的 Actions 终态尚无法从 GitHub 状态接口确认：插件 combined status 暂无 checks，公开 Actions 页快照只到 #979 且列表加载失败，因此不记成功或失败。修复后的本机 SDK8.0.423 Release build `0/0`、Core `125/125`、Worker `356 passed / 1 Named Pipe 环境 skip`、目标取消 `1/1`、R09 高对比 `3/3`；Playnite 全量仅完成 6/122 类。R00/R01 freshness 在新 HEAD 为 `14 fresh / 0 stale`、0 条命中源路径，任务表已有行为证据仍有效；package identity 为 `not-provided`。证据：[Worker 修复](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)、[R00/R01 freshness](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)。
+
 
 更新：2026-10-15；分支 `main`，最新推送基线 `8e6513856500505d4608f76ef098236c64e1b5b4`。Actions #1026/run `38690846810` 已终态失败：SDK8.0.423 job `116276140253` 的 R09 高对比行为断言失败，SDK10.0.401 job `116276140402` 的取消幂等测试因 `SemaphoreSlim` 已释放失败；两份完整日志已读取。Worker 竞态修复在本机 SDK8.0.423 已经 Release 全解方案构建 0 warning/0 error，Core 125/125，Worker 356 passed/1 个 Named Pipe 环境 skip，目标取消测试 1/1，高对比类 3/3；完整 Playnite 扫描只完成 6/122 个隔离类后中止，不能当作全量通过。新提交 Actions 尚待推送与跟踪。证据：[本阶段复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
 
@@ -64,13 +66,13 @@ CI：暂停检查点 #920/run 36677346317 与 #919/run 36675309812 的 SDK 10.0.
 
 ## 当前执行顺序
 
-用户要求继续执行 Round3 任务；截至 2026-10-16 09:00（Asia/Shanghai）无法回复问题，独立工作继续推进。当前未完成阶段按以下顺序收口：
+用户明确要求继续 Round3；截至 2026-10-16 09:00（Asia/Shanghai）无法回复，不因缺少输入停住独立工作。
 
-1. 提交并推送 `TaskCoordinator` 取消竞态修复与本阶段证据；用 GitHub 插件跟踪新 Actions 的 SDK8 与 SDK10.0.401 job 至终态。#1026 是旧提交的失败基线，不代表修复提交的 CI 结果。若新 CI 失败，先读取完整 job log 再修。
-2. CI 收口后，在新 source HEAD 重跑 R00/R01 freshness，并修正确实过期的证据；旧报告 `8e651385` 的 `14 fresh / 0 stale` 仅适用于其自身 source commit，不代替新 HEAD 复核。
-3. 继续按第三轮质量审查和账本逐项处理依赖满足的 Q/R 任务。先复用已有服务、DTO、绑定和命令；不要用文本断言代替行为、动画、焦点或性能证据。
+1. 继续查询提交 `5862856e508fdb0abf2478fbbc54c34b34075692` 对应 Actions。GitHub 插件 combined status 暂未返回 checks；公开 Actions 页当前缓存/加载异常，run ID 和终态未知。CI 未确认前不报告阶段完成；若失败先取得完整 job log。
+2. R00/R01 已在 2026-10-15 按当前 source HEAD `5862856e` 复核：14 条均 fresh、0 stale、0 条命中登记源路径；报告只证明已有证据未过期，不代替行为重跑、package 或宿主验收。Round3 进度表中既有“已满足”状态保持不变。
+3. 下一项 R12-04：先检查现有 PreRestore 保护备份服务、DTO、同游戏锁和恢复编排，再以 fake service/隔离目录验证备份失败中止危险恢复、重试/取消遵守锁和最新状态；不得访问真实存档。逐项补行为与负例后按小阶段验证、记录并提交。
 
-当前 Worker 修复仅改变运行时 Gate 的释放时机并保持重复取消幂等；本机 SDK8 结果不替代 CI SDK10.0.401。R09 高对比 CI 断言本机未复现，需看新 CI 完整结果；Playnite 全量本机回归未完成。真实 Playnite、物理 DPI/跨屏、OS 输入与高对比通知、最终呈现帧、ETW/宿主性能仍未验。2026-10-15 清理本任务确认已完成且无引用的 `.tmp` 输出，释放约 588 MB；保留 SDK8.0.423 和被历史证据明确引用的输出。
+当前代码修复本机验证为 SDK8.0.423；CI SDK10.0.401 结果未知。Playnite 全量本机扫描未完成（6/122 类），真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。2026-10-15 清理本任务临时输出约 588 MB，保留 SDK 和有历史证据引用的阶段输出。
 ## 架构与生产 UI
 
 - Playnite 插件 `net462`，Core/Contracts `netstandard2.0`，Worker `net8.0-windows10.0.19041.0`，Playnite 测试 `net472`。插件与 Worker 经 Named Pipe 协作，SQLite 由 Worker 持久化。

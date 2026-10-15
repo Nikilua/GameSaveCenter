@@ -6,12 +6,12 @@
 - Worker：356 通过，1 个环境跳过（`WorkerProcessRestartTests.HardRestartReconcilesDurableIncompleteTask`；本机环境禁止 Named Pipes），0 失败；TRX：`tests/worker-sdk8423.trx`。
 - 取消幂等回归：`TaskCoordinatorFailureTests.CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled` 修复后 1/1 通过；TRX：`tests/worker-cancel-targeted-sdk8423.trx`。
 - 相关高对比焦点 WPF 类：3/3 通过；TRX：`tests/R09-high-contrast-sdk8423.trx`。
-- CI #1026（SDK 8 与 SDK 10.0.401）在旧提交 `8e651385` 均失败。SDK10 完整日志显示 `CancelAsync` 对已释放的 `SemaphoreSlim` 调用 `Release`；代码改为保留运行时门闩供已捕获运行时引用的并发取消调用收尾，并保持重复取消返回成功。SDK8 的 `R09HighContrastBehaviorTests` 有一条焦点断言失败；本机相同类在当前构建 3/3 通过，原因仍待新 CI 与必要时的完整日志确认。
+- CI #1026（SDK 8 与 SDK 10.0.401）在旧提交 `8e651385` 均失败。SDK10 完整日志显示 `CancelAsync` 对已释放的 `SemaphoreSlim` 调用 `Release`；代码改为保留运行时门闩供已捕获运行时引用的并发取消调用收尾，并保持重复取消返回成功。SDK8 的 `R09HighContrastBehaviorTests` 有一条 `Assert.True` 失败，但日志未给出该断言的状态上下文；本机相同类在当前构建 3/3 通过，原因仍待新 CI 与必要时的完整日志确认。
 - 边界：新提交的 GitHub Actions 尚未运行；Playnite 全量本机回归未完成；SDK10.0.401 尚无本机复现。
 
 ## 文件哈希
 
-- src/GameSaveCenter.Worker/Services/TaskCoordinator.cs（修复后工作树）：SHA-256 $(Microsoft.PowerShell.Commands.FileHashInfo.Hash)。
+- src/GameSaveCenter.Worker/Services/TaskCoordinator.cs（修复后工作树）：SHA-256 7A76049A65D7DC287A3586AD7F2B7E735B241B52598F79057FC2AB8A811B326E。
 - `tests/core-sdk8423.trx`：`AB243A3E8285FE33DB0F96D7C3ABC99000E0457661C08558A140A6DE718B0BDC`。
 - `tests/worker-sdk8423.trx`：`0BA26E77FDED28D96B3330D4313DC53CAAD228DD62B6C5877569F41316A93AC1`。
 - `tests/worker-cancel-targeted-sdk8423.trx`：`D7AC740FE256CD576FD5524C50DDF2781E1FFC3C78A5F16E754BE7C6981A9171`。

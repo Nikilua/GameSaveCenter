@@ -354,3 +354,10 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 本机 SDK8.0.423 完整 Release build `0/0`、Core `125/125`、Worker `356 passed / 1 Named Pipe 环境 skip`、目标取消用例 `1/1`、R09 高对比 `3/3`。Playnite 全量扫测中断在 122 类中的 6 类，不能宣称全量通过。证据见 [CI-WORKER-CANCEL-RACE-FIX-20261015](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
 - `.tmp` 清理已释放约 588 MB；SDK8.0.423 必须保留供后续验证。未跟踪的其他 Q/R TRX、临时 WPF 项目和 TestResults 保持原样。
 - 下一步：同步最终事实后中文 commit/push 到 `main`，通过 GitHub 插件跟踪新 SDK8 与 SDK10.0.401 Actions 至明确终态；如果失败先取完整日志。CI 阶段收口后重跑 R00/R01 freshness，再处理其行为缺口。R09 高对比 CI 断言在本机未复现，真实 Playnite、物理跨屏/呈现帧/ETW仍未验。
+
+## 2026-10-15 当前恢复点：5862856e / R00-R01 fresh
+
+- `main` 最新推送 `5862856e508fdb0abf2478fbbc54c34b34075692`。#1026/run `38690846810` 旧提交两条 CI lane 均失败；SDK10 日志根因为取消期间释放已 Dispose 的 Gate，已修复并本机 SDK8.0.423 验证。该新提交 Actions 尚无可读终态：GitHub 插件 combined status 返回空 checks，公开列表缓存只到 #979 并报加载错误，run ID 未取得，不判断为成功或失败。
+- R00/R01 current-head freshness `14/14 fresh`、`0 stale`、`0 matched paths`，package `not-provided`；这是失效检查，不是宿主验收。任务表既有行为证据保持有效。
+- 下一项 R12-04：查现有 PreRestore 保护备份、DTO/锁/编排；用 fake service 和隔离目录验证备份失败阻断恢复、重试/取消按同游戏锁和最新状态，不触碰真实存档。
+- 本轮 `.tmp` 净释放约 588 MB；保留 SDK8.0.423 以及被历史证据引用的输出。其他未跟踪证据与临时项目保持原样。

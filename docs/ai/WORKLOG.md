@@ -10819,3 +10819,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK8.0.423：`scripts/build.ps1 -Configuration Release` 完整解决方案构建 `0 warning / 0 error`；Core `125/125`；Worker `356 passed / 1 skipped / 0 failed`（Named Pipe 重启测试受本机环境限制）；取消目标回归 `1/1`；R09 高对比类 `3/3`。全量 Playnite 122 个隔离类扫描只完成 6 类后停止，因此 Playnite 全量本机结果未完成。TRX 与范围见 [证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
 - 新提交/推送后的两条 Actions 尚待查询并跟到终态；SDK8 本机不能替代 SDK10.0.401。若 R09 失败再次出现，依据对应完整 job log 定位，不凭 Assert 行号猜根因。下一步 CI 收口后重查 R00/R01 freshness，再推进依赖已满足的 Q/R 项。
 - 清理本轮 `ci1026-*` 临时 build/diagnostics/repro 与四个无文档引用的旧 build 目录，共释放约 `588 MB`；保留 SDK8.0.423、已被历史证据显式引用的构建目录及其他任务文件。
+
+## 2026-10-15 R00/R01 freshness recheck on 5862856e
+
+- 在已推送 `5862856e508fdb0abf2478fbbc54c34b34075692` 上运行 `scripts/check-ui-evidence-freshness.ps1`：14 条登记记录 `14 fresh / 0 stale`，没有记录命中 source path，package identity `not-provided`。完整 JSON 与 SHA-256 在 [R00/R01 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)。Worker `TaskCoordinator` 改动不触及 R00/R01 登记源范围；各任务既有行为、负例和审计证据维持“已满足”，本次不重复重建。
+- 新提交 Actions 尚未取得可核实终态：GitHub 插件 combined status 暂无 checks，公开 Actions 页快照只到 #979 且列表报错。该边界不作为成功或失败判断；后续重试读取准确 run/job 状态。
+- 下一项 R12-04：复用现有保护备份流程和 DTO，以 fake service、合成状态和隔离目录核对失败即阻断危险恢复、同游戏锁、重试及取消；不操作真实存档。
