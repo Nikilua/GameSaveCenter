@@ -479,7 +479,12 @@ public sealed class R21AutomationValueBehaviorTests
             using var host = new PeerHost(view);
             host.Pump();
             grid.SelectedIndex = 0;
+            grid.ScrollIntoView(grid.Items[0]);
+            grid.UpdateLayout();
             host.Pump();
+            Assert.Same(grid.Items[0], grid.SelectedItem);
+            Assert.Same(grid.Items[0], Assert.Single(grid.SelectedItems));
+            Assert.IsAssignableFrom<DataGridRow>(grid.ItemContainerGenerator.ContainerFromIndex(0));
 
             var selection = Assert.IsAssignableFrom<ISelectionProvider>(GetPeer(grid).GetPattern(PatternInterface.Selection));
             Assert.True(selection.CanSelectMultiple);
@@ -488,7 +493,12 @@ public sealed class R21AutomationValueBehaviorTests
             Assert.Equal("媒体 A", firstName);
 
             grid.SelectedIndex = 1;
+            grid.ScrollIntoView(grid.Items[1]);
+            grid.UpdateLayout();
             host.Pump();
+            Assert.Same(grid.Items[1], grid.SelectedItem);
+            Assert.Same(grid.Items[1], Assert.Single(grid.SelectedItems));
+            Assert.IsAssignableFrom<DataGridRow>(grid.ItemContainerGenerator.ContainerFromIndex(1));
 
             var nextSelection = Assert.Single(selection.GetSelection());
             var nextName = nextSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);

@@ -10833,3 +10833,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`：Release 测试项目及引用 build 成功；R09 高对比类 `3/3`、Q06 按钮状态类 `1/1`。TRX、源码/程序集哈希和 CI artifact 元信息见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。没有保存 CI ZIP、DLL/PDB 或离屏截图到仓库。
 - `.tmp` 本轮移除 12 个过期日志、403/401 API 错误响应、旧 freshness 临时 JSON 与临时审计 ZIP，释放约 `37.3 MB`。证据目录保留的两个小 TRX 已归档。清理旧 bin/obj 前复查发现来源不明的活动 PID `32408`（`dotnet`，进程启动时间/路径不可读），因此没有删除可能正在使用的缓存；本次检查 D 盘余量约 `8.2 GB`，已将所有先前误写的“缓存已删除”说明修正为“暂缓清理”。SDK8 工具、R12 patch 输入和其余证据保留；其他任务未跟踪文件未动。
 - 当前修正仍须提交推送并追踪新 Actions 至终态；SDK8 本机结果不替代 SDK10.0.401 CI。CI 收口后按既有清单复核 R12-04；ledger 已有满足状态，若源与证据未失效则补实际证据，不重建功能。
+
+## 2026-10-15 R21 UIA selection 前置状态补强（待新 CI）
+
+- main 推送基线 `171ac4a6e6327dd6f163fb9112928f1c271d7e50` 对应 Actions #1029/run `38706481548`；SDK8.0.423 job `116327043161` 与 SDK10.0.401 job `116327042757` 都在 `R21AutomationValueBehaviorTests.ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 失败。完整日志均显示第 485 行 `Assert.Single(selection.GetSelection())` 收到空集合；同类其余 `23/24` 通过，Core `125/125`、Worker `357/357` 通过。完整日志没有记录 DataGrid.SelectedItems/容器状态，实际根因尚未确认。
+- 只改测试夹具：两次选择后显式 `ScrollIntoView`、`UpdateLayout`，验证 `SelectedItem`、唯一 `SelectedItems` 及已生成的 `DataGridRow`，保留原 UIA Selection pattern 和名称断言。没有改生产控件、XAML、命令或绑定。
+- 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`；Playnite `net462` / tests `net472`。Release 测试项目与引用构建 `0 warning / 0 error`，修改后的 R21 类 `24/24`。TRX SHA、源码与 DLL SHA、#1029 job/artifact ID/SHA 见 [R09/R21 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。测试宿主 .NET Framework `4.8.9181.0` 与 CI `4.8.9345.0` 不同；本机通过不替代 CI。
+- 清理盘点 `.tmp` 共约 `1087.8 MiB`：SDK8.0.423 工具链约 `713.8 MiB`，旧阶段隔离输出约 `374 MiB`。D 盘可用 `8.93 GiB`。尝试删除已完成的旧隔离目录时，自动审查拒绝了批量递归删除，理由是仍有未归档 TRX/日志且 dotnet PID `32408` 的来源/缓存占用未知；命令未执行、没有绕过。12 个旧错误响应/日志此前已清理（释放约 `37.3 MB`）；SDK 与当前证据保留。请求用户明日确认具体旧隔离目录后再清理；这不阻断代码与 CI 工作。
+- 下一步完成文档校验、中文 commit/push，再用 GitHub 插件跟踪新提交 SDK8/SDK10.0.401 jobs 至明确终态；失败先读完整日志。CI 收口后复核 R12-04 已有能力/证据。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能未验。

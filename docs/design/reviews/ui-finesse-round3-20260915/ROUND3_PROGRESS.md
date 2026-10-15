@@ -1861,3 +1861,10 @@
 - 本机 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 Release 测试项目 build 成功；R09 `3/3`，Q06 `1/1`。TRX、源/产物 SHA 与 #1027/#1028 artifact ID/SHA 在[证据包](evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。没有在工作区保留诊断 ZIP、DLL/PDB 或离屏图。
 - 修正提交推送后仍须追踪对应 SDK8 与 SDK10.0.401 CI 至成功/失败终态；本机 SDK8 不可替代 SDK10。
 - 下一项：R12-04 的 ledger 行与 `e4e42f40` 证据已经标为“已满足”。先核对当前 main 相关源码与测试是否发生变化；无变化时沿用已有 fake/隔离证据并补 freshness 结论，若当前依赖改变则只针对实际缺口复验。真实存档不触碰。
+
+## 2026-10-15 R21 UIA 行选择前置条件与 #1029 双 SDK 失败
+
+- Actions #1029/run `38706481548` 对提交 `171ac4a6` 的 SDK8.0.423 与 SDK10.0.401 jobs 都在 `R21AutomationValueBehaviorTests.ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 的 UIA `GetSelection()` 返回空集合处失败。完整 log 未记录 WPF `SelectedItems` 或容器状态，不能区分实际选择丢失、行未实现或 .NET Framework UIA peer 差异。失败详情、job/artifact 身份见[证据包](evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。
+- 测试夹具增加 `ScrollIntoView`、布局、SelectedItem/SelectedItems 及实际 `DataGridRow` 前置断言，仍运行原 UIA Selection pattern 项数和名称检查；生产源未改。本机 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 Release project/reference build `0 warning / 0 error`，R21 `24/24`，TRX 及 SHA 在证据包。当前 .NET Framework testhost `4.8.9181.0`，CI 为 `4.8.9345.0`，本机结果不能替代新 CI。
+- 当前测试改动待中文 commit/push；跟踪 SDK8 与 SDK10.0.401 新 Actions 至明确终态后再定 R21 证据状态。失败须先读取对应完整 logs。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+- `.tmp` 约 `1087.8 MiB`；SDK8.0.423 约 `713.8 MiB`，旧隔离输出约 `374 MiB`。D盘可用 `8.93 GiB`。批量删除旧目录被自动审查拒绝（存在未归档 TRX/日志、未知 dotnet PID `32408`）；拒绝后未尝试旁路删除，未删除任何目录。后续先补齐归档并确认进程占用再清理；工作继续进行。

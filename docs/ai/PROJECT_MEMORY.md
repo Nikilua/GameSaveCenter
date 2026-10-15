@@ -221,3 +221,9 @@ Actions #1025 (`38687483121`) 的 SDK10.0.401 日志指向 R08 system-motion 测
 ### 2026-10-15 R09 high-contrast press fixture
 
 Actions #1027 (`38698959702`) 与 #1028 (`38701408503`) 的 SDK8.0.423/SDK10.0.401 完整 job logs 都在 R09 high-contrast matrix 的合成 `RaiseSpaceKey` 路径后报告 bare `Assert.True` Expected True/Actual False；后续 `TextServicesContext` COM 异常也会在通过的本机测试退出时出现，不能当成该 xUnit 断言的根因。现用 `HighContrastStateProbeButton.SetPressedStateForProbe(true/false)` 驱动按钮模板状态，再检查 overlay、动画时钟与释放后的负例。生产样式不变。SDK8.0.423 本机 Release 测试项目 build 成功，R09 `3/3`、Q06 routed Space 状态类 `1/1`；物理键盘仍未验。证据与 CI artifact 元信息见 `evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md`。修正提交推送后必须确认 SDK8 与 SDK10.0.401 Actions 终态。
+
+### 2026-10-15 R21 UIA selection CI follow-up
+
+Actions #1029 两条 SDK lane 在 R21 DataGrid `ISelectionProvider.GetSelection()` 查询时都得到空集合；CI 没有记录 WPF SelectedItems 或行容器，故实际根因尚未证实。本机 SDK8.0.423 / .NET Framework 4.8.9181.0 对照通过。当前测试夹具在查询前显式滚动、布局并检查真实选中项和生成的 DataGridRow，同时保留 UIA 正向项数/名称断言。修改后 R21 `24/24`；尚待新提交 SDK8/SDK10.0.401 CI 终态。只改测试，不改生产 UI/绑定/命令。
+
+`.tmp` 盘点约 1.09 GiB；约 714 MiB 为后续 SDK8 构建工具，约 374 MiB 为过期隔离输出。批量清理被自动审查拒绝，因为尚有未归档 TRX/日志且 dotnet PID `32408` 无法识别/确认占用；没有通过其他方式删除。D 盘当时剩余 `8.93 GiB`。旧输出只有在逐份确认/归档并消除进程占用风险后再清理；此事不阻断其他任务。

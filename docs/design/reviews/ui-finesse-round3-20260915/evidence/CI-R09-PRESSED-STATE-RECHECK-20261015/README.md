@@ -34,6 +34,25 @@ GitHub 插件已取得 #1027 和 #1028 的完整 SDK8/SDK10 job logs。失败发
 | [R09 high contrast](tests/R09HighContrastBehaviorTests-sdk8423-after-fixture-fix.trx) | 3 passed, 0 failed, 0 skipped |
 | [Q06 button state sequence](tests/Q06ButtonStateSequenceBehaviorTests-sdk8423.trx) | 1 passed, 0 failed, 0 skipped |
 
+## Actions #1029 失败与 UIA 行选择夹具补强
+
+修正提交 `171ac4a6e6327dd6f163fb9112928f1c271d7e50` 对应 [Actions #1029 / run `38706481548`](https://github.com/Nikilua/GameSaveCenter/actions/runs/38706481548)。SDK8 job `116327043161` 和 SDK10.0.401 job `116327042757` 都在 `R21AutomationValueBehaviorTests.ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 失败，失败点是第 485 行 `Assert.Single(selection.GetSelection())` 收到空集合。两个 CI testhost 都是 .NET Framework `4.8.9345.0`；其余该类 23 项通过，Worker `357/357`、Core `125/125` 通过。失败后的 TextServices COM shutdown 输出发生在 xUnit 报错之后。
+
+完整日志证实的现象是：夹具设置 `grid.SelectedIndex = 0` 并执行一次 `UpdateLayout` 后，UIA Selection pattern 尚未给出所选行。日志没有记录 `DataGrid.SelectedItems` 和生成容器状态，因而不能仅凭它确认是实际选择丢失、行容器尚未生成还是 .NET Framework peer 行为差异。本机 .NET Framework `4.8.9181.0` 首次单测通过；原始测试类在正确嵌入 `GscBuildCommit=171ac4a6…` 的重建后也 `24/24` 通过，不能复现 CI 状态。
+
+为让 UIA 查询前提可核实，测试夹具现在显式 `ScrollIntoView` 并重新布局目标行，随后断言 WPF 实际 `SelectedItem`、唯一 `SelectedItems` 和已生成的 `DataGridRow`，再保留原有 UIA Selection pattern 项数与行名称断言。切到第二行时重复相同前置验证；没有更改生产控件、XAML、命令或绑定。
+
+- 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`，Playnite `net462` / tests `net472`；Release 测试项目及引用构建 `0 warning / 0 error`。
+- 修改后的 `R21AutomationValueBehaviorTests`：`24/24`；TRX：[本机行容器复核](tests/R21AutomationValueBehaviorTests-sdk8423-after-row-realization.trx)，SHA-256 `D6EE57973E4C6F5E60D1C45240B2AFCB5D551AA0AAF0B9230395DC936D7807F3`。
+- 测试源码 SHA-256 `B61ADBE1C37FBE2B232967BC649B378A7BD0CFA2D1322B8DF8ED6D6EB0A792A2`；测试 DLL `7FC1FDC6F533C8FAD16861F1CC9EAD62915D1A0CCB5DCAB0CBF03650866A3749`；生产插件 DLL `31B52F2151F35EA37A95CE5A73D10300CD838190F0994864EBF1147C609C49C3`。构建提交身份为 `171ac4a6`，测试源码 SHA 单独记录以区分未提交工作树内容。
+
+| #1029 lane | Job ID | 诊断 artifact | SHA-256 |
+|---|---:|---:|---|
+| SDK8.0.423 | `116327043161` | `11959620980` | `95c4a4b14e47423fc0334afd535c30eb9b9de38d33206ea3d7ef82e7c1d69763` |
+| SDK10.0.401 | `116327042757` | `11959885981` | `a40c20e5ac9bd966d205ed6c008f9c691d419071a84c3b8aae541694e33fd9c4` |
+
+上述夹具调整是否消除 SDK8/SDK10.0.401 的 CI 失败，须以新提交 Actions 终态确认；目前根因仍未被本机 .NET Framework 复现。
+
 ## 尚未验证
 
 本机 SDK8 的结果不替代修正提交的 SDK8/SDK10.0.401 Actions。真实 Playnite、物理键盘/鼠标、UI Automation/读屏、IME、物理 DPI/跨屏、最终呈现帧、ETW 和宿主性能仍未验。
