@@ -10757,3 +10757,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - GitHub Actions：公开页 loading 错误，当前可见 #979 指向短 SHA `ae3c565` 且 queued，#978 指向 `ae8f3be`；均不能匹配已 fetch 的当前 `main=88b8eb57`。#979 run 页面 cache miss、匿名 API 访问限制；当前提交对应 SDK8/SDK10.0.401 run ID 与终态未知。SDK8 本机结果不替代 SDK10.0.401；推送本阶段证据后继续检查新 run 至明确成功或失败。
 - 没有运行真实 Playnite/package-host、OS UIA/IME/读屏、物理 DPI/跨屏、屏幕 presented frame、ETW 或宿主性能；只使用合成 DTO/受控离屏 WPF，没有读写真实存档、媒体、设置或云端。Demo 原目录不可用，沿用恢复生产基线。
 - 下一项 Q24-02：先重新核对 `74815b2` transient Popup/焦点/选框虚拟化失败 TRX 与当前 main 测试源，逐个验证窗口可见、焦点成功及 dispatcher 前提，再决定是否有产品缺口或仅需修夹具；Q24-03 物理跨屏、Q25 ETW/宿主采样继续作为外部阻塞，不绕过系统拒绝。
+
+## 2026-10-15 Q24-02 transient surface failures 与外机 R09 当前 main 复核
+
+- 当前分支 `main` 的文档提交 `6b946540e634eacde4c64e50a5b187e8e085e9bc` 已推送；生产代码父项为 `88b8eb57`。SDK8.0.423 / MSBuild17.11.48 下完整 Release solution build `0 warning / 0 error`，XAML `24/24`；Playnite `net462`、测试 `net472`。
+- `74815b2b` 历史瞬态交互失败涉及的三个类按正式隔离方式分别运行：R05 Popup boundary `2/2`、focus boundary `5/5`、option virtualization `5/5`。Popup lifecycle `1/1`。同一构建输出里 R09 焦点描边类 `2/2`。没有生产/测试源修改。
+- Tooltip timing 类 `2/3`；物理系统鼠标测试在显示测试窗口前因 Win32 `GetCursorPos=false` 终止。16 项合并单进程探针为 `11/16`，包括四个 focus/window activation 断言和该鼠标 API 前提失败；这不是仓库正式的 WPF 类隔离运行方式，根因未证实。保留限制，不绕过系统输入，也未把合并运行差异归因于产品缺陷或签收。
+- 用户外机 R09 仍报告 Expected `2,2,2,2` / Actual `1,1,1,1` 与 line151；当前 main 第151行是颜色断言。本次 `6b946540` 完整构建同输出 R09 `2/2`，插件/测试 DLL/PDB 和源 hash 已归档，不能据此确认外机实际载入物或根因；没有改模板、放宽断言。`libpng iCCP` 不在断言堆栈，COM 异常在失败后收尾。
+- GitHub Actions：`6b946540` 对应 run ID/终态仍未知；公开页报加载错误并缓存不同 SHA `8546aca`，匿名 API `403 rate limit`，`gh` CLI 不存在。本机 SDK8 不替代 SDK10.0.401；未把阶段记为 CI 完成。相关构建日志、脱敏 TRX、源码/程序集 SHA 与边界见[Q24-02 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-RERUN-20261015/README.md)和[R09 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 下一可执行动作：在系统指针 API 可用的交互桌面重跑 Tooltip 鼠标行为；用户明早可回复后，对照外机同次失败的 HEAD、status、测试源码、DLL/PDB SHA。真实 Playnite、UIA/Narrator、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。

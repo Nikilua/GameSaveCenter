@@ -121,3 +121,9 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 当前 main 基线 6cf279238d55fe3d139fa2cb0eb7b09229a7478a 的隔离 Release 全解方案 build 为 0 warning / 0 error；R09FocusOutlineBehaviorTests 在同一输出目录中 2/2 通过。脱敏结果、程序集 hashes 与 MVID 见 [本轮 R09 对照](../R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md)。本机只有 SDK9.0.302/VSTest17.14.1，仓库固定 SDK8.0.423 不可用，结果不替代 SDK8/SDK10.0.401。
 
 该结果只能证明当前同源隔离构建通过，无法识别用户另一台机器的实际 HEAD、测试源、PDB、测试程序集或资源程序集。当前源码行 151 检查错误色，line 152 检查 Chrome 1 DIP，line 154 检查 ValidationStroke 2 DIP；旧断言/符号映射错配仍未证实。没有生产 UI 改动。
+
+## 2026-10-15 当前推送提交 `6b946540` 的同输出复跑
+
+在刚推送的 `main` 提交 `6b946540e634eacde4c64e50a5b187e8e085e9bc` 上，用固定 SDK `8.0.423` 重建完整 Release solution（MSBuild `17.11.48`、XAML `24/24`、`0 warning / 0 error`），然后从该隔离输出单独运行 `R09FocusOutlineBehaviorTests`：`2/2` 通过。该提交只更新文档；生产源基线仍为 `88b8eb57`。脱敏 TRX：[当前 6b946540 R09 测试](tests/R09FocusOutlineBehaviorTests-sdk8423-main-6b946540.trx)，SHA-256 `AC026DE2B6BE77A5B9F944526765B33D7AA0B96F2857FE5D71F912C1D26F60F6`。源、插件/测试 DLL、测试 PDB 的 SHA-256 与 DLL MVID 见[6b946540 身份清单](tests/hashes-current-main-6b946540.txt)。
+
+这再次确认当前 main 的同一构建输出不能复现外机报告，不会推断外机根因。SDK8 本机结果不替代 GitHub Actions 的 SDK10.0.401 lane；`6b946540` 对应 Actions run ID/终态暂不可核实（公开页加载错误且显示不同 SHA 的缓存项，匿名 API 返回 HTTP `403` rate limit）。
