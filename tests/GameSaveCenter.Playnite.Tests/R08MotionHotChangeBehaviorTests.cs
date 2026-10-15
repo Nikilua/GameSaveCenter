@@ -33,11 +33,20 @@ public sealed class R08MotionHotChangeBehaviorTests
                     EnableUiAnimations = true
                 };
                 var view = new GameSaveCenterSettingsView { DataContext = settings };
-                view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
-                view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
+                // This test exercises the app setting while the separate system-policy
+                // test controls Windows motion. Hosted runners may disable client-area
+                // animations, which would otherwise replace these durations with zero.
+                view.MotionEnabledOverrideForBehaviorTest = () => settings.EnableUiAnimations;
                 window = CreateWindow(view, 1040, 720);
                 window.Show();
                 window.UpdateLayout();
+
+                // ApplyAdaptiveTheme uses the real Windows motion policy when it writes
+                // duration resources, even though this test isolates the app preference.
+                // Override those resources after the initial theme application so the
+                // entrance animation remains deterministic on hosted Windows runners.
+                view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
+                view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
 
                 var tabs = (ListBox)view.FindName("SettingsSectionTabs")!;
                 tabs.SelectedIndex = 2;

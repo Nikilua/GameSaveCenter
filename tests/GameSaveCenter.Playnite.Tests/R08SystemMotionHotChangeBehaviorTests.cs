@@ -33,8 +33,6 @@ public sealed class R08SystemMotionHotChangeBehaviorTests
                 var systemAllowsMotion = true;
                 var view = new GameSaveCenterSettingsView { DataContext = settings };
                 view.MotionEnabledOverrideForBehaviorTest = () => settings.EnableUiAnimations && systemAllowsMotion;
-                view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
-                view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
                 window = new Window
                 {
                     Content = view,
@@ -47,6 +45,11 @@ public sealed class R08SystemMotionHotChangeBehaviorTests
                 };
                 window.Show();
                 window.UpdateLayout();
+
+                // Initial adaptive-theme application reads the real OS preference before
+                // the fake system-policy provider takes over this behavior test.
+                view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
+                view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
 
                 var shell = Assert.IsAssignableFrom<FrameworkElement>(view.FindName("SettingsShell"));
                 var translate = GscMotion.GetMutableTranslateTransform(shell);

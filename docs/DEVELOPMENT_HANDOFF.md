@@ -340,3 +340,9 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - SDK8.0.423、VSTest17.11.1 的完整 Release build 0/0、XAML24/24、Core125/125、Worker356 passed/1 skipped、Playnite source455 passed/27 skipped。122 WPF类总648 passed/39 skipped/1 failed；R05TooltipTiming系统指针用例在window显示前GetCursorPos返回false，另外2/3通过。全套1584 passed/67 skipped/1 failed，本机门禁未绿。
 - 完整证据与TRX在 docs/design/reviews/ui-finesse-round3-20260915/evidence/CLOSE-WRAP-CURRENT-MAIN-RECHECK-20261015/README.md。外机R09的Expected2/Actual1仍因实际HEAD、source、DLL/PDB身份缺失而未定因。用户所附CI ZIP与#962/#963/#965/#967/#970/#971现有复核包一致。
 - 提交推送本阶段后查询准确Actions runs，分别跟SDK8和SDK10.0.401到success/failure；CI日志不完整时不猜根因。随后重查当前main的R00/R01 freshness并只校正有证据的条目，再推进CLOSE-OPTICAL-01。未验：交互式系统指针、真实Playnite、物理DPI/跨屏、最终呈现帧、ETW/宿主性能。
+
+## 2026-10-15 当前恢复点：R08 动效测试夹具已本机修正，Actions 待收口
+
+- 从 `main` / `c30b89e2053e509c24ebd4135b3641b8d152867d` 开始。#1024/run `38677622085` 已终态失败：SDK8 job `116234717488` 和 SDK10.0.401 job `116234717135` 都在编译/测试步骤遇到同一 R08 opacity 动画未启动断言。GitHub 插件已取得两份完整日志。初始主题应用按真实 Windows motion policy 写入零时长，测试在 `Show` 前设置的 1 秒资源随后被覆盖。
+- 只改两个 R08 测试夹具，在 `Show`/`UpdateLayout` 完成首轮主题应用后再写入测试时长；没有生产 UI 改动。SDK8.0.423 Release 测试项目 build `0 warning / 0 error`，应用设置类 `1/1`、系统策略类 `1/1`，source validation 与 `git diff --check` 通过。TRX、源码/程序集 SHA 与 CI 失败摘要见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md`。
+- 本阶段提交 push 后须查询两条 Actions lane，并追到明确终态。之后按用户要求在新 source checkout 重查 R00/R01 freshness，接着推进 CLOSE-OPTICAL-01。外机 R09 的 `Expected 2 / Actual 1` 仍缺同次 HEAD、测试 DLL/PDB 身份；不能据本机 `2/2` 推断外机根因。真实 Playnite、系统偏好通知、物理 DPI/跨屏、呈现帧、UIA/读屏、ETW/宿主性能未验。

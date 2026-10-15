@@ -10797,3 +10797,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - Q14 当前测试1/1，654 DIP 单行 margin 不再复现；测试记录的620/654/660 DIP边界均覆盖。源码验证和git diff --check通过。Release本机总门禁仍非全绿，不把Win32指针API失败归因于生产或隐藏为skip。
 - 附件ZIP哈希与已有 #962/#963/#965/#967/#970/#971 triage一致；#962/#963数字动效测试、#965窗口几何、#970取消回调竞态、#971 Q14夹具各有现存的复核记录，本轮没有盲改生产代码。#967 SDK10包通过只证明其SDK10 job，不替代run中SDK8红灯。
 - 证据：docs/design/reviews/ui-finesse-round3-20260915/evidence/CLOSE-WRAP-CURRENT-MAIN-RECHECK-20261015/README.md。工作树其他未跟踪证据及生成文件均保留。下一步推送后核查两条Actions；独立进行b046当前R00/R01 freshness复核，再继续CLOSE-OPTICAL-01。
+
+## 2026-10-15 R08 CI 动效测试夹具修正
+
+- GitHub 插件读取 #1024/run `38677622085` 的完整 SDK8 job `116234717488` 与 SDK10.0.401 job `116234717135` 日志；两条 lane 同时失败在 `R08MotionHotChangeBehaviorTests.SettingsAnimationToggleEndsEntranceAndReenableDoesNotReplayIt`，错误为入场 opacity 动画未启动（`opacity=1; loaded=True`）。失败后的 WPF TextServices COM cleanup 异常不是触发断言的根因。
+- 对照生产代码后确认测试在 `Window.Show` 前设定 1 秒资源，初次 `ApplyAdaptiveTheme` 仍按 runner 的 Windows 动效策略重写 duration。只把测试资源设定移动到初次主题应用后；应用动效开关仍用既有实例级 override，系统策略测试仍走 fake provider 与生产回调。未改生产 UI/行为。
+- 本机锁定 SDK8.0.423 / VSTest17.11.1 Release 测试项目 build `0 warning / 0 error`，Playnite `net462`、测试 `net472`；应用设置类 `1/1`、系统策略类 `1/1`，source validation 和 `git diff --check` 通过。脱敏 TRX 与 SHA-256 见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md`。本机 SDK8 不替代 SDK10.0.401 CI。
+- 新阶段 commit/push 后要用 GitHub 插件查 SDK8 与 SDK10.0.401 新 run，取得完整失败日志（若失败），并跟踪到终态。后续在修正后的 source checkout 重跑 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。外机 R09 实际 HEAD/DLL/PDB 仍缺；真实 Playnite、系统通知、物理 DPI/跨屏、呈现帧和 ETW/宿主性能仍未验。

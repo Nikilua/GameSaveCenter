@@ -1826,3 +1826,9 @@
 - 锁定 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 使用本机现有 assets 做隔离 Release 重建，0 warnings / 0 errors；Playnite net462、测试 net472，R09 单类 `2/2`。测试/插件 DLL、PDB、MVID、TRX 与脱敏日志见[R09 外机复核包](evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。没有改生产模板或放宽断言。
 - #1023/run `38671542992` 对应 `db073461`，SDK8 job `116215565491` 与 SDK10.0.401 job `116215565679` 均失败于编译/测试步骤；公开页只有 exit code，匿名日志 API 返回403，完整 artifact 未取得，根因未知。本机 SDK8 结果不代替 CI SDK10。当前 CLOSE-WRAP 完整门禁另有系统 `GetCursorPos=false` 前提失败，真实宿主/物理跨屏/呈现帧/ETW 仍未验。
 - 下一独立 Q/R 项 R12-04：复用恢复前保护备份流程与 DTO，用 fake service/隔离目录验证保护备份失败确实阻断危险恢复、重试/取消遵守同游戏锁和最新状态；不访问真实存档。
+
+## 2026-10-15 R08-02 CI 失败诊断与夹具修正
+
+- #1024/run `38677622085` 对应 `c30b89e2`，SDK8 job `116234717488` 与 SDK10.0.401 job `116234717135` 都在相同 R08 app motion 行为测试失败；完整日志通过已配置 GitHub 插件取得。失败位置报告 `opacity=1; loaded=True`，不是断言之后的 TextServices COM 清理异常导致。
+- 初次 Settings 主题应用依赖真实 Windows 动效策略并会重写 duration 资源；两个测试夹具现在在初次显示/主题应用后再注入确定时长。生产代码未改。锁定 SDK8.0.423 Release test project build `0/0`；R08 应用设置和系统偏好行为各 `1/1`；source validation、diff check 通过。源/产物 SHA 与 TRX 见[本阶段证据包](evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md)。
+- 新提交的 SDK8/SDK10.0.401 Actions 仍须查询并跟到终态；本机 SDK8 结果不替代 CI。真实 Windows motion notification、Playnite host、物理 DPI/跨屏、呈现帧、UIA/读屏、ETW/宿主性能未验。
