@@ -1,3 +1,11 @@
+## 2026-10-15 R09 外机失败本地对照与 #1023 CI 续查
+
+- 用户提供另一台机器的 R09 失败片段：测试行 151 期望 `2,2,2,2`、实际 `1,1,1,1`。当前 main 测试源第 151 行是错误边框颜色，第 152 行断言 Chrome `1 DIP`，第 154 行断言独立 `ValidationStroke 2 DIP`；外机 HEAD、源、DLL/PDB、插件资源身份未提供，因此旧源/符号错配仍是线索，不是确认根因。
+- 原 test 会话句柄 51987 已不可查询；没有使用 PID 强杀。授权后用本机已存在的 `project.assets.json`（`--no-restore`）在 `.tmp/r09-current-main-retry-20261015` 隔离输出重新构建：SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`，插件 `net462`、测试 `net472`，Release `0 warning / 0 error`；R09 类 `2/2`，0 skip/失败。source、DLL/PDB/MVID 与脱敏 TRX/log 归档在 `evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/`。
+- 外机日志里的 libpng `iCCP` warning 不在失败堆栈；WPF TextServices COM 异常发生于失败后的 teardown。没有改生产模板、断言或主题，也没有读写真实存档/媒体/云端。
+- R00/R01 对 `db073461994062d6b1849948f105f97f3ff15f53` freshness 重查为 14 条 `needsRerun=false`，package identity `not-provided`；JSON 报告已放入 R00/R01 证据目录。
+- 当前 Actions #1023/run `38671542992`（commit `db073461`）终态失败：SDK8 job `116215565491` 与 SDK10.0.401 job `116215565679` 均在编译/测试步骤 exit 1。公开页未给出失败详情；匿名 API 403，完整日志和 artifact 内容没有取到。根因未知，本机 SDK8 不代表 CI SDK10。两项 artifact 的页面摘要/哈希及访问限制写入交接。
+- 下一独立 Q/R 项 R12-04：先核对已有恢复保护备份服务/DTO/执行顺序及原测试覆盖，再用 fake 服务和隔离目录补实际保护备份失败中止行为、取消/重试负例；真实存档不作夹具。CLOSE-WRAP 的 `GetCursorPos=false` 完整门禁项仍待交互桌面验证。
 ## 2026-10-15 R07-08 当前 main resize 压力复核
 
 - 当前 main commit `d190f7eac4d85e81193080a2ff4f73105cec9b45`。与旧 R07-08 证据基线 `552b8168` 相比，TaskCenter 与 resize 测试源未改，但共享 `WpfUiProduction.xaml`、`Redesign.xaml` 和 DataGrid 输入接线有更新，因此按当前源码隔离重建并实跑。

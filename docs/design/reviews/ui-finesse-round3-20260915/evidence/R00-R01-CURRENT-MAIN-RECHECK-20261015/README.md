@@ -49,3 +49,9 @@ dotnet run --project tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHar
 ```
 
 SDK 8.0.423 的本机结果不替代 GitHub Actions SDK 10.0.401 lane。推送后仍须记录对应 Actions 的明确终态；真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW 和宿主性能仍未验证。
+
+## 2026-10-15 `db073461` freshness 续核
+
+对当前 `main` 源码提交 `db073461994062d6b1849948f105f97f3ff15f53` 重新运行 `check-ui-evidence-freshness.ps1`：14 条 R00/R01 记录全部 `needsRerun=false`，没有匹配到需要重跑的已登记源路径；当前包身份仍为 `not-provided`。原有 88b8 生产源码构建/测试及审计数据保持历史证据，本次仅确认后续变更未使这 14 条记录过期。
+
+完整扫描结果见 [`ui-evidence-freshness-db073461.json`](ui-evidence-freshness-db073461.json)。该 freshness 结论不代表安装包、真实 Playnite 宿主或外部呈现已验证。

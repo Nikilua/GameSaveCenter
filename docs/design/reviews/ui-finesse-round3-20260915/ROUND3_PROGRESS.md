@@ -1818,3 +1818,11 @@
 - Q14 654 DIP 单行无额外gap当前1/1通过，旧 backlog 的复现描述过期。唯一失败R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt在调用window.Show()前GetCursorPos返回false；没有实际显示窗口或执行光标/tooltip动作。其余78类隔离为481 passed/39 skipped/0 failed。全体计数1584 passed/67 skipped/1 failed，本机门禁未全绿。
 - 不改Win32 API、不把该项记skip、不写成通过；需交互式桌面重新执行真实系统指针用例。SDK8结果不能替代SDK10.0.401。用户附加CI ZIP确认与既有归档相符，详细失败修正见R08-06、CI-965、CI-SDK10-BUILD-VERIFY与CI-970-971证据。
 - 下一可执行动作：本阶段提交推送后查询两条Actions至终态；并按授权在当前main重新核对R00/R01 freshness，然后继续CLOSE-OPTICAL-01。未验证Playnite宿主、物理DPI/跨屏、呈现帧和ETW权限。
+
+## 2026-10-15 `db073461` R00/R01 freshness 与外机 R09 续核
+
+- 当前 source commit `db073461994062d6b1849948f105f97f3ff15f53` 上重跑 R00/R01 freshness：14 条全部 `needsRerun=false`，package identity `not-provided`；完整报告为 `evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/ui-evidence-freshness-db073461.json`。这是源路径 freshness 结论，不是重新构建或宿主验收。
+- 用户新贴的外机 R09 日志仍是 line151 `Expected 2 / Actual 1`。当前源 line151 检查错误色，line152 Chrome `1 DIP`，line154 独立 ValidationStroke `2 DIP`；当前测试源与 PDB 映射不符的线索仍不能确定外机加载物或根因。
+- 锁定 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 使用本机现有 assets 做隔离 Release 重建，0 warnings / 0 errors；Playnite net462、测试 net472，R09 单类 `2/2`。测试/插件 DLL、PDB、MVID、TRX 与脱敏日志见[R09 外机复核包](evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。没有改生产模板或放宽断言。
+- #1023/run `38671542992` 对应 `db073461`，SDK8 job `116215565491` 与 SDK10.0.401 job `116215565679` 均失败于编译/测试步骤；公开页只有 exit code，匿名日志 API 返回403，完整 artifact 未取得，根因未知。本机 SDK8 结果不代替 CI SDK10。当前 CLOSE-WRAP 完整门禁另有系统 `GetCursorPos=false` 前提失败，真实宿主/物理跨屏/呈现帧/ETW 仍未验。
+- 下一独立 Q/R 项 R12-04：复用恢复前保护备份流程与 DTO，用 fake service/隔离目录验证保护备份失败确实阻断危险恢复、重试/取消遵守同游戏锁和最新状态；不访问真实存档。

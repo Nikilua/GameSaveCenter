@@ -122,6 +122,16 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 
 该结果只能证明当前同源隔离构建通过，无法识别用户另一台机器的实际 HEAD、测试源、PDB、测试程序集或资源程序集。当前源码行 151 检查错误色，line 152 检查 Chrome 1 DIP，line 154 检查 ValidationStroke 2 DIP；旧断言/符号映射错配仍未证实。没有生产 UI 改动。
 
+## 2026-10-15 当前 main `db073461` SDK8 复跑
+
+用户随后贴出另一台机器的构建日志：`SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError` 在第 151 行期望 `2,2,2,2`、实际 `1,1,1,1`。当前 `db073461` 测试源第 151 行检查错误边框颜色、第 152 行断言布局 Chrome 为 `1 DIP`、第 154 行断言独立 `ValidationStroke` 覆盖层为 `2 DIP`。这是测试源/行映射差异的证据，但没有外机 HEAD、status、测试源、DLL/PDB 和被加载插件资源身份，不能确认具体错配原因。
+
+使用仓库锁定 SDK `8.0.423`、MSBuild `17.11.48`、VSTest `17.11.1`，从现有 `project.assets.json`（`--no-restore`，本地依赖缓存）隔离 Release 重建 Playnite `net462`、测试 `net472` 及引用项目，构建为 `0 warning / 0 error`；同一新建输出串行运行 R09 类为 `2/2`，0 失败、0 跳过。此为定向项目构建/行为复跑，不是完整 solution build、安装包或真实 Playnite 验证。测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；生产 `WpfUiProduction.xaml` SHA-256 `FD212D59A0244DF8CABF33A3926FB5CE80CF930E4A0B587692D2DC9D3B15EC6E`。
+
+本次测试 DLL SHA-256 `2EBD1981D34C61C2BA64921E31240432E5BDDBCA8AE5FB8232A51CA10530FCA4`、MVID `0856eb2c-128e-4170-9219-3ddd69568d56`；插件 DLL SHA-256 `690B730D9C98458A4E76BA70143C1F2519290EA1D13CC2DD5C3EF46143CE8546`、MVID `62ec4b19-30c0-4d37-8260-d69aa99b1379`；两者 ProductVersion 均标记 `0.6.73+db073461994062d6b1849948f105f97f3ff15f53`。PDB、TRX 与 console/build log 哈希见[身份清单](tests/hashes-current-main-db073461-sdk8423.txt)；脱敏结果分别见 [TRX](tests/R09FocusOutlineBehaviorTests-sdk8423-main-db073461.trx)、[console log](tests/R09FocusOutlineBehaviorTests-sdk8423-main-db073461-console.txt) 和 [build log](tests/R09FocusOutlineBehaviorTests-sdk8423-main-db073461-build.txt)。
+
+外机日志里的 `libpng iCCP` warning 不在断言调用栈中；`TextServicesContext` 的 COM 异常出现在断言失败之后的 WPF teardown，现有材料不能把它们解释为厚度比较失败原因。没有改生产模板或放宽断言。确认外机结果仍需失败同次运行的源码与 DLL/PDB/资源身份。
+
 ## 2026-10-15 当前推送提交 `6b946540` 的同输出复跑
 
 在刚推送的 `main` 提交 `6b946540e634eacde4c64e50a5b187e8e085e9bc` 上，用固定 SDK `8.0.423` 重建完整 Release solution（MSBuild `17.11.48`、XAML `24/24`、`0 warning / 0 error`），然后从该隔离输出单独运行 `R09FocusOutlineBehaviorTests`：`2/2` 通过。该提交只更新文档；生产源基线仍为 `88b8eb57`。脱敏 TRX：[当前 6b946540 R09 测试](tests/R09FocusOutlineBehaviorTests-sdk8423-main-6b946540.trx)，SHA-256 `AC026DE2B6BE77A5B9F944526765B33D7AA0B96F2857FE5D71F912C1D26F60F6`。源、插件/测试 DLL、测试 PDB 的 SHA-256 与 DLL MVID 见[6b946540 身份清单](tests/hashes-current-main-6b946540.txt)。

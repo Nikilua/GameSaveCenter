@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15；分支 `main`，源码检查点 `91bc88ad2f865c760469c8ad68fc6bf061c4a97b`（文档提交；生产源基线 `88b8eb57`）。R00/R01 freshness `14/14`，SDK8.0.423 完整 Release solution `0/0`、相关测试 `175 passed / 39 skipped / 0 failed`。本机 SDK9.0.302/VSTest17.14.1 下 R09 焦点类 `2/2`、R05 Popup 边界/虚拟化 `7/7`；R05-03 仍缺真实 presented-frame 证据。用户外机 R09 报告 line151/期望2/实际1 与历史 `3f7d0b30` 旧断言相符，但外机 HEAD/DLL/PDB 未知，根因未确认。旧隔离 Playnite profile 经确认无进程后清理约134 MB；本轮未重跑真实宿主。仓库 pin SDK8.0.423，本机未安装；SDK9 和历史 SDK8 证据均不能替代 SDK10.0.401 CI。证据：[R00/R01](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)、[R09](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-CURRENT-MAIN-RECHECK-20261015/README.md)、[R05-03](../design/reviews/ui-finesse-round3-20260915/evidence/R05-03-CURRENT-MAIN-RECHECK-20261015/README.md)。新提交 Actions 终态待查；下一独立项 R10-03。
+更新：2026-10-15；分支 `main`，当前源码 `db073461994062d6b1849948f105f97f3ff15f53`。R00/R01 freshness `14/14`；仓库 pin SDK8.0.423，本轮用隔离 SDK8 测试 R09 `2/2`，DLL/PDB/MVID/TRX 已归档。外机 R09 line 151 `Expected 2 / Actual 1` 与当前断言不匹配，但缺外机 HEAD、测试源、DLL/PDB 和生产资源身份，根因未确认。Actions #1023/run `38671542992` 的 SDK8/SDK10.0.401 jobs 均失败，完整日志不可读；本机结果不替代 SDK10。CLOSE-WRAP 完整门禁仍有 `GetCursorPos=false` 的系统鼠标前提失败。下一独立 Q/R 项 R12-04；真实宿主、OS 输入/UIA、物理 DPI/跨屏、presented frame、ETW/宿主性能仍是边界。详见 [当前交接](../DEVELOPMENT_HANDOFF.md)、[R00/R01](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md) 与 [R09](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：R12-03 复用 `c0adb1b7` 的路径映射服务/DTO/预览，当前 main 实际生产视图 Playnite `3/3`、Worker `4/4`、XAML `24/24`；长路径选择/Copy 可执行状态、Recycling 有界视口、异盘/相似根与无写入负例通过。本轮未改生产实现，真实 Playnite、系统剪贴板、IPC/存档、物理 DPI/跨屏、UIA/IME、最终呈现和宿主性能未验。下一项 Q24-04 补筛选/表格/详情/页尾数据状态的焦点轨迹。R00/R01 的四项 stale 已在 `599d2fd` 经行为复验更新 baseline；`4078f23d` freshness 为 14 records / 0 stale，package identity 未提供，旧 audit 保留 `13 MEDIUM`。文档提交 `750349f3` 已推送，但 Actions 页面仅有旧 #979 queued 加载失败快照，匿名 API 内部错误，run ID/终态未知；SDK8/SDK10.0.401 分开记录。#976 前置两 lane failure 根因未知；#971 SDK10 原始诊断仍缺，不阻塞独立任务。Q24-03 仍需第二物理显示器；R05-03 bootstrap、R08-01 用户失败复现仍保持各自边界。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。截至 `db073461`，R00/R01 freshness 14/14；外机 R09 同样式测试在锁定 SDK8 的同源隔离构建中为 2/2，但外机 HEAD/DLL/PDB 未知。CLOSE-WRAP 全套仍有 `GetCursorPos=false` 的系统输入前提失败；#1023 两条 Actions lane 均 Failure、根因未知，不能由本机 SDK8 定向结果替代 SDK10。下一独立 Q/R 项按积压推进 R12-04；用 fake service/隔离目录验证保护备份失败阻断危险恢复，不访问真实存档。真实宿主、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍各自记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

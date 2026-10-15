@@ -1,0 +1,61 @@
+{
+  "sourceCommit": "db073461994062d6b1849948f105f97f3ff15f53",
+  "sdk": "8.0.423",
+  "msbuild": "17.11.48",
+  "vstest": "17.11.1",
+  "pluginTarget": "net462",
+  "testTarget": "net472",
+  "build": "Release test project and references: 0 warnings, 0 errors",
+  "test": "R09FocusOutlineBehaviorTests: 2 passed, 0 skipped, 0 failed",
+  "restore": "--no-restore; used the existing project.assets.json/package cache; no remote restore",
+  "files": {
+    "testSource": {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09FocusOutlineBehaviorTests.cs",
+      "sha256": "A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98"
+    },
+    "productionXaml": {
+      "path": "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+      "sha256": "FD212D59A0244DF8CABF33A3926FB5CE80CF930E4A0B587692D2DC9D3B15EC6E"
+    },
+    "testDll": {
+      "path": ".tmp/r09-current-main-retry-20261015/bin/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "2EBD1981D34C61C2BA64921E31240432E5BDDBCA8AE5FB8232A51CA10530FCA4"
+    },
+    "testPdb": {
+      "path": ".tmp/r09-current-main-retry-20261015/bin/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "sha256": "2AAFDFF5274628D042C575BDA6870CF630B7F88721417506A4760BF670424FBC"
+    },
+    "pluginDll": {
+      "path": ".tmp/r09-current-main-retry-20261015/bin/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "690B730D9C98458A4E76BA70143C1F2519290EA1D13CC2DD5C3EF46143CE8546"
+    },
+    "pluginPdb": {
+      "path": ".tmp/r09-current-main-retry-20261015/bin/Release/net462/GameSaveCenter.Playnite.pdb",
+      "sha256": "477DFB4803CB551342498601D8485A54F3222A8213D3EFD8819F090E919C70DD"
+    },
+    "trx": {
+      "path": "docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/tests/R09FocusOutlineBehaviorTests-sdk8423-main-db073461.trx",
+      "sha256": "8683B361E1FFEC3461712292842A2F910472F23B71CD64878A2FFED346FC88F4"
+    },
+    "consoleLog": {
+      "path": "docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/tests/R09FocusOutlineBehaviorTests-sdk8423-main-db073461.txt",
+      "sha256": "11CC6AEF90147B7E430DEA287702084CBFCF5657B5313ED425490986DFD7C8D9"
+    },
+    "buildLog": {
+      "path": "docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/tests/R09FocusOutlineBehaviorTests-sdk8423-main-db073461-build.txt",
+      "sha256": "8122C05E08280DEDFA2AEA98ED08E74FA70A80AD737AD6982DB439745459084B"
+    }
+  },
+  "assemblies": {
+    "testDll": {
+      "sha256": "2EBD1981D34C61C2BA64921E31240432E5BDDBCA8AE5FB8232A51CA10530FCA4",
+      "mvid": "0856eb2c-128e-4170-9219-3ddd69568d56",
+      "productVersion": "0.6.73+db073461994062d6b1849948f105f97f3ff15f53"
+    },
+    "pluginDll": {
+      "sha256": "690B730D9C98458A4E76BA70143C1F2519290EA1D13CC2DD5C3EF46143CE8546",
+      "mvid": "62ec4b19-30c0-4d37-8260-d69aa99b1379",
+      "productVersion": "0.6.73+db073461994062d6b1849948f105f97f3ff15f53"
+    }
+  }
+}
