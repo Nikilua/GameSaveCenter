@@ -209,3 +209,7 @@ Actions #1024 (`38677622085`) 的 SDK8.0.423 与 SDK10.0.401 job logs 都证明 
 ### 2026-10-15 R08 system-motion fixture follow-up
 
 Actions #1025 (`38687483121`) 的 SDK10.0.401 日志指向 R08 system-motion 测试第56行没有检测到 opacity 动画时钟。仅等 `Show/UpdateLayout` 不保证 Loaded 队列已完成；测试现在先 drain dispatcher 并重新布局，再注入测试时长并触发被测入场动画。SDK10 artifact `11951470215` SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`。同 run SDK8 job `116265550259` 报 R09HighContrast 第195行 Assert.True（Expected True / Actual False）；同身份本机 SDK8 3/3 未复现，先保留为未定位的独立 CI 失败，不将它归到 R08。artifact `11951095969` SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。本机锁定 SDK8.0.423/VSTest17.11.1 build `0/0`，R08 system/app `1/1`、R09 high-contrast `3/3`；两个完整 CI log 已取得。新补丁推送后跟踪双 SDK Actions 至终态；其后按用户顺序重验 R00/R01。
+
+### 2026-10-15 TaskCoordinator 取消 Gate 生命周期竞态
+
+`TaskCoordinator.RunAsync` 从 `_taskRuntimes` 移除 runtime 时，另一个 `CancelAsync` 可能已读出同一个 runtime 并仍在等待/使用 `SemaphoreSlim Gate`。不可在移除时 Dispose 这个 Gate；让 semaphore 在并发调用释放引用后由 GC 回收。`CancellationRequested` 必须在终态判断前检查，使已接受取消的重复请求继续返回成功。CI #1026 SDK10.0.401 真实日志确认旧实现的 `ObjectDisposedException` 正是在 `CancelAsync` 的 `Release` 上抛出。修复后的本机 SDK8.0.423 目标回归 `1/1`、Worker `356 pass / 1 环境 skip`；新 SDK10 CI 仍待结果。

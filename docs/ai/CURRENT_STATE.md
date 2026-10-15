@@ -1,5 +1,7 @@
 # GameSaveCenter 当前事实入口
 
+更新：2026-10-15；分支 `main`，最新推送基线 `8e6513856500505d4608f76ef098236c64e1b5b4`。Actions #1026/run `38690846810` 已终态失败：SDK8.0.423 job `116276140253` 的 R09 高对比行为断言失败，SDK10.0.401 job `116276140402` 的取消幂等测试因 `SemaphoreSlim` 已释放失败；两份完整日志已读取。Worker 竞态修复在本机 SDK8.0.423 已经 Release 全解方案构建 0 warning/0 error，Core 125/125，Worker 356 passed/1 个 Named Pipe 环境 skip，目标取消测试 1/1，高对比类 3/3；完整 Playnite 扫描只完成 6/122 个隔离类后中止，不能当作全量通过。新提交 Actions 尚待推送与跟踪。证据：[本阶段复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
+
 更新：2026-10-15；分支 `main`，当前已推送源码 `676be4f3349d439198e834aa28341b3ca2883040`。本轮继续修正 R08 system-motion 测试的 Loaded/Dispatcher 时序；仅改测试夹具，不改生产 UI。本机 SDK `8.0.423` / VSTest `17.11.1` Release 测试项目 build `0 warning / 0 error`，R08 app/system 动效行为各 `1/1`，R09 高对比类定向复测 `3/3`，source validation 与 diff check 通过。Actions #1025/run `38687483121` 已终态 Failure：SDK10.0.401 job `116265550450` 在 R08SystemMotion 入场 opacity 动画观察失败；SDK8 job `116265550259` 在 R09HighContrast 行为矩阵失败（日志第195行 Assert.True，Expected True/Actual False）。两份完整日志已用 GitHub 插件取得；SDK8失败在本机同 SDK 定向 `3/3` 通过，当前根因未证实。新的 R08 夹具修复已完成本机验证，待提交推送并跟踪新 Actions。R00/R01 最近 source freshness 为 `14/14 fresh`、package identity `not-provided`；R08 CI 收口后须在新 source HEAD 重核。外机 R09 `Expected 2 / Actual 1` 仍缺该次 HEAD/DLL/PDB，根因未确认。后续待真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能验证。
 
 历史基线：R07-07 `2b423737` 与 R07-08 `d190f7ea` 的滚动/缩放复核证据分别见[R07-07](../design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20261015/README.md)、[R07-08](../design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20261015/README.md)；R10-02 `6eac7b90` 的锁定 SDK8 复核及同名选框行为见[R10-02](../design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md)。上面旧 CI/#1012 状态仅作历史记录；当前 run ID/终态以本页顶部的续跑状态为准。真实 Playnite host/UIA、物理DPI/跨屏、presented frame、ETW/宿主性能仍待验。
@@ -62,14 +64,13 @@ CI：暂停检查点 #920/run 36677346317 与 #919/run 36675309812 的 SDK 10.0.
 
 ## 当前执行顺序
 
-当前用户明确续跑 Round3 192 项任务，并在 2026-10-15 09:00 前无法回复；不因缺少补充日志或 ZIP 停住独立工作。
+用户要求继续执行 Round3 任务；截至 2026-10-16 09:00（Asia/Shanghai）无法回复问题，独立工作继续推进。当前未完成阶段按以下顺序收口：
 
-1. #970/#971 附件 SHA-256 与已审包相同；对应问题已在先前提交分别修正。R00/R01 当前受控证据已复核，freshness 14 fresh / 0 stale；本机 SDK8.0.423 Release 0/0、5 类 163 passed / 39 skipped / 0 failed。见各自证据包。
-2. Q24-08 当前 main 受控行为 15/15；Q25-01 当前 main 13/13。R08-01 按钮反向 3/3；R08-02 热关闭/策略/订阅行为已有隔离证据；R08-03 隐藏 Tab/最小化停机 1/1；R08-04 忙态/反馈 9/9；R08-05 已满足，下一项 R07-08 resize 复核。Q24-03 第二显示器、真实 Windows 设置通知/高对比开关、真实 Playnite、ETW/宿主性能仍待验。
-3. R09 外机焦点失败日志期望 2 DIP、实测 1 DIP，与历史旧 Chrome 2 DIP 断言一致；当前 main 检查错误颜色、Chrome 1 DIP、独立 ValidationStroke 2 DIP，SDK9 定向 2/2。外机 HEAD/DLL/PDB 未知，错配解释未确认；libpng 警告不在调用栈，COM shutdown 噪声发生于断言失败后。详见 R09 外机复核记录。
-4. R10-06 生产来源清除行为 3/3；R10-07 当前 main 22/22；R10-08 最近访问入口/键盘焦点/切换和列表隔离 2/2。本轮相邻 R09 类 2/2、XAML 24/24、双主题 RenderHarness 0 PROBLEM。前序 #992/#993 已失败，完整 logs API 403、公开 job 页面需登录，根因未知；本轮代码待 commit/push 后另跟对应 run。
-5. R11-01 已在当前 main 实际复核通过（17/17），见 evidence/R11-01-CURRENT-MAIN-RECHECK-20261014/README.md。下一项 R11-02：先核对 A/B 版本选择、方向交换、相同版本禁止比较的现有实现与负例，复用 CompareBackups，不执行真实恢复。提交 58090d99 Actions 终态仍受 GitHub API 403/页面缓存限制，继续查询并不得声称 SDK10/SDK8 CI 通过；之后的证据提交也要跟新 run 到终态。
+1. 提交并推送 `TaskCoordinator` 取消竞态修复与本阶段证据；用 GitHub 插件跟踪新 Actions 的 SDK8 与 SDK10.0.401 job 至终态。#1026 是旧提交的失败基线，不代表修复提交的 CI 结果。若新 CI 失败，先读取完整 job log 再修。
+2. CI 收口后，在新 source HEAD 重跑 R00/R01 freshness，并修正确实过期的证据；旧报告 `8e651385` 的 `14 fresh / 0 stale` 仅适用于其自身 source commit，不代替新 HEAD 复核。
+3. 继续按第三轮质量审查和账本逐项处理依赖满足的 Q/R 任务。先复用已有服务、DTO、绑定和命令；不要用文本断言代替行为、动画、焦点或性能证据。
 
+当前 Worker 修复仅改变运行时 Gate 的释放时机并保持重复取消幂等；本机 SDK8 结果不替代 CI SDK10.0.401。R09 高对比 CI 断言本机未复现，需看新 CI 完整结果；Playnite 全量本机回归未完成。真实 Playnite、物理 DPI/跨屏、OS 输入与高对比通知、最终呈现帧、ETW/宿主性能仍未验。2026-10-15 清理本任务确认已完成且无引用的 `.tmp` 输出，释放约 588 MB；保留 SDK8.0.423 和被历史证据明确引用的输出。
 ## 架构与生产 UI
 
 - Playnite 插件 `net462`，Core/Contracts `netstandard2.0`，Worker `net8.0-windows10.0.19041.0`，Playnite 测试 `net472`。插件与 Worker 经 Named Pipe 协作，SQLite 由 Worker 持久化。

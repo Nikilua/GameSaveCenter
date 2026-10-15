@@ -1839,3 +1839,10 @@
 - SDK8.0.423 job `116265550259` 同 run 在 R09HighContrast 行为矩阵报告第195行 Assert.True（Expected True / Actual False）；完整 log 无定制状态上下文，本机当前源码同 SDK 类测试 `3/3`，没有复现，根因未证实，不能将其记为通过或归因于此轮改动。
 - 锁定 SDK8.0.423/VSTest17.11.1 Release test project build `0/0`；R08 system/app-motion `1/1` 各通过；R09 high-contrast `3/3`。source validation/diff check 通过；TRX 与 #1025 artifacts 的身份见[本阶段证据包](evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md)。
 - 下一步提交推送当前夹具修复并追踪新 SDK8/SDK10.0.401 Actions 至终态。R08 CI 收口后按用户顺序更新 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。外机 R09 `Expected 2 / Actual 1` 仍缺同次 HEAD/DLL/PDB；真实 Playnite、OS 输入/UIA、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+
+## 2026-10-15 Actions #1026 Worker 取消竞态收口
+
+- 旧提交 `8e651385` 的 SDK10.0.401 完整日志确认 `TaskCoordinator.CancelAsync` 访问已释放的 `SemaphoreSlim Gate`；根因是运行时从字典移除后并发取消者仍持有引用。修复移除提前 `Dispose`，并保留重复取消幂等快返；没有改变业务取消或错误语义。
+- 本机 SDK8.0.423 Release solution build `0 warning / 0 error`；Core `125/125`、Worker `356 passed / 1 Named Pipe 环境 skip / 0 failed`、取消目标 `1/1`、R09 高对比类 `3/3`。Playnite 122 类扫描仅完成 6 类后中止，未全量验收。实际 TRX：[证据目录](evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
+- 新提交 Actions 未执行/未验，需待推送后查询 SDK8 与 SDK10.0.401 job 至终态。后续按用户顺序重查 R00/R01 freshness 并推进其行为证据，再处理依赖已满足的 Q/R；CI 失败先读完整日志。真实 Playnite、物理跨屏、最终呈现、OS UIA/IME、ETW/宿主性能仍未验。
+- 本轮删除已完成且未被证据引用的 `.tmp`，净释放约 588 MB；保留 SDK 和明确被历史 README 引用的产物。

@@ -10811,3 +10811,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 同一 run 的 SDK8.0.423 job `116265550259` 后段在 `R09HighContrastBehaviorTests` 报告第195行 Assert.True（Expected True / Actual False）。完整日志未给出定制断言上下文；本机 SDK8 同类 `3/3` 通过，暂不推定根因。Artifact `11951095969` SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。SDK10 artifact `11951470215` SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`；两条完整 job log 由 GitHub 插件取得。
 - 锁定本机 SDK8.0.423 / VSTest17.11.1 重建测试项目 `0 warning / 0 error`；R08SystemMotion `1/1`、R08 app-motion `1/1`、R09HighContrast `3/3`。源码校验和 `git diff --check` 通过。TRX 已复制到 R08 证据包；后续清理仅删除本阶段可再生 `.tmp` build，不动其他 untracked 文件。
 - 下一步提交/推送本次 R08 夹具修复，跟踪新 SDK8/SDK10.0.401 Actions 到终态。若 SDK8 高对比失败再次出现，先取得对应完整日志并定位断言；R08 CI 收口后按用户要求重查 R00/R01 freshness，再做 CLOSE-OPTICAL-01。外机 R09 仍缺实际 HEAD/DLL/PDB。
+
+## 2026-10-15 Actions #1026 取消竞态修复
+
+- GitHub Actions #1026/run `38690846810` 对提交 `8e651385` 两条 lane 均失败。SDK10.0.401 job `116276140402` 完整日志显示 `TaskCoordinator.CancelAsync` 在 `SemaphoreSlim.Release` 处触及已释放 Gate；`RunAsync` 清理时先从字典移除 runtime 并 Dispose，存在已取得 runtime 引用的并发取消者。SDK8.0.423 job `116276140253` 的 `R09HighContrastBehaviorTests` 一条 `Assert.True` 失败，CI 未输出定制状态值。
+- 修复保留 Gate 到并发调用自然结束后回收，避免对仍被使用的 semaphore 调用 `Dispose`；重复取消状态优先检查，保持幂等调用成功语义。没有更改取消/错误状态或业务数据。
+- 本机 SDK8.0.423：`scripts/build.ps1 -Configuration Release` 完整解决方案构建 `0 warning / 0 error`；Core `125/125`；Worker `356 passed / 1 skipped / 0 failed`（Named Pipe 重启测试受本机环境限制）；取消目标回归 `1/1`；R09 高对比类 `3/3`。全量 Playnite 122 个隔离类扫描只完成 6 类后停止，因此 Playnite 全量本机结果未完成。TRX 与范围见 [证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
+- 新提交/推送后的两条 Actions 尚待查询并跟到终态；SDK8 本机不能替代 SDK10.0.401。若 R09 失败再次出现，依据对应完整 job log 定位，不凭 Assert 行号猜根因。下一步 CI 收口后重查 R00/R01 freshness，再推进依赖已满足的 Q/R 项。
+- 清理本轮 `ci1026-*` 临时 build/diagnostics/repro 与四个无文档引用的旧 build 目录，共释放约 `588 MB`；保留 SDK8.0.423、已被历史证据显式引用的构建目录及其他任务文件。

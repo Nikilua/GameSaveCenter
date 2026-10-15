@@ -346,3 +346,11 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - 从 `main` / `c30b89e2053e509c24ebd4135b3641b8d152867d` 开始。#1024/run `38677622085` 已终态失败：SDK8 job `116234717488` 和 SDK10.0.401 job `116234717135` 都在编译/测试步骤遇到同一 R08 opacity 动画未启动断言。GitHub 插件已取得两份完整日志。初始主题应用按真实 Windows motion policy 写入零时长，测试在 `Show` 前设置的 1 秒资源随后被覆盖。
 - 只改两个 R08 测试夹具，在 `Show`/`UpdateLayout` 完成首轮主题应用后再写入测试时长；没有生产 UI 改动。SDK8.0.423 Release 测试项目 build `0 warning / 0 error`，应用设置类 `1/1`、系统策略类 `1/1`，source validation 与 `git diff --check` 通过。TRX、源码/程序集 SHA 与 CI 失败摘要见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md`。
 - 本阶段提交 push 后须查询两条 Actions lane，并追到明确终态。之后按用户要求在新 source checkout 重查 R00/R01 freshness，接着推进 CLOSE-OPTICAL-01。外机 R09 的 `Expected 2 / Actual 1` 仍缺同次 HEAD、测试 DLL/PDB 身份；不能据本机 `2/2` 推断外机根因。真实 Playnite、系统偏好通知、物理 DPI/跨屏、呈现帧、UIA/读屏、ETW/宿主性能未验。
+
+## 2026-10-15 当前恢复点：Actions #1026 Worker 取消竞态
+
+- 分支 `main`，当前推送基线 `8e6513856500505d4608f76ef098236c64e1b5b4`。已查询 #1026/run `38690846810`：SDK8.0.423 job `116276140253` 与 SDK10.0.401 job `116276140402` 均已终态失败，完整日志已从 GitHub 插件取得。
+- SDK10 日志确认为 `TaskCoordinator.CancelAsync` 在 `SemaphoreSlim.Release` 遇到已 Dispose 的 Gate。当前未提交代码不 Dispose runtime Gate，并在状态终态检查前保留 `CancellationRequested` 快速返回。该修复保留取消、终态和错误语义。
+- 本机 SDK8.0.423 完整 Release build `0/0`、Core `125/125`、Worker `356 passed / 1 Named Pipe 环境 skip`、目标取消用例 `1/1`、R09 高对比 `3/3`。Playnite 全量扫测中断在 122 类中的 6 类，不能宣称全量通过。证据见 [CI-WORKER-CANCEL-RACE-FIX-20261015](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
+- `.tmp` 清理已释放约 588 MB；SDK8.0.423 必须保留供后续验证。未跟踪的其他 Q/R TRX、临时 WPF 项目和 TestResults 保持原样。
+- 下一步：同步最终事实后中文 commit/push 到 `main`，通过 GitHub 插件跟踪新 SDK8 与 SDK10.0.401 Actions 至明确终态；如果失败先取完整日志。CI 阶段收口后重跑 R00/R01 freshness，再处理其行为缺口。R09 高对比 CI 断言在本机未复现，真实 Playnite、物理跨屏/呈现帧/ETW仍未验。

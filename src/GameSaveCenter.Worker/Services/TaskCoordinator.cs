@@ -89,7 +89,6 @@ public sealed class TaskCoordinator
         catch
         {
             _taskRuntimes.TryRemove(task.TaskId, out _);
-            runtime.Gate.Dispose();
             throw;
         }
         var gateEntered=false;
@@ -155,7 +154,9 @@ public sealed class TaskCoordinator
             finally
             {
                 _taskRuntimes.TryRemove(task.TaskId,out _);
-                runtime.Gate.Dispose();
+                // CancelAsync callers may already have captured this runtime before it
+                // was removed from the dictionary. Let the semaphore be reclaimed by GC
+                // after those callers finish instead of disposing it underneath them.
                 if(gateEntered)gate.Release();
             }
         }
@@ -255,8 +256,8 @@ public sealed class TaskCoordinator
         await runtime.Gate.WaitAsync(CancellationToken.None).ConfigureAwait(false);
         try
         {
-            if (runtime.Terminal || (runtime.Task.State != TaskState.Queued && runtime.Task.State != TaskState.Running)) return false;
             if (runtime.CancellationRequested) return true;
+            if (runtime.Terminal || (runtime.Task.State != TaskState.Queued && runtime.Task.State != TaskState.Running)) return false;
             runtime.CancellationRequested = true;
             runtime.Task.CancellationState = TaskCancellationStates.Requested;
             runtime.Task.Message = "正在取消";
