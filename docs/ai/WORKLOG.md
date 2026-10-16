@@ -10956,3 +10956,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK9.0.302、VSTest17.14.1、.NET Framework testhost4.8.9181.0，以新的隔离输出执行 R11 `6/6`、R09 `2/2`、R06 `6/6`、独立 Q13 `1/1`；freshness `14 fresh / 0 stale / 0 source matches`。source validation 通过。新 TRX/源码及程序集 hash 归档在 `evidence/R11-08-CURRENT-MAIN-RECHECK-20261016/`；本机 SDK9 不替代锁定 SDK8 或 CI SDK10。
 - 用户粘贴的 R09 旧失败断言第151行来自旧形态（Chrome border 2 DIP）；当前 main 第151行检查 brush，第154行才检查独立 ValidationStroke 的 2 DIP。实际外机 source/assembly identity 仍未取得，当前工作区不存在该外机的 build diagnostics 目录；需其同次 `summary.json` 才能区分旧 source checkout/dirty file/旧程序集。
 - 当前修复需单独中文 commit/push，再检查两个新 Actions lanes 到终态。新 CI 未终态前不签收；若成功，再推进 R13-07 队列筛选与汇总。保留用户和其他任务生成的未跟踪文件。
+
+## 2026-10-16 R13-07 当前 main 队列筛选与分页复核
+
+- 复核已存在的 Worker 查询 DTO/服务、维护页控件、全局与筛选汇总、consistency token、分页集合和选择锚点；没有重建能力。本轮生产路径改为调用可直接行为测试的页追加、选择恢复 helper，并用同一个生产汇总格式 helper 给 UI 行为测试生成当前/全局计数。
+- 在生产 `MaintenanceView` 隔离 STA 窗口操作状态、类型、时间、游戏、设备筛选，核对五个绑定属性更新和汇总文本；Worker CloudTransferStateTests 用合成隔离数据执行 game/state/device/time/global count、全量汇总、分页和 stale token 用例。分页追加覆盖大小写不敏感的跨页与页内重复、既有实例不替换、新条目单次 Reset、全重复页无空 Reset；刷新选择覆盖稳定 key、未加载后页和删除 fallback。
+- 本机 SDK9.0.302/VSTest17.14.1，Playnite `net462` / tests `net472` 定向 Release build 后 R13 `16/16`；Worker `net8.0-windows10.0.19041.0` `CloudTransferStateTests 14/14`；`validate-source.py`、`git diff --check` 通过。Playnite 不是完整 solution build；SDK8.0.423 未安装，不以 SDK9 替代锁定 SDK或CI SDK10.0.401。R00/R01 freshness `14 条/0 需重跑/0 源路径命中`，package identity 未提供。
+- 首轮分开启动的 STA 筛选测试关闭全局 WPF Application Dispatcher，导致后续页面测试找不到表格；将筛选交互并入已有 STA 页测试后完整 R13 类通过。最终成功 TRX、源/程序集 SHA 与 freshness 归档于 [R13-07 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。`.tmp/r13-07-sdk9-runner` 在归档后清理，其他任务文件保留。
+- #1044/run `38894241925` 对 `ea1e1aea` 的 SDK10 job `116950776709` 已成功；SDK8 job `116950777158` 的编译/测试步骤成功，离屏渲染 QA 仍运行，不含本轮源码。R13-07 推送后的新 Actions 也需两条 lane 终态；不能以本机结果签收。外机 R09 的 `Expected 2 / Actual 1` 仍与当前 line151测试断言映射不符；外机 summary/DLL/PDB 身份未取得，根因未知但不阻断主线。真实插件 IPC刷新、Playnite host、物理 DPI/跨屏、独立 UIA/IME、最终呈现、ETW/宿主性能未验。下一项 R13-08。

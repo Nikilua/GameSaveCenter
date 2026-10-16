@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using System.IO;
 using Xunit;
@@ -75,7 +78,10 @@ public sealed class R13CloudTransferStageBehaviorTests
                 LastErrorCode = "RCLONE_AUTH_FAILED",
                 LastError = "合成认证失败"
             };
-            var context = new CloudQueueViewContext(uploaded, verified, retry, recovering, authentication);
+            var context = new CloudQueueViewContext(uploaded, verified, retry, recovering, authentication)
+            {
+                CloudTransferViewSummary = new CloudTransferSummaryDto { TotalCount = 5, GlobalTotalCount = 8, LoadedCount = 5 }
+            };
             var application = Application.Current ?? new Application();
             if (!application.Resources.Contains("BaseTextBlockStyle"))
                 application.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
@@ -102,6 +108,40 @@ public sealed class R13CloudTransferStageBehaviorTests
                 var grid = Assert.Single(FindVisualChildren<DataGrid>(page),
                     candidate => candidate.Name == "CloudTransferGrid");
                 Assert.Equal(5, grid.Items.Count);
+
+                var stateFilter = Assert.Single(FindVisualChildren<ComboBox>(page), control =>
+                    System.Windows.Automation.AutomationProperties.GetName(control) == "云端队列状态筛选");
+                var kindFilter = Assert.Single(FindVisualChildren<ComboBox>(page), control =>
+                    System.Windows.Automation.AutomationProperties.GetName(control) == "云端队列类型筛选");
+                var timeFilter = Assert.Single(FindVisualChildren<ComboBox>(page), control =>
+                    System.Windows.Automation.AutomationProperties.GetName(control) == "云端队列时间筛选");
+                var gameFilter = Assert.Single(FindVisualChildren<TextBox>(page), control =>
+                    System.Windows.Automation.AutomationProperties.GetName(control) == "云端队列游戏筛选");
+                var deviceFilter = Assert.Single(FindVisualChildren<TextBox>(page), control =>
+                    System.Windows.Automation.AutomationProperties.GetName(control) == "云端队列来源设备筛选");
+                stateFilter.SelectedValue = "RetryScheduled";
+                kindFilter.SelectedValue = "Backup";
+                timeFilter.SelectedValue = "7d";
+                gameFilter.Text = "合成筛选游戏";
+                deviceFilter.Text = "合成设备";
+                gameFilter.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
+                deviceFilter.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
+                PumpLayout(window);
+
+                Assert.Equal("RetryScheduled", context.CloudTransferStateFilter);
+                Assert.Equal("Backup", context.CloudTransferKindFilter);
+                Assert.Equal("7d", context.CloudTransferTimeFilter);
+                Assert.Equal("合成筛选游戏", context.CloudTransferGameFilter);
+                Assert.Equal("合成设备", context.CloudTransferSourceDeviceFilter);
+                Assert.Contains(FindVisualChildren<TextBlock>(page), label =>
+                    label.Text == "当前筛选 5/8 项 · 已加载全部 5 项");
+                Assert.Equal("当前筛选 5/8 项",
+                    DashboardViewModel.FormatCloudTransferScopeSummary(true, context.CloudTransferViewSummary));
+                Assert.Equal("全局 8 项",
+                    DashboardViewModel.FormatCloudTransferScopeSummary(false, context.CloudTransferViewSummary));
+                Assert.Equal("当前筛选 0/8 项", DashboardViewModel.FormatCloudTransferScopeSummary(
+                    true, new CloudTransferSummaryDto { TotalCount = 0, GlobalTotalCount = 8 }));
+
                 grid.ScrollIntoView(uploaded);
                 grid.SelectedItem = uploaded;
                 PumpLayout(window);
@@ -285,6 +325,72 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.Contains("GlobalTotalCount = globalAggregate.TotalCount", worker, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void CloudTransferPageAppendSkipsOverlappingKeysAndAvoidsEmptyReset()
+    {
+        var existing = new CloudTransferStatusDto { TransferKey = "Backup:existing", State = "Uploaded" };
+        var target = new BatchObservableCollection<CloudTransferStatusDto>(new[] { existing });
+        var changes = new List<NotifyCollectionChangedAction>();
+        target.CollectionChanged += (_, args) => changes.Add(args.Action);
+
+        var appended = DashboardViewModel.AppendCloudTransferPageItems(target, new[]
+        {
+            new CloudTransferStatusDto { TransferKey = "backup:EXISTING", State = "Failed" },
+            new CloudTransferStatusDto { TransferKey = "Media:new" },
+            new CloudTransferStatusDto { TransferKey = "media:NEW" }
+        });
+
+        Assert.Equal(1, appended);
+        Assert.Equal(2, target.Count);
+        Assert.Same(existing, target[0]);
+        Assert.Equal("Media:new", target[1].TransferKey);
+        Assert.Equal(new[] { NotifyCollectionChangedAction.Reset }, changes);
+
+        changes.Clear();
+        var duplicateOnly = DashboardViewModel.AppendCloudTransferPageItems(target, new[]
+        {
+            new CloudTransferStatusDto { TransferKey = "MEDIA:NEW" },
+            new CloudTransferStatusDto { TransferKey = "backup:existing" }
+        });
+
+        Assert.Equal(0, duplicateOnly);
+        Assert.Equal(2, target.Count);
+        Assert.Empty(changes);
+    }
+
+    [Fact]
+    public void CloudTransferRefreshRestoresStableSelectionOrDefersItUntilItsPageLoads()
+    {
+        var refreshed = new CloudTransferStatusDto { TransferKey = "Backup:selected" };
+        var currentPage = new List<CloudTransferStatusDto>
+        {
+            new() { TransferKey = "Backup:first" },
+            refreshed
+        };
+
+        var restored = DashboardViewModel.ResolveCloudTransferPageSelection(
+            currentPage, "backup:SELECTED", previousSelectedIndex: 0, hasMore: false, out var shouldLoadPending);
+
+        Assert.Same(refreshed, restored);
+        Assert.False(shouldLoadPending);
+
+        var firstPage = new List<CloudTransferStatusDto>
+        {
+            new() { TransferKey = "Backup:first" }
+        };
+        restored = DashboardViewModel.ResolveCloudTransferPageSelection(
+            firstPage, "Backup:later", previousSelectedIndex: 4, hasMore: true, out shouldLoadPending);
+
+        Assert.Null(restored);
+        Assert.True(shouldLoadPending);
+
+        restored = DashboardViewModel.ResolveCloudTransferPageSelection(
+            firstPage, "Backup:removed", previousSelectedIndex: 4, hasMore: false, out shouldLoadPending);
+
+        Assert.Same(firstPage[0], restored);
+        Assert.False(shouldLoadPending);
+    }
+
     [Theory]
     [InlineData("Failed", true)]
     [InlineData("RetryScheduled", true)]
@@ -412,6 +518,11 @@ public sealed class R13CloudTransferStageBehaviorTests
     private sealed class CloudQueueViewContext : INotifyPropertyChanged
     {
         private CloudTransferStatusDto selectedCloudTransfer;
+        private string cloudTransferStateFilter = string.Empty;
+        private string cloudTransferKindFilter = string.Empty;
+        private string cloudTransferGameFilter = string.Empty;
+        private string cloudTransferSourceDeviceFilter = string.Empty;
+        private string cloudTransferTimeFilter = string.Empty;
 
         public CloudQueueViewContext(params CloudTransferStatusDto[] transfers)
         {
@@ -421,6 +532,60 @@ public sealed class R13CloudTransferStageBehaviorTests
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public ObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; }
+        public IReadOnlyList<CloudTransferFilterOption> CloudTransferStateOptions { get; } = new[]
+        {
+            new CloudTransferFilterOption(string.Empty, "全部状态"),
+            new CloudTransferFilterOption("RetryScheduled", "下次尝试")
+        };
+        public IReadOnlyList<CloudTransferFilterOption> CloudTransferKindOptions { get; } = new[]
+        {
+            new CloudTransferFilterOption(string.Empty, "全部类型"),
+            new CloudTransferFilterOption("Backup", "备份")
+        };
+        public IReadOnlyList<CloudTransferFilterOption> CloudTransferTimeFilterOptions { get; } = new[]
+        {
+            new CloudTransferFilterOption(string.Empty, "全部时间"),
+            new CloudTransferFilterOption("7d", "最近 7 天")
+        };
+        public CloudTransferSummaryDto CloudTransferViewSummary { get; set; } = new();
+        public bool CloudTransferHasActiveFilters
+            => !string.IsNullOrWhiteSpace(CloudTransferStateFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferKindFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferGameFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferSourceDeviceFilter)
+               || !string.IsNullOrWhiteSpace(CloudTransferTimeFilter);
+        public string CloudTransferLoadedSummary
+            => $"{DashboardViewModel.FormatCloudTransferScopeSummary(CloudTransferHasActiveFilters, CloudTransferViewSummary)} · 已加载全部 {CloudTransferItems.Count} 项";
+
+        public string CloudTransferStateFilter
+        {
+            get => cloudTransferStateFilter;
+            set => SetFilter(ref cloudTransferStateFilter, value ?? string.Empty, nameof(CloudTransferStateFilter));
+        }
+
+        public string CloudTransferKindFilter
+        {
+            get => cloudTransferKindFilter;
+            set => SetFilter(ref cloudTransferKindFilter, value ?? string.Empty, nameof(CloudTransferKindFilter));
+        }
+
+        public string CloudTransferGameFilter
+        {
+            get => cloudTransferGameFilter;
+            set => SetFilter(ref cloudTransferGameFilter, value ?? string.Empty, nameof(CloudTransferGameFilter));
+        }
+
+        public string CloudTransferSourceDeviceFilter
+        {
+            get => cloudTransferSourceDeviceFilter;
+            set => SetFilter(ref cloudTransferSourceDeviceFilter, value ?? string.Empty, nameof(CloudTransferSourceDeviceFilter));
+        }
+
+        public string CloudTransferTimeFilter
+        {
+            get => cloudTransferTimeFilter;
+            set => SetFilter(ref cloudTransferTimeFilter, value ?? string.Empty, nameof(CloudTransferTimeFilter));
+        }
 
         public CloudTransferStatusDto SelectedCloudTransfer
         {
@@ -431,6 +596,14 @@ public sealed class R13CloudTransferStageBehaviorTests
                 selectedCloudTransfer = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCloudTransfer)));
             }
+        }
+
+        private void SetFilter(ref string field, string value, string propertyName)
+        {
+            if (string.Equals(field, value, StringComparison.Ordinal)) return;
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CloudTransferLoadedSummary)));
         }
     }
 }

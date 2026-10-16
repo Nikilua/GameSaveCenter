@@ -103,16 +103,7 @@ public sealed partial class DashboardViewModel
                 }
                 else if (response?.Items != null && response.Items.Count > 0)
                 {
-                    var incoming = response.Items;
-                    CloudTransferItems.ApplyBatch(() =>
-                    {
-                        var existingKeys = new HashSet<string>(CloudTransferItems.Select(x => x.TransferKey), StringComparer.OrdinalIgnoreCase);
-                        foreach (var item in incoming)
-                        {
-                            if (existingKeys.Add(item.TransferKey))
-                                CloudTransferItems.Add(item);
-                        }
-                    });
+                    AppendCloudTransferPageItems(CloudTransferItems, response.Items);
                 }
 
                 CloudTransferViewSummary = response ?? new CloudTransferSummaryDto();
@@ -120,14 +111,12 @@ public sealed partial class DashboardViewModel
                 cloudTransferHasMore = response?.HasMore == true;
                 cloudTransferConsistencyToken = response?.ConsistencyToken ?? string.Empty;
                 cloudTransferNeedsManualRefresh = false;
-                var restored = !string.IsNullOrWhiteSpace(selectedKey)
-                    ? CloudTransferItems.FirstOrDefault(x => string.Equals(x.TransferKey, selectedKey, StringComparison.OrdinalIgnoreCase))
-                    : null;
-                var shouldLoadPending = restored == null
-                    && !string.IsNullOrWhiteSpace(selectedKey)
-                    && response?.HasMore == true;
-                if (restored == null && !shouldLoadPending && (previousSelectedIndex >= 0 || !string.IsNullOrWhiteSpace(selectedKey)))
-                    restored = SelectionAnchorResolver.Restore(CloudTransferItems, selectedKey, previousSelectedIndex, item => item.TransferKey);
+                var restored = ResolveCloudTransferPageSelection(
+                    CloudTransferItems,
+                    selectedKey,
+                    previousSelectedIndex,
+                    response?.HasMore == true,
+                    out var shouldLoadPending);
                 SelectedCloudTransfer = restored!;
                 if (shouldLoadPending)
                     pendingCloudTransferKey = selectedKey;
@@ -297,4 +286,44 @@ public sealed partial class DashboardViewModel
            && left.LastError == right.LastError
            && left.UpdatedUtc == right.UpdatedUtc
            && left.GameName == right.GameName;
+
+    internal static int AppendCloudTransferPageItems(
+        BatchObservableCollection<CloudTransferStatusDto> target,
+        IEnumerable<CloudTransferStatusDto> incoming)
+    {
+        if (target == null) throw new ArgumentNullException(nameof(target));
+        if (incoming == null) throw new ArgumentNullException(nameof(incoming));
+
+        var existingKeys = new HashSet<string>(target.Select(x => x.TransferKey), StringComparer.OrdinalIgnoreCase);
+        var additions = incoming.Where(item => existingKeys.Add(item.TransferKey)).ToList();
+        if (additions.Count == 0)
+            return 0;
+
+        target.ApplyBatch(() =>
+        {
+            foreach (var item in additions)
+                target.Add(item);
+        });
+        return additions.Count;
+    }
+
+    internal static CloudTransferStatusDto? ResolveCloudTransferPageSelection(
+        IList<CloudTransferStatusDto> items,
+        string? selectedKey,
+        int previousSelectedIndex,
+        bool hasMore,
+        out bool shouldLoadPending)
+    {
+        if (items == null) throw new ArgumentNullException(nameof(items));
+
+        var restored = !string.IsNullOrWhiteSpace(selectedKey)
+            ? items.FirstOrDefault(x => string.Equals(x.TransferKey, selectedKey, StringComparison.OrdinalIgnoreCase))
+            : null;
+        shouldLoadPending = restored == null
+            && !string.IsNullOrWhiteSpace(selectedKey)
+            && hasMore;
+        if (restored == null && !shouldLoadPending && (previousSelectedIndex >= 0 || !string.IsNullOrWhiteSpace(selectedKey)))
+            restored = SelectionAnchorResolver.Restore(items, selectedKey, previousSelectedIndex, item => item.TransferKey);
+        return restored;
+    }
 }

@@ -253,3 +253,9 @@ R13-06 的 `NetworkRecoveryDisplay`、维护页绑定、Worker 轮询/批次与�
 ### WPF 合成宿主的设置保存边界（2026-10-16）
 
 当 STA 行为测试将未初始化 Playnite `Plugin` 注入 `DashboardViewModel`，但加载真实页面会启用带 DispatcherTimer 的列宽持久化控制器时，必须让测试的偏好保存 callback 落在 fake host 内；不得让此行为测试异步调用 `Plugin.SavePluginSettings`。生产默认 callback 保持不变。列宽控制器保存/恢复本身用独立合成设置测试覆盖。若另一台机器的断言行号和当前源码不一致，先从同次诊断 `summary.json` 对照 sourceCommit、dirtyPaths、source SHA、DLL hash/MVID，再判断旧 checkout 或 stale assembly；本机不同 SDK 的定向通过不能覆盖对方故障。
+
+### 2026-10-16 R13-07 队列筛选与分页行为复核
+
+R13-07 既有 Worker 查询与维护页控件、全局/筛选计数、分页一致性 token、稳定选择恢复已存在；不要另建服务/DTO。当前 main 只将分页追加/选中恢复小段逻辑抽为生产路径实际调用的 helper，去掉全重复页的无效 Reset，并用生产汇总格式 helper 验证当前/全局计数。Playnite `MaintenanceView` STA 真实操作五个合成绑定控件；Worker `CloudTransferStateTests` 用隔离状态验证过滤、全局汇总和过期 token。最终 SDK9.0.302/VSTest17.14.1 Playnite R13 `16/16`、Worker `14/14`；不是完整 solution build，不代替 SDK8.0.423/CI SDK10.0.401。TRX、SHA、freshness 见 `evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md`。
+
+WPF 测试若新增窗口到另一个 STA thread，`Application.Current` 可能保留已关闭 Dispatcher，影响之后视图；优先将真实控件交互合并到已有的隔离 STA fixture 并完整运行该类，不能只跑新 Fact。外机旧断言来源仍需同次 `summary.json`/程序集 SHA 才能确认，但不阻断其他主线任务。当前先追踪 #1044 和 R13-07 新 Actions 两条 SDK lane 至终态，再做 R13-08；真实插件 IPC refresh、Playnite host、物理 DPI、独立 UIA/IME、最终呈现、ETW/宿主性能仍属未验证边界。

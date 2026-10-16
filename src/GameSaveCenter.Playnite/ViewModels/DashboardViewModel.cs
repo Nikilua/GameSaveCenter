@@ -740,9 +740,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         public int CloudTransferGlobalCount
             => Math.Max(CloudTransferViewSummary.GlobalTotalCount, CloudTransferViewSummary.TotalCount);
         public string CloudTransferScopeSummary
-            => CloudTransferHasActiveFilters
-                ? $"当前筛选 {CloudTransferViewSummary.TotalCount}/{CloudTransferGlobalCount} 项"
-                : $"全局 {CloudTransferGlobalCount} 项";
+            => FormatCloudTransferScopeSummary(CloudTransferHasActiveFilters, CloudTransferViewSummary);
+        internal static string FormatCloudTransferScopeSummary(bool hasActiveFilters, CloudTransferSummaryDto summary)
+        {
+            if (summary == null) throw new ArgumentNullException(nameof(summary));
+            var globalCount = Math.Max(summary.GlobalTotalCount, summary.TotalCount);
+            return hasActiveFilters
+                ? $"当前筛选 {summary.TotalCount}/{globalCount} 项"
+                : $"全局 {globalCount} 项";
+        }
         public string CloudTransferGameFilter
         {
             get => cloudTransferGameFilter;
