@@ -8,6 +8,10 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
+### 2026-10-16 当前续跑点（覆盖下方历史下一项）
+
+**最新续跑事实（从已推送 `2252fad7` 继续）：** Actions #1031/run `38834172655` 已终态失败：SDK8.0.423 job `116759418158` 与 SDK10.0.401 job `116759417854` 均在 R21 父级 Selection 查询返回空集合。完整 logs 和 diagnostics artifacts 已取得，具体状态见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md`。当前本地候选只改 R21 测试夹具，使用 UIA 客户端 `AutomationElement`/`SelectionPattern` 验证 A→B 选择及旧项取消；本机 SDK8.0.423 Release build `0/0`、目标 `1/1`、R21 `24/24`，证据见 `CI-R21-SELECTION-UIA-CLIENT-20261016`。先中文 commit/push 并追踪新双 SDK Actions 至终态；CI 若失败，先取得完整 job log，按实际断言处理。门禁收口后按用户顺序先复核 R00/R01 freshness 与 stale 证据，再核对 R12-04 已有恢复前保护、DTO 和 fake/隔离测试，不访问真实存档；随后推进依赖已满足的 Q/R 小批。R00/R01 最近已知 14/14 freshness 属于 2026-10-15 source，不代替新 HEAD 复核。真实 Playnite、Windows 独立 UIA/Narrator、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍单列待验。
+
 ### 2026-10-15 当前续跑点（覆盖下方历史下一项）
 
 **最新续跑事实（从已推送 `676be4f3` 继续）：** R08 夹具第二次修正已完成本机 SDK8.0.423/VSTest17.11.1 Release test project build `0/0`，应用设置、系统偏好行为各 `1/1`；R09 高对比类同身份本机复测 `3/3`，source validation/diff check 通过。本次修正先 drain Loaded/Dispatcher 并完成布局，再覆盖测试时长和触发入场动画，避免 Hosted runner 的 Loaded 回调与断言竞态；不改生产 UI。#1025/run `38687483121` 已终态 Failure：SDK10 job `116265550450` 在 R08SystemMotion 入场 opacity 动画断言失败；SDK8 job `116265550259` 在 R09HighContrast 行为矩阵第195行 Assert.True 失败，本机同类 3/3 通过，根因未证实。完整日志已由 GitHub 插件读取；对应诊断 artifact `11951470215` SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893` 与 `11951095969` SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。修复补丁待提交推送；新 Actions 必须跟到终态。CI 收口后按用户顺序在新 source HEAD 重核 R00/R01 freshness，再推进 CLOSE-OPTICAL-01；真实 Playnite、物理 DPI/跨屏、呈现帧、UIA/读屏和 ETW/宿主性能仍未验。外机 R09 缺该次 HEAD/DLL/PDB，根因仍未知。

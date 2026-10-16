@@ -10857,3 +10857,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户明确授权后清理五个旧 `.tmp` 目录：q24-07、r11-06、r09-current-main-retry、r00-08、r08-01 build，共释放 `373.7 MiB`。SDK和当前 R21 输出保留；`.tmp` 余 `744.9 MiB`，D 盘余量 `9.26 GiB`。过程仅删除获准路径，未碰其他未跟踪证据。
 - 下一步：中文 commit/push 当前小批并跟踪对应 SDK8/SDK10.0.401 Actions 至终态；失败先读取完整 job log。CI 收口后核对 R12-04 已有保护备份与 fake/隔离证据，不访问真实存档。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。
 - `python scripts/validate-source.py` 与 `git diff --check` 均通过。该批没有 XAML/视觉改动，因此未做离屏图或真实 Playnite 呈现声明。
+
+## 2026-10-16 R21 UIA 客户端选择路径复核
+
+- #1031/run `38834172655`（推送提交 `2252fad7`）当前终态 Failure：SDK10.0.401 job `116759417854` 和 SDK8.0.423 job `116759418158` 都在父级 `ISelectionProvider.GetSelection()` 空集合失败。完整 job log 显示 build `0 warning / 0 error`、Core `125/125`、Worker `357/357`，R21 `23/24`；此前行 peer 的 `IsSelected` 检查通过，失败断言之后的 TextServices COM 异常为 testhost 收尾输出。artifact ID/SHA 与前置状态见[前序 CI 证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
+- 只调整测试夹具：保留生产 `FullRow`、SelectedItem/SelectedItems、行 peer 选择/取消检查，改由 `AutomationElement.FromHandle` 与 `SelectionPattern.Current.GetSelection()` 验证客户端能读到“媒体 A”，并在切换后读到“媒体 B”、旧项为未选中。没有改生产 UI、绑定、命令或选择模型。新证据包：[R21 UIA 客户端选择复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)。
+- 本机隔离 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`；Playnite `net462` 与测试 `net472` Release build `0 warning / 0 error`，UIA 单项 `1/1`，R21 `24/24`；`validate-source.py`、`git diff --check` 通过。源 SHA `1878915B46AFDA3889D687FFE4B60279A94CDD93F0368B9B1CB74BB2760CD943`、测试 DLL SHA `9AB0FBEE289F00A00E5F7E6A5B43C9C0019372A160F7849AF455CF2CF2EAACF4`、MVID `ccd66d2b-8cf6-4950-ac6c-98ad44f29000`、脱敏 TRX SHA `0D006E025F47476F2163B5AEE31EF0104F6CC7D93E5124D979D6CD3D23F89797`。本机 testhost `.NET Framework 4.8.9181.0`，CI `4.8.9345.0`；SDK8 本机不能替代新双 SDK Actions。
+- 首次默认并行的 `dotnet test` 超过两分钟无输出且没创建结果目录；精确按该 SDK 路径与本次启动时间结束这次本机调用后，以 `-m:1` 重建和重跑通过。该停滞调用没有可用测试结果，不当作产品失败。脱敏 TRX 已归档，两个本批临时测试结果目录也已从 `.tmp/r21-automation-selection-repro` 清理。
+- 下一步中文 commit/push 并查新 Actions 至明确终态；失败先取完整日志。之后按用户序列重新核对 R00/R01 freshness 及问题证据，再复核 R12-04 已有恢复保护实现和 fake/隔离证据，不访问真实存档。真实 Playnite、独立 UIA/Narrator、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。

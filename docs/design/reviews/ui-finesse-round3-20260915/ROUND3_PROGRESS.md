@@ -1869,6 +1869,13 @@
 - 本机 SDK8.0.423 / MSBuild17.11.48 Release build `0/0`；R21 `24/24`，TRX 已归档。代码修订需 push 后确认 SDK8/SDK10.0.401 Actions 终态；未完成 CI 不签收阶段。
 - `.tmp` 旧隔离输出约 `374 MiB`。自动审查两次拦截对列出的旧目录进行递归删除，理由包含目录内日志/TRX及不明 PID `32408`；未清理、未绕过。用户提出希望清理无用文件；待用户明日可回复时申请这些具体路径的确认，当前继续主任务。
 
+## 2026-10-16 R21 UIA 客户端 Selection 查询复核
+
+- #1031/run `38834172655`（推送提交 `2252fad7`）SDK8.0.423 job `116759418158` 与 SDK10.0.401 job `116759417854` 均已终态失败：`ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 的父级 `ISelectionProvider.GetSelection()` 返回空集合。完整日志显示两条 lane 的 Release build `0/0`、Core `125/125`、Worker `357/357`；SelectedItem/SelectedItems/DataGridRow 与行 peer 选中状态前置断言通过，R21 其余 `23/24`。COM teardown 噪声在 xUnit 失败之后。失败/ZIP 身份详见[evidence](evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
+- 测试现在保留 FullRow、WPF 状态和真实行 peer 负例，改由 UIA 客户端 `AutomationElement.FromHandle` 定位命名生产 DataGrid，并用 `SelectionPattern` 查询 A→B 单选切换、旧项取消及新项 IsSelected。没有改生产视觉、绑定、命令或模型。此处覆盖 UIA 客户端 API 的 STA 行为，不代表独立外部进程、Narrator 或真实 Playnite。
+- 隔离 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1，Release Playnite `net462` / 测试 `net472` build `0 warning / 0 error`；目标行为 `1/1`，R21 `24/24`；source validation 与 diff check 通过。源/DLL/MVID/TRX 身份见[本机复核包](evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)。默认并行 `dotnet test` 首次超过两分钟无输出且无结果目录；结束本次精确 SDK 调用后以 `-m:1` 重跑成功，不把停滞试次算成测试结果。
+- 新夹具待中文 commit/push；必须查对应 SDK8 和 SDK10.0.401 Actions 到终态，失败先取得完整日志。完成后按用户要求先复核 R00/R01 问题与 freshness，再审查 R12-04 既有保护路径与证据，随后推进依赖已满足的 Q/R。真实 Playnite、Windows 独立 UIA/读屏、OS 输入/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+
 ## 2026-10-15 R21 UIA 行选择前置条件与 #1029 双 SDK 失败
 
 - Actions #1029/run `38706481548` 对提交 `171ac4a6` 的 SDK8.0.423 与 SDK10.0.401 jobs 都在 `R21AutomationValueBehaviorTests.ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 的 UIA `GetSelection()` 返回空集合处失败。完整 log 未记录 WPF `SelectedItems` 或容器状态，不能区分实际选择丢失、行未实现或 .NET Framework UIA peer 差异。失败详情、job/artifact 身份见[证据包](evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。

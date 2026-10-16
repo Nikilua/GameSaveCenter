@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-15；分支 `main`，已推送源码 `676be4f3349d439198e834aa28341b3ca2883040`。当前修正 R08 system-motion 行为夹具：SDK8.0.423/VSTest17.11.1 Release 测试项目 build `0/0`，R08 app/system 两类 `1/1`，R09 高对比定向类 `3/3`；新夹具补丁已本机通过但尚待提交与 CI。Actions #1025/run `38687483121` 终态 Failure：SDK10 job `116265550450` 在 R08SystemMotion 入场动画断言失败；SDK8 job `116265550259` 在 R09HighContrast 矩阵第195行 Assert.True 失败（Expected True / Actual False），同 SDK本机定向复测 `3/3`，原因未确认。完整 job logs 已从 GitHub 插件取得；artifact SHA 分别 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893`、`8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。R00/R01 freshness 最近 `14/14`，R08 CI 收口后重核当前 source。外机 R09 line151 `Expected 2 / Actual 1` 仍缺同一次 HEAD/DLL/PDB；CLOSE-WRAP 鼠标前提 `GetCursorPos=false` 仍待交互桌面。真实宿主、OS 输入/UIA、物理 DPI/跨屏、presented frame、ETW/宿主性能继续单独记账。详见[当前交接](../DEVELOPMENT_HANDOFF.md)、[R00/R01](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md)、[R09外机对照](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)与[R08证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-MOTION-POLICY-FIX-20261015/README.md)。
+更新：2026-10-16；分支 `main`，已推送基线 `2252fad7c0e1d682d00f7314efbba296f6699292` 的 Actions #1031/run `38834172655` 双 SDK 均在 R21 父级 Selection 查询空集合处失败。当前候选只改测试夹具，改用 `AutomationElement`/`SelectionPattern` 客户端查询并验证 A→B 选中、取消；本机隔离 SDK8.0.423 Release build `0/0`，目标 `1/1`、R21 `24/24`，source validation 和 diff check 通过。证据见[UIA 客户端复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)；中文 commit/push 后必须追踪 SDK8 与 SDK10.0.401 新 run 至终态。随后按用户指定复核 R00/R01 当前 freshness 与问题证据，再核对 R12-04 既有恢复保护与 fake/隔离证据并继续依赖已满足的 Q/R。R00/R01 最新已知 14/14 仅代表 2026-10-15 当时源路径 freshness；外机 R09、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能继续分别记账。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。先收口 R08 CI：已在 SDK8 本机修正 Loaded 调度时序并通过两个 R08 动效类；推送后查 SDK8/SDK10.0.401 Actions 至终态。#1025 的 SDK8 R09HighContrast 失败在同身份本机复测未复现（3/3），保留其日志行/断言差异，若新 CI 再现则按具体失败继续定位。之后按用户顺序重验 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。外机 R09 的 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。先收口 R21 UIA 行选择校正：新夹具通过 UIA 客户端 `AutomationElement`/`SelectionPattern` 查询真实选择项；本机 SDK8 通过，#1031 的双 SDK 失败仍需新提交 CI 证据。失败先取完整 job log，再按实际断言定位。CI 收口后依用户顺序复核 R00/R01 freshness 与具体 stale 问题，再核对 R12-04 已有保护备份路径并推进依赖满足的 Q/R。外机 R09 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

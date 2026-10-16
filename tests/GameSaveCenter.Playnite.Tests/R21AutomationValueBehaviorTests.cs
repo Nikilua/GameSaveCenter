@@ -6,6 +6,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Views;
@@ -492,11 +493,19 @@ public sealed class R21AutomationValueBehaviorTests
             var firstRowSelection = Assert.IsAssignableFrom<ISelectionItemProvider>(firstRowPeer.GetPattern(PatternInterface.SelectionItem));
             Assert.True(firstRowSelection.IsSelected);
 
-            var selection = Assert.IsAssignableFrom<ISelectionProvider>(gridPeer.GetPattern(PatternInterface.Selection));
-            Assert.True(selection.CanSelectMultiple);
-            var firstSelection = Assert.Single(selection.GetSelection());
-            var firstName = firstSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);
-            Assert.Equal("媒体 A", firstName);
+            var automationWindow = AutomationElement.FromHandle(host.WindowHandle);
+            var automationGrid = automationWindow.FindFirst(
+                TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.NameProperty, "媒体收件箱"));
+            Assert.NotNull(automationGrid);
+            var selection = Assert.IsAssignableFrom<SelectionPattern>(
+                automationGrid.GetCurrentPattern(SelectionPattern.Pattern));
+            Assert.True(selection.Current.CanSelectMultiple);
+            var firstSelection = Assert.Single(selection.Current.GetSelection());
+            Assert.Equal("媒体 A", firstSelection.Current.Name);
+            var firstAutomationSelection = Assert.IsAssignableFrom<SelectionItemPattern>(
+                firstSelection.GetCurrentPattern(SelectionItemPattern.Pattern));
+            Assert.True(firstAutomationSelection.Current.IsSelected);
 
             grid.SelectedIndex = 1;
             grid.ScrollIntoView(grid.Items[1]);
@@ -506,13 +515,15 @@ public sealed class R21AutomationValueBehaviorTests
             Assert.Same(grid.Items[1], Assert.Single(grid.SelectedItems));
             Assert.IsAssignableFrom<DataGridRow>(grid.ItemContainerGenerator.ContainerFromIndex(1));
             Assert.False(firstRowSelection.IsSelected);
+            Assert.False(firstAutomationSelection.Current.IsSelected);
             var nextRowPeer = GetRowPeerByName(gridPeer, "媒体 B");
             var nextRowSelection = Assert.IsAssignableFrom<ISelectionItemProvider>(nextRowPeer.GetPattern(PatternInterface.SelectionItem));
             Assert.True(nextRowSelection.IsSelected);
 
-            var nextSelection = Assert.Single(selection.GetSelection());
-            var nextName = nextSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);
-            Assert.Equal("媒体 B", nextName);
+            var nextSelection = Assert.Single(selection.Current.GetSelection());
+            Assert.Equal("媒体 B", nextSelection.Current.Name);
+            Assert.True(Assert.IsAssignableFrom<SelectionItemPattern>(
+                nextSelection.GetCurrentPattern(SelectionItemPattern.Pattern)).Current.IsSelected);
             Assert.Equal("媒体 B", grid.SelectedItem is AutomationTestRow row ? row.Label : null);
         });
     }
@@ -988,6 +999,8 @@ public sealed class R21AutomationValueBehaviorTests
 
         public void Pump()
             => Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, new Action(() => window.UpdateLayout()));
+
+        public IntPtr WindowHandle => new WindowInteropHelper(window).Handle;
 
         public void Dispose()
         {
