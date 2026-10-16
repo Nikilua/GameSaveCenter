@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；分支 main，推送基线 b1e7b652c938463f2f50ac74cb8157c4899daa1d。Actions #1032/run 38838015414 已成功：SDK8.0.423 job 116771387686（46m29s，含扩展打包/产物上传）和 SDK10.0.401 job 116771387396（21m42s），总计46m33s。R21 只改测试夹具，UIA 客户端 A→B 选择检查与旧项取消通过；本机 SDK8.0.423 Release build 0/0、目标1/1、完整R21 24/24。生产 UI、绑定、命令和选择模型未改。详情见[R21 CI 证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)。
+更新：2026-10-16；分支 main。R12-04 推送提交 `86ba18a58c72d4599bbb9748b063f72ce108857c` 的 Actions #1034/run `38846116072` 已成功，SDK8 job `116796913269` 与 SDK10.0.401 job `116796913109` 均通过。R12-05 当前 main 修正保留取消状态中的 Worker 清理结果，并补隔离锁文件失败负例与生产 MaintenanceView 绑定行为；本机 SDK8.0.423/VSTest17.11.1 Worker `32/32`、Playnite `8/8`、XAML `24/24`、source validation 与 diff check 通过。相关项目定向重建通过；完整 solution 未在最后修正后重跑。当前小批 push 后需追踪新双 SDK Actions 到终态。证据见[复核包](design/reviews/ui-finesse-round3-20260915/evidence/R12-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
 R00/R01 在源码 b1e7b652 freshness 为14/14 fresh、0 stale、无登记源路径命中；R00-07 账本已更正到最新 audit 116 warnings/13 MEDIUM，13条工具栏自然换行风险仍打开。package identity 未提供。详见[R00/R01 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
-.tmp 本阶段临时 Release 输出已在归档 TRX 后清理。用户明确批准的五个旧阶段目录已释放373.7 MiB；保留 SDK、当前 R21 复现目录及其他任务文件，不碰其他未跟踪 TRX/WPF 临时项目。R12-04 当前 main 已用 SDK8 Worker `26/26`、Playnite `8/8` 复核；新增同游戏锁冲突负例仍待本次 push 后双 SDK Actions 终态。下一项 R12-05：复核现有 remote staging、状态 DTO、取消与隔离清理行为；只用 fake/隔离目录。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。
+.tmp 已删除用户授权的五个旧阶段目录，释放373.7 MiB；R12-05 本轮隔离构建和诊断输出在核对归档 TRX 与程序集身份后清理。保留 SDK8、当前 R21 复现目录及其他任务文件，其他未跟踪 TRX/WPF 临时项目保持原样。R00/R01 最近 freshness 在 b1e7b652 为14/14 fresh，代码提交后重跑。下一项核查已满足的 R13-01 当前 main 证据，不新建服务。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。
 
 CI #1031 的双 SDK 失败是历史结果，已由 #1032 新终态成功覆盖当前候选；前序失败日志与 artifact 身份继续保留在[历史证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
 外机 R09 仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151；用户称已从 Git 拉取最新。当前 main line151 是错误色断言、line152 检查 Chrome `1 DIP`、line154 检查 `ValidationStroke 2 DIP`。直接从历史 `3f7d0b30` 取源确认，其 line 151 正是 Chrome `BorderThickness == 2 DIP`，与外机断言和值完全吻合；这证明外机测试/PDB 行映射与当前源码不同，但无法区分旧 DLL、旧 PDB、不同 checkout 或构建输出复用。外机 HEAD、测试源/DLL/PDB 未知，根因未确认。`libpng iCCP` 不在断言栈；COM teardown 在断言失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。

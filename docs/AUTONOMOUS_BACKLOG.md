@@ -10,7 +10,7 @@
 
 ### 2026-10-16 当前续跑点（覆盖下方历史下一项）
 
-**最新续跑事实（从已推送 b1e7b652 继续）：** R21 Actions #1032/run 38838015414 已终态成功，SDK8.0.423 job 116771387686 与 SDK10.0.401 job 116771387396 均通过。R00/R01 freshness 为14/14 fresh、0 stale、0源路径命中；R00-07 最新 audit 为116 warnings/13 MEDIUM，13条换行风险仍打开，package identity not-provided。证据见各自复核包。R12-04 沿用已有 RestoreOrchestrator/DTO；本机 SDK8 Worker `RestoreOrchestratorTests + GameOperationLockTests 26/26`、Playnite `R12RestoreWorkflowBehaviorTests 8/8`。本轮补同游戏锁持有时恢复客户端零写入负例，代码仅改测试；新推送后的双 SDK Actions 尚待终态。随后检查 R12-05 现有 remote staging 状态/取消证据，再推进依赖满足的 Q/R 小批。不访问真实存档、用户媒体或云端。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
+**最新续跑事实（从已推送 R12-04 提交 `86ba18a5` 继续）：** R12-04 Actions #1034/run `38846116072` 已终态成功，SDK8 job `116796913269` 与 SDK10.0.401 job `116796913109` 均通过。R12-05 复用现有远端 staging、TaskStatusDto 和生产维护页；修正取消投影，保留 Worker 报告的隔离区清理结果。新增锁定合成文件的 Worker 残留负例和生产 MaintenanceView 下载/取消/错误帮助文本行为；本机 SDK8.0.423 Worker `32/32`、Playnite `8/8`，XAML `24/24`、source validation/diff check 通过。最后修正后定向项目/引用重建通过，完整 solution 未重跑；当前 commit push 后新双 SDK Actions 待终态。R00/R01 最近 freshness 是 b1e7b652 的14/14 fresh，当前源提交后复跑；R00-07 audit 116 warnings/13 MEDIUM，package identity not-provided。随后复核已标“已满足”的 R13-01 当前 main 实现与现有证据，不重建服务，再推进依赖满足的 Q/R 小批。不访问真实存档、用户媒体或云端。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
 
 ### 2026-10-15 当前续跑点（覆盖下方历史下一项）
 

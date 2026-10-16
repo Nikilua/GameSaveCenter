@@ -69,4 +69,30 @@ public sealed class RemoteBackupStagingSafetyTests
             if(Directory.Exists(root))Directory.Delete(root,true);
         }
     }
+
+    [Fact]
+    public void StagingCleanupFailureLeavesLockedResidualForMaintenanceReview()
+    {
+        var root=Path.Combine(Path.GetTempPath(),"gsc-r12-05-locked-"+Guid.NewGuid().ToString("N"));
+        var vault=Path.Combine(root,"Vault");
+        Directory.CreateDirectory(vault);
+        var partial=Path.Combine(vault,"partial.save");
+        File.WriteAllText(partial,"synthetic");
+        try
+        {
+            using(var locked=new FileStream(partial,FileMode.Open,FileAccess.Read,FileShare.None))
+            {
+                Assert.False(RemoteBackupStagingService.TryDeleteStaging(root));
+                Assert.True(Directory.Exists(root));
+                Assert.True(File.Exists(partial));
+            }
+
+            Assert.True(RemoteBackupStagingService.TryDeleteStaging(root));
+            Assert.False(Directory.Exists(root));
+        }
+        finally
+        {
+            if(Directory.Exists(root))Directory.Delete(root,true);
+        }
+    }
 }

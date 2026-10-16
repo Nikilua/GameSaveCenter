@@ -32,7 +32,8 @@ internal sealed class RemoteBackupStageProjection
         if(task.State==TaskState.Succeeded)
             return new RemoteBackupStageProjection(true,false,100,"下载完成并已校验，等待恢复确认。");
         if(task.State==TaskState.Cancelled)
-            return new RemoteBackupStageProjection(true,false,progress,"远端备份下载已取消；正在确认隔离区清理结果。");
+            return new RemoteBackupStageProjection(true,false,progress,
+                string.IsNullOrWhiteSpace(task.Message)?"远端备份下载已取消；隔离区清理结果请查看任务详情。":task.Message);
 
         var detail=string.IsNullOrWhiteSpace(task.ErrorMessage)?task.Message:task.ErrorMessage;
         return new RemoteBackupStageProjection(true,false,progress,
