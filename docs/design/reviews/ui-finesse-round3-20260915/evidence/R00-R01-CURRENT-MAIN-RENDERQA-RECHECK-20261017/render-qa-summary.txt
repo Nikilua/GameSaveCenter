@@ -1,0 +1,78 @@
+GameSaveCenter render QA report
+Generated: 2026-10-17 01:18:07
+Scenario: render-qa
+EvidenceSource: OffscreenRenderHarness
+Commit: 01efb189488e6d6323d9386f7ff68057c0030cbe
+WorkingTreeClean: False
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: workspace fixtures; scroll probes include 50/400/2000/4468
+
+  Task TaskGrid: size=727x200, rows=8, readableRows=4/4
+  Task TaskGrid: size=787x200, rows=8, readableRows=4/4
+  Task TaskGrid: size=939x200, rows=8, readableRows=4/4
+  Task TaskGrid: size=651x264, rows=8, readableRows=4/4
+  Task TaskGrid: size=821x283, rows=8, readableRows=4/4
+  Task TaskGrid: size=885x357, rows=8, readableRows=6/4
+  Task TaskGrid: size=991x381, rows=8, readableRows=6/4
+  Task TaskGrid: size=1205x501, rows=8, readableRows=8/4
+  Task TaskGrid: size=1333x573, rows=8, readableRows=8/4
+  Task TaskGrid: size=1845x861, rows=8, readableRows=8/4
+  Task TaskGrid: size=3125x1581, rows=8, readableRows=8/4
+  SettingsLayout w=760 h=560 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=159.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=760 h=560 lastTabBottomDip=126 viewportDip=168.67 logicalViewport=3 scrollable=2
+  SettingsLayout w=760 h=560 contentViewport=181.33
+  SettingsLayout w=760 h=700 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=760 h=700 lastTabBottomDip=212.67 viewportDip=308.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=760 h=700 contentViewport=321.33
+  SettingsLayout w=760 h=900 headerH=420 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=760 h=900 lastTabBottomDip=212.67 viewportDip=370.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=760 h=900 contentViewport=383.33
+  SettingsLayout w=880 h=560 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=159.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=880 h=560 lastTabBottomDip=126 viewportDip=168.67 logicalViewport=3 scrollable=2
+  SettingsLayout w=880 h=560 contentViewport=181.33
+  SettingsLayout w=880 h=700 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=880 h=700 lastTabBottomDip=212.67 viewportDip=308.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=880 h=700 contentViewport=321.33
+  SettingsLayout w=880 h=900 headerH=420 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=880 h=900 lastTabBottomDip=212.67 viewportDip=370.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=880 h=900 contentViewport=383.33
+  SettingsLayout w=920 h=560 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=159.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=920 h=560 lastTabBottomDip=126 viewportDip=168.67 logicalViewport=3 scrollable=2
+  SettingsLayout w=920 h=560 contentViewport=181.33
+  SettingsLayout w=920 h=700 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=920 h=700 lastTabBottomDip=212.67 viewportDip=308.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=920 h=700 contentViewport=321.33
+  SettingsLayout w=920 h=900 headerH=420 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=920 h=900 lastTabBottomDip=212.67 viewportDip=370.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=920 h=900 contentViewport=383.33
+  SettingsLayout w=1100 h=560 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=159.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=1100 h=560 lastTabBottomDip=126 viewportDip=168.67 logicalViewport=3 scrollable=2
+  SettingsLayout w=1100 h=560 contentViewport=181.33
+  SettingsLayout w=1100 h=700 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=1100 h=700 lastTabBottomDip=212.67 viewportDip=308.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=1100 h=700 contentViewport=321.33
+  SettingsLayout w=1100 h=900 headerH=404 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=1100 h=900 lastTabBottomDip=212.67 viewportDip=386.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=1100 h=900 contentViewport=399.33
+  SettingsLayout w=1400 h=560 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=159.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=1400 h=560 lastTabBottomDip=126 viewportDip=168.67 logicalViewport=3 scrollable=2
+  SettingsLayout w=1400 h=560 contentViewport=181.33
+  SettingsLayout w=1400 h=700 headerH=282 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=1400 h=700 lastTabBottomDip=212.67 viewportDip=308.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=1400 h=700 contentViewport=321.33
+  SettingsLayout w=1400 h=900 headerH=404 intro=Collapsed tabs=5 tabItems=5 visible=5 minW=171.33 minH=39.33 scroller=ScrollViewer
+  SettingsLayout w=1400 h=900 lastTabBottomDip=212.67 viewportDip=386.67 logicalViewport=5 scrollable=0
+  SettingsLayout w=1400 h=900 contentViewport=399.33
+Settings first-viewport state fixtures (1040x700)
+  SettingsValidationNavigation visible=Visible links=1 selectedCategory=1 fieldVisibility=Visible fieldIsVisible=False fieldFocused=False scrollOffset=0 help=压缩等级必须为 -7–22；zstd 建议使用 3。
+  light/Settings/1040x700 viewport probe done
+  light/Settings/1040x700 OK
+  dark/Settings/1040x700 viewport probe done
+  dark/Settings/1040x700 OK
+  Shell Tasks 1040x700: PageHost=726x573, compact=True, rows=4, queue=726x255, gridScroll=709x200, grid=709x200, inspector=Visible/726x136, filters=Visible
+  Shell Tasks 1100x720: PageHost=786x593, compact=True, rows=4, queue=786x275, gridScroll=769x200, grid=769x200, inspector=Visible/786x136, filters=Visible
+  Shell Tasks 1366x768: PageHost=1052x641, compact=False, rows=4, queue=678x393, gridScroll=661x300, grid=661x300, inspector=Visible/360x393, filters=Visible
+render-qa OK
+PROBLEM count=0

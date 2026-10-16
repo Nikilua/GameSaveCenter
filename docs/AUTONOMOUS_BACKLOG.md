@@ -18,6 +18,12 @@
 
 本次前后已检查近期准入表；除跟进 CI、复核外机 R09 身份材料外，没有确认新的依赖已满足 Q/R 代码缺口。Q24-03 需第二物理屏，R05-03 需 WMI 访问权限，R23-04 需 Playnite/CEF 状态改变，R23-05 的 ETW 系统跟踪权限受拒绝；均不越权绕过。#1052 已终态，下一步重新按 R23-08 当前表项选择依赖已满足的 Q/R，不自创功能。
 
+### 2026-10-17 R00/R01 当前 main Render QA 校正
+
+以当前代码基线 `5c81a070` 的后继文档提交 `01efb189` 运行仓库隔离 SDK `8.0.423` 的 Release RenderHarness build 与完整 `scripts/render-qa.ps1`，报告 `render-qa OK`、`0 PROBLEM`。旧准入表记录的 Task/Settings 13 个布局问题未在当前完整矩阵复现：窄 Settings 的最小主体 viewport `181.33 DIP`，Task 1040×700 为 `4/4` 可读行及可见 Inspector。R00/R01 freshness `14 fresh / 0 stale / 0 source-path matches`、2,919 paths；package identity `not-provided`。详细范围见[R00/R01 当前 Render QA 复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
+
+2026-10-15 静态 audit 的 13 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` warnings 仍单独保留为布局风险；#1053 的 WPF 静态审查通过（30 XAML files，0 errors / 27 warnings / 177 info），但不清除此独立 audit 风险。未发现可据当前 Render QA 新增生产代码改动。#1053/run `38937972835` 对文档提交 `01efb189` 已双 lane 终态成功：[Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38937972835)。SDK8.0.423 job `117098144434` 与 SDK10.0.401 job `117098144743` 均 Release `0/0`、Core125、Worker362、WPF隔离125类通过（含 R09/R21）；SDK8 另 Render QA `0 PROBLEM`、生成 `0.6.73` 扩展包并成功上传包与诊断 artifact，完整日志确认 SDK10 实际为 `10.0.401`。当前外机 R09 `1/2` 仍是真实独立失败，不由本机或 CI 通过覆盖。外机同次诊断目录 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4` 缺于当前工作区；该阶段下一步取其 `summary.json`/TRX（无需重跑），并从 R23-08 最新准入表选择首个依赖已满足的现有 Q/R 项。
+
 ### 2026-10-16 R13-08 失败帮助 CI 收口续跑点
 
 **本阶段已收口：** `R13-08` 复用既有服务、DTO、映射和生产 `MaintenanceView`；只扩展测试。在现有 STA 真实生产页验证已识别认证失败与未知错误码正负行为：帮助文案/可见性、`Expander` 的实际 ExpandCollapse 状态、原始诊断展开与收起。本机 SDK `9.0.302` / VSTest `17.14.1` 定向 Release build 后 `16/16` 通过，source validation 与 diff check 通过。证据和源码/test DLL/PDB/plugin DLL 身份见[R13-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。Actions #1047/run `38916251153` 对提交 `e5b27cde` 终态成功：SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 均通过；两边 Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类通过。SDK8 另完成 Release build、`render-qa OK`、WPF 静态审查、扩展包生成和产物上传。SDK9 定向项目构建与两条 CI SDK 分开记录，不混为一项结果。

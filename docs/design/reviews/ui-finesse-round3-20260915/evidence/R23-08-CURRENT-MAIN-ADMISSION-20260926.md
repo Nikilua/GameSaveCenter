@@ -34,3 +34,11 @@
 | 新代码项 | 用户报告新的可复现缺陷/明确功能范围，或任务账本出现有证据的实现缺口 | 当前 R23-08 无可据以修改产品行为的开放项，不自行发明功能或视觉改动 |
 
 本复核使用只读任务证据与当前桌面拓扑，不访问真实存档、媒体、云端或用户扩展目录，也没有启动 Playnite。后续环境条件或用户新需求到来后，再按启动协议选择下一独立阶段。
+
+### 2026-10-17 当前 main Render QA 复核补记
+
+在源码未变的代码基线 `5c81a07056d64482767d546efe043012abc1e6fc` 上，以文档提交 `01efb189488e6d6323d9386f7ff68057c0030cbe` 执行当前 RenderHarness：仓库隔离 SDK `8.0.423`，Release build 与 Harness 均成功，完整报告 `render-qa OK` 且 `0 PROBLEM`。这一轮实测没有复现本准入记录中遗留的 Task/Settings 短窗布局问题，不能把 2026-09-26 的 13 项描述继续当作当前缺陷；此前 2026-09-30 全量报告已为 clean，本次是最新 main 的重新确认。
+
+SettingsLayout probe 覆盖 760/880/920/1100/1400 DIP 宽度与 560/700/900 DIP 高度，共 15 个尺寸案例、45 行头部/分类/body 几何读数；5 个分类均可测，末分类可滚动到达，宽度不超过 920 DIP 时最低主体 viewport `181.33 DIP`，高于 Harness `160 DIP` 门槛。完整 Render QA 另覆盖 Light/Dark。Task Center 的 1040×700 DIP shell geometry 为 `4/4` 可读行、`200 DIP` 表格 viewport、Inspector 可见。R00/R01 freshness 为 `14 fresh / 0 stale / 0 matched source paths / 2,919 compared paths`，package identity 未提供。详细摘要见 [R00/R01 current-main Render QA 证据](R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
+
+这仅是本机离屏逻辑 DIP 和合成数据验证，未运行 Playnite、物理 DPI/跨屏或最终呈现帧。2026-10-15 静态 audit 的 `13 MEDIUM TOOLBAR_VERTICAL_EXPANSION` 仍单独保留为布局风险；本次 Render QA 不会自动清除这些警告。当前没有由这次复核支持的新增产品代码改动；R23-08 的后续代码准入仍要求新发现可复现问题或明确用户需求。
