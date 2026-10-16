@@ -142,6 +142,17 @@ public sealed class R13CloudTransferStageBehaviorTests
                 Assert.Equal("当前筛选 0/8 项", DashboardViewModel.FormatCloudTransferScopeSummary(
                     true, new CloudTransferSummaryDto { TotalCount = 0, GlobalTotalCount = 8 }));
 
+                var unknownFailure = new CloudTransferStatusDto
+                {
+                    TransferKey = "Backup:synthetic-unknown",
+                    GameName = "合成未知错误游戏",
+                    State = "Failed",
+                    LastErrorCode = "RCLONE_PROVIDER_NEW_FAILURE",
+                    LastError = "合成提供方返回了未分类错误"
+                };
+                context.CloudTransferItems.Add(unknownFailure);
+                PumpLayout(window);
+
                 grid.ScrollIntoView(uploaded);
                 grid.SelectedItem = uploaded;
                 PumpLayout(window);
@@ -212,6 +223,49 @@ public sealed class R13CloudTransferStageBehaviorTests
                 Assert.Same(authentication, context.SelectedCloudTransfer);
                 Assert.Equal(string.Empty, authentication.NetworkRecoveryDisplay);
                 Assert.Equal(string.Empty, networkRecovery.Text);
+
+                var failureCategory = FindInspectorText(page, "SelectedCloudTransfer.FailureCategoryDisplay");
+                var failureNextStep = FindInspectorText(page, "SelectedCloudTransfer.FailureNextStepDisplay");
+                var failureHelpPanel = FindVisualAncestor<Border>(failureNextStep);
+                Assert.NotNull(failureHelpPanel);
+                Assert.Equal(Visibility.Visible, failureHelpPanel!.Visibility);
+                Assert.Equal("认证失败", failureCategory.Text);
+                Assert.Equal("下一步：前往设置检查云端凭据并重新验证远端，然后再重试。", failureNextStep.Text);
+
+                var rawCode = FindInspectorText(page, "SelectedCloudTransfer.LastErrorCode");
+                var rawError = FindInspectorText(page, "SelectedCloudTransfer.LastError");
+                var expanderPeer = System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(diagnosticExpander);
+                Assert.NotNull(expanderPeer);
+                var disclosure = Assert.IsAssignableFrom<System.Windows.Automation.Provider.IExpandCollapseProvider>(
+                    expanderPeer!.GetPattern(System.Windows.Automation.Peers.PatternInterface.ExpandCollapse));
+                disclosure.Collapse();
+                PumpLayout(window);
+                Assert.False(diagnosticExpander.IsExpanded);
+                Assert.False(rawCode.IsVisible);
+
+                disclosure.Expand();
+                PumpLayout(window);
+                Assert.True(diagnosticExpander.IsExpanded);
+                Assert.Equal("RCLONE_AUTH_FAILED", rawCode.Text);
+                Assert.Equal("合成认证失败", rawError.Text);
+                Assert.True(rawCode.IsVisible);
+
+                grid.ScrollIntoView(unknownFailure);
+                grid.SelectedItem = unknownFailure;
+                PumpLayout(window);
+
+                Assert.Same(unknownFailure, context.SelectedCloudTransfer);
+                Assert.Equal(Visibility.Collapsed, failureHelpPanel.Visibility);
+                Assert.Equal(string.Empty, failureCategory.Text);
+                Assert.Equal(string.Empty, failureNextStep.Text);
+                Assert.Equal("RCLONE_PROVIDER_NEW_FAILURE", rawCode.Text);
+                Assert.Equal("合成提供方返回了未分类错误", rawError.Text);
+                Assert.True(rawCode.IsVisible);
+
+                disclosure.Collapse();
+                PumpLayout(window);
+                Assert.False(diagnosticExpander.IsExpanded);
+                Assert.False(rawCode.IsVisible);
 
                 grid.ScrollIntoView(retry);
                 grid.SelectedItem = retry;
@@ -294,7 +348,7 @@ public sealed class R13CloudTransferStageBehaviorTests
     }
 
     [Fact]
-    public void MaintenanceInspectorSeparatesKnownFailureHelpFromRawDiagnostics()
+    public void MaintenanceInspectorFailureHelpSourceHooksRemainWired()
     {
         var root = TestRepositoryContext.Root;
         var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
@@ -502,6 +556,19 @@ public sealed class R13CloudTransferStageBehaviorTests
         window.UpdateLayout();
         window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
         window.UpdateLayout();
+    }
+
+    private static T? FindVisualAncestor<T>(DependencyObject descendant)
+        where T : DependencyObject
+    {
+        for (DependencyObject? current = System.Windows.Media.VisualTreeHelper.GetParent(descendant);
+             current != null;
+             current = System.Windows.Media.VisualTreeHelper.GetParent(current))
+        {
+            if (current is T match) return match;
+        }
+
+        return null;
     }
 
     private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root)

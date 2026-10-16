@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；分支 `main`，已推送 HEAD `33b9d23f73b05d18b703959a5106b34b2fb662f9`。R13-07 生产页筛选、分页追加与选中恢复复核见[R13-07 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。待提交的小批只修复旧源码形状断言：改为检查生产 helper 接线；实际选择与分页语义由 R13-07 WPF 行为测试验证。
+更新：2026-10-16；分支 `main`，当前已推送 HEAD `e30a29767a903cfe42d16885dc5ed15c3885f05c`。R13-07 源码断言校正对应 #1046/run `38902753483`，SDK8/SDK10.0.401 两条 lane 均终态成功；当前 R13-08 只修改测试，在生产 MaintenanceView 中补已识别/未知失败帮助和原始诊断展开行为，本机 SDK9 定向 `16/16` 通过，证据见[R13-08 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。本次行为补证尚未提交/推送，不能借用 #1046 的父提交 CI 作为其门禁。
 
 Actions #1045/run `38897153757` 对 `33b9d23f` 的 SDK10 job `116960249686` 和 SDK8 job `116960249845` 均因 `WorkspaceStateSourceTests` 查找已移除变量名失败（443/462 通过、1 失败、18 跳过）；完整日志已取得，见[CI 校正记录](design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。本机只安装 SDK9.0.302，仓库锁定 SDK8.0.423 不可用；首次尝试因 MSB4276 在项目引用阶段终止，随后关闭 Workload resolver 并在全新隔离输出运行 `WorkspaceStateSourceTests 9/1/0`（通过/跳过/失败）。这是定向测试，不代表完整 Playnite source group，也不替代 SDK8/SDK10 CI。修正后源码校验和 `git diff --check` 通过，R00/R01 freshness `14/14 FRESH / 0 STALE / 0 matched source paths`。#1044/run `38894241925` 针对旧提交 `ea1e1aea` 已双 SDK 全 job 成功，且不含 R13-07 新代码。
 
-外机 R09 最新一键日志确以 exit 1 结束，目标测试期望 `2 DIP`、实际 `1 DIP`；日志发现 116 个 WPF 类，而当前 main 隔离清单 124 类。当前源码第 154 行的 `ValidationStroke` 厚度断言与历史第 151 行 Chrome 厚度断言都能产生相同数值，缺同次 HEAD/status/source/DLL/PDB 时不能只凭行号和值归属到其中一条。发现数不一致证明测试发现结果不同，具体 checkout/程序集/符号原因未定。本机先前 R09 定向通过不能替代外机失败。没有改生产模板或放宽断言。`.tmp/r13-07-sdk9-ci-failure-repro-20261016` 已清理，其他任务未跟踪文件保留。下一步提交并推送源码断言校正，监控新 Actions 两条 SDK lane 到终态；成功后按账本复核已满足 R13-08，再推进下一未完成 Q/R。真实 Playnite/package-host、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+外机 R09 的一键流程实际 exit `1`，Core `125/125`、Worker `357/357`，R09 `1/2`。该日志 stack line151 映射 `Thickness(2)` / `Thickness(1)`；当前源码 line151 是 Brush 颜色断言，不可能产生 Thickness，历史 `3f7d0b30` 的 line151 是旧 Chrome `2 DIP` 断言。由此确认运行代码或符号映射与当前测试源不一致，但缺同次 diagnostics `summary.json`、TRX、HEAD/status、DLL/PDB/plugin DLL identity，仍不能区分旧测试程序集、旧 PDB、checkout 或脚本输入。本机和父提交 CI 的 R09 通过都不代表外机成功。具体事实见[R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)；缺失的外机 summary 不阻塞独立主线工作。
 
 ## 2026-10-15 R12-03 当前 main 行为复核
 
@@ -145,16 +145,16 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 
 ## 下一项如何开始
 
-1. 保持 `main`；保留其他任务的 R04/R05/R07 未跟踪 TRX 和证据，不把它们并入本阶段。
-2. R08 fixture 修正已经 push；#960 run `38327521241` 最新公开页面显示 `In progress`，与之前终态失败记录冲突，日志与 CI SDK不可见。R00/R01 校正 #954 的完整日志已归档，确认失败在旧 R07 初始 `IsVisible` 断言，未记录实际几何值；#954 不指向 R00/R01 问题。用户指定的 #919/#920 SDK `10.0.401` 日志已在证据包归档并核验 SHA，绑定旧源码。
-3. R06-05 当前 main 本机复核已完成：Release `0/0`、XAML `24/24`、行为 `2/2`，当前源码长表头换行、双向排序和四页双主题代表图见证据包；其 #961 页面仍为 `In progress`，不能收口。
-4. R06-06 当前 main 本机复核为 Release `0/0`、XAML `24/24`、逐类隔离行为 `43/43`，详见本轮复核包。证据/账本文档已准备提交；推送后跟踪新 Actions 到终态。随后复核已实现的 R06-07，不重建已有功能。
-5. 真实 Playnite、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍独立待验；R05-07/R06-04 需当前远端门禁覆盖，R02-06 仍需 ENV-001 条件解除。
-6. 本机临时输出尚未清理：已确认绝对路径均在仓库的 `.tmp/` 或 `artifacts/build-diagnostics/`，被 `.gitignore` 忽略且无已跟踪文件；执行器安全策略拒绝 `Remove-Item -LiteralPath -Recurse -Force`，没有改用其他删除方式。以下四个生成目录仍存在、不可提交：`.tmp/r06-05-main-20261013`、`.tmp/r06-05-render-current-20261013`、`artifacts/build-diagnostics/20261013T005136220Z-e660c089`、`.tmp/r08-postcommit-d60e472d`。
+1. 保持 `main`；保留其他任务的 R04/R05/R07 未跟踪文件，显式暂存本阶段的代码/证据/文档路径，不能 `git add .`。
+2. 收口 R13-08：本机 SDK `9.0.302` 定向 Release build 后行为类 `16/16`；`validate-source.py` 和 `git diff --check` 已通过。提交前归档成功 TRX/哈希并清理本阶段生成、且未被证据引用的 `.tmp` 和失败 TRX。
+3. 按中文历史风格提交并 push `main`。通过 GitHub 插件查新 Actions，SDK `8.0.423` 和 `10.0.401` 分别追踪到明确终态；CI 运行中不得签收。若失败，先取得完整 job log，再按实际报错复现和修改。
+4. R13-08 CI 关闭后按账本尝试 R05-03 的 fail-closed 隔离宿主预检；若 ENV-001 前置仍拒绝，不绕过权限，记录限制并转另一个依赖满足的 Q/R。
+5. 外机 R09 已证实运行代码/符号行映射与当前测试源不一致，但具体是旧测试 DLL、PDB、checkout 或实际脚本尚待同次 `summary.json`/TRX/哈希。等待用户能提供时再定位，不暂停其它独立工作。
+6. 保留真实 Playnite/package-host、OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能等未验边界；Demo 原目录缺失时沿用恢复生产基线。
 
 ## 验证边界
 
-本轮没有启动真实Playnite、改变Windows动画偏好、安装到用户Extensions或触及真实存档/媒体/云端；没有验证物理DPI/读屏/最终呈现帧。SDK8本机与SDK10 CI分别记录。测试期间只终止已核对命令行归属本轮隔离目录的测试进程；被终止的运行不记为通过。
+R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真实 Playnite、连接真实云端、触碰存档/媒体或安装用户 Extensions。本机 SDK9 不是 SDK8 或 SDK10.0.401 CI 替代；R13-08 新改动的新 CI 尚待追踪。没有验证真实 UIA/读屏/IME、物理 DPI/跨屏或最终呈现帧。
 
 每独立阶段编译、测试、同步文档并commit/push当前main。历史d57a613f包的clean构建/IPC/结构及六个程序集身份已记录，未安装；不能签收当前源码。当前freshness6/8，baseline未改，完整SDK/CI门禁仍受Q14阻塞。本地包不冒称稳定发布，当前阶段中间产物归档后按仓库规则清理。
 

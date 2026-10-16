@@ -8,11 +8,11 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
-### 2026-10-16 R11-08 行为补证当前续跑点
+### 2026-10-16 R13-08 失败帮助行为补证当前续跑点
 
-**当前阶段：** `R11-08` 日期范围/历史跳转。保留既有 DTO、日期范围 helper、CollectionView 和生产命令；本机 SDK9.0.302 Release net462/net472 项目与引用构建通过，行为类 `6/6`，覆盖本地日期、DST 跳时/重叠小时、清空恢复全部、真实 SaveCenterView 筛选和最近/较早跳转。代码已推送到 `main`：`5157d8719110514aec857f2c0397ec4943b926e4`；脱敏 TRX、源/程序集/PDB SHA 见 [R11-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。旧 #1040 对 `964f325d` 双 SDK成功，但不含本轮改动；当前 push run ID/终态尚未取到，不签收 CI。本机 SDK9 不代替 CI SDK8/10.0.401。
+**当前阶段：** `R13-08` 失败分类帮助。复用既有服务、DTO、映射和生产 `MaintenanceView`；只扩展测试。在现有 STA 真实生产页中加入已识别认证失败与未知错误码正负行为：帮助文案/可见性、`Expander` 的实际 ExpandCollapse 状态、原始诊断展开与收起均有断言。本机 SDK `9.0.302` / VSTest `17.14.1` 的 Playnite `net462/net472` 定向 Release build 后 `16/16` 通过，source validation 与 diff check 通过；成功 TRX、源码/test DLL/PDB/plugin DLL 哈希和范围见[R13-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。这是 SDK9 定向项目验证，不是完整 solution build。Actions #1046/run `38902753483` 的 SDK8.0.423/SDK10.0.401 双 lane 验证父提交 `e30a2976`，不含本次测试更改；提交推送后必须追踪新两 lane 到明确终态。
 
-当前 source HEAD `5157d871` 的 R00/R01 freshness 为 `14/14 fresh / 0 stale / 0 source-path matches`，2,883 paths；package identity 未提供。R00-07 audit 摘要已校正为 168 snapshots/116 warnings/0 HIGH/13 MEDIUM，13 条工具栏自然换行风险仍开。R11-08 Actions #1041/run `38885898033` 已定位：SDK10.0.401 job `116923431523` 成功，SDK8 job `116923431709` 最近已到扩展包生成、仍运行；当前文档提交 #1042/run `38888296980` 两条 SDK job 在最近查询仍运行，因此不签收 R11-08 CI。独立 Q/R 按已有能力继续至 R13-06；R13-05 当前 main 与成功双 SDK Actions #1040 的相关源码一致，见[复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。真实 Playnite、物理呈现、ETW/宿主性能等未验边界保留。
+R00/R01 对本次唯一测试文件的显式 freshness 复核仍为 `14/14 fresh / 0 stale / 0 source-path matches`；package identity 未提供。R00-07 最近 audit 仍 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，13 条 toolbar wrap 风险保持打开，本轮未重跑 audit。外机 R09 一键流程确实 exit `1`：Core `125/125`、Worker `357/357`，R09 `1/2`。其 line151 映射到 `Thickness(2)`，但当前源 line151 是 Brush 颜色比较，历史 `3f7d0b30` line151 是旧 Chrome `2 DIP` 断言；由此可确认测试源/符号映射不与当前源匹配，尚不能区分旧 DLL/PDB/checkout/脚本输入。该外机失败不由本机或当前 HEAD CI 通过抵消，等待同次 diagnostics `summary.json` / TRX / DLL-PDB 身份期间不阻塞主线。R13-08 CI 收口后先尝试 R05-03 fail-closed 隔离宿主预检；若 ENV-001 仍阻塞，则记录具体门禁并转另一个依赖已满足的 Q/R。Demo 原目录不可用时继续用恢复生产基线；真实 Playnite/package-host、UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
 
 ### 2026-10-16 R13-04 当前续跑点（历史快照）
 

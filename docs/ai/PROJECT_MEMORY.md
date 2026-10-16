@@ -1,10 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；`main` 已推送 HEAD `33b9d23f73b05d18b703959a5106b34b2fb662f9`。R13-07 定向实现/行为测试此前在本机 SDK9.0.302 下为 Playnite `16/16`、Worker `14/14`；完整 GitHub run #1045 在 SDK10.0.401 和 SDK8.0.423 两条 lane 都发现 `WorkspaceStateSourceTests` 还匹配旧源码变量名（443/462 通过，1失败，18跳过）。校正只改源码接线测试，分页选择行为由 R13-07 行为测试覆盖。两份 CI 完整日志已读，详细见[校正证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。
+更新：2026-10-16；`main` 已推送 HEAD `e30a29767a903cfe42d16885dc5ed15c3885f05c`。修正后的 Actions #1046/run `38902753483` 双 SDK lane 终态成功：SDK8.0.423 job `116978745271`、SDK10.0.401 job `116978744884`；Core `125/125`、Worker `362/362`、Playnite source `107` 类与 WPF `125` 类全通过。SDK8 另完成 Render QA、WPF 静态审查、自包含 Worker 发布与 Playnite 扩展包。详情见[校正证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。
 
-本机只装 SDK `9.0.302`，仓库锁定 SDK `8.0.423` 不可用。首次定向测试尝试因 MSB4276 在项目引用阶段终止；按仓库构建配置关闭 Workload resolver 后，在全新隔离输出重跑 `WorkspaceStateSourceTests` 为 `9 passed / 1 skipped / 0 failed`。这是 SDK9 定向项目验证，不是完整 Playnite source group，不能替代双 SDK CI。校正提交的新 Actions 待查到双 SDK 终态。旧 run #1044 针对 `ea1e1aea`，SDK10.0.401 与 SDK8.0.423 的全部 job/步骤现已终态成功；它不含 R13-07 代码。
+本机仅装 SDK `9.0.302`；关闭 Workload resolver 的隔离 SDK9 `WorkspaceStateSourceTests` 定向结果为 `9 passed / 1 skipped / 0 failed`，它不是完整 suite；当前双 SDK CI 才完成校正提交自动化门禁。R00/R01 freshness 在 e30a2976 为 `14/14 FRESH / 0 STALE / 0 matched source paths`、比较 `2,907` 条路径、package `not-provided`，没有因此重跑行为或宿主场景。
 
-用户最新一键日志确认外机这次 R09 实际失败并以 exit 1 结束，测试发现 116 个 WPF 类；当前 main 的隔离清单为 124 类。当前 line 154 的 `ValidationStroke` 厚度断言与历史 line 151 的 Chrome 厚度断言都可能产生 `Expected 2 / Actual 1`，所以没有同次源/DLL/PDB 身份时不能仅凭行号和值断定具体哪条断言执行。发现数不一致证明两次测试发现结果不同，但具体 checkout/程序集/符号原因仍未知。此前本机 R09 `2/2` 不能代替外机复核。外机同次 HEAD/status/source/DLL/PDB 身份未取得。之后按 ROUND3_PROGRESS 复核已满足 R13-08，再推进下一个未完成 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
+用户另一台机器的一键日志确实以 exit 1 结束：Core `125/125`、Worker `357/357`，R09 焦点行为 `1/2`，期望 `2 DIP`、实际 `1 DIP`；其 source/WPF 类数 `111/116`，当前完整 CI `107/125`。当前测试源 line 151 是 Brush 颜色断言，不可能产生 Thickness 值；历史 `3f7d0b30` 的 line 151 正是旧 Chrome `2 DIP` 断言，当前 `ValidationStroke 2 DIP` 在 line 154。由此能确认失败代码/符号行映射与当前测试源不一致，不能据此确定旧测试 DLL、旧 PDB、checkout 或脚本输入是哪一项。一次安装脚本默认随机隔离输出目录可降低 bin/obj 复用风险，但不证明外机运行了当前脚本。CI R09 通过不能代替外机复现；需要同次 diagnostics `summary.json` / TRX / DLL-PDB identity。R13-08 另新增生产 `MaintenanceView` 已识别/未知帮助与原始诊断实际展开收起行为，本机 SDK9 `16/16`，新提交 CI 待推送追踪。之后尝试 R05-03 fail-closed 隔离宿主预检；真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 
@@ -63,7 +63,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。本地 main `ad2e6716` 比 origin ahead 1，R13-03 当前 SDK8 行为补证已完成；同一新隔离 DLL 上 R09 类 `2/2`、R13 类 `14/14`。完整本机 Playnite 扫描因 R05 fixture 读取系统指针返回 Win32 error 5 停在 `45/124`，不能记全量成功；无权限绕过，也未尝试移动指针。旧 Actions #1037 的两个 SDK jobs 成功但只验证 `09173448`，本地提交推送后必须查新 Actions 到终态。用户外机 R09 日志没有 source/DLL/PDB identity，WPF 类数 `116` 与当前 `124` 不同、line151映射不一致，根因仍未确认；下次如重现，需获取同次 diagnostics summary、HEAD/工作树、源片段、DLL/PDB SHA。R00/R01 freshness `14 fresh / 0 stale / 0 source matches`，package identity 未提供。下一项 R13-04。真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。e30a2976 已推送且 #1046 双 SDK 全流程成功；本机 SDK9 定向结果仍与 SDK8/SDK10 分开记录。外机 R09 一键日志以 exit 1 结束，WPF 类数 `116` 对当前 CI `125`，line151 映射不一致；没有同次 diagnostics summary、HEAD/工作树、测试源与 DLL/PDB SHA，根因仍未确认。R00/R01 freshness 已在 e30a2976 复核为 `14 fresh / 0 stale / 0 source matches`，package identity 未提供。下一步复核 R13-08 当前行为证据，随后按 R05-03 fail-closed 预检及实时环境条件选下一项；不绕过 ENV-001 被拒权限。真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

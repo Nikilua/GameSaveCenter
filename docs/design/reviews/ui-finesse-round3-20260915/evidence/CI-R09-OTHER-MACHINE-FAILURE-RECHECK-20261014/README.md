@@ -197,3 +197,9 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 不能只凭 `Expected 2 / Actual 1` 与堆栈 line 151 确认它运行了历史 Chrome 厚度断言：历史测试 line 151 曾要求 Chrome `2 DIP`；当前测试 line 154 也要求独立 `ValidationStroke` 为 `2 DIP`，若 PDB/source 不同样可能映射到别的行。当前 main 的 WPF 隔离类数为 `124`，与日志的 `116` 不同，表明两次发现结果不同，但根因可能涉及 checkout、测试程序集、插件程序集或符号映射，当前没有证据区分。本机当前 main 的 R09 `2/2` 不能抵消外机实际失败，也不证明外机运行的是相同程序集。
 
 后续定位需使用失败同次 `summary.json` 的 sourceCommit/dirtyPaths/sourceFiles/assemblies，加上 R09 TRX 与实际 DLL/PDB/plugin DLL SHA。已在上方保留用户机器读取这些文件的命令；没有要求用户马上操作，主线修正继续推进。
+
+## 2026-10-16 对堆栈行映射的进一步校正
+
+重新逐行比较附件与 Git 历史后，可以更明确地判断失败映射：当前 main 测试源第 151 行比较 Brush 颜色，不可能抛出 `Thickness(2)` 对 `Thickness(1)`；历史提交 `3f7d0b30` 的第 151 行则正是 `Assert.Equal(new Thickness(2), errorChrome.BorderThickness)`。当前独立 `ValidationStroke` 厚度断言在第 154 行。因此，这条外机堆栈不可能同时对应“当前测试源 + 与之匹配的 PDB”。它指向旧测试源/程序集，或当前测试代码与旧 PDB 等符号文件错配；现有日志仍不能区分两者，也不能确认实际加载的插件资源 DLL。
+
+这比“line 151 也可能映射到当前 `ValidationStroke` 断言”更准确。此前同文中这类不确定表述以本节为准。用户日志报告的失败仍是真实失败：Core、Worker 通过不改变 R09 的 1/2 和总流程 exit 1。当前 main 的本机/CI 通过只验证各自编译输入；不能宣称外机已成功。外机 diagnostics `summary.json` 的 sourceCommit、dirtyPaths、sourceFiles、assemblies 和同次 R09 TRX/DLL/PDB 哈希仍是确定是哪一类构建错配所需的证据。

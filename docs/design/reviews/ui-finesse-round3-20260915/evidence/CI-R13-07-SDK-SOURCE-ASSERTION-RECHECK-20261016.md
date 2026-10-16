@@ -18,6 +18,16 @@
 
 本轮修正后的 `python scripts/validate-source.py` 通过，`git diff --check` 通过。对修改的 `WorkspaceStateSourceTests.cs` 运行 R00/R01 freshness 后为 `14/14 FRESH / 0 STALE / 0 matched source paths`，`packageIdentityStatus=not-provided`。本机结果只证明该源码接线测试在 SDK9 定向执行成功，不覆盖完整 Playnite source group、WPF behavior suite 或 SDK8/10；推送提交的两个 SDK lane 必须到终态后才能签收，如再失败先取得完整日志再定位。
 
+## 校正提交的完整 CI 收口
+
+修正提交 `e30a29767a903cfe42d16885dc5ed15c3885f05c` 对应 Actions [#1046 / run `38902753483`](https://github.com/Nikilua/GameSaveCenter/actions/runs/38902753483) 已终态成功：
+
+- SDK `8.0.423` job `116978745271` 成功。完整 Release 编译/测试显示 Core `125/125`、Worker `362/362`；Playnite 隔离入口 `source classes 107 / WPF classes 125`，全部类通过，其中 R09 焦点行为类位于第 `68/125` 类。离屏 `render-qa OK`、WPF 静态审查、Playnite 扩展包生成、自包含 Worker 发布、上传与诊断归档步骤均成功。
+- SDK `10.0.401` job `116978744884` 成功。Core `125/125`、Worker `362/362`；Playnite 同样为 `107` 个 source 类与 `125` 个 WPF 类，日志确认所有 Playnite 测试类通过。
+- SDK8 打包脚本会再次构建并执行测试；这次打包阶段的复建/测试也通过，最终生成 `GameSaveCenter-0.6.73-playnite.zip` 与 `GameSaveCenter-0.6.73.pext`。这些 CI 包在 GitHub runner 上生成，不是用户机安装验证。
+
+这两条 CI lane 关闭了校正后源码测试的 SDK 门禁，也证明当前提交的 R09 测试在两种 CI SDK 下通过；它们不等于另一台机器的 R09 失败已定位或消失。
+
 ## 边界和下一步
 
-仍未取得用户另一台机器的 R09 同次 HEAD/status、测试源、DLL/PDB 与 plugin DLL 身份；该失败的真实输入根因未确认。本轮 CI 的源码测试失败与那台机器的 R09 失败是不同问题。下一步提交此断言校正并监控新 Actions；R13-07 只有新 run 两条 lane 均成功后才收口。之后按账本核对已满足的 R13-08 证据，推进下一个未完成 Q/R 项。
+用户另一台机器的日志确认 R09 `1/2`、总流程 exit `1`。line 151 映射到 `Thickness(2/1)`，而当前测试源 line 151 是 Brush 颜色比较、历史 `3f7d0b30` line 151 才是 Chrome 厚度断言；因此外机测试代码或 PDB 行映射与当前源不匹配，具体是旧测试 DLL、PDB、checkout 还是脚本输入待同次 summary/TRX/程序集身份确认。本机和 #1046 父提交 CI 通过不覆盖外机失败。R13-08 真实生产 MaintenanceView 的已知/未知帮助与诊断展开行为补证见[R13-08 复核包](R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)；提交推送后必须监控两条新 SDK Actions 到终态。真实 Playnite/package-host、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW 和宿主性能仍待验。
