@@ -166,6 +166,12 @@ public sealed class R21KeyboardNavigationTraceTests
         var retryActionEnabled = false;
         var cancelActionEnabled = true;
         var retryCommandStayedBound = false;
+        var loadMoreCommandStayedBound = false;
+        var loadMoreIsVisible = false;
+        var loadMoreReachedForward = false;
+        var loadMoreReachedReverse = false;
+        var loadMoreTraceIndex = -1;
+        var taskGridTraceIndex = -1;
         var focusStops = string.Empty;
 
         RunSta(() =>
@@ -208,7 +214,7 @@ public sealed class R21KeyboardNavigationTraceTests
                 ErrorCode = "E_KEYBOARD_SAMPLE",
                 ErrorMessage = "仅用于任务中心焦点顺序复核的合成错误详情。"
             };
-            var fixture = new TaskKeyboardFixture(new[] { succeeded, running, failed }, failed);
+            var fixture = new TaskKeyboardFixture(new[] { succeeded, running, failed }, failed, hasMoreHistory: true);
             var view = new TaskCenterView { DataContext = fixture };
             using var host = new TraceHost(view, 1280, 760);
             view.ApplyResponsiveLayout(1280, 760);
@@ -225,9 +231,12 @@ public sealed class R21KeyboardNavigationTraceTests
             visibleRowCount = grid.Items.Count;
             var retryButton = FindNamedButton(view, "安全重试任务");
             var cancelButton = FindNamedButton(view, "取消任务");
+            var loadMoreButton = FindTaskLoadMoreButton(view);
             retryActionEnabled = retryButton.IsEnabled;
             cancelActionEnabled = cancelButton.IsEnabled;
             retryCommandStayedBound = ReferenceEquals(retryButton.Command, fixture.RetryTaskCommand);
+            loadMoreCommandStayedBound = ReferenceEquals(loadMoreButton.Command, fixture.LoadMoreTasksCommand);
+            loadMoreIsVisible = loadMoreButton.IsVisible;
             detailText = string.Join(" ", EnumerateElements(view)
                 .OfType<TextBlock>()
                 .Select(text => text.Text));
@@ -248,8 +257,13 @@ public sealed class R21KeyboardNavigationTraceTests
                 "搜索任务", "任务状态筛选", "任务列表", "任务可选择技术详情", "安全重试任务"
             });
             trace = TraceEntry(entry, host);
+            loadMoreReachedForward = trace.Forward.Any(stop => ReferenceEquals(stop.Target, loadMoreButton));
+            loadMoreReachedReverse = trace.Reverse.Any(stop => ReferenceEquals(stop.Target, loadMoreButton));
             if (!trace.VisibleInteractiveTargets.Any(target => ReferenceEquals(target.Target, grid)))
                 trace.VisibleInteractiveTargets.Add(new InteractiveTarget(grid, "任务列表"));
+            var forwardTargets = GetInteractiveTrace(trace, trace.Forward);
+            loadMoreTraceIndex = forwardTargets.FindIndex(target => ReferenceEquals(target.Target, loadMoreButton));
+            taskGridTraceIndex = forwardTargets.FindIndex(target => ReferenceEquals(target.Target, grid));
             selectedCellWasReached = selectedCell != null
                 && trace.Forward.Any(stop => ReferenceEquals(stop.Target, selectedCell));
             selectedCellWasReachedReverse = selectedCell != null
@@ -266,6 +280,12 @@ public sealed class R21KeyboardNavigationTraceTests
         Assert.True(retryActionEnabled, "the failed task keeps its retry action available");
         Assert.False(cancelActionEnabled, "a terminal failed task must not expose cancellation as an enabled action");
         Assert.True(retryCommandStayedBound, "the inspector retry button must retain its bound command");
+        Assert.True(loadMoreIsVisible, "available task history must reveal the load-more action");
+        Assert.True(loadMoreCommandStayedBound, "the visible load-more action must retain its bound command");
+        Assert.True(loadMoreReachedForward, "Tab must reach the load-more action");
+        Assert.True(loadMoreReachedReverse, "Shift+Tab must reach the load-more action");
+        Assert.True(loadMoreTraceIndex >= 0 && taskGridTraceIndex > loadMoreTraceIndex,
+            "the load-more action must precede the task grid in forward order");
         Assert.True(selectedCellWasReached, "Tab must reach a cell in the selected task row; stops=[" + focusStops + "]");
         Assert.True(selectedCellWasReachedReverse, "Shift+Tab must reach a cell in the selected task row; stops=[" + focusStops + "]");
         Assert.All(trace!.Forward.Concat(trace.Reverse), stop =>
@@ -310,6 +330,61 @@ public sealed class R21KeyboardNavigationTraceTests
             cancelActionEnabled,
             selectedCellWasReached && selectedCellWasReachedReverse);
     }
+
+    [Fact]
+    public void LoadMoreButtonIsNotKeyboardReachableWhenTaskHistoryIsExhausted()
+    {
+        EntryTrace? trace = null;
+        Button? loadMoreButton = null;
+        var buttonIsCollapsed = false;
+        var commandStayedBound = false;
+        var reachedForward = false;
+        var reachedReverse = false;
+
+        RunSta(() =>
+        {
+            var failed = new TaskStatusDto
+            {
+                TaskId = "keyboard-exhausted-history",
+                TaskType = "Validation",
+                GameId = "synthetic-game-exhausted",
+                GameName = "合成任务",
+                State = TaskState.Failed,
+                ProgressPercent = 100,
+                CreatedUtc = DateTime.UtcNow.AddMinutes(-1),
+                ErrorCode = "E_KEYBOARD_HISTORY_END",
+                ErrorMessage = "用于键盘可达性负例的合成失败详情。"
+            };
+            var fixture = new TaskKeyboardFixture(new[] { failed }, failed, hasMoreHistory: false);
+            var view = new TaskCenterView { DataContext = fixture };
+            using var host = new TraceHost(view, 1280, 760);
+            view.ApplyResponsiveLayout(1280, 760);
+            host.Pump();
+
+            loadMoreButton = FindTaskLoadMoreButton(view);
+            buttonIsCollapsed = loadMoreButton.Visibility == Visibility.Collapsed && !loadMoreButton.IsVisible;
+            commandStayedBound = ReferenceEquals(loadMoreButton.Command, fixture.LoadMoreTasksCommand);
+            trace = TraceEntry(new EntrySpec("TaskCenter exhausted history", () => view, new[]
+            {
+                "搜索任务", "任务状态筛选", "任务列表", "安全重试任务"
+            }), host);
+            reachedForward = trace.Forward.Any(stop => ReferenceEquals(stop.Target, loadMoreButton));
+            reachedReverse = trace.Reverse.Any(stop => ReferenceEquals(stop.Target, loadMoreButton));
+        });
+
+        Assert.True(buttonIsCollapsed, "exhausted history must keep the load-more action collapsed");
+        Assert.True(commandStayedBound, "collapsing the action must not detach its existing command binding");
+        Assert.NotNull(trace);
+        Assert.False(reachedForward, "Tab must not reach a collapsed load-more action");
+        Assert.False(reachedReverse, "Shift+Tab must not reach a collapsed load-more action");
+        Assert.DoesNotContain(trace!.VisibleInteractiveTargets, target => ReferenceEquals(target.Target, loadMoreButton));
+        Assert.All(trace.Forward.Concat(trace.Reverse), stop =>
+            Assert.True(stop.IsInsideEntry, "focus escaped the TaskCenter host at " + stop.AutomationName));
+    }
+
+    private static Button FindTaskLoadMoreButton(FrameworkElement root)
+        => Assert.Single(EnumerateElements(root).OfType<Button>(), button =>
+            string.Equals(button.Content?.ToString(), "加载更多", StringComparison.Ordinal));
 
     private static void AssertInOrder(
         IReadOnlyList<InteractiveTarget> trace,
@@ -584,10 +659,11 @@ public sealed class R21KeyboardNavigationTraceTests
     {
         private TaskStatusDto? selectedTask;
 
-        public TaskKeyboardFixture(IEnumerable<TaskStatusDto> tasks, TaskStatusDto selectedTask)
+        public TaskKeyboardFixture(IEnumerable<TaskStatusDto> tasks, TaskStatusDto selectedTask, bool hasMoreHistory)
         {
             TasksView = CollectionViewSource.GetDefaultView(new ObservableCollection<TaskStatusDto>(tasks));
             this.selectedTask = selectedTask;
+            TaskHistoryHasMore = hasMoreHistory;
             OpenSelectedTaskGameCommand = new NoOpCommand(() => !string.IsNullOrWhiteSpace(SelectedTask?.GameId));
             CopyTaskErrorCommand = new NoOpCommand(() => SelectedTask?.State == TaskState.Failed);
             RetryTaskCommand = new NoOpCommand(() => SelectedTask?.State == TaskState.Failed);
@@ -620,7 +696,7 @@ public sealed class R21KeyboardNavigationTraceTests
         public bool TaskPageHasItems => true;
         public bool TaskPageLoadFailed => false;
         public bool IsTaskPageLoading => false;
-        public bool TaskHistoryHasMore => false;
+        public bool TaskHistoryHasMore { get; }
         public bool TaskHasActiveFilters => false;
         public bool HasTaskNavigationTarget => false;
         public int TaskTotalCount => 3;

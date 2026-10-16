@@ -209,3 +209,11 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 提交 `e5b27cde` 对应 Actions #1047/run `38916251153` 已终态成功。SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 的 Release build/test 均成功；两边日志均发现 Playnite source `107` 类、WPF 隔离 `125` 类，完整日志记录 `R09FocusOutlineBehaviorTests` 在第 `68/125` 类并随完整测试步骤通过。SDK8 还通过 Render QA、WPF 静态审查和扩展包/诊断上传。
 
 这把当前 `main` 的 CI 证据更新到提交 `e5b27cde`，不能抵消外机 `R09 1/2` 与总流程 exit `1`。外机发现 `111/116` 类，当前 CI 为 `107/125`；测试发现和执行环境不同仍是事实，具体根因没有确认。下一次如可提供，只需读取失败同次 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4\summary.json`，以及该次 TRX/test DLL/PDB/plugin DLL 身份；无需重新构建或只凭本机结果猜测。
+
+## 2026-10-17 当前 main 重建与旧断言逐行核对
+
+附件文本中 `ActivityTimelineMapperTests.CloudFailureMapsToFailedCloudActivity` 是通过项；真正失败仍为 `R09FocusOutlineBehaviorTests`。逐行核对历史 `3f7d0b30` 后，失败调用栈第 151 行和 `Expected 2 / Actual 1` 精确对应当时的旧断言 `errorChrome.BorderThickness == Thickness(2)`。提交 `f13b9e05` 后测试改为检查 Chrome `1 DIP`、独立 `ValidationStroke` `2 DIP`；当前文件第 151 行是颜色断言、第 154 行是描边厚度。因此该调用栈不可能来自“当前 R09 测试源 + 与它匹配的 PDB”。这确认外机的测试源或符号/程序集身份与当前 main 不一致，但仍不能区分旧 checkout、旧测试 DLL、旧 PDB 或不同构建输入。
+
+在 `main` 父提交 `cbdc29ad1913b759a64d4835df5da04e01142fc0` 上，以 SDK `9.0.302` / VSTest `17.14.1` 重建 Playnite 测试项目及引用，`R09FocusOutlineBehaviorTests` 为 `2/2`。目标为插件 `net462`、测试 `net472`；这是定向项目构建，不是完整 solution build。测试 DLL ProductVersion `0.6.73+cbdc29ad1913b759a64d4835df5da04e01142fc0`、SHA-256 `A6520D3449BABD303DCD0984005240A1974DDB806E4A94AB2E2E476127B3929B`、MVID `b599b620-0d58-4a40-b385-2368ef80a88d`；测试 PDB SHA-256 `C08E22B44E82839D2D4513280CA908F6C19204D11150F99BE44355E798DB6C4B`。本次 `R21KeyboardNavigationTraceTests.cs` 正在工作区修改中，测试 DLL 源含该文件的 SHA `789B56AFEDF343DFBE6BC98B14E126D20F3CC057D27D2BC49018F8E611C33D11`；R09 测试源 SHA `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`，`WpfUiProduction.xaml` SHA `FD212D59A0244DF8CABF33A3926FB5CE80CF930E4A0B587692D2DC9D3B15EC6E`。脱敏 [当前 R09 TRX](tests/R09FocusOutlineBehaviorTests-sdk9302-main-cbdc29ad.trx)，SHA-256 `C2BC61A4C2775920F8212B66367B14A20AE52B82F7DF5A6C94109A6DDD569D45`。
+
+这项本机复核只证明上述本机构建输入通过，不证明外机已成功，也不抵消外机真实 exit `1`。没有改生产模板或降低断言；外机具体构建输入仍待同次 `summary.json`/TRX/DLL/PDB 身份才能定位。真实 Playnite 和最终显示呈现不在本次验证范围。
