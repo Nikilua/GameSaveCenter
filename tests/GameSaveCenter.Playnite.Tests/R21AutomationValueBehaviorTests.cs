@@ -470,6 +470,7 @@ public sealed class R21AutomationValueBehaviorTests
             tabControl.SelectedIndex = 0;
 
             var grid = Assert.IsType<DataGrid>(view.FindName("MediaInboxGrid"));
+            Assert.Equal(DataGridSelectionUnit.FullRow, grid.SelectionUnit);
             grid.ItemsSource = new System.Collections.ObjectModel.ObservableCollection<object>
             {
                 new AutomationTestRow("媒体 A"),
@@ -486,7 +487,12 @@ public sealed class R21AutomationValueBehaviorTests
             Assert.Same(grid.Items[0], Assert.Single(grid.SelectedItems));
             Assert.IsAssignableFrom<DataGridRow>(grid.ItemContainerGenerator.ContainerFromIndex(0));
 
-            var selection = Assert.IsAssignableFrom<ISelectionProvider>(GetPeer(grid).GetPattern(PatternInterface.Selection));
+            var gridPeer = GetPeer(grid);
+            var firstRowPeer = GetRowPeerByName(gridPeer, "媒体 A");
+            var firstRowSelection = Assert.IsAssignableFrom<ISelectionItemProvider>(firstRowPeer.GetPattern(PatternInterface.SelectionItem));
+            Assert.True(firstRowSelection.IsSelected);
+
+            var selection = Assert.IsAssignableFrom<ISelectionProvider>(gridPeer.GetPattern(PatternInterface.Selection));
             Assert.True(selection.CanSelectMultiple);
             var firstSelection = Assert.Single(selection.GetSelection());
             var firstName = firstSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);
@@ -499,6 +505,10 @@ public sealed class R21AutomationValueBehaviorTests
             Assert.Same(grid.Items[1], grid.SelectedItem);
             Assert.Same(grid.Items[1], Assert.Single(grid.SelectedItems));
             Assert.IsAssignableFrom<DataGridRow>(grid.ItemContainerGenerator.ContainerFromIndex(1));
+            Assert.False(firstRowSelection.IsSelected);
+            var nextRowPeer = GetRowPeerByName(gridPeer, "媒体 B");
+            var nextRowSelection = Assert.IsAssignableFrom<ISelectionItemProvider>(nextRowPeer.GetPattern(PatternInterface.SelectionItem));
+            Assert.True(nextRowSelection.IsSelected);
 
             var nextSelection = Assert.Single(selection.GetSelection());
             var nextName = nextSelection.GetPropertyValue(AutomationElementIdentifiers.NameProperty.Id);
@@ -875,6 +885,13 @@ public sealed class R21AutomationValueBehaviorTests
     private static AutomationPeer GetPeer(FrameworkElement element)
         => FrameworkElementAutomationPeer.CreatePeerForElement(element)
             ?? throw new Xunit.Sdk.XunitException(element.GetType().Name + " did not create an AutomationPeer.");
+
+    private static DataGridItemAutomationPeer GetRowPeerByName(AutomationPeer gridPeer, string expectedName)
+    {
+        var children = gridPeer.GetChildren()
+            ?? throw new Xunit.Sdk.XunitException("The production DataGrid peer did not expose its realized row children.");
+        return Assert.Single(children.OfType<DataGridItemAutomationPeer>(), peer => peer.GetName() == expectedName);
+    }
 
     private sealed class AutomationTestRow
     {

@@ -1862,9 +1862,22 @@
 - 修正提交推送后仍须追踪对应 SDK8 与 SDK10.0.401 CI 至成功/失败终态；本机 SDK8 不可替代 SDK10。
 - 下一项：R12-04 的 ledger 行与 `e4e42f40` 证据已经标为“已满足”。先核对当前 main 相关源码与测试是否发生变化；无变化时沿用已有 fake/隔离证据并补 freshness 结论，若当前依赖改变则只针对实际缺口复验。真实存档不触碰。
 
+## 2026-10-15 R21 UIA Selection 子树复核（新 CI 待验）
+
+- Actions #1030/run `38712426496` 的 SDK8 和 SDK10.0.401 jobs 均因父级 `GetSelection()` 返回空集合失败。两个 job 的完整日志确认先前补入的 SelectedItem、唯一 SelectedItems、DataGridRow 检查都通过；根因尚未确认。详见[evidence](evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
+- 新夹具实际从 DataGrid peer 子树按行名取得 `DataGridItemAutomationPeer`，用 `ISelectionItemProvider.IsSelected` 验证首行选中及切换后的旧行取消/新行选中，并继续验证父级 Selection pattern 的返回项。只改测试，没有变更生产控件。
+- 本机 SDK8.0.423 / MSBuild17.11.48 Release build `0/0`；R21 `24/24`，TRX 已归档。代码修订需 push 后确认 SDK8/SDK10.0.401 Actions 终态；未完成 CI 不签收阶段。
+- `.tmp` 旧隔离输出约 `374 MiB`。自动审查两次拦截对列出的旧目录进行递归删除，理由包含目录内日志/TRX及不明 PID `32408`；未清理、未绕过。用户提出希望清理无用文件；待用户明日可回复时申请这些具体路径的确认，当前继续主任务。
+
 ## 2026-10-15 R21 UIA 行选择前置条件与 #1029 双 SDK 失败
 
 - Actions #1029/run `38706481548` 对提交 `171ac4a6` 的 SDK8.0.423 与 SDK10.0.401 jobs 都在 `R21AutomationValueBehaviorTests.ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 的 UIA `GetSelection()` 返回空集合处失败。完整 log 未记录 WPF `SelectedItems` 或容器状态，不能区分实际选择丢失、行未实现或 .NET Framework UIA peer 差异。失败详情、job/artifact 身份见[证据包](evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。
 - 测试夹具增加 `ScrollIntoView`、布局、SelectedItem/SelectedItems 及实际 `DataGridRow` 前置断言，仍运行原 UIA Selection pattern 项数和名称检查；生产源未改。本机 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 Release project/reference build `0 warning / 0 error`，R21 `24/24`，TRX 及 SHA 在证据包。当前 .NET Framework testhost `4.8.9181.0`，CI 为 `4.8.9345.0`，本机结果不能替代新 CI。
 - 当前测试改动待中文 commit/push；跟踪 SDK8 与 SDK10.0.401 新 Actions 至明确终态后再定 R21 证据状态。失败须先读取对应完整 logs。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍待验。
 - `.tmp` 约 `1087.8 MiB`；SDK8.0.423 约 `713.8 MiB`，旧隔离输出约 `374 MiB`。D盘可用 `8.93 GiB`。批量删除旧目录被自动审查拒绝（存在未归档 TRX/日志、未知 dotnet PID `32408`）；拒绝后未尝试旁路删除，未删除任何目录。后续先补齐归档并确认进程占用再清理；工作继续进行。
+
+## 2026-10-16 R21 SelectionItem 子树复核及临时目录清理
+
+- 本机隔离 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 的 Release 项目与引用构建 `0 warning / 0 error`，R21 行选择 UIA 类 `24/24`。测试先核对生产 `SelectionUnit.FullRow`，再覆盖真实 DataGrid AutomationPeer 子树、两行 SelectionItem 正反状态与父级 Selection pattern 查询；源码 SHA `E13552DA73AF1FE8D72715CE0D9A0C6D5FC1B36DB0564C359701C58226D77D5C`、DLL SHA `840ABF60DE81DEC74744168F78397085D4CD9B2B3A3FE7AABFE1F3C12EE67CB4`、脱敏 TRX SHA `E33A440A00897E7DC830CA35232B67B0441170F03D81643980E63242EC330550`。证据见[复核包](evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。新提交 SDK8/SDK10.0.401 Actions 仍须到终态后才可签收。
+- 用户明确授权后移除五个旧 `.tmp` 阶段输出（q24-07、r11-06、r09-current-main-retry、r00-08、r08-01 build），释放 `373.7 MiB`。SDK8工具链及当前 R21 复现目录保留；`.tmp` 现为 `744.9 MiB`，D盘可用 `9.26 GiB`。
+- `python scripts/validate-source.py` 与 `git diff --check` 通过；该批只改测试夹具，无 XAML/视觉变更。

@@ -227,3 +227,13 @@ Actions #1027 (`38698959702`) 与 #1028 (`38701408503`) 的 SDK8.0.423/SDK10.0.4
 Actions #1029 两条 SDK lane 在 R21 DataGrid `ISelectionProvider.GetSelection()` 查询时都得到空集合；CI 没有记录 WPF SelectedItems 或行容器，故实际根因尚未证实。本机 SDK8.0.423 / .NET Framework 4.8.9181.0 对照通过。当前测试夹具在查询前显式滚动、布局并检查真实选中项和生成的 DataGridRow，同时保留 UIA 正向项数/名称断言。修改后 R21 `24/24`；尚待新提交 SDK8/SDK10.0.401 CI 终态。只改测试，不改生产 UI/绑定/命令。
 
 `.tmp` 盘点约 1.09 GiB；约 714 MiB 为后续 SDK8 构建工具，约 374 MiB 为过期隔离输出。批量清理被自动审查拒绝，因为尚有未归档 TRX/日志且 dotnet PID `32408` 无法识别/确认占用；没有通过其他方式删除。D 盘当时剩余 `8.93 GiB`。旧输出只有在逐份确认/归档并消除进程占用风险后再清理；此事不阻断其他任务。
+
+### 2026-10-16 R21 Selection peer 子树复核
+
+Actions #1030/run `38712426496` 的 SDK8 与 SDK10.0.401 job 均在 R21 父级 `ISelectionProvider.GetSelection()` 返回空集合处失败；CI 已确认 SelectedItem、唯一 SelectedItems 和已实现 DataGridRow 前置条件通过，根因仍未知。新夹具先断言生产 `SelectionUnit.FullRow`，再枚举 grid peer 子树并用 `ISelectionItemProvider.IsSelected` 检查首行、旧行取消和新行选中。只改测试；本机隔离 SDK8.0.423、.NET Framework 4.8.9181.0 下 Release build `0/0`、R21 `24/24`。源码 SHA `E13552DA73AF1FE8D72715CE0D9A0C6D5FC1B36DB0564C359701C58226D77D5C`，脱敏 TRX SHA `E33A440A00897E7DC830CA35232B67B0441170F03D81643980E63242EC330550`。新修订待 push 后追踪 SDK8/SDK10.0.401 Actions 终态，证据见 `evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md`。真实 Playnite/Windows UIA、OS 输入、DPI、呈现与宿主性能未验。
+
+先前的清理请求曾被自动审查拒绝；用户随后明确授权五个精确目标，已按授权范围清理并释放 `373.7 MiB`。当前 `.tmp` 约 `744.9 MiB`，保留 SDK8 工具链和 R21 复现目录；PID `32408` 仍无法识别。
+
+### 2026-10-16 临时目录清理
+
+收到用户对五个旧阶段目录的明确授权后，清理了 `.tmp/q24-07-official-postcommit-0243c108`、`.tmp/r11-06-40af39c8-20261015`、`.tmp/r09-current-main-retry-20261015`、`.tmp/r00-08-55ed3a17-20261015` 和 `.tmp/r08-01-production-button-sdk9-20261014/build`，共释放 `373.7 MiB`。没有删除 SDK、当前 R21 复现输出或其他任务文件；剩余 `.tmp` 约 `744.9 MiB`，D 盘可用 `9.26 GiB`。PID `32408` 仍无法识别，但删除范围严格限于用户明确指定授权的路径。

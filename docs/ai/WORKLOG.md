@@ -10841,3 +10841,19 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`；Playnite `net462` / tests `net472`。Release 测试项目与引用构建 `0 warning / 0 error`，修改后的 R21 类 `24/24`。TRX SHA、源码与 DLL SHA、#1029 job/artifact ID/SHA 见 [R09/R21 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-PRESSED-STATE-RECHECK-20261015/README.md)。测试宿主 .NET Framework `4.8.9181.0` 与 CI `4.8.9345.0` 不同；本机通过不替代 CI。
 - 清理盘点 `.tmp` 共约 `1087.8 MiB`：SDK8.0.423 工具链约 `713.8 MiB`，旧阶段隔离输出约 `374 MiB`。D 盘可用 `8.93 GiB`。尝试删除已完成的旧隔离目录时，自动审查拒绝了批量递归删除，理由是仍有未归档 TRX/日志且 dotnet PID `32408` 的来源/缓存占用未知；命令未执行、没有绕过。12 个旧错误响应/日志此前已清理（释放约 `37.3 MB`）；SDK 与当前证据保留。请求用户明日确认具体旧隔离目录后再清理；这不阻断代码与 CI 工作。
 - 下一步完成文档校验、中文 commit/push，再用 GitHub 插件跟踪新提交 SDK8/SDK10.0.401 jobs 至明确终态；失败先读完整日志。CI 收口后复核 R12-04 已有能力/证据。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能未验。
+
+## 2026-10-15 R21 AutomationPeer 子树和 SelectionItem 状态复核
+
+- #1030/run `38712426496`（提交 `dfac9ea4`）SDK8 job `116346829496` 与 SDK10.0.401 job `116346829591` 均失败；完整 logs 显示 `ProductionMediaInboxSelectionPatternTracksTheSelectedRow` 第 490 行父级 `ISelectionProvider.GetSelection()` 返回空集合。SelectedItem、SelectedItems、DataGridRow 前置断言均通过，R21 其余 23 项通过，Core `125/125`、Worker `357/357` 通过。根因仍未知；artifact ID/SHA 和本机复核见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
+- 只增加测试行为核对：先枚举 grid AutomationPeer 子树并取得命名 `DataGridItemAutomationPeer`，验证首行 `IsSelected=true`；切到第二行后确认旧 peer `false`、新 peer `true`，之后仍断言父级 UIA selection 返回对应一行。没有改生产 UI、命令、绑定或选择模型。
+- 本机 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1；Release 测试项目与引用 `0 warning / 0 error`，R21 `24/24`。测试源 SHA `C7BD34F591F1C97F62454551F659B999BDED8D9B144A8825E6FC56C39CCA7C67`、DLL SHA `DDA62DE8DD9688588951EDAE926C83060A0CB1E9542CEBF1AF2B01097D09964C`、TRX SHA `12068F1A9B9E71E0B154B899CD5453056A6A8F59BF417FB48C78DDF1D2B31749`。本机 testhost .NET Framework 4.8.9181.0；CI 为 4.8.9345.0。非完整 solution build、非 Playnite 宿主验证。
+- `.tmp` 清理：核查旧输出共约 `374 MiB`、SDK `713.8 MiB`；递归删除多目录两次均被自动审查拒绝，未删除或旁路。PID `32408` 仍无法读取路径/启动时间与缓存占用；D 盘当时可用 `8.93 GiB`。用户要求持续清理；待用户可回复时精确申请清理旧目录，不影响本阶段继续。
+- 下一步：提交并 push 此 R21 夹具与证据，跟踪新双 SDK Actions 到终态；CI 若失败，先按完整 job log 定位。CI 门禁结束后复核 R12-04 现有保护备份流程与证据，不访问真实存档。真实 Playnite/Windows UIA、OS 输入、Narrator、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
+
+## 2026-10-16 R21 SelectionItem 子树复核及临时目录清理
+
+- Actions #1030/run `38712426496` 当前终态为 failure：SDK8 job `116346829496`、SDK10.0.401 job `116346829591` 都在父级 `ISelectionProvider.GetSelection()` 空集合失败。完整日志确认 WPF SelectedItem、唯一 SelectedItems 与 DataGridRow 前置状态已通过；根因仍待新运行验证。旧 artifact ID/SHA 与本机复核见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
+- 测试夹具先核对生产 `SelectionUnit.FullRow`，再从 grid AutomationPeer 子树查找两行 `DataGridItemAutomationPeer`，验证第一行选中、切换后旧行取消/新行选中，并保留父级 selection 项数/名称断言。生产 XAML、选择模型、命令和绑定未改。本机隔离 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 Release 项目/引用 build `0 warning / 0 error`，R21 `24/24`；源码 SHA `E13552DA73AF1FE8D72715CE0D9A0C6D5FC1B36DB0564C359701C58226D77D5C`、DLL SHA `840ABF60DE81DEC74744168F78397085D4CD9B2B3A3FE7AABFE1F3C12EE67CB4`、脱敏 TRX SHA `E33A440A00897E7DC830CA35232B67B0441170F03D81643980E63242EC330550` 已归档。首轮裸 `dotnet test` 未设置仓库要求的 `GSC_BUILD_COMMIT`，11 项源码身份检查失败；按 `scripts/build.ps1` 身份约定重跑后 24 项全通过，首轮不作产品失败或通过依据。本机 testhost `.NET Framework 4.8.9181.0` 与 CI `4.8.9345.0` 不同；不是完整 solution build 或真实 Playnite 运行。
+- 用户明确授权后清理五个旧 `.tmp` 目录：q24-07、r11-06、r09-current-main-retry、r00-08、r08-01 build，共释放 `373.7 MiB`。SDK和当前 R21 输出保留；`.tmp` 余 `744.9 MiB`，D 盘余量 `9.26 GiB`。过程仅删除获准路径，未碰其他未跟踪证据。
+- 下一步：中文 commit/push 当前小批并跟踪对应 SDK8/SDK10.0.401 Actions 至终态；失败先读取完整 job log。CI 收口后核对 R12-04 已有保护备份与 fake/隔离证据，不访问真实存档。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。
+- `python scripts/validate-source.py` 与 `git diff --check` 均通过。该批没有 XAML/视觉改动，因此未做离屏图或真实 Playnite 呈现声明。
