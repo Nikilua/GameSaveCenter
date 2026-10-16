@@ -1,3 +1,11 @@
+## 2026-10-17 Worker 取消回调时序修复与外机日志再校正
+
+- GitHub #1055/run `38951586638` 对 `ef5c8a7` 终态失败：SDK10.0.401 lane 成功；SDK8.0.423 lane 首次 build/test、Render QA、WPF 静态审查通过，但 package step 再次运行 build 时 Worker 取消回调用例 `361/362`（expected 1 / actual 0）导致打包失败。完整 SDK8 job log 已取得。错误来自测试夹具的 CancellationToken 注册释放时序；没有生产代码缺陷证据。
+- 修复只在 `TaskCoordinatorFailureTests` 夹具：取消捕获后等待已注册的测试回调完成再释放注册，等待上限 2 秒，仍保留调用次数与安全终态断言。SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 本机官方 Release build 为 `0 warning / 0 error`，Core `125/125`、Worker `361 Passed + 1 NotExecuted`；修正后的目标 Worker 测试同一 DLL 连续 `50/50` 通过。TRX、源/DLL identity 与范围见[Worker 取消回调复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
+- 同一隔离输出 R09 定向 `2/2`；官方完整 WPF 隔离在 R05 Tooltip `50/116` 停止，因为系统 `GetCursorPos` 前置条件不能读取初始光标位置。不能记录为完整脚本通过，R09 定向复跑不覆盖该失败。
+- 外机 R09 附件 SHA 与旧附件相同（`F3DDDC...4514`），不是新复跑。当前源码 line151 是颜色断言，外机 `Thickness(2/1)` 栈映射对不上；具体测试源/PDB/程序集身份未定位。外机和本机官方隔离均发现116个 WPF 类，但 #1055 同提交 SDK8 GitHub job 发现125类；此前把 `116 vs 125` 作为外机独有错配证据的说法需更正，计数本身不能诊断来源。外机 R09 `1/2` 与 exit1 保留，不被本机定向通过覆盖。
+- 临时工作目录 `.tmp/worker-cancel-repro-1055` 约 `487,055,438` bytes；归档实际引用的三个脱敏 TRX 与 identity 后删除。代码推送后需跟到 SDK8.0.423 / SDK10.0.401 Actions 明确终态；成功后下一项 R12-04 current-main 复核。真实 Playnite 呈现和外机 R09 身份仍未验。
+
 ## 2026-10-17 Q24-04 加载更多键盘路径与 R09 外机失败对照
 
 - 复用 `TaskCenterView`、`TaskHistoryHasMore` 与既有 `LoadMoreTasksCommand`，只补 `R21KeyboardNavigationTraceTests`。有历史时实际追踪可见、命令仍绑定、Tab/Shift+Tab 可达且先于 DataGrid；历史耗尽时折叠，命令绑定仍在但双向不可达。失败任务详情/Retry/Cancel 和既有轨迹保留，合成命令均为 no-op。

@@ -229,3 +229,11 @@ Actions #1053/run `38937972835`（文档提交 `01efb189`，代码基线 `5c81a0
 Actions #1054/run `38944728502` 对文档 HEAD `797482168a74360b41bfaa609cf48d50130bd39b` 已两 lane 终态成功。SDK8.0.423 job `117120854146`：Release 编译 `0 warning / 0 error`；Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类全通过，R09 为第 `68/125` 类并通过；第二次 package 默认完整构建也通过 Core/Worker 与 WPF 全类，Render QA 为 `render-qa OK`，静态审查扫描30 XAML 得 `0 errors / 27 warnings / 177 info`，`0.6.73` zip/pext 与 artifacts 成功上传。SDK8 package artifact `12068606580`，diagnostics artifact `12068781572`。SDK10.0.401 job `117120854512`：Release 编译 `0/0`，Core `125/125`、Worker `362/362`、全部 `125` WPF 隔离类通过（含 R09），diagnostics artifact `12066891114`。
 
 #1054 仍只验证对应 GitHub runner 和 main 提交的实际构建输入。用户外机 R09 `1/2`、整流程 exit `1` 是独立真实失败；外机类发现数 `116`，当前 CI 为 `125`。其第151行 `Thickness(2/1)` 与当前源码第151行颜色断言不可能同时匹配，具体是旧 checkout、测试 DLL、PDB、插件资源或脚本输入仍未确认。待同次 `summary.json`、R09 TRX/console 与 DLL/PDB/plugin DLL identity 可用后再定位，不要用本机/CI通过覆盖外机失败，也不要求用户重跑。
+
+## 2026-10-17 对测试类计数证据的更正
+
+用户重复提供的附件 SHA-256 仍为 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`，是同一失败日志，不含 source commit、测试 DLL/PDB 或 plugin DLL identity。重查当前 `ef5c8a7` 的本机官方隔离运行后，它也报告 WPF 类数 `116`；但 #1055 同一提交的 SDK8 GitHub job 完整日志报告 `125`。因此此前“外机 `116` vs CI `125` 能证明外机与当前输入测试发现不同”的结论不成立，计数受具体构建/发现输入影响，不能单独定位源错配。
+
+外机真实失败仍未改变：`1/2`、Expected `Thickness(2)` / Actual `Thickness(1)`、stack line151。当前 main 同名源 line151 是 Brush 颜色比较，厚度 `2 DIP` 在 line154；旧 Chrome `2 DIP` 断言在历史 `3f7d0b30`。所以日志不能来自“当前测试源 + 与它匹配的行映射”，但具体是旧 checkout、测试 DLL、PDB、插件资源还是脚本输入仍未知。
+
+本机 SDK `8.0.423` 的完整 `scripts/build.ps1` 在 R05 Tooltip 用例失败，因为系统 `GetCursorPos` 无法读取初始光标位置；当时 WPF 隔离进度为 `50/116`，故没有本机完整 WPF 通过证据。随后从同一隔离构建输出独立运行 R09 类为 `2/2`，这只是定向同源复跑，不能覆盖外机失败或完整门禁未跑完。详见[2026-10-17 Worker/R09 本机复核](../CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。

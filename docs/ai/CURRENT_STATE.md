@@ -1,6 +1,10 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-17；版本 `0.6.73`；当前分支 `main`；本轮代码基线 `5c81a07056d64482767d546efe043012abc1e6fc`，CI 复核文档基线 `797482168a74360b41bfaa609cf48d50130bd39b`。R00/R01 Render QA 报告记录于 `01efb189488e6d6323d9386f7ff68057c0030cbe`。本轮没有生产 UI/服务/DTO/命令改动。
+更新：2026-10-17；版本 `0.6.73`；当前分支 `main`；本轮从代码提交 `ef5c8a7ffafc06cdbf9771ca6f74f90d7435f510` 继续，正在修复 Worker 取消回调测试时序。没有生产 UI/服务/DTO/命令改动。此前 Q24-04/R00-R01 事实详见下方历史记录。
+
+- #1055/run `38951586638` 已终态：SDK10.0.401 job `117144037233` 成功；SDK8.0.423 job `117144037407` 在打包时重复构建/测试，Worker `361/362`，取消回调测试 expected `1`/actual `0`。测试夹具已修正并完成本机 SDK8 定向复核，待新提交后的双 SDK Actions 终态确认。
+- 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 官方 Release 脚本 build `0 warning / 0 error`，Core `125/125`、Worker `361 passed + 1 NotExecuted`；修正的取消测试 `50/50`、同输出 R09 定向测试 `2/2`。完整 WPF 隔离于 R05 Tooltip 第 `50/116` 类因 `GetCursorPos` 无法读取系统初始鼠标位置停止；这不是完整 WPF 门禁通过。证据：[Worker 取消回调复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
+- 用户外机 R09 一键日志仍为真实失败：Core `125/125`、Worker `357/357`、R09 `1/2`、整体 exit `1`。本次重复附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`，没有新的机器身份。其 line 151 `Thickness(2/1)` 与当前同名源码 line 151 Brush 颜色断言不匹配，旧 Chrome `2 DIP` 断言在 `3f7d0b30`；旧 checkout/DLL/PDB/构建输入具体哪一项仍未定位。外机及本机隔离脚本都报告 116 个 WPF 类，但 #1055 同提交 SDK8 GitHub log 为 125；计数不能单独确认根因。此前将 `116 vs 125` 当作外机独有错配证据的表述以此为准修正。
 
 - Q24-04 当前受控行为：本机 SDK `9.0.302` / VSTest `17.14.1`，Playnite `net462`/tests `net472` 定向 Release build 后，键盘相关四类 `21/21`；非完整 solution build。加载更多可见时命令绑定保留、Tab/Shift+Tab 可达；历史耗尽时折叠且正反向不可达。证据见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
 - R00/R01 对最新源码的 freshness 已重新绑定 R00-08 证据提交 `5c81a070`：`14/14 fresh / 0 stale / 0 matched source paths`，2,918 个比较路径，package identity `not-provided`。这只校验登记源码范围。
@@ -11,7 +15,7 @@
 - R00-07 最近 audit 仍为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，未因本轮测试改动重跑；窄布局风险仍保留。R05-03 宿主预检仍因 WMI 拒绝访问而 fail closed；Q24-03 需第二物理显示器；R23-04 需 CEF/宿主条件变化；R23-05 的 ETW 系统跟踪权限被拒，不绕过。现有 R23-08 准入盘点没有其它可立即实施的 Q/R 代码项。
 - #1053/run `38937972835`（文档提交 `01efb189`，代码基线 `5c81a070`）现已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38937972835)。SDK8.0.423 job `117098144434` 与 SDK10.0.401 job `117098144743` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过（含 R09/R21）。SDK8 另 `render-qa OK / 0 PROBLEM`、WPF 静态检查 `0 errors / 27 warnings / 177 info`、生成 `0.6.73` 扩展包并成功上传包和诊断 artifact；SDK10 完整日志确认实际 `dotnet --version` 为 `10.0.401`。这只验证该 CI 源码输入，不覆盖外机 R09 的真实失败。
 - #1054/run `38944728502` 对当前文档 HEAD `79748216` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38944728502)。SDK8.0.423 job `117120854146` 与 SDK10.0.401 job `117120854512` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、全部 `125` 个 Playnite WPF 隔离类通过，R09 在两 lane 均通过。SDK8 还完成 `render-qa OK`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、生成 `0.6.73` 扩展包并上传；SDK8 诊断 artifact `12068781572`、SDK10 诊断 artifact `12066891114`。这仍只验证该 CI 输入，不证明外机 R09 失败已解决。
-- 当前阶段已完成 R00/R01 证据校正与 #1054 双 SDK CI；没有产品代码改动。R23-08 准入扫描没有新的依赖已满足 Q/R 代码缺口；下一步保留用户外机 R09 同次 diagnostics `summary.json` / TRX / DLL-PDB 身份待核，继续独立工作且不要求重跑。外机原日志 `116` 个 WPF 类与 CI 当前 `125` 类不一致；当前源 line151 是颜色断言而失败报告为 `Thickness(2/1)`，仍不能确定源 checkout、测试 DLL、PDB 或构建脚本中的具体错配。真实 Playnite、物理 DPI/跨屏、OS UIA/IME 与最终呈现仍待验。
+- 当前活动项：收口 Worker 取消回调测试修正并跟完双 SDK CI；CI 终态成功后继续 R12-04 当前 main 复核。用户外机 R09 同次 diagnostics `summary.json` / TRX / DLL-PDB 身份待核，但不阻塞独立任务。真实 Playnite、物理 DPI/跨屏、OS UIA/IME 与最终呈现仍待验。
 ## 当前判断
 
 核心功能和六个工作区已实现，当前属于功能较完整、尚未完成发布验收的开发预览版。不能用测试数量、Round3 的“已满足”或旧评估的 95%/98% 推导正式稳定版完成度。详见 [完成度评估](../FEATURE_COMPLETION_ASSESSMENT.md)。

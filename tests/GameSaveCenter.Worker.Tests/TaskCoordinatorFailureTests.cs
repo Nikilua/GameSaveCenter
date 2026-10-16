@@ -105,6 +105,7 @@ public sealed class TaskCoordinatorFailureTests
         var store = new RecordingTaskStatusStore();
         var coordinator = new TaskCoordinator(store, new TaskEventBroadcaster(), NullLogger<TaskCoordinator>.Instance);
         var cancellationReady = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var cancellationCallbackObserved = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         var callbackCount = 0;
 
         var run = coordinator.RunAsync(
@@ -113,9 +114,23 @@ public sealed class TaskCoordinatorFailureTests
             "Synthetic Game",
             async (_, token) =>
             {
-                using var callback = token.Register(() => Interlocked.Increment(ref callbackCount));
+                using var callback = token.Register(() =>
+                {
+                    Interlocked.Increment(ref callbackCount);
+                    cancellationCallbackObserved.TrySetResult(true);
+                });
                 cancellationReady.TrySetResult(true);
-                await Task.Delay(Timeout.InfiniteTimeSpan, token);
+                try
+                {
+                    await Task.Delay(Timeout.InfiniteTimeSpan, token);
+                }
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    // Task.Delay may resume this operation inline from its cancellation callback.
+                    // Keep this earlier registration alive until CancellationTokenSource invokes it.
+                    await cancellationCallbackObserved.Task.WaitAsync(TimeSpan.FromSeconds(2));
+                    throw;
+                }
             },
             CancellationToken.None,
             taskId: "cancel-once");
