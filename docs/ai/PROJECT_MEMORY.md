@@ -1,10 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；`main` 已推送 HEAD `e30a29767a903cfe42d16885dc5ed15c3885f05c`。修正后的 Actions #1046/run `38902753483` 双 SDK lane 终态成功：SDK8.0.423 job `116978745271`、SDK10.0.401 job `116978744884`；Core `125/125`、Worker `362/362`、Playnite source `107` 类与 WPF `125` 类全通过。SDK8 另完成 Render QA、WPF 静态审查、自包含 Worker 发布与 Playnite 扩展包。详情见[校正证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。
+更新：2026-10-16；`main` 已推送 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`。R13-08 只补真实生产 `MaintenanceView` 的已识别/未知错误帮助和原始诊断展开/收起行为测试。Actions #1047/run `38916251153` 双 SDK lane 终态成功：SDK8.0.423 job `117024368753`、SDK10.0.401 job `117024368994`；两边 Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类均通过。SDK8 另完成 Render QA、WPF 静态审查和扩展包/诊断上传。详情见[R13-08 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
 
-本机仅装 SDK `9.0.302`；关闭 Workload resolver 的隔离 SDK9 `WorkspaceStateSourceTests` 定向结果为 `9 passed / 1 skipped / 0 failed`，它不是完整 suite；当前双 SDK CI 才完成校正提交自动化门禁。R00/R01 freshness 在 e30a2976 为 `14/14 FRESH / 0 STALE / 0 matched source paths`、比较 `2,907` 条路径、package `not-provided`，没有因此重跑行为或宿主场景。
+本机仅装 SDK `9.0.302` / VSTest `17.14.1`；R13-08 定向生产视图测试为 `16/16`，不是完整 solution build。R00/R01 freshness 为 `14/14 FRESH / 0 STALE / 0 matched source paths`，对本次测试源变更的显式 ChangedPath 检查同为 `14/14`，package `not-provided`。
 
-用户另一台机器的一键日志确实以 exit 1 结束：Core `125/125`、Worker `357/357`，R09 焦点行为 `1/2`，期望 `2 DIP`、实际 `1 DIP`；其 source/WPF 类数 `111/116`，当前完整 CI `107/125`。当前测试源 line 151 是 Brush 颜色断言，不可能产生 Thickness 值；历史 `3f7d0b30` 的 line 151 正是旧 Chrome `2 DIP` 断言，当前 `ValidationStroke 2 DIP` 在 line 154。由此能确认失败代码/符号行映射与当前测试源不一致，不能据此确定旧测试 DLL、旧 PDB、checkout 或脚本输入是哪一项。一次安装脚本默认随机隔离输出目录可降低 bin/obj 复用风险，但不证明外机运行了当前脚本。CI R09 通过不能代替外机复现；需要同次 diagnostics `summary.json` / TRX / DLL-PDB identity。R13-08 另新增生产 `MaintenanceView` 已识别/未知帮助与原始诊断实际展开收起行为，本机 SDK9 `16/16`，新提交 CI 待推送追踪。之后尝试 R05-03 fail-closed 隔离宿主预检；真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
+用户另一台机器的一键日志确实以 exit 1 结束：Core `125/125`、Worker `357/357`，R09 焦点行为 `1/2`，期望 `2 DIP`、实际 `1 DIP`；其 source/WPF 类数 `111/116`，当前 #1047 CI `107/125`。当前测试源 line 151 是 Brush 颜色断言，不可能产生 Thickness 值；历史 `3f7d0b30` 的 line 151 正是旧 Chrome `2 DIP` 断言，当前 `ValidationStroke 2 DIP` 在 line 154。由此能确认失败源代码或符号行映射与当前测试源不一致，不能确定旧测试 DLL、旧 PDB、checkout 或脚本输入是哪一项。默认随机隔离输出只能降低 bin/obj 复用风险，不能证明外机运行了当前脚本。#1047 两 SDK R09 通过不能代替外机复现；仍需同次 diagnostics `summary.json` / TRX / DLL-PDB identity。用户暂不能回复至明日 09:00，外机信息缺口不阻塞主线。R05-03 fail-closed 宿主预检已因 `Win32_Process.CommandLine` 返回“拒绝访问”停止，未启动/安装 Playnite；下一步记录 ENV-001 边界并转可离线复核的 Q/R。
 
 ## AI/Codex 启动协议
 

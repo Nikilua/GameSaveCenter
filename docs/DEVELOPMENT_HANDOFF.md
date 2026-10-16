@@ -1,10 +1,12 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；分支 `main`，当前已推送 HEAD `e30a29767a903cfe42d16885dc5ed15c3885f05c`。R13-07 源码断言校正对应 #1046/run `38902753483`，SDK8/SDK10.0.401 两条 lane 均终态成功；当前 R13-08 只修改测试，在生产 MaintenanceView 中补已识别/未知失败帮助和原始诊断展开行为，本机 SDK9 定向 `16/16` 通过，证据见[R13-08 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。本次行为补证尚未提交/推送，不能借用 #1046 的父提交 CI 作为其门禁。
+更新：2026-10-16；分支 `main`，当前已推送 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`。R13-08 只补测试，在生产 MaintenanceView 中验证已识别/未知失败帮助和原始诊断展开/收起；本机 SDK9 定向 `16/16`。Actions #1047/run `38916251153` 的 SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 均成功；完整测试/渲染/静态审查/打包范围见[R13-08 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
 
 Actions #1045/run `38897153757` 对 `33b9d23f` 的 SDK10 job `116960249686` 和 SDK8 job `116960249845` 均因 `WorkspaceStateSourceTests` 查找已移除变量名失败（443/462 通过、1 失败、18 跳过）；完整日志已取得，见[CI 校正记录](design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。本机只安装 SDK9.0.302，仓库锁定 SDK8.0.423 不可用；首次尝试因 MSB4276 在项目引用阶段终止，随后关闭 Workload resolver 并在全新隔离输出运行 `WorkspaceStateSourceTests 9/1/0`（通过/跳过/失败）。这是定向测试，不代表完整 Playnite source group，也不替代 SDK8/SDK10 CI。修正后源码校验和 `git diff --check` 通过，R00/R01 freshness `14/14 FRESH / 0 STALE / 0 matched source paths`。#1044/run `38894241925` 针对旧提交 `ea1e1aea` 已双 SDK 全 job 成功，且不含 R13-07 新代码。
 
-外机 R09 的一键流程实际 exit `1`，Core `125/125`、Worker `357/357`，R09 `1/2`。该日志 stack line151 映射 `Thickness(2)` / `Thickness(1)`；当前源码 line151 是 Brush 颜色断言，不可能产生 Thickness，历史 `3f7d0b30` 的 line151 是旧 Chrome `2 DIP` 断言。由此确认运行代码或符号映射与当前测试源不一致，但缺同次 diagnostics `summary.json`、TRX、HEAD/status、DLL/PDB/plugin DLL identity，仍不能区分旧测试程序集、旧 PDB、checkout 或脚本输入。本机和父提交 CI 的 R09 通过都不代表外机成功。具体事实见[R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)；缺失的外机 summary 不阻塞独立主线工作。
+外机 R09 一键流程实际 exit `1`，Core `125/125`、Worker `357/357`，R09 `1/2`。该日志 stack line151 映射 `Thickness(2)` / `Thickness(1)`；当前源码 line151 是 Brush 颜色断言，不可能产生 Thickness，历史 `3f7d0b30` 的 line151 是旧 Chrome `2 DIP` 断言。#1047 当前 main 双 SDK R09 类通过，仍不能覆盖外机失败。缺同次 diagnostics `summary.json`、TRX、HEAD/status、DLL/PDB/plugin DLL identity，不能区分旧测试程序集、旧 PDB、checkout 或脚本输入。具体事实见[R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)；缺失的外机 summary 不阻塞独立主线工作。
+
+R05-03 fail-closed 宿主预检因 `Win32_Process.CommandLine` 查询返回“拒绝访问”而停止；未启动 Playnite、未安装扩展、未创建 profile/output。不要绕过 ENV-001，记录该边界后转可离线复核的 Q/R。用户暂不能回复至 2026-10-17 09:00（Asia/Shanghai）；需补外机 identity 时只请求失败同次 `artifacts/build-diagnostics/20261016T052146719Z-d9d99ac4/summary.json`，不阻塞其他任务。
 
 ## 2026-10-15 R12-03 当前 main 行为复核
 

@@ -194,7 +194,7 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 
 用户再次附上同一 `20261016T052146719Z-d9d99ac4` 一键运行日志文本，附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`。可直接确认这次运行失败：Core `125/125`、Worker `357/357`，R09 焦点类 `1/2`，整次一键构建/安装 exit 1。日志显示 VSTest `17.11.1`、.NET Framework testhost `4.8.9221.0`、WPF 隔离类共 `116`；文本没有本次 SDK、sourceCommit、dirtyPaths、源文件 SHA、DLL/PDB SHA 或 plugin DLL identity。
 
-不能只凭 `Expected 2 / Actual 1` 与堆栈 line 151 确认它运行了历史 Chrome 厚度断言：历史测试 line 151 曾要求 Chrome `2 DIP`；当前测试 line 154 也要求独立 `ValidationStroke` 为 `2 DIP`，若 PDB/source 不同样可能映射到别的行。当前 main 的 WPF 隔离类数为 `124`，与日志的 `116` 不同，表明两次发现结果不同，但根因可能涉及 checkout、测试程序集、插件程序集或符号映射，当前没有证据区分。本机当前 main 的 R09 `2/2` 不能抵消外机实际失败，也不证明外机运行的是相同程序集。
+不能只凭 `Expected 2 / Actual 1` 与堆栈 line 151 确认它运行了历史 Chrome 厚度断言：历史测试 line 151 曾要求 Chrome `2 DIP`；当前测试 line 154 也要求独立 `ValidationStroke` 为 `2 DIP`，若 PDB/source 不同样可能映射到别的行。2026-10-16 当前 main #1047 的 CI WPF 隔离类数为 `125`，与日志的 `116` 不同，表明两次发现结果不同，但根因可能涉及 checkout、测试程序集、插件程序集或符号映射，当前没有证据区分。本机当前 main 的 R09 `2/2` 不能抵消外机实际失败，也不证明外机运行的是相同程序集。
 
 后续定位需使用失败同次 `summary.json` 的 sourceCommit/dirtyPaths/sourceFiles/assemblies，加上 R09 TRX 与实际 DLL/PDB/plugin DLL SHA。已在上方保留用户机器读取这些文件的命令；没有要求用户马上操作，主线修正继续推进。
 
@@ -203,3 +203,9 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 重新逐行比较附件与 Git 历史后，可以更明确地判断失败映射：当前 main 测试源第 151 行比较 Brush 颜色，不可能抛出 `Thickness(2)` 对 `Thickness(1)`；历史提交 `3f7d0b30` 的第 151 行则正是 `Assert.Equal(new Thickness(2), errorChrome.BorderThickness)`。当前独立 `ValidationStroke` 厚度断言在第 154 行。因此，这条外机堆栈不可能同时对应“当前测试源 + 与之匹配的 PDB”。它指向旧测试源/程序集，或当前测试代码与旧 PDB 等符号文件错配；现有日志仍不能区分两者，也不能确认实际加载的插件资源 DLL。
 
 这比“line 151 也可能映射到当前 `ValidationStroke` 断言”更准确。此前同文中这类不确定表述以本节为准。用户日志报告的失败仍是真实失败：Core、Worker 通过不改变 R09 的 1/2 和总流程 exit 1。当前 main 的本机/CI 通过只验证各自编译输入；不能宣称外机已成功。外机 diagnostics `summary.json` 的 sourceCommit、dirtyPaths、sourceFiles、assemblies 和同次 R09 TRX/DLL/PDB 哈希仍是确定是哪一类构建错配所需的证据。
+
+## 2026-10-16 #1047 当前 main CI 交叉证据
+
+提交 `e5b27cde` 对应 Actions #1047/run `38916251153` 已终态成功。SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 的 Release build/test 均成功；两边日志均发现 Playnite source `107` 类、WPF 隔离 `125` 类，完整日志记录 `R09FocusOutlineBehaviorTests` 在第 `68/125` 类并随完整测试步骤通过。SDK8 还通过 Render QA、WPF 静态审查和扩展包/诊断上传。
+
+这把当前 `main` 的 CI 证据更新到提交 `e5b27cde`，不能抵消外机 `R09 1/2` 与总流程 exit `1`。外机发现 `111/116` 类，当前 CI 为 `107/125`；测试发现和执行环境不同仍是事实，具体根因没有确认。下一次如可提供，只需读取失败同次 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4\summary.json`，以及该次 TRX/test DLL/PDB/plugin DLL 身份；无需重新构建或只凭本机结果猜测。
