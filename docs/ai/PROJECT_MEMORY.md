@@ -1,8 +1,8 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；`main` 已推送 HEAD `5157d8719110514aec857f2c0397ec4943b926e4`。R11-08 复用日期范围实现并补 DST/生产 SaveCenterView 行为，SDK9.0.302 本机定向 Release `6/6`；源与脱敏 TRX见[R11-08证据](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。Actions #1040 对前一提交 `964f325d` 已双 SDK成功，但不包含 R11-08；`5157d871` 的 push run ID/终态尚未由 GitHub 工具取到。
+更新：2026-10-16；`main` 已推送 HEAD `72b2cbb77e4be53e9550983fd685d82ca9a31f88`，R11-08 代码在 `5157d8719110514aec857f2c0397ec4943b926e4`。本机 SDK9.0.302 定向 `6/6`；Actions #1041 对代码提交的 SDK10.0.401 job `116923431523` 成功，SDK8 job `116923431709` 在最近一次查询仍运行；文档提交 #1042 的两条 job 也仍运行。#1040 的双 SDK成功只覆盖前一代码 HEAD `964f325d`。未终态的 run 均不签收。R13-05 当前 main 未变源码由 #1040 双 SDK验证，受控行为证据见[R13-05复核](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
-外机 R09 仍报 `Expected 2 / Actual 1`、line151；该断言与旧 `3f7d0b30` 中 Chrome `2 DIP` 相符，当前 main 已于 `f13b9e05` 改为 Chrome `1 DIP`、外置 `ValidationStroke 2 DIP`。外机日志的 `gsc-b/fd7672ef` 是随机隔离构建目录，不是 commit；当前一键脚本默认每次创建新输出根，因此旧运行缓存复用可能性较低，但缺 sourceCommit、dirty paths、测试 DLL/PDB 和加载插件身份，根因仍未确认。详见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。R00/R01 对 `5157d871` freshness 为 `14/14 fresh / 0 stale / 0 source matches`，2,883 paths；package identity 未提供。
+外机 R09 仍报旧厚度断言 `Expected 2 / Actual 1`、line 151。该行与历史 `3f7d0b30` 中 Chrome `2 DIP` 一致，但 `f13b9e05` 之后当前代码将 Chrome 固定为 `1 DIP` 并由独立 `ValidationStroke` 提供 `2 DIP`；截图中的祖先 `983fee5` 已包含新测试源。故日志与当前测试源码/PDB 行映射不一致，不能仅凭“pull 最新”断言具体二进制来源。需要该次 summary/TRX 与 test DLL/PDB SHA 才能定位。R00/R01 freshness 对 `5157d871` 为 `14/14 fresh / 0 stale / 0 source matches`，2,883 paths；审计摘要和边界见 CURRENT_STATE。
 
 CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已由 #1039 双 SDK完整自动化门禁收口。R11-08 本机结果不替代新提交 CI；旧 #1040 仅验证 `964f325d`。`5157d871` push run 的查找是当前门禁，R00/R01 freshness 已预查 fresh，但具体问题与证据校正仍按阶段复核。之后按 ROUND3_PROGRESS 推进依赖满足的 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
 

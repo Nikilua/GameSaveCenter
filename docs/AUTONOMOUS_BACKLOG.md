@@ -12,7 +12,7 @@
 
 **当前阶段：** `R11-08` 日期范围/历史跳转。保留既有 DTO、日期范围 helper、CollectionView 和生产命令；本机 SDK9.0.302 Release net462/net472 项目与引用构建通过，行为类 `6/6`，覆盖本地日期、DST 跳时/重叠小时、清空恢复全部、真实 SaveCenterView 筛选和最近/较早跳转。代码已推送到 `main`：`5157d8719110514aec857f2c0397ec4943b926e4`；脱敏 TRX、源/程序集/PDB SHA 见 [R11-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。旧 #1040 对 `964f325d` 双 SDK成功，但不含本轮改动；当前 push run ID/终态尚未取到，不签收 CI。本机 SDK9 不代替 CI SDK8/10.0.401。
 
-当前 source HEAD `5157d871` 的 R00/R01 只读 freshness 预查为 `14/14 fresh / 0 stale / 0 source-path matches`，2,883 paths；package identity 未提供。待取得本阶段 push run 终态后，仍需核对 R00/R01 的具体问题与证据，再选择 ROUND3_PROGRESS 中依赖满足的 Q/R；不因缺少用户回复停住独立工作。真实 Playnite、物理呈现、ETW/宿主性能等未验边界保留。
+当前 source HEAD `5157d871` 的 R00/R01 freshness 为 `14/14 fresh / 0 stale / 0 source-path matches`，2,883 paths；package identity 未提供。R00-07 audit 摘要已校正为 168 snapshots/116 warnings/0 HIGH/13 MEDIUM，13 条工具栏自然换行风险仍开。R11-08 Actions #1041/run `38885898033` 已定位：SDK10.0.401 job `116923431523` 成功，SDK8 job `116923431709` 最近已到扩展包生成、仍运行；当前文档提交 #1042/run `38888296980` 两条 SDK job 在最近查询仍运行，因此不签收 R11-08 CI。独立 Q/R 按已有能力继续至 R13-06；R13-05 当前 main 与成功双 SDK Actions #1040 的相关源码一致，见[复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。真实 Playnite、物理呈现、ETW/宿主性能等未验边界保留。
 
 ### 2026-10-16 R13-04 当前续跑点（历史快照）
 

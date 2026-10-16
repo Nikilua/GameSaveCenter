@@ -10934,3 +10934,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机使用保留的 SDK `8.0.423`，MSBuild `17.11.48`、VSTest `17.11.1`。Core 重试边界 `2/2`，Playnite `R13CloudTransferStageBehaviorTests 14/14`，当前提交 `1e7ff4d8` 的 test assembly/source identity 匹配；source validation 与 diff check 通过。Playnite 插件/net462、测试/net472 及引用项目 Release 定向构建成功；不是完整 solution build。脱敏 TRX、源码/程序集 SHA、R00/R01 freshness `14 fresh / 0 stale / 0 source matches` 见[R13-02 当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R13-02-CURRENT-MAIN-RECHECK-20261016/README.md)。
 - 用到期时间戳重新求值模拟时钟快进经过计划时间后的边界，不调用系统改时 API，因此不能证明系统时钟通知令已显示 WPF 绑定即时刷新。STA 窗口为逻辑 DIP，不等于真实 Playnite/package-host、最终帧/物理 DPI/跨屏/独立 UIA/IME/ETW/宿主性能。只使用合成数据，未读写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，继续参考恢复生产基线。
 - 归档 TRX、源/程序集身份后已删除本阶段唯一隔离输出 `.tmp/r13-02-current-main-1e7ff4d8-sdk8`；保留用户和其他任务文件。R12-05 #1035 的 SDK8/SDK10 job 已成功；R13-01 #1036 的 SDK10 job成功，SDK8 job `116830769619` 最近仍在编译/测试，上次非终态；继续跟踪且不能用本机SDK8替代CI SDK10.0.401。下一项 `R13-03 手动重试范围`，先核对命令入口、幂等 requestId 和部分成功语义。
+## 2026-10-16 R13-05 当前 main 远端详情证据复核
+
+- 原实现 `e280cf1c` 后，DTO、维护页 XAML、Worker 投影和测试文件都继续演进。本次核对 R13-05 六个相关文件从 `964f325d` 到当前 main `72b2cbb7` 无变化；因此使用 `964f325d` 成功 CI + 祖先 `ad2e6716` 的现有行为/TRX 作为当前有效证据，不重建现有能力。
+- 既有 Playnite `R13CloudTransferStageBehaviorTests 14/14` 包含生产 `MaintenanceView` 四项证据绑定、诊断复制 sanitizer 与第二次重试门控；Core/Worker 对未知字段/时间、URI/query/Bearer 凭据脱敏和远端验证状态的测试也在 #1040 全套 CI 中。详细源码/任务边界见 [R13-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
+- GitHub Actions #1040/run `38880099277` 在 `964f325d` 上双 SDK终态成功：SDK8 job `116904483831`（8.0.423）与 SDK10 job `116904484037`（10.0.401）；WPF 隔离套件 124 类成功。当前本机只装 SDK9.0.302，且仓库 global.json 锁定8.0.423，本轮未运行本机替代测试。无代码/XAML改动，也未生成新截图/临时构建目录。
+- R13-05 维持“已满足”；真实 Playnite/package-host、rclone 远端、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能仍待验。#1041（R11-08 代码）与 #1042（当前文档）的 Actions 状态见 CURRENT_STATE；CI 未终态的任务不签收。下一项 R13-06 当前 main 依赖/源路径复核。

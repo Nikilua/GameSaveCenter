@@ -1921,3 +1921,8 @@
 - 本机隔离 SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 的 Release 项目与引用构建 `0 warning / 0 error`，R21 行选择 UIA 类 `24/24`。测试先核对生产 `SelectionUnit.FullRow`，再覆盖真实 DataGrid AutomationPeer 子树、两行 SelectionItem 正反状态与父级 Selection pattern 查询；源码 SHA `E13552DA73AF1FE8D72715CE0D9A0C6D5FC1B36DB0564C359701C58226D77D5C`、DLL SHA `840ABF60DE81DEC74744168F78397085D4CD9B2B3A3FE7AABFE1F3C12EE67CB4`、脱敏 TRX SHA `E33A440A00897E7DC830CA35232B67B0441170F03D81643980E63242EC330550`。证据见[复核包](evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。新提交 SDK8/SDK10.0.401 Actions 仍须到终态后才可签收。
 - 用户明确授权后移除五个旧 `.tmp` 阶段输出（q24-07、r11-06、r09-current-main-retry、r00-08、r08-01 build），释放 `373.7 MiB`。SDK8工具链及当前 R21 复现目录保留；`.tmp` 现为 `744.9 MiB`，D盘可用 `9.26 GiB`。
 - `python scripts/validate-source.py` 与 `git diff --check` 通过；该批只改测试夹具，无 XAML/视觉变更。
+## 2026-10-16 R13-05 当前 main 远端证据复核
+
+- R13-05 原始实现后的 DTO、维护页、Worker 映射和测试都在后续 R13 阶段继续变化，不能直接沿用 9 月身份。本次确认相关六个源/测试文件在成功验证的 `964f325d` 到当前 main `72b2cbb7` 间无变化；R13 行为用例现有 `14/14` 与真实生产 `MaintenanceView` 隔离绑定、未知态、凭据脱敏及诊断复制负例见[R13-05 当前 main 复核包](evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
+- Actions #1040/run `38880099277` 的 SDK8.0.423 job `116904483831`、SDK10.0.401 job `116904484037` 均成功；主 lane 完成全套 WPF `124/124` 类。该 run 验证 R13-05 当前代码但不含 R11-08。此工作环境只装 SDK9.0.302，未用其冒充仓库锁定 SDK8；本轮无代码或 XAML 变化。
+- R13-05 继续“已满足”。未验真实 Playnite、rclone、物理 DPI/跨屏、独立 OS UIA/IME、presented frame 或宿主性能。下一项 R13-06：检查离线状态/恢复反馈相关路径是否有后续改动，再复用已有行为证据。
