@@ -8,6 +8,14 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
+### 2026-10-17 R00-03 历史 SDK10 失败复核与外机输入校正
+
+GitHub 连接现可读取 #919/run `36675309812` job `109758888214` 与 #920/run `36677346317` job `109765067482` 完整日志。两份日志均使用 SDK `10.0.401`，在 `ProductionShellChromeSourceTests` 的活动侧栏过渡前提处各失败 2/13；系统偏好可合法关闭动效，而测试只固定了应用开关。`48b78b3b` 的实例级系统动效测试 seam、策略矩阵与默认系统偏好测试校正了输入；当前 main 是该提交后代，#1056 SDK8/SDK10 全量 WPF 门禁均成功。详情见 [R00-03 失败复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
+
+外机 R09 附件 SHA `F3DDDC...4514` 与已记录文本相同，诊断 ID 未变；`Thickness(2/1)` 与第151行是旧测试形态，不能当成当前 main 新复跑。若新失败 artifact 到手，再按其 summary/TRX/DLL/PDB 身份定位，不用本机或 GitHub runner 的通过覆盖外机失败。
+
+R02-06、R05-03、R23-05 当前仍分别依赖真实 Playnite 菜单、Popup 实际呈现帧和获准系统跟踪环境；不绕过权限。R23-08 无新的依赖已满足产品代码项。本轮只校正证据与表格重复项，不新增产品功能；下一次在新缺陷证据或环境前置变化时重新准入。
+
 ### 2026-10-17 Worker 取消回调 CI 与 R12-04 复核（阶段已收口）
 
 取消回调测试夹具修正已在提交 `4a98148caf2b0909998824acc73119272fc0cb37` 完成。Actions #1056/run `38962119739` 两 lane 均终态成功：SDK8.0.423 job `117179503173`、SDK10.0.401 job `117179503250`，各自 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125` 类全通过；SDK8 另 Render QA、WPF 静态审查和扩展包上传成功。#1055 的 SDK8 package 重跑失败是已修正测试夹具的历史真实失败。本机完整 WPF 门禁仍在 R05 Tooltip `GetCursorPos` 前置阶段停止，R09 定向 `2/2` 不代表本机全套通过。详见[Worker 取消回调与双 SDK 证据](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。

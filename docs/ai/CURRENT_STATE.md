@@ -2,6 +2,10 @@
 
 更新：2026-10-17；版本 `0.6.73`；当前分支 `main`，代码提交 `4a98148caf2b0909998824acc73119272fc0cb37`。本轮只修正 Worker 取消回调测试夹具；没有生产 UI/服务/DTO/命令改动。此前 Q24-04/R00-R01 事实详见下方历史记录。
 
+- 当前已推送文档 HEAD `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b` 对应 Actions #1057/run `38969111355` 已终态成功；最后一次代码变更仍是 `4a98148c`，#1056 两个 SDK lane 已全部通过。此处区分代码提交与后续文档提交。
+- R00-03 历史 #919/#920 的 SDK10.0.401 完整日志现已取得：两次均为活动侧栏过渡断言的测试前提失败；`48b78b3b` 后由测试固定系统动效输入并补偏好矩阵，当前 #1056 双 SDK 已过。详情见 [R00-03 历史失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
+- 外机 R09 附件是先前同一文本 SHA，仍是一次真实失败，不是当前 main 的新复跑。其 `Thickness(2/1)` 第151行与旧 `3f7d0b30` 断言形态相符；当前 main 的 R09 断言在 `f13b9e05` 已拆为 Chrome 1 DIP + 独立 ValidationStroke 2 DIP。外机 HEAD、源、test DLL/PDB、plugin DLL 身份仍缺；本机和 CI 通过只验证各自输入。
+
 - #1056/run `38962119739` 对提交 `4a98148caf2b0909998824acc73119272fc0cb37` 双 SDK 终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38962119739)。SDK8.0.423 job `117179503173` 与 SDK10.0.401 job `117179503250` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125` 类全通过。SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包与诊断产物上传成功。#1055 的取消回调夹具失败在修正后当前提交通过；历史失败保留。该 runner 结果不代表另一台机器的安装/构建输入。
 - 本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 官方 Release 脚本 build `0 warning / 0 error`，Core `125/125`、Worker `361 passed + 1 NotExecuted`；修正的取消测试 `50/50`、同输出 R09 定向测试 `2/2`。完整 WPF 隔离于 R05 Tooltip 第 `50/116` 类因 `GetCursorPos` 无法读取系统初始鼠标位置停止；这不是完整 WPF 门禁通过。证据：[Worker 取消回调复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
 - 用户外机 R09 一键日志仍为真实失败：Core `125/125`、Worker `357/357`、R09 `1/2`、整体 exit `1`。本次重复附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`，没有新的机器身份。其 line 151 `Thickness(2/1)` 与当前同名源码 line 151 Brush 颜色断言不匹配，旧 Chrome `2 DIP` 断言在 `3f7d0b30`；旧 checkout/DLL/PDB/构建输入具体哪一项仍未定位。外机及本机隔离脚本都报告 116 个 WPF 类，但 #1055 同提交 SDK8 GitHub log 为 125；计数不能单独确认根因。此前将 `116 vs 125` 当作外机独有错配证据的表述以此为准修正。

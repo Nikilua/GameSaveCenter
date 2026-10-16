@@ -1,6 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-17；`main` 当前提交 `4a98148caf2b0909998824acc73119272fc0cb37`；Worker 取消回调测试夹具时序修正已完成，生产代码未改。Q24-04 的本机 SDK9 行为和 R00/R01 freshness/Render QA 仍见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)和[R00/R01 Render QA 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
+更新：2026-10-17；当前 `main` 代码基线为 `4a98148caf2b0909998824acc73119272fc0cb37`，最近已推送文档检查点为 `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b`；Worker 取消回调测试夹具时序修正已完成，生产代码未改。Q24-04 的本机 SDK9 行为和 R00/R01 freshness/Render QA 仍见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)和[R00/R01 Render QA 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
+
+新读取的 #919/#920 完整 SDK10 日志证实它们在 2026-09-30 分别对 `a6b6dfc9`、`77de7f45` 运行，并在 `ProductionShellChromeSourceTests` 的两个活动动效前提处失败（每次 11/13）。测试只覆盖应用动效设置，没有固定 runner 的系统动效偏好；2026-10-07 `48b78b3b` 加入实例级系统偏好测试 seam、偏好组合矩阵与默认真实系统偏好测试，生产策略仍尊重 Windows 状态。该提交是当前 main 祖先；#1056 两 SDK 的 125 个 WPF 类全部通过。历史失败保留为失败，修正后的 CI 通过不重写历史。证据见 [R00-03 历史 SDK10 失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
+
+外机 R09 的本次文本附件 SHA 与旧件一致（`F3DDDC...4514`，诊断 ID `20261016T052146719Z-d9d99ac4`），不是当前 main 新复跑。其第151行数值断言属于旧 `3f7d0b30` 测试形态；`f13b9e05` 已把 Chrome 1 DIP 与独立错误描边 2 DIP 分开。不能据此断言用户当前 checkout 或程序集身份，不能用本机/CI 通过覆盖用户失败。新失败要优先取得同次 `summary.json`、R09 console/TRX 与 test DLL/PDB/plugin DLL SHA；在此之前不改生产模板、不放宽断言。
 
 当前取消测试修正仅改 Worker 测试：本机 SDK8.0.423 官方 Release build `0/0`、Core `125/125`、Worker `361 Passed + 1 NotExecuted`，修正用例同一隔离 DLL 重复 `50/50`；同输出 R09 定向 `2/2`。完整 WPF 隔离在 R05 Tooltip `50/116` 因 `GetCursorPos` 无法取得初始系统光标位置停止，不能称全套通过。随后 #1056/run `38962119739` 在 SDK8.0.423 和 SDK10.0.401 两 lane 均 Release `0/0`、Core125、Worker362、source107类和WPF隔离125类通过；SDK8 Render QA、静态审查、扩展包也成功。GitHub runner 两 SDK 通过是独立于本机的证据，但仍不等于用户另一台电脑的构建输入成功。证据：[Worker 取消回调复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
 

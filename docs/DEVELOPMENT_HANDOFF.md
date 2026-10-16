@@ -1,5 +1,15 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 当前 CI 与外机故障边界
+
+当前分支为 `main`。已推送文档检查点 `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b` 的 #1057/run `38969111355` 终态成功；最后代码提交 `4a98148caf2b0909998824acc73119272fc0cb37` 的 #1056 SDK8.0.423 / SDK10.0.401 两 lane 也成功。它们验证各自 runner 输入，不是用户另一台机器的安装或本机状态证明。
+
+历史 #919/#920 的 SDK10 完整日志已取回：两者各在 `ProductionShellChromeSourceTests` 13 项中 11 通过、2 个活动过渡断言失败；原因是测试只固定应用设置，没有固定可由 Windows 关闭的系统动效偏好。`48b78b3b` 后增加实例级测试 seam 与系统偏好矩阵，生产仍读取真实系统偏好；当前 #1056 双 SDK 通过。详见 [R00-03 历史失败复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
+
+用户外机 R09 文本 SHA 与既有附件相同：Expected `Thickness(2)` / Actual `Thickness(1)`、第151行是旧 `3f7d0b30` 断言形态，当前 main 在 `f13b9e05` 已拆为 Chrome 1 DIP 与 ValidationStroke 2 DIP。它仍是那次真实失败，不是新复跑；外机源/程序集身份未证实。若得到新失败目录，先比对 `summary.json`、R09 TRX/console、test DLL/PDB 和 plugin DLL 身份，再决定是否改代码。
+
+下一可执行项：在新 R/Q 问题证据或环境前置变化时重做 R23-08 准入并挑依赖已满足的小批。现有边界为 R02-06 需要 Playnite 宿主菜单，R05-03 需要真实翻转呈现帧，R23-05 需要允许的系统跟踪输入；继续遵守 fail-closed，不以离屏/代理数据代替宿主验收。
+
 更新：2026-10-17；分支 `main`；代码提交 `4a98148caf2b0909998824acc73119272fc0cb37`。本轮只修复 Worker 取消回调测试夹具时序，无生产代码变化。本机 SDK8.0.423 官方 Release build `0/0`、Core `125/125`、Worker `361 passed + 1 NotExecuted`、目标取消测试 `50/50`；R09 定向 `2/2`。本机全量 WPF 隔离在 R05 Tooltip `GetCursorPos` 前置条件失败处停止。其后 #1056/run `38962119739` 的 SDK8.0.423 与 SDK10.0.401 Actions 两 lane 均成功，完整 Release build/Core/Worker/Playnite WPF 组通过；SDK8 另 Render QA、静态审查和扩展包成功。证据见[Worker 取消回调与双 SDK 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。Q24-04/R00-R01 事实仍见[Q24-04复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
 
 **当前 CI 结论：** #1056/run `38962119739` 对提交 `4a98148c` 已整体终态成功。SDK8 job `117179503173`、SDK10.0.401 job `117179503250` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125` 类通过；SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成与上传成功。#1055 的 SDK8 package 重跑失败在后续提交复现并修正；#1051 历史失败及 #1052–#1056 的各自输入仍按历史事实保留。该 CI 结果只证明 GitHub runner 构建输入通过，不能覆盖另一台机器的失败。

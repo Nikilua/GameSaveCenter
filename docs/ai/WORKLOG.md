@@ -1,3 +1,10 @@
+## 2026-10-17 R00-03 历史 SDK10 失败与外机 R09 输入再校正
+
+- 使用 GitHub 连接补取 #919/run `36675309812` job `109758888214` 与 #920/run `36677346317` job `109765067482` 的完整日志。两者均实际使用 Windows Server 2025 和 SDK `10.0.401`；`ProductionShellChromeSourceTests` 都是 `11/13`，失败为两个活动侧栏过渡断言（旧测试行234、319）。失败发生在编译/测试步骤，后续渲染和打包被跳过。
+- 根因已由日志、提交与夹具对照确认：那时测试只固定应用动效开关，没有固定系统 ClientAreaAnimation/高对比策略；测试依赖活动时钟，但 runner 可以按真实系统偏好禁用动效。`48b78b3b` 在 2026-10-07 增加实例级测试 seam、策略矩阵和默认真实系统偏好检查；生产策略仍尊重 Windows 偏好。当前 main 是该提交后代，#1056/run `38962119739` 的 SDK8.0.423 与 SDK10.0.401 两 lane、125 个 WPF 隔离类全部通过。证据：[R00-03 历史 SDK10 失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
+- 用户本次重新附的 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与先前文本相同，诊断 ID 仍是 `20261016T052146719Z-d9d99ac4`。它真实失败，但第151行 `Thickness(2/1)` 是历史 `3f7d0b30` 断言形态；当前 main 在 `f13b9e05` 已把 Chrome 保持 1 DIP、将 2 DIP 错误态描边独立为 ValidationStroke。该重复附件没有新运行身份，不能证明当前 main 在外机仍失败或已通过；若出现新失败，读取同次 `summary.json`、R09 TRX/console 与 test DLL/PDB/plugin DLL 身份，不用本机通过覆盖。
+- 文档 HEAD `01e99b6e` 对应 #1057/run `38969111355` 已终态成功。重新核对 R02-06、R05-03、R23-05 仍分别需要 Playnite 宿主菜单、真实 presented-frame 和获准系统跟踪输入；R23-08 没有新增可独立实施的产品代码项。下一项在新任务证据或环境前置改变时再做针对性准入复核，不制造功能。
+
 ## 2026-10-17 Worker 取消回调时序修复与外机日志再校正
 
 - GitHub #1055/run `38951586638` 对 `ef5c8a7` 终态失败：SDK10.0.401 lane 成功；SDK8.0.423 lane 首次 build/test、Render QA、WPF 静态审查通过，但 package step 再次运行 build 时 Worker 取消回调用例 `361/362`（expected 1 / actual 0）导致打包失败。完整 SDK8 job log 已取得。错误来自测试夹具的 CancellationToken 注册释放时序；没有生产代码缺陷证据。
