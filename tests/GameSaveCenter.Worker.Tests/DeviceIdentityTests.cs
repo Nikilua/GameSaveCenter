@@ -1,5 +1,6 @@
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Worker.Configuration;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace GameSaveCenter.Worker.Tests;
@@ -87,4 +88,51 @@ public sealed class DeviceIdentityTests
         Assert.Equal(0, options.ToDto().CloudUploadAllowedStartMinute);
         Assert.Equal(1440, options.ToDto().CloudUploadAllowedEndMinute);
     }
+
+    [Fact]
+    public void CloudQueuePauseAndWindowSurviveWorkerRestartAndResume()
+    {
+        var root = Path.Combine(Path.GetTempPath(), "GameSaveCenter.Tests", Guid.NewGuid().ToString("N"));
+        try
+        {
+            var options = WorkerOptions.Load(CreateConfiguration(root));
+            options.Apply(new WorkerSettingsDto
+            {
+                CloudUploadQueuePaused = true,
+                CloudUploadAllowedStartMinute = 1320,
+                CloudUploadAllowedEndMinute = 120
+            }, persist: true);
+
+            var restarted = WorkerOptions.Load(CreateConfiguration(root));
+            Assert.True(restarted.CloudUploadQueuePaused);
+            Assert.Equal(1320, restarted.CloudUploadAllowedStartMinute);
+            Assert.Equal(120, restarted.CloudUploadAllowedEndMinute);
+
+            restarted.Apply(new WorkerSettingsDto
+            {
+                CloudUploadQueuePaused = false,
+                CloudUploadAllowedStartMinute = 60,
+                CloudUploadAllowedEndMinute = 300
+            }, persist: true);
+
+            var resumed = WorkerOptions.Load(CreateConfiguration(root));
+            Assert.False(resumed.CloudUploadQueuePaused);
+            Assert.Equal(60, resumed.CloudUploadAllowedStartMinute);
+            Assert.Equal(300, resumed.CloudUploadAllowedEndMinute);
+        }
+        finally
+        {
+            if (Directory.Exists(root)) Directory.Delete(root, recursive: true);
+        }
+    }
+
+    private static IConfiguration CreateConfiguration(string root)
+        => new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["GameSaveCenter:DataDirectory"] = root,
+                ["GameSaveCenter:LudusaviBackupDirectory"] = Path.Combine(root, "Saves"),
+                ["GameSaveCenter:MediaArchiveDirectory"] = Path.Combine(root, "Media")
+            })
+            .Build();
 }
