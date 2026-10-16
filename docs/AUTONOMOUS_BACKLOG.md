@@ -4,10 +4,10 @@
 
 > 当前 UI 方向声明（2026-08-17）：用户已授权整页 UI 重构。下方 UI 条目中的“保留现有页面/控件实现”“避免改变信息架构”等，是对应历史阶段的范围或验收记录，不再作为当前页面冻结禁令；新的 UI 任务可以重做布局、导航、控件和共享模板，同时必须通过本文件及 UI 门禁要求的功能、性能、可访问性和 Playnite 验证。
 
-## 2026-10-17 当前阶段：Q11-06 视觉补证
+## 2026-10-17 当前阶段：Q11-06 等待 Actions 终态
 
-- 状态：`IN_PROGRESS`。基线 main `1662e27b6f41ba00b78388589267691d4def7b6f`；Q11-06 既有键盘/鼠标路由行为仍通过，本轮加 18 张当前生产共享页签模板的 96-DPI 离屏图及滚动几何报告。只改变测试捕获，不改变生产 UI。证据链接见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。
-- 本机 SDK9.0.302 定向 Release `1/1`；仓库锁定的 SDK8.0.423 未安装，不把 SDK9 冒充 SDK8。下一步提交/push 并确认 SDK8.0.423 与 SDK10.0.401 Actions 对当前提交均到终态；CI 失败需先取完整日志。
+- 状态：`IN_PROGRESS`。基线 main `1662e27b6f41ba00b78388589267691d4def7b6f`；Q11-06 既有键盘/鼠标路由行为仍通过，本轮加 18 张当前生产共享页签模板的 96-DPI 离屏图及滚动几何报告。代码提交 `1c60a2fc` 已推送，Actions #1059 的 SDK8 默认与 SDK10.0.401 lanes 仍在编译与测试。只改变测试捕获，不改变生产 UI。证据链接见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。
+- 本机 SDK9.0.302 定向 Release `1/1`；仓库锁定的 SDK8.0.423 未安装，不把 SDK9 冒充 SDK8。下一步等两个 Actions job 终态；CI 失败需先取完整日志。
 - CI 收口后重扫 Round2/3 ledger，选择下一个依赖已满足且存在具体行为/证据缺口的任务；不因外机 R09 身份材料暂缺而停住。用户外机 R09 同一重复日志仍真实失败，源/DLL/PDB/插件身份待同次 diagnostics，当前 main 与该机结果不可互相代替。
 
 ## 2026-10-05 收口队列（当前执行入口）

@@ -1,10 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-17 最新续跑：Q11-06 视觉证据待双 SDK CI
+## 2026-10-17 最新续跑：Q11-06 视觉证据待 Actions 终态
 
-当前 `main` 基线 `1662e27b6f41ba00b78388589267691d4def7b6f`。为 Q11-06 复用生产页签模板补了可选离屏捕获；测试源 SHA `94347B788C770CD4D30FD3AFA161F751DD17EA724748C35CA37F028F89F56BA9`，生产 `Redesign.xaml` 未改。SDK9.0.302/VSTest17.14.1 定向 Release test `1/1`，18 张 Light/Dark 截图和几何报告已归档。提交/推送与新 Actions 双 SDK lane 终态仍待完成；SDK9 不能代替 SDK8.0.423/SDK10.0.401。
+代码提交 `1c60a2fc61fae6109a609fd14c4977dfb927a32c` 已推送到 `main`，基线为 `1662e27b6f41ba00b78388589267691d4def7b6f`。为 Q11-06 复用生产页签模板补了可选离屏捕获；测试源 SHA `94347B788C770CD4D30FD3AFA161F751DD17EA724748C35CA37F028F89F56BA9`，生产 `Redesign.xaml` 未改。SDK9.0.302/VSTest17.14.1 定向 Release test `1/1`，18 张 Light/Dark 截图和几何报告已归档。Actions #1059/run `38982569941` 的 SDK8 默认 job `117246575824` 与 SDK10.0.401 job `117246576000` 均仍在编译与测试；不能用本机 SDK9 代替。
 
-Q11-06 视觉只记受控通过；host 因真实 Playnite/OS 输入/有效物理 DPI/屏幕呈现未验而保持外部阻塞，Final 未完成。外机 R09 文本是重复附件（SHA `F3DDDC...4514`），旧 `3f7d0b30` 第151行是 Chrome 2 DIP 断言；当前已拆 Chrome 1 DIP + ValidationStroke 2 DIP。外机 HEAD、源码、DLL/PDB 与插件身份仍缺，不能用本机或 CI 通过覆盖外机失败。下一步先推送当前本批并跟踪双 SDK CI，收口后重扫依赖就绪的 Q/R 队列。
+Q11-06 视觉只记受控通过；host 因真实 Playnite/OS 输入/有效物理 DPI/屏幕呈现未验而保持外部阻塞，Final 未完成。外机 R09 文本是重复附件（SHA `F3DDDC...4514`），旧 `3f7d0b30` 第151行是 Chrome 2 DIP 断言；当前已拆 Chrome 1 DIP + ValidationStroke 2 DIP。外机 HEAD、源码、DLL/PDB 与插件身份仍缺，不能用本机或 CI 通过覆盖外机失败。下一步等 #1059 两个 SDK job 终态，收口后重扫依赖就绪的 Q/R 队列。
 
 更新：2026-10-17；当前 `main` 代码基线为 `4a98148caf2b0909998824acc73119272fc0cb37`，最近已推送文档检查点为 `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b`；Worker 取消回调测试夹具时序修正已完成，生产代码未改。Q24-04 的本机 SDK9 行为和 R00/R01 freshness/Render QA 仍见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)和[R00/R01 Render QA 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
 

@@ -1,10 +1,10 @@
-## 2026-10-17 Q11-06 当前 main 双主题视觉复核（CI 待跑）
+## 2026-10-17 Q11-06 当前 main 双主题视觉复核（Actions 运行中）
 
-- 继续在 `main` / 基线 `1662e27b6f41ba00b78388589267691d4def7b6f` 补 Q11-06：沿用现有 `GscRedesignWorkspaceTabControl` 与行为夹具，只给 `R23ProductionResourceStateBehaviorTests` 加环境变量 opt-in 截图/几何报告；没有生产 UI/XAML/导航改动。
+- 在 `main` 基线 `1662e27b6f41ba00b78388589267691d4def7b6f` 补 Q11-06：沿用现有 `GscRedesignWorkspaceTabControl` 与行为夹具，只给 `R23ProductionResourceStateBehaviorTests` 加环境变量 opt-in 截图/几何报告；没有生产 UI/XAML/导航改动。提交 `1c60a2fc61fae6109a609fd14c4977dfb927a32c` 已推送。
 - 本机 SDK `9.0.302`、VSTest `17.14.1`，Playnite `net462`/测试 `net472` 定向 Release `dotnet test` build 成功，页签溢出行为 `1/1`。先前一次无 `GscBuildCommit` 元数据的试跑在源码读取前按身份保护失败，不计为测试结果；补齐 `GscBuildCommit`、`GscSourceRoot` 后新隔离构建通过。`scripts/validate-source.py` 和 `git diff --check` 通过。
 - 保存 18 张 96-DPI `RenderTargetBitmap`（四生产页 Light/Dark 首末项 + Maintenance Light/Dark 宽布局）、viewport/extent/offset/滚动条报告与 TRX；完整来源/哈希/边界见[Q11-06 当前 main 视觉复核](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。这不是 Playnite/屏幕呈现/物理 DPI 验证；状态只将视觉栏转为“受控通过”，host 外部阻塞、Final 未完成。
 - 外机 R09 粘贴日志仍是 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 的同一份真实失败。旧 line151 `Thickness(2)` 与历史测试形态吻合；当前代码行断言已分为 Chrome 1 DIP 与独立 ValidationStroke 2 DIP。当前本机结果不能证明外机成功；需要同次 `summary.json`/TRX/DLL/PDB/plugin 身份才能定位具体错配，外部问题不阻塞本批。
-- 下一步：提交本阶段中文 commit 并 push 到 `main`，查询该提交 Actions，分别确认 SDK8.0.423 与 SDK10.0.401 lane 终态；若失败，先读取完整日志。CI 收口后重扫 Round2/3 的依赖就绪任务并推进下一小批。真实 Playnite、OS 物理输入/UIA、物理 DPI/跨屏与最终呈现仍未验。
+- Actions #1059/run `38982569941` 的 SDK8 默认 job `117246575824` 和 SDK10.0.401 job `117246576000` 目前均在编译与测试，尚无终态。下一步等待两个 job 结束；若失败，先读取完整日志。CI 收口后重扫 Round2/3 的依赖就绪任务并推进下一小批。真实 Playnite、OS 物理输入/UIA、物理 DPI/跨屏与最终呈现仍未验。
 
 ## 2026-10-17 R00-03 历史 SDK10 失败与外机 R09 输入再校正
 

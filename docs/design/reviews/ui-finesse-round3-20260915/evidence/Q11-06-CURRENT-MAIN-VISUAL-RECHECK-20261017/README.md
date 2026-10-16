@@ -28,11 +28,12 @@
 
 - 仓库基线：`main`，`1662e27b6f41ba00b78388589267691d4def7b6f`。本机 SDK 选择为 `9.0.302`（仓库要求的 `8.0.423` 未安装）；VSTest `17.14.1`，测试宿主 `.NET Framework 4.8.9181.0`。
 - Playnite `net462` 与测试项目 `net472` 的定向 Release `dotnet test` 构建成功；`WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes` `1/1` 通过，耗时 `24.1865s`。脱敏/可复核结果：[TRX](tests/q11-06-tab-overflow-final.trx)。
-- 测试运行时，本阶段截图夹具改动尚未提交；精确测试源由 SHA-256 绑定。`GscBuildCommit` 元数据为基线 `1662e27b`，源码根为本仓库。待推送提交的 SDK8/SDK10 CI 是这份最终提交的干净检出验证，不能用本机 SDK9 代替。
+- 测试运行时，本阶段截图夹具改动尚未提交；精确测试源由 SHA-256 绑定。`GscBuildCommit` 元数据为基线 `1662e27b`，源码根为本仓库。代码与证据已提交并推送为 `1c60a2fc61fae6109a609fd14c4977dfb927a32c`。对应 Actions #1059/run `38982569941` 在记录时仍运行中：SDK8 默认 lane job `117246575824` 与 SDK10.0.401 lane job `117246576000` 均停留在“编译与测试”，不能据此签收。两个 runner 将验证该最终提交的干净检出；不能用本机 SDK9 代替。
 - 测试源码 SHA-256：`94347B788C770CD4D30FD3AFA161F751DD17EA724748C35CA37F028F89F56BA9`。
 - 生产共享模板 `Redesign.xaml` SHA-256：`3E311AEAE281E20D004BA395A5EED08E1C813FFB44994087645356A91865FE98`。
 - 测试 DLL SHA-256 / MVID：`85BEE36D6A47A474080FB01F817547A4AE4F2961081A9B0CDD78150EC366A035` / `0e9d7248-59ef-45f3-a1c0-f75f98cee6d9`；PDB SHA-256：`85D799F6948C408DEE7FA18FE7638918BA4C997F50F3BE9C549F0461EAAEF739`。
 - 插件 DLL SHA-256 / MVID：`362EF4CC27A6464F1FF8D2CF658AF7324D9A04B97B40E88B87C30D8F51D5EB63` / `d501a1ef-470f-47ae-a14c-978b69dd6065`。
+- 提交前已对 TRX 中的本机用户名、主机名和仓库绝对路径脱敏；测试名、通过结果、计数与时间保持不变。
 - 本目录每张 PNG、TRX 与几何报告的 SHA-256 见 [`SHA256SUMS.txt`](SHA256SUMS.txt)。
 
 ## 未验证边界
