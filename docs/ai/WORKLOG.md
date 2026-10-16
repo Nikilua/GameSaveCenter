@@ -3,8 +3,9 @@
 - 复核任务条件时确认已有日期 helper 按本地时区工作，但旧证据没有真实生产控件交互，也没有可重复的 DST 覆盖。复用 `BackupHistoryDateRange`，增加显式 `TimeZoneInfo` overload（默认生产入口仍传 `TimeZoneInfo.Local`），测试美东春季跳时、秋季重复小时及 UTC 排序。
 - STA 行为测试加载真实 `SaveCenterView` 和 DashboardViewModel 命令，以合成 DTO 验证日期筛选、清空恢复全部、空结果禁用跳转、最近/较早版本选择。Release `R11HistoryTimeNavigationBehaviorTests 6/6`，0 fail/skip；Playnite net462、测试 net472 与引用构建通过，SDK9.0.302 / MSBuild17.14.13 / VSTest17.14.1，0 编译 warning/error；`scripts/validate-source.py` 与 `git diff --check` 通过。SDK9 本机结果不替代 pinned SDK8/CI SDK10.0.401。
 - 脱敏 TRX 和源/程序集/PDB 哈希见[R11-08 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。无 XAML/视觉修改；只用合成 DTO 与隔离 STA，不触及用户存档、媒体、云端或设置。
-- 代码变更与证据文档尚待提交/推送。#1040 对旧文档提交 964f325d 的 SDK10.0.401 job 已成功，SDK8 主 job 编译测试、Render QA、静态审查成功；扩展包生成仍在运行；该 run 不包含本轮源修改。推送新代码后跟踪两条 SDK lane 至终态。
-- 外机 R09 的 Expected `2 DIP` / Actual `1 DIP` 仍是真实失败；当前 main 测试映射不同，但外机 sourceCommit、工作树与测试/插件 DLL/PDB 身份未知，原因未确认。本轮 R11 结果不覆盖 R09。下一步先收口本阶段 CI，再按用户顺序重查 R00/R01 freshness/证据，然后推进依赖满足的 Q/R 项。
+- 代码与证据已在 `main` 提交并推送：`5157d8719110514aec857f2c0397ec4943b926e4`（`补齐历史时间筛选与跳转行为验证`）。旧 Actions #1040/run `38880099277` 对 `964f325d` 已终态成功：SDK8 job `116904483831`、SDK10.0.401 job `116904484037` 均通过；它不含本轮源码。GitHub 连接对当前 push run 没返回 ID；`fetch_commit_workflow_runs` 仅查 PR runs，combined status 为空，因此新代码 CI 状态未知，不签收阶段。
+- 外机 R09 是真实失败，且 line151 的 `Expected 2 / Actual 1` 精确符合旧 `3f7d0b30` 的 Chrome `2 DIP` 断言；当前 main 祖先 `f13b9e05` 已改为 Chrome `1 DIP` 加独立 `ValidationStroke 2 DIP`。当前 `dev-install-run.ps1` 每次使用随机隔离输出并构建；如果外机确实使用此脚本，旧运行 DLL 缓存复用可能性较低，实际 checkout/分支/工作区仍含旧源更可能但未证实。粘贴日志缺 sourceCommit、dirty paths、测试/插件 DLL 与 PDB 身份。`libpng iCCP` 不在失败断言栈，COM 异常属于失败后的 WPF 收尾。完整分析见[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 只读 freshness 对 `5157d871` 复核为 `14/14 fresh / 0 stale / 0 source-path matches`，比较 `2,883` 条路径，package identity `not-provided`；简要结果见[R00/R01当前 freshness](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261016/README.md)。这只证明登记源码路径未变化，不代表 package 或宿主通过。下一步继续取得当前 push run 终态，再核对 R00/R01 具体问题与证据，随后推进依赖满足的 Q/R。
 
 ## 2026-10-16 R13-04 CI终态、外机测试源差异与Q/R证据校正
 

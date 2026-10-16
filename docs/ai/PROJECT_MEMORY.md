@@ -1,10 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 `main`，最近已推送 HEAD `964f325d3bed8e273de98e6d8532b1c5e5065fc7`，当前工作树修改 R11-08 日期范围 helper/行为测试。R13-04 的 #1039 双 SDK 已成功（source108/WPF124、Core125、Worker362，SDK8 Render QA/静态审查/扩展包通过）。R11-08 本机 SDK9.0.302/MSBuild17.14.13/VSTest17.14.1 Release 类测试 `6/6`，含美东 DST 与生产 SaveCenterView 控件行为；完整源码/程序集身份和脱敏 TRX见[R11-08证据](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。SDK9 本机结果不替代 SDK8/CI SDK10.0.401。
+更新：2026-10-16；`main` 已推送 HEAD `5157d8719110514aec857f2c0397ec4943b926e4`。R11-08 复用日期范围实现并补 DST/生产 SaveCenterView 行为，SDK9.0.302 本机定向 Release `6/6`；源与脱敏 TRX见[R11-08证据](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。Actions #1040 对前一提交 `964f325d` 已双 SDK成功，但不包含 R11-08；`5157d871` 的 push run ID/终态尚未由 GitHub 工具取到。
 
-外机新附 R09 输出显示 WPF `116` 类，line 151 断言 Chrome `2 DIP`；当前 main 同行检查错误色，line 152 是 Chrome `1 DIP`，line 154 才是独立 `ValidationStroke 2 DIP`。旧测试形态见 `3f7d0b30`，`f13b9e05` 已拆分。`gsc-b/fd7672ef` 为随机构建目录，不是提交标识；缺同次 sourceCommit、dirty paths、测试 DLL/PDB SHA 与加载插件 DLL 身份。可确认测试输入版本不同，具体来源未归因；#1039 当前候选通过不覆盖外机失败。完整本机 WPF 扫描仍因受限桌面的 `GetCursorPos` error 5 中止。
+外机 R09 仍报 `Expected 2 / Actual 1`、line151；该断言与旧 `3f7d0b30` 中 Chrome `2 DIP` 相符，当前 main 已于 `f13b9e05` 改为 Chrome `1 DIP`、外置 `ValidationStroke 2 DIP`。外机日志的 `gsc-b/fd7672ef` 是随机隔离构建目录，不是 commit；当前一键脚本默认每次创建新输出根，因此旧运行缓存复用可能性较低，但缺 sourceCommit、dirty paths、测试 DLL/PDB 和加载插件身份，根因仍未确认。详见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。R00/R01 对 `5157d871` freshness 为 `14/14 fresh / 0 stale / 0 source matches`，2,883 paths；package identity 未提供。
 
-CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已由 #1039 双 SDK 完整自动化门禁收口。外机 R09 `2 DIP` 失败与当前测试源不一致，具体 checkout/DLL/PDB 来源未确认；本机通过不能覆盖。当前先收口 R11-08 新 Actions，再对新 source HEAD 重查 R00/R01 freshness/校正证据，随后按 ROUND3_PROGRESS 选择依赖满足的未完成 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
+CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已由 #1039 双 SDK完整自动化门禁收口。R11-08 本机结果不替代新提交 CI；旧 #1040 仅验证 `964f325d`。`5157d871` push run 的查找是当前门禁，R00/R01 freshness 已预查 fresh，但具体问题与证据校正仍按阶段复核。之后按 ROUND3_PROGRESS 推进依赖满足的 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 

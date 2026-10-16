@@ -8,7 +8,9 @@
 
 ## 2026-10-16 再次收到外机完整一键日志
 
-本次日志仍是 `Expected 2 / Actual 1`、堆栈行 151。附件没有 source commit、测试源副本、DLL/PDB SHA 或诊断清单；日志显示 WPF 类隔离数为 `116`。当前 main 在干净隔离 Release 输出中发现 `124` 个 WPF 类；当前 R09 源（以及截图祖先提交 `983fee5`）第 151 行检查错误色，第 154 行检查 `ValidationStroke` 的 `2 DIP`。因此外机日志的行映射与当前源不一致、测试集也不同，无法仅凭粘贴文本判定它运行的代码或实际根因。
+本次日志仍是 `Expected 2 / Actual 1`、堆栈行 151。附件没有 source commit、测试源副本、DLL/PDB SHA 或诊断清单；日志显示 WPF 类隔离数为 `116`。当前 main 在干净隔离 Release 输出中发现 `124` 个 WPF 类；当前 R09 源（以及截图祖先提交 `983fee5`）第 151 行检查错误色，第 154 行检查 `ValidationStroke` 的 `2 DIP`。历史提交 `3f7d0b30` 的第 151 行正是 Chrome `2 DIP` 断言，`f13b9e05` 拆为 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP`。因此可确认外机运行的测试输入与当前源码契约不同，但仅凭粘贴文本仍不能确定源 checkout、测试程序集或符号身份。
+
+日志路径 `artifacts/gsc-b/fd7672ef` 符合当前 `scripts/dev-install-run.ps1` 默认构建目录格式；该脚本每次生成新的 8 位随机目录，并将其作为 `GscBuildOutputRoot` 传给 solution build 和测试。若外机使用此脚本版本，前次运行残留 DLL 被复用的可能性较低，优先应核对实际运行的 repo root、HEAD、分支和工作区测试源；但用户日志没有脚本 revision、sourceCommit 或诊断清单，所以这仍是推断而非根因结论。
 
 在 `ad2e67167072ca2af2a55e32de16077ab5a6603e` 上，仓库锁定 SDK `8.0.423` / VSTest `17.11.1` 通过完整隔离 Release solution build `0 warning / 0 error`、XAML `24/24`、Core `125/125`、Worker `360 passed / 1 环境 skip`。全量 Playnite 类扫描在 `R05TooltipTimingBehaviorTests` 停止：受限桌面只读 `GetCursorPos` 返回 Win32 error 5，未移动鼠标。随后从同一新建隔离输出、`--no-build` 串行运行完整 `R09FocusOutlineBehaviorTests` 为 `2/2`，0 失败/跳过；这不是完整 Playnite 全量通过。
 

@@ -1,14 +1,13 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-16；分支 `main`，最近已推送 HEAD `964f325d3bed8e273de98e6d8532b1c5e5065fc7`；工作树目前在该基线上修改 R11-08 helper/测试。此前 R13-04 的 Actions #1039/run `38872163664` 双 SDK 成功（SDK8/SDK10.0.401；Core `125`、Worker `362`、Playnite source `108` 类/WPF `124` 类全通过，SDK8 Render QA、静态审查、扩展包通过）。本机全类扫描因 `GetCursorPos` Win32 error 5 停止。R00/R01 freshness 最近是旧 source HEAD `ccdbacb6` 的 `14/14`、0 登记源码路径命中；R11-08 收口后需在新 source HEAD 重查。证据见[R13-04 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
+更新：2026-10-16；分支 `main`，当前已推送 HEAD `5157d8719110514aec857f2c0397ec4943b926e4`（R11-08 代码与证据提交）。本机 SDK9.0.302 Release 定向行为 `6/6`；该本机结果不替代固定 SDK8 或 CI SDK10.0.401。旧提交 `964f325d` 的 Actions #1040/run `38880099277` 已终态成功：SDK8 job `116904483831` 与 SDK10.0.401 job `116904484037` 全部通过；它不含 R11-08 新代码。对 `5157d871` 尚未取得 push run ID，当前 Actions 状态未知，不能签收 CI。R11-08 证据见[当前 main 包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。此前 R13-04 #1039 成功仅作历史记录，见[证据](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
-外机新附 R09 输出确实失败，且与当前 main 测试源不同：附件显示 source classes `111` / WPF `116`，line 151 要求 Chrome `2 DIP`；当前 line 151 检查错误色、line 152 要求 Chrome `1 DIP`、line 154 要求独立 `ValidationStroke 2 DIP`。失败输入与历史提交 `3f7d0b30` 的旧断言相符，`f13b9e05` 已拆分；附件 `gsc-b/fd7672ef` 是随机构建目录，不是 commit，未含 sourceCommit、dirty paths、DLL/PDB 与插件 DLL 身份。因此确认输入版本不一致，但具体是旧 checkout、测试程序集或安装包仍未知；#1039 通过不能覆盖外机失败。
+外机 R09 输出确实失败：line 151 的 `Expected 2 / Actual 1` 与历史 `3f7d0b30` 中 Chrome `2 DIP` 旧断言相符；当前 main 祖先 `f13b9e05` 已将其拆分为 Chrome `1 DIP` 与独立 `ValidationStroke 2 DIP`。当前 `dev-install-run.ps1` 为每次默认运行创建新的随机 `artifacts/gsc-b/<token>`，并将隔离输出传给 build；若外机使用该脚本，旧运行目录复用的可能性较低，较可能是实际 checkout/分支/工作区仍含旧测试源，但附件没有 sourceCommit、dirty paths、测试 DLL/PDB 与插件身份，具体原因仍未知。完整分析见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-当前活动阶段 R11-08：复用现有日期范围实现，补显式 `TimeZoneInfo` 的 DST 测试和生产 `SaveCenterView` 筛选/清空/跳转行为。本机 SDK9.0.302 Release `6/6`，只证明本次源码/程序集，不证明其他电脑的构建身份。#1040 对 964f325d 尚未终态：SDK10 lane成功，SDK8主job已通过编译测试、Render QA和静态审查，扩展包生成仍在运行；该 run 不包含当前 R11 修改。
+R00/R01 对当前 source HEAD `5157d871` 的只读 freshness 复核为 `14/14 fresh / 0 stale / 0 source-path matches`，比较 `2,883` 条路径；package identity `not-provided`。这只说明登记源码路径未变化，不代表安装包或宿主验证。简要证据见[R00/R01 当前 freshness](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
-.tmp 中旧目录按既有授权清理，R13-04 临时输出已删除；本轮 R11-08 Debug/Release/失败重跑输出也已删除，脱敏 TRX 与身份摘要归档。SDK工具链、R21复现、其他任务和用户未跟踪证据保留。R00-07 audit 为116 warnings/13 MEDIUM；CLOSE-WRAP/OPTICAL/FOCUS 已由#1039收口。下一步跟踪 R11-08 新 Actions 到终态，再在新 source HEAD 重查 R00/R01，随后推进依赖满足的 Q/R。真实 Playnite、OS UIA/读屏/IME、物理DPI/跨屏、最终呈现、ETW/宿主性能未验。
+.tmp 中旧目录与本轮 R11-08 隔离输出已按授权清理，脱敏 TRX 和身份摘要归档；其他用户与任务未跟踪文件保留。下一步取得并追踪 `5157d871` 对应的 SDK8/SDK10.0.401 Actions 终态；随后核对 R00/R01 的具体问题与证据，再推进依赖满足的 Q/R。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 
-本轮临时 SDK9 隔离输出只留在 `.tmp/r11-08-interaction-recheck-20261016`，TRX 与身份摘要已脱敏归档；R11-08 push 后须等双 SDK CI 终态。随后在新 source HEAD 重查 R00/R01 freshness，再推进依赖已满足的 Q/R 项。
 
 
 更新：2026-10-16；分支 `main`，最新推送基线 `8e6513856500505d4608f76ef098236c64e1b5b4`。Actions #1026/run `38690846810` 已终态失败：SDK8.0.423 job `116276140253` 的 R09 高对比行为断言失败，SDK10.0.401 job `116276140402` 的取消幂等测试因 `SemaphoreSlim` 已释放失败；两份完整日志已读取。Worker 竞态修复在本机 SDK8.0.423 已经 Release 全解方案构建 0 warning/0 error，Core 125/125，Worker 356 passed/1 个 Named Pipe 环境 skip，目标取消测试 1/1，高对比类 3/3；完整 Playnite 扫描只完成 6/122 个隔离类后中止，不能当作全量通过。新提交 Actions 尚待推送与跟踪。证据：[本阶段复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
