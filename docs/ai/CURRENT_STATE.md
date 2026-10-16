@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-16；分支 `main`，当前已推送 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`。R13-08 只补测试，在真实生产 `MaintenanceView` 中检查已识别/未知失败帮助和原始诊断展开/收起。Actions #1047/run `38916251153` 双 lane 终态成功：SDK8.0.423 job `117024368753`、SDK10.0.401 job `117024368994`。两 lane 均 Core `125/125`、Worker `362/362`、Playnite source `107` 类与 WPF 隔离 `125` 类完成；SDK8 另有 `render-qa OK`、WPF 静态审查、扩展包和诊断上传成功。完整证据见[R13-08 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
+更新：2026-10-16；分支 `main`，代码 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`，最新文档 HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`。R13-08 只补测试，在真实生产 `MaintenanceView` 中检查已识别/未知失败帮助和原始诊断展开/收起。Actions #1047/run `38916251153` 双 lane 终态成功：SDK8.0.423 job `117024368753`、SDK10.0.401 job `117024368994`。两 lane 均 Core `125/125`、Worker `362/362`、Playnite source `107` 类与 WPF 隔离 `125` 类完成；SDK8 另有 `render-qa OK`、WPF 静态审查、扩展包和诊断上传成功。完整证据见[R13-08 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
 
 本机只装 SDK `9.0.302` / VSTest `17.14.1`；R13-08 定向生产页测试 `16/16`，这是测试项目与引用项目构建，不是完整 solution build。SDK8/SDK10 CI 结果分别记录，不混成本机 SDK。R00/R01 基线 freshness 为 `14/14 FRESH / 0 STALE / 0 matched source paths`；对本次测试源变更的显式 ChangedPath 检查也为 `14/14`，package identity `not-provided`。没有因 freshness 结果重跑无关行为或宿主场景。
 

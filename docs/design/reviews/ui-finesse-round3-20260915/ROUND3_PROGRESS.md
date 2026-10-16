@@ -1966,3 +1966,9 @@
 - 在 `main` 上通过 `scripts/PlayniteHostIsolation.ps1` 执行启动前检查。冲突进程枚举没有报告 Playnite/Worker；`Assert-GscProcessCommandLineInspectionAvailable` 读取 `Win32_Process.CommandLine` 时返回“拒绝访问”，预检 fail closed。由于命令行读取被拒绝，本次枚举不能证明所有 Playnite 进程均不存在。
 - 未启动 Playnite/Worker、未安装扩展、未创建新的隔离 profile/output；未强杀、重试相同 bootstrap 或绕过 WMI 限制。10-13 保留的隔离 profile 未触碰，本次没有生成新 artifact 或呈现帧。
 - R05-03 保持部分满足：现有工作区边界、Popup 几何、滚动和选定项受控测试通过；“翻转无闪屏”仍无真实 presented-frame 证据。ENV-001 持续阻塞宿主验证，转至 Q24-02 当前 main 补充证据校正。细节见[R05-03 复核包](evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/README.md)新增的 2026-10-16 记录。
+
+## 2026-10-16 R00/R01 current-main freshness check
+
+- Ran the baseline freshness script on tracked `main` HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`: 14 records, `14 fresh / 0 stale / 0 matched source paths`, 2,911 compared paths, package identity `not-provided`.
+- No registered R00/R01 behavior/visual paths changed since the archived evidence, so this was a freshness-only check; no suites or RenderHarness audit were rerun. Existing R00-01..07 and R01-01..08 statuses stand on their prior evidence.
+- R01-06/R00-07 retain 13 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` layout-risk findings from the prior audit; these remain visible risks. Real Playnite/package identity, physical DPI/cross-screen, OS input/UIA/IME, and presented frames remain unverified. Next is Q24-02 evidence correction, then other dependency-ready Q/R items.

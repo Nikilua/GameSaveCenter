@@ -27,3 +27,9 @@ At source HEAD `4eb778e992b6f6f76048309f42c2811d6a791815`, the result is again `
 The ledger remains: R00-01 through R00-07 satisfied; R00-08 controlled behavior satisfied with real Playnite/OS IME and physical input still unverified; R01-01 through R01-08 satisfied. R01-06 retains the current audit's `13 MEDIUM` layout notes rather than marking them cleared. This freshness result checks source-path invalidation only; it does not replace the archived behavior tests, create a package identity, or close host/OS verification.
 
 The separate Actions failures #1006 (`38624032938`) and #1007 (`38625232841`) do not identify an R00/R01 regression: complete logs and diagnostic ZIP contents remain unavailable, so their causes are not inferred from the failure summaries.
+
+## 2026-10-16 current-main freshness check
+
+Ran `scripts/check-ui-evidence-freshness.ps1 -HeadCommit HEAD -AsJson` against source HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`. The baseline contains 14 R00/R01 records: `14 fresh / 0 stale / 0 matched source paths`; the comparison considered 2,911 changed paths. Package identity remains `not-provided`. This check covers tracked HEAD through the R05 documentation commit and does not include uncommitted documentation edits.
+
+No R00/R01 registered behavior or visual source path changed, so this freshness result did not call for rerunning existing behavior suites or the RenderHarness audit. R00-01 through R00-07 and R01-01 through R01-08 retain their recorded status. The 13 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` findings remain explicit layout risks from the prior audit; they are not reported as cleared or converted into build failures. R00/R01 still have no package identity or real Playnite/presented-frame/OS-input proof.

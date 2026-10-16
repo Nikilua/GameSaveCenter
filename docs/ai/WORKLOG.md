@@ -10994,3 +10994,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 main 的 R05-03 fail-closed 预检在 `Assert-GscProcessCommandLineInspectionAvailable` 读取 `Win32_Process.CommandLine` 时收到“拒绝访问”，因此无法完整证明不存在 Playnite/Worker 冲突进程。该限制与 #1047 的双 SDK代码测试结果独立。
 - 未启动 Playnite/Worker、安装扩展、创建隔离 profile/output、重试 bootstrap、终止进程或绕过 WMI 权限；10-13 的隔离 profile 未触碰。本轮没有生成宿主诊断 artifact 或屏幕帧。详情见 [R05-03 预检复核](../design/reviews/ui-finesse-round3-20260915/evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/README.md)。
 - ENV-001 保持 `BLOCKED_ENVIRONMENT`；“翻转无闪屏”仍缺真实呈现帧。R05 事实已写入 Round3 进度、backlog、handoff 与项目状态。下一可执行项为 Q24-02 当前 main 补充类隔离证据复核，再推进其他依赖满足的 Q/R。
+
+## 2026-10-16 R00/R01 freshness and risk recheck
+
+- On current tracked main HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`, `scripts/check-ui-evidence-freshness.ps1 -HeadCommit HEAD -AsJson` reports `14 records / 14 fresh / 0 stale / 0 matched source paths` across 2,911 compared paths; package identity is `not-provided`.
+- No registered R00/R01 behavior or visual source path changed since its evidence, so this freshness-only check did not rerun suites or RenderHarness. R00-01..07 and R01-01..08 retain the ledger status supported by their prior tests and audits. The 13 MEDIUM toolbar vertical-expansion warnings remain documented risks, not cleared defects or build failures.
+- The supported next item after this R00/R01 check is the Q24-02 current-main evidence correction. Real Playnite, physical DPI/cross-screen, OS input/UIA/IME and presented-frame boundaries remain open.

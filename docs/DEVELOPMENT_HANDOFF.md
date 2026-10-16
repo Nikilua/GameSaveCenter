@@ -1,6 +1,6 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；分支 `main`，当前已推送 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`。R13-08 只补测试，在生产 MaintenanceView 中验证已识别/未知失败帮助和原始诊断展开/收起；本机 SDK9 定向 `16/16`。Actions #1047/run `38916251153` 的 SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 均成功；完整测试/渲染/静态审查/打包范围见[R13-08 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
+更新：2026-10-16；分支 `main`，代码 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`，最新文档 HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`。R13-08 只补测试，在生产 MaintenanceView 中验证已识别/未知失败帮助和原始诊断展开/收起；本机 SDK9 定向 `16/16`。Actions #1047/run `38916251153` 的 SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 均成功；完整测试/渲染/静态审查/打包范围见[R13-08 当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
 
 Actions #1045/run `38897153757` 对 `33b9d23f` 的 SDK10 job `116960249686` 和 SDK8 job `116960249845` 均因 `WorkspaceStateSourceTests` 查找已移除变量名失败（443/462 通过、1 失败、18 跳过）；完整日志已取得，见[CI 校正记录](design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。本机只安装 SDK9.0.302，仓库锁定 SDK8.0.423 不可用；首次尝试因 MSB4276 在项目引用阶段终止，随后关闭 Workload resolver 并在全新隔离输出运行 `WorkspaceStateSourceTests 9/1/0`（通过/跳过/失败）。这是定向测试，不代表完整 Playnite source group，也不替代 SDK8/SDK10 CI。修正后源码校验和 `git diff --check` 通过，R00/R01 freshness `14/14 FRESH / 0 STALE / 0 matched source paths`。#1044/run `38894241925` 针对旧提交 `ea1e1aea` 已双 SDK 全 job 成功，且不含 R13-07 新代码。
 
