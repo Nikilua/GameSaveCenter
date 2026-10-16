@@ -10,7 +10,7 @@
 
 ### 2026-10-16 当前续跑点（覆盖下方历史下一项）
 
-**最新续跑事实（从已推送 R12-04 提交 `86ba18a5` 继续）：** R12-04 Actions #1034/run `38846116072` 已终态成功，SDK8 job `116796913269` 与 SDK10.0.401 job `116796913109` 均通过。R12-05 复用现有远端 staging、TaskStatusDto 和生产维护页；修正取消投影，保留 Worker 报告的隔离区清理结果。新增锁定合成文件的 Worker 残留负例和生产 MaintenanceView 下载/取消/错误帮助文本行为；本机 SDK8.0.423 Worker `32/32`、Playnite `8/8`，XAML `24/24`、source validation/diff check 通过。最后修正后定向项目/引用重建通过，完整 solution 未重跑；当前 commit push 后新双 SDK Actions 待终态。R00/R01 最近 freshness 是 b1e7b652 的14/14 fresh，当前源提交后复跑；R00-07 audit 116 warnings/13 MEDIUM，package identity not-provided。随后复核已标“已满足”的 R13-01 当前 main 实现与现有证据，不重建服务，再推进依赖满足的 Q/R 小批。不访问真实存档、用户媒体或云端。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。
+**最新续跑事实（从已推送 `241bfb16` 继续）：** R12-04 的 #1034 双 SDK Actions 已成功。R12-05 提交 `241bfb16` 对应 #1035/run `38855405119` 最近仍 in progress：SDK10 job `116825613833` 和 SDK8 job `116825614090` 都在 Release 编译/测试；只有终态才可结束，失败先读取完整日志。本机 SDK8.0.423 对 R12-05 Worker `32/32`、Playnite `8/8`，完整 Release solution `0 warning / 0 error`、XAML `24/24`。R00/R01 freshness 在 `241bfb16` 为14/14 fresh、0 stale、0源路径命中，package identity not-provided；R13 测试提交后重跑。R13-01 既有能力当前 main 复核 Core `40/40`、Worker `14/14`、Playnite `21/21`；实际生产 `MaintenanceView` DataGrid 和详情显示上传/等待验证与远端已验证的不同阶段，隔离 Worker DTO 状态确认只有完成校验后才报告 Verified。此次只改测试/证据，不改生产代码或 XAML；R13-01 继续标记已满足。R12/R13 证据见 Round3 progress。本轮只使用合成 DTO、fake 与隔离 SQLite，不访问真实存档、用户媒体或云端。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。下一项 R13-02。
 
 ### 2026-10-15 当前续跑点（覆盖下方历史下一项）
 

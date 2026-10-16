@@ -38,4 +38,4 @@ SHA-256（源码 / 测试程序集）：
 | Worker test DLL | `C0DC0810D27AC9E720FE389A16728DEC2828912D1204D48991C50A7E766BD964` |
 | Playnite test DLL | `889A86603F6D467873D5BE396D27DB30BD62E70C267EBF4394D55B17A58EDEAA` |
 
-TRX 内的本机用户名、计算机名和绝对仓库路径已脱敏。修正后的完整 solution 没有重跑；受影响 Release 项目与引用由定向 `dotnet test` 重新构建成功。隔离 Release build 及诊断目录将在本阶段证据提交后清理。
+TRX 内的本机用户名、计算机名和绝对仓库路径已脱敏。R12 复核最初只定向重建受影响项目；随后在 R13-01 当前 main 复核中，用 SDK `8.0.423` 对含本修正的完整 Release solution 再构建，`0 warning / 0 error`、XAML `24/24`。该后续构建还包含 R13 测试夹具的本地增补，不替代本批 Actions。提交 `241bfb16` 的 R00/R01 freshness 为 `14 fresh / 0 stale / 0 source-path matches`，package identity `not-provided`；结果见 [摘要 JSON](R00-R01-freshness-241bfb16.json)，SHA-256 `51C7AEC2C92C47B2A138F7FC94D9A4F6921120DF205309F6FB447C43C2468D92`。归档 R13 证据后已删除 `.tmp/r12-05-current-main-sdk8` 与 `.tmp/r12-05-current-main-sdk8-diag`，释放 `170.9 MiB`。

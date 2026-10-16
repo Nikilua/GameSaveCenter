@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "generatedUtc": "2026-10-16T05:32:46.304922Z",
+  "currentSourceCommit": "241bfb1605ef54c7a3d36247f3b2923f797d1073",
+  "currentPackageCommit": "not-provided",
+  "packageIdentityStatus": "not-provided",
+  "changedPathCount": 2856,
+  "documentationOnlyChange": false,
+  "records": [
+    {
+      "id": "R00-01-02",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-03",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-04",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-05",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-06",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-07",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-08",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-01",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-02",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-03",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-04",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-05",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-06",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-07",
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable"
+    }
+  ]
+}

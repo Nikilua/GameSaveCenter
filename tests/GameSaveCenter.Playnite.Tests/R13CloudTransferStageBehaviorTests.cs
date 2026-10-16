@@ -1,3 +1,12 @@
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
 using System.IO;
@@ -5,6 +14,7 @@ using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
 
+[Collection("R11SaveWpf")]
 public sealed class R13CloudTransferStageBehaviorTests
 {
     [Fact]
@@ -16,6 +26,92 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.Contains("QueuePhaseDisplay", source);
         Assert.Contains("GuaranteeLevelDisplay", source);
         Assert.Contains("QueueControlDisplay", source);
+    }
+
+    [Fact]
+    public void ProductionMaintenanceQueueRendersUploadedAndVerifiedAsDifferentStates()
+    {
+        RunSta(() =>
+        {
+            var uploaded = new CloudTransferStatusDto
+            {
+                TransferKey = "Backup:synthetic-uploaded",
+                GameName = "合成待校验游戏",
+                State = "Uploaded",
+                UpdatedUtc = new DateTime(2026, 10, 16, 0, 0, 0, DateTimeKind.Utc)
+            };
+            var verified = new CloudTransferStatusDto
+            {
+                TransferKey = "Backup:synthetic-verified",
+                GameName = "合成已校验游戏",
+                State = "RemoteVerified",
+                UpdatedUtc = new DateTime(2026, 10, 16, 0, 1, 0, DateTimeKind.Utc),
+                LastSuccessfulVerificationUtc = new DateTime(2026, 10, 16, 0, 1, 0, DateTimeKind.Utc)
+            };
+            var context = new CloudQueueViewContext(uploaded, verified);
+            var application = Application.Current ?? new Application();
+            if (!application.Resources.Contains("BaseTextBlockStyle"))
+                application.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var page = new GameSaveCenter.Playnite.Views.MaintenanceView { DataContext = context };
+            var tabs = Assert.IsType<TabControl>(page.FindName("MaintenanceTabControl"));
+            BindingOperations.ClearBinding(tabs, TabControl.SelectedIndexProperty);
+            tabs.SelectedItem = Assert.Single(tabs.Items.OfType<TabItem>(),
+                item => string.Equals(item.Header as string, "云端队列", StringComparison.Ordinal));
+            var window = new Window
+            {
+                Content = page,
+                Width = 1440,
+                Height = 1000,
+                WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Opacity = 0.01
+            };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                var grid = Assert.Single(FindVisualChildren<DataGrid>(page),
+                    candidate => candidate.Name == "CloudTransferGrid");
+                Assert.Equal(2, grid.Items.Count);
+                grid.ScrollIntoView(uploaded);
+                grid.SelectedItem = uploaded;
+                PumpLayout(window);
+
+                var phaseColumn = Assert.IsType<DataGridTextColumn>(grid.Columns.Single(column =>
+                    string.Equals(column.Header as string, "阶段", StringComparison.Ordinal)));
+                var guaranteeColumn = Assert.IsType<DataGridTextColumn>(grid.Columns.Single(column =>
+                    string.Equals(column.Header as string, "保证级别", StringComparison.Ordinal)));
+                var uploadedPhaseCell = Assert.IsType<TextBlock>(phaseColumn.GetCellContent(uploaded));
+                var uploadedGuaranteeCell = Assert.IsType<TextBlock>(guaranteeColumn.GetCellContent(uploaded));
+                var detailPhase = FindInspectorText(page, "SelectedCloudTransfer.QueuePhaseDisplay");
+                var detailGuarantee = FindInspectorText(page, "SelectedCloudTransfer.GuaranteeLevelDisplay");
+
+                Assert.Equal("⚠ 等待验证", uploadedPhaseCell.Text);
+                Assert.Equal("上传命令成功，尚未远端校验", uploadedGuaranteeCell.Text);
+                Assert.Equal("等待验证", detailPhase.Text);
+                Assert.Equal("上传命令成功，尚未远端校验", detailGuarantee.Text);
+                Assert.DoesNotContain("已验证", uploadedPhaseCell.Text, StringComparison.Ordinal);
+                Assert.DoesNotContain("远端校验成功", uploadedGuaranteeCell.Text, StringComparison.Ordinal);
+
+                grid.ScrollIntoView(verified);
+                grid.SelectedItem = verified;
+                PumpLayout(window);
+
+                var verifiedPhaseCell = Assert.IsType<TextBlock>(phaseColumn.GetCellContent(verified));
+                var verifiedGuaranteeCell = Assert.IsType<TextBlock>(guaranteeColumn.GetCellContent(verified));
+                Assert.Same(verified, context.SelectedCloudTransfer);
+                Assert.Equal("已验证", verifiedPhaseCell.Text);
+                Assert.Equal("远端校验成功", verifiedGuaranteeCell.Text);
+                Assert.Equal("已验证", detailPhase.Text);
+                Assert.Equal("远端校验成功", detailGuarantee.Text);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
     }
 
     [Fact]
@@ -157,5 +253,70 @@ public sealed class R13CloudTransferStageBehaviorTests
         Assert.Contains("恢复开关后会继续处理已保存队列", source);
         Assert.Contains("下一轮 Worker 检查时生效", source);
         Assert.Contains("已开始的上传不会被取消", source);
+    }
+
+    private static TextBlock FindInspectorText(DependencyObject root, string bindingPath)
+        => Assert.Single(FindVisualChildren<TextBlock>(root), textBlock =>
+            BindingOperations.GetBinding(textBlock, TextBlock.TextProperty)?.Path?.Path == bindingPath);
+
+    private static void RunSta(Action action)
+    {
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                action();
+                Dispatcher.CurrentDispatcher.InvokeShutdown();
+            }
+            catch (Exception exception) { failure = exception; }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        Assert.Null(failure);
+    }
+
+    private static void PumpLayout(Window window)
+    {
+        window.UpdateLayout();
+        window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+        window.UpdateLayout();
+    }
+
+    private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
+        where T : DependencyObject
+    {
+        for (var index = 0; index < System.Windows.Media.VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            var child = System.Windows.Media.VisualTreeHelper.GetChild(root, index);
+            if (child is T match) yield return match;
+            foreach (var descendant in FindVisualChildren<T>(child)) yield return descendant;
+        }
+    }
+
+    private sealed class CloudQueueViewContext : INotifyPropertyChanged
+    {
+        private CloudTransferStatusDto selectedCloudTransfer;
+
+        public CloudQueueViewContext(CloudTransferStatusDto uploaded, CloudTransferStatusDto verified)
+        {
+            CloudTransferItems = new ObservableCollection<CloudTransferStatusDto> { uploaded, verified };
+            selectedCloudTransfer = uploaded;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public ObservableCollection<CloudTransferStatusDto> CloudTransferItems { get; }
+
+        public CloudTransferStatusDto SelectedCloudTransfer
+        {
+            get => selectedCloudTransfer;
+            set
+            {
+                if (ReferenceEquals(selectedCloudTransfer, value)) return;
+                selectedCloudTransfer = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCloudTransfer)));
+            }
+        }
     }
 }

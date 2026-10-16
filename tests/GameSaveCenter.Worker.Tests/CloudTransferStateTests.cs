@@ -86,6 +86,28 @@ public sealed class CloudTransferStateTests : IDisposable
     }
 
     [Fact]
+    public async Task UploadMustReachRemoteVerificationBeforeQueueReportsVerified()
+    {
+        var state = CreateState(new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance));
+        await state.StartNewAsync(CloudTransferKind.Backup, "game-stage-boundary", CancellationToken.None);
+        await state.MarkUploadedAsync(CloudTransferKind.Backup, "game-stage-boundary", CancellationToken.None);
+
+        var uploaded = Assert.Single((await state.GetStatusAsync(CancellationToken.None)).Items);
+        Assert.Equal("Uploaded", uploaded.State);
+        Assert.Equal("等待验证", uploaded.QueuePhaseDisplay);
+        Assert.Equal("上传命令成功，尚未远端校验", uploaded.GuaranteeLevelDisplay);
+        Assert.Null(uploaded.LastSuccessfulVerificationUtc);
+
+        await state.MarkRemoteVerifiedAsync(CloudTransferKind.Backup, "game-stage-boundary", CancellationToken.None);
+
+        var verified = Assert.Single((await state.GetStatusAsync(CancellationToken.None)).Items);
+        Assert.Equal("RemoteVerified", verified.State);
+        Assert.Equal("已验证", verified.QueuePhaseDisplay);
+        Assert.Equal("远端校验成功", verified.GuaranteeLevelDisplay);
+        Assert.NotNull(verified.LastSuccessfulVerificationUtc);
+    }
+
+    [Fact]
     public async Task QueueStateSurvivesStoreRecreation()
     {
         var coordinator = new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance);
