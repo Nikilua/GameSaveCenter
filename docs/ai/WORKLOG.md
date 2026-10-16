@@ -10874,3 +10874,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 将进度表 R00-07 当前 audit 摘要从过期的110 warnings/7 MEDIUM校正为最新归档审计的168 snapshots/116 warnings/0 HIGH/13 MEDIUM/0 Fidelity/0 failed routes；13条工具栏换行风险继续打开，任务状态不变。
 - 用户明确批准后删除五个 .tmp 旧阶段目录，释放373.7 MiB；目前 .tmp 约751.4 MiB、D盘可用9.25 GiB。保留SDK8、当前R21复现目录、其他任务文件和未跟踪测试证据。
 - 下一项 R12-04：先核查 RestoreOrchestrator、RestoreWorkflowProgress、PreRestore保护、DTO、同游戏锁及当前测试；再用 fake 服务和隔离目录补失败阻断、重试/取消的正反行为。禁止访问真实存档。真实 Playnite、独立UIA/Narrator、OS输入/IME、物理DPI/跨屏、presented frame、ETW/宿主性能仍待验。
+
+## 2026-10-16 R12-04 当前 main 保护恢复与锁冲突复核
+
+- 复用现有 `RestoreOrchestrator`、`GameOperationLock`、`TaskCoordinator`、`RestoreWorkflowProgress` 和恢复 DTO；生产源码/XAML未改。Worker fixture 改为在两次编排间复用同一锁，并新增锁持有时执行 Restore 的行为负例：错误码 `GAME_OPERATION_BUSY`，fake `BackupAsync` 调用0次，无 Restore/Edit 调用，合成当前状态保持 `A`。已有 PreRestore 失败后重试用例改在同一锁对象上执行，将当前状态切至 `A-latest` 后确认锁定快照取新状态再恢复目标。
+- 本机使用仓库保留的 SDK `8.0.423` / VSTest `17.11.1`。Worker `RestoreOrchestratorTests + GameOperationLockTests 26/26`、Playnite `R12RestoreWorkflowBehaviorTests 8/8`；Playnite `net462`/测试 `net472` 与 Worker 项目引用 Release build 成功；`scripts/validate-source.py`、XAML `24/24`、`git diff --check` 通过。NuGet 漏洞数据源不可达产生 `NU1900` 警告，不影响还原/build/test exit 0。首次使用系统 SDK9 的默认并行 restore 无结果；结束本任务测试进程后改用保留 SDK8 串行重跑，未计入通过结果。
+- 脱敏 TRX、源/程序集 SHA 和边界见[R12-04 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R12-04-CURRENT-MAIN-RECHECK-20261016/README.md)。TRX 已移出测试默认输出目录，151.7 MiB 隔离 build 已从 `.tmp` 清理。仅 fake/合成数据/隔离 SQLite/STA；没有接触真实存档、媒体或云端。没有运行 RenderHarness，未声称真实 Playnite、物理呈现、UIA/IME、ETW 或宿主性能通过。
+- 先前 main source `b1e7b652` 对应 Actions #1032/run `38838015414` 的 SDK8/SDK10 jobs 均成功；本次新增锁负例不在该 run 内，推送后仍要确认新 Actions 两个 SDK lanes 终态。下一项核对 R12-05 现有远端 staging/状态/取消证据，不重建服务。

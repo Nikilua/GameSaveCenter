@@ -25,6 +25,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
     private readonly FakeRestoreCatalog catalog;
     private readonly FakeRestoreSessionState sessions = new();
     private readonly CloudTransferCoordinator cloud = new(NullLogger<CloudTransferCoordinator>.Instance);
+    private readonly GameOperationLock gameLock = new();
 
     public RestoreOrchestratorTests()
     {
@@ -282,8 +283,30 @@ public sealed class RestoreOrchestratorTests : IDisposable
         Assert.Equal("B", client.CurrentSave);
     }
 
+    [Fact]
+    public async Task RestoreIsRejectedWithoutClientWritesWhenSameGameLockIsHeld()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+        using var held = await gameLock.AcquireAsync(
+            "game-1",
+            GameOperationKind.Backup,
+            TimeSpan.FromSeconds(1),
+            CancellationToken.None);
+        Assert.NotNull(held);
+
+        var exception = await Assert.ThrowsAsync<WorkerOperationException>(
+            () => CreateOrchestrator().ExecuteAsync(Request("B"), CancellationToken.None));
+
+        Assert.Equal("GAME_OPERATION_BUSY", exception.Code);
+        Assert.Equal(0, client.BackupCalls);
+        Assert.Empty(client.RestoreCalls);
+        Assert.Empty(client.EditedBackups);
+        Assert.Equal("A", client.CurrentSave);
+    }
+
     private RestoreOrchestrator CreateOrchestrator()
-        => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider(), new GameOperationLock());
+        => new(catalog, store, client, tasks, sessions, cloud, new FakeRemoteStageProvider(), gameLock);
 
     private static RestoreRequestDto Request(string backupId) => new()
     {
@@ -347,6 +370,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public List<string> RestoreCalls { get; } = new();
         public List<(string BackupId, bool Preview)> RestoreOperations { get; } = new();
         public List<(string BackupId, bool? Locked)> EditedBackups { get; } = new();
+        public int BackupCalls { get; private set; }
         public int FailPreRestoreCount { get; set; }
         public bool FailRollback { get; set; }
         public string LiveDirectory { get; }
@@ -368,6 +392,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
 
         public Task<LudusaviCommandResult> BackupAsync(IEnumerable<string> games, bool force, bool preview, CancellationToken token)
         {
+            BackupCalls++;
             if (FailPreRestoreCount > 0)
             {
                 FailPreRestoreCount--;

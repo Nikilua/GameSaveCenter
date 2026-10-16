@@ -4,7 +4,7 @@
 
 R00/R01 在源码 b1e7b652 freshness 为14/14 fresh、0 stale、无登记源路径命中；R00-07 账本已更正到最新 audit 116 warnings/13 MEDIUM，13条工具栏自然换行风险仍打开。package identity 未提供。详见[R00/R01 复核包](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
-.tmp 当前约751.4 MiB，D盘可用9.25 GiB。经用户明确批准，已清理指定五个旧阶段目录，释放373.7 MiB；保留 SDK、当前 R21 复现目录及其他任务文件，不碰未跟踪 TRX/WPF 临时项目。下一项 R12-04：先检查既有 PreRestore 保护备份服务、DTO、同游戏锁与编排，再用 fake service/隔离目录验证失败阻断危险恢复和重试/取消门闩；不得访问真实存档。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。
+.tmp 本阶段临时 Release 输出已在归档 TRX 后清理。用户明确批准的五个旧阶段目录已释放373.7 MiB；保留 SDK、当前 R21 复现目录及其他任务文件，不碰其他未跟踪 TRX/WPF 临时项目。R12-04 当前 main 已用 SDK8 Worker `26/26`、Playnite `8/8` 复核；新增同游戏锁冲突负例仍待本次 push 后双 SDK Actions 终态。下一项 R12-05：复核现有 remote staging、状态 DTO、取消与隔离清理行为；只用 fake/隔离目录。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。
 
 CI #1031 的双 SDK 失败是历史结果，已由 #1032 新终态成功覆盖当前候选；前序失败日志与 artifact 身份继续保留在[历史证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
 外机 R09 仍报 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151；用户称已从 Git 拉取最新。当前 main line151 是错误色断言、line152 检查 Chrome `1 DIP`、line154 检查 `ValidationStroke 2 DIP`。直接从历史 `3f7d0b30` 取源确认，其 line 151 正是 Chrome `BorderThickness == 2 DIP`，与外机断言和值完全吻合；这证明外机测试/PDB 行映射与当前源码不同，但无法区分旧 DLL、旧 PDB、不同 checkout 或构建输出复用。外机 HEAD、测试源/DLL/PDB 未知，根因未确认。`libpng iCCP` 不在断言栈；COM teardown 在断言失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。

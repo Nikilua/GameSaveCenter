@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 main，推送基线 b1e7b652c938463f2f50ac74cb8157c4899daa1d。R21 UIA 客户端选择夹具本机 SDK8.0.423 Release build 0/0、目标 1/1、R21 24/24；Actions #1032/run 38838015414 的 SDK8.0.423 与 SDK10.0.401 job 均成功。生产选择、命令、绑定未改。R00/R01 在该源码身份 fresh 14/14、0 stale、无 source path 命中；R00-07 已更正最新审计为 116 warnings/13 MEDIUM，风险保持打开，package identity not-provided。下一项按用户顺序复核 R12-04 现有保护备份实现、DTO、锁与 fake/隔离行为；不访问真实存档。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
+更新：2026-10-16；分支 main，推送基线 b1e7b652c938463f2f50ac74cb8157c4899daa1d。R21 的 Actions #1032/run 38838015414 已由 SDK8.0.423 与 SDK10.0.401 两 job 通过。R00/R01 在该源码身份 fresh 14/14、0 stale、无 source path 命中；R00-07 最新 audit 为116 warnings/13 MEDIUM，风险仍打开，package identity not-provided。R12-04 当前 main 的 fake/隔离行为通过 SDK8 Worker 26/26、Playnite 8/8；新增同游戏锁冲突负例等待本次双 SDK Actions。下一项 R12-05 当前 main 证据复核，不访问真实存档。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。先收口 R21 UIA 行选择校正：新夹具通过 UIA 客户端 `AutomationElement`/`SelectionPattern` 查询真实选择项；本机 SDK8 通过，#1031 的双 SDK 失败仍需新提交 CI 证据。失败先取完整 job log，再按实际断言定位。CI 收口后依用户顺序复核 R00/R01 freshness 与具体 stale 问题，再核对 R12-04 已有保护备份路径并推进依赖满足的 Q/R。外机 R09 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。R21 与 R00/R01 已按当前事实收口。R12-04 已补同游戏锁持有时 Restore 不触发 PreRestore/Restore/Edit 的 Worker 负例；本机 SDK8 `26/26`、Playnite `8/8`，新提交 CI 仍需 SDK8/SDK10.0.401 终态。失败先取完整 job log 再按实际断言定位。之后复核 R12-05 现有 staging 行为并继续依赖满足的 Q/R。外机 R09 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
