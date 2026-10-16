@@ -1,8 +1,8 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-17；`main` 上一代码基线 `5c81a07056d64482767d546efe043012abc1e6fc`；本轮从 `ef5c8a7ffafc06cdbf9771ca6f74f90d7435f510` 继续，修复 Worker 取消回调测试夹具时序。Q24-04 的本机 SDK9 行为和 R00/R01 freshness/Render QA 仍见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)和[R00/R01 Render QA 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
+更新：2026-10-17；`main` 当前提交 `4a98148caf2b0909998824acc73119272fc0cb37`；Worker 取消回调测试夹具时序修正已完成，生产代码未改。Q24-04 的本机 SDK9 行为和 R00/R01 freshness/Render QA 仍见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)和[R00/R01 Render QA 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
 
-当前取消测试修正仅改 Worker 测试：本机 SDK8.0.423 官方 Release build `0/0`、Core `125/125`、Worker `361 Passed + 1 NotExecuted`，修正用例同一隔离 DLL 重复 `50/50`；同输出 R09 定向 `2/2`。完整 WPF 隔离在 R05 Tooltip `50/116` 因 `GetCursorPos` 无法取得初始系统光标位置停止，不能称全套通过。证据：[Worker 取消回调复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。下一步待新 push 的 SDK8/SDK10 Actions 明确终态后继续 R12-04 current-main recheck。
+当前取消测试修正仅改 Worker 测试：本机 SDK8.0.423 官方 Release build `0/0`、Core `125/125`、Worker `361 Passed + 1 NotExecuted`，修正用例同一隔离 DLL 重复 `50/50`；同输出 R09 定向 `2/2`。完整 WPF 隔离在 R05 Tooltip `50/116` 因 `GetCursorPos` 无法取得初始系统光标位置停止，不能称全套通过。随后 #1056/run `38962119739` 在 SDK8.0.423 和 SDK10.0.401 两 lane 均 Release `0/0`、Core125、Worker362、source107类和WPF隔离125类通过；SDK8 Render QA、静态审查、扩展包也成功。GitHub runner 两 SDK 通过是独立于本机的证据，但仍不等于用户另一台电脑的构建输入成功。证据：[Worker 取消回调复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
 
 R00/R01 完整 RenderHarness 在仓库隔离 SDK `8.0.423` 上 Release build/运行成功，`render-qa OK`、`0 PROBLEM`；旧准入表的 13 个 Task/Settings 问题未复现。窄 Settings 最小 body viewport `181.33 DIP`，Task 1040×700 `4/4` 行且 Inspector 可见。2026-10-15 静态审查的 13 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 警告仍作为独立风险保留。本次没有产品代码改动；没有运行 Playnite、物理 DPI/跨屏或屏幕最终呈现。
 
@@ -12,7 +12,7 @@ Actions #1051 的 SDK10.0.401 Worker 取消回调测试失败为 `361/362`、cal
 
 Actions #1054/run `38944728502` 已在当前文档 HEAD `79748216` 终态成功：SDK8.0.423 job `117120854146` 与 SDK10.0.401 job `117120854512` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、125 个 Playnite WPF 隔离类通过，含 R09；SDK8 另 Render QA `render-qa OK`、静态审查 `0 errors / 27 warnings / 177 info`、扩展包与 artifact 上传成功。它仅证明 GitHub runner 的该次构建输入通过，不覆盖外机 R09 `1/2`。
 
-用户提供的外机日志仍待精确定位：外机报告 116 个 WPF 类，当前 main CI 跑 125 类；第151行 `Thickness(2/1)` 不对应当前 R09 源的第151行颜色断言，旧断言在历史 `3f7d0b30`。没有失败同次 `summary.json`、TRX 与 test DLL/PDB/plugin DLL 身份，不能判断是旧 checkout、程序集或符号错配；无需让用户重跑。R23-08 最近准入复核未发现可立即实施的新 Q/R 产品代码项；下一步复核任务账本及外部边界变化，再领取依赖满足的小批。
+用户提供的外机日志仍待精确定位：外机报告 116 个 WPF 类，本机隔离也是116、#1055同提交SDK8 CI为125；类数不再作为根因判断。当前 R09 源 line151 是颜色断言，粘贴栈的 line151 却报 `Thickness(2/1)`；旧 Chrome 厚度断言在历史 `3f7d0b30`。重复附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`，没有新的运行身份；缺该次 `summary.json`、TRX 与 test DLL/PDB/plugin DLL 哈希，不能判断具体 checkout/程序集/符号错配。本机与 CI 通过均不覆盖外机真实失败。R12-04 四个源码/测试哈希已与现有证据一致。下一步按积压和 R23-08 准入复核选择依赖满足的小批；外机身份材料暂缺不阻塞独立工作。
 
 目前物理第二屏、真实 Playnite/OS 输入、CEF 权限和 ETW 权限仍是外部边界；R05-03 fail-closed，不绕过系统跟踪拒绝。临时 `.tmp` 保留仍在使用的输出；其他任务的未跟踪 TRX/artifact 不擅自删除。
 ## AI/Codex 启动协议
@@ -72,7 +72,7 @@ Actions #1054/run `38944728502` 已在当前文档 HEAD `79748216` 终态成功�
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。先收口 Worker 取消测试修正并跟完新的 SDK8/SDK10 Actions；成功后下一项 R12-04 current-main recheck。外机 R09 `1/2` 与 exit1 保留，source/DLL/PDB/脚本身份未确认；116 vs 125 的计数差不能单独定位原因。R00/R01 freshness 与 Render QA 的当前事实见本文件上文。真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。Worker 取消回调测试修正与 #1056 双 SDK CI 已收口；R12-04 文件身份复核完成并维持“已满足”。本轮重新扫描 Round2/3 的 208/192 项及 R23-08：未发现新的可独立实施代码缺口；只读桌面只有一块活动屏且没有可见 Playnite/Worker 进程。下一执行点为取得外机 R09 同次诊断身份材料、环境前置发生变化或任务表出现具体证据缺口后再领取对应小批。外机 `1/2` 和 exit1 保留；line151/Thickness 映射不符，重复日志 SHA 相同，缺同次构建身份，根因仍未确认。R00/R01 freshness 与 Render QA 的当前事实见本文件上文。真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

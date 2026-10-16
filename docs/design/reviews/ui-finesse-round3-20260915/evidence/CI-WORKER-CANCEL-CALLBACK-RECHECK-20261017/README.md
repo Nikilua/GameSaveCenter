@@ -22,4 +22,10 @@ Actions #1055/run `38951586638` 在旧代码提交上终态失败。SDK10.0.401 
 - [R09 SDK8.0.423 定向结果](tests/R09FocusOutline-sdk8423-ef5c8a7.trx)，SHA-256 `7B496BAE47779517463D6B0AFD330E99426B07DC66BCC825D1BE23574A59DABA`。
 - [R05 Tooltip 系统指针前置条件失败](tests/R05TooltipTiming-sdk8423-ef5c8a7.trx)，SHA-256 `F2A6E7ED3CC07CE2291CBBAA862D99A96152F1407CE662E6D9A91689D12ACE07`。
 
-推送本轮代码后仍须等待 SDK8.0.423 与 SDK10.0.401 Actions 两条 lane 终态。R09 外机源/测试 DLL/PDB/插件身份仍未知；真实 Playnite 呈现也未验。
+## 推送后 CI 与后续复核
+
+代码提交 `4a98148caf2b0909998824acc73119272fc0cb37` 对应 Actions #1056/run `38962119739` 已在两个 job 成功终态：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38962119739)。SDK8.0.423 job `117179503173` 和 SDK10.0.401 job `117179503250` 均 Release build `0 warning / 0 error`，Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125` 类通过。SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73` 扩展包生成及上传成功。SDK8 诊断 artifact `12076070827`（SHA-256 `ca2bc811fa05e227f2e2f7972a5f2b84b8cacb5ab98638b7189b0bf35774efce`），SDK10 诊断 artifact `12073339339`（SHA-256 `04fcc7a8fb76bc88a50c48f648a6f72431f523e74bfd0c6eac761a692bf4d129`）。该结果验证 GitHub runner 上这次提交；不代表用户另一台电脑的安装/测试输入一致或成功。
+
+R12-04 相关文件在当前 main 的 SHA 与 2026-10-16 复核包一致：`RestoreOrchestrator.cs` `7C58FD0E...4CF76D`、`RestoreWorkflowProgress.cs` `C520BD5A...21AE4F`、`RestoreOrchestratorTests.cs` `2100A6D4...23B72B`、`R12RestoreWorkflowBehaviorTests.cs` `6C3FDAEB...3B2A3C`。#1056 的完整 Worker 与 Playnite test groups 也已通过；无需重建 R12-04 服务或重复局部运行，本项继续标“已满足（当前 main 复核）”。
+
+外机 R09 的同次源码/DLL/PDB/插件身份和真实 Playnite 呈现仍未取得/未验。最新粘贴文本 SHA-256 与先前附件相同，仍是实际 `1/2` 失败；#1056 两 SDK 通过不能覆盖它。下一步按 backlog 与 R23-08 准入表重扫依赖已满足的 Q/R 工作，外机身份材料等待期间继续独立任务。

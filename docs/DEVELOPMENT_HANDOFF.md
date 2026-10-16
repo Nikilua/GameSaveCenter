@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-17；分支 `main`；本轮从 `ef5c8a7ffafc06cdbf9771ca6f74f90d7435f510` 继续，修复 Worker 取消回调测试夹具时序。本机 SDK8.0.423 官方 Release build `0/0`、Core `125/125`、Worker `361 passed + 1 NotExecuted`，修正用例重复 `50/50`，同输出 R09 定向 `2/2`；完整 WPF 隔离在 R05 Tooltip 系统 `GetCursorPos` 前置条件失败处停止。证据见[Worker 取消回调复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。Q24-04/R00-R01 事实仍见[Q24-04复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
+更新：2026-10-17；分支 `main`；代码提交 `4a98148caf2b0909998824acc73119272fc0cb37`。本轮只修复 Worker 取消回调测试夹具时序，无生产代码变化。本机 SDK8.0.423 官方 Release build `0/0`、Core `125/125`、Worker `361 passed + 1 NotExecuted`、目标取消测试 `50/50`；R09 定向 `2/2`。本机全量 WPF 隔离在 R05 Tooltip `GetCursorPos` 前置条件失败处停止。其后 #1056/run `38962119739` 的 SDK8.0.423 与 SDK10.0.401 Actions 两 lane 均成功，完整 Release build/Core/Worker/Playnite WPF 组通过；SDK8 另 Render QA、静态审查和扩展包成功。证据见[Worker 取消回调与双 SDK 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。Q24-04/R00-R01 事实仍见[Q24-04复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
 
-**最近的 Actions 尚未收口。** #1054/run `38944728502` 对文档 HEAD `79748216` 双 lane 成功，是此前完整门禁。更新的 #1055/run `38951586638` 对 `ef5c8a7` 已终态：SDK10.0.401 job `117144037233` 成功；SDK8.0.423 job `117144037407` 首轮 build/test、Render QA 与静态审查通过，但 package 重跑 Worker 测试时取消回调用例 `361/362` 导致包步骤失败。该测试夹具已修正，本机复核完成；新提交的 SDK8/SDK10 Actions 仍需跟至终态。#1051 同类旧失败及 #1052–#1054 成功仍按各自输入保留。GitHub runner 结果不证明外机已成功。
+**当前 CI 结论：** #1056/run `38962119739` 对提交 `4a98148c` 已整体终态成功。SDK8 job `117179503173`、SDK10.0.401 job `117179503250` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125` 类通过；SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成与上传成功。#1055 的 SDK8 package 重跑失败在后续提交复现并修正；#1051 历史失败及 #1052–#1056 的各自输入仍按历史事实保留。该 CI 结果只证明 GitHub runner 构建输入通过，不能覆盖另一台机器的失败。
 
 用户外机 R09 失败仍真实存在：Core `125/125`、Worker `357/357`、R09 `1/2`、整流程 exit `1`。line151 的 `Thickness(2/1)` 与当前源码 line151 颜色断言不匹配，说明测试源或配套 PDB/程序集输入至少一项不同；具体 checkout/DLL/PDB/脚本来源仍未知。外机、本机官方隔离都报告116个 WPF 类，但 #1055 同提交 SDK8 GitHub log 报125，类计数差不能单独定位根因。COM 收尾异常发生在断言失败之后，不解释厚度值。SDK9 本机定向和 #1047/#1053/#1054 通过均不覆盖外机错误。外机诊断目录不在当前工作区，取得同次 `summary.json`/R09 TRX/DLL-PDB 身份后直接分析，不要求用户重跑。
 
-下一可执行动作：提交推送本 Worker 测试修正，等待 SDK8.0.423 与 SDK10.0.401 Actions 终态；成功后继续 R12-04 当前 main 复核。外机 R09 身份材料仍待但不阻塞主线。Q24-04 的真实 Playnite/package-host、物理键盘/读屏、完整页面阅读顺序与视觉仍未验；第二物理屏、CEF 权限、ETW/真实呈现保留外部边界。未绕过权限或修改真实存档/媒体/云端。
+下一可执行动作：Round2 208 项、Round3 192 项和 R23-08 准入已重新扫描，没有发现新的可独立实施 Q/R 代码缺口；当前只读快照无可见 Playnite/Worker 进程且只有一块活动屏。用户外机 R09 的摘要文本与先前附件 SHA 相同，仍需那次诊断 artifact 中的 summary/TRX/test DLL/PDB/plugin DLL 身份才能定位；若 artifact 后续可用，先做身份比对，不要求重跑。否则等环境前置变化或任务表出现新的具体证据缺口，再按小批继续。真实 Playnite/package-host、物理键盘/屏/读屏、完整页面阅读顺序与视觉仍未验；CEF 权限、ETW/真实呈现保留外部边界。未绕过权限或修改真实存档/媒体/云端。
 ## 2026-10-15 R12-03 当前 main 行为复核
 
 - 现有 `PathRemapService`、DTO、隔离索引与生产 `MaintenanceView` 已满足目标路径核对方向；没有重建业务服务或改生产 XAML。

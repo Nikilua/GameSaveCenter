@@ -42,3 +42,12 @@
 SettingsLayout probe 覆盖 760/880/920/1100/1400 DIP 宽度与 560/700/900 DIP 高度，共 15 个尺寸案例、45 行头部/分类/body 几何读数；5 个分类均可测，末分类可滚动到达，宽度不超过 920 DIP 时最低主体 viewport `181.33 DIP`，高于 Harness `160 DIP` 门槛。完整 Render QA 另覆盖 Light/Dark。Task Center 的 1040×700 DIP shell geometry 为 `4/4` 可读行、`200 DIP` 表格 viewport、Inspector 可见。R00/R01 freshness 为 `14 fresh / 0 stale / 0 matched source paths / 2,919 compared paths`，package identity 未提供。详细摘要见 [R00/R01 current-main Render QA 证据](R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
 
 这仅是本机离屏逻辑 DIP 和合成数据验证，未运行 Playnite、物理 DPI/跨屏或最终呈现帧。2026-10-15 静态 audit 的 `13 MEDIUM TOOLBAR_VERTICAL_EXPANSION` 仍单独保留为布局风险；本次 Render QA 不会自动清除这些警告。当前没有由这次复核支持的新增产品代码改动；R23-08 的后续代码准入仍要求新发现可复现问题或明确用户需求。
+
+### 2026-10-17 当前 main 准入与外部边界复查
+
+- Worker 取消回调测试夹具修正后的提交 `4a98148caf2b0909998824acc73119272fc0cb37` 对应 #1056/run `38962119739` 已由 SDK8.0.423 与 SDK10.0.401 两 lane 完整验证成功；本阶段未改生产 UI 或服务。此 runner 结果不能覆盖用户另一台电脑的 R09 实际失败。
+- 重新扫描 Round2 208 项与 Round3 192 项：任务表中没有新增未实现代码项；Q24-03 仍要求第二物理屏，R23-04 仍依赖可用的隔离 Playnite/CEF 状态，R23-05/Q25-02/Q25-03 仍依赖合规系统呈现跟踪证据，其它当前差异主要是宿主/OS 输入/读屏/真实呈现验收。没有据此创建新的产品改动。
+- 本机只读环境快照：当前没有对当前用户可见的 Playnite 或 GameSaveCenter Worker 进程；`Screen.AllScreens` 仅有 `\\.\DISPLAY1` 一块活动屏，2560×1440，工作区 2560×1368。故 Q24-03 本轮不具备真跨屏条件；没有启动宿主或模拟第二屏。
+- 用户最新粘贴的 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与已有附件相同；日志仍是 R09 `1/2`、总体 exit `1`，诊断目录不在当前工作区。缺同次 `summary.json`、TRX、test DLL/PDB 与生产插件 DLL 身份，根因仍未定位；不要求用户重跑，也不凭当前本机/CI 通过覆盖该失败。
+
+准入结论：当前没有可安全独立实施的新 Q/R 代码项。下一可执行动作是在出现新的故障身份 artifact、可观察到环境前置变化或任务表产生具体缺口时，再依启动协议选一项；外机诊断 artifact 若之后可用，先比对该次 sourceCommit/dirty paths 与 test DLL/PDB/plugin DLL SHA。未验边界仍包括真实 Playnite UI、物理跨屏、OS UIA/IME/读屏、最终呈现帧、ETW/宿主性能。

@@ -8,9 +8,11 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
-### 2026-10-17 Worker 取消回调 CI 复核（当前活动项）
+### 2026-10-17 Worker 取消回调 CI 与 R12-04 复核（阶段已收口）
 
-Actions #1055/run `38951586638` 的 SDK8 package 重跑 Worker 测试失败；SDK10 lane 成功。测试夹具现已修改，本机 SDK8.0.423 官方 Release build/Core/Worker 通过，目标测试 `50/50`；完整 WPF 门禁在 R05 Tooltip 系统光标读取前置条件失败处停止，R09 单类 `2/2` 不代表全套通过。详见[Worker 取消回调证据](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。代码提交 push 后必须跟完 SDK8 与 SDK10 Actions 终态；成功后下一项 R12-04 current-main recheck。
+取消回调测试夹具修正已在提交 `4a98148caf2b0909998824acc73119272fc0cb37` 完成。Actions #1056/run `38962119739` 两 lane 均终态成功：SDK8.0.423 job `117179503173`、SDK10.0.401 job `117179503250`，各自 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125` 类全通过；SDK8 另 Render QA、WPF 静态审查和扩展包上传成功。#1055 的 SDK8 package 重跑失败是已修正测试夹具的历史真实失败。本机完整 WPF 门禁仍在 R05 Tooltip `GetCursorPos` 前置阶段停止，R09 定向 `2/2` 不代表本机全套通过。详见[Worker 取消回调与双 SDK 证据](design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
+
+R12-04 的四个生产/测试文件 SHA 与当前 main 既有复核证据一致；完整 Worker/Playnite CI groups 通过，无需重建服务或重复局部测试，状态维持“已满足（当前 main 复核）”。本轮按 R23-08 准入记录复扫后没有发现新的可独立实施项；后续等外部诊断身份 artifact、环境前置变化或任务表出现具体缺口时，再按小批继续。
 
 外机 R09 日志真实 exit `1` 保留。第151行 Thickness 断言不匹配当前源码同一行的颜色断言，具体 checkout/DLL/PDB/脚本输入未知。本机与外机发现116个 WPF 类，但 #1055 同提交 SDK8 CI 发现125类；类数不能单独作为根因证据。重复附件与既有日志 SHA 相同，不阻塞其它工作。
 
@@ -22,7 +24,7 @@ Actions #1055/run `38951586638` 的 SDK8 package 重跑 Worker 测试失败；SD
 
 **Actions 门禁已收口：** #1051/run `38927198349` 的 SDK10.0.401 job `117061655415` 曾终态失败于 Worker 取消回调测试，361/362，line128 expected1/actual0；完整 log 已读，SDK8 job `117061656455` 成功。#1052/run `38932328340` 与 #1053/run `38937972835` 已双 SDK整体成功。最新 #1054/run `38944728502` 对文档 HEAD `79748216` 也双 SDK整体终态成功：[Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38944728502)。SDK8.0.423 job `117120854146` 与 SDK10.0.401 job `117120854512` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、125个WPF隔离类通过（含R09）；SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包与上传成功，诊断 artifact 分别为 `12068781572` / `12066891114`。这些结果只证明对应 GitHub runner 的构建输入通过，不证明外机 R09 失败已解决；#1051历史失败仍保留，不称已修复。
 
-本次前后已检查近期准入表；Q24-03 需第二物理屏，R05-03 需 WMI 访问权限，R23-04 需 Playnite/CEF 状态改变，R23-05 的 ETW 系统跟踪权限受拒绝；均不越权绕过。当前先收口 Worker 取消测试修正及双 SDK Actions；之后执行 R12-04 当前 main 复核。若外机 R09 身份材料暂不可得，不阻塞独立任务。
+本次重新扫描 Round2 的 208 项与 Round3 的 192 项后，没有发现新的可独立实施 Q/R 代码缺口；Worker 取消测试与双 SDK Actions 已收口，R12-04 当前 main 身份复核完成。只读桌面快照没有可见 Playnite/Worker 进程且仅有一块活动屏，Q24-03 仍无法做真跨屏；R05-03 的 WMI、R23-04 的 CEF/隔离宿主、R23-05 的系统跟踪边界不绕过。下一步在外机 R09 同次诊断 artifact 可用、环境前置改变或任务表出现具体证据缺口时，再领取对应小批；目前用户粘贴文本仍是已有 SHA，缺 test DLL/PDB/plugin DLL 身份，不阻塞独立任务，也不将本机/GitHub runner 通过解释成外机成功。
 
 ### 2026-10-17 R00/R01 当前 main Render QA 校正
 
