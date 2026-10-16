@@ -34,3 +34,11 @@
 - #970/#971 用户补充的三个 ZIP 经 SHA-256 对照均为已审包的相同副本：#970 SDK10 `155612D3…43EAE`、#970 SDK8 `598C2CA6…4A8B6`、#971 SDK8 `6AC19F26…ADA4C`。#970 的 SDK8/SDK10 失败与通过内容均已定位；#971 SDK10 lane 仍无原始诊断，根因未知，不阻塞其他独立任务。
 - 没有启动真实 Playnite、调整 OS 显示设置或跨越物理显示器；没有验证真实宿主主题/Chrome、UIA/IME/读屏、最终 presented frame、ETW 或宿主性能。业务数据全是合成 DTO，不读写用户配置、存档、媒体、云端或真实目录。
 - Q24-02 受控 WPF 行为/几何栏通过；真实宿主仍外部待验，最终状态不签收。下一项可执行任务是 Q24-04 键盘次序；Q24-03 需要第二台物理显示器，本机当前只枚举到 `DISPLAY1`，留作外部阻塞。
+
+## 2026-10-16 current-main evidence correction
+
+The earlier `8 passed / 8 failed` supplementary result above belongs to the `74815b2b` source snapshot and is historical. It is superseded for current-main behavior by [the full Release rerun](../Q24-02-CURRENT-MAIN-RERUN-20261015/README.md), built at source commit `6b946540e634eacde4c64e50a5b187e8e085e9bc` with SDK `8.0.423` / VSTest `17.11.1`. The five relevant WPF classes were run in separate processes: Popup boundary `2/2`, focus boundary `5/5`, option virtualization `5/5`, Popup lifecycle `1/1`, and Tooltip timing `2/3`, total `15 passed / 1 failed`. The single failure was the `GetCursorPos` prerequisite returning false before the mouse test showed its window; no Tooltip hover assertion ran and no input permission was bypassed. The optional combined-process probe was `11/16` and is not the supported isolation gate.
+
+Actions #1047/run `38916251153` then validated code commit `e5b27cdec422bfd128c3830cf6c1e8684523545a` in both SDK lanes: SDK `8.0.423` job `117024368753` and SDK `10.0.401` job `117024368994` completed successfully. Each ran the full Playnite isolation manifest (`107` source classes and `125` WPF classes); logs include the R05 focus, option virtualization, Popup boundary/lifecycle, and Tooltip timing classes, and the full compile/test step succeeded. The wrapper log does not print per-class test totals, so those are recorded only from the isolated local TRX above. These CI results support current-main tests on hosted runners; they do not override the separate user's R09 failure or prove behavior on that machine.
+
+The Q24-02 controlled PageHost/scroll behavior remains passed. Final task acceptance remains incomplete pending real Playnite/presented-frame evidence and the external environment boundary; no screenshot or physical DPI/cross-screen proof is claimed.

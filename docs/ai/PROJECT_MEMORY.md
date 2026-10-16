@@ -6,7 +6,7 @@
 
 用户另一台机器的一键日志确实以 exit 1 结束：Core `125/125`、Worker `357/357`，R09 焦点行为 `1/2`，期望 `2 DIP`、实际 `1 DIP`；其 source/WPF 类数 `111/116`，当前 #1047 CI `107/125`。当前测试源 line 151 是 Brush 颜色断言，不可能产生 Thickness 值；历史 `3f7d0b30` 的 line 151 正是旧 Chrome `2 DIP` 断言，当前 `ValidationStroke 2 DIP` 在 line 154。由此能确认失败源代码或符号行映射与当前测试源不一致，不能确定旧测试 DLL、旧 PDB、checkout 或脚本输入是哪一项。默认随机隔离输出只能降低 bin/obj 复用风险，不能证明外机运行了当前脚本。#1047 两 SDK R09 通过不能代替外机复现；仍需同次 diagnostics `summary.json` / TRX / DLL-PDB identity。用户暂不能回复至明日 09:00，外机信息缺口不阻塞主线。R05-03 fail-closed 宿主预检已因 `Win32_Process.CommandLine` 返回“拒绝访问”停止，未启动/安装 Playnite；下一步安排以紧随本段的续跑信息为准。
 
-R05-03 的 fail-closed 预检结果已归档：`Win32_Process.CommandLine` 返回“拒绝访问”，未启动/安装 Playnite；ENV-001 阻塞保持。下一项为 Q24-02 当前 main 补充证据校正，然后继续依赖已满足的 Q/R。用户暂不能回复至 2026-10-17 09:00（Asia/Shanghai），外机 R09 diagnostics `summary.json` 仍待补但不阻塞主线。
+R05-03 的 fail-closed 预检结果已归档：`Win32_Process.CommandLine` 返回“拒绝访问”，未启动/安装 Playnite；ENV-001 阻塞保持。Q24-02 旧 `8/16` 记录已校正为当前 main 类隔离 `15/16`（`GetCursorPos` 前置失败）及 #1047 双 SDK 全量测试通过；宿主/呈现仍未验。下一项 Q24-04：检查现有键盘轨迹夹具，再补合成业务状态的正反向完整遍历。用户暂不能回复至 2026-10-17 09:00（Asia/Shanghai），外机 R09 diagnostics `summary.json` 仍待补但不阻塞主线。
 
 ## AI/Codex 启动协议
 

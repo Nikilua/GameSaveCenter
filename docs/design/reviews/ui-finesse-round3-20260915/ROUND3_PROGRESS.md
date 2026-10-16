@@ -1972,3 +1972,9 @@
 - Ran the baseline freshness script on tracked `main` HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`: 14 records, `14 fresh / 0 stale / 0 matched source paths`, 2,911 compared paths, package identity `not-provided`.
 - No registered R00/R01 behavior/visual paths changed since the archived evidence, so this was a freshness-only check; no suites or RenderHarness audit were rerun. Existing R00-01..07 and R01-01..08 statuses stand on their prior evidence.
 - R01-06/R00-07 retain 13 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` layout-risk findings from the prior audit; these remain visible risks. Real Playnite/package identity, physical DPI/cross-screen, OS input/UIA/IME, and presented frames remain unverified. Next is Q24-02 evidence correction, then other dependency-ready Q/R items.
+
+## 2026-10-16 Q24-02 current-main evidence correction
+
+- Round2 progress no longer treats the older `74815b2b` supplementary `8/16` failure run as current evidence. At source `6b946540`, the full Release solution rebuild and five isolated WPF classes produced `15 passed / 1 failed`; the sole failure was a `GetCursorPos` prerequisite before the physical mouse test displayed its window. The combined-process `11/16` diagnostic is outside the supported gate.
+- Actions #1047 on code commit `e5b27cde` completed successfully in SDK `8.0.423` and SDK `10.0.401`; each full Playnite isolation run included all `125` WPF classes and completed successfully. The wrapper does not print per-class numeric totals.
+- Q24-02 controlled PageHost and scroll evidence passes; real Playnite/presented-frame acceptance remains open. Next Q24-04 uses synthetic business states to inspect forward/reverse keyboard reachability across navigation, filter, table, detail and footer controls. Physical OS keyboard and host traversal remain unverified.
