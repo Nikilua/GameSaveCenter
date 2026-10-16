@@ -1,3 +1,10 @@
+## 2026-10-16 R13-04 暂停/时段持久化补证与 R09 同源复核
+
+- 复用既有 `WorkerOptions` 持久化、`CloudRetryService` 和 Playnite 设置，不改生产代码/XAML。新增 `DeviceIdentityTests.CloudQueuePauseAndWindowSurviveWorkerRestartAndResume`：在独立临时目录中保存暂停及跨午夜时段，通过新建 WorkerOptions 从磁盘重载，再保存恢复状态/新时段并再次重载验证。该行为测试不启动真实 Windows Service，也不声称验证运行中上传取消。
+- 本机锁定 SDK `8.0.423`、MSBuild `17.11.48`、VSTest `17.11.1`：Worker `4/4`、Core `1/1`、Playnite R13/PortableSettings `24/24`；Playnite 插件目标 `net462`。同一新建隔离 Playnite 输出的 R09 类 `2/2`。均为定向项目构建/测试，非完整 solution build/完整 Playnite 全类通过；未跑真实 Playnite，且没有 XAML 改动。脱敏 TRX、源码与 DLL/PDB SHA-256 见[R13-04 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
+- R00/R01 对代码提交 `ccdbacb6` freshness 为 `14/14` 无需重跑、`0` 登记源码路径命中，package identity 未提供。用户外机 R09 失败仍不能由本机定向通过否定；失败同次的 HEAD/源码/DLL/PDB/插件 DLL 身份缺失，具体根因未知。完整 Playnite 扫描仍因受限桌面 `GetCursorPos` Win32 error 5 中止。
+- Actions #1038/run `38867768405` 构建的是前一提交 `e6b77ade`：SDK10.0.401 job 已成功，SDK8 主 job最近查询仍在生成 Playnite 扩展包；不代表 `ccdbacb6`。本阶段证据和记忆文档完成后推送，并跟踪本提交新建的双 SDK Actions 至终态，再签收阶段。`.tmp/r13-04-ccdbacb6-20261016` 中的 TRX 已脱敏归档，提交证据后删除此本地输出。下一项根据 backlog 当前 READY 项继续，避免重做已满足的 R13-05/06/07/08 与 R14-01..08。
+
 ## 2026-10-16 R13-03 当前 main 行为复核与 R09 外机对照
 
 - 当前分支 `main`，代码提交 `ad2e67167072ca2af2a55e32de16077ab5a6603e`。R13-03 实现沿用 `680ea83a`，本次只强化真实 `BusyOperationCoordinator`/`RelayCommand` 重入门控和 Worker 合成 fake-cloud 复用本地备份验证；Playnite 目标类 `14/14`，Worker 全套 `360 passed / 1 Named Pipe 环境 skip`（本地备份重试测试 Passed），Core `125/125`。

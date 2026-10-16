@@ -149,3 +149,9 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 这再次确认当前 main 的同一构建输出不能复现外机报告，不会推断外机根因。SDK8 本机结果不替代 GitHub Actions 的 SDK10.0.401 lane；`6b946540` 对应 Actions run ID/终态暂不可核实（公开页加载错误且显示不同 SHA 的缓存项，匿名 API 返回 HTTP `403` rate limit）。
 
 清理检查（2026-10-15）：源文件、程序集 SHA/MVID、脱敏 TRX 与 build/test logs 已保存在本证据目录。`.tmp/r09-current-main-retry-20261015` 的构建缓存暂未删除：检查时发现来源不明的活动 `dotnet` 进程，无法确认缓存未被占用；DLL/PDB 不作为持久证据。
+
+## 2026-10-16 当前 `ccdbacb6` 的 SDK8 同输出复核
+
+当前 main 代码提交 `ccdbacb683afe6b0a745640d545cc9876332391c` 的隔离 Release 输出中，R09 测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；测试 DLL SHA-256 `A0D6FA3D6E25CC940AA0B69D08993CF8DE6FB9261723DEE3A8BAF428F30DB7A2`、PDB SHA-256 `C5857DF9B80FC9878D1A8F0F186138FABCB97D770380DE8250764A871DF25570`；同一输出的 Playnite 插件 DLL SHA-256 `B6903A1A2B50533A98C5B7A7C937F4F607645FC226AA4B015F43330335BC1BB5`、PDB SHA-256 `BD8A1027DE0F0C8398A93380C777C61996453A671327064ED582A913BF7F7E92`。这些 DLL 的 ProductVersion 均为 `0.6.73+ccdbacb6`。本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`；R09 类 `2/2`，0 失败、0 跳过。脱敏 [TRX](../R13-04-CURRENT-MAIN-RECHECK-20261016/tests/R09FocusOutlineBehaviorTests-sdk8423-main-ccdbacb6.trx)，TRX SHA-256 `BE59CF2B3878B632E0C69865A9D68DCAF769F38B8FF3E985DE6273E328134BB7`。
+
+这是当前源码和身份明确的程序集在本机定向通过证据，不是完整 Playnite 测试通过，也不能覆盖/否定用户另一台机器的失败。外机失败的 HEAD、源快照、DLL/PDB 和插件 DLL 仍未提供，根因仍未知；SDK10.0.401 对 `ccdbacb6` 的 CI 结果需等本提交推送后的 Actions run。外机如果再次复现，需保留同一次运行的完整 diagnostics summary/console/TRX 与源码、测试 DLL/PDB、加载插件 DLL 的 SHA-256，以便确认是否是同一输入。

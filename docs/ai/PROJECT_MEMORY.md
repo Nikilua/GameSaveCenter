@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 `main`，本地源码 `ad2e67167072ca2af2a55e32de16077ab5a6603e`，较 `origin/main` ahead 1。R12-05 #1035、R13-01 #1036 的 SDK8/SDK10 jobs 均成功。R13-03 复用原生产实现，只补行为测试；SDK8.0.423 隔离 Release solution build `0/0`、XAML `24/24`、Core `125/125`、Worker `360 passed/1 Named Pipe skip`；R13 Playnite 类 `14/14`，同一隔离程序集 R09 类 `2/2`。全量 Playnite 扫描在 R05 Tooltip 的 `GetCursorPos` 被桌面环境拒绝（Win32 error 5）时停在 `45/124`，不能记作全量通过。R00/R01 freshness `14/14 fresh`、0 stale、0 source matches，package identity 未提供。新证据见 R13-03 与 R09 外机复核包。下一项 R13-04；推送 `ad2e6716` 后跟踪 SDK8/SDK10.0.401 CI 到终态。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
+更新：2026-10-16；分支 `main`，代码 HEAD `ccdbacb683afe6b0a745640d545cc9876332391c`，比 `origin/main` `e6b77ade789d25406532e0cdcc3d8598dc2a0a2c` ahead 1 个代码提交。R13-04 磁盘暂停/时段持久化补测，本机 SDK8.0.423 Worker/Core/Playnite 定向结果为 `4/4`、`1/1`、`24/24`；同一隔离 Playnite 输出 R09 `2/2`。这不是完整 solution/Playnite 全类或真实宿主通过。R00/R01 freshness `14/14` 无需重跑、0 源路径命中，package identity 未提供。证据见[R13-04当前main复核](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。外机 R09 `Expected 2 / Actual 1` 仍未由本机复跑解释或否定；实际 HEAD/DLL/PDB/加载插件身份缺失，根因未知。旧 run #1038 是前一提交 `e6b77ade`，其 SDK10 job成功但SDK8主job当时还在打包，不能代表当前代码。新候选推送后跟踪双 SDK 到终态。下一活动项为 backlog 的 `CLOSE-WRAP-01`，此前先收口本阶段 CI；真实 Playnite/完整 Playnite 类、物理 DPI/跨屏、UI Automation/IME、呈现帧、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 
