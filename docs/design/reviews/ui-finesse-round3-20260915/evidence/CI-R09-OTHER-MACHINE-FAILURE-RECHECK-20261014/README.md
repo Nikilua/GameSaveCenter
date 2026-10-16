@@ -160,11 +160,11 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 
 ## 2026-10-16 再次收到完整 R09 输出后的当前 main 对照
 
-最新粘贴文本指向外机诊断 run `20261016T052146719Z-d9d99ac4`，隔离构建目录 `artifacts/gsc-b/fd7672ef`，显示 WPF 隔离类数 `116`。本机工作区没有该外机 diagnostics 目录或 DLL/PDB，所以无法读取其 summary、`sourceCommit`、dirty paths 或程序集身份。当前已提供的内容仍报告 line 151、Expected `2,2,2,2` / Actual `1,1,1,1`，与旧 Chrome 厚度断言一致。
+最新粘贴文本指向外机诊断 run `20261016T052146719Z-d9d99ac4`，隔离构建目录 `artifacts/gsc-b/fd7672ef`，显示 WPF 隔离类数 `116`。本机工作区没有该外机 diagnostics 目录或 DLL/PDB，所以无法读取其 summary、`sourceCommit`、dirty paths 或程序集身份。当前已提供的内容报告 line 151、Expected `2,2,2,2` / Actual `1,1,1,1`；历史 Chrome 厚度断言和当前 line 154 的 `ValidationStroke` 厚度断言都可能产生这组数值，不能仅凭此映射到其中一个。
 
 在本机 `main` HEAD `2341ca59e8bca692c9e778c2e31e62ba59016768` 上从新隔离输出重新编译后，SDK `9.0.302` / VSTest `17.14.1` 的 R09 类 `2/2` 通过。此为 Playnite `net462` / tests `net472` 项目及引用构建，不是完整 solution build。R09 测试源 SHA-256 仍为 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；测试 DLL SHA-256 `BB99081B1BB9CD92C99406168C907E818391F16B54CD7D4395C4B53B1C31C35B`、PDB SHA-256 `FD57C9B16A97EA8E9CE759D54B89BBC4BC50686D0E0F7EAB4693BA7DB4E63F56`、MVID `671c1b35-1359-457f-8c9d-c010418e12b3`；插件 DLL SHA-256 `A034E9EA376C68C0222E38543C0F52EFC27BA245045FF505402A9CA208A759D8`、MVID `2d7e700d-97de-4a2c-8d32-e02ebdfe53c1`。ProductVersion 均为 `0.6.73+2341ca59e8bca692c9e778c2e31e62ba59016768`。同次测试只扩展了 R13 维护页测试源（SHA-256 `CBB2025C47BC8E81297EC8A283F65208AC26FF7B689AFC4C2D94BB2E98401CBB`）；R09 源没有改。脱敏 [R09 TRX](tests/R09FocusOutlineBehaviorTests-current-main-2341ca59-sdk9302.trx)，SHA-256 `A70ADC7FC9FBF3D933ED9024621AF4114D547C3CF559C685AF5B41D56866C689`。
 
-当前测试文件的第 151 行是颜色断言，`983fee5` 也已包含当前分拆后的验证描边测试。因而外机运行的测试源码/符号行映射仍与该源码不同。本机通过只说明本机这份明确身份输入通过；新日志显示随机隔离输出，降低了复用旧输出目录的可能，但不能证明外机实际构建脚本版本或 checkout。具体根因不猜测。
+当前测试文件第 151 行是颜色断言，line 154 检查 `ValidationStroke` 的 `2 DIP`；历史测试 line 151 曾检查 Chrome 的 `2 DIP`。外机的 `116` 类与当前 main 的 `124` 类发现数不同，证明两次测试发现结果不同，但因没有同次 PDB/DLL identity，line 151 可能是旧断言，也可能是新测试断言的符号映射。随机隔离输出降低了复用旧目录的可能，但不能证明外机实际构建脚本版本、checkout 或实际加载的生产 DLL。具体根因不猜测。
 
 请从外机仓库根目录取回同一次 run 的以下身份，以区分错误 checkout 与生成物来源：
 
@@ -189,3 +189,11 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 ```
 
 当前 `main` 的 R09 定向复核 SDK9.0.302 `2/2` 通过；#1043 SDK8 job 在同次运行先通过 R09，之后失败在 R11 测试夹具，SDK10.0.401 job成功。上述结果仍不能识别用户机器的实际 checkout/DLL。没有对应 `summary.json` 前，外机 R09 根因保持未确认。
+
+## 2026-10-16 用户再次复核本机构建可信度
+
+用户再次附上同一 `20261016T052146719Z-d9d99ac4` 一键运行日志文本，附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`。可直接确认这次运行失败：Core `125/125`、Worker `357/357`，R09 焦点类 `1/2`，整次一键构建/安装 exit 1。日志显示 VSTest `17.11.1`、.NET Framework testhost `4.8.9221.0`、WPF 隔离类共 `116`；文本没有本次 SDK、sourceCommit、dirtyPaths、源文件 SHA、DLL/PDB SHA 或 plugin DLL identity。
+
+不能只凭 `Expected 2 / Actual 1` 与堆栈 line 151 确认它运行了历史 Chrome 厚度断言：历史测试 line 151 曾要求 Chrome `2 DIP`；当前测试 line 154 也要求独立 `ValidationStroke` 为 `2 DIP`，若 PDB/source 不同样可能映射到别的行。当前 main 的 WPF 隔离类数为 `124`，与日志的 `116` 不同，表明两次发现结果不同，但根因可能涉及 checkout、测试程序集、插件程序集或符号映射，当前没有证据区分。本机当前 main 的 R09 `2/2` 不能抵消外机实际失败，也不证明外机运行的是相同程序集。
+
+后续定位需使用失败同次 `summary.json` 的 sourceCommit/dirtyPaths/sourceFiles/assemblies，加上 R09 TRX 与实际 DLL/PDB/plugin DLL SHA。已在上方保留用户机器读取这些文件的命令；没有要求用户马上操作，主线修正继续推进。

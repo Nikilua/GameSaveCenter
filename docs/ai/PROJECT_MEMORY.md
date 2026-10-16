@@ -1,10 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；`main` 已推送 HEAD `72b2cbb77e4be53e9550983fd685d82ca9a31f88`，R11-08 代码在 `5157d8719110514aec857f2c0397ec4943b926e4`。本机 SDK9.0.302 定向 `6/6`；Actions #1041 对代码提交的 SDK10.0.401 job `116923431523` 成功，SDK8 job `116923431709` 在最近一次查询仍运行；文档提交 #1042 的两条 job 也仍运行。#1040 的双 SDK成功只覆盖前一代码 HEAD `964f325d`。未终态的 run 均不签收。R13-05 当前 main 未变源码由 #1040 双 SDK验证，受控行为证据见[R13-05复核](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
+更新：2026-10-16；`main` 已推送 HEAD `33b9d23f73b05d18b703959a5106b34b2fb662f9`。R13-07 定向实现/行为测试此前在本机 SDK9.0.302 下为 Playnite `16/16`、Worker `14/14`；完整 GitHub run #1045 在 SDK10.0.401 和 SDK8.0.423 两条 lane 都发现 `WorkspaceStateSourceTests` 还匹配旧源码变量名（443/462 通过，1失败，18跳过）。校正只改源码接线测试，分页选择行为由 R13-07 行为测试覆盖。两份 CI 完整日志已读，详细见[校正证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。
 
-外机 R09 仍报旧厚度断言 `Expected 2 / Actual 1`、line 151。该行与历史 `3f7d0b30` 中 Chrome `2 DIP` 一致，但 `f13b9e05` 之后当前代码将 Chrome 固定为 `1 DIP` 并由独立 `ValidationStroke` 提供 `2 DIP`；截图中的祖先 `983fee5` 已包含新测试源。故日志与当前测试源码/PDB 行映射不一致，不能仅凭“pull 最新”断言具体二进制来源。需要该次 summary/TRX 与 test DLL/PDB SHA 才能定位。R00/R01 freshness 对 `5157d871` 为 `14/14 fresh / 0 stale / 0 source matches`，2,883 paths；审计摘要和边界见 CURRENT_STATE。
+本机只装 SDK `9.0.302`，仓库锁定 SDK `8.0.423` 不可用。首次定向测试尝试因 MSB4276 在项目引用阶段终止；按仓库构建配置关闭 Workload resolver 后，在全新隔离输出重跑 `WorkspaceStateSourceTests` 为 `9 passed / 1 skipped / 0 failed`。这是 SDK9 定向项目验证，不是完整 Playnite source group，不能替代双 SDK CI。校正提交的新 Actions 待查到双 SDK 终态。旧 run #1044 针对 `ea1e1aea`，SDK10.0.401 与 SDK8.0.423 的全部 job/步骤现已终态成功；它不含 R13-07 代码。
 
-CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已由 #1039 双 SDK完整自动化门禁收口。R11-08 本机结果不替代新提交 CI；旧 #1040 仅验证 `964f325d`。`5157d871` push run 的查找是当前门禁，R00/R01 freshness 已预查 fresh，但具体问题与证据校正仍按阶段复核。之后按 ROUND3_PROGRESS 推进依赖满足的 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
+用户最新一键日志确认外机这次 R09 实际失败并以 exit 1 结束，测试发现 116 个 WPF 类；当前 main 的隔离清单为 124 类。当前 line 154 的 `ValidationStroke` 厚度断言与历史 line 151 的 Chrome 厚度断言都可能产生 `Expected 2 / Actual 1`，所以没有同次源/DLL/PDB 身份时不能仅凭行号和值断定具体哪条断言执行。发现数不一致证明两次测试发现结果不同，但具体 checkout/程序集/符号原因仍未知。此前本机 R09 `2/2` 不能代替外机复核。外机同次 HEAD/status/source/DLL/PDB 身份未取得。之后按 ROUND3_PROGRESS 复核已满足 R13-08，再推进下一个未完成 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 

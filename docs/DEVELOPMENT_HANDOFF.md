@@ -1,19 +1,10 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；分支 `main`，最近已推送 HEAD `ea1e1aead8ffd8c89d09cd753519a522f327f91b`。当前待提交 R13-07 小批修改生产 ViewModel 中的队列分页追加/选中恢复与汇总格式 helper，并补实际维护页控件绑定行为；优先复用现有 DTO、Worker 查询、`BatchObservableCollection` 和 `SelectionAnchorResolver`。
+更新：2026-10-16；分支 `main`，已推送 HEAD `33b9d23f73b05d18b703959a5106b34b2fb662f9`。R13-07 生产页筛选、分页追加与选中恢复复核见[R13-07 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。待提交的小批只修复旧源码形状断言：改为检查生产 helper 接线；实际选择与分页语义由 R13-07 WPF 行为测试验证。
 
-本机 SDK9.0.302/VSTest17.14.1 隔离 Release：Playnite R13 `16/16`、Worker `CloudTransferStateTests 14/14`、source validation 与 `git diff --check` 通过。Playnite tests `net472` / plugin `net462` 定向构建成功；不是完整 solution build，也不替代 SDK8.0.423 或 CI SDK10.0.401。R00/R01 freshness 为 14 条、0 需重跑、0 匹配登记源路径，package identity `not-provided`；详见[R13-07 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。
+Actions #1045/run `38897153757` 对 `33b9d23f` 的 SDK10 job `116960249686` 和 SDK8 job `116960249845` 均因 `WorkspaceStateSourceTests` 查找已移除变量名失败（443/462 通过、1 失败、18 跳过）；完整日志已取得，见[CI 校正记录](design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。本机只安装 SDK9.0.302，仓库锁定 SDK8.0.423 不可用；首次尝试因 MSB4276 在项目引用阶段终止，随后关闭 Workload resolver 并在全新隔离输出运行 `WorkspaceStateSourceTests 9/1/0`（通过/跳过/失败）。这是定向测试，不代表完整 Playnite source group，也不替代 SDK8/SDK10 CI。修正后源码校验和 `git diff --check` 通过，R00/R01 freshness `14/14 FRESH / 0 STALE / 0 matched source paths`。#1044/run `38894241925` 针对旧提交 `ea1e1aea` 已双 SDK 全 job 成功，且不含 R13-07 新代码。
 
-Actions：#1041/run `38885898033` 与 #1042/run `38888296980` 两 SDK lane 均成功；#1043/run `38889453677` SDK10 job `116935125185` 成功、SDK8 job `116935124793` 在 R11 历史筛选测试失败（完整日志已读）；#1044/run `38894241925` 对提交 `ea1e1aea` 的 SDK10 job `116950776709` 已成功，SDK8 job `116950777158` 的编译/测试步骤成功、当前离屏渲染 QA 仍运行。它不包含本次 R13-07 未提交代码。推送本批后产生的新 run 也必须追踪两条 SDK lane 到终态并处理完整日志。
-
-外机 R09 新日志指向 diagnostics `20261016T052146719Z-d9d99ac4`、隔离输出 `artifacts/gsc-b/fd7672ef`，仍报 line151 `Expected 2 / Actual 1`，WPF 类数 116。当前 main/祖先 `983fee5` 第151行检查错误色，第152行为 Chrome 1 DIP，第154行为 ValidationStroke 2 DIP；当前源本机新隔离 R09 `2/2`。外机没给 HEAD/status/source hash/DLL/PDB/plugin DLL 身份，故具体根因未确认。取证命令已写入[R09 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
-
-R00/R01 对当前 source HEAD `2341ca59` freshness `14/14 fresh / 0 stale / 0 matched paths`，本轮测试路径未命中登记源路径；package identity `not-provided`。R00-07 audit 为168 snapshots/116 warnings/0 HIGH/13 MEDIUM，13条工具栏自然换行风险仍打开。R13-05 当前 main 复核与 #1040 双 SDK结果见[R13-05 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
-
-.tmp 中先前获授权的五个旧目录已清理。本轮自建 `.tmp/r13-07-sdk9-runner` 在 TRX、源/程序集 SHA、freshness 归档后删除；其他任务未跟踪证据保留。用户贴出的 R09 外机 `Expected 2 / Actual 1` 对应旧测试断言形态，当前 main line151/154 已拆为错误色与 ValidationStroke 厚度检查；外机同次 HEAD/status/summary/DLL/PDB 身份仍未提供，根因未确认，不阻塞主线。先收口 #1044 与本批新 Actions，再推进 R13-08。真实 Playnite/通知、联网、OS UIA/读屏/IME、物理 DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
-
-CI #1031 的双 SDK 失败是历史结果，已由 #1032 新终态成功覆盖当前候选；前序失败日志与 artifact 身份继续保留在[历史证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
-用户本次粘贴的外机 R09 日志为 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151、WPF 类总数 `116`；当前 main/祖先 `983fee5` 的 line151 是错误色断言，`ValidationStroke 2 DIP` 在 line154，当前干净隔离程序集发现124个 WPF 类。外机未附 HEAD、源快照、DLL/PDB SHA 或诊断清单，故可确认日志与当前源映射/测试清单不一致，不能断言根因。当前 SDK8 新建隔离 DLL 的 R09 类 `2/2`；完整 Playnite 扫描另因本机 `GetCursorPos` Win32 error5 在 R05 中止，未算全量成功。`libpng iCCP` 不在失败断言栈；COM teardown 在断言失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+外机 R09 最新一键日志确以 exit 1 结束，目标测试期望 `2 DIP`、实际 `1 DIP`；日志发现 116 个 WPF 类，而当前 main 隔离清单 124 类。当前源码第 154 行的 `ValidationStroke` 厚度断言与历史第 151 行 Chrome 厚度断言都能产生相同数值，缺同次 HEAD/status/source/DLL/PDB 时不能只凭行号和值归属到其中一条。发现数不一致证明测试发现结果不同，具体 checkout/程序集/符号原因未定。本机先前 R09 定向通过不能替代外机失败。没有改生产模板或放宽断言。`.tmp/r13-07-sdk9-ci-failure-repro-20261016` 已清理，其他任务未跟踪文件保留。下一步提交并推送源码断言校正，监控新 Actions 两条 SDK lane 到终态；成功后按账本复核已满足 R13-08，再推进下一未完成 Q/R。真实 Playnite/package-host、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 
 ## 2026-10-15 R12-03 当前 main 行为复核
 

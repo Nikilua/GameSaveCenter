@@ -120,7 +120,7 @@ public sealed class WorkspaceStateSourceTests
     }
 
     [Fact]
-    public void ConsistentPagedViewsPreserveSelectionAndStopAfterRepeatedResets()
+    public void PagedViewsRetainSelectionRecoverySourceHooks()
     {
         var root = FindRepositoryRoot();
         var cloud = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.CloudTransfers.cs"));
@@ -128,7 +128,8 @@ public sealed class WorkspaceStateSourceTests
         var state = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
         Assert.Contains("pendingCloudTransferKey = selectedKey", cloud);
-        Assert.Contains("var shouldLoadPending = restored == null", cloud);
+        // Cloud selection semantics are behavior-tested through the production helper by R13CloudTransferStageBehaviorTests.
+        Assert.Contains("var restored = ResolveCloudTransferPageSelection(", cloud);
         Assert.Contains("response?.HasMore == true", cloud);
         Assert.Contains("!pageResetReceived && loadPendingSelectionPage", cloud);
         Assert.Contains("请点击“刷新队列”后继续", cloud);

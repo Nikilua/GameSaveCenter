@@ -1,16 +1,14 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-16；分支 `main`，最近已推送 HEAD `ea1e1aead8ffd8c89d09cd753519a522f327f91b`。当前工作树在此基础上包含 R13-07 小批：生产路径的页追加/选中恢复行为 helper、筛选汇总格式 helper 与对应 Playnite 测试；没有新建服务或 DTO。
+更新：2026-10-16；分支 `main`，已推送 HEAD `33b9d23f73b05d18b703959a5106b34b2fb662f9`。R13-07 生产实现与定向行为复核见[R13-07 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。目前有一项未提交的测试源码校正：旧源码测试仍查找已删除的局部变量名，改为检查生产 helper 接线；分页/选择真实行为由 R13-07 WPF 用例验证。未改生产功能。
 
-本机 SDK `9.0.302` / VSTest `17.14.1` 独立 Release 输出：Playnite R13 `16/16`、Worker `CloudTransferStateTests 14/14`；源码校验与 `git diff --check` 通过。非完整 solution build；SDK8.0.423 未安装，SDK9 结果不替代仓库 SDK8 或 CI SDK10.0.401。R00/R01 freshness `14` 条记录、`0` 需重跑、`0` 匹配登记源路径，package identity `not-provided`。证据及源/程序集/TRX SHA 见[R13-07 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。
+Actions #1045/run `38897153757` 对 `33b9d23f` 双 lane 终态失败：SDK10.0.401 job `116960249686` 与 SDK8.0.423 job `116960249845` 都在 `WorkspaceStateSourceTests` 的旧源码断言失败（462 项、443 通过、1 失败、18 跳过）。两份完整日志已读取；精确失败与校正见[CI 证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R13-07-SDK-SOURCE-ASSERTION-RECHECK-20261016.md)。#1044/run `38894241925` 已终态成功，但验证的是旧提交 `ea1e1aea`，不覆盖 `33b9d23f`。
 
-Actions：#1041/run `38885898033` 与 #1042/run `38888296980` 双 SDK 均成功；#1043/run `38889453677` SDK10 job `116935125185` 成功、SDK8 job `116935124793` 在 R11 历史筛选 WPF 测试失败，完整日志已读取。#1044/run `38894241925`（提交 `ea1e1aea`）SDK10 job `116950776709` 已成功；SDK8 job `116950777158` 的编译/测试成功，离屏渲染 QA 正在运行。它不覆盖本次未提交 R13-07 改动。R13-07 推送后产生的新 run 必须跟两条 lane 到终态。
+本机只装 SDK `9.0.302`，仓库锁定 SDK8.0.423 未安装。首次定向测试尝试因 MSB4276 在项目引用阶段终止；随后按仓库 build 配置关闭 Workload resolver，在全新隔离输出重新 Release 编译并运行 `WorkspaceStateSourceTests`，`9 passed / 1 skipped / 0 failed`。这是 SDK9 定向项目验证，不是完整 solution/source group，也不替代 SDK8/10 CI。源码校验通过，`git diff --check` 通过；R00/R01 对变更测试路径 `14/14 FRESH / 0 STALE / 0 matched source paths`、package identity 未提供。两次本轮 `.tmp` 均已清理；推送后新 Actions 两条 lane 均终态成功才收口。
 
-外机 R09 最新诊断 run 为 `20261016T052146719Z-d9d99ac4`，构建路径 `artifacts/gsc-b/fd7672ef`，失败仍是 `Expected 2,2,2,2 / Actual 1,1,1,1`、line 151，WPF 类数 `116`。当前 main line 151 是颜色断言，152/154 分别检查 Chrome `1 DIP` 与 ValidationStroke `2 DIP`；祖先 `983fee5` 已含该新测试源。本机当前源码新隔离构建 R09 `2/2` 通过。外机的 checkout、工作区源、DLL/PDB 身份未提供，具体根因未确认；没有改生产模板或降低断言。精确需要的外机命令与本机 SHA/TRX 见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+外机 R09 最新一键日志确有失败：`SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError` 的 `2 DIP` 对 `1 DIP` 断言失败，整次运行以 exit 1 结束。日志发现 116 个 WPF 类，当前 main 隔离清单为 124 类，说明两次测试发现结果不同。当前源码 line 151 是颜色断言、line 154 才检查 `ValidationStroke` 的 `2 DIP`；历史 Chrome `2 DIP` 断言也曾位于 line 151。由于当前 line 154 同样可能产生 `2` 对 `1`，而外机未提供同次 HEAD/status、测试源与 DLL/PDB identity，不能只凭期望值和堆栈行号确定失败的是旧 Chrome 断言还是当前 ValidationStroke 断言。本机此前 R09 定向通过不覆盖这台机器的失败；未改生产模板或放宽断言。见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-外机 R09 最新诊断 run `20261016T052146719Z-d9d99ac4` 仍报 `Expected 2 / Actual 1`、line 151、WPF 类数 `116`；当前 main line 151 为错误色、line 152/154 分别检查 Chrome `1 DIP` 与 ValidationStroke `2 DIP`。据此能确认外机的测试源/符号映射与当前源码不同，不能确定是 checkout、工作区源还是程序集来源。外机的同次 HEAD/status、summary.json、DLL/PDB 身份仍未取得；未改生产模板或放宽断言，取证命令见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
-
-.tmp 中先前获授权的旧目录已清理。本轮自建 `.tmp/r13-07-sdk9-runner` 已归档最终 TRX、哈希与 freshness，随后删除；其他任务未跟踪文件保留。R00-07 最近 audit 为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，13 条工具栏换行风险仍开。R13-05 仍“已满足”；R13-06 与 R13-07 受控复核见对应 evidence README。下一步追踪 #1044 与本次 R13-07 新 Actions；两条 lane 终态后推进 R13-08。真实 Playnite/package-host、网络/通知、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+R00-07 最近 audit 为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，13 条工具栏换行风险仍开。R13-08 已有失败分类和未知错误正反证据，CI 收口后按当前输入复核，再推进账本中下一个未完成 Q/R 项。真实 Playnite/package-host、网络/通知、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 
 
 
