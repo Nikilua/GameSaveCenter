@@ -10,7 +10,7 @@
 
 ### 2026-10-16 当前续跑点（覆盖下方历史下一项）
 
-**最新续跑事实（从已推送 `241bfb16` 继续）：** R12-04 的 #1034 双 SDK Actions 已成功。R12-05 提交 `241bfb16` 对应 #1035/run `38855405119` 最近仍 in progress：SDK10 job `116825613833` 和 SDK8 job `116825614090` 都在 Release 编译/测试；只有终态才可结束，失败先读取完整日志。本机 SDK8.0.423 对 R12-05 Worker `32/32`、Playnite `8/8`，完整 Release solution `0 warning / 0 error`、XAML `24/24`。R00/R01 freshness 在 `241bfb16` 为14/14 fresh、0 stale、0源路径命中，package identity not-provided；R13 测试提交后重跑。R13-01 既有能力当前 main 复核 Core `40/40`、Worker `14/14`、Playnite `21/21`；实际生产 `MaintenanceView` DataGrid 和详情显示上传/等待验证与远端已验证的不同阶段，隔离 Worker DTO 状态确认只有完成校验后才报告 Verified。此次只改测试/证据，不改生产代码或 XAML；R13-01 继续标记已满足。R12/R13 证据见 Round3 progress。本轮只使用合成 DTO、fake 与隔离 SQLite，不访问真实存档、用户媒体或云端。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。下一项 R13-02。
+**最新续跑事实（从源码提交 `1e7ff4d8` 继续）：** R12-04 #1034 双 SDK 已成功。R12-05 #1035/run `38855405119` 的 SDK10.0.401 job `116825613833` 与 SDK8 job `116825614090` 均已成功。R13-01 #1036/run `38857050764` 的 SDK10 job `116830769335` 成功，SDK8 job `116830769619` 已通过编译/测试、离屏 QA、WPF 静态审查并正在打包；必须继续跟到终态，失败先取得完整日志。R13-01 既有能力当前 main SDK8 Core `40/40`、Worker `14/14`、Playnite `21/21`；生产维护页真实 DataGrid/详情状态区分已上传待验证与远端已验证。R13-02 已有重试时间实现，本次仅改测试：本机 Core `2/2`、Playnite `R13CloudTransferStageBehaviorTests 14/14`，生产维护页详情实际验证有界相对时间、完整时间辅助文本、错误原因和已到期无负倒计时。R00/R01 freshness 在 `1e7ff4d8d121f46869c87d8315d466056344a1ae` 为14/14 fresh、0 stale、0登记源命中，package identity not-provided。R12/R13 证据见 Round3 progress；全部只用合成 DTO/fake/隔离输出，不访问真实存档、用户媒体或云端。R13-02 的时钟边界没有调用 OS 改时 API；真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍未验。R13-02 证据已同步，推送后跟踪新 Actions 至终态。下一项 R13-03 手动重试范围。
 
 ### 2026-10-15 当前续跑点（覆盖下方历史下一项）
 

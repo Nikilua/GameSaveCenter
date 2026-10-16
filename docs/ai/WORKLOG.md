@@ -10901,3 +10901,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R12-05 Actions #1035/run `38855405119` 最近读取仍 In progress：SDK10 job `116825613833` 与 SDK8 job `116825614090` 都在 Release 编译/测试。相关提交的完整 solution 本机 build 已成功，但不替代 CI SDK10.0.401。R13 这批测试/证据文档提交后也要检查新 Actions 到终态。
 - 已归档 Core/Worker/Playnite 脱敏 TRX 与哈希后，按 PowerShell 路径校验删除自己建立的 `.tmp/r12-05-current-main-sdk8` 和 `.tmp/r12-05-current-main-sdk8-diag`，共释放 `170.9 MiB`；D盘当时剩余 `6.73 GiB`。保留 SDK、R21 复现目录、用户/其他任务文件、未跟踪 TRX 和 WPF 临时项目。
 - 未连接真实远端或 rclone/Ludusavi；没有访问真实存档、媒体或云端。真实 Playnite/package-host、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。下一项 R13-02 下次重试时间：先检查现有 `NextAttemptUtc/NextAttemptLocal`、时钟变化及页面生命周期，再确定是否缺行为证据。
+
+## 2026-10-16 R13-02 当前 main 下次重试时间复核
+
+- 先复用已有 `CloudTransferStatusDto.NextAttemptUtc/NextAttemptLocal`、有界相对时间、完整时间 Tooltip/Automation HelpText 和维护页原始错误详情；生产 DTO、XAML、Worker 与命令未改。原功能 `6fd22892` 已满足任务，本轮只补实际生产视图证据。
+- 扩展现有隔离 STA 生产 `MaintenanceView` 用例并复用同一测试窗口；实际选中网络失败重试行后检查详情里的相对提示、完整本地/UTC Tooltip、Automation HelpText 与展开的失败原因。将合成时间设为已到期后重新选择，实控件显示“可立即重试”、没有负值。源码检查确认此路径没有逐行 DispatcherTimer，实际数据来自合成 DTO。
+- 本机使用保留的 SDK `8.0.423`，MSBuild `17.11.48`、VSTest `17.11.1`。Core 重试边界 `2/2`，Playnite `R13CloudTransferStageBehaviorTests 14/14`，当前提交 `1e7ff4d8` 的 test assembly/source identity 匹配；source validation 与 diff check 通过。Playnite 插件/net462、测试/net472 及引用项目 Release 定向构建成功；不是完整 solution build。脱敏 TRX、源码/程序集 SHA、R00/R01 freshness `14 fresh / 0 stale / 0 source matches` 见[R13-02 当前 main 证据](../design/reviews/ui-finesse-round3-20260915/evidence/R13-02-CURRENT-MAIN-RECHECK-20261016/README.md)。
+- 用到期时间戳重新求值模拟时钟快进经过计划时间后的边界，不调用系统改时 API，因此不能证明系统时钟通知令已显示 WPF 绑定即时刷新。STA 窗口为逻辑 DIP，不等于真实 Playnite/package-host、最终帧/物理 DPI/跨屏/独立 UIA/IME/ETW/宿主性能。只使用合成数据，未读写真实存档、媒体、云端或外发诊断；Demo 原目录不可用，继续参考恢复生产基线。
+- 归档 TRX、源/程序集身份后已删除本阶段唯一隔离输出 `.tmp/r13-02-current-main-1e7ff4d8-sdk8`；保留用户和其他任务文件。R12-05 #1035 的 SDK8/SDK10 job 已成功；R13-01 #1036 的 SDK10 job成功，SDK8 job `116830769619` 最近仍在编译/测试，上次非终态；继续跟踪且不能用本机SDK8替代CI SDK10.0.401。下一项 `R13-03 手动重试范围`，先核对命令入口、幂等 requestId 和部分成功语义。

@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 main，R12-04 提交 `86ba18a5` 的 Actions #1034/run `38846116072` 双 SDK 成功。R12-05 提交 `241bfb16` 的 #1035/run `38855405119` 最近仍在进行，SDK8 与 SDK10.0.401 都在编译/测试步骤；本机 SDK8 Worker `32/32`、Playnite `8/8`，后续完整 Release solution build `0/0`。R13-01 既有实现经当前 main SDK8 Core `40/40`、Worker `14/14`、Playnite `21/21` 复核，新增生产 MaintenanceView STA 表格/详情状态行为和 Worker 上传/校验负例；只改测试与证据，生产服务/XAML不变。证据见 R12-05、R13-01 当前 main 包。R00/R01 freshness 在 `241bfb16` 为14/14 fresh、0 stale、无登记源命中；R13 测试提交后重跑。R00-07 audit 116 warnings/13 MEDIUM，package identity 未提供。下一项 R13-02。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
+更新：2026-10-16；分支 main，R12-04 #1034 与 R12-05 #1035/run `38855405119` 的 SDK8/SDK10 job 已成功。R13-01 #1036/run `38857050764` 的 SDK10 job `116830769335` 成功、SDK8 job `116830769619` 已过编译/测试、离屏 QA、WPF 静态审查，正在打包。当前源码提交 `1e7ff4d8` 仅增加 R13-02 测试；本机 SDK8 Core 重试边界 `2/2`、Playnite `R13CloudTransferStageBehaviorTests 14/14`，生产维护页详情行为真实绑定复核通过。R00/R01 对 `1e7ff4d8` freshness `14/14 fresh`、0 stale、0 登记源命中；package identity 未提供。证据见 R12-05、R13-01、R13-02 当前 main 包。R00-07 audit 为116 warnings/13 MEDIUM。下一项 R13-03。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。R12-05 #1035 仍须跟踪 SDK8/SDK10.0.401 至终态，失败先取完整 job log；不能用本机 SDK8 代替 CI SDK10。R13-01 已有实现，当前 main 行为补证通过 Core `40/40`、Worker `14/14`、Playnite `21/21` 和 SDK8 Release solution `0/0`，没有生产代码改动；下一项 R13-02。R00/R01 freshness 上次为源码 `241bfb16` 的14/14 fresh，测试提交后刷新。外机 R09 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。R12-05 #1035 两个 SDK job 已成功；R13-01 #1036 SDK10 job成功、SDK8 `116830769619` 已过编译/测试、离屏 QA、WPF 静态审查并正在打包，必须跟到终态。失败先取完整 job log，本机 SDK8 不替代 CI SDK10。R13-01 与 R13-02 当前 main 已补生产维护页实际行为证据并维持已满足；R13-02 Core `2/2`、Playnite `14/14`。源码 `1e7ff4d8` 的 R00/R01 freshness 为14/14 fresh、0 stale、0登记源命中，package identity 未提供。下一项 R13-03。外机 R09 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。
