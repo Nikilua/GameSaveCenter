@@ -6,7 +6,7 @@ Actions #1045/run `38897153757` 对 `33b9d23f` 的 SDK10 job `116960249686` 和 
 
 外机 R09 一键流程实际 exit `1`，Core `125/125`、Worker `357/357`，R09 `1/2`。该日志 stack line151 映射 `Thickness(2)` / `Thickness(1)`；当前源码 line151 是 Brush 颜色断言，不可能产生 Thickness，历史 `3f7d0b30` 的 line151 是旧 Chrome `2 DIP` 断言。#1047 当前 main 双 SDK R09 类通过，仍不能覆盖外机失败。缺同次 diagnostics `summary.json`、TRX、HEAD/status、DLL/PDB/plugin DLL identity，不能区分旧测试程序集、旧 PDB、checkout 或脚本输入。具体事实见[R09 外机复核](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)；缺失的外机 summary 不阻塞独立主线工作。
 
-R05-03 fail-closed 宿主预检因 `Win32_Process.CommandLine` 查询返回“拒绝访问”而停止；未启动 Playnite、未安装扩展、未创建 profile/output。不要绕过 ENV-001，记录该边界后转可离线复核的 Q/R。用户暂不能回复至 2026-10-17 09:00（Asia/Shanghai）；需补外机 identity 时只请求失败同次 `artifacts/build-diagnostics/20261016T052146719Z-d9d99ac4/summary.json`，不阻塞其他任务。
+R05-03 fail-closed 宿主预检因 `Win32_Process.CommandLine` 查询返回“拒绝访问”而停止；未启动 Playnite、未安装扩展、未创建 profile/output。该边界已归档在 R05-03 复核包；下一项更新 Q24-02 当前 main 补充证据，再推进其他可离线复核的 Q/R。用户暂不能回复至 2026-10-17 09:00（Asia/Shanghai）；需补外机 identity 时只请求失败同次 `artifacts/build-diagnostics/20261016T052146719Z-d9d99ac4/summary.json`，不阻塞其他任务。
 
 ## 2026-10-15 R12-03 当前 main 行为复核
 

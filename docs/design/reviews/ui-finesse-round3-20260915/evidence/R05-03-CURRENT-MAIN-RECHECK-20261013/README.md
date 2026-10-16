@@ -31,3 +31,9 @@
 - PID `34512` 的 exe 与 `--userdatadir` 均验证属于本次 `.tmp/r05-03-popup-profile-20261013`。我请求过一次正常关闭；截至 `2026-10-13 10:35:50 UTC`，进程仍响应、主窗口句柄为 0；其进程树有 4 个使用同一隔离 profile 的 CefSharp 子进程。未强杀或重试。该隔离 profile 因进程仍在运行而保留。后续先等待该进程树退出；确认 Playnite/Worker 全部无冲突后，才可用同一 marker-bound profile 和新的唯一输出目录重跑。若仍无法优雅关闭，保留阻塞并继续其他任务，不绕过保护。
 - 本次没有安装当前插件、执行弹层交互或采集屏幕呈现序列；真实 Playnite Popup 与“翻转无闪屏”仍未验。Runner 原始 blocker 与 metadata 位于本机 `artifacts/ui-host-audit-r05-03-popup-20261013/`；脱敏摘要见 [host-preflight-20261013.json](host-preflight-20261013.json)。原始输出只含本次隔离 profile 的日志，不触及用户库、真实存档、媒体或云端。
 - 本记录提交时 d56d23e 对应 Actions run `38377673615` 已成功，耗时 `43m27s`。R08-01 已用 #967 SDK10 单类 TRX 校正当前 main 自动证据；用户机器的原始失败仍待提供。下一项 Round2 Q23-06 目录编辑器视觉复核，使用合成路径与隔离 RenderHarness，不依赖被阻塞的 Playnite profile。
+
+## 2026-10-16 fail-closed 宿主预检复核
+
+- 在当前 `main` 工作树用既有 `scripts/PlayniteHostIsolation.ps1` 执行启动前预检。冲突进程枚举没有报告 Playnite/Worker；随后 `Assert-GscProcessCommandLineInspectionAvailable` 读取 `Win32_Process.CommandLine` 时返回“拒绝访问”，安全预检因此 fail closed。权限拒绝意味着无法据这次枚举证明宿主进程完整不存在。
+- 本次没有启动 Playnite/Worker、安装扩展、创建新隔离 profile/output、重试相同 bootstrap、强终止进程或绕过 WMI 权限。10-13 留下的隔离 profile 未触碰；本轮没有生成 artifact 或呈现帧。
+- R05-03 现有 Popup 工作区几何、列表边界、滚动及选定项测试仍通过；“翻转无闪屏”没有真实呈现帧，本次预检也没有推进该条件。ENV-001 `BLOCKED_ENVIRONMENT` 保持。下一步转 Q24-02 证据校正；如果之后权限/宿主环境变化，再按原保护流程复核，不从离屏图推断真实呈现。

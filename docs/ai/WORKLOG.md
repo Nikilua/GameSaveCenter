@@ -10988,3 +10988,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R13-08 受控生产页行为已由本机 SDK9 定向 `16/16` 和当前 commit 双 SDK CI 支持；不是实际 Playnite/package-host 验收。外机 R09 失败仍保留：该机 R09 `1/2`、整流程 exit `1`，source/WPF 发现 `111/116`；当前 CI `107/125`。当前 R09 测试源 line151 为颜色断言，不可能与 `Thickness(2/1)` 同时匹配，具体 checkout/DLL/PDB/script 输入待失败同次 `summary.json`/TRX/程序集 identity；当前 CI 通过不覆盖外机故障。
 - R00/R01 显式 changed-path freshness 保持 `14/14 fresh / 0 stale / 0 source matches`，package identity 未提供；没有重跑审计。删除了一个已确认的 MSBuild 临时 WPF 项目文件 `src/GameSaveCenter.Playnite/GameSaveCenter.Playnite_5fciadwp_wpftmp.csproj`，其内容指向此前已清理的 `.tmp/q24-07-final-build-20261014`；没有清理用户或其他任务 TRX。
 - 为当前状态、项目记忆、交接、积压清单、R13/R09 证据及进度表同步了本阶段事实。下一项 R05-03 fail-closed 预检已经尝试，WMI 进程命令行查询拒绝访问；未启动/安装宿主，按 ENV-001 记录阻塞后继续依赖已满足的 Q/R。真实 Playnite、物理 DPI/跨屏、OS UIA/IME、最终呈现、ETW/宿主性能仍未验。
+
+## 2026-10-16 R05-03 隔离宿主预检阻塞归档
+
+- 当前 main 的 R05-03 fail-closed 预检在 `Assert-GscProcessCommandLineInspectionAvailable` 读取 `Win32_Process.CommandLine` 时收到“拒绝访问”，因此无法完整证明不存在 Playnite/Worker 冲突进程。该限制与 #1047 的双 SDK代码测试结果独立。
+- 未启动 Playnite/Worker、安装扩展、创建隔离 profile/output、重试 bootstrap、终止进程或绕过 WMI 权限；10-13 的隔离 profile 未触碰。本轮没有生成宿主诊断 artifact 或屏幕帧。详情见 [R05-03 预检复核](../design/reviews/ui-finesse-round3-20260915/evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/README.md)。
+- ENV-001 保持 `BLOCKED_ENVIRONMENT`；“翻转无闪屏”仍缺真实呈现帧。R05 事实已写入 Round3 进度、backlog、handoff 与项目状态。下一可执行项为 Q24-02 当前 main 补充类隔离证据复核，再推进其他依赖满足的 Q/R。

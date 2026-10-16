@@ -6,7 +6,7 @@
 
 用户另一台机器的一键日志中 Core `125/125`、Worker `357/357` 通过，WPF `R09FocusOutlineBehaviorTests` `1/2` 失败，`2 DIP` 对 `1 DIP`，整次 exit 1。该日志报告 source/WPF 类数 `111/116`；#1047 当前 CI 为 `107/125`。当前源码 line 151 是 Brush 颜色断言，不能产生 Thickness 值；历史源 line 151 正是 Chrome `2 DIP` 断言，当前独立 `ValidationStroke 2 DIP` 在 line 154。因此能确认外机测试源或 PDB 行映射与当前测试源不一致，但缺同次 HEAD/status/source/DLL/PDB/plugin DLL identity，无法区分旧测试程序集、旧 PDB、checkout 或其他脚本输入。#1047 的两 SDK R09 类通过不代表用户机失败已解决；没有放宽断言或归因具体构建环节，见[R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-R00-07 最近可核审计仍为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，13 条工具栏换行风险仍开；本轮未重跑 audit。R13-08 双 SDK CI 已收口成功。R05-03 fail-closed 隔离宿主预检在本轮因读取 `Win32_Process.CommandLine` 返回“拒绝访问”而停止；没有启动 Playnite、安装扩展或创建 profile/output。该预检需作为 ENV-001 阻塞记录，随后转向依赖已满足的 Q/R 证据校正。用户到明日 09:00 前不能回复，外机所需同次 diagnostics `summary.json` 不能阻塞主线。真实 Playnite/package-host、网络/通知、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+R00-07 最近可核审计仍为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，13 条工具栏换行风险仍开；本轮未重跑 audit。R13-08 双 SDK CI 已收口成功。R05-03 fail-closed 预检记录见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R05-03-CURRENT-MAIN-RECHECK-20261013/README.md)：WMI `Win32_Process.CommandLine` 返回“拒绝访问”，未启动 Playnite、安装扩展或创建 profile/output，ENV-001 阻塞保持。下一步校正 Q24-02 当前 main 的补充类隔离证据，再推进依赖满足的 Q/R。用户到明日 09:00 前不能回复，外机所需同次 diagnostics `summary.json` 不阻塞主线。真实 Playnite/package-host、网络/通知、OS UIA/读屏/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 
 
 
