@@ -1,3 +1,10 @@
+## 2026-10-16 R13-03 当前 main 行为复核与 R09 外机对照
+
+- 当前分支 `main`，代码提交 `ad2e67167072ca2af2a55e32de16077ab5a6603e`。R13-03 实现沿用 `680ea83a`，本次只强化真实 `BusyOperationCoordinator`/`RelayCommand` 重入门控和 Worker 合成 fake-cloud 复用本地备份验证；Playnite 目标类 `14/14`，Worker 全套 `360 passed / 1 Named Pipe 环境 skip`（本地备份重试测试 Passed），Core `125/125`。
+- 锁定 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 的隔离 Release solution build `0 warning / 0 error`，XAML `24/24`。完整 Playnite 隔离扫描在 `R05TooltipTimingBehaviorTests` 的 `GetCursorPos` 访问返回 Win32 error 5，于 `45/124` 停止；只做只读 API 探测，不移动指针、不把全量测试记为通过。新建隔离 DLL 上 R09 类 `2/2`，R13 类 `14/14`。
+- R09 外机日志仍报 `Expected 2 / Actual 1` 和 line151，并显示 `116` 个 WPF 类。当前源 line151 是颜色断言、line154 是 `ValidationStroke 2 DIP`，当前隔离程序集发现124类；外机 HEAD/工作树/DLL/PDB 仍缺，根因未确认。新的源码、测试程序集身份与 TRX 归档在[R13-03 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-03-CURRENT-MAIN-RECHECK-20261016/README.md)和[R09 外机复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- R00/R01 对 `ad2e6716` freshness 为 `14/14 fresh / 0 stale / 0 source matches`，package identity 未提供。Actions #1037/run `38859916493` SDK8 与 SDK10.0.401 均成功，但它们构建 `09173448`，不是当前本地提交。当前 main 比 origin ahead 1；文档提交后推送并跟踪新双 SDK run 至终态。下一项 R13-04。
+
 ## 2026-10-15 R09 外机失败本地对照与 #1023 CI 续查
 
 - 用户提供另一台机器的 R09 失败片段：测试行 151 期望 `2,2,2,2`、实际 `1,1,1,1`。当前 main 测试源第 151 行是错误边框颜色，第 152 行断言 Chrome `1 DIP`，第 154 行断言独立 `ValidationStroke 2 DIP`；外机 HEAD、源、DLL/PDB、插件资源身份未提供，因此旧源/符号错配仍是线索，不是确认根因。

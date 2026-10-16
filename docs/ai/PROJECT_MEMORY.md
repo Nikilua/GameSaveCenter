@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 main，R12-04 #1034 与 R12-05 #1035/run `38855405119` 的 SDK8/SDK10 job 已成功。R13-01 #1036/run `38857050764` 的 SDK10 job `116830769335` 成功、SDK8 job `116830769619` 已过编译/测试、离屏 QA、WPF 静态审查，正在打包。当前源码提交 `1e7ff4d8` 仅增加 R13-02 测试；本机 SDK8 Core 重试边界 `2/2`、Playnite `R13CloudTransferStageBehaviorTests 14/14`，生产维护页详情行为真实绑定复核通过。R00/R01 对 `1e7ff4d8` freshness `14/14 fresh`、0 stale、0 登记源命中；package identity 未提供。证据见 R12-05、R13-01、R13-02 当前 main 包。R00-07 audit 为116 warnings/13 MEDIUM。下一项 R13-03。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
+更新：2026-10-16；分支 `main`，本地源码 `ad2e67167072ca2af2a55e32de16077ab5a6603e`，较 `origin/main` ahead 1。R12-05 #1035、R13-01 #1036 的 SDK8/SDK10 jobs 均成功。R13-03 复用原生产实现，只补行为测试；SDK8.0.423 隔离 Release solution build `0/0`、XAML `24/24`、Core `125/125`、Worker `360 passed/1 Named Pipe skip`；R13 Playnite 类 `14/14`，同一隔离程序集 R09 类 `2/2`。全量 Playnite 扫描在 R05 Tooltip 的 `GetCursorPos` 被桌面环境拒绝（Win32 error 5）时停在 `45/124`，不能记作全量通过。R00/R01 freshness `14/14 fresh`、0 stale、0 source matches，package identity 未提供。新证据见 R13-03 与 R09 外机复核包。下一项 R13-04；推送 `ad2e6716` 后跟踪 SDK8/SDK10.0.401 CI 到终态。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
 
 ## AI/Codex 启动协议
 
@@ -59,7 +59,7 @@
 - SDK阶段历史：2026-10-07本机侧栏22/22、source470/18、WPF前23类通过；Q14独立及全量先因错误态TextBox高度36→37 DIP失败，未到654 DIP，原边距问题继续开放。GscMotion/build变更还命中R00-03/R01-01/R01-04，补证范围增加，baseline不能静默转绿。
 - 受控自动行为、离屏截图、真实宿主、物理 DPI/跨屏、包安装身份分别记账。历史宿主成功不签收当前候选。
 - IPC取消通过dispose解除IO时，任务可先以IOException或EOF结束；仅在linked token确已取消的transport路径按host→caller→timeout分类，并保留RequestId/未知提交，不覆盖服务拒绝。测试服务用握手、每场景独立管道和失败路径异步清理，不用固定延时猜取消时机。
-- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。R12-05 #1035 两个 SDK job 已成功；R13-01 #1036 SDK10 job成功、SDK8 `116830769619` 已过编译/测试、离屏 QA、WPF 静态审查并正在打包，必须跟到终态。失败先取完整 job log，本机 SDK8 不替代 CI SDK10。R13-01 与 R13-02 当前 main 已补生产维护页实际行为证据并维持已满足；R13-02 Core `2/2`、Playnite `14/14`。源码 `1e7ff4d8` 的 R00/R01 freshness 为14/14 fresh、0 stale、0登记源命中，package identity 未提供。下一项 R13-03。外机 R09 HEAD/DLL/PDB、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
+- 当前活动缺口：唯一执行入口是 `docs/AUTONOMOUS_BACKLOG.md`。本地 main `ad2e6716` 比 origin ahead 1，R13-03 当前 SDK8 行为补证已完成；同一新隔离 DLL 上 R09 类 `2/2`、R13 类 `14/14`。完整本机 Playnite 扫描因 R05 fixture 读取系统指针返回 Win32 error 5 停在 `45/124`，不能记全量成功；无权限绕过，也未尝试移动指针。旧 Actions #1037 的两个 SDK jobs 成功但只验证 `09173448`，本地提交推送后必须查新 Actions 到终态。用户外机 R09 日志没有 source/DLL/PDB identity，WPF 类数 `116` 与当前 `124` 不同、line151映射不一致，根因仍未确认；下次如重现，需获取同次 diagnostics summary、HEAD/工作树、源片段、DLL/PDB SHA。R00/R01 freshness `14 fresh / 0 stale / 0 source matches`，package identity 未提供。下一项 R13-04。真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、系统时钟事件即时刷新、ETW/宿主性能仍分别记账。
 - `599d2fd` 的 `14 fresh / 0 stale` 基线已对受影响行为和负例复验；`0243c108` 的四项 stale 是更新前中间状态。`4078f23d` 当前源路径复核仍为 `14 fresh / 0 stale`。Package identity 与真实宿主边界仍独立。
 - ENV-001 历史 WMI 命令行读取拒绝、CEF 0x5 与单实例边界尚无解除证据；条件变化后先做 fail-closed 预检，不关闭用户实例，不反复撞同一边界。
 - Q06/R08 本机不复现不能关闭用户问题；需要失败方法、断言、堆栈、DLL 身份。COM 清理日志不自动解释测试失败。

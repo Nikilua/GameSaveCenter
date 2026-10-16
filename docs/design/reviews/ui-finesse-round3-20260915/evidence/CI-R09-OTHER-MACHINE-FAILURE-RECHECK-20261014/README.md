@@ -6,6 +6,16 @@
 
 用户提供的测试输出显示 SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError 失败，Expected 2,2,2,2、Actual 1,1,1,1，堆栈报告源文件第 151 行。日志同时有 libpng iCCP 警告与 WPF TextServicesContext 收尾时的 COM 异常。
 
+## 2026-10-16 再次收到外机完整一键日志
+
+本次日志仍是 `Expected 2 / Actual 1`、堆栈行 151。附件没有 source commit、测试源副本、DLL/PDB SHA 或诊断清单；日志显示 WPF 类隔离数为 `116`。当前 main 在干净隔离 Release 输出中发现 `124` 个 WPF 类；当前 R09 源（以及截图祖先提交 `983fee5`）第 151 行检查错误色，第 154 行检查 `ValidationStroke` 的 `2 DIP`。因此外机日志的行映射与当前源不一致、测试集也不同，无法仅凭粘贴文本判定它运行的代码或实际根因。
+
+在 `ad2e67167072ca2af2a55e32de16077ab5a6603e` 上，仓库锁定 SDK `8.0.423` / VSTest `17.11.1` 通过完整隔离 Release solution build `0 warning / 0 error`、XAML `24/24`、Core `125/125`、Worker `360 passed / 1 环境 skip`。全量 Playnite 类扫描在 `R05TooltipTimingBehaviorTests` 停止：受限桌面只读 `GetCursorPos` 返回 Win32 error 5，未移动鼠标。随后从同一新建隔离输出、`--no-build` 串行运行完整 `R09FocusOutlineBehaviorTests` 为 `2/2`，0 失败/跳过；这不是完整 Playnite 全量通过。
+
+该 R09 测试 DLL SHA-256 `467C6560507BF68F0BA8804A0CAA32855A20AC2122DB1D92AA7509132FE416B5`、MVID `56fa26da-7f2a-4c5a-a722-0cf604a121b2`、PDB SHA-256 `2F1D9038B6667EEEA21F5B4E8140C54C86E5D9D329818C7272E4595EFDF68C09`；ProductVersion `0.6.73+ad2e67167072ca2af2a55e32de16077ab5a6603e`。测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`，生产 `WpfUiProduction.xaml` SHA-256 `FD212D59A0244DF8CABF33A3926FB5CE80CF930E4A0B587692D2DC9D3B15EC6E`。脱敏结果：[当前 main R09 TRX](tests/R09FocusOutlineBehaviorTests-sdk8423-main-ad2e6716.trx)，SHA-256 `9C73CD9B5C9B966C269AF569644A354650055CA62FB9C57168688CC32D0C08AA`。
+
+当前 R09 定向结果可复核，但外机实际 HEAD、工作树和程序集身份仍未提供。若外机重现，需从同一次失败目录一并取得 `git rev-parse HEAD`、`git status --short --branch`、第 145–158 行源文本、测试 DLL/PDB SHA 和 diagnostics summary；仅有失败摘要不能证明两台机器运行了同一源码/程序集。没有改生产样式或削弱断言。
+
 ## 当前实现与断言
 
 生产模板 WpfUiProduction.xaml 的输入 Chrome 始终为 1 DIP；独立 ValidationStroke 为 2 DIP、不可命中，只在 Validation.HasError 时显示。错误清除后该描边隐藏，错误态不改变内容测量。

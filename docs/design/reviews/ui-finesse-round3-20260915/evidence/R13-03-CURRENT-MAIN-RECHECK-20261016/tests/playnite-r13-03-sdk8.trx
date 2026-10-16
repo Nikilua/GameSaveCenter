@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="87c92ef8-e09d-4abd-9d14-37aa0b507972" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-16T14:35:20.1716519+08:00" queuing="2026-10-16T14:35:20.1716522+08:00" start="2026-10-16T14:35:15.7672812+08:00" finish="2026-10-16T14:35:38.8105813+08:00" />
+  <TestSettings name="default" id="7d21e8aa-1805-4a59-b343-d544ec3e03b8">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b9ee5c74-f687-42ea-be9b-e49345dd243e" testId="5f0ce3c6-6ee5-c317-dd04-e999d4561054" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorExplainsBoundedOfflineRecovery" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:20.1534022+08:00" endTime="2026-10-16T14:35:20.1544031+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9ee5c74-f687-42ea-be9b-e49345dd243e" />
+    <UnitTestResult executionId="95bf8a74-ff20-4957-a4b0-d1c6f09fa73b" testId="95bcaa2d-88a1-4510-2718-8420fdee0876" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;RetryScheduled&quot;, canRetry: True)" computerName="redacted-host" duration="00:00:00.0180000" startTime="2026-10-16T14:35:20.1194020+08:00" endTime="2026-10-16T14:35:20.1204034+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95bf8a74-ff20-4957-a4b0-d1c6f09fa73b" />
+    <UnitTestResult executionId="04fd2c87-5862-486c-bb2d-b489d3265893" testId="f82ce85e-b262-4806-8215-584ba18ddec4" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorShowsRemoteEvidenceAndKeepsDiagnosticCopyRedacted" computerName="redacted-host" duration="00:00:00.1060000" startTime="2026-10-16T14:35:20.1614016+08:00" endTime="2026-10-16T14:35:20.2530396+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04fd2c87-5862-486c-bb2d-b489d3265893" />
+    <UnitTestResult executionId="d5552d5a-d0a7-402e-a959-ffae75787398" testId="a3a99424-c6fb-fcfd-28e1-48ad141e4a1d" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;Failed&quot;, canRetry: True)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:20.1244025+08:00" endTime="2026-10-16T14:35:20.1254020+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5552d5a-d0a7-402e-a959-ffae75787398" />
+    <UnitTestResult executionId="bd97cffc-4e93-4221-b2f2-fac700372ea8" testId="3a26ce17-f761-4fe8-325f-004920a6b50f" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceQueueBindsStageAndKeepsGuaranteeSeparate" computerName="redacted-host" duration="00:00:00.0070000" startTime="2026-10-16T14:35:20.1404021+08:00" endTime="2026-10-16T14:35:20.1444016+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd97cffc-4e93-4221-b2f2-fac700372ea8" />
+    <UnitTestResult executionId="e082deb4-2605-4252-833d-5bb31f213604" testId="7a6adf44-9367-71df-7665-d529d6506d97" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceQueueKeepsFilterScopeAndPagingSelectionContracts" computerName="redacted-host" duration="00:00:00.1220000" startTime="2026-10-16T14:35:19.9858117+08:00" endTime="2026-10-16T14:35:20.0924033+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e082deb4-2605-4252-833d-5bb31f213604" />
+    <UnitTestResult executionId="833b8648-fa8c-46e6-854c-46aff9b8633c" testId="aa22e502-d3e0-2b85-e103-0a054babd4ab" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;Uploaded&quot;, canRetry: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:20.1294035+08:00" endTime="2026-10-16T14:35:20.1304038+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="833b8648-fa8c-46e6-854c-46aff9b8633c" />
+    <UnitTestResult executionId="ce331955-43fe-47e1-a1fa-bba8c22c9925" testId="c3cb5815-1fa9-984d-eb0f-933a30d7dd5d" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;RemoteVerified&quot;, canRetry: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:20.1264023+08:00" endTime="2026-10-16T14:35:20.1274027+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce331955-43fe-47e1-a1fa-bba8c22c9925" />
+    <UnitTestResult executionId="c7a2f6ef-2830-4819-be28-861d2b6a248c" testId="3528063c-13be-c691-9aeb-fee6993eb63d" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryCommandGateBlocksSecondClickWhileSubmissionIsBusy" computerName="redacted-host" duration="00:00:00.0120000" startTime="2026-10-16T14:35:20.1344013+08:00" endTime="2026-10-16T14:35:20.1384021+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7a2f6ef-2830-4819-be28-861d2b6a248c" />
+    <UnitTestResult executionId="8ff29e8c-5b5d-4569-b260-c94e3f601adf" testId="df05fc05-513b-4d72-00aa-2e04daa81b9e" testName="GameSaveCenter.Playnite.Tests.R02BusyStateTests.BusyCoordinatorKeepsSuccessfulOperationPendingUntilActionCompletes" computerName="redacted-host" duration="00:00:00.0190000" startTime="2026-10-16T14:35:23.5748676+08:00" endTime="2026-10-16T14:35:23.5824897+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ff29e8c-5b5d-4569-b260-c94e3f601adf" />
+    <UnitTestResult executionId="c363e9b8-7394-4e48-83c7-b4dae7f3bc32" testId="bb1671c5-f218-abe5-0d89-18200f081643" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;Transferring&quot;, canRetry: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:20.1224023+08:00" endTime="2026-10-16T14:35:20.1234017+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c363e9b8-7394-4e48-83c7-b4dae7f3bc32" />
+    <UnitTestResult executionId="f25e53bd-8fae-441a-8dd9-c98b31961e23" testId="0ad46f26-a5bd-c84d-ac1f-855ecd67f69d" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.SettingsExplainPauseRecoveryAndWindowChangeBoundary" computerName="redacted-host" duration="00:00:00.0040000" startTime="2026-10-16T14:35:20.2550379+08:00" endTime="2026-10-16T14:35:20.2560378+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f25e53bd-8fae-441a-8dd9-c98b31961e23" />
+    <UnitTestResult executionId="a24df398-627c-49e9-a5e9-4075cbe49580" testId="65c27aa0-7003-612c-0037-0e316979334c" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorUsesBoundedRetryTimingWithoutPerItemTimer" computerName="redacted-host" duration="00:00:00.0090000" startTime="2026-10-16T14:35:20.1324014+08:00" endTime="2026-10-16T14:35:20.1334016+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a24df398-627c-49e9-a5e9-4075cbe49580" />
+    <UnitTestResult executionId="952b5ad1-2cdd-4885-a1ce-8dec1e9e603b" testId="85c3e75c-1c00-7047-21d4-b43e87b78378" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorSeparatesKnownFailureHelpFromRawDiagnostics" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:20.1564015+08:00" endTime="2026-10-16T14:35:20.1594021+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="952b5ad1-2cdd-4885-a1ce-8dec1e9e603b" />
+    <UnitTestResult executionId="7d50fc56-a7d0-44e5-9dcb-da05f9773c97" testId="29b79728-761b-2c59-c84a-9b32db51572a" testName="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ProductionMaintenanceQueueRendersUploadedAndVerifiedAsDifferentStates" computerName="redacted-host" duration="00:00:03.3010000" startTime="2026-10-16T14:35:20.2580398+08:00" endTime="2026-10-16T14:35:23.5583800+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d50fc56-a7d0-44e5-9dcb-da05f9773c97" />
+    <UnitTestResult executionId="bee69a01-aa92-4b70-b00e-bca7d3d1b474" testId="3fc05850-2274-ea31-29b8-cce260a7ac86" testName="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-16T14:35:23.5650090+08:00" endTime="2026-10-16T14:35:23.5662222+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bee69a01-aa92-4b70-b00e-bca7d3d1b474">
+      <Output>
+        <ErrorInfo>
+          <Message>当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d66ff706-cc13-4a07-9e30-4c8c41562cb3" testId="b8e2b027-7a58-5c9e-f3af-ecd28ece0eee" testName="GameSaveCenter.Playnite.Tests.R02BusyStateTests.BusyCoordinatorRejectsDuplicateAndRestoresAfterFailureAndCancellation" computerName="redacted-host" duration="00:00:00.0210000" startTime="2026-10-16T14:35:23.5852627+08:00" endTime="2026-10-16T14:35:23.6036229+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d66ff706-cc13-4a07-9e30-4c8c41562cb3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02BusyStateTests.BusyCoordinatorRejectsDuplicateAndRestoresAfterFailureAndCancellation" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b8e2b027-7a58-5c9e-f3af-ecd28ece0eee">
+      <Execution id="d66ff706-cc13-4a07-9e30-4c8c41562cb3" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02BusyStateTests" name="BusyCoordinatorRejectsDuplicateAndRestoresAfterFailureAndCancellation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;RetryScheduled&quot;, canRetry: True)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="95bcaa2d-88a1-4510-2718-8420fdee0876">
+      <Execution id="95bf8a74-ff20-4957-a4b0-d1c6f09fa73b" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02BusyStateTests.BusyCoordinatorKeepsSuccessfulOperationPendingUntilActionCompletes" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="df05fc05-513b-4d72-00aa-2e04daa81b9e">
+      <Execution id="8ff29e8c-5b5d-4569-b260-c94e3f601adf" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02BusyStateTests" name="BusyCoordinatorKeepsSuccessfulOperationPendingUntilActionCompletes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;Uploaded&quot;, canRetry: False)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="aa22e502-d3e0-2b85-e103-0a054babd4ab">
+      <Execution id="833b8648-fa8c-46e6-854c-46aff9b8633c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorSeparatesKnownFailureHelpFromRawDiagnostics" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="85c3e75c-1c00-7047-21d4-b43e87b78378">
+      <Execution id="952b5ad1-2cdd-4885-a1ce-8dec1e9e603b" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="MaintenanceInspectorSeparatesKnownFailureHelpFromRawDiagnostics" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryCommandGateBlocksSecondClickWhileSubmissionIsBusy" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3528063c-13be-c691-9aeb-fee6993eb63d">
+      <Execution id="c7a2f6ef-2830-4819-be28-861d2b6a248c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ManualRetryCommandGateBlocksSecondClickWhileSubmissionIsBusy" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;Transferring&quot;, canRetry: False)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="bb1671c5-f218-abe5-0d89-18200f081643">
+      <Execution id="c363e9b8-7394-4e48-83c7-b4dae7f3bc32" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.SettingsExplainPauseRecoveryAndWindowChangeBoundary" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="0ad46f26-a5bd-c84d-ac1f-855ecd67f69d">
+      <Execution id="f25e53bd-8fae-441a-8dd9-c98b31961e23" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="SettingsExplainPauseRecoveryAndWindowChangeBoundary" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;Failed&quot;, canRetry: True)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a3a99424-c6fb-fcfd-28e1-48ad141e4a1d">
+      <Execution id="d5552d5a-d0a7-402e-a959-ffae75787398" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ProductionMaintenanceQueueRendersUploadedAndVerifiedAsDifferentStates" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="29b79728-761b-2c59-c84a-9b32db51572a">
+      <Execution id="7d50fc56-a7d0-44e5-9dcb-da05f9773c97" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ProductionMaintenanceQueueRendersUploadedAndVerifiedAsDifferentStates" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers(state: &quot;RemoteVerified&quot;, canRetry: False)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="c3cb5815-1fa9-984d-eb0f-933a30d7dd5d">
+      <Execution id="ce331955-43fe-47e1-a1fa-bba8c22c9925" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="ManualRetryScopeOnlyAcceptsUnfinishedSelectedTransfers" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceQueueKeepsFilterScopeAndPagingSelectionContracts" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="7a6adf44-9367-71df-7665-d529d6506d97">
+      <Execution id="e082deb4-2605-4252-833d-5bb31f213604" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="MaintenanceQueueKeepsFilterScopeAndPagingSelectionContracts" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceQueueBindsStageAndKeepsGuaranteeSeparate" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3a26ce17-f761-4fe8-325f-004920a6b50f">
+      <Execution id="bd97cffc-4e93-4221-b2f2-fac700372ea8" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="MaintenanceQueueBindsStageAndKeepsGuaranteeSeparate" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="3fc05850-2274-ea31-29b8-cce260a7ac86">
+      <Execution id="bee69a01-aa92-4b70-b00e-bca7d3d1b474" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests" name="LostWriteResponseIsRecoveredWithTheSameRequestId" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorExplainsBoundedOfflineRecovery" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="5f0ce3c6-6ee5-c317-dd04-e999d4561054">
+      <Execution id="b9ee5c74-f687-42ea-be9b-e49345dd243e" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="MaintenanceInspectorExplainsBoundedOfflineRecovery" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorShowsRemoteEvidenceAndKeepsDiagnosticCopyRedacted" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="f82ce85e-b262-4806-8215-584ba18ddec4">
+      <Execution id="04fd2c87-5862-486c-bb2d-b489d3265893" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="MaintenanceInspectorShowsRemoteEvidenceAndKeepsDiagnosticCopyRedacted" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests.MaintenanceInspectorUsesBoundedRetryTimingWithoutPerItemTimer" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="65c27aa0-7003-612c-0037-0e316979334c">
+      <Execution id="a24df398-627c-49e9-a5e9-4075cbe49580" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests" name="MaintenanceInspectorUsesBoundedRetryTimingWithoutPerItemTimer" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5f0ce3c6-6ee5-c317-dd04-e999d4561054" executionId="b9ee5c74-f687-42ea-be9b-e49345dd243e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="95bcaa2d-88a1-4510-2718-8420fdee0876" executionId="95bf8a74-ff20-4957-a4b0-d1c6f09fa73b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f82ce85e-b262-4806-8215-584ba18ddec4" executionId="04fd2c87-5862-486c-bb2d-b489d3265893" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3a99424-c6fb-fcfd-28e1-48ad141e4a1d" executionId="d5552d5a-d0a7-402e-a959-ffae75787398" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a26ce17-f761-4fe8-325f-004920a6b50f" executionId="bd97cffc-4e93-4221-b2f2-fac700372ea8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7a6adf44-9367-71df-7665-d529d6506d97" executionId="e082deb4-2605-4252-833d-5bb31f213604" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa22e502-d3e0-2b85-e103-0a054babd4ab" executionId="833b8648-fa8c-46e6-854c-46aff9b8633c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3cb5815-1fa9-984d-eb0f-933a30d7dd5d" executionId="ce331955-43fe-47e1-a1fa-bba8c22c9925" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3528063c-13be-c691-9aeb-fee6993eb63d" executionId="c7a2f6ef-2830-4819-be28-861d2b6a248c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df05fc05-513b-4d72-00aa-2e04daa81b9e" executionId="8ff29e8c-5b5d-4569-b260-c94e3f601adf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb1671c5-f218-abe5-0d89-18200f081643" executionId="c363e9b8-7394-4e48-83c7-b4dae7f3bc32" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ad46f26-a5bd-c84d-ac1f-855ecd67f69d" executionId="f25e53bd-8fae-441a-8dd9-c98b31961e23" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="65c27aa0-7003-612c-0037-0e316979334c" executionId="a24df398-627c-49e9-a5e9-4075cbe49580" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="85c3e75c-1c00-7047-21d4-b43e87b78378" executionId="952b5ad1-2cdd-4885-a1ce-8dec1e9e603b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="29b79728-761b-2c59-c84a-9b32db51572a" executionId="7d50fc56-a7d0-44e5-9dcb-da05f9773c97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3fc05850-2274-ea31-29b8-cce260a7ac86" executionId="bee69a01-aa92-4b70-b00e-bca7d3d1b474" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b8e2b027-7a58-5c9e-f3af-ecd28ece0eee" executionId="d66ff706-cc13-4a07-9e30-4c8c41562cb3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="17" executed="16" passed="16" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.52]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.02]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.09]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.74]       当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。&#xD;
+[xUnit.net 00:00:06.78]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId”。&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-16T14:35:23.5686594+08:00">
+        <Text>[xUnit.net 00:00:06.74]     GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.LostWriteResponseIsRecoveredWithTheSameRequestId [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
