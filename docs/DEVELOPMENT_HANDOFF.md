@@ -1,12 +1,14 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；`main` 当前已推送 HEAD `72b2cbb77e4be53e9550983fd685d82ca9a31f88`，R11-08 代码提交为 `5157d8719110514aec857f2c0397ec4943b926e4`。本机 SDK9.0.302 定向 Release build `0 warning/error`、行为 `6/6`。GitHub #1041/run `38885898033`：SDK10.0.401 job `116923431523` 成功，SDK8 job `116923431709` 最近已到扩展包生成、仍未终态；文档 HEAD 的 #1042/run `38888296980` 两 job 最近仍在编译/测试。#1040/run `38880099277` 对前一提交 `964f325d` 双 SDK成功，不覆盖 R11。CI 未终态，不签收阶段。R11-08 身份见[证据包](design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。
+更新：2026-10-16；分支 `main`，本轮起始推送 HEAD `2341ca59e8bca692c9e778c2e31e62ba59016768`。当前待提交的小批只扩展 R13 测试及同步事实，不改生产代码。SDK9.0.302/VSTest17.14.1 隔离 Release 定向结果：Playnite R13 `14/14`、Worker retry `12/12`、Core recovery `1/1`、通知去重 `6/6`、R09 `2/2`；R00/R01 freshness `14/14 fresh`。本机不是完整 solution build，SDK9 不替代 global 锁定 SDK8.0.423/CI SDK10.0.401。
 
-外机新附 R09 日志与截图所示提交 `983fee5` 的当前测试源不一致：该提交已包含 `f13b9e05` 的拆分，line151 是错误色、line152 Chrome `1 DIP`、line154 外圈 `2 DIP`；用户日志 line151 的厚度 `Expected 2 / Actual 1` 则与旧 `3f7d0b30` 相同。现有输出支持“实际测试源码或符号身份不同”，仍不能判断是旧 DLL/PDB、不同 checkout 或其他构建输入。诊断目录 `artifacts/build-diagnostics/20261014T052440239Z-3fc9f5f1` 下的 `summary.json`/TRX 以及测试 DLL/PDB SHA 可用于精确归因。详见[R09 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+最近 Actions：#1041/run `38885898033` 的 SDK10 `116923431523` 成功、SDK8 `116923431709` 尚在扩展包步骤；#1042/run `38888296980` SDK10 `116931335672` 成功、SDK8 `116931336141` 尚在编译/测试；#1043/run `38889453677` SDK8 `116935124793` 和 SDK10 `116935125185` 都在编译/测试。#1040/run `38880099277` 双 SDK成功但不含 R11-08/R13-06。新测试提交 push 后还要追踪其独立 run 两 lane 终态。
 
-R00/R01 freshness 对 `5157d871` 为 `14/14 fresh / 0 stale / 0 source-path matches`，比较2,883条路径；package identity `not-provided`。R00-07 audit 为168 snapshots/116 warnings/0 HIGH/13 MEDIUM，13条工具栏自然换行风险仍打开。R13-05 当前 main 复核与 #1040 双 SDK结果见[R13-05 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
+外机 R09 新日志指向 diagnostics `20261016T052146719Z-d9d99ac4`、隔离输出 `artifacts/gsc-b/fd7672ef`，仍报 line151 `Expected 2 / Actual 1`，WPF 类数 116。当前 main/祖先 `983fee5` 第151行检查错误色，第152行为 Chrome 1 DIP，第154行为 ValidationStroke 2 DIP；当前源本机新隔离 R09 `2/2`。外机没给 HEAD/status/source hash/DLL/PDB/plugin DLL 身份，故具体根因未确认。取证命令已写入[R09 复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-.tmp 中旧目录及 R11-08 隔离输出已按授权清理；其他用户与任务未跟踪证据保留。先继续跟踪 `5157d871` Actions 至终态；R00/R01 已按当前 freshness 与审计摘要完成核对。独立 Q/R 继续到 R13-06 当前 main 复核。真实 Playnite、OS UIA/读屏/IME、物理 DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
+R00/R01 对当前 source HEAD `2341ca59` freshness `14/14 fresh / 0 stale / 0 matched paths`，本轮测试路径未命中登记源路径；package identity `not-provided`。R00-07 audit 为168 snapshots/116 warnings/0 HIGH/13 MEDIUM，13条工具栏自然换行风险仍打开。R13-05 当前 main 复核与 #1040 双 SDK结果见[R13-05 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
+
+.tmp 中先前授权的五个旧目录已清理；本轮自己创建的两份隔离输出在归档 TRX/SHA 后又清理 `178.1 MiB`，其他用户与任务未跟踪证据保留。R13-06 当前 main 行为证据见[evidence](design/reviews/ui-finesse-round3-20260915/evidence/R13-06-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。先跟踪 #1041/#1042/#1043 与新提交 Actions 至各自终态，再推进 R13-07。真实 Playnite/通知、联网、OS UIA/读屏/IME、物理 DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
 
 CI #1031 的双 SDK 失败是历史结果，已由 #1032 新终态成功覆盖当前候选；前序失败日志与 artifact 身份继续保留在[历史证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
 用户本次粘贴的外机 R09 日志为 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151、WPF 类总数 `116`；当前 main/祖先 `983fee5` 的 line151 是错误色断言，`ValidationStroke 2 DIP` 在 line154，当前干净隔离程序集发现124个 WPF 类。外机未附 HEAD、源快照、DLL/PDB SHA 或诊断清单，故可确认日志与当前源映射/测试清单不一致，不能断言根因。当前 SDK8 新建隔离 DLL 的 R09 类 `2/2`；完整 Playnite 扫描另因本机 `GetCursorPos` Win32 error5 在 R05 中止，未算全量成功。`libpng iCCP` 不在失败断言栈；COM teardown 在断言失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
@@ -374,3 +376,17 @@ c35 runner两项自测/SDK8.0.423已实际验证，失败artifact已取得。独
 - R00/R01 current-head freshness `14/14 fresh`、`0 stale`、`0 matched paths`，package `not-provided`；这是失效检查，不是宿主验收。任务表既有行为证据保持有效。
 - 下一项 R12-04：查现有 PreRestore 保护备份、DTO/锁/编排；用 fake service 和隔离目录验证备份失败阻断恢复、重试/取消按同游戏锁和最新状态，不触碰真实存档。
 - 本轮 `.tmp` 净释放约 588 MB；保留 SDK8.0.423 以及被历史证据引用的输出。其他未跟踪证据与临时项目保持原样。
+
+## 2026-10-16 当前恢复点：R13-06 行为补证与外机 R09 输入身份
+
+- 起始推送 HEAD `2341ca59e8bca692c9e778c2e31e62ba59016768`，分支 `main`。本轮唯一代码修改是 `tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs`，扩展真实生产 `MaintenanceView` STA 行为；新增两种 DTO/状态只用于合成 fixture，没有改生产 UI/DTO/Worker/通知语义。
+- 本机 SDK9.0.302/VSTest17.14.1，新隔离构建的 R13 WPF 类 `14/14`、Worker retry `12/12`、Core recovery `1/1`、通知 deduper `6/6`、R09 `2/2`。source validation 与 diff check 通过。TRX/SHA 已归档；本轮自建 `.tmp/r09-r13-repro-20261016`、`.tmp/r13-06-recheck-20261016` 已在确认路径位于仓库 `.tmp` 后清理，释放 `178.1 MiB`；其他 `.tmp`、用户文件、其他任务未跟踪文件保留。
+- 外机 R09 新日志 run `20261016T052146719Z-d9d99ac4`、输出 `artifacts/gsc-b/fd7672ef`、WPF classes 116；期望/实际与历史旧 Chrome 2 DIP 断言一致。main 及祖先 `983fee5` 的 line151/152/154 已分别是颜色断言、Chrome 1 DIP、ValidationStroke 2 DIP。本机当前源 R09 2/2 通过。外机没有提供 HEAD/status、源码/DLL/PDB/plugin DLL SHA，根因不能确定；README 已列明从同次 run 取身份的 PowerShell 命令。
+- 当前已知 CI：#1041 SDK10 成功，SDK8仍在 package；#1042 SDK10成功、SDK8仍在编译/测试；#1043 两条 lane 均在编译/测试。新代码提交仍待 commit/push，随后查新 run SDK8与SDK10.0.401至终态；旧 run 状态不得混成新阶段结果。`#1040`成功不覆盖本轮代码。
+- 下一可执行任务 R13-07 队列筛选/汇总：先核对状态筛选、全局计数、分页 consistency token、过期选择恢复和现有命令；仅用合成数据/fake/隔离状态。真实 network/rclone、Playnite host/通知、OS UIA/IME、物理 DPI/跨屏、最终帧、ETW/宿主性能未验。
+
+## 2026-10-16 最近恢复点：R11 fake host 修复待双 SDK CI
+
+当前 `main` 起始 HEAD 为 `2341ca59e8bca692c9e778c2e31e62ba59016768`。#1041 与 #1042 的 SDK8/SDK10 jobs 均成功；#1043 SDK10 成功、SDK8 在 R11 WPF 行为测试失败。失败根因来自 synthetic host：宽度 debounce timer 触发未初始化 Playnite Plugin 的 `SavePluginSettings/GetPluginUserDataPath`。已为 SaveCenterView 行为测试增加内部 persistence callback seam，生产默认 callback 保持原样；R11 fake host 使用安全 no-op。SDK9.0.302 本机新隔离 build 下 R11 6/6、R09 2/2、R06 6/6、Q13 单类进程 1/1，source validation 与 R00/R01 freshness 均通过；不替代 SDK8/SDK10 CI。
+
+最近外机 R09 日志的 Expected2/Actual1 与旧版第151行断言吻合；当前源码第151行是颜色、第154行才是 ValidationStroke 2 DIP。没有该次诊断 `summary.json`，外机 HEAD/status/source/DLL 身份仍未知。下一步提交并推送本批，跟踪新 SDK8 与 SDK10.0.401 job 直到终态；若失败先读完整日志。两条 lane 成功后继续 R13-07 队列筛选与汇总，并在同次诊断 `summary.json` 可用时复核外机来源。没有验真实 Playnite host、OS UIA/IME、真实 DPI/最终呈现、ETW 或宿主性能；未访问真实存档、媒体与云端。

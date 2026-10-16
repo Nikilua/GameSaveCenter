@@ -22,6 +22,8 @@ namespace GameSaveCenter.Playnite.Views
         private DataGridStableSortController? candidateSort;
         private readonly WrapPanelRowGapController historyActionRowGap;
 
+        internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
+
         public SaveCenterView()
         {
             InitializeComponent();
@@ -49,18 +51,19 @@ namespace GameSaveCenter.Playnite.Views
         private void AttachColumnLayouts()
         {
             if (historyColumnLayout != null || !(DataContext is DashboardViewModel viewModel)) return;
+            var persistPreference = PreferencePersistenceOverrideForBehaviorTest ?? viewModel.PersistUiPreference;
             historyColumnLayout = new DataGridColumnLayoutController(
                 SaveHistoryGrid,
                 "save-history",
                 new[] { "time", "type", "file-count", "size", "device", "note", "state" },
                 viewModel.PluginSettings,
-                viewModel.PersistUiPreference);
+                persistPreference);
             candidateColumnLayout = new DataGridColumnLayoutController(
                 SaveCandidateGrid,
                 "save-candidates",
                 new[] { "confidence", "status", "path", "reason" },
                 viewModel.PluginSettings,
-                viewModel.PersistUiPreference);
+                persistPreference);
             SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(nameof(DashboardViewModel.BackupHistoryView)));
             historySort = ProductionDataGridSortProfiles.AttachSaveHistory(SaveHistoryGrid);
             candidateSort = ProductionDataGridSortProfiles.AttachSaveCandidates(SaveCandidateGrid);

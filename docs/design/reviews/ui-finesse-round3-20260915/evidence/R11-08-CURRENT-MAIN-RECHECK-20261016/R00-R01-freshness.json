@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "generatedUtc": "2026-10-16T11:26:54.3298873Z",
+  "currentSourceCommit": "2341ca59e8bca692c9e778c2e31e62ba59016768",
+  "currentPackageCommit": "not-provided",
+  "packageIdentityStatus": "not-provided",
+  "changedPaths": [
+    "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+    "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+    "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+  ],
+  "documentationOnlyChange": false,
+  "records": [
+    {
+      "id": "R00-01-02",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "scopes": [
+        "shared-controls",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-03",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "scopes": [
+        "shell",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-04",
+      "evidence": "evidence/R00-03-04-CURRENT-MAIN-RECHECK-20261013/README.md",
+      "scopes": [
+        "shell",
+        "game-picker"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-05",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "scopes": [
+        "shared-controls",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-06",
+      "evidence": "evidence/Q24-06-CURRENT-MAIN-UI-AUTOMATION-20261014/README.md",
+      "scopes": [
+        "media-center"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "af8ed430373c5e52dba77af534c689f6727bb91f",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-07",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "scopes": [
+        "trainer-center",
+        "audit"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R00-08",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "scopes": [
+        "shell",
+        "game-picker"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-01",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "scopes": [
+        "test-infrastructure"
+      ],
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-02",
+      "evidence": "evidence/R01-02-NUMERIC-CELL-READABILITY-20260916.md",
+      "scopes": [
+        "dev-probe",
+        "numeric-cells"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-03",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "scopes": [
+        "audit",
+        "evidence-index"
+      ],
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-04",
+      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
+      "scopes": [
+        "shell",
+        "motion"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-05",
+      "evidence": "evidence/R00-R01-Q24-07-CURRENT-MAIN-RECHECK-20261014/README.md",
+      "scopes": [
+        "negative-fixtures",
+        "all-pages"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-06",
+      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
+      "scopes": [
+        "audit",
+        "host-evidence"
+      ],
+      "runtimeKind": "offscreen",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    },
+    {
+      "id": "R01-07",
+      "evidence": "evidence/R01-07-EVIDENCE-FRESHNESS-20260916.md",
+      "scopes": [
+        "audit",
+        "evidence-freshness"
+      ],
+      "runtimeKind": "infrastructure",
+      "evidenceSourceCommit": "e1324fe",
+      "changedPathsSinceEvidence": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R11HistoryTimeNavigationBehaviorTests.cs",
+        "tests/GameSaveCenter.Playnite.Tests/R13CloudTransferStageBehaviorTests.cs"
+      ],
+      "matchedSourcePaths": [],
+      "documentationOnlyChange": false,
+      "needsRerun": false,
+      "reinstallRequired": false,
+      "packageBaselineCommit": "not-applicable",
+      "packageStatus": "not-applicable"
+    }
+  ]
+}

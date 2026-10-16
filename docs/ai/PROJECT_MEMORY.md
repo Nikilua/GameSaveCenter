@@ -241,3 +241,15 @@ Actions #1030/run `38712426496` 的 SDK8 与 SDK10.0.401 job 均在 R21 父级 `
 ### 2026-10-16 临时目录清理
 
 收到用户对五个旧阶段目录的明确授权后，清理了 `.tmp/q24-07-official-postcommit-0243c108`、`.tmp/r11-06-40af39c8-20261015`、`.tmp/r09-current-main-retry-20261015`、`.tmp/r00-08-55ed3a17-20261015` 和 `.tmp/r08-01-production-button-sdk9-20261014/build`，共释放 `373.7 MiB`。没有删除 SDK、当前 R21 复现输出或其他任务文件；剩余 `.tmp` 约 `744.9 MiB`，D 盘可用 `9.26 GiB`。PID `32408` 仍无法识别，但删除范围严格限于用户明确指定授权的路径。
+
+### 2026-10-16 R13-06 当前 main 与外机 R09 证据校准
+
+R13-06 的 `NetworkRecoveryDisplay`、维护页绑定、Worker 轮询/批次与任务通知去重已存在；本轮只扩展生产 `MaintenanceView` STA 行为检查，实际选择网络失败项→恢复传输项→认证失败项，断言显示文字变化、退避计数和认证负例。SDK9.0.302/VSTest17.14.1 新隔离输出：Playnite R13 `14/14`、Worker 重试 `12/12`、Core 映射 `1/1`、通知去重 `6/6`、R09 `2/2`；不是完整 solution，也不替代锁定 SDK8.0.423 或 CI SDK10.0.401。`R13-06-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016` 保存 TRX、源/DLL/PDB SHA；无生产源码改动、无真实网络/通知/Playnite。
+
+用户新附的外机 R09 日志对应诊断 ID `20261016T052146719Z-d9d99ac4`、随机隔离构建目录 `gsc-b/fd7672ef`、116 个 WPF 类。其第151行的 `Thickness(2)` 失败断言属于旧测试形态；当前 main（包括 `983fee5`）第151行检查错误色、第152行 Chrome 1 DIP、第154行独立 ValidationStroke 2 DIP。本机当前源干净隔离运行 R09 `2/2`。新日志不含外机 HEAD/dirty paths/test source hash/DLL/PDB/plugin DLL hash；外机根因仍未知，不能把本机成功说成同机复现。详细取证命令见 `evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md`。
+
+当前可执行下一步：提交并推送本阶段小批，再追踪本阶段新 Actions 两条 SDK lane 至终态；同时继续核对仍在运行的 #1041/#1042/#1043，不把它们的部分状态合并。随后 R13-07 队列筛选/汇总。真实通知监视器、联网/远端、Playnite host、物理 DPI/跨屏、独立 OS UIA/IME、最终呈现、ETW/宿主性能仍未验。
+
+### WPF 合成宿主的设置保存边界（2026-10-16）
+
+当 STA 行为测试将未初始化 Playnite `Plugin` 注入 `DashboardViewModel`，但加载真实页面会启用带 DispatcherTimer 的列宽持久化控制器时，必须让测试的偏好保存 callback 落在 fake host 内；不得让此行为测试异步调用 `Plugin.SavePluginSettings`。生产默认 callback 保持不变。列宽控制器保存/恢复本身用独立合成设置测试覆盖。若另一台机器的断言行号和当前源码不一致，先从同次诊断 `summary.json` 对照 sourceCommit、dirtyPaths、source SHA、DLL hash/MVID，再判断旧 checkout 或 stale assembly；本机不同 SDK 的定向通过不能覆盖对方故障。

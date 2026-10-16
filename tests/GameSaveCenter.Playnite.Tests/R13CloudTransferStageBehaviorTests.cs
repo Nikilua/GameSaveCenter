@@ -56,9 +56,26 @@ public sealed class R13CloudTransferStageBehaviorTests
                 State = "RetryScheduled",
                 LastErrorCode = "RCLONE_NETWORK_FAILED",
                 LastError = "合成网络中断原因",
+                AttemptCount = 2,
                 NextAttemptUtc = DateTime.UtcNow.AddMinutes(18)
             };
-            var context = new CloudQueueViewContext(uploaded, verified, retry);
+            var recovering = new CloudTransferStatusDto
+            {
+                TransferKey = "Backup:synthetic-recovering",
+                GameName = "合成恢复中游戏",
+                State = "Transferring",
+                LastErrorCode = "RCLONE_TRANSFER_INCOMPLETE",
+                LastError = "合成网络中断后恢复"
+            };
+            var authentication = new CloudTransferStatusDto
+            {
+                TransferKey = "Backup:synthetic-authentication",
+                GameName = "合成认证失败游戏",
+                State = "RetryScheduled",
+                LastErrorCode = "RCLONE_AUTH_FAILED",
+                LastError = "合成认证失败"
+            };
+            var context = new CloudQueueViewContext(uploaded, verified, retry, recovering, authentication);
             var application = Application.Current ?? new Application();
             if (!application.Resources.Contains("BaseTextBlockStyle"))
                 application.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
@@ -84,7 +101,7 @@ public sealed class R13CloudTransferStageBehaviorTests
                 PumpLayout(window);
                 var grid = Assert.Single(FindVisualChildren<DataGrid>(page),
                     candidate => candidate.Name == "CloudTransferGrid");
-                Assert.Equal(3, grid.Items.Count);
+                Assert.Equal(5, grid.Items.Count);
                 grid.ScrollIntoView(uploaded);
                 grid.SelectedItem = uploaded;
                 PumpLayout(window);
@@ -121,6 +138,7 @@ public sealed class R13CloudTransferStageBehaviorTests
                 grid.SelectedItem = retry;
                 PumpLayout(window);
                 var retryTiming = FindInspectorText(page, "SelectedCloudTransfer.RetryTimingRelativeDisplay");
+                var networkRecovery = FindInspectorText(page, "SelectedCloudTransfer.NetworkRecoveryDisplay");
                 var diagnosticExpander = Assert.Single(FindVisualChildren<Expander>(page),
                     expander => string.Equals(expander.Header as string, "原始诊断", StringComparison.Ordinal));
                 diagnosticExpander.IsExpanded = true;
@@ -134,6 +152,32 @@ public sealed class R13CloudTransferStageBehaviorTests
                 Assert.Equal(retry.RetryTimingFullDisplay,
                     System.Windows.Automation.AutomationProperties.GetHelpText(retryTiming));
                 Assert.Equal("合成网络中断原因", lastError.Text);
+                Assert.Equal(retry.NetworkRecoveryDisplay, networkRecovery.Text);
+                Assert.Contains("等待网络恢复", networkRecovery.Text, StringComparison.Ordinal);
+                Assert.Contains("按退避时间重试", networkRecovery.Text, StringComparison.Ordinal);
+                Assert.Contains("已用 2/6 次自动重试", networkRecovery.Text, StringComparison.Ordinal);
+                Assert.Contains("本轮最多 10 项", networkRecovery.Text, StringComparison.Ordinal);
+
+                grid.ScrollIntoView(recovering);
+                grid.SelectedItem = recovering;
+                PumpLayout(window);
+                Assert.Same(recovering, context.SelectedCloudTransfer);
+                Assert.Equal(recovering.NetworkRecoveryDisplay, networkRecovery.Text);
+                Assert.Contains("网络已恢复", networkRecovery.Text, StringComparison.Ordinal);
+                Assert.Contains("按批次上传中", networkRecovery.Text, StringComparison.Ordinal);
+
+                grid.ScrollIntoView(authentication);
+                grid.SelectedItem = authentication;
+                PumpLayout(window);
+                Assert.Same(authentication, context.SelectedCloudTransfer);
+                Assert.Equal(string.Empty, authentication.NetworkRecoveryDisplay);
+                Assert.Equal(string.Empty, networkRecovery.Text);
+
+                grid.ScrollIntoView(retry);
+                grid.SelectedItem = retry;
+                PumpLayout(window);
+                Assert.Same(retry, context.SelectedCloudTransfer);
+                Assert.Equal(retry.NetworkRecoveryDisplay, networkRecovery.Text);
 
                 // A forward wall-clock adjustment that passes the due time is represented by
                 // selecting an already-expired timestamp; reevaluation clamps it to an action,

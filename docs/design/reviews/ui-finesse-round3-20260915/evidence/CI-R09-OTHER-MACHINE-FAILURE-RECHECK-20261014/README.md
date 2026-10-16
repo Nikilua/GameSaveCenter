@@ -157,3 +157,35 @@ libpng 警告不在失败调用栈内；TextServicesContext 的 COM 异常在断
 当前 main 代码提交 `ccdbacb683afe6b0a745640d545cc9876332391c` 的隔离 Release 输出中，R09 测试源 SHA-256 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；测试 DLL SHA-256 `A0D6FA3D6E25CC940AA0B69D08993CF8DE6FB9261723DEE3A8BAF428F30DB7A2`、PDB SHA-256 `C5857DF9B80FC9878D1A8F0F186138FABCB97D770380DE8250764A871DF25570`；同一输出的 Playnite 插件 DLL SHA-256 `B6903A1A2B50533A98C5B7A7C937F4F607645FC226AA4B015F43330335BC1BB5`、PDB SHA-256 `BD8A1027DE0F0C8398A93380C777C61996453A671327064ED582A913BF7F7E92`。这些 DLL 的 ProductVersion 均为 `0.6.73+ccdbacb6`。本机 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`；R09 类 `2/2`，0 失败、0 跳过。脱敏 [TRX](../R13-04-CURRENT-MAIN-RECHECK-20261016/tests/R09FocusOutlineBehaviorTests-sdk8423-main-ccdbacb6.trx)，TRX SHA-256 `BE59CF2B3878B632E0C69865A9D68DCAF769F38B8FF3E985DE6273E328134BB7`。
 
 这是当前源码和身份明确的程序集在本机定向通过证据，不是完整 Playnite 测试通过，也不能覆盖/否定用户另一台机器的失败。外机失败的 HEAD、源快照、DLL/PDB 和插件 DLL 仍未提供，根因仍未知；SDK10.0.401 对 `ccdbacb6` 的 CI 结果需等本提交推送后的 Actions run。外机如果再次复现，需保留同一次运行的完整 diagnostics summary/console/TRX 与源码、测试 DLL/PDB、加载插件 DLL 的 SHA-256，以便确认是否是同一输入。
+
+## 2026-10-16 再次收到完整 R09 输出后的当前 main 对照
+
+最新粘贴文本指向外机诊断 run `20261016T052146719Z-d9d99ac4`，隔离构建目录 `artifacts/gsc-b/fd7672ef`，显示 WPF 隔离类数 `116`。本机工作区没有该外机 diagnostics 目录或 DLL/PDB，所以无法读取其 summary、`sourceCommit`、dirty paths 或程序集身份。当前已提供的内容仍报告 line 151、Expected `2,2,2,2` / Actual `1,1,1,1`，与旧 Chrome 厚度断言一致。
+
+在本机 `main` HEAD `2341ca59e8bca692c9e778c2e31e62ba59016768` 上从新隔离输出重新编译后，SDK `9.0.302` / VSTest `17.14.1` 的 R09 类 `2/2` 通过。此为 Playnite `net462` / tests `net472` 项目及引用构建，不是完整 solution build。R09 测试源 SHA-256 仍为 `A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98`；测试 DLL SHA-256 `BB99081B1BB9CD92C99406168C907E818391F16B54CD7D4395C4B53B1C31C35B`、PDB SHA-256 `FD57C9B16A97EA8E9CE759D54B89BBC4BC50686D0E0F7EAB4693BA7DB4E63F56`、MVID `671c1b35-1359-457f-8c9d-c010418e12b3`；插件 DLL SHA-256 `A034E9EA376C68C0222E38543C0F52EFC27BA245045FF505402A9CA208A759D8`、MVID `2d7e700d-97de-4a2c-8d32-e02ebdfe53c1`。ProductVersion 均为 `0.6.73+2341ca59e8bca692c9e778c2e31e62ba59016768`。同次测试只扩展了 R13 维护页测试源（SHA-256 `CBB2025C47BC8E81297EC8A283F65208AC26FF7B689AFC4C2D94BB2E98401CBB`）；R09 源没有改。脱敏 [R09 TRX](tests/R09FocusOutlineBehaviorTests-current-main-2341ca59-sdk9302.trx)，SHA-256 `A70ADC7FC9FBF3D933ED9024621AF4114D547C3CF559C685AF5B41D56866C689`。
+
+当前测试文件的第 151 行是颜色断言，`983fee5` 也已包含当前分拆后的验证描边测试。因而外机运行的测试源码/符号行映射仍与该源码不同。本机通过只说明本机这份明确身份输入通过；新日志显示随机隔离输出，降低了复用旧输出目录的可能，但不能证明外机实际构建脚本版本或 checkout。具体根因不猜测。
+
+请从外机仓库根目录取回同一次 run 的以下身份，以区分错误 checkout 与生成物来源：
+
+```powershell
+git rev-parse HEAD
+git status --short --branch
+Get-FileHash .\tests\GameSaveCenter.Playnite.Tests\R09FocusOutlineBehaviorTests.cs -Algorithm SHA256
+Get-FileHash .\artifacts\gsc-b\fd7672ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll, .\artifacts\gsc-b\fd7672ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.pdb, .\artifacts\gsc-b\fd7672ef\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll -Algorithm SHA256
+Get-Content .\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4\summary.json -Raw
+```
+
+## 2026-10-16 同次失败诊断文件请求
+
+用户粘贴的完整一键日志对应 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4`。该目录不在当前代理工作区中，日志本身没有 `sourceCommit`、`dirtyPaths`、源码 SHA 或测试程序集身份。最有用的单个文件是同目录 `summary.json`：它记录本次 HEAD、工作树状态、已编译源文件 SHA，以及插件/测试 DLL SHA 与 MVID。若后续可提供，也可一并提供 `artifacts/gsc-b/fd7672ef/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll` 和 `.pdb` 的 SHA-256。
+
+用户机器可直接运行：
+
+```powershell
+$run = 'D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4'
+Get-Content -LiteralPath (Join-Path $run 'summary.json') -Raw
+Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\artifacts\gsc-b\fd7672ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll', 'D:\workplace\Github\GameSaveCenter\artifacts\gsc-b\fd7672ef\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.pdb'
+```
+
+当前 `main` 的 R09 定向复核 SDK9.0.302 `2/2` 通过；#1043 SDK8 job 在同次运行先通过 R09，之后失败在 R11 测试夹具，SDK10.0.401 job成功。上述结果仍不能识别用户机器的实际 checkout/DLL。没有对应 `summary.json` 前，外机 R09 根因保持未确认。

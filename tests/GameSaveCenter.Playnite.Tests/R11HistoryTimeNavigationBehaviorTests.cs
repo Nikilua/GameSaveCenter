@@ -145,7 +145,15 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
             var viewModel = CreateBareDashboardViewModel(today, older, unknown);
             SetField(viewModel, "selectedBackup", older);
 
-            var view = new SaveCenterView { DataContext = viewModel, Width = 1040, Height = 700 };
+            // This behavior fixture uses an uninitialized Playnite Plugin so debounced
+            // column-width persistence must stay in the synthetic host boundary.
+            var view = new SaveCenterView
+            {
+                DataContext = viewModel,
+                Width = 1040,
+                Height = 700,
+                PreferencePersistenceOverrideForBehaviorTest = () => { }
+            };
             var window = new Window
             {
                 Width = 1040,

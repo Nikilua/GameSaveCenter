@@ -1,0 +1,7 @@
+3EE7A741B2906F30471B290B0471BE666EA6FBC7640424B38040B507837DD12C  D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\Views\SaveCenterView.xaml.cs
+14B2294DF1AD0E093DB8D3C0BB9233D350B0ADDF417F57F3F531420E9AADCE4C  D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R11HistoryTimeNavigationBehaviorTests.cs
+CBB2025C47BC8E81297EC8A283F65208AC26FF7B689AFC4C2D94BB2E98401CBB  D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R13CloudTransferStageBehaviorTests.cs
+A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98  D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R09FocusOutlineBehaviorTests.cs
+CADF4D416AFF62B38D012D62E78ACC9492558379E48B19E488CC571DA0B79AE3  D:\workplace\github\GameSaveCenter\.tmp\r11-fixture-isolation-20261016\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+EB7503B6372FED85BA9A8C5290A314326D01FA05D3440583104D5ACA1361F794  D:\workplace\github\GameSaveCenter\.tmp\r11-fixture-isolation-20261016\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.pdb
+395A3B8B34A47D2840747FACF1ABE956595F52047A918A96B9F2320584EA4307  D:\workplace\github\GameSaveCenter\.tmp\r11-fixture-isolation-20261016\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll

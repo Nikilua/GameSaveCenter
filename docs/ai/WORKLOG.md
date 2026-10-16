@@ -10940,3 +10940,19 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 既有 Playnite `R13CloudTransferStageBehaviorTests 14/14` 包含生产 `MaintenanceView` 四项证据绑定、诊断复制 sanitizer 与第二次重试门控；Core/Worker 对未知字段/时间、URI/query/Bearer 凭据脱敏和远端验证状态的测试也在 #1040 全套 CI 中。详细源码/任务边界见 [R13-05 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-05-CURRENT-MAIN-RECHECK-20261016/README.md)。
 - GitHub Actions #1040/run `38880099277` 在 `964f325d` 上双 SDK终态成功：SDK8 job `116904483831`（8.0.423）与 SDK10 job `116904484037`（10.0.401）；WPF 隔离套件 124 类成功。当前本机只装 SDK9.0.302，且仓库 global.json 锁定8.0.423，本轮未运行本机替代测试。无代码/XAML改动，也未生成新截图/临时构建目录。
 - R13-05 维持“已满足”；真实 Playnite/package-host、rclone 远端、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能仍待验。#1041（R11-08 代码）与 #1042（当前文档）的 Actions 状态见 CURRENT_STATE；CI 未终态的任务不签收。下一项 R13-06 当前 main 依赖/源路径复核。
+
+## 2026-10-16 R13-06 当前 main 离线恢复行为补证
+
+- 已检查现有 `CloudTransferStatusDto.NetworkRecoveryDisplay`、真实 `MaintenanceView` 绑定和 Worker retry loop；30 秒 poll、每轮最多10项、逐项 await 与历史任务 notification deduper 均已存在，不重建队列或修改生产行为。本轮只扩展当前生产视图 STA 测试，添加等待网络→恢复传输的选中/绑定变化、退避次数/批次上限可见、认证失败恢复文案为空的负例。
+- 本机 SDK `9.0.302` / VSTest `17.14.1`，从干净隔离输出构建对应测试项目/引用：Playnite R13 `14/14`、Worker `CloudRetryPersistenceTests 12/12`、Core 1 项 `1/1`、`TaskNotificationDeduperTests 6/6`。同一 Playnite 编译身份运行 R09 `2/2`。`python scripts/validate-source.py` 与 `git diff --check` 通过。不是完整 solution build；SDK8.0.423 未安装，不把 SDK9 结果冒充锁定 SDK或CI。
+- TRX、源/DLL/PDB SHA 见 [R13-06 当前 main 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-06-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md)。外机 R09 新附件指向 run `20261016T052146719Z-d9d99ac4`，仍缺同次 HEAD/status/源码/DLL/PDB/plugin DLL 身份；当前源 R09 本机隔离 2/2 不能确认另一台机器的具体输入，证据边界和命令见 [R09 外机复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 本轮唯一测试源变化 `R13CloudTransferStageBehaviorTests.cs` 的 R00/R01 freshness 为 `14/14 FRESH / 0 STALE / 0 matched paths`，package identity `not-provided`；JSON SHA `FDBF2584252E32EEF941793980C79D9094AE22A838C7B0A77B1236DA1BAAF0CD`。
+- 本批未改生产代码/XAML、未运行真实 Worker/Playnite 通知监视器或联网；未接触真实存档/媒体/云端。提交推送后必须追踪新 SDK8/SDK10.0.401 Actions 至终态，并继续核查 #1041/#1042/#1043；下一小批 R13-07 队列筛选与汇总。
+
+## 2026-10-16 R11 测试宿主隔离与外机 R09 输入身份
+
+- GitHub #1041/run `38885898033`、#1042/run `38888296980` 均双 SDK 成功。#1043/run `38889453677` SDK10.0.401 成功、SDK8 job `116935124793` 失败；已下载完整 job log 与 artifact。失败测试是 R11 历史筛选 WPF 行为用例，后台列宽持久化 DispatcherTimer 调到未初始化的 Playnite `Plugin.SavePluginSettings()`，随后 `GetPluginUserDataPath()` 抛空引用。不是生产环境的设置文件问题。
+- 修复限定在测试宿主边界：`SaveCenterView` 可内部注入行为测试保存 callback，默认生产 callback 仍是原 `viewModel.PersistUiPreference`；R11 合成测试传空 callback。真实列宽控制器仍由 R06 `6/6` 和 Q13 `1/1` 独立覆盖。未改 XAML或业务逻辑。
+- 本机 SDK9.0.302、VSTest17.14.1、.NET Framework testhost4.8.9181.0，以新的隔离输出执行 R11 `6/6`、R09 `2/2`、R06 `6/6`、独立 Q13 `1/1`；freshness `14 fresh / 0 stale / 0 source matches`。source validation 通过。新 TRX/源码及程序集 hash 归档在 `evidence/R11-08-CURRENT-MAIN-RECHECK-20261016/`；本机 SDK9 不替代锁定 SDK8 或 CI SDK10。
+- 用户粘贴的 R09 旧失败断言第151行来自旧形态（Chrome border 2 DIP）；当前 main 第151行检查 brush，第154行才检查独立 ValidationStroke 的 2 DIP。实际外机 source/assembly identity 仍未取得，当前工作区不存在该外机的 build diagnostics 目录；需其同次 `summary.json` 才能区分旧 source checkout/dirty file/旧程序集。
+- 当前修复需单独中文 commit/push，再检查两个新 Actions lanes 到终态。新 CI 未终态前不签收；若成功，再推进 R13-07 队列筛选与汇总。保留用户和其他任务生成的未跟踪文件。
