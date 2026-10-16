@@ -10,11 +10,13 @@
 
 ### 2026-10-16 当前续跑点（覆盖下方历史下一项）
 
-**最新续跑事实（本地 main 代码 HEAD `ccdbacb683afe6b0a745640d545cc9876332391c`，较 origin/main `e6b77ade789d25406532e0cdcc3d8598dc2a0a2c` 多 1 个代码提交，R13-04 文档待提交）：** 在 R13-04 既有 `WorkerOptions`、暂停/允许时段策略和设置页基础上，只增加独立临时目录的落盘/重载行为测试，没有改生产代码/XAML。本机锁定 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 的定向结果为 Worker `4/4`、Core `1/1`、Playnite R13/设置迁移 `24/24`；同一隔离 Playnite 输出 R09 `2/2`。这不是完整 solution 或完整 Playnite 全类通过；扫描仍会在 R05 Tooltip 的 `GetCursorPos` Win32 error 5 环境限制中止。R00/R01 freshness 对 `ccdbacb6` 为 `14/14` 无需重跑、0 登记源码路径命中，package identity not-provided。详情见 R13-04 当前 main 证据和 R09 外机复核。用户外机 R09 `Expected 2 / Actual 1` 失败未被本机结果否定，外机同次 HEAD/源码/DLL/PDB/插件身份缺失。Actions #1038/run `38867768405` 对旧提交 `e6b77ade`：SDK10.0.401 已成功、SDK8主job查询时仍在生成Playnite扩展包；不代表 `ccdbacb6`。提交并推送本阶段后，追踪新 run 的两个 SDK lane 至终态再签收。随后按当前活动队列推进 `CLOSE-WRAP-01`；R13-05/06/07/08 与 R14-01..08 已有当前 main 受控证据，不重复重做。
+**最新续跑事实（`main` 当前候选 `a81e7abd219e136cf784359ac48174e154f157be`，与 `origin/main` 一致；代码变更在父提交 `ccdbacb683afe6b0a745640d545cc9876332391c`）：** R13-04 只增加隔离目录的 WorkerOptions 持久化/重载行为测试，没有改生产代码/XAML。本机锁定 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 定向结果为 Worker `4/4`、Core `1/1`、Playnite R13/设置迁移 `24/24`，同一隔离 Playnite 输出 R09 `2/2`；这不是本机完整 solution 或完整 Playnite 全类通过。GitHub Actions #1039/run `38872163664` 对当前候选终态成功：SDK8 job `116878566799` 与 SDK `10.0.401` job `116878566530` 均通过；完整 WPF 隔离入口 `124/124` 类通过，Core `125`、Worker `362`，SDK8 另完成 Render QA、静态审查和扩展包生成。故 CLOSE-WRAP-01、CLOSE-OPTICAL-01 与 CLOSE-FOCUS-01 的当前自动化门禁已收口；真实 Playnite/物理呈现仍是环境边界。本机全类扫描仍因 `GetCursorPos` Win32 error 5 中止，不绕过权限。R00/R01 freshness 当前文档 HEAD 为 `14/14` 无需重跑、0 登记源码路径命中，package identity `not-provided`。
+
+外机本次 R09 附件显示 source classes `111` / WPF classes `116`，line 151 仍断言 `Chrome.BorderThickness == 2 DIP`，与当前 main line 151 错误色、line 152 Chrome `1 DIP`、line 154 `ValidationStroke 2 DIP` 不同；该旧断言形态见历史 `3f7d0b30`，`f13b9e05` 已拆分。附件中的 `artifacts/gsc-b/fd7672ef` 是随机构建目录，不是 commit；粘贴文本没有 sourceCommit/dirty paths/DLL/PDB SHA/插件 DLL 身份，因此只可确认测试输入版本不同，不能归因具体是旧 checkout、旧程序集还是安装包身份。#1039 当前候选通过不覆盖该失败。详细差异已记入 R13-04 证据包；旧 run #1038 只对应 `e6b77ade`。
 
 ### 2026-10-15 当前续跑点（覆盖下方历史下一项）
 
-**最新续跑事实（本地 main 代码 HEAD `ccdbacb683afe6b0a745640d545cc9876332391c`，较 origin/main `e6b77ade789d25406532e0cdcc3d8598dc2a0a2c` 多 1 个代码提交，R13-04 文档待提交）：** 在 R13-04 既有 `WorkerOptions`、暂停/允许时段策略和设置页基础上，只增加独立临时目录的落盘/重载行为测试，没有改生产代码/XAML。本机锁定 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 的定向结果为 Worker `4/4`、Core `1/1`、Playnite R13/设置迁移 `24/24`；同一隔离 Playnite 输出 R09 `2/2`。这不是完整 solution 或完整 Playnite 全类通过；扫描仍会在 R05 Tooltip 的 `GetCursorPos` Win32 error 5 环境限制中止。R00/R01 freshness 对 `ccdbacb6` 为 `14/14` 无需重跑、0 登记源码路径命中，package identity not-provided。详情见 R13-04 当前 main 证据和 R09 外机复核。用户外机 R09 `Expected 2 / Actual 1` 失败未被本机结果否定，外机同次 HEAD/源码/DLL/PDB/插件身份缺失。Actions #1038/run `38867768405` 对旧提交 `e6b77ade`：SDK10.0.401 已成功、SDK8主job查询时仍在生成Playnite扩展包；不代表 `ccdbacb6`。提交并推送本阶段后，追踪新 run 的两个 SDK lane 至终态再签收。随后按当前活动队列推进 `CLOSE-WRAP-01`；R13-05/06/07/08 与 R14-01..08 已有当前 main 受控证据，不重复重做。
+**最新续跑事实（从已推送 `676be4f3` 继续）：** R08 夹具第二次修正已完成本机 SDK8.0.423/VSTest17.11.1 Release test project build `0/0`，应用设置、系统偏好行为各 `1/1`；R09 高对比类本机复测 `3/3`，source validation/diff check 通过。本次修正先 drain Loaded/Dispatcher 并完成布局，再覆盖测试时长和触发入场动画，避免 Hosted runner 的 Loaded 回调与断言竞态；不改生产 UI。#1025/run `38687483121` 已终态 Failure：SDK10 job `116265550450` 在 R08SystemMotion 入场 opacity 动画断言失败；SDK8 job `116265550259` 在 R09HighContrast 行为矩阵第195行 Assert.True 失败，本机同类 `3/3` 通过，根因未证实。完整日志已由 GitHub 插件读取；对应诊断 artifact `11951470215` SHA-256 `7c328cf7b16c0d641dc0bdc61e6095d24e33b48ae69d0c9b4f1f5ddb812e4893` 与 `11951095969` SHA-256 `8d928e1b58657bb058b243aeb96de0cf8e5906b5bed46a9ffc90606181dd34cd`。修复补丁待提交推送；新 Actions 必须跟到终态。CI 收口后按用户顺序在新 source HEAD 重核 R00/R01 freshness，再推进 CLOSE-OPTICAL-01；真实 Playnite、物理 DPI/跨屏、呈现帧、UIA/读屏和 ETW/宿主性能仍未验。
 
 - R00/R01 freshness 在 source HEAD `4eb778e9` 为 14/14 fresh / 0 stale；R00-01..07、R01-01..08 维持已满足，R00-08 受控行为满足、真实 OS/宿主输入待验。R07-04 当前 main `8/8`；R07-05 `18/18`；R07-06 `18/18`、XAML `24/24`、引用 Release build `0/0`。R07-07 在源码 `2b423737` 上 SDK8.0.423/VSTest17.11.1 `21/21`；R07-08 当前 main `d190f7ea` 同 SDK定向复测 `9/9`、项目引用 build `0/0`、XAML `24/24`。证据：[R07-07](design/reviews/ui-finesse-round3-20260915/evidence/R07-07-CURRENT-MAIN-RECHECK-20261015/README.md)、[R07-08](design/reviews/ui-finesse-round3-20260915/evidence/R07-08-CURRENT-MAIN-RECHECK-20261015/README.md)。这些不是完整 solution build或SDK10 CI。受控视觉/行为通过，真实触控板/拖窗/Playnite host仍待验；R10-02 当前 main 复核为 SDK8 `32/32`，见 [R10-02](design/reviews/ui-finesse-round3-20260915/evidence/R10-02-CURRENT-MAIN-RECHECK-20261015/README.md)；R10-03 至 R10-05 已有受控复核证据；下一步先在当前 main b04660e0 重查 R00/R01 freshness，再推进 CLOSE-OPTICAL-01。
 - CI：#1006–#1009 已失败且完整日志受限；#1010/run `38636778462` 与 #1011/run `38638331563` 均 Failure。#1010 jobs `116101841201/116101841930`，artifact IDs `11929597360/11928647581`，SHA-256 `3c2bd19e16b0cef0dc54ba1c57e19b71a8be664e84dfa222e0d496e11a81660b` / `a9fb5a96607f5625c1699bf29a1447eb7616f1e424ac4dcb8bf8e4e0254fe746`；#1011 jobs `116107139673/116107139925`，artifact IDs `11928784541/11928968878`，SHA-256 `88170a28f0a19480eff989216674cbc0e3637d2bb80e35dfdbe2ea3e6bb352ac` / `f7abb468be15448673b2ba31f38ae3e48f69af2cfc6114fec4a9e9737cb4f1c5`。公开 job 只显示 exit 1，匿名日志 API 403；#1012/run `38640644812`（`2b423737`）上次看到 In progress，当前状态访问失败。`d190f7ea` 已推送，但其 Actions run ID/终态尚未从本机通道读到。CI SDK8.0.423/SDK10.0.401 分开记录；根因未知前不盲改。
@@ -53,9 +55,9 @@
 | CLOSE-IPC-01 | P0 | IMPLEMENTED | 开发/测试 Agent | 取消 IO/EOF 分类与夹具释放已修复；R19-08/R01-08 |
 | CLOSE-CI-01 | P0 | IMPLEMENTED | 构建维护 Agent | #968 当前源码 SDK8/SDK10 构建、测试、Render QA、静态审查、扩展包和诊断上传均成功；历史不可读失败仍单列，不猜测根因 |
 | CLOSE-SDK-01 | P0 | IMPLEMENTED | 构建维护 Agent | #968 分别验证仓库 SDK8 `8.0.423` 与 SDK10 `10.0.401` job；本地 helper 失败由源码门禁复现后补 BOM |
-| CLOSE-WRAP-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main Q14 `1/1` 验证 654 DIP 单行无额外行距；完整本机门禁唯一失败在系统指针 API `GetCursorPos` 返回 false，待交互桌面复核；证据见 CLOSE-WRAP 当前 main 包 |
-| CLOSE-OPTICAL-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 当前 main R02几何7/7，间距8 DIP/中心差0；整体共享回归与CI run `38249983091` 仍未收口 |
-| CLOSE-FOCUS-01 | P1 | IN_PROGRESS | UI 开发/测试 Agent | 已定位R05隐藏ComboBox/Focus失败的夹具前提；可见获焦与紧凑负例4/4，全量入口通过；后续删除回退失败另案 |
+| CLOSE-WRAP-01 | P1 | IMPLEMENTED | UI 开发/测试 Agent | Q14 `1/1` 验证 654 DIP 单行边距；当前候选 Actions #1039 SDK8/SDK10 双 lane 全量 WPF 通过，SDK8 Render QA 通过。真实交互桌面上的指针用例仍因 GetCursorPos error 5 未验 |
+| CLOSE-OPTICAL-01 | P1 | IMPLEMENTED | UI 开发/测试 Agent | 当前 main R02 几何 `7/7`、间距 8 DIP/中心差 0；Actions #1039 双 SDK 全量 WPF 与 SDK8 Render QA 成功收口 |
+| CLOSE-FOCUS-01 | P1 | IMPLEMENTED | UI 开发/测试 Agent | R05 可见 ComboBox 获焦/离焦、Popup 关闭及紧凑布局负例已覆盖；Actions #1039 两 SDK 全量 WPF `124/124` 类通过。外机 R09 的旧测试源映射差异单列，非本任务复现 |
 | CLOSE-PICKER-01 | P1 | IMPLEMENTED | 开发/测试 Agent | Dispatcher 负例与修复正例、本机完整 Release/WPF 门禁已通过；run `38222818374` 终态失败，根因并入 CLOSE-CI-01 |
 | CLOSE-EVID-01 | P1 | IMPLEMENTED | UI 验证 Agent | main `599d2fd` freshness 14/14；package identity 未提供并继续单独待验，四条受影响基线记录已按当前证据校正，见 R00/R01 当前 main 复核包 |
 | CLOSE-HOST-01 | P1 | BLOCKED_ENVIRONMENT | 宿主验证 Agent | ENV-001；R00-06/R23-04；Media Inbox |
@@ -207,6 +209,7 @@ Q23-08 代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97` 复用现有 `Set
 - **完成条件**：原16/20尺寸8 DIP严格间距/中心与36 DIP高度通过，Left/Center/Right动态切换和文本有限宽度不回归；保留命令/绑定/忙碌/焦点/禁用与ellipsis，双主题全量WPF/render/source门禁通过。与CLOSE-WRAP分别记录，不放宽容差。
 - **证据**：[共享UI阶段](ai/evidence/close-wrap-20261007/README.md)保留首次全量失败、旧DLL对照、STA干预及修复后TRX/源码和DLL身份；整体CI/发布未签收。
 - **2026-10-12 当前 main 复验**：上方历史“间距9 DIP”对应修复前的失败身份；当前确切 main 用真实生产 ResourceDictionary 重建后，R02 optical类7/7，16/20 DIP实际间距8、中心差0；Release0/0、XAML24/24、双主题全量render-qa 372图通过。R02任务行为与视觉条件当前满足。整体队列仍 `IN_PROGRESS`；run932与后续run `38247748056` 的“编译与测试”exit1均无可读日志，不猜成此项回归。
+- **2026-10-16 收口**：当前候选 Actions #1039 的 SDK8/SDK10.0.401 全量 WPF 隔离入口均成功，SDK8 `render-qa OK`。当前自动化条件已满足；真实 Playnite 和物理 DPI/最终呈现仍未验。
 
 ### CLOSE-FOCUS-01：ComboBox Popup离开焦点后的关闭路径
 
@@ -214,6 +217,7 @@ Q23-08 代码提交 `c377ab218dad54d81d7dd22202f0bf283f250f97` 复用现有 `Set
 - **当前对照**：旧clean c35 DLL独立3/3；同联合candidate DLL独立再复现2/1。新增日志保留原失败，证明260×180中筛选行Collapsed、Focus()=false；900×640可见且获焦后原断言通过。最终强制前置断言并补900×320紧凑负例4/4，生产Popup未改；第三轮全量本类4/4，后续第37类删除回退另案，完整门禁仍未过。
 - **完成条件**：保留真实ComboBox/方向选择、Tab/Shift+Tab回表单/overlay边界、DropDownClosed提交语义与焦点恢复；稳定复现后根因修复及正负例，完整114类/source/render无回归。不能以直接关闭夹具Popup、放宽断言或skip代替修复。
 - **证据**：[联合UI证据](ai/evidence/close-wrap-20261007/README.md)记录全量失败、clean旧DLL与同candidate独立结果及源码/DLL SHA/MVID。任务不等同真实Playnite输入/物理DPI验收。
+- **2026-10-16 收口**：已确认全尺寸与紧凑可见性前提后，保留真实 ComboBox、方向选择、Tab 离焦关闭、DropDownClosed 提交和焦点回到 overlay 的行为/负例；当前 Actions #1039 双 SDK 完整 WPF `124/124` 类通过，SDK8 Render QA 通过。真实 Playnite 输入未验。
 
 ### CLOSE-PICKER-01：删除回退与防抖刷新时序
 

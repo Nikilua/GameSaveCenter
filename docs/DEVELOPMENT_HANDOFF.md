@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-16；`main` 代码 HEAD `ccdbacb683afe6b0a745640d545cc9876332391c`，origin 为 `e6b77ade789d25406532e0cdcc3d8598dc2a0a2c`，领先 1 个代码提交；R13-04 证据文档已同步，待中文文档提交后推送并跟踪新 Actions。SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 定向 Worker/Core/Playnite 测试为 `4/4`、`1/1`、`24/24`，同一 Playnite 输出 R09 `2/2`；并非完整 solution/Playnite 全类或真实宿主验证。R00/R01 freshness 对 ccdbacb6 为 `14/14` 无需重跑、`0` 源命中。见[R13-04复核证据](design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
+更新：2026-10-16；`main` 推送 HEAD `a81e7abd219e136cf784359ac48174e154f157be`，与 `origin/main` 一致；代码父提交 `ccdbacb683afe6b0a745640d545cc9876332391c`。R13-04 本机 SDK8 定向测试 Worker/Core/Playnite `4/4`、`1/1`、`24/24`，R09 `2/2`；Actions #1039/run `38872163664` 两条 SDK lane 均终态成功（8.0.423 / 10.0.401），Playnite source 108 类与 WPF 124 类全通过，SDK8 Render QA、静态审查和扩展包成功。R00/R01 freshness 当前 HEAD `14/14` 无需重跑、0 登记源路径命中。见[R13-04复核证据](design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
 
-外机 R09 厚度失败仍为未解决问题；本机定向通过不覆盖它，外机 HEAD/源/DLL/PDB/插件 DLL 指纹待同次失败材料。#1038/run `38867768405` 的 SDK10成功与SDK8打包中状态只对应旧 `e6b77ade`。推送 ccdbacb6 及文档后，检查新提交SDK8、SDK10.0.401到终态；完整 Playnite扫描受 `GetCursorPos` Win32 error 5 环境限制，真实Playnite与OS验收未通过。
+外机新附 R09 日志与当前 main 测试源不一致：外机 line 151 断言 Chrome `2 DIP`、WPF 类 116；当前 line 151 是颜色、line 152 Chrome `1 DIP`、line 154 外圈 `2 DIP`。`gsc-b/fd7672ef` 是随机构建目录而非 commit；日志没有同次 source/DLL/PDB/插件身份，故旧输入版本已确认、具体原因仍未归因。#1039 当前 GitHub 候选全量 WPF 通过不覆盖外机失败。本机完整扫描仍受 `GetCursorPos` error 5 阻塞，没有绕过权限或验真实 Playnite。
 
 R00/R01 在代码提交 `ccdbacb6` freshness 为14/14无需重跑、0登记源路径命中，package identity 未提供；结果见[R13-04当前复核包](design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/R00-R01-freshness-ccdbacb6.json)。R00-07 最新 audit 为116 warnings/13 MEDIUM，13条工具栏自然换行风险仍打开。package identity 未提供。
 
-.tmp 中授权清理的旧目录已释放373.7 MiB；R12-05/R13-01等旧阶段输出已按历史记录清理。当前 R13-04 TRX 已归档，隔离 SDK8 构建目录 `.tmp/r13-04-ccdbacb6-20261016` 待本阶段提交推送/CI启动后删除；SDK工具链、R21复现目录、其他任务与用户未跟踪证据保留。下一活动项为 `CLOSE-WRAP-01`，在本阶段 CI 收口后继续。真实Playnite、OS UIA/读屏/IME、物理DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
+.tmp 中授权清理的旧目录已释放373.7 MiB；本轮 R13-04 两个隔离输出目录已按授权清理，TRX/身份摘要留在证据包；SDK工具链、R21复现目录、其他任务与用户未跟踪证据保留。CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已通过当前双 SDK 自动化门禁。下一项按第三轮账本选择依赖满足的未完成 Q/R 任务；真实 Playnite、OS UIA/读屏/IME、物理DPI/跨屏、呈现帧、ETW/宿主性能仍未验。
 
 CI #1031 的双 SDK 失败是历史结果，已由 #1032 新终态成功覆盖当前候选；前序失败日志与 artifact 身份继续保留在[历史证据包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。
 用户本次粘贴的外机 R09 日志为 Expected `2,2,2,2` / Actual `1,1,1,1`、stack line151、WPF 类总数 `116`；当前 main/祖先 `983fee5` 的 line151 是错误色断言，`ValidationStroke 2 DIP` 在 line154，当前干净隔离程序集发现124个 WPF 类。外机未附 HEAD、源快照、DLL/PDB SHA 或诊断清单，故可确认日志与当前源映射/测试清单不一致，不能断言根因。当前 SDK8 新建隔离 DLL 的 R09 类 `2/2`；完整 Playnite 扫描另因本机 `GetCursorPos` Win32 error5 在 R05 中止，未算全量成功。`libpng iCCP` 不在失败断言栈；COM teardown 在断言失败后。详见[R09 外机复核包](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。

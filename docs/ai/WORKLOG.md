@@ -1,9 +1,11 @@
-## 2026-10-16 R13-04 暂停/时段持久化补证与 R09 同源复核
+## 2026-10-16 R13-04 CI终态、外机测试源差异与Q/R证据校正
 
-- 复用既有 `WorkerOptions` 持久化、`CloudRetryService` 和 Playnite 设置，不改生产代码/XAML。新增 `DeviceIdentityTests.CloudQueuePauseAndWindowSurviveWorkerRestartAndResume`：在独立临时目录中保存暂停及跨午夜时段，通过新建 WorkerOptions 从磁盘重载，再保存恢复状态/新时段并再次重载验证。该行为测试不启动真实 Windows Service，也不声称验证运行中上传取消。
-- 本机锁定 SDK `8.0.423`、MSBuild `17.11.48`、VSTest `17.11.1`：Worker `4/4`、Core `1/1`、Playnite R13/PortableSettings `24/24`；Playnite 插件目标 `net462`。同一新建隔离 Playnite 输出的 R09 类 `2/2`。均为定向项目构建/测试，非完整 solution build/完整 Playnite 全类通过；未跑真实 Playnite，且没有 XAML 改动。脱敏 TRX、源码与 DLL/PDB SHA-256 见[R13-04 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
-- R00/R01 对代码提交 `ccdbacb6` freshness 为 `14/14` 无需重跑、`0` 登记源码路径命中，package identity 未提供。用户外机 R09 失败仍不能由本机定向通过否定；失败同次的 HEAD/源码/DLL/PDB/插件 DLL 身份缺失，具体根因未知。完整 Playnite 扫描仍因受限桌面 `GetCursorPos` Win32 error 5 中止。
-- Actions #1038/run `38867768405` 构建的是前一提交 `e6b77ade`：SDK10.0.401 job 已成功，SDK8 主 job最近查询仍在生成 Playnite 扩展包；不代表 `ccdbacb6`。本阶段证据和记忆文档完成后推送，并跟踪本提交新建的双 SDK Actions 至终态，再签收阶段。`.tmp/r13-04-ccdbacb6-20261016` 中的 TRX 已脱敏归档，提交证据后删除此本地输出。下一项根据 backlog 当前 READY 项继续，避免重做已满足的 R13-05/06/07/08 与 R14-01..08。
+- 复用既有 `WorkerOptions` 持久化、`CloudRetryService` 和 Playnite 设置，不改生产代码/XAML。新增 `DeviceIdentityTests.CloudQueuePauseAndWindowSurviveWorkerRestartAndResume`，只用隔离目录证明暂停/跨午夜时段落盘、重载及恢复，不启动真实 Worker Service，也不声称验证进行中上传取消。SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 定向结果：Worker `4/4`、Core `1/1`、Playnite R13/PortableSettings `24/24`、R09 `2/2`；源码、DLL/PDB SHA 和 TRX 见[R13-04证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
+- 代码提交 `ccdbacb6` 及证据文档提交 `a81e7abd` 均已推送。Actions #1039/run `38872163664` 对 `a81e7abd` 终态成功：SDK8 job `116878566799`、SDK10.0.401 job `116878566530`；Core `125`、Worker `362`，Playnite source `108` 类与 WPF `124` 类全通过，SDK8 Render QA、静态审查、扩展包生成成功。这是 hosted Windows runner 的结果；本机完整 Playnite 扫描仍因 `GetCursorPos` error 5 停止，未绕过桌面权限。
+- 外机 R09 新附日志为真实失败，但可直接确认失败测试输入与当前 main 不同：它有 source classes `111` / WPF `116`，line 151 断言 Chrome 边框 `2 DIP`；当前 main line 151 检查错误色、line 152 检查 Chrome `1 DIP`、line 154 检查独立 `ValidationStroke 2 DIP`。旧断言形态见 `3f7d0b30`，`f13b9e05` 已拆分。附件路径 `gsc-b/fd7672ef` 是随机临时构建目录，不是 commit；粘贴日志不含 sourceCommit、dirty paths、测试源/DLL/PDB SHA 或安装插件 DLL 身份。确认了输入版本不一致，没有确认是旧 checkout、测试程序集或安装包导致。#1039 的当前候选通过不覆盖此外机失败。
+- 当前 R00/R01 freshness `14/14` 无需重跑、0 源路径命中；`CLOSE-WRAP-01`、`CLOSE-OPTICAL-01` 与 `CLOSE-FOCUS-01` 的受控验收由当前双 SDK 全量 WPF 与 SDK8 Render QA 收口。对应证据和环境边界同步到账本。R05-03 弹层“翻转无闪屏”仍缺真实呈现帧，不能由离屏/打开后几何签收。R13-04 两个本轮 `.tmp` 构建目录已清理，未触及其他任务与用户未跟踪文件。
+- GitHub 连接取回 #992/#993 四个 job 的完整日志：两次的 SDK8.0.423 和 SDK10.0.401 job 都在 `R08MotionHotChangeBehaviorTests.SettingsAnimationToggleEndsEntranceAndReenableDoesNotReplayIt` 失败，精确观察为 `opacity=1; loaded=True`、未观察到入场 opacity clock（测试行49）。失败后出现的 TextServices COM 异常是收尾信息。后续 R08 夹具调度修正已提交，当前候选 #1039 双 SDK 完整 WPF 套件通过；#992/#993 的历史结果保留为失败，不归因给 R10-06 或 R09。
+- 下一批：已将 #1039 的双 SDK 完整 WPF 结果同步到 R07-05/06/07/08 和 R10-02/03/04/05/07/08；R10 受控任务已逐项核对；下一项复核 R11-01 现有实现、行为证据和依赖，不重复已满足的生产能力。
 
 ## 2026-10-16 R13-03 当前 main 行为复核与 R09 外机对照
 

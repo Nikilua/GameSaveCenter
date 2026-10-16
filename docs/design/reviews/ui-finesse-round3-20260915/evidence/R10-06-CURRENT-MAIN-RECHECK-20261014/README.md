@@ -60,6 +60,16 @@
 
 下一可执行项：本阶段提交并推送后跟踪新 Actions 到成功或失败终态；失败先尝试取得完整日志。CI 日志受限时，继续 R10-07 侧栏信息密度的独立当前 main 核查，不阻塞主任务。
 
+## 2026-10-16 GitHub 日志复查
+
+此前记载的日志 API 403/网页要求登录，是 2026-10-14 当时的访问结果。现通过已配置的 GitHub 连接成功读取 #992/#993 四个完整 job logs：
+
+- [#992 / run `38564273828`](https://github.com/Nikilua/GameSaveCenter/actions/runs/38564273828)：SDK10.0.401 job `115852859775` 与 SDK8.0.423 默认 build job `115852860137` 均在 `R08MotionHotChangeBehaviorTests.SettingsAnimationToggleEndsEntranceAndReenableDoesNotReplayIt` 失败。精确观测为 `app-motion test did not start opacity animation; opacity=1; loaded=True`，测试断言在 `R08MotionHotChangeBehaviorTests.cs:49`；两个 job 的前置 XAML/SDK 检查及 Core、Worker 测试已通过。
+- [#993 / run `38570078343`](https://github.com/Nikilua/GameSaveCenter/actions/runs/38570078343)：SDK10.0.401 job `115872658151` 与 SDK8.0.423 默认 build job `115872658675` 在同一测试、同一观察值失败。
+- 失败后出现的 WPF TextServices `InvalidComObjectException` 位于 testhost 收尾阶段；触发失败的是动画测试未观察到 opacity 时钟，不是 COM 异常。两次历史失败不在 R10-06 筛选来源提示行为类中。
+
+后来测试夹具针对初始主题应用/Loaded 调度时序做了修正（见工作日志 2026-10-15 R08 motion test fixture correction）。当前候选 Actions #1039/run `38872163664` 对 SDK8 与 SDK10.0.401 的完整 WPF 隔离套件均成功，包括现行 R08 motion 测试。该当前候选结果收口自动化回归，但不把历史 #992/#993 改写成成功，也不把其失败误归到 R10-06。
+
 ## #993 当前终态补记
 
 2026-10-14 检查了提交 `e0a72c93774610110100d7ead0ab59108689d1eb` 对应的 Actions [run #993](https://github.com/Nikilua/GameSaveCenter/actions/runs/38570078343)，公开页面确认终态 Failure：
