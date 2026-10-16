@@ -1,10 +1,10 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 `main`，推送 HEAD `a81e7abd219e136cf784359ac48174e154f157be` 与 origin 一致，代码父级为 `ccdbacb683afe6b0a745640d545cc9876332391c`。R13-04 本机 SDK8 定向 Worker/Core/Playnite 为 `4/4`、`1/1`、`24/24`，同输出 R09 `2/2`；当前候选 Actions #1039 双 SDK（8.0.423 / 10.0.401）均终态成功，Playnite source `108` 类、WPF `124` 类全部通过；SDK8 Render QA、静态审查和扩展包生成成功。R00/R01 freshness `14/14` 无需重跑、0 登记源路径命中，package identity 未提供。证据见[R13-04当前main复核](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。
+更新：2026-10-16；分支 `main`，最近已推送 HEAD `964f325d3bed8e273de98e6d8532b1c5e5065fc7`，当前工作树修改 R11-08 日期范围 helper/行为测试。R13-04 的 #1039 双 SDK 已成功（source108/WPF124、Core125、Worker362，SDK8 Render QA/静态审查/扩展包通过）。R11-08 本机 SDK9.0.302/MSBuild17.14.13/VSTest17.14.1 Release 类测试 `6/6`，含美东 DST 与生产 SaveCenterView 控件行为；完整源码/程序集身份和脱敏 TRX见[R11-08证据](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。SDK9 本机结果不替代 SDK8/CI SDK10.0.401。
 
 外机新附 R09 输出显示 WPF `116` 类，line 151 断言 Chrome `2 DIP`；当前 main 同行检查错误色，line 152 是 Chrome `1 DIP`，line 154 才是独立 `ValidationStroke 2 DIP`。旧测试形态见 `3f7d0b30`，`f13b9e05` 已拆分。`gsc-b/fd7672ef` 为随机构建目录，不是提交标识；缺同次 sourceCommit、dirty paths、测试 DLL/PDB SHA 与加载插件 DLL 身份。可确认测试输入版本不同，具体来源未归因；#1039 当前候选通过不覆盖外机失败。完整本机 WPF 扫描仍因受限桌面的 `GetCursorPos` error 5 中止。
 
-CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已由 #1039 双 SDK 完整自动化门禁收口。下一步按 ROUND3_PROGRESS 中的条件选择依赖已满足且仍未完成的 Q/R 项。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
+CLOSE-WRAP-01、CLOSE-OPTICAL-01、CLOSE-FOCUS-01 已由 #1039 双 SDK 完整自动化门禁收口。外机 R09 `2 DIP` 失败与当前测试源不一致，具体 checkout/DLL/PDB 来源未确认；本机通过不能覆盖。当前先收口 R11-08 新 Actions，再对新 source HEAD 重查 R00/R01 freshness/校正证据，随后按 ROUND3_PROGRESS 选择依赖满足的未完成 Q/R。真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现、ETW/宿主性能仍待验。
 
 ## AI/Codex 启动协议
 

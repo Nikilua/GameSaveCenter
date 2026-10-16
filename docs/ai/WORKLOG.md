@@ -1,3 +1,11 @@
+## 2026-10-16 R11-08 日期范围、DST 与历史跳转行为补证
+
+- 复核任务条件时确认已有日期 helper 按本地时区工作，但旧证据没有真实生产控件交互，也没有可重复的 DST 覆盖。复用 `BackupHistoryDateRange`，增加显式 `TimeZoneInfo` overload（默认生产入口仍传 `TimeZoneInfo.Local`），测试美东春季跳时、秋季重复小时及 UTC 排序。
+- STA 行为测试加载真实 `SaveCenterView` 和 DashboardViewModel 命令，以合成 DTO 验证日期筛选、清空恢复全部、空结果禁用跳转、最近/较早版本选择。Release `R11HistoryTimeNavigationBehaviorTests 6/6`，0 fail/skip；Playnite net462、测试 net472 与引用构建通过，SDK9.0.302 / MSBuild17.14.13 / VSTest17.14.1，0 编译 warning/error；`scripts/validate-source.py` 与 `git diff --check` 通过。SDK9 本机结果不替代 pinned SDK8/CI SDK10.0.401。
+- 脱敏 TRX 和源/程序集/PDB 哈希见[R11-08 当前 main 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。无 XAML/视觉修改；只用合成 DTO 与隔离 STA，不触及用户存档、媒体、云端或设置。
+- 代码变更与证据文档尚待提交/推送。#1040 对旧文档提交 964f325d 的 SDK10.0.401 job 已成功，SDK8 主 job 编译测试、Render QA、静态审查成功；扩展包生成仍在运行；该 run 不包含本轮源修改。推送新代码后跟踪两条 SDK lane 至终态。
+- 外机 R09 的 Expected `2 DIP` / Actual `1 DIP` 仍是真实失败；当前 main 测试映射不同，但外机 sourceCommit、工作树与测试/插件 DLL/PDB 身份未知，原因未确认。本轮 R11 结果不覆盖 R09。下一步先收口本阶段 CI，再按用户顺序重查 R00/R01 freshness/证据，然后推进依赖满足的 Q/R 项。
+
 ## 2026-10-16 R13-04 CI终态、外机测试源差异与Q/R证据校正
 
 - 复用既有 `WorkerOptions` 持久化、`CloudRetryService` 和 Playnite 设置，不改生产代码/XAML。新增 `DeviceIdentityTests.CloudQueuePauseAndWindowSurviveWorkerRestartAndResume`，只用隔离目录证明暂停/跨午夜时段落盘、重载及恢复，不启动真实 Worker Service，也不声称验证进行中上传取消。SDK8.0.423 / MSBuild17.11.48 / VSTest17.11.1 定向结果：Worker `4/4`、Core `1/1`、Playnite R13/PortableSettings `24/24`、R09 `2/2`；源码、DLL/PDB SHA 和 TRX 见[R13-04证据包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。

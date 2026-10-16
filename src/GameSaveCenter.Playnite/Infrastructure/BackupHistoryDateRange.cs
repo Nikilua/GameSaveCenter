@@ -21,14 +21,30 @@ namespace GameSaveCenter.Playnite.Infrastructure
         };
 
         internal static bool Matches(BackupVersionDto version, string range, DateTime localNow)
+            => Matches(version, range, localNow, TimeZoneInfo.Local);
+
+        internal static bool Matches(
+            BackupVersionDto version,
+            string range,
+            DateTime localNow,
+            TimeZoneInfo localTimeZone)
         {
             if (version == null) return false;
             if (string.Equals(range, All, StringComparison.Ordinal)) return true;
             if (version.CreatedUtc == DateTime.MinValue) return false;
             if (!TryResolve(range, localNow, out var from, out var to)) return true;
 
-            var localDate = version.CreatedLocal.Date;
+            var localDate = ConvertUtcToLocal(version.CreatedUtc, localTimeZone).Date;
             return localDate >= from && localDate <= to;
+        }
+
+        internal static DateTime ConvertUtcToLocal(DateTime createdUtc, TimeZoneInfo localTimeZone)
+        {
+            if (localTimeZone == null) throw new ArgumentNullException(nameof(localTimeZone));
+            var utc = createdUtc.Kind == DateTimeKind.Utc
+                ? createdUtc
+                : DateTime.SpecifyKind(createdUtc, DateTimeKind.Utc);
+            return TimeZoneInfo.ConvertTimeFromUtc(utc, localTimeZone);
         }
 
         internal static string Describe(string range, DateTime localNow)

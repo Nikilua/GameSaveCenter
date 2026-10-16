@@ -8,7 +8,13 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
-### 2026-10-16 当前续跑点（覆盖下方历史下一项）
+### 2026-10-16 R11-08 行为补证当前续跑点
+
+**当前阶段：** `R11-08` 日期范围/历史跳转。保留既有 DTO、日期范围 helper、CollectionView 和生产命令；本机 SDK9.0.302 Release net462/net472 项目与引用构建通过，行为类 `6/6`，覆盖本地日期、DST 跳时/重叠小时、清空恢复全部、真实 SaveCenterView 筛选和最近/较早跳转。脱敏 TRX、源/程序集/PDB SHA 见 [R11-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R11-08-CURRENT-MAIN-INTERACTION-20261016/README.md)。本机 SDK9 不代替 CI SDK8/10.0.401；当前本轮源修改尚未推送，Actions 终态待新提交。
+
+推送新提交并跟踪两条 CI lane 至终态后，按用户顺序在最新 source HEAD 重核 R00/R01 freshness/证据，再选择 ROUND3_PROGRESS 中依赖满足的 Q/R；不因缺少用户回复停住独立工作。真实 Playnite、物理呈现、ETW/宿主性能等未验边界保留。
+
+### 2026-10-16 R13-04 当前续跑点（历史快照）
 
 **最新续跑事实（`main` 当前候选 `a81e7abd219e136cf784359ac48174e154f157be`，与 `origin/main` 一致；代码变更在父提交 `ccdbacb683afe6b0a745640d545cc9876332391c`）：** R13-04 只增加隔离目录的 WorkerOptions 持久化/重载行为测试，没有改生产代码/XAML。本机锁定 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1` 定向结果为 Worker `4/4`、Core `1/1`、Playnite R13/设置迁移 `24/24`，同一隔离 Playnite 输出 R09 `2/2`；这不是本机完整 solution 或完整 Playnite 全类通过。GitHub Actions #1039/run `38872163664` 对当前候选终态成功：SDK8 job `116878566799` 与 SDK `10.0.401` job `116878566530` 均通过；完整 WPF 隔离入口 `124/124` 类通过，Core `125`、Worker `362`，SDK8 另完成 Render QA、静态审查和扩展包生成。故 CLOSE-WRAP-01、CLOSE-OPTICAL-01 与 CLOSE-FOCUS-01 的当前自动化门禁已收口；真实 Playnite/物理呈现仍是环境边界。本机全类扫描仍因 `GetCursorPos` Win32 error 5 中止，不绕过权限。R00/R01 freshness 当前文档 HEAD 为 `14/14` 无需重跑、0 登记源码路径命中，package identity `not-provided`。
 
