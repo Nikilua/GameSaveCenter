@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -263,24 +264,48 @@ public sealed class R13CloudTransferStageBehaviorTests
     }
 
     [Fact]
-    public void ManualRetryCommandGateBlocksSecondClickWhileSubmissionIsBusy()
+    public async Task ManualRetryCommandGateBlocksSecondClickWhileSubmissionIsBusy()
     {
         var transfer = new CloudTransferStatusDto { State = "RetryScheduled" };
+        var coordinator = new BusyOperationCoordinator();
+        var actionCompletion = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
         var busy = false;
         var submissions = 0;
+        Task<bool>? firstOperation = null;
         var command = new RelayCommand(
             _ =>
             {
-                submissions++;
-                busy = true;
+                var attempt = coordinator.TryRunAsync(
+                    () => Task.CompletedTask,
+                    () =>
+                    {
+                        submissions++;
+                        return actionCompletion.Task;
+                    },
+                    value => busy = value,
+                    _ => { },
+                    _ => { },
+                    () => { });
+                firstOperation ??= attempt;
             },
             _ => !busy && transfer.CanManuallyRetry);
 
         Assert.True(command.CanExecute(null));
         command.Execute(null);
+        Assert.NotNull(firstOperation);
+        Assert.Equal(1, submissions);
+        Assert.True(busy);
 
         Assert.False(command.CanExecute(null));
+        command.Execute(null); // Exercise the coordinator too, for a race after CanExecute.
         Assert.Equal(1, submissions);
+
+        actionCompletion.SetResult(null);
+        Assert.True(await firstOperation!);
+        Assert.False(busy);
+
+        transfer.State = "Uploaded";
+        Assert.False(command.CanExecute(null));
     }
 
     [Fact]
