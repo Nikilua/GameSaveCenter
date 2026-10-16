@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：Q11-06 视觉证据待双 SDK CI
+
+当前 `main` 基线 `1662e27b6f41ba00b78388589267691d4def7b6f`。为 Q11-06 复用生产页签模板补了可选离屏捕获；测试源 SHA `94347B788C770CD4D30FD3AFA161F751DD17EA724748C35CA37F028F89F56BA9`，生产 `Redesign.xaml` 未改。SDK9.0.302/VSTest17.14.1 定向 Release test `1/1`，18 张 Light/Dark 截图和几何报告已归档。提交/推送与新 Actions 双 SDK lane 终态仍待完成；SDK9 不能代替 SDK8.0.423/SDK10.0.401。
+
+Q11-06 视觉只记受控通过；host 因真实 Playnite/OS 输入/有效物理 DPI/屏幕呈现未验而保持外部阻塞，Final 未完成。外机 R09 文本是重复附件（SHA `F3DDDC...4514`），旧 `3f7d0b30` 第151行是 Chrome 2 DIP 断言；当前已拆 Chrome 1 DIP + ValidationStroke 2 DIP。外机 HEAD、源码、DLL/PDB 与插件身份仍缺，不能用本机或 CI 通过覆盖外机失败。下一步先推送当前本批并跟踪双 SDK CI，收口后重扫依赖就绪的 Q/R 队列。
+
 更新：2026-10-17；当前 `main` 代码基线为 `4a98148caf2b0909998824acc73119272fc0cb37`，最近已推送文档检查点为 `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b`；Worker 取消回调测试夹具时序修正已完成，生产代码未改。Q24-04 的本机 SDK9 行为和 R00/R01 freshness/Render QA 仍见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)和[R00/R01 Render QA 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RENDERQA-RECHECK-20261017/README.md)。
 
 新读取的 #919/#920 完整 SDK10 日志证实它们在 2026-09-30 分别对 `a6b6dfc9`、`77de7f45` 运行，并在 `ProductionShellChromeSourceTests` 的两个活动动效前提处失败（每次 11/13）。测试只覆盖应用动效设置，没有固定 runner 的系统动效偏好；2026-10-07 `48b78b3b` 加入实例级系统偏好测试 seam、偏好组合矩阵与默认真实系统偏好测试，生产策略仍尊重 Windows 状态。该提交是当前 main 祖先；#1056 两 SDK 的 125 个 WPF 类全部通过。历史失败保留为失败，修正后的 CI 通过不重写历史。证据见 [R00-03 历史 SDK10 失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。

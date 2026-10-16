@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,9 +12,11 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using GameSaveCenter.Contracts;
@@ -539,6 +542,16 @@ public sealed class R23ProductionResourceStateBehaviorTests
     {
         RunSta(() =>
         {
+            var visualCaptureRoot = Environment.GetEnvironmentVariable("GSC_Q11_06_VISUAL_OUTPUT");
+            if (!string.IsNullOrWhiteSpace(visualCaptureRoot))
+            {
+                Directory.CreateDirectory(visualCaptureRoot);
+                File.WriteAllText(
+                    Path.Combine(visualCaptureRoot, "q11-06-tab-overflow-captures.txt"),
+                    "RenderTargetBitmap of the production shared TabControl template at 96 DPI; not a screen capture or physical-DPI measurement."
+                    + Environment.NewLine);
+            }
+
             var pages = new[]
             {
                 (FileName: "SaveCenterView.xaml", ExpectedCount: 4),
@@ -560,6 +573,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 foreach (var theme in Themes)
                 {
                     var root = new Grid { Resources = resources };
+                    root.SetResourceReference(Panel.BackgroundProperty, "GscGlassFillBrush");
+                    root.SetResourceReference(TextElement.ForegroundProperty, "GscPrimaryTextBrush");
                     root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                     var beforeTabs = new Button { Content = "前一控件", Height = 30, Width = 110 };
@@ -601,6 +616,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         tabs.SelectedIndex = 0;
                         headerViewer.ScrollToHorizontalOffset(0);
                         FlushLayout(window);
+                        CaptureQ11TabVisualIfRequested(
+                            visualCaptureRoot, root, page.FileName, theme, "first", tabs, headerViewer, horizontalBar);
 
                         Assert.Equal(page.Headers.Length, tabs.Items.Count);
                         Assert.Equal(ScrollBarVisibility.Auto, headerViewer.HorizontalScrollBarVisibility);
@@ -674,6 +691,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         RaiseWorkspaceTabMouseClick(lastTab, window);
                         FlushLayout(window);
                         Assert.Equal(tabs.Items.Count - 1, tabs.SelectedIndex);
+                        CaptureQ11TabVisualIfRequested(
+                            visualCaptureRoot, root, page.FileName, theme, "last", tabs, headerViewer, horizontalBar);
 
                         var decreaseTrackButton = GetScrollTrackButton(horizontalBar, increase: false);
                         previousOffset = headerViewer.HorizontalOffset;
@@ -700,6 +719,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
             }
 
             var wideRoot = new Grid { Resources = resources };
+            wideRoot.SetResourceReference(Panel.BackgroundProperty, "GscGlassFillBrush");
+            wideRoot.SetResourceReference(TextElement.ForegroundProperty, "GscPrimaryTextBrush");
             var wideTabs = new TabControl
             {
                 Style = tabControlStyle,
@@ -721,12 +742,65 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 var wideBar = Assert.Single(FindVisualChildren<ScrollBar>(wideViewer),
                     scrollBar => scrollBar.Orientation == Orientation.Horizontal);
                 Assert.Equal(Visibility.Collapsed, wideBar.Visibility);
+                foreach (var theme in Themes)
+                {
+                    ApplyTheme(wideRoot, theme);
+                    FlushLayout(wideWindow);
+                    CaptureQ11TabVisualIfRequested(
+                        visualCaptureRoot, wideRoot, "MaintenanceView", theme, "wide", wideTabs, wideViewer, wideBar);
+                }
             }
             finally
             {
                 wideWindow.Close();
             }
         });
+    }
+
+    private static void CaptureQ11TabVisualIfRequested(
+        string? outputRoot,
+        Grid root,
+        string pageName,
+        GameSaveCenterThemeMode theme,
+        string state,
+        TabControl tabs,
+        ScrollViewer headerViewer,
+        ScrollBar horizontalBar)
+    {
+        if (string.IsNullOrWhiteSpace(outputRoot))
+            return;
+
+        Assert.True(root.ActualWidth > 0 && root.ActualHeight > 0,
+            $"{pageName}/{theme}/{state}: cannot capture an unmeasured visual root.");
+        var fileName = $"{Path.GetFileNameWithoutExtension(pageName)}-{theme.ToString().ToLowerInvariant()}-{state}.png";
+        var bitmap = new RenderTargetBitmap(
+            Math.Max(1, (int)Math.Ceiling(root.ActualWidth)),
+            Math.Max(1, (int)Math.Ceiling(root.ActualHeight)),
+            96,
+            96,
+            PixelFormats.Pbgra32);
+        bitmap.Render(root);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using (var stream = File.Create(Path.Combine(outputRoot, fileName)))
+            encoder.Save(stream);
+
+        var selectedHeader = (tabs.SelectedItem as TabItem)?.Header?.ToString() ?? string.Empty;
+        var row = string.Join("|", new[]
+        {
+            Path.GetFileNameWithoutExtension(pageName),
+            theme.ToString(),
+            state,
+            $"{root.ActualWidth.ToString("0.##", CultureInfo.InvariantCulture)}x{root.ActualHeight.ToString("0.##", CultureInfo.InvariantCulture)}",
+            $"{headerViewer.ViewportWidth.ToString("0.##", CultureInfo.InvariantCulture)}/{headerViewer.ExtentWidth.ToString("0.##", CultureInfo.InvariantCulture)}",
+            headerViewer.HorizontalOffset.ToString("0.##", CultureInfo.InvariantCulture),
+            tabs.SelectedIndex.ToString(CultureInfo.InvariantCulture),
+            selectedHeader.Replace("|", " "),
+            horizontalBar.Visibility.ToString(),
+            horizontalBar.ActualHeight.ToString("0.##", CultureInfo.InvariantCulture),
+            fileName
+        });
+        File.AppendAllText(Path.Combine(outputRoot, "q11-06-tab-overflow-captures.txt"), row + Environment.NewLine);
     }
 
     [Fact]

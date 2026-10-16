@@ -1,5 +1,13 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 当前续跑：Q11-06 视觉证据待推送
+
+- 当前分支 `main` / 基线 `1662e27b6f41ba00b78388589267691d4def7b6f`；工作树只有本阶段测试源变更和证据/记忆文档，加上已存在的其它任务未跟踪 TRX，必须按本阶段文件精确提交。
+- Q11-06 复用现有生产页签共享资源；只增加环境变量 opt-in 截图/几何输出。SDK9.0.302/VSTest17.14.1 定向 Release build/test `1/1`，`validate-source.py` 与 diff check 通过。18 张 96-DPI 离屏图、报告、TRX、完整身份和未验边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。Round2 视觉栏转“受控通过”，host 仍外部阻塞、Final 未完成。
+- 下一步：本批中文 commit + push main；用 GitHub 插件查该提交 Actions 至 SDK8.0.423 和 SDK10.0.401 均明确终态。CI 失败先取完整日志，不凭摘要推断。CI 收口后再选下一项依赖已满足的 Q/R 任务。
+- 外机 R09 重复日志 SHA `F3DDDC...4514`，报告 `Expected Thickness(2) / Actual(1)` 在第151行；第151行与历史 `3f7d0b30` 旧断言相同，与当前拆分断言不同。真实失败保留；没有同次 `summary.json`、HEAD、测试 DLL/PDB、插件 DLL 身份，根因未定。本机/CI通过不能代替外机输入复核。不要放宽/重建断言来签收。
+- 仍未验真实 Playnite、OS 物理键鼠/UIA、有效物理 DPI/跨屏、最终呈现帧、ETW/宿主性能；真实存档、媒体和云端未访问。
+
 ## 2026-10-17 当前 CI 与外机故障边界
 
 当前分支为 `main`。已推送文档检查点 `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b` 的 #1057/run `38969111355` 终态成功；最后代码提交 `4a98148caf2b0909998824acc73119272fc0cb37` 的 #1056 SDK8.0.423 / SDK10.0.401 两 lane 也成功。它们验证各自 runner 输入，不是用户另一台机器的安装或本机状态证明。

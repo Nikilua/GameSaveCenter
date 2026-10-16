@@ -1,0 +1,19 @@
+RenderTargetBitmap of the production shared TabControl template at 96 DPI; not a screen capture or physical-DPI measurement.
+SaveCenterView|Light|first|306.67x226.67|304.67/378.67|0|0|历史版本|Visible|12|SaveCenterView-light-first.png
+SaveCenterView|Light|last|306.67x226.67|304.67/378.67|74|3|比较与保留|Visible|12|SaveCenterView-light-last.png
+SaveCenterView|Dark|first|306.67x226.67|304.67/378.67|0|0|历史版本|Visible|12|SaveCenterView-dark-first.png
+SaveCenterView|Dark|last|306.67x226.67|304.67/378.67|74|3|比较与保留|Visible|12|SaveCenterView-dark-last.png
+MediaCenterView|Light|first|306.67x226.67|304.67/366.67|0|0|待归类|Visible|12|MediaCenterView-light-first.png
+MediaCenterView|Light|last|306.67x226.67|304.67/366.67|62|3|来源规则|Visible|12|MediaCenterView-light-last.png
+MediaCenterView|Dark|first|306.67x226.67|304.67/366.67|0|0|待归类|Visible|12|MediaCenterView-dark-first.png
+MediaCenterView|Dark|last|306.67x226.67|304.67/366.67|62|3|来源规则|Visible|12|MediaCenterView-dark-last.png
+MaintenanceView|Light|first|306.67x226.67|304.67/520|0|0|诊断|Visible|12|MaintenanceView-light-first.png
+MaintenanceView|Light|last|306.67x226.67|304.67/520|215.33|5|进程映射|Visible|12|MaintenanceView-light-last.png
+MaintenanceView|Dark|first|306.67x226.67|304.67/520|0|0|诊断|Visible|12|MaintenanceView-dark-first.png
+MaintenanceView|Dark|last|306.67x226.67|304.67/520|215.33|5|进程映射|Visible|12|MaintenanceView-dark-last.png
+TrainerCenterView|Light|first|306.67x226.67|304.67/404.67|0|0|已绑定工具|Visible|12|TrainerCenterView-light-first.png
+TrainerCenterView|Light|last|306.67x226.67|304.67/404.67|100|3|可下载版本|Visible|12|TrainerCenterView-light-last.png
+TrainerCenterView|Dark|first|306.67x226.67|304.67/404.67|0|0|已绑定工具|Visible|12|TrainerCenterView-dark-first.png
+TrainerCenterView|Dark|last|306.67x226.67|304.67/404.67|100|3|可下载版本|Visible|12|TrainerCenterView-dark-last.png
+MaintenanceView|Light|wide|1266.67x266.67|1264.67/520|0|0|诊断|Collapsed|0|MaintenanceView-light-wide.png
+MaintenanceView|Dark|wide|1266.67x266.67|1264.67/520|0|0|诊断|Collapsed|0|MaintenanceView-dark-wide.png
