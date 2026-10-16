@@ -48,7 +48,16 @@ public sealed class R13CloudTransferStageBehaviorTests
                 UpdatedUtc = new DateTime(2026, 10, 16, 0, 1, 0, DateTimeKind.Utc),
                 LastSuccessfulVerificationUtc = new DateTime(2026, 10, 16, 0, 1, 0, DateTimeKind.Utc)
             };
-            var context = new CloudQueueViewContext(uploaded, verified);
+            var retry = new CloudTransferStatusDto
+            {
+                TransferKey = "Backup:synthetic-retry",
+                GameName = "合成重试游戏",
+                State = "RetryScheduled",
+                LastErrorCode = "RCLONE_NETWORK_FAILED",
+                LastError = "合成网络中断原因",
+                NextAttemptUtc = DateTime.UtcNow.AddMinutes(18)
+            };
+            var context = new CloudQueueViewContext(uploaded, verified, retry);
             var application = Application.Current ?? new Application();
             if (!application.Resources.Contains("BaseTextBlockStyle"))
                 application.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
@@ -74,7 +83,7 @@ public sealed class R13CloudTransferStageBehaviorTests
                 PumpLayout(window);
                 var grid = Assert.Single(FindVisualChildren<DataGrid>(page),
                     candidate => candidate.Name == "CloudTransferGrid");
-                Assert.Equal(2, grid.Items.Count);
+                Assert.Equal(3, grid.Items.Count);
                 grid.ScrollIntoView(uploaded);
                 grid.SelectedItem = uploaded;
                 PumpLayout(window);
@@ -106,6 +115,38 @@ public sealed class R13CloudTransferStageBehaviorTests
                 Assert.Equal("远端校验成功", verifiedGuaranteeCell.Text);
                 Assert.Equal("已验证", detailPhase.Text);
                 Assert.Equal("远端校验成功", detailGuarantee.Text);
+
+                grid.ScrollIntoView(retry);
+                grid.SelectedItem = retry;
+                PumpLayout(window);
+                var retryTiming = FindInspectorText(page, "SelectedCloudTransfer.RetryTimingRelativeDisplay");
+                var diagnosticExpander = Assert.Single(FindVisualChildren<Expander>(page),
+                    expander => string.Equals(expander.Header as string, "原始诊断", StringComparison.Ordinal));
+                diagnosticExpander.IsExpanded = true;
+                PumpLayout(window);
+                var lastError = FindInspectorText(page, "SelectedCloudTransfer.LastError");
+
+                Assert.Equal(retry.RetryTimingRelativeDisplay, retryTiming.Text);
+                Assert.Contains("分钟", retryTiming.Text, StringComparison.Ordinal);
+                Assert.EndsWith("后", retryTiming.Text, StringComparison.Ordinal);
+                Assert.Equal(retry.RetryTimingFullDisplay, retryTiming.ToolTip as string);
+                Assert.Equal(retry.RetryTimingFullDisplay,
+                    System.Windows.Automation.AutomationProperties.GetHelpText(retryTiming));
+                Assert.Equal("合成网络中断原因", lastError.Text);
+
+                // A forward wall-clock adjustment that passes the due time is represented by
+                // selecting an already-expired timestamp; reevaluation clamps it to an action,
+                // never a negative countdown.
+                retry.NextAttemptUtc = DateTime.UtcNow.AddMinutes(-2);
+                context.SelectedCloudTransfer = verified;
+                PumpLayout(window);
+                context.SelectedCloudTransfer = retry;
+                grid.SelectedItem = retry;
+                PumpLayout(window);
+
+                Assert.Equal("可立即重试", retryTiming.Text);
+                Assert.DoesNotContain("负", retryTiming.Text, StringComparison.Ordinal);
+                Assert.Equal(retry.RetryTimingFullDisplay, retryTiming.ToolTip as string);
             }
             finally
             {
@@ -115,15 +156,19 @@ public sealed class R13CloudTransferStageBehaviorTests
     }
 
     [Fact]
-    public void MaintenanceInspectorUsesBoundedRetryTimingDisplay()
+    public void MaintenanceInspectorUsesBoundedRetryTimingWithoutPerItemTimer()
     {
         var root = TestRepositoryContext.Root;
-        var source = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var view = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var viewCodeBehind = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml.cs"));
+        var contracts = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "CloudTransferDtos.cs"));
 
-        Assert.Contains("SelectedCloudTransfer.RetryTimingRelativeDisplay", source);
-        Assert.Contains("SelectedCloudTransfer.RetryTimingFullDisplay", source);
-        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedCloudTransfer.RetryTimingFullDisplay}\"", source);
-        Assert.DoesNotContain("SelectedCloudTransfer.NextAttemptLocal, StringFormat", source);
+        Assert.Contains("SelectedCloudTransfer.RetryTimingRelativeDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("SelectedCloudTransfer.RetryTimingFullDisplay", view, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText=\"{Binding SelectedCloudTransfer.RetryTimingFullDisplay}\"", view, StringComparison.Ordinal);
+        Assert.DoesNotContain("SelectedCloudTransfer.NextAttemptLocal, StringFormat", view, StringComparison.Ordinal);
+        Assert.DoesNotContain("DispatcherTimer", viewCodeBehind, StringComparison.Ordinal);
+        Assert.DoesNotContain("Timer", contracts, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -299,10 +344,10 @@ public sealed class R13CloudTransferStageBehaviorTests
     {
         private CloudTransferStatusDto selectedCloudTransfer;
 
-        public CloudQueueViewContext(CloudTransferStatusDto uploaded, CloudTransferStatusDto verified)
+        public CloudQueueViewContext(params CloudTransferStatusDto[] transfers)
         {
-            CloudTransferItems = new ObservableCollection<CloudTransferStatusDto> { uploaded, verified };
-            selectedCloudTransfer = uploaded;
+            CloudTransferItems = new ObservableCollection<CloudTransferStatusDto>(transfers);
+            selectedCloudTransfer = transfers[0];
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
