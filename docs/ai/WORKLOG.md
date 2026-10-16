@@ -1,3 +1,12 @@
+## 2026-10-17 Q24-04 加载更多键盘路径与 R09 外机失败对照
+
+- 复用 `TaskCenterView`、`TaskHistoryHasMore` 与既有 `LoadMoreTasksCommand`，只补 `R21KeyboardNavigationTraceTests`。有历史时实际追踪可见、命令仍绑定、Tab/Shift+Tab 可达且先于 DataGrid；历史耗尽时折叠，命令绑定仍在但双向不可达。失败任务详情/Retry/Cancel 和既有轨迹保留，合成命令均为 no-op。
+- 本机 SDK `9.0.302` / VSTest `17.14.1`、Playnite `net462`/tests `net472` 定向 Release build 后，`R21KeyboardNavigationTraceTests 4/4`、`KeyboardFocusSourceTests 5/5`、`GamePickerKeyboardBehaviorTests 7/7`、`R10KeyboardShortcutHelpBehaviorTests 5/5`，合计 `21/21`；非完整 solution build。源码校验、diff check 通过。受控 STA `MoveFocus` 不代表真实 OS 键盘、Narrator 或 Playnite 呈现。
+- `R00-08` 因登记范围覆盖 `*Keyboard*.cs`，重新核对后将 evidence source commit 绑定到代码提交 `5c81a07056d64482767d546efe043012abc1e6fc`，证据更新为本复核包；freshness `14/14 fresh / 0 stale / 0 matched source paths`，2,918 个比较路径，package identity `not-provided`。新 freshness JSON、脱敏 TRX 与测试 DLL/PDB SHA 已归档。
+- 用户外机一键日志仍为真实失败：Core `125/125`、Worker `357/357`、R09 `1/2`、整体 exit `1`。当前源码 line151 是颜色断言，外机 `Thickness(2/1)` 栈映射对不上；精确旧断言来自 `3f7d0b30`。本机 R09 SDK9 `2/2` 与 #1047 旧提交双 SDK通过不覆盖该失败；待外机同次 `summary.json`、TRX 和 DLL/PDB 身份才能区分旧 checkout/程序集/PDB/脚本来源。
+- #1051/run `38927198349` SDK10 job `117061655415` 完整日志显示 Worker `361/362`，`CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled` line128 callback count expected1/actual0；SDK8 job `117061656455` 已终态成功。Q24-04 commit `5c81a070` 的 #1052/run `38932328340` 已整体成功：[Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38932328340)。SDK10.0.401 job `117079155932` build `0 warning / 0 error`、Core `125/125`、Worker `362/362`，Playnite WPF 隔离共125类通过且包含 R21；旧取消回调失败测试在本次 lane 通过，未复现。SDK8.0.423 job `117079155802` build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF隔离125类通过，Render QA、WPF 静态审查、扩展包和上传均成功。#1051 失败保留为历史真实 CI 失败，本次未复现不等于修复。
+- 代码/证据小批已提交并推送 `5c81a070`（`补齐任务中心加载更多键盘路径证据`）；#1052 双 SDK Actions 现已整体成功。精确清理仅限本任务创建的 `.tmp/r09-main-sdk9-20261017` 和 `.tmp/ci1051-worker-cancel-sdk9-20261016`，共约 `154 MiB`；没有删除其它任务 TRX 或 artifact。Round2 总项 Q24-04 仍未完成：物理键盘、完整阅读顺序、真实 Playnite/UIA/视觉待验。外机 R09 身份问题独立保留。下一步重新盘点 R23-08 的 READY 条件。
+
 ## 2026-10-16 R11-08 日期范围、DST 与历史跳转行为补证
 
 - 复核任务条件时确认已有日期 helper 按本地时区工作，但旧证据没有真实生产控件交互，也没有可重复的 DST 覆盖。复用 `BackupHistoryDateRange`，增加显式 `TimeZoneInfo` overload（默认生产入口仍传 `TimeZoneInfo.Local`），测试美东春季跳时、秋季重复小时及 UTC 排序。

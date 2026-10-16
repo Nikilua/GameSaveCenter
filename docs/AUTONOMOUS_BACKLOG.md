@@ -8,6 +8,16 @@
 
 本节优先于下方历史候选及旧 Q/R 文档的“下一项”。用户本轮授权审阅和调整任务；这里只把明确可执行的工程缺口标 READY，不据此启动无限开发。实现证据、宿主验收和用户故障分别记录；`IMPLEMENTED` 不等于发布通过。
 
+### 2026-10-17 Q24-04 / R00-08 当前续跑点
+
+**本机代码与行为：** 已提交推送 `5c81a07056d64482767d546efe043012abc1e6fc`；只为生产 `TaskCenterView` 现有“加载更多”状态/命令增加实际 STA 键盘正负轨迹，没有改生产 UI、服务、DTO 或命令。有历史时按钮显示且双向可达；耗尽时折叠且双向不可达。本机 SDK `9.0.302`/VSTest `17.14.1` 定向 Release build，四类键盘测试 `21/21`；非完整 solution build。`R00-08` evidence sourceCommit 更新后，R00/R01 freshness `14/14 fresh / 0 stale / 0 matched source paths`、2,918 路径、package identity `not-provided`。证据：[Q24-04 加载更多键盘与 freshness](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。Round2 Q24-04 仍未完成：真实 Playnite/OS 键盘、完整阅读顺序、UIA/Narrator 与视觉待验。
+
+**外机 R09 单独保留为真实失败：** 用户日志 Core `125/125`、Worker `357/357`、R09 `1/2`、整体 exit `1`。`line 151` 的 `Thickness(2/1)` 对不上当前源码 line151 的 Brush 颜色断言，旧 Chrome 2 DIP 断言在 `3f7d0b30`；目前只能确认测试源码或 PDB 映射与当前源不一致，具体旧 checkout/DLL/PDB/脚本输入仍未确认。本机 R09 `2/2` 和历史 #1047 双 SDK通过都不能覆盖外机失败。失败同次 `summary.json`、TRX 与程序集身份是下一步定位材料，不阻塞独立任务。
+
+**Actions 门禁已收口：** #1051/run `38927198349` 的 SDK10.0.401 job `117061655415` 曾终态失败于 Worker 取消回调测试，361/362，line128 expected1/actual0；完整 log 已读，SDK8 job `117061656455` 成功。当前代码 #1052/run `38932328340` 双 SDK均整体成功：[Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38932328340)。SDK8.0.423 与 SDK10.0.401 均完成 `0 warning / 0 error` build、Core125、Worker362、125个WPF隔离类（含R21）；SDK8 另完成 Render QA、WPF 静态审查、扩展包和上传。#1051 的取消回调失败在 #1052 SDK10 通过但未复现，仍按历史失败记录，不据此声称修复。以上 CI 不证明外机 R09 失败已解决。
+
+本次前后已检查近期准入表；除跟进 CI、复核外机 R09 身份材料外，没有确认新的依赖已满足 Q/R 代码缺口。Q24-03 需第二物理屏，R05-03 需 WMI 访问权限，R23-04 需 Playnite/CEF 状态改变，R23-05 的 ETW 系统跟踪权限受拒绝；均不越权绕过。#1052 已终态，下一步重新按 R23-08 当前表项选择依赖已满足的 Q/R，不自创功能。
+
 ### 2026-10-16 R13-08 失败帮助 CI 收口续跑点
 
 **本阶段已收口：** `R13-08` 复用既有服务、DTO、映射和生产 `MaintenanceView`；只扩展测试。在现有 STA 真实生产页验证已识别认证失败与未知错误码正负行为：帮助文案/可见性、`Expander` 的实际 ExpandCollapse 状态、原始诊断展开与收起。本机 SDK `9.0.302` / VSTest `17.14.1` 定向 Release build 后 `16/16` 通过，source validation 与 diff check 通过。证据和源码/test DLL/PDB/plugin DLL 身份见[R13-08 证据包](design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。Actions #1047/run `38916251153` 对提交 `e5b27cde` 终态成功：SDK8.0.423 job `117024368753` 与 SDK10.0.401 job `117024368994` 均通过；两边 Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类通过。SDK8 另完成 Release build、`render-qa OK`、WPF 静态审查、扩展包生成和产物上传。SDK9 定向项目构建与两条 CI SDK 分开记录，不混为一项结果。

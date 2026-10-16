@@ -1,6 +1,6 @@
 # Q24-04 加载更多键盘路径与 R00-08 freshness 复核
 
-日期：2026-10-17。当前 `main` 父提交：`cbdc29ad1913b759a64d4835df5da04e01142fc0`。本批只修改 `R21KeyboardNavigationTraceTests.cs`，不改生产 XAML、ViewModel、服务、DTO 或命令。
+日期：2026-10-17。代码提交：`5c81a07056d64482767d546efe043012abc1e6fc`。本批只修改 `R21KeyboardNavigationTraceTests.cs`，不改生产 XAML、ViewModel、服务、DTO 或命令。本机 DLL 是在提交前工作树构建，身份仍记录其 parent `cbdc29ad1913b759a64d4835df5da04e01142fc0`；远端 CI 则从已提交的 `5c81a070` 构建。
 
 ## 已有能力与补充点
 
@@ -26,6 +26,14 @@
 
 全部 21 项通过，0 失败、0 跳过。原始 TRX 已去除机器名/用户名，保存在 [`tests/`](tests/)；这些文件同时复核了 R00-08 登记的 `*Keyboard*.cs` 源码范围。源码结构检查与 `git diff --check` 通过。
 
+将 R00-08 的 evidence source commit 更新为键盘范围复核提交 `5c81a07056d64482767d546efe043012abc1e6fc` 后，按当前 `main` 运行完整基线 freshness：14 条记录 `14 fresh / 0 stale / 0 matched source paths`，比较路径 2,918，package identity `not-provided`。[`r00-r01-freshness.json`](r00-r01-freshness.json) 保存精简结果与可重现命令；没有把 2,918 条路径复制进仓库，也没有触发额外全量 UI 或宿主测试。
+
 构建程序集包含父提交 `cbdc29ad` 的 `GscBuildCommit` 元数据；编译时 R21 测试文件尚未提交，内容 SHA-256 为 `789B56AFEDF343DFBE6BC98B14E126D20F3CC057D27D2BC49018F8E611C33D11`。测试 DLL SHA-256 `A6520D3449BABD303DCD0984005240A1974DDB806E4A94AB2E2E476127B3929B`，PDB SHA-256 `C08E22B44E82839D2D4513280CA908F6C19204D11150F99BE44355E798DB6C4B`，MVID `b599b620-0d58-4a40-b385-2368ef80a88d`。生产插件 DLL SHA-256 `57369BAE11768B1AE5ADE13AAACEC9CFBE00ECD4EB9BB3BFED480E8E11F1EA2F`，PDB SHA-256 `588D8CE4A23A87E22A1D87885738F0838CFDCD6611D8363FD871031DA11422DC`。其余源码、DLL 与 TRX SHA 见[身份清单](hashes-sdk9302-cbdc29ad.txt)。
 
 这些 STA WPF 自动化结果只证明合成内容下的 `MoveFocus` 路径；没有运行真实 Playnite、物理 Tab/Shift+Tab、Narrator/UIA 客户端或视觉验收，因此 Q24-04 与 Round2 总体仍未完成。
+
+## 推送提交的双 SDK CI
+
+Actions #1052/run `38932328340` 对代码提交 `5c81a07056d64482767d546efe043012abc1e6fc` 已终态整体成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38932328340)。SDK8.0.423 job `117079155802` 的 Release build 为 `0 warning / 0 error`，Core `125/125`、Worker `362/362`；Playnite `125` 个 WPF 类隔离运行全部通过，含 `R21KeyboardNavigationTraceTests`。Render QA、WPF UI 静态审查、Playnite 扩展包构建与 artifact 上传也成功。插件、Worker、Contracts 与 Core 包构建身份均为 `0.6.73+5c81a07056d64482767d546efe043012abc1e6fc`。
+
+SDK10.0.401 job `117079155932` 的 Release build 为 `0 warning / 0 error`，Core `125/125`、Worker `362/362`，Playnite 全部 `125` 个 WPF 隔离类通过，含 R21。此前 #1051 的 Worker 取消回调失败在本次 SDK10 lane 通过、未复现；#1051 仍保留为真实历史 CI 失败，不能因此称已修复。双 SDK CI 仅验证该推送提交的 CI 环境；它不能识别或覆盖另一台电脑先前 R09 失败，也不等于真实 Playnite、物理键盘、UIA/Narrator 或页面视觉验收。

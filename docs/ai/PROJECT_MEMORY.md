@@ -1,13 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；`main` 代码 HEAD `e5b27cdec422bfd128c3830cf6c1e8684523545a`，最新文档 HEAD `d4559f3b52da077caa997406db5d3ab70269cabd`。R13-08 只补真实生产 `MaintenanceView` 的已识别/未知错误帮助和原始诊断展开/收起行为测试。Actions #1047/run `38916251153` 双 SDK lane 终态成功：SDK8.0.423 job `117024368753`、SDK10.0.401 job `117024368994`；两边 Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类均通过。SDK8 另完成 Render QA、WPF 静态审查和扩展包/诊断上传。详情见[R13-08 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R13-08-CURRENT-MAIN-FAILURE-HELP-RECHECK-20261016/README.md)。
+更新：2026-10-17；`main` 当前代码 HEAD `5c81a07056d64482767d546efe043012abc1e6fc`。最新小批 Q24-04 只增加 Task Center 加载更多的键盘正负行为测试，并校正 R00-08 evidence 基线；没有生产 UI 改动。本机 SDK9/VSTest17.14.1 的相关键盘类 `21/21`，非完整 solution build；R00/R01 freshness 为 `14/14 fresh / 0 stale / 0 matched source paths`、package identity `not-provided`。详见[复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
 
-本机仅装 SDK `9.0.302` / VSTest `17.14.1`；R13-08 定向生产视图测试为 `16/16`，不是完整 solution build。R00/R01 freshness 为 `14/14 FRESH / 0 STALE / 0 matched source paths`，对本次测试源变更的显式 ChangedPath 检查同为 `14/14`，package `not-provided`。
+**本机成功不等于另一台机器或远端成功。** 外机一键流程的真实 exit `1` 和 R09 `1/2` 必须保留；当前源码 line 151 是颜色断言，外机栈却报 `Thickness(2/1)`，对应历史 `3f7d0b30` 的旧 Chrome 厚度断言。可确认测试源或 PDB 行映射与当前源码不同，不能仅靠本机 SDK9 或较早 CI 通过推断外机正确。定位需要失败同次 `summary.json`、TRX、HEAD/dirty paths 及 test DLL/PDB/plugin DLL identity；用户提供前继续处理独立任务。
 
-用户另一台机器的一键日志确实以 exit 1 结束：Core `125/125`、Worker `357/357`，R09 焦点行为 `1/2`，期望 `2 DIP`、实际 `1 DIP`；其 source/WPF 类数 `111/116`，当前 #1047 CI `107/125`。当前测试源 line 151 是 Brush 颜色断言，不可能产生 Thickness 值；历史 `3f7d0b30` 的 line 151 正是旧 Chrome `2 DIP` 断言，当前 `ValidationStroke 2 DIP` 在 line 154。由此能确认失败源代码或符号行映射与当前测试源不一致，不能确定旧测试 DLL、旧 PDB、checkout 或脚本输入是哪一项。默认随机隔离输出只能降低 bin/obj 复用风险，不能证明外机运行了当前脚本。#1047 两 SDK R09 通过不能代替外机复现；仍需同次 diagnostics `summary.json` / TRX / DLL-PDB identity。用户暂不能回复至明日 09:00，外机信息缺口不阻塞主线。R05-03 fail-closed 宿主预检已因 `Win32_Process.CommandLine` 返回“拒绝访问”停止，未启动/安装 Playnite；下一步安排以紧随本段的续跑信息为准。
+Actions #1051 的 SDK10.0.401 Worker 取消回调测试失败为 `361/362`、callback count expected `1` actual `0`；SDK8 job 已完整成功。Q24-04 commit `5c81a070` 的 #1052/run `38932328340` 已整体成功。SDK10.0.401 lane build `0 warning / 0 error`，Core `125/125`、Worker `362/362`、125 个 WPF 类隔离运行成功（含 R21）；#1051 失败测试本次通过，未复现。SDK8.0.423 lane build `0 warning / 0 error`，Core/Worker 与 125 个 WPF 类通过，Render QA、WPF 静态审查、扩展包和上传完成。#1051 的失败仍是历史真实 CI 失败，本次未复现不等于修复。CI 结果分别记录；本机 SDK9 不能替代 CI SDK。
 
-R05-03 的 fail-closed 预检结果已归档：`Win32_Process.CommandLine` 返回“拒绝访问”，未启动/安装 Playnite；ENV-001 阻塞保持。Q24-02 旧 `8/16` 记录已校正为当前 main 类隔离 `15/16`（`GetCursorPos` 前置失败）及 #1047 双 SDK 全量测试通过；宿主/呈现仍未验。下一项 Q24-04：检查现有键盘轨迹夹具，再补合成业务状态的正反向完整遍历。用户暂不能回复至 2026-10-17 09:00（Asia/Shanghai），外机 R09 diagnostics `summary.json` 仍待补但不阻塞主线。
-
+目前物理第二屏、真实 Playnite/OS 输入、CEF 权限和 ETW 权限仍是外部边界；R05-03 fail-closed，不绕过系统跟踪拒绝。临时 `.tmp` 仅保留仍在使用的输出：本轮结束后已精确删除本任务新建的 R09 与 Worker 复核目录约 `154 MiB`；其他任务的未跟踪 TRX/artifact 不擅自删除。
 ## AI/Codex 启动协议
 
 开始开发前依次阅读：

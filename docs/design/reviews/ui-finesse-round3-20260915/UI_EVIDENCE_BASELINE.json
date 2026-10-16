@@ -100,8 +100,8 @@
     },
     {
       "id": "R00-08",
-      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
-      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "evidence": "evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md",
+      "sourceCommit": "5c81a07056d64482767d546efe043012abc1e6fc",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
