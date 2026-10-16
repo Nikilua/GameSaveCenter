@@ -27,4 +27,6 @@
 |---|---|
 | [R21 UIA 客户端选择行为](tests/R21AutomationValueBehaviorTests-sdk8423-uiaclient.trx) | 24 passed, 0 failed, 0 skipped |
 
-本次候选改动待中文 commit/push。新 Actions 到终态后再决定该选择模式的 CI 收口；未确认前不签收。真实 Playnite、Windows 独立 UIA/Narrator、OS 键盘/IME、物理 DPI/跨屏、presented frame、ETW 与宿主性能仍待验。
+本次测试夹具已于 `b1e7b652c938463f2f50ac74cb8157c4899daa1d` 用中文提交并推送至 `main`。Actions #1032/run `38838015414` 已终态成功，总耗时 `46m 33s`：SDK8.0.423 job `116771387686` 成功（`46m 29s`，含 Playnite 扩展打包和构建产物上传），SDK10.0.401 job `116771387396` 成功（`21m 42s`）。两个 Release build/test lane 均通过，故修正后的 R21 行为进入两条完整测试门禁。GitHub Actions 页面还列出 diagnostics 与 Windows preview artifacts；这不代表安装或真实 Playnite 宿主验收。
+
+真实 Playnite、Windows 独立 UIA/Narrator、OS 键盘/IME、物理 DPI/跨屏、presented frame、ETW 与宿主性能仍待验。

@@ -1,7 +1,7 @@
 # GameSaveCenter 当前事实入口
-更新：2026-10-16；分支 `main`，已推送基线 `2252fad7c0e1d682d00f7314efbba296f6699292` 的 Actions #1031/run `38834172655` 已终态失败：SDK8 job `116759418158`、SDK10.0.401 job `116759417854` 均在 R21 父级 Selection 查询空集合失败。完整日志、artifact ID/SHA 见[前序 CI 证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-PEER-ENUMERATION-20261015/README.md)。当前本地仅改测试夹具：使用 `AutomationElement`/`SelectionPattern` 客户端 API 实际读取首行与切换后的选择，保留 WPF 行 peer 和选择状态正反检查；生产 UI、Binding、命令和选择模型未改。本机隔离 SDK8.0.423、MSBuild17.11.48、VSTest17.11.1 下 Release 项目与引用 `0 warning / 0 error`，目标行为 `1/1`、R21 `24/24`，source validation 和 diff check 通过。候选证据在[UIA 客户端复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)；下一步中文提交/push 并将新双 SDK Actions 追到终态，未结束前不签收。
+更新：2026-10-16；分支 main，已推送源码 b1e7b652c938463f2f50ac74cb8157c4899daa1d。Actions #1032/run 38838015414 已终态成功：SDK8.0.423 job 116771387686 成功（46m29s，含 Playnite 扩展打包和产物上传），SDK10.0.401 job 116771387396 成功（21m42s），run 共 46m33s。R21 修正只改测试夹具，用 UIA 客户端 AutomationElement/SelectionPattern 验证 A→B 行选择和旧项取消；本机 SDK8.0.423 Release build 0 warning/0 error、目标 1/1、R21 24/24；双 SDK CI 完整 Release build/test 均通过，未改生产 UI、Binding、命令或选择模型。证据见[CI 收口包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)。
 
-`.tmp` 当前约 `751.4 MiB`（SDK8 工具链 `713.8 MiB`、当前 R21 复现目录 `37.5 MiB`、旧 R08 输出约 `0.1 MiB`）；D 盘余量 `9.26 GiB`。用户明确批准清理五个旧阶段目录后，已从 `.tmp` 内删除 `q24-07-official-postcommit-0243c108`、`r11-06-40af39c8-20261015`、`r09-current-main-retry-20261015`、`r00-08-55ed3a17-20261015` 和 `r08-01-production-button-sdk9-20261014/build`，释放 `373.7 MiB`；已归档的本批 TRX 之外，两次本地测试临时结果子目录也已清理。SDK、当前 R21 复现目录和其他任务文件保留。PID `32408` 仍无法识别，旧清理只涉及用户点名授权的目标。CI 收口后先复核 R00/R01，再核对 R12-04 既有保护备份能力与证据，不访问真实存档。
+.tmp 当前约 751.4 MiB，D 盘可用 9.25 GiB。用户批准的五个旧阶段目录已从 .tmp 删除，释放 373.7 MiB；保留 SDK8 工具链、当前 R21 复现目录、其他任务文件和历史证据。清理没有触及未跟踪 TRX、WPF 临时项目或其他任务输出。R00/R01 在源码 b1e7b652 上复核为 14/14 fresh、0 stale、0 条命中登记源路径；R00-07 当前摘要已校正到最新 audit 的 116 warnings / 13 MEDIUM，风险仍打开。package identity 仍未提供。下一项 R12-04 先复用现有保护备份服务/DTO，以 fake 与隔离目录验证；不访问真实存档。
 
 
 更新：2026-10-16；分支 `main`，最新推送基线 `8e6513856500505d4608f76ef098236c64e1b5b4`。Actions #1026/run `38690846810` 已终态失败：SDK8.0.423 job `116276140253` 的 R09 高对比行为断言失败，SDK10.0.401 job `116276140402` 的取消幂等测试因 `SemaphoreSlim` 已释放失败；两份完整日志已读取。Worker 竞态修复在本机 SDK8.0.423 已经 Release 全解方案构建 0 warning/0 error，Core 125/125，Worker 356 passed/1 个 Named Pipe 环境 skip，目标取消测试 1/1，高对比类 3/3；完整 Playnite 扫描只完成 6/122 个隔离类后中止，不能当作全量通过。新提交 Actions 尚待推送与跟踪。证据：[本阶段复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-WORKER-CANCEL-RACE-FIX-20261015/README.md)。
@@ -61,7 +61,7 @@ CI：暂停检查点 #920/run 36677346317 与 #919/run 36675309812 的 SDK 10.0.
 | Q24-08 当前 main | 复用现有长文本、TextComposition、键盘与复制实现；本机 SDK `8.0.423` Release `0/0`、XAML `24/24`、定向 `15/15`。双主题长标签/AutomationPeer/Space command、合成中文 composition 和 82 DIP 长值复制负例通过；无生产 UI 改动。真实 Windows IME、Playnite/Narrator、系统剪贴板及运行时 Tooltip 仍待验。详见[Q24-08 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-08-CURRENT-MAIN-LONG-TEXT-ASSISTIVE-INPUT-RECHECK-20261014/README.md) |
 | Q25-01 当前 main | 复用既有搜索/可见列表实现；SDK `8.0.423` Release `0/0`、XAML `24/24`、4 类 `13/13`。2000项5次预热+30个不同查询 p50/p95/max=`45/60/60ms`，受控 Window 20次输入到可见容器=`46.214/75.782/76.334ms`，GamePicker 键盘路径6/6。受控行为可满足；不等于真实 Playnite/物理输入/呈现帧。详见[Q25-01 证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q25-01-CURRENT-MAIN-HOT-RESPONSE-RECHECK-20261014/README.md) |
 | 远端 CI | #970/run `38386326043` SDK10 `10.0.401` Worker cancellation test race failed；SDK8 `8.0.423` 两次 solution-build passed；测试夹具修正在 `599d2fd3`。#971/run `38393317198` 公开状态仍 In progress；用户所附 SDK8 diagnostics 在 `5a6647c` 记录 Q14 fixture failure，`599d2fd3` 已修，未提供 SDK10 lane 日志。#972/run `38421480496` 两 lane 成功但对应更早提交。#978/run `38509928015` 两命名 lane 均失败；完整日志需登录，实际 SDK/根因未知。#979（`ae3c565`）仍 queued；当前 main `31d64e42` 已推送；最新公开 Actions 检查仍只显示 #979 queued，未见该提交对应的新 run。SDK9 本机定向复核不替代 SDK8/CI SDK10.0.401。 |
-| R00/R01 证据 | freshness 脚本在 source HEAD `4eb778e992b6f6f76048309f42c2811d6a791815` 复核 `14 fresh / 0 stale`；14 条记录均无匹配登记源路径。期间比较的 2,727 个路径包含非文档变更，因此结果不是 docs-only；R00/R01 的登记源码仍未变化。R00-01/02、R00-05 定向 `6/6`，双主题 finesseprobe 各 88 状态样本、0 违规；受影响完整类 `154 passed / 39 skipped / 0 failed`。R00-01..07、R01-01..08 保持已满足；R00-08 受控行为已满足，真实宿主/OS IME仍待验。旧 audit `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes`、E01–E20 `20/20`。Package identity 未提供。详见[R00/R01 freshness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-FRESHNESS-RECHECK-20261015/README.md)。 |
+| R00/R01 证据 | source HEAD b1e7b652 的 freshness 为 14 fresh / 0 stale，0 条命中登记源路径；比较区间 2,848 个变更路径并非 docs-only。R00/R01 登记源码未变；保留受影响行为与审计证据，不将 freshness 等同于重跑。R00-07 audit 最新摘要 168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM / 0 Fidelity / 0 failed routes，13 条工具栏换行风险保持打开；package identity not-provided。详见[R00/R01 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261016/README.md)。|
 | 真实宿主 | 未启动真实 Playnite；Media Inbox 同进程滚动、物理 DPI/跨屏、IME、Narrator/UIA、ETW 与最终呈现帧均未验，`MANUAL QA REQUIRED` |
 
 仓库锁定 SDK `8.0.423` 已由官方安装脚本安装到 `D:\GameSaveCenterTools\dotnet-sdk-8.0.423`；通过临时进程 PATH 前缀选择，系统 SDK/PATH 未改。历史 SDK/CI/IPC 诊断见[SDK阶段证据](evidence/close-sdk-20261007/README.md)、[CI证据](evidence/close-ci-20261007/README.md)和[IPC证据](evidence/close-ipc-20261005/README.md)。R05 新确定性负例与修复正例已记录；旧的第三轮失败保留为归因证据，不能用旧clean DLL独立通过覆盖。run930、run931、run932、#934、#935 与 #936 的失败原因均未取得完整日志；访问受限期间不盲修。
@@ -70,11 +70,12 @@ CI：暂停检查点 #920/run 36677346317 与 #919/run 36675309812 的 SDK 10.0.
 
 用户明确要求继续 Round3；截至 2026-10-16 09:00（Asia/Shanghai）无法回复，不因缺少输入停住独立工作。
 
-1. 继续查询提交 `5862856e508fdb0abf2478fbbc54c34b34075692` 对应 Actions。GitHub 插件 combined status 暂未返回 checks；公开 Actions 页当前缓存/加载异常，run ID 和终态未知。CI 未确认前不报告阶段完成；若失败先取得完整 job log。
-2. R00/R01 已在 2026-10-15 按当前 source HEAD `5862856e` 复核：14 条均 fresh、0 stale、0 条命中登记源路径；报告只证明已有证据未过期，不代替行为重跑、package 或宿主验收。Round3 进度表中既有“已满足”状态保持不变。
-3. 下一项 R12-04：先检查现有 PreRestore 保护备份服务、DTO、同游戏锁和恢复编排，再以 fake service/隔离目录验证备份失败中止危险恢复、重试/取消遵守锁和最新状态；不得访问真实存档。逐项补行为与负例后按小阶段验证、记录并提交。
+1. R21 UIA 选择修正已完成本机验证、中文 commit/push，Actions #1032/run 38838015414 两个 SDK lane 均终态成功；不沿用此前 #1031 的失败状态。
+2. R00/R01 当前 freshness 已在源码 b1e7b652 复核为 14/14 fresh、0 stale、0 条命中登记源路径；R00-07 当前账本的 audit 摘要已从旧的 110/7 校正为 116 warnings / 13 MEDIUM。13 条工具栏换行风险继续打开；package identity 未提供。行为/视觉旧证据因源路径未变而保持原状。
+3. 下一项 R12-04：先检查现有 PreRestore 保护备份服务、DTO、同游戏锁和恢复编排，再以 fake service/隔离目录验证备份失败阻断危险恢复、重试/取消遵守锁和最新状态；不得访问真实存档。
 
-当前代码修复本机验证为 SDK8.0.423；CI SDK10.0.401 结果未知。Playnite 全量本机扫描未完成（6/122 类），真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。2026-10-15 清理本任务临时输出约 588 MB，保留 SDK 和有历史证据引用的阶段输出。
+本机 R21 使用 SDK8.0.423；远端 SDK8.0.423 与 SDK10.0.401 两条 CI 均通过。Playnite 全量本机扫描未完成（6/122 类），真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。Demo 原目录不可用；视觉沿用已恢复生产基线。
+
 ## 架构与生产 UI
 
 - Playnite 插件 `net462`，Core/Contracts `netstandard2.0`，Worker `net8.0-windows10.0.19041.0`，Playnite 测试 `net472`。插件与 Worker 经 Named Pipe 协作，SQLite 由 Worker 持久化。

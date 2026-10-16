@@ -10865,3 +10865,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本机隔离 SDK `8.0.423` / MSBuild `17.11.48` / VSTest `17.11.1`；Playnite `net462` 与测试 `net472` Release build `0 warning / 0 error`，UIA 单项 `1/1`，R21 `24/24`；`validate-source.py`、`git diff --check` 通过。源 SHA `1878915B46AFDA3889D687FFE4B60279A94CDD93F0368B9B1CB74BB2760CD943`、测试 DLL SHA `9AB0FBEE289F00A00E5F7E6A5B43C9C0019372A160F7849AF455CF2CF2EAACF4`、MVID `ccd66d2b-8cf6-4950-ac6c-98ad44f29000`、脱敏 TRX SHA `0D006E025F47476F2163B5AEE31EF0104F6CC7D93E5124D979D6CD3D23F89797`。本机 testhost `.NET Framework 4.8.9181.0`，CI `4.8.9345.0`；SDK8 本机不能替代新双 SDK Actions。
 - 首次默认并行的 `dotnet test` 超过两分钟无输出且没创建结果目录；精确按该 SDK 路径与本次启动时间结束这次本机调用后，以 `-m:1` 重建和重跑通过。该停滞调用没有可用测试结果，不当作产品失败。脱敏 TRX 已归档，两个本批临时测试结果目录也已从 `.tmp/r21-automation-selection-repro` 清理。
 - 下一步中文 commit/push 并查新 Actions 至明确终态；失败先取完整日志。之后按用户序列重新核对 R00/R01 freshness 及问题证据，再复核 R12-04 已有恢复保护实现和 fake/隔离证据，不访问真实存档。真实 Playnite、独立 UIA/Narrator、OS 输入、IME、物理 DPI/跨屏、presented frame、ETW/宿主性能未验。
+
+## 2026-10-16 R21 CI 收口与 R00/R01 freshness 校正
+
+- R21 测试夹具提交 b1e7b652c938463f2f50ac74cb8157c4899daa1d 对应 Actions #1032/run 38838015414 已终态成功。SDK8.0.423 job 116771387686 成功（46m29s，含扩展打包/产物上传），SDK10.0.401 job 116771387396 成功（21m42s），run 共46m33s。GitHub MCP 后续短时返回 429，改从已打开的 GitHub Actions run 页面读取终态；页面显示整体 Success。双 SDK完整 Release build/test 均通过。本机 SDK8.0.423、MSBuild17.11.48、VSTest17.11.1 的 Release build 0/0、目标 UIA 1/1、R21 24/24；不把本机结果替代CI SDK10。
+- R21 修正只改测试夹具：使用 AutomationElement/SelectionPattern 客户端读取“媒体 A”并切换到“媒体 B”，同时验证旧选择取消；未改生产 UI、绑定、命令、选择模型。详细身份、TRX和边界见[证据包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)。
+- 在源码 b1e7b652 上运行 freshness 脚本：14条登记项14 fresh/0 stale、无源路径命中；比较区间2,848个路径含源码、文档和历史证据，非 docs-only。package identity 仍 not-provided；没有因此重复跑未受影响的行为组或视觉审计。机器结果见[R00/R01 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-MAIN-RECHECK-20261016/README.md)。
+- 将进度表 R00-07 当前 audit 摘要从过期的110 warnings/7 MEDIUM校正为最新归档审计的168 snapshots/116 warnings/0 HIGH/13 MEDIUM/0 Fidelity/0 failed routes；13条工具栏换行风险继续打开，任务状态不变。
+- 用户明确批准后删除五个 .tmp 旧阶段目录，释放373.7 MiB；目前 .tmp 约751.4 MiB、D盘可用9.25 GiB。保留SDK8、当前R21复现目录、其他任务文件和未跟踪测试证据。
+- 下一项 R12-04：先核查 RestoreOrchestrator、RestoreWorkflowProgress、PreRestore保护、DTO、同游戏锁及当前测试；再用 fake 服务和隔离目录补失败阻断、重试/取消的正反行为。禁止访问真实存档。真实 Playnite、独立UIA/Narrator、OS输入/IME、物理DPI/跨屏、presented frame、ETW/宿主性能仍待验。

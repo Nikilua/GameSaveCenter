@@ -1,6 +1,6 @@
 # GameSaveCenter 长期项目记忆
 
-更新：2026-10-16；分支 `main`，已推送基线 `2252fad7c0e1d682d00f7314efbba296f6699292` 的 Actions #1031/run `38834172655` 双 SDK 均在 R21 父级 Selection 查询空集合处失败。当前候选只改测试夹具，改用 `AutomationElement`/`SelectionPattern` 客户端查询并验证 A→B 选中、取消；本机隔离 SDK8.0.423 Release build `0/0`，目标 `1/1`、R21 `24/24`，source validation 和 diff check 通过。证据见[UIA 客户端复核包](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R21-SELECTION-UIA-CLIENT-20261016/README.md)；中文 commit/push 后必须追踪 SDK8 与 SDK10.0.401 新 run 至终态。随后按用户指定复核 R00/R01 当前 freshness 与问题证据，再核对 R12-04 既有恢复保护与 fake/隔离证据并继续依赖已满足的 Q/R。R00/R01 最新已知 14/14 仅代表 2026-10-15 当时源路径 freshness；外机 R09、真实 Playnite/OS UIA/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能继续分别记账。
+更新：2026-10-16；分支 main，推送基线 b1e7b652c938463f2f50ac74cb8157c4899daa1d。R21 UIA 客户端选择夹具本机 SDK8.0.423 Release build 0/0、目标 1/1、R21 24/24；Actions #1032/run 38838015414 的 SDK8.0.423 与 SDK10.0.401 job 均成功。生产选择、命令、绑定未改。R00/R01 在该源码身份 fresh 14/14、0 stale、无 source path 命中；R00-07 已更正最新审计为 116 warnings/13 MEDIUM，风险保持打开，package identity not-provided。下一项按用户顺序复核 R12-04 现有保护备份实现、DTO、锁与 fake/隔离行为；不访问真实存档。真实 Playnite、OS UIA/Narrator/IME、物理 DPI/跨屏、presented frame、ETW/宿主性能仍分别记账。
 
 ## AI/Codex 启动协议
 
