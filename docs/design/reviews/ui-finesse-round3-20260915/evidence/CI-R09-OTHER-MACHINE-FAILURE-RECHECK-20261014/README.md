@@ -223,3 +223,9 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 Actions #1053/run `38937972835`（文档提交 `01efb189`，代码基线 `5c81a070`）现已终态成功。SDK8.0.423 job `117098144434` 与 SDK10.0.401 job `117098144743` 均完成 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、全部 125 个 Playnite WPF 隔离类。两条全套日志包含 `R09FocusOutlineBehaviorTests`；SDK10 日志确认实际 `dotnet --version` 为 `10.0.401`。该运行验证当前 main 的测试输入，不证明外机成功，也不能覆盖外机真实的 `1/2` 与 exit `1`。
 
 用户粘贴的失败日志指向同次本地诊断目录 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4`；此目录不在当前工作区。仓库 `build-diagnostics.ps1` 已在 `summary.json` 写入 source commit、dirty paths、源码 SHA、SDK，以及插件/测试 DLL SHA、ProductVersion 和 MVID。下一步应直接取得该目录的 `summary.json` 与 `tests/wpf.R09FocusOutlineBehaviorTests/` 下 TRX/console；无需重跑。若仍需区分 PDB 行映射，再按上文命令计算该次 test DLL/PDB 和 plugin DLL SHA-256。外机真实 Playnite 安装与呈现仍未验证。
+
+## 2026-10-17 #1054 当前 main 双 SDK CI
+
+Actions #1054/run `38944728502` 对文档 HEAD `797482168a74360b41bfaa609cf48d50130bd39b` 已两 lane 终态成功。SDK8.0.423 job `117120854146`：Release 编译 `0 warning / 0 error`；Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类全通过，R09 为第 `68/125` 类并通过；第二次 package 默认完整构建也通过 Core/Worker 与 WPF 全类，Render QA 为 `render-qa OK`，静态审查扫描30 XAML 得 `0 errors / 27 warnings / 177 info`，`0.6.73` zip/pext 与 artifacts 成功上传。SDK8 package artifact `12068606580`，diagnostics artifact `12068781572`。SDK10.0.401 job `117120854512`：Release 编译 `0/0`，Core `125/125`、Worker `362/362`、全部 `125` WPF 隔离类通过（含 R09），diagnostics artifact `12066891114`。
+
+#1054 仍只验证对应 GitHub runner 和 main 提交的实际构建输入。用户外机 R09 `1/2`、整流程 exit `1` 是独立真实失败；外机类发现数 `116`，当前 CI 为 `125`。其第151行 `Thickness(2/1)` 与当前源码第151行颜色断言不可能同时匹配，具体是旧 checkout、测试 DLL、PDB、插件资源或脚本输入仍未确认。待同次 `summary.json`、R09 TRX/console 与 DLL/PDB/plugin DLL identity 可用后再定位，不要用本机/CI通过覆盖外机失败，也不要求用户重跑。

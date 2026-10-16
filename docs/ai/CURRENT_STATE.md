@@ -1,6 +1,6 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-17；版本 `0.6.73`；当前分支 `main`，最新代码提交 `5c81a07056d64482767d546efe043012abc1e6fc`；R00/R01 Render QA 报告记录于后续文档提交 `01efb189488e6d6323d9386f7ff68057c0030cbe`。本轮没有生产 UI/服务/DTO/命令改动。
+更新：2026-10-17；版本 `0.6.73`；当前分支 `main`；本轮代码基线 `5c81a07056d64482767d546efe043012abc1e6fc`，CI 复核文档基线 `797482168a74360b41bfaa609cf48d50130bd39b`。R00/R01 Render QA 报告记录于 `01efb189488e6d6323d9386f7ff68057c0030cbe`。本轮没有生产 UI/服务/DTO/命令改动。
 
 - Q24-04 当前受控行为：本机 SDK `9.0.302` / VSTest `17.14.1`，Playnite `net462`/tests `net472` 定向 Release build 后，键盘相关四类 `21/21`；非完整 solution build。加载更多可见时命令绑定保留、Tab/Shift+Tab 可达；历史耗尽时折叠且正反向不可达。证据见[Q24-04 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
 - R00/R01 对最新源码的 freshness 已重新绑定 R00-08 证据提交 `5c81a070`：`14/14 fresh / 0 stale / 0 matched source paths`，2,918 个比较路径，package identity `not-provided`。这只校验登记源码范围。
@@ -10,16 +10,17 @@
 - Q24-04 提交 `5c81a070` 对应 #1052/run `38932328340` 已整体成功，见[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38932328340)。SDK8.0.423 lane：Release build `0 warning / 0 error`，Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过（含 R21），Render QA、WPF 静态审查、扩展包与上传成功。SDK10.0.401 lane：Release build `0 warning / 0 error`，Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类通过（含 R21）；#1051 的 Worker 取消回调失败在本次 lane 通过，未复现。历史 #1051 失败保留为真实失败，不称已修复。
 - R00-07 最近 audit 仍为 `168 snapshots / 116 warnings / 0 HIGH / 13 MEDIUM`，未因本轮测试改动重跑；窄布局风险仍保留。R05-03 宿主预检仍因 WMI 拒绝访问而 fail closed；Q24-03 需第二物理显示器；R23-04 需 CEF/宿主条件变化；R23-05 的 ETW 系统跟踪权限被拒，不绕过。现有 R23-08 准入盘点没有其它可立即实施的 Q/R 代码项。
 - #1053/run `38937972835`（文档提交 `01efb189`，代码基线 `5c81a070`）现已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38937972835)。SDK8.0.423 job `117098144434` 与 SDK10.0.401 job `117098144743` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过（含 R09/R21）。SDK8 另 `render-qa OK / 0 PROBLEM`、WPF 静态检查 `0 errors / 27 warnings / 177 info`、生成 `0.6.73` 扩展包并成功上传包和诊断 artifact；SDK10 完整日志确认实际 `dotnet --version` 为 `10.0.401`。这只验证该 CI 源码输入，不覆盖外机 R09 的真实失败。
-- 当前实现阶段为 R00/R01 证据校正（没有产品代码变化）：当前 RenderHarness 全矩阵未复现旧 Task/Settings 13 个问题，旧问题不再按当前缺陷登记；13 MEDIUM toolbar 风险仍单独保留。已完成 freshness 与双 SDK CI，文档 commit/push 后继续检查新 Actions 至终态。R23-08 当前准入扫描没有新的可据以改产品代码的 Q/R 项；下一步复核 R23-08 及最新任务账本，选首个依赖已满足的既有 Q/R 行。外机 R09 精确诊断目录 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4` 不在本工作区；后续从该次运行取 `summary.json` 和 R09 TRX，不要求重跑。
+- #1054/run `38944728502` 对当前文档 HEAD `79748216` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38944728502)。SDK8.0.423 job `117120854146` 与 SDK10.0.401 job `117120854512` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、全部 `125` 个 Playnite WPF 隔离类通过，R09 在两 lane 均通过。SDK8 还完成 `render-qa OK`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、生成 `0.6.73` 扩展包并上传；SDK8 诊断 artifact `12068781572`、SDK10 诊断 artifact `12066891114`。这仍只验证该 CI 输入，不证明外机 R09 失败已解决。
+- 当前阶段已完成 R00/R01 证据校正与 #1054 双 SDK CI；没有产品代码改动。R23-08 准入扫描没有新的依赖已满足 Q/R 代码缺口；下一步保留用户外机 R09 同次 diagnostics `summary.json` / TRX / DLL-PDB 身份待核，继续独立工作且不要求重跑。外机原日志 `116` 个 WPF 类与 CI 当前 `125` 类不一致；当前源 line151 是颜色断言而失败报告为 `Thickness(2/1)`，仍不能确定源 checkout、测试 DLL、PDB 或构建脚本中的具体错配。真实 Playnite、物理 DPI/跨屏、OS UIA/IME 与最终呈现仍待验。
 ## 当前判断
 
 核心功能和六个工作区已实现，当前属于功能较完整、尚未完成发布验收的开发预览版。不能用测试数量、Round3 的“已满足”或旧评估的 95%/98% 推导正式稳定版完成度。详见 [完成度评估](../FEATURE_COMPLETION_ASSESSMENT.md)。
 
 | 维度 | 当前可核查事实 |
 | --- | --- |
-| 最近完整 Release/CI | 当前代码基线 `5c81a070` 的文档提交 `01efb189` 对应 #1053/run `38937972835`，SDK8.0.423 与 SDK10.0.401 两条 lane 均终态成功；Release build `0/0`、Core125、Worker362、Playnite WPF 隔离125类；SDK8 另完成 Render QA、静态审查、扩展包和上传 |
-| 最近完整脚本测试 | #1053 SDK8/SDK10 两条 lane 都成功，R09/R21 类在完整 WPF 隔离套件内通过；SDK8 的 Render QA `0 PROBLEM`。本机 SDK `9.0.302` / VSTest `17.14.1` 定向 Release build 与键盘四类 `21/21` 是独立记录，均不证明外机成功 |
-| 当前实现阶段 | Q24-04 键盘正/负行为补证已在 `5c81a070` 完成；R00/R01 当前 main Render QA 与 freshness 已复核、旧 Task/Settings 问题未复现，#1053 双 SDK CI 成功。当前只剩文档同步/提交推送；真实 Playnite、物理键盘、完整逐页顺序、OS UIA/Narrator 与页面视觉仍待验；外机 R09 `1/2` 失败未解决 |
+| 最近完整 Release/CI | #1054/run `38944728502` 对文档基线 `79748216` 双 lane 终态成功；SDK8.0.423 与 SDK10.0.401 Release build `0/0`、Core125、Worker362、Playnite WPF 隔离125类（含 R09）；SDK8 另完成 Render QA、静态审查、扩展包和上传 |
+| 最近完整脚本测试 | #1054 SDK8/SDK10 两条 lane 都成功，R09/R21 类在完整 WPF 隔离套件内通过；SDK8 的 Render QA `0 PROBLEM`。本机 SDK `9.0.302` / VSTest `17.14.1` 定向 Release build 与键盘四类 `21/21` 是独立记录，均不证明外机成功 |
+| 当前实现阶段 | Q24-04 键盘正/负行为补证已在 `5c81a070` 完成；R00/R01 当前 main Render QA 与 freshness 已复核、旧 Task/Settings 问题未复现，#1054 双 SDK CI 成功。当前只剩本次 CI 事实的文档同步；真实 Playnite、物理键盘、完整逐页顺序、OS UIA/Narrator 与页面视觉仍待验；外机 R09 `1/2` 失败未解决 |
 | R02-03 当前复验 | 生产实现未变；加强后的 STA 提示焦点/UIA peer行为与Save紧凑布局定向 `5/5`。本机 SDK `8.0.423` Release `0 warning / 0 error`、XAML `24/24`；WPF 静态审查 `0 errors/29 warnings/177 info`；RenderHarness 通用双主题 `render-qa OK`，未作为禁用提示截图证明 |
 | R02-04 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 几何 `7/7`，16/20 DIP 图标间距各 `8 DIP`、中心差 `0`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已人工对照并归档 Save 1040×700 两主题截图。未改生产 UI |
 | R02-05 当前复验 | 当前 main Release `0/0`、XAML `24/24`；生产资源 STA 命中/间距/82 DIP 换行 `2/2`；Light/Dark RenderHarness `372` 图 `render-qa OK`，已检查并归档 Media 1040×700 两主题截图。未改生产 UI |

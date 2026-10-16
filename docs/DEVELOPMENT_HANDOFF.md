@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-更新：2026-10-17；分支 `main`，代码 HEAD `5c81a07056d64482767d546efe043012abc1e6fc`，本次代码提交已推送。Q24-04 受控键盘路径新增加载更多正/负例；本机 SDK `9.0.302`/VSTest `17.14.1` 定向 build，相关四类 `21/21`。R00-08 freshness 回绑后全基线 `14/14 fresh / 0 stale / 0 matched paths`，package identity `not-provided`。证据见[Q24-04复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
+更新：2026-10-17；分支 `main`；本轮代码基线 `5c81a07056d64482767d546efe043012abc1e6fc`，#1054 CI 复核的文档提交基线 `797482168a74360b41bfaa609cf48d50130bd39b`。Q24-04 受控键盘路径新增加载更多正/负例；本机 SDK `9.0.302`/VSTest `17.14.1` 定向 build，相关四类 `21/21`。R00-08 freshness 回绑后全基线 `14/14 fresh / 0 stale / 0 matched paths`，package identity `not-provided`。证据见[Q24-04复核包](design/reviews/ui-finesse-round3-20260915/evidence/Q24-04-LOAD-MORE-KEYBOARD-RECHECK-20261017/README.md)。
 
-**CI 已收口。** #1051/run `38927198349` SDK10.0.401 job `117061655415` 曾失败于 Worker `361/362`、取消回调计数期望1实得0；该事实保留。当前 #1052/run `38932328340` 对 `5c81a070` 双 SDK均终态成功：[Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38932328340)。SDK8 job `117079155802` 与 SDK10 job `117079155932` 均 build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF隔离125类（含 R21）成功；SDK8 另完成 Render QA、WPF 静态审查、扩展包和上传。#1051 的取消回调失败在 #1052 SDK10 lane 通过但未复现，不能据此称已修复。结果不证明另一台机器失败已解决，也不能替代真实 Playnite/OS 验收。
+**CI 已收口。** #1051/run `38927198349` SDK10.0.401 job `117061655415` 曾失败于 Worker `361/362`、取消回调计数期望1实得0；该事实保留。#1052/run `38932328340` 与 #1053/run `38937972835` 均双 SDK成功。最新 #1054/run `38944728502` 对文档 HEAD `79748216` 两 lane 终态成功：[Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38944728502)。SDK8.0.423 job `117120854146`、SDK10.0.401 job `117120854512` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF隔离125类（含 R09）成功；SDK8 另完成 Render QA、WPF 静态审查 `0 errors / 27 warnings / 177 info`、扩展包与 artifact 上传。SDK8/SDK10 诊断 artifact 分别为 `12068781572` / `12066891114`。该 CI 证明当前仓库提交在 GitHub runner 上通过，不证明外机已成功。
 
-用户外机 R09 失败仍真实存在：Core `125/125`、Worker `357/357`、R09 `1/2`、整流程 exit `1`。line 151 的 `Thickness(2/1)` 与当前源码 line151 的颜色断言不匹配；说明失败测试源或 PDB 映射与当前源不一致，具体 checkout/DLL/PDB/脚本来源待同次 `summary.json`、TRX 和程序集哈希确认。本机 R09 SDK9 `2/2` 及 #1047 旧提交双 SDK通过均不覆盖外机错误。用户有可提供该次诊断资料时再核对，不阻塞其他工作。
+用户外机 R09 失败仍真实存在：Core `125/125`、Worker `357/357`、R09 `1/2`、整流程 exit `1`；日志报告 WPF 隔离 `116` 类，而 #1054 当前 main 两 lane 跑 `125` 类。line 151 的 `Thickness(2/1)` 与当前源码 line151 的颜色断言不匹配；说明测试源码或配套符号/程序集输入至少一项不同，具体 checkout/DLL/PDB/脚本来源待失败同次 `summary.json`、TRX 和程序集哈希确认。COM 收尾异常发生在断言失败之后，不解释厚度值。本机 R09 SDK9 `2/2`、#1047/#1053/#1054 通过均不覆盖外机错误。确切外机诊断目录 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4` 不在此工作区；待用户明早可回复后直接读取 `summary.json`/R09 TRX，不要求重跑。
 
-下一可执行动作：基于当前 R23-08 准入表重新确认是否出现依赖已满足的 Q/R 项，再推进一个小批。Q24-04 的真实 Playnite/package-host、物理键盘/读屏、完整页面阅读顺序与视觉仍未验；第二物理屏、CEF 权限、ETW/真实呈现保留外部边界。未绕过权限或修改真实存档/媒体/云端。
+下一可执行动作：重扫最新 R23-08 准入表及 Q/R 账本，只在有依赖已满足的既有任务时推进小批；最近准入复核暂无新的产品代码缺口，不自创功能。外机 diagnostics 到手后先比对源、SDK、DLL/PDB，再判断是否可复现或需修复。Q24-04 的真实 Playnite/package-host、物理键盘/读屏、完整页面阅读顺序与视觉仍未验；第二物理屏、CEF 权限、ETW/真实呈现保留外部边界。未绕过权限或修改真实存档/媒体/云端。
 ## 2026-10-15 R12-03 当前 main 行为复核
 
 - 现有 `PathRemapService`、DTO、隔离索引与生产 `MaintenanceView` 已满足目标路径核对方向；没有重建业务服务或改生产 XAML。
