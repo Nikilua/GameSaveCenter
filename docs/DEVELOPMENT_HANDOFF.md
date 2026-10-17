@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 最新交接：#1085 双 SDK 终态成功，外机 R09 未定位
+## 2026-10-18 最新交接：#1086 双 SDK 终态成功，外机 R09 未定位
 
-当前分支 `main`，Actions [#1085/run `39074063525`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39074063525) 对文档提交 `188c8a749a1f3ae2dfb26281b8cfeb931a2d9f30` 已整体终态 success。SDK8.0.423 job `117517460740`、SDK10.0.401 job `117517460855` 均通过 Release build/test、Core `125/125`、Worker `362/362` 和 Playnite WPF `125/125`；`ProductionShellChromeSourceTests` 为第 `17/125` 类。SDK8 Render QA、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包及 diagnostics 上传成功。Artifacts 和 SHA 见 CURRENT_STATE / WORKLOG；产品代码基线为 `be314f59`。
+当前分支 `main`，Actions [#1086/run `39077533150`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39077533150) 对文档提交 `5eb0d1fd9a06acedaa2bbdb52e3b810a37eb9341` 已整体终态 success。SDK8.0.423 job `117527685827`、SDK10.0.401 job `117527686008` 均通过 Release build/test、Core `125/125`、Worker `362/362` 和 Playnite WPF `125/125`；`ProductionShellChromeSourceTests` 为第 `17/125` 类。SDK8 Render QA、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包及 diagnostics 上传成功。Artifacts 和 SHA 见 CURRENT_STATE / WORKLOG；产品代码基线为 `be314f59`。
 
-#919/#920 失败的完整 SDK10 日志已表明旧动画测试夹具遗漏系统动效偏好输入；`48b78b3b` 已修正测试前提。#1056、#1084、#1085 的 SDK8/SDK10 全量 WPF 均通过，R00-03 受控条件已满足，历史失败保留。
+#919/#920 失败的完整 SDK10 日志已表明旧动画测试夹具遗漏系统动效偏好输入；`48b78b3b` 已修正测试前提。#1056、#1084、#1085、#1086 的 SDK8/SDK10 全量 WPF 均通过，R00-03 受控条件已满足，历史失败保留。
 
 用户当前外机 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与已有文本相同，仍是 `20261016T052146719Z-d9d99ac4` 的 `1/2` 失败。Thickness 2/1 堆栈与当前同名源文件第151行的 Brush 断言不一致；因暂无同次 summary/TRX/test/plugin DLL/PDB identity，根因未定位。用户说暂时没有 ZIP、继续主线，因此不等该输入。CI 不能代表外机实际 checkout、程序集加载或 Playnite 呈现。
 

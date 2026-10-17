@@ -4,6 +4,11 @@
 
 > 当前 UI 方向声明（2026-08-17）：用户已授权整页 UI 重构。下方 UI 条目中的“保留现有页面/控件实现”“避免改变信息架构”等，是对应历史阶段的范围或验收记录，不再作为当前页面冻结禁令；新的 UI 任务可以重做布局、导航、控件和共享模板，同时必须通过本文件及 UI 门禁要求的功能、性能、可访问性和 Playnite 验证。
 
+## 2026-10-18 最新检查点：#1086 双 SDK CI 已终态
+
+- Actions [#1086/run `39077533150`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39077533150) 对文档提交 `5eb0d1fd9a06acedaa2bbdb52e3b810a37eb9341` 已 success。SDK8.0.423、SDK10.0.401 两 lane Release build/test 均通过，Core `125/125`、Worker `362/362`、WPF `125/125`；SDK8 Render QA、静态审查和扩展包成功。Artifacts ID/SHA 记于 CURRENT_STATE / WORKLOG。
+- 当前 main 产品基线 `be314f59` 与 R00/R01 freshness `14 fresh / 0 stale / 0 matched source paths` 未变。复扫 Round2/3、质量审查与 R23-08 未找到新增的、前置已满足且有明确代码缺口的 Q/R 项；不添加空转功能。外机 R09 仍是用户提供的独立真实失败，已有文本未附该次身份包，根因未定位；按用户要求不等待，继续主线。
+
 ## 2026-10-17 当前阶段：Q11-07 双主题往返证据与双 SDK CI 已收口
 
 - 状态：`IN_PROGRESS`（受控行为/视觉与双 SDK CI 已通过；真实宿主/Final 尚待验，故任务最终未完成）。以 `6a909cb329d88af3da83a78446050a83d24ef246` 为当前证据提交；仅在 `R08PageSwitchBehaviorTests` 增加 opt-in Light/Dark 离屏截图/几何报告，无生产 UI/XAML、服务、DTO、命令或导航改动。四个缓存生产页往返行为类 `4/4`。

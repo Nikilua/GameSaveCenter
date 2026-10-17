@@ -1,12 +1,14 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-18 最新检查点：#1085 双 SDK 终态成功，R00-03 双 SDK 复核收口
+## 2026-10-18 最新检查点：#1086 双 SDK 终态成功，R00-03 双 SDK 复核继续
 
-`main` 文档提交 `188c8a749a1f3ae2dfb26281b8cfeb931a2d9f30` 对应 Actions [#1085/run `39074063525`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39074063525) 已整体终态 success。SDK8.0.423 job `117517460740` 与 SDK10.0.401 job `117517460855` 均 Release build/test 成功，Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；`ProductionShellChromeSourceTests` 是第 `17/125` 个类，两 lane 均完成所有 WPF 类。SDK8 Render QA `OK`、30 XAML 静态审查 `0 errors / 27 warnings / 177 info`、扩展包生成及上传成功。本次只同步文档；产品代码基线仍为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。
+`main` 文档提交 `5eb0d1fd9a06acedaa2bbdb52e3b810a37eb9341` 对应 Actions [#1086/run `39077533150`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39077533150) 已整体终态 success。SDK8.0.423 job `117527685827` 与 SDK10.0.401 job `117527686008` 均 Release build/test 成功，Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；`ProductionShellChromeSourceTests` 是第 `17/125` 个类，两 lane 均完成所有 WPF 类。SDK8 Render QA `OK`、30 XAML 静态审查 `0 errors / 27 warnings / 177 info`、扩展包生成及上传成功。本次只同步文档；产品代码基线仍为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。
 
-#1085 artifacts：SDK8 diagnostics `12117183822`（1,627,485 bytes，SHA-256 `9fa54112eb2cc46099f76a6f711578292df701a96b84bea64498dcd2a3e523c3`）；SDK10 diagnostics `12117041346`（775,167 bytes，`a5832db5321811b602ed8f8465aa76021ece3e77762070234ebf1c013297d159`）；preview package `12117198649`（90,314,008 bytes，`de169d06bcccd6e8f726628e11ff797a2861aa1504ac8efa22b6d74b858fabf7`）。
+#1086 artifacts：SDK8 diagnostics `12118941566`（1,627,512 bytes，SHA-256 `105e41b387ebe32b2e0649d6fda52652e4e59127d39f0b29064330584fac8927`）；SDK10 diagnostics `12118231791`（774,897 bytes，`5a46cd159f173f658bf50b1c25aec6693a84d05e1ae6addad077512acd07dff2`）；preview package `12118593365`（90,314,412 bytes，`f1778ec7fdab43c841ffec86846860ff1bba9354f0cf07c44fe311adcd552892`）。
 
-#919/#920 完整 SDK10.0.401 日志已确定两项活动侧栏断言失败源于旧测试夹具未固定系统动效偏好。`48b78b3b` 已修正夹具并增加系统策略矩阵；#1056、#1084、#1085 的 SDK8/SDK10 全量 WPF 均通过，因此 R00-03 受控完成/取消/卸载与清钟证据保持“已满足”，旧 run 仍保留为真实历史失败。#1085 的通过只证明该 runner 提交，不代表用户外机 checkout、程序集加载或 Playnite 实际呈现。
+#1085 artifacts：SDK8 diagnostics `12117183822`（1,627,485 bytes，SHA-256 `9fa54112eb2cc46099f76a6f711578292df701a96b84bea64498cd2a3e523c3`）；SDK10 diagnostics `12117041346`（775,167 bytes，`a5832db5321811b602ed8f8465aa76021ece3e77762070234ebf1c013297d159`）；preview package `12117198649`（90,314,008 bytes，`de169d06bcccd6e8f726628e11ff797a2861aa1504ac8efa22b6d74b858fabf7`）。
+
+#919/#920 完整 SDK10.0.401 日志已确定两项活动侧栏断言失败源于旧测试夹具未固定系统动效偏好。`48b78b3b` 已修正夹具并增加系统策略矩阵；#1056、#1084 至 #1086 的 SDK8/SDK10 全量 WPF 均通过，因此 R00-03 受控完成/取消/卸载与清钟证据保持“已满足”，旧 run 仍保留为真实历史失败。#1086 的通过只证明该 runner 提交，不代表用户外机 checkout、程序集加载或 Playnite 实际呈现。
 
 用户再次提供的外机 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与之前相同，仍对应 `20261016T052146719Z-d9d99ac4` 的真实 `1/2` 失败；Thickness 2/1 与当前源第151行 Brush 断言不对应，缺同次 summary/TRX/test/plugin DLL/PDB identity，根因未定位。
 

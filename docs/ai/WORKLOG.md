@@ -1,3 +1,11 @@
+## 2026-10-18 #1086 双 SDK CI 终态与 R00-03 复核
+
+- `main` 文档提交 `5eb0d1fd9a06acedaa2bbdb52e3b810a37eb9341` 对应 Actions [#1086/run `39077533150`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39077533150) 已整体 success。SDK8.0.423 job `117527685827`、SDK10.0.401 job `117527686008` 均完成 Release build/test，Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；`ProductionShellChromeSourceTests` 位于第 `17/125` 类，两 lane 后续全通过。SDK8 Render QA OK、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包及上传成功。
+- Artifacts：SDK8 diagnostics `12118941566`（1,627,512 bytes，SHA-256 `105e41b387ebe32b2e0649d6fda52652e4e59127d39f0b29064330584fac8927`）；SDK10 diagnostics `12118231791`（774,897 bytes，`5a46cd159f173f658bf50b1c25aec6693a84d05e1ae6addad077512acd07dff2`）；preview package `12118593365`（90,314,412 bytes，`f1778ec7fdab43c841ffec86846860ff1bba9354f0cf07c44fe311adcd552892`）。无本地构建/测试或新 `.tmp`/artifacts；既有未跟踪 TRX/TestResults 保持原样。
+- R00-03 的测试夹具已固定系统动效输入；#1056、#1079、#1084、#1085、#1086 的双 SDK 全量 WPF 通过，继续维持受控行为“已满足”，真实 Playnite 呈现与 OS/ETW 边界未验。
+- 外机 R09 粘贴文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 仍重复对应 `20261016T052146719Z-d9d99ac4` 的 `1/2` 失败；同次 checkout/TRX/test/plugin DLL/PDB identity 未取得，具体根因未知。用户当前没有新 ZIP，明确要求不阻塞主线；CI 只证明精确 runner 输入。
+- R00/R01 freshness 对产品代码 `be314f59` 仍为 `14 fresh / 0 stale / 0 matched source paths`、package identity `not-provided`。Round2/3 与质量审查无新的依赖已满足且有具体代码缺口的 Q/R 产品项；目标仍未完成。下一动作是在新外机身份材料、新复现/范围或宿主/设备/权限前置变化时重新准入。
+
 ## 2026-10-18 #1083 双 SDK 终态与外机日志重复核验
 
 - 本轮更新前 `main` HEAD `0bde982d49700465498bd0732651e21c10cebe43` 的 Actions [#1083/run `39066560072`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39066560072) 已终态成功。SDK8.0.423 job `117495353783` 与 SDK10.0.401 job `117495353928` 均成功；Release build/test、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过。SDK8 Render QA OK、30 个 XAML 静态审查 0 errors / 27 warnings / 177 info，扩展包生成和上传成功。产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`；#1083 只同步文档。
