@@ -1,5 +1,13 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 R08 system-motion CI 失败夹具修正
+
+待提交代码基于 `main` `5241add2fd93ca04ca65b95242a783239eb7e65e`。Actions [#1078/run `39054894478`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39054894478)：SDK8.0.423 build、Core125、Worker362 成功，WPF 隔离在 R08 system-motion 启动断言失败；SDK10.0.401 的 build、Core125、Worker362、WPF125类全部成功。完整日志确认错误发生在 `GscMotion.AnimateEntrance` 测试启动检查，不是 COM shutdown 噪声。artifact ID/digest 及具体断言见 `docs/ai/WORKLOG.md` 与 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。
+
+本次在共享 `GscMotion` 增加显式时长重载：生产双参数入口仍从元素资源解析时长，测试 fixture 用显式一秒时长启动相同 tracked entrance 时钟。其后仍实际调用 SettingsView 系统参数回调，检查关闭时钟被清除及恢复后无重播。SDK9.0.302/VSTest17.14.1 本机 Release 定向 `1/1`、source validation、diff check 通过。工作树代码与日志已更新，下一步提交中文 commit 并 push `main`，跟进新 Actions 的 SDK8/SDK10 lane 到终态；失败时读取完整日志后再按证据处理。本机 SDK9 不能替代这两个 CI SDK。
+
+R09 外机失败仍有独立未验边界：当前没有同次 `summary.json`/TRX/test DLL/PDB/plugin DLL，不能把当前 CI 的 R09 通过或其他工作站结果当作外机问题已解决。真实 Playnite、物理跨屏/呈现、OS UIA/IME、ETW/宿主性能也未验证。
+
 ## 2026-10-18 #1077 终态与下一准入条件
 
 `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已双 SDK 终态成功：SDK8.0.423 job `117448022062` 与 SDK10.0.401 job `117448022272` 的 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 均通过；SDK8 Render QA、静态审查和扩展包也通过。Artifact ID/SHA 见 `docs/ai/WORKLOG.md` 的 #1077 记录。本提交仅同步证据，产品代码基线仍为 `8fc980f`。

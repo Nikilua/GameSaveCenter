@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-18 最新检查点：R08 system-motion CI 夹具修正待双 SDK 复核
+
+当前 `main` HEAD `5241add2fd93ca04ca65b95242a783239eb7e65e` 的 Actions [#1078/run `39054894478`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39054894478) 为混合终态：SDK8.0.423 job `117460748837` Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`，在第 `66/125` 个 WPF 隔离类 `R08SystemMotionHotChangeBehaviorTests` 失败；完整日志显示测试第58行启动入场动画时 Opacity 为1且无动画时钟。后续 TextServices COM 异常在测试退出时出现，不能当作断言根因。SDK10.0.401 job `117460748676` 全部构建与测试成功（Core125、Worker362、WPF隔离125类）。SDK8/SDK10 诊断 artifact 分别为 `12109790764`（609,140 bytes，SHA-256 `edb89c8b722baeaff502cc113df97f7f252bc4a4f44ed67ba66b862caf18373f`）与 `12109567791`（776,313 bytes，SHA-256 `26d32ae0062ff13e94801656e0694c8b7e61b35a7f6914cc298720c52abc33de`）。
+
+为隔离此行为测试对窗口主题资源刷新时序的依赖，`GscMotion.AnimateEntrance` 保留原始资源查找入口并增加显式时长重载；R08 system-motion 夹具使用一秒时长，仍验证动画实际启动、系统策略关闭后时钟清理和恢复后不重播。SDK `9.0.302` / VSTest `17.14.1` 本机目标 Release 测试 `1/1` 通过；`scripts/validate-source.py`、`git diff --check` 通过。当前两个代码文件与阶段文档待提交；新提交 CI 尚待确认，SDK9 结果不替代 SDK8.0.423/SDK10.0.401。未改视觉、命令或真实系统偏好；未运行真实 Playnite。
+
 ## 2026-10-18 最新检查点：#1077 双 SDK 终态与 Q/R 准入复核
 
 当前 `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已双 SDK 终态成功。SDK8.0.423 job `117448022062` 与 SDK10.0.401 job `117448022272` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 `render-qa OK`，静态审查扫描 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包生成并上传成功。Artifacts：package `12108658169`（90,314,190 bytes，SHA-256 `c290c2dbec6af9c044d5ec42ad1ae8bd21cb0d86f5094925ae82d66e9aff8937`）；SDK8 diagnostics `12108792518`（1,628,542 bytes，`39a2d164e7224eeac7d7f7932a64d5267bbda78c3cabf6a82cd21952a5442969`）；SDK10 diagnostics `12108435363`（775,322 bytes，`d9faa653ca34c1d8c1e00f2b430450f81384df9d665e0722d9dd5cfce31c63f5`）。

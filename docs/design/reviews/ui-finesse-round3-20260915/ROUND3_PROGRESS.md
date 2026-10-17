@@ -1,3 +1,10 @@
+## 2026-10-18 R08 system-motion SDK8 行为失败复核
+
+- #1078/run `39054894478` 对 `5241add2` 的两条 CI lane 已终态：SDK8.0.423 build/Core125/Worker362 成功，在 R08 system-motion 第58行动画启动正向断言失败（Opacity=1、`IsAnimated=False`）；SDK10.0.401 Release build、Core125、Worker362、WPF隔离125类成功。诊断包为 SDK8 `12109790764` / SHA-256 `edb89c8b722baeaff502cc113df97f7f252bc4a4f44ed67ba66b862caf18373f`，SDK10 `12109567791` / `26d32ae0062ff13e94801656e0694c8b7e61b35a7f6914cc298720c52abc33de`。不把 exit 阶段 COM 异常或 SDK10 成功当成 SDK8 失败原因/豁免。
+- 已为 R08 系统动效热切换夹具隔离运行时资源时长：共享 `GscMotion` 的既有入口保持动态主题资源读取，测试调用显式时长重载启动同样的生产跟踪/取消路径。禁用后断言时钟释放与稳定值，重启后断言不重播仍保留。
+- 本机 SDK9.0.302 / VSTest17.14.1 的 Release 相关项目编译与目标用例 `1/1` 通过，source validation 和 diff check 通过。无视觉变化，未运行真实 Playnite、未修改 Windows 偏好。新提交双 SDK CI 仍待运行终态；SDK9 证据不替代 CI。外机 R09 输入身份仍缺。
+- 这不是新增 R/Q 产品功能项，属于 R08 行为门禁夹具稳定性修正。提交后先收口对应 CI，再按 R23-08 现有准入规则继续。
+
 ## 2026-10-18 #1077 双 SDK CI 终态与 Q/R 准入复核
 
 - `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已终态成功。SDK8.0.423 job `117448022062`、SDK10.0.401 job `117448022272` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 Render QA、30-XAML 静态审查与扩展包成功。Artifacts ID/SHA 见 `docs/ai/WORKLOG.md` 的 #1077 记录。

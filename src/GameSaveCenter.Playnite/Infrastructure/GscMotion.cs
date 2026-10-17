@@ -432,6 +432,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
         }
 
         internal static void AnimateEntrance(FrameworkElement element, double offsetY)
+            => AnimateEntrance(
+                element,
+                offsetY,
+                GetDuration(element, MotionDurationKind.Normal),
+                GetDuration(element, MotionDurationKind.Slow));
+
+        // Explicit durations keep behavior tests independent from a host's asynchronously
+        // refreshed theme resources while exercising the same entrance and cancellation path.
+        internal static void AnimateEntrance(
+            FrameworkElement element,
+            double offsetY,
+            TimeSpan opacityDuration,
+            TimeSpan translationDuration)
         {
             Track(element);
             var motionState = MotionStates.GetOrCreateValue(element);
@@ -461,12 +474,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             var easing = CreateEaseOut();
-            var opacityAnimation = new DoubleAnimation(currentOpacity, 1, GetDuration(element, MotionDurationKind.Normal))
+            var opacityAnimation = new DoubleAnimation(currentOpacity, 1, opacityDuration)
             {
                 EasingFunction = easing,
                 FillBehavior = FillBehavior.HoldEnd
             };
-            var translateAnimation = new DoubleAnimation(currentY, 0, GetDuration(element, MotionDurationKind.Slow))
+            var translateAnimation = new DoubleAnimation(currentY, 0, translationDuration)
             {
                 EasingFunction = easing,
                 FillBehavior = FillBehavior.HoldEnd

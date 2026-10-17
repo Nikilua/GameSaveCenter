@@ -1,3 +1,11 @@
+## 2026-10-18 R08 system-motion 夹具时长隔离与 CI #1078 复核
+
+- 基线 `main` commit `5241add2fd93ca04ca65b95242a783239eb7e65e` 的 Actions [#1078/run `39054894478`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39054894478) 已双 job 终态，但整体不是成功：SDK8.0.423 job `117460748837` build `0 warning / 0 error`、Core `125/125`、Worker `362/362` 后，在 WPF 隔离 `[66/125]` 的 `R08SystemMotionHotChangeBehaviorTests.SystemAnimationPreferenceChangeEndsEntranceAndReenableDoesNotReplayIt` 失败。完整日志定因到源第58行启动时钟断言，值为 `opacity=1; loaded=True` 且 `IsAnimated=False`；退出阶段的 TextServices COM 异常为后续清理输出。SDK8 artifact `12109790764`，609,140 bytes，SHA-256 `edb89c8b722baeaff502cc113df97f7f252bc4a4f44ed67ba66b862caf18373f`。
+- SDK10.0.401 job `117460748676` 对同一提交全量成功：Release build 成功、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类完整通过。SDK10 artifact `12109567791`，776,313 bytes，SHA-256 `26d32ae0062ff13e94801656e0694c8b7e61b35a7f6914cc298720c52abc33de`。两条 lane 的 runner 结果分别记录，不用其一覆盖另一条。
+- 修正只在 `GscMotion` 为显式时长新增转发重载，原双参数生产入口仍从元素资源解析 normal/slow 时长。system-motion 行为夹具改用显式一秒时长，正向断言实际时钟启动，负例继续验证关闭策略时清时钟/归一值且重新启用不重播。未改生产默认动效策略、XAML、视觉或系统偏好。
+- 本机 SDK `9.0.302` / VSTest `17.14.1`，Release 相关依赖构建且目标用例 `1/1` 通过；`python scripts/validate-source.py .`、`git diff --check` 通过。无视觉变化，不适用截图或 Playnite 呈现验证。本机结果不代替 SDK8/SDK10 新提交 CI；新提交 run 尚未启动。
+- 本轮代码改动不接触用户未跟踪 TRX、`TestResults/`、真实存档、媒体或云端；本轮自建 `.tmp/r08-system-motion-local-repro-20261018` 已清理。外机 R09 的缺失 source/test/plugin/PDB 身份仍独立未解，未用本次 runner 结果覆盖。
+
 ## 2026-10-18 #1077 双 SDK 终态、外机 R09 重复输入与 Q/R 准入
 
 - 当前 `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已终态成功。SDK8.0.423 job `117448022062` 和 SDK10.0.401 job `117448022272` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`。SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包上传成功。完整 job logs 已读取。

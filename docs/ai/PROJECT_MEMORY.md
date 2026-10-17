@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 R08 system-motion 测试时长隔离
+
+Actions #1078 的 SDK8.0.423 在 `R08SystemMotionHotChangeBehaviorTests` 启动动画的前置断言失败（Opacity=1、无动画时钟），SDK10.0.401 全量成功，本机 SDK9.0.302 定向 `1/1` 成功。不要从这些结果推断已证实的操作系统根因；针对该行为测试，用 `GscMotion.AnimateEntrance` 的显式时长重载控制要被取消的时钟，保证继续经过生产的注册、取消和归一化路径。默认双参数入口仍从当前控件资源读取时长。新提交必须追踪 SDK8 与 SDK10.0.401 Actions 到终态；SDK9 不能替代二者。
+
 ## 2026-10-18 最新续跑：#1077 双 SDK CI 与准入复核
 
 `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions #1077/run `39050532641` 已双 SDK 终态成功。SDK8.0.423 job `117448022062`、SDK10.0.401 job `117448022272` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`。SDK8 Render QA、30-XAML 静态审查和扩展包通过。Artifacts：package `12108658169` / SHA-256 `c290c2dbec6af9c044d5ec42ad1ae8bd21cb0d86f5094925ae82d66e9aff8937`；SDK8 diagnostics `12108792518` / `39a2d164e7224eeac7d7f7932a64d5267bbda78c3cabf6a82cd21952a5442969`；SDK10 diagnostics `12108435363` / `d9faa653ca34c1d8c1e00f2b430450f81384df9d665e0722d9dd5cfce31c63f5`。

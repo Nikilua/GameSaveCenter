@@ -48,14 +48,11 @@ public sealed class R08SystemMotionHotChangeBehaviorTests
                 DrainDispatcher();
                 window.UpdateLayout();
 
-                // Finish the Loaded handler and its entrance scheduling before installing
-                // deterministic durations, so this test controls the animation it cancels.
-                view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
-                view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
-
                 var shell = Assert.IsAssignableFrom<FrameworkElement>(view.FindName("SettingsShell"));
                 var translate = GscMotion.GetMutableTranslateTransform(shell);
-                GscMotion.AnimateEntrance(shell, 12);
+                // The behavior under test is cancellation after a system-policy change;
+                // explicit durations avoid depending on live host theme resource timing.
+                GscMotion.AnimateEntrance(shell, 12, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
                 PumpDispatcher(TimeSpan.FromMilliseconds(55));
                 Assert.True(
                     DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated,
