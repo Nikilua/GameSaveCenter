@@ -1,5 +1,13 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑补记：#1064 与 R09 外机证据范围
+
+文档检查点 5475ba7d9744ab107b159a89ef930d535f1f95cb 的 Actions #1064/run 38996324038 已双 SDK 整体成功。SDK10.0.401 job 117289578704 与 SDK8.0.423 job 117289578557 在 Windows Server 2025 干净检出上均 Release 0/0、Core 125/125、Worker 362/362、WPF 隔离 125 类（含 R09）；SDK8 Render QA 0 PROBLEM、静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包与诊断上传成功。Artifact IDs：SDK10 diagnostics 12088185573、SDK8 diagnostics 12088616683、package 12088477370。CI 是独立 runner 证据，仍不能覆盖用户外机的实际失败。
+
+用户给的 GameSaveCenter-build-diagnostics (4).zip 与 GameSaveCenter-sdk10-build-diagnostics (1).zip 内部记录为 2026-10-13、sourceCommit c9f9179d9b8d38e506dbb1402ae7030eafebea6c；SDK8 ZIP 中 R09 2/2，SDK10 ZIP 中 Worker 取消测试 356/357 失败且没有 R09 子运行。这些文件不含 2026-10-14 外机失败目录 20261014T052440239Z-3fc9f5f1。外机 Thickness(2/1) line 151 匹配历史 3f7d0b30 测试断言，当前 main 已将 Chrome 1 DIP 与 ValidationStroke 2 DIP 分开；当前一键流程每次新建隔离输出目录，根因仍需该次 summary/TRX 与 test/plugin DLL/PDB 身份，不能按旧 bin 猜修。
+
+当前仍没有新的依赖已满足 Q/R 产品代码项；下一准入点为外机同次身份 artifact、新的可复现问题或前置环境变化。未验真实 Playnite、物理 DPI/跨屏、最终呈现、OS UIA/IME、ETW/宿主性能。保持本机、GitHub runner 与外机验证分账。
+
 ## 2026-10-17 当前续跑：Q11-07 双主题工作区状态往返
 
 Q11-07 在 main 基线 `57023ac849689dab0d2b999737e0213042a1eebc` 上只扩展 `R08PageSwitchBehaviorTests`，添加 opt-in 生产缓存页 Light/Dark 离屏输出；生产 UI/XAML/服务/DTO/命令/导航未改。Playnite `net462` / Tests `net472`，本机 SDK9.0.302/VSTest17.14.1 隔离 Release 类 `4/4`。实际测试源 SHA `6B46ADE6C82FE6DF26466BBB95406F0CAEA96423BEBC9AB862031CC062237222`，测试 DLL/PDB 与插件程序集身份见 [Q11-07 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。SDK9结果只适用于本机该源码/运行环境，不证明 CI 或用户外机。

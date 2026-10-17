@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 补充：#1064 终态与外机诊断 ZIP 范围
+
+文档基线修正提交 5475ba7d9744ab107b159a89ef930d535f1f95cb 对应 Actions #1064/run 38996324038 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38996324038)。SDK10.0.401 job 117289578704 与 SDK8.0.423 job 117289578557 均在 Windows Server 2025 干净检出中 Release build 0 warning / 0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类通过（含 R09）；SDK8 另 Render QA 0 PROBLEM、静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包及诊断上传成功。Artifacts：SDK10 diagnostics 12088185573、SDK8 diagnostics 12088616683、package 12088477370。该远端结果比本机验证独立，但仍不是用户外机安装输入。
+
+用户提供的 GameSaveCenter-build-diagnostics (4).zip 与 GameSaveCenter-sdk10-build-diagnostics (1).zip 是 2026-10-13 的另一批输入，sourceCommit 均为 c9f9179d9b8d38e506dbb1402ae7030eafebea6c；前者包含 SDK8 R09 2/2 通过，后者 SDK10 失败在 Worker 取消用例 356/357 且没有 R09 子运行。它们不包含 2026-10-14 外机目录 20261014T052440239Z-3fc9f5f1；该次 summary/TRX/DLL/PDB 仍未取得。当前一键流程每次用新隔离输出目录，故不先归因旧 bin；line 151 仍指向旧断言形态，具体构建身份待同次诊断。
+
 更新：2026-10-17；版本 `0.6.73`；当前分支 `main`；最近代码提交 `6a909cb329d88af3da83a78446050a83d24ef246`。后续文档收口提交 `ee8d6aa8d32da2861167d9d49b28e1f912063a8b` 对应 #1063/run `38992929963` 也已双 SDK终态成功。Q11-07 只在 `R08PageSwitchBehaviorTests` 增加 opt-in Light/Dark 离屏往返截图与证据，没有生产 UI/XAML、服务或 DTO 改动。本机 SDK `9.0.302`/VSTest `17.14.1` Playnite.Tests 隔离 Release `4/4`。精确代码提交的 Actions #1062/run `38988908489` 已双 SDK终态成功：SDK10.0.401 job `117266648758` 与 SDK8.0.423 job `117266649011` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类通过，包含 R09 与 Q11-07 行为类；SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、包生成与上传成功。#1063 的 SDK8.0.423 job `117279033559` 与 SDK10.0.401 job `117279033715` 验证文档提交也成功。SDK9 本机、CI runner 与另一台用户机器是不同验证输入；外机 R09 `1/2` 真实失败仍未定位，不能由本机或 CI 结果覆盖。
 
 - 当前代码提交 `1c60a2fc` 对应 Actions #1059/run `38982569941`、文档/证据提交 `d62e199f` 对应 #1060/run `38983018226` 均终态成功。详细 SDK/job 与测试结果见 Q11-06 当前 main 视觉复核包。

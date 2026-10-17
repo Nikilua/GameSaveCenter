@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 最新 CI 状态与待验输入
+
+文档纠偏提交 5475ba7d9744ab107b159a89ef930d535f1f95cb 的 #1064/run 38996324038 已终态成功：SDK10.0.401 job 117289578704、SDK8.0.423 job 117289578557 均在 Windows Server 2025 干净检出上完成 Release build/test；两边 Core 125/125、Worker 362/362、WPF 隔离 125 类通过（包含 R09），SDK8 Render QA、WPF 静态审查、扩展包和 artifact 上传成功。artifacts：SDK10 diagnostics 12088185573、SDK8 diagnostics 12088616683、package 12088477370。它不能证明用户外机的安装/构建输入成功。
+
+用户给出的 GameSaveCenter-build-diagnostics (4).zip 和 GameSaveCenter-sdk10-build-diagnostics (1).zip 是 2026-10-13、sourceCommit c9f9179d9b8d38e506dbb1402ae7030eafebea6c 的不同运行：SDK8 R09 2/2；SDK10 失败在 Worker 取消测试 356/357，未运行 R09 子类。它们不是 2026-10-14 外机目录 20261014T052440239Z-3fc9f5f1。外机错误 line 151 的 Thickness 2/1 是历史测试源码形态，具体 HEAD、dirty paths、test DLL/PDB/plugin DLL 尚缺。当前一键脚本使用每次独立输出目录，因此不先将原因归为旧 bin。待该次 summary.json、R09 TRX/console 与程序集身份可用后再定位；主线继续独立任务，不改生产焦点样式或放宽断言。
+
 ## 2026-10-17 当前续跑：Q11-07 双 SDK CI 已收口
 
 Q11-07 代码与证据提交为 `6a909cb329d88af3da83a78446050a83d24ef246`；只在 `R08PageSwitchBehaviorTests` 增加环境变量 opt-in 的 Light/Dark 四个生产缓存页往返离屏截图/几何输出，生产 UI、服务、DTO、命令和导航未改。本机 SDK `9.0.302`/VSTest `17.14.1` 隔离 Release 行为类 `4/4`。测试/插件 DLL/PDB 身份见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`；本机结果只适用于本机 SDK 和该源输入。

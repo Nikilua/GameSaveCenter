@@ -1,3 +1,10 @@
+## 2026-10-17 #1064 文档基线校正与外机诊断 ZIP 区分
+
+- 文档检查点 5475ba7d9744ab107b159a89ef930d535f1f95cb 对应 #1064/run 38996324038 已终态 success。SDK10.0.401 job 117289578704 在 Windows Server 2025 干净检出通过 Release build 0 warning / 0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类（含 R09），diagnostics artifact 12088185573。
+- SDK8.0.423 job 117289578557 同样 Release build/test 成功，Core 125/125、Worker 362/362、WPF 隔离 125 类（含 R09），Render QA 0 PROBLEM；静态审查 30 XAML / 0 errors / 27 warnings / 177 info；扩展包与 artifacts 上传成功。run 整体 success；SDK8 diagnostics artifact 12088616683，package 12088477370。
+- 查看用户给的 GameSaveCenter-build-diagnostics (4).zip 与 GameSaveCenter-sdk10-build-diagnostics (1).zip：内部运行是 2026-10-13、sourceCommit c9f9179d9b8d38e506dbb1402ae7030eafebea6c。SDK8 R09 2/2；SDK10 失败于 Worker 取消测试 356/357，且没有 R09 子运行。因此不是 pasted external run 20261014T052440239Z-3fc9f5f1 的诊断包。外机 line151 Thickness(2/1) 匹配历史 3f7d0b30 测试形态；实际 checkout、dirty paths、test DLL/PDB/plugin DLL 仍未知。当前一键脚本每次创建隔离输出目录，不盲目归因旧 bin。
+- 没有改 R09 生产代码或测试断言；本机结果不能证明外机成功。下一准入点是那次外机 summary/TRX/console 与程序集身份，或新的可复现 Q/R 缺陷/前置变化。真实 Playnite、物理 DPI/跨屏、最终呈现、OS UIA/IME、ETW/宿主性能仍未验。
+
 ## 2026-10-17 Q11-06 当前 main 双主题视觉复核（双 SDK CI 收口）
 
 - 在 `main` 基线 `1662e27b6f41ba00b78388589267691d4def7b6f` 补 Q11-06：沿用现有 `GscRedesignWorkspaceTabControl` 与行为夹具，只给 `R23ProductionResourceStateBehaviorTests` 加环境变量 opt-in 截图/几何报告；没有生产 UI/XAML/导航改动。提交 `1c60a2fc61fae6109a609fd14c4977dfb927a32c` 已推送。
