@@ -4,7 +4,7 @@
 
 ## 2026-10-17 Q11-06 当前 main 视觉增量
 
-当前统计在 208 项唯一 ID 上将 Q11-06 视觉从“待验”更新为“受控通过”：视觉 `156 通过 / 6 受控通过 / 43 待验 / 3 不适用`；自动、宿主和最终结论统计未因本次改变。18 张双主题生产共享页签模板的 96-DPI 离屏图、viewport/extent/offset 报告和定向 TRX 见[Q11-06 当前 main 视觉复核](../ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。真实 Playnite/OS 输入/有效物理 DPI 与屏幕呈现仍待验，Final 保持未完成。
+当前统计在 208 项唯一 ID 上将 Q11-06 视觉从“待验”更新为“受控通过”：视觉 `156 通过 / 6 受控通过 / 43 待验 / 3 不适用`；自动、宿主和最终结论统计未因本次改变。18 张双主题生产共享页签模板的 96-DPI 离屏图、viewport/extent/offset 报告和定向 TRX 见[Q11-06 当前 main 视觉复核](../ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。代码提交 `1c60a2fc` 对应 #1059 双 SDK run、脱敏证据文档提交 `d62e199f` 对应 #1060 双 SDK run 均整体成功；这只验证 CI 输入。真实 Playnite/OS 输入/有效物理 DPI 与屏幕呈现仍待验，Final 保持未完成。
 
 # UI 精修第二轮任务账本
 

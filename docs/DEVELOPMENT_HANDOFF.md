@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-17 当前续跑：Q11-06 等待 Actions 终态
+## 2026-10-17 当前续跑：Q11-06 CI 收口后继续证据复核
 
-- 当前分支 `main`，代码提交 `1c60a2fc61fae6109a609fd14c4977dfb927a32c` 已推送；证据隐私修订仍在本地工作树，另有此前已存在的其它任务未跟踪 TRX。
-- Q11-06 复用现有生产页签共享资源；只增加环境变量 opt-in 截图/几何输出。SDK9.0.302/VSTest17.14.1 定向 Release build/test `1/1`，`validate-source.py` 与 diff check 通过。18 张 96-DPI 离屏图、报告、TRX、完整身份和未验边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。Round2 视觉栏转“受控通过”，host 仍外部阻塞、Final 未完成。
-- Actions #1059/run `38982569941` 仍运行：SDK8 默认 job `117246575824` 与 SDK10.0.401 job `117246576000` 均在编译与测试。下一步等二者终态；若失败先取完整日志再复现，不凭摘要推断。CI 收口后再选依赖已满足的 Q/R 任务。
+- 当前分支 `main`，HEAD `d62e199fed5adf002fbf762f3a8ea0a770da46fd`；Q11-06 代码提交 `1c60a2fc` 与证据脱敏提交 `d62e199f` 均已推送。工作树仅保留此前其它任务的未跟踪 TRX/TestResults，本阶段跟踪文件无未提交修改。
+- Q11-06 复用现有生产页签共享资源，只增加环境变量 opt-in 截图/几何输出。SDK9.0.302/VSTest17.14.1 定向 Release build/test `1/1`，18 张 96-DPI 离屏图和几何报告已归档。#1059/run `38982569941` 与 #1060/run `38983018226` 均双 SDK 终态成功；build/test、125 个 WPF 隔离类通过，SDK8 另 Render QA、静态审查、打包成功。详细身份与边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。Round2 视觉栏“受控通过”，host 外部阻塞、Final 未完成。
+- 最新 main 的 R00/R01 freshness `14/14 fresh / 0 stale / 0 matched source paths`、2,949 paths，package identity `not-provided`。下一步重扫 Round2/3 ledger 并选有明确缺口、依赖已满足的小批。外机 R09 同一真实失败仍未定位；没有其同次 `summary.json`、HEAD、源、test DLL/PDB、plugin DLL 身份。真实 Playnite、OS 输入/UIA、物理 DPI/跨屏和最终屏幕呈现仍待验。
 - 外机 R09 重复日志 SHA `F3DDDC...4514`，报告 `Expected Thickness(2) / Actual(1)` 在第151行；第151行与历史 `3f7d0b30` 旧断言相同，与当前拆分断言不同。真实失败保留；没有同次 `summary.json`、HEAD、测试 DLL/PDB、插件 DLL 身份，根因未定。本机/CI通过不能代替外机输入复核。不要放宽/重建断言来签收。
 - 仍未验真实 Playnite、OS 物理键鼠/UIA、有效物理 DPI/跨屏、最终呈现帧、ETW/宿主性能；真实存档、媒体和云端未访问。
 

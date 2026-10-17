@@ -1,8 +1,8 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-17；版本 `0.6.73`；当前分支 `main`，HEAD `1c60a2fc61fae6109a609fd14c4977dfb927a32c`。Q11-06 只为受控视觉截图/几何增加 opt-in 测试输出；无生产 UI/XAML/导航改动。本机 SDK9 定向测试通过；Actions #1059/run `38982569941` 的 SDK8 默认与 SDK10.0.401 两 lane 仍在编译与测试，未终态。此前 Worker 取消回调夹具、Q24-04 与 R00/R01 事实详见下方历史记录。
+更新：2026-10-17；版本 `0.6.73`；当前分支 `main`，HEAD `d62e199fed5adf002fbf762f3a8ea0a770da46fd`，代码提交 `1c60a2fc`。Q11-06 只为受控视觉截图/几何增加 opt-in 测试输出；无生产 UI/XAML/导航改动。本机 SDK9 定向测试通过；Actions #1059（代码）与 #1060（脱敏证据文档）双 SDK 均终态成功。SDK8.0.423 和 SDK10.0.401 build/test 通过；SDK8 Render QA、静态审查和扩展包上传成功。R00/R01 最新 freshness 为 `14/14 fresh / 0 stale / 0 matched source paths`、2,949 paths、package identity `not-provided`。这些结果验证各自 runner 输入，不覆盖外机 R09 实际失败。
 
-- 当前已推送文档 HEAD `01e99b6e41c05519a78dfae42a4ad97c6fcf9f1b` 对应 Actions #1057/run `38969111355` 已终态成功；最后一次代码变更仍是 `4a98148c`，#1056 两个 SDK lane 已全部通过。此处区分代码提交与后续文档提交。
+- 当前代码提交 `1c60a2fc` 对应 Actions #1059/run `38982569941`、文档/证据提交 `d62e199f` 对应 #1060/run `38983018226` 均终态成功。详细 SDK/job 与测试结果见 Q11-06 当前 main 视觉复核包。
 - R00-03 历史 #919/#920 的 SDK10.0.401 完整日志现已取得：两次均为活动侧栏过渡断言的测试前提失败；`48b78b3b` 后由测试固定系统动效输入并补偏好矩阵，当前 #1056 双 SDK 已过。详情见 [R00-03 历史失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
 - 外机 R09 附件是先前同一文本 SHA，仍是一次真实失败，不是当前 main 的新复跑。其 `Thickness(2/1)` 第151行与旧 `3f7d0b30` 断言形态相符；当前 main 的 R09 断言在 `f13b9e05` 已拆为 Chrome 1 DIP + 独立 ValidationStroke 2 DIP。外机 HEAD、源、test DLL/PDB、plugin DLL 身份仍缺；本机和 CI 通过只验证各自输入。
 
@@ -20,6 +20,8 @@
 - #1053/run `38937972835`（文档提交 `01efb189`，代码基线 `5c81a070`）现已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38937972835)。SDK8.0.423 job `117098144434` 与 SDK10.0.401 job `117098144743` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过（含 R09/R21）。SDK8 另 `render-qa OK / 0 PROBLEM`、WPF 静态检查 `0 errors / 27 warnings / 177 info`、生成 `0.6.73` 扩展包并成功上传包和诊断 artifact；SDK10 完整日志确认实际 `dotnet --version` 为 `10.0.401`。这只验证该 CI 源码输入，不覆盖外机 R09 的真实失败。
 - #1054/run `38944728502` 对当前文档 HEAD `79748216` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38944728502)。SDK8.0.423 job `117120854146` 与 SDK10.0.401 job `117120854512` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、全部 `125` 个 Playnite WPF 隔离类通过，R09 在两 lane 均通过。SDK8 还完成 `render-qa OK`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、生成 `0.6.73` 扩展包并上传；SDK8 诊断 artifact `12068781572`、SDK10 诊断 artifact `12066891114`。这仍只验证该 CI 输入，不证明外机 R09 失败已解决。
 - 当前阶段已收口：Worker 测试夹具修正及 #1056 双 SDK CI 均通过。R12-04 相关生产/测试文件 SHA 与 2026-10-16 证据一致，状态保持“已满足”。本轮重扫 Round2 208 项与 Round3 192 项后没有新增可独立实施的 Q/R 代码项；只读桌面快照为无可见 Playnite/Worker 进程、单活动屏。下一执行点是等待可用的外机 R09 同次诊断身份 artifact、环境前置变化或任务表出现具体证据缺口，再选相应小批。外机 R09 `1/2` 仍是真实失败；当前文本 SHA 与旧附件相同，summary/TRX/DLL/PDB/plugin DLL 身份仍缺。真实 Playnite、物理 DPI/跨屏、OS UIA/IME 与最终呈现仍待验。
+
+- Q11-06 视觉证据受控通过；host/物理 DPI/最终屏幕呈现仍待验，Final 未完成。当前 main 的 R00/R01 freshness 复扫未发现 stale 项；下一执行点是在 Round2/3 ledger 中挑选另一个依赖已满足且有明确证据缺口的 Q/R 小批。外机 R09 的真实失败继续单独保留。
 ## 当前判断
 
 核心功能和六个工作区已实现，当前属于功能较完整、尚未完成发布验收的开发预览版。不能用测试数量、Round3 的“已满足”或旧评估的 95%/98% 推导正式稳定版完成度。详见 [完成度评估](../FEATURE_COMPLETION_ASSESSMENT.md)。

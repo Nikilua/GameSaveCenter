@@ -1,0 +1,125 @@
+{
+  "generatedUtc": "2026-10-17T00:29:25.8543761Z",
+  "currentSourceCommit": "d62e199fed5adf002fbf762f3a8ea0a770da46fd",
+  "currentPackageCommit": "not-provided",
+  "packageIdentityStatus": "not-provided",
+  "documentationOnlyChange": false,
+  "comparedPathCount": 2949,
+  "freshCount": 14,
+  "staleCount": 0,
+  "matchedPathCount": 0,
+  "records": [
+    {
+      "id": "R00-01-02",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc"
+    },
+    {
+      "id": "R00-03",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc"
+    },
+    {
+      "id": "R00-04",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "5762c874ef9c1ee2e92692a61c71d17cc9c0f371"
+    },
+    {
+      "id": "R00-05",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc"
+    },
+    {
+      "id": "R00-06",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "af8ed430373c5e52dba77af534c689f6727bb91f"
+    },
+    {
+      "id": "R00-07",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f"
+    },
+    {
+      "id": "R00-08",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "5c81a07056d64482767d546efe043012abc1e6fc"
+    },
+    {
+      "id": "R01-01",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f"
+    },
+    {
+      "id": "R01-02",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "5fbfc869ecddec852440ac82b3b0cc94343f3d60"
+    },
+    {
+      "id": "R01-03",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc"
+    },
+    {
+      "id": "R01-04",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f"
+    },
+    {
+      "id": "R01-05",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "ae8f3be9969fe8baa649d7ae39bb88f7c6498484"
+    },
+    {
+      "id": "R01-06",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc"
+    },
+    {
+      "id": "R01-07",
+      "fresh": true,
+      "needsRerun": false,
+      "matchedSourcePaths": [],
+      "packageStatus": "not-applicable",
+      "evidenceSourceCommit": "e1324fe"
+    }
+  ]
+}
