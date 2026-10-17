@@ -1,3 +1,10 @@
+## 2026-10-17 #1075 双 SDK CI 终态与 R23-08 准入复核
+
+- 文档提交 `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions [#1075/run `39043054832`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39043054832) 整体终态成功。SDK8.0.423 job `117426249110`、SDK10.0.401 job `117426248974` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。
+- Artifacts：package `12106570037`（90,314,110 bytes，SHA-256 `e0068c287926768ee8ed13b5fb1d2eee01ac33581331d74068fa0a8195e63424`）；SDK8 diagnostics `12106450704`（1,628,394 bytes，`5c8f78a322556c9c7e1c5201fce243f0d1f44070c3692fd250b5e5dfe4371c53`）；SDK10 diagnostics `12104389589`（775,652 bytes，`f606db90d3323b3d9ed997b4cddab54681c4209ef50dc0cad08c55fdbd22b3f4`）。
+- R00-01—R01-08 账本状态均为“已满足”；R00-08 真实宿主/OS 输入仍待验。Round2/3 复扫未发现新的依赖满足 Q/R 代码缺口；当前桌面只有 `\\.\DISPLAY1`，没有 Playnite/Worker 进程。R23-04 不重试既有 CEF `0x5` 同态，R23-05 不绕过 ETW 权限拒绝，Q24-03 不把单屏模拟写成物理跨屏。外机 R09 `1/2` 独立未定位；当前 Actions 不覆盖该失败。
+- 本阶段仅同步 #1075 和准入事实，不含产品代码修改；R00/R01 freshness 继续绑定代码基线 `8fc980f`。未生成本地 `artifacts/.tmp`，用户已有未跟踪 TRX/TestResults 保持不动。
+
 ## 2026-10-17 #1074 双 SDK CI 终态
 
 - 文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions [#1074/run `39039120707`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39039120707) 已终态成功。SDK8.0.423 job `117414822833`、SDK10.0.401 job `117414822607` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过。SDK8 `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包及诊断上传成功。

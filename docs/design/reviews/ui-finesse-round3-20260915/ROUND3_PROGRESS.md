@@ -1,3 +1,9 @@
+## 2026-10-17 #1075 双 SDK CI 终态与当前准入复核
+
+- 文档提交 `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions [#1075/run `39043054832`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39043054832) 已终态成功。SDK8.0.423 job `117426249110`、SDK10.0.401 job `117426248974` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包上传成功。
+- Artifacts：package `12106570037`（90,314,110 bytes，SHA-256 `e0068c287926768ee8ed13b5fb1d2eee01ac33581331d74068fa0a8195e63424`）；SDK8 diagnostics `12106450704`（1,628,394 bytes，`5c8f78a322556c9c7e1c5201fce243f0d1f44070c3692fd250b5e5dfe4371c53`）；SDK10 diagnostics `12104389589`（775,652 bytes，`f606db90d3323b3d9ed997b4cddab54681c4209ef50dc0cad08c55fdbd22b3f4`）。
+- 最新账本行显示 R00-01—R01-08 均已满足，R00-08 仅真实 Playnite/OS 输入仍待验；Round2/3 复扫无新的依赖满足 Q/R 代码缺口。本机只枚举到单屏 `\\.\DISPLAY1`，没有 Playnite/Worker 进程。R23-04 的 CEF `0x5` 未在相同状态重试，R23-05 的 ETW 权限拒绝未绕过，Q24-03 不以逻辑模拟代替第二块活动显示器。外机 R09 `1/2` 仍缺同次源/TRX/DLL/PDB 身份；#1075 的 runner 成功不覆盖它。当前代码基线 `8fc980f` 未变，本阶段无本地 artifacts/.tmp。
+
 ## 2026-10-17 #1074 双 SDK 文档提交 CI 终态
 
 - 文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions [#1074/run `39039120707`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39039120707) 已终态成功。SDK8.0.423 job `117414822833` 与 SDK10.0.401 job `117414822607` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过。SDK8 `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包和诊断上传成功。

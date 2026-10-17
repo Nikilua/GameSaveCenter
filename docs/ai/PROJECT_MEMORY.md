@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：#1075 双 SDK 终态与准入边界
+
+文档提交 `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions #1075/run `39043054832` 已终态成功。SDK8.0.423 (`117426249110`) 与 SDK10.0.401 (`117426248974`) 的 Release build、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 均通过；SDK8 Render QA、30-XAML 静态审查及扩展包生成/上传成功。Artifacts：package `12106570037` / `e0068c287926768ee8ed13b5fb1d2eee01ac33581331d74068fa0a8195e63424`；SDK8 diagnostics `12106450704` / `5c8f78a322556c9c7e1c5201fce243f0d1f44070c3692fd250b5e5dfe4371c53`；SDK10 diagnostics `12104389589` / `f606db90d3323b3d9ed997b4cddab54681c4209ef50dc0cad08c55fdbd22b3f4`。
+
+R00-01 至 R01-08 最新账本均为“已满足”；R00-08 仍只是受控合成行为已满足，真实宿主/OS 输入待验。Round2/3 与 R23-08 复扫未发现新的依赖满足代码缺口。本机当前单显示器、无 Playnite/Worker 进程，故 Q24-03 和 R23-04/05 门槛没有变化；R09 外机 `1/2` 仍缺同次 source/test/plugin 身份。当前代码基线仍为 `8fc980f`，本轮只改文档；不把 #1075 runner 通过当作外机成功。
+
 ## 2026-10-17 最新续跑：#1074 双 SDK CI 终态与外机边界
 
 文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions #1074/run `39039120707` 已终态成功：SDK8.0.423 job `117414822833` 与 SDK10.0.401 job `117414822607` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过；SDK8 Render QA、30-XAML 静态审查与包生成/上传成功。Artifacts：package `12104192973` / SHA-256 `0900b6fe7ec432716e9fc6da9a23c1c194c8dec34069c0d3b5f49848bf5b5098`，SDK8 diagnostics `12104078221` / `b7ad514628db695804530d5e49a2b02e95e91ccdd10128a5c57264aef79ec8d9`，SDK10 diagnostics `12104125808` / `7d6274eac8e4e096d13a3b074a018af3cd05c0e5e9fb3cd4c5bb3034b42b5bc6`。
