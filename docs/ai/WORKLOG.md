@@ -1,3 +1,10 @@
+## 2026-10-18 #1076 双 SDK CI 终态与积压复核
+
+- 文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 整体终态成功。SDK8.0.423 job `117437640771`、SDK10.0.401 job `117437640925` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。
+- Artifacts：package `12107422070`（90,314,170 bytes，SHA-256 `18310d2c4a94b85f6840006cc3ac9da77e896161ec07be066f3c58b32b54e9e0`）；SDK8 diagnostics `12107750956`（1,626,582 bytes，`70db57dfdfd00cf41ac2a46cbc65985f41ad1ea3c989e9f9ebc28fce8377bd6b`）；SDK10 diagnostics `12106670885`（772,805 bytes，`01203d80bde6bbc05a367951b966106e05b51016fb3b751a725af25f0b6a2f88`）。
+- 重读 Round2/3 账本：Round2 `208/208` 的实现列均代码完成/已复核，最终 `203` 未完成项主要待宿主门禁；Round3 `192/192` 无待开始/实施中代码项；R00-01 至 R01-08 均已满足受控条件。当前单屏、无 Playnite/Worker，R23-04/05 和 Q24-03 前置未变。外机 R09 `1/2` 缺同次 checkout/summary/TRX/test/plugin DLL/PDB 身份，#1076 成功不覆盖它。
+- 本阶段只更新交接与证据，不改产品代码、不运行本机 build；CI 分别使用 SDK8.0.423 与 SDK10.0.401。没有生成本地 artifacts/.tmp；既有未跟踪 TRX/TestResults 均保留。总目标未完成；下一准入条件为外机同次身份、新复现/明确范围或环境前置改变。
+
 ## 2026-10-17 #1075 双 SDK CI 终态与 R23-08 准入复核
 
 - 文档提交 `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions [#1075/run `39043054832`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39043054832) 整体终态成功。SDK8.0.423 job `117426249110`、SDK10.0.401 job `117426248974` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。

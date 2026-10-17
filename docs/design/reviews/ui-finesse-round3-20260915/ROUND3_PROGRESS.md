@@ -1,3 +1,9 @@
+## 2026-10-18 #1076 双 SDK CI 终态与 Q/R 队列收口
+
+- 文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已终态成功。SDK8.0.423 job `117437640771`、SDK10.0.401 job `117437640925` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。
+- Artifacts：package `12107422070`（90,314,170 bytes，SHA-256 `18310d2c4a94b85f6840006cc3ac9da77e896161ec07be066f3c58b32b54e9e0`）；SDK8 diagnostics `12107750956`（1,626,582 bytes，`70db57dfdfd00cf41ac2a46cbc65985f41ad1ea3c989e9f9ebc28fce8377bd6b`）；SDK10 diagnostics `12106670885`（772,805 bytes，`01203d80bde6bbc05a367951b966106e05b51016fb3b751a725af25f0b6a2f88`）。
+- Round2 `208/208` 实现行均为代码完成/已复核，最终未完成主要受宿主门禁限制；Round3 `192/192` 无待开始/实施中代码行；R00-01 至 R01-08 受控条件均已满足。环境仍为单屏且无 Playnite/Worker；R23-04 不重试 CEF `0x5`，R23-05 不绕过 ETW 拒绝，Q24-03 不冒充物理跨屏。外机 R09 `1/2` 身份仍缺，当前 CI 不覆盖该失败。本阶段无产品代码改动，真实宿主、OS 输入/IME/UIA、物理跨屏/呈现帧及宿主性能仍未验。
+
 ## 2026-10-17 #1075 双 SDK CI 终态与当前准入复核
 
 - 文档提交 `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions [#1075/run `39043054832`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39043054832) 已终态成功。SDK8.0.423 job `117426249110`、SDK10.0.401 job `117426248974` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包上传成功。

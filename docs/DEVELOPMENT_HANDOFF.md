@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 #1076 终态与当前可执行边界
+
+`main` HEAD `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已双 SDK 终态成功。SDK8.0.423、SDK10.0.401 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 Render QA、30-XAML 静态审查和扩展包通过。Artifact ID/SHA 见 `docs/ai/WORKLOG.md` 的 #1076 记录。本次无产品代码变化，R00/R01 freshness 仍绑定 `8fc980f`。
+
+当前 Round2/3 无新的依赖满足代码缺口；R00-01 至 R01-08 受控条件已满足。单屏、无 Playnite/Worker；CEF `0x5` 不重试，ETW 权限不绕过，物理跨屏不模拟。用户外机 R09 `1/2` 仍未定位，缺失败当次源、summary/TRX 与测试/插件 DLL/PDB 身份。下一执行条件：外机身份材料、新复现缺陷/明确功能范围，或相关宿主/硬件/权限前置可观察变化；材料到手先做身份比对，不要求重跑。
+
 ## 2026-10-17 #1075 终态与下一准入条件
 
 当前 `main` HEAD `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions [#1075/run `39043054832`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39043054832) 已双 SDK 终态成功。SDK8.0.423 和 SDK10.0.401 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 Render QA、静态审查与扩展包通过。Artifact ID/SHA 见 `docs/ai/WORKLOG.md` 的 #1075 记录。代码基线仍是 `8fc980f`。

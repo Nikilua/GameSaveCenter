@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-18 最新检查点：#1076 双 SDK 终态与 Q/R 准入
+
+文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已整体成功。SDK8.0.423 job `117437640771` 与 SDK10.0.401 job `117437640925` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过。SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包生成/上传成功。Artifacts：package `12107422070`（90,314,170 bytes，SHA-256 `18310d2c4a94b85f6840006cc3ac9da77e896161ec07be066f3c58b32b54e9e0`）；SDK8 diagnostics `12107750956`（1,626,582 bytes，`70db57dfdfd00cf41ac2a46cbc65985f41ad1ea3c989e9f9ebc28fce8377bd6b`）；SDK10 diagnostics `12106670885`（772,805 bytes，`01203d80bde6bbc05a367951b966106e05b51016fb3b751a725af25f0b6a2f88`）。
+
+本轮只同步 CI/准入文档，代码基线仍为 `8fc980f`。Round2 `208/208` 的实现列均为代码完成/已复核、最终 `203` 项未完成主要受宿主证据门槛约束；Round3 `192/192` 无待开始/实施中代码项；R00-01 至 R01-08 均已满足受控条件。当前单屏且无 Playnite/Worker 进程，R23-04/05、Q24-03 前置仍不满足。外机 R09 `1/2` 仍缺同次 checkout、summary/TRX、test/plugin DLL/PDB 身份，#1076 不覆盖该失败。下一步仅在新复现/明确范围、同次身份材料或环境条件变化时重新准入。
+
 ## 2026-10-17 最新检查点：#1075 双 SDK 终态与准入复核
 
 文档提交 `6e308527e5040b94da1f07199f93adddf8978e4a` 对应 Actions [#1075/run `39043054832`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39043054832) 已整体成功。SDK8.0.423 job `117426249110` 与 SDK10.0.401 job `117426248974` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过。SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包已生成并上传。Artifacts：package `12106570037`（90,314,110 bytes，SHA-256 `e0068c287926768ee8ed13b5fb1d2eee01ac33581331d74068fa0a8195e63424`）；SDK8 diagnostics `12106450704`（1,628,394 bytes，`5c8f78a322556c9c7e1c5201fce243f0d1f44070c3692fd250b5e5dfe4371c53`）；SDK10 diagnostics `12104389589`（775,652 bytes，`f606db90d3323b3d9ed997b4cddab54681c4209ef50dc0cad08c55fdbd22b3f4`）。

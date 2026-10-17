@@ -1,5 +1,13 @@
 # R23-08 当前 main 下一轮准入复核
 
+## 2026-10-18 当前准入复核补记
+
+文档 HEAD `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已 SDK8.0.423/SDK10.0.401 双 lane 成功；详情及 artifact SHA 见 `docs/ai/WORKLOG.md`。这是文档提交 CI，不改变产品源码基线 `8fc980f`。
+
+重新检查任务行：Round2 的 208 项实现列均已代码完成/已复核，203 项最终未完成仍主要因宿主验收；Round3 192 项中没有待开始或实施中代码项；R00-01 至 R01-08 受控条件已满足。当前桌面只有一块活动显示器，当前用户无 Playnite/Worker 进程。此前 CEF `platform_channel 0x5` 未观察到变化，不重试；ETW/WPR/xperf 权限拒绝不绕过。外机 R09 `1/2` 仍缺失败当次 source/checkout、summary/TRX、test/plugin DLL/PDB 身份。
+
+准入结论仍是当前无可依据实施的代码小批；总体验收未完成。恢复条件是新的可复现缺陷/明确功能范围、外机同次身份材料或宿主/屏幕/权限前置发生可观察变化。外机材料到手后先比对身份，不要求重跑。真实 Playnite/CEF、OS UIA/IME/读屏、物理 DPI/跨屏、最终呈现和 ETW/宿主性能仍待验。
+
 日期：2026-09-26
 代码基线：`4f778e9bd7e305cc878e83671f372b6b954b32e8`
 文档收口：`6ac276d1`；当前复核不修改产品代码或 192 项任务状态
