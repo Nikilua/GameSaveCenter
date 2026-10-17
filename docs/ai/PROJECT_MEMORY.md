@@ -1,10 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 当前 R08 app-motion CI 失败与夹具跟进
+## 2026-10-18 当前 R08 app-motion 修正与 R09 外机断言差异
 
-文档 HEAD `7b5ea6b1` 的 #1080 SDK10.0.401 job `117480203788` 在 `R08MotionHotChangeBehaviorTests` 的活动动画启动正例失败（`opacity=1; loaded=True`，无动画时钟）；Release build `0/0`、Core `125/125`、Worker `362/362`。SDK8 job `117480204000` 记录时仍运行。诊断 artifact `12112485036` / SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d`，完整日志已读取。
+当前代码 HEAD be314f59 已推送；#1081/run 39063179675 的 SDK8.0.423 与 SDK10.0.401 job 记录时都在 Release 编译/测试。#1080 SDK10 已失败于 R08 app-motion 启动正例（opacity=1、loaded、无 clock），SDK8 进入包生成仍运行；artifact 12112485036 完整日志已读取。
 
-夹具曾在窗口 `Show()` 后改资源时长，再走默认动画入口。当前改为显式一秒时长，保留共享 `GscMotion` 跟踪/取消路径与全部行为断言。SDK9.0.302 / VSTest17.14.1 Release 目标类 `1/1` 通过，TRX/源/DLL 哈希在 `evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。SDK9 不是 CI 替代；新修正提交的 SDK8/SDK10 Actions 待跑。用户外机 R09 `1/2` 与本项无关，仍缺同次 checkout/TRX/test/plugin DLL/PDB 身份。总目标未完成。
+R08 测试夹具改为显式一秒时长，保留共享 GscMotion 跟踪/取消与行为断言；本机 SDK 9.0.302 / VSTest 17.14.1 Release 定向类 1/1 通过，哈希/TRX 在 R08 evidence README。SDK9 不替代 CI。
+
+外机 R09 期待 Chrome 2 DIP 的断言与当前源码不匹配。历史测试提交 3f7d0b30 检查 Chrome.BorderThickness=2；f13b9e05 起共享模板/测试拆成 Chrome=1 与独立 ValidationStroke=2，当前 main 如此且 #1079 全 WPF 125 类通过。旧/混合 test DLL 或 checkout 是可能性，但缺同次 checkout、TRX、test/plugin DLL/PDB，根因未确认，不能宣称外机问题已解决。总目标未完成。
 
 ## 2026-10-18 最新：#1079 R08 双 SDK 收口与 R00/R01 freshness
 

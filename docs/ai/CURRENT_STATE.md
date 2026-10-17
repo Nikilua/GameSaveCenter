@@ -1,14 +1,14 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-18 最新检查点：R08 app-motion 夹具修正待 CI
+## 2026-10-18 最新检查点：be314f59 已推送，双 SDK CI 运行中
 
-当前 `main` HEAD `7b5ea6b1861ca813495fc12d06fe9893bc541e48` 的 Actions [#1080/run `39061487759`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39061487759)：SDK10.0.401 job `117480203788` 已失败，SDK8.0.423 job `117480204000` 仍在运行。SDK10 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`；WPF 隔离在 `[61/125]` 的 `R08MotionHotChangeBehaviorTests` 失败。完整日志报告其活动动画启动正例为 `opacity=1; loaded=True`，预期的动画时钟不存在。之后的 TextServices COM 异常位于测试断言之后。Diagnostics artifact `12112485036`，518,122 bytes，SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d`。
+当前 main HEAD 为代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523（固定应用动效测试时长）。新代码 Actions #1081/run 39063179675 的 SDK10.0.401 job 117485212614、SDK8.0.423 job 117485212854 均在 Release 编译/测试，尚无终态。前一提交 7b5ea6b1 的 #1080/run 39061487759 中，SDK10 job 117480203788 已失败，SDK8 job 117480204000 记录时进入扩展包生成、仍运行。SDK10 build 0/0、Core 125/125、Worker 362/362；WPF 第 [61/125] 类 R08MotionHotChangeBehaviorTests 报告活动动画启动正例 opacity=1; loaded=True、无 clock。TextServices COM 异常在断言后。完整日志已读取，diagnostics artifact 12112485036（518,122 bytes，SHA-256 31a556e3a6ab9777f4512b13bd73d649ebe5b058a71a27a67d9eb38c6bc9d）。
 
-根因范围已缩到测试夹具对 `Show()` 后资源时长刷新的依赖；本地修改只涉及 `R08MotionHotChangeBehaviorTests`，改用已存在的 `GscMotion.AnimateEntrance` 显式时长重载。生产代码与动画策略不变，测试仍断言动画启动、关闭时钟清理、恢复后不重播。本机 SDK9.0.302 / VSTest17.14.1 Release 构建与该行为类 `1/1` 通过，source validation 和 diff check 通过；TRX 与源/DLL哈希见 [R08 CI 证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/README.md)。SDK9 不能替代 SDK8/SDK10 CI。
+修正只改 R08MotionHotChangeBehaviorTests 夹具：改用既有 GscMotion.AnimateEntrance 显式时长重载；生产代码、动画策略及启动/取消/恢复负例断言不变。be314f59 已推送。本机 SDK 9.0.302 / VSTest 17.14.1 的 Playnite net462 / tests net472 Release 定向构建与该行为类 1/1 通过，source validation、diff check 通过；TRX、源/DLL 哈希见 R08 CI 证据。SDK9 不替代 CI SDK8/SDK10。
 
-已提交的 R00/R01 baseline 仍绑定 `de8bdbb`，当前已提交 HEAD `7b5ea6b1` freshness 为 `14/14 fresh / 0 stale / 0 matched source paths`。本次测试夹具文件不在 R00/R01 这两条被登记的 GscMotion/UiFinesseFoundation 源路径内。
+R00/R01 freshness 在 be314f59 为 14 fresh / 0 stale / 0 matched source paths，package identity not-provided；只复核已登记源码范围。用户外机 R09 日志期待 Chrome.BorderThickness=2，实际为 1；该测试断言来自旧测试形态 3f7d0b30。f13b9e05 起测试与共享模板将内容 Chrome 保持 1 DIP、错误轮廓移至独立 ValidationStroke 2 DIP，并加入恢复检查；当前 main 使用新形态，且 #1079 精确 CI 的 WPF 125/125（含 R09）通过。外机日志与当前测试源码形态不一致，旧/混合测试产物是可能性，但缺少同次 checkout、TRX、test/plugin DLL/PDB 身份，不能断言根因或称外机已解决。
 
-下一步提交并推送这项夹具修正，检查新 run 的 SDK8/SDK10 两 lane 至终态；同时等待 #1080 SDK8 job 结束，不能把当前混合/运行状态记为成功。外机 R09 的 `1/2` 仍是独立真实失败，缺同次源码、TRX、test/plugin DLL/PDB 身份，CI 结果不覆盖。真实 Playnite、物理 DPI/跨屏、OS UIA/IME/读屏、最终呈现帧、ETW/宿主性能仍未验。
+下一步：等待 #1080 SDK8 和 #1081 SDK8/SDK10 所有 job 至终态，失败时读取完整日志；不得把运行中的 CI 报为阶段完成。外机 R09 1/2 仍是独立真实失败，CI 不覆盖外机实际安装。真实 Playnite、物理 DPI/跨屏、OS UIA/IME/读屏、最终呈现帧、ETW/宿主性能仍未验。
 
 ## 2026-10-18 最新检查点：#1077 双 SDK 终态与 Q/R 准入复核
 

@@ -1,8 +1,8 @@
-## 2026-10-18 R08 app-motion 夹具 SDK10 失败复核
+## 2026-10-18 R08 app-motion 夹具修正与外机 R09 版本差异
 
-- 文档提交 `7b5ea6b1861ca813495fc12d06fe9893bc541e48` 对应 Actions #1080/run `39061487759`：SDK10.0.401 job `117480203788` Release `0/0`、Core `125/125`、Worker `362/362`；WPF 隔离第 `61/125` 个 `R08MotionHotChangeBehaviorTests` 失败，启动正例为 Opacity `1`、window loaded、无动画 clock。TextServices COM teardown 在断言后。SDK10 diagnostics `12112485036` / SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d`；完整日志与 TRX 目录见 [R08 evidence](evidence/CI-R08-SYSTEM-MOTION-20261018/README.md)。
-- 该夹具原在 `Show()` 后改写主题资源时长再启动默认动画。现仅将该行为用例改为既有 `GscMotion` 显式时长重载；实际 clock startup、关闭时钟清理、重新启用不重播检查都保留。SDK `9.0.302` / VSTest `17.14.1` Release 定向构建与类 `1/1`、source validation、diff check 通过；TRX/源/DLL hashes 见 evidence README。不是生产动画策略变更。
-- 记录时 SDK8.0.423 job `117480204000` 仍运行，#1080 未终态；修正提交需独立双 SDK CI 通过后才能关闭。CI/本机均不等价真实 Playnite、OS UIA/IME、物理 DPI/跨屏或最终呈现。外机 R09 `1/2` 缺同次构建身份，独立保留。
+- 修正代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 已推送；新 Actions #1081/run 39063179675 的 SDK10 job 117485212614、SDK8 job 117485212854 记录时均在编译/测试，不能记成功。前一 #1080/run 39061487759 的 SDK10 job 117480203788 已失败，SDK8 job 117480204000 仍在扩展包生成。SDK10 失败为 R08 动画启动正例无 clock（opacity 1、loaded）；build 0/0、Core 125/125、Worker 362/362。diagnostics artifact 12112485036 / SHA-256 31a556e3a6ab9777f4512b13bd73d649ebe5b058a71a27a67d9eb38c6bc9d；完整日志和 TRX 见 R08 evidence README。
+- 夹具改为既有 GscMotion 显式一秒时长重载；启动、关闭时钟、恢复不重播断言保留，无生产策略变化。本机 SDK 9.0.302 / VSTest 17.14.1 Release 定向构建与行为类 1/1、source validation、diff check 通过，TRX/源/DLL hashes 见 evidence README。R00/R01 freshness 对 be314f59 为 14 fresh / 0 stale / 0 matched source paths，package identity not-provided。
+- 外机 R09 日志中旧测试把 Chrome.BorderThickness 期望为 2 DIP；历史提交 3f7d0b30 即该测试形态。提交 f13b9e05 起共享 TextBox 模板和测试分离为内容 Chrome 1 DIP、独立错误 ValidationStroke 2 DIP，并校验恢复状态；当前 main 为新形态，#1079 精确 CI WPF 125/125 通过。这个差异说明日志测试形态旧于当前源码，提示可能运行旧/混合 test 产物或 checkout，但同次 checkout、TRX、test/plugin DLL/PDB 仍缺，根因未知，不把外机失败标成解决。真实 Playnite、物理 DPI/跨屏/最终呈现、OS UIA/IME、ETW/宿主性能仍未验。
 
 ## 2026-10-18 #1079 双 SDK 终态与 R00/R01 freshness 校正
 

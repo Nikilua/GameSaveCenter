@@ -11189,3 +11189,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 夹具修改删除 `Show()` 后对 `GscMotionNormal/Slow` 资源的改写，通过现有显式时长重载启动已跟踪动画；原动画启动正例、关闭时钟和恢复不重播断言保留。没有动生产策略或放宽断言。
 - 本机从仓库父目录选择 SDK `9.0.302` / VSTest `17.14.1`，完整构建 Playnite `net462` / tests `net472` Release，目标行为类 `1/1` 通过。源文件 SHA-256 `EE03FED5B0528AE2629260E4FAD7F62401694E702E59E6C3658E6CFEAE4351FA`，test DLL SHA-256 `4A0F4BFF94EAFCEC152DEB31F1DBEDD82F138C96B878CDEA3F89217316EB8015`，脱敏 TRX `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/tests/R08MotionHotChangeBehaviorTests-sdk9302-local.trx` SHA-256 `BC1793C693679F8D17813488A014503ACE9A260E938639DD477EBFCE87AE6799`（7,356 bytes）。Source validation 与 `git diff --check` 通过；SDK9 不能替代 CI。
 - 记录时 #1080 SDK8.0.423 job `117480204000` 尚在“编译与测试”，run 未终态；不得把这次阶段记为 CI 成功。下一步提交/推送夹具修正并跟踪新 Actions 双 SDK，再补 #1080 SDK8 终态事实。用户外机 R09 失败独立且同次 test/plugin/PDB identity 仍缺；#1079 success 不能覆盖它。
+
+## 2026-10-18 R08 夹具修正推送与外机 R09 断言差异
+
+- 代码 commit be314f59c6a3a0b93d890cf39ee4c6c26ff2c523（固定应用动效测试时长）已推送 main。新 Actions #1081/run 39063179675：SDK10 job 117485212614、SDK8 job 117485212854 记录时都在编译/测试。前一 #1080 的 SDK10 job 117480203788 失败于 R08 motion active-clock 正例；SDK8 job 117480204000 已进扩展包生成但仍运行。状态未终态，失败日志已读取，细节见 R08 evidence README。
+- 对 be314f59 运行 freshness 检查：14 fresh / 0 stale / 0 matched source paths，package identity not-provided。R08 测试夹具路径未命中 R00/R01 已登记源码路径。
+- R09 外机日志的 Expected Thickness 2 / Actual 1 对应旧的 Chrome 边框断言形态：历史提交 3f7d0b30 断言错误态 Chrome=2 DIP；f13b9e05 起共享模板与测试改为 Chrome=1 DIP、独立 ValidationStroke=2 DIP，并补状态恢复检查。当前 main 是后者；#1079 两 SDK 全量 WPF 125/125（含 R09）通过。日志源码形态差异提示旧/混合测试 DLL 或 checkout 的可能性，但缺同次 checkout、TRX、test/plugin DLL/PDB，不能确认根因或称外机已修复。
+- R08 本机 SDK 9.0.302 / VSTest 17.14.1 Release 定向行为类 1/1 和 source validation、diff check 通过；SDK9 不替代 SDK8/SDK10 CI。真实 Playnite、外机实际加载程序集及物理呈现仍未验；下一步跟踪 #1080 SDK8、#1081 两 SDK 至终态。

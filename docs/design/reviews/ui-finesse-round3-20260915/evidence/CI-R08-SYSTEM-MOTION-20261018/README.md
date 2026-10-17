@@ -46,3 +46,13 @@ R00-03 与 R01-04 继续标记“已满足（受控 WPF 行为）”。真实 Pl
 本机 SDK `9.0.302` / VSTest `17.14.1`，Playnite `net462` / tests `net472` Release 定向构建及 `R08MotionHotChangeBehaviorTests` `1/1` 通过；source validation 与 diff check 通过。源文件 SHA-256 `EE03FED5B0528AE2629260E4FAD7F62401694E702E59E6C3658E6CFEAE4351FA`，测试 DLL SHA-256 `4A0F4BFF94EAFCEC152DEB31F1DBEDD82F138C96B878CDEA3F89217316EB8015`。脱敏 TRX：[R08MotionHotChangeBehaviorTests-sdk9302-local.trx](tests/R08MotionHotChangeBehaviorTests-sdk9302-local.trx)，SHA-256 `BC1793C693679F8D17813488A014503ACE9A260E938639DD477EBFCE87AE6799`，7,356 bytes。本机 SDK9 不替代 GitHub SDK8/SDK10。
 
 记录时 SDK8.0.423 job `117480204000` 仍在编译与测试阶段，#1080 不是终态，不能据此结束 follow-up。修正提交还需独立 CI 双 SDK 复核。当前真实 Playnite、OS 输入/UIA、物理 DPI/跨屏、最终呈现帧和宿主性能仍未验。
+
+## be314f59 修正提交与 R09 外机断言版本差异
+
+R08 夹具修正已提交并推送至 main：代码 SHA be314f59c6a3a0b93d890cf39ee4c6c26ff2c523，提交说明“固定应用动效测试时长”。Actions #1081/run 39063179675 的 SDK8 job 117485212854 和 SDK10 job 117485212614 记录时仍在编译/测试；不据此报告 CI 通过。前一 #1080 SDK8 job 117480204000 记录时在生成扩展包，SDK10 job 117480203788 已失败。状态以 GitHub run 为准。
+
+修正提交对应的 R00/R01 freshness 脚本输出为 14 fresh / 0 stale / 0 matched source paths，package identity not-provided。测试夹具修改没有命中已登记的 R00/R01 source paths。
+
+用户外机 R09 文本报告 Chrome.BorderThickness 期望 2,2,2,2、实际 1,1,1,1。仓库历史显示：初始测试提交 3f7d0b3027c968620e412d38394c69e060fc0564 直接断言错误态 Chrome 为 2 DIP；提交 f13b9e05de0cf502ac61e97b0fbad8433b339b3f 同步修改生产模板和测试，将内容 Chrome 固定为 1 DIP、独立错误 ValidationStroke 设为 2 DIP，并新增恢复状态检查。当前 main 用后一形态，#1079 精确代码 WPF 全量 125/125 通过。外机日志测试形态与当前源码不同，可能涉及旧/混合测试程序集或 checkout；没有同次源码、TRX、test/plugin DLL/PDB 身份前，无法确定根因或确认外机已修复。
+
+本机 SDK9 1/1、GitHub #1079 全量测试和当前代码行为分别是有限证据，均不证明用户外机实际加载了同一 test/plugin 产物。真实 Playnite、外机程序集身份与呈现仍待验证。

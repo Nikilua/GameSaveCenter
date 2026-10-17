@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 当前交接：R08 app-motion 夹具修正待 CI
+## 2026-10-18 当前交接：be314f59 R08 夹具修正待双 SDK CI
 
-Actions #1080/run `39061487759` 的 SDK10.0.401 job `117480203788` 已失败，SDK8.0.423 job `117480204000` 仍在运行。失败发生于 WPF `R08MotionHotChangeBehaviorTests` 的活动动画启动正例（`opacity=1; loaded=True`，无动画时钟），不是 Core/Worker 或 Release build；SDK10 build 0/0、Core125、Worker362。完整日志和 diagnostics artifact `12112485036` 的 SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d` 已保存于 R08 证据 README。
+代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 已推送到 main。Actions #1081/run 39063179675 的 SDK10 job 117485212614 与 SDK8 job 117485212854 记录时均在编译/测试，不能报告成功。前一 run #1080 的 SDK10 job 117480203788 已失败；SDK8 job 117480204000 仍在生成扩展包。SDK10 失败为 R08 动效启动正例无活动 clock，完整日志及 diagnostics artifact 12112485036（SHA-256 31a556e3a6ab9777f4512b13bd73d649ebe5b058a71a27a67d9eb38c6bc9d）已在 R08 证据 README。
 
-本机只改该行为测试夹具，使用 `GscMotion` 显式时长重载，保留动画启动、取消清钟、重启不重播断言。本机 SDK9.0.302 / VSTest17.14.1 Release 定向 `1/1`、source validation、diff check 通过；TRX 与源/DLL身份见证据 README。下一步：commit/push该修正，追踪新双 SDK Actions；另外等 #1080 SDK8 job 终态后记录，不将 SDK10失败或SDK8运行中混写成成功。
+修正只改行为测试夹具，使用 GscMotion 显式时长重载并保留启动、取消清钟、重新启用不重播断言。本机 SDK 9.0.302 / VSTest 17.14.1 Release 定向 1/1、source validation、diff check 通过；证据和身份见 README。下一步跟踪 #1080 SDK8 与 #1081 双 SDK 到终态，失败则读取日志。
 
-外机 R09 `1/2` 仍是独立未定位真实失败；同次 checkout、TRX、test/plugin DLL/PDB 身份缺失，不要求用户重跑。真实 Playnite、OS UIA/IME、物理 DPI/跨屏/呈现、ETW/宿主性能仍未验。
+外机 R09 日志的 2 DIP 断言与当前源码不一致：历史测试 3f7d0b30 直接检查 Chrome 2 DIP；提交 f13b9e05 起改为 Chrome 1 DIP + 独立 ValidationStroke 2 DIP。旧/混合测试产物是可能性，缺同次 checkout、TRX、test/plugin DLL/PDB 身份，不能确认根因。#1079 WPF 125 类 CI 通过不等于外机安装成功。真实 Playnite、OS UIA/IME、物理 DPI/跨屏/呈现、ETW/宿主性能仍未验。
 
 ## 2026-10-18 #1077 终态与下一准入条件
 
