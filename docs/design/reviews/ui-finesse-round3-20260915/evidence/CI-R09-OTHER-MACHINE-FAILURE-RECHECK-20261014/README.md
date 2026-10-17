@@ -241,3 +241,10 @@ Actions #1054/run `38944728502` 对文档 HEAD `797482168a74360b41bfaa609cf48d50
 外机真实失败仍未改变：`1/2`、Expected `Thickness(2)` / Actual `Thickness(1)`、stack line151。当前 main 同名源 line151 是 Brush 颜色比较，厚度 `2 DIP` 在 line154；旧 Chrome `2 DIP` 断言在历史 `3f7d0b30`。所以日志不能来自“当前测试源 + 与它匹配的行映射”，但具体是旧 checkout、测试 DLL、PDB、插件资源还是脚本输入仍未知。
 
 本机 SDK `8.0.423` 的完整 `scripts/build.ps1` 在 R05 Tooltip 用例失败，因为系统 `GetCursorPos` 无法读取初始光标位置；当时 WPF 隔离进度为 `50/116`，故没有本机完整 WPF 通过证据。随后从同一隔离构建输出独立运行 R09 类为 `2/2`，这只是定向同源复跑，不能覆盖外机失败或完整门禁未跑完。详见[2026-10-17 Worker/R09 本机复核](../CI-WORKER-CANCEL-CALLBACK-RECHECK-20261017/README.md)。
+## 2026-10-17 用户重复日志与 #1067 CI 结果
+
+用户本轮再次粘贴的文本 SHA-256 为 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`，与先前附件相同，并未提供新的机器或程序集身份。日志仍报告外机 Core `125/125`、Worker `357/357`、R09 `1/2`、总 exit `1`；厚度断言 Expected `2,2,2,2` / Actual `1,1,1,1` 位于旧测试形态的 line151，当前 main 同名源 line151 是错误色断言、Chrome 1 DIP 在 line152、独立 ValidationStroke 2 DIP 在 line154。具体外机 checkout、dirty paths、测试 DLL/PDB、插件 DLL 和资源身份仍未知。没有放宽断言或更改生产焦点样式。
+
+针对可选 PDB 元数据被锁/不可读时不能阻断诊断的提交 `26de12257748075e024c61972da16e87fd4ddfce`，Actions #1067/run `39006921277` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/39006921277)。SDK8.0.423 job `117321161387` 与 SDK10.0.401 job `117321161211` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类全通过。SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73.pext` 和 artifacts 上传成功。Artifact IDs：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。
+
+此 CI 结果只证明 `26de1225` 在 GitHub Windows runner 的两种 SDK 输入下成功；本机、本次精确提交 CI、另一台机器的实际安装是三份独立证据。没有获得外机本次失败目录中的 `summary.json`、R09 TRX/console、test DLL/PDB 与 plugin DLL 身份，故仍不能判定外机根因或声称它已修复。下一步：若该同次诊断 artifact 后续可用，先比对身份，无需重跑；否则等新的可复现问题或环境前置变化，再复扫 R23-08 并选择依赖满足的小批。真实 Playnite、物理 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能仍未验。

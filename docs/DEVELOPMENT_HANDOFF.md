@@ -1,8 +1,16 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-17 R09 诊断脚本补强待 CI
+## 2026-10-17 #1067 终态与本机/CI/外机验证边界
 
-在 `350cdcb1` 基线上，`build-diagnostics.ps1` 尽力把每个 DLL 的相邻 PDB SHA-256/大小/脱敏路径写入 `summary.json`；缺失时为 `null`，被锁/不可读时记录错误类型且保留构建结果。首版提交 `8a895807` 对应 Actions #1066/run `39003320618` 已终态成功：SDK8.0.423 与 SDK10.0.401 均 Release build 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类通过；SDK8 Render QA 通过、静态审查 30 XAML 为 0 errors/27 warnings/177 info，扩展包和诊断 artifact 上传成功。本机诊断自测覆盖可读、独占锁定、缺失 PDB 及 JSON 路径脱敏；当前“锁定时不阻断诊断”的后续修订未包含在 #1066 中，必须另行取得双 SDK CI 终态。本机自测不是完整应用构建或外机验证。外机 R09 `1/2` 根因仍未知；新元数据只能帮助后续取得同次诊断时比对，不能代替缺失的 `20261014T052440239Z-3fc9f5f1` 文件。
+诊断保护代码提交 `26de12257748075e024c61972da16e87fd4ddfce` 对应 Actions #1067/run `39006921277` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/39006921277)。SDK8.0.423 job `117321161387`、SDK10.0.401 job `117321161211` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（含 R09）。SDK8 Render QA `0 PROBLEM`；WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`；`0.6.73.pext`、包和诊断 artifacts 生成/上传成功。Artifact IDs：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。
+
+本机 build、精确提交的 GitHub runner、用户另一台电脑的实际安装/构建是不同证据。#1067 只证明该 commit 在两种 CI SDK/runner 输入下通过，不代表外机成功。用户本轮再次粘贴的 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与已有日志相同；外机 `R09 1/2` 和整体 exit `1` 仍是真实失败。line151 的 `Thickness(2/1)` 不匹配当前 main 同名源 line151 的 Brush 断言；外机同次 `summary.json`、test DLL/PDB 与 plugin DLL identity 仍未获得，故保持未定位，不改焦点样式或断言。详见[R09 外机复核证据](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+
+R00/R01 freshness 对 `26de1225` 为 `14 fresh / 0 stale / 0 matched source paths`、2,963 paths、package identity `not-provided`；只检查登记源码路径。R23-08 最新复扫未发现新的依赖已满足 Q/R 产品代码项。下一步在外机身份材料、新可复现问题或环境前置变化时重做准入并挑依赖满足的小批。真实 Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能仍待验。
+
+## 2026-10-17 R09 诊断脚本补强（#1067 已收口）
+
+在 `350cdcb1` 基线上，`build-diagnostics.ps1` 尽力把每个 DLL 的相邻 PDB SHA-256/大小/脱敏路径写入 `summary.json`；缺失时为 `null`，被锁/不可读时记录错误类型且保留构建结果。首版提交 `8a895807` 对应 Actions #1066/run `39003320618` 已终态成功。后续提交 `26de1225` 为锁定/不可读 PDB 增加非阻断保护，并由本机合成自测及 #1067/run `39006921277` 双 SDK CI 收口。此工具只增加诊断字段，不定位或覆盖外机真实 R09 失败；仍需同次 summary/TRX/DLL/PDB/plugin 身份。缺失的 `20261014T052440239Z-3fc9f5f1` 文件仍未取得。
 
 ## 2026-10-17 最新 CI 状态与待验输入
 

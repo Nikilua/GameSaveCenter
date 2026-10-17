@@ -1,8 +1,16 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：#1067 与用户外机 R09
+
+提交 `26de12257748075e024c61972da16e87fd4ddfce` 对应 Actions #1067/run `39006921277` 已整体终态成功。SDK8.0.423 job `117321161387` 和 SDK10.0.401 job `117321161211` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过；SDK8 Render QA、静态审查、扩展包和诊断上传成功。Artifacts：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。这证明精确提交在 GitHub runner 上通过，不等于本机或用户外机通过。
+
+用户再次粘贴的外机 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前相同；其真实结果仍为 R09 `1/2`、整体 exit `1`。当前 main 源 line151 与该日志的旧厚度断言不匹配，但外机本次 `summary.json`、test DLL/PDB 和 plugin DLL identity 仍缺，具体输入错配未证实。不得以本机或 CI 通过覆盖该失败；不改焦点样式或放宽断言。
+
+R00/R01 freshness 对 `26de1225` 为 `14 fresh / 0 stale / 0 matched source paths`、2,963 比较路径，package identity `not-provided`。Round3/R23-08 最新准入没有新的依赖已满足产品代码项；下一准入点是外机同次身份材料、新可复现问题或环境前置变化。Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能仍未验。
+
 ## 2026-10-17 R09 外机身份诊断补强
 
-在 `scripts/build-diagnostics.ps1` 中，为每个已识别 DLL 增加同目录 PDB 的可选 identity 记录（文件名、脱敏路径、SHA-256、大小；缺失时为 `null`，被锁/不可读时记录错误类型而不阻断摘要），使失败栈行号可与实际符号文件做同次比较。`Test-BuildDiagnostics.ps1` 用合成 DLL/PDB 验证可读、锁定、缺失三态、JSON 序列化和路径脱敏；本机诊断自测、`scripts/validate-source.py`、`git diff --check` 通过。首版 `8a895807` 的 Actions #1066/run `39003320618` 已双 SDK 终态成功（SDK8.0.423/SDK10.0.401；Core125、Worker362、WPF隔离125类；SDK8 Render QA、静态审查、包与诊断上传均通过）。当前锁定/不可读 PDB 的非阻断保护是后续修订，不在 #1066 输入中，需自己提交并追踪新 CI。该工作只补诊断能力，不诊断或覆盖用户外机真实 R09 失败；仍需其同次 summary/TRX/DLL/PDB/plugin 身份。完整 solution/WPF、外机输入仍未验。Round3 准入不因此新增或完成产品任务。
+在 `scripts/build-diagnostics.ps1` 中，为每个已识别 DLL 增加同目录 PDB 的可选 identity 记录（文件名、脱敏路径、SHA-256、大小；缺失时为 `null`，被锁/不可读时记录错误类型而不阻断摘要），使失败栈行号可与实际符号文件做同次比较。`Test-BuildDiagnostics.ps1` 用合成 DLL/PDB 验证可读、锁定、缺失三态、JSON 序列化和路径脱敏；本机诊断自测、`scripts/validate-source.py`、`git diff --check` 通过。首版 `8a895807` 的 Actions #1066/run `39003320618` 已双 SDK 终态成功；后续 `26de1225` 的锁定/不可读保护已由 #1067/run `39006921277` 双 SDK 终态验证。该工作只补诊断能力，不诊断或覆盖用户外机真实 R09 失败；仍需其同次 summary/TRX/DLL/PDB/plugin 身份。CI runner 成功不证明外机成功。Round3 准入不因此新增或完成产品任务。
 
 ## 2026-10-17 最新续跑补记：#1064 与 R09 外机证据范围
 

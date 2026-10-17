@@ -2031,6 +2031,12 @@
 ## 2026-10-17 R09 外机诊断 PDB 身份补强
 
 - #1065/run `38999877162` 对文档提交 `350cdcb1` 已整体终态成功：SDK10.0.401 与 SDK8.0.423 Windows Server 2025 runner 均通过，Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类（含 R09）；SDK8 的 Render QA、静态审查、扩展包与诊断 artifact 上传也成功。这只覆盖精确 CI 输入，不覆盖外机报告。
-- 首版 PDB identity 提交 `8a895807` 的 Actions #1066/run `39003320618` 也已双 SDK 终态成功：两边 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类；SDK8 Render QA、静态审查、包与诊断上传通过。当前 PDB 锁定/不可读非阻断保护是后续工作，尚无该修改的 CI 结论。
-- 针对外机 R09 缺少 PDB 行映射身份的证据缺口，`build-diagnostics.ps1` 在 DLL 清单中新增相邻 PDB 的 SHA-256、大小、脱敏路径及缺失值；PDB 被锁/不可读时记录错误类型，不让可选采集中断构建诊断。`Test-BuildDiagnostics.ps1` 合成可读/锁定/缺失三态验证 JSON 序列化与路径脱敏。本机诊断自测、source validation、`git diff --check` 通过；未执行完整 solution/WPF build，后续修订尚待双 SDK Actions。
+- 首版 PDB identity 提交 `8a895807` 的 Actions #1066/run `39003320618` 也已双 SDK 终态成功：两边 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类；SDK8 Render QA、静态审查、包与诊断上传通过。当时尚未完成的 PDB 锁定/不可读非阻断保护随后进入 `26de1225`，由 #1067 双 SDK 终态验证。
+- 针对外机 R09 缺少 PDB 行映射身份的证据缺口，`build-diagnostics.ps1` 在 DLL 清单中新增相邻 PDB 的 SHA-256、大小、脱敏路径及缺失值；PDB 被锁/不可读时记录错误类型，不让可选采集中断构建诊断。`Test-BuildDiagnostics.ps1` 合成可读/锁定/缺失三态验证 JSON 序列化与路径脱敏。本机诊断自测、source validation、`git diff --check` 通过；后续锁定保护已由 #1067 双 SDK CI 验证。
 - 没有改焦点样式、R09 断言或已跟踪 R/Q 任务状态。用户外机 R09 `1/2` 仍是真实失败，精确同次目录及 test/plugin DLL/PDB 身份仍未取得；下一项是提交并追踪当前改动的 CI，之后若获得失败目录便直接比较身份，不要求重跑。R23-08 准入仍无新独立产品代码项；Playnite host、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验证。
+## 2026-10-17 #1067 PDB 读取保护双 SDK CI 收口
+
+- 提交 `26de12257748075e024c61972da16e87fd4ddfce` 对应 Actions #1067/run `39006921277` 已整体终态 success。SDK10.0.401 job `117321161211` 和 SDK8.0.423 job `117321161387` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（含 R09）。完整 job logs 已读取。
+- SDK8 另 `render-qa OK`、WPF 静态审查扫描30个 XAML 得 `0 errors / 27 warnings / 177 info`，生成 `0.6.73.pext` 并成功上传。Artifacts：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。此提交仅补可选 PDB 元数据读取异常保护，没有修改 R09 模板或放宽测试。
+- 用户本轮重复粘贴 R09 外机文本，SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前相同；它仍报告真实 `1/2` 和总体 exit `1`，没有附加同次 `summary.json`、TRX、test DLL/PDB 或 plugin DLL 身份。CI R09 通过只适用于这条 runner 的提交输入，不证明另一台机器成功；根因保持未定位。
+- R00/R01 freshness 对 `26de1225` 为 `14 fresh / 0 stale / 0 matched source paths`、2,963 比较路径，package identity `not-provided`，仅为登记源码范围。Round2/3 与 R23-08 当前扫描未发现新的依赖已满足 Q/R 产品代码项。下一准入点是外机同次身份材料、新可复现问题或前置环境变化。Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现、ETW/宿主性能仍未验。

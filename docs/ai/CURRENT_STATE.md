@@ -1,10 +1,18 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 最新检查点：#1067 双 SDK CI 收口
+
+本次诊断保护代码提交为 `26de12257748075e024c61972da16e87fd4ddfce`。其 Actions #1067/run `39006921277` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/39006921277)。SDK8.0.423 job `117321161387`、SDK10.0.401 job `117321161211` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（含 R09）。SDK8 另 Render QA `0 PROBLEM`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73.pext` 生成和上传成功。Artifacts：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。
+
+这条提交在 GitHub Windows Server 2025 runner 上通过，不能证明用户另一台机器的安装或构建通过。本轮重复粘贴的 R09 日志 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前相同；外机 `1/2`、总体 exit `1` 仍是真实失败。其 line151 `Thickness(2/1)` 与当前 main 同名源 line151 Brush 断言不对应，外机的 `summary.json`、测试源、test DLL/PDB、plugin DLL 身份仍未取得。未改 R09 生产样式或放宽断言。
+
+R00/R01 freshness 对 `26de1225` 为 `14 fresh / 0 stale / 0 matched source paths`，2,963 个比较路径，package identity `not-provided`；仅为登记源路径 freshness。当前复扫 Round2/3 与 R23-08 没发现新的依赖已满足 Q/R 产品代码项。下一可执行动作是在新外机身份材料、新可复现问题或前置环境变化时重做准入并选小批；未验真实 Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能。
+
 ## 2026-10-17 R09 诊断元数据补强
 
 Actions #1065/run `38999877162` 对提交 `350cdcb1eb672e952991666fa77add9a207445df` 已整体终态成功：SDK10.0.401 与 SDK8.0.423 Windows Server 2025 job 均通过；Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过（含 R09），SDK8 Render QA、静态审查、扩展包与诊断上传也成功。这证明该提交在两个干净 runner 的输入通过，不代表用户外机问题已解决。
 
-首版 PDB 身份记录提交 `8a895807e4232cfaf8d350cc419172e7b865a30b` 对应 Actions #1066/run `39003320618` 双 SDK 终态成功，SDK8.0.423 与 SDK10.0.401 均 Release build 0 warning/0 error、Core 125/125、Worker 362/362、WPF 隔离 125 类通过；SDK8 Render QA、静态审查、扩展包与诊断上传成功。当前未提交的后续修订增加不可读/锁定 PDB 的非阻断处理，并已由本机合成诊断自测、source validation 验证；它不在 #1066 的提交输入内，必须单独跟踪新 CI，不能用前一提交的成功代替。该工具验证不是完整 solution/WPF 构建。外机 R09 `1/2` 仍未取得同次 summary/TRX/DLL/PDB 身份，未改生产样式或断言。
+首版 PDB 身份记录提交 `8a895807e4232cfaf8d350cc419172e7b865a30b` 对应 Actions #1066/run `39003320618` 双 SDK 终态成功。后续提交 `26de1225` 为可选 PDB 哈希读取补不可读/锁定保护：采集失败记录 unavailable reason，不覆盖原构建/测试退出语义；本机合成自测覆盖可读、锁定、缺失。该后续修改对应的 #1067/run `39006921277` 现已双 SDK 终态成功，详细结果见本页最新检查点。该工具只补诊断能力，不是用户外机成功证明；R09 外机 `1/2` 仍缺同次 summary/TRX/DLL/PDB 身份。
 
 ## 2026-10-17 补充：#1064 终态与外机诊断 ZIP 范围
 
@@ -82,9 +90,9 @@ Actions #1065/run `38999877162` 对提交 `350cdcb1eb672e952991666fa77add9a20744
 
 用户明确要求持续推进 Round3，不需要逐阶段确认。外机 R09 身份材料待有条件时再核对；缺少的外机输入不阻断其他任务。
 
-1. 提交并推送 R13-07 小批，跟踪 #1044 及新 run 的 SDK8.0.423/SDK10.0.401 两 lane 到终态；失败先获取完整日志再判断。
-2. R13-07 CI 收口后推进 R13-08 失败分类帮助，优先复用当前 Core/Worker/DTO。
-3. R00/R01 freshness 是本轮 14 条/0 需重跑/0 源路径命中；继续按目标文件的行为条件与公共门禁推进后续 Q/R，不把 freshness 当宿主验证。
+1. #1067 的 PDB 锁定/不可读诊断保护已通过双 SDK Actions；文档收口后跟踪新 run 至终态。
+2. R23-08 最近复扫未发现新的依赖已满足 Q/R 产品代码项；不为凑进度新建功能。
+3. 收到外机身份材料、新的可复现问题或环境前置变化后，重新做准入并按小批推进；外机故障与本机/CI 结果分账。
 
 本轮本机仅 SDK9.0.302 / VSTest17.14.1，测试只证明明确 SHA 的隔离程序集所含项目范围；不是完整 solution build，也不替代 SDK8/SDK10 CI。真实 Playnite/package-host/通知、真实网络与远端、OS UIA/Narrator/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍未验。Demo 原目录不可用；视觉沿用已恢复生产基线。
 
