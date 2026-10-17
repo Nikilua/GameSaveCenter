@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：#1074 双 SDK CI 终态与外机边界
+
+文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions #1074/run `39039120707` 已终态成功：SDK8.0.423 job `117414822833` 与 SDK10.0.401 job `117414822607` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过；SDK8 Render QA、30-XAML 静态审查与包生成/上传成功。Artifacts：package `12104192973` / SHA-256 `0900b6fe7ec432716e9fc6da9a23c1c194c8dec34069c0d3b5f49848bf5b5098`，SDK8 diagnostics `12104078221` / `b7ad514628db695804530d5e49a2b02e95e91ccdd10128a5c57264aef79ec8d9`，SDK10 diagnostics `12104125808` / `7d6274eac8e4e096d13a3b074a018af3cd05c0e5e9fb3cd4c5bb3034b42b5bc6`。
+
+这是文档提交的 CI 结果，不是产品源码变更，也不重算 R00/R01 freshness；代码基线保持 `8fc980f`。CI 成功不能推出外机 R09 成功：外机 `1/2` 失败缺同次 checkout、summary/TRX 和测试/插件 DLL/PDB 身份，根因未确认。Round2/3 复扫没有新且依赖满足的 Q/R 代码缺口；等同次身份材料、新复现或前置变化后再准入。真实 Playnite/CEF、OS 输入/UIA/IME/读屏、物理屏幕与呈现帧、ETW/宿主性能仍待验。
+
 ## 2026-10-17 最新续跑：#1073 双 SDK 终态与 Q/R 准入
 
 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 的 Actions #1073/run `39027064950` 已终态成功；SDK8.0.423 job `117380045515` 与 SDK10.0.401 job `117380045495` 均成功。SDK8 完成 Release build/test、Render QA、WPF 静态审查、扩展包与诊断上传；SDK10 完成 Release build/test 和 diagnostics 上传。该提交仅验证文档，R00/R01 freshness 继续绑定代码基线 `8fc980f`。

@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 最新检查点：#1074 双 SDK CI 终态
+
+文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions [#1074/run `39039120707`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39039120707) 已终态成功。SDK8.0.423 job `117414822833` 与 SDK10.0.401 job `117414822607` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过。SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，并成功生成/上传扩展包与诊断。
+
+Artifacts：扩展包 `12104192973`（90,314,298 bytes，SHA-256 `0900b6fe7ec432716e9fc6da9a23c1c194c8dec34069c0d3b5f49848bf5b5098`）；SDK8 diagnostics `12104078221`（1,627,488 bytes，SHA-256 `b7ad514628db695804530d5e49a2b02e95e91ccdd10128a5c57264aef79ec8d9`）；SDK10 diagnostics `12104125808`（774,476 bytes，SHA-256 `7d6274eac8e4e096d13a3b074a018af3cd05c0e5e9fb3cd4c5bb3034b42b5bc6`）。此提交只更新文档，R00/R01 freshness 仍绑定代码基线 `8fc980f`；CI 结果只证明该提交和对应 runner，不代表外机验证。
+
+Round2 `208/208`、Round3 `192/192` 与 R23-08 复扫没有发现新的依赖已满足且有明确代码缺口的 Q/R 项。外机 R09 `1/2` 仍是未定位的真实失败，缺同次 checkout、summary/TRX、test/plugin DLL/PDB 身份；不改当前 UI 或弱化断言。下一步在有同次身份材料、新复现或环境前置变化时重新准入；物理输入、真实 Playnite/CEF、OS UIA/IME/读屏、物理跨屏/呈现帧和获准系统跟踪仍未验证。
+
 ## 2026-10-17 最新检查点：#1073 双 SDK 终态与 R23-08 准入复扫
 
 当前 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions [#1073/run `39027064950`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39027064950) 已终态成功。SDK8.0.423 job `117380045515` 和 SDK10.0.401 job `117380045495` 均成功；SDK8 完成源码结构检查、诊断自测、Release build/test、Render QA、WPF 静态审查、扩展包及 artifact 上传，SDK10 完成 Release build/test 与 diagnostics 上传。该提交相对代码基线 `8fc980f` 只含文档，不重新绑定 R00/R01 freshness。

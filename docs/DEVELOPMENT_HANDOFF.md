@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 #1074 双 SDK 终态与下一准入点
+
+文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions [#1074/run `39039120707`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39039120707) 已终态成功：SDK8.0.423 / SDK10.0.401 两 job 均完成 Release build/test，Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过；SDK8 Render QA 和 WPF 静态审查通过，扩展包及双 SDK 诊断已上传。Artifacts 和 SHA 见 `docs/ai/WORKLOG.md` 的 #1074 记录。该文档提交没有改源码，R00/R01 代码 freshness 基线仍为 `8fc980f`。
+
+外机 R09 `1/2` 仍是独立未定位失败；没有同次 checkout、summary/TRX、test/plugin DLL/PDB 身份，不能用本机或 CI 结果覆盖。Round2/3 与 R23-08 最新复扫没有新的依赖满足代码缺口。下一可执行准入条件是外机同次身份材料、新的复现问题或相关环境前置变化；不要要求重跑。真实 Playnite/CEF、OS UIA/IME/读屏、物理 DPI/跨屏、最终呈现帧及获准 ETW/宿主性能仍未验证。
+
 ## 2026-10-17 #1073 终态与当前准入复扫
 
 当前 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions [#1073/run `39027064950`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39027064950) 已终态成功。SDK8.0.423 job `117380045515` 与 SDK10.0.401 job `117380045495` 均成功；SDK8 完成 Release build/test、Render QA、静态审查与扩展包，SDK10 完成 Release build/test。该提交仅验证文档；R00/R01 freshness 仍绑定代码基线 `8fc980f`。

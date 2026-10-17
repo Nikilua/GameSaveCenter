@@ -1,3 +1,9 @@
+## 2026-10-17 #1074 双 SDK CI 终态
+
+- 文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions [#1074/run `39039120707`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39039120707) 已终态成功。SDK8.0.423 job `117414822833`、SDK10.0.401 job `117414822607` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过。SDK8 `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包及诊断上传成功。
+- Artifacts：package `12104192973`（90,314,298 bytes，SHA-256 `0900b6fe7ec432716e9fc6da9a23c1c194c8dec34069c0d3b5f49848bf5b5098`）；SDK8 diagnostics `12104078221`（1,627,488 bytes，`b7ad514628db695804530d5e49a2b02e95e91ccdd10128a5c57264aef79ec8d9`）；SDK10 diagnostics `12104125808`（774,476 bytes，`7d6274eac8e4e096d13a3b074a018af3cd05c0e5e9fb3cd4c5bb3034b42b5bc6`）。
+- 本提交仅记录 #1074 结果，不含产品源码改动；R00/R01 freshness 仍绑定 `8fc980f`。Round2 `208/208`、Round3 `192/192` 和 R23-08 复扫未发现新的依赖满足 Q/R 代码缺口。外机 R09 `1/2` 保持未定位，CI 通过不能代替外机验证；缺同次 checkout、summary/TRX、test/plugin DLL/PDB 身份。没有新 artifacts/.tmp；用户遗留 TRX/TestResults 未动。
+
 ## 2026-10-17 #1073 双 SDK 终态与当前准入复扫
 
 - 当前 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions #1073/run `39027064950` 已终态成功；SDK8.0.423 job `117380045515` 与 SDK10.0.401 job `117380045495` 均成功。SDK8 完成 Release build/test、Render QA、WPF 静态审查、扩展包与诊断上传；SDK10 完成 Release build/test 与 diagnostics 上传。本提交仅更新文档，不改源码；R00/R01 freshness 仍绑定 `8fc980f`，不因文档提交重跑。

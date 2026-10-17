@@ -1,3 +1,9 @@
+## 2026-10-17 #1074 双 SDK 文档提交 CI 终态
+
+- 文档提交 `68c178968e535774d7acb68c8c01a67319c20804` 对应 Actions [#1074/run `39039120707`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39039120707) 已终态成功。SDK8.0.423 job `117414822833` 与 SDK10.0.401 job `117414822607` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite/WPF 隔离 `125/125` 通过。SDK8 `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包和诊断上传成功。
+- Artifacts：package `12104192973`（90,314,298 bytes，SHA-256 `0900b6fe7ec432716e9fc6da9a23c1c194c8dec34069c0d3b5f49848bf5b5098`）；SDK8 diagnostics `12104078221`（1,627,488 bytes，`b7ad514628db695804530d5e49a2b02e95e91ccdd10128a5c57264aef79ec8d9`）；SDK10 diagnostics `12104125808`（774,476 bytes，`7d6274eac8e4e096d13a3b074a018af3cd05c0e5e9fb3cd4c5bb3034b42b5bc6`）。
+- 本阶段只同步 CI 事实，不动产品代码。R00/R01 freshness 继续绑定 `8fc980f`；Round2 `208/208`、Round3 `192/192` 与 R23-08 复扫没有新的依赖满足 Q/R 代码缺口。外机 R09 `1/2` 仍未定位，当前 CI 不能代表外机成功。下一准入条件：同次外机身份材料、新复现或环境前置变化；真实 Playnite/CEF、OS 输入/UIA/IME/读屏、物理跨屏/呈现帧、ETW/宿主性能保持未验。
+
 ## 2026-10-17 #1073 双 SDK CI 与 Q/R 重新准入复核
 
 - `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions [#1073/run `39027064950`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39027064950) 已整体终态 success。SDK8.0.423 job `117380045515`、SDK10.0.401 job `117380045495` 均成功；SDK8 完成源码结构/诊断自测、Release build/test、Render QA、静态审查、扩展包及 artifact 上传，SDK10 完成 Release build/test 与 diagnostics 上传。
