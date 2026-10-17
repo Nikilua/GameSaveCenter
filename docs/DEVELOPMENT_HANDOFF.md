@@ -1,6 +1,16 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 当前交接：#1083 双 SDK 终态，外机 R09 未定位
+## 2026-10-18 最新交接：#1084 双 SDK 终态，R00-03 已归因，外机 R09 仍未定位
+
+当前分支 `main`、HEAD `4cde34ce465a99787ba3ef969a57bacf9e606550`。Actions [#1084/run `39070369704`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39070369704) 已终态 success：SDK8.0.423 job `117506536858` 与 SDK10.0.401 job `117506537093` 的 Release build/test、Core `125/125`、Worker `362/362`、WPF 隔离 `125/125` 均通过。`ProductionShellChromeSourceTests` 在第 `17/125` 类，两 lane 完成全组；SDK8 Render QA、XAML 静态审查和扩展包生成/上传成功。本次文档提交不改产品代码，最近产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。Artifacts ID/SHA 见 CURRENT_STATE 与 WORKLOG。
+
+已取得并检查 #919/#920 完整 SDK10.0.401 job log：两者同一测试类均 `11/13`，失败是活动侧栏过渡夹具未固定系统动效偏好；`48b78b3b` 增加测试实例级系统策略输入与矩阵用例，未改变生产策略。#1056 和当前 #1084 双 SDK 全量 WPF 均通过，R00-03 受控条件保持已满足；历史失败保留原样。
+
+用户附加的外机日志 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与旧文本相同，仍为 `20261016T052146719Z-d9d99ac4` 的 R09 `1/2` 失败。Thickness 第151行不对应当前源码的 Brush 第151行；无同次 summary/TRX/test DLL/PDB/plugin DLL 身份，不能定根因或称外机已成功。用户暂时没有诊断 ZIP，依其要求不等待，外机问题保持独立未解。
+
+R00/R01 freshness 对产品代码 `be314f59` 为 `14 fresh / 0 stale / 0 matched source paths`。重新读质量审查、第三轮账本与 R23-08 后没有新的依赖已满足且有明确代码缺口的 Q/R 小批。下一可执行条件是外机身份材料、新复现/明确范围，或相关宿主、设备、权限前置变化；总目标未完成。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/呈现帧、ETW/宿主性能仍未验。保留工作树既有未跟踪 TRX/TestResults，不生成临时产物。
+
+## 2026-10-18 历史交接：#1083 双 SDK 终态，外机 R09 未定位
 
 本轮开始时分支为 `main`、HEAD 为文档提交 `0bde982d49700465498bd0732651e21c10cebe43`；它对应 Actions #1083/run `39066560072` 已终态成功，SDK8.0.423 job `117495353783` 与 SDK10.0.401 job `117495353928` 均成功。Release build/test、Core 125/125、Worker 362/362、Playnite WPF 125/125 通过；SDK8 Render QA、静态审查和扩展包上传也成功。产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。这些 runner 结果不代表外机 checkout 或实际加载的程序集。
 

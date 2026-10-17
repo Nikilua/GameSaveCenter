@@ -1,6 +1,16 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 最新检查点：#1083 双 SDK 成功，外机附件未更新
+## 2026-10-18 最新：#1084 双 SDK 通过，R00-03 历史失败已归因
+
+当前 `main` HEAD `4cde34ce465a99787ba3ef969a57bacf9e606550` 的 Actions #1084/run `39070369704` 已终态成功：SDK8.0.423 job `117506536858`、SDK10.0.401 job `117506537093` 均 Release build/test 成功，Core 125/125、Worker 362/362、Playnite WPF 125/125；ProductionShellChromeSourceTests 在 17/125，两 lane 全部完成。该结果验证 runner 上精确 main，不代表另一台机器加载了相同源码/程序集或 Playnite 呈现。
+
+#919 与 #920 的 SDK10.0.401 完整日志都显示旧动画正例夹具只固定应用开关，没有固定 Windows 系统动效偏好，因而系统合法关闭动画时“活动时钟”断言失败。`48b78b3b` 为测试加入实例级系统输入和组合策略矩阵；#1056 和当前 main #1084 两 SDK 全量 WPF 通过，R00-03 受控条件可维持已满足。日志和证据路径见 CURRENT_STATE 与 R00-03 evidence README。
+
+用户本轮附加的外机文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 已确认与旧文本相同，诊断 ID 仍为 `20261016T052146719Z-d9d99ac4`、R09 `1/2`。第151行 Thickness 2/1 与当前源第151行 Brush 断言不一致；无同次 summary/TRX/test/plugin DLL/PDB identity，具体根因仍未知。始终分开陈述本机、GitHub runner、外机结果，不以任何一方覆盖另一方。
+
+R00/R01 对产品代码 `be314f59` 的 freshness 为 `14 fresh / 0 stale / 0 matched source paths`。Round2/3 与 R23-08 重扫没有新的依赖满足且有具体实现缺口的 Q/R 项；总目标仍 active。新输入到达时先核对身份；否则等新复现、明确范围或宿主/设备/权限前置有可观察变化，再重新准入。既有用户 TRX/TestResults 未动，没有新 artifacts/.tmp。
+
+## 2026-10-18 历史检查点：#1083 双 SDK 成功，外机附件未更新
 
 本轮更新前的 `main` 文档 HEAD `0bde982d49700465498bd0732651e21c10cebe43` 对应 Actions #1083/run `39066560072` 已终态成功。SDK8.0.423 job `117495353783` 与 SDK10.0.401 job `117495353928` 均通过；两边 Release build/test、Core `125/125`、Worker `362/362`、Playnite WPF `125/125` 通过。SDK8 Render QA、30-XAML 静态审查与扩展包上传成功。代码基线仍是 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。这些结果验证精确提交在对应 runner，不代表用户另一台机器成功。
 

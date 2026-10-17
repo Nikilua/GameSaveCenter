@@ -16,7 +16,7 @@
 
 ### 2026-10-17 R00-03 历史 SDK10 失败复核与外机输入校正
 
-GitHub 连接现可读取 #919/run `36675309812` job `109758888214` 与 #920/run `36677346317` job `109765067482` 完整日志。两份日志均使用 SDK `10.0.401`，在 `ProductionShellChromeSourceTests` 的活动侧栏过渡前提处各失败 2/13；系统偏好可合法关闭动效，而测试只固定了应用开关。`48b78b3b` 的实例级系统动效测试 seam、策略矩阵与默认系统偏好测试校正了输入；当前 main 是该提交后代，#1056 SDK8/SDK10 全量 WPF 门禁均成功。详情见 [R00-03 失败复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
+GitHub 连接现可读取 #919/run `36675309812` job `109758888214` 与 #920/run `36677346317` job `109765067482` 完整日志。两份日志均使用 SDK `10.0.401`，在 `ProductionShellChromeSourceTests` 的活动侧栏过渡前提处各失败 2/13；系统偏好可合法关闭动效，而测试只固定了应用开关。`48b78b3b` 的实例级系统动效测试 seam、策略矩阵与默认系统偏好测试校正了输入；修正后 #1056 SDK8/SDK10 全量 WPF 均通过，当前 main #1084/run `39070369704` 的 SDK8.0.423 与 SDK10.0.401 两 lane 也各完成 125/125 WPF 类（目标类是第17类）。历史失败仍保留，不作为当前 main 失败。详情见 [R00-03 失败复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
 
 外机 R09 附件 SHA `F3DDDC...4514` 与已记录文本相同，诊断 ID 未变；`Thickness(2/1)` 与第151行是旧测试形态，不能当成当前 main 新复跑。若新失败 artifact 到手，再按其 summary/TRX/DLL/PDB 身份定位，不用本机或 GitHub runner 的通过覆盖外机失败。
 

@@ -1,6 +1,18 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-18 最新检查点：#1083 双 SDK 终态、外机失败附件仍为旧运行
+## 2026-10-18 最新检查点：#1084 main 双 SDK 通过，R00-03 历史失败已校正
+
+当前 `main` HEAD `4cde34ce465a99787ba3ef969a57bacf9e606550` 对应 Actions [#1084/run `39070369704`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39070369704)，最新 main run 已终态成功。SDK8.0.423 job `117506536858`、SDK10.0.401 job `117506537093` 均完成 Release build/test、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；`ProductionShellChromeSourceTests` 是第 `17/125` 个类，两 lane 均继续跑完全部 WPF 类。SDK8 Render QA OK、30 个 XAML 静态审查 `0 errors / 27 warnings / 177 info`，扩展包及诊断上传成功。本次提交只同步文档，产品代码基线仍为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。
+
+#1084 artifacts：SDK8 diagnostics `12116415577`（1,626,364 bytes，SHA-256 `83b999ac9277dcbcda82f21fdc8c4a467a6db52842a1bc2cb28a96e1bcef1a72`）；SDK10 diagnostics `12115273490`（775,040 bytes，`775b37f4b6ad9ad19a207f42b830e38ad12ce0c7b7d6947b1130b39b689e2efe`）；preview package `12115659313`（90,314,066 bytes，`fe884f8526bf6ebf03639b142b9bada40c4aba728cea34a771163765618273cc`）。
+
+本轮重新核对 #919/run `36675309812` 与 #920/run `36677346317` 的完整日志：两者使用 SDK `10.0.401`，都因活动侧栏动画测试未固定系统动效偏好而在 `ProductionShellChromeSourceTests` 各失败 `2/13`。`48b78b3b` 加入实例级系统动效输入、策略矩阵和默认系统偏好测试；后续 #1056 与当前 main #1084 的 SDK8/SDK10 WPF 全组均通过。R00-03 受控完成、清钟与终态证据可维持“已满足”，历史 run 仍如实保留失败；真实 Playnite 生命周期、物理呈现和宿主性能未验。详情见 Round3 R00-03 证据包。
+
+本轮收到的外机 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与先前附件完全相同，仍指向 `20261016T052146719Z-d9d99ac4` 的真实 `1/2` 失败，不是新复跑。堆栈第151行的 Thickness 2/1 与当前测试源第151行 Brush 断言不匹配；缺同次 `summary.json`、TRX、test/plugin DLL/PDB identity，根因仍未定位。#1084、#1056 和本机结果只证明各自构建输入，不能代表外机成功。
+
+R00/R01 freshness 对产品代码 SHA `be314f59` 仍为 `14 fresh / 0 stale / 0 matched source paths`、package identity `not-provided`。本次重核 Round2/3、R23-08 后仍无新的依赖已满足且有具体缺口的 Q/R 产品代码项。下一项可执行工作是新外机身份材料到达时直接比对，或出现新复现、明确范围、宿主/设备/权限前置变化后重做准入；总目标未完成。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。
+
+## 2026-10-18 历史检查点：#1083 双 SDK 终态、外机失败附件仍为旧运行
 
 本轮更新前 `main` 的 HEAD 为文档提交 `0bde982d49700465498bd0732651e21c10cebe43`，产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。该 HEAD 对应 Actions [#1083/run `39066560072`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39066560072) 已终态成功：SDK8.0.423 job `117495353783`、SDK10.0.401 job `117495353928` 均成功。两个 lane 对该提交 Release build/test 通过；各 WPF 隔离组 `125/125`，Core `125/125`、Worker `362/362`。SDK8 另 Render QA OK、30 XAML 静态审查 0 errors / 27 warnings / 177 info，扩展包和诊断上传成功。该结果证明对应 GitHub runner 对这些提交通过，不证明另一台电脑的 checkout、加载程序集或 Playnite 呈现。
 
