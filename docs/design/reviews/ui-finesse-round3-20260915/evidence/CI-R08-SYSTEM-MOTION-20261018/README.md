@@ -23,6 +23,16 @@ SDK8 诊断 artifact：ID `12109790764`，609,140 bytes，SHA-256 `edb89c8b722ba
 
 - 本机 Windows：SDK `9.0.302`、VSTest `17.14.1`。修改后的 Playnite `net462` / tests `net472` Release 相关项目编译，目标行为测试 `1/1` 通过。
 - `python scripts/validate-source.py .` 通过，`git diff --check` 通过。无视觉变化，不适用截图验收；未启动真实 Playnite，未改 Windows 动效设置。
-- SDK9 本机结果不替代 SDK8.0.423 或 SDK10.0.401。提交推送后的新 Actions run 必须两 lane 终态后才能完成阶段；若再失败，先读取完整 job log 与该次 TRX，再判断。
+- 本机 SDK9 结果不替代 SDK8.0.423 或 SDK10.0.401。阶段提交后的新 Actions 结果见下节。
 
 未验证边界：真实 Playnite 系统偏好通知、系统高对比度环境中的用户界面行为、OS UIA/读屏、物理 DPI/跨屏、最终呈现帧和宿主性能。外机 R09 同次 checkout/test DLL/PDB/plugin DLL 身份继续缺失，与本次 R08 CI 结果无关。
+
+## #1079 双 SDK 收口与 R00/R01 freshness
+
+代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 对应 [Actions #1079/run `39057273073`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39057273073)，两条 job 均终态成功。完整日志确认 SDK8.0.423 job `117467706465` 和 SDK10.0.401 job `117467706337` 都运行了完整 Playnite WPF 隔离清单 `125/125`；其中 `UiFinesseFoundationTests` 是第 `121/125` 类，随后 R08 system-motion 类也运行，最终均报告全部 Playnite 测试成功。两 lane Release build 均 `0 warning / 0 error`，Core `125/125`、Worker `362/362`。
+
+SDK8 另完成 `render-qa OK`、WPF 静态审查（30 XAML、0 errors、27 warnings、177 info）、扩展包生成和上传。Artifacts：SDK10 diagnostics `12110214194`（775,251 bytes，SHA-256 `fa95154a4b93daedd4d57f26547a0b02959bb53c40c222a2e0f3b803d992dc2e`）；SDK8 diagnostics `12110638801`（1,628,891 bytes，SHA-256 `2fb041e67a8e5f5b39caedcea4adabf9cddd65e7d5aba1e3057fa07b7839141b`）；SDK8 package `12111535634`（90,314,202 bytes，SHA-256 `dd45ec28d148d19202a80acdb1b917f59ade012c24dca0a7ec621b34eec59381`）。
+
+R00/R01 freshness 初扫的 14 条记录中，只有 R00-03 与 R01-04 命中 `GscMotion.cs`。#1079 全量隔离测试在两种 SDK lane 中覆盖这两个记录共用的 `UiFinesseFoundationTests`，因此将这两条登记证据更新到精确代码提交 `de8bdbb`；复核脚本在更新后的基线返回 `14 fresh / 0 stale / 0 matched source paths`，package identity `not-provided`。这只刷新已登记源码范围，不代表包安装或真实 Playnite 呈现。完整 job log 已读取；CI 通过只说明相同提交在对应 GitHub runner 输入下通过。
+
+R00-03 与 R01-04 继续标记“已满足（受控 WPF 行为）”。真实 Playnite 生命周期/系统偏好通知、OS UIA/读屏、物理 DPI/跨屏、最终呈现帧和宿主性能未验。用户外机 R09 的 `1/2` 失败仍是独立真实问题，当前同次 checkout、TRX、test/plugin DLL/PDB 身份仍缺；本次 CI 不覆盖该失败。

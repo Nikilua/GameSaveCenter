@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 R08 system-motion CI 失败夹具修正
+## 2026-10-18 当前交接：#1079 已双 SDK 收口
 
-待提交代码基于 `main` `5241add2fd93ca04ca65b95242a783239eb7e65e`。Actions [#1078/run `39054894478`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39054894478)：SDK8.0.423 build、Core125、Worker362 成功，WPF 隔离在 R08 system-motion 启动断言失败；SDK10.0.401 的 build、Core125、Worker362、WPF125类全部成功。完整日志确认错误发生在 `GscMotion.AnimateEntrance` 测试启动检查，不是 COM shutdown 噪声。artifact ID/digest 及具体断言见 `docs/ai/WORKLOG.md` 与 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。
+`main` 代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 对应 Actions [#1079/run `39057273073`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39057273073) 两 SDK 均终态成功。SDK8.0.423 job `117467706465`、SDK10.0.401 job `117467706337` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；包含 `UiFinesseFoundationTests` 和修复后的 R08 system-motion 类。SDK8 Render QA、WPF 静态审查、扩展包及 diagnostics 上传成功。完整 job 和 artifact 细节见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。
 
-本次在共享 `GscMotion` 增加显式时长重载：生产双参数入口仍从元素资源解析时长，测试 fixture 用显式一秒时长启动相同 tracked entrance 时钟。其后仍实际调用 SettingsView 系统参数回调，检查关闭时钟被清除及恢复后无重播。SDK9.0.302/VSTest17.14.1 本机 Release 定向 `1/1`、source validation、diff check 通过。工作树代码与日志已更新，下一步提交中文 commit 并 push `main`，跟进新 Actions 的 SDK8/SDK10 lane 到终态；失败时读取完整日志后再按证据处理。本机 SDK9 不能替代这两个 CI SDK。
+R00/R01 freshness 的命中项 R00-03、R01-04 已由 #1079 全量行为测试覆盖并更新到该精确代码 SHA；freshness `14/14`、package identity `not-provided`。本轮从仓库目录执行的本机 `dotnet test` 因 `global.json` 要求 SDK8.0.423（本机只有 SDK9.0.302）未启动；这不是测试失败，CI 双 SDK 结果单独记录。
 
-R09 外机失败仍有独立未验边界：当前没有同次 `summary.json`/TRX/test DLL/PDB/plugin DLL，不能把当前 CI 的 R09 通过或其他工作站结果当作外机问题已解决。真实 Playnite、物理跨屏/呈现、OS UIA/IME、ETW/宿主性能也未验证。
+下一步：新复现/明确功能范围或相关宿主、设备、权限前置变化时重做 Q/R 准入；若外机提供同次身份材料，先进行 source/test/plugin/PDB 比对，不要求用户重跑。外机 R09 `1/2` 仍是真实未定位失败；当前 CI 不覆盖。真实 Playnite、OS UIA/IME、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。总目标仍进行中。
 
 ## 2026-10-18 #1077 终态与下一准入条件
 

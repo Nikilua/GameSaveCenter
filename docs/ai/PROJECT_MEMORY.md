@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 最新：#1079 R08 双 SDK 收口与 R00/R01 freshness
+
+代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 对应 Actions #1079/run `39057273073` 已整体终态成功：SDK8.0.423 job `117467706465` 与 SDK10.0.401 job `117467706337` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、WPF 隔离 `125/125`，包含 `UiFinesseFoundationTests` 与 R08 system-motion 行为类。SDK8 另 Render QA、XAML 静态审查及扩展包生成/上传成功。完整 artifact IDs/SHA 见 Round3 的 `evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。
+
+R00/R01 初扫命中 R00-03、R01-04 的 `GscMotion.cs`；已由该精确 SHA 的两 lane 全量 WPF 运行复核并更新证据基线，freshness `14/14`，package identity `not-provided`。本机仓库 global.json 要求 SDK8.0.423 而本机只有 SDK9.0.302，本轮本机 dotnet 命令未启动；SDK9 不是 CI 替代。外机 R09 `1/2` 仍是真实独立失败，当前同次 checkout/TRX/test/plugin DLL/PDB 身份缺失。下一步是在新复现、明确范围或宿主/设备/权限前置变化时重新扫描任务准入；取得外机身份材料时先比对，不要求重跑。总目标未完成。
+
 ## 2026-10-18 R08 system-motion 测试时长隔离
 
 Actions #1078 的 SDK8.0.423 在 `R08SystemMotionHotChangeBehaviorTests` 启动动画的前置断言失败（Opacity=1、无动画时钟），SDK10.0.401 全量成功，本机 SDK9.0.302 定向 `1/1` 成功。不要从这些结果推断已证实的操作系统根因；针对该行为测试，用 `GscMotion.AnimateEntrance` 的显式时长重载控制要被取消的时钟，保证继续经过生产的注册、取消和归一化路径。默认双参数入口仍从当前控件资源读取时长。新提交必须追踪 SDK8 与 SDK10.0.401 Actions 到终态；SDK9 不能替代二者。

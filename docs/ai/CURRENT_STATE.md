@@ -1,10 +1,14 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-18 最新检查点：R08 system-motion CI 夹具修正待双 SDK 复核
+## 2026-10-18 最新检查点：#1079 双 SDK 成功与 R00/R01 freshness
 
-当前 `main` HEAD `5241add2fd93ca04ca65b95242a783239eb7e65e` 的 Actions [#1078/run `39054894478`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39054894478) 为混合终态：SDK8.0.423 job `117460748837` Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`，在第 `66/125` 个 WPF 隔离类 `R08SystemMotionHotChangeBehaviorTests` 失败；完整日志显示测试第58行启动入场动画时 Opacity 为1且无动画时钟。后续 TextServices COM 异常在测试退出时出现，不能当作断言根因。SDK10.0.401 job `117460748676` 全部构建与测试成功（Core125、Worker362、WPF隔离125类）。SDK8/SDK10 诊断 artifact 分别为 `12109790764`（609,140 bytes，SHA-256 `edb89c8b722baeaff502cc113df97f7f252bc4a4f44ed67ba66b862caf18373f`）与 `12109567791`（776,313 bytes，SHA-256 `26d32ae0062ff13e94801656e0694c8b7e61b35a7f6914cc298720c52abc33de`）。
+`main` 代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 的 Actions [#1079/run `39057273073`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39057273073) 已双 SDK 终态成功。SDK8.0.423 job `117467706465`、SDK10.0.401 job `117467706337` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；两 lane 实际运行 `UiFinesseFoundationTests`（第 `121/125` 类）及 R08 system-motion 类并全部成功。SDK8 另 Render QA、30-XAML 静态审查及扩展包生成/上传成功。Artifact IDs 与 digest 见 [R08 CI 证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/README.md)。
 
-为隔离此行为测试对窗口主题资源刷新时序的依赖，`GscMotion.AnimateEntrance` 保留原始资源查找入口并增加显式时长重载；R08 system-motion 夹具使用一秒时长，仍验证动画实际启动、系统策略关闭后时钟清理和恢复后不重播。SDK `9.0.302` / VSTest `17.14.1` 本机目标 Release 测试 `1/1` 通过；`scripts/validate-source.py`、`git diff --check` 通过。当前两个代码文件与阶段文档待提交；新提交 CI 尚待确认，SDK9 结果不替代 SDK8.0.423/SDK10.0.401。未改视觉、命令或真实系统偏好；未运行真实 Playnite。
+R00/R01 freshness 初扫只命中 R00-03、R01-04 的 `GscMotion.cs`。全量 WPF CI 已覆盖 `UiFinesseFoundationTests`，因此把这两项 sourceCommit/evidence 更新到 `de8bdbb`；更新后为 `14 fresh / 0 stale / 0 matched source paths`，package identity `not-provided`。这只反映登记源码范围，不代表 package-host 或真实 Playnite 验收。
+
+本机仓库 `global.json` 固定 SDK `8.0.423`，但本机只安装 SDK `9.0.302`，所以本轮从仓库目录启动的 `dotnet test` 未进入测试；此前 SDK9 定向 R08 `1/1` 仅作补充，不能替代 #1079 的 SDK8/SDK10 runner 结果。CI 成功只说明精确提交在对应 GitHub runner 输入下通过，不证明用户外机安装成功。
+
+Round2/3 `208/192` 的最新准入复核未发现新的依赖已满足代码缺口。外机 R09 `1/2` 仍是独立真实失败，缺同次 checkout、summary/TRX 与 test/plugin DLL/PDB 身份；不要求用户重跑，拿到材料先做身份比较。下一可执行准入条件是新复现、明确功能范围或相关宿主/设备/权限前置变化。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。
 
 ## 2026-10-18 最新检查点：#1077 双 SDK 终态与 Q/R 准入复核
 

@@ -21,8 +21,8 @@
     },
     {
       "id": "R00-03",
-      "evidence": "evidence/R00-R01-CURRENT-MAIN-RECHECK-20261015/README.md",
-      "sourceCommit": "88b8eb57f13750b4f0a43c1f94a7dc1d59ae6acc",
+      "evidence": "evidence/CI-R08-SYSTEM-MOTION-20261018/README.md",
+      "sourceCommit": "de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
@@ -163,8 +163,8 @@
     },
     {
       "id": "R01-04",
-      "evidence": "evidence/R00-R01-CURRENT-RECHECK-20261012/README.md",
-      "sourceCommit": "f13b9e05de0cf502ac61e97b0fbad8433b339b3f",
+      "evidence": "evidence/CI-R08-SYSTEM-MOTION-20261018/README.md",
+      "sourceCommit": "de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec",
       "packageCommit": null,
       "runtimeKind": "offscreen",
       "scopes": [
