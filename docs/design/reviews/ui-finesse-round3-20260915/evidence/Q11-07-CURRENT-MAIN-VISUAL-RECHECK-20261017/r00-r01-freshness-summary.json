@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceCommit": "57023ac849689dab0d2b999737e0213042a1eebc",
+  "sourceCommit": "6a909cb329d88af3da83a78446050a83d24ef246",
   "changedPaths": [
     "tests/GameSaveCenter.Playnite.Tests/R08PageSwitchBehaviorTests.cs"
   ],

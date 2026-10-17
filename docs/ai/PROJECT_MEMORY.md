@@ -6,7 +6,7 @@ Q11-07 在 main 基线 `57023ac849689dab0d2b999737e0213042a1eebc` 上只扩展 `
 
 四个生产缓存页面在往返后 Light/Dark 共8张 `RenderTargetBitmap` 离屏图，96 DPI；不是 Playnite/桌面屏幕/有效物理 DPI/呈现帧。行为断言检查筛选、Tab `2/3/5`、任务 ID `q11-07-task-55`、滚动 `18 DIP`、缓存与引用保持、刷新命令0次。选中任务不在当前截图视口，截图不声称其可见。只用合成 DTO 和 state-only fixture，未触业务查询/真实存档/Worker/云端。
 
-Actions #1061/run `38986851956` 的 SDK10.0.401 job `117260206331` 已成功，日志末尾确认 Release build/test 和125个隔离 WPF 类通过；SDK8.0.423 job `117260206566` 最近仍运行于编译/测试。它是旧提交 `57023ac`，不含本轮 Q11-07 测试改动，不能作为本轮代码 CI 证据。未终态不能签收。另一台机器 R09 `1/2` 仍是独立真实失败；缺同次 `summary.json`、HEAD、源码、test DLL/PDB、plugin DLL 身份，本机/CI都不能覆盖它。下一步完成小批文档与校验，中文 commit/push 后跟踪新 Actions，再按 R23-08 准入挑下一依赖满足的 Q/R 任务。
+Actions #1061/run `38986851956` 已在旧提交 `57023ac` 上双 lane 终态成功，但不含本轮测试改动。Q11-07 精确提交 `6a909cb329d88af3da83a78446050a83d24ef246` 对应 #1062/run `38988908489` 也已双 lane 终态成功：SDK10.0.401 job `117266648758` 和 SDK8.0.423 job `117266649011` 均 Release `0/0`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类全通过（R09 与 R08 page-switch 类包含在内）；SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、包与诊断 artifacts 上传成功。#1062 artifacts: SDK10 diagnostics `12084772763`，SDK8 diagnostics `12086060974`，package `12085647890`。这仅证明 CI runner 对该精确提交通过，不覆盖用户另一台电脑的真实 R09 `1/2` 失败。其日志目录在当前工作区不存在，已向用户请求方便时附加同次目录 ZIP；不等文件，继续主线。Q11-07 的宿主、有效物理 DPI/最终屏幕呈现仍待验；R23-08 最新准入复扫无可独立实施 Q/R 代码项，下一可执行条件为取得外机身份 artifact、新的可复现问题或环境前置变化。
 
 ## 2026-10-17 最新续跑：Q11-06 双 SDK CI 收口与 R00/R01 freshness
 
