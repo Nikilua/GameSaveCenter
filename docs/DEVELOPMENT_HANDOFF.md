@@ -6,6 +6,8 @@ Q11-07 代码与证据提交为 `6a909cb329d88af3da83a78446050a83d24ef246`；只
 
 #1061/run `38986851956`（旧提交 `57023ac`）与 #1062/run `38988908489`（精确代码提交 `6a909cb`）均已终态成功。#1062 SDK10.0.401 job `117266648758`、SDK8.0.423 job `117266649011` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类通过；SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包/诊断 artifacts 成功上传。详细日志、artifact ID 和准确边界见 Q11-07 证据包。
 
+文档收口提交 `ee8d6aa8d32da2861167d9d49b28e1f912063a8b` 的 #1063/run `38992929963` 也终态成功：SDK10 job `117279033715` 与 SDK8 job `117279033559` 均通过；SDK8 再次完成 Render QA、静态审查及扩展包上传。#1063 不改变 Q11-07 代码基线。
+
 8 张图是 96-DPI `RenderTargetBitmap`，不是桌面截图、Playnite host、物理 DPI 或 presented frame。Task 选中项不在当前 18-DIP 截图视口；选中 ID 由测试行为断言验证。外机 R09 `1/2` 仍是真实独立失败；缺该次 `summary.json`、HEAD、源和 test/plugin DLL/PDB 身份。本机和 CI 都不能代替它。
 
 阶段状态：自动行为、受控双主题图像与精确提交双 SDK CI 均通过；Q11-07 最终仍因真实 Playnite、有效物理 DPI和用户屏幕呈现待验而未完成。Round2/3 与 R23-08 复扫未发现新的独立代码缺口；下一步在外机 R09 同次诊断 ZIP 可用、新复现问题或环境前置变化时重新准入。用户外机 R09 `1/2` 是独立真实失败，日志目录当前工作区不存在；已请用户方便时附加该目录，主线不等待。未访问真实存档/媒体/云端。

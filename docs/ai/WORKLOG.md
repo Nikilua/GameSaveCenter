@@ -11068,3 +11068,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 人工检查 Task Light/Dark、Media Dark、Save Light、Maintenance Dark。任务选中行不在18 DIP截图视口，仅由行为断言验证；不声称可见。没有连接 Worker/Playnite profile/真实服务。真实 Playnite、有效物理DPI、屏幕最终呈现、OS UIA/输入仍待验。
 - R00/R01 freshness `14 fresh / 0 stale / 0 matched source paths`、2,949 paths、package identity `not-provided`，只核对登记源码范围。Q11-07 精确提交 `6a909cb329d88af3da83a78446050a83d24ef246` 对应 #1062/run `38988908489` 已终态成功：SDK10.0.401 job `117266648758`、SDK8.0.423 job `117266649011` 均 Release `0/0`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类通过，含 `R08PageSwitchBehaviorTests` 与 `R09FocusOutlineBehaviorTests`。SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成与 artifact 上传成功。artifacts：SDK10 diagnostics `12084772763`、SDK8 diagnostics `12086060974`、package `12085647890`。旧提交 #1061/run `38986851956` 也已终态双 lane 成功，不包含 Q11-07 测试源码。
 - 两 lane 通过只证明对应 GitHub runner 的精确提交输入。外机 R09 `1/2` 仍是独立真实失败；其诊断路径在当前工作区不存在，已请用户方便时附加同次 diagnostics ZIP。没有放宽 R09 断言或修改生产样式。下一准入点是外机身份材料、新复现问题或环境前置变化；真实 Playnite/物理 DPI/屏幕呈现仍待验。
+
+## 2026-10-17 Q11-07 文档收口 #1063 CI
+
+- 文档提交 `ee8d6aa8d32da2861167d9d49b28e1f912063a8b` 对应 #1063/run `38992929963` 终态成功。SDK10.0.401 job `117279033715` 与 SDK8.0.423 job `117279033559` 均 Release `0/0`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类通过，含 R08 page-switch 与 R09 focus-outline 类；SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73` package/诊断 artifacts 上传成功。artifacts：SDK10 diagnostics `12086666105`、SDK8 diagnostics `12086958423`、package `12086774849`。
+- 这是文档提交的 CI 复核；Q11-07 精确代码提交 `6a909cb` 的主验证仍是 #1062/run `38988908489`。外机 R09 真实失败仍未定位，不能由 runner 通过覆盖。
