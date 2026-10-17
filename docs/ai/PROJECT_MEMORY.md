@@ -1,6 +1,16 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 最新：#1084 双 SDK 通过，R00-03 历史失败已归因
+## 2026-10-18 最新：#1085 双 SDK 成功，R00-03 已完成 runner 复核
+
+`main` 文档提交 `188c8a749a1f3ae2dfb26281b8cfeb931a2d9f30` 的 Actions #1085/run `39074063525` 已整体 success：SDK8.0.423 job `117517460740`、SDK10.0.401 job `117517460855` 各自 Release build/test 成功，Core `125/125`、Worker `362/362`、Playnite WPF `125/125`；目标 ProductionShellChromeSourceTests 在 `17/125`，两 lane 跑完余下全部类。SDK8 Render QA、静态审查、扩展包通过。日志与 artifacts 在 CURRENT_STATE / WORKLOG。
+
+旧 #919/#920 SDK10.0.401 失败根因是活动侧栏过渡夹具只控制应用动效开关，未控制合法关闭动画的 Windows 系统偏好。`48b78b3b` 为夹具增加实例级系统输入、策略矩阵与系统默认值测试；#1056、#1084、#1085 双 SDK 全量 WPF 都成功。R00-03 受控要求可记已满足；历史失败保留。Runner success 不证明外机 source/DLL/Playnite runtime。
+
+外机 R09 文本 SHA `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 仍与旧输入一致，真实 `1/2` 失败未解决；第151行 Thickness 断言与当前源的 Brush 断言不一致，没有同次 summary/TRX/test/plugin DLL/PDB identity，具体根因未知。用户表示暂时无诊断包；按其要求不等该材料，继续主线。
+
+R00/R01 freshness 继续绑定 `be314f59`（14 fresh、0 stale、0 source matches）。Round2/3 / R23-08 重筛无新的依赖已满足且有明确实现缺口的 Q/R 项；总目标仍 active。下一步在新外机身份材料、新复现/明确范围或宿主/设备/权限前置变化时重新准入。用户未跟踪的 TRX/TestResults 未动，未产生临时文件。
+
+## 2026-10-18 历史：#1084 双 SDK 通过，R00-03 历史失败已归因
 
 当前 `main` HEAD `4cde34ce465a99787ba3ef969a57bacf9e606550` 的 Actions #1084/run `39070369704` 已终态成功：SDK8.0.423 job `117506536858`、SDK10.0.401 job `117506537093` 均 Release build/test 成功，Core 125/125、Worker 362/362、Playnite WPF 125/125；ProductionShellChromeSourceTests 在 17/125，两 lane 全部完成。该结果验证 runner 上精确 main，不代表另一台机器加载了相同源码/程序集或 Playnite 呈现。
 

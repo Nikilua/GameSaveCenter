@@ -11211,7 +11211,15 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - #1082 artifacts：SDK10 diagnostics 12112952511 / 774,340 bytes / 3f0a28ab24a073ef89627c191d8176d838172b493e911eae3a2b4776fe439d0d；SDK8 diagnostics 12113009402 / 1,625,081 bytes / f15f0ade7391f9e8ed62f92d3e7244fffeab881eb11828fc24d783c958954e33；package 12112844773 / 90,313,972 bytes / efb9999efd7cee64ac9b4aa4bced0a52ec104bb47366801f2d98d42d24c4a2d5。
 - 对照 #1080/run 39061487759 整体 failure：SDK10 WPF R08 active-clock 正例失败，SDK8 完整成功；完整 SDK8/SDK10 job logs 已读取。修正后 #1081 两 SDK 成功。R00/R01 freshness 对 be314f59 为 14 fresh/0 stale/0 matched source paths，package identity not-provided。
 - R09 外机旧断言 expected Chrome=2 DIP，与当前模板 Chrome=1 + ValidationStroke=2 的测试形态不同（3f7d0b30 vs f13b9e05）。#1079/#1081/#1082 WPF 125 类通过不能证明外机安装成功；缺同次 checkout、TRX、test/plugin DLL/PDB，同步记录为版本差异线索而非根因。无新依赖满足代码缺口；下一项是对照将来获得的身份材料。真实 Playnite、OS 输入/物理 DPI/最终呈现与 ETW 边界仍未验。
-## 2026-10-18 #1084 main 双 SDK 终态与 R00-03 失败归因复核
+## 2026-10-18 #1085 双 SDK CI 终态与 R00-03 行为复核
+
+- `main` 文档提交 `188c8a749a1f3ae2dfb26281b8cfeb931a2d9f30` 对应 Actions #1085/run `39074063525` 已整体成功。SDK8.0.423 job `117517460740`、SDK10.0.401 job `117517460855` 均完成 Release build/test，Core `125/125`、Worker `362/362`、Playnite WPF `125/125`；`ProductionShellChromeSourceTests` 在第 `17/125` 类且后续类全通过。SDK8 Render QA OK、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包和诊断上传成功。
+- Artifacts：SDK8 diagnostics `12117183822`（1,627,485 bytes，SHA-256 `9fa54112eb2cc46099f76a6f711578292df701a96b84bea64498dcd2a3e523c3`）；SDK10 diagnostics `12117041346`（775,167 bytes，`a5832db5321811b602ed8f8465aa76021ece3e77762070234ebf1c013297d159`）；preview package `12117198649`（90,314,008 bytes，`de169d06bcccd6e8f726628e11ff797a2861aa1504ac8efa22b6d74b858fabf7`）。本次只改文档；产品代码仍为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。
+- #919/#920 的完整 SDK10.0.401 job log 已核对，旧侧栏动画夹具未固定系统动效偏好，导致两项活动时钟正例各失败、类结果 `11/13`。`48b78b3b` 的实例级系统输入与策略矩阵修正了前提；修正后 #1056、#1084、#1085 的 SDK8/SDK10 全量 WPF 均通过。R00-03 受控行为已满足，历史 failures 保留，不冒充成功。
+- 用户本轮外机文本哈希仍是 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`，与旧附件完全相同；仍记录 `1/2` R09 失败和诊断 ID `20261016T052146719Z-d9d99ac4`。缺同次 source/summary/TRX/test/plugin DLL/PDB identity，根因未定位；本机/runner 结果不代表外机是否成功。
+- R00/R01 freshness 对产品代码 `be314f59` 为 `14 fresh / 0 stale / 0 matched source paths`。Round2/3 与 R23-08 无新的依赖满足且有具体缺口的 Q/R 项；总目标未完成，边界与下一可执行条件见 CURRENT_STATE / DEVELOPMENT_HANDOFF。没有本地 build/test 或新 artifacts/.tmp，既有未跟踪 TRX/TestResults 保持原样。
+
+## 2026-10-18 历史 #1084 main 双 SDK 终态与 R00-03 失败归因复核
 
 - `main` HEAD `4cde34ce465a99787ba3ef969a57bacf9e606550` 对应 Actions #1084/run `39070369704` 已终态 success。SDK8.0.423 job `117506536858`、SDK10.0.401 job `117506537093` 均 Release build/test 成功，Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；`ProductionShellChromeSourceTests` 在第 `17/125` 类，两 lane 均跑完。SDK8 Render QA OK、XAML `30 / 0 errors / 27 warnings / 177 info`、扩展包生成和上传成功。
 - Artifacts：SDK8 diagnostics `12116415577`（1,626,364 bytes，SHA-256 `83b999ac9277dcbcda82f21fdc8c4a467a6db52842a1bc2cb28a96e1bcef1a72`）；SDK10 diagnostics `12115273490`（775,040 bytes，`775b37f4b6ad9ad19a207f42b830e38ad12ce0c7b7d6947b1130b39b689e2efe`）；preview package `12115659313`（90,314,066 bytes，`fe884f8526bf6ebf03639b142b9bada40c4aba728cea34a771163765618273cc`）。本次只是文档提交，产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。

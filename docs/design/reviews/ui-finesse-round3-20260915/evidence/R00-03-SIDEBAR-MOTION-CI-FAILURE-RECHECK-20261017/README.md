@@ -24,7 +24,7 @@
 
 `48b78b3` 是当前 main 的祖先。修正后的当前源码已通过 Actions #1056 / run `38962119739`：SDK8.0.423 job `117179503173` 与 SDK10.0.401 job `117179503250` 均完成 Release build、Core/Worker 与 125 个隔离 WPF 测试类；Playnite 全组通过。文档提交 #1057 / run `38969111355` 也已成功。历史 #919/#920 仍记录为真实失败，不因后续修正而改写为成功。
 
-当前 main 的后续确认：HEAD `4cde34ce465a99787ba3ef969a57bacf9e606550` 对应 #1084/run `39070369704` 已整体终态成功。SDK8.0.423 job `117506536858` 与 SDK10.0.401 job `117506537093` 都在 `ProductionShellChromeSourceTests`（第 `17/125` 类）之后继续跑完全部 125 类。两 lane 的 Release build/test 及 Core/Worker/WPF 全组均通过；SDK8 Render QA、XAML 静态审查和扩展包也成功。产品测试源码与 `48b78b3` 修正后的系统偏好输入一致。#1084 验证的是 GitHub runner 上当前 main，不代表外机加载了相同 checkout 或程序集。
+当前 main 的后续确认：文档 HEAD `4cde34ce` 的 #1084/run `39070369704` 和文档 HEAD `188c8a74` 的 #1085/run `39074063525` 均整体终态成功。#1085 SDK8.0.423 job `117517460740` 与 SDK10.0.401 job `117517460855` 均在 `ProductionShellChromeSourceTests`（第 `17/125` 类）之后继续跑完全部 125 类。两 lane 的 Release build/test 及 Core/Worker/WPF 全组均通过；SDK8 Render QA、XAML 静态审查和扩展包也成功。产品测试源码与 `48b78b3` 修正后的系统偏好输入一致。CI 验证的是 GitHub runner 当前 main，不代表外机加载了相同 checkout 或程序集。
 
 ## 结论边界
 
