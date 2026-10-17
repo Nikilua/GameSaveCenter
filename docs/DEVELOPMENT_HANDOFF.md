@@ -2,7 +2,7 @@
 
 ## 2026-10-17 R09 诊断脚本补强待 CI
 
-在 `350cdcb1` 基线上，`build-diagnostics.ps1` 现在会把每个 DLL 的相邻 PDB SHA-256/大小/脱敏路径写入 `summary.json`，不存在时记录 `null`；诊断自测已覆盖有/无 PDB 及 JSON 中的路径脱敏。本机 `Test-BuildDiagnostics.ps1`、`scripts/validate-source.py`、`git diff --check` 均通过；这不是完整应用构建或外机验证。代码和本阶段事实文档提交后，追踪新 Actions 的 SDK8.0.423 与 SDK10.0.401 两 lane 至终态。外机 R09 `1/2` 根因仍未知；新元数据改进只能帮助后续取得同次诊断时比对，不能代替缺失的 `20261014T052440239Z-3fc9f5f1` 文件。
+在 `350cdcb1` 基线上，`build-diagnostics.ps1` 尽力把每个 DLL 的相邻 PDB SHA-256/大小/脱敏路径写入 `summary.json`；缺失时为 `null`，被锁/不可读时记录错误类型且保留构建结果。首版提交 `8a895807` 对应 Actions #1066/run `39003320618` 已终态成功：SDK8.0.423 与 SDK10.0.401 均 Release build 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类通过；SDK8 Render QA 通过、静态审查 30 XAML 为 0 errors/27 warnings/177 info，扩展包和诊断 artifact 上传成功。本机诊断自测覆盖可读、独占锁定、缺失 PDB 及 JSON 路径脱敏；当前“锁定时不阻断诊断”的后续修订未包含在 #1066 中，必须另行取得双 SDK CI 终态。本机自测不是完整应用构建或外机验证。外机 R09 `1/2` 根因仍未知；新元数据只能帮助后续取得同次诊断时比对，不能代替缺失的 `20261014T052440239Z-3fc9f5f1` 文件。
 
 ## 2026-10-17 最新 CI 状态与待验输入
 

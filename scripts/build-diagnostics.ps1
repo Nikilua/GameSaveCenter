@@ -76,12 +76,21 @@ function Set-GscDiagnosticAssemblies {
             $pdbPath = [IO.Path]::ChangeExtension($dll.FullName, '.pdb')
             $pdbIdentity = $null
             if (Test-Path -LiteralPath $pdbPath -PathType Leaf) {
-                $pdbFile = Get-Item -LiteralPath $pdbPath
                 $pdbIdentity = [ordered]@{
-                    file = $pdbFile.Name
-                    path = (ConvertTo-GscDiagnosticText $pdbFile.FullName $Context)
-                    sha256 = (Get-FileHash -LiteralPath $pdbFile.FullName -Algorithm SHA256).Hash
-                    bytes = $pdbFile.Length
+                    file = [IO.Path]::GetFileName($pdbPath)
+                    path = (ConvertTo-GscDiagnosticText $pdbPath $Context)
+                    sha256 = $null
+                    bytes = $null
+                }
+                try {
+                    $pdbFile = Get-Item -LiteralPath $pdbPath
+                    $pdbIdentity.bytes = $pdbFile.Length
+                    $pdbIdentity.sha256 = (Get-FileHash -LiteralPath $pdbPath -Algorithm SHA256).Hash
+                }
+                catch {
+                    # A locked or unreadable optional PDB must never mask the
+                    # build/test exit that this diagnostic collector records.
+                    $pdbIdentity['unavailableReason'] = $_.Exception.GetType().FullName
                 }
             }
             $row = [ordered]@{ file = $dll.Name; path = (ConvertTo-GscDiagnosticText $dll.FullName $Context); sha256 = (Get-FileHash $dll.FullName).Hash

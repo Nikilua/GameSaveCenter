@@ -2031,5 +2031,6 @@
 ## 2026-10-17 R09 外机诊断 PDB 身份补强
 
 - #1065/run `38999877162` 对文档提交 `350cdcb1` 已整体终态成功：SDK10.0.401 与 SDK8.0.423 Windows Server 2025 runner 均通过，Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类（含 R09）；SDK8 的 Render QA、静态审查、扩展包与诊断 artifact 上传也成功。这只覆盖精确 CI 输入，不覆盖外机报告。
-- 针对外机 R09 缺少 PDB 行映射身份的证据缺口，`build-diagnostics.ps1` 在 DLL 清单中新增相邻 PDB 的 SHA-256、大小、脱敏路径及缺失值；`Test-BuildDiagnostics.ps1` 合成正/负例验证 JSON 序列化与路径脱敏。本机诊断自测、source validation、`git diff --check` 通过；未执行完整 solution/WPF build，尚待本次提交的双 SDK Actions。
+- 首版 PDB identity 提交 `8a895807` 的 Actions #1066/run `39003320618` 也已双 SDK 终态成功：两边 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类；SDK8 Render QA、静态审查、包与诊断上传通过。当前 PDB 锁定/不可读非阻断保护是后续工作，尚无该修改的 CI 结论。
+- 针对外机 R09 缺少 PDB 行映射身份的证据缺口，`build-diagnostics.ps1` 在 DLL 清单中新增相邻 PDB 的 SHA-256、大小、脱敏路径及缺失值；PDB 被锁/不可读时记录错误类型，不让可选采集中断构建诊断。`Test-BuildDiagnostics.ps1` 合成可读/锁定/缺失三态验证 JSON 序列化与路径脱敏。本机诊断自测、source validation、`git diff --check` 通过；未执行完整 solution/WPF build，后续修订尚待双 SDK Actions。
 - 没有改焦点样式、R09 断言或已跟踪 R/Q 任务状态。用户外机 R09 `1/2` 仍是真实失败，精确同次目录及 test/plugin DLL/PDB 身份仍未取得；下一项是提交并追踪当前改动的 CI，之后若获得失败目录便直接比较身份，不要求重跑。R23-08 准入仍无新独立产品代码项；Playnite host、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验证。

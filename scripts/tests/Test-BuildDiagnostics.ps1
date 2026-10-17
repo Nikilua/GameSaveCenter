@@ -82,13 +82,24 @@ try {
         throw 'Sibling PDB diagnostics did not redact the repository path.'
     }
 
+    $pdbLock = [IO.File]::Open($testPdbPath, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+    try {
+        Set-GscDiagnosticAssemblies $context $assemblyRoot 'Release'
+        $lockedSummary = Get-Content -LiteralPath (Join-Path $context.RunRoot 'summary.json') -Raw | ConvertFrom-Json
+        $lockedAssembly = @($lockedSummary.assemblies | Where-Object { $_.file -eq 'GameSaveCenter.Playnite.Tests.dll' } | Select-Object -First 1)[0]
+        if (-not $lockedAssembly -or $lockedAssembly.pdb.sha256 -or -not $lockedAssembly.pdb.unavailableReason) {
+            throw 'An unreadable PDB should preserve the DLL record and report a non-fatal identity error.'
+        }
+    }
+    finally { $pdbLock.Dispose() }
+
     Remove-Item -LiteralPath $testPdbPath -Force
     Set-GscDiagnosticAssemblies $context $assemblyRoot 'Release'
     $assemblyWithoutPdb = @($context.Assemblies | Where-Object { $_.file -eq 'GameSaveCenter.Playnite.Tests.dll' } | Select-Object -First 1)[0]
     if (-not $assemblyWithoutPdb -or $null -ne $assemblyWithoutPdb.pdb) {
         throw 'Assembly diagnostic summary should report a missing sibling PDB as null.'
     }
-    Write-Host "Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON/TRX redaction and present/missing PDB identity. Evidence: $($context.RunRoot)"
+    Write-Host "Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON/TRX redaction and present/locked/missing PDB identity. Evidence: $($context.RunRoot)"
 }
 finally { [Environment]::SetEnvironmentVariable('GSC_DIAGNOSTIC_TEST_PATH', $previous, 'Process') }
 # Controlled native failures are expected inputs. Report the selftest's result,

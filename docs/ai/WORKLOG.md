@@ -11084,6 +11084,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 ## 2026-10-17 R09 外机构建诊断 PDB 身份补强
 
 - 在 `scripts/build-diagnostics.ps1` 的 DLL 清单中新增相邻 PDB 的 `file/path/sha256/bytes` 元数据；路径使用既有脱敏器，找不到 PDB 时为 `null`。这填补了外机 R09 堆栈行号无法对照 PDB 的可独立诊断缺口，不改生产 UI 或 R09 断言。
-- `scripts/tests/Test-BuildDiagnostics.ps1` 新增合成 DLL/PDB fixture，验证 PDB 哈希与大小写入序列化 `summary.json`、路径脱敏、缺失 PDB 的 `null` 负例。PowerShell 诊断自测通过；`python scripts/validate-source.py` 通过；`git diff --check` 通过。本地未执行完整 solution/WPF build，这些结果不能替代双 SDK CI 或用户外机。
+- `scripts/tests/Test-BuildDiagnostics.ps1` 新增合成 DLL/PDB fixture，验证 PDB 哈希与大小写入序列化 `summary.json`、路径脱敏，以及缺失 `null` 与独占锁定不可读的非阻断负例。PowerShell 诊断自测通过；`python scripts/validate-source.py` 通过；`git diff --check` 通过。本地未执行完整 solution/WPF build，这些结果不能替代双 SDK CI 或用户外机。
 - #1065/run `38999877162` 对 `350cdcb1` 已整体终态成功，SDK8.0.423 和 SDK10.0.401 两条 GitHub Windows runner 均通过，包含 Core125、Worker362、WPF隔离125类和 R09；SDK8 Render QA/静态审查/扩展包上传完成。这仍不覆盖外机 `R09 1/2`。
-- 没有收到外机同次 `20261014T052440239Z-3fc9f5f1` 诊断目录；其 source/test/plugin/PDB identity 与失败 TRX 仍未验。此改动的双 SDK Actions 尚待本次提交后追踪。自测产生的两个 `.tmp/build-diagnostics-pdb-test-20261017*` 目录已在确认位于 `.tmp` 内后删除；既有未跟踪 TRX 与 TestResults 保留。
+- `8a895807` 对应 Actions #1066/run `39003320618` 双 SDK 终态成功：SDK8.0.423、SDK10.0.401 均 Release build 0 warning/0 error、Core125/125、Worker362/362、WPF隔离125类通过；SDK8 Render QA、静态审查和扩展包/诊断上传成功。当前未提交的“PDB 被锁/不可读时不阻断摘要” follow-up 不属于该 run 输入，必须在本次提交后跟踪新的 SDK8/SDK10 CI。
+- 没有收到外机同次 `20261014T052440239Z-3fc9f5f1` 诊断目录；其 source/test/plugin/PDB identity 与失败 TRX 仍未验。首版 PDB identity 的 #1066 已终态成功；当前锁定/不可读保护尚未提交，也没有该后续修改的 CI 结果。自测产生的 `.tmp/build-diagnostics-pdb-locked-test-20261017` 已在确认位于 `.tmp` 内后删除；既有未跟踪 TRX 与 TestResults 保留。

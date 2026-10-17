@@ -192,7 +192,7 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 
 ## 2026-10-17 诊断元数据补强
 
-仓库 `build-diagnostics.ps1` 已扩展为在 `summary.json` 的 DLL identity 下记录相邻 PDB 的文件名、脱敏路径、SHA-256 和大小；没有相邻 PDB 时写 `null`。`Test-BuildDiagnostics.ps1` 用合成 DLL/PDB 验证该 JSON 字段、缺失负例和路径脱敏。本机诊断自测及 source validation 通过；此改动不改变 R09 样式、断言或生产程序集，也不代表真实外机失败已定位。缺少的仍是用户那次失败目录 `20261014T052440239Z-3fc9f5f1` 的同次 summary、TRX/console 与 DLL/PDB 身份。
+仓库 `build-diagnostics.ps1` 已扩展为尽力在 `summary.json` 的 DLL identity 下记录相邻 PDB 的文件名、脱敏路径、SHA-256 和大小；没有相邻 PDB 时写 `null`，被锁或不可读时记录错误类型且不阻断摘要。首版字段提交 `8a895807` 对应 Actions #1066/run `39003320618` 双 SDK 终态成功；当前锁定/不可读保护为后续修订，不在该 CI 输入中，仍须另行验证。本机 `Test-BuildDiagnostics.ps1` 合成可读、独占锁定、缺失三态及路径脱敏通过；此改动不改变 R09 样式、断言或生产程序集，也不代表真实外机失败已定位。缺少的仍是用户那次失败目录 `20261014T052440239Z-3fc9f5f1` 的同次 summary、TRX/console 与 DLL/PDB 身份。
 
 ## 2026-10-16 用户再次复核本机构建可信度
 
