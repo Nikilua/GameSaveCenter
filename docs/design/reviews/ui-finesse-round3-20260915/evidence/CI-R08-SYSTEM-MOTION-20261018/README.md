@@ -36,3 +36,13 @@ SDK8 另完成 `render-qa OK`、WPF 静态审查（30 XAML、0 errors、27 warni
 R00/R01 freshness 初扫的 14 条记录中，只有 R00-03 与 R01-04 命中 `GscMotion.cs`。#1079 全量隔离测试在两种 SDK lane 中覆盖这两个记录共用的 `UiFinesseFoundationTests`，因此将这两条登记证据更新到精确代码提交 `de8bdbb`；复核脚本在更新后的基线返回 `14 fresh / 0 stale / 0 matched source paths`，package identity `not-provided`。这只刷新已登记源码范围，不代表包安装或真实 Playnite 呈现。完整 job log 已读取；CI 通过只说明相同提交在对应 GitHub runner 输入下通过。
 
 R00-03 与 R01-04 继续标记“已满足（受控 WPF 行为）”。真实 Playnite 生命周期/系统偏好通知、OS UIA/读屏、物理 DPI/跨屏、最终呈现帧和宿主性能未验。用户外机 R09 的 `1/2` 失败仍是独立真实问题，当前同次 checkout、TRX、test/plugin DLL/PDB 身份仍缺；本次 CI 不覆盖该失败。
+
+## #1080 SDK10 新发现：应用动效切换夹具
+
+文档提交 `7b5ea6b1861ca813495fc12d06fe9893bc541e48` 对应 [Actions #1080/run `39061487759`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39061487759)。SDK10.0.401 job `117480203788` 的 Release solution build 成功（0 warning / 0 error），Core `125/125`、Worker `362/362`；WPF 隔离第 `61/125` 类 `R08MotionHotChangeBehaviorTests` 在正向动画启动前置失败：`opacity=1; loaded=True`，期望存在动画时钟但没有。完整 job log 已读取。失败后的 TextServices `InvalidComObjectException` 出现在断言之后，不是日志所示的断言原因。SDK10 diagnostics artifact `12112485036`，518,122 bytes，SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d`。
+
+该 app-preference 测试此前在窗口 `Show()` 后写入 `GscMotionNormal/Slow` 资源，再通过默认入口启动动画。改为显式一秒时长，避免启动正例依赖活动窗口资源刷新；调用仍经过共享 `GscMotion` 的真实跟踪与取消逻辑，现有动画启动、关闭后清钟、重新启用不重播断言都保留。没有改生产动画策略或放宽断言。
+
+本机 SDK `9.0.302` / VSTest `17.14.1`，Playnite `net462` / tests `net472` Release 定向构建及 `R08MotionHotChangeBehaviorTests` `1/1` 通过；source validation 与 diff check 通过。源文件 SHA-256 `EE03FED5B0528AE2629260E4FAD7F62401694E702E59E6C3658E6CFEAE4351FA`，测试 DLL SHA-256 `4A0F4BFF94EAFCEC152DEB31F1DBEDD82F138C96B878CDEA3F89217316EB8015`。脱敏 TRX：[R08MotionHotChangeBehaviorTests-sdk9302-local.trx](tests/R08MotionHotChangeBehaviorTests-sdk9302-local.trx)，SHA-256 `BC1793C693679F8D17813488A014503ACE9A260E938639DD477EBFCE87AE6799`，7,356 bytes。本机 SDK9 不替代 GitHub SDK8/SDK10。
+
+记录时 SDK8.0.423 job `117480204000` 仍在编译与测试阶段，#1080 不是终态，不能据此结束 follow-up。修正提交还需独立 CI 双 SDK 复核。当前真实 Playnite、OS 输入/UIA、物理 DPI/跨屏、最终呈现帧和宿主性能仍未验。

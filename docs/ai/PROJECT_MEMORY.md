@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 当前 R08 app-motion CI 失败与夹具跟进
+
+文档 HEAD `7b5ea6b1` 的 #1080 SDK10.0.401 job `117480203788` 在 `R08MotionHotChangeBehaviorTests` 的活动动画启动正例失败（`opacity=1; loaded=True`，无动画时钟）；Release build `0/0`、Core `125/125`、Worker `362/362`。SDK8 job `117480204000` 记录时仍运行。诊断 artifact `12112485036` / SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d`，完整日志已读取。
+
+夹具曾在窗口 `Show()` 后改资源时长，再走默认动画入口。当前改为显式一秒时长，保留共享 `GscMotion` 跟踪/取消路径与全部行为断言。SDK9.0.302 / VSTest17.14.1 Release 目标类 `1/1` 通过，TRX/源/DLL 哈希在 `evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。SDK9 不是 CI 替代；新修正提交的 SDK8/SDK10 Actions 待跑。用户外机 R09 `1/2` 与本项无关，仍缺同次 checkout/TRX/test/plugin DLL/PDB 身份。总目标未完成。
+
 ## 2026-10-18 最新：#1079 R08 双 SDK 收口与 R00/R01 freshness
 
 代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 对应 Actions #1079/run `39057273073` 已整体终态成功：SDK8.0.423 job `117467706465` 与 SDK10.0.401 job `117467706337` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、WPF 隔离 `125/125`，包含 `UiFinesseFoundationTests` 与 R08 system-motion 行为类。SDK8 另 Render QA、XAML 静态审查及扩展包生成/上传成功。完整 artifact IDs/SHA 见 Round3 的 `evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。

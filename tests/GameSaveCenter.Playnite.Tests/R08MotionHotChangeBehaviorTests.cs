@@ -6,7 +6,6 @@ using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -41,13 +40,6 @@ public sealed class R08MotionHotChangeBehaviorTests
                 window.Show();
                 window.UpdateLayout();
 
-                // ApplyAdaptiveTheme uses the real Windows motion policy when it writes
-                // duration resources, even though this test isolates the app preference.
-                // Override those resources after the initial theme application so the
-                // entrance animation remains deterministic on hosted Windows runners.
-                view.Resources["GscMotionNormal"] = new Duration(TimeSpan.FromSeconds(1));
-                view.Resources["GscMotionSlow"] = new Duration(TimeSpan.FromSeconds(1));
-
                 var tabs = (ListBox)view.FindName("SettingsSectionTabs")!;
                 tabs.SelectedIndex = 2;
                 DrainDispatcher();
@@ -55,7 +47,9 @@ public sealed class R08MotionHotChangeBehaviorTests
 
                 var shell = Assert.IsAssignableFrom<FrameworkElement>(view.FindName("SettingsShell"));
                 var translate = GscMotion.GetMutableTranslateTransform(shell);
-                GscMotion.AnimateEntrance(shell, 12);
+                // The behavior under test is app-preference cancellation. Explicit durations
+                // keep the active clock independent of live Windows policy/resource refresh.
+                GscMotion.AnimateEntrance(shell, 12, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
                 PumpDispatcher(TimeSpan.FromMilliseconds(55));
                 Assert.True(
                     DependencyPropertyHelper.GetValueSource(shell, UIElement.OpacityProperty).IsAnimated,

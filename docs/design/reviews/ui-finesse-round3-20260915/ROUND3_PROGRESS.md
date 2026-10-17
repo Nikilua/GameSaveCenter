@@ -1,3 +1,9 @@
+## 2026-10-18 R08 app-motion 夹具 SDK10 失败复核
+
+- 文档提交 `7b5ea6b1861ca813495fc12d06fe9893bc541e48` 对应 Actions #1080/run `39061487759`：SDK10.0.401 job `117480203788` Release `0/0`、Core `125/125`、Worker `362/362`；WPF 隔离第 `61/125` 个 `R08MotionHotChangeBehaviorTests` 失败，启动正例为 Opacity `1`、window loaded、无动画 clock。TextServices COM teardown 在断言后。SDK10 diagnostics `12112485036` / SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d`；完整日志与 TRX 目录见 [R08 evidence](evidence/CI-R08-SYSTEM-MOTION-20261018/README.md)。
+- 该夹具原在 `Show()` 后改写主题资源时长再启动默认动画。现仅将该行为用例改为既有 `GscMotion` 显式时长重载；实际 clock startup、关闭时钟清理、重新启用不重播检查都保留。SDK `9.0.302` / VSTest `17.14.1` Release 定向构建与类 `1/1`、source validation、diff check 通过；TRX/源/DLL hashes 见 evidence README。不是生产动画策略变更。
+- 记录时 SDK8.0.423 job `117480204000` 仍运行，#1080 未终态；修正提交需独立双 SDK CI 通过后才能关闭。CI/本机均不等价真实 Playnite、OS UIA/IME、物理 DPI/跨屏或最终呈现。外机 R09 `1/2` 缺同次构建身份，独立保留。
+
 ## 2026-10-18 #1079 双 SDK 终态与 R00/R01 freshness 校正
 
 - 代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 对应 Actions [#1079/run `39057273073`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39057273073) 已终态成功。SDK8.0.423 job `117467706465`、SDK10.0.401 job `117467706337` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；两边都运行 `UiFinesseFoundationTests`（第 `121/125` 类）及 R08 system-motion 测试，完整测试成功。SDK8 另 `render-qa OK`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。Artifact IDs/SHA 见 [R08 CI 及 R00/R01 freshness 证据](evidence/CI-R08-SYSTEM-MOTION-20261018/README.md)。

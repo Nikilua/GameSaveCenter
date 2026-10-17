@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 当前交接：#1079 已双 SDK 收口
+## 2026-10-18 当前交接：R08 app-motion 夹具修正待 CI
 
-`main` 代码提交 `de8bdbb176bb7ae85c4ca3f488f0aeb37958bfec` 对应 Actions [#1079/run `39057273073`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39057273073) 两 SDK 均终态成功。SDK8.0.423 job `117467706465`、SDK10.0.401 job `117467706337` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；包含 `UiFinesseFoundationTests` 和修复后的 R08 system-motion 类。SDK8 Render QA、WPF 静态审查、扩展包及 diagnostics 上传成功。完整 job 和 artifact 细节见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R08-SYSTEM-MOTION-20261018/README.md`。
+Actions #1080/run `39061487759` 的 SDK10.0.401 job `117480203788` 已失败，SDK8.0.423 job `117480204000` 仍在运行。失败发生于 WPF `R08MotionHotChangeBehaviorTests` 的活动动画启动正例（`opacity=1; loaded=True`，无动画时钟），不是 Core/Worker 或 Release build；SDK10 build 0/0、Core125、Worker362。完整日志和 diagnostics artifact `12112485036` 的 SHA-256 `31a556e3a6ab9777f4512b13bd73d649ebe5be5b058a71a27a67d9eb38c6bc9d` 已保存于 R08 证据 README。
 
-R00/R01 freshness 的命中项 R00-03、R01-04 已由 #1079 全量行为测试覆盖并更新到该精确代码 SHA；freshness `14/14`、package identity `not-provided`。本轮从仓库目录执行的本机 `dotnet test` 因 `global.json` 要求 SDK8.0.423（本机只有 SDK9.0.302）未启动；这不是测试失败，CI 双 SDK 结果单独记录。
+本机只改该行为测试夹具，使用 `GscMotion` 显式时长重载，保留动画启动、取消清钟、重启不重播断言。本机 SDK9.0.302 / VSTest17.14.1 Release 定向 `1/1`、source validation、diff check 通过；TRX 与源/DLL身份见证据 README。下一步：commit/push该修正，追踪新双 SDK Actions；另外等 #1080 SDK8 job 终态后记录，不将 SDK10失败或SDK8运行中混写成成功。
 
-下一步：新复现/明确功能范围或相关宿主、设备、权限前置变化时重做 Q/R 准入；若外机提供同次身份材料，先进行 source/test/plugin/PDB 比对，不要求用户重跑。外机 R09 `1/2` 仍是真实未定位失败；当前 CI 不覆盖。真实 Playnite、OS UIA/IME、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。总目标仍进行中。
+外机 R09 `1/2` 仍是独立未定位真实失败；同次 checkout、TRX、test/plugin DLL/PDB 身份缺失，不要求用户重跑。真实 Playnite、OS UIA/IME、物理 DPI/跨屏/呈现、ETW/宿主性能仍未验。
 
 ## 2026-10-18 #1077 终态与下一准入条件
 
