@@ -73,6 +73,66 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         }
     }
 
+    private static void RunPressedRestorationSequence(
+        UiButton button,
+        StackPanel content,
+        Border focusProxy,
+        CountingCommand command)
+    {
+        var chrome = Assert.IsType<Border>(button.Template!.FindName("ButtonChrome", button));
+        var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
+        var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
+
+        Assert.True(button.IsPressed);
+        Assert.True(scale.ScaleX < 1);
+        Assert.True(pressedOverlay.Opacity > 0.9);
+        Assert.Equal(0, command.ExecutionCount);
+
+        Assert.True(Keyboard.Focus(focusProxy) == focusProxy);
+        PumpDispatcher(TimeSpan.FromMilliseconds(180));
+        Assert.False(button.IsPressed);
+        AssertPressedLayersRestored(pressedOverlay, scale);
+        Assert.Equal(0, command.ExecutionCount);
+
+        FocusAndPressSpace(button);
+        Assert.True(button.IsPressed);
+        button.IsEnabled = false;
+        PumpDispatcher(TimeSpan.FromMilliseconds(180));
+        Assert.False(button.IsEnabled);
+        Assert.False(button.IsPressed);
+        AssertPressedLayersRestored(pressedOverlay, scale);
+        Assert.Equal(0, command.ExecutionCount);
+
+        button.IsEnabled = true;
+        FocusAndPressSpace(button);
+        Assert.True(button.IsPressed);
+        content.Children.Remove(button);
+        Assert.DoesNotContain(button, content.Children.Cast<UIElement>());
+        content.UpdateLayout();
+        PumpDispatcher(TimeSpan.FromMilliseconds(20));
+        Assert.False(button.IsLoaded);
+        AssertPressedLayersRestored(pressedOverlay, scale);
+        Assert.Equal(0, command.ExecutionCount);
+    }
+
+    private static void FocusAndPressSpace(UiButton button)
+    {
+        Assert.True(Keyboard.Focus(button) == button);
+        var source = PresentationSource.FromVisual(button)
+            ?? throw new InvalidOperationException("Button is not connected to a WPF PresentationSource.");
+        button.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, source, Environment.TickCount, Key.Space)
+        {
+            RoutedEvent = Keyboard.KeyDownEvent
+        });
+    }
+
+    private static void AssertPressedLayersRestored(Border pressedOverlay, ScaleTransform scale)
+    {
+        Assert.InRange(pressedOverlay.Opacity, 0, 0.01);
+        Assert.InRange(scale.ScaleX, 0.99, 1.01);
+        Assert.InRange(scale.ScaleY, 0.99, 1.01);
+    }
+
     private static StateCapture CaptureState(
         ResourceDictionary resources,
         GameSaveCenterThemeMode theme,
@@ -142,6 +202,10 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 button.Command = new DeniedCommand();
                 AutomationProperties.SetHelpText(button, "此夹具验证 CanExecute=false 的禁用状态。");
             }
+
+            var pressedCommand = state.Name == "pressed" ? new CountingCommand() : null;
+            if (pressedCommand != null)
+                button.Command = pressedCommand;
 
             window.Show();
             FlushLayout(window);
@@ -223,7 +287,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 SavePng(root, path);
             }
 
-            return new StateCapture(
+            var capture = new StateCapture(
                 theme.ToString(),
                 state.Name,
                 state.Activation,
@@ -238,6 +302,11 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 chrome.Opacity,
                 scale.ScaleX,
                 path);
+
+            if (pressedCommand != null)
+                RunPressedRestorationSequence(button, content, focusProxy, pressedCommand);
+
+            return capture;
         }
         finally
         {
@@ -415,6 +484,19 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         public int ExecutionCount { get; private set; }
 
         public bool CanExecute(object? parameter) => false;
+        public void Execute(object? parameter) => ExecutionCount++;
+        public event EventHandler? CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
+    }
+
+    private sealed class CountingCommand : ICommand
+    {
+        public int ExecutionCount { get; private set; }
+
+        public bool CanExecute(object? parameter) => true;
         public void Execute(object? parameter) => ExecutionCount++;
         public event EventHandler? CanExecuteChanged
         {
