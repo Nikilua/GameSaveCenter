@@ -71,7 +71,7 @@
 | Q05-07 | 常规命中区 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [ButtonGeometry](evidence/Q04-Q12-INDEX.md)；夹具按钮高度 36 DIP |
 | Q05-08 | 按钮密度统一 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [按钮截图](evidence/Q04-Q12-INDEX.md)；常规/紧凑角色沿用共享尺寸语义 |
 | Q06-01 | 正常与 Hover | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [状态边界](evidence/Q04-Q12-INDEX.md)；Hover 由共享模板局部 overlay 提供 |
-| Q06-02 | Pressed 恢复 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q06-02 按下中断复核](evidence/Q06-02-PRESSED-RESTORE-20261017.md) 覆盖浅/深主题的 Space 按下→移焦→禁用→卸载，scale/overlay 复位且命令 0 次；物理鼠标移出、异步命令取消时序与 Playnite 宿主仍待验 |
+| Q06-02 | Pressed 恢复 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q06-02 按下中断复核](evidence/Q06-02-PRESSED-RESTORE-20261017.md) 覆盖浅/深主题的 Space 按下→移焦→禁用→卸载，scale/overlay 复位且命令 0 次；当前 main #1070 的 SDK8/SDK10 CI 均通过该类；物理鼠标移出、异步命令取消时序与 Playnite 宿主仍待验 |
 | Q06-03 | 键盘焦点 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [焦点模板复核](evidence/Q04-Q12-INDEX.md)；屏幕键盘焦点仍待宿主 |
 | Q06-04 | 禁用解释 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [正常/禁用夹具](evidence/Q04-Q12-INDEX.md)；禁用 Tooltip 与真实业务原因待验 |
 | Q06-05 | 复合状态优先级 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [选中悬停优先级证据](evidence/q04-q12/nav-priority-20260915.md)；共享 `AcrylicNavItem` 已补 `Selected+Hover` 最后规则，组合输入序列仍待宿主 |

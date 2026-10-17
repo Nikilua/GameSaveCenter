@@ -1,10 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-17 最新续跑：Q06-02 按下中断行为补测
+## 2026-10-17 最新续跑：#1070 双 SDK 收口与 R09 外机映射复核
 
-本地 `main` 代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只增强既有 `Q06ButtonStateSequenceBehaviorTests`，没有改生产按钮/XAML/命令。仓库随附 SDK `8.0.423`、VSTest `17.11.1` 下，Playnite `net462`/测试 `net472` 定向 Release 构建与双主题 STA 测试 `1/1` 通过：Space 按下后程序化移焦、禁用、卸载，ScaleX/Y 和 PressedOverlay 回到基值，fake 命令执行 `0` 次。源码和测试身份、脱敏 TRX 见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md`。这不是完整 solution build 或真实 Playnite/物理输入。
+当前 `main` HEAD 为 `8fc980fce5262411fbb16f0299583c34074f7f61`。代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只增强 `Q06ButtonStateSequenceBehaviorTests`，没有改生产按钮/XAML/命令。本机 SDK `8.0.423`、VSTest `17.11.1` 下 Playnite `net462`/测试 `net472` 定向 Release 与双主题 STA 测试 `1/1` 通过；该结果不是完整 solution build 或真实 Playnite/物理输入。源码/测试身份、脱敏 TRX 见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md`。
 
-R00/R01 freshness 为 `14` 条记录、`0` 需重跑、`0` 个匹配源码路径、`2,964` 比较路径，package identity `not-provided`。Round2 Q06-02 的自动行为证据补强，但物理鼠标按下后移出、异步命令取消与 Playnite 宿主仍待验；视觉/最终结论未改变。当前 #1069/run `39013848650`（前序文档提交 `c043f9f7`）的 SDK8 `117341773887` 与 SDK10.0.401 `117341773896` 编译/测试仍在运行，job 日志接口在运行中返回 BlobNotFound；先等 run 终态，失败时再取得可用完整日志，不据此猜测。该批代码与证据尚待推送，`.tmp/q06-02-button-sequence-20261017` 已清理，释放约 58.4 MiB。
+R00/R01 freshness 对当前 HEAD 为 `14` 项、`0` 需重跑、`0` 个匹配登记源码路径，`packageIdentity=not-provided`。#1069/run `39013848650` 与精确代码提交 #1070/run `39016699991` 均双 SDK 终态成功。#1070 SDK8 job `117350168944`（SDK `8.0.423`）和 SDK10 job `117350169177`（SDK `10.0.401`）完整 Release build/test、WPF `125/125` 类通过，均含 R09/Q06-02；SDK8 Render QA `render-qa OK`。本次当前 HEAD 证据见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md`。旧13条 MEDIUM toolbar layout risk 不是 Render QA 检查结果，仍须保留。
+
+用户另一台机器日志的 `Expected Thickness(2) / Actual Thickness(1)` 和行151对应历史 `e12119bf` 的旧 Chrome 边框断言；当前源在 `f13b9e05` 后改为 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP`，当前行151是颜色比较。这意味着外机日志所用源或 PDB 行映射与当前 main 不一致；具体 checkout、测试 DLL/PDB、plugin DLL 尚未取得，不能把可能的旧 checkout/程序集错配写成确诊。CI 通过只证明各 runner 的精确输入，不覆盖外机 `1/2` 失败。Round2 Q06-02 仍因物理输入、取消时序和 Playnite 宿主未验而未完成。R23-08 复扫没有新的依赖满足代码缺口；提交本轮文档并跟踪新 Actions 后，在新身份材料、复现或环境变化时重新准入。用户暂时不能提供外机 artifact，不要求重跑，也不阻塞这份主线工作。
 
 ## 2026-10-17 最新续跑：#1068 CI 与 R00/R01 freshness
 

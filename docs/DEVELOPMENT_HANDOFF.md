@@ -1,10 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-17 Q06-02 行为证据与前序 Actions 状态
+## 2026-10-17 #1070 双 SDK 收口与外机 R09 断言映射
 
-当前本地 `main` 顶端代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524`，扩展生产按钮双主题 STA 用例，验证 Space 按下→程序化移焦/禁用/卸载的复位结果和命令零执行。SDK8.0.423/VSTest17.11.1 定向 Release `1/1`、`validate-source.py`、`git diff --check` 通过；本机不是完整 solution build。证据：[Q06-02 按下中断复核](design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。物理鼠标移出、异步命令取消、Playnite 宿主仍待验；外机 R09 `1/2` 仍独立未定位。
+当前 `main` 为 `8fc980fce5262411fbb16f0299583c34074f7f61`。代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 Q06 按钮状态测试；本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite 定向 Release `1/1` 通过，不是完整 solution build。对应 #1069 与精确代码提交 #1070 均已双 SDK 终态成功；#1070 的 SDK8.0.423 job `117350168944` 与 SDK10.0.401 job `117350169177` 均运行 R09 `2/2` 并通过。构建、包和诊断 artifact 证据见[R00/R01 当前 main 复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
 
-前序文档提交 #1069/run `39013848650` 的 SDK8 job `117341773887`、SDK10.0.401 job `117341773896` 最近仍运行在编译/测试步骤；job logs API 当前返回 BlobNotFound。下一步先查 run 终态；若失败，获取该 run/job 完整日志并按实际错误处理。之后提交文档证据、push 本批至 `main`，再将新 Actions 跟踪至终态。新 `.tmp/q06-02-button-sequence-20261017` 已清理；工作树中既有其他任务 TRX/TestResults 未改未删。
+用户外机日志仍报告 R09 `1/2`、总体 exit `1`。其中 `Expected Thickness(2) / Actual Thickness(1)`、源第 151 行与历史提交 `e12119bf` 的旧 Chrome `2 DIP` 断言吻合；当前测试已经拆为 Chrome `1 DIP`、ValidationStroke `2 DIP`，源第 151 行是颜色比较。由此可确认外机日志的源码/PDB映射不等于当前测试形态，但外机 HEAD、dirty paths、测试 DLL/PDB 和 plugin DLL 身份缺失，具体根因未确认。#1070 runner 通过不能覆盖这次外机失败；不凭该日志改当前模板或弱化断言。详情见[外机 R09 复核记录](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+
+R00/R01 freshness 对当前 HEAD 为 `14` 条、`0` 需重跑、`0` 个匹配源码路径，`packageIdentity=not-provided`。13 条 MEDIUM toolbar layout risk 仍保留；R23-08 重新准入未发现依赖已满足且有明确代码缺口的 Q/R 项。下一步：提交推送本次文档检查点，跟踪新 Actions 两个 SDK lane 至终态；之后按 R23-08 准入条件继续。物理鼠标移出、异步命令取消、真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。工作树里既有未跟踪 TRX/TestResults 保留未动。
 
 ## 2026-10-17 #1068 终态与下一准入点
 

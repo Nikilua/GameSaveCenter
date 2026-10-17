@@ -1,3 +1,11 @@
+## 2026-10-17 #1070 双 SDK 收口与外机 R09 断言映射复核
+
+- 复核 GitHub Actions [#1070/run `39016699991`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39016699991)，对应当前代码 HEAD `8fc980fce5262411fbb16f0299583c34074f7f61`，run 与两条 SDK job 均终态成功。SDK8.0.423 job `117350168944`、SDK10.0.401 job `117350169177` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类/WPF 隔离 `125/125` 类通过，包含 Q06-02 与 R09。SDK8 Render QA `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，package/diagnostics 上传完成。
+- 当前 HEAD freshness `14 records / 0 rerun / 0 matched registered source paths`，`packageIdentity=not-provided`。2026-10-15 的 13 条 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 未在本次重新审计，继续列为风险。本轮未发现 R00/R01 新产品代码修复依据；R23-08 admission scan 也未找到当前依赖满足的明确 Q/R 代码缺口。
+- 用户外机粘贴日志中 Core `ActivityTimelineMapperTests.CloudFailureMapsToFailedCloudActivity` 通过；实际失败是 R09 `1/2`，厚度 Expected `2,2,2,2` / Actual `1,1,1,1`，栈行151。该断言与历史 `e12119bf` 的 Chrome `2 DIP` 断言吻合；当前源码 `f13b9e05` 后分别检查 Chrome `1 DIP` 和 ValidationStroke `2 DIP`，第151行不再是厚度断言。可确认测试源或PDB行映射与当前源不匹配，但没有外机 `summary.json`、TRX、test DLL/PDB、plugin DLL 与 HEAD，故具体旧 checkout/程序集错配未确诊。
+- `libpng iCCP` 不在失败调用栈；TextServicesContext COM 异常出现在断言失败后的清理阶段，不是已证实的厚度比较原因。没有改生产样式或放宽断言。详细 R00/R01、artifact 身份和外机边界见[R00/R01 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)及[外机 R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 文档更新后推送 `main`，并检查新 Actions 的 SDK8 与 SDK10.0.401 两 lane 至终态。现阶段下一准入在 R23-08；无外机身份材料、新可复现缺陷或环境条件变化时不新增功能。物理输入、取消时序、真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现帧、ETW/宿主性能仍未验。
+
 ## 2026-10-17 Q06-02 按下中断行为补测
 
 - 在 `main` 既有 Q06-08 双主题生产按钮 STA 用例中增加恢复序列，不新建独立 STA/xUnit 用例，避免 WPF `Application.Current` 跨 Dispatcher 生命周期冲突；未修改生产控件、模板、命令或业务取消逻辑。

@@ -1,8 +1,16 @@
+## 2026-10-17 #1070 双 SDK 收口与 R00/R01 / 外机 R09 证据校正
+
+- 当前 `main` HEAD `8fc980fce5262411fbb16f0299583c34074f7f61` 对应 Actions #1070/run `39016699991` 已终态成功。SDK8.0.423 job `117350168944`、SDK10.0.401 job `117350169177` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类通过，含 Q06-02 与 R09；SDK8 Render QA `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，包与诊断 artifacts 上传成功。具体 artifacts/SHA 与 sdk 分 lane 见[R00/R01 当前 HEAD 复核](evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
+- R00/R01 freshness 对 HEAD 为 `14` 条、`0` 需重跑、`0` 个登记源码路径命中，`packageIdentity=not-provided`。未重跑2026-10-15全量运行时布局审计；13 条 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 保留为风险。当前没有由 freshness/Render QA 支持的新生产 UI 修复。
+- 用户外机日志的 R09 失败仍是有效的失败记录：`1/2`，Expected `Thickness(2)` / Actual `Thickness(1)`，line151。逐行比较显示它对应历史 `e12119bf` 的旧 Chrome `2 DIP` 断言；当前源在 `f13b9e05` 后把 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP` 分开，当前 line151 是颜色断言、line154 才是 ValidationStroke 厚度。由此确认日志的源码或符号映射与当前 main 不一致；外机 HEAD、dirty paths、同次 summary/TRX、test DLL/PDB/plugin DLL 未取得，具体来源仍未知。#1070 当前 main CI 通过不能覆盖外机失败。
+- Core 的 `ActivityTimelineMapperTests.CloudFailureMapsToFailedCloudActivity` 在用户日志里是通过项。`libpng iCCP` warning 不在断言调用栈；`TextServicesContext.InvalidComObjectException` 出现在 WPF teardown，不解释厚度值。未更改当前模板或弱化断言。
+- R00/R01 freshness 和 R23-08 准入重扫后，没有依赖已满足且有明确产品代码缺口的 Q/R 小批。下一执行点：提交本次证据校正、跟踪新 Actions 两 SDK lane 至终态，再按 R23-08 条件准入。物理鼠标输入、异步取消时序、真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+
 ## 2026-10-17 Q06-02 当前 main 按下中断行为补证
 
 - 作为 R02 按钮状态的相邻 Q 证据，当前 main 代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 扩展既有 `Q06ButtonStateSequenceBehaviorTests`；SDK8.0.423/VSTest17.11.1 的 Playnite 定向 Release 测试 `1/1`，Light/Dark 下 Space 按下后失焦、禁用、卸载均恢复 Scale 与 PressedOverlay，fake 命令执行 `0` 次。完整构建输入与程序集 SHA 见[Q06-02 证据](../ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。
 - 没有改生产控件/XAML/命令；这是合成键盘事件和逻辑 DIP 的受控 WPF 行为，不是物理鼠标按下移出或真实 Playnite。Q06-02 的视觉、真实宿主与 Final 仍未完成；异步命令取消结果未覆盖。
-- 当前前序文档提交 #1069/run `39013848650` 的两 SDK 编译/测试 job 仍运行；其状态与后续本批 push 尚待跟踪。R00/R01 freshness 为 `14/14 fresh`、0 stale/0 matched paths、2,964 compared paths；package identity `not-provided`。
+- #1069/run `39013848650` 的 SDK8/SDK10 lanes 与精确代码提交 #1070/run `39016699991` 已终态成功；Q06/R09 在两 SDK runner 均通过。R00/R01 当前 HEAD freshness 为 `14/14 fresh`、0 stale/0 matched registered source paths；package identity `not-provided`。本项还没有物理鼠标移出、异步命令取消或 Playnite 宿主证据。
 
 ## 2026-10-16 R13-04 当前 main 双 SDK CI 收口与外机 R09 测试源对照
 
