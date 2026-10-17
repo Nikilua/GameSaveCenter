@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-17 #1071 文档检查点终态与外机 R09 断言映射
+## 2026-10-17 #1072 双 SDK 文档检查点终态与外机 R09 断言映射
 
-当前 `main` HEAD 为文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550`，代码基线为 `8fc980fce5262411fbb16f0299583c34074f7f61`。代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 Q06 按钮状态测试；本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite 定向 Release `1/1` 通过，不是完整 solution build。精确代码提交 #1070 与文档提交 #1071 均双 SDK 终态成功。#1071/run `39020360750` 的 SDK8.0.423 job `117360775397` 完成 build/test、Render QA、WPF 静态审查、扩展包与 artifact 上传；SDK10.0.401 job `117360775218` 完成 build/test 与诊断上传。完整 artifact 身份见[R00/R01 当前 main 复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
+当前文档检查点的前序 `main` HEAD 为 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d`，代码基线为 `8fc980fce5262411fbb16f0299583c34074f7f61`。代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 Q06 按钮状态测试；本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite 定向 Release `1/1` 通过，不是完整 solution build。#1070/#1071/#1072 对各自精确提交的 Actions 均双 SDK 终态成功。#1072/run `39023752118` 对提交 `6c8c85b0`：SDK8.0.423 job `117370558805` 与 SDK10.0.401 job `117370558697` 的 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类与 WPF 隔离 `125/125` 类均通过；SDK8 另有 Render QA、WPF 静态审查、扩展包与 artifact 上传。artifact 身份和外机边界见[R00/R01 当前 main 复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
 
 用户外机日志仍报告 R09 `1/2`、总体 exit `1`。其中 `Expected Thickness(2) / Actual Thickness(1)`、源第 151 行与历史提交 `e12119bf` 的旧 Chrome `2 DIP` 断言吻合；当前测试已经拆为 Chrome `1 DIP`、ValidationStroke `2 DIP`，源第 151 行是颜色比较。由此可确认外机日志的源码/PDB映射不等于当前测试形态，但外机 HEAD、dirty paths、测试 DLL/PDB 和 plugin DLL 身份缺失，具体根因未确认。#1070 runner 通过不能覆盖这次外机失败；不凭该日志改当前模板或弱化断言。详情见[外机 R09 复核记录](design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
-R00/R01 freshness 绑定代码提交 `8fc980f`：`14` 条、`0` 需重跑、`0` 个匹配源码路径，`packageIdentity=not-provided`。`9feb88c0` 仅改文档，按 R01-07 不需重建源码 freshness。13 条 MEDIUM toolbar layout risk 仍保留；R23-08 重新准入未发现依赖已满足且有明确代码缺口的 Q/R 项。下一可执行动作是用户方便时比对外机失败同次 `summary.json`、R09 TRX/console 和 test/plugin DLL/PDB 身份；无需重跑。如果仍无法取得，按 R23-08 重做准入，等待新复现或环境前置改变后再选 Q/R。物理鼠标移出、异步命令取消、真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。工作树里既有未跟踪 TRX/TestResults 保留未动。
+R00/R01 freshness 绑定代码提交 `8fc980f`：`14` 条、`0` 需重跑、`0` 个匹配源码路径，`packageIdentity=not-provided`。后续提交 `9feb88c0` 与 `6c8c85b0` 仅改文档，按 R01-07 不需重建源码 freshness。13 条 MEDIUM toolbar layout risk 仍保留；R23-08 重新准入未发现依赖已满足且有明确代码缺口的 Q/R 项。下一可执行动作是用户方便时比对外机失败同次 `summary.json`、R09 TRX/console 和 test/plugin DLL/PDB 身份；无需重跑。如果仍无法取得，按 R23-08 重做准入，等待新复现或环境前置改变后再选 Q/R。物理鼠标移出、异步命令取消、真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现帧、ETW/宿主性能仍待验。工作树里既有未跟踪 TRX/TestResults 保留未动。
 
 ## 2026-10-17 #1068 终态与下一准入点
 

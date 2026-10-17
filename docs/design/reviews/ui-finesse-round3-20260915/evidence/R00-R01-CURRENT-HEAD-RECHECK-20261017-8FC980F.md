@@ -36,4 +36,6 @@ Artifacts：SDK8 package `12096595339`（SHA-256 `90191acd305d52c2eb19b69316e7b3
 
 提交 `9feb88c0` 仅改文档；R00/R01 登记源码路径没有变化，按 R01-07 规则无需因纯文档提交重建基线。freshness 结果仍明确绑定 `8fc980f`，而非宣称已在 `9feb88c` 重新运行。
 
-未验证真实 Playnite/package-host、外机当前 checkout 与程序集身份、物理 DPI/跨屏、OS UIA/IME、最终屏幕呈现帧，以及 ETW/宿主性能。#1071 已终态成功。下一可执行动作：用户可回复后读取外机失败同次 `summary.json`、R09 TRX/console 及 test DLL/PDB/plugin DLL 身份；无需重跑。若该 artifact 仍不可用，按 R23-08 重做准入，仅在出现身份材料、新可复现缺陷或环境前置变化后领取 Q/R 小批。
+Actions [#1072 / run `39023752118`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39023752118) 对前序文档提交 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d` 已整体终态 `success`：SDK8.0.423 job `117370558805` 与 SDK10.0.401 job `117370558697` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类通过；SDK8 另外完成 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成与上传。Artifacts：package `12098304583`（90,314,080 bytes，SHA-256 `3ac418287e75d012c6917d80abb10cde0e0b42005725797a88112991ae0a4ffa`）、SDK8 diagnostics `12099205027`（1,630,261 bytes，`9f8d8503738a9990159787a1d83996b490d0e6832547345a5acfb334c7a0756d`）、SDK10 diagnostics `12098735372`（774,612 bytes，`36d6c6766ae8f879794c708ce19f66e459e389717ab70c1f1a7e3dd7e9d443e1`）。这是文档提交的 CI，不改变本报告代码 freshness 输入 `8fc980f`，也不是外机或真实 Playnite host 验收。
+
+未验证真实 Playnite/package-host、外机当前 checkout 与程序集身份、物理 DPI/跨屏、OS UIA/IME、最终屏幕呈现帧，以及 ETW/宿主性能。#1072 已终态成功。下一可执行动作：获得外机失败同次 `summary.json`、R09 TRX/console 及 test DLL/PDB/plugin DLL 身份后逐项对照；无需重跑。若该 artifact 仍不可用，按 R23-08 重做准入，仅在出现身份材料、新可复现缺陷或环境前置变化后领取 Q/R 小批。

@@ -1,3 +1,10 @@
+## 2026-10-17 #1072 文档检查点双 SDK CI 收口
+
+- 文档提交 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d` 对应 Actions [#1072/run `39023752118`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39023752118) 已整体终态 success。SDK8.0.423 job `117370558805` 与 SDK10.0.401 job `117370558697` 的 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类均通过。SDK8 另 Render QA `render-qa OK`，WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包生成及上传成功；SDK10 build/test 与 diagnostics 上传成功。
+- Artifacts：package `12098304583`（90,314,080 bytes，SHA-256 `3ac418287e75d012c6917d80abb10cde0e0b42005725797a88112991ae0a4ffa`）；SDK8 diagnostics `12099205027`（1,630,261 bytes，`9f8d8503738a9990159787a1d83996b490d0e6832547345a5acfb334c7a0756d`）；SDK10 diagnostics `12098735372`（774,612 bytes，`36d6c6766ae8f879794c708ce19f66e459e389717ab70c1f1a7e3dd7e9d443e1`）。完整的 #1072 结果与外机验证边界见[当前 main 复核](evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
+- #1072 仅验证文档提交；R00/R01 freshness 仍绑定代码基线 `8fc980f`，`14/14 fresh / 0 stale / 0 matched source paths / packageIdentity=not-provided`。13 条 MEDIUM toolbar 风险继续保留，未重跑运行时审计。
+- 用户外机 R09 `1/2` 仍是独立失败，不能由当前 main/CI 通过覆盖；外机 HEAD、dirty paths、同次 summary/TRX 与 test/plugin DLL/PDB 身份未取得。R23-08 复扫未发现新的依赖满足产品代码项。下一步等同次外机身份输入；不可用时有新复现或环境前置变化再重新准入。真实 Playnite、物理 DPI/跨屏、OS UIA/IME、最终呈现、ETW/宿主性能仍待验。
+
 ## 2026-10-17 #1071 文档检查点双 SDK CI 收口
 
 - 文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550` 对应 Actions #1071/run `39020360750` 已整体终态 success。SDK8.0.423 job `117360775397` 与 SDK10.0.401 job `117360775218` 均 build/test 成功；SDK8 另 Render QA、WPF 静态审查、Playnite 扩展包与 diagnostics/package artifact 上传成功。SDK10 日志确认实际 SDK `10.0.401` 并上传 diagnostics。

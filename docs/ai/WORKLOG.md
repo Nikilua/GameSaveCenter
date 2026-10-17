@@ -1,3 +1,10 @@
+## 2026-10-17 #1072 文档检查点双 SDK CI 终态
+
+- 文档提交 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d` 对应 [Actions #1072/run `39023752118`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39023752118) 已整体终态 success。SDK8.0.423 job `117370558805` 和 SDK10.0.401 job `117370558697` 均 Release build `0 Warning(s) / 0 Error(s)`、Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类通过（含 R09）。SDK8 另完成 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`GameSaveCenter-0.6.73-playnite.zip`/扩展包生成和产物上传；SDK10 日志明确显示 `10.0.401` 并上传 diagnostics。
+- Artifacts：package `12098304583`，`90,314,080` bytes，SHA-256 `3ac418287e75d012c6917d80abb10cde0e0b42005725797a88112991ae0a4ffa`；SDK8 diagnostics `12099205027`，`1,630,261` bytes，SHA `9f8d8503738a9990159787a1d83996b490d0e6832547345a5acfb334c7a0756d`；SDK10 diagnostics `12098735372`，`774,612` bytes，SHA `36d6c6766ae8f879794c708ce19f66e459e389717ab70c1f1a7e3dd7e9d443e1`。日志、Artifacts API 与逐项结果均核对完成；#1072 处于 package 步骤的运行中日志端点此前返回 404，job 终态后完整日志可用。
+- #1072 仅触发于文档提交 `6c8c85b0`，不改变 R00/R01 代码 freshness：仍绑定 `8fc980f`，`14` 条、`0` 需重跑、`0` 匹配登记源码路径，package identity `not-provided`。13 条 MEDIUM toolbar 风险保留，未重跑运行时审计。当前精确 main/runner 通过不覆盖用户外机 R09 `1/2`；其 source/PDB/DLL 同次身份仍未知。
+- 没有可独立实施且依赖已满足的 Q/R 产品代码缺口。下一可执行动作：如获得外机同次 `summary.json`/TRX/test DLL/PDB/plugin DLL 身份则逐项比对；若仍不可用，按 R23-08 重新准入，直到出现新复现或环境前置变化。真实 Playnite/package-host、物理输入与 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能仍未验。纯文档阶段不重跑 R00/R01 baseline，也未生成本机 artifacts/.tmp。
+
 ## 2026-10-17 #1071 文档检查点双 SDK CI 终态
 
 - 文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550` 对应 [Actions #1071/run `39020360750`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39020360750) 已整体终态 success。SDK8.0.423 job `117360775397` 的 Release build/tests、Render QA、WPF 静态审查、扩展包、构建产物/诊断上传及 job cleanup 全成功；完整 SDK8 日志中 build `0 Warning(s) / 0 Error(s)`、`render-qa OK`。SDK10.0.401 job `117360775218` build/tests 和 diagnostics upload 成功；完整日志显示使用 `10.0.401`、Release build `0 Warning(s) / 0 Error(s)`、测试通过。
