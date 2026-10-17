@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 最新检查点：#1073 双 SDK 终态与 R23-08 准入复扫
+
+当前 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions [#1073/run `39027064950`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39027064950) 已终态成功。SDK8.0.423 job `117380045515` 和 SDK10.0.401 job `117380045495` 均成功；SDK8 完成源码结构检查、诊断自测、Release build/test、Render QA、WPF 静态审查、扩展包及 artifact 上传，SDK10 完成 Release build/test 与 diagnostics 上传。该提交相对代码基线 `8fc980f` 只含文档，不重新绑定 R00/R01 freshness。
+
+再次检查 Round2 `208/208` 与 Round3 `192/192` canonical task rows，并复核 R23-08 准入：目前没有新的依赖满足且有明确代码缺口的 Q/R 产品任务。未收口项仍卡在真实 Playnite/CEF、OS 输入与读屏、物理跨屏/呈现帧或获准系统跟踪权限。用户外机 R09 `1/2` 是独立真实失败；日志中的 Thickness 断言/行号与 main 源及符号映射不一致，缺同次 summary、TRX、test/plugin DLL/PDB 身份，根因未确认。CI 结果不能代替该机器的验证。
+
+下一准入条件为外机同次身份材料、新的可复现问题或相关环境前置变化；先比对现有构建诊断，不要求外机重跑。此前代码基线、详细测试边界和外机材料缺口见下方 #1072 检查点记录。
+
 ## 2026-10-17 当前 main：Q06-02、#1072 双 SDK CI 与外机 R09 对照
 
 当前 `main` 的前序文档 HEAD 为 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d`，代码基线为 `8fc980fce5262411fbb16f0299583c34074f7f61`；代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 `Q06ButtonStateSequenceBehaviorTests`。本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite `net462`/测试 `net472` 定向 Release 测试 `1/1` 通过：双主题 Space 按下后移焦、禁用、卸载均复位 scale/PressedOverlay，fake 命令执行 `0` 次。该本机结果不是完整 solution build。证据及测试程序集/PDB SHA 见[Q06-02 按下中断复核](../design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。

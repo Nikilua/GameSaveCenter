@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 #1073 终态与当前准入复扫
+
+当前 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions [#1073/run `39027064950`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39027064950) 已终态成功。SDK8.0.423 job `117380045515` 与 SDK10.0.401 job `117380045495` 均成功；SDK8 完成 Release build/test、Render QA、静态审查与扩展包，SDK10 完成 Release build/test。该提交仅验证文档；R00/R01 freshness 仍绑定代码基线 `8fc980f`。
+
+重新扫描 Round2 `208/208`、Round3 `192/192` 与 R23-08 后，没有新的依赖满足且有明确实现缺口的 Q/R 产品代码项。用户外机 R09 `1/2` 继续作为未定位的真实失败记录：缺该次 summary/TRX/test DLL/PDB/plugin DLL 身份，CI 不能替代外机结果。下一步仅在身份 artifact、新复现或环境条件变化时重新准入；获取 artifact 后先做身份比对，不要求重跑。真实 Playnite/CEF、OS UIA/IME/读屏、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍待验。用户工作树中的既有未跟踪 TRX/TestResults 保留。
+
 ## 2026-10-17 #1072 双 SDK 文档检查点终态与外机 R09 断言映射
 
 当前文档检查点的前序 `main` HEAD 为 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d`，代码基线为 `8fc980fce5262411fbb16f0299583c34074f7f61`。代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 Q06 按钮状态测试；本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite 定向 Release `1/1` 通过，不是完整 solution build。#1070/#1071/#1072 对各自精确提交的 Actions 均双 SDK 终态成功。#1072/run `39023752118` 对提交 `6c8c85b0`：SDK8.0.423 job `117370558805` 与 SDK10.0.401 job `117370558697` 的 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类与 WPF 隔离 `125/125` 类均通过；SDK8 另有 Render QA、WPF 静态审查、扩展包与 artifact 上传。artifact 身份和外机边界见[R00/R01 当前 main 复核](design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。

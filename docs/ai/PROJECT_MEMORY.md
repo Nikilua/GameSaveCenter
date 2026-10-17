@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：#1073 双 SDK 终态与 Q/R 准入
+
+`main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 的 Actions #1073/run `39027064950` 已终态成功；SDK8.0.423 job `117380045515` 与 SDK10.0.401 job `117380045495` 均成功。SDK8 完成 Release build/test、Render QA、WPF 静态审查、扩展包与诊断上传；SDK10 完成 Release build/test 和 diagnostics 上传。该提交仅验证文档，R00/R01 freshness 继续绑定代码基线 `8fc980f`。
+
+Round2 `208/208` 与 Round3 `192/192` 复扫未发现新且依赖已满足的 Q/R 产品代码缺口。现在未收口的主要条件是真实 Playnite/CEF、OS 输入/UIA/IME/读屏、物理跨屏与屏幕呈现、获准 ETW/系统跟踪。用户外机 R09 `1/2` 仍是独立失败；其 `Thickness(2/1)` 第151行与当前源/PDB 映射不匹配，但缺同次 summary/TRX/test DLL/PDB/plugin DLL 身份，故根因未确认。当前本机或 CI 通过不能证明外机成功。若有同次诊断材料，先直接比较身份；没有新材料时不要求用户重跑，按 R23-08 条件等待新复现或环境变化再准入。
+
 ## 2026-10-17 最新续跑：#1072 文档检查点终态与 R09 外机映射复核
 
 当前文档检查点的前序 `main` HEAD 为 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d`，代码基线为 `8fc980fce5262411fbb16f0299583c34074f7f61`。代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只增强 `Q06ButtonStateSequenceBehaviorTests`，没有改生产按钮/XAML/命令。本机 SDK `8.0.423`、VSTest `17.11.1` 下 Playnite `net462`/测试 `net472` 定向 Release 与双主题 STA 测试 `1/1` 通过；该结果不是完整 solution build 或真实 Playnite/物理输入。源码/测试身份、脱敏 TRX 见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md`。

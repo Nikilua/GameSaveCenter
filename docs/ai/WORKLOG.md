@@ -1,3 +1,9 @@
+## 2026-10-17 #1073 双 SDK 终态与当前准入复扫
+
+- 当前 `main` HEAD `199b49381598aeffa362a4154dced74f202180e9` 对应 Actions #1073/run `39027064950` 已终态成功；SDK8.0.423 job `117380045515` 与 SDK10.0.401 job `117380045495` 均成功。SDK8 完成 Release build/test、Render QA、WPF 静态审查、扩展包与诊断上传；SDK10 完成 Release build/test 与 diagnostics 上传。本提交仅更新文档，不改源码；R00/R01 freshness 仍绑定 `8fc980f`，不因文档提交重跑。
+- Round2 `208/208` 与 Round3 `192/192` 复扫没有发现新的依赖满足 Q/R 产品代码项。真实 Playnite/CEF、OS 输入/UIA/IME/读屏、物理跨屏/呈现帧、ETW/宿主性能仍是实际未验边界；被拒绝的系统跟踪权限不绕过。
+- 外机 R09 `1/2` 仍保留为真实失败，main/CI 成功不覆盖它。缺同次 summary/TRX/test DLL/PDB/plugin DLL 身份，当前只确认日志断言/行号与 main 源映射不一致，未确认具体根因。下一可执行准入条件是外机同次身份材料、新复现或环境前置变化；不要求重跑。工作树中用户既有未跟踪 TRX/TestResults 保持未动；本阶段未生成 artifacts/.tmp。
+
 ## 2026-10-17 #1072 文档检查点双 SDK CI 终态
 
 - 文档提交 `6c8c85b0efae4d15996a2c7382255fcbaa8d2a2d` 对应 [Actions #1072/run `39023752118`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39023752118) 已整体终态 success。SDK8.0.423 job `117370558805` 和 SDK10.0.401 job `117370558697` 均 Release build `0 Warning(s) / 0 Error(s)`、Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类通过（含 R09）。SDK8 另完成 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`GameSaveCenter-0.6.73-playnite.zip`/扩展包生成和产物上传；SDK10 日志明确显示 `10.0.401` 并上传 diagnostics。
