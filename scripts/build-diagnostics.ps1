@@ -73,8 +73,19 @@ function Set-GscDiagnosticAssemblies {
         elseif ($project.EndsWith('.Tests')) { Join-Path $Context.RepoRoot "tests/$project/bin/$Configuration" }
         else { Join-Path $Context.RepoRoot "src/$project/bin/$Configuration" }
         foreach ($dll in @(Get-ChildItem -LiteralPath $projectRoot -Filter "$project.dll" -Recurse -ErrorAction SilentlyContinue)) {
+            $pdbPath = [IO.Path]::ChangeExtension($dll.FullName, '.pdb')
+            $pdbIdentity = $null
+            if (Test-Path -LiteralPath $pdbPath -PathType Leaf) {
+                $pdbFile = Get-Item -LiteralPath $pdbPath
+                $pdbIdentity = [ordered]@{
+                    file = $pdbFile.Name
+                    path = (ConvertTo-GscDiagnosticText $pdbFile.FullName $Context)
+                    sha256 = (Get-FileHash -LiteralPath $pdbFile.FullName -Algorithm SHA256).Hash
+                    bytes = $pdbFile.Length
+                }
+            }
             $row = [ordered]@{ file = $dll.Name; path = (ConvertTo-GscDiagnosticText $dll.FullName $Context); sha256 = (Get-FileHash $dll.FullName).Hash
-                productVersion = $dll.VersionInfo.ProductVersion; bytes = $dll.Length; mvid = $null }
+                productVersion = $dll.VersionInfo.ProductVersion; bytes = $dll.Length; mvid = $null; pdb = $pdbIdentity }
             $stream = $null; $pe = $null
             try {
                 $stream = [IO.File]::OpenRead($dll.FullName)

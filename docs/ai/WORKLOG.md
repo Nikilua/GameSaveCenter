@@ -11080,3 +11080,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 文档提交 `ee8d6aa8d32da2861167d9d49b28e1f912063a8b` 对应 #1063/run `38992929963` 终态成功。SDK10.0.401 job `117279033715` 与 SDK8.0.423 job `117279033559` 均 Release `0/0`、Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类通过，含 R08 page-switch 与 R09 focus-outline 类；SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73` package/诊断 artifacts 上传成功。artifacts：SDK10 diagnostics `12086666105`、SDK8 diagnostics `12086958423`、package `12086774849`。
 - 这是文档提交的 CI 复核；Q11-07 精确代码提交 `6a909cb` 的主验证仍是 #1062/run `38988908489`。外机 R09 真实失败仍未定位，不能由 runner 通过覆盖。
+
+## 2026-10-17 R09 外机构建诊断 PDB 身份补强
+
+- 在 `scripts/build-diagnostics.ps1` 的 DLL 清单中新增相邻 PDB 的 `file/path/sha256/bytes` 元数据；路径使用既有脱敏器，找不到 PDB 时为 `null`。这填补了外机 R09 堆栈行号无法对照 PDB 的可独立诊断缺口，不改生产 UI 或 R09 断言。
+- `scripts/tests/Test-BuildDiagnostics.ps1` 新增合成 DLL/PDB fixture，验证 PDB 哈希与大小写入序列化 `summary.json`、路径脱敏、缺失 PDB 的 `null` 负例。PowerShell 诊断自测通过；`python scripts/validate-source.py` 通过；`git diff --check` 通过。本地未执行完整 solution/WPF build，这些结果不能替代双 SDK CI 或用户外机。
+- #1065/run `38999877162` 对 `350cdcb1` 已整体终态成功，SDK8.0.423 和 SDK10.0.401 两条 GitHub Windows runner 均通过，包含 Core125、Worker362、WPF隔离125类和 R09；SDK8 Render QA/静态审查/扩展包上传完成。这仍不覆盖外机 `R09 1/2`。
+- 没有收到外机同次 `20261014T052440239Z-3fc9f5f1` 诊断目录；其 source/test/plugin/PDB identity 与失败 TRX 仍未验。此改动的双 SDK Actions 尚待本次提交后追踪。自测产生的两个 `.tmp/build-diagnostics-pdb-test-20261017*` 目录已在确认位于 `.tmp` 内后删除；既有未跟踪 TRX 与 TestResults 保留。

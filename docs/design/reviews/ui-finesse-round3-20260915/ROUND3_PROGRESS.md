@@ -2027,3 +2027,9 @@
 - 文档提交 5475ba7d9744ab107b159a89ef930d535f1f95cb 对应 #1064/run 38996324038 已整体终态 success。SDK10.0.401 job 117289578704 与 SDK8.0.423 job 117289578557 均在 Windows Server 2025 干净检出完成 Release 0 warning / 0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类（含 R09）。SDK8 另 Render QA 0 PROBLEM、静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包成功并上传；SDK10/SDK8 diagnostics IDs 12088185573/12088616683，package ID 12088477370。此文档检查点不改 Q11-07 产品代码，也不替代用户外机验证。
 - 查看用户给的 GameSaveCenter-build-diagnostics (4).zip 与 GameSaveCenter-sdk10-build-diagnostics (1).zip：其中运行是 2026-10-13、sourceCommit c9f9179d9b8d38e506dbb1402ae7030eafebea6c；SDK8 R09 2/2，SDK10 的失败是 Worker 取消用例 356/357 且无 R09 子运行。因此它们并非 2026-10-14 外机 R09 目录 20261014T052440239Z-3fc9f5f1。外机 report line151 Thickness(2/1) 对应旧 3f7d0b30 测试形态，而当前 main 已拆分 Chrome 1 DIP 与 ValidationStroke 2 DIP；一键脚本每次使用隔离输出目录，不先假定旧 bin。外机 sourceCommit/dirtyPaths/test DLL/PDB/plugin DLL 身份仍需同次 summary/TRX 才能确定。
 - 本机验证、这些旧 ZIP 与 #1064 远端运行均不能覆盖外机失败；没有改 R09 生产或测试代码。R23-08 准入扫描仍无新可独立实施的 Q/R 代码项。下一项只在外机 identity artifact 到手、新的可复现缺陷或前置环境改变时开始；真实 Playnite/物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。
+
+## 2026-10-17 R09 外机诊断 PDB 身份补强
+
+- #1065/run `38999877162` 对文档提交 `350cdcb1` 已整体终态成功：SDK10.0.401 与 SDK8.0.423 Windows Server 2025 runner 均通过，Core `125/125`、Worker `362/362`、WPF 隔离 `125` 类（含 R09）；SDK8 的 Render QA、静态审查、扩展包与诊断 artifact 上传也成功。这只覆盖精确 CI 输入，不覆盖外机报告。
+- 针对外机 R09 缺少 PDB 行映射身份的证据缺口，`build-diagnostics.ps1` 在 DLL 清单中新增相邻 PDB 的 SHA-256、大小、脱敏路径及缺失值；`Test-BuildDiagnostics.ps1` 合成正/负例验证 JSON 序列化与路径脱敏。本机诊断自测、source validation、`git diff --check` 通过；未执行完整 solution/WPF build，尚待本次提交的双 SDK Actions。
+- 没有改焦点样式、R09 断言或已跟踪 R/Q 任务状态。用户外机 R09 `1/2` 仍是真实失败，精确同次目录及 test/plugin DLL/PDB 身份仍未取得；下一项是提交并追踪当前改动的 CI，之后若获得失败目录便直接比较身份，不要求重跑。R23-08 准入仍无新独立产品代码项；Playnite host、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验证。

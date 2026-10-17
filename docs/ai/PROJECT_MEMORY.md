@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 R09 外机身份诊断补强
+
+在 `scripts/build-diagnostics.ps1` 中，为每个已识别 DLL 增加同目录 PDB 的可选 identity 记录（文件名、脱敏路径、SHA-256、大小；缺失时为 `null`），使失败栈行号可与实际符号文件做同次比较。`Test-BuildDiagnostics.ps1` 用合成 DLL/PDB 验证序列化、有/无 PDB和路径脱敏；本机诊断自测、`scripts/validate-source.py`、`git diff --check` 通过。该工作只补诊断能力，不诊断或覆盖用户外机真实 R09 失败；仍需其同次 summary/TRX/DLL/PDB/plugin 身份。完整 solution/WPF、外机输入仍未验。#1065/run `38999877162` 已在 `350cdcb1` 的 SDK8.0.423/SDK10.0.401 干净 runner 全部成功；新脚本阶段的 Actions 待本次提交后追踪。Round3 准入仍不因此新增或完成产品任务。
+
 ## 2026-10-17 最新续跑补记：#1064 与 R09 外机证据范围
 
 文档检查点 5475ba7d9744ab107b159a89ef930d535f1f95cb 的 Actions #1064/run 38996324038 已双 SDK 整体成功。SDK10.0.401 job 117289578704 与 SDK8.0.423 job 117289578557 在 Windows Server 2025 干净检出上均 Release 0/0、Core 125/125、Worker 362/362、WPF 隔离 125 类（含 R09）；SDK8 Render QA 0 PROBLEM、静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包与诊断上传成功。Artifact IDs：SDK10 diagnostics 12088185573、SDK8 diagnostics 12088616683、package 12088477370。CI 是独立 runner 证据，仍不能覆盖用户外机的实际失败。

@@ -190,6 +190,10 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'D:\workplace\Github\GameSaveCenter\
 
 当前 `main` 的 R09 定向复核 SDK9.0.302 `2/2` 通过；#1043 SDK8 job 在同次运行先通过 R09，之后失败在 R11 测试夹具，SDK10.0.401 job成功。上述结果仍不能识别用户机器的实际 checkout/DLL。没有对应 `summary.json` 前，外机 R09 根因保持未确认。
 
+## 2026-10-17 诊断元数据补强
+
+仓库 `build-diagnostics.ps1` 已扩展为在 `summary.json` 的 DLL identity 下记录相邻 PDB 的文件名、脱敏路径、SHA-256 和大小；没有相邻 PDB 时写 `null`。`Test-BuildDiagnostics.ps1` 用合成 DLL/PDB 验证该 JSON 字段、缺失负例和路径脱敏。本机诊断自测及 source validation 通过；此改动不改变 R09 样式、断言或生产程序集，也不代表真实外机失败已定位。缺少的仍是用户那次失败目录 `20261014T052440239Z-3fc9f5f1` 的同次 summary、TRX/console 与 DLL/PDB 身份。
+
 ## 2026-10-16 用户再次复核本机构建可信度
 
 用户再次附上同一 `20261016T052146719Z-d9d99ac4` 一键运行日志文本，附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514`。可直接确认这次运行失败：Core `125/125`、Worker `357/357`，R09 焦点类 `1/2`，整次一键构建/安装 exit 1。日志显示 VSTest `17.11.1`、.NET Framework testhost `4.8.9221.0`、WPF 隔离类共 `116`；文本没有本次 SDK、sourceCommit、dirtyPaths、源文件 SHA、DLL/PDB SHA 或 plugin DLL identity。

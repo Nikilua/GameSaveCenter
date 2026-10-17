@@ -62,7 +62,33 @@ try {
             if ($private -and $content.Contains($private)) { throw "Diagnostic redaction failed for a private value" }
         }
     }
-    Write-Host "Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON and TRX redaction. Evidence: $($context.RunRoot)"
+
+    $assemblyRoot = Join-Path $context.RunRoot 'assembly-fixture'
+    $testAssemblyDirectory = Join-Path $assemblyRoot 'bin/GameSaveCenter.Playnite.Tests/Release'
+    New-Item -ItemType Directory -Path $testAssemblyDirectory -Force | Out-Null
+    $testAssemblyPath = Join-Path $testAssemblyDirectory 'GameSaveCenter.Playnite.Tests.dll'
+    $testPdbPath = [IO.Path]::ChangeExtension($testAssemblyPath, '.pdb')
+    [IO.File]::WriteAllText($testAssemblyPath, 'synthetic test assembly identity fixture')
+    [IO.File]::WriteAllText($testPdbPath, 'synthetic portable PDB identity fixture')
+    $expectedPdbHash = (Get-FileHash -LiteralPath $testPdbPath -Algorithm SHA256).Hash
+    Set-GscDiagnosticAssemblies $context $assemblyRoot 'Release'
+    $pdbSummaryText = [IO.File]::ReadAllText((Join-Path $context.RunRoot 'summary.json'))
+    $pdbSummary = $pdbSummaryText | ConvertFrom-Json
+    $assemblyRecord = @($pdbSummary.assemblies | Where-Object { $_.file -eq 'GameSaveCenter.Playnite.Tests.dll' } | Select-Object -First 1)[0]
+    if (-not $assemblyRecord -or $assemblyRecord.pdb.sha256 -ne $expectedPdbHash -or $assemblyRecord.pdb.bytes -ne (Get-Item -LiteralPath $testPdbPath).Length) {
+        throw 'Serialized assembly diagnostics did not record the sibling PDB identity.'
+    }
+    if (-not $assemblyRecord.pdb.path.Contains('[repo]') -or $pdbSummaryText.Contains($repoRoot)) {
+        throw 'Sibling PDB diagnostics did not redact the repository path.'
+    }
+
+    Remove-Item -LiteralPath $testPdbPath -Force
+    Set-GscDiagnosticAssemblies $context $assemblyRoot 'Release'
+    $assemblyWithoutPdb = @($context.Assemblies | Where-Object { $_.file -eq 'GameSaveCenter.Playnite.Tests.dll' } | Select-Object -First 1)[0]
+    if (-not $assemblyWithoutPdb -or $null -ne $assemblyWithoutPdb.pdb) {
+        throw 'Assembly diagnostic summary should report a missing sibling PDB as null.'
+    }
+    Write-Host "Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON/TRX redaction and present/missing PDB identity. Evidence: $($context.RunRoot)"
 }
 finally { [Environment]::SetEnvironmentVariable('GSC_DIAGNOSTIC_TEST_PATH', $previous, 'Process') }
 # Controlled native failures are expected inputs. Report the selftest's result,

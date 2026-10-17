@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 R09 诊断元数据补强
+
+Actions #1065/run `38999877162` 对提交 `350cdcb1eb672e952991666fa77add9a207445df` 已整体终态成功：SDK10.0.401 与 SDK8.0.423 Windows Server 2025 job 均通过；Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过（含 R09），SDK8 Render QA、静态审查、扩展包与诊断上传也成功。这证明该提交在两个干净 runner 的输入通过，不代表用户外机问题已解决。
+
+本阶段补强 `scripts/build-diagnostics.ps1`：对诊断目录中每个插件/测试 DLL 记录同目录 PDB 的文件名、脱敏路径、SHA-256 和字节数；PDB 缺失时写 `null`。`Test-BuildDiagnostics.ps1` 使用合成文件验证有/无 PDB、JSON 序列化与路径脱敏。本机 PowerShell 诊断自测和 source validation 通过；这不是完整 solution/WPF 构建。外机 R09 `1/2` 仍未取得同次 summary/TRX/DLL/PDB 身份，未改生产样式或断言。
+
 ## 2026-10-17 补充：#1064 终态与外机诊断 ZIP 范围
 
 文档基线修正提交 5475ba7d9744ab107b159a89ef930d535f1f95cb 对应 Actions #1064/run 38996324038 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/38996324038)。SDK10.0.401 job 117289578704 与 SDK8.0.423 job 117289578557 均在 Windows Server 2025 干净检出中 Release build 0 warning / 0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类通过（含 R09）；SDK8 另 Render QA 0 PROBLEM、静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包及诊断上传成功。Artifacts：SDK10 diagnostics 12088185573、SDK8 diagnostics 12088616683、package 12088477370。该远端结果比本机验证独立，但仍不是用户外机安装输入。

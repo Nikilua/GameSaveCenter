@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 R09 诊断脚本补强待 CI
+
+在 `350cdcb1` 基线上，`build-diagnostics.ps1` 现在会把每个 DLL 的相邻 PDB SHA-256/大小/脱敏路径写入 `summary.json`，不存在时记录 `null`；诊断自测已覆盖有/无 PDB 及 JSON 中的路径脱敏。本机 `Test-BuildDiagnostics.ps1`、`scripts/validate-source.py`、`git diff --check` 均通过；这不是完整应用构建或外机验证。代码和本阶段事实文档提交后，追踪新 Actions 的 SDK8.0.423 与 SDK10.0.401 两 lane 至终态。外机 R09 `1/2` 根因仍未知；新元数据改进只能帮助后续取得同次诊断时比对，不能代替缺失的 `20261014T052440239Z-3fc9f5f1` 文件。
+
 ## 2026-10-17 最新 CI 状态与待验输入
 
 文档纠偏提交 5475ba7d9744ab107b159a89ef930d535f1f95cb 的 #1064/run 38996324038 已终态成功：SDK10.0.401 job 117289578704、SDK8.0.423 job 117289578557 均在 Windows Server 2025 干净检出上完成 Release build/test；两边 Core 125/125、Worker 362/362、WPF 隔离 125 类通过（包含 R09），SDK8 Render QA、WPF 静态审查、扩展包和 artifact 上传成功。artifacts：SDK10 diagnostics 12088185573、SDK8 diagnostics 12088616683、package 12088477370。它不能证明用户外机的安装/构建输入成功。
