@@ -1,6 +1,14 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 当前交接：R08 修正双 SDK 成功，R09 外机仍未定位
+## 2026-10-18 当前交接：#1083 双 SDK 终态，外机 R09 未定位
+
+本轮开始时分支为 `main`、HEAD 为文档提交 `0bde982d49700465498bd0732651e21c10cebe43`；它对应 Actions #1083/run `39066560072` 已终态成功，SDK8.0.423 job `117495353783` 与 SDK10.0.401 job `117495353928` 均成功。Release build/test、Core 125/125、Worker 362/362、Playnite WPF 125/125 通过；SDK8 Render QA、静态审查和扩展包上传也成功。产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。这些 runner 结果不代表外机 checkout 或实际加载的程序集。
+
+本轮外机粘贴文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与之前附件相同，仍是诊断目录 `20261016T052146719Z-d9d99ac4` 的 R09 `1/2` 失败。它的测试第 151 行报告 Chrome 厚度 2/1，而当前 main 第 151 行检查错误色 Brush，第 152 行检查 Chrome `1 DIP`，第 154 行检查 `ValidationStroke=2 DIP`。不据此改生产样式或放宽测试；缺同次 `summary.json`、TRX、test/plugin DLL/PDB identity，外机根因仍未知。本机 SDK9 与 GitHub SDK8/SDK10 不能替外机作结论。
+
+R00/R01 freshness 对 `be314f59` 为 `14 fresh / 0 stale / 0 matched source paths`。重新核对 Round2/3、质量审查与 R23-08 后，当前没有依赖已满足且有具体缺口的 Q/R 产品代码小批；总目标仍未完成。下一步：外机同次身份材料到达时直接比对；如果没有材料，则有新复现、明确功能范围或宿主/设备/权限前置可观察变化时重做任务准入。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能保持未验。用户先前说明无法即时回复，因此本交接不等待其回复，也不要求重跑。
+
+## 2026-10-18 历史交接：R08 修正双 SDK 成功（#1082）
 
 代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 和文档提交 b9eb697152f6def41faeca5753e91e1053d3f829 均已推送 main。代码 Actions #1081/run 39063179675、文档 Actions #1082/run 39063783824 都双 SDK 终态成功。SDK8.0.423/SDK10.0.401 两边 Release build 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 125/125；SDK8 Render QA OK、静态审查 30 XAML / 0 errors / 27 warnings / 177 info、包生成及上传成功。Artifacts 的 ID、大小、digest 见 R08 evidence README。
 

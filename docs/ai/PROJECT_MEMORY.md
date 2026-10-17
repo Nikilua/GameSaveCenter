@@ -1,6 +1,14 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 最新：R08 夹具双 SDK 收口与 R09 外机版本差异
+## 2026-10-18 最新检查点：#1083 双 SDK 成功，外机附件未更新
+
+本轮更新前的 `main` 文档 HEAD `0bde982d49700465498bd0732651e21c10cebe43` 对应 Actions #1083/run `39066560072` 已终态成功。SDK8.0.423 job `117495353783` 与 SDK10.0.401 job `117495353928` 均通过；两边 Release build/test、Core `125/125`、Worker `362/362`、Playnite WPF `125/125` 通过。SDK8 Render QA、30-XAML 静态审查与扩展包上传成功。代码基线仍是 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。这些结果验证精确提交在对应 runner，不代表用户另一台机器成功。
+
+用户本轮粘贴日志 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前文件逐字节相同，诊断目录仍为 `20261016T052146719Z-d9d99ac4`，不是新运行。其 R09 第 151 行厚度断言与当前测试源码第 151 行 Brush 断言不同，表明日志的行号/断言映射不一致；旧/混合源码、符号、程序集仍只是线索。没有同次 summary/TRX/test DLL/PDB/plugin DLL identity，不能定位根因，也不能称外机已解决。用户指出本机构建不能代表外机，这一点成立；本机 SDK9 和 CI runner 均只对各自输入作结论。
+
+R00/R01 freshness 继续绑定 `be314f59`，为 `14 fresh / 0 stale / 0 matched source paths`，测试夹具改动未命中登记源码路径。质量审查、Round3 192 行及 R23-08 最新复核目前没有新的依赖已满足且有具体实现缺口的 Q/R 代码项。继续条件：外机同次身份材料、新的可复现问题/明确功能范围，或宿主、设备、权限前置的可观察变化。真实 Playnite/CEF、OS UIA/IME/读屏、物理 DPI/跨屏/呈现、ETW/宿主性能仍未验；整体目标未完成。
+
+## 2026-10-18 截至 #1082：R08 夹具双 SDK 收口与 R09 外机版本差异
 
 代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 的 #1081/run 39063179675 已双 SDK 成功；后续文档提交 b9eb6971 的 #1082/run 39063783824 也双 SDK 成功。两 run 的 SDK8.0.423、SDK10.0.401 都 Release 0/0、Core 125/125、Worker 362/362、Playnite WPF 125/125，含 R08MotionHotChangeBehaviorTests 与 UiFinesseFoundationTests。SDK8 Render QA OK、WPF 静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包生成上传成功；artifact IDs/digests 见 R08 evidence README。
 

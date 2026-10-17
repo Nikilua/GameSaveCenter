@@ -1,3 +1,10 @@
+## 2026-10-18 #1083 双 SDK 终态与 R09 外机重复日志核验
+
+- 本轮起始文档 HEAD `0bde982d49700465498bd0732651e21c10cebe43` 对应 Actions #1083/run `39066560072` 已终态成功；SDK8.0.423 job `117495353783` 与 SDK10.0.401 job `117495353928` 均通过。两 lane Release build/test、Core `125/125`、Worker `362/362`、WPF 隔离 `125/125` 通过。SDK8 Render QA OK、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包成功。产品代码基线仍为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`；artifact IDs/SHA 记在 `docs/ai/WORKLOG.md`。
+- 当前再收到的外机文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前附件相同，仍是 `20261016T052146719Z-d9d99ac4`，没有新运行身份。历史失败 R09 `1/2` 保留为真实外机失败；其 line 151 Thickness 2/1 与当前 main line 151 Brush 断言不同。没有同次 `summary.json`、TRX、test/plugin DLL/PDB 身份，不能确认根因或说外机成功。
+- 用户指出本机构建不能代表外机是否成功，此判断正确。本机 SDK9 对 R08 的定向结果、GitHub SDK8/SDK10 精确提交结果分别只证明各自输入；均不能代替外机当前 checkout/runtime。
+- R00/R01 freshness 对代码 SHA `be314f59` 仍为 `14 fresh / 0 stale / 0 matched source paths`；测试夹具改动没有命中登记源码路径。再次阅读质量审查、Round3 192 项与 R23-08，没有发现新的依赖已满足且有具体实现缺口的 Q/R 代码项。下一可执行条件：外机同次身份材料、新的可复现缺陷/明确范围，或相关宿主/设备/权限前置发生可观察变化。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验；总目标未完成。
+
 ## 2026-10-18 R08 app-motion 修正双 SDK 收口与 R09 外机版本差异
 
 - 代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 对应 Actions #1081/run 39063179675 已整体 success；后续文档提交 b9eb697152f6def41faeca5753e91e1053d3f829 对应 #1082/run 39063783824 也整体 success。两 run 的 SDK8.0.423 与 SDK10.0.401 job 均 Release 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 125/125，实际覆盖 R08MotionHotChangeBehaviorTests 与 UiFinesseFoundationTests。

@@ -71,3 +71,11 @@ R08 夹具修正已提交并推送至 main：代码 SHA be314f59c6a3a0b93d890cf3
 ## R09 外机断言与当前源码版本差异
 
 外机粘贴日志期待 Chrome.BorderThickness=2、实际 1。历史测试提交 3f7d0b3027c968620e412d38394c69e060fc0564 直接检查错误态 Chrome=2 DIP；提交 f13b9e05de0cf502ac61e97b0fbad8433b339b3f 起生产模板和测试改成 Chrome=1 DIP、独立 ValidationStroke=2 DIP，另有错误恢复状态断言。当前 main 使用后一版，#1079、#1081、#1082 的完整 WPF 125 类均通过。这个源码形态差异提示外机可能使用旧/混合 test 产物或 checkout，但外机同次 checkout、TRX、test/plugin DLL/PDB 身份仍缺；不推断成已确认根因或已修复。
+
+## #1083 文档检查点双 SDK 终态
+
+历史文档 HEAD `0bde982d49700465498bd0732651e21c10cebe43` 对应 Actions #1083/run `39066560072` 已由 GitHub API 核验终态成功。SDK8.0.423 job `117495353783` 和 SDK10.0.401 job `117495353928` 均成功。两 lane 的 Release build/test、Core `125/125`、Worker `362/362`、WPF 隔离 `125/125` 通过；SDK8 Render QA、30-XAML 静态审查及 package 上传成功。产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`，该 run 仅验证文档 HEAD 所含的精确代码/runner 输入，不能证明外机安装或加载程序集。
+
+Artifacts：SDK10 diagnostics `12113568013`，775,150 bytes，SHA-256 `1e4fd2c98056804044c60021324632621039a0454267d8a7f364a69d108d7127`；SDK8 diagnostics `12114328619`，1,627,808 bytes，`1e331115c26317bab230f999674eb534cfaeab219f6c9d8538ad414586b42dfb`；package `12114328615`，90,313,962 bytes，`785878fa1ecd78fa051fd3b39e4effdd530e2b1af4352b498722341faa70924e`。
+
+本轮再次附加的文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与已登记外机日志完全一致，仍是 `20261016T052146719Z-d9d99ac4`，不是外机新运行。当前源 line 151 为 Brush 断言，而该日志在 line 151 报 Thickness 2/1；保留失败事实并等待该次 `summary.json`、TRX、test/plugin DLL/PDB 身份以区分外机输入，不能将本机或 CI 通过写成外机通过。

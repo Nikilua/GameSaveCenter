@@ -1,6 +1,16 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-18 最新检查点：R08 夹具双 SDK 收口、R09 外机身份待比对
+## 2026-10-18 最新检查点：#1083 双 SDK 终态、外机失败附件仍为旧运行
+
+本轮更新前 `main` 的 HEAD 为文档提交 `0bde982d49700465498bd0732651e21c10cebe43`，产品代码基线为 `be314f59c6a3a0b93d890cf39ee4c6c26ff2c523`。该 HEAD 对应 Actions [#1083/run `39066560072`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39066560072) 已终态成功：SDK8.0.423 job `117495353783`、SDK10.0.401 job `117495353928` 均成功。两个 lane 对该提交 Release build/test 通过；各 WPF 隔离组 `125/125`，Core `125/125`、Worker `362/362`。SDK8 另 Render QA OK、30 XAML 静态审查 0 errors / 27 warnings / 177 info，扩展包和诊断上传成功。该结果证明对应 GitHub runner 对这些提交通过，不证明另一台电脑的 checkout、加载程序集或 Playnite 呈现。
+
+#1083 artifacts：SDK10 diagnostics `12113568013`（775,150 bytes，SHA-256 `1e4fd2c98056804044c60021324632621039a0454267d8a7f364a69d108d7127`）；SDK8 diagnostics `12114328619`（1,627,808 bytes，`1e331115c26317bab230f999674eb534cfaeab219f6c9d8538ad414586b42dfb`）；package `12114328615`（90,313,962 bytes，`785878fa1ecd78fa051fd3b39e4effdd530e2b1af4352b498722341faa70924e`）。
+
+本轮重新收到的外机粘贴文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前输入逐字节相同；其目录仍是 `20261016T052146719Z-d9d99ac4`，R09 失败 `1/2`，没有当前外机的新运行身份。附件第 151 行报告 `Thickness(2)` 对 `Thickness(1)`；当前 main 的测试第 151 行是错误色 Brush 断言，第 152 行检查 Chrome `1 DIP`，独立 `ValidationStroke` 在第 154 行检查 `2 DIP`。这说明日志的行号/断言映射与当前源码不一致，但不能单独确认旧 DLL/PDB 或 checkout 为根因。缺少失败同次 `summary.json`、TRX 和 test/plugin DLL/PDB 身份，外机结果仍未解决；不以本机或 CI 通过覆盖。
+
+R00/R01 freshness 对产品代码 SHA `be314f59` 仍为 `14 fresh / 0 stale / 0 matched source paths`，package identity `not-provided`；本次测试夹具修改没有触及登记源码路径。重读质量审查、192 项账本与 R23-08 后，当前无新的、依赖已满足且有具体实现缺口的 Q/R 产品代码项。下一可执行条件是外机同次身份材料、新的可复现缺陷/明确范围，或宿主、设备、权限前置发生可观察变化。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。
+
+## 2026-10-18 历史检查点：R08 夹具双 SDK 收口（#1082）
 
 当前 main 的产品代码提交为 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523（固定应用动效测试时长）；同步状态的文档提交 b9eb697152f6def41faeca5753e91e1053d3f829 对应 #1082/run 39063783824。代码 Actions #1081/run 39063179675 与文档 Actions #1082/run 39063783824 均已双 SDK 终态成功。两 run 的 SDK8.0.423、SDK10.0.401 job 都是 Release 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 125/125；日志明确包含 R08MotionHotChangeBehaviorTests 与 UiFinesseFoundationTests。SDK8 Render QA 为 OK，WPF 静态审查 30 XAML / 0 errors / 27 warnings / 177 info，扩展包生成及上传成功。完整 logs/artifact digest 见 R08 evidence README。
 
