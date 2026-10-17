@@ -1,12 +1,14 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 当前 R08 app-motion 修正与 R09 外机断言差异
+## 2026-10-18 最新：R08 夹具双 SDK 收口与 R09 外机版本差异
 
-当前代码 HEAD be314f59 已推送；#1081/run 39063179675 的 SDK8.0.423 与 SDK10.0.401 job 记录时都在 Release 编译/测试。#1080 SDK10 已失败于 R08 app-motion 启动正例（opacity=1、loaded、无 clock），SDK8 进入包生成仍运行；artifact 12112485036 完整日志已读取。
+代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 的 #1081/run 39063179675 已双 SDK 成功；后续文档提交 b9eb6971 的 #1082/run 39063783824 也双 SDK 成功。两 run 的 SDK8.0.423、SDK10.0.401 都 Release 0/0、Core 125/125、Worker 362/362、Playnite WPF 125/125，含 R08MotionHotChangeBehaviorTests 与 UiFinesseFoundationTests。SDK8 Render QA OK、WPF 静态审查 30 XAML / 0 errors / 27 warnings / 177 info、扩展包生成上传成功；artifact IDs/digests 见 R08 evidence README。
 
-R08 测试夹具改为显式一秒时长，保留共享 GscMotion 跟踪/取消与行为断言；本机 SDK 9.0.302 / VSTest 17.14.1 Release 定向类 1/1 通过，哈希/TRX 在 R08 evidence README。SDK9 不替代 CI。
+#1080/run 39061487759 整体 failure：SDK10 R08 active-clock 正例失败，SDK8 全部通过；已用完整日志确认。be314f59 将 app-motion 夹具改用显式时长后，#1081 SDK8/SDK10 全量测试均通过。SDK9.0.302 / VSTest17.14.1 本机定向行为类 1/1 是补充，不替代 CI。
 
-外机 R09 期待 Chrome 2 DIP 的断言与当前源码不匹配。历史测试提交 3f7d0b30 检查 Chrome.BorderThickness=2；f13b9e05 起共享模板/测试拆成 Chrome=1 与独立 ValidationStroke=2，当前 main 如此且 #1079 全 WPF 125 类通过。旧/混合 test DLL 或 checkout 是可能性，但缺同次 checkout、TRX、test/plugin DLL/PDB，根因未确认，不能宣称外机问题已解决。总目标未完成。
+外机 R09 Expected Chrome thickness 2 / Actual 1 与当前源码不一致。历史测试 3f7d0b30 断言 Chrome=2 DIP；f13b9e05 起模板/测试拆成 Chrome=1、ValidationStroke=2。当前 main 的 #1079/#1081/#1082 干净 CI 都通过 WPF 125 类，但这不能证明外机加载程序集正确。缺同次 checkout、TRX、test/plugin DLL/PDB 身份，旧或混合产物只是待证线索，不能称外机已解决。
+
+Round2/3 与 R23-08 最近复扫无新的依赖已满足且有明确代码缺口的 Q/R 项。若外机身份材料到达，先对照，不要求用户重跑；若没有新身份材料、新复现或宿主/设备/权限前置变化，当前无独立可实施的 Q/R 代码项。真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/呈现、ETW/宿主性能仍未验。总目标未完成。
 
 ## 2026-10-18 最新：#1079 R08 双 SDK 收口与 R00/R01 freshness
 

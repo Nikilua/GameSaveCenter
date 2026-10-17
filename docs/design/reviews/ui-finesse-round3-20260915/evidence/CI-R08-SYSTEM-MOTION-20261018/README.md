@@ -56,3 +56,18 @@ R08 夹具修正已提交并推送至 main：代码 SHA be314f59c6a3a0b93d890cf3
 用户外机 R09 文本报告 Chrome.BorderThickness 期望 2,2,2,2、实际 1,1,1,1。仓库历史显示：初始测试提交 3f7d0b3027c968620e412d38394c69e060fc0564 直接断言错误态 Chrome 为 2 DIP；提交 f13b9e05de0cf502ac61e97b0fbad8433b339b3f 同步修改生产模板和测试，将内容 Chrome 固定为 1 DIP、独立错误 ValidationStroke 设为 2 DIP，并新增恢复状态检查。当前 main 用后一形态，#1079 精确代码 WPF 全量 125/125 通过。外机日志测试形态与当前源码不同，可能涉及旧/混合测试程序集或 checkout；没有同次源码、TRX、test/plugin DLL/PDB 身份前，无法确定根因或确认外机已修复。
 
 本机 SDK9 1/1、GitHub #1079 全量测试和当前代码行为分别是有限证据，均不证明用户外机实际加载了同一 test/plugin 产物。真实 Playnite、外机程序集身份与呈现仍待验证。
+## #1081 代码修正与 #1082 文档提交双 SDK 终态
+
+代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523 的 Actions #1081/run 39063179675 已整体 success。SDK10 job 117485212614、SDK8 job 117485212854 均 Release build 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125/125；日志明确覆盖 R08MotionHotChangeBehaviorTests（第 61/125 类）、UiFinesseFoundationTests（第 121/125 类），随后报告全部 Playnite 测试成功。SDK8 另 Render QA OK、30 个 XAML 静态审查 0 errors / 27 warnings / 177 info、扩展包生成及上传成功。
+
+#1081 artifacts：SDK10 diagnostics 12112518432（774,065 bytes，SHA-256 b253a85499ae31178037772d42d7831a0d2e45dba9ea89b5b93b57189f600f08）；SDK8 diagnostics 12113496075（1,623,054 bytes，SHA-256 ac35ce2c95dba9c00568ea5ae4c605d0e620076d026b9a329432093db0d9bcac）；package 12113301806（90,314,050 bytes，SHA-256 20a2eeccb8e358096ee181cc0d735061282c858680549d5bc370cd5efa46a390）。
+
+文档提交 b9eb697152f6def41faeca5753e91e1053d3f829 对应 #1082/run 39063783824 也整体 success。SDK10 job 117487049149、SDK8 job 117487049347 均 Release 0/0、Core 125/125、Worker 362/362、WPF 125/125；SDK8 Render QA、WPF 静态审查与扩展包均通过。Artifacts：SDK10 diagnostics 12112952511（774,340 bytes，SHA-256 3f0a28ab24a073ef89627c191d8176d838172b493e911eae3a2b4776fe439d0d）；SDK8 diagnostics 12113009402（1,625,081 bytes，SHA-256 f15f0ade7391f9e8ed62f92d3e7244fffeab881eb11828fc24d783c958954e33）；package 12112844773（90,313,972 bytes，SHA-256 efb9999efd7cee64ac9b4aa4bced0a52ec104bb47366801f2d98d42d24c4a2d5）。
+
+作为修正前对照，#1080/run 39061487759 整体 failure。SDK8 job 117480204000 的 Release build、Core 125/125、Worker 362/362、WPF 125/125、Render QA、静态审查与包上传全部成功；SDK10 job 117480203788 在 R08 活动动画时钟正例失败。SDK8 artifacts：diagnostics 12113205878（1,627,137 bytes，SHA-256 adbd95a4357a40729a158f41bda0f2b66dd3cb54106a26d4f300fdef229b481e）；package 12112444661（90,313,860 bytes，SHA-256 4c8a8f41c47d966fa9105883ac59a1dbedec4bb2599214960261a9b4a26e913c）。SDK10 diagnostics 12112485036（518,122 bytes，SHA-256 31a556e3a6ab9777f4512b13bd73d649ebe5b058a71a27a67d9eb38c6bc9d）。
+
+本机 SDK9.0.302 / VSTest17.14.1 定向构建与 R08 类 1/1 通过只作补充；SDK8 与 SDK10 CI 分开记录。对用户“本机成功是否代表外机成功”的答复是否定的：clean-runner CI 可验证精确 commit 的构建/测试，不证明外机实际加载 DLL 或 Playnite 呈现。
+
+## R09 外机断言与当前源码版本差异
+
+外机粘贴日志期待 Chrome.BorderThickness=2、实际 1。历史测试提交 3f7d0b3027c968620e412d38394c69e060fc0564 直接检查错误态 Chrome=2 DIP；提交 f13b9e05de0cf502ac61e97b0fbad8433b339b3f 起生产模板和测试改成 Chrome=1 DIP、独立 ValidationStroke=2 DIP，另有错误恢复状态断言。当前 main 使用后一版，#1079、#1081、#1082 的完整 WPF 125 类均通过。这个源码形态差异提示外机可能使用旧/混合 test 产物或 checkout，但外机同次 checkout、TRX、test/plugin DLL/PDB 身份仍缺；不推断成已确认根因或已修复。

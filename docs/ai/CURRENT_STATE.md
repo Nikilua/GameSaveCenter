@@ -1,14 +1,18 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-18 最新检查点：be314f59 已推送，双 SDK CI 运行中
+## 2026-10-18 最新检查点：R08 夹具双 SDK 收口、R09 外机身份待比对
 
-当前 main HEAD 为代码提交 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523（固定应用动效测试时长）。新代码 Actions #1081/run 39063179675 的 SDK10.0.401 job 117485212614、SDK8.0.423 job 117485212854 均在 Release 编译/测试，尚无终态。前一提交 7b5ea6b1 的 #1080/run 39061487759 中，SDK10 job 117480203788 已失败，SDK8 job 117480204000 记录时进入扩展包生成、仍运行。SDK10 build 0/0、Core 125/125、Worker 362/362；WPF 第 [61/125] 类 R08MotionHotChangeBehaviorTests 报告活动动画启动正例 opacity=1; loaded=True、无 clock。TextServices COM 异常在断言后。完整日志已读取，diagnostics artifact 12112485036（518,122 bytes，SHA-256 31a556e3a6ab9777f4512b13bd73d649ebe5b058a71a27a67d9eb38c6bc9d）。
+当前 main 的产品代码提交为 be314f59c6a3a0b93d890cf39ee4c6c26ff2c523（固定应用动效测试时长）；同步状态的文档提交 b9eb697152f6def41faeca5753e91e1053d3f829 对应 #1082/run 39063783824。代码 Actions #1081/run 39063179675 与文档 Actions #1082/run 39063783824 均已双 SDK 终态成功。两 run 的 SDK8.0.423、SDK10.0.401 job 都是 Release 0 warning/0 error、Core 125/125、Worker 362/362、Playnite WPF 125/125；日志明确包含 R08MotionHotChangeBehaviorTests 与 UiFinesseFoundationTests。SDK8 Render QA 为 OK，WPF 静态审查 30 XAML / 0 errors / 27 warnings / 177 info，扩展包生成及上传成功。完整 logs/artifact digest 见 R08 evidence README。
 
-修正只改 R08MotionHotChangeBehaviorTests 夹具：改用既有 GscMotion.AnimateEntrance 显式时长重载；生产代码、动画策略及启动/取消/恢复负例断言不变。be314f59 已推送。本机 SDK 9.0.302 / VSTest 17.14.1 的 Playnite net462 / tests net472 Release 定向构建与该行为类 1/1 通过，source validation、diff check 通过；TRX、源/DLL 哈希见 R08 CI 证据。SDK9 不替代 CI SDK8/SDK10。
+#1081 code artifacts：SDK10 diagnostics 12112518432（774,065 bytes，SHA-256 b253a85499ae31178037772d42d7831a0d2e45dba9ea89b5b93b57189f600f08）；SDK8 diagnostics 12113496075（1,623,054 bytes，ac35ce2c95dba9c00568ea5ae4c605d0e620076d026b9a329432093db0d9bcac）；package 12113301806（90,314,050 bytes，20a2eeccb8e358096ee181cc0d735061282c858680549d5bc370cd5efa46a390）。#1082 documentation artifacts：SDK10 diagnostics 12112952511（774,340 bytes，3f0a28ab24a073ef89627c191d8176d838172b493e911eae3a2b4776fe439d0d）；SDK8 diagnostics 12113009402（1,625,081 bytes，f15f0ade7391f9e8ed62f92d3e7244fffeab881eb11828fc24d783c958954e33）；package 12112844773（90,313,972 bytes，efb9999efd7cee64ac9b4aa4bced0a52ec104bb47366801f2d98d42d24c4a2d5）。
 
-R00/R01 freshness 在 be314f59 为 14 fresh / 0 stale / 0 matched source paths，package identity not-provided；只复核已登记源码范围。用户外机 R09 日志期待 Chrome.BorderThickness=2，实际为 1；该测试断言来自旧测试形态 3f7d0b30。f13b9e05 起测试与共享模板将内容 Chrome 保持 1 DIP、错误轮廓移至独立 ValidationStroke 2 DIP，并加入恢复检查；当前 main 使用新形态，且 #1079 精确 CI 的 WPF 125/125（含 R09）通过。外机日志与当前测试源码形态不一致，旧/混合测试产物是可能性，但缺少同次 checkout、TRX、test/plugin DLL/PDB 身份，不能断言根因或称外机已解决。
+前一提交 7b5ea6b1 的 #1080/run 39061487759 整体失败：SDK10 job 117480203788 的 R08 动画启动正例没有活动 clock（opacity=1、loaded），完整 log 已读取；SDK8 job 117480204000 完整成功，含 WPF 125/125、Render QA、静态审查与包上传。修复后 #1081 两 SDK 均通过。#1080 artifacts：SDK10 diagnostics 12112485036（518,122 bytes，31a556e3a6ab9777f4512b13bd73d649ebe5b058a71a27a67d9eb38c6bc9d）；SDK8 diagnostics 12113205878（1,627,137 bytes，adbd95a4357a40729a158f41bda0f2b66dd3cb54106a26d4f300fdef229b481e）；package 12112444661（90,313,860 bytes，4c8a8f41c47d966fa9105883ac59a1dbedec4bb2599214960261a9b4a26e913c）。
 
-下一步：等待 #1080 SDK8 和 #1081 SDK8/SDK10 所有 job 至终态，失败时读取完整日志；不得把运行中的 CI 报为阶段完成。外机 R09 1/2 仍是独立真实失败，CI 不覆盖外机实际安装。真实 Playnite、物理 DPI/跨屏、OS UIA/IME/读屏、最终呈现帧、ETW/宿主性能仍未验。
+本机 SDK 9.0.302 / VSTest 17.14.1 对 Playnite net462 / tests net472 Release 定向构建和 R08 行为类 1/1 通过；它是补充，CI SDK8/10 分别记录。R00/R01 freshness 对代码 SHA be314f59 为 14 fresh / 0 stale / 0 matched source paths，package identity not-provided；本次测试夹具路径不命中登记源码范围。
+
+外机 R09 报告 Chrome.BorderThickness 期望 2、实际 1。历史测试提交 3f7d0b30 的形态直接断言 Chrome=2 DIP；f13b9e05 起共享模板/测试改为内容 Chrome=1 DIP、独立 ValidationStroke=2 DIP，并校验恢复。当前 main 是后一形态，#1079、#1081、#1082 的全量 WPF 测试通过。外机日志和当前测试源码形态不一致，旧/混合程序集或 checkout 是线索，不是根因结论；缺同次 checkout、TRX、test/plugin DLL/PDB 身份，不能称外机已解决。干净 CI 不证明外机实际加载的程序集或 Playnite 呈现。
+
+Round2/3 与 R23-08 最近准入未发现新的依赖已满足且有明确代码缺口的 Q/R 项。下一可执行动作是在外机 R09 同次身份材料到达时对照源码/test/plugin DLL/PDB；若没有新身份材料、新复现或环境前置变化，暂时没有独立可实施的 Q/R 代码项。真实 Playnite host、OS UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能仍未验。
 
 ## 2026-10-18 最新检查点：#1077 双 SDK 终态与 Q/R 准入复核
 
