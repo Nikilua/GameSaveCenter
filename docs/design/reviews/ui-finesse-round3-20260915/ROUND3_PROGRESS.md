@@ -1,10 +1,17 @@
+## 2026-10-17 #1071 文档检查点双 SDK CI 收口
+
+- 文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550` 对应 Actions #1071/run `39020360750` 已整体终态 success。SDK8.0.423 job `117360775397` 与 SDK10.0.401 job `117360775218` 均 build/test 成功；SDK8 另 Render QA、WPF 静态审查、Playnite 扩展包与 diagnostics/package artifact 上传成功。SDK10 日志确认实际 SDK `10.0.401` 并上传 diagnostics。
+- SDK8 package `12097522989` SHA-256 `63a7e4f04dece80583e479c7d3f8f4ad00cccb5161a3955bae40a01d764ee314`；SDK8 diagnostics `12097701530` SHA `240250bd996a538b53622301f6b95e4b3d7273f5767923cd0983c965c20653ad`；SDK10 diagnostics `12096373383` SHA `3a07125de9066430be2c753f5c014aabe72d3b80ab782ae8c43bc2fc09d49334`。精确 CI 与当前代码基线差异见[R00/R01 当前 HEAD 复核](evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
+- #1071 只更改文档，不重新绑定 R00/R01 baseline；freshness 仍为代码基线 `8fc980f` 的 `14/14 fresh / 0 stale / 0 matched source paths`、package identity `not-provided`。13 条 MEDIUM toolbar 风险继续保留，未重跑运行时审计。
+- 外机 R09 仍 `1/2` 且源码/PDB 行映射与当前断言不符；具体外机 HEAD 和测试/插件 DLL/PDB identity 未取得，#1070/#1071 当前 main/CI 通过都不覆盖该失败。当前 R23-08 admission 没有新的依赖已满足 Q/R 产品代码缺口。下一可执行动作：用户方便时按同次 artifact 身份对照，不要求重跑；若身份材料仍不可用，等待新复现或环境前置变化再重新准入。真实 Playnite、物理输入、DPI/跨屏、OS UIA/IME、呈现帧及 ETW/宿主性能仍待验。
+
 ## 2026-10-17 #1070 双 SDK 收口与 R00/R01 / 外机 R09 证据校正
 
 - 当前 `main` HEAD `8fc980fce5262411fbb16f0299583c34074f7f61` 对应 Actions #1070/run `39016699991` 已终态成功。SDK8.0.423 job `117350168944`、SDK10.0.401 job `117350169177` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类通过，含 Q06-02 与 R09；SDK8 Render QA `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，包与诊断 artifacts 上传成功。具体 artifacts/SHA 与 sdk 分 lane 见[R00/R01 当前 HEAD 复核](evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
 - R00/R01 freshness 对 HEAD 为 `14` 条、`0` 需重跑、`0` 个登记源码路径命中，`packageIdentity=not-provided`。未重跑2026-10-15全量运行时布局审计；13 条 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 保留为风险。当前没有由 freshness/Render QA 支持的新生产 UI 修复。
 - 用户外机日志的 R09 失败仍是有效的失败记录：`1/2`，Expected `Thickness(2)` / Actual `Thickness(1)`，line151。逐行比较显示它对应历史 `e12119bf` 的旧 Chrome `2 DIP` 断言；当前源在 `f13b9e05` 后把 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP` 分开，当前 line151 是颜色断言、line154 才是 ValidationStroke 厚度。由此确认日志的源码或符号映射与当前 main 不一致；外机 HEAD、dirty paths、同次 summary/TRX、test DLL/PDB/plugin DLL 未取得，具体来源仍未知。#1070 当前 main CI 通过不能覆盖外机失败。
 - Core 的 `ActivityTimelineMapperTests.CloudFailureMapsToFailedCloudActivity` 在用户日志里是通过项。`libpng iCCP` warning 不在断言调用栈；`TextServicesContext.InvalidComObjectException` 出现在 WPF teardown，不解释厚度值。未更改当前模板或弱化断言。
-- R00/R01 freshness 和 R23-08 准入重扫后，没有依赖已满足且有明确产品代码缺口的 Q/R 小批。下一执行点：提交本次证据校正、跟踪新 Actions 两 SDK lane 至终态，再按 R23-08 条件准入。物理鼠标输入、异步取消时序、真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
+- R00/R01 freshness 和 R23-08 准入重扫后，没有依赖已满足且有明确产品代码缺口的 Q/R 小批。后续文档提交 `9feb88c0` 与 #1071 两 SDK lanes 已终态成功；按 R23-08 条件继续准入。物理鼠标输入、异步取消时序、真实 Playnite、OS UIA/IME、物理 DPI/跨屏、最终呈现、ETW/宿主性能仍未验。
 
 ## 2026-10-17 Q06-02 当前 main 按下中断行为补证
 

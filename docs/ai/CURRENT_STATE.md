@@ -1,12 +1,12 @@
 # GameSaveCenter 当前事实入口
 
-## 2026-10-17 当前 main：Q06-02、#1070 CI 与外机 R09 对照
+## 2026-10-17 当前 main：Q06-02、#1071 CI 与外机 R09 对照
 
-当前 `main` HEAD 为 `8fc980fce5262411fbb16f0299583c34074f7f61`；代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 `Q06ButtonStateSequenceBehaviorTests`。本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite `net462`/测试 `net472` 定向 Release 测试 `1/1` 通过：双主题 Space 按下后移焦、禁用、卸载均复位 scale/PressedOverlay，fake 命令执行 `0` 次。该本机结果不是完整 solution build。证据及测试程序集/PDB SHA 见[Q06-02 按下中断复核](../design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。
+当前 `main` HEAD 为文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550`，代码基线为 `8fc980fce5262411fbb16f0299583c34074f7f61`；代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只扩展 `Q06ButtonStateSequenceBehaviorTests`。本机 SDK `8.0.423` / VSTest `17.11.1` 的 Playnite `net462`/测试 `net472` 定向 Release 测试 `1/1` 通过：双主题 Space 按下后移焦、禁用、卸载均复位 scale/PressedOverlay，fake 命令执行 `0` 次。该本机结果不是完整 solution build。证据及测试程序集/PDB SHA 见[Q06-02 按下中断复核](../design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。
 
-R00/R01 freshness 对当前 HEAD 为 `14` 条记录、`0` 需重跑、`0` 匹配登记源码路径，`packageIdentity=not-provided`。#1069/run `39013848650` 与精确代码提交 #1070/run `39016699991` 均已双 SDK 终态成功；#1070 的 SDK8.0.423 job `117350168944` 和 SDK10.0.401 job `117350169177` 均通过 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类，含 R09/Q06-02。SDK8 Render QA 为 `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`。完整证据与 artifacts 身份见[R00/R01 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
+R00/R01 freshness 绑定代码 HEAD `8fc980f`：`14` 条记录、`0` 需重跑、`0` 匹配登记源码路径，`packageIdentity=not-provided`。#1069/run `39013848650` 与精确代码提交 #1070/run `39016699991` 均已双 SDK 终态成功；#1070 SDK8.0.423/SDK10.0.401 jobs `117350168944`/`117350169177` 均通过 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类，含 R09/Q06-02。随后文档提交 #1071/run `39020360750` 也双 SDK 成功：SDK8 job `117360775397` 的 build/test、Render QA、静态审查、打包与 artifacts 上传成功；SDK10 job `117360775218` build/test 和诊断上传成功。#1071 仅更新文档，freshness 仍绑定 `8fc980f`，没有声称对 `9feb88c0` 重跑源码基线。完整 artifact 身份见[当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)。
 
-用户另一台机器日志报告 R09 `1/2`、expected thickness `2` / actual `1`、源码行 `151`。该组合与历史 `e12119bf` 旧 Chrome `2 DIP` 断言相符，不与当前源码/PDB映射一致：当前 Chrome 为 `1 DIP`，ValidationStroke 为 `2 DIP`；具体外机 checkout/DLL/PDB 输入仍未知，所以这是输入身份不一致的线索，不是已确认的根因。CI 成功只适用于对应提交与 runner，不覆盖外机失败。物理鼠标移出、异步命令取消和真实 Playnite 宿主仍待验；Round2 Q06-02 最终状态未完成。13 条 MEDIUM toolbar layout risk 继续保留，CI Render QA 未重跑该审计。R23-08 准入没有发现当前依赖已满足且存在明确实现缺口的 Q/R 项。提交本次文档检查点后跟踪新 Actions 两 SDK lane；下一步按准入表在新身份材料、复现问题或环境条件变化时选取小批。
+用户另一台机器日志报告 R09 `1/2`、expected thickness `2` / actual `1`、源码行 `151`。该组合与历史 `e12119bf` 旧 Chrome `2 DIP` 断言相符，不与当前源码/PDB映射一致：当前 Chrome 为 `1 DIP`，ValidationStroke 为 `2 DIP`；具体外机 checkout/DLL/PDB 输入仍未知，所以这是输入身份不一致的线索，不是已确认的根因。CI 成功只适用于对应提交与 runner，不覆盖外机失败。物理鼠标移出、异步命令取消和真实 Playnite 宿主仍待验；Round2 Q06-02 最终状态未完成。13 条 MEDIUM toolbar layout risk 继续保留，CI Render QA 未重跑该审计。R23-08 准入没有发现当前依赖已满足且存在明确实现缺口的 Q/R 项。下一可执行动作是用户方便后对照外机同次诊断身份；若仍不可用，按 R23-08 重做准入，等待新复现或环境前置改变，不要求外机重跑。
 
 ## 2026-10-17 最新检查点：#1068 双 SDK CI 与 R00/R01 freshness 收口
 

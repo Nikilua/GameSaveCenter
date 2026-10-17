@@ -32,4 +32,8 @@ Artifacts：SDK8 package `12096595339`（SHA-256 `90191acd305d52c2eb19b69316e7b3
 
 ## 未验证边界与下一步
 
-未验证真实 Playnite/package-host、外机当前 checkout 与程序集身份、物理 DPI/跨屏、OS UIA/IME、最终屏幕呈现帧，以及 ETW/宿主性能。下一可执行动作是提交并推送本次文档检查点、跟踪新 Actions 两个 SDK lane 至终态；其后按 R23-08 重新准入，只有出现身份材料、可复现缺陷或环境前置变化时才选新的 Q/R 小批。
+本文件随后作为文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550` 推送。Actions [#1071 / run `39020360750`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39020360750) 对该文档提交已整体终态 `success`：SDK8.0.423 job `117360775397` 的 Release build/tests、Render QA、WPF 静态审查、扩展包与上传步骤均成功；SDK10.0.401 job `117360775218` 的 Release build/tests 与诊断上传成功。Artifacts：SDK8 package `12097522989`（90,314,056 bytes，SHA-256 `63a7e4f04dece80583e479c7d3f8f4ad00cccb5161a3955bae40a01d764ee314`）、SDK8 diagnostics `12097701530`（1,629,165 bytes，`240250bd996a538b53622301f6b95e4b3d7273f5767923cd0983c965c20653ad`）、SDK10 diagnostics `12096373383`（773,429 bytes，`3a07125de9066430be2c753f5c014aabe72d3b80ab782ae8c43bc2fc09d49334`）。
+
+提交 `9feb88c0` 仅改文档；R00/R01 登记源码路径没有变化，按 R01-07 规则无需因纯文档提交重建基线。freshness 结果仍明确绑定 `8fc980f`，而非宣称已在 `9feb88c` 重新运行。
+
+未验证真实 Playnite/package-host、外机当前 checkout 与程序集身份、物理 DPI/跨屏、OS UIA/IME、最终屏幕呈现帧，以及 ETW/宿主性能。#1071 已终态成功。下一可执行动作：用户可回复后读取外机失败同次 `summary.json`、R09 TRX/console 及 test DLL/PDB/plugin DLL 身份；无需重跑。若该 artifact 仍不可用，按 R23-08 重做准入，仅在出现身份材料、新可复现缺陷或环境前置变化后领取 Q/R 小批。

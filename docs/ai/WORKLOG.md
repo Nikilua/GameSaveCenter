@@ -1,10 +1,17 @@
+## 2026-10-17 #1071 文档检查点双 SDK CI 终态
+
+- 文档提交 `9feb88c057e2b800e24edb69bdd2a4d5546df550` 对应 [Actions #1071/run `39020360750`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39020360750) 已整体终态 success。SDK8.0.423 job `117360775397` 的 Release build/tests、Render QA、WPF 静态审查、扩展包、构建产物/诊断上传及 job cleanup 全成功；完整 SDK8 日志中 build `0 Warning(s) / 0 Error(s)`、`render-qa OK`。SDK10.0.401 job `117360775218` build/tests 和 diagnostics upload 成功；完整日志显示使用 `10.0.401`、Release build `0 Warning(s) / 0 Error(s)`、测试通过。
+- Artifacts：SDK8 package `12097522989`，`90,314,056` bytes，SHA-256 `63a7e4f04dece80583e479c7d3f8f4ad00cccb5161a3955bae40a01d764ee314`；SDK8 diagnostics `12097701530`，`1,629,165` bytes，SHA `240250bd996a538b53622301f6b95e4b3d7273f5767923cd0983c965c20653ad`；SDK10 diagnostics `12096373383`，`773,429` bytes，SHA `3a07125de9066430be2c753f5c014aabe72d3b80ab782ae8c43bc2fc09d49334`。
+- #1071 是纯文档提交的验证，不代表 R00/R01 freshness 重新运行。freshness 对源码基线 `8fc980f` 为 `14/14 fresh / 0 stale / 0 matched source paths`，package identity `not-provided`；`9feb88c0` 没改登记源码路径，按 R01-07 无需因文档变更重建。
+- 真实外机 R09 厚度失败的旧断言行映射线索与未取得身份保持不变；#1071 成功不覆盖外机 `1/2`。R23-08 复核没有依赖已满足的 Q/R 产品代码项。下一可执行动作是用户方便后分析同次 summary/TRX/DLL/PDB/plugin DLL；无资料则按 R23-08 条件等待新缺陷或环境变化。真实 Playnite、物理输入、DPI/跨屏、OS UIA/IME、呈现帧、ETW/宿主性能仍未验。
+
 ## 2026-10-17 #1070 双 SDK 收口与外机 R09 断言映射复核
 
 - 复核 GitHub Actions [#1070/run `39016699991`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39016699991)，对应当前代码 HEAD `8fc980fce5262411fbb16f0299583c34074f7f61`，run 与两条 SDK job 均终态成功。SDK8.0.423 job `117350168944`、SDK10.0.401 job `117350169177` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类/WPF 隔离 `125/125` 类通过，包含 Q06-02 与 R09。SDK8 Render QA `render-qa OK`，静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，package/diagnostics 上传完成。
 - 当前 HEAD freshness `14 records / 0 rerun / 0 matched registered source paths`，`packageIdentity=not-provided`。2026-10-15 的 13 条 MEDIUM `TOOLBAR_VERTICAL_EXPANSION` 未在本次重新审计，继续列为风险。本轮未发现 R00/R01 新产品代码修复依据；R23-08 admission scan 也未找到当前依赖满足的明确 Q/R 代码缺口。
 - 用户外机粘贴日志中 Core `ActivityTimelineMapperTests.CloudFailureMapsToFailedCloudActivity` 通过；实际失败是 R09 `1/2`，厚度 Expected `2,2,2,2` / Actual `1,1,1,1`，栈行151。该断言与历史 `e12119bf` 的 Chrome `2 DIP` 断言吻合；当前源码 `f13b9e05` 后分别检查 Chrome `1 DIP` 和 ValidationStroke `2 DIP`，第151行不再是厚度断言。可确认测试源或PDB行映射与当前源不匹配，但没有外机 `summary.json`、TRX、test DLL/PDB、plugin DLL 与 HEAD，故具体旧 checkout/程序集错配未确诊。
 - `libpng iCCP` 不在失败调用栈；TextServicesContext COM 异常出现在断言失败后的清理阶段，不是已证实的厚度比较原因。没有改生产样式或放宽断言。详细 R00/R01、artifact 身份和外机边界见[R00/R01 当前 main 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-CURRENT-HEAD-RECHECK-20261017-8FC980F.md)及[外机 R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
-- 文档更新后推送 `main`，并检查新 Actions 的 SDK8 与 SDK10.0.401 两 lane 至终态。现阶段下一准入在 R23-08；无外机身份材料、新可复现缺陷或环境条件变化时不新增功能。物理输入、取消时序、真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现帧、ETW/宿主性能仍未验。
+- 本文档证据已随 `9feb88c0` 推送并由 #1071 两 SDK lanes 终态验证成功。现阶段下一准入在 R23-08；无外机身份材料、新可复现缺陷或环境条件变化时不新增功能。物理输入、取消时序、真实 Playnite、物理 DPI/跨屏、UIA/IME、最终呈现帧、ETW/宿主性能仍未验。
 
 ## 2026-10-17 Q06-02 按下中断行为补测
 
