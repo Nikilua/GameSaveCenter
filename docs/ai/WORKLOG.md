@@ -1,3 +1,12 @@
+## 2026-10-17 Q06-02 按下中断行为补测
+
+- 在 `main` 既有 Q06-08 双主题生产按钮 STA 用例中增加恢复序列，不新建独立 STA/xUnit 用例，避免 WPF `Application.Current` 跨 Dispatcher 生命周期冲突；未修改生产控件、模板、命令或业务取消逻辑。
+- 仓库随附 .NET SDK `8.0.423` / VSTest `17.11.1`，测试宿主 `.NET Framework 4.8.9181.0`。Playnite `net462` 与 Playnite.Tests `net472` 定向 Release 项目/引用构建成功，类 `1/1` 通过。Light/Dark 两主题均通过合成 Space KeyDown 建立 Pressed 状态，再分别程序化移焦、禁用、从可视树移除触发 Unloaded；每次检查 IsPressed 清除、PressedOverlay `0–0.01`、ScaleX/Y `0.99–1.01`，fake ICommand 执行 `0` 次。未释放的 Space 不派发业务命令。
+- `scripts/validate-source.py` 与 `git diff --check` 通过。R00/R01 freshness 对代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 为 `14 records / 0 rerun / 0 matched source paths / 2,964 compared paths`，package identity `not-provided`。
+- [证据包](../design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)归档脱敏 TRX 与测试源码/程序集/PDB SHA；代码提交已本地生成，证据文档更改待提交/push。定向临时目录在归档后删除，释放约 `58.4 MiB`；只清理本阶段自建目录，未碰工作树中既有未跟踪 TRX/TestResults。
+- Q06-02 自动行为证据得到补强，但视觉仍待验、宿主外部阻塞、Final 未完成。没有物理鼠标按下移出、异步命令取消或真实 Playnite 输入证据。
+- 前序文档提交 #1069/run `39013848650` 最近观察仍在 SDK8 job `117341773887`、SDK10.0.401 job `117341773896` 编译/测试中；运行期完整日志 API 返回 BlobNotFound，根因未知。下一步先等其终态；失败则读取完整日志后按实际错误处理。之后推送本批，跟踪新 Actions。
+
 ## 2026-10-17 #1064 文档基线校正与外机诊断 ZIP 区分
 
 - 文档检查点 5475ba7d9744ab107b159a89ef930d535f1f95cb 对应 #1064/run 38996324038 已终态 success。SDK10.0.401 job 117289578704 在 Windows Server 2025 干净检出通过 Release build 0 warning / 0 error、Core 125/125、Worker 362/362、Playnite WPF 隔离 125 类（含 R09），diagnostics artifact 12088185573。

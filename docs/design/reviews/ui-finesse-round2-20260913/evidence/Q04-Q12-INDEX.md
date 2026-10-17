@@ -44,6 +44,7 @@
 - 源契约测试覆盖 `Unloaded` 订阅、ScaleX/ScaleY 归一和三个交互覆盖层；本阶段 `UiFinesseRound2ControlSourceTests=19/19`、RenderHarness Release `0 warning/0 error`、源码/XAML 门禁通过。
 - 提交 `132e6d5` 修复了真实 RenderHarness 卸载路径暴露的冻结 `ScaleTransform` 回归：无活动动画的模板实例可能被冻结，清理逻辑现在只对未冻结变换取消动画并写回 `ScaleX/ScaleY=1`；clean-tree RenderHarness 报告绑定 `132e6d5`，完整 `render-qa OK`。
 - 该阶段只升级 Q06-02 的生命周期实现与自动门禁，不把卸载路径静态复核写成真实按下→移出→失焦→禁用→卸载输入截图；真实宿主输入序列仍保留视觉/宿主边界。
+- 2026-10-17 当前 main 的[按下中断行为复核](Q06-02-PRESSED-RESTORE-20261017.md)以生产按钮模板和 fake 命令补测 Light/Dark 下 Space 按下后的移焦、禁用、卸载；ScaleX/ScaleY 与 PressedOverlay 均回到基值，未释放的按压命令执行 0 次。它是合成键盘输入，不覆盖物理鼠标移出、异步操作取消或 Playnite 宿主；Q06-02 的视觉/宿主/Final 仍未完成。
 
 ## 2026-09-23 Q06-06 按钮激活行为复核
 

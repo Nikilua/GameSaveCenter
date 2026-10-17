@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：Q06-02 按下中断行为补测
+
+本地 `main` 代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 只增强既有 `Q06ButtonStateSequenceBehaviorTests`，没有改生产按钮/XAML/命令。仓库随附 SDK `8.0.423`、VSTest `17.11.1` 下，Playnite `net462`/测试 `net472` 定向 Release 构建与双主题 STA 测试 `1/1` 通过：Space 按下后程序化移焦、禁用、卸载，ScaleX/Y 和 PressedOverlay 回到基值，fake 命令执行 `0` 次。源码和测试身份、脱敏 TRX 见 `docs/design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md`。这不是完整 solution build 或真实 Playnite/物理输入。
+
+R00/R01 freshness 为 `14` 条记录、`0` 需重跑、`0` 个匹配源码路径、`2,964` 比较路径，package identity `not-provided`。Round2 Q06-02 的自动行为证据补强，但物理鼠标按下后移出、异步命令取消与 Playnite 宿主仍待验；视觉/最终结论未改变。当前 #1069/run `39013848650`（前序文档提交 `c043f9f7`）的 SDK8 `117341773887` 与 SDK10.0.401 `117341773896` 编译/测试仍在运行，job 日志接口在运行中返回 BlobNotFound；先等 run 终态，失败时再取得可用完整日志，不据此猜测。该批代码与证据尚待推送，`.tmp/q06-02-button-sequence-20261017` 已清理，释放约 58.4 MiB。
+
 ## 2026-10-17 最新续跑：#1068 CI 与 R00/R01 freshness
 
 文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions #1068/run `39010428185` 已整体终态成功。SDK `8.0.423` job `117331623876` 和 SDK `10.0.401` job `117331623679` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（包含 R09）。SDK8 Render QA `0 PROBLEM`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。Artifacts：SDK10 diagnostics `12092898627`，SDK8 diagnostics `12093722541`，package `12093881767`；大小与 SHA-256 见 `docs/ai/CURRENT_STATE.md`。

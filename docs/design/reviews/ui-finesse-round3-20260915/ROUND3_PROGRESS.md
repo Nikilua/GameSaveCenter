@@ -1,3 +1,9 @@
+## 2026-10-17 Q06-02 当前 main 按下中断行为补证
+
+- 作为 R02 按钮状态的相邻 Q 证据，当前 main 代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524` 扩展既有 `Q06ButtonStateSequenceBehaviorTests`；SDK8.0.423/VSTest17.11.1 的 Playnite 定向 Release 测试 `1/1`，Light/Dark 下 Space 按下后失焦、禁用、卸载均恢复 Scale 与 PressedOverlay，fake 命令执行 `0` 次。完整构建输入与程序集 SHA 见[Q06-02 证据](../ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。
+- 没有改生产控件/XAML/命令；这是合成键盘事件和逻辑 DIP 的受控 WPF 行为，不是物理鼠标按下移出或真实 Playnite。Q06-02 的视觉、真实宿主与 Final 仍未完成；异步命令取消结果未覆盖。
+- 当前前序文档提交 #1069/run `39013848650` 的两 SDK 编译/测试 job 仍运行；其状态与后续本批 push 尚待跟踪。R00/R01 freshness 为 `14/14 fresh`、0 stale/0 matched paths、2,964 compared paths；package identity `not-provided`。
+
 ## 2026-10-16 R13-04 当前 main 双 SDK CI 收口与外机 R09 测试源对照
 
 - R13-04 本机 SDK8.0.423 定向 Worker/Core/Playnite 为 `4/4`、`1/1`、`24/24`；R09 同隔离输出 `2/2`。代码 `ccdbacb6` 与证据提交 `a81e7abd` 已推送，当前 HEAD 与 `origin/main` 一致。Actions #1039/run `38872163664` 两条 job 终态成功：SDK8 `116878566799`、SDK10.0.401 `116878566530`；Core `125`、Worker `362`、source `108` 类/WPF `124` 类全通过；SDK8 Render QA、静态审查及扩展包生成成功。详见[R13-04证据包](evidence/R13-04-CURRENT-MAIN-RECHECK-20261016/README.md)。

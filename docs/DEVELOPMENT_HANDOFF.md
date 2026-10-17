@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 Q06-02 行为证据与前序 Actions 状态
+
+当前本地 `main` 顶端代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524`，扩展生产按钮双主题 STA 用例，验证 Space 按下→程序化移焦/禁用/卸载的复位结果和命令零执行。SDK8.0.423/VSTest17.11.1 定向 Release `1/1`、`validate-source.py`、`git diff --check` 通过；本机不是完整 solution build。证据：[Q06-02 按下中断复核](design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。物理鼠标移出、异步命令取消、Playnite 宿主仍待验；外机 R09 `1/2` 仍独立未定位。
+
+前序文档提交 #1069/run `39013848650` 的 SDK8 job `117341773887`、SDK10.0.401 job `117341773896` 最近仍运行在编译/测试步骤；job logs API 当前返回 BlobNotFound。下一步先查 run 终态；若失败，获取该 run/job 完整日志并按实际错误处理。之后提交文档证据、push 本批至 `main`，再将新 Actions 跟踪至终态。新 `.tmp/q06-02-button-sequence-20261017` 已清理；工作树中既有其他任务 TRX/TestResults 未改未删。
+
 ## 2026-10-17 #1068 终态与下一准入点
 
 `main` 上文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions [#1068/run `39010428185`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39010428185) 已终态成功。SDK8.0.423 job `117331623876` 与 SDK10.0.401 job `117331623679` 的 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125` 类（含 R09）均通过；SDK8 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、package/diagnostics 上传成功。Artifact IDs：SDK10 diagnostics `12092898627`、SDK8 diagnostics `12093722541`、package `12093881767`。

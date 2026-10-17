@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 Q06-02 按下中断行为补测（本地已提交，CI 待前序 run 收口）
+
+当前本地 `main` 增加代码提交 `547efd4badaa462379532c2c0c96eea5c5a5c524`，只扩展 `Q06ButtonStateSequenceBehaviorTests`。SDK `8.0.423` / VSTest `17.11.1` 下，Playnite `net462` 与测试 `net472` 定向 Release 构建成功；双主题生产按钮 STA 用例 `1/1`，包含既有五态及 Space 按下后移焦、禁用、卸载的行为序列，三个中断后 scale/PressedOverlay 恢复，fake 命令执行 `0` 次。`validate-source.py`、`git diff --check` 通过。证据及测试程序集/PDB SHA 见[Q06-02 按下中断复核](../design/reviews/ui-finesse-round2-20260913/evidence/Q06-02-PRESSED-RESTORE-20261017.md)。该本机结果不是完整 solution build 或 SDK10 CI。
+
+R00/R01 freshness 对该代码提交为 `14` 条记录、`0` 需重跑、`0` 匹配源码路径、`2,964` 比较路径，package identity `not-provided`。仅补证 Q06-02 自动行为：物理鼠标按下后移出、异步命令取消结果与 Playnite 宿主仍未验，Round2 最终状态保持未完成。此前文档提交 #1069/run `39013848650` 在 SDK8 job `117341773887` 和 SDK10.0.401 job `117341773896` 的编译/测试步骤仍运行；当前本地代码提交尚未 push，先取得前序 run 终态及必要日志，再推送本批并追踪新 Actions。临时复现目录 `.tmp/q06-02-button-sequence-20261017` 已在证据归档后清理，释放约 `58.4 MiB`。外机 R09 失败和既有宿主未验边界不受本批结果覆盖。
+
 ## 2026-10-17 最新检查点：#1068 双 SDK CI 与 R00/R01 freshness 收口
 
 文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions [#1068](https://github.com/Nikilua/GameSaveCenter/actions/runs/39010428185) 已终态成功。SDK `10.0.401` job `117331623679` 与 SDK `8.0.423` job `117331623876` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类通过（含 R09）。SDK8 另外完成 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成及上传。Artifacts：SDK10 diagnostics `12092898627`（776,003 bytes，SHA-256 `fc6e02c4e6ac58e173bebb405dde9d05647b248981aba8faa6c85e9e0b52f4c7`）；SDK8 diagnostics `12093722541`（1,629,137 bytes，SHA-256 `21df9106ad02ee918ade6a759a2774ee67058e5ad1b15b2531e6045312e06725`）；package `12093881767`（90,313,946 bytes，SHA-256 `c3e24dd9cac58580fcc57fcadde26b44c3a03397740277348f256aa19afa8cc3`）。
