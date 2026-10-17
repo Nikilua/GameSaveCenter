@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-17 #1068 终态与下一准入点
+
+`main` 上文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions [#1068/run `39010428185`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39010428185) 已终态成功。SDK8.0.423 job `117331623876` 与 SDK10.0.401 job `117331623679` 的 Release build、Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125` 类（含 R09）均通过；SDK8 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、package/diagnostics 上传成功。Artifact IDs：SDK10 diagnostics `12092898627`、SDK8 diagnostics `12093722541`、package `12093881767`。
+
+R00/R01 freshness 对 `b14e780d` 为 `14` 条、`0` 需重跑、`0` 源路径命中、`2,963` 比较路径，package identity `not-provided`。Round2/3 canonical `192` 项已复扫，当前没有新且依赖满足的产品代码缺口。下一步：有外机 R09 同次身份材料时先比对 summary/TRX/test DLL/PDB/plugin DLL；若无新外部输入，则遇到新可复现问题或环境前置变化时重做准入并选最小 Q/R 小批，不要求用户重跑或回复。用户外机 R09 的 `1/2` 是独立真实失败，不能由 #1068 通过覆盖。真实 Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能仍待验。
+
 ## 2026-10-17 #1067 终态与本机/CI/外机验证边界
 
 诊断保护代码提交 `26de12257748075e024c61972da16e87fd4ddfce` 对应 Actions #1067/run `39006921277` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/39006921277)。SDK8.0.423 job `117321161387`、SDK10.0.401 job `117321161211` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（含 R09）。SDK8 Render QA `0 PROBLEM`；WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`；`0.6.73.pext`、包和诊断 artifacts 生成/上传成功。Artifact IDs：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。

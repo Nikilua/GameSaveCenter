@@ -2040,3 +2040,10 @@
 - SDK8 另 `render-qa OK`、WPF 静态审查扫描30个 XAML 得 `0 errors / 27 warnings / 177 info`，生成 `0.6.73.pext` 并成功上传。Artifacts：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。此提交仅补可选 PDB 元数据读取异常保护，没有修改 R09 模板或放宽测试。
 - 用户本轮重复粘贴 R09 外机文本，SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前相同；它仍报告真实 `1/2` 和总体 exit `1`，没有附加同次 `summary.json`、TRX、test DLL/PDB 或 plugin DLL 身份。CI R09 通过只适用于这条 runner 的提交输入，不证明另一台机器成功；根因保持未定位。
 - R00/R01 freshness 对 `26de1225` 为 `14 fresh / 0 stale / 0 matched source paths`、2,963 比较路径，package identity `not-provided`，仅为登记源码范围。Round2/3 与 R23-08 当前扫描未发现新的依赖已满足 Q/R 产品代码项。下一准入点是外机同次身份材料、新可复现问题或前置环境变化。Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现、ETW/宿主性能仍未验。
+
+## 2026-10-17 #1068 文档检查点双 SDK CI 与 R00/R01 freshness
+
+- 文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions #1068/run `39010428185` 已整体终态成功。SDK8.0.423 job `117331623876` 与 SDK10.0.401 job `117331623679` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类、WPF 隔离 `125/125` 类通过（含 R09）。
+- SDK8 Render QA `render-qa OK / 0 PROBLEM`；静态审查扫描 `30 XAML / 0 errors / 27 warnings / 177 info`；`0.6.73.pext` 与 diagnostics artifact 上传成功。SDK10 diagnostics artifact `12092898627`；SDK8 diagnostics `12093722541`；package `12093881767`。具体大小与 digest 见 CURRENT_STATE/WORKLOG。
+- freshness 对当前 `b14e780d`：`14` 项、`0` 需重跑、`0` 个登记源码路径命中、`2,963` 个比较路径，package identity `not-provided`；记录见 [R00/R01 freshness 复查](evidence/R00-R01-FRESHNESS-RECHECK-20261017.md)。此前 Render QA 的 `0 PROBLEM` 与 13 条 MEDIUM toolbar 审计风险继续分开记录。
+- Canonical task IDs `192/192` 唯一；当前未收口项涉及宿主/系统输入/外机身份/跟踪权限，未发现新的依赖已满足 Q/R 产品代码缺口。外机 R09 `1/2` 仍真实且缺同次 summary/TRX/test DLL/PDB/plugin DLL identity，#1068 runner 的通过不覆盖它。下一步在新身份材料、新复现或环境前置变化时重做准入；Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、presented frame、ETW/宿主性能仍待验。

@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 最新续跑：#1068 CI 与 R00/R01 freshness
+
+文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions #1068/run `39010428185` 已整体终态成功。SDK `8.0.423` job `117331623876` 和 SDK `10.0.401` job `117331623679` 均 Release `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（包含 R09）。SDK8 Render QA `0 PROBLEM`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。Artifacts：SDK10 diagnostics `12092898627`，SDK8 diagnostics `12093722541`，package `12093881767`；大小与 SHA-256 见 `docs/ai/CURRENT_STATE.md`。
+
+R00/R01 freshness 对 `b14e780d` 为 `14` 项、`0` 需重跑、`0` 个匹配源码路径、`2,963` 比较路径，package identity `not-provided`。Round2/3 canonical ledger `192/192` 唯一；仍未收口行均要求宿主/系统输入/外机身份/获准系统跟踪，当前没有新的依赖已满足 Q/R 产品代码项。用户外机 R09 `1/2` 仍真实且未定位；缺同次 summary/TRX/test DLL/PDB/plugin DLL 身份。本机与 runner 通过不能覆盖外机失败。下一准入点是同次身份 artifact、新的复现缺陷或前置环境变化；不可等待该文件而阻塞独立工作。
+
 ## 2026-10-17 最新续跑：#1067 与用户外机 R09
 
 提交 `26de12257748075e024c61972da16e87fd4ddfce` 对应 Actions #1067/run `39006921277` 已整体终态成功。SDK8.0.423 job `117321161387` 和 SDK10.0.401 job `117321161211` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类通过；SDK8 Render QA、静态审查、扩展包和诊断上传成功。Artifacts：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。这证明精确提交在 GitHub runner 上通过，不等于本机或用户外机通过。

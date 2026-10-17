@@ -1,5 +1,13 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-17 最新检查点：#1068 双 SDK CI 与 R00/R01 freshness 收口
+
+文档提交 `b14e780daa11a074d63abc381d777c66a8d258a8` 对应 Actions [#1068](https://github.com/Nikilua/GameSaveCenter/actions/runs/39010428185) 已终态成功。SDK `10.0.401` job `117331623679` 与 SDK `8.0.423` job `117331623876` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类和 WPF 隔离 `125/125` 类通过（含 R09）。SDK8 另外完成 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成及上传。Artifacts：SDK10 diagnostics `12092898627`（776,003 bytes，SHA-256 `fc6e02c4e6ac58e173bebb405dde9d05647b248981aba8faa6c85e9e0b52f4c7`）；SDK8 diagnostics `12093722541`（1,629,137 bytes，SHA-256 `21df9106ad02ee918ade6a759a2774ee67058e5ad1b15b2531e6045312e06725`）；package `12093881767`（90,313,946 bytes，SHA-256 `c3e24dd9cac58580fcc57fcadde26b44c3a03397740277348f256aa19afa8cc3`）。
+
+R00/R01 freshness 对当前 HEAD `b14e780d` 为 `14` 条记录、`0` 需重跑、`0` 个登记源码路径命中、`2,963` 个比较路径，package identity `not-provided`；详见 [freshness 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-R01-FRESHNESS-RECHECK-20261017.md)。这是登记源码路径核对，不证明包或宿主身份。Round2/Round3 的 `192` 条 canonical task rows 已复扫；当前未收口条目对应真实宿主、系统输入、外机身份或获准跟踪权限边界，没有新的独立 Q/R 产品代码缺口。
+
+用户另一台机器的 R09 `1/2` 与整体 exit `1` 仍是独立真实失败；当前未取得同次 `summary.json`、TRX 与 test/plugin DLL/PDB 身份。本次 #1068 的 R09 通过只代表精确 main 输入在 GitHub runner 上通过，不覆盖外机失败。下一步在获得同次身份材料、新的可复现问题或环境前置变化时重新准入并选独立小批；真实 Playnite/package-host、物理 DPI/跨屏、OS UIA/IME、最终呈现帧及 ETW/宿主性能仍未验。
+
 ## 2026-10-17 最新检查点：#1067 双 SDK CI 收口
 
 本次诊断保护代码提交为 `26de12257748075e024c61972da16e87fd4ddfce`。其 Actions #1067/run `39006921277` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/39006921277)。SDK8.0.423 job `117321161387`、SDK10.0.401 job `117321161211` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite source `107` 类及 WPF 隔离 `125` 类通过（含 R09）。SDK8 另 Render QA `0 PROBLEM`、WPF 静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73.pext` 生成和上传成功。Artifacts：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。
