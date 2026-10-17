@@ -1,0 +1,9 @@
+RenderTargetBitmap of the cached production shell/pages with synthetic navigation state at 96 DPI; not a screen capture, Playnite host, or physical-DPI measurement.
+TaskCenter|Light|shell=1352.67x886.67 DIP|page=1038.67x768 DIP|renderDpi=96|filters=失败保留/失败/媒体归类/全部历史/近30天; selected=q11-07-task-55; scroll=18 DIP|TaskCenter-light-return.png
+MediaCenter|Light|shell=1352.67x886.67 DIP|page=1038.67x759.33 DIP|renderDpi=96|selectedTab=2; stateIndex=2|MediaCenter-light-return.png
+SaveCenter|Light|shell=1352.67x886.67 DIP|page=1038.67x759.33 DIP|renderDpi=96|selectedTab=3; stateIndex=3|SaveCenter-light-return.png
+Maintenance|Light|shell=1352.67x886.67 DIP|page=1038.67x768 DIP|renderDpi=96|selectedTab=5; stateIndex=5|Maintenance-light-return.png
+TaskCenter|Dark|shell=1352.67x886.67 DIP|page=1038.67x768 DIP|renderDpi=96|filters=失败保留/失败/媒体归类/全部历史/近30天; selected=q11-07-task-55; scroll=18 DIP|TaskCenter-dark-return.png
+MediaCenter|Dark|shell=1352.67x886.67 DIP|page=1038.67x759.33 DIP|renderDpi=96|selectedTab=2; stateIndex=2|MediaCenter-dark-return.png
+SaveCenter|Dark|shell=1352.67x886.67 DIP|page=1038.67x759.33 DIP|renderDpi=96|selectedTab=3; stateIndex=3|SaveCenter-dark-return.png
+Maintenance|Dark|shell=1352.67x886.67 DIP|page=1038.67x768 DIP|renderDpi=96|selectedTab=5; stateIndex=5|Maintenance-dark-return.png

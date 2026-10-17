@@ -11059,3 +11059,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R12-04 当前 SHA 与 2026-10-16 复核包逐一一致：RestoreOrchestrator `7C58FD0E…4CF76D`、RestoreWorkflowProgress `C520BD5A…21AE4F`、RestoreOrchestratorTests `2100A6D4…23B72B`、R12RestoreWorkflowBehaviorTests `6C3FDAEB…3B2A3C`。R12-04 保持“已满足（当前 main 复核）”；复用现有 fake/隔离结果，不重建 service/DTO。
 - 用户另一台电脑的 R09 失败仍然有效：附加文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与先前日志完全相同，R09 为 `1/2`、整体 exit `1`。当前同名源文件 line151 为 Brush 颜色断言，Thickness `2 DIP` 在 line154；该日志 line151 报 Thickness `2/1`，只能确认测试源/PDB 映射不匹配当前文件，不能判断是旧 test DLL、PDB、checkout、插件 DLL 或其它输入。libpng warning 和失败后的 TextServices COM 收尾异常均不解释 xUnit 断言。没有新的 summary/TRX/DLL/PDB 身份可用于根因定位。
 - 本机完整 Playnite 隔离仍在 `R05TooltipTimingBehaviorTests` `GetCursorPos` 前置条件处中止，故不记本机全 WPF 门禁通过。之后重新扫描 Round2 208 项、Round3 192 项和 R23-08 准入，没有发现新的可独立实施 Q/R 代码缺口；当前只读快照无可见 Playnite/Worker 进程，只有一块活动屏。外机身份材料若可用，先比对该次 summary/TRX/test DLL/PDB/plugin DLL SHA；若未提供则不要求重跑，等待环境前置变化或任务表出现具体证据缺口，再继续独立小批。真实 Playnite、物理 DPI/跨屏、OS UIA/IME、最终呈现、ETW/宿主性能边界保留。
+
+## 2026-10-17 Q11-07 工作区往返 Light/Dark 复核
+
+- 生产缓存页、双向绑定、服务/DTO/命令未改；只给 `R08PageSwitchBehaviorTests` 增加 `GSC_Q11_07_VISUAL_OUTPUT` opt-in 捕获。用96条合成任务检查 TaskCenter 搜索与四筛选、Media/Save/Maintenance Tab `2/3/5`、选中 ID `q11-07-task-55`、18 DIP 滚动、缓存页/控件/DataContext/集合引用和0次 refresh 在工作区往返后保留。四个生产页面各 Light/Dark `RenderTargetBitmap` 图，共8张；截图是96 DPI离屏图。
+- 本机 Playnite `net462` / Tests `net472` 隔离 Release，系统选 SDK `9.0.302`、VSTest `17.14.1`，完整 `R08PageSwitchBehaviorTests` 类 `4/4`、0失败/跳过。构建源基线 `57023ac849689dab0d2b999737e0213042a1eebc` 加测试文件 SHA `6B46ADE6C82FE6DF26466BBB95406F0CAEA96423BEBC9AB862031CC062237222`。程序集身份与脱敏TRX见[Q11-07证据包](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。本机成功仅验证该输入，不代表另一机或CI成功。
+- 之前一次 source identity guard 参数写为非 Git SHA 的 `57023ac-dirty-q11-07`，受守卫拒绝；随后在独立输出目录用真实 HEAD 与相同源码重建，完整类 `4/4` 通过。把它记录成纠正的验证身份尝试，非产品断言失败。
+- 人工检查 Task Light/Dark、Media Dark、Save Light、Maintenance Dark。任务选中行不在18 DIP截图视口，仅由行为断言验证；不声称可见。没有连接 Worker/Playnite profile/真实服务。真实 Playnite、有效物理DPI、屏幕最终呈现、OS UIA/输入仍待验。
+- R00/R01 freshness `14 fresh / 0 stale / 0 matched source paths`、2,949 paths、package identity `not-provided`，只核对登记源码范围。旧检查点 Actions #1061/run `38986851956` 最近仍在SDK8/SDK10编译测试；本次代码推送触发的 run 必须另行跟踪至终态。用户外机 R09 `1/2` 仍为独立真实失败，本机/CI均不覆盖。

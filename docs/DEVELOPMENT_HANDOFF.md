@@ -1,12 +1,14 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-17 当前续跑：Q11-06 CI 收口后继续证据复核
+## 2026-10-17 当前续跑：Q11-07 往返截图与双 SDK CI
 
-- 当前分支 `main`，HEAD `d62e199fed5adf002fbf762f3a8ea0a770da46fd`；Q11-06 代码提交 `1c60a2fc` 与证据脱敏提交 `d62e199f` 均已推送。工作树仅保留此前其它任务的未跟踪 TRX/TestResults，本阶段跟踪文件无未提交修改。
-- Q11-06 复用现有生产页签共享资源，只增加环境变量 opt-in 截图/几何输出。SDK9.0.302/VSTest17.14.1 定向 Release build/test `1/1`，18 张 96-DPI 离屏图和几何报告已归档。#1059/run `38982569941` 与 #1060/run `38983018226` 均双 SDK 终态成功；build/test、125 个 WPF 隔离类通过，SDK8 另 Render QA、静态审查、打包成功。详细身份与边界见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。Round2 视觉栏“受控通过”，host 外部阻塞、Final 未完成。
-- 最新 main 的 R00/R01 freshness `14/14 fresh / 0 stale / 0 matched source paths`、2,949 paths，package identity `not-provided`。下一步重扫 Round2/3 ledger 并选有明确缺口、依赖已满足的小批。外机 R09 同一真实失败仍未定位；没有其同次 `summary.json`、HEAD、源、test DLL/PDB、plugin DLL 身份。真实 Playnite、OS 输入/UIA、物理 DPI/跨屏和最终屏幕呈现仍待验。
-- 外机 R09 重复日志 SHA `F3DDDC...4514`，报告 `Expected Thickness(2) / Actual(1)` 在第151行；第151行与历史 `3f7d0b30` 旧断言相同，与当前拆分断言不同。真实失败保留；没有同次 `summary.json`、HEAD、测试 DLL/PDB、插件 DLL 身份，根因未定。本机/CI通过不能代替外机输入复核。不要放宽/重建断言来签收。
-- 仍未验真实 Playnite、OS 物理键鼠/UIA、有效物理 DPI/跨屏、最终呈现帧、ETW/宿主性能；真实存档、媒体和云端未访问。
+本次 Q11-07 基于 main HEAD `57023ac849689dab0d2b999737e0213042a1eebc`，只在 `R08PageSwitchBehaviorTests` 增加环境变量 opt-in 的 Light/Dark 四个生产缓存页往返离屏截图/几何输出；生产 UI、服务、DTO、命令和导航未改。本机 SDK `9.0.302`/VSTest `17.14.1` 的隔离 Release 行为类 `4/4`；源文件与测试/插件 DLL/PDB 身份见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md`。本机通过只适用于本机 SDK 和这组源输入。
+
+#1061/run `38986851956` 的 SDK10.0.401 job `117260206331` 已成功；日志末尾确认 Release build/test 和125个隔离 WPF 类通过。SDK8.0.423 job `117260206566` 记录时还在编译/测试。#1061 不含本次 Q11-07 未提交测试改动；继续通过 GitHub 连接器跟踪该旧 run，并在新代码 push 后把新 run 单独跟踪至终态。失败时读取完整 job 日志，不按摘要猜根因。
+
+8 张图是 96-DPI `RenderTargetBitmap`，不是桌面截图、Playnite host、物理 DPI 或 presented frame。Task 选中项不在当前 18-DIP 截图视口；选中 ID 由测试行为断言验证。外机 R09 `1/2` 仍是真实独立失败；缺该次 `summary.json`、HEAD、源和 test/plugin DLL/PDB 身份。本机和 CI 都不能代替它。
+
+阶段下一步：完成证据清单、source validation/diff check、单独中文 commit/push，跟踪相关 Actions 至终态；随后重扫 Round2/3 与 R23-08 选择依赖已满足且具体缺口明确的任务。真实 Playnite/OS输入/UIA、有效物理 DPI/跨屏、最终呈现仍待验；未访问真实存档/媒体/云端。
 
 ## 2026-10-17 当前 CI 与外机故障边界
 

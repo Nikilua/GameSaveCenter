@@ -2012,3 +2012,12 @@
 - `48b78b3beb0465083f420b1df23cd4c973a06ea8`（2026-10-07）为当前 main 祖先；测试现在实例级固定系统动效偏好，另有应用/系统组合矩阵与默认读取 Windows 偏好的测试，生产系统策略未改变。当前 #1056/run `38962119739` SDK8.0.423 job `117179503173`、SDK10.0.401 job `117179503250` 均全量通过；文档检查点 #1057/run `38969111355` 亦成功。证据与边界见[R00-03 历史 SDK10 失败复核](evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
 - 用户这次重复附上的外机 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与此前相同，诊断 ID `20261016T052146719Z-d9d99ac4` 未变。其 `Thickness(2/1)` 和 line151 对应旧 `3f7d0b30` 测试形态；当前 main 经 `f13b9e05` 已把 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP` 分开。因此该文本是真实历史失败，但不是当前 main 的新复跑，也没有新机器/程序集身份；不能以本机或 CI 成功覆盖它。
 - 重新核对 R02-06、R05-03、R23-05：宿主菜单、Popup 实际翻转呈现帧和获准系统跟踪仍是环境边界；R23-08 未发现新的依赖已满足代码任务。下一项在新缺陷证据、诊断身份 artifact 或前置环境变化时重做准入，不为凑任务制造功能。Round3 表主任务 ID 现在 `192/192` 唯一；删除了额外重复的 R13-01 任务行，前面的 R13/R14 摘要表保留。
+
+## 2026-10-17 Q11-07 当前 main 双主题离屏复核
+
+- 生产 `AcrylicProductionShellView`、四个缓存页面、绑定、服务与 DTO 未改。本次只在 `R08PageSwitchBehaviorTests` 补环境变量 opt-in 图像/几何输出，并把合成任务描述对齐 Task Center 当前筛选值。复用 96 条合成 Task DTO 和真实生产页面，断言搜索/四筛选、Media/Save/Maintenance Tab `2/3/5`、选中 ID `q11-07-task-55`、18 DIP 滚动、DataContext/集合/缓存页面引用、零刷新都在往返后保持；最终行为检查后对四页各做 Light/Dark 共8张离屏渲染。完整行为类 `4/4` 通过，0 失败/跳过。
+- 本机 SDK `9.0.302` / VSTest `17.14.1`，Playnite `net462` / Tests `net472` 隔离 Release 构建。测试输入是 main 基线 `57023ac849689dab0d2b999737e0213042a1eebc` 加当时唯一未提交的测试源文件变更，源 SHA `6B46ADE6C82FE6DF26466BBB95406F0CAEA96423BEBC9AB862031CC062237222`；测试 DLL SHA `3D9387A4A78459FCC375623A200BBF3F56D7E2A46FEB10EF72A5F28E9ED2679`，MVID `e2c0eb78-7069-4453-a629-683b0e0e6f44`。SDK9 结果仅说明该本机输入通过；CI 和用户外机需要分别判读。
+- 人工查看了 Task Light/Dark、Media Dark、Save Light、Maintenance Dark。Task 选中项在18 DIP偏移后的截图视口之外：截图只证明页面/主题外观，不声称选中行可见；选中 ID 由行为断言验证。输出明确为96-DPI `RenderTargetBitmap`，不是屏幕/Playnite 截图或物理 DPI。合成宿主没有连 Worker、repository、Playnite profile 或查询服务；Worker/Ludusavi 不可用提示来自 fixture。
+- R00/R01 freshness 为 `14 fresh / 0 stale / 0 matched source paths`、2,949 个比较路径，package identity `not-provided`；仅为登记源码范围检查。证据、截图、脱敏TRX、生产输入和程序集身份见[Q11-07 当前 main 复核包](evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。
+- #1061/run `38986851956`（旧文档 HEAD `57023ac`）的 SDK10.0.401 job `117260206331` 已成功，包括 Release build/test 和125个隔离 WPF 类；SDK8.0.423 job `117260206566` 最近仍在编译/测试。该 run 不含 Q11-07 未提交的测试更改；push 后的新 run 必须独立跟踪至终态。CI runner 验证与本机 SDK9 分开，也都不代表用户另一台机器的输入。上一轮外机 R09 `1/2` 的源/DLL/PDB身份仍未取得，保留真实失败。
+- Q11-07 受控自动行为与双主题视觉栏通过；真实 Playnite host、有效物理 DPI、屏幕呈现、选中行在用户布局中的可见性仍待验，任务最终未完成。下一项仍按 R23-08 准入审查，从账本挑一个依赖已满足且证据缺口明确的 Q/R 小批；不能把本轮本机输出当作外机失败的解决方案。

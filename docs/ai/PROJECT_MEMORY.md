@@ -1,5 +1,13 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-17 当前续跑：Q11-07 双主题工作区状态往返
+
+Q11-07 在 main 基线 `57023ac849689dab0d2b999737e0213042a1eebc` 上只扩展 `R08PageSwitchBehaviorTests`，添加 opt-in 生产缓存页 Light/Dark 离屏输出；生产 UI/XAML/服务/DTO/命令/导航未改。Playnite `net462` / Tests `net472`，本机 SDK9.0.302/VSTest17.14.1 隔离 Release 类 `4/4`。实际测试源 SHA `6B46ADE6C82FE6DF26466BBB95406F0CAEA96423BEBC9AB862031CC062237222`，测试 DLL/PDB 与插件程序集身份见 [Q11-07 复核包](../design/reviews/ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。SDK9结果只适用于本机该源码/运行环境，不证明 CI 或用户外机。
+
+四个生产缓存页面在往返后 Light/Dark 共8张 `RenderTargetBitmap` 离屏图，96 DPI；不是 Playnite/桌面屏幕/有效物理 DPI/呈现帧。行为断言检查筛选、Tab `2/3/5`、任务 ID `q11-07-task-55`、滚动 `18 DIP`、缓存与引用保持、刷新命令0次。选中任务不在当前截图视口，截图不声称其可见。只用合成 DTO 和 state-only fixture，未触业务查询/真实存档/Worker/云端。
+
+Actions #1061/run `38986851956` 的 SDK10.0.401 job `117260206331` 已成功，日志末尾确认 Release build/test 和125个隔离 WPF 类通过；SDK8.0.423 job `117260206566` 最近仍运行于编译/测试。它是旧提交 `57023ac`，不含本轮 Q11-07 测试改动，不能作为本轮代码 CI 证据。未终态不能签收。另一台机器 R09 `1/2` 仍是独立真实失败；缺同次 `summary.json`、HEAD、源码、test DLL/PDB、plugin DLL 身份，本机/CI都不能覆盖它。下一步完成小批文档与校验，中文 commit/push 后跟踪新 Actions，再按 R23-08 准入挑下一依赖满足的 Q/R 任务。
+
 ## 2026-10-17 最新续跑：Q11-06 双 SDK CI 收口与 R00/R01 freshness
 
 代码提交 `1c60a2fc61fae6109a609fd14c4977dfb927a32c` 与证据脱敏提交 `d62e199fed5adf002fbf762f3a8ea0a770da46fd` 已推送至 `main`；Q11-06 复用生产页签模板补了可选离屏捕获，测试源 SHA `94347B788C770CD4D30FD3AFA161F751DD17EA724748C35CA37F028F89F56BA9`，生产 `Redesign.xaml` 未改。SDK9.0.302/VSTest17.14.1 定向 Release test `1/1`，18 张 Light/Dark 截图与几何报告已归档。#1059/run `38982569941` 与 #1060/run `38983018226` 双 SDK 均整体成功；SDK8.0.423 和 SDK10.0.401 build/test 通过，SDK8 另 Render QA、静态审查、扩展包生成与上传成功。SDK9 本机结果与 CI 结果分开记录。

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -9,9 +11,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -214,8 +219,8 @@ public sealed class R08PageSwitchBehaviorTests
                     .Select(index => new TaskStatusDto
                     {
                         TaskId = "q11-07-task-" + index,
-                        TaskType = "Validation",
-                        GameName = "合成游戏 " + index,
+                        TaskType = "媒体归类",
+                        GameName = "失败保留 合成游戏 " + index,
                         State = TaskState.Failed,
                         Message = "保留筛选和选择"
                     })
@@ -359,6 +364,65 @@ public sealed class R08PageSwitchBehaviorTests
                 summary = $"task filters retained; tabs media/save/maintenance={mediaTabs.SelectedIndex}/{saveTabs.SelectedIndex}/{maintenanceTabs.SelectedIndex}; "
                     + $"task selection={((TaskStatusDto)taskGrid.SelectedItem).TaskId}; scroll={taskOffsetBefore:0.##}->{taskScrollViewer.VerticalOffset:0.##}; "
                     + $"cached pages retained; refresh executions={state.RefreshCommand.ExecutionCount}";
+
+                var visualOutputRoot = Environment.GetEnvironmentVariable("GSC_Q11_07_VISUAL_OUTPUT");
+                if (!string.IsNullOrWhiteSpace(visualOutputRoot))
+                {
+                    Directory.CreateDirectory(visualOutputRoot);
+                    var reportPath = Path.Combine(visualOutputRoot, "q11-07-workspace-return-captures.txt");
+                    File.WriteAllText(
+                        reportPath,
+                        "RenderTargetBitmap of the cached production shell/pages with synthetic navigation state at 96 DPI; not a screen capture, Playnite host, or physical-DPI measurement."
+                            + Environment.NewLine);
+
+                    var pages = new[]
+                    {
+                        (Kind: WorkspaceKind.Tasks, Name: "TaskCenter", Page: (UserControl)taskPage,
+                            State: $"filters={search.Text}/{status.SelectedItem}/{type.SelectedItem}/{scope.SelectedItem}/{range.SelectedItem}; selected={((TaskStatusDto)taskGrid.SelectedItem).TaskId}; scroll={taskScrollViewer.VerticalOffset.ToString("0.##", CultureInfo.InvariantCulture)} DIP"),
+                        (Kind: WorkspaceKind.Media, Name: "MediaCenter", Page: (UserControl)mediaPage,
+                            State: $"selectedTab={mediaTabs.SelectedIndex}; stateIndex={state.MediaTabIndex}"),
+                        (Kind: WorkspaceKind.Saves, Name: "SaveCenter", Page: (UserControl)savePage,
+                            State: $"selectedTab={saveTabs.SelectedIndex}; stateIndex={state.SaveTabIndex}"),
+                        (Kind: WorkspaceKind.Maintenance, Name: "Maintenance", Page: (UserControl)maintenancePage,
+                            State: $"selectedTab={maintenanceTabs.SelectedIndex}; stateIndex={state.MaintenanceTabIndex}")
+                    };
+
+                    foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
+                    {
+                        ApplyTheme(shell, theme);
+                        foreach (var capture in pages)
+                        {
+                            phase = $"capture {capture.Name} {theme}";
+                            shell.NavigateTo(capture.Kind);
+                            FlushLayout(window);
+                            Assert.Same(capture.Page, ((ContentControl)shell.PageHostForAudit).Content);
+                            Assert.True(capture.Page.IsVisible && capture.Page.ActualWidth > 0 && capture.Page.ActualHeight > 0,
+                                $"{capture.Name}/{theme}: cached production page was not visibly laid out for capture.");
+                            CaptureQ1107WorkspaceState(
+                                visualOutputRoot,
+                                reportPath,
+                                shell,
+                                window,
+                                capture.Page,
+                                capture.Name,
+                                theme,
+                                capture.State);
+                        }
+                    }
+
+                    phase = "verify state after themed visual captures";
+                    Assert.Equal("失败保留", search.Text);
+                    Assert.Equal("失败", status.SelectedItem);
+                    Assert.Equal("媒体归类", type.SelectedItem);
+                    Assert.Equal("全部历史", scope.SelectedItem);
+                    Assert.Equal("近30天", range.SelectedItem);
+                    Assert.Same(taskSelectionBefore, taskGrid.SelectedItem);
+                    Assert.InRange(Math.Abs(taskOffsetBefore - taskScrollViewer.VerticalOffset), 0, 0.1);
+                    Assert.Equal(2, mediaTabs.SelectedIndex);
+                    Assert.Equal(3, saveTabs.SelectedIndex);
+                    Assert.Equal(5, maintenanceTabs.SelectedIndex);
+                    Assert.Equal(0, state.RefreshCommand.ExecutionCount);
+                }
             }
             catch (Exception caught)
             {
@@ -519,6 +583,62 @@ public sealed class R08PageSwitchBehaviorTests
         Assert.DoesNotContain("AnimateEntrance(PageHost", source);
         Assert.DoesNotContain("BlurEffect", markup);
         Assert.DoesNotContain("PageHost.Effect", source);
+    }
+
+    private static void ApplyTheme(FrameworkElement host, GameSaveCenterThemeMode mode)
+    {
+        var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
+            host,
+            glassEnabled: true,
+            strengthPercent: 78,
+            themeMode: mode,
+            highContrastOverride: false);
+        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(
+            host.Resources,
+            palette,
+            glassEnabled: true,
+            motionEnabled: true);
+        host.UpdateLayout();
+    }
+
+    private static void CaptureQ1107WorkspaceState(
+        string outputRoot,
+        string reportPath,
+        AcrylicProductionShellView shell,
+        Window window,
+        UserControl page,
+        string pageName,
+        GameSaveCenterThemeMode theme,
+        string state)
+    {
+        FlushLayout(window);
+        Assert.True(shell.ActualWidth > 0 && shell.ActualHeight > 0,
+            $"{pageName}/{theme}: production shell has no measured capture bounds.");
+
+        var fileName = $"{pageName}-{theme.ToString().ToLowerInvariant()}-return.png";
+        var bitmap = new RenderTargetBitmap(
+            Math.Max(1, (int)Math.Ceiling(shell.ActualWidth)),
+            Math.Max(1, (int)Math.Ceiling(shell.ActualHeight)),
+            96,
+            96,
+            PixelFormats.Pbgra32);
+        bitmap.Render(shell);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using (var stream = File.Create(Path.Combine(outputRoot, fileName)))
+            encoder.Save(stream);
+
+        var row = string.Join("|", new[]
+        {
+            pageName,
+            theme.ToString(),
+            $"shell={shell.ActualWidth.ToString("0.##", CultureInfo.InvariantCulture)}x{shell.ActualHeight.ToString("0.##", CultureInfo.InvariantCulture)} DIP",
+            $"page={page.ActualWidth.ToString("0.##", CultureInfo.InvariantCulture)}x{page.ActualHeight.ToString("0.##", CultureInfo.InvariantCulture)} DIP",
+            "renderDpi=96",
+            state.Replace("|", " "),
+            fileName
+        });
+        File.AppendAllText(reportPath, row + Environment.NewLine);
     }
 
     private static void FlushLayout(Window window)

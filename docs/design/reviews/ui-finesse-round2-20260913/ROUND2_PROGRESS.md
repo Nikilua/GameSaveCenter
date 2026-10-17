@@ -2,6 +2,10 @@
 
 正式表208个唯一Q ID：实现129代码完成/79已复核；自动207通过/1待验；视觉156通过/5受控通过/44待验/3不适用；宿主4通过/8待验/195外部阻塞/1不适用；最终5已验收/203未完成。本次将 Q24-01 的视觉证据从待验更新为受控通过，并为 Q24-04 补当前 main 自动行为证据但未改变其视觉/宿主/Final状态；物理 DPI 仍待验，Q/R不能相加为产品完成率。当前执行入口见 [活动积压清单](../../../AUTONOMOUS_BACKLOG.md)。
 
+## 2026-10-17 Q11-07 当前 main 双主题离屏复核
+
+正式表为 208 个唯一 Q ID。Q11-07 将视觉从“待验”更新为“受控通过”：视觉 `156 通过 / 7 受控通过 / 42 待验 / 3 不适用`；自动行为已通过，宿主与最终结论保持未完成。Task、Media、Save、Maintenance 四个缓存生产页在工作区往返后各有 Light/Dark 离屏图，共 8 张；测试仍断言筛选、Tab、选中任务、滚动、页/数据引用及零刷新。选中任务在当前 `18 DIP` 视口之外，截图不作为其可见性证据。截图为 96-DPI `RenderTargetBitmap`，非桌面截图/Playnite 呈现/物理 DPI。详见[Q11-07 当前 main 复核包](../ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。本机 SDK9 `4/4` 与 CI SDK8/SDK10 分开记录；CI 尚未终态，外机 R09 失败仍独立未解。
+
 ## 2026-10-17 Q11-06 当前 main 视觉增量
 
 当前统计在 208 项唯一 ID 上将 Q11-06 视觉从“待验”更新为“受控通过”：视觉 `156 通过 / 6 受控通过 / 43 待验 / 3 不适用`；自动、宿主和最终结论统计未因本次改变。18 张双主题生产共享页签模板的 96-DPI 离屏图、viewport/extent/offset 报告和定向 TRX 见[Q11-06 当前 main 视觉复核](../ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)。代码提交 `1c60a2fc` 对应 #1059 双 SDK run、脱敏证据文档提交 `d62e199f` 对应 #1060 双 SDK run 均整体成功；这只验证 CI 输入。真实 Playnite/OS 输入/有效物理 DPI 与屏幕呈现仍待验，Final 保持未完成。
@@ -112,7 +116,7 @@
 | Q11-04 | 页签内边距 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [页签长文本与计数几何](../ui-finesse-round3-20260915/evidence/Q11-04-TAB-HEADER-PADDING-20260928.md)；短中文、长英文、计数 Header 边界/内边距和切换标签后内容视口宽度稳定通过；Playnite host/物理 DPI 待验 |
 | Q11-05 | 页签内容拉伸 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [页签窄宽内容拉伸](../ui-finesse-round3-20260915/evidence/Q11-05-TAB-CONTENT-STRETCH-20260928.md)；共享 ContentPresenter 浅/深主题在 `380×240 DIP` 实测 x/y 对齐和横纵 Stretch；Playnite host/物理 DPI 待验 |
 | Q11-06 | 页签溢出 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [行为证据](../ui-finesse-round3-20260915/evidence/Q11-06-WORKSPACE-TAB-OVERFLOW-20260929.md) + [当前 main 视觉复核](../ui-finesse-round3-20260915/evidence/Q11-06-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)：四页浅/深主题首末项窄布局、Maintenance 宽布局共 18 张 96-DPI 离屏图；真实 Playnite、OS 输入、有效物理 DPI 和最终屏幕呈现仍待验 |
-| Q11-07 | 导航状态保存 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q11-07 WPF 往返证据](../ui-finesse-round3-20260915/evidence/Q11-07-WORKSPACE-STATE-RETURN-20260929.md)：搜索/四筛选、三个工作区 Tab、选中任务与滚动偏移跨切页保持；真实 Playnite/主题截图/DPI 仍待验 |
+| Q11-07 | 导航状态保存 | 代码完成 | 通过 | 受控通过 | 外部阻塞 | 未完成 | [Q11-07 当前 main 双主题复核](../ui-finesse-round3-20260915/evidence/Q11-07-CURRENT-MAIN-VISUAL-RECHECK-20261017/README.md)：真实缓存生产页状态往返和 Light/Dark 离屏图；选中任务不在截图视口；Playnite/有效物理 DPI/屏幕呈现仍待验 |
 | Q11-08 | 导航过渡 | 代码完成 | 通过 | 待验 | 外部阻塞 | 未完成 | [Q11-08 受控 WPF 行为](../ui-finesse-round3-20260915/evidence/Q11-08-NAV-TRANSITION-20260929/README.md)：真实 RadioButton Checked 路由快速交替 7 次，逐次核对缓存页/标题/唯一选中项/WPF 焦点；Playnite/presented frame/OS 输入仍待宿主 |
 | Q12-01 | 表头文字 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [表格截图](evidence/Q04-Q12-INDEX.md)；连续表面表头字重已复核 |
 | Q12-02 | 行中文字基线 | 代码完成 | 通过 | 通过 | 外部阻塞 | 未完成 | [4 行端点报告](evidence/Q04-Q12-INDEX.md)；52 DIP 行高未裁字 |

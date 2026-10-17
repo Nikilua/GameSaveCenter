@@ -1,8 +1,9 @@
 # GameSaveCenter 当前事实入口
 
-更新：2026-10-17；版本 `0.6.73`；当前分支 `main`，HEAD `d62e199fed5adf002fbf762f3a8ea0a770da46fd`，代码提交 `1c60a2fc`。Q11-06 只为受控视觉截图/几何增加 opt-in 测试输出；无生产 UI/XAML/导航改动。本机 SDK9 定向测试通过；Actions #1059（代码）与 #1060（脱敏证据文档）双 SDK 均终态成功。SDK8.0.423 和 SDK10.0.401 build/test 通过；SDK8 Render QA、静态审查和扩展包上传成功。R00/R01 最新 freshness 为 `14/14 fresh / 0 stale / 0 matched source paths`、2,949 paths、package identity `not-provided`。这些结果验证各自 runner 输入，不覆盖外机 R09 实际失败。
+更新：2026-10-17；版本 `0.6.73`；当前分支 `main`。Q11-07 复核以 HEAD `57023ac849689dab0d2b999737e0213042a1eebc` 为基线；工作树现增加 opt-in Light/Dark 离屏往返截图和证据文档，没有生产 UI/XAML、服务或 DTO 改动。本机 SDK `9.0.302`/VSTest `17.14.1` 的 Playnite.Tests 隔离 Release `R08PageSwitchBehaviorTests 4/4`；实际测试源、测试/插件 DLL/PDB 身份见 Q11-07 证据包。本机结果只覆盖该本机输入。旧检查点 Actions #1061/run `38986851956` 的 SDK10.0.401 job `117260206331` 已成功，日志末尾确认 Release build/test 与125个隔离 WPF 类通过；SDK8.0.423 job `117260206566` 记录时仍在编译/测试，且旧 run 不含 Q11-07 改动。新代码 push 后的 run 仍须等终态。另一台机器 R09 `1/2` 的真实失败不被本机或 CI 结果覆盖。
 
 - 当前代码提交 `1c60a2fc` 对应 Actions #1059/run `38982569941`、文档/证据提交 `d62e199f` 对应 #1060/run `38983018226` 均终态成功。详细 SDK/job 与测试结果见 Q11-06 当前 main 视觉复核包。
+- Q11-07 的自动行为类 `4/4`；Task/Media/Save/Maintenance 四个缓存生产页在往返状态下各输出 Light/Dark 离屏图，共8张。Task选中 ID 由断言验证，但不在截图视口。图片不是屏幕截图或Playnite呈现。R00/R01 freshness `14 fresh / 0 stale / 0 matched` 不代表构建/host通过；新代码对应 CI 尚需读取终态。
 - R00-03 历史 #919/#920 的 SDK10.0.401 完整日志现已取得：两次均为活动侧栏过渡断言的测试前提失败；`48b78b3b` 后由测试固定系统动效输入并补偏好矩阵，当前 #1056 双 SDK 已过。详情见 [R00-03 历史失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/R00-03-SIDEBAR-MOTION-CI-FAILURE-RECHECK-20261017/README.md)。
 - 外机 R09 附件是先前同一文本 SHA，仍是一次真实失败，不是当前 main 的新复跑。其 `Thickness(2/1)` 第151行与旧 `3f7d0b30` 断言形态相符；当前 main 的 R09 断言在 `f13b9e05` 已拆为 Chrome 1 DIP + 独立 ValidationStroke 2 DIP。外机 HEAD、源、test DLL/PDB、plugin DLL 身份仍缺；本机和 CI 通过只验证各自输入。
 
