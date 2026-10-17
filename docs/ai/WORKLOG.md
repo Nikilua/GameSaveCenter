@@ -1,3 +1,11 @@
+## 2026-10-18 #1077 双 SDK 终态、外机 R09 重复输入与 Q/R 准入
+
+- 当前 `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已终态成功。SDK8.0.423 job `117448022062` 和 SDK10.0.401 job `117448022272` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`。SDK8 另 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包上传成功。完整 job logs 已读取。
+- Artifacts：package `12108658169`（90,314,190 bytes，SHA-256 `c290c2dbec6af9c044d5ec42ad1ae8bd21cb0d86f5094925ae82d66e9aff8937`）；SDK8 diagnostics `12108792518`（1,628,542 bytes，`39a2d164e7224eeac7d7f7932a64d5267bbda78c3cabf6a82cd21952a5442969`）；SDK10 diagnostics `12108435363`（775,322 bytes，`d9faa653ca34c1d8c1e00f2b430450f81384df9d665e0722d9dd5cfce31c63f5`）。SDK8 与 SDK10.0.401 分开记录；这些结果只适用于精确 CI commit/runner。
+- 用户本轮提供的粘贴文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与既有输入一致，诊断目录仍是 `20261016T052146719Z-d9d99ac4`，R09 `1/2`、整体 exit `1`；没有新的运行或同次 source/test/plugin/PDB identity。当前源码第151行是 Brush 断言、历史旧测试第151行是 Chrome `2 DIP`，未更改模板或放宽断言。R09 README 记录的 `artifacts/gsc-b/fd7672ef` 和一键流程隔离目录只构成路径线索，未凭此确认外机脚本版本或根因。
+- 重新核对 Round2 `208/208`、Round3 `192/192`、R00/R01 与 R23-08：当前无待开始/实施中的代码项，R00-01—R01-08 受控状态不变。本机实时只读快照为一块活动屏 `\\.\DISPLAY1`（2560×1440），没有 Playnite/Worker 进程；没有重试 CEF `0x5` 或 ETW 权限拒绝。未访问真实存档、媒体、用户云端或扩展目录。
+- 本阶段仅同步 CI 与准入文档，没有产品代码改动或本机 build；未生成 artifacts/.tmp。既有未跟踪 TRX/TestResults 保持原样。下一可执行条件为外机同次身份材料、新的可复现问题/明确范围或宿主/设备/权限前置变化；未验边界包括真实 Playnite/OS 输入/UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能和外机当前安装结果。总目标未完成。
+
 ## 2026-10-18 #1076 双 SDK CI 终态与积压复核
 
 - 文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 整体终态成功。SDK8.0.423 job `117437640771`、SDK10.0.401 job `117437640925` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。

@@ -1,3 +1,10 @@
+## 2026-10-18 #1077 双 SDK CI 终态与 Q/R 准入复核
+
+- `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已终态成功。SDK8.0.423 job `117448022062`、SDK10.0.401 job `117448022272` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 Render QA、30-XAML 静态审查与扩展包成功。Artifacts ID/SHA 见 `docs/ai/WORKLOG.md` 的 #1077 记录。
+- 任务准入复扫没有新的依赖满足代码缺口；R00-01 至 R01-08 受控状态不变。桌面实时快照为单屏 `\\.\DISPLAY1`，无 Playnite/Worker；不重试相同 CEF `0x5`，不绕过 ETW 拒绝，不把模拟 DPI 当作物理跨屏。
+- 外机 R09 粘贴文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 未变，仍是 `20261016T052146719Z-d9d99ac4` 的 `1/2` 失败。当前 source line151 与失败 Thickness 栈映射不符；当前 main/CI 成功不能覆盖。未改生产模板或弱化测试。
+- 本阶段只同步文档，产品代码基线仍为 `8fc980f`，无本机 artifacts/.tmp。下一项准入条件是外机同次身份材料、新的可复现问题/明确范围或环境前置变化。总目标未完成；真实 Playnite、OS UIA/IME/读屏、物理 DPI/跨屏/呈现、ETW/宿主性能与外机安装仍未验证。
+
 ## 2026-10-18 #1076 双 SDK CI 终态与 Q/R 队列收口
 
 - 文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已终态成功。SDK8.0.423 job `117437640771`、SDK10.0.401 job `117437640925` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、扩展包生成/上传成功。

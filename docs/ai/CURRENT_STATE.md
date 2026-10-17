@@ -1,5 +1,11 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-18 最新检查点：#1077 双 SDK 终态与 Q/R 准入复核
+
+当前 `main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已双 SDK 终态成功。SDK8.0.423 job `117448022062` 与 SDK10.0.401 job `117448022272` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 `render-qa OK`，静态审查扫描 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包生成并上传成功。Artifacts：package `12108658169`（90,314,190 bytes，SHA-256 `c290c2dbec6af9c044d5ec42ad1ae8bd21cb0d86f5094925ae82d66e9aff8937`）；SDK8 diagnostics `12108792518`（1,628,542 bytes，`39a2d164e7224eeac7d7f7932a64d5267bbda78c3cabf6a82cd21952a5442969`）；SDK10 diagnostics `12108435363`（775,322 bytes，`d9faa653ca34c1d8c1e00f2b430450f81384df9d665e0722d9dd5cfce31c63f5`）。
+
+本次只更新文档，产品代码基线仍为 `8fc980f`。重读 Round2/3 与 R23-08 后没有新的依赖已满足代码缺口；R00-01 至 R01-08 的受控条件仍已满足。本机当前只有 `\\.\DISPLAY1`（2560×1440），没有 Playnite/Worker；CEF `0x5` 不重试，ETW 权限不绕过，Q24-03 不把逻辑模拟当物理跨屏。用户外机 R09 失败附件 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与既有文本完全相同，仍是 `20261016T052146719Z-d9d99ac4` 的 `1/2` 失败，不是新运行；#1077 runner 通过不覆盖它。下一准入条件是外机同次身份材料、新的可复现问题/明确范围或相关宿主/设备/权限前置变化。
+
 ## 2026-10-18 最新检查点：#1076 双 SDK 终态与 Q/R 准入
 
 文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已整体成功。SDK8.0.423 job `117437640771` 与 SDK10.0.401 job `117437640925` 均 Release build `0 warning / 0 error`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过。SDK8 `render-qa OK`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`，扩展包生成/上传成功。Artifacts：package `12107422070`（90,314,170 bytes，SHA-256 `18310d2c4a94b85f6840006cc3ac9da77e896161ec07be066f3c58b32b54e9e0`）；SDK8 diagnostics `12107750956`（1,626,582 bytes，`70db57dfdfd00cf41ac2a46cbc65985f41ad1ea3c989e9f9ebc28fce8377bd6b`）；SDK10 diagnostics `12106670885`（772,805 bytes，`01203d80bde6bbc05a367951b966106e05b51016fb3b751a725af25f0b6a2f88`）。

@@ -1,5 +1,15 @@
 # R23-08 当前 main 下一轮准入复核
 
+## 2026-10-18 #1077 终态与实时环境复核
+
+文档 HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions [#1077/run `39050532641`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39050532641) 已由 SDK8.0.423 和 SDK10.0.401 两 lane 终态成功。Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125` 通过；SDK8 Render QA、静态审查和扩展包上传成功。Artifact 身份见 `docs/ai/WORKLOG.md`。这是文档提交 CI，不改变代码基线 `8fc980f`。
+
+实时只读快照：`\\.\DISPLAY1` 单块活动显示器（2560×1440，工作区 2560×1368），没有 Playnite/Worker 进程。此前 CEF `platform_channel 0x5` 未发生可观察变化，不重试；不绕过 ETW/WPR/xperf 权限拒绝。Round2 `208/208`、Round3 `192/192` 当前没有新的依赖已满足代码缺口；R00-01 至 R01-08 受控条件仍已满足。
+
+本轮重复的外机 R09 文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与既有附件相同，目录仍指向 `20261016T052146719Z-d9d99ac4`，不是新的运行。外机 `1/2` 失败有效；其 line151 `Thickness(2/1)` 与当前 main line151 Brush 断言不匹配，具体外机 checkout/test DLL/PDB/plugin DLL 身份仍缺。#1077 CI 结果不覆盖该失败。
+
+当前没有可据以实施的 Q/R 产品代码小批。下一准入条件为该次身份材料、新的可复现问题/明确范围或宿主/设备/权限前置发生可观察变化。外机材料到手先比对，不要求重跑。真实 Playnite/CEF、OS UIA/IME/读屏、物理 DPI/跨屏、最终呈现和 ETW/宿主性能仍未验。
+
 ## 2026-10-18 当前准入复核补记
 
 文档 HEAD `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions [#1076/run `39047011333`](https://github.com/Nikilua/GameSaveCenter/actions/runs/39047011333) 已 SDK8.0.423/SDK10.0.401 双 lane 成功；详情及 artifact SHA 见 `docs/ai/WORKLOG.md`。这是文档提交 CI，不改变产品源码基线 `8fc980f`。

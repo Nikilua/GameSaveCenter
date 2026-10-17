@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 最新续跑：#1077 双 SDK CI 与准入复核
+
+`main` HEAD `e8edbfc073d6bf18e07980a60c778577f643c6be` 对应 Actions #1077/run `39050532641` 已双 SDK 终态成功。SDK8.0.423 job `117448022062`、SDK10.0.401 job `117448022272` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`。SDK8 Render QA、30-XAML 静态审查和扩展包通过。Artifacts：package `12108658169` / SHA-256 `c290c2dbec6af9c044d5ec42ad1ae8bd21cb0d86f5094925ae82d66e9aff8937`；SDK8 diagnostics `12108792518` / `39a2d164e7224eeac7d7f7932a64d5267bbda78c3cabf6a82cd21952a5442969`；SDK10 diagnostics `12108435363` / `d9faa653ca34c1d8c1e00f2b430450f81384df9d665e0722d9dd5cfce31c63f5`。
+
+Round2/3 与 R23-08 复扫没有新的依赖满足代码缺口；R00/R01 受控项状态不变。本机当前单屏且无 Playnite/Worker。外机 R09 附件 SHA-256 与既有输入相同，仍是真实失败；本机或 CI 通过不代表外机成功。下一准入点是该次身份材料、新复现/明确范围或宿主/设备/权限前置发生可观察变化。总目标保持未完成。
+
 ## 2026-10-18 最新续跑：#1076 双 SDK 收口与当前准入
 
 文档提交 `32a62d8413f49d7f02a5909321377c9cdc09da22` 对应 Actions #1076/run `39047011333` 已双 SDK 终态成功：SDK8.0.423 job `117437640771`、SDK10.0.401 job `117437640925` 均 Release `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125/125`；SDK8 Render QA、XAML 静态审查和扩展包生成成功。Artifacts：package `12107422070` / SHA-256 `18310d2c4a94b85f6840006cc3ac9da77e896161ec07be066f3c58b32b54e9e0`；SDK8 diagnostics `12107750956` / `70db57dfdfd00cf41ac2a46cbc65985f41ad1ea3c989e9f9ebc28fce8377bd6b`；SDK10 diagnostics `12106670885` / `01203d80bde6bbc05a367951b966106e05b51016fb3b751a725af25f0b6a2f88`。
