@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Win32;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
 
@@ -15,13 +18,41 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string restorePlanDraftStatus = "先预览所选版本的映射，再保存只读方案草稿。";
         private RestorePlanDraftDefinition? selectedRestorePlanDraftFrom;
         private RestorePlanDraftDefinition? selectedRestorePlanDraftTo;
+        private RestorePlanDraftDefinition? selectedRestorePlanDraftForExport;
+        private string restorePlanDraftExportPreviewText = string.Empty;
         private RestorePlanDraftComparison? restorePlanDraftComparison;
 
         public ObservableCollection<RestorePlanDraftDefinition> RestorePlanDrafts { get; } = new ObservableCollection<RestorePlanDraftDefinition>();
         public ICommand PreviewRestorePlanMappingCommand { get; private set; } = null!;
         public ICommand SaveRestorePlanDraftCommand { get; private set; } = null!;
         public ICommand DeleteRestorePlanDraftCommand { get; private set; } = null!;
+        public ICommand PreviewRestorePlanDraftExportCommand { get; private set; } = null!;
+        public ICommand ExportRestorePlanDraftCommand { get; private set; } = null!;
         public ICommand CompareRestorePlanDraftsCommand { get; private set; } = null!;
+
+        public RestorePlanDraftDefinition? SelectedRestorePlanDraftForExport
+        {
+            get => selectedRestorePlanDraftForExport;
+            private set
+            {
+                if (ReferenceEquals(selectedRestorePlanDraftForExport, value)) return;
+                selectedRestorePlanDraftForExport = value;
+                OnPropertyChanged(nameof(SelectedRestorePlanDraftForExport));
+                RaiseCommandStates();
+            }
+        }
+
+        public string RestorePlanDraftExportPreviewText
+        {
+            get => restorePlanDraftExportPreviewText;
+            private set
+            {
+                if (string.Equals(restorePlanDraftExportPreviewText, value, StringComparison.Ordinal)) return;
+                restorePlanDraftExportPreviewText = value ?? string.Empty;
+                OnPropertyChanged(nameof(RestorePlanDraftExportPreviewText));
+                RaiseCommandStates();
+            }
+        }
 
         public RestorePlanDraftDefinition? SelectedRestorePlanDraftFrom
         {
@@ -112,9 +143,69 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (value is RestorePlanDraftDefinition draft) Run(() => DeleteRestorePlanDraftAsync(draft));
                 },
                 value => !IsBusy && value is RestorePlanDraftDefinition);
+            PreviewRestorePlanDraftExportCommand = new RelayCommand(
+                PreviewRestorePlanDraftExport,
+                value => !IsBusy && value is RestorePlanDraftDefinition);
+            ExportRestorePlanDraftCommand = new RelayCommand(
+                _ => RunLocal(ExportRestorePlanDraft),
+                _ => !IsBusy && SelectedRestorePlanDraftForExport != null && !string.IsNullOrWhiteSpace(RestorePlanDraftExportPreviewText));
             CompareRestorePlanDraftsCommand = new RelayCommand(
                 _ => CompareSelectedRestorePlanDrafts(),
                 _ => CanCompareSelectedRestorePlanDrafts());
+        }
+
+        private void PreviewRestorePlanDraftExport(object? value)
+        {
+            if (!(value is RestorePlanDraftDefinition requested)) return;
+            var draft = RestorePlanDrafts.FirstOrDefault(item =>
+                string.Equals(item.DraftId, requested.DraftId, StringComparison.OrdinalIgnoreCase));
+            if (draft == null)
+            {
+                RestorePlanDraftStatus = "该草稿已删除，无法生成导出预览。";
+                return;
+            }
+
+            SelectedRestorePlanDraftForExport = draft;
+            RestorePlanDraftExportPreviewText = RestorePlanDraftExportFormatter.Create(draft);
+            RestorePlanDraftStatus = "只读导出预览已生成。请检查下方内容后，再明确保存为 TXT 文件。";
+        }
+
+        private void ExportRestorePlanDraft()
+        {
+            var previewed = SelectedRestorePlanDraftForExport;
+            if (previewed == null) return;
+
+            var draft = RestorePlanDrafts.FirstOrDefault(item =>
+                string.Equals(item.DraftId, previewed.DraftId, StringComparison.OrdinalIgnoreCase));
+            if (draft == null)
+            {
+                SelectedRestorePlanDraftForExport = null;
+                RestorePlanDraftExportPreviewText = string.Empty;
+                RestorePlanDraftStatus = "该草稿已删除，导出已取消。";
+                return;
+            }
+
+            var currentText = RestorePlanDraftExportFormatter.Create(draft);
+            if (!string.Equals(currentText, RestorePlanDraftExportPreviewText, StringComparison.Ordinal))
+            {
+                RestorePlanDraftExportPreviewText = currentText;
+                RestorePlanDraftStatus = "草稿状态已变化，预览已更新；请复核后再次选择导出。";
+                return;
+            }
+
+            var dialog = new SaveFileDialog
+            {
+                Title = "导出只读恢复方案摘要",
+                Filter = "文本摘要 (*.txt)|*.txt",
+                FileName = $"GameSaveCenter-restore-plan-{DateTime.Now:yyyyMMdd-HHmmss}.txt",
+                AddExtension = true,
+                DefaultExt = ".txt",
+                OverwritePrompt = true
+            };
+            if (dialog.ShowDialog() != true) return;
+
+            File.WriteAllText(dialog.FileName, currentText, new UTF8Encoding(false));
+            RestorePlanDraftStatus = "只读摘要已导出；文本不包含存档、路径或凭据，也不是可导入或执行的恢复指令。";
         }
 
         private async Task PreviewRestorePlanMappingAsync()
@@ -253,6 +344,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SelectedRestorePlanDraftFrom = null;
             if (string.Equals(SelectedRestorePlanDraftTo?.DraftId, draft.DraftId, StringComparison.OrdinalIgnoreCase))
                 SelectedRestorePlanDraftTo = null;
+            if (string.Equals(SelectedRestorePlanDraftForExport?.DraftId, draft.DraftId, StringComparison.OrdinalIgnoreCase))
+            {
+                SelectedRestorePlanDraftForExport = null;
+                RestorePlanDraftExportPreviewText = string.Empty;
+            }
         }
 
         private void ResetRestorePlanMappingPreview(string? status = null)

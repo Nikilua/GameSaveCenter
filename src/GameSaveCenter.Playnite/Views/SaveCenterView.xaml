@@ -412,7 +412,10 @@
                                                     <Grid>
                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                         <TextBlock Text="{Binding GameName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
-                                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiContextButton}" Content="删除" Command="{Binding DataContext.DeleteRestorePlanDraftCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" AutomationProperties.Name="删除只读恢复方案草稿"/>
+                                                        <WrapPanel Grid.Column="1" VerticalAlignment="Top">
+                                                            <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Content="预览导出" Command="{Binding DataContext.PreviewRestorePlanDraftExportCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" AutomationProperties.Name="预览只读恢复方案导出" AutomationProperties.HelpText="先查看脱敏摘要；此操作不会导入或执行恢复。"/>
+                                                            <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Content="删除" Command="{Binding DataContext.DeleteRestorePlanDraftCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" AutomationProperties.Name="删除只读恢复方案草稿" Margin="6,0,0,0"/>
+                                                        </WrapPanel>
                                                     </Grid>
                                                     <TextBlock Text="{Binding TargetDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                     <TextBlock Text="{Binding CreationDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
@@ -426,6 +429,26 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                                <Border x:Name="RestorePlanDraftExportPreviewCard" Padding="10" Margin="0,8,0,0" AutomationProperties.Name="只读恢复方案导出预览">
+                                    <Border.Style>
+                                        <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                                            <Setter Property="Padding" Value="10"/>
+                                            <Setter Property="Margin" Value="0,8,0,0"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedRestorePlanDraftForExport}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel>
+                                        <TextBlock Text="只读摘要预览" FontWeight="SemiBold"/>
+                                        <TextBlock Text="仅显示脱敏后的摘要字段。确认下面的内容后，可另存为 TXT；文本不能导入或触发恢复。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,6" AutomationProperties.HelpText="导出不包含存档数据、路径、认证参数或自动执行脚本。"/>
+                                        <TextBox Text="{Binding RestorePlanDraftExportPreviewText, Mode=OneWay}" Style="{DynamicResource GscWpfUiTextBox}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MinHeight="112" MaxHeight="196" AutomationProperties.Name="恢复方案脱敏文本预览" AutomationProperties.HelpText="只读文本，可滚动与选择；内容不会作为恢复命令解析。"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ExportRestorePlanDraftCommand}" Content="导出 TXT 摘要" AutomationProperties.Name="保存只读恢复方案摘要" AutomationProperties.HelpText="保存当前已预览的 TXT 摘要，不执行或导入恢复。" Margin="0,8,0,0" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Border>
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,8,0,0" AutomationProperties.Name="恢复方案差异比较入口">
                                     <StackPanel>
                                         <TextBlock Text="比较两份方案" FontWeight="SemiBold"/>

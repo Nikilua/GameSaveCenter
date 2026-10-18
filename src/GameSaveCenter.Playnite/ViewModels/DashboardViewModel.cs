@@ -6457,6 +6457,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PreviewBackupCommand, RetrySelectedGameCloudUploadCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
                 PreviewRestorePlanMappingCommand, SaveRestorePlanDraftCommand, DeleteRestorePlanDraftCommand,
+                PreviewRestorePlanDraftExportCommand, ExportRestorePlanDraftCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand, CancelPolicyDraftCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
