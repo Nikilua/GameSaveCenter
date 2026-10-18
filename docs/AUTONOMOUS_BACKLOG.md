@@ -2,12 +2,12 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已完成受控验收；S00-02 代码完成，UI 门禁仍未通过，不推送到远端。S01-01 与 S02-01 已验收；S02-02 为后续入口工作。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
+用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足并在 origin/main；S00-02 代码完成，SDK8 build 通过但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达，不推送含该 XAML 的分支。S01-01 与 S02-01 已验收；S02-02 为后续入口工作。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
-| S00-01 | IMPLEMENTED | `dd38f8ca` 已交付稳定 ID、双语别名、作用域、不可用原因，并复用真实命令；7/7 定向行为测试通过。证据见 Round4 S00-01。 |
-| S00-02 | VERIFY_PENDING | `29dc09b2`/`a58dd582` 实现 Shell 内搜索 overlay，空输入最多 8 项、按名称/别名/分类过滤、显示作用范围与可用原因；21/21 定向测试通过。需 SDK8.0.423 和真实 `GameSaveCenter-Run.cmd` 安装/版本核验后再推送并准入 S00-03。 |
+| S00-01 | SATISFIED | `dd38f8ca` 与实现/证据已在 origin/main；稳定 ID、双语别名、作用域、不可用原因复用真实命令。原 7/7 与当前 SDK8 行为类 2/2 均有记录；无需重复实现。 |
+| S00-02 | BLOCKED_ENVIRONMENT | `29dc09b2`/`a58dd582` 实现 Shell 内搜索 overlay；21/21 定向测试与 SDK8 Release build 通过。全量 WPF 隔离在 R05 `GetCursorPos` Win32 error 5 处停止，安装/版本核验未运行。保留门禁，不推送含此 XAML 的分支。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S02-01 | IMPLEMENTED | `83194c50` 建立本地通知记录 DTO 与 Worker SQLite 去重/保留接口；SDK8 解决方案构建 0/0，新增通知持久化测试 3/3，Worker 364 passed/1 skipped。通知 producer 留给 S02-02。证据见 Round4 S02-01。 |
 | S07-01 | IMPLEMENTED | `4ea5e694` 将 `CURRENT_STATE.md` 从 254 行压缩为 32 行并保留完整历史快照；source validation、diff check 与归档一致性检查通过。证据见 Round4 S07-01。 |

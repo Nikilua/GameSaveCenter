@@ -11335,3 +11335,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 使用 SDK `8.0.423` 做 Release 解决方案构建，0 warning / 0 error。新增 `NotificationRecordPersistenceTests` `3/3` 通过，完整 Worker suite `364 passed / 1 skipped`。定向 TRX SHA `9D89AF7F28591FE57DBC4C63BBC217A4B788B2D72CA01B88187BCF88E16B93CF`。
 - 修复 SDK8 nullable warning、Worker 日志扩展编译缺失，以及 SQLite 测试 fixture 删除前的连接池清理；通知记录逻辑仍保留唯一去重、30天/500条保留规则。未改 XAML或外发通知；S02-01 更新为已验收，S02-02 仍待接入。
+
+## 2026-10-18 Round4 S00 当前 SDK8 UI 门禁复核
+
+- S00-01 已在 `origin/main`，作为已有能力满足本任务；原 SDK9 7/7 与本次 SDK8 `CommandDirectoryBehaviorTests` 2/2 均有 TRX。没有重复实现命令目录。
+- S00-02 使用 SDK `8.0.423` 完成 Release solution build，0 warning / 0 error；Core `125/125`、Worker `364 passed / 1 skipped`、Playnite source `445 passed / 27 skipped`。Playnite WPF 隔离运行至 45/126 类，在 R05 `QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt` 因 `GetCursorPos` Win32 error 5 停止；169/170 已运行用例通过，其余 WPF 类未运行。完整诊断 ID `20261018T043821860Z-6e089ab8`，R05 TRX SHA `CDF246C301EFFA904619E881333880925003EDEECEDB41F9DFFD07136391330A`。
+- 安装、插件版本核验和真实 Playnite rendering 未到达；不绕过指针权限门槛，不推送含 S00-02 XAML 的 `main`。S00-01 标记已满足，S00-02 等待环境前置可观察变化。

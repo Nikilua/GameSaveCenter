@@ -6,19 +6,19 @@
     {
       "id": "S00-01",
       "title": "只读命令目录",
-      "state": "已验收",
+      "state": "已满足",
       "implementationState": "complete",
       "implementationCommit": "dd38f8ca",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S00-01/README.md)：Release 目标构建、7/7 定向行为用例、source validation、diff check",
+      "verificationText": "[证据](evidence/S00-01/README.md)：origin/main 已有稳定命令目录；原 7/7 SDK9 与当前 SDK8 CommandDirectoryBehaviorTests 2/2 复核通过",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md"
         }
       ],
-      "boundary": "SDK9.0.302；真实 Playnite 未运行；S00-02 已准入"
+      "boundary": "当前 SDK8.0.423 解决方案构建通过；真实 Playnite 未运行；S00-02 仍待 UI 门禁"
     },
     {
       "id": "S00-02",
@@ -28,14 +28,14 @@
       "implementationCommit": "29dc09b2、a58dd582",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S00-02/README.md)：Release 目标构建、21/21 定向用例、200 项过滤 0.554 ms、source/WPF 静态审查",
+      "verificationText": "[证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 全量隔离在 R05 系统指针权限错误处中止",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md"
         }
       ],
-      "boundary": "`GameSaveCenter-Run.cmd` 因缺 SDK 8.0.423 在安装前退出；未推送、未验证真实宿主；门禁通过后再准入 S00-03"
+      "boundary": "SDK8 Release build 已通过；WPF 隔离在 R05 GetCursorPos Win32 error 5 处停止，安装/版本核验及真实宿主未运行；门禁通过后再推送并准入 S00-03"
     },
     {
       "id": "S00-03",

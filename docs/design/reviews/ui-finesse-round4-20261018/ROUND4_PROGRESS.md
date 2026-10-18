@@ -6,13 +6,13 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收10、代码完成待验收1、外部阻塞1、待开始52。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收9、已满足1、代码完成待验收1、外部阻塞1、待开始52。
 实现状态：完成11、未开始53、不适用0；受控验证：通过12、未跑52、不适用0；宿主验证：通过0、待验1、未跑55、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
-| S00-01 | 只读命令目录 | 已验收 | dd38f8ca | [证据](evidence/S00-01/README.md)：Release 目标构建、7/7 定向行为用例、source validation、diff check | SDK9.0.302；真实 Playnite 未运行；S00-02 已准入 |
-| S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建、21/21 定向用例、200 项过滤 0.554 ms、source/WPF 静态审查 | `GameSaveCenter-Run.cmd` 因缺 SDK 8.0.423 在安装前退出；未推送、未验证真实宿主；门禁通过后再准入 S00-03 |
+| S00-01 | 只读命令目录 | 已满足 | dd38f8ca | [证据](evidence/S00-01/README.md)：origin/main 已有稳定命令目录；原 7/7 SDK9 与当前 SDK8 CommandDirectoryBehaviorTests 2/2 复核通过 | 当前 SDK8.0.423 解决方案构建通过；真实 Playnite 未运行；S00-02 仍待 UI 门禁 |
+| S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 全量隔离在 R05 系统指针权限错误处中止 | SDK8 Release build 已通过；WPF 隔离在 R05 GetCursorPos Win32 error 5 处停止，安装/版本核验及真实宿主未运行；门禁通过后再推送并准入 S00-03 |
 | S00-03 | 键盘与组合输入 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-04 | 固定与最近命令 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-05 | 上下文预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

@@ -20,4 +20,6 @@
 - 测试记录：[S00-01-command-directory.trx](tests/S00-01-command-directory.trx)，SHA-256 `EED8C2552F5AAB0F68ABB6BA7D730D27404783ABD1B8CCB2FE958E8A2BD6C677`。
 - 测试程序集 SHA-256 `399123919710231FD0E0FCF04DDDCCD27D694655F33FA9E7CFEF78C9EFD81809`。
 
+当前源复核：仓库 SDK `8.0.423` 隔离 Release 解决方案构建成功（0 warning / 0 error）；本轮 `CommandDirectoryBehaviorTests` 独立类 `2/2` 通过。记录见 [SDK8 TRX](tests/command-directory-sdk8423.trx)，SHA-256 `BD2520D0C7BA56CC3FD1428E713B1F66B728FDCC4487FE92FF3D3C710F2653AC`。原 7/7 结果仍是 SDK9 旧证据，未与这次类计数混合。
+
 本批没有修改 XAML 或布局，因此不以离屏图像或静态资源检查声称 Playnite 屏幕呈现通过。命令目录目前是可被后续入口调用的真实数据契约，用户可见搜索面板属于下一项 S00-02；真实 Playnite 宿主运行未验证。

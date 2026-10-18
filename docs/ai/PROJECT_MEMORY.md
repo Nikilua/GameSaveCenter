@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S00 状态与 SDK8 UI 门禁
+
+S00-01 的稳定命令目录和证据已在 `origin/main`，不重复实现；原 SDK9 `7/7` 证据保留，本次 SDK8 `CommandDirectoryBehaviorTests` 类 `2/2` 复核通过。S00-02 仍是 Shell 内命令搜索 overlay；SDK `8.0.423` Release solution build `0/0`，Core `125/125`、Worker `364 passed/1 skipped`、Playnite source `445 passed/27 skipped`。WPF 隔离至第 `45/126` 类、累计 `170` 个用例时，R05 读取系统指针触发 Win32 error 5（169 pass / 1 fail）；剩余 WPF 类及安装/版本核验未运行。不要提升权限或修改测试以绕过系统指针前置条件；等环境能力变化再完成 UI 门禁。完整日志与 TRX 在 `artifacts/build-diagnostics/20261018T043821860Z-6e089ab8` 和 S00-02 evidence。真实 Playnite 未启动。
+
 ## 2026-10-18 Round4 S02-01 通知记录契约代码完成待验收
 
 临时插件 toast 不构成持久收件箱；选择已有 Worker SQLite 状态库作为本地通知记录所有者。`NotificationRecordDto` 保存通知/去重 ID、关联 task/game ID、级别、短标题/摘要、UTC 时间和读状态；`tasks` 表仍是任务状态权威来源。表对 dedup key 建唯一约束，重放忽略；记录保留 30 天、最多 500 条。S02-02 再连接通知生产者与入口。代码提交 `83194c50`；SDK8.0.423 Release 解决方案构建 0 warning / 0 error，新增 SQLite 行为测试 3/3，Worker 364 passed / 1 skipped。未改 XAML、无外发通知或 Playnite/UI 验证。见 [S02-01](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。

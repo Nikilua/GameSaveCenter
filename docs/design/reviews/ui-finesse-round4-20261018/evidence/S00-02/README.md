@@ -25,6 +25,8 @@
 
 ## 尚未完成的 UI 门禁
 
-按仓库要求执行了 `GameSaveCenter-Run.cmd`。脚本要求从 `global.json` 选择精确 SDK `8.0.423`；本机 `dotnet --list-sdks` 只有 `9.0.302`，脚本以退出码 1 在 SDK 检查阶段停止，没有完成其真实构建、安装和版本核验。流程输出出现“Playnite 已退出”，但没有验证插件启动、主题呈现或实际版本。没有替代 SDK 检查、没有伪造宿主或屏幕证据。
+SDK8 后续复核已找到仓库内置的精确 SDK `8.0.423`，并在隔离输出目录完成 Release 解决方案构建（0 warning / 0 error）。Core `125/125`；Worker `364` passed、`1` skipped；Playnite source group `445` passed、`27` skipped。WPF 隔离运行累计到第 45/126 个类、170 个用例时有 1 个环境失败：`R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt` 在读取系统指针时 `GetCursorPos` 返回 Win32 error 5。其他 169 个已运行用例通过；其余 WPF 类未运行。TRX：[R05TooltipTimingBehaviorTests-sdk8423.trx](tests/R05TooltipTimingBehaviorTests-sdk8423.trx)，SHA-256 `CDF246C301EFFA904619E881333880925003EDEECEDB41F9DFFD07136391330A`。
 
-因此该项仍为“代码完成待验收”，尚未推送到 `origin/main`；远端 UI 门禁通过后再完成推送并准入依赖项 S00-03。受控用例不证明真实 Playnite、浅/深主题、UI Automation/读屏、实际 IME 候选行为或 DPI 呈现。当前 checkout 未包含门禁所指的 `AcrylicFork/Design` 演示源，视觉实现沿用生产 Shell 已共享的浮层、令牌和按钮资源。
+该 WPF 失败发生在安装与版本核验之前，因此本次没有完成 UI host gate。未提升权限或绕过系统指针前置条件，也未启动 Playnite。旧的 SDK9 `21/21` 定向行为结果与本次 SDK8 全量分组结果分别记录，不相互替代。
+
+因此该项仍为“代码完成待验收”，尚未推送到 `origin/main`；只有 SDK8 全套隔离验证不再被环境失败打断，并完成项目要求的安装/版本核验后，才进入 S00-03。受控用例不证明真实 Playnite、浅/深主题、UI Automation/读屏、实际 IME 候选行为或 DPI 呈现。当前 checkout 未包含门禁所指的 `AcrylicFork/Design` 演示源，视觉实现沿用生产 Shell 已共享的浮层、令牌和按钮资源。

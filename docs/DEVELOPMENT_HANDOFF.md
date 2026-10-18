@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 当前 Round4 SDK8 门禁复核
+
+S00-01 已满足，已有实现与证据在 `origin/main`。S01-01 和 S02-01 分别完成 SDK8 受控验收，详见各自 evidence README。S00-02 的 SDK8 Release solution build 为 0 warning / 0 error，Core 125/125、Worker 364 passed/1 skipped、Playnite source 445 passed/27 skipped。WPF 隔离运行到第 45/126 类时，R05 `GetCursorPos` 对系统指针读取返回 Win32 error 5；本次 169/170 已运行用例通过，其余 WPF 类未运行，安装/版本核验未到达。不要绕过指针权限或推送含该 XAML 的 `main`；前置条件变化后继续 UI 门禁。
+
+用户最新 R09 日志所示 `Expected 2 DIP / Actual 1 DIP` 与旧测试 `3f7d0b30` 相符；当前 `origin/main` 已含 `f13b9e05` 的 Chrome 1 DIP / ValidationStroke 2 DIP 修正，本机 SDK8 当前 R09 `2/2`。外机同次程序集身份仍缺，详见 R09 复核证据。
+
 ## 2026-10-18 Round4 S02-01 通知记录代码完成
 
 `83194c50` 新增通知记录 DTO、severity/规范化策略和 Worker SQLite 持久化 API。去重键唯一且同事件重放不覆盖首条；保留 30 天、最多 500 条，任务状态仍以原任务表为准。SDK8.0.423 Release 解决方案构建 0/0，新增 Worker SQLite 测试 `3/3`，完整 Worker `364` passed / `1` skipped。通知生产者尚未接入，S02-02 接续；未改 XAML/外发通知。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md`。
