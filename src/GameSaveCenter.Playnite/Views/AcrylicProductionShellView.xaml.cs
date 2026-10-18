@@ -25,6 +25,7 @@ namespace GameSaveCenter.Playnite.Views
         private static readonly global::Playnite.SDK.ILogger Logger = global::Playnite.SDK.LogManager.GetLogger();
         private readonly Dictionary<WorkspaceKind, UserControl> pages = new Dictionary<WorkspaceKind, UserControl>();
         private readonly HashSet<WorkspaceKind> activatedWorkspaces = new HashSet<WorkspaceKind>();
+        private IReadOnlyList<CommandDirectoryItem> commandDirectoryItems = Array.Empty<CommandDirectoryItem>();
         private DashboardViewModel? viewModel;
         private bool viewModelSubscribed;
         private bool suppressNavigation;
@@ -37,6 +38,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool gameSearchCompositionActive;
         private bool pickerKeyboardNavigationActive;
         private int pickerKeyboardNavigationGeneration;
+        private Action? settingsRequested;
+        private Action? focusWorkspaceSearchRequested;
         private readonly WrapPanelRowGapController headerActionRowGap;
         private int measurePasses;
         private int arrangePasses;
@@ -46,8 +49,18 @@ namespace GameSaveCenter.Playnite.Views
             InitializeComponent();
             headerActionRowGap = new WrapPanelRowGapController(HeaderActionsPanel);
             FocusWorkspaceSearchCommand = new RelayCommand(
-                _ => FocusWorkspaceSearchRequested?.Invoke(),
-                _ => FocusWorkspaceSearchRequested != null);
+                _ => focusWorkspaceSearchRequested?.Invoke(),
+                _ => focusWorkspaceSearchRequested != null);
+            NavigateWorkspaceCommand = new RelayCommand(
+                NavigateWorkspaceFromCommand,
+                value => viewModel != null && value is WorkspaceKind workspace
+                    && Enum.IsDefined(typeof(WorkspaceKind), workspace));
+            OpenSettingsCommand = new RelayCommand(
+                _ => SettingsRequested?.Invoke(),
+                _ => viewModel != null && SettingsRequested != null);
+            OpenGamePickerCommand = new RelayCommand(
+                _ => OpenGamePicker(),
+                _ => viewModel != null && GameContextButton.IsVisible);
             TextCompositionManager.AddPreviewTextInputStartHandler(GameSearchTextBox, OnGameSearchCompositionStarted);
             TextCompositionManager.AddPreviewTextInputUpdateHandler(GameSearchTextBox, OnGameSearchCompositionUpdated);
             TextCompositionManager.AddPreviewTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
@@ -72,7 +85,19 @@ namespace GameSaveCenter.Playnite.Views
         public FrameworkElement PageHostForAudit => PageHost;
         internal bool IsGamePickerOpen => PickerOverlay.Visibility == Visibility.Visible;
         public ICommand FocusWorkspaceSearchCommand { get; }
-        public Action? FocusWorkspaceSearchRequested { get; set; }
+        public ICommand NavigateWorkspaceCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
+        public ICommand OpenGamePickerCommand { get; }
+        internal IReadOnlyList<CommandDirectoryItem> CommandDirectoryItems => commandDirectoryItems;
+        public Action? FocusWorkspaceSearchRequested
+        {
+            get => focusWorkspaceSearchRequested;
+            set
+            {
+                focusWorkspaceSearchRequested = value;
+                NotifyCommandDirectoryCanExecuteChanged();
+            }
+        }
         internal IReadOnlyList<KeyboardShortcutHelpItem> KeyboardShortcutHelpItems
             => viewModel == null
                 ? Array.Empty<KeyboardShortcutHelpItem>()
@@ -91,7 +116,15 @@ namespace GameSaveCenter.Playnite.Views
             Keyboard.Focus(GameSearchTextBox);
         }
 
-        public Action? SettingsRequested { get; set; }
+        public Action? SettingsRequested
+        {
+            get => settingsRequested;
+            set
+            {
+                settingsRequested = value;
+                NotifyCommandDirectoryCanExecuteChanged();
+            }
+        }
 
         /// <summary>
         /// The parent dashboard owns the persisted animation preference.  Keep the shell
@@ -121,6 +154,7 @@ namespace GameSaveCenter.Playnite.Views
                 {
                     viewModel.PropertyChanged += OnViewModelPropertyChanged;
                     viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
+                    viewModel.Games.CollectionChanged += OnGamesCollectionChanged;
                     viewModelSubscribed = true;
                 }
                 NavigateTo(dashboardViewModel.CurrentWorkspace);
@@ -133,6 +167,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
                 viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
+                viewModel.Games.CollectionChanged -= OnGamesCollectionChanged;
                 viewModelSubscribed = false;
             }
 
@@ -140,8 +175,15 @@ namespace GameSaveCenter.Playnite.Views
             DataContext = viewModel;
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
+            viewModel.Games.CollectionChanged += OnGamesCollectionChanged;
             viewModelSubscribed = true;
             CreatePages();
+            commandDirectoryItems = CommandDirectoryCatalog.Create(
+                viewModel,
+                NavigateWorkspaceCommand,
+                OpenSettingsCommand,
+                OpenGamePickerCommand,
+                FocusWorkspaceSearchCommand);
             NavigateTo(viewModel.CurrentWorkspace);
             RestoreSidebarState();
             QueueGamePickerFilterDefaults();
@@ -221,6 +263,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
                 viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
+                viewModel.Games.CollectionChanged -= OnGamesCollectionChanged;
                 viewModelSubscribed = false;
             }
         }
@@ -228,6 +271,16 @@ namespace GameSaveCenter.Playnite.Views
         private void OnGamePickerPlatformOptionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             QueueGamePickerFilterDefaults();
+        }
+
+        private void OnGamesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke(new Action(NotifyCommandDirectoryCanExecuteChanged));
+                return;
+            }
+            NotifyCommandDirectoryCanExecuteChanged();
         }
 
         private void RestoreGamePickerFilterDefaults()
@@ -333,13 +386,25 @@ namespace GameSaveCenter.Playnite.Views
                 {
                     suppressNavigation = false;
                 }
-                SettingsRequested?.Invoke();
+                if (OpenSettingsCommand.CanExecute(null))
+                    OpenSettingsCommand.Execute(null);
                 return;
             }
             if (!Enum.TryParse(button.Tag.ToString(), out WorkspaceKind workspace)) return;
+            if (NavigateWorkspaceCommand.CanExecute(workspace))
+                NavigateWorkspaceCommand.Execute(workspace);
+        }
+
+        private void NavigateWorkspaceFromCommand(object? value)
+        {
+            if (viewModel == null || !(value is WorkspaceKind workspace)
+                || !Enum.IsDefined(typeof(WorkspaceKind), workspace))
+                return;
+
             viewModel.CurrentWorkspace = workspace;
             viewModel.RequestWorkspaceLoad();
             NavigateTo(workspace);
+            NotifyCommandDirectoryCanExecuteChanged();
         }
 
         private void OnSidebarCollapseClick(object sender, RoutedEventArgs e)
@@ -560,6 +625,18 @@ namespace GameSaveCenter.Playnite.Views
                       || e.PropertyName == nameof(DashboardViewModel.NavigationReturnToolTip))
                      && viewModel != null)
                 UpdateNavigationReturnButton();
+
+            if (e.PropertyName == nameof(DashboardViewModel.CurrentWorkspace)
+                || e.PropertyName == nameof(DashboardViewModel.SelectedGame)
+                || e.PropertyName == nameof(DashboardViewModel.SelectedTask)
+                || e.PropertyName == nameof(DashboardViewModel.IsBusy))
+                NotifyCommandDirectoryCanExecuteChanged();
+        }
+
+        private void NotifyCommandDirectoryCanExecuteChanged()
+        {
+            foreach (var item in commandDirectoryItems)
+                item.RaiseCanExecuteChanged();
         }
 
         private void OnKeyboardHelpClick(object sender, RoutedEventArgs e)
@@ -627,7 +704,8 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            OpenGamePicker();
+            if (OpenGamePickerCommand.CanExecute(null))
+                OpenGamePickerCommand.Execute(null);
         }
 
         private void OnPickerScrimMouseDown(object sender, MouseButtonEventArgs e)
