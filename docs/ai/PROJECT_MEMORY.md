@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-08 已验收
+
+Round4 的[交付与退出协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)要求每个小批集中同步实现、证据、未验边界和下一项；总计划只有 64 个任务均达到终态且必需的宿主/设备/外部证据齐备时才能结束。完整计划已获用户授权，`PROPOSED` 表示依赖/能力审查未完成，不是要求重复授权。无当前可执行项时记录阻塞和解锁条件，不重试拒绝探测或自行扩展计划外需求。此规则不改变 S00-02 门禁，Round4 当前仍进行中。证据见 [S07-08](../design/reviews/ui-finesse-round4-20261018/evidence/S07-08/README.md)。
+
 ## 2026-10-18 Round4 S07-07 已验收
 
 `docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json` 记录 SDK 8.0.423 缺失、Playnite 真实宿主未检查及历史 CEF/ETW 权限阻塞，保留已知检查日期、证据和允许重试条件；未知日期保持空值。`scripts/validate-environment-capability-cache.py` 校验状态、唯一 ID、日期、证据路径与重试条件，并已接入 `validate-source.py`。没有重复启动被 SDK 门禁挡下的宿主或重试被拒权限探测。S00-02 门禁仍待补齐 SDK 后按指定流程验证。证据见[Round4 S07-07](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md)。

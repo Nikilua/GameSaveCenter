@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S07-08 交付快照与退出条件
+
+- 对照既有 `ROUND4_STATUS.json`、progress renderer、`AUTONOMOUS_BACKLOG.md` 与 S07-04 CI 记录边界：任务/实现/验证/证据已有单一索引，欠缺对完整 64 项授权范围、每批快照内容及整体退出条件的明确说明。
+- 新增 `DELIVERY_AND_EXIT.md` 并把 backlog 说明为计划内子任务选择器。完成条件要求 64 个 ID 对齐、证据/验证/宿主边界如实登记；有仍需宿主/设备/权限/外部材料时不得宣布整体完成。无当前可执行任务时记录具体阻塞与重试条件；计划内 `PROPOSED` 无需重复授权，计划外想法不自动进入范围。
+- `python scripts/render-round4-progress.py --check`、`python scripts/validate-source.py .` 和 `git diff --check` 通过。只更新流程文档，Round4 仍进行中。证据见 [S07-08](../design/reviews/ui-finesse-round4-20261018/evidence/S07-08/README.md)。
+
 ## 2026-10-18 Round4 S07-07 环境能力准入缓存
 
 - 对照 `CURRENT_STATE.md`、S00-02 门禁证据与旧 Q/R 边界：缺 SDK、未观察宿主、CEF `0x5` 与 ETW 权限拒绝是不同状态。原流程已有不重试无变化权限探测的文字约束，但没有可查的能力条目和重试条件。

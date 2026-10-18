@@ -802,14 +802,19 @@
     {
       "id": "S07-08",
       "title": "交付快照与退出条件",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "本次实现提交",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "not_applicable",
+      "verificationText": "[证据](evidence/S07-08/README.md)：定义每批交付快照、64 项退出条件与无可执行项处理；账本及源码校验通过",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-08/README.md"
+        }
+      ],
+      "boundary": "仅定义管理流程；Round4 尚有未完成项，S00-02 UI 门禁及外部依赖保持独立"
     }
   ]
 }

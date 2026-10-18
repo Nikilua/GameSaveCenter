@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-08 已定义整体交付边界
+
+完整 Round4 64 项计划已由用户授权；`PROPOSED` 仅表示该项的能力/依赖审查尚未完成。单批交付时统一更新机器状态、生成账本、证据、验证边界与下一项。只有 64 个任务全部达到终态且所需宿主/设备/外部证据齐备时才能宣告计划完成。规则见 `docs/design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md`。
+
+S00-02 UI 门禁仍未通过；S07-03 是下一维护候选，需先核对 GitHub 实际 required checks 与混合路径行为。Round4 其他未开始任务仍在原计划范围内，继续按依赖推进。
+
 ## 2026-10-18 最新续接：S07-07 环境能力缓存已验收
 
 环境准入缓存位于 `docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json`。SDK8 缺失、Playnite 真实宿主未检查、CEF `0x5` 与 ETW 权限拒绝分别记录状态、已知检查日期、证据与重试条件；没有在无前置变化时重复探测。校验器已接入 `scripts/validate-source.py`，验证与证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md`。
