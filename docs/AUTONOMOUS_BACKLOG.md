@@ -14,7 +14,7 @@
 | S07-05 | IMPLEMENTED | 复用现有 diagnostics collector 补充环境身份，新增本机只读 summary/TRX 预览；旧 TRX 可在本机复算。证据见 Round4 S07-05。 |
 | S07-06 | IMPLEMENTED | 诊断 `summary.json` 加入原始 TRX 的测试用例通过/失败/跳过汇总、每文件原计数对照、套件类别和 WPF 隔离类运行数；保留逐文件路径便于复算。证据见 Round4 S07-06。 |
 | S07-07 | IMPLEMENTED | `ENVIRONMENT_CAPABILITY_CACHE.json` 记录 SDK/Playnite/CEF/ETW 当前能力状态、已知检查与重试条件；validator 纳入 source validation。证据见 Round4 S07-07。 |
-| S07-03 | PROPOSED | 暂不改 workflow；先取得并核对 GitHub 实际 required checks 与纯文档/混合路径行为，再决定是否具备安全分流条件。 |
+| S07-03 | BLOCKED_ENVIRONMENT | workflow 当前所有路径走完整双 SDK 流程；branch protection API 返回 403，required check 名称不可见。未改 workflow；取得配置读取权限或 required-check 清单后继续。证据见 Round4 S07-03。 |
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
 | S01～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |

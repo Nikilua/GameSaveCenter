@@ -1,13 +1,13 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。已满足必须有当前等价能力与证据；受控通过不代表真实宿主通过。每项分别补实现 commit、验证与未验边界。
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收8、代码完成待验收1、待开始55。
-实现状态：完成9、未开始55、不适用0；受控验证：通过9、未跑55、不适用0；宿主验证：通过0、待验1、未跑56、不适用7。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收8、代码完成待验收1、外部阻塞1、待开始54。
+实现状态：完成9、未开始55、不适用0；受控验证：通过10、未跑54、不适用0；宿主验证：通过0、待验1、未跑55、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -69,7 +69,7 @@
 | S06-08 | 跨会话回归 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S07-01 | 精简当前事实入口 | 已验收 | 4ea5e694 | [证据](evidence/S07-01/README.md)：254 行压缩至 32 行；归档正文与提交前 Git 版本一致；source validation、diff check 通过 | 仅更新文档；未运行产品构建；S00-02 UI 门禁仍待 SDK8 与真实 Playnite |
 | S07-02 | 结构化任务状态 | 已验收 | 7a81e5f2 | [证据](evidence/S07-02/README.md)：64 个 ID 与计划对齐；生成表格/分项摘要；校验重复 ID、标题、状态值与证据链接 | 仅管理 Round4 状态；既有 Q/R 外部阻塞保持独立，不从本索引自动清除 |
-| S07-03 | 文档变更 CI 分流 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S07-03 | 文档变更 CI 分流 | 外部阻塞 | — | [审查证据](evidence/S07-03/README.md)：工作流路径行为已审；branch protection API 403，required check 名称不可读 | 无 required check 上下文前不改 paths 过滤；须获得只读设置权限或用户提供配置 |
 | S07-04 | 避免 CI 自循环记录 | 已验收 | 33c8722c | [证据](evidence/S07-04/README.md)：仓库规则限定结果记录触发条件；保留原 run/job/artifact 查询身份 | 未调整所有 push 触发的 workflow 或 required checks；不为纯记录提交的通过结果追加记录提交 |
 | S07-05 | 跨机器诊断入口 | 已验收 | 4226a8df | [证据](evidence/S07-05/README.md)：复用诊断 collector；记录环境/checkout/DLL/PDB/TRX 身份并提供离线只读预览；旧 TRX 可现场复算 | 不探测运行中 Playnite 或安装目录；不收集用户存档/凭据；安装包身份仍需单独提供 |
 | S07-06 | 测试计数口径 | 已验收 | c698c161 | [证据](evidence/S07-06/README.md)：原始 TRX 可复算用例与状态总数；区分 suite、实际测试类及 WPF 隔离类运行 | 旧 SDK8 证据只用于核验解析器；历史 Q14 失败保持失败，不代表当前代码 |

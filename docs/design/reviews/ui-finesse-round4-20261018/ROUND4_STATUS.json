@@ -722,14 +722,19 @@
     {
       "id": "S07-03",
       "title": "文档变更 CI 分流",
-      "state": "待开始",
+      "state": "外部阻塞",
       "implementationState": "not_started",
       "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "not_applicable",
+      "verificationText": "[审查证据](evidence/S07-03/README.md)：工作流路径行为已审；branch protection API 403，required check 名称不可读",
+      "evidence": [
+        {
+          "label": "审查证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md"
+        }
+      ],
+      "boundary": "无 required check 上下文前不改 paths 过滤；须获得只读设置权限或用户提供配置"
     },
     {
       "id": "S07-04",

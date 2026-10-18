@@ -85,6 +85,24 @@
         "docs/ai/CURRENT_STATE.md",
         "docs/ai/CURRENT_STATE_HISTORY_THROUGH_20261018.md"
       ]
+    },
+    {
+      "id": "github-main-branch-protection-read",
+      "kind": "repository-configuration",
+      "scope": "S07-03 CI path routing",
+      "status": "blocked_by_permission",
+      "lastCheck": {
+        "checkedOn": "2026-10-18",
+        "method": "Read-only GitHub API request for main branch protection; repository rulesets endpoint also queried.",
+        "result": "Branch protection returned 403 Resource not accessible by integration; rulesets returned an empty list, which does not establish the classic required-check configuration."
+      },
+      "retryWhen": [
+        "A GitHub connection with read access to main branch protection is available.",
+        "The user supplies the current required check names and branch protection policy."
+      ],
+      "evidence": [
+        "docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md"
+      ]
     }
   ]
 }

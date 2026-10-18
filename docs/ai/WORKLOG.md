@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S07-03 文档 CI 分流审查（外部阻塞）
+
+- 检查 `.github/workflows/windows-build.yml`：push/main、pull_request、workflow_dispatch 无路径过滤；完整流程含 SDK8 主构建/测试和 SDK10 复核、源码校验、渲染 QA、WPF 静态审查及打包，纯文档与混合路径都会全跑。
+- GitHub API rulesets 为 `[]`，但 `GET .../branches/main/protection` 返回 `403 Resource not accessible by integration`；当前连接不能读取 classic branch protection。浏览器 settings 页显示 Page not found，`gh` CLI 不可用。rulesets 空不能推断实际 required checks 为空。
+- required check 名称未核实前不加 paths/paths-ignore。S07-03 记为外部阻塞；解锁条件是取得 branch protection 只读权限或用户提供 required check 策略，随后再验证纯文档、混合及未知路径。source/cache/账本校验通过；证据见 [S07-03](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md)。
+
 ## 2026-10-18 Round4 S07-08 交付快照与退出条件
 
 - 对照既有 `ROUND4_STATUS.json`、progress renderer、`AUTONOMOUS_BACKLOG.md` 与 S07-04 CI 记录边界：任务/实现/验证/证据已有单一索引，欠缺对完整 64 项授权范围、每批快照内容及整体退出条件的明确说明。

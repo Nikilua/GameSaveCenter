@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-03 外部阻塞
+
+`windows-build.yml` 当前不按路径筛选；每次 push/pr 都跑双 SDK 全流程。GitHub `main` branch protection read 返回 403，rulesets 列表为空但不能推断 classic branch protection；浏览器设置页未显示，`gh` CLI 不可用。required check 名称尚未确认，故没有改 workflow。取得 branch protection 只读权限或用户提供 required-check 配置后，才能验证文档、混合与未知路径是否正确保留必需检查。记录见 [S07-03](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md) 与[环境能力缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
+
 ## 2026-10-18 Round4 S07-08 已验收
 
 Round4 的[交付与退出协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)要求每个小批集中同步实现、证据、未验边界和下一项；总计划只有 64 个任务均达到终态且必需的宿主/设备/外部证据齐备时才能结束。完整计划已获用户授权，`PROPOSED` 表示依赖/能力审查未完成，不是要求重复授权。无当前可执行项时记录阻塞和解锁条件，不重试拒绝探测或自行扩展计划外需求。此规则不改变 S00-02 门禁，Round4 当前仍进行中。证据见 [S07-08](../design/reviews/ui-finesse-round4-20261018/evidence/S07-08/README.md)。

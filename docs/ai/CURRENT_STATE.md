@@ -13,7 +13,8 @@
 - S07-05 已验收：现有 diagnostics 增加 OS/PowerShell/位数身份，新增本机只读预览；旧摘要可从原始 TRX 只读复算。不检查运行中的 Playnite/安装目录。见 [S07-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md)。
 - S07-04 已建立 CI 结果记录规则：只在新失败/修复、发布或验收状态变化时新增结论，不为纯记录提交的通过结果再造一笔提交；保留 run/job/artifact 身份。详见 [仓库规则](../../AGENTS.md) 与 [S07-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md)。未调整 workflow/required checks。
 - S07-06 已在诊断 `summary.json` 加入原始 TRX 测试用例计数、结果状态、suite 和 WPF 隔离类运行汇总，并逐文件对照原 TRX Counters。定向诊断自测与历史原始 TRX 复算通过；历史用例失败原样保留。见 [S07-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
-- S07-07 已建立环境能力缓存与校验器，区分 SDK 缺失、真实宿主未检查、CEF/ETW 权限阻塞，并逐项记录证据和重试条件；没有重试被拒探测。见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md) 与[缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
+- S07-07 已建立环境能力缓存与校验器，区分 SDK 缺失、真实宿主未检查、CEF/ETW 权限阻塞及 GitHub branch protection 读取权限阻塞，并逐项记录证据和重试条件；没有重试被拒探测。见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md) 与[缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
+- S07-03 审查发现 workflow 对纯文档和混合路径都运行完整双 SDK 流程；GitHub API 读取 `main` branch protection 返回 403，无法确认 required check 名称。workflow 未修改，待获得配置读权限或用户提供清单后再解锁。见 [S07-03 审查](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md)。
 - S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。
 
 ## 已核验事实与外部边界

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-03 分支检查读取受限
+
+Windows workflow 对纯文档与混合改动都执行 SDK8/SDK10 全流程。GitHub `GET /branches/main/protection` 返回 403，rulesets 查询为空但不能证明 classic required checks 配置；设置页不可用，`gh` CLI 不在本机。未改 workflow。取到 required-check 策略后再继续 S07-03。审查记录与重试条件见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md` 和 `docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json`。
+
+S07-03 之外，Round4 继续处理依赖独立且可验证的小批；S00-02 的 SDK8/真实 Playnite 门禁不绕过，也不因本项阻塞而把总目标判完成。
+
 ## 2026-10-18 最新续接：S07-08 已定义整体交付边界
 
 完整 Round4 64 项计划已由用户授权；`PROPOSED` 仅表示该项的能力/依赖审查尚未完成。单批交付时统一更新机器状态、生成账本、证据、验证边界与下一项。只有 64 个任务全部达到终态且所需宿主/设备/外部证据齐备时才能宣告计划完成。规则见 `docs/design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md`。
