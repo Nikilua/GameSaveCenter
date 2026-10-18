@@ -66,6 +66,10 @@ namespace GameSaveCenter.Playnite.Settings
             new SettingsResetFieldOption("EnableDashboardAutoRefresh", "管理面板自动刷新", SettingsResetCategory.AutomationMedia, "开启"),
             new SettingsResetFieldOption("EnableTaskNotifications", "任务通知", SettingsResetCategory.AutomationMedia, "开启"),
             new SettingsResetFieldOption("NotificationLevel", "通知级别", SettingsResetCategory.AutomationMedia, "退出摘要"),
+            new SettingsResetFieldOption("NotificationMutedUntilUtc", "通知临时静音", SettingsResetCategory.AutomationMedia, "未静音"),
+            new SettingsResetFieldOption("NotificationQuietHoursEnabled", "通知安静时段", SettingsResetCategory.AutomationMedia, "关闭"),
+            new SettingsResetFieldOption("NotificationQuietHoursStartMinute", "安静时段开始", SettingsResetCategory.AutomationMedia, "22:00"),
+            new SettingsResetFieldOption("NotificationQuietHoursEndMinute", "安静时段结束", SettingsResetCategory.AutomationMedia, "07:00"),
             new SettingsResetFieldOption("SafeModeEnabled", "安全模式", SettingsResetCategory.AutomationMedia, "关闭"),
             new SettingsResetFieldOption("SafeModeRequested", "下次以安全模式启动", SettingsResetCategory.AutomationMedia, "关闭"),
             new SettingsResetFieldOption("DashboardRefreshSeconds", "管理面板刷新间隔", SettingsResetCategory.AutomationMedia, "10 秒"),
@@ -127,6 +131,10 @@ namespace GameSaveCenter.Playnite.Settings
                 case "EnableDashboardAutoRefresh": settings.EnableDashboardAutoRefresh = true; return true;
                 case "EnableTaskNotifications": settings.EnableTaskNotifications = true; return true;
                 case "NotificationLevel": settings.NotificationLevel = NotificationLevel.Summary; return true;
+                case "NotificationMutedUntilUtc": settings.NotificationMutedUntilUtc = null; return true;
+                case "NotificationQuietHoursEnabled": settings.NotificationQuietHoursEnabled = false; return true;
+                case "NotificationQuietHoursStartMinute": settings.NotificationQuietHoursStartMinute = 22 * 60; return true;
+                case "NotificationQuietHoursEndMinute": settings.NotificationQuietHoursEndMinute = 7 * 60; return true;
                 case "SafeModeEnabled": settings.SafeModeEnabled = false; return true;
                 case "SafeModeRequested": settings.SafeModeRequested = false; return true;
                 case "DashboardRefreshSeconds": settings.DashboardRefreshSeconds = 10; return true;

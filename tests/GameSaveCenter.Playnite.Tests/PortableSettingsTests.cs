@@ -54,6 +54,11 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.MediaSearchTextState, imported.MediaSearchTextState);
             Assert.Equal(source.OnboardingCompleted, imported.OnboardingCompleted);
             Assert.Equal(source.NotificationLevel, imported.NotificationLevel);
+            Assert.Equal(source.NotificationMutedUntilUtc, imported.NotificationMutedUntilUtc);
+            Assert.Equal(DateTimeKind.Utc, imported.NotificationMutedUntilUtc!.Value.Kind);
+            Assert.Equal(source.NotificationQuietHoursEnabled, imported.NotificationQuietHoursEnabled);
+            Assert.Equal(source.NotificationQuietHoursStartMinute, imported.NotificationQuietHoursStartMinute);
+            Assert.Equal(source.NotificationQuietHoursEndMinute, imported.NotificationQuietHoursEndMinute);
             Assert.Equal(source.SafeModeEnabled, imported.SafeModeEnabled);
             Assert.Equal(source.SafeModeRequested, imported.SafeModeRequested);
             Assert.Equal(destinationDeviceId, imported.DeviceId);
@@ -85,6 +90,10 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(30, imported.RecentProtectionWindowDays);
             Assert.Equal(BackupStorageFormat.Zip, imported.BackupFormat);
             Assert.Equal(NotificationLevel.Summary, imported.NotificationLevel);
+            Assert.Null(imported.NotificationMutedUntilUtc);
+            Assert.False(imported.NotificationQuietHoursEnabled);
+            Assert.Equal(22 * 60, imported.NotificationQuietHoursStartMinute);
+            Assert.Equal(7 * 60, imported.NotificationQuietHoursEndMinute);
             Assert.False(imported.SafeModeEnabled);
             Assert.Equal("zstd", imported.Compression);
             Assert.True(imported.HealthInspectionEnabled);
@@ -274,6 +283,10 @@ namespace GameSaveCenter.Playnite.Tests
             EnableDashboardAutoRefresh = false,
             EnableTaskNotifications = true,
             NotificationLevel = NotificationLevel.Verbose,
+            NotificationMutedUntilUtc = new DateTime(2026, 10, 18, 9, 45, 0, DateTimeKind.Utc),
+            NotificationQuietHoursEnabled = true,
+            NotificationQuietHoursStartMinute = 1320,
+            NotificationQuietHoursEndMinute = 420,
             SafeModeEnabled = true,
             SafeModeRequested = true,
             OnboardingCompleted = true,

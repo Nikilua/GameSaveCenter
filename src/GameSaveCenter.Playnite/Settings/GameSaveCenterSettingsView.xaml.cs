@@ -61,6 +61,7 @@ namespace GameSaveCenter.Playnite.Settings
         private long pathValidationGeneration;
         private IReadOnlyList<string> pathValidationErrors = Array.Empty<string>();
         private readonly SettingsSaveFeedbackState saveFeedback = new();
+        private readonly DispatcherTimer notificationScheduleStatusTimer;
         private readonly LatestAsyncValidationCoordinator<SettingsPathValidationSnapshot, IReadOnlyList<string>> pathValidationCoordinator = new();
         private readonly List<ValidationFieldTarget> validationFieldTargets = new();
         private readonly List<SettingsSearchTarget> settingsSearchTargets = new();
@@ -114,6 +115,11 @@ namespace GameSaveCenter.Playnite.Settings
         public GameSaveCenterSettingsView()
         {
             InitializeComponent();
+            notificationScheduleStatusTimer = new DispatcherTimer(DispatcherPriority.Background)
+            {
+                Interval = TimeSpan.FromMinutes(1)
+            };
+            notificationScheduleStatusTimer.Tick += (_, __) => observedSettings?.RefreshNotificationScheduleStatus();
             SettingsResetFieldComboBox.ItemsSource = SettingsResetCatalog.Fields;
             SettingsResetFieldComboBox.SelectedIndex = 0;
             SettingsPathEditorComboBox.ItemsSource = SettingsPathEditorCatalog.Options;
@@ -283,6 +289,8 @@ namespace GameSaveCenter.Playnite.Settings
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            observedSettings?.RefreshNotificationScheduleStatus();
+            notificationScheduleStatusTimer.Start();
             if (!systemParametersSubscribed)
             {
                 SystemParameters.StaticPropertyChanged += OnSystemParametersChanged;
@@ -370,6 +378,7 @@ namespace GameSaveCenter.Playnite.Settings
                 RefreshSaveState();
                 return;
             }
+            observedSettings.RefreshNotificationScheduleStatus();
 
             observedSettings.SettingsCommitted += OnSettingsCommitted;
             observedSettings.SettingsReverted += OnSettingsReverted;
@@ -693,6 +702,33 @@ namespace GameSaveCenter.Playnite.Settings
                 SetSettingsPathEditorStatus(option, "当前路径有效，但打开失败：" + exception.Message);
             }
 
+            e.Handled = true;
+        }
+
+        private void OnNotificationMutePresetClick(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not GameSaveCenterSettings settings
+                || sender is not Button button
+                || !int.TryParse(button.Tag?.ToString(), out var minutes)
+                || minutes < 1
+                || minutes > 24 * 60)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            settings.NotificationMutedUntilUtc = DateTime.UtcNow.AddMinutes(minutes);
+            settings.RefreshNotificationScheduleStatus();
+            e.Handled = true;
+        }
+
+        private void OnNotificationMuteReleaseClick(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is GameSaveCenterSettings settings)
+            {
+                settings.NotificationMutedUntilUtc = null;
+                settings.RefreshNotificationScheduleStatus();
+            }
             e.Handled = true;
         }
 
@@ -1191,6 +1227,7 @@ namespace GameSaveCenter.Playnite.Settings
             // Import/export can still finish in the background; only its visual feedback is gated.
             RememberDraftFocus();
             restoreDraftFocusOnLoad = HasUnsavedSettings && draftFocusTarget != null;
+            notificationScheduleStatusTimer.Stop();
             DetachHostWindowClosingHandler();
             InvalidatePathValidation();
             SettingsShell.BeginAnimation(UIElement.OpacityProperty, null);

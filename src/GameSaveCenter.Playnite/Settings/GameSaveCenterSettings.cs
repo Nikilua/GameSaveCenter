@@ -40,6 +40,10 @@ namespace GameSaveCenter.Playnite.Settings
         private bool cloudUploadQueuePaused;
         private bool enableDashboardAutoRefresh = true;
         private bool enableTaskNotifications = true;
+        private DateTime? notificationMutedUntilUtc;
+        private bool notificationQuietHoursEnabled;
+        private int notificationQuietHoursStartMinute = 22 * 60;
+        private int notificationQuietHoursEndMinute = 7 * 60;
         private bool safeModeEnabled;
         private bool safeModeRequested;
         private bool enableUiAnimations = true;
@@ -141,6 +145,65 @@ namespace GameSaveCenter.Playnite.Settings
         public bool EnableDashboardAutoRefresh { get => enableDashboardAutoRefresh; set => SetBoolean(ref enableDashboardAutoRefresh, value, nameof(EnableDashboardAutoRefresh)); }
         public bool EnableTaskNotifications { get => enableTaskNotifications; set => SetBoolean(ref enableTaskNotifications, value, nameof(EnableTaskNotifications)); }
         public NotificationLevel NotificationLevel { get; set; } = NotificationLevel.Summary;
+        public DateTime? NotificationMutedUntilUtc
+        {
+            get => notificationMutedUntilUtc;
+            set
+            {
+                var normalized = NotificationPopupPolicy.NormalizeUtc(value);
+                if (notificationMutedUntilUtc == normalized) return;
+                notificationMutedUntilUtc = normalized;
+                OnPropertyChanged(nameof(NotificationMutedUntilUtc));
+                RefreshNotificationScheduleStatus();
+            }
+        }
+        public bool NotificationQuietHoursEnabled
+        {
+            get => notificationQuietHoursEnabled;
+            set
+            {
+                if (notificationQuietHoursEnabled == value) return;
+                notificationQuietHoursEnabled = value;
+                OnPropertyChanged(nameof(NotificationQuietHoursEnabled));
+                RefreshNotificationScheduleStatus();
+            }
+        }
+        public int NotificationQuietHoursStartMinute
+        {
+            get => notificationQuietHoursStartMinute;
+            set => SetNotificationQuietHoursMinute(ref notificationQuietHoursStartMinute, value, nameof(NotificationQuietHoursStartMinute));
+        }
+        public int NotificationQuietHoursEndMinute
+        {
+            get => notificationQuietHoursEndMinute;
+            set => SetNotificationQuietHoursMinute(ref notificationQuietHoursEndMinute, value, nameof(NotificationQuietHoursEndMinute));
+        }
+        [JsonIgnore]
+        public bool IsTemporaryNotificationMuteActive
+            => NotificationMutedUntilUtc.HasValue && NotificationMutedUntilUtc.Value > DateTime.UtcNow;
+        [JsonIgnore]
+        public string NotificationScheduleStatusText
+        {
+            get
+            {
+                if (IsTemporaryNotificationMuteActive)
+                    return $"临时静音中，至 {NotificationMutedUntilUtc!.Value.ToLocalTime():yyyy-MM-dd HH:mm}；通知记录仍会保存。";
+                if (!NotificationQuietHoursEnabled)
+                    return "当前弹出正常；安静时段已关闭。通知记录仍会保存。";
+                if (NotificationQuietHoursStartMinute == NotificationQuietHoursEndMinute)
+                    return "安静时段起止相同，因此当前不会静音弹出。";
+
+                var start = NotificationPopupPolicy.FormatMinuteOfDay(NotificationQuietHoursStartMinute);
+                var end = NotificationPopupPolicy.FormatMinuteOfDay(NotificationQuietHoursEndMinute);
+                return NotificationPopupPolicy.IsWithinQuietHours(
+                    true,
+                    NotificationQuietHoursStartMinute,
+                    NotificationQuietHoursEndMinute,
+                    DateTime.Now)
+                    ? $"安静时段生效中，每天 {start}–{end}；通知记录仍会保存。"
+                    : $"当前弹出正常；每天 {start}–{end} 为安静时段，通知记录仍会保存。";
+            }
+        }
         public bool SafeModeEnabled { get => safeModeEnabled; set => SetBoolean(ref safeModeEnabled, value, nameof(SafeModeEnabled)); }
         public bool SafeModeRequested { get => safeModeRequested; set => SetBoolean(ref safeModeRequested, value, nameof(SafeModeRequested)); }
         public GameSaveCenterThemeMode ThemeMode { get; set; } = GameSaveCenterThemeMode.FollowPlaynite;
@@ -679,6 +742,21 @@ namespace GameSaveCenter.Playnite.Settings
             OnPropertyChanged(propertyName);
         }
 
+        private void SetNotificationQuietHoursMinute(ref int field, int value, string propertyName)
+        {
+            var normalized = Math.Max(0, Math.Min(NotificationPopupPolicy.MinutesPerDay - 1, value));
+            if (field == normalized) return;
+            field = normalized;
+            OnPropertyChanged(propertyName);
+            RefreshNotificationScheduleStatus();
+        }
+
+        public void RefreshNotificationScheduleStatus()
+        {
+            OnPropertyChanged(nameof(IsTemporaryNotificationMuteActive));
+            OnPropertyChanged(nameof(NotificationScheduleStatusText));
+        }
+
         private void CopyFrom(GameSaveCenterSettings other)
         {
             WorkerExecutable = other.WorkerExecutable;
@@ -710,6 +788,10 @@ namespace GameSaveCenter.Playnite.Settings
             NotificationLevel = Enum.IsDefined(typeof(NotificationLevel), other.NotificationLevel)
                 ? other.NotificationLevel
                 : NotificationLevel.Summary;
+            NotificationMutedUntilUtc = other.NotificationMutedUntilUtc;
+            NotificationQuietHoursEnabled = other.NotificationQuietHoursEnabled;
+            NotificationQuietHoursStartMinute = other.NotificationQuietHoursStartMinute;
+            NotificationQuietHoursEndMinute = other.NotificationQuietHoursEndMinute;
             SafeModeEnabled = other.SafeModeEnabled;
             SafeModeRequested = other.SafeModeRequested;
             ThemeMode = other.ThemeMode;

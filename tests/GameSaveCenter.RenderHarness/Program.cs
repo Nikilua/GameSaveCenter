@@ -400,6 +400,19 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("notificationsettingsprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "notification-settings-probe");
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunNotificationSettingsProbe(outputRoot); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("buttonbusyprobe", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -4554,6 +4567,139 @@ public static class Program
     {
         var view = new TrainerCenterView { DataContext = new FakeDashboardData() };
         RenderTabs(view, outputRoot, "Trainer", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
+    }
+
+    private static int RunNotificationSettingsProbe(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        report.AppendLine("S02-05 notification schedule settings probe");
+        report.AppendLine($"Generated: {DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}");
+        report.AppendLine("Scope: production settings view; search to notification quiet-hours controls; light/dark themes; 1040x700 and 720x640 DIP. No settings are saved and no notification is emitted.");
+
+        var problems = new List<string>();
+        var app = Application.Current ?? new Application();
+        app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+        var applyLayout = typeof(GameSaveCenterSettingsView).GetMethod(
+            "ApplyResponsiveLayout",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        if (applyLayout == null)
+            throw new InvalidOperationException("GameSaveCenterSettingsView.ApplyResponsiveLayout not found.");
+
+        var themes = new[]
+        {
+            (Name: "light", Mode: GameSaveCenterThemeMode.Light),
+            (Name: "dark", Mode: GameSaveCenterThemeMode.Dark)
+        };
+        var sizes = new[] { (Width: 1040, Height: 700), (Width: 720, Height: 640) };
+        foreach (var theme in themes)
+        foreach (var size in sizes)
+        {
+            var label = $"{theme.Name}/{size.Width}x{size.Height}";
+            var settings = new GameSaveCenterSettings
+            {
+                ThemeMode = theme.Mode,
+                WorkerExecutable = Path.Combine(RepositoryRoot, "src", "GameSaveCenter.Worker", "bin", "Release", "net8.0-windows10.0.19041.0", "GameSaveCenter.Worker.exe"),
+                LudusaviBackupDirectory = RepositoryRoot,
+                MediaArchiveDirectory = RepositoryRoot,
+                NotificationQuietHoursEnabled = true
+            };
+            var view = new GameSaveCenterSettingsView { DataContext = settings };
+            view.ApplyThemeForAudit(theme.Mode);
+            var search = (TextBox?)view.FindName("SettingsSearchTextBox");
+            var tabs = (ListBox?)view.FindName("SettingsSectionTabs");
+            var shell = (FrameworkElement?)view.FindName("SettingsShell");
+            if (search == null || tabs == null || shell == null)
+                throw new InvalidOperationException("The production settings search controls were not found.");
+            search.Text = "安静时段";
+
+            var host = new Grid
+            {
+                Width = size.Width,
+                Height = size.Height,
+                Background = CreateHarnessBackground(view),
+                ClipToBounds = true
+            };
+            host.Children.Add(view);
+            var window = new Window
+            {
+                Content = host,
+                Width = size.Width,
+                Height = size.Height,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            window.Show();
+            window.UpdateLayout();
+            applyLayout.Invoke(view, new object[] { (double)size.Width, (double)size.Height });
+            host.Measure(new Size(size.Width, size.Height));
+            host.Arrange(new Rect(0, 0, size.Width, size.Height));
+            host.UpdateLayout();
+            applyLayout.Invoke(view, new object[] { (double)size.Width, (double)size.Height });
+            host.UpdateLayout();
+            shell.BeginAnimation(UIElement.OpacityProperty, null);
+            shell.Opacity = 1;
+            host.UpdateLayout();
+
+            var scroller = (ScrollViewer?)view.FindName("SettingsScroller");
+            var status = (TextBlock?)view.FindName("NotificationScheduleStatusTextBlock");
+            var releaseButton = (FrameworkElement?)view.FindName("NotificationMuteReleaseButton");
+            var quietHoursFields = (FrameworkElement?)view.FindName("NotificationQuietHoursFields");
+            var controls = new[]
+            {
+                (FrameworkElement?)view.FindName("NotificationMute15MinutesButton"),
+                (FrameworkElement?)view.FindName("NotificationMuteOneHourButton"),
+                (FrameworkElement?)view.FindName("NotificationMuteFourHoursButton"),
+                releaseButton,
+                (FrameworkElement?)view.FindName("NotificationQuietHoursToggleSwitch"),
+                (FrameworkElement?)view.FindName("NotificationQuietHoursStartMinuteTextBox"),
+                (FrameworkElement?)view.FindName("NotificationQuietHoursEndMinuteTextBox")
+            };
+            if (scroller == null || status == null || releaseButton == null || quietHoursFields == null || controls.Any(control => control == null))
+                throw new InvalidOperationException("One or more notification schedule controls were not found.");
+            if (tabs.SelectedIndex != 3)
+                problems.Add($"{label}: searching notification mute did not select the automation category (index={tabs.SelectedIndex}).");
+            if (!status.IsVisible || status.ActualWidth <= 0 || status.ActualHeight <= 0
+                || status.Text.IndexOf("安静时段", StringComparison.Ordinal) < 0)
+                problems.Add($"{label}: current notification schedule status is not visible or descriptive.");
+            if (releaseButton.IsEnabled)
+                problems.Add($"{label}: release action is enabled when no temporary mute is active.");
+            if (!quietHoursFields.IsEnabled)
+                problems.Add($"{label}: quiet-hours time inputs are disabled while quiet hours are enabled.");
+
+            foreach (var control in controls.Cast<FrameworkElement>())
+            {
+                control.BringIntoView();
+                host.UpdateLayout();
+                if (!control.IsVisible || control.ActualWidth <= 0 || control.ActualHeight <= 0)
+                {
+                    problems.Add($"{label}: {control.Name} is not visible or measurable.");
+                    continue;
+                }
+                var bounds = control.TransformToAncestor(scroller).TransformBounds(new Rect(new Point(0, 0), control.RenderSize));
+                var viewport = new Rect(0, 0, scroller.ViewportWidth, scroller.ViewportHeight);
+                if (bounds.Left < viewport.Left - 1 || bounds.Top < viewport.Top - 1
+                    || bounds.Right > viewport.Right + 1 || bounds.Bottom > viewport.Bottom + 1)
+                    problems.Add($"{label}: {control.Name} remains clipped after BringIntoView ({bounds} vs {viewport}).");
+            }
+
+            scroller.ScrollToTop();
+            host.UpdateLayout();
+            var imagePath = Path.Combine(outputRoot, $"notification-schedule-{theme.Name}-{size.Width}x{size.Height}.png");
+            SavePng(host, imagePath);
+            report.AppendLine($"  {label}: searchCategory={tabs.SelectedIndex}, status=visible, actions=4, quietHoursFields={quietHoursFields.IsEnabled}, screenshot={Path.GetFileName(imagePath)}");
+            window.Close();
+        }
+
+        report.AppendLine(problems.Count == 0 ? "notificationsettingsprobe OK" : "notificationsettingsprobe FAILED");
+        foreach (var problem in problems)
+            report.AppendLine("  PROBLEM " + problem);
+        File.WriteAllText(Path.Combine(outputRoot, "notification-settings-probe-report.txt"), report.ToString());
+        Console.WriteLine(report.ToString());
+        return problems.Count == 0 ? 0 : 1;
     }
 
     private static void RenderSettings(string outputRoot, int windowW, int windowH, double contentW, double contentH, StringBuilder report)

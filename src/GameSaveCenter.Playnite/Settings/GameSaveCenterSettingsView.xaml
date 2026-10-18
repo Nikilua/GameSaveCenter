@@ -334,6 +334,40 @@
                             </ComboBox>
                         </Grid>
                     </Border>
+                    <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 通知 临时 静音 到期 解除 安静时段 跨午夜 开始 结束" Style="{DynamicResource GscRedesignSubCard}" Padding="12" Margin="0,2,0,0">
+                        <StackPanel>
+                            <TextBlock Text="临时静音与安静时段" FontWeight="SemiBold"/>
+                            <TextBlock Text="静音只减少信息和成功弹出；通知仍保存到本地收件箱。设置草稿在 Playnite 保存后生效。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                            <TextBlock x:Name="NotificationScheduleStatusTextBlock" Text="{Binding NotificationScheduleStatusText, Mode=OneWay}" AutomationProperties.Name="当前通知静音状态" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                            <WrapPanel Margin="0,8,0,2">
+                                <ui:Button x:Name="NotificationMute15MinutesButton" Content="静音 15 分钟" Tag="15" Style="{DynamicResource GscWpfUiContextButton}" Click="OnNotificationMutePresetClick" AutomationProperties.Name="临时静音 15 分钟" AutomationProperties.HelpText="保存设置后生效；警告和错误通知仍会显示。" Margin="0,0,8,6" Padding="10,4"/>
+                                <ui:Button x:Name="NotificationMuteOneHourButton" Content="静音 1 小时" Tag="60" Style="{DynamicResource GscWpfUiContextButton}" Click="OnNotificationMutePresetClick" AutomationProperties.Name="临时静音 1 小时" AutomationProperties.HelpText="保存设置后生效；到期时间按 UTC 保存。" Margin="0,0,8,6" Padding="10,4"/>
+                                <ui:Button x:Name="NotificationMuteFourHoursButton" Content="静音 4 小时" Tag="240" Style="{DynamicResource GscWpfUiContextButton}" Click="OnNotificationMutePresetClick" AutomationProperties.Name="临时静音 4 小时" AutomationProperties.HelpText="保存设置后生效；到期时间按 UTC 保存。" Margin="0,0,8,6" Padding="10,4"/>
+                                <ui:Button x:Name="NotificationMuteReleaseButton" Content="解除临时静音" Style="{DynamicResource GscWpfUiContextButton}" Click="OnNotificationMuteReleaseClick" IsEnabled="{Binding IsTemporaryNotificationMuteActive}" AutomationProperties.Name="解除通知临时静音" AutomationProperties.HelpText="清除临时静音到期时间；安静时段设置保持不变。" Margin="0,0,8,6" Padding="10,4"/>
+                            </WrapPanel>
+                            <ui:ToggleSwitch x:Name="NotificationQuietHoursToggleSwitch" settings:GameSaveCenterSettingsView.SearchTerms="自动化 通知 安静时段 每天 跨午夜" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding NotificationQuietHoursEnabled}" Margin="0,2,0,4" AutomationProperties.Name="启用每日安静时段">
+                                <StackPanel>
+                                    <TextBlock Text="按本地时间暂停非关键弹出" FontWeight="SemiBold"/>
+                                    <TextBlock Text="起始晚于结束表示跨午夜；每次通知到达时按当前系统时间重新判断。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </ui:ToggleSwitch>
+                            <UniformGrid x:Name="NotificationQuietHoursFields" Columns="2" Margin="0,6,0,0" IsEnabled="{Binding NotificationQuietHoursEnabled}">
+                                <StackPanel Margin="0,0,12,8">
+                                    <TextBlock Text="安静时段开始分钟（0–1439）" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="NotificationQuietHoursStartMinuteTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="使用本地 24 小时制分钟数；1320 表示 22:00。" AutomationProperties.Name="安静时段开始分钟">
+                                        <TextBox.Text><Binding Path="NotificationQuietHoursStartMinute" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="1439"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,8">
+                                    <TextBlock Text="安静时段结束分钟（0–1439）" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="NotificationQuietHoursEndMinuteTextBox" Style="{StaticResource GscNumericTextBox}" infra:SelectAllOnKeyboardFocus.Enabled="True" ToolTip="使用本地 24 小时制分钟数；420 表示 07:00。" AutomationProperties.Name="安静时段结束分钟">
+                                        <TextBox.Text><Binding Path="NotificationQuietHoursEndMinute" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="1439"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                            </UniformGrid>
+                            <TextBlock Text="相同起止分钟不会静音；安静时段随系统本地时钟和时区变化，重启后仍按配置生效。" Foreground="{DynamicResource GscMutedTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                        </StackPanel>
+                    </Border>
                     <ui:ToggleSwitch settings:GameSaveCenterSettingsView.SearchTerms="自动化 安全模式 暂停 自动备份 媒体 云端 工具" Style="{StaticResource GscWpfUiToggleSwitch}" OnContent="开" OffContent="关" IsChecked="{Binding SafeModeEnabled}" Margin="0,5" AutomationProperties.Name="安全模式">
                         <StackPanel>
                             <TextBlock Text="安全模式" FontWeight="SemiBold"/>

@@ -988,18 +988,20 @@ namespace GameSaveCenter.Playnite
             var kind = task.State == TaskState.Failed ? UiNotificationKind.Error
                 : task.State == TaskState.Cancelled ? UiNotificationKind.Warning
                 : UiNotificationKind.Success;
+            var severity = task.State == TaskState.Failed ? NotificationSeverity.Error
+                : task.State == TaskState.Cancelled ? NotificationSeverity.Warning
+                : NotificationSeverity.Success;
             FireAndForget(() => PersistNotificationRecordAsync(new NotificationRecordDto
             {
                 DeduplicationKey = CreateNotificationDeduplicationKey("task", TaskNotificationFingerprint.Build(task)),
                 TaskId = task.TaskId,
                 GameId = task.GameId,
-                Severity = task.State == TaskState.Failed ? NotificationSeverity.Error
-                    : task.State == TaskState.Cancelled ? NotificationSeverity.Warning
-                    : NotificationSeverity.Success,
+                Severity = severity,
                 Title = TaskNotificationTitle(task),
                 Summary = text,
                 CreatedUtc = task.FinishedUtc ?? DateTime.UtcNow
             }));
+            if (!ShouldShowNotificationPopup(severity)) return;
             if (!RaiseUiNotification(TaskNotificationTitle(task), text, kind, BuildTaskNotificationDetail(task, game)))
                 AddNotification("Task." + task.TaskId, text, task.State == TaskState.Failed ? NotificationType.Error : NotificationType.Info);
         }
@@ -1060,6 +1062,19 @@ namespace GameSaveCenter.Playnite
             var args = new UiNotificationEventArgs(title, LimitNotificationText(message, summaryLength), kind, detailMessage ?? message, isCopyFeedback);
             if (!TryInvokeUi(() => handler(this, args), "notification request")) return false;
             return args.Handled;
+        }
+
+        private bool ShouldShowNotificationPopup(NotificationSeverity severity)
+        {
+            var utcNow = DateTime.UtcNow;
+            return NotificationPopupPolicy.ShouldShowPopup(
+                severity,
+                Settings.NotificationMutedUntilUtc,
+                Settings.NotificationQuietHoursEnabled,
+                Settings.NotificationQuietHoursStartMinute,
+                Settings.NotificationQuietHoursEndMinute,
+                utcNow,
+                DateTime.Now);
         }
 
         private void AddNotification(string category, string message, NotificationType type)
@@ -1265,19 +1280,19 @@ namespace GameSaveCenter.Playnite
             {
                 var kind = summary.IsFailure ? UiNotificationKind.Error
                     : summary.IsWarning ? UiNotificationKind.Warning : UiNotificationKind.Success;
+                var severity = summary.IsFailure ? NotificationSeverity.Error
+                    : summary.IsWarning ? NotificationSeverity.Warning : NotificationSeverity.Success;
                 var firstTask = session.Tasks.FirstOrDefault(task => !string.IsNullOrWhiteSpace(task.GameId));
                 FireAndForget(() => PersistNotificationRecordAsync(new NotificationRecordDto
                 {
                     DeduplicationKey = CreateNotificationDeduplicationKey("session", sessionId),
                     GameId = firstTask?.GameId ?? string.Empty,
-                    Severity = summary.IsFailure ? NotificationSeverity.Error
-                        : summary.IsWarning ? NotificationSeverity.Warning
-                        : NotificationSeverity.Success,
+                    Severity = severity,
                     Title = "退出备份摘要",
                     Summary = summary.Message,
                     CreatedUtc = DateTime.UtcNow
                 }));
-                if (!RaiseUiNotification("退出备份摘要", summary.Message, kind))
+                if (ShouldShowNotificationPopup(severity) && !RaiseUiNotification("退出备份摘要", summary.Message, kind))
                     AddNotification("Session." + sessionId, summary.Message, summary.IsFailure ? NotificationType.Error : NotificationType.Info);
             }
             foreach (var completed in session.Tasks) taskNotificationDeduper.TryClaim(completed);

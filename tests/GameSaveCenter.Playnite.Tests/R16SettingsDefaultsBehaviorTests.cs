@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Settings;
 using Newtonsoft.Json;
 using Xunit;
@@ -22,7 +24,11 @@ public sealed class R16SettingsDefaultsBehaviorTests
             LocalMirrorPath = "E:/mirror",
             EnableCloudUpload = true,
             Compression = "none",
-            GamePickerSearchText = "keep?"
+            GamePickerSearchText = "keep?",
+            NotificationMutedUntilUtc = new DateTime(2026, 10, 18, 10, 0, 0, DateTimeKind.Utc),
+            NotificationQuietHoursEnabled = true,
+            NotificationQuietHoursStartMinute = 1260,
+            NotificationQuietHoursEndMinute = 360
         };
 
         settings.BeginEdit();
@@ -40,6 +46,10 @@ public sealed class R16SettingsDefaultsBehaviorTests
         Assert.Equal("zstd", settings.Compression);
         Assert.False(settings.EnableCloudUpload);
         Assert.Equal(string.Empty, settings.GamePickerSearchText);
+        Assert.Null(settings.NotificationMutedUntilUtc);
+        Assert.False(settings.NotificationQuietHoursEnabled);
+        Assert.Equal(22 * 60, settings.NotificationQuietHoursStartMinute);
+        Assert.Equal(7 * 60, settings.NotificationQuietHoursEndMinute);
 
         settings.CancelEdit();
 
@@ -47,6 +57,10 @@ public sealed class R16SettingsDefaultsBehaviorTests
         Assert.Equal("remote:profile", settings.RcloneDestination);
         Assert.True(settings.EnableCloudUpload);
         Assert.Equal("keep?", settings.GamePickerSearchText);
+        Assert.Equal(new DateTime(2026, 10, 18, 10, 0, 0, DateTimeKind.Utc), settings.NotificationMutedUntilUtc);
+        Assert.True(settings.NotificationQuietHoursEnabled);
+        Assert.Equal(1260, settings.NotificationQuietHoursStartMinute);
+        Assert.Equal(360, settings.NotificationQuietHoursEndMinute);
     }
 
     [Fact]
@@ -90,5 +104,45 @@ public sealed class R16SettingsDefaultsBehaviorTests
             field.Key == "DefaultTableDensityMode"
             && field.Category == SettingsResetCategory.Appearance
             && field.DefaultDisplay == "舒适");
+    }
+
+    [Fact]
+    public void NotificationMuteExpiryAndQuietHoursSurviveSettingsRestartRoundTrip()
+    {
+        var expiryUtc = DateTime.UtcNow.AddMinutes(37);
+        var settings = new GameSaveCenterSettings
+        {
+            NotificationMutedUntilUtc = expiryUtc,
+            NotificationQuietHoursEnabled = true,
+            NotificationQuietHoursStartMinute = 22 * 60,
+            NotificationQuietHoursEndMinute = 7 * 60
+        };
+
+        var restored = JsonConvert.DeserializeObject<GameSaveCenterSettings>(JsonConvert.SerializeObject(settings))!;
+        var justBeforeExpiry = expiryUtc.AddMinutes(-1);
+        var atExpiry = expiryUtc;
+        var localNoon = new DateTime(2026, 10, 18, 12, 0, 0, DateTimeKind.Local);
+
+        Assert.Equal(expiryUtc, restored.NotificationMutedUntilUtc);
+        Assert.Equal(DateTimeKind.Utc, restored.NotificationMutedUntilUtc!.Value.Kind);
+        Assert.True(restored.NotificationQuietHoursEnabled);
+        Assert.Equal(22 * 60, restored.NotificationQuietHoursStartMinute);
+        Assert.Equal(7 * 60, restored.NotificationQuietHoursEndMinute);
+        Assert.False(NotificationPopupPolicy.ShouldShowPopup(
+            NotificationSeverity.Information,
+            restored.NotificationMutedUntilUtc,
+            restored.NotificationQuietHoursEnabled,
+            restored.NotificationQuietHoursStartMinute,
+            restored.NotificationQuietHoursEndMinute,
+            justBeforeExpiry,
+            localNoon));
+        Assert.True(NotificationPopupPolicy.ShouldShowPopup(
+            NotificationSeverity.Information,
+            restored.NotificationMutedUntilUtc,
+            restored.NotificationQuietHoursEnabled,
+            restored.NotificationQuietHoursStartMinute,
+            restored.NotificationQuietHoursEndMinute,
+            atExpiry,
+            localNoon));
     }
 }
