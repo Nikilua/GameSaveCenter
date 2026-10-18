@@ -6,8 +6,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收9、已满足1、代码完成待验收5、外部阻塞1、待开始48。
-实现状态：完成15、未开始49、不适用0；受控验证：通过16、未跑48、不适用0；宿主验证：通过0、待验2、未跑54、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收9、已满足1、代码完成待验收6、外部阻塞1、待开始47。
+实现状态：完成16、未开始48、不适用0；受控验证：通过17、未跑47、不适用0；宿主验证：通过0、待验2、未跑54、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -24,7 +24,7 @@
 | S01-03 | 可选列管理 | 代码完成待验收 | 8cdf5253 | [证据](evidence/S01-03/README.md)：SDK8.0.423 Release 解决方案构建 0/0；列显隐 4/4、列宽 6/6、视图配置 5/5、R09 2/2，source validation 通过 | Playnite 宿主设置提交/双主题视觉未验；完整安装/UI 门禁仍受 R05 GetCursorPos Win32 error 5 阻塞 |
 | S01-04 | 保存与复制视图 | 代码完成待验收 | c6eb8d62 | [证据](evidence/S01-04/README.md)：SDK8.0.423 Release 解决方案构建 0/0；视图配置/交互、列显隐/列宽、R09、R10、Q14 隔离测试共 29/29；Render QA OK，Task 1040×700 为 4/4 可读行 | 未运行完整 WPF/安装门禁及真实 Playnite；既有 R05 GetCursorPos Win32 error 5 权限边界未绕过，宿主设置保存与双主题呈现待验 |
 | S01-05 | 临时覆盖标记 | 代码完成待验收 | dcfca235 | [证据](evidence/S01-05/README.md)：SDK8.0.423 Release 解决方案构建 0/0，视图/列/R09/R10/Q14 隔离测试 29/29，Render QA OK | 完整 WPF/安装门禁和真实 Playnite 设置保存、双主题宿主呈现未验；既有 R05 GetCursorPos Win32 error 5 权限边界保留 |
-| S01-06 | 布局重置预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S01-06 | 布局重置预览 | 代码完成待验收 | 9ec0096b | [证据](evidence/S01-06/README.md)：SDK8.0.423 Release 构建 0/0；定向测试 39 通过、11 跳过；Render QA OK，Task/候选表 1040×700 均为 4/4 可读行 | 完整 WPF/安装门禁和真实 Playnite 设置/双主题宿主呈现未验；R05 GetCursorPos Win32 error 5 权限边界保留；外机 R09 因缺少同次 summary/TRX/DLL/PDB 身份无法追溯 |
 | S01-07 | 断点适配记忆 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S01-08 | 视图迁移验收 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S02-01 | 通知记录契约 | 已验收 | 83194c50 | [证据](evidence/S02-01/README.md)：SDK8 Release 构建通过；NotificationRecordPersistenceTests 3/3，Worker 364 passed / 1 skipped | 通知生产者尚未接入；无 XAML、外发通知或 Playnite host 验证；S02-02 后续接入 |

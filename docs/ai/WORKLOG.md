@@ -11367,3 +11367,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 实现提交 `dcfca2353b33a7c991d004ba7282e2df2e13847f` 为任务与存档表格的命名视图增加未保存更改提示、恢复动作，以及筛选/布局状态对照。保存当前手动筛选与选中筛选预设不一致时给出可操作提示并阻止保存，避免视图无法复现。
 - 提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`，诊断 ID `20261018T080234061Z-158c7f0f`。ViewConfigurationDefinition `9/9`、DataGridViewConfiguration `1/1`、列显隐 `4/4`、R06 列宽 `6/6`、R09 `2/2`、R10 `6/6`、Q14 `1/1`，合计 `29/29`，各类独立进程。Render QA `render-qa OK`，Task `1040×700` 为 `4/4` 可读行；source validation 与 diff check 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。
 - 完整 WPF/安装门禁与真实 Playnite 设置保存/双主题呈现未运行；既有 R05 `GetCursorPos` Win32 error 5 权限边界保留。用户外机 R09 诊断 ID `20261018T012631286Z-e027df9d` 的第151行 `Thickness(2)` 失败形态与当前行号/断言不符；用户暂时没有该次 summary/TRX。旧 checkout、测试 DLL 或 PDB 映射仍是未区分推测，不改模板。证据、TRX、摘要、程序集及 PDB SHA 见 [S01-05](../design/reviews/ui-finesse-round4-20261018/evidence/S01-05/README.md)。下一项 S01-06。
+
+## 2026-10-18 Round4 S01-06 布局重置预览
+
+- 实现提交 `9ec0096b39410c8615ea9d5ecbc7e66738ef9c01` 为任务、存档历史与候选路径表格增加当前表格/全部工作视图重置入口和确认前影响预览；重置当前命名视图保留名称与筛选预设，全局重置保留筛选预设、当前筛选及业务路径/云端/设备设置。候选路径控制移入可换行工具栏。
+- 提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`，诊断 ID `20261018T090828772Z-8dd0b53e`。表格布局设置 `2/2`、R06 `6/6`、R09 `2/2`、视图定义 `9/9`、UI 布局回归 `20 passed / 11 skipped`；总计 `39 passed / 0 failed / 11 skipped`。Offscreen Render QA `OK`，Task/候选路径 `1040×700` 均有 `4/4` 可读行。完整摘要、TRX、DLL/PDB 身份及截图见 [S01-06](../design/reviews/ui-finesse-round4-20261018/evidence/S01-06/README.md)。
+- 未完成完整 WPF 隔离循环、安装/版本门禁及真实 Playnite 设置保存/双主题呈现；既有 R05 `GetCursorPos` Win32 error 5 边界保留。用户外机 R09 一键流程在测试阶段因断言失败退出，非编译错误；用户暂时没有对应 summary/TRX，无法核对该次源码与 DLL/PDB。当前提交 R09 `2/2` 通过，但不据此宣称外机问题已追溯。

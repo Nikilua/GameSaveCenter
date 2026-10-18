@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S01-06 已提交，SDK8 Release 与定向验证通过
+
+本地 `main` 实现提交 `9ec0096b` 为任务、存档历史与候选路径表格增加当前表格/全部工作视图重置入口和确认前影响预览。提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`；表格布局设置 `2/2`、R06 `6/6`、R09 `2/2`、视图定义 `9/9`、UI 布局回归 `20 passed / 11 skipped`，合计 `39 passed / 0 failed / 11 skipped`。Render QA `OK`，Task/候选路径 `1040×700` 均为 `4/4` 可读行。完整摘要、TRX、DLL/PDB 身份和截图见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-06/README.md`。
+
+用户外机 R09 输出是在测试阶段因断言失败而退出，不是编译错误；用户暂时没有对应 `summary.json`/TRX，无法将其源码、测试 DLL/PDB 与本机提交对照。本机当前 R09 `2/2` 通过，但没有据此宣称外机失败已解释，也没有修改焦点样式。完整 WPF 隔离循环、安装/版本门禁和真实 Playnite 设置保存/双主题宿主呈现仍未验证；R05 `GetCursorPos` Win32 error 5 权限边界保留。下一项按计划为 S01-07。
+
 ## 2026-10-18 最新续接：S01-05 已提交，SDK8 Release 与定向测试通过
 
 本地 `main` 实现提交 `dcfca235` 为任务与存档表格命名视图添加临时差异提示和恢复操作。提交后 SDK `8.0.423` Release solution build `0 warning / 0 error`；视图配置 `9/9`、交互 `1/1`、列显隐 `4/4`、列宽 `6/6`、R09 `2/2`、R10 `6/6`、Q14 `1/1`，总计 `29/29`。Render QA `OK`，Task `1040×700` 为 `4/4` 可读行。用户提供的外机 R09 日志仍缺少其 summary/TRX 与测试/插件 DLL/PDB 身份；用户表示暂时没有这些文件。该日志行号/断言与当前源不一致，本机当前 R09 通过不能代替外机输入，未改焦点样式。完整 WPF/安装门禁和真实 Playnite 设置保存/宿主呈现仍未验证；此前 R05 `GetCursorPos` Win32 error 5 的环境边界保留。下一项按 Round4 计划为 S01-06。详见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-05/README.md`。

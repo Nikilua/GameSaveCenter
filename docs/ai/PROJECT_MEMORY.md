@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-06 布局重置预览代码完成待验收
+
+提交 `9ec0096b` 为任务、存档历史和候选路径表格增加当前表格/全部工作视图布局重置及确认预览。当前视图重置保留名称和筛选预设；全部重置保留筛选与业务配置。SDK `8.0.423` Release 解决方案构建 `0/0`，定向测试 `39 passed / 0 failed / 11 skipped`，Render QA `OK` 且 Task/候选路径在 `1040×700` 均为 `4/4` 可读行。完整 WPF、安装门禁和真实 Playnite 设置保存/双主题宿主呈现未验；R05 `GetCursorPos` 权限边界保留。用户没有外机 R09 同次 summary/TRX，故无法比对源码及 DLL/PDB；当前 R09 `2/2` 不等同解释外机失败。证据见 [S01-06](../design/reviews/ui-finesse-round4-20261018/evidence/S01-06/README.md)。
+
 ## 2026-10-18 Round4 S01-05 临时覆盖标记代码完成待验收
 
 提交 `dcfca235` 为任务和存档表格命名视图增加未保存差异提示与恢复按钮，覆盖筛选、列显隐/宽度、排序和密度。当前筛选无法由已保存预设表示时阻止保存/另存，并提示先保存并应用预设，避免刷新后丢失。提交后 SDK `8.0.423` Release 解决方案构建 `0/0`，七个隔离测试类 `29/29`，Render QA `OK` 且 Task `1040×700` 为 `4/4` 行。完整 WPF/安装/真实 Playnite 设置保存与宿主呈现未验证；此前门禁仍在 R05 `GetCursorPos` Win32 error 5 处受阻。证据见 [S01-05](../design/reviews/ui-finesse-round4-20261018/evidence/S01-05/README.md)。下一项 S01-06。
