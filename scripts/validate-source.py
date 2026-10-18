@@ -1753,6 +1753,21 @@ def check_round4_progress() -> None:
         detail = (result.stdout + result.stderr).strip()
         fail(f"Round4 status index/table validation failed: {detail}")
 
+
+def check_environment_capability_cache() -> None:
+    """Keep external prerequisites, evidence, and retry gates structurally valid."""
+    validator = ROOT / "scripts/validate-environment-capability-cache.py"
+    result = subprocess.run(
+        [sys.executable, str(validator)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        detail = (result.stdout + result.stderr).strip()
+        fail(f"Environment capability cache validation failed: {detail}")
+
 def main() -> int:
     check_structured_files()
     check_csharp_delimiters()
@@ -1789,12 +1804,13 @@ def main() -> int:
     check_wpf_ui_probe_guards()
     check_settings_autoselect_guards()
     check_round4_progress()
+    check_environment_capability_cache()
     if ERRORS:
         print("Source validation failed:")
         for item in ERRORS:
             print(f" - {item}")
         return 1
-    print("Source validation passed: JSON/XML/YAML, XAML semantics/resources, C# delimiters, solution, IPC constants, version consistency, delivery guards, media/game-tool SQLite guards, large-library performance guards and Windows launchers.")
+    print("Source validation passed: JSON/XML/YAML, XAML semantics/resources, C# delimiters, solution, IPC constants, version consistency, delivery guards, media/game-tool SQLite guards, large-library performance guards, Windows launchers, Round4 status and environment capability cache.")
     print("Note: this does not replace dotnet build/test on Windows with Playnite installed.")
     return 0
 

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-10-18",
+  "scope": "Record external prerequisites and safe retry gates. This cache does not grant permission or prove host behavior.",
+  "retryPolicy": {
+    "retryOnlyWhen": [
+      "A required capability becomes observably available or its permission state changes.",
+      "New same-run external evidence arrives for an evidence-dependent item.",
+      "The user explicitly requests a retry and the required gate remains intact."
+    ],
+    "doNotRepeatWithoutChange": [
+      "Do not repeatedly start a host after its exact SDK gate fails before launch.",
+      "Do not repeat a denied CEF or ETW permission probe, and do not bypass the denial.",
+      "Do not treat an unobserved host, device, permission, or package identity as available."
+    ]
+  },
+  "capabilities": [
+    {
+      "id": "dotnet-sdk-8-0-423",
+      "kind": "toolchain",
+      "scope": "S00-02 UI gate",
+      "status": "missing",
+      "lastCheck": {
+        "checkedOn": "2026-10-18",
+        "method": "Read the SDK list and the recorded GameSaveCenter-Run.cmd gate result.",
+        "result": "Only SDK 9.0.302 was visible; the repository requires exact SDK 8.0.423, so the launcher stopped before build, install, and version validation."
+      },
+      "retryWhen": [
+        "SDK 8.0.423 becomes visible to dotnet in this checkout.",
+        "The user explicitly requests another gate attempt after arranging the required SDK."
+      ],
+      "evidence": [
+        "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md"
+      ]
+    },
+    {
+      "id": "playnite-real-host-ui",
+      "kind": "host",
+      "scope": "S00-02 UI gate",
+      "status": "not_checked",
+      "lastCheck": null,
+      "note": "The exact SDK gate stopped before host launch; no plugin startup, rendering, theme, or version result was observed.",
+      "retryWhen": [
+        "The exact SDK gate passes and the intended Playnite installation is available for the prescribed launcher.",
+        "The user explicitly requests the prescribed host gate with its prerequisites prepared."
+      ],
+      "evidence": [
+        "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md"
+      ]
+    },
+    {
+      "id": "cef-process-attach-permission",
+      "kind": "permission",
+      "scope": "Legacy Q/R host diagnostics",
+      "status": "blocked_by_permission",
+      "lastCheck": {
+        "checkedOn": null,
+        "method": "Historical access attempt; its exact check date is not retained in the current fact record.",
+        "result": "CEF process access returned 0x5. No retry or bypass is authorized by this record."
+      },
+      "retryWhen": [
+        "The relevant process/access context changes observably and an authorized check can be made.",
+        "The user explicitly requests a check after the permission prerequisite changes."
+      ],
+      "evidence": [
+        "docs/ai/CURRENT_STATE.md",
+        "docs/ai/CURRENT_STATE_HISTORY_THROUGH_20261018.md"
+      ]
+    },
+    {
+      "id": "etw-system-tracing-permission",
+      "kind": "permission",
+      "scope": "Legacy Q/R host performance diagnostics",
+      "status": "blocked_by_permission",
+      "lastCheck": {
+        "checkedOn": null,
+        "method": "Historical system-tracing attempt; its exact check date is not retained in the current fact record.",
+        "result": "System tracing permission was denied. Do not elevate, bypass, or repeat without a changed authorized prerequisite."
+      },
+      "retryWhen": [
+        "Authorized ETW/system-tracing access becomes observably available.",
+        "The user explicitly requests a check after the permission prerequisite changes."
+      ],
+      "evidence": [
+        "docs/ai/CURRENT_STATE.md",
+        "docs/ai/CURRENT_STATE_HISTORY_THROUGH_20261018.md"
+      ]
+    }
+  ]
+}

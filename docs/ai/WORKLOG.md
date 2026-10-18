@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S07-07 环境能力准入缓存
+
+- 对照 `CURRENT_STATE.md`、S00-02 门禁证据与旧 Q/R 边界：缺 SDK、未观察宿主、CEF `0x5` 与 ETW 权限拒绝是不同状态。原流程已有不重试无变化权限探测的文字约束，但没有可查的能力条目和重试条件。
+- 新增 `ENVIRONMENT_CAPABILITY_CACHE.json`，逐项登记已知/未知检查日期、方法/结果、证据路径与允许重试条件；新增独立校验器，并由 `scripts/validate-source.py` 调用。未知检查时间保留 `null`，没有把“未检查”写成“可用”。
+- `python -m unittest discover -s scripts/tests -p test_environment_capability_cache.py` 7 项通过；缓存校验、Round4 账本校验、source validation 和 `git diff --check` 通过。没有重新启动被 SDK 门禁挡下的宿主流程，也没有重试 CEF/ETW 权限探测。详见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md)。
+
 ## 2026-10-18 Round4 S07-05 跨机器诊断预览
 
 - 现有 collector 已覆盖 checkout/source dirty paths/hash、SDK、DLL/MVID/PDB 与原始 TRX，不重复开发采集器。本阶段在 `summary.json` 加入 OS version/bitness、PowerShell 版本/edition、进程位数与 .NET runtime；新增 `scripts/preview-build-diagnostics.ps1` 只读显示摘要身份、失败步骤、DLL/PDB 与 TRX 状态。旧格式没有测试计数时复用现有 TRX parser 本地重算；没有 OS 字段就明确标“未记录”，不拿当前机器补推历史环境。

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-07 环境能力缓存已验收
+
+环境准入缓存位于 `docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json`。SDK8 缺失、Playnite 真实宿主未检查、CEF `0x5` 与 ETW 权限拒绝分别记录状态、已知检查日期、证据与重试条件；没有在无前置变化时重复探测。校验器已接入 `scripts/validate-source.py`，验证与证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md`。
+
+S00-02 仍未通过真实 Playnite UI 门禁；仓库缺精确 SDK8.0.423 时不启动后续宿主步骤，含该 XAML 改动的分支不推送。S07-03 的 CI 分流仍需先核对 actual required checks 与混合路径行为。
+
 ## 2026-10-18 最新续接：S07-05 已验收，S00-02 仍待 UI 门禁
 
 现有 `build-diagnostics.ps1` collector 的 summary 现在带 OS/PowerShell/bitness/.NET runtime 身份；运行 `pwsh -NoProfile -File scripts/preview-build-diagnostics.ps1 -Path artifacts/build-diagnostics` 可在本机只读查看 commit/dirty paths、SDK、DLL/PDB 与测试/TRX 计数。旧 summary 会在本机从 raw TRX 重算，旧环境字段保持“未记录”。该入口不访问网络或 Playnite，也不采集用户存档/凭据。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md`。

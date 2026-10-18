@@ -2,7 +2,7 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求新增功能/UI。当前有效增量入口为[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)，状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已由 `dd38f8ca` 实现并完成受控验收；S00-02 代码完成，但仓库要求的 SDK8 安装/版本与宿主 UI 门禁未通过，未推送到远端。S07-01/02/04/05/06 当前事实精简、结构化索引、CI 记录规则、诊断入口与 TRX 计数均已完成。旧 Q/R 的环境边界不变，但此前“无新明确范围”已被本次请求更新。
+用户已明确要求新增功能/UI。当前有效增量入口为[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)，状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已由 `dd38f8ca` 实现并完成受控验收；S00-02 代码完成，但仓库要求的 SDK8 安装/版本与宿主 UI 门禁未通过，未推送到远端。S07-01/02/04/05/06/07 当前事实精简、结构化索引、CI 记录规则、诊断入口、TRX 计数与环境准入缓存均已完成。旧 Q/R 的环境边界不变，但此前“无新明确范围”已被本次请求更新。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
@@ -13,10 +13,11 @@
 | S07-04 | IMPLEMENTED | 已在仓库 `AGENTS.md` 明确 CI 结果记录条件与禁止纯文档通过结果自循环的规则。保留实际 run/job/artifact 身份，不更改 workflow 或 required checks。证据见 Round4 S07-04。 |
 | S07-05 | IMPLEMENTED | 复用现有 diagnostics collector 补充环境身份，新增本机只读 summary/TRX 预览；旧 TRX 可在本机复算。证据见 Round4 S07-05。 |
 | S07-06 | IMPLEMENTED | 诊断 `summary.json` 加入原始 TRX 的测试用例通过/失败/跳过汇总、每文件原计数对照、套件类别和 WPF 隔离类运行数；保留逐文件路径便于复算。证据见 Round4 S07-06。 |
+| S07-07 | IMPLEMENTED | `ENVIRONMENT_CAPABILITY_CACHE.json` 记录 SDK/Playnite/CEF/ETW 当前能力状态、已知检查与重试条件；validator 纳入 source validation。证据见 Round4 S07-07。 |
+| S07-03 | PROPOSED | 暂不改 workflow；先取得并核对 GitHub 实际 required checks 与纯文档/混合路径行为，再决定是否具备安全分流条件。 |
+| S07-08 | PROPOSED | 在本轮各小批证据与真实阻塞明确后，收口交付快照和无 READY 项的退出条件。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
 | S01～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
-| S07-06 | PROPOSED | 独立维护增量，可与产品小批交替；先核对现有 TRX 原始摘要、测试用例计数与 WPF 隔离类计数的差异。 |
-| S07 其余 | PROPOSED | 结构化状态/CI 分流/诊断入口须复用现有脚本，先验证旧消费者与 required checks。 |
 
 不自动启动新线程；不重跑无变化的外部权限探测；不把真实存档、媒体或云端写入当规划验证。
 

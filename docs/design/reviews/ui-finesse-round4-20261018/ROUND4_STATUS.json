@@ -753,7 +753,7 @@
       "title": "跨机器诊断入口",
       "state": "已验收",
       "implementationState": "complete",
-      "implementationCommit": "本次实现提交",
+      "implementationCommit": "4226a8df",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_applicable",
       "verificationText": "[证据](evidence/S07-05/README.md)：复用诊断 collector；记录环境/checkout/DLL/PDB/TRX 身份并提供离线只读预览；旧 TRX 可现场复算",
@@ -785,14 +785,19 @@
     {
       "id": "S07-07",
       "title": "环境能力准入缓存",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "本次实现提交",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "not_applicable",
+      "verificationText": "[证据](evidence/S07-07/README.md)：缓存 SDK/Playnite/CEF/ETW 状态、证据与重试条件；7 项校验测试及 source validation 通过",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md"
+        }
+      ],
+      "boundary": "不探测或绕过权限；S00-02 真实宿主门禁未运行，旧 Q/R 阻塞独立保留"
     },
     {
       "id": "S07-08",

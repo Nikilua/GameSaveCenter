@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-07 已验收
+
+`docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json` 记录 SDK 8.0.423 缺失、Playnite 真实宿主未检查及历史 CEF/ETW 权限阻塞，保留已知检查日期、证据和允许重试条件；未知日期保持空值。`scripts/validate-environment-capability-cache.py` 校验状态、唯一 ID、日期、证据路径与重试条件，并已接入 `validate-source.py`。没有重复启动被 SDK 门禁挡下的宿主或重试被拒权限探测。S00-02 门禁仍待补齐 SDK 后按指定流程验证。证据见[Round4 S07-07](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md)。
+
 ## 2026-10-18 Round4 S07-05 已验收
 
 沿用 `build-diagnostics.ps1` 的 collector，不增加第二套 DLL/TRX 采集器。新的 `summary.json.environment` 记录 OS version/bitness、PowerShell version/edition、process bitness 和 .NET runtime；不记录用户名或用户目录。`scripts/preview-build-diagnostics.ps1` 在本地只读显示 checkout、环境、SDK、steps、DLL/PDB、summary/TRX 计数与缺失解释。旧格式可从本地 raw TRX 重算测试总数；环境未记录时不会推断历史环境。此入口不检查安装包或运行中 Playnite。证据见[Round4 S07-05](../design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md)。
