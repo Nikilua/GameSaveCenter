@@ -1,8 +1,15 @@
+## 2026-10-18 Round4 S02-03 已读语义
+
+- 提交 6d3a6f43 增加单条已读、当前筛选结果批量已读和确认清除已读记录。后端只更新指定未读 ID；清理只删已读通知行，任务、审计和备份/恢复证据保留。
+- SDK 8.0.423 Release 全解方案构建 0 warning / 0 error；Playnite 定向测试 18/18（R09 2/2），Worker NotificationRecordPersistenceTests 7/7。Source validation 与 git diff --check 通过，WPF 静态审查 0 errors / 26 warnings / 177 info。
+- Render QA 首轮发现通知列表在 1040×700 只能完整显示 2/3 行；收紧摘要卡和动作按钮占高后复验，双主题 11 尺寸 22/22，无 PROBLEM，代表窗口均显示 3/3 行。完整报告、代表截图、TRX 和程序集/PDB SHA-256 见 [S02-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md)。
+- 用户外机 R09 诊断 20261018T012631286Z-e027df9d 仍缺同次 summary/TRX/DLL/PDB；该日志是测试断言失败而非编译错误，旧运行输入身份未确认。本次提交 R09 2/2 通过，不替代外机输入。完整 WPF 独立进程循环及真实 Playnite 安装/宿主呈现未运行；下一项按依赖审查 S02-04。
+
 ## 2026-10-18 Round4 S02-02 收件箱入口受控验证通过
 
 提交 `8810d9e6` 接入终态通知与会话摘要的本地持久化，增加通知收件箱、严重级别/时间筛选、未读计数、刷新与详情查看。SDK `8.0.423` Release solution build `0 warning / 0 error`；通知/页面切换/焦点/命令目录定向 Playnite 测试 `15/15`（R09 `2/2`），Worker 持久化测试 `3/3`；双主题 11 种窗口尺寸 Render QA `22/22`，source validation 通过。静态 WPF 审查 `36 XAML / 0 errors / 26 warnings / 177 info`。程序集、PDB、测试源码与 TRX SHA-256、原始 TRX、渲染报告及代表截图见 [S02-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md)。完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行。
 
-用户没有旧 R09 诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB；当前源码和程序集能够证明新一次 R09 `2/2`，无法识别旧失败的实际输入。用户原日志进入测试后因断言失败退出，属于测试失败而非编译错误；不要推断旧运行来源。下一项按依赖审查 S02-03。
+用户没有旧 R09 诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB；当前源码和程序集能够证明新一次 R09 `2/2`，无法识别旧失败的实际输入。用户原日志进入测试后因断言失败退出，属于测试失败而非编译错误；不要推断旧运行来源。下一项按依赖审查 S02-04。
 
 ## 2026-10-18 Round4 S01-08 视图迁移恢复
 

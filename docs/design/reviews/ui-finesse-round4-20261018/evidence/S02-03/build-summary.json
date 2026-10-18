@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "task": "S02-03",
+  "implementationCommit": "6d3a6f437f1d51ec337e18e8f767b02afca17681",
+  "sdk": "8.0.423",
+  "generatedAt": "2026-10-18T21:40:19+08:00",
+  "fullSolutionBuild": {
+    "status": "passed",
+    "configuration": "Release",
+    "warnings": 0,
+    "errors": 0,
+    "command": "dotnet build GameSaveCenter.sln -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false"
+  },
+  "targetedTests": {
+    "status": "passed",
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "includes": "NotificationInboxReadActionsTests, NotificationInboxViewBehaviorTests, NotificationInboxFilterTests, R08PageSwitchBehaviorTests, R09FocusOutlineBehaviorTests",
+    "r09": "2/2",
+    "trx": "tests/playnite-targeted.trx"
+  },
+  "workerPersistenceTests": {
+    "status": "passed",
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "class": "NotificationRecordPersistenceTests",
+    "trx": "tests/worker-notifications.trx"
+  },
+  "renderQA": {
+    "status": "passed",
+    "scenarios": 22,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "viewportCount": 11,
+    "report": "render/render-qa-report.txt",
+    "representativeScreenshots": [
+      "render/Notifications-light-1040x700.png",
+      "render/Notifications-dark-1040x700.png"
+    ],
+    "problems": 0
+  },
+  "sourceValidation": "passed",
+  "wpfStaticAudit": {
+    "status": "passed",
+    "scannedXaml": 36,
+    "errors": 0,
+    "warnings": 26,
+    "info": 177,
+    "report": "audits/wpf-ui-audit.txt"
+  },
+  "fullWpfIsolation": {
+    "status": "not_completed",
+    "note": "本批通知、页面切换和焦点定向用例已运行；未运行完整 WPF 独立进程循环。"
+  },
+  "playniteHost": {
+    "status": "not_run",
+    "note": "未运行真实 Playnite 安装/启动门禁，未声称宿主渲染通过。"
+  },
+  "priorExternalR09": {
+    "status": "unresolved",
+    "diagnosticId": "20261018T012631286Z-e027df9d",
+    "reason": "用户目前没有同次 summary.json、TRX 与 DLL/PDB 身份；本次新构建 R09 为 2/2，但不能映射旧运行输入。"
+  },
+  "renderReportWorkingTreeClean": false
+}

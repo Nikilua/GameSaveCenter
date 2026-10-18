@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "6d3a6f437f1d51ec337e18e8f767b02afca17681",
+  "branch": "main",
+  "sdk": "8.0.423",
+  "entries": [
+    {
+      "path": "src/GameSaveCenter.Contracts/IpcRequestSemantics.cs",
+      "sha256": "9D6571CA4B6E2BFA6C102C580102860BD8D9F949A49C50EEC1C8693D9686FB2B",
+      "bytes": 2546,
+      "lastWriteLocal": "2026-10-18 20:50:44"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/MessageTypes.cs",
+      "sha256": "15227AB01850B3796EC8B047B4D945D5A90D8A116C0DD0BD107D24FB144395EF",
+      "bytes": 8839,
+      "lastWriteLocal": "2026-10-18 20:50:43"
+    },
+    {
+      "path": "src/GameSaveCenter.Contracts/NotificationRecordDto.cs",
+      "sha256": "0981AD68716143DC2BAF7D643A5D16BB1472FC10ADCF6E26181ECF5EF81E184C",
+      "bytes": 1644,
+      "lastWriteLocal": "2026-10-18 20:53:07"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/NotificationRecordPolicy.cs",
+      "sha256": "3D9B6046D8A131445F7BC77B837836015AECCC23C3AF925E6B2BA78D4E765153",
+      "bytes": 4519,
+      "lastWriteLocal": "2026-10-18 20:50:45"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.Notifications.cs",
+      "sha256": "884FC157202FC831B811E81F119DE94667FA3C9176C7D13D6AC4E54905622DF6",
+      "bytes": 16342,
+      "lastWriteLocal": "2026-10-18 20:54:25"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "sha256": "F49A432275C3720E1B03C7C2BB10B1ACF1A7DFA492BD035FBDEFE75129B91F91",
+      "bytes": 360095,
+      "lastWriteLocal": "2026-10-18 21:29:17"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/NotificationInboxReadActions.cs",
+      "sha256": "3702E4A5DF31C8D33AB91949B71FD0B20CFF34722CB0802C57E9AC7A9EFA2B2F",
+      "bytes": 2511,
+      "lastWriteLocal": "2026-10-18 20:53:57"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml",
+      "sha256": "F276A7F650FD39BF1F99F12BF202F858EDEE66497614851FA977B045A697810F",
+      "bytes": 19013,
+      "lastWriteLocal": "2026-10-18 21:22:12"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Ipc/IpcRequestDispatcher.cs",
+      "sha256": "9A32F247F3487C86CA204A9F72990619004003A0251EBDBB4091F157FDC8B5A5",
+      "bytes": 54999,
+      "lastWriteLocal": "2026-10-18 20:53:29"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.Notifications.cs",
+      "sha256": "20CFEB8C6973F64A4F1B7A7B7BDFD6BCD03FB8A0788A17EE0476FDCF2AD10530",
+      "bytes": 7740,
+      "lastWriteLocal": "2026-10-18 20:53:30"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "B894487380834B7FFE64BA241EF5E4B9B522B33D261E03A14DB4EB9CEE9BAF56",
+      "bytes": 1950720,
+      "lastWriteLocal": "2026-10-18 21:31:37"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.pdb",
+      "sha256": "D0560E34ED8ACA99E8E1D70D259616C6079F56878561FAC817B12D610C1A0B8A",
+      "bytes": 520892,
+      "lastWriteLocal": "2026-10-18 21:31:37"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "02476BDADEFBD5BC9537B54DC48C633D5889E015867A5FB071B5017D7F47C0D9",
+      "bytes": 2014720,
+      "lastWriteLocal": "2026-10-18 21:32:26"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "sha256": "DF1E2A0CDD21EEEF550AAC64E34DA445FE68DB7824A8B77FB58B67F148BE1F01",
+      "bytes": 465000,
+      "lastWriteLocal": "2026-10-18 21:32:26"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.dll",
+      "sha256": "B894487380834B7FFE64BA241EF5E4B9B522B33D261E03A14DB4EB9CEE9BAF56",
+      "bytes": 1950720,
+      "lastWriteLocal": "2026-10-18 21:31:37"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.pdb",
+      "sha256": "D0560E34ED8ACA99E8E1D70D259616C6079F56878561FAC817B12D610C1A0B8A",
+      "bytes": 520892,
+      "lastWriteLocal": "2026-10-18 21:31:37"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.dll",
+      "sha256": "487CABA9D6073CB28D8506A0322DBFE819C9A1AC84A4DDECB2A6A1E6F45B3D93",
+      "bytes": 1453056,
+      "lastWriteLocal": "2026-10-18 21:31:28"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.pdb",
+      "sha256": "0825E1DE5FEA0561288074125AD9A74214F9481FCF37B5890AE5E5C072CB88D6",
+      "bytes": 213924,
+      "lastWriteLocal": "2026-10-18 21:31:28"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll",
+      "sha256": "84EEBF1BAD53FD08E5C46DDE5194691700A887F74F807DDF24CD93829953298E",
+      "bytes": 762368,
+      "lastWriteLocal": "2026-10-18 21:32:01"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.pdb",
+      "sha256": "4620849F96691EC403D01DD72CC0406B3DF5ACEF3494782FA005568CB2A59106",
+      "bytes": 136236,
+      "lastWriteLocal": "2026-10-18 21:32:01"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/NotificationInboxReadActions.cs",
+      "sha256": "3702E4A5DF31C8D33AB91949B71FD0B20CFF34722CB0802C57E9AC7A9EFA2B2F",
+      "bytes": 2511,
+      "lastWriteLocal": "2026-10-18 20:53:57"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.Notifications.cs",
+      "sha256": "20CFEB8C6973F64A4F1B7A7B7BDFD6BCD03FB8A0788A17EE0476FDCF2AD10530",
+      "bytes": 7740,
+      "lastWriteLocal": "2026-10-18 20:53:30"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml",
+      "sha256": "F276A7F650FD39BF1F99F12BF202F858EDEE66497614851FA977B045A697810F",
+      "bytes": 19013,
+      "lastWriteLocal": "2026-10-18 21:22:12"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/NotificationInboxReadActionsTests.cs",
+      "sha256": "873B28E0948ACFDA667A69EEEDA285417E7329451C5C454739C4520BF439DB5A",
+      "bytes": 4017,
+      "lastWriteLocal": "2026-10-18 20:56:54"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/NotificationInboxViewBehaviorTests.cs",
+      "sha256": "0ECFD10F24BBC7088210FCEB26850CB65D27E2DE59B1A2A32446ABD846B08AB3",
+      "bytes": 7482,
+      "lastWriteLocal": "2026-10-18 21:29:33"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09FocusOutlineBehaviorTests.cs",
+      "sha256": "A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98",
+      "bytes": 10455,
+      "lastWriteLocal": "2026-10-12 15:08:30"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/NotificationRecordPersistenceTests.cs",
+      "sha256": "7AE5CFEB961C1DF2C8797EC48C41E65267A2861BA88E085E878DDF0F88691894",
+      "bytes": 10324,
+      "lastWriteLocal": "2026-10-18 21:01:43"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs",
+      "sha256": "180D1CE51595073247D488655EA155D2B01FAF36DBA45CBFA9B9C8DC39523F35",
+      "bytes": 73711,
+      "lastWriteLocal": "2026-10-18 20:59:21"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/tests/playnite-targeted.trx",
+      "sha256": "B4B9FA60106797ED78EBFDC229893CBED2A21CDC5A237976DE6E46C3302F09EF",
+      "bytes": 29202,
+      "lastWriteLocal": "2026-10-18 21:33:26"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/tests/worker-notifications.trx",
+      "sha256": "DCB069234085887DED0AF4EBB2EE20DAFEB46A102A3624E714E599CF020EA50C",
+      "bytes": 12602,
+      "lastWriteLocal": "2026-10-18 21:33:02"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/render/render-qa-report.txt",
+      "sha256": "0A7D0A132DE7A6309B914F1E87A8242D5B47B54F46DCE1822CB003A808EB8BBE",
+      "bytes": 1115351,
+      "lastWriteLocal": "2026-10-18 21:36:40"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/render/Notifications-light-1040x700.png",
+      "sha256": "D88486EC6D78E1B9AA09D59EC75010FB1089165BE09C3D069094E2E8D560CE08",
+      "bytes": 59159,
+      "lastWriteLocal": "2026-10-18 21:34:19"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/render/Notifications-dark-1040x700.png",
+      "sha256": "C9B9FDEC49C73BA7C9F4F3A85F1C85D150E8434FD601107DFB300AAC7CB7C4CF",
+      "bytes": 62118,
+      "lastWriteLocal": "2026-10-18 21:34:19"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/audits/source-validation.txt",
+      "sha256": "30760E7082311AC27AA2D981C07638FC2A4B11D039C265AFB40365B1F98FBCA6",
+      "bytes": 361,
+      "lastWriteLocal": "2026-10-18 21:37:31"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/audits/wpf-ui-audit.txt",
+      "sha256": "ED9F3F99F5F399E625B129F1F51F0AB54FFD14079E831A308A23BE26A00CD03A",
+      "bytes": 29371,
+      "lastWriteLocal": "2026-10-18 21:37:32"
+    }
+  ],
+  "note": "SHA-256 identities only; no MVID claim. Playnite and Worker tests ran against post-commit Release outputs. Render evidence is OffscreenRenderHarness in logical DIP; it does not claim Playnite host or physical DPI rendering.",
+  "playniteTestRun": {
+    "started": "2026-10-18T21:32:57.7616900+08:00",
+    "finished": "2026-10-18T21:33:26.4652032+08:00",
+    "total": 18,
+    "executed": 18,
+    "passed": 18,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "inconclusive": 0,
+    "passedButRunAborted": 0,
+    "notRunnable": 0,
+    "notExecuted": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "completed": 0,
+    "inProgress": 0,
+    "pending": 0,
+    "r09": {
+      "total": 2,
+      "passed": 2
+    }
+  },
+  "workerTestRun": {
+    "started": "2026-10-18T21:32:57.7476950+08:00",
+    "finished": "2026-10-18T21:33:02.3537529+08:00",
+    "total": 7,
+    "executed": 7,
+    "passed": 7,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "inconclusive": 0,
+    "passedButRunAborted": 0,
+    "notRunnable": 0,
+    "notExecuted": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "completed": 0,
+    "inProgress": 0,
+    "pending": 0
+  }
+}

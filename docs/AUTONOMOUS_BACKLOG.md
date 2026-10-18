@@ -2,7 +2,7 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 与 S02-02 已完成受控验证；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验；S02-02 的真实 Playnite 宿主/安装门禁未运行，下一项按依赖审查 S02-03。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
+用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 至 S02-03 已完成受控验证；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验；S02-02/S02-03 的真实 Playnite 宿主/安装门禁未运行，下一项按依赖审查 S02-04。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
@@ -18,6 +18,7 @@
 | S01-08 | IMPLEMENTED | `d1005e33` 完成视图配置迁移回退；SDK8.0.423 Release solution build 0/0，五个隔离测试类 21/21（含 R09 2/2），source validation 与 diff check 通过。真实 Playnite 设置保存/加载、双主题宿主呈现及安装门禁未验；用户旧 R09 身份材料缺失。证据见 Round4 S01-08。 |
 | S02-01 | IMPLEMENTED | `83194c50` 建立本地通知记录 DTO 与 Worker SQLite 去重/保留接口；SDK8 解决方案构建 0/0，新增通知持久化测试 3/3，Worker 364 passed/1 skipped。通知 producer 留给 S02-02。证据见 Round4 S02-01。 |
 | S02-02 | IMPLEMENTED | `8810d9e6` 接入通知记录生产者和收件箱；SDK8.0.423 Release solution build 0/0，Playnite 定向 15/15（R09 2/2）、Worker persistence 3/3、双主题 Render QA 22/22。真实 Playnite/安装门禁未运行。证据见 Round4 S02-02。 |
+| S02-03 | IMPLEMENTED | 6d3a6f43 加入单条/当前筛选结果已读与确认清除已读记录；SDK8.0.423 Release build 0/0，Playnite 定向 18/18（R09 2/2）、Worker SQLite 7/7、双主题 11 尺寸 Render QA 22/22。真实 Playnite/安装门禁未运行；外机旧 R09 缺同次身份材料。证据见 Round4 S02-03。 |
 | S07-01 | IMPLEMENTED | `4ea5e694` 将 `CURRENT_STATE.md` 从 254 行压缩为 32 行并保留完整历史快照；source validation、diff check 与归档一致性检查通过。证据见 Round4 S07-01。 |
 | S07-02 | IMPLEMENTED | 新增 `ROUND4_STATUS.json` 与渲染/校验脚本；账本生成块接入 `validate-source.py`，保留外部 Q/R 状态。证据见 Round4 S07-02。 |
 | S07-04 | IMPLEMENTED | 已在仓库 `AGENTS.md` 明确 CI 结果记录条件与禁止纯文档通过结果自循环的规则。保留实际 run/job/artifact 身份，不更改 workflow 或 required checks。证据见 Round4 S07-04。 |

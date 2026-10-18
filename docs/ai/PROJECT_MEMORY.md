@@ -1,10 +1,16 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S02-03 已读语义受控验证通过
+
+6d3a6f43 加入所选未读、当前筛选结果未读批量标记和确认清除已读记录。清理操作只删通知表的已读行，不改变任务状态或关联审计/恢复证据。提交后 SDK 8.0.423 Release solution build 0 warning / 0 error；Playnite 定向测试 18/18（R09 2/2），Worker SQLite 7/7，双主题 11 窗口尺寸 Render QA 22/22，source validation 通过，WPF 静态审查 0 errors / 26 warnings / 177 info。通知页 1040×700 两主题均完整显示 3/3 行。DLL/PDB、源码与 TRX SHA-256 见 [S02-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md)。
+
+真实 Playnite 安装/宿主呈现和完整 WPF 独立进程循环未运行。用户暂时没有旧 R09 诊断的 summary/TRX/DLL/PDB 身份；当前构建 R09 2/2 不能映射旧运行输入。下一项按依赖审查 S02-04。
+
 ## 2026-10-18 Round4 S02-02 通知收件箱受控验证通过，宿主待验
 
 `8810d9e6` 接入 Worker 本地通知持久化与收件箱入口。SDK `8.0.423` Release solution build `0/0`；通知、页面切换、焦点及命令目录 Playnite 定向测试 `15/15`（R09 `2/2`），Worker 通知记录持久化 `3/3`；双主题 11 窗口尺寸 Render QA `22/22`，source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。DLL/PDB、源码和 TRX SHA-256 见 [S02-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md)。未运行完整 WPF 独立进程循环、真实 Playnite 安装或宿主呈现。
 
-用户最初给出的 R09 旧失败没有同次 summary/TRX/DLL/PDB，实际测试输入仍未知。其日志表明流程已进入测试且由断言失败退出；当前提交版干净构建后的 R09 `2/2` 通过，不足以解释旧输入。下一项按依赖审查 S02-03。
+用户最初给出的 R09 旧失败没有同次 summary/TRX/DLL/PDB，实际测试输入仍未知。其日志表明流程已进入测试且由断言失败退出；当前提交版干净构建后的 R09 `2/2` 通过，不足以解释旧输入。下一项按依赖审查 S02-04。
 
 ## 2026-10-18 Round4 S01-08 视图迁移受控验证通过，宿主待验
 

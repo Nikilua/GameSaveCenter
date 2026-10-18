@@ -1,10 +1,18 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 最新进展：S02-02 通知收件箱受控验证通过
+## 2026-10-18 最新进展：S02-03 已读语义受控验证通过
+
+实现提交 6d3a6f43 支持标记所选未读通知、只标记当前筛选结果内的未读项，以及确认后清除已读记录；清理不解决关联任务，也不删除任务、审计或备份/恢复证据。提交后 SDK 8.0.423 Release solution build 0 warning / 0 error，Playnite 定向 18/18（R09 2/2），Worker SQLite 7/7，Render QA 22/22，source validation 通过。WPF 静态审查 0 errors / 26 warnings / 177 info。全部报告、TRX、截图和 SHA-256 身份见 docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md。
+
+首次布局探针发现 1040×700 的通知列表只完整显示 2/3 行；收紧摘要卡与操作按钮后，最终浅色/深色各 11 尺寸均通过，窗口列表为 3/3。完整 WPF 独立进程循环、真实 Playnite 安装/启动和宿主呈现未运行。
+
+用户所贴诊断 20261018T012631286Z-e027df9d 是 R09 测试断言失败，不是编译错误。当前模板保留 Chrome 1 DIP 与独立错误描边 2 DIP；本次提交后 R09 2/2。旧运行缺同次 summary/TRX/DLL/PDB，实际输入仍未知。下一项按计划审查 S02-04。
+
+## 前序进展：S02-02 通知收件箱受控验证通过
 
 提交 `8810d9e6` 已实现通知本地记录生产者与收件箱入口。SDK `8.0.423` Release solution build `0 warning / 0 error`，Playnite 相关定向测试 `15/15`（R09 `2/2`），Worker 持久化 `3/3`，Render QA `22/22`，source validation 通过。测试 TRX、程序集/PDB SHA、Render QA 报告和截图见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md`。完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行。
 
-用户贴出的外机日志是在测试阶段 R09 断言失败，不能称为编译失败。当前源码的 Chrome 边框是 `1 DIP`，单独 ValidationStroke 是 `2 DIP`；这次当前提交版重跑通过。用户目前没有旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB，所以旧运行实际源码和程序集仍无法确认。依赖审查后下一项 S02-03。
+用户贴出的外机日志是在测试阶段 R09 断言失败，不能称为编译失败。当前源码的 Chrome 边框是 `1 DIP`，单独 ValidationStroke 是 `2 DIP`；这次当前提交版重跑通过。用户目前没有旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB，所以旧运行实际源码和程序集仍无法确认。S02-03 已在后续批次完成。
 
 ## 前序交接记录：S01-08 视图迁移受控验收通过
 

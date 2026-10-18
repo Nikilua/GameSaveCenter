@@ -277,19 +277,24 @@
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md"
         }
       ],
-      "boundary": "完整 WPF 独立进程循环未完成；真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺少 summary/TRX/DLL/PDB，不能确认旧输入；下一项按依赖审查 S02-03"
+      "boundary": "完整 WPF 独立进程循环未完成；真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺少 summary/TRX/DLL/PDB，不能确认旧输入；S02-03 已在后续批次完成。"
     },
     {
       "id": "S02-03",
       "title": "已读语义",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "6d3a6f43",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S02-03/README.md)：SDK8.0.423 Release 构建 0/0；Playnite 18/18（R09 2/2）；Worker SQLite 7/7；双主题 11 尺寸 Render QA 22/22",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md"
+        }
+      ],
+      "boundary": "完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺同次 summary/TRX/DLL/PDB，实际输入身份无法确认。下一项按依赖审查 S02-04。"
     },
     {
       "id": "S02-04",

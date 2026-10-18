@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="01e36a7f-8e52-4d57-aef7-a01551ed9aa1" name="lopmatu@SULT 2026-10-18 21:32:59" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-18T21:32:59.6657438+08:00" queuing="2026-10-18T21:32:59.6657442+08:00" start="2026-10-18T21:32:57.7476950+08:00" finish="2026-10-18T21:33:02.3537529+08:00" />
+  <TestSettings name="default" id="d655082a-053a-4e89-95ce-ed8016f55390">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-18_21_32_59" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="61f1a9e9-f7f9-4890-80c8-beee9f1dcf84" testId="fde7e653-c51d-fa52-910b-c60948f543ea" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.NotificationReadMutationsRequireReplayProtection(messageType: &quot;notifications.records.mark-read&quot;)" computerName="SULT" duration="00:00:00.2849591" startTime="2026-10-18T21:32:58.8385900+08:00" endTime="2026-10-18T21:32:59.1165192+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61f1a9e9-f7f9-4890-80c8-beee9f1dcf84" />
+    <UnitTestResult executionId="39c1ae51-1438-46aa-b037-b5d9cb12564d" testId="7e41f8ef-24b9-6b9c-ba86-00ece078e027" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RetentionAndQuantityCapsAreAppliedAndExpiredRecordsAreRejected" computerName="SULT" duration="00:00:01.8182229" startTime="2026-10-18T21:33:00.0063438+08:00" endTime="2026-10-18T21:33:01.8245995+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39c1ae51-1438-46aa-b037-b5d9cb12564d" />
+    <UnitTestResult executionId="ac3d1f7a-c504-4719-a899-b2ce2814796e" testId="4639a4af-14e9-1829-d15f-eadd1f804d70" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.NotificationReadMutationsRequireReplayProtection(messageType: &quot;notifications.records.clear-read&quot;)" computerName="SULT" duration="00:00:00.2924070" startTime="2026-10-18T21:32:59.1172970+08:00" endTime="2026-10-18T21:32:59.4090841+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac3d1f7a-c504-4719-a899-b2ce2814796e" />
+    <UnitTestResult executionId="9d1c1181-3606-4625-b516-539ef63f5f27" testId="32a4a04d-7dcb-fd3a-9256-e49db37fada9" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ClearReadDeletesOnlyReadNotificationsAndPreservesTasksAuditAndRestoreEvidence" computerName="SULT" duration="00:00:00.4552615" startTime="2026-10-18T21:32:58.3711336+08:00" endTime="2026-10-18T21:32:58.8312705+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d1c1181-3606-4625-b516-539ef63f5f27" />
+    <UnitTestResult executionId="def3851d-f108-4ae5-98bf-e73afe3e8e8e" testId="40afc5a5-8edb-3cf0-001c-3fe6b5b91e48" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ReplayUsesStableDeduplicationKeyAndRecordSurvivesWorkerRestart" computerName="SULT" duration="00:00:00.2905261" startTime="2026-10-18T21:32:59.7157477+08:00" endTime="2026-10-18T21:33:00.0060825+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="def3851d-f108-4ae5-98bf-e73afe3e8e8e" />
+    <UnitTestResult executionId="f712792a-869c-4189-9ed9-2de0c866afa6" testId="8e02445a-f3e9-a51d-12e8-d77706081ea9" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.MarkReadChangesOnlyRequestedUnreadIdsAndPersistsAcrossRestart" computerName="SULT" duration="00:00:00.3060163" startTime="2026-10-18T21:32:59.4094883+08:00" endTime="2026-10-18T21:32:59.7153520+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f712792a-869c-4189-9ed9-2de0c866afa6" />
+    <UnitTestResult executionId="fa259a21-6218-43e7-80f2-ce2656615e81" testId="ad6ccc16-1282-1449-e95b-42cd8da213b1" testName="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RecordNormalizationBoundsTextAndDoesNotEscalateUnknownSeverity" computerName="SULT" duration="00:00:00.2882761" startTime="2026-10-18T21:33:01.8248032+08:00" endTime="2026-10-18T21:33:02.1130587+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fa259a21-6218-43e7-80f2-ce2656615e81" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RetentionAndQuantityCapsAreAppliedAndExpiredRecordsAreRejected" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="7e41f8ef-24b9-6b9c-ba86-00ece078e027">
+      <Execution id="39c1ae51-1438-46aa-b037-b5d9cb12564d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="RetentionAndQuantityCapsAreAppliedAndExpiredRecordsAreRejected" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.NotificationReadMutationsRequireReplayProtection(messageType: &quot;notifications.records.mark-read&quot;)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="fde7e653-c51d-fa52-910b-c60948f543ea">
+      <Execution id="61f1a9e9-f7f9-4890-80c8-beee9f1dcf84" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="NotificationReadMutationsRequireReplayProtection" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ReplayUsesStableDeduplicationKeyAndRecordSurvivesWorkerRestart" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="40afc5a5-8edb-3cf0-001c-3fe6b5b91e48">
+      <Execution id="def3851d-f108-4ae5-98bf-e73afe3e8e8e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="ReplayUsesStableDeduplicationKeyAndRecordSurvivesWorkerRestart" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.MarkReadChangesOnlyRequestedUnreadIdsAndPersistsAcrossRestart" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="8e02445a-f3e9-a51d-12e8-d77706081ea9">
+      <Execution id="f712792a-869c-4189-9ed9-2de0c866afa6" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="MarkReadChangesOnlyRequestedUnreadIdsAndPersistsAcrossRestart" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RecordNormalizationBoundsTextAndDoesNotEscalateUnknownSeverity" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="ad6ccc16-1282-1449-e95b-42cd8da213b1">
+      <Execution id="fa259a21-6218-43e7-80f2-ce2656615e81" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="RecordNormalizationBoundsTextAndDoesNotEscalateUnknownSeverity" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.NotificationReadMutationsRequireReplayProtection(messageType: &quot;notifications.records.clear-read&quot;)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="4639a4af-14e9-1829-d15f-eadd1f804d70">
+      <Execution id="ac3d1f7a-c504-4719-a899-b2ce2814796e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="NotificationReadMutationsRequireReplayProtection" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ClearReadDeletesOnlyReadNotificationsAndPreservesTasksAuditAndRestoreEvidence" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.worker.tests\bin\release\net8.0-windows10.0.19041.0\gamesavecenter.worker.tests.dll" id="32a4a04d-7dcb-fd3a-9256-e49db37fada9">
+      <Execution id="9d1c1181-3606-4625-b516-539ef63f5f27" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests" name="ClearReadDeletesOnlyReadNotificationsAndPreservesTasksAuditAndRestoreEvidence" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="fde7e653-c51d-fa52-910b-c60948f543ea" executionId="61f1a9e9-f7f9-4890-80c8-beee9f1dcf84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e41f8ef-24b9-6b9c-ba86-00ece078e027" executionId="39c1ae51-1438-46aa-b037-b5d9cb12564d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4639a4af-14e9-1829-d15f-eadd1f804d70" executionId="ac3d1f7a-c504-4719-a899-b2ce2814796e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="32a4a04d-7dcb-fd3a-9256-e49db37fada9" executionId="9d1c1181-3606-4625-b516-539ef63f5f27" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40afc5a5-8edb-3cf0-001c-3fe6b5b91e48" executionId="def3851d-f108-4ae5-98bf-e73afe3e8e8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e02445a-f3e9-a51d-12e8-d77706081ea9" executionId="f712792a-869c-4189-9ed9-2de0c866afa6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ad6ccc16-1282-1449-e95b-42cd8da213b1" executionId="fa259a21-6218-43e7-80f2-ce2656615e81" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.09]   Discovering: GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.17]   Discovered:  GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:00.19]   Starting:    GameSaveCenter.Worker.Tests&#xD;
+[xUnit.net 00:00:03.95]   Finished:    GameSaveCenter.Worker.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
