@@ -1,3 +1,9 @@
+## 2026-10-19 Round4 S03-05 方案差异比较
+
+- 实现提交 `b2c1e3de5fa822bcd8f2b04ddfe8b66d41411457` 增加恢复草稿 A → B 比较，展示来源、映射、预计影响和未知项。Worker 用 DPAPI 保护的 HMAC-SHA256 映射指纹区分同一备份版本上的映射变化；路径和密钥不写入草稿。密钥丢失/轮换、旧草稿缺指纹及未知文件大小都不折算成相同或零。
+- SDK `8.0.423` Release solution build `0 warning / 0 error`；Playnite `R12RestorePlanDraftBehaviorTests 7/7`、Worker `RestoreMappingPreviewBuilderTests 4/4`，source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`，双主题 RenderHarness `render-qa OK`。
+- 精确提交 `b2c1e3de` 的干净临时 worktree 运行 `dev-install-run.ps1 -NoStart` 隔离安装成功；XAML 结构检查 `25/25`，manifest `0.6.73`、插件 DLL `0.6.73.0`。未启动真实 Playnite；完整 WPF 逐类循环未运行。用户旧 R09 缺诊断目录、summary/TRX/DLL/PDB，旧运行输入身份未知。详情与程序集 SHA-256 见 [S03-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-05/README.md)。
+
 ## 2026-10-19 Round4 S03-04 恢复方案草稿与构建复核
 
 - 实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0` 新增路径脱敏的恢复映射只读预览与最多 50 条安全草稿；只保存版本/基线引用、计数、预览和 readiness 检查引用、固定保护要求，不保存路径、凭据或执行授权。预览、保存、删除绑定到 `SaveCenterView`，并检查 30 分钟新鲜度及当前选择匹配。

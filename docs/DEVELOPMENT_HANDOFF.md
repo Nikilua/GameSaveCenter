@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 Round4 S03-05 方案差异比较
+
+实现与受控验收提交 `b2c1e3de5fa822bcd8f2b04ddfe8b66d41411457`。恢复草稿比较支持明确 A → B 方向，通过 DPAPI 保护的 HMAC-SHA256 映射指纹区分同版本的映射变化，不保存原始路径或密钥；无法确认的指纹和大小保持未知。SDK `8.0.423` Release solution build `0/0`，Playnite `7/7`、Worker `4/4`，RenderHarness 双主题 `render-qa OK`，精确提交的隔离 no-start 安装通过（版本 `0.6.73` / DLL `0.6.73.0`）。未运行完整 WPF 循环或真实 Playnite。用户旧 R09 `summary.json`、TRX、DLL/PDB 暂不可用，旧运行输入仍未知。证据：[S03-05](design/reviews/ui-finesse-round4-20261018/evidence/S03-05/README.md)。下一项按计划处理 S03-06 方案失效规则。
+
 ## 2026-10-19 Round4 S03-04 恢复方案草稿
 
 实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0`；功能和隔离安装验证基于 `b5bb5158960e05a4c948124d9e29540f4a05812a`，最新完整一键复跑源提交 `d4068e6562b7d78a9893211a522059d5d1ce3c9f`。SDK `8.0.423` Release solution build `0/0`；Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`，当前 main R09 `2/2` 与恢复草稿 `4/4` 通过。WPF 隔离跑到 `48/133` 类时，R05 Tooltip 用例无法读取启动前系统指针而失败；178 项通过、1 项失败、85 个类未运行。独立隔离安装、双主题 RenderHarness 复跑、source validation 和 XAML `25/25` 通过。首次 RenderHarness 快速切换时序探针未稳定，同一已构建 Harness 复跑通过。真实 Playnite 未启动。

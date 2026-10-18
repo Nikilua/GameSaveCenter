@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 Round4 S03-05 方案差异比较
+
+实现提交 `b2c1e3de5fa822bcd8f2b04ddfe8b66d41411457` 增加恢复草稿 A → B 只读比较。Worker 使用 DPAPI 保护的用户密钥对规范化映射计算 HMAC-SHA256 指纹；草稿保存指纹/版本/密钥 ID，而不保存路径或密钥。密钥缺失、轮换、旧草稿无指纹及未计量的文件大小都显式保留为未知；同一来源版本的映射变化可以区分。比较不授予恢复执行权限。
+
+SDK `8.0.423` Release solution build `0 warning / 0 error`；Playnite `R12RestorePlanDraftBehaviorTests 7/7`、Worker `RestoreMappingPreviewBuilderTests 4/4`；source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`，RenderHarness 双主题矩阵 `render-qa OK`。精确提交 `b2c1e3de` 的干净临时 worktree 通过 `dev-install-run.ps1 -NoStart` 隔离安装，manifest `0.6.73`、插件 DLL `0.6.73.0`；真实 Playnite 未启动。完整 WPF 逐类循环未运行。用户的旧 R09 诊断目录、summary/TRX/DLL/PDB 暂时不可用，旧运行身份仍未知。详情见 [S03-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-05/README.md)。下一项按计划处理 S03-06 方案失效规则。
+
 ## 2026-10-19 Round4 S03-04 恢复方案草稿实现
 
 实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0` 将恢复映射 IPC 收敛为只读、路径脱敏摘要；UI 草稿最多 50 条，只保存游戏/目标版本/基线、映射计数与预览引用、创建时间、readiness 检查引用和固定保护要求，不含文件路径、凭据或可执行授权。`SaveCenterView` 提供只读预览、保存与删除操作，30 分钟预览新鲜度及选择匹配由 ViewModel 校验。最终受控验证基于 `b5bb5158960e05a4c948124d9e29540f4a05812a`。

@@ -452,14 +452,19 @@
     {
       "id": "S03-05",
       "title": "方案差异比较",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "b2c1e3de5fa822bcd8f2b04ddfe8b66d41411457",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[受控证据](evidence/S03-05/README.md)：SDK8 Release solution 0/0；Playnite 草稿比较 7/7、Worker 映射指纹 4/4；RenderHarness 双主题通过，提交 b2c1e3de 的隔离 no-start 安装通过。",
+      "evidence": [
+        {
+          "label": "受控证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-05/README.md"
+        }
+      ],
+      "boundary": "未运行完整 WPF 逐类隔离循环或真实 Playnite；旧 R09 诊断 summary/TRX/DLL/PDB 不可用，不能确认旧运行输入。"
     },
     {
       "id": "S03-06",
