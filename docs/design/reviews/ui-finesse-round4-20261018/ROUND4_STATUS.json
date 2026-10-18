@@ -707,7 +707,7 @@
       "title": "结构化任务状态",
       "state": "已验收",
       "implementationState": "complete",
-      "implementationCommit": "本次实现提交",
+      "implementationCommit": "7a81e5f2",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_applicable",
       "verificationText": "[证据](evidence/S07-02/README.md)：64 个 ID 与计划对齐；生成表格/分项摘要；校验重复 ID、标题、状态值与证据链接",
@@ -751,14 +751,19 @@
     {
       "id": "S07-05",
       "title": "跨机器诊断入口",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "本次实现提交",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "not_applicable",
+      "verificationText": "[证据](evidence/S07-05/README.md)：复用诊断 collector；记录环境/checkout/DLL/PDB/TRX 身份并提供离线只读预览；旧 TRX 可现场复算",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md"
+        }
+      ],
+      "boundary": "不探测运行中 Playnite 或安装目录；不收集用户存档/凭据；安装包身份仍需单独提供"
     },
     {
       "id": "S07-06",

@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-05 已验收，S00-02 仍待 UI 门禁
+
+现有 `build-diagnostics.ps1` collector 的 summary 现在带 OS/PowerShell/bitness/.NET runtime 身份；运行 `pwsh -NoProfile -File scripts/preview-build-diagnostics.ps1 -Path artifacts/build-diagnostics` 可在本机只读查看 commit/dirty paths、SDK、DLL/PDB 与测试/TRX 计数。旧 summary 会在本机从 raw TRX 重算，旧环境字段保持“未记录”。该入口不访问网络或 Playnite，也不采集用户存档/凭据。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md`。
+
+S07-01/02/04/06 已完成。S00-02 仍缺 SDK8.0.423 与真实 Playnite UI 验证；含该 XAML 改动的本地 `main` 仍不推送。
+
 ## 2026-10-18 最新续接：S07-02 已验收，S00-02 仍待 UI 门禁
 
 Round4 64 项的结构化状态源为 `docs/design/reviews/ui-finesse-round4-20261018/ROUND4_STATUS.json`。更新 JSON 后运行 `python scripts/render-round4-progress.py --write`；验证使用 `--check`，同时已接入 `scripts/validate-source.py`。完成/受控/宿主状态与证据索引分开记录，旧 Q/R 项与外部阻塞不由该索引清除。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-02/README.md`。

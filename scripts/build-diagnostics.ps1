@@ -21,6 +21,19 @@ function ConvertTo-GscDiagnosticText {
     return $value
 }
 
+function Get-GscEnvironmentIdentity {
+    $powershellVersion = if ($PSVersionTable -and $PSVersionTable.PSVersion) { $PSVersionTable.PSVersion.ToString() } else { 'unknown' }
+    $powershellEdition = if ($PSVersionTable -and $PSVersionTable.ContainsKey('PSEdition')) { $PSVersionTable.PSEdition } else { 'Desktop' }
+    return [ordered]@{
+        osVersion = [Environment]::OSVersion.Version.ToString()
+        osBitness = if ([Environment]::Is64BitOperatingSystem) { 64 } else { 32 }
+        processBitness = if ([Environment]::Is64BitProcess) { 64 } else { 32 }
+        powershellVersion = $powershellVersion
+        powershellEdition = $powershellEdition
+        dotnetRuntimeVersion = [Environment]::Version.ToString()
+    }
+}
+
 function New-GscDiagnosticContext {
     param([string]$RepoRoot, [string]$DiagnosticsRoot)
     if ([string]::IsNullOrWhiteSpace($DiagnosticsRoot)) {
@@ -43,7 +56,8 @@ function New-GscDiagnosticContext {
         RepoRoot = $RepoRoot; RunRoot = $runRoot; SourceCommit = ($commit -join '').Trim()
         DirtyPaths = $dirtyPaths; Sdk = 'unknown'; StartedUtc = [DateTime]::UtcNow.ToString('o')
         Steps = [Collections.Generic.List[object]]::new()
-        SourceFiles = $sourceFiles; Assemblies = @(); TestSummary = $null; Outcome = 'running'; CompletedUtc = $null
+        SourceFiles = $sourceFiles; Assemblies = @(); TestSummary = $null; Environment = (Get-GscEnvironmentIdentity)
+        Outcome = 'running'; CompletedUtc = $null
         RunType = 'unspecified'; TestsRequested = $null; FailureMessage = $null
     }
     Write-GscDiagnosticSummary $context
@@ -189,6 +203,7 @@ function Write-GscDiagnosticSummary {
     $summary = [ordered]@{
         schemaVersion = 1; sourceCommit = $Context.SourceCommit
         workingTreeClean = $Context.DirtyPaths.Count -eq 0; dirtyPaths = $Context.DirtyPaths
+        environment = $Context.Environment
         sdk = $Context.Sdk; startedUtc = $Context.StartedUtc; completedUtc = $Context.CompletedUtc
         outcome = $Context.Outcome; steps = @($Context.Steps.ToArray()); assemblies = $Context.Assemblies
         testSummary = $Context.TestSummary

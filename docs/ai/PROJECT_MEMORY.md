@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-05 已验收
+
+沿用 `build-diagnostics.ps1` 的 collector，不增加第二套 DLL/TRX 采集器。新的 `summary.json.environment` 记录 OS version/bitness、PowerShell version/edition、process bitness 和 .NET runtime；不记录用户名或用户目录。`scripts/preview-build-diagnostics.ps1` 在本地只读显示 checkout、环境、SDK、steps、DLL/PDB、summary/TRX 计数与缺失解释。旧格式可从本地 raw TRX 重算测试总数；环境未记录时不会推断历史环境。此入口不检查安装包或运行中 Playnite。证据见[Round4 S07-05](../design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md)。
+
 ## 2026-10-18 Round4 S07-02 已验收
 
 Round4 的机器数据源是 `docs/design/reviews/ui-finesse-round4-20261018/ROUND4_STATUS.json`；它把整体状态、实现/commit、受控验证、宿主验证、证据路径和未验边界分列。`scripts/render-round4-progress.py --write` 更新账本生成块，`--check` 验证计划 ID/标题、唯一性、状态值和证据链接；`scripts/validate-source.py` 已包含该检查。手写说明留在生成区域外。此索引只包含 Round4 的 64 项，不自动改动已有 Q/R 项或外部阻塞。证据见[Round4 S07-02](../design/reviews/ui-finesse-round4-20261018/evidence/S07-02/README.md)。

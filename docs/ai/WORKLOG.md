@@ -1,3 +1,8 @@
+## 2026-10-18 Round4 S07-05 跨机器诊断预览
+
+- 现有 collector 已覆盖 checkout/source dirty paths/hash、SDK、DLL/MVID/PDB 与原始 TRX，不重复开发采集器。本阶段在 `summary.json` 加入 OS version/bitness、PowerShell 版本/edition、进程位数与 .NET runtime；新增 `scripts/preview-build-diagnostics.ps1` 只读显示摘要身份、失败步骤、DLL/PDB 与 TRX 状态。旧格式没有测试计数时复用现有 TRX parser 本地重算；没有 OS 字段就明确标“未记录”，不拿当前机器补推历史环境。
+- `Test-BuildDiagnostics.ps1` 通过，包含 preview 正/负例和敏感内容不输出断言。历史 SDK8 run `c7f2a368` 的 27 个 TRX 只读复算为 1,073 cases（1,054 passed/1 failed/18 skipped），WPF 24 类/103 cases；其 Q14 失败状态保持。preview 不联网、不运行宿主、不采集用户存档/凭据，也不写文件。证据与命令见 [S07-05](../design/reviews/ui-finesse-round4-20261018/evidence/S07-05/README.md)。
+
 ## 2026-10-18 Round4 S07-02 结构化状态与证据索引
 
 - 核对现有进度账本：64 个 ID 唯一但状态/验证/宿主边界只存在手写 Markdown 行，无法机器分别计数，也无法确保链接索引完整。新增 `ROUND4_STATUS.json`，显式记录整体状态、实现与 commit、受控验证、宿主验证、说明、evidence 路径和未验边界；只管理 Round4，不自动迁移或解除旧 Q/R 阻塞。

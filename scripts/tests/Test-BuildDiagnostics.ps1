@@ -93,6 +93,9 @@ try {
     $summaryText = [IO.File]::ReadAllText((Join-Path $context.RunRoot 'summary.json'))
     $summary = $summaryText | ConvertFrom-Json
     if ($summary.outcome -ne 'failed' -or $summary.steps.Count -ne 4 -or $summary.steps[0].exitCode -ne 7) { throw 'Failure summary lost actual status' }
+    if (-not $summary.environment -or -not $summary.environment.osVersion -or -not $summary.environment.powershellVersion) {
+        throw 'Diagnostic summary did not record a minimal OS and PowerShell identity.'
+    }
     $coreSummary = @($summary.testSummary.groups | Where-Object { $_.id -eq 'core' })[0]
     $wpfSummary = @($summary.testSummary.groups | Where-Object { $_.id -eq 'playnite-wpf-isolated' })[0]
     if ($summary.testSummary.trxFileCount -ne 7 -or $summary.testSummary.totals.trxFileCount -ne 7 -or $summary.testSummary.totals.testCaseCount -ne 11) {
@@ -157,6 +160,7 @@ try {
     if (-not $assemblyWithoutPdb -or $null -ne $assemblyWithoutPdb.pdb) {
         throw 'Assembly diagnostic summary should report a missing sibling PDB as null.'
     }
+    & (Join-Path $PSScriptRoot 'Test-DiagnosticPreview.ps1') | Out-Null
     Write-Host "Diagnostics tests passed: real exits 7/0, duplicate PATH precedence, failure details, JSON/TRX redaction and present/locked/missing PDB identity. Evidence: $($context.RunRoot)"
 }
 finally { [Environment]::SetEnvironmentVariable('GSC_DIAGNOSTIC_TEST_PATH', $previous, 'Process') }
