@@ -17,6 +17,8 @@ public sealed class DeviceConflictStateSourceTests
         Assert.Contains("ItemsSource=\"{Binding DeviceDecisionOptions}\" SelectedItem=\"{Binding DeviceDecision, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=稍后处理, FallbackValue=稍后处理}\"", maintenance);
         Assert.Contains("Text=\"{Binding StagedRemoteBackupStatus, Mode=OneWay}\"", maintenance);
         Assert.Contains("AutomationProperties.Name=\"远端备份隔离状态\"", maintenance);
+        Assert.Contains("ItemsSource=\"{Binding SelectedDeviceComparisonEvidence}\"", maintenance);
+        Assert.Contains("AutomationProperties.Name=\"冲突原因与版本证据\"", maintenance);
 
         Assert.DoesNotContain("SelectedIndex=\"0\" ItemsSource=\"{Binding MediaFilterOptions}", media);
         Assert.Contains("ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);

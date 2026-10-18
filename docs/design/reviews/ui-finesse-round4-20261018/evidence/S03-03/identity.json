@@ -1,0 +1,118 @@
+{
+  "baseCommit": "f78cee55bea2c6dad167af4d45d69bd6dc0655e6",
+  "buildCommitMetadata": "GSC_BUILD_COMMIT=f78cee55; GSC_SOURCE_ROOT=repo",
+  "sdkVersion": "8.0.423",
+  "vstestVersion": "17.11.1",
+  "configuration": "Release",
+  "solutionBuildLog": "solution-build.log",
+  "testResults": [
+    "tests/playnite-device-conflict.trx",
+    "tests/worker-readiness-summary.trx",
+    "tests/core-device-conflict.trx",
+    "tests/R09FocusOutlineBehaviorTests.trx"
+  ],
+  "sourceHashes": [
+    {
+      "path": "src/GameSaveCenter.Contracts/DeviceStateDtos.cs",
+      "sha256": "9D350C0ED7FFC55A768934741716092478EF445509B3775BA035E1B276DD99ED"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DeviceConflictComparisonDisplayBuilder.cs",
+      "sha256": "EC5886011FF6830CFC3B65D2D88DB71730555B1ECCBF336ED41094151F58837A"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "sha256": "FC9E001C8580BF699E8DCE4B632C5DED2BE6534D3FE6FF5E350E8F9BF94EA37B"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml",
+      "sha256": "03042B4F977957FE41097137E21519BB857DC892E31ED0381910ACCF14B845EC"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.cs",
+      "sha256": "AE68BAFD070519FE378DDF2A0CF5E43759977FD269042DAFEAD311FA25F1FCAE"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Services/DeviceStateService.cs",
+      "sha256": "55487F1DA9BC94DDC0BBD5D50940EF76A78325C235901FBD9C4B37F144C0EEB7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DeviceConflictComparisonDisplayBehaviorTests.cs",
+      "sha256": "A1A8F3AD2E6A5677E20010E641FF7C5A987994A60A644CE6620F0A53B9820159"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DeviceConflictStateSourceTests.cs",
+      "sha256": "7502B4543A8972C0F5B0DFF3EFC9D004412323E091CBD04343F5082BBADB322F"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/DeviceConflictReadinessSummaryTests.cs",
+      "sha256": "2409EDA6E703B49A595FE9A63A51B45C5C603EFE9275D025220A1BBAC925E0CD"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs",
+      "sha256": "5108D5E0D55535C66D39F5707D7DEF6FEF70A19FE3115A94190F436E2CC7C89E"
+    }
+  ],
+  "binaryHashes": [
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Contracts/Release/netstandard2.0/GameSaveCenter.Contracts.dll",
+      "length": 275456,
+      "sha256": "2688525922609B66562379F6548D1C7E4A44FFF132A86DF59DDF03A661C63C50"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Contracts/Release/netstandard2.0/GameSaveCenter.Contracts.pdb",
+      "length": 96592,
+      "sha256": "7B483CAC8B31C11061341FC49173CFD10D7078381D41F1DD7E5A0309ED36199E"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll",
+      "length": 1987584,
+      "sha256": "AE458CEAFEC87C12B823B1D49ECA1A82D48334DC1635EC070B1D21B97D990602"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.pdb",
+      "length": 530276,
+      "sha256": "725E6B851AB62F0669AB02306EF052612C968474250604BB27EA8FA2B51B8DFC"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "length": 2029568,
+      "sha256": "31916115EC2FF674410528342120882968F861B424A1F32A6F5CBF2759DEA1EF"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "length": 468276,
+      "sha256": "9770555654CEFD15E106FA445401FEE8C08DE3D39D43DD7DF21071B6BB0D1A99"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Worker/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.dll",
+      "length": 1488384,
+      "sha256": "1D8AA34878753A2B61B292618818B4E555248113F5DE909E3ABDE8DBC1EBF7B0"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Worker/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.pdb",
+      "length": 217088,
+      "sha256": "C28C7AB3E6FAD0AE7206ED682267CBA1F5843BF508A79EDBFBC9F670E6328865"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Worker.Tests/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll",
+      "length": 783360,
+      "sha256": "D876FE5693F5625CE13A8C988F3A487B2680BA130B3E6EDD3B61FED052F50AAD"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.Worker.Tests/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.pdb",
+      "length": 139556,
+      "sha256": "A79049D743D1E19226F9F51A8DD42B44C492DF4894CD80FFCC0D363C82382FC6"
+    },
+    {
+      "path": ".tmp/round4-s03-03-sdk8423/bin/GameSaveCenter.RenderHarness/Release/net472/GameSaveCenter.RenderHarness.exe",
+      "length": 620544,
+      "sha256": "B658F02D9647214B7ADF29686E8CDBE63A9B733E210F21267B4BA870BAEEB35A"
+    },
+    {
+      "path": ".tmp/dotnet-sdk-8.0.423/dotnet.exe",
+      "length": 157480,
+      "sha256": "E94C17675054A5DEC941971293F08C417756A9A4F78EFB4B7F88E312272A07C2"
+    }
+  ]
+}

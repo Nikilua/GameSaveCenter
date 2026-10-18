@@ -14,12 +14,15 @@ namespace GameSaveCenter.Contracts
         public long TotalBytes { get; set; }
         public int FileCount { get; set; }
         public string ContentFingerprint { get; set; } = string.Empty;
+        /// <summary>Small validation summary for this exact backup; absent in older sidecar schemas.</summary>
+        public string RestoreReadinessStatus { get; set; } = string.Empty;
+        public DateTime? RestoreReadinessCheckedUtc { get; set; }
     }
 
     /// <summary>Small JSON sidecar shared between devices. It deliberately contains no save files or credentials.</summary>
     public sealed class DeviceStateSidecarDto
     {
-        public int SchemaVersion { get; set; } = 3;
+        public int SchemaVersion { get; set; } = 4;
         public string DeviceId { get; set; } = string.Empty;
         public string DeviceName { get; set; } = string.Empty;
         public DateTime GeneratedUtc { get; set; } = DateTime.UtcNow;
@@ -33,8 +36,24 @@ namespace GameSaveCenter.Contracts
         public string GameName { get; set; } = string.Empty;
         public string RemoteDevice { get; set; } = string.Empty;
         public string RemoteDeviceId { get; set; } = string.Empty;
+        public string LocalDevice { get; set; } = string.Empty;
         public string LocalBackupId { get; set; } = string.Empty;
         public string RemoteBackupId { get; set; } = string.Empty;
+        public string LocalParentBackupId { get; set; } = string.Empty;
+        public string RemoteParentBackupId { get; set; } = string.Empty;
+        public long LocalTotalBytes { get; set; }
+        public long RemoteTotalBytes { get; set; }
+        public int LocalFileCount { get; set; }
+        public int RemoteFileCount { get; set; }
+        public bool LocalContentFingerprintAvailable { get; set; }
+        public bool RemoteContentFingerprintAvailable { get; set; }
+        public bool? ContentFingerprintsMatch { get; set; }
+        public string LocalReadinessStatus { get; set; } = string.Empty;
+        public string RemoteReadinessStatus { get; set; } = string.Empty;
+        public DateTime? LocalReadinessCheckedUtc { get; set; }
+        public DateTime? RemoteReadinessCheckedUtc { get; set; }
+        public DateTime? LocalSummaryGeneratedUtc { get; set; }
+        public DateTime? RemoteSummaryGeneratedUtc { get; set; }
         public bool HasConflict { get; set; }
         public string Reason { get; set; } = string.Empty;
         public string SuggestedBackupId { get; set; } = string.Empty;
@@ -53,16 +72,35 @@ namespace GameSaveCenter.Contracts
             "Defer" => "稍后处理",
             _ => "尚未记录"
         };
-        public string ReasonDisplay => Reason switch
+        public string ReasonDisplay
         {
-            "DifferentDevicesChangedWithinTenMinutes" => "两台设备在十分钟内产生不同备份",
-            "DivergentDeviceSummaries" => "两台设备的最新备份摘要不同",
-            "EquivalentContent" => "Manifest 内容指纹相同",
-            "EquivalentSummary" => "摘要相同（旧版本证据）",
-            "UnknownDivergence" => "摘要相同但没有足够内容证据，需人工确认",
-            "OnlyOneSideAvailable" => "仅一台设备存在该备份摘要",
-            _ => string.IsNullOrWhiteSpace(Reason) ? "未知状态" : Reason
-        };
+            get
+            {
+                if (Reason == "UnknownDivergence")
+                {
+                    if (LocalContentFingerprintAvailable && RemoteContentFingerprintAvailable && ContentFingerprintsMatch == false)
+                        return "两侧摘要字段相同，但内容指纹不同；父版本关系未知。";
+                    if (LocalContentFingerprintAvailable && RemoteContentFingerprintAvailable && ContentFingerprintsMatch == true)
+                        return "内容指纹相同，但检测器仍报告冲突；需人工核对输入一致性。";
+                    return "两侧摘要字段相同，但内容指纹证据缺失；冲突原因未知。";
+                }
+
+                return Reason switch
+                {
+                    "SameDevice" => "两个摘要来自同一设备",
+                    "SameBackupId" => "两侧引用同一备份版本",
+                    "LinearFromKnownBase" => "一侧版本明确基于另一侧版本继续创建",
+                    "DivergedFromCommonBase" => "两个版本从同一父版本分叉",
+                    "DifferentDevicesChangedWithinTenMinutes" => "两端摘要不同且创建时间相差十分钟内；时间接近只是线索",
+                    "DivergentDeviceSummaries" => "两台设备的最新备份摘要不同",
+                    "EquivalentContent" => "Manifest 内容指纹相同",
+                    "EquivalentSummary" => "摘要相同（旧版证据未提供内容指纹）",
+                    "UnknownDivergence" => "冲突原因未知",
+                    "OnlyOneSideAvailable" => "仅一台设备存在该备份摘要",
+                    _ => string.IsNullOrWhiteSpace(Reason) ? "检测原因未提供" : "检测器返回了未识别的原因；需要人工查看两侧证据"
+                };
+            }
+        }
     }
 
     /// <summary>Records a human decision only; it never downloads, restores, deletes or overwrites a backup.</summary>

@@ -499,12 +499,27 @@ public sealed class FakeDashboardData
             {
                 PlayniteId = "game-" + i,
                 GameName = Games[i - 1].Name,
+                LocalDevice = "DESKTOP-01",
                 RemoteDevice = "LAPTOP-02",
                 LocalBackupId = "local-" + i,
                 RemoteBackupId = "remote-" + i,
-                HasConflict = i % 2 == 0,
-                Reason = "DifferentDevicesChangedWithinTenMinutes",
-                SuggestedBackupId = "remote-" + i,
+                LocalParentBackupId = "base-" + i,
+                RemoteParentBackupId = "base-" + i,
+                LocalTotalBytes = 24 * 1024,
+                RemoteTotalBytes = 31 * 1024,
+                LocalFileCount = 8,
+                RemoteFileCount = 10,
+                LocalContentFingerprintAvailable = true,
+                RemoteContentFingerprintAvailable = true,
+                ContentFingerprintsMatch = false,
+                LocalReadinessStatus = "Ready",
+                RemoteReadinessStatus = "Warning",
+                LocalReadinessCheckedUtc = DateTime.UtcNow.AddDays(-2),
+                RemoteReadinessCheckedUtc = DateTime.UtcNow.AddDays(-21),
+                LocalSummaryGeneratedUtc = DateTime.UtcNow.AddMinutes(-5),
+                RemoteSummaryGeneratedUtc = DateTime.UtcNow.AddDays(-1),
+                HasConflict = true,
+                Reason = "DivergedFromCommonBase",
                 Confidence = 0.82,
                 LocalCreatedUtc = DateTime.UtcNow.AddDays(-i),
                 RemoteCreatedUtc = DateTime.UtcNow.AddDays(-i).AddMinutes(3),
@@ -1181,6 +1196,8 @@ public sealed class FakeDashboardData
     public string SelectedFindingNavigationToolTip => FindingNavigationResolver.Resolve(SelectedFinding).ToolTip;
     public bool HasSelectedFindingNavigation => FindingNavigationResolver.Resolve(SelectedFinding).IsAvailable;
     public DeviceConflictStatusDto? SelectedDeviceComparison { get; set; }
+    public IReadOnlyList<string> SelectedDeviceComparisonEvidence
+        => DeviceConflictComparisonDisplayBuilder.Build(SelectedDeviceComparison);
     public RemoteBackupStageResultDto? StagedRemoteBackup { get; set; }
     public string RemoteRestoreAvailabilityHint => ActionAvailabilityHints.RemoteRestore(SelectedDeviceComparison != null, !string.IsNullOrWhiteSpace(SelectedDeviceComparison?.RemoteBackupId), StagedRemoteBackup != null, StagedRemoteBackup?.Verified == true, IsBusy);
     public ProcessMappingDto? SelectedProcessMapping { get; set; }

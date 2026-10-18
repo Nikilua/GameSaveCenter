@@ -27,7 +27,7 @@ public sealed class DeviceStateService
     {
         var device=Environment.MachineName;
         var deviceId=_options.DeviceId;
-        var sidecar=new DeviceStateSidecarDto{SchemaVersion=3,DeviceId=deviceId,DeviceName=device,GeneratedUtc=DateTime.UtcNow,
+        var sidecar=new DeviceStateSidecarDto{SchemaVersion=4,DeviceId=deviceId,DeviceName=device,GeneratedUtc=DateTime.UtcNow,
             Backups=await _store.GetLatestBackupSummariesAsync(token).ConfigureAwait(false)};
         var directory=Path.Combine(_options.DataDirectory,"DeviceState");Directory.CreateDirectory(directory);
         var localPath=Path.Combine(directory,deviceId+".json");
@@ -54,7 +54,7 @@ public sealed class DeviceStateService
             try
             {
                 var remote=JsonSerializer.Deserialize<DeviceStateSidecarDto>(text,JsonOptions);
-                if(remote==null||remote.SchemaVersion is <1 or >3||string.IsNullOrWhiteSpace(remote.DeviceName))continue;
+                if(remote==null||remote.SchemaVersion is <1 or >4||string.IsNullOrWhiteSpace(remote.DeviceName))continue;
                 var remoteDeviceId=WorkerOptions.IsValidDeviceId(remote.DeviceId)
                     ? remote.DeviceId.ToLowerInvariant()
                     : remote.DeviceName;
@@ -67,7 +67,19 @@ public sealed class DeviceStateService
                     result.Comparisons.Add(new DeviceConflictStatusDto
                     {
                         PlayniteId=item.PlayniteId,GameName=local?.GameName??item.GameName,RemoteDevice=remote.DeviceName,RemoteDeviceId=remoteDeviceId,
-                        LocalBackupId=local?.BackupId??string.Empty,RemoteBackupId=item.BackupId,HasConflict=conflict.HasConflict,
+                        LocalDevice=device,LocalBackupId=local?.BackupId??string.Empty,RemoteBackupId=item.BackupId,
+                        LocalParentBackupId=local?.ParentBackupId??string.Empty,RemoteParentBackupId=item.ParentBackupId,
+                        LocalTotalBytes=local?.TotalBytes??0,RemoteTotalBytes=item.TotalBytes,
+                        LocalFileCount=local?.FileCount??0,RemoteFileCount=item.FileCount,
+                        LocalContentFingerprintAvailable=!string.IsNullOrWhiteSpace(local?.ContentFingerprint),
+                        RemoteContentFingerprintAvailable=!string.IsNullOrWhiteSpace(item.ContentFingerprint),
+                        ContentFingerprintsMatch=HasComparableFingerprints(local,item)
+                            ? string.Equals(local!.ContentFingerprint,item.ContentFingerprint,StringComparison.OrdinalIgnoreCase)
+                            : null,
+                        LocalReadinessStatus=local?.RestoreReadinessStatus??string.Empty,RemoteReadinessStatus=item.RestoreReadinessStatus,
+                        LocalReadinessCheckedUtc=local?.RestoreReadinessCheckedUtc,RemoteReadinessCheckedUtc=item.RestoreReadinessCheckedUtc,
+                        LocalSummaryGeneratedUtc=sidecar.GeneratedUtc,RemoteSummaryGeneratedUtc=remote.GeneratedUtc==default?null:remote.GeneratedUtc,
+                        HasConflict=conflict.HasConflict,
                         Reason=conflict.Reason,SuggestedBackupId=conflict.PreferredBackupId,Confidence=conflict.Confidence,
                         LocalCreatedUtc=local?.CreatedUtc??default,RemoteCreatedUtc=item.CreatedUtc
                     });
@@ -94,4 +106,7 @@ public sealed class DeviceStateService
 
     private static BackupSnapshot? ToSnapshot(DeviceBackupSummaryDto? value,string device)=>value==null?null:new BackupSnapshot
     { BackupId=value.BackupId,ParentBackupId=value.ParentBackupId,SourceDevice=device,CreatedUtc=value.CreatedUtc,TotalBytes=value.TotalBytes,FileCount=value.FileCount,ContentFingerprint=value.ContentFingerprint };
+
+    private static bool HasComparableFingerprints(DeviceBackupSummaryDto? local,DeviceBackupSummaryDto remote)
+        => !string.IsNullOrWhiteSpace(local?.ContentFingerprint)&&!string.IsNullOrWhiteSpace(remote.ContentFingerprint);
 }

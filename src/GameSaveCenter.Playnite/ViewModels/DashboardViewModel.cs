@@ -1976,6 +1976,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref selectedDeviceComparison,value);
+                OnPropertyChanged(nameof(SelectedDeviceComparisonEvidence));
                 DeviceDecision=value?.DecisionDisplay switch
                 {
                     "保留两者"=>"保留两者","记录为优先本机"=>"以本机为准","记录为优先远端"=>"以远端为准",_=>"稍后处理"
@@ -1990,6 +1991,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RaiseCommandStates();
             }
         }
+        public IReadOnlyList<string> SelectedDeviceComparisonEvidence
+            => DeviceConflictComparisonDisplayBuilder.Build(SelectedDeviceComparison);
         public RemoteBackupStageResultDto? StagedRemoteBackup
         {
             get=>stagedRemoteBackup;

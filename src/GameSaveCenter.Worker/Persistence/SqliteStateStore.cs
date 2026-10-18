@@ -1045,19 +1045,27 @@ ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;";
         await using var connection = Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"
-SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id,b.manifest_json
+SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id,b.manifest_json,b.restore_readiness_json
 FROM backup_versions b
 JOIN games g ON g.playnite_id=b.playnite_id
 JOIN (SELECT playnite_id,MAX(created_utc) AS newest FROM backup_versions GROUP BY playnite_id) latest
   ON latest.playnite_id=b.playnite_id AND latest.newest=b.created_utc
 ORDER BY g.name COLLATE NOCASE;";
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
-        while (await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new DeviceBackupSummaryDto
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
         {
-            PlayniteId=reader.GetString(0),GameName=reader.GetString(1),BackupId=reader.GetString(2),
-            CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5),ParentBackupId=reader.IsDBNull(6)?string.Empty:reader.GetString(6),
-            ContentFingerprint=ComputeContentFingerprint(reader.IsDBNull(7)?string.Empty:reader.GetString(7))
-        });
+            var readiness = reader.IsDBNull(8) || string.IsNullOrWhiteSpace(reader.GetString(8)) || reader.GetString(8) == "{}"
+                ? null
+                : TryDeserializeRestoreReadiness(reader.GetString(8));
+            result.Add(new DeviceBackupSummaryDto
+            {
+                PlayniteId=reader.GetString(0),GameName=reader.GetString(1),BackupId=reader.GetString(2),
+                CreatedUtc=DateTime.Parse(reader.GetString(3)).ToUniversalTime(),TotalBytes=reader.GetInt64(4),FileCount=reader.GetInt32(5),ParentBackupId=reader.IsDBNull(6)?string.Empty:reader.GetString(6),
+                ContentFingerprint=ComputeContentFingerprint(reader.IsDBNull(7)?string.Empty:reader.GetString(7)),
+                RestoreReadinessStatus=readiness?.Status.ToString()??string.Empty,
+                RestoreReadinessCheckedUtc=readiness?.CheckedUtc
+            });
+        }
         return result;
     }
 
