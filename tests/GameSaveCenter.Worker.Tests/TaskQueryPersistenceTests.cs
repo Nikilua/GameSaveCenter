@@ -290,6 +290,21 @@ public sealed class TaskQueryPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task ExactTaskIdLookupDoesNotMatchNamesMessagesOrSimilarIds()
+    {
+        var created = DateTime.UtcNow.AddMinutes(-2);
+        await AddTaskAsync("task-target", TaskState.Failed, created, created.AddSeconds(1), "target-id in message");
+        await AddTaskAsync("prefix-task-target", TaskState.Failed, created.AddSeconds(2), created.AddSeconds(3));
+        await AddTaskAsync("message-only", TaskState.Failed, created.AddSeconds(4), created.AddSeconds(5), "task-target");
+
+        var page = await store.GetTaskPageAsync(new TaskQueryDto { Limit = 10, ExactTaskId = " task-target " }, CancellationToken.None);
+
+        var match = Assert.Single(page.Items);
+        Assert.Equal("task-target", match.TaskId);
+        Assert.Equal(1, page.TotalCount);
+    }
+
+    [Fact]
     public async Task FinishedTaskCountUsesTheFinishedStateIndex()
     {
         for (var i = 0; i < 1000; i++)

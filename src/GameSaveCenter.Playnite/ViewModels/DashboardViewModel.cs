@@ -3508,6 +3508,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 Limit = taskHistoryScope == "全部历史" ? 200 : 50,
                 Cursor = cursor ?? string.Empty,
                 Search = TaskSearchText,
+                ExactTaskId = restoringNavigationTaskSelection ? pendingNavigationTaskId : string.Empty,
                 // A finding route is an additional, transient target. Keep the user's
                 // visible game/search/type/time filters intact while narrowing the server
                 // query to the diagnostic game when its name is available.
@@ -6430,7 +6431,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,
                 OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,ApplyRecommendedProtectionCommand,
                  LoadTrainerReleasesCommand,DownloadTrainerCommand,CancelTrainerDownloadCommand,
-                 RefreshNotificationInboxCommand, MarkSelectedNotificationReadCommand, MarkVisibleNotificationsReadCommand, ClearReadNotificationRecordsCommand
+                 RefreshNotificationInboxCommand, MarkSelectedNotificationReadCommand, MarkVisibleNotificationsReadCommand, ClearReadNotificationRecordsCommand,
+                 OpenSelectedNotificationGameCommand, OpenSelectedNotificationTaskCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();

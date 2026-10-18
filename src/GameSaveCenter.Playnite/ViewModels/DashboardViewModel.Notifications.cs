@@ -18,6 +18,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string notificationTimeFilter = NotificationInboxFilter.AllTime;
         private string notificationInboxSearchText = string.Empty;
         private string notificationInboxErrorMessage = string.Empty;
+        private string notificationContextStatusMessage = string.Empty;
         private bool isNotificationInboxLoading;
         private bool isNotificationInboxMutating;
         private long notificationInboxRequestGeneration;
@@ -38,14 +39,44 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand MarkSelectedNotificationReadCommand { get; private set; } = null!;
         public ICommand MarkVisibleNotificationsReadCommand { get; private set; } = null!;
         public ICommand ClearReadNotificationRecordsCommand { get; private set; } = null!;
+        public ICommand OpenSelectedNotificationGameCommand { get; private set; } = null!;
+        public ICommand OpenSelectedNotificationTaskCommand { get; private set; } = null!;
 
         public NotificationInboxItem? SelectedNotification
         {
             get => selectedNotification;
             set
             {
+                if (!string.Equals(selectedNotification?.NotificationId, value?.NotificationId, StringComparison.Ordinal))
+                    NotificationContextStatusMessage = string.Empty;
                 SetValue(ref selectedNotification, value);
+                OnPropertyChanged(nameof(HasSelectedNotificationGameId));
+                OnPropertyChanged(nameof(HasSelectedNotificationTaskId));
+                OnPropertyChanged(nameof(NotificationContextMessage));
                 RaiseCommandStates();
+            }
+        }
+
+        public bool HasSelectedNotificationGameId => SelectedNotification != null
+            && !string.IsNullOrWhiteSpace(SelectedNotification.GameId);
+        public bool HasSelectedNotificationTaskId => SelectedNotification != null
+            && !string.IsNullOrWhiteSpace(SelectedNotification.TaskId);
+        public string NotificationContextMessage => !string.IsNullOrWhiteSpace(notificationContextStatusMessage)
+            ? notificationContextStatusMessage + " 已读只表示查看，不代表问题已解决。"
+            : SelectedNotification == null
+                ? "请选择一条通知查看关联入口。"
+                : !HasSelectedNotificationGameId && !HasSelectedNotificationTaskId
+                    ? "这条通知保留了可读摘要，但没有可定位的游戏或任务 ID。已读只表示查看，不代表问题已解决。"
+                    : "关联内容按稳定 ID 定位；不会按名称猜测。已读只表示查看，不代表问题已解决。";
+
+        private string NotificationContextStatusMessage
+        {
+            get => notificationContextStatusMessage;
+            set
+            {
+                if (string.Equals(notificationContextStatusMessage, value ?? string.Empty, StringComparison.Ordinal)) return;
+                notificationContextStatusMessage = value ?? string.Empty;
+                OnPropertyChanged(nameof(NotificationContextMessage));
             }
         }
 
@@ -161,6 +192,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             ClearReadNotificationRecordsCommand = new RelayCommand(
                 _ => Run(ClearReadNotificationRecordsAsync),
                 _ => CanClearReadNotificationRecords);
+            OpenSelectedNotificationGameCommand = new RelayCommand(
+                _ => OpenSelectedNotificationGame(),
+                _ => !IsBusy && HasSelectedNotificationGameId);
+            OpenSelectedNotificationTaskCommand = new RelayCommand(
+                _ => Run(OpenSelectedNotificationTaskAsync),
+                _ => !IsBusy && HasSelectedNotificationTaskId);
             NotificationRecords.CollectionChanged += (_, __) =>
             {
                 OnPropertyChanged(nameof(NotificationUnreadCount));
@@ -196,6 +233,91 @@ namespace GameSaveCenter.Playnite.ViewModels
             var readRecordCount = NotificationReadCount;
             return RunNotificationRecordMutationAsync(() =>
                 notificationInboxReadActions.ClearReadRecordsAsync(readRecordCount));
+        }
+
+        private void OpenSelectedNotificationGame()
+        {
+            var notification = SelectedNotification;
+            if (notification == null || string.IsNullOrWhiteSpace(notification.GameId)) return;
+
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new TaskSourceReferenceDto { StableId = notification.GameId, PlayniteId = notification.GameId },
+                Games);
+            if (game == null)
+            {
+                NotificationContextStatusMessage = $"关联游戏 ID“{notification.GameId}”不在当前游戏库快照中；通知摘要仍保留。请刷新游戏库后重试，未按名称跳转。";
+                StatusMessage = NotificationContextStatusMessage;
+                return;
+            }
+
+            PushNavigationReturnTarget("返回通知", $"来源通知：{notification.Title} · {notification.NotificationId}");
+            SaveTabIndex = 0;
+            CurrentWorkspace = WorkspaceKind.Saves;
+            SelectedGame = game;
+            NotificationContextStatusMessage = string.Empty;
+            StatusMessage = $"已按稳定游戏 ID 打开“{game.Name}”详情。可以使用顶部“{NavigationReturnLabel}”返回通知。";
+            RequestWorkspaceLoad();
+        }
+
+        private async Task OpenSelectedNotificationTaskAsync()
+        {
+            var notification = SelectedNotification;
+            var taskId = notification?.TaskId?.Trim() ?? string.Empty;
+            if (notification == null || string.IsNullOrWhiteSpace(taskId)) return;
+
+            var page = await plugin.RequestAsync<TaskPageDto>(
+                MessageTypes.GetTaskPage,
+                new TaskQueryDto { Limit = 1, ExactTaskId = taskId },
+                TimeSpan.FromSeconds(30));
+            var task = TaskSourceNavigationResolver.ResolveExactTask(taskId, page?.Items);
+            ApplyOnUi(() =>
+            {
+                if (!string.Equals(SelectedNotification?.NotificationId, notification.NotificationId, StringComparison.Ordinal)) return;
+                if (task == null)
+                {
+                    NotificationContextStatusMessage = $"关联任务 ID“{taskId}”已不存在或已清理；通知标题和摘要仍可查看。";
+                    StatusMessage = NotificationContextStatusMessage;
+                    return;
+                }
+
+                PushNavigationReturnTarget("返回通知", $"来源通知：{notification.Title} · {notification.NotificationId}");
+                taskSearchRefresh.Cancel();
+                taskHistoryQueryRefresh.Cancel();
+                taskSearchText = task.TaskId;
+                taskStatusFilter = "全部";
+                taskGameFilter = "全部";
+                taskTypeFilter = "全部";
+                pendingTaskGameFilter = "全部";
+                pendingTaskTypeFilter = "全部";
+                pendingTaskDynamicFilterRestore = false;
+                taskHistoryScope = "全部历史";
+                taskHistoryRange = "全部时间";
+                taskNavigationGameId = string.Empty;
+                taskNavigationGameName = string.Empty;
+                pendingNavigationTaskId = task.TaskId;
+                pendingNavigationTaskIndex = -1;
+                restoringNavigationTaskSelection = true;
+
+                OnPropertyChanged(nameof(TaskSearchText));
+                OnPropertyChanged(nameof(TaskStatusFilter));
+                OnPropertyChanged(nameof(TaskGameFilter));
+                OnPropertyChanged(nameof(TaskTypeFilter));
+                OnPropertyChanged(nameof(TaskHistoryScope));
+                OnPropertyChanged(nameof(TaskHistoryRange));
+                OnPropertyChanged(nameof(TaskLoadedSummary));
+                OnPropertyChanged(nameof(TaskTotalCountLabel));
+                OnPropertyChanged(nameof(HasTaskNavigationTarget));
+                OnPropertyChanged(nameof(TaskNavigationSourceSummary));
+                OnPropertyChanged(nameof(TaskHasActiveFilters));
+                OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+
+                RefreshTasksView();
+                CurrentWorkspace = WorkspaceKind.Tasks;
+                RequestTaskHistoryRefresh(immediate: true, force: true);
+                NotificationContextStatusMessage = string.Empty;
+                StatusMessage = $"已按任务 ID 打开“{task.TaskTypeDisplay}”任务详情；可从任务来源继续进入版本或关联问题。";
+                RaiseCommandStates();
+            });
         }
 
         private async Task RunNotificationRecordMutationAsync(Func<Task<int?>> mutation)

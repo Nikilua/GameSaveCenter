@@ -49,6 +49,14 @@ public sealed class NotificationInboxViewBehaviorTests
         RunSta(() =>
         {
             var data = new NotificationInboxData();
+            data.SelectedNotification = new NotificationInboxItem(new NotificationRecordDto
+            {
+                NotificationId = "notice-1",
+                GameId = "playnite-game-1",
+                TaskId = "task-1",
+                Title = "任务失败",
+                Summary = "保留的通知摘要"
+            });
             var view = new NotificationInboxView { DataContext = data };
             var window = new Window
             {
@@ -71,17 +79,27 @@ public sealed class NotificationInboxViewBehaviorTests
                 var markSelected = Assert.IsAssignableFrom<Button>(view.FindName("NotificationMarkSelectedReadButton"));
                 var markVisible = Assert.IsAssignableFrom<Button>(view.FindName("NotificationMarkVisibleReadButton"));
                 var clearRead = Assert.IsAssignableFrom<Button>(view.FindName("NotificationClearReadButton"));
+                var openGame = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenGameButton"));
+                var openTask = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenTaskButton"));
                 markSelected.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
                 markVisible.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
                 clearRead.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
+                openGame.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
+                openTask.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
 
                 Assert.Equal(2, Grid.GetRow(actionBar));
                 Assert.True(ReferenceEquals(data.MarkSelectedNotificationReadCommand, markSelected.Command), "Selected-read command binding");
                 Assert.True(ReferenceEquals(data.MarkVisibleNotificationsReadCommand, markVisible.Command), "Visible-read command binding");
                 Assert.True(ReferenceEquals(data.ClearReadNotificationRecordsCommand, clearRead.Command), "Clear-read command binding");
+                Assert.True(ReferenceEquals(data.OpenSelectedNotificationGameCommand, openGame.Command), "Open-game command binding");
+                Assert.True(ReferenceEquals(data.OpenSelectedNotificationTaskCommand, openTask.Command), "Open-task command binding");
                 Assert.Equal("标记所选通知为已读", AutomationProperties.GetName(markSelected));
                 Assert.Contains("被筛除的通知保持原状态", AutomationProperties.GetHelpText(markVisible));
                 Assert.Contains("不会删除任务、审计日志或恢复证据", AutomationProperties.GetHelpText(clearRead));
+                Assert.Contains("稳定游戏 ID", AutomationProperties.GetHelpText(openGame));
+                Assert.Contains("任务稳定 ID", AutomationProperties.GetHelpText(openTask));
+                Assert.Equal(Visibility.Visible, openGame.Visibility);
+                Assert.Equal(Visibility.Visible, openTask.Visibility);
 
                 markSelected.Command.Execute(null);
                 markVisible.Command.Execute(null);
@@ -138,10 +156,15 @@ public sealed class NotificationInboxViewBehaviorTests
         public string NotificationInboxErrorMessage => string.Empty;
         public bool HasNotificationInboxError => false;
         public string NotificationInboxLoadStatus => string.Empty;
+        public bool HasSelectedNotificationGameId => !string.IsNullOrWhiteSpace(SelectedNotification?.GameId);
+        public bool HasSelectedNotificationTaskId => !string.IsNullOrWhiteSpace(SelectedNotification?.TaskId);
+        public string NotificationContextMessage => "这条通知保留了摘要。";
         public System.Windows.Input.ICommand RefreshNotificationInboxCommand { get; } = new RelayCommand(_ => { });
         public System.Windows.Input.ICommand MarkSelectedNotificationReadCommand { get; }
         public System.Windows.Input.ICommand MarkVisibleNotificationsReadCommand { get; }
         public System.Windows.Input.ICommand ClearReadNotificationRecordsCommand { get; }
+        public System.Windows.Input.ICommand OpenSelectedNotificationGameCommand { get; } = new RelayCommand(_ => { });
+        public System.Windows.Input.ICommand OpenSelectedNotificationTaskCommand { get; } = new RelayCommand(_ => { });
 
         public NotificationInboxData()
         {

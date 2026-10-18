@@ -8,6 +8,17 @@ namespace GameSaveCenter.Playnite.ViewModels;
 /// <summary>Resolves task source targets by durable identity only.</summary>
 public static class TaskSourceNavigationResolver
 {
+    public static TaskStatusDto? ResolveExactTask(
+        string? taskId,
+        IEnumerable<TaskStatusDto>? tasks)
+    {
+        var stableTaskId = taskId?.Trim();
+        if (string.IsNullOrWhiteSpace(stableTaskId)) return null;
+
+        return (tasks ?? Enumerable.Empty<TaskStatusDto>())
+            .FirstOrDefault(candidate => string.Equals(candidate.TaskId, stableTaskId, StringComparison.OrdinalIgnoreCase));
+    }
+
     public static GameStatusDto? ResolveExactGame(
         TaskSourceReferenceDto? source,
         IEnumerable<GameStatusDto>? games)

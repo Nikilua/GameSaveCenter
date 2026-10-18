@@ -84,6 +84,18 @@ public sealed class R10ContextGameBehaviorTests
     }
 
     [Fact]
+    public void NotificationTaskContextResolvesOnlyTheExactStableTaskId()
+    {
+        var first = new TaskStatusDto { TaskId = "task-a", GameName = "同名游戏" };
+        var second = new TaskStatusDto { TaskId = "task-b", GameName = "同名游戏" };
+        var tasks = new[] { first, second };
+
+        Assert.Same(second, TaskSourceNavigationResolver.ResolveExactTask(" task-b ", tasks));
+        Assert.Null(TaskSourceNavigationResolver.ResolveExactTask("removed-task", tasks));
+        Assert.Null(TaskSourceNavigationResolver.ResolveExactTask("", tasks));
+    }
+
+    [Fact]
     public void TaskAndMediaDetailsExposeStableGameIdentityRoutes()
     {
         var root = TestRepositoryContext.Root;

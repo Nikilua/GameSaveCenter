@@ -81,6 +81,15 @@ public sealed class FakeDashboardData
     public ICommand MarkSelectedNotificationReadCommand { get; } = new NoopCommand();
     public ICommand MarkVisibleNotificationsReadCommand { get; } = new NoopCommand();
     public ICommand ClearReadNotificationRecordsCommand { get; } = new NoopCommand();
+    public ICommand OpenSelectedNotificationGameCommand { get; } = new NoopCommand();
+    public ICommand OpenSelectedNotificationTaskCommand { get; } = new NoopCommand();
+    public bool HasSelectedNotificationGameId => !string.IsNullOrWhiteSpace(SelectedNotification?.GameId);
+    public bool HasSelectedNotificationTaskId => !string.IsNullOrWhiteSpace(SelectedNotification?.TaskId);
+    public string NotificationContextMessage => SelectedNotification == null
+        ? "请选择一条通知查看关联入口。"
+        : !HasSelectedNotificationGameId && !HasSelectedNotificationTaskId
+            ? "这条通知保留了摘要，但没有可定位的游戏或任务 ID。已读只表示查看，不代表问题已解决。"
+            : "关联内容按稳定 ID 定位；不会按名称猜测。已读只表示查看，不代表问题已解决。";
     public ObservableCollection<NotificationInboxItem> NotificationInboxItems { get; } = new()
     {
         new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-error", Severity = NotificationSeverity.Error, Title = "备份任务失败", Summary = "远端认证失败，请检查连接设置。", GameId = "game-1", TaskId = "task-103", CreatedUtc = DateTime.UtcNow.AddMinutes(-8) }),

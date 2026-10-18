@@ -137,21 +137,25 @@
                 <Border x:Name="NotificationInspectorCard" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource NotificationSurface}" ClipToBounds="True">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                        <StackPanel Grid.Row="0" Margin="0,0,0,7">
                             <TextBlock Text="通知详情" FontSize="16" FontWeight="SemiBold"/>
                             <TextBlock Text="{Binding SelectedNotification.SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
                         <ScrollViewer x:Name="NotificationDetailScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
                             <StackPanel>
                                 <TextBlock Text="{Binding SelectedNotification.Title, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                                <TextBlock Text="{Binding SelectedNotification.Summary, Mode=OneWay}" Margin="0,8,0,12" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SelectedNotification.Summary, Mode=OneWay}" Margin="0,7,0,7" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap"/>
                                 <TextBlock Text="时间" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
-                                <TextBlock Text="{Binding SelectedNotification.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedNotification.CreatedRawUtcDisplay, Mode=OneWay}" Margin="0,3,0,10" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SelectedNotification.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedNotification.CreatedRawUtcDisplay, Mode=OneWay}" Margin="0,2,0,6" TextWrapping="Wrap"/>
                                 <TextBlock Text="游戏 ID" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
-                                <TextBlock Text="{Binding SelectedNotification.GameId, Mode=OneWay, TargetNullValue=无}" Margin="0,3,0,10" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SelectedNotification.GameId, Mode=OneWay, TargetNullValue=无}" Margin="0,2,0,6" TextWrapping="Wrap"/>
                                 <TextBlock Text="任务 ID" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
-                                <TextBlock Text="{Binding SelectedNotification.TaskId, Mode=OneWay, TargetNullValue=无}" Margin="0,3,0,0" TextWrapping="Wrap"/>
-                                <TextBlock Text="标记已读只表示已查看，不代表关联问题已解决。" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SelectedNotification.TaskId, Mode=OneWay, TargetNullValue=无}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                <WrapPanel Margin="0,8,0,0">
+                                    <ui:Button x:Name="NotificationOpenGameButton" Content="打开关联游戏" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding OpenSelectedNotificationGameCommand}" Visibility="{Binding HasSelectedNotificationGameId, Converter={StaticResource BooleanToVisibilityConverter}}" AutomationProperties.Name="打开通知关联游戏" AutomationProperties.HelpText="只按 Playnite 稳定游戏 ID 定位，不会按同名游戏猜测。" Padding="11,4" Margin="0,0,8,4"/>
+                                    <ui:Button x:Name="NotificationOpenTaskButton" Content="打开关联任务" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding OpenSelectedNotificationTaskCommand}" Visibility="{Binding HasSelectedNotificationTaskId, Converter={StaticResource BooleanToVisibilityConverter}}" AutomationProperties.Name="打开通知关联任务" AutomationProperties.HelpText="只按任务稳定 ID 查询；找不到时保留通知摘要并说明原因。" Padding="11,4" Margin="0,0,8,4"/>
+                                </WrapPanel>
+                                <TextBlock Text="{Binding NotificationContextMessage, Mode=OneWay}" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,1,0,0" TextWrapping="Wrap"/>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>

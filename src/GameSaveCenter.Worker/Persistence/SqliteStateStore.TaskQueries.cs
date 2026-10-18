@@ -123,6 +123,11 @@ WHERE state=$state AND finished_utc IS NOT NULL
     {
         var predicates = new List<string> { "1=1" };
         var parameters = new Dictionary<string, object?>();
+        if (!string.IsNullOrWhiteSpace(query.ExactTaskId))
+        {
+            predicates.Add("task_id=$exactTaskId");
+            parameters["$exactTaskId"] = query.ExactTaskId.Trim();
+        }
         if (query.State.HasValue)
         {
             predicates.Add("state=$stateFilter");
