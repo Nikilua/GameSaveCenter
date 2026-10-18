@@ -152,6 +152,30 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task ExplicitRetryLineageKeepsEarliestOccurrenceWhenEventsArriveOutOfOrder()
+    {
+        var laterAt = DateTime.UtcNow.AddMinutes(-2);
+        var earlierAt = laterAt.AddMinutes(-5);
+        var issueKey = "issue:backup:game-1:out-of-order";
+
+        Assert.True(await store.TryAddNotificationAsync(
+            CreateIssueRecord(issueKey, "task-later", "attempt:task-later", laterAt, "LATEST_ERROR"),
+            CancellationToken.None));
+        Assert.True(await store.TryAddNotificationAsync(
+            CreateIssueRecord(issueKey, "task-earlier", "attempt:task-earlier", earlierAt, "EARLIER_ERROR"),
+            CancellationToken.None));
+
+        var aggregate = Assert.Single(await store.GetRecentNotificationRecordsAsync(10, CancellationToken.None));
+        Assert.Equal(2, aggregate.OccurrenceCount);
+        Assert.Equal("task-earlier", aggregate.FirstTaskId);
+        Assert.Equal("task-later", aggregate.TaskId);
+        Assert.Equal("LATEST_ERROR", aggregate.LastError);
+        Assert.Equal(earlierAt, aggregate.CreatedUtc, TimeSpan.FromMilliseconds(1));
+        Assert.Equal(earlierAt, aggregate.FirstOccurredUtc, TimeSpan.FromMilliseconds(1));
+        Assert.Equal(laterAt, aggregate.LastOccurredUtc, TimeSpan.FromMilliseconds(1));
+    }
+
+    [Fact]
     public async Task RetryIssueIdentitySurvivesTaskStoreRestart()
     {
         await store.AddOrUpdateTaskAsync(new TaskStatusDto

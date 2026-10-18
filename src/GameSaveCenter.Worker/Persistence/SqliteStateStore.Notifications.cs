@@ -151,17 +151,22 @@ WHERE issue_key=$issue AND last_occurred_utc<=$lastOccurred;";
                 {
                     updateIssue.CommandText = @"
 UPDATE notification_records
-SET task_id=CASE WHEN last_occurred_utc<=$lastOccurred THEN $task ELSE task_id END,
+SET first_task_id=CASE WHEN COALESCE(NULLIF(first_occurred_utc,''),created_utc)>$firstOccurred THEN $firstTask ELSE first_task_id END,
+    created_utc=CASE WHEN created_utc>$firstOccurred THEN $firstOccurred ELSE created_utc END,
+    first_occurred_utc=CASE WHEN COALESCE(NULLIF(first_occurred_utc,''),created_utc)>$firstOccurred THEN $firstOccurred ELSE first_occurred_utc END,
+    task_id=CASE WHEN last_occurred_utc<=$lastOccurred THEN $task ELSE task_id END,
     severity=CASE WHEN last_occurred_utc<=$lastOccurred THEN $severity ELSE severity END,
     title=CASE WHEN last_occurred_utc<=$lastOccurred THEN $title ELSE title END,
     summary=CASE WHEN last_occurred_utc<=$lastOccurred THEN $summary ELSE summary END,
     occurrence_count=occurrence_count+1,
     last_occurred_utc=CASE WHEN last_occurred_utc<=$lastOccurred THEN $lastOccurred ELSE last_occurred_utc END,
     last_error=CASE WHEN last_occurred_utc<=$lastOccurred THEN $lastError ELSE last_error END,
-    is_resolved=CASE WHEN last_occurred_utc<$lastOccurred THEN 0 ELSE is_resolved END,
-    is_read=CASE WHEN last_occurred_utc<$lastOccurred THEN 0 ELSE is_read END
+    is_resolved=CASE WHEN last_occurred_utc<=$lastOccurred THEN 0 ELSE is_resolved END,
+    is_read=CASE WHEN last_occurred_utc<=$lastOccurred THEN 0 ELSE is_read END
 WHERE issue_key=$issue;";
                 }
+                updateIssue.Parameters.AddWithValue("$firstTask", string.IsNullOrWhiteSpace(normalized.FirstTaskId) ? normalized.TaskId : normalized.FirstTaskId);
+                updateIssue.Parameters.AddWithValue("$firstOccurred", normalized.FirstOccurredUtc.ToString("O", CultureInfo.InvariantCulture));
                 updateIssue.Parameters.AddWithValue("$task", normalized.TaskId);
                 updateIssue.Parameters.AddWithValue("$severity", (int)normalized.Severity);
                 updateIssue.Parameters.AddWithValue("$title", normalized.Title);
