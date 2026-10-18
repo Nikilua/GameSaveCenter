@@ -4,13 +4,17 @@
 
 用仓库锁定 SDK `8.0.423` 和全新隔离输出运行正式 build 脚本：解决方案编译 `0 warning / 0 error`，Core `147/147`、Worker `374 passed / 1 skipped`、Playnite 非 WPF 分组 `468/468`。WPF 逐类在第 16/132 类发现 `NumericInputTests` 仍断言设置页有 10 个范围校验；当前设置页实际为 12 个，新增两项来自安静时段开始/结束分钟输入框。更新断言后该类 `12/12`，R09 `2/2`。
 
-完整 WPF 独立循环没有完成；本次未安装或启动 Playnite。用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，当前 R09 复测不能识别旧运行输入。构建日志和 TRX 身份见 [BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 当前下一项 S03-01。
+完整 WPF 独立循环没有完成；本次未安装或启动 Playnite。用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，当前 R09 复测不能识别旧运行输入。构建日志和 TRX 身份见 [BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 当前下一项 S03-02。
 
 ## 2026-10-19 Round4 S02-08 通知体验受控验收
 
 核对并复用已有通知收件箱、页面缓存、Worker 持久化、过滤批量已读、静音/级别策略与进度辅助通知实现，没有新增产品代码或字符串镜像测试。SDK `9.0.302` Playnite 定向行为测试 `20/20`、Worker 通知持久化 `12/12`；Playnite 插件 DLL/PDB 与测试加载副本哈希匹配。VSTest 退出码为 0、TRX 全部通过，但 WPF 清理阶段输出 `TextServicesContext.StopTransitoryExtension()` 的 `InvalidComObjectException`。
 
-正式 SDK8 基线、完整 WPF 隔离循环、真实 Playnite、Windows 系统高对比和实际读屏器未验。受控 palette/UI Automation 用例不替代系统设置或真实读屏公告。证据与输入身份见 [S02-08](../design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。下一项 S03-01 来源关系模型。
+正式 SDK8 基线、完整 WPF 隔离循环、真实 Playnite、Windows 系统高对比和实际读屏器未验。受控 palette/UI Automation 用例不替代系统设置或真实读屏公告。证据与输入身份见 [S02-08](../design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。
+
+## 2026-10-19 Round4 S03-01 来源关系模型
+
+提交 `5e05aa73` 新增 Core `BackupLineageBuilder` 和轻量节点/关系/问题模型。父边只来自唯一可解析的 `ParentBackupId`；同指纹版本建等价内容关系；重复 ID、父引用歧义、缺失父、缺失 ID、环和无父声明都显式报告。列表顺序与时间戳不用于推断谱系。输入上限默认 500，额外只检查一条来报告是否截断；等价组使用代表节点星形边，避免二次关系展开。SDK `9.0.302` 下 Core 与 Core.Tests Release 构建成功，全套 Core `156/156`，无跳过。SDK8 尚未安装；未接 Worker IPC/Playnite、未跑全解方案或恢复流程。证据与源/程序集/TRX SHA-256 见 [S03-01](../design/reviews/ui-finesse-round4-20261018/evidence/S03-01/README.md)。下一项 S03-02 版本关系视图。
 
 ## 2026-10-19 Round4 S02-07 重复归并摘要已受控验证
 

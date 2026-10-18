@@ -8,7 +8,13 @@
 
 - 核对后复用现有通知收件箱、离页缓存、Worker 记录/重试持久化、筛选批量已读、级别/静音策略及进度 UI Automation 行为；没有新增生产代码或字符串镜像测试。
 - SDK `9.0.302` 下 Playnite 通知体验定向类 `20/20`，Worker `NotificationRecordPersistenceTests` `12/12`。测试 TRX 通过且 VSTest 退出码 `0`；WPF 清理阶段输出 `TextServicesContext.StopTransitoryExtension()` 的 `InvalidComObjectException`。插件 DLL/PDB 与测试加载副本 SHA-256 一致。完整输入身份和验证范围见 [S02-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。
-- SDK8 正式基线、完整 WPF 逐类循环、真实 Playnite、Windows 系统高对比切换和实际读屏器未验。账本标记受控验证通过、宿主验收待验；下一项 S03-01 来源关系模型。
+- SDK8 正式基线、完整 WPF 逐类循环、真实 Playnite、Windows 系统高对比切换和实际读屏器未验。账本标记受控验证通过、宿主验收待验。
+
+## 2026-10-19 Round4 S03-01 来源关系模型
+
+- 提交 `5e05aa73` 新增 Core 只读来源节点、父边、同内容关系和问题模型。父边只用唯一 `ParentBackupId` 解析；内容指纹只说明内容等价，不改写谱系。重复/缺失 ID、歧义/缺失父、环、未说明父关系均返回问题；不根据时间戳或列表顺序推断线性关系。
+- 默认最多检查 500 项，再用单条 lookahead 判断是否截断；同指纹多版本用代表节点星形边，避免平方级关系扩张。未复制文件清单到投影。
+- SDK `9.0.302` 下 Core 和 Core.Tests Release 构建成功，全套 Core `156/156`，无跳过。`validate-source.py` 与 `git diff --check` 通过。SDK8 正式基线、全解方案、Worker/Playnite 接入及实际恢复未运行。编译日志、TRX、DLL/PDB 与源码哈希见 [S03-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-01/README.md)。下一项 S03-02 版本关系视图。
 
 ## 2026-10-19 Round4 S02-07 重复归并摘要
 

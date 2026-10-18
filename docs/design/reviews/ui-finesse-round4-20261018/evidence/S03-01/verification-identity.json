@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "taskId": "S03-01",
+  "sourceCommit": "5e05aa73",
+  "sdk": "9.0.302",
+  "sdkBaseline": "global.json requires SDK 8.0.423; that SDK was not installed on this machine.",
+  "buildWorkingDirectory": "C:/Windows/Temp",
+  "isolatedOutputRoot": ".tmp/round4-s03-01-20261019",
+  "commands": [
+    "dotnet restore D:\\workplace\\github\\GameSaveCenter\\tests\\GameSaveCenter.Core.Tests\\GameSaveCenter.Core.Tests.csproj --ignore-failed-sources --nologo -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildCommit=5e05aa73 -p:GscBuildOutputRoot=D:\\workplace\\github\\GameSaveCenter\\.tmp\\round4-s03-01-20261019",
+    "dotnet test D:\\workplace\\github\\GameSaveCenter\\tests\\GameSaveCenter.Core.Tests\\GameSaveCenter.Core.Tests.csproj -c Release --no-restore --logger console;verbosity=minimal --logger trx;LogFileName=core-full-final.trx --results-directory D:\\workplace\\github\\GameSaveCenter\\.tmp\\round4-s03-01-20261019\\tests\\trx -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildCommit=5e05aa73 -p:GscBuildOutputRoot=D:\\workplace\\github\\GameSaveCenter\\.tmp\\round4-s03-01-20261019"
+  ],
+  "targetedBuildResult": "Core, Contracts and Core.Tests Release outputs built successfully as part of dotnet test.",
+  "testResults": [
+    {
+      "failed": 0,
+      "artifact": {
+        "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-01/tests/core-full.trx",
+        "bytes": 235131,
+        "sha256": "4AB251D1649D9BF12112D982142A43D16756EEAAF5736B5B86B3A3DBCD613EA2"
+      },
+      "passed": 156,
+      "name": "GameSaveCenter.Core.Tests",
+      "outcome": "Completed",
+      "total": 156,
+      "skipped": 0
+    }
+  ],
+  "binaryFiles": [
+    {
+      "path": ".tmp/round4-s03-01-20261019/bin/GameSaveCenter.Core/Release/netstandard2.0/GameSaveCenter.Core.dll",
+      "bytes": 79872,
+      "sha256": "1F5F0DEAAD47A7816CA8E8DB0777E53F755576267BA59D0885E8EFCC087105A8"
+    },
+    {
+      "path": ".tmp/round4-s03-01-20261019/bin/GameSaveCenter.Core/Release/netstandard2.0/GameSaveCenter.Core.pdb",
+      "bytes": 29108,
+      "sha256": "0DFB0F0FE1AF20F5BFCACD323C103D187DF16B99E3558BB085557A8CABDC3F2B"
+    },
+    {
+      "path": ".tmp/round4-s03-01-20261019/bin/GameSaveCenter.Core.Tests/Release/net8.0/GameSaveCenter.Core.Tests.dll",
+      "bytes": 59904,
+      "sha256": "E50CF34D365A622F3364A11829FDF9CC8B7E7C2EB3CAA9F9F979E6088EF3B4A4"
+    },
+    {
+      "path": ".tmp/round4-s03-01-20261019/bin/GameSaveCenter.Core.Tests/Release/net8.0/GameSaveCenter.Core.Tests.pdb",
+      "bytes": 24444,
+      "sha256": "02E4733CF81AE56C179C0917E5B7DB974A82465754FE04208823791D86B0B95B"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "src/GameSaveCenter.Core/Models/BackupLineageModels.cs",
+      "bytes": 2168,
+      "sha256": "08D781F4AE3321D06408727460CFE373619828B7C1ECD9234F2FAC99D36E2A0D"
+    },
+    {
+      "path": "src/GameSaveCenter.Core/Services/BackupLineageBuilder.cs",
+      "bytes": 8751,
+      "sha256": "971605C8FAB31F3ADF715E9AABB7A952EC9A7807C88C04D6364745D272FDDC06"
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/BackupLineageBuilderTests.cs",
+      "bytes": 5866,
+      "sha256": "74E0A9BDC6E1E56D514CD716CB48B8F6990BB98C8C916B4DEB509DC2A0D06712"
+    }
+  ],
+  "logs": [
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-01/build/sdk-version.log",
+      "bytes": 7,
+      "sha256": "2AF0685273C29FA25CDA91E6000FD4DBAE468017EBD1BD6D842F27E320761873"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-01/build/restore.log",
+      "bytes": 427,
+      "sha256": "AFA9ABB9E466D51AB78D0EA21E3F9BDE999E0CE12349E6B183EEAA202A53D5D1"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-01/tests/core-full.log",
+      "bytes": 1063,
+      "sha256": "DECAE625F544DAA663A06DBFBBA4978FD82C3104D5CDE767952D566E8772AC73"
+    }
+  ],
+  "checks": {
+    "sourceChanges": "Core model and behavior tests committed at 5e05aa73",
+    "sourceValidation": "passed after evidence/docs update",
+    "diffCheck": "passed after evidence/docs update",
+    "fullSolutionBuild": "not_run",
+    "workerIpcIntegration": "not_run",
+    "playniteHost": "not_applicable_to_core_model",
+    "restoreExecution": "not_run"
+  },
+  "boundary": "SDK9 controlled Core evidence only; SDK8 formal baseline and full-solution build were not run. No Worker/Playnite integration, host rendering or restore was performed."
+}
