@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 Round4 S03-03 冲突原因对照
+
+提交 `3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720` 完成受控实现和证据。设备冲突详情把检测原因、左右备份来源/设备/时间/大小/文件数、共同父版本、指纹比较结果与 readiness 状态/检查时间放在同一只读面板；已知原因均用中文描述。校验新鲜度只按记录时间展示相对年龄与绝对值，不添加未约定阈值，也不根据最新时间推荐覆盖。旧 sidecar 缺字段时显示未知；不传指纹原文或清单路径。保留现有决策和隔离远端恢复命令。
+
+仓库隔离 SDK `8.0.423` Release 全解方案 `0 warning / 0 error`；Playnite `4/4`、Worker `2/2`、Core detector `7/7`、R09 `2/2`；RenderHarness `render-qa OK / 0 PROBLEM`，XAML 25 个文件结构校验和 source validation 通过。没有运行完整 WPF 逐类循环、安装或真实 Playnite。用户旧 R09 同次 summary/TRX/DLL/PDB 不可用，因此旧日志仍无法定位到同一源码和二进制输入。详见 [S03-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。下一项检查 S03-04。
+
 ## 2026-10-19 Round4 S03-02 版本关系视图
 
 实现提交 `fd59dcc1`。
@@ -12,7 +18,7 @@ SDK `9.0.302` Release solution build `0/0`，Playnite `12/12`（含 R09 `2/2`）
 
 用仓库锁定 SDK `8.0.423` 和全新隔离输出运行正式 build 脚本：解决方案编译 `0 warning / 0 error`，Core `147/147`、Worker `374 passed / 1 skipped`、Playnite 非 WPF 分组 `468/468`。WPF 逐类在第 16/132 类发现 `NumericInputTests` 仍断言设置页有 10 个范围校验；当前设置页实际为 12 个，新增两项来自安静时段开始/结束分钟输入框。更新断言后该类 `12/12`，R09 `2/2`。
 
-完整 WPF 独立循环没有完成；本次未安装或启动 Playnite。用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，当前 R09 复测不能识别旧运行输入。构建日志和 TRX 身份见 [BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 当前下一项 S03-02。
+完整 WPF 独立循环没有完成；本次未安装或启动 Playnite。用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，当前 R09 复测不能识别旧运行输入。构建日志和 TRX 身份见 [BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。其后 S03-02、S03-03 已受控完成。
 
 ## 2026-10-19 Round4 S02-08 通知体验受控验收
 

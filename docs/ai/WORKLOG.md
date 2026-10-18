@@ -1,3 +1,10 @@
+## 2026-10-19 Round4 S03-03 冲突原因对照
+
+- 实现及证据已提交 `3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720`。新增设备冲突详情双侧证据卡：两侧设备/备份 ID/创建时间/大小/文件数、共同父版本、指纹可比性与相同性、readiness 校验状态和精确时间；以中文呈现所有已知冲突原因，并将未知分歧区分为内容不同或证据不足。
+- 明确 freshness 只显示实际检查时间，不自造过期阈值，不按最新时间推荐覆盖另一分支；旧 sidecar 缺 readiness 时标为未知。保留原冲突动作和隔离恢复流程。
+- SDK `8.0.423` Release 全解决方案构建 `0 warning / 0 error`；Playnite `4/4`、Worker `2/2`、Core 冲突检测器 `7/7`、R09 `2/2`；RenderHarness `render-qa OK / 0 PROBLEM`，XAML 25 文件结构检查和 source validation 通过。证据与源码/程序集/PDB SHA-256 见 [S03-03](../design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。
+- 未运行完整 WPF 逐类隔离循环、安装包或真实 Playnite。用户确认没有旧诊断 `summary.json`/TRX；旧 R09 运行输入仍未知，本次当前 R09 通过不解释旧失败。下一步审查 S03-04 恢复方案草稿的现有能力和依赖。
+
 ## 2026-10-19 Round4 S03-02 版本关系视图
 
 - 实现与证据提交：`fd59dcc1`。

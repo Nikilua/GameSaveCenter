@@ -1,5 +1,6 @@
 {
   "baseCommit": "f78cee55bea2c6dad167af4d45d69bd6dc0655e6",
+  "implementationCommit": "3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720",
   "buildCommitMetadata": "GSC_BUILD_COMMIT=f78cee55; GSC_SOURCE_ROOT=repo",
   "sdkVersion": "8.0.423",
   "vstestVersion": "17.11.1",

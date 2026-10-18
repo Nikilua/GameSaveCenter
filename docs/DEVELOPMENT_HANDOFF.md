@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 Round4 S03-03 冲突原因对照
+
+实现与证据已提交 `3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720`，证据包：[S03-03](design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。设备冲突详情现将检测原因、左右备份和设备信息、共同父版本、指纹可比性、两侧 readiness 状态及检查时间放在同一只读对照卡内；旧 sidecar 没有检查状态时显示未知。面板清楚区分新鲜度信息与分支胜负，不按最新时间建议覆盖。
+
+全解方案 build `0/0`；Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`；RenderHarness `render-qa OK`。未运行完整 WPF 隔离循环、安装或真实 Playnite。用户确认旧 R09 诊断目录与 summary/TRX 不在手上；当前匹配 SDK8 测试程序集通过，但不能识别旧失败实际源码/DLL/PDB。继续按 64 项计划审查 S03-04 恢复方案草稿。
+
 ## 2026-10-19 Round4 S03-02 版本关系视图
 
 提交 `fd59dcc1`。版本详情现展示来源父版本、分叉、内容相同版本、设备与不确定关系；历史通过时间键加备份 ID 稳定分页，每页最多 100 条。SDK `9.0.302` Release solution build `0/0`，Playnite 定向 `12/12`（R09 `2/2`），Worker `2/2`，RenderHarness `render-qa OK / 0 PROBLEM`。证据包：[S03-02](design/reviews/ui-finesse-round4-20261018/evidence/S03-02/README.md)。当前未启动真实 Playnite；本机只有 SDK9.0.302，而仓库要求 SDK8.0.423。

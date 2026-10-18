@@ -418,14 +418,19 @@
     {
       "id": "S03-03",
       "title": "冲突原因对照",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[受控证据](evidence/S03-03/README.md)：SDK8.0.423 Release solution 0/0；Playnite 4/4、Worker 2/2、Core 7/7、R09 2/2；RenderHarness render-qa OK，0 PROBLEM",
+      "evidence": [
+        {
+          "label": "受控证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md"
+        }
+      ],
+      "boundary": "完整 WPF 逐类隔离循环、安装包和真实 Playnite 未运行；无真实同步或恢复。readiness 只显示实际检查时间，不定义过期阈值或推荐冲突胜方。用户旧 R09 summary/TRX/DLL/PDB 缺失，旧失败运行输入仍未知。"
     },
     {
       "id": "S03-04",
