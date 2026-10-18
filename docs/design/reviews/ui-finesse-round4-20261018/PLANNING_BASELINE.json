@@ -1,0 +1,7 @@
+{
+  "reviewedHead": "4d55a7dd53098eed6c80b0c64ebbb870aa24b3ba",
+  "round3Rows": 192,
+  "round3ExactPendingOrInProgress": [],
+  "newTaskCount": 64,
+  "reviewScope": "Local source and ledger inspection; no new host or CI verification"
+}

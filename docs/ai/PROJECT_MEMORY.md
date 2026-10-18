@@ -1,5 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 新明确范围：第四轮 64 项增量计划
+
+用户要求继续补充有价值的功能/UI，并直接落地本地文档。本轮已核对 `4d55a7dd` 的源码与第三轮主账本：192 个主条目无精确“待开始/实施中”，但宿主/IME/跨屏/呈现等边界仍未全验。本轮只做规划，不新增产品代码，不重新声称 CI 或宿主通过。
+
+新增[第四轮 64 项计划](../design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：命令搜索、工作视图、通知收件箱、备份来源/恢复方案、媒体比较、容量情景、人工待办、开发入口维护。已明确复用筛选预设、通知策略、冲突检测、容量趋势、保留预览等已有能力。下一小批 S00-01 已在 AUTONOMOUS_BACKLOG 准入；旧“没有新明确范围”的判断不再适用于此新计划，旧环境阻塞仍保留。文档数量/ID/链接及 source/diff 校验作为本次纯文档验证；不触碰现有未跟踪 TRX/TestResults。
+
+
 ## 2026-10-18 最新：#1086 双 SDK 成功，R00-03 runner 复核继续
 
 `main` 文档提交 `5eb0d1fd9a06acedaa2bbdb52e3b810a37eb9341` 的 Actions #1086/run `39077533150` 已整体 success：SDK8.0.423 job `117527685827`、SDK10.0.401 job `117527686008` 各自 Release build/test 成功，Core `125/125`、Worker `362/362`、Playnite WPF `125/125`；目标 ProductionShellChromeSourceTests 在 `17/125`，两 lane 跑完余下全部类。SDK8 Render QA、静态审查、扩展包通过。日志与 artifacts 在 CURRENT_STATE / WORKLOG。
