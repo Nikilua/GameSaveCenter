@@ -65,6 +65,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             button.ContextMenu = menu;
             button.Click += OnButtonClick;
             menu.Opened += OnMenuOpened;
+            DataGridLayoutResetCoordinator.AllLayoutsReset += OnAllLayoutsReset;
             ApplyStoredHiddenColumns();
             RefreshMenuState();
         }
@@ -74,6 +75,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
         internal IReadOnlyList<string> CaptureVisibleColumnKeys()
             => entries.Where(entry => entry.Column.Visibility == Visibility.Visible)
                 .OrderBy(entry => entry.Column.DisplayIndex)
+                .Select(entry => entry.Key)
+                .ToArray();
+
+        internal IReadOnlyList<string> CaptureAllColumnKeys()
+            => entries.OrderBy(entry => entry.Column.DisplayIndex)
                 .Select(entry => entry.Key)
                 .ToArray();
 
@@ -124,6 +130,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             menu.IsOpen = false;
             menu.Opened -= OnMenuOpened;
             button.Click -= OnButtonClick;
+            DataGridLayoutResetCoordinator.AllLayoutsReset -= OnAllLayoutsReset;
             if (ReferenceEquals(button.ContextMenu, menu))
                 button.ContextMenu = null;
             foreach (var item in columnMenuItems)
@@ -205,6 +212,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private void OnMenuOpened(object? sender, RoutedEventArgs e)
             => RefreshMenuState();
+
+        private void OnAllLayoutsReset(object? sender, EventArgs e)
+        {
+            if (disposed) return;
+            if (!grid.Dispatcher.CheckAccess())
+            {
+                grid.Dispatcher.BeginInvoke(new Action(() => OnAllLayoutsReset(sender, e)));
+                return;
+            }
+            ApplyStoredVisibility();
+        }
 
         private void OnColumnMenuItemClick(object sender, RoutedEventArgs e)
         {

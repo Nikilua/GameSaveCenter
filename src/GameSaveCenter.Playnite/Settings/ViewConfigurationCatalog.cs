@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.Settings
 {
@@ -129,6 +130,82 @@ namespace GameSaveCenter.Playnite.Settings
             return ViewConfigurationMutationResult.Success;
         }
 
+        internal static string BuildCurrentLayoutResetImpact(
+            GameSaveCenterSettings settings,
+            string workspaceKey,
+            ViewConfigurationDefinition? selected)
+        {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            var workspace = GetWorkspaceDisplayName(workspaceKey);
+            if (selected == null)
+                return $"将仅重置“{workspace}”表格的默认列宽、显示列和排序。当前筛选值与筛选预设、其他表格及已保存视图均保留。";
+
+            var presetName = settings.FilterPresets.FirstOrDefault(item => item.Id == selected.FilterPresetId)?.Name;
+            var presetDescription = string.IsNullOrWhiteSpace(presetName)
+                ? "当前筛选预设绑定"
+                : $"筛选预设“{presetName}”";
+            return $"将把“{workspace}”中的已保存视图“{selected.Name}”恢复为默认列宽、显示全部列、默认排序和默认表格密度。视图名称与{presetDescription}保留，其他已保存视图、当前筛选值和业务设置不变。";
+        }
+
+        internal static string BuildAllLayoutsResetImpact(GameSaveCenterSettings settings)
+        {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            var viewNames = settings.ViewConfigurations
+                .GroupBy(item => item.WorkspaceKey, StringComparer.Ordinal)
+                .Select(group => $"{GetWorkspaceDisplayName(group.Key)}：{string.Join("、", group.Select(item => item.Name))}")
+                .ToArray();
+            var views = viewNames.Length == 0
+                ? "没有已保存的命名视图"
+                : string.Join("；", viewNames);
+            return $"将删除全部 {settings.ViewConfigurations.Count} 个已保存命名视图（{views}），清除所有表格的自定义列宽/列显隐，并将默认表格密度恢复为舒适。将保留全部 {settings.FilterPresets.Count} 个筛选预设、当前筛选值、业务策略、路径、云端目标和设备身份。";
+        }
+
+        internal static ViewConfigurationMutationResult ResetConfigurationLayout(
+            GameSaveCenterSettings settings,
+            string workspaceKey,
+            string? selectedId,
+            ViewConfigurationDefinition resetLayout,
+            out ViewConfigurationDefinition? reset)
+        {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            if (resetLayout == null) throw new ArgumentNullException(nameof(resetLayout));
+            reset = null;
+            var existing = Find(settings, workspaceKey, selectedId);
+            if (existing == null) return ViewConfigurationMutationResult.MissingConfiguration;
+
+            var snapshot = resetLayout.Clone();
+            snapshot.Id = existing.Id;
+            snapshot.Name = existing.Name;
+            snapshot.WorkspaceKey = existing.WorkspaceKey;
+            snapshot.FilterPresetId = existing.FilterPresetId;
+            var normalized = ViewConfigurationDefinition.Normalize(snapshot);
+            if (normalized == null) return ViewConfigurationMutationResult.InvalidName;
+
+            settings.ViewConfigurations = settings.ViewConfigurations
+                .Select(item => item.Id == existing.Id ? normalized : item.Clone())
+                .ToList();
+            reset = normalized.Clone();
+            return ViewConfigurationMutationResult.Success;
+        }
+
+        internal static bool ResetAllLayouts(GameSaveCenterSettings settings)
+        {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            var hasChanges = settings.ViewConfigurations.Count > 0
+                || settings.ActiveViewConfigurationIds.Count > 0
+                || settings.DataGridColumnWidths.Count > 0
+                || settings.DataGridHiddenColumnKeys.Count > 0
+                || !string.Equals(settings.DefaultTableDensityMode, TableDensityPolicy.ComfortableMode, StringComparison.Ordinal);
+            if (!hasChanges) return false;
+
+            settings.ViewConfigurations = new List<ViewConfigurationDefinition>();
+            settings.ActiveViewConfigurationIds = new Dictionary<string, string>(StringComparer.Ordinal);
+            settings.DataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
+            settings.DataGridHiddenColumnKeys = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            settings.DefaultTableDensityMode = TableDensityPolicy.ComfortableMode;
+            return true;
+        }
+
         internal static string NormalizeName(string? value)
         {
             var name = (value ?? string.Empty).Trim();
@@ -144,5 +221,14 @@ namespace GameSaveCenter.Playnite.Settings
             return settings.ViewConfigurations.FirstOrDefault(item =>
                 item.Id == selectedId && item.WorkspaceKey == workspaceKey);
         }
+
+        private static string GetWorkspaceDisplayName(string workspaceKey)
+            => workspaceKey switch
+            {
+                "tasks" => "任务队列",
+                "save-history" => "存档历史",
+                "save-candidates" => "存档候选路径",
+                _ => workspaceKey
+            };
     }
 }

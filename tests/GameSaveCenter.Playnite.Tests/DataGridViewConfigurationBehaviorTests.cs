@@ -73,6 +73,7 @@ public sealed class DataGridViewConfigurationBehaviorTests
             var delete = new Button();
             var dirtyStatus = new TextBlock();
             var restore = new Button();
+            var resetLayout = new Button();
             var filterState = new TestFilterState(firstFilterPresetId, "preset-a");
             filterState.AddPreset(secondFilterPresetId, "manual");
             var confirmationCount = 0;
@@ -82,6 +83,7 @@ public sealed class DataGridViewConfigurationBehaviorTests
             using var controller = new DataGridViewConfigurationController(
                 owner, "tasks", settings, layout, visibility, sort, selector, nameBox, save, copy, rename, delete,
                 dirtyStatus, restore,
+                resetLayout,
                 () => persistCount++, () => filterState.SelectedPresetId, filterState.ApplyPreset,
                 enabled => filterPersistenceEnabled = enabled, filterState,
                 () => filterState.CurrentFingerprint, filterState.GetFingerprint,
@@ -179,6 +181,166 @@ public sealed class DataGridViewConfigurationBehaviorTests
             Assert.Equal(string.Empty, settings.GetActiveViewConfigurationId("tasks"));
             Assert.Equal(6, persistCount);
             Assert.True(filterPersistenceEnabled);
+
+            controller.Dispose();
+            visibility.Dispose();
+            layout.Dispose();
+            sort.Dispose();
+        });
+    }
+
+    [Fact]
+    public void LayoutResetPreviewsScopeAndPreservesFiltersAndBusinessSettings()
+    {
+        RunSta(() =>
+        {
+            var configurationId = Guid.NewGuid().ToString("N");
+            var otherConfigurationId = Guid.NewGuid().ToString("N");
+            var presetId = Guid.NewGuid().ToString("N");
+            var settings = new GameSaveCenterSettings
+            {
+                EnableCloudUpload = true,
+                DefaultTableDensityMode = TableDensityPolicy.ComfortableMode,
+                FilterPresets = new()
+                {
+                    new FilterPresetDefinition { Id = presetId, Name = "失败任务", Workspace = FilterPresetDefinition.TasksWorkspace }
+                },
+                DataGridColumnWidths = new() { ["v1/tasks/state"] = 140 },
+                DataGridHiddenColumnKeys = new() { ["v1/tasks"] = new() { "detail" } },
+                ViewConfigurations = new()
+                {
+                    new ViewConfigurationDefinition
+                    {
+                        Id = configurationId,
+                        Name = "紧凑失败任务",
+                        WorkspaceKey = "tasks",
+                        FilterPresetId = presetId,
+                        SortColumnKey = "detail",
+                        SortDirection = "Descending",
+                        VisibleColumnKeys = new() { "state" },
+                        ColumnWidths = new() { ["state"] = 180 },
+                        DensityMode = TableDensityPolicy.CompactMode
+                    },
+                    new ViewConfigurationDefinition
+                    {
+                        Id = otherConfigurationId,
+                        Name = "备份候选",
+                        WorkspaceKey = "save-candidates",
+                        VisibleColumnKeys = new() { "state" }
+                    }
+                },
+                ActiveViewConfigurationIds = new() { ["tasks"] = configurationId }
+            };
+            var grid = new DataGrid
+            {
+                ItemsSource = new ObservableCollection<ViewRow> { new("a", 1, "Alpha"), new("b", 2, "Beta") },
+                Columns =
+                {
+                    new DataGridTextColumn { Header = "状态", Binding = new Binding(nameof(ViewRow.Value)), Width = new DataGridLength(90) },
+                    new DataGridTextColumn { Header = "详情", Binding = new Binding(nameof(ViewRow.Name)), Width = new DataGridLength(1, DataGridLengthUnitType.Star) }
+                }
+            };
+            var owner = CreateDensityOwner();
+            var pickerButton = new Button();
+            var resetButton = new Button();
+            var persistCount = 0;
+            var layout = new DataGridColumnLayoutController(grid, "tasks", new[] { "state", "detail" }, settings, () => persistCount++);
+            var visibility = new DataGridColumnVisibilityController(grid, pickerButton, "tasks", new[] { "state", "detail" }, new[] { "state" }, settings, () => persistCount++);
+            var sort = new DataGridStableSortController(grid, new[]
+            {
+                DataGridSortColumn.Create<ViewRow>("state", nameof(ViewRow.Value), ListSortDirection.Ascending,
+                    (left, right) => left.Value.CompareTo(right.Value), _ => false, row => row.Id),
+                DataGridSortColumn.Create<ViewRow>("detail", nameof(ViewRow.Name), ListSortDirection.Ascending,
+                    (left, right) => string.Compare(left.Name, right.Name, StringComparison.Ordinal), _ => false, row => row.Id)
+            }, 0);
+            var filterState = new TestFilterState(presetId, "preset-state");
+            var selector = new ComboBox();
+            var acceptConfirmation = false;
+            var confirmationCount = 0;
+            var lastConfirmationTitle = string.Empty;
+            var lastConfirmationMessage = string.Empty;
+            var lastStatus = string.Empty;
+            using var controller = new DataGridViewConfigurationController(
+                owner, "tasks", settings, layout, visibility, sort, selector, new TextBox(),
+                new Button(), new Button(), new Button(), new Button(), new TextBlock(), new Button(), resetButton,
+                () => persistCount++, () => filterState.SelectedPresetId, filterState.ApplyPreset,
+                _ => { }, filterState, () => filterState.CurrentFingerprint, _ => "preset-state",
+                (title, message, _, _, _) =>
+                {
+                    confirmationCount++;
+                    lastConfirmationTitle = title;
+                    lastConfirmationMessage = message;
+                    return Task.FromResult(acceptConfirmation);
+                },
+                message => lastStatus = message);
+
+            var resetCurrent = (MenuItem)resetButton.ContextMenu!.Items[0];
+            resetCurrent.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Assert.Equal(1, confirmationCount);
+            Assert.Equal("确认重置当前表格布局", lastConfirmationTitle);
+            Assert.Contains("紧凑失败任务", lastConfirmationMessage, StringComparison.Ordinal);
+            Assert.Contains("失败任务", lastConfirmationMessage, StringComparison.Ordinal);
+            Assert.Equal(180, grid.Columns[0].Width.Value);
+            Assert.Equal(180, settings.ViewConfigurations[0].ColumnWidths["state"]);
+            Assert.Equal(0, persistCount);
+
+            acceptConfirmation = true;
+            resetCurrent.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            var resetConfiguration = settings.ViewConfigurations.Single(item => item.Id == configurationId);
+            Assert.Equal("紧凑失败任务", resetConfiguration.Name);
+            Assert.Equal(presetId, resetConfiguration.FilterPresetId);
+            Assert.Empty(resetConfiguration.ColumnWidths);
+            Assert.Equal(new[] { "state", "detail" }, resetConfiguration.VisibleColumnKeys);
+            Assert.Equal("state", resetConfiguration.SortColumnKey);
+            Assert.Equal("Ascending", resetConfiguration.SortDirection);
+            Assert.Equal(TableDensityPolicy.ComfortableMode, resetConfiguration.DensityMode);
+            Assert.Equal(140, settings.DataGridColumnWidths["v1/tasks/state"]);
+            Assert.Equal(new[] { "detail" }, settings.DataGridHiddenColumnKeys["v1/tasks"]);
+            Assert.Equal("preset-state", filterState.CurrentFingerprint);
+            Assert.Single(settings.FilterPresets);
+            Assert.Equal(1, persistCount);
+
+            var resetAll = (MenuItem)resetButton.ContextMenu.Items[2];
+            resetAll.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Assert.Equal(3, confirmationCount);
+            Assert.Equal("确认重置全部工作视图", lastConfirmationTitle);
+            Assert.Contains("任务队列：紧凑失败任务", lastConfirmationMessage, StringComparison.Ordinal);
+            Assert.Contains("存档候选路径：备份候选", lastConfirmationMessage, StringComparison.Ordinal);
+            Assert.Contains("保留全部 1 个筛选预设", lastConfirmationMessage, StringComparison.Ordinal);
+            Assert.Empty(settings.ViewConfigurations);
+            Assert.Empty(settings.ActiveViewConfigurationIds);
+            Assert.Empty(settings.DataGridColumnWidths);
+            Assert.Empty(settings.DataGridHiddenColumnKeys);
+            Assert.Equal(TableDensityPolicy.ComfortableMode, settings.DefaultTableDensityMode);
+            Assert.Single(settings.FilterPresets);
+            Assert.True(settings.EnableCloudUpload);
+            Assert.Equal(presetId, filterState.SelectedPresetId);
+            Assert.Equal("preset-state", filterState.CurrentFingerprint);
+            Assert.Equal("默认视图", selector.SelectedItem?.ToString());
+            Assert.Equal(90, grid.Columns[0].Width.Value);
+            Assert.Equal(Visibility.Visible, grid.Columns[1].Visibility);
+            Assert.Equal("state", sort.ActiveColumnKey);
+            Assert.Equal(2, persistCount);
+            Assert.Contains("业务设置均已保留", lastStatus, StringComparison.Ordinal);
+
+            settings.DataGridColumnWidths = new()
+            {
+                ["v1/tasks/state"] = 130,
+                ["v1/save-history/state"] = 210
+            };
+            settings.DataGridHiddenColumnKeys = new()
+            {
+                ["v1/tasks"] = new() { "detail" },
+                ["v1/save-history"] = new() { "detail" }
+            };
+            resetCurrent.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Assert.Equal(4, confirmationCount);
+            Assert.Contains("仅重置“任务队列”表格", lastConfirmationMessage, StringComparison.Ordinal);
+            Assert.False(settings.DataGridColumnWidths.ContainsKey("v1/tasks/state"));
+            Assert.False(settings.DataGridHiddenColumnKeys.ContainsKey("v1/tasks"));
+            Assert.Equal(210, settings.DataGridColumnWidths["v1/save-history/state"]);
+            Assert.Contains("v1/save-history", settings.DataGridHiddenColumnKeys.Keys);
+            Assert.Equal(3, persistCount);
 
             controller.Dispose();
             visibility.Dispose();

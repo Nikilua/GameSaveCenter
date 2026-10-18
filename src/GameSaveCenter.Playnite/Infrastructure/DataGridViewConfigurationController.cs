@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Input;
@@ -31,6 +32,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private readonly Button deleteButton;
         private readonly TextBlock dirtyStatus;
         private readonly Button restoreButton;
+        private readonly Button resetLayoutButton;
+        private readonly ContextMenu resetMenu;
+        private readonly MenuItem resetCurrentMenuItem;
+        private readonly MenuItem resetAllMenuItem;
         private readonly Action persist;
         private readonly Func<string> captureFilterPresetId;
         private readonly Action<string> applyFilterPresetId;
@@ -63,6 +68,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             Button deleteButton,
             TextBlock dirtyStatus,
             Button restoreButton,
+            Button resetLayoutButton,
             Action persist,
             Func<string>? captureFilterPresetId,
             Action<string>? applyFilterPresetId,
@@ -90,6 +96,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             this.deleteButton = deleteButton ?? throw new ArgumentNullException(nameof(deleteButton));
             this.dirtyStatus = dirtyStatus ?? throw new ArgumentNullException(nameof(dirtyStatus));
             this.restoreButton = restoreButton ?? throw new ArgumentNullException(nameof(restoreButton));
+            this.resetLayoutButton = resetLayoutButton ?? throw new ArgumentNullException(nameof(resetLayoutButton));
             this.persist = persist ?? throw new ArgumentNullException(nameof(persist));
             this.captureFilterPresetId = captureFilterPresetId ?? (() => string.Empty);
             this.applyFilterPresetId = applyFilterPresetId ?? (_ => { });
@@ -99,6 +106,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             this.filterPresetFingerprint = filterPresetFingerprint;
             this.confirm = confirm ?? throw new ArgumentNullException(nameof(confirm));
             this.reportStatus = reportStatus ?? throw new ArgumentNullException(nameof(reportStatus));
+            resetMenu = CreateResetMenu(out resetCurrentMenuItem, out resetAllMenuItem);
+            this.resetLayoutButton.ContextMenu = resetMenu;
             activeDensityMode = settings.DefaultTableDensityMode;
             columnWidthDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.WidthProperty, typeof(DataGridColumn));
             columnVisibilityDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.VisibilityProperty, typeof(DataGridColumn));
@@ -118,7 +127,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             renameButton.Click += OnRenameClick;
             deleteButton.Click += OnDeleteClick;
             restoreButton.Click += OnRestoreClick;
+            this.resetLayoutButton.Click += OnResetMenuButtonClick;
+            resetCurrentMenuItem.Click += OnResetCurrentLayoutClick;
+            resetAllMenuItem.Click += OnResetAllLayoutsClick;
+            DataGridLayoutResetCoordinator.AllLayoutsReset += OnAllLayoutsReset;
             AutomationProperties.SetName(selector, "表格视图");
+            AutomationProperties.SetName(this.resetLayoutButton, "预览表格布局重置范围");
             RestoreSelection();
         }
 
@@ -140,6 +154,171 @@ namespace GameSaveCenter.Playnite.Infrastructure
             renameButton.Click -= OnRenameClick;
             deleteButton.Click -= OnDeleteClick;
             restoreButton.Click -= OnRestoreClick;
+            resetLayoutButton.Click -= OnResetMenuButtonClick;
+            resetCurrentMenuItem.Click -= OnResetCurrentLayoutClick;
+            resetAllMenuItem.Click -= OnResetAllLayoutsClick;
+            DataGridLayoutResetCoordinator.AllLayoutsReset -= OnAllLayoutsReset;
+            resetMenu.IsOpen = false;
+            if (ReferenceEquals(resetLayoutButton.ContextMenu, resetMenu))
+                resetLayoutButton.ContextMenu = null;
+        }
+
+        private ContextMenu CreateResetMenu(out MenuItem resetCurrent, out MenuItem resetAll)
+        {
+            var result = new ContextMenu
+            {
+                Placement = PlacementMode.Bottom,
+                PlacementTarget = resetLayoutButton,
+                StaysOpen = false
+            };
+            if (resetLayoutButton.TryFindResource("GscColumnPickerContextMenuStyle") is Style menuStyle)
+                result.Style = menuStyle;
+            var itemStyle = resetLayoutButton.TryFindResource("GscColumnPickerMenuItemStyle") as Style;
+            resetCurrent = new MenuItem
+            {
+                Header = "重置当前表格布局…",
+                Style = itemStyle,
+                StaysOpenOnClick = false
+            };
+            AutomationProperties.SetName(resetCurrent, "预览并重置当前表格布局");
+            AutomationProperties.SetHelpText(resetCurrent, "只影响当前表格或当前选中的已保存视图。");
+            resetAll = new MenuItem
+            {
+                Header = "重置全部工作视图…",
+                Style = itemStyle,
+                StaysOpenOnClick = false
+            };
+            AutomationProperties.SetName(resetAll, "预览并重置全部工作视图布局");
+            AutomationProperties.SetHelpText(resetAll, "重置所有表格布局，保留筛选预设和业务设置。");
+            result.Items.Add(resetCurrent);
+            result.Items.Add(new Separator());
+            result.Items.Add(resetAll);
+            return result;
+        }
+
+        private void OnResetMenuButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (disposed) return;
+            resetMenu.PlacementTarget = resetLayoutButton;
+            resetMenu.Placement = PlacementMode.Bottom;
+            resetMenu.IsOpen = true;
+            e.Handled = true;
+        }
+
+        private async void OnResetCurrentLayoutClick(object sender, RoutedEventArgs e)
+        {
+            if (disposed) return;
+            var selected = SelectedConfiguration;
+            try
+            {
+                var impact = ViewConfigurationCatalog.BuildCurrentLayoutResetImpact(settings, workspaceKey, selected);
+                if (!await confirm("确认重置当前表格布局", impact, "重置当前表格", "取消", true).ConfigureAwait(true))
+                    return;
+
+                if (selected == null)
+                    ResetDefaultTableLayout();
+                else if (!ResetSelectedViewLayout(selected))
+                    return;
+
+                resetMenu.IsOpen = false;
+                reportStatus(selected == null
+                    ? $"已重置“{workspaceKey}”表格布局；筛选预设和业务设置未更改。"
+                    : $"已重置视图“{selected.Name}”的表格布局；名称和筛选预设已保留。");
+            }
+            catch (Exception error)
+            {
+                reportStatus($"重置当前表格布局失败：{error.Message}");
+            }
+        }
+
+        private bool ResetSelectedViewLayout(ViewConfigurationDefinition selected)
+        {
+            SetPersistenceMode(isDefault: false);
+            layout.ApplyConfigurationWidths(new Dictionary<string, double>(StringComparer.Ordinal));
+            visibility.ApplyVisibleColumnKeys(visibility.CaptureAllColumnKeys());
+            sort.ResetToDefaultSort();
+            activeDensityMode = TableDensityPolicy.NormalizeMode(settings.DefaultTableDensityMode);
+            TableDensityPolicy.ApplyResources(resourceOwner, activeDensityMode);
+
+            var resetLayout = CaptureCurrent(selected.Name);
+            resetLayout.FilterPresetId = selected.FilterPresetId;
+            resetLayout.ColumnWidths.Clear();
+            var result = ViewConfigurationCatalog.ResetConfigurationLayout(
+                settings, workspaceKey, selected.Id, resetLayout, out var reset);
+            if (result != ViewConfigurationMutationResult.Success || reset == null)
+            {
+                ReportMutationResult(result);
+                return false;
+            }
+
+            RebuildOptions();
+            var option = options.First(item => item.Configuration?.Id == reset.Id);
+            SetSelection(option, apply: false, persistSelection: false);
+            baselineFilterStateFingerprint = filterPresetFingerprint?.Invoke(reset.FilterPresetId);
+            UpdateButtons();
+            persist();
+            return true;
+        }
+
+        private void ResetDefaultTableLayout()
+        {
+            SetPersistenceMode(isDefault: false);
+            settings.ResetDataGridColumnWidths(workspaceKey);
+            settings.ResetDataGridHiddenColumnKeys(workspaceKey);
+            layout.ResetToDefaults();
+            visibility.ResetToDefaults();
+            sort.ResetToDefaultSort();
+            activeDensityMode = TableDensityPolicy.NormalizeMode(settings.DefaultTableDensityMode);
+            TableDensityPolicy.ApplyResources(resourceOwner, activeDensityMode);
+            SetPersistenceMode(isDefault: true);
+            persist();
+            UpdateButtons();
+        }
+
+        private async void OnResetAllLayoutsClick(object sender, RoutedEventArgs e)
+        {
+            if (disposed) return;
+            try
+            {
+                var impact = ViewConfigurationCatalog.BuildAllLayoutsResetImpact(settings);
+                if (!await confirm("确认重置全部工作视图", impact, "重置全部视图", "取消", true).ConfigureAwait(true))
+                    return;
+                if (!ViewConfigurationCatalog.ResetAllLayouts(settings))
+                {
+                    resetMenu.IsOpen = false;
+                    reportStatus("所有表格布局已是默认状态；筛选预设和业务设置未更改。");
+                    return;
+                }
+
+                persist();
+                resetMenu.IsOpen = false;
+                DataGridLayoutResetCoordinator.NotifyAllLayoutsReset();
+                reportStatus("已重置全部工作视图；所有筛选预设和业务设置均已保留。");
+            }
+            catch (Exception error)
+            {
+                reportStatus($"重置全部工作视图失败：{error.Message}");
+            }
+        }
+
+        private void OnAllLayoutsReset(object? sender, EventArgs e)
+        {
+            if (disposed) return;
+            if (!resourceOwner.Dispatcher.CheckAccess())
+            {
+                resourceOwner.Dispatcher.BeginInvoke(new Action(() => OnAllLayoutsReset(sender, e)));
+                return;
+            }
+            RebuildOptions();
+            SetSelection(options[0], apply: false, persistSelection: false);
+            SetPersistenceMode(isDefault: true);
+            layout.ApplyStoredWidthsFromDefault();
+            visibility.ApplyStoredVisibility();
+            sort.ResetToDefaultSort();
+            activeDensityMode = TableDensityPolicy.NormalizeMode(settings.DefaultTableDensityMode);
+            TableDensityPolicy.ApplyResources(resourceOwner, activeDensityMode);
+            baselineFilterStateFingerprint = null;
+            UpdateButtons();
         }
 
         private void RestoreSelection()

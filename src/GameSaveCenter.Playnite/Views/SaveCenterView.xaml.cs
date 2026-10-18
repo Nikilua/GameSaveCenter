@@ -92,13 +92,15 @@ namespace GameSaveCenter.Playnite.Views
                 SaveHistoryViewConfigurationComboBox, SaveHistoryViewConfigurationNameBox,
                 SaveHistoryViewConfigurationSaveButton, SaveHistoryViewConfigurationCopyButton,
                 SaveHistoryViewConfigurationRenameButton, SaveHistoryViewConfigurationDeleteButton,
-                SaveHistoryViewConfigurationDirtyStatusText, SaveHistoryViewConfigurationRestoreButton);
+                SaveHistoryViewConfigurationDirtyStatusText, SaveHistoryViewConfigurationRestoreButton,
+                SaveHistoryViewConfigurationResetButton);
             candidateViewConfiguration = CreateViewConfigurationController(
                 viewModel, "save-candidates", candidateColumnLayout, candidateColumnVisibility, candidateSort,
                 SaveCandidateViewConfigurationComboBox, SaveCandidateViewConfigurationNameBox,
                 SaveCandidateViewConfigurationSaveButton, SaveCandidateViewConfigurationCopyButton,
                 SaveCandidateViewConfigurationRenameButton, SaveCandidateViewConfigurationDeleteButton,
-                SaveCandidateViewConfigurationDirtyStatusText, SaveCandidateViewConfigurationRestoreButton);
+                SaveCandidateViewConfigurationDirtyStatusText, SaveCandidateViewConfigurationRestoreButton,
+                SaveCandidateViewConfigurationResetButton);
         }
 
         private DataGridViewConfigurationController CreateViewConfigurationController(
@@ -114,11 +116,12 @@ namespace GameSaveCenter.Playnite.Views
             Button renameButton,
             Button deleteButton,
             TextBlock dirtyStatus,
-            Button restoreButton)
+            Button restoreButton,
+            Button resetLayoutButton)
             => new DataGridViewConfigurationController(
                 this, workspaceKey, viewModel.PluginSettings, layout, visibility, sort,
                 selector, nameBox, saveButton, copyButton, renameButton, deleteButton,
-                dirtyStatus, restoreButton,
+                dirtyStatus, restoreButton, resetLayoutButton,
                 PreferencePersistenceOverrideForBehaviorTest ?? viewModel.PersistUiPreference,
                 null, null, null,
                 null, null, null,
@@ -413,15 +416,6 @@ namespace GameSaveCenter.Playnite.Views
                 historyColumnLayout?.EndLayoutPass();
                 isApplyingLayout = false;
             }
-        }
-
-        private void OnResetColumnLayoutClick(object sender, RoutedEventArgs e)
-        {
-            historyColumnLayout?.ResetToDefaults();
-            candidateColumnLayout?.ResetToDefaults();
-            if (responsiveWidth > 0 && responsiveHeight > 0)
-                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
-            e.Handled = true;
         }
 
         private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)

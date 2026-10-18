@@ -55,6 +55,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 Interval = TimeSpan.FromMilliseconds(400)
             };
             persistTimer.Tick += OnPersistTimerTick;
+            DataGridLayoutResetCoordinator.AllLayoutsReset += OnAllLayoutsReset;
 
             for (var index = 0; index < grid.Columns.Count; index++)
             {
@@ -178,6 +179,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             disposed = true;
             persistTimer.Stop();
             persistTimer.Tick -= OnPersistTimerTick;
+            DataGridLayoutResetCoordinator.AllLayoutsReset -= OnAllLayoutsReset;
             if (widthDescriptor == null) return;
             foreach (var column in grid.Columns)
                 widthDescriptor.RemoveValueChanged(column, OnColumnWidthChanged);
@@ -230,6 +232,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private void OnPersistTimerTick(object? sender, EventArgs e)
             => FlushPendingPersistence();
+
+        private void OnAllLayoutsReset(object? sender, EventArgs e)
+        {
+            if (disposed) return;
+            if (!grid.Dispatcher.CheckAccess())
+            {
+                grid.Dispatcher.BeginInvoke(new Action(() => OnAllLayoutsReset(sender, e)));
+                return;
+            }
+            ApplyStoredWidthsFromDefault();
+        }
 
         private bool TryNormalizeWidth(DataGridColumn column, double width, out double normalizedWidth)
         {

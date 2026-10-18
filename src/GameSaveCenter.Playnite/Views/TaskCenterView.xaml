@@ -295,7 +295,7 @@
                             </ui:Button.Style>
                         </ui:Button>
                         <ui:Button x:Name="TaskGridColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择任务表格显示的列；时间、任务和状态始终显示。" AutomationProperties.Name="设置任务列表显示列" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                        <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置列宽" ToolTip="恢复任务表格的默认列宽" AutomationProperties.Name="重置任务表格列宽" Click="OnResetColumnLayoutClick" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置…" ToolTip="先预览范围，再选择只重置任务表格或全部工作视图" AutomationProperties.Name="预览任务表格布局重置范围" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
                     <Grid x:Name="TaskQueueSummaryGrid" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>

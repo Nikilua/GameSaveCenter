@@ -204,14 +204,21 @@ public sealed class R06ColumnWidthPersistenceBehaviorTests
         var mediaCode = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs"));
         var settings = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettings.cs"));
         var controller = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "DataGridColumnLayoutController.cs"));
+        var saveDocument = XDocument.Parse(save);
+        var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var currentRuleActions = saveDocument.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveCurrentRuleActions");
+        var candidateViewActions = saveDocument.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveCandidateViewConfigurationActions");
 
         Assert.Contains("x:Name=\"SaveHistoryGrid\"", save);
         Assert.Contains("x:Name=\"SaveCandidateGrid\"", save);
-        Assert.Contains("Click=\"OnResetColumnLayoutClick\"", save);
+        Assert.Contains("x:Name=\"SaveHistoryViewConfigurationResetButton\"", save);
+        Assert.Contains("x:Name=\"SaveCandidateViewConfigurationResetButton\"", save);
+        Assert.Contains(candidateViewActions.Descendants(), element => element.Attribute(xamlName)?.Value == "SaveCandidateViewConfigurationResetButton");
+        Assert.DoesNotContain(currentRuleActions.Descendants(), element => element.Attribute(xamlName)?.Value == "SaveCandidateViewConfigurationResetButton");
         Assert.Contains("\"save-history\"", saveCode);
         Assert.Contains("\"save-candidates\"", saveCode);
         Assert.Contains("x:Name=\"TaskGrid\"", task);
-        Assert.Contains("Click=\"OnResetColumnLayoutClick\"", task);
+        Assert.Contains("x:Name=\"TaskQueueResetColumnWidthButton\"", task);
         Assert.Contains("\"tasks\"", taskCode);
         Assert.Contains("x:Name=\"MediaInboxGrid\"", media);
         Assert.Contains("Click=\"OnResetColumnLayoutClick\"", media);

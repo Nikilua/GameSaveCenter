@@ -318,7 +318,16 @@ namespace GameSaveCenter.Playnite.Tests
                 .ToString());
 
             var actions = save.Descendants().Single(element => element.Attribute(xamlName)?.Value == "SaveCurrentRuleActions");
-            var buttons = actions.Elements().Where(element => element.Name.LocalName == "Button").ToList();
+            var actionButtonNames = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "SaveDetectPathsButton",
+                "SaveValidateButton",
+                "SaveLoadDetailsButton"
+            };
+            var buttons = actions.Elements()
+                .Where(element => element.Name.LocalName == "Button"
+                    && actionButtonNames.Contains(element.Attribute(xamlName)?.Value ?? string.Empty))
+                .ToList();
             Assert.Equal(3, buttons.Count);
             Assert.Contains("GscWpfUiPrimaryActionButton", buttons[0].Attribute("Style")?.Value);
             Assert.Equal("立即扫描", TextContent(buttons[0]));
