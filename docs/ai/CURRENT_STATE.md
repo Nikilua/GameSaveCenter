@@ -21,7 +21,7 @@
 ## 已核验事实与外部边界
 
 - 最近有完整双 SDK runner 记录的是 [Actions #1086](https://github.com/Nikilua/GameSaveCenter/actions/runs/39077533150)：SDK8.0.423/SDK10.0.401 的 Core、Worker、Playnite WPF、SDK8 Render QA 成功。它验证对应旧提交和 runner，不验证 S00-02 当前本机代码或用户 Playnite。
-- 外机 R09 最近报告仍为一次真实 `1/2` 失败；所贴文本与旧输入相同，缺少同次 checkout、TRX、测试/插件 DLL 与 PDB 身份，根因未定。见 [R09 复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 外机于 2026-10-18 再报告 R09 `1/2`：行151期望 `2 DIP`、实际 `1 DIP`。当前源行151是错误色断言，旧提交 `3f7d0b30` 行151才是 Chrome `2 DIP`；该次一键流程在测试阶段退出，并非日志所示编译错误。诊断 summary/TRX/source HEAD/DLL/PDB 尚缺，旧源码/二进制/符号差异未定。见 [R09 复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 - 历史 CEF `0x5` 与 ETW 系统跟踪权限拒绝保持原边界；不绕过、不重复探测，只有前置条件可观察变化后再复查。
 - Playnite 未由本地门禁运行；OS UIA/读屏、实际 IME、物理 DPI/跨屏和最终呈现仍未验。离屏 WPF、源码测试和 CI 均只证明各自覆盖范围。
 

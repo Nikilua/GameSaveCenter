@@ -248,3 +248,11 @@ Actions #1054/run `38944728502` 对文档 HEAD `797482168a74360b41bfaa609cf48d50
 针对可选 PDB 元数据被锁/不可读时不能阻断诊断的提交 `26de12257748075e024c61972da16e87fd4ddfce`，Actions #1067/run `39006921277` 已整体终态成功：[GitHub Actions](https://github.com/Nikilua/GameSaveCenter/actions/runs/39006921277)。SDK8.0.423 job `117321161387` 与 SDK10.0.401 job `117321161211` 均 Release build `0/0`、Core `125/125`、Worker `362/362`、Playnite WPF 隔离 `125` 类全通过。SDK8 另 Render QA `0 PROBLEM`、静态审查 `30 XAML / 0 errors / 27 warnings / 177 info`、`0.6.73.pext` 和 artifacts 上传成功。Artifact IDs：SDK8 diagnostics `12092696132`、SDK10 diagnostics `12091697203`、package `12092870374`。
 
 此 CI 结果只证明 `26de1225` 在 GitHub Windows runner 的两种 SDK 输入下成功；本机、本次精确提交 CI、另一台机器的实际安装是三份独立证据。没有获得外机本次失败目录中的 `summary.json`、R09 TRX/console、test DLL/PDB 与 plugin DLL 身份，故仍不能判定外机根因或声称它已修复。下一步：若该同次诊断 artifact 后续可用，先比对身份，无需重跑；否则等新的可复现问题或环境前置变化，再复扫 R23-08 并选择依赖满足的小批。真实 Playnite、物理 DPI/跨屏、OS UIA/IME、最终呈现帧、ETW/宿主性能仍未验。
+
+## 2026-10-18 再次收到的失败输出
+
+用户再次提供诊断 ID `20261018T012631286Z-e027df9d` 的一键流程输出：`R09FocusOutlineBehaviorTests` 为 `1 passed / 1 failed`；失败测试仍是 `SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError`，期望 `2,2,2,2`、实际 `1,1,1,1`，报告第 151 行。日志栈落在 `run-playnite-tests-isolated.ps1:72` 的失败测试返回路径，因此该一键流程因测试退出码 `1` 停止；贴出的内容没有编译错误信息。
+
+当前工作区测试第 151 行检查错误边框颜色，第 152 行验证 Chrome `1 DIP`，第 154 行验证独立 `ValidationStroke` `2 DIP`。历史 `3f7d0b30` 第 151 行则是 Chrome `2 DIP` 断言。新的输出再次显示运行输入与当前测试契约/行映射不一致；可能是旧测试源码、测试 DLL 或 PDB，尚不能确定具体原因。该诊断目录、summary、TRX、source HEAD、测试 DLL/PDB 身份未随消息提供且不在当前工作区，不能据此修改生产模板或宣称定位完成。
+
+日志中 `TextServicesContext` 的 COM 清理异常发生在断言失败之后，不能解释边框值。下一步需同一诊断 ID 的 `summary.json` 与失败 TRX/DLL/PDB SHA，以及当时 repo HEAD、status 和第 145–158 行源文本；若无法提供，则该外机输入身份保持未知。本次未运行本机测试，也未修改 R09 生产代码或断言。

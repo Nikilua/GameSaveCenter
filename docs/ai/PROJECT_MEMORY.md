@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 R09 外机失败再次出现，输入身份仍缺
+
+用户提供的诊断 ID `20261018T012631286Z-e027df9d` 显示 R09 类 `1/2`，期望 `2 DIP`/实际 `1 DIP` 的失败仍定位到行151。当前源码第151行是颜色断言，第154行才检查独立的 `ValidationStroke` 2 DIP；历史 `3f7d0b30` 第151行是旧 Chrome 2 DIP 断言。说明这次执行的源码/程序集/符号输入与当前源不一致，但没有 summary、TRX、source HEAD、DLL/PDB 身份，不能判定具体是旧源码、旧测试 DLL 还是 PDB 映射。测试阶段失败不能表述为编译错误。未改模板或断言。见 [R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+
 ## 2026-10-18 Round4 S01-01 代码完成待验收
 
 新增 `ViewConfigurationDefinition` v1，持久化筛选预设 ID、工作区键、排序、可见稳定列键、列宽及密度；只包含整数/字符串/字符串列表/列宽映射，不持有 DTO 或文件内容。旧设置缺失 `ViewConfigurations` 时使用空列表，未知 JSON 成员由 Json.NET 忽略，未知 schema 条目不应用。`GameSaveCenterSettings.CopyFrom`/JSON 编辑快照与“全部重置”已接入。提交 `25bbe005`。Source validation 和 diff check 通过；新 C# 测试尚未运行，因为机器缺精确 SDK8.0.423。未改 XAML、未验证 Playnite host；见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。

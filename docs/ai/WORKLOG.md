@@ -1,3 +1,9 @@
+## 2026-10-18 外机再次报告 R09 旧断言形态
+
+- 用户提供诊断 ID `20261018T012631286Z-e027df9d`：R09 类 `1/2`，`SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError` 报第151行期望 `2,2,2,2`、实际 `1,1,1,1`。日志是测试阶段退出码1；没有贴出编译错误。
+- 当前源第151行是错误边框颜色、第152行 Chrome `1 DIP`、第154行独立 ValidationStroke `2 DIP`；旧提交 `3f7d0b30` 第151行才是 Chrome `2 DIP`。该输出与当前测试源码或符号映射不一致；未取得诊断 summary/TRX/DLL/PDB/source HEAD，具体旧源码、旧 DLL 或 PDB 映射原因未确认。COM 清理异常发生在断言失败后。
+- 未改模板/弱化断言，未重跑测试。证据与下一步输入要求见 [R09 外机失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+
 ## 2026-10-18 Round4 S01-01 版本化工作视图配置模型
 
 - 新增只含稳定 scalar 键的版本化模型，组合筛选预设引用、排序、可见列、列宽和密度；设置加载、编辑快照复制与“全部重置”均接入新集合，旧 JSON 缺字段及未知成员保持兼容，未来 schema 条目安全忽略。
