@@ -2,7 +2,7 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求新增功能/UI。当前有效增量入口为[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)，状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已由 `dd38f8ca` 实现并完成受控验收；S00-02 代码完成，但仓库要求的 SDK8 安装/版本与宿主 UI 门禁未通过，未推送到远端。S07-01 当前事实入口精简与 S07-04 CI 结果记录规则已完成。旧 Q/R 的环境边界不变，但此前“无新明确范围”已被本次请求更新。
+用户已明确要求新增功能/UI。当前有效增量入口为[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)，状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已由 `dd38f8ca` 实现并完成受控验收；S00-02 代码完成，但仓库要求的 SDK8 安装/版本与宿主 UI 门禁未通过，未推送到远端。S07-01 当前事实入口精简、S07-04 CI 结果记录规则与 S07-06 原始 TRX 测试计数汇总已完成。旧 Q/R 的环境边界不变，但此前“无新明确范围”已被本次请求更新。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
@@ -10,6 +10,7 @@
 | S00-02 | VERIFY_PENDING | `29dc09b2`/`a58dd582` 实现 Shell 内搜索 overlay，空输入最多 8 项、按名称/别名/分类过滤、显示作用范围与可用原因；21/21 定向测试通过。需 SDK8.0.423 和真实 `GameSaveCenter-Run.cmd` 安装/版本核验后再推送并准入 S00-03。 |
 | S07-01 | IMPLEMENTED | `4ea5e694` 将 `CURRENT_STATE.md` 从 254 行压缩为 32 行并保留完整历史快照；source validation、diff check 与归档一致性检查通过。证据见 Round4 S07-01。 |
 | S07-04 | IMPLEMENTED | 已在仓库 `AGENTS.md` 明确 CI 结果记录条件与禁止纯文档通过结果自循环的规则。保留实际 run/job/artifact 身份，不更改 workflow 或 required checks。证据见 Round4 S07-04。 |
+| S07-06 | IMPLEMENTED | 诊断 `summary.json` 加入原始 TRX 的测试用例通过/失败/跳过汇总、每文件原计数对照、套件类别和 WPF 隔离类运行数；保留逐文件路径便于复算。证据见 Round4 S07-06。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
 | S01～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
 | S07-06 | PROPOSED | 独立维护增量，可与产品小批交替；先核对现有 TRX 原始摘要、测试用例计数与 WPF 隔离类计数的差异。 |

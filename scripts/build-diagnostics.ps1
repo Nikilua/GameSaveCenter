@@ -43,11 +43,145 @@ function New-GscDiagnosticContext {
         RepoRoot = $RepoRoot; RunRoot = $runRoot; SourceCommit = ($commit -join '').Trim()
         DirtyPaths = $dirtyPaths; Sdk = 'unknown'; StartedUtc = [DateTime]::UtcNow.ToString('o')
         Steps = [Collections.Generic.List[object]]::new()
-        SourceFiles = $sourceFiles; Assemblies = @(); Outcome = 'running'; CompletedUtc = $null
+        SourceFiles = $sourceFiles; Assemblies = @(); TestSummary = $null; Outcome = 'running'; CompletedUtc = $null
         RunType = 'unspecified'; TestsRequested = $null; FailureMessage = $null
     }
     Write-GscDiagnosticSummary $context
     return $context
+}
+
+function New-GscTestOutcomeCounts {
+    return [ordered]@{
+        testCaseCount = 0; passed = 0; failed = 0; error = 0; timeout = 0; aborted = 0
+        skipped = 0; notRunnable = 0; inconclusive = 0; disconnected = 0; warning = 0; otherOutcome = 0
+        reportedCounterTotal = 0; reportedCounterFileCount = 0; counterMismatchCount = 0
+        parseErrorCount = 0; trxFileCount = 0; distinctTestClassCount = 0; wpfIsolatedClassRunCount = 0
+    }
+}
+
+function Add-GscTrxResultToCounts {
+    param([Collections.IDictionary]$Counts, [string]$Outcome)
+
+    $Counts['testCaseCount']++
+    switch -CaseSensitive ($Outcome) {
+        'Passed' { $Counts['passed']++ }
+        'Failed' { $Counts['failed']++ }
+        'Error' { $Counts['error']++ }
+        'Timeout' { $Counts['timeout']++ }
+        'Aborted' { $Counts['aborted']++ }
+        'NotExecuted' { $Counts['skipped']++ }
+        'NotRunnable' { $Counts['notRunnable']++ }
+        'Inconclusive' { $Counts['inconclusive']++ }
+        'Disconnected' { $Counts['disconnected']++ }
+        'Warning' { $Counts['warning']++ }
+        default { $Counts['otherOutcome']++ }
+    }
+}
+
+function Get-GscTestSummary {
+    param([hashtable]$Context)
+
+    $testRoot = Join-Path $Context.RunRoot 'tests'
+    $testRootFull = [IO.Path]::GetFullPath($testRoot)
+    $trxFiles = if (Test-Path -LiteralPath $testRootFull -PathType Container) {
+        @(Get-ChildItem -LiteralPath $testRootFull -Filter '*.trx' -Recurse -File -ErrorAction SilentlyContinue | Sort-Object FullName)
+    }
+    else { @() }
+
+    $groups = [ordered]@{}
+    $fileSummaries = [Collections.Generic.List[object]]::new()
+    foreach ($trx in $trxFiles) {
+        $relativePath = $trx.FullName.Substring($testRootFull.Length).TrimStart([char[]]@('\', '/')).Replace('\', '/')
+        $groupId = if ($relativePath -match '^core/') { 'core' }
+            elseif ($relativePath -match '^worker/') { 'worker' }
+            elseif ($relativePath -match '^playnite-source/') { 'playnite-source' }
+            elseif ($relativePath -match '^wpf\.[^/]+/') { 'playnite-wpf-isolated' }
+            else { 'unclassified' }
+
+        if (-not $groups.Contains($groupId)) {
+            $groups[$groupId] = [ordered]@{
+                counts = (New-GscTestOutcomeCounts)
+                classes = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+            }
+        }
+        $group = $groups[$groupId]
+        $fileCounts = New-GscTestOutcomeCounts
+        $fileCounts['trxFileCount'] = 1
+        if ($groupId -eq 'playnite-wpf-isolated') { $fileCounts['wpfIsolatedClassRunCount'] = 1 }
+        $fileClasses = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+        $declaredTotal = $null
+        $parseError = $null
+        try {
+            [xml]$document = [IO.File]::ReadAllText($trx.FullName)
+            $unitTestClasses = @{}
+            foreach ($unitTest in @($document.SelectNodes("//*[local-name()='UnitTest']"))) {
+                $method = $unitTest.SelectSingleNode("./*[local-name()='TestMethod']")
+                $className = if ($method) { $method.GetAttribute('className') } else { '' }
+                if (-not [string]::IsNullOrWhiteSpace($className)) {
+                    $unitTestClasses[$unitTest.GetAttribute('id')] = $className
+                }
+            }
+
+            foreach ($result in @($document.SelectNodes("//*[local-name()='UnitTestResult']"))) {
+                $outcome = $result.GetAttribute('outcome')
+                Add-GscTrxResultToCounts $fileCounts $outcome
+                $className = $unitTestClasses[$result.GetAttribute('testId')]
+                if (-not [string]::IsNullOrWhiteSpace($className)) {
+                    [void]$group.classes.Add($className)
+                    [void]$fileClasses.Add($className)
+                }
+            }
+
+            $counters = $document.SelectSingleNode("//*[local-name()='ResultSummary']/*[local-name()='Counters']")
+            if ($counters -and $counters.HasAttribute('total')) {
+                $parsedTotal = 0
+                if ([int]::TryParse($counters.GetAttribute('total'), [ref]$parsedTotal)) {
+                    $declaredTotal = $parsedTotal
+                    $fileCounts['reportedCounterTotal'] = $parsedTotal
+                    $fileCounts['reportedCounterFileCount'] = 1
+                    if ($parsedTotal -ne $fileCounts['testCaseCount']) { $fileCounts['counterMismatchCount'] = 1 }
+                }
+            }
+        }
+        catch {
+            $parseError = $_.Exception.GetType().FullName
+            $fileCounts['parseErrorCount'] = 1
+        }
+
+        foreach ($key in $fileCounts.Keys) { $group.counts[$key] += $fileCounts[$key] }
+        $fileSummaries.Add([ordered]@{
+            path = $relativePath; group = $groupId; testCaseCount = $fileCounts['testCaseCount']
+            passed = $fileCounts['passed']; failed = $fileCounts['failed']; error = $fileCounts['error']
+            timeout = $fileCounts['timeout']; aborted = $fileCounts['aborted']; skipped = $fileCounts['skipped']
+            notRunnable = $fileCounts['notRunnable']; inconclusive = $fileCounts['inconclusive']
+            disconnected = $fileCounts['disconnected']; warning = $fileCounts['warning']
+            otherOutcome = $fileCounts['otherOutcome']; reportedCounterTotal = $declaredTotal
+            counterMatchesResults = if ($null -ne $declaredTotal) { $declaredTotal -eq $fileCounts['testCaseCount'] } else { $null }
+            distinctTestClassCount = $fileClasses.Count; wpfIsolatedClassRun = ($groupId -eq 'playnite-wpf-isolated')
+            parseError = $parseError
+        })
+    }
+
+    $groupSummaries = [Collections.Generic.List[object]]::new()
+    $totalCounts = New-GscTestOutcomeCounts
+    foreach ($groupId in $groups.Keys) {
+        $group = $groups[$groupId]
+        $group.counts['distinctTestClassCount'] = $group.classes.Count
+        $groupSummary = [ordered]@{ id = $groupId }
+        foreach ($key in $group.counts.Keys) { $groupSummary[$key] = $group.counts[$key] }
+        $groupSummaries.Add($groupSummary)
+        foreach ($key in @($totalCounts.Keys)) { $totalCounts[$key] += $group.counts[$key] }
+    }
+
+    return [ordered]@{
+        schemaVersion = 1
+        testCaseCountBasis = 'count of TRX UnitTestResult entries'
+        reportedTotalBasis = 'sum of TRX ResultSummary/Counters total; compared with each file entry count'
+        trxFileCount = $trxFiles.Count
+        totals = $totalCounts
+        groups = $groupSummaries.ToArray()
+        files = $fileSummaries.ToArray()
+    }
 }
 
 function Write-GscDiagnosticSummary {
@@ -57,6 +191,7 @@ function Write-GscDiagnosticSummary {
         workingTreeClean = $Context.DirtyPaths.Count -eq 0; dirtyPaths = $Context.DirtyPaths
         sdk = $Context.Sdk; startedUtc = $Context.StartedUtc; completedUtc = $Context.CompletedUtc
         outcome = $Context.Outcome; steps = @($Context.Steps.ToArray()); assemblies = $Context.Assemblies
+        testSummary = $Context.TestSummary
         runType = $Context.RunType; testsRequested = $Context.TestsRequested
         failureMessage = $Context.FailureMessage; sourceFiles = $Context.SourceFiles
     }
@@ -167,6 +302,14 @@ function Complete-GscTestDiagnostics {
 
 function Complete-GscDiagnostics {
     param([hashtable]$Context, [bool]$Succeeded)
+    if ($Context.TestsRequested) {
+        $Context.TestSummary = Get-GscTestSummary $Context
+        Write-Host ("TRX test cases: {0} total; {1} passed; {2} failed outcomes; {3} skipped; {4} errors/timeouts/aborts; {5} WPF isolated class runs." -f `
+            $Context.TestSummary.totals.testCaseCount, $Context.TestSummary.totals.passed,
+            $Context.TestSummary.totals.failed, $Context.TestSummary.totals.skipped,
+            ($Context.TestSummary.totals.error + $Context.TestSummary.totals.timeout + $Context.TestSummary.totals.aborted),
+            $Context.TestSummary.totals.wpfIsolatedClassRunCount) -ForegroundColor DarkCyan
+    }
     $Context.Outcome = if ($Succeeded) { 'passed' } else { 'failed' }
     $Context.CompletedUtc = [DateTime]::UtcNow.ToString('o')
     Write-GscDiagnosticSummary $Context

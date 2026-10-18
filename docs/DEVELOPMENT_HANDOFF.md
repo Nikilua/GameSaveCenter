@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-06 已验收，S00-02 仍待 UI 门禁
+
+诊断器现在从原始 TRX 生成 `summary.json.testSummary`，分别报告测试用例状态、各 suite 的 case/class 数，以及 WPF 隔离类运行数，并逐文件对照 TRX Counters。定向诊断测试通过；历史 SDK8 `c7f2a368` 的 27 个 TRX 复算为 1,073 个用例（1,054通过、1失败、18跳过），WPF 为24个隔离类/103个用例。历史 Q14 失败未被改写。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md`。
+
+S07-01/04 已完成。S00-02 仍缺 SDK8.0.423 与真实 Playnite UI 验证；不要将含该 UI 改动的 `main` 推送。后续继续从 Round4 独立可执行项准入。
+
 ## 2026-10-18 最新续接：S07-04 已验收，S00-02 仍待 UI 门禁
 
 根 `AGENTS.md` 新增 CI 结果记录规则：仅新失败/修复、发布或验收状态改变时提交新结论；不为纯文档提交触发的通过结果继续追加提交。run/job/artifact 身份仍须可追溯。本次只审查 workflow 和历史记录，未改 workflow/required checks；相关 path 分流属独立 S07-03。证据位于 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md`。

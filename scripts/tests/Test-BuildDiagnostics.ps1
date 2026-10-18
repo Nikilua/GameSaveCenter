@@ -45,11 +45,69 @@ try {
     New-Item -ItemType Directory -Path $results -Force | Out-Null
     $trx = Join-Path $results 'controlled.trx'
     [IO.File]::WriteAllText($trx, '<TestRun name="private-user@private-host" runUser="private-host\private-user"><Deployment runDeploymentRoot="private-user_private-host"/><UnitTestResult computerName="private-host"><ErrorInfo><Message>Assert.Equal() Failure</Message><StackTrace>at ExampleTests.ControlledFailure():line 42</StackTrace></ErrorInfo><Path>' + [Security.SecurityElement]::Escape($env:GSC_DIAGNOSTIC_TEST_PATH) + '</Path></UnitTestResult></TestRun>')
+
+    function Write-GscTestSummaryFixture {
+        param([string]$RelativePath, [string]$ClassName, [string[]]$Outcomes, [int]$ReportedTotal = -1)
+
+        $fixturePath = Join-Path $results $RelativePath
+        New-Item -ItemType Directory -Path (Split-Path -Parent $fixturePath) -Force | Out-Null
+        $document = [xml]::new()
+        $testRun = $document.CreateElement('TestRun'); [void]$document.AppendChild($testRun)
+        $resultsNode = $document.CreateElement('Results'); [void]$testRun.AppendChild($resultsNode)
+        $definitions = $document.CreateElement('TestDefinitions'); [void]$testRun.AppendChild($definitions)
+        $passedCount = 0; $failedCount = 0; $skippedCount = 0; $index = 0
+        foreach ($outcome in $Outcomes) {
+            $index++
+            $testId = "fixture-test-$index"
+            $unitTest = $document.CreateElement('UnitTest'); $unitTest.SetAttribute('id', $testId)
+            $testMethod = $document.CreateElement('TestMethod'); $testMethod.SetAttribute('className', $ClassName)
+            [void]$unitTest.AppendChild($testMethod); [void]$definitions.AppendChild($unitTest)
+            $resultNode = $document.CreateElement('UnitTestResult')
+            $resultNode.SetAttribute('testId', $testId); $resultNode.SetAttribute('testName', "$ClassName.Case$index")
+            $resultNode.SetAttribute('outcome', $outcome); [void]$resultsNode.AppendChild($resultNode)
+            switch ($outcome) {
+                'Passed' { $passedCount++ }
+                'Failed' { $failedCount++ }
+                'NotExecuted' { $skippedCount++ }
+            }
+        }
+        $summary = $document.CreateElement('ResultSummary'); $counters = $document.CreateElement('Counters')
+        $counterTotal = if ($ReportedTotal -ge 0) { $ReportedTotal } else { $Outcomes.Count }
+        $counters.SetAttribute('total', [string]$counterTotal)
+        $counters.SetAttribute('executed', [string]($Outcomes.Count - $skippedCount))
+        $counters.SetAttribute('passed', [string]$passedCount); $counters.SetAttribute('failed', [string]$failedCount)
+        $counters.SetAttribute('notExecuted', [string]$skippedCount)
+        [void]$summary.AppendChild($counters); [void]$testRun.AppendChild($summary)
+        $document.Save($fixturePath)
+    }
+
+    Write-GscTestSummaryFixture 'core/core.trx' 'GameSaveCenter.Core.Tests.CoreFixtureTests' @('Passed', 'Failed', 'NotExecuted')
+    Write-GscTestSummaryFixture 'worker/worker.trx' 'GameSaveCenter.Worker.Tests.WorkerFixtureTests' @('Passed')
+    Write-GscTestSummaryFixture 'playnite-source/playnite-source.trx' 'GameSaveCenter.Playnite.Tests.SourceFixtureTests' @('Passed', 'Passed')
+    Write-GscTestSummaryFixture 'wpf.FirstFixtureTests/wpf.FirstFixtureTests.trx' 'GameSaveCenter.Playnite.Tests.FirstFixtureTests' @('Passed')
+    Write-GscTestSummaryFixture 'wpf.SecondFixtureTests/wpf.SecondFixtureTests.trx' 'GameSaveCenter.Playnite.Tests.SecondFixtureTests' @('NotExecuted', 'Passed')
+    Write-GscTestSummaryFixture 'mismatch/counter-mismatch.trx' 'ExampleTests.CounterMismatchFixture' @('Passed') 2
+
     Complete-GscTestDiagnostics $context $results
     Complete-GscDiagnostics $context $false
     $summaryText = [IO.File]::ReadAllText((Join-Path $context.RunRoot 'summary.json'))
     $summary = $summaryText | ConvertFrom-Json
     if ($summary.outcome -ne 'failed' -or $summary.steps.Count -ne 4 -or $summary.steps[0].exitCode -ne 7) { throw 'Failure summary lost actual status' }
+    $coreSummary = @($summary.testSummary.groups | Where-Object { $_.id -eq 'core' })[0]
+    $wpfSummary = @($summary.testSummary.groups | Where-Object { $_.id -eq 'playnite-wpf-isolated' })[0]
+    if ($summary.testSummary.trxFileCount -ne 7 -or $summary.testSummary.totals.trxFileCount -ne 7 -or $summary.testSummary.totals.testCaseCount -ne 11) {
+        throw 'TRX summary did not count raw test-case results separately from diagnostic steps.'
+    }
+    if (-not $coreSummary -or $coreSummary.testCaseCount -ne 3 -or $coreSummary.passed -ne 1 -or $coreSummary.failed -ne 1 -or $coreSummary.skipped -ne 1 -or $coreSummary.counterMismatchCount -ne 0) {
+        throw 'Core TRX test-case outcomes did not match the raw result entries and counters.'
+    }
+    if (-not $wpfSummary -or $wpfSummary.testCaseCount -ne 3 -or $wpfSummary.passed -ne 2 -or $wpfSummary.skipped -ne 1 -or $wpfSummary.distinctTestClassCount -ne 2 -or $wpfSummary.wpfIsolatedClassRunCount -ne 2) {
+        throw 'WPF isolated class-run counts were not reported separately from test-case counts.'
+    }
+    $unclassifiedSummary = @($summary.testSummary.groups | Where-Object { $_.id -eq 'unclassified' })[0]
+    if (-not $unclassifiedSummary -or $unclassifiedSummary.counterMismatchCount -ne 1) {
+        throw 'TRX counter mismatches were not exposed for follow-up.'
+    }
     $log = [IO.File]::ReadAllText((Join-Path $context.RunRoot 'controlled-failure-console.txt'))
     foreach ($expected in @('ExampleTests.ControlledFailure', 'Assert.Equal()', 'Expected: 1 Actual: 2', 'line 42', '[repo]', '[user-profile]', '[redacted]')) {
         if (-not $log.Contains($expected)) { throw "Missing diagnostic evidence: $expected" }

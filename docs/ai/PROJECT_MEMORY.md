@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-06 已验收
+
+诊断 `summary.json` 现从 TRX `<UnitTestResult>` 原始条目统计用例数，分类记录 passed/failed/error/timeout/aborted/skipped 等结果，并逐文件比对 `ResultSummary/Counters/@total`。报告分组为 Core、Worker、Playnite source 与 Playnite WPF isolated，另记录实际类数与 WPF 隔离类 TRX 运行数；结果文件相对路径允许重新计数。`Test-BuildDiagnostics.ps1` 的合成结果与旧 SDK8 整套 TRX 快照验证通过，旧快照中 Q14 的 1 个失败仍保留为失败。证据见[Round4 S07-06](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
+
 ## 2026-10-18 Round4 S07-04 已验收
 
 CI 结果应保留其实际 source commit、SDK、job 与 artifact 身份。只有新失败/修复、发布或影响验收状态时新增结论；不要为纯文档/CI 结果记录触发出的通过结果再追加一笔记录提交。该约束已提升到根 `AGENTS.md`。现有 Windows workflow 对 `main` 的每次 push 都运行完整任务，本阶段没有改触发器或 required checks；S07-03 需单独审查其兼容性。证据见[Round4 S07-04](../design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md)。

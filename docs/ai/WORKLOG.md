@@ -1,6 +1,12 @@
+## 2026-10-18 Round4 S07-06 TRX 测试计数口径
+
+- 核对 `scripts/build.ps1` 与 `scripts/run-playnite-tests-isolated.ps1`：原流程输出源测试/WPF 隔离类数量，诊断只脱敏/保留 TRX，尚未汇总用例数。`scripts/build-diagnostics.ps1` 现在从 `<UnitTestResult>` 重算每 suite 的测试用例/通过/失败/跳过/其他状态，汇总 `core`、`worker`、`playnite-source` 与 `playnite-wpf-isolated`，并比较每个 TRX 的 `Counters total`。同时记录实际测试类数和 WPF 隔离类 TRX 数；逐 TRX 相对路径及计数保留在 `summary.json` 便于复算。
+- `pwsh -NoProfile -File scripts/tests/Test-BuildDiagnostics.ps1 -OutputRoot .tmp/gsc-s07-06-test` 通过：合成TRX共 11 个结果、7通过/1失败/2跳过/1未知态、2 个 WPF 隔离类运行，并发现一个故意设置的计数不匹配。该 1 个失败是解析器夹具，不是产品测试失败。source validation 通过。
+- 对照既有历史 SDK8 原始证据 [CLOSE-SDK-01](evidence/close-sdk-20261007/local-sdk8-full/summary.json)，提交身份 `c7f2a368`，27 个 TRX 的 1,073 用例合计为 1,054 通过/1失败/18跳过；其中 WPF 隔离组是 24 类、103用例（102通过/1失败）。27/27 原始 `Counters total` 与 `<UnitTestResult>` 逐文件相符。历史 Q14 失败保持失败，本次解析没有运行/覆盖它。详见 [S07-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
+
 ## 2026-10-18 Round4 S07-04 CI 结果记录规则
 
-- 审查 `.github/workflows/windows-build.yml`：`main` 的 push 不设文档路径过滤；诊断已有 `summary.json`、console 与原始 TRX。近四个提交 `4cde34ce`、`188c8a74`、`5eb0d1fd`、`4d55a7dd` 连续更新前一轮 CI 结论，说明只在计划内留一条提示不足以约束交付记录。新增仓库级规则于 `AGENTS.md`：CI 结论只因新失败/修复、发布或验收变化提交；纯文档提交触发的通过结果不再引发记录提交；保留可查询 run/job/artifact 身份。
+- 审查 `.github/workflows/windows-build.yml`：`main` 的 push 不设文档路径过滤；诊断已有 `summary.json`、console 与原始 TRX。近四个提交 `4cde34ce`、`188c8a74`、`5eb0d1fd`、`4d55a7dd` 连续更新前一轮 CI 结论，说明只在计划内留一条提示不足以约束交付记录。提交 `33c8722c` 在 `AGENTS.md` 加入仓库级规则：CI 结论只因新失败/修复、发布或验收变化提交；纯文档提交触发的通过结果不再引发记录提交；保留可查询 run/job/artifact 身份。
 - 未更改 workflow、required checks 或 branch protection（S07-03 单独评估）。这是文档流程变更，不运行产品构建；`python scripts/validate-source.py .`、`git diff --check` 与新证据链接检查通过。详见 [S07-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md)。
 
 ## 2026-10-18 Round4 S07-01 当前事实入口精简
