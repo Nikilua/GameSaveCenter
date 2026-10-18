@@ -4,11 +4,12 @@
 
 ## 当前身份与活动事项
 
-- 远端 `origin/main` 当前在 `d85d2b53`，含 S00-01 实现/证据及 R09 1 DIP / 2 DIP 测试修正；本地 `main` 已分别提交 S00-02、S01-01、S01-02、S02-01 和维护记录。S00-02 的全量 WPF/安装/版本门禁仍未通过，因此不推送包含其 XAML 的本地分支。
+- 远端 `origin/main` 当前在 `d85d2b53`；本地 `main` 已提交 S00-02、S01-01、S01-02、S01-03、S02-01 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍未通过，因此不推送包含这些 XAML 改动的本地分支。
 - S00-01：已满足。稳定命令目录复用现有 ICommand；原受控行为 `7/7`，当前 SDK8 命令目录类复核 `2/2`。见 [S00-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
 - S00-02：代码完成待验收。Shell 内搜索 overlay，名称/别名/分类过滤，空输入最多 8 项，显示目标与可用状态；定向用例 `21/21`、200 项过滤 `0.554 ms`。SDK8 Release build 通过，但完整 WPF 隔离在 R05 系统指针 `GetCursorPos` Win32 error 5 处中止，尚未到安装/版本核验。见 [S00-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md)。
 - S01-01：版本化视图配置模型已实现并接入设置复制/重置；SDK `8.0.423` Release 测试项目构建 `0/0`，配置测试与 R09 共 `7/7` 通过。Json.NET 集合替换问题已由 `ObjectCreationHandling.Replace` 修复。未改 XAML；Playnite host 未验。详见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
 - S01-02：新增舒适/紧凑表格密度设置，行/表头/留白令牌为 `52/42/12` 与 `44/38/10 DIP`，正文字号不变；四行最小高度按活动令牌计算。SDK `8.0.423` Release 解决方案构建 `0/0`；密度/设置 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`。提交 `ad7bd563`。真实 Playnite 设置保存与呈现未验证；完整 WPF/安装门禁仍受 R05 系统指针权限阻挡，详见 [S01-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-02/README.md)。
+- S01-03：提交 `8cdf5253` 为存档历史、候选路径与任务表格加入可选列菜单和稳定键持久化；状态/身份列固定可见，新列默认显示，媒体收件箱未改。SDK `8.0.423` Release 解决方案构建 `0/0`，列显隐/列宽/视图配置/R09 共 `17/17`，source validation 通过。用户外机 R09 日志第 151 行与当前测试源码不一致；当前提交 R09 `2/2`。真实 Playnite 设置保存及呈现未验证；详见 [S01-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md)。
 - S02-01：本地通知记录 DTO 与 Worker SQLite 去重/保留 API 已实现；SDK `8.0.423` Release 解决方案构建 `0/0`，通知持久化测试 `3/3`、Worker `364` passed / `1` skipped。30 天、500 条上限；通知生产者未接入，未改 XAML/发送外部通知。详见 [S02-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
 - S00-02 的精确 SDK8 `8.0.423` 已在仓库隔离目录可用，SDK8 Release build 已通过；完整 WPF 测试因 R05 `GetCursorPos` 权限错误中断，安装与版本核验未运行。不得把受控构建或合成呈现写成 Playnite 真实呈现。
 - S07-01 已验收：本入口由 254 行压缩至 32 行，完整快照保存在 [归档](CURRENT_STATE_HISTORY_THROUGH_20261018.md)；实现提交 `4ea5e694`，压缩前正文逐字核对相同。验证及边界见 [S07-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。后续准入见 [Round4 账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md) 与 [自主积压](../AUTONOMOUS_BACKLOG.md)。

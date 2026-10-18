@@ -146,14 +146,19 @@
     {
       "id": "S01-03",
       "title": "可选列管理",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "8cdf5253",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[证据](evidence/S01-03/README.md)：SDK8.0.423 Release 解决方案构建 0/0；列显隐 4/4、列宽 6/6、视图配置 5/5、R09 2/2，source validation 通过",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md"
+        }
+      ],
+      "boundary": "Playnite 宿主设置提交/双主题视觉未验；完整安装/UI 门禁仍受 R05 GetCursorPos Win32 error 5 阻塞"
     },
     {
       "id": "S01-04",

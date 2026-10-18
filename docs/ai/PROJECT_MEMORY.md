@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-03 可选列管理代码完成待验收
+
+提交 `8cdf5253` 为存档历史、存档候选路径与任务三张表增加列显隐菜单。按 `v1/<view-key>` 保存稳定列键，只记显式隐藏的可选列；状态/对象身份必需列固定可见，新版本新增列默认显示，重置只影响当前表格。共享菜单样式使用动态主题资源；MediaInbox 保持原虚拟化方案。SDK `8.0.423` Release 解决方案构建 `0/0`，列显隐 `4/4`、列宽 `6/6`、视图配置 `5/5`、R09 `2/2`。source validation 通过，静态 WPF 审查 `35 XAML / 0 errors / 28 warnings / 177 info`。外机 R09 日志的第151行期望厚度与当前源码行151的颜色断言不符；当前提交隔离 R09 通过，外机 source/DLL/PDB 身份仍未知。真实 Playnite 设置提交与呈现未验；门禁和 TRX 见 [S01-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md)。
+
 ## 2026-10-18 Round4 S01-02 舒适紧凑密度代码完成待验收
 
 提交 `ad7bd563` 新增全局密度设置与共享资源覆盖：舒适/紧凑行高为 52/44 DIP，表头为 42/38 DIP，单元格水平留白为 12/10 DIP；不缩小正文。设置支持归一化、JSON 往返、编辑取消和外观重置；活动页面按当前令牌重算四行门槛。SDK `8.0.423` Release 解决方案构建 0/0；密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题资源 `9/9`，源码校验通过。当前全量 WPF/安装门禁仍在 R05 `GetCursorPos` Win32 error 5 处停止，Playnite 设置保存/实际呈现未运行。证据：[S01-02](../design/reviews/ui-finesse-round4-20261018/evidence/S01-02/README.md)。

@@ -1,3 +1,10 @@
+## 2026-10-18 Round4 S01-03 可选列管理与 R09 外机失败复核
+
+- 用户贴出的构建日志实际在 R09 测试断言处失败，日志中的 `expected 2,2,2,2 / actual 1,1,1,1` 位于外机堆栈第151行。当前源码第151行是 `Chrome.BorderBrush` 颜色断言，2 DIP 断言在第154行；用户给出的 diagnostics 目录未存在于当前工作区。没有据错位日志改生产焦点模板或放宽测试。
+- 提交后以仓库隔离 SDK `8.0.423` 运行 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp/s01-03-postcommit-20261018 -SkipTests`：完整解决方案构建成功，0 warning / 0 error。当前提交 WPF 类分别隔离运行：`DataGridColumnVisibilityBehaviorTests` 4/4、`R06ColumnWidthPersistenceBehaviorTests` 6/6、`ViewConfigurationDefinitionTests` 5/5、`R09FocusOutlineBehaviorTests` 2/2。首个直接调用系统 `dotnet` 的尝试因该 shell 仅有 SDK9 而未启动测试，随后改为仓库隔离 SDK8 路径，未将该次 SDK 解析失败当作产品测试结果。
+- S01-03 为存档历史、候选路径和任务表格新增原生键盘列选择菜单与稳定键偏好；必需身份/状态列固定显示，只保存隐藏的可选列，新增列默认显示。设置重置和 JSON 往返有覆盖；MediaInbox 未触碰。`python scripts/validate-source.py .` 通过；WPF 静态审查 `35 XAML / 0 errors / 28 warnings / 177 info`。
+- Playnite 真实宿主设置保存、双主题视觉与 UIA 未验证。独立 WPF/安装门禁既有 R05 `GetCursorPos` Win32 error 5 边界仍保留。TRX、SHA 与边界见 [S01-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md)。
+
 ## 2026-10-18 Round4 S01-02 舒适紧凑表格密度
 
 - 外观设置持久化 `DefaultTableDensityMode`，默认舒适、无效值安全回退；舒适/紧凑行高和表头为 `52/42`、`44/38 DIP`，单元格水平留白 `12/10 DIP`，正文不缩小。共享及 Dashboard 本地 DataGrid 样式读取同一组资源，Playnite/Application 全局资源不变。

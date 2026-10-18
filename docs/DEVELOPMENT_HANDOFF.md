@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S01-03 已提交，SDK8 Release 与定向测试通过
+
+本地 `main` 提交 `8cdf5253` 增加存档历史、存档候选路径和任务表格可选列管理。提交后 SDK `8.0.423` 完整 Release solution build `0 warning / 0 error`；列显隐 `4/4`、列宽 `6/6`、视图配置 `5/5`、R09 `2/2`。用户贴出的外机 R09 堆栈第151行不对应当前源码同一行，外机 checkout/DLL/PDB 身份未知；当前提交复测通过，不修改焦点样式断言。完整宿主/安装门禁仍待真实 Playnite/R05 环境前置满足；因此不推送尚未通过 UI 门禁的 XAML 提交。下一项按 Round4 计划为 S01-04。详见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md`。
+
 ## 2026-10-18 当前 Round4 SDK8 门禁复核
 
 S00-01 已满足，已有实现与证据在 `origin/main`。S01-01、S01-02 和 S02-01 均完成 SDK8 受控验证，详见各自 evidence README。S01-02 的密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`；全解方案构建 `0 warning / 0 error`。完整 WPF 隔离仍在第 45/126 类的 R05 `GetCursorPos` 系统指针读取 Win32 error 5 处停止；剩余 WPF 类及安装/版本核验未运行。不要绕过指针权限或推送含未过 UI 门禁 XAML 的 `main`；前置条件变化后继续 UI 门禁。
