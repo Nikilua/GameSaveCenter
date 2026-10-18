@@ -105,7 +105,7 @@ public sealed class NumericInputTests
         var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
 
         Assert.Contains("<Setter Property=\"infra:NumericInput.Enabled\" Value=\"True\"/>", tokens);
-        Assert.Equal(10, Count(settings, "infra:IntegerRangeValidationRule"));
+        Assert.Equal(12, Count(settings, "infra:IntegerRangeValidationRule"));
         Assert.Equal(1, Count(dashboard, "infra:IntegerRangeValidationRule"));
         Assert.Equal(5, Count(saves, "infra:IntegerRangeValidationRule"));
         Assert.Equal(1, Count(trainer, "infra:IntegerRangeValidationRule"));

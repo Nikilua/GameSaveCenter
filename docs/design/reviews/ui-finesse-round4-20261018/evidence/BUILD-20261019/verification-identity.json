@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "fe03548827653504d2fb4ef9776cbf43a804f5c1",
+  "changedSource": "tests/GameSaveCenter.Playnite.Tests/NumericInputTests.cs",
+  "changedSourceSha256": "41357D069451335EE761FDA9E005FDCF618A03B3EC5B193DE3DAE684D5711B5D",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "isolatedOutputRoot": ".tmp/oneclick-rebuild-20261019",
+  "initialBuildResult": {
+    "solutionBuild": "passed; 0 warnings; 0 errors",
+    "core": "147/147 passed",
+    "worker": "374 passed; 1 skipped",
+    "playniteNonWpfGroup": "468/468 passed",
+    "initialWpfFailure": "NumericInputTests: expected 10 range validation rules; actual 12"
+  },
+  "postFixResults": [
+    {
+      "name": "NumericInputTests",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "trx": "tests/numeric-input-after-fix.trx",
+      "sha256": "84808A0F5819037CAD3E107971FF5D69AF9CADDF5F891E43E83DDDC5244E26C6"
+    },
+    {
+      "name": "R09FocusOutlineBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "trx": "tests/r09-after-fix.trx",
+      "sha256": "DBEA372D178DEE48FF7E83B09DFA176E531936C3769EC1B6D403467BD590C6B8"
+    }
+  ],
+  "binaries": [
+    {
+      "path": ".tmp/oneclick-rebuild-20261019/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll",
+      "bytes": 1969152,
+      "sha256": "70F062E1ABEB3687BFA100E8A88B223404FB14456E2F22FBA1A29C9B57EBD5B8"
+    },
+    {
+      "path": ".tmp/oneclick-rebuild-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.dll",
+      "bytes": 1969152,
+      "sha256": "70F062E1ABEB3687BFA100E8A88B223404FB14456E2F22FBA1A29C9B57EBD5B8"
+    },
+    {
+      "path": ".tmp/oneclick-rebuild-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "bytes": 2023424,
+      "sha256": "28C98683AF35DBE819BD94EADCFAC6431E5D2BFDE5AB321D4DEE36406AC09991"
+    },
+    {
+      "path": ".tmp/oneclick-rebuild-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "bytes": 467180,
+      "sha256": "AEE64C57F334F0FF6F583904D6901D7513C90A734E9369CB9FC6F2B3CC750602"
+    }
+  ],
+  "checks": {
+    "fullWpfIsolation": "not completed; initial script stopped at WPF class 16 of 132; only NumericInputTests and R09 were rerun after the assertion update",
+    "playniteInstall": "not run",
+    "playniteHost": "not run",
+    "sourceValidation": "passed",
+    "diffCheck": "passed"
+  },
+  "boundary": "The reported older R09 run has no retained summary/TRX/DLL/PDB identity. Passing R09 with this current build does not identify that older run's input."
+}

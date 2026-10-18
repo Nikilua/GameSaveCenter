@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 当前构建失败复核
+
+当前测试源已修复设置页数字范围校验数量断言：设置页现有 12 项（包含通知安静时段的开始/结束分钟），原断言仍为 10。SDK `8.0.423` 下解决方案编译 `0 warning / 0 error`；Core `147/147`、Worker `374 passed / 1 skipped`、Playnite 非 WPF 分组 `468/468`；修正后的 `NumericInputTests` `12/12`、R09 `2/2`。完整 Playnite WPF 132 类隔离循环未完成，因此不能称一键构建/测试/安装整链已通过；未安装或启动 Playnite。
+
+用户此前的 R09 `Thickness(2) → Thickness(1)` 运行缺同次 summary/TRX/DLL/PDB。当前源码与新构建 DLL 下该类 `2/2` 通过，但旧运行输入仍无法确认。详细 TRX、build 日志和程序集哈希：[BUILD-20261019](design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 继续 S02-08。
+
 ## 2026-10-18 最新进展：S02-06 重要通知例外受控验证通过
 
 实现提交 `a6153219` 明确只有已知警告/错误通知突破临时静音与安静时段；未知级别按信息处理。设置说明任务/会话警告与错误仍显示并保存在收件箱，备份校验 Findings 继续由现有持久化列表承载。SDK9.0.302 Release solution restore/build `0/0`，弹窗策略 `22/22`、通知记录持久化 `7/7`、同次隔离输出 R09 `2/2`；source validation 通过。R09 运行目录中插件 DLL 与测试加载副本 SHA-256 一致。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md`。
