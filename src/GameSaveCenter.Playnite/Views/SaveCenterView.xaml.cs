@@ -18,6 +18,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool candidateInspectorOpen;
         private DataGridColumnLayoutController? historyColumnLayout;
         private DataGridColumnLayoutController? candidateColumnLayout;
+        private DataGridColumnVisibilityController? historyColumnVisibility;
+        private DataGridColumnVisibilityController? candidateColumnVisibility;
         private DataGridStableSortController? historySort;
         private DataGridStableSortController? candidateSort;
         private readonly WrapPanelRowGapController historyActionRowGap;
@@ -64,6 +66,22 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "confidence", "status", "path", "reason" },
                 viewModel.PluginSettings,
                 persistPreference);
+            historyColumnVisibility = new DataGridColumnVisibilityController(
+                SaveHistoryGrid,
+                SaveHistoryColumnVisibilityButton,
+                "save-history",
+                new[] { "time", "type", "file-count", "size", "device", "note", "state" },
+                new[] { "time", "type", "state" },
+                viewModel.PluginSettings,
+                persistPreference);
+            candidateColumnVisibility = new DataGridColumnVisibilityController(
+                SaveCandidateGrid,
+                SaveCandidateColumnVisibilityButton,
+                "save-candidates",
+                new[] { "confidence", "status", "path", "reason" },
+                new[] { "status", "path" },
+                viewModel.PluginSettings,
+                persistPreference);
             SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(nameof(DashboardViewModel.BackupHistoryView)));
             historySort = ProductionDataGridSortProfiles.AttachSaveHistory(SaveHistoryGrid);
             candidateSort = ProductionDataGridSortProfiles.AttachSaveCandidates(SaveCandidateGrid);
@@ -71,12 +89,16 @@ namespace GameSaveCenter.Playnite.Views
 
         private void DetachColumnLayouts()
         {
+            candidateColumnVisibility?.Dispose();
+            historyColumnVisibility?.Dispose();
             candidateColumnLayout?.Dispose();
             historyColumnLayout?.Dispose();
             candidateSort?.Dispose();
             historySort?.Dispose();
             candidateColumnLayout = null;
             historyColumnLayout = null;
+            candidateColumnVisibility = null;
+            historyColumnVisibility = null;
             candidateSort = null;
             historySort = null;
         }

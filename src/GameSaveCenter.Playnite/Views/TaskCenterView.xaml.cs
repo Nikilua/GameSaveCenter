@@ -19,6 +19,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly WrapPanelRowGapController taskFilterPresetRowGap;
         private bool taskInspectorOpen;
         private DataGridColumnLayoutController? columnLayout;
+        private DataGridColumnVisibilityController? columnVisibility;
         private DataGridStableSortController? sortController;
         private ScrollViewer? taskGridScrollViewer;
         private DashboardViewModel? navigationViewModel;
@@ -48,6 +49,14 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "local-time", "task", "stage", "game", "state", "progress", "detail" },
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
+            columnVisibility = new DataGridColumnVisibilityController(
+                TaskGrid,
+                TaskGridColumnVisibilityButton,
+                "tasks",
+                new[] { "local-time", "task", "stage", "game", "state", "progress", "detail" },
+                new[] { "local-time", "task", "state" },
+                viewModel.PluginSettings,
+                viewModel.PersistUiPreference);
             sortController = ProductionDataGridSortProfiles.AttachTasks(TaskGrid);
         }
 
@@ -56,9 +65,11 @@ namespace GameSaveCenter.Playnite.Views
             CaptureTaskGridScroll();
             DetachTaskGridScrollViewer();
             UnsubscribeNavigationViewModel();
+            columnVisibility?.Dispose();
             columnLayout?.Dispose();
             sortController?.Dispose();
             columnLayout = null;
+            columnVisibility = null;
             sortController = null;
         }
 

@@ -1471,4 +1471,35 @@
     <Style x:Key="GscIconOnlyToolbarButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Width" Value="36"/><Setter Property="Height" Value="36"/></Style>
     <Style x:Key="GscIconOnlyAccentButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/></Style>
     <Style x:Key="GscIconOnlyDangerButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Background" Value="{DynamicResource GscErrorTintBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/><Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/></Style>
+
+    <!-- Column choices use a native keyboard menu, styled with the same theme tokens as
+         production controls so the popup remains readable inside either Playnite theme. -->
+    <Style x:Key="GscColumnPickerContextMenuStyle" TargetType="ContextMenu">
+        <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="6"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="TextElement.FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+    </Style>
+
+    <Style x:Key="GscColumnPickerMenuItemStyle" TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="10,7"/>
+        <Setter Property="MinWidth" Value="190"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="TextElement.FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Style.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

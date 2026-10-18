@@ -175,6 +175,7 @@ namespace GameSaveCenter.Playnite.Settings
             settings.FilterPresets = new List<FilterPresetDefinition>();
             settings.ViewConfigurations = new List<ViewConfigurationDefinition>();
             settings.DataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
+            settings.DataGridHiddenColumnKeys = new Dictionary<string, List<string>>(StringComparer.Ordinal);
             settings.RecentAccess = new List<RecentAccessRecord>();
             return count;
         }
@@ -186,6 +187,6 @@ namespace GameSaveCenter.Playnite.Settings
             => $"将恢复“{GetCategoryDisplay(category)}”中的 {fieldOptions.Count(option => option.Category == category)} 个安全设置字段。不会修改工具路径、存档/媒体/镜像路径、Rclone 云端目标或安装身份；操作只修改当前编辑草稿，Playnite 取消仍可恢复。";
 
         public static string BuildAllImpact()
-            => $"将恢复 {fieldOptions.Count} 个安全设置字段，并清空筛选预设、列宽和最近访问等本地界面偏好。不会清除 Worker、Ludusavi、Rclone、存档/媒体/镜像路径、云端目标或设备身份；操作只修改当前编辑草稿，Playnite 取消仍可恢复。";
+            => $"将恢复 {fieldOptions.Count} 个安全设置字段，并清空筛选预设、表格列宽/显隐和最近访问等本地界面偏好。不会清除 Worker、Ludusavi、Rclone、存档/媒体/镜像路径、云端目标或设备身份；操作只修改当前编辑草稿，Playnite 取消仍可恢复。";
     }
 }

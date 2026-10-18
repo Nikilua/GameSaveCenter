@@ -47,6 +47,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool sidebarCollapsed;
         private bool healthInspectionEnabled = true;
         private Dictionary<string, double> dataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
+        private Dictionary<string, List<string>> dataGridHiddenColumnKeys = new Dictionary<string, List<string>>(StringComparer.Ordinal);
         private List<RecentAccessRecord> recentAccess = new List<RecentAccessRecord>();
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
@@ -198,6 +199,18 @@ namespace GameSaveCenter.Playnite.Settings
             set => dataGridColumnWidths = CloneDataGridColumnWidths(value);
         }
 
+        /// <summary>
+        /// Stable optional DataGrid columns hidden by the user, keyed by the versioned
+        /// table scope. Storing only hidden keys lets columns added by a later release
+        /// appear by default while preserving the user's existing choices.
+        /// </summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public Dictionary<string, List<string>> DataGridHiddenColumnKeys
+        {
+            get => dataGridHiddenColumnKeys;
+            set => dataGridHiddenColumnKeys = CloneDataGridHiddenColumnKeys(value);
+        }
+
         /// <summary>Stable-id-only recent game access records; names and paths are never persisted.</summary>
         public List<RecentAccessRecord> RecentAccess
         {
@@ -237,6 +250,35 @@ namespace GameSaveCenter.Playnite.Settings
                 if (key.StartsWith(prefix, StringComparison.Ordinal))
                     dataGridColumnWidths.Remove(key);
             }
+        }
+
+        internal bool TryGetDataGridHiddenColumnKeys(string viewKey, out List<string> columnKeys)
+        {
+            columnKeys = new List<string>();
+            if (string.IsNullOrWhiteSpace(viewKey)) return false;
+            if (!dataGridHiddenColumnKeys.TryGetValue(BuildDataGridColumnVisibilityKey(viewKey), out var storedKeys))
+                return false;
+            columnKeys = new List<string>(storedKeys);
+            return columnKeys.Count > 0;
+        }
+
+        internal void SetDataGridHiddenColumnKeys(string viewKey, IEnumerable<string>? columnKeys)
+        {
+            if (string.IsNullOrWhiteSpace(viewKey)) return;
+            var profileKey = BuildDataGridColumnVisibilityKey(viewKey);
+            var normalizedKeys = NormalizeDataGridColumnKeys(columnKeys);
+            if (normalizedKeys.Count == 0)
+            {
+                dataGridHiddenColumnKeys.Remove(profileKey);
+                return;
+            }
+            dataGridHiddenColumnKeys[profileKey] = normalizedKeys;
+        }
+
+        internal void ResetDataGridHiddenColumnKeys(string viewKey)
+        {
+            if (string.IsNullOrWhiteSpace(viewKey)) return;
+            dataGridHiddenColumnKeys.Remove(BuildDataGridColumnVisibilityKey(viewKey));
         }
 
         public string ExportPortableJson()
@@ -657,6 +699,7 @@ namespace GameSaveCenter.Playnite.Settings
             FilterPresets = other.FilterPresets;
             ViewConfigurations = other.ViewConfigurations;
             DataGridColumnWidths = other.DataGridColumnWidths;
+            DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;
             RecentAccess = other.RecentAccess;
         }
 
@@ -676,8 +719,42 @@ namespace GameSaveCenter.Playnite.Settings
             return result;
         }
 
+        private static Dictionary<string, List<string>> CloneDataGridHiddenColumnKeys(
+            IDictionary<string, List<string>>? source)
+        {
+            var result = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            if (source == null) return result;
+            foreach (var pair in source)
+            {
+                if (result.Count >= 256 || string.IsNullOrWhiteSpace(pair.Key) || pair.Key.Length > 180)
+                    continue;
+                var keys = NormalizeDataGridColumnKeys(pair.Value);
+                if (keys.Count > 0)
+                    result[pair.Key] = keys;
+            }
+            return result;
+        }
+
+        private static List<string> NormalizeDataGridColumnKeys(IEnumerable<string>? source)
+        {
+            var result = new List<string>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            if (source == null) return result;
+            foreach (var value in source)
+            {
+                var key = (value ?? string.Empty).Trim();
+                if (key.Length == 0 || key.Length > 80 || !seen.Add(key)) continue;
+                result.Add(key);
+                if (result.Count >= 64) break;
+            }
+            return result;
+        }
+
         private static bool IsFinite(double value)
             => !double.IsNaN(value) && !double.IsInfinity(value);
+
+        private static string BuildDataGridColumnVisibilityKey(string viewKey)
+            => "v1/" + viewKey.Trim();
 
         private static bool IsSupportedTaskHistoryRange(string value)
             => value == "全部时间" || value == "今天" || value == "昨天" || value == "近7天" || value == "近30天";
@@ -730,6 +807,8 @@ namespace GameSaveCenter.Playnite.Settings
                 case nameof(ThemeMode): return "主题";
                 case nameof(EnableUiAnimations): return "界面动画";
                 case nameof(EnableGlassEffects): return "玻璃效果";
+                case nameof(DataGridColumnWidths): return "表格列宽";
+                case nameof(DataGridHiddenColumnKeys): return "表格列显示";
                 case nameof(FollowSelectedGameBackground): return "跟随游戏背景";
                 case nameof(BackupFormat): return "备份格式";
                 case nameof(Compression): return "压缩方式";

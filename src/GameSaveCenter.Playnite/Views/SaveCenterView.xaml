@@ -200,6 +200,7 @@
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>
+                                        <ui:Button x:Name="SaveHistoryColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择存档历史表格显示的列；时间、类型和状态始终显示。" AutomationProperties.Name="设置存档历史表格显示列"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="重置列宽" ToolTip="恢复存档历史和候选路径表格的默认列宽" AutomationProperties.Name="重置存档表格列宽" Click="OnResetColumnLayoutClick"/>
                                     </WrapPanel>
                                 </Grid>
@@ -434,6 +435,7 @@
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>
                                 <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding LoadDetailsCommand}" ToolTip="重新加载存档详情" AutomationProperties.Name="重新加载存档详情" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
+                                <ui:Button x:Name="SaveCandidateColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="候选列" ToolTip="选择候选路径表格显示的列；状态和路径始终显示。" AutomationProperties.Name="设置存档候选路径表格显示列" VerticalAlignment="Center"/>
                             </WrapPanel>
                         </Grid>
                     </Border>
