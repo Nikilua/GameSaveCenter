@@ -6,7 +6,7 @@
 
 ## 2026-10-18 R09 外机失败再次出现，输入身份仍缺
 
-用户提供的诊断 ID `20261018T012631286Z-e027df9d` 显示 R09 类 `1/2`，期望 `2 DIP`/实际 `1 DIP` 的失败仍定位到行151。当前源码第151行是颜色断言，第154行才检查独立的 `ValidationStroke` 2 DIP；历史 `3f7d0b30` 第151行是旧 Chrome 2 DIP 断言。说明这次执行的源码/程序集/符号输入与当前源不一致，但没有 summary、TRX、source HEAD、DLL/PDB 身份，不能判定具体是旧源码、旧测试 DLL 还是 PDB 映射。测试阶段失败不能表述为编译错误。未改模板或断言。见 [R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+用户提供的诊断 ID `20261018T012631286Z-e027df9d` 显示 R09 类 `1/2`，期望 `2 DIP`/实际 `1 DIP` 的失败定位到行151。该断言与历史 `3f7d0b30` 中旧 Chrome 2 DIP 检查相同；`f13b9e05` 已于 2026-10-12 将共享模板和测试改为 Chrome 1 DIP、ValidationStroke 2 DIP，且当前 `origin/main` 已包含该版本。SDK8.0.423 对当前隔离输出运行 R09 `2/2` 通过；测试 DLL/PDB SHA 和 TRX 见 [R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md)。外机本次 summary/TRX/DLL/PDB 身份未提供，因此可以确认它不是当前测试输入，但无法区分旧 checkout、旧 DLL 或旧 PDB 映射；这是一项测试失败，不是编译错误。未改模板或放宽断言。
 
 ## 2026-10-18 Round4 S01-01 代码完成待验收
 

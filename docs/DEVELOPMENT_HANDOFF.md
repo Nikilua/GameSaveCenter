@@ -6,7 +6,7 @@
 
 ## 2026-10-18 外机 R09 最新失败输入
 
-诊断 ID `20261018T012631286Z-e027df9d` 的用户日志为 R09 `1/2`，行151期望 Chrome `2 DIP`、实际 `1 DIP`；当前行151是颜色断言，旧 `3f7d0b30` 才在该行检查 Chrome `2 DIP`。日志指向隔离测试阶段退出，不是编译器错误。没有同次 summary/TRX/source HEAD/test DLL/PDB，因此只确认输入或行映射与当前源不一致，根因未定。不要改模板或放宽断言；需要同次身份包再定位。见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md`。
+诊断 ID `20261018T012631286Z-e027df9d` 的用户日志为 R09 `1/2`，行151期望 Chrome `2 DIP`、实际 `1 DIP`；该断言与旧 `3f7d0b30` 测试一致。`f13b9e05` 已将 Chrome 改为 1 DIP、独立 ValidationStroke 维持 2 DIP，当前 `origin/main` 包含该修正。本机 SDK8.0.423 当前隔离输出 R09 `2/2` 通过（TRX、测试 DLL/PDB SHA 已归档）。外机同次 summary/TRX/source HEAD/DLL/PDB 不在当前工作区，无法区分旧 checkout、旧测试 DLL 或 PDB；这不是编译错误。不要改模板或放宽断言。见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md`。
 
 ## 2026-10-18 最新续接：S01-01 视图配置模型代码完成
 

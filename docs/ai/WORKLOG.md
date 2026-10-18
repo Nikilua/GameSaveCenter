@@ -11320,4 +11320,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 本轮又收到的外机文本 SHA-256 `F3DDDC6445E0BB1A5E4CD44EEEEC2C2C98834FC8C81482A67E456C5DB5864514` 与已有附件相同，仍是诊断 ID `20261016T052146719Z-d9d99ac4` 的 R09 `1/2` 失败。其第151行 Thickness 2/1 与当前源码同一行 Brush 断言不同；缺同次 summary/TRX/test/plugin DLL/PDB identity，未定位根因。用户指出本机结果不能代表外机是正确的；CI 也只证明各自精确提交和 runner 输入。
 - R00/R01 freshness 对产品代码 `be314f59` 为 `14 fresh / 0 stale / 0 matched source paths`，package identity 未提供。Round2/3 与 R23-08 复扫没有新的依赖满足且有具体代码缺口的 Q/R 项。没有本机 build/test 或新 artifacts/.tmp；用户已有未跟踪 TRX 与 TestResults 保持原样。总目标未完成，下一可执行条件及外部未验边界见 CURRENT_STATE 与 DEVELOPMENT_HANDOFF。
 
-## 2026-10-18 历史 #1083 双 SDK 终态与外机日志重复核验
+## 2026-10-18 R09 当前源 SDK8 对照
+
+- 用户提供诊断 `20261018T012631286Z-e027df9d`：R09 `1/2`，期望 Chrome `2 DIP`、实际 `1 DIP`，定位到旧测试行151。该诊断目录不在当前工作区，外机 HEAD、工作树、summary/TRX 和 DLL/PDB 身份仍未知。
+- 对照源历史：`3f7d0b30` 的错误态测试要求 `errorChrome.BorderThickness=2 DIP`；`f13b9e05`（2026-10-12）已改为 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP`，且 `origin/main` 含当前断言。当前 SDK8.0.423 隔离 Release 输出执行 R09 `2/2` 通过；TRX SHA `F342D82F829D724D8B58D840CE7018F95696F1F2EB6A7A7C12385DCDB676E4DB`，测试 DLL SHA `5E98D8755039C22DC3372F931719479086E4865F3DEA9EE22230358D8BA7CD0C`，PDB SHA `3E1F619C4B2122AB3BBC6B2193D6F353D67C708F1E7107C9355BE7C87879A266`。
+- 结论：用户此次报告的是测试断言失败，不是编译错误；其测试输入不对应当前源。无法仅凭现有日志区分旧 checkout、旧测试 DLL 或旧 PDB 映射。模板与断言没有再改动；需要外机同次 summary/TRX/程序集身份才能细分。完整记录见 R09 复核 README。
