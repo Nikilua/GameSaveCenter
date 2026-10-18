@@ -1,16 +1,22 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S02-06 重要通知例外已受控验证
+
+提交 `a6153219` 明确仅 `Warning` / `Error` 级通知突破临时静音和安静时段；未知通知级别按信息处理并遵循静音。设置说明写明任务/会话警告与错误仍会弹出且留存收件箱；失败/取消/成功与会话摘要继续使用真实结果级别，备份校验风险继续由独立 Findings 持久化。SDK `9.0.302` Release solution restore/build 成功，build `0 warning / 0 error`；策略 `22/22`、Worker 通知持久化 `7/7`、当前隔离输出 R09 `2/2`，source validation 通过。R09 测试加载插件 DLL 与同次构建输出 SHA-256 一致。证据见 [S02-06](../design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md)。
+
+主机只装 SDK `9.0.302`，`global.json` 要求 SDK `8.0.423`；完整 WPF 逐类循环、安装和真实 Playnite 宿主未验。用户旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 未保留，旧失败具体输入仍未知；当前干净匹配输出通过不能解释它。下一项 S02-07。
+
 ## 2026-10-18 Round4 S02-05 临时静音与时段已受控验证
 
 提交 `2aa3fe3c` 增加 15 分钟/1 小时/4 小时临时静音、解除入口和本地时间安静时段；跨午夜区间在每条通知到达时按当前系统时钟重新判断，UTC 到期点随普通设置 JSON/便携设置保存。只压制信息与成功弹出，记录仍落本地收件箱，警告/错误继续显示。SDK `9.0.302` Release solution build `0/0`；策略 `20/20`、设置持久化与交互 `15/15`、独立 R09 `2/2`；新增生产设置搜索及浅/深主题 `1040×700`、`720×640` 的可见/可达探针 `4/4`。日志、TRX、截图、源码及程序集哈希见 [S02-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md)。
 
-此环境只安装 SDK `9.0.302`，`global.json` 锁定的 SDK `8.0.423` 不可用；构建使用现有 NuGet 资产、未 restore。完整 WPF 逐类循环、一键安装及真实 Playnite 宿主未验证。此前一键日志停在 R05 系统指针读取；用户旧 R09 诊断没有 summary/TRX/DLL/PDB 身份，本次独立 R09 通过不能映射旧输入。下一项 S02-06。
+此环境只安装 SDK `9.0.302`，`global.json` 锁定的 SDK `8.0.423` 不可用；该阶段构建使用现有 NuGet 资产、未 restore。完整 WPF 逐类循环、一键安装及真实 Playnite 宿主未验证。此前一键日志停在 R05 系统指针读取；用户旧 R09 诊断没有 summary/TRX/DLL/PDB 身份，本机复测不能映射旧输入。S02-06 已在后续批次完成，下一项 S02-07。
 
 ## 2026-10-18 Round4 S02-04 上下文跳转代码完成，SDK8/宿主待验
 
 提交 `1b17e4a0` 为通知详情加入按稳定游戏 ID 打开游戏和按精确任务 ID 打开任务；无法定位对象时保留摘要并解释，不按名称猜测。提交后 SDK `9.0.302` Release 全解方案构建 `0 warning / 0 error`，通知/R10 `8/8`、Worker 精确任务查询 `10/10`、R09 `2/2`；Offscreen Render QA `render-qa OK`，无 `PROBLEM`，浅/深主题各 11 个尺寸通知列表 `3/3` 行。构建使用 `C:\Windows\Temp` 启动和 workload resolver 参数；`global.json` 要求 SDK `8.0.423`，当前 dotnet 安装未提供该版本，本次未执行 restore。完整 WPF 独立循环、Playnite 安装和真实宿主呈现未运行。证据及源码/程序集/PDB/TRX/截图 SHA-256 见 [S02-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md)。
 
-保存的一键流程日志在 Release 构建后停于 R05 系统鼠标位置读取失败，尚未到安装。用户旧 R09 诊断 `20261018T012631286Z-e027df9d` 缺 `summary.json`、TRX、同次 DLL/PDB 身份，无法确认实际输入；本次 R09 `2/2` 不解释旧失败，不调整共享焦点模板。S02-05 已在后续批次完成，下一项 S02-06。
+保存的一键流程日志在 Release 构建后停于 R05 系统鼠标位置读取失败，尚未到安装。用户旧 R09 诊断 `20261018T012631286Z-e027df9d` 缺 `summary.json`、TRX、同次 DLL/PDB 身份，无法确认实际输入；本机后续新隔离构建 R09 `2/2` 且测试加载 DLL 与构建 DLL SHA-256 一致，仍不解释旧失败。S02-05 与 S02-06 已在后续批次完成，当前下一项 S02-07。
 
 ## 2026-10-18 Round4 S02-03 已读语义受控验证通过
 

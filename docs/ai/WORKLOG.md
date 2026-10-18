@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S02-06 重要通知例外
+
+- 提交 `a6153219` 让静音策略只对明确的 Warning/Error 开例外；未识别枚举按信息级遵循静音和安静时段。设置说明明确任务/会话警告、错误仍会显示并留在本地收件箱。真实任务失败/取消与会话摘要级别映射保持现状；备份校验 Findings 仍由持久化风险列表承担，未另造 Toast 流。
+- SDK `9.0.302` 隔离 Release solution restore/build `0 warnings / 0 errors`；NotificationPopupPolicy `22/22`、NotificationRecordPersistence `7/7`、R09 `2/2`；同次输出的 Playnite DLL 与 R09 测试目录加载 DLL SHA-256 相同。`validate-source.py`、`git diff --check` 通过。日志、TRX 与身份见 [S02-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md)。
+- 当前只安装 SDK9.0.302，正式 SDK8、完整 WPF 隔离循环、安装和 Playnite 真实宿主仍未验。用户 R09 失败目录/summary/TRX/DLL/PDB 未保留；行号与当前源码不匹配，旧输入错配仍只是线索。下一项 S02-07。
+
 ## 2026-10-18 Round4 S02-05 临时静音与时段
 
 - 提交 `2aa3fe3c5fd099d6b5a580e2d1f3c436ed5a2c39` 增加 15 分钟、1 小时和 4 小时静音预设、解除动作、本地每日安静时段及跨午夜判断。信息/成功弹出按静音策略过滤，记录持久化仍在弹出判断之前；警告/错误不受本项抑制。设置加入复制/重置、取消回滚、便携导入导出和 JSON 持久化。

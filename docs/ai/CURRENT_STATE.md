@@ -4,8 +4,9 @@
 
 ## 当前身份与活动事项
 
-- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 至 S02-05 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
-- S02-05：提交 `2aa3fe3c` 增加通知临时静音与每日跨午夜安静时段，记录仍写入本地收件箱；SDK `9.0.302` Release solution build `0/0`，策略测试 `20/20`、设置持久化/交互 `15/15`、独立 R09 `2/2`，双主题 2 种尺寸设置探针 `4/4`。SDK8、完整 WPF 循环、一键安装和真实 Playnite 宿主仍待验；机器此前保存的一键日志停在 R05 系统鼠标位置读取，旧 R09 输入身份缺失。详见 [S02-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md)。下一项 S02-06。
+- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 至 S02-06 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
+- S02-06：提交 `a6153219` 明确只有已知警告/错误通知突破临时静音和安静时段；未知级别按信息通知走静音策略。设置解释任务/会话警告与错误仍弹出并留在收件箱；任务状态/会话摘要仍驱动实际级别，备份校验问题仍由 Findings 持久保存。SDK `9.0.302` Release solution build `0/0`；策略测试 `22/22`、通知记录持久化 `7/7`、同次隔离输出 R09 `2/2`，source validation 通过。该目录内插件 DLL 与 R09 测试目录加载副本 SHA-256 一致；旧失败诊断 ID `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 未保留，旧输入仍无法定位。SDK8、完整 WPF 循环、安装和真实 Playnite 宿主仍待验。详见 [S02-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md)。下一项 S02-07。
+- S02-05：提交 `2aa3fe3c` 增加通知临时静音与每日跨午夜安静时段，记录仍写入本地收件箱；SDK `9.0.302` Release solution build `0/0`，策略测试 `20/20`、设置持久化/交互 `15/15`、独立 R09 `2/2`，双主题 2 种尺寸设置探针 `4/4`。SDK8、完整 WPF 循环、一键安装和真实 Playnite 宿主仍待验；机器此前保存的一键日志停在 R05 系统鼠标位置读取，旧 R09 输入身份缺失。详见 [S02-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md)。
 - S02-04：提交 `1b17e4a0` 增加通知到关联游戏/任务的稳定 ID 跳转；SDK `9.0.302` Release solution build `0/0`，通知/R10、Worker 精确任务 ID、R09 定向测试 `20/20`，双主题 11 尺寸 Offscreen Render QA OK。正式 SDK8、完整 WPF 循环、安装和真实 Playnite 宿主仍待验；保存的一键日志在 R05 系统鼠标位置读取失败，未安装。旧 R09 输入身份缺失。详见 [S02-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md)。
 - S02-03：提交 6d3a6f43 支持单条/当前筛选结果已读和确认清除已读记录；Release 构建 0/0，Playnite 定向 18/18（R09 2/2），Worker SQLite 7/7，双主题 11 尺寸 Render QA 22/22，source validation 通过，WPF 静态审查 0 errors / 26 warnings / 177 info。真实 Playnite 安装/宿主呈现和完整 WPF 隔离循环未运行；外机旧 R09 输入身份仍未知。详见 [S02-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md)。
 - S02-02：通知记录生产者与通知收件箱已接入；SDK `8.0.423` Release solution build `0/0`，通知/页面切换/焦点/命令目录定向测试 `15/15`（R09 `2/2`），Worker 持久化 `3/3`，双主题 11 尺寸 Render QA `22/22`，source validation 通过。完整 WPF 独立进程循环与真实 Playnite 安装/宿主呈现未运行。详见 [S02-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md)。
@@ -28,12 +29,12 @@
 - S07-06 已在诊断 `summary.json` 加入原始 TRX 测试用例计数、结果状态、suite 和 WPF 隔离类运行汇总，并逐文件对照原 TRX Counters。定向诊断自测与历史原始 TRX 复算通过；历史用例失败原样保留。见 [S07-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
 - S07-07 已建立环境能力缓存与校验器，区分 SDK 缺失、真实宿主未检查、CEF/ETW 权限阻塞及 GitHub branch protection 读取权限阻塞，并逐项记录证据和重试条件；没有重试被拒探测。见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md) 与[缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
 - S07-03 审查发现 workflow 对纯文档和混合路径都运行完整双 SDK 流程；GitHub API 读取 `main` branch protection 返回 403，无法确认 required check 名称。workflow 未修改，待获得配置读权限或用户提供清单后再解锁。见 [S07-03 审查](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md)。
-- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。S01-08、S02-02 至 S02-05 受控验证已通过；S02-04/05 的 SDK8 正式基线、完整隔离循环与宿主仍待验；下一项按依赖审查 S02-06。
+- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。S01-08、S02-02 至 S02-06 受控验证已通过；S02-04 至 S02-06 的 SDK8 正式基线、完整隔离循环与宿主仍待验；下一项按依赖审查 S02-07。
 
 ## 已核验事实与外部边界
 
 - 最近有完整双 SDK runner 记录的是 [Actions #1086](https://github.com/Nikilua/GameSaveCenter/actions/runs/39077533150)：SDK8.0.423/SDK10.0.401 的 Core、Worker、Playnite WPF、SDK8 Render QA 成功。它验证对应旧提交和 runner，不验证 S00-02 当前本机代码或用户 Playnite。
-- 外机于 2026-10-18 再报告 R09 `1/2`：行151期望 Chrome `2 DIP`、实际 `1 DIP`，与旧测试提交 `3f7d0b30` 一致；`f13b9e05` 已把断言改为 Chrome 1 / ValidationStroke 2 DIP，当前 `origin/main` 含该修正。本机 SDK8.0.423 当前隔离输出 R09 `2/2` 通过。外机同次 summary/TRX/source HEAD/DLL/PDB 未提供，不能区分旧 checkout、旧测试 DLL 或 PDB 错配；这次是测试失败，不是编译错误。见 [R09 复核证据](../design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md)。
+- 外机于 2026-10-18 报告 R09 `1/2`，`Thickness` 期望 `2`、实际 `1`，堆栈行号与当前测试源码中的断言行不一致。本机使用当前提交、新隔离输出完成 Release solution build 后，R09 `2/2` 通过；测试目录加载的插件 DLL 与该次插件构建 DLL SHA-256 一致。旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/source HEAD/DLL/PDB 未保留，无法区分旧 checkout、旧测试 DLL、资源 DLL 或 PDB 错配；“输入产物错配”只是线索，不是已证实根因。这次报告的是测试断言失败，不是编译器错误。详见 [S02-06 复核证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md)。
 - 历史 CEF `0x5` 与 ETW 系统跟踪权限拒绝保持原边界；不绕过、不重复探测，只有前置条件可观察变化后再复查。
 - Playnite 未由本地门禁运行；OS UIA/读屏、实际 IME、物理 DPI/跨屏和最终呈现仍未验。离屏 WPF、源码测试和 CI 均只证明各自覆盖范围。
 

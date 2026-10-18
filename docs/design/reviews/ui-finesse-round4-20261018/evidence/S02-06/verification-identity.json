@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "a6153219a8d0342bcbb6f5b0253621cd788cf65e",
+  "sdk": "9.0.302",
+  "sdkBaseline": "global.json requires SDK 8.0.423; this host has SDK 9.0.302. Restore and build used SDK 9.0.302.",
+  "buildCommands": [
+    "dotnet restore GameSaveCenter.sln --ignore-failed-sources --nologo -m:1 -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=.tmp/s02-06-build-20261018",
+    "dotnet build GameSaveCenter.sln --configuration Release --no-restore --nologo -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=.tmp/s02-06-build-20261018"
+  ],
+  "buildResult": "0 warnings / 0 errors",
+  "testResults": [
+    {
+      "name": "NotificationPopupPolicyTests",
+      "passed": 22,
+      "failed": 0
+    },
+    {
+      "name": "NotificationRecordPersistenceTests",
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "name": "R09FocusOutlineBehaviorTests",
+      "passed": 2,
+      "failed": 0
+    }
+  ],
+  "playniteAssemblyCopiesMatch": true,
+  "sourceFiles": [
+    {
+      "label": "popup policy",
+      "path": "src/GameSaveCenter.Core/Services/NotificationPopupPolicy.cs",
+      "gitBlob": "d9c964831d59c126f973338b7d51e2007de6e146",
+      "sha256": "BF87CFF4CEF61F57BBC2F04A48908BE5642A2426C60EE840717460C8AB308045",
+      "bytes": 2717
+    },
+    {
+      "label": "stored severity fallback",
+      "path": "src/GameSaveCenter.Core/Services/NotificationRecordPolicy.cs",
+      "gitBlob": "0fb88cdc093d42c1f62bd7046c4e44541af6f393",
+      "sha256": "3D9B6046D8A131445F7BC77B837836015AECCC23C3AF925E6B2BA78D4E765153",
+      "bytes": 4519
+    },
+    {
+      "label": "settings explanation",
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml",
+      "gitBlob": "2175720f16b31ad6543d569b06181080fac037fd",
+      "sha256": "0BE0F4E3476BAC84393E2176D96E1607C1D24CD99E17C871C6E3414C5141F480",
+      "bytes": 66711
+    },
+    {
+      "label": "task/session event mapping and durable record path",
+      "path": "src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs",
+      "gitBlob": "7b9c558f34407f46003b230bc31330594d76487c",
+      "sha256": "C0995912BE55A3C4926937FAD3667E7E2D874E2F41CC1B0CD688F8BE3FCAD87A",
+      "bytes": 84232
+    },
+    {
+      "label": "policy regression tests",
+      "path": "tests/GameSaveCenter.Core.Tests/NotificationPopupPolicyTests.cs",
+      "gitBlob": "b9eb71fdc02c9ef72a215f477e0304c38e01796b",
+      "sha256": "66912AD418CE7E3DE896A303F8315669CFE37D6DB53DAE57ED565798A96C2CF1",
+      "bytes": 4266
+    }
+  ],
+  "binaryFiles": [
+    {
+      "label": "Playnite plugin build output",
+      "path": ".tmp/s02-06-build-20261018/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "5599AE56C295DDE3710004028DB8866D027061CD4A5F1FC12E9890FBF5664521",
+      "bytes": 1963008
+    },
+    {
+      "label": "Playnite plugin loaded by R09 tests",
+      "path": ".tmp/s02-06-build-20261018/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.dll",
+      "sha256": "5599AE56C295DDE3710004028DB8866D027061CD4A5F1FC12E9890FBF5664521",
+      "bytes": 1963008
+    },
+    {
+      "label": "Playnite test assembly",
+      "path": ".tmp/s02-06-build-20261018/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "D72867B62880778E76801C870A662CD67E53C6E700F87755A193A8F94DBC3C93",
+      "bytes": 2020864
+    },
+    {
+      "label": "Core test assembly",
+      "path": ".tmp/s02-06-build-20261018/bin/GameSaveCenter.Core.Tests/Release/net8.0/GameSaveCenter.Core.Tests.dll",
+      "sha256": "BF798B71F7480151894D9ABFFA1431790001BB94991C919EE52631FFDB195DD7",
+      "bytes": 53248
+    },
+    {
+      "label": "Worker test assembly",
+      "path": ".tmp/s02-06-build-20261018/bin/GameSaveCenter.Worker.Tests/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll",
+      "sha256": "998ECBC98C1340EA3770CC8EAAE6D5E6E711C5439C43058F53AEE75762E0FC5F",
+      "bytes": 763904
+    }
+  ],
+  "testArtifacts": [
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/tests/notification-popup-policy.trx",
+      "sha256": "11BBDCFA13A1ADD4594198926E80CE6FF335053A2AAC2CE0AB0B3F908309683F",
+      "bytes": 35391
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/tests/notification-record-persistence.trx",
+      "sha256": "E0483072F325ACA472E82AB7B214CD882EF2BF4FD66EC694080EF811C63F1281",
+      "bytes": 12896
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/tests/r09-focus.trx",
+      "sha256": "A7788A91EF35250DF434ABDAF4853D6F41F365FA1CB844484D7C320138675A2B",
+      "bytes": 4842
+    }
+  ]
+}

@@ -333,14 +333,19 @@
     {
       "id": "S02-06",
       "title": "重要事件例外",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "a6153219",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S02-06/README.md)：SDK9 Release solution build 0/0；弹窗策略 22/22、通知记录持久化 7/7、当前匹配构建 R09 2/2；source validation 通过",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md"
+        }
+      ],
+      "boundary": "global.json 锁定 SDK 8.0.423，本机仅有 SDK 9.0.302；完整 WPF 隔离循环、安装和真实 Playnite 宿主未验。旧 R09 诊断身份缺失、根因未定位；本次匹配 DLL 复测通过。"
     },
     {
       "id": "S02-07",

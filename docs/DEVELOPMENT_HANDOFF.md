@@ -1,16 +1,16 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 最新进展：S02-05 临时静音与时段已完成受控验证
+## 2026-10-18 最新进展：S02-06 重要通知例外受控验证通过
 
-实现提交 `2aa3fe3c` 新增临时静音预设/解除入口和按本地时钟执行的跨午夜安静时段；只减少信息与成功弹出，通知记录仍写入收件箱。SDK9.0.302 Release solution build 0/0，策略 20/20、设置持久化与交互 15/15、逐类独立 R09 2/2；设置搜索下浅/深色两个主题各在 1040×700 和 720×640 DIP 通过可见/可达探针。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md`。
+实现提交 `a6153219` 明确只有已知警告/错误通知突破临时静音与安静时段；未知级别按信息处理。设置说明任务/会话警告与错误仍显示并保存在收件箱，备份校验 Findings 继续由现有持久化列表承载。SDK9.0.302 Release solution restore/build `0/0`，弹窗策略 `22/22`、通知记录持久化 `7/7`、同次隔离输出 R09 `2/2`；source validation 通过。R09 运行目录中插件 DLL 与测试加载副本 SHA-256 一致。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md`。
 
-当前主机只有 SDK9.0.302，仓库锁定 SDK8.0.423，未 restore。完整 WPF 逐类循环、一键安装和真实 Playnite 宿主未验证；已有一键日志在 R05 系统鼠标位置读取处失败。用户没有旧 R09 同次 summary/TRX/DLL/PDB；本次 R09 2/2 仅证明当前程序集。继续 S02-06。
+当前主机只有 SDK9.0.302，仓库锁定 SDK8.0.423；正式 SDK8 基线、完整 WPF 逐类循环、一键安装和真实 Playnite 宿主仍未验证。用户旧 R09 诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 没有保留，所以旧失败具体输入仍未知；当前通过不能映射旧运行。继续 S02-07。
 
-## 2026-10-18 最新进展：S02-04 上下文跳转已实现，正式基线待验
+## 2026-10-18 进展回顾：S02-04 上下文跳转已实现，正式基线待验
 
 提交 `1b17e4a0` 增加通知详情按稳定游戏 ID 打开游戏、按精确任务 ID 打开任务；缺失对象时保留摘要并解释，不按名称误跳。提交后 SDK `9.0.302` Release solution build `0 warning / 0 error`；通知/R10 `8/8`、Worker 精确任务查询 `10/10`、R09 `2/2`；双主题 11 尺寸 Offscreen Render QA OK。详见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md`。
 
-当前 shell 只找到 SDK9.0.302，仓库 `global.json` 要求 SDK8.0.423；本次从 `C:\Windows\Temp` 使用 workaround 参数且未 restore。完整 WPF 独立循环、真实 Playnite 安装/宿主呈现未运行。工作区保存的一键日志在 R05 测试读取系统鼠标位置时退出，未进入安装；这是与用户旧 R09 Thickness 断言失败不同的运行。用户确认没有旧 R09 的 summary/TRX/DLL/PDB，因此旧测试输入仍不可追溯。S02-05 已在后续完成，下一项 S02-06。
+当前 shell 只找到 SDK9.0.302，仓库 `global.json` 要求 SDK8.0.423；本次从 `C:\Windows\Temp` 使用 workaround 参数且未 restore。完整 WPF 独立循环、真实 Playnite 安装/宿主呈现未运行。工作区保存的一键日志在 R05 测试读取系统鼠标位置时退出，未进入安装；这是与用户旧 R09 Thickness 断言失败不同的运行。用户确认没有旧 R09 的 summary/TRX/DLL/PDB，因此旧测试输入仍不可追溯。S02-05 和 S02-06 已在后续完成，当前下一项 S02-07。
 
 ## 2026-10-18 最新进展：S02-03 已读语义受控验证通过
 
