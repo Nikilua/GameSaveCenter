@@ -299,14 +299,19 @@
     {
       "id": "S02-04",
       "title": "上下文跳转",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "1b17e4a0",
+      "controlledVerificationState": "pending",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S02-04/README.md)：SDK 9.0.302 Release solution build 0/0；通知/R10、Worker 精确任务查询与 R09 定向测试 20/20；双主题 11 尺寸 Offscreen Render QA OK。SDK8 正式基线、完整 WPF 独立循环及真实宿主未验",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md"
+        }
+      ],
+      "boundary": "global.json 要求 SDK 8.0.423；本次受控构建使用 SDK 9.0.302。保存的一键日志在 R05 系统鼠标位置读取处中止安装；用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，输入身份仍未知。"
     },
     {
       "id": "S02-05",

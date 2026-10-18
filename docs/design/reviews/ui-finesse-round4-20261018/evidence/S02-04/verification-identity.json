@@ -1,0 +1,158 @@
+{
+  "implementationCommit": "1b17e4a0e14f7de2f9ba5fe51595d51a26099e56",
+  "sdk": "9.0.302",
+  "buildCommand": "dotnet build GameSaveCenter.sln --configuration Release --no-restore --nologo -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false",
+  "buildResult": "0 warnings / 0 errors",
+  "testResults": [
+    {
+      "name": "NotificationInboxViewBehaviorTests + R10ContextGameBehaviorTests",
+      "passed": 8,
+      "failed": 0,
+      "trx": "tests/notification-context.trx"
+    },
+    {
+      "name": "TaskQueryPersistenceTests",
+      "passed": 10,
+      "failed": 0,
+      "trx": "tests/exact-task-id-query.trx"
+    },
+    {
+      "name": "R09FocusOutlineBehaviorTests",
+      "passed": 2,
+      "failed": 0,
+      "trx": "tests/R09-focus-outline.trx"
+    }
+  ],
+  "renderResult": "render-qa OK; 0 PROBLEM; Notifications light/dark 11 sizes each",
+  "sourceFiles": [
+    {
+      "path": "src/GameSaveCenter.Contracts/TaskQueryDtos.cs",
+      "gitBlob": "d80fd0b0f8e1865588578e57670c50a82f6a858c"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.Notifications.cs",
+      "gitBlob": "e7f1d163b022f0b85d761da289c2e372479d480d"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "gitBlob": "a18401ecd88319b6140f3fb53430fa5b17ca0191"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/TaskSourceNavigationResolver.cs",
+      "gitBlob": "2b20335da546b33c26db9f872131dba020da4972"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml",
+      "gitBlob": "8ce63363ae7ea26a7c41cd8779770cf1dd37f1fb"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/Persistence/SqliteStateStore.TaskQueries.cs",
+      "gitBlob": "ce4e40be80909e170426dafe7198b8d8c6aa8b6e"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/NotificationInboxViewBehaviorTests.cs",
+      "gitBlob": "75f009d2f8b03c4ca7ea6bafd296ce1f0630084b"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R10ContextGameBehaviorTests.cs",
+      "gitBlob": "98a7134be80478bd7b09fb717d986297a3aa1c1d"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/TaskQueryPersistenceTests.cs",
+      "gitBlob": "fd40c4d7019f68eba0262fc8b059abc592f44583"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs",
+      "gitBlob": "abf2c8247f4a1802e87eec1aa3d97f503acb3602"
+    }
+  ],
+  "binaryFiles": [
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "ECF116089EA7701A6B43307C2012509130A8F43A185A7ED036DD84204E9ED8C5",
+      "bytes": 1956864
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.pdb",
+      "sha256": "4A7325FBC5014D1A167BB5C0E1B2A63C88BBC1847F5A9F99FD42046B82D8A7B3",
+      "bytes": 522672
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "B78C181C91764FEE80793534047F55CD5D0E7865503FD1052FD0AC5C60052497",
+      "bytes": 2017280
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "sha256": "F11BB16F9079D2DB8538FD55B1A3157D59014109695434403EF93461770DA827",
+      "bytes": 465348
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.dll",
+      "sha256": "F38BC172229ADCD109F0C6DBB4BF5FD25D12D3E7817DA9E7E129B62483F3EF0B",
+      "bytes": 1453568
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.pdb",
+      "sha256": "A185D9EC464DF7304983B51A48628C76439240E3E880A1BDEC2616EB4C681839",
+      "bytes": 213932
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll",
+      "sha256": "553A0B3DCB135B4E62820527151380DBB0B4E9E5D02CC6A66E7DF42311EE6F2E",
+      "bytes": 763904
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.pdb",
+      "sha256": "38292B83215304CA7C37872CFC23B6C654E4AA861A20460BAD4AE8ED35274891",
+      "bytes": 136448
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe",
+      "sha256": "016AD5B64D76B30EFC9E17F47DDB062A9B3E2249B8726046A172FF7F65AC295C",
+      "bytes": 613376
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "build.log",
+      "sha256": "B0EB27CF2743C51F36E9D3F21860F09192F7FC5E8E9591BA199F6AD746B52639",
+      "bytes": 1584
+    },
+    {
+      "path": "tests/notification-context.trx",
+      "sha256": "F69A1776F598A9C4688D237A05B969F78D44DD3505FC06D9B1AE0BE0AE1AC4D8",
+      "bytes": 13512
+    },
+    {
+      "path": "tests/exact-task-id-query.trx",
+      "sha256": "9FB80B27138D793BE817087A548ACF6A02A90626097F07A24DD2CFA240C3415E",
+      "bytes": 16460
+    },
+    {
+      "path": "tests/R09-focus-outline.trx",
+      "sha256": "EFBACFBE806C351EA1A698FBEFCB41CED83EF764A35E549C0E3629718859B010",
+      "bytes": 4758
+    },
+    {
+      "path": "render/render-qa-report.txt",
+      "sha256": "5847C3C9C1B082015761356F808EB4F26069113CB5C323CC3439B5462DC175A6",
+      "bytes": 1115363
+    },
+    {
+      "path": "render/Notifications-light-1366x768.png",
+      "sha256": "0BF696467303C718D60951897F170B7A278AE092080C39EB82B89FFCD35FE118",
+      "bytes": 88909
+    },
+    {
+      "path": "render/Notifications-dark-1366x768.png",
+      "sha256": "C37D87156CDC816CA7E38717076419F567A5541E511122BC8FBEACF42C234320",
+      "bytes": 93979
+    }
+  ],
+  "limitations": [
+    "Repository global.json pins SDK 8.0.423; this invocation used SDK 9.0.302 from C:\\Windows\\Temp and did not run restore.",
+    "No Playnite host installation or real-host rendering was performed.",
+    "User diagnostic 20261018T012631286Z-e027df9d lacks summary.json, TRX and same-run DLL/PDB identity; it cannot be mapped to this run."
+  ]
+}

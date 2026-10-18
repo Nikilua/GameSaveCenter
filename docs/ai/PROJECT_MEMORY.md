@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S02-04 上下文跳转代码完成，SDK8/宿主待验
+
+提交 `1b17e4a0` 为通知详情加入按稳定游戏 ID 打开游戏和按精确任务 ID 打开任务；无法定位对象时保留摘要并解释，不按名称猜测。提交后 SDK `9.0.302` Release 全解方案构建 `0 warning / 0 error`，通知/R10 `8/8`、Worker 精确任务查询 `10/10`、R09 `2/2`；Offscreen Render QA `render-qa OK`，无 `PROBLEM`，浅/深主题各 11 个尺寸通知列表 `3/3` 行。构建使用 `C:\Windows\Temp` 启动和 workload resolver 参数；`global.json` 要求 SDK `8.0.423`，当前 dotnet 安装未提供该版本，本次未执行 restore。完整 WPF 独立循环、Playnite 安装和真实宿主呈现未运行。证据及源码/程序集/PDB/TRX/截图 SHA-256 见 [S02-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md)。
+
+保存的一键流程日志在 Release 构建后停于 R05 系统鼠标位置读取失败，尚未到安装。用户旧 R09 诊断 `20261018T012631286Z-e027df9d` 缺 `summary.json`、TRX、同次 DLL/PDB 身份，无法确认实际输入；本次 R09 `2/2` 不解释旧失败，不调整共享焦点模板。下一项 S02-05。
+
 ## 2026-10-18 Round4 S02-03 已读语义受控验证通过
 
 6d3a6f43 加入所选未读、当前筛选结果未读批量标记和确认清除已读记录。清理操作只删通知表的已读行，不改变任务状态或关联审计/恢复证据。提交后 SDK 8.0.423 Release solution build 0 warning / 0 error；Playnite 定向测试 18/18（R09 2/2），Worker SQLite 7/7，双主题 11 窗口尺寸 Render QA 22/22，source validation 通过，WPF 静态审查 0 errors / 26 warnings / 177 info。通知页 1040×700 两主题均完整显示 3/3 行。DLL/PDB、源码与 TRX SHA-256 见 [S02-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md)。

@@ -6,8 +6,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收9、已满足1、代码完成待验收10、外部阻塞1、待开始43。
-实现状态：完成20、未开始44、不适用0；受控验证：通过21、未跑43、不适用0；宿主验证：通过0、待验4、未跑52、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收9、已满足1、代码完成待验收11、外部阻塞1、待开始42。
+实现状态：完成21、未开始43、不适用0；受控验证：通过21、未跑42、不适用0；宿主验证：通过0、待验5、未跑51、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -30,7 +30,7 @@
 | S02-01 | 通知记录契约 | 已验收 | 83194c50 | [证据](evidence/S02-01/README.md)：SDK8 Release 构建通过；NotificationRecordPersistenceTests 3/3，Worker 364 passed / 1 skipped | 通知生产者尚未接入；无 XAML、外发通知或 Playnite host 验证；S02-02 后续接入 |
 | S02-02 | 收件箱入口 | 代码完成待验收 | 8810d9e6 | [证据](evidence/S02-02/README.md)：SDK8 Release solution 0/0；Playnite 定向测试 15/15（R09 2/2）、Worker 3/3；双主题 Render QA 22/22 | 完整 WPF 独立进程循环未完成；真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺少 summary/TRX/DLL/PDB，不能确认旧输入；S02-03 已在后续批次完成。 |
 | S02-03 | 已读语义 | 代码完成待验收 | 6d3a6f43 | [证据](evidence/S02-03/README.md)：SDK8.0.423 Release 构建 0/0；Playnite 18/18（R09 2/2）；Worker SQLite 7/7；双主题 11 尺寸 Render QA 22/22 | 完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺同次 summary/TRX/DLL/PDB，实际输入身份无法确认。下一项按依赖审查 S02-04。 |
-| S02-04 | 上下文跳转 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S02-04 | 上下文跳转 | 代码完成待验收 | 1b17e4a0 | [证据](evidence/S02-04/README.md)：SDK 9.0.302 Release solution build 0/0；通知/R10、Worker 精确任务查询与 R09 定向测试 20/20；双主题 11 尺寸 Offscreen Render QA OK。SDK8 正式基线、完整 WPF 独立循环及真实宿主未验 | global.json 要求 SDK 8.0.423；本次受控构建使用 SDK 9.0.302。保存的一键日志在 R05 系统鼠标位置读取处中止安装；用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，输入身份仍未知。 |
 | S02-05 | 临时静音与时段 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S02-06 | 重要事件例外 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S02-07 | 重复归并摘要 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
