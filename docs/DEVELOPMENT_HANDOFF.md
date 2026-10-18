@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 Round4 S02-01 通知记录代码完成
+
+`83194c50` 新增通知记录 DTO、severity/规范化策略和 Worker SQLite 持久化 API。去重键唯一且同事件重放不覆盖首条；保留 30 天、最多 500 条，任务状态仍以原任务表为准。新 Worker SQLite 测试已补但没有运行：当前只安装 SDK9.0.302，仓库精确要求 SDK8.0.423。通知生产者尚未接入，S02-02 接续；未改 XAML/外发通知。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md`。
+
 ## 2026-10-18 外机 R09 最新失败输入
 
 诊断 ID `20261018T012631286Z-e027df9d` 的用户日志为 R09 `1/2`，行151期望 Chrome `2 DIP`、实际 `1 DIP`；当前行151是颜色断言，旧 `3f7d0b30` 才在该行检查 Chrome `2 DIP`。日志指向隔离测试阶段退出，不是编译器错误。没有同次 summary/TRX/source HEAD/test DLL/PDB，因此只确认输入或行映射与当前源不一致，根因未定。不要改模板或放宽断言；需要同次身份包再定位。见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md`。
@@ -8,7 +12,7 @@
 
 `25bbe005` 新增版本化工作视图配置模型并接入设置复制/重置；只存标量与稳定列键，旧设置缺字段和未知 JSON 成员兼容。source validation 与 diff check 通过。新 C# 测试尚未运行：仓库精确 SDK8.0.423 当前缺失，不使用 SDK9 替代。未改 XAML、未验 Playnite host。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md`。
 
-下一步继续按 Round4 计划核对 S01-02 与后续独立子项；涉及 XAML 的实现仍遵守 UI gate。S00-02 门禁未通过，因此本地 `main` 仍不推送。
+下一步继续 S02-02 收件箱入口，同时保留 S01-02 等 UI gate 的工作区；涉及 XAML 的实现遵守 UI gate。S00-02 门禁未通过，因此本地 `main` 仍不推送。
 
 ## 2026-10-18 最新续接：S07-03 分支检查读取受限
 

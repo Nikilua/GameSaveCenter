@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S02-01 通知记录契约
+
+- 现有 toast/通知决策不持久化。选择复用 Worker `SqliteStateStore`，新增 DTO、级别、去重/归一化策略及本地 SQLite 表；任务状态仍以 `tasks` 表为准，只保存关联 ID 与短 UI 摘要。
+- 去重键唯一并使用 `INSERT OR IGNORE`；单次事务清理 30 天前记录、集合最多 500 条；新 Worker 测试覆盖同事件重放、重启读回、过期、数量上限和损坏值回退。通知生产者暂未接入，留给 S02-02。
+- `python scripts/validate-source.py .` 和 `git diff --check` 通过。新 C# 测试未运行：当前仅有 SDK `9.0.302`，仓库固定 `8.0.423`；未用 SDK9 替代。实现提交 `83194c50`，证据见 [S02-01](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
+
 ## 2026-10-18 外机再次报告 R09 旧断言形态
 
 - 用户提供诊断 ID `20261018T012631286Z-e027df9d`：R09 类 `1/2`，`SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError` 报第151行期望 `2,2,2,2`、实际 `1,1,1,1`。日志是测试阶段退出码1；没有贴出编译错误。

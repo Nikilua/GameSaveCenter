@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S02-01 通知记录契约代码完成待验收
+
+临时插件 toast 不构成持久收件箱；选择已有 Worker SQLite 状态库作为本地通知记录所有者。`NotificationRecordDto` 保存通知/去重 ID、关联 task/game ID、级别、短标题/摘要、UTC 时间和读状态；`tasks` 表仍是任务状态权威来源。表对 dedup key 建唯一约束，重放忽略；记录保留 30 天、最多 500 条。S02-02 再连接通知生产者与入口。代码提交 `83194c50`，source validation/diff check 通过；新增 SQLite 行为测试因精确 SDK8.0.423 缺失未运行，无 Playnite/UI 验证。见 [S02-01](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
+
 ## 2026-10-18 R09 外机失败再次出现，输入身份仍缺
 
 用户提供的诊断 ID `20261018T012631286Z-e027df9d` 显示 R09 类 `1/2`，期望 `2 DIP`/实际 `1 DIP` 的失败仍定位到行151。当前源码第151行是颜色断言，第154行才检查独立的 `ValidationStroke` 2 DIP；历史 `3f7d0b30` 第151行是旧 Chrome 2 DIP 断言。说明这次执行的源码/程序集/符号输入与当前源不一致，但没有 summary、TRX、source HEAD、DLL/PDB 身份，不能判定具体是旧源码、旧测试 DLL 还是 PDB 映射。测试阶段失败不能表述为编译错误。未改模板或断言。见 [R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
