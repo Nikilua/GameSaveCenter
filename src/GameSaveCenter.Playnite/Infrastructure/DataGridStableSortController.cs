@@ -73,6 +73,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private ICollectionView? view;
         private int activeColumnIndex;
         private ListSortDirection activeDirection;
+        private readonly int defaultColumnIndex;
+        private readonly ListSortDirection defaultDirection;
         private bool disposed;
 
         internal DataGridStableSortController(
@@ -91,8 +93,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (this.columns.Select(column => column.Key).Distinct(StringComparer.Ordinal).Count() != this.columns.Count)
                 throw new ArgumentException("Sort keys must be unique.", nameof(columns));
 
+            this.defaultColumnIndex = defaultColumnIndex;
+            defaultDirection = this.columns[defaultColumnIndex].DefaultDirection;
             activeColumnIndex = defaultColumnIndex;
-            activeDirection = this.columns[defaultColumnIndex].DefaultDirection;
+            activeDirection = defaultDirection;
             grid.Sorting += OnSorting;
             grid.Loaded += OnGridLoaded;
             itemsSourceDescriptor = DependencyPropertyDescriptor.FromProperty(DataGrid.ItemsSourceProperty, typeof(DataGrid));
@@ -102,6 +106,28 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal string ActiveColumnKey => columns[activeColumnIndex].Key;
         internal ListSortDirection ActiveDirection => activeDirection;
+
+        internal bool ApplySort(string? columnKey, ListSortDirection direction)
+        {
+            if (disposed) return false;
+            var index = string.IsNullOrWhiteSpace(columnKey)
+                ? -1
+                : columns.ToList().FindIndex(column => string.Equals(column.Key, columnKey, StringComparison.Ordinal));
+            if (index < 0) return ResetToDefaultSort();
+            activeColumnIndex = index;
+            activeDirection = direction;
+            ApplyCurrentSort();
+            return true;
+        }
+
+        internal bool ResetToDefaultSort()
+        {
+            if (disposed) return false;
+            activeColumnIndex = defaultColumnIndex;
+            activeDirection = defaultDirection;
+            ApplyCurrentSort();
+            return true;
+        }
 
         private void OnGridLoaded(object sender, RoutedEventArgs e) => AttachView();
 

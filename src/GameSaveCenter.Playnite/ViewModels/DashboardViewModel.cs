@@ -6322,12 +6322,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             try
             {
-                plugin.Settings.TaskStatusFilterState = TaskStatusFilter;
-                plugin.Settings.TaskGameFilterState = TaskGameFilter;
-                plugin.Settings.TaskTypeFilterState = TaskTypeFilter;
-                plugin.Settings.TaskSearchTextState = TaskSearchText;
-                plugin.Settings.TaskHistoryScopeState = TaskHistoryScope;
-                plugin.Settings.TaskHistoryRangeState = TaskHistoryRange;
+                if (persistTaskFilterState)
+                {
+                    plugin.Settings.TaskStatusFilterState = TaskStatusFilter;
+                    plugin.Settings.TaskGameFilterState = TaskGameFilter;
+                    plugin.Settings.TaskTypeFilterState = TaskTypeFilter;
+                    plugin.Settings.TaskSearchTextState = TaskSearchText;
+                    plugin.Settings.TaskHistoryScopeState = TaskHistoryScope;
+                    plugin.Settings.TaskHistoryRangeState = TaskHistoryRange;
+                }
                 plugin.Settings.MediaFilterState = MediaFilter;
                 plugin.Settings.MediaSearchTextState = MediaSearchText;
                 plugin.SavePluginSettings(plugin.Settings);

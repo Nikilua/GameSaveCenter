@@ -22,6 +22,8 @@ namespace GameSaveCenter.Playnite.Views
         private DataGridColumnVisibilityController? candidateColumnVisibility;
         private DataGridStableSortController? historySort;
         private DataGridStableSortController? candidateSort;
+        private DataGridViewConfigurationController? historyViewConfiguration;
+        private DataGridViewConfigurationController? candidateViewConfiguration;
         private readonly WrapPanelRowGapController historyActionRowGap;
 
         internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
@@ -85,10 +87,42 @@ namespace GameSaveCenter.Playnite.Views
             SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(nameof(DashboardViewModel.BackupHistoryView)));
             historySort = ProductionDataGridSortProfiles.AttachSaveHistory(SaveHistoryGrid);
             candidateSort = ProductionDataGridSortProfiles.AttachSaveCandidates(SaveCandidateGrid);
+            historyViewConfiguration = CreateViewConfigurationController(
+                viewModel, "save-history", historyColumnLayout, historyColumnVisibility, historySort,
+                SaveHistoryViewConfigurationComboBox, SaveHistoryViewConfigurationNameBox,
+                SaveHistoryViewConfigurationSaveButton, SaveHistoryViewConfigurationCopyButton,
+                SaveHistoryViewConfigurationRenameButton, SaveHistoryViewConfigurationDeleteButton);
+            candidateViewConfiguration = CreateViewConfigurationController(
+                viewModel, "save-candidates", candidateColumnLayout, candidateColumnVisibility, candidateSort,
+                SaveCandidateViewConfigurationComboBox, SaveCandidateViewConfigurationNameBox,
+                SaveCandidateViewConfigurationSaveButton, SaveCandidateViewConfigurationCopyButton,
+                SaveCandidateViewConfigurationRenameButton, SaveCandidateViewConfigurationDeleteButton);
         }
+
+        private DataGridViewConfigurationController CreateViewConfigurationController(
+            DashboardViewModel viewModel,
+            string workspaceKey,
+            DataGridColumnLayoutController layout,
+            DataGridColumnVisibilityController visibility,
+            DataGridStableSortController sort,
+            ComboBox selector,
+            TextBox nameBox,
+            Button saveButton,
+            Button copyButton,
+            Button renameButton,
+            Button deleteButton)
+            => new DataGridViewConfigurationController(
+                this, workspaceKey, viewModel.PluginSettings, layout, visibility, sort,
+                selector, nameBox, saveButton, copyButton, renameButton, deleteButton,
+                PreferencePersistenceOverrideForBehaviorTest ?? viewModel.PersistUiPreference,
+                null, null, null,
+                viewModel.ConfirmViewConfigurationMutationAsync,
+                viewModel.ReportViewConfigurationStatus);
 
         private void DetachColumnLayouts()
         {
+            historyViewConfiguration?.Dispose();
+            candidateViewConfiguration?.Dispose();
             candidateColumnVisibility?.Dispose();
             historyColumnVisibility?.Dispose();
             candidateColumnLayout?.Dispose();
@@ -101,6 +135,8 @@ namespace GameSaveCenter.Playnite.Views
             historyColumnVisibility = null;
             candidateSort = null;
             historySort = null;
+            historyViewConfiguration = null;
+            candidateViewConfiguration = null;
         }
 
         private void InspectorIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

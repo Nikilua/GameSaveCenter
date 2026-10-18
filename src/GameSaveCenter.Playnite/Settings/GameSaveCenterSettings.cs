@@ -24,6 +24,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool enableLocalMirror;
         private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
         private List<ViewConfigurationDefinition> viewConfigurations = new List<ViewConfigurationDefinition>();
+        private Dictionary<string, string> activeViewConfigurationIds = new Dictionary<string, string>(StringComparer.Ordinal);
         private string defaultTableDensityMode = TableDensityPolicy.ComfortableMode;
         private bool autoStartWorker = true;
         private bool onboardingCompleted;
@@ -188,6 +189,14 @@ namespace GameSaveCenter.Playnite.Settings
             set => viewConfigurations = ViewConfigurationDefinition.NormalizeMany(value);
         }
 
+        /// <summary>Selected named view by stable workspace key. An absent key means the built-in default view.</summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public Dictionary<string, string> ActiveViewConfigurationIds
+        {
+            get => activeViewConfigurationIds;
+            set => activeViewConfigurationIds = NormalizeActiveViewConfigurationIds(value);
+        }
+
         /// <summary>
         /// User-adjusted DataGrid widths keyed by the versioned view/column identity.
         /// Unknown keys are intentionally retained for forward-compatible imports but
@@ -225,6 +234,26 @@ namespace GameSaveCenter.Playnite.Settings
             return dataGridColumnWidths.TryGetValue(BuildDataGridColumnWidthKey(viewKey, columnKey), out width)
                 && IsFinite(width)
                 && width > 0;
+        }
+
+        internal string GetActiveViewConfigurationId(string workspaceKey)
+        {
+            if (string.IsNullOrWhiteSpace(workspaceKey)) return string.Empty;
+            return activeViewConfigurationIds.TryGetValue(workspaceKey.Trim(), out var id) ? id : string.Empty;
+        }
+
+        internal void SetActiveViewConfigurationId(string workspaceKey, string? configurationId)
+        {
+            if (string.IsNullOrWhiteSpace(workspaceKey)) return;
+            var key = workspaceKey.Trim();
+            var id = (configurationId ?? string.Empty).Trim();
+            if (id.Length == 0)
+            {
+                activeViewConfigurationIds.Remove(key);
+                return;
+            }
+            if (!Guid.TryParseExact(id, "N", out var parsedId)) return;
+            activeViewConfigurationIds[key] = parsedId.ToString("N");
         }
 
         internal void SetDataGridColumnWidth(string viewKey, string columnKey, double width)
@@ -698,6 +727,7 @@ namespace GameSaveCenter.Playnite.Settings
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
             FilterPresets = other.FilterPresets;
             ViewConfigurations = other.ViewConfigurations;
+            ActiveViewConfigurationIds = other.ActiveViewConfigurationIds;
             DataGridColumnWidths = other.DataGridColumnWidths;
             DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;
             RecentAccess = other.RecentAccess;
@@ -715,6 +745,21 @@ namespace GameSaveCenter.Playnite.Settings
                 if (result.Count >= 256 || string.IsNullOrWhiteSpace(pair.Key) || pair.Key.Length > 180 || !IsFinite(pair.Value) || pair.Value <= 0)
                     continue;
                 result[pair.Key] = pair.Value;
+            }
+            return result;
+        }
+
+        private static Dictionary<string, string> NormalizeActiveViewConfigurationIds(IDictionary<string, string>? source)
+        {
+            var result = new Dictionary<string, string>(StringComparer.Ordinal);
+            if (source == null) return result;
+            foreach (var pair in source)
+            {
+                var workspaceKey = (pair.Key ?? string.Empty).Trim();
+                var configurationId = (pair.Value ?? string.Empty).Trim();
+                if (workspaceKey.Length == 0 || workspaceKey.Length > 64 || !Guid.TryParseExact(configurationId, "N", out var parsedId)) continue;
+                result[workspaceKey] = parsedId.ToString("N");
+                if (result.Count >= 64) break;
             }
             return result;
         }

@@ -13,9 +13,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         private FilterPresetDefinition? selectedMediaFilterPreset;
         private string taskFilterPresetNameDraft = string.Empty;
         private string mediaFilterPresetNameDraft = string.Empty;
+        private bool persistTaskFilterState = true;
+        private string defaultTaskFilterPresetIdForView = string.Empty;
 
         /// <summary>Lets isolated interaction tests answer preset confirmations without opening host UI.</summary>
         internal Func<string, string, string, string, bool, Task<bool>>? FilterPresetConfirmationOverrideForAudit { get; set; }
+        internal Func<string, string, string, string, bool, Task<bool>>? ViewConfigurationConfirmationOverrideForAudit { get; set; }
 
         public ObservableCollection<FilterPresetDefinition> TaskFilterPresets { get; } = new ObservableCollection<FilterPresetDefinition>();
         public ObservableCollection<FilterPresetDefinition> MediaFilterPresets { get; } = new ObservableCollection<FilterPresetDefinition>();
@@ -119,6 +122,75 @@ namespace GameSaveCenter.Playnite.ViewModels
             TaskHistoryRange = preset.TaskHistoryRange;
             StatusMessage = $"已应用任务筛选预设“{preset.Name}”";
         }
+
+        internal string GetSelectedTaskFilterPresetId()
+            => SelectedTaskFilterPreset?.Id ?? string.Empty;
+
+        internal void ApplyTaskFilterPresetById(string presetId)
+        {
+            if (string.IsNullOrWhiteSpace(presetId))
+            {
+                RestoreDefaultTaskFiltersForView();
+                return;
+            }
+            var preset = TaskFilterPresets.FirstOrDefault(item => string.Equals(item.Id, presetId, StringComparison.Ordinal));
+            if (preset == null)
+            {
+                StatusMessage = "视图关联的任务筛选预设已不存在，保留当前筛选条件。";
+                RestoreDefaultTaskFiltersForView();
+                return;
+            }
+            SelectedTaskFilterPreset = preset;
+            ApplyTaskFilterPreset();
+        }
+
+        internal void SetTaskViewConfigurationFilterPersistenceEnabled(bool enabled)
+        {
+            if (persistTaskFilterState == enabled) return;
+            if (!enabled)
+                defaultTaskFilterPresetIdForView = SelectedTaskFilterPreset?.Id ?? string.Empty;
+            persistTaskFilterState = enabled;
+            if (enabled)
+                uiStateSave?.Schedule();
+        }
+
+        private void RestoreDefaultTaskFiltersForView()
+        {
+            var settings = plugin.Settings;
+            TaskSearchText = settings.TaskSearchTextState ?? string.Empty;
+            TaskStatusFilter = TaskStatusFilterOptions.Contains(settings.TaskStatusFilterState)
+                ? settings.TaskStatusFilterState
+                : "全部";
+            TaskHistoryScope = TaskHistoryScopeOptions.Contains(settings.TaskHistoryScopeState)
+                ? settings.TaskHistoryScopeState
+                : "最近任务";
+            TaskHistoryRange = TaskHistoryRangeOptions.Contains(settings.TaskHistoryRangeState)
+                ? settings.TaskHistoryRangeState
+                : "全部时间";
+            pendingTaskGameFilter = settings.TaskGameFilterState ?? "全部";
+            pendingTaskTypeFilter = settings.TaskTypeFilterState ?? "全部";
+            pendingTaskDynamicFilterRestore = true;
+            RebuildTaskFilters();
+            SelectedTaskFilterPreset = TaskFilterPresets.FirstOrDefault(item =>
+                string.Equals(item.Id, defaultTaskFilterPresetIdForView, StringComparison.Ordinal));
+            TaskFilterPresetNameDraft = SelectedTaskFilterPreset?.Name ?? string.Empty;
+        }
+
+        internal Task<bool> ConfirmViewConfigurationMutationAsync(
+            string title,
+            string message,
+            string confirmText,
+            string cancelText,
+            bool isDangerous)
+        {
+            var confirmationOverride = ViewConfigurationConfirmationOverrideForAudit;
+            return confirmationOverride != null
+                ? confirmationOverride(title, message, confirmText, cancelText, isDangerous)
+                : plugin.ConfirmAsync(title, message, confirmText, cancelText, isDangerous);
+        }
+
+        internal void ReportViewConfigurationStatus(string message)
+            => StatusMessage = message ?? string.Empty;
 
         private void ApplyMediaFilterPreset()
         {

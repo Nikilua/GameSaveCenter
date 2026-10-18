@@ -201,6 +201,12 @@
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>
                                         <ui:Button x:Name="SaveHistoryColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择存档历史表格显示的列；时间、类型和状态始终显示。" AutomationProperties.Name="设置存档历史表格显示列"/>
+                                        <ComboBox x:Name="SaveHistoryViewConfigurationComboBox" Width="132" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的存档历史表格布局" AutomationProperties.Name="存档历史表格视图"/>
+                                        <TextBox x:Name="SaveHistoryViewConfigurationNameBox" Width="110" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="存档历史视图名称"/>
+                                        <ui:Button x:Name="SaveHistoryViewConfigurationSaveButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="保存当前" AutomationProperties.Name="保存当前存档历史视图"/>
+                                        <ui:Button x:Name="SaveHistoryViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" AutomationProperties.Name="另存存档历史视图副本"/>
+                                        <ui:Button x:Name="SaveHistoryViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" AutomationProperties.Name="重命名存档历史视图"/>
+                                        <ui:Button x:Name="SaveHistoryViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" AutomationProperties.Name="删除存档历史视图"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="重置列宽" ToolTip="恢复存档历史和候选路径表格的默认列宽" AutomationProperties.Name="重置存档表格列宽" Click="OnResetColumnLayoutClick"/>
                                     </WrapPanel>
                                 </Grid>
@@ -436,6 +442,12 @@
                                 </ui:Button>
                                 <ui:Button x:Name="SaveLoadDetailsButton" Style="{DynamicResource GscIconOnlyToolbarButton}" Command="{Binding LoadDetailsCommand}" ToolTip="重新加载存档详情" AutomationProperties.Name="重新加载存档详情" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnRefresh}" Width="18" Height="18"/></ui:Button>
                                 <ui:Button x:Name="SaveCandidateColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="候选列" ToolTip="选择候选路径表格显示的列；状态和路径始终显示。" AutomationProperties.Name="设置存档候选路径表格显示列" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="SaveCandidateViewConfigurationComboBox" Width="132" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的候选路径表格布局" AutomationProperties.Name="存档候选表格视图" VerticalAlignment="Center"/>
+                                <TextBox x:Name="SaveCandidateViewConfigurationNameBox" Width="110" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="存档候选视图名称" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveCandidateViewConfigurationSaveButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="保存当前" AutomationProperties.Name="保存当前存档候选视图"/>
+                                <ui:Button x:Name="SaveCandidateViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" AutomationProperties.Name="另存存档候选视图副本"/>
+                                <ui:Button x:Name="SaveCandidateViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" AutomationProperties.Name="重命名存档候选视图"/>
+                                <ui:Button x:Name="SaveCandidateViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" AutomationProperties.Name="删除存档候选视图"/>
                             </WrapPanel>
                         </Grid>
                     </Border>

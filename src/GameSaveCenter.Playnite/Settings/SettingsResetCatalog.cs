@@ -174,6 +174,7 @@ namespace GameSaveCenter.Playnite.Settings
             settings.MediaSearchTextState = string.Empty;
             settings.FilterPresets = new List<FilterPresetDefinition>();
             settings.ViewConfigurations = new List<ViewConfigurationDefinition>();
+            settings.ActiveViewConfigurationIds = new Dictionary<string, string>(StringComparer.Ordinal);
             settings.DataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
             settings.DataGridHiddenColumnKeys = new Dictionary<string, List<string>>(StringComparer.Ordinal);
             settings.RecentAccess = new List<RecentAccessRecord>();

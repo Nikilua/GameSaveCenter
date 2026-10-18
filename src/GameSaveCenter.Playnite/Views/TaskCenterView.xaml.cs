@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Views
         private DataGridColumnLayoutController? columnLayout;
         private DataGridColumnVisibilityController? columnVisibility;
         private DataGridStableSortController? sortController;
+        private DataGridViewConfigurationController? viewConfigurationController;
         private ScrollViewer? taskGridScrollViewer;
         private DashboardViewModel? navigationViewModel;
         private bool restoringTaskGridScroll;
@@ -58,6 +59,25 @@ namespace GameSaveCenter.Playnite.Views
                 viewModel.PluginSettings,
                 viewModel.PersistUiPreference);
             sortController = ProductionDataGridSortProfiles.AttachTasks(TaskGrid);
+            viewConfigurationController = new DataGridViewConfigurationController(
+                this,
+                "tasks",
+                viewModel.PluginSettings,
+                columnLayout,
+                columnVisibility,
+                sortController,
+                TaskViewConfigurationComboBox,
+                TaskViewConfigurationNameBox,
+                TaskViewConfigurationSaveButton,
+                TaskViewConfigurationCopyButton,
+                TaskViewConfigurationRenameButton,
+                TaskViewConfigurationDeleteButton,
+                viewModel.PersistUiPreference,
+                viewModel.GetSelectedTaskFilterPresetId,
+                viewModel.ApplyTaskFilterPresetById,
+                viewModel.SetTaskViewConfigurationFilterPersistenceEnabled,
+                viewModel.ConfirmViewConfigurationMutationAsync,
+                viewModel.ReportViewConfigurationStatus);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -65,11 +85,13 @@ namespace GameSaveCenter.Playnite.Views
             CaptureTaskGridScroll();
             DetachTaskGridScrollViewer();
             UnsubscribeNavigationViewModel();
+            viewConfigurationController?.Dispose();
             columnVisibility?.Dispose();
             columnLayout?.Dispose();
             sortController?.Dispose();
             columnLayout = null;
             columnVisibility = null;
+            viewConfigurationController = null;
             sortController = null;
         }
 

@@ -27,6 +27,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private readonly DispatcherTimer persistTimer;
         private int layoutPassDepth;
         private bool applying;
+        private bool settingsPersistenceEnabled = true;
         private bool persistPending;
         private bool disposed;
 
@@ -81,7 +82,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
         public void ResetToDefaults()
         {
             if (disposed) return;
-            settings.ResetDataGridColumnWidths(viewKey);
+            if (settingsPersistenceEnabled)
+                settings.ResetDataGridColumnWidths(viewKey);
             applying = true;
             try
             {
@@ -92,8 +94,70 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 applying = false;
             }
-            persistPending = true;
-            FlushPendingPersistence();
+            if (settingsPersistenceEnabled)
+            {
+                persistPending = true;
+                FlushPendingPersistence();
+            }
+        }
+
+        internal IReadOnlyDictionary<string, double> CaptureConfigurationWidths()
+        {
+            var result = new Dictionary<string, double>(StringComparer.Ordinal);
+            for (var index = 0; index < grid.Columns.Count; index++)
+            {
+                var width = grid.Columns[index].Width;
+                if (width.UnitType == DataGridLengthUnitType.Pixel
+                    && TryNormalizeWidth(grid.Columns[index], width.Value, out var normalized))
+                    result[columnKeys[index]] = normalized;
+            }
+            return result;
+        }
+
+        internal void SetSettingsPersistenceEnabled(bool enabled)
+        {
+            if (disposed || settingsPersistenceEnabled == enabled) return;
+            if (!enabled)
+                FlushPendingPersistence();
+            settingsPersistenceEnabled = enabled;
+        }
+
+        internal void ApplyStoredWidthsFromDefault()
+        {
+            if (disposed) return;
+            applying = true;
+            try
+            {
+                for (var index = 0; index < grid.Columns.Count; index++)
+                    grid.Columns[index].Width = defaultWidths[index];
+            }
+            finally
+            {
+                applying = false;
+            }
+            ApplyStoredWidths();
+        }
+
+        internal void ApplyConfigurationWidths(IDictionary<string, double>? widths)
+        {
+            if (disposed) return;
+            var values = widths ?? new Dictionary<string, double>(StringComparer.Ordinal);
+            applying = true;
+            try
+            {
+                for (var index = 0; index < grid.Columns.Count; index++)
+                {
+                    var column = grid.Columns[index];
+                    column.Width = defaultWidths[index];
+                    if (values.TryGetValue(columnKeys[index], out var storedWidth)
+                        && TryNormalizeWidth(column, storedWidth, out var normalizedWidth))
+                        column.Width = new DataGridLength(normalizedWidth, DataGridLengthUnitType.Pixel);
+                }
+            }
+            finally
+            {
+                applying = false;
+            }
         }
 
         public void FlushPendingPersistence()
@@ -139,7 +203,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private void OnColumnWidthChanged(object? sender, EventArgs e)
         {
-            if (disposed || applying || layoutPassDepth != 0 || !(sender is DataGridColumn column)) return;
+            if (disposed || applying || layoutPassDepth != 0 || !settingsPersistenceEnabled || !(sender is DataGridColumn column)) return;
             var index = grid.Columns.IndexOf(column);
             if (index < 0) return;
             if (column.Width.UnitType == DataGridLengthUnitType.Auto)

@@ -26,6 +26,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private readonly ContextMenu menu;
         private readonly List<MenuItem> columnMenuItems = new List<MenuItem>();
         private MenuItem resetMenuItem = null!;
+        private bool settingsPersistenceEnabled = true;
         private bool disposed;
 
         internal DataGridColumnVisibilityController(
@@ -70,14 +71,50 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         internal ContextMenu Menu => menu;
 
+        internal IReadOnlyList<string> CaptureVisibleColumnKeys()
+            => entries.Where(entry => entry.Column.Visibility == Visibility.Visible)
+                .OrderBy(entry => entry.Column.DisplayIndex)
+                .Select(entry => entry.Key)
+                .ToArray();
+
+        internal void SetSettingsPersistenceEnabled(bool enabled)
+        {
+            if (disposed) return;
+            settingsPersistenceEnabled = enabled;
+        }
+
+        internal void ApplyStoredVisibility()
+        {
+            if (disposed) return;
+            foreach (var entry in entries)
+                entry.Column.Visibility = Visibility.Visible;
+            ApplyStoredHiddenColumns();
+            RefreshMenuState();
+        }
+
+        internal void ApplyVisibleColumnKeys(IEnumerable<string>? visibleColumnKeys)
+        {
+            if (disposed) return;
+            var visible = new HashSet<string>(visibleColumnKeys ?? Array.Empty<string>(), StringComparer.Ordinal);
+            foreach (var entry in entries)
+                entry.Column.Visibility = entry.IsRequired || visible.Contains(entry.Key)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            if (grid.CurrentColumn != null && grid.CurrentColumn.Visibility != Visibility.Visible)
+                MoveCurrentCellToVisibleColumn(grid.CurrentColumn);
+            RefreshMenuState();
+        }
+
         internal void ResetToDefaults()
         {
             if (disposed) return;
-            settings.ResetDataGridHiddenColumnKeys(viewKey);
+            if (settingsPersistenceEnabled)
+                settings.ResetDataGridHiddenColumnKeys(viewKey);
             foreach (var entry in entries)
                 entry.Column.Visibility = Visibility.Visible;
             RefreshMenuState();
-            persist();
+            if (settingsPersistenceEnabled)
+                persist();
         }
 
         public void Dispose()
@@ -190,6 +227,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         private void PersistHiddenColumns()
         {
+            if (!settingsPersistenceEnabled) return;
             var hiddenKeys = entries
                 .Where(entry => !entry.IsRequired && entry.Column.Visibility != Visibility.Visible)
                 .OrderBy(entry => entry.Column.DisplayIndex)

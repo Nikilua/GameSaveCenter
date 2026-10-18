@@ -59,7 +59,7 @@ namespace GameSaveCenter.Playnite.Settings
 
             var result = source.Clone();
             result.SchemaVersion = CurrentSchemaVersion;
-            result.Id = Guid.TryParseExact(source.Id, "N", out _) ? source.Id : Guid.NewGuid().ToString("N");
+            result.Id = Guid.TryParseExact(source.Id, "N", out var parsedId) ? parsedId.ToString("N") : Guid.NewGuid().ToString("N");
             result.Name = name;
             result.WorkspaceKey = workspaceKey;
             result.FilterPresetId = NormalizeId(source.FilterPresetId);

@@ -139,6 +139,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -207,7 +208,16 @@
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RenameTaskFilterPresetCommand}" Content="重命名" ToolTip="确认后重命名选中的任务筛选预设" AutomationProperties.Name="重命名任务筛选预设" Margin="0,0,8,0"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding DeleteTaskFilterPresetCommand}" Content="删除" ToolTip="确认后删除选中的任务筛选预设" AutomationProperties.Name="删除任务筛选预设"/>
                 </WrapPanel>
-                <Border x:Name="TaskNavigationSourceBanner" Grid.Row="2" Grid.ColumnSpan="6" Margin="0,8,0,0">
+                <WrapPanel x:Name="TaskViewConfigurationRow" Grid.Row="2" Grid.ColumnSpan="6" Margin="0,8,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="表格视图" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="TaskViewConfigurationComboBox" Width="150" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的任务表格布局" AutomationProperties.Name="任务表格视图" Margin="0,0,8,0"/>
+                    <TextBox x:Name="TaskViewConfigurationNameBox" Width="132" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="任务表格视图名称" Margin="0,0,8,0"/>
+                    <ui:Button x:Name="TaskViewConfigurationSaveButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="保存当前" ToolTip="保存或更新当前任务表格视图" AutomationProperties.Name="保存当前任务表格视图" Margin="0,0,8,0"/>
+                    <ui:Button x:Name="TaskViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" ToolTip="使用新名称保存当前任务表格视图副本" AutomationProperties.Name="另存任务表格视图副本" Margin="0,0,8,0"/>
+                    <ui:Button x:Name="TaskViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" ToolTip="重命名已保存的任务表格视图" AutomationProperties.Name="重命名任务表格视图" Margin="0,0,8,0"/>
+                    <ui:Button x:Name="TaskViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" ToolTip="删除已保存的任务表格视图并恢复默认布局" AutomationProperties.Name="删除任务表格视图"/>
+                </WrapPanel>
+                <Border x:Name="TaskNavigationSourceBanner" Grid.Row="3" Grid.ColumnSpan="6" Margin="0,8,0,0">
                     <Border.Style>
                         <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -225,7 +235,7 @@
                         <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ClearTaskNavigationContextCommand}" Content="清除带入条件" ToolTip="仅清除带入的游戏条件，保留其他任务筛选" AutomationProperties.Name="清除带入的任务筛选" Margin="12,0,0,0"/>
                     </Grid>
                 </Border>
-                <TextBlock x:Name="TaskLeavePageHint" Grid.Row="3" Grid.ColumnSpan="6" Text="后台任务会继续运行。" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="后台任务离页说明" AutomationProperties.HelpText="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。">
+                <TextBlock x:Name="TaskLeavePageHint" Grid.Row="4" Grid.ColumnSpan="6" Text="后台任务会继续运行。" TextWrapping="Wrap" Margin="0,8,0,0" AutomationProperties.Name="后台任务离页说明" AutomationProperties.HelpText="离开本页不会取消后台任务；返回任务中心后会从任务记录恢复阶段和进度。">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
                             <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>

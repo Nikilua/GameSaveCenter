@@ -160,4 +160,104 @@ public sealed class ViewConfigurationDefinitionTests
         Assert.Equal(new[] { "state", "task" }, restored.VisibleColumnKeys);
         Assert.Equal(180, restored.ColumnWidths["state"]);
     }
+
+    [Fact]
+    public void CatalogSavesDefaultAsNewCopyAndUpdatesOnlySelectedWorkspaceView()
+    {
+        var settings = new GameSaveCenterSettings();
+        var state = CreateSnapshot("tasks");
+
+        var create = ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "工作视图", state, null, false, out var created);
+        Assert.Equal(ViewConfigurationMutationResult.Success, create);
+        Assert.NotNull(created);
+        Assert.NotEqual(string.Empty, created!.Id);
+        Assert.Equal("工作视图", created.Name);
+
+        var duplicateCopy = ViewConfigurationCatalog.SaveCurrent(settings, "tasks", created.Name, state, created.Id, true, out _);
+        Assert.Equal(ViewConfigurationMutationResult.DuplicateName, duplicateCopy);
+
+        var updateState = CreateSnapshot("tasks");
+        updateState.SortDirection = "Descending";
+        var update = ViewConfigurationCatalog.SaveCurrent(settings, "tasks", null, updateState, created.Id, false, out var updated);
+        Assert.Equal(ViewConfigurationMutationResult.Success, update);
+        Assert.Equal(created.Id, updated!.Id);
+        Assert.Equal("Descending", updated.SortDirection);
+
+        var otherWorkspace = ViewConfigurationCatalog.SaveCurrent(settings, "save-history", "工作视图", CreateSnapshot("save-history"), null, false, out _);
+        Assert.Equal(ViewConfigurationMutationResult.Success, otherWorkspace);
+        Assert.Equal(2, settings.ViewConfigurations.Count);
+    }
+
+    [Fact]
+    public void CatalogRejectsInvalidDuplicateAndOverLimitNamesWithoutChangingSettings()
+    {
+        var settings = new GameSaveCenterSettings();
+        var first = CreateSnapshot("tasks");
+        Assert.Equal(ViewConfigurationMutationResult.Success,
+            ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "失败任务", first, null, false, out var saved));
+
+        Assert.Equal(ViewConfigurationMutationResult.InvalidName,
+            ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "  ", first, null, false, out _));
+        Assert.Equal(ViewConfigurationMutationResult.InvalidName,
+            ViewConfigurationCatalog.SaveCurrent(settings, "tasks", new string('名', 49), first, null, true, out _));
+        Assert.Equal(ViewConfigurationMutationResult.DuplicateName,
+            ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "失败任务", first, saved!.Id, true, out _));
+
+        settings.ViewConfigurations = Enumerable.Range(0, ViewConfigurationCatalog.MaximumConfigurations)
+            .Select(index => new ViewConfigurationDefinition { Name = $"视图 {index}", WorkspaceKey = "other" })
+            .ToList();
+        var initialCount = settings.ViewConfigurations.Count;
+        Assert.Equal(ViewConfigurationMutationResult.LimitReached,
+            ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "新视图", first, null, false, out _));
+        Assert.Equal(initialCount, settings.ViewConfigurations.Count);
+    }
+
+    [Fact]
+    public void CatalogRenameRejectsDuplicatesAndDeletingActiveViewFallsBackToDefault()
+    {
+        var settings = new GameSaveCenterSettings();
+        ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "失败任务", CreateSnapshot("tasks"), null, false, out var first);
+        ViewConfigurationCatalog.SaveCurrent(settings, "tasks", "全部任务", CreateSnapshot("tasks"), null, false, out var second);
+
+        Assert.Equal(ViewConfigurationMutationResult.DuplicateName,
+            ViewConfigurationCatalog.Rename(settings, "tasks", first!.Id, "全部任务", out _));
+        Assert.Equal(ViewConfigurationMutationResult.Success,
+            ViewConfigurationCatalog.Rename(settings, "tasks", first.Id, "失败重试", out var renamed));
+        Assert.Equal("失败重试", renamed!.Name);
+
+        settings.SetActiveViewConfigurationId("tasks", renamed.Id);
+        Assert.Equal(ViewConfigurationMutationResult.Success,
+            ViewConfigurationCatalog.Delete(settings, "tasks", renamed.Id, out var deleted));
+        Assert.Equal(renamed.Id, deleted!.Id);
+        Assert.Equal(string.Empty, settings.GetActiveViewConfigurationId("tasks"));
+        Assert.Contains(settings.ViewConfigurations, item => item.Id == second!.Id);
+    }
+
+    [Fact]
+    public void ActiveViewSelectionRoundTripsAndIsClearedByAllSettingsReset()
+    {
+        var id = Guid.NewGuid().ToString("N");
+        var source = new GameSaveCenterSettings
+        {
+            ActiveViewConfigurationIds = new Dictionary<string, string> { ["tasks"] = id }
+        };
+        var imported = JsonConvert.DeserializeObject<GameSaveCenterSettings>(JsonConvert.SerializeObject(source))!;
+        Assert.Equal(id, imported.GetActiveViewConfigurationId("tasks"));
+
+        imported.ActiveViewConfigurationIds = new Dictionary<string, string> { ["invalid"] = "not-an-id" };
+        Assert.Empty(imported.ActiveViewConfigurationIds);
+        imported.ActiveViewConfigurationIds = new Dictionary<string, string> { ["tasks"] = id };
+        Assert.True(SettingsResetCatalog.ResetAll(imported) > 0);
+        Assert.Empty(imported.ActiveViewConfigurationIds);
+    }
+
+    private static ViewConfigurationDefinition CreateSnapshot(string workspaceKey)
+        => new()
+        {
+            Name = "临时状态",
+            WorkspaceKey = workspaceKey,
+            SortColumnKey = "state",
+            VisibleColumnKeys = new List<string> { "state", "task" },
+            ColumnWidths = new Dictionary<string, double> { ["state"] = 180 }
+        };
 }
