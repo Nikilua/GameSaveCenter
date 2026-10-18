@@ -10,6 +10,7 @@ public sealed class NotificationPopupPolicyTests
     [Theory]
     [InlineData(NotificationSeverity.Information)]
     [InlineData(NotificationSeverity.Success)]
+    [InlineData((NotificationSeverity)99)]
     public void TemporaryMuteHidesRoutinePopupsUntilTheUtcExpiry(NotificationSeverity severity)
     {
         var now = new DateTime(2026, 10, 18, 8, 0, 0, DateTimeKind.Utc);
@@ -17,6 +18,21 @@ public sealed class NotificationPopupPolicyTests
 
         Assert.False(NotificationPopupPolicy.ShouldShowPopup(severity, expiry, false, 1320, 420, now, now.ToLocalTime()));
         Assert.True(NotificationPopupPolicy.ShouldShowPopup(severity, expiry, false, 1320, 420, expiry, expiry.ToLocalTime()));
+    }
+
+    [Fact]
+    public void UnknownSeverityDoesNotBypassQuietHours()
+    {
+        var now = new DateTime(2026, 10, 18, 23, 30, 0, DateTimeKind.Utc);
+
+        Assert.False(NotificationPopupPolicy.ShouldShowPopup(
+            (NotificationSeverity)99,
+            null,
+            true,
+            22 * 60,
+            7 * 60,
+            now,
+            new DateTime(2026, 10, 18, 23, 30, 0, DateTimeKind.Local)));
     }
 
     [Theory]

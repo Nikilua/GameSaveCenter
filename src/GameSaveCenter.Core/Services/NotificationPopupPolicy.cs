@@ -3,7 +3,7 @@ using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Core.Services;
 
-/// <summary>Applies temporary mute and local quiet hours to non-critical notification popups.</summary>
+/// <summary>Applies temporary mute and local quiet hours to routine and unknown notifications.</summary>
 public static class NotificationPopupPolicy
 {
     public const int MinutesPerDay = 24 * 60;
@@ -17,9 +17,10 @@ public static class NotificationPopupPolicy
         DateTime utcNow,
         DateTime localNow)
     {
-        // S02-05 only quiets routine information and success. Warning and error behavior is
-        // intentionally stable until the follow-up important-event policy is implemented.
-        if (severity != NotificationSeverity.Information && severity != NotificationSeverity.Success)
+        // Only explicit, known warning/error levels are important enough to bypass quiet hours.
+        // Unknown values follow the routine path, matching NotificationRecordPolicy's safe
+        // fallback to Information instead of silently gaining urgency in a newer/older host.
+        if (severity == NotificationSeverity.Warning || severity == NotificationSeverity.Error)
             return true;
 
         var normalizedNowUtc = NormalizeUtc(utcNow);
