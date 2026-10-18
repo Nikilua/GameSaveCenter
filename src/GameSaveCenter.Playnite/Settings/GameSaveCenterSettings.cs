@@ -168,6 +168,7 @@ namespace GameSaveCenter.Playnite.Settings
         /// contain this property keep an empty collection; unsupported schema versions use
         /// the safe default view and are not applied.
         /// </summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
         public List<ViewConfigurationDefinition> ViewConfigurations
         {
             get => viewConfigurations;

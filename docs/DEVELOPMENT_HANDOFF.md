@@ -10,7 +10,7 @@
 
 ## 2026-10-18 最新续接：S01-01 视图配置模型代码完成
 
-`25bbe005` 新增版本化工作视图配置模型并接入设置复制/重置；只存标量与稳定列键，旧设置缺字段和未知 JSON 成员兼容。source validation 与 diff check 通过。新 C# 测试尚未运行：仓库精确 SDK8.0.423 当前缺失，不使用 SDK9 替代。未改 XAML、未验 Playnite host。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md`。
+`25bbe005` 新增版本化工作视图配置模型并接入设置复制/重置；只存标量与稳定列键，旧设置缺字段和未知 JSON 成员兼容。SDK8.0.423 Release 测试项目构建 0/0，`ViewConfigurationDefinitionTests` 与 R09 合计 7/7。验证发现 Json.NET 默认填充初始集合会绕过归一化 setter，现用 `ObjectCreationHandling.Replace` 修正。未改 XAML、未验 Playnite host。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md`。
 
 下一步继续 S02-02 收件箱入口，同时保留 S01-02 等 UI gate 的工作区；涉及 XAML 的实现遵守 UI gate。S00-02 门禁未通过，因此本地 `main` 仍不推送。
 

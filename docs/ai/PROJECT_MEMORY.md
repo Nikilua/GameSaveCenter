@@ -10,7 +10,7 @@
 
 ## 2026-10-18 Round4 S01-01 代码完成待验收
 
-新增 `ViewConfigurationDefinition` v1，持久化筛选预设 ID、工作区键、排序、可见稳定列键、列宽及密度；只包含整数/字符串/字符串列表/列宽映射，不持有 DTO 或文件内容。旧设置缺失 `ViewConfigurations` 时使用空列表，未知 JSON 成员由 Json.NET 忽略，未知 schema 条目不应用。`GameSaveCenterSettings.CopyFrom`/JSON 编辑快照与“全部重置”已接入。提交 `25bbe005`。Source validation 和 diff check 通过；新 C# 测试尚未运行，因为机器缺精确 SDK8.0.423。未改 XAML、未验证 Playnite host；见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
+新增 `ViewConfigurationDefinition` v1，持久化筛选预设 ID、工作区键、排序、可见稳定列键、列宽及密度；只包含整数/字符串/字符串列表/列宽映射，不持有 DTO 或文件内容。旧设置缺少 `ViewConfigurations` 时使用空列表，未知 JSON 成员由 Json.NET 忽略，未知 schema 条目不应用。`GameSaveCenterSettings.CopyFrom`/JSON 编辑快照与“全部重置”已接入。提交 `25bbe005`。SDK8.0.423 Release 测试项目构建 0 warning / 0 error，`ViewConfigurationDefinitionTests` 与 R09 合计 7/7；测试发现 Json.NET 默认填充初始化集合会绕过归一化 setter，现以 `ObjectCreationHandling.Replace` 修复。未改 XAML、未验证 Playnite host；见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
 
 ## 2026-10-18 Round4 S07-03 外部阻塞
 

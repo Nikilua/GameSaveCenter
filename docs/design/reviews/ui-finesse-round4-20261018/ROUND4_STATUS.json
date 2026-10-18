@@ -112,19 +112,19 @@
     {
       "id": "S01-01",
       "title": "视图配置模型",
-      "state": "代码完成待验收",
+      "state": "已验收",
       "implementationState": "complete",
       "implementationCommit": "25bbe005",
-      "controlledVerificationState": "not_run",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-01/README.md)：source validation 与 diff check 通过；新增 C# 测试未运行，精确 SDK 8.0.423 缺失",
+      "verificationText": "[证据](evidence/S01-01/README.md)：SDK8 Release 测试项目构建通过；ViewConfigurationDefinition 与 R09 合计 7/7",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md"
         }
       ],
-      "boundary": "未改 XAML；未构建/运行新增 C# 测试，Playnite host 未验；SDK 8.0.423 可用后补验"
+      "boundary": "未改 XAML；真实 Playnite 设置加载/保存未验证；密度、列选择和视图保存交互留后续任务"
     },
     {
       "id": "S01-02",

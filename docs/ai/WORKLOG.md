@@ -11325,3 +11325,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 用户提供诊断 `20261018T012631286Z-e027df9d`：R09 `1/2`，期望 Chrome `2 DIP`、实际 `1 DIP`，定位到旧测试行151。该诊断目录不在当前工作区，外机 HEAD、工作树、summary/TRX 和 DLL/PDB 身份仍未知。
 - 对照源历史：`3f7d0b30` 的错误态测试要求 `errorChrome.BorderThickness=2 DIP`；`f13b9e05`（2026-10-12）已改为 Chrome `1 DIP` 与独立 ValidationStroke `2 DIP`，且 `origin/main` 含当前断言。当前 SDK8.0.423 隔离 Release 输出执行 R09 `2/2` 通过；TRX SHA `F342D82F829D724D8B58D840CE7018F95696F1F2EB6A7A7C12385DCDB676E4DB`，测试 DLL SHA `5E98D8755039C22DC3372F931719479086E4865F3DEA9EE22230358D8BA7CD0C`，PDB SHA `3E1F619C4B2122AB3BBC6B2193D6F353D67C708F1E7107C9355BE7C87879A266`。
 - 结论：用户此次报告的是测试断言失败，不是编译错误；其测试输入不对应当前源。无法仅凭现有日志区分旧 checkout、旧测试 DLL 或旧 PDB 映射。模板与断言没有再改动；需要外机同次 summary/TRX/程序集身份才能细分。完整记录见 R09 复核 README。
+
+## 2026-10-18 Round4 S01-01 SDK8 受控验收
+
+- 使用仓库 SDK `8.0.423` 做 Playnite 测试项目 Release build，0 warning / 0 error。`ViewConfigurationDefinitionTests` 与当前 R09 两个回归用例合计 `7/7` 通过，TRX SHA `67A87BA7EB9D418AD790A6EEBCB5285CB20E83C385A371717A5167E4D7707A69`。
+- 测试发现 Json.NET 默认填充 `ViewConfigurations` 已初始化集合会绕过 setter 归一化；设置 `ObjectCreationHandling.Replace` 后测试通过。未改 XAML，真实 Playnite 设置读写未验。S01-01 更新为已验收；密度/列选择/视图保存交互仍是后续任务。

@@ -7,7 +7,7 @@
 - 远端 `origin/main` 当前在 `d85d2b53`，包含 S00-01 的实现与证据；本地 `main` 另有未推送的 S00-02、S01-01 模型 `25bbe005`、S02-01 通知契约 `83194c50` 与 Round4 维护记录。S00-02 的 SDK8/真实 Playnite UI 门禁仍未完成，不能推送本地分支。
 - S00-01：已验收。稳定命令目录复用现有 ICommand；受控行为 `7/7`。见 [S00-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
 - S00-02：代码完成待验收。Shell 内搜索 overlay，名称/别名/分类过滤，空输入最多 8 项，显示目标与可用状态；受控用例 `21/21`，200 项过滤 `0.554 ms`。见 [S00-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md)。
-- S01-01：版本化视图配置模型已实现并接入设置复制/重置；新增 C# 测试尚未运行，受精确 SDK `8.0.423` 缺失阻塞，Playnite host 未验。未改 XAML。详见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
+- S01-01：版本化视图配置模型已实现并接入设置复制/重置；SDK `8.0.423` Release 测试项目构建 `0/0`，配置测试与 R09 共 `7/7` 通过。Json.NET 集合替换问题已由 `ObjectCreationHandling.Replace` 修复。未改 XAML；Playnite host 未验。详见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
 - S02-01：本地通知记录 DTO 与 Worker SQLite 去重/保留 API 已实现；测试未运行，当前无通知生产者接入。30 天、500 条上限；未改 XAML/发送外部通知。详见 [S02-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
 - S00-02 依赖的真实 UI 门禁未通过：仓库要求精确 SDK `8.0.423`；当前 `dotnet` 仅有 `9.0.302`，常见隔离路径也未发现 SDK8。`GameSaveCenter-Run.cmd` 在构建/安装/版本核验前退出。不得把受控构建或合成呈现写成 Playnite 真实呈现。
 - S07-01 已验收：本入口由 254 行压缩至 32 行，完整快照保存在 [归档](CURRENT_STATE_HISTORY_THROUGH_20261018.md)；实现提交 `4ea5e694`，压缩前正文逐字核对相同。验证及边界见 [S07-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。后续准入见 [Round4 账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md) 与 [自主积压](../AUTONOMOUS_BACKLOG.md)。

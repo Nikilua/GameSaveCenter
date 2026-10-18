@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="59c50ed2-fd70-4d95-8a4f-853481894771" name="lopmatu@SULT 2026-10-18 12:34:56" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-18T12:34:56.8578926+08:00" queuing="2026-10-18T12:34:56.8578931+08:00" start="2026-10-18T12:34:51.3597624+08:00" finish="2026-10-18T12:35:14.0725774+08:00" />
+  <TestSettings name="default" id="e89ac7f8-5580-4bac-be63-cf36d23c398b">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-18_12_34_56" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="82f5f351-0c2a-4ac3-9689-d5f266afe3c6" testId="08330a03-9fef-87a1-321c-47707c21787f" testName="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.UnknownJsonMembersAndMissingViewCollectionRemainCompatible" computerName="SULT" duration="00:00:00.2150000" startTime="2026-10-18T12:34:55.3311197+08:00" endTime="2026-10-18T12:34:55.5280658+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82f5f351-0c2a-4ac3-9689-d5f266afe3c6" />
+    <UnitTestResult executionId="0073f452-5e06-4be5-bc45-6c3c809594ae" testId="24784125-168b-e6a3-e5f4-3418cda16bdd" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" computerName="SULT" duration="00:00:00.5020000" startTime="2026-10-18T12:34:58.0050391+08:00" endTime="2026-10-18T12:34:58.5050149+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0073f452-5e06-4be5-bc45-6c3c809594ae" />
+    <UnitTestResult executionId="f300ddf2-83eb-44f5-8e70-6d1e49bd2e1b" testId="0ef83de7-c534-018c-1620-7aa9203b7d23" testName="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.ConfigurationContractContainsOnlyStableKeysAndScalarValues" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-18T12:34:55.6395634+08:00" endTime="2026-10-18T12:34:55.6415640+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f300ddf2-83eb-44f5-8e70-6d1e49bd2e1b" />
+    <UnitTestResult executionId="42d5f531-a18b-425b-99fc-7ca1514ce9fb" testId="4ff01232-4dcc-eef3-82cb-5fa76274ff66" testName="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.SettingsRoundTripAndClonePreserveConfigurationWithoutSharingCollections" computerName="SULT" duration="00:00:00.0910000" startTime="2026-10-18T12:34:55.5504930+08:00" endTime="2026-10-18T12:34:55.6185640+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="42d5f531-a18b-425b-99fc-7ca1514ce9fb" />
+    <UnitTestResult executionId="aa12ef00-f431-4ee7-8c80-8d1a071133f3" testId="ef5203a7-07e9-8c3e-89d6-5c0323caa4a5" testName="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.NormalizeManyRejectsInvalidAndUnsupportedEntriesAndCapsCollection" computerName="SULT" duration="00:00:00.0120000" startTime="2026-10-18T12:34:55.6275632+08:00" endTime="2026-10-18T12:34:55.6375638+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa12ef00-f431-4ee7-8c80-8d1a071133f3" />
+    <UnitTestResult executionId="2fd533f2-908f-447f-9c0d-b2cd5db9c9a8" testId="656cb48b-6117-db47-8114-749aedae68d4" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" computerName="SULT" duration="00:00:02.3580000" startTime="2026-10-18T12:34:55.6457437+08:00" endTime="2026-10-18T12:34:58.0030412+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2fd533f2-908f-447f-9c0d-b2cd5db9c9a8" />
+    <UnitTestResult executionId="7e7508f5-4b93-4409-8269-21bd11c41634" testId="0df8d4cd-75bf-2528-3503-d72528cc8e88" testName="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.NormalizeKeepsStableScalarStateAndDropsInvalidValues" computerName="SULT" duration="00:00:00.0070000" startTime="2026-10-18T12:34:55.6205672+08:00" endTime="2026-10-18T12:34:55.6255633+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7e7508f5-4b93-4409-8269-21bd11c41634" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.SettingsRoundTripAndClonePreserveConfigurationWithoutSharingCollections" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4ff01232-4dcc-eef3-82cb-5fa76274ff66">
+      <Execution id="42d5f531-a18b-425b-99fc-7ca1514ce9fb" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests" name="SettingsRoundTripAndClonePreserveConfigurationWithoutSharingCollections" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.NormalizeKeepsStableScalarStateAndDropsInvalidValues" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0df8d4cd-75bf-2528-3503-d72528cc8e88">
+      <Execution id="7e7508f5-4b93-4409-8269-21bd11c41634" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests" name="NormalizeKeepsStableScalarStateAndDropsInvalidValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.UnknownJsonMembersAndMissingViewCollectionRemainCompatible" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="08330a03-9fef-87a1-321c-47707c21787f">
+      <Execution id="82f5f351-0c2a-4ac3-9689-d5f266afe3c6" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests" name="UnknownJsonMembersAndMissingViewCollectionRemainCompatible" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="24784125-168b-e6a3-e5f4-3418cda16bdd">
+      <Execution id="0073f452-5e06-4be5-bc45-6c3c809594ae" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.NormalizeManyRejectsInvalidAndUnsupportedEntriesAndCapsCollection" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ef5203a7-07e9-8c3e-89d6-5c0323caa4a5">
+      <Execution id="aa12ef00-f431-4ee7-8c80-8d1a071133f3" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests" name="NormalizeManyRejectsInvalidAndUnsupportedEntriesAndCapsCollection" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests.ConfigurationContractContainsOnlyStableKeysAndScalarValues" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0ef83de7-c534-018c-1620-7aa9203b7d23">
+      <Execution id="f300ddf2-83eb-44f5-8e70-6d1e49bd2e1b" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ViewConfigurationDefinitionTests" name="ConfigurationContractContainsOnlyStableKeysAndScalarValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" storage="d:\workplace\github\gamesavecenter\.tmp\r09-sdk8423-8d0309d7\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="656cb48b-6117-db47-8114-749aedae68d4">
+      <Execution id="2fd533f2-908f-447f-9c0d-b2cd5db9c9a8" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r09-sdk8423-8d0309d7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="08330a03-9fef-87a1-321c-47707c21787f" executionId="82f5f351-0c2a-4ac3-9689-d5f266afe3c6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24784125-168b-e6a3-e5f4-3418cda16bdd" executionId="0073f452-5e06-4be5-bc45-6c3c809594ae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ef83de7-c534-018c-1620-7aa9203b7d23" executionId="f300ddf2-83eb-44f5-8e70-6d1e49bd2e1b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ff01232-4dcc-eef3-82cb-5fa76274ff66" executionId="42d5f531-a18b-425b-99fc-7ca1514ce9fb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ef5203a7-07e9-8c3e-89d6-5c0323caa4a5" executionId="aa12ef00-f431-4ee7-8c80-8d1a071133f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="656cb48b-6117-db47-8114-749aedae68d4" executionId="2fd533f2-908f-447f-9c0d-b2cd5db9c9a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0df8d4cd-75bf-2528-3503-d72528cc8e88" executionId="7e7508f5-4b93-4409-8269-21bd11c41634" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.89]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.13]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -12,10 +12,10 @@
 
 - `python scripts/validate-source.py .`：通过；包含 JSON/XML/YAML、XAML 语义/资源、C# 分隔符、Round4 账本与环境缓存检查。
 - `git diff --check`：通过。
-- 新增 `ViewConfigurationDefinitionTests` 覆盖归一化、数量上限、未知 JSON 成员、旧设置字段缺失、未来 schema 忽略、设置往返与编辑取消后的独立集合；尚未运行这些 C# 测试或编译。
-- 当前主机缺仓库要求的精确 SDK `8.0.423`，因此本阶段未运行 .NET build/test；不以 SDK9 代替。
+- SDK `8.0.423` Release 构建 Playnite 测试项目成功（0 warning / 0 error）。`ViewConfigurationDefinitionTests` 与 R09 回归类共 `7/7` 通过；TRX：[S01-01-and-R09-sdk8423.trx](tests/S01-01-and-R09-sdk8423.trx)，SHA-256 `67A87BA7EB9D418AD790A6EEBCB5285CB20E83C385A371717A5167E4D7707A69`。
+- 测试发现 Json.NET 默认填充初始化集合，导致设置反序列化绕过 `ViewConfigurations` 的归一化 setter。已为该属性指定 `ObjectCreationHandling.Replace`，保证加载时执行替换和归一化；旧设置缺字段行为仍由测试覆盖。
 - 未修改 XAML；真实 Playnite 设置加载/保存与宿主行为未验证。
 
 ## 边界与下一步
 
-`controlledVerificationState` 保持 `not_run`，`hostVerificationState` 保持 `not_run`。SDK8.0.423 可用后先构建 Playnite 测试项目并运行 `ViewConfigurationDefinitionTests`；通过后再将 S01-01 更新为已验收。该模型只建立持久化契约，尚未提供页面密度、列选择或视图保存交互。
+受控验证现已通过，S01-01 可更新为已验收；真实 Playnite 设置加载/保存仍未运行。该模型只建立持久化契约，尚未提供页面密度、列选择或视图保存交互。
