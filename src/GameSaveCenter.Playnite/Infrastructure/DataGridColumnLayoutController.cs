@@ -114,6 +114,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return result;
         }
 
+        internal DataGrid Grid => grid;
+
         internal void SetSettingsPersistenceEnabled(bool enabled)
         {
             if (disposed || settingsPersistenceEnabled == enabled) return;

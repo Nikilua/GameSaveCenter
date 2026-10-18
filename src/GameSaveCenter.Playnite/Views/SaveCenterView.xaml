@@ -207,6 +207,8 @@
                                         <ui:Button x:Name="SaveHistoryViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" AutomationProperties.Name="另存存档历史视图副本"/>
                                         <ui:Button x:Name="SaveHistoryViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" AutomationProperties.Name="重命名存档历史视图"/>
                                         <ui:Button x:Name="SaveHistoryViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" AutomationProperties.Name="删除存档历史视图"/>
+                                        <TextBlock x:Name="SaveHistoryViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="存档历史视图保存状态"/>
+                                        <ui:Button x:Name="SaveHistoryViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存存档历史视图" IsEnabled="False" Visibility="Collapsed"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="重置列宽" ToolTip="恢复存档历史和候选路径表格的默认列宽" AutomationProperties.Name="重置存档表格列宽" Click="OnResetColumnLayoutClick"/>
                                     </WrapPanel>
                                 </Grid>
@@ -448,6 +450,8 @@
                                 <ui:Button x:Name="SaveCandidateViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" AutomationProperties.Name="另存存档候选视图副本"/>
                                 <ui:Button x:Name="SaveCandidateViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" AutomationProperties.Name="重命名存档候选视图"/>
                                 <ui:Button x:Name="SaveCandidateViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" AutomationProperties.Name="删除存档候选视图"/>
+                                <TextBlock x:Name="SaveCandidateViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="候选视图保存状态"/>
+                                <ui:Button x:Name="SaveCandidateViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存候选视图" IsEnabled="False" Visibility="Collapsed"/>
                             </WrapPanel>
                         </Grid>
                     </Border>

@@ -72,10 +72,15 @@ namespace GameSaveCenter.Playnite.Views
                 TaskViewConfigurationCopyButton,
                 TaskViewConfigurationRenameButton,
                 TaskViewConfigurationDeleteButton,
+                TaskViewConfigurationDirtyStatusText,
+                TaskViewConfigurationRestoreButton,
                 viewModel.PersistUiPreference,
                 viewModel.GetSelectedTaskFilterPresetId,
                 viewModel.ApplyTaskFilterPresetById,
                 viewModel.SetTaskViewConfigurationFilterPersistenceEnabled,
+                viewModel,
+                viewModel.CaptureTaskFilterStateFingerprint,
+                viewModel.GetTaskFilterPresetFingerprint,
                 viewModel.ConfirmViewConfigurationMutationAsync,
                 viewModel.ReportViewConfigurationStatus);
         }

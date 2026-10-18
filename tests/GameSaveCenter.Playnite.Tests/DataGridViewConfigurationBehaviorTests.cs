@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
@@ -20,6 +21,8 @@ public sealed class DataGridViewConfigurationBehaviorTests
         RunSta(() =>
         {
             var configId = Guid.NewGuid().ToString("N");
+            var firstFilterPresetId = Guid.NewGuid().ToString("N");
+            var secondFilterPresetId = Guid.NewGuid().ToString("N");
             var settings = new GameSaveCenterSettings
             {
                 DataGridColumnWidths = new() { ["v1/tasks/state"] = 140 },
@@ -31,6 +34,7 @@ public sealed class DataGridViewConfigurationBehaviorTests
                         Id = configId,
                         Name = "紧凑失败任务",
                         WorkspaceKey = "tasks",
+                        FilterPresetId = firstFilterPresetId,
                         SortColumnKey = "detail",
                         SortDirection = "Descending",
                         VisibleColumnKeys = new() { "state" },
@@ -67,19 +71,27 @@ public sealed class DataGridViewConfigurationBehaviorTests
             var copy = new Button();
             var rename = new Button();
             var delete = new Button();
+            var dirtyStatus = new TextBlock();
+            var restore = new Button();
+            var filterState = new TestFilterState(firstFilterPresetId, "preset-a");
+            filterState.AddPreset(secondFilterPresetId, "manual");
             var confirmationCount = 0;
             var lastConfirmationWasDangerous = false;
+            var lastStatus = string.Empty;
             var filterPersistenceEnabled = true;
             using var controller = new DataGridViewConfigurationController(
                 owner, "tasks", settings, layout, visibility, sort, selector, nameBox, save, copy, rename, delete,
-                () => persistCount++, null, null, enabled => filterPersistenceEnabled = enabled,
+                dirtyStatus, restore,
+                () => persistCount++, () => filterState.SelectedPresetId, filterState.ApplyPreset,
+                enabled => filterPersistenceEnabled = enabled, filterState,
+                () => filterState.CurrentFingerprint, filterState.GetFingerprint,
                 (_, _, _, _, isDangerous) =>
                 {
                     confirmationCount++;
                     lastConfirmationWasDangerous = isDangerous;
                     return Task.FromResult(true);
                 },
-                _ => { });
+                message => lastStatus = message);
 
             Assert.Equal(configId, ((ViewConfigurationDefinition)settings.ViewConfigurations[0]).Id);
             Assert.Equal("紧凑失败任务", selector.SelectedItem?.ToString());
@@ -89,13 +101,30 @@ public sealed class DataGridViewConfigurationBehaviorTests
             Assert.Equal(ListSortDirection.Descending, sort.ActiveDirection);
             Assert.Equal(44d, owner.Resources["GscTableRowHeight"]);
             Assert.False(filterPersistenceEnabled);
+            Assert.Equal(Visibility.Collapsed, dirtyStatus.Visibility);
+            Assert.False(restore.IsEnabled);
 
             grid.Columns[0].Width = new DataGridLength(230, DataGridLengthUnitType.Pixel);
             Assert.Equal(140, settings.DataGridColumnWidths["v1/tasks/state"]);
+            Assert.Equal(180, settings.ViewConfigurations[0].ColumnWidths["state"]);
+            Assert.Equal(Visibility.Visible, dirtyStatus.Visibility);
+            Assert.True(restore.IsEnabled);
+            restore.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.Equal(180, grid.Columns[0].Width.Value);
+            Assert.Equal(Visibility.Collapsed, dirtyStatus.Visibility);
+
+            grid.Columns[0].Width = new DataGridLength(230, DataGridLengthUnitType.Pixel);
             save.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Assert.Equal(230, settings.ViewConfigurations[0].ColumnWidths["state"]);
             Assert.Equal(140, settings.DataGridColumnWidths["v1/tasks/state"]);
             Assert.Equal(1, persistCount);
+            Assert.Equal(Visibility.Collapsed, dirtyStatus.Visibility);
+
+            grid.Columns[1].Visibility = Visibility.Visible;
+            Assert.Equal(Visibility.Visible, dirtyStatus.Visibility);
+            restore.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.Equal(Visibility.Collapsed, grid.Columns[1].Visibility);
+            Assert.Equal(Visibility.Collapsed, dirtyStatus.Visibility);
 
             selector.SelectedIndex = 0;
             Assert.Equal("默认视图", selector.SelectedItem?.ToString());
@@ -116,12 +145,31 @@ public sealed class DataGridViewConfigurationBehaviorTests
             Assert.Equal(3, persistCount);
             Assert.False(filterPersistenceEnabled);
 
+            filterState.SetCurrentFingerprint("manual");
+            Assert.Equal(Visibility.Visible, dirtyStatus.Visibility);
+            Assert.Contains("筛选", dirtyStatus.Text, StringComparison.Ordinal);
+            save.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.Contains("请先保存并应用筛选预设", lastStatus, StringComparison.Ordinal);
+            Assert.Equal(string.Empty, settings.ViewConfigurations[1].FilterPresetId);
+
+            restore.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.Equal("default", filterState.CurrentFingerprint);
+            Assert.Equal(Visibility.Collapsed, dirtyStatus.Visibility);
+
+            filterState.SelectPreset(secondFilterPresetId);
+            filterState.SetCurrentFingerprint("manual");
+            Assert.Equal(Visibility.Visible, dirtyStatus.Visibility);
+            save.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.Equal(secondFilterPresetId, settings.ViewConfigurations[1].FilterPresetId);
+            Assert.Equal(Visibility.Collapsed, dirtyStatus.Visibility);
+            Assert.Equal(4, persistCount);
+
             nameBox.Text = "重命名副本";
             rename.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Assert.Equal("重命名副本", settings.ViewConfigurations[1].Name);
             Assert.Equal(1, confirmationCount);
             Assert.False(lastConfirmationWasDangerous);
-            Assert.Equal(4, persistCount);
+            Assert.Equal(5, persistCount);
 
             delete.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             Assert.Single(settings.ViewConfigurations);
@@ -129,7 +177,7 @@ public sealed class DataGridViewConfigurationBehaviorTests
             Assert.True(lastConfirmationWasDangerous);
             Assert.Equal(0, selector.SelectedIndex);
             Assert.Equal(string.Empty, settings.GetActiveViewConfigurationId("tasks"));
-            Assert.Equal(5, persistCount);
+            Assert.Equal(6, persistCount);
             Assert.True(filterPersistenceEnabled);
 
             controller.Dispose();
@@ -149,6 +197,63 @@ public sealed class DataGridViewConfigurationBehaviorTests
         owner.Resources["GscTableCellPaddingComfortable"] = new Thickness(12, 0, 12, 0);
         owner.Resources["GscTableCellPaddingCompact"] = new Thickness(10, 0, 10, 0);
         return owner;
+    }
+
+    private sealed class TestFilterState : INotifyPropertyChanged
+    {
+        private readonly Dictionary<string, string> presetFingerprints = new(StringComparer.Ordinal);
+        private string selectedPresetId;
+        private string currentFingerprint;
+
+        internal TestFilterState(string selectedPresetId, string currentFingerprint)
+        {
+            this.selectedPresetId = selectedPresetId;
+            this.currentFingerprint = currentFingerprint;
+            presetFingerprints[string.Empty] = "default";
+            presetFingerprints[selectedPresetId] = currentFingerprint;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        internal string SelectedPresetId
+        {
+            get => selectedPresetId;
+            private set
+            {
+                if (string.Equals(selectedPresetId, value, StringComparison.Ordinal)) return;
+                selectedPresetId = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedTaskFilterPreset"));
+            }
+        }
+
+        internal string CurrentFingerprint
+        {
+            get => currentFingerprint;
+            private set
+            {
+                if (string.Equals(currentFingerprint, value, StringComparison.Ordinal)) return;
+                currentFingerprint = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TaskSearchText"));
+            }
+        }
+
+        internal string? GetFingerprint(string presetId)
+            => presetFingerprints.TryGetValue(presetId ?? string.Empty, out var value) ? value : null;
+
+        internal void AddPreset(string id, string fingerprint)
+            => presetFingerprints[id] = fingerprint;
+
+        internal void SelectPreset(string id)
+            => SelectedPresetId = id;
+
+        internal void SetCurrentFingerprint(string value)
+            => CurrentFingerprint = value;
+
+        internal void ApplyPreset(string id)
+        {
+            SelectedPresetId = id ?? string.Empty;
+            if (GetFingerprint(SelectedPresetId) is string fingerprint)
+                CurrentFingerprint = fingerprint;
+        }
     }
 
     private static void RunSta(Action action)

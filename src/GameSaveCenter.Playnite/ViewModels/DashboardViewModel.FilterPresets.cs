@@ -126,6 +126,57 @@ namespace GameSaveCenter.Playnite.ViewModels
         internal string GetSelectedTaskFilterPresetId()
             => SelectedTaskFilterPreset?.Id ?? string.Empty;
 
+        internal string CaptureTaskFilterStateFingerprint()
+            => CreateTaskFilterStateFingerprint(
+                TaskSearchText,
+                TaskStatusFilter,
+                TaskGameFilter,
+                TaskTypeFilter,
+                TaskHistoryScope,
+                TaskHistoryRange);
+
+        internal string GetTaskFilterPresetFingerprint(string presetId)
+        {
+            var preset = string.IsNullOrWhiteSpace(presetId)
+                ? null
+                : TaskFilterPresets.FirstOrDefault(item => string.Equals(item.Id, presetId, StringComparison.Ordinal));
+            if (preset != null)
+            {
+                return CreateTaskFilterStateFingerprint(
+                    preset.TaskSearchText,
+                    preset.TaskStatusFilter,
+                    preset.TaskGameFilter,
+                    preset.TaskTypeFilter,
+                    preset.TaskHistoryScope,
+                    preset.TaskHistoryRange);
+            }
+
+            var settings = plugin.Settings;
+            return CreateTaskFilterStateFingerprint(
+                settings.TaskSearchTextState ?? string.Empty,
+                TaskStatusFilterOptions.Contains(settings.TaskStatusFilterState) ? settings.TaskStatusFilterState : "全部",
+                TaskGameFilterOptions.Contains(settings.TaskGameFilterState) ? settings.TaskGameFilterState : "全部",
+                TaskTypeFilterOptions.Contains(settings.TaskTypeFilterState) ? settings.TaskTypeFilterState : "全部",
+                TaskHistoryScopeOptions.Contains(settings.TaskHistoryScopeState) ? settings.TaskHistoryScopeState : "最近任务",
+                TaskHistoryRangeOptions.Contains(settings.TaskHistoryRangeState) ? settings.TaskHistoryRangeState : "全部时间");
+        }
+
+        private static string CreateTaskFilterStateFingerprint(
+            string? search,
+            string? status,
+            string? game,
+            string? type,
+            string? historyScope,
+            string? historyRange)
+        {
+            var values = new[] { search, status, game, type, historyScope, historyRange };
+            return string.Join("|", values.Select(value =>
+            {
+                var normalized = value ?? string.Empty;
+                return $"{normalized.Length}:{normalized}";
+            }));
+        }
+
         internal void ApplyTaskFilterPresetById(string presetId)
         {
             if (string.IsNullOrWhiteSpace(presetId))

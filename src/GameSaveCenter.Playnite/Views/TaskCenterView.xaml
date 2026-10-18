@@ -216,6 +216,8 @@
                     <ui:Button x:Name="TaskViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" ToolTip="使用新名称保存当前任务表格视图副本" AutomationProperties.Name="另存任务表格视图副本" Margin="0,0,8,0"/>
                     <ui:Button x:Name="TaskViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" ToolTip="重命名已保存的任务表格视图" AutomationProperties.Name="重命名任务表格视图" Margin="0,0,8,0"/>
                     <ui:Button x:Name="TaskViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" ToolTip="删除已保存的任务表格视图并恢复默认布局" AutomationProperties.Name="删除任务表格视图"/>
+                    <TextBlock x:Name="TaskViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="任务视图保存状态"/>
+                    <ui:Button x:Name="TaskViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存任务视图" IsEnabled="False" Visibility="Collapsed"/>
                 </WrapPanel>
                 <Border x:Name="TaskNavigationSourceBanner" Grid.Row="3" Grid.ColumnSpan="6" Margin="0,8,0,0">
                     <Border.Style>

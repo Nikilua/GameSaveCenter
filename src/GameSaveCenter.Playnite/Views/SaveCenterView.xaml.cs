@@ -91,12 +91,14 @@ namespace GameSaveCenter.Playnite.Views
                 viewModel, "save-history", historyColumnLayout, historyColumnVisibility, historySort,
                 SaveHistoryViewConfigurationComboBox, SaveHistoryViewConfigurationNameBox,
                 SaveHistoryViewConfigurationSaveButton, SaveHistoryViewConfigurationCopyButton,
-                SaveHistoryViewConfigurationRenameButton, SaveHistoryViewConfigurationDeleteButton);
+                SaveHistoryViewConfigurationRenameButton, SaveHistoryViewConfigurationDeleteButton,
+                SaveHistoryViewConfigurationDirtyStatusText, SaveHistoryViewConfigurationRestoreButton);
             candidateViewConfiguration = CreateViewConfigurationController(
                 viewModel, "save-candidates", candidateColumnLayout, candidateColumnVisibility, candidateSort,
                 SaveCandidateViewConfigurationComboBox, SaveCandidateViewConfigurationNameBox,
                 SaveCandidateViewConfigurationSaveButton, SaveCandidateViewConfigurationCopyButton,
-                SaveCandidateViewConfigurationRenameButton, SaveCandidateViewConfigurationDeleteButton);
+                SaveCandidateViewConfigurationRenameButton, SaveCandidateViewConfigurationDeleteButton,
+                SaveCandidateViewConfigurationDirtyStatusText, SaveCandidateViewConfigurationRestoreButton);
         }
 
         private DataGridViewConfigurationController CreateViewConfigurationController(
@@ -110,11 +112,15 @@ namespace GameSaveCenter.Playnite.Views
             Button saveButton,
             Button copyButton,
             Button renameButton,
-            Button deleteButton)
+            Button deleteButton,
+            TextBlock dirtyStatus,
+            Button restoreButton)
             => new DataGridViewConfigurationController(
                 this, workspaceKey, viewModel.PluginSettings, layout, visibility, sort,
                 selector, nameBox, saveButton, copyButton, renameButton, deleteButton,
+                dirtyStatus, restoreButton,
                 PreferencePersistenceOverrideForBehaviorTest ?? viewModel.PersistUiPreference,
+                null, null, null,
                 null, null, null,
                 viewModel.ConfirmViewConfigurationMutationAsync,
                 viewModel.ReportViewConfigurationStatus);

@@ -22,22 +22,31 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private readonly DataGridColumnLayoutController layout;
         private readonly DataGridColumnVisibilityController visibility;
         private readonly DataGridStableSortController sort;
+        private readonly DataGrid grid;
         private readonly ComboBox selector;
         private readonly TextBox nameBox;
         private readonly Button saveButton;
         private readonly Button copyButton;
         private readonly Button renameButton;
         private readonly Button deleteButton;
+        private readonly TextBlock dirtyStatus;
+        private readonly Button restoreButton;
         private readonly Action persist;
         private readonly Func<string> captureFilterPresetId;
         private readonly Action<string> applyFilterPresetId;
         private readonly Action<bool> setFilterPersistenceEnabled;
+        private readonly INotifyPropertyChanged? viewStateNotifications;
+        private readonly Func<string>? captureFilterStateFingerprint;
+        private readonly Func<string, string?>? filterPresetFingerprint;
         private readonly Func<string, string, string, string, bool, Task<bool>> confirm;
         private readonly Action<string> reportStatus;
         private readonly List<ViewConfigurationOption> options = new List<ViewConfigurationOption>();
+        private readonly DependencyPropertyDescriptor? columnWidthDescriptor;
+        private readonly DependencyPropertyDescriptor? columnVisibilityDescriptor;
         private bool applyingSelection;
         private bool disposed;
         private string activeDensityMode;
+        private string? baselineFilterStateFingerprint;
 
         internal DataGridViewConfigurationController(
             FrameworkElement resourceOwner,
@@ -52,10 +61,15 @@ namespace GameSaveCenter.Playnite.Infrastructure
             Button copyButton,
             Button renameButton,
             Button deleteButton,
+            TextBlock dirtyStatus,
+            Button restoreButton,
             Action persist,
             Func<string>? captureFilterPresetId,
             Action<string>? applyFilterPresetId,
             Action<bool>? setFilterPersistenceEnabled,
+            INotifyPropertyChanged? viewStateNotifications,
+            Func<string>? captureFilterStateFingerprint,
+            Func<string, string?>? filterPresetFingerprint,
             Func<string, string, string, string, bool, Task<bool>> confirm,
             Action<string> reportStatus)
         {
@@ -67,26 +81,43 @@ namespace GameSaveCenter.Playnite.Infrastructure
             this.layout = layout ?? throw new ArgumentNullException(nameof(layout));
             this.visibility = visibility ?? throw new ArgumentNullException(nameof(visibility));
             this.sort = sort ?? throw new ArgumentNullException(nameof(sort));
+            grid = layout.Grid;
             this.selector = selector ?? throw new ArgumentNullException(nameof(selector));
             this.nameBox = nameBox ?? throw new ArgumentNullException(nameof(nameBox));
             this.saveButton = saveButton ?? throw new ArgumentNullException(nameof(saveButton));
             this.copyButton = copyButton ?? throw new ArgumentNullException(nameof(copyButton));
             this.renameButton = renameButton ?? throw new ArgumentNullException(nameof(renameButton));
             this.deleteButton = deleteButton ?? throw new ArgumentNullException(nameof(deleteButton));
+            this.dirtyStatus = dirtyStatus ?? throw new ArgumentNullException(nameof(dirtyStatus));
+            this.restoreButton = restoreButton ?? throw new ArgumentNullException(nameof(restoreButton));
             this.persist = persist ?? throw new ArgumentNullException(nameof(persist));
             this.captureFilterPresetId = captureFilterPresetId ?? (() => string.Empty);
             this.applyFilterPresetId = applyFilterPresetId ?? (_ => { });
             this.setFilterPersistenceEnabled = setFilterPersistenceEnabled ?? (_ => { });
+            this.viewStateNotifications = viewStateNotifications;
+            this.captureFilterStateFingerprint = captureFilterStateFingerprint;
+            this.filterPresetFingerprint = filterPresetFingerprint;
             this.confirm = confirm ?? throw new ArgumentNullException(nameof(confirm));
             this.reportStatus = reportStatus ?? throw new ArgumentNullException(nameof(reportStatus));
             activeDensityMode = settings.DefaultTableDensityMode;
+            columnWidthDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.WidthProperty, typeof(DataGridColumn));
+            columnVisibilityDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.VisibilityProperty, typeof(DataGridColumn));
 
             selector.ItemsSource = options;
             selector.SelectionChanged += OnSelectionChanged;
+            grid.Sorting += OnGridSorting;
+            if (viewStateNotifications != null)
+                viewStateNotifications.PropertyChanged += OnViewStatePropertyChanged;
+            foreach (var column in grid.Columns)
+            {
+                columnWidthDescriptor?.AddValueChanged(column, OnColumnPresentationChanged);
+                columnVisibilityDescriptor?.AddValueChanged(column, OnColumnPresentationChanged);
+            }
             saveButton.Click += OnSaveCurrentClick;
             copyButton.Click += OnSaveCopyClick;
             renameButton.Click += OnRenameClick;
             deleteButton.Click += OnDeleteClick;
+            restoreButton.Click += OnRestoreClick;
             AutomationProperties.SetName(selector, "表格视图");
             RestoreSelection();
         }
@@ -96,10 +127,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (disposed) return;
             disposed = true;
             selector.SelectionChanged -= OnSelectionChanged;
+            grid.Sorting -= OnGridSorting;
+            if (viewStateNotifications != null)
+                viewStateNotifications.PropertyChanged -= OnViewStatePropertyChanged;
+            foreach (var column in grid.Columns)
+            {
+                columnWidthDescriptor?.RemoveValueChanged(column, OnColumnPresentationChanged);
+                columnVisibilityDescriptor?.RemoveValueChanged(column, OnColumnPresentationChanged);
+            }
             saveButton.Click -= OnSaveCurrentClick;
             copyButton.Click -= OnSaveCopyClick;
             renameButton.Click -= OnRenameClick;
             deleteButton.Click -= OnDeleteClick;
+            restoreButton.Click -= OnRestoreClick;
         }
 
         private void RestoreSelection()
@@ -144,6 +184,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     Apply(selected.Configuration);
                 else
                     SetPersistenceMode(selected.Configuration == null);
+                baselineFilterStateFingerprint = selected.Configuration == null
+                    ? null
+                    : captureFilterStateFingerprint?.Invoke();
                 if (persistSelection)
                 {
                     settings.SetActiveViewConfigurationId(workspaceKey, selected.Configuration?.Id);
@@ -210,6 +253,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             try
             {
+                if (!CanSaveCurrentFilterState()) return;
                 var selected = SelectedConfiguration;
                 var result = ViewConfigurationCatalog.SaveCurrent(
                     settings,
@@ -231,6 +275,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             try
             {
+                if (!CanSaveCurrentFilterState()) return;
                 var result = ViewConfigurationCatalog.SaveCurrent(
                     settings,
                     workspaceKey,
@@ -328,6 +373,86 @@ namespace GameSaveCenter.Playnite.Infrastructure
             deleteButton.IsEnabled = hasSavedView;
             saveButton.ToolTip = hasSavedView ? "将当前布局更新到已选视图" : "将当前默认布局保存为命名视图";
             copyButton.ToolTip = hasSavedView ? "以新名称另存当前布局" : "以新名称保存当前默认布局副本";
+            var isDirty = IsSelectedViewDirty(out var filterChanged);
+            dirtyStatus.Text = filterChanged
+                ? "筛选条件有未保存更改"
+                : "视图有未保存更改";
+            dirtyStatus.ToolTip = filterChanged
+                ? "先保存并应用此筛选为筛选预设，再保存视图；也可以恢复已保存视图。"
+                : "当前排列与已保存视图不同。恢复会放弃这些临时改动。";
+            dirtyStatus.Visibility = isDirty ? Visibility.Visible : Visibility.Collapsed;
+            restoreButton.Visibility = isDirty ? Visibility.Visible : Visibility.Collapsed;
+            restoreButton.IsEnabled = isDirty;
+        }
+
+        private bool IsSelectedViewDirty(out bool filterChanged)
+        {
+            filterChanged = false;
+            var saved = SelectedConfiguration;
+            if (saved == null) return false;
+
+            var current = CaptureCurrent(saved.Name);
+            var viewChanged = !AreEquivalent(saved, current);
+            var currentFilterState = captureFilterStateFingerprint?.Invoke();
+            filterChanged = baselineFilterStateFingerprint != null
+                && currentFilterState != null
+                && !string.Equals(baselineFilterStateFingerprint, currentFilterState, StringComparison.Ordinal);
+            return viewChanged || filterChanged;
+        }
+
+        private bool CanSaveCurrentFilterState()
+        {
+            if (captureFilterStateFingerprint == null || filterPresetFingerprint == null) return true;
+            var current = captureFilterStateFingerprint();
+            var preset = filterPresetFingerprint(captureFilterPresetId());
+            if (current == null || preset == null || string.Equals(current, preset, StringComparison.Ordinal))
+                return true;
+
+            reportStatus("当前筛选尚未保存在所选筛选预设中。请先保存并应用筛选预设，或恢复已保存视图。");
+            return false;
+        }
+
+        private void OnRestoreClick(object sender, RoutedEventArgs e)
+        {
+            var selected = SelectedConfiguration;
+            if (disposed || selected == null) return;
+            Apply(selected);
+            baselineFilterStateFingerprint = captureFilterStateFingerprint?.Invoke();
+            UpdateButtons();
+            reportStatus($"已恢复已保存视图“{selected.Name}”。");
+        }
+
+        private void OnGridSorting(object sender, DataGridSortingEventArgs e)
+            => UpdateButtons();
+
+        private void OnColumnPresentationChanged(object? sender, EventArgs e)
+            => UpdateButtons();
+
+        private void OnViewStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName == "SelectedTaskFilterPreset"
+                || e.PropertyName.StartsWith("Task", StringComparison.Ordinal))
+                UpdateButtons();
+        }
+
+        private static bool AreEquivalent(ViewConfigurationDefinition saved, ViewConfigurationDefinition current)
+        {
+            if (!string.Equals(saved.FilterPresetId, current.FilterPresetId, StringComparison.Ordinal)
+                || !string.Equals(saved.SortColumnKey, current.SortColumnKey, StringComparison.Ordinal)
+                || !string.Equals(saved.SortDirection, current.SortDirection, StringComparison.Ordinal)
+                || !string.Equals(saved.DensityMode, current.DensityMode, StringComparison.Ordinal)
+                || !saved.VisibleColumnKeys.SequenceEqual(current.VisibleColumnKeys, StringComparer.Ordinal)
+                || saved.ColumnWidths.Count != current.ColumnWidths.Count)
+                return false;
+
+            foreach (var pair in saved.ColumnWidths)
+            {
+                if (!current.ColumnWidths.TryGetValue(pair.Key, out var width)
+                    || Math.Abs(pair.Value - width) > 0.01d)
+                    return false;
+            }
+            return true;
         }
 
         private ViewConfigurationDefinition? SelectedConfiguration
