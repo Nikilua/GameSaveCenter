@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 import sqlite3
+import subprocess
 import sys
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -1737,6 +1738,21 @@ def check_external_process_guards() -> None:
     if "_runner.RunAsync(_options.RcloneExecutable, arguments, null, timeout, token)" not in rclone:
         fail("Rclone safe runner must keep the existing executable working-directory policy")
 
+
+def check_round4_progress() -> None:
+    """Keep the generated Round4 status table synchronized with its JSON index."""
+    validator = ROOT / "scripts/render-round4-progress.py"
+    result = subprocess.run(
+        [sys.executable, str(validator), "--check"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        detail = (result.stdout + result.stderr).strip()
+        fail(f"Round4 status index/table validation failed: {detail}")
+
 def main() -> int:
     check_structured_files()
     check_csharp_delimiters()
@@ -1772,6 +1788,7 @@ def main() -> int:
     check_wpf_ui_production_scope_guards()
     check_wpf_ui_probe_guards()
     check_settings_autoselect_guards()
+    check_round4_progress()
     if ERRORS:
         print("Source validation failed:")
         for item in ERRORS:

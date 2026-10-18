@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S07-02 结构化状态与证据索引
+
+- 核对现有进度账本：64 个 ID 唯一但状态/验证/宿主边界只存在手写 Markdown 行，无法机器分别计数，也无法确保链接索引完整。新增 `ROUND4_STATUS.json`，显式记录整体状态、实现与 commit、受控验证、宿主验证、说明、evidence 路径和未验边界；只管理 Round4，不自动迁移或解除旧 Q/R 阻塞。
+- 新增 `scripts/render-round4-progress.py`，从 JSON 生成摘要和表格，并校验 64 个 ID/标题与计划一致、唯一、状态枚举、完成项 commit、证据路径存在以及结构化 evidence 与表格链接一致。生成区域外保留人工说明。`scripts/validate-source.py` 现在自动执行该检查。
+- `python scripts/render-round4-progress.py --check` 与 `python scripts/validate-source.py .` 通过；`python -m unittest discover -s scripts/tests -p test_round4_progress.py` 5 项通过，包括重复 ID、缺失链接文件、链接错配和无实现 commit 负例。详情见 [S07-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-02/README.md)。
+
 ## 2026-10-18 Round4 S07-06 TRX 测试计数口径
 
 - 核对 `scripts/build.ps1` 与 `scripts/run-playnite-tests-isolated.ps1`：原流程输出源测试/WPF 隔离类数量，诊断只脱敏/保留 TRX，尚未汇总用例数。`scripts/build-diagnostics.ps1` 现在从 `<UnitTestResult>` 重算每 suite 的测试用例/通过/失败/跳过/其他状态，汇总 `core`、`worker`、`playnite-source` 与 `playnite-wpf-isolated`，并比较每个 TRX 的 `Counters total`。同时记录实际测试类数和 WPF 隔离类 TRX 数；逐 TRX 相对路径及计数保留在 `summary.json` 便于复算。

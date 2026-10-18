@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-02 已验收
+
+Round4 的机器数据源是 `docs/design/reviews/ui-finesse-round4-20261018/ROUND4_STATUS.json`；它把整体状态、实现/commit、受控验证、宿主验证、证据路径和未验边界分列。`scripts/render-round4-progress.py --write` 更新账本生成块，`--check` 验证计划 ID/标题、唯一性、状态值和证据链接；`scripts/validate-source.py` 已包含该检查。手写说明留在生成区域外。此索引只包含 Round4 的 64 项，不自动改动已有 Q/R 项或外部阻塞。证据见[Round4 S07-02](../design/reviews/ui-finesse-round4-20261018/evidence/S07-02/README.md)。
+
 ## 2026-10-18 Round4 S07-06 已验收
 
 诊断 `summary.json` 现从 TRX `<UnitTestResult>` 原始条目统计用例数，分类记录 passed/failed/error/timeout/aborted/skipped 等结果，并逐文件比对 `ResultSummary/Counters/@total`。报告分组为 Core、Worker、Playnite source 与 Playnite WPF isolated，另记录实际类数与 WPF 隔离类 TRX 运行数；结果文件相对路径允许重新计数。`Test-BuildDiagnostics.ps1` 的合成结果与旧 SDK8 整套 TRX 快照验证通过，旧快照中 Q14 的 1 个失败仍保留为失败。证据见[Round4 S07-06](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。

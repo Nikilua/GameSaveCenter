@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-02 已验收，S00-02 仍待 UI 门禁
+
+Round4 64 项的结构化状态源为 `docs/design/reviews/ui-finesse-round4-20261018/ROUND4_STATUS.json`。更新 JSON 后运行 `python scripts/render-round4-progress.py --write`；验证使用 `--check`，同时已接入 `scripts/validate-source.py`。完成/受控/宿主状态与证据索引分开记录，旧 Q/R 项与外部阻塞不由该索引清除。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-02/README.md`。
+
+S07-01/04/06 已完成。S00-02 仍缺 SDK8.0.423 与真实 Playnite UI 验证；本地分支包含该未准入 XAML 改动，继续不推送 `main`。后续继续按剩余独立项准入。
+
 ## 2026-10-18 最新续接：S07-06 已验收，S00-02 仍待 UI 门禁
 
 诊断器现在从原始 TRX 生成 `summary.json.testSummary`，分别报告测试用例状态、各 suite 的 case/class 数，以及 WPF 隔离类运行数，并逐文件对照 TRX Counters。定向诊断测试通过；历史 SDK8 `c7f2a368` 的 27 个 TRX 复算为 1,073 个用例（1,054通过、1失败、18跳过），WPF 为24个隔离类/103个用例。历史 Q14 失败未被改写。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md`。
