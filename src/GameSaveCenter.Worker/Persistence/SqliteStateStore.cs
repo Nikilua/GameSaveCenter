@@ -426,7 +426,8 @@ INSERT OR REPLACE INTO backup_versions_v2(backup_id,playnite_id,ludusavi_name,cr
 SELECT backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,{archivePathSelect},{readinessSelect},parent_backup_id FROM backup_versions;
 DROP TABLE backup_versions;
 ALTER TABLE backup_versions_v2 RENAME TO backup_versions;
-CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);";
+CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);
+CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time_id ON backup_versions(playnite_id,created_utc DESC,backup_id ASC);";
         await migrate.ExecuteNonQueryAsync(token).ConfigureAwait(false);
         await transaction.CommitAsync(token).ConfigureAwait(false);
     }
@@ -930,7 +931,7 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         var result = new List<BackupVersionDto>();
         await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
         var command=connection.CreateCommand();
-        command.CommandText="SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id FROM backup_versions WHERE playnite_id=$id ORDER BY created_utc DESC;";
+        command.CommandText="SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id FROM backup_versions WHERE playnite_id=$id ORDER BY created_utc DESC,backup_id ASC;";
         command.Parameters.AddWithValue("$id",playniteId);
         await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while(await reader.ReadAsync(token).ConfigureAwait(false)) result.Add(new BackupVersionDto
@@ -944,6 +945,78 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
             ,ParentBackupId=reader.IsDBNull(12)?string.Empty:reader.GetString(12)
         });
         return result;
+    }
+
+    public async Task<BackupVersionPageDto> GetBackupVersionPageAsync(
+        string playniteId,
+        int limit,
+        string? beforeCreatedUtcKey,
+        string? beforeBackupId,
+        CancellationToken token)
+    {
+        var page = new BackupVersionPageDto();
+        if (string.IsNullOrWhiteSpace(playniteId)) return page;
+
+        var safeLimit = Math.Clamp(limit, 1, 100);
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+
+        await using (var countCommand = connection.CreateCommand())
+        {
+            countCommand.CommandText = "SELECT COUNT(*) FROM backup_versions WHERE playnite_id=$id;";
+            countCommand.Parameters.AddWithValue("$id", playniteId);
+            page.TotalCount = Convert.ToInt32(await countCommand.ExecuteScalarAsync(token).ConfigureAwait(false));
+        }
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = !string.IsNullOrWhiteSpace(beforeCreatedUtcKey)
+            ? @"SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id,manifest_json
+FROM backup_versions
+WHERE playnite_id=$id AND (created_utc<$before OR (created_utc=$before AND backup_id>$beforeId))
+ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;"
+            : @"SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id,manifest_json
+FROM backup_versions WHERE playnite_id=$id
+ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;";
+        command.Parameters.AddWithValue("$id", playniteId);
+        command.Parameters.AddWithValue("$limit", safeLimit + 1);
+        if (!string.IsNullOrWhiteSpace(beforeCreatedUtcKey))
+        {
+            command.Parameters.AddWithValue("$before", beforeCreatedUtcKey);
+            command.Parameters.AddWithValue("$beforeId", beforeBackupId ?? string.Empty);
+        }
+
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        var cursorKeys = new List<(string CreatedUtcKey, string BackupId)>();
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+        {
+            var createdUtcKey = reader.GetString(2);
+            var backupId = reader.GetString(0);
+            page.Items.Add(new BackupVersionDto
+            {
+                BackupId=backupId,PlayniteId=playniteId,LudusaviName=reader.GetString(1),CreatedUtc=DateTime.Parse(createdUtcKey).ToUniversalTime(),
+                TotalBytes=reader.GetInt64(3),FileCount=reader.GetInt32(4),IsLocked=reader.GetInt32(5)==1,Comment=reader.IsDBNull(6)?string.Empty:reader.GetString(6),SourceDevice=reader.IsDBNull(7)?string.Empty:reader.GetString(7),
+                OperatingSystem=reader.IsDBNull(8)?string.Empty:reader.GetString(8),IsPreRestore=reader.GetInt32(9)==1,
+                ArchivePath=reader.IsDBNull(10)?string.Empty:reader.GetString(10),
+                RestoreReadiness=reader.IsDBNull(11)||string.IsNullOrWhiteSpace(reader.GetString(11))||reader.GetString(11)=="{}"
+                    ? null : TryDeserializeRestoreReadiness(reader.GetString(11)),
+                ParentBackupId=reader.IsDBNull(12)?string.Empty:reader.GetString(12),
+                ContentFingerprint=ComputeContentFingerprint(reader.IsDBNull(13)?string.Empty:reader.GetString(13))
+            });
+            cursorKeys.Add((createdUtcKey, backupId));
+        }
+
+        page.HasMore = page.Items.Count > safeLimit;
+        if (page.HasMore)
+        {
+            page.Items.RemoveAt(page.Items.Count - 1);
+            cursorKeys.RemoveAt(cursorKeys.Count - 1);
+        }
+        if (cursorKeys.Count > 0)
+        {
+            page.NextCreatedUtcKey = cursorKeys[cursorKeys.Count - 1].CreatedUtcKey;
+            page.NextBackupId = cursorKeys[cursorKeys.Count - 1].BackupId;
+        }
+        return page;
     }
 
     /// <summary>Returns indexed backup rows needed for read-only storage analysis.</summary>
@@ -1314,6 +1387,7 @@ CREATE INDEX IF NOT EXISTS ix_tasks_game_type_created ON tasks(game_id,task_type
 CREATE INDEX IF NOT EXISTS ix_tasks_request_created ON tasks(request_id,created_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_ipc_request_updated ON ipc_request_ledger(updated_utc);
 CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time ON backup_versions(playnite_id,created_utc DESC);
+CREATE INDEX IF NOT EXISTS ix_backup_versions_game_time_id ON backup_versions(playnite_id,created_utc DESC,backup_id ASC);
 CREATE INDEX IF NOT EXISTS ix_media_game ON media(playnite_id,captured_utc DESC);
 CREATE INDEX IF NOT EXISTS ix_sessions_open ON sessions(stopped_utc);
 CREATE INDEX IF NOT EXISTS ix_save_candidates_game_path ON save_candidates(playnite_id,path,created_utc DESC);

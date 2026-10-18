@@ -86,6 +86,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.PreviewBackup=>await _backup.PreviewAsync(Read<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.BackupAll=>await _backup.SubmitAllAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackups=>await ListBackupsAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListBackupHistoryPage=>await ListBackupHistoryPageAsync(Read<BackupHistoryPageQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRetention=>await PreviewRetentionAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateBackupMetadata=>await UpdateMetadataAsync(Read<BackupMetadataUpdateDto>(request),token).ConfigureAwait(false),
@@ -312,6 +313,58 @@ public sealed class IpcRequestDispatcher
                 reconcileError.ToString());
         }
         return cached;
+    }
+
+    private async Task<BackupVersionPageDto> ListBackupHistoryPageAsync(BackupHistoryPageQueryDto query, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(query.PlayniteId)) return new BackupVersionPageDto();
+
+        var page = await _store.GetBackupVersionPageAsync(
+            query.PlayniteId,
+            query.Limit,
+            query.BeforeCreatedUtcKey,
+            query.BeforeBackupId,
+            token).ConfigureAwait(false);
+
+        Exception? reconcileError = null;
+        if (_ludusavi.IsAvailable && (query.ForceRefresh || page.TotalCount == 0))
+        {
+            try
+            {
+                var matches = await _catalog.GetMatchesAsync(token).ConfigureAwait(false);
+                if (matches.TryGetValue(query.PlayniteId, out var match) && !string.IsNullOrWhiteSpace(match.Name))
+                {
+                    await _backup.RefreshBackupHistoryAsync(query.PlayniteId, match.Name, token).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                reconcileError = ex;
+                _logger.LogWarning(ex, "Could not reconcile backup history for {PlayniteId}", query.PlayniteId);
+                await _store.AppendAuditAsync(
+                    "BackupHistory",
+                    "读取历史版本失败，已保留最后一次有效索引",
+                    ex.ToString(),
+                    token).ConfigureAwait(false);
+            }
+
+            page = await _store.GetBackupVersionPageAsync(
+                query.PlayniteId,
+                query.Limit,
+                query.BeforeCreatedUtcKey,
+                query.BeforeBackupId,
+                token).ConfigureAwait(false);
+        }
+
+        if (page.TotalCount == 0 && reconcileError != null)
+        {
+            throw new WorkerOperationException(
+                "BACKUP_HISTORY_REFRESH_FAILED",
+                "磁盘备份可能已经存在，但读取历史索引失败；请查看诊断页中的 BackupHistory 日志。",
+                reconcileError.ToString());
+        }
+
+        return page;
     }
     private Task<List<MediaItemDto>> ListMediaAsync(GameQueryDto query,CancellationToken token)
         =>_store.GetMediaAsync(query.PlayniteId,ClampMediaPageSize(query.Limit),token);

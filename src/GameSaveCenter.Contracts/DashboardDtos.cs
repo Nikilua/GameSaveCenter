@@ -98,6 +98,8 @@ namespace GameSaveCenter.Contracts
     {
         public string BackupId { get; set; } = string.Empty;
         public string ParentBackupId { get; set; } = string.Empty;
+        /// <summary>Content-only fingerprint computed from the indexed manifest; no manifest paths are exposed.</summary>
+        public string ContentFingerprint { get; set; } = string.Empty;
         public string PlayniteId { get; set; } = string.Empty;
         public string LudusaviName { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; }
@@ -184,6 +186,27 @@ namespace GameSaveCenter.Contracts
         }
 
         private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
+    }
+
+    /// <summary>Bounded page of backup history in newest-first chronological order.</summary>
+    public sealed class BackupVersionPageDto
+    {
+        public List<BackupVersionDto> Items { get; set; } = new List<BackupVersionDto>();
+        public int TotalCount { get; set; }
+        public bool HasMore { get; set; }
+        /// <summary>Exact indexed timestamp text for a lossless SQLite continuation cursor.</summary>
+        public string NextCreatedUtcKey { get; set; } = string.Empty;
+        public string NextBackupId { get; set; } = string.Empty;
+    }
+
+    /// <summary>Stable keyset query for loading older backup history without offset drift.</summary>
+    public sealed class BackupHistoryPageQueryDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public int Limit { get; set; } = 100;
+        public bool ForceRefresh { get; set; }
+        public string BeforeCreatedUtcKey { get; set; } = string.Empty;
+        public string BeforeBackupId { get; set; } = string.Empty;
     }
 
     /// <summary>Persisted evidence from a non-destructive restore-readiness check.</summary>

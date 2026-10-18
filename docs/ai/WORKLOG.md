@@ -1,3 +1,9 @@
+## 2026-10-19 Round4 S03-02 版本关系视图
+
+- 将历史分页接入 Worker 和 Playnite：每页最多 100 条，以原始创建时间与备份 ID 作稳定游标；仅为当前页计算内容指纹。版本详情新增来源父版本、分叉、内容相同版本、设备和不确定关系文字，并区分尚未加载与完整索引缺失；保留既有筛选、选择和恢复命令。
+- SDK `9.0.302` Release 全解方案构建 `0 warning / 0 error`；Playnite 定向测试 `12/12`（关系视图 4、历史导航 6、R09 2），Worker 定向测试 `2/2`。RenderHarness 报告 `render-qa OK / 0 PROBLEM`，source validation、25 文件 XAML 结构检查通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。构建输入、TRX、程序集/PDB/源码 SHA-256、完整渲染报告及截图见 [S03-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-02/README.md)。
+- 当前环境只安装 SDK `9.0.302`，仓库要求 `8.0.423`；未运行真实 Playnite。用户旧 R09 诊断缺少同次 summary/TRX/DLL/PDB，本轮当前匹配程序集 R09 `2/2` 不能解释旧失败。
+
 ## 2026-10-19 当前构建失败复核
 
 - 使用锁定 SDK `8.0.423` 在全新隔离输出运行 `scripts/build.ps1`：完整解决方案编译 `0 warning / 0 error`；Core `147/147`，Worker `374 passed / 1 skipped`，Playnite 非 WPF 分组 `468/468`。

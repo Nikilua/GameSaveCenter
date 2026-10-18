@@ -19,6 +19,7 @@ namespace GameSaveCenter.Contracts
         public const string PreviewBackup = "backup.preview";
         public const string BackupAll = "backup.all";
         public const string ListBackups = "backup.list";
+        public const string ListBackupHistoryPage = "backup.history.page";
         public const string CompareBackups = "backup.compare";
         public const string PreviewRetention = "backup.retention.preview";
         public const string UpdateBackupMetadata = "backup.metadata.update";

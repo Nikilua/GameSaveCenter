@@ -401,14 +401,19 @@
     {
       "id": "S03-02",
       "title": "版本关系视图",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "待本轮提交",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[受控证据](evidence/S03-02/README.md)：SDK9 Release solution 0/0；Playnite 12/12、Worker 2/2；RenderHarness render-qa OK，0 PROBLEM",
+      "evidence": [
+        {
+          "label": "受控证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-02/README.md"
+        }
+      ],
+      "boundary": "当前仅 SDK9.0.302；SDK8.0.423 正式基线和真实 Playnite 未运行。用户旧 R09 诊断缺同次 summary/TRX/DLL/PDB，当前 R09 通过不识别旧运行输入。"
     },
     {
       "id": "S03-03",

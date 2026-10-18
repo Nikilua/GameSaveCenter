@@ -1373,6 +1373,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     selectedBackup = value!;
                     OnPropertyChanged(nameof(SelectedBackup));
                 }
+                RefreshSelectedBackupLineage();
                 if (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup))
                 {
                     ResetRestoreWorkflow();
@@ -3923,7 +3924,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     });
                     try
                     {
-                        var backupsTask = plugin.RequestAsync<BackupVersionDto[]>(MessageTypes.ListBackups, new GameQueryDto { PlayniteId = id, Limit = 500, ForceRefresh = forceBackupHistory }, cancellationToken: cancellationToken);
+                        var lineageTargetBackupId = !string.IsNullOrWhiteSpace(pendingTaskBackupId)
+                            ? pendingTaskBackupId
+                            : !string.IsNullOrWhiteSpace(pendingFindingBackupId)
+                                ? pendingFindingBackupId
+                                : !string.IsNullOrWhiteSpace(pendingStorageBackupId)
+                                    ? pendingStorageBackupId
+                                    : SelectedBackup?.BackupId;
+                        var backupsTask = LoadBackupHistoryPagesAsync(id, forceBackupHistory, lineageTargetBackupId, cancellationToken);
                         var candidatesTask = plugin.RequestAsync<SavePathCandidateDto[]>(MessageTypes.ListSaveCandidates, new GameQueryDto { PlayniteId = id }, cancellationToken: cancellationToken);
                         await Task.WhenAll(backupsTask, candidatesTask);
                         if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
@@ -3934,7 +3942,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                             var selectedBackupId = SelectedBackup?.BackupId;
                             var selectedCandidateBeforeRefresh = SelectedCandidate;
                             var selectedCandidateIndex = SelectedCandidate == null ? -1 : SaveCandidates.IndexOf(SelectedCandidate);
-                            Replace(Backups, backupsTask.Result, SnapshotComparers.Backup);
+                            Replace(Backups, backupsTask.Result.Items, SnapshotComparers.Backup);
+                            SetBackupHistoryPageState(backupsTask.Result);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
                             var requestedTaskBackupId = pendingTaskBackupId;
                             var requestedFindingBackupId = pendingFindingBackupId;
@@ -6435,6 +6444,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
+                LoadMoreBackupHistoryCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,

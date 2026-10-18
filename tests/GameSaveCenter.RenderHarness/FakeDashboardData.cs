@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.RenderHarness;
@@ -529,6 +531,8 @@ public sealed class FakeDashboardData
             Backups.Add(new BackupVersionDto
             {
                 BackupId = "B-" + i.ToString("D4"),
+                ParentBackupId = i == 1 ? "B-0002" : i == 2 || i == 3 ? "B-0004" : string.Empty,
+                ContentFingerprint = i == 1 || i == 2 ? "render-equivalent-content" : $"render-content-{i}",
                 PlayniteId = SelectedGame.PlayniteId,
                 LudusaviName = SelectedGame.Name,
                 CreatedUtc = DateTime.UtcNow.AddDays(-i),
@@ -1160,6 +1164,9 @@ public sealed class FakeDashboardData
     public string TaskPageErrorMessage => fixtureState == WorkspaceFixtureState.Error ? FixtureStateDetail : string.Empty;
     public TaskStatusDto SelectedTask { get; set; } = null!;
     public BackupVersionDto SelectedBackup { get; set; } = null!;
+    public string SelectedBackupLineageSummary => BackupLineageDisplayBuilder.Build(SelectedBackup, Backups, Backups.Count).Summary;
+    public IReadOnlyList<string> SelectedBackupLineageItems => BackupLineageDisplayBuilder.Build(SelectedBackup, Backups, Backups.Count).Items;
+    public ICommand LoadMoreBackupHistoryCommand { get; } = new NoopCommand();
     public SavePathCandidateDto SelectedCandidate { get; set; } = null!;
     public GameToolDto SelectedGameTool { get; set; } = null!;
     public GameToolVersionDto SelectedGameToolVersion { get; set; } = null!;
