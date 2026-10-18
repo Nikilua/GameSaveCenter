@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -148,6 +149,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
 
             RestorePlanMappingPreview = preview;
+            MarkRestorePlanDraftsForMappingPreview(preview);
             RestorePlanDraftStatus = preview.Success
                 ? preview.Summary
                 : preview.Summary + (string.IsNullOrWhiteSpace(preview.ErrorCode) ? string.Empty : $"（{preview.ErrorCode}）");
@@ -161,7 +163,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             var game = SelectedGame ?? throw new InvalidOperationException("请先选择游戏。");
             var target = SelectedBackup ?? throw new InvalidOperationException("请先选择备份版本。");
             var mapping = RestorePlanMappingPreview ?? throw new InvalidOperationException("请先生成映射预览。");
-            var draft = RestorePlanDraftDefinition.Create(game, target, mapping);
+            RestorePlanDraftDefinition draft;
+            using (var key = RestorePlanMappingFingerprintKeyStore.GetOrCreate(
+                plugin.Settings,
+                () => plugin.SavePluginSettings(plugin.Settings)))
+            {
+                if (!string.Equals(key.KeyId, mapping.MappingFingerprintKeyId, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException("映射签名密钥已变化，请重新预览后再保存草稿。");
+                draft = RestorePlanDraftDefinition.Create(
+                    game,
+                    target,
+                    mapping,
+                    key.ComputeFileIdentityFingerprint(target.ContentFingerprint),
+                    key.KeyId,
+                    key.ComputeReadinessFingerprint(target.RestoreReadiness));
+            }
             var previous = plugin.Settings.RestorePlanDrafts;
             var candidates = new System.Collections.Generic.List<RestorePlanDraftDefinition> { draft };
             candidates.AddRange(previous);
@@ -244,6 +260,91 @@ namespace GameSaveCenter.Playnite.ViewModels
             RestorePlanMappingPreview = null;
             if (!string.IsNullOrWhiteSpace(status)) RestorePlanDraftStatus = status!;
             else RestorePlanDraftStatus = "所选游戏或版本已变化；请重新预览映射后再保存草稿。";
+        }
+
+        private void MarkRestorePlanDraftsForMappingPreview(RestoreMappingPreviewDto preview)
+        {
+            var changed = false;
+            foreach (var draft in RestorePlanDrafts)
+            {
+                if (!string.Equals(draft.PlayniteId, preview.PlayniteId, StringComparison.OrdinalIgnoreCase)
+                    || !string.Equals(draft.TargetBackupId, preview.BackupId, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var reason = RestorePlanDraftRevalidation.CompareMapping(draft, preview);
+                if (reason.Length > 0) changed |= draft.MarkNeedsRevalidation(reason);
+            }
+
+            PersistRestorePlanInvalidations(changed);
+        }
+
+        public void MarkRestorePlanDraftsForSnapshot(
+            string playniteId,
+            GameStatusDto? game,
+            IEnumerable<BackupVersionDto> currentBackups,
+            bool historyComplete)
+        {
+            if (string.IsNullOrWhiteSpace(playniteId) || game == null
+                || !string.Equals(playniteId, game.PlayniteId, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            var byId = currentBackups?.ToDictionary(item => item.BackupId, StringComparer.OrdinalIgnoreCase)
+                ?? new Dictionary<string, BackupVersionDto>(StringComparer.OrdinalIgnoreCase);
+            using var key = RestorePlanMappingFingerprintKeyStore.TryLoad(plugin.Settings);
+            var changed = false;
+            foreach (var draft in RestorePlanDrafts)
+            {
+                if (!string.Equals(draft.PlayniteId, playniteId, StringComparison.OrdinalIgnoreCase)) continue;
+
+                string reason;
+                if (byId.TryGetValue(draft.TargetBackupId, out var currentBackup))
+                {
+                    var currentFileIdentity = key?.ComputeFileIdentityFingerprint(currentBackup.ContentFingerprint) ?? string.Empty;
+                    reason = RestorePlanDraftRevalidation.CompareSnapshot(
+                        draft,
+                        game,
+                        currentBackup,
+                        currentFileIdentity,
+                        key?.KeyId ?? string.Empty,
+                        key?.ComputeReadinessFingerprint(currentBackup.RestoreReadiness) ?? string.Empty);
+                }
+                else if (historyComplete)
+                {
+                    reason = "目标版本已不存在，需要重新选择版本并保存草稿。";
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (reason.Length > 0) changed |= draft.MarkNeedsRevalidation(reason);
+            }
+
+            PersistRestorePlanInvalidations(changed);
+        }
+
+        private void PersistRestorePlanInvalidations(bool changed)
+        {
+            if (!changed) return;
+            try
+            {
+                var selectedFromId = SelectedRestorePlanDraftFrom?.DraftId;
+                var selectedToId = SelectedRestorePlanDraftTo?.DraftId;
+                plugin.Settings.RestorePlanDrafts = RestorePlanDrafts.ToList();
+                RestorePlanDrafts.Clear();
+                foreach (var draft in plugin.Settings.RestorePlanDrafts)
+                    RestorePlanDrafts.Add(draft);
+                SelectedRestorePlanDraftFrom = RestorePlanDrafts.FirstOrDefault(draft =>
+                    string.Equals(draft.DraftId, selectedFromId, StringComparison.OrdinalIgnoreCase));
+                SelectedRestorePlanDraftTo = RestorePlanDrafts.FirstOrDefault(draft =>
+                    string.Equals(draft.DraftId, selectedToId, StringComparison.OrdinalIgnoreCase));
+                RestorePlanDraftComparisonResult = null;
+                plugin.SavePluginSettings(plugin.Settings);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "GameSaveCenter could not persist restore-plan revalidation markers.");
+            }
         }
     }
 }

@@ -98,6 +98,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && string.Equals(a.OperatingSystem, b.OperatingSystem, StringComparison.Ordinal)
             && a.IsPreRestore == b.IsPreRestore
             && string.Equals(a.ParentBackupId, b.ParentBackupId, StringComparison.Ordinal)
+            && string.Equals(a.ContentFingerprint, b.ContentFingerprint, StringComparison.Ordinal)
             && string.Equals(a.ArchivePath, b.ArchivePath, StringComparison.Ordinal)
             && string.Equals(a.RestoreReadiness?.Summary, b.RestoreReadiness?.Summary, StringComparison.Ordinal)
             && a.RestoreReadiness?.Status == b.RestoreReadiness?.Status

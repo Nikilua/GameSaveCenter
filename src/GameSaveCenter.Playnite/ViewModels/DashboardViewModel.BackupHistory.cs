@@ -189,6 +189,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (!string.IsNullOrWhiteSpace(selectedId))
                         SelectedBackup = Backups.FirstOrDefault(item => string.Equals(item.BackupId, selectedId, StringComparison.OrdinalIgnoreCase))!;
                     SetBackupHistoryPageState(page);
+                    MarkRestorePlanDraftsForSnapshot(
+                        gameId,
+                        SelectedGame,
+                        Backups,
+                        !page.HasMore && Backups.Count >= page.TotalCount);
                 });
             }
             finally

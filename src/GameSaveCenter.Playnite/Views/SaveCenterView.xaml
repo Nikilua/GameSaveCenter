@@ -419,6 +419,7 @@
                                                     <TextBlock Text="{Binding BaselineDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                     <TextBlock Text="{Binding MappingSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                                     <TextBlock Text="{Binding ReadinessReferenceDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                    <TextBlock Text="{Binding RevalidationDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.Name="恢复方案需重验状态" AutomationProperties.HelpText="游戏、版本、映射、文件身份或可恢复性检查变化后，旧草稿需要重新预览并保存；恢复仍经过安全确认和最新检查。"/>
                                                     <TextBlock Text="{Binding ProtectionRequirements}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.HelpText="恢复执行仍需关闭游戏、重新检查，并先创建和锁定 PreRestore 快照及明确确认。"/>
                                                 </StackPanel>
                                             </Border>

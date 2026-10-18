@@ -3991,6 +3991,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                             }
                             else
                                 SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
+                            MarkRestorePlanDraftsForSnapshot(
+                                id,
+                                SelectedGame,
+                                Backups,
+                                !backupsTask.Result.HasMore && Backups.Count >= backupsTask.Result.TotalCount);
                             SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh, selectedCandidateIndex)!;
                             CompleteSaveDetailsLoad();
                             RaiseCommandStates();

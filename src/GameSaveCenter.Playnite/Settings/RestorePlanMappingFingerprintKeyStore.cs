@@ -1,6 +1,8 @@
 using System;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using GameSaveCenter.Contracts;
 
 namespace GameSaveCenter.Playnite.Settings
 {
@@ -43,6 +45,14 @@ namespace GameSaveCenter.Playnite.Settings
             return new RestorePlanMappingFingerprintKeyMaterial(key, keyId);
         }
 
+        public static RestorePlanMappingFingerprintKeyMaterial? TryLoad(GameSaveCenterSettings settings)
+        {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            return TryLoad(settings, out var key, out var keyId)
+                ? new RestorePlanMappingFingerprintKeyMaterial(key, keyId)
+                : null;
+        }
+
         private static bool TryLoad(GameSaveCenterSettings settings, out byte[] key, out string keyId)
         {
             key = Array.Empty<byte>();
@@ -79,6 +89,49 @@ namespace GameSaveCenter.Playnite.Settings
 
         public string KeyId { get; }
         public string KeyBase64 => Convert.ToBase64String(key);
+
+        public string ComputeFileIdentityFingerprint(string? contentFingerprint)
+        {
+            var normalized = (contentFingerprint ?? string.Empty).Trim().ToUpperInvariant();
+            if (normalized.Length != 64) return string.Empty;
+            foreach (var character in normalized)
+                if (!Uri.IsHexDigit(character)) return string.Empty;
+
+            return ComputeDomainSeparatedFingerprint("GameSaveCenter.RestorePlan.FileIdentity.v1", normalized);
+        }
+
+        public string ComputeReadinessFingerprint(RestoreReadinessDto? readiness)
+        {
+            if (readiness?.CheckedUtc is not DateTime checkedUtc || string.IsNullOrWhiteSpace(readiness.BackupVersionId))
+                return string.Empty;
+
+            var canonical = string.Join("\n", new[]
+            {
+                readiness.BackupVersionId.Trim().ToUpperInvariant(),
+                readiness.Status.ToString(),
+                checkedUtc.ToUniversalTime().ToString("O", CultureInfo.InvariantCulture),
+                readiness.ArchiveReadable ? "1" : "0",
+                readiness.ExtractSucceeded ? "1" : "0",
+                readiness.ExpectedFileCount.ToString(CultureInfo.InvariantCulture),
+                readiness.ActualFileCount.ToString(CultureInfo.InvariantCulture),
+                readiness.ExpectedTotalSize.ToString(CultureInfo.InvariantCulture),
+                readiness.ActualTotalSize.ToString(CultureInfo.InvariantCulture),
+                readiness.HashValidation ?? string.Empty,
+                readiness.HashCoveredFileCount.ToString(CultureInfo.InvariantCulture),
+                readiness.HashEligibleFileCount.ToString(CultureInfo.InvariantCulture),
+                readiness.WarningCount.ToString(CultureInfo.InvariantCulture),
+                readiness.ErrorCount.ToString(CultureInfo.InvariantCulture),
+                readiness.StagingCleanupStatus ?? string.Empty
+            });
+            return ComputeDomainSeparatedFingerprint("GameSaveCenter.RestorePlan.Readiness.v1", canonical);
+        }
+
+        private string ComputeDomainSeparatedFingerprint(string domain, string canonical)
+        {
+            using var hmac = new HMACSHA256(key);
+            var input = Encoding.UTF8.GetBytes(domain + "\n" + canonical);
+            return BitConverter.ToString(hmac.ComputeHash(input)).Replace("-", string.Empty);
+        }
 
         public RestorePlanMappingFingerprintKeyMaterial(byte[] key, string keyId)
         {

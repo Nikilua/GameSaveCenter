@@ -279,6 +279,7 @@ public sealed class R12RestorePlanDraftBehaviorTests
                 Assert.Contains(cardText, text => text.IndexOf("基线版本：backup-1", StringComparison.Ordinal) >= 0);
                 Assert.Contains(cardText, text => text.IndexOf("映射预览：2 个文件", StringComparison.Ordinal) >= 0);
                 Assert.Contains(cardText, text => text.IndexOf("可恢复性结果：Ready", StringComparison.Ordinal) >= 0);
+            Assert.Contains(cardText, text => text.IndexOf("需重验", StringComparison.Ordinal) >= 0);
                 Assert.Contains(cardText, text => text.IndexOf("PreRestore", StringComparison.Ordinal) >= 0);
                 Assert.DoesNotContain(cardText, text => text.IndexOf("private-slot.sav", StringComparison.OrdinalIgnoreCase) >= 0);
 
