@@ -47,6 +47,8 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "媒体", "截图", "录像", "Media", "Screenshots", "Videos" }, CommandDirectoryScope.CurrentGame, requiresGame: true),
             new WorkspaceCommandDefinition(WorkspaceKind.Tasks, "workspace.tasks", "查看任务",
                 new[] { "任务", "任务列表", "Tasks", "Task center", "View tasks" }, CommandDirectoryScope.Workspace),
+            new WorkspaceCommandDefinition(WorkspaceKind.Notifications, "workspace.notifications", "打开通知收件箱",
+                new[] { "通知", "收件箱", "未读通知", "Notifications", "Inbox", "Unread notifications" }, CommandDirectoryScope.Workspace),
             new WorkspaceCommandDefinition(WorkspaceKind.Maintenance, "workspace.maintenance", "打开维护中心",
                 new[] { "维护", "诊断", "设备状态", "Maintenance", "Diagnostics" }, CommandDirectoryScope.Workspace)
         };

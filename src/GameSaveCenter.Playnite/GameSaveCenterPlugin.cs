@@ -988,8 +988,50 @@ namespace GameSaveCenter.Playnite
             var kind = task.State == TaskState.Failed ? UiNotificationKind.Error
                 : task.State == TaskState.Cancelled ? UiNotificationKind.Warning
                 : UiNotificationKind.Success;
+            FireAndForget(() => PersistNotificationRecordAsync(new NotificationRecordDto
+            {
+                DeduplicationKey = CreateNotificationDeduplicationKey("task", TaskNotificationFingerprint.Build(task)),
+                TaskId = task.TaskId,
+                GameId = task.GameId,
+                Severity = task.State == TaskState.Failed ? NotificationSeverity.Error
+                    : task.State == TaskState.Cancelled ? NotificationSeverity.Warning
+                    : NotificationSeverity.Success,
+                Title = TaskNotificationTitle(task),
+                Summary = text,
+                CreatedUtc = task.FinishedUtc ?? DateTime.UtcNow
+            }));
             if (!RaiseUiNotification(TaskNotificationTitle(task), text, kind, BuildTaskNotificationDetail(task, game)))
                 AddNotification("Task." + task.TaskId, text, task.State == TaskState.Failed ? NotificationType.Error : NotificationType.Info);
+        }
+
+        private async Task PersistNotificationRecordAsync(NotificationRecordDto notification)
+        {
+            if (lifetimeCancellation.IsCancellationRequested) return;
+            try
+            {
+                await RequestAsync<bool>(
+                    MessageTypes.AddNotificationRecord,
+                    notification,
+                    TimeSpan.FromSeconds(8)).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (lifetimeCancellation.IsCancellationRequested)
+            {
+                // A notification record is best-effort during host shutdown.
+            }
+            catch (Exception ex)
+            {
+                logger.Debug(ex, "Could not save a local notification record; the transient notification path remains active.");
+            }
+        }
+
+        private static string CreateNotificationDeduplicationKey(string category, string identity)
+        {
+            using (var sha = SHA256.Create())
+            {
+                var input = Encoding.UTF8.GetBytes(category + ":" + (identity ?? string.Empty));
+                var digest = BitConverter.ToString(sha.ComputeHash(input)).Replace("-", string.Empty);
+                return category + ":" + digest;
+            }
         }
 
         private static string TaskNotificationTitle(TaskStatusDto task)
@@ -1223,6 +1265,18 @@ namespace GameSaveCenter.Playnite
             {
                 var kind = summary.IsFailure ? UiNotificationKind.Error
                     : summary.IsWarning ? UiNotificationKind.Warning : UiNotificationKind.Success;
+                var firstTask = session.Tasks.FirstOrDefault(task => !string.IsNullOrWhiteSpace(task.GameId));
+                FireAndForget(() => PersistNotificationRecordAsync(new NotificationRecordDto
+                {
+                    DeduplicationKey = CreateNotificationDeduplicationKey("session", sessionId),
+                    GameId = firstTask?.GameId ?? string.Empty,
+                    Severity = summary.IsFailure ? NotificationSeverity.Error
+                        : summary.IsWarning ? NotificationSeverity.Warning
+                        : NotificationSeverity.Success,
+                    Title = "退出备份摘要",
+                    Summary = summary.Message,
+                    CreatedUtc = DateTime.UtcNow
+                }));
                 if (!RaiseUiNotification("退出备份摘要", summary.Message, kind))
                     AddNotification("Session." + sessionId, summary.Message, summary.IsFailure ? NotificationType.Error : NotificationType.Info);
             }

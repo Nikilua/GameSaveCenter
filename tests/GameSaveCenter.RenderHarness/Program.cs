@@ -964,7 +964,7 @@ public static class Program
             "enduranceprobe",
             "ControlledWpfWindow",
             "light,dark",
-            "six workspaces; 1040x700 DIP; sample every 10s; no forced GC");
+            "seven workspaces; 1040x700 DIP; sample every 10s; no forced GC");
         report.AppendLine();
 
         var problems = new List<string>();
@@ -997,6 +997,7 @@ public static class Program
                 (WorkspaceKind.Trainers, "Trainer", new TrainerCenterView { DataContext = data }),
                 (WorkspaceKind.Media, "Media", new MediaCenterView { DataContext = data }),
                 (WorkspaceKind.Tasks, "Task", new TaskCenterView { DataContext = data }),
+                (WorkspaceKind.Notifications, "Notifications", new NotificationInboxView { DataContext = data }),
                 (WorkspaceKind.Maintenance, "Maintenance", new MaintenanceView { DataContext = data })
             };
             var pageHost = shell.PageHostForAudit as ContentControl
@@ -4060,6 +4061,8 @@ public static class Program
                 RenderMedia(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderMaintenance(outputRoot, windowW, windowH, contentW, contentH, report);
                 RenderTasks(outputRoot, windowW, windowH, contentW, contentH, report);
+                foreach (var (themeName, themeMode) in ThemeModes)
+                    RenderNotifications(outputRoot, themeName, themeMode, windowW, windowH, contentW, contentH, report);
                 RenderSettings(outputRoot, windowW, windowH, contentW, contentH, report);
                 report.AppendLine();
             }
@@ -4587,6 +4590,42 @@ public static class Program
     {
         var view = new TaskCenterView { DataContext = new FakeDashboardData() };
         RenderView(view, outputRoot, "Task", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
+    }
+
+    private static void RenderNotifications(
+        string outputRoot,
+        string themeName,
+        GameSaveCenterThemeMode themeMode,
+        int windowW,
+        int windowH,
+        double contentW,
+        double contentH,
+        StringBuilder report)
+    {
+        var view = new NotificationInboxView { DataContext = new FakeDashboardData() };
+        ApplyThemePalette(view, themeMode);
+        RenderViewWithVerification(
+            view,
+            outputRoot,
+            $"Notifications-{themeName}",
+            windowW,
+            windowH,
+            contentW,
+            contentH,
+            report,
+            () => view.ApplyResponsiveLayout(contentW, contentH),
+            (host, fixtureReport) =>
+            {
+                var grid = FindVisualChildren<DataGrid>(host).FirstOrDefault(candidate => candidate.Name == "NotificationGrid");
+                var data = (FakeDashboardData)view.DataContext;
+                if (grid == null)
+                    s_problems.Add($"Notifications/{themeName}/{windowW}x{windowH} did not render NotificationGrid.");
+                else if (grid.Items.Count != data.NotificationInboxItems.Count || !grid.EnableRowVirtualization)
+                    s_problems.Add($"Notifications/{themeName}/{windowW}x{windowH} has rows={grid.Items.Count}, virtualized={grid.EnableRowVirtualization}.");
+                if (data.NotificationUnreadCount != 2)
+                    s_problems.Add($"Notifications/{themeName}/{windowW}x{windowH} unread summary differs from its fixture.");
+                fixtureReport.AppendLine($"  Notifications {themeName}/{windowW}x{windowH} rows={grid?.Items.Count ?? 0} unread={data.NotificationUnreadCount} compact={contentW < 980}");
+            });
     }
 
     private static void RenderTabs(UserControl view, string outputRoot, string name, int windowW, int windowH, double contentW, double contentH, StringBuilder report, Action applyLayout, Action<Grid, int, StringBuilder>? verify = null)

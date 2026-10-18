@@ -7,7 +7,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         Trainers,
         Media,
         Tasks,
-        Maintenance
+        Maintenance,
+        Notifications
     }
 
     public enum LayoutMode

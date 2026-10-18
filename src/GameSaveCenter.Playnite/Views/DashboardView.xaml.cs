@@ -482,7 +482,8 @@ namespace GameSaveCenter.Playnite.Views
             // third column: all widths use the same top button and the same floating layer.
             // Tasks and maintenance remain global and intentionally have no game picker.
             var gameScopedWorkspace = viewModel.CurrentWorkspace != WorkspaceKind.Tasks
-                && viewModel.CurrentWorkspace != WorkspaceKind.Maintenance;
+                && viewModel.CurrentWorkspace != WorkspaceKind.Maintenance
+                && viewModel.CurrentWorkspace != WorkspaceKind.Notifications;
             var showCompactGameBrowser = gameScopedWorkspace && compactGameBrowserOpen;
 
             SidebarColumn.Width = new GridLength(layout.SidebarWidth);
@@ -767,6 +768,10 @@ namespace GameSaveCenter.Playnite.Views
                     PageTitleText.Text = "任务中心";
                     PageSubtitleText.Text = "全局任务、真实阶段、失败详情、取消与安全重试";
                     break;
+                case WorkspaceKind.Notifications:
+                    PageTitleText.Text = "通知收件箱";
+                    PageSubtitleText.Text = "全局提醒、未读状态、级别与时间筛选";
+                    break;
                 case WorkspaceKind.Maintenance:
                     PageTitleText.Text = "维护中心";
                     PageSubtitleText.Text = "关注项、诊断日志、进程映射、设备恢复与保留预览";
@@ -820,7 +825,7 @@ namespace GameSaveCenter.Playnite.Views
             SetVisibility(RestoreSafetyBanner, false);
             BackupPolicyPanel.Visibility = Visibility.Collapsed;
 
-            SetVisibility(TopRefreshButton, workspace != WorkspaceKind.Trainers && workspace != WorkspaceKind.Maintenance);
+            SetVisibility(TopRefreshButton, workspace != WorkspaceKind.Trainers && workspace != WorkspaceKind.Maintenance && workspace != WorkspaceKind.Notifications);
             SetVisibility(TopBackupAllButton, saves);
             SetVisibility(TopMediaSyncButton, workspace == WorkspaceKind.Media);
             SetVisibility(TopTrainerImportButton, workspace == WorkspaceKind.Trainers);
@@ -910,7 +915,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnToggleGameBrowserClick(object sender, RoutedEventArgs e)
         {
-            if (viewModel == null || viewModel.CurrentWorkspace == WorkspaceKind.Tasks || viewModel.CurrentWorkspace == WorkspaceKind.Maintenance) return;
+            if (viewModel == null || viewModel.CurrentWorkspace == WorkspaceKind.Tasks
+                || viewModel.CurrentWorkspace == WorkspaceKind.Maintenance
+                || viewModel.CurrentWorkspace == WorkspaceKind.Notifications) return;
             if (compactGameBrowserOpen) CloseGameBrowser(); else OpenGameBrowser();
         }
 
@@ -1516,6 +1523,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 WorkspaceKind.Trainers => getWorkspaceView(WorkspaceKind.Trainers)?.FindName("TrainerSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Tasks => getWorkspaceView(WorkspaceKind.Tasks)?.FindName("TaskSearchTextBox") as FrameworkElement,
+                WorkspaceKind.Notifications => getWorkspaceView(WorkspaceKind.Notifications)?.FindName("NotificationInboxSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Media => getWorkspaceView(WorkspaceKind.Media)?.FindName("MediaSearchTextBox") as FrameworkElement,
                 WorkspaceKind.Maintenance => getWorkspaceView(WorkspaceKind.Maintenance)?.FindName("ProcessMappingExecutableTextBox") as FrameworkElement,
                 _ => defaultTarget

@@ -77,6 +77,27 @@ public sealed class FakeDashboardData
     public ICommand CancelTrainerDownloadCommand { get; } = new NoopCommand();
     public ICommand CopyTaskErrorCommand { get; } = new NoopCommand();
     public ICommand ClearTaskFiltersCommand { get; } = new NoopCommand();
+    public ICommand RefreshNotificationInboxCommand { get; } = new NoopCommand();
+    public ObservableCollection<NotificationInboxItem> NotificationInboxItems { get; } = new()
+    {
+        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-error", Severity = NotificationSeverity.Error, Title = "备份任务失败", Summary = "远端认证失败，请检查连接设置。", GameId = "game-1", TaskId = "task-103", CreatedUtc = DateTime.UtcNow.AddMinutes(-8) }),
+        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-warning", Severity = NotificationSeverity.Warning, Title = "退出备份摘要", Summary = "本次会话有一项备份未完成。", GameId = "game-2", CreatedUtc = DateTime.UtcNow.AddMinutes(-35) }),
+        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-success", Severity = NotificationSeverity.Success, Title = "媒体同步完成", Summary = "已归档 12 个截图。", GameId = "game-3", TaskId = "task-101", CreatedUtc = DateTime.UtcNow.AddHours(-2), IsRead = true })
+    };
+    public IReadOnlyList<string> NotificationSeverityOptions { get; } = new[] { "全部级别", "错误", "警告", "成功", "信息" };
+    public IReadOnlyList<string> NotificationTimeOptions { get; } = new[] { "全部时间", "最近24小时", "最近7天", "最近30天" };
+    public NotificationInboxItem? SelectedNotification { get; set; }
+    public string NotificationSeverityFilter { get; set; } = "全部级别";
+    public string NotificationTimeFilter { get; set; } = "全部时间";
+    public string NotificationInboxSearchText { get; set; } = string.Empty;
+    public int NotificationUnreadCount => NotificationInboxItems.Count(item => !item.IsRead);
+    public string NotificationInboxCountSummary => $"最近 30 天 · 未读 {NotificationUnreadCount} · 当前显示 {NotificationInboxItems.Count}/{NotificationInboxItems.Count} 个";
+    public bool NotificationInboxHasNoRecords => NotificationInboxItems.Count == 0;
+    public bool NotificationInboxHasNoFilterResults => false;
+    public bool IsNotificationInboxLoading => false;
+    public bool HasNotificationInboxError => false;
+    public string NotificationInboxErrorMessage => string.Empty;
+    public string NotificationInboxLoadStatus => string.Empty;
 
     public FakeDashboardData(int rowCount = 8)
         : this(rowCount, WorkspaceFixtureState.Ready, OverviewFixtureProfile.Default)
@@ -666,6 +687,7 @@ public sealed class FakeDashboardData
         MediaView = CollectionViewSource.GetDefaultView(Media);
         TasksView = CollectionViewSource.GetDefaultView(Tasks);
         ApplyOverviewFixtureProfile(overviewProfile);
+        SelectedNotification = NotificationInboxItems.FirstOrDefault();
     }
 
     private void ApplyWorkspaceFixtureState()

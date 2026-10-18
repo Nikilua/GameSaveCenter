@@ -310,12 +310,17 @@ namespace GameSaveCenter.Playnite.Views
             if (contentChanged)
                 PageHost.Content = page;
             UpdatePageHeader(workspace);
-            var gameScoped = workspace != WorkspaceKind.Tasks && workspace != WorkspaceKind.Maintenance;
+            var gameScoped = workspace != WorkspaceKind.Tasks
+                && workspace != WorkspaceKind.Maintenance
+                && workspace != WorkspaceKind.Notifications;
             GameContextButton.Visibility = gameScoped ? Visibility.Visible : Visibility.Collapsed;
             HeaderMediaButton.Visibility = workspace == WorkspaceKind.Media ? Visibility.Visible : Visibility.Collapsed;
             HeaderBackupSelectedButton.Visibility = workspace == WorkspaceKind.Saves ? Visibility.Visible : Visibility.Collapsed;
-            HeaderBackupButton.Visibility = Visibility.Visible;
-            HeaderRefreshButton.Visibility = Visibility.Visible;
+            HeaderBackupButton.Visibility = workspace == WorkspaceKind.Notifications ? Visibility.Collapsed : Visibility.Visible;
+            HeaderRefreshButton.Visibility = workspace != WorkspaceKind.Trainers
+                && workspace != WorkspaceKind.Maintenance
+                && workspace != WorkspaceKind.Notifications
+                ? Visibility.Visible : Visibility.Collapsed;
             UpdateNavigationReturnButton();
 
             suppressNavigation = true;
@@ -453,6 +458,7 @@ namespace GameSaveCenter.Playnite.Views
             pages[WorkspaceKind.Trainers] = CreatePage(new TrainerCenterView());
             pages[WorkspaceKind.Media] = CreatePage(new MediaCenterView());
             pages[WorkspaceKind.Tasks] = CreatePage(new TaskCenterView());
+            pages[WorkspaceKind.Notifications] = CreatePage(new NotificationInboxView());
             pages[WorkspaceKind.Maintenance] = CreatePage(new MaintenanceView());
             timer.Stop();
             Logger.Debug($"[PERF] WorkspacePages created={pages.Count} binding={timer.Elapsed.TotalMilliseconds:F3}ms");
@@ -474,6 +480,7 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Trainers => NavTrainers,
                 WorkspaceKind.Media => NavMedia,
                 WorkspaceKind.Tasks => NavTasks,
+                WorkspaceKind.Notifications => NavNotifications,
                 WorkspaceKind.Maintenance => NavMaintenance,
                 _ => NavOverview,
             };
@@ -773,6 +780,7 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Trainers => "修改器中心",
                 WorkspaceKind.Media => "媒体中心",
                 WorkspaceKind.Tasks => "任务中心",
+                WorkspaceKind.Notifications => "通知收件箱",
                 WorkspaceKind.Maintenance => "维护中心",
                 _ => "首页",
             };
@@ -794,6 +802,7 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Trainers => "修改器 · CT 表 · 自定义启动项",
                 WorkspaceKind.Media => "截图与录像的自动归档",
                 WorkspaceKind.Tasks => "备份 · 云端 · 媒体任务队列",
+                WorkspaceKind.Notifications => "全局提醒 · 未读状态 · 时间与级别筛选",
                 WorkspaceKind.Maintenance => "诊断 · 设备 · 保留策略 · 审计",
                 _ => string.IsNullOrWhiteSpace(overviewPriorityTitle)
                     ? "今日工作台 · 正在读取概览状态"
@@ -1034,6 +1043,7 @@ namespace GameSaveCenter.Playnite.Views
             if (pages.TryGetValue(WorkspaceKind.Trainers, out var trainers)) ((TrainerCenterView)trainers).ApplyResponsiveLayout(width, height);
             if (pages.TryGetValue(WorkspaceKind.Media, out var media)) ((MediaCenterView)media).ApplyResponsiveLayout(width, height);
             if (pages.TryGetValue(WorkspaceKind.Tasks, out var tasks)) ((TaskCenterView)tasks).ApplyResponsiveLayout(width, height);
+            if (pages.TryGetValue(WorkspaceKind.Notifications, out var notifications)) ((NotificationInboxView)notifications).ApplyResponsiveLayout(width, height);
             if (pages.TryGetValue(WorkspaceKind.Maintenance, out var maintenance)) ((MaintenanceView)maintenance).ApplyResponsiveLayout(width, height);
         }
     }

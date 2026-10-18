@@ -2102,6 +2102,7 @@ namespace GameSaveCenter.Playnite.Diagnostics
             WorkspaceKind.Trainers,
             WorkspaceKind.Media,
             WorkspaceKind.Tasks,
+            WorkspaceKind.Notifications,
             WorkspaceKind.Maintenance
         };
 

@@ -46,7 +46,8 @@ namespace GameSaveCenter.Contracts
             "MaintenanceReport",
             "HealthInspection",
             "MediaInboxBatch",
-            "CloudTransferQueue"
+            "CloudTransferQueue",
+            "NotificationRecords"
         };
     }
 }

@@ -32,6 +32,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         partial void OnNavigationStateInitialize();
         partial void OnRecentAccessInitialize();
         partial void OnBackupHistoryInitialize();
+        partial void OnNotificationInboxInitialize();
         partial void OnWorkspaceStateInputsChanged();
 
         private static readonly ILogger Logger = LogManager.GetLogger();
@@ -294,6 +295,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnNavigationStateInitialize();
             OnRecentAccessInitialize();
             OnBackupHistoryInitialize();
+            OnNotificationInboxInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
             gameSearchText = gamePicker.SearchText;
@@ -2752,6 +2754,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (CurrentWorkspace == WorkspaceKind.Maintenance) await LoadDiagnosticsAsync();
+            if (CurrentWorkspace == WorkspaceKind.Notifications) await LoadNotificationInboxAsync();
             if (!dashboardRefreshRequests.IsCurrent(refreshRequest)) return;
             if (SelectedGame != null && IsGameScopedWorkspace(CurrentWorkspace)) await LoadDetailsAsync();
             else ClearSelectedGameDetails();
@@ -3785,6 +3788,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 WorkspaceKind.Saves => SaveCandidates.Count + Backups.Count,
                 WorkspaceKind.Trainers => GameTools.Count + TrainerCatalogResults.Count,
                 WorkspaceKind.Maintenance => Findings.Count + Audit.Count + CloudTransferItems.Count,
+                WorkspaceKind.Notifications => NotificationInboxItems.Count,
                 _ => 0
             };
 
@@ -4074,6 +4078,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RunWorkspaceLoad(workspace, contextKey, LoadMediaWorkspaceAsync);
             else if (workspace == WorkspaceKind.Maintenance)
                 RunWorkspaceLoad(workspace, contextKey, LoadDiagnosticsAsync);
+            else if (workspace == WorkspaceKind.Notifications)
+                RunWorkspaceLoad(workspace, contextKey, LoadNotificationInboxAsync);
             else if (IsGameScopedWorkspace(workspace))
                 RunWorkspaceLoad(workspace, contextKey, () => LoadDetailsAsync());
         }

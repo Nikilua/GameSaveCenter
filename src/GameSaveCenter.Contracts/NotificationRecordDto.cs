@@ -26,4 +26,10 @@ namespace GameSaveCenter.Contracts
         public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
         public bool IsRead { get; set; }
     }
+
+    /// <summary>Bounded read request for the local notification inbox.</summary>
+    public sealed class NotificationRecordsQueryDto
+    {
+        public int Limit { get; set; } = 500;
+    }
 }

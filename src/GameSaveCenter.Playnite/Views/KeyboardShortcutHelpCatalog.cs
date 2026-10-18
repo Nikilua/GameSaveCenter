@@ -42,6 +42,7 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Trainers => "修改器中心",
                 WorkspaceKind.Media => "媒体中心",
                 WorkspaceKind.Tasks => "任务中心",
+                WorkspaceKind.Notifications => "通知收件箱",
                 WorkspaceKind.Maintenance => "维护中心",
                 _ => "当前页面",
             };
