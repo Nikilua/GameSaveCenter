@@ -23,6 +23,7 @@ namespace GameSaveCenter.Playnite.Settings
         private int settingsSaveInProgress;
         private bool enableLocalMirror;
         private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
+        private List<ViewConfigurationDefinition> viewConfigurations = new List<ViewConfigurationDefinition>();
         private bool autoStartWorker = true;
         private bool onboardingCompleted;
         private bool enableProcessDetection = true;
@@ -160,6 +161,17 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => filterPresets;
             set => filterPresets = FilterPresetDefinition.NormalizeMany(value);
+        }
+
+        /// <summary>
+        /// Versioned, scalar-only UI view configurations. Older settings files that do not
+        /// contain this property keep an empty collection; unsupported schema versions use
+        /// the safe default view and are not applied.
+        /// </summary>
+        public List<ViewConfigurationDefinition> ViewConfigurations
+        {
+            get => viewConfigurations;
+            set => viewConfigurations = ViewConfigurationDefinition.NormalizeMany(value);
         }
 
         /// <summary>
@@ -629,6 +641,7 @@ namespace GameSaveCenter.Playnite.Settings
             MediaFilterState = string.IsNullOrWhiteSpace(other.MediaFilterState) ? "全部" : other.MediaFilterState;
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
             FilterPresets = other.FilterPresets;
+            ViewConfigurations = other.ViewConfigurations;
             DataGridColumnWidths = other.DataGridColumnWidths;
             RecentAccess = other.RecentAccess;
         }

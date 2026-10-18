@@ -170,6 +170,7 @@ namespace GameSaveCenter.Playnite.Settings
             settings.MediaFilterState = "全部";
             settings.MediaSearchTextState = string.Empty;
             settings.FilterPresets = new List<FilterPresetDefinition>();
+            settings.ViewConfigurations = new List<ViewConfigurationDefinition>();
             settings.DataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
             settings.RecentAccess = new List<RecentAccessRecord>();
             return count;
