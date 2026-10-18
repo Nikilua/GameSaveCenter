@@ -1,8 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-05 临时覆盖标记代码完成待验收
+
+提交 `dcfca235` 为任务和存档表格命名视图增加未保存差异提示与恢复按钮，覆盖筛选、列显隐/宽度、排序和密度。当前筛选无法由已保存预设表示时阻止保存/另存，并提示先保存并应用预设，避免刷新后丢失。提交后 SDK `8.0.423` Release 解决方案构建 `0/0`，七个隔离测试类 `29/29`，Render QA `OK` 且 Task `1040×700` 为 `4/4` 行。完整 WPF/安装/真实 Playnite 设置保存与宿主呈现未验证；此前门禁仍在 R05 `GetCursorPos` Win32 error 5 处受阻。证据见 [S01-05](../design/reviews/ui-finesse-round4-20261018/evidence/S01-05/README.md)。下一项 S01-06。
+
 ## 2026-10-18 Round4 S01-04 保存与复制视图代码完成待验收
 
-提交 `c6eb8d62` 为任务、存档历史与候选路径表格接入工作区命名视图，可保存、复制、重命名和删除；每个视图保存筛选预设 ID、稳定排序、可见列、列宽与密度。保存默认排列会创建命名视图；命名视图关闭默认列宽/显隐和任务筛选状态写回，删除活动视图回安全默认。SDK `8.0.423` Release solution build `0/0`，七个隔离测试类 `29/29`，Render QA `OK` 且 Task `1040×700` 为 `4/4` 可读行。未完成完整 WPF/安装/真实 Playnite 设置保存和宿主呈现验证；此前门禁仍在 R05 `GetCursorPos` Win32 error 5 处受阻。证据见 [S01-04](../design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md)。下一项 S01-05。
+提交 `c6eb8d62` 为任务、存档历史与候选路径表格接入工作区命名视图，可保存、复制、重命名和删除；每个视图保存筛选预设 ID、稳定排序、可见列、列宽与密度。保存默认排列会创建命名视图；命名视图关闭默认列宽/显隐和任务筛选状态写回，删除活动视图回安全默认。SDK `8.0.423` Release solution build `0/0`，七个隔离测试类 `29/29`，Render QA `OK` 且 Task `1040×700` 为 `4/4` 可读行。未完成完整 WPF/安装/真实 Playnite 设置保存和宿主呈现验证；此前门禁仍在 R05 `GetCursorPos` Win32 error 5 处受阻。证据见 [S01-04](../design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md)。后续由 S01-05 追加临时覆盖标记，当前下一项 S01-06。
 
 ## 2026-10-18 Round4 S01-03 可选列管理代码完成待验收
 
@@ -22,7 +26,7 @@ S00-01 的稳定命令目录和证据已在 `origin/main`，不重复实现；�
 
 ## 2026-10-18 R09 外机失败再次出现，输入身份仍缺
 
-用户提供的诊断 ID `20261018T012631286Z-e027df9d` 显示 R09 类 `1/2`，期望 `2 DIP`/实际 `1 DIP` 的失败定位到行151。该断言与历史 `3f7d0b30` 中旧 Chrome 2 DIP 检查相同；`f13b9e05` 已于 2026-10-12 将共享模板和测试改为 Chrome 1 DIP、ValidationStroke 2 DIP，且当前 `origin/main` 已包含该版本。SDK8.0.423 对当前隔离输出运行 R09 `2/2` 通过；测试 DLL/PDB SHA 和 TRX 见 [R09 复核记录](../design/reviews/ui-finesse-round3-20260915/evidence/R09-FOCUS-CURRENT-MAIN-RECHECK-20261015/README.md)。外机本次 summary/TRX/DLL/PDB 身份未提供，因此可以确认它不是当前测试输入，但无法区分旧 checkout、旧 DLL 或旧 PDB 映射；这是一项测试失败，不是编译错误。未改模板或放宽断言。
+用户提供的诊断 ID `20261018T012631286Z-e027df9d` 显示 R09 类 `1/2`，期望 `2 DIP`/实际 `1 DIP` 的失败定位到行151。该断言与历史 `3f7d0b30` 中旧 Chrome 2 DIP 检查相同；`f13b9e05` 已于 2026-10-12 将共享模板和测试改为 Chrome 1 DIP、ValidationStroke 2 DIP，且当前 `origin/main` 已包含该版本。用户表示暂时没有该次 summary/TRX。S01-05 提交后 SDK8.0.423 对当前隔离输出运行 R09 `2/2` 通过；当前测试 DLL/PDB SHA 和 TRX 见 [S01-05 身份记录](../design/reviews/ui-finesse-round4-20261018/evidence/S01-05/verification-identity.json)。外机断言及行号与当前测试源码不一致，可能是旧 checkout、旧 DLL 或旧 PDB 映射；缺少同次程序集身份无法区分。该报告是一项测试失败，不是编译错误。未改模板或放宽断言。
 
 ## 2026-10-18 Round4 S01-01 代码完成待验收
 

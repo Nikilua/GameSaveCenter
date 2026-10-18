@@ -4,13 +4,14 @@
 
 ## 当前身份与活动事项
 
-- 本地 `main` 已提交 S00-02、S01-01 至 S01-04、S02-01 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
+- 本地 `main` 已提交 S00-02、S01-01 至 S01-05、S02-01 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
 - S00-01：已满足。稳定命令目录复用现有 ICommand；原受控行为 `7/7`，当前 SDK8 命令目录类复核 `2/2`。见 [S00-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
 - S00-02：代码完成待验收。Shell 内搜索 overlay，名称/别名/分类过滤，空输入最多 8 项，显示目标与可用状态；定向用例 `21/21`、200 项过滤 `0.554 ms`。SDK8 Release build 通过，但完整 WPF 隔离在 R05 系统指针 `GetCursorPos` Win32 error 5 处中止，尚未到安装/版本核验。见 [S00-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md)。
 - S01-01：版本化视图配置模型已实现并接入设置复制/重置；SDK `8.0.423` Release 测试项目构建 `0/0`，配置测试与 R09 共 `7/7` 通过。Json.NET 集合替换问题已由 `ObjectCreationHandling.Replace` 修复。未改 XAML；Playnite host 未验。详见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
 - S01-02：新增舒适/紧凑表格密度设置，行/表头/留白令牌为 `52/42/12` 与 `44/38/10 DIP`，正文字号不变；四行最小高度按活动令牌计算。SDK `8.0.423` Release 解决方案构建 `0/0`；密度/设置 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`。提交 `ad7bd563`。真实 Playnite 设置保存与呈现未验证；完整 WPF/安装门禁仍受 R05 系统指针权限阻挡，详见 [S01-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-02/README.md)。
 - S01-03：提交 `8cdf5253` 为存档历史、候选路径与任务表格加入可选列菜单和稳定键持久化；状态/身份列固定可见，新列默认显示，媒体收件箱未改。SDK `8.0.423` Release 解决方案构建 `0/0`，列显隐/列宽/视图配置/R09 共 `17/17`，source validation 通过。用户外机 R09 日志第 151 行与当前测试源码不一致；当前提交 R09 `2/2`。真实 Playnite 设置保存及呈现未验证；详见 [S01-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md)。
 - S01-04：提交 `c6eb8d62` 为任务、存档历史和候选路径表格加入命名视图保存、复制、重命名与删除。默认排列的“保存”创建命名视图；活动命名视图不覆盖全局默认列宽/显隐/任务筛选状态。SDK `8.0.423` Release 解决方案构建 `0/0`，视图配置、交互、列显隐/宽度、R09、R10、Q14 隔离测试 `29/29`；Render QA OK，Task `1040×700` 有 `4/4` 可读行。真实 Playnite 设置读写、双主题宿主呈现及安装门禁未验证；外机 R09 缺少同次 summary/TRX/DLL/PDB 身份，本机通过不能解释外机输入。详见 [S01-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md)。
+- S01-05：提交 `dcfca235` 增加已保存视图的临时差异提示与恢复动作，观察筛选、列宽/显隐、排序和密度；筛选值无法由预设表示时阻止保存/另存。提交后 SDK `8.0.423` Release 解决方案构建 `0/0`，七个相关隔离测试类 `29/29`，Render QA OK，Task `1040×700` 为 `4/4` 行。真实 Playnite、完整 WPF/安装门禁未运行；既有 R05 `GetCursorPos` Win32 error 5 边界保留。证据与程序集身份见 [S01-05](../design/reviews/ui-finesse-round4-20261018/evidence/S01-05/README.md)。
 - S02-01：本地通知记录 DTO 与 Worker SQLite 去重/保留 API 已实现；SDK `8.0.423` Release 解决方案构建 `0/0`，通知持久化测试 `3/3`、Worker `364` passed / `1` skipped。30 天、500 条上限；通知生产者未接入，未改 XAML/发送外部通知。详见 [S02-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
 - S00-02 的精确 SDK8 `8.0.423` 已在仓库隔离目录可用，SDK8 Release build 已通过；完整 WPF 测试因 R05 `GetCursorPos` 权限错误中断，安装与版本核验未运行。不得把受控构建或合成呈现写成 Playnite 真实呈现。
 - S07-01 已验收：本入口由 254 行压缩至 32 行，完整快照保存在 [归档](CURRENT_STATE_HISTORY_THROUGH_20261018.md)；实现提交 `4ea5e694`，压缩前正文逐字核对相同。验证及边界见 [S07-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。后续准入见 [Round4 账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md) 与 [自主积压](../AUTONOMOUS_BACKLOG.md)。
@@ -20,7 +21,7 @@
 - S07-06 已在诊断 `summary.json` 加入原始 TRX 测试用例计数、结果状态、suite 和 WPF 隔离类运行汇总，并逐文件对照原 TRX Counters。定向诊断自测与历史原始 TRX 复算通过；历史用例失败原样保留。见 [S07-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
 - S07-07 已建立环境能力缓存与校验器，区分 SDK 缺失、真实宿主未检查、CEF/ETW 权限阻塞及 GitHub branch protection 读取权限阻塞，并逐项记录证据和重试条件；没有重试被拒探测。见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md) 与[缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
 - S07-03 审查发现 workflow 对纯文档和混合路径都运行完整双 SDK 流程；GitHub API 读取 `main` branch protection 返回 403，无法确认 required check 名称。workflow 未修改，待获得配置读权限或用户提供清单后再解锁。见 [S07-03 审查](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md)。
-- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。
+- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。下一项按依赖为 S01-06。
 
 ## 已核验事实与外部边界
 

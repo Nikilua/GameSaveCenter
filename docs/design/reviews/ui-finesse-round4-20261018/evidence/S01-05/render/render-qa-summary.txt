@@ -1,0 +1,4 @@
+    openedRows=4, closeAction=Visible
+  Shell Tasks 1040x700: PageHost=726x573, compact=True, rows=4, queue=726x211, gridScroll=709x274, grid=709x274, inspector=Visible/726x136, filters=Visible
+    openedRows=4, closeAction=Visible
+render-qa OK

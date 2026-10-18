@@ -1,0 +1,72 @@
+{
+  "sourceCommit": "dcfca2353b33a7c991d004ba7282e2df2e13847f",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "buildOutcome": "passed",
+  "buildSummary": "build-summary.json",
+  "testAssemblyHashes": {
+    "pluginPdb": "1F776A774996BC76A52D8774672AFF4910A9A5C11B1152D999280BB921402521",
+    "testAssembly": "90A4307EEAF0A4084315FFB79C4EB13E8FE8844E81D9E9FD970EBF30106F6C0F",
+    "r09Source": "A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98",
+    "testPdb": "DE7043EB5D2A2BDCBCF9BFE3103D79801E27981748271BAE8C9AA3C9C2089629",
+    "pluginAssembly": "51AB790BDE724A5EDE630C065CEEA9923703065151FD8930FCBAE8F0BC2BCC4D"
+  },
+  "tests": [
+    {
+      "class": "ViewConfigurationDefinitionTests",
+      "passed": 9,
+      "failed": 0,
+      "total": 9,
+      "trx": "wpf.ViewConfigurationDefinitionTests.trx",
+      "sha256": "FAAC7563BF6AF3ED3D0CF1C59534F1BF85AF0E2DDABD7D7A5BD548A31AB77851"
+    },
+    {
+      "class": "DataGridViewConfigurationBehaviorTests",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "trx": "wpf.DataGridViewConfigurationBehaviorTests.trx",
+      "sha256": "9B0F41A74C312DA29E8B6384A0EECC71B172025370B22DEBCB0AB783BBB39661"
+    },
+    {
+      "class": "DataGridColumnVisibilityBehaviorTests",
+      "passed": 4,
+      "failed": 0,
+      "total": 4,
+      "trx": "wpf.DataGridColumnVisibilityBehaviorTests.trx",
+      "sha256": "0CBD21F5C917F6D5859AB918638FEF1BD2926731FDA842EEB0DB910A517B4073"
+    },
+    {
+      "class": "R06ColumnWidthPersistenceBehaviorTests",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "trx": "wpf.R06ColumnWidthPersistenceBehaviorTests.trx",
+      "sha256": "87640907C2656EB70D89DA058C2E1BB99D81A30D41E69F94DA741CEFFB8C3637"
+    },
+    {
+      "class": "R09FocusOutlineBehaviorTests",
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "trx": "wpf.R09FocusOutlineBehaviorTests.trx",
+      "sha256": "57B12FFC55FDF207A034157CD5134DE2EF1571E256E630366F05EE77AE16647F"
+    },
+    {
+      "class": "R10FilterPresetBehaviorTests",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "trx": "wpf.R10FilterPresetBehaviorTests.trx",
+      "sha256": "B70BA643B50B7CD5C73557BC47D37CF56ACD17E13A6E96EFE8D491915C6DFB6D"
+    },
+    {
+      "class": "Q14ToolbarAlignmentBehaviorTests",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "trx": "wpf.Q14ToolbarAlignmentBehaviorTests.trx",
+      "sha256": "849E10F1E75901D3A35E202DE4E885028D018216FD9535D87A0F3DE72DAEC756"
+    }
+  ]
+}
