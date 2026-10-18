@@ -350,14 +350,19 @@
     {
       "id": "S02-07",
       "title": "重复归并摘要",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "9ed6b4e5",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 373通过/1跳过、通知与R09定向 19/19；source validation 通过，WPF静态审查0错误",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md"
+        }
+      ],
+      "boundary": "global.json锁定SDK8.0.423，本机仅有SDK9.0.302；完整WPF隔离循环、一键安装和真实Playnite宿主未验。旧R09诊断文件和程序集身份未保留，旧失败根因仍未知。"
     },
     {
       "id": "S02-08",

@@ -1,3 +1,9 @@
+## 2026-10-19 Round4 S02-07 重复归并摘要
+
+- 提交 `9ed6b4e5` 为明确用户重试传递原问题身份，Worker 将同一故障链的失败归并为一条记录，保存次数、首次/最近时间、最后错误和首次/最近任务 ID；同一任务事件重放幂等，不同游戏/任务类型/问题根键不混并。成功重试关闭旧告警并保留历史，后续失败重新打开；旧单任务失败通知迁移到新字段。
+- SDK `9.0.302` Release solution build `0 warnings / 0 errors`；提交后匹配程序集复验：Core `147/147`、Worker `373 passed / 1 skipped`、Playnite 通知/重试/R09 `19/19`（R09 `2/2`）。`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`。日志、TRX、源码与插件 DLL/PDB 身份见 [S02-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
+- 本机仅 SDK `9.0.302`，`global.json` 要求 `8.0.423`；完整 WPF 独立循环、安装、一键流程和真实 Playnite 宿主/双主题呈现未验。用户旧 R09 失败的 summary/TRX/DLL/PDB 未保留，旧输入仍无法定位；当前匹配程序集 R09 `2/2` 通过不解释旧失败。下一项 S02-08。
+
 ## 2026-10-18 Round4 S02-06 重要通知例外
 
 - 提交 `a6153219` 让静音策略只对明确的 Warning/Error 开例外；未识别枚举按信息级遵循静音和安静时段。设置说明明确任务/会话警告、错误仍会显示并留在本地收件箱。真实任务失败/取消与会话摘要级别映射保持现状；备份校验 Findings 仍由持久化风险列表承担，未另造 Toast 流。

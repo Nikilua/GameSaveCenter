@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 Round4 S02-07 重复归并摘要已受控验证
+
+提交 `9ed6b4e5` 为明确用户重试传递原问题身份，Worker 将同一故障链的失败归并为一条记录，记录次数、首末时间、最后错误和首次/最近任务入口；同任务事件重放幂等，不同对象不混并。成功重试关闭告警并保留错误历史，后续失败重新打开；旧任务失败通知启动时迁移到新字段。SDK `9.0.302` Release solution build `0 warning / 0 error`；提交后匹配程序集 Core `147/147`、Worker `373 passed / 1 skipped`、通知/重试/R09 `19/19`（R09 `2/2`）。源码校验和 diff check 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。证据及源文件、TRX、插件 DLL/PDB 哈希见 [S02-07](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
+
+主机仅安装 SDK `9.0.302`，`global.json` 锁定 SDK `8.0.423`；完整 WPF 独立循环、一键安装及真实 Playnite 宿主/双主题呈现未验。用户旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 没有保留，旧失败具体输入与根因仍未知；本次匹配提交 R09 `2/2` 不能映射旧输入。下一项 S02-08。
+
 ## 2026-10-18 Round4 S02-06 重要通知例外已受控验证
 
 提交 `a6153219` 明确仅 `Warning` / `Error` 级通知突破临时静音和安静时段；未知通知级别按信息处理并遵循静音。设置说明写明任务/会话警告与错误仍会弹出且留存收件箱；失败/取消/成功与会话摘要继续使用真实结果级别，备份校验风险继续由独立 Findings 持久化。SDK `9.0.302` Release solution restore/build 成功，build `0 warning / 0 error`；策略 `22/22`、Worker 通知持久化 `7/7`、当前隔离输出 R09 `2/2`，source validation 通过。R09 测试加载插件 DLL 与同次构建输出 SHA-256 一致。证据见 [S02-06](../design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md)。

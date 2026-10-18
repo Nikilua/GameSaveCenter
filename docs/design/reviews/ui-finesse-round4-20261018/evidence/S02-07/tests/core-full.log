@@ -1,0 +1,5 @@
+D:\workplace\github\GameSaveCenter\.tmp\s02-07-build-20261019\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll (.NETCoreApp,Version=v8.0)的测试运行
+总共 1 个测试文件与指定模式相匹配。
+结果文件: D:\workplace\github\GameSaveCenter\.tmp\s02-07-build-20261019\tests\postcommit\core-full-postcommit.trx
+
+已通过! - 失败:     0，通过:   147，已跳过:     0，总计:   147，持续时间: 44 ms - GameSaveCenter.Core.Tests.dll (net8.0)
