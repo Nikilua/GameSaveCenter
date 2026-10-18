@@ -2,12 +2,13 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已由 `dd38f8ca` 实现并完成受控验收；S00-02 代码完成，但仓库要求的 SDK8 安装/版本与宿主 UI 门禁未通过，不推送到远端。S07-01/02/04/05/06/07/08 当前事实精简、结构化索引、CI 记录规则、诊断入口、TRX 计数、环境准入缓存和交付退出规则均已完成。旧 Q/R 的环境边界不变。
+用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已完成受控验收；S00-02 代码完成，但仓库要求的 SDK8 与真实宿主 UI 门禁未通过，不推送到远端。S01-01 配置模型代码已完成，测试待精确 SDK8.0.423。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
 | S00-01 | IMPLEMENTED | `dd38f8ca` 已交付稳定 ID、双语别名、作用域、不可用原因，并复用真实命令；7/7 定向行为测试通过。证据见 Round4 S00-01。 |
 | S00-02 | VERIFY_PENDING | `29dc09b2`/`a58dd582` 实现 Shell 内搜索 overlay，空输入最多 8 项、按名称/别名/分类过滤、显示作用范围与可用原因；21/21 定向测试通过。需 SDK8.0.423 和真实 `GameSaveCenter-Run.cmd` 安装/版本核验后再推送并准入 S00-03。 |
+| S01-01 | IN_PROGRESS | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；旧设置与未知字段兼容。测试已补但未运行，需精确 SDK8.0.423 构建/验证；证据见 Round4 S01-01。 |
 | S07-01 | IMPLEMENTED | `4ea5e694` 将 `CURRENT_STATE.md` 从 254 行压缩为 32 行并保留完整历史快照；source validation、diff check 与归档一致性检查通过。证据见 Round4 S07-01。 |
 | S07-02 | IMPLEMENTED | 新增 `ROUND4_STATUS.json` 与渲染/校验脚本；账本生成块接入 `validate-source.py`，保留外部 Q/R 状态。证据见 Round4 S07-02。 |
 | S07-04 | IMPLEMENTED | 已在仓库 `AGENTS.md` 明确 CI 结果记录条件与禁止纯文档通过结果自循环的规则。保留实际 run/job/artifact 身份，不更改 workflow 或 required checks。证据见 Round4 S07-04。 |

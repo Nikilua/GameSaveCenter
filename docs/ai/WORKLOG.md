@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S01-01 版本化工作视图配置模型
+
+- 新增只含稳定 scalar 键的版本化模型，组合筛选预设引用、排序、可见列、列宽和密度；设置加载、编辑快照复制与“全部重置”均接入新集合，旧 JSON 缺字段及未知成员保持兼容，未来 schema 条目安全忽略。
+- 新增 `ViewConfigurationDefinitionTests` 覆盖契约字段类型、归一化、上限、旧设置兼容、未知字段和往返/编辑取消深复制。精确 SDK `8.0.423` 未安装，测试和构建未运行；未执行 SDK9 代替。未改 XAML，Playnite host 未验。
+- `python scripts/validate-source.py .` 与 `git diff --check` 通过。实现提交 `25bbe005`；本项为代码完成待验收。完整边界见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
+
 ## 2026-10-18 Round4 S07-03 文档 CI 分流审查（外部阻塞）
 
 - 检查 `.github/workflows/windows-build.yml`：push/main、pull_request、workflow_dispatch 无路径过滤；完整流程含 SDK8 主构建/测试和 SDK10 复核、源码校验、渲染 QA、WPF 静态审查及打包，纯文档与混合路径都会全跑。

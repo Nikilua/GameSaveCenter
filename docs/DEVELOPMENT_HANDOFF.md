@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S01-01 视图配置模型代码完成
+
+`25bbe005` 新增版本化工作视图配置模型并接入设置复制/重置；只存标量与稳定列键，旧设置缺字段和未知 JSON 成员兼容。source validation 与 diff check 通过。新 C# 测试尚未运行：仓库精确 SDK8.0.423 当前缺失，不使用 SDK9 替代。未改 XAML、未验 Playnite host。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md`。
+
+下一步继续按 Round4 计划核对 S01-02 与后续独立子项；涉及 XAML 的实现仍遵守 UI gate。S00-02 门禁未通过，因此本地 `main` 仍不推送。
+
 ## 2026-10-18 最新续接：S07-03 分支检查读取受限
 
 Windows workflow 对纯文档与混合改动都执行 SDK8/SDK10 全流程。GitHub `GET /branches/main/protection` 返回 403，rulesets 查询为空但不能证明 classic required checks 配置；设置页不可用，`gh` CLI 不在本机。未改 workflow。取到 required-check 策略后再继续 S07-03。审查记录与重试条件见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md` 和 `docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json`。
