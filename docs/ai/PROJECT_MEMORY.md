@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-07 断点适配记忆代码完成待验收
+
+提交 `87520a92` 为共享 `DataGridColumnLayoutController` 加入临时响应式列宽：窄窗口时从末尾显示列起压缩像素列至最小宽度，恢复空间后回到用户偏好；临时宽度不写设置/命名视图。移除 SaveCenter 历史表单页单独的窄屏列宽分支，并给候选表状态/置信度列设可读下限。提交后 SDK `8.0.423` Release 解决方案构建 `0/0`；六个隔离 WPF 测试类 `20/20`，含实际窗口生命周期测试 `1/1` 与 R09 `2/2`；Render QA OK，Task/候选路径 `1040×700` 均为 `4/4` 可读行。`validate-source.py` 和 `git diff --check` 通过。完整 WPF/安装门禁和 Playnite 真实宿主仍未验证，R05 系统指针 error 5 边界保留。用户外机 R09 旧 `2 DIP` 断言与 `f13b9e05` 前源码吻合，但无外机同次 summary/TRX/DLL/PDB，仍不能确定其实际测试输入。证据见 [S01-07](../design/reviews/ui-finesse-round4-20261018/evidence/S01-07/README.md)。下一项 S01-08。
+
 ## 2026-10-18 Round4 S01-06 布局重置预览代码完成待验收
 
 提交 `9ec0096b` 为任务、存档历史和候选路径表格增加当前表格/全部工作视图布局重置及确认预览。当前视图重置保留名称和筛选预设；全部重置保留筛选与业务配置。SDK `8.0.423` Release 解决方案构建 `0/0`，定向测试 `39 passed / 0 failed / 11 skipped`，Render QA `OK` 且 Task/候选路径在 `1040×700` 均为 `4/4` 可读行。完整 WPF、安装门禁和真实 Playnite 设置保存/双主题宿主呈现未验；R05 `GetCursorPos` 权限边界保留。用户没有外机 R09 同次 summary/TRX，故无法比对源码及 DLL/PDB；当前 R09 `2/2` 不等同解释外机失败。证据见 [S01-06](../design/reviews/ui-finesse-round4-20261018/evidence/S01-06/README.md)。

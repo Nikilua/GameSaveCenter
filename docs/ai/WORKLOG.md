@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S01-07 断点适配记忆与 R09 外机失败复核
+
+- 提交 `87520a92` 为共享 `DataGridColumnLayoutController` 加入临时响应式列宽。窄窗口时按可用宽度从末尾显示列起压缩像素列到 `MinWidth`；放宽后恢复用户偏好。临时宽度不进入设置或命名视图；显隐操作会刷新预算，Save 历史页旧的单独断点宽度分支已移除，候选置信度/状态列补齐可读最小宽度。
+- 提交后用隔离 SDK `8.0.423` Release 构建全解方案，0 warning / 0 error，diagnostic `20261018T101957814Z-ecc1f9cf`。R06 列宽 `7/7`、真实 Window Loaded/SizeChanged `1/1`、R07 断点/缩放 `2/2`、TaskCenter `8/8`、R09 `2/2`，六个 WPF 隔离进程合计 `20/20`。离屏 Render QA OK，Task/候选表在 `1040×700` 均为 `4/4` 可读行；报告为逻辑 DIP，实际窗口生命周期由单独 WPF 测试覆盖。`python scripts/validate-source.py .` 与 `git diff --check` 通过。
+- 用户暂时没有外机诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB。Git diff `f13b9e05` 证实该提交将 R09 错误 Chrome 厚度断言由 2 DIP 改为 1 DIP，并新增独立 ValidationStroke 2 DIP；外机 `2,2,2,2 → 1,1,1,1` 与旧断言形态吻合。当前提交全新隔离构建的 R09 `2/2`，但缺少外机身份仍不能判定其实际测试输入，也不声称已复现外机失败。完整 WPF/安装门禁及真实 Playnite 设置持久化/双主题仍未验证；R05 `GetCursorPos` Win32 error 5 边界保留。证据、TRX、build summary、程序集/PDB 哈希见 [S01-07](../design/reviews/ui-finesse-round4-20261018/evidence/S01-07/README.md)。下一项 S01-08。
+
 ## 2026-10-18 Round4 S01-03 可选列管理与 R09 外机失败复核
 
 - 用户贴出的构建日志实际在 R09 测试断言处失败，日志中的 `expected 2,2,2,2 / actual 1,1,1,1` 位于外机堆栈第151行。当前源码第151行是 `Chrome.BorderBrush` 颜色断言，2 DIP 断言在第154行；用户给出的 diagnostics 目录未存在于当前工作区。没有据错位日志改生产焦点模板或放宽测试。
