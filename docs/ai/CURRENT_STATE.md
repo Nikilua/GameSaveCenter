@@ -4,11 +4,11 @@
 
 ## 当前身份与活动事项
 
-- 远端 `origin/main` 当前在 `d85d2b53`，包含 S00-01 的实现与证据；本地 `main` 另有 S00-02 实现/证据提交 `29dc09b2`、`a58dd582`、`f770bd20`，尚未推送。工作树跟踪文件干净。
+- 远端 `origin/main` 当前在 `d85d2b53`，包含 S00-01 的实现与证据；本地 `main` 有 S00-02 实现/证据和 S07-01 文档记录，尚未推送。S00-02 的 UI 门禁仍未完成，不能把包含它的分支推到 `main`；跟踪文件干净。
 - S00-01：已验收。稳定命令目录复用现有 ICommand；受控行为 `7/7`。见 [S00-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
 - S00-02：代码完成待验收。Shell 内搜索 overlay，名称/别名/分类过滤，空输入最多 8 项，显示目标与可用状态；受控用例 `21/21`，200 项过滤 `0.554 ms`。见 [S00-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md)。
 - S00-02 依赖的真实 UI 门禁未通过：仓库要求精确 SDK `8.0.423`；当前 `dotnet` 仅有 `9.0.302`，常见隔离路径也未发现 SDK8。`GameSaveCenter-Run.cmd` 在构建/安装/版本核验前退出。不得把受控构建或合成呈现写成 Playnite 真实呈现。
-- 当前执行维护小批 S07-01（压缩事实入口）；状态和后续准入见 [Round4 账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md) 与 [自主积压](../AUTONOMOUS_BACKLOG.md)。
+- S07-01 已验收：本入口由 254 行压缩至 32 行，完整快照保存在 [归档](CURRENT_STATE_HISTORY_THROUGH_20261018.md)；实现提交 `4ea5e694`，压缩前正文逐字核对相同。验证及边界见 [S07-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。后续准入见 [Round4 账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md) 与 [自主积压](../AUTONOMOUS_BACKLOG.md)。
 
 ## 已核验事实与外部边界
 

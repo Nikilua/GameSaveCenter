@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-01 已验收，S00-02 仍待 UI 门禁
+
+S07-01 将当前事实入口从 254 行压缩到 32 行，并把完整旧正文保存在 `docs/ai/CURRENT_STATE_HISTORY_THROUGH_20261018.md`；归档正文与提交 `4ea5e694` 的父提交原文一致。证据位于 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md`。source validation、diff check 通过；本项不需要产品构建。
+
+本机 SDK8.0.423 与真实 Playnite UI 门禁仍未满足，S00-02 继续保持代码完成待验收。当前本地 `main` 的提交包含这些尚未准入远端的 XAML 改动，因此不推送该分支；改走依赖独立或符合计划准入条件的工作项。保留的历史 TRX 和 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 未修改。
+
 ## 2026-10-18 当前阶段：Round4 S00-02 代码完成，等待 UI 门禁
 
 本轮没有复记旧 Q/R CI。S00-01 代码提交 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 加入只读命令目录，复用现有工作区导航、设置回调、游戏选择、Ctrl+F 搜索和任务关联游戏命令；稳定 ID / 双语别名 / 分类 / 作用域 / 不可用原因齐备，缺少当前游戏/任务时阻止执行。详细证据和 TRX/DLL SHA 见[证据页](design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。

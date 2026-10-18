@@ -1,3 +1,8 @@
+## 2026-10-18 Round4 S07-01 当前事实入口精简
+
+- 把 `docs/ai/CURRENT_STATE.md` 从 254 行缩至 32 行，集中保留代码身份、活动任务、SDK/Playnite 门禁边界、项目结构和验证索引；完整压缩前文件归档至 `CURRENT_STATE_HISTORY_THROUGH_20261018.md`。归档正文与 `4ea5e694` 的父提交版本规范化换行后完全相同，SHA-256 `4CC18CD21483C04EADBA36B6D01AF8262A671457EC5B8A846F7D276A491B8BA9`。
+- `python scripts/validate-source.py .` 与 `git diff --check` 通过。此为纯文档项，没有产品构建或测试；S00-02 真实 UI 门禁仍未完成。详情见 [S07-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。
+
 ## 2026-10-18 Round4 S00-02 命令搜索面板（代码完成待 UI 门禁）
 
 - 对照 S00-01 目录后，增加 Shell 标题栏搜索入口与本地名称/别名/分类过滤。空查询最多显示八项；每条结果显示类别、作用范围、可用状态和禁用原因，调用现有 ICommand。200 条列表使用虚拟化；搜索为同步线性筛选，不访问业务服务或外部数据。

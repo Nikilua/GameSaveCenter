@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-01 已验收
+
+`CURRENT_STATE.md` 已从 254 行精简到 32 行，保留当前代码身份、活动事项、不可绕过的门禁边界及验证入口；压缩前的完整正文存入 `CURRENT_STATE_HISTORY_THROUGH_20261018.md`，并已与 `4ea5e694` 的父提交版本核对一致。source validation、diff check 通过。该文档项不改变 S00-02 的代码完成待 UI 门禁状态，也不构成 Playnite 验证。证据见[Round4 S07-01](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。
+
 ## 2026-10-18 Round4 S00-01 已验收，S00-02 代码完成待验收
 
 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 新增只读命令目录，稳定登记工作区导航、插件设置、游戏选择、当前页搜索与任务关联游戏。每项有稳定 ID、中文名、英文别名、分类/作用域和动态不可用原因，执行时复用真实 Shell/ViewModel 命令并重新校验 CanExecute；当前游戏或任务缺失时返回原因并阻断执行。现有快捷键帮助只有当前页 Ctrl+F，不等价于统一目录。
