@@ -1,12 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 最新续接：S01-03 已提交，SDK8 Release 与定向测试通过
+## 2026-10-18 最新续接：S01-04 已提交，SDK8 Release 与定向测试通过
 
-本地 `main` 提交 `8cdf5253` 增加存档历史、存档候选路径和任务表格可选列管理。提交后 SDK `8.0.423` 完整 Release solution build `0 warning / 0 error`；列显隐 `4/4`、列宽 `6/6`、视图配置 `5/5`、R09 `2/2`。用户贴出的外机 R09 堆栈第151行不对应当前源码同一行，外机 checkout/DLL/PDB 身份未知；当前提交复测通过，不修改焦点样式断言。完整宿主/安装门禁仍待真实 Playnite/R05 环境前置满足；因此不推送尚未通过 UI 门禁的 XAML 提交。下一项按 Round4 计划为 S01-04。详见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md`。
+本地 `main` 提交 `c6eb8d62` 为任务、存档历史和候选路径表格增加命名视图保存、复制、重命名和删除。提交后 SDK `8.0.423` 完整 Release solution build `0 warning / 0 error`；视图配置 `9/9`、新视图交互 `1/1`、列显隐 `4/4`、列宽 `6/6`、R09 `2/2`、R10 `6/6`、Q14 `1/1`。Render QA `OK`，Task `1040×700` 为 `4/4` 可读行。用户外机 R09 诊断目录、TRX 与 DLL/PDB 身份未提供；当前提交隔离 R09 通过，不据此修改焦点样式。完整 WPF/安装门禁和真实 Playnite 设置保存/宿主呈现仍未验证；此前 R05 `GetCursorPos` Win32 error 5 的环境边界保留。下一项按 Round4 计划为 S01-05。详见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md`。
 
 ## 2026-10-18 当前 Round4 SDK8 门禁复核
 
-S00-01 已满足，已有实现与证据在 `origin/main`。S01-01、S01-02 和 S02-01 均完成 SDK8 受控验证，详见各自 evidence README。S01-02 的密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`；全解方案构建 `0 warning / 0 error`。完整 WPF 隔离仍在第 45/126 类的 R05 `GetCursorPos` 系统指针读取 Win32 error 5 处停止；剩余 WPF 类及安装/版本核验未运行。不要绕过指针权限或推送含未过 UI 门禁 XAML 的 `main`；前置条件变化后继续 UI 门禁。
+S00-01 已满足；S01-01 至 S01-04 与 S02-01 均完成 SDK8 受控验证，详见各自 evidence README。S01-02 的密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`；S01-04 构建 `0 warning / 0 error`、定向隔离测试 `29/29`。完整 WPF 隔离此前在第 45/126 类的 R05 `GetCursorPos` 系统指针读取 Win32 error 5 处停止；剩余 WPF 类及安装/版本核验未运行。不要绕过指针权限；前置条件变化后继续 UI 门禁。
 
 用户最新 R09 日志所示 `Expected 2 DIP / Actual 1 DIP` 与旧测试 `3f7d0b30` 相符；当前 `origin/main` 已含 `f13b9e05` 的 Chrome 1 DIP / ValidationStroke 2 DIP 修正，本机 SDK8 当前 R09 `2/2`。外机同次程序集身份仍缺，详见 R09 复核证据。
 
@@ -22,7 +22,7 @@ S00-01 已满足，已有实现与证据在 `origin/main`。S01-01、S01-02 和 
 
 `25bbe005` 新增版本化工作视图配置模型并接入设置复制/重置；只存标量与稳定列键，旧设置缺字段和未知 JSON 成员兼容。SDK8.0.423 Release 测试项目构建 0/0，`ViewConfigurationDefinitionTests` 与 R09 合计 7/7。验证发现 Json.NET 默认填充初始集合会绕过归一化 setter，现用 `ObjectCreationHandling.Replace` 修正。未改 XAML、未验 Playnite host。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md`。
 
-下一步按计划继续 S01-03 可选列管理；S00-02 的真实安装/版本门禁未通过，因此本地 `main` 仍不推送。S01-02 的密度控件尚未在真实 Playnite 中加载/保存验证。
+下一步按计划继续 S01-05 临时覆盖标记；S00-02 的真实安装/版本门禁仍未通过。S01-02/03/04 的设置加载保存和页面呈现均未在真实 Playnite 中验证。
 
 ## 2026-10-18 最新续接：S07-03 分支检查读取受限
 

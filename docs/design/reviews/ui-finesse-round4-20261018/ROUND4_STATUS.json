@@ -163,14 +163,19 @@
     {
       "id": "S01-04",
       "title": "保存与复制视图",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "c6eb8d62",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[证据](evidence/S01-04/README.md)：SDK8.0.423 Release 解决方案构建 0/0；视图配置/交互、列显隐/列宽、R09、R10、Q14 隔离测试共 29/29；Render QA OK，Task 1040×700 为 4/4 可读行",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md"
+        }
+      ],
+      "boundary": "未运行完整 WPF/安装门禁及真实 Playnite；既有 R05 GetCursorPos Win32 error 5 权限边界未绕过，宿主设置保存与双主题呈现待验"
     },
     {
       "id": "S01-05",

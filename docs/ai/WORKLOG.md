@@ -11355,3 +11355,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - S00-01 已在 `origin/main`，作为已有能力满足本任务；原 SDK9 7/7 与本次 SDK8 `CommandDirectoryBehaviorTests` 2/2 均有 TRX。没有重复实现命令目录。
 - S00-02 使用 SDK `8.0.423` 完成 Release solution build，0 warning / 0 error；Core `125/125`、Worker `364 passed / 1 skipped`、Playnite source `445 passed / 27 skipped`。Playnite WPF 隔离运行至 45/126 类，在 R05 `QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt` 因 `GetCursorPos` Win32 error 5 停止；169/170 已运行用例通过，其余 WPF 类未运行。完整诊断 ID `20261018T043821860Z-6e089ab8`，R05 TRX SHA `CDF246C301EFFA904619E881333880925003EDEECEDB41F9DFFD07136391330A`。
 - 安装、插件版本核验和真实 Playnite rendering 未到达；不绕过指针权限门槛，不推送含 S00-02 XAML 的 `main`。S00-01 标记已满足，S00-02 等待环境前置可观察变化。
+
+## 2026-10-18 Round4 S01-04 保存与复制视图
+
+- 实现提交 `c6eb8d62566bbc74f577eaa6e7c5b9132365af1c` 为任务、存档历史与候选路径表格加入工作区命名视图：保存当前排列、另存副本、重命名、删除和活动视图恢复。每个视图保存筛选预设 ID、排序列/方向、稳定列键、列宽和密度；默认排列的保存会创建命名视图，命名视图期间不把表格列设置或任务筛选覆盖写进默认设置。
+- 提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`，诊断 ID `20261018T072356967Z-15a7f819`。ViewConfigurationDefinition `9/9`、DataGridViewConfiguration `1/1`、列显隐 `4/4`、R06 列宽 `6/6`、R09 `2/2`、R10 `6/6`、Q14 `1/1`，共 `29/29`，各类独立进程；源码校验通过。Render QA `render-qa OK`，Task `1040×700` 可读行 `4/4`。测试 TRX、DLL/PDB 身份和合成截图已归档于 [S01-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md)。
+- 用户提供的外机 R09 失败缺少该诊断目录、TRX、source HEAD 与测试/插件 DLL/PDB 身份；当前提交 R09 `2/2` 不定位外机原因。完整 WPF/安装门禁、Playnite 设置加载保存和真实宿主呈现未运行；既有 R05 `GetCursorPos` Win32 error 5 权限边界保留。下一项 S01-05。

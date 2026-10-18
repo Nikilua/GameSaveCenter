@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-04 保存与复制视图代码完成待验收
+
+提交 `c6eb8d62` 为任务、存档历史与候选路径表格接入工作区命名视图，可保存、复制、重命名和删除；每个视图保存筛选预设 ID、稳定排序、可见列、列宽与密度。保存默认排列会创建命名视图；命名视图关闭默认列宽/显隐和任务筛选状态写回，删除活动视图回安全默认。SDK `8.0.423` Release solution build `0/0`，七个隔离测试类 `29/29`，Render QA `OK` 且 Task `1040×700` 为 `4/4` 可读行。未完成完整 WPF/安装/真实 Playnite 设置保存和宿主呈现验证；此前门禁仍在 R05 `GetCursorPos` Win32 error 5 处受阻。证据见 [S01-04](../design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md)。下一项 S01-05。
+
 ## 2026-10-18 Round4 S01-03 可选列管理代码完成待验收
 
 提交 `8cdf5253` 为存档历史、存档候选路径与任务三张表增加列显隐菜单。按 `v1/<view-key>` 保存稳定列键，只记显式隐藏的可选列；状态/对象身份必需列固定可见，新版本新增列默认显示，重置只影响当前表格。共享菜单样式使用动态主题资源；MediaInbox 保持原虚拟化方案。SDK `8.0.423` Release 解决方案构建 `0/0`，列显隐 `4/4`、列宽 `6/6`、视图配置 `5/5`、R09 `2/2`。source validation 通过，静态 WPF 审查 `35 XAML / 0 errors / 28 warnings / 177 info`。外机 R09 日志的第151行期望厚度与当前源码行151的颜色断言不符；当前提交隔离 R09 通过，外机 source/DLL/PDB 身份仍未知。真实 Playnite 设置提交与呈现未验；门禁和 TRX 见 [S01-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md)。
