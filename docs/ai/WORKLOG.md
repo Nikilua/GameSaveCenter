@@ -2,7 +2,7 @@
 
 - 实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0` 新增路径脱敏的恢复映射只读预览与最多 50 条安全草稿；只保存版本/基线引用、计数、预览和 readiness 检查引用、固定保护要求，不保存路径、凭据或执行授权。预览、保存、删除绑定到 `SaveCenterView`，并检查 30 分钟新鲜度及当前选择匹配。
 - 最终验证源码提交 `b5bb5158960e05a4c948124d9e29540f4a05812a`，SDK `8.0.423` Release solution build `0 warning / 0 error`；Core `156/156`、Worker `380 passed / 1 skipped`、Playnite 非 WPF `475 passed / 27 skipped`。定向 R09 `2/2`、草稿 `4/4`、侧栏来源 `22/22`、Q06 按下态 `1/1`、映射预览 `2/2`，合计 `31/31`。
-- WPF 隔离只完成 `26/133` 类、`113/113` 通过，剩余 `107` 类未运行，不称完整矩阵通过。隔离安装独立流程通过，版本 `0.6.73` / DLL `0.6.73.0`；RenderHarness 双主题首次运行只有侧栏快速切换时序探针失败，同一已构建 Harness 复跑 `render-qa OK`。source validation 通过，XAML `25/25`，WPF 静态审查 `0 errors / 26 warnings / 177 info`。真实 Playnite 未启动。
+- 最新 main 一键复跑的 WPF 隔离完成 `48/133` 类，`178` 通过/`1` 失败；在 `R05TooltipTimingBehaviorTests` 因无法读取启动前系统指针位置停止，余下 `85` 类未运行。R09 在同次已构建测试程序集下单独 `2/2` 通过。此前隔离安装流程通过，版本 `0.6.73` / DLL `0.6.73.0`；RenderHarness 双主题最终复跑 `render-qa OK`。source validation 通过，XAML `25/25`，WPF 静态审查 `0 errors / 26 warnings / 177 info`。真实 Playnite 未启动。
 - 用户粘贴的旧 R09 `2,2,2,2 → 1,1,1,1` 是测试阶段断言失败，不是编译错误。这个值吻合旧版对错误态 Chrome 厚度的 2 DIP 断言；`f13b9e05` 已改为 Chrome 1 DIP 并增加独立 2 DIP ValidationStroke 断言。用户暂时没有该次 summary/TRX/DLL/PDB，无法证明旧运行实际使用该版本，也不能确定二进制输入。当前提交 R09 `2/2` 不反推旧输入。完整报告、部分 WPF TRX、渲染截图、安装与二进制身份见 [S03-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。
 
 ## 2026-10-19 Round4 S03-03 冲突原因对照

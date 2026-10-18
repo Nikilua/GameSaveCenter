@@ -440,14 +440,14 @@
       "implementationCommit": "1c7083e2e1f6b4e6a7c9881794e1f722e96148c0",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[受控证据](evidence/S03-04/README.md)：SDK8 Release solution 0/0；Core 156/156、Worker 380/1 skipped、Playnite 非 WPF 475/27 skipped、定向 31/31；隔离安装和双主题 RenderHarness 通过。WPF 只完成 26/133 类。",
+      "verificationText": "[受控证据](evidence/S03-04/README.md)：SDK8 Release solution 0/0；Core 156/156、Worker 380/1 skipped、Playnite 非 WPF 475/27 skipped、定向 31/31；隔离安装和双主题 RenderHarness 通过。当前 main R09 2/2；完整 WPF 一键复跑到 48/133 类时因 R05 系统指针读取失败中断（178 通过/1 失败，余 85 类未运行）。",
       "evidence": [
         {
           "label": "受控证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md"
         }
       ],
-      "boundary": "最终验证源码为 b5bb5158960e05a4c948124d9e29540f4a05812a。完整 WPF 隔离循环有 107 类未运行，真实 Playnite 未启动。用户旧 R09 summary/TRX/DLL/PDB 暂不可用；当前 R09 2/2 不能识别旧运行输入或根因。"
+      "boundary": "当前 main 完整一键复跑源为 d4068e6562b7d78a9893211a522059d5d1ce3c9f。全量 WPF 隔离循环被现有 R05 系统指针读取失败中断，85 类未运行；该环境失败不是 S03-04/R09 断言。真实 Playnite 未启动。用户旧 R09 summary/TRX/DLL/PDB 暂不可用；当前 R09 2/2 不能识别旧运行输入或根因。"
     },
     {
       "id": "S03-05",

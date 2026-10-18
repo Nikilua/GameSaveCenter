@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="933b08f0-ba94-4588-90ff-7197faf29d6e" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-19T06:17:56.3817732+08:00" queuing="2026-10-19T06:17:56.3817735+08:00" start="2026-10-19T06:17:50.5375570+08:00" finish="2026-10-19T06:18:12.6908477+08:00" />
+  <TestSettings name="default" id="3937d403-2094-4839-8324-d5bee64ea371">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="dadf77b7-b1f0-4f3a-8c13-dd27094dee65" testId="ff4c1069-f292-5caa-a585-9c88e909a784" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  '*.png'  &quot;, kind: ExcludePattern, expected: &quot;*.png&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-19T06:17:56.3657467+08:00" endTime="2026-10-19T06:17:56.3668084+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dadf77b7-b1f0-4f3a-8c13-dd27094dee65" />
+    <UnitTestResult executionId="3060cea4-28e1-4ef7-9f52-527790ac2b35" testId="42c44b0a-8249-f198-e4ea-38bdb07c8590" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.MultiLinePasteIsRejectedWithoutChangingTheValue" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-19T06:17:56.6979498+08:00" endTime="2026-10-19T06:17:56.6989525+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3060cea4-28e1-4ef7-9f52-527790ac2b35" />
+    <UnitTestResult executionId="70e32356-425c-40f9-9a79-b78913341b90" testId="1dcb0301-e6f0-7b8f-da54-2bc04df825b3" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  '8080'  &quot;, kind: Port, expected: &quot;8080&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-19T06:17:56.3708455+08:00" endTime="2026-10-19T06:17:56.3718495+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="70e32356-425c-40f9-9a79-b78913341b90" />
+    <UnitTestResult executionId="62ede226-857f-41f9-914c-75e566932ffc" testId="1c093db2-dcc3-5528-446c-4ebc28f6ede6" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.DirectoryPasteTrimsOuterWhitespaceQuotesAndTrailingShellNewline" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-19T06:17:56.6853389+08:00" endTime="2026-10-19T06:17:56.6874182+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62ede226-857f-41f9-914c-75e566932ffc" />
+    <UnitTestResult executionId="97b7f354-87b5-493b-8ce9-037f99dcb818" testId="b9be7f10-bccb-67db-d9c9-081b603f0fdb" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfTextBoxKeepsSelectionAcrossUndoAndSupportsRedoForOrdinaryEditing" computerName="redacted-host" duration="00:00:02.0260000" startTime="2026-10-19T06:17:54.3337479+08:00" endTime="2026-10-19T06:17:56.3428405+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97b7f354-87b5-493b-8ce9-037f99dcb818" />
+    <UnitTestResult executionId="e81884cd-b7b6-4778-8240-ddfee5e0e687" testId="4fece017-9c18-1ddc-e156-329c9c87d247" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  \&quot;myremote:GameSaveCenter\&quot;  &quot;, kind: RemoteTarget, expected: &quot;myremote:GameSaveCenter&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-19T06:17:56.3678447+08:00" endTime="2026-10-19T06:17:56.3688430+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e81884cd-b7b6-4778-8240-ddfee5e0e687" />
+    <UnitTestResult executionId="a77642e3-da54-49e4-97bb-ec8d91af54f2" testId="26e0f50f-980a-4753-d5c6-59cab0295d03" testName="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfPasteKeepsUndoForNormalizedTextAndLeavesRejectedTextUntouched" computerName="redacted-host" duration="00:00:00.3410000" startTime="2026-10-19T06:17:56.3728491+08:00" endTime="2026-10-19T06:17:56.6833384+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a77642e3-da54-49e4-97bb-ec8d91af54f2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  '*.png'  &quot;, kind: ExcludePattern, expected: &quot;*.png&quot;)" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ff4c1069-f292-5caa-a585-9c88e909a784">
+      <Execution id="dadf77b7-b1f0-4f3a-8c13-dd27094dee65" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfTextBoxKeepsSelectionAcrossUndoAndSupportsRedoForOrdinaryEditing" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b9be7f10-bccb-67db-d9c9-081b603f0fdb">
+      <Execution id="97b7f354-87b5-493b-8ce9-037f99dcb818" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="WpfTextBoxKeepsSelectionAcrossUndoAndSupportsRedoForOrdinaryEditing" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.MultiLinePasteIsRejectedWithoutChangingTheValue" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="42c44b0a-8249-f198-e4ea-38bdb07c8590">
+      <Execution id="3060cea4-28e1-4ef7-9f52-527790ac2b35" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="MultiLinePasteIsRejectedWithoutChangingTheValue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  '8080'  &quot;, kind: Port, expected: &quot;8080&quot;)" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1dcb0301-e6f0-7b8f-da54-2bc04df825b3">
+      <Execution id="70e32356-425c-40f9-9a79-b78913341b90" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.DirectoryPasteTrimsOuterWhitespaceQuotesAndTrailingShellNewline" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1c093db2-dcc3-5528-446c-4ebc28f6ede6">
+      <Execution id="62ede226-857f-41f9-914c-75e566932ffc" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="DirectoryPasteTrimsOuterWhitespaceQuotesAndTrailingShellNewline" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax(raw: &quot;  \&quot;myremote:GameSaveCenter\&quot;  &quot;, kind: RemoteTarget, expected: &quot;myremote:GameSaveCenter&quot;)" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4fece017-9c18-1ddc-e156-329c9c87d247">
+      <Execution id="e81884cd-b7b6-4778-8240-ddfee5e0e687" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="EachInputKindUsesTheSameWrapperRulesWithoutCollapsingItsSyntax" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.PasteNormalizationTests.WpfPasteKeepsUndoForNormalizedTextAndLeavesRejectedTextUntouched" storage="[repo]\.tmp\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="26e0f50f-980a-4753-d5c6-59cab0295d03">
+      <Execution id="a77642e3-da54-49e4-97bb-ec8d91af54f2" />
+      <TestMethod codeBase="[repo]\.tmp\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.PasteNormalizationTests" name="WpfPasteKeepsUndoForNormalizedTextAndLeavesRejectedTextUntouched" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ff4c1069-f292-5caa-a585-9c88e909a784" executionId="dadf77b7-b1f0-4f3a-8c13-dd27094dee65" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42c44b0a-8249-f198-e4ea-38bdb07c8590" executionId="3060cea4-28e1-4ef7-9f52-527790ac2b35" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1dcb0301-e6f0-7b8f-da54-2bc04df825b3" executionId="70e32356-425c-40f9-9a79-b78913341b90" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1c093db2-dcc3-5528-446c-4ebc28f6ede6" executionId="62ede226-857f-41f9-914c-75e566932ffc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b9be7f10-bccb-67db-d9c9-081b603f0fdb" executionId="97b7f354-87b5-493b-8ce9-037f99dcb818" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4fece017-9c18-1ddc-e156-329c9c87d247" executionId="e81884cd-b7b6-4778-8240-ddfee5e0e687" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="26e0f50f-980a-4753-d5c6-59cab0295d03" executionId="a77642e3-da54-49e4-97bb-ec8d91af54f2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.35]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.75]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.25]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

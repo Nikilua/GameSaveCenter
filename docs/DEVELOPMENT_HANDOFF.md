@@ -2,9 +2,9 @@
 
 ## 2026-10-19 Round4 S03-04 恢复方案草稿
 
-实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0`；最终验证源码提交 `b5bb5158960e05a4c948124d9e29540f4a05812a`。SDK `8.0.423` Release solution build `0/0`；Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`，R09 `2/2` 与恢复草稿 `4/4` 通过；隔离安装、双主题 RenderHarness 复跑、source validation 和 XAML `25/25` 通过。WPF 隔离仅完成 `26/133` 类、`113/113`，不是全量通过；真实 Playnite 未启动。首次 RenderHarness 的快速切换时序探针未稳定，同一已构建 Harness 复跑通过。
+实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0`；功能和隔离安装验证基于 `b5bb5158960e05a4c948124d9e29540f4a05812a`，最新完整一键复跑源提交 `d4068e6562b7d78a9893211a522059d5d1ce3c9f`。SDK `8.0.423` Release solution build `0/0`；Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`，当前 main R09 `2/2` 与恢复草稿 `4/4` 通过。WPF 隔离跑到 `48/133` 类时，R05 Tooltip 用例无法读取启动前系统指针而失败；178 项通过、1 项失败、85 个类未运行。独立隔离安装、双主题 RenderHarness 复跑、source validation 和 XAML `25/25` 通过。首次 RenderHarness 快速切换时序探针未稳定，同一已构建 Harness 复跑通过。真实 Playnite 未启动。
 
-用户粘贴的旧 R09 结果属于测试断言失败，不是编译错误；2 DIP→1 DIP 与历史 Chrome 厚度断言相符，该断言已在 `f13b9e05` 拆分为 Chrome 1 DIP、ValidationStroke 2 DIP。用户暂时没有该次 summary/TRX/DLL/PDB，无法确认旧运行是否用了该测试版本。详细 TRX、隔离安装报告、渲染报告、截图和二进制哈希见 [S03-04 证据包](design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。下一项按计划审查 S03-05 方案差异比较。
+用户粘贴的旧 R09 结果属于测试断言失败，不是编译错误；2 DIP→1 DIP 与历史 Chrome 厚度断言相符，该断言已在 `f13b9e05` 拆分为 Chrome 1 DIP、ValidationStroke 2 DIP。用户暂时没有该次 summary/TRX/DLL/PDB，无法确认旧运行是否用了该测试版本。当前 main R09 `2/2`；本机完整一键测试另在 R05 系统指针读取失败处中断，该边界不应与旧 R09 混为一谈。详细 TRX、隔离安装报告、渲染报告、截图和二进制哈希见 [S03-04 证据包](design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。下一项按计划审查 S03-05 方案差异比较。
 
 ## 2026-10-19 Round4 S03-03 冲突原因对照
 

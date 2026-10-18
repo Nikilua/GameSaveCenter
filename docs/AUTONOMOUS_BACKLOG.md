@@ -36,7 +36,7 @@
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
 | S03-03 | IMPLEMENTED | `3268565c` 冲突详情并排显示双方版本/设备证据、共同父版本、指纹关系与 readiness 校验状态/时间；SDK8 Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`、Render QA OK。无时间戳覆盖建议；完整 WPF 隔离、安装与真实 Playnite未验。证据见 Round4 S03-03。 |
-| S03-04 | IMPLEMENTED | `1c7083e2` 实现只读恢复方案草稿；最终 SDK8 验证源码 `b5bb5158` solution build `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`、定向 `31/31`，隔离安装与 RenderHarness 双主题复跑通过。WPF 仅部分 `26/133`，真实 Playnite未启动；用户旧 R09 输入身份缺失。证据见 Round4 S03-04。 |
+| S03-04 | IMPLEMENTED | `1c7083e2` 实现只读恢复方案草稿；SDK8 Release solution `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`、定向 `31/31`，隔离安装与 RenderHarness 双主题复跑通过。当前 main R09 `2/2`；完整 WPF 一键复跑至 `48/133` 时因 R05 系统指针读取失败中断（178 通过/1 失败，余 85 类未跑）；真实 Playnite未启动。用户旧 R09 输入身份缺失。证据见 Round4 S03-04。 |
 | S03-05～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
 
 不自动启动新线程；不重跑无变化的外部权限探测；不把真实存档、媒体或云端写入当规划验证。

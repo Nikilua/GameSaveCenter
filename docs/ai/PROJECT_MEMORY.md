@@ -4,9 +4,9 @@
 
 实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0` 将恢复映射 IPC 收敛为只读、路径脱敏摘要；UI 草稿最多 50 条，只保存游戏/目标版本/基线、映射计数与预览引用、创建时间、readiness 检查引用和固定保护要求，不含文件路径、凭据或可执行授权。`SaveCenterView` 提供只读预览、保存与删除操作，30 分钟预览新鲜度及选择匹配由 ViewModel 校验。最终受控验证基于 `b5bb5158960e05a4c948124d9e29540f4a05812a`。
 
-SDK `8.0.423` Release solution build `0 warning / 0 error`；Core `156/156`、Worker `380 passed / 1 skipped`、Playnite 非 WPF `475 passed / 27 skipped`。定向用例共 `31/31`：R09 `2/2`、草稿 `4/4`、侧栏 `22/22`、Q06 按下态 `1/1`、Worker 脱敏预览 `2/2`。完整 WPF 隔离只完成 `26/133` 类（`113/113` 通过），其余 `107` 类未运行，不能称全量 WPF 通过。RenderHarness 双主题复跑 `render-qa OK`；source validation、XAML `25/25`、WPF 静态审查 `0 errors / 26 warnings / 177 info`。隔离安装通过，扩展清单 `0.6.73`、插件 DLL `0.6.73.0`。真实 Playnite 未启动。首次 RenderHarness 仅快速切换时序探针失败，同一已构建 Harness 复跑通过。
+SDK `8.0.423` Release solution build `0 warning / 0 error`；Core `156/156`、Worker `380 passed / 1 skipped`、Playnite 非 WPF `475 passed / 27 skipped`。定向用例共 `31/31`：R09 `2/2`、草稿 `4/4`、侧栏 `22/22`、Q06 按下态 `1/1`、Worker 脱敏预览 `2/2`。当前 main 完整一键复跑（源码 `d4068e65`）在 WPF `48/133` 类时因 R05 `GetCursorPos` 系统指针读取失败而停止；该批 WPF `178` 通过/`1` 失败，其余 `85` 类未运行。当前 main 单独 R09 `2/2` 通过。RenderHarness 双主题复跑 `render-qa OK`；source validation、XAML `25/25`、WPF 静态审查 `0 errors / 26 warnings / 177 info`。b5 源码上的独立隔离安装通过，版本 `0.6.73` / DLL `0.6.73.0`。真实 Playnite 未启动。首次 RenderHarness 仅快速切换时序探针失败，同一已构建 Harness 复跑通过。
 
-用户日志诊断 `20261018T012631286Z-e027df9d` 显示的是测试阶段 R09 断言失败，不是编译失败。日志中的 2 DIP→1 DIP 与旧版 Chrome 厚度断言吻合；提交 `f13b9e05` 已改为 Chrome 1 DIP，并单独验证 2 DIP ValidationStroke。用户暂时没有旧运行 summary/TRX/DLL/PDB，故无法证明旧运行实际使用旧断言，也不能确定其二进制输入。最终源码 SDK8 R09 `2/2` 通过。构建、部分隔离测试、隔离安装、截图、程序集/TRX SHA-256 及边界见 [S03-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。
+用户日志诊断 `20261018T012631286Z-e027df9d` 显示的是测试阶段 R09 断言失败，不是编译失败。日志中的 2 DIP→1 DIP 与旧版 Chrome 厚度断言吻合；提交 `f13b9e05` 已改为 Chrome 1 DIP，并单独验证 2 DIP ValidationStroke。用户暂时没有旧运行 summary/TRX/DLL/PDB，故无法证明旧运行实际使用旧断言，也不能确定其二进制输入。当前 main SDK8 R09 `2/2` 通过。一键全量 WPF 循环另在第 48 类被系统指针读取失败中断，与 R09 无关。构建、隔离测试、隔离安装、截图、程序集/TRX SHA-256 及边界见 [S03-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。
 
 ## 2026-10-19 Round4 S03-03 冲突原因对照
 
