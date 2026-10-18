@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-18 最新续接：S07-04 已验收，S00-02 仍待 UI 门禁
+
+根 `AGENTS.md` 新增 CI 结果记录规则：仅新失败/修复、发布或验收状态改变时提交新结论；不为纯文档提交触发的通过结果继续追加提交。run/job/artifact 身份仍须可追溯。本次只审查 workflow 和历史记录，未改 workflow/required checks；相关 path 分流属独立 S07-03。证据位于 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md`。
+
+S07-01 的压缩/归档已完成。S00-02 门禁仍缺 SDK8.0.423 与真实 Playnite 验证；本地分支含该未准入 XAML 改动，继续不推送 `main`，并推进依赖独立的任务。
+
 ## 2026-10-18 最新续接：S07-01 已验收，S00-02 仍待 UI 门禁
 
 S07-01 将当前事实入口从 254 行压缩到 32 行，并把完整旧正文保存在 `docs/ai/CURRENT_STATE_HISTORY_THROUGH_20261018.md`；归档正文与提交 `4ea5e694` 的父提交原文一致。证据位于 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md`。source validation、diff check 通过；本项不需要产品构建。

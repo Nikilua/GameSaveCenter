@@ -1,3 +1,8 @@
+## 2026-10-18 Round4 S07-04 CI 结果记录规则
+
+- 审查 `.github/workflows/windows-build.yml`：`main` 的 push 不设文档路径过滤；诊断已有 `summary.json`、console 与原始 TRX。近四个提交 `4cde34ce`、`188c8a74`、`5eb0d1fd`、`4d55a7dd` 连续更新前一轮 CI 结论，说明只在计划内留一条提示不足以约束交付记录。新增仓库级规则于 `AGENTS.md`：CI 结论只因新失败/修复、发布或验收变化提交；纯文档提交触发的通过结果不再引发记录提交；保留可查询 run/job/artifact 身份。
+- 未更改 workflow、required checks 或 branch protection（S07-03 单独评估）。这是文档流程变更，不运行产品构建；`python scripts/validate-source.py .`、`git diff --check` 与新证据链接检查通过。详见 [S07-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md)。
+
 ## 2026-10-18 Round4 S07-01 当前事实入口精简
 
 - 把 `docs/ai/CURRENT_STATE.md` 从 254 行缩至 32 行，集中保留代码身份、活动任务、SDK/Playnite 门禁边界、项目结构和验证索引；完整压缩前文件归档至 `CURRENT_STATE_HISTORY_THROUGH_20261018.md`。归档正文与 `4ea5e694` 的父提交版本规范化换行后完全相同，SHA-256 `4CC18CD21483C04EADBA36B6D01AF8262A671457EC5B8A846F7D276A491B8BA9`。

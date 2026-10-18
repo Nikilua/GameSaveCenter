@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S07-04 已验收
+
+CI 结果应保留其实际 source commit、SDK、job 与 artifact 身份。只有新失败/修复、发布或影响验收状态时新增结论；不要为纯文档/CI 结果记录触发出的通过结果再追加一笔记录提交。该约束已提升到根 `AGENTS.md`。现有 Windows workflow 对 `main` 的每次 push 都运行完整任务，本阶段没有改触发器或 required checks；S07-03 需单独审查其兼容性。证据见[Round4 S07-04](../design/reviews/ui-finesse-round4-20261018/evidence/S07-04/README.md)。
+
 ## 2026-10-18 Round4 S07-01 已验收
 
 `CURRENT_STATE.md` 已从 254 行精简到 32 行，保留当前代码身份、活动事项、不可绕过的门禁边界及验证入口；压缩前的完整正文存入 `CURRENT_STATE_HISTORY_THROUGH_20261018.md`，并已与 `4ea5e694` 的父提交版本核对一致。source validation、diff check 通过。该文档项不改变 S00-02 的代码完成待 UI 门禁状态，也不构成 Playnite 验证。证据见[Round4 S07-01](../design/reviews/ui-finesse-round4-20261018/evidence/S07-01/README.md)。
