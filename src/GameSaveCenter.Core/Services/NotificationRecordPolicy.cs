@@ -75,11 +75,12 @@ public static class NotificationRecordPolicy
 
     private static string NormalizeWhitespace(string? value, int maxLength)
     {
-        if (string.IsNullOrEmpty(value) || maxLength <= 0) return string.Empty;
+        var text = value ?? string.Empty;
+        if (text.Length == 0 || maxLength <= 0) return string.Empty;
 
-        var result = new StringBuilder(Math.Min(value.Length, maxLength));
+        var result = new StringBuilder(Math.Min(text.Length, maxLength));
         var needsSpace = false;
-        foreach (var character in value)
+        foreach (var character in text)
         {
             if (char.IsWhiteSpace(character))
             {

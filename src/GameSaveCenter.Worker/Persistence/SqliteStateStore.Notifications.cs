@@ -2,6 +2,7 @@ using System.Globalization;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
 
 namespace GameSaveCenter.Worker.Persistence;
 

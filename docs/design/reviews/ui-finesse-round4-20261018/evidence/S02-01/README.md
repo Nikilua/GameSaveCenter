@@ -14,10 +14,10 @@
 
 - `python scripts/validate-source.py .`：通过。
 - `git diff --check`：通过。
-- 新增 `NotificationRecordPersistenceTests` 覆盖同去重键重放、Worker 重启读回、30 天过期拒绝、500 条上限、文本归一化和未知 severity 回退；尚未运行。
-- 当前工作区只安装 SDK `9.0.302`，仓库要求精确 SDK `8.0.423`。本阶段未运行 .NET build/test；不使用 SDK9 冒充仓库门禁。
+- SDK `8.0.423` Release 解决方案构建成功（0 warning / 0 error）。新增 `NotificationRecordPersistenceTests` `3/3` 通过；完整 Worker suite `364` passed、`1` skipped。TRX：[notification-records-sdk8423.trx](tests/notification-records-sdk8423.trx)，SHA-256 `9D89AF7F28591FE57DBC4C63BBC217A4B788B2D72CA01B88187BCF88E16B93CF`。
+- 为 SQLite 测试夹具在删除隔离数据库前清理连接池，避免文件句柄在 fixture 清理阶段仍被池化连接持有；生产数据库与存储语义未因此改变。另修复了 nullable 输入归一化告警并补齐 Worker 日志扩展命名空间。
 - 未修改 XAML，未发送外部通知，也未验证 Playnite host。
 
 ## 下一步
 
-取得 SDK8.0.423 后运行 Worker `NotificationRecordPersistenceTests` 和目标构建。随后 S02-02 可将现有通知生产路径接入 `TryAddNotificationAsync`，并提供收件箱入口。Round4 总计划仍进行中。
+受控构建与新增 Worker 测试现已通过，S02-01 可更新为已验收。通知生产者尚未接入；后续 S02-02 再将现有通知生产路径接入 `TryAddNotificationAsync` 并提供收件箱入口。Round4 总计划仍进行中。

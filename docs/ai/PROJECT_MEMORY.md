@@ -2,7 +2,7 @@
 
 ## 2026-10-18 Round4 S02-01 通知记录契约代码完成待验收
 
-临时插件 toast 不构成持久收件箱；选择已有 Worker SQLite 状态库作为本地通知记录所有者。`NotificationRecordDto` 保存通知/去重 ID、关联 task/game ID、级别、短标题/摘要、UTC 时间和读状态；`tasks` 表仍是任务状态权威来源。表对 dedup key 建唯一约束，重放忽略；记录保留 30 天、最多 500 条。S02-02 再连接通知生产者与入口。代码提交 `83194c50`，source validation/diff check 通过；新增 SQLite 行为测试因精确 SDK8.0.423 缺失未运行，无 Playnite/UI 验证。见 [S02-01](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
+临时插件 toast 不构成持久收件箱；选择已有 Worker SQLite 状态库作为本地通知记录所有者。`NotificationRecordDto` 保存通知/去重 ID、关联 task/game ID、级别、短标题/摘要、UTC 时间和读状态；`tasks` 表仍是任务状态权威来源。表对 dedup key 建唯一约束，重放忽略；记录保留 30 天、最多 500 条。S02-02 再连接通知生产者与入口。代码提交 `83194c50`；SDK8.0.423 Release 解决方案构建 0 warning / 0 error，新增 SQLite 行为测试 3/3，Worker 364 passed / 1 skipped。未改 XAML、无外发通知或 Playnite/UI 验证。见 [S02-01](../design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md)。
 
 ## 2026-10-18 R09 外机失败再次出现，输入身份仍缺
 

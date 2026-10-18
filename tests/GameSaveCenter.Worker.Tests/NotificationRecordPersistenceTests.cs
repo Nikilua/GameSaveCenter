@@ -2,6 +2,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using GameSaveCenter.Worker.Configuration;
 using GameSaveCenter.Worker.Persistence;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
@@ -105,6 +106,7 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
 
     public void Dispose()
     {
+        SqliteConnection.ClearAllPools();
         if (Directory.Exists(root)) Directory.Delete(root, recursive: true);
     }
 

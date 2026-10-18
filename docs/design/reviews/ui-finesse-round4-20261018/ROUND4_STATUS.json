@@ -213,19 +213,19 @@
     {
       "id": "S02-01",
       "title": "通知记录契约",
-      "state": "代码完成待验收",
+      "state": "已验收",
       "implementationState": "complete",
       "implementationCommit": "83194c50",
-      "controlledVerificationState": "not_run",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S02-01/README.md)：source validation 与 diff check 通过；新增 Worker SQLite 测试未运行，精确 SDK 8.0.423 缺失",
+      "verificationText": "[证据](evidence/S02-01/README.md)：SDK8 Release 构建通过；NotificationRecordPersistenceTests 3/3，Worker 364 passed / 1 skipped",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md"
         }
       ],
-      "boundary": "通知生产者尚未接入；未构建/运行新增 Worker 测试；无 XAML、外发通知或 Playnite host 验证"
+      "boundary": "通知生产者尚未接入；无 XAML、外发通知或 Playnite host 验证；S02-02 后续接入"
     },
     {
       "id": "S02-02",

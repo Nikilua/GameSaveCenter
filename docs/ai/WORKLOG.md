@@ -11330,3 +11330,8 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 使用仓库 SDK `8.0.423` 做 Playnite 测试项目 Release build，0 warning / 0 error。`ViewConfigurationDefinitionTests` 与当前 R09 两个回归用例合计 `7/7` 通过，TRX SHA `67A87BA7EB9D418AD790A6EEBCB5285CB20E83C385A371717A5167E4D7707A69`。
 - 测试发现 Json.NET 默认填充 `ViewConfigurations` 已初始化集合会绕过 setter 归一化；设置 `ObjectCreationHandling.Replace` 后测试通过。未改 XAML，真实 Playnite 设置读写未验。S01-01 更新为已验收；密度/列选择/视图保存交互仍是后续任务。
+
+## 2026-10-18 Round4 S02-01 SDK8 受控验收
+
+- 使用 SDK `8.0.423` 做 Release 解决方案构建，0 warning / 0 error。新增 `NotificationRecordPersistenceTests` `3/3` 通过，完整 Worker suite `364 passed / 1 skipped`。定向 TRX SHA `9D89AF7F28591FE57DBC4C63BBC217A4B788B2D72CA01B88187BCF88E16B93CF`。
+- 修复 SDK8 nullable warning、Worker 日志扩展编译缺失，以及 SQLite 测试 fixture 删除前的连接池清理；通知记录逻辑仍保留唯一去重、30天/500条保留规则。未改 XAML或外发通知；S02-01 更新为已验收，S02-02 仍待接入。

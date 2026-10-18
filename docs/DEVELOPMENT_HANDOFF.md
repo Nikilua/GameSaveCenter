@@ -2,7 +2,7 @@
 
 ## 2026-10-18 Round4 S02-01 通知记录代码完成
 
-`83194c50` 新增通知记录 DTO、severity/规范化策略和 Worker SQLite 持久化 API。去重键唯一且同事件重放不覆盖首条；保留 30 天、最多 500 条，任务状态仍以原任务表为准。新 Worker SQLite 测试已补但没有运行：当前只安装 SDK9.0.302，仓库精确要求 SDK8.0.423。通知生产者尚未接入，S02-02 接续；未改 XAML/外发通知。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md`。
+`83194c50` 新增通知记录 DTO、severity/规范化策略和 Worker SQLite 持久化 API。去重键唯一且同事件重放不覆盖首条；保留 30 天、最多 500 条，任务状态仍以原任务表为准。SDK8.0.423 Release 解决方案构建 0/0，新增 Worker SQLite 测试 `3/3`，完整 Worker `364` passed / `1` skipped。通知生产者尚未接入，S02-02 接续；未改 XAML/外发通知。证据：`docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-01/README.md`。
 
 ## 2026-10-18 外机 R09 最新失败输入
 
