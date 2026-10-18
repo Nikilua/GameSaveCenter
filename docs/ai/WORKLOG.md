@@ -1,3 +1,9 @@
+# 2026-10-19 Round4 S03-06 恢复方案失效规则
+
+- 实现提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38` 增加恢复草稿 `Current` / `NeedsRevalidation` 与失效原因；以 HMAC 身份摘要比较对象、内容、readiness 结果和映射变化，不保存原始路径/内容指纹/自由文本摘要。草稿重新验证前不代表可恢复；原 `RestoreConfirmationGuard` 和最新安全确认保持执行前门禁。
+- 精确提交 SDK `8.0.423` Release solution build 成功、0 errors；还原时漏洞数据源 `127.0.0.1:9` 不可连造成 17 条 `NU1900` 警告。定向 Playnite 14/14（含当前 R09 2/2），source validation、XAML 25 文件检查、RenderHarness 双主题和精确提交隔离 `dev-install-run.ps1 -NoStart` 均通过；版本 `0.6.73` / DLL `0.6.73.0`。
+- 未运行完整 WPF 逐类循环或真实 Playnite。旧 R09 诊断材料仍不可用，不能判定旧失败运行的源码和程序集身份。详细记录与 TRX、安装报告见 [S03-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-06/README.md)。下一项按计划处理 S03-07 脱敏方案导出。
+
 ## 2026-10-19 Round4 S03-05 方案差异比较
 
 - 实现提交 `b2c1e3de5fa822bcd8f2b04ddfe8b66d41411457` 增加恢复草稿 A → B 比较，展示来源、映射、预计影响和未知项。Worker 用 DPAPI 保护的 HMAC-SHA256 映射指纹区分同一备份版本上的映射变化；路径和密钥不写入草稿。密钥丢失/轮换、旧草稿缺指纹及未知文件大小都不折算成相同或零。

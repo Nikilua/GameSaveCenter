@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 Round4 S03-06 恢复方案失效规则
+
+实现提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38` 为恢复草稿持久化 `Current` / `NeedsRevalidation` 状态和原因，并将游戏/备份身份、文件数与大小、内容 HMAC、readiness 结果 HMAC、映射指纹重新比较接入详情刷新和历史页载入；完整历史才允许因目标缺失标记失效。路径、原内容指纹和自由文本摘要不持久化；草稿重新验证前不成为执行授权，`RestoreConfirmationGuard` 与最新确认仍执行。
+
+SDK `8.0.423` 精确提交 Release solution build 成功、0 errors；还原阶段受网络不可达影响有 17 条 NuGet audit `NU1900` 警告。恢复规则/草稿/R09 定向 Playnite 测试 `14/14`，source validation、XAML 25 文件检查、RenderHarness 双主题和隔离 no-start 安装通过（manifest `0.6.73`、DLL `0.6.73.0`）。完整 WPF 循环和真实 Playnite未验。用户旧 R09 `summary.json`/TRX/DLL/PDB 不可用，旧输入身份未知。细节见 [S03-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-06/README.md)。下一项 S03-07 脱敏方案导出。
+
 ## 2026-10-19 Round4 S03-05 方案差异比较
 
 实现提交 `b2c1e3de5fa822bcd8f2b04ddfe8b66d41411457` 增加恢复草稿 A → B 只读比较。Worker 使用 DPAPI 保护的用户密钥对规范化映射计算 HMAC-SHA256 指纹；草稿保存指纹/版本/密钥 ID，而不保存路径或密钥。密钥缺失、轮换、旧草稿无指纹及未计量的文件大小都显式保留为未知；同一来源版本的映射变化可以区分。比较不授予恢复执行权限。
