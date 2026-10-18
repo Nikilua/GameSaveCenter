@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Settings;
@@ -17,18 +18,21 @@ namespace GameSaveCenter.Playnite.Infrastructure
     internal sealed class DataGridColumnLayoutController : IDisposable
     {
         private const double MaximumPersistedWidth = 4096d;
+        private const double ResponsiveGridChromeAllowance = 28d;
         private readonly DataGrid grid;
         private readonly string viewKey;
         private readonly GameSaveCenterSettings settings;
         private readonly Action persist;
         private readonly string[] columnKeys;
         private readonly DataGridLength[] defaultWidths;
+        private readonly DataGridLength[] preferredWidths;
         private readonly DependencyPropertyDescriptor? widthDescriptor;
         private readonly DispatcherTimer persistTimer;
         private int layoutPassDepth;
         private bool applying;
         private bool settingsPersistenceEnabled = true;
         private bool persistPending;
+        private double responsiveAvailableWidth;
         private bool disposed;
 
         public DataGridColumnLayoutController(
@@ -49,6 +53,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 throw new ArgumentException("Column keys must be non-empty and unique.", nameof(columnKeys));
 
             defaultWidths = grid.Columns.Select(column => column.Width).ToArray();
+            preferredWidths = defaultWidths.ToArray();
             widthDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.WidthProperty, typeof(DataGridColumn));
             persistTimer = new DispatcherTimer(DispatcherPriority.Background, grid.Dispatcher)
             {
@@ -56,6 +61,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             };
             persistTimer.Tick += OnPersistTimerTick;
             DataGridLayoutResetCoordinator.AllLayoutsReset += OnAllLayoutsReset;
+            grid.SizeChanged += OnGridSizeChanged;
+            grid.Loaded += OnGridLoaded;
 
             for (var index = 0; index < grid.Columns.Count; index++)
             {
@@ -64,6 +71,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
 
             ApplyStoredWidths();
+            if (grid.IsLoaded)
+                ApplyResponsiveWidthBudget(grid.ActualWidth);
         }
 
         public void BeginLayoutPass()
@@ -77,7 +86,26 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (disposed || layoutPassDepth == 0) return;
             layoutPassDepth--;
             if (layoutPassDepth != 0) return;
-            ApplyStoredWidths();
+            ApplyPreferredWidths();
+        }
+
+        internal void RefreshResponsiveLayout()
+        {
+            if (disposed) return;
+            var width = grid.ActualWidth > 0 ? grid.ActualWidth : responsiveAvailableWidth;
+            ApplyResponsiveWidthBudget(width);
+        }
+
+        internal void ApplyResponsiveWidthBudget(double availableWidth)
+        {
+            if (disposed || double.IsNaN(availableWidth) || double.IsInfinity(availableWidth) || availableWidth <= 0)
+                return;
+
+            responsiveAvailableWidth = availableWidth;
+            if (layoutPassDepth != 0)
+                return;
+
+            ApplyResponsiveWidths();
         }
 
         public void ResetToDefaults()
@@ -85,16 +113,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (disposed) return;
             if (settingsPersistenceEnabled)
                 settings.ResetDataGridColumnWidths(viewKey);
-            applying = true;
-            try
-            {
-                for (var index = 0; index < grid.Columns.Count; index++)
-                    grid.Columns[index].Width = defaultWidths[index];
-            }
-            finally
-            {
-                applying = false;
-            }
+            SetPreferredWidths(defaultWidths);
+            ApplyPreferredWidths();
             if (settingsPersistenceEnabled)
             {
                 persistPending = true;
@@ -107,7 +127,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var result = new Dictionary<string, double>(StringComparer.Ordinal);
             for (var index = 0; index < grid.Columns.Count; index++)
             {
-                var width = grid.Columns[index].Width;
+                var width = preferredWidths[index];
                 if (width.UnitType == DataGridLengthUnitType.Pixel
                     && TryNormalizeWidth(grid.Columns[index], width.Value, out var normalized))
                     result[columnKeys[index]] = normalized;
@@ -128,39 +148,24 @@ namespace GameSaveCenter.Playnite.Infrastructure
         internal void ApplyStoredWidthsFromDefault()
         {
             if (disposed) return;
-            applying = true;
-            try
-            {
-                for (var index = 0; index < grid.Columns.Count; index++)
-                    grid.Columns[index].Width = defaultWidths[index];
-            }
-            finally
-            {
-                applying = false;
-            }
-            ApplyStoredWidths();
+            LoadPreferredWidthsFromSettings();
+            ApplyPreferredWidths();
         }
 
         internal void ApplyConfigurationWidths(IDictionary<string, double>? widths)
         {
             if (disposed) return;
             var values = widths ?? new Dictionary<string, double>(StringComparer.Ordinal);
-            applying = true;
-            try
+            var nextWidths = defaultWidths.ToArray();
+            for (var index = 0; index < grid.Columns.Count; index++)
             {
-                for (var index = 0; index < grid.Columns.Count; index++)
-                {
-                    var column = grid.Columns[index];
-                    column.Width = defaultWidths[index];
-                    if (values.TryGetValue(columnKeys[index], out var storedWidth)
-                        && TryNormalizeWidth(column, storedWidth, out var normalizedWidth))
-                        column.Width = new DataGridLength(normalizedWidth, DataGridLengthUnitType.Pixel);
-                }
+                var column = grid.Columns[index];
+                if (values.TryGetValue(columnKeys[index], out var storedWidth)
+                    && TryNormalizeWidth(column, storedWidth, out var normalizedWidth))
+                    nextWidths[index] = new DataGridLength(normalizedWidth, DataGridLengthUnitType.Pixel);
             }
-            finally
-            {
-                applying = false;
-            }
+            SetPreferredWidths(nextWidths);
+            ApplyPreferredWidths();
         }
 
         public void FlushPendingPersistence()
@@ -180,6 +185,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             persistTimer.Stop();
             persistTimer.Tick -= OnPersistTimerTick;
             DataGridLayoutResetCoordinator.AllLayoutsReset -= OnAllLayoutsReset;
+            grid.SizeChanged -= OnGridSizeChanged;
+            grid.Loaded -= OnGridLoaded;
             if (widthDescriptor == null) return;
             foreach (var column in grid.Columns)
                 widthDescriptor.RemoveValueChanged(column, OnColumnWidthChanged);
@@ -188,33 +195,22 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private void ApplyStoredWidths()
         {
             if (disposed || layoutPassDepth != 0) return;
-            applying = true;
-            try
-            {
-                for (var index = 0; index < grid.Columns.Count; index++)
-                {
-                    var column = grid.Columns[index];
-                    if (!settings.TryGetDataGridColumnWidth(viewKey, columnKeys[index], out var storedWidth)) continue;
-                    if (!TryNormalizeWidth(column, storedWidth, out var normalizedWidth)) continue;
-                    column.Width = new DataGridLength(normalizedWidth, DataGridLengthUnitType.Pixel);
-                }
-            }
-            finally
-            {
-                applying = false;
-            }
+            LoadPreferredWidthsFromSettings();
+            ApplyPreferredWidths();
         }
 
         private void OnColumnWidthChanged(object? sender, EventArgs e)
         {
-            if (disposed || applying || layoutPassDepth != 0 || !settingsPersistenceEnabled || !(sender is DataGridColumn column)) return;
+            if (disposed || applying || layoutPassDepth != 0 || !(sender is DataGridColumn column)) return;
             var index = grid.Columns.IndexOf(column);
             if (index < 0) return;
             if (column.Width.UnitType == DataGridLengthUnitType.Auto)
             {
                 // WPF uses Auto when a header gripper is double-clicked. Remove the old
-                // pixel override so a later layout pass does not undo that user action.
-                if (settings.RemoveDataGridColumnWidth(viewKey, columnKeys[index]))
+                // pixel override for the default view; named views capture the Auto
+                // preference when the user saves them.
+                preferredWidths[index] = column.Width;
+                if (settingsPersistenceEnabled && settings.RemoveDataGridColumnWidth(viewKey, columnKeys[index]))
                 {
                     persistPending = true;
                     persistTimer.Stop();
@@ -224,6 +220,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             }
             if (column.Width.UnitType != DataGridLengthUnitType.Pixel) return;
             if (!TryNormalizeWidth(column, column.Width.Value, out var normalizedWidth)) return;
+            preferredWidths[index] = new DataGridLength(normalizedWidth, DataGridLengthUnitType.Pixel);
+            if (!settingsPersistenceEnabled) return;
+
             settings.SetDataGridColumnWidth(viewKey, columnKeys[index], normalizedWidth);
             persistPending = true;
             persistTimer.Stop();
@@ -244,11 +243,118 @@ namespace GameSaveCenter.Playnite.Infrastructure
             ApplyStoredWidthsFromDefault();
         }
 
+        private void OnGridLoaded(object sender, RoutedEventArgs e)
+            => ApplyResponsiveWidthBudget(grid.ActualWidth);
+
+        private void OnGridSizeChanged(object sender, SizeChangedEventArgs e)
+            => ApplyResponsiveWidthBudget(e.NewSize.Width);
+
+        private void LoadPreferredWidthsFromSettings()
+        {
+            var nextWidths = defaultWidths.ToArray();
+            for (var index = 0; index < grid.Columns.Count; index++)
+            {
+                var column = grid.Columns[index];
+                if (!settings.TryGetDataGridColumnWidth(viewKey, columnKeys[index], out var storedWidth)) continue;
+                if (!TryNormalizeWidth(column, storedWidth, out var normalizedWidth)) continue;
+                nextWidths[index] = new DataGridLength(normalizedWidth, DataGridLengthUnitType.Pixel);
+            }
+            SetPreferredWidths(nextWidths);
+        }
+
+        private void SetPreferredWidths(IReadOnlyList<DataGridLength> widths)
+        {
+            var count = Math.Min(preferredWidths.Length, widths.Count);
+            for (var index = 0; index < count; index++)
+                preferredWidths[index] = widths[index];
+        }
+
+        private void ApplyPreferredWidths()
+        {
+            if (disposed || layoutPassDepth != 0) return;
+            applying = true;
+            try
+            {
+                for (var index = 0; index < grid.Columns.Count; index++)
+                    grid.Columns[index].Width = preferredWidths[index];
+            }
+            finally
+            {
+                applying = false;
+            }
+
+            if (responsiveAvailableWidth > 0)
+                ApplyResponsiveWidths();
+        }
+
+        private void ApplyResponsiveWidths()
+        {
+            if (disposed || applying || layoutPassDepth != 0 || responsiveAvailableWidth <= 0)
+                return;
+
+            var availableColumnWidth = Math.Max(0, responsiveAvailableWidth - ResponsiveGridChromeAllowance);
+            var requiredWidth = 0d;
+            var visibleIndexes = new List<int>();
+            for (var index = 0; index < grid.Columns.Count; index++)
+            {
+                var column = grid.Columns[index];
+                if (column.Visibility != Visibility.Visible) continue;
+                visibleIndexes.Add(index);
+                requiredWidth += GetPreferredBudgetWidth(index);
+            }
+
+            var effectiveWidths = preferredWidths.ToArray();
+            var remainingExcess = Math.Max(0, requiredWidth - availableColumnWidth);
+            foreach (var index in visibleIndexes.OrderByDescending(item => grid.Columns[item].DisplayIndex))
+            {
+                if (remainingExcess <= 0.5) break;
+                var preferred = preferredWidths[index];
+                if (preferred.UnitType != DataGridLengthUnitType.Pixel) continue;
+
+                var minimumWidth = GetMinimumWidth(grid.Columns[index]);
+                var reducibleWidth = Math.Max(0, preferred.Value - minimumWidth);
+                var reduction = Math.Min(remainingExcess, reducibleWidth);
+                if (reduction <= 0) continue;
+
+                effectiveWidths[index] = new DataGridLength(preferred.Value - reduction, DataGridLengthUnitType.Pixel);
+                remainingExcess -= reduction;
+            }
+
+            applying = true;
+            try
+            {
+                for (var index = 0; index < grid.Columns.Count; index++)
+                {
+                    if (grid.Columns[index].Width != effectiveWidths[index])
+                        grid.Columns[index].Width = effectiveWidths[index];
+                }
+            }
+            finally
+            {
+                applying = false;
+            }
+        }
+
+        private double GetPreferredBudgetWidth(int index)
+        {
+            var column = grid.Columns[index];
+            var minimum = GetMinimumWidth(column);
+            var preferred = preferredWidths[index];
+            if (preferred.UnitType == DataGridLengthUnitType.Pixel)
+                return Math.Max(minimum, preferred.Value);
+            if (preferred.UnitType == DataGridLengthUnitType.Star)
+                return minimum;
+            return Math.Max(minimum, column.ActualWidth > 0 ? column.ActualWidth : minimum);
+        }
+
+        private double GetMinimumWidth(DataGridColumn column)
+            => Math.Max(0, Math.Max(grid.MinColumnWidth, column.MinWidth));
+
         private bool TryNormalizeWidth(DataGridColumn column, double width, out double normalizedWidth)
         {
             normalizedWidth = 0;
             if (double.IsNaN(width) || double.IsInfinity(width) || width <= 0) return false;
-            var minimum = Math.Max(0, Math.Max(grid.MinColumnWidth, column.MinWidth));
+            var minimum = GetMinimumWidth(column);
             var maximum = column.MaxWidth > 0 && !double.IsInfinity(column.MaxWidth)
                 ? Math.Min(MaximumPersistedWidth, column.MaxWidth)
                 : MaximumPersistedWidth;

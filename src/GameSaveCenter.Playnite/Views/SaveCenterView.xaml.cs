@@ -75,7 +75,8 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "time", "type", "file-count", "size", "device", "note", "state" },
                 new[] { "time", "type", "state" },
                 viewModel.PluginSettings,
-                persistPreference);
+                persistPreference,
+                historyColumnLayout.RefreshResponsiveLayout);
             candidateColumnVisibility = new DataGridColumnVisibilityController(
                 SaveCandidateGrid,
                 SaveCandidateColumnVisibilityButton,
@@ -83,7 +84,8 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "confidence", "status", "path", "reason" },
                 new[] { "status", "path" },
                 viewModel.PluginSettings,
-                persistPreference);
+                persistPreference,
+                candidateColumnLayout.RefreshResponsiveLayout);
             SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(nameof(DashboardViewModel.BackupHistoryView)));
             historySort = ProductionDataGridSortProfiles.AttachSaveHistory(SaveHistoryGrid);
             candidateSort = ProductionDataGridSortProfiles.AttachSaveCandidates(SaveCandidateGrid);
@@ -173,27 +175,6 @@ namespace GameSaveCenter.Playnite.Views
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 SaveHistoryGrid.MinHeight = tableMinHeight;
                 SaveCandidateGrid.MinHeight = tableMinHeight;
-                // On narrow hosts the lock status is the essential per-row summary; the
-                // note column can be read in full inside the version details inspector.
-                // Hiding it keeps 状态 inside the viewport without enabling a horizontal bar.
-                if (SaveHistoryNoteColumn != null)
-                {
-                    // The history table shares the normal desktop workspace with a
-                    // 360-DIP inspector. At the 1116-DIP standard route the table
-                    // itself is only about 739 DIP wide, so the compact column rhythm
-                    // must begin before the full page crosses the compact breakpoint.
-                    // This keeps the essential 状态 column inside the table without
-                    // changing the project's DataGrid scrolling contract.
-                    var narrowHistory = width < 1240;
-                    SaveHistoryTimeColumn.Width = new DataGridLength(narrowHistory ? 104 : 110);
-                    SaveHistoryTypeColumn.Width = new DataGridLength(narrowHistory ? 104 : 124);
-                    SaveHistoryFileCountColumn.Width = new DataGridLength(narrowHistory ? 56 : 82);
-                    SaveHistorySizeColumn.Width = new DataGridLength(narrowHistory ? 78 : 116);
-                    SaveHistoryDeviceColumn.Width = new DataGridLength(narrowHistory ? 110 : 120);
-                    SaveHistoryStateColumn.Width = new DataGridLength(narrowHistory ? 96 : 106);
-                    SaveHistoryNoteColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
-                    SaveHistoryNoteColumn.MinWidth = narrowHistory ? 116 : 180;
-                }
                 // Demo keeps the inspector beside the main surface at the normal
                 // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
                 // Playnite host into the drawer layout even when there was enough

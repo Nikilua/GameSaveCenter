@@ -57,7 +57,8 @@ namespace GameSaveCenter.Playnite.Views
                 new[] { "local-time", "task", "stage", "game", "state", "progress", "detail" },
                 new[] { "local-time", "task", "state" },
                 viewModel.PluginSettings,
-                viewModel.PersistUiPreference);
+                viewModel.PersistUiPreference,
+                columnLayout.RefreshResponsiveLayout);
             sortController = ProductionDataGridSortProfiles.AttachTasks(TaskGrid);
             viewConfigurationController = new DataGridViewConfigurationController(
                 this,

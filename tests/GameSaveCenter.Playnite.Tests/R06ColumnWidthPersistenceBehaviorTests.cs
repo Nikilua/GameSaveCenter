@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml.Linq;
@@ -182,6 +183,94 @@ public sealed class R06ColumnWidthPersistenceBehaviorTests
                     Assert.NotNull(scrollViewer);
                     Assert.True(grid.Columns[0].ActualWidth >= 128, $"主列宽度={grid.Columns[0].ActualWidth}");
                     Assert.Equal(Visibility.Visible, scrollViewer!.ComputedHorizontalScrollBarVisibility);
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void NarrowWindowTemporarilyCompressesPreferredWidthsAndRestoresThemWithoutLosingFocus()
+    {
+        RunSta(() =>
+        {
+            EnsureApplicationResources();
+            var settings = new GameSaveCenterSettings();
+            settings.SetDataGridColumnWidth("adaptive-test", "primary", 250);
+            settings.SetDataGridColumnWidth("adaptive-test", "secondary", 220);
+            settings.SetDataGridColumnWidth("adaptive-test", "tertiary", 190);
+            var persistCount = 0;
+            var grid = CreateGrid(3);
+            grid.MinColumnWidth = 64;
+            grid.Columns[0].MinWidth = 110;
+            grid.Columns[1].MinWidth = 90;
+            grid.Columns[2].MinWidth = 90;
+            grid.SelectionUnit = DataGridSelectionUnit.FullRow;
+            grid.IsReadOnly = true;
+            var row = new GridRow { Value = "保留选择与焦点" };
+            grid.ItemsSource = new[] { row };
+            grid.Height = 130;
+            var window = new Window
+            {
+                Content = grid,
+                Width = 460,
+                Height = 170,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+
+            try
+            {
+                using (var controller = new DataGridColumnLayoutController(
+                    grid,
+                    "adaptive-test",
+                    new[] { "primary", "secondary", "tertiary" },
+                    settings,
+                    () => persistCount++))
+                {
+                    window.Show();
+                    window.Activate();
+                    window.UpdateLayout();
+                    grid.SelectedItem = row;
+                    grid.CurrentCell = new DataGridCellInfo(row, grid.Columns[1]);
+                    grid.ScrollIntoView(row, grid.Columns[1]);
+                    grid.Focus();
+                    FocusManager.SetFocusedElement(window, grid);
+                    DrainDispatcher();
+                    var focusedElement = FocusManager.GetFocusedElement(window);
+
+                    Assert.Same(grid, focusedElement);
+                    // The isolated WPF runner may create a Window without native
+                    // dimensions. Feed the same DIP budget delivered by SizeChanged.
+                    controller.ApplyResponsiveWidthBudget(460);
+                    Assert.True(
+                        grid.Columns[1].Width.Value < 220,
+                        $"窄屏第二列仍为 {grid.Columns[1].Width.Value} DIP；grid={grid.ActualWidth}，window={window.ActualWidth}，三列={string.Join(",", grid.Columns.Select(column => column.Width.Value))}");
+                    Assert.True(grid.Columns[0].Width.Value >= 110);
+                    Assert.True(grid.Columns[1].Width.Value >= 90);
+                    Assert.True(grid.Columns[2].Width.Value >= 90);
+                    Assert.Equal(250, controller.CaptureConfigurationWidths()["primary"], 3);
+                    Assert.Equal(220, controller.CaptureConfigurationWidths()["secondary"], 3);
+                    Assert.Equal(190, controller.CaptureConfigurationWidths()["tertiary"], 3);
+                    Assert.Equal(250, settings.DataGridColumnWidths["v1/adaptive-test/primary"], 3);
+                    Assert.Equal(220, settings.DataGridColumnWidths["v1/adaptive-test/secondary"], 3);
+                    Assert.Equal(190, settings.DataGridColumnWidths["v1/adaptive-test/tertiary"], 3);
+                    Assert.Equal(0, persistCount);
+
+                    controller.ApplyResponsiveWidthBudget(1040);
+                    DrainDispatcher();
+
+                    Assert.Equal(250, grid.Columns[0].Width.Value, 3);
+                    Assert.Equal(220, grid.Columns[1].Width.Value, 3);
+                    Assert.Equal(190, grid.Columns[2].Width.Value, 3);
+                    Assert.Same(row, grid.SelectedItem);
+                    Assert.Same(grid.Columns[1], grid.CurrentColumn);
+                    Assert.Same(focusedElement, FocusManager.GetFocusedElement(window));
+                    Assert.Equal(0, persistCount);
                 }
             }
             finally

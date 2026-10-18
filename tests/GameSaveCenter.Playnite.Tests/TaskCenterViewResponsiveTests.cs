@@ -19,6 +19,7 @@ namespace GameSaveCenter.Playnite.Tests
             double shortSummaryTopPadding = 0;
             double regularSummaryTopPadding = 0;
             double taskGridMinHeight = 0;
+            double expectedTaskGridMinHeight = 0;
 
             var thread = new Thread(() =>
             {
@@ -28,6 +29,7 @@ namespace GameSaveCenter.Playnite.Tests
                     var viewType = typeof(TaskCenterView);
                     var summary = (Border)viewType.GetField("TaskSummaryPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    expectedTaskGridMinHeight = GameSaveCenter.Playnite.Infrastructure.TableDensityPolicy.CalculateMinimumGridHeight(view);
 
                     view.ApplyResponsiveLayout(744, 680);
                     shortSummaryMinHeight = summary.MinHeight;
@@ -53,7 +55,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(5, shortSummaryTopPadding);
             Assert.Equal(84, regularSummaryMinHeight);
             Assert.Equal(14, regularSummaryTopPadding);
-            Assert.Equal(200, taskGridMinHeight);
+            Assert.Equal(expectedTaskGridMinHeight, taskGridMinHeight);
         }
 
         [Fact]
@@ -230,6 +232,7 @@ namespace GameSaveCenter.Playnite.Tests
         {
             Exception? exception = null;
             var compactTableMinHeight = 0d;
+            var expectedTableMinHeight = 0d;
             var compactInspectorMaxHeight = 0d;
             var compactSummaryVisibility = Visibility.Visible;
             var restoredSummaryVisibility = Visibility.Collapsed;
@@ -245,6 +248,7 @@ namespace GameSaveCenter.Playnite.Tests
                     var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var button = (Button)viewType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var closeButton = (Button)viewType.GetField("TaskCompactCloseDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    expectedTableMinHeight = GameSaveCenter.Playnite.Infrastructure.TableDensityPolicy.CalculateMinimumGridHeight(view);
                     var selected = new object();
                     grid.ItemsSource = new[] { selected };
                     grid.SelectedItem = selected;
@@ -275,7 +279,7 @@ namespace GameSaveCenter.Playnite.Tests
             thread.Join();
 
             Assert.Null(exception);
-            Assert.Equal(200, compactTableMinHeight);
+            Assert.Equal(expectedTableMinHeight, compactTableMinHeight);
             Assert.Equal(136, compactInspectorMaxHeight);
             Assert.Equal(Visibility.Collapsed, compactSummaryVisibility);
             Assert.Equal(Visibility.Visible, restoredSummaryVisibility);

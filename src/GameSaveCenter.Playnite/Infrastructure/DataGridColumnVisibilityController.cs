@@ -21,6 +21,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private readonly string viewKey;
         private readonly GameSaveCenterSettings settings;
         private readonly Action persist;
+        private readonly Action? refreshResponsiveLayout;
         private readonly List<ColumnEntry> entries;
         private readonly HashSet<string> requiredKeys;
         private readonly ContextMenu menu;
@@ -36,7 +37,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             IEnumerable<string> columnKeys,
             IEnumerable<string> requiredColumnKeys,
             GameSaveCenterSettings settings,
-            Action persist)
+            Action persist,
+            Action? refreshResponsiveLayout = null)
         {
             this.grid = grid ?? throw new ArgumentNullException(nameof(grid));
             this.button = button ?? throw new ArgumentNullException(nameof(button));
@@ -45,6 +47,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 : viewKey;
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.persist = persist ?? throw new ArgumentNullException(nameof(persist));
+            this.refreshResponsiveLayout = refreshResponsiveLayout;
 
             var keys = (columnKeys ?? throw new ArgumentNullException(nameof(columnKeys))).ToArray();
             if (keys.Length != grid.Columns.Count)
@@ -68,6 +71,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             DataGridLayoutResetCoordinator.AllLayoutsReset += OnAllLayoutsReset;
             ApplyStoredHiddenColumns();
             RefreshMenuState();
+            this.refreshResponsiveLayout?.Invoke();
         }
 
         internal ContextMenu Menu => menu;
@@ -96,6 +100,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 entry.Column.Visibility = Visibility.Visible;
             ApplyStoredHiddenColumns();
             RefreshMenuState();
+            refreshResponsiveLayout?.Invoke();
         }
 
         internal void ApplyVisibleColumnKeys(IEnumerable<string>? visibleColumnKeys)
@@ -109,6 +114,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             if (grid.CurrentColumn != null && grid.CurrentColumn.Visibility != Visibility.Visible)
                 MoveCurrentCellToVisibleColumn(grid.CurrentColumn);
             RefreshMenuState();
+            refreshResponsiveLayout?.Invoke();
         }
 
         internal void ResetToDefaults()
@@ -119,6 +125,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             foreach (var entry in entries)
                 entry.Column.Visibility = Visibility.Visible;
             RefreshMenuState();
+            refreshResponsiveLayout?.Invoke();
             if (settingsPersistenceEnabled)
                 persist();
         }
@@ -231,6 +238,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 item.IsChecked = true;
                 entry.Column.Visibility = Visibility.Visible;
+                refreshResponsiveLayout?.Invoke();
                 return;
             }
 
@@ -238,6 +246,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             MoveCurrentCellToVisibleColumn(entry.Column);
             PersistHiddenColumns();
             RefreshMenuState();
+            refreshResponsiveLayout?.Invoke();
         }
 
         private void OnResetMenuItemClick(object sender, RoutedEventArgs e)

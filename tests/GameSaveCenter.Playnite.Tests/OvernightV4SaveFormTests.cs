@@ -29,13 +29,11 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void SharedWorkspaceBreakpointsKeepSearchAndHistoryEssentialsReadable()
+        public void MediaWorkspaceBreakpointsKeepDetailsReadable()
         {
             var root = FindRepositoryRoot();
-            var save = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "SaveCenterView.xaml.cs"));
             var media = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
 
-            Assert.Contains("var narrowHistory = width < 1240;", save);
             Assert.Contains("<ColumnDefinition Width=\"Auto\" MinWidth=\"300\"/>", media);
             Assert.Contains("<ColumnDefinition Width=\"*\" MinWidth=\"160\"/>", media);
         }
