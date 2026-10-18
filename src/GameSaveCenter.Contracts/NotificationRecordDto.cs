@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace GameSaveCenter.Contracts
 {
@@ -31,5 +32,16 @@ namespace GameSaveCenter.Contracts
     public sealed class NotificationRecordsQueryDto
     {
         public int Limit { get; set; } = 500;
+    }
+
+    /// <summary>Bounded IDs for marking visible notification records as read.</summary>
+    public sealed class NotificationRecordIdsDto
+    {
+        public List<string> NotificationIds { get; set; } = new List<string>();
+    }
+
+    /// <summary>Explicit request for deleting read notification records only.</summary>
+    public sealed class NotificationRecordsClearReadDto
+    {
     }
 }

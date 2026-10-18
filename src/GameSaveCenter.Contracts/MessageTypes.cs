@@ -71,6 +71,8 @@ namespace GameSaveCenter.Contracts
         public const string WaitForTaskChanges = "tasks.changes.wait";
         public const string AddNotificationRecord = "notifications.record.add";
         public const string GetNotificationRecords = "notifications.records.list";
+        public const string MarkNotificationRecordsRead = "notifications.records.mark-read";
+        public const string ClearReadNotificationRecords = "notifications.records.clear-read";
         public const string RetryCloudUpload = "cloud.upload.retry";
         public const string RetryMediaCloudUpload = "media.cloud.upload.retry";
         public const string GetCloudTransferStatus = "cloud.transfer.status";

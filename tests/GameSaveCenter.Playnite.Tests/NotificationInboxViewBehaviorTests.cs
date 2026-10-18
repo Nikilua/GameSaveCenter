@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Automation;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
@@ -41,6 +43,60 @@ public sealed class NotificationInboxViewBehaviorTests
         });
     }
 
+    [Fact]
+    public void ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation()
+    {
+        RunSta(() =>
+        {
+            var data = new NotificationInboxData();
+            var view = new NotificationInboxView { DataContext = data };
+            var window = new Window
+            {
+                Content = view,
+                Width = 744,
+                Height = 460,
+                WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false,
+                Opacity = 0.01
+            };
+
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                window.Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
+                view.ApplyResponsiveLayout(744, 460);
+
+                var actionBar = Assert.IsType<WrapPanel>(view.FindName("NotificationReadActions"));
+                var markSelected = Assert.IsAssignableFrom<Button>(view.FindName("NotificationMarkSelectedReadButton"));
+                var markVisible = Assert.IsAssignableFrom<Button>(view.FindName("NotificationMarkVisibleReadButton"));
+                var clearRead = Assert.IsAssignableFrom<Button>(view.FindName("NotificationClearReadButton"));
+                markSelected.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
+                markVisible.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
+                clearRead.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
+
+                Assert.Equal(2, Grid.GetRow(actionBar));
+                Assert.True(ReferenceEquals(data.MarkSelectedNotificationReadCommand, markSelected.Command), "Selected-read command binding");
+                Assert.True(ReferenceEquals(data.MarkVisibleNotificationsReadCommand, markVisible.Command), "Visible-read command binding");
+                Assert.True(ReferenceEquals(data.ClearReadNotificationRecordsCommand, clearRead.Command), "Clear-read command binding");
+                Assert.Equal("标记所选通知为已读", AutomationProperties.GetName(markSelected));
+                Assert.Contains("被筛除的通知保持原状态", AutomationProperties.GetHelpText(markVisible));
+                Assert.Contains("不会删除任务、审计日志或恢复证据", AutomationProperties.GetHelpText(clearRead));
+
+                markSelected.Command.Execute(null);
+                markVisible.Command.Execute(null);
+                clearRead.Command.Execute(null);
+                Assert.Equal(1, data.MarkSelectedExecutions);
+                Assert.Equal(1, data.MarkVisibleExecutions);
+                Assert.Equal(1, data.ClearReadExecutions);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     private static void RunSta(Action action)
     {
         Exception? failure = null;
@@ -48,7 +104,6 @@ public sealed class NotificationInboxViewBehaviorTests
         {
             try
             {
-                _ = new Application();
                 action();
                 Dispatcher.CurrentDispatcher.InvokeShutdown();
             }
@@ -66,6 +121,9 @@ public sealed class NotificationInboxViewBehaviorTests
 
     private sealed class NotificationInboxData
     {
+        public int MarkSelectedExecutions { get; private set; }
+        public int MarkVisibleExecutions { get; private set; }
+        public int ClearReadExecutions { get; private set; }
         public ObservableCollection<NotificationInboxItem> NotificationInboxItems { get; } = new ObservableCollection<NotificationInboxItem>();
         public string[] NotificationSeverityOptions { get; } = new[] { "全部级别", "错误", "警告", "成功", "信息" };
         public string[] NotificationTimeOptions { get; } = new[] { "全部时间", "最近24小时", "最近7天", "最近30天" };
@@ -81,6 +139,16 @@ public sealed class NotificationInboxViewBehaviorTests
         public bool HasNotificationInboxError => false;
         public string NotificationInboxLoadStatus => string.Empty;
         public System.Windows.Input.ICommand RefreshNotificationInboxCommand { get; } = new RelayCommand(_ => { });
+        public System.Windows.Input.ICommand MarkSelectedNotificationReadCommand { get; }
+        public System.Windows.Input.ICommand MarkVisibleNotificationsReadCommand { get; }
+        public System.Windows.Input.ICommand ClearReadNotificationRecordsCommand { get; }
+
+        public NotificationInboxData()
+        {
+            MarkSelectedNotificationReadCommand = new RelayCommand(_ => MarkSelectedExecutions++);
+            MarkVisibleNotificationsReadCommand = new RelayCommand(_ => MarkVisibleExecutions++);
+            ClearReadNotificationRecordsCommand = new RelayCommand(_ => ClearReadExecutions++);
+        }
     }
 }
 

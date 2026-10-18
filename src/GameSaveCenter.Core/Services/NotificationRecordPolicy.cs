@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameSaveCenter.Contracts;
@@ -14,6 +15,25 @@ public static class NotificationRecordPolicy
     public const int MaximumTitleLength = 96;
     public const int MaximumSummaryLength = 320;
     public const int MaximumKeyLength = 128;
+
+    public static IReadOnlyList<string> NormalizeNotificationIds(IEnumerable<string?>? notificationIds)
+    {
+        if (notificationIds == null) return Array.Empty<string>();
+
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        var normalized = new List<string>();
+        foreach (var value in notificationIds)
+        {
+            var id = (value ?? string.Empty).Trim();
+            if (id.Length == 0 || id.Length > MaximumKeyLength || id.Any(char.IsWhiteSpace) || !seen.Add(id))
+                continue;
+
+            normalized.Add(id);
+            if (normalized.Count == MaximumPageSize) break;
+        }
+
+        return normalized;
+    }
 
     public static NotificationRecordDto? Normalize(NotificationRecordDto? source)
     {

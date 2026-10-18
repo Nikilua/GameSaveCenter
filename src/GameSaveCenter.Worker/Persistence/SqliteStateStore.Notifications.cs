@@ -108,4 +108,71 @@ LIMIT $limit;";
 
         return result;
     }
+
+    public async Task<int> MarkNotificationRecordsReadAsync(IEnumerable<string?> notificationIds, CancellationToken token)
+    {
+        var ids = NotificationRecordPolicy.NormalizeNotificationIds(notificationIds);
+        if (ids.Count == 0) return 0;
+
+        await _writeGate.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            await using var connection = Open();
+            await connection.OpenAsync(token).ConfigureAwait(false);
+            using var transaction = connection.BeginTransaction();
+            using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+
+            var parameters = new List<string>(ids.Count);
+            for (var index = 0; index < ids.Count; index++)
+            {
+                var parameter = "$id" + index.ToString(CultureInfo.InvariantCulture);
+                parameters.Add(parameter);
+                command.Parameters.AddWithValue(parameter, ids[index]);
+            }
+
+            command.CommandText = $@"
+UPDATE notification_records
+SET is_read = 1
+WHERE is_read = 0 AND notification_id IN ({string.Join(",", parameters)});";
+            var updated = await command.ExecuteNonQueryAsync(token).ConfigureAwait(false);
+            transaction.Commit();
+            return updated;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "SQLite notification read update failed");
+            throw;
+        }
+        finally
+        {
+            _writeGate.Release();
+        }
+    }
+
+    public async Task<int> ClearReadNotificationRecordsAsync(CancellationToken token)
+    {
+        await _writeGate.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            await using var connection = Open();
+            await connection.OpenAsync(token).ConfigureAwait(false);
+            using var transaction = connection.BeginTransaction();
+            using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = "DELETE FROM notification_records WHERE is_read = 1;";
+            var deleted = await command.ExecuteNonQueryAsync(token).ConfigureAwait(false);
+            transaction.Commit();
+            return deleted;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "SQLite read notification cleanup failed");
+            throw;
+        }
+        finally
+        {
+            _writeGate.Release();
+        }
+    }
 }

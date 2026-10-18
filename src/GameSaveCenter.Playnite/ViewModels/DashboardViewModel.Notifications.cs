@@ -19,7 +19,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string notificationInboxSearchText = string.Empty;
         private string notificationInboxErrorMessage = string.Empty;
         private bool isNotificationInboxLoading;
+        private bool isNotificationInboxMutating;
         private long notificationInboxRequestGeneration;
+        private NotificationInboxReadActions notificationInboxReadActions = null!;
 
         public BatchObservableCollection<NotificationRecordDto> NotificationRecords { get; } = new BatchObservableCollection<NotificationRecordDto>();
         public BatchObservableCollection<NotificationInboxItem> NotificationInboxItems { get; } = new BatchObservableCollection<NotificationInboxItem>();
@@ -33,11 +35,18 @@ namespace GameSaveCenter.Playnite.ViewModels
         };
 
         public ICommand RefreshNotificationInboxCommand { get; private set; } = null!;
+        public ICommand MarkSelectedNotificationReadCommand { get; private set; } = null!;
+        public ICommand MarkVisibleNotificationsReadCommand { get; private set; } = null!;
+        public ICommand ClearReadNotificationRecordsCommand { get; private set; } = null!;
 
         public NotificationInboxItem? SelectedNotification
         {
             get => selectedNotification;
-            set => SetValue(ref selectedNotification, value);
+            set
+            {
+                SetValue(ref selectedNotification, value);
+                RaiseCommandStates();
+            }
         }
 
         public string NotificationSeverityFilter
@@ -92,6 +101,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
+        public bool IsNotificationInboxMutating
+        {
+            get => isNotificationInboxMutating;
+            private set
+            {
+                if (isNotificationInboxMutating == value) return;
+                SetValue(ref isNotificationInboxMutating, value);
+                OnPropertyChanged(nameof(NotificationInboxLoadStatus));
+                RaiseCommandStates();
+            }
+        }
+
         public string NotificationInboxErrorMessage
         {
             get => notificationInboxErrorMessage;
@@ -106,8 +127,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         public bool HasNotificationInboxError => !string.IsNullOrWhiteSpace(NotificationInboxErrorMessage);
-        public string NotificationInboxLoadStatus => IsNotificationInboxLoading ? "正在更新通知…" : string.Empty;
+        public string NotificationInboxLoadStatus => IsNotificationInboxMutating
+            ? "正在更新通知状态…"
+            : IsNotificationInboxLoading ? "正在更新通知…" : string.Empty;
         public int NotificationUnreadCount => NotificationRecords.Count(record => !record.IsRead);
+        public int NotificationReadCount => NotificationRecords.Count(record => record.IsRead);
+        public bool CanMarkSelectedNotificationRead =>
+            !IsNotificationInboxLoading && !IsNotificationInboxMutating && SelectedNotification is { IsRead: false };
+        public bool CanMarkVisibleNotificationsRead =>
+            !IsNotificationInboxLoading && !IsNotificationInboxMutating && NotificationInboxItems.Any(item => !item.IsRead);
+        public bool CanClearReadNotificationRecords =>
+            !IsNotificationInboxLoading && !IsNotificationInboxMutating && NotificationReadCount > 0;
         public string NotificationInboxCountSummary => NotificationRecords.Count == 0
             ? "最近 30 天 · 暂无记录"
             : $"最近 30 天 · 未读 {NotificationUnreadCount} · 当前显示 {NotificationInboxItems.Count}/{NotificationRecords.Count}";
@@ -118,18 +148,76 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             RefreshNotificationInboxCommand = new RelayCommand(
                 _ => Run(LoadNotificationInboxAsync),
-                _ => !IsNotificationInboxLoading);
+                _ => !IsNotificationInboxLoading && !IsNotificationInboxMutating);
+            notificationInboxReadActions = new NotificationInboxReadActions(
+                (type, payload) => plugin.RequestAsync<int>(type, payload, TimeSpan.FromSeconds(20)),
+                plugin.ConfirmAsync);
+            MarkSelectedNotificationReadCommand = new RelayCommand(
+                _ => Run(MarkSelectedNotificationReadAsync),
+                _ => CanMarkSelectedNotificationRead);
+            MarkVisibleNotificationsReadCommand = new RelayCommand(
+                _ => Run(MarkVisibleNotificationsReadAsync),
+                _ => CanMarkVisibleNotificationsRead);
+            ClearReadNotificationRecordsCommand = new RelayCommand(
+                _ => Run(ClearReadNotificationRecordsAsync),
+                _ => CanClearReadNotificationRecords);
             NotificationRecords.CollectionChanged += (_, __) =>
             {
                 OnPropertyChanged(nameof(NotificationUnreadCount));
+                OnPropertyChanged(nameof(NotificationReadCount));
                 OnPropertyChanged(nameof(NotificationInboxCountSummary));
                 OnPropertyChanged(nameof(NotificationInboxHasNoRecords));
+                RaiseCommandStates();
             };
             NotificationInboxItems.CollectionChanged += (_, __) =>
             {
                 OnPropertyChanged(nameof(NotificationInboxCountSummary));
                 OnPropertyChanged(nameof(NotificationInboxHasNoFilterResults));
+                RaiseCommandStates();
             };
+        }
+
+        private Task MarkSelectedNotificationReadAsync()
+        {
+            var selected = SelectedNotification;
+            return RunNotificationRecordMutationAsync(async () =>
+                (int?)await notificationInboxReadActions.MarkSelectedAsReadAsync(selected));
+        }
+
+        private Task MarkVisibleNotificationsReadAsync()
+        {
+            var visibleItems = NotificationInboxItems.ToList();
+            return RunNotificationRecordMutationAsync(async () =>
+                (int?)await notificationInboxReadActions.MarkVisibleAsReadAsync(visibleItems));
+        }
+
+        private Task ClearReadNotificationRecordsAsync()
+        {
+            var readRecordCount = NotificationReadCount;
+            return RunNotificationRecordMutationAsync(() =>
+                notificationInboxReadActions.ClearReadRecordsAsync(readRecordCount));
+        }
+
+        private async Task RunNotificationRecordMutationAsync(Func<Task<int?>> mutation)
+        {
+            if (IsNotificationInboxLoading || IsNotificationInboxMutating) return;
+
+            IsNotificationInboxMutating = true;
+            NotificationInboxErrorMessage = string.Empty;
+            try
+            {
+                var result = await mutation();
+                if (result.HasValue)
+                    await LoadNotificationInboxAsync();
+            }
+            catch (Exception ex) when (!(ex is OutOfMemoryException) && !(ex is StackOverflowException))
+            {
+                NotificationInboxErrorMessage = "通知状态暂时无法更新。请检查后台服务后重试。";
+            }
+            finally
+            {
+                IsNotificationInboxMutating = false;
+            }
         }
 
         private async Task LoadNotificationInboxAsync()
@@ -200,6 +288,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(NotificationInboxCountSummary));
             OnPropertyChanged(nameof(NotificationInboxHasNoRecords));
             OnPropertyChanged(nameof(NotificationInboxHasNoFilterResults));
+            RaiseCommandStates();
         }
 
         private static bool ContainsNotificationSearchValue(string? value, string search)

@@ -58,6 +58,57 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task MarkReadChangesOnlyRequestedUnreadIdsAndPersistsAcrossRestart()
+    {
+        Assert.True(await store.TryAddNotificationAsync(CreateRecord("event:read-1", "notification-1"), CancellationToken.None));
+        Assert.True(await store.TryAddNotificationAsync(CreateRecord("event:read-2", "notification-2"), CancellationToken.None));
+        Assert.True(await store.TryAddNotificationAsync(CreateRecord("event:read-3", "notification-3"), CancellationToken.None));
+
+        var updated = await store.MarkNotificationRecordsReadAsync(
+            new[] { " notification-1 ", "", "notification-1", "missing", "notification-2" },
+            CancellationToken.None);
+
+        Assert.Equal(2, updated);
+        Assert.Equal(0, await store.MarkNotificationRecordsReadAsync(new[] { "notification-1", "notification-2" }, CancellationToken.None));
+        var restartedStore = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
+        await restartedStore.InitializeAsync(CancellationToken.None);
+        var records = await restartedStore.GetRecentNotificationRecordsAsync(10, CancellationToken.None);
+        Assert.True(Assert.Single(records, item => item.NotificationId == "notification-1").IsRead);
+        Assert.True(Assert.Single(records, item => item.NotificationId == "notification-2").IsRead);
+        Assert.False(Assert.Single(records, item => item.NotificationId == "notification-3").IsRead);
+    }
+
+    [Fact]
+    public async Task ClearReadDeletesOnlyReadNotificationsAndPreservesTasksAuditAndRestoreEvidence()
+    {
+        var read = CreateRecord("event:read", "notification-read");
+        read.IsRead = true;
+        Assert.True(await store.TryAddNotificationAsync(read, CancellationToken.None));
+        Assert.True(await store.TryAddNotificationAsync(CreateRecord("event:unread", "notification-unread"), CancellationToken.None));
+
+        await InsertRelatedStateAsync();
+
+        Assert.Equal(1, await store.ClearReadNotificationRecordsAsync(CancellationToken.None));
+        var retained = Assert.Single(await store.GetRecentNotificationRecordsAsync(10, CancellationToken.None));
+        Assert.Equal("notification-unread", retained.NotificationId);
+        Assert.False(retained.IsRead);
+
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        Assert.Equal(1L, await ReadScalarAsync<long>(connection, "SELECT COUNT(*) FROM tasks WHERE task_id='task-preserved';"));
+        Assert.Equal("restore-evidence", await ReadScalarAsync<string>(connection, "SELECT restore_report_json FROM tasks WHERE task_id='task-preserved';"));
+        Assert.Equal(1L, await ReadScalarAsync<long>(connection, "SELECT COUNT(*) FROM audit_log WHERE audit_id='audit-preserved';"));
+        Assert.Equal(1L, await ReadScalarAsync<long>(connection, "SELECT COUNT(*) FROM backup_versions WHERE backup_id='backup-preserved';"));
+        Assert.Equal(0, await store.ClearReadNotificationRecordsAsync(CancellationToken.None));
+    }
+
+    [Theory]
+    [InlineData(MessageTypes.MarkNotificationRecordsRead)]
+    [InlineData(MessageTypes.ClearReadNotificationRecords)]
+    public void NotificationReadMutationsRequireReplayProtection(string messageType)
+        => Assert.True(IpcRequestSemantics.RequiresReplayProtection(messageType));
+
+    [Fact]
     public async Task RetentionAndQuantityCapsAreAppliedAndExpiredRecordsAreRejected()
     {
         var expired = CreateRecord("expired:event", "expired-record");
@@ -119,4 +170,28 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
             Summary = "测试摘要",
             CreatedUtc = DateTime.UtcNow
         };
+
+    private async Task InsertRelatedStateAsync()
+    {
+        await using var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True");
+        await connection.OpenAsync();
+        await using var command = connection.CreateCommand();
+        command.CommandText = @"
+INSERT INTO tasks(task_id,task_type,state,progress,created_utc,restore_report_json)
+VALUES('task-preserved','restore',0,0,$created,'restore-evidence');
+INSERT INTO audit_log(audit_id,category,message,detail_json,created_utc)
+VALUES('audit-preserved','restore','恢复记录保留','{}',$created);
+INSERT INTO backup_versions(backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count)
+VALUES('backup-preserved','game-preserved','game-preserved',$created,1,1);";
+        command.Parameters.AddWithValue("$created", DateTime.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture));
+        await command.ExecuteNonQueryAsync();
+    }
+
+    private static async Task<T> ReadScalarAsync<T>(SqliteConnection connection, string sql)
+    {
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        var result = await command.ExecuteScalarAsync();
+        return (T)Convert.ChangeType(result!, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
+    }
 }

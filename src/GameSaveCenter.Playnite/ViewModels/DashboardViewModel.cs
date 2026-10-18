@@ -6429,7 +6429,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,
                 ConfirmGameToolImportCommand,CancelGameToolImportCommand,
                 OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,ApplyRecommendedProtectionCommand,
-                LoadTrainerReleasesCommand,DownloadTrainerCommand,CancelTrainerDownloadCommand
+                 LoadTrainerReleasesCommand,DownloadTrainerCommand,CancelTrainerDownloadCommand,
+                 RefreshNotificationInboxCommand, MarkSelectedNotificationReadCommand, MarkVisibleNotificationsReadCommand, ClearReadNotificationRecordsCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();
