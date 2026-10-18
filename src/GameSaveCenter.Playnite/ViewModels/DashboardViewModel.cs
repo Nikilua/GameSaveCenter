@@ -5489,9 +5489,26 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (string.Equals(task.TaskType, "CloudUpload", StringComparison.OrdinalIgnoreCase)
                 || task.ErrorCode?.StartsWith("RCLONE_", StringComparison.OrdinalIgnoreCase) == true)
             {
+                if (task.SourceReferences?.Any(reference =>
+                        reference?.Kind == TaskSourceReferenceKind.CloudTransfer
+                        && reference.StableId?.StartsWith("Media:", StringComparison.OrdinalIgnoreCase) == true) == true)
+                {
+                    var mediaRetry = await plugin.RequestAsync<MediaCloudRetryResultDto>(
+                        MessageTypes.RetryMediaCloudUpload,
+                        new MediaCloudRetryRequestDto
+                        {
+                            PlayniteId = task.GameId,
+                            NotificationIssueId = GetNotificationIssueId(task)
+                        },
+                        TimeSpan.FromHours(2));
+                    return mediaRetry?.Task == null
+                        ? new List<TaskStatusDto>()
+                        : new List<TaskStatusDto> { mediaRetry.Task };
+                }
+
                 var result=await plugin.RequestAsync<TaskStatusDto>(
                     MessageTypes.RetryCloudUpload,
-                    new GameQueryDto{PlayniteId=task.GameId},
+                    new GameQueryDto{PlayniteId=task.GameId,NotificationIssueId=GetNotificationIssueId(task)},
                     TimeSpan.FromHours(2));
                 return result == null ? new List<TaskStatusDto>() : new List<TaskStatusDto> { result };
             }
@@ -5499,7 +5516,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 var result = await plugin.RequestAsync<TaskStatusDto[]>(
                     MessageTypes.BackupGame,
-                    new BackupRequestDto { PlayniteIds = { task.GameId }, Force = true, Reason = "Retry" },
+                    new BackupRequestDto { PlayniteIds = { task.GameId }, Force = true, Reason = "Retry", NotificationIssueId = GetNotificationIssueId(task) },
                     TimeSpan.FromMinutes(15));
                 return result?.ToList() ?? new List<TaskStatusDto>();
             }
@@ -5507,13 +5524,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 var result = await plugin.RequestAsync<TaskStatusDto[]>(
                     MessageTypes.BackupAll,
-                    new BackupRequestDto { Force = true, Reason = "RetryAll" },
+                    new BackupRequestDto { Force = true, Reason = "RetryAll", NotificationIssueId = GetNotificationIssueId(task) },
                     TimeSpan.FromSeconds(30));
                 return result?.ToList() ?? new List<TaskStatusDto>();
             }
             else if (string.Equals(task.TaskType, "MediaSync", StringComparison.OrdinalIgnoreCase))
             {
-                var request = new MediaSyncRequestDto { UploadAfterSync = plugin.Settings.EnableCloudUpload };
+                var request = new MediaSyncRequestDto { UploadAfterSync = plugin.Settings.EnableCloudUpload, NotificationIssueId = GetNotificationIssueId(task) };
                 request.PlayniteIds.Add(task.GameId);
                 var result = await plugin.RequestAsync<TaskStatusDto[]>(MessageTypes.SyncMedia, request, TimeSpan.FromMinutes(60));
                 return result?.ToList() ?? new List<TaskStatusDto>();
@@ -5530,6 +5547,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             throw new NotSupportedException("该任务类型暂不支持安全重试。");
         }
+
+        private static string GetNotificationIssueId(TaskStatusDto task)
+            => string.IsNullOrWhiteSpace(task.NotificationIssueId) ? task.TaskId ?? string.Empty : task.NotificationIssueId;
 
         private async Task CopySelectedTaskErrorAsync()
         {
@@ -6432,7 +6452,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,ApplyRecommendedProtectionCommand,
                  LoadTrainerReleasesCommand,DownloadTrainerCommand,CancelTrainerDownloadCommand,
                  RefreshNotificationInboxCommand, MarkSelectedNotificationReadCommand, MarkVisibleNotificationsReadCommand, ClearReadNotificationRecordsCommand,
-                 OpenSelectedNotificationGameCommand, OpenSelectedNotificationTaskCommand
+                 OpenSelectedNotificationGameCommand, OpenSelectedNotificationTaskCommand, OpenSelectedNotificationFirstTaskCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();

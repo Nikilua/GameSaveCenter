@@ -62,6 +62,8 @@ namespace GameSaveCenter.Contracts
         public string Reason { get; set; } = "Manual";
         public string SessionId { get; set; } = string.Empty;
         public string NotificationSessionId { get; set; } = string.Empty;
+        /// <summary>Optional root task identity for a user-initiated retry notification lineage.</summary>
+        public string NotificationIssueId { get; set; } = string.Empty;
     }
 
     /// <summary>Read-only summary from Ludusavi's backup preview; it never represents an archive.</summary>
@@ -161,6 +163,8 @@ namespace GameSaveCenter.Contracts
         public List<string> PlayniteIds { get; set; } = new List<string>();
         public string SessionId { get; set; } = string.Empty;
         public string NotificationSessionId { get; set; } = string.Empty;
+        /// <summary>Optional root task identity for a user-initiated retry notification lineage.</summary>
+        public string NotificationIssueId { get; set; } = string.Empty;
         public bool IncludeUnassignedInbox { get; set; } = true;
         public bool SharedOnly { get; set; }
         public bool UploadAfterSync { get; set; }
@@ -274,6 +278,8 @@ namespace GameSaveCenter.Contracts
     public sealed class TaskStatusDto
     {
         public string TaskId { get; set; } = string.Empty;
+        /// <summary>Stable root task identity for notifications created by retrying this task.</summary>
+        public string NotificationIssueId { get; set; } = string.Empty;
         /// <summary>IPC request that submitted this task; empty for legacy/non-IPC tasks.</summary>
         public string RequestId { get; set; } = string.Empty;
         /// <summary>Groups tasks launched by one game session for a single exit summary.</summary>
@@ -676,6 +682,8 @@ namespace GameSaveCenter.Contracts
     public sealed class GameQueryDto
     {
         public string PlayniteId { get; set; } = string.Empty;
+        /// <summary>Optional root task identity for a user-initiated retry notification lineage.</summary>
+        public string NotificationIssueId { get; set; } = string.Empty;
         public int Limit { get; set; } = 200;
         /// <summary>Optional zero-based offset for bounded list responses.</summary>
         public int Offset { get; set; }

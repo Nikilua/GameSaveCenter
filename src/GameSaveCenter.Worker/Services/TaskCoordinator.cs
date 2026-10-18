@@ -51,7 +51,8 @@ public sealed class TaskCoordinator
         string? taskId = null,
         DateTime? createdUtc = null,
         string requestId = "",
-        IReadOnlyCollection<TaskSourceReferenceDto>? sourceReferences = null)
+        IReadOnlyCollection<TaskSourceReferenceDto>? sourceReferences = null,
+        string notificationIssueId = "")
     {
         var taskSources = (sourceReferences ?? Array.Empty<TaskSourceReferenceDto>())
             .Where(reference => reference != null && reference.HasStableIdentity)
@@ -73,6 +74,7 @@ public sealed class TaskCoordinator
         var task = new TaskStatusDto
         {
             TaskId=string.IsNullOrWhiteSpace(taskId) ? Guid.NewGuid().ToString("N") : taskId,
+            NotificationIssueId=NormalizeNotificationIssueId(notificationIssueId),
             RequestId=requestId ?? string.Empty,
             SessionId=sessionId ?? string.Empty, WorkerSessionId=workerSessionId, TaskType=taskType, GameId=gameId, GameName=gameName ?? string.Empty,
             State=TaskState.Queued, ProgressPercent=0, Message="等待执行", StageMessage="等待执行", CancellationState=TaskCancellationStates.None, CreatedUtc=createdUtc ?? DateTime.UtcNow, ElapsedSeconds=0,
@@ -161,6 +163,14 @@ public sealed class TaskCoordinator
             }
         }
         return task;
+    }
+
+    private static string NormalizeNotificationIssueId(string? value)
+    {
+        var normalized = (value ?? string.Empty).Trim();
+        return normalized.Length <= 128 && !normalized.Any(char.IsWhiteSpace)
+            ? normalized
+            : string.Empty;
     }
 
     private static void MarkRestoreFailure(TaskProgress? progress, string errorCode)

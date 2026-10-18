@@ -41,6 +41,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ClearReadNotificationRecordsCommand { get; private set; } = null!;
         public ICommand OpenSelectedNotificationGameCommand { get; private set; } = null!;
         public ICommand OpenSelectedNotificationTaskCommand { get; private set; } = null!;
+        public ICommand OpenSelectedNotificationFirstTaskCommand { get; private set; } = null!;
 
         public NotificationInboxItem? SelectedNotification
         {
@@ -52,6 +53,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SetValue(ref selectedNotification, value);
                 OnPropertyChanged(nameof(HasSelectedNotificationGameId));
                 OnPropertyChanged(nameof(HasSelectedNotificationTaskId));
+                OnPropertyChanged(nameof(HasSelectedNotificationFirstTaskId));
                 OnPropertyChanged(nameof(NotificationContextMessage));
                 RaiseCommandStates();
             }
@@ -61,13 +63,20 @@ namespace GameSaveCenter.Playnite.ViewModels
             && !string.IsNullOrWhiteSpace(SelectedNotification.GameId);
         public bool HasSelectedNotificationTaskId => SelectedNotification != null
             && !string.IsNullOrWhiteSpace(SelectedNotification.TaskId);
+        public bool HasSelectedNotificationFirstTaskId => SelectedNotification != null
+            && SelectedNotification.HasIssue
+            && SelectedNotification.OccurrenceCount > 1
+            && !string.IsNullOrWhiteSpace(SelectedNotification.FirstTaskId)
+            && !string.Equals(SelectedNotification.FirstTaskId, SelectedNotification.TaskId, StringComparison.Ordinal);
         public string NotificationContextMessage => !string.IsNullOrWhiteSpace(notificationContextStatusMessage)
-            ? notificationContextStatusMessage + " 已读只表示查看，不代表问题已解决。"
+            ? notificationContextStatusMessage + (SelectedNotification?.IsResolved == true ? " 该问题已恢复。" : " 已读只表示查看，不代表问题已解决。")
             : SelectedNotification == null
                 ? "请选择一条通知查看关联入口。"
                 : !HasSelectedNotificationGameId && !HasSelectedNotificationTaskId
-                    ? "这条通知保留了可读摘要，但没有可定位的游戏或任务 ID。已读只表示查看，不代表问题已解决。"
-                    : "关联内容按稳定 ID 定位；不会按名称猜测。已读只表示查看，不代表问题已解决。";
+                    ? "这条通知保留了可读摘要，但没有可定位的游戏或任务 ID。"
+                    : SelectedNotification.IsResolved
+                        ? "关联内容按稳定 ID 定位；该问题已恢复，历史错误与任务入口仍保留。"
+                        : "关联内容按稳定 ID 定位；不会按名称猜测。已读只表示查看，不代表问题已解决。";
 
         private string NotificationContextStatusMessage
         {
@@ -196,8 +205,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                 _ => OpenSelectedNotificationGame(),
                 _ => !IsBusy && HasSelectedNotificationGameId);
             OpenSelectedNotificationTaskCommand = new RelayCommand(
-                _ => Run(OpenSelectedNotificationTaskAsync),
+                _ => Run(() => OpenSelectedNotificationTaskAsync(false)),
                 _ => !IsBusy && HasSelectedNotificationTaskId);
+            OpenSelectedNotificationFirstTaskCommand = new RelayCommand(
+                _ => Run(() => OpenSelectedNotificationTaskAsync(true)),
+                _ => !IsBusy && HasSelectedNotificationFirstTaskId);
             NotificationRecords.CollectionChanged += (_, __) =>
             {
                 OnPropertyChanged(nameof(NotificationUnreadCount));
@@ -259,10 +271,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             RequestWorkspaceLoad();
         }
 
-        private async Task OpenSelectedNotificationTaskAsync()
+        private async Task OpenSelectedNotificationTaskAsync(bool firstAttempt)
         {
             var notification = SelectedNotification;
-            var taskId = notification?.TaskId?.Trim() ?? string.Empty;
+            var taskId = (firstAttempt ? notification?.FirstTaskId : notification?.TaskId)?.Trim() ?? string.Empty;
+            var taskLabel = firstAttempt ? "首次失败任务" : "最近关联任务";
             if (notification == null || string.IsNullOrWhiteSpace(taskId)) return;
 
             var page = await plugin.RequestAsync<TaskPageDto>(
@@ -275,7 +288,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!string.Equals(SelectedNotification?.NotificationId, notification.NotificationId, StringComparison.Ordinal)) return;
                 if (task == null)
                 {
-                    NotificationContextStatusMessage = $"关联任务 ID“{taskId}”已不存在或已清理；通知标题和摘要仍可查看。";
+                    NotificationContextStatusMessage = $"{taskLabel} ID“{taskId}”已不存在或已清理；通知标题和摘要仍可查看。";
                     StatusMessage = NotificationContextStatusMessage;
                     return;
                 }
@@ -315,7 +328,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CurrentWorkspace = WorkspaceKind.Tasks;
                 RequestTaskHistoryRefresh(immediate: true, force: true);
                 NotificationContextStatusMessage = string.Empty;
-                StatusMessage = $"已按任务 ID 打开“{task.TaskTypeDisplay}”任务详情；可从任务来源继续进入版本或关联问题。";
+                StatusMessage = $"已按任务 ID 打开{taskLabel}“{task.TaskTypeDisplay}”详情；可从任务来源继续进入版本或关联问题。";
                 RaiseCommandStates();
             });
         }
@@ -429,14 +442,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             Summary = record.Summary ?? string.Empty;
             GameId = record.GameId ?? string.Empty;
             TaskId = record.TaskId ?? string.Empty;
+            FirstTaskId = string.IsNullOrWhiteSpace(record.FirstTaskId) ? TaskId : record.FirstTaskId;
+            HasIssue = !string.IsNullOrWhiteSpace(record.IssueKey);
             Severity = record.Severity;
             SeverityDisplay = NotificationInboxFilter.SeverityName(record.Severity);
-            CreatedUtc = record.CreatedUtc.Kind == DateTimeKind.Local
-                ? record.CreatedUtc.ToUniversalTime()
-                : DateTime.SpecifyKind(record.CreatedUtc, DateTimeKind.Utc);
+            OccurrenceCount = Math.Max(1, record.OccurrenceCount);
+            IsResolved = record.IsResolved;
+            LastError = record.LastError ?? string.Empty;
+            FirstOccurredUtc = NormalizeUtc(record.FirstOccurredUtc, record.CreatedUtc);
+            LastOccurredUtc = NormalizeUtc(record.LastOccurredUtc, record.CreatedUtc);
+            CreatedUtc = LastOccurredUtc;
             CreatedRelativeDisplay = TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
             CreatedFullDisplay = TimeDisplayFormatter.Full(CreatedUtc);
             CreatedRawUtcDisplay = TimeDisplayFormatter.RawUtc(CreatedUtc);
+            FirstOccurredFullDisplay = TimeDisplayFormatter.Full(FirstOccurredUtc);
+            LastOccurredFullDisplay = TimeDisplayFormatter.Full(LastOccurredUtc);
             IsRead = record.IsRead;
         }
 
@@ -446,13 +466,32 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string Summary { get; }
         public string GameId { get; }
         public string TaskId { get; }
+        public string FirstTaskId { get; }
+        public bool HasIssue { get; }
         public NotificationSeverity Severity { get; }
         public string SeverityDisplay { get; }
+        public int OccurrenceCount { get; }
+        public string OccurrenceDisplay => string.IsNullOrWhiteSpace(Record.IssueKey) ? "—" : OccurrenceCount + " 次";
+        public bool IsResolved { get; }
+        public string ResolvedDisplay => string.IsNullOrWhiteSpace(Record.IssueKey) ? "—" : IsResolved ? "已恢复" : "待恢复";
+        public string LastError { get; }
         public DateTime CreatedUtc { get; }
+        public DateTime FirstOccurredUtc { get; }
+        public DateTime LastOccurredUtc { get; }
         public string CreatedRelativeDisplay { get; }
         public string CreatedFullDisplay { get; }
         public string CreatedRawUtcDisplay { get; }
+        public string FirstOccurredFullDisplay { get; }
+        public string LastOccurredFullDisplay { get; }
         public bool IsRead { get; }
         public string ReadStateDisplay => IsRead ? "已读" : "未读";
+
+        private static DateTime NormalizeUtc(DateTime value, DateTime fallback)
+        {
+            var normalized = value == default ? fallback : value;
+            return normalized.Kind == DateTimeKind.Local
+                ? normalized.ToUniversalTime()
+                : DateTime.SpecifyKind(normalized, DateTimeKind.Utc);
+        }
     }
 }

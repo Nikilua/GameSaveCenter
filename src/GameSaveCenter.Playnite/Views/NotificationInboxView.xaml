@@ -125,6 +125,10 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="通知" Binding="{Binding Title}" Width="2*" MinWidth="160"/>
                             <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="3*" MinWidth="200"/>
+                            <DataGridTextColumn Header="尝试" Binding="{Binding OccurrenceDisplay}" Width="68" MinWidth="64"/>
+                            <DataGridTemplateColumn Header="问题" Width="76" MinWidth="70">
+                                <DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding ResolvedDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/></DataTemplate></DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="时间" Width="155" MinWidth="145">
                                 <DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding CreatedRelativeDisplay, Mode=OneWay}" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}" VerticalAlignment="Center"/></DataTemplate></DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -145,15 +149,26 @@
                             <StackPanel>
                                 <TextBlock Text="{Binding SelectedNotification.Title, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding SelectedNotification.Summary, Mode=OneWay}" Margin="0,7,0,7" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap"/>
+                                <StackPanel Visibility="{Binding SelectedNotification.HasIssue, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding SelectedNotification.OccurrenceDisplay, Mode=OneWay}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding SelectedNotification.ResolvedDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0"/>
+                                    <TextBlock Text="首次发生" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding SelectedNotification.FirstOccurredFullDisplay, Mode=OneWay}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Text="最近发生" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding SelectedNotification.LastOccurredFullDisplay, Mode=OneWay}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Text="最后错误" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding SelectedNotification.LastError, Mode=OneWay, TargetNullValue=无}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
                                 <TextBlock Text="时间" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
                                 <TextBlock Text="{Binding SelectedNotification.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedNotification.CreatedRawUtcDisplay, Mode=OneWay}" Margin="0,2,0,6" TextWrapping="Wrap"/>
                                 <TextBlock Text="游戏 ID" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
                                 <TextBlock Text="{Binding SelectedNotification.GameId, Mode=OneWay, TargetNullValue=无}" Margin="0,2,0,6" TextWrapping="Wrap"/>
-                                <TextBlock Text="任务 ID" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
+                                <TextBlock Text="最近任务 ID" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
                                 <TextBlock Text="{Binding SelectedNotification.TaskId, Mode=OneWay, TargetNullValue=无}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                                 <WrapPanel Margin="0,8,0,0">
                                     <ui:Button x:Name="NotificationOpenGameButton" Content="打开关联游戏" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding OpenSelectedNotificationGameCommand}" Visibility="{Binding HasSelectedNotificationGameId, Converter={StaticResource BooleanToVisibilityConverter}}" AutomationProperties.Name="打开通知关联游戏" AutomationProperties.HelpText="只按 Playnite 稳定游戏 ID 定位，不会按同名游戏猜测。" Padding="11,4" Margin="0,0,8,4"/>
-                                    <ui:Button x:Name="NotificationOpenTaskButton" Content="打开关联任务" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding OpenSelectedNotificationTaskCommand}" Visibility="{Binding HasSelectedNotificationTaskId, Converter={StaticResource BooleanToVisibilityConverter}}" AutomationProperties.Name="打开通知关联任务" AutomationProperties.HelpText="只按任务稳定 ID 查询；找不到时保留通知摘要并说明原因。" Padding="11,4" Margin="0,0,8,4"/>
+                                    <ui:Button x:Name="NotificationOpenTaskButton" Content="打开最近任务" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding OpenSelectedNotificationTaskCommand}" Visibility="{Binding HasSelectedNotificationTaskId, Converter={StaticResource BooleanToVisibilityConverter}}" AutomationProperties.Name="打开通知最近关联任务" AutomationProperties.HelpText="只按任务稳定 ID 查询；找不到时保留通知摘要并说明原因。" Padding="11,4" Margin="0,0,8,4"/>
+                                    <ui:Button x:Name="NotificationOpenFirstTaskButton" Content="打开首次失败" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding OpenSelectedNotificationFirstTaskCommand}" Visibility="{Binding HasSelectedNotificationFirstTaskId, Converter={StaticResource BooleanToVisibilityConverter}}" AutomationProperties.Name="打开通知首次失败任务" AutomationProperties.HelpText="归并通知保留首次任务入口；只按任务稳定 ID 查询。" Padding="11,4" Margin="0,0,8,4"/>
                                 </WrapPanel>
                                 <TextBlock Text="{Binding NotificationContextMessage, Mode=OneWay}" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,1,0,0" TextWrapping="Wrap"/>
                             </StackPanel>

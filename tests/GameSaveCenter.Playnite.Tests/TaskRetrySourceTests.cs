@@ -47,6 +47,21 @@ public sealed class TaskRetrySourceTests
         Assert.Contains("跳过/未返回", mediaViewModel);
     }
 
+    [Fact]
+    public void ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind()
+    {
+        var root = FindRepositoryRoot();
+        var taskViewModel = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
+        var plugin = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "GameSaveCenterPlugin.cs"));
+        var worker = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "MediaSyncService.cs"));
+
+        Assert.Contains("NotificationIssueId = GetNotificationIssueId(task)", taskViewModel);
+        Assert.Contains("reference.StableId?.StartsWith(\"Media:\"", taskViewModel);
+        Assert.Contains("NotificationRecordPolicy.CreateTaskIssueKey", plugin);
+        Assert.Contains("notificationIssueId: notificationIssueId", worker);
+        Assert.Contains("public string NotificationIssueId { get; set; }", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Contracts", "CloudTransferDtos.cs")));
+    }
+
     private static string FindRepositoryRoot()
         => TestRepositoryContext.Root;
 }

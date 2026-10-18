@@ -140,8 +140,8 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GetNotificationRecords=>await _store.GetRecentNotificationRecordsAsync(Read<NotificationRecordsQueryDto>(request).Limit,token).ConfigureAwait(false),
                 MessageTypes.MarkNotificationRecordsRead=>await _store.MarkNotificationRecordsReadAsync(Read<NotificationRecordIdsDto>(request).NotificationIds,token).ConfigureAwait(false),
                 MessageTypes.ClearReadNotificationRecords=>await _store.ClearReadNotificationRecordsAsync(token).ConfigureAwait(false),
-                MessageTypes.RetryCloudUpload=>await _backup.RetryCloudUploadAsync(Read<GameQueryDto>(request).PlayniteId,token).ConfigureAwait(false),
-                MessageTypes.RetryMediaCloudUpload=>await _media.RetryCloudUploadForUserAsync(Read<MediaCloudRetryRequestDto>(request).PlayniteId,token).ConfigureAwait(false),
+                MessageTypes.RetryCloudUpload=>await RetryCloudUploadAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.RetryMediaCloudUpload=>await RetryMediaCloudUploadAsync(Read<MediaCloudRetryRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetCloudTransferStatus=>await _cloudState.GetStatusAsync(Read<CloudTransferStatusRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.VerifyCloudTransfer=>await _cloudState.VerifyAsync(Read<CloudTransferVerifyRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.SyncDeviceStates=>await _deviceStates.SyncAsync(token).ConfigureAwait(false),
@@ -206,6 +206,12 @@ public sealed class IpcRequestDispatcher
             return Error(request,ex.GetType().Name,ex.Message);
         }
     }
+
+    private Task<TaskStatusDto> RetryCloudUploadAsync(GameQueryDto request, CancellationToken token)
+        => _backup.RetryCloudUploadAsync(request.PlayniteId, token, request.NotificationIssueId);
+
+    private Task<MediaCloudRetryResultDto> RetryMediaCloudUploadAsync(MediaCloudRetryRequestDto request, CancellationToken token)
+        => _media.RetryCloudUploadForUserAsync(request.PlayniteId, token, request.NotificationIssueId);
 
     private async Task<object> UpsertAsync(List<GameDescriptorDto> games,CancellationToken token){await _catalog.UpsertAndMatchAsync(games,token).ConfigureAwait(false);return new{accepted=games.Count};}
     private async Task<object> SyncGameDescriptorAsync(GameDescriptorSyncRequestDto request, CancellationToken token)

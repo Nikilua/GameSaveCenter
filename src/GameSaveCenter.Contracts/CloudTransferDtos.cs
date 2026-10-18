@@ -29,6 +29,8 @@ public enum MediaCloudRetryOutcome
 public sealed class MediaCloudRetryRequestDto
 {
     public string PlayniteId { get; set; } = string.Empty;
+    /// <summary>Optional root task identity for a user-initiated retry notification lineage.</summary>
+    public string NotificationIssueId { get; set; } = string.Empty;
 }
 
 /// <summary>

@@ -139,7 +139,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         BackupRequestDto request,
         CancellationToken token,
         ISet<string>? completedGameIds,
-        Func<int, int, GameDescriptorDto, bool, Task>? progressCallback)
+        Func<int, int, GameDescriptorDto, bool, Task>? progressCallback,
+        Func<GameDescriptorDto, string>? notificationIssueIdSelector = null)
     {
         var games = await _catalog.GetGamesAsync(token).ConfigureAwait(false);
         var matches = await _catalog.GetMatchesAsync(token).ConfigureAwait(false);
@@ -180,7 +181,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         "LUDUSAVI_NOT_CONFIGURED",
                         "Ludusavi 尚未配置或可执行文件不存在。",
                         _options.LudusaviExecutable)),
-                    token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
+                    token, request.NotificationSessionId, requestId: request.RequestId,
+                    notificationIssueId: notificationIssueIdSelector?.Invoke(game) ?? request.NotificationIssueId).ConfigureAwait(false);
                 results.Add(task);
                 await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 continue;
@@ -198,7 +200,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                             "LUDUSAVI_GAME_UNMATCHED",
                             "该游戏尚未匹配到 Ludusavi 存档规则。",
                             game.Name)),
-                        token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
+                        token, request.NotificationSessionId, requestId: request.RequestId,
+                        notificationIssueId: notificationIssueIdSelector?.Invoke(game) ?? request.NotificationIssueId).ConfigureAwait(false);
                     results.Add(task);
                     await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 }
@@ -218,7 +221,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         "GAME_OPERATION_BUSY",
                         "该游戏已有备份、恢复或媒体操作正在执行，已跳过本次备份。",
                         game.PlayniteId)),
-                    token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
+                    token, request.NotificationSessionId, requestId: request.RequestId,
+                    notificationIssueId: notificationIssueIdSelector?.Invoke(game) ?? request.NotificationIssueId).ConfigureAwait(false);
                 results.Add(task);
                 await ReportProcessedAsync(game, task.State == TaskState.Succeeded).ConfigureAwait(false);
                 continue;
@@ -393,7 +397,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                     };
                     await progress.ReportAsync(100, $"{requestLabel}：{completion}").ConfigureAwait(false);
                 },
-                token, request.NotificationSessionId, requestId: request.RequestId).ConfigureAwait(false);
+                token, request.NotificationSessionId, requestId: request.RequestId,
+                notificationIssueId: notificationIssueIdSelector?.Invoke(game) ?? request.NotificationIssueId).ConfigureAwait(false);
             results.Add(completedTask);
             await ReportProcessedAsync(game, completedTask.State == TaskState.Succeeded).ConfigureAwait(false);
         }
@@ -504,7 +509,9 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                                 "游戏",
                                 job.Message,
                                 job.ProgressPercent).ConfigureAwait(false);
-                        }).ConfigureAwait(false);
+                        }, game => CreateBackupAllGameIssueId(
+                            string.IsNullOrWhiteSpace(request.NotificationIssueId) ? job.JobId : request.NotificationIssueId,
+                            game.PlayniteId)).ConfigureAwait(false);
 
                     operationToken.ThrowIfCancellationRequested();
                     var failed = results.Count(x => x.State == TaskState.Failed);
@@ -525,7 +532,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 request.NotificationSessionId,
                 job.JobId,
                 job.CreatedUtc,
-                request.RequestId).ConfigureAwait(false);
+                request.RequestId,
+                notificationIssueId: request.NotificationIssueId).ConfigureAwait(false);
 
             job.State = result.State;
             job.ProgressPercent = result.ProgressPercent;
@@ -564,6 +572,13 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
         }
     }
 
+    private static string CreateBackupAllGameIssueId(string rootIssueId, string gameId)
+    {
+        var bytes = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(
+            (rootIssueId ?? string.Empty) + "\n" + (gameId ?? string.Empty)));
+        return "backupall-game:" + Convert.ToHexString(bytes);
+    }
+
     private static HashSet<string> DeserializeGameIds(string json)
     {
         try
@@ -594,7 +609,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
     /// Repeats only the safe one-way cloud copy after a local backup already succeeded.
     /// It deliberately does not create another Ludusavi version.
     /// </summary>
-    public async Task<TaskStatusDto> RetryCloudUploadAsync(string playniteId,CancellationToken token)
+    public async Task<TaskStatusDto> RetryCloudUploadAsync(string playniteId,CancellationToken token,string notificationIssueId = "")
     {
         if(_options.SafeModeEnabled)
             throw new WorkerOperationException("SAFE_MODE_ENABLED","安全模式已开启，云端上传已暂停。请先关闭安全模式。","SafeMode");
@@ -654,7 +669,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 DisplayName = "备份云队列",
                 Detail = "仅重试已保留的本地备份副本"
             }
-        }).ConfigureAwait(false);
+        },notificationIssueId: notificationIssueId).ConfigureAwait(false);
         return result;
     }
 

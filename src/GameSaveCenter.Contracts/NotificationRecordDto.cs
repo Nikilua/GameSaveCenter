@@ -19,12 +19,22 @@ namespace GameSaveCenter.Contracts
     {
         public string NotificationId { get; set; } = Guid.NewGuid().ToString("N");
         public string DeduplicationKey { get; set; } = string.Empty;
+        /// <summary>Stable identity for one explicit retry lineage; empty for standalone notices.</summary>
+        public string IssueKey { get; set; } = string.Empty;
+        /// <summary>Unique terminal event identity used to make retry aggregation idempotent.</summary>
+        public string OccurrenceKey { get; set; } = string.Empty;
         public string TaskId { get; set; } = string.Empty;
+        public string FirstTaskId { get; set; } = string.Empty;
         public string GameId { get; set; } = string.Empty;
         public NotificationSeverity Severity { get; set; } = NotificationSeverity.Information;
         public string Title { get; set; } = string.Empty;
         public string Summary { get; set; } = string.Empty;
         public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
+        public int OccurrenceCount { get; set; } = 1;
+        public DateTime FirstOccurredUtc { get; set; }
+        public DateTime LastOccurredUtc { get; set; }
+        public string LastError { get; set; } = string.Empty;
+        public bool IsResolved { get; set; }
         public bool IsRead { get; set; }
     }
 

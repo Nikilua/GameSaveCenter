@@ -66,7 +66,7 @@ public sealed class MediaSyncService
                 {
                     output.Add(await _tasks.RunAsync("MediaSync",game.PlayniteId,game.Name,
                         (_, _) => Task.FromException(new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过本次媒体同步。",game.PlayniteId)),
-                        token,request.NotificationSessionId).ConfigureAwait(false));
+                        token,request.NotificationSessionId,notificationIssueId:request.NotificationIssueId).ConfigureAwait(false));
                     continue;
                 }
                 output.Add(await SyncGameSourcesAsync(game,request,token).ConfigureAwait(false));
@@ -1242,7 +1242,7 @@ public sealed class MediaSyncService
                 await _cloudState.MarkUploadedAsync(CloudTransferKind.Media,game.PlayniteId,ct).ConfigureAwait(false);
             }
             await progress.ReportAsync(100,$"媒体同步完成，新增 {copied} 个文件").ConfigureAwait(false);
-        },token,request.NotificationSessionId);
+        },token,request.NotificationSessionId,notificationIssueId:request.NotificationIssueId);
 
     private Task<TaskStatusDto> SyncSharedSourcesAsync(IReadOnlyList<GameDescriptorDto> games,MediaSyncRequestDto request,CancellationToken token)=>
         _tasks.RunAsync("MediaInbox",string.Empty,"公共媒体收件箱",async(progress,ct)=>
@@ -1314,10 +1314,10 @@ public sealed class MediaSyncService
                 }
             }
             await progress.ReportAsync(100,$"公共媒体扫描完成，自动归类 {assigned} 个，待人工归类 {inbox} 个").ConfigureAwait(false);
-        },token,request.NotificationSessionId);
+        },token,request.NotificationSessionId,notificationIssueId:request.NotificationIssueId);
 
     /// <summary>Retries only the safe one-way media copy; it never rescans or deletes captures.</summary>
-    public async Task<TaskStatusDto> RetryCloudUploadAsync(string playniteId, CancellationToken token)
+    public async Task<TaskStatusDto> RetryCloudUploadAsync(string playniteId, CancellationToken token, string notificationIssueId = "")
     {
         var game=await _catalog.GetGameAsync(playniteId,token).ConfigureAwait(false)
             ??throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND","找不到需要重试媒体云端上传的游戏。",playniteId);
@@ -1373,7 +1373,7 @@ public sealed class MediaSyncService
                 DisplayName = "媒体云队列",
                 Detail = "仅重试已保留的本地媒体归档"
             }
-        }).ConfigureAwait(false);
+        },notificationIssueId: notificationIssueId).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -1381,7 +1381,7 @@ public sealed class MediaSyncService
     /// as the existing retry operation before creating a task, and returns a typed outcome
     /// so a disabled policy or unavailable cloud cannot be shown as a successful submit.
     /// </summary>
-    public async Task<MediaCloudRetryResultDto> RetryCloudUploadForUserAsync(string playniteId, CancellationToken token)
+    public async Task<MediaCloudRetryResultDto> RetryCloudUploadForUserAsync(string playniteId, CancellationToken token, string notificationIssueId = "")
     {
         var game = await _catalog.GetGameAsync(playniteId, token).ConfigureAwait(false)
             ?? throw new WorkerOperationException("CLOUD_GAME_NOT_FOUND", "找不到需要重试媒体云端上传的游戏。", playniteId);
@@ -1412,7 +1412,7 @@ public sealed class MediaSyncService
             return CannotSubmit(playniteId, game.Name, "RCLONE_NOT_CONFIGURED", "云端复制尚未启用或 Rclone 配置不可用。请先完成云端设置。");
         }
 
-        var task = await RetryCloudUploadAsync(playniteId, token).ConfigureAwait(false);
+        var task = await RetryCloudUploadAsync(playniteId, token, notificationIssueId).ConfigureAwait(false);
         if (task.State == TaskState.Failed)
         {
             return CannotSubmit(playniteId, game.Name, task.ErrorCode, task.ErrorMessage, task);

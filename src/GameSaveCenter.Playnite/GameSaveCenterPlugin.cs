@@ -991,16 +991,46 @@ namespace GameSaveCenter.Playnite
             var severity = task.State == TaskState.Failed ? NotificationSeverity.Error
                 : task.State == TaskState.Cancelled ? NotificationSeverity.Warning
                 : NotificationSeverity.Success;
-            FireAndForget(() => PersistNotificationRecordAsync(new NotificationRecordDto
+            var taskId = task.TaskId ?? string.Empty;
+            var gameId = task.GameId ?? string.Empty;
+            var taskType = task.TaskType ?? string.Empty;
+            var notificationIssueId = task.NotificationIssueId ?? string.Empty;
+            var issueRoot = string.IsNullOrWhiteSpace(notificationIssueId)
+                ? taskId
+                : notificationIssueId;
+            var tracksIssueFailure = task.State == TaskState.Failed && !string.IsNullOrWhiteSpace(issueRoot);
+            var resolvesIssue = task.State == TaskState.Succeeded
+                && !string.IsNullOrWhiteSpace(notificationIssueId)
+                && !string.IsNullOrWhiteSpace(taskId);
+            var issueKey = tracksIssueFailure || resolvesIssue
+                ? NotificationRecordPolicy.CreateTaskIssueKey(taskType, gameId, issueRoot)
+                : string.Empty;
+            var notification = new NotificationRecordDto
             {
-                DeduplicationKey = CreateNotificationDeduplicationKey("task", TaskNotificationFingerprint.Build(task)),
-                TaskId = task.TaskId,
-                GameId = task.GameId,
+                DeduplicationKey = tracksIssueFailure || resolvesIssue
+                    ? issueKey
+                    : CreateNotificationDeduplicationKey("task", TaskNotificationFingerprint.Build(task)),
+                TaskId = taskId,
+                FirstTaskId = taskId,
+                GameId = gameId,
                 Severity = severity,
-                Title = TaskNotificationTitle(task),
-                Summary = text,
-                CreatedUtc = task.FinishedUtc ?? DateTime.UtcNow
-            }));
+                Title = resolvesIssue ? "后台任务已恢复" : TaskNotificationTitle(task),
+                Summary = resolvesIssue ? game + " · " + task.TaskTypeDisplay + " 重试成功，关联故障已恢复。" : text,
+                CreatedUtc = task.FinishedUtc ?? DateTime.UtcNow,
+                FirstOccurredUtc = task.FinishedUtc ?? DateTime.UtcNow,
+                LastOccurredUtc = task.FinishedUtc ?? DateTime.UtcNow,
+                LastError = task.State == TaskState.Failed
+                    ? string.Join(": ", new[] { task.ErrorCode, string.IsNullOrWhiteSpace(task.ErrorMessage) ? task.DetailMessage : task.ErrorMessage }
+                        .Where(value => !string.IsNullOrWhiteSpace(value)))
+                    : string.Empty,
+                IssueKey = issueKey,
+                OccurrenceKey = tracksIssueFailure || resolvesIssue
+                    ? NotificationRecordPolicy.CreateTaskOccurrenceKey(taskId, task.State == TaskState.Failed)
+                    : string.Empty,
+                OccurrenceCount = 1,
+                IsResolved = resolvesIssue
+            };
+            FireAndForget(() => PersistNotificationRecordAsync(notification));
             if (!ShouldShowNotificationPopup(severity)) return;
             if (!RaiseUiNotification(TaskNotificationTitle(task), text, kind, BuildTaskNotificationDetail(task, game)))
                 AddNotification("Task." + task.TaskId, text, task.State == TaskState.Failed ? NotificationType.Error : NotificationType.Info);
