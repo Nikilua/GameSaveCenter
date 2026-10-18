@@ -4,7 +4,8 @@
 
 ## 当前身份与活动事项
 
-- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
+- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01、S02-02 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
+- S02-02：通知记录生产者与通知收件箱已接入；SDK `8.0.423` Release solution build `0/0`，通知/页面切换/焦点/命令目录定向测试 `15/15`（R09 `2/2`），Worker 持久化 `3/3`，双主题 11 尺寸 Render QA `22/22`，source validation 通过。完整 WPF 独立进程循环与真实 Playnite 安装/宿主呈现未运行。详见 [S02-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md)。
 - S00-01：已满足。稳定命令目录复用现有 ICommand；原受控行为 `7/7`，当前 SDK8 命令目录类复核 `2/2`。见 [S00-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
 - S00-02：代码完成待验收。Shell 内搜索 overlay，名称/别名/分类过滤，空输入最多 8 项，显示目标与可用状态；定向用例 `21/21`、200 项过滤 `0.554 ms`。SDK8 Release build 通过，但完整 WPF 隔离在 R05 系统指针 `GetCursorPos` Win32 error 5 处中止，尚未到安装/版本核验。见 [S00-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md)。
 - S01-01：版本化视图配置模型已实现并接入设置复制/重置；SDK `8.0.423` Release 测试项目构建 `0/0`，配置测试与 R09 共 `7/7` 通过。Json.NET 集合替换问题已由 `ObjectCreationHandling.Replace` 修复。未改 XAML；Playnite host 未验。详见 [S01-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md)。
@@ -24,7 +25,7 @@
 - S07-06 已在诊断 `summary.json` 加入原始 TRX 测试用例计数、结果状态、suite 和 WPF 隔离类运行汇总，并逐文件对照原 TRX Counters。定向诊断自测与历史原始 TRX 复算通过；历史用例失败原样保留。见 [S07-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
 - S07-07 已建立环境能力缓存与校验器，区分 SDK 缺失、真实宿主未检查、CEF/ETW 权限阻塞及 GitHub branch protection 读取权限阻塞，并逐项记录证据和重试条件；没有重试被拒探测。见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md) 与[缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
 - S07-03 审查发现 workflow 对纯文档和混合路径都运行完整双 SDK 流程；GitHub API 读取 `main` branch protection 返回 403，无法确认 required check 名称。workflow 未修改，待获得配置读权限或用户提供清单后再解锁。见 [S07-03 审查](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md)。
-- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。S01-08 受控验证已通过，下一项按依赖审查 S02-02。
+- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。S01-08、S02-02 受控验证已通过；下一项按依赖审查 S02-03。
 
 ## 已核验事实与外部边界
 

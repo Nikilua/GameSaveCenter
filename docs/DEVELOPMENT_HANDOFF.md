@@ -1,6 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 最新进展：S01-08 视图迁移受控验收通过
+## 2026-10-18 最新进展：S02-02 通知收件箱受控验证通过
+
+提交 `8810d9e6` 已实现通知本地记录生产者与收件箱入口。SDK `8.0.423` Release solution build `0 warning / 0 error`，Playnite 相关定向测试 `15/15`（R09 `2/2`），Worker 持久化 `3/3`，Render QA `22/22`，source validation 通过。测试 TRX、程序集/PDB SHA、Render QA 报告和截图见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md`。完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行。
+
+用户贴出的外机日志是在测试阶段 R09 断言失败，不能称为编译失败。当前源码的 Chrome 边框是 `1 DIP`，单独 ValidationStroke 是 `2 DIP`；这次当前提交版重跑通过。用户目前没有旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB，所以旧运行实际源码和程序集仍无法确认。依赖审查后下一项 S02-03。
+
+## 前序交接记录：S01-08 视图迁移受控验收通过
 
 `d1005e33` 已提交视图配置迁移回退。SDK `8.0.423` Release solution build `0 warning / 0 error`，五个隔离测试类 `21/21`，包含 R09 `2/2`；source validation 与 diff check 通过。诊断 ID `20261018T110922448Z-da48bc13`，构建及测试身份见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md`。真实 Playnite 设置读写、宿主双主题呈现和安装门禁未运行。用户旧 R09 失败缺 summary/TRX/DLL/PDB，因此实际输入仍未知；当前 R09 通过不能反推旧运行。
 

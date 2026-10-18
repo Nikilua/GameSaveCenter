@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S02-02 通知收件箱受控验证通过，宿主待验
+
+`8810d9e6` 接入 Worker 本地通知持久化与收件箱入口。SDK `8.0.423` Release solution build `0/0`；通知、页面切换、焦点及命令目录 Playnite 定向测试 `15/15`（R09 `2/2`），Worker 通知记录持久化 `3/3`；双主题 11 窗口尺寸 Render QA `22/22`，source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。DLL/PDB、源码和 TRX SHA-256 见 [S02-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md)。未运行完整 WPF 独立进程循环、真实 Playnite 安装或宿主呈现。
+
+用户最初给出的 R09 旧失败没有同次 summary/TRX/DLL/PDB，实际测试输入仍未知。其日志表明流程已进入测试且由断言失败退出；当前提交版干净构建后的 R09 `2/2` 通过，不足以解释旧输入。下一项按依赖审查 S02-03。
+
 ## 2026-10-18 Round4 S01-08 视图迁移受控验证通过，宿主待验
 
 提交 `d1005e33` 完成视图配置迁移回退：隔离不兼容字段、保留可解析配置中的其他设置、备份损坏原文件，并在无效列键时恢复当前默认显隐。提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`；五个隔离测试类合计 `21/21`，其中 R09 `2/2`；source validation、diff check 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。诊断 ID 为 `20261018T110922448Z-da48bc13`，DLL/PDB SHA、MVID、TRX 和源文件哈希见 [S01-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md)。真实 Playnite 设置读写、宿主双主题与安装门禁未运行。用户旧 R09 缺 summary/TRX/DLL/PDB 身份，原因未定；当前隔离输出通过不能映射旧运行。下一项依赖审查为 S02-02。

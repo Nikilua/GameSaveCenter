@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "8810d9e6cd0fe0677ee500bcf766b047bcd6e8f2",
+  "branch": "main",
+  "sdk": "8.0.423",
+  "entries": [
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "AB7A5949A7D895A7C978BA493FF1EA508FA14BCAE4A70B13C48EFD24651B9E8B",
+      "bytes": 1939968,
+      "lastWriteLocal": "2026-10-18 20:23:58"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.pdb",
+      "sha256": "B41BBA9C236479AD23003ECEBB7DC832D37C534754663B6F20FEF8383822C59F",
+      "bytes": 518488,
+      "lastWriteLocal": "2026-10-18 20:23:58"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "69A85016B0E06F48098C8A870FC5313B66B9E0CEA1E27D84A09C683DC7075D57",
+      "bytes": 2004992,
+      "lastWriteLocal": "2026-10-18 20:24:27"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "sha256": "B0ABA58CA5DB4BEFE96250A230C0A608A412AB776A304AAFFF9020CC411E04F2",
+      "bytes": 463004,
+      "lastWriteLocal": "2026-10-18 20:24:27"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.dll",
+      "sha256": "9C69112FF37B82E2339F7B33D3260F4714DA3A5CA0A5D148F11A71D42E4A177F",
+      "bytes": 1448448,
+      "lastWriteLocal": "2026-10-18 20:23:49"
+    },
+    {
+      "path": "src/GameSaveCenter.Worker/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.pdb",
+      "sha256": "8F68EBCF2ED511EDF6F50EF0CCA010BDC561AEDFEC1817AF73CFCF6632E792E4",
+      "bytes": 213020,
+      "lastWriteLocal": "2026-10-18 20:23:49"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll",
+      "sha256": "36E086FA33B39A2E43FB8D282501FDF164104B79FC1069D2000ABEC05FE6F4EB",
+      "bytes": 751616,
+      "lastWriteLocal": "2026-10-18 20:24:03"
+    },
+    {
+      "path": "tests/GameSaveCenter.Worker.Tests/bin/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.pdb",
+      "sha256": "59F119906F4DB3319A58F10398B74319782B345B5DA9E638FC064803CAE4D28B",
+      "bytes": 134932,
+      "lastWriteLocal": "2026-10-18 20:24:03"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09FocusOutlineBehaviorTests.cs",
+      "sha256": "A5AAB9E90C340F93301D8424FF1E30D98B160D39C1265172AEE7A6B01B2CBC98",
+      "bytes": 10455,
+      "lastWriteLocal": "2026-10-12 15:08:30"
+    },
+    {
+      "path": "audits/wpf-ui-audit.txt",
+      "sha256": "ED9F3F99F5F399E625B129F1F51F0AB54FFD14079E831A308A23BE26A00CD03A",
+      "bytes": 29371,
+      "lastWriteLocal": "2026-10-18 20:20:58"
+    },
+    {
+      "path": "render/Notifications-dark-1040x700.png",
+      "sha256": "AC592E312C1ADF5FEDAFE8640AC199DD146D933D43D765C12F8C9D1318250AAA",
+      "bytes": 52366,
+      "lastWriteLocal": "2026-10-18 20:26:07"
+    },
+    {
+      "path": "render/Notifications-light-1040x700.png",
+      "sha256": "CF455A0478B5A8810C69D29DF5B596CFE68BCA451AAABBCAC248F3A40276C793",
+      "bytes": 50327,
+      "lastWriteLocal": "2026-10-18 20:26:07"
+    },
+    {
+      "path": "render/render-qa-report.txt",
+      "sha256": "87079476EE48786F9EF7618E738AA8FA68D1AF86F7DDE2EF50612B7CE3082952",
+      "bytes": 1115351,
+      "lastWriteLocal": "2026-10-18 20:28:25"
+    },
+    {
+      "path": "tests/s02-02-notification-persistence.trx",
+      "sha256": "E5E3C64F14B6417F87FEF58C99FDBF85FA9BD90355A2FAEB741942439B5CB99B",
+      "bytes": 6258,
+      "lastWriteLocal": "2026-10-18 20:25:36"
+    },
+    {
+      "path": "tests/s02-02-targeted.trx",
+      "sha256": "BEE43BF1934F3A525B617F3C07627D121255D781C44F7709192DCB73F2BFA65F",
+      "bytes": 24753,
+      "lastWriteLocal": "2026-10-18 20:25:16"
+    }
+  ],
+  "note": "SHA-256 identities only; no MVID claim. Assembly outputs were written after the implementation commit and before the recorded targeted TRX runs.",
+  "implementationCommitAt": "2026-10-18T20:22:32+08:00",
+  "assemblyOutputsWrittenAfter": "2026-10-18T20:23:58+08:00",
+  "playniteTestRun": {
+    "started": "2026-10-18T20:24:49.2543674+08:00",
+    "finished": "2026-10-18T20:25:16.0423725+08:00"
+  },
+  "workerTestRun": {
+    "started": "2026-10-18T20:25:33.5302028+08:00",
+    "finished": "2026-10-18T20:25:36.7292466+08:00"
+  }
+}

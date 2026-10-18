@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "task": "S02-02",
+  "implementationCommit": "8810d9e6cd0fe0677ee500bcf766b047bcd6e8f2",
+  "sdk": "8.0.423",
+  "generatedAt": "2026-10-18T20:26:00+08:00",
+  "fullSolutionBuild": {
+    "status": "passed",
+    "configuration": "Release",
+    "warnings": 0,
+    "errors": 0,
+    "command": "dotnet build GameSaveCenter.sln -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false"
+  },
+  "targetedTests": {
+    "status": "passed",
+    "total": 15,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "includes": "NotificationInboxFilterTests, NotificationInboxViewBehaviorTests, R08PageSwitchBehaviorTests, R09FocusOutlineBehaviorTests, CommandDirectoryBehaviorTests",
+    "r09": "2/2",
+    "trx": "tests/s02-02-targeted.trx"
+  },
+  "workerPersistenceTests": {
+    "status": "passed",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "class": "NotificationRecordPersistenceTests",
+    "trx": "tests/s02-02-notification-persistence.trx"
+  },
+  "renderQA": {
+    "status": "passed",
+    "scenarios": 22,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "viewportCount": 11,
+    "report": "render/render-qa-report.txt",
+    "representativeScreenshots": [
+      "render/Notifications-light-1040x700.png",
+      "render/Notifications-dark-1040x700.png"
+    ]
+  },
+  "sourceValidation": "passed",
+  "wpfStaticAudit": {
+    "status": "passed",
+    "scannedXaml": 36,
+    "errors": 0,
+    "warnings": 26,
+    "info": 177,
+    "report": "audits/wpf-ui-audit.txt"
+  },
+  "fullWpfIsolation": {
+    "status": "not_completed",
+    "note": "本项只完成相关隔离用例；完整 130 类独立进程循环未完成。"
+  },
+  "playniteHost": {
+    "status": "not_run",
+    "note": "未运行真实 Playnite 安装/启动门禁，未声称宿主渲染通过。"
+  },
+  "priorExternalR09": {
+    "status": "unresolved",
+    "diagnosticId": "20261018T012631286Z-e027df9d",
+    "reason": "用户暂时没有该次 summary.json、TRX 和 DLL/PDB 身份，因此不能确认旧失败的测试输入。当前提交版 R09 定向运行 2/2 通过。"
+  },
+  "renderReportWorkingTreeClean": false
+}
