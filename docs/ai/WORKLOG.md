@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S01-08 视图迁移恢复
+
+- 提交 `d1005e33` 为设置加载增加视图配置错误隔离和备份回退；无效列键恢复当前默认显隐。原配置会先复制为唯一备份，备份失败不自动覆盖。
+- 提交后 SDK `8.0.423` Release solution build `0 warning / 0 error`，诊断 `20261018T110922448Z-da48bc13`；设置恢复 `2/2`、视图定义 `10/10`、表格配置 `3/3`、列显隐 `4/4`、R09 `2/2`，共 `21/21`。程序集及源码身份、TRX 哈希见 [S01-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md)。`python scripts/validate-source.py .` 与 `git diff --check` 通过。
+- WPF 静态审查 `0 errors / 26 warnings / 177 info`，未改 XAML，Render QA 未运行。真实 Playnite 设置存取、双主题宿主呈现和安装门禁未运行。用户旧 R09 诊断缺同次 summary/TRX/DLL/PDB，实际输入身份未确认；当前 R09 `2/2` 不解释旧失败。下一项依赖审查 S02-02。
+
 ## 2026-10-18 Round4 S01-07 断点适配记忆与 R09 外机失败复核
 
 - 提交 `87520a92` 为共享 `DataGridColumnLayoutController` 加入临时响应式列宽。窄窗口时按可用宽度从末尾显示列起压缩像素列到 `MinWidth`；放宽后恢复用户偏好。临时宽度不进入设置或命名视图；显隐操作会刷新预算，Save 历史页旧的单独断点宽度分支已移除，候选置信度/状态列补齐可读最小宽度。

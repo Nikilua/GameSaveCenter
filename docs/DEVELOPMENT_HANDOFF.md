@@ -1,10 +1,16 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 最新续接：S01-07 已提交，SDK8 Release 与定向验证通过
+## 2026-10-18 最新进展：S01-08 视图迁移受控验收通过
+
+`d1005e33` 已提交视图配置迁移回退。SDK `8.0.423` Release solution build `0 warning / 0 error`，五个隔离测试类 `21/21`，包含 R09 `2/2`；source validation 与 diff check 通过。诊断 ID `20261018T110922448Z-da48bc13`，构建及测试身份见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md`。真实 Playnite 设置读写、宿主双主题呈现和安装门禁未运行。用户旧 R09 失败缺 summary/TRX/DLL/PDB，因此实际输入仍未知；当前 R09 通过不能反推旧运行。
+
+S01-08 后按 64 项计划审查 S02-02 收件箱入口的依赖与现有能力；S02-01 通知记录契约已完成。继续按单个小批实现、验证、证据、中文提交并推送。
+
+## 前序交接记录：S01-07 已提交，SDK8 Release 与定向验证通过
 
 本地 `main` 实现提交 `87520a92` 为共享 DataGrid 列宽控制器增加窄窗口临时压缩和放宽后恢复；设置、命名视图捕获使用偏好宽度，临时宽度不持久化。提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`；R06 列宽 `7/7`、真实窗口 resize `1/1`、R07 断点/缩放 `2/2`、TaskCenter `8/8`、R09 `2/2`，共 `20/20`。Render QA `OK`，Task/候选路径 `1040×700` 均为 `4/4` 可读行。摘要、TRX、DLL/PDB 身份和截图见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-07/README.md`。
 
-用户外机 R09 输出是在测试阶段因断言失败而退出，不是编译错误。当前代码提交版使用全新隔离输出后 R09 `2/2` 通过。Git 历史显示 `f13b9e05` 已在 2026-10-12 把错误主边框断言从 `2 DIP` 改为 `1 DIP`，并增加独立 `2 DIP ValidationStroke`；外机日志的厚度值与旧断言吻合。但用户暂时没有该次 `summary.json`/TRX/DLL/PDB，无法确认实际运行的测试源码/程序集身份，不能把旧 DLL 或 checkout 写成定论。完整 WPF 隔离循环、安装/版本门禁和真实 Playnite 设置保存/双主题宿主呈现仍未验证；R05 `GetCursorPos` Win32 error 5 权限边界保留。下一项按计划为 S01-08。
+用户外机 R09 输出是在测试阶段因断言失败而退出，不是编译错误。当前代码提交版使用全新隔离输出后 R09 `2/2` 通过。Git 历史显示 `f13b9e05` 已在 2026-10-12 把错误主边框断言从 `2 DIP` 改为 `1 DIP`，并增加独立 `2 DIP ValidationStroke`；外机日志的厚度值与旧断言吻合。但用户暂时没有该次 `summary.json`/TRX/DLL/PDB，无法确认实际运行的测试源码/程序集身份，不能把旧 DLL 或 checkout 写成定论。完整 WPF 隔离循环、安装/版本门禁和真实 Playnite 设置保存/双主题宿主呈现仍未验证；R05 `GetCursorPos` Win32 error 5 权限边界保留。S01-08 已完成受控验证，后续按计划审查 S02-02。
 
 ## 2026-10-18 最新续接：S01-05 已提交，SDK8 Release 与定向测试通过
 

@@ -2,7 +2,7 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-07 与 S02-01 已完成受控验证；S01-02 至 S01-07 的真实 Playnite 设置保存与呈现仍待验，下一项按计划继续 S01-08。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
+用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08 与 S02-01 已完成受控验证；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验，下一项按依赖审查 S02-02。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
@@ -15,6 +15,7 @@
 | S01-05 | IMPLEMENTED | `dcfca235` 标记命名视图的临时筛选/列/排序/密度差异并支持恢复；SDK8.0.423 Release build 0/0，视图/列/R09/R10/Q14 隔离测试 29/29，Render QA OK。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-05。 |
 | S01-06 | IMPLEMENTED | `9ec0096b` 增加表格/工作视图重置影响预览；SDK8.0.423 Release build 0/0，定向测试 39 passed / 0 failed / 11 skipped，Render QA OK。完整 WPF/安装门禁及真实 Playnite 未验；用户外机 R09 身份材料缺失，不能追溯。证据见 Round4 S01-06。 |
 | S01-07 | IMPLEMENTED | `87520a92` 为共享表格列宽加入窗口窄时临时压缩、放宽后恢复；偏好宽度保持用于设置保存。SDK8.0.423 Release build 0/0，六个隔离测试类 20/20，Render QA OK。完整 WPF/安装门禁及真实 Playnite 未验；外机 R09 旧断言与 `f13b9e05` 前源码吻合，但同次程序集身份缺失。证据见 Round4 S01-07。 |
+| S01-08 | IMPLEMENTED | `d1005e33` 完成视图配置迁移回退；SDK8.0.423 Release solution build 0/0，五个隔离测试类 21/21（含 R09 2/2），source validation 与 diff check 通过。真实 Playnite 设置保存/加载、双主题宿主呈现及安装门禁未验；用户旧 R09 身份材料缺失。证据见 Round4 S01-08。 |
 | S02-01 | IMPLEMENTED | `83194c50` 建立本地通知记录 DTO 与 Worker SQLite 去重/保留接口；SDK8 解决方案构建 0/0，新增通知持久化测试 3/3，Worker 364 passed/1 skipped。通知 producer 留给 S02-02。证据见 Round4 S02-01。 |
 | S07-01 | IMPLEMENTED | `4ea5e694` 将 `CURRENT_STATE.md` 从 254 行压缩为 32 行并保留完整历史快照；source validation、diff check 与归档一致性检查通过。证据见 Round4 S07-01。 |
 | S07-02 | IMPLEMENTED | 新增 `ROUND4_STATUS.json` 与渲染/校验脚本；账本生成块接入 `validate-source.py`，保留外部 Q/R 状态。证据见 Round4 S07-02。 |
@@ -25,7 +26,7 @@
 | S07-03 | BLOCKED_ENVIRONMENT | workflow 当前所有路径走完整双 SDK 流程；branch protection API 返回 403，required check 名称不可见。未改 workflow；取得配置读取权限或 required-check 清单后继续。证据见 Round4 S07-03。 |
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
-| S01-08、S02～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
+| S02～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
 
 不自动启动新线程；不重跑无变化的外部权限探测；不把真实存档、媒体或云端写入当规划验证。
 

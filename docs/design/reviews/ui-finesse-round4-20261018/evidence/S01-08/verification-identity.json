@@ -1,0 +1,154 @@
+{
+  "diagnosticId": "20261018T110922448Z-da48bc13",
+  "sourceCommit": "d1005e3350238e1da9f9ad68a76b0b8dee01ac68",
+  "sdk": "8.0.423",
+  "environment": {
+    "osVersion": "10.0.22000.0",
+    "osBitness": 64,
+    "processBitness": 64,
+    "powershellVersion": "7.6.2",
+    "powershellEdition": "Core",
+    "dotnetRuntimeVersion": "10.0.8"
+  },
+  "trackedWorkingTreeCleanAtCapture": true,
+  "preexistingUntrackedPaths": [
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/tests/R07ResizeStressBehaviorTests-sdk9302-current-main.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/tests/Q24-01-fractional-dpi-8546acab.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/Combined-after-tooltip-guard-worktree.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/MediaInboxScrollBehaviorTests-5fcd6856.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/Q24-02-pagehost-and-scroll-20261014.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/R05-transient-surface-regression-74815b2b.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/R07ResizeStressBehaviorTests-5fcd6856.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/TooltipCrossDispatcher-worktree.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/tests/GamePickerKeyboardBehaviorTests-current-main.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/tests/current-main-generated-test-run.txt",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev2.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev3.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev4.trx",
+    "?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev5.trx",
+    "?? tests/GameSaveCenter.Playnite.Tests/TestResults/"
+  ],
+  "build": {
+    "exitCode": 0,
+    "warningCount": 0,
+    "errorCount": 0,
+    "outputRoot": "[repo]\\.tmp\\s01-08-postcommit-build"
+  },
+  "testSummary": {
+    "total": 21,
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "processIsolation": "one test class per process"
+  },
+  "testResults": [
+    {
+      "file": "DataGridColumnVisibilityBehaviorTests.trx",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "D5551A9E99A0520809A45AC8862C40461E01FCC2B827EE045C982CE85164B1AC"
+    },
+    {
+      "file": "DataGridViewConfigurationBehaviorTests.trx",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "89C6B77A9CF087C15F4DE6FC7258421DC3F8C03E38867D8EF69D40A5372D9221"
+    },
+    {
+      "file": "PluginSettingsLoadRecoveryTests.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "46BF99F8E83264D8F1C2331286EED5D4B3EFD97D959C00BF50062034E9053082"
+    },
+    {
+      "file": "R09FocusOutlineBehaviorTests.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "289404956EA45498B9AC8258A0912DB76818F59D8D14F2FAC3F98281910E2363"
+    },
+    {
+      "file": "ViewConfigurationDefinitionTests.trx",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "E97E337F483E1A5F383C2AC3543EAB39B8685D398ACC4FF0EC0B045FFA8BCB1F"
+    }
+  ],
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "path": "[repo]\\.tmp\\s01-08-postcommit-build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+      "sha256": "80772BE43E2C11A9564B3CACC9A46CFC50EDA37DF74C6E19DA9D20804A60A74B",
+      "productVersion": "0.6.73+d1005e3350238e1da9f9ad68a76b0b8dee01ac68",
+      "bytes": 1910784,
+      "mvid": "d951d6d3-c8af-42e6-9533-5a0ce2c1dfcc",
+      "pdb": {
+        "file": "GameSaveCenter.Playnite.pdb",
+        "path": "[repo]\\.tmp\\s01-08-postcommit-build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.pdb",
+        "sha256": "DCFFC7A788325B7480BFE988F7127DD0C08663458FDDF43574F6AACA435CB66B",
+        "bytes": 510220
+      }
+    },
+    {
+      "file": "GameSaveCenter.Playnite.Tests.dll",
+      "path": "[repo]\\.tmp\\s01-08-postcommit-build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "CF96A2855C6FC8173AE9B76D2DE30B5BCDADB08E7686F908555846822E6F19C8",
+      "productVersion": "0.6.73+d1005e3350238e1da9f9ad68a76b0b8dee01ac68",
+      "bytes": 1999360,
+      "mvid": "b1dab713-669b-4010-a0b1-7876a7de5e0e",
+      "pdb": {
+        "file": "GameSaveCenter.Playnite.Tests.pdb",
+        "path": "[repo]\\.tmp\\s01-08-postcommit-build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.pdb",
+        "sha256": "77FEA906BF788CA7D4982B97B97507B5B2277D19991E07357C583903BA8CAB75",
+        "bytes": 461484
+      }
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs",
+      "sha256": "37980D97B807A34C176F985989A389854ED5A7E6F7DE788489FA127194BD2A8F"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Infrastructure/DataGridColumnVisibilityController.cs",
+      "sha256": "26572B75530C4AAD607DFEBCE9459841D5AE26C63E34ED758E765065ACA94E8C"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettings.cs",
+      "sha256": "154BA5127574314F564BC0C5F116AE28CD6E12D8EA081CAB5F3262A9470FEAA9"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/PluginSettingsLoadRecovery.cs",
+      "sha256": "B9BAA69F626A3EDC6792D3B51DD19C8C3565486BECCFF1902D02929DD9572BE0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/DataGridViewConfigurationBehaviorTests.cs",
+      "sha256": "EF272064302FBB1B53118104E6B4EF56FE5A27979B7BD208024BB0FC77705D33"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PluginSettingsLoadRecoveryTests.cs",
+      "sha256": "F9BFD547C136C6DE3F0D53925B94D735CDFA1D1D9389AC257C9A68227553E2A7"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/ViewConfigurationDefinitionTests.cs",
+      "sha256": "0B36CC9150812810CF599DC01172F5A4187B41CEE3203C4337C791B54F750BF7"
+    }
+  ],
+  "validation": {
+    "sourceValidation": "passed",
+    "diffCheck": "passed",
+    "wpfUiStaticAudit": "0 errors / 26 warnings / 177 info",
+    "renderQa": "not run; no XAML or page layout change",
+    "playniteHost": "not run"
+  }
+}

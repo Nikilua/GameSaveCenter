@@ -1,8 +1,8 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 Round4 S01-08 视图迁移恢复候选实现
+## 2026-10-18 Round4 S01-08 视图迁移受控验证通过，宿主待验
 
-当前候选实现为插件设置加载增加损坏视图配置恢复：对可解析 JSON 移除视图布局/密度字段并保留其他设置；对整份语法损坏配置使用安全默认值。恢复前保留原 `config.json` 副本，备份失败时只在本次会话使用回退值，不自动覆盖原文件。列可见键缺失或全数失配时按当前表格默认显隐恢复；旧密度和未来 schema 按安全默认/忽略未知条目加载。SDK `8.0.423` 正式隔离 Release build `0 warning / 0 error`，五个定向测试类 `21/21`，source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。代码正在等待提交后身份复验；真实 Playnite 设置保存/加载和宿主双主题呈现未运行。外机 R09 仍缺同次 summary/TRX/DLL/PDB；本机当前 R09 `2/2` 通过，不能替代外机输入。下一步完成提交后证据与 S01-08 账本更新。
+提交 `d1005e33` 完成视图配置迁移回退：隔离不兼容字段、保留可解析配置中的其他设置、备份损坏原文件，并在无效列键时恢复当前默认显隐。提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`；五个隔离测试类合计 `21/21`，其中 R09 `2/2`；source validation、diff check 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。诊断 ID 为 `20261018T110922448Z-da48bc13`，DLL/PDB SHA、MVID、TRX 和源文件哈希见 [S01-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md)。真实 Playnite 设置读写、宿主双主题与安装门禁未运行。用户旧 R09 缺 summary/TRX/DLL/PDB 身份，原因未定；当前隔离输出通过不能映射旧运行。下一项依赖审查为 S02-02。
 
 ## 2026-10-18 Round4 S01-07 断点适配记忆代码完成待验收
 

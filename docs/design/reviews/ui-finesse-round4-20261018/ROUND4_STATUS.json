@@ -231,14 +231,19 @@
     {
       "id": "S01-08",
       "title": "视图迁移验收",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "d1005e33",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[证据](evidence/S01-08/README.md)：SDK 8.0.423 Release solution build 0/0；五个隔离测试类 21/21（含 R09 2/2）；source validation 与 diff check 通过。",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md"
+        }
+      ],
+      "boundary": "真实 Playnite 设置保存/加载、双主题宿主呈现及安装门禁未运行；用户旧 R09 运行缺同次 summary/TRX/DLL/PDB，无法确认实际测试输入。"
     },
     {
       "id": "S02-01",
