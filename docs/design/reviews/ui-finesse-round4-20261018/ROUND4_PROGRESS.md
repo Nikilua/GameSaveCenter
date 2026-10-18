@@ -33,7 +33,7 @@
 | S02-04 | 上下文跳转 | 代码完成待验收 | 1b17e4a0 | [证据](evidence/S02-04/README.md)：SDK 9.0.302 Release solution build 0/0；通知/R10、Worker 精确任务查询与 R09 定向测试 20/20；双主题 11 尺寸 Offscreen Render QA OK。SDK8 正式基线、完整 WPF 独立循环及真实宿主未验 | global.json 要求 SDK 8.0.423；本次受控构建使用 SDK 9.0.302。保存的一键日志在 R05 系统鼠标位置读取处中止安装；用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，输入身份仍未知。 |
 | S02-05 | 临时静音与时段 | 代码完成待验收 | 2aa3fe3c | [证据](evidence/S02-05/README.md)：SDK9 Release solution 0/0；通知策略 20/20，设置持久化/交互 15/15，独立 R09 2/2；浅/深主题 × 1040×700/720×640 设置探针 4/4 | 当前只安装 SDK 9.0.302，global.json 锁定 SDK 8.0.423；完整 WPF 隔离循环、安装和真实 Playnite 宿主未验证。已有一键日志在 R05 系统鼠标位置读取处停止；旧 R09 同次 summary/TRX/DLL/PDB 身份缺失。 |
 | S02-06 | 重要事件例外 | 代码完成待验收 | a6153219 | [证据](evidence/S02-06/README.md)：SDK9 Release solution build 0/0；弹窗策略 22/22、通知记录持久化 7/7、当前匹配构建 R09 2/2；source validation 通过 | global.json 锁定 SDK 8.0.423，本机仅有 SDK 9.0.302；完整 WPF 隔离循环、安装和真实 Playnite 宿主未验。旧 R09 诊断身份缺失、根因未定位；本次匹配 DLL 复测通过。 |
-| S02-07 | 重复归并摘要 | 代码完成待验收 | 9ed6b4e5 | [证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 373通过/1跳过、通知与R09定向 19/19；source validation 通过，WPF静态审查0错误 | global.json锁定SDK8.0.423，本机仅有SDK9.0.302；完整WPF隔离循环、一键安装和真实Playnite宿主未验。旧R09诊断文件和程序集身份未保留，旧失败根因仍未知。 |
+| S02-07 | 重复归并摘要 | 代码完成待验收 | 9ed6b4e5、c4fb56a0 | [证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 374通过/1跳过、通知持久化 12/12、Playnite通知与R09定向 19/19；source validation 通过，WPF静态审查0错误 | global.json锁定SDK8.0.423，本机仅有SDK9.0.302；完整WPF隔离循环、一键安装和真实Playnite宿主未验。旧R09诊断文件和程序集身份未保留，旧失败根因仍未知。 |
 | S02-08 | 通知体验验收 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S03-01 | 来源关系模型 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S03-02 | 版本关系视图 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

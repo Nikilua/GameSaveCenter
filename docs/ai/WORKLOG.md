@@ -1,7 +1,7 @@
 ## 2026-10-19 Round4 S02-07 重复归并摘要
 
-- 提交 `9ed6b4e5` 为明确用户重试传递原问题身份，Worker 将同一故障链的失败归并为一条记录，保存次数、首次/最近时间、最后错误和首次/最近任务 ID；同一任务事件重放幂等，不同游戏/任务类型/问题根键不混并。成功重试关闭旧告警并保留历史，后续失败重新打开；旧单任务失败通知迁移到新字段。
-- SDK `9.0.302` Release solution build `0 warnings / 0 errors`；提交后匹配程序集复验：Core `147/147`、Worker `373 passed / 1 skipped`、Playnite 通知/重试/R09 `19/19`（R09 `2/2`）。`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`。日志、TRX、源码与插件 DLL/PDB 身份见 [S02-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
+- 提交 `9ed6b4e5`、`c4fb56a0` 为明确用户重试传递原问题身份，Worker 将同一故障链的失败归并为一条记录，保存次数、首次/最近时间、最后错误和首次/最近任务 ID；同一任务事件重放幂等，不同游戏/任务类型/问题根键不混并。成功重试关闭旧告警并保留历史，后续失败重新打开；异步事件乱序时首末时间、任务和错误仍按发生时间归并；旧单任务失败通知迁移到新字段。
+- SDK `9.0.302` Release solution restore/build `0 warnings / 0 errors`；最终提交匹配程序集复验：Core `147/147`、Worker `374 passed / 1 skipped`、通知持久化 `12/12`、Playnite 通知/重试/R09 `19/19`（R09 `2/2`）。`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`。日志、TRX、源码与插件 DLL/PDB 身份见 [S02-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
 - 本机仅 SDK `9.0.302`，`global.json` 要求 `8.0.423`；完整 WPF 独立循环、安装、一键流程和真实 Playnite 宿主/双主题呈现未验。用户旧 R09 失败的 summary/TRX/DLL/PDB 未保留，旧输入仍无法定位；当前匹配程序集 R09 `2/2` 通过不解释旧失败。下一项 S02-08。
 
 ## 2026-10-18 Round4 S02-06 重要通知例外

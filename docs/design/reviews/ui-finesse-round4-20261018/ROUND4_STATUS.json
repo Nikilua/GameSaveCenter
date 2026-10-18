@@ -352,10 +352,10 @@
       "title": "重复归并摘要",
       "state": "代码完成待验收",
       "implementationState": "complete",
-      "implementationCommit": "9ed6b4e5",
+      "implementationCommit": "9ed6b4e5、c4fb56a0",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 373通过/1跳过、通知与R09定向 19/19；source validation 通过，WPF静态审查0错误",
+      "verificationText": "[证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 374通过/1跳过、通知持久化 12/12、Playnite通知与R09定向 19/19；source validation 通过，WPF静态审查0错误",
       "evidence": [
         {
           "label": "证据",

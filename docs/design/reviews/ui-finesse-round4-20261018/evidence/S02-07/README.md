@@ -1,13 +1,13 @@
 # S02-07 重复归并摘要
 
-实现提交：`9ed6b4e5`。用户从通知或任务记录重试时，原任务的问题身份会随备份、媒体同步及云端上传请求进入 Worker 并持久化到新任务。相同问题链的失败任务归并到一条本地通知；不同游戏、任务类型或根问题 ID 保持分离。
+实现提交：`9ed6b4e5`、`c4fb56a0`。用户从通知或任务记录重试时，原任务的问题身份会随备份、媒体同步及云端上传请求进入 Worker 并持久化到新任务。相同问题链的失败任务归并到一条本地通知；不同游戏、任务类型或根问题 ID 保持分离。
 
-通知记录展示累计次数、首次/最近发生时间和最后错误，并保留首次失败与最近任务的稳定 ID 跳转。事件 ID 使重复投递幂等。重试成功将问题标记为已恢复但保留历史错误与任务入口；后续重试再次失败会重开告警。Worker 启动时将旧版单任务失败通知迁入新字段；任务表仍是任务状态的权威来源。
+通知记录展示累计次数、首次/最近发生时间和最后错误，并保留首次失败与最近任务的稳定 ID 跳转。事件 ID 使重复投递幂等；异步乱序写入时仍按发生时间更新首末任务、时间与错误。重试成功将问题标记为已恢复但保留历史错误与任务入口；后续重试再次失败会重开告警。Worker 启动时将旧版单任务失败通知迁入新字段；任务表仍是任务状态的权威来源。
 
 ## 验证
 
-- 使用 SDK `9.0.302` 对提交 `9ed6b4e5` 执行 Release solution build：`0` warnings / `0` errors。命令、输出和 SDK 选择见 [build.log](build/build.log) 与 [验证身份](verification-identity.json)。本机没有 `global.json` 锁定的 SDK `8.0.423`，构建使用现有 NuGet 资产，未执行 restore。
-- Core 全量测试 `147/147`；Worker 全量测试 `373 passed / 1 skipped / 0 failed`；Playnite 通知归并、重试来源与 R09 定向测试 `19/19`，其中 R09 `2/2`。TRX 和 console logs 在 [tests](tests/) 下。
+- 使用 SDK `9.0.302` 对最终提交 `c4fb56a0` 执行 Release solution restore/build：`0` warnings / `0` errors。restore/build 输出见 [restore.log](build/restore.log) 和 [build.log](build/build.log)；[验证身份](verification-identity.json)记录 SDK、命令、源码与加载程序集的 SHA-256。本机没有 `global.json` 锁定的 SDK `8.0.423`。
+- Core 全量测试 `147/147`；Worker 全量测试 `374 passed / 1 skipped / 0 failed`；通知持久化 `12/12`；Playnite 通知归并、重试来源与 R09 定向测试 `19/19`，其中 R09 `2/2`。TRX 和 console logs 在 [tests](tests/) 下。
 - `python scripts/validate-source.py` 与 `git diff --check` 通过，记录在 [validation](validation/)；WPF 静态审查 `0 errors / 26 warnings / 177 info`。未运行全量 WPF 独立进程循环或 `GameSaveCenter-Run.cmd` 安装门禁。
 
 ## 边界
