@@ -107,6 +107,34 @@ public sealed class RestoreOrchestratorTests : IDisposable
     }
 
     [Fact]
+    public async Task MappingDraftPreviewIsReadOnlyAndReturnsNoFilePaths()
+    {
+        await SeedGameAsync();
+        client.Backups.Add("B", "B");
+        client.MappingPreviewJson = """
+        {"games":{"Test Game":{"files":{"C:/Users/secret/AppData/save.dat":{"bytes":123},"profile/settings.json":{"bytes":456}}}}}
+        """;
+        var originalSave = client.CurrentSave;
+
+        var preview = await CreateOrchestrator().PreviewMappingAsync(
+            new RestoreMappingPreviewRequestDto { PlayniteId = "game-1", BackupId = "B" },
+            CancellationToken.None);
+
+        Assert.True(preview.Success);
+        Assert.Equal(2, preview.FileCount);
+        Assert.Equal(579, preview.TotalBytes);
+        Assert.Equal(("B", true), Assert.Single(client.RestoreOperations));
+        Assert.Equal(0, client.BackupCalls);
+        Assert.Empty(client.EditedBackups);
+        Assert.Equal(originalSave, client.CurrentSave);
+        Assert.Equal(originalSave, await File.ReadAllTextAsync(client.LiveSavePath));
+        var serialized = JsonSerializer.Serialize(preview);
+        Assert.DoesNotContain("C:/Users/secret", serialized, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("save.dat", serialized, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("settings.json", serialized, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task RestoreA_FromCurrentB_CompletesAtoBackupBtoRestoreASequence()
     {
         await SeedGameAsync();
@@ -371,6 +399,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public List<(string BackupId, bool Preview)> RestoreOperations { get; } = new();
         public List<(string BackupId, bool? Locked)> EditedBackups { get; } = new();
         public int BackupCalls { get; private set; }
+        public string? MappingPreviewJson { get; set; }
         public int FailPreRestoreCount { get; set; }
         public bool FailRollback { get; set; }
         public string LiveDirectory { get; }
@@ -412,6 +441,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
             RestoreOperations.Add((backupId, preview));
             if (preview)
             {
+                if (!string.IsNullOrWhiteSpace(MappingPreviewJson)) return Task.FromResult(Success(MappingPreviewJson));
                 var postValidation = string.Equals(CurrentSave, Backups.TryGetValue(backupId, out var expected) ? expected : backupId, StringComparison.Ordinal);
                 return Task.FromResult(postValidation && FailPostValidationFor.Contains(backupId)
                     ? Failure("post validation failed")

@@ -377,6 +377,55 @@
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="验证可恢复性" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>
                                 <Separator Margin="0,16,0,12"/>
+                                <TextBlock Text="恢复方案草稿" FontWeight="SemiBold" AutomationProperties.Name="恢复方案草稿"/>
+                                <TextBlock Text="只读保存目标版本、映射摘要、基线和可恢复性检查引用。草稿没有执行授权，不会修改当前存档。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="只读方案草稿不会执行恢复，也不会写入当前存档。"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding PreviewRestorePlanMappingCommand}" Content="预览映射" AutomationProperties.Name="只读预览恢复映射"/>
+                                    <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding SaveRestorePlanDraftCommand}" Content="保存草稿" AutomationProperties.Name="保存只读恢复方案草稿" Margin="8,0,0,0"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding RestorePlanDraftStatus, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,6,0,0" AutomationProperties.Name="恢复方案草稿状态"/>
+                                <Border x:Name="SaveRestorePlanMappingPreviewCard" Padding="10" Margin="0,8,0,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RestorePlanMappingPreview}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel>
+                                        <TextBlock Text="当前映射预览" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding RestorePlanMappingPreview.Summary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.HelpText="映射摘要不包含存档文件路径。"/>
+                                        <TextBlock Text="{Binding RestorePlanMappingPreview.PreviewedUtc, StringFormat=预览时间：{0:yyyy-MM-dd HH:mm:ss}, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <ItemsControl ItemsSource="{Binding RestorePlanDrafts, Mode=OneWay}" Margin="0,8,0,0" AutomationProperties.Name="已保存的只读恢复方案草稿">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,6">
+                                                <StackPanel>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                        <TextBlock Text="{Binding GameName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
+                                                        <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiContextButton}" Content="删除" Command="{Binding DataContext.DeleteRestorePlanDraftCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" AutomationProperties.Name="删除只读恢复方案草稿"/>
+                                                    </Grid>
+                                                    <TextBlock Text="{Binding TargetDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                    <TextBlock Text="{Binding CreationDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
+                                                    <TextBlock Text="{Binding BaselineDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                    <TextBlock Text="{Binding MappingSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                    <TextBlock Text="{Binding ReadinessReferenceDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                    <TextBlock Text="{Binding ProtectionRequirements}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.HelpText="恢复执行仍需关闭游戏、重新检查，并先创建和锁定 PreRestore 快照及明确确认。"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复流程" FontWeight="SemiBold"/>
                                 <TextBlock Text="{Binding RestoreWorkflowSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="恢复流程摘要"/>
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,8,0,0">

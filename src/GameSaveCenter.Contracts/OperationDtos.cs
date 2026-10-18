@@ -181,6 +181,27 @@ namespace GameSaveCenter.Contracts
         public string UserComment { get; set; } = string.Empty;
     }
 
+    /// <summary>Read-only mapping preview request; it contains no restore confirmation or execution fields.</summary>
+    public sealed class RestoreMappingPreviewRequestDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+    }
+
+    /// <summary>Path-free result of previewing the files a restore would map.</summary>
+    public sealed class RestoreMappingPreviewDto
+    {
+        public bool Success { get; set; }
+        public string PreviewId { get; set; } = string.Empty;
+        public string PlayniteId { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+        public DateTime PreviewedUtc { get; set; }
+        public int FileCount { get; set; }
+        public long TotalBytes { get; set; }
+        public string Summary { get; set; } = string.Empty;
+        public string ErrorCode { get; set; } = string.Empty;
+    }
+
     /// <summary>Durable, credential-free summary of one restore execution.</summary>
     public sealed class RestoreReportDto
     {

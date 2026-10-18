@@ -21,13 +21,16 @@ public sealed class RestoreOrchestrator
         IRestoreSessionState sessions,CloudTransferCoordinator cloudTransfers,IRemoteBackupStageProvider remoteBackups,GameOperationLock gameLock)
     { _catalog=catalog;_store=store;_ludusavi=ludusavi;_tasks=tasks;_sessions=sessions;_cloudTransfers=cloudTransfers;_remoteBackups=remoteBackups;_gameLock=gameLock; }
 
-    public async Task<LudusaviCommandResult> PreviewAsync(RestoreRequestDto request,CancellationToken token)
+    public async Task<RestoreMappingPreviewDto> PreviewMappingAsync(RestoreMappingPreviewRequestDto request,CancellationToken token)
     {
+        if (string.IsNullOrWhiteSpace(request.PlayniteId) || string.IsNullOrWhiteSpace(request.BackupId))
+            throw new ArgumentException("A game and backup version are required for restore mapping preview.", nameof(request));
         var match=await ResolveAsync(request.PlayniteId,token).ConfigureAwait(false);
         using var lease = await _gameLock.AcquireAsync(request.PlayniteId, GameOperationKind.Restore, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
         if (lease == null)
             throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过恢复预览。",request.PlayniteId);
-        return await _ludusavi.RestoreAsync(match,request.BackupId,true,token).ConfigureAwait(false);
+        var result = await _ludusavi.RestoreAsync(match,request.BackupId,true,token).ConfigureAwait(false);
+        return RestoreMappingPreviewBuilder.Build(result, request.PlayniteId, request.BackupId, match, DateTime.UtcNow);
     }
 
     public async Task<TaskStatusDto> ExecuteAsync(RestoreRequestDto request,CancellationToken token)

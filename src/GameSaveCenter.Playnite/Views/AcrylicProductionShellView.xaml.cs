@@ -682,13 +682,14 @@ namespace GameSaveCenter.Playnite.Views
             NavTrainersLabel.Visibility = labelVisibility;
             NavMediaLabel.Visibility = labelVisibility;
             NavTasksLabel.Visibility = labelVisibility;
+            NavNotificationsLabel.Visibility = labelVisibility;
             NavMaintenanceLabel.Visibility = labelVisibility;
             NavSettingsLabel.Visibility = labelVisibility;
 
             foreach (var content in new[]
                      {
                          NavOverviewContent, NavSavesContent, NavTrainersContent, NavMediaContent,
-                         NavTasksContent, NavMaintenanceContent, NavSettingsContent
+                         NavTasksContent, NavNotificationsContent, NavMaintenanceContent, NavSettingsContent
                      })
             {
                 content.HorizontalAlignment = expanded
@@ -699,7 +700,7 @@ namespace GameSaveCenter.Playnite.Views
             }
 
             var navigationPadding = expanded ? new Thickness(12, 10, 12, 10) : new Thickness(0, 10, 0, 10);
-            foreach (var item in new[] { NavOverview, NavSaves, NavTrainers, NavMedia, NavTasks, NavMaintenance, NavSettings })
+            foreach (var item in new[] { NavOverview, NavSaves, NavTrainers, NavMedia, NavTasks, NavNotifications, NavMaintenance, NavSettings })
             {
                 item.Padding = navigationPadding;
                 item.Width = expanded ? double.NaN : 48;

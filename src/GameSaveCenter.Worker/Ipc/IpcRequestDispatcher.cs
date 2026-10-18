@@ -91,7 +91,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.PreviewRetention=>await PreviewRetentionAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateBackupMetadata=>await UpdateMetadataAsync(Read<BackupMetadataUpdateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ValidateRestoreReadiness=>await ValidateRestoreReadinessAsync(Read<RestoreReadinessRequestDto>(request),token).ConfigureAwait(false),
-                MessageTypes.RestorePreview=>ToPortable(await _restore.PreviewAsync(Read<RestoreRequestDto>(request),token).ConfigureAwait(false)),
+                MessageTypes.RestorePreview=>await _restore.PreviewMappingAsync(Read<RestoreMappingPreviewRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(ReadCorrelated<RestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UndoRestore=>await _restore.UndoAsync(Read<GameQueryDto>(request).PlayniteId,token,request.RequestId).ConfigureAwait(false),
                 MessageTypes.SyncMedia=>await _media.SyncAsync(Read<MediaSyncRequestDto>(request),token).ConfigureAwait(false),
@@ -753,7 +753,6 @@ public sealed class IpcRequestDispatcher
         payload.RequestId=envelope.RequestId;
         return payload;
     }
-    private object ToPortable(LudusaviCommandResult result)=>new{result.Success,result.ErrorCode,result.ErrorMessage,result.ExitCode,json=result.Json?.GetRawText(),result.WarningText};
     private IpcEnvelope Success(IpcEnvelope request,object payload)=>new(){RequestId=request.RequestId,Type=request.Type,IsResponse=true,Success=true,PayloadJson=JsonSerializer.Serialize(payload,_json)};
     private static IpcEnvelope Error(IpcEnvelope request,string code,string message)=>new(){RequestId=request.RequestId,Type=request.Type,IsResponse=true,Success=false,ErrorCode=code,ErrorMessage=message,PayloadJson="{}"};
 }

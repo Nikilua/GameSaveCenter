@@ -24,6 +24,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool enableLocalMirror;
         private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
         private List<ViewConfigurationDefinition> viewConfigurations = new List<ViewConfigurationDefinition>();
+        private List<RestorePlanDraftDefinition> restorePlanDrafts = new List<RestorePlanDraftDefinition>();
         private Dictionary<string, string> activeViewConfigurationIds = new Dictionary<string, string>(StringComparer.Ordinal);
         private string defaultTableDensityMode = TableDensityPolicy.ComfortableMode;
         private bool autoStartWorker = true;
@@ -270,6 +271,14 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => viewConfigurations;
             set => viewConfigurations = ViewConfigurationDefinition.NormalizeMany(value);
+        }
+
+        /// <summary>Bounded, scalar-only restore plan drafts. They never contain paths or execution authorization.</summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public List<RestorePlanDraftDefinition> RestorePlanDrafts
+        {
+            get => restorePlanDrafts;
+            set => restorePlanDrafts = RestorePlanDraftDefinition.NormalizeMany(value);
         }
 
         /// <summary>Selected named view by stable workspace key. An absent key means the built-in default view.</summary>
@@ -829,6 +838,7 @@ namespace GameSaveCenter.Playnite.Settings
             MediaSearchTextState = other.MediaSearchTextState ?? string.Empty;
             FilterPresets = other.FilterPresets;
             ViewConfigurations = other.ViewConfigurations;
+            RestorePlanDrafts = other.RestorePlanDrafts;
             ActiveViewConfigurationIds = other.ActiveViewConfigurationIds;
             DataGridColumnWidths = other.DataGridColumnWidths;
             DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;

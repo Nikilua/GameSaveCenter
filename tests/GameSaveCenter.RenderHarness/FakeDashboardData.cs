@@ -8,6 +8,7 @@ using System.Windows.Input;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Services;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.RenderHarness;
@@ -66,6 +67,9 @@ public sealed class FakeDashboardData
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
     public ICommand LoadDetailsCommand { get; } = new NoopCommand();
+    public ICommand PreviewRestorePlanMappingCommand { get; } = new NoopCommand();
+    public ICommand SaveRestorePlanDraftCommand { get; } = new NoopCommand();
+    public ICommand DeleteRestorePlanDraftCommand { get; } = new NoopCommand();
     public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
     public ICommand RetryTaskCommand { get; } = new NoopCommand();
     public ICommand CancelTaskCommand { get; } = new NoopCommand();
@@ -692,6 +696,34 @@ public sealed class FakeDashboardData
         SelectedProcessMapping = ProcessMappings.Count > 0 ? ProcessMappings[0] : null;
         SelectedCloudTransfer = CloudTransferItems.Count > 0 ? CloudTransferItems[0] : null;
         SelectedBackup = Backups[0];
+        RestorePlanMappingPreview = new RestoreMappingPreviewDto
+        {
+            Success = true,
+            PreviewId = "render-preview-01",
+            PlayniteId = SelectedGame.PlayniteId,
+            BackupId = SelectedBackup.BackupId,
+            PreviewedUtc = DateTime.UtcNow.AddMinutes(-3),
+            FileCount = 18,
+            TotalBytes = 2_850_000,
+            Summary = "映射预览：18 个文件 · 2.72 MiB；只读核对，不写入当前存档。"
+        };
+        RestorePlanDrafts.Add(new RestorePlanDraftDefinition
+        {
+            DraftId = "render-plan-01",
+            CreatedUtc = DateTime.UtcNow.AddMinutes(-2),
+            PlayniteId = SelectedGame.PlayniteId,
+            GameName = SelectedGame.Name,
+            TargetBackupId = SelectedBackup.BackupId,
+            TargetCreatedUtc = SelectedBackup.CreatedUtc,
+            BaselineBackupId = SelectedBackup.ParentBackupId,
+            MappingFileCount = 18,
+            MappingTotalBytes = 2_850_000,
+            MappingPreviewId = "render-preview-01",
+            MappingPreviewedUtc = DateTime.UtcNow.AddMinutes(-3),
+            ReadinessStatus = SelectedBackup.RestoreReadiness?.Status.ToString() ?? "Unknown",
+            ReadinessCheckedUtc = SelectedBackup.RestoreReadiness?.CheckedUtc,
+            ReadinessBackupId = SelectedBackup.RestoreReadiness?.BackupVersionId ?? string.Empty
+        });
         SelectedCandidate = SaveCandidates[0];
         SelectedGameTool = GameTools[0];
         SelectedGameToolVersion = SelectedGameTool.ActiveVersion;
@@ -1179,6 +1211,9 @@ public sealed class FakeDashboardData
     public string TaskPageErrorMessage => fixtureState == WorkspaceFixtureState.Error ? FixtureStateDetail : string.Empty;
     public TaskStatusDto SelectedTask { get; set; } = null!;
     public BackupVersionDto SelectedBackup { get; set; } = null!;
+    public ObservableCollection<RestorePlanDraftDefinition> RestorePlanDrafts { get; } = new();
+    public RestoreMappingPreviewDto? RestorePlanMappingPreview { get; set; }
+    public string RestorePlanDraftStatus { get; } = "当前选择可生成只读映射预览。";
     public string SelectedBackupLineageSummary => BackupLineageDisplayBuilder.Build(SelectedBackup, Backups, Backups.Count).Summary;
     public IReadOnlyList<string> SelectedBackupLineageItems => BackupLineageDisplayBuilder.Build(SelectedBackup, Backups, Backups.Count).Items;
     public ICommand LoadMoreBackupHistoryCommand { get; } = new NoopCommand();

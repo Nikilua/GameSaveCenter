@@ -591,6 +591,7 @@ public sealed class ProductionShellChromeSourceTests
                     (Button: "NavTrainers", Content: "NavTrainersContent", Label: "NavTrainersLabel"),
                     (Button: "NavMedia", Content: "NavMediaContent", Label: "NavMediaLabel"),
                     (Button: "NavTasks", Content: "NavTasksContent", Label: "NavTasksLabel"),
+                    (Button: "NavNotifications", Content: "NavNotificationsContent", Label: "NavNotificationsLabel"),
                     (Button: "NavMaintenance", Content: "NavMaintenanceContent", Label: "NavMaintenanceLabel"),
                     (Button: "NavSettings", Content: "NavSettingsContent", Label: "NavSettingsLabel")
                 };
@@ -773,7 +774,7 @@ public sealed class ProductionShellChromeSourceTests
 
     private static void AssertNavigationRowRhythm(NavigationRow[] rows, bool requireLabel, string state)
     {
-        Assert.Equal(7, rows.Length);
+        Assert.Equal(8, rows.Length);
         var expandedIconLeft = rows[0].Icon.Left;
         var expandedLabelLeft = rows[0].Label.Left;
         for (var index = 0; index < rows.Length; index++)
@@ -803,7 +804,7 @@ public sealed class ProductionShellChromeSourceTests
         var heights = rows.Select(row => row.Button.Height).ToArray();
         Assert.True(heights.Max() - heights.Min() <= 1.5,
             $"{state} navigation entries must keep the same row height without an outlier: heights={string.Join(",", heights.Select(value => value.ToString("0.##")))}");
-        var mainGaps = rows.Skip(1).Take(5).Select((row, index) => CenterY(row.Button) - CenterY(rows[index].Button)).ToArray();
+        var mainGaps = rows.Skip(1).Take(6).Select((row, index) => CenterY(row.Button) - CenterY(rows[index].Button)).ToArray();
         var meanGap = mainGaps.Average();
         Assert.All(mainGaps, gap => Assert.True(Math.Abs(gap - meanGap) <= 1.5,
             $"{state} main navigation rows must keep a consistent vertical rhythm: gaps={string.Join(",", mainGaps.Select(value => value.ToString("0.##")))}"));

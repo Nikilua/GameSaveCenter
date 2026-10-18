@@ -11462,3 +11462,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 命名视图可见列列表为空、或旧可选列键全部被删除/改名时，当前表格回到已存默认显隐；存在可识别可选列时仍按保存布局精确应用。缺失旧密度字段、未知密度和未来 schema 有行为覆盖。
 - 当前工作树 SDK `8.0.423` Release 全解方案构建 `0 warning / 0 error`；恢复 `2/2`、视图定义 `10/10`、视图交互 `3/3`、列显隐 `4/4`、R09 `2/2`，合计 `21/21`。`validate-source.py` 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`（扫描结果中的警告均在未修改 XAML 文件）。提交后构建/身份复验待进行，真实 Playnite 设置读写和主题呈现未运行。
 - 用户外机 R09 日志中的 Chrome `2 DIP` 断言与旧测试输入一致；当前源码是 Chrome `1 DIP`、独立验证描边 `2 DIP`，本机同次隔离运行 R09 `2/2`。缺少外机同次 summary/TRX/DLL/PDB，具体是旧 checkout、测试 DLL 或 PDB 源映射仍未知。
+
+## 2026-10-19 Round4 S03-04 恢复方案草稿与构建复核
+
+- 新增 Ludusavi 恢复映射只读预览 DTO/Worker 投影，只回传文件数、总大小、时间和通用错误码；不把原始 JSON、路径或 warning/error 文本传到 UI。插件设置持久化最多 50 条只读草稿，引用目标版本、基线、路径脱敏映射摘要/预览 ID、创建时间、匹配目标的 readiness 状态/检查时间及固定保护要求；没有恢复命令/授权/凭据字段。新保存中心区绑定预览、保存、删除操作，并对预览实施 30 分钟和当前选择匹配检查。
+- SDK `8.0.423` Release solution build `0/0`；Core `147/147`；Worker 完整集 `380 passed / 1 skipped`，新脱敏/只读预览 `3/3`；Playnite 草稿 `4/4`、R09 `2/2`。额外完整 WPF 隔离在第 `21/133` 类发现侧栏折叠测试遗漏新增的通知导航项，并暴露生产折叠逻辑遗漏 `NavNotificationsLabel` 的真实问题；已同时补齐生产 label/content/button 折叠和夹具集合，修正后该类 `22/22`。其余 112 个 WPF 类未执行，不代表全量通过。RenderHarness 双主题完整矩阵 `render-qa OK`、0 PROBLEM；source validator、XAML 25 项检查、diff check 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`（现存 warnings 未在本阶段修改范围内）。
+- 尝试仓库隔离一键流程：真实 Playnite 未关闭或启动；完整测试流程在上述侧栏类停止。修复后独立 build/定向类通过；使用 `-SkipTests` 的隔离安装流程再次 build `0/0`，但 `package.ps1` 检查到本工作树有未提交改动和其他任务既有未跟踪 TRX，按 fail-closed 规则拒绝打包；之后用 clean commit 工作树做隔离版本核验。真实用户 Playnite 安装/呈现未验。
+- 用户诊断 `20261018T012631286Z-e027df9d` 的同次 `summary.json`、失败 TRX 和源/DLL/PDB identity 不可用；用户答复暂时没有。当前匹配 SDK8 R09 `2/2` 不证明旧日志运行输入或根因。S03-04 详细身份、测试结果与隔离安装报告见 [受控证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。

@@ -33,6 +33,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         partial void OnRecentAccessInitialize();
         partial void OnBackupHistoryInitialize();
         partial void OnNotificationInboxInitialize();
+        partial void OnRestorePlanDraftsInitialize();
         partial void OnWorkspaceStateInputsChanged();
 
         private static readonly ILogger Logger = LogManager.GetLogger();
@@ -296,6 +297,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnRecentAccessInitialize();
             OnBackupHistoryInitialize();
             OnNotificationInboxInitialize();
+            OnRestorePlanDraftsInitialize();
             gameIconProvider = new PlayniteGameIconProvider(plugin.PlayniteApi);
             gameBackgroundProvider = new PlayniteGameBackgroundProvider(plugin.PlayniteApi);
             gameSearchText = gamePicker.SearchText;
@@ -1310,7 +1312,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public GameStatusDto SelectedGame
         {
             get => gamePicker.SelectedGame!;
-            set => gamePicker.SelectGame(value);
+            set
+            {
+                if (!string.Equals(gamePicker.SelectedGame?.PlayniteId, value?.PlayniteId, StringComparison.OrdinalIgnoreCase))
+                    ResetRestorePlanMappingPreview();
+                gamePicker.SelectGame(value);
+            }
         }
         public ImageSource SelectedGameIcon
         {
@@ -1373,6 +1380,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     selectedBackup = value!;
                     OnPropertyChanged(nameof(SelectedBackup));
                 }
+                if (!sameBackup) ResetRestorePlanMappingPreview();
                 RefreshSelectedBackupLineage();
                 if (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup))
                 {
@@ -6443,6 +6451,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshCommand, BackupSelectedCommand, BackupAllCommand, SyncMediaCommand,
                 PreviewBackupCommand, RetrySelectedGameCloudUploadCommand,
                 DetectPathsCommand, ValidateCommand, RestoreCommand,
+                PreviewRestorePlanMappingCommand, SaveRestorePlanDraftCommand, DeleteRestorePlanDraftCommand,
                 ValidateRestoreReadinessCommand, UndoRestoreCommand, LoadDetailsCommand, SavePolicyCommand, CancelPolicyDraftCommand,
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
