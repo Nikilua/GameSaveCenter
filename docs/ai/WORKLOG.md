@@ -1,3 +1,10 @@
+## 2026-10-18 Round4 S00-01 只读命令目录
+
+- 核对当前能力：既有快捷键帮助目录只含当前页 Ctrl+F，导航是分散的 Shell 事件/现有 ViewModel ICommand，尚无稳定 ID、别名、作用域与不可用原因的统一目录。提交 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 新增内部目录契约，覆盖六工作区、设置、游戏选择、当前页搜索和任务关联游戏；执行包装器再次检查底层 CanExecute，缺少游戏/任务/可解析稳定 ID 时阻断并说明原因。没有登记恢复/删除等危险动作，没有改业务服务或 XAML。
+- SDK9.0.302 / VSTest17.14.1，在 Release 下构建 Playnite 测试项目，`GscBuildCommit=dd38f8ca`；新 `CommandDirectoryBehaviorTests` 与既有 `R10ContextGameBehaviorTests` 共 `7/7`，0 失败/跳过。`python scripts/validate-source.py .` 与 `git diff --check` 通过。源码及测试程序集 SHA、TRX 在[Round4 S00-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。SDK8.0.423 未安装，因此本机结果不冒充 SDK8 或 CI。
+- 首次默认并行 SDK9 调用 5 分钟无输出且启动约 50 个 MSBuild worker；只终止本次启动的 PIDs，改成 `/m:1` 后构建/测试成功。独立结果写入第四轮 evidence，既有未跟踪 `TestResults/` 与历史 TRX 未触碰。WMI 查询仍 Access Denied，未读取或操作宿主进程；本批未运行真实 Playnite。
+- 更新 Round4 账本将 S00-01 记为“已验收”、AUTONOMOUS_BACKLOG 将其置为 `IMPLEMENTED`，S00-02 准入为 `READY`。下一阶段交付可见 Shell 搜索入口；本阶段没有反复触发完整 CI。
+
 ## 2026-10-18 #1086 双 SDK CI 终态与 R00-03 复核
 
 ## 2026-10-18 新明确范围：第四轮 64 项增量计划

@@ -1,10 +1,16 @@
 # GameSaveCenter 当前事实入口
 
+## 2026-10-18 Round4 S00-01 已验收，S00-02 READY
+
+S00-01 只读命令目录在代码提交 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 完成：六个工作区、设置、游戏选择、当前页搜索和任务关联游戏使用稳定 ID、中文名、英文别名、作用域与动态不可用原因；目录包装器复用既有 ICommand，并再次检查 CanExecute。无当前游戏/任务时不执行。证据与哈希见[Round4 S00-01](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
+
+SDK9.0.302 / VSTest17.14.1 Release 目标构建成功，`CommandDirectoryBehaviorTests` + 既有 `R10ContextGameBehaviorTests` 共 `7/7`；`validate-source.py` 与 `git diff --check` 通过。SDK8.0.423 未安装；本批没有 XAML 改动，真实 Playnite 未运行。下一批 S00-02 已在 backlog 设为 READY，做可见搜索面板。既有未跟踪 TRX/TestResults 保留。
+
 ## 2026-10-18 新明确范围：第四轮 64 项增量计划
 
 用户要求继续补充有价值的功能/UI，并直接落地本地文档。本轮已核对 `4d55a7dd` 的源码与第三轮主账本：192 个主条目无精确“待开始/实施中”，但宿主/IME/跨屏/呈现等边界仍未全验。本轮只做规划，不新增产品代码，不重新声称 CI 或宿主通过。
 
-新增[第四轮 64 项计划](../design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：命令搜索、工作视图、通知收件箱、备份来源/恢复方案、媒体比较、容量情景、人工待办、开发入口维护。已明确复用筛选预设、通知策略、冲突检测、容量趋势、保留预览等已有能力。下一小批 S00-01 已在 AUTONOMOUS_BACKLOG 准入；旧“没有新明确范围”的判断不再适用于此新计划，旧环境阻塞仍保留。文档数量/ID/链接及 source/diff 校验作为本次纯文档验证；不触碰现有未跟踪 TRX/TestResults。
+新增[第四轮 64 项计划](../design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：命令搜索、工作视图、通知收件箱、备份来源/恢复方案、媒体比较、容量情景、人工待办、开发入口维护。该计划按依赖小批推进；S00-01 当前已验收，下一项 S00-02 READY。旧 Q/R 环境边界仍保留。
 
 
 ## 2026-10-18 最新检查点：#1086 双 SDK 终态成功，R00-03 双 SDK 复核继续
