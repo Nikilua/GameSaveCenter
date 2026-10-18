@@ -403,7 +403,7 @@
       "title": "版本关系视图",
       "state": "已验收",
       "implementationState": "complete",
-      "implementationCommit": "待本轮提交",
+      "implementationCommit": "fd59dcc1",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
       "verificationText": "[受控证据](evidence/S03-02/README.md)：SDK9 Release solution 0/0；Playnite 12/12、Worker 2/2；RenderHarness render-qa OK，0 PROBLEM",

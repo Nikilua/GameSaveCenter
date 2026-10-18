@@ -2,6 +2,8 @@
 
 ## 2026-10-19 Round4 S03-02 版本关系视图
 
+实现提交 `fd59dcc1`。
+
 在备份历史接入 Worker 稳定游标分页与 Playnite 来源关系摘要。每页最多 100 项，游标由数据库原始时间键和备份 ID 组成；只计算返回页内容指纹，不向页面传递清单路径。详情按时间列来源父版本、分叉、同内容版本和设备，明确区分未加载、完整历史缺失、歧义与未知；不从时间戳推导父子关系。选中版本关系上下文有界，恢复命令和既有历史筛选行为保留。
 
 SDK `9.0.302` Release solution build `0/0`，Playnite `12/12`（含 R09 `2/2`），Worker `2/2`；RenderHarness `render-qa OK / 0 PROBLEM`。source validation 与 XAML 结构检查通过，WPF 静态 `0 errors / 26 warnings / 177 info`。当前 shell 只安装 SDK9.0.302，global.json 要求 SDK8.0.423；真实 Playnite 未启动。证据、TRX、截图与输入哈希见 [S03-02](../design/reviews/ui-finesse-round4-20261018/evidence/S03-02/README.md)。用户先前 R09 运行的同次 summary/TRX/DLL/PDB 缺失，所以当前运行不能确认旧失败所用输入。

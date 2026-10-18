@@ -36,7 +36,7 @@
 | S02-07 | 重复归并摘要 | 代码完成待验收 | 9ed6b4e5、c4fb56a0 | [证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 374通过/1跳过、通知持久化 12/12、Playnite通知与R09定向 19/19；source validation 通过，WPF静态审查0错误 | global.json锁定SDK8.0.423，本机仅有SDK9.0.302；完整WPF隔离循环、一键安装和真实Playnite宿主未验。旧R09诊断文件和程序集身份未保留，旧失败根因仍未知。 |
 | S02-08 | 通知体验验收 | 代码完成待验收 | 已有 S02 通知实现（83194c50 至 c4fb56a0） | [受控证据](evidence/S02-08/README.md)：SDK9 Playnite 通知体验 20/20，Worker 持久化 12/12；插件 DLL/PDB 与测试加载副本哈希匹配 | 本次使用 SDK9.0.302；SDK8 正式基线、完整 WPF 隔离循环、真实 Playnite、Windows 系统高对比和真实读屏器未验证。VSTest 退出码为0但 WPF 清理输出 InvalidComObjectException。 |
 | S03-01 | 来源关系模型 | 已验收 | 5e05aa73 | [受控证据](evidence/S03-01/README.md)：SDK9 Core Release 构建成功；Core 全套测试 156/156，覆盖父关系、等价内容、异常关系和有界读取 | 仅新增 Core 模型/构建器与测试；SDK8 正式基线、全解方案、Worker IPC、Playnite 版本关系视图和真实恢复未验证。S03-02 负责视图接入。 |
-| S03-02 | 版本关系视图 | 已验收 | 待本轮提交 | [受控证据](evidence/S03-02/README.md)：SDK9 Release solution 0/0；Playnite 12/12、Worker 2/2；RenderHarness render-qa OK，0 PROBLEM | 当前仅 SDK9.0.302；SDK8.0.423 正式基线和真实 Playnite 未运行。用户旧 R09 诊断缺同次 summary/TRX/DLL/PDB，当前 R09 通过不识别旧运行输入。 |
+| S03-02 | 版本关系视图 | 已验收 | fd59dcc1 | [受控证据](evidence/S03-02/README.md)：SDK9 Release solution 0/0；Playnite 12/12、Worker 2/2；RenderHarness render-qa OK，0 PROBLEM | 当前仅 SDK9.0.302；SDK8.0.423 正式基线和真实 Playnite 未运行。用户旧 R09 诊断缺同次 summary/TRX/DLL/PDB，当前 R09 通过不识别旧运行输入。 |
 | S03-03 | 冲突原因对照 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S03-04 | 恢复方案草稿 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S03-05 | 方案差异比较 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
