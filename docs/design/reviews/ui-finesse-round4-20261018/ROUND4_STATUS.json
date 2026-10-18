@@ -804,7 +804,7 @@
       "title": "交付快照与退出条件",
       "state": "已验收",
       "implementationState": "complete",
-      "implementationCommit": "本次实现提交",
+      "implementationCommit": "5ee1a0c9",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_applicable",
       "verificationText": "[证据](evidence/S07-08/README.md)：定义每批交付快照、64 项退出条件与无可执行项处理；账本及源码校验通过",
