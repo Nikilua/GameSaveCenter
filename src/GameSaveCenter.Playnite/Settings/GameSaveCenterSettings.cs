@@ -77,13 +77,33 @@ namespace GameSaveCenter.Playnite.Settings
         public GameSaveCenterSettings(GameSaveCenterPlugin plugin)
         {
             this.plugin = plugin;
-            var saved = plugin.LoadPluginSettings<GameSaveCenterSettings>();
+            var settingsPath = Path.Combine(plugin.GetPluginUserDataPath(), "config.json");
+            var loadResult = PluginSettingsLoadRecovery.Load(
+                () => plugin.LoadPluginSettings<GameSaveCenterSettings>(),
+                settingsPath);
+            if (loadResult.WasRecovered)
+                plugin.LogSettingsLoadRecovery(loadResult.Exception, loadResult.Diagnostic);
+
+            var saved = loadResult.Settings;
             var migrateDeviceIdentity = saved != null && !saved.deviceIdWasLoaded;
             if (saved != null) CopyFrom(saved);
             if (migrateDeviceIdentity) DeviceId = Guid.NewGuid().ToString("N");
             var pluginInstallPath = Path.GetDirectoryName(typeof(GameSaveCenterPlugin).Assembly.Location) ?? plugin.GetPluginUserDataPath();
-            if (EnsureDefaults(pluginInstallPath) || migrateDeviceIdentity)
-                plugin.SavePluginSettings(this);
+            var shouldSave = EnsureDefaults(pluginInstallPath) || migrateDeviceIdentity || loadResult.WasRecovered;
+            if (shouldSave && loadResult.CanPersistRecoveredSettings)
+            {
+                try
+                {
+                    plugin.SavePluginSettings(this);
+                }
+                catch (Exception saveException)
+                {
+                    if (!loadResult.WasRecovered) throw;
+                    plugin.LogSettingsLoadRecovery(
+                        saveException,
+                        "Recovered settings are active for this session, but the repaired config could not be saved. Any recovery backup remains untouched.");
+                }
+            }
         }
 
         public string WorkerExecutable { get; set; } = string.Empty;

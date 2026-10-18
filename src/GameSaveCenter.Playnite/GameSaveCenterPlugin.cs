@@ -87,6 +87,14 @@ namespace GameSaveCenter.Playnite
 
         public override Guid Id => PluginId;
         public GameSaveCenterSettings Settings { get; }
+        internal void LogSettingsLoadRecovery(Exception? exception, string message)
+        {
+            if (exception == null)
+                logger.Warn(message);
+            else
+                logger.Warn(exception, message);
+        }
+
         /// <summary>Session-only workspace memory for the current Playnite process.</summary>
         public WorkspaceKind? SessionLastWorkspace { get; set; }
         public event EventHandler? VisualSettingsChanged;

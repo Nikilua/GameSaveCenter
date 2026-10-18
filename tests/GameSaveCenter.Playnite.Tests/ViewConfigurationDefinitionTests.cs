@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using Newtonsoft.Json;
 using Xunit;
@@ -107,6 +108,21 @@ public sealed class ViewConfigurationDefinitionTests
 
         Assert.Equal("Tasks", config.Name);
         Assert.Equal("Tasks", config.WorkspaceKey);
+    }
+
+    [Fact]
+    public void LegacyMissingDensityAndFutureViewSchemaLoadWithoutBlockingOtherSettings()
+    {
+        const string legacyAndFutureJson = "{\"EnableCloudUpload\":true,\"DefaultTableDensityMode\":\"unknown-density\",\"ViewConfigurations\":[{\"Id\":\"11111111111111111111111111111111\",\"Name\":\"Legacy\",\"WorkspaceKey\":\"tasks\",\"UnknownOldMember\":true},{\"SchemaVersion\":99,\"Id\":\"22222222222222222222222222222222\",\"Name\":\"Future\",\"WorkspaceKey\":\"tasks\",\"DensityMode\":\"Compact\"}],\"UnknownSettingsVersion\":99}";
+
+        var settings = JsonConvert.DeserializeObject<GameSaveCenterSettings>(legacyAndFutureJson)!;
+
+        Assert.True(settings.EnableCloudUpload);
+        Assert.Equal(TableDensityPolicy.ComfortableMode, settings.DefaultTableDensityMode);
+        var legacy = Assert.Single(settings.ViewConfigurations);
+        Assert.Equal("Legacy", legacy.Name);
+        Assert.Equal(ViewConfigurationDefinition.CurrentSchemaVersion, legacy.SchemaVersion);
+        Assert.Equal(TableDensityPolicy.ComfortableMode, legacy.DensityMode);
     }
 
     [Fact]

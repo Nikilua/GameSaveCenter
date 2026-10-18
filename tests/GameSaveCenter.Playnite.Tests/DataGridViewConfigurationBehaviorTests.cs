@@ -190,6 +190,78 @@ public sealed class DataGridViewConfigurationBehaviorTests
     }
 
     [Fact]
+    public void SavedViewWithMissingOrRenamedColumnsFallsBackToCurrentTableDefaults()
+    {
+        RunSta(() =>
+        {
+            var configId = Guid.NewGuid().ToString("N");
+            var settings = new GameSaveCenterSettings
+            {
+                DefaultTableDensityMode = TableDensityPolicy.CompactMode,
+                ViewConfigurations = new()
+                {
+                    new ViewConfigurationDefinition
+                    {
+                        Id = configId,
+                        Name = "旧列键视图",
+                        WorkspaceKey = "tasks",
+                        VisibleColumnKeys = new() { "state", "removed-detail", "old-summary-name" },
+                        ColumnWidths = new() { ["old-state-name"] = 240, ["old-summary-name"] = 280 },
+                        SortColumnKey = "removed-sort-column",
+                        SortDirection = "Descending",
+                        DensityMode = "unknown-density"
+                    }
+                },
+                ActiveViewConfigurationIds = new() { ["tasks"] = configId }
+            };
+            var grid = new DataGrid
+            {
+                ItemsSource = new ObservableCollection<ViewRow> { new("a", 1, "Alpha"), new("b", 2, "Beta") },
+                Columns =
+                {
+                    new DataGridTextColumn { Header = "状态", Binding = new Binding(nameof(ViewRow.Value)), Width = new DataGridLength(90) },
+                    new DataGridTextColumn { Header = "摘要", Binding = new Binding(nameof(ViewRow.Name)), Width = new DataGridLength(1, DataGridLengthUnitType.Star) }
+                }
+            };
+            var owner = CreateDensityOwner();
+            var persistCount = 0;
+            var layout = new DataGridColumnLayoutController(grid, "tasks", new[] { "state", "summary" }, settings, () => persistCount++);
+            var visibility = new DataGridColumnVisibilityController(
+                grid, new Button(), "tasks", new[] { "state", "summary" }, new[] { "state" }, settings, () => persistCount++);
+            var sort = new DataGridStableSortController(grid, new[]
+            {
+                DataGridSortColumn.Create<ViewRow>("state", nameof(ViewRow.Value), ListSortDirection.Ascending,
+                    (left, right) => left.Value.CompareTo(right.Value), _ => false, row => row.Id),
+                DataGridSortColumn.Create<ViewRow>("summary", nameof(ViewRow.Name), ListSortDirection.Ascending,
+                    (left, right) => string.Compare(left.Name, right.Name, StringComparison.Ordinal), _ => false, row => row.Id)
+            }, 0);
+            var filterState = new TestFilterState(string.Empty, "default");
+            using var controller = new DataGridViewConfigurationController(
+                owner, "tasks", settings, layout, visibility, sort, new ComboBox(), new TextBox(),
+                new Button(), new Button(), new Button(), new Button(), new TextBlock(), new Button(), new Button(),
+                () => persistCount++, () => string.Empty, _ => { }, _ => { }, filterState,
+                () => filterState.CurrentFingerprint, filterState.GetFingerprint,
+                (_, _, _, _, _) => Task.FromResult(true), _ => { });
+
+            Assert.Equal("旧列键视图", settings.ViewConfigurations[0].Name);
+            Assert.Equal(Visibility.Visible, grid.Columns[0].Visibility);
+            Assert.Equal(Visibility.Visible, grid.Columns[1].Visibility);
+            Assert.Equal(90, grid.Columns[0].Width.Value);
+            Assert.Equal(DataGridLengthUnitType.Star, grid.Columns[1].Width.UnitType);
+            Assert.Equal("state", sort.ActiveColumnKey);
+            Assert.Equal(ListSortDirection.Ascending, sort.ActiveDirection);
+            Assert.Equal(TableDensityPolicy.ComfortableMode, settings.ViewConfigurations[0].DensityMode);
+            Assert.Equal(52d, owner.Resources["GscTableRowHeight"]);
+            Assert.Equal(0, persistCount);
+
+            controller.Dispose();
+            visibility.Dispose();
+            layout.Dispose();
+            sort.Dispose();
+        });
+    }
+
+    [Fact]
     public void LayoutResetPreviewsScopeAndPreservesFiltersAndBusinessSettings()
     {
         RunSta(() =>

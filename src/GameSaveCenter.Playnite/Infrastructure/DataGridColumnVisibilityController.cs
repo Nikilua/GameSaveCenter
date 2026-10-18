@@ -107,6 +107,17 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             if (disposed) return;
             var visible = new HashSet<string>(visibleColumnKeys ?? Array.Empty<string>(), StringComparer.Ordinal);
+            var hasKnownOptionalColumn = entries.Any(entry => !entry.IsRequired && visible.Contains(entry.Key));
+            var hasUnknownColumn = visible.Any(key => entries.All(entry => !string.Equals(entry.Key, key, StringComparison.Ordinal)));
+            if (visible.Count == 0 || (!hasKnownOptionalColumn && hasUnknownColumn))
+            {
+                // Older views may not contain a visibility list, or every optional key
+                // they reference may have been removed/renamed. In that case use the
+                // current table defaults instead of hiding every current optional column.
+                ApplyStoredVisibility();
+                return;
+            }
+
             foreach (var entry in entries)
                 entry.Column.Visibility = entry.IsRequired || visible.Contains(entry.Key)
                     ? Visibility.Visible

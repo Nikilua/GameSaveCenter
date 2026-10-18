@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-08 视图迁移恢复候选实现
+
+当前候选实现为插件设置加载增加损坏视图配置恢复：对可解析 JSON 移除视图布局/密度字段并保留其他设置；对整份语法损坏配置使用安全默认值。恢复前保留原 `config.json` 副本，备份失败时只在本次会话使用回退值，不自动覆盖原文件。列可见键缺失或全数失配时按当前表格默认显隐恢复；旧密度和未来 schema 按安全默认/忽略未知条目加载。SDK `8.0.423` 正式隔离 Release build `0 warning / 0 error`，五个定向测试类 `21/21`，source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。代码正在等待提交后身份复验；真实 Playnite 设置保存/加载和宿主双主题呈现未运行。外机 R09 仍缺同次 summary/TRX/DLL/PDB；本机当前 R09 `2/2` 通过，不能替代外机输入。下一步完成提交后证据与 S01-08 账本更新。
+
 ## 2026-10-18 Round4 S01-07 断点适配记忆代码完成待验收
 
 提交 `87520a92` 为共享 `DataGridColumnLayoutController` 加入临时响应式列宽：窄窗口时从末尾显示列起压缩像素列至最小宽度，恢复空间后回到用户偏好；临时宽度不写设置/命名视图。移除 SaveCenter 历史表单页单独的窄屏列宽分支，并给候选表状态/置信度列设可读下限。提交后 SDK `8.0.423` Release 解决方案构建 `0/0`；六个隔离 WPF 测试类 `20/20`，含实际窗口生命周期测试 `1/1` 与 R09 `2/2`；Render QA OK，Task/候选路径 `1040×700` 均为 `4/4` 可读行。`validate-source.py` 和 `git diff --check` 通过。完整 WPF/安装门禁和 Playnite 真实宿主仍未验证，R05 系统指针 error 5 边界保留。用户外机 R09 旧 `2 DIP` 断言与 `f13b9e05` 前源码吻合，但无外机同次 summary/TRX/DLL/PDB，仍不能确定其实际测试输入。证据见 [S01-07](../design/reviews/ui-finesse-round4-20261018/evidence/S01-07/README.md)。下一项 S01-08。
