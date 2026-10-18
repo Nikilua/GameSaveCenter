@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-18 Round4 S01-02 舒适紧凑密度代码完成待验收
+
+提交 `ad7bd563` 新增全局密度设置与共享资源覆盖：舒适/紧凑行高为 52/44 DIP，表头为 42/38 DIP，单元格水平留白为 12/10 DIP；不缩小正文。设置支持归一化、JSON 往返、编辑取消和外观重置；活动页面按当前令牌重算四行门槛。SDK `8.0.423` Release 解决方案构建 0/0；密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题资源 `9/9`，源码校验通过。当前全量 WPF/安装门禁仍在 R05 `GetCursorPos` Win32 error 5 处停止，Playnite 设置保存/实际呈现未运行。证据：[S01-02](../design/reviews/ui-finesse-round4-20261018/evidence/S01-02/README.md)。
+
 ## 2026-10-18 Round4 S00 状态与 SDK8 UI 门禁
 
 S00-01 的稳定命令目录和证据已在 `origin/main`，不重复实现；原 SDK9 `7/7` 证据保留，本次 SDK8 `CommandDirectoryBehaviorTests` 类 `2/2` 复核通过。S00-02 仍是 Shell 内命令搜索 overlay；SDK `8.0.423` Release solution build `0/0`，Core `125/125`、Worker `364 passed/1 skipped`、Playnite source `445 passed/27 skipped`。WPF 隔离至第 `45/126` 类、累计 `170` 个用例时，R05 读取系统指针触发 Win32 error 5（169 pass / 1 fail）；剩余 WPF 类及安装/版本核验未运行。不要提升权限或修改测试以绕过系统指针前置条件；等环境能力变化再完成 UI 门禁。完整日志与 TRX 在 `artifacts/build-diagnostics/20261018T043821860Z-6e089ab8` 和 S00-02 evidence。真实 Playnite 未启动。

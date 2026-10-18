@@ -2,7 +2,7 @@
 
 ## 2026-10-18 当前 Round4 SDK8 门禁复核
 
-S00-01 已满足，已有实现与证据在 `origin/main`。S01-01 和 S02-01 分别完成 SDK8 受控验收，详见各自 evidence README。S00-02 的 SDK8 Release solution build 为 0 warning / 0 error，Core 125/125、Worker 364 passed/1 skipped、Playnite source 445 passed/27 skipped。WPF 隔离运行到第 45/126 类时，R05 `GetCursorPos` 对系统指针读取返回 Win32 error 5；本次 169/170 已运行用例通过，其余 WPF 类未运行，安装/版本核验未到达。不要绕过指针权限或推送含该 XAML 的 `main`；前置条件变化后继续 UI 门禁。
+S00-01 已满足，已有实现与证据在 `origin/main`。S01-01、S01-02 和 S02-01 均完成 SDK8 受控验证，详见各自 evidence README。S01-02 的密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`；全解方案构建 `0 warning / 0 error`。完整 WPF 隔离仍在第 45/126 类的 R05 `GetCursorPos` 系统指针读取 Win32 error 5 处停止；剩余 WPF 类及安装/版本核验未运行。不要绕过指针权限或推送含未过 UI 门禁 XAML 的 `main`；前置条件变化后继续 UI 门禁。
 
 用户最新 R09 日志所示 `Expected 2 DIP / Actual 1 DIP` 与旧测试 `3f7d0b30` 相符；当前 `origin/main` 已含 `f13b9e05` 的 Chrome 1 DIP / ValidationStroke 2 DIP 修正，本机 SDK8 当前 R09 `2/2`。外机同次程序集身份仍缺，详见 R09 复核证据。
 
@@ -18,7 +18,7 @@ S00-01 已满足，已有实现与证据在 `origin/main`。S01-01 和 S02-01 �
 
 `25bbe005` 新增版本化工作视图配置模型并接入设置复制/重置；只存标量与稳定列键，旧设置缺字段和未知 JSON 成员兼容。SDK8.0.423 Release 测试项目构建 0/0，`ViewConfigurationDefinitionTests` 与 R09 合计 7/7。验证发现 Json.NET 默认填充初始集合会绕过归一化 setter，现用 `ObjectCreationHandling.Replace` 修正。未改 XAML、未验 Playnite host。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-01/README.md`。
 
-下一步继续 S02-02 收件箱入口，同时保留 S01-02 等 UI gate 的工作区；涉及 XAML 的实现遵守 UI gate。S00-02 门禁未通过，因此本地 `main` 仍不推送。
+下一步按计划继续 S01-03 可选列管理；S00-02 的真实安装/版本门禁未通过，因此本地 `main` 仍不推送。S01-02 的密度控件尚未在真实 Playnite 中加载/保存验证。
 
 ## 2026-10-18 最新续接：S07-03 分支检查读取受限
 

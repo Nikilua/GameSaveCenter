@@ -1,3 +1,10 @@
+## 2026-10-18 Round4 S01-02 舒适紧凑表格密度
+
+- 外观设置持久化 `DefaultTableDensityMode`，默认舒适、无效值安全回退；舒适/紧凑行高和表头为 `52/42`、`44/38 DIP`，单元格水平留白 `12/10 DIP`，正文不缩小。共享及 Dashboard 本地 DataGrid 样式读取同一组资源，Playnite/Application 全局资源不变。
+- Save/Task/Trainer/Maintenance 与 Media Inbox 的行高及四行下限读取实际令牌；密度保存后重建已打开工作区布局。新增密度算法、资源作用域、设置 JSON/编辑取消/重置与 XAML 绑定测试。
+- SDK `8.0.423` Release solution build `0 warning / 0 error`；密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`。`python scripts/validate-source.py .` 与 `git diff --check` 通过。证据：[S01-02](../design/reviews/ui-finesse-round4-20261018/evidence/S01-02/README.md)。
+- 用户贴出的 R09 `Expected 2 DIP / Actual 1 DIP` 行号与旧断言版本一致；当前隔离输出 R09 `2/2`。独立完整 WPF/安装门禁仍受 R05 系统指针读取权限影响，Playnite host 未运行；提交 `ad7bd563` 保留为代码完成待验收，不推送。
+
 ## 2026-10-18 Round4 S02-01 通知记录契约
 
 - 现有 toast/通知决策不持久化。选择复用 Worker `SqliteStateStore`，新增 DTO、级别、去重/归一化策略及本地 SQLite 表；任务状态仍以 `tasks` 表为准，只保存关联 ID 与短 UI 摘要。
@@ -8,7 +15,7 @@
 
 - 用户提供诊断 ID `20261018T012631286Z-e027df9d`：R09 类 `1/2`，`SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError` 报第151行期望 `2,2,2,2`、实际 `1,1,1,1`。日志是测试阶段退出码1；没有贴出编译错误。
 - 当前源第151行是错误边框颜色、第152行 Chrome `1 DIP`、第154行独立 ValidationStroke `2 DIP`；旧提交 `3f7d0b30` 第151行才是 Chrome `2 DIP`。该输出与当前测试源码或符号映射不一致；未取得诊断 summary/TRX/DLL/PDB/source HEAD，具体旧源码、旧 DLL 或 PDB 映射原因未确认。COM 清理异常发生在断言失败后。
-- 未改模板/弱化断言，未重跑测试。证据与下一步输入要求见 [R09 外机失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
+- 未改模板/弱化断言；本轮随后用 SDK8.0.423 当前源码隔离重建并复跑 R09，结果 `2/2`，TRX 收录于 [S01-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S01-02/tests/R09FocusOutlineBehaviorTests-final.trx)。原外机输入身份仍未提供，旧诊断原因仍不能进一步区分。证据与下一步输入要求见 [R09 外机失败复核](../design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014/README.md)。
 
 ## 2026-10-18 Round4 S01-01 版本化工作视图配置模型
 
