@@ -73,7 +73,7 @@
 | S07-04 | 避免 CI 自循环记录 | 已验收 | 33c8722c | [证据](evidence/S07-04/README.md)：仓库规则限定结果记录触发条件；保留原 run/job/artifact 查询身份 | 未调整所有 push 触发的 workflow 或 required checks；不为纯记录提交的通过结果追加记录提交 |
 | S07-05 | 跨机器诊断入口 | 已验收 | 4226a8df | [证据](evidence/S07-05/README.md)：复用诊断 collector；记录环境/checkout/DLL/PDB/TRX 身份并提供离线只读预览；旧 TRX 可现场复算 | 不探测运行中 Playnite 或安装目录；不收集用户存档/凭据；安装包身份仍需单独提供 |
 | S07-06 | 测试计数口径 | 已验收 | c698c161 | [证据](evidence/S07-06/README.md)：原始 TRX 可复算用例与状态总数；区分 suite、实际测试类及 WPF 隔离类运行 | 旧 SDK8 证据只用于核验解析器；历史 Q14 失败保持失败，不代表当前代码 |
-| S07-07 | 环境能力准入缓存 | 已验收 | 本次实现提交 | [证据](evidence/S07-07/README.md)：缓存 SDK/Playnite/CEF/ETW 状态、证据与重试条件；7 项校验测试及 source validation 通过 | 不探测或绕过权限；S00-02 真实宿主门禁未运行，旧 Q/R 阻塞独立保留 |
+| S07-07 | 环境能力准入缓存 | 已验收 | 473e67d8 | [证据](evidence/S07-07/README.md)：缓存 SDK/Playnite/CEF/ETW 状态、证据与重试条件；7 项校验测试及 source validation 通过 | 不探测或绕过权限；S00-02 真实宿主门禁未运行，旧 Q/R 阻塞独立保留 |
 | S07-08 | 交付快照与退出条件 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 
 <!-- ROUND4-STATUS-GENERATED-END -->
