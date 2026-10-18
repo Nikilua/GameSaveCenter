@@ -343,37 +343,49 @@
                 </Border>
             </Popup>
 
-            <Popup x:Name="CommandDirectoryPopup"
-                   PlacementTarget="{Binding ElementName=HeaderCommandDirectoryButton}"
-                   Placement="Bottom"
-                   HorizontalOffset="-372"
-                   Margin="0,8,0,0"
-                   StaysOpen="False"
-                   AllowsTransparency="True"
-                   PopupAnimation="Fade"
-                   Focusable="True"
-                   AutomationProperties.Name="命令搜索">
-                <Border Width="420" MaxWidth="520" Padding="16"
+            <Grid x:Name="CommandDirectoryOverlay" Grid.Row="1" Margin="24,0,20,8"
+                  Visibility="Collapsed" Panel.ZIndex="41"
+                  FocusManager.IsFocusScope="True"
+                  KeyboardNavigation.TabNavigation="Cycle"
+                  KeyboardNavigation.DirectionalNavigation="Contained"
+                  PreviewKeyDown="OnCommandDirectoryPreviewKeyDown"
+                  AutomationProperties.Name="命令搜索">
+                <Rectangle Fill="{DynamicResource GscPickerScrimBrush}"
+                           MouseLeftButtonDown="OnCommandDirectoryScrimMouseDown"/>
+                <Border x:Name="CommandDirectoryPanel" Width="420"
+                        MaxWidth="{Binding ActualWidth, ElementName=CommandDirectoryOverlay}"
+                        MaxHeight="{Binding ActualHeight, ElementName=CommandDirectoryOverlay}"
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Margin="0,0,4,0" Padding="16"
                         Style="{DynamicResource GscRedesignFloatingPickerCard}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="320"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <StackPanel>
-                            <TextBlock Text="命令搜索" FontSize="15" FontWeight="SemiBold"
-                                       AutomationProperties.Name="命令搜索标题"/>
-                            <TextBlock Text="按名称、别名或分类查找工作区操作。"
-                                       Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                       FontSize="{DynamicResource GscCaptionFontSize}"
-                                       Margin="0,3,0,12"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="命令搜索" FontSize="15" FontWeight="SemiBold"
+                                           AutomationProperties.Name="命令搜索标题"/>
+                                <TextBlock Text="按名称、别名或分类查找工作区操作。"
+                                           Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                           Margin="0,3,0,12"/>
+                            </StackPanel>
+                            <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiContextButton}"
+                                       Content="关闭" Click="OnCommandDirectoryCloseClick"
+                                       ToolTip="关闭命令搜索" AutomationProperties.Name="关闭命令搜索"
+                                       Margin="8,0,0,12"/>
+                        </Grid>
                         <TextBox x:Name="CommandDirectorySearchTextBox" Grid.Row="1"
                                  Style="{DynamicResource GscWpfUiTextBox}"
                                  TextChanged="OnCommandDirectorySearchTextChanged"
-                                 KeyDown="OnCommandDirectorySearchKeyDown"
                                  ToolTip="按命令名称、别名或分类搜索"
                                  AutomationProperties.Name="搜索命令"
                                  AutomationProperties.HelpText="输入中文或英文名称、别名或分类。按 Escape 关闭命令搜索。"
@@ -405,6 +417,7 @@
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ListBoxItem">
@@ -469,7 +482,7 @@
                         </ListBox>
                     </Grid>
                 </Border>
-            </Popup>
+            </Grid>
 
             <Grid x:Name="MainPageHost" Grid.Row="1" Margin="24,0,20,8">
                 <Border Background="Transparent">

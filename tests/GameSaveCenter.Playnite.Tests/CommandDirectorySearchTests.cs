@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Views;
@@ -95,6 +96,20 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains(nameof(CommandDirectoryItem.AvailabilityDisplay), changed);
             Assert.Contains(nameof(CommandDirectoryItem.UnavailableReason), changed);
             Assert.Contains(nameof(CommandDirectoryItem.AutomationDisplayName), changed);
+        }
+
+        [Fact]
+        public void SearchPanelUsesTheInShellOverlayAndVirtualizedResults()
+        {
+            var shell = File.ReadAllText(Path.Combine(
+                TestRepositoryContext.Root,
+                "src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml"));
+
+            Assert.Contains("<Grid x:Name=\"CommandDirectoryOverlay\"", shell);
+            Assert.DoesNotContain("<Popup x:Name=\"CommandDirectoryPopup\"", shell);
+            Assert.Contains("VirtualizingPanel.IsVirtualizing=\"True\"", shell);
+            Assert.Contains("AutomationProperties.Name=\"命令搜索结果\"", shell);
+            Assert.Contains("PreviewKeyDown=\"OnCommandDirectoryPreviewKeyDown\"", shell);
         }
 
         private static CommandDirectoryItem Item(string id, string name, IEnumerable<string> aliases, string category)

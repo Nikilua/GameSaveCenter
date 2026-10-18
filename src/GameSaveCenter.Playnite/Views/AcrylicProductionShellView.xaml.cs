@@ -36,6 +36,7 @@ namespace GameSaveCenter.Playnite.Views
         private double pendingResponsiveWidth;
         private bool pickerFilterRestorePending;
         private bool gameSearchCompositionActive;
+        private bool commandSearchCompositionActive;
         private bool pickerKeyboardNavigationActive;
         private int pickerKeyboardNavigationGeneration;
         private Action? settingsRequested;
@@ -65,6 +66,10 @@ namespace GameSaveCenter.Playnite.Views
             TextCompositionManager.AddPreviewTextInputUpdateHandler(GameSearchTextBox, OnGameSearchCompositionUpdated);
             TextCompositionManager.AddPreviewTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
             TextCompositionManager.AddTextInputHandler(GameSearchTextBox, OnGameSearchTextInput);
+            TextCompositionManager.AddPreviewTextInputStartHandler(CommandDirectorySearchTextBox, OnCommandSearchCompositionStarted);
+            TextCompositionManager.AddPreviewTextInputUpdateHandler(CommandDirectorySearchTextBox, OnCommandSearchCompositionUpdated);
+            TextCompositionManager.AddPreviewTextInputHandler(CommandDirectorySearchTextBox, OnCommandSearchTextInput);
+            TextCompositionManager.AddTextInputHandler(CommandDirectorySearchTextBox, OnCommandSearchTextInput);
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
@@ -110,6 +115,7 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModel == null || !GameContextButton.IsVisible)
                 return;
 
+            CommandDirectoryOverlay.Visibility = Visibility.Collapsed;
             PickerOverlay.Visibility = Visibility.Visible;
             QueueGamePickerFilterDefaults();
             GameSearchTextBox.Focus();
@@ -118,7 +124,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnCommandDirectoryClick(object sender, RoutedEventArgs e)
         {
-            if (CommandDirectoryPopup.IsOpen)
+            if (CommandDirectoryOverlay.Visibility == Visibility.Visible)
             {
                 CloseCommandDirectory(restoreFocus: true);
                 e.Handled = true;
@@ -128,13 +134,15 @@ namespace GameSaveCenter.Playnite.Views
             if (viewModel == null)
                 return;
 
+            if (PickerOverlay.Visibility == Visibility.Visible)
+                ClosePickerAndRestoreFocus();
             KeyboardShortcutHelpPopup.IsOpen = false;
             CommandDirectorySearchTextBox.Clear();
             UpdateCommandDirectorySearchResults();
-            CommandDirectoryPopup.IsOpen = true;
+            CommandDirectoryOverlay.Visibility = Visibility.Visible;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (!CommandDirectoryPopup.IsOpen) return;
+                if (CommandDirectoryOverlay.Visibility != Visibility.Visible) return;
                 CommandDirectorySearchTextBox.Focus();
                 Keyboard.Focus(CommandDirectorySearchTextBox);
             }), DispatcherPriority.Input);
@@ -157,9 +165,13 @@ namespace GameSaveCenter.Playnite.Views
                 : results.Count == 0 ? "没有匹配的命令" : $"搜索结果 · {results.Count}";
         }
 
-        private void OnCommandDirectorySearchKeyDown(object sender, KeyEventArgs e)
+        private void OnCommandDirectoryPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Escape)
+            if (CommandDirectoryOverlay.Visibility != Visibility.Visible
+                || commandSearchCompositionActive
+                || e.Key == Key.ImeProcessed
+                || e.ImeProcessedKey != Key.None
+                || e.Key != Key.Escape)
                 return;
 
             CloseCommandDirectory(restoreFocus: true);
@@ -168,13 +180,38 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnCommandDirectoryResultClick(object sender, RoutedEventArgs e)
         {
+            var item = (sender as FrameworkElement)?.DataContext as CommandDirectoryItem;
+            var commandOwnsFocus = item?.Id == "game-picker.open"
+                || item?.Id == "workspace.focus-search"
+                || item?.Id == "settings.open";
+            CloseCommandDirectory(restoreFocus: !commandOwnsFocus);
+            e.Handled = true;
+        }
+
+        private void OnCommandDirectoryScrimMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CloseCommandDirectory(restoreFocus: false);
+            e.Handled = true;
+        }
+
+        private void OnCommandDirectoryCloseClick(object sender, RoutedEventArgs e)
+        {
             CloseCommandDirectory(restoreFocus: true);
             e.Handled = true;
         }
 
+        private void OnCommandSearchCompositionStarted(object sender, TextCompositionEventArgs e)
+            => commandSearchCompositionActive = true;
+
+        private void OnCommandSearchCompositionUpdated(object sender, TextCompositionEventArgs e)
+            => commandSearchCompositionActive = true;
+
+        private void OnCommandSearchTextInput(object sender, TextCompositionEventArgs e)
+            => commandSearchCompositionActive = false;
+
         private void CloseCommandDirectory(bool restoreFocus)
         {
-            CommandDirectoryPopup.IsOpen = false;
+            CommandDirectoryOverlay.Visibility = Visibility.Collapsed;
             if (!restoreFocus)
                 return;
 
@@ -711,6 +748,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnKeyboardHelpClick(object sender, RoutedEventArgs e)
         {
+            CommandDirectoryOverlay.Visibility = Visibility.Collapsed;
             KeyboardShortcutHelpItemsControl.ItemsSource = KeyboardShortcutHelpItems;
             KeyboardShortcutHelpPopup.IsOpen = !KeyboardShortcutHelpPopup.IsOpen;
             e.Handled = true;
