@@ -1,16 +1,18 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-18 当前阶段：Round4 S00-01 完成，下一项 S00-02
+## 2026-10-18 当前阶段：Round4 S00-02 代码完成，等待 UI 门禁
 
 本轮没有复记旧 Q/R CI。S00-01 代码提交 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 加入只读命令目录，复用现有工作区导航、设置回调、游戏选择、Ctrl+F 搜索和任务关联游戏命令；稳定 ID / 双语别名 / 分类 / 作用域 / 不可用原因齐备，缺少当前游戏/任务时阻止执行。详细证据和 TRX/DLL SHA 见[证据页](design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
 
-SDK9.0.302 Release 目标构建、目录+R10 精确任务导航 `7/7`、source validation、diff check 通过；SDK8 未安装，真实 Playnite 未运行。本批未改 XAML。S00-02 已设 READY，接下来实现可见搜索面板；既有用户未跟踪 TRX/TestResults 保留。
+S00-01 证据见上一节。S00-02 的实现已在本地提交 `29dc09b2` 和 `a58dd582`：Shell 内搜索 overlay，名称/别名/分类过滤，空查询限八项，显示作用范围/可用状态/禁用原因并虚拟化；Escape 保留 IME 组合语义。按最终提交 Release 目标构建成功，21/21 定向测试通过，200 项本地过滤 `0.554 ms`，source validation 通过；静态 WPF 审查 0 errors。
+
+`GameSaveCenter-Run.cmd` 被实际调用，但本机只有 SDK9.0.302，仓库 `global.json` 要求精确 SDK8.0.423，故脚本在安装与版本核验前退出。Playnite 未进行插件启动、真实渲染、主题或 DPI 核验。遵守 UI_CHANGE_GATE，不把未通过门禁的 XAML 改动推送到 `origin/main`；本地 `main` 暂时领先远端两个产品提交和后续账本提交。补齐 SDK8 后先重新运行指定脚本，再依据真实结果验收并推送，之后才准入 S00-03。历史未跟踪 TRX/TestResults 原样保留。
 
 ## 2026-10-18 新明确范围：第四轮 64 项增量计划
 
 用户要求继续补充有价值的功能/UI，并直接落地本地文档。本轮已核对 `4d55a7dd` 的源码与第三轮主账本：192 个主条目无精确“待开始/实施中”，但宿主/IME/跨屏/呈现等边界仍未全验。本轮只做规划，不新增产品代码，不重新声称 CI 或宿主通过。
 
-新增[第四轮 64 项计划](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：按依赖推进；S00-01 已验收，当前下一项 S00-02 READY。旧 Q/R 环境边界仍保留。
+新增[第四轮 64 项计划](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：按依赖推进；S00-01 已验收，S00-02 等待本机 SDK/Playnite UI 门禁。旧 Q/R 环境边界仍保留。
 
 
 ## 2026-10-18 最新交接：#1086 双 SDK 终态成功，外机 R09 未定位

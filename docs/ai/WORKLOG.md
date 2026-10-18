@@ -1,3 +1,11 @@
+## 2026-10-18 Round4 S00-02 命令搜索面板（代码完成待 UI 门禁）
+
+- 对照 S00-01 目录后，增加 Shell 标题栏搜索入口与本地名称/别名/分类过滤。空查询最多显示八项；每条结果显示类别、作用范围、可用状态和禁用原因，调用现有 ICommand。200 条列表使用虚拟化；搜索为同步线性筛选，不访问业务服务或外部数据。
+- 共享 `GscRedesignFloatingPickerCard` 明确要求在宿主内绘制。初版 WPF Popup 随后改为与游戏选择器一致的 Shell overlay，修正提交为 `a58dd582`；Escape 只在无 IME 组合时关闭，并有关闭按钮、遮罩与焦点返回。设计源目录 `AcrylicFork/Design` 在当前 checkout 缺失，沿用生产 Shell 当前共享资源，不声称完成 Demo 图像级对照。
+- 按最终提交 `a58dd582` 在 Windows SDK9.0.302 / VSTest17.14.1 下 Release 构建 `GameSaveCenter.Playnite.Tests.csproj` 成功且无编译警告。命令目录、搜索、200 项延迟、上下文路由、快捷键帮助、焦点视觉与自动化名称共 `21/21` 通过。TRX 记录 200 项匹配 200 项、`0.554 ms`；TRX、Playnite DLL 与测试 DLL SHA 见 S00-02 evidence README。`validate-source.py`、`git diff --check` 通过。WPF 静态审查 `35 XAML / 0 errors / 28 warnings / 177 info`；Shell 第373行提示滚动控件可能位于 StackPanel 为启发式误报，结果 ListBox 实际在有最大高度约束的 overlay Grid 星号行中。
+- 按 UI 门禁尝试 `GameSaveCenter-Run.cmd`；脚本要求 global.json 精确 SDK8.0.423，而本机只安装 SDK9.0.302，因此在真实安装和版本核验前退出，返回码 1。没有绕过版本检查、假造安装或运行宿主截图；Playnite 真机呈现、双主题、UI Automation/读屏、真实 IME、DPI 仍未验证。代码保持“代码完成待验收”，尚未推送 `origin/main`，不得准入依赖 S00-03。
+- 仅提交本阶段的证据、账本、当前状态、项目记忆与交接文档；旧的 Round3 未跟踪 TRX 及 `tests/.../TestResults/` 未暂存/删除。清理本次门禁产生的 artifacts 临时目录和 `one-click-install.log`；不提交 `artifacts/` 或 `.tmp/`。
+
 ## 2026-10-18 Round4 S00-01 只读命令目录
 
 - 核对当前能力：既有快捷键帮助目录只含当前页 Ctrl+F，导航是分散的 Shell 事件/现有 ViewModel ICommand，尚无稳定 ID、别名、作用域与不可用原因的统一目录。提交 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 新增内部目录契约，覆盖六工作区、设置、游戏选择、当前页搜索和任务关联游戏；执行包装器再次检查底层 CanExecute，缺少游戏/任务/可解析稳定 ID 时阻断并说明原因。没有登记恢复/删除等危险动作，没有改业务服务或 XAML。

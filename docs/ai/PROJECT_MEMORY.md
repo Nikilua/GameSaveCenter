@@ -1,16 +1,18 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-18 Round4 S00-01 已验收
+## 2026-10-18 Round4 S00-01 已验收，S00-02 代码完成待验收
 
 `dd38f8caec8cc6c63080b2d7e1eb587e14e9cde8` 新增只读命令目录，稳定登记工作区导航、插件设置、游戏选择、当前页搜索与任务关联游戏。每项有稳定 ID、中文名、英文别名、分类/作用域和动态不可用原因，执行时复用真实 Shell/ViewModel 命令并重新校验 CanExecute；当前游戏或任务缺失时返回原因并阻断执行。现有快捷键帮助只有当前页 Ctrl+F，不等价于统一目录。
 
-SDK9.0.302 / VSTest17.14.1 定向 Release build 成功；新目录与既有 R10 task-navigation 行为共 `7/7`，源码校验与 diff check 通过。SDK8.0.423 未安装；没有改 XAML、运行 Playnite 或声称宿主视觉通过。TRX / test DLL 哈希和具体边界见[证据页](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。下一项 S00-02 已 READY，交付可见 Shell 搜索面板。
+SDK9.0.302 / VSTest17.14.1 定向 Release build 成功；新目录与既有 R10 task-navigation 行为共 `7/7`，源码校验与 diff check 通过。SDK8.0.423 未安装；没有改 XAML、运行 Playnite 或声称宿主视觉通过。TRX / test DLL 哈希和具体边界见[证据页](../design/reviews/ui-finesse-round4-20261018/evidence/S00-01/README.md)。
+
+S00-02 在本地提交 `29dc09b2` 与 `a58dd582` 实现命令搜索 Shell overlay：中文/英文名称、别名、分类过滤，空输入显示最多八项，结果显示分类、作用范围、可用状态和不可用原因，启用列表虚拟化。按最终提交 Release 构建成功，21/21 定向用例通过；200 项搜索耗时 0.554 ms。`GameSaveCenter-Run.cmd` 因机器只装 SDK9.0.302 而仓库要求精确 SDK8.0.423，在安装与版本核验前退出。UI 门禁因此未完成，S00-02 保持代码完成待验收，不推送也不准入依赖 S00-03。证据见[Round4 S00-02](../design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md)。
 
 ## 2026-10-18 新明确范围：第四轮 64 项增量计划
 
 用户要求继续补充有价值的功能/UI，并直接落地本地文档。本轮已核对 `4d55a7dd` 的源码与第三轮主账本：192 个主条目无精确“待开始/实施中”，但宿主/IME/跨屏/呈现等边界仍未全验。本轮只做规划，不新增产品代码，不重新声称 CI 或宿主通过。
 
-新增[第四轮 64 项计划](../design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：命令搜索、工作视图、通知收件箱、备份来源/恢复方案、媒体比较、容量情景、人工待办、开发入口维护。按依赖推进；S00-01 当前已验收，下一项 S00-02 READY。旧 Q/R 环境边界仍保留。
+新增[第四轮 64 项计划](../design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)及[账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)：命令搜索、工作视图、通知收件箱、备份来源/恢复方案、媒体比较、容量情景、人工待办、开发入口维护。按依赖推进；S00-01 已验收，S00-02 等待 UI 门禁后再准入下一项。旧 Q/R 环境边界仍保留。
 
 
 ## 2026-10-18 最新：#1086 双 SDK 成功，R00-03 runner 复核继续
