@@ -361,19 +361,18 @@ namespace GameSaveCenter.Playnite.Views
             var environmentPanel = FindVisualChild<UniformGrid>(EnvironmentCheckItems);
             if (environmentPanel != null)
                 environmentPanel.Columns = environmentColumns;
-            // Keep four full 52-DIP rows plus the 42-DIP header readable after the
-            // shared table density was raised from the compact legacy baseline.
-            const double tableMinHeight = 260d;
+            // Keep four complete rows visible using the active shared row/header tokens.
+            var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
             FindingsGrid.MinHeight = tableMinHeight;
             FindingsGrid.Height = double.NaN;
             FindingsGrid.MaxHeight = double.PositiveInfinity;
-            MaintenanceDeviceGrid.MinHeight = Math.Max(tableMinHeight, 252d);
+            MaintenanceDeviceGrid.MinHeight = tableMinHeight;
             MaintenanceDeviceGrid.Height = double.NaN;
             MaintenanceDeviceGrid.MaxHeight = double.PositiveInfinity;
             MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight;
             MaintenanceAuditFindingsGrid.Height = double.NaN;
             MaintenanceAuditFindingsGrid.MaxHeight = double.PositiveInfinity;
-            MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d);
+            MaintenanceProcessGrid.MinHeight = tableMinHeight;
             MaintenanceProcessGrid.Height = double.NaN;
             MaintenanceProcessGrid.MaxHeight = double.PositiveInfinity;
             if (width < 800)
@@ -381,8 +380,8 @@ namespace GameSaveCenter.Playnite.Views
                 // Narrow audit windows keep at least four readable rows even when the
                 // stacked device/process inspectors consume part of the finite workspace;
                 // the page-level scroll surface remains the overflow owner.
-                MaintenanceDeviceGrid.MinHeight = 280;
-                MaintenanceProcessGrid.MinHeight = 280;
+                MaintenanceDeviceGrid.MinHeight = tableMinHeight;
+                MaintenanceProcessGrid.MinHeight = tableMinHeight;
             }
             var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
             var compact = detailBreakpoint.Evaluate(width);
@@ -569,7 +568,7 @@ namespace GameSaveCenter.Playnite.Views
                 : double.PositiveInfinity;
             MaintenanceProcessGrid.MinHeight = showProcessInspector && stackProcess
                 ? 150
-                : width < 800 ? 280 : Math.Max(tableMinHeight, 252d);
+                : tableMinHeight;
 
             // Match the Demo process-mapping editor on wide workspaces: the EXE field
             // receives the flexible space, the game target stays readable at 240 DIP,
@@ -644,7 +643,7 @@ namespace GameSaveCenter.Playnite.Views
             // at least the header plus two full rows; closing it restores the table.
             var deviceTableMinHeight = showDeviceInspector && stackDevice
                 ? 150
-                : width < 800 ? 280 : Math.Max(tableMinHeight, 252d);
+                : tableMinHeight;
             MaintenanceDeviceGrid.MinHeight = deviceTableMinHeight;
             var deviceInspectorHeight = Math.Max(180, Math.Min(420, deviceAvailableHeight - deviceTableMinHeight - 10));
             MaintenanceDeviceInspectorScrollViewer.MaxHeight = showDeviceInspector && stackDevice

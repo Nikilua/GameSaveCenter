@@ -103,9 +103,9 @@ namespace GameSaveCenter.Playnite.Views
                 // inspector is stacked below it. The table still owns its internal
                 // virtualized scroll; this floor prevents the inspector's Auto row from
                 // reducing the primary list below the common-window baseline.
-                const double tableMinHeight = 260d;
+                var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 SaveHistoryGrid.MinHeight = tableMinHeight;
-                SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d);
+                SaveCandidateGrid.MinHeight = tableMinHeight;
                 // On narrow hosts the lock status is the essential per-row summary; the
                 // note column can be read in full inside the version details inspector.
                 // Hiding it keeps 状态 inside the viewport without enabling a horizontal bar.

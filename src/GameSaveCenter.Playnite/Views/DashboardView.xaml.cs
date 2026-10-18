@@ -353,6 +353,7 @@ namespace GameSaveCenter.Playnite.Views
                 if (!IsLoaded) return;
                 viewModel.ApplySelectedGameBackgroundPreference();
                 ApplyAdaptiveTheme();
+                ApplyResponsiveLayout(ActualWidth, ActualHeight);
                 refreshTimer.Interval = TimeSpan.FromSeconds(Math.Max(5, Math.Min(300, plugin.Settings.DashboardRefreshSeconds)));
                 if (plugin.Settings.EnableDashboardAutoRefresh) refreshTimer.Start(); else refreshTimer.Stop();
             }, DispatcherPriority.Background);
@@ -1704,11 +1705,13 @@ namespace GameSaveCenter.Playnite.Views
             AdaptiveThemePaletteFactory.SetHighContrastActive(this, palette.IsHighContrast);
             AdaptiveThemePaletteFactory.SetMotionEnabledActive(this, MotionEnabled && !palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
+            TableDensityPolicy.ApplyResources(this, plugin.Settings.DefaultTableDensityMode);
             foreach (var workspaceView in GetLegacyCompatibilityWorkspaceViews())
             {
                 AdaptiveThemePaletteFactory.SetHighContrastActive(workspaceView, palette.IsHighContrast);
                 AdaptiveThemePaletteFactory.SetMotionEnabledActive(workspaceView, MotionEnabled && !palette.IsHighContrast);
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
+                TableDensityPolicy.ApplyResources(workspaceView, plugin.Settings.DefaultTableDensityMode);
             }
 
             // The production shell owns a second set of extracted page instances in its
@@ -1721,11 +1724,13 @@ namespace GameSaveCenter.Playnite.Views
             AdaptiveThemePaletteFactory.SetHighContrastActive(ProductionShellView, palette.IsHighContrast);
             AdaptiveThemePaletteFactory.SetMotionEnabledActive(ProductionShellView, MotionEnabled && !palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(ProductionShellView.Resources, palette, glassEnabled, MotionEnabled);
+            TableDensityPolicy.ApplyResources(ProductionShellView, plugin.Settings.DefaultTableDensityMode);
             foreach (var workspaceView in ProductionShellView.WorkspaceViews)
             {
                 AdaptiveThemePaletteFactory.SetHighContrastActive(workspaceView, palette.IsHighContrast);
                 AdaptiveThemePaletteFactory.SetMotionEnabledActive(workspaceView, MotionEnabled && !palette.IsHighContrast);
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(workspaceView.Resources, palette, glassEnabled, MotionEnabled);
+                TableDensityPolicy.ApplyResources(workspaceView, plugin.Settings.DefaultTableDensityMode);
             }
             ApplySelectedGameGlassResources();
             OverviewWorkspaceView.UiAnimationsEnabled = MotionEnabled;

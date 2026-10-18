@@ -630,7 +630,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             var headerHeight = MediaInboxGrid.ColumnHeaderHeight;
             if (double.IsNaN(headerHeight) || double.IsInfinity(headerHeight) || headerHeight <= 0)
-                headerHeight = MediaInboxGeometry.DefaultHeaderHeight;
+                headerHeight = ReadDensityMetric("GscTableHeaderHeight", MediaInboxGeometry.DefaultHeaderHeight);
 
             var rowHeight = FindVisualDescendants(MediaInboxGrid)
                 .OfType<DataGridRow>()
@@ -638,7 +638,7 @@ namespace GameSaveCenter.Playnite.Views
                 .Select(row => row.ActualHeight)
                 .FirstOrDefault();
             if (rowHeight <= 0)
-                rowHeight = MediaInboxGeometry.DefaultRowHeight;
+                rowHeight = ReadDensityMetric("GscTableRowHeight", MediaInboxGeometry.DefaultRowHeight);
 
             var horizontalScrollBarHeight = FindVisualDescendants(MediaInboxGrid)
                 .OfType<ScrollBar>()
@@ -662,6 +662,25 @@ namespace GameSaveCenter.Playnite.Views
                 headerHeight,
                 rowHeight,
                 horizontalScrollBarHeight);
+        }
+
+        private double ReadDensityMetric(string key, double fallback)
+        {
+            var value = TryFindResource(key);
+            if (value == null) return fallback;
+            try
+            {
+                var metric = Convert.ToDouble(value, System.Globalization.CultureInfo.InvariantCulture);
+                return double.IsNaN(metric) || double.IsInfinity(metric) || metric <= 0 ? fallback : metric;
+            }
+            catch (InvalidCastException)
+            {
+                return fallback;
+            }
+            catch (FormatException)
+            {
+                return fallback;
+            }
         }
 
         private void OnMediaSelectionChanged(object sender, SelectionChangedEventArgs e)

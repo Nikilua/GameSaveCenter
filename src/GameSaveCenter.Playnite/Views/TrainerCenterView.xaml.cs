@@ -89,7 +89,7 @@ namespace GameSaveCenter.Playnite.Views
                 // A stacked inspector must not consume the installed-tool list's entire
                 // star row.  Keep roughly four readable rows in the virtualized list and
                 // give the inspector the remaining finite budget for its own scroll bar.
-                const double tableMinHeight = 236d;
+                var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 TrainerToolsTable.MinHeight = tableMinHeight;
                 TrainerToolsList.MinHeight = tableMinHeight;
                 TrainerCatalogResultsPanel.MinHeight = tableMinHeight;

@@ -164,7 +164,7 @@
                         </WrapPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TrainerCatalogResultsPanel" Grid.Row="1" Style="{StaticResource TrainerTableFrame}" Margin="0,12,0,0" MinHeight="236">
+                <Border x:Name="TrainerCatalogResultsPanel" Grid.Row="1" Style="{StaticResource TrainerTableFrame}" Margin="0,12,0,0" MinHeight="{DynamicResource GscTableRowHeight}">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                         <Grid Margin="12,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="搜索结果" FontWeight="SemiBold"/><TextBlock Text="选择结果查看版本。" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" Margin="0,3,0,0"/></StackPanel><TextBlock Grid.Column="1" Text="{Binding TrainerCatalogResults.Count, Mode=OneWay, StringFormat={}{0} 个结果}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/></Grid>
@@ -181,7 +181,7 @@
             <Grid x:Name="TrainerReleasesLayout" Margin="0,12,0,0">
                 <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
-                <Border x:Name="TrainerCatalogReleasesPanel" Style="{StaticResource TrainerTableFrame}" MinHeight="236">
+                <Border x:Name="TrainerCatalogReleasesPanel" Style="{StaticResource TrainerTableFrame}" MinHeight="{DynamicResource GscTableRowHeight}">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid Margin="12,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="TrainerReleasesHeading" Text="可下载版本" FontWeight="SemiBold" ToolTip="选择在线目录结果后，此列表会显示对应版本。" AutomationProperties.HelpText="选择在线目录结果后，此列表会显示对应版本。"/><TextBlock x:Name="TrainerReleasesCount" Grid.Column="1" Text="{Binding TrainerReleases.Count, Mode=OneWay, StringFormat={}{0} 个版本}" Foreground="{DynamicResource GscSecondaryTextBrush}" VerticalAlignment="Center"/></Grid>

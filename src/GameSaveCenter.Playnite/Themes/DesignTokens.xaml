@@ -187,6 +187,8 @@
     <!-- Keep rows comfortably readable instead of collapsing a table to two or three lines.
          The surrounding page owns the overflow channel, while the DataGrid keeps its own
          virtualized scrollbar for the remaining rows. -->
+    <sys:Double x:Key="GscTableRowHeightComfortable">52</sys:Double>
+    <sys:Double x:Key="GscTableRowHeightCompact">44</sys:Double>
     <sys:Double x:Key="GscTableRowHeight">52</sys:Double>
     <!-- A readable table should expose several rows at normal window sizes. Legacy and
          dashboard-hosted tables can still use the large viewport token below; extracted
@@ -204,7 +206,12 @@
          each breakpoint so normal hosts show several readable rows without clipping. -->
     <sys:Double x:Key="GscTableViewportHeight">720</sys:Double>
     <sys:Double x:Key="GscListViewportHeight">720</sys:Double>
+    <sys:Double x:Key="GscTableHeaderHeightComfortable">42</sys:Double>
+    <sys:Double x:Key="GscTableHeaderHeightCompact">38</sys:Double>
     <sys:Double x:Key="GscTableHeaderHeight">42</sys:Double>
+    <Thickness x:Key="GscTableCellPaddingComfortable">12,0</Thickness>
+    <Thickness x:Key="GscTableCellPaddingCompact">10,0</Thickness>
+    <Thickness x:Key="GscTableCellPadding">12,0</Thickness>
 
     <!-- Page-level scrolling is deliberately keyed instead of implicit.  A page owns one
          vertical scroll channel; tables and lists own their own internal channels.  Keeping

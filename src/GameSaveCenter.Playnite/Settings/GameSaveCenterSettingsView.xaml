@@ -197,7 +197,7 @@
                         <TextBlock Text="外观与动态效果" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ui:Button Style="{StaticResource GscWpfUiToolbarButton}" Content="恢复本类默认" Click="OnResetAppearanceDefaultsClick" Margin="16,0,0,0" AutomationProperties.Name="恢复外观与可访问性安全设置默认值"/>
                     </WrapPanel>
                     <TextBlock Text="毛玻璃采用主题自适应的半透明表面和模糊环境光，不会修改 Playnite 外层窗口。系统高对比度或关闭动画时会自动降级。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
-                    <TextBlock x:Name="SettingsAppearanceEffectHint" Text="生效：当前设置页即时预览；保存后已打开的 GameSaveCenter 页面立即重建主题、动画和背景偏好，不需要重启 Playnite。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="外观设置生效条件"/>
+                    <TextBlock x:Name="SettingsAppearanceEffectHint" Text="生效：当前设置页即时预览；保存后已打开的 GameSaveCenter 页面立即应用主题、表格密度、动画和背景偏好，不需要重启 Playnite。" Foreground="{DynamicResource GscMutedTextBrush}" TextWrapping="Wrap" Margin="0,0,0,10" AutomationProperties.Name="外观设置生效条件"/>
                     <UniformGrid x:Name="AppearanceFields" Columns="2" Margin="0,0,0,12">
                         <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 主题 浅色 深色 Playnite" Margin="0,0,12,10">
                         <TextBlock Text="界面主题" Margin="0,0,0,4"/>
@@ -207,6 +207,20 @@
                             <ComboBoxItem Content="深色" Tag="{x:Static settings:GameSaveCenterThemeMode.Dark}"/>
                         </ComboBox>
                         <TextBlock Text="第三方主题可读性不佳时，可固定为浅色或深色。" Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 表格 行高 密度 舒适 紧凑" Margin="0,0,12,10">
+                            <TextBlock Text="数据表密度" Margin="0,0,0,4"/>
+                            <ComboBox x:Name="TableDensitySelector" Style="{StaticResource GscWpfUiComboBox}"
+                                      SelectedValue="{Binding DefaultTableDensityMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=Comfortable, FallbackValue=Comfortable}"
+                                      SelectedValuePath="Tag" SelectionChanged="OnVisualSettingChanged"
+                                      ToolTip="调整所有工作区数据表的行高与单元格留白，不会缩小正文文字。"
+                                      AutomationProperties.Name="数据表密度"
+                                      AutomationProperties.HelpText="舒适模式行高52 DIP；紧凑模式44 DIP。正文文字大小保持不变。">
+                                <ComboBoxItem Content="舒适" Tag="Comfortable"/>
+                                <ComboBoxItem Content="紧凑" Tag="Compact"/>
+                            </ComboBox>
+                            <TextBlock Text="紧凑模式只减少行高与单元格横向留白，正文字号不变；长内容仍可通过省略提示查看完整文本。"
+                                       Foreground="{DynamicResource GscMutedTextBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
                         </StackPanel>
                         <StackPanel settings:GameSaveCenterSettingsView.SearchTerms="外观 毛玻璃 强度 环境光" Margin="0,0,12,10">
                             <TextBlock Text="毛玻璃强度" Margin="0,0,0,4"/>

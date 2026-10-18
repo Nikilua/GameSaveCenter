@@ -1,6 +1,7 @@
 using System.Linq;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -64,5 +65,30 @@ public sealed class R16SettingsDefaultsBehaviorTests
             || field.Key == "MediaArchiveDirectory"
             || field.Key == "LocalMirrorPath");
         Assert.Contains("不会清除", SettingsResetCatalog.BuildAllImpact());
+    }
+
+    [Fact]
+    public void TableDensityDefaultPersistsNormalizesCopiesAndResetsWithAppearance()
+    {
+        var settings = new GameSaveCenterSettings();
+        Assert.Equal("Comfortable", settings.DefaultTableDensityMode);
+
+        settings.DefaultTableDensityMode = " compact ";
+        Assert.Equal("Compact", settings.DefaultTableDensityMode);
+
+        var restored = JsonConvert.DeserializeObject<GameSaveCenterSettings>(JsonConvert.SerializeObject(settings))!;
+        Assert.Equal("Compact", restored.DefaultTableDensityMode);
+
+        restored.BeginEdit();
+        restored.DefaultTableDensityMode = "Comfortable";
+        restored.CancelEdit();
+        Assert.Equal("Compact", restored.DefaultTableDensityMode);
+
+        Assert.True(SettingsResetCatalog.ResetField(restored, "DefaultTableDensityMode"));
+        Assert.Equal("Comfortable", restored.DefaultTableDensityMode);
+        Assert.Contains(SettingsResetCatalog.Fields, field =>
+            field.Key == "DefaultTableDensityMode"
+            && field.Category == SettingsResetCategory.Appearance
+            && field.DefaultDisplay == "舒适");
     }
 }

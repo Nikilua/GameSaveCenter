@@ -1511,6 +1511,7 @@ namespace GameSaveCenter.Playnite.Settings
             AdaptiveThemePaletteFactory.SetHighContrastActive(this, palette.IsHighContrast);
             AdaptiveThemePaletteFactory.SetMotionEnabledActive(this, MotionEnabled && !palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(Resources, palette, glassEnabled, MotionEnabled);
+            TableDensityPolicy.ApplyResources(this, CurrentSettings?.DefaultTableDensityMode);
             // Keep the same host-neutral baseline used by DashboardView. The settings
             // material below only changes structural surfaces; it must not leave core
             // semantic brushes inherited from a Playnite host dictionary.

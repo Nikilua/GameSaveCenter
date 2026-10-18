@@ -204,13 +204,10 @@ namespace GameSaveCenter.Playnite.Views
                 // When the compact inspector opens, its own scroll surface gives up
                 // a little height; the compact queue still keeps four complete
                 // rows while the inspector is visible.
-                const double desktopTaskGridMinHeight = 264d; // 52-DIP header + 4 x 52-DIP rows + rounding allowance.
-                const double compactTaskGridMinHeight = 200d; // 52-DIP header + 4 x 36-DIP rows + rounding allowance.
-                const double compactOpenTaskGridMinHeight = 200d; // Keep four compact rows while the inspector is open.
+                var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 const double compactInspectorMaxHeight = 136d;
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var stack = detailBreakpoint.Evaluate(width);
-                var tableMinHeight = stack ? compactTaskGridMinHeight : desktopTaskGridMinHeight;
                 // Some hosts report the outer window height while this view is
                 // arranged inside a shorter PageHost. Prefer the measured page
                 // viewport so the compact summary does not consume table rows.
@@ -228,13 +225,12 @@ namespace GameSaveCenter.Playnite.Views
                 var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
                 // Keep four compact rows both before and while the secondary drawer
                 // is open; the summary strip yields its space on short pages below.
-                TaskGrid.MinHeight = compactInspectorOpen ? compactOpenTaskGridMinHeight : tableMinHeight;
+                TaskGrid.MinHeight = tableMinHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
-                // The compact page must expose several task rows before the stacked
-                // inspector button; the desktop theme row height remains unchanged.
+                // Responsive stacking changes the page layout; the shared user density
+                // remains the only source for table row height in every breakpoint.
                 TaskGrid.ClearValue(DataGrid.RowHeightProperty);
-                if (stack) TaskGrid.RowHeight = 36d;
                 TaskGrid.RowStyle = (Style)FindResource(stack ? "TaskCompactDataGridRow" : "GscStableDataGridRow");
                 // Keep the Demo's four metrics in one continuous strip at every width. On a
                 // short window, tighten only the secondary summary chrome so the queue still

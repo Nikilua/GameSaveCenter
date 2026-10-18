@@ -24,6 +24,7 @@ namespace GameSaveCenter.Playnite.Settings
         private bool enableLocalMirror;
         private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
         private List<ViewConfigurationDefinition> viewConfigurations = new List<ViewConfigurationDefinition>();
+        private string defaultTableDensityMode = TableDensityPolicy.ComfortableMode;
         private bool autoStartWorker = true;
         private bool onboardingCompleted;
         private bool enableProcessDetection = true;
@@ -121,6 +122,17 @@ namespace GameSaveCenter.Playnite.Settings
         public bool SafeModeEnabled { get => safeModeEnabled; set => SetBoolean(ref safeModeEnabled, value, nameof(SafeModeEnabled)); }
         public bool SafeModeRequested { get => safeModeRequested; set => SetBoolean(ref safeModeRequested, value, nameof(SafeModeRequested)); }
         public GameSaveCenterThemeMode ThemeMode { get; set; } = GameSaveCenterThemeMode.FollowPlaynite;
+        public string DefaultTableDensityMode
+        {
+            get => defaultTableDensityMode;
+            set
+            {
+                var normalized = TableDensityPolicy.NormalizeMode(value);
+                if (string.Equals(defaultTableDensityMode, normalized, StringComparison.Ordinal)) return;
+                defaultTableDensityMode = normalized;
+                OnPropertyChanged(nameof(DefaultTableDensityMode));
+            }
+        }
         public bool EnableUiAnimations { get => enableUiAnimations; set => SetBoolean(ref enableUiAnimations, value, nameof(EnableUiAnimations)); }
         public bool EnableGlassEffects { get => enableGlassEffects; set => SetBoolean(ref enableGlassEffects, value, nameof(EnableGlassEffects)); }
         public int GlassEffectStrength { get; set; } = 78;
@@ -610,6 +622,7 @@ namespace GameSaveCenter.Playnite.Settings
             SafeModeEnabled = other.SafeModeEnabled;
             SafeModeRequested = other.SafeModeRequested;
             ThemeMode = other.ThemeMode;
+            DefaultTableDensityMode = other.DefaultTableDensityMode;
             EnableUiAnimations = other.EnableUiAnimations;
             EnableGlassEffects = other.EnableGlassEffects;
             GlassEffectStrength = other.GlassEffectStrength <= 0 ? 78 : other.GlassEffectStrength;

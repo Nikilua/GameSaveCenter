@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.Settings
 {
@@ -43,6 +44,7 @@ namespace GameSaveCenter.Playnite.Settings
             new SettingsResetFieldOption("FullBackupLimit", "完整版本数", SettingsResetCategory.BackupRestore, "3"),
             new SettingsResetFieldOption("DifferentialBackupLimit", "每组差异版本数", SettingsResetCategory.BackupRestore, "5"),
             new SettingsResetFieldOption("ThemeMode", "界面主题", SettingsResetCategory.Appearance, "跟随 Playnite"),
+            new SettingsResetFieldOption("DefaultTableDensityMode", "数据表密度", SettingsResetCategory.Appearance, "舒适"),
             new SettingsResetFieldOption("EnableUiAnimations", "界面动画", SettingsResetCategory.Appearance, "开启"),
             new SettingsResetFieldOption("EnableGlassEffects", "毛玻璃与环境光", SettingsResetCategory.Appearance, "开启"),
             new SettingsResetFieldOption("GlassEffectStrength", "毛玻璃强度", SettingsResetCategory.Appearance, "78"),
@@ -103,6 +105,7 @@ namespace GameSaveCenter.Playnite.Settings
                 case "FullBackupLimit": settings.FullBackupLimit = 3; return true;
                 case "DifferentialBackupLimit": settings.DifferentialBackupLimit = 5; return true;
                 case "ThemeMode": settings.ThemeMode = GameSaveCenterThemeMode.FollowPlaynite; return true;
+                case "DefaultTableDensityMode": settings.DefaultTableDensityMode = TableDensityPolicy.ComfortableMode; return true;
                 case "EnableUiAnimations": settings.EnableUiAnimations = true; return true;
                 case "EnableGlassEffects": settings.EnableGlassEffects = true; return true;
                 case "GlassEffectStrength": settings.GlassEffectStrength = 78; return true;

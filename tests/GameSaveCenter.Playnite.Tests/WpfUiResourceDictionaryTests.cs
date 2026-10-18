@@ -1068,10 +1068,17 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscTableRowHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\"", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\"", designTokens);
+        Assert.Contains("x:Key=\"GscTableRowHeightComfortable\">52</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableRowHeightCompact\">44</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableRowHeight\">52</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableMinHeight\">0</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableViewportHeight\">720</sys:Double>", designTokens);
         Assert.Contains("x:Key=\"GscTableHeaderHeight\">42</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableHeaderHeightComfortable\">42</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableHeaderHeightCompact\">38</sys:Double>", designTokens);
+        Assert.Contains("x:Key=\"GscTableCellPaddingComfortable\">12,0</Thickness>", designTokens);
+        Assert.Contains("x:Key=\"GscTableCellPaddingCompact\">10,0</Thickness>", designTokens);
+        Assert.Contains("Padding\" Value=\"{DynamicResource GscTableCellPadding}\"", production);
         Assert.Contains("<Setter Property=\"ClipToBounds\" Value=\"True\"/>", redesign);
         Assert.DoesNotContain("Property=\"Height\" Value=\"{DynamicResource GscTableViewportHeight}\"", production);
         Assert.DoesNotContain("Property=\"Height\" Value=\"{DynamicResource GscTableViewportHeight}\"", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
@@ -1128,6 +1135,28 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"PART_RightHeaderGripper\"", dashboard);
         Assert.Contains("<ColumnDefinition Width=\"22\" MinWidth=\"22\"/>", dashboard);
         Assert.Contains("Grid.Column=\"1\" Data=\"M 0 5 L 5 0 L 10 5\"", dashboard);
+    }
+
+    [Fact]
+    public void TableDensitySettingUsesSharedTokensWithoutChangingBodyTypography()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var settingsView = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml"));
+        var settingsCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettingsView.xaml.cs"));
+        var dashboardCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs"));
+        var production = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var designTokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml"));
+
+        Assert.Contains("x:Name=\"TableDensitySelector\"", settingsView);
+        Assert.Contains("SelectedValue=\"{Binding DefaultTableDensityMode", settingsView);
+        Assert.Contains("SelectionChanged=\"OnVisualSettingChanged\"", settingsView);
+        Assert.Contains("GscTableRowHeightComfortable\">52</sys:Double>", designTokens);
+        Assert.Contains("GscTableRowHeightCompact\">44</sys:Double>", designTokens);
+        Assert.Contains("TableDensityPolicy.ApplyResources(this, CurrentSettings?.DefaultTableDensityMode)", settingsCode);
+        Assert.Contains("TableDensityPolicy.ApplyResources(workspaceView, plugin.Settings.DefaultTableDensityMode)", dashboardCode);
+        Assert.Contains("ApplyResponsiveLayout(ActualWidth, ActualHeight)", dashboardCode);
+        Assert.Contains("FontSize\" Value=\"{DynamicResource GscBodyFontSize}\"", production);
+        Assert.Contains("只减少行高与单元格横向留白，正文字号不变", settingsView);
     }
 
     [Fact]
@@ -1466,7 +1495,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MaintenanceDeviceScrollSurface\"", maintenance);
         Assert.Contains("x:Name=\"MaintenanceAuditScrollSurface\"", maintenance);
         Assert.Contains("x:Name=\"MaintenanceProcessScrollSurface\"", maintenance);
-        Assert.Contains("const double tableMinHeight = 260d", maintenanceCode);
+        Assert.Contains("TableDensityPolicy.CalculateMinimumGridHeight(this)", maintenanceCode);
+        Assert.Contains("MaintenanceAuditLogGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.DoesNotContain("tableViewportHeight", maintenanceCode);
         Assert.Contains("FindingsGrid.Height = double.NaN", maintenanceCode);
         Assert.Contains("FindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
@@ -1552,9 +1582,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"SaveHistoryRestoreAvailabilityHint\"", save);
         Assert.Contains("x:Name=\"SaveHistoryInspectorAvailabilityHint\"", save);
         Assert.Contains("x:Name=\"SaveLoadDetailsButton\" Style=\"{DynamicResource GscIconOnlyToolbarButton}\"", save);
-        Assert.Contains("const double tableMinHeight = 260d", saveCode);
+        Assert.Contains("TableDensityPolicy.CalculateMinimumGridHeight(this)", saveCode);
         Assert.Contains("SaveHistoryGrid.MinHeight = tableMinHeight", saveCode);
-        Assert.Contains("SaveCandidateGrid.MinHeight = Math.Max(tableMinHeight, 252d)", saveCode);
+        Assert.Contains("SaveCandidateGrid.MinHeight = tableMinHeight", saveCode);
         Assert.Contains("SaveHistorySummaryCard.Padding = historyActionsCompact", saveCode);
         Assert.Contains("new Thickness(10, 4, 10, 4)", saveCode);
         Assert.Contains("SaveHistorySummaryActions.Margin = historyActionsCompact", saveCode);
@@ -1568,8 +1598,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"TrainerToolsTable\"", trainer);
         Assert.Contains("x:Name=\"TrainerCatalogResultsPanel\"", trainer);
         Assert.Contains("x:Name=\"TrainerCatalogReleasesPanel\"", trainer);
-        Assert.Contains("MinHeight=\"236\"", trainer);
-        Assert.Contains("const double tableMinHeight = 236d", trainerCode);
+        Assert.Contains("MinHeight=\"{DynamicResource GscTableRowHeight}\"", trainer);
+        Assert.Contains("TableDensityPolicy.CalculateMinimumGridHeight(this)", trainerCode);
         Assert.Contains("TrainerToolsTable.MinHeight = tableMinHeight", trainerCode);
         Assert.Contains("TrainerCatalogReleasesPanel.MinHeight = tableMinHeight", trainerCode);
         Assert.Contains("installedHeight - tableMinHeight - 72", trainerCode);
@@ -1590,11 +1620,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"TaskPageScrollSurface\"", task);
         Assert.Contains("Grid x:Name=\"TaskPageScrollSurface\"", task);
         Assert.DoesNotContain("ScrollViewer x:Name=\"TaskPageScrollSurface\"", task);
-        Assert.Contains("const double desktopTaskGridMinHeight = 264d", taskCode);
-        Assert.Contains("const double compactTaskGridMinHeight = 200d", taskCode);
-        Assert.Contains("const double compactOpenTaskGridMinHeight = 200d", taskCode);
+        Assert.Contains("TableDensityPolicy.CalculateMinimumGridHeight(this)", taskCode);
         Assert.DoesNotContain("tableViewportHeight", taskCode);
-        Assert.Contains("TaskGrid.MinHeight = compactInspectorOpen ? compactOpenTaskGridMinHeight : tableMinHeight", taskCode);
+        Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
         Assert.Contains("TaskGrid.MaxHeight = double.PositiveInfinity", taskCode);
         Assert.Contains("TaskPageScrollSurface.ActualHeight", taskCode);
         Assert.Contains("- TaskSummaryPanel.ActualHeight", taskCode);
@@ -1979,7 +2007,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Disabled", auditInspector.Attribute("HorizontalScrollBarVisibility")?.Value);
         Assert.Null(auditInspector.Attribute("MaxHeight"));
         var maintenanceCode = File.ReadAllText(maintenancePath + ".cs");
-        Assert.Contains("const double tableMinHeight = 260d", maintenanceCode);
+        Assert.Contains("TableDensityPolicy.CalculateMinimumGridHeight(this)", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.MaxHeight = double.PositiveInfinity", maintenanceCode);
@@ -2164,7 +2192,7 @@ public sealed class WpfUiResourceDictionaryTests
             element.Name.LocalName == "DataGrid" && (string?)element.Attribute(xamlName) == "MaintenanceProcessGrid");
         Assert.Equal("{StaticResource MaintenanceDataGrid}", (string?)processGrid.Attribute("Style"));
         Assert.Contains(maintenance.Descendants(), element => (string?)element.Attribute(xamlName) == "MaintenanceProcessInspector");
-        Assert.Contains("MaintenanceProcessGrid.MinHeight = Math.Max(tableMinHeight, 252d)", maintenanceCode);
+        Assert.Contains("MaintenanceProcessGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedProcessMapping}\" Value=\"{x:Null}\">", maintenanceText);
         Assert.Contains("Command=\"{Binding DeleteProcessMappingCommand}\" CommandParameter=\"{Binding SelectedProcessMapping}\"", maintenanceText);
         Assert.Contains("CommandParameter=\"{Binding}\" AutomationProperties.Name=\"{Binding ExecutableName}\"", maintenanceText);
@@ -2758,7 +2786,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("Stretch", viewer.Attribute("VerticalContentAlignment")?.Value);
         Assert.Null(viewer.Attribute("MaxHeight"));
 
-        Assert.Contains("MaintenanceDeviceGrid.MinHeight = Math.Max(tableMinHeight, 252d)", maintenanceCode);
+        Assert.Contains("MaintenanceDeviceGrid.MinHeight = tableMinHeight", maintenanceCode);
         Assert.Contains("var deviceAvailableHeight", maintenanceCode);
         Assert.Contains("MaintenanceDeviceLayout.RowDefinitions[0].ActualHeight", maintenanceCode);
         Assert.Contains("var deviceInspectorHeight", maintenanceCode);
@@ -2974,7 +3002,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Name=\"MediaInspectorScrollViewer\"", media);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\" HorizontalScrollBarVisibility=\"Disabled\"", media);
         Assert.Contains("MinHeight=\"0\" ClipToBounds=\"True\"", media);
-        Assert.Contains("MinHeight=\"236\" ItemsSource=\"{Binding MediaInboxItems}\"", media);
+        Assert.Contains("MinHeight=\"0\" ItemsSource=\"{Binding MediaInboxItems}\"", media);
+        Assert.Contains("ReadDensityMetric(\"GscTableRowHeight\"", mediaCode);
+        Assert.Contains("ReadDensityMetric(\"GscTableHeaderHeight\"", mediaCode);
         Assert.Contains("Setter Property=\"ColumnHeaderStyle\" Value=\"{StaticResource GscDataGridColumnHeaderStyle}\"", maintenance);
         Assert.DoesNotContain("FindVisualChildren", maintenanceCode);
         Assert.Contains("MediaInspectorScrollViewer.MaxHeight = showInspector && stack", mediaCode);
