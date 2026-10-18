@@ -1,3 +1,9 @@
+## 2026-10-18 Round4 S02-05 临时静音与时段
+
+- 提交 `2aa3fe3c5fd099d6b5a580e2d1f3c436ed5a2c39` 增加 15 分钟、1 小时和 4 小时静音预设、解除动作、本地每日安静时段及跨午夜判断。信息/成功弹出按静音策略过滤，记录持久化仍在弹出判断之前；警告/错误不受本项抑制。设置加入复制/重置、取消回滚、便携导入导出和 JSON 持久化。
+- SDK `9.0.302` Release solution build `0 warning / 0 error`；通知策略 `20/20`、设置 JSON/便携配置/设置页交互 `15/15`、逐类独立 R09 `2/2`。新 `notificationsettingsprobe` 在 light/dark × `1040×700`/`720×640` DIP 下状态、按钮与字段可见可达 `4/4`；XAML 结构检查 25 文件通过，`validate-source.py` 和 `git diff --check` 通过。日志、TRX、报告、截图和哈希见 [S02-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md)。
+- 合并 R09 与新增 WPF 窗口测试时出现焦点前置条件失败；按隔离进程运行 R09 则 `2/2`，不改焦点描边模板。当前仅有 SDK9.0.302，global.json 要求 SDK8.0.423，构建未 restore；完整 WPF 独立循环、安装和真实 Playnite 未验。既存一键日志此前停在 R05 系统鼠标位置读取，用户旧 R09 诊断仍无同次 summary/TRX/DLL/PDB，旧输入身份未知。下一项 S02-06。
+
 ## 2026-10-18 Round4 S02-04 上下文跳转
 
 - 提交 `1b17e4a0` 为通知详情加入按稳定游戏 ID 打开游戏、按精确任务 ID 打开任务，并在对象不可定位时保留通知摘要与原因提示；已有返回导航回到通知收件箱。

@@ -1,0 +1,192 @@
+{
+  "implementationCommit": "2aa3fe3c5fd099d6b5a580e2d1f3c436ed5a2c39",
+  "sdk": "9.0.302",
+  "buildCommand": "dotnet build GameSaveCenter.sln --configuration Release --no-restore --nologo -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false",
+  "buildResult": "0 warnings / 0 errors",
+  "sdkBaseline": "global.json requires 8.0.423; installed SDK used was 9.0.302; no restore",
+  "testResults": [
+    {
+      "trx": "tests/core-policy/notification-popup-policy.trx",
+      "passed": 20,
+      "name": "NotificationPopupPolicyTests",
+      "failed": 0
+    },
+    {
+      "trx": "tests/playnite-settings/s02-05-settings.trx",
+      "passed": 15,
+      "name": "settings persistence and interaction",
+      "failed": 0
+    },
+    {
+      "trx": "tests/r09-focus/R09-focus-outline.trx",
+      "passed": 2,
+      "name": "R09FocusOutlineBehaviorTests",
+      "failed": 0
+    }
+  ],
+  "renderResult": "notificationsettingsprobe OK; 4/4 theme and viewport combinations; not a Playnite host render",
+  "renderEvidence": [
+    {
+      "path": "render/notification-settings-probe-report.txt",
+      "sha256": "C4E9153A40C3E6AF446B22BDC7C66493B792CF92CAA1571CA187D4A741E396DD",
+      "bytes": 834
+    },
+    {
+      "path": "render/notification-schedule-light-1040x700.png",
+      "sha256": "50C2BFDB7A1A2534216C614A8870FE4EF81964C8A6BC35F63522460AFDC4B3D4",
+      "bytes": 174635
+    },
+    {
+      "path": "render/notification-schedule-dark-1040x700.png",
+      "sha256": "B1FCBE94FDAF725EE04F7A8A45EEC9D64BD2FF9ABBC5D92148182738ABE37C2A",
+      "bytes": 211362
+    },
+    {
+      "path": "render/notification-schedule-light-720x640.png",
+      "sha256": "F178FF9317414C0D355CFE158407937684BA45FBDEBE91143EBD8F7252DCA67D",
+      "bytes": 141273
+    },
+    {
+      "path": "render/notification-schedule-dark-720x640.png",
+      "sha256": "CA90F85E749FC0AF227415379ECEF3497E832CE75A66BB19E8693A695BBE485E",
+      "bytes": 169760
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "src/GameSaveCenter.Core/Services/NotificationPopupPolicy.cs",
+      "gitBlob": "7bf97c15ac5c11833a6325b7a5607e0da5b39285",
+      "sha256": "61286F651A33D703474987E008A676BF18F89569D54C57CCDE048C8101479C22",
+      "bytes": 2623
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs",
+      "gitBlob": "7b9c558f34407f46003b230bc31330594d76487c",
+      "sha256": "C0995912BE55A3C4926937FAD3667E7E2D874E2F41CC1B0CD688F8BE3FCAD87A",
+      "bytes": 84232
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettings.cs",
+      "gitBlob": "37ae25a09262e3d90b1fd28640ab0e67da7cf424",
+      "sha256": "C46B956D1AD7D869BBA514B890EF304C8015476C649B7E40A1D49E9BAB291F94",
+      "bytes": 56985
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml",
+      "gitBlob": "3f0aff41799223048ea2b5d79bc476039254d996",
+      "sha256": "4BCFF251743B191AC8D25252F230CCF6A36AF8ACAFDECD0A256DD5EA0BFF7C5A",
+      "bytes": 66573
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/GameSaveCenterSettingsView.xaml.cs",
+      "gitBlob": "ea1043bb23aea23d8466cafb2c67c35216ac3425",
+      "sha256": "7F6627D5288F0276F1AEE67DB1D35FA76BB125035CD9B2799A7CCEA987664FAB",
+      "bytes": 82398
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Settings/SettingsResetCatalog.cs",
+      "gitBlob": "1cbcc9df2e43814a170164746c826692ecdb687c",
+      "sha256": "3693B4532A49A41801C356C71A0992DA2D4CA94C1C9322BD104F4D4ACDFDD814",
+      "bytes": 15867
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/NotificationPopupPolicyTests.cs",
+      "gitBlob": "f0ff87f7b8f3633bd06339455d2011fbc0e4e019",
+      "sha256": "918C789D096ED4937B1F5017987864797FA0CD33D75067C323353C917870993F",
+      "bytes": 3799
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/PortableSettingsTests.cs",
+      "gitBlob": "8c15a91a381def578efa566e7227ac67ad50c88e",
+      "sha256": "94A527C589944441B610716D0C16CF96AC74C93A30A3A5F3E5048B6B862DA88B",
+      "bytes": 15659
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16SettingsDefaultsBehaviorTests.cs",
+      "gitBlob": "51e7cd9e64d239bb600e08495bc6bfaba4f1f3a4",
+      "sha256": "1343FE561166DFF93DC35951E0809768009BBDF578B7055C60B86F64869FDA94",
+      "bytes": 6863
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R16NotificationScheduleBehaviorTests.cs",
+      "gitBlob": "aaac0b007badd97f63c3f32d4910cbcc09d84d28",
+      "sha256": "7BB9B8A92F29B71B4223F4F019C32359FC890FF7D82234B3C6BD76B36EFA32D9",
+      "bytes": 4879
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/Program.cs",
+      "gitBlob": "98c6e84871cd10835b26b036c877512c51155d72",
+      "sha256": "5CB5967D731F7B7DAAF172BA6A7B37109E0E4807AF7C7B639304139CB6741596",
+      "bytes": 504609
+    }
+  ],
+  "binaryFiles": [
+    {
+      "path": "src/GameSaveCenter.Core/bin/Release/netstandard2.0/GameSaveCenter.Core.dll",
+      "sha256": "4FFF39E19F5AF36FCB597C56E078B7BA71CCEDA515455A92144153DB88EEAA5B",
+      "bytes": 70656
+    },
+    {
+      "path": "src/GameSaveCenter.Core/bin/Release/netstandard2.0/GameSaveCenter.Core.pdb",
+      "sha256": "BB38E87FBD368A1EA1400E03589B4FEA554780ACB0D70FDBC4328EDE0B8A8BEC",
+      "bytes": 26192
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "450809CFD1F421E492F4A7B7EE8049D1B43AA05C5844E3408541C40CC4235A57",
+      "bytes": 1963520
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/bin/Release/net462/GameSaveCenter.Playnite.pdb",
+      "sha256": "EA8BB038ADDC4F670AE56FEEA0134AC7C5867C9BC0BDBAD7C86A8003CCE39A70",
+      "bytes": 524640
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/bin/Release/net8.0/GameSaveCenter.Core.Tests.dll",
+      "sha256": "29A7B2B1AFE9A43190ABD7B1EB628E86D10D5DEAF20384EE95DF984E945052D6",
+      "bytes": 52736
+    },
+    {
+      "path": "tests/GameSaveCenter.Core.Tests/bin/Release/net8.0/GameSaveCenter.Core.Tests.pdb",
+      "sha256": "96171DDCF2E0567D568A10B632F35D6CC1F6BAC843BAE4ED7D95D7F56539235F",
+      "bytes": 23200
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "90F75FE9D014192874373FFF833139D482176825EBC9E2E43491513C72A9D2E5",
+      "bytes": 2021376
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "sha256": "177FF24AB5B9654DDDE6FFA5328F83501557A314C79FB288FE79DD4BD6B103FD",
+      "bytes": 466632
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe",
+      "sha256": "10E74BA8E8BF1D9A88519EDB37C41C2727C5D5AE1A4FB8DA4FD7464AB19ABE0F",
+      "bytes": 619008
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.pdb",
+      "sha256": "E9FA1120C27197DD316E21A57C619E8B05F9F9D5AC8FD0826C7E7FA7D14415EA",
+      "bytes": 130572
+    }
+  ],
+  "testArtifacts": [
+    {
+      "path": "tests/core-policy/notification-popup-policy.trx",
+      "sha256": "C07A255924BD5A6B609B3C0D5DA524E651C631488D15497004E2D2FC451AF5EC",
+      "bytes": 31621
+    },
+    {
+      "path": "tests/playnite-settings/s02-05-settings.trx",
+      "sha256": "A43B33A551BBEBF80E929C1C444CF91B0FEC82C801BA48C9D05914529B774421",
+      "bytes": 23617
+    },
+    {
+      "path": "tests/r09-focus/R09-focus-outline.trx",
+      "sha256": "C73B0084FA3D83F2AE18092FDE1046509EA28D8FD41ADF9D86B46365BC9CCF6E",
+      "bytes": 4758
+    }
+  ]
+}

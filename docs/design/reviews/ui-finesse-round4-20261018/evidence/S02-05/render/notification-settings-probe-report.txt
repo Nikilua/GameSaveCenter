@@ -1,0 +1,8 @@
+S02-05 notification schedule settings probe
+Generated: 2026-10-18T15:31:45Z
+Scope: production settings view; search to notification quiet-hours controls; light/dark themes; 1040x700 and 720x640 DIP. No settings are saved and no notification is emitted.
+  light/1040x700: searchCategory=3, status=visible, actions=4, quietHoursFields=True, screenshot=notification-schedule-light-1040x700.png
+  light/720x640: searchCategory=3, status=visible, actions=4, quietHoursFields=True, screenshot=notification-schedule-light-720x640.png
+  dark/1040x700: searchCategory=3, status=visible, actions=4, quietHoursFields=True, screenshot=notification-schedule-dark-1040x700.png
+  dark/720x640: searchCategory=3, status=visible, actions=4, quietHoursFields=True, screenshot=notification-schedule-dark-720x640.png
+notificationsettingsprobe OK

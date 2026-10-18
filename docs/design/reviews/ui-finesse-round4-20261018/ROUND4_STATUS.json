@@ -316,14 +316,19 @@
     {
       "id": "S02-05",
       "title": "临时静音与时段",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "2aa3fe3c",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S02-05/README.md)：SDK9 Release solution 0/0；通知策略 20/20，设置持久化/交互 15/15，独立 R09 2/2；浅/深主题 × 1040×700/720×640 设置探针 4/4",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md"
+        }
+      ],
+      "boundary": "当前只安装 SDK 9.0.302，global.json 锁定 SDK 8.0.423；完整 WPF 隔离循环、安装和真实 Playnite 宿主未验证。已有一键日志在 R05 系统鼠标位置读取处停止；旧 R09 同次 summary/TRX/DLL/PDB 身份缺失。"
     },
     {
       "id": "S02-06",
