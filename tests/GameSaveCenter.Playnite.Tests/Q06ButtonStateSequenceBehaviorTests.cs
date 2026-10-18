@@ -311,6 +311,8 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         finally
         {
             window.Close();
+            // Let the previous window's animation clocks drain before the next theme fixture starts.
+            PumpDispatcher(TimeSpan.FromMilliseconds(150));
         }
     }
 
