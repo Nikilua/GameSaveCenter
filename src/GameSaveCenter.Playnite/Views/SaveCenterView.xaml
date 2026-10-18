@@ -425,6 +425,41 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,8,0,0" AutomationProperties.Name="恢复方案差异比较入口">
+                                    <StackPanel>
+                                        <TextBlock Text="比较两份方案" FontWeight="SemiBold"/>
+                                        <TextBlock Text="选择起始方案 A 和目标方案 B。比较只使用草稿保存的脱敏摘要，不会执行恢复。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,6"/>
+                                        <TextBlock Text="起始方案 A" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <ComboBox x:Name="RestorePlanCompareFromSelector" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding RestorePlanDrafts, Mode=OneWay}" DisplayMemberPath="ComparisonSelectorDisplay" SelectedItem="{Binding SelectedRestorePlanDraftFrom, Mode=TwoWay}" AutomationProperties.Name="恢复方案比较起始方案 A" AutomationProperties.HelpText="选择差异比较的起始只读方案。" Margin="0,3,0,6"/>
+                                        <TextBlock Text="目标方案 B" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <ComboBox x:Name="RestorePlanCompareToSelector" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding RestorePlanDrafts, Mode=OneWay}" DisplayMemberPath="ComparisonSelectorDisplay" SelectedItem="{Binding SelectedRestorePlanDraftTo, Mode=TwoWay}" AutomationProperties.Name="恢复方案比较目标方案 B" AutomationProperties.HelpText="选择差异比较的目标只读方案。比较方向为 A 到 B。" Margin="0,3,0,0"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareRestorePlanDraftsCommand}" Content="比较 A → B" AutomationProperties.Name="比较恢复方案 A 到 B" Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border x:Name="RestorePlanDraftComparisonCard" Padding="10" Margin="0,8,0,0" AutomationProperties.Name="恢复方案差异结果">
+                                    <Border.Style>
+                                        <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                                            <Setter Property="Padding" Value="10"/>
+                                            <Setter Property="Margin" Value="0,8,0,0"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RestorePlanDraftComparisonResult}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel AutomationProperties.Name="恢复方案 A 到 B 差异摘要">
+                                        <TextBlock Text="对比结果（A → B）" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.DirectionDisplay, Mode=OneWay}" Style="{DynamicResource GscBodyStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.SourceDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.MappingDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="仅比较脱敏映射签名，不显示或保存具体路径。"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.EstimatedImpactDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.ReadinessDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.UnknownsDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="恢复方案未知项"/>
+                                        <TextBlock Text="{Binding RestorePlanDraftComparisonResult.SnapshotDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="对比基于草稿保存时的检查摘要，不会重新验证当前文件。"/>
+                                    </StackPanel>
+                                </Border>
                                 <Separator Margin="0,16,0,12"/>
                                 <TextBlock Text="恢复流程" FontWeight="SemiBold"/>
                                 <TextBlock Text="{Binding RestoreWorkflowSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="恢复流程摘要"/>

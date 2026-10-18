@@ -12,11 +12,52 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private RestoreMappingPreviewDto? restorePlanMappingPreview;
         private string restorePlanDraftStatus = "先预览所选版本的映射，再保存只读方案草稿。";
+        private RestorePlanDraftDefinition? selectedRestorePlanDraftFrom;
+        private RestorePlanDraftDefinition? selectedRestorePlanDraftTo;
+        private RestorePlanDraftComparison? restorePlanDraftComparison;
 
         public ObservableCollection<RestorePlanDraftDefinition> RestorePlanDrafts { get; } = new ObservableCollection<RestorePlanDraftDefinition>();
         public ICommand PreviewRestorePlanMappingCommand { get; private set; } = null!;
         public ICommand SaveRestorePlanDraftCommand { get; private set; } = null!;
         public ICommand DeleteRestorePlanDraftCommand { get; private set; } = null!;
+        public ICommand CompareRestorePlanDraftsCommand { get; private set; } = null!;
+
+        public RestorePlanDraftDefinition? SelectedRestorePlanDraftFrom
+        {
+            get => selectedRestorePlanDraftFrom;
+            set
+            {
+                if (ReferenceEquals(selectedRestorePlanDraftFrom, value)) return;
+                selectedRestorePlanDraftFrom = value;
+                OnPropertyChanged(nameof(SelectedRestorePlanDraftFrom));
+                RestorePlanDraftComparisonResult = null;
+                RaiseCommandStates();
+            }
+        }
+
+        public RestorePlanDraftDefinition? SelectedRestorePlanDraftTo
+        {
+            get => selectedRestorePlanDraftTo;
+            set
+            {
+                if (ReferenceEquals(selectedRestorePlanDraftTo, value)) return;
+                selectedRestorePlanDraftTo = value;
+                OnPropertyChanged(nameof(SelectedRestorePlanDraftTo));
+                RestorePlanDraftComparisonResult = null;
+                RaiseCommandStates();
+            }
+        }
+
+        public RestorePlanDraftComparison? RestorePlanDraftComparisonResult
+        {
+            get => restorePlanDraftComparison;
+            private set
+            {
+                if (ReferenceEquals(restorePlanDraftComparison, value)) return;
+                restorePlanDraftComparison = value;
+                OnPropertyChanged(nameof(RestorePlanDraftComparisonResult));
+            }
+        }
 
         public RestoreMappingPreviewDto? RestorePlanMappingPreview
         {
@@ -70,6 +111,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (value is RestorePlanDraftDefinition draft) Run(() => DeleteRestorePlanDraftAsync(draft));
                 },
                 value => !IsBusy && value is RestorePlanDraftDefinition);
+            CompareRestorePlanDraftsCommand = new RelayCommand(
+                _ => CompareSelectedRestorePlanDrafts(),
+                _ => CanCompareSelectedRestorePlanDrafts());
         }
 
         private async Task PreviewRestorePlanMappingAsync()
@@ -80,9 +124,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             var backupId = backup.BackupId;
             RestorePlanMappingPreview = null;
             RestorePlanDraftStatus = "正在只读检查版本映射；不会写入当前存档。";
-            var preview = await plugin.RequestAsync<RestoreMappingPreviewDto>(MessageTypes.RestorePreview,
-                new RestoreMappingPreviewRequestDto { PlayniteId = gameId, BackupId = backupId },
-                TimeSpan.FromMinutes(2));
+            RestoreMappingPreviewDto preview;
+            using (var key = RestorePlanMappingFingerprintKeyStore.GetOrCreate(
+                plugin.Settings,
+                () => plugin.SavePluginSettings(plugin.Settings)))
+            {
+                preview = await plugin.RequestAsync<RestoreMappingPreviewDto>(MessageTypes.RestorePreview,
+                    new RestoreMappingPreviewRequestDto
+                    {
+                        PlayniteId = gameId,
+                        BackupId = backupId,
+                        MappingFingerprintKeyBase64 = key.KeyBase64,
+                        MappingFingerprintKeyId = key.KeyId
+                    },
+                    TimeSpan.FromMinutes(2));
+            }
 
             if (!string.Equals(SelectedGame?.PlayniteId, gameId, StringComparison.OrdinalIgnoreCase)
                 || !string.Equals(SelectedBackup?.BackupId, backupId, StringComparison.OrdinalIgnoreCase))
@@ -123,7 +179,11 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             RestorePlanDrafts.Insert(0, draft);
             while (RestorePlanDrafts.Count > RestorePlanDraftDefinition.MaximumSavedDrafts)
+            {
+                var removed = RestorePlanDrafts[RestorePlanDrafts.Count - 1];
                 RestorePlanDrafts.RemoveAt(RestorePlanDrafts.Count - 1);
+                ClearComparisonSelectionFor(removed);
+            }
             RestorePlanMappingPreview = null;
             RestorePlanDraftStatus = "只读方案草稿已保存；它不包含执行授权，也不会写入当前存档。";
             return Task.CompletedTask;
@@ -148,8 +208,35 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             var visible = RestorePlanDrafts.FirstOrDefault(item => string.Equals(item.DraftId, draft.DraftId, StringComparison.OrdinalIgnoreCase));
             if (visible != null) RestorePlanDrafts.Remove(visible);
+            ClearComparisonSelectionFor(draft);
             RestorePlanDraftStatus = "方案草稿已删除。";
             return Task.CompletedTask;
+        }
+
+        private bool CanCompareSelectedRestorePlanDrafts()
+            => SelectedRestorePlanDraftFrom != null
+                && SelectedRestorePlanDraftTo != null
+                && !string.Equals(SelectedRestorePlanDraftFrom.DraftId, SelectedRestorePlanDraftTo.DraftId, StringComparison.OrdinalIgnoreCase);
+
+        private void CompareSelectedRestorePlanDrafts()
+        {
+            if (!CanCompareSelectedRestorePlanDrafts())
+            {
+                RestorePlanDraftComparisonResult = null;
+                return;
+            }
+
+            RestorePlanDraftComparisonResult = RestorePlanDraftComparison.Create(
+                SelectedRestorePlanDraftFrom!,
+                SelectedRestorePlanDraftTo!);
+        }
+
+        private void ClearComparisonSelectionFor(RestorePlanDraftDefinition draft)
+        {
+            if (string.Equals(SelectedRestorePlanDraftFrom?.DraftId, draft.DraftId, StringComparison.OrdinalIgnoreCase))
+                SelectedRestorePlanDraftFrom = null;
+            if (string.Equals(SelectedRestorePlanDraftTo?.DraftId, draft.DraftId, StringComparison.OrdinalIgnoreCase))
+                SelectedRestorePlanDraftTo = null;
         }
 
         private void ResetRestorePlanMappingPreview(string? status = null)

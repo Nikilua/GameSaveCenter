@@ -13,7 +13,7 @@ using Playnite.SDK.Data;
 
 namespace GameSaveCenter.Playnite.Settings
 {
-    /// <summary>Serializable non-secret plugin settings.</summary>
+    /// <summary>Serializable plugin settings; the mapping fingerprint key is stored only as a DPAPI-protected value.</summary>
     public sealed class GameSaveCenterSettings : ObservableObject, ISettings
     {
         private readonly GameSaveCenterPlugin? plugin;
@@ -280,6 +280,12 @@ namespace GameSaveCenter.Playnite.Settings
             get => restorePlanDrafts;
             set => restorePlanDrafts = RestorePlanDraftDefinition.NormalizeMany(value);
         }
+
+        /// <summary>DPAPI-protected per-user HMAC key for path-free restore mapping fingerprints.</summary>
+        public string RestorePlanMappingFingerprintKeyProtected { get; set; } = string.Empty;
+
+        /// <summary>Random generation ID used to detect when a protected fingerprint key has rotated.</summary>
+        public string RestorePlanMappingFingerprintKeyId { get; set; } = string.Empty;
 
         /// <summary>Selected named view by stable workspace key. An absent key means the built-in default view.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
@@ -839,6 +845,8 @@ namespace GameSaveCenter.Playnite.Settings
             FilterPresets = other.FilterPresets;
             ViewConfigurations = other.ViewConfigurations;
             RestorePlanDrafts = other.RestorePlanDrafts;
+            RestorePlanMappingFingerprintKeyProtected = other.RestorePlanMappingFingerprintKeyProtected ?? string.Empty;
+            RestorePlanMappingFingerprintKeyId = other.RestorePlanMappingFingerprintKeyId ?? string.Empty;
             ActiveViewConfigurationIds = other.ActiveViewConfigurationIds;
             DataGridColumnWidths = other.DataGridColumnWidths;
             DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;

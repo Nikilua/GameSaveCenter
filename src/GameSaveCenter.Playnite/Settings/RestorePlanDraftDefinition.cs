@@ -22,8 +22,12 @@ namespace GameSaveCenter.Playnite.Settings
         public string BaselineBackupId { get; set; } = string.Empty;
         public int MappingFileCount { get; set; }
         public long MappingTotalBytes { get; set; }
+        public int? MappingUnknownSizeCount { get; set; }
         public string MappingPreviewId { get; set; } = string.Empty;
         public DateTime MappingPreviewedUtc { get; set; }
+        public int MappingFingerprintVersion { get; set; }
+        public string MappingFingerprint { get; set; } = string.Empty;
+        public string MappingFingerprintKeyId { get; set; } = string.Empty;
         public string ReadinessStatus { get; set; } = "Unknown";
         public DateTime? ReadinessCheckedUtc { get; set; }
         public string ReadinessBackupId { get; set; } = string.Empty;
@@ -32,7 +36,15 @@ namespace GameSaveCenter.Playnite.Settings
         public bool IsReadOnly => true;
 
         [JsonIgnore]
-        public string MappingSummary => $"映射预览：{MappingFileCount} 个文件 · {ByteSizeFormatter.Format(MappingTotalBytes)}；不包含文件路径。";
+        public string MappingSummary => !MappingUnknownSizeCount.HasValue
+            ? $"映射预览：{MappingFileCount} 个文件 · 已知大小小计 {ByteSizeFormatter.Format(MappingTotalBytes)}；文件大小完整性未记录，路径不保存。"
+            : MappingUnknownSizeCount.Value > 0
+                ? $"映射预览：{MappingFileCount} 个文件 · 已知大小小计 {ByteSizeFormatter.Format(MappingTotalBytes)}；{MappingUnknownSizeCount.Value} 个文件大小未知，路径不保存。"
+                : $"映射预览：{MappingFileCount} 个文件 · {ByteSizeFormatter.Format(MappingTotalBytes)}；路径不保存。";
+
+        [JsonIgnore]
+        public string ComparisonSelectorDisplay
+            => $"{(string.IsNullOrWhiteSpace(GameName) ? "未命名游戏" : GameName)} · {TargetBackupId} · {CreatedUtc.ToLocalTime():MM-dd HH:mm}";
 
         [JsonIgnore]
         public string CreationDisplay => $"草稿创建于 {CreatedUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss}";
@@ -81,8 +93,12 @@ namespace GameSaveCenter.Playnite.Settings
                 BaselineBackupId = target.ParentBackupId,
                 MappingFileCount = mapping.FileCount,
                 MappingTotalBytes = mapping.TotalBytes,
+                MappingUnknownSizeCount = mapping.UnknownSizeCount,
                 MappingPreviewId = mapping.PreviewId,
                 MappingPreviewedUtc = mapping.PreviewedUtc,
+                MappingFingerprintVersion = mapping.MappingFingerprintVersion,
+                MappingFingerprint = mapping.MappingFingerprint,
+                MappingFingerprintKeyId = mapping.MappingFingerprintKeyId,
                 ReadinessStatus = matchingReadiness ? readiness!.Status.ToString() : "Unknown",
                 ReadinessCheckedUtc = matchingReadiness ? readiness!.CheckedUtc : null,
                 ReadinessBackupId = matchingReadiness ? readiness!.BackupVersionId : string.Empty
@@ -106,6 +122,16 @@ namespace GameSaveCenter.Playnite.Settings
                 if (!seen.Add(id)) continue;
                 var fileCount = Math.Max(0, item.MappingFileCount);
                 var totalBytes = Math.Max(0, item.MappingTotalBytes);
+                var unknownSizeCount = item.MappingUnknownSizeCount.HasValue
+                    ? Math.Min(fileCount, Math.Max(0, item.MappingUnknownSizeCount.Value))
+                    : (int?)null;
+                var fingerprint = NormalizeFingerprint(item.MappingFingerprint);
+                var fingerprintVersion = fingerprint.Length == 64 && item.MappingFingerprintVersion == 1 ? 1 : 0;
+                var fingerprintKeyId = fingerprintVersion == 1
+                    && Guid.TryParseExact(item.MappingFingerprintKeyId, "N", out var parsedKeyId)
+                    ? parsedKeyId.ToString("N")
+                    : string.Empty;
+                if (fingerprintVersion == 0) fingerprint = string.Empty;
                 var readiness = Enum.TryParse(item.ReadinessStatus, ignoreCase: true, out RestoreReadinessStatus parsed)
                     ? parsed.ToString()
                     : "Unknown";
@@ -121,8 +147,12 @@ namespace GameSaveCenter.Playnite.Settings
                     BaselineBackupId = NormalizeText(item.BaselineBackupId, 180),
                     MappingFileCount = fileCount,
                     MappingTotalBytes = totalBytes,
+                    MappingUnknownSizeCount = unknownSizeCount,
                     MappingPreviewId = NormalizeText(item.MappingPreviewId, 64),
                     MappingPreviewedUtc = NormalizeUtc(item.MappingPreviewedUtc),
+                    MappingFingerprintVersion = fingerprintVersion,
+                    MappingFingerprint = fingerprint,
+                    MappingFingerprintKeyId = fingerprintKeyId,
                     ReadinessStatus = readiness,
                     ReadinessCheckedUtc = item.ReadinessCheckedUtc.HasValue ? NormalizeUtc(item.ReadinessCheckedUtc.Value) : null,
                     ReadinessBackupId = NormalizeText(item.ReadinessBackupId, 180)
@@ -139,6 +169,13 @@ namespace GameSaveCenter.Playnite.Settings
             var text = (value ?? string.Empty).Trim();
             if (text.Length > maximumLength) text = text.Substring(0, maximumLength);
             return new string(text.Where(character => !char.IsControl(character)).ToArray());
+        }
+
+        private static string NormalizeFingerprint(string? value)
+        {
+            var text = value ?? string.Empty;
+            if (text.Length != 64 || text.Any(character => !Uri.IsHexDigit(character))) return string.Empty;
+            return text.ToUpperInvariant();
         }
     }
 }

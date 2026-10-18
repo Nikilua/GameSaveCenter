@@ -186,6 +186,10 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public string BackupId { get; set; } = string.Empty;
+
+        /// <summary>Per-user HMAC key used only to return a path-free mapping fingerprint. Never echoed.</summary>
+        public string MappingFingerprintKeyBase64 { get; set; } = string.Empty;
+        public string MappingFingerprintKeyId { get; set; } = string.Empty;
     }
 
     /// <summary>Path-free result of previewing the files a restore would map.</summary>
@@ -198,6 +202,10 @@ namespace GameSaveCenter.Contracts
         public DateTime PreviewedUtc { get; set; }
         public int FileCount { get; set; }
         public long TotalBytes { get; set; }
+        public int? UnknownSizeCount { get; set; }
+        public int MappingFingerprintVersion { get; set; }
+        public string MappingFingerprint { get; set; } = string.Empty;
+        public string MappingFingerprintKeyId { get; set; } = string.Empty;
         public string Summary { get; set; } = string.Empty;
         public string ErrorCode { get; set; } = string.Empty;
     }

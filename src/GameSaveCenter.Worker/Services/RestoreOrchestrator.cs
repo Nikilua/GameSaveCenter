@@ -30,7 +30,14 @@ public sealed class RestoreOrchestrator
         if (lease == null)
             throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过恢复预览。",request.PlayniteId);
         var result = await _ludusavi.RestoreAsync(match,request.BackupId,true,token).ConfigureAwait(false);
-        return RestoreMappingPreviewBuilder.Build(result, request.PlayniteId, request.BackupId, match, DateTime.UtcNow);
+        return RestoreMappingPreviewBuilder.Build(
+            result,
+            request.PlayniteId,
+            request.BackupId,
+            match,
+            DateTime.UtcNow,
+            request.MappingFingerprintKeyBase64,
+            request.MappingFingerprintKeyId);
     }
 
     public async Task<TaskStatusDto> ExecuteAsync(RestoreRequestDto request,CancellationToken token)

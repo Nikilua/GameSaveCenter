@@ -70,6 +70,7 @@ public sealed class FakeDashboardData
     public ICommand PreviewRestorePlanMappingCommand { get; } = new NoopCommand();
     public ICommand SaveRestorePlanDraftCommand { get; } = new NoopCommand();
     public ICommand DeleteRestorePlanDraftCommand { get; } = new NoopCommand();
+    public ICommand CompareRestorePlanDraftsCommand { get; } = new NoopCommand();
     public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
     public ICommand RetryTaskCommand { get; } = new NoopCommand();
     public ICommand CancelTaskCommand { get; } = new NoopCommand();
@@ -718,12 +719,42 @@ public sealed class FakeDashboardData
             BaselineBackupId = SelectedBackup.ParentBackupId,
             MappingFileCount = 18,
             MappingTotalBytes = 2_850_000,
+            MappingUnknownSizeCount = 0,
             MappingPreviewId = "render-preview-01",
             MappingPreviewedUtc = DateTime.UtcNow.AddMinutes(-3),
+            MappingFingerprintVersion = 1,
+            MappingFingerprint = new string('A', 64),
+            MappingFingerprintKeyId = "7921d802aedb490ab9935cd8f2241968",
             ReadinessStatus = SelectedBackup.RestoreReadiness?.Status.ToString() ?? "Unknown",
             ReadinessCheckedUtc = SelectedBackup.RestoreReadiness?.CheckedUtc,
             ReadinessBackupId = SelectedBackup.RestoreReadiness?.BackupVersionId ?? string.Empty
         });
+        var comparisonDraft = new RestorePlanDraftDefinition
+        {
+            DraftId = "render-plan-02",
+            CreatedUtc = DateTime.UtcNow,
+            PlayniteId = SelectedGame.PlayniteId,
+            GameName = SelectedGame.Name,
+            TargetBackupId = SelectedBackup.BackupId,
+            TargetCreatedUtc = SelectedBackup.CreatedUtc,
+            BaselineBackupId = SelectedBackup.ParentBackupId,
+            MappingFileCount = 18,
+            MappingTotalBytes = 2_850_000,
+            MappingUnknownSizeCount = 1,
+            MappingPreviewId = "render-preview-02",
+            MappingPreviewedUtc = DateTime.UtcNow,
+            MappingFingerprintVersion = 1,
+            MappingFingerprint = new string('B', 64),
+            MappingFingerprintKeyId = "7921d802aedb490ab9935cd8f2241968",
+            ReadinessStatus = SelectedBackup.RestoreReadiness?.Status.ToString() ?? "Unknown",
+            ReadinessCheckedUtc = SelectedBackup.RestoreReadiness?.CheckedUtc,
+            ReadinessBackupId = SelectedBackup.RestoreReadiness?.BackupVersionId ?? string.Empty
+        };
+        RestorePlanDrafts.Add(comparisonDraft);
+        var fromDraft = RestorePlanDrafts[0];
+        SelectedRestorePlanDraftFrom = fromDraft;
+        SelectedRestorePlanDraftTo = comparisonDraft;
+        RestorePlanDraftComparisonResult = RestorePlanDraftComparison.Create(fromDraft, comparisonDraft);
         SelectedCandidate = SaveCandidates[0];
         SelectedGameTool = GameTools[0];
         SelectedGameToolVersion = SelectedGameTool.ActiveVersion;
@@ -1213,6 +1244,9 @@ public sealed class FakeDashboardData
     public BackupVersionDto SelectedBackup { get; set; } = null!;
     public ObservableCollection<RestorePlanDraftDefinition> RestorePlanDrafts { get; } = new();
     public RestoreMappingPreviewDto? RestorePlanMappingPreview { get; set; }
+    public RestorePlanDraftDefinition? SelectedRestorePlanDraftFrom { get; set; }
+    public RestorePlanDraftDefinition? SelectedRestorePlanDraftTo { get; set; }
+    public RestorePlanDraftComparison? RestorePlanDraftComparisonResult { get; private set; }
     public string RestorePlanDraftStatus { get; } = "当前选择可生成只读映射预览。";
     public string SelectedBackupLineageSummary => BackupLineageDisplayBuilder.Build(SelectedBackup, Backups, Backups.Count).Summary;
     public IReadOnlyList<string> SelectedBackupLineageItems => BackupLineageDisplayBuilder.Build(SelectedBackup, Backups, Backups.Count).Items;
