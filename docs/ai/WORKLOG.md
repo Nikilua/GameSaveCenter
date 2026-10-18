@@ -4,11 +4,17 @@
 - WPF 逐类循环在第 16/132 类 `NumericInputTests` 停止。该测试旧断言预计设置页有 10 个范围校验；通知安静时段新增开始/结束分钟输入框后，实际为 12。更新计数为 12；同一 SDK/隔离输出重建后 `NumericInputTests 12/12`、`R09FocusOutlineBehaviorTests 2/2`。
 - 完整 WPF 隔离循环、打包安装和真实 Playnite 宿主未完成/未运行。用户旧 R09 诊断缺少同次 summary/TRX/DLL/PDB，当前 R09 通过不能解释旧运行。失败与通过 TRX、build 日志和程序集哈希见 [BUILD-20261019 证据](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。
 
+## 2026-10-19 Round4 S02-08 通知体验验收
+
+- 核对后复用现有通知收件箱、离页缓存、Worker 记录/重试持久化、筛选批量已读、级别/静音策略及进度 UI Automation 行为；没有新增生产代码或字符串镜像测试。
+- SDK `9.0.302` 下 Playnite 通知体验定向类 `20/20`，Worker `NotificationRecordPersistenceTests` `12/12`。测试 TRX 通过且 VSTest 退出码 `0`；WPF 清理阶段输出 `TextServicesContext.StopTransitoryExtension()` 的 `InvalidComObjectException`。插件 DLL/PDB 与测试加载副本 SHA-256 一致。完整输入身份和验证范围见 [S02-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。
+- SDK8 正式基线、完整 WPF 逐类循环、真实 Playnite、Windows 系统高对比切换和实际读屏器未验。账本标记受控验证通过、宿主验收待验；下一项 S03-01 来源关系模型。
+
 ## 2026-10-19 Round4 S02-07 重复归并摘要
 
 - 提交 `9ed6b4e5`、`c4fb56a0` 为明确用户重试传递原问题身份，Worker 将同一故障链的失败归并为一条记录，保存次数、首次/最近时间、最后错误和首次/最近任务 ID；同一任务事件重放幂等，不同游戏/任务类型/问题根键不混并。成功重试关闭旧告警并保留历史，后续失败重新打开；异步事件乱序时首末时间、任务和错误仍按发生时间归并；旧单任务失败通知迁移到新字段。
 - SDK `9.0.302` Release solution restore/build `0 warnings / 0 errors`；最终提交匹配程序集复验：Core `147/147`、Worker `374 passed / 1 skipped`、通知持久化 `12/12`、Playnite 通知/重试/R09 `19/19`（R09 `2/2`）。`validate-source.py`、`git diff --check` 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`。日志、TRX、源码与插件 DLL/PDB 身份见 [S02-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
-- 本机仅 SDK `9.0.302`，`global.json` 要求 `8.0.423`；完整 WPF 独立循环、安装、一键流程和真实 Playnite 宿主/双主题呈现未验。用户旧 R09 失败的 summary/TRX/DLL/PDB 未保留，旧输入仍无法定位；当前匹配程序集 R09 `2/2` 通过不解释旧失败。下一项 S02-08。
+- 本机仅 SDK `9.0.302`，`global.json` 要求 `8.0.423`；完整 WPF 独立循环、安装、一键流程和真实 Playnite 宿主/双主题呈现未验。用户旧 R09 失败的 summary/TRX/DLL/PDB 未保留，旧输入仍无法定位；当前匹配程序集 R09 `2/2` 通过不解释旧失败。
 
 ## 2026-10-18 Round4 S02-06 重要通知例外
 

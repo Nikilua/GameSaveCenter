@@ -2,7 +2,7 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 至 S02-06 已完成受控验证；S02-04 至 S02-06 使用当前安装的 SDK9，SDK8 正式基线和真实宿主仍待验；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验；下一项按依赖审查 S02-07。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
+用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 至 S02-08 已完成受控验证；S02-04 至 S02-08 使用 SDK9，SDK8 正式基线和真实宿主仍待验；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验。S02-08 通知体验受控测试为 Playnite 20/20、Worker 12/12；全量 WPF、系统高对比、读屏器和真实 Playnite 未验。下一项 S03-01 来源关系模型。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
@@ -21,6 +21,10 @@
 | S02-03 | IMPLEMENTED | 6d3a6f43 加入单条/当前筛选结果已读与确认清除已读记录；SDK8.0.423 Release build 0/0，Playnite 定向 18/18（R09 2/2）、Worker SQLite 7/7、双主题 11 尺寸 Render QA 22/22。真实 Playnite/安装门禁未运行；外机旧 R09 缺同次身份材料。证据见 Round4 S02-03。 |
 | S02-04 | CODE_COMPLETE_PENDING | `1b17e4a0` 增加通知到游戏/任务的稳定 ID 上下文跳转；SDK9 Release solution build 0/0，通知/R10 + Worker 查询 + R09 `20/20`，双主题 11 尺寸 Render QA OK。SDK8 正式基线、完整 WPF 隔离、Playnite 安装/宿主未验；保存的一键日志停于 R05 指针读取。证据见 Round4 S02-04。 |
 | S02-05 | IMPLEMENTED | `2aa3fe3c` 增加 UTC 临时静音、跨午夜本地安静时段、可发现状态和解除入口；SDK9 Release build 0/0，策略 20/20、设置交互/持久化 15/15、独立 R09 2/2，浅/深主题 × 两尺寸探针 4/4。SDK8、完整 WPF 循环、安装和真实宿主待验；旧 R09 输入身份未知。证据见 Round4 S02-05。 |
+| S02-06 | IMPLEMENTED | `a6153219` 明确已知警告/错误级别突破静音；SDK9 策略 22/22、持久化 7/7、R09 2/2。SDK8、完整 WPF 循环和真实宿主未验。证据见 Round4 S02-06。 |
+| S02-07 | IMPLEMENTED | `9ed6b4e5`/`c4fb56a0` 归并明确重试链并保留首末时间、次数和最后错误；SDK9 通知/重试/R09 定向测试 19/19。SDK8、完整 WPF 循环和真实宿主未验。证据见 Round4 S02-07。 |
+| S02-08 | IMPLEMENTED | 复用已有通知体验行为；SDK9 Playnite 定向测试 20/20、Worker 持久化 12/12。完整 WPF 循环、SDK8、系统高对比、读屏器与真实 Playnite 未验。证据见 Round4 S02-08。 |
+| S03-01 | READY | 先新增只读来源关系模型，基于 ParentBackupId 与内容指纹报告缺父、重复 ID、环和未知关系，并限制输入/输出规模；不得按时间戳推断安全线性关系。 |
 | S07-01 | IMPLEMENTED | `4ea5e694` 将 `CURRENT_STATE.md` 从 254 行压缩为 32 行并保留完整历史快照；source validation、diff check 与归档一致性检查通过。证据见 Round4 S07-01。 |
 | S07-02 | IMPLEMENTED | 新增 `ROUND4_STATUS.json` 与渲染/校验脚本；账本生成块接入 `validate-source.py`，保留外部 Q/R 状态。证据见 Round4 S07-02。 |
 | S07-04 | IMPLEMENTED | 已在仓库 `AGENTS.md` 明确 CI 结果记录条件与禁止纯文档通过结果自循环的规则。保留实际 run/job/artifact 身份，不更改 workflow 或 required checks。证据见 Round4 S07-04。 |
@@ -30,7 +34,7 @@
 | S07-03 | BLOCKED_ENVIRONMENT | workflow 当前所有路径走完整双 SDK 流程；branch protection API 返回 403，required check 名称不可见。未改 workflow；取得配置读取权限或 required-check 清单后继续。证据见 Round4 S07-03。 |
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
-| S02-07～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
+| S03-02～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
 
 不自动启动新线程；不重跑无变化的外部权限探测；不把真实存档、媒体或云端写入当规划验证。
 

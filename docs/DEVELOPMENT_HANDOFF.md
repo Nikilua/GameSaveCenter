@@ -4,13 +4,17 @@
 
 当前测试源已修复设置页数字范围校验数量断言：设置页现有 12 项（包含通知安静时段的开始/结束分钟），原断言仍为 10。SDK `8.0.423` 下解决方案编译 `0 warning / 0 error`；Core `147/147`、Worker `374 passed / 1 skipped`、Playnite 非 WPF 分组 `468/468`；修正后的 `NumericInputTests` `12/12`、R09 `2/2`。完整 Playnite WPF 132 类隔离循环未完成，因此不能称一键构建/测试/安装整链已通过；未安装或启动 Playnite。
 
-用户此前的 R09 `Thickness(2) → Thickness(1)` 运行缺同次 summary/TRX/DLL/PDB。当前源码与新构建 DLL 下该类 `2/2` 通过，但旧运行输入仍无法确认。详细 TRX、build 日志和程序集哈希：[BUILD-20261019](design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 继续 S02-08。
+用户此前的 R09 `Thickness(2) → Thickness(1)` 运行缺同次 summary/TRX/DLL/PDB。当前源码与新构建 DLL 下该类 `2/2` 通过，但旧运行输入仍无法确认。详细 TRX、build 日志和程序集哈希：[BUILD-20261019](design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 继续 S03-01。
+
+## 2026-10-19 Round4 S02-08 通知体验受控验收
+
+核对并复用现有通知收件箱、Worker 持久化、过滤批量已读、页面缓存、通知去重和进度 UI Automation 行为；没有新增生产实现。SDK `9.0.302` Playnite 定向测试 `20/20`，Worker 持久化 `12/12`。VSTest 退出码为 0 且 TRX 通过；WPF 清理输出 `TextServicesContext.StopTransitoryExtension()` `InvalidComObjectException`。SDK8、完整 WPF 隔离、真实 Playnite、Windows 系统高对比及实际读屏器未验。证据和二进制身份：[S02-08](design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。下一项 S03-01。
 
 ## 2026-10-18 最新进展：S02-06 重要通知例外受控验证通过
 
 实现提交 `a6153219` 明确只有已知警告/错误通知突破临时静音与安静时段；未知级别按信息处理。设置说明任务/会话警告与错误仍显示并保存在收件箱，备份校验 Findings 继续由现有持久化列表承载。SDK9.0.302 Release solution restore/build `0/0`，弹窗策略 `22/22`、通知记录持久化 `7/7`、同次隔离输出 R09 `2/2`；source validation 通过。R09 运行目录中插件 DLL 与测试加载副本 SHA-256 一致。证据见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md`。
 
-当前主机只有 SDK9.0.302，仓库锁定 SDK8.0.423；正式 SDK8 基线、完整 WPF 逐类循环、一键安装和真实 Playnite 宿主仍未验证。用户旧 R09 诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 没有保留，所以旧失败具体输入仍未知；当前通过不能映射旧运行。继续 S02-07。
+当前主机只有 SDK9.0.302，仓库锁定 SDK8.0.423；正式 SDK8 基线、完整 WPF 逐类循环、一键安装和真实 Playnite 宿主仍未验证。用户旧 R09 诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 没有保留，所以旧失败具体输入仍未知；当前通过不能映射旧运行。
 
 ## 2026-10-18 进展回顾：S02-04 上下文跳转已实现，正式基线待验
 

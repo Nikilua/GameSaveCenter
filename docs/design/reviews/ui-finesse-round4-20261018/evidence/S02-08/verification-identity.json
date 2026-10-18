@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "taskId": "S02-08",
+  "sourceCommit": "fe03548827653504d2fb4ef9776cbf43a804f5c1",
+  "sdk": "9.0.302",
+  "sdkBaseline": "global.json requires SDK 8.0.423; only SDK 9.0.302 was used in this controlled run.",
+  "buildWorkingDirectory": "C:/Windows/Temp",
+  "isolatedOutputRoot": ".tmp/round4-s02-08-20261019",
+  "commands": [
+    "dotnet restore tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj --ignore-failed-sources --nologo -m:1 -nodeReuse:false -p:GscBuildCommit=fe035488 -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=.tmp/round4-s02-08-20261019",
+    "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --no-restore --filter <S02-08 targeted classes> --logger console;verbosity=normal --logger trx;LogFileName=s02-08-notification-experience.trx --results-directory .tmp/round4-s02-08-20261019/tests/trx -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildCommit=fe035488 -p:GscBuildOutputRoot=.tmp/round4-s02-08-20261019",
+    "dotnet restore tests/GameSaveCenter.Worker.Tests/GameSaveCenter.Worker.Tests.csproj --ignore-failed-sources --nologo -m:1 -nodeReuse:false -p:GscBuildCommit=fe035488 -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=.tmp/round4-s02-08-20261019",
+    "dotnet test tests/GameSaveCenter.Worker.Tests/GameSaveCenter.Worker.Tests.csproj -c Release --no-restore --filter FullyQualifiedName~NotificationRecordPersistenceTests --logger console;verbosity=normal --logger trx;LogFileName=s02-08-notification-persistence.trx --results-directory .tmp/round4-s02-08-20261019/tests/worker-trx -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildCommit=fe035488 -p:GscBuildOutputRoot=.tmp/round4-s02-08-20261019"
+  ],
+  "targetedBuildResult": "Playnite and Worker test projects built as part of dotnet test; both restores and test builds completed successfully. No full solution build was run.",
+  "testResults": [
+    {
+      "name": "GameSaveCenter.Playnite.Tests S02-08 targeted",
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "outcome": "Completed",
+      "includedClasses": [
+        "NotificationInboxReadActionsTests (4)",
+        "TaskNotificationDeduperTests (6)",
+        "R08PageSwitchBehaviorTests (4)",
+        "R09HighContrastBehaviorTests (3)",
+        "NotificationInboxViewBehaviorTests (2)",
+        "R21AutomationValueBehaviorTests.TaskProgressPeerExposesBoundValueAndUnknownStatus (1)"
+      ],
+      "artifact": {
+        "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/tests/playnite-notification-experience.trx",
+        "bytes": 33807,
+        "sha256": "CDD8AD9F90ECF2A3087ACA63DF69AE9455E82BF514961B789E8C6C9A369D243A"
+      }
+    },
+    {
+      "name": "GameSaveCenter.Worker.Tests notification persistence",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "outcome": "Completed",
+      "includedClasses": [
+        "NotificationRecordPersistenceTests (12)"
+      ],
+      "artifact": {
+        "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/tests/worker-notification-persistence.trx",
+        "bytes": 20757,
+        "sha256": "E91E160AF914C8863C57D173B0F2CDBBBA5192EA4FB21AF300DC93FB5E0AA603"
+      }
+    }
+  ],
+  "binaryFiles": [
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll",
+      "bytes": 1968640,
+      "sha256": "294E24046E0632D801748C7B7B8759C78C1C888D997DE6F4941199C9002435A4"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.pdb",
+      "bytes": 526892,
+      "sha256": "4D09A1DF4CED9E82AA88A7FA73B0B163EA478D21A7C2C172D2EE01E5065011E8"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.dll",
+      "bytes": 1968640,
+      "sha256": "294E24046E0632D801748C7B7B8759C78C1C888D997DE6F4941199C9002435A4"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.pdb",
+      "bytes": 526892,
+      "sha256": "4D09A1DF4CED9E82AA88A7FA73B0B163EA478D21A7C2C172D2EE01E5065011E8"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "bytes": 2023936,
+      "sha256": "4EFC64CC1D7F8156694E903068C0673483B9014BD0262902DB93F8F0AE179775"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.pdb",
+      "bytes": 467160,
+      "sha256": "DB1F15313EC18123C57A6F243CC07F73CD06F661CFF069A7F0399AC5D120059D"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Worker/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.dll",
+      "bytes": 1477120,
+      "sha256": "24F03A7B67A2C1D8CE8BE3211779718703CC7A0D3E82B9655F62C81A90E31DB8"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Worker/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.pdb",
+      "bytes": 216028,
+      "sha256": "9CAB3D2997501FFE8759211101070117E346F944364F8411925336C5077A0FD3"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Worker.Tests/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll",
+      "bytes": 776704,
+      "sha256": "654DA7D1E053F22CA0F384B2ABE89E39895EBC14F98E62BF0C19F480F1ED57CA"
+    },
+    {
+      "path": ".tmp/round4-s02-08-20261019/bin/GameSaveCenter.Worker.Tests/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.pdb",
+      "bytes": 138216,
+      "sha256": "631FAC73CC060F0FC299A428709A879C08C9380525B60F012BF6E6BCDC4F12B2"
+    }
+  ],
+  "playnitePluginCopiesMatch": true,
+  "logs": [
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/build/sdk-version.log",
+      "bytes": 9,
+      "sha256": "3681FAE57A19F24E0D71A53DEEFEE563ADC494640F8A4618F0444BA660AB5640"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/build/playnite-restore.log",
+      "bytes": 86,
+      "sha256": "0A5293E62D3BB4D8819D8D749F51206D3AA424744E622337BEE96070823F245B"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/build/worker-restore.log",
+      "bytes": 359,
+      "sha256": "CABA3801139557A07A17D0C99A4C52A89399A66B32E71A8A76645BB31B19A4B6"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/tests/playnite-notification-experience.log",
+      "bytes": 5508,
+      "sha256": "87E4B125929C35886FE6A107EF91E93A94E137F7FA5AE53A052F00E547D85BA5"
+    },
+    {
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/tests/worker-notification-persistence.log",
+      "bytes": 3451,
+      "sha256": "0E56E79CD85DE77597C0C601637251BF46304C824C9717A16AA93A5CB80640EE"
+    }
+  ],
+  "coverageMap": {
+    "leaveAndReturn": "R08PageSwitchBehaviorTests verifies production pages are cached and binding/selection survive navigation.",
+    "restart": "NotificationRecordPersistenceTests verifies notification records and retry identity survive worker/store restart.",
+    "batchRead": "NotificationInboxReadActionsTests verifies only unread items from the filtered visible set are sent to the worker endpoint.",
+    "highContrast": "R09HighContrastBehaviorTests uses controlled high-contrast palette overrides for shared control state and popup behavior; this is not a real OS/Playnite host test.",
+    "assistiveFrequency": "TaskNotificationDeduperTests excludes running/progress snapshots from screen notifications; R21 TaskProgressPeerExposesBoundValueAndUnknownStatus confirms LiveSetting Off and keyboard focus remains during progress updates.",
+    "inboxCommands": "NotificationInboxViewBehaviorTests verifies real WPF command bindings and automation safety scope."
+  },
+  "checks": {
+    "sourceChanges": "none; reused existing production behavior after current-source audit",
+    "sourceValidation": "passed after evidence/docs update",
+    "diffCheck": "passed after evidence/docs update",
+    "realPlayniteHost": "not run",
+    "systemHighContrast": "not run",
+    "screenReader": "not run",
+    "fullWpfIsolation": "not run"
+  },
+  "boundary": "Controlled tests prove only the covered WPF/Worker behavior. Actual Playnite rendering, OS high-contrast setting, screen-reader announcements, and full WPF isolation remain unverified."
+}

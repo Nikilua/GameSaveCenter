@@ -367,14 +367,19 @@
     {
       "id": "S02-08",
       "title": "通知体验验收",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "已有 S02 通知实现（83194c50 至 c4fb56a0）",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[受控证据](evidence/S02-08/README.md)：SDK9 Playnite 通知体验 20/20，Worker 持久化 12/12；插件 DLL/PDB 与测试加载副本哈希匹配",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md"
+        }
+      ],
+      "boundary": "本次使用 SDK9.0.302；SDK8 正式基线、完整 WPF 隔离循环、真实 Playnite、Windows 系统高对比和真实读屏器未验证。VSTest 退出码为0但 WPF 清理输出 InvalidComObjectException。"
     },
     {
       "id": "S03-01",

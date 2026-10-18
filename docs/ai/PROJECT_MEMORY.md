@@ -4,13 +4,19 @@
 
 用仓库锁定 SDK `8.0.423` 和全新隔离输出运行正式 build 脚本：解决方案编译 `0 warning / 0 error`，Core `147/147`、Worker `374 passed / 1 skipped`、Playnite 非 WPF 分组 `468/468`。WPF 逐类在第 16/132 类发现 `NumericInputTests` 仍断言设置页有 10 个范围校验；当前设置页实际为 12 个，新增两项来自安静时段开始/结束分钟输入框。更新断言后该类 `12/12`，R09 `2/2`。
 
-完整 WPF 独立循环没有完成；本次未安装或启动 Playnite。用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，当前 R09 复测不能识别旧运行输入。构建日志和 TRX 身份见 [BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 继续 S02-08。
+完整 WPF 独立循环没有完成；本次未安装或启动 Playnite。用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，当前 R09 复测不能识别旧运行输入。构建日志和 TRX 身份见 [BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。Round4 当前下一项 S03-01。
+
+## 2026-10-19 Round4 S02-08 通知体验受控验收
+
+核对并复用已有通知收件箱、页面缓存、Worker 持久化、过滤批量已读、静音/级别策略与进度辅助通知实现，没有新增产品代码或字符串镜像测试。SDK `9.0.302` Playnite 定向行为测试 `20/20`、Worker 通知持久化 `12/12`；Playnite 插件 DLL/PDB 与测试加载副本哈希匹配。VSTest 退出码为 0、TRX 全部通过，但 WPF 清理阶段输出 `TextServicesContext.StopTransitoryExtension()` 的 `InvalidComObjectException`。
+
+正式 SDK8 基线、完整 WPF 隔离循环、真实 Playnite、Windows 系统高对比和实际读屏器未验。受控 palette/UI Automation 用例不替代系统设置或真实读屏公告。证据与输入身份见 [S02-08](../design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。下一项 S03-01 来源关系模型。
 
 ## 2026-10-19 Round4 S02-07 重复归并摘要已受控验证
 
 提交 `9ed6b4e5`、`c4fb56a0` 为明确用户重试传递原问题身份，Worker 将同一故障链的失败归并为一条记录，记录次数、首末时间、最后错误和首次/最近任务入口；同任务事件重放幂等，不同对象不混并。成功重试关闭告警并保留错误历史，后续失败重新打开；异步乱序时仍保留按发生时间最早/最近的任务与错误；旧任务失败通知启动时迁移到新字段。SDK `9.0.302` Release solution restore/build `0 warning / 0 error`；最终提交匹配程序集 Core `147/147`、Worker `374 passed / 1 skipped`、通知持久化 `12/12`、通知/重试/R09 `19/19`（R09 `2/2`）。源码校验和 diff check 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。证据及源文件、TRX、插件 DLL/PDB 哈希见 [S02-07](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
 
-主机仅安装 SDK `9.0.302`，`global.json` 锁定 SDK `8.0.423`；完整 WPF 独立循环、一键安装及真实 Playnite 宿主/双主题呈现未验。用户旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 没有保留，旧失败具体输入与根因仍未知；本次匹配提交 R09 `2/2` 不能映射旧输入。下一项 S02-08。
+主机仅安装 SDK `9.0.302`，`global.json` 锁定 SDK `8.0.423`；完整 WPF 独立循环、一键安装及真实 Playnite 宿主/双主题呈现未验。用户旧诊断 `20261018T012631286Z-e027df9d` 的 summary/TRX/DLL/PDB 没有保留，旧失败具体输入与根因仍未知；本次匹配提交 R09 `2/2` 不能映射旧输入。
 
 ## 2026-10-18 Round4 S02-06 重要通知例外已受控验证
 
