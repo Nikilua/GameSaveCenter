@@ -116,6 +116,76 @@ namespace GameSaveCenter.Playnite.Views
             Keyboard.Focus(GameSearchTextBox);
         }
 
+        private void OnCommandDirectoryClick(object sender, RoutedEventArgs e)
+        {
+            if (CommandDirectoryPopup.IsOpen)
+            {
+                CloseCommandDirectory(restoreFocus: true);
+                e.Handled = true;
+                return;
+            }
+
+            if (viewModel == null)
+                return;
+
+            KeyboardShortcutHelpPopup.IsOpen = false;
+            CommandDirectorySearchTextBox.Clear();
+            UpdateCommandDirectorySearchResults();
+            CommandDirectoryPopup.IsOpen = true;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (!CommandDirectoryPopup.IsOpen) return;
+                CommandDirectorySearchTextBox.Focus();
+                Keyboard.Focus(CommandDirectorySearchTextBox);
+            }), DispatcherPriority.Input);
+            e.Handled = true;
+        }
+
+        private void OnCommandDirectorySearchTextChanged(object sender, TextChangedEventArgs e)
+            => UpdateCommandDirectorySearchResults();
+
+        private void UpdateCommandDirectorySearchResults()
+        {
+            if (CommandDirectoryResultsListBox == null || CommandDirectorySearchTextBox == null)
+                return;
+
+            var query = CommandDirectorySearchTextBox.Text;
+            var results = CommandDirectorySearch.Filter(commandDirectoryItems, query);
+            CommandDirectoryResultsListBox.ItemsSource = results;
+            CommandDirectoryResultsSummaryText.Text = string.IsNullOrWhiteSpace(query)
+                ? $"常用命令 · {results.Count}"
+                : results.Count == 0 ? "没有匹配的命令" : $"搜索结果 · {results.Count}";
+        }
+
+        private void OnCommandDirectorySearchKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape)
+                return;
+
+            CloseCommandDirectory(restoreFocus: true);
+            e.Handled = true;
+        }
+
+        private void OnCommandDirectoryResultClick(object sender, RoutedEventArgs e)
+        {
+            CloseCommandDirectory(restoreFocus: true);
+            e.Handled = true;
+        }
+
+        private void CloseCommandDirectory(bool restoreFocus)
+        {
+            CommandDirectoryPopup.IsOpen = false;
+            if (!restoreFocus)
+                return;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (!IsLoaded) return;
+                HeaderCommandDirectoryButton.Focus();
+                Keyboard.Focus(HeaderCommandDirectoryButton);
+            }), DispatcherPriority.Input);
+        }
+
         public Action? SettingsRequested
         {
             get => settingsRequested;

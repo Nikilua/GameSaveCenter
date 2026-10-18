@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -18,7 +19,7 @@ namespace GameSaveCenter.Playnite.Views
     /// The wrapper captures its real command and argument and rechecks availability
     /// immediately before forwarding execution.
     /// </summary>
-    internal sealed class CommandDirectoryItem : ICommand
+    internal sealed class CommandDirectoryItem : ICommand, INotifyPropertyChanged
     {
         private readonly ICommand command;
         private readonly object? commandParameter;
@@ -62,6 +63,20 @@ namespace GameSaveCenter.Playnite.Views
         public string Category { get; }
         public CommandDirectoryScope Scope { get; }
         public bool IsAvailable => CanExecute(null);
+        public string ScopeDisplay => Scope switch
+        {
+            CommandDirectoryScope.Global => "全局",
+            CommandDirectoryScope.Workspace => "工作区",
+            CommandDirectoryScope.CurrentGame => "当前游戏",
+            CommandDirectoryScope.SelectedTask => "所选任务",
+            _ => "当前范围",
+        };
+
+        public string AvailabilityDisplay => IsAvailable ? "可用" : "暂不可用";
+
+        public string AutomationDisplayName => IsAvailable
+            ? $"{Name}，{Category}，{ScopeDisplay}，可用"
+            : $"{Name}，{Category}，{ScopeDisplay}，暂不可用：{UnavailableReason}";
 
         public string UnavailableReason
         {
@@ -78,6 +93,8 @@ namespace GameSaveCenter.Playnite.Views
             add => canExecuteChanged += value;
             remove => canExecuteChanged -= value;
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public bool CanExecute(object? parameter)
             => command.CanExecute(commandParameter)
@@ -97,6 +114,12 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         public void RaiseCanExecuteChanged()
-            => canExecuteChanged?.Invoke(this, EventArgs.Empty);
+        {
+            canExecuteChanged?.Invoke(this, EventArgs.Empty);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAvailable)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailabilityDisplay)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnavailableReason)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutomationDisplayName)));
+        }
     }
 }

@@ -10,6 +10,17 @@
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="GscCommandDirectoryResultButton"
+           TargetType="{x:Type ui:Button}"
+           BasedOn="{StaticResource GscWpfUiContextButton}">
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="MinHeight" Value="68"/>
+        <Setter Property="Margin" Value="0,0,0,6"/>
+        <Setter Property="Padding" Value="12,9"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
     <Style x:Key="AcrylicNavItem" TargetType="RadioButton">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>

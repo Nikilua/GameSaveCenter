@@ -262,6 +262,15 @@
                                       VerticalAlignment="Center" Margin="0,0,2,0"/>
                             </Grid>
                         </Button>
+                        <ui:Button x:Name="HeaderCommandDirectoryButton" Style="{DynamicResource GscIconOnlyToolbarButton}"
+                                   Click="OnCommandDirectoryClick"
+                                   ToolTip="搜索命令"
+                                   AutomationProperties.Name="搜索命令">
+                            <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
+                                               IconData="{StaticResource GscIconSearch}"
+                                               Width="18" Height="18"
+                                               Foreground="{DynamicResource GscPrimaryTextBrush}"/>
+                        </ui:Button>
                         <ui:Button x:Name="HeaderKeyboardHelpButton" Style="{DynamicResource GscIconOnlyToolbarButton}"
                                    Click="OnKeyboardHelpClick"
                                    ToolTip="键盘操作"
@@ -331,6 +340,134 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
+                </Border>
+            </Popup>
+
+            <Popup x:Name="CommandDirectoryPopup"
+                   PlacementTarget="{Binding ElementName=HeaderCommandDirectoryButton}"
+                   Placement="Bottom"
+                   HorizontalOffset="-372"
+                   Margin="0,8,0,0"
+                   StaysOpen="False"
+                   AllowsTransparency="True"
+                   PopupAnimation="Fade"
+                   Focusable="True"
+                   AutomationProperties.Name="命令搜索">
+                <Border Width="420" MaxWidth="520" Padding="16"
+                        Style="{DynamicResource GscRedesignFloatingPickerCard}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="320"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="命令搜索" FontSize="15" FontWeight="SemiBold"
+                                       AutomationProperties.Name="命令搜索标题"/>
+                            <TextBlock Text="按名称、别名或分类查找工作区操作。"
+                                       Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                       FontSize="{DynamicResource GscCaptionFontSize}"
+                                       Margin="0,3,0,12"/>
+                        </StackPanel>
+                        <TextBox x:Name="CommandDirectorySearchTextBox" Grid.Row="1"
+                                 Style="{DynamicResource GscWpfUiTextBox}"
+                                 TextChanged="OnCommandDirectorySearchTextChanged"
+                                 KeyDown="OnCommandDirectorySearchKeyDown"
+                                 ToolTip="按命令名称、别名或分类搜索"
+                                 AutomationProperties.Name="搜索命令"
+                                 AutomationProperties.HelpText="输入中文或英文名称、别名或分类。按 Escape 关闭命令搜索。"
+                                 Margin="0,0,0,10"/>
+                        <TextBlock x:Name="CommandDirectoryResultsSummaryText" Grid.Row="2"
+                                   Text="常用命令"
+                                   FontSize="{DynamicResource GscCaptionFontSize}"
+                                   Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                   Margin="2,0,0,6"
+                                   AutomationProperties.Name="命令搜索结果数量"/>
+                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="3"
+                                 BorderThickness="0" Background="Transparent" Padding="0"
+                                 IsTabStop="False"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.CanContentScroll="True"
+                                 VirtualizingPanel.IsVirtualizing="True"
+                                 VirtualizingPanel.VirtualizationMode="Recycling"
+                                 AutomationProperties.Name="命令搜索结果">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <ContentPresenter/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <ui:Button Style="{DynamicResource GscCommandDirectoryResultButton}"
+                                               Command="{Binding}"
+                                               Click="OnCommandDirectoryResultClick"
+                                               ToolTip="{Binding UnavailableReason}"
+                                               AutomationProperties.Name="{Binding AutomationDisplayName}"
+                                               AutomationProperties.HelpText="{Binding UnavailableReason}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding AvailabilityDisplay}"
+                                                       Foreground="{DynamicResource GscAccentBrush}"
+                                                       FontSize="{DynamicResource GscCaptionFontSize}"
+                                                       Margin="12,0,0,0"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding Category}"
+                                                       Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                                       FontSize="{DynamicResource GscCaptionFontSize}"
+                                                       Margin="0,3,8,0" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ScopeDisplay}"
+                                                       Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                                       FontSize="{DynamicResource GscCaptionFontSize}"
+                                                       Margin="0,3,0,0"/>
+                                            <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
+                                                       Text="{Binding UnavailableReason}"
+                                                       Foreground="{DynamicResource GscMutedTextBrush}"
+                                                       FontSize="{DynamicResource GscCaptionFontSize}"
+                                                       TextWrapping="Wrap" Margin="0,3,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </ui:Button>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </Border>
             </Popup>
 
