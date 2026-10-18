@@ -6,8 +6,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收12、已满足1、代码完成待验收15、外部阻塞1、待开始35。
-实现状态：完成28、未开始36、不适用0；受控验证：通过28、未跑35、不适用0；宿主验证：通过0、待验9、未跑47、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收13、已满足1、代码完成待验收15、外部阻塞1、待开始34。
+实现状态：完成29、未开始35、不适用0；受控验证：通过29、未跑34、不适用0；宿主验证：通过0、待验9、未跑47、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -38,7 +38,7 @@
 | S03-01 | 来源关系模型 | 已验收 | 5e05aa73 | [受控证据](evidence/S03-01/README.md)：SDK9 Core Release 构建成功；Core 全套测试 156/156，覆盖父关系、等价内容、异常关系和有界读取 | 仅新增 Core 模型/构建器与测试；SDK8 正式基线、全解方案、Worker IPC、Playnite 版本关系视图和真实恢复未验证。S03-02 负责视图接入。 |
 | S03-02 | 版本关系视图 | 已验收 | fd59dcc1 | [受控证据](evidence/S03-02/README.md)：SDK9 Release solution 0/0；Playnite 12/12、Worker 2/2；RenderHarness render-qa OK，0 PROBLEM | 当前仅 SDK9.0.302；SDK8.0.423 正式基线和真实 Playnite 未运行。用户旧 R09 诊断缺同次 summary/TRX/DLL/PDB，当前 R09 通过不识别旧运行输入。 |
 | S03-03 | 冲突原因对照 | 已验收 | 3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720 | [受控证据](evidence/S03-03/README.md)：SDK8.0.423 Release solution 0/0；Playnite 4/4、Worker 2/2、Core 7/7、R09 2/2；RenderHarness render-qa OK，0 PROBLEM | 完整 WPF 逐类隔离循环、安装包和真实 Playnite 未运行；无真实同步或恢复。readiness 只显示实际检查时间，不定义过期阈值或推荐冲突胜方。用户旧 R09 summary/TRX/DLL/PDB 缺失，旧失败运行输入仍未知。 |
-| S03-04 | 恢复方案草稿 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S03-04 | 恢复方案草稿 | 已验收 | 1c7083e2e1f6b4e6a7c9881794e1f722e96148c0 | [受控证据](evidence/S03-04/README.md)：SDK8 Release solution 0/0；Core 156/156、Worker 380/1 skipped、Playnite 非 WPF 475/27 skipped、定向 31/31；隔离安装和双主题 RenderHarness 通过。WPF 只完成 26/133 类。 | 最终验证源码为 b5bb5158960e05a4c948124d9e29540f4a05812a。完整 WPF 隔离循环有 107 类未运行，真实 Playnite 未启动。用户旧 R09 summary/TRX/DLL/PDB 暂不可用；当前 R09 2/2 不能识别旧运行输入或根因。 |
 | S03-05 | 方案差异比较 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S03-06 | 方案失效规则 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S03-07 | 脱敏方案导出 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

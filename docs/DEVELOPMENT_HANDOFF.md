@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 Round4 S03-04 恢复方案草稿
+
+实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0`；最终验证源码提交 `b5bb5158960e05a4c948124d9e29540f4a05812a`。SDK `8.0.423` Release solution build `0/0`；Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`，R09 `2/2` 与恢复草稿 `4/4` 通过；隔离安装、双主题 RenderHarness 复跑、source validation 和 XAML `25/25` 通过。WPF 隔离仅完成 `26/133` 类、`113/113`，不是全量通过；真实 Playnite 未启动。首次 RenderHarness 的快速切换时序探针未稳定，同一已构建 Harness 复跑通过。
+
+用户粘贴的旧 R09 结果属于测试断言失败，不是编译错误；2 DIP→1 DIP 与历史 Chrome 厚度断言相符，该断言已在 `f13b9e05` 拆分为 Chrome 1 DIP、ValidationStroke 2 DIP。用户暂时没有该次 summary/TRX/DLL/PDB，无法确认旧运行是否用了该测试版本。详细 TRX、隔离安装报告、渲染报告、截图和二进制哈希见 [S03-04 证据包](design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。下一项按计划审查 S03-05 方案差异比较。
+
 ## 2026-10-19 Round4 S03-03 冲突原因对照
 
 实现与证据已提交 `3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720`，证据包：[S03-03](design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。设备冲突详情现将检测原因、左右备份和设备信息、共同父版本、指纹可比性、两侧 readiness 状态及检查时间放在同一只读对照卡内；旧 sidecar 没有检查状态时显示未知。面板清楚区分新鲜度信息与分支胜负，不按最新时间建议覆盖。

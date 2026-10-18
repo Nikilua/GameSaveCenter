@@ -2,7 +2,7 @@
 
 ## 2026-10-18 第四轮执行状态
 
-用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 至 S02-08 已完成受控验证；S02-04 至 S02-08 使用 SDK9，SDK8 正式基线和真实宿主仍待验；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验。S02-08 通知体验受控测试为 Playnite 20/20、Worker 12/12；全量 WPF、系统高对比、读屏器和真实 Playnite 未验。S03-01 来源关系模型 SDK9 Core `156/156` 已验收；S03-02 `fd59dcc1` 版本关系视图 SDK9 Release solution `0/0`、Playnite `12/12`、Worker `2/2`、RenderHarness `render-qa OK` 已受控验收，SDK8 与真实 Playnite待验；S03-03 冲突原因对照已完成 SDK8 受控验证；下一项审查 S03-04 恢复方案草稿的现有能力和依赖。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
+用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 至 S02-08 已完成受控验证；S02-04 至 S02-08 使用 SDK9，SDK8 正式基线和真实宿主仍待验；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验。S02-08 通知体验受控测试为 Playnite 20/20、Worker 12/12；全量 WPF、系统高对比、读屏器和真实 Playnite未验。S03-01 来源关系模型 SDK9 Core `156/156` 已验收；S03-02 `fd59dcc1` 版本关系视图 SDK9 Release solution `0/0`、Playnite `12/12`、Worker `2/2`、RenderHarness `render-qa OK` 已受控验收；S03-03 冲突原因对照已完成 SDK8 受控验证；S03-04 恢复方案草稿已完成 SDK8 build、定向验证、隔离安装与双主题渲染，完整 WPF 循环和真实 Playnite仍待验。下一项审查 S03-05 方案差异比较。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
 | --- | --- | --- |
@@ -36,7 +36,8 @@
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
 | S03-03 | IMPLEMENTED | `3268565c` 冲突详情并排显示双方版本/设备证据、共同父版本、指纹关系与 readiness 校验状态/时间；SDK8 Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`、Render QA OK。无时间戳覆盖建议；完整 WPF 隔离、安装与真实 Playnite未验。证据见 Round4 S03-03。 |
-| S03-04～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
+| S03-04 | IMPLEMENTED | `1c7083e2` 实现只读恢复方案草稿；最终 SDK8 验证源码 `b5bb5158` solution build `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`、定向 `31/31`，隔离安装与 RenderHarness 双主题复跑通过。WPF 仅部分 `26/133`，真实 Playnite未启动；用户旧 R09 输入身份缺失。证据见 Round4 S03-04。 |
+| S03-05～S06 | PROPOSED | 见计划逐组已有能力对照；先去重、确定契约，再准入可审阅小批。 |
 
 不自动启动新线程；不重跑无变化的外部权限探测；不把真实存档、媒体或云端写入当规划验证。
 

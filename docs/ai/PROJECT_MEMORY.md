@@ -2,11 +2,11 @@
 
 ## 2026-10-19 Round4 S03-04 恢复方案草稿实现
 
-恢复映射 IPC 已收敛为只读、路径脱敏摘要；UI 草稿只保存游戏/目标版本/基线、映射计数与预览引用、创建时间、readiness 检查引用和固定保护要求，不含文件路径、凭据或可执行授权。草稿上限 50 条；保存仅写插件设置，恢复仍需进入既有安全流程。`SaveCenterView` 提供只读预览、保存与删除操作，30 分钟预览新鲜度及选择匹配由 ViewModel 校验。
+实现提交 `1c7083e2e1f6b4e6a7c9881794e1f722e96148c0` 将恢复映射 IPC 收敛为只读、路径脱敏摘要；UI 草稿最多 50 条，只保存游戏/目标版本/基线、映射计数与预览引用、创建时间、readiness 检查引用和固定保护要求，不含文件路径、凭据或可执行授权。`SaveCenterView` 提供只读预览、保存与删除操作，30 分钟预览新鲜度及选择匹配由 ViewModel 校验。最终受控验证基于 `b5bb5158960e05a4c948124d9e29540f4a05812a`。
 
-SDK `8.0.423` Release solution build `0 warning / 0 error`；Core `147/147`、Worker `380 passed / 1 skipped`；新增 Worker 脱敏预览 `3/3`，Playnite 草稿 `4/4`、R09 `2/2`。完整 WPF 隔离跑到 133 类中的 21 类时发现生产侧栏漏折叠通知项，及夹具漏测该导航项；生产逻辑和夹具已修复，`ProductionShellChromeSourceTests` 最终 `22/22`。其余 112 个 WPF 类未执行，不能称全量 WPF 通过。RenderHarness 双主题 `render-qa OK / 0 PROBLEM`；源码校验、XAML 25 项结构检查通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`。受控安装脚本通过隔离构建后，打包器因主工作树仍有未提交源码和既有未跟踪 TRX 而拒绝打包；后续在 clean checkpoint 完成隔离安装/版本核验。真实 Playnite 未关闭、安装或启动。
+SDK `8.0.423` Release solution build `0 warning / 0 error`；Core `156/156`、Worker `380 passed / 1 skipped`、Playnite 非 WPF `475 passed / 27 skipped`。定向用例共 `31/31`：R09 `2/2`、草稿 `4/4`、侧栏 `22/22`、Q06 按下态 `1/1`、Worker 脱敏预览 `2/2`。完整 WPF 隔离只完成 `26/133` 类（`113/113` 通过），其余 `107` 类未运行，不能称全量 WPF 通过。RenderHarness 双主题复跑 `render-qa OK`；source validation、XAML `25/25`、WPF 静态审查 `0 errors / 26 warnings / 177 info`。隔离安装通过，扩展清单 `0.6.73`、插件 DLL `0.6.73.0`。真实 Playnite 未启动。首次 RenderHarness 仅快速切换时序探针失败，同一已构建 Harness 复跑通过。
 
-用户日志诊断 `20261018T012631286Z-e027df9d` 的同次 summary/TRX/DLL/PDB 不在工作区，用户表示暂时没有。当前 SDK8 R09 `2/2` 通过，不足以还原旧运行的输入或根因。详见后续 [S03-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。
+用户日志诊断 `20261018T012631286Z-e027df9d` 显示的是测试阶段 R09 断言失败，不是编译失败。日志中的 2 DIP→1 DIP 与旧版 Chrome 厚度断言吻合；提交 `f13b9e05` 已改为 Chrome 1 DIP，并单独验证 2 DIP ValidationStroke。用户暂时没有旧运行 summary/TRX/DLL/PDB，故无法证明旧运行实际使用旧断言，也不能确定其二进制输入。最终源码 SDK8 R09 `2/2` 通过。构建、部分隔离测试、隔离安装、截图、程序集/TRX SHA-256 及边界见 [S03-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。
 
 ## 2026-10-19 Round4 S03-03 冲突原因对照
 

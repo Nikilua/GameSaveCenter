@@ -4,10 +4,11 @@
 
 ## 当前身份与活动事项
 
-- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 至 S02-08、S03-01 至 S03-03 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
+- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 至 S02-08、S03-01 至 S03-04 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
 - 2026-10-19 当前构建追踪：SDK `8.0.423` Release 完整解决方案编译 `0 warning / 0 error`，Core `147/147`、Worker `374 passed / 1 skipped`、Playnite 非 WPF 分组 `468/468`。WPF 第 16/132 类发现设置页范围校验数从旧断言 `10` 增至 `12`（通知安静时段新增开始/结束分钟字段）；更新测试后 `NumericInputTests 12/12`、R09 `2/2`。完整 WPF 隔离循环未完成；未打包、安装或运行真实 Playnite。旧 R09 诊断文件缺失，当前 R09 通过不能识别旧运行输入。证据：[BUILD-20261019](../design/reviews/ui-finesse-round4-20261018/evidence/BUILD-20261019/README.md)。
 - S03-02 提交 `fd59dcc1` 完成版本关系视图受控验证：Worker 用时间键+备份 ID 稳定分页，每页最多 100 项；Playnite 详情按时间显示父版本、分叉、同内容版本、设备和不确定关系。SDK `9.0.302` Release solution `0/0`、Playnite 定向 `12/12`（R09 `2/2`）、Worker `2/2`、RenderHarness `render-qa OK / 0 PROBLEM`。SDK8 正式基线与真实 Playnite 未验；旧 R09 运行身份文件缺失，不能从本轮通过反推旧输入。证据：[S03-02](../design/reviews/ui-finesse-round4-20261018/evidence/S03-02/README.md)。
-- S03-03 提交 `3268565c` 已在 SDK `8.0.423` 完成冲突原因对照受控验证：设备冲突详情同时显示两侧备份/设备证据、共同父版本、指纹比较结果和 readiness 检查状态/时间；不按时间自动推荐覆盖。Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`，RenderHarness `render-qa OK`。未运行完整 WPF 隔离循环、安装或真实 Playnite；旧 R09 运行身份仍未知。证据：[S03-03](../design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。下一项审查 S03-04。
+- S03-03 提交 `3268565c` 已在 SDK `8.0.423` 完成冲突原因对照受控验证：设备冲突详情同时显示两侧备份/设备证据、共同父版本、指纹比较结果和 readiness 检查状态/时间；不按时间自动推荐覆盖。Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`，RenderHarness `render-qa OK`。证据：[S03-03](../design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。
+- S03-04 恢复方案草稿已实现并完成受控验证，源实现提交 `1c7083e2`，最终验证源码提交 `b5bb5158`。SDK `8.0.423` Release solution `0/0`；Core `156/156`、Worker `380 passed / 1 skipped`、Playnite 非 WPF `475 passed / 27 skipped`、R09 `2/2`、恢复草稿 `4/4`；隔离安装和双主题 RenderHarness 复跑通过。完整 WPF 133 类仅完成 26 类（113/113），不算全量通过；未启动真实 Playnite。旧 R09 同次 summary/TRX/DLL/PDB 用户暂时没有，旧失败输入仍未知。证据：[S03-04](../design/reviews/ui-finesse-round4-20261018/evidence/S03-04/README.md)。下一项审查 S03-05。
 - S03-01：提交 `5e05aa73` 新增只读来源关系模型。基于真实父 ID 建父边，基于内容指纹标注等价版本；报告缺父/重复/歧义 ID、环、缺失身份和未知关系，不按时间戳推导线性历史。输入最多 500 条并用一条 lookahead 判断截断。SDK `9.0.302` Core Release 测试 `156/156`；global.json 要求 SDK8，本次没有全解方案、Worker/Playnite 接入或真实宿主验证。证据：[S03-01](../design/reviews/ui-finesse-round4-20261018/evidence/S03-01/README.md)。
 - S02-08：复用通知收件箱/Worker 持久化等现有实现完成体验验收；SDK `9.0.302` Playnite 定向测试 `20/20`、Worker 持久化 `12/12`，插件 DLL/PDB 与测试加载副本哈希一致。完整 WPF 循环、SDK8 基线、真实 Playnite、Windows 系统高对比和读屏器未验；WPF 清理输出 `InvalidComObjectException`，VSTest 退出码为 0。详情：[S02-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md)。
 - S02-07：提交 `9ed6b4e5`、`c4fb56a0` 为明确重试链路建立通知问题身份；同一故障重试归并并展示次数、首末时间、最后错误、首次/最近任务入口，成功重试关闭告警，后续失败重新打开；通知异步乱序落库仍保留最早时间/任务。SDK `9.0.302` Release solution build `0/0`；Core `147/147`、Worker `374` 通过/`1` 跳过、通知持久化 `12/12`、通知与重试及 R09 定向测试 `19/19`（R09 `2/2`）；source validation 通过，WPF 静态审查 `0 errors / 26 warnings / 177 info`。SDK8、完整 WPF 循环、安装、双主题渲染和真实 Playnite 宿主仍待验；旧 R09 输入身份未知。详见 [S02-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md)。
@@ -35,7 +36,7 @@
 - S07-06 已在诊断 `summary.json` 加入原始 TRX 测试用例计数、结果状态、suite 和 WPF 隔离类运行汇总，并逐文件对照原 TRX Counters。定向诊断自测与历史原始 TRX 复算通过；历史用例失败原样保留。见 [S07-06 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-06/README.md)。
 - S07-07 已建立环境能力缓存与校验器，区分 SDK 缺失、真实宿主未检查、CEF/ETW 权限阻塞及 GitHub branch protection 读取权限阻塞，并逐项记录证据和重试条件；没有重试被拒探测。见 [S07-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S07-07/README.md) 与[缓存](ENVIRONMENT_CAPABILITY_CACHE.json)。
 - S07-03 审查发现 workflow 对纯文档和混合路径都运行完整双 SDK 流程；GitHub API 读取 `main` branch protection 返回 403，无法确认 required check 名称。workflow 未修改，待获得配置读权限或用户提供清单后再解锁。见 [S07-03 审查](../design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md)。
-- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。S01-08、S02-02 至 S03-03 受控验证已通过；SDK8、完整隔离循环与真实宿主的剩余边界按任务记录；下一项审查 S03-04 恢复方案草稿。
+- S07-08 已记录 64 项总体验收条件、每批快照内容与无可执行项时的边界处理。Round4 尚未完成；具体规则见[交付协议](../design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。S01-08、S02-02 至 S03-04 受控验证已通过；完整隔离循环与真实宿主的剩余边界按任务记录；下一项审查 S03-05 方案差异比较。
 
 ## 已核验事实与外部边界
 
