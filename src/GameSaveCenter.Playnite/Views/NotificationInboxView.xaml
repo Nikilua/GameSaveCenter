@@ -121,7 +121,7 @@
                     <DataGrid x:Name="NotificationGrid" Style="{StaticResource NotificationDataGrid}" ItemsSource="{Binding NotificationInboxItems}" SelectedItem="{Binding SelectedNotification, Mode=TwoWay}" SelectionMode="Single" AutomationProperties.Name="通知列表">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="级别" Width="88" MinWidth="80">
-                                <DataGridTemplateColumn.CellTemplate><DataTemplate><Border Style="{StaticResource NotificationSeverityPill}" HorizontalAlignment="Left" Padding="7,3"><TextBlock Text="{Binding SeverityDisplay}" FontSize="11" FontWeight="SemiBold"/></Border></DataTemplate></DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellTemplate><DataTemplate><Border Style="{StaticResource NotificationSeverityPill}" HorizontalAlignment="Left" Padding="7,3"><TextBlock Text="{Binding SeverityDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/></Border></DataTemplate></DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="通知" Binding="{Binding Title}" Width="2*" MinWidth="160"/>
                             <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="3*" MinWidth="200"/>
