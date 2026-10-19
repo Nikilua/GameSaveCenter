@@ -4,6 +4,12 @@
 - SDK8.0.423 Release 全解决方案构建 `0 warnings / 0 errors`；生产页面按钮绑定与比较集合行为 `5/5`；双主题 11 尺寸 Offscreen RenderHarness `render-qa OK / 0 PROBLEM`。source validation 与 diff check 通过。证据：[S04-01](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。
 - 完整 WPF 独立进程循环与真实 Playnite 未运行；离屏截图只用于核对合成夹具。下一项 S04-02 双图工作区。
 
+## 2026-10-19 Round4 S04-02 双图工作区
+
+- 实现提交 `825e58e9867ae3303c100eef31693f768f1772cf`：两张截图同比例显示，并提供原图像素尺寸、大小、来源与游戏 ID；窄布局改为上下排列，短宿主默认收起比较区，媒体列表至少保留 `154 DIP`。
+- SDK `8.0.423` Release 全解决方案构建 `0 warnings / 0 errors`，两个隔离 WPF 测试类共 `7/7`；双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`，source validation 与 diff check 通过。证据、TRX、截图与文件哈希见 [S04-02](../design/reviews/ui-finesse-round4-20261018/evidence/S04-02/README.md)。
+- 未运行完整 WPF 隔离循环或真实 Playnite；RenderHarness 使用合成数据，未读取真实媒体。下一项 S04-03 同步缩放移动。
+
 ## 2026-10-19 用户反馈：窗口布局与弹出样式
 
 - 壳层头部从 `1200 DIP` 起同行，窄窗保留折行；存档详情展开时保留四行历史，媒体详情展开时保留至少一整行卡片并限制堆叠详情高度。列显隐菜单加入主题玻璃色、圆角和动效开关控制的入口动画。通知读操作按钮等高，空状态面板只在列表列内居中并复用共享玻璃面板样式。

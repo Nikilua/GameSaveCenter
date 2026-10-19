@@ -1,0 +1,7 @@
+# S04-02 RenderHarness 摘要
+
+- 工具：OffscreenRenderHarness，Release 构建；结果 `render-qa OK`，`0 PROBLEM`。
+- 主题：light、dark；窗口尺寸：1040×700、1100×720、1280×720、1366×768、1536×864、1600×900、1707×960、1920×1080、2048×1152、2560×1440、3840×2160。
+- 当前游戏媒体列表在紧凑档的 viewport 为 161–162 DIP；RenderHarness 门槛按一个 154 DIP 完整媒体卡片行核验。
+- 合成比较 DTO 的 `ArchivePath` 留空，渲染验证不访问任何外部媒体文件；截图仅展示比较卡片布局与空预览状态。实际 PNG 读取和原始像素尺寸另由 `R18ThumbnailBudgetTests` 中 960×540 临时图验证。
+- 截图不是 Playnite 实机画面。

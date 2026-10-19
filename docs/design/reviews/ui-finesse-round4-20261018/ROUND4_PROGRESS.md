@@ -6,8 +6,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收18、已满足1、代码完成待验收15、外部阻塞1、待开始29。
-实现状态：完成34、未开始30、不适用0；受控验证：通过34、未跑29、不适用0；宿主验证：通过0、待验9、未跑47、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收19、已满足1、代码完成待验收15、外部阻塞1、待开始28。
+实现状态：完成35、未开始29、不适用0；受控验证：通过35、未跑28、不适用0；宿主验证：通过0、待验9、未跑47、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -44,7 +44,7 @@
 | S03-07 | 脱敏方案导出 | 已验收 | eeedd003bb91a0e562529b45b15d4cde67f18db8 | [受控证据](evidence/S03-07/README.md)：SDK8 Release solution 成功；恢复方案脱敏导出、草稿行为与 R09 定向测试 18/18；RenderHarness 双主题与精确提交隔离 no-start 安装通过。 | 未运行完整 WPF 逐类隔离循环或真实 Playnite；RenderHarness 未触发导出对话框交互；旧 R09 输入身份未知。 |
 | S03-08 | 来源与方案验收 | 已验收 | 37f42cc2e9920574d43d13cf8018ad6dcf114158 | [受控证据](evidence/S03-08/README.md)：SDK9 Release solution 0/0；Core 10/10、Playnite 15/15（含 R09 2/2），覆盖时钟偏差、指纹、41 天前校验、只读文件夹具与恢复 guard。 | global.json 要求的 SDK8.0.423 当前未安装，本批用 SDK9.0.302；完整 WPF 隔离循环和真实 Playnite未运行，用户旧 R09 运行输入身份仍未知。 |
 | S04-01 | 比较对象集合 | 已验收 | f911cba4 | [证据](evidence/S04-01/README.md)：SDK8.0.423 Release solution 0/0；生产媒体比较命令行为 5/5；浅/深主题 11 尺寸 RenderHarness render-qa OK / 0 PROBLEM | OffscreenRenderHarness 与受控 WPF 行为已验；完整 WPF 隔离循环、真实 Playnite 和真实媒体解码未运行。下一项 S04-02 双图工作区。 |
-| S04-02 | 双图工作区 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S04-02 | 双图工作区 | 已验收 | 825e58e9867ae3303c100eef31693f768f1772cf | [证据](evidence/S04-02/README.md)：SDK8.0.423 Release solution 0/0；媒体比较与原图尺寸 WPF 7/7；双主题 11 尺寸 RenderHarness render-qa OK / 0 PROBLEM | 未运行完整 WPF 隔离循环或真实 Playnite；合成截图不是宿主画面，真实媒体目录未读取。 |
 | S04-03 | 同步缩放移动 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S04-04 | 差异查看辅助 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S04-05 | 比较候选切换 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

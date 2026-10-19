@@ -12,7 +12,11 @@
 
 ## 2026-10-19 Round4 S04-01 比较对象集合
 
-S04-01 实现提交 `f911cba4`，已完成受控验收：最多两张有效截图按稳定 `MediaId` 保存在筛选无关集合；视频/缺失文件有说明，只有被选中的截图归档路径会接受 `File.Exists` 检查。SDK8.0.423 Release solution build `0 warnings / 0 errors`，生产页面按钮/命令行为 `5/5`，双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。源、构建 DLL、PDB、TRX 和合成渲染截图身份见 [S04-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。没有运行完整 WPF 隔离循环或真实 Playnite；offscreen DPI 为逻辑 1.00。下一项 S04-02 双图工作区。
+S04-01 实现提交 `f911cba4`，已完成受控验收：最多两张有效截图按稳定 `MediaId` 保存在筛选无关集合；视频/缺失文件有说明，只有被选中的截图归档路径会接受 `File.Exists` 检查。SDK8.0.423 Release solution build `0 warnings / 0 errors`，生产页面按钮/命令行为 `5/5`，双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。源、构建 DLL、PDB、TRX 和合成渲染截图身份见 [S04-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。没有运行完整 WPF 隔离循环或真实 Playnite；offscreen DPI 为逻辑 1.00。S04-02 已验收，下一项 S04-03 同步缩放移动。
+
+## 2026-10-19 Round4 S04-02 双图工作区
+
+实现提交 `825e58e9867ae3303c100eef31693f768f1772cf`：媒体比较区等比例并排显示两张截图及原图像素尺寸、大小、来源和游戏 ID；宽度低于 `560 DIP` 时上下排列，高度低于 `680 DIP` 时自动收起以保留列表空间，仍可手动展开；列表最小可读高度 `154 DIP`。SDK `8.0.423` Release solution build `0/0`，两个隔离 WPF 类共 `7/7`，双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`，源码校验通过。证据与 SHA：[S04-02](../design/reviews/ui-finesse-round4-20261018/evidence/S04-02/README.md)。未运行完整 WPF 隔离循环或真实 Playnite；渲染使用合成数据、未读取真实媒体。下一项 S04-03 同步缩放移动。
 
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
