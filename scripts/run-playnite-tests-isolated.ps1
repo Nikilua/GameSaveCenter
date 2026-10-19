@@ -53,6 +53,7 @@ function Invoke-PlayniteTestProcess {
         '--logger', 'console;verbosity=normal',
         '--logger', ('trx;LogFileName=' + $StepId + '.trx'),
         '--results-directory', (Join-Path $DiagnosticsContext.RunRoot ('tests/' + $StepId)),
+        '--blame-hang-timeout', '2m',
         '-m:1',
         '-nodeReuse:false',
         '-p:NuGetAudit=false',

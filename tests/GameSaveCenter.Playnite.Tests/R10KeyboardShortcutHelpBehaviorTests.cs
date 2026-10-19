@@ -89,11 +89,20 @@ public sealed class R10KeyboardShortcutHelpBehaviorTests
             var popup = (System.Windows.Controls.Primitives.Popup)shell.FindName("KeyboardShortcutHelpPopup")!;
             var items = (ItemsControl)shell.FindName("KeyboardShortcutHelpItemsControl")!;
 
-            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            host.Window.UpdateLayout();
+            try
+            {
+                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                host.Window.UpdateLayout();
 
-            Assert.True(popup.IsOpen);
-            Assert.Empty(items.Items.Cast<KeyboardShortcutHelpItem>());
+                Assert.True(popup.IsOpen);
+                Assert.Empty(items.Items.Cast<KeyboardShortcutHelpItem>());
+            }
+            finally
+            {
+                // Do not leave the native Popup window alive when WindowHost shuts down
+                // its dispatcher; this can hang the isolated test host on headless desktops.
+                popup.IsOpen = false;
+            }
         });
     }
 
