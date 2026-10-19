@@ -122,6 +122,55 @@ public sealed class BackupLineageBuilderTests
     }
 
     [Fact]
+    public void ExplicitParentAndFingerprintEvidenceSurviveDeviceClockSkew()
+    {
+        var model = new BackupLineageBuilder().Build(new[]
+        {
+            new BackupSnapshot
+            {
+                BackupId = "laptop-branch",
+                ParentBackupId = "desktop-base",
+                SourceDevice = "Laptop",
+                CreatedUtc = new DateTime(2026, 10, 19, 8, 0, 0, DateTimeKind.Utc),
+                ContentFingerprint = "shared-content"
+            },
+            new BackupSnapshot
+            {
+                BackupId = "desktop-base",
+                SourceDevice = "Desktop",
+                CreatedUtc = new DateTime(2026, 10, 19, 10, 0, 0, DateTimeKind.Utc),
+                ContentFingerprint = "base-content"
+            },
+            new BackupSnapshot
+            {
+                BackupId = "desktop-copy",
+                ParentBackupId = "desktop-base",
+                SourceDevice = "Desktop",
+                CreatedUtc = new DateTime(2026, 10, 19, 9, 0, 0, DateTimeKind.Utc),
+                ContentFingerprint = "SHARED-CONTENT"
+            }
+        });
+
+        Assert.Contains(model.Relations, relation =>
+            relation.Kind == BackupLineageRelationKind.Parent &&
+            model.Nodes[relation.FromNodeIndex].BackupId == "desktop-base" &&
+            model.Nodes[relation.ToNodeIndex].BackupId == "laptop-branch");
+        Assert.Contains(model.Relations, relation =>
+            relation.Kind == BackupLineageRelationKind.Parent &&
+            model.Nodes[relation.FromNodeIndex].BackupId == "desktop-base" &&
+            model.Nodes[relation.ToNodeIndex].BackupId == "desktop-copy");
+        Assert.Contains(model.Relations, relation =>
+            relation.Kind == BackupLineageRelationKind.EquivalentContent &&
+            new[]
+            {
+                model.Nodes[relation.FromNodeIndex].BackupId,
+                model.Nodes[relation.ToNodeIndex].BackupId
+            }.OrderBy(id => id).SequenceEqual(new[] { "desktop-copy", "laptop-branch" }));
+        Assert.DoesNotContain(model.Relations, relation =>
+            relation.FromNodeIndex == 0 && relation.ToNodeIndex == 1);
+    }
+
+    [Fact]
     public void StopsAfterTheLimitAndOneLookaheadItem()
     {
         var yielded = 0;

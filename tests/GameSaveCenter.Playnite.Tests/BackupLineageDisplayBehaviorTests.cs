@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -48,6 +49,67 @@ public sealed class BackupLineageDisplayBehaviorTests
 
         Assert.True(HasText(display.Items, "来源未知"));
         Assert.True(HasText(display.Items, "内容关系未知"));
+    }
+
+    [Fact]
+    public void ClockSkewAndOldReadinessRemainEvidenceLedWithoutWritingArchiveData()
+    {
+        var fixtureDirectory = Path.Combine(Path.GetTempPath(), "GameSaveCenter-S03-08-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(fixtureDirectory);
+        var archiveFixture = Path.Combine(fixtureDirectory, "synthetic-save.bin");
+        var originalArchiveBytes = new byte[] { 0x47, 0x53, 0x43, 0x08, 0x00, 0xFF };
+        File.WriteAllBytes(archiveFixture, originalArchiveBytes);
+
+        try
+        {
+            var now = new DateTime(2026, 10, 19, 12, 0, 0, DateTimeKind.Utc);
+            var baseTime = now.AddHours(-2);
+            var childTime = now.AddHours(-4);
+            var equivalentTime = now.AddHours(-3);
+            var source = Backup("desktop-base", string.Empty, baseTime, "Desktop", "base-fingerprint");
+            var child = Backup("laptop-branch", source.BackupId, childTime, "Laptop", "shared-fingerprint");
+            var equivalent = Backup("handheld-copy", source.BackupId, equivalentTime, "Handheld", "SHARED-FINGERPRINT");
+            var loaded = new[] { equivalent, source, child };
+
+            var lineage = BackupLineageDisplayBuilder.Build(child, loaded, totalVersionCount: loaded.Length);
+            var equivalentPosition = IndexOf(lineage.Items, "handheld-copy");
+            var parentPosition = IndexOf(lineage.Items, "desktop-base");
+
+            Assert.True(HasText(lineage.Items, "来源父版本", "desktop-base"));
+            Assert.True(HasText(lineage.Items, "内容相同", "handheld-copy"));
+            Assert.True(equivalentPosition >= 0 && parentPosition >= 0 && equivalentPosition < parentPosition);
+
+            var conflictText = string.Join("\n", DeviceConflictComparisonDisplayBuilder.Build(new DeviceConflictStatusDto
+            {
+                HasConflict = true,
+                Reason = "DivergedFromCommonBase",
+                LocalDevice = "Laptop",
+                RemoteDevice = "Desktop",
+                LocalBackupId = "laptop-branch",
+                RemoteBackupId = "desktop-branch",
+                LocalParentBackupId = "desktop-base",
+                RemoteParentBackupId = "desktop-base",
+                LocalCreatedUtc = childTime,
+                RemoteCreatedUtc = equivalentTime,
+                LocalContentFingerprintAvailable = true,
+                RemoteContentFingerprintAvailable = true,
+                ContentFingerprintsMatch = false,
+                LocalReadinessStatus = "Ready",
+                LocalReadinessCheckedUtc = now.AddDays(-41)
+            }, now));
+
+            Assert.Contains("两个版本从同一父版本分叉", conflictText);
+            Assert.Contains("41 天前", conflictText);
+            Assert.Contains("结果仅反映该次检查", conflictText);
+            Assert.DoesNotContain("已过期", conflictText);
+            Assert.Contains("系统不会因为创建时间较新就推荐覆盖另一侧", conflictText);
+            Assert.Equal(new[] { archiveFixture }, Directory.GetFiles(fixtureDirectory));
+            Assert.Equal(originalArchiveBytes, File.ReadAllBytes(archiveFixture));
+        }
+        finally
+        {
+            Directory.Delete(fixtureDirectory, recursive: true);
+        }
     }
 
     [Fact]
