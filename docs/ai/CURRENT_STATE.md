@@ -10,6 +10,10 @@
 
 按本轮五项反馈调整：壳层头部在 `1200 DIP` 起并为一行；显示列菜单使用共享玻璃色、圆角和遵循动效偏好的淡入位移动画；存档详情展开时保留四行表格，媒体详情展开时至少保留一整行卡片；通知操作按钮等高，空状态只在通知表格列中水平居中并复用玻璃空状态面板。SDK `8.0.423` Release solution build、15 项定向 WPF 测试、全尺寸双主题 RenderHarness 和最终 shell QA 均通过。构建/渲染工作树还包含用户未提交的 S04-01 媒体比较更改，本轮提交仅选择 UI 修复文件；真实 Playnite 中的新版本渲染尚未复验，完整 WPF 隔离循环未运行。
 
+## 2026-10-19 Round4 S04-01 比较对象集合
+
+S04-01 已完成受控验收：最多两张有效截图按稳定 `MediaId` 保存在筛选无关集合；视频/缺失文件有说明，只有被选中的截图归档路径会接受 `File.Exists` 检查。SDK8.0.423 Release solution build `0 warnings / 0 errors`，生产页面按钮/命令行为 `5/5`，双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。源、构建 DLL、PDB、TRX 和合成渲染截图身份见 [S04-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。没有运行完整 WPF 隔离循环或真实 Playnite；offscreen DPI 为逻辑 1.00。下一项 S04-02 双图工作区。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 完成受控验收，没有生产代码变化。合成两设备夹具验证明确父 ID、同指纹和时钟偏差；41 天前 readiness 只显示该次检查年龄，不自行判过期；只读展示未改写合成存档文件；草稿重验与原 RestoreConfirmationGuard 相关行为通过。SDK9 Release solution build `0/0`，Core `10/10`，Playnite `15/15`（含 R09 `2/2`），source validation 通过。当前机器未安装 global.json 锁定的 SDK8.0.423，完整 WPF 循环和真实 Playnite未运行。证据：[S03-08](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项按计划核对 S04-01。

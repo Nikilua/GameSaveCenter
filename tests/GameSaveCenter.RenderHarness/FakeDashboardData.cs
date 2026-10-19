@@ -40,6 +40,7 @@ public sealed class FakeDashboardData
 {
     private readonly WorkspaceFixtureState fixtureState;
     private readonly bool mediaInboxHasMore;
+    private readonly MediaComparisonSelection mediaComparisonSelection = new();
 
     public string OnboardingTitle => "首次使用：准备环境";
     public string OnboardingDescription => "先确认 Worker、目录、SQLite 与备份工具可用。所有检查都是非破坏性的；你可以跳过，之后随时在维护中心重新运行。";
@@ -64,6 +65,11 @@ public sealed class FakeDashboardData
     public ICommand LoadMoreMediaInboxCommand { get; } = new NoopCommand();
     public ICommand ReloadMediaInboxCommand { get; } = new NoopCommand();
     public ICommand ReloadMediaDuplicateGroupsCommand { get; } = new NoopCommand();
+    public ICommand AddSelectedMediaToComparisonCommand { get; } = new NoopCommand();
+    public ICommand ClearMediaComparisonCommand { get; }
+    public ObservableCollection<MediaItemDto> MediaComparisonItems => mediaComparisonSelection.Items;
+    public string MediaComparisonSummary => mediaComparisonSelection.Summary;
+    public string MediaComparisonStatus => mediaComparisonSelection.Status;
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
     public ICommand LoadDetailsCommand { get; } = new NoopCommand();
@@ -137,6 +143,7 @@ public sealed class FakeDashboardData
     {
         fixtureState = state;
         this.mediaInboxHasMore = mediaInboxHasMore;
+        ClearMediaComparisonCommand = new RelayCommand(_ => { }, _ => mediaComparisonSelection.Items.Count > 0);
         rowCount = Math.Max(8, rowCount);
         Snapshot = new DashboardSnapshotDto
         {

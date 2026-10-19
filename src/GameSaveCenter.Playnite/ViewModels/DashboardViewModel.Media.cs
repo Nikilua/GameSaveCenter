@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -15,6 +16,32 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel
     {
         private const int MediaPageSize = 200;
+
+        public ObservableCollection<MediaItemDto> MediaComparisonItems => mediaComparisonSelection.Items;
+        public string MediaComparisonSummary => mediaComparisonSelection.Summary;
+        public string MediaComparisonStatus => mediaComparisonSelection.Status;
+
+        private void AddSelectedMediaToComparison(object? value)
+        {
+            var selected = (value as IList)?
+                .Cast<object>()
+                .OfType<MediaItemDto>()
+                .Cast<MediaItemDto?>()
+                .ToArray();
+
+            mediaComparisonSelection.Add(selected);
+            OnPropertyChanged(nameof(MediaComparisonSummary));
+            OnPropertyChanged(nameof(MediaComparisonStatus));
+            RaiseCommandStates();
+        }
+
+        private void ClearMediaComparison()
+        {
+            mediaComparisonSelection.Clear();
+            OnPropertyChanged(nameof(MediaComparisonSummary));
+            OnPropertyChanged(nameof(MediaComparisonStatus));
+            RaiseCommandStates();
+        }
 
         private sealed class MediaInboxBatchSelection
         {

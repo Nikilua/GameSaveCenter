@@ -1,0 +1,12 @@
+GameSaveCenter render QA report
+Generated: 2026-10-19 13:54:10
+Scenario: render-qa
+EvidenceSource: OffscreenRenderHarness
+Commit: 44c650df27d4c0b46c5481a2f6e2974c3381030b
+WorkingTreeClean: False
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+Themes: light,dark
+Window cases: 11 (1040x700, 1100x720, 1280x720, 1366x768, 1536x864, 1600x900, 1707x960, 1920x1080, 2048x1152, 2560x1440, 3840x2160)
+Result: render-qa OK
+PROBLEM entries: 0
+Full report SHA-256: 101322FFE600D6C76C2666C764418AE595D5C30EA8DC7EA950E903E7DCD992EE
