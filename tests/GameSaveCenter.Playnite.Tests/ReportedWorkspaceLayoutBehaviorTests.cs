@@ -1689,20 +1689,20 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 compactActionsColumnWidth = actionsColumn.ActualWidth;
                 compactTitleActionsGap = BoundsIn(actions, shell).Top - BoundsIn(titlePanel, shell).Bottom;
 
-                window.Width = 1320;
-                shell.ApplyResponsiveLayout(1320, 720);
+                window.Width = 1199;
+                shell.ApplyResponsiveLayout(1199, 720);
                 FlushLayout(window);
                 middleCompactSubtitleVisibility = subtitle.Visibility;
                 middleCompactActionRow = Grid.GetRow(actions);
                 middleCompactTitleColumnSpan = Grid.GetColumnSpan(titlePanel);
 
-                window.Width = 1500;
-                shell.ApplyResponsiveLayout(1500, 720);
+                window.Width = 1280;
+                shell.ApplyResponsiveLayout(1280, 720);
                 FlushLayout(window);
                 wideSubtitleVisibility = subtitle.Visibility;
 
-                window.Width = 1320;
-                shell.ApplyResponsiveLayout(1320, 720);
+                window.Width = 1199;
+                shell.ApplyResponsiveLayout(1199, 720);
                 FlushLayout(window);
                 roundTripActionRow = Grid.GetRow(actions);
                 roundTripTitleColumnSpan = Grid.GetColumnSpan(titlePanel);
@@ -1717,7 +1717,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, title/action spans={compactTitleColumnSpan}/{compactActionsColumnSpan}, actionsColumn={compactActionsColumnWidth:0.##} DIP, title/action gap={compactTitleActionsGap:0.##} DIP, actionRows={compactRows}; 1320 DIP subtitle/row/titleSpan={middleCompactSubtitleVisibility}/{middleCompactActionRow}/{middleCompactTitleColumnSpan}; wide subtitle={wideSubtitleVisibility}; compact round-trip row/span={roundTripActionRow}/{roundTripTitleColumnSpan}");
+        output.WriteLine($"{theme} Compact header title={compactTitleText}, subtitle={compactSubtitleVisibility}, actionsRow={compactActionRows}, title/action spans={compactTitleColumnSpan}/{compactActionsColumnSpan}, actionsColumn={compactActionsColumnWidth:0.##} DIP, title/action gap={compactTitleActionsGap:0.##} DIP, actionRows={compactRows}; 1199 DIP subtitle/row/titleSpan={middleCompactSubtitleVisibility}/{middleCompactActionRow}/{middleCompactTitleColumnSpan}; 1280 DIP subtitle={wideSubtitleVisibility}; compact round-trip row/span={roundTripActionRow}/{roundTripTitleColumnSpan}");
         Assert.Null(exception);
         Assert.Equal("存档中心", compactTitleText);
         Assert.Equal(Visibility.Collapsed, compactSubtitleVisibility);
