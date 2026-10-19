@@ -77,7 +77,7 @@ public sealed class R05TooltipTimingBehaviorTests
         Assert.Null(foreignSourceFailure);
     }
 
-    [Fact]
+    [InteractivePointerFact]
     public void QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt()
     {
         RunSta(() =>
