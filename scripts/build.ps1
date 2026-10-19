@@ -50,7 +50,8 @@ try {
     # A non-Git build remains visibly unknown; package.ps1 rejects it before output.
     $env:GSC_BUILD_COMMIT = Get-CurrentBuildCommit
     $env:GSC_SOURCE_ROOT = $root
-    $requiredSdk = Get-GscSdkBaseline $root
+    $sdkInitialization = Initialize-GscSdkBaseline -ProjectRoot $root
+    $requiredSdk = $sdkInitialization.RequiredVersion
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
     if (-not $dotnet) {
         throw "未找到 dotnet。请安装 global.json 要求的 .NET SDK $requiredSdk，并确认 dotnet 在 PATH 中。"

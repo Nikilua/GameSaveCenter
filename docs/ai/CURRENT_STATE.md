@@ -2,6 +2,10 @@
 
 更新时间：2026-10-19。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
+## 当前构建优先项：缺 SDK 时自动准备准确版本
+
+`global.json` 仍精确锁定 .NET SDK `8.0.423`。新 `DEV-INSTALL-009` 在 Playnite 关闭前检查/准备此版本；若缺失，通过官方安装脚本写入当前用户 LocalAppData，SDK9 不会替代；下载失败则保留 Playnite 运行状态。完整编译、测试、打包和 stage 版本核验成功后才关闭 Playnite。首次安装到隔离目录与 SDK 选择自测已通过。当前工作树 SDK8 Release build `0/0`，Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`；R09 `2/2`，S04-01 `4/4`。全量 WPF 133 类循环只到 5 类通过，第 6 类时被新用户输入控制中断；完整测试/安装/真实 Playnite 尚未通过验证。诊断 ID `20261019T010804009Z-d25e5350`；构建输入含未提交 S04-01 源码，不能作为精确提交安装证据。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 完成受控验收，没有生产代码变化。合成两设备夹具验证明确父 ID、同指纹和时钟偏差；41 天前 readiness 只显示该次检查年龄，不自行判过期；只读展示未改写合成存档文件；草稿重验与原 RestoreConfirmationGuard 相关行为通过。SDK9 Release solution build `0/0`，Core `10/10`，Playnite `15/15`（含 R09 `2/2`），source validation 通过。当前机器未安装 global.json 锁定的 SDK8.0.423，完整 WPF 循环和真实 Playnite未运行。证据：[S03-08](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项按计划核对 S04-01。

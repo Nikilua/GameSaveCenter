@@ -102,13 +102,9 @@ try {
 
     Push-Location $WorktreePath
     try {
-        $sdkOutput = @(& dotnet --version 2>&1)
-        $sdkExitCode = $LASTEXITCODE
-        $selectedSdk = ($sdkOutput | ForEach-Object { $_.ToString() }) -join ''
-        $selectedSdk = $selectedSdk.Trim()
-        if ($sdkExitCode -ne 0 -or $selectedSdk -ne $SdkVersion) {
-            throw "SDK verification requested $SdkVersion but dotnet selected '$selectedSdk' (exit $sdkExitCode)."
-        }
+        . (Join-Path $WorktreePath 'scripts/sdk-baseline.ps1')
+        $sdkInitialization = Initialize-GscSdkBaseline -ProjectRoot $WorktreePath
+        $selectedSdk = $sdkInitialization.SelectedVersion
 
         Write-Host "Run Release build and tests with .NET SDK $selectedSdk"
         & (Join-Path $WorktreePath 'scripts/build.ps1') `

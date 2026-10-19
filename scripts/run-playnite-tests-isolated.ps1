@@ -76,7 +76,8 @@ function Invoke-PlayniteTestProcess {
 Push-Location $ProjectRoot
 try {
     if ($ownsDiagnostics) {
-        $requiredSdk = Get-GscSdkBaseline $ProjectRoot
+        $sdkInitialization = Initialize-GscSdkBaseline -ProjectRoot $ProjectRoot
+        $requiredSdk = $sdkInitialization.RequiredVersion
         $sdk = Invoke-GscRecordedCommand $DiagnosticsContext 'sdk-version' dotnet @('--version')
         $selectedVersion = if ($sdk.ExitCode -eq 0) { ($sdk.Output -join '').Trim() } else { '' }
         Assert-GscSdkSelection $requiredSdk $selectedVersion $sdk.ExitCode @()

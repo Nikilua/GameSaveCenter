@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 一键构建 SDK 修复进度
+
+用户最新 `DEV-INSTALL-008` 日志在编译前失败：`global.json` 要求精确 SDK `8.0.423`，机器只有 `9.0.302`。当前实现仍保留精确锁定，并将入口修订为 `DEV-INSTALL-009`：通过官方安装脚本把缺失 SDK 安装到当前用户 LocalAppData；在关闭 Playnite/Worker 前完成选择验证。构建、测试、打包和 stage 版本核验成功后才关闭宿主，提前失败不会关闭 Playnite。首次 SDK8 隔离安装与 `Test-SdkBaseline.ps1` 已通过；当前工作树 SDK8 Release build `0/0`、Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`、R09 `2/2`、S04-01 `4/4`。
+
+当前完整 WPF 隔离测试有 133 类，只完成前 5 类；第 6 类运行时新用户指令中断了进程，诊断 `20261019T010804009Z-d25e5350` 仍为 `running`，没有用例失败记录。尚未验证完整一键打包安装或真实 Playnite 加载。首次 SDK 下载验证安装到仓库 `.tmp`，不是已写入 LocalAppData；一键脚本在其他机器首次运行仍需要能访问 Microsoft 下载源。后续先完成干净提交的一键隔离安装，再按当前 Round4 计划继续；用户保留的未跟踪 TRX/TestResults 未改动。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 已受控完成，没有生产代码变化。SDK9.0.302 Release solution build `0/0`，Core 来源图 `10/10`，Playnite `15/15`（含 R09 `2/2`）；覆盖明确父 ID、两设备分叉、同指纹、时钟偏差、41 天 readiness、只读合成文件、草稿重验与原 Restore guard。source validation 通过。当前机器缺少 global.json 要求的 SDK8.0.423，SDK9 结果不替代 SDK8 正式基线；完整 WPF 循环、真实 Playnite与真实恢复未运行。证据：[S03-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项核对 S04-01。

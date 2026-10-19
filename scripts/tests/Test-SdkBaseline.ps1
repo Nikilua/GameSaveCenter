@@ -11,7 +11,8 @@ $succeeded = $false
 try {
     Push-Location $repoRoot
     try {
-        $required = Get-GscSdkBaseline $repoRoot
+        $sdkInitialization = Initialize-GscSdkBaseline -ProjectRoot $repoRoot
+        $required = $sdkInitialization.RequiredVersion
         $installed = Invoke-GscRecordedCommand $context 'sdk-list' dotnet @('--list-sdks')
         if ($installed.ExitCode -ne 0) { throw 'SDK inventory failed' }
         $actual = Invoke-GscRecordedCommand $context 'sdk-baseline' dotnet @('--version')

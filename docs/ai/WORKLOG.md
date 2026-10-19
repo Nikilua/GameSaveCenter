@@ -1,3 +1,9 @@
+## 2026-10-19 一键安装器 SDK 预检修复
+
+- `global.json` 继续要求精确 SDK `8.0.423`。缺失时 `sdk-baseline.ps1` 通过 Microsoft 官方 `dotnet-install.ps1` 将该版本安装到当前用户 `%LOCALAPPDATA%\GameSaveCenter\dotnet-sdk-8.0.423`，只改当前 PowerShell 进程的 PATH/DOTNET_ROOT；不让 SDK9 替代。`dev-install-run.ps1` 的修订号升到 `DEV-INSTALL-009`，并在关闭 Playnite/Worker 之前先准备并验证 SDK；构建、测试、打包及 stage 版本核对全部成功后才关闭宿主。构建、独立 Playnite 测试与 SDK 验证脚本共用同一初始化逻辑。
+- 实测 SDK8.0.423 首次自动下载/安装到隔离 `.tmp` 路径，SDK 基线自测通过；当前工作树 Release solution build 为 `0 warning / 0 error`、XAML `25/25`、Core `157/157`、Worker `382 passed / 1 skipped`、Playnite 非 WPF `487 passed / 27 skipped`；R09 `2/2`，工作区当前 S04-01 媒体比较行为 `4/4`。
+- 完整 WPF 隔离循环发现 133 个类；前 5 类通过。第 6 类执行中收到新的用户指令后进程以控制中断结束，摘要仍为 `running`，没有失败断言；完整 WPF 循环、打包安装和真实 Playnite 启动尚未验。诊断 ID：`20261019T010804009Z-d25e5350`。此构建包含仍在工作区的 S04-01 改动，程序集身份对应提交前 HEAD `29b8b9a3`，不作为干净提交安装证据。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 - 测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 增加两项跨层行为验收，没有产品代码改动。Core 夹具验证明确父 ID 与同指纹关系不受父版本晚于子版本的时钟偏差影响；Playnite 夹具验证两设备来源文字、41 天 readiness 年龄和不推断过期/时间胜方，并核对合成存档 sentinel 字节和目录条目在只读展示后不变。

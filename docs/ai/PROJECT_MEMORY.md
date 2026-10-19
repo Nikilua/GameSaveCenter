@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 一键安装器 SDK 预检修复
+
+源码锁定 SDK `8.0.423` 不变。`Initialize-GscSdkBaseline` 先验证已选版本；缺失时使用 Microsoft 官方安装脚本安装到当前用户 LocalAppData 下的版本化目录，并仅设置当前进程 PATH、`DOTNET_ROOT`、`DOTNET_ROOT_X64`。`DEV-INSTALL-009` 在关闭 Playnite/Worker 前调用它；`build.ps1`、standalone Playnite 测试和 SDK 验证 worktree 也走该初始化。完整编译、测试、打包和 stage 版本核验成功后才关闭宿主。下载或安装失败时流程会停止在宿主关闭之前，并指出确切 SDK/网络代理原因。
+
+首次 SDK8 自动安装实测完成（安装目标用仓库 `.tmp` 隔离目录），SDK 基线自测通过。随后当前工作树 SDK8 Release solution build `0/0`、Core `157/157`、Worker `382 passed / 1 skipped`、Playnite 非 WPF `487 passed / 27 skipped`；R09 `2/2`、S04-01 当前行为 `4/4`。全量 WPF 循环仅完成前 5/133 类，第 6 类时收到新用户输入并被控制中断；它没有失败用例，摘要保持 `running`。尚未完成干净提交的一键安装/真实 Playnite 启动，不得写成全流程通过。日志位于本地诊断 `20261019T010804009Z-d25e5350`。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 已完成受控验收，无生产代码改动。Core 明确父 ID/指纹图 `10/10`；Playnite 来源、两设备分叉、时钟偏差、41 天前 readiness、合成存档只读、草稿重验与 R09 定向测试 `15/15`，原 `RestoreConfirmationGuard` 仍在实际 RestoreCommand 提交前生效。SDK9.0.302 Release solution build `0 warning / 0 error`，source validation 通过；机器未安装 global.json 锁定的 SDK8.0.423，真实 Playnite和完整 WPF 循环未运行。证据及精确 DLL/TRX SHA：[S03-08](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项核对 S04-01 是否已有等价能力。

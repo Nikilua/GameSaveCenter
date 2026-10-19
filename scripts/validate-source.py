@@ -370,7 +370,8 @@ def check_delivery_guards() -> None:
     if "打包目录不存在：$stage" not in dev_install:
         fail("Development installation must reject a missing staging directory")
     for token in (
-        "DEV-INSTALL-008",
+        "DEV-INSTALL-009",
+        "Initialize-GscSdkBaseline -ProjectRoot $root",
         "TrustedPlayniteExecutables",
         "AllowEmptyCollection",
         "playniteExecutables.Count -eq 0",
@@ -382,6 +383,13 @@ def check_delivery_guards() -> None:
     ):
         if token not in dev_install:
             fail(f"Development installation stale-process safety guard is missing: {token}")
+    preflight_position = dev_install.find("Initialize-GscSdkBaseline -ProjectRoot $root")
+    build_position = dev_install.find("& (Join-Path $PSScriptRoot 'build.ps1')")
+    package_position = dev_install.find("& (Join-Path $PSScriptRoot 'package.ps1')")
+    shutdown_position = dev_install.find("Stop-PlayniteAndOwnedWorkerReliably @stopArguments")
+    install_position = dev_install.find("Install-ExtensionAtomically -Source $stage")
+    if not (0 <= preflight_position < build_position < package_position < shutdown_position < install_position):
+        fail("Development installation must prepare the SDK, build/test/package, then stop Playnite immediately before installing")
 
 
 def check_current_state_documentation() -> None:

@@ -15,7 +15,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-008'
+$installerRevision = 'DEV-INSTALL-009'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -28,6 +28,7 @@ catch {
 }
 
 $root = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
 $hostIsolationHelpers = Join-Path $PSScriptRoot 'PlayniteHostIsolation.ps1'
 . $hostIsolationHelpers
 if ($SkipPlayniteShutdownForIsolatedTarget) {
@@ -435,6 +436,11 @@ function Install-ExtensionAtomically {
 
 Push-Location $root
 try {
+    # Resolve or install the exact SDK before touching the running host. A first
+    # run may need a network download, but an SDK preflight failure must not close
+    # Playnite or its Worker.
+    Initialize-GscSdkBaseline -ProjectRoot $root | Out-Null
+
     $sourceManifest = Join-Path $root 'src\GameSaveCenter.Playnite\extension.yaml'
     $expectedVersion = Read-ManifestVersion $sourceManifest
     Write-Host "GameSaveCenter 一键开发安装" -ForegroundColor Cyan
@@ -469,12 +475,6 @@ try {
     if ($playniteExecutables.Count -gt 0) {
         $stopArguments.TrustedPlayniteExecutables = $playniteExecutables
     }
-    if ($SkipPlayniteShutdownForIsolatedTarget) {
-        Write-Host '隔离扩展目标：跳过停止 Playnite/Worker；若发现既有进程则已在入口处拒绝。' -ForegroundColor DarkCyan
-    }
-    else {
-        Stop-PlayniteAndOwnedWorkerReliably @stopArguments
-    }
 
     if (-not $SkipClean) {
         Write-Host "`n==> 使用新的隔离构建目录：无需清理正在使用的标准 bin/obj" -ForegroundColor DarkCyan
@@ -506,6 +506,15 @@ try {
     $stageVersion = Read-ManifestVersion (Join-Path $stage 'extension.yaml')
     if ($stageVersion -ne $expectedVersion) {
         throw "打包目录版本不一致：源码 $expectedVersion，打包目录 $stageVersion。"
+    }
+
+    # Build, tests, package identity and the stage manifest must all be valid
+    # before stopping the host. Failed restores/tests must leave Playnite running.
+    if ($SkipPlayniteShutdownForIsolatedTarget) {
+        Write-Host '隔离扩展目标：跳过停止 Playnite/Worker；若发现既有进程则已在入口处拒绝。' -ForegroundColor DarkCyan
+    }
+    else {
+        Stop-PlayniteAndOwnedWorkerReliably @stopArguments
     }
 
     $results = @()
