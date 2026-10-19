@@ -1,4 +1,4 @@
-function Get-GscPackageRelevantDirtyFiles {
+﻿function Get-GscPackageRelevantDirtyFiles {
     [CmdletBinding()]
     param([AllowEmptyCollection()][string[]]$StatusLines)
 

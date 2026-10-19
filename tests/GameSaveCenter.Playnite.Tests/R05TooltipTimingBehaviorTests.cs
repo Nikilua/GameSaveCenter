@@ -137,6 +137,12 @@ public sealed class R05TooltipTimingBehaviorTests
                 window.UpdateLayout();
                 var source = PresentationSource.FromVisual(window) as HwndSource;
                 Assert.NotNull(source);
+                if (!CanReceiveSystemPointer(owners[0]))
+                {
+                    throw Xunit.Sdk.SkipException.ForSkip(
+                        "当前 Windows 桌面允许系统指针 API，但没有把指针输入分发到 Tooltip 测试窗口；该交互用例只在窗口可接收桌面鼠标事件时运行。");
+                }
+
                 Assert.Equal(350, ToolTipService.GetInitialShowDelay(shell));
                 Assert.Equal(0, ToolTipService.GetBetweenShowDelay(shell));
                 Assert.All(owners, owner =>
@@ -355,6 +361,22 @@ public sealed class R05TooltipTimingBehaviorTests
         MoveCursorTo(target, new Point(target.RenderSize.Width / 2, target.RenderSize.Height / 2));
     }
 
+    private static bool CanReceiveSystemPointer(UIElement target)
+    {
+        var screenPoint = target.PointToScreen(new Point(target.RenderSize.Width / 2, target.RenderSize.Height / 2));
+        var expectedX = (int)Math.Round(screenPoint.X);
+        var expectedY = (int)Math.Round(screenPoint.Y);
+        if (!SetCursorPos(expectedX, expectedY))
+            return false;
+
+        PumpDispatcherFor(TimeSpan.FromMilliseconds(80));
+        var current = new NativePoint();
+        return target.IsMouseOver &&
+            GetCursorPos(ref current) &&
+            Math.Abs(current.X - expectedX) <= 2 &&
+            Math.Abs(current.Y - expectedY) <= 2;
+    }
+
     private static void MoveCursorTo(UIElement target, Point point)
     {
         var screenPoint = target.PointToScreen(point);
@@ -445,6 +467,8 @@ public sealed class R05TooltipTimingBehaviorTests
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
         thread.Join();
+        if (failure is Xunit.Sdk.SkipException skipException)
+            throw skipException;
         if (failure != null)
             throw new Xunit.Sdk.XunitException(failure.ToString());
     }
