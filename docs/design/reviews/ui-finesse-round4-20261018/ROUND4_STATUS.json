@@ -522,7 +522,7 @@
       "title": "比较对象集合",
       "state": "已验收",
       "implementationState": "complete",
-      "implementationCommit": "待本轮提交回填",
+      "implementationCommit": "f911cba4",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
       "verificationText": "[证据](evidence/S04-01/README.md)：SDK8.0.423 Release solution 0/0；生产媒体比较命令行为 5/5；浅/深主题 11 尺寸 RenderHarness render-qa OK / 0 PROBLEM",

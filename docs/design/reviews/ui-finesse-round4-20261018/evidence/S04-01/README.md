@@ -15,7 +15,7 @@
 
 ## 输入身份
 
-构建与测试使用提交基线 `44c650df27d4c0b46c5481a2f6e2974c3381030b` 上的工作树；本项源文件当时有未提交修改。构建 DLL、测试 DLL/PDB、TRX 和离屏截图均按 SHA-256 固定如下。RenderHarness 报告的 `WorkingTreeClean` 为 `False`，其源码身份以本表哈希为准。
+实现提交为 `f911cba4`。构建与测试使用其父提交 `44c650df27d4c0b46c5481a2f6e2974c3381030b` 上包含本项改动的工作树；以下源文件哈希与提交内容一致。构建 DLL、测试 DLL/PDB、TRX 和离屏截图均按 SHA-256 固定如下。RenderHarness 报告的 `WorkingTreeClean` 为 `False`，其源码身份以本表哈希为准。
 
 | 文件 | SHA-256 |
 | --- | --- |

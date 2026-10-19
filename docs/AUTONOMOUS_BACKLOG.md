@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | S00-01 | SATISFIED | `dd38f8ca` 与实现/证据已在 origin/main；稳定 ID、双语别名、作用域、不可用原因复用真实命令。原 7/7 与当前 SDK8 行为类 2/2 均有记录；无需重复实现。 |
 | S00-02 | BLOCKED_ENVIRONMENT | `29dc09b2`/`a58dd582` 实现 Shell 内搜索 overlay；21/21 定向测试与 SDK8 Release build 通过。全量 WPF 隔离在 R05 `GetCursorPos` Win32 error 5 处停止，安装/版本核验与真实宿主呈现未运行。 |
-| S04-01 | IMPLEMENTED | 比较对象集合最多保留两张有效截图，按稳定媒体 ID 存储；视频/缺失文件有原因，筛选变化不替换对象。SDK8 Release solution 0/0、行为测试 5/5、双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。证据见 Round4 S04-01；下一项 S04-02 双图工作区。 |
+| S04-01 | IMPLEMENTED | `f911cba4` 比较对象集合最多保留两张有效截图，按稳定媒体 ID 存储；视频/缺失文件有原因，筛选变化不替换对象。SDK8 Release solution 0/0、行为测试 5/5、双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。证据见 Round4 S04-01；下一项 S04-02 双图工作区。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S01-02 | IMPLEMENTED | `ad7bd563` 新增舒适/紧凑全局密度设置与共享令牌，四行下限按行/表头高度计算；SDK8 solution build 0/0，密度/设置资源14/14、R09 2/2、MediaInbox几何3/3、R23双主题资源9/9。真实 Playnite 验收待 UI gate；证据见 Round4 S01-02。 |
 | S01-03 | IMPLEMENTED | `8cdf5253` 为存档历史、候选路径和任务表格加入可访问的列管理；SDK8.0.423 Release build 0/0，列显隐/列宽/视图配置/R09 共 17/17。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-03。 |

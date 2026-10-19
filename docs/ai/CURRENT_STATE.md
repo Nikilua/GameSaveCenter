@@ -12,7 +12,7 @@
 
 ## 2026-10-19 Round4 S04-01 比较对象集合
 
-S04-01 已完成受控验收：最多两张有效截图按稳定 `MediaId` 保存在筛选无关集合；视频/缺失文件有说明，只有被选中的截图归档路径会接受 `File.Exists` 检查。SDK8.0.423 Release solution build `0 warnings / 0 errors`，生产页面按钮/命令行为 `5/5`，双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。源、构建 DLL、PDB、TRX 和合成渲染截图身份见 [S04-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。没有运行完整 WPF 隔离循环或真实 Playnite；offscreen DPI 为逻辑 1.00。下一项 S04-02 双图工作区。
+S04-01 实现提交 `f911cba4`，已完成受控验收：最多两张有效截图按稳定 `MediaId` 保存在筛选无关集合；视频/缺失文件有说明，只有被选中的截图归档路径会接受 `File.Exists` 检查。SDK8.0.423 Release solution build `0 warnings / 0 errors`，生产页面按钮/命令行为 `5/5`，双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。源、构建 DLL、PDB、TRX 和合成渲染截图身份见 [S04-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。没有运行完整 WPF 隔离循环或真实 Playnite；offscreen DPI 为逻辑 1.00。下一项 S04-02 双图工作区。
 
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 

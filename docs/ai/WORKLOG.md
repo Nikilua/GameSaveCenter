@@ -1,6 +1,6 @@
 ## 2026-10-19 Round4 S04-01 比较对象集合
 
-- 媒体中心加入最多两张有效截图的过滤无关比较集合，按 `MediaId` 保存稳定对象；只检查所选截图归档文件，视频/缺失文件/重复/超限均有说明。
+- 提交 `f911cba4`：媒体中心加入最多两张有效截图的过滤无关比较集合，按 `MediaId` 保存稳定对象；只检查所选截图归档文件，视频/缺失文件/重复/超限均有说明。
 - SDK8.0.423 Release 全解决方案构建 `0 warnings / 0 errors`；生产页面按钮绑定与比较集合行为 `5/5`；双主题 11 尺寸 Offscreen RenderHarness `render-qa OK / 0 PROBLEM`。source validation 与 diff check 通过。证据：[S04-01](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。
 - 完整 WPF 独立进程循环与真实 Playnite 未运行；离屏截图只用于核对合成夹具。下一项 S04-02 双图工作区。
 

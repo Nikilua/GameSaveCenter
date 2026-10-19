@@ -2,7 +2,7 @@
 
 ## 2026-10-19 Round4 S04-01 比较对象集合
 
-媒体中心现有筛选结果可将最多两张有效截图加入独立比较对象集合，使用稳定 `MediaId`，且不会因筛选改变而替换。选择的非图片、缺失文件和超量候选在状态区说明；仅对用户所选的截图路径调用文件存在性检查，不递归读取无关目录。真实媒体仍由后续比较工作区负责解码显示。
+提交 `f911cba4`：媒体中心现有筛选结果可将最多两张有效截图加入独立比较对象集合，使用稳定 `MediaId`，且不会因筛选改变而替换。选择的非图片、缺失文件和超量候选在状态区说明；仅对用户所选的截图路径调用文件存在性检查，不递归读取无关目录。真实媒体仍由后续比较工作区负责解码显示。
 
 SDK `8.0.423` Release solution build `0 warnings / 0 errors`；S04-01 定向 WPF 行为 `5/5`；双主题 11 尺寸 Offscreen RenderHarness `render-qa OK / 0 PROBLEM`；source validation 与 diff check 通过。输入 SHA、TRX 和合成渲染边界见 [S04-01 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-01/README.md)。完整 WPF 隔离循环和真实 Playnite未运行。下一项 S04-02 双图工作区。
 
