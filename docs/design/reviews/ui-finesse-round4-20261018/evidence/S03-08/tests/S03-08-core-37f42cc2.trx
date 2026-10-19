@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="dd62f939-e735-4a7d-a885-d41dd85a14f1" name="lopmatu@SULT 2026-10-19 08:23:56" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-19T08:23:56.7053311+08:00" queuing="2026-10-19T08:23:56.7053317+08:00" start="2026-10-19T08:23:56.1184959+08:00" finish="2026-10-19T08:23:56.7243442+08:00" />
+  <TestSettings name="default" id="0e2adaca-24e5-4f90-b1ed-8a4aac9fff75">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-19_08_23_56" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="be962c52-1a64-4e50-9aa4-12efcd9015ed" testId="628c1651-eb51-5d0b-ff89-3d6434148b19" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.UsesExplicitParentIdsAndContentFingerprintsAcrossDevices" computerName="SULT" duration="00:00:00.0034735" startTime="2026-10-19T08:23:56.6590321+08:00" endTime="2026-10-19T08:23:56.6590635+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="be962c52-1a64-4e50-9aa4-12efcd9015ed" />
+    <UnitTestResult executionId="e487fdf4-157c-4e73-a7c0-790b761be86a" testId="31778b5a-4c7b-a473-e25d-af198004c762" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.StopsAfterTheLimitAndOneLookaheadItem" computerName="SULT" duration="00:00:00.0004763" startTime="2026-10-19T08:23:56.6810492+08:00" endTime="2026-10-19T08:23:56.6810938+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e487fdf4-157c-4e73-a7c0-790b761be86a" />
+    <UnitTestResult executionId="74640bac-32e9-40ae-93a3-711a4e962e59" testId="e87b9953-47c4-90ed-3a67-9841e42a30ed" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsParentCycles" computerName="SULT" duration="00:00:00.0012031" startTime="2026-10-19T08:23:56.6630010+08:00" endTime="2026-10-19T08:23:56.6638212+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="74640bac-32e9-40ae-93a3-711a4e962e59" />
+    <UnitTestResult executionId="2348560c-4775-4ff3-8861-28bb594e7def" testId="5ad6807d-b06b-18df-3463-f2d5c6af00ff" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ExplicitParentAndFingerprintEvidenceSurviveDeviceClockSkew" computerName="SULT" duration="00:00:00.0091481" startTime="2026-10-19T08:23:56.6386727+08:00" endTime="2026-10-19T08:23:56.6523084+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2348560c-4775-4ff3-8861-28bb594e7def" />
+    <UnitTestResult executionId="4fdf2910-7d31-49c5-b974-fc93525fc522" testId="b55ee396-449a-e24b-0303-875a739f15a5" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.RejectsUnboundedOrEmptyLimits(limit: 501)" computerName="SULT" duration="00:00:00.0001346" startTime="2026-10-19T08:23:56.6592108+08:00" endTime="2026-10-19T08:23:56.6592362+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4fdf2910-7d31-49c5-b974-fc93525fc522" />
+    <UnitTestResult executionId="407d3b02-6514-4cca-9ca9-8494d73dd8f4" testId="9fc6475c-abae-feaf-75d9-9b454c90c508" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.TimestampsDoNotInventLinearRelationships" computerName="SULT" duration="00:00:00.0005926" startTime="2026-10-19T08:23:56.6592969+08:00" endTime="2026-10-19T08:23:56.6593227+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="407d3b02-6514-4cca-9ca9-8494d73dd8f4" />
+    <UnitTestResult executionId="1370fb7a-0d78-4235-b283-abc01863f055" testId="c8dd1561-7349-21ce-6d4a-48f1cbfd6715" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.RejectsUnboundedOrEmptyLimits(limit: 0)" computerName="SULT" duration="00:00:00.0003105" startTime="2026-10-19T08:23:56.6591358+08:00" endTime="2026-10-19T08:23:56.6591629+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1370fb7a-0d78-4235-b283-abc01863f055" />
+    <UnitTestResult executionId="cc394747-9d47-4c99-a524-84149a08bd2b" testId="9ddab361-6dce-807b-2a30-392d2e651557" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.DuplicateIdsAreReportedAndDoNotResolveAnAmbiguousParent" computerName="SULT" duration="00:00:00.0002640" startTime="2026-10-19T08:23:56.6628524+08:00" endTime="2026-10-19T08:23:56.6628981+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc394747-9d47-4c99-a524-84149a08bd2b" />
+    <UnitTestResult executionId="7b95be35-45df-459d-9d33-fe956efed5c2" testId="46add567-c37b-cb4f-d55e-3987e74f8c4a" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsMissingParentsAndUnspecifiedRoots" computerName="SULT" duration="00:00:00.0009436" startTime="2026-10-19T08:23:56.6586296+08:00" endTime="2026-10-19T08:23:56.6586886+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b95be35-45df-459d-9d33-fe956efed5c2" />
+    <UnitTestResult executionId="1e65a7c1-091e-4d15-ba7b-6c08ba9044e1" testId="be7caa2a-9087-f333-7d95-a762ee0f025e" testName="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsVersionsWithoutAnIdentity" computerName="SULT" duration="00:00:00.0047459" startTime="2026-10-19T08:23:56.6593840+08:00" endTime="2026-10-19T08:23:56.6626952+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1e65a7c1-091e-4d15-ba7b-6c08ba9044e1" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.RejectsUnboundedOrEmptyLimits(limit: 0)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="c8dd1561-7349-21ce-6d4a-48f1cbfd6715">
+      <Execution id="1370fb7a-0d78-4235-b283-abc01863f055" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="RejectsUnboundedOrEmptyLimits" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsMissingParentsAndUnspecifiedRoots" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="46add567-c37b-cb4f-d55e-3987e74f8c4a">
+      <Execution id="7b95be35-45df-459d-9d33-fe956efed5c2" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="ReportsMissingParentsAndUnspecifiedRoots" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsVersionsWithoutAnIdentity" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="be7caa2a-9087-f333-7d95-a762ee0f025e">
+      <Execution id="1e65a7c1-091e-4d15-ba7b-6c08ba9044e1" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="ReportsVersionsWithoutAnIdentity" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.TimestampsDoNotInventLinearRelationships" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="9fc6475c-abae-feaf-75d9-9b454c90c508">
+      <Execution id="407d3b02-6514-4cca-9ca9-8494d73dd8f4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="TimestampsDoNotInventLinearRelationships" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsParentCycles" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="e87b9953-47c4-90ed-3a67-9841e42a30ed">
+      <Execution id="74640bac-32e9-40ae-93a3-711a4e962e59" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="ReportsParentCycles" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.UsesExplicitParentIdsAndContentFingerprintsAcrossDevices" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="628c1651-eb51-5d0b-ff89-3d6434148b19">
+      <Execution id="be962c52-1a64-4e50-9aa4-12efcd9015ed" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="UsesExplicitParentIdsAndContentFingerprintsAcrossDevices" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.DuplicateIdsAreReportedAndDoNotResolveAnAmbiguousParent" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="9ddab361-6dce-807b-2a30-392d2e651557">
+      <Execution id="cc394747-9d47-4c99-a524-84149a08bd2b" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="DuplicateIdsAreReportedAndDoNotResolveAnAmbiguousParent" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.StopsAfterTheLimitAndOneLookaheadItem" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="31778b5a-4c7b-a473-e25d-af198004c762">
+      <Execution id="e487fdf4-157c-4e73-a7c0-790b761be86a" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="StopsAfterTheLimitAndOneLookaheadItem" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.RejectsUnboundedOrEmptyLimits(limit: 501)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="b55ee396-449a-e24b-0303-875a739f15a5">
+      <Execution id="4fdf2910-7d31-49c5-b974-fc93525fc522" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="RejectsUnboundedOrEmptyLimits" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ExplicitParentAndFingerprintEvidenceSurviveDeviceClockSkew" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.core.tests\bin\release\net8.0\gamesavecenter.core.tests.dll" id="5ad6807d-b06b-18df-3463-f2d5c6af00ff">
+      <Execution id="2348560c-4775-4ff3-8861-28bb594e7def" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="GameSaveCenter.Core.Tests.BackupLineageBuilderTests" name="ExplicitParentAndFingerprintEvidenceSurviveDeviceClockSkew" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="628c1651-eb51-5d0b-ff89-3d6434148b19" executionId="be962c52-1a64-4e50-9aa4-12efcd9015ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31778b5a-4c7b-a473-e25d-af198004c762" executionId="e487fdf4-157c-4e73-a7c0-790b761be86a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e87b9953-47c4-90ed-3a67-9841e42a30ed" executionId="74640bac-32e9-40ae-93a3-711a4e962e59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ad6807d-b06b-18df-3463-f2d5c6af00ff" executionId="2348560c-4775-4ff3-8861-28bb594e7def" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b55ee396-449a-e24b-0303-875a739f15a5" executionId="4fdf2910-7d31-49c5-b974-fc93525fc522" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9fc6475c-abae-feaf-75d9-9b454c90c508" executionId="407d3b02-6514-4cca-9ca9-8494d73dd8f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8dd1561-7349-21ce-6d4a-48f1cbfd6715" executionId="1370fb7a-0d78-4235-b283-abc01863f055" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9ddab361-6dce-807b-2a30-392d2e651557" executionId="cc394747-9d47-4c99-a524-84149a08bd2b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="46add567-c37b-cb4f-d55e-3987e74f8c4a" executionId="7b95be35-45df-459d-9d33-fe956efed5c2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="be7caa2a-9087-f333-7d95-a762ee0f025e" executionId="1e65a7c1-091e-4d15-ba7b-6c08ba9044e1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="10" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.18)&#xD;
+[xUnit.net 00:00:00.06]   Discovering: GameSaveCenter.Core.Tests&#xD;
+[xUnit.net 00:00:00.11]   Discovered:  GameSaveCenter.Core.Tests&#xD;
+[xUnit.net 00:00:00.13]   Starting:    GameSaveCenter.Core.Tests&#xD;
+[xUnit.net 00:00:00.18]   Finished:    GameSaveCenter.Core.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

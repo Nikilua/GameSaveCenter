@@ -1,10 +1,14 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 Round4 S03-08 来源与方案验收
+
+验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 已完成受控验收，无生产代码改动。Core 明确父 ID/指纹图 `10/10`；Playnite 来源、两设备分叉、时钟偏差、41 天前 readiness、合成存档只读、草稿重验与 R09 定向测试 `15/15`，原 `RestoreConfirmationGuard` 仍在实际 RestoreCommand 提交前生效。SDK9.0.302 Release solution build `0 warning / 0 error`，source validation 通过；机器未安装 global.json 锁定的 SDK8.0.423，真实 Playnite和完整 WPF 循环未运行。证据及精确 DLL/TRX SHA：[S03-08](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项核对 S04-01 是否已有等价能力。
+
 ## 2026-10-19 Round4 S03-07 脱敏方案导出
 
 实现提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8` 给恢复草稿增加只读 TXT 预览/导出。摘要只包含人可读白名单字段，不输出游戏/草稿/备份内部 ID、HMAC 指纹或密钥；盘符/UNC/用户路径整体隐藏，URL 参数用共用 redactor 处理。写文件前重新生成摘要；若草稿状态变化则刷新预览并等用户再次确认。没有文本导入命令、Worker 调用或恢复执行入口。
 
-精确提交 SDK8 Release solution build `0 errors`（离线 NuGet audit `17 NU1900`），定向 Playnite `18/18`，source validation、XAML `25/25`、WPF 静态审查 `0 errors / 26 warnings / 177 info`、RenderHarness 双主题与隔离 no-start 安装通过；版本 `0.6.73` / DLL `0.6.73.0`。完整 WPF、真实 Playnite和文件对话框交互未验。仓库约定的 Demo 目录不在 checkout；本次只复用已存在的共享按钮、输入框和卡片样式。详情见 [S03-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。下一项处理 S03-08 来源与方案验收。
+精确提交 SDK8 Release solution build `0 errors`（离线 NuGet audit `17 NU1900`），定向 Playnite `18/18`，source validation、XAML `25/25`、WPF 静态审查 `0 errors / 26 warnings / 177 info`、RenderHarness 双主题与隔离 no-start 安装通过；版本 `0.6.73` / DLL `0.6.73.0`。完整 WPF、真实 Playnite和文件对话框交互未验。仓库约定的 Demo 目录不在 checkout；本次只复用已存在的共享按钮、输入框和卡片样式。详情见 [S03-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。其后 S03-08 已验收；当前核对 S04-01。
 
 ## 2026-10-19 Round4 S03-06 恢复方案失效规则
 

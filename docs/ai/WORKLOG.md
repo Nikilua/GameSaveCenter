@@ -1,8 +1,14 @@
+## 2026-10-19 Round4 S03-08 来源与方案验收
+
+- 测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 增加两项跨层行为验收，没有产品代码改动。Core 夹具验证明确父 ID 与同指纹关系不受父版本晚于子版本的时钟偏差影响；Playnite 夹具验证两设备来源文字、41 天 readiness 年龄和不推断过期/时间胜方，并核对合成存档 sentinel 字节和目录条目在只读展示后不变。
+- 精确提交 SDK9.0.302 Release solution build `0 warning / 0 error`；Core `10/10`、Playnite `15/15`，包含草稿 readiness 重验、原 RestoreConfirmationGuard 和 R09 `2/2`。source validation 与 diff check 通过。TRX、源文件和程序集 SHA 见 [S03-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。
+- 当前机器只装 SDK9.0.302，仓库 `global.json` 要求 SDK8.0.423；本批从仓库目录外运行 SDK9 并限制 MSBuild 单节点，不视为 SDK8 基线。完整 WPF 隔离循环、真实 Playnite与真实存档恢复未运行；旧 R09 输入身份材料仍缺失。下一项按计划核对 S04-01。
+
 # 2026-10-19 Round4 S03-07 脱敏方案导出
 
 - 实现提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8` 为草稿卡片增加只读摘要预览和明确的 TXT 导出。摘要按白名单字段格式化，不写出内部 ID/HMAC/密钥、存档、认证参数或执行脚本；本地盘符/UNC/用户路径及 URL 参数脱敏。导出前会复核当前摘要，变化时先刷新并要求再次点击；没有导入入口或恢复命令路径。
 - 精确提交 SDK `8.0.423` Release solution build 成功、0 errors（NuGet audit 源不可达有 17 条 `NU1900` 警告）；Playnite 定向 `18/18`，含导出脱敏与刷新行为、草稿失效/比较及 R09 `2/2`。source validation、XAML 25 文件检查、WPF 静态审查 `0 errors / 26 warnings / 177 info`、双主题 RenderHarness、精确提交隔离 no-start 安装和版本核验均通过（`0.6.73` / `0.6.73.0`）。
-- 未执行完整 WPF 逐类循环或真实 Playnite；离屏渲染没有触发导出对话框交互。仓库所指 `GameSaveCenter.AcrylicFork` Demo 目录不在 checkout，本次只复用现有共享资源。证据及 TRX/安装报告/渲染摘要见 [S03-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。下一项按计划处理 S03-08 来源与方案验收。
+- 未执行完整 WPF 逐类循环或真实 Playnite；离屏渲染没有触发导出对话框交互。仓库所指 `GameSaveCenter.AcrylicFork` Demo 目录不在 checkout，本次只复用现有共享资源。证据及 TRX/安装报告/渲染摘要见 [S03-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。其后 S03-08 已验收；当前按计划核对 S04-01。
 
 # 2026-10-19 Round4 S03-06 恢复方案失效规则
 

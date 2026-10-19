@@ -2,17 +2,21 @@
 
 更新时间：2026-10-19。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
+## 2026-10-19 Round4 S03-08 来源与方案验收
+
+验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 完成受控验收，没有生产代码变化。合成两设备夹具验证明确父 ID、同指纹和时钟偏差；41 天前 readiness 只显示该次检查年龄，不自行判过期；只读展示未改写合成存档文件；草稿重验与原 RestoreConfirmationGuard 相关行为通过。SDK9 Release solution build `0/0`，Core `10/10`，Playnite `15/15`（含 R09 `2/2`），source validation 通过。当前机器未安装 global.json 锁定的 SDK8.0.423，完整 WPF 循环和真实 Playnite未运行。证据：[S03-08](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项按计划核对 S04-01。
+
 ## 2026-10-19 Round4 S03-07 脱敏方案导出
 
-实现提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8` 已完成受控验收：SDK8 Release solution build 成功（17 条 NuGet audit 数据源不可达警告、0 errors），导出/草稿/R09 定向测试 `18/18`、source validation、XAML `25/25`、WPF 静态审查 0 errors、RenderHarness 双主题和精确提交隔离 no-start 安装通过。完整 WPF 循环、真实 Playnite和文件对话框交互仍未验；Demo 目录缺失。下一项按计划处理 S03-08 来源与方案验收。证据：[S03-07](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。
+实现提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8` 已完成受控验收：SDK8 Release solution build 成功（17 条 NuGet audit 数据源不可达警告、0 errors），导出/草稿/R09 定向测试 `18/18`、source validation、XAML `25/25`、WPF 静态审查 0 errors、RenderHarness 双主题和精确提交隔离 no-start 安装通过。完整 WPF 循环、真实 Playnite和文件对话框交互仍未验；Demo 目录缺失。其后 S03-08 已验收；当前按计划核对 S04-01。证据：[S03-07](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。
 
 ## 2026-10-19 Round4 S03-06 方案失效规则
 
-实现提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38` 已完成受控验收：SDK8 Release solution build 成功（17 条 NuGet audit 数据源不可达警告、0 errors），定向 Playnite `14/14`（含 R09 `2/2`）、source validation、XAML `25/25`、RenderHarness 双主题和精确提交隔离 no-start 安装通过。完整 WPF 逐类循环、真实 Playnite仍未验。旧 R09 诊断文件缺失，旧运行输入身份未知。后续 S03-07 已完成，当前按计划处理 S03-08 来源与方案验收。证据：[S03-06](../design/reviews/ui-finesse-round4-20261018/evidence/S03-06/README.md)。
+实现提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38` 已完成受控验收：SDK8 Release solution build 成功（17 条 NuGet audit 数据源不可达警告、0 errors），定向 Playnite `14/14`（含 R09 `2/2`）、source validation、XAML `25/25`、RenderHarness 双主题和精确提交隔离 no-start 安装通过。完整 WPF 逐类循环、真实 Playnite仍未验。旧 R09 诊断文件缺失，旧运行输入身份未知。后续 S03-07 已完成，S03-08 已验收；当前按计划核对 S04-01。证据：[S03-06](../design/reviews/ui-finesse-round4-20261018/evidence/S03-06/README.md)。
 
 ## 当前身份与活动事项
 
-- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 至 S02-08、S03-01 至 S03-07 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
+- 本地 `main` 已提交 S00-02、S01-01 至 S01-08、S02-01 至 S02-08、S03-01 至 S03-08 和维护记录。S00-02 的完整 WPF/安装/版本门禁仍在 R05 系统指针读取处受权限阻挡；相关宿主与安装事实按各任务证据分别记录，不把受控结果写成真实宿主验收。
 - 前一轮 `BUILD-20261019` 诊断已修正设置页范围字段数量断言；该记录保留其当时的 `NumericInputTests 12/12`、R09 `2/2`，不代表当前最新整链。当前 main 全解方案和一键结果见 S03-04 证据：Release build `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`；WPF 隔离在 `48/133` 类处因 R05 系统指针读取失败中断，R09 当前 main `2/2`。
 - S03-02 提交 `fd59dcc1` 完成版本关系视图受控验证：Worker 用时间键+备份 ID 稳定分页，每页最多 100 项；Playnite 详情按时间显示父版本、分叉、同内容版本、设备和不确定关系。SDK `9.0.302` Release solution `0/0`、Playnite 定向 `12/12`（R09 `2/2`）、Worker `2/2`、RenderHarness `render-qa OK / 0 PROBLEM`。SDK8 正式基线与真实 Playnite 未验；旧 R09 运行身份文件缺失，不能从本轮通过反推旧输入。证据：[S03-02](../design/reviews/ui-finesse-round4-20261018/evidence/S03-02/README.md)。
 - S03-03 提交 `3268565c` 已在 SDK `8.0.423` 完成冲突原因对照受控验证：设备冲突详情同时显示两侧备份/设备证据、共同父版本、指纹比较结果和 readiness 检查状态/时间；不按时间自动推荐覆盖。Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`，RenderHarness `render-qa OK`。证据：[S03-03](../design/reviews/ui-finesse-round4-20261018/evidence/S03-03/README.md)。
