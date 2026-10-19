@@ -1,0 +1,11 @@
+GameSaveCenter render QA report
+Generated: 2026-10-19 07:55:05
+Scenario: render-qa
+EvidenceSource: OffscreenRenderHarness
+Commit: eeedd003bb91a0e562529b45b15d4cde67f18db8
+WorkingTreeClean: True
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+Themes: light,dark
+Result: render-qa OK
+PROBLEM entries: 0
+The full image/report matrix was generated in a temporary verification worktree and removed after this audit.

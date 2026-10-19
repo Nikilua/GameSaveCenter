@@ -1,8 +1,12 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 Round4 S03-07 脱敏方案导出
+
+实现与受控验证提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8`。恢复草稿支持先预览脱敏 TXT 摘要，再明确保存；只导出白名单字段，不含存档、路径、认证参数、内部 ID/HMAC/密钥或自动执行脚本。保存前发现预览对应草稿已变化时先更新预览并要求再次操作。SDK8 Release solution build 成功、0 errors（17 条 NuGet audit 源不可达警告），定向测试 `18/18`，source/XAML/WPF 静态审查、双主题 RenderHarness 和精确提交隔离 no-start 安装通过；版本 `0.6.73` / DLL `0.6.73.0`。未跑完整 WPF/真实 Playnite或导出文件对话框交互；Demo 目录不在 checkout。证据：[S03-07](design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。下一项处理 S03-08 来源与方案验收。
+
 ## 2026-10-19 Round4 S03-06 方案失效规则
 
-实现与受控验证提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38`。恢复草稿现记录对象、内容、映射或 readiness 变化引起的 `NeedsRevalidation` 状态；不会持久化原始路径/内容指纹/自由文本摘要，重验前也不会绕过 `RestoreConfirmationGuard`。SDK `8.0.423` 精确提交 Release solution build 成功、0 errors（还原阶段 17 条 NuGet audit 数据源连接警告）；定向 Playnite `14/14`（包含 R09 `2/2`）、XAML 25 文件检查、RenderHarness 双主题、隔离 no-start 安装通过，版本 `0.6.73` / DLL `0.6.73.0`。未跑完整 WPF 循环或真实 Playnite。旧 R09 运行仍缺 `summary.json`/TRX/DLL/PDB，不能识别旧输入。证据：[S03-06](design/reviews/ui-finesse-round4-20261018/evidence/S03-06/README.md)。下一项处理 S03-07 脱敏方案导出。
+实现与受控验证提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38`。恢复草稿现记录对象、内容、映射或 readiness 变化引起的 `NeedsRevalidation` 状态；不会持久化原始路径/内容指纹/自由文本摘要，重验前也不会绕过 `RestoreConfirmationGuard`。SDK `8.0.423` 精确提交 Release solution build 成功、0 errors（还原阶段 17 条 NuGet audit 数据源连接警告）；定向 Playnite `14/14`（包含 R09 `2/2`）、XAML 25 文件检查、RenderHarness 双主题、隔离 no-start 安装通过，版本 `0.6.73` / DLL `0.6.73.0`。未跑完整 WPF 循环或真实 Playnite。旧 R09 运行仍缺 `summary.json`/TRX/DLL/PDB，不能识别旧输入。证据：[S03-06](design/reviews/ui-finesse-round4-20261018/evidence/S03-06/README.md)。其后的 S03-07 已完成；当前下一项为 S03-08。
 
 ## 2026-10-19 Round4 S03-05 方案差异比较
 

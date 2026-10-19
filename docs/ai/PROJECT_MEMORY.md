@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 Round4 S03-07 脱敏方案导出
+
+实现提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8` 给恢复草稿增加只读 TXT 预览/导出。摘要只包含人可读白名单字段，不输出游戏/草稿/备份内部 ID、HMAC 指纹或密钥；盘符/UNC/用户路径整体隐藏，URL 参数用共用 redactor 处理。写文件前重新生成摘要；若草稿状态变化则刷新预览并等用户再次确认。没有文本导入命令、Worker 调用或恢复执行入口。
+
+精确提交 SDK8 Release solution build `0 errors`（离线 NuGet audit `17 NU1900`），定向 Playnite `18/18`，source validation、XAML `25/25`、WPF 静态审查 `0 errors / 26 warnings / 177 info`、RenderHarness 双主题与隔离 no-start 安装通过；版本 `0.6.73` / DLL `0.6.73.0`。完整 WPF、真实 Playnite和文件对话框交互未验。仓库约定的 Demo 目录不在 checkout；本次只复用已存在的共享按钮、输入框和卡片样式。详情见 [S03-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。下一项处理 S03-08 来源与方案验收。
+
 ## 2026-10-19 Round4 S03-06 恢复方案失效规则
 
 实现提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38` 为恢复草稿持久化 `Current` / `NeedsRevalidation` 状态和原因，并将游戏/备份身份、文件数与大小、内容 HMAC、readiness 结果 HMAC、映射指纹重新比较接入详情刷新和历史页载入；完整历史才允许因目标缺失标记失效。路径、原内容指纹和自由文本摘要不持久化；草稿重新验证前不成为执行授权，`RestoreConfirmationGuard` 与最新确认仍执行。

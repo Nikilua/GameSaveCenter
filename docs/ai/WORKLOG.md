@@ -1,3 +1,9 @@
+# 2026-10-19 Round4 S03-07 脱敏方案导出
+
+- 实现提交 `eeedd003bb91a0e562529b45b15d4cde67f18db8` 为草稿卡片增加只读摘要预览和明确的 TXT 导出。摘要按白名单字段格式化，不写出内部 ID/HMAC/密钥、存档、认证参数或执行脚本；本地盘符/UNC/用户路径及 URL 参数脱敏。导出前会复核当前摘要，变化时先刷新并要求再次点击；没有导入入口或恢复命令路径。
+- 精确提交 SDK `8.0.423` Release solution build 成功、0 errors（NuGet audit 源不可达有 17 条 `NU1900` 警告）；Playnite 定向 `18/18`，含导出脱敏与刷新行为、草稿失效/比较及 R09 `2/2`。source validation、XAML 25 文件检查、WPF 静态审查 `0 errors / 26 warnings / 177 info`、双主题 RenderHarness、精确提交隔离 no-start 安装和版本核验均通过（`0.6.73` / `0.6.73.0`）。
+- 未执行完整 WPF 逐类循环或真实 Playnite；离屏渲染没有触发导出对话框交互。仓库所指 `GameSaveCenter.AcrylicFork` Demo 目录不在 checkout，本次只复用现有共享资源。证据及 TRX/安装报告/渲染摘要见 [S03-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S03-07/README.md)。下一项按计划处理 S03-08 来源与方案验收。
+
 # 2026-10-19 Round4 S03-06 恢复方案失效规则
 
 - 实现提交 `7366d8cfe76702350a4c397f8de8aeed8e482b38` 增加恢复草稿 `Current` / `NeedsRevalidation` 与失效原因；以 HMAC 身份摘要比较对象、内容、readiness 结果和映射变化，不保存原始路径/内容指纹/自由文本摘要。草稿重新验证前不代表可恢复；原 `RestoreConfirmationGuard` 和最新安全确认保持执行前门禁。
