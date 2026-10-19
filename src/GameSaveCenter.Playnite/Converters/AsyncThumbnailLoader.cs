@@ -10,6 +10,19 @@ using Playnite.SDK;
 
 namespace GameSaveCenter.Playnite.Converters
 {
+    internal sealed class AsyncThumbnailSourceDimensions
+    {
+        public AsyncThumbnailSourceDimensions(int pixelWidth, int pixelHeight)
+        {
+            PixelWidth = pixelWidth;
+            PixelHeight = pixelHeight;
+        }
+
+        public int PixelWidth { get; }
+        public int PixelHeight { get; }
+        public string DisplayText => $"{PixelWidth} × {PixelHeight} px";
+    }
+
     internal sealed class AsyncThumbnailLoaderDiagnostics
     {
         public AsyncThumbnailLoaderDiagnostics(
@@ -140,6 +153,45 @@ namespace GameSaveCenter.Playnite.Converters
                 Interlocked.Increment(ref failureCount);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Reads only the selected image's frame metadata on a worker thread. The full
+        /// source dimensions remain available even when the displayed bitmap is capped
+        /// to a thumbnail width.
+        /// </summary>
+        internal static Task<AsyncThumbnailSourceDimensions?> ReadSourceDimensionsAsync(string path, CancellationToken token)
+        {
+            return Task.Run(() =>
+            {
+                token.ThrowIfCancellationRequested();
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsImage(path))
+                        return null;
+
+                    using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                    var decoder = BitmapDecoder.Create(
+                        stream,
+                        BitmapCreateOptions.DelayCreation | BitmapCreateOptions.PreservePixelFormat,
+                        BitmapCacheOption.None);
+                    if (decoder.Frames.Count == 0)
+                        return null;
+
+                    var frame = decoder.Frames[0];
+                    return frame.PixelWidth > 0 && frame.PixelHeight > 0
+                        ? new AsyncThumbnailSourceDimensions(frame.PixelWidth, frame.PixelHeight)
+                        : null;
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception exception) when (!(exception is OutOfMemoryException) && !(exception is StackOverflowException))
+                {
+                    return null;
+                }
+            }, token);
         }
 
         internal static AsyncThumbnailLoaderDiagnostics CaptureDiagnostics()

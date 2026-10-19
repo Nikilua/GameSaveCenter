@@ -380,6 +380,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ReloadMediaDuplicateGroupsCommand = new RelayCommand(_ => Run(ReloadMediaDuplicateGroupsAsync), _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Media && SelectedGame != null);
             AddSelectedMediaToComparisonCommand = new RelayCommand(AddSelectedMediaToComparison);
             ClearMediaComparisonCommand = new RelayCommand(_ => ClearMediaComparison(), _ => MediaComparisonItems.Count > 0);
+            ToggleMediaComparisonWorkspaceCommand = new RelayCommand(_ => ToggleMediaComparisonWorkspace(), _ => MediaComparisonItems.Count == MediaComparisonSelection.MaximumItems);
             ClearMediaFiltersCommand = new RelayCommand(_ => ClearMediaFilters(), _ => !IsBusy);
             ApplyMediaFilterPresetCommand = new RelayCommand(_ => ApplyMediaFilterPreset(), _ => !IsBusy && SelectedMediaFilterPreset != null);
             SaveMediaFilterPresetCommand = new RelayCommand(_ => Observe(SaveMediaFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
@@ -1889,6 +1890,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ReloadMediaDuplicateGroupsCommand { get; }
         public ICommand AddSelectedMediaToComparisonCommand { get; }
         public ICommand ClearMediaComparisonCommand { get; }
+        public ICommand ToggleMediaComparisonWorkspaceCommand { get; }
         public ICommand ClearMediaFiltersCommand { get; }
         public ICommand ApplyMediaFilterPresetCommand { get; }
         public ICommand SaveMediaFilterPresetCommand { get; }
@@ -6471,7 +6473,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

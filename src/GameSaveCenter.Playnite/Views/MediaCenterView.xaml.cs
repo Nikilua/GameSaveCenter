@@ -26,6 +26,7 @@ namespace GameSaveCenter.Playnite.Views
         private bool mediaInspectorOpen;
         private bool mediaInboxInspectorOpen;
         private bool mediaInboxHistoryOpen;
+        private bool mediaComparisonWorkspaceUserOverride;
         private DashboardViewModel? attachedViewModel;
         private readonly HashSet<string> selectedMediaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
@@ -117,6 +118,7 @@ namespace GameSaveCenter.Playnite.Views
 
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.Media.CollectionChanged += OnMediaCollectionChanged;
+            viewModel.MediaComparisonItems.CollectionChanged += OnMediaComparisonItemsChanged;
             viewModel.UnassignedMedia.CollectionChanged += OnInboxCollectionChanged;
             viewModel.IgnoredMedia.CollectionChanged += OnInboxCollectionChanged;
         }
@@ -126,6 +128,7 @@ namespace GameSaveCenter.Playnite.Views
             if (attachedViewModel == null) return;
             attachedViewModel.PropertyChanged -= OnViewModelPropertyChanged;
             attachedViewModel.Media.CollectionChanged -= OnMediaCollectionChanged;
+            attachedViewModel.MediaComparisonItems.CollectionChanged -= OnMediaComparisonItemsChanged;
             attachedViewModel.UnassignedMedia.CollectionChanged -= OnInboxCollectionChanged;
             attachedViewModel.IgnoredMedia.CollectionChanged -= OnInboxCollectionChanged;
             attachedViewModel = null;
@@ -133,6 +136,18 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaComparisonWorkspaceOpen), StringComparison.Ordinal)
+                && !mediaComparisonWorkspaceUserOverride
+                && responsiveHeight > 0
+                && responsiveHeight < 680d
+                && sender is DashboardViewModel comparisonViewModel
+                && comparisonViewModel.MediaComparisonWorkspaceOpen)
+            {
+                // Keep the media list readable in short hosts. The user can still open
+                // the comparison manually; larger hosts open it as soon as a pair forms.
+                comparisonViewModel.SetMediaComparisonWorkspaceOpen(false);
+            }
+
             if (string.IsNullOrEmpty(e.PropertyName)
                 || string.Equals(e.PropertyName, nameof(DashboardViewModel.SelectedGame), StringComparison.Ordinal)
                 || string.Equals(e.PropertyName, nameof(DashboardViewModel.CurrentWorkspace), StringComparison.Ordinal)
@@ -153,6 +168,17 @@ namespace GameSaveCenter.Playnite.Views
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(UpdateMediaSelectionSummary));
             }
+        }
+
+        private void OnMediaComparisonItemsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (attachedViewModel?.MediaComparisonItems.Count == 0)
+                mediaComparisonWorkspaceUserOverride = false;
+        }
+
+        private void OnMediaComparisonWorkspaceToggleClick(object sender, RoutedEventArgs e)
+        {
+            mediaComparisonWorkspaceUserOverride = true;
         }
 
         private void InvalidatePendingAnchorRestore()
@@ -337,6 +363,31 @@ namespace GameSaveCenter.Playnite.Views
         public ScrollViewer MediaInspectorScrollViewerElement => MediaInspectorScrollViewer;
         public Border MediaInspectorFrameElement => MediaInspectorFrame;
 
+        private void OnMediaComparisonWorkspaceSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (MediaComparisonWorkspaceGrid == null || MediaComparisonSecondCard == null)
+                return;
+
+            // The current-game page keeps a 600-DIP inspector-adjacent lane on many
+            // supported window sizes. Two 270-DIP cards still read side by side there;
+            // stack only when the comparison surface itself becomes narrower than that.
+            var stacked = e.NewSize.Width < 560d;
+            MediaComparisonWorkspaceGrid.ColumnDefinitions[1].Width = stacked
+                ? new GridLength(0)
+                : new GridLength(1, GridUnitType.Star);
+            MediaComparisonWorkspaceGrid.RowDefinitions[1].Height = stacked
+                ? GridLength.Auto
+                : new GridLength(0);
+            Grid.SetRow(MediaComparisonSecondCard, stacked ? 1 : 0);
+            Grid.SetColumn(MediaComparisonSecondCard, stacked ? 0 : 1);
+            MediaComparisonFirstCard.Margin = stacked
+                ? new Thickness(0, 0, 0, 5)
+                : new Thickness(0, 0, 5, 0);
+            MediaComparisonSecondCard.Margin = stacked
+                ? new Thickness(0, 5, 0, 0)
+                : new Thickness(5, 0, 0, 0);
+        }
+
         public void ApplyResponsiveLayout(double width, double height)
         {
             if (isApplyingLayout) return;
@@ -345,6 +396,13 @@ namespace GameSaveCenter.Playnite.Views
             {
                 responsiveWidth = width;
                 responsiveHeight = height;
+                if (height > 0
+                    && height < 680d
+                    && !mediaComparisonWorkspaceUserOverride
+                    && attachedViewModel?.MediaComparisonWorkspaceOpen == true)
+                {
+                    attachedViewModel.SetMediaComparisonWorkspaceOpen(false);
+                }
                 // The filter preset controls wrap below the measured 720 DIP page width.
                 // Add room between wrapped rows and restore authored margins once they fit.
                 mediaFilterPresetRowGap.SetRowGap(width < 720d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
@@ -520,7 +578,7 @@ namespace GameSaveCenter.Playnite.Views
                 var finiteInboxHeight = Math.Max(readableGridHeight, height - inboxNonTableHeightBudget);
                 MediaInboxGrid.Height = finiteInboxHeight;
                 MediaInboxGrid.MaxHeight = finiteInboxHeight;
-                MediaGrid.MinHeight = 236d;
+                MediaGrid.MinHeight = 154d;
                 MediaGrid.Height = double.NaN;
                 MediaGrid.MaxHeight = double.PositiveInfinity;
 

@@ -40,9 +40,14 @@ namespace GameSaveCenter.Playnite.Tests
                     var dashboard = CreateDashboard(selection);
                     var view = new MediaCenterView { DataContext = dashboard };
                     var viewType = typeof(MediaCenterView);
+                    var tabControl = GetField<TabControl>(viewType, view, "MediaTabControl");
                     var grid = GetField<ListBox>(viewType, view, "MediaGrid");
                     var addButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonAddButton");
                     var clearButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonClearButton");
+                    var toggleButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonWorkspaceToggleButton");
+                    var workspace = GetField<Border>(viewType, view, "MediaComparisonWorkspace");
+                    var workspaceGrid = GetField<Grid>(viewType, view, "MediaComparisonWorkspaceGrid");
+                    var secondCard = GetField<Border>(viewType, view, "MediaComparisonSecondCard");
                     var summary = GetField<TextBlock>(viewType, view, "MediaComparisonSummaryText");
                     var status = GetField<TextBlock>(viewType, view, "MediaComparisonStatusText");
 
@@ -56,7 +61,9 @@ namespace GameSaveCenter.Playnite.Tests
                         Opacity = 0.01
                     }))
                     {
+                        tabControl.SelectedIndex = 1;
                         BindingOperations.ClearBinding(grid, ItemsControl.ItemsSourceProperty);
+                        view.ApplyResponsiveLayout(1040, 900);
                         var visibleItems = new ObservableCollection<MediaItemDto>
                         {
                             Screenshot("media-a", firstPath),
@@ -82,6 +89,35 @@ namespace GameSaveCenter.Playnite.Tests
                         Assert.Contains("归档文件不存在", status.Text);
                         Assert.Contains("first.png", summary.Text);
                         Assert.Contains("second.png", summary.Text);
+                        Assert.True(dashboard.MediaComparisonWorkspaceOpen);
+                        Assert.Equal(Visibility.Visible, workspace.Visibility);
+                        view.ApplyResponsiveLayout(1040, 600);
+                        host.UpdateLayout();
+                        Assert.False(dashboard.MediaComparisonWorkspaceOpen);
+                        Assert.Equal(Visibility.Collapsed, workspace.Visibility);
+                        toggleButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent, toggleButton));
+                        ExecuteButtonCommand(toggleButton);
+                        host.UpdateLayout();
+                        Assert.True(dashboard.MediaComparisonWorkspaceOpen);
+                        Assert.Equal(Visibility.Visible, workspace.Visibility);
+                        Assert.Equal(0, Grid.GetRow(secondCard));
+                        Assert.Equal(1, Grid.GetColumn(secondCard));
+                        workspaceGrid.Width = 500;
+                        host.UpdateLayout();
+                        Assert.Equal(1, Grid.GetRow(secondCard));
+                        Assert.Equal(0, Grid.GetColumn(secondCard));
+                        workspaceGrid.Width = double.NaN;
+                        host.UpdateLayout();
+                        Assert.Equal(0, Grid.GetRow(secondCard));
+                        Assert.Equal(1, Grid.GetColumn(secondCard));
+                        Assert.True(toggleButton.Command!.CanExecute(null));
+                        ExecuteButtonCommand(toggleButton);
+                        host.UpdateLayout();
+                        Assert.False(dashboard.MediaComparisonWorkspaceOpen);
+                        Assert.Equal(Visibility.Collapsed, workspace.Visibility);
+                        ExecuteButtonCommand(toggleButton);
+                        host.UpdateLayout();
+                        Assert.Equal(Visibility.Visible, workspace.Visibility);
 
                         grid.ItemsSource = new ObservableCollection<MediaItemDto> { visibleItems[1] };
                         host.UpdateLayout();
@@ -200,8 +236,12 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.NotNull(clearMethod);
             var add = (Action<object?>)addMethod!.CreateDelegate(typeof(Action<object?>), dashboard);
             var clear = (Action)clearMethod!.CreateDelegate(typeof(Action), dashboard);
+            var toggleMethod = typeof(DashboardViewModel).GetMethod("ToggleMediaComparisonWorkspace", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(toggleMethod);
+            var toggle = (Action)toggleMethod!.CreateDelegate(typeof(Action), dashboard);
             SetAutoProperty(dashboard, nameof(DashboardViewModel.AddSelectedMediaToComparisonCommand), new RelayCommand(add));
             SetAutoProperty(dashboard, nameof(DashboardViewModel.ClearMediaComparisonCommand), new RelayCommand(_ => clear(), _ => selection.Items.Count > 0));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.ToggleMediaComparisonWorkspaceCommand), new RelayCommand(_ => toggle(), _ => selection.Items.Count == MediaComparisonSelection.MaximumItems));
             return dashboard;
         }
 

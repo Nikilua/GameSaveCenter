@@ -67,9 +67,12 @@ public sealed class FakeDashboardData
     public ICommand ReloadMediaDuplicateGroupsCommand { get; } = new NoopCommand();
     public ICommand AddSelectedMediaToComparisonCommand { get; } = new NoopCommand();
     public ICommand ClearMediaComparisonCommand { get; }
+    public ICommand ToggleMediaComparisonWorkspaceCommand { get; } = new NoopCommand();
     public ObservableCollection<MediaItemDto> MediaComparisonItems => mediaComparisonSelection.Items;
     public string MediaComparisonSummary => mediaComparisonSelection.Summary;
     public string MediaComparisonStatus => mediaComparisonSelection.Status;
+    public bool MediaComparisonWorkspaceOpen => MediaComparisonItems.Count == 2;
+    public string MediaComparisonWorkspaceToggleLabel => "收起对比";
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
     public ICommand LoadDetailsCommand { get; } = new NoopCommand();
@@ -144,6 +147,26 @@ public sealed class FakeDashboardData
         fixtureState = state;
         this.mediaInboxHasMore = mediaInboxHasMore;
         ClearMediaComparisonCommand = new RelayCommand(_ => { }, _ => mediaComparisonSelection.Items.Count > 0);
+        mediaComparisonSelection.Items.Add(new MediaItemDto
+        {
+            MediaId = "render-comparison-a",
+            PlayniteId = "render-game-a",
+            Kind = MediaKind.Screenshot,
+            Source = MediaSourceKind.Steam,
+            OriginalPath = "render-comparison-a.png",
+            ArchivePath = string.Empty,
+            SizeBytes = 184320
+        });
+        mediaComparisonSelection.Items.Add(new MediaItemDto
+        {
+            MediaId = "render-comparison-b",
+            PlayniteId = "render-game-a",
+            Kind = MediaKind.Screenshot,
+            Source = MediaSourceKind.WindowsScreenshot,
+            OriginalPath = "render-comparison-b.png",
+            ArchivePath = string.Empty,
+            SizeBytes = 263168
+        });
         rowCount = Math.Max(8, rowCount);
         Snapshot = new DashboardSnapshotDto
         {

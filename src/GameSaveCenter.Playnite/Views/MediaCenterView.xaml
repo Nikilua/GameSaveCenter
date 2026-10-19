@@ -606,7 +606,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="0"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource MediaTableFrame}" MinHeight="{DynamicResource GscWorkspaceTableMinHeight}" Padding="14,12">
                         <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid Grid.Row="0" Margin="0,0,0,12">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto" MinWidth="300"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -664,10 +664,76 @@
                                 <WrapPanel Grid.Column="1" VerticalAlignment="Center">
                                     <ui:Button x:Name="MediaComparisonAddButton" Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding AddSelectedMediaToComparisonCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="加入图片比较" ToolTip="将当前选择中的有效截图加入比较对象，最多两张；筛选变化不会替换已加入对象" AutomationProperties.Name="将所选截图加入图片比较"/>
                                     <ui:Button x:Name="MediaComparisonClearButton" Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding ClearMediaComparisonCommand}" Content="清空比较" ToolTip="移除当前图片比较对象" AutomationProperties.Name="清空图片比较对象"/>
+                                    <ui:Button x:Name="MediaComparisonWorkspaceToggleButton" Command="{Binding ToggleMediaComparisonWorkspaceCommand}" Click="OnMediaComparisonWorkspaceToggleClick" Content="{Binding MediaComparisonWorkspaceToggleLabel, Mode=OneWay}" ToolTip="展开或收起两张截图的并排比较预览" AutomationProperties.Name="切换图片比较预览">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiMediaBatchButton}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding MediaComparisonItems.Count}" Value="2"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
                                 </WrapPanel>
                             </Grid>
                         </Border>
-                        <ListBox Grid.Row="2" x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" AutomationProperties.Name="当前游戏媒体列表" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                        <Border x:Name="MediaComparisonWorkspace" Grid.Row="2" Padding="10" Margin="0,0,0,8" AutomationProperties.Name="截图并排比较预览">
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource GscRedesignSubCard}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding MediaComparisonWorkspaceOpen}" Value="True"/>
+                                                <Condition Binding="{Binding MediaComparisonItems.Count}" Value="2"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid x:Name="MediaComparisonWorkspaceGrid" SizeChanged="OnMediaComparisonWorkspaceSizeChanged">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="0"/></Grid.RowDefinitions>
+                                <Border x:Name="MediaComparisonFirstCard" Grid.Row="0" Grid.Column="0" Style="{DynamicResource GscRedesignSectionCard}" Padding="10" Margin="0,0,5,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="174"/></Grid.RowDefinitions>
+                                        <StackPanel Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding MediaComparisonItems[0].FileName, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding MediaComparisonItems[0].FileName}"/>
+                                            <TextBlock Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis">
+                                                <Run Text="{Binding ElementName=MediaComparisonFirstImage, Path=SourceDimensions, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding MediaComparisonItems[0].SizeDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding MediaComparisonItems[0].SourceDisplay, Mode=OneWay}"/><Run Text=" · 游戏 "/><Run Text="{Binding MediaComparisonItems[0].PlayniteId, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <Border Grid.Row="1" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" ClipToBounds="True">
+                                            <Grid>
+                                                <TextBlock>
+                                                    <TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MediaEmptyText}"><Setter Property="Text" Value="截图预览不可用"/><Style.Triggers><DataTrigger Binding="{Binding PreviewState, ElementName=MediaComparisonFirstImage}" Value="Loading"><Setter Property="Text" Value="正在载入截图…"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaComparisonFirstImage}" Value="Ready"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                                </TextBlock>
+                                                <ui:AsyncThumbnailImage x:Name="MediaComparisonFirstImage" SourcePath="{Binding MediaComparisonItems[0].ArchivePath}" PreviewWidth="480" Stretch="Uniform"/>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                                <Border x:Name="MediaComparisonSecondCard" Grid.Row="0" Grid.Column="1" Style="{DynamicResource GscRedesignSectionCard}" Padding="10" Margin="5,0,0,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="174"/></Grid.RowDefinitions>
+                                        <StackPanel Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding MediaComparisonItems[1].FileName, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding MediaComparisonItems[1].FileName}"/>
+                                            <TextBlock Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis">
+                                                <Run Text="{Binding ElementName=MediaComparisonSecondImage, Path=SourceDimensions, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding MediaComparisonItems[1].SizeDisplay, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding MediaComparisonItems[1].SourceDisplay, Mode=OneWay}"/><Run Text=" · 游戏 "/><Run Text="{Binding MediaComparisonItems[1].PlayniteId, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <Border Grid.Row="1" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" ClipToBounds="True">
+                                            <Grid>
+                                                <TextBlock>
+                                                    <TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MediaEmptyText}"><Setter Property="Text" Value="截图预览不可用"/><Style.Triggers><DataTrigger Binding="{Binding PreviewState, ElementName=MediaComparisonSecondImage}" Value="Loading"><Setter Property="Text" Value="正在载入截图…"/></DataTrigger><DataTrigger Binding="{Binding PreviewState, ElementName=MediaComparisonSecondImage}" Value="Ready"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                                </TextBlock>
+                                                <ui:AsyncThumbnailImage x:Name="MediaComparisonSecondImage" SourcePath="{Binding MediaComparisonItems[1].ArchivePath}" PreviewWidth="480" Stretch="Uniform"/>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ListBox Grid.Row="3" x:Name="MediaGrid" Tag="FiniteViewport" ItemsSource="{Binding MediaView}" SelectedItem="{Binding SelectedMedia}" SelectionChanged="OnMediaSelectionChanged" SelectionMode="Extended" AutomationProperties.Name="当前游戏媒体列表" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
                             <!-- The current-game view is a bounded card surface. Keep the
                                  production card geometry while using the project's
                                  IScrollInfo panel so a 2000-item retained window does not
@@ -714,7 +780,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                         <!-- MediaView.IsEmpty remains a filter-level signal; the workspace state decides whether this is a real empty result. -->
-                        <TextBlock Grid.Row="2" Text="{Binding MediaDetailsStateMessage, Mode=OneWay}" IsHitTestVisible="False">
+                        <TextBlock Grid.Row="3" Text="{Binding MediaDetailsStateMessage, Mode=OneWay}" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -725,7 +791,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <ui:WorkspaceStatePresenter Grid.Row="2" Grid.RowSpan="3" State="{Binding MediaDetailsPresenterState}" Title="{Binding MediaDetailsStateTitle}" Message="{Binding MediaDetailsStateMessage}" Detail="{Binding MediaDetailsStateDetail}" RetryCommand="{Binding ReloadMediaWindowCommand}" RetryText="重试">
+                        <ui:WorkspaceStatePresenter Grid.Row="3" Grid.RowSpan="3" State="{Binding MediaDetailsPresenterState}" Title="{Binding MediaDetailsStateTitle}" Message="{Binding MediaDetailsStateMessage}" Detail="{Binding MediaDetailsStateDetail}" RetryCommand="{Binding ReloadMediaWindowCommand}" RetryText="重试">
                             <ui:WorkspaceStatePresenter.Style>
                                 <Style TargetType="ui:WorkspaceStatePresenter" BasedOn="{StaticResource GscWorkspaceStatePresenter}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -733,7 +799,7 @@
                                 </Style>
                             </ui:WorkspaceStatePresenter.Style>
                         </ui:WorkspaceStatePresenter>
-                        <Border x:Name="MediaCurrentStaleBanner" Grid.Row="3" Padding="10" Margin="0,12,0,0">
+                        <Border x:Name="MediaCurrentStaleBanner" Grid.Row="4" Padding="10" Margin="0,12,0,0">
                             <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -745,7 +811,7 @@
                                 <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding ReloadMediaWindowCommand}" Content="重试" AutomationProperties.Name="重试读取当前游戏媒体" Margin="8,0,0,0"/>
                             </Grid>
                         </Border>
-                        <Grid x:Name="MediaCurrentActionRow" Grid.Row="4" Margin="0,12,0,0">
+                        <Grid x:Name="MediaCurrentActionRow" Grid.Row="5" Margin="0,12,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                             <StackPanel x:Name="MediaCurrentActionHint" Orientation="Horizontal" VerticalAlignment="Center">

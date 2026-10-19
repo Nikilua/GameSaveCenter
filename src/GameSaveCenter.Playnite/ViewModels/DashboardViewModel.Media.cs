@@ -16,10 +16,13 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel
     {
         private const int MediaPageSize = 200;
+        private bool mediaComparisonWorkspaceOpen;
 
         public ObservableCollection<MediaItemDto> MediaComparisonItems => mediaComparisonSelection.Items;
         public string MediaComparisonSummary => mediaComparisonSelection.Summary;
         public string MediaComparisonStatus => mediaComparisonSelection.Status;
+        public bool MediaComparisonWorkspaceOpen => mediaComparisonWorkspaceOpen;
+        public string MediaComparisonWorkspaceToggleLabel => mediaComparisonWorkspaceOpen ? "收起对比" : "展开对比";
 
         private void AddSelectedMediaToComparison(object? value)
         {
@@ -30,17 +33,44 @@ namespace GameSaveCenter.Playnite.ViewModels
                 .ToArray();
 
             mediaComparisonSelection.Add(selected);
+            if (mediaComparisonSelection.Items.Count == MediaComparisonSelection.MaximumItems)
+                mediaComparisonWorkspaceOpen = true;
             OnPropertyChanged(nameof(MediaComparisonSummary));
             OnPropertyChanged(nameof(MediaComparisonStatus));
+            OnPropertyChanged(nameof(MediaComparisonWorkspaceOpen));
+            OnPropertyChanged(nameof(MediaComparisonWorkspaceToggleLabel));
             RaiseCommandStates();
         }
 
         private void ClearMediaComparison()
         {
             mediaComparisonSelection.Clear();
+            mediaComparisonWorkspaceOpen = false;
             OnPropertyChanged(nameof(MediaComparisonSummary));
             OnPropertyChanged(nameof(MediaComparisonStatus));
+            OnPropertyChanged(nameof(MediaComparisonWorkspaceOpen));
+            OnPropertyChanged(nameof(MediaComparisonWorkspaceToggleLabel));
             RaiseCommandStates();
+        }
+
+        private void ToggleMediaComparisonWorkspace()
+        {
+            if (mediaComparisonSelection.Items.Count != MediaComparisonSelection.MaximumItems)
+                return;
+
+            SetMediaComparisonWorkspaceOpen(!mediaComparisonWorkspaceOpen);
+        }
+
+        internal void SetMediaComparisonWorkspaceOpen(bool isOpen)
+        {
+            if (isOpen && mediaComparisonSelection.Items.Count != MediaComparisonSelection.MaximumItems)
+                return;
+            if (mediaComparisonWorkspaceOpen == isOpen)
+                return;
+
+            mediaComparisonWorkspaceOpen = isOpen;
+            OnPropertyChanged(nameof(MediaComparisonWorkspaceOpen));
+            OnPropertyChanged(nameof(MediaComparisonWorkspaceToggleLabel));
         }
 
         private sealed class MediaInboxBatchSelection

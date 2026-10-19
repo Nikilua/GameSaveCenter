@@ -89,11 +89,63 @@ namespace GameSaveCenter.Playnite.Tests
             output.WriteLine($"R18-03 raw active_after_windows={string.Join(",", activeSamples)},cache_samples={string.Join(",", cacheSamples)}");
         }
 
+        [Fact]
+        public void SourceDimensionsRemainOriginalWhilePreviewUsesCappedThumbnail()
+        {
+            var path = CreateThumbnail("large-source", 91, 960, 540);
+            string previewDimensions = string.Empty;
+            string sourceDimensions = string.Empty;
+            Exception? failure = null;
+            var thread = new Thread(() =>
+            {
+                Window? window = null;
+                try
+                {
+                    var image = new AsyncThumbnailImage { PreviewWidth = 480, SourcePath = path };
+                    window = new Window
+                    {
+                        Content = image,
+                        Width = 500,
+                        Height = 300,
+                        ShowInTaskbar = false,
+                        ShowActivated = false,
+                        WindowStyle = WindowStyle.None,
+                        Opacity = 0.01
+                    };
+                    window.Show();
+                    window.UpdateLayout();
+                    PumpUntil(window.Dispatcher, () => image.PreviewState == "Ready" && !string.IsNullOrWhiteSpace(image.SourceDimensions), TimeSpan.FromSeconds(5));
+                    previewDimensions = image.PreviewDimensions;
+                    sourceDimensions = image.SourceDimensions;
+                    Assert.Equal("Ready", image.PreviewState);
+                }
+                catch (Exception exception)
+                {
+                    failure = exception;
+                }
+                finally
+                {
+                    if (window != null && window.IsVisible) window.Close();
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+            if (failure != null)
+                throw new Xunit.Sdk.XunitException(failure.ToString());
+
+            Assert.Equal("480 × 270 px", previewDimensions);
+            Assert.Equal("960 × 540 px", sourceDimensions);
+        }
+
         private string CreateThumbnail(string name, byte value)
+            => CreateThumbnail(name, value, 64, 64);
+
+        private string CreateThumbnail(string name, byte value, int width, int height)
         {
             var path = Path.Combine(root, name + ".png");
-            var pixels = new byte[64 * 64 * 4];
-            for (var index = 0; index < 64 * 64; index++)
+            var pixels = new byte[width * height * 4];
+            for (var index = 0; index < width * height; index++)
             {
                 pixels[index * 4] = value;
                 pixels[index * 4 + 1] = (byte)(255 - value);
@@ -101,7 +153,7 @@ namespace GameSaveCenter.Playnite.Tests
                 pixels[index * 4 + 3] = 255;
             }
 
-            var bitmap = BitmapSource.Create(64, 64, 96, 96, System.Windows.Media.PixelFormats.Bgra32, null, pixels, 64 * 4);
+            var bitmap = BitmapSource.Create(width, height, 96, 96, System.Windows.Media.PixelFormats.Bgra32, null, pixels, width * 4);
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using (var stream = File.Create(path))

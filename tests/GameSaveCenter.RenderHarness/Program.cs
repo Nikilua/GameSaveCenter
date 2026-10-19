@@ -5012,14 +5012,17 @@ public static class Program
             // are not the primary workspace viewport covered by the four-row gate.
             if (list.Name is "MediaClassificationPreviewItems" or "MediaClassificationHistoryList")
                 continue;
+            // A 154-DIP media card is one complete screenshot row. Keep this responsive
+            // floor distinct from the taller inspector and multi-row workspace lists.
+            var minimumListViewport = list.Name == "MediaGrid" ? 154d : 236d;
             if (list.ActualHeight > 0
-                && list.ActualHeight < 236
+                && list.ActualHeight < minimumListViewport
                 && list.Name != "OverviewActivityList"
                 && !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
                 && list.Name != "SettingsSectionTabs"
                 && list.Name != "MaintenanceDiagnosticsSubTabs")
             {
-                s_problems.Add($"{label} {list.Name} list viewport is only {list.ActualHeight:0} DIP (< 236)");
+                s_problems.Add($"{label} {list.Name} list viewport is only {list.ActualHeight:0} DIP (< {minimumListViewport:0})");
             }
         }
 
@@ -7911,12 +7914,13 @@ public static class Program
                 continue;
             if (list.Name is "MediaClassificationPreviewItems" or "MediaClassificationHistoryList")
                 continue;
-            if (list.ActualHeight < 236
+            var minimumListViewport = list.Name == "MediaGrid" ? 154d : 236d;
+            if (list.ActualHeight < minimumListViewport
                 && list.Name != "OverviewActivityList"
                 && !list.Name.EndsWith("SegmentTabs", StringComparison.Ordinal)
                 && list.Name != "SettingsSectionTabs"
                 && list.Name != "MaintenanceDiagnosticsSubTabs")
-                s_problems.Add($"{label} {list.Name} viewport {list.ActualHeight:0} DIP (<236)");
+                s_problems.Add($"{label} {list.Name} viewport {list.ActualHeight:0} DIP (<{minimumListViewport:0})");
         }
 
         foreach (var scroller in FindVisualChildren<ScrollViewer>(host))

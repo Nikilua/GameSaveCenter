@@ -29,6 +29,9 @@ namespace GameSaveCenter.Playnite.Controls
         public static readonly DependencyProperty PreviewDimensionsProperty = DependencyProperty.Register(
             nameof(PreviewDimensions), typeof(string), typeof(AsyncThumbnailImage),
             new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty SourceDimensionsProperty = DependencyProperty.Register(
+            nameof(SourceDimensions), typeof(string), typeof(AsyncThumbnailImage),
+            new PropertyMetadata(string.Empty));
 
         private int generation;
         private CancellationTokenSource? pending;
@@ -56,6 +59,12 @@ namespace GameSaveCenter.Playnite.Controls
         {
             get => (string)GetValue(PreviewDimensionsProperty);
             private set => SetValue(PreviewDimensionsProperty, value);
+        }
+
+        public string SourceDimensions
+        {
+            get => (string)GetValue(SourceDimensionsProperty);
+            private set => SetValue(SourceDimensionsProperty, value);
         }
 
         public string PreviewState
@@ -108,6 +117,7 @@ namespace GameSaveCenter.Playnite.Controls
             {
                 Source = null;
                 PreviewDimensions = string.Empty;
+                SourceDimensions = string.Empty;
                 PreviewState = "NoImage";
                 return;
             }
@@ -116,12 +126,14 @@ namespace GameSaveCenter.Playnite.Controls
             {
                 Source = null;
                 PreviewDimensions = string.Empty;
+                SourceDimensions = string.Empty;
                 PreviewState = "Unavailable";
                 return;
             }
 
             Source = null;
             PreviewDimensions = string.Empty;
+            SourceDimensions = string.Empty;
             PreviewState = "Loading";
             var width = Math.Max(48, Math.Min(PreviewWidth, 480));
             var cancellation = new CancellationTokenSource();
@@ -140,19 +152,28 @@ namespace GameSaveCenter.Playnite.Controls
             }
 
             if (clearSource)
+            {
                 Source = null;
+                PreviewDimensions = string.Empty;
+                SourceDimensions = string.Empty;
+            }
         }
 
         private async Task LoadAsync(string path, int width, int expected, CancellationToken token)
         {
             try
             {
-                var image = await AsyncThumbnailLoader.LoadAsync(path, width, token).ConfigureAwait(false);
+                var imageTask = AsyncThumbnailLoader.LoadAsync(path, width, token);
+                var dimensionsTask = AsyncThumbnailLoader.ReadSourceDimensionsAsync(path, token);
+                await Task.WhenAll(imageTask, dimensionsTask).ConfigureAwait(false);
+                var image = await imageTask.ConfigureAwait(false);
+                var sourceDimensions = await dimensionsTask.ConfigureAwait(false);
                 if (token.IsCancellationRequested || expected != Volatile.Read(ref generation)) return;
                 await Dispatcher.InvokeAsync(() =>
                 {
                      if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;
                      Source = image;
+                     SourceDimensions = image == null ? string.Empty : sourceDimensions?.DisplayText ?? string.Empty;
                      PreviewDimensions = image == null
                          ? string.Empty
                          : $"{image.PixelWidth} × {image.PixelHeight} px";
@@ -170,6 +191,7 @@ namespace GameSaveCenter.Playnite.Controls
                     await Dispatcher.InvokeAsync(() =>
                     {
                         PreviewDimensions = string.Empty;
+                        SourceDimensions = string.Empty;
                         PreviewState = "Failed";
                     }, DispatcherPriority.Background);
             }
