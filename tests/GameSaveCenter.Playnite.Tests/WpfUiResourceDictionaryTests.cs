@@ -203,12 +203,12 @@ public sealed class WpfUiResourceDictionaryTests
         var resources = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml"));
 
         Assert.Contains("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>", resources);
-        foreach (var name in new[] { "Overview", "Saves", "Trainers", "Media", "Tasks", "Maintenance", "Settings" })
+        foreach (var name in new[] { "Overview", "Saves", "Trainers", "Media", "Tasks", "Notifications", "Maintenance", "Settings" })
         {
             Assert.Contains($"x:Name=\"Nav{name}Content\" Orientation=\"Horizontal\" VerticalAlignment=\"Center\"", shell);
             Assert.Contains($"x:Name=\"Nav{name}Label\"", shell);
         }
-        Assert.Equal(7, Regex.Matches(shell, "GscIconNav").Count);
+        Assert.Equal(8, Regex.Matches(shell, "GscIconNav").Count);
     }
 
     [Fact]
@@ -1592,7 +1592,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("new Thickness(0, 10, 0, 0)", saveCode);
         Assert.Contains("SaveHistoryRestoreAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("SaveHistoryInspectorAvailabilityHint.Visibility = compact", saveCode);
-        Assert.Contains("historyHeight - tableMinHeight - 10", saveCode);
+        Assert.Contains("Math.Max(140, Math.Min(220, historyHeight * 0.30))", saveCode);
         Assert.Contains("candidateHeight - tableMinHeight - 10", saveCode);
 
         Assert.Contains("x:Name=\"TrainerToolsTable\"", trainer);
@@ -2403,7 +2403,8 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Equal("Disabled", viewer.Attribute("HorizontalScrollBarVisibility")?.Value);
             Assert.Null(viewer.Attribute("Style"));
             var inspectorStyle = viewer.Descendants().Single(element =>
-                element.Name.LocalName == "Style" && element.Attribute("BasedOn") != null);
+                element.Name.LocalName == "Style" &&
+                element.Attribute("BasedOn")?.Value == "{StaticResource GscInspectorScrollViewer}");
             Assert.Equal("{StaticResource GscInspectorScrollViewer}", inspectorStyle.Attribute("BasedOn")?.Value);
         }
 
@@ -4564,7 +4565,9 @@ public sealed class WpfUiResourceDictionaryTests
     {
         Exception? exception = null;
         var desktopGridMinHeight = 0d;
+        var desktopGridExpectedMinHeight = 0d;
         var compactGridMinHeight = 0d;
+        var compactGridExpectedMinHeight = 0d;
         var openedCompactGridMinHeight = 0d;
         var compactInspectorMaxHeight = 0d;
 
@@ -4578,9 +4581,11 @@ public sealed class WpfUiResourceDictionaryTests
                 var button = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                 view.ApplyResponsiveLayout(1280, 800);
+                desktopGridExpectedMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(view);
                 desktopGridMinHeight = grid.MinHeight;
 
                 view.ApplyResponsiveLayout(960, 640);
+                compactGridExpectedMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(view);
                 compactGridMinHeight = grid.MinHeight;
                 var selected = new object();
                 grid.ItemsSource = new[] { selected };
@@ -4602,9 +4607,9 @@ public sealed class WpfUiResourceDictionaryTests
         thread.Join();
 
         Assert.Null(exception);
-        Assert.Equal(264, desktopGridMinHeight);
-        Assert.Equal(200, compactGridMinHeight);
-        Assert.Equal(200, openedCompactGridMinHeight);
+        Assert.Equal(desktopGridExpectedMinHeight, desktopGridMinHeight);
+        Assert.Equal(compactGridExpectedMinHeight, compactGridMinHeight);
+        Assert.Equal(compactGridExpectedMinHeight, openedCompactGridMinHeight);
         Assert.Equal(136, compactInspectorMaxHeight);
     }
 
@@ -6352,7 +6357,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
-        Assert.Equal(6, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
+        Assert.Equal(7, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
         Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
