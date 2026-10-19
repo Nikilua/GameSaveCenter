@@ -1,3 +1,10 @@
+## 2026-10-20 DEV-INSTALL-009 默认全流程验收
+
+- 用户反馈 `DEV-INSTALL-008` 在 SDK9-only 机器因锁定 SDK `8.0.423` 不存在而提前失败。保留 `global.json` 精确锁定；`DEV-INSTALL-009` 在关闭宿主前从微软官方渠道自动准备 SDK，且此前已验证仅有系统 SDK `9.0.302` 时可选中 SDK8.0.423。
+- 从默认入口 `GameSaveCenter-Run.cmd` 执行完整构建/测试/打包/安装/启动，提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`，SDK `8.0.423`，退出码 `0`。Release solution `0/0`；Core `157/157`、Worker `383/383`、Playnite 总计 `1812`（`1754` passed、`58` skipped、0 failed/error/timeout/aborted）；WPF 隔离 `137/137` 类完成。140 份 TRX 的结果数与汇总计数一致；R09 `2/2`、R10 `5/5`。
+- 根因修复：隔离 WPF 每类运行结束后只清理本次新增的 shadow-copy TEMP 目录，修复测试把磁盘写满的问题；帮助 Popup 现在在清理阶段关闭，runner 对挂起测试提供 2 分钟定位。系统输入无法路由时，鼠标/指针依赖用例按预检标记跳过。
+- 自包含 win-x64 Worker 发布成功；Playnite `.zip` / `.pext` 和扩展安装成功，manifest `0.6.73`、DLL `0.6.73.0`，安装与构建插件 DLL SHA-256 均为 `AC87FDC16F4FF7211CC00C6B0B8135711D32D20F6C338A36F09B086972535A31`。Playnite PID `11068` 已启动且响应。诊断：`20261019T184725162Z-607fe456`；完整验收边界见 [证据记录](../design/reviews/DEV-INSTALL-009-20261020/README.md)。首次 SDK 获取仍要求访问微软下载源；未做真实 UI 视觉检查。
+
 ## 2026-10-19 Round4 S04-01 比较对象集合
 
 - 提交 `f911cba4`：媒体中心加入最多两张有效截图的过滤无关比较集合，按 `MediaId` 保存稳定对象；只检查所选截图归档文件，视频/缺失文件/重复/超限均有说明。
