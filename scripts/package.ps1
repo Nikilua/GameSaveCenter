@@ -12,6 +12,7 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $artifacts = Join-Path $root 'artifacts'
 $previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
+. (Join-Path $PSScriptRoot 'package-dirty-state.ps1')
 
 function Read-AssemblyInformationalVersion {
     param([Parameter(Mandatory = $true)][string]$AssemblyPath)
@@ -177,10 +178,11 @@ if ($buildCommit -match '^[0-9a-fA-F]{7,40}$') {
 else {
     throw '无法从当前 Git HEAD 获取有效提交号，已停止打包；不能生成 unknown 构建包。'
 }
-$dirtyFiles = @(& git -C $root status --porcelain --untracked-files=all 2>$null)
+$gitStatus = @(& git -C $root status --porcelain --untracked-files=all 2>$null)
 if ($LASTEXITCODE -ne 0) { throw '无法读取 Git 工作树状态，已停止打包。' }
+$dirtyFiles = @(Get-GscPackageRelevantDirtyFiles $gitStatus)
 if ($dirtyFiles.Count -gt 0) {
-    throw "工作树存在未提交改动，已停止打包以避免用 HEAD 冒充实际源码：$($dirtyFiles -join '; ')"
+    throw "存在会影响插件构建身份的未提交源码改动，已停止打包以避免用 HEAD 冒充实际源码：$($dirtyFiles -join '; ')"
 }
 $stage = Join-Path $artifacts 'GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
 $workerStage = Join-Path $stage 'Worker'
