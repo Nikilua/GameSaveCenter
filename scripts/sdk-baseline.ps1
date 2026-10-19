@@ -45,8 +45,25 @@ function Get-GscDotNetSdkSelection {
     if (-not $dotnet) {
         return [pscustomobject]@{ ExitCode = 9009; Version = ''; Output = @('dotnet was not found on PATH.') }
     }
-    $output = @(& dotnet --version 2>&1 | ForEach-Object { $_.ToString() })
-    $exitCode = $LASTEXITCODE
+
+    # Windows PowerShell 5.1 can promote a native stderr line to a terminating
+    # NativeCommandError when ErrorActionPreference is Stop. An SDK mismatch or
+    # an incomplete dotnet host is an expected probe result here: let the
+    # bootstrap path handle it instead of aborting before it can run.
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        $output = @(& dotnet --version 2>&1 | ForEach-Object { $_.ToString() })
+        $exitCode = $LASTEXITCODE
+    }
+    catch {
+        $output = @($_.Exception.Message)
+        $exitCode = if ($LASTEXITCODE) { $LASTEXITCODE } else { 9009 }
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
     $version = if ($exitCode -eq 0) { ($output -join '').Trim() } else { '' }
     return [pscustomobject]@{ ExitCode = $exitCode; Version = $version; Output = $output }
 }
@@ -54,8 +71,21 @@ function Get-GscDotNetSdkSelection {
 function Get-GscInstalledSdks {
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
     if (-not $dotnet) { return @() }
-    $output = @(& dotnet --list-sdks 2>&1 | ForEach-Object { $_.ToString() })
-    if ($LASTEXITCODE -ne 0) { return @() }
+
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        $output = @(& dotnet --list-sdks 2>&1 | ForEach-Object { $_.ToString() })
+        $exitCode = $LASTEXITCODE
+    }
+    catch {
+        return @()
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    if ($exitCode -ne 0) { return @() }
     return $output
 }
 

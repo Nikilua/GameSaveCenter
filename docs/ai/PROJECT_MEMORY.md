@@ -4,7 +4,7 @@
 
 源码锁定 SDK `8.0.423` 不变。`Initialize-GscSdkBaseline` 先验证已选版本；缺失时使用 Microsoft 官方安装脚本安装到当前用户 LocalAppData 下的版本化目录，并仅设置当前进程 PATH、`DOTNET_ROOT`、`DOTNET_ROOT_X64`。`DEV-INSTALL-009` 在关闭 Playnite/Worker 前调用它；`build.ps1`、standalone Playnite 测试和 SDK 验证 worktree 也走该初始化。完整编译、测试、打包和 stage 版本核验成功后才关闭宿主。下载或安装失败时流程会停止在宿主关闭之前，并指出确切 SDK/网络代理原因。
 
-首次 SDK8 自动安装实测完成（安装目标用仓库 `.tmp` 隔离目录），SDK 基线自测通过。随后当前工作树 SDK8 Release solution build `0/0`、Core `157/157`、Worker `382 passed / 1 skipped`、Playnite 非 WPF `487 passed / 27 skipped`；R09 `2/2`、S04-01 当前行为 `4/4`。全量 WPF 循环仅完成前 5/133 类，第 6 类时收到新用户输入并被控制中断；它没有失败用例，摘要保持 `running`。尚未完成干净提交的一键安装/真实 Playnite 启动，不得写成全流程通过。日志位于本地诊断 `20261019T010804009Z-d25e5350`。
+首次 SDK8 自动安装已在本机真实用户缓存完成：系统仅有 SDK `9.0.302` 时，Windows PowerShell 5.1 的原生 stderr 曾触发终止错误；修正后自动下载到 `%LOCALAPPDATA%\GameSaveCenter\dotnet-sdk-8.0.423`，选中精确 `8.0.423`，SDK 基线自测通过，诊断 `20261019T014732824Z-823abe5a`。干净提交 `9a44c50e` 的 `-SkipTests` 一键流程已完成 Release 编译、自包含 Worker 发布、版本/构建身份核验、真实用户扩展目录安装并启动 Playnite 与 Worker；默认全测试流程仍在复核中。此前当前工作树 SDK8 Release solution build `0/0`、Core `157/157`、Worker `382 passed / 1 skipped`、Playnite 非 WPF `487 passed / 27 skipped`；R09 `2/2`、S04-01 当前行为 `4/4`。旧全量 WPF 循环只跑到 5/133 类后被新用户输入控制中断，没有失败用例，摘要保持 `running`；该次输入含未提交 S04-01 源码，诊断 `20261019T010804009Z-d25e5350`。
 
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 

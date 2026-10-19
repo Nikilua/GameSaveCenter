@@ -4,6 +4,12 @@
 - 实测 SDK8.0.423 首次自动下载/安装到隔离 `.tmp` 路径，SDK 基线自测通过；当前工作树 Release solution build 为 `0 warning / 0 error`、XAML `25/25`、Core `157/157`、Worker `382 passed / 1 skipped`、Playnite 非 WPF `487 passed / 27 skipped`；R09 `2/2`，工作区当前 S04-01 媒体比较行为 `4/4`。
 - 完整 WPF 隔离循环发现 133 个类；前 5 类通过。第 6 类执行中收到新的用户指令后进程以控制中断结束，摘要仍为 `running`，没有失败断言；完整 WPF 循环、打包安装和真实 Playnite 启动尚未验。诊断 ID：`20261019T010804009Z-d25e5350`。此构建包含仍在工作区的 S04-01 改动，程序集身份对应提交前 HEAD `29b8b9a3`，不作为干净提交安装证据。
 
+## 2026-10-19 SDK 自举在 Windows PowerShell 5.1 的修正
+
+- 复跑发现仅有 SDK `9.0.302` 时，Windows PowerShell 5.1 会把 `dotnet --version` 的预期失败 stderr 提升为终止错误，导致 SDK 自举逻辑无法运行。`sdk-baseline.ps1` 现在在两个探测函数内暂时使用 Continue 捕获本机命令输出，再恢复调用方的错误偏好；`package.ps1` 在 Windows PowerShell 5.1 直接探测 SDK 自带的 net472 Metadata 程序集，避免记录一个已捕获的预期 Add-Type 错误。
+- 在系统仅安装 `9.0.302` 的环境实测自动下载 SDK `8.0.423` 到用户 LocalAppData，精确版本选择和 SDK 基线自测通过。诊断 ID `20261019T014732824Z-823abe5a`；PowerShell 5.1 解析、`git diff --check` 与 `validate-source.py` 通过。
+- 干净提交 `9a44c50e` 的 `-SkipTests` 一键流程已完成 Release build `0 warning / 0 error`、Worker self-contained publish、构建身份一致、安装版本 `0.6.73` / DLL `0.6.73.0`，并启动 Playnite/Worker。默认全测试一键流程仍在继续验证；此前工作树全量 WPF 测试中断不计为通过或失败。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 - 测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 增加两项跨层行为验收，没有产品代码改动。Core 夹具验证明确父 ID 与同指纹关系不受父版本晚于子版本的时钟偏差影响；Playnite 夹具验证两设备来源文字、41 天 readiness 年龄和不推断过期/时间胜方，并核对合成存档 sentinel 字节和目录条目在只读展示后不变。

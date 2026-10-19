@@ -27,11 +27,16 @@ function Read-AssemblyInformationalVersion {
     # assembly is requested by name, so fall back to the SDK's net472 copy.
     if (-not ('System.Reflection.Metadata.MetadataReaderProvider' -as [type])) {
         $metadataLoaded = $false
-        try {
-            Add-Type -AssemblyName System.Reflection.Metadata -ErrorAction Stop
-            $metadataLoaded = $true
+        if ($PSVersionTable.PSEdition -ne 'Desktop') {
+            try {
+                Add-Type -AssemblyName System.Reflection.Metadata -ErrorAction Stop
+                $metadataLoaded = $true
+            }
+            catch {
+                # PowerShell Core may need the SDK-local net472 fallback below.
+            }
         }
-        catch {
+        if (-not $metadataLoaded) {
             $metadataCandidates = @()
             $dotnetRoot = if ($env:DOTNET_ROOT) { $env:DOTNET_ROOT } else { Join-Path $env:ProgramFiles 'dotnet' }
             if (Test-Path -LiteralPath (Join-Path $dotnetRoot 'sdk')) {

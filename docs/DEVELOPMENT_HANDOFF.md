@@ -2,9 +2,9 @@
 
 ## 2026-10-19 一键构建 SDK 修复进度
 
-用户最新 `DEV-INSTALL-008` 日志在编译前失败：`global.json` 要求精确 SDK `8.0.423`，机器只有 `9.0.302`。当前实现仍保留精确锁定，并将入口修订为 `DEV-INSTALL-009`：通过官方安装脚本把缺失 SDK 安装到当前用户 LocalAppData；在关闭 Playnite/Worker 前完成选择验证。构建、测试、打包和 stage 版本核验成功后才关闭宿主，提前失败不会关闭 Playnite。首次 SDK8 隔离安装与 `Test-SdkBaseline.ps1` 已通过；当前工作树 SDK8 Release build `0/0`、Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`、R09 `2/2`、S04-01 `4/4`。
+用户最新 `DEV-INSTALL-008` 日志在编译前失败：`global.json` 要求精确 SDK `8.0.423`，机器只有 `9.0.302`。`DEV-INSTALL-009` 保留精确锁定并通过官方安装脚本把缺失 SDK 安装到当前用户 LocalAppData；SDK 准备和后续完整检查均在关闭 Playnite/Worker 前进行。复跑发现 Windows PowerShell 5.1 会把 dotnet 的预期 stderr 提升为终止错误，现已修正。系统仅有 SDK9.0.302 的本机已成功自动安装并选中 SDK8.0.423，`Test-SdkBaseline.ps1` 通过，诊断 `20261019T014732824Z-823abe5a`。干净提交 `9a44c50e` 的 `-SkipTests` 一键 build/publish/install/start 流程也通过，版本 `0.6.73` / DLL `0.6.73.0`，Playnite 与 Worker 已运行。
 
-当前完整 WPF 隔离测试有 133 类，只完成前 5 类；第 6 类运行时新用户指令中断了进程，诊断 `20261019T010804009Z-d25e5350` 仍为 `running`，没有用例失败记录。尚未验证完整一键打包安装或真实 Playnite 加载。首次 SDK 下载验证安装到仓库 `.tmp`，不是已写入 LocalAppData；一键脚本在其他机器首次运行仍需要能访问 Microsoft 下载源。后续先完成干净提交的一键隔离安装，再按当前 Round4 计划继续；用户保留的未跟踪 TRX/TestResults 未改动。
+当前默认全测试一键流程仍在验证中。此前另一次全量 WPF 隔离循环发现 133 类、前 5 类通过，第 6 类时受新用户输入控制中断（诊断 `20261019T010804009Z-d25e5350`），不是测试失败；其输入含未提交 S04-01 源码。首次 SDK 下载已写入用户 LocalAppData；另一台新环境首次使用仍需能访问 Microsoft 下载源。用户保留的未跟踪 TRX/TestResults 未改动。
 
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 

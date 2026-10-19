@@ -4,7 +4,7 @@
 
 ## 当前构建优先项：缺 SDK 时自动准备准确版本
 
-`global.json` 仍精确锁定 .NET SDK `8.0.423`。新 `DEV-INSTALL-009` 在 Playnite 关闭前检查/准备此版本；若缺失，通过官方安装脚本写入当前用户 LocalAppData，SDK9 不会替代；下载失败则保留 Playnite 运行状态。完整编译、测试、打包和 stage 版本核验成功后才关闭 Playnite。首次安装到隔离目录与 SDK 选择自测已通过。当前工作树 SDK8 Release build `0/0`，Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`；R09 `2/2`，S04-01 `4/4`。全量 WPF 133 类循环只到 5 类通过，第 6 类时被新用户输入控制中断；完整测试/安装/真实 Playnite 尚未通过验证。诊断 ID `20261019T010804009Z-d25e5350`；构建输入含未提交 S04-01 源码，不能作为精确提交安装证据。
+`global.json` 仍精确锁定 .NET SDK `8.0.423`。`DEV-INSTALL-009` 在 Playnite 关闭前检查/准备此版本；若缺失，通过官方安装脚本写入当前用户 LocalAppData，SDK9 不会替代；下载失败则保留 Playnite 运行状态。补上 Windows PowerShell 5.1 对 `dotnet` 预期 stderr 退出的捕获后，只有系统 SDK `9.0.302` 的本机已自动安装并选中 `8.0.423`，SDK 基线自测通过（诊断 `20261019T014732824Z-823abe5a`）。干净提交的 `-SkipTests` 一键编译、Worker 发布、真实用户扩展目录安装和 Playnite/Worker 启动通过；默认全测试一键流程仍在复核中。先前工作树 SDK8 Release build `0/0`，Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`；R09 `2/2`，S04-01 `4/4`。此前全量 WPF 133 类循环只到 5 类通过后被新用户输入控制中断（诊断 `20261019T010804009Z-d25e5350`），不代表失败；输入含未提交 S04-01 源码。
 
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
