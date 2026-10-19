@@ -53,6 +53,7 @@ namespace GameSaveCenter.Playnite.Views
             mediaInboxSecondaryActionRowGap = new WrapPanelRowGapController(MediaInboxSecondaryActions);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
+            MediaCurrentLayout.LayoutUpdated += OnMediaCurrentLayoutUpdated;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             DataContextChanged += OnDataContextChanged;
@@ -616,13 +617,33 @@ namespace GameSaveCenter.Playnite.Views
                 // Give a real inspector its own finite scroll channel only when it is stacked;
                 // an empty selection must not retain a hidden capped surface.
                 MediaInspectorScrollViewer.MaxHeight = showInspector && stack
-                    ? Math.Max(220, Math.Min(420, height * 0.56))
+                    ? Math.Max(140, Math.Min(220, height * 0.30))
                     : double.PositiveInfinity;
                 MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14);
+                UpdateMediaCurrentTableSurfaceMinimumHeight();
             }
             finally
             {
                 isApplyingLayout = false;
+            }
+        }
+
+        private void OnMediaCurrentLayoutUpdated(object? sender, EventArgs e)
+        {
+            if (!isApplyingLayout)
+                UpdateMediaCurrentTableSurfaceMinimumHeight();
+        }
+
+        private void UpdateMediaCurrentTableSurfaceMinimumHeight()
+        {
+            if (MediaGrid.Parent is Grid contentGrid)
+            {
+                MediaCurrentLayout.RowDefinitions[0].MinHeight = WorkspaceTableViewportPolicy.CalculateMinimumSurfaceHeight(
+                    contentGrid,
+                    MediaGrid,
+                    minimumViewportHeight: 154d,
+                    surface: VisualTreeHelper.GetParent(contentGrid) as Border,
+                    autoRowFallbackHeight: 52d);
             }
         }
 

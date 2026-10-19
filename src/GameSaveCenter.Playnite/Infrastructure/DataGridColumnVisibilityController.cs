@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using GameSaveCenter.Playnite.Settings;
 
 namespace GameSaveCenter.Playnite.Infrastructure
@@ -68,6 +70,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             button.ContextMenu = menu;
             button.Click += OnButtonClick;
             menu.Opened += OnMenuOpened;
+            menu.Closed += OnMenuClosed;
             DataGridLayoutResetCoordinator.AllLayoutsReset += OnAllLayoutsReset;
             ApplyStoredHiddenColumns();
             RefreshMenuState();
@@ -147,6 +150,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             disposed = true;
             menu.IsOpen = false;
             menu.Opened -= OnMenuOpened;
+            menu.Closed -= OnMenuClosed;
             button.Click -= OnButtonClick;
             DataGridLayoutResetCoordinator.AllLayoutsReset -= OnAllLayoutsReset;
             if (ReferenceEquals(button.ContextMenu, menu))
@@ -162,7 +166,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 Placement = PlacementMode.Bottom,
                 PlacementTarget = button,
-                StaysOpen = false
+                StaysOpen = false,
+                Opacity = 0,
+                RenderTransform = new TranslateTransform(0, -4)
             };
             if (button.TryFindResource("GscColumnPickerContextMenuStyle") is Style menuStyle)
                 result.Style = menuStyle;
@@ -229,7 +235,58 @@ namespace GameSaveCenter.Playnite.Infrastructure
         }
 
         private void OnMenuOpened(object? sender, RoutedEventArgs e)
-            => RefreshMenuState();
+        {
+            RefreshMenuState();
+            AnimateMenuEntrance();
+        }
+
+        private void OnMenuClosed(object? sender, RoutedEventArgs e)
+        {
+            menu.BeginAnimation(UIElement.OpacityProperty, null);
+            menu.Opacity = 0;
+            if (menu.RenderTransform is TranslateTransform transform)
+            {
+                transform.BeginAnimation(TranslateTransform.YProperty, null);
+                transform.Y = -4;
+            }
+        }
+
+        private void AnimateMenuEntrance()
+        {
+            var transform = menu.RenderTransform as TranslateTransform;
+            if (transform == null)
+            {
+                transform = new TranslateTransform(0, -4);
+                menu.RenderTransform = transform;
+            }
+
+            var motionEnabled = button.TryFindResource("GscToggleMotionEnabled") is bool enabled && enabled;
+            if (!motionEnabled)
+            {
+                menu.BeginAnimation(UIElement.OpacityProperty, null);
+                transform.BeginAnimation(TranslateTransform.YProperty, null);
+                menu.Opacity = 1;
+                transform.Y = 0;
+                return;
+            }
+
+            var duration = button.TryFindResource("GscMotionFast") is Duration configuredDuration
+                && configuredDuration.HasTimeSpan
+                ? configuredDuration.TimeSpan
+                : TimeSpan.FromMilliseconds(140);
+            var easing = button.TryFindResource("GscMotionEaseOut") as IEasingFunction;
+
+            menu.BeginAnimation(UIElement.OpacityProperty, null);
+            transform.BeginAnimation(TranslateTransform.YProperty, null);
+            menu.Opacity = 0;
+            transform.Y = -4;
+            menu.BeginAnimation(
+                UIElement.OpacityProperty,
+                new DoubleAnimation(0, 1, new Duration(duration)) { EasingFunction = easing });
+            transform.BeginAnimation(
+                TranslateTransform.YProperty,
+                new DoubleAnimation(-4, 0, new Duration(duration)) { EasingFunction = easing });
+        }
 
         private void OnAllLayoutsReset(object? sender, EventArgs e)
         {

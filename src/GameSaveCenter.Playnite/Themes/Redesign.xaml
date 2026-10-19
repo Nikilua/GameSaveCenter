@@ -863,6 +863,17 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
+    <!-- Reusable calm surface for empty results and first-run guidance. Keep the same
+         translucent fill used by the notification empty state and the workspace cards. -->
+    <Style x:Key="GscRedesignEmptyStateSurface" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="24"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
     <Style x:Key="GscFloatingCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>

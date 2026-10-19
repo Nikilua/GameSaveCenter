@@ -102,10 +102,10 @@
                     <ComboBox x:Name="NotificationTimeFilterComboBox" Grid.Row="0" Grid.Column="2" Margin="0,0,8,0" Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding NotificationTimeOptions}" SelectedItem="{Binding NotificationTimeFilter, Mode=TwoWay}" ToolTip="按通知时间筛选" AutomationProperties.Name="通知时间"/>
                     <ui:Button x:Name="NotificationInboxRefreshButton" Grid.Row="0" Grid.Column="3" Content="刷新" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RefreshNotificationInboxCommand}" AutomationProperties.Name="刷新通知收件箱" Padding="14,7"/>
                     <ui:Button x:Name="NotificationCompactDetailsButton" Grid.Row="0" Grid.Column="4" Content="查看详情" Style="{DynamicResource GscWpfUiContextButton}" Click="OnCompactDetailsClick" AutomationProperties.Name="查看所选通知详情" Padding="12,7" Visibility="Collapsed"/>
-                    <WrapPanel x:Name="NotificationReadActions" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Margin="0,4,0,0">
-                        <ui:Button x:Name="NotificationMarkSelectedReadButton" Content="标记所选已读" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding MarkSelectedNotificationReadCommand}" AutomationProperties.Name="标记所选通知为已读" AutomationProperties.HelpText="只更新所选通知的已读状态，不会解决或关闭关联问题。" Padding="12,5" Margin="0,0,8,0"/>
-                        <ui:Button x:Name="NotificationMarkVisibleReadButton" Content="筛选结果全部已读" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding MarkVisibleNotificationsReadCommand}" ToolTip="只标记当前筛选结果中的未读通知" AutomationProperties.Name="将当前筛选结果中的未读通知全部标为已读" AutomationProperties.HelpText="只更新当前筛选结果中的未读通知；被筛除的通知保持原状态。" Padding="12,5" Margin="0,0,8,0"/>
-                        <ui:Button x:Name="NotificationClearReadButton" Content="清除已读记录" Style="{DynamicResource GscWpfUiContextDangerButton}" Command="{Binding ClearReadNotificationRecordsCommand}" ToolTip="只删除已读通知记录" AutomationProperties.Name="清除已读通知记录" AutomationProperties.HelpText="清除前会要求确认；不会删除任务、审计日志或恢复证据。" Padding="12,5"/>
+                    <WrapPanel x:Name="NotificationReadActions" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Margin="0,4,0,0" VerticalAlignment="Center">
+                        <ui:Button x:Name="NotificationMarkSelectedReadButton" Content="标记所选已读" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding MarkSelectedNotificationReadCommand}" AutomationProperties.Name="标记所选通知为已读" AutomationProperties.HelpText="只更新所选通知的已读状态，不会解决或关闭关联问题。" Padding="12,5" Margin="0,0,8,0" MinHeight="{DynamicResource GscButtonHeight}" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="NotificationMarkVisibleReadButton" Content="筛选结果全部已读" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding MarkVisibleNotificationsReadCommand}" ToolTip="只标记当前筛选结果中的未读通知" AutomationProperties.Name="将当前筛选结果中的未读通知全部标为已读" AutomationProperties.HelpText="只更新当前筛选结果中的未读通知；被筛除的通知保持原状态。" Padding="12,5" Margin="0,0,8,0" MinHeight="{DynamicResource GscButtonHeight}" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="NotificationClearReadButton" Content="清除已读记录" Style="{DynamicResource GscWpfUiContextDangerButton}" Command="{Binding ClearReadNotificationRecordsCommand}" ToolTip="只删除已读通知记录" AutomationProperties.Name="清除已读通知记录" AutomationProperties.HelpText="清除前会要求确认；不会删除任务、审计日志或恢复证据。" Padding="12,5" Margin="0,0,8,0" MinHeight="{DynamicResource GscButtonHeight}" VerticalAlignment="Center"/>
                     </WrapPanel>
                 </Grid>
             </Border>
@@ -176,13 +176,13 @@
                     </Grid>
                 </Border>
 
-                <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource GscGlassFillBrush}" CornerRadius="12" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Visibility="{Binding NotificationInboxHasNoRecords, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border x:Name="NotificationNoRecordsEmptyState" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource GscRedesignEmptyStateSurface}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Visibility="{Binding NotificationInboxHasNoRecords, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center">
                         <TextBlock Text="还没有通知" FontSize="17" FontWeight="SemiBold" TextAlignment="Center"/>
                         <TextBlock Text="任务完成、失败或退出摘要会出现在这里。" Margin="0,7,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" TextAlignment="Center" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource GscGlassFillBrush}" CornerRadius="12" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Visibility="{Binding NotificationInboxHasNoFilterResults, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border x:Name="NotificationNoResultsEmptyState" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource GscRedesignEmptyStateSurface}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Visibility="{Binding NotificationInboxHasNoFilterResults, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center">
                         <TextBlock Text="没有匹配的通知" FontSize="17" FontWeight="SemiBold" TextAlignment="Center"/>
                         <TextBlock Text="调整级别、时间或搜索条件后重试。" Margin="0,7,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" TextAlignment="Center" TextWrapping="Wrap"/>

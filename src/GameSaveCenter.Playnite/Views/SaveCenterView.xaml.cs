@@ -34,6 +34,7 @@ namespace GameSaveCenter.Playnite.Views
             historyActionRowGap = new WrapPanelRowGapController(SaveHistorySummaryActions);
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
+            SaveHistoryLayout.LayoutUpdated += OnSaveHistoryLayoutUpdated;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             DataContextChanged += OnDataContextChanged;
@@ -334,8 +335,11 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(SaveHistoryActionsScrollViewer, compact ? 3 : 1);
             Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
             SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            UpdateHistoryTableSurfaceMinimumHeight();
             var historyHeight = SaveHistoryLayout.ActualHeight > 0 ? SaveHistoryLayout.ActualHeight : Math.Max(320, height - 200);
-            var historyInspectorHeight = Math.Max(160, Math.Min(360, historyHeight - tableMinHeight - 10));
+            // Keep the inspector useful without letting it take the room reserved for
+            // the complete history table surface (toolbar, four readable rows and footer).
+            var historyInspectorHeight = Math.Max(140, Math.Min(220, historyHeight * 0.30));
             SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? historyInspectorHeight : double.PositiveInfinity;
             var showCandidateInspector = SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible;
             var candidateSideBySide = showCandidateInspector && !compact;
@@ -404,6 +408,25 @@ namespace GameSaveCenter.Playnite.Views
             historyInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+        }
+
+        private void OnSaveHistoryLayoutUpdated(object? sender, EventArgs e)
+        {
+            if (!isApplyingLayout)
+                UpdateHistoryTableSurfaceMinimumHeight();
+        }
+
+        private void UpdateHistoryTableSurfaceMinimumHeight()
+        {
+            if (SaveHistoryGrid.Parent is Grid contentGrid)
+            {
+                SaveHistoryLayout.RowDefinitions[0].MinHeight = WorkspaceTableViewportPolicy.CalculateMinimumSurfaceHeight(
+                    contentGrid,
+                    SaveHistoryGrid,
+                    SaveHistoryGrid.MinHeight,
+                    SaveHistoryTableFrame,
+                    autoRowFallbackHeight: 52d);
+            }
         }
 
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)

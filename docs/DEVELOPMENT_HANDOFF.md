@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-19 用户反馈：窗口布局与弹出样式
+
+已实现五项 UI 调整：头部 `1200 DIP` 起同行；列选择 ContextMenu 使用主题玻璃与圆角模板并播放可关闭的淡入位移动画；存档详情展开保留四行历史表格；媒体详情展开保留一整行卡片；通知操作按钮等高，空状态限制在表格列内居中并复用共享面板样式。SDK8 Release 解决方案编译 `0/0`，定向 WPF `15/15`，全尺寸 RenderHarness `render-qa OK`，最终 shell QA 与源码校验通过。
+
+本次未在真实 Playnite 安装/展示新 UI，也未执行完整 WPF 隔离循环。RenderHarness 离屏 DPI 为 1.0 DIP，不代表用户物理屏幕呈现。当前验证时工作树含用户未提交的 S04-01 媒体比较更改；本轮提交需排除其 ViewModel、`MediaCenterView.xaml`、FakeDashboardData 和对应测试。下一步可让用户用 `DEV-INSTALL-009` 一键复测，再根据实际 Playnite 窗口尺寸校准细节。
+
 ## 2026-10-19 一键构建 SDK 修复进度
 
 用户最新 `DEV-INSTALL-008` 日志在编译前失败：`global.json` 要求精确 SDK `8.0.423`，机器只有 `9.0.302`。`DEV-INSTALL-009` 保留精确锁定并通过官方安装脚本把缺失 SDK 安装到当前用户 LocalAppData；SDK 准备和后续完整检查均在关闭 Playnite/Worker 前进行。复跑发现 Windows PowerShell 5.1 会把 dotnet 的预期 stderr 提升为终止错误，现已修正。系统仅有 SDK9.0.302 的本机已成功自动安装并选中 SDK8.0.423，`Test-SdkBaseline.ps1` 通过，诊断 `20261019T014732824Z-823abe5a`。干净提交 `9a44c50e` 的 `-SkipTests` 一键 build/publish/install/start 流程也通过，版本 `0.6.73` / DLL `0.6.73.0`，Playnite 与 Worker 已运行。

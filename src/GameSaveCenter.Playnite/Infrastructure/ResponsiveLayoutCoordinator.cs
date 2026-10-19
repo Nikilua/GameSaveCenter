@@ -73,7 +73,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
     public static class ResponsiveLayoutCoordinator
     {
-        public const double CompactShellHeaderThreshold = 1440d;
+        // The shell's 734-DIP action group sits beside the title and host chrome.
+        // Keep the compact header only below 1,200 DIP, where that complete row no
+        // longer fits reliably; this leaves ordinary 2K windows on one line.
+        public const double CompactShellHeaderThreshold = 1200d;
         public const double CompactActionRowGap = 20d;
 
         // The detail inspector needs a small content-budget hysteresis band. Without it,

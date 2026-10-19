@@ -82,6 +82,8 @@ public sealed class NotificationInboxViewBehaviorTests
                 var markSelected = Assert.IsAssignableFrom<Button>(view.FindName("NotificationMarkSelectedReadButton"));
                 var markVisible = Assert.IsAssignableFrom<Button>(view.FindName("NotificationMarkVisibleReadButton"));
                 var clearRead = Assert.IsAssignableFrom<Button>(view.FindName("NotificationClearReadButton"));
+                var noRecords = Assert.IsType<Border>(view.FindName("NotificationNoRecordsEmptyState"));
+                var noResults = Assert.IsType<Border>(view.FindName("NotificationNoResultsEmptyState"));
                 var openGame = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenGameButton"));
                 var openTask = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenTaskButton"));
                 var openFirstTask = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenFirstTaskButton"));
@@ -93,6 +95,17 @@ public sealed class NotificationInboxViewBehaviorTests
                 openFirstTask.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
 
                 Assert.Equal(2, Grid.GetRow(actionBar));
+                Assert.Equal(markSelected.Margin, markVisible.Margin);
+                Assert.Equal(markVisible.Margin, clearRead.Margin);
+                Assert.Equal(markSelected.MinHeight, markVisible.MinHeight);
+                Assert.Equal(markVisible.MinHeight, clearRead.MinHeight);
+                Assert.Equal(VerticalAlignment.Center, markSelected.VerticalAlignment);
+                Assert.Equal(VerticalAlignment.Center, markVisible.VerticalAlignment);
+                Assert.Equal(VerticalAlignment.Center, clearRead.VerticalAlignment);
+                Assert.Equal(1, Grid.GetColumnSpan(noRecords));
+                Assert.Equal(1, Grid.GetColumnSpan(noResults));
+                Assert.Same(view.FindResource("GscRedesignEmptyStateSurface"), noRecords.Style);
+                Assert.Same(view.FindResource("GscRedesignEmptyStateSurface"), noResults.Style);
                 Assert.True(ReferenceEquals(data.MarkSelectedNotificationReadCommand, markSelected.Command), "Selected-read command binding");
                 Assert.True(ReferenceEquals(data.MarkVisibleNotificationsReadCommand, markVisible.Command), "Visible-read command binding");
                 Assert.True(ReferenceEquals(data.ClearReadNotificationRecordsCommand, clearRead.Command), "Clear-read command binding");

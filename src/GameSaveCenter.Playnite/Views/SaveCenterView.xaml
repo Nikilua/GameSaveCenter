@@ -93,7 +93,7 @@
                 <Grid x:Name="SaveHistoryLayout" Margin="0,4,0,0">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
-                    <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
+                    <Border x:Name="SaveHistoryTableFrame" Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
                         <Grid>
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="10,8" Margin="0,0,0,10">

@@ -6,6 +6,10 @@
 
 `global.json` 仍精确锁定 .NET SDK `8.0.423`。`DEV-INSTALL-009` 在 Playnite 关闭前检查/准备此版本；若缺失，通过官方安装脚本写入当前用户 LocalAppData，SDK9 不会替代；下载失败则保留 Playnite 运行状态。补上 Windows PowerShell 5.1 对 `dotnet` 预期 stderr 退出的捕获后，只有系统 SDK `9.0.302` 的本机已自动安装并选中 `8.0.423`，SDK 基线自测通过（诊断 `20261019T014732824Z-823abe5a`）。干净提交的 `-SkipTests` 一键编译、Worker 发布、真实用户扩展目录安装和 Playnite/Worker 启动通过；默认全测试一键流程仍在复核中。先前工作树 SDK8 Release build `0/0`，Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`；R09 `2/2`，S04-01 `4/4`。此前全量 WPF 133 类循环只到 5 类通过后被新用户输入控制中断（诊断 `20261019T010804009Z-d25e5350`），不代表失败；输入含未提交 S04-01 源码。
 
+## 2026-10-19 用户反馈：窗口布局与弹出样式
+
+按本轮五项反馈调整：壳层头部在 `1200 DIP` 起并为一行；显示列菜单使用共享玻璃色、圆角和遵循动效偏好的淡入位移动画；存档详情展开时保留四行表格，媒体详情展开时至少保留一整行卡片；通知操作按钮等高，空状态只在通知表格列中水平居中并复用玻璃空状态面板。SDK `8.0.423` Release solution build、15 项定向 WPF 测试、全尺寸双主题 RenderHarness 和最终 shell QA 均通过。构建/渲染工作树还包含用户未提交的 S04-01 媒体比较更改，本轮提交仅选择 UI 修复文件；真实 Playnite 中的新版本渲染尚未复验，完整 WPF 隔离循环未运行。
+
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
 验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 完成受控验收，没有生产代码变化。合成两设备夹具验证明确父 ID、同指纹和时钟偏差；41 天前 readiness 只显示该次检查年龄，不自行判过期；只读展示未改写合成存档文件；草稿重验与原 RestoreConfirmationGuard 相关行为通过。SDK9 Release solution build `0/0`，Core `10/10`，Playnite `15/15`（含 R09 `2/2`），source validation 通过。当前机器未安装 global.json 锁定的 SDK8.0.423，完整 WPF 循环和真实 Playnite未运行。证据：[S03-08](../design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项按计划核对 S04-01。

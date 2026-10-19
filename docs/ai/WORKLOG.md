@@ -1,3 +1,9 @@
+## 2026-10-19 用户反馈：窗口布局与弹出样式
+
+- 壳层头部从 `1200 DIP` 起同行，窄窗保留折行；存档详情展开时保留四行历史，媒体详情展开时保留至少一整行卡片并限制堆叠详情高度。列显隐菜单加入主题玻璃色、圆角和动效开关控制的入口动画。通知读操作按钮等高，空状态面板只在列表列内居中并复用共享玻璃面板样式。
+- SDK `8.0.423` Release 解决方案 build `0 warning / 0 error`；15 项定向 WPF 测试通过；RenderHarness 全尺寸双主题 `render-qa OK`，最终 shell QA 在 1040 DIP 保持紧凑、1200 DIP 起单行；source validation 通过。
+- 新版本真实 Playnite 呈现和完整 WPF 隔离循环未验。构建树包含用户未提交 S04-01 媒体比较变更；这些 ViewModel、`MediaCenterView.xaml`、fake 与测试文件未纳入本轮提交。
+
 ## 2026-10-19 一键安装器 SDK 预检修复
 
 - `global.json` 继续要求精确 SDK `8.0.423`。缺失时 `sdk-baseline.ps1` 通过 Microsoft 官方 `dotnet-install.ps1` 将该版本安装到当前用户 `%LOCALAPPDATA%\GameSaveCenter\dotnet-sdk-8.0.423`，只改当前 PowerShell 进程的 PATH/DOTNET_ROOT；不让 SDK9 替代。`dev-install-run.ps1` 的修订号升到 `DEV-INSTALL-009`，并在关闭 Playnite/Worker 之前先准备并验证 SDK；构建、测试、打包及 stage 版本核对全部成功后才关闭宿主。构建、独立 Playnite 测试与 SDK 验证脚本共用同一初始化逻辑。

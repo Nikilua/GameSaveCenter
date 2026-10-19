@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-19 窗口布局与弹出样式反馈
+
+用户在实际启动的插件中反馈头部空间利用、存档/媒体详情占高、显示列菜单和通知收件箱对齐。壳层头部断点为 `1200 DIP`：边界渲染确认 `1200+` 同行、`1040` 紧凑折行；存档历史需保留四行（由共享表格密度计算），当前游戏媒体至少保留一整行 `154 DIP` 卡片；堆叠详情限制高度并保留自身滚动。显示列 ContextMenu 复用主题玻璃资源、圆角模板和尊重动效开关的入口动画。通知三项读操作共用按钮高度，空状态只覆盖列表列并使用共享空状态面板。
+
+受控验证使用 SDK `8.0.423`：Release 解决方案 `0 warning / 0 error`，15 项定向 WPF 测试通过，RenderHarness 全尺寸双主题 `render-qa OK`，shell QA 的 `1040/1200/1279/1280/1366 DIP` 尺寸通过，source validation 通过。未进行此 UI 版本的真实 Playnite 安装/呈现或完整 WPF 隔离循环。此次验证树含未提交 S04-01 媒体比较工作；提交时排除其 ViewModel、XAML、fake 和测试文件。
+
 ## 2026-10-19 一键安装器 SDK 预检修复
 
 源码锁定 SDK `8.0.423` 不变。`Initialize-GscSdkBaseline` 先验证已选版本；缺失时使用 Microsoft 官方安装脚本安装到当前用户 LocalAppData 下的版本化目录，并仅设置当前进程 PATH、`DOTNET_ROOT`、`DOTNET_ROOT_X64`。`DEV-INSTALL-009` 在关闭 Playnite/Worker 前调用它；`build.ps1`、standalone Playnite 测试和 SDK 验证 worktree 也走该初始化。完整编译、测试、打包和 stage 版本核验成功后才关闭宿主。下载或安装失败时流程会停止在宿主关闭之前，并指出确切 SDK/网络代理原因。

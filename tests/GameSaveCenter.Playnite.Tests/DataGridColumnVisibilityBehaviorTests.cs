@@ -126,6 +126,7 @@ public sealed class DataGridColumnVisibilityBehaviorTests
         var tasks = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
         var taskCode = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
         var styles = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var controller = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Infrastructure", "DataGridColumnVisibilityController.cs"));
 
         Assert.Contains("x:Name=\"SaveHistoryColumnVisibilityButton\"", save);
         Assert.Contains("设置存档历史表格显示列", save);
@@ -138,6 +139,11 @@ public sealed class DataGridColumnVisibilityBehaviorTests
         Assert.Contains("new[] { \"local-time\", \"task\", \"state\" }", taskCode);
         Assert.Contains("GscColumnPickerContextMenuStyle", styles);
         Assert.Contains("GscColumnPickerMenuItemStyle", styles);
+        Assert.Contains("<ControlTemplate TargetType=\"ContextMenu\">", styles);
+        Assert.Contains("CornerRadius=\"12\"", styles.Substring(styles.IndexOf("x:Key=\"GscColumnPickerContextMenuStyle\"", StringComparison.Ordinal)));
+        Assert.Contains("Grid.ColumnDefinitions", styles.Substring(styles.IndexOf("x:Key=\"GscColumnPickerMenuItemStyle\"", StringComparison.Ordinal)));
+        Assert.Contains("AnimateMenuEntrance();", controller);
+        Assert.Contains("GscToggleMotionEnabled", controller);
         Assert.DoesNotContain("MediaInboxColumnVisibilityButton", System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
     }
 
