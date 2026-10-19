@@ -64,6 +64,18 @@ function Invoke-PlayniteTestProcess {
     }
 
     Write-Host "    $Label" -ForegroundColor DarkCyan
+    $isolatedTempRootForClass = ''
+    $existingTempEntries = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    if (-not [string]::IsNullOrWhiteSpace($OutputRoot)) {
+        $processTempRoot = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
+        if (-not [string]::IsNullOrWhiteSpace($processTempRoot) -and
+            (Test-Path -LiteralPath $processTempRoot -PathType Container)) {
+            $isolatedTempRootForClass = [System.IO.Path]::GetFullPath($processTempRoot)
+            foreach ($entry in Get-ChildItem -LiteralPath $isolatedTempRootForClass -Force) {
+                [void]$existingTempEntries.Add([System.IO.Path]::GetFullPath($entry.FullName))
+            }
+        }
+    }
     $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments
     $output = $result.Output
     $exitCode = $result.ExitCode
@@ -71,6 +83,27 @@ function Invoke-PlayniteTestProcess {
     if ($exitCode -ne 0) {
         $output | ForEach-Object { Write-Host $_ }
         throw "$Label failed; dotnet exit code: $exitCode"
+    }
+
+    # .NET Framework's xUnit adapter shadow-copies a testhost and its dependencies
+    # below TEMP for every isolated class. Remove only entries created by this
+    # successful process; on a failing class, retain its temporary evidence.
+    if (-not [string]::IsNullOrWhiteSpace($isolatedTempRootForClass)) {
+        $tempRootPrefix = $isolatedTempRootForClass.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+        $removedTempEntries = 0
+        foreach ($entry in Get-ChildItem -LiteralPath $isolatedTempRootForClass -Force) {
+            $entryPath = [System.IO.Path]::GetFullPath($entry.FullName)
+            if (-not $entryPath.StartsWith($tempRootPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+                throw "Refusing to clear a test temp path outside the isolated root: $entryPath"
+            }
+            if (-not $existingTempEntries.Contains($entryPath)) {
+                Remove-Item -LiteralPath $entryPath -Recurse -Force
+                $removedTempEntries++
+            }
+        }
+        if ($removedTempEntries -gt 0) {
+            Write-Host "    cleaned $removedTempEntries isolated test temp entr$(if ($removedTempEntries -eq 1) { 'y' } else { 'ies' })" -ForegroundColor DarkCyan
+        }
     }
 }
 
