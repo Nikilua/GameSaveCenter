@@ -27,6 +27,12 @@ namespace GameSaveCenter.Playnite.Views
         private bool mediaInboxInspectorOpen;
         private bool mediaInboxHistoryOpen;
         private bool mediaComparisonWorkspaceUserOverride;
+        private readonly MediaComparisonViewportState mediaComparisonViewportState = new MediaComparisonViewportState();
+        private bool suppressMediaComparisonScrollSync;
+        private ScrollViewer? mediaComparisonPanViewer;
+        private Point mediaComparisonPanStart;
+        private double mediaComparisonPanStartHorizontal;
+        private double mediaComparisonPanStartVertical;
         private DashboardViewModel? attachedViewModel;
         private readonly HashSet<string> selectedMediaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, HashSet<string>> selectedInboxIdsByMode = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
@@ -48,6 +54,8 @@ namespace GameSaveCenter.Playnite.Views
         public MediaCenterView()
         {
             InitializeComponent();
+            MediaComparisonFirstImage.PreviewStateChanged += OnMediaComparisonPreviewStateChanged;
+            MediaComparisonSecondImage.PreviewStateChanged += OnMediaComparisonPreviewStateChanged;
             mediaFilterPresetRowGap = new WrapPanelRowGapController(MediaFilterPresetRow);
             mediaCurrentBatchActionRowGap = new WrapPanelRowGapController(MediaCurrentBatchActions);
             mediaInboxActionRowGap = new WrapPanelRowGapController(MediaInboxBatchActionRow);
@@ -74,6 +82,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            StopMediaComparisonPan();
             InvalidatePendingAnchorRestore();
             pendingAnchorExpiryTimer.Stop();
             inboxColumnLayout?.Dispose();
@@ -172,8 +181,17 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaComparisonItemsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (attachedViewModel?.MediaComparisonItems.Count == 0)
+            var count = attachedViewModel?.MediaComparisonItems.Count ?? 0;
+            if (count == 0)
+            {
                 mediaComparisonWorkspaceUserOverride = false;
+                mediaComparisonViewportState.FitBoth();
+            }
+            else if (count == 2)
+            {
+                mediaComparisonViewportState.FitBoth();
+                Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(UpdateMediaComparisonViewports));
+            }
         }
 
         private void OnMediaComparisonWorkspaceToggleClick(object sender, RoutedEventArgs e)
@@ -375,10 +393,10 @@ namespace GameSaveCenter.Playnite.Views
             MediaComparisonWorkspaceGrid.ColumnDefinitions[1].Width = stacked
                 ? new GridLength(0)
                 : new GridLength(1, GridUnitType.Star);
-            MediaComparisonWorkspaceGrid.RowDefinitions[1].Height = stacked
+            MediaComparisonWorkspaceGrid.RowDefinitions[2].Height = stacked
                 ? GridLength.Auto
                 : new GridLength(0);
-            Grid.SetRow(MediaComparisonSecondCard, stacked ? 1 : 0);
+            Grid.SetRow(MediaComparisonSecondCard, stacked ? 2 : 1);
             Grid.SetColumn(MediaComparisonSecondCard, stacked ? 0 : 1);
             MediaComparisonFirstCard.Margin = stacked
                 ? new Thickness(0, 0, 0, 5)
@@ -386,6 +404,288 @@ namespace GameSaveCenter.Playnite.Views
             MediaComparisonSecondCard.Margin = stacked
                 ? new Thickness(0, 5, 0, 0)
                 : new Thickness(5, 0, 0, 0);
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(UpdateMediaComparisonViewports));
+        }
+
+        private void OnMediaComparisonPreviewStateChanged(object? sender, EventArgs e)
+        {
+            UpdateMediaComparisonViewports();
+        }
+
+        private void OnMediaComparisonViewportSizeChanged(object sender, SizeChangedEventArgs e)
+            => UpdateMediaComparisonViewports();
+
+        private void OnMediaComparisonSyncClick(object sender, RoutedEventArgs e)
+        {
+            mediaComparisonViewportState.SetSynchronized(MediaComparisonSyncToggle.IsChecked == true);
+            UpdateMediaComparisonViewports();
+        }
+
+        private void OnMediaComparisonFitClick(object sender, RoutedEventArgs e)
+        {
+            mediaComparisonViewportState.FitBoth();
+            UpdateMediaComparisonViewports();
+        }
+
+        private void OnMediaComparisonOneToOneClick(object sender, RoutedEventArgs e)
+        {
+            mediaComparisonViewportState.SetOneToOne();
+            UpdateMediaComparisonViewports();
+        }
+
+        private void OnMediaComparisonFirstZoomOutClick(object sender, RoutedEventArgs e)
+            => AdjustMediaComparisonZoom(MediaComparisonPane.First, -1);
+
+        private void OnMediaComparisonFirstZoomInClick(object sender, RoutedEventArgs e)
+            => AdjustMediaComparisonZoom(MediaComparisonPane.First, 1);
+
+        private void OnMediaComparisonSecondZoomOutClick(object sender, RoutedEventArgs e)
+            => AdjustMediaComparisonZoom(MediaComparisonPane.Second, -1);
+
+        private void OnMediaComparisonSecondZoomInClick(object sender, RoutedEventArgs e)
+            => AdjustMediaComparisonZoom(MediaComparisonPane.Second, 1);
+
+        private void AdjustMediaComparisonZoom(MediaComparisonPane pane, int direction)
+        {
+            var image = GetMediaComparisonImage(pane);
+            var viewer = GetMediaComparisonScroller(pane);
+            if (image.Source == null) return;
+            mediaComparisonViewportState.AdjustZoom(pane, direction, GetMediaComparisonFitZoom(viewer, image));
+            UpdateMediaComparisonViewports();
+            viewer.Focus();
+        }
+
+        private void UpdateMediaComparisonViewports()
+        {
+            if (!IsLoaded || !MediaComparisonWorkspace.IsVisible) return;
+            suppressMediaComparisonScrollSync = true;
+            try
+            {
+                UpdateMediaComparisonViewport(MediaComparisonPane.First);
+                UpdateMediaComparisonViewport(MediaComparisonPane.Second);
+            }
+            finally
+            {
+                suppressMediaComparisonScrollSync = false;
+            }
+            UpdateMediaComparisonZoomStatus();
+        }
+
+        private void UpdateMediaComparisonViewport(MediaComparisonPane pane)
+        {
+            if (!IsLoaded || !MediaComparisonWorkspace.IsVisible) return;
+            var viewer = GetMediaComparisonScroller(pane);
+            var content = pane == MediaComparisonPane.First
+                ? MediaComparisonFirstViewportContent
+                : MediaComparisonSecondViewportContent;
+            var image = GetMediaComparisonImage(pane);
+            var viewportWidth = Math.Max(0d, viewer.ViewportWidth);
+            var viewportHeight = Math.Max(0d, viewer.ViewportHeight);
+            if (viewportWidth <= 0d || viewportHeight <= 0d) return;
+
+            var bitmap = image.Source as System.Windows.Media.Imaging.BitmapSource;
+            if (bitmap == null)
+            {
+                content.Width = viewportWidth;
+                content.Height = viewportHeight;
+                image.Width = double.NaN;
+                image.Height = double.NaN;
+                return;
+            }
+
+            var fitZoom = GetMediaComparisonFitZoom(viewer, image);
+            var zoom = mediaComparisonViewportState.GetZoom(pane, fitZoom);
+            var displayWidth = bitmap.PixelWidth * zoom;
+            var displayHeight = bitmap.PixelHeight * zoom;
+            content.Width = Math.Max(viewportWidth, displayWidth);
+            content.Height = Math.Max(viewportHeight, displayHeight);
+            image.Width = displayWidth;
+            image.Height = displayHeight;
+            image.HorizontalAlignment = displayWidth > viewportWidth ? HorizontalAlignment.Left : HorizontalAlignment.Center;
+            image.VerticalAlignment = displayHeight > viewportHeight ? VerticalAlignment.Top : VerticalAlignment.Center;
+            viewer.UpdateLayout();
+
+            viewer.ScrollToHorizontalOffset(MediaComparisonViewportState.GetOffset(
+                mediaComparisonViewportState.GetCenterX(pane), viewer.ViewportWidth, viewer.ExtentWidth));
+            viewer.ScrollToVerticalOffset(MediaComparisonViewportState.GetOffset(
+                mediaComparisonViewportState.GetCenterY(pane), viewer.ViewportHeight, viewer.ExtentHeight));
+        }
+
+        private static double GetMediaComparisonFitZoom(ScrollViewer viewer, AsyncThumbnailImage image)
+        {
+            var bitmap = image.Source as System.Windows.Media.Imaging.BitmapSource;
+            if (bitmap == null || bitmap.PixelWidth <= 0 || bitmap.PixelHeight <= 0
+                || viewer.ViewportWidth <= 0d || viewer.ViewportHeight <= 0d)
+                return 1d;
+            return Math.Min(viewer.ViewportWidth / bitmap.PixelWidth, viewer.ViewportHeight / bitmap.PixelHeight);
+        }
+
+        private AsyncThumbnailImage GetMediaComparisonImage(MediaComparisonPane pane)
+            => pane == MediaComparisonPane.First ? MediaComparisonFirstImage : MediaComparisonSecondImage;
+
+        private ScrollViewer GetMediaComparisonScroller(MediaComparisonPane pane)
+            => pane == MediaComparisonPane.First ? MediaComparisonFirstScroller : MediaComparisonSecondScroller;
+
+        private void UpdateMediaComparisonZoomStatus()
+        {
+            if (MediaComparisonZoomStatusText == null) return;
+            var firstZoom = mediaComparisonViewportState.GetZoom(
+                MediaComparisonPane.First,
+                GetMediaComparisonFitZoom(MediaComparisonFirstScroller, MediaComparisonFirstImage));
+            var secondZoom = mediaComparisonViewportState.GetZoom(
+                MediaComparisonPane.Second,
+                GetMediaComparisonFitZoom(MediaComparisonSecondScroller, MediaComparisonSecondImage));
+            MediaComparisonZoomStatusText.Text = mediaComparisonViewportState.IsFit(MediaComparisonPane.First)
+                && mediaComparisonViewportState.IsFit(MediaComparisonPane.Second)
+                    ? "适应窗口 · 最高解码长边 2048 px"
+                    : $"左 {firstZoom:P0} · 右 {secondZoom:P0} · 最高解码长边 2048 px";
+        }
+
+        private void OnMediaComparisonFirstScrollChanged(object sender, ScrollChangedEventArgs e)
+            => OnMediaComparisonScrollChanged(MediaComparisonPane.First, e);
+
+        private void OnMediaComparisonSecondScrollChanged(object sender, ScrollChangedEventArgs e)
+            => OnMediaComparisonScrollChanged(MediaComparisonPane.Second, e);
+
+        private void OnMediaComparisonScrollChanged(MediaComparisonPane pane, ScrollChangedEventArgs e)
+        {
+            if (suppressMediaComparisonScrollSync) return;
+            var viewer = GetMediaComparisonScroller(pane);
+            if (Math.Abs(e.ExtentWidthChange) > 0.01d || Math.Abs(e.ExtentHeightChange) > 0.01d
+                || Math.Abs(e.ViewportWidthChange) > 0.01d || Math.Abs(e.ViewportHeightChange) > 0.01d)
+            {
+                ApplyMediaComparisonCenter(pane);
+                return;
+            }
+
+            var centerX = viewer.ScrollableWidth > 0.01d
+                ? MediaComparisonViewportState.GetNormalizedCenter(viewer.HorizontalOffset, viewer.ViewportWidth, viewer.ExtentWidth)
+                : mediaComparisonViewportState.GetCenterX(pane);
+            var centerY = viewer.ScrollableHeight > 0.01d
+                ? MediaComparisonViewportState.GetNormalizedCenter(viewer.VerticalOffset, viewer.ViewportHeight, viewer.ExtentHeight)
+                : mediaComparisonViewportState.GetCenterY(pane);
+            if (!mediaComparisonViewportState.SetCenter(pane, centerX, centerY)
+                || !mediaComparisonViewportState.IsSynchronized)
+                return;
+
+            ApplyMediaComparisonCenter(pane == MediaComparisonPane.First ? MediaComparisonPane.Second : MediaComparisonPane.First);
+        }
+
+        private void ApplyMediaComparisonCenter(MediaComparisonPane pane)
+        {
+            var viewer = GetMediaComparisonScroller(pane);
+            suppressMediaComparisonScrollSync = true;
+            try
+            {
+                viewer.ScrollToHorizontalOffset(MediaComparisonViewportState.GetOffset(
+                    mediaComparisonViewportState.GetCenterX(pane), viewer.ViewportWidth, viewer.ExtentWidth));
+                viewer.ScrollToVerticalOffset(MediaComparisonViewportState.GetOffset(
+                    mediaComparisonViewportState.GetCenterY(pane), viewer.ViewportHeight, viewer.ExtentHeight));
+            }
+            finally
+            {
+                suppressMediaComparisonScrollSync = false;
+            }
+        }
+
+        private void OnMediaComparisonPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == 0) return;
+            var pane = ReferenceEquals(sender, MediaComparisonFirstScroller)
+                ? MediaComparisonPane.First
+                : MediaComparisonPane.Second;
+            AdjustMediaComparisonZoom(pane, e.Delta > 0 ? 1 : -1);
+            e.Handled = true;
+        }
+
+        private void OnMediaComparisonPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var viewer = sender as ScrollViewer;
+            if (viewer == null || e.ChangedButton != MouseButton.Left
+                || viewer.ScrollableWidth <= 0.01d && viewer.ScrollableHeight <= 0.01d
+                || IsMediaComparisonScrollBar(e.OriginalSource as DependencyObject))
+                return;
+
+            mediaComparisonPanViewer = viewer;
+            mediaComparisonPanStart = e.GetPosition(viewer);
+            mediaComparisonPanStartHorizontal = viewer.HorizontalOffset;
+            mediaComparisonPanStartVertical = viewer.VerticalOffset;
+            viewer.Focus();
+            viewer.CaptureMouse();
+            viewer.Cursor = Cursors.Hand;
+            e.Handled = true;
+        }
+
+        private void OnMediaComparisonPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            var viewer = mediaComparisonPanViewer;
+            if (viewer == null || !viewer.IsMouseCaptured || e.LeftButton != MouseButtonState.Pressed) return;
+            var current = e.GetPosition(viewer);
+            viewer.ScrollToHorizontalOffset(mediaComparisonPanStartHorizontal + mediaComparisonPanStart.X - current.X);
+            viewer.ScrollToVerticalOffset(mediaComparisonPanStartVertical + mediaComparisonPanStart.Y - current.Y);
+            e.Handled = true;
+        }
+
+        private void OnMediaComparisonPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (mediaComparisonPanViewer == null) return;
+            StopMediaComparisonPan();
+            e.Handled = true;
+        }
+
+        private void StopMediaComparisonPan()
+        {
+            var viewer = mediaComparisonPanViewer;
+            mediaComparisonPanViewer = null;
+            if (viewer == null) return;
+            viewer.Cursor = Cursors.Arrow;
+            if (viewer.IsMouseCaptured) viewer.ReleaseMouseCapture();
+        }
+
+        private void OnMediaComparisonPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var viewer = sender as ScrollViewer;
+            if (viewer == null) return;
+            var pane = ReferenceEquals(viewer, MediaComparisonFirstScroller)
+                ? MediaComparisonPane.First
+                : MediaComparisonPane.Second;
+            if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+            {
+                if (e.Key == Key.Add || e.Key == Key.OemPlus)
+                    AdjustMediaComparisonZoom(pane, 1);
+                else if (e.Key == Key.Subtract || e.Key == Key.OemMinus)
+                    AdjustMediaComparisonZoom(pane, -1);
+                else if (e.Key == Key.D0 || e.Key == Key.NumPad0)
+                    OnMediaComparisonFitClick(this, new RoutedEventArgs());
+                else if (e.Key == Key.D1 || e.Key == Key.NumPad1)
+                    OnMediaComparisonOneToOneClick(this, new RoutedEventArgs());
+                else
+                    return;
+                e.Handled = true;
+                return;
+            }
+
+            const double panStep = 48d;
+            switch (e.Key)
+            {
+                case Key.Left: viewer.ScrollToHorizontalOffset(viewer.HorizontalOffset - panStep); break;
+                case Key.Right: viewer.ScrollToHorizontalOffset(viewer.HorizontalOffset + panStep); break;
+                case Key.Up: viewer.ScrollToVerticalOffset(viewer.VerticalOffset - panStep); break;
+                case Key.Down: viewer.ScrollToVerticalOffset(viewer.VerticalOffset + panStep); break;
+                default: return;
+            }
+            e.Handled = true;
+        }
+
+        private static bool IsMediaComparisonScrollBar(DependencyObject? source)
+        {
+            var current = source;
+            while (current != null)
+            {
+                if (current is ScrollBar) return true;
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return false;
         }
 
         public void ApplyResponsiveLayout(double width, double height)

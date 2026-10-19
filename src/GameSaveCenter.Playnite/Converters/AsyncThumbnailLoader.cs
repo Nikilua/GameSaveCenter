@@ -28,6 +28,8 @@ namespace GameSaveCenter.Playnite.Converters
         public AsyncThumbnailLoaderDiagnostics(
             int cacheCount,
             int cacheLimit,
+            long cachedBytes,
+            long cacheByteLimit,
             int activeDecodes,
             int peakConcurrentDecodes,
             long requestCount,
@@ -39,6 +41,8 @@ namespace GameSaveCenter.Playnite.Converters
         {
             CacheCount = cacheCount;
             CacheLimit = cacheLimit;
+            CachedBytes = cachedBytes;
+            CacheByteLimit = cacheByteLimit;
             ActiveDecodes = activeDecodes;
             PeakConcurrentDecodes = peakConcurrentDecodes;
             RequestCount = requestCount;
@@ -51,6 +55,8 @@ namespace GameSaveCenter.Playnite.Converters
 
         public int CacheCount { get; }
         public int CacheLimit { get; }
+        public long CachedBytes { get; }
+        public long CacheByteLimit { get; }
         public int ActiveDecodes { get; }
         public int PeakConcurrentDecodes { get; }
         public long RequestCount { get; }
@@ -71,10 +77,14 @@ namespace GameSaveCenter.Playnite.Converters
         private static readonly ILogger Logger = LogManager.GetLogger();
         private const int MaxConcurrency = 3;
         private const int CacheLimit = 96;
+        internal const int MaximumDecodeDimension = 2048;
+        private const long CacheByteLimit = 64L * 1024 * 1024;
         private static readonly SemaphoreSlim Gate = new SemaphoreSlim(MaxConcurrency, MaxConcurrency);
         private static readonly object CacheLock = new object();
         private static readonly Dictionary<string, BitmapSource> Cache = new Dictionary<string, BitmapSource>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, long> CacheEntryBytes = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
         private static readonly LinkedList<string> Recency = new LinkedList<string>();
+        private static long cachedBytes;
         private static long requestCount;
         private static long cacheHitCount;
         private static long decodeStartCount;
@@ -84,7 +94,10 @@ namespace GameSaveCenter.Playnite.Converters
         private static int activeDecodes;
         private static int peakConcurrentDecodes;
 
-        public static async Task<BitmapSource?> LoadAsync(string path, int width, CancellationToken token)
+        public static Task<BitmapSource?> LoadAsync(string path, int width, CancellationToken token)
+            => LoadAsync(path, width, token, preserveSourceSize: false);
+
+        internal static async Task<BitmapSource?> LoadAsync(string path, int width, CancellationToken token, bool preserveSourceSize)
         {
             Interlocked.Increment(ref requestCount);
             try
@@ -92,7 +105,7 @@ namespace GameSaveCenter.Playnite.Converters
                 // Task.Run guarantees the file metadata probe never runs on the caller's
                 // thread (normally the WPF Dispatcher), even when the semaphore is
                 // immediately available.
-                var request = await Task.Run(() => PrepareRequest(path, width), token).ConfigureAwait(false);
+                var request = await Task.Run(() => PrepareRequest(path, width, preserveSourceSize), token).ConfigureAwait(false);
                 if (request == null)
                 {
                     Interlocked.Increment(ref failureCount);
@@ -120,7 +133,7 @@ namespace GameSaveCenter.Playnite.Converters
                     UpdatePeak(active);
                     try
                     {
-                        var image = await Task.Run(() => Decode(request.Path, request.Width, request.Key, token), token).ConfigureAwait(false);
+                        var image = await Task.Run(() => Decode(request.Path, request.DecodePixelWidth, request.DecodePixelHeight, request.Key, token), token).ConfigureAwait(false);
                         Interlocked.Increment(ref decodeSuccessCount);
                         return image;
                     }
@@ -197,14 +210,18 @@ namespace GameSaveCenter.Playnite.Converters
         internal static AsyncThumbnailLoaderDiagnostics CaptureDiagnostics()
         {
             int cacheCount;
+            long currentCachedBytes;
             lock (CacheLock)
             {
                 cacheCount = Cache.Count;
+                currentCachedBytes = cachedBytes;
             }
 
             return new AsyncThumbnailLoaderDiagnostics(
                 cacheCount,
                 CacheLimit,
+                currentCachedBytes,
+                CacheByteLimit,
                 Volatile.Read(ref activeDecodes),
                 Volatile.Read(ref peakConcurrentDecodes),
                 Interlocked.Read(ref requestCount),
@@ -227,17 +244,35 @@ namespace GameSaveCenter.Playnite.Converters
             Interlocked.Exchange(ref peakConcurrentDecodes, 0);
         }
 
-        private static LoadRequest? PrepareRequest(string path, int width)
+        private static LoadRequest? PrepareRequest(string path, int requestedDimension, bool preserveSourceSize)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || !IsImage(path)) return null;
                 var info = new FileInfo(path);
-                var boundedWidth = Math.Max(48, Math.Min(width, 480));
-                var key = string.Concat(path, "|", boundedWidth.ToString(CultureInfo.InvariantCulture), "|",
+                var maximumDimension = Math.Max(48, Math.Min(requestedDimension, MaximumDecodeDimension));
+                int sourceWidth;
+                int sourceHeight;
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                {
+                    var decoder = BitmapDecoder.Create(
+                        stream,
+                        BitmapCreateOptions.DelayCreation | BitmapCreateOptions.PreservePixelFormat,
+                        BitmapCacheOption.None);
+                    if (decoder.Frames.Count == 0) return null;
+                    sourceWidth = decoder.Frames[0].PixelWidth;
+                    sourceHeight = decoder.Frames[0].PixelHeight;
+                }
+
+                if (sourceWidth <= 0 || sourceHeight <= 0) return null;
+                var sourceLongEdge = Math.Max(sourceWidth, sourceHeight);
+                var decodeLongEdge = preserveSourceSize ? Math.Min(maximumDimension, sourceLongEdge) : maximumDimension;
+                var decodeWidth = sourceWidth >= sourceHeight ? decodeLongEdge : 0;
+                var decodeHeight = sourceHeight > sourceWidth ? decodeLongEdge : 0;
+                var key = string.Concat(path, "|", decodeWidth.ToString(CultureInfo.InvariantCulture), "x", decodeHeight.ToString(CultureInfo.InvariantCulture), "|",
                     info.Length.ToString(CultureInfo.InvariantCulture), "|",
                     info.LastWriteTimeUtc.Ticks.ToString(CultureInfo.InvariantCulture));
-                return new LoadRequest(path, boundedWidth, key, TryGetCached(key));
+                return new LoadRequest(path, decodeWidth, decodeHeight, key, TryGetCached(key));
             }
             catch (Exception ex) when (IsExpectedLoadFailure(ex))
             {
@@ -256,7 +291,7 @@ namespace GameSaveCenter.Playnite.Converters
             }
         }
 
-        private static BitmapSource Decode(string path, int width, string key, CancellationToken token)
+        private static BitmapSource Decode(string path, int decodeWidth, int decodeHeight, string key, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             var timer = Stopwatch.StartNew();
@@ -264,11 +299,14 @@ namespace GameSaveCenter.Playnite.Converters
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
-            image.DecodePixelWidth = width;
+            if (decodeWidth > 0)
+                image.DecodePixelWidth = decodeWidth;
+            else
+                image.DecodePixelHeight = decodeHeight;
             image.StreamSource = stream;
             image.EndInit();
             timer.Stop();
-            Logger.Debug($"[PERF] Thumbnail decode={timer.ElapsedMilliseconds}ms width={width} path={path}");
+            Logger.Debug($"[PERF] Thumbnail decode={timer.ElapsedMilliseconds}ms bound={decodeWidth}x{decodeHeight} path={path}");
             image.Freeze();
             AddToCache(key, image);
             return image;
@@ -279,7 +317,9 @@ namespace GameSaveCenter.Playnite.Converters
             lock (CacheLock)
             {
                 Cache.Clear();
+                CacheEntryBytes.Clear();
                 Recency.Clear();
+                cachedBytes = 0;
             }
         }
 
@@ -295,6 +335,7 @@ namespace GameSaveCenter.Playnite.Converters
 
         private static bool IsExpectedLoadFailure(Exception exception)
             => exception is IOException
+                || exception is FormatException
                 || exception is UnauthorizedAccessException
                 || exception is ArgumentException
                 || exception is NotSupportedException
@@ -305,13 +346,22 @@ namespace GameSaveCenter.Playnite.Converters
             lock (CacheLock)
             {
                 if (Cache.ContainsKey(key)) return;
-                var node = Recency.AddFirst(key);
+                var imageBytes = Math.Max(1L, (long)image.PixelWidth * image.PixelHeight * 4L);
+                if (imageBytes > CacheByteLimit) return;
+                Recency.AddFirst(key);
                 Cache[key] = image;
-                while (Cache.Count > CacheLimit && Recency.Last != null)
+                CacheEntryBytes[key] = imageBytes;
+                cachedBytes += imageBytes;
+                while ((Cache.Count > CacheLimit || cachedBytes > CacheByteLimit) && Recency.Last != null)
                 {
                     var expired = Recency.Last;
                     Recency.RemoveLast();
                     Cache.Remove(expired.Value);
+                    if (CacheEntryBytes.TryGetValue(expired.Value, out var expiredBytes))
+                    {
+                        cachedBytes = Math.Max(0, cachedBytes - expiredBytes);
+                        CacheEntryBytes.Remove(expired.Value);
+                    }
                 }
             }
         }
@@ -329,16 +379,18 @@ namespace GameSaveCenter.Playnite.Converters
 
         private sealed class LoadRequest
         {
-            public LoadRequest(string path, int width, string key, BitmapSource? cached)
+            public LoadRequest(string path, int decodePixelWidth, int decodePixelHeight, string key, BitmapSource? cached)
             {
                 Path = path;
-                Width = width;
+                DecodePixelWidth = decodePixelWidth;
+                DecodePixelHeight = decodePixelHeight;
                 Key = key;
                 Cached = cached;
             }
 
             public string Path { get; }
-            public int Width { get; }
+            public int DecodePixelWidth { get; }
+            public int DecodePixelHeight { get; }
             public string Key { get; }
             public BitmapSource? Cached { get; }
         }

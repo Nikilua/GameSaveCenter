@@ -100,15 +100,15 @@ namespace GameSaveCenter.Playnite.Tests
                         host.UpdateLayout();
                         Assert.True(dashboard.MediaComparisonWorkspaceOpen);
                         Assert.Equal(Visibility.Visible, workspace.Visibility);
-                        Assert.Equal(0, Grid.GetRow(secondCard));
+                        Assert.Equal(1, Grid.GetRow(secondCard));
                         Assert.Equal(1, Grid.GetColumn(secondCard));
                         workspaceGrid.Width = 500;
                         host.UpdateLayout();
-                        Assert.Equal(1, Grid.GetRow(secondCard));
+                        Assert.Equal(2, Grid.GetRow(secondCard));
                         Assert.Equal(0, Grid.GetColumn(secondCard));
                         workspaceGrid.Width = double.NaN;
                         host.UpdateLayout();
-                        Assert.Equal(0, Grid.GetRow(secondCard));
+                        Assert.Equal(1, Grid.GetRow(secondCard));
                         Assert.Equal(1, Grid.GetColumn(secondCard));
                         Assert.True(toggleButton.Command!.CanExecute(null));
                         ExecuteButtonCommand(toggleButton);

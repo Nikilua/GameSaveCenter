@@ -26,6 +26,10 @@ namespace GameSaveCenter.Playnite.Controls
             nameof(PreviewWidth), typeof(int), typeof(AsyncThumbnailImage),
             new PropertyMetadata(480, OnPreviewWidthChanged));
 
+        public static readonly DependencyProperty PreserveSourceSizeProperty = DependencyProperty.Register(
+            nameof(PreserveSourceSize), typeof(bool), typeof(AsyncThumbnailImage),
+            new PropertyMetadata(false, OnPreviewWidthChanged));
+
         public static readonly DependencyProperty PreviewDimensionsProperty = DependencyProperty.Register(
             nameof(PreviewDimensions), typeof(string), typeof(AsyncThumbnailImage),
             new PropertyMetadata(string.Empty));
@@ -53,6 +57,15 @@ namespace GameSaveCenter.Playnite.Controls
         {
             get => (int)GetValue(PreviewWidthProperty);
             set => SetValue(PreviewWidthProperty, value);
+        }
+
+        /// <summary>
+        /// Avoids upscaling small source images. Larger sources remain capped by PreviewWidth.
+        /// </summary>
+        public bool PreserveSourceSize
+        {
+            get => (bool)GetValue(PreserveSourceSizeProperty);
+            set => SetValue(PreserveSourceSizeProperty, value);
         }
 
         public string PreviewDimensions
@@ -135,10 +148,11 @@ namespace GameSaveCenter.Playnite.Controls
             PreviewDimensions = string.Empty;
             SourceDimensions = string.Empty;
             PreviewState = "Loading";
-            var width = Math.Max(48, Math.Min(PreviewWidth, 480));
+            var width = Math.Max(48, Math.Min(PreviewWidth, AsyncThumbnailLoader.MaximumDecodeDimension));
+            var preserveSourceSize = PreserveSourceSize;
             var cancellation = new CancellationTokenSource();
             pending = cancellation;
-            _ = LoadAsync(path!, width, expected, cancellation.Token);
+            _ = LoadAsync(path!, width, preserveSourceSize, expected, cancellation.Token);
         }
 
         private void CancelPendingLoad(bool clearSource)
@@ -159,11 +173,11 @@ namespace GameSaveCenter.Playnite.Controls
             }
         }
 
-        private async Task LoadAsync(string path, int width, int expected, CancellationToken token)
+        private async Task LoadAsync(string path, int width, bool preserveSourceSize, int expected, CancellationToken token)
         {
             try
             {
-                var imageTask = AsyncThumbnailLoader.LoadAsync(path, width, token);
+                var imageTask = AsyncThumbnailLoader.LoadAsync(path, width, token, preserveSourceSize);
                 var dimensionsTask = AsyncThumbnailLoader.ReadSourceDimensionsAsync(path, token);
                 await Task.WhenAll(imageTask, dimensionsTask).ConfigureAwait(false);
                 var image = await imageTask.ConfigureAwait(false);

@@ -138,6 +138,51 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal("960 × 540 px", sourceDimensions);
         }
 
+        [Fact]
+        public async Task ComparisonDecodeKeepsOneToOneSourcePixelsWithinDimensionAndCacheBudgets()
+        {
+            AsyncThumbnailLoader.ClearCache();
+            var landscapePath = CreateThumbnail("comparison-landscape", 121, 2200, 1100);
+            var portraitPath = CreateThumbnail("comparison-portrait", 122, 1100, 2200);
+            var smallPath = CreateThumbnail("comparison-small", 123, 64, 48);
+            try
+            {
+                var landscape = await AsyncThumbnailLoader.LoadAsync(
+                    landscapePath,
+                    int.MaxValue,
+                    CancellationToken.None,
+                    preserveSourceSize: true);
+                var portrait = await AsyncThumbnailLoader.LoadAsync(
+                    portraitPath,
+                    int.MaxValue,
+                    CancellationToken.None,
+                    preserveSourceSize: true);
+                var small = await AsyncThumbnailLoader.LoadAsync(
+                    smallPath,
+                    int.MaxValue,
+                    CancellationToken.None,
+                    preserveSourceSize: true);
+
+                Assert.NotNull(landscape);
+                Assert.NotNull(portrait);
+                Assert.NotNull(small);
+                Assert.Equal(2048, landscape!.PixelWidth);
+                Assert.Equal(1024, landscape.PixelHeight);
+                Assert.Equal(1024, portrait!.PixelWidth);
+                Assert.Equal(2048, portrait.PixelHeight);
+                Assert.Equal(64, small!.PixelWidth);
+                Assert.Equal(48, small.PixelHeight);
+
+                var diagnostics = AsyncThumbnailLoader.CaptureDiagnostics();
+                Assert.True(diagnostics.CachedBytes <= diagnostics.CacheByteLimit);
+                Assert.InRange(diagnostics.CachedBytes, 1, diagnostics.CacheByteLimit);
+            }
+            finally
+            {
+                AsyncThumbnailLoader.ClearCache();
+            }
+        }
+
         private string CreateThumbnail(string name, byte value)
             => CreateThumbnail(name, value, 64, 64);
 
