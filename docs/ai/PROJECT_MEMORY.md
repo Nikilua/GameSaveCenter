@@ -16,7 +16,9 @@
 
 `85400645` 为存档版本、媒体、后台任务和校验问题详情加入待办入口；确认预览后只把稳定对象 ID 写入插件设置。问题引用复用 Worker 已有 `finding_id` 主键。SDK9.0.302 Release solution `0 warning/0 error`，Playnite 行为 `8/8`，Worker 主键稳定性 `2/2`；源代码校验与 WPF 静态审查 0 errors。证据：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。真实宿主未验。
 
-S06-03 审计发现最近访问、任务/媒体筛选预设、校验问题分组均不等价于用户创建的跨类型清单浏览器。下一步为键盘可达的搜索、分组、重排、单项/确认批量移除及保守的引用解析状态；不能把未检查误报为失效。审计：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。
+`0fc43773` 完成 S06-03：工作清单可浏览、搜索、分组、键盘重排和确认移除；Worker 按稳定 ID 解析索引引用，待刷新与无法检查不会误报失效。SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`。证据：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md)。S06-04 审计发现条目没有按稳定 ID 路由到业务页的续接动作；继续实现显式导航及缺失诊断，不恢复对话框/自动命令。审计：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md)。
+
+2026-10-21 新截图回报后，`43b869d1` 将紧凑模式次要筛选/视图配置收进 disclosure，并把候选/任务详情入口移出 DataGrid 框架。SDK9 Release solution `0/0`、截图尺寸几何行为 `10/10`。表格仍须独占有限滚动框架，页面工具区需计入剩余视口预算；测试验证四行可读及页面/表内滚动都能到端点。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
 
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
 

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "taskId": "S06-03",
+  "sourceCommit": "0fc43773c56b75ba79bb6e295b5a9a31dec1fa4f",
+  "toolchain": {
+    "sdk": "9.0.302",
+    "configuration": "Release",
+    "globalJsonSdk": "8.0.423 (not installed)",
+    "workloadResolverOverride": "MSBuildEnableWorkloadResolver=false"
+  },
+  "build": {
+    "result": "passed",
+    "warnings": 0,
+    "errors": 0,
+    "log": "build/release-solution-sdk9302.txt",
+    "logSha256": "1A5F4DAC45105FFC86AA25590E3F9E6A5BBCF15CBC8836E2B4265647FD9A16FC"
+  },
+  "tests": [
+    {
+      "project": "GameSaveCenter.Worker.Tests",
+      "filter": "FullyQualifiedName~WorklistReferenceResolutionTests",
+      "passed": 2,
+      "failed": 0,
+      "trx": "tests/worker-worklist-reference-resolution.trx",
+      "sha256": "A8990EFFDD9F9E2D3A8A7149C9484B9176E6199640709AE4294AB7B5D2B68B05",
+      "assembly": "GameSaveCenter.Worker.Tests.dll",
+      "assemblySha256": "9A95687E31C99E109B24940D5BF403CDBE6C54A1C99C154CD11EBF820C5031BF"
+    },
+    {
+      "project": "GameSaveCenter.Playnite.Tests",
+      "filter": "FullyQualifiedName~WorklistDefinitionTests|FullyQualifiedName~WorklistBrowserEntryTests",
+      "passed": 8,
+      "failed": 0,
+      "trx": "tests/playnite-worklist-behavior.trx",
+      "sha256": "5E134212C739AC04FE44F9A945F7B523F041B6AC5AF5D40C80501AFCFEE3586C",
+      "assembly": "GameSaveCenter.Playnite.Tests.dll",
+      "assemblySha256": "7AC0C4EBC21262F237769FBEE1FBD5D9B33FCED2211E47E738937366EBF4BB90"
+    }
+  ],
+  "productAssemblies": [
+    {
+      "name": "GameSaveCenter.Worker.dll",
+      "sha256": "992C5E9D27980DA764338DC32165C7970EA8765A3C938C9AFBD3D5D472DFF930"
+    },
+    {
+      "name": "GameSaveCenter.Playnite.dll",
+      "sha256": "CADF43FF7B4D9974876826474E47481518E2DB00F940E2819DC3049D28EEFFB7"
+    }
+  ],
+  "renderHarness": {
+    "result": "blocked",
+    "diagnostic": "NETSDK1047: assets file has no net472/win-x86 target",
+    "log": "build/renderharness-build-blocked.txt",
+    "logSha256": "ECACA317769DAED545FFAC9E72C77A11BF7F61AC38A370DAA819D75A69443A83"
+  },
+  "hostVerification": "not_run; exact SDK 8.0.423 prerequisite missing",
+  "sourceValidation": "passed",
+  "wpfStaticAudit": {
+    "errors": 0,
+    "warnings": 27,
+    "info": 179
+  },
+  "round4ProgressValidation": "passed"
+}

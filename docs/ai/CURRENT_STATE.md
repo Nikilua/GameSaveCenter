@@ -2,9 +2,9 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-08 已受控验收。S06-01 `40a82b15` 与 S06-02 `85400645` 已推送：后者在四类详情加入确认后保存稳定引用的待办入口，SDK9 Release solution `0/0`、Playnite `8/8`、Worker `2/2`。S06-03 等价能力审计已准入 READY，详见 [S06-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md) 与 [S06-03 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。真实 Playnite 未运行；保留用户原有未跟踪 TRX/TestResults。
+Round4 S05-03 至 S05-08、S06-01 至 S06-03 已受控验收。S06-03 `0fc43773` 完成持久化清单浏览、搜索/分组、键盘重排、确认移除及引用状态查看；SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`。S06-04 已审计为 READY：清单条目还不能按稳定 ID 续接到业务页；证据见 [S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md) 与 [S06-04 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite 未运行；原有未跟踪 TRX/TestResults 保留。
 
-2026-10-21 用户补充的宿主截图确认页面滚动首轮修复仍会裁掉存档历史/候选路径/任务队列下方内容。后续已移除三处根布局裁切，按表格/详情剩余视口预算限高，并处理窗口由小放大时的旧视口值。SDK9.0.302 Release solution `0 error`（NU1900 为网络无法取漏洞索引），几何行为 `6/6`，RenderHarness 双主题恢复矩阵 `render-qa OK`，XAML/source/diff 检查通过。证据：[滚动视口后续修正](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏数据并非真实 Playnite 屏幕，宿主和物理 DPI 未验；滚动修复提交 `48727c13`，之后 S05-08 已完成。
+2026-10-21 用户三张宿主截图显示表格和下方详情仍互相挤压。修复提交 `43b869d1` 将紧凑任务筛选/视图操作收进折叠区，移走表格框架内详情按钮并补充真实视口几何回归；SDK9 Release solution `0/0`、定向测试 `10/10`。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。RenderHarness 因缺少 `net472/win-x86` assets 未运行；真实 Playnite/物理 DPI 未验。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 

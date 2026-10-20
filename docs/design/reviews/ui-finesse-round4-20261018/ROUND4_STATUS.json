@@ -830,19 +830,19 @@
     {
       "id": "S06-03",
       "title": "清单浏览整理",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "0fc43773",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "等价能力审计已完成，整理边界及失效状态判据见 [S06-03 审计](evidence/S06-03/AUDIT.md)；准入 READY",
+      "verificationText": "[证据](evidence/S06-03/README.md)：SDK9 Release solution 0 warning/0 error；Worker 2/2、Playnite 8/8；清单浏览、键盘重排/精确移除与保守引用状态已实现",
       "evidence": [
         {
-          "label": "准入审计",
-          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md"
+          "label": "验收证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md"
         }
       ],
-      "boundary": "S06-01/S06-02 依赖已满足。浏览、筛选、重排及移除仅操作清单引用；状态解析须区分权威未找到与尚未检查，不按名称/路径猜测。"
+      "boundary": "真实 Playnite 未运行；SDK8.0.423 未安装。RenderHarness 还原资产缺少 net472/win-x86，NETSDK1047；旧 CEF/ETW 权限边界未重试或绕过。"
     },
     {
       "id": "S06-04",
@@ -850,11 +850,16 @@
       "state": "待开始",
       "implementationState": "not_started",
       "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "等价能力审计未发现从已保存清单续接到业务对象的路由；S06-03 已验收，稳定 ID 与保守失效状态可复用。审计：[S06-04](evidence/S06-04/AUDIT.md)",
+      "evidence": [
+        {
+          "label": "准入审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md"
+        }
+      ],
+      "boundary": "READY；只按对象种类与稳定 ID 导航并应用最小定位筛选；不得恢复旧对话框或自动执行命令。对象消失须给出诊断且允许移除。"
     },
     {
       "id": "S06-05",

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "43b869d13e7b62a5af319aa9c3cfdaf33a81dfc9",
+  "toolchain": {
+    "sdk": "9.0.302",
+    "configuration": "Release",
+    "globalJsonSdk": "8.0.423 (not installed)",
+    "workloadResolverOverride": "MSBuildEnableWorkloadResolver=false",
+    "restore": "not run"
+  },
+  "solutionBuild": {
+    "result": "passed",
+    "warnings": 0,
+    "errors": 0,
+    "isolatedOutput": ".tmp/scroll-feedback-20261021/solution-buildRelease",
+    "log": null
+  },
+  "tests": {
+    "filter": "CompactWorkspaceTableViewportBehaviorTests | CompactTaskFiltersKeepCommonControlsInOneRowAndMoveSecondaryFiltersIntoDisclosure | CompactTaskDetailsKeepsFourRowsAndBoundsItsOwnScrollSurface | ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups",
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "trx": "tests/compact-scroll-geometry-sdk9302.trx",
+    "trxSha256": "72C81552AB07A2E4CAAE6EAA92F07E604C6B4D69AFE824CAA730A6E6FD3FE766",
+    "testAssembly": "GameSaveCenter.Playnite.Tests.dll",
+    "testAssemblySha256": "863F25560BA3FCA7EF5DB12181C9EAD5EA6AC4B46E80525F018E2485A331835C"
+  },
+  "sourceValidation": "passed",
+  "wpfStaticAudit": {
+    "files": 31,
+    "errors": 0,
+    "warnings": 27,
+    "info": 179
+  },
+  "renderHarness": {
+    "result": "blocked",
+    "diagnostic": "NETSDK1047: project.assets.json lacks net472/win-x86 target"
+  },
+  "hostVerification": "not_run; no real Playnite screen captured",
+  "legacyEvidence": "pre-existing untracked Round3 TRX and Playnite TestResults preserved"
+}

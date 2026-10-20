@@ -1,0 +1,1 @@
+9.0.302 [C:\Program Files\dotnet\sdk]

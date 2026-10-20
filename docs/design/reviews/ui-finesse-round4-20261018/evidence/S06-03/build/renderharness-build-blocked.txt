@@ -1,0 +1,9 @@
+C:\Program Files\dotnet\sdk\9.0.302\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1047: 资产文件“D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.RenderHarness\obj\project.assets.json”没有“net472/win-x86”的目标。确保已运行还原，且“net472”已包含在项目的 TargetFrameworks 中。可能需要在项目 RuntimeIdentifiers 中包括“win-x86”。 [D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+
+生成失败。
+
+C:\Program Files\dotnet\sdk\9.0.302\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1047: 资产文件“D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.RenderHarness\obj\project.assets.json”没有“net472/win-x86”的目标。确保已运行还原，且“net472”已包含在项目的 TargetFrameworks 中。可能需要在项目 RuntimeIdentifiers 中包括“win-x86”。 [D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+    0 个警告
+    1 个错误
+
+已用时间 00:00:00.31

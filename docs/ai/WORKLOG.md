@@ -11658,3 +11658,16 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - SDK9.0.302 Release 全解决方案构建 0 warning/0 error；Playnite 工作清单行为 8/8，Worker finding 主键 2/2；source validation、Round4 progress 校验、git diff check 通过。WPF 静态审查 0 errors、27 warnings、179 info；真实 Playnite 未运行。可选 RenderHarness 试构建因本地 assets 缺 `net472/win-x86` target 未启动，未作为布局证据。详细日志、TRX 和 SHA：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。
 - S06-03 等价审计：最近访问、过滤预设、FindingTriage 和页面队列都不支持用户维护的跨类型引用；READY 范围为浏览、搜索、分组、重排、移除及准确的解析状态。需要明确区分已由权威查询确认的失效与尚未检查。审计：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。
 - 原有未跟踪 Round3 TRX/TestResults 未暂存、修改或提交。自建 `.tmp/round4-s06-02` 在归档证据后清理；下一小批 S06-03。
+
+## 2026-10-21 用户新截图：存档/任务表格滚动区域修正
+
+- 用户反馈存档历史和路径候选的内容被下方详情遮挡，任务队列表格的滚动条侵入详情区域；三张截图还显示紧凑视口内的可见行数不足。
+- `43b869d1` 将候选视图操作和任务中心次要筛选收进紧凑 disclosure，把详情入口移出 DataGrid 框架。保留表格内部有限滚动和页面外层滚动，并用 744×460 DIP 几何回归覆盖四行可读、缩放回弹与下方详情可达。
+- SDK9.0.302 Release 全解决方案构建 `0 warning / 0 error`；最终定向几何回归 `10/10`；source validation 通过；WPF 静态审查 31 个 XAML 文件，0 error、27 warning、179 info。证据及 TRX：[用户截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
+- 本机 SDK8.0.423 未安装，RenderHarness assets 缺 `net472/win-x86`（NETSDK1047），真实 Playnite/物理 DPI 未验。保留原 Round3 TRX 与 Playnite TestResults，清理仅针对本批 `.tmp/scroll-feedback-20261021`。
+
+## 2026-10-21 Round4 S06-03 验收状态登记与 S06-04 准入
+
+- 已核对并登记已推送的实现提交 `0fc43773`：跨类型工作清单浏览、搜索/分组、键盘重排、精确确认移除和稳定 ID 引用状态解析。证据包括 SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`、源码校验与静态审查；真实 Playnite及 RenderHarness 保持未验/受限边界。
+- S06-04 审计确认当前只持久化清单数据；浏览器没有从条目路由到业务对象的动作，现有任务导航返回状态只在当前进程。审计证据：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md)。按计划准入 READY，下一项实现按稳定 ID 续接及缺失诊断。
+- 同步 `ROUND4_STATUS.json`、生成进度账本、当前事实/记忆/交接和 Backlog；未复制或记录旧 Q/R 的重复 CI 通过。

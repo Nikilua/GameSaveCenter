@@ -1,17 +1,17 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08 已按依赖受控验收；S06-01 工作清单契约已完成等价能力审计并准入 READY，审计见对应 evidence/S06-01/AUDIT.md。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-03 已受控验收；S06-04 已完成等价能力审计并准入 READY，证据见对应 evidence/S06-04/AUDIT.md。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待既有 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
-2026-10-21 用户后续截图确认存档历史、任务队列和路径候选仍有内容裁切；已移除根布局裁切并改为扣除页面工具区后的视口预算，修正缩小后放大时的旧视口反馈。SDK9 Release 全解决方案 `0 error`、几何行为 `6/6`、双主题 RenderHarness 窗口恢复矩阵 `render-qa OK`。后续证据与真实宿主边界见同一[修复记录](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)；本次不改变 Round4 任务状态。
+2026-10-21 用户后续截图再确认存档历史/路径候选及任务队列仍有内容落入下方详情或被裁切；提交 `43b869d1` 将紧凑模式次要筛选和候选视图操作移入折叠区，并将详情入口移出有限表格框架。SDK9 Release 全解决方案 `0 warning/0 error`，定向几何回归 `10/10`。真实 Playnite 未运行；RenderHarness 还原资产缺 `net472/win-x86`（NETSDK1047）。证据：[本轮截图修复](evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
 
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。已满足必须有当前等价能力与证据；受控通过不代表真实宿主通过。每项分别补实现 commit、验证与未验边界。
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收34、已满足2、代码完成待验收15、外部阻塞1、待开始12。
-实现状态：完成51、未开始13、不适用0；受控验证：通过51、未跑12、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收35、已满足2、代码完成待验收15、外部阻塞1、待开始11。
+实现状态：完成52、未开始12、不适用0；受控验证：通过53、未跑10、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -65,8 +65,8 @@
 | S05-08 | 情景性能验证 | 已验收 | dc696fb0 | [证据](evidence/S05-08/README.md)：SDK9 Release solution 0 error；Worker 29/29（含大库、增长边界、并发失效、限额/取消），维护页 Light/Dark 2/2 | 代码提交与证据已推送；SDK8.0.423 未安装，真实 Playnite/完整 WPF 隔离循环/物理 DPI/CEF 未验；RenderHarness 为合成离屏验证 |
 | S06-01 | 工作清单契约 | 已验收 | 40a82b15 | [证据](evidence/S06-01/README.md)；[审计](evidence/S06-01/AUDIT.md)：SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error；契约行为 4/4；源码护栏通过 | 仅建立有界设置模型；未接入持久化、入口或业务操作。SDK8.0.423 未安装；无真实宿主/UI 改动。 |
 | S06-02 | 加入待办入口 | 已验收 | 85400645 | [证据](evidence/S06-02/README.md)：SDK9.0.302 Release solution 0 warning/0 error；Playnite 8/8、Worker 2/2；source/UI 检查通过 | 入口只添加用户确认的稳定引用，不执行源业务命令。真实 Playnite 未运行；RenderHarness 可选构建因现有 project.assets.json 缺少 net472/win-x86 target 未执行。既有 CEF/权限边界未重试或绕过。 |
-| S06-03 | 清单浏览整理 | 待开始 | — | 等价能力审计已完成，整理边界及失效状态判据见 [S06-03 审计](evidence/S06-03/AUDIT.md)；准入 READY | S06-01/S06-02 依赖已满足。浏览、筛选、重排及移除仅操作清单引用；状态解析须区分权威未找到与尚未检查，不按名称/路径猜测。 |
-| S06-04 | 续接上下文 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S06-03 | 清单浏览整理 | 已验收 | 0fc43773 | [证据](evidence/S06-03/README.md)：SDK9 Release solution 0 warning/0 error；Worker 2/2、Playnite 8/8；清单浏览、键盘重排/精确移除与保守引用状态已实现 | 真实 Playnite 未运行；SDK8.0.423 未安装。RenderHarness 还原资产缺少 net472/win-x86，NETSDK1047；旧 CEF/ETW 权限边界未重试或绕过。 |
+| S06-04 | 续接上下文 | 待开始 | — | 等价能力审计未发现从已保存清单续接到业务对象的路由；S06-03 已验收，稳定 ID 与保守失效状态可复用。审计：[S06-04](evidence/S06-04/AUDIT.md) | READY；只按对象种类与稳定 ID 导航并应用最小定位筛选；不得恢复旧对话框或自动执行命令。对象消失须给出诊断且允许移除。 |
 | S06-05 | 逐项处理转交 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-06 | 失效刷新 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-07 | 清单导出预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
