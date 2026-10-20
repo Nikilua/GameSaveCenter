@@ -1343,8 +1343,12 @@ public sealed class FakeDashboardData
         RepositoryBytes = 128L * 1024 * 1024 * 1024,
         IndexedBackupBytes = 96L * 1024 * 1024 * 1024,
         BackupVersionCount = 184,
-        Summary = "卷 D: 剩余 512 GiB / 共 1 TiB；索引 184 个版本，索引体积 96 GiB，目录实测 128 GiB。近 30 天新增 12 GiB（估算）",
-        PredictionSummary = "按最近 30 天新增速度估算，约 14 个月后达到磁盘 90% 用量。",
+        GrowthObservationSpanDays = 86,
+        GrowthObservationDayCount = 18,
+        HistoricalGrowthMinimumBytesPer30Days = 8L * 1024 * 1024 * 1024,
+        HistoricalGrowthMaximumBytesPer30Days = 12L * 1024 * 1024 * 1024,
+        Summary = "卷 D: 剩余 512 GiB / 共 1 TiB；索引 184 个版本，索引体积 96 GiB，目录实测 128 GiB。近 30 天新增 12 GiB（历史统计）",
+        PredictionSummary = "当前本地卷剩余 512 GiB / 共 1 TiB。历史逻辑新增范围只描述索引体积，压缩、保留和其他写入未知；不据此推算磁盘耗尽日期。",
         Trends =
         {
             new StorageTrendDto { Days = 7, AddedBytes = 2L * 1024 * 1024 * 1024, AddedVersionCount = 9 },

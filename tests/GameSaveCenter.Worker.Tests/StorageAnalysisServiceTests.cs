@@ -74,7 +74,7 @@ public sealed class StorageAnalysisServiceTests : IDisposable
         Assert.Equal(5120, top.BackupBytes);
         Assert.Equal(2, top.BackupCount);
         Assert.Equal("b1", top.LatestBackupId);
-        Assert.Contains("估算", result.Summary);
+        Assert.Contains("历史统计", result.Summary);
     }
 
     [Fact]
@@ -91,7 +91,7 @@ public sealed class StorageAnalysisServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task AnalyzeUsesRecentGrowthForPrediction()
+    public async Task AnalyzeDoesNotProduceExpiryFromInsufficientHistory()
     {
         await store.AddBackupVersionAsync(new BackupVersionDto
         {
@@ -119,7 +119,47 @@ public sealed class StorageAnalysisServiceTests : IDisposable
         Assert.Equal(1, result.Trends[0].AddedVersionCount);
         Assert.True(result.Trends[1].AddedBytes >= 2000);
         Assert.True(result.Trends[2].AddedBytes >= 3000);
-        Assert.Contains("估算", result.PredictionSummary);
+        Assert.False(result.HasHistoricalGrowthRange);
+        Assert.Null(result.HistoricalGrowthMinimumBytesPer30Days);
+        Assert.Contains("样本不足", result.HistoricalGrowthRangeDisplay);
+        Assert.Contains("不输出耗尽日期", result.PredictionSummary);
+        Assert.Contains("远端可用容量未知", result.RemoteCapacitySummary);
+    }
+
+    [Fact]
+    public async Task AnalyzeReportsObservedGrowthRangeWithoutClaimingConfidenceOrExpiry()
+    {
+        var now = DateTime.UtcNow;
+        foreach (var backup in new[]
+        {
+            (Id: "recent", Age: 5, Bytes: 70L),
+            (Id: "middle", Age: 20, Bytes: 20L),
+            (Id: "old", Age: 50, Bytes: 90L)
+        })
+        {
+            await store.AddBackupVersionAsync(new BackupVersionDto
+            {
+                PlayniteId = "g1",
+                BackupId = backup.Id,
+                LudusaviName = "Game One",
+                CreatedUtc = now.AddDays(-backup.Age),
+                TotalBytes = backup.Bytes,
+                FileCount = 1
+            }, "{}", CancellationToken.None);
+        }
+
+        var service = new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance);
+        var result = await service.AnalyzeAsync(CancellationToken.None);
+
+        Assert.True(result.HasHistoricalGrowthRange);
+        Assert.Equal(3, result.GrowthObservationDayCount);
+        Assert.True(result.GrowthObservationSpanDays >= 30);
+        Assert.Equal(90, result.HistoricalGrowthMinimumBytesPer30Days);
+        Assert.Equal(300, result.HistoricalGrowthMaximumBytesPer30Days);
+        Assert.Contains("90 B–300 B", result.HistoricalGrowthRangeDisplay);
+        Assert.Contains("不是置信区间", result.HistoricalGrowthRangeDisplay);
+        Assert.DoesNotContain("个月后", result.PredictionSummary);
+        Assert.Contains("不据此推算磁盘耗尽日期", result.PredictionSummary);
     }
 
     [Fact]

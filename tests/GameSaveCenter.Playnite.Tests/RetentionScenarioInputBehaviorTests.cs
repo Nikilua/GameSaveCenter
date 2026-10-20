@@ -75,6 +75,18 @@ public sealed class RetentionScenarioInputBehaviorTests
                     Assert.Same(context.CompareRetentionScenarioCommand, compareButton.Command);
                     Assert.True(compareButton.Command.CanExecute(null));
                     Assert.Equal(context.RetentionScenarioComparison.Summary, Field<TextBlock>(page, "RetentionScenarioComparisonSummary").Text);
+                    Assert.Equal(context.RetentionScenarioComparison.GrowthAssumptionDisplay, Field<TextBlock>(page, "RetentionScenarioGrowthAssumptionDisplay").Text);
+                    Assert.Equal(context.StorageAnalysis.VolumeFreeDisplay, Field<TextBlock>(page, "MaintenanceStorageLocalVolume").Text);
+                    Assert.Equal(context.StorageAnalysis.HistoricalGrowthRangeDisplay, Field<TextBlock>(page, "MaintenanceStorageGrowthRangeSummary").Text);
+                    Assert.Equal(context.StorageAnalysis.HistoricalGrowthRangeDisplay, Field<TextBlock>(page, "MaintenanceStorageDemoGrowthRangeSummary").Text);
+                    Assert.Equal(context.StorageAnalysis.RemoteCapacitySummary, Field<TextBlock>(page, "MaintenanceStorageRemoteCapacitySummary").Text);
+                    Assert.Equal(context.StorageAnalysis.PredictionSummary, Field<TextBlock>(page, "MaintenanceStoragePredictionSummary").Text);
+                    Assert.Equal(context.RetentionScenarioInput.GrowthAssumptionDisplay, Field<TextBlock>(page, "MaintenanceStorageUserGrowthAssumption").Text);
+                    var rangeBars = Field<UniformGrid>(page, "MaintenanceStorageGrowthRangeBars");
+                    Assert.True(context.StorageAnalysis.HasHistoricalGrowthRange, "The controlled UI sample must expose an observed range.");
+                    Assert.Equal(Visibility.Visible, rangeBars.Visibility);
+                    Assert.Equal((double)context.StorageAnalysis.HistoricalGrowthMinimumBytesPer30Days!.Value, Field<ProgressBar>(page, "MaintenanceStorageGrowthMinimumBar").Value);
+                    Assert.Equal((double)context.StorageAnalysis.HistoricalGrowthMaximumBytesPer30Days!.Value, Field<ProgressBar>(page, "MaintenanceStorageGrowthMaximumBar").Value);
 
                     var minimum = Field<TextBox>(page, "RetentionScenarioGrowthMinimumInput");
                     var maximum = Field<TextBox>(page, "RetentionScenarioGrowthMaximumInput");
@@ -98,6 +110,7 @@ public sealed class RetentionScenarioInputBehaviorTests
                     Assert.Equal(42, draft.CandidatePolicy.KeepDailyDays);
                     Assert.Equal(14, effectivePolicy.KeepDailyDays);
                     Assert.True(draft.IsValid);
+                    Assert.Equal(draft.GrowthAssumptionDisplay, Field<TextBlock>(page, "MaintenanceStorageUserGrowthAssumption").Text);
 
                     SetAndCommit(daily, "-1");
                     PumpLayout(window);
@@ -181,6 +194,8 @@ public sealed class RetentionScenarioInputBehaviorTests
                 Summary = "测试对比：同一基线 5 个版本。",
                 BaselineVersionCount = 5,
                 GeneratedUtc = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc),
+                GrowthMinimumMiBPer30Days = 500,
+                GrowthMaximumMiBPer30Days = 750,
                 Current = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 5, KeepVersionCount = 3, DeleteCandidateCount = 2 },
                 Candidate = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 5, KeepVersionCount = 4, DeleteCandidateCount = 1 }
             };
@@ -189,6 +204,22 @@ public sealed class RetentionScenarioInputBehaviorTests
         public RetentionScenarioDraft RetentionScenarioInput { get; }
         public RetentionPolicy EffectivePolicy { get; }
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get; }
+        public StorageAnalysisDto StorageAnalysis { get; } = new StorageAnalysisDto
+        {
+            VolumeTotalBytes = 1024L * 1024 * 1024 * 1024,
+            VolumeFreeBytes = 512L * 1024 * 1024 * 1024,
+            GrowthObservationSpanDays = 60,
+            GrowthObservationDayCount = 5,
+            HistoricalGrowthMinimumBytesPer30Days = 64L * 1024 * 1024,
+            HistoricalGrowthMaximumBytesPer30Days = 256L * 1024 * 1024,
+            PredictionSummary = "历史逻辑新增无法直接换算成磁盘实占，不输出耗尽日期。",
+            Trends =
+            {
+                new StorageTrendDto { Days = 7, AddedBytes = 64L * 1024 * 1024, AddedVersionCount = 2 },
+                new StorageTrendDto { Days = 30, AddedBytes = 128L * 1024 * 1024, AddedVersionCount = 5 },
+                new StorageTrendDto { Days = 90, AddedBytes = 256L * 1024 * 1024, AddedVersionCount = 11 }
+            }
+        };
         public ICommand CompareRetentionScenarioCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public int MaintenanceTabIndex { get; set; } = 3;
     }

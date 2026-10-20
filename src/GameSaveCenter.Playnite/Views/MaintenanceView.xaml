@@ -785,7 +785,7 @@
                             </Border>
                             <Border Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscReadingCardStyle}" Padding="18">
                                 <StackPanel>
-                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="备份存储分析" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="只读统计；增长预测为估算。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshStorageAnalysisCommand}" Content="刷新分析"/></Grid>
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="备份存储分析" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="只读统计；历史增长范围不代表耗尽日期。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshStorageAnalysisCommand}" Content="刷新分析"/></Grid>
                                     <UniformGrid x:Name="MaintenanceStorageDemoMetrics" Columns="3" Margin="0,18,0,0">
                                          <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.IndexedBackupBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="索引体积" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="SQLite 逻辑大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
                                          <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="磁盘实测" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="备份目录文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
@@ -793,6 +793,8 @@
                                     </UniformGrid>
                                     <ProgressBar Minimum="0" Maximum="{Binding StorageAnalysis.VolumeTotalBytes}" Value="{Binding StorageAnalysis.RepositoryBytes}" AutomationProperties.Name="备份存储占用比例" Height="7" Margin="0,18,0,0" ToolTip="磁盘实测：备份目录文件大小；索引体积另行统计"/>
                                     <TextBlock Text="{Binding StorageAnalysis.Summary, TargetNullValue=尚未分析备份存储。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding StorageAnalysis.Summary}" Margin="0,6,0,0"/>
+                                    <TextBlock x:Name="MaintenanceStorageDemoGrowthRangeSummary" Text="{Binding StorageAnalysis.HistoricalGrowthRangeDisplay}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                    <TextBlock x:Name="MaintenanceStorageDemoRemoteCapacitySummary" Text="{Binding StorageAnalysis.RemoteCapacitySummary}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                     <TextBlock Text="{Binding StorageAnalysis.MissingIndexedPathSummary}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
                                     <TextBlock Text="占用排行（按 SQLite 逻辑大小）" Style="{DynamicResource GscSectionTitleStyle}" Margin="0,14,0,0"/>
                                     <ItemsControl ItemsSource="{Binding StorageAnalysis.TopGames}" Margin="0,8,0,0">
@@ -895,7 +897,7 @@
                                 <TextBlock x:Name="RetentionScenarioComparisonSummary" Text="{Binding RetentionScenarioComparison.Summary}" Style="{DynamicResource GscBodyStyle}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding RetentionScenarioComparison.BaselineDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,8,0,0"/>
                                 <TextBlock Text="{Binding RetentionScenarioComparison.GeneratedDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/>
-                                <TextBlock Text="{Binding RetentionScenarioComparison.GrowthAssumptionDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="RetentionScenarioGrowthAssumptionDisplay" Text="{Binding RetentionScenarioComparison.GrowthAssumptionDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding RetentionScenarioComparison.Assumptions}" Style="{DynamicResource GscDiagnosticHintText}" Margin="0,8,0,0" TextWrapping="Wrap"/>
                                 <Grid x:Name="MaintenanceRetentionScenarioComparisonLayout" Margin="0,12,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -981,7 +983,7 @@
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel MinWidth="0">
                                         <TextBlock Text="备份存储分析" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <TextBlock Text="只读统计；增长预测为估算，不执行任何清理。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                        <TextBlock Text="只读统计；历史增长范围不代表耗尽日期，不执行任何清理。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                                     </StackPanel>
                                     <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding RefreshStorageAnalysisCommand}" Content="刷新存储分析" VerticalAlignment="Top"/>
                                 </Grid>
@@ -989,7 +991,7 @@
                                     <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding StorageAnalysis.Summary}"/>
                                 </Border>
                                 <UniformGrid x:Name="MaintenanceStorageMetrics" Columns="4" Margin="0,14,0,0">
-                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.VolumeFreeDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="磁盘剩余" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="{Binding StorageAnalysis.VolumeTotalDisplay, FallbackValue=—, StringFormat=容量 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock x:Name="MaintenanceStorageLocalVolume" Text="{Binding StorageAnalysis.VolumeFreeDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="磁盘剩余" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="{Binding StorageAnalysis.VolumeTotalDisplay, FallbackValue=—, StringFormat=容量 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="目录实测" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="按备份目录文件统计" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.IndexedBackupBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="索引体积" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="来自 SQLite 版本记录" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="{Binding StorageAnalysis.BackupVersionCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="版本数" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="已索引备份" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
@@ -1000,7 +1002,32 @@
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.Trends[1].AddedBytesDisplay, FallbackValue=—}" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="近 30 天" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/><TextBlock Text="{Binding StorageAnalysis.Trends[1].AddedVersionCount, FallbackValue=0, StringFormat={}{0} 个新版本}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="{Binding StorageAnalysis.Trends[2].AddedBytesDisplay, FallbackValue=—}" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="近 90 天" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/><TextBlock Text="{Binding StorageAnalysis.Trends[2].AddedVersionCount, FallbackValue=0, StringFormat={}{0} 个新版本}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                 </UniformGrid>
-                                <TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding StorageAnalysis.PredictionSummary, TargetNullValue=尚未生成增长预测。}" Margin="0,10,0,0"/>
+                                <Border x:Name="MaintenanceStorageGrowthRangePanel" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="近 90 天历史逻辑新增范围（观察值，不是置信区间）" Style="{DynamicResource GscCaptionStyle}"/>
+                                        <TextBlock x:Name="MaintenanceStorageGrowthRangeSummary" Text="{Binding StorageAnalysis.HistoricalGrowthRangeDisplay}" Style="{DynamicResource GscBodyStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <UniformGrid x:Name="MaintenanceStorageGrowthRangeBars" Columns="2" Margin="0,8,0,0">
+                                            <UniformGrid.Style>
+                                                <Style TargetType="UniformGrid">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding StorageAnalysis.HasHistoricalGrowthRange}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </UniformGrid.Style>
+                                            <StackPanel Margin="0,0,8,0">
+                                                <ProgressBar x:Name="MaintenanceStorageGrowthMinimumBar" Minimum="0" Maximum="{Binding StorageAnalysis.HistoricalGrowthChartMaximumBytesPer30Days}" Value="{Binding StorageAnalysis.HistoricalGrowthMinimumBytesPer30Days, TargetNullValue=0, FallbackValue=0}" Height="7" AutomationProperties.Name="历史逻辑新增观察下界每 30 天"/>
+                                                <TextBlock Text="{Binding StorageAnalysis.HistoricalGrowthMinimumDisplay, StringFormat=观察下界 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <ProgressBar x:Name="MaintenanceStorageGrowthMaximumBar" Minimum="0" Maximum="{Binding StorageAnalysis.HistoricalGrowthChartMaximumBytesPer30Days}" Value="{Binding StorageAnalysis.HistoricalGrowthMaximumBytesPer30Days, TargetNullValue=0, FallbackValue=0}" Height="7" AutomationProperties.Name="历史逻辑新增观察上界每 30 天"/>
+                                                <TextBlock Text="{Binding StorageAnalysis.HistoricalGrowthMaximumDisplay, StringFormat=观察上界 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </UniformGrid>
+                                        <TextBlock x:Name="MaintenanceStorageUserGrowthAssumption" Text="{Binding RetentionScenarioInput.GrowthAssumptionDisplay}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock x:Name="MaintenanceStoragePredictionSummary" Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding StorageAnalysis.PredictionSummary, TargetNullValue=尚未生成容量判断。}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                                <TextBlock x:Name="MaintenanceStorageRemoteCapacitySummary" Text="{Binding StorageAnalysis.RemoteCapacitySummary}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                 <TextBlock Text="占用排行" Style="{DynamicResource GscSectionTitleStyle}" Margin="0,16,0,0"/>
                                 <ItemsControl ItemsSource="{Binding StorageAnalysis.TopGames}" Margin="0,8,0,0">
                                     <ItemsControl.ItemTemplate>

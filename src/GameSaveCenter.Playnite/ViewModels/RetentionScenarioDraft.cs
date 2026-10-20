@@ -73,6 +73,12 @@ public sealed class RetentionScenarioDraft : INotifyPropertyChanged, INotifyData
         }
     }
 
+    public string GrowthAssumptionDisplay => !growthMinimumMiBPer30Days.HasValue || !growthMaximumMiBPer30Days.HasValue
+        ? "用户增长假设：未知（填写本会话范围后显示）。"
+        : growthMinimumMiBPer30Days.Value > growthMaximumMiBPer30Days.Value
+            ? "用户增长假设无效：下限高于上限。"
+            : $"当前用户假设增长：{growthMinimumMiBPer30Days.Value}–{growthMaximumMiBPer30Days.Value} MiB/30 天；与历史逻辑新增和磁盘实测分开展示。";
+
     /// <summary>Returns a fresh value object so edits cannot mutate an effective game policy.</summary>
     public RetentionPolicy CandidatePolicy => new RetentionPolicy
     {
@@ -155,6 +161,7 @@ public sealed class RetentionScenarioDraft : INotifyPropertyChanged, INotifyData
 
     private void NotifyGrowthValidationChanged()
     {
+        OnPropertyChanged(nameof(GrowthAssumptionDisplay));
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(GrowthMinimumMiBPer30Days)));
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(GrowthMaximumMiBPer30Days)));
         OnPropertyChanged(nameof(IsValid));

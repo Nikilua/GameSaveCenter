@@ -49,7 +49,7 @@ public sealed class StorageAnalysisService
         foreach (var days in new[] { 7, 30, 90 })
         {
             var cutoff = now.AddDays(-days);
-            var added = rows.Where(x => x.CreatedUtc >= cutoff).ToList();
+            var added = rows.Where(x => x.CreatedUtc >= cutoff && x.CreatedUtc <= now).ToList();
             result.Trends.Add(new StorageTrendDto
             {
                 Days = days,
@@ -57,6 +57,8 @@ public sealed class StorageAnalysisService
                 AddedVersionCount = added.Count
             });
         }
+
+        PopulateHistoricalGrowthRange(result, rows, now);
 
         result.TopGames = rows
             .GroupBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase)
@@ -119,20 +121,52 @@ public sealed class StorageAnalysisService
         }, token).ConfigureAwait(false);
     }
 
+    private static void PopulateHistoricalGrowthRange(StorageAnalysisDto result, IReadOnlyCollection<BackupVersionDto> rows, DateTime now)
+    {
+        var recentRows = rows
+            .Where(row => row.CreatedUtc <= now && row.CreatedUtc >= now.AddDays(-90))
+            .ToList();
+        var observationDays = recentRows
+            .Select(row => row.CreatedUtc.Date)
+            .Distinct()
+            .OrderBy(day => day)
+            .ToArray();
+        result.GrowthObservationDayCount = observationDays.Length;
+        result.GrowthObservationSpanDays = observationDays.Length > 1
+            ? Math.Max(0, (int)(observationDays[^1] - observationDays[0]).TotalDays)
+            : 0;
+
+        if (result.GrowthObservationDayCount < 3 || result.GrowthObservationSpanDays < 30)
+            return;
+
+        var rates = result.Trends
+            .Where(trend => trend.Days > 0 && trend.Days <= result.GrowthObservationSpanDays)
+            .Select(trend => BytesPerThirtyDays(trend.AddedBytes, trend.Days))
+            .ToArray();
+        if (rates.Length < 2)
+            return;
+
+        result.HistoricalGrowthMinimumBytesPer30Days = rates.Min();
+        result.HistoricalGrowthMaximumBytesPer30Days = rates.Max();
+    }
+
+    private static long BytesPerThirtyDays(long bytes, int days)
+    {
+        var rate = decimal.Round(Math.Max(0, bytes) * 30m / days, 0, MidpointRounding.AwayFromZero);
+        return rate >= long.MaxValue ? long.MaxValue : (long)rate;
+    }
+
     private static string BuildPrediction(StorageAnalysisDto result)
     {
-        if (result.VolumeTotalBytes <= 0 || result.VolumeFreeBytes <= 0) return string.Empty;
-        var trend30 = result.Trends.FirstOrDefault(x => x.Days == 30)?.AddedBytes ?? 0;
-        if (trend30 <= 0)
-            return "近 30 天没有可用的增长趋势，无法可靠估算容量耗尽时间。";
+        var localVolume = result.VolumeTotalBytes > 0
+            ? $"本地卷剩余 {result.VolumeFreeDisplay} / 共 {result.VolumeTotalDisplay}。"
+            : "本地卷容量或剩余空间未知。";
+        if (!result.HasHistoricalGrowthRange)
+        {
+            return $"{result.HistoricalGrowthRangeDisplay} {localVolume}样本不足时不输出耗尽日期。逻辑新增量也不能直接换算成磁盘实占。";
+        }
 
-        var dailyBytes = trend30 / 30d;
-        var target = result.VolumeTotalBytes * 0.9d;
-        var used = Math.Max(0, result.VolumeTotalBytes - result.VolumeFreeBytes);
-        if (target <= used) return "估算：磁盘已接近 90% 用量，请尽快清理或迁移备份目录。";
-        var days = (target - used) / dailyBytes;
-        var months = days / 30.44d;
-        return $"按最近 30 天新增速度估算，约 {months:0.#} 个月后达到磁盘 90% 用量。";
+        return $"{localVolume}历史逻辑新增范围仅描述索引体积，压缩、保留和其他写入未知；不据此推算磁盘耗尽日期。";
     }
 
     private static string BuildSummary(StorageAnalysisDto result)
@@ -142,7 +176,7 @@ public sealed class StorageAnalysisService
             : $"卷 {result.VolumeRoot} 剩余 {result.VolumeFreeDisplay} / 共 {result.VolumeTotalDisplay}";
         var footprint = $"索引 {result.BackupVersionCount} 个版本，索引体积 {result.IndexedBackupBytesDisplay}，目录实测 {result.RepositoryBytesDisplay}";
         var trend = result.Trends.FirstOrDefault(x => x.Days == 30)?.AddedBytesDisplay ?? "0 B";
-        return $"{volume}；{footprint}。近 30 天新增 {trend}（估算）。{result.MissingIndexedPathSummary}";
+        return $"{volume}；{footprint}。近 30 天新增 {trend}（索引逻辑历史统计）。{result.MissingIndexedPathSummary}";
     }
 
     private static string GetVolumeRoot(string path)
