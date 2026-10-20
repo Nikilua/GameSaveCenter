@@ -10,11 +10,13 @@
 
 证据：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。定向测试在提交前工作树运行；后续 `48727c13` 只修改页面视口，不变更 S05 文件；两者一并通过 SDK9 Release solution 构建。当前机器无 SDK8.0.423，真实 Playnite/CEF/物理 DPI 未验。
 
-## 2026-10-21 Round4 S06-01 已实现、S06-02 已准入
+## 2026-10-21 Round4 S06-01/S06-02 已验收、S06-03 已准入
 
 `40a82b15` 实现 `WorklistDefinition`/`WorklistItemRecord`：最多 20 份清单、每份 200 项、80 字名称、256 字稳定键、500 字备注；仅记录对象种类/ID、人工备注和手工完成状态，按种类+稳定键去重并提供深克隆，不含 DTO、路径或操作授权。SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error，行为测试 4/4。审计：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。
 
-S06-02 已准入：详情页没有跨类型清单入口。版本、媒体和任务分别使用 `PlayniteId+BackupId`、`MediaId`、`TaskId`；诊断数据表已有 `findings.finding_id` 主键，但 DTO 查询投影尚未透传，计划复用该主键，不使用标题/路径充当身份。确认预览后只新增设置引用，重复项明确反馈，不触发业务命令。审计：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/AUDIT.md)。
+`85400645` 为存档版本、媒体、后台任务和校验问题详情加入待办入口；确认预览后只把稳定对象 ID 写入插件设置。问题引用复用 Worker 已有 `finding_id` 主键。SDK9.0.302 Release solution `0 warning/0 error`，Playnite 行为 `8/8`，Worker 主键稳定性 `2/2`；源代码校验与 WPF 静态审查 0 errors。证据：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。真实宿主未验。
+
+S06-03 审计发现最近访问、任务/媒体筛选预设、校验问题分组均不等价于用户创建的跨类型清单浏览器。下一步为键盘可达的搜索、分组、重排、单项/确认批量移除及保守的引用解析状态；不能把未检查误报为失效。审计：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。
 
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
 

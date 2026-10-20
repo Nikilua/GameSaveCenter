@@ -11650,4 +11650,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - `40a82b15` 已推送有界的工作清单契约：支持四种稳定对象引用、人工备注和手动完成；不保留 DTO、路径、认证或命令授权。SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error，行为测试 4/4，源码护栏通过。证据：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/README.md)。
 - S06-02 审计发现各详情页无等价入口；版本/媒体/任务有稳定 ID，问题表已有 `finding_id` 主键但 DTO 未暴露。将按确认预览新增引用，重复项有状态反馈；不改源业务对象。审计：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/AUDIT.md)。
-- 保留已有 Round3 未跟踪 TRX/TestResults；S06-01 自建 `.tmp/round4-s06-01-build` 已在证据归档后删除。下一小批 S06-02。
+- 保留已有 Round3 未跟踪 TRX/TestResults；S06-01 自建 `.tmp/round4-s06-01-build` 已在证据归档后删除。随后完成 S06-02。
+
+## 2026-10-21 Round4 S06-02 加入待办入口已验收；S06-03 已准入
+
+- `85400645` 已推送。存档版本、媒体、后台任务和维护问题详情新增“加入待办”；现有确认对话框先展示对象摘要，确认后只持久化种类与稳定 ID，不执行原对象命令。备份键为带长度前缀的 PlayniteId+BackupId，问题复用 Worker `finding_id`。
+- SDK9.0.302 Release 全解决方案构建 0 warning/0 error；Playnite 工作清单行为 8/8，Worker finding 主键 2/2；source validation、Round4 progress 校验、git diff check 通过。WPF 静态审查 0 errors、27 warnings、179 info；真实 Playnite 未运行。可选 RenderHarness 试构建因本地 assets 缺 `net472/win-x86` target 未启动，未作为布局证据。详细日志、TRX 和 SHA：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。
+- S06-03 等价审计：最近访问、过滤预设、FindingTriage 和页面队列都不支持用户维护的跨类型引用；READY 范围为浏览、搜索、分组、重排、移除及准确的解析状态。需要明确区分已由权威查询确认的失效与尚未检查。审计：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。
+- 原有未跟踪 Round3 TRX/TestResults 未暂存、修改或提交。自建 `.tmp/round4-s06-02` 在归档证据后清理；下一小批 S06-03。

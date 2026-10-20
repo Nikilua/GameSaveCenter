@@ -4,7 +4,7 @@
 
 ### 最新状态（2026-10-21）
 
-Round4 S05-01 至 S05-08 已受控验收；S05-08 `dc696fb0` 增加维护页取消比较、10,000 索引版本硬上限和比较期间版本/有效策略变化过期检查。SDK9 Release solution `0 error`，Worker `29/29`，维护页 Light/Dark 行为 `2/2`；详见 `design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md`。S06-01 `40a82b15` 已实现有界清单契约，Playnite.Tests Release 构建 0 warning/0 error、行为 4/4；本机无 SDK8.0.423。S06-02 已完成等价能力审计并准入 READY，问题项复用 Worker 已有 `finding_id` 主键；审计见 `evidence/S06-02/AUDIT.md`。
+Round4 S05-01 至 S05-08 已受控验收；S05-08 `dc696fb0` 增加维护页取消比较、10,000 索引版本硬上限和比较期间版本/有效策略变化过期检查。SDK9 Release solution `0 error`，Worker `29/29`，维护页 Light/Dark 行为 `2/2`；详见 `design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md`。S06-01 `40a82b15` 完成有界清单契约；S06-02 `85400645` 已推送四类详情的确认式待办入口，SDK9 Release solution `0/0`、Playnite `8/8`、Worker `2/2`。S06-03 等价审计已 READY，范围含清单浏览、整理和保守失效状态；证据见 `evidence/S06-02/README.md` 与 `evidence/S06-03/AUDIT.md`。本机无 SDK8.0.423；真实 Playnite 未验。
 
 S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且经过搜索/筛选的有限媒体结果中切换 B，保留详情焦点；坏图会被跳过，复用 `AsyncThumbnailImage` 的迟到回调保护。S04-06 `792b1a2f`、S04-07 `14925e5e`、S04-08 `c9da7c76` 已完成受控验收：比较会话意见可撤销，转交使用稳定 ID 并复核，缩略图沿用 2048 px 解码/64 MiB 缓存边界。S04-08 SDK8.0.423 Release solution `0/0`，缩略图及生产比较页行为 `19/19`。真实 Playnite、真实媒体和物理 DPI 未验；详细证据见各项 Round4 页面。另按用户新反馈修正工作区滚动视口预算，SDK8 Release solution `0/0`、布局回归 `6/6`；2026-10-21 依三张宿主截图又修正根裁切、表格扣除页面工具区及小窗放大后的高度恢复，SDK9 Release solution `0 error`、布局回归 `6/6`、RenderHarness `render-qa OK`。证据见 `design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md`。
 
@@ -32,7 +32,8 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S05-07 | IMPLEMENTED | `6807ae84` 新增维护页情景转交策略编辑入口：拒绝覆盖未保存情景/模板/游戏策略草稿，只映射四项保留期限到未保存模板副本，清空旧比较并跳至现有策略差异页；无自动保存、Apply 或清理。SDK9 Release solution `0/0`、生产维护页 Light/Dark 与策略映射 `4/4`、XAML `25/25`、source validation 通过。SDK8.0.423 未安装；真实 Playnite、完整 WPF/物理 DPI 未验。清理仍须当前 Worker PreviewId。证据见 Round4 S05-07。 |
 | S05-08 | IMPLEMENTED | `dc696fb0` 为情景比较增加取消命令、10,000 个索引版本上限（查询限取 10,001）及结束前版本/有效策略重验；超限或过期均不展示旧明细、不清理。SDK9 Release solution `0 error`，Worker `29/29`（含 1,200 版本、零/极端增长、并发改变、上限和取消），维护页 Light/Dark `2/2`；SDK8/真实宿主/完整 WPF/物理 DPI 未验。证据见 Round4 S05-08。 |
 | S06-01 | IMPLEMENTED | `40a82b15` 新增有界的清单/条目设置模型；按对象种类与稳定 ID 去重，克隆隔离，限制清单、条目、名称、ID 和备注大小，不存 DTO、路径或操作授权。SDK9.0.302 Playnite.Tests Release 0 warning/0 error，行为 4/4，源码护栏通过。SDK8.0.423 未安装；证据见 Round4 S06-01。 |
-| S06-02 | READY | 已核实版本/媒体/任务/诊断详情均无跨类型人工清单入口；版本、媒体、任务分别复用已有稳定 ID，问题项透传 Worker `findings.finding_id` 主键。范围为确认预览后添加设置引用，重复/容量有反馈，不改业务状态。审计：[S06-02](design/reviews/ui-finesse-round4-20261018/evidence/S06-02/AUDIT.md)。 |
+| S06-02 | IMPLEMENTED | `85400645` 为存档版本、媒体、后台任务、校验问题详情加入确认式待办入口；确认后只存稳定 ID，不执行源业务操作。SDK9 Release solution `0/0`、Playnite `8/8`、Worker `2/2`，source validation 通过。真实 Playnite 未验；证据见 Round4 S06-02。 |
+| S06-03 | READY | 审计确认 RecentAccess、任务/媒体筛选预设、FindingTriage 和局部页面列表均不是异构人工清单。准入浏览/搜索/分组/键盘重排/移除，批量移除先确认精确范围；解析需区分权威未找到与待检查。审计：[S06-03](design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S01-02 | IMPLEMENTED | `ad7bd563` 新增舒适/紧凑全局密度设置与共享令牌，四行下限按行/表头高度计算；SDK8 solution build 0/0，密度/设置资源14/14、R09 2/2、MediaInbox几何3/3、R23双主题资源9/9。真实 Playnite 验收待 UI gate；证据见 Round4 S01-02。 |
 | S01-03 | IMPLEMENTED | `8cdf5253` 为存档历史、候选路径和任务表格加入可访问的列管理；SDK8.0.423 Release build 0/0，列显隐/列宽/视图配置/R09 共 17/17。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-03。 |

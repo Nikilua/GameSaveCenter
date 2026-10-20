@@ -2,7 +2,7 @@
 
 ## 2026-10-21 用户截图滚动问题已复核并修正
 
-三张宿主截图显示首轮布局修复仍遗留根布局裁切、表格高度未扣页面工具区，以及窗口放大时沿用短视口的问题。已修正存档历史、路径候选、任务队列的高度预算和根滚动布局。SDK9.0.302 Release solution 0 error（9 条 NU1900 为网络不可达漏洞索引提示）、几何行为 6/6、双主题 RenderHarness 多尺寸及大小窗回环 `render-qa OK`、XAML/source/diff 校验通过。修复提交 `48727c13`，详情与 SHA：[修正证据](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏/合成验证不代表 Playnite 真实窗口或物理 DPI；保留原有未跟踪 TRX/TestResults。之后 S05-08、S06-01 已验收并推送，S06-02 已完成等价能力审计并准入 READY。
+三张宿主截图显示首轮布局修复仍遗留根布局裁切、表格高度未扣页面工具区，以及窗口放大时沿用短视口的问题。已修正存档历史、路径候选、任务队列的高度预算和根滚动布局。SDK9.0.302 Release solution 0 error（9 条 NU1900 为网络不可达漏洞索引提示）、几何行为 6/6、双主题 RenderHarness 多尺寸及大小窗回环 `render-qa OK`、XAML/source/diff 校验通过。修复提交 `48727c13`，详情与 SHA：[修正证据](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏/合成验证不代表 Playnite 真实窗口或物理 DPI；保留原有未跟踪 TRX/TestResults。之后 S05-08、S06-01 与 S06-02 已验收并推送，S06-03 已完成等价能力审计并准入 READY。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 
@@ -10,9 +10,11 @@
 
 提交 `dc696fb0` 加入维护页情景比较的取消入口、10,000 版本硬上限和结束前版本/有效策略重验；超限明确拒绝，过期返回空结果并提示重算，不触碰清理 Apply。SDK9 Worker 29/29、维护页 Light/Dark 2/2、Release solution 0 error。详情、TRX 和构建边界：[S05-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。本机没有 SDK8.0.423；真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验。
 
-## 2026-10-21 Round4 S06-01 已完成；S06-02 已准入
+## 2026-10-21 Round4 S06-01/S06-02 已验收；S06-03 已准入
 
-`40a82b15` 已提交并推送 S06-01 有界清单契约；SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error，契约行为 4/4，源码护栏通过。S06-02 审计确认版本/媒体/任务/诊断页没有等价入口，使用原有 `BackupId`、`MediaId`、`TaskId` 和 Worker `findings.finding_id` 主键。入口按确认后添加引用，不修改源业务状态；审计：[S06-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-02/AUDIT.md)。下一步实现详情入口并做定向行为和 XAML 验证。
+`40a82b15` 完成 S06-01 有界清单契约；`85400645` 为存档版本、媒体、任务和校验问题详情接入确认后保存稳定引用的待办入口。Release solution `0 warning/0 error`，Playnite `8/8`、Worker `2/2`，source validation 通过，WPF 静态审查 `0 errors`。完整证据：[S06-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。真实 Playnite 未运行；现有 CEF/权限边界未重试或绕过。
+
+S06-03 审计确认最近访问、筛选预设、校验 triage 和各页面队列不是异构人工清单。准入 READY：新增清单浏览、键盘搜索/分组/重排、单项及确认批量移除；引用状态需区分已确认失效与未检查。审计：[S06-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-03/AUDIT.md)。
 
 ## 历史：2026-10-21 Round4 S05-03 至 S05-05 已验收
 
