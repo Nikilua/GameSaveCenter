@@ -1036,6 +1036,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string TaskReconcileSummary { get => taskReconcileSummary; private set => SetValue(ref taskReconcileSummary, value); }
         public StorageAnalysisDto StorageAnalysis { get => storageAnalysis; private set => SetValue(ref storageAnalysis, value ?? new StorageAnalysisDto()); }
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
+        public RetentionScenarioDraft RetentionScenarioInput { get; } = new RetentionScenarioDraft();
         public LocalMirrorStatusDto LocalMirrorStatus { get => localMirrorStatus; private set => SetValue(ref localMirrorStatus, value ?? new LocalMirrorStatusDto()); }
         public string GameSearchText
         {

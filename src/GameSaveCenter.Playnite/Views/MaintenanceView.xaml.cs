@@ -456,6 +456,7 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceRetentionDemoMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1;
             MaintenanceStorageDemoMetrics.Columns = width >= 720 ? 3 : 1;
             MaintenanceRetentionDemoSimulationMetrics.Columns = width >= 720 ? 2 : 1;
+            MaintenanceRetentionScenarioInputs.Columns = width >= 980 ? 3 : width >= 620 ? 2 : 1;
             MaintenanceRetentionMetrics.Columns = width >= 720 ? 3 : width >= 480 ? 2 : 1;
             MaintenanceStorageMetrics.Columns = width >= 900 ? 4 : width >= 620 ? 2 : 1;
             MaintenanceStorageTrendPanel.Columns = width >= 720 ? 3 : 1;

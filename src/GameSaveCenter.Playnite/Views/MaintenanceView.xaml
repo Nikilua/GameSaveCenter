@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
              xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
+             xmlns:vm="clr-namespace:GameSaveCenter.Playnite.ViewModels"
              xmlns:contracts="clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts"
              FontFamily="{DynamicResource GscUiFontFamily}"
              Foreground="{DynamicResource GscPrimaryTextBrush}"
@@ -15,6 +16,14 @@
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/>
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="MaintenanceRetentionFieldError" TargetType="TextBlock" BasedOn="{StaticResource GscFormFieldHelper}">
+                <Setter Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
+                <Setter Property="Margin" Value="0,4,0,0"/>
+            </Style>
+            <Style x:Key="MaintenanceRetentionNumericInput" TargetType="TextBox" BasedOn="{StaticResource GscNumericFieldInput}">
+                <Setter Property="Width" Value="140"/>
+                <Setter Property="AutomationProperties.IsRequiredForForm" Value="True"/>
+            </Style>
 <Style x:Key="MaintenanceDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"><Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
             </Style>
             <Style x:Key="MaintenanceLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="TextAlignment" Value="Left"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
@@ -820,6 +829,65 @@
                                 <StackPanel><TextBlock Text="安全边界" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="以下对象不会进入候选清理。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><StackPanel Margin="0,14,0,0"><Grid Margin="0,4"><TextBlock Text="锁定版本" Style="{DynamicResource GscBodyStyle}"/><TextBlock Text="永不清理" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right" Foreground="{DynamicResource GscSuccessBrush}"/></Grid><Border Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,7"/><Grid Margin="0,4"><TextBlock Text="健康恢复点" Style="{DynamicResource GscBodyStyle}"/><TextBlock Text="永不清理" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right" Foreground="{DynamicResource GscSuccessBrush}"/></Grid><Border Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,7"/><Grid Margin="0,4"><TextBlock Text="PreRestore 快照" Style="{DynamicResource GscBodyStyle}"/><TextBlock Text="永不清理" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right" Foreground="{DynamicResource GscSuccessBrush}"/></Grid><Border Height="1" Background="{DynamicResource GscDividerBrush}" Margin="0,7"/><Grid Margin="0,4"><TextBlock Text="备份根目录外文件" Style="{DynamicResource GscBodyStyle}"/><TextBlock Text="自动跳过" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right" Foreground="{DynamicResource GscSuccessBrush}"/></Grid></StackPanel></StackPanel>
                             </Border>
                         </Grid>
+                        <Border x:Name="MaintenanceRetentionScenarioCard" Style="{DynamicResource GscReadingCardStyle}" Padding="18" Margin="0,14,0,0" AutomationProperties.Name="保留策略情景输入">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel MinWidth="0">
+                                        <TextBlock Text="保留策略情景参数" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                        <TextBlock Text="输入一组候选保留规则与 30 天增长范围，供后续只读比较使用。当前只接收临时假设，不保存策略或执行清理。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" Style="{DynamicResource GscRedesignContextPill}" Padding="8,3" VerticalAlignment="Top">
+                                        <TextBlock Text="仅当前会话" AutomationProperties.Name="情景参数仅当前会话有效"/>
+                                    </Border>
+                                </Grid>
+                                <UniformGrid x:Name="MaintenanceRetentionScenarioInputs" Columns="3" Margin="0,14,0,0">
+                                    <StackPanel Margin="0,0,10,10">
+                                        <TextBlock Text="全量保留 · 小时" Style="{StaticResource GscFormFieldLabel}"/>
+                                        <TextBox x:Name="RetentionScenarioKeepAllForHoursInput" Style="{StaticResource MaintenanceRetentionNumericInput}" HorizontalAlignment="Left" ToolTip="0–876000 小时；不写入当前游戏或策略模板。" AutomationProperties.Name="情景全量保留小时" AutomationProperties.HelpText="候选策略全量保留窗口，0 到 876000 小时。">
+                                            <TextBox.Text><Binding Path="RetentionScenarioInput.KeepAllForHours" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="{x:Static vm:RetentionScenarioDraft.MaximumKeepAllForHours}"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                        </TextBox>
+                                        <TextBlock Text="{Binding ElementName=RetentionScenarioKeepAllForHoursInput, Path=(Validation.Errors)[0].ErrorContent, FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceRetentionFieldError}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=RetentionScenarioKeepAllForHoursInput, Path=(Validation.HasError)}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,10">
+                                        <TextBlock Text="每日保留 · 天" Style="{StaticResource GscFormFieldLabel}"/>
+                                        <TextBox x:Name="RetentionScenarioKeepDailyDaysInput" Style="{StaticResource MaintenanceRetentionNumericInput}" HorizontalAlignment="Left" ToolTip="0–36500 天；最长 100 年，避免超出规划器时间范围。" AutomationProperties.Name="情景每日保留天数" AutomationProperties.HelpText="候选策略每日保留窗口，0 到 36500 天。">
+                                            <TextBox.Text><Binding Path="RetentionScenarioInput.KeepDailyDays" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="{x:Static vm:RetentionScenarioDraft.MaximumKeepDailyDays}"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                        </TextBox>
+                                        <TextBlock x:Name="RetentionScenarioKeepDailyDaysError" Text="{Binding ElementName=RetentionScenarioKeepDailyDaysInput, Path=(Validation.Errors)[0].ErrorContent, FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceRetentionFieldError}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=RetentionScenarioKeepDailyDaysInput, Path=(Validation.HasError)}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,10">
+                                        <TextBlock Text="每周保留 · 周" Style="{StaticResource GscFormFieldLabel}"/>
+                                        <TextBox x:Name="RetentionScenarioKeepWeeklyWeeksInput" Style="{StaticResource MaintenanceRetentionNumericInput}" HorizontalAlignment="Left" ToolTip="0–5200 周；最长 100 年，避免超出规划器时间范围。" AutomationProperties.Name="情景每周保留周数" AutomationProperties.HelpText="候选策略每周保留窗口，0 到 5200 周。">
+                                            <TextBox.Text><Binding Path="RetentionScenarioInput.KeepWeeklyWeeks" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="{x:Static vm:RetentionScenarioDraft.MaximumKeepWeeklyWeeks}"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                        </TextBox>
+                                        <TextBlock Text="{Binding ElementName=RetentionScenarioKeepWeeklyWeeksInput, Path=(Validation.Errors)[0].ErrorContent, FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceRetentionFieldError}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=RetentionScenarioKeepWeeklyWeeksInput, Path=(Validation.HasError)}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <TextBlock Text="每月保留 · 月" Style="{StaticResource GscFormFieldLabel}"/>
+                                        <TextBox x:Name="RetentionScenarioKeepMonthlyMonthsInput" Style="{StaticResource MaintenanceRetentionNumericInput}" HorizontalAlignment="Left" ToolTip="0–1200 个月；最长 100 年，避免超出规划器时间范围。" AutomationProperties.Name="情景每月保留月数" AutomationProperties.HelpText="候选策略每月保留窗口，0 到 1200 个月。">
+                                            <TextBox.Text><Binding Path="RetentionScenarioInput.KeepMonthlyMonths" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="{x:Static vm:RetentionScenarioDraft.MaximumKeepMonthlyMonths}"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                        </TextBox>
+                                        <TextBlock Text="{Binding ElementName=RetentionScenarioKeepMonthlyMonthsInput, Path=(Validation.Errors)[0].ErrorContent, FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceRetentionFieldError}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=RetentionScenarioKeepMonthlyMonthsInput, Path=(Validation.HasError)}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <TextBlock Text="增长下限 · MiB/30 天" Style="{StaticResource GscFormFieldLabel}"/>
+                                        <TextBox x:Name="RetentionScenarioGrowthMinimumInput" Style="{StaticResource MaintenanceRetentionNumericInput}" HorizontalAlignment="Left" ToolTip="填写每 30 天新增的逻辑备份体积假设，范围 0–1000000 MiB。" AutomationProperties.Name="情景增长下限 MiB 每 30 天" AutomationProperties.HelpText="用户输入的增长下限假设，不是磁盘实测。">
+                                            <TextBox.Text><Binding Path="RetentionScenarioInput.GrowthMinimumMiBPer30Days" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="{x:Static vm:RetentionScenarioDraft.MaximumGrowthMiBPer30Days}"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                        </TextBox>
+                                        <TextBlock Text="{Binding ElementName=RetentionScenarioGrowthMinimumInput, Path=(Validation.Errors)[0].ErrorContent, FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceRetentionFieldError}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=RetentionScenarioGrowthMinimumInput, Path=(Validation.HasError)}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,0">
+                                        <TextBlock Text="增长上限 · MiB/30 天" Style="{StaticResource GscFormFieldLabel}"/>
+                                        <TextBox x:Name="RetentionScenarioGrowthMaximumInput" Style="{StaticResource MaintenanceRetentionNumericInput}" HorizontalAlignment="Left" ToolTip="上限必须不小于下限；填写每 30 天新增的逻辑备份体积假设。" AutomationProperties.Name="情景增长上限 MiB 每 30 天" AutomationProperties.HelpText="用户输入的增长上限假设，不是磁盘实测。">
+                                            <TextBox.Text><Binding Path="RetentionScenarioInput.GrowthMaximumMiBPer30Days" UpdateSourceTrigger="LostFocus" ValidatesOnExceptions="True" ValidatesOnNotifyDataErrors="True" NotifyOnValidationError="True"><Binding.ValidationRules><infra:IntegerRangeValidationRule Minimum="0" Maximum="{x:Static vm:RetentionScenarioDraft.MaximumGrowthMiBPer30Days}"/></Binding.ValidationRules></Binding></TextBox.Text>
+                                        </TextBox>
+                                        <TextBlock x:Name="RetentionScenarioGrowthMaximumError" Text="{Binding ElementName=RetentionScenarioGrowthMaximumInput, Path=(Validation.Errors)[0].ErrorContent, FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceRetentionFieldError}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=RetentionScenarioGrowthMaximumInput, Path=(Validation.HasError)}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                                    </StackPanel>
+                                </UniformGrid>
+                                <TextBlock Text="增长范围是用户假设，单位为逻辑备份体积；不代表目录实测或磁盘预测。规则沿用现有全量、每日、每周和每月保留类型；本批只收集候选输入，不写入当前策略、模板或设置，也不调用清理。" Style="{DynamicResource GscDiagnosticHintText}" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
                         <Border Style="{DynamicResource GscReadingCardStyle}" Padding="18" Visibility="Collapsed">
                             <StackPanel>
                                 <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
