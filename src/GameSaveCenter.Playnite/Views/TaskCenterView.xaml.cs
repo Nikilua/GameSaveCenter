@@ -15,7 +15,9 @@ namespace GameSaveCenter.Playnite.Views
     public partial class TaskCenterView : UserControl
     {
         private bool isApplyingLayout;
+        private double responsiveWidth;
         private double responsiveHeight;
+        private double lastRequestedHeight;
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private readonly WrapPanelRowGapController taskFilterPresetRowGap;
         private bool taskInspectorOpen;
@@ -31,6 +33,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             taskFilterPresetRowGap = new WrapPanelRowGapController(TaskFilterPresetRow);
+            TaskPageScrollViewer.ScrollChanged += OnTaskPageScrollChanged;
             DataGridScrollDiagnostics.Attach(TaskGrid, "TaskGrid", GetScrollDiagnosticContext);
             TaskGrid.Loaded += OnTaskGridLoaded;
             TaskGrid.Unloaded += OnTaskGridUnloaded;
@@ -227,7 +230,22 @@ namespace GameSaveCenter.Playnite.Views
             if (isApplyingLayout || !IsLoaded) return;
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
-                responsiveHeight > 0 ? responsiveHeight : TaskWorkspaceLayout.ActualHeight);
+                lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : TaskWorkspaceLayout.ActualHeight);
+        }
+
+        private void OnTaskPageScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (isApplyingLayout || !IsLoaded || TaskPageScrollViewer.ViewportHeight <= 0)
+                return;
+
+            if (Math.Abs(e.ViewportHeightChange) < 0.1
+                && Math.Abs(e.ViewportWidthChange) < 0.1
+                && Math.Abs(e.ExtentHeightChange) < 0.1)
+                return;
+
+            ApplyResponsiveLayout(
+                responsiveWidth > 0 ? responsiveWidth : TaskPageScrollSurface.ActualWidth,
+                TaskPageScrollViewer.ViewportHeight);
         }
 
         public Border TaskSummaryPanelElement => TaskSummaryPanel;
@@ -240,17 +258,21 @@ namespace GameSaveCenter.Playnite.Views
             isApplyingLayout = true;
             try
             {
+                responsiveWidth = width;
                 const double compactInspectorMaxHeight = 136d;
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var stack = detailBreakpoint.Evaluate(width);
-                // The shell supplies the current PageHost viewport. The page viewer's
-                // ViewportHeight may still reflect the previous layout during resize,
-                // so it must not drive the next table size.
-                var availableHeight = Math.Max(0, height > 0
-                    ? height
-                    : TaskPageScrollViewer.ViewportHeight > 0
-                        ? TaskPageScrollViewer.ViewportHeight
-                        : ActualHeight);
+                // Use the shell size for the first pass. The page ScrollViewer reports its
+                // settled viewport after measure and refines this value without feeding the
+                // growing content extent back into the table budget.
+                var previousRequestedHeight = lastRequestedHeight;
+                var requestedHeight = height > 0 ? height : lastRequestedHeight > 0 ? lastRequestedHeight : ActualHeight;
+                if (height > 0)
+                    lastRequestedHeight = height;
+                var availableHeight = WorkspaceTableViewportPolicy.ResolvePageViewportHeight(
+                    requestedHeight,
+                    TaskPageScrollViewer.ViewportHeight,
+                    previousRequestedHeight);
                 responsiveHeight = availableHeight;
                 if (wasWideDetailLayout && stack
                     && TaskGrid.SelectedItem != null
@@ -417,7 +439,23 @@ namespace GameSaveCenter.Playnite.Views
                 // Keep only the virtualized queue finite. The page ScrollViewer measures
                 // the full summary, queue, and inspector naturally; assigning a cached
                 // height to their shared root could clip those later sections.
-                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(620d, availableHeight * 0.68d));
+                var queueChromeHeight = WorkspaceTableViewportPolicy.MeasureChromeHeight(
+                    TaskQueuePanel.ActualHeight,
+                    TaskGrid.ActualHeight,
+                    fallbackHeight: 148d);
+                var pageChromeHeight = TaskWorkspaceLayout.RowDefinitions[0].ActualHeight
+                    + TaskWorkspaceLayout.RowDefinitions[1].ActualHeight
+                    + TaskWorkspaceLayout.RowDefinitions[2].ActualHeight
+                    + queueChromeHeight;
+                var stackedInspectorHeight = showInspector && stack
+                    ? compactInspectorMaxHeight + TaskDetailScrollViewer.Margin.Top + TaskDetailScrollViewer.Margin.Bottom
+                    : 0;
+                var tableBudget = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                    availableHeight,
+                    tableMinHeight,
+                    pageChromeHeight,
+                    stackedInspectorHeight);
+                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(620d, tableBudget));
                 TaskGrid.Height = tableViewportHeight;
                 TaskGrid.MaxHeight = tableViewportHeight;
             }
@@ -433,7 +471,7 @@ namespace GameSaveCenter.Playnite.Views
             if (IsLoaded)
                 ApplyResponsiveLayout(
                     TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
-                    responsiveHeight > 0 ? responsiveHeight : TaskWorkspaceLayout.ActualHeight);
+                    lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : TaskWorkspaceLayout.ActualHeight);
         }
 
         private void OnClearTaskFiltersClick(object sender, RoutedEventArgs e)
@@ -526,7 +564,7 @@ namespace GameSaveCenter.Playnite.Views
             taskInspectorOpen = !taskInspectorOpen;
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
-                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+                lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(taskInspectorOpen ? TaskDetailScrollViewer : TaskCompactDetailsButton);
         }
 
@@ -538,7 +576,7 @@ namespace GameSaveCenter.Playnite.Views
             taskInspectorOpen = false;
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
-                responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+                lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(TaskCompactDetailsButton);
             e.Handled = true;
         }

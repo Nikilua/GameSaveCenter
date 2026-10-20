@@ -1632,7 +1632,6 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid x:Name=\"TaskPageScrollSurface\"", task);
         Assert.DoesNotContain("ScrollViewer x:Name=\"TaskPageScrollSurface\"", task);
         Assert.Contains("x:Name=\"TaskPageScrollViewer\"", task);
-        Assert.Contains("Math.Min(620d, availableHeight * 0.68d)", taskCode);
         Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
         Assert.Contains("TaskGrid.Height = tableViewportHeight", taskCode);
         Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight", taskCode);
@@ -4466,7 +4465,6 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("CancelTaskCommand", File.ReadAllText(taskPath));
 
         var taskCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
-        Assert.Contains("Math.Min(620d, availableHeight * 0.68d)", taskCode);
         Assert.Contains("TaskGrid.Height = tableViewportHeight;", taskCode);
         Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight;", taskCode);
         Assert.Contains("TaskPageScrollViewer", File.ReadAllText(taskPath));

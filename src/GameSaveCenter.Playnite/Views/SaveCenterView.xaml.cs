@@ -12,6 +12,7 @@ namespace GameSaveCenter.Playnite.Views
     {
         private double responsiveWidth;
         private double responsiveHeight;
+        private double lastRequestedHeight;
         private bool isApplyingLayout;
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool historyInspectorOpen;
@@ -34,6 +35,8 @@ namespace GameSaveCenter.Playnite.Views
             historyActionRowGap = new WrapPanelRowGapController(SaveHistorySummaryActions);
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
+            SaveHistoryPageScrollViewer.ScrollChanged += PageScrollViewerChanged;
+            SaveCandidatePageScrollViewer.ScrollChanged += PageScrollViewerChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             DataContextChanged += OnDataContextChanged;
@@ -155,7 +158,21 @@ namespace GameSaveCenter.Playnite.Views
             if (isApplyingLayout || !IsLoaded || responsiveWidth <= 0 || responsiveHeight <= 0)
                 return;
 
-            ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+            ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+        }
+
+        private void PageScrollViewerChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (isApplyingLayout || !IsLoaded || responsiveWidth <= 0
+                || !(sender is ScrollViewer viewer) || !viewer.IsVisible || viewer.ViewportHeight <= 0)
+                return;
+
+            if (Math.Abs(e.ViewportHeightChange) < 0.1
+                && Math.Abs(e.ViewportWidthChange) < 0.1
+                && Math.Abs(e.ExtentHeightChange) < 0.1)
+                return;
+
+            ApplyResponsiveLayout(responsiveWidth, viewer.ViewportHeight);
         }
 
         public void ApplyResponsiveLayout(double width, double height)
@@ -167,20 +184,36 @@ namespace GameSaveCenter.Playnite.Views
             try
             {
                 responsiveWidth = width;
-                // The shell supplies the current PageHost viewport. A page ScrollViewer's
-                // ViewportHeight can still describe the previous layout pass while a tab,
-                // host size, or compact inspector is changing; using it here can freeze
-                // the whole page at a stale height and clip the content below the table.
-                var pageViewportHeight = height > 0
-                    ? height
-                    : SaveCandidatePageScrollViewer.IsVisible
-                        ? SaveCandidatePageScrollViewer.ViewportHeight
-                        : SaveHistoryPageScrollViewer.ViewportHeight;
-                pageViewportHeight = Math.Max(0, pageViewportHeight);
+                // The shell gives the first-pass PageHost size. Once WPF measures the
+                // selected tab, its ScrollViewer reports the settled viewport and this
+                // method runs again with that value.
+                var measuredViewportHeight = SaveCandidatePageScrollViewer.IsVisible
+                    ? SaveCandidatePageScrollViewer.ViewportHeight
+                    : SaveHistoryPageScrollViewer.ViewportHeight;
+                var previousRequestedHeight = lastRequestedHeight;
+                var requestedHeight = height > 0 ? height : lastRequestedHeight;
+                if (height > 0)
+                    lastRequestedHeight = height;
+                var pageViewportHeight = WorkspaceTableViewportPolicy.ResolvePageViewportHeight(
+                    requestedHeight,
+                    measuredViewportHeight,
+                    previousRequestedHeight);
                 responsiveHeight = pageViewportHeight;
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 SaveHistoryGrid.MinHeight = tableMinHeight;
                 SaveCandidateGrid.MinHeight = tableMinHeight;
+                var historyPageBudgetHeight = Math.Max(0,
+                    pageViewportHeight - SaveHistoryLayout.Margin.Top - SaveHistoryLayout.Margin.Bottom);
+                var historyFrameChromeHeight = GetTableFrameChromeHeight(
+                    SaveHistoryTableLayout,
+                    SaveHistoryTableFrame,
+                    tableRow: 1,
+                    fallbackHeight: 168d);
+                var candidateFrameChromeHeight = GetTableFrameChromeHeight(
+                    SaveCandidateTableLayout,
+                    SaveCandidateTableFrame,
+                    tableRow: 0,
+                    fallbackHeight: 52d);
                 // Demo keeps the inspector beside the main surface at the normal
                 // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
                 // Playnite host into the drawer layout even when there was enough
@@ -341,7 +374,15 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
             SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var historyInspectorHeight = Math.Min(220, Math.Max(0, pageViewportHeight * 0.30));
-            var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, pageViewportHeight * 0.68d));
+            var historyInspectorBudget = showHistoryInspector && compact
+                ? historyInspectorHeight + SaveHistoryActionsScrollViewer.Margin.Top + SaveHistoryActionsScrollViewer.Margin.Bottom
+                : 0;
+            var historyTableBudget = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                historyPageBudgetHeight,
+                tableMinHeight,
+                historyFrameChromeHeight,
+                historyInspectorBudget);
+            var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, historyTableBudget));
             SaveHistoryGrid.Height = tableViewportHeight;
             SaveHistoryGrid.MaxHeight = tableViewportHeight;
             SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector
@@ -357,7 +398,18 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
             SaveCandidateInspectorScrollViewer.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var candidateInspectorHeight = Math.Min(360, Math.Max(0, pageViewportHeight * 0.30));
-            var candidateTableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, pageViewportHeight * 0.68d));
+            var candidateTopChromeHeight = SaveCandidatePageSurface.RowDefinitions[0].ActualHeight
+                + SaveCandidatePageSurface.RowDefinitions[1].ActualHeight
+                + SaveCandidatePageSurface.RowDefinitions[2].ActualHeight;
+            var candidateInspectorBudget = showCandidateInspector && compact
+                ? candidateInspectorHeight + SaveCandidateInspectorScrollViewer.Margin.Top + SaveCandidateInspectorScrollViewer.Margin.Bottom
+                : 0;
+            var candidateTableBudget = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                pageViewportHeight,
+                tableMinHeight,
+                candidateTopChromeHeight + candidateFrameChromeHeight,
+                candidateInspectorBudget);
+            var candidateTableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, candidateTableBudget));
             SaveCandidateGrid.Height = candidateTableViewportHeight;
             SaveCandidateGrid.MaxHeight = candidateTableViewportHeight;
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector
@@ -413,25 +465,43 @@ namespace GameSaveCenter.Playnite.Views
             }
         }
 
+        private static double GetTableFrameChromeHeight(
+            Grid tableLayout,
+            Border tableFrame,
+            int tableRow,
+            double fallbackHeight)
+        {
+            var fixedRowsHeight = 0d;
+            for (var index = 0; index < tableLayout.RowDefinitions.Count; index++)
+            {
+                if (index != tableRow)
+                    fixedRowsHeight += tableLayout.RowDefinitions[index].ActualHeight;
+            }
+
+            fixedRowsHeight += tableFrame.Padding.Top + tableFrame.Padding.Bottom
+                + tableFrame.BorderThickness.Top + tableFrame.BorderThickness.Bottom;
+            return fixedRowsHeight > 0 ? fixedRowsHeight : Math.Max(0, fallbackHeight);
+        }
+
         private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             historyInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
-                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
         }
 
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             candidateInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
-                ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
         }
 
         private void OnSaveHistoryCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (SaveHistoryGrid.SelectedItem == null) return;
             historyInspectorOpen = !historyInspectorOpen;
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(historyInspectorOpen ? SaveHistoryActionsScrollViewer : SaveHistoryCompactDetailsButton);
         }
 
@@ -439,7 +509,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (SaveCandidateGrid.SelectedItem == null) return;
             candidateInspectorOpen = !candidateInspectorOpen;
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(candidateInspectorOpen ? SaveCandidateInspectorScrollViewer : SaveCandidateCompactDetailsButton);
         }
 
@@ -455,7 +525,7 @@ namespace GameSaveCenter.Playnite.Views
             else
                 return;
 
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, responsiveHeight > 0 ? responsiveHeight : ActualHeight);
+            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(ReferenceEquals(sender, SaveHistoryActionsScrollViewer)
                 ? SaveHistoryCompactDetailsButton
                 : SaveCandidateCompactDetailsButton);

@@ -20,3 +20,19 @@
 - 构建验证对应基线提交 `3ef50cc27d80b4ddf3ad342c602837db8e143787` 的工作树修改；提交前的构建摘要记录 `workingTreeClean: false`，改动范围为本修复的四个源码/测试文件及保留的用户 TRX/TestResults。此处没有记录 CI 通过，也没有为此触发 CI。
 
 STA 几何测试检查 WPF 实际测量边界、内外 ScrollViewer 位置及缩小宿主后到达详情末端的能力；它是离屏控件证据，不代表真实 Playnite 窗口或物理 DPI 已复验。此次没有使用模拟截图作为真实屏幕证据。用户提供的截图仅作为缺陷复现线索。
+
+## 2026-10-21 用户截图复核：视口预算与内容裁切的后续修正
+
+用户随后提供存档历史、任务队列和路径候选的宿主截图，确认 10 月 20 日修复仍有可见问题。复查发现遗漏两点：三个整页根 Grid 仍设置 `ClipToBounds`，且表格仍按页面视口的 `68%` 分配，没有从高度中扣除筛选/摘要/表头/详情区；视口测量值也可能滞后一轮，缩小后再放大会把表格留在短窗高度。
+
+- 移除 `SaveHistoryLayout`、`SaveCandidatePageSurface`、`TaskPageScrollSurface` 的根裁切；保留 `SaveTableFrame` / `TaskTableFrame` 的局部裁切，使内层表格滚动条留在卡片内。
+- 历史表、路径候选和任务队列都从当前宿主与已测 Page ScrollViewer 视口取得预算，减去当前页面工具区、表格框架与堆叠详情区后再给虚拟化表格分配高度；详情和其余页面内容由外层页面滚动承载。
+- 宿主变高时先接受新的宿主高度，避免较小旧视口阻止恢复；缩小时保守使用宿主/已测视口较小值，布局稳定后让实测视口修正。保留四行可读下限及现有表内滚动。
+
+验证：SDK `9.0.302` Release 全解决方案 `0 error`（9 条 `NU1900` 均为 NuGet 漏洞索引因网络不可达；依赖从缓存还原）；布局几何与端点行为 `6/6`；25 个 XAML 文件结构检查通过；`scripts/validate-source.py` 与 `git diff --check` 通过。RenderHarness 双主题、多尺寸、`2560x1440 → 1100x720 → 2560x1440` 窗口恢复矩阵为 `render-qa OK`，无 `PROBLEM`。构建、TRX、离屏报告和 SHA-256 见本目录的 `build/follow-up-release-sdk9-console.txt`、`tests/scroll-layout-follow-up.trx`、`render/render-qa-follow-up.txt`、`render/render-build-sdk9.txt`。
+
+- 构建日志 SHA-256：`2978B6F7FB25859382019071E04496410B2DDBB3D5EA6891125D7A9793CD854E`。
+- 几何 TRX SHA-256：`7A77368B35287589E68944E8E077889296D852ECFCF896C983431557100F5046`。
+- RenderHarness 报告 SHA-256：`18EEE0EDC4B4DA7077A56FDEAB5253DB998FE3FE1E856DF2A87C104E576C51BE`；RenderHarness 构建日志 SHA-256：`8FF262CE9455C5A5DBA93C36623306A782FB3964C297C14BE3AC40D297EFE9ED`。
+
+该机器未安装仓库 `global.json` 锁定的 SDK `8.0.423`；此次用 SDK `9.0.302` 从仓库目录外构建，未改 SDK 锁定。RenderHarness 与 WPF 行为测试使用合成数据、逻辑 DPI `1.00`，只证明受控几何/内容可达，不是用户真实屏幕；没有重新启动 Playnite。真实 Playnite 窗口和物理 DPI 仍待宿主复验。

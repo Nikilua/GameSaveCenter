@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 页面滚动视口约束（2026-10-21）
+
+表格位于页面 ScrollViewer 时，页面根容器不能 `ClipToBounds`；限高只放在虚拟化表格/局部表格框架。表格视口预算须先扣掉页面工具栏、表格自身标题/表头和堆叠详情，再保留四行可读下限；剩余详情由页面外层滚动承载。宿主缩放时不能只相信上次 `ActualHeight` 或 `ViewportHeight`：缩小时按当前宿主和实测视口的较小值，宿主变高时先接受新请求再让稳定测量收敛；测试须覆盖缩小后恢复大窗。证据与边界见 [滚动视口复核](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。
+
 ## 2026-10-21 Round4 S05-08 情景性能验证已准入
 
 - 审计基线 `479a03c3`：`CompareScenarioAsync` 已用一条 SQLite statement snapshot、同一 UTC 截止时间和 Worker `CancellationToken`；增长假设不参与策略/清理；容量未知由 S05-03 `StorageAnalysisService` 独立说明，统计 DTO 没有清理预览句柄。现有测试覆盖 25–75 MiB，StorageAnalysis 另有未知容量行为测试。

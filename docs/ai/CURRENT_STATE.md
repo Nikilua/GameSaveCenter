@@ -4,6 +4,8 @@
 
 Round4 S05-03 至 S05-07 已验收；S05-08 已完成能力审计并准入 READY：维护页情景比较缺少用户取消、版本数硬上限和计算期间数据变化过期检测。已有未知容量单独显示、增长假设与清理执行分离将复用。保留用户原有未跟踪 TRX/TestResults。
 
+2026-10-21 用户补充的宿主截图确认页面滚动首轮修复仍会裁掉存档历史/候选路径/任务队列下方内容。后续已移除三处根布局裁切，按表格/详情剩余视口预算限高，并处理窗口由小放大时的旧视口值。SDK9.0.302 Release solution `0 error`（NU1900 为网络无法取漏洞索引），几何行为 `6/6`，RenderHarness 双主题恢复矩阵 `render-qa OK`，XAML/source/diff 检查通过。证据：[滚动视口后续修正](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏数据并非真实 Playnite 屏幕，宿主和物理 DPI 未验；随后继续 S05-08。
+
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
 存档历史/路径候选、任务队列与详情区域曾以旧布局测量值固定整页高度，造成内容被裁切而内层滚动仍可操作。现在整页根布局自然测量，PageHost 外层承担额外滚动，表格和详情保留有限内部视口；SDK8 Release solution `0 warning / 0 error`，几何回归 `5/5`，静态契约 `4 pass / 1 historical skip`。证据：[页面滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。测试为 STA/离屏 WPF；真实 Playnite 窗口和物理 DPI 未验证。后续已完成 S05-03 至 S05-05。

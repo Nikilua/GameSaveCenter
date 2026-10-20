@@ -1,0 +1,33 @@
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Contracts -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Core -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Worker -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_frkr5acl_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Core.Tests -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Worker.Tests -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite.HostAuditSeeder -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> D:\workplace\github\GameSaveCenter\.tmp\scroll-layout-user-fix\full-solution\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_frkr5acl_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+    9 个警告
+    0 个错误
+
+已用时间 00:00:32.82

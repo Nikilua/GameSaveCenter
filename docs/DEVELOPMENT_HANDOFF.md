@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-21 用户截图滚动问题已复核并修正
+
+三张宿主截图显示首轮布局修复仍遗留根布局裁切、表格高度未扣页面工具区，以及窗口放大时沿用短视口的问题。已修正存档历史、路径候选、任务队列的高度预算和根滚动布局。SDK9.0.302 Release solution 0 error（9 条 NU1900 为网络不可达漏洞索引提示）、几何行为 6/6、双主题 RenderHarness 多尺寸及大小窗回环 `render-qa OK`、XAML/source/diff 校验通过。详情与 SHA：[修正证据](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏/合成验证不代表 Playnite 真实窗口或物理 DPI；保留原有未跟踪 TRX/TestResults。当前随后继续 S05-08。
+
 ## 2026-10-21 Round4 S05-08 已审计准入，当前实施范围
 
 提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 为维护中心保留策略页增加有界命名情景设置；支持选择载入、保存/更新、复制、重命名、删除和最近成功快照时间。它与生效策略分离；结果与清理预览句柄不缓存。旧设置缺字段仍可读取，便携设置包含命名情景。精确提交 SDK `8.0.423` Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation/diff check 通过。完整证据：[S05-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验；保留旧 Round3 TRX/TestResults。

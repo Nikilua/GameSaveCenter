@@ -88,9 +88,12 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             saveHost.UpdateLayout();
             ResizeHost(saveHost, 900, 600, () => saveView.ApplyResponsiveLayout(900, 600));
 
-            Assert.Equal(Math.Max(historyGrid.MinHeight, Math.Min(560d, 600d * 0.68d)), historyGrid.Height, 1);
+            Assert.True(historyGrid.Height >= historyGrid.MinHeight && historyGrid.Height <= 560d);
             AssertPageContentMeasuredWithinHost(GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer"), saveHost);
             AssertTableScrollsInsideFrame(historyGrid, GetField<Border>(saveType, saveView, "SaveHistoryTableFrame"));
+            AssertContentBoundsFit(GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer"),
+                GetField<Border>(saveType, saveView, "SaveHistoryTableFrame"));
+            AssertInnerScrollCanReachEnd(historyGrid);
             AssertPageCanReachEnd(GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer"));
 
             var tabs = FindVisualDescendant<TabControl>(saveView);
@@ -101,10 +104,12 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             tabs.SelectedIndex = 1;
             saveView.ApplyResponsiveLayout(900, 600);
             saveHost.UpdateLayout();
-            Assert.Equal(Math.Max(candidateGrid.MinHeight, Math.Min(560d, 600d * 0.68d)), candidateGrid.Height, 1);
+            Assert.True(candidateGrid.Height >= candidateGrid.MinHeight && candidateGrid.Height <= 560d);
             var candidatePage = GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer");
             AssertPageContentMeasuredWithinHost(candidatePage, saveHost);
             AssertTableScrollsInsideFrame(candidateGrid, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
+            AssertContentBoundsFit(candidatePage, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
+            AssertInnerScrollCanReachEnd(candidateGrid);
             AssertPageCanReachEnd(candidatePage);
 
             var taskView = new TaskCenterView();
@@ -118,10 +123,12 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             taskHost.UpdateLayout();
             ResizeHost(taskHost, 715, 577, () => taskView.ApplyResponsiveLayout(715, 577));
 
-            Assert.Equal(Math.Max(taskGrid.MinHeight, Math.Min(620d, 577d * 0.68d)), taskGrid.Height, 1);
+            Assert.True(taskGrid.Height >= taskGrid.MinHeight && taskGrid.Height <= 620d);
             var taskPage = GetField<ScrollViewer>(taskType, taskView, "TaskPageScrollViewer");
             AssertPageContentMeasuredWithinHost(taskPage, taskHost);
             AssertTableScrollsInsideFrame(taskGrid, GetField<Border>(taskType, taskView, "TaskTableFrame"));
+            AssertContentBoundsFit(taskPage, GetField<Border>(taskType, taskView, "TaskTableFrame"));
+            AssertInnerScrollCanReachEnd(taskGrid);
             AssertPageCanReachEnd(taskPage);
         });
     }
@@ -355,6 +362,30 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         var innerScrollViewer = FindVisualDescendant<ScrollViewer>(table);
         Assert.True(innerScrollViewer.ActualHeight <= frame.ActualHeight + 1);
         AssertWithin(innerScrollViewer, frame);
+    }
+
+    private static void AssertContentBoundsFit(ScrollViewer page, FrameworkElement descendant)
+    {
+        Assert.True(page.Content is FrameworkElement,
+            $"{page.Name} needs a framework-element content surface to measure its scroll extent.");
+        var content = (FrameworkElement)page.Content;
+        var bounds = descendant.TransformToAncestor(content)
+            .TransformBounds(new Rect(0, 0, descendant.ActualWidth, descendant.ActualHeight));
+        Assert.True(bounds.Top >= -1 && bounds.Bottom <= content.ActualHeight + 1,
+            $"{descendant.Name} bounds ({bounds}) must remain inside scroll content {content.Name} ({content.ActualWidth:0.0}x{content.ActualHeight:0.0}).");
+        Assert.True(content.ActualHeight <= page.ExtentHeight + 1,
+            $"{page.Name} extent ({page.ExtentHeight:0.0}) must include content height ({content.ActualHeight:0.0}).");
+    }
+
+    private static void AssertInnerScrollCanReachEnd(DataGrid grid)
+    {
+        var viewer = FindVisualDescendant<ScrollViewer>(grid);
+        viewer.ScrollToEnd();
+        viewer.UpdateLayout();
+        Assert.True(viewer.ScrollableHeight > 0,
+            $"{grid.Name} needs an inner scroll range for its virtualized rows.");
+        Assert.True(viewer.VerticalOffset >= viewer.ScrollableHeight - 1,
+            $"{grid.Name} inner scroll should reach its end: offset={viewer.VerticalOffset:0.0}, scrollable={viewer.ScrollableHeight:0.0}.");
     }
 
     private static void AssertInnerScrolls(FrameworkElement list)
