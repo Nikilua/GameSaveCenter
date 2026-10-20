@@ -20,6 +20,8 @@
 
 `2af5841f` 完成 S06-04：工作清单显式续接存档版本、媒体、后台任务和校验问题。Worker 提供精确 finding ID 只读查询；备份使用长度前缀 ID，媒体需索引归属游戏，任务/问题走精确对象详情。不按名称/路径猜测，不恢复旧对话框或触发原命令；缺失时显示诊断并保留移除能力。任务页返回时恢复当前会话中的原清单、选中项、搜索和分组状态。SDK9.0.302 Release solution 重编译 `0/0`，Worker `2/2`、Playnite 路由/导航 `10/10`，source validation 通过、XAML `25/25`。证据：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；未探测/绕过 CEF、ETW。原 Round3 未跟踪 TRX/TestResults 保留。
 
+S06-05 等价审计确认 `IsManuallyComplete` 只有持久字段与只读投影，没有逐项操作。READY 范围为唯一选中清单项标记/撤销，显式说明这是人工跟进状态而非备份或校验成功，持久化同时保留解析状态、ID、顺序和备注；续接或原业务命令成功/失败/取消均不自动切换。审计：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。
+
 2026-10-21 新截图回报后，`43b869d1` 将紧凑模式次要筛选/视图配置收进 disclosure，并把候选/任务详情入口移出 DataGrid 框架。SDK9 Release solution `0/0`、截图尺寸几何行为 `10/10`。表格仍须独占有限滚动框架，页面工具区需计入剩余视口预算；测试验证四行可读及页面/表内滚动都能到端点。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
 
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收

@@ -2,7 +2,7 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-08、S06-01 至 S06-04 已受控验收。S06-04 `2af5841f` 增加按稳定 ID 续接存档版本、媒体、任务和校验问题；Release solution 重编译 `0/0`、Worker `2/2`、Playnite 路由/导航 `10/10`。清单条目沿用既有持久化；任务返回快照仅保留当前会话状态。证据见 [S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；原有未跟踪 TRX/TestResults 保留。
+Round4 S05-03 至 S05-08、S06-01 至 S06-04 已受控验收。S06-04 `2af5841f` 增加按稳定 ID 续接存档版本、媒体、任务和校验问题；Release solution 重编译 `0/0`、Worker `2/2`、Playnite 路由/导航 `10/10`。清单条目沿用既有持久化；任务返回快照仅保留当前会话状态。证据见 [S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；原有未跟踪 TRX/TestResults 保留。下一项 S06-05 已审计为 READY：待实现单条可逆手动完成/撤销，并保留引用解析状态；审计见 [S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。
 
 2026-10-21 用户三张宿主截图显示表格和下方详情仍互相挤压。修复提交 `43b869d1` 将紧凑任务筛选/视图操作收进折叠区，移走表格框架内详情按钮并补充真实视口几何回归；SDK9 Release solution `0/0`、定向测试 `10/10`。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。RenderHarness 因缺少 `net472/win-x86` assets 未运行；真实 Playnite/物理 DPI 未验。
 

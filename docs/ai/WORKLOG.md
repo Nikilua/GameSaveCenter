@@ -11677,3 +11677,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - `2af5841f39a3871db3fd4e4da07b81b6a25ef3c5` 已推送：工作清单新增“续接对象”，按稳定 ID 定位存档版本、媒体、后台任务和校验问题。新增 Worker 精确 finding 只读查询，支持已解决问题。任务详情返回时恢复当前会话的原清单、条目、搜索和分组；不恢复对话框或重放业务命令。
 - SDK9.0.302 Release 全解决方案重编译 `0 warning / 0 error`；Worker `2/2`、Playnite 路由/导航 `10/10`；source validation 与 XAML `25/25`、diff check 通过。TRX、程序集哈希和限制见 [S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行。
 - 推送实现提交前后均未暂存、修改或删除用户既有 Round3 TRX 与 Playnite TestResults；只把本次两份新 TRX 复制到 S06-04 证据目录。S06-04 `.tmp` 目录在证据核对后清理。下一步按计划审计 S06-05。
+
+## 2026-10-21 Round4 S06-05 逐项处理转交等价审计
+
+- 检查 `IsManuallyComplete` 的模型克隆/持久化和 `WorklistBrowserEntry` 只读投影；当前没有唯一选中条目的修改/撤销命令。S06-04 的稳定 ID 续接已覆盖现有详情，但不是完成人工转交闭环。
+- READY 范围：手动标记/恢复单条状态，保留同项解析状态、ID、顺序与备注；明确是人工跟进而非业务成功，续接及业务成功/失败/取消不自动改写。审计证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。无 SDK8、Playnite 或设备前置依赖。
+- 审计阶段未运行构建/测试或修改产品代码。原 Round3 未跟踪 TRX/TestResults 保留。

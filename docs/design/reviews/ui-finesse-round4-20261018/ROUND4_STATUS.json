@@ -873,9 +873,14 @@
       "implementationCommit": "—",
       "controlledVerificationState": "not_run",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[等价审计](evidence/S06-05/AUDIT.md)：确认缺少可逆的单条人工完成/撤销动作；本项已准入 READY",
+      "evidence": [
+        {
+          "label": "等价审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md"
+        }
+      ],
+      "boundary": "依赖 S06-01 至 S06-04 已满足；实现须保留稳定引用与解析状态，手动标记不代表备份/校验成功，导航或业务操作结果不自动改写；无宿主依赖"
     },
     {
       "id": "S06-06",

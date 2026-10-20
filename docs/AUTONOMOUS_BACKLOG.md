@@ -35,6 +35,7 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S06-02 | IMPLEMENTED | `85400645` 为存档版本、媒体、后台任务、校验问题详情加入确认式待办入口；确认后只存稳定 ID，不执行源业务操作。SDK9 Release solution `0/0`、Playnite `8/8`、Worker `2/2`，source validation 通过。真实 Playnite 未验；证据见 Round4 S06-02。 |
 | S06-03 | IMPLEMENTED | `0fc43773` 已交付清单浏览/搜索/分组、键盘重排、确认移除和按稳定 ID 解析引用状态。SDK9 Release solution 0/0、Worker 2/2、Playnite 8/8。真实 Playnite未验；RenderHarness 因 NETSDK1047 未运行。证据见 Round4 S06-03。 |
 | S06-04 | IMPLEMENTED | `2af5841f` 已交付稳定 ID 续接存档版本、媒体、后台任务和校验问题；任务返回时恢复当前会话清单上下文。不猜名称/路径、不恢复对话框或执行命令；缺失时可移除。SDK9 Release solution 重编译 `0/0`、Worker `2/2`、Playnite `10/10`。SDK8.0.423 与真实 Playnite未验；证据见 Round4 S06-04。 |
+| S06-05 | READY | 等价审计确认仅有 `IsManuallyComplete` 字段与只读投影，没有单条可逆人工完成操作。实现范围为唯一选中项手动标记/撤销、明确不代表业务成功、保持引用状态且续接/成功/失败/取消不自动改写；依赖 S06-01 至 S06-04 已满足。审计：Round4 `evidence/S06-05/AUDIT.md`。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S01-02 | IMPLEMENTED | `ad7bd563` 新增舒适/紧凑全局密度设置与共享令牌，四行下限按行/表头高度计算；SDK8 solution build 0/0，密度/设置资源14/14、R09 2/2、MediaInbox几何3/3、R23双主题资源9/9。真实 Playnite 验收待 UI gate；证据见 Round4 S01-02。 |
 | S01-03 | IMPLEMENTED | `8cdf5253` 为存档历史、候选路径和任务表格加入可访问的列管理；SDK8.0.423 Release build 0/0，列显隐/列宽/视图配置/R09 共 17/17。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-03。 |
