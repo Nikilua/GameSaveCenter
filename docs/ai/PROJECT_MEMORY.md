@@ -20,7 +20,9 @@
 
 `2af5841f` 完成 S06-04：工作清单显式续接存档版本、媒体、后台任务和校验问题。Worker 提供精确 finding ID 只读查询；备份使用长度前缀 ID，媒体需索引归属游戏，任务/问题走精确对象详情。不按名称/路径猜测，不恢复旧对话框或触发原命令；缺失时显示诊断并保留移除能力。任务页返回时恢复当前会话中的原清单、选中项、搜索和分组状态。SDK9.0.302 Release solution 重编译 `0/0`，Worker `2/2`、Playnite 路由/导航 `10/10`，source validation 通过、XAML `25/25`。证据：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；未探测/绕过 CEF、ETW。原 Round3 未跟踪 TRX/TestResults 保留。
 
-`0aa80547` 完成 S06-05：工作清单唯一选中项可标为人工完成并反向恢复；文字、工具提示和 UIA HelpText 均说明这不是备份/校验成功。模型按 kind+稳定 ID 只改目标标记；设置保存失败回滚，列表刷新保留已有引用解析状态和父 Playnite ID。SDK9 Release solution 重编译/最终增量构建 `0/0`，Playnite `17/17`、source validation 通过、XAML `25/25`、Round4 台账 `5/5`，WPF 静态审查 0 errors。证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。SDK8.0.423、真实宿主与主题/DPI 未验；下一项按计划审计 S06-06。
+`0aa80547` 完成 S06-05：工作清单唯一选中项可标为人工完成并反向恢复；文字、工具提示和 UIA HelpText 均说明这不是备份/校验成功。模型按 kind+稳定 ID 只改目标标记；设置保存失败回滚，列表刷新保留已有引用解析状态和父 Playnite ID。SDK9 Release solution 重编译/最终增量构建 `0/0`，Playnite `17/17`、source validation 通过、XAML `25/25`、Round4 台账 `5/5`，WPF 静态审查 0 errors。证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。SDK8.0.423、真实宿主与主题/DPI 未验。
+
+S06-06 等价审计发现现有精确 ID 刷新可反映索引删除/失效、媒体/问题父 ID 变化和 Worker 查询不可用，单条失效不阻止其他行；但响应没有对象当前摘要，改名/归属更新未显示在清单。READY 范围为临时只读摘要和父游戏摘要，按 stable ID 查询、不落盘、不导出路径；真实文件 ACL/可读性不通过索引检查。审计：[S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。
 
 S06-05 等价审计确认 `IsManuallyComplete` 只有持久字段与只读投影，没有逐项操作。READY 范围为唯一选中清单项标记/撤销，显式说明这是人工跟进状态而非备份或校验成功，持久化同时保留解析状态、ID、顺序和备注；续接或原业务命令成功/失败/取消均不自动切换。审计：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。
 

@@ -11691,3 +11691,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - SDK9.0.302 Release 全解决方案 Rebuild `0 warning / 0 error`；最终源版本增量 solution build `0/0`。Playnite `WorklistDefinitionTests`、`WorklistBrowserEntryTests`、`WorklistContinuationResolverTests` 共 `17/17`；source validation、XAML `25/25`、Round4 ledger `5/5`、diff check 通过。WPF 静态审查 `0 error / 27 warning / 179 info`，全局 warning/info 未命中本次按钮。
 - TRX SHA `D1A84A57FDBDFBD5BA1E3FB2EA8C94A3AC1E9AA7F7735E0BD7C3CA497C3082C3`；Playnite DLL/PDB SHA 分别为 `D868FB96E2CE6A6BF8757AB2DB51F869CEE4389DD7EEEDF87FA7F59497BB8E98` / `600F6E933F7AE1322603288E761EC50D7D9DAE95C54A2ACF3D5DDD72B0CD0862`。完整证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。
 - SDK8.0.423 未安装。未安装/启动真实 Playnite，未验窗口呈现、主题/DPI、键盘/UIA；没有触碰 CEF/ETW。原 Round3 未跟踪 TRX/TestResults 保留，本批 TRX 独立归档后清理 `.tmp/round4-s06-05`。下一项依计划审计 S06-06。
+
+## 2026-10-21 Round4 S06-06 失效刷新等价审计
+
+- 在 S06-05 证据提交后按计划审查 `ResolveWorklistReferencesAsync`、浏览器批量刷新和逐行续接。当前按备份 composite ID、MediaId、TaskId、FindingId 精确解析；索引删除返回 NotFound，媒体/问题返回当前父 PlayniteId，刷新异常/缺结果标未知，其他行仍可继续。
+- 与计划不等价处：查询只返回 ID/状态/父 ID，没有当前对象显示摘要；改名摘要不可见，父归属虽然更新到路由状态但清单未显示。权限边界：只知道 Worker/索引查询 Unavailable，不查原文件 ACL，也不把 Indexed 说成物理可读。
+- S06-06 READY 范围：依 stable ID 返回不持久化的脱敏当前摘要/父游戏摘要；刷新时更新可见行，删除/查询失败清空过期摘要并保持其他行可用。OS ACL 与物理文件权限仍保留为未知，不探测/绕过。审计：[S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。审计未运行构建/测试或改产品代码。

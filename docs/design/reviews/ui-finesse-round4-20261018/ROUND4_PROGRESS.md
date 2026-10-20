@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-05 已受控验收；S06-04 按稳定 ID 续接清单中的存档、媒体、任务及校验问题，S06-05 完成单条人工跟进状态的标记/撤销，详情见[evidence/S06-05](evidence/S06-05/README.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待既有 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-05 已受控验收；S06-04 按稳定 ID 续接清单中的存档、媒体、任务及校验问题，S06-05 完成单条人工跟进状态的标记/撤销，详情见[evidence/S06-05](evidence/S06-05/README.md)。S06-06 审计发现当前摘要缺失，已准入按稳定 ID 刷新瞬时索引摘要；不探测源文件 ACL/物理可读性，见[evidence/S06-06/AUDIT.md](evidence/S06-06/AUDIT.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待既有 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -72,7 +72,7 @@
 | S06-03 | 清单浏览整理 | 已验收 | 0fc43773 | [证据](evidence/S06-03/README.md)：SDK9 Release solution 0 warning/0 error；Worker 2/2、Playnite 8/8；清单浏览、键盘重排/精确移除与保守引用状态已实现 | 真实 Playnite 未运行；SDK8.0.423 未安装。RenderHarness 还原资产缺少 net472/win-x86，NETSDK1047；旧 CEF/ETW 权限边界未重试或绕过。 |
 | S06-04 | 续接上下文 | 已验收 | 2af5841f | [交付与验证](evidence/S06-04/README.md)，[等价审计](evidence/S06-04/AUDIT.md)：SDK9 Release solution 重编译 0 warning/0 error；Worker 2/2、Playnite 路由/导航 10/10、source validation 与 XAML 25/25 通过 | 只按对象种类与稳定 ID 导航；不恢复旧对话框或执行命令。缺失对象显示诊断且可移除。SDK8.0.423 未安装，真实 Playnite 未运行；未探测或绕过 CEF/ETW。 |
 | S06-05 | 逐项处理转交 | 已验收 | 0aa80547 | [受控验收](evidence/S06-05/README.md)：SDK9 Release solution 0/0；Playnite 17/17，source validation、XAML 25/25、Round4 台账 5/5 通过 | 手动状态仅是人工跟进记录；SDK8.0.423 未安装，真实 Playnite 窗口、主题/DPI、Keyboard-only 与 UI Automation 未验；未触碰 CEF/ETW 权限边界 |
-| S06-06 | 失效刷新 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S06-06 | 失效刷新 | 待开始 | — | [等价审计](evidence/S06-06/AUDIT.md)：稳定 ID 失效/归属状态已有；缺少按 ID 刷新并展示当前对象摘要，已准入 READY | 实现只读瞬时索引摘要，不按名称匹配、不持久化路径/摘要；Worker 整体不可用显示未知；OS 文件 ACL/物理文件可读性不探测，权限边界需保留 |
 | S06-07 | 清单导出预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-08 | 跨会话回归 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S07-01 | 精简当前事实入口 | 已验收 | 4ea5e694 | [证据](evidence/S07-01/README.md)：254 行压缩至 32 行；归档正文与提交前 Git 版本一致；source validation、diff check 通过 | 仅更新文档；未运行产品构建；S00-02 UI 门禁仍待 SDK8 与真实 Playnite |

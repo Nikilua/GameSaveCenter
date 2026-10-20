@@ -8,7 +8,7 @@
 
 提交 `43b869d1` 将紧凑任务筛选/视图配置收进折叠区，并把路径候选和任务详情入口移出 DataGrid 框架，避免表格可滚动而内容仍落到下方详情后面。SDK9.0.302 Release solution `0 warning/0 error`，几何回归 `10/10`。完整证据：[用户截图修复](docs/design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。真实 Playnite 未运行，RenderHarness 因缺少 `net472/win-x86` assets 报 `NETSDK1047`；保留原 Round3 TRX/TestResults。
 
-S06-03 `0fc43773` 完成清单浏览/搜索/分组、键盘重排、确认移除和稳定 ID 状态解析；S06-04 `2af5841f` 新增按稳定 ID 续接存档、媒体、任务与校验问题，并在任务详情返回时恢复会话内清单上下文；S06-05 `0aa80547` 增加单条人工完成/撤销，状态不表示业务成功，续接或业务操作结果不会自动改写，并保留其他条目的解析状态。SDK9 Release solution `0/0`、Playnite `17/17`、source validation、XAML `25/25` 与台账 `5/5` 通过。证据：[S06-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；下一步按计划审计 S06-06。
+S06-03 `0fc43773` 完成清单浏览/搜索/分组、键盘重排、确认移除和稳定 ID 状态解析；S06-04 `2af5841f` 新增按稳定 ID 续接存档、媒体、任务与校验问题，并在任务详情返回时恢复会话内清单上下文；S06-05 `0aa80547` 增加单条人工完成/撤销，状态不表示业务成功且续接/业务结果不会自动改写。SDK9 Release solution `0/0`、Playnite `17/17`、source validation、XAML `25/25` 与台账 `5/5` 通过。证据：[S06-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。S06-06 等价审计已准入 READY：按稳定 ID 刷新并展示瞬时索引摘要；OS 文件 ACL/物理可读性不探测，保持明确未知边界。审计见 [S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite 未运行。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 

@@ -890,9 +890,14 @@
       "implementationCommit": "—",
       "controlledVerificationState": "not_run",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[等价审计](evidence/S06-06/AUDIT.md)：稳定 ID 失效/归属状态已有；缺少按 ID 刷新并展示当前对象摘要，已准入 READY",
+      "evidence": [
+        {
+          "label": "等价审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md"
+        }
+      ],
+      "boundary": "实现只读瞬时索引摘要，不按名称匹配、不持久化路径/摘要；Worker 整体不可用显示未知；OS 文件 ACL/物理文件可读性不探测，权限边界需保留"
     },
     {
       "id": "S06-07",
