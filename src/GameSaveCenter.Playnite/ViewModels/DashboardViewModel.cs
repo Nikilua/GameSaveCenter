@@ -384,6 +384,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             ToggleMediaComparisonWorkspaceCommand = new RelayCommand(_ => ToggleMediaComparisonWorkspace(), _ => MediaComparisonItems.Count == MediaComparisonSelection.MaximumItems);
             PreviousMediaComparisonCandidateCommand = new RelayCommand(_ => NavigateMediaComparisonCandidate(-1), _ => CanNavigatePreviousMediaComparisonCandidate);
             NextMediaComparisonCandidateCommand = new RelayCommand(_ => NavigateMediaComparisonCandidate(1), _ => CanNavigateNextMediaComparisonCandidate);
+            MarkMediaComparisonToKeepCommand = new RelayCommand(value => SetMediaComparisonOpinion(value, MediaComparisonOpinionKind.Keep), CanSetMediaComparisonOpinion);
+            MarkMediaComparisonToReviewCommand = new RelayCommand(value => SetMediaComparisonOpinion(value, MediaComparisonOpinionKind.Review), CanSetMediaComparisonOpinion);
+            ClearMediaComparisonOpinionCommand = new RelayCommand(ClearMediaComparisonOpinion, CanClearMediaComparisonOpinion);
             ClearMediaFiltersCommand = new RelayCommand(_ => ClearMediaFilters(), _ => !IsBusy);
             ApplyMediaFilterPresetCommand = new RelayCommand(_ => ApplyMediaFilterPreset(), _ => !IsBusy && SelectedMediaFilterPreset != null);
             SaveMediaFilterPresetCommand = new RelayCommand(_ => Observe(SaveMediaFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
@@ -1897,6 +1900,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ToggleMediaComparisonWorkspaceCommand { get; }
         public ICommand PreviousMediaComparisonCandidateCommand { get; }
         public ICommand NextMediaComparisonCandidateCommand { get; }
+        public ICommand MarkMediaComparisonToKeepCommand { get; }
+        public ICommand MarkMediaComparisonToReviewCommand { get; }
+        public ICommand ClearMediaComparisonOpinionCommand { get; }
         public ICommand ClearMediaFiltersCommand { get; }
         public ICommand ApplyMediaFilterPresetCommand { get; }
         public ICommand SaveMediaFilterPresetCommand { get; }
@@ -6480,7 +6486,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, PreviousMediaComparisonCandidateCommand, NextMediaComparisonCandidateCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, PreviousMediaComparisonCandidateCommand, NextMediaComparisonCandidateCommand, MarkMediaComparisonToKeepCommand, MarkMediaComparisonToReviewCommand, ClearMediaComparisonOpinionCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

@@ -227,6 +227,7 @@ namespace GameSaveCenter.Playnite.Tests
             SetAutoProperty(plugin, nameof(GameSaveCenterPlugin.Settings), new GameSaveCenterSettings());
             SetField(dashboard, "plugin", plugin);
             SetField(dashboard, "mediaComparisonSelection", selection);
+            SetField(dashboard, "mediaComparisonCandidateNavigator", new MediaComparisonCandidateNavigator());
             SetAutoProperty(dashboard, nameof(DashboardViewModel.Media), new BatchObservableCollection<MediaItemDto>());
             SetField(dashboard, "unassignedMedia", new BatchObservableCollection<MediaItemDto>());
             SetField(dashboard, "ignoredMedia", new BatchObservableCollection<MediaItemDto>());

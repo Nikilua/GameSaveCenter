@@ -18,10 +18,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         private const int MediaPageSize = 200;
         private bool mediaComparisonWorkspaceOpen;
         private int mediaComparisonCandidateDirection = 1;
+        private MediaComparisonOpinionTracker mediaComparisonOpinionTracker = new MediaComparisonOpinionTracker();
+        private MediaComparisonOpinionTracker MediaComparisonOpinions
+            => mediaComparisonOpinionTracker ?? (mediaComparisonOpinionTracker = new MediaComparisonOpinionTracker());
 
         public ObservableCollection<MediaItemDto> MediaComparisonItems => mediaComparisonSelection.Items;
         public string MediaComparisonSummary => mediaComparisonSelection.Summary;
         public string MediaComparisonStatus => mediaComparisonSelection.Status;
+        public string MediaComparisonOpinionSummary => MediaComparisonOpinions.Summary;
+        public string MediaComparisonFirstOpinionDisplay => GetMediaComparisonOpinionDisplay(0);
+        public string MediaComparisonSecondOpinionDisplay => GetMediaComparisonOpinionDisplay(1);
         public bool MediaComparisonWorkspaceOpen => mediaComparisonWorkspaceOpen;
         public string MediaComparisonWorkspaceToggleLabel => mediaComparisonWorkspaceOpen ? "收起对比" : "展开对比";
         public bool CanNavigatePreviousMediaComparisonCandidate => CanNavigateMediaComparisonCandidate(-1);
@@ -72,6 +78,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             mediaComparisonSelection.Clear();
             mediaComparisonCandidateNavigator.ResetUnavailable();
+            MediaComparisonOpinions.Reset();
             mediaComparisonWorkspaceOpen = false;
             OnPropertyChanged(nameof(MediaComparisonSummary));
             OnPropertyChanged(nameof(MediaComparisonStatus));
@@ -190,7 +197,69 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(CanNavigatePreviousMediaComparisonCandidate));
             OnPropertyChanged(nameof(CanNavigateNextMediaComparisonCandidate));
             OnPropertyChanged(nameof(MediaComparisonCandidateNavigationDisplay));
+            RaiseMediaComparisonOpinionProperties();
             RaiseCommandStates();
+        }
+
+        private string GetMediaComparisonOpinionDisplay(int index)
+        {
+            if (index < 0 || index >= mediaComparisonSelection.Items.Count)
+                return "未标记";
+
+            var opinion = MediaComparisonOpinions.Get(mediaComparisonSelection.Items[index].MediaId);
+            return opinion == MediaComparisonOpinionKind.Keep
+                ? "人工意见：待保留"
+                : opinion == MediaComparisonOpinionKind.Review
+                    ? "人工意见：待检查"
+                    : "未标记";
+        }
+
+        private void SetMediaComparisonOpinion(object? value, MediaComparisonOpinionKind opinion)
+        {
+            if (!(value is MediaItemDto item)
+                || item.Kind != MediaKind.Screenshot
+                || string.IsNullOrWhiteSpace(item.MediaId)
+                || !mediaComparisonSelection.Items.Any(candidate =>
+                    string.Equals(candidate.MediaId, item.MediaId, StringComparison.OrdinalIgnoreCase)))
+                return;
+
+            MediaComparisonOpinions.Set(item.MediaId, opinion);
+            RaiseMediaComparisonOpinionProperties();
+            RaiseCommandStates();
+        }
+
+        private void ClearMediaComparisonOpinion(object? value)
+        {
+            if (!(value is MediaItemDto item)
+                || string.IsNullOrWhiteSpace(item.MediaId)
+                || !mediaComparisonSelection.Items.Any(candidate =>
+                    string.Equals(candidate.MediaId, item.MediaId, StringComparison.OrdinalIgnoreCase)))
+                return;
+
+            if (MediaComparisonOpinions.Clear(item.MediaId))
+            {
+                RaiseMediaComparisonOpinionProperties();
+                RaiseCommandStates();
+            }
+        }
+
+        private bool CanSetMediaComparisonOpinion(object? value)
+            => value is MediaItemDto item
+                && item.Kind == MediaKind.Screenshot
+                && !string.IsNullOrWhiteSpace(item.MediaId)
+                && mediaComparisonSelection.Items.Any(candidate =>
+                    string.Equals(candidate.MediaId, item.MediaId, StringComparison.OrdinalIgnoreCase));
+
+        private bool CanClearMediaComparisonOpinion(object? value)
+            => CanSetMediaComparisonOpinion(value)
+                && value is MediaItemDto item
+                && MediaComparisonOpinions.Get(item.MediaId) != null;
+
+        private void RaiseMediaComparisonOpinionProperties()
+        {
+            OnPropertyChanged(nameof(MediaComparisonOpinionSummary));
+            OnPropertyChanged(nameof(MediaComparisonFirstOpinionDisplay));
+            OnPropertyChanged(nameof(MediaComparisonSecondOpinionDisplay));
         }
 
         private void ToggleMediaComparisonWorkspace()

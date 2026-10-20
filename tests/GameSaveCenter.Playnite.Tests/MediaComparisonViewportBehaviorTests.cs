@@ -344,6 +344,103 @@ namespace GameSaveCenter.Playnite.Tests
             });
         }
 
+        [Fact]
+        public void ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks()
+        {
+            RunSta(() =>
+            {
+                var root = Path.Combine(Path.GetTempPath(), "gsc-s04-06-" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(root);
+                var reference = Screenshot("reference", CreateImage(Path.Combine(root, "reference.png"), 320, 180, 45));
+                var current = Screenshot("current", CreateImage(Path.Combine(root, "current.png"), 320, 180, 85));
+                var next = Screenshot("next", CreateImage(Path.Combine(root, "next.png"), 320, 180, 125));
+
+                try
+                {
+                    var selection = new MediaComparisonSelection();
+                    selection.Add(new[] { reference, current }, _ => true);
+                    var viewModel = CreateDashboard(selection, new[] { reference, current, next });
+                    var view = new MediaCenterView { DataContext = viewModel };
+                    var viewType = typeof(MediaCenterView);
+                    var tabControl = GetField<TabControl>(viewType, view, "MediaTabControl");
+                    var nextCandidateButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonNextCandidateButton");
+                    var previousCandidateButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonPreviousCandidateButton");
+                    var keepButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonSecondKeepOpinionButton");
+                    var reviewButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonSecondReviewOpinionButton");
+                    var undoButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonSecondClearOpinionButton");
+                    var clearComparisonButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonClearButton");
+                    var secondOpinionText = GetField<TextBlock>(viewType, view, "MediaComparisonSecondOpinionText");
+                    var opinionSummaryText = GetField<TextBlock>(viewType, view, "MediaComparisonOpinionSummaryText");
+
+                    using (var host = new WindowHost(new Window
+                    {
+                        Content = view,
+                        Width = 1180,
+                        Height = 900,
+                        ShowInTaskbar = false,
+                        WindowStyle = WindowStyle.None,
+                        Opacity = 0.01
+                    }))
+                    {
+                        tabControl.SelectedIndex = 1;
+                        viewModel.SetMediaComparisonWorkspaceOpen(true);
+                        host.UpdateLayout();
+
+                        Assert.Same(viewModel.MarkMediaComparisonToKeepCommand, keepButton.Command);
+                        Assert.Same(viewModel.MarkMediaComparisonToReviewCommand, reviewButton.Command);
+                        Assert.Same(viewModel.ClearMediaComparisonOpinionCommand, undoButton.Command);
+                        Assert.Contains("0 项", opinionSummaryText.Text);
+
+                        ExecuteBoundCommand(keepButton);
+                        host.UpdateLayout();
+                        Assert.Equal(MediaComparisonOpinionKind.Keep,
+                            GetField<MediaComparisonOpinionTracker>(typeof(DashboardViewModel), viewModel, "mediaComparisonOpinionTracker").Get("current"));
+                        Assert.Equal("人工意见：待保留", secondOpinionText.Text);
+                        Assert.Contains("待保留 1 项", opinionSummaryText.Text);
+
+                        nextCandidateButton.Command!.Execute(null);
+                        host.UpdateLayout();
+                        Assert.Equal("next", selection.Items[1].MediaId);
+                        Assert.Equal("未标记", secondOpinionText.Text);
+                        previousCandidateButton.Command!.Execute(null);
+                        host.UpdateLayout();
+                        Assert.Equal("current", selection.Items[1].MediaId);
+                        Assert.Equal("人工意见：待保留", secondOpinionText.Text);
+
+                        ExecuteBoundCommand(reviewButton);
+                        host.UpdateLayout();
+                        Assert.Equal("人工意见：待检查", secondOpinionText.Text);
+                        Assert.Contains("待保留 0 项 · 待检查 1 项", opinionSummaryText.Text);
+                        ExecuteBoundCommand(undoButton);
+                        host.UpdateLayout();
+                        Assert.Equal("未标记", secondOpinionText.Text);
+                        Assert.Contains("待保留 0 项 · 待检查 0 项", opinionSummaryText.Text);
+
+                        ExecuteBoundCommand(reviewButton);
+                        host.UpdateLayout();
+                        Assert.Equal("人工意见：待检查", secondOpinionText.Text);
+                        Assert.Contains("待保留 0 项 · 待检查 1 项", opinionSummaryText.Text);
+                        var capturePath = Environment.GetEnvironmentVariable("GSC_S04_06_CAPTURE_PATH");
+                        if (!string.IsNullOrWhiteSpace(capturePath))
+                            SaveVisualCapture(view, capturePath!);
+                        ExecuteBoundCommand(clearComparisonButton);
+                        host.UpdateLayout();
+                        Assert.Empty(selection.Items);
+                        Assert.Contains("待保留 0 项 · 待检查 0 项", opinionSummaryText.Text);
+                        Assert.True(File.Exists(reference.ArchivePath));
+                        Assert.True(File.Exists(current.ArchivePath));
+
+                    }
+                }
+                finally
+                {
+                    AsyncThumbnailLoader.ClearCache();
+                    if (Directory.Exists(root))
+                        Directory.Delete(root, recursive: true);
+                }
+            });
+        }
+
         private static MediaItemDto Screenshot(string id, string path)
             => new MediaItemDto
             {
@@ -393,6 +490,7 @@ namespace GameSaveCenter.Playnite.Tests
             SetAutoProperty(plugin, nameof(GameSaveCenterPlugin.Settings), new GameSaveCenterSettings());
             SetField(dashboard, "plugin", plugin);
             SetField(dashboard, "mediaComparisonSelection", selection);
+            SetField(dashboard, "mediaComparisonOpinionTracker", new MediaComparisonOpinionTracker());
             SetField(dashboard, "mediaComparisonCandidateNavigator", new MediaComparisonCandidateNavigator());
             var mediaCollection = new BatchObservableCollection<MediaItemDto>();
             foreach (var item in media ?? Array.Empty<MediaItemDto>()) mediaCollection.Add(item);
@@ -408,6 +506,27 @@ namespace GameSaveCenter.Playnite.Tests
                 _ => navigateMethod!.Invoke(dashboard, new object[] { -1 }), _ => dashboard.CanNavigatePreviousMediaComparisonCandidate));
             SetAutoProperty(dashboard, nameof(DashboardViewModel.NextMediaComparisonCandidateCommand), new RelayCommand(
                 _ => navigateMethod!.Invoke(dashboard, new object[] { 1 }), _ => dashboard.CanNavigateNextMediaComparisonCandidate));
+            var setOpinionMethod = typeof(DashboardViewModel).GetMethod("SetMediaComparisonOpinion", BindingFlags.Instance | BindingFlags.NonPublic);
+            var canSetOpinionMethod = typeof(DashboardViewModel).GetMethod("CanSetMediaComparisonOpinion", BindingFlags.Instance | BindingFlags.NonPublic);
+            var clearOpinionMethod = typeof(DashboardViewModel).GetMethod("ClearMediaComparisonOpinion", BindingFlags.Instance | BindingFlags.NonPublic);
+            var canClearOpinionMethod = typeof(DashboardViewModel).GetMethod("CanClearMediaComparisonOpinion", BindingFlags.Instance | BindingFlags.NonPublic);
+            var clearComparisonMethod = typeof(DashboardViewModel).GetMethod("ClearMediaComparison", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(setOpinionMethod);
+            Assert.NotNull(canSetOpinionMethod);
+            Assert.NotNull(clearOpinionMethod);
+            Assert.NotNull(canClearOpinionMethod);
+            Assert.NotNull(clearComparisonMethod);
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.MarkMediaComparisonToKeepCommand), new RelayCommand(
+                value => setOpinionMethod!.Invoke(dashboard, new object[] { value!, MediaComparisonOpinionKind.Keep }),
+                value => (bool)canSetOpinionMethod!.Invoke(dashboard, new[] { value })!));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.MarkMediaComparisonToReviewCommand), new RelayCommand(
+                value => setOpinionMethod!.Invoke(dashboard, new object[] { value!, MediaComparisonOpinionKind.Review }),
+                value => (bool)canSetOpinionMethod!.Invoke(dashboard, new[] { value })!));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.ClearMediaComparisonOpinionCommand), new RelayCommand(
+                value => clearOpinionMethod!.Invoke(dashboard, new[] { value }),
+                value => (bool)canClearOpinionMethod!.Invoke(dashboard, new[] { value })!));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.ClearMediaComparisonCommand), new RelayCommand(
+                _ => clearComparisonMethod!.Invoke(dashboard, null), _ => dashboard.MediaComparisonItems.Count > 0));
             return dashboard;
         }
 
@@ -422,6 +541,13 @@ namespace GameSaveCenter.Playnite.Tests
 
         private static void Execute(System.Windows.Controls.Button button)
             => button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, button));
+
+        private static void ExecuteBoundCommand(GameSaveCenter.Playnite.Controls.Button button)
+        {
+            Assert.NotNull(button.Command);
+            Assert.True(button.Command!.CanExecute(button.CommandParameter));
+            button.Command.Execute(button.CommandParameter);
+        }
 
         private static KeyEventArgs RaisePreviewKeyDown(UIElement element, Key key)
         {
