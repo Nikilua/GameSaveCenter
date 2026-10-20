@@ -10,11 +10,15 @@
 
 ## 2026-10-20 用户反馈：页面与表格滚动区修复
 
-存档历史、候选路径、任务中心和当前媒体页采用 PageHost 视口内的页面滚动，加上限高的表格/列表内部滚动。数据仍可通过内层表格滚动查看，页面向下滚动可到达详情；收件箱尺寸算法保持原状。SDK8 Release solution `0/0`，定向 WPF `9/9`，全尺寸双主题 RenderHarness `0 PROBLEM`；合成截图和几何/TRX 见 [滚动区证据](docs/design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。RenderHarness 为合成数据、逻辑 DPI 1.0，不代表真实 Playnite 呈现。Round4 下一项仍是 S04-04。
+存档历史、候选路径、任务中心和当前媒体页采用 PageHost 视口内的页面滚动，加上限高的表格/列表内部滚动。数据仍可通过内层表格滚动查看，页面向下滚动可到达详情；收件箱尺寸算法保持原状。SDK8 Release solution `0/0`，定向 WPF `9/9`，全尺寸双主题 RenderHarness `0 PROBLEM`；合成截图和几何/TRX 见 [滚动区证据](docs/design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。RenderHarness 为合成数据、逻辑 DPI 1.0，不代表真实 Playnite 呈现。滚动修复后续接 S04-04；当前下一个 READY 项为 S04-05。
 
-## 2026-10-20 Round4 S04-03 已满足，下一项 S04-04
+## 2026-10-20 Round4 S04-04 已验收，下一项 S04-05
 
-S00-01 已由当前账本和既有行为证据标为满足；S00-02 的完整 UI 门禁仍受 R05 `GetCursorPos` 权限边界阻挡。S04-03 现有实现提交 `f51e5c9e` 已验证：SDK8 全链中的状态行为 `4/4`、生产 Media 页面 WPF 行为 `1/1`、缩略图预算 `3/3`；当前 RenderHarness Release `0/0`，浅/深主题矩阵 `render-qa OK` 且 `0 PROBLEM`。详细证据：[S04-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。本机未验真实 Playnite 页面视觉、真实媒体与物理 DPI；Demo 目录不在 checkout。S04-04 已满足依赖并进入 READY。
+S00-01 已由当前账本和既有行为证据标为满足；S00-02 的完整 UI 门禁仍受 R05 `GetCursorPos` 权限边界阻挡。S04-03 使用既有 `f51e5c9e` 同步缩放/平移能力，详细受控证据见 [S04-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
+
+S04-04 提交 `9e0af12b` 加入图片擦除对照、A 左/B 右、透明棋盘背景和键盘位置调整；复用现有异步缩略图源。SDK8.0.423 Release solution `0/0`，媒体比较生产 WPF 行为 `2/2`；证据、TRX、合成渲染截图和哈希见 [S04-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。VSTest 成功，但 WPF 关闭阶段输出 `TextServicesContext.InvalidComObjectException`。真实 Playnite、真实媒体、物理 DPI 和物理鼠标拖动未验证；此功能只供人工视觉比较，不判断内容一致性。
+
+S04-05 已核对为 READY：现有 `PreviousMediaCommand`/`NextMediaCommand` 只更改当前媒体详情，不锁定比较左图或切换右图候选；按有限结果、焦点稳定、迟到解码和失效回退要求继续实现。
 
 ## 2026-10-19 用户反馈：窗口布局与弹出样式
 

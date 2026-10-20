@@ -571,14 +571,19 @@
     {
       "id": "S04-04",
       "title": "差异查看辅助",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "9e0af12b",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[证据](evidence/S04-04/README.md)：SDK8.0.423 Release solution 0/0；MediaComparisonViewportBehaviorTests 2/2；生产 WPF 视图擦除、A/B 像素方向、透明棋盘和键盘位置均有行为/渲染证据",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md"
+        }
+      ],
+      "boundary": "受控 WPF 使用合成透明图片；完整 WPF 隔离流程、真实 Playnite、真实媒体、物理 DPI 和真实鼠标拖动未验。测试退出码为0且2/2通过，WPF TextServicesContext 关闭时仍有 InvalidComObjectException 输出；本功能只用于人工视觉比较。"
     },
     {
       "id": "S04-05",

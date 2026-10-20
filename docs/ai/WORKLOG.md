@@ -1,3 +1,10 @@
+## 2026-10-20 Round4 S04-04 差异查看辅助
+
+- 生产媒体比较页此前已有两图、同步缩放/平移，但没有 wipe/交替对照或透明棋盘。提交 `9e0af12b` 增加擦除分隔线：A 固定在左、B 在右；支持拖动、方向键、Shift 方向键、Home/End。棋盘背景复用于两张并排视口和擦除视口，并明确只用于人工视觉比较。擦除层直接绑定现有异步缩略图 BitmapSource，不增加解码路径。
+- SDK `8.0.423` Release solution build `0 warning / 0 error`；媒体比较生产 WPF 行为 `2/2`，覆盖当前同步缩放行为、图源引用、A/B 像素方向、键盘边界、透明棋盘实际渲染和退出擦除模式恢复并排视图。`validate-source.py`、25 文件 XAML 检查和 `git diff --check` 通过。证据、TRX、构建日志、程序集/源码 SHA 与截图见 [S04-04](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。
+- 截图来自生产 `MediaCenterView` 的 WPF 离屏渲染和合成图片，不是 Playnite/物理屏幕证据。真实 Playnite、真实媒体、物理 DPI、物理鼠标拖动和完整 WPF 隔离循环未验。WPF 测试退出时打印 TextServicesContext `InvalidComObjectException` 清理输出，但 VSTest 退出码为 0，TRX `2/2`。
+- 核对 S04-05：已有 `PreviousMediaCommand`/`NextMediaCommand` 只在当前媒体集合更改详情焦点，不会锁定左侧比较参考或替换右侧比较对象，因此不等价；S04-05 已加入 READY。原有 Round3 未跟踪 TRX/TestResults 保留。
+
 ## 2026-10-20 用户反馈：工作区滚动条越界
 
 - 按页面与表格两层有限滚动修复存档历史、路径校验、任务队列和当前媒体页；PageHost 高度来自实际 ViewportHeight，表格仍有内部滚动条和四行可读下限。媒体收件箱保留旧尺寸路径。

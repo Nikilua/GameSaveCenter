@@ -1,16 +1,18 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-20 Round4 S04-03 已满足；S04-04 READY
+## 2026-10-20 Round4 S04-04 已验收；S04-05 READY
 
 启动候选 S00-01 已在当前 main 账本标为满足，复用 `dd38f8ca` 当前 SDK8 证据，无需重复实现。S00-02 全量 UI 门禁仍因 R05 系统指针读取 Win32 error 5 未完成；继续选择已满足独立依赖的任务。
 
 S04-03 已由 `f51e5c9e` 实现：比较视图支持同步/独立缩放、Fit、100% 查看和两图归一化中心坐标同步平移，缩放范围 `12.5%–400%`。继续使用异步缩略图解码，单图长边上限 `2048 px`，LRU 图片缓存上限 `64 MiB`。在 SDK8.0.423 的全链验收中，状态测试 `4/4`、真实生产 WPF 页面行为 `1/1`、缩略图预算 `3/3`；当前提交 RenderHarness Release `0 warning / 0 error`，浅/深主题结果 `render-qa OK / 0 PROBLEM`。详细 TRX、报告、SHA 和边界见 [S04-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
 
-S04-03 验收时的代码与全链验收源提交相同；真实 Playnite 页面视觉、真实媒体和物理 DPI 未验。Demo 目录缺失。本地用户提供的未跟踪 TRX/TestResults 保留。S04-04 的前置 S04-01 至 S04-03 已满足，验收时生产代码没有视觉 wipe/交替对照功能，已准入下一小批。
+S04-03 验收时的代码与全链验收源提交相同；真实 Playnite 页面视觉、真实媒体和物理 DPI 未验。Demo 目录缺失。本地用户提供的未跟踪 TRX/TestResults 保留。S04-03 验收当时生产代码还没有视觉擦除/交替对照，随后由 S04-04 补齐。
+
+S04-04 已由 `9e0af12b` 实现：媒体比较工作区可显示 A 左/B 右的擦除对照，分隔线支持鼠标拖动及方向键、Shift 方向键、Home/End；两种比较视口都有透明棋盘底纹。它直接绑定现有异步缩略图的 BitmapSource，保持 2048 px 解码长边和 64 MiB 图像缓存。SDK `8.0.423` Release solution build `0 warning / 0 error`，`MediaComparisonViewportBehaviorTests` `2/2`；用例验证图源引用、方向/位置、A/B 像素方向、棋盘渲染及退出时恢复并排模式。证据、截图、TRX、构建记录和 SHA-256 见 [S04-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。测试窗口与图片为合成夹具，未验真实 Playnite、真实媒体、物理 DPI 或鼠标操作；WPF 测试退出时有 `TextServicesContext.InvalidComObjectException` 清理输出但 VSTest 返回 0。下一项 S04-05 已 READY：现有媒体上一项/下一项只改详情选择，不切换比较集合候选。
 
 ## 2026-10-20 用户反馈：页面/表格滚动区越界
 
-存档历史和路径校验现在分别通过有限页面 ScrollViewer 到达下方内容，DataGrid 保留自己的有限虚拟化视口和滚动条；任务中心外层滚动使用 `TaskPageScrollViewer.ViewportHeight`，避免把内容高度误作 PageHost 可视高度；当前媒体页同样限定内外滚动范围。媒体收件箱保留既有 PageHost 尺寸算法，避免影响其缩放恢复。SDK8 Release solution `0 warning / 0 error`，WPF 几何测试 `9/9`，RenderHarness `0 PROBLEM`；详情、TRX、截图及离屏/宿主边界见[证据页](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。真实 Playnite 未运行。Round4 S04-04 仍是下一个 READY 项。
+存档历史和路径校验现在分别通过有限页面 ScrollViewer 到达下方内容，DataGrid 保留自己的有限虚拟化视口和滚动条；任务中心外层滚动使用 `TaskPageScrollViewer.ViewportHeight`，避免把内容高度误作 PageHost 可视高度；当前媒体页同样限定内外滚动范围。媒体收件箱保留既有 PageHost 尺寸算法，避免影响其缩放恢复。SDK8 Release solution `0 warning / 0 error`，WPF 几何测试 `9/9`，RenderHarness `0 PROBLEM`；详情、TRX、截图及离屏/宿主边界见[证据页](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。真实 Playnite 未运行。滚动修复后续接 S04-04；当前下一个 READY 项为 S04-05。
 
 ## 2026-10-20 默认一键安装流程已全链通过
 

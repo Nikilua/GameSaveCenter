@@ -10,13 +10,15 @@
 
 Worker 自包含 win-x64 发布、`0.6.73` 包/PEXT、Playnite 扩展安装与启动均完成；安装清单 `0.6.73`、插件 DLL `0.6.73.0`，构建与安装 DLL SHA-256 相同（`AC87FDC16F4FF7211CC00C6B0B8135711D32D20F6C338A36F09B086972535A31`）。Playnite PID `11068` 已启动且响应。运行提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`，诊断 `20261019T184725162Z-607fe456`，详细记录见 [一键全链验收证据](../design/reviews/DEV-INSTALL-009-20261020/README.md)。首次在新机器准备 SDK 仍需访问微软下载源；未检查真实 Playnite 页面视觉呈现。
 
-## Round4 当前可执行项：S04-04 差异查看辅助
+## Round4 当前小批已验收：S04-04 差异查看辅助
 
-S00-01 已满足；S00-02 的 WPF/安装门禁仍停在 R05 系统指针权限读取。S04-03 已确认复用 `f51e5c9e` 同步缩放/平移实现，SDK8 全链测试覆盖状态 `4/4`、生产 WPF 交互 `1/1`、缩略图预算 `3/3`；当前 RenderHarness 双主题 `render-qa OK / 0 PROBLEM`。证据：[S04-03](../design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。S04-04 为当前 READY 项。真实 Playnite 页面视觉、真实媒体和物理 DPI 未验；Demo 目录缺失。
+S00-01 已满足；S00-02 的 WPF/安装门禁仍停在 R05 系统指针权限读取。S04-03 复用 `f51e5c9e` 同步缩放/平移能力。S04-04 `9e0af12b` 为媒体比较增加擦除分隔线、A 左/B 右、键盘调整和透明棋盘背景，明确仅用于人工视觉比较；复用现有异步图像源。SDK8.0.423 Release solution `0/0`，定向生产 WPF 行为 `2/2`，源码与 XAML 校验通过。受控图、TRX、程序集身份和边界见 [S04-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。
+
+下一项 S04-05 已准入：现有 `PreviousMediaCommand`/`NextMediaCommand` 只更改详情选择，不能锁定比较左图并切换右侧候选。S04-04 的测试使用合成图和隔离 WPF 窗口；真实 Playnite、真实媒体、物理 DPI 和真实鼠标拖动未验。测试关闭输出仍包含 WPF TextServicesContext `InvalidComObjectException`，但 VSTest 退出码为 0 且 `2/2` 通过。
 
 ## 2026-10-20 用户反馈：页面与表格滚动区
 
-存档历史、候选路径、任务队列和当前游戏媒体页已各自限制页面滚动区到 PageHost 视口，同时保留表格/列表内部有限虚拟化滚动；布局按滚动区实际 ViewportHeight 计算。SDK8 Release solution `0/0`，定向 WPF `9/9`，RenderHarness 双主题多尺寸 `render-qa OK / 0 PROBLEM`。合成几何、截图和 TRX：[滚动区修复证据](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。媒体收件箱缩放回归经全尺寸检查确认没有变化。真实 Playnite 页面和物理 DPI 未验；本修复不改变 Round4 backlog，下一项仍为 S04-04。
+存档历史、候选路径、任务队列和当前游戏媒体页已各自限制页面滚动区到 PageHost 视口，同时保留表格/列表内部有限虚拟化滚动；布局按滚动区实际 ViewportHeight 计算。SDK8 Release solution `0/0`，定向 WPF `9/9`，RenderHarness 双主题多尺寸 `render-qa OK / 0 PROBLEM`。合成几何、截图和 TRX：[滚动区修复证据](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。媒体收件箱缩放回归经全尺寸检查确认没有变化。真实 Playnite 页面和物理 DPI 未验；本修复后已完成 S04-04，下一项为 S04-05。
 
 ## 当前构建优先项：缺 SDK 时自动准备准确版本
 
