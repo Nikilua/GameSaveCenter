@@ -882,12 +882,27 @@
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel MinWidth="0">
                                         <TextBlock Text="保留策略情景参数" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                        <TextBlock Text="输入一组候选保留规则与 30 天增长范围，供后续只读比较使用。当前只接收临时假设，不保存策略或执行清理。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                        <TextBlock Text="输入一组候选保留规则与 30 天增长范围，供后续只读比较使用。可保存为命名情景草稿；它与当前策略分离，不会执行清理。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                                     </StackPanel>
                                     <Border Grid.Column="1" Style="{DynamicResource GscRedesignContextPill}" Padding="8,3" VerticalAlignment="Top">
                                         <TextBlock Text="仅当前会话" AutomationProperties.Name="情景参数仅当前会话有效"/>
                                     </Border>
                                 </Grid>
+                                <StackPanel Margin="0,12,0,0" AutomationProperties.Name="保存的保留情景草稿">
+                                    <TextBlock Text="保存的情景草稿" Style="{StaticResource GscFormFieldLabel}"/>
+                                    <Grid Margin="0,6,0,0">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="1.2*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                        <ComboBox x:Name="RetentionScenarioDraftSelector" Grid.Column="0" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding RetentionScenarioDrafts}" SelectedItem="{Binding SelectedRetentionScenarioDraft, Mode=TwoWay}" DisplayMemberPath="Name" MaxDropDownHeight="280" ToolTip="选择后载入保存的假设；比较会重新读取当前版本快照。" AutomationProperties.Name="已保存保留情景"/>
+                                        <TextBox x:Name="RetentionScenarioNameInput" Grid.Column="1" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding RetentionScenarioNameDraft, UpdateSourceTrigger=PropertyChanged}" MaxLength="48" Margin="8,0,0,0" ToolTip="最多 48 个字符。名称只属于情景草稿。" AutomationProperties.Name="保留情景名称"/>
+                                    </Grid>
+                                    <WrapPanel Margin="0,8,0,0">
+                                        <ui:Button x:Name="SaveRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding SaveRetentionScenarioDraftCommand}" Content="保存方案" Margin="0,0,8,0" AutomationProperties.Name="保存保留情景草稿"/>
+                                        <ui:Button x:Name="CopyRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyRetentionScenarioDraftCommand}" Content="复制" Margin="0,0,8,0" AutomationProperties.Name="复制保留情景草稿"/>
+                                        <ui:Button x:Name="RenameRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RenameRetentionScenarioDraftCommand}" Content="重命名" Margin="0,0,8,0" AutomationProperties.Name="重命名保留情景草稿"/>
+                                        <ui:Button x:Name="DeleteRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding DeleteRetentionScenarioDraftCommand}" Content="删除" AutomationProperties.Name="删除保留情景草稿"/>
+                                    </WrapPanel>
+                                    <TextBlock x:Name="RetentionScenarioDraftStatus" Text="{Binding RetentionScenarioDraftStatusDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,6,0,0" TextWrapping="Wrap" AutomationProperties.Name="保留情景草稿状态"/>
+                                </StackPanel>
                                 <UniformGrid x:Name="MaintenanceRetentionScenarioInputs" Columns="3" Margin="0,14,0,0">
                                     <StackPanel Margin="0,0,10,10">
                                         <TextBlock Text="全量保留 · 小时" Style="{StaticResource GscFormFieldLabel}"/>

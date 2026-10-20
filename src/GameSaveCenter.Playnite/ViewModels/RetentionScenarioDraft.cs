@@ -7,8 +7,8 @@ using GameSaveCenter.Core.Models;
 namespace GameSaveCenter.Playnite.ViewModels;
 
 /// <summary>
-/// Session-only candidate retention inputs. This draft is deliberately not part of settings,
-/// persistence, Worker requests, or the cleanup command path.
+/// Transient editor buffer for candidate retention inputs. Named scalar assumptions are stored
+/// separately as RetentionScenarioDefinition and never replace an active policy.
 /// </summary>
 public sealed class RetentionScenarioDraft : INotifyPropertyChanged, INotifyDataErrorInfo
 {

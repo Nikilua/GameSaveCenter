@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Threading;
@@ -25,7 +26,7 @@ public sealed class RetentionScenarioInputBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void MaintenanceInputsStayInSessionAndShowInvalidFieldErrors(GameSaveCenterThemeMode theme)
+    public void NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
         var thread = new Thread(() =>
@@ -62,6 +63,16 @@ public sealed class RetentionScenarioInputBehaviorTests
 
                     var card = Field<Border>(page, "MaintenanceRetentionScenarioCard");
                     Assert.True(card.IsVisible && card.ActualWidth > 700, "The scenario editor must be part of the visible retention page.");
+                    var scenarioSelector = Field<ComboBox>(page, "RetentionScenarioDraftSelector");
+                    Assert.Same(context.RetentionScenarioDrafts, scenarioSelector.ItemsSource);
+                    Assert.Same(context.SelectedRetentionScenarioDraft, scenarioSelector.SelectedItem);
+                    var scenarioName = Field<TextBox>(page, "RetentionScenarioNameInput");
+                    Assert.Equal(context.RetentionScenarioNameDraft, scenarioName.Text);
+                    Assert.Equal(context.RetentionScenarioDraftStatusDisplay, Field<TextBlock>(page, "RetentionScenarioDraftStatus").Text);
+                    AssertScenarioCommand(page, "SaveRetentionScenarioDraftButton", context.SaveRetentionScenarioDraftCommand);
+                    AssertScenarioCommand(page, "CopyRetentionScenarioDraftButton", context.CopyRetentionScenarioDraftCommand);
+                    AssertScenarioCommand(page, "RenameRetentionScenarioDraftButton", context.RenameRetentionScenarioDraftCommand);
+                    AssertScenarioCommand(page, "DeleteRetentionScenarioDraftButton", context.DeleteRetentionScenarioDraftCommand);
                     var pageScrollViewer = FindVisualAncestor<ScrollViewer>(card);
                     Assert.NotNull(pageScrollViewer);
                     Assert.True(pageScrollViewer!.ViewportHeight > 0);
@@ -148,7 +159,10 @@ public sealed class RetentionScenarioInputBehaviorTests
                 }
                 finally
                 {
+                    Keyboard.ClearFocus();
                     window.Close();
+                    window.Content = null;
+                    window.Dispatcher.InvokeShutdown();
                 }
             }
             catch (Exception caught)
@@ -196,6 +210,13 @@ public sealed class RetentionScenarioInputBehaviorTests
         where T : class
         => Assert.IsType<T>(owner.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(owner));
 
+    private static void AssertScenarioCommand(MaintenanceView page, string fieldName, ICommand command)
+    {
+        var button = Assert.IsAssignableFrom<ButtonBase>(page.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(page));
+        Assert.Same(command, button.Command);
+        Assert.True(button.IsVisible);
+    }
+
     private static T? FindVisualAncestor<T>(DependencyObject child)
         where T : DependencyObject
     {
@@ -227,6 +248,21 @@ public sealed class RetentionScenarioInputBehaviorTests
         {
             RetentionScenarioInput = input;
             EffectivePolicy = effectivePolicy;
+            var savedScenario = new RetentionScenarioDefinition
+            {
+                Id = "11111111111111111111111111111111",
+                Name = "稳妥保留",
+                KeepAllForHours = input.KeepAllForHours,
+                KeepDailyDays = input.KeepDailyDays,
+                KeepWeeklyWeeks = input.KeepWeeklyWeeks,
+                KeepMonthlyMonths = input.KeepMonthlyMonths,
+                GrowthMinimumMiBPer30Days = input.GrowthMinimumMiBPer30Days,
+                GrowthMaximumMiBPer30Days = input.GrowthMaximumMiBPer30Days,
+                LastSnapshotUtc = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc)
+            };
+            RetentionScenarioDrafts.Add(savedScenario);
+            SelectedRetentionScenarioDraft = savedScenario;
+            RetentionScenarioNameDraft = savedScenario.Name;
             RetentionScenarioComparison = new RetentionScenarioComparisonDto
             {
                 Summary = "测试对比：同一基线 25 个版本。",
@@ -286,6 +322,14 @@ public sealed class RetentionScenarioInputBehaviorTests
         }
 
         public RetentionScenarioDraft RetentionScenarioInput { get; }
+        public ObservableCollection<RetentionScenarioDefinition> RetentionScenarioDrafts { get; } = new ObservableCollection<RetentionScenarioDefinition>();
+        public RetentionScenarioDefinition? SelectedRetentionScenarioDraft { get; set; }
+        public string RetentionScenarioNameDraft { get; set; } = string.Empty;
+        public string RetentionScenarioDraftStatusDisplay { get; } = "已保存方案 · 可重新比较";
+        public ICommand SaveRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
+        public ICommand CopyRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
+        public ICommand RenameRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
+        public ICommand DeleteRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public RetentionPolicy EffectivePolicy { get; }
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get; }
         public RetentionScenarioGameSummaryDto? SelectedRetentionScenarioGame { get; set; }

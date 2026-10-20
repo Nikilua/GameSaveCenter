@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
@@ -13,6 +14,20 @@ namespace GameSaveCenter.Playnite.Tests
         public void ExportImport_RoundTripsNonSecretSettings()
         {
             var source = CreateSettings();
+            source.RetentionScenarioDrafts = new List<RetentionScenarioDefinition>
+            {
+                new()
+                {
+                    Name = "安全保留",
+                    KeepAllForHours = 36,
+                    KeepDailyDays = 45,
+                    KeepWeeklyWeeks = 16,
+                    KeepMonthlyMonths = 30,
+                    GrowthMinimumMiBPer30Days = 100,
+                    GrowthMaximumMiBPer30Days = 500,
+                    LastSnapshotUtc = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc)
+                }
+            };
             var json = source.ExportPortableJson();
             var package = JObject.Parse(json);
 
@@ -35,6 +50,11 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal(source.HealthInspectionEnabled, imported.HealthInspectionEnabled);
             Assert.Equal(source.HealthInspectionIntervalMinutes, imported.HealthInspectionIntervalMinutes);
             Assert.Equal(source.HealthInspectionStaleAfterDays, imported.HealthInspectionStaleAfterDays);
+            var importedRetentionScenario = Assert.Single(imported.RetentionScenarioDrafts);
+            Assert.Equal("安全保留", importedRetentionScenario.Name);
+            Assert.Equal(45, importedRetentionScenario.KeepDailyDays);
+            Assert.Equal(500, importedRetentionScenario.GrowthMaximumMiBPer30Days);
+            Assert.Equal(new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc), importedRetentionScenario.LastSnapshotUtc);
             Assert.Equal(source.CloudUploadQueuePaused, imported.CloudUploadQueuePaused);
             Assert.Equal(source.CloudUploadAllowedStartMinute, imported.CloudUploadAllowedStartMinute);
             Assert.Equal(source.CloudUploadAllowedEndMinute, imported.CloudUploadAllowedEndMinute);

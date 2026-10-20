@@ -80,6 +80,26 @@ public sealed class FakeDashboardData
     public ICommand SaveRestorePlanDraftCommand { get; } = new NoopCommand();
     public ICommand DeleteRestorePlanDraftCommand { get; } = new NoopCommand();
     public ICommand CompareRestorePlanDraftsCommand { get; } = new NoopCommand();
+    public ICommand CompareRetentionScenarioCommand { get; } = new NoopCommand();
+    public ICommand SaveRetentionScenarioDraftCommand { get; } = new NoopCommand();
+    public ICommand CopyRetentionScenarioDraftCommand { get; } = new NoopCommand();
+    public ICommand RenameRetentionScenarioDraftCommand { get; } = new NoopCommand();
+    public ICommand DeleteRetentionScenarioDraftCommand { get; } = new NoopCommand();
+    public RetentionScenarioDraft RetentionScenarioInput { get; } = new()
+    {
+        GrowthMinimumMiBPer30Days = 128,
+        GrowthMaximumMiBPer30Days = 512
+    };
+    public RetentionScenarioComparisonDto RetentionScenarioComparison { get; } = new()
+    {
+        Summary = "布局样例：候选方案需按当前数据重新比较。"
+    };
+    public ObservableCollection<RetentionScenarioDefinition> RetentionScenarioDrafts { get; } = new();
+    public RetentionScenarioDefinition? SelectedRetentionScenarioDraft { get; set; }
+    public string RetentionScenarioNameDraft { get; set; } = string.Empty;
+    public string RetentionScenarioDraftStatusDisplay => SelectedRetentionScenarioDraft?.LastSnapshotUtc is DateTime snapshotUtc
+        ? $"已载入“{SelectedRetentionScenarioDraft.Name}” · 最近快照 {snapshotUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss} · 布局样例不缓存比较结果。"
+        : "当前为未保存的会话输入；保存命名方案后可跨重启继续使用。";
     public ICommand RetryAllTasksCommand { get; } = new NoopCommand();
     public ICommand RetryTaskCommand { get; } = new NoopCommand();
     public ICommand CancelTaskCommand { get; } = new NoopCommand();
@@ -147,6 +167,21 @@ public sealed class FakeDashboardData
         fixtureState = state;
         this.mediaInboxHasMore = mediaInboxHasMore;
         ClearMediaComparisonCommand = new RelayCommand(_ => { }, _ => mediaComparisonSelection.Items.Count > 0);
+        var retentionScenario = new RetentionScenarioDefinition
+        {
+            Id = "22222222222222222222222222222222",
+            Name = "低增长演示方案",
+            KeepAllForHours = 48,
+            KeepDailyDays = 45,
+            KeepWeeklyWeeks = 16,
+            KeepMonthlyMonths = 30,
+            GrowthMinimumMiBPer30Days = 128,
+            GrowthMaximumMiBPer30Days = 512,
+            LastSnapshotUtc = DateTime.UtcNow.AddHours(-3)
+        };
+        RetentionScenarioDrafts.Add(retentionScenario);
+        SelectedRetentionScenarioDraft = retentionScenario;
+        RetentionScenarioNameDraft = retentionScenario.Name;
         mediaComparisonSelection.Items.Add(new MediaItemDto
         {
             MediaId = "render-comparison-a",

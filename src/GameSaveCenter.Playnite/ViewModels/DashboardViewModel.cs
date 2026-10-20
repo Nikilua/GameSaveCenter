@@ -327,6 +327,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             cloudTransferFilterRefresh = new DebouncedRefresh(() => Run(() => LoadCloudTransferPageAsync(true)), TimeSpan.FromMilliseconds(240));
             uiStateSave = new DebouncedRefresh(SaveUiStateSettings, TimeSpan.FromMilliseconds(500));
             InitializeFilterPresets();
+            InitializeRetentionScenarioDrafts();
             taskStatusFilter = TaskStatusFilterOptions.Contains(plugin.Settings.TaskStatusFilterState) ? plugin.Settings.TaskStatusFilterState : "全部";
             pendingTaskGameFilter = plugin.Settings.TaskGameFilterState ?? "全部";
             pendingTaskTypeFilter = plugin.Settings.TaskTypeFilterState ?? "全部";
@@ -474,6 +475,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshStorageAnalysisCommand = new RelayCommand(_ => Run(RefreshStorageAnalysisAsync), _ => !IsBusy);
             RefreshRetentionSimulationCommand = new RelayCommand(_ => Run(RefreshRetentionSimulationAsync), _ => !IsBusy);
             CompareRetentionScenarioCommand = new RelayCommand(_ => Run(CompareRetentionScenarioAsync), _ => !IsBusy && RetentionScenarioInput.IsValid);
+            SaveRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(SaveRetentionScenarioDraftAsync()), _ => CanSaveRetentionScenarioDraft);
+            CopyRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(CopyRetentionScenarioDraftAsync()), _ => CanCopyRetentionScenarioDraft);
+            RenameRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(RenameRetentionScenarioDraftAsync()), _ => CanRenameRetentionScenarioDraft);
+            DeleteRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(DeleteRetentionScenarioDraftAsync()), _ => CanDeleteRetentionScenarioDraft);
             ApplyRetentionSimulationCommand = new RelayCommand(_ => Run(ApplyRetentionSimulationAsync), _ => !IsBusy && RetentionSimulation.DeleteCandidateCount > 0);
             RetentionScenarioInput.PropertyChanged += (_, _) => OnRetentionScenarioInputChanged();
             RetentionScenarioInput.ErrorsChanged += (_, _) => OnRetentionScenarioInputChanged();
@@ -3452,14 +3457,17 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RetentionScenarioComparison = result;
                 SelectedRetentionScenarioGame = result.Games.FirstOrDefault(x => x.HasScenarioDifference)
                     ?? result.Games.FirstOrDefault();
+                RecordRetentionScenarioSnapshot(request, result);
                 StatusMessage = result.Summary;
             });
         }
 
         private void OnRetentionScenarioInputChanged()
         {
+            if (isLoadingRetentionScenarioDraft) return;
             RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "情景参数已变化，请重新生成对比。" };
             SelectedRetentionScenarioGame = null;
+            RefreshRetentionScenarioDraftStatusDisplay();
             RaiseCommandStates();
         }
 
@@ -6557,7 +6565,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, OpenSelectedTaskSourceCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, OpenStorageGameCommand, OpenStorageBackupCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,CompareRetentionScenarioCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,CompareRetentionScenarioCommand,SaveRetentionScenarioDraftCommand,CopyRetentionScenarioDraftCommand,RenameRetentionScenarioDraftCommand,DeleteRetentionScenarioDraftCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

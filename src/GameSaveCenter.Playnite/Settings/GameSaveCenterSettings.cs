@@ -25,6 +25,7 @@ namespace GameSaveCenter.Playnite.Settings
         private List<FilterPresetDefinition> filterPresets = new List<FilterPresetDefinition>();
         private List<ViewConfigurationDefinition> viewConfigurations = new List<ViewConfigurationDefinition>();
         private List<RestorePlanDraftDefinition> restorePlanDrafts = new List<RestorePlanDraftDefinition>();
+        private List<RetentionScenarioDefinition> retentionScenarioDrafts = new List<RetentionScenarioDefinition>();
         private Dictionary<string, string> activeViewConfigurationIds = new Dictionary<string, string>(StringComparer.Ordinal);
         private string defaultTableDensityMode = TableDensityPolicy.ComfortableMode;
         private bool autoStartWorker = true;
@@ -279,6 +280,14 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => restorePlanDrafts;
             set => restorePlanDrafts = RestorePlanDraftDefinition.NormalizeMany(value);
+        }
+
+        /// <summary>Named scalar-only retention assumptions; saved drafts never change active game policies.</summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public List<RetentionScenarioDefinition> RetentionScenarioDrafts
+        {
+            get => retentionScenarioDrafts;
+            set => retentionScenarioDrafts = RetentionScenarioDefinition.NormalizeMany(value);
         }
 
         /// <summary>DPAPI-protected per-user HMAC key for path-free restore mapping fingerprints.</summary>
@@ -845,6 +854,7 @@ namespace GameSaveCenter.Playnite.Settings
             FilterPresets = other.FilterPresets;
             ViewConfigurations = other.ViewConfigurations;
             RestorePlanDrafts = other.RestorePlanDrafts;
+            RetentionScenarioDrafts = other.RetentionScenarioDrafts;
             RestorePlanMappingFingerprintKeyProtected = other.RestorePlanMappingFingerprintKeyProtected ?? string.Empty;
             RestorePlanMappingFingerprintKeyId = other.RestorePlanMappingFingerprintKeyId ?? string.Empty;
             ActiveViewConfigurationIds = other.ActiveViewConfigurationIds;
