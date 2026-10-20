@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -23,6 +24,132 @@ namespace GameSaveCenter.Playnite.Tests
     [Collection("R09FocusWpf")]
     public sealed class MediaComparisonViewportBehaviorTests
     {
+        [Fact]
+        public void WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard()
+        {
+            RunSta(() =>
+            {
+                var root = Path.Combine(Path.GetTempPath(), "gsc-s04-04-" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(root);
+                var firstPath = CreateImage(Path.Combine(root, "first-transparent.png"), 960, 540, 75, transparent: true);
+                var secondPath = CreateImage(Path.Combine(root, "second-transparent.png"), 960, 540, 155, transparent: true);
+                try
+                {
+                    var selection = new MediaComparisonSelection();
+                    selection.Add(new[]
+                    {
+                        Screenshot("media-first", firstPath),
+                        Screenshot("media-second", secondPath)
+                    }, _ => true);
+                    var dashboard = CreateDashboard(selection);
+                    var view = new MediaCenterView { DataContext = dashboard };
+                    var viewType = typeof(MediaCenterView);
+                    var tabControl = GetField<TabControl>(viewType, view, "MediaTabControl");
+                    var wipeToggle = GetField<ToggleSwitch>(viewType, view, "MediaComparisonWipeToggle");
+                    var wipeCard = GetField<Border>(viewType, view, "MediaComparisonWipeCard");
+                    var wipeCanvas = GetField<Grid>(viewType, view, "MediaComparisonWipeCanvas");
+                    var wipeReveal = GetField<Border>(viewType, view, "MediaComparisonWipeReveal");
+                    var wipeHandle = GetField<Border>(viewType, view, "MediaComparisonWipeHandle");
+                    var firstImage = GetField<AsyncThumbnailImage>(viewType, view, "MediaComparisonFirstImage");
+                    var secondImage = GetField<AsyncThumbnailImage>(viewType, view, "MediaComparisonSecondImage");
+                    var wipeFirstImage = GetField<System.Windows.Controls.Image>(viewType, view, "MediaComparisonWipeFirstImage");
+                    var wipeSecondImage = GetField<System.Windows.Controls.Image>(viewType, view, "MediaComparisonWipeSecondImage");
+
+                    using (var host = new WindowHost(new Window
+                    {
+                        Content = view,
+                        Width = 1180,
+                        Height = 900,
+                        ShowInTaskbar = false,
+                        WindowStyle = WindowStyle.None,
+                        Opacity = 0.01
+                    }))
+                    {
+                        tabControl.SelectedIndex = 1;
+                        dashboard.SetMediaComparisonWorkspaceOpen(true);
+                        host.UpdateLayout();
+                        PumpUntil(host.Window.Dispatcher,
+                            () => firstImage.PreviewState == "Ready" && secondImage.PreviewState == "Ready",
+                            TimeSpan.FromSeconds(6));
+                        host.UpdateLayout();
+
+                        wipeToggle.IsChecked = true;
+                        wipeToggle.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, wipeToggle));
+                        host.UpdateLayout();
+
+                        Assert.Equal(Visibility.Visible, wipeCard.Visibility);
+                        Assert.Same(firstImage.Source, wipeFirstImage.Source);
+                        Assert.Same(secondImage.Source, wipeSecondImage.Source);
+                        Assert.Equal(wipeCanvas.ActualWidth * 0.5d, wipeReveal.Width, 2);
+                        Assert.Equal("Ready", firstImage.PreviewState);
+                        Assert.Equal("Ready", secondImage.PreviewState);
+
+                        var comparisonRender = new RenderTargetBitmap(
+                            (int)Math.Ceiling(wipeCanvas.ActualWidth),
+                            (int)Math.Ceiling(wipeCanvas.ActualHeight),
+                            96,
+                            96,
+                            PixelFormats.Pbgra32);
+                        comparisonRender.Render(wipeCanvas);
+                        var comparisonPixels = new byte[comparisonRender.PixelWidth * comparisonRender.PixelHeight * 4];
+                        comparisonRender.CopyPixels(comparisonPixels, comparisonRender.PixelWidth * 4, 0);
+                        var comparisonCenterY = comparisonRender.PixelHeight / 2;
+                        var aPixel = (comparisonCenterY * comparisonRender.PixelWidth + (int)(comparisonRender.PixelWidth * 0.42d)) * 4;
+                        var bPixel = (comparisonCenterY * comparisonRender.PixelWidth + (int)(comparisonRender.PixelWidth * 0.58d)) * 4;
+                        Assert.True(comparisonPixels[aPixel + 1] > comparisonPixels[aPixel + 2], "The left half should show A's green synthetic image.");
+                        Assert.True(comparisonPixels[bPixel + 2] > comparisonPixels[bPixel + 1], "The right half should show B's purple synthetic image.");
+
+                        var initialWidth = wipeReveal.Width;
+                        RaisePreviewKeyDown(wipeHandle, Key.Right);
+                        host.UpdateLayout();
+                        Assert.Equal(initialWidth + wipeCanvas.ActualWidth * 0.02d, wipeReveal.Width, 2);
+
+                        RaisePreviewKeyDown(wipeHandle, Key.Home);
+                        host.UpdateLayout();
+                        Assert.Equal(0d, wipeReveal.Width);
+                        RaisePreviewKeyDown(wipeHandle, Key.End);
+                        host.UpdateLayout();
+                        Assert.Equal(wipeCanvas.ActualWidth, wipeReveal.Width, 2);
+
+                        var transparentPixelRender = new RenderTargetBitmap(
+                            (int)Math.Ceiling(wipeCanvas.ActualWidth),
+                            (int)Math.Ceiling(wipeCanvas.ActualHeight),
+                            96,
+                            96,
+                            PixelFormats.Pbgra32);
+                        transparentPixelRender.Render(wipeCanvas);
+                        var pixels = new byte[transparentPixelRender.PixelWidth * transparentPixelRender.PixelHeight * 4];
+                        transparentPixelRender.CopyPixels(pixels, transparentPixelRender.PixelWidth * 4, 0);
+                        var firstCheckerPixel = pixels[(4 * transparentPixelRender.PixelWidth + 4) * 4];
+                        var secondCheckerPixel = pixels[(4 * transparentPixelRender.PixelWidth + 12) * 4];
+                        Assert.NotEqual(firstCheckerPixel, secondCheckerPixel);
+
+                        var visualCapturePath = Environment.GetEnvironmentVariable("GSC_S04_04_WIPE_CAPTURE");
+                        if (!string.IsNullOrWhiteSpace(visualCapturePath))
+                        {
+                            RaisePreviewKeyDown(wipeHandle, Key.Home);
+                            for (var index = 0; index < 25; index++)
+                                RaisePreviewKeyDown(wipeHandle, Key.Right);
+                            host.UpdateLayout();
+                            SaveVisualCapture(wipeCard, visualCapturePath!);
+                        }
+
+                        wipeToggle.IsChecked = false;
+                        wipeToggle.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, wipeToggle));
+                        host.UpdateLayout();
+                        Assert.Equal(Visibility.Collapsed, wipeCard.Visibility);
+                        Assert.True(GetField<Border>(viewType, view, "MediaComparisonFirstCard").IsEnabled);
+                        Assert.True(GetField<Border>(viewType, view, "MediaComparisonSecondCard").IsEnabled);
+                    }
+                }
+                finally
+                {
+                    AsyncThumbnailLoader.ClearCache();
+                    if (Directory.Exists(root)) Directory.Delete(root, recursive: true);
+                }
+            });
+        }
+
         [Fact]
         public void ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan()
         {
@@ -119,7 +246,7 @@ namespace GameSaveCenter.Playnite.Tests
                 OriginalPath = path
             };
 
-        private static string CreateImage(string path, int width, int height, byte value)
+        private static string CreateImage(string path, int width, int height, byte value, bool transparent = false)
         {
             var pixels = new byte[width * height * 4];
             for (var index = 0; index < width * height; index++)
@@ -127,7 +254,7 @@ namespace GameSaveCenter.Playnite.Tests
                 pixels[index * 4] = value;
                 pixels[index * 4 + 1] = (byte)(255 - value);
                 pixels[index * 4 + 2] = 127;
-                pixels[index * 4 + 3] = 255;
+                pixels[index * 4 + 3] = transparent && index % width < width / 5 ? (byte)0 : (byte)255;
             }
 
             var bitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, pixels, width * 4);
@@ -135,6 +262,18 @@ namespace GameSaveCenter.Playnite.Tests
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using (var stream = File.Create(path)) encoder.Save(stream);
             return path;
+        }
+
+        private static void SaveVisualCapture(FrameworkElement element, string path)
+        {
+            var width = Math.Max(1, (int)Math.Ceiling(element.ActualWidth));
+            var height = Math.Max(1, (int)Math.Ceiling(element.ActualHeight));
+            var render = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+            render.Render(element);
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(render));
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            using (var stream = File.Create(path)) encoder.Save(stream);
         }
 
         private static DashboardViewModel CreateDashboard(MediaComparisonSelection selection)
@@ -161,6 +300,19 @@ namespace GameSaveCenter.Playnite.Tests
 
         private static void Execute(System.Windows.Controls.Button button)
             => button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, button));
+
+        private static KeyEventArgs RaisePreviewKeyDown(UIElement element, Key key)
+        {
+            var presentationSource = PresentationSource.FromVisual(element);
+            Assert.NotNull(presentationSource);
+            var args = new KeyEventArgs(Keyboard.PrimaryDevice, presentationSource!, Environment.TickCount, key)
+            {
+                RoutedEvent = Keyboard.PreviewKeyDownEvent,
+                Source = element
+            };
+            element.RaiseEvent(args);
+            return args;
+        }
 
         private static void PumpUntil(Dispatcher dispatcher, Func<bool> condition, TimeSpan timeout)
         {

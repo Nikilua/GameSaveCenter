@@ -27,6 +27,9 @@ namespace GameSaveCenter.Playnite.Views
         private bool mediaInboxInspectorOpen;
         private bool mediaInboxHistoryOpen;
         private bool mediaComparisonWorkspaceUserOverride;
+        private bool mediaComparisonWipeMode;
+        private bool mediaComparisonWipeDragging;
+        private double mediaComparisonWipePosition = 0.5d;
         private readonly MediaComparisonViewportState mediaComparisonViewportState = new MediaComparisonViewportState();
         private bool suppressMediaComparisonScrollSync;
         private ScrollViewer? mediaComparisonPanViewer;
@@ -82,6 +85,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             StopMediaComparisonPan();
+            StopMediaComparisonWipeDrag();
             InvalidatePendingAnchorRestore();
             pendingAnchorExpiryTimer.Stop();
             inboxColumnLayout?.Dispose();
@@ -382,13 +386,24 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaComparisonWorkspaceSizeChanged(object sender, SizeChangedEventArgs e)
         {
+            ApplyMediaComparisonWorkspaceLayout(e.NewSize.Width);
+        }
+
+        private void OnMediaComparisonWipeToggleClick(object sender, RoutedEventArgs e)
+        {
+            mediaComparisonWipeMode = MediaComparisonWipeToggle.IsChecked == true;
+            ApplyMediaComparisonWorkspaceLayout(MediaComparisonWorkspaceGrid.ActualWidth);
+        }
+
+        private void ApplyMediaComparisonWorkspaceLayout(double width)
+        {
             if (MediaComparisonWorkspaceGrid == null || MediaComparisonSecondCard == null)
                 return;
 
-            // The current-game page keeps a 600-DIP inspector-adjacent lane on many
-            // supported window sizes. Two 270-DIP cards still read side by side there;
-            // stack only when the comparison surface itself becomes narrower than that.
-            var stacked = e.NewSize.Width < 560d;
+            // Keep the two source previews loaded under the wipe surface. The wipe
+            // presenters bind to their already-decoded BitmapSources and do not start
+            // another decode or replace the bounded thumbnail-loading path.
+            var stacked = !mediaComparisonWipeMode && width < 560d;
             MediaComparisonWorkspaceGrid.ColumnDefinitions[1].Width = stacked
                 ? new GridLength(0)
                 : new GridLength(1, GridUnitType.Star);
@@ -403,7 +418,107 @@ namespace GameSaveCenter.Playnite.Views
             MediaComparisonSecondCard.Margin = stacked
                 ? new Thickness(0, 5, 0, 0)
                 : new Thickness(5, 0, 0, 0);
+            MediaComparisonFirstCard.Opacity = mediaComparisonWipeMode ? 0d : 1d;
+            MediaComparisonSecondCard.Opacity = mediaComparisonWipeMode ? 0d : 1d;
+            MediaComparisonFirstCard.IsHitTestVisible = !mediaComparisonWipeMode;
+            MediaComparisonSecondCard.IsHitTestVisible = !mediaComparisonWipeMode;
+            MediaComparisonFirstCard.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonSecondCard.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonSyncToggle.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonFitButton.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonOneToOneButton.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonFirstZoomOutButton.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonFirstZoomInButton.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonSecondZoomOutButton.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonSecondZoomInButton.IsEnabled = !mediaComparisonWipeMode;
+            MediaComparisonWipeCard.Visibility = mediaComparisonWipeMode ? Visibility.Visible : Visibility.Collapsed;
+            UpdateMediaComparisonWipeReveal();
+            UpdateMediaComparisonZoomStatus();
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(UpdateMediaComparisonViewports));
+        }
+
+        private void OnMediaComparisonWipeCanvasSizeChanged(object sender, SizeChangedEventArgs e)
+            => UpdateMediaComparisonWipeReveal();
+
+        private void OnMediaComparisonWipeHandleMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left) return;
+            mediaComparisonWipeDragging = true;
+            MediaComparisonWipeHandle.Focus();
+            MediaComparisonWipeHandle.CaptureMouse();
+            SetMediaComparisonWipePosition(e.GetPosition(MediaComparisonWipeCanvas).X);
+            e.Handled = true;
+        }
+
+        private void OnMediaComparisonWipeHandleMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mediaComparisonWipeDragging || !MediaComparisonWipeHandle.IsMouseCaptured
+                || e.LeftButton != MouseButtonState.Pressed)
+                return;
+            SetMediaComparisonWipePosition(e.GetPosition(MediaComparisonWipeCanvas).X);
+            e.Handled = true;
+        }
+
+        private void OnMediaComparisonWipeHandleMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!mediaComparisonWipeDragging || e.ChangedButton != MouseButton.Left) return;
+            StopMediaComparisonWipeDrag();
+            e.Handled = true;
+        }
+
+        private void OnMediaComparisonWipeHandleLostMouseCapture(object sender, MouseEventArgs e)
+            => mediaComparisonWipeDragging = false;
+
+        private void StopMediaComparisonWipeDrag()
+        {
+            mediaComparisonWipeDragging = false;
+            if (MediaComparisonWipeHandle.IsMouseCaptured)
+                MediaComparisonWipeHandle.ReleaseMouseCapture();
+        }
+
+        private void OnMediaComparisonWipePreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var step = (Keyboard.Modifiers & ModifierKeys.Shift) != 0 ? 0.1d : 0.02d;
+            switch (e.Key)
+            {
+                case Key.Left:
+                    SetMediaComparisonWipePosition(MediaComparisonWipeCanvas.ActualWidth * (mediaComparisonWipePosition - step));
+                    break;
+                case Key.Right:
+                    SetMediaComparisonWipePosition(MediaComparisonWipeCanvas.ActualWidth * (mediaComparisonWipePosition + step));
+                    break;
+                case Key.Home:
+                    SetMediaComparisonWipePosition(0d);
+                    break;
+                case Key.End:
+                    SetMediaComparisonWipePosition(MediaComparisonWipeCanvas.ActualWidth);
+                    break;
+                default:
+                    return;
+            }
+            e.Handled = true;
+        }
+
+        private void SetMediaComparisonWipePosition(double x)
+        {
+            var width = MediaComparisonWipeCanvas.ActualWidth;
+            if (width <= 0d) return;
+            mediaComparisonWipePosition = Math.Max(0d, Math.Min(1d, x / width));
+            UpdateMediaComparisonWipeReveal();
+        }
+
+        private void UpdateMediaComparisonWipeReveal()
+        {
+            if (MediaComparisonWipeCanvas == null || MediaComparisonWipeReveal == null) return;
+            var width = Math.Max(0d, MediaComparisonWipeCanvas.ActualWidth);
+            MediaComparisonWipeReveal.Width = width * mediaComparisonWipePosition;
+            MediaComparisonWipeHandle.Margin = new Thickness(
+                width * mediaComparisonWipePosition - MediaComparisonWipeHandle.Width / 2d,
+                0,
+                0,
+                0);
+            if (MediaComparisonWipePositionText != null)
+                MediaComparisonWipePositionText.Text = $"{mediaComparisonWipePosition:P0} · 拖动或用方向键调整";
         }
 
         private void OnMediaComparisonPreviewStateChanged(object? sender, EventArgs e)
@@ -528,6 +643,11 @@ namespace GameSaveCenter.Playnite.Views
         private void UpdateMediaComparisonZoomStatus()
         {
             if (MediaComparisonZoomStatusText == null) return;
+            if (mediaComparisonWipeMode)
+            {
+                MediaComparisonZoomStatusText.Text = "拖动分隔线 · 方向键微调 · 人工视觉比较";
+                return;
+            }
             var firstZoom = mediaComparisonViewportState.GetZoom(
                 MediaComparisonPane.First,
                 GetMediaComparisonFitZoom(MediaComparisonFirstScroller, MediaComparisonFirstImage));
