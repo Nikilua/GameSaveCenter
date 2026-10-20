@@ -909,6 +909,117 @@ VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0);",
         return result;
     }
 
+    public async Task<WorklistReferenceQueryResultDto> ResolveWorklistReferencesAsync(
+        WorklistReferenceQueryDto? request,
+        CancellationToken token)
+    {
+        var references = request?.References ?? new List<WorklistReferenceQueryItemDto>();
+        if (references.Count > WorklistReferenceQueryDto.MaximumReferences)
+            throw new InvalidOperationException($"A worklist reference lookup is limited to {WorklistReferenceQueryDto.MaximumReferences} items.");
+
+        var result = new WorklistReferenceQueryResultDto();
+        if (references.Count == 0) return result;
+
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        foreach (var reference in references)
+        {
+            var stableId = (reference?.StableObjectId ?? string.Empty).Trim();
+            var state = WorklistReferenceState.InvalidReference;
+            if (stableId.Length > 0 && stableId.Length <= 256)
+            {
+                switch (reference!.Kind)
+                {
+                    case 1 when TryParseBackupReference(stableId, out var playniteId, out var backupId):
+                        state = await ReadReferenceStateAsync(connection,
+                            "SELECT 1 FROM backup_versions WHERE playnite_id=$game AND backup_id=$id LIMIT 1;",
+                            ("$game", playniteId), ("$id", backupId), token).ConfigureAwait(false)
+                            ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
+                        break;
+                    case 2:
+                        state = await ReadReferenceStateAsync(connection,
+                            "SELECT 1 FROM media WHERE media_id=$id LIMIT 1;", ("$id", stableId), null, token).ConfigureAwait(false)
+                            ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
+                        break;
+                    case 3:
+                        state = await ReadReferenceStateAsync(connection,
+                            "SELECT 1 FROM tasks WHERE task_id=$id LIMIT 1;", ("$id", stableId), null, token).ConfigureAwait(false)
+                            ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
+                        break;
+                    case 4:
+                        var findingState = await ReadFindingReferenceStateAsync(connection, stableId, token).ConfigureAwait(false);
+                        state = findingState.HasValue
+                            ? findingState.Value ? WorklistReferenceState.Resolved : WorklistReferenceState.Indexed
+                            : WorklistReferenceState.NotFound;
+                        break;
+                }
+            }
+
+            result.References.Add(new WorklistReferenceQueryResultItemDto
+            {
+                Kind = reference?.Kind ?? 0,
+                StableObjectId = stableId,
+                State = state
+            });
+        }
+        return result;
+    }
+
+    private static async Task<bool> ReadReferenceStateAsync(
+        SqliteConnection connection,
+        string commandText,
+        (string Name, string Value) first,
+        (string Name, string Value)? second,
+        CancellationToken token)
+    {
+        await using var command = connection.CreateCommand();
+        command.CommandText = commandText;
+        command.Parameters.AddWithValue(first.Name, first.Value);
+        if (second.HasValue) command.Parameters.AddWithValue(second.Value.Name, second.Value.Value);
+        return await command.ExecuteScalarAsync(token).ConfigureAwait(false) != null;
+    }
+
+    private static async Task<bool?> ReadFindingReferenceStateAsync(
+        SqliteConnection connection,
+        string findingId,
+        CancellationToken token)
+    {
+        await using var command = connection.CreateCommand();
+        command.CommandText = "SELECT resolved FROM findings WHERE finding_id=$id LIMIT 1;";
+        command.Parameters.AddWithValue("$id", findingId);
+        var value = await command.ExecuteScalarAsync(token).ConfigureAwait(false);
+        if (value == null || value == DBNull.Value) return null;
+        return Convert.ToInt32(value, System.Globalization.CultureInfo.InvariantCulture) != 0;
+    }
+
+    private static bool TryParseBackupReference(string value, out string playniteId, out string backupId)
+    {
+        playniteId = string.Empty;
+        backupId = string.Empty;
+        if (!value.StartsWith("v1|", StringComparison.Ordinal)) return false;
+        var cursor = 3;
+        if (!TryReadLengthPrefixedPart(value, ref cursor, out playniteId) || cursor >= value.Length || value[cursor++] != '|')
+            return false;
+        if (!TryReadLengthPrefixedPart(value, ref cursor, out backupId)) return false;
+        return cursor == value.Length && playniteId.Length > 0 && backupId.Length > 0;
+    }
+
+    private static bool TryReadLengthPrefixedPart(string value, ref int cursor, out string part)
+    {
+        part = string.Empty;
+        var colon = value.IndexOf(':', cursor);
+        if (colon < 0 || !int.TryParse(value.Substring(cursor, colon - cursor),
+                System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var length)
+            || length <= 0)
+            return false;
+
+        cursor = colon + 1;
+        if (length > value.Length - cursor) return false;
+        part = value.Substring(cursor, length);
+        cursor += length;
+        return true;
+    }
+
     public Task AddBackupVersionAsync(BackupVersionDto version, string manifestJson, CancellationToken token) => ExecuteAsync(@"
 INSERT INTO backup_versions(backup_id,playnite_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,manifest_json,archive_path,restore_readiness_json,parent_backup_id)
 VALUES($id,$game,$ludusavi,$created,$bytes,$count,$locked,$comment,$device,$os,$pre,$manifest,$archive,$readiness,$parent)

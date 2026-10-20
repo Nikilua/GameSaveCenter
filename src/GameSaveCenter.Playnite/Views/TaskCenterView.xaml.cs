@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -223,6 +224,12 @@ namespace GameSaveCenter.Playnite.Views
                 Keyboard.Focus(textBox);
             }
             e.Handled = true;
+        }
+
+        private void OnWorklistBrowserSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is DashboardViewModel viewModel && WorklistBrowserGrid != null)
+                viewModel.SetWorklistBrowserSelection(WorklistBrowserGrid.SelectedItems.Cast<WorklistBrowserEntry>());
         }
 
         private void OnTaskDetailScrollViewerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

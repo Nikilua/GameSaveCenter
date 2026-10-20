@@ -34,6 +34,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             AddSelectedFindingToWorklistCommand = new RelayCommand(
                 _ => Observe(AddWorklistEntryAsync(() => WorklistEntryPreviewFactory.FromValidationFinding(SelectedFinding))),
                 _ => !isAddingWorklistEntry && WorklistEntryPreviewFactory.FromValidationFinding(SelectedFinding) != null);
+            InitializeWorklistBrowser();
         }
 
         private string ResolveWorklistGameName(string? playniteId, string? fallback)
@@ -141,6 +142,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
 
                 StatusMessage = $"已加入“{target.Name}”（共 {target.Items.Count} 项）；仅保存人工待办引用。";
+                RefreshWorklistBrowserFromSettings();
             }
             catch (Exception exception)
             {

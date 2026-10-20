@@ -135,6 +135,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.ApplyPolicyTemplateBatch=>await ApplyPolicyTemplateBatchAsync(Read<ApplyPolicyTemplateBatchDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTasks=>await _store.GetRecentTasksAsync(200,token).ConfigureAwait(false),
                 MessageTypes.GetTaskPage=>await _store.GetTaskPageAsync(Read<TaskQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ResolveWorklistReferences=>await _store.ResolveWorklistReferencesAsync(Read<WorklistReferenceQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetTaskChanges=>GetTaskChanges(Read<TaskChangeRequestDto>(request)),
                 MessageTypes.WaitForTaskChanges=>await WaitForTaskChangesAsync(Read<TaskChangeRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.AddNotificationRecord=>await _store.TryAddNotificationAsync(Read<NotificationRecordDto>(request),token).ConfigureAwait(false),
