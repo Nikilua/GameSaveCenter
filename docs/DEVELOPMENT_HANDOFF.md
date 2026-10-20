@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-20 Round4 S05-01 已受控验收
+
+提交 `990758b6` 增加维护中心保留策略情景输入：期限规则及每 30 天增长上下限只在会话内生效，独立构造现有 `RetentionPolicy`，不会改当前游戏策略/模板/设置或调用清理。SDK8.0.423 Release 构建/隔离 no-start 安装 `0/0`，生产 WPF 输入行为 `6/6`，精确提交双主题 11 尺寸 RenderHarness `0 PROBLEM`。完整证据见 [S05-01](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-01/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验；AcrylicFork Demo 缺失。下一项按计划审查 S05-02 双方案预览。旧 Round3 未跟踪 TRX 和 TestResults 保留，未提交。
+
 ## 2026-10-20 一键构建、安装、启动默认流程已验证通过
 
 此前 `DEV-INSTALL-008` 在只有 SDK `9.0.302` 的机器上因仓库精确锁定 SDK `8.0.423` 而失败于编译前。当前 `DEV-INSTALL-009` 会在关闭 Playnite 前，通过微软官方安装脚本准备缺少的准确 SDK（新机器首次执行需能访问微软下载源）。

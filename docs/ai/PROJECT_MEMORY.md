@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-20 Round4 S05-01 只读情景输入已验收
+
+提交 `990758b6` 在维护中心“保留策略”页加入当前会话使用的候选保留规则与增长范围输入；字段有数值边界和上下限关系错误，卡片复用生产主题样式并由页面滚动容器承载。它通过现有 `RetentionPolicy` 构造独立候选值，不更改游戏策略、模板、设置或 Worker 状态，不执行清理。旧的当前策略预览/策略编辑不提供等价候选输入。
+
+SDK8.0.423 Release 一键隔离构建、Worker 发布、包身份检查和 no-start 隔离安装通过，`0 warning / 0 error`；精确提交的生产 WPF Light/Dark 情景输入行为 `6/6`；RenderHarness 双主题 11 尺寸 `0 PROBLEM`；source validation、XAML 和静态审查通过。安装版本 `0.6.73` / DLL `0.6.73.0`。证据与 SHA 见 [S05-01](../design/reviews/ui-finesse-round4-20261018/evidence/S05-01/README.md)。真实 Playnite、物理 DPI 和完整 WPF 独立循环未验。下一项待核对 S05-02 双方案预览；Demo 目录仍未提供。
+
 ## 2026-10-20 Round4 S04-06 至 S04-08 已验收
 
 S04-05 提交 `4d0bfd3c` 已把比较导航按钮接入生产 `MediaCenterView`。候选只来自当前已加载且通过搜索/筛选的 `MediaView`：B 可上一张/下一张，A 固定不变，详情选择不变，当前位置可见；不自动拉取新页。候选缺失/损坏时利用 `MediaId` 暂时排除并继续当前方向，无后续项时换向回退；文件存在检查和实际替换之间发生变化时也会继续尝试。使用现有异步缩略图的取消和 generation guard，未引入新解码器。

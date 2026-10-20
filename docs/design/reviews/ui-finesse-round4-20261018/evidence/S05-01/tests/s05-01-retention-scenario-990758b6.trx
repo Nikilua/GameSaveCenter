@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ef9f135b-9a4c-4aa9-a1ea-15400efb9c1f" name="lopmatu@SULT 2026-10-20 17:02:49" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-20T17:02:49.1818313+08:00" queuing="2026-10-20T17:02:49.1818316+08:00" start="2026-10-20T17:02:42.5881675+08:00" finish="2026-10-20T17:03:05.8894440+08:00" />
+  <TestSettings name="default" id="dca56096-43eb-4c51-afd9-974f4d38d9ee">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-20_17_02_49" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d54d7e8b-78f8-430b-a116-a66bf85f53bf" testId="f3feeac8-004f-914d-ee1b-69c0ad86b852" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.MaintenanceInputsStayInSessionAndShowInvalidFieldErrors(theme: Light)" computerName="SULT" duration="00:00:02.6910000" startTime="2026-10-20T17:02:46.4603950+08:00" endTime="2026-10-20T17:02:49.1339930+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d54d7e8b-78f8-430b-a116-a66bf85f53bf" />
+    <UnitTestResult executionId="a0788f68-7faf-4541-a38f-f588b6dbd0db" testId="5bdfaf03-1873-f7d4-3333-fbadb9a1e107" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.MaintenanceInputsStayInSessionAndShowInvalidFieldErrors(theme: Dark)" computerName="SULT" duration="00:00:00.4120000" startTime="2026-10-20T17:02:49.1649971+08:00" endTime="2026-10-20T17:02:49.5450498+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0788f68-7faf-4541-a38f-f588b6dbd0db" />
+    <UnitTestResult executionId="a1e9bb05-aba3-425c-9e43-633b61205851" testId="db7e957d-ed00-44b2-55e1-eef413a75589" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.CandidatePolicyUsesExistingRetentionPolicyAndReturnsAnIndependentValue" computerName="SULT" duration="00:00:00.0060000" startTime="2026-10-20T17:02:49.5520508+08:00" endTime="2026-10-20T17:02:49.5540487+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a1e9bb05-aba3-425c-9e43-633b61205851" />
+    <UnitTestResult executionId="b52a38a1-880f-46f0-89cf-81fee080a230" testId="f7841978-61dc-d36f-2aa4-293a4889bd07" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.PolicyInputLimitsRejectValuesOutsidePlannerSafeHorizon(propertyName: &quot;KeepMonthlyMonths&quot;, value: 1201)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T17:02:49.5590494+08:00" endTime="2026-10-20T17:02:49.5600487+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b52a38a1-880f-46f0-89cf-81fee080a230" />
+    <UnitTestResult executionId="2935f932-d4f1-4457-b6f8-a4c16c76a974" testId="1faccc62-719e-a498-68eb-3908d54d5a69" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.PolicyInputLimitsRejectValuesOutsidePlannerSafeHorizon(propertyName: &quot;KeepDailyDays&quot;, value: -1)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T17:02:49.5610494+08:00" endTime="2026-10-20T17:02:49.5620494+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2935f932-d4f1-4457-b6f8-a4c16c76a974" />
+    <UnitTestResult executionId="c7760084-32bb-4945-887a-de694772a5b8" testId="003e7a5e-cb55-dd44-b5eb-974549a59a8d" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.GrowthRangeReportsFieldErrorsUntilLowerBoundDoesNotExceedUpperBound" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T17:02:49.5560487+08:00" endTime="2026-10-20T17:02:49.5570487+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7760084-32bb-4945-887a-de694772a5b8" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.PolicyInputLimitsRejectValuesOutsidePlannerSafeHorizon(propertyName: &quot;KeepMonthlyMonths&quot;, value: 1201)" storage="d:\workplace\github\gamesavecenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f7841978-61dc-d36f-2aa4-293a4889bd07">
+      <Execution id="b52a38a1-880f-46f0-89cf-81fee080a230" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests" name="PolicyInputLimitsRejectValuesOutsidePlannerSafeHorizon" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.MaintenanceInputsStayInSessionAndShowInvalidFieldErrors(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f3feeac8-004f-914d-ee1b-69c0ad86b852">
+      <Execution id="d54d7e8b-78f8-430b-a116-a66bf85f53bf" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests" name="MaintenanceInputsStayInSessionAndShowInvalidFieldErrors" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.MaintenanceInputsStayInSessionAndShowInvalidFieldErrors(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5bdfaf03-1873-f7d4-3333-fbadb9a1e107">
+      <Execution id="a0788f68-7faf-4541-a38f-f588b6dbd0db" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests" name="MaintenanceInputsStayInSessionAndShowInvalidFieldErrors" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.CandidatePolicyUsesExistingRetentionPolicyAndReturnsAnIndependentValue" storage="d:\workplace\github\gamesavecenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="db7e957d-ed00-44b2-55e1-eef413a75589">
+      <Execution id="a1e9bb05-aba3-425c-9e43-633b61205851" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests" name="CandidatePolicyUsesExistingRetentionPolicyAndReturnsAnIndependentValue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.GrowthRangeReportsFieldErrorsUntilLowerBoundDoesNotExceedUpperBound" storage="d:\workplace\github\gamesavecenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="003e7a5e-cb55-dd44-b5eb-974549a59a8d">
+      <Execution id="c7760084-32bb-4945-887a-de694772a5b8" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests" name="GrowthRangeReportsFieldErrorsUntilLowerBoundDoesNotExceedUpperBound" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests.PolicyInputLimitsRejectValuesOutsidePlannerSafeHorizon(propertyName: &quot;KeepDailyDays&quot;, value: -1)" storage="d:\workplace\github\gamesavecenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1faccc62-719e-a498-68eb-3908d54d5a69">
+      <Execution id="2935f932-d4f1-4457-b6f8-a4c16c76a974" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s05-01-scenario-20261020\oneclick-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioDraftTests" name="PolicyInputLimitsRejectValuesOutsidePlannerSafeHorizon" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f3feeac8-004f-914d-ee1b-69c0ad86b852" executionId="d54d7e8b-78f8-430b-a116-a66bf85f53bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5bdfaf03-1873-f7d4-3333-fbadb9a1e107" executionId="a0788f68-7faf-4541-a38f-f588b6dbd0db" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db7e957d-ed00-44b2-55e1-eef413a75589" executionId="a1e9bb05-aba3-425c-9e43-633b61205851" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7841978-61dc-d36f-2aa4-293a4889bd07" executionId="b52a38a1-880f-46f0-89cf-81fee080a230" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1faccc62-719e-a498-68eb-3908d54d5a69" executionId="2935f932-d4f1-4457-b6f8-a4c16c76a974" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="003e7a5e-cb55-dd44-b5eb-974549a59a8d" executionId="c7760084-32bb-4945-887a-de694772a5b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.86]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.03]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

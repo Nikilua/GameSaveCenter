@@ -1,3 +1,11 @@
+## 2026-10-20 Round4 S05-01 只读保留情景输入
+
+- 能力审计：当前每游戏策略与模板编辑可持久化，Worker 预览只处理当前生效策略；均无会话内候选保留规则/增长假设，不能满足 S05-01。实现前引用现有 `RetentionPolicy`，不复制新的策略契约。
+- 提交 `990758b6` 新增 `RetentionScenarioDraft` 与维护中心保留策略页输入。草稿复制策略值，只在本次 Dashboard 会话存活；六个输入包含期限/增长范围边界和交叉错误，不接设置保存、Worker 请求或清理命令。生产 WPF Light/Dark 行为测试确认输入可见、错误可见、候选更新不改变当前策略，并由页面滚动通道承载。
+- SDK `8.0.423` Release solution / 一键隔离构建 `0 warning / 0 error`；针对精确提交构建程序集的行为测试 `6/6`。隔离安装版本 `0.6.73`、DLL `0.6.73.0`。双主题 11 尺寸 RenderHarness `render-qa OK`、`0 PROBLEM`；source validation、XAML 25/25、WPF 静态审查 0 errors、git diff check 通过。
+- 证据、TRX、构建/安装记录、RenderHarness 报告及 SHA 见 [S05-01](../design/reviews/ui-finesse-round4-20261018/evidence/S05-01/README.md)。安装用 `.tmp` 隔离目录并未启动 Playnite。未验证真实宿主页面或物理 DPI；未运行完整 WPF 独立循环。Demo 文件不在当前 checkout。
+- 原 Round3 未跟踪 TRX 与 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 保留，未暂存/提交。下一项依赖已满足，待核对 S05-02 现有双方案规划能力后决定是否实现。
+
 ## 2026-10-20 Round4 S04-05 比较候选切换
 
 - 提交 `4d0bfd3c`：比较工作区新增上一/下一候选和当前位置。只替换右侧 B，锁定 A，保留详情选择和当前按钮焦点；来源限制为当前已加载 `MediaView` 搜索/筛选结果，不自动拉取下一页。
