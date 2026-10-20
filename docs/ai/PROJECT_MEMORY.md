@@ -4,7 +4,7 @@
 
 实现提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 增加保留情景的命名设置持久化：版本化标量定义最多 32 项，字段有范围校验；维护页提供选择载入、保存/更新、复制、重命名和删除。只记最近成功比较时间，不缓存旧结果/版本列表/清理句柄，也不改当前生效策略。旧设置缺少集合字段时使用空集合，便携设置导入/导出包含这些非秘密设置。
 
-先审计确认旧 `RetentionScenarioDraft` 只有本会话输入，比较返回的快照时间未存；每游戏策略与模板保存也不能保存命名情景，因此不是重复开发。SDK `8.0.423` 精确提交 Release solution `0/0`，XAML `25/25`、定向 Playnite `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation 与 diff check 通过。构建摘要、原始 TRX、RenderHarness 报告和 SHA 见 [S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。受控 WPF/离屏数据为合成；真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验，未触发 CI。原 Round3 未跟踪 TRX/TestResults 未修改或提交。下一项按计划审计 S05-07。
+先审计确认旧 `RetentionScenarioDraft` 只有本会话输入，比较返回的快照时间未存；每游戏策略与模板保存也不能保存命名情景，因此不是重复开发。SDK `8.0.423` 精确提交 Release solution `0/0`，XAML `25/25`、定向 Playnite `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation 与 diff check 通过。构建摘要、原始 TRX、RenderHarness 报告和 SHA 见 [S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。受控 WPF/离屏数据为合成；真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验，未触发 CI。原 Round3 未跟踪 TRX/TestResults 未修改或提交。随后审计 S05-07 已准入 READY。
 
 ## 2026-10-21 Round4 S05-05 策略差异定位已验收
 

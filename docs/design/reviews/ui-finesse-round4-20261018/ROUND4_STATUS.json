@@ -765,7 +765,7 @@
       "hostVerificationState": "not_run",
       "verificationText": "待实现后按范围验证",
       "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "boundary": "能力审计已准入 READY：维护页现无转交入口；复用 SaveCenter 备份策略模板编辑、差异与批量确认。仅转成未保存模板草稿并作废旧比较；不调用 Apply/清理。清理仍用 Worker 新 PreviewId 并复核版本、策略、保护和归档身份。"
     },
     {
       "id": "S05-08",

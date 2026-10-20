@@ -1,8 +1,10 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-21 Round4 S05-06 已验收，下一项审计 S05-07
+## 2026-10-21 Round4 S05-06 已验收，S05-07 已准入 READY
 
 提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 为维护中心保留策略页增加有界命名情景设置；支持选择载入、保存/更新、复制、重命名、删除和最近成功快照时间。它与生效策略分离；结果与清理预览句柄不缓存。旧设置缺字段仍可读取，便携设置包含命名情景。精确提交 SDK `8.0.423` Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation/diff check 通过。完整证据：[S05-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验；保留旧 Round3 TRX/TestResults。
+
+S05-07 能力审计：已有的 `SaveCenterView` “备份策略”标签页提供策略模板编辑、当前游戏差异和批量目标确认；Worker 按稳定游戏 ID 重新读取游戏/模板并获取游戏操作锁。维护中心已保存情景此前没有转交入口。策略模板应用只写策略、不删除归档；不可逆清理继续使用独立 `PreviewRetentionSimulation` 产生的 Worker 预览 ID。Worker 在清理时检查预览新鲜度、当前版本/策略、保护状态和归档身份，并在每游戏锁内再次读取。S05-07 准入 READY：仅将选中保存情景的保留期限映射到未保存模板草稿，清除/作废旧比较提示；不自动应用模板或清理。下一步实现此转交并验证模板映射、编辑差异和旧清理预览拒绝变化状态的行为。
 
 ## 历史：2026-10-21 Round4 S05-03 至 S05-05 已验收
 

@@ -11612,3 +11612,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 精确提交 SDK `8.0.423` Release solution build `0 warning / 0 error`，XAML `25/25`；Playnite 定向测试 `13/13`，包括设置往返、旧配置/未来 schema、边界与去重、复制/重命名定义、候选策略隔离、生产维护页 Light/Dark 输入/绑定和便携设置；RenderHarness `render-qa OK / 0 PROBLEM`；source validation、WPF 静态审查和 diff check 通过。原始日志、摘要、TRX、离屏报告、程序集身份和哈希见 [S05-06 证据包](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。
 - RenderHarness 和 WPF 行为使用合成数据；真实 Playnite、完整 WPF 隔离循环、物理 DPI、CEF/设备权限未验，也未触发 CI。摘要记录的未跟踪 Round3 TRX/TestResults 路径均保留，没有进入本批提交。
 - 下一项按计划核对 S05-07 转交策略编辑与现有策略/差异确认安全链。
+
+## 2026-10-21 Round4 S05-07 转交策略编辑能力审计
+
+- 检查计划要求与当前入口：维护中心选中的命名情景尚无转交入口；`RetentionScenarioComparisonDto` 是只读汇总，没有 Worker 清理 `PreviewId`，不能复用为执行授权。
+- 可复用现有 `SaveCenterView` “备份策略”模板编辑器：已有模板草稿、当前游戏字段差异、显式目标筛选/选择和批量确认。Worker 按稳定游戏 ID 重新读取游戏与模板并取得游戏操作锁；模板应用只更新策略，不处理归档文件。
+- 清理保持独立安全链：`PreviewRetentionSimulation` 产生 Worker 预览句柄；Apply 校验预览 ID/时间、重读当前版本与策略，检查锁定/PreRestore/健康保护和归档路径/身份，并在每游戏操作锁下再次读取。已有 Worker 行为测试覆盖保护项和状态变化拒绝。
+- 因而 S05-07 真实缺口是从保存情景到现有模板编辑器的安全转交。已将 backlog 标为 READY：只映射四项保留期限至未保存模板草稿，保留其他模板策略项，增长范围仍为比较假设；转交时清除旧对比并提示重新比较，不调用模板 Apply 或清理。未发现需新增的执行/删除引擎。
