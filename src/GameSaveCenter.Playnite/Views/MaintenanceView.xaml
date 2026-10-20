@@ -900,6 +900,7 @@
                                         <ui:Button x:Name="CopyRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyRetentionScenarioDraftCommand}" Content="复制" Margin="0,0,8,0" AutomationProperties.Name="复制保留情景草稿"/>
                                         <ui:Button x:Name="RenameRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RenameRetentionScenarioDraftCommand}" Content="重命名" Margin="0,0,8,0" AutomationProperties.Name="重命名保留情景草稿"/>
                                         <ui:Button x:Name="DeleteRetentionScenarioDraftButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding DeleteRetentionScenarioDraftCommand}" Content="删除" AutomationProperties.Name="删除保留情景草稿"/>
+                                        <ui:Button x:Name="HandoffRetentionScenarioToPolicyTemplateButton" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding HandoffRetentionScenarioToPolicyTemplateCommand}" Content="转交策略编辑" Margin="8,0,0,0" ToolTip="将已保存情景的四项保留期限带入未保存策略模板草稿；不保存、不应用，也不清理归档。旧比较作废，清理必须另行生成当前 Worker 预览。" AutomationProperties.Name="将保留情景转交策略模板编辑" AutomationProperties.HelpText="创建未保存策略模板草稿，不会应用策略或清理归档。"/>
                                     </WrapPanel>
                                     <TextBlock x:Name="RetentionScenarioDraftStatus" Text="{Binding RetentionScenarioDraftStatusDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,6,0,0" TextWrapping="Wrap" AutomationProperties.Name="保留情景草稿状态"/>
                                 </StackPanel>

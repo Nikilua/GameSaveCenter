@@ -73,6 +73,10 @@ public sealed class RetentionScenarioInputBehaviorTests
                     AssertScenarioCommand(page, "CopyRetentionScenarioDraftButton", context.CopyRetentionScenarioDraftCommand);
                     AssertScenarioCommand(page, "RenameRetentionScenarioDraftButton", context.RenameRetentionScenarioDraftCommand);
                     AssertScenarioCommand(page, "DeleteRetentionScenarioDraftButton", context.DeleteRetentionScenarioDraftCommand);
+                    var handoffButton = Assert.IsAssignableFrom<ButtonBase>(page.GetType().GetField("HandoffRetentionScenarioToPolicyTemplateButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(page));
+                    Assert.Same(context.HandoffRetentionScenarioToPolicyTemplateCommand, handoffButton.Command);
+                    Assert.True(handoffButton.IsVisible);
+                    Assert.Contains("不保存、不应用", handoffButton.ToolTip?.ToString());
                     var pageScrollViewer = FindVisualAncestor<ScrollViewer>(card);
                     Assert.NotNull(pageScrollViewer);
                     Assert.True(pageScrollViewer!.ViewportHeight > 0);
@@ -330,6 +334,7 @@ public sealed class RetentionScenarioInputBehaviorTests
         public ICommand CopyRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public ICommand RenameRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public ICommand DeleteRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
+        public ICommand HandoffRetentionScenarioToPolicyTemplateCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public RetentionPolicy EffectivePolicy { get; }
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get; }
         public RetentionScenarioGameSummaryDto? SelectedRetentionScenarioGame { get; set; }

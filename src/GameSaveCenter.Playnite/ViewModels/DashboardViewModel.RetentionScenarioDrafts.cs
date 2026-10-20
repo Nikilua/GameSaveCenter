@@ -86,6 +86,7 @@ public sealed partial class DashboardViewModel
     public ICommand CopyRetentionScenarioDraftCommand { get; }
     public ICommand RenameRetentionScenarioDraftCommand { get; }
     public ICommand DeleteRetentionScenarioDraftCommand { get; }
+    public ICommand HandoffRetentionScenarioToPolicyTemplateCommand { get; }
 
     internal void InitializeRetentionScenarioDrafts()
     {
@@ -117,6 +118,74 @@ public sealed partial class DashboardViewModel
             && !string.IsNullOrWhiteSpace(RetentionScenarioNameDraft);
 
     private bool CanDeleteRetentionScenarioDraft => !IsBusy && SelectedRetentionScenarioDraft != null;
+
+    private bool CanHandoffRetentionScenarioToPolicyTemplate
+        => !IsBusy && SelectedRetentionScenarioDraft != null;
+
+    private void HandoffRetentionScenarioToPolicyTemplate()
+    {
+        var scenario = SelectedRetentionScenarioDraft;
+        if (scenario == null) return;
+
+        if (!RetentionScenarioDraftMatches(scenario))
+        {
+            StatusMessage = "当前情景参数有未保存修改；请先保存方案，或重新选择已保存方案后再转交。";
+            return;
+        }
+
+        if (!RetentionScenarioInput.IsValid)
+        {
+            StatusMessage = "请先修正情景参数和增长范围，再转交策略模板。";
+            return;
+        }
+
+        if (HasUnsavedPolicyTemplateDraft())
+        {
+            StatusMessage = "策略模板编辑器中有未保存草稿；请先保存或放弃该草稿，再转交保留情景。";
+            return;
+        }
+
+        if (HasSelectedGamePolicyChanges)
+        {
+            StatusMessage = "当前游戏策略有未保存修改；请先保存或取消修改，再转交保留情景。";
+            return;
+        }
+
+        CreatePolicyTemplate();
+        var draftName = $"情景副本 - {scenario.Name}";
+        PolicyTemplateDraft.Name = draftName;
+        var mappedPolicy = RetentionScenarioPolicyHandoff.CreatePolicyDraft(
+            scenario,
+            PolicyTemplateDraft.Policy);
+        PolicyTemplateDraft.Policy.KeepRecentAllHours = mappedPolicy.KeepRecentAllHours;
+        PolicyTemplateDraft.Policy.KeepDailyDays = mappedPolicy.KeepDailyDays;
+        PolicyTemplateDraft.Policy.KeepWeeklyWeeks = mappedPolicy.KeepWeeklyWeeks;
+        PolicyTemplateDraft.Policy.KeepMonthlyMonths = mappedPolicy.KeepMonthlyMonths;
+        PolicyTemplateNameDraft = draftName;
+
+        RetentionScenarioComparison = new Contracts.RetentionScenarioComparisonDto
+        {
+            Summary = "情景已转交为未保存策略模板草稿；此前比较结果已作废。请在策略页复核字段差异并重新比较。模板应用不会清理归档；清理需另行生成当前 Worker 预览。"
+        };
+        SelectedRetentionScenarioGame = null;
+
+        SaveTabIndex = 2;
+        CurrentWorkspace = WorkspaceKind.Saves;
+        StatusMessage = $"已将保留情景“{scenario.Name}”转交到策略模板草稿。仅映射四项保留期限；增长范围仍是比较假设。草稿尚未保存或应用，请复核字段差异；此操作不会清理归档。";
+        RequestWorkspaceLoad();
+    }
+
+    private bool HasUnsavedPolicyTemplateDraft()
+    {
+        if (SelectedPolicyTemplate == null)
+            return !string.IsNullOrWhiteSpace(PolicyTemplateNameDraft)
+                || !string.IsNullOrWhiteSpace(PolicyTemplateDraft?.Name);
+
+        return !string.Equals(PolicyTemplateNameDraft, SelectedPolicyTemplate.Name, StringComparison.Ordinal)
+            || GameSaveCenter.Core.Services.BackupPolicyDiff.Compare(
+                SelectedPolicyTemplate.Policy,
+                PolicyTemplateDraft.Policy).Count > 0;
+    }
 
     private async Task SaveRetentionScenarioDraftAsync()
     {

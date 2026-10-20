@@ -85,6 +85,7 @@ public sealed class FakeDashboardData
     public ICommand CopyRetentionScenarioDraftCommand { get; } = new NoopCommand();
     public ICommand RenameRetentionScenarioDraftCommand { get; } = new NoopCommand();
     public ICommand DeleteRetentionScenarioDraftCommand { get; } = new NoopCommand();
+    public ICommand HandoffRetentionScenarioToPolicyTemplateCommand { get; } = new NoopCommand();
     public RetentionScenarioDraft RetentionScenarioInput { get; } = new()
     {
         GrowthMinimumMiBPer30Days = 128,
