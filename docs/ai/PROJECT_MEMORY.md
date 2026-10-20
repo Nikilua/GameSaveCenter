@@ -1,5 +1,13 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-20 Round4 S04-03 已满足；S04-04 READY
+
+启动候选 S00-01 已在当前 main 账本标为满足，复用 `dd38f8ca` 当前 SDK8 证据，无需重复实现。S00-02 全量 UI 门禁仍因 R05 系统指针读取 Win32 error 5 未完成；继续选择已满足独立依赖的任务。
+
+S04-03 已由 `f51e5c9e` 实现：比较视图支持同步/独立缩放、Fit、100% 查看和两图归一化中心坐标同步平移，缩放范围 `12.5%–400%`。继续使用异步缩略图解码，单图长边上限 `2048 px`，LRU 图片缓存上限 `64 MiB`。在 SDK8.0.423 的全链验收中，状态测试 `4/4`、真实生产 WPF 页面行为 `1/1`、缩略图预算 `3/3`；当前提交 RenderHarness Release `0 warning / 0 error`，浅/深主题结果 `render-qa OK / 0 PROBLEM`。详细 TRX、报告、SHA 和边界见 [S04-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
+
+当前 `main` 的代码与全链验收源提交相同，后续差异为文档；真实 Playnite 页面视觉、真实媒体和物理 DPI 未验。Demo 目录缺失。本地用户提供的未跟踪 TRX/TestResults 保留。S04-04 的前置 S04-01 至 S04-03 已满足，当前生产代码没有视觉 wipe/交替对照功能，已准入下一小批。
+
 ## 2026-10-20 默认一键安装流程已全链通过
 
 用户报告另一台仅安装 SDK `9.0.302` 的机器被 `DEV-INSTALL-008` 的精确 SDK8 检查挡在编译前。`DEV-INSTALL-009` 会在关闭 Playnite 前自动准备微软官方 SDK `8.0.423`，并保持 `global.json` 精确锁定；缺少 SDK 时首次下载要求机器能访问微软源。

@@ -1,3 +1,10 @@
+## 2026-10-20 Round4 S04-03 同步缩放移动能力复核
+
+- 启动候选 S00-01 已在当前 main 标为满足，`dd38f8ca` 与 SDK8 行为复核证据完整；本轮不重复实现或测试。
+- S04-03 已由 `f51e5c9e` 实现并在当前代码中生效：同步/独立缩放，适应窗口、100% 查看、归一化中心坐标平移、缩放上限，以及 2048px 解码长边和 64MiB 缓存预算。复核认定为已满足，没有新增生产代码。
+- 精确 SDK8 全链结果包含状态测试 `4/4`、生产 `MediaCenterView` WPF 行为 `1/1`、缩略图预算 `3/3`。当前 HEAD 上 RenderHarness 构建 `0/0`，浅/深主题矩阵 `render-qa OK`、`0 PROBLEM`；原始 TRX、报告、输入 commit 与边界见 [S04-03](../design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
+- 真实 Playnite 页面视觉未验；离屏截图使用合成夹具、逻辑 DPI `1.00`。启动时被保留的未跟踪 Round3 TRX 与 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 未触碰。下一项 S04-04 已具备依赖并进入 READY。
+
 ## 2026-10-20 DEV-INSTALL-009 默认全流程验收
 
 - 用户反馈 `DEV-INSTALL-008` 在 SDK9-only 机器因锁定 SDK `8.0.423` 不存在而提前失败。保留 `global.json` 精确锁定；`DEV-INSTALL-009` 在关闭宿主前从微软官方渠道自动准备 SDK，且此前已验证仅有系统 SDK `9.0.302` 时可选中 SDK8.0.423。

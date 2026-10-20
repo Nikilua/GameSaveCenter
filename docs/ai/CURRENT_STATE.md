@@ -10,6 +10,10 @@
 
 Worker 自包含 win-x64 发布、`0.6.73` 包/PEXT、Playnite 扩展安装与启动均完成；安装清单 `0.6.73`、插件 DLL `0.6.73.0`，构建与安装 DLL SHA-256 相同（`AC87FDC16F4FF7211CC00C6B0B8135711D32D20F6C338A36F09B086972535A31`）。Playnite PID `11068` 已启动且响应。运行提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`，诊断 `20261019T184725162Z-607fe456`，详细记录见 [一键全链验收证据](../design/reviews/DEV-INSTALL-009-20261020/README.md)。首次在新机器准备 SDK 仍需访问微软下载源；未检查真实 Playnite 页面视觉呈现。
 
+## Round4 当前可执行项：S04-04 差异查看辅助
+
+S00-01 已满足；S00-02 的 WPF/安装门禁仍停在 R05 系统指针权限读取。S04-03 已确认复用 `f51e5c9e` 同步缩放/平移实现，SDK8 全链测试覆盖状态 `4/4`、生产 WPF 交互 `1/1`、缩略图预算 `3/3`；当前 RenderHarness 双主题 `render-qa OK / 0 PROBLEM`。证据：[S04-03](../design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。S04-04 为当前 READY 项。真实 Playnite 页面视觉、真实媒体和物理 DPI 未验；Demo 目录缺失。
+
 ## 当前构建优先项：缺 SDK 时自动准备准确版本
 
 `global.json` 仍精确锁定 .NET SDK `8.0.423`。`DEV-INSTALL-009` 在 Playnite 关闭前检查/准备此版本；若缺失，通过官方安装脚本写入当前用户 LocalAppData，SDK9 不会替代；下载失败则保留 Playnite 运行状态。补上 Windows PowerShell 5.1 对 `dotnet` 预期 stderr 退出的捕获后，只有系统 SDK `9.0.302` 的本机已自动安装并选中 `8.0.423`，SDK 基线自测通过（诊断 `20261019T014732824Z-823abe5a`）。干净提交的 `-SkipTests` 一键编译、Worker 发布、真实用户扩展目录安装和 Playnite/Worker 启动通过；默认全测试一键流程仍在复核中。先前工作树 SDK8 Release build `0/0`，Core `157/157`、Worker `382/1 skip`、Playnite 非 WPF `487/27 skip`；R09 `2/2`，S04-01 `4/4`。此前全量 WPF 133 类循环只到 5 类通过后被新用户输入控制中断（诊断 `20261019T010804009Z-d25e5350`），不代表失败；输入含未提交 S04-01 源码。

@@ -8,6 +8,10 @@
 
 此前全量流程还暴露出隔离 WPF 测试的 shadow-copy 临时目录累积并耗尽磁盘，以及帮助 Popup 阻止测试进程退出；前者按类清理本轮新增的隔离 TEMP 项，后者在清理阶段关闭 Popup 并设置 2 分钟挂起诊断。诊断 ID `20261019T184725162Z-607fe456`，运行提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`；分组结果和本地日志位置见 [DEV-INSTALL-009 全链验收记录](docs/design/reviews/DEV-INSTALL-009-20261020/README.md)。此次验证了构建、测试、安装与进程启动；没有声称已检查真实 Playnite 窗口的页面视觉效果。
 
+## 2026-10-20 Round4 S04-03 已满足，下一项 S04-04
+
+S00-01 已由当前账本和既有行为证据标为满足；S00-02 的完整 UI 门禁仍受 R05 `GetCursorPos` 权限边界阻挡。S04-03 现有实现提交 `f51e5c9e` 已验证：SDK8 全链中的状态行为 `4/4`、生产 Media 页面 WPF 行为 `1/1`、缩略图预算 `3/3`；当前 RenderHarness Release `0/0`，浅/深主题矩阵 `render-qa OK` 且 `0 PROBLEM`。详细证据：[S04-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。本机未验真实 Playnite 页面视觉、真实媒体与物理 DPI；Demo 目录不在 checkout。S04-04 已满足依赖并进入 READY。
+
 ## 2026-10-19 用户反馈：窗口布局与弹出样式
 
 已实现五项 UI 调整：头部 `1200 DIP` 起同行；列选择 ContextMenu 使用主题玻璃与圆角模板并播放可关闭的淡入位移动画；存档详情展开保留四行历史表格；媒体详情展开保留一整行卡片；通知操作按钮等高，空状态限制在表格列内居中并复用共享面板样式。SDK8 Release 解决方案编译 `0/0`，定向 WPF `15/15`，全尺寸 RenderHarness `render-qa OK`，最终 shell QA 与源码校验通过。
