@@ -78,6 +78,126 @@ public sealed class StorageAnalysisServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task AnalyzeBreaksDownArchiveMirrorStagingAndMediaWithoutSummingCopies()
+    {
+        options.EnableLocalMirror = true;
+        options.LocalMirrorPath = Path.Combine(root, "Mirror");
+        Directory.CreateDirectory(options.LocalMirrorPath);
+        Directory.CreateDirectory(options.RemoteBackupStagingDirectory);
+
+        var archivePath = Path.Combine(options.LudusaviBackupDirectory, "measured.zip");
+        var mirrorPath = Path.Combine(options.LocalMirrorPath, "copy.zip");
+        var mediaPath = Path.Combine(options.MediaArchiveDirectory, "shot.png");
+        await File.WriteAllBytesAsync(archivePath, new byte[3]);
+        await File.WriteAllBytesAsync(mirrorPath, new byte[5]);
+        await File.WriteAllBytesAsync(Path.Combine(options.RemoteBackupStagingDirectory, "stage.zip"), new byte[7]);
+        await File.WriteAllBytesAsync(mediaPath, new byte[11]);
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "g1",
+            BackupId = "indexed",
+            LudusaviName = "Indexed Game",
+            CreatedUtc = DateTime.UtcNow,
+            TotalBytes = 101,
+            FileCount = 1,
+            ArchivePath = archivePath
+        }, "{}", CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "assigned-media",
+            PlayniteId = "g1",
+            Kind = MediaKind.Screenshot,
+            Source = MediaSourceKind.Steam,
+            ArchivePath = mediaPath,
+            OriginalPath = "shot.png",
+            CapturedUtc = DateTime.UtcNow,
+            SizeBytes = 211,
+            Sha256 = "hash-assigned"
+        }, CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = "inbox-media",
+            Kind = MediaKind.VideoClip,
+            Source = MediaSourceKind.Custom,
+            ArchivePath = Path.Combine(root, "not-present.mp4"),
+            OriginalPath = "not-present.mp4",
+            CapturedUtc = DateTime.UtcNow,
+            SizeBytes = 307,
+            Sha256 = "hash-inbox",
+            ClassificationState = "Inbox"
+        }, CancellationToken.None);
+
+        var service = new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance);
+        var result = await service.AnalyzeAsync(CancellationToken.None);
+
+        var archive = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "本地存档");
+        Assert.Equal<long?>(3L, archive.FileLengthBytes);
+        Assert.Equal<long?>(101L, archive.LogicalBytes);
+        Assert.Equal("已完成目录测量", archive.StatusDisplay);
+
+        var mirror = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "第二本地镜像");
+        Assert.Equal<long?>(5L, mirror.FileLengthBytes);
+        Assert.Null(mirror.LogicalBytes);
+        Assert.Contains("重复", mirror.BoundaryDisplay);
+
+        var staging = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "远端恢复暂存");
+        Assert.Equal<long?>(7L, staging.FileLengthBytes);
+        Assert.Null(staging.LogicalBytes);
+
+        var media = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "媒体归档");
+        Assert.Equal<long?>(11L, media.FileLengthBytes);
+        Assert.Equal<long?>(518L, media.LogicalBytes);
+        Assert.Equal(2, media.LogicalItemCount);
+        Assert.Contains("待分类", media.BoundaryDisplay);
+        Assert.Contains("不生成合计", result.BudgetBreakdownSummary);
+    }
+
+    [Fact]
+    public async Task AnalyzeDistinguishesEmptyDirectoryFromMissingOrDisabledScopes()
+    {
+        Directory.CreateDirectory(options.RemoteBackupStagingDirectory);
+        var result = await new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance)
+            .AnalyzeAsync(CancellationToken.None);
+
+        var staging = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "远端恢复暂存");
+        Assert.True(staging.MeasurementComplete);
+        Assert.Equal<long?>(0L, staging.FileLengthBytes);
+        Assert.Equal("目录为空", staging.StatusDisplay);
+
+        var mirror = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "第二本地镜像");
+        Assert.False(mirror.IsConfigured);
+        Assert.Null(mirror.FileLengthBytes);
+        Assert.Equal("未启用", mirror.StatusDisplay);
+
+        options.MediaArchiveDirectory = Path.Combine(root, "MissingMedia");
+        var missingResult = await new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance)
+            .AnalyzeAsync(CancellationToken.None);
+        var media = Assert.Single(missingResult.BudgetBreakdown, entry => entry.Name == "媒体归档");
+        Assert.True(media.IsConfigured);
+        Assert.False(media.DirectoryAvailable);
+        Assert.False(media.MeasurementComplete);
+        Assert.Null(media.FileLengthBytes);
+        Assert.Equal("目录不存在或不可访问", media.StatusDisplay);
+    }
+
+    [Fact]
+    public async Task AnalyzeWarnsWhenConfiguredBudgetScopesContainTheSameFiles()
+    {
+        options.EnableLocalMirror = true;
+        options.LocalMirrorPath = options.LudusaviBackupDirectory;
+        var service = new StorageAnalysisService(options, store, NullLogger<StorageAnalysisService>.Instance);
+
+        var result = await service.AnalyzeAsync(CancellationToken.None);
+
+        var archive = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "本地存档");
+        var mirror = Assert.Single(result.BudgetBreakdown, entry => entry.Name == "第二本地镜像");
+        Assert.Contains("与“第二本地镜像”相同或互相包含", archive.BoundaryDisplay);
+        Assert.Contains("与“本地存档”相同或互相包含", mirror.BoundaryDisplay);
+        Assert.Contains("请勿相加", archive.BoundaryDisplay);
+        Assert.Contains("请勿相加", mirror.BoundaryDisplay);
+    }
+
+    [Fact]
     public async Task AnalyzeUnavailableDirectoryIsNotAnError()
     {
         options.LudusaviBackupDirectory = Path.Combine(root, "MissingSaves");

@@ -55,7 +55,9 @@ public sealed class R17StorageAnalysisNavigationTests
         var service = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Worker", "Services", "StorageAnalysisService.cs"));
 
         Assert.Contains("索引体积", maintenance);
-        Assert.Contains("磁盘实测", maintenance);
+        Assert.Contains("目录文件长度", maintenance);
+        Assert.Contains("MaintenanceStorageDemoBudgetEntries", maintenance);
+        Assert.Contains("StorageAnalysis.BudgetBreakdown", maintenance);
         Assert.Contains("OpenStorageGameCommand", maintenance);
         Assert.Contains("OpenStorageBackupCommand", maintenance);
         Assert.Contains("pendingStorageBackupId", navigation);

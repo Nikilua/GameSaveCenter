@@ -788,13 +788,58 @@
                                     <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="备份存储分析" Style="{DynamicResource GscSectionTitleStyle}"/><TextBlock Text="只读统计；历史增长范围不代表耗尽日期。" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/></StackPanel><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RefreshStorageAnalysisCommand}" Content="刷新分析"/></Grid>
                                     <UniformGrid x:Name="MaintenanceStorageDemoMetrics" Columns="3" Margin="0,18,0,0">
                                          <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.IndexedBackupBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="索引体积" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="SQLite 逻辑大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
-                                         <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="磁盘实测" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="备份目录文件" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
+                                         <StackPanel Margin="0,0,8,0"><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="目录文件长度" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="文件长度合计，不是卷簇实占" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
                                          <StackPanel><TextBlock Text="{Binding StorageAnalysis.VolumeFreeDisplay, FallbackValue=—}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="磁盘剩余" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Text="{Binding StorageAnalysis.VolumeTotalDisplay, FallbackValue=—, StringFormat=容量 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel>
                                     </UniformGrid>
-                                    <ProgressBar Minimum="0" Maximum="{Binding StorageAnalysis.VolumeTotalBytes}" Value="{Binding StorageAnalysis.RepositoryBytes}" AutomationProperties.Name="备份存储占用比例" Height="7" Margin="0,18,0,0" ToolTip="磁盘实测：备份目录文件大小；索引体积另行统计"/>
+                                    <ProgressBar Minimum="0" Maximum="{Binding StorageAnalysis.VolumeTotalBytes}" Value="{Binding StorageAnalysis.RepositoryBytes}" AutomationProperties.Name="备份目录文件长度与卷容量对比" Height="7" Margin="0,18,0,0" ToolTip="备份目录文件长度合计，不含文件系统簇分配、压缩或稀疏文件开销；索引逻辑体积另行统计">
+                                        <ProgressBar.Style>
+                                            <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding StorageAnalysis.RepositoryMeasurementComplete}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                    <DataTrigger Binding="{Binding StorageAnalysis.VolumeTotalBytes}" Value="0"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ProgressBar.Style>
+                                    </ProgressBar>
                                     <TextBlock Text="{Binding StorageAnalysis.Summary, TargetNullValue=尚未分析备份存储。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" ToolTip="{Binding StorageAnalysis.Summary}" Margin="0,6,0,0"/>
                                     <TextBlock x:Name="MaintenanceStorageDemoGrowthRangeSummary" Text="{Binding StorageAnalysis.HistoricalGrowthRangeDisplay}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
                                     <TextBlock x:Name="MaintenanceStorageDemoRemoteCapacitySummary" Text="{Binding StorageAnalysis.RemoteCapacitySummary}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    <Border x:Name="MaintenanceStorageDemoBudgetBreakdown" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="存储预算分项" Style="{DynamicResource GscSectionTitleStyle}"/>
+                                            <TextBlock Text="{Binding StorageAnalysis.BudgetBreakdownSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                            <ItemsControl x:Name="MaintenanceStorageDemoBudgetEntries" ItemsSource="{Binding StorageAnalysis.BudgetBreakdown}" Margin="0,6,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Style="{DynamicResource GscRedesignMetricBorder}" Padding="8" Margin="0,0,0,5">
+                                                            <StackPanel>
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                                                    <TextBlock Grid.Column="1" Text="{Binding StatusDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="8,0,0,0"/>
+                                                                </Grid>
+                                                                <WrapPanel Margin="0,3,0,0">
+                                                                    <TextBlock Text="目录文件长度 " Style="{DynamicResource GscCaptionStyle}"/>
+                                                                    <TextBlock Text="{Binding FileLengthDisplay}" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
+                                                                    <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
+                                                                    <TextBlock Text="{Binding FileCountDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                                </WrapPanel>
+                                                                <WrapPanel Margin="0,2,0,0">
+                                                                    <TextBlock Text="逻辑指标 " Style="{DynamicResource GscCaptionStyle}"/>
+                                                                    <TextBlock Text="{Binding LogicalMetricLabelDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                                    <TextBlock Text="{Binding LogicalBytesDisplay}" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
+                                                                    <TextBlock Text=" · " Style="{DynamicResource GscCaptionStyle}"/>
+                                                                    <TextBlock Text="{Binding LogicalItemCountDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                                </WrapPanel>
+                                                                <TextBlock Text="{Binding ScopeDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                                <TextBlock Text="{Binding BoundaryDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
                                     <TextBlock Text="{Binding StorageAnalysis.MissingIndexedPathSummary}" Style="{DynamicResource GscDiagnosticHintText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
                                     <TextBlock Text="占用排行（按 SQLite 逻辑大小）" Style="{DynamicResource GscSectionTitleStyle}" Margin="0,14,0,0"/>
                                     <ItemsControl ItemsSource="{Binding StorageAnalysis.TopGames}" Margin="0,8,0,0">
@@ -992,7 +1037,7 @@
                                 </Border>
                                 <UniformGrid x:Name="MaintenanceStorageMetrics" Columns="4" Margin="0,14,0,0">
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock x:Name="MaintenanceStorageLocalVolume" Text="{Binding StorageAnalysis.VolumeFreeDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="磁盘剩余" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="{Binding StorageAnalysis.VolumeTotalDisplay, FallbackValue=—, StringFormat=容量 {0}}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
-                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="目录实测" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="按备份目录文件统计" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
+                                    <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.RepositoryBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="目录文件长度" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="文件长度合计，不是卷簇实占" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}" Margin="0,0,8,0"><StackPanel><TextBlock Text="{Binding StorageAnalysis.IndexedBackupBytesDisplay, FallbackValue=—}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="索引体积" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="来自 SQLite 版本记录" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                     <Border Style="{DynamicResource GscRedesignMetricBorder}"><StackPanel><TextBlock Text="{Binding StorageAnalysis.BackupVersionCount, FallbackValue=0}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="版本数" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0"/><TextBlock Text="已索引备份" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0"/></StackPanel></Border>
                                 </UniformGrid>

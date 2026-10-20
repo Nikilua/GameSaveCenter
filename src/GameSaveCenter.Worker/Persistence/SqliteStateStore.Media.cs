@@ -59,6 +59,31 @@ WHERE playnite_id=$id AND classification_state='Assigned';";
         };
     }
 
+    public async Task<MediaStorageSummaryDto> GetAllMediaStorageSummaryAsync(CancellationToken token)
+    {
+        await using var connection=Open(); await connection.OpenAsync(token).ConfigureAwait(false);
+        var command=connection.CreateCommand();
+        command.CommandText=@"SELECT
+COUNT(*),
+COALESCE(SUM(CASE WHEN kind=$screenshot THEN 1 ELSE 0 END),0),
+COALESCE(SUM(CASE WHEN kind=$video THEN 1 ELSE 0 END),0),
+COALESCE(SUM(CASE WHEN is_favorite=1 THEN 1 ELSE 0 END),0),
+COALESCE(SUM(size_bytes),0)
+FROM media;";
+        command.Parameters.AddWithValue("$screenshot",(int)MediaKind.Screenshot);
+        command.Parameters.AddWithValue("$video",(int)MediaKind.VideoClip);
+        await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        if(!await reader.ReadAsync(token).ConfigureAwait(false))return new MediaStorageSummaryDto();
+        return new MediaStorageSummaryDto
+        {
+            TotalCount=checked((int)reader.GetInt64(0)),
+            ScreenshotCount=checked((int)reader.GetInt64(1)),
+            VideoCount=checked((int)reader.GetInt64(2)),
+            FavoriteCount=checked((int)reader.GetInt64(3)),
+            TotalBytes=reader.GetInt64(4)
+        };
+    }
+
     public Task UpdateMediaMetadataAsync(MediaMetadataUpdateDto update,CancellationToken token)=>ExecuteAsync(@"
 UPDATE media
 SET is_favorite=$favorite,comment=$comment

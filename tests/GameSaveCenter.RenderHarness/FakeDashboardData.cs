@@ -1341,6 +1341,7 @@ public sealed class FakeDashboardData
         VolumeTotalBytes = 1024L * 1024 * 1024 * 1024,
         VolumeFreeBytes = 512L * 1024 * 1024 * 1024,
         RepositoryBytes = 128L * 1024 * 1024 * 1024,
+        RepositoryMeasurementComplete = true,
         IndexedBackupBytes = 96L * 1024 * 1024 * 1024,
         BackupVersionCount = 184,
         GrowthObservationSpanDays = 86,
