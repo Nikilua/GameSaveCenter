@@ -14,8 +14,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收37、已满足2、代码完成待验收15、外部阻塞1、待开始9。
-实现状态：完成54、未开始10、不适用0；受控验证：通过54、未跑9、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收38、已满足2、代码完成待验收15、外部阻塞1、待开始8。
+实现状态：完成55、未开始9、不适用0；受控验证：通过55、未跑8、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -72,8 +72,8 @@
 | S06-03 | 清单浏览整理 | 已验收 | 0fc43773 | [证据](evidence/S06-03/README.md)：SDK9 Release solution 0 warning/0 error；Worker 2/2、Playnite 8/8；清单浏览、键盘重排/精确移除与保守引用状态已实现 | 真实 Playnite 未运行；SDK8.0.423 未安装。RenderHarness 还原资产缺少 net472/win-x86，NETSDK1047；旧 CEF/ETW 权限边界未重试或绕过。 |
 | S06-04 | 续接上下文 | 已验收 | 2af5841f | [交付与验证](evidence/S06-04/README.md)，[等价审计](evidence/S06-04/AUDIT.md)：SDK9 Release solution 重编译 0 warning/0 error；Worker 2/2、Playnite 路由/导航 10/10、source validation 与 XAML 25/25 通过 | 只按对象种类与稳定 ID 导航；不恢复旧对话框或执行命令。缺失对象显示诊断且可移除。SDK8.0.423 未安装，真实 Playnite 未运行；未探测或绕过 CEF/ETW。 |
 | S06-05 | 逐项处理转交 | 已验收 | 0aa80547 | [受控验收](evidence/S06-05/README.md)：SDK9 Release solution 0/0；Playnite 17/17，source validation、XAML 25/25、Round4 台账 5/5 通过 | 手动状态仅是人工跟进记录；SDK8.0.423 未安装，真实 Playnite 窗口、主题/DPI、Keyboard-only 与 UI Automation 未验；未触碰 CEF/ETW 权限边界 |
-| S06-06 | 失效刷新 | 待开始 | — | [等价审计](evidence/S06-06/AUDIT.md)：稳定 ID 失效/归属状态已有；缺少按 ID 刷新并展示当前对象摘要，已准入 READY | 实现只读瞬时索引摘要，不按名称匹配、不持久化路径/摘要；Worker 整体不可用显示未知；OS 文件 ACL/物理文件可读性不探测，权限边界需保留 |
-| S06-07 | 清单导出预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S06-06 | 失效刷新 | 已验收 | fb33cd11 | [交付与验证](evidence/S06-06/README.md)，[等价审计](evidence/S06-06/AUDIT.md)：Worker 失效刷新 3/3；滚动修正后 Playnite 页面/表格几何与入口 23/23；SDK9 Release solution 0/0 | 实现只读瞬时索引摘要，不按名称匹配、不持久化路径/摘要；Worker 整体不可用显示未知；OS 文件 ACL/物理文件可读性不探测，权限边界需保留 |
+| S06-07 | 清单导出预览 | 待开始 | — | [等价审计](evidence/S06-07/AUDIT.md)：未发现清单导出或待办剪贴板能力；依赖 S06-01 至 S06-06 已满足，已准入 READY | 只读脱敏人工记录预览；默认包含未手动完成项并标注导出 UTC 时间。不写文件、不包含真实文件、稳定 ID、完整路径或可执行命令，不代表业务成功。 |
 | S06-08 | 跨会话回归 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S07-01 | 精简当前事实入口 | 已验收 | 4ea5e694 | [证据](evidence/S07-01/README.md)：254 行压缩至 32 行；归档正文与提交前 Git 版本一致；source validation、diff check 通过 | 仅更新文档；未运行产品构建；S00-02 UI 门禁仍待 SDK8 与真实 Playnite |
 | S07-02 | 结构化任务状态 | 已验收 | 7a81e5f2 | [证据](evidence/S07-02/README.md)：64 个 ID 与计划对齐；生成表格/分项摘要；校验重复 ID、标题、状态值与证据链接 | 仅管理 Round4 状态；既有 Q/R 外部阻塞保持独立，不从本索引自动清除 |

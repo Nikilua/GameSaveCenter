@@ -2,9 +2,9 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-08、S06-01 至 S06-05 已受控验收。S06-04 `2af5841f` 增加按稳定 ID 续接存档版本、媒体、任务和校验问题；S06-05 `0aa80547` 增加单条可逆人工完成标记，且状态不代表备份/校验成功。S06-05 SDK9 Release solution `0/0`、Playnite `17/17`、source validation、XAML `25/25`、台账 `5/5`；证据见 [S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。下一项 S06-06 已审计为 READY：补充按稳定 ID 刷新当前索引摘要，明确不检查物理文件 ACL/可读性；详见 [S06-06 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite 未运行；原有未跟踪 TRX/TestResults 保留。
+Round4 S05-03 至 S05-08、S06-01 至 S06-06 已受控验收。S06-06 `fb33cd11` 按稳定 ID 刷新当前索引摘要并仅在 UI 投影显示；Worker `3/3`。用户滚动截图复修 `a1a86e41` 保证有效的页面 ScrollViewer 测量高度限制表格空间；SDK9 Release solution `0/0`、Playnite 几何/入口 `23/23`。证据：[S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)、[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。下一项 S06-07 已审计为 READY：清单只读脱敏预览导出；依赖 S06-01 至 S06-06 已满足。SDK8.0.423 未安装，真实 Playnite 未运行；原有未跟踪 TRX/TestResults 保留。
 
-2026-10-21 用户三张宿主截图显示表格和下方详情仍互相挤压。修复提交 `43b869d1` 将紧凑任务筛选/视图操作收进折叠区，移走表格框架内详情按钮并补充真实视口几何回归；SDK9 Release solution `0/0`、定向测试 `10/10`。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。RenderHarness 因缺少 `net472/win-x86` assets 未运行；真实 Playnite/物理 DPI 未验。
+2026-10-21 用户截图显示表格内部滚动条与页面详情区域错位。此前 `43b869d1` 已重排详情入口和紧凑工具区；后续提交 `a1a86e41` 修正视口高度来源：只要页面 ScrollViewer 已有有效测量，就以更小的页面实测高度约束表格分配，避免使用包含页面 chrome 的宿主高度溢出。SDK9 Release solution `0/0`，最终页面/表格与入口定向测试 `23/23`。证据：[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。验证是离屏 STA/WPF 几何行为，不代表真实 Playnite 窗口或物理 DPI。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 

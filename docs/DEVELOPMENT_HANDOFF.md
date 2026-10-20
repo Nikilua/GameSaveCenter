@@ -1,14 +1,10 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-21 用户截图滚动问题已复核并修正
+## 2026-10-21 当前进展：滚动视口修正、S06-06 完成
 
-首次截图修正提交 `48727c13` 移除根裁切并改为按页面剩余视口预算限高。SDK9 Release solution、几何行为 `6/6` 与双主题 RenderHarness 当时通过；详情见[首轮修正证据](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。后续新截图仍发现紧凑模式内容被详情区挤压，已由下方 `43b869d1` 修正并重新验证。离屏/合成验证不代表 Playnite 真实窗口或物理 DPI。
+用户截图指出存档历史、路径校验和任务队列表格内部滚动条进入下方详情区域，部分数据被遮挡。此前 `43b869d1` 收拢紧凑工具区并移出表格框架内的详情入口；后续 `a1a86e41` 修复页面高度输入，已测量的页面 ScrollViewer 视口优先限制表格空间。SDK9.0.302 Release solution `0 warning / 0 error`；页面/表格几何与清单入口测试 `23/23`。证据：[滚动视口修复](docs/design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。测试为离屏 WPF，未在真实 Playnite 或物理 DPI 下验屏。
 
-## 2026-10-21 新截图后滚动裁切修正；S06-03 已验收
-
-提交 `43b869d1` 将紧凑任务筛选/视图配置收进折叠区，并把路径候选和任务详情入口移出 DataGrid 框架，避免表格可滚动而内容仍落到下方详情后面。SDK9.0.302 Release solution `0 warning/0 error`，几何回归 `10/10`。完整证据：[用户截图修复](docs/design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。真实 Playnite 未运行，RenderHarness 因缺少 `net472/win-x86` assets 报 `NETSDK1047`；保留原 Round3 TRX/TestResults。
-
-S06-03 `0fc43773` 完成清单浏览/搜索/分组、键盘重排、确认移除和稳定 ID 状态解析；S06-04 `2af5841f` 新增按稳定 ID 续接存档、媒体、任务与校验问题，并在任务详情返回时恢复会话内清单上下文；S06-05 `0aa80547` 增加单条人工完成/撤销，状态不表示业务成功且续接/业务结果不会自动改写。SDK9 Release solution `0/0`、Playnite `17/17`、source validation、XAML `25/25` 与台账 `5/5` 通过。证据：[S06-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。S06-06 等价审计已准入 READY：按稳定 ID 刷新并展示瞬时索引摘要；OS 文件 ACL/物理可读性不探测，保持明确未知边界。审计见 [S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite 未运行。
+S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 清单导出预览已完成等价能力审计并准入 READY：默认包含未手动完成项的脱敏人工记录与 UTC 导出时间，不写文件、不包含 ID/路径/命令；审计见 [S06-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite未运行；原 Round3 未跟踪 TRX/TestResults 保留。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 

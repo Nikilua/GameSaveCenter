@@ -885,15 +885,19 @@
     {
       "id": "S06-06",
       "title": "失效刷新",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "fb33cd11",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[等价审计](evidence/S06-06/AUDIT.md)：稳定 ID 失效/归属状态已有；缺少按 ID 刷新并展示当前对象摘要，已准入 READY",
+      "verificationText": "[交付与验证](evidence/S06-06/README.md)，[等价审计](evidence/S06-06/AUDIT.md)：Worker 失效刷新 3/3；滚动修正后 Playnite 页面/表格几何与入口 23/23；SDK9 Release solution 0/0",
       "evidence": [
         {
-          "label": "等价审计",
+          "label": "交付与验证",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md"
+        },
+        {
+          "label": "等价能力审计",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md"
         }
       ],
@@ -907,9 +911,14 @@
       "implementationCommit": "—",
       "controlledVerificationState": "not_run",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[等价审计](evidence/S06-07/AUDIT.md)：未发现清单导出或待办剪贴板能力；依赖 S06-01 至 S06-06 已满足，已准入 READY",
+      "evidence": [
+        {
+          "label": "等价能力审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/AUDIT.md"
+        }
+      ],
+      "boundary": "只读脱敏人工记录预览；默认包含未手动完成项并标注导出 UTC 时间。不写文件、不包含真实文件、稳定 ID、完整路径或可执行命令，不代表业务成功。"
     },
     {
       "id": "S06-08",

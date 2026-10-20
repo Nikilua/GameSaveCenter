@@ -2,7 +2,7 @@
 
 ## 页面滚动视口约束（2026-10-21）
 
-表格位于页面 ScrollViewer 时，页面根容器不能 `ClipToBounds`；限高只放在虚拟化表格/局部表格框架。表格视口预算须先扣掉页面工具栏、表格自身标题/表头和堆叠详情，再保留四行可读下限；剩余详情由页面外层滚动承载。宿主缩放时不能只相信上次 `ActualHeight` 或 `ViewportHeight`：缩小时按当前宿主和实测视口的较小值，宿主变高时先接受新请求再让稳定测量收敛；测试须覆盖缩小后恢复大窗。证据与边界见 [滚动视口复核](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。
+表格位于页面 ScrollViewer 时，页面根容器不能 `ClipToBounds`；限高只放在虚拟化表格/局部表格框架。表格视口预算须先扣掉页面工具栏、表格自身标题/表头和堆叠详情，再分配剩余高度；空间不足时由页面外层滚动承载。只要页面 `ScrollViewer.ViewportHeight` 已有有效测量，它就是表格预算的上限；宿主高度只在页面视口尚未测出时作回退值，不能因宿主增长覆盖一个更小的有效测量。测试需覆盖页面视口边界、表格内/外层滚动端点和窗口缩小后再放大。证据与边界见 [滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。
 
 ## 2026-10-21 Round4 S05-08 情景性能边界
 
@@ -22,11 +22,13 @@
 
 `0aa80547` 完成 S06-05：工作清单唯一选中项可标为人工完成并反向恢复；文字、工具提示和 UIA HelpText 均说明这不是备份/校验成功。模型按 kind+稳定 ID 只改目标标记；设置保存失败回滚，列表刷新保留已有引用解析状态和父 Playnite ID。SDK9 Release solution 重编译/最终增量构建 `0/0`，Playnite `17/17`、source validation 通过、XAML `25/25`、Round4 台账 `5/5`，WPF 静态审查 0 errors。证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。SDK8.0.423、真实宿主与主题/DPI 未验。
 
-S06-06 等价审计发现现有精确 ID 刷新可反映索引删除/失效、媒体/问题父 ID 变化和 Worker 查询不可用，单条失效不阻止其他行；但响应没有对象当前摘要，改名/归属更新未显示在清单。READY 范围为临时只读摘要和父游戏摘要，按 stable ID 查询、不落盘、不导出路径；真实文件 ACL/可读性不通过索引检查。审计：[S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。
+S06-06 提交 `fb33cd11` 已让稳定 ID 查询返回当前对象摘要及父游戏摘要，刷新后只进入清单浏览器的会话投影；不按名称匹配、不持久化路径或摘要。查询失败清除旧摘要并显示未知，OS ACL/物理可读性仍未知。后续滚动边界修复 `a1a86e41` 确保实测页面 ScrollViewer 高度优先限制表格空间。构建和测试证据见 [S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md) 和[滚动修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。
+
+S06-07 等价审计确认 Worklist 浏览器没有文本导出/预览入口，DataGrid 未挂接通用剪贴板行为，formatter 的允许列表不含 Worklist。复用恢复草稿只读 allowlist/redaction 与剪贴板反馈；导出仅是人工整理记录，默认包含未手动完成项和 UTC 时间，不包含稳定 ID、原始路径、文件内容或可执行命令。审计：[S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/AUDIT.md)。
 
 S06-05 等价审计确认 `IsManuallyComplete` 只有持久字段与只读投影，没有逐项操作。READY 范围为唯一选中清单项标记/撤销，显式说明这是人工跟进状态而非备份或校验成功，持久化同时保留解析状态、ID、顺序和备注；续接或原业务命令成功/失败/取消均不自动切换。审计：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。
 
-2026-10-21 新截图回报后，`43b869d1` 将紧凑模式次要筛选/视图配置收进 disclosure，并把候选/任务详情入口移出 DataGrid 框架。SDK9 Release solution `0/0`、截图尺寸几何行为 `10/10`。表格仍须独占有限滚动框架，页面工具区需计入剩余视口预算；测试验证四行可读及页面/表内滚动都能到端点。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
+2026-10-21 新截图回报后，`43b869d1` 将紧凑模式次要筛选/视图配置收进 disclosure，并把候选/任务详情入口移出 DataGrid 框架；随后 `a1a86e41` 令已测量的页面 ScrollViewer 高度严格约束表格空间，修正表格滚动条下探详情区的问题。SDK9 Release solution `0/0`，最终页面/表格与入口定向测试 `23/23`。行为证据：[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。离屏几何测试不代表真实宿主屏幕。
 
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
 

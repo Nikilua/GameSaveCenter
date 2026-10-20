@@ -11697,3 +11697,16 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在 S06-05 证据提交后按计划审查 `ResolveWorklistReferencesAsync`、浏览器批量刷新和逐行续接。当前按备份 composite ID、MediaId、TaskId、FindingId 精确解析；索引删除返回 NotFound，媒体/问题返回当前父 PlayniteId，刷新异常/缺结果标未知，其他行仍可继续。
 - 与计划不等价处：查询只返回 ID/状态/父 ID，没有当前对象显示摘要；改名摘要不可见，父归属虽然更新到路由状态但清单未显示。权限边界：只知道 Worker/索引查询 Unavailable，不查原文件 ACL，也不把 Indexed 说成物理可读。
 - S06-06 READY 范围：依 stable ID 返回不持久化的脱敏当前摘要/父游戏摘要；刷新时更新可见行，删除/查询失败清空过期摘要并保持其他行可用。OS ACL 与物理文件权限仍保留为未知，不探测/绕过。审计：[S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/AUDIT.md)。审计未运行构建/测试或改产品代码。
+
+## 2026-10-21 S06-06 失效刷新与用户滚动反馈修复验收
+
+- `fb33cd11` 已实现按稳定对象 ID 刷新当前索引摘要及父游戏摘要；摘要仅保存在 Worklist 浏览器条目投影中，不写设置、不按名称匹配。Worker/索引整体不可用时保留未知并清除旧摘要；Indexed 仅表示索引存在，不代表文件可读或可恢复。
+- 用户截图显示存档历史/路径候选/任务队列的表格滚动条进入详情区域。复核发现有有效页面 `ScrollViewer.ViewportHeight` 时仍优先采信宿主高度，宿主高度包含标签和 chrome 后可能让表格超出内页视口。`a1a86e41` 将页面实测高度作为表格预算硬上限；没有有效测量时才回退到宿主高度。已有 `43b869d1` 的紧凑工具区与详情入口调整一并保留。
+- SDK9.0.302 Release 全解决方案重建 `0 warning / 0 error`；Worker 刷新测试 `3/3`；Playnite 页面视口策略、存档/候选/任务表格详情几何与清单入口行为 `23/23`；source validation、XAML 25 文件结构校验、Round4 台账 5 项测试通过。TRX/build 日志哈希见 [S06-06 交付证据](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。渲染验证为离屏 WPF/逻辑尺寸，未声称真实宿主截图通过。
+- SDK8.0.423 未安装；真实 Playnite、实际物理 DPI、用户屏幕呈现未验证。原 Round3 未跟踪 TRX 与 `TestResults/` 保留；新 TRX 单独归档。
+
+## 2026-10-21 Round4 S06-07 清单导出预览等价审计
+
+- 检查 TaskCenter Worklist 浏览器命令/按钮、`WorklistBrowserEntry`、`WorklistDefinition`、`DataGridClipboardBehavior` 的生产挂接与 formatter allowlist。清单可浏览/续接/标记/移除，但无文本预览导出；工作清单表格未启用 clipboard behavior，剪贴板格式也不包含 Worklist。
+- 可复用既有 `RestorePlanDraftExportFormatter` 的只读 allowlist/redaction 约束及 `ClipboardFeedback` 的复制成功/失败反馈；当前能力只针对恢复草稿，并不满足工作清单导出。S06-07 READY 范围为独立、只读、脱敏预览和用户明确复制，默认包含未手动完成的条目、带 UTC 导出时间；不写文件、不包含稳定 ID、完整路径、真实文件或命令，也不表示业务成功。
+- 审计证据：[S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/AUDIT.md)。审计未修改产品代码或运行构建；依赖 S06-01 至 S06-06 均已验收。
