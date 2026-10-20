@@ -333,6 +333,7 @@
                             <StackPanel>
                                 <TextBlock Text="版本详情" Style="{DynamicResource GscSectionTitleStyle}"/>
                                 <TextBlock Text="{Binding SelectedBackup.BackupId, TargetNullValue=选择一个存档版本查看详情}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.BackupId}"/>
+                                <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding AddSelectedBackupToWorklistCommand}" Content="加入待办" ToolTip="预览该版本并确认加入当前待办；不会执行恢复或改变版本状态。" AutomationProperties.Name="将所选存档版本加入待办" AutomationProperties.HelpText="仅保存 Playnite ID 和备份版本 ID。" Margin="0,8,0,0"/>
                                 <Border x:Name="SaveHistoryInspectorAvailabilityHint" Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="8,6" Margin="0,10,0,0" Visibility="Collapsed">
                                     <TextBlock Text="{Binding RestoreAvailabilityHint, Mode=OneWay}"
                                                Style="{DynamicResource GscActionAvailabilityHintText}"

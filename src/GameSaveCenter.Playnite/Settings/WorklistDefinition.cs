@@ -16,6 +16,14 @@ namespace GameSaveCenter.Playnite.Settings
         ValidationFinding = 4
     }
 
+    public enum WorklistItemAddResult
+    {
+        Added,
+        AlreadyPresent,
+        LimitReached,
+        InvalidReference
+    }
+
     /// <summary>A user-maintained list of stable references and manual follow-up notes.</summary>
     public sealed class WorklistDefinition
     {
@@ -36,6 +44,30 @@ namespace GameSaveCenter.Playnite.Settings
                 Name = Name,
                 Items = NormalizeItems(Items)
             };
+
+        public bool Contains(WorklistObjectKind kind, string? stableObjectId)
+        {
+            if (!Enum.IsDefined(typeof(WorklistObjectKind), kind)) return false;
+            var normalizedId = (stableObjectId ?? string.Empty).Trim();
+            if (normalizedId.Length == 0 || normalizedId.Length > MaximumStableObjectIdLength) return false;
+            return NormalizeItems(Items).Any(item => item.Kind == kind
+                && string.Equals(item.StableObjectId, normalizedId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public WorklistItemAddResult TryAdd(WorklistItemRecord? item)
+        {
+            var normalized = NormalizeItem(item);
+            if (normalized == null) return WorklistItemAddResult.InvalidReference;
+
+            Items = NormalizeItems(Items);
+            if (Contains(normalized.Kind, normalized.StableObjectId))
+                return WorklistItemAddResult.AlreadyPresent;
+            if (Items.Count >= MaximumItemsPerWorklist)
+                return WorklistItemAddResult.LimitReached;
+
+            Items.Add(normalized);
+            return WorklistItemAddResult.Added;
+        }
 
         public static WorklistDefinition? Normalize(WorklistDefinition? source)
         {
@@ -93,27 +125,37 @@ namespace GameSaveCenter.Playnite.Settings
             // cannot force an unbounded enumeration before the item cap is applied.
             foreach (var item in source.Take(MaximumItemsPerWorklist * 4))
             {
-                if (item == null || !Enum.IsDefined(typeof(WorklistObjectKind), item.Kind)) continue;
-                var stableObjectId = (item.StableObjectId ?? string.Empty).Trim();
-                if (stableObjectId.Length == 0 || stableObjectId.Length > MaximumStableObjectIdLength) continue;
+                var normalized = NormalizeItem(item);
+                if (normalized == null) continue;
 
-                var identity = ((int)item.Kind).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + stableObjectId;
+                var identity = BuildIdentity(normalized.Kind, normalized.StableObjectId);
                 if (!identities.Add(identity)) continue;
                 if (result.Count >= MaximumItemsPerWorklist) continue;
-
-                var note = (item.Note ?? string.Empty).Trim();
-                if (note.Length > MaximumNoteLength) note = note.Substring(0, MaximumNoteLength);
-                result.Add(new WorklistItemRecord
-                {
-                    Kind = item.Kind,
-                    StableObjectId = stableObjectId,
-                    Note = note,
-                    IsManuallyComplete = item.IsManuallyComplete
-                });
+                result.Add(normalized);
             }
 
             return result;
         }
+
+        private static WorklistItemRecord? NormalizeItem(WorklistItemRecord? item)
+        {
+            if (item == null || !Enum.IsDefined(typeof(WorklistObjectKind), item.Kind)) return null;
+            var stableObjectId = (item.StableObjectId ?? string.Empty).Trim();
+            if (stableObjectId.Length == 0 || stableObjectId.Length > MaximumStableObjectIdLength) return null;
+
+            var note = (item.Note ?? string.Empty).Trim();
+            if (note.Length > MaximumNoteLength) note = note.Substring(0, MaximumNoteLength);
+            return new WorklistItemRecord
+            {
+                Kind = item.Kind,
+                StableObjectId = stableObjectId,
+                Note = note,
+                IsManuallyComplete = item.IsManuallyComplete
+            };
+        }
+
+        private static string BuildIdentity(WorklistObjectKind kind, string stableObjectId)
+            => ((int)kind).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + stableObjectId;
     }
 
     /// <summary>

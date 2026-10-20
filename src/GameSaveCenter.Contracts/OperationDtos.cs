@@ -541,6 +541,8 @@ namespace GameSaveCenter.Contracts
     /// <summary>One validation result displayed to the user.</summary>
     public sealed class ValidationFindingDto
     {
+        /// <summary>Stable primary key assigned by the Worker findings store.</summary>
+        public string FindingId { get; set; } = string.Empty;
         public string PlayniteId { get; set; } = string.Empty;
         /// <summary>Stable backup version identity when the finding is version-specific.</summary>
         public string BackupId { get; set; } = string.Empty;

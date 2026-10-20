@@ -270,6 +270,7 @@
                                                             </Style>
                                                         </ui:Button.Style>
                                                     </ui:Button>
+                                                    <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DataContext.AddSelectedFindingToWorklistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="加入待办" ToolTip="{Binding DataContext.SelectedFindingWorklistAvailabilityHint, RelativeSource={RelativeSource AncestorType=UserControl}}" AutomationProperties.Name="将所选校验问题加入待办" AutomationProperties.HelpText="仅保存 Worker 问题主键，不改变校验状态。" Margin="0,0,8,8"/>
                                                 </WrapPanel>
                                             </StackPanel>
                                             <Border.Style>
@@ -1335,6 +1336,7 @@
                                     <Border Style="{DynamicResource GscDiagnosticHintBubble}" Padding="10" Margin="0,12,0,0"><TextBlock Style="{DynamicResource GscDiagnosticHintText}" Text="{Binding SelectedFinding.SuggestedAction, TargetNullValue=暂无建议处理方式}"/></Border>
                                     <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
                                         <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="复制诊断"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding DataContext.AddSelectedFindingToWorklistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="加入待办" ToolTip="{Binding DataContext.SelectedFindingWorklistAvailabilityHint, RelativeSource={RelativeSource AncestorType=UserControl}}" AutomationProperties.Name="将所选审计问题加入待办" AutomationProperties.HelpText="仅保存 Worker 问题主键，不改变校验状态。" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <Border.Style>

@@ -26,6 +26,8 @@ namespace GameSaveCenter.Playnite.Settings
         private List<ViewConfigurationDefinition> viewConfigurations = new List<ViewConfigurationDefinition>();
         private List<RestorePlanDraftDefinition> restorePlanDrafts = new List<RestorePlanDraftDefinition>();
         private List<RetentionScenarioDefinition> retentionScenarioDrafts = new List<RetentionScenarioDefinition>();
+        private List<WorklistDefinition> worklists = new List<WorklistDefinition>();
+        private string activeWorklistId = string.Empty;
         private Dictionary<string, string> activeViewConfigurationIds = new Dictionary<string, string>(StringComparer.Ordinal);
         private string defaultTableDensityMode = TableDensityPolicy.ComfortableMode;
         private bool autoStartWorker = true;
@@ -288,6 +290,23 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => retentionScenarioDrafts;
             set => retentionScenarioDrafts = RetentionScenarioDefinition.NormalizeMany(value);
+        }
+
+        /// <summary>Bounded, stable-reference-only user worklists; referenced business objects are never copied here.</summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public List<WorklistDefinition> Worklists
+        {
+            get => worklists;
+            set => worklists = WorklistDefinition.NormalizeMany(value);
+        }
+
+        /// <summary>Selected worklist identity; an unknown ID falls back to the first available list at use time.</summary>
+        public string ActiveWorklistId
+        {
+            get => activeWorklistId;
+            set => activeWorklistId = Guid.TryParse(value, out var id) && id != Guid.Empty
+                ? id.ToString("D")
+                : string.Empty;
         }
 
         /// <summary>DPAPI-protected per-user HMAC key for path-free restore mapping fingerprints.</summary>
@@ -861,6 +880,8 @@ namespace GameSaveCenter.Playnite.Settings
             DataGridColumnWidths = other.DataGridColumnWidths;
             DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;
             RecentAccess = other.RecentAccess;
+            Worklists = other.Worklists;
+            ActiveWorklistId = other.ActiveWorklistId;
         }
 
         private static string BuildDataGridColumnWidthKey(string viewKey, string columnKey)

@@ -145,4 +145,42 @@ public sealed class WorklistDefinitionTests
         Assert.NotSame(normalized.Items[0], clone.Items[0]);
         Assert.Equal("新备注", normalized.Items[0].Note);
     }
+
+    [Fact]
+    public void TryAddReportsAddedDuplicateLimitAndInvalidReferences()
+    {
+        var worklist = new WorklistDefinition();
+        var item = new WorklistItemRecord
+        {
+            Kind = WorklistObjectKind.BackgroundTask,
+            StableObjectId = "task-1"
+        };
+
+        Assert.Equal(WorklistItemAddResult.Added, worklist.TryAdd(item));
+        Assert.Equal(WorklistItemAddResult.AlreadyPresent, worklist.TryAdd(new WorklistItemRecord
+        {
+            Kind = WorklistObjectKind.BackgroundTask,
+            StableObjectId = " TASK-1 "
+        }));
+        Assert.Single(worklist.Items);
+
+        var full = new WorklistDefinition
+        {
+            Items = Enumerable.Range(0, WorklistDefinition.MaximumItemsPerWorklist)
+                .Select(index => new WorklistItemRecord
+                {
+                    Kind = WorklistObjectKind.MediaItem,
+                    StableObjectId = $"media-{index}"
+                })
+                .ToList()
+        };
+        Assert.Equal(WorklistItemAddResult.LimitReached, full.TryAdd(item));
+        Assert.Equal(WorklistDefinition.MaximumItemsPerWorklist, full.Items.Count);
+        Assert.Equal(WorklistItemAddResult.InvalidReference, worklist.TryAdd(new WorklistItemRecord
+        {
+            Kind = WorklistObjectKind.ValidationFinding,
+            StableObjectId = new string('x', WorklistDefinition.MaximumStableObjectIdLength + 1)
+        }));
+        Assert.Single(worklist.Items);
+    }
 }

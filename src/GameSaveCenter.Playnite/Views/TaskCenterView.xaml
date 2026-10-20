@@ -537,6 +537,7 @@
                     </ItemsControl>
                 </StackPanel>
             </Border>
+            <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding AddSelectedTaskToWorklistCommand}" Content="加入待办" ToolTip="预览该任务并确认加入当前待办；不会重试、取消或改变任务状态。" AutomationProperties.Name="将所选后台任务加入待办" AutomationProperties.HelpText="仅保存任务稳定 ID。" HorizontalAlignment="Left" Margin="0,10,0,0"/>
         </StackPanel>
         </ScrollViewer>
     </Grid>

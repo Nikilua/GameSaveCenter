@@ -39,6 +39,7 @@ public sealed class R17FindingPersistenceTests : IDisposable
 
         var finding = Assert.Single(await store.GetOpenFindingsAsync(20, CancellationToken.None));
         Assert.InRange(finding.CreatedUtc, before, DateTime.UtcNow.AddSeconds(1));
+        Assert.True(Guid.TryParseExact(finding.FindingId, "N", out _));
     }
 
     [Fact]
@@ -51,6 +52,15 @@ public sealed class R17FindingPersistenceTests : IDisposable
         }, CancellationToken.None);
         var finding = Assert.Single(await store.GetOpenFindingsAsync(20, CancellationToken.None));
         Assert.Equal("backup-1", finding.BackupId);
+        Assert.False(string.IsNullOrWhiteSpace(finding.FindingId));
+        var originalId = finding.FindingId;
+
+        await store.UpsertHealthInspectionFindingAsync("game-1", "backup-1", new RestoreReadinessDto
+        {
+            Status = RestoreReadinessStatus.Failed,
+            Summary = "再次检查"
+        }, CancellationToken.None);
+        Assert.Equal(originalId, Assert.Single(await store.GetOpenFindingsAsync(20, CancellationToken.None)).FindingId);
 
         await store.ResolveHealthInspectionFindingAsync("game-1", "backup-1", CancellationToken.None);
 

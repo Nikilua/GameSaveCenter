@@ -31,6 +31,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         partial void OnWorkspaceStateInitialize();
         partial void OnNavigationStateInitialize();
         partial void OnRecentAccessInitialize();
+        partial void OnWorklistsInitialize();
         partial void OnBackupHistoryInitialize();
         partial void OnNotificationInboxInitialize();
         partial void OnRestorePlanDraftsInitialize();
@@ -301,6 +302,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnWorkspaceStateInitialize();
             OnNavigationStateInitialize();
             OnRecentAccessInitialize();
+            OnWorklistsInitialize();
             OnBackupHistoryInitialize();
             OnNotificationInboxInitialize();
             OnRestorePlanDraftsInitialize();
@@ -1464,6 +1466,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(SelectedFindingNavigationText));
                 OnPropertyChanged(nameof(SelectedFindingNavigationToolTip));
                 OnPropertyChanged(nameof(HasSelectedFindingNavigation));
+                OnPropertyChanged(nameof(HasSelectedFindingWorklistIdentity));
+                OnPropertyChanged(nameof(SelectedFindingWorklistAvailabilityHint));
                 RaiseCommandStates();
             }
         }
@@ -1471,6 +1475,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string SelectedFindingNavigationText => SelectedFindingNavigation.Text;
         public string SelectedFindingNavigationToolTip => SelectedFindingNavigation.ToolTip;
         public bool HasSelectedFindingNavigation => SelectedFindingNavigation.IsAvailable;
+        public bool HasSelectedFindingWorklistIdentity
+            => !string.IsNullOrWhiteSpace(WorklistEntryPreviewFactory.FromValidationFinding(SelectedFinding)?.StableObjectId);
+        public string SelectedFindingWorklistAvailabilityHint
+            => HasSelectedFindingWorklistIdentity
+                ? "将问题主键加入人工待办；不会更改校验或问题状态。"
+                : "此问题没有持久记录编号，暂不能加入清单。";
         public string BackupComment
         {
             get => backupComment;
@@ -6625,6 +6635,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, PreviousMediaComparisonCandidateCommand, NextMediaComparisonCandidateCommand, MarkMediaComparisonToKeepCommand, MarkMediaComparisonToReviewCommand, ClearMediaComparisonOpinionCommand, CreateMediaComparisonClassificationPreviewCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                AddSelectedBackupToWorklistCommand, AddSelectedMediaToWorklistCommand, AddSelectedTaskToWorklistCommand, AddSelectedFindingToWorklistCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,

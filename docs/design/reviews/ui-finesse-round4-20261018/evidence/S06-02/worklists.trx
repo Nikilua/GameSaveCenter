@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5771d28f-26ac-4ffe-a4bc-e4177b64b25d" name="lopmatu@SULT 2026-10-21 04:30:13" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-21T04:30:13.5010158+08:00" queuing="2026-10-21T04:30:13.5010159+08:00" start="2026-10-21T04:30:08.1202023+08:00" finish="2026-10-21T04:30:28.0863714+08:00" />
+  <TestSettings name="default" id="e86220d1-e415-43c3-862e-a47fca78959d">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-21_04_30_13" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2d0f43a1-45f8-4072-a305-35194bc362a9" testId="eaf3da1c-f1b7-1140-207d-515bfbeaf53f" testName="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests.TaskAndFindingPreviewsRequireTheirPersistentPrimaryKeys" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-21T04:30:12.2354182+08:00" endTime="2026-10-21T04:30:12.2404188+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2d0f43a1-45f8-4072-a305-35194bc362a9" />
+    <UnitTestResult executionId="54b4c180-7d83-4ed9-9257-e13acc537920" testId="00c7a969-b7aa-6747-a540-ca70218d6ebc" testName="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.ListItemAndTextSizesAreBounded" computerName="SULT" duration="00:00:00.0490000" startTime="2026-10-21T04:30:12.2464192+08:00" endTime="2026-10-21T04:30:12.2934216+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54b4c180-7d83-4ed9-9257-e13acc537920" />
+    <UnitTestResult executionId="d73ac86d-0348-474c-9930-203053ffe3d3" testId="806666ed-3ea0-4ec9-1895-0297f7c0e8d7" testName="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.NormalizeManyKeepsListIdentityAndProducesIndependentClones" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-21T04:30:12.3054190+08:00" endTime="2026-10-21T04:30:12.3064190+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d73ac86d-0348-474c-9930-203053ffe3d3" />
+    <UnitTestResult executionId="e22bc906-46fd-4363-9bb0-26ccaade7df7" testId="4b8654f0-5394-7727-9023-1e416aa3dca1" testName="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests.BackupAndMediaPreviewsUseStableIdsWithoutPersistingPaths" computerName="SULT" duration="00:00:00.0320000" startTime="2026-10-21T04:30:11.9736299+08:00" endTime="2026-10-21T04:30:11.9896298+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e22bc906-46fd-4363-9bb0-26ccaade7df7" />
+    <UnitTestResult executionId="0daffcf5-06db-460b-85e9-96b41a40dc56" testId="c9e5e9fa-b4ae-866d-ca3f-61ff3a65af5f" testName="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.InvalidKindsAndUnstableIdentifiersAreDroppedWithoutTruncatingIdentity" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-21T04:30:12.2954206+08:00" endTime="2026-10-21T04:30:12.2964202+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0daffcf5-06db-460b-85e9-96b41a40dc56" />
+    <UnitTestResult executionId="505829d3-6991-45fe-837f-3769bf9060cd" testId="62b16eb6-332c-7ac7-3bf6-604a067fc16f" testName="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.TryAddReportsAddedDuplicateLimitAndInvalidReferences" computerName="SULT" duration="00:00:00.0060000" startTime="2026-10-21T04:30:12.2984206+08:00" endTime="2026-10-21T04:30:12.3034190+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="505829d3-6991-45fe-837f-3769bf9060cd" />
+    <UnitTestResult executionId="7bae6d3c-cccb-449e-8d25-3f1b43e8c812" testId="d22adf28-4786-05eb-7708-d6db78dca594" testName="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.ItemNormalizationDeduplicatesStableReferencesWithinKind" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-21T04:30:12.3074191+08:00" endTime="2026-10-21T04:30:12.3094192+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7bae6d3c-cccb-449e-8d25-3f1b43e8c812" />
+    <UnitTestResult executionId="5bbeac63-f1f5-45fa-aab7-7e06bf801465" testId="19e3e772-cc30-449f-e62d-875ef6e14737" testName="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests.WorklistsAndActiveSelectionSurviveSettingsSerialization" computerName="SULT" duration="00:00:00.2440000" startTime="2026-10-21T04:30:12.0146298+08:00" endTime="2026-10-21T04:30:12.2334115+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5bbeac63-f1f5-45fa-aab7-7e06bf801465" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.TryAddReportsAddedDuplicateLimitAndInvalidReferences" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="62b16eb6-332c-7ac7-3bf6-604a067fc16f">
+      <Execution id="505829d3-6991-45fe-837f-3769bf9060cd" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests" name="TryAddReportsAddedDuplicateLimitAndInvalidReferences" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests.WorklistsAndActiveSelectionSurviveSettingsSerialization" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="19e3e772-cc30-449f-e62d-875ef6e14737">
+      <Execution id="5bbeac63-f1f5-45fa-aab7-7e06bf801465" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests" name="WorklistsAndActiveSelectionSurviveSettingsSerialization" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests.TaskAndFindingPreviewsRequireTheirPersistentPrimaryKeys" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="eaf3da1c-f1b7-1140-207d-515bfbeaf53f">
+      <Execution id="2d0f43a1-45f8-4072-a305-35194bc362a9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests" name="TaskAndFindingPreviewsRequireTheirPersistentPrimaryKeys" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.NormalizeManyKeepsListIdentityAndProducesIndependentClones" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="806666ed-3ea0-4ec9-1895-0297f7c0e8d7">
+      <Execution id="d73ac86d-0348-474c-9930-203053ffe3d3" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests" name="NormalizeManyKeepsListIdentityAndProducesIndependentClones" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.InvalidKindsAndUnstableIdentifiersAreDroppedWithoutTruncatingIdentity" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="c9e5e9fa-b4ae-866d-ca3f-61ff3a65af5f">
+      <Execution id="0daffcf5-06db-460b-85e9-96b41a40dc56" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests" name="InvalidKindsAndUnstableIdentifiersAreDroppedWithoutTruncatingIdentity" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.ItemNormalizationDeduplicatesStableReferencesWithinKind" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="d22adf28-4786-05eb-7708-d6db78dca594">
+      <Execution id="7bae6d3c-cccb-449e-8d25-3f1b43e8c812" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests" name="ItemNormalizationDeduplicatesStableReferencesWithinKind" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests.ListItemAndTextSizesAreBounded" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="00c7a969-b7aa-6747-a540-ca70218d6ebc">
+      <Execution id="54b4c180-7d83-4ed9-9257-e13acc537920" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistDefinitionTests" name="ListItemAndTextSizesAreBounded" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests.BackupAndMediaPreviewsUseStableIdsWithoutPersistingPaths" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s06-02\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4b8654f0-5394-7727-9023-1e416aa3dca1">
+      <Execution id="e22bc906-46fd-4363-9bb0-26ccaade7df7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s06-02\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorklistEntryPreviewFactoryTests" name="BackupAndMediaPreviewsUseStableIdsWithoutPersistingPaths" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="eaf3da1c-f1b7-1140-207d-515bfbeaf53f" executionId="2d0f43a1-45f8-4072-a305-35194bc362a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00c7a969-b7aa-6747-a540-ca70218d6ebc" executionId="54b4c180-7d83-4ed9-9257-e13acc537920" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="806666ed-3ea0-4ec9-1895-0297f7c0e8d7" executionId="d73ac86d-0348-474c-9930-203053ffe3d3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b8654f0-5394-7727-9023-1e416aa3dca1" executionId="e22bc906-46fd-4363-9bb0-26ccaade7df7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9e5e9fa-b4ae-866d-ca3f-61ff3a65af5f" executionId="0daffcf5-06db-460b-85e9-96b41a40dc56" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="62b16eb6-332c-7ac7-3bf6-604a067fc16f" executionId="505829d3-6991-45fe-837f-3769bf9060cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d22adf28-4786-05eb-7708-d6db78dca594" executionId="7bae6d3c-cccb-449e-8d25-3f1b43e8c812" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19e3e772-cc30-449f-e62d-875ef6e14737" executionId="5bbeac63-f1f5-45fa-aab7-7e06bf801465" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.37]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.78]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.23]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
