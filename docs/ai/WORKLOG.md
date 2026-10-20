@@ -1,9 +1,17 @@
+## 2026-10-20 Round4 S04-05 比较候选切换
+
+- 提交 `4d0bfd3c`：比较工作区新增上一/下一候选和当前位置。只替换右侧 B，锁定 A，保留详情选择和当前按钮焦点；来源限制为当前已加载 `MediaView` 搜索/筛选结果，不自动拉取下一页。
+- 生产缩略图失败/缺失时记录不可用稳定 ID，沿用户浏览方向切换，若到边界再回退反向候选；文件检查/替换之间的竞态也在有限候选内重试。继续复用 `AsyncThumbnailImage` 取消及 generation guard。
+- SDK `8.0.423` Release solution build `0 warning / 0 error`；比较候选、生产 WPF 和旧图晚到回调测试 `6/6`；source validation、XAML 25 文件检查及 `git diff --check` 通过。TRX、构建日志、合成截图、DLL/PDB 与源码哈希：[S04-05](../design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)。
+- 未运行真实 Playnite、真实媒体、物理输入或完整 WPF 独立循环；离屏截图使用合成 PNG。现有 Round3 TRX/TestResults 保留，未纳入提交。
+- S04-06 审查：收藏/备注会更改正式媒体元数据，IgnoreMedia 会正式忽略，均与可撤销的比较意见标记不同；比较工作区依赖满足，下一项 READY。建议会话内保存标记、重启清空。
+
 ## 2026-10-20 Round4 S04-04 差异查看辅助
 
 - 生产媒体比较页此前已有两图、同步缩放/平移，但没有 wipe/交替对照或透明棋盘。提交 `9e0af12b` 增加擦除分隔线：A 固定在左、B 在右；支持拖动、方向键、Shift 方向键、Home/End。棋盘背景复用于两张并排视口和擦除视口，并明确只用于人工视觉比较。擦除层直接绑定现有异步缩略图 BitmapSource，不增加解码路径。
 - SDK `8.0.423` Release solution build `0 warning / 0 error`；媒体比较生产 WPF 行为 `2/2`，覆盖当前同步缩放行为、图源引用、A/B 像素方向、键盘边界、透明棋盘实际渲染和退出擦除模式恢复并排视图。`validate-source.py`、25 文件 XAML 检查和 `git diff --check` 通过。证据、TRX、构建日志、程序集/源码 SHA 与截图见 [S04-04](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。
 - 截图来自生产 `MediaCenterView` 的 WPF 离屏渲染和合成图片，不是 Playnite/物理屏幕证据。真实 Playnite、真实媒体、物理 DPI、物理鼠标拖动和完整 WPF 隔离循环未验。WPF 测试退出时打印 TextServicesContext `InvalidComObjectException` 清理输出，但 VSTest 退出码为 0，TRX `2/2`。
-- 核对 S04-05：已有 `PreviousMediaCommand`/`NextMediaCommand` 只在当前媒体集合更改详情焦点，不会锁定左侧比较参考或替换右侧比较对象，因此不等价；S04-05 已加入 READY。原有 Round3 未跟踪 TRX/TestResults 保留。
+- S04-05 后续已完成：候选导航替换右侧比较对象、锁定左图并在有限筛选结果内跳过失败图片；详情焦点保持。详情见本文件顶部 S04-05 记录。原有 Round3 未跟踪 TRX/TestResults 保留；下一项 S04-06 已审查准入。
 
 ## 2026-10-20 用户反馈：工作区滚动条越界
 
@@ -16,7 +24,7 @@
 - 启动候选 S00-01 已在当前 main 标为满足，`dd38f8ca` 与 SDK8 行为复核证据完整；本轮不重复实现或测试。
 - S04-03 已由 `f51e5c9e` 实现并在当前代码中生效：同步/独立缩放，适应窗口、100% 查看、归一化中心坐标平移、缩放上限，以及 2048px 解码长边和 64MiB 缓存预算。复核认定为已满足，没有新增生产代码。
 - 精确 SDK8 全链结果包含状态测试 `4/4`、生产 `MediaCenterView` WPF 行为 `1/1`、缩略图预算 `3/3`。当前 HEAD 上 RenderHarness 构建 `0/0`，浅/深主题矩阵 `render-qa OK`、`0 PROBLEM`；原始 TRX、报告、输入 commit 与边界见 [S04-03](../design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
-- 真实 Playnite 页面视觉未验；离屏截图使用合成夹具、逻辑 DPI `1.00`。启动时被保留的未跟踪 Round3 TRX 与 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 未触碰。下一项 S04-04 已具备依赖并进入 READY。
+- 真实 Playnite 页面视觉未验；离屏截图使用合成夹具、逻辑 DPI `1.00`。启动时被保留的未跟踪 Round3 TRX 与 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 未触碰。其后 S04-04、S04-05 已完成，当前 S04-06 READY。
 
 ## 2026-10-20 DEV-INSTALL-009 默认全流程验收
 

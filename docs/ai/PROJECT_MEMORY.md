@@ -1,6 +1,14 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-20 Round4 S04-04 已验收；S04-05 READY
+## 2026-10-20 Round4 S04-05 已验收；S04-06 READY
+
+S04-05 提交 `4d0bfd3c` 已把比较导航按钮接入生产 `MediaCenterView`。候选只来自当前已加载且通过搜索/筛选的 `MediaView`：B 可上一张/下一张，A 固定不变，详情选择不变，当前位置可见；不自动拉取新页。候选缺失/损坏时利用 `MediaId` 暂时排除并继续当前方向，无后续项时换向回退；文件存在检查和实际替换之间发生变化时也会继续尝试。使用现有异步缩略图的取消和 generation guard，未引入新解码器。
+
+SDK `8.0.423` Release solution build `0 warning / 0 error`。候选导航单元行为 `2/2`、生产比较 WPF `3/3`、迟到图像替换测试 `1/1`，共 `6/6`；source validation、XAML `25/25` 和 diff check 通过。证据及 TRX、构建日志、离屏合成截图、二进制/源码 SHA：[S04-05](../design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)。真实 Playnite、真实媒体和物理输入未验，完整 WPF 隔离循环未运行。
+
+S04-06 的生产代码搜索未发现比较专用意见标记。收藏/备注会写正式媒体元数据，忽略会改变归类状态，不能复用为可撤销的人工保留/检查意见。依赖已满足；预期采用比较会话内标记，退出/重启清空，不修改文件。原 Round3 TRX 与 `TestResults/` 仍为未跟踪用户文件，没有清理或提交。
+
+## 2026-10-20 Round4 S04-04 已验收
 
 启动候选 S00-01 已在当前 main 账本标为满足，复用 `dd38f8ca` 当前 SDK8 证据，无需重复实现。S00-02 全量 UI 门禁仍因 R05 系统指针读取 Win32 error 5 未完成；继续选择已满足独立依赖的任务。
 
@@ -8,11 +16,11 @@ S04-03 已由 `f51e5c9e` 实现：比较视图支持同步/独立缩放、Fit、
 
 S04-03 验收时的代码与全链验收源提交相同；真实 Playnite 页面视觉、真实媒体和物理 DPI 未验。Demo 目录缺失。本地用户提供的未跟踪 TRX/TestResults 保留。S04-03 验收当时生产代码还没有视觉擦除/交替对照，随后由 S04-04 补齐。
 
-S04-04 已由 `9e0af12b` 实现：媒体比较工作区可显示 A 左/B 右的擦除对照，分隔线支持鼠标拖动及方向键、Shift 方向键、Home/End；两种比较视口都有透明棋盘底纹。它直接绑定现有异步缩略图的 BitmapSource，保持 2048 px 解码长边和 64 MiB 图像缓存。SDK `8.0.423` Release solution build `0 warning / 0 error`，`MediaComparisonViewportBehaviorTests` `2/2`；用例验证图源引用、方向/位置、A/B 像素方向、棋盘渲染及退出时恢复并排模式。证据、截图、TRX、构建记录和 SHA-256 见 [S04-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。测试窗口与图片为合成夹具，未验真实 Playnite、真实媒体、物理 DPI 或鼠标操作；WPF 测试退出时有 `TextServicesContext.InvalidComObjectException` 清理输出但 VSTest 返回 0。下一项 S04-05 已 READY：现有媒体上一项/下一项只改详情选择，不切换比较集合候选。
+S04-04 已由 `9e0af12b` 实现：媒体比较工作区可显示 A 左/B 右的擦除对照，分隔线支持鼠标拖动及方向键、Shift 方向键、Home/End；两种比较视口都有透明棋盘底纹。它直接绑定现有异步缩略图的 BitmapSource，保持 2048 px 解码长边和 64 MiB 图像缓存。SDK `8.0.423` Release solution build `0 warning / 0 error`，`MediaComparisonViewportBehaviorTests` `2/2`；用例验证图源引用、方向/位置、A/B 像素方向、棋盘渲染及退出时恢复并排模式。证据、截图、TRX、构建记录和 SHA-256 见 [S04-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。测试窗口与图片为合成夹具，未验真实 Playnite、真实媒体、物理 DPI 或鼠标操作；WPF 测试退出时有 `TextServicesContext.InvalidComObjectException` 清理输出但 VSTest 返回 0。其后 S04-05 已完成，当前进入 S04-06。
 
 ## 2026-10-20 用户反馈：页面/表格滚动区越界
 
-存档历史和路径校验现在分别通过有限页面 ScrollViewer 到达下方内容，DataGrid 保留自己的有限虚拟化视口和滚动条；任务中心外层滚动使用 `TaskPageScrollViewer.ViewportHeight`，避免把内容高度误作 PageHost 可视高度；当前媒体页同样限定内外滚动范围。媒体收件箱保留既有 PageHost 尺寸算法，避免影响其缩放恢复。SDK8 Release solution `0 warning / 0 error`，WPF 几何测试 `9/9`，RenderHarness `0 PROBLEM`；详情、TRX、截图及离屏/宿主边界见[证据页](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。真实 Playnite 未运行。滚动修复后续接 S04-04；当前下一个 READY 项为 S04-05。
+存档历史和路径校验现在分别通过有限页面 ScrollViewer 到达下方内容，DataGrid 保留自己的有限虚拟化视口和滚动条；任务中心外层滚动使用 `TaskPageScrollViewer.ViewportHeight`，避免把内容高度误作 PageHost 可视高度；当前媒体页同样限定内外滚动范围。媒体收件箱保留既有 PageHost 尺寸算法，避免影响其缩放恢复。SDK8 Release solution `0 warning / 0 error`，WPF 几何测试 `9/9`，RenderHarness `0 PROBLEM`；详情、TRX、截图及离屏/宿主边界见[证据页](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。真实 Playnite 未运行。滚动修复后续完成 S04-04 与 S04-05；当前下一个 READY 项为 S04-06。
 
 ## 2026-10-20 默认一键安装流程已全链通过
 

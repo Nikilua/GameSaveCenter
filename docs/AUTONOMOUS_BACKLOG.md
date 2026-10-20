@@ -2,6 +2,10 @@
 
 ## 2026-10-18 第四轮执行状态
 
+### 最新状态（2026-10-20）
+
+S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且经过搜索/筛选的有限媒体结果中切换 B，保留详情焦点；坏图会被跳过，复用 `AsyncThumbnailImage` 的迟到回调保护。SDK8.0.423 Release solution `0/0`，相关导航、生产 WPF 与缩略图迟到路径测试 `6/6`。真实 Playnite/物理输入未验，证据见 Round4 S04-05。S04-06 已审查：现有收藏/备注是媒体正式元数据，忽略是正式归类动作，均不等价于可撤销的比较意见标记；其依赖已满足，进入 READY。建议采用比较会话内可撤销标记，不跨重启持久化，也不改变收藏/忽略状态或文件。
+
 用户已明确要求完成[第四轮 64 项](design/UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)整体计划；本清单只用于挑选一个可执行子任务，`PROPOSED` 表示能力/依赖待审，不要求重复授权计划内任务。交付与退出条件见[协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)。状态表见[第四轮账本](design/reviews/ui-finesse-round4-20261018/ROUND4_PROGRESS.md)。S00-01 已满足；S00-02 SDK8 build 通过，但 WPF 隔离在 R05 系统指针权限处失败，安装/版本核验未到达。S01-01 至 S01-08、S02-01 至 S02-08 已完成受控验证；S02-04 至 S02-08 使用 SDK9，SDK8 正式基线和真实宿主仍待验；S01-02 至 S01-08 的真实 Playnite 设置保存与呈现仍待验。S02-08 通知体验受控测试为 Playnite 20/20、Worker 12/12；全量 WPF、系统高对比、读屏器和真实 Playnite未验。S03-01 来源关系模型 SDK9 Core `156/156` 已验收；S03-02 `fd59dcc1` 版本关系视图 SDK9 Release solution `0/0`、Playnite `12/12`、Worker `2/2`、RenderHarness `render-qa OK` 已受控验收；S03-03 冲突原因对照已完成 SDK8 受控验证；S03-04 恢复方案草稿已完成 SDK8 build、定向验证、隔离安装与双主题渲染，完整 WPF 循环和真实 Playnite仍待验；S03-05 方案差异比较已完成 SDK8 build、定向测试、双主题渲染和精确提交隔离 no-start 安装；S03-06 `7366d8cf` 方案失效规则已完成 SDK8 构建、14/14 定向测试、双主题渲染和精确提交隔离 no-start 安装。S03-04 至 S03-06 的完整 WPF 循环与真实 Playnite仍待验。S03-07 `eeedd003` 脱敏只读导出已完成 SDK8 构建、18/18 定向测试、双主题 Render QA 和精确提交隔离 no-start 安装。S03-04 至 S03-07 的完整 WPF 循环与真实 Playnite仍待验。S03-08 来源与方案验收已受控完成：SDK9 Release solution 0/0，Core 10/10、Playnite 15/15（含 R09 2/2）；SDK8.0.423 未安装，完整 WPF 与真实 Playnite未验。S04-01 至 S04-04 已受控验收，S04-03 复用 `f51e5c9e` 同步缩放/平移，S04-04 `9e0af12b` 加入擦除对照、棋盘透明底纹和键盘调整；S04-05 已核实依赖满足并准入。S07-01/02/04/05/06/07/08 已完成，S07-03 等 branch protection 读取条件解锁。旧 Q/R 的环境边界不变。
 
 | ID/范围 | 状态 | 下一步与准入条件 |
@@ -12,7 +16,8 @@
 | S04-02 | IMPLEMENTED | `825e58e9` 双图工作区展示两张同比例截图、原图像素尺寸、大小、来源与游戏 ID；窄宽度上下排列，短宿主默认保留媒体列表并可手动展开。SDK8 Release solution 0/0、WPF 7/7、双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。证据见 Round4 S04-02；其后 S04-03 已由 `f51e5c9e` 实现并验证。 |
 | S04-03 | SATISFIED | `f51e5c9e` 已实现同步/独立缩放、适应窗口、100% 查看、归一化中心坐标平移、12.5%–400% 缩放上限与 2048px/64MiB 缩略图预算。SDK8 一键全链内状态 `4/4`、生产 WPF 面板行为 `1/1`、缩略图预算 `3/3`；当前 RenderHarness 双主题 `render-qa OK / 0 PROBLEM`。证据见 Round4 S04-03；真实 Playnite 页面呈现未验。 |
 | S04-04 | IMPLEMENTED | `9e0af12b` 在现有媒体比较视图加入擦除分隔线、A 左/B 右、方向键/Home/End 调整和透明棋盘底纹；复用现有异步解码图像源。SDK8.0.423 Release solution 0/0，生产 WPF 行为 2/2，截图及 TRX 见 Round4 S04-04 证据。仅作人工视觉比较，未做内容一致性校验或自动删除。 |
-| S04-05 | READY | S04-01 至 S04-04 依赖已满足。现有 `PreviousMediaCommand` / `NextMediaCommand` 只更改媒体详情选择，不锁定比较左图或替换右侧比较对象；比较候选切换仍需实现。按计划限定到当前有限结果，保留焦点并防止迟到解码覆盖新候选，失效候选后仍可继续浏览。 |
+| S04-05 | IMPLEMENTED | `4d0bfd3c` 锁定左侧 A，在当前 `MediaView` 已加载的筛选结果里切换右侧 B；详情选择/焦点保持，坏图跳过并可继续双向浏览，复用缩略图代际保护。SDK8.0.423 Release solution 0/0，定向行为 `6/6`。证据见 Round4 S04-05；真实 Playnite、真实媒体、物理输入未验。 |
+| S04-06 | READY | 已检查生产比较页：没有比较专用的人工意见标记。收藏/备注会改正式媒体元数据，`IgnoreMedia` 会执行正式忽略，均不等价。比较对象集合、候选浏览和现有预览链依赖已满足；本批建议只在当前比较会话中添加可撤销的“待保留/待检查”标记，不持久化、不删除/忽略/归类文件。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S01-02 | IMPLEMENTED | `ad7bd563` 新增舒适/紧凑全局密度设置与共享令牌，四行下限按行/表头高度计算；SDK8 solution build 0/0，密度/设置资源14/14、R09 2/2、MediaInbox几何3/3、R23双主题资源9/9。真实 Playnite 验收待 UI gate；证据见 Round4 S01-02。 |
 | S01-03 | IMPLEMENTED | `8cdf5253` 为存档历史、候选路径和任务表格加入可访问的列管理；SDK8.0.423 Release build 0/0，列显隐/列宽/视图配置/R09 共 17/17。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-03。 |

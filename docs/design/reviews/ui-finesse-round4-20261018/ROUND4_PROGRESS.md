@@ -6,8 +6,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收20、已满足2、代码完成待验收15、外部阻塞1、待开始26。
-实现状态：完成37、未开始27、不适用0；受控验证：通过37、未跑26、不适用0；宿主验证：通过0、待验9、未跑47、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收21、已满足2、代码完成待验收15、外部阻塞1、待开始25。
+实现状态：完成38、未开始26、不适用0；受控验证：通过38、未跑25、不适用0；宿主验证：通过0、待验9、未跑47、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -47,7 +47,7 @@
 | S04-02 | 双图工作区 | 已验收 | 825e58e9867ae3303c100eef31693f768f1772cf | [证据](evidence/S04-02/README.md)：SDK8.0.423 Release solution 0/0；媒体比较与原图尺寸 WPF 7/7；双主题 11 尺寸 RenderHarness render-qa OK / 0 PROBLEM | 未运行完整 WPF 隔离循环或真实 Playnite；合成截图不是宿主画面，真实媒体目录未读取。 |
 | S04-03 | 同步缩放移动 | 已满足 | f51e5c9e | [证据](evidence/S04-03/README.md)：SDK8.0.423 全链中的同步/独立缩放状态4/4、生产 WPF 面板行为1/1、缩略图预算3/3；当前 RenderHarness 双主题矩阵 render-qa OK，0 PROBLEM | 真实 Playnite 页面视觉未验；RenderHarness 使用合成数据、offscreen DPI 1.00；Demo 目录缺失。S04-04 前置现已满足。 |
 | S04-04 | 差异查看辅助 | 已验收 | 9e0af12b | [证据](evidence/S04-04/README.md)：SDK8.0.423 Release solution 0/0；MediaComparisonViewportBehaviorTests 2/2；生产 WPF 视图擦除、A/B 像素方向、透明棋盘和键盘位置均有行为/渲染证据 | 受控 WPF 使用合成透明图片；完整 WPF 隔离流程、真实 Playnite、真实媒体、物理 DPI 和真实鼠标拖动未验。测试退出码为0且2/2通过，WPF TextServicesContext 关闭时仍有 InvalidComObjectException 输出；本功能只用于人工视觉比较。 |
-| S04-05 | 比较候选切换 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S04-05 | 比较候选切换 | 已验收 | 4d0bfd3c | [受控证据](evidence/S04-05/README.md)：SDK8.0.423 Release solution 0/0；候选导航与生产 WPF/缩略图迟到回调定向测试 6/6，合成截图与 TRX 已归档 | 候选限于当前 MediaView 已加载的搜索/筛选结果，不自动请求下一页；真实 Playnite、真实媒体和物理输入设备未验，截图来自合成 WPF 夹具；完整 WPF 独立循环未运行。 |
 | S04-06 | 保留意见标记 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S04-07 | 比较结束转交 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S04-08 | 大图资源验收 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
