@@ -175,19 +175,23 @@ namespace GameSaveCenter.Playnite.Views
                     : Math.Max(0, height);
                 responsiveHeight = pageViewportHeight;
                 height = pageViewportHeight;
-                SaveHistoryLayout.MinHeight = pageViewportHeight;
+                var historyPageBudgetHeight = Math.Max(0,
+                    pageViewportHeight - SaveHistoryLayout.Margin.Top - SaveHistoryLayout.Margin.Bottom);
+                SaveHistoryLayout.MinHeight = historyPageBudgetHeight;
                 SaveCandidatePageSurface.MinHeight = pageViewportHeight;
-                // Each tab page owns a finite outer scroll channel. Keep the DataGrid
-                // itself finite as well so its virtualized rows and scrollbar stay in
-                // the table frame while the rest of the page remains reachable.
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
-                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560, pageViewportHeight * 0.68));
+                var historyFrameChromeHeight = GetTableFrameChromeHeight(
+                    SaveHistoryTableLayout,
+                    SaveHistoryTableFrame,
+                    tableRow: 1,
+                    fallbackHeight: 168d);
+                var candidateFrameChromeHeight = GetTableFrameChromeHeight(
+                    SaveCandidateTableLayout,
+                    SaveCandidateTableFrame,
+                    tableRow: 0,
+                    fallbackHeight: 52d);
                 SaveHistoryGrid.MinHeight = tableMinHeight;
-                SaveHistoryGrid.Height = tableViewportHeight;
-                SaveHistoryGrid.MaxHeight = tableViewportHeight;
                 SaveCandidateGrid.MinHeight = tableMinHeight;
-                SaveCandidateGrid.Height = tableViewportHeight;
-                SaveCandidateGrid.MaxHeight = tableViewportHeight;
                 // Demo keeps the inspector beside the main surface at the normal
                 // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
                 // Playnite host into the drawer layout even when there was enough
@@ -348,8 +352,23 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
             SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var historyInspectorHeight = Math.Min(220, Math.Max(0, pageViewportHeight * 0.30));
+            var historyInspectorBudget = showHistoryInspector && compact
+                ? historyInspectorHeight + SaveHistoryActionsScrollViewer.Margin.Top + SaveHistoryActionsScrollViewer.Margin.Bottom
+                : 0;
+            var tableViewportHeight = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                historyPageBudgetHeight,
+                tableMinHeight,
+                historyFrameChromeHeight,
+                historyInspectorBudget);
+            SaveHistoryGrid.Height = double.NaN;
+            SaveHistoryGrid.MaxHeight = double.PositiveInfinity;
+            SaveHistoryLayout.Height = WorkspaceTableViewportPolicy.CalculatePageContentHeight(
+                historyPageBudgetHeight,
+                historyFrameChromeHeight,
+                tableViewportHeight,
+                historyInspectorBudget);
             SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector
-                ? (compact ? historyInspectorHeight : tableViewportHeight)
+                ? (compact ? historyInspectorHeight : double.PositiveInfinity)
                 : double.PositiveInfinity;
             var showCandidateInspector = SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible;
             var candidateSideBySide = showCandidateInspector && !compact;
@@ -361,8 +380,26 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
             SaveCandidateInspectorScrollViewer.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var candidateInspectorHeight = Math.Min(360, Math.Max(0, pageViewportHeight * 0.30));
+            var candidateTopChromeHeight = SaveCandidatePageSurface.RowDefinitions[0].ActualHeight
+                + SaveCandidatePageSurface.RowDefinitions[1].ActualHeight
+                + SaveCandidatePageSurface.RowDefinitions[2].ActualHeight;
+            var candidateInspectorBudget = showCandidateInspector && compact
+                ? candidateInspectorHeight + SaveCandidateInspectorScrollViewer.Margin.Top + SaveCandidateInspectorScrollViewer.Margin.Bottom
+                : 0;
+            var candidateTableViewportHeight = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                pageViewportHeight,
+                tableMinHeight,
+                candidateTopChromeHeight + candidateFrameChromeHeight,
+                candidateInspectorBudget);
+            SaveCandidateGrid.Height = double.NaN;
+            SaveCandidateGrid.MaxHeight = double.PositiveInfinity;
+            SaveCandidatePageSurface.Height = WorkspaceTableViewportPolicy.CalculatePageContentHeight(
+                pageViewportHeight,
+                candidateTopChromeHeight + candidateFrameChromeHeight,
+                candidateTableViewportHeight,
+                candidateInspectorBudget);
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector
-                ? (compact ? candidateInspectorHeight : tableViewportHeight)
+                ? (compact ? candidateInspectorHeight : double.PositiveInfinity)
                 : double.PositiveInfinity;
             var stackPolicy = width < 980;
             // Keep the three Demo cards in one row when there is room. Below
@@ -412,6 +449,24 @@ namespace GameSaveCenter.Playnite.Views
                 historyColumnLayout?.EndLayoutPass();
                 isApplyingLayout = false;
             }
+        }
+
+        private static double GetTableFrameChromeHeight(
+            Grid tableLayout,
+            Border tableFrame,
+            int tableRow,
+            double fallbackHeight)
+        {
+            var fixedRowsHeight = 0d;
+            for (var index = 0; index < tableLayout.RowDefinitions.Count; index++)
+            {
+                if (index != tableRow)
+                    fixedRowsHeight += tableLayout.RowDefinitions[index].ActualHeight;
+            }
+
+            fixedRowsHeight += tableFrame.Padding.Top + tableFrame.Padding.Bottom
+                + tableFrame.BorderThickness.Top + tableFrame.BorderThickness.Bottom;
+            return fixedRowsHeight > 0 ? fixedRowsHeight : fallbackHeight;
         }
 
         private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)

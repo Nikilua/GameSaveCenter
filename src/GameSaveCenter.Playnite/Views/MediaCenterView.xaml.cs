@@ -823,6 +823,10 @@ namespace GameSaveCenter.Playnite.Views
                 var pageViewportHeight = MediaCurrentPageScrollViewer.ViewportHeight > 0
                     ? MediaCurrentPageScrollViewer.ViewportHeight
                     : Math.Max(0, height);
+                var mediaTableChromeHeight = WorkspaceTableViewportPolicy.MeasureChromeHeight(
+                    MediaCurrentTableFrame.ActualHeight,
+                    MediaGrid.ActualHeight,
+                    fallbackHeight: 340d);
                 responsiveWidth = width;
                 responsiveHeight = height;
                 if (height > 0
@@ -1008,10 +1012,7 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxGrid.Height = finiteInboxHeight;
                 MediaInboxGrid.MaxHeight = finiteInboxHeight;
                 MediaCurrentScrollSurface.MinHeight = pageViewportHeight;
-                var mediaViewportHeight = Math.Max(154d, Math.Min(560, pageViewportHeight * 0.60));
                 MediaGrid.MinHeight = 154d;
-                MediaGrid.Height = mediaViewportHeight;
-                MediaGrid.MaxHeight = mediaViewportHeight;
 
                 // Match the demo: the media table and its inspector share the main
                 // work area on wide hosts; on compact hosts the inspector is a drawer
@@ -1105,10 +1106,26 @@ namespace GameSaveCenter.Playnite.Views
                 // it never rewrites the inspector's internal visual tree during a resize.
                 // Give a real inspector its own finite scroll channel only when it is stacked;
                 // an empty selection must not retain a hidden capped surface.
-                MediaInspectorScrollViewer.MaxHeight = showInspector
-                    ? (stack
-                        ? Math.Min(220, Math.Max(0, height * 0.30))
-                        : mediaViewportHeight)
+                var mediaInspectorHeight = Math.Min(220, Math.Max(0, pageViewportHeight * 0.30));
+                var mediaInspectorBudget = showInspector && stack
+                    ? mediaInspectorHeight + MediaInspectorFrame.Margin.Top + MediaInspectorFrame.Margin.Bottom
+                    : 0;
+                var mediaTableViewportHeight = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                    pageViewportHeight,
+                    154d,
+                    mediaTableChromeHeight,
+                    mediaInspectorBudget);
+                var mediaPageContentHeight = WorkspaceTableViewportPolicy.CalculatePageContentHeight(
+                    pageViewportHeight,
+                    mediaTableChromeHeight,
+                    mediaTableViewportHeight,
+                    mediaInspectorBudget);
+                MediaGrid.Height = double.NaN;
+                MediaGrid.MaxHeight = double.PositiveInfinity;
+                MediaCurrentScrollSurface.Height = mediaPageContentHeight;
+                MediaCurrentLayout.Height = mediaPageContentHeight;
+                MediaInspectorScrollViewer.MaxHeight = showInspector && stack
+                    ? mediaInspectorHeight
                     : double.PositiveInfinity;
                 MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14);
             }

@@ -1590,8 +1590,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("TableDensityPolicy.CalculateMinimumGridHeight(this)", saveCode);
         Assert.Contains("SaveHistoryGrid.MinHeight = tableMinHeight", saveCode);
         Assert.Contains("SaveCandidateGrid.MinHeight = tableMinHeight", saveCode);
-        Assert.Contains("SaveHistoryGrid.Height = tableViewportHeight", saveCode);
-        Assert.Contains("SaveCandidateGrid.Height = tableViewportHeight", saveCode);
+        Assert.Contains("SaveHistoryGrid.Height = double.NaN", saveCode);
+        Assert.Contains("SaveCandidateGrid.Height = double.NaN", saveCode);
+        Assert.Contains("SaveHistoryLayout.Height = WorkspaceTableViewportPolicy.CalculatePageContentHeight", saveCode);
+        Assert.Contains("SaveCandidatePageSurface.Height = WorkspaceTableViewportPolicy.CalculatePageContentHeight", saveCode);
+        Assert.Contains("SaveHistoryGrid.MaxHeight = double.PositiveInfinity", saveCode);
+        Assert.Contains("SaveCandidateGrid.MaxHeight = double.PositiveInfinity", saveCode);
         Assert.Contains("SaveHistorySummaryCard.Padding = historyActionsCompact", saveCode);
         Assert.Contains("new Thickness(10, 4, 10, 4)", saveCode);
         Assert.Contains("SaveHistorySummaryActions.Margin = historyActionsCompact", saveCode);
@@ -1627,10 +1631,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Grid x:Name=\"TaskPageScrollSurface\"", task);
         Assert.DoesNotContain("ScrollViewer x:Name=\"TaskPageScrollSurface\"", task);
         Assert.Contains("x:Name=\"TaskPageScrollViewer\"", task);
-        Assert.Contains("tableViewportHeight", taskCode);
+        Assert.Contains("WorkspaceTableViewportPolicy.CalculateTableHeight", taskCode);
         Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
-        Assert.Contains("TaskGrid.Height = tableViewportHeight", taskCode);
-        Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight", taskCode);
+        Assert.Contains("TaskGrid.Height = double.NaN", taskCode);
+        Assert.Contains("TaskGrid.MaxHeight = double.PositiveInfinity", taskCode);
+        Assert.Contains("TaskPageScrollSurface.Height = pageContentHeight", taskCode);
+        Assert.Contains("TaskWorkspaceLayout.Height = pageContentHeight", taskCode);
         Assert.Contains("GetTaskPageViewportHeight(double fallbackHeight)", taskCode);
         Assert.Contains("? TaskPageScrollViewer.ViewportHeight", taskCode);
         Assert.Contains("const double compactInspectorMaxHeight = 136d", taskCode);
@@ -4457,9 +4463,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("CancelTaskCommand", File.ReadAllText(taskPath));
 
         var taskCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
-        Assert.Contains("tableViewportHeight", taskCode);
-        Assert.Contains("TaskGrid.Height = tableViewportHeight;", taskCode);
-        Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight;", taskCode);
+        Assert.Contains("WorkspaceTableViewportPolicy.CalculateTableHeight", taskCode);
+        Assert.Contains("TaskGrid.Height = double.NaN;", taskCode);
+        Assert.Contains("TaskGrid.MaxHeight = double.PositiveInfinity;", taskCode);
         Assert.Contains("TaskPageScrollViewer", File.ReadAllText(taskPath));
         Assert.Contains("GetTaskPageViewportHeight(double fallbackHeight)", taskCode);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector && stack", taskCode);

@@ -601,7 +601,8 @@
                 <ScrollViewer x:Name="MediaCurrentPageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" CanContentScroll="False">
                 <Grid x:Name="MediaCurrentScrollSurface"
                       HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch">
+                      VerticalAlignment="Stretch"
+                      ClipToBounds="True">
                 <Grid x:Name="MediaCurrentLayout" Margin="0" VerticalAlignment="Stretch" ClipToBounds="True">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="0"/><RowDefinition Height="0"/></Grid.RowDefinitions>

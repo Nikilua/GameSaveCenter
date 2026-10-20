@@ -257,14 +257,12 @@ namespace GameSaveCenter.Playnite.Views
                     taskInspectorOpen = true;
                 }
                 var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
-                // The queue keeps four complete rows at the common window size. Its
-                // DataGrid remains finite inside its frame; the outer page ScrollViewer
-                // carries overflow from the summary, queue and stacked inspector.
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
-                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(620, availableHeight * 0.68));
                 TaskGrid.MinHeight = tableMinHeight;
-                TaskGrid.Height = tableViewportHeight;
-                TaskGrid.MaxHeight = tableViewportHeight;
+                var queueChromeHeight = WorkspaceTableViewportPolicy.MeasureChromeHeight(
+                    TaskQueuePanel.ActualHeight,
+                    TaskGrid.ActualHeight,
+                    fallbackHeight: 148d);
                 // Responsive stacking changes the page layout; the shared user density
                 // remains the only source for table row height in every breakpoint.
                 TaskGrid.ClearValue(DataGrid.RowHeightProperty);
@@ -409,11 +407,32 @@ namespace GameSaveCenter.Playnite.Views
                 // A small bottom inset avoids the 0.8-DIP PageHost overflow produced
                 // by the host's fractional layout rounding at the compact breakpoint.
                 TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 2) : new Thickness(0);
-                // Keep the compact inspector's internal scroll range stable. The page
-                // scroller makes the rest of its content reachable below the finite queue.
+                // Keep the compact inspector finite so the page budget can reserve its
+                // real height before allocating the remaining space to the task grid.
                 TaskDetailScrollViewer.MaxHeight = showInspector && stack
                     ? compactInspectorMaxHeight
                     : double.PositiveInfinity;
+                var pageChromeHeight = TaskWorkspaceLayout.RowDefinitions[0].ActualHeight
+                    + TaskWorkspaceLayout.RowDefinitions[1].ActualHeight
+                    + TaskWorkspaceLayout.RowDefinitions[2].ActualHeight
+                    + queueChromeHeight;
+                var stackedInspectorHeight = showInspector && stack
+                    ? compactInspectorMaxHeight + TaskDetailScrollViewer.Margin.Top + TaskDetailScrollViewer.Margin.Bottom
+                    : 0;
+                var tableViewportHeight = WorkspaceTableViewportPolicy.CalculateTableHeight(
+                    availableHeight,
+                    tableMinHeight,
+                    pageChromeHeight,
+                    stackedInspectorHeight);
+                var pageContentHeight = WorkspaceTableViewportPolicy.CalculatePageContentHeight(
+                    availableHeight,
+                    pageChromeHeight,
+                    tableViewportHeight,
+                    stackedInspectorHeight);
+                TaskGrid.Height = double.NaN;
+                TaskGrid.MaxHeight = double.PositiveInfinity;
+                TaskPageScrollSurface.Height = pageContentHeight;
+                TaskWorkspaceLayout.Height = pageContentHeight;
             }
             finally
             {

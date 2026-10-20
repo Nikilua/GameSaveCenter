@@ -19,3 +19,13 @@
 ## 边界
 
 RenderHarness 使用合成数据与离屏逻辑 DPI `1.00`；这些结果核对控件几何，不代替真实 Playnite 窗口、真实媒体、物理 DPI 或显示器呈现验证。没有运行完整 CI，也没有把用户原有未跟踪 TRX/TestResults 纳入本批。
+
+## 2026-10-20 二次调整
+
+用户复测后，原先按页面视口比例给 DataGrid 设置高度的布局仍会在较大窗口把表格滚动区分配到详情卡片以下。存档历史、路径候选、任务队列与当前媒体列表现从 PageHost 的实际 `ViewportHeight` 扣除页面工具栏、表格卡片固定行和紧凑详情预算，再把剩余高度交给星号行；表格本身保持虚拟化的内部滚动。页面空间不足时页面滚动区承接完整内容。`ClipToBounds` 限制页面绘制越界。
+
+- SDK `8.0.423` Release 全解决方案构建通过，`0 warning / 0 error`；最终联合构建诊断 ID `20261020T074347195Z-e0d59102`，控制台：[构建记录](ui-scroll-viewport-fix-build-console.txt)。构建输入以提交 `14925e5e` 为基线，并包含本次滚动区修正和 S04-08 的缩略图回归验证。
+- 定向 WPF 几何与资源回归 `6/6` 通过：[原始 TRX](ui-scroll-viewport-regression-final.trx)，SHA-256 `EB332D41CE3ADFF3BC27CA5DE569BE80348DD13E2F62A5E8BFC99C83E162646D`。覆盖 `1400×900` 的宽工作区、`900×600` 存档/媒体页面及 `715×577` 任务页，检查页面是否在视口内、空间不足时页面是否可滚、表格边框内是否保留独立滚动范围。
+- `scripts/validate-source.py`、25 个 XAML 结构检查和 `git diff --check` 通过。联合构建 DLL SHA-256：`098607BC5C7E16D0D269382A5B71BED71E2012F7086AEE6BDBC97DAAE726D3B9`；测试 DLL SHA-256：`CBD0229E663A9F935B99D98E02BC658041A6F06CDA7743A39664FBF794E9704D`。
+
+这批证据来自生产 WPF 控件的 STA/离屏几何夹具，不是 Playnite 实际窗口或物理 DPI 证据。为滚到底的测试操作未纳入验收，因为未启动窗口的夹具不会推进 ScrollViewer 偏移；当前测试核对实际测量边界与内部滚动范围。真实宿主复测仍待用户环境确认。

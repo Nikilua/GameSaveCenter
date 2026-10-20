@@ -15,6 +15,68 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class CompactWorkspaceTableViewportBehaviorTests
 {
     [Fact]
+    public void WideWorkspacesAllocateRemainingPageHeightToTablesWithoutPageOverflow()
+    {
+        RunSta(() =>
+        {
+            const double width = 1400;
+            const double height = 900;
+
+            var saveView = new SaveCenterView();
+            var saveType = typeof(SaveCenterView);
+            var saveRows = CreateRows();
+            var historyGrid = GetField<DataGrid>(saveType, saveView, "SaveHistoryGrid");
+            historyGrid.ItemsSource = saveRows;
+            historyGrid.SelectedItem = saveRows[0];
+            var historyPage = GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer");
+            var saveHost = MeasureInHost(saveView, width, height);
+            saveView.ApplyResponsiveLayout(width, height);
+            saveHost.UpdateLayout();
+            AssertPageFitsViewport(historyPage);
+            AssertTableScrollsInsideFrame(historyGrid, GetField<Border>(saveType, saveView, "SaveHistoryTableFrame"));
+
+            var tabs = FindVisualDescendant<TabControl>(saveView);
+            var candidateGrid = GetField<DataGrid>(saveType, saveView, "SaveCandidateGrid");
+            candidateGrid.ItemsSource = saveRows;
+            candidateGrid.SelectedItem = saveRows[0];
+            saveType.GetField("candidateInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(saveView, true);
+            tabs.SelectedIndex = 1;
+            saveView.ApplyResponsiveLayout(width, height);
+            saveHost.UpdateLayout();
+            AssertPageFitsViewport(GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer"));
+            AssertTableScrollsInsideFrame(candidateGrid, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
+
+            var taskView = new TaskCenterView();
+            var taskType = typeof(TaskCenterView);
+            var taskGrid = GetField<DataGrid>(taskType, taskView, "TaskGrid");
+            var taskRows = CreateRows();
+            taskGrid.ItemsSource = taskRows;
+            taskGrid.SelectedItem = taskRows[0];
+            var taskPage = GetField<ScrollViewer>(taskType, taskView, "TaskPageScrollViewer");
+            var taskHost = MeasureInHost(taskView, width, height);
+            taskView.ApplyResponsiveLayout(width, height);
+            taskHost.UpdateLayout();
+            AssertPageFitsViewport(taskPage);
+            AssertTableScrollsInsideFrame(taskGrid, GetField<Border>(taskType, taskView, "TaskTableFrame"));
+
+            var mediaView = new MediaCenterView();
+            var mediaType = typeof(MediaCenterView);
+            GetField<TabControl>(mediaType, mediaView, "MediaTabControl").SelectedIndex = 1;
+            var mediaGrid = GetField<ListBox>(mediaType, mediaView, "MediaGrid");
+            var mediaRows = CreateRows();
+            mediaGrid.ItemsSource = mediaRows;
+            mediaGrid.SelectedItem = mediaRows[0];
+            var mediaPage = GetField<ScrollViewer>(mediaType, mediaView, "MediaCurrentPageScrollViewer");
+            var mediaHost = MeasureInHost(mediaView, width, height);
+            mediaView.ApplyResponsiveLayout(width, height);
+            mediaHost.UpdateLayout();
+            AssertPageFitsViewport(mediaPage);
+            AssertWithin(mediaGrid, GetField<Border>(mediaType, mediaView, "MediaCurrentTableFrame"));
+            AssertInnerScrolls(mediaGrid);
+        });
+    }
+
+    [Fact]
     public void SaveHistoryAndPathTablesKeepFiniteInnerScrollbarsInsideScrollablePages()
     {
         RunSta(() =>
@@ -87,7 +149,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
 
             var inspector = view.MediaInspectorScrollViewerElement;
             Assert.True(grid.MinHeight >= 154 && grid.ActualHeight >= grid.MinHeight);
-            Assert.Equal(180, inspector.MaxHeight);
+            Assert.Equal(Math.Min(220, Math.Max(0, page.ViewportHeight * 0.30)), inspector.MaxHeight, 1);
             Assert.True(inspector.ActualHeight > 0 && inspector.ActualHeight <= inspector.MaxHeight + 1);
             Assert.Equal(Visibility.Visible, inspector.Visibility);
             Assert.True(layout.RowDefinitions[1].Height.IsAuto);
@@ -193,6 +255,13 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         Assert.True(page.ExtentHeight > page.ViewportHeight + 1,
             $"Expected the page scroll channel to expose overflow: extent={page.ExtentHeight:0.0}, viewport={page.ViewportHeight:0.0}.");
         Assert.True(page.ScrollableHeight > 0);
+    }
+
+    private static void AssertPageFitsViewport(ScrollViewer page)
+    {
+        Assert.True(page.ViewportHeight > 0);
+        Assert.True(page.ScrollableHeight <= 1.5,
+            $"Expected the page to fit its host viewport: extent={page.ExtentHeight:0.0}, viewport={page.ViewportHeight:0.0}, scrollable={page.ScrollableHeight:0.0}.");
     }
 
     private static void AssertTableScrollsInsideFrame(FrameworkElement table, Border frame)

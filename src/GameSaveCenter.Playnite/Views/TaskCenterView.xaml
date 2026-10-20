@@ -90,7 +90,7 @@
     </UserControl.Resources>
 
     <ScrollViewer x:Name="TaskPageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" CanContentScroll="False">
-    <Grid x:Name="TaskPageScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+    <Grid x:Name="TaskPageScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">
         <ui:AmbientMaterialLayer Panel.ZIndex="-1"/>
     <Grid x:Name="TaskWorkspaceLayout" Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
