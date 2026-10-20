@@ -599,6 +599,9 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="顺序" Width="72" Binding="{Binding PositionDisplay}"/>
                             <DataGridTextColumn Header="类型" Width="120" Binding="{Binding KindDisplay}"/>
+                            <DataGridTemplateColumn Header="当前摘要" Width="2*" MinWidth="220">
+                                <DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding CurrentSummaryDisplay}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CurrentSummaryHelpText}" AutomationProperties.Name="待办对象当前索引摘要" AutomationProperties.HelpText="{Binding CurrentSummaryHelpText}" VerticalAlignment="Center"/></DataTemplate></DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="稳定编号" Width="2*" MinWidth="180">
                                 <DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding StableObjectId}" TextTrimming="CharacterEllipsis" ToolTip="{Binding StableObjectId}" VerticalAlignment="Center"/></DataTemplate></DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

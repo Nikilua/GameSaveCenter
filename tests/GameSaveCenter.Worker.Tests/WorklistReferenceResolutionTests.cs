@@ -129,6 +129,119 @@ public sealed class WorklistReferenceResolutionTests : IDisposable
     }
 
     [Fact]
+    public async Task CurrentSummariesFollowRenamesAndOwnershipWithoutReturningMediaPaths()
+    {
+        const string gameId = "summary-game-1";
+        const string ownerGameId = "summary-game-2";
+        const string backupId = "summary-backup-1";
+        const string mediaId = "summary-media-1";
+        const string taskId = "summary-task-1";
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = gameId, Name = "Old Game Name" },
+            new GameDescriptorDto { PlayniteId = ownerGameId, Name = "Old Owner Name" }
+        }, CancellationToken.None);
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            BackupId = backupId,
+            PlayniteId = gameId,
+            LudusaviName = "Old Indexed Name",
+            CreatedUtc = DateTime.UtcNow
+        }, "{}", CancellationToken.None);
+        await store.AddMediaAsync(new MediaItemDto
+        {
+            MediaId = mediaId,
+            PlayniteId = gameId,
+            CapturedUtc = DateTime.UtcNow,
+            Kind = MediaKind.Screenshot,
+            Sha256 = Guid.NewGuid().ToString("N"),
+            ArchivePath = Path.Combine(root, "private", "old-shot.png"),
+            OriginalPath = Path.Combine(root, "source", "secret-shot.png")
+        }, CancellationToken.None);
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = taskId,
+            TaskType = "Backup",
+            GameId = gameId,
+            GameName = "Old Game Name",
+            State = TaskState.Failed,
+            CreatedUtc = DateTime.UtcNow
+        }, CancellationToken.None);
+        await store.AddFindingAsync(gameId, new ValidationFindingDto
+        {
+            Code = "SUMMARY_CHECK",
+            Title = "Old finding title"
+        }, CancellationToken.None);
+        var findingId = Assert.Single(await store.GetOpenFindingsAsync(10, CancellationToken.None)).FindingId;
+        var request = new WorklistReferenceQueryDto
+        {
+            References = new List<WorklistReferenceQueryItemDto>
+            {
+                Reference(1, BackupKey(gameId, backupId)),
+                Reference(2, mediaId),
+                Reference(3, taskId),
+                Reference(4, findingId)
+            }
+        };
+
+        var beforeRename = await store.ResolveWorklistReferencesAsync(request, CancellationToken.None);
+        var oldBackup = beforeRename.References[0];
+        var oldMedia = beforeRename.References[1];
+        var oldTask = beforeRename.References[2];
+        var oldFinding = beforeRename.References[3];
+        Assert.Contains("Old Game Name", oldBackup.CurrentSummary);
+        Assert.Equal("Old Game Name", oldBackup.ParentSummary);
+        Assert.Contains("old-shot.png", oldMedia.CurrentSummary);
+        Assert.DoesNotContain(root, oldMedia.CurrentSummary, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("private", oldMedia.CurrentSummary, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal("Old Game Name", oldMedia.ParentSummary);
+        Assert.Contains("Backup", oldTask.CurrentSummary);
+        Assert.Contains("失败", oldTask.CurrentSummary);
+        Assert.Equal("Old Game Name", oldTask.ParentSummary);
+        Assert.Contains("Old finding title", oldFinding.CurrentSummary);
+        Assert.Equal("Old Game Name", oldFinding.ParentSummary);
+
+        await store.UpsertGamesAsync(new[]
+        {
+            new GameDescriptorDto { PlayniteId = gameId, Name = "Renamed Game" },
+            new GameDescriptorDto { PlayniteId = ownerGameId, Name = "New Owner Name" }
+        }, CancellationToken.None);
+        await using (var connection = new Microsoft.Data.Sqlite.SqliteConnection($"Data Source={Path.Combine(root, "gamesavecenter.db")};Cache=Shared"))
+        {
+            await connection.OpenAsync();
+            await using var command = connection.CreateCommand();
+            command.CommandText = @"UPDATE media SET playnite_id=$owner,archive_path=$path WHERE media_id=$media;
+UPDATE tasks SET game_id=$owner WHERE task_id=$task;
+UPDATE findings SET playnite_id=$owner WHERE finding_id=$finding;";
+            command.Parameters.AddWithValue("$owner", ownerGameId);
+            command.Parameters.AddWithValue("$path", Path.Combine(root, "private", "renamed-shot.png"));
+            command.Parameters.AddWithValue("$media", mediaId);
+            command.Parameters.AddWithValue("$task", taskId);
+            command.Parameters.AddWithValue("$finding", findingId);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        var afterRename = await store.ResolveWorklistReferencesAsync(request, CancellationToken.None);
+        Assert.Contains("Renamed Game", afterRename.References[0].CurrentSummary);
+        Assert.Equal("Renamed Game", afterRename.References[0].ParentSummary);
+        Assert.Contains("renamed-shot.png", afterRename.References[1].CurrentSummary);
+        Assert.Equal(ownerGameId, afterRename.References[1].PlayniteId);
+        Assert.Equal("New Owner Name", afterRename.References[1].ParentSummary);
+        Assert.Equal(ownerGameId, afterRename.References[2].PlayniteId);
+        Assert.Equal("New Owner Name", afterRename.References[2].ParentSummary);
+        Assert.Equal(ownerGameId, afterRename.References[3].PlayniteId);
+        Assert.Equal("New Owner Name", afterRename.References[3].ParentSummary);
+
+        await store.DeleteBackupVersionAsync(gameId, backupId, CancellationToken.None);
+        var afterDelete = await store.ResolveWorklistReferencesAsync(request, CancellationToken.None);
+        Assert.Equal(WorklistReferenceState.NotFound, afterDelete.References[0].State);
+        Assert.Empty(afterDelete.References[0].CurrentSummary);
+        Assert.Equal(WorklistReferenceState.Indexed, afterDelete.References[1].State);
+        Assert.Equal(WorklistReferenceState.Indexed, afterDelete.References[2].State);
+        Assert.Equal(WorklistReferenceState.Indexed, afterDelete.References[3].State);
+    }
+
+    [Fact]
     public async Task LookupRejectsMoreThanTheBoundedNumberOfReferences()
     {
         var request = new WorklistReferenceQueryDto();

@@ -190,6 +190,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             return ContainsWorklistSearchValue(entry.KindDisplay, query)
                 || ContainsWorklistSearchValue(entry.StableObjectId, query)
                 || ContainsWorklistSearchValue(entry.Note, query)
+                || ContainsWorklistSearchValue(entry.CurrentSummaryDisplay, query)
                 || ContainsWorklistSearchValue(entry.StateDisplay, query)
                 || ContainsWorklistSearchValue(entry.IsManuallyComplete ? "已完成" : "未完成", query);
         }
@@ -279,10 +280,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                 foreach (var entry in entries)
                 {
                     var identity = GetWorklistIdentity(entry.Kind, entry.StableObjectId);
-                    entry.SetResolution(resultLookup.TryGetValue(identity, out var resolution)
-                        ? resolution.State
-                        : WorklistReferenceState.Unavailable,
-                        resolution?.PlayniteId);
+                    if (resultLookup.TryGetValue(identity, out var resolution))
+                    {
+                        entry.SetResolution(resolution.State, resolution.PlayniteId, resolution.CurrentSummary, resolution.ParentSummary);
+                    }
+                    else
+                    {
+                        entry.SetResolution(WorklistReferenceState.Unavailable, string.Empty, null, null);
+                    }
                 }
                 UpdateWorklistLookupSummary();
                 worklistBrowserView.Refresh();

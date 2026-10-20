@@ -37,6 +37,10 @@ namespace GameSaveCenter.Contracts
         public string StableObjectId { get; set; } = string.Empty;
         /// <summary>Stable parent game id used to open game-scoped media/finding details.</summary>
         public string PlayniteId { get; set; } = string.Empty;
+        /// <summary>Bounded, transient, path-free display summary read from the current indexed object.</summary>
+        public string CurrentSummary { get; set; } = string.Empty;
+        /// <summary>Bounded current owner game label; does not assert that source files are accessible.</summary>
+        public string ParentSummary { get; set; } = string.Empty;
         public WorklistReferenceState State { get; set; } = WorklistReferenceState.NotChecked;
     }
 

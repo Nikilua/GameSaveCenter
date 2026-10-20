@@ -10,6 +10,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private WorklistReferenceState state = WorklistReferenceState.NotChecked;
         private string groupMode = string.Empty;
         private string targetPlayniteId = string.Empty;
+        private string currentSummary = string.Empty;
+        private string parentSummary = string.Empty;
 
         public WorklistBrowserEntry(WorklistItemRecord record, int position)
         {
@@ -37,6 +39,35 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string ManualStateDisplay => IsManuallyComplete ? "已完成（手动）" : "未完成";
         public WorklistReferenceState State => state;
         public string TargetPlayniteId => targetPlayniteId;
+        public string CurrentSummary => currentSummary;
+        public string ParentSummary => parentSummary;
+        public string CurrentSummaryDisplay
+        {
+            get
+            {
+                var summary = currentSummary.Length > 0
+                    ? currentSummary
+                    : State switch
+                    {
+                        WorklistReferenceState.NotFound => "当前索引未找到对象",
+                        WorklistReferenceState.InvalidReference => "引用无效，无法读取摘要",
+                        WorklistReferenceState.Unavailable => "当前状态未知",
+                        WorklistReferenceState.NotChecked => "刷新后显示当前摘要",
+                        _ => "索引未提供对象摘要"
+                    };
+                return parentSummary.Length == 0 ? summary : $"{summary} · 所属：{parentSummary}";
+            }
+        }
+        public string CurrentSummaryHelpText => currentSummary.Length > 0
+            ? $"{CurrentSummaryDisplay}\n摘要来自 Worker 当前索引，不代表源文件存在或可读取。"
+            : State switch
+            {
+                WorklistReferenceState.NotFound => "当前索引未找到此对象；引用仍保留在清单中。",
+                WorklistReferenceState.InvalidReference => "引用格式无效，无法按稳定编号读取摘要。",
+                WorklistReferenceState.Unavailable => "Worker 或索引暂不可用；当前不能判断对象状态。",
+                WorklistReferenceState.NotChecked => "刷新状态后显示当前摘要。",
+                _ => "Worker 当前索引没有提供摘要。"
+            };
         public bool CanContinue => State == WorklistReferenceState.Indexed || State == WorklistReferenceState.Resolved;
         public string StateDisplay => State switch
         {
@@ -64,14 +95,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         };
 
         public void SetState(WorklistReferenceState value)
-            => SetResolution(value, targetPlayniteId);
+            => SetResolution(value, targetPlayniteId, null, null);
 
-        public void SetResolution(WorklistReferenceState value, string? playniteId)
+        public void SetResolution(WorklistReferenceState value, string? playniteId, string? summary = null, string? ownerSummary = null)
         {
             var normalizedState = Enum.IsDefined(typeof(WorklistReferenceState), value)
                 ? value
                 : WorklistReferenceState.Unavailable;
             var normalizedPlayniteId = (playniteId ?? string.Empty).Trim();
+            var normalizedSummary = NormalizeSummary(summary);
+            var normalizedParentSummary = NormalizeSummary(ownerSummary);
             if (state != normalizedState)
             {
                 state = normalizedState;
@@ -80,10 +113,28 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OnPropertyChanged(nameof(StateHelpText));
                 OnPropertyChanged(nameof(GroupKey));
                 OnPropertyChanged(nameof(CanContinue));
+                OnPropertyChanged(nameof(CurrentSummaryDisplay));
+                OnPropertyChanged(nameof(CurrentSummaryHelpText));
             }
-            if (string.Equals(targetPlayniteId, normalizedPlayniteId, StringComparison.OrdinalIgnoreCase)) return;
-            targetPlayniteId = normalizedPlayniteId;
-            OnPropertyChanged(nameof(TargetPlayniteId));
+            if (!string.Equals(targetPlayniteId, normalizedPlayniteId, StringComparison.OrdinalIgnoreCase))
+            {
+                targetPlayniteId = normalizedPlayniteId;
+                OnPropertyChanged(nameof(TargetPlayniteId));
+            }
+            if (!string.Equals(currentSummary, normalizedSummary, StringComparison.Ordinal))
+            {
+                currentSummary = normalizedSummary;
+                OnPropertyChanged(nameof(CurrentSummary));
+                OnPropertyChanged(nameof(CurrentSummaryDisplay));
+                OnPropertyChanged(nameof(CurrentSummaryHelpText));
+            }
+            if (!string.Equals(parentSummary, normalizedParentSummary, StringComparison.Ordinal))
+            {
+                parentSummary = normalizedParentSummary;
+                OnPropertyChanged(nameof(ParentSummary));
+                OnPropertyChanged(nameof(CurrentSummaryDisplay));
+                OnPropertyChanged(nameof(CurrentSummaryHelpText));
+            }
         }
 
         public void SetGroupMode(string value)
@@ -96,5 +147,13 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private static string NormalizeSummary(string? value)
+        {
+            if (value is null || string.IsNullOrWhiteSpace(value)) return string.Empty;
+            var normalized = value.Trim();
+            if (normalized.Length > 240) normalized = normalized.Substring(0, 240);
+            return normalized;
+        }
     }
 }
