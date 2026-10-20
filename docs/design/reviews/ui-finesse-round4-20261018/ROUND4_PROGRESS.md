@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-07 已按依赖受控验收；S05-08 情景性能验证已完成能力审计并准入 READY，审计见对应 evidence/S05-08/AUDIT.md。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08 已按依赖受控验收；S06-01 工作清单契约已完成等价能力审计并准入 READY，审计见对应 evidence/S06-01/AUDIT.md。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -10,8 +10,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收31、已满足2、代码完成待验收15、外部阻塞1、待开始15。
-实现状态：完成48、未开始16、不适用0；受控验证：通过48、未跑15、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收32、已满足2、代码完成待验收15、外部阻塞1、待开始14。
+实现状态：完成49、未开始15、不适用0；受控验证：通过49、未跑14、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -62,7 +62,7 @@
 | S05-05 | 策略差异定位 | 已验收 | 2fd0aa04 | [证据](evidence/S05-05/README.md)：SDK8.0.423 Release solution 0/0、XAML 25/25、Worker 2/2、生产维护页 Light/Dark 与外层/内层滚动 2/2、RenderHarness 0 PROBLEM、source validation 通过 | 逐游戏和变化版本在同一规划快照内对账；保护项单独展示，缺失/不可访问/未通过路径检查的归档不计入现存归档候选。详情不生成清理句柄。RenderHarness 为离屏合成；真实 Playnite、物理 DPI 和宿主滚动未验。 |
 | S05-06 | 保存情景草稿 | 已验收 | 313fabc1 | [证据](evidence/S05-06/README.md)：SDK8.0.423 Release solution 0/0、XAML 25/25、定向测试 13/13、双主题 RenderHarness 0 PROBLEM、source validation 通过 | 仅持久化有界标量假设和最近快照 UTC，不缓存比较结果/清理句柄，不改生效策略；RenderHarness 与 WPF 行为为合成受控验证，真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验。 |
 | S05-07 | 转交策略编辑 | 已验收 | 6807ae84 | [证据](evidence/S05-07/README.md)：SDK9.0.302 Release solution 0/0、定向测试 4/4、XAML 25/25、source validation 通过 | 仅将选中且未修改的已保存情景转交为未保存模板草稿，复用现有策略差异/确认；不自动保存/应用/清理，清理仍须新 Worker PreviewId 并复核。实际生产 XAML 用合成上下文验证；未运行真实 Playnite、完整隔离/安装门禁、物理 DPI/CEF。global.json 要求 SDK8.0.423但本机未安装，本次 SDK9.0.302 构建通过，需在 SDK8 环境补精确版本验证。 |
-| S05-08 | 情景性能验证 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S05-08 | 情景性能验证 | 已验收 | dc696fb0 | [证据](evidence/S05-08/README.md)：SDK9 Release solution 0 error；Worker 29/29（含大库、增长边界、并发失效、限额/取消），维护页 Light/Dark 2/2 | 代码提交与证据已推送；SDK8.0.423 未安装，真实 Playnite/完整 WPF 隔离循环/物理 DPI/CEF 未验；RenderHarness 为合成离屏验证 |
 | S06-01 | 工作清单契约 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-02 | 加入待办入口 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-03 | 清单浏览整理 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

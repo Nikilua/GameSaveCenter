@@ -4,11 +4,15 @@
 
 表格位于页面 ScrollViewer 时，页面根容器不能 `ClipToBounds`；限高只放在虚拟化表格/局部表格框架。表格视口预算须先扣掉页面工具栏、表格自身标题/表头和堆叠详情，再保留四行可读下限；剩余详情由页面外层滚动承载。宿主缩放时不能只相信上次 `ActualHeight` 或 `ViewportHeight`：缩小时按当前宿主和实测视口的较小值，宿主变高时先接受新请求再让稳定测量收敛；测试须覆盖缩小后恢复大窗。证据与边界见 [滚动视口复核](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。
 
-## 2026-10-21 Round4 S05-08 情景性能验证已准入
+## 2026-10-21 Round4 S05-08 情景性能边界
 
-- 审计基线 `479a03c3`：`CompareScenarioAsync` 已用一条 SQLite statement snapshot、同一 UTC 截止时间和 Worker `CancellationToken`；增长假设不参与策略/清理；容量未知由 S05-03 `StorageAnalysisService` 独立说明，统计 DTO 没有清理预览句柄。现有测试覆盖 25–75 MiB，StorageAnalysis 另有未知容量行为测试。
-- 缺口：用户不能取消维护页情景比较；快照、逐游戏/版本 DTO 无硬上限；计算期间新版本/有效策略变化不会使结果过期。准入范围为加取消按钮、10,000 版本上限（SQLite 最多读取上限 + 1 条）、比较前后版本和有效保留策略复核，并验证大库、零/极端增长不改变规划结果、并发变更、取消与超限。
-- 未知容量沿用既有测试，不重复做功能；不触碰清理 Apply 路径。详细审计：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/AUDIT.md)。
+提交 `dc696fb0` 为维护页比较加入用户取消，为 Worker 情景查询设置 10,000 个索引版本上限；SQLite 只读最多物化 10,001 行用于超限判断。比较完成前重新核对版本和生效策略，基线变更则返回明确过期摘要并清空旧明细。增长假设仍不参与规划，未知容量沿用 S05-03 表现，比较结果不携带清理句柄、清理 Apply 路径不变。
+
+证据：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。定向测试在提交前工作树运行；后续 `48727c13` 只修改页面视口，不变更 S05 文件；两者一并通过 SDK9 Release solution 构建。当前机器无 SDK8.0.423，真实 Playnite/CEF/物理 DPI 未验。
+
+## S06-01 工作清单能力审计
+
+`RecentAccessRecord` 是最多 8 条游戏/工作区跳转记录；`FindingTriageResolver` 是当前发现聚合，后台任务是实际业务执行记录。都没有用户创建清单的 ID/名称、跨类型稳定对象引用、备注及人工完成状态。S06-01 已准入：模型只存用户记录和稳定标识，不存运行时 DTO、路径内容、认证信息或操作授权；对象数、命名和备注需有限制。审计：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。
 
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
 

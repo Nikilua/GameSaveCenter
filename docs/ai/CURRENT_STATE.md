@@ -2,9 +2,9 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-07 已验收；S05-08 已完成能力审计并准入 READY：维护页情景比较缺少用户取消、版本数硬上限和计算期间数据变化过期检测。已有未知容量单独显示、增长假设与清理执行分离将复用。保留用户原有未跟踪 TRX/TestResults。
+Round4 S05-03 至 S05-08 已受控验收；`dc696fb0` 的 S05-08 加入情景取消、10,000 版本上限和比较期间数据过期检测，证据见 [S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。S06-01 工作清单契约等价能力审计已准入 READY；最近访问、分诊和后台任务都不等价，审计见 [S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。保留用户原有未跟踪 TRX/TestResults。
 
-2026-10-21 用户补充的宿主截图确认页面滚动首轮修复仍会裁掉存档历史/候选路径/任务队列下方内容。后续已移除三处根布局裁切，按表格/详情剩余视口预算限高，并处理窗口由小放大时的旧视口值。SDK9.0.302 Release solution `0 error`（NU1900 为网络无法取漏洞索引），几何行为 `6/6`，RenderHarness 双主题恢复矩阵 `render-qa OK`，XAML/source/diff 检查通过。证据：[滚动视口后续修正](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏数据并非真实 Playnite 屏幕，宿主和物理 DPI 未验；随后继续 S05-08。
+2026-10-21 用户补充的宿主截图确认页面滚动首轮修复仍会裁掉存档历史/候选路径/任务队列下方内容。后续已移除三处根布局裁切，按表格/详情剩余视口预算限高，并处理窗口由小放大时的旧视口值。SDK9.0.302 Release solution `0 error`（NU1900 为网络无法取漏洞索引），几何行为 `6/6`，RenderHarness 双主题恢复矩阵 `render-qa OK`，XAML/source/diff 检查通过。证据：[滚动视口后续修正](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏数据并非真实 Playnite 屏幕，宿主和物理 DPI 未验；滚动修复提交 `48727c13`，之后 S05-08 已完成。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
