@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-21 Round4 S05-07 已受控验收，下一项审计 S05-08
+## 2026-10-21 Round4 S05-08 已审计准入，当前实施范围
 
 提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 为维护中心保留策略页增加有界命名情景设置；支持选择载入、保存/更新、复制、重命名、删除和最近成功快照时间。它与生效策略分离；结果与清理预览句柄不缓存。旧设置缺字段仍可读取，便携设置包含命名情景。精确提交 SDK `8.0.423` Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation/diff check 通过。完整证据：[S05-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验；保留旧 Round3 TRX/TestResults。
 
-S05-07 能力审计与实现：已有的 `SaveCenterView` “备份策略”标签页提供策略模板编辑、当前游戏差异和批量目标确认；Worker 按稳定游戏 ID 重新读取游戏/模板并获取游戏操作锁。维护中心已保存情景此前没有转交入口。策略模板应用只写策略、不删除归档；不可逆清理继续使用独立 `PreviewRetentionSimulation` 产生的 Worker 预览 ID。Worker 在清理时检查预览新鲜度、当前版本/策略、保护状态和归档身份，并在每游戏锁内再次读取。S05-07 实现已验收：仅将选中且未修改的已保存情景映射到未保存模板草稿，清除旧比较并切至策略编辑；不自动保存、应用或清理。SDK9.0.302 Release solution `0/0`、定向测试 `4/4`、XAML `25/25`、source validation 通过，证据：[S05-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-07/README.md)。本机 SDK8.0.423 未安装，真实 Playnite/宿主未运行。下一步审计 S05-08。
+S05-08 审计已发现真实缺口并准入：Worker 虽支持 CancellationToken 和单条 SQLite 快照，增长只作假设、未知容量已由 S05-03 单独呈现，且统计与清理预览分离；但维护页没有用户取消入口、比较读取无版本数上限、比较期间数据库变化不作过期判定。当前只实施这三项：用户取消；10,000 版本硬上限（查询最多物化上限加一条）；计算前后版本/有效策略核对，不一致返回过期空结果。验收将覆盖大库、零/极端增长不影响策略计数、未知容量既有测试、并发新增、取消和超限。审计证据：[S05-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-08/AUDIT.md)。
 
 ## 历史：2026-10-21 Round4 S05-03 至 S05-05 已验收
 

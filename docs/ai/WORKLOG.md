@@ -11625,3 +11625,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 提交 `6807ae842f5a5b1ff478cb231a1fb8fdfc805a2b` 加入“转交策略编辑”按钮。命令拒绝未保存情景/模板/当前游戏策略草稿，复用 `CreatePolicyTemplate` 生成未保存副本，只映射全量、每日、每周、每月四项保留期限；增长范围不进入策略。清空旧对比并切到存档中心备份策略标签，不保存、不应用、不清理。
 - 受控验证：SDK9.0.302 Release solution `0 warning / 0 error`；生产 MaintenanceView Light/Dark 和策略映射定向测试 `4/4`；XAML structural validation `25/25`；source validation 与 diff check 通过。完整日志、TRX、summary 和程序集/PDB SHA 见 [S05-07 证据包](../design/reviews/ui-finesse-round4-20261018/evidence/S05-07/README.md)。SDK8.0.423 是 global.json 锁定版本但本机未安装；本轮从系统临时目录选择现有 SDK9 构建，未修改 SDK 锁定。实际 Playnite、完整 WPF 隔离/安装门禁和物理 DPI 未验，合成 WPF 测试未作真实屏幕证明，未触发 CI。
 - 原 Round3 未跟踪 TRX/TestResults 未暂存、提交或修改。后续按依赖审计 S05-08 情景性能验证。
+
+## 2026-10-21 Round4 S05-08 情景性能验证能力审计
+
+- 复核基线 `479a03c3`：情景比较已有单语句 SQLite 快照、单一截止时点、Worker 端输入校验及查询/循环取消 token；增长假设不进计划，比较 DTO 不含清理预览 ID。未知容量已有 S05-03 存储分析行为测试，不需重复开发。
+- 真实缺口为维护页无取消入口、场景查询及 DTO 无硬上限、比较过程数据库版本/策略变化后仍返回结果。S05-08 准入 READY，限定增加用户取消、10,000 版本上限（查询只读取上限 + 1 用于检测）、比较末端快照一致性复核与过期空结果；测试覆盖大库、零/极端增长、并发新增、取消和超限。既有统计/清理隔离和未知容量边界保留。
+- 审计依据与范围见 [S05-08 AUDIT](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/AUDIT.md)。本审计未改产品代码或触发构建，之后实施阶段单独验证和提交。

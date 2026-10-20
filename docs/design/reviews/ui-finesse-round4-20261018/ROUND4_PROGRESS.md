@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-07 已按依赖受控验收；S05-07 `6807ae84` 完成转交策略编辑，下一项审计 S05-08。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-07 已按依赖受控验收；S05-08 情景性能验证已完成能力审计并准入 READY，审计见对应 evidence/S05-08/AUDIT.md。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 

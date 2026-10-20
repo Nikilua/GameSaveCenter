@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-21 Round4 S05-08 情景性能验证已准入
+
+- 审计基线 `479a03c3`：`CompareScenarioAsync` 已用一条 SQLite statement snapshot、同一 UTC 截止时间和 Worker `CancellationToken`；增长假设不参与策略/清理；容量未知由 S05-03 `StorageAnalysisService` 独立说明，统计 DTO 没有清理预览句柄。现有测试覆盖 25–75 MiB，StorageAnalysis 另有未知容量行为测试。
+- 缺口：用户不能取消维护页情景比较；快照、逐游戏/版本 DTO 无硬上限；计算期间新版本/有效策略变化不会使结果过期。准入范围为加取消按钮、10,000 版本上限（SQLite 最多读取上限 + 1 条）、比较前后版本和有效保留策略复核，并验证大库、零/极端增长不改变规划结果、并发变更、取消与超限。
+- 未知容量沿用既有测试，不重复做功能；不触碰清理 Apply 路径。详细审计：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/AUDIT.md)。
+
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
 
 提交 `6807ae842f5a5b1ff478cb231a1fb8fdfc805a2b` 新增从已保存保留情景进入策略模板编辑器的入口。先拒绝情景输入、模板草稿或当前游戏策略的未保存变更，再复用 `CreatePolicyTemplate` 产生独立模板草稿，仅映射四项保留期限；比较旧结果失效并导航到策略页，未保存/应用策略/删除归档。现有策略差异、批量确认与 Worker 清理新 PreviewId 校验保持独立。
