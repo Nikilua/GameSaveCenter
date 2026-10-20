@@ -1368,6 +1368,43 @@ def check_final_redesign_guards() -> None:
         and "GscListViewportHeight" in design_tokens_text
         and "GscTableViewportHeight" in wpf_ui_production_text
     )
+    finite_page_tables = {
+        "SaveHistoryGrid": (
+            "SaveHistoryPageScrollViewer",
+            "SaveHistoryGrid.Height = tableViewportHeight",
+            "SaveHistoryGrid.MaxHeight = tableViewportHeight",
+            "SaveHistoryPageScrollViewer.ViewportHeight",
+        ),
+        "SaveCandidateGrid": (
+            "SaveCandidatePageScrollViewer",
+            "SaveCandidateGrid.Height = tableViewportHeight",
+            "SaveCandidateGrid.MaxHeight = tableViewportHeight",
+            "SaveCandidatePageScrollViewer.ViewportHeight",
+        ),
+        "TaskGrid": (
+            "TaskPageScrollViewer",
+            "TaskGrid.Height = tableViewportHeight",
+            "TaskGrid.MaxHeight = tableViewportHeight",
+            "GetTaskPageViewportHeight",
+        ),
+        "MediaGrid": (
+            "MediaCurrentPageScrollViewer",
+            "MediaGrid.Height = mediaViewportHeight",
+            "MediaGrid.MaxHeight = mediaViewportHeight",
+            "MediaCurrentPageScrollViewer.ViewportHeight",
+        ),
+    }
+    finite_page_table_sources = {
+        "SaveHistoryGrid": ("SaveCenterView.xaml.cs",),
+        "SaveCandidateGrid": ("SaveCenterView.xaml.cs",),
+        "TaskGrid": ("TaskCenterView.xaml.cs",),
+        "MediaGrid": ("MediaCenterView.xaml.cs",),
+    }
+    finite_page_source_text = {
+        source_name: (ROOT / "src/GameSaveCenter.Playnite/Views" / source_name).read_text(encoding="utf-8")
+        for source_names in finite_page_table_sources.values()
+        for source_name in source_names
+    }
     for control in large_controls:
         ancestors: list[str] = []
         ancestor_nodes = []
@@ -1557,6 +1594,22 @@ def check_final_redesign_guards() -> None:
             and control.attrib.get("MaxHeight") == "240"
             and control.attrib.get("ItemsSource") == "{Binding MediaSourcePreview.Items}"
         )
+        control_name = control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "")
+        if control_name in finite_page_tables:
+            page_viewer_name, *required_source_tokens = finite_page_tables[control_name]
+            page_viewport_is_finite = any(
+                local_name(node.tag) == "ScrollViewer"
+                and node.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "") == page_viewer_name
+                for node in ancestor_nodes
+            )
+            page_viewport_has_bounded_table = all(
+                any(token in finite_page_source_text[source_name]
+                    for source_name in finite_page_table_sources[control_name])
+                for token in required_source_tokens
+            )
+            bounded_workspace_scroll = bounded_workspace_scroll or (
+                page_viewport_is_finite and page_viewport_has_bounded_table
+            )
         allowed_page_scroll = allowed_page_scroll or page_scroll_contract or bounded_workspace_scroll
         if (("StackPanel" in ancestors or "ScrollViewer" in ancestors) and not allowed_page_scroll) or "Grid" not in ancestors:
             fail(

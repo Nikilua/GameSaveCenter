@@ -226,7 +226,7 @@ namespace GameSaveCenter.Playnite.Views
             if (isApplyingLayout || !IsLoaded) return;
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
-                TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : TaskWorkspaceLayout.ActualHeight);
+                GetTaskPageViewportHeight(TaskWorkspaceLayout.ActualHeight));
         }
 
         public Border TaskSummaryPanelElement => TaskSummaryPanel;
@@ -239,21 +239,15 @@ namespace GameSaveCenter.Playnite.Views
             isApplyingLayout = true;
             try
             {
-                // The queue is the primary Demo-aligned surface. Reserve enough room
-                // for the header and four complete rows at the active row density.
-                // When the compact inspector opens, its own scroll surface gives up
-                // a little height; the compact queue still keeps four complete
-                // rows while the inspector is visible.
-                var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 const double compactInspectorMaxHeight = 136d;
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var stack = detailBreakpoint.Evaluate(width);
-                // Some hosts report the outer window height while this view is
-                // arranged inside a shorter PageHost. Prefer the measured page
-                // viewport so the compact summary does not consume table rows.
-                var availableHeight = TaskPageScrollSurface.ActualHeight > 0
-                    ? TaskPageScrollSurface.ActualHeight
-                    : height;
+                // Use the finite PageHost viewport as the page-scroll budget. The
+                // scrollable content can be taller, but must not feed its extent back
+                // into table sizing on the next responsive pass.
+                var availableHeight = GetTaskPageViewportHeight(height);
+                availableHeight = Math.Max(0, availableHeight);
+                TaskPageScrollSurface.MinHeight = availableHeight;
                 if (wasWideDetailLayout && stack
                     && TaskGrid.SelectedItem != null
                     && TaskDetailScrollViewer.Visibility == Visibility.Visible)
@@ -263,19 +257,22 @@ namespace GameSaveCenter.Playnite.Views
                     taskInspectorOpen = true;
                 }
                 var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
-                // Keep four compact rows both before and while the secondary drawer
-                // is open; the summary strip yields its space on short pages below.
+                // The queue keeps four complete rows at the common window size. Its
+                // DataGrid remains finite inside its frame; the outer page ScrollViewer
+                // carries overflow from the summary, queue and stacked inspector.
+                var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
+                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(620, availableHeight * 0.68));
                 TaskGrid.MinHeight = tableMinHeight;
-                TaskGrid.Height = double.NaN;
-                TaskGrid.MaxHeight = double.PositiveInfinity;
+                TaskGrid.Height = tableViewportHeight;
+                TaskGrid.MaxHeight = tableViewportHeight;
                 // Responsive stacking changes the page layout; the shared user density
                 // remains the only source for table row height in every breakpoint.
                 TaskGrid.ClearValue(DataGrid.RowHeightProperty);
                 TaskGrid.RowStyle = (Style)FindResource(stack ? "TaskCompactDataGridRow" : "GscStableDataGridRow");
                 // Keep the Demo's four metrics in one continuous strip at every width. On a
                 // short window, tighten only the secondary summary chrome so the queue still
-                // gets a useful first viewport; the table and inspector keep their own scroll
-                // surfaces instead of scrolling the whole workspace.
+                // gets a useful first viewport; the page viewer carries overflow while the
+                // table and inspector retain finite inner scroll surfaces.
                 var shortHeight = availableHeight > 0 && availableHeight < 720;
                 // On a short compact page, let the selected-task inspector reclaim
                 // the secondary count strip. The user can restore it by closing the
@@ -412,23 +409,10 @@ namespace GameSaveCenter.Playnite.Views
                 // A small bottom inset avoids the 0.8-DIP PageHost overflow produced
                 // by the host's fractional layout rounding at the compact breakpoint.
                 TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 2) : new Thickness(0);
-                var viewportHeight = availableHeight > 0
-                    ? availableHeight
-                    : Math.Max(320, height);
-                var workspaceHeight = viewportHeight > 0
-                    ? viewportHeight
-                        - TaskSummaryPanel.ActualHeight
-                        - TaskFilterBar.ActualHeight
-                        - TaskMoreFiltersExpander.ActualHeight
-                    : Math.Max(320, height - 200);
-                // Keep the finite cap so the inspector owns its own scroll. In stacked
-                // mode reserve a 4-DIP bottom inset after accounting for the larger
-                // four-row table; this also absorbs host layout-rounding drift.
-                var inspectorHeight = Math.Max(160, Math.Min(420, workspaceHeight - tableMinHeight - 10));
-                if (showInspector && stack)
-                    inspectorHeight = Math.Min(inspectorHeight, compactInspectorMaxHeight);
+                // Keep the compact inspector's internal scroll range stable. The page
+                // scroller makes the rest of its content reachable below the finite queue.
                 TaskDetailScrollViewer.MaxHeight = showInspector && stack
-                    ? inspectorHeight
+                    ? compactInspectorMaxHeight
                     : double.PositiveInfinity;
             }
             finally
@@ -443,7 +427,7 @@ namespace GameSaveCenter.Playnite.Views
             if (IsLoaded)
                 ApplyResponsiveLayout(
                     TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
-                    TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : TaskWorkspaceLayout.ActualHeight);
+                    GetTaskPageViewportHeight(TaskWorkspaceLayout.ActualHeight));
         }
 
         private void OnClearTaskFiltersClick(object sender, RoutedEventArgs e)
@@ -536,7 +520,7 @@ namespace GameSaveCenter.Playnite.Views
             taskInspectorOpen = !taskInspectorOpen;
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
-                TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : ActualHeight);
+                GetTaskPageViewportHeight(ActualHeight));
             FocusElement(taskInspectorOpen ? TaskDetailScrollViewer : TaskCompactDetailsButton);
         }
 
@@ -548,7 +532,7 @@ namespace GameSaveCenter.Playnite.Views
             taskInspectorOpen = false;
             ApplyResponsiveLayout(
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
-                TaskPageScrollSurface.ActualHeight > 0 ? TaskPageScrollSurface.ActualHeight : ActualHeight);
+                GetTaskPageViewportHeight(ActualHeight));
             FocusElement(TaskCompactDetailsButton);
             e.Handled = true;
         }
@@ -561,5 +545,10 @@ namespace GameSaveCenter.Playnite.Views
             element.Focus();
             Keyboard.Focus(element);
         }
+
+        private double GetTaskPageViewportHeight(double fallbackHeight)
+            => TaskPageScrollViewer.ViewportHeight > 0
+                ? TaskPageScrollViewer.ViewportHeight
+                : fallbackHeight;
     }
 }

@@ -11,7 +11,7 @@ namespace GameSaveCenter.Playnite.Tests
     public sealed class TaskCenterViewResponsiveTests
     {
         [Fact]
-        public void ShortTaskWindowTightensSummaryWithoutDroppingTableFloor()
+        public void ShortTaskWindowTightensSummaryAndKeepsFourRowTableFloor()
         {
             Exception? exception = null;
             double shortSummaryMinHeight = 0;
@@ -30,7 +30,6 @@ namespace GameSaveCenter.Playnite.Tests
                     var summary = (Border)viewType.GetField("TaskSummaryPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     expectedTaskGridMinHeight = GameSaveCenter.Playnite.Infrastructure.TableDensityPolicy.CalculateMinimumGridHeight(view);
-
                     view.ApplyResponsiveLayout(744, 680);
                     shortSummaryMinHeight = summary.MinHeight;
                     shortSummaryTopPadding = summary.Padding.Top;
@@ -228,7 +227,7 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
-        public void CompactTaskDetailsKeepsReadableTableFloor()
+        public void CompactTaskDetailsKeepsFourRowsAndBoundsItsOwnScrollSurface()
         {
             Exception? exception = null;
             var compactTableMinHeight = 0d;

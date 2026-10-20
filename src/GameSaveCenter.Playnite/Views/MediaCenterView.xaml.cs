@@ -62,7 +62,6 @@ namespace GameSaveCenter.Playnite.Views
             mediaInboxSecondaryActionRowGap = new WrapPanelRowGapController(MediaInboxSecondaryActions);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
-            MediaCurrentLayout.LayoutUpdated += OnMediaCurrentLayoutUpdated;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             DataContextChanged += OnDataContextChanged;
@@ -694,6 +693,9 @@ namespace GameSaveCenter.Playnite.Views
             isApplyingLayout = true;
             try
             {
+                var pageViewportHeight = MediaCurrentPageScrollViewer.ViewportHeight > 0
+                    ? MediaCurrentPageScrollViewer.ViewportHeight
+                    : Math.Max(0, height);
                 responsiveWidth = width;
                 responsiveHeight = height;
                 if (height > 0
@@ -714,9 +716,9 @@ namespace GameSaveCenter.Playnite.Views
                     ? batchActionWidth < 960
                     : width < 1040;
                 mediaInboxActionRowGap.SetRowGap(compactBatchActions ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0);
-                // Keep the Demo's four metrics in one continuous strip. Do not discard
-                // summary information at short heights. Local list/inspector surfaces own
-                // overflow so the whole workspace does not become a scroll canvas.
+                // Keep the Demo's four metrics in one continuous strip. The page viewer
+                // carries excess height while each table and inspector keeps a finite
+                // inner scrolling surface.
                 MediaSummaryPanel.Visibility = Visibility.Visible;
                 // A themed 1366x768 host has less content height after shell chrome than
                 // the raw window number suggests. Keep the primary inbox grid at its
@@ -878,9 +880,11 @@ namespace GameSaveCenter.Playnite.Views
                 var finiteInboxHeight = Math.Max(readableGridHeight, height - inboxNonTableHeightBudget);
                 MediaInboxGrid.Height = finiteInboxHeight;
                 MediaInboxGrid.MaxHeight = finiteInboxHeight;
+                MediaCurrentScrollSurface.MinHeight = pageViewportHeight;
+                var mediaViewportHeight = Math.Max(154d, Math.Min(560, pageViewportHeight * 0.60));
                 MediaGrid.MinHeight = 154d;
-                MediaGrid.Height = double.NaN;
-                MediaGrid.MaxHeight = double.PositiveInfinity;
+                MediaGrid.Height = mediaViewportHeight;
+                MediaGrid.MaxHeight = mediaViewportHeight;
 
                 // Match the demo: the media table and its inspector share the main
                 // work area on wide hosts; on compact hosts the inspector is a drawer
@@ -974,34 +978,16 @@ namespace GameSaveCenter.Playnite.Views
                 // it never rewrites the inspector's internal visual tree during a resize.
                 // Give a real inspector its own finite scroll channel only when it is stacked;
                 // an empty selection must not retain a hidden capped surface.
-                MediaInspectorScrollViewer.MaxHeight = showInspector && stack
-                    ? Math.Max(140, Math.Min(220, height * 0.30))
+                MediaInspectorScrollViewer.MaxHeight = showInspector
+                    ? (stack
+                        ? Math.Min(220, Math.Max(0, height * 0.30))
+                        : mediaViewportHeight)
                     : double.PositiveInfinity;
                 MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14);
-                UpdateMediaCurrentTableSurfaceMinimumHeight();
             }
             finally
             {
                 isApplyingLayout = false;
-            }
-        }
-
-        private void OnMediaCurrentLayoutUpdated(object? sender, EventArgs e)
-        {
-            if (!isApplyingLayout)
-                UpdateMediaCurrentTableSurfaceMinimumHeight();
-        }
-
-        private void UpdateMediaCurrentTableSurfaceMinimumHeight()
-        {
-            if (MediaGrid.Parent is Grid contentGrid)
-            {
-                MediaCurrentLayout.RowDefinitions[0].MinHeight = WorkspaceTableViewportPolicy.CalculateMinimumSurfaceHeight(
-                    contentGrid,
-                    MediaGrid,
-                    minimumViewportHeight: 154d,
-                    surface: VisualTreeHelper.GetParent(contentGrid) as Border,
-                    autoRowFallbackHeight: 52d);
             }
         }
 

@@ -1,3 +1,9 @@
+## 2026-10-20 用户反馈：工作区滚动条越界
+
+- 按页面与表格两层有限滚动修复存档历史、路径校验、任务队列和当前媒体页；PageHost 高度来自实际 ViewportHeight，表格仍有内部滚动条和四行可读下限。媒体收件箱保留旧尺寸路径。
+- SDK8.0.423 Release 全解决方案构建 `0 warning / 0 error`；针对页面滚动/表格边界、任务短视口与紧凑详情用例 `9/9`。RenderHarness Release 双主题、多尺寸 `render-qa OK / 0 PROBLEM`；source validation、25 文件 XAML 校验与 `git diff --check` 通过。WPF 静态扫描 `0 errors / 26 warnings / 177 info`。
+- OffscreenRenderHarness 使用合成数据、逻辑 DPI `1.00`，不代表真实 Playnite 或物理屏幕。证据：[滚动区修复](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。原有 Round3 未跟踪 TRX/TestResults 保留。Round4 S00-01 已满足；S04-04 继续作为下一 READY 小批。
+
 ## 2026-10-20 Round4 S04-03 同步缩放移动能力复核
 
 - 启动候选 S00-01 已在当前 main 标为满足，`dd38f8ca` 与 SDK8 行为复核证据完整；本轮不重复实现或测试。

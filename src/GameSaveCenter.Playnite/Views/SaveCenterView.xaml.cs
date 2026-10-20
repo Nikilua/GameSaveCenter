@@ -34,7 +34,6 @@ namespace GameSaveCenter.Playnite.Views
             historyActionRowGap = new WrapPanelRowGapController(SaveHistorySummaryActions);
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
-            SaveHistoryLayout.LayoutUpdated += OnSaveHistoryLayoutUpdated;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             DataContextChanged += OnDataContextChanged;
@@ -168,14 +167,27 @@ namespace GameSaveCenter.Playnite.Views
             try
             {
                 responsiveWidth = width;
-                responsiveHeight = height;
-                // Keep four complete history rows readable when the selected-version
-                // inspector is stacked below it. The table still owns its internal
-                // virtualized scroll; this floor prevents the inspector's Auto row from
-                // reducing the primary list below the common-window baseline.
+                var activePageViewportHeight = SaveCandidatePageScrollViewer.IsVisible
+                    ? SaveCandidatePageScrollViewer.ViewportHeight
+                    : SaveHistoryPageScrollViewer.ViewportHeight;
+                var pageViewportHeight = activePageViewportHeight > 0
+                    ? activePageViewportHeight
+                    : Math.Max(0, height);
+                responsiveHeight = pageViewportHeight;
+                height = pageViewportHeight;
+                SaveHistoryLayout.MinHeight = pageViewportHeight;
+                SaveCandidatePageSurface.MinHeight = pageViewportHeight;
+                // Each tab page owns a finite outer scroll channel. Keep the DataGrid
+                // itself finite as well so its virtualized rows and scrollbar stay in
+                // the table frame while the rest of the page remains reachable.
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
+                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560, pageViewportHeight * 0.68));
                 SaveHistoryGrid.MinHeight = tableMinHeight;
+                SaveHistoryGrid.Height = tableViewportHeight;
+                SaveHistoryGrid.MaxHeight = tableViewportHeight;
                 SaveCandidateGrid.MinHeight = tableMinHeight;
+                SaveCandidateGrid.Height = tableViewportHeight;
+                SaveCandidateGrid.MaxHeight = tableViewportHeight;
                 // Demo keeps the inspector beside the main surface at the normal
                 // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
                 // Playnite host into the drawer layout even when there was enough
@@ -323,9 +335,9 @@ namespace GameSaveCenter.Playnite.Views
                         : Visibility.Collapsed;
                 }
             // The demo keeps the history table and the selected-version inspector
-            // side by side when there is room. On a compact host, stack the
-            // inspector below the table so actions remain reachable without a
-            // page-level scrollbar or clipped controls.
+            // side by side when there is room. Compact pages stack the inspector;
+            // their outer ScrollViewer keeps the complete finite table and detail card
+            // reachable without letting either inner scrollbar escape its surface.
             var showHistoryInspector = SaveHistoryActionsScrollViewer.Visibility == Visibility.Visible;
             var historySideBySide = showHistoryInspector && !compact;
             SaveHistoryLayout.ColumnDefinitions[1].Width = historySideBySide ? new GridLength(14) : new GridLength(0);
@@ -335,12 +347,10 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(SaveHistoryActionsScrollViewer, compact ? 3 : 1);
             Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
             SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            UpdateHistoryTableSurfaceMinimumHeight();
-            var historyHeight = SaveHistoryLayout.ActualHeight > 0 ? SaveHistoryLayout.ActualHeight : Math.Max(320, height - 200);
-            // Keep the inspector useful without letting it take the room reserved for
-            // the complete history table surface (toolbar, four readable rows and footer).
-            var historyInspectorHeight = Math.Max(140, Math.Min(220, historyHeight * 0.30));
-            SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector && compact ? historyInspectorHeight : double.PositiveInfinity;
+            var historyInspectorHeight = Math.Min(220, Math.Max(0, pageViewportHeight * 0.30));
+            SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector
+                ? (compact ? historyInspectorHeight : tableViewportHeight)
+                : double.PositiveInfinity;
             var showCandidateInspector = SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible;
             var candidateSideBySide = showCandidateInspector && !compact;
             SaveCandidateLayout.ColumnDefinitions[1].Width = candidateSideBySide ? new GridLength(14) : new GridLength(0);
@@ -350,9 +360,10 @@ namespace GameSaveCenter.Playnite.Views
             Grid.SetColumnSpan(SaveCandidateInspectorScrollViewer, compact ? 3 : 1);
             Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
             SaveCandidateInspectorScrollViewer.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
-            var candidateHeight = SaveCandidateLayout.ActualHeight > 0 ? SaveCandidateLayout.ActualHeight : Math.Max(320, height - 200);
-            var candidateInspectorHeight = Math.Max(160, Math.Min(360, candidateHeight - tableMinHeight - 10));
-            SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector && compact ? candidateInspectorHeight : double.PositiveInfinity;
+            var candidateInspectorHeight = Math.Min(360, Math.Max(0, pageViewportHeight * 0.30));
+            SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector
+                ? (compact ? candidateInspectorHeight : tableViewportHeight)
+                : double.PositiveInfinity;
             var stackPolicy = width < 980;
             // Keep the three Demo cards in one row when there is room. Below
             // the compact breakpoint, stack the cards into explicit rows so
@@ -408,25 +419,6 @@ namespace GameSaveCenter.Playnite.Views
             historyInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
-        }
-
-        private void OnSaveHistoryLayoutUpdated(object? sender, EventArgs e)
-        {
-            if (!isApplyingLayout)
-                UpdateHistoryTableSurfaceMinimumHeight();
-        }
-
-        private void UpdateHistoryTableSurfaceMinimumHeight()
-        {
-            if (SaveHistoryGrid.Parent is Grid contentGrid)
-            {
-                SaveHistoryLayout.RowDefinitions[0].MinHeight = WorkspaceTableViewportPolicy.CalculateMinimumSurfaceHeight(
-                    contentGrid,
-                    SaveHistoryGrid,
-                    SaveHistoryGrid.MinHeight,
-                    SaveHistoryTableFrame,
-                    autoRowFallbackHeight: 52d);
-            }
         }
 
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)
