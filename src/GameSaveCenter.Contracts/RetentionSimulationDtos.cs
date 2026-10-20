@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameSaveCenter.Contracts
 {
@@ -129,6 +130,49 @@ namespace GameSaveCenter.Contracts
         public string HealthProtectedDisplay => $"健康恢复点保护：{HealthProtectedCount}";
     }
 
+    /// <summary>Per-game counts from the same retention snapshot and cutoff as the global comparison.</summary>
+    public sealed class RetentionScenarioGameSummaryDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public int ExistingVersionCount { get; set; }
+        public int CurrentKeepVersionCount { get; set; }
+        public int CurrentProtectedVersionCount { get; set; }
+        public int CurrentDeleteCandidateCount { get; set; }
+        public long CurrentDeleteCandidateLogicalBytes { get; set; }
+        public int CandidateKeepVersionCount { get; set; }
+        public int CandidateProtectedVersionCount { get; set; }
+        public int CandidateDeleteCandidateCount { get; set; }
+        public long CandidateDeleteCandidateLogicalBytes { get; set; }
+        public int ChangedVersionCount { get; set; }
+        public List<RetentionScenarioVersionDetailDto> VersionDetails { get; set; } = new List<RetentionScenarioVersionDetailDto>();
+
+        public bool HasScenarioDifference => ChangedVersionCount > 0;
+        public string PolicyImpactDisplay => $"保留 {CurrentKeepVersionCount} → {CandidateKeepVersionCount} · 淘汰候选 {CurrentDeleteCandidateCount} → {CandidateDeleteCandidateCount} · 变化 {ChangedVersionCount} 项";
+        public string ProtectedSummaryDisplay => $"保护项：当前 {CurrentProtectedVersionCount} · 候选 {CandidateProtectedVersionCount}";
+    }
+
+    /// <summary>Read-only per-version explanation; archive availability is informational and never authorizes cleanup.</summary>
+    public sealed class RetentionScenarioVersionDetailDto
+    {
+        public string PlayniteId { get; set; } = string.Empty;
+        public string GameName { get; set; } = string.Empty;
+        public string BackupId { get; set; } = string.Empty;
+        public DateTime CreatedUtc { get; set; }
+        public long TotalBytes { get; set; }
+        public bool IsProtected { get; set; }
+        public bool IsCurrentDeleteCandidate { get; set; }
+        public bool IsCandidateDeleteCandidate { get; set; }
+        public string CurrentDispositionDisplay { get; set; } = string.Empty;
+        public string CandidateDispositionDisplay { get; set; } = string.Empty;
+        public string ProtectionReasonDisplay { get; set; } = string.Empty;
+        public string ArchiveAvailabilityDisplay { get; set; } = string.Empty;
+
+        public string CreatedDisplay => CreatedUtc == default(DateTime)
+            ? string.Empty
+            : $"{CreatedUtc.ToLocalTime():yyyy-MM-dd HH:mm} · {BackupId}";
+    }
+
     /// <summary>
     /// Read-only comparison of the effective per-game policies and one uniform candidate
     /// policy against the same indexed backup snapshot and planner cutoff.
@@ -143,8 +187,14 @@ namespace GameSaveCenter.Contracts
         public int? GrowthMaximumMiBPer30Days { get; set; }
         public RetentionScenarioPlanSummaryDto Current { get; set; } = new RetentionScenarioPlanSummaryDto();
         public RetentionScenarioPlanSummaryDto Candidate { get; set; } = new RetentionScenarioPlanSummaryDto();
+        public List<RetentionScenarioGameSummaryDto> Games { get; set; } = new List<RetentionScenarioGameSummaryDto>();
         public string Summary { get; set; } = "输入情景参数后生成只读对比。";
         public string Assumptions { get; set; } = "候选策略统一应用于所有游戏；当前策略按游戏生效。增长范围只记录为假设，不参与本次保留数量计算。";
+
+        public int ChangedGameCount => Games.Count(x => x.ChangedVersionCount > 0);
+        public int ChangedVersionCount => Games.Sum(x => x.ChangedVersionCount);
+        public int ProtectedVersionDetailCount => Games.Sum(x => x.VersionDetails.Count(version => version.IsProtected));
+        public string DetailSummaryDisplay => $"逐游戏对账 {Games.Count} 个游戏；策略结论变化 {ChangedGameCount} 个游戏 / {ChangedVersionCount} 个版本；另列 {ProtectedVersionDetailCount} 个保护项。选择游戏查看版本和保护原因。详情只读，不执行清理。";
 
         public string GeneratedDisplay => GeneratedUtc == default(DateTime)
             ? "尚未生成共同截止时点"

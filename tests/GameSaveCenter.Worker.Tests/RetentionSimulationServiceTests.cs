@@ -100,6 +100,7 @@ public sealed class RetentionSimulationServiceTests : IDisposable
             CreateArchive("scenario-health-g1.zip", 400),
             CreateArchive("scenario-delete-g2.zip", 500)
         };
+        File.Delete(archivePaths[4]);
         await AddVersionAsync("g1", "scenario-delete-g1", archivePaths[0], 100, now.AddDays(-100));
         await AddVersionAsync("g1", "scenario-lock-g1", archivePaths[1], 200, now.AddDays(-90), isLocked: true);
         await AddVersionAsync("g1", "scenario-pre-g1", archivePaths[2], 300, now.AddDays(-80), isPreRestore: true);
@@ -134,6 +135,34 @@ public sealed class RetentionSimulationServiceTests : IDisposable
         Assert.Equal(0, comparison.Candidate.CandidateLogicalBytes);
         Assert.Equal(25, comparison.GrowthMinimumMiBPer30Days);
         Assert.Equal(75, comparison.GrowthMaximumMiBPer30Days);
+        Assert.Equal(2, comparison.Games.Count);
+        Assert.Equal(2, comparison.ChangedGameCount);
+        Assert.Equal(2, comparison.ChangedVersionCount);
+        Assert.Equal(comparison.Current.ExistingVersionCount, comparison.Games.Sum(x => x.ExistingVersionCount));
+        Assert.Equal(comparison.Current.KeepVersionCount, comparison.Games.Sum(x => x.CurrentKeepVersionCount));
+        Assert.Equal(comparison.Current.DeleteCandidateCount, comparison.Games.Sum(x => x.CurrentDeleteCandidateCount));
+        Assert.Equal(comparison.Candidate.KeepVersionCount, comparison.Games.Sum(x => x.CandidateKeepVersionCount));
+        Assert.Equal(comparison.Candidate.DeleteCandidateCount, comparison.Games.Sum(x => x.CandidateDeleteCandidateCount));
+        Assert.All(comparison.Games, game =>
+        {
+            Assert.Equal(game.ExistingVersionCount, game.CurrentKeepVersionCount + game.CurrentDeleteCandidateCount);
+            Assert.Equal(game.ExistingVersionCount, game.CandidateKeepVersionCount + game.CandidateDeleteCandidateCount);
+            Assert.True(game.CurrentProtectedVersionCount <= game.CurrentKeepVersionCount);
+            Assert.True(game.CandidateProtectedVersionCount <= game.CandidateKeepVersionCount);
+        });
+        var missingArchiveDetail = Assert.Single(comparison.Games.Single(x => x.PlayniteId == "g2").VersionDetails);
+        Assert.Contains("归档缺失", missingArchiveDetail.ArchiveAvailabilityDisplay);
+        Assert.Contains("不计入现存归档候选", missingArchiveDetail.ArchiveAvailabilityDisplay);
+        Assert.True(missingArchiveDetail.IsCurrentDeleteCandidate);
+        Assert.False(missingArchiveDetail.IsCandidateDeleteCandidate);
+        var protectedDetails = comparison.Games.SelectMany(x => x.VersionDetails).Where(x => x.IsProtected).ToList();
+        Assert.Equal(3, protectedDetails.Count);
+        Assert.All(protectedDetails, detail =>
+        {
+            Assert.False(detail.IsCurrentDeleteCandidate);
+            Assert.False(detail.IsCandidateDeleteCandidate);
+            Assert.Contains("保护项不进入淘汰候选", detail.ArchiveAvailabilityDisplay);
+        });
         Assert.Contains("统一应用到所有游戏", comparison.Assumptions);
         Assert.Contains("不参与保留数量", comparison.Assumptions);
         Assert.Equal(comparison.Current.KeepVersionCount + comparison.Current.DeleteCandidateCount, comparison.Current.ExistingVersionCount);
@@ -162,7 +191,8 @@ public sealed class RetentionSimulationServiceTests : IDisposable
                 PreviewGeneratedUtc = comparison.GeneratedUtc
             }, CancellationToken.None));
         Assert.Equal("RETENTION_PREVIEW_STALE", staleApply.Code);
-        Assert.All(archivePaths, path => Assert.True(File.Exists(path)));
+        Assert.All(archivePaths.Take(4), path => Assert.True(File.Exists(path)));
+        Assert.False(File.Exists(archivePaths[4]));
         Assert.Equal(5, (await store.GetStorageAnalysisRowsAsync(CancellationToken.None)).Count);
     }
 

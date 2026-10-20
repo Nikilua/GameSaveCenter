@@ -92,6 +92,7 @@ public sealed class RetentionSimulationService
         var candidatePlans = BuildPlans(versions, candidatePolicy, generatedUtc);
         var current = SummarizePlans(currentPlans);
         var candidate = SummarizePlans(candidatePlans);
+        var gameSummaries = BuildScenarioGameSummaries(currentPlans, candidatePlans, token);
         var policyDisplay = RetentionScenarioComparisonDto.FormatPolicy(
             request.KeepAllForHours,
             request.KeepDailyDays,
@@ -107,8 +108,9 @@ public sealed class RetentionSimulationService
             GrowthMaximumMiBPer30Days = request.GrowthMaximumMiBPer30Days,
             Current = current,
             Candidate = candidate,
-            Summary = $"同一基线 {versions.Count} 个版本：当前策略保留 {current.KeepVersionCount} 个、候选 {current.DeleteCandidateCount} 个；候选策略保留 {candidate.KeepVersionCount} 个、候选 {candidate.DeleteCandidateCount} 个。只读对比不会执行清理。",
-            Assumptions = $"当前侧按每个游戏已生效的保留策略规划；候选侧将“{policyDisplay}”统一应用到所有游戏。锁定、PreRestore 与健康恢复点属于保护计数（去重），不会进入候选清理。增长范围 {request.GrowthMinimumMiBPer30Days}–{request.GrowthMaximumMiBPer30Days} MiB/30 天是用户假设，仅供后续分析，本次不参与保留数量或候选体积计算。候选体积按索引逻辑大小求和，不代表磁盘实占或最终可释放空间。"
+            Games = gameSummaries,
+            Summary = $"同一基线 {versions.Count} 个版本：当前策略保留 {current.KeepVersionCount} 个、策略淘汰候选 {current.DeleteCandidateCount} 个；候选策略保留 {candidate.KeepVersionCount} 个、策略淘汰候选 {candidate.DeleteCandidateCount} 个。逐版本差异只读展示，不会执行清理。",
+            Assumptions = $"当前侧按每个游戏已生效的保留策略规划；候选侧将“{policyDisplay}”统一应用到所有游戏。锁定、PreRestore 与健康恢复点属于保护计数（去重），不会进入策略淘汰候选。候选体积按索引逻辑大小求和；缺失、不可访问或未通过安全路径检查的归档会在逐版本明细中单独说明，不计作现存归档候选。该逻辑大小不代表磁盘实占或最终可释放空间。增长范围 {request.GrowthMinimumMiBPer30Days}–{request.GrowthMaximumMiBPer30Days} MiB/30 天是用户假设，仅供后续分析，本次不参与保留数量或候选体积计算。"
         };
     }
 
@@ -792,6 +794,132 @@ public sealed class RetentionSimulationService
             DeleteCandidateCount = groups.Sum(x => x.Plan.DeleteCandidates.Count),
             CandidateLogicalBytes = groups.Sum(x => x.Plan.DeleteCandidates.Sum(version => Math.Max(0, version.TotalBytes)))
         };
+    }
+
+    private List<RetentionScenarioGameSummaryDto> BuildScenarioGameSummaries(
+        IReadOnlyList<RetentionPlanGroup> currentPlans,
+        IReadOnlyList<RetentionPlanGroup> candidatePlans,
+        CancellationToken token)
+    {
+        var candidateByGame = candidatePlans.ToDictionary(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase);
+        var result = new List<RetentionScenarioGameSummaryDto>(currentPlans.Count);
+        foreach (var current in currentPlans)
+        {
+            token.ThrowIfCancellationRequested();
+            if (!candidateByGame.TryGetValue(current.PlayniteId, out var candidate))
+                continue;
+
+            var currentCandidates = current.Plan.DeleteCandidates.ToDictionary(x => x.BackupId, StringComparer.OrdinalIgnoreCase);
+            var candidateCandidates = candidate.Plan.DeleteCandidates.ToDictionary(x => x.BackupId, StringComparer.OrdinalIgnoreCase);
+            var changedVersionCount = current.Versions.Count(version =>
+                currentCandidates.ContainsKey(version.BackupId) != candidateCandidates.ContainsKey(version.BackupId));
+            var protectedVersionCount = current.Versions.Count(IsRetentionProtected);
+            var details = new List<RetentionScenarioVersionDetailDto>();
+            foreach (var version in current.Versions)
+            {
+                token.ThrowIfCancellationRequested();
+                var isCurrentCandidate = currentCandidates.ContainsKey(version.BackupId);
+                var isCandidateCandidate = candidateCandidates.ContainsKey(version.BackupId);
+                var isProtected = IsRetentionProtected(version);
+                if (isCurrentCandidate == isCandidateCandidate && !isProtected)
+                    continue;
+
+                var hasPlanCandidate = isCurrentCandidate || isCandidateCandidate;
+                details.Add(new RetentionScenarioVersionDetailDto
+                {
+                    PlayniteId = current.PlayniteId,
+                    GameName = current.GameName,
+                    BackupId = version.BackupId,
+                    CreatedUtc = version.CreatedUtc,
+                    TotalBytes = Math.Max(0, version.TotalBytes),
+                    IsProtected = isProtected,
+                    IsCurrentDeleteCandidate = isCurrentCandidate,
+                    IsCandidateDeleteCandidate = isCandidateCandidate,
+                    CurrentDispositionDisplay = isProtected
+                        ? "保护保留"
+                        : isCurrentCandidate ? "策略淘汰候选" : "策略保留",
+                    CandidateDispositionDisplay = isProtected
+                        ? "保护保留"
+                        : isCandidateCandidate ? "策略淘汰候选" : "策略保留",
+                    ProtectionReasonDisplay = GetProtectionReason(version),
+                    ArchiveAvailabilityDisplay = isProtected
+                        ? "不适用：保护项不进入淘汰候选"
+                        : hasPlanCandidate ? GetArchiveAvailability(version.ArchivePath) : "不适用：两侧均按策略保留"
+                });
+            }
+
+            result.Add(new RetentionScenarioGameSummaryDto
+            {
+                PlayniteId = current.PlayniteId,
+                GameName = current.GameName,
+                ExistingVersionCount = current.Versions.Count,
+                CurrentKeepVersionCount = current.Plan.Keep.Count,
+                CurrentProtectedVersionCount = protectedVersionCount,
+                CurrentDeleteCandidateCount = current.Plan.DeleteCandidates.Count,
+                CurrentDeleteCandidateLogicalBytes = SumLogicalBytes(current.Plan.DeleteCandidates),
+                CandidateKeepVersionCount = candidate.Plan.Keep.Count,
+                CandidateProtectedVersionCount = candidate.Versions.Count(IsRetentionProtected),
+                CandidateDeleteCandidateCount = candidate.Plan.DeleteCandidates.Count,
+                CandidateDeleteCandidateLogicalBytes = SumLogicalBytes(candidate.Plan.DeleteCandidates),
+                ChangedVersionCount = changedVersionCount,
+                VersionDetails = details
+                    .OrderByDescending(x => x.IsCurrentDeleteCandidate != x.IsCandidateDeleteCandidate)
+                    .ThenByDescending(x => x.CreatedUtc)
+                    .ToList()
+            });
+        }
+
+        return result
+            .OrderByDescending(x => x.ChangedVersionCount)
+            .ThenBy(x => x.GameName, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+    }
+
+    private static long SumLogicalBytes(IEnumerable<BackupSnapshot> versions)
+        => versions.Sum(x => Math.Max(0, x.TotalBytes));
+
+    private static bool IsRetentionProtected(BackupVersionDto version)
+        => version.IsLocked || version.IsPreRestore || version.IsHealthProtected;
+
+    private static string GetProtectionReason(BackupVersionDto version)
+    {
+        var reasons = new List<string>();
+        if (version.IsLocked) reasons.Add("用户锁定");
+        if (version.IsPreRestore) reasons.Add("PreRestore 恢复前快照");
+        if (version.IsHealthProtected) reasons.Add("健康恢复点安全底线");
+        return reasons.Count == 0 ? "无额外保护标记" : string.Join("、", reasons);
+    }
+
+    private string GetArchiveAvailability(string path)
+    {
+        if (!IsSafeArchivePath(path))
+            return string.IsNullOrWhiteSpace(path)
+                ? "缺少归档路径；不计入现存归档候选"
+                : "路径未通过归档安全检查；不计入现存归档候选";
+
+        try
+        {
+            var attributes = File.GetAttributes(path);
+            return (attributes & FileAttributes.Directory) != 0
+                ? "目标不是归档文件；不计入现存归档候选"
+                : "归档存在（只读检查；执行时仍会复核）";
+        }
+        catch (FileNotFoundException)
+        {
+            return "归档缺失；不计入现存归档候选";
+        }
+        catch (DirectoryNotFoundException)
+        {
+            return "归档目录缺失；不计入现存归档候选";
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return "归档不可访问；不计入现存归档候选";
+        }
+        catch (IOException)
+        {
+            return "归档读取状态未知；不计入现存归档候选";
+        }
     }
 
     private static void ValidateScenarioRequest(RetentionScenarioComparisonRequestDto request)

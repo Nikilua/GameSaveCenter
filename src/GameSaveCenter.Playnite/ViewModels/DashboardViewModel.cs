@@ -172,6 +172,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
         private RetentionScenarioComparisonDto retentionScenarioComparison = new RetentionScenarioComparisonDto();
+        private RetentionScenarioGameSummaryDto? selectedRetentionScenarioGame;
         private LocalMirrorStatusDto localMirrorStatus = new LocalMirrorStatusDto { Message = "尚未检查本地镜像。" };
         private string diffSummary = "选择两个版本后，比较结果会显示在这里。";
         private string diffComparedSummary = "尚未选择可比较的版本。";
@@ -1042,6 +1043,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
         public RetentionScenarioDraft RetentionScenarioInput { get; } = new RetentionScenarioDraft();
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get => retentionScenarioComparison; private set => SetValue(ref retentionScenarioComparison, value ?? new RetentionScenarioComparisonDto()); }
+        public RetentionScenarioGameSummaryDto? SelectedRetentionScenarioGame { get => selectedRetentionScenarioGame; set => SetValue(ref selectedRetentionScenarioGame, value); }
         public LocalMirrorStatusDto LocalMirrorStatus { get => localMirrorStatus; private set => SetValue(ref localMirrorStatus, value ?? new LocalMirrorStatusDto()); }
         public string GameSearchText
         {
@@ -3420,6 +3422,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (!RetentionScenarioInput.IsValid)
             {
                 RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "请先修正情景参数和增长范围。" };
+                SelectedRetentionScenarioGame = null;
                 return;
             }
 
@@ -3441,11 +3444,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!RetentionScenarioInputMatches(request))
                 {
                     RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "对比期间情景参数已变化，请重新生成结果。" };
+                    SelectedRetentionScenarioGame = null;
                     StatusMessage = RetentionScenarioComparison.Summary;
                     return;
                 }
 
                 RetentionScenarioComparison = result;
+                SelectedRetentionScenarioGame = result.Games.FirstOrDefault(x => x.HasScenarioDifference)
+                    ?? result.Games.FirstOrDefault();
                 StatusMessage = result.Summary;
             });
         }
@@ -3453,6 +3459,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void OnRetentionScenarioInputChanged()
         {
             RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "情景参数已变化，请重新生成对比。" };
+            SelectedRetentionScenarioGame = null;
             RaiseCommandStates();
         }
 

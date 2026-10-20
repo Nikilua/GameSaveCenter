@@ -76,6 +76,28 @@ public sealed class RetentionScenarioInputBehaviorTests
                     Assert.True(compareButton.Command.CanExecute(null));
                     Assert.Equal(context.RetentionScenarioComparison.Summary, Field<TextBlock>(page, "RetentionScenarioComparisonSummary").Text);
                     Assert.Equal(context.RetentionScenarioComparison.GrowthAssumptionDisplay, Field<TextBlock>(page, "RetentionScenarioGrowthAssumptionDisplay").Text);
+                    Assert.Equal(context.RetentionScenarioComparison.DetailSummaryDisplay, Field<TextBlock>(page, "RetentionScenarioDetailSummary").Text);
+                    var gameGrid = Field<DataGrid>(page, "RetentionScenarioGameGrid");
+                    Assert.True(gameGrid.IsVisible);
+                    Assert.Equal(context.RetentionScenarioComparison.Games.Count, gameGrid.Items.Count);
+                    Assert.Same(context.SelectedRetentionScenarioGame, gameGrid.SelectedItem);
+                    Assert.True(VirtualizingPanel.GetIsVirtualizing(gameGrid));
+                    Assert.Equal(250, gameGrid.MaxHeight);
+                    var versionGrid = Field<DataGrid>(page, "RetentionScenarioVersionGrid");
+                    Assert.True(versionGrid.IsVisible);
+                    Assert.Same(context.SelectedRetentionScenarioGame!.VersionDetails, versionGrid.ItemsSource);
+                    Assert.Equal(context.SelectedRetentionScenarioGame.VersionDetails.Count, versionGrid.Items.Count);
+                    Assert.True(VirtualizingPanel.GetIsVirtualizing(versionGrid));
+                    Assert.Equal(300, versionGrid.MaxHeight);
+                    var versionGridOffset = versionGrid.TransformToAncestor(pageScrollViewer).Transform(new Point(0, 0)).Y;
+                    pageScrollViewer.ScrollToVerticalOffset(pageScrollViewer.VerticalOffset + versionGridOffset);
+                    PumpLayout(window);
+                    var detailViewport = FindVisualDescendant<ScrollViewer>(versionGrid);
+                    Assert.NotNull(detailViewport);
+                    Assert.True(detailViewport!.ScrollableHeight > 0, "Version details keep their own bounded virtualized scroll viewport.");
+                    var detailBounds = versionGrid.TransformToAncestor(window).TransformBounds(new Rect(new Point(0, 0), versionGrid.RenderSize));
+                    Assert.True(Rect.Intersect(detailBounds, new Rect(0, 0, window.ActualWidth, window.ActualHeight)).Height > 0,
+                        "The page scroll must expose the version detail grid within the host window.");
                     Assert.Equal(context.StorageAnalysis.VolumeFreeDisplay, Field<TextBlock>(page, "MaintenanceStorageLocalVolume").Text);
                     Assert.Equal(context.StorageAnalysis.HistoricalGrowthRangeDisplay, Field<TextBlock>(page, "MaintenanceStorageGrowthRangeSummary").Text);
                     Assert.Equal(context.StorageAnalysis.HistoricalGrowthRangeDisplay, Field<TextBlock>(page, "MaintenanceStorageDemoGrowthRangeSummary").Text);
@@ -183,6 +205,22 @@ public sealed class RetentionScenarioInputBehaviorTests
         return null;
     }
 
+    private static T? FindVisualDescendant<T>(DependencyObject parent)
+        where T : DependencyObject
+    {
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, index);
+            if (child is T match)
+                return match;
+            var nested = FindVisualDescendant<T>(child);
+            if (nested != null)
+                return nested;
+        }
+
+        return null;
+    }
+
     private sealed class ScenarioContext
     {
         public ScenarioContext(RetentionScenarioDraft input, RetentionPolicy effectivePolicy)
@@ -191,19 +229,66 @@ public sealed class RetentionScenarioInputBehaviorTests
             EffectivePolicy = effectivePolicy;
             RetentionScenarioComparison = new RetentionScenarioComparisonDto
             {
-                Summary = "测试对比：同一基线 5 个版本。",
-                BaselineVersionCount = 5,
+                Summary = "测试对比：同一基线 25 个版本。",
+                BaselineVersionCount = 25,
                 GeneratedUtc = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc),
                 GrowthMinimumMiBPer30Days = 500,
                 GrowthMaximumMiBPer30Days = 750,
-                Current = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 5, KeepVersionCount = 3, DeleteCandidateCount = 2 },
-                Candidate = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 5, KeepVersionCount = 4, DeleteCandidateCount = 1 }
+                Current = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 25, KeepVersionCount = 23, ProtectedVersionCount = 20, DeleteCandidateCount = 2 },
+                Candidate = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 25, KeepVersionCount = 24, ProtectedVersionCount = 20, DeleteCandidateCount = 1 },
+                Games =
+                {
+                    new RetentionScenarioGameSummaryDto
+                    {
+                        PlayniteId = "game-1",
+                        GameName = "测试游戏",
+                        ExistingVersionCount = 25,
+                        CurrentKeepVersionCount = 23,
+                        CurrentProtectedVersionCount = 20,
+                        CurrentDeleteCandidateCount = 2,
+                        CandidateKeepVersionCount = 24,
+                        CandidateProtectedVersionCount = 20,
+                        CandidateDeleteCandidateCount = 1,
+                        ChangedVersionCount = 1,
+                        VersionDetails =
+                        {
+                            new RetentionScenarioVersionDetailDto
+                            {
+                                PlayniteId = "game-1",
+                                GameName = "测试游戏",
+                                BackupId = "backup-1",
+                                CreatedUtc = new DateTime(2026, 10, 20, 10, 0, 0, DateTimeKind.Utc),
+                                CurrentDispositionDisplay = "策略淘汰候选",
+                                CandidateDispositionDisplay = "策略保留",
+                                ProtectionReasonDisplay = "无额外保护标记",
+                                ArchiveAvailabilityDisplay = "归档存在（只读检查；执行时仍会复核）"
+                            }
+                        }
+                    }
+                }
             };
+            for (var index = 2; index <= 21; index++)
+            {
+                RetentionScenarioComparison.Games[0].VersionDetails.Add(new RetentionScenarioVersionDetailDto
+                {
+                    PlayniteId = "game-1",
+                    GameName = "测试游戏",
+                    BackupId = $"locked-backup-{index:D2}",
+                    CreatedUtc = new DateTime(2026, 10, 20, 10, 0, 0, DateTimeKind.Utc).AddMinutes(-index),
+                    IsProtected = true,
+                    CurrentDispositionDisplay = "保护保留",
+                    CandidateDispositionDisplay = "保护保留",
+                    ProtectionReasonDisplay = "用户锁定",
+                    ArchiveAvailabilityDisplay = "不适用：保护项不进入淘汰候选"
+                });
+            }
+            SelectedRetentionScenarioGame = RetentionScenarioComparison.Games[0];
         }
 
         public RetentionScenarioDraft RetentionScenarioInput { get; }
         public RetentionPolicy EffectivePolicy { get; }
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get; }
+        public RetentionScenarioGameSummaryDto? SelectedRetentionScenarioGame { get; set; }
         public StorageAnalysisDto StorageAnalysis { get; } = new StorageAnalysisDto
         {
             VolumeTotalBytes = 1024L * 1024 * 1024 * 1024,

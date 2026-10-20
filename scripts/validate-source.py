@@ -1600,6 +1600,21 @@ def check_final_redesign_guards() -> None:
             and control.attrib.get("MaxHeight") == "240"
             and control.attrib.get("ItemsSource") == "{Binding MediaSourcePreview.Items}"
         )
+        # Retention scenario drill-down lives in a page-level StackPanel, so its two
+        # data grids must declare explicit, finite internal viewports and recycling.
+        bounded_workspace_scroll = bounded_workspace_scroll or (
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") in {
+                "RetentionScenarioGameGrid",
+                "RetentionScenarioVersionGrid",
+            }
+            and control.attrib.get("Tag") == "FiniteViewport"
+            and control.attrib.get("MaxHeight") in {"250", "300"}
+            and control.attrib.get("MinHeight") == "120"
+            and control.attrib.get("ScrollViewer.CanContentScroll") == "True"
+            and control.attrib.get("ScrollViewer.VerticalScrollBarVisibility") == "Auto"
+            and control.attrib.get("VirtualizingPanel.IsVirtualizing") == "True"
+            and control.attrib.get("VirtualizingPanel.VirtualizationMode") == "Recycling"
+        )
         control_name = control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name", "")
         if control_name in finite_page_tables:
             page_viewer_name, *required_source_tokens = finite_page_tables[control_name]
