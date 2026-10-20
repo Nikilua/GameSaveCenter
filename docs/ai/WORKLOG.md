@@ -11619,3 +11619,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 可复用现有 `SaveCenterView` “备份策略”模板编辑器：已有模板草稿、当前游戏字段差异、显式目标筛选/选择和批量确认。Worker 按稳定游戏 ID 重新读取游戏与模板并取得游戏操作锁；模板应用只更新策略，不处理归档文件。
 - 清理保持独立安全链：`PreviewRetentionSimulation` 产生 Worker 预览句柄；Apply 校验预览 ID/时间、重读当前版本与策略，检查锁定/PreRestore/健康保护和归档路径/身份，并在每游戏操作锁下再次读取。已有 Worker 行为测试覆盖保护项和状态变化拒绝。
 - 因而 S05-07 真实缺口是从保存情景到现有模板编辑器的安全转交。已将 backlog 标为 READY：只映射四项保留期限至未保存模板草稿，保留其他模板策略项，增长范围仍为比较假设；转交时清除旧对比并提示重新比较，不调用模板 Apply 或清理。未发现需新增的执行/删除引擎。
+## 2026-10-21 Round4 S05-07 转交策略编辑受控验收
+
+- 按 S05-07 计划要求先审计：现有 `SaveCenterView` 备份策略页已有模板编辑、字段差异、批量目标选择与确认；Worker 按稳定游戏 ID 复读当前游戏/模板并在锁内应用。保留清理有独立 Worker PreviewId，执行前复核版本、策略、保护和归档身份。缺口只在于维护中心保存情景没有转交入口。
+- 提交 `6807ae842f5a5b1ff478cb231a1fb8fdfc805a2b` 加入“转交策略编辑”按钮。命令拒绝未保存情景/模板/当前游戏策略草稿，复用 `CreatePolicyTemplate` 生成未保存副本，只映射全量、每日、每周、每月四项保留期限；增长范围不进入策略。清空旧对比并切到存档中心备份策略标签，不保存、不应用、不清理。
+- 受控验证：SDK9.0.302 Release solution `0 warning / 0 error`；生产 MaintenanceView Light/Dark 和策略映射定向测试 `4/4`；XAML structural validation `25/25`；source validation 与 diff check 通过。完整日志、TRX、summary 和程序集/PDB SHA 见 [S05-07 证据包](../design/reviews/ui-finesse-round4-20261018/evidence/S05-07/README.md)。SDK8.0.423 是 global.json 锁定版本但本机未安装；本轮从系统临时目录选择现有 SDK9 构建，未修改 SDK 锁定。实际 Playnite、完整 WPF 隔离/安装门禁和物理 DPI 未验，合成 WPF 测试未作真实屏幕证明，未触发 CI。
+- 原 Round3 未跟踪 TRX/TestResults 未暂存、提交或修改。后续按依赖审计 S05-08 情景性能验证。

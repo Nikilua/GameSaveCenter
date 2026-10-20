@@ -1,16 +1,23 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
+
+提交 `6807ae842f5a5b1ff478cb231a1fb8fdfc805a2b` 新增从已保存保留情景进入策略模板编辑器的入口。先拒绝情景输入、模板草稿或当前游戏策略的未保存变更，再复用 `CreatePolicyTemplate` 产生独立模板草稿，仅映射四项保留期限；比较旧结果失效并导航到策略页，未保存/应用策略/删除归档。现有策略差异、批量确认与 Worker 清理新 PreviewId 校验保持独立。
+
+精确源码提交使用 SDK9.0.302 Release solution `0/0`、定向生产页 Light/Dark 与映射测试 `4/4`、XAML `25/25` 和 source validation。SDK8.0.423 未安装；从系统临时目录调用 SDK9，未修改 global.json。证据含 summary、构建日志、TRX 和程序集/PDB 哈希，见 [S05-07](../design/reviews/ui-finesse-round4-20261018/evidence/S05-07/README.md)。合成数据的生产 WPF 测试不代表真实 Playnite/物理 DPI；未触发 CI，原 Round3 未跟踪 TRX/TestResults 保留。下一项按依赖审计 S05-08。
+
+
 ## 2026-10-21 Round4 S05-06 保存情景草稿已验收
 
 实现提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 增加保留情景的命名设置持久化：版本化标量定义最多 32 项，字段有范围校验；维护页提供选择载入、保存/更新、复制、重命名和删除。只记最近成功比较时间，不缓存旧结果/版本列表/清理句柄，也不改当前生效策略。旧设置缺少集合字段时使用空集合，便携设置导入/导出包含这些非秘密设置。
 
-先审计确认旧 `RetentionScenarioDraft` 只有本会话输入，比较返回的快照时间未存；每游戏策略与模板保存也不能保存命名情景，因此不是重复开发。SDK `8.0.423` 精确提交 Release solution `0/0`，XAML `25/25`、定向 Playnite `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation 与 diff check 通过。构建摘要、原始 TRX、RenderHarness 报告和 SHA 见 [S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。受控 WPF/离屏数据为合成；真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验，未触发 CI。原 Round3 未跟踪 TRX/TestResults 未修改或提交。随后审计 S05-07 已准入 READY。
+先审计确认旧 `RetentionScenarioDraft` 只有本会话输入，比较返回的快照时间未存；每游戏策略与模板保存也不能保存命名情景，因此不是重复开发。SDK `8.0.423` 精确提交 Release solution `0/0`，XAML `25/25`、定向 Playnite `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation 与 diff check 通过。构建摘要、原始 TRX、RenderHarness 报告和 SHA 见 [S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。受控 WPF/离屏数据为合成；真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验，未触发 CI。原 Round3 未跟踪 TRX/TestResults 未修改或提交。随后 S05-07 已验收，下一项审计 S05-08。
 
 ## 2026-10-21 Round4 S05-05 策略差异定位已验收
 
 提交 `2fd0aa04474c314a179bac0a1c641def813c6d71` 将 S05-02 的策略总量比较下钻为逐游戏与变化版本明细。既有当前策略清理预览和时间线保护说明都不具备双方案逐版本比较，因此本项不是重复实现。逐游戏两侧计数与版本计划对账；用户锁定、PreRestore 和健康恢复点保护单独显示；只读检查满足现有归档根目录/ZIP/重解析点边界的候选是否存在。缺失、不可访问或不安全路径不计作现存归档候选，也不承诺索引大小可释放。页面虚拟化游戏和版本表并保留外层页面滚动，比较不写设置、不创建清理预览句柄、不调用 Apply/清理。
 
-SDK `8.0.423` 精确提交 Release solution `0/0`、XAML `25/25`、Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness `0 PROBLEM`，source validation/diff check 通过。证据、TRX、构建摘要和哈希见 [S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。RenderHarness 是合成离屏检查；真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。旧 Round3 未跟踪 TRX/TestResults 保留；随后 S05-06 已验收，当前下一项审计 S05-07。
+SDK `8.0.423` 精确提交 Release solution `0/0`、XAML `25/25`、Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness `0 PROBLEM`，source validation/diff check 通过。证据、TRX、构建摘要和哈希见 [S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。RenderHarness 是合成离屏检查；真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。旧 Round3 未跟踪 TRX/TestResults 保留；随后 S05-06 已验收，当前下一项审计 S05-08。
 
 ## 2026-10-20 Round4 S05-04 存储预算分解已验收
 

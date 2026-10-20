@@ -758,14 +758,19 @@
     {
       "id": "S05-07",
       "title": "转交策略编辑",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "6807ae84",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "能力审计已准入 READY：维护页现无转交入口；复用 SaveCenter 备份策略模板编辑、差异与批量确认。仅转成未保存模板草稿并作废旧比较；不调用 Apply/清理。清理仍用 Worker 新 PreviewId 并复核版本、策略、保护和归档身份。"
+      "verificationText": "[证据](evidence/S05-07/README.md)：SDK9.0.302 Release solution 0/0、定向测试 4/4、XAML 25/25、source validation 通过",
+      "evidence": [
+        {
+          "label": "受控证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-07/README.md"
+        }
+      ],
+      "boundary": "仅将选中且未修改的已保存情景转交为未保存模板草稿，复用现有策略差异/确认；不自动保存/应用/清理，清理仍须新 Worker PreviewId 并复核。实际生产 XAML 用合成上下文验证；未运行真实 Playnite、完整隔离/安装门禁、物理 DPI/CEF。global.json 要求 SDK8.0.423但本机未安装，本次 SDK9.0.302 构建通过，需在 SDK8 环境补精确版本验证。"
     },
     {
       "id": "S05-08",

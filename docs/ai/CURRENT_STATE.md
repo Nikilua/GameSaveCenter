@@ -2,7 +2,7 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-06 已验收；S05-07 转交策略编辑已审计准入 READY，下一步实现。保留用户原有未跟踪 TRX/TestResults。
+Round4 S05-03 至 S05-07 已验收；下一步按依赖审计 S05-08 情景性能验证。SDK8.0.423 未安装，本轮 SDK9.0.302 Release build/定向测试通过；保留用户原有未跟踪 TRX/TestResults。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
@@ -14,11 +14,16 @@ S05-03 实现提交 `e6279b7d` 将历史逻辑增长表达为样本覆盖内的�
 
 S05-04 实现提交 `cf50643c` 为本地存档、第二镜像、恢复 staging、媒体目录提供独立只读预算分项，区分目录文件长度和 SQLite 逻辑量，空目录/未知/未启用分别显示，不生成总计并警告重叠路径。精确提交 SDK8.0.423 Release solution `0/0`、Worker `8/8`、生产维护页双主题与导航 `4/4`。证据：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。目录文件长度不表示卷簇实占。
 
-S05-05 实现提交 `2fd0aa04` 将策略总量差异下钻到逐游戏和变化版本，并展示各保护原因；只对通过既有路径安全检查的变化候选做只读归档存在性检查，不创建清理句柄。精确提交 SDK8.0.423 Release solution `0/0`、Worker `2/2`、生产维护页 Light/Dark 双层滚动 `2/2`，RenderHarness 无问题。证据：[S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。随后 S05-06 已验收，当前下一步审计 S05-07。
+S05-05 实现提交 `2fd0aa04` 将策略总量差异下钻到逐游戏和变化版本，并展示各保护原因；只对通过既有路径安全检查的变化候选做只读归档存在性检查，不创建清理句柄。精确提交 SDK8.0.423 Release solution `0/0`、Worker `2/2`、生产维护页 Light/Dark 双层滚动 `2/2`，RenderHarness 无问题。证据：[S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。随后 S05-06 与 S05-07 已验收，当前下一步审计 S05-08。
 
+## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
+
+实现提交 `6807ae84` 在维护中心保留策略卡新增“转交策略编辑”。该命令复用现有 `CreatePolicyTemplate`，将选中且未修改的命名情景转入未保存模板草稿，只覆盖四项保留期限；增长范围仍是比较假设，自动恢复安全约束和其他策略字段沿用模板克隆逻辑。遇到未保存情景、模板或游戏策略修改时拒绝覆盖。转交清空旧比较、切到存档中心备份策略页，不保存、不应用、不清理。后续策略应用沿用现有差异/确认，清理需要新的 Worker 预览并实时复核。
+
+SDK9.0.302 Release solution `0/0`、生产 MaintenanceView Light/Dark 与策略映射测试 `4/4`、XAML `25/25`、source validation 通过。证据：[S05-07](../design/reviews/ui-finesse-round4-20261018/evidence/S05-07/README.md)。当前机器缺少 global.json 锁定的 SDK8.0.423；真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验。测试数据为合成，未触发 CI；用户旧 Round3 TRX/TestResults 保留。
 ## 2026-10-21 Round4 S05-06 保存情景草稿已验收
 
-实现提交 `313fabc1` 为保留情景增加有界、版本化的标量设置持久化，以及选择载入、保存/更新、复制、重命名、删除和最近快照时间。草稿与生效策略分离；比较结果不缓存，后续会重新读取当前版本快照。SDK8.0.423 Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、Light/Dark RenderHarness `0 PROBLEM`、source validation 通过。证据：[S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验；原 Round3 TRX/TestResults 保留。下一项审计 S05-07。
+实现提交 `313fabc1` 为保留情景增加有界、版本化的标量设置持久化，以及选择载入、保存/更新、复制、重命名、删除和最近快照时间。草稿与生效策略分离；比较结果不缓存，后续会重新读取当前版本快照。SDK8.0.423 Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、Light/Dark RenderHarness `0 PROBLEM`、source validation 通过。证据：[S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验；原 Round3 TRX/TestResults 保留。随后 S05-07 已验收，下一项审计 S05-08。
 
 ## Round4 前序小批：S05-02 已验收
 

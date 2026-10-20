@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a9b6d501-9476-4e0b-a270-44cadb03dab8" name="lopmatu@SULT 2026-10-21 02:22:41" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-21T02:22:41.7927961+08:00" queuing="2026-10-21T02:22:41.7927963+08:00" start="2026-10-21T02:22:34.8261473+08:00" finish="2026-10-21T02:22:58.1413421+08:00" />
+  <TestSettings name="default" id="a97713f8-faf6-44cb-abc9-9542d1a42f27">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-21_02_22_41" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e290f479-7c9d-4022-a22b-6c7aae3007d3" testId="53c26930-2b65-bb6a-dd28-d9afdc8ac479" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioPolicyHandoffTests.HandoffRejectsInvalidSavedScenario" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-21T02:22:42.3953795+08:00" endTime="2026-10-21T02:22:42.3963788+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e290f479-7c9d-4022-a22b-6c7aae3007d3" />
+    <UnitTestResult executionId="08ff3e2e-e80f-4101-9c49-ad7900a85f07" testId="6866598d-3264-5033-c0dd-f6fa3ba9aed7" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors(theme: Dark)" computerName="SULT" duration="00:00:00.6200000" startTime="2026-10-21T02:22:41.7781806+08:00" endTime="2026-10-21T02:22:42.3763797+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08ff3e2e-e80f-4101-9c49-ad7900a85f07" />
+    <UnitTestResult executionId="abc7a675-b970-44fc-b39c-f07a4c46395c" testId="300f1e4a-1fa4-ba83-1ea3-689e21c29f29" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioPolicyHandoffTests.HandoffMapsOnlyRetentionWindowsIntoAnIndependentPolicyDraft" computerName="SULT" duration="00:00:00.0140000" startTime="2026-10-21T02:22:42.3813791+08:00" endTime="2026-10-21T02:22:42.3933801+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="abc7a675-b970-44fc-b39c-f07a4c46395c" />
+    <UnitTestResult executionId="18bd4dda-5a88-47f4-8e3c-e44feaea9d08" testId="2052ffa1-b68a-20e2-77c1-dae82f67b11b" testName="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors(theme: Light)" computerName="SULT" duration="00:00:03.1100000" startTime="2026-10-21T02:22:38.6617253+08:00" endTime="2026-10-21T02:22:41.7571803+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="18bd4dda-5a88-47f4-8e3c-e44feaea9d08" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioPolicyHandoffTests.HandoffMapsOnlyRetentionWindowsIntoAnIndependentPolicyDraft" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s05-07-sdk9-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="300f1e4a-1fa4-ba83-1ea3-689e21c29f29">
+      <Execution id="abc7a675-b970-44fc-b39c-f07a4c46395c" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s05-07-sdk9-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioPolicyHandoffTests" name="HandoffMapsOnlyRetentionWindowsIntoAnIndependentPolicyDraft" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s05-07-sdk9-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2052ffa1-b68a-20e2-77c1-dae82f67b11b">
+      <Execution id="18bd4dda-5a88-47f4-8e3c-e44feaea9d08" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s05-07-sdk9-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests" name="NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests.NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s05-07-sdk9-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6866598d-3264-5033-c0dd-f6fa3ba9aed7">
+      <Execution id="08ff3e2e-e80f-4101-9c49-ad7900a85f07" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s05-07-sdk9-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioInputBehaviorTests" name="NamedDraftControlsStaySeparateFromEffectivePolicyAndShowInvalidFieldErrors" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.RetentionScenarioPolicyHandoffTests.HandoffRejectsInvalidSavedScenario" storage="d:\workplace\github\gamesavecenter\.tmp\round4-s05-07-sdk9-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="53c26930-2b65-bb6a-dd28-d9afdc8ac479">
+      <Execution id="e290f479-7c9d-4022-a22b-6c7aae3007d3" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-s05-07-sdk9-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.RetentionScenarioPolicyHandoffTests" name="HandoffRejectsInvalidSavedScenario" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="53c26930-2b65-bb6a-dd28-d9afdc8ac479" executionId="e290f479-7c9d-4022-a22b-6c7aae3007d3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6866598d-3264-5033-c0dd-f6fa3ba9aed7" executionId="08ff3e2e-e80f-4101-9c49-ad7900a85f07" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="300f1e4a-1fa4-ba83-1ea3-689e21c29f29" executionId="abc7a675-b970-44fc-b39c-f07a4c46395c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2052ffa1-b68a-20e2-77c1-dae82f67b11b" executionId="18bd4dda-5a88-47f4-8e3c-e44feaea9d08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.78]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.64]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

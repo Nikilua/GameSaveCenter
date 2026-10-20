@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "6807ae842f5a5b1ff478cb231a1fb8fdfc805a2b",
+  "sdk": "9.0.302",
+  "globalJsonRequiredSdk": "8.0.423",
+  "sdkSelectionNote": "SDK 8.0.423 is not installed. Commands ran from the system temp directory to use installed SDK 9.0.302; global.json was not changed.",
+  "buildCommand": "dotnet build GameSaveCenter.sln -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=.tmp/round4-s05-07-sdk9-output -v:minimal",
+  "buildExitCode": 0,
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "buildOutput": ".tmp/round4-s05-07-sdk9-output",
+  "testExitCode": 0,
+  "testCommand": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --no-build --no-restore --filter FullyQualifiedName~RetentionScenarioPolicyHandoffTests|FullyQualifiedName~RetentionScenarioInputBehaviorTests",
+  "testFilter": "RetentionScenarioPolicyHandoffTests | RetentionScenarioInputBehaviorTests",
+  "trx": "tests/retention-handoff-6807ae84.trx",
+  "trxSha256": "5B3FAF3AB746CB7F2E7FE6F1BB885A60BA1BC2135245E30C74BA39813ED06B56",
+  "pluginAssemblySha256": "E3B9E0DA1F17D777C9D2BFCD5FD0D9F91C83026C8A5569A265DF7970A4387D1E",
+  "pluginPdbSha256": "3650270F672384F37072BA5410EB13734AB8C0022C57EEDB15B44175295DD992",
+  "testAssemblySha256": "27E931F8F954DE717CD0A98A2224C58634E5F2A0EBCCEAB7449B2AC81F6EDB3B",
+  "testPdbSha256": "B9748492003420C3AFD46B7DC1D0BDB5FE25DC9B734EE1264A1DFF6470775284",
+  "buildLogSha256": "E42425B7D3362950EB924148F3C0BC387AB97AA23341444376B03AB39B3B19A2",
+  "testLogSha256": "C60A4DCD4DD9842E73CDC2009F8A5F2B39F2DD2FF1E041E620357E3E087589BC"
+}
