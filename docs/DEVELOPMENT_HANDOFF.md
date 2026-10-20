@@ -8,7 +8,7 @@
 
 提交 `43b869d1` 将紧凑任务筛选/视图配置收进折叠区，并把路径候选和任务详情入口移出 DataGrid 框架，避免表格可滚动而内容仍落到下方详情后面。SDK9.0.302 Release solution `0 warning/0 error`，几何回归 `10/10`。完整证据：[用户截图修复](docs/design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。真实 Playnite 未运行，RenderHarness 因缺少 `net472/win-x86` assets 报 `NETSDK1047`；保留原 Round3 TRX/TestResults。
 
-S06-03 `0fc43773` 已完成：清单浏览/搜索/分组、键盘重排、确认移除及按稳定 ID 查看引用状态，SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`。S06-04 已审计为 READY，下一步实现显式的稳定 ID 页面续接与缺失诊断；不恢复过期对话框或自动执行命令。证据：[S06-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md)、[S06-04 审计](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md)。
+S06-03 `0fc43773` 完成清单浏览/搜索/分组、键盘重排、确认移除和稳定 ID 状态解析；S06-04 `2af5841f` 新增按稳定 ID 续接存档、媒体、任务与校验问题，并在任务详情返回时恢复会话内清单上下文。SDK9 Release 重编译 `0/0`、Worker `2/2`、Playnite `10/10`、source validation 和 XAML `25/25` 通过。证据：[S06-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；按计划下一步审计 S06-05。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 

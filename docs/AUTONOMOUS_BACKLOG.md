@@ -4,7 +4,7 @@
 
 ### 最新状态（2026-10-21）
 
-Round4 S05-01 至 S05-08 已受控验收；S06-01 `40a82b15`、S06-02 `85400645`、S06-03 `0fc43773` 已完成受控验收，分别交付有界清单、确认式引用入口、清单浏览整理。S06-03 SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`；详见 `design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md`。审查未发现从清单续接到目标业务对象的等价路由，S06-04 已 READY；审计见 `evidence/S06-04/AUDIT.md`。另按用户截图提交 `43b869d1` 修正存档/任务紧凑表格的详情与筛选布局，SDK9 Release solution `0/0`、几何回归 `10/10`；证据见 `evidence/USER-SCROLL-FEEDBACK-20261021/README.md`。SDK8.0.423 与真实 Playnite 当前不可用。
+Round4 S05-01 至 S05-08 已受控验收；S06-01 `40a82b15`、S06-02 `85400645`、S06-03 `0fc43773`、S06-04 `2af5841f` 已完成有界清单、确认式引用入口、清单浏览整理与稳定 ID 对象续接。S06-04 SDK9 Release solution 重编译 `0/0`、Worker `2/2`、Playnite `10/10`、source validation/XAML `25/25`；证据见 `design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md`。另按用户截图提交 `43b869d1` 修正存档/任务紧凑表格的详情与筛选布局，SDK9 Release solution `0/0`、几何回归 `10/10`；证据见 `evidence/USER-SCROLL-FEEDBACK-20261021/README.md`。SDK8.0.423 与真实 Playnite 当前不可用。
 
 S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且经过搜索/筛选的有限媒体结果中切换 B，保留详情焦点；坏图会被跳过，复用 `AsyncThumbnailImage` 的迟到回调保护。S04-06 `792b1a2f`、S04-07 `14925e5e`、S04-08 `c9da7c76` 已完成受控验收：比较会话意见可撤销，转交使用稳定 ID 并复核，缩略图沿用 2048 px 解码/64 MiB 缓存边界。S04-08 SDK8.0.423 Release solution `0/0`，缩略图及生产比较页行为 `19/19`。真实 Playnite、真实媒体和物理 DPI 未验；详细证据见各项 Round4 页面。另按用户新反馈修正工作区滚动视口预算，SDK8 Release solution `0/0`、布局回归 `6/6`；2026-10-21 依三张宿主截图又修正根裁切、表格扣除页面工具区及小窗放大后的高度恢复，SDK9 Release solution `0 error`、布局回归 `6/6`、RenderHarness `render-qa OK`。证据见 `design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md`。
 
@@ -34,7 +34,7 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S06-01 | IMPLEMENTED | `40a82b15` 新增有界的清单/条目设置模型；按对象种类与稳定 ID 去重，克隆隔离，限制清单、条目、名称、ID 和备注大小，不存 DTO、路径或操作授权。SDK9.0.302 Playnite.Tests Release 0 warning/0 error，行为 4/4，源码护栏通过。SDK8.0.423 未安装；证据见 Round4 S06-01。 |
 | S06-02 | IMPLEMENTED | `85400645` 为存档版本、媒体、后台任务、校验问题详情加入确认式待办入口；确认后只存稳定 ID，不执行源业务操作。SDK9 Release solution `0/0`、Playnite `8/8`、Worker `2/2`，source validation 通过。真实 Playnite 未验；证据见 Round4 S06-02。 |
 | S06-03 | IMPLEMENTED | `0fc43773` 已交付清单浏览/搜索/分组、键盘重排、确认移除和按稳定 ID 解析引用状态。SDK9 Release solution 0/0、Worker 2/2、Playnite 8/8。真实 Playnite未验；RenderHarness 因 NETSDK1047 未运行。证据见 Round4 S06-03。 |
-| S06-04 | READY | 审计确认清单虽跨重启持久化，但没有从条目按稳定 ID 返回业务页的路由；现有任务返回上下文仅在当前进程中。增加显式续接动作、必要定位筛选、缺失诊断和移除入口；不恢复对话框或执行命令。审计：[S06-04](design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md)。 |
+| S06-04 | IMPLEMENTED | `2af5841f` 已交付稳定 ID 续接存档版本、媒体、后台任务和校验问题；任务返回时恢复当前会话清单上下文。不猜名称/路径、不恢复对话框或执行命令；缺失时可移除。SDK9 Release solution 重编译 `0/0`、Worker `2/2`、Playnite `10/10`。SDK8.0.423 与真实 Playnite未验；证据见 Round4 S06-04。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S01-02 | IMPLEMENTED | `ad7bd563` 新增舒适/紧凑全局密度设置与共享令牌，四行下限按行/表头高度计算；SDK8 solution build 0/0，密度/设置资源14/14、R09 2/2、MediaInbox几何3/3、R23双主题资源9/9。真实 Playnite 验收待 UI gate；证据见 Round4 S01-02。 |
 | S01-03 | IMPLEMENTED | `8cdf5253` 为存档历史、候选路径和任务表格加入可访问的列管理；SDK8.0.423 Release build 0/0，列显隐/列宽/视图配置/R09 共 17/17。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-03。 |

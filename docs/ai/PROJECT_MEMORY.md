@@ -10,13 +10,15 @@
 
 证据：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。定向测试在提交前工作树运行；后续 `48727c13` 只修改页面视口，不变更 S05 文件；两者一并通过 SDK9 Release solution 构建。当前机器无 SDK8.0.423，真实 Playnite/CEF/物理 DPI 未验。
 
-## 2026-10-21 Round4 S06-01/S06-02 已验收、S06-03 已准入
+## 2026-10-21 Round4 S06-01 至 S06-04 已验收
 
 `40a82b15` 实现 `WorklistDefinition`/`WorklistItemRecord`：最多 20 份清单、每份 200 项、80 字名称、256 字稳定键、500 字备注；仅记录对象种类/ID、人工备注和手工完成状态，按种类+稳定键去重并提供深克隆，不含 DTO、路径或操作授权。SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error，行为测试 4/4。审计：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。
 
 `85400645` 为存档版本、媒体、后台任务和校验问题详情加入待办入口；确认预览后只把稳定对象 ID 写入插件设置。问题引用复用 Worker 已有 `finding_id` 主键。SDK9.0.302 Release solution `0 warning/0 error`，Playnite 行为 `8/8`，Worker 主键稳定性 `2/2`；源代码校验与 WPF 静态审查 0 errors。证据：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。真实宿主未验。
 
-`0fc43773` 完成 S06-03：工作清单可浏览、搜索、分组、键盘重排和确认移除；Worker 按稳定 ID 解析索引引用，待刷新与无法检查不会误报失效。SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`。证据：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md)。S06-04 审计发现条目没有按稳定 ID 路由到业务页的续接动作；继续实现显式导航及缺失诊断，不恢复对话框/自动命令。审计：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/AUDIT.md)。
+`0fc43773` 完成 S06-03：工作清单可浏览、搜索、分组、键盘重排和确认移除；Worker 按稳定 ID 解析索引引用，待刷新与无法检查不会误报失效。SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`。证据：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md)。
+
+`2af5841f` 完成 S06-04：工作清单显式续接存档版本、媒体、后台任务和校验问题。Worker 提供精确 finding ID 只读查询；备份使用长度前缀 ID，媒体需索引归属游戏，任务/问题走精确对象详情。不按名称/路径猜测，不恢复旧对话框或触发原命令；缺失时显示诊断并保留移除能力。任务页返回时恢复当前会话中的原清单、选中项、搜索和分组状态。SDK9.0.302 Release solution 重编译 `0/0`，Worker `2/2`、Playnite 路由/导航 `10/10`，source validation 通过、XAML `25/25`。证据：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；未探测/绕过 CEF、ETW。原 Round3 未跟踪 TRX/TestResults 保留。
 
 2026-10-21 新截图回报后，`43b869d1` 将紧凑模式次要筛选/视图配置收进 disclosure，并把候选/任务详情入口移出 DataGrid 框架。SDK9 Release solution `0/0`、截图尺寸几何行为 `10/10`。表格仍须独占有限滚动框架，页面工具区需计入剩余视口预算；测试验证四行可读及页面/表内滚动都能到端点。证据：[截图修复](../design/reviews/ui-finesse-round4-20261018/evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
 
