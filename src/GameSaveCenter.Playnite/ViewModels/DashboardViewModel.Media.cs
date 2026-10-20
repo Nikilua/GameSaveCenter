@@ -691,12 +691,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
             catch (OperationCanceledException)
             {
-                if (reset) ApplyOnUi(() => CancelMediaDetailsLoad(requestGeneration));
+                if (reset) ApplyOnUi(() =>
+                {
+                    CancelMediaDetailsLoad(requestGeneration);
+                    if (CurrentWorkspace != WorkspaceKind.Media || !IsSelectedGame(playniteId))
+                        ClearPendingWorklistMediaContinuation();
+                });
                 throw;
             }
             catch (Exception ex)
             {
-                if (reset) ApplyOnUi(() => FailMediaDetailsLoad(ex, requestGeneration));
+                if (reset) ApplyOnUi(() =>
+                {
+                    FailMediaDetailsLoad(ex, requestGeneration);
+                    ClearPendingWorklistMediaContinuation();
+                });
                 throw;
             }
             finally
@@ -707,13 +716,25 @@ namespace GameSaveCenter.Playnite.ViewModels
                 || CurrentWorkspace != WorkspaceKind.Media
                 || !IsSelectedGame(playniteId)) return;
 
-            var selectedId = SelectedMedia?.MediaId;
+            var worklistMediaId = reset ? pendingWorklistMediaId : null;
+            var selectedId = !string.IsNullOrWhiteSpace(worklistMediaId)
+                ? worklistMediaId
+                : SelectedMedia?.MediaId;
             ApplyOnUi(() =>
             {
                 if (requestGeneration != Interlocked.Read(ref mediaPageGeneration)
                     || CurrentWorkspace != WorkspaceKind.Media
                     || !IsSelectedGame(playniteId)) return;
                 ApplyMediaPage(page ?? new MediaPageDto(), reset, selectedId);
+                if (!string.IsNullOrWhiteSpace(worklistMediaId))
+                {
+                    SelectedMedia = Media.FirstOrDefault(item =>
+                        string.Equals(item.MediaId, worklistMediaId, StringComparison.OrdinalIgnoreCase))!;
+                    pendingWorklistMediaId = null;
+                    StatusMessage = SelectedMedia == null
+                        ? $"待办媒体“{worklistMediaId}”已不在当前游戏的媒体结果中；没有选择相邻项目。可返回清单刷新或移除引用。"
+                        : $"已从待办续接媒体“{worklistMediaId}”；只打开详情，没有修改文件。";
+                }
                 if (reset) CompleteMediaDetailsLoad(requestGeneration);
             });
         }
@@ -1296,7 +1317,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             if(string.Equals(MediaFilter,"录像",StringComparison.Ordinal)&&item.Kind!=MediaKind.VideoClip)return false;
             if(string.Equals(MediaFilter,"收藏",StringComparison.Ordinal)&&!item.IsFavorite)return false;
             if(string.IsNullOrWhiteSpace(MediaSearchText))return true;
-            return (item.FileName??string.Empty).IndexOf(MediaSearchText,StringComparison.OrdinalIgnoreCase)>=0
+            return (item.MediaId ?? string.Empty).IndexOf(MediaSearchText, StringComparison.OrdinalIgnoreCase) >= 0
+                   || (item.FileName??string.Empty).IndexOf(MediaSearchText,StringComparison.OrdinalIgnoreCase)>=0
                    || (item.Comment??string.Empty).IndexOf(MediaSearchText,StringComparison.OrdinalIgnoreCase)>=0
                    || (item.SourceDisplay??string.Empty).IndexOf(MediaSearchText,StringComparison.OrdinalIgnoreCase)>=0;
         }

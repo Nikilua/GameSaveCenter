@@ -926,20 +926,23 @@ VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0);",
         {
             var stableId = (reference?.StableObjectId ?? string.Empty).Trim();
             var state = WorklistReferenceState.InvalidReference;
+            var targetPlayniteId = string.Empty;
             if (stableId.Length > 0 && stableId.Length <= 256)
             {
                 switch (reference!.Kind)
                 {
                     case 1 when TryParseBackupReference(stableId, out var playniteId, out var backupId):
+                        targetPlayniteId = playniteId;
                         state = await ReadReferenceStateAsync(connection,
                             "SELECT 1 FROM backup_versions WHERE playnite_id=$game AND backup_id=$id LIMIT 1;",
                             ("$game", playniteId), ("$id", backupId), token).ConfigureAwait(false)
                             ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
                         break;
                     case 2:
-                        state = await ReadReferenceStateAsync(connection,
-                            "SELECT 1 FROM media WHERE media_id=$id LIMIT 1;", ("$id", stableId), null, token).ConfigureAwait(false)
-                            ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
+                        var mediaGameId = await ReadReferenceStringAsync(connection,
+                            "SELECT playnite_id FROM media WHERE media_id=$id LIMIT 1;", ("$id", stableId), token).ConfigureAwait(false);
+                        targetPlayniteId = mediaGameId ?? string.Empty;
+                        state = mediaGameId != null ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
                         break;
                     case 3:
                         state = await ReadReferenceStateAsync(connection,
@@ -947,9 +950,10 @@ VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0);",
                             ? WorklistReferenceState.Indexed : WorklistReferenceState.NotFound;
                         break;
                     case 4:
-                        var findingState = await ReadFindingReferenceStateAsync(connection, stableId, token).ConfigureAwait(false);
-                        state = findingState.HasValue
-                            ? findingState.Value ? WorklistReferenceState.Resolved : WorklistReferenceState.Indexed
+                        var findingReference = await ReadFindingReferenceAsync(connection, stableId, token).ConfigureAwait(false);
+                        targetPlayniteId = findingReference?.PlayniteId ?? string.Empty;
+                        state = findingReference.HasValue
+                            ? findingReference.Value.Resolved ? WorklistReferenceState.Resolved : WorklistReferenceState.Indexed
                             : WorklistReferenceState.NotFound;
                         break;
                 }
@@ -959,10 +963,39 @@ VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0);",
             {
                 Kind = reference?.Kind ?? 0,
                 StableObjectId = stableId,
+                PlayniteId = targetPlayniteId,
                 State = state
             });
         }
         return result;
+    }
+
+    public async Task<ValidationFindingDto?> GetValidationFindingAsync(
+        ValidationFindingQueryDto? request,
+        CancellationToken token)
+    {
+        var findingId = (request?.FindingId ?? string.Empty).Trim();
+        if (findingId.Length == 0 || findingId.Length > 256) return null;
+
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        await using var command = connection.CreateCommand();
+        command.CommandText = "SELECT finding_id,playnite_id,backup_id,severity,code,title,detail,suggested_action,created_utc FROM findings WHERE finding_id=$id LIMIT 1;";
+        command.Parameters.AddWithValue("$id", findingId);
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        if (!await reader.ReadAsync(token).ConfigureAwait(false)) return null;
+        return new ValidationFindingDto
+        {
+            FindingId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
+            PlayniteId = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+            BackupId = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+            Severity = (FindingSeverity)reader.GetInt32(3),
+            Code = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
+            Title = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+            Detail = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),
+            SuggestedAction = reader.IsDBNull(7) ? string.Empty : reader.GetString(7),
+            CreatedUtc = reader.IsDBNull(8) ? DateTime.MinValue : DateTime.Parse(reader.GetString(8)).ToUniversalTime()
+        };
     }
 
     private static async Task<bool> ReadReferenceStateAsync(
@@ -979,17 +1012,31 @@ VALUES($id,$game,$backup,$severity,$code,$title,$detail,$action,$utc,0);",
         return await command.ExecuteScalarAsync(token).ConfigureAwait(false) != null;
     }
 
-    private static async Task<bool?> ReadFindingReferenceStateAsync(
+    private static async Task<string?> ReadReferenceStringAsync(
+        SqliteConnection connection,
+        string commandText,
+        (string Name, string Value) parameter,
+        CancellationToken token)
+    {
+        await using var command = connection.CreateCommand();
+        command.CommandText = commandText;
+        command.Parameters.AddWithValue(parameter.Name, parameter.Value);
+        var value = await command.ExecuteScalarAsync(token).ConfigureAwait(false);
+        return value == null || value == DBNull.Value ? null : Convert.ToString(value, System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    private static async Task<(bool Resolved, string PlayniteId)?> ReadFindingReferenceAsync(
         SqliteConnection connection,
         string findingId,
         CancellationToken token)
     {
         await using var command = connection.CreateCommand();
-        command.CommandText = "SELECT resolved FROM findings WHERE finding_id=$id LIMIT 1;";
+        command.CommandText = "SELECT resolved,playnite_id FROM findings WHERE finding_id=$id LIMIT 1;";
         command.Parameters.AddWithValue("$id", findingId);
-        var value = await command.ExecuteScalarAsync(token).ConfigureAwait(false);
-        if (value == null || value == DBNull.Value) return null;
-        return Convert.ToInt32(value, System.Globalization.CultureInfo.InvariantCulture) != 0;
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        if (!await reader.ReadAsync(token).ConfigureAwait(false)) return null;
+        return (Convert.ToInt32(reader.GetValue(0), System.Globalization.CultureInfo.InvariantCulture) != 0,
+            reader.IsDBNull(1) ? string.Empty : reader.GetString(1));
     }
 
     private static bool TryParseBackupReference(string value, out string playniteId, out string backupId)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Settings;
 
 namespace GameSaveCenter.Playnite.ViewModels
 {
@@ -219,7 +220,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                 taskGridScrollOffset,
                 maintenanceFindingsScrollOffset,
                 returnLabel,
-                sourceSummary));
+                sourceSummary,
+                CurrentWorkspace == WorkspaceKind.Tasks && IsWorklistBrowserOpen,
+                CurrentWorkspace == WorkspaceKind.Tasks ? selectedWorklist?.Id.ToString("D") ?? string.Empty : string.Empty,
+                CurrentWorkspace == WorkspaceKind.Tasks && selectedWorklistBrowserEntry != null ? (int)selectedWorklistBrowserEntry.Kind : 0,
+                CurrentWorkspace == WorkspaceKind.Tasks ? selectedWorklistBrowserEntry?.StableObjectId ?? string.Empty : string.Empty,
+                CurrentWorkspace == WorkspaceKind.Tasks ? WorklistSearchText : string.Empty,
+                CurrentWorkspace == WorkspaceKind.Tasks ? WorklistGroupMode : string.Empty));
             OnNavigationHistoryChanged();
         }
 
@@ -409,6 +416,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     break;
                 case WorkspaceKind.Tasks:
                     RestoreTaskSnapshot(entry);
+                    RestoreWorklistBrowserSnapshot(entry);
                     RequestTaskGridScrollRestore(entry);
                     Run(() => LoadTaskPageAsync(true));
                     if (!selectedGameRestored)
@@ -424,6 +432,36 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
 
             OnNavigationHistoryChanged();
+        }
+
+        private void RestoreWorklistBrowserSnapshot(WorkspaceNavigationSnapshot entry)
+        {
+            IsWorklistBrowserOpen = false;
+            if (!entry.WorklistBrowserOpen) return;
+
+            WorklistDefinition? list = null;
+            if (Guid.TryParse(entry.WorklistListId, out var listId))
+                list = worklistBrowserLists.FirstOrDefault(candidate => candidate.Id == listId);
+            if (list == null)
+            {
+                StatusMessage = string.IsNullOrWhiteSpace(entry.WorklistListId)
+                    ? "已返回任务中心；原待办清单状态未记录，清单未自动切换。"
+                    : $"已返回任务中心；待办清单（{entry.WorklistListId}）已不存在，未自动切换到其他清单。";
+                return;
+            }
+
+            SelectedWorklist = list;
+            if (!string.IsNullOrEmpty(entry.WorklistGroupMode)) WorklistGroupMode = entry.WorklistGroupMode;
+            WorklistSearchText = entry.WorklistSearchText;
+            if (!string.IsNullOrWhiteSpace(entry.WorklistEntryStableId)
+                && Enum.IsDefined(typeof(WorklistObjectKind), entry.WorklistEntryKind))
+            {
+                var selectedEntry = worklistBrowserEntries.FirstOrDefault(candidate =>
+                    (int)candidate.Kind == entry.WorklistEntryKind
+                    && string.Equals(candidate.StableObjectId, entry.WorklistEntryStableId, StringComparison.OrdinalIgnoreCase));
+                if (selectedEntry != null) SetWorklistBrowserSelection(new[] { selectedEntry });
+            }
+            IsWorklistBrowserOpen = true;
         }
 
         private void RestoreTaskSnapshot(WorkspaceNavigationSnapshot entry)

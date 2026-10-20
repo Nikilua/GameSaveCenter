@@ -35,6 +35,18 @@ namespace GameSaveCenter.Contracts
     {
         public int Kind { get; set; }
         public string StableObjectId { get; set; } = string.Empty;
+        /// <summary>Stable parent game id used to open game-scoped media/finding details.</summary>
+        public string PlayniteId { get; set; } = string.Empty;
         public WorklistReferenceState State { get; set; } = WorklistReferenceState.NotChecked;
+    }
+
+    public sealed class ValidationFindingQueryDto
+    {
+        public string FindingId { get; set; } = string.Empty;
+    }
+
+    public sealed class ValidationFindingQueryResultDto
+    {
+        public ValidationFindingDto? Finding { get; set; }
     }
 }

@@ -584,6 +584,7 @@
                     </Grid>
                     <TextBox Width="220" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding WorklistSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索对象类型、稳定编号、备注或引用状态" AutomationProperties.Name="搜索待办条目" Margin="0,0,10,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshWorklistReferencesCommand}" Content="刷新状态" ToolTip="通过 Worker 按稳定 ID 查询索引；不会访问或修改源文件" AutomationProperties.Name="刷新待办引用状态" Margin="0,0,8,6"/>
+                    <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ContinueSelectedWorklistItemCommand}" Content="续接对象" ToolTip="按稳定编号打开对应页面和详情；不会恢复旧对话框或执行备份、恢复、校验、重试" AutomationProperties.Name="续接所选待办对象" Margin="0,0,8,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding MoveWorklistItemUpCommand}" Content="上移" ToolTip="在未分组且未搜索时，将唯一选中条目上移一位" AutomationProperties.Name="将待办条目上移" Margin="0,0,8,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding MoveWorklistItemDownCommand}" Content="下移" ToolTip="在未分组且未搜索时，将唯一选中条目下移一位" AutomationProperties.Name="将待办条目下移" Margin="0,0,8,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RemoveSelectedWorklistItemsCommand}" Content="移除所选" ToolTip="先确认当前清单中选中的精确条数；原对象不会删除" AutomationProperties.Name="从清单移除所选条目" Margin="0,0,0,6"/>

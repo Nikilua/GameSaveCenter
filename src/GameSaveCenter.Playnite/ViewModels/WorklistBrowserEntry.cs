@@ -9,6 +9,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private WorklistReferenceState state = WorklistReferenceState.NotChecked;
         private string groupMode = string.Empty;
+        private string targetPlayniteId = string.Empty;
 
         public WorklistBrowserEntry(WorklistItemRecord record, int position)
         {
@@ -35,6 +36,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsManuallyComplete => Record.IsManuallyComplete;
         public string ManualStateDisplay => IsManuallyComplete ? "已完成（手动）" : "未完成";
         public WorklistReferenceState State => state;
+        public string TargetPlayniteId => targetPlayniteId;
+        public bool CanContinue => State == WorklistReferenceState.Indexed || State == WorklistReferenceState.Resolved;
         public string StateDisplay => State switch
         {
             WorklistReferenceState.Indexed => "有效 · 索引存在",
@@ -61,13 +64,26 @@ namespace GameSaveCenter.Playnite.ViewModels
         };
 
         public void SetState(WorklistReferenceState value)
+            => SetResolution(value, targetPlayniteId);
+
+        public void SetResolution(WorklistReferenceState value, string? playniteId)
         {
-            if (state == value) return;
-            state = value;
-            OnPropertyChanged(nameof(State));
-            OnPropertyChanged(nameof(StateDisplay));
-            OnPropertyChanged(nameof(StateHelpText));
-            OnPropertyChanged(nameof(GroupKey));
+            var normalizedState = Enum.IsDefined(typeof(WorklistReferenceState), value)
+                ? value
+                : WorklistReferenceState.Unavailable;
+            var normalizedPlayniteId = (playniteId ?? string.Empty).Trim();
+            if (state != normalizedState)
+            {
+                state = normalizedState;
+                OnPropertyChanged(nameof(State));
+                OnPropertyChanged(nameof(StateDisplay));
+                OnPropertyChanged(nameof(StateHelpText));
+                OnPropertyChanged(nameof(GroupKey));
+                OnPropertyChanged(nameof(CanContinue));
+            }
+            if (string.Equals(targetPlayniteId, normalizedPlayniteId, StringComparison.OrdinalIgnoreCase)) return;
+            targetPlayniteId = normalizedPlayniteId;
+            OnPropertyChanged(nameof(TargetPlayniteId));
         }
 
         public void SetGroupMode(string value)

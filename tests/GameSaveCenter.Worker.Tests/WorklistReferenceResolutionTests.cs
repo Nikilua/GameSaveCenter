@@ -82,10 +82,22 @@ public sealed class WorklistReferenceResolutionTests : IDisposable
         }, CancellationToken.None);
 
         Assert.Collection(result.References,
+            item =>
+            {
+                Assert.Equal(WorklistReferenceState.Indexed, item.State);
+                Assert.Equal(gameId, item.PlayniteId);
+            },
+            item =>
+            {
+                Assert.Equal(WorklistReferenceState.Indexed, item.State);
+                Assert.Equal(gameId, item.PlayniteId);
+            },
             item => Assert.Equal(WorklistReferenceState.Indexed, item.State),
-            item => Assert.Equal(WorklistReferenceState.Indexed, item.State),
-            item => Assert.Equal(WorklistReferenceState.Indexed, item.State),
-            item => Assert.Equal(WorklistReferenceState.Indexed, item.State),
+            item =>
+            {
+                Assert.Equal(WorklistReferenceState.Indexed, item.State);
+                Assert.Equal(gameId, item.PlayniteId);
+            },
             item => Assert.Equal(WorklistReferenceState.NotFound, item.State),
             item => Assert.Equal(WorklistReferenceState.NotFound, item.State),
             item => Assert.Equal(WorklistReferenceState.InvalidReference, item.State),
@@ -106,6 +118,14 @@ public sealed class WorklistReferenceResolutionTests : IDisposable
         }, CancellationToken.None);
 
         Assert.Equal(WorklistReferenceState.Resolved, Assert.Single(resolved.References).State);
+        var exactFinding = await store.GetValidationFindingAsync(
+            new ValidationFindingQueryDto { FindingId = findingId }, CancellationToken.None);
+        Assert.NotNull(exactFinding);
+        Assert.Equal(findingId, exactFinding!.FindingId);
+        Assert.Equal(gameId, exactFinding.PlayniteId);
+        Assert.Equal("Test finding", exactFinding.Title);
+        Assert.Null(await store.GetValidationFindingAsync(
+            new ValidationFindingQueryDto { FindingId = "different-id" }, CancellationToken.None));
     }
 
     [Fact]

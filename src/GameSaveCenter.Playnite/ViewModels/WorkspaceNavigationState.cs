@@ -29,7 +29,13 @@ namespace GameSaveCenter.Playnite.ViewModels
             double taskScrollOffset,
             double maintenanceFindingsScrollOffset,
             string returnLabel,
-            string sourceSummary)
+            string sourceSummary,
+            bool worklistBrowserOpen = false,
+            string worklistListId = "",
+            int worklistEntryKind = 0,
+            string worklistEntryStableId = "",
+            string worklistSearchText = "",
+            string worklistGroupMode = "")
         {
             Workspace = workspace;
             SelectedGameId = selectedGameId ?? string.Empty;
@@ -51,6 +57,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             MaintenanceFindingsScrollOffset = NormalizeOffset(maintenanceFindingsScrollOffset);
             ReturnLabel = string.IsNullOrWhiteSpace(returnLabel) ? "返回来源" : returnLabel;
             SourceSummary = sourceSummary ?? string.Empty;
+            WorklistBrowserOpen = worklistBrowserOpen;
+            WorklistListId = worklistListId ?? string.Empty;
+            WorklistEntryKind = worklistEntryKind;
+            WorklistEntryStableId = worklistEntryStableId ?? string.Empty;
+            WorklistSearchText = worklistSearchText ?? string.Empty;
+            WorklistGroupMode = worklistGroupMode ?? string.Empty;
         }
 
         public WorkspaceKind Workspace { get; }
@@ -73,6 +85,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public double MaintenanceFindingsScrollOffset { get; }
         public string ReturnLabel { get; }
         public string SourceSummary { get; }
+        public bool WorklistBrowserOpen { get; }
+        public string WorklistListId { get; }
+        public int WorklistEntryKind { get; }
+        public string WorklistEntryStableId { get; }
+        public string WorklistSearchText { get; }
+        public string WorklistGroupMode { get; }
 
         private static double NormalizeOffset(double value)
             => double.IsNaN(value) || double.IsInfinity(value) || value < 0 ? 0 : value;

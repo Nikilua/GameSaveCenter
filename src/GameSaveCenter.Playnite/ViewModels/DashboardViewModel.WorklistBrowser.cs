@@ -32,6 +32,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenWorklistBrowserCommand { get; private set; } = null!;
         public ICommand CloseWorklistBrowserCommand { get; private set; } = null!;
         public ICommand RefreshWorklistReferencesCommand { get; private set; } = null!;
+        public ICommand ContinueSelectedWorklistItemCommand { get; private set; } = null!;
         public ICommand MoveWorklistItemUpCommand { get; private set; } = null!;
         public ICommand MoveWorklistItemDownCommand { get; private set; } = null!;
         public ICommand RemoveSelectedWorklistItemsCommand { get; private set; } = null!;
@@ -144,6 +145,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshWorklistReferencesCommand = new RelayCommand(
                 _ => Observe(RefreshWorklistReferencesAsync()),
                 _ => selectedWorklist != null && !isResolvingWorklistReferences);
+            ContinueSelectedWorklistItemCommand = new RelayCommand(
+                _ => Observe(ContinueSelectedWorklistItemAsync()),
+                _ => !IsBusy && !isMutatingWorklist && !isResolvingWorklistReferences
+                    && selectedWorklistBrowserEntries.Count == 1
+                    && selectedWorklistBrowserEntries[0].CanContinue);
             MoveWorklistItemUpCommand = new RelayCommand(_ => MoveSelectedWorklistItem(-1), _ => CanMoveSelectedWorklistItem(-1));
             MoveWorklistItemDownCommand = new RelayCommand(_ => MoveSelectedWorklistItem(1), _ => CanMoveSelectedWorklistItem(1));
             RemoveSelectedWorklistItemsCommand = new RelayCommand(
@@ -257,14 +263,14 @@ namespace GameSaveCenter.Playnite.ViewModels
 
                 var resultLookup = (response?.References ?? new List<WorklistReferenceQueryResultItemDto>())
                     .GroupBy(item => GetWorklistIdentity((WorklistObjectKind)item.Kind, item.StableObjectId), StringComparer.OrdinalIgnoreCase)
-                    .ToDictionary(group => group.Key, group => group.First().State, StringComparer.OrdinalIgnoreCase);
+                    .ToDictionary(group => group.Key, group => group.First(), StringComparer.OrdinalIgnoreCase);
                 foreach (var entry in entries)
                 {
                     var identity = GetWorklistIdentity(entry.Kind, entry.StableObjectId);
-                    entry.SetState(resultLookup.TryGetValue(identity, out var state)
-                        && Enum.IsDefined(typeof(WorklistReferenceState), state)
-                        ? state
-                        : WorklistReferenceState.Unavailable);
+                    entry.SetResolution(resultLookup.TryGetValue(identity, out var resolution)
+                        ? resolution.State
+                        : WorklistReferenceState.Unavailable,
+                        resolution?.PlayniteId);
                 }
                 UpdateWorklistLookupSummary();
                 worklistBrowserView.Refresh();
@@ -285,6 +291,238 @@ namespace GameSaveCenter.Playnite.ViewModels
                 else if (IsWorklistBrowserOpen)
                     Observe(RefreshWorklistReferencesAsync());
             }
+        }
+
+        private async Task ContinueSelectedWorklistItemAsync()
+        {
+            if (selectedWorklist == null || selectedWorklistBrowserEntries.Count != 1 || isMutatingWorklist)
+                return;
+            var entry = selectedWorklistBrowserEntries[0];
+            if (!WorklistContinuationResolver.TryResolve(entry, out var target, out var message))
+            {
+                StatusMessage = message;
+                return;
+            }
+
+            var listName = selectedWorklist.Name;
+            isMutatingWorklist = true;
+            RaiseCommandStates();
+            try
+            {
+                switch (target!.Kind)
+                {
+                    case WorklistObjectKind.BackupVersion:
+                        ContinueToWorklistBackup(target, listName);
+                        break;
+                    case WorklistObjectKind.MediaItem:
+                        ContinueToWorklistMedia(target, listName);
+                        break;
+                    case WorklistObjectKind.BackgroundTask:
+                        await ContinueToWorklistTaskAsync(target, entry, listName);
+                        break;
+                    case WorklistObjectKind.ValidationFinding:
+                        await ContinueToWorklistFindingAsync(target, entry, listName);
+                        break;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "GameSaveCenter could not continue from a worklist reference.");
+                ApplyOnUi(() =>
+                {
+                    IsWorklistBrowserOpen = true;
+                    StatusMessage = "无法从待办打开该对象；清单与源对象未改变，可以刷新状态或移除引用。";
+                });
+            }
+            finally
+            {
+                ApplyOnUi(() =>
+                {
+                    isMutatingWorklist = false;
+                    RaiseCommandStates();
+                });
+            }
+        }
+
+        private void ContinueToWorklistBackup(WorklistContinuationTarget target, string listName)
+        {
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new GameSaveCenter.Contracts.TaskSourceReferenceDto
+                {
+                    StableId = target.PlayniteId,
+                    PlayniteId = target.PlayniteId
+                }, Games);
+            if (game == null)
+            {
+                StatusMessage = $"待办存档版本的游戏 ID（{target.PlayniteId}）不在当前库中；未按名称替换目标，清单仍可移除该引用。";
+                return;
+            }
+
+            PushNavigationReturnTarget("返回待办", $"来源：人工待办 · {listName} · 存档版本");
+            pendingTaskBackupId = target.ObjectId;
+            pendingFindingBackupId = string.Empty;
+            pendingStorageBackupId = string.Empty;
+            SaveTabIndex = 0;
+            CurrentWorkspace = WorkspaceKind.Saves;
+            SelectedBackup = null!;
+            SelectedGame = game;
+            StatusMessage = $"正在打开待办存档版本“{target.ObjectId}”；仅按 Playnite ID 与版本 ID 定位，不会执行恢复。";
+            RequestWorkspaceLoad();
+        }
+
+        private void ContinueToWorklistMedia(WorklistContinuationTarget target, string listName)
+        {
+            var game = TaskSourceNavigationResolver.ResolveExactGame(
+                new GameSaveCenter.Contracts.TaskSourceReferenceDto
+                {
+                    StableId = target.PlayniteId,
+                    PlayniteId = target.PlayniteId
+                }, Games);
+            if (game == null)
+            {
+                StatusMessage = $"待办媒体所属游戏（{target.PlayniteId}）不在当前库中；未按名称替换目标，清单仍可移除该引用。";
+                return;
+            }
+
+            PushNavigationReturnTarget("返回待办", $"来源：人工待办 · {listName} · 媒体项");
+            pendingWorklistMediaId = target.ObjectId;
+            MediaFilter = "全部";
+            MediaSearchText = target.ObjectId;
+            mediaSearchRefresh.Cancel();
+            mediaPageQueryRefresh.Cancel();
+            SelectedMedia = null!;
+            CurrentWorkspace = WorkspaceKind.Media;
+            SelectedGame = game;
+            StatusMessage = $"正在打开待办媒体“{target.ObjectId}”；媒体页将按稳定编号筛选，不会修改文件。";
+            RequestWorkspaceLoad();
+        }
+
+        private async Task ContinueToWorklistTaskAsync(WorklistContinuationTarget target, WorklistBrowserEntry entry, string listName)
+        {
+            var previousNavigationCount = navigationHistory.Count;
+            PushNavigationReturnTarget("返回待办", $"来源：人工待办 · {listName} · 后台任务");
+            PrepareExactWorklistTaskFilter(target.ObjectId);
+            pendingNavigationTaskId = target.ObjectId;
+            pendingNavigationTaskIndex = -1;
+            restoringNavigationTaskSelection = true;
+            IsWorklistBrowserOpen = false;
+            CurrentWorkspace = WorkspaceKind.Tasks;
+            try
+            {
+                await LoadTaskPageAsync(true);
+            }
+            catch
+            {
+                ApplyOnUi(() =>
+                {
+                    if (navigationHistory.Count > previousNavigationCount && navigationHistory.TryPop(out _))
+                        OnNavigationHistoryChanged();
+                    IsWorklistBrowserOpen = true;
+                });
+                throw;
+            }
+            var taskFound = false;
+            ApplyOnUi(() =>
+            {
+                taskFound = SelectedTask != null
+                    && string.Equals(SelectedTask.TaskId, target.ObjectId, StringComparison.OrdinalIgnoreCase);
+                if (taskFound)
+                {
+                    StatusMessage = $"已从待办续接后台任务“{target.ObjectId}”。该操作只打开详情，不会重试或改变任务状态。";
+                    return;
+                }
+
+                entry.SetResolution(WorklistReferenceState.NotFound, entry.TargetPlayniteId);
+                WorklistLookupSummary = "该任务在打开期间已从当前索引消失；可以移除清单引用。";
+                if (navigationHistory.Count > previousNavigationCount && navigationHistory.TryPop(out _))
+                    OnNavigationHistoryChanged();
+                IsWorklistBrowserOpen = true;
+                StatusMessage = $"待办任务“{target.ObjectId}”已不存在于当前索引；已返回清单，引用仍可移除。";
+            });
+        }
+
+        private void ClearPendingWorklistMediaContinuation()
+        {
+            var mediaId = pendingWorklistMediaId;
+            if (string.IsNullOrWhiteSpace(mediaId)) return;
+            pendingWorklistMediaId = null;
+            StatusMessage = $"待办媒体“{mediaId}”的详情加载失败；没有选择其他媒体，也没有修改文件。可返回清单重试或移除引用。";
+        }
+
+        private async Task ContinueToWorklistFindingAsync(WorklistContinuationTarget target, WorklistBrowserEntry entry, string listName)
+        {
+            var findingResult = await plugin.RequestAsync<GameSaveCenter.Contracts.ValidationFindingQueryResultDto>(
+                GameSaveCenter.Contracts.MessageTypes.GetValidationFinding,
+                new GameSaveCenter.Contracts.ValidationFindingQueryDto { FindingId = target.ObjectId },
+                TimeSpan.FromSeconds(20));
+            var finding = findingResult?.Finding;
+            if (finding == null || !string.Equals(finding.FindingId, target.ObjectId, StringComparison.OrdinalIgnoreCase))
+            {
+                ApplyOnUi(() =>
+                {
+                    entry.SetResolution(WorklistReferenceState.NotFound, entry.TargetPlayniteId);
+                    WorklistLookupSummary = "该校验问题已从当前索引消失；可以移除清单引用。";
+                    StatusMessage = $"待办校验问题“{target.ObjectId}”已不存在于当前索引；清单与其他条目仍可使用。";
+                });
+                return;
+            }
+
+            var gameName = string.Empty;
+            ApplyOnUi(() =>
+            {
+                var game = Games.FirstOrDefault(candidate =>
+                    string.Equals(candidate.PlayniteId, finding.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                gameName = game?.Name ?? (string.IsNullOrWhiteSpace(finding.PlayniteId) ? "全局" : $"原游戏已不在库中（{finding.PlayniteId}）");
+                PushNavigationReturnTarget("返回待办", $"来源：人工待办 · {listName} · 校验问题");
+                CurrentWorkspace = WorkspaceKind.Maintenance;
+                MaintenanceTabIndex = 0;
+            });
+            finding.GameName = gameName;
+            await LoadDiagnosticsAsync();
+            ApplyOnUi(() =>
+            {
+                var current = Findings.FirstOrDefault(candidate =>
+                    string.Equals(candidate.FindingId, target.ObjectId, StringComparison.OrdinalIgnoreCase));
+                if (current == null)
+                {
+                    Findings.Add(finding);
+                    current = finding;
+                }
+                SelectedFinding = current;
+                StatusMessage = $"已从待办续接校验问题“{target.ObjectId}”；只显示诊断，不会自动执行建议操作。";
+            });
+        }
+
+        private void PrepareExactWorklistTaskFilter(string taskId)
+        {
+            taskSearchRefresh.Cancel();
+            taskHistoryQueryRefresh.Cancel();
+            taskHistoryQueryQueued = false;
+            taskSearchText = taskId;
+            taskStatusFilter = "全部";
+            taskGameFilter = "全部";
+            taskTypeFilter = "全部";
+            pendingTaskGameFilter = "全部";
+            pendingTaskTypeFilter = "全部";
+            pendingTaskDynamicFilterRestore = false;
+            taskHistoryScope = "全部历史";
+            taskHistoryRange = "全部时间";
+            taskHistoryActive = true;
+            taskNavigationGameId = string.Empty;
+            taskNavigationGameName = string.Empty;
+            OnPropertyChanged(nameof(TaskSearchText));
+            OnPropertyChanged(nameof(TaskStatusFilter));
+            OnPropertyChanged(nameof(TaskGameFilter));
+            OnPropertyChanged(nameof(TaskTypeFilter));
+            OnPropertyChanged(nameof(TaskHistoryScope));
+            OnPropertyChanged(nameof(TaskHistoryRange));
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
+            OnPropertyChanged(nameof(TaskLoadedSummary));
+            OnPropertyChanged(nameof(TaskHasActiveFilters));
+            OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+            TasksView.Refresh();
+            uiStateSave?.Schedule();
         }
 
         private void UpdateWorklistLookupSummary()

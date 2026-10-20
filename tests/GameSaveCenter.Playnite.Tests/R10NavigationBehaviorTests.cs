@@ -1,3 +1,4 @@
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
 
@@ -50,7 +51,13 @@ public sealed class R10NavigationBehaviorTests
             288,
             0,
             "返回任务",
-            "来源：任务中心 · 示例游戏");
+            "来源：任务中心 · 示例游戏",
+            worklistBrowserOpen: true,
+            worklistListId: "4e41cb9d-9168-4a9d-bd0c-e64b7f971132",
+            worklistEntryKind: (int)WorklistObjectKind.BackgroundTask,
+            worklistEntryStableId: "task-worklist-8",
+            worklistSearchText: "失败任务",
+            worklistGroupMode: "按对象类型");
 
         stack.Push(alert);
         stack.Push(tasks);
@@ -64,6 +71,12 @@ public sealed class R10NavigationBehaviorTests
         Assert.Equal("task-2", taskReturn.SelectedTaskId);
         Assert.Equal(7, taskReturn.SelectedTaskIndex);
         Assert.Equal(288, taskReturn.TaskScrollOffset);
+        Assert.True(taskReturn.WorklistBrowserOpen);
+        Assert.Equal("4e41cb9d-9168-4a9d-bd0c-e64b7f971132", taskReturn.WorklistListId);
+        Assert.Equal((int)WorklistObjectKind.BackgroundTask, taskReturn.WorklistEntryKind);
+        Assert.Equal("task-worklist-8", taskReturn.WorklistEntryStableId);
+        Assert.Equal("失败任务", taskReturn.WorklistSearchText);
+        Assert.Equal("按对象类型", taskReturn.WorklistGroupMode);
 
         Assert.True(stack.TryPop(out var alertReturn));
         Assert.Equal(WorkspaceKind.Maintenance, alertReturn.Workspace);

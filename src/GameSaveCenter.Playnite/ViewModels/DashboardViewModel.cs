@@ -153,6 +153,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool mediaClassificationHistoryHasMore;
         private string mediaClassificationHistoryConsistencyToken = string.Empty;
         private string? pendingMediaClassificationBatchId;
+        private string? pendingWorklistMediaId;
         private bool mediaClassificationHistoryNeedsManualRefresh;
         private long mediaClassificationHistoryLoadGeneration;
         private string? pendingTaskBackupId;
@@ -4205,8 +4206,20 @@ namespace GameSaveCenter.Playnite.ViewModels
                         {
                             if (!IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace)) return;
                             if (mediaRequestGeneration != Interlocked.Read(ref mediaPageGeneration)) return;
-                            var selectedMediaId = SelectedMedia?.MediaId;
+                            var worklistMediaId = pendingWorklistMediaId;
+                            var selectedMediaId = !string.IsNullOrWhiteSpace(worklistMediaId)
+                                ? worklistMediaId
+                                : SelectedMedia?.MediaId;
                             ApplyMediaPage(mediaTask.Result ?? new MediaPageDto(), reset: true, selectedId: selectedMediaId);
+                            if (!string.IsNullOrWhiteSpace(worklistMediaId))
+                            {
+                                SelectedMedia = Media.FirstOrDefault(item =>
+                                    string.Equals(item.MediaId, worklistMediaId, StringComparison.OrdinalIgnoreCase))!;
+                                pendingWorklistMediaId = null;
+                                StatusMessage = SelectedMedia == null
+                                    ? $"待办媒体“{worklistMediaId}”已不在当前游戏的媒体结果中；没有选择相邻项目。可返回清单刷新或移除引用。"
+                                    : $"已从待办续接媒体“{worklistMediaId}”；只打开详情，没有修改文件。";
+                            }
                             Replace(MediaSources, sourcesTask.Result, SnapshotComparers.MediaSource);
                             MediaSourcePreview = new MediaSourcePreviewDto();
                             MediaSummary=summaryTask.Result;
@@ -4222,13 +4235,24 @@ namespace GameSaveCenter.Playnite.ViewModels
                     catch (OperationCanceledException)
                     {
                         if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
-                            ApplyOnUi(() => CancelMediaDetailsLoad(mediaRequestGeneration));
+                            ApplyOnUi(() =>
+                            {
+                                CancelMediaDetailsLoad(mediaRequestGeneration);
+                                if (CurrentWorkspace != WorkspaceKind.Media || !IsSelectedGame(id))
+                                    ClearPendingWorklistMediaContinuation();
+                            });
+                        else if (CurrentWorkspace != WorkspaceKind.Media || !IsSelectedGame(id))
+                            ApplyOnUi(ClearPendingWorklistMediaContinuation);
                         throw;
                     }
                     catch (Exception ex)
                     {
                         if (IsCurrentDetailsLoad(id, cancellationToken, requestGeneration, requestWorkspace))
-                            ApplyOnUi(() => FailMediaDetailsLoad(ex, mediaRequestGeneration));
+                            ApplyOnUi(() =>
+                            {
+                                FailMediaDetailsLoad(ex, mediaRequestGeneration);
+                                ClearPendingWorklistMediaContinuation();
+                            });
                         throw;
                     }
                     break;
@@ -6636,7 +6660,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, PreviousMediaComparisonCandidateCommand, NextMediaComparisonCandidateCommand, MarkMediaComparisonToKeepCommand, MarkMediaComparisonToReviewCommand, ClearMediaComparisonOpinionCommand, CreateMediaComparisonClassificationPreviewCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AddSelectedBackupToWorklistCommand, AddSelectedMediaToWorklistCommand, AddSelectedTaskToWorklistCommand, AddSelectedFindingToWorklistCommand,
-                OpenWorklistBrowserCommand, CloseWorklistBrowserCommand, RefreshWorklistReferencesCommand, MoveWorklistItemUpCommand, MoveWorklistItemDownCommand, RemoveSelectedWorklistItemsCommand,
+                OpenWorklistBrowserCommand, CloseWorklistBrowserCommand, RefreshWorklistReferencesCommand, ContinueSelectedWorklistItemCommand, MoveWorklistItemUpCommand, MoveWorklistItemDownCommand, RemoveSelectedWorklistItemsCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
