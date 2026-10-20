@@ -2,6 +2,8 @@
 
 日期：2026-10-21
 
+实现提交：`40a82b15`（已推送至 `main`）
+
 ## 实现范围
 
 新增设置层契约 `WorklistDefinition`、`WorklistItemRecord` 和 `WorklistObjectKind`。清单有 GUID、名称和稳定对象引用集合；每项只存对象种类、稳定对象 ID、人工备注和 `IsManuallyComplete`。对象类型先覆盖备份版本、媒体项、后台任务和校验发现。父级 ID 未包含在各源对象 ID 中时，调用方须将其编入 `StableObjectId`。

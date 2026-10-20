@@ -10,9 +10,11 @@
 
 证据：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。定向测试在提交前工作树运行；后续 `48727c13` 只修改页面视口，不变更 S05 文件；两者一并通过 SDK9 Release solution 构建。当前机器无 SDK8.0.423，真实 Playnite/CEF/物理 DPI 未验。
 
-## S06-01 工作清单能力审计
+## 2026-10-21 Round4 S06-01 已实现、S06-02 已准入
 
-`RecentAccessRecord` 是最多 8 条游戏/工作区跳转记录；`FindingTriageResolver` 是当前发现聚合，后台任务是实际业务执行记录。都没有用户创建清单的 ID/名称、跨类型稳定对象引用、备注及人工完成状态。S06-01 已准入：模型只存用户记录和稳定标识，不存运行时 DTO、路径内容、认证信息或操作授权；对象数、命名和备注需有限制。审计：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。
+`40a82b15` 实现 `WorklistDefinition`/`WorklistItemRecord`：最多 20 份清单、每份 200 项、80 字名称、256 字稳定键、500 字备注；仅记录对象种类/ID、人工备注和手工完成状态，按种类+稳定键去重并提供深克隆，不含 DTO、路径或操作授权。SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error，行为测试 4/4。审计：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。
+
+S06-02 已准入：详情页没有跨类型清单入口。版本、媒体和任务分别使用 `PlayniteId+BackupId`、`MediaId`、`TaskId`；诊断数据表已有 `findings.finding_id` 主键，但 DTO 查询投影尚未透传，计划复用该主键，不使用标题/路径充当身份。确认预览后只新增设置引用，重复项明确反馈，不触发业务命令。审计：[S06-02](../design/reviews/ui-finesse-round4-20261018/evidence/S06-02/AUDIT.md)。
 
 ## 2026-10-21 Round4 S05-07 转交策略编辑已受控验收
 
