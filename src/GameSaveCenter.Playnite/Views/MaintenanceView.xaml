@@ -949,7 +949,21 @@
                                     </StackPanel>
                                 </UniformGrid>
                                 <TextBlock Text="增长范围是用户假设，单位为逻辑备份体积；不代表目录实测或磁盘预测。下方比较会把候选策略统一应用于所有游戏，并与各游戏当前有效策略使用同一份版本快照和截止时点；只读结果不会写入策略、模板或设置，也不调用清理。" Style="{DynamicResource GscDiagnosticHintText}" Margin="0,10,0,0" TextWrapping="Wrap"/>
-                                <ui:Button x:Name="RetentionScenarioCompareButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding CompareRetentionScenarioCommand}" Content="比较当前与候选策略" Margin="0,12,0,0" HorizontalAlignment="Left" AutomationProperties.Name="比较当前与候选保留策略"/>
+                                <WrapPanel Margin="0,12,0,0">
+                                    <ui:Button x:Name="RetentionScenarioCompareButton" Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding CompareRetentionScenarioCommand}" Content="比较当前与候选策略" HorizontalAlignment="Left" AutomationProperties.Name="比较当前与候选保留策略"/>
+                                    <ui:Button x:Name="RetentionScenarioCancelButton" Command="{Binding CancelRetentionScenarioComparisonCommand}" Content="取消比较" ToolTip="取消当前只读策略比较；不会触发清理。" AutomationProperties.Name="取消保留策略比较" AutomationProperties.HelpText="中断当前情景查询与计算，不执行归档清理。">
+                                        <ui:Button.Style>
+                                            <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscWpfUiContextButton}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsRetentionScenarioComparisonRunning}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+                                </WrapPanel>
                             </StackPanel>
                         </Border>
                         <Border x:Name="MaintenanceRetentionScenarioComparisonCard" Style="{DynamicResource GscReadingCardStyle}" Padding="18" Margin="0,14,0,0" AutomationProperties.Name="保留策略只读对比">

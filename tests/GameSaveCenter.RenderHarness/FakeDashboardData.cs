@@ -81,6 +81,8 @@ public sealed class FakeDashboardData
     public ICommand DeleteRestorePlanDraftCommand { get; } = new NoopCommand();
     public ICommand CompareRestorePlanDraftsCommand { get; } = new NoopCommand();
     public ICommand CompareRetentionScenarioCommand { get; } = new NoopCommand();
+    public ICommand CancelRetentionScenarioComparisonCommand { get; } = new NoopCommand();
+    public bool IsRetentionScenarioComparisonRunning { get; set; }
     public ICommand SaveRetentionScenarioDraftCommand { get; } = new NoopCommand();
     public ICommand CopyRetentionScenarioDraftCommand { get; } = new NoopCommand();
     public ICommand RenameRetentionScenarioDraftCommand { get; } = new NoopCommand();

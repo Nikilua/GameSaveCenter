@@ -89,6 +89,15 @@ public sealed class RetentionScenarioInputBehaviorTests
                     var compareButton = Assert.IsAssignableFrom<ButtonBase>(page.GetType().GetField("RetentionScenarioCompareButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(page));
                     Assert.Same(context.CompareRetentionScenarioCommand, compareButton.Command);
                     Assert.True(compareButton.Command.CanExecute(null));
+                    var cancelButton = Assert.IsAssignableFrom<ButtonBase>(page.GetType().GetField("RetentionScenarioCancelButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(page));
+                    Assert.Same(context.CancelRetentionScenarioComparisonCommand, cancelButton.Command);
+                    Assert.Equal(Visibility.Visible, cancelButton.Visibility);
+                    Assert.True(cancelButton.Command.CanExecute(null));
+                    context.IsRetentionScenarioComparisonRunning = false;
+                    ((RelayCommand)context.CancelRetentionScenarioComparisonCommand).RaiseCanExecuteChanged();
+                    PumpLayout(window);
+                    Assert.Equal(Visibility.Collapsed, cancelButton.Visibility);
+                    Assert.False(cancelButton.Command.CanExecute(null));
                     Assert.Equal(context.RetentionScenarioComparison.Summary, Field<TextBlock>(page, "RetentionScenarioComparisonSummary").Text);
                     Assert.Equal(context.RetentionScenarioComparison.GrowthAssumptionDisplay, Field<TextBlock>(page, "RetentionScenarioGrowthAssumptionDisplay").Text);
                     Assert.Equal(context.RetentionScenarioComparison.DetailSummaryDisplay, Field<TextBlock>(page, "RetentionScenarioDetailSummary").Text);
@@ -246,8 +255,10 @@ public sealed class RetentionScenarioInputBehaviorTests
         return null;
     }
 
-    private sealed class ScenarioContext
+    private sealed class ScenarioContext : INotifyPropertyChanged
     {
+        private bool isRetentionScenarioComparisonRunning;
+
         public ScenarioContext(RetentionScenarioDraft input, RetentionPolicy effectivePolicy)
         {
             RetentionScenarioInput = input;
@@ -267,6 +278,8 @@ public sealed class RetentionScenarioInputBehaviorTests
             RetentionScenarioDrafts.Add(savedScenario);
             SelectedRetentionScenarioDraft = savedScenario;
             RetentionScenarioNameDraft = savedScenario.Name;
+            CancelRetentionScenarioComparisonCommand = new RelayCommand(_ => { }, _ => IsRetentionScenarioComparisonRunning);
+            IsRetentionScenarioComparisonRunning = true;
             RetentionScenarioComparison = new RetentionScenarioComparisonDto
             {
                 Summary = "测试对比：同一基线 25 个版本。",
@@ -335,6 +348,18 @@ public sealed class RetentionScenarioInputBehaviorTests
         public ICommand RenameRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public ICommand DeleteRetentionScenarioDraftCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public ICommand HandoffRetentionScenarioToPolicyTemplateCommand { get; } = new RelayCommand(_ => { }, _ => true);
+        public ICommand CancelRetentionScenarioComparisonCommand { get; }
+        public bool IsRetentionScenarioComparisonRunning
+        {
+            get => isRetentionScenarioComparisonRunning;
+            set
+            {
+                if (isRetentionScenarioComparisonRunning == value) return;
+                isRetentionScenarioComparisonRunning = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRetentionScenarioComparisonRunning)));
+            }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
         public RetentionPolicy EffectivePolicy { get; }
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get; }
         public RetentionScenarioGameSummaryDto? SelectedRetentionScenarioGame { get; set; }

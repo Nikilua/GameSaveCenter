@@ -1039,8 +1039,13 @@ ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;";
     }
 
     /// <summary>Reads indexed versions and their effective per-game policies with one SQLite statement snapshot.</summary>
-    public async Task<(List<BackupVersionDto> Versions, Dictionary<string, BackupPolicyDto> Policies)> GetRetentionScenarioSnapshotAsync(CancellationToken token)
+    public async Task<(List<BackupVersionDto> Versions, Dictionary<string, BackupPolicyDto> Policies)> GetRetentionScenarioSnapshotAsync(
+        CancellationToken token,
+        int? maxVersionCount = null)
     {
+        if (maxVersionCount is <= 0)
+            throw new ArgumentOutOfRangeException(nameof(maxVersionCount), "版本读取上限必须大于零。");
+
         var versions = new List<BackupVersionDto>();
         var policies = new Dictionary<string, BackupPolicyDto>(StringComparer.OrdinalIgnoreCase);
         await using var connection = Open();
@@ -1051,7 +1056,11 @@ SELECT b.backup_id,b.playnite_id,b.ludusavi_name,b.created_utc,b.total_bytes,b.f
        b.is_locked,b.is_pre_restore,b.archive_path,b.restore_readiness_json,p.policy_json
 FROM backup_versions b
 LEFT JOIN game_policies p ON p.playnite_id=b.playnite_id
-ORDER BY b.created_utc ASC;";
+ORDER BY b.created_utc ASC" + (maxVersionCount.HasValue ? "\nLIMIT $scenarioVersionLimit;" : ";");
+        if (maxVersionCount.HasValue)
+        {
+            command.Parameters.AddWithValue("$scenarioVersionLimit", (long)maxVersionCount.Value + 1);
+        }
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
         {

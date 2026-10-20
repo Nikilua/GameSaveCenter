@@ -182,6 +182,8 @@ namespace GameSaveCenter.Contracts
     {
         public DateTime GeneratedUtc { get; set; }
         public int BaselineVersionCount { get; set; }
+        public bool IsExpired { get; set; }
+        public bool IsCancelled { get; set; }
         public string CandidatePolicyDisplay { get; set; } = string.Empty;
         public int? GrowthMinimumMiBPer30Days { get; set; }
         public int? GrowthMaximumMiBPer30Days { get; set; }

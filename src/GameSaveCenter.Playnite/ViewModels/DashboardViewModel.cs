@@ -173,6 +173,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
         private RetentionScenarioComparisonDto retentionScenarioComparison = new RetentionScenarioComparisonDto();
         private RetentionScenarioGameSummaryDto? selectedRetentionScenarioGame;
+        private CancellationTokenSource? retentionScenarioComparisonCancellation;
+        private bool isRetentionScenarioComparisonRunning;
         private LocalMirrorStatusDto localMirrorStatus = new LocalMirrorStatusDto { Message = "尚未检查本地镜像。" };
         private string diffSummary = "选择两个版本后，比较结果会显示在这里。";
         private string diffComparedSummary = "尚未选择可比较的版本。";
@@ -475,6 +477,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             RefreshStorageAnalysisCommand = new RelayCommand(_ => Run(RefreshStorageAnalysisAsync), _ => !IsBusy);
             RefreshRetentionSimulationCommand = new RelayCommand(_ => Run(RefreshRetentionSimulationAsync), _ => !IsBusy);
             CompareRetentionScenarioCommand = new RelayCommand(_ => Run(CompareRetentionScenarioAsync), _ => !IsBusy && RetentionScenarioInput.IsValid);
+            CancelRetentionScenarioComparisonCommand = new RelayCommand(_ => CancelRetentionScenarioComparison(), _ => IsRetentionScenarioComparisonRunning);
             SaveRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(SaveRetentionScenarioDraftAsync()), _ => CanSaveRetentionScenarioDraft);
             CopyRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(CopyRetentionScenarioDraftAsync()), _ => CanCopyRetentionScenarioDraft);
             RenameRetentionScenarioDraftCommand = new RelayCommand(_ => Observe(RenameRetentionScenarioDraftAsync()), _ => CanRenameRetentionScenarioDraft);
@@ -1049,6 +1052,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
         public RetentionScenarioDraft RetentionScenarioInput { get; } = new RetentionScenarioDraft();
         public RetentionScenarioComparisonDto RetentionScenarioComparison { get => retentionScenarioComparison; private set => SetValue(ref retentionScenarioComparison, value ?? new RetentionScenarioComparisonDto()); }
+        public bool IsRetentionScenarioComparisonRunning
+        {
+            get => isRetentionScenarioComparisonRunning;
+            private set
+            {
+                if (isRetentionScenarioComparisonRunning == value) return;
+                SetValue(ref isRetentionScenarioComparisonRunning, value);
+                RaiseCommandStates();
+            }
+        }
         public RetentionScenarioGameSummaryDto? SelectedRetentionScenarioGame { get => selectedRetentionScenarioGame; set => SetValue(ref selectedRetentionScenarioGame, value); }
         public LocalMirrorStatusDto LocalMirrorStatus { get => localMirrorStatus; private set => SetValue(ref localMirrorStatus, value ?? new LocalMirrorStatusDto()); }
         public string GameSearchText
@@ -1990,6 +2003,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand RefreshStorageAnalysisCommand { get; }
         public ICommand RefreshRetentionSimulationCommand { get; }
         public ICommand CompareRetentionScenarioCommand { get; }
+        public ICommand CancelRetentionScenarioComparisonCommand { get; }
         public ICommand ApplyRetentionSimulationCommand { get; }
         public ICommand RefreshLocalMirrorStatusCommand { get; }
         public ICommand SyncLocalMirrorCommand { get; }
@@ -3441,31 +3455,81 @@ namespace GameSaveCenter.Playnite.ViewModels
                 GrowthMinimumMiBPer30Days = RetentionScenarioInput.GrowthMinimumMiBPer30Days,
                 GrowthMaximumMiBPer30Days = RetentionScenarioInput.GrowthMaximumMiBPer30Days
             };
-            var result = await plugin.RequestAsync<RetentionScenarioComparisonDto>(
-                MessageTypes.CompareRetentionScenario,
-                request,
-                TimeSpan.FromMinutes(3));
-            ApplyOnUi(() =>
+            var cancellation = new CancellationTokenSource();
+            retentionScenarioComparisonCancellation = cancellation;
+            IsRetentionScenarioComparisonRunning = true;
+            RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "正在比较当前与候选策略；可以取消。" };
+            SelectedRetentionScenarioGame = null;
+            try
             {
-                if (!RetentionScenarioInputMatches(request))
+                var result = await plugin.RequestAsync<RetentionScenarioComparisonDto>(
+                    MessageTypes.CompareRetentionScenario,
+                    request,
+                    TimeSpan.FromMinutes(3),
+                    cancellation.Token);
+                ApplyOnUi(() =>
                 {
-                    RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "对比期间情景参数已变化，请重新生成结果。" };
+                    if (!RetentionScenarioInputMatches(request))
+                    {
+                        RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "对比期间情景参数已变化，请重新生成结果。" };
+                        SelectedRetentionScenarioGame = null;
+                        StatusMessage = RetentionScenarioComparison.Summary;
+                        return;
+                    }
+
+                    RetentionScenarioComparison = result;
+                    SelectedRetentionScenarioGame = result.Games.FirstOrDefault(x => x.HasScenarioDifference)
+                        ?? result.Games.FirstOrDefault();
+                    if (!result.IsExpired && !result.IsCancelled)
+                        RecordRetentionScenarioSnapshot(request, result);
+                    StatusMessage = result.Summary;
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                ApplyOnUi(() =>
+                {
+                    if (!RetentionScenarioInputMatches(request)) return;
+                    RetentionScenarioComparison = new RetentionScenarioComparisonDto
+                    {
+                        IsCancelled = true,
+                        Summary = "情景比较已取消；未执行清理。可以重新生成对比。"
+                    };
                     SelectedRetentionScenarioGame = null;
                     StatusMessage = RetentionScenarioComparison.Summary;
-                    return;
+                });
+            }
+            catch (Exception error)
+            {
+                ApplyOnUi(() =>
+                {
+                    if (!RetentionScenarioInputMatches(request)) return;
+                    RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = error.Message };
+                    SelectedRetentionScenarioGame = null;
+                });
+                throw;
+            }
+            finally
+            {
+                if (ReferenceEquals(retentionScenarioComparisonCancellation, cancellation))
+                {
+                    retentionScenarioComparisonCancellation = null;
+                    ApplyOnUi(() => IsRetentionScenarioComparisonRunning = false);
                 }
+                cancellation.Dispose();
+            }
+        }
 
-                RetentionScenarioComparison = result;
-                SelectedRetentionScenarioGame = result.Games.FirstOrDefault(x => x.HasScenarioDifference)
-                    ?? result.Games.FirstOrDefault();
-                RecordRetentionScenarioSnapshot(request, result);
-                StatusMessage = result.Summary;
-            });
+        private void CancelRetentionScenarioComparison()
+        {
+            retentionScenarioComparisonCancellation?.Cancel();
+            StatusMessage = "正在取消保留策略比较。";
         }
 
         private void OnRetentionScenarioInputChanged()
         {
             if (isLoadingRetentionScenarioDraft) return;
+            retentionScenarioComparisonCancellation?.Cancel();
             RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "情景参数已变化，请重新生成对比。" };
             SelectedRetentionScenarioGame = null;
             RefreshRetentionScenarioDraftStatusDisplay();
@@ -6566,7 +6630,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, OpenSelectedTaskSourceCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, OpenStorageGameCommand, OpenStorageBackupCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,CompareRetentionScenarioCommand,SaveRetentionScenarioDraftCommand,CopyRetentionScenarioDraftCommand,RenameRetentionScenarioDraftCommand,DeleteRetentionScenarioDraftCommand,HandoffRetentionScenarioToPolicyTemplateCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,CompareRetentionScenarioCommand,CancelRetentionScenarioComparisonCommand,SaveRetentionScenarioDraftCommand,CopyRetentionScenarioDraftCommand,RenameRetentionScenarioDraftCommand,DeleteRetentionScenarioDraftCommand,HandoffRetentionScenarioToPolicyTemplateCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

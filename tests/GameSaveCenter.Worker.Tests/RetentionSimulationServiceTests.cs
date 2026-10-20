@@ -197,6 +197,160 @@ public sealed class RetentionSimulationServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ScenarioComparisonHandlesLargeIndexedLibraryWithinConfiguredBound()
+    {
+        const int gameCount = 40;
+        const int versionsPerGame = 30;
+        for (var gameIndex = 0; gameIndex < gameCount; gameIndex++)
+        {
+            var gameId = $"large-game-{gameIndex:D3}";
+            await AddZeroRetentionPolicyAsync(gameId);
+            for (var versionIndex = 0; versionIndex < versionsPerGame; versionIndex++)
+            {
+                await AddVersionAsync(
+                    gameId,
+                    $"large-version-{gameIndex:D3}-{versionIndex:D3}",
+                    string.Empty,
+                    100 + versionIndex,
+                    new DateTime(2010, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMinutes(versionIndex));
+            }
+        }
+
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var comparison = await service.CompareScenarioAsync(CreateScenarioRequest(0, 1_000_000, keepAllForHours: 876_000), CancellationToken.None);
+
+        Assert.False(comparison.IsExpired);
+        Assert.False(comparison.IsCancelled);
+        Assert.Equal(gameCount * versionsPerGame, comparison.BaselineVersionCount);
+        Assert.Equal(gameCount * versionsPerGame, comparison.Current.DeleteCandidateCount);
+        Assert.Equal(gameCount * versionsPerGame, comparison.Candidate.KeepVersionCount);
+        Assert.Equal(gameCount, comparison.Games.Count);
+        Assert.Equal(gameCount * versionsPerGame, comparison.Games.Sum(game => game.VersionDetails.Count));
+        Assert.Equal(comparison.Current.ExistingVersionCount, comparison.Games.Sum(game => game.ExistingVersionCount));
+    }
+
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(1_000_000, 1_000_000)]
+    public async Task ScenarioGrowthAssumptionsDoNotAffectRetentionCounts(int growthMinimum, int growthMaximum)
+    {
+        await AddZeroRetentionPolicyAsync("growth-game");
+        for (var index = 0; index < 3; index++)
+        {
+            await AddVersionAsync(
+                "growth-game",
+                $"growth-version-{index}",
+                string.Empty,
+                100 + index,
+                new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddDays(index));
+        }
+
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var comparison = await service.CompareScenarioAsync(CreateScenarioRequest(growthMinimum, growthMaximum), CancellationToken.None);
+
+        Assert.Equal(growthMinimum, comparison.GrowthMinimumMiBPer30Days);
+        Assert.Equal(growthMaximum, comparison.GrowthMaximumMiBPer30Days);
+        Assert.Equal(3, comparison.Current.DeleteCandidateCount);
+        Assert.Equal(3, comparison.Candidate.DeleteCandidateCount);
+        Assert.Contains("不参与保留数量", comparison.Assumptions);
+    }
+
+    [Fact]
+    public async Task ScenarioComparisonReturnsExpiredWithoutDetailsWhenVersionChangesDuringCalculation()
+    {
+        await AddZeroRetentionPolicyAsync("concurrent-game");
+        await AddVersionAsync("concurrent-game", "before", string.Empty, 100, new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+        var service = new RetentionSimulationService(
+            options,
+            store,
+            NullLogger<RetentionSimulationService>.Instance,
+            gameLock: null,
+            gameLockTimeout: null,
+            maximumScenarioVersionCount: 10,
+            beforeScenarioRevalidation: token => AddVersionAsync(
+                "concurrent-game",
+                "added-during-comparison",
+                string.Empty,
+                200,
+                new DateTime(2020, 1, 2, 0, 0, 0, DateTimeKind.Utc)));
+
+        var comparison = await service.CompareScenarioAsync(CreateScenarioRequest(10, 20), CancellationToken.None);
+
+        Assert.True(comparison.IsExpired);
+        Assert.Empty(comparison.Games);
+        Assert.Equal(0, comparison.Current.ExistingVersionCount);
+        Assert.Equal(0, comparison.Candidate.ExistingVersionCount);
+        Assert.Contains("已过期", comparison.Summary);
+        Assert.Contains("未执行清理", comparison.Summary);
+        Assert.Equal(0, comparison.BaselineVersionCount);
+        Assert.Equal(2, (await store.GetStorageAnalysisRowsAsync(CancellationToken.None)).Count);
+    }
+
+    [Fact]
+    public async Task ScenarioComparisonReturnsExpiredWhenEffectivePolicyChangesDuringCalculation()
+    {
+        await AddZeroRetentionPolicyAsync("policy-change-game");
+        await AddVersionAsync("policy-change-game", "existing", string.Empty, 100, new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+        var service = new RetentionSimulationService(
+            options,
+            store,
+            NullLogger<RetentionSimulationService>.Instance,
+            gameLock: null,
+            gameLockTimeout: null,
+            maximumScenarioVersionCount: 10,
+            beforeScenarioRevalidation: token => store.SetPolicyAsync("policy-change-game", new BackupPolicyDto
+            {
+                KeepRecentAllHours = 0,
+                KeepDailyDays = 7,
+                KeepWeeklyWeeks = 0,
+                KeepMonthlyMonths = 0
+            }, token));
+
+        var comparison = await service.CompareScenarioAsync(CreateScenarioRequest(10, 20), CancellationToken.None);
+
+        Assert.True(comparison.IsExpired);
+        Assert.Empty(comparison.Games);
+        Assert.Equal(0, comparison.BaselineVersionCount);
+    }
+
+    [Fact]
+    public async Task ScenarioComparisonStopsAtConfiguredVersionLimit()
+    {
+        await AddZeroRetentionPolicyAsync("limited-game");
+        for (var index = 0; index < 5; index++)
+            await AddVersionAsync("limited-game", $"limited-{index}", string.Empty, 100, new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddDays(index));
+
+        var limitedSnapshot = await store.GetRetentionScenarioSnapshotAsync(CancellationToken.None, maxVersionCount: 2);
+        Assert.Equal(3, limitedSnapshot.Versions.Count);
+
+        var service = new RetentionSimulationService(
+            options,
+            store,
+            NullLogger<RetentionSimulationService>.Instance,
+            gameLock: null,
+            gameLockTimeout: null,
+            maximumScenarioVersionCount: 2,
+            beforeScenarioRevalidation: null);
+
+        var error = await Assert.ThrowsAsync<WorkerOperationException>(() =>
+            service.CompareScenarioAsync(CreateScenarioRequest(0, 0), CancellationToken.None));
+
+        Assert.Equal("RETENTION_SCENARIO_VERSION_LIMIT", error.Code);
+        Assert.Equal(5, (await store.GetStorageAnalysisRowsAsync(CancellationToken.None)).Count);
+    }
+
+    [Fact]
+    public async Task ScenarioComparisonHonorsCancellationDuringSnapshotRead()
+    {
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            service.CompareScenarioAsync(CreateScenarioRequest(0, 0), cancellation.Token));
+    }
+
+    [Fact]
     public async Task ScenarioComparisonRejectsInvalidWorkerSideInputs()
     {
         var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
@@ -513,6 +667,20 @@ BEGIN SELECT RAISE(ABORT, 'injected retention index deletion failure'); END;");
             KeepMonthlyMonths = 0
         }, CancellationToken.None);
     }
+
+    private static RetentionScenarioComparisonRequestDto CreateScenarioRequest(
+        int growthMinimum,
+        int growthMaximum,
+        int keepAllForHours = 0)
+        => new()
+        {
+            KeepAllForHours = keepAllForHours,
+            KeepDailyDays = 0,
+            KeepWeeklyWeeks = 0,
+            KeepMonthlyMonths = 0,
+            GrowthMinimumMiBPer30Days = growthMinimum,
+            GrowthMaximumMiBPer30Days = growthMaximum
+        };
 
     private async Task ExecuteSqlAsync(string sql)
     {

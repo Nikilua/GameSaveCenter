@@ -424,7 +424,7 @@ public sealed partial class DashboardViewModel
     private void RecordRetentionScenarioSnapshot(RetentionScenarioComparisonRequestDto request, RetentionScenarioComparisonDto result)
     {
         var selected = SelectedRetentionScenarioDraft;
-        if (selected == null || !RetentionScenarioInputMatches(request) || !RetentionScenarioDraftMatches(selected)) return;
+        if (result.IsExpired || result.IsCancelled || selected == null || !RetentionScenarioInputMatches(request) || !RetentionScenarioDraftMatches(selected)) return;
 
         var previousSnapshot = selected.LastSnapshotUtc;
         selected.LastSnapshotUtc = result.GeneratedUtc.Kind == DateTimeKind.Utc

@@ -26,15 +26,35 @@ public sealed class RetentionSimulationService
     private readonly ILogger<RetentionSimulationService> _logger;
     private readonly ConcurrentDictionary<string, RetentionPreviewSnapshot> _previews = new(StringComparer.OrdinalIgnoreCase);
     private const int MaximumStoredPreviews = 8;
+    internal const int MaximumScenarioVersionCount = 10_000;
     private readonly TimeSpan _gameLockTimeout;
+    private readonly int _maximumScenarioVersionCount;
+    private readonly Func<CancellationToken, Task>? _beforeScenarioRevalidation;
 
     public RetentionSimulationService(WorkerOptions options, SqliteStateStore store, ILogger<RetentionSimulationService> logger, GameOperationLock? gameLock = null, TimeSpan? gameLockTimeout = null)
+        : this(options, store, logger, gameLock, gameLockTimeout, MaximumScenarioVersionCount, null)
     {
+    }
+
+    internal RetentionSimulationService(
+        WorkerOptions options,
+        SqliteStateStore store,
+        ILogger<RetentionSimulationService> logger,
+        GameOperationLock? gameLock,
+        TimeSpan? gameLockTimeout,
+        int maximumScenarioVersionCount,
+        Func<CancellationToken, Task>? beforeScenarioRevalidation)
+    {
+        if (maximumScenarioVersionCount <= 0)
+            throw new ArgumentOutOfRangeException(nameof(maximumScenarioVersionCount));
+
         _options = options;
         _store = store;
         _gameLock = gameLock ?? new GameOperationLock();
         _logger = logger;
         _gameLockTimeout = gameLockTimeout ?? TimeSpan.FromSeconds(10);
+        _maximumScenarioVersionCount = maximumScenarioVersionCount;
+        _beforeScenarioRevalidation = beforeScenarioRevalidation;
     }
 
     public async Task<RetentionSimulationPreviewDto> PreviewAsync(CancellationToken token)
@@ -79,9 +99,18 @@ public sealed class RetentionSimulationService
     public async Task<RetentionScenarioComparisonDto> CompareScenarioAsync(RetentionScenarioComparisonRequestDto request, CancellationToken token)
     {
         ValidateScenarioRequest(request);
-        var (versions, policies) = await _store.GetRetentionScenarioSnapshotAsync(token).ConfigureAwait(false);
+        var (versions, policies) = await _store.GetRetentionScenarioSnapshotAsync(token, _maximumScenarioVersionCount).ConfigureAwait(false);
+        if (versions.Count > _maximumScenarioVersionCount)
+        {
+            throw new WorkerOperationException(
+                "RETENTION_SCENARIO_VERSION_LIMIT",
+                $"情景比较最多支持 {_maximumScenarioVersionCount:N0} 个已索引版本；当前数据超过上限。请缩小库规模后重试。未执行清理。");
+        }
+
+        token.ThrowIfCancellationRequested();
         var generatedUtc = DateTime.UtcNow;
         var currentPlans = BuildPlans(versions, policies, generatedUtc);
+        token.ThrowIfCancellationRequested();
         var candidatePolicy = new BackupPolicyDto
         {
             KeepRecentAllHours = request.KeepAllForHours,
@@ -90,9 +119,36 @@ public sealed class RetentionSimulationService
             KeepMonthlyMonths = request.KeepMonthlyMonths
         };
         var candidatePlans = BuildPlans(versions, candidatePolicy, generatedUtc);
+        token.ThrowIfCancellationRequested();
         var current = SummarizePlans(currentPlans);
         var candidate = SummarizePlans(candidatePlans);
         var gameSummaries = BuildScenarioGameSummaries(currentPlans, candidatePlans, token);
+        token.ThrowIfCancellationRequested();
+
+        if (_beforeScenarioRevalidation != null)
+            await _beforeScenarioRevalidation(token).ConfigureAwait(false);
+        token.ThrowIfCancellationRequested();
+
+        var (latestVersions, latestPolicies) = await _store.GetRetentionScenarioSnapshotAsync(token, _maximumScenarioVersionCount).ConfigureAwait(false);
+        if (latestVersions.Count > _maximumScenarioVersionCount || !ScenarioSnapshotsMatch(versions, policies, latestVersions, latestPolicies))
+        {
+            return new RetentionScenarioComparisonDto
+            {
+                GeneratedUtc = default,
+                BaselineVersionCount = 0,
+                IsExpired = true,
+                CandidatePolicyDisplay = RetentionScenarioComparisonDto.FormatPolicy(
+                    request.KeepAllForHours,
+                    request.KeepDailyDays,
+                    request.KeepWeeklyWeeks,
+                    request.KeepMonthlyMonths),
+                GrowthMinimumMiBPer30Days = request.GrowthMinimumMiBPer30Days,
+                GrowthMaximumMiBPer30Days = request.GrowthMaximumMiBPer30Days,
+                Summary = "比较期间版本或有效保留策略发生变化，本次结果已过期。请重新生成对比；未执行清理。",
+                Assumptions = "情景统计只读；数据快照发生变化时不展示旧明细，也不会产生清理授权。"
+            };
+        }
+
         var policyDisplay = RetentionScenarioComparisonDto.FormatPolicy(
             request.KeepAllForHours,
             request.KeepDailyDays,
@@ -113,6 +169,83 @@ public sealed class RetentionSimulationService
             Assumptions = $"当前侧按每个游戏已生效的保留策略规划；候选侧将“{policyDisplay}”统一应用到所有游戏。锁定、PreRestore 与健康恢复点属于保护计数（去重），不会进入策略淘汰候选。候选体积按索引逻辑大小求和；缺失、不可访问或未通过安全路径检查的归档会在逐版本明细中单独说明，不计作现存归档候选。该逻辑大小不代表磁盘实占或最终可释放空间。增长范围 {request.GrowthMinimumMiBPer30Days}–{request.GrowthMaximumMiBPer30Days} MiB/30 天是用户假设，仅供后续分析，本次不参与保留数量或候选体积计算。"
         };
     }
+
+    private static bool ScenarioSnapshotsMatch(
+        IReadOnlyList<BackupVersionDto> baselineVersions,
+        IReadOnlyDictionary<string, BackupPolicyDto> baselinePolicies,
+        IReadOnlyList<BackupVersionDto> currentVersions,
+        IReadOnlyDictionary<string, BackupPolicyDto> currentPolicies)
+    {
+        if (baselineVersions.Count != currentVersions.Count || baselinePolicies.Count != currentPolicies.Count)
+            return false;
+
+        var currentByKey = currentVersions.ToDictionary(ScenarioVersionKey, StringComparer.OrdinalIgnoreCase);
+        foreach (var baseline in baselineVersions)
+        {
+            if (!currentByKey.TryGetValue(ScenarioVersionKey(baseline), out var current)
+                || !ScenarioVersionMatches(baseline, current))
+            {
+                return false;
+            }
+        }
+
+        foreach (var baseline in baselinePolicies)
+        {
+            if (!currentPolicies.TryGetValue(baseline.Key, out var current)
+                || baseline.Value.KeepRecentAllHours != current.KeepRecentAllHours
+                || baseline.Value.KeepDailyDays != current.KeepDailyDays
+                || baseline.Value.KeepWeeklyWeeks != current.KeepWeeklyWeeks
+                || baseline.Value.KeepMonthlyMonths != current.KeepMonthlyMonths)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool ScenarioVersionMatches(BackupVersionDto baseline, BackupVersionDto current)
+    {
+        var left = baseline.RestoreReadiness;
+        var right = current.RestoreReadiness;
+        return string.Equals(baseline.PlayniteId, current.PlayniteId, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(baseline.BackupId, current.BackupId, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(baseline.ParentBackupId, current.ParentBackupId, StringComparison.Ordinal)
+            && string.Equals(baseline.ContentFingerprint, current.ContentFingerprint, StringComparison.Ordinal)
+            && string.Equals(baseline.LudusaviName, current.LudusaviName, StringComparison.Ordinal)
+            && baseline.CreatedUtc == current.CreatedUtc
+            && baseline.TotalBytes == current.TotalBytes
+            && baseline.FileCount == current.FileCount
+            && baseline.IsLocked == current.IsLocked
+            && baseline.IsPreRestore == current.IsPreRestore
+            && string.Equals(baseline.ArchivePath, current.ArchivePath, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(baseline.Comment, current.Comment, StringComparison.Ordinal)
+            && string.Equals(baseline.SourceDevice, current.SourceDevice, StringComparison.Ordinal)
+            && string.Equals(baseline.OperatingSystem, current.OperatingSystem, StringComparison.Ordinal)
+            && (left == null) == (right == null)
+            && (left == null || RestoreReadinessMatches(left, right!));
+    }
+
+    private static bool RestoreReadinessMatches(RestoreReadinessDto baseline, RestoreReadinessDto current)
+        => baseline.Status == current.Status
+            && baseline.CheckedUtc == current.CheckedUtc
+            && string.Equals(baseline.BackupVersionId, current.BackupVersionId, StringComparison.OrdinalIgnoreCase)
+            && baseline.ArchiveReadable == current.ArchiveReadable
+            && baseline.ExtractSucceeded == current.ExtractSucceeded
+            && baseline.ExpectedFileCount == current.ExpectedFileCount
+            && baseline.ActualFileCount == current.ActualFileCount
+            && baseline.ExpectedTotalSize == current.ExpectedTotalSize
+            && baseline.ActualTotalSize == current.ActualTotalSize
+            && string.Equals(baseline.HashValidation, current.HashValidation, StringComparison.Ordinal)
+            && baseline.HashCoveredFileCount == current.HashCoveredFileCount
+            && baseline.HashEligibleFileCount == current.HashEligibleFileCount
+            && baseline.WarningCount == current.WarningCount
+            && baseline.ErrorCount == current.ErrorCount
+            && string.Equals(baseline.StagingCleanupStatus, current.StagingCleanupStatus, StringComparison.Ordinal)
+            && string.Equals(baseline.Summary, current.Summary, StringComparison.Ordinal);
+
+    private static string ScenarioVersionKey(BackupVersionDto version)
+        => $"{version.PlayniteId.Length}:{version.PlayniteId}{version.BackupId.Length}:{version.BackupId}";
 
     public async Task<RetentionSimulationResultDto> ApplyAsync(RetentionSimulationApplyRequestDto request, CancellationToken token)
     {
