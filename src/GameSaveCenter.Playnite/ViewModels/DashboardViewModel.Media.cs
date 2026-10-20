@@ -17,12 +17,36 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private const int MediaPageSize = 200;
         private bool mediaComparisonWorkspaceOpen;
+        private int mediaComparisonCandidateDirection = 1;
 
         public ObservableCollection<MediaItemDto> MediaComparisonItems => mediaComparisonSelection.Items;
         public string MediaComparisonSummary => mediaComparisonSelection.Summary;
         public string MediaComparisonStatus => mediaComparisonSelection.Status;
         public bool MediaComparisonWorkspaceOpen => mediaComparisonWorkspaceOpen;
         public string MediaComparisonWorkspaceToggleLabel => mediaComparisonWorkspaceOpen ? "收起对比" : "展开对比";
+        public bool CanNavigatePreviousMediaComparisonCandidate => CanNavigateMediaComparisonCandidate(-1);
+        public bool CanNavigateNextMediaComparisonCandidate => CanNavigateMediaComparisonCandidate(1);
+        public string MediaComparisonCandidateNavigationDisplay
+        {
+            get
+            {
+                if (mediaComparisonSelection.Items.Count != MediaComparisonSelection.MaximumItems)
+                    return "先加入两张截图，再切换右侧候选。";
+
+                var candidates = GetLoadedMediaComparisonResults();
+                var referenceId = mediaComparisonSelection.Items[0].MediaId;
+                var rightId = mediaComparisonSelection.Items[1].MediaId;
+                var navigableOrder = candidates.Where(item => item.Kind == MediaKind.Screenshot
+                    && !string.Equals(item.MediaId, referenceId, StringComparison.OrdinalIgnoreCase)).ToList();
+                var index = navigableOrder.FindIndex(item => string.Equals(item.MediaId, rightId, StringComparison.OrdinalIgnoreCase));
+                var count = mediaComparisonCandidateNavigator.CountCandidates(candidates, referenceId);
+                return index >= 0
+                    ? $"当前筛选结果 · {index + 1} / {navigableOrder.Count}"
+                    : count > 0
+                        ? $"当前 B 不在筛选结果 · {count} 张候选"
+                        : "当前筛选结果没有其他可用截图";
+            }
+        }
 
         private void AddSelectedMediaToComparison(object? value)
         {
@@ -33,23 +57,139 @@ namespace GameSaveCenter.Playnite.ViewModels
                 .ToArray();
 
             mediaComparisonSelection.Add(selected);
+            mediaComparisonCandidateNavigator.ResetUnavailable();
             if (mediaComparisonSelection.Items.Count == MediaComparisonSelection.MaximumItems)
                 mediaComparisonWorkspaceOpen = true;
             OnPropertyChanged(nameof(MediaComparisonSummary));
             OnPropertyChanged(nameof(MediaComparisonStatus));
             OnPropertyChanged(nameof(MediaComparisonWorkspaceOpen));
             OnPropertyChanged(nameof(MediaComparisonWorkspaceToggleLabel));
+            RaiseMediaComparisonCandidateStateChanged();
             RaiseCommandStates();
         }
 
         private void ClearMediaComparison()
         {
             mediaComparisonSelection.Clear();
+            mediaComparisonCandidateNavigator.ResetUnavailable();
             mediaComparisonWorkspaceOpen = false;
             OnPropertyChanged(nameof(MediaComparisonSummary));
             OnPropertyChanged(nameof(MediaComparisonStatus));
             OnPropertyChanged(nameof(MediaComparisonWorkspaceOpen));
             OnPropertyChanged(nameof(MediaComparisonWorkspaceToggleLabel));
+            RaiseMediaComparisonCandidateStateChanged();
+            RaiseCommandStates();
+        }
+
+        private bool CanNavigateMediaComparisonCandidate(int direction)
+            => mediaComparisonSelection.Items.Count == MediaComparisonSelection.MaximumItems
+                && mediaComparisonCandidateNavigator.CanMove(
+                    GetLoadedMediaComparisonResults(),
+                    mediaComparisonSelection.Items[1].MediaId,
+                    mediaComparisonSelection.Items[0].MediaId,
+                    direction);
+
+        private void NavigateMediaComparisonCandidate(int direction)
+        {
+            if (mediaComparisonSelection.Items.Count != MediaComparisonSelection.MaximumItems)
+                return;
+
+            var candidates = GetLoadedMediaComparisonResults();
+            var reference = mediaComparisonSelection.Items[0];
+            var current = mediaComparisonSelection.Items[1];
+            if (!TryReplaceMediaComparisonCandidate(candidates, current.MediaId, reference.MediaId, direction, out var candidate, out var skipped))
+            {
+                mediaComparisonSelection.SetStatus(skipped > 0
+                    ? $"已跳过 {skipped} 张缺失或失效图片；当前筛选结果没有更多可切换候选。"
+                    : direction > 0 ? "已到当前筛选结果末尾。" : "已到当前筛选结果开头。");
+                OnPropertyChanged(nameof(MediaComparisonStatus));
+                RaiseMediaComparisonCandidateStateChanged();
+                return;
+            }
+
+            var selectedCandidate = candidate!;
+            var status = skipped > 0
+                ? $"已跳过 {skipped} 张缺失或失效图片；右侧已切换为 {selectedCandidate.FileName}，左侧参考图保持不变。"
+                : null;
+            if (status != null) mediaComparisonSelection.SetStatus(status);
+            mediaComparisonCandidateDirection = direction;
+            OnPropertyChanged(nameof(MediaComparisonStatus));
+            RaiseMediaComparisonCandidateStateChanged();
+        }
+
+        internal void HandleMediaComparisonCandidatePreviewFailure(string? failedMediaId)
+        {
+            if (mediaComparisonSelection.Items.Count != MediaComparisonSelection.MaximumItems
+                || string.IsNullOrWhiteSpace(failedMediaId)
+                || !string.Equals(mediaComparisonSelection.Items[1].MediaId, failedMediaId, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            var failed = mediaComparisonSelection.Items[1];
+            var reference = mediaComparisonSelection.Items[0];
+            mediaComparisonCandidateNavigator.MarkUnavailable(failedMediaId);
+            var candidates = GetLoadedMediaComparisonResults();
+            var replaced = TryReplaceMediaComparisonCandidate(
+                candidates, failedMediaId, reference.MediaId, mediaComparisonCandidateDirection, out var replacement, out _);
+            var fallbackDirection = mediaComparisonCandidateDirection > 0 ? -1 : 1;
+            if (!replaced)
+                replaced = TryReplaceMediaComparisonCandidate(candidates, failedMediaId, reference.MediaId, fallbackDirection, out replacement, out _);
+
+            if (replaced && replacement != null)
+            {
+                var message = $"右侧候选 {failed.FileName} 载入失败，已跳过并切换到 {replacement.FileName}；左侧参考图保持不变。";
+                mediaComparisonSelection.SetStatus(message);
+            }
+            else
+            {
+                mediaComparisonSelection.SetStatus($"右侧候选 {failed.FileName} 载入失败，当前已加载筛选结果中没有其他可用截图。左侧参考图保持不变。可以调整筛选或重新加载媒体列表后继续。");
+            }
+
+            OnPropertyChanged(nameof(MediaComparisonStatus));
+            RaiseMediaComparisonCandidateStateChanged();
+        }
+
+        private bool TryReplaceMediaComparisonCandidate(
+            IReadOnlyList<MediaItemDto> results,
+            string? currentMediaId,
+            string? referenceMediaId,
+            int direction,
+            out MediaItemDto? candidate,
+            out int skippedUnavailable)
+        {
+            candidate = null;
+            skippedUnavailable = 0;
+            for (var attempt = 0; attempt <= results.Count; attempt++)
+            {
+                var next = mediaComparisonCandidateNavigator.FindAdjacent(
+                    results, currentMediaId, referenceMediaId, direction, File.Exists, out skippedUnavailable);
+                if (next == null)
+                    return false;
+                if (mediaComparisonSelection.ReplaceSecond(next, File.Exists))
+                {
+                    candidate = next;
+                    return true;
+                }
+
+                // The file may disappear between the availability probe and replacement.
+                // Exclude it and re-evaluate inside this same bounded result window.
+                mediaComparisonCandidateNavigator.MarkUnavailable(next.MediaId);
+            }
+
+            return false;
+        }
+
+        private List<MediaItemDto> GetLoadedMediaComparisonResults()
+        {
+            if (MediaView != null)
+                return MediaView.Cast<object>().OfType<MediaItemDto>().ToList();
+            return Media?.ToList() ?? new List<MediaItemDto>();
+        }
+
+        private void RaiseMediaComparisonCandidateStateChanged()
+        {
+            OnPropertyChanged(nameof(CanNavigatePreviousMediaComparisonCandidate));
+            OnPropertyChanged(nameof(CanNavigateNextMediaComparisonCandidate));
+            OnPropertyChanged(nameof(MediaComparisonCandidateNavigationDisplay));
             RaiseCommandStates();
         }
 
@@ -462,7 +602,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             var incoming = page.Items ?? new List<MediaItemDto>();
             var previousSelectedIndex = SelectedMedia == null ? -1 : Media.IndexOf(SelectedMedia);
             if (reset)
+            {
                 mediaPageAccumulator.ReplaceFirstPage(incoming, selectedId);
+                mediaComparisonCandidateNavigator.ResetUnavailable();
+            }
             else
                 mediaPageAccumulator.AppendPage(incoming, selectedId);
             mediaPageCursor = page.NextCursor ?? string.Empty;
@@ -475,6 +618,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(CanNavigatePreviousMedia));
             OnPropertyChanged(nameof(CanNavigateNextMedia));
             OnPropertyChanged(nameof(MediaDetailNavigationDisplay));
+            RaiseMediaComparisonCandidateStateChanged();
             RaiseCommandStates();
         }
 
@@ -544,6 +688,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(MediaActiveFiltersSummary));
             NotifyMediaDetailsStateChanged();
             MediaView.Refresh();
+            RaiseMediaComparisonCandidateStateChanged();
             uiStateSave?.Schedule();
             if (changed) ScheduleMediaPageQuery();
         }

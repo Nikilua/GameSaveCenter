@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -6,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -237,6 +239,111 @@ namespace GameSaveCenter.Playnite.Tests
             });
         }
 
+        [Fact]
+        public void CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages()
+        {
+            RunSta(() =>
+            {
+                var root = Path.Combine(Path.GetTempPath(), "gsc-s04-05-" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(root);
+                var reference = Screenshot("reference", CreateImage(Path.Combine(root, "reference.png"), 320, 180, 45));
+                var current = Screenshot("current", CreateImage(Path.Combine(root, "current.png"), 320, 180, 85));
+                var filtered = Screenshot("filtered-out", CreateImage(Path.Combine(root, "filtered.png"), 320, 180, 105));
+                var next = Screenshot("next", CreateImage(Path.Combine(root, "next.png"), 320, 180, 125));
+                var broken = Screenshot("broken", Path.Combine(root, "broken.png"));
+                File.WriteAllBytes(broken.ArchivePath, Array.Empty<byte>());
+                var last = Screenshot("last", CreateImage(Path.Combine(root, "last.png"), 320, 180, 175));
+                var detailSelection = Screenshot("detail-selection", reference.ArchivePath);
+
+                try
+                {
+                    var selection = new MediaComparisonSelection();
+                    selection.Add(new[] { reference, current }, _ => true);
+                    var viewModel = CreateDashboard(selection, new[]
+                    {
+                        reference,
+                        current,
+                        new MediaItemDto { MediaId = "video", Kind = MediaKind.VideoClip, ArchivePath = Path.Combine(root, "clip.mp4") },
+                        filtered,
+                        next,
+                        broken,
+                        last
+                    }, item => !string.Equals(item.MediaId, "filtered-out", StringComparison.Ordinal));
+                    SetField(viewModel, "selectedMedia", detailSelection);
+                    var view = new MediaCenterView { DataContext = viewModel };
+                    var viewType = typeof(MediaCenterView);
+                    var tabControl = GetField<TabControl>(viewType, view, "MediaTabControl");
+                    var previousButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonPreviousCandidateButton");
+                    var nextButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonNextCandidateButton");
+                    var rightImage = GetField<AsyncThumbnailImage>(viewType, view, "MediaComparisonSecondImage");
+                    var candidatePosition = GetField<TextBlock>(viewType, view, "MediaComparisonCandidateNavigationText");
+
+                    using (var host = new WindowHost(new Window
+                    {
+                        Content = view,
+                        Width = 1180,
+                        Height = 900,
+                        ShowInTaskbar = false,
+                        WindowStyle = WindowStyle.None,
+                        Opacity = 0.01
+                    }))
+                    {
+                        tabControl.SelectedIndex = 1;
+                        viewModel.SetMediaComparisonWorkspaceOpen(true);
+                        host.UpdateLayout();
+
+                        Assert.Same(viewModel.NextMediaComparisonCandidateCommand, nextButton.Command);
+                        Assert.Same(viewModel.PreviousMediaComparisonCandidateCommand, previousButton.Command);
+                        Assert.True(nextButton.Command!.CanExecute(null));
+                        nextButton.Focus();
+                        Keyboard.Focus(nextButton);
+                        nextButton.Command.Execute(null);
+                        host.UpdateLayout();
+                        Assert.Equal("next", selection.Items[1].MediaId);
+                        Assert.Equal("reference", selection.Items[0].MediaId);
+                        Assert.Same(detailSelection, viewModel.SelectedMedia);
+                        Assert.Same(nextButton, Keyboard.FocusedElement);
+                        Assert.Contains("2 / 4", candidatePosition.Text);
+
+                        nextButton.Command.Execute(null);
+                        PumpUntil(host.Window.Dispatcher,
+                            () => selection.Items[1].MediaId == "last" && rightImage.PreviewState == "Ready",
+                            TimeSpan.FromSeconds(6));
+                        host.UpdateLayout();
+                        Assert.Equal("Ready", rightImage.PreviewState);
+                        Assert.Equal("reference", selection.Items[0].MediaId);
+                        Assert.Same(detailSelection, viewModel.SelectedMedia);
+                        Assert.Contains("载入失败", viewModel.MediaComparisonStatus);
+                        Assert.Contains("4 / 4", candidatePosition.Text);
+
+                        previousButton.Focus();
+                        Keyboard.Focus(previousButton);
+                        previousButton.Command!.Execute(null);
+                        host.UpdateLayout();
+                        Assert.Equal("next", selection.Items[1].MediaId);
+                        Assert.Equal("reference", selection.Items[0].MediaId);
+                        Assert.Same(detailSelection, viewModel.SelectedMedia);
+                        Assert.Same(previousButton, Keyboard.FocusedElement);
+
+                        nextButton.Focus();
+                        Keyboard.Focus(nextButton);
+                        nextButton.Command.Execute(null);
+                        host.UpdateLayout();
+                        Assert.Equal("last", selection.Items[1].MediaId);
+                        Assert.Contains("已跳过 1 张缺失或失效图片", viewModel.MediaComparisonStatus);
+                        var capturePath = Environment.GetEnvironmentVariable("GSC_S04_05_CAPTURE_PATH");
+                        if (!string.IsNullOrWhiteSpace(capturePath))
+                            SaveVisualCapture(view, capturePath!);
+                    }
+                }
+                finally
+                {
+                    if (Directory.Exists(root))
+                        Directory.Delete(root, recursive: true);
+                }
+            });
+        }
+
         private static MediaItemDto Screenshot(string id, string path)
             => new MediaItemDto
             {
@@ -276,16 +383,31 @@ namespace GameSaveCenter.Playnite.Tests
             using (var stream = File.Create(path)) encoder.Save(stream);
         }
 
-        private static DashboardViewModel CreateDashboard(MediaComparisonSelection selection)
+        private static DashboardViewModel CreateDashboard(
+            MediaComparisonSelection selection,
+            IEnumerable<MediaItemDto>? media = null,
+            Func<MediaItemDto, bool>? filter = null)
         {
             var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
             var plugin = (GameSaveCenterPlugin)FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin));
             SetAutoProperty(plugin, nameof(GameSaveCenterPlugin.Settings), new GameSaveCenterSettings());
             SetField(dashboard, "plugin", plugin);
             SetField(dashboard, "mediaComparisonSelection", selection);
-            SetAutoProperty(dashboard, nameof(DashboardViewModel.Media), new BatchObservableCollection<MediaItemDto>());
+            SetField(dashboard, "mediaComparisonCandidateNavigator", new MediaComparisonCandidateNavigator());
+            var mediaCollection = new BatchObservableCollection<MediaItemDto>();
+            foreach (var item in media ?? Array.Empty<MediaItemDto>()) mediaCollection.Add(item);
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.Media), mediaCollection);
+            var mediaView = new ListCollectionView(mediaCollection);
+            if (filter != null) mediaView.Filter = value => value is MediaItemDto item && filter(item);
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.MediaView), mediaView);
             SetField(dashboard, "unassignedMedia", new BatchObservableCollection<MediaItemDto>());
             SetField(dashboard, "ignoredMedia", new BatchObservableCollection<MediaItemDto>());
+            var navigateMethod = typeof(DashboardViewModel).GetMethod("NavigateMediaComparisonCandidate", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(navigateMethod);
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.PreviousMediaComparisonCandidateCommand), new RelayCommand(
+                _ => navigateMethod!.Invoke(dashboard, new object[] { -1 }), _ => dashboard.CanNavigatePreviousMediaComparisonCandidate));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.NextMediaComparisonCandidateCommand), new RelayCommand(
+                _ => navigateMethod!.Invoke(dashboard, new object[] { 1 }), _ => dashboard.CanNavigateNextMediaComparisonCandidate));
             return dashboard;
         }
 

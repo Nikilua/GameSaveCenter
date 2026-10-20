@@ -523,6 +523,13 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnMediaComparisonPreviewStateChanged(object? sender, EventArgs e)
         {
+            if (ReferenceEquals(sender, MediaComparisonSecondImage)
+                && (MediaComparisonSecondImage.PreviewState == "Failed" || MediaComparisonSecondImage.PreviewState == "Missing"))
+            {
+                var candidateId = attachedViewModel?.MediaComparisonItems.ElementAtOrDefault(1)?.MediaId;
+                attachedViewModel?.HandleMediaComparisonCandidatePreviewFailure(candidateId);
+            }
+
             UpdateMediaComparisonViewports();
         }
 

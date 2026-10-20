@@ -109,6 +109,56 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return true;
         }
 
+        public bool ReplaceSecond(MediaItemDto? candidate, Func<string, bool>? fileExists = null, string? status = null)
+        {
+            if (Items.Count != MaximumItems)
+            {
+                Status = "需要先固定左侧参考图和右侧比较图，才能切换候选。";
+                return false;
+            }
+
+            if (candidate == null || candidate.Kind != MediaKind.Screenshot)
+            {
+                Status = "右侧比较候选必须是截图。";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(candidate.MediaId))
+            {
+                Status = "右侧比较候选缺少稳定媒体 ID。";
+                return false;
+            }
+
+            if (string.Equals(candidate.MediaId, Items[0].MediaId, StringComparison.OrdinalIgnoreCase))
+            {
+                Status = "右侧比较候选不能替换为左侧参考图。";
+                return false;
+            }
+
+            var path = candidate.ArchivePath;
+            var exists = fileExists ?? File.Exists;
+            if (string.IsNullOrWhiteSpace(path) || !exists(path))
+            {
+                Status = $"右侧候选 {GetDisplayName(candidate)} 的归档文件不存在。";
+                return false;
+            }
+
+            if (string.Equals(candidate.MediaId, Items[1].MediaId, StringComparison.OrdinalIgnoreCase))
+            {
+                Status = "右侧已是当前比较候选。";
+                return false;
+            }
+
+            Items[1] = candidate;
+            Status = string.IsNullOrWhiteSpace(status)
+                ? $"右侧比较候选已切换为 {GetDisplayName(candidate)}；左侧参考图保持不变。"
+                : status ?? string.Empty;
+            return true;
+        }
+
+        internal void SetStatus(string status)
+            => Status = status ?? string.Empty;
+
         public void Clear()
         {
             Items.Clear();

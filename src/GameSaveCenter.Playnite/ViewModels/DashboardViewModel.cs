@@ -126,6 +126,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private int mediaPageTotalCount;
         private bool mediaPageHasMore;
         private readonly MediaComparisonSelection mediaComparisonSelection = new MediaComparisonSelection();
+        private MediaComparisonCandidateNavigator mediaComparisonCandidateNavigator = new MediaComparisonCandidateNavigator();
         private readonly MediaPageAccumulator mediaPageAccumulator;
         private readonly MediaPageAccumulator unassignedMediaPageAccumulator;
         private readonly MediaPageAccumulator ignoredMediaPageAccumulator;
@@ -381,6 +382,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             AddSelectedMediaToComparisonCommand = new RelayCommand(AddSelectedMediaToComparison);
             ClearMediaComparisonCommand = new RelayCommand(_ => ClearMediaComparison(), _ => MediaComparisonItems.Count > 0);
             ToggleMediaComparisonWorkspaceCommand = new RelayCommand(_ => ToggleMediaComparisonWorkspace(), _ => MediaComparisonItems.Count == MediaComparisonSelection.MaximumItems);
+            PreviousMediaComparisonCandidateCommand = new RelayCommand(_ => NavigateMediaComparisonCandidate(-1), _ => CanNavigatePreviousMediaComparisonCandidate);
+            NextMediaComparisonCandidateCommand = new RelayCommand(_ => NavigateMediaComparisonCandidate(1), _ => CanNavigateNextMediaComparisonCandidate);
             ClearMediaFiltersCommand = new RelayCommand(_ => ClearMediaFilters(), _ => !IsBusy);
             ApplyMediaFilterPresetCommand = new RelayCommand(_ => ApplyMediaFilterPreset(), _ => !IsBusy && SelectedMediaFilterPreset != null);
             SaveMediaFilterPresetCommand = new RelayCommand(_ => Observe(SaveMediaFilterPresetAsync()), _ => !IsBusy && !string.IsNullOrWhiteSpace(MediaFilterPresetNameDraft));
@@ -1573,6 +1576,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 SetValue(ref mediaFilter, normalized);
                 if (changed) InvalidateMediaDetailsContext();
                 MediaView.Refresh();
+                RaiseMediaComparisonCandidateStateChanged();
                 ScheduleMediaPageQuery();
                 uiStateSave?.Schedule();
                 OnPropertyChanged(nameof(MediaHasActiveFilters));
@@ -1891,6 +1895,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand AddSelectedMediaToComparisonCommand { get; }
         public ICommand ClearMediaComparisonCommand { get; }
         public ICommand ToggleMediaComparisonWorkspaceCommand { get; }
+        public ICommand PreviousMediaComparisonCandidateCommand { get; }
+        public ICommand NextMediaComparisonCandidateCommand { get; }
         public ICommand ClearMediaFiltersCommand { get; }
         public ICommand ApplyMediaFilterPresetCommand { get; }
         public ICommand SaveMediaFilterPresetCommand { get; }
@@ -5938,6 +5944,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var timer = Stopwatch.StartNew();
             MediaView.Refresh();
+            RaiseMediaComparisonCandidateStateChanged();
             timer.Stop();
             Logger.Debug($"[PERF] MediaSearch refresh={timer.ElapsedMilliseconds}ms media={Media.Count}");
         }
@@ -6473,7 +6480,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
-                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
+                LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, PreviousMediaComparisonCandidateCommand, NextMediaComparisonCandidateCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
