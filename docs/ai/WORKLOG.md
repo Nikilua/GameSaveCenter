@@ -11552,6 +11552,16 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 提交后 SDK `8.0.423` Release 解决方案构建 `0 warning / 0 error`，诊断 ID `20261018T090828772Z-8dd0b53e`。表格布局设置 `2/2`、R06 `6/6`、R09 `2/2`、视图定义 `9/9`、UI 布局回归 `20 passed / 11 skipped`；总计 `39 passed / 0 failed / 11 skipped`。Offscreen Render QA `OK`，Task/候选路径 `1040×700` 均有 `4/4` 可读行。完整摘要、TRX、DLL/PDB 身份及截图见 [S01-06](../design/reviews/ui-finesse-round4-20261018/evidence/S01-06/README.md)。
 - 未完成完整 WPF 隔离循环、安装/版本门禁及真实 Playnite 设置保存/双主题呈现；既有 R05 `GetCursorPos` Win32 error 5 边界保留。用户外机 R09 一键流程在测试阶段因断言失败退出，非编译错误；用户暂时没有对应 summary/TRX，无法核对该次源码与 DLL/PDB。当前提交 R09 `2/2` 通过，但不据此宣称外机问题已追溯。
 
+## 2026-10-20 用户反馈：工作区滚动越界二次修正
+
+- 按用户截图复核存档历史、路径校验、任务队列和当前媒体列表。此前按页面视口比例限制表格高度，组合详情卡片和页面固定内容后会把表格内部滚动条推到详情区下方，遮挡更后的行。改为按实际 `ScrollViewer.ViewportHeight` 扣除页面固定行、表格边框与堆叠详情预算，再分配剩余表格高度；页面不够时由外层滚动区承接，保留列表虚拟化和内部滚动。媒体收件箱未改。
+- SDK `8.0.423` Release 全解决方案构建 `0 warning / 0 error`，诊断 `20261020T074347195Z-e0d59102`。宽/紧凑 WPF 主机边界、表格内滚动和页面外滚动回归 `6/6` 通过；证据 [UI-SCROLL-VIEWPORT-20261020](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。提交 `7242fb6b`。离屏 WPF 几何不代表 Playnite 实际窗口或物理 DPI。
+
+## 2026-10-20 Round4 S04-06 至 S04-08 媒体比较交付
+
+- S04-06 `792b1a2f` 的可撤销比较意见、S04-07 `14925e5e` 的稳定 ID 预览转交完成受控验收；S04-08 `c9da7c76` 复核既有异步缩略图预算及卸载保护，并补齐 GIF/非支持格式与 UI 发布前卸载行为覆盖。SDK8 Release solution `0/0`，缩略图与生产比较行为 `19/19`，构建、TRX、源和测试 DLL 身份记录在 [S04-08](../design/reviews/ui-finesse-round4-20261018/evidence/S04-08/README.md)。真实 Playnite、真实媒体和物理 DPI 未验。
+- S00-01 已满足，复用既有只读命令目录证据，不重复实现；S00-02 仍保留 R05 `GetCursorPos` Win32 error 5 的系统权限边界。Round4 账本和下一项依赖审查以 `ROUND4_PROGRESS.md` 与 `AUTONOMOUS_BACKLOG.md` 为准。
+
 ## 2026-10-18 Round4 S01-08 视图迁移兼容候选实现
 
 - 插件设置加载在 Json.NET 反序列化失败后，会移除损坏的视图布局、密度和列偏好字段并继续保留有效业务设置；整份 JSON 无法解析时使用安全默认设置。恢复前先将原 `config.json` 复制为唯一命名备份；备份失败则不自动覆盖原文件，已恢复设置仍可用于本次启动。恢复原因和丢弃字段写入 Playnite 日志。

@@ -605,38 +605,53 @@
     {
       "id": "S04-06",
       "title": "保留意见标记",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "792b1a2f",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S04-06/README.md)：SDK8.0.423 Release solution 0/0；比较意见、撤销与生产 WPF 行为测试 11/11",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-06/README.md"
+        }
+      ],
+      "boundary": "标记只保留于当前比较会话，不改变媒体元数据或文件；真实 Playnite 页面与物理输入未验；S04-07 依赖已满足"
     },
     {
       "id": "S04-07",
       "title": "比较结束转交",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "14925e5e",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S04-07/README.md)：稳定 ID 转交预览复核 Playnite 7/7、Worker 1/1；SDK8 Release solution 0/0",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-07/README.md"
+        }
+      ],
+      "boundary": "关比较面板不执行操作；对象状态由现有 Worker 复核；真实 Playnite 呈现与完整 WPF 循环未验；S04-08 依赖已满足"
     },
     {
       "id": "S04-08",
       "title": "大图资源验收",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "c9da7c76",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[证据](evidence/S04-08/README.md)：SDK8.0.423 Release solution 0/0；缩略图预算、GIF/不支持格式、损坏图、卸载迟到回调及比较页行为 19/19",
+      "evidence": [
+        {
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-08/README.md"
+        }
+      ],
+      "boundary": "沿用 2048 px 解码长边、3 路并发和 64 MiB 缓存；GIF 使用合成数据，真实媒体、Playnite 宿主与物理 DPI 未验"
     },
     {
       "id": "S05-01",

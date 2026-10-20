@@ -1,12 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-20 Round4 S04-05 已验收；S04-06 READY
+## 2026-10-20 Round4 S04-06 至 S04-08 已验收
 
 S04-05 提交 `4d0bfd3c` 已把比较导航按钮接入生产 `MediaCenterView`。候选只来自当前已加载且通过搜索/筛选的 `MediaView`：B 可上一张/下一张，A 固定不变，详情选择不变，当前位置可见；不自动拉取新页。候选缺失/损坏时利用 `MediaId` 暂时排除并继续当前方向，无后续项时换向回退；文件存在检查和实际替换之间发生变化时也会继续尝试。使用现有异步缩略图的取消和 generation guard，未引入新解码器。
 
 SDK `8.0.423` Release solution build `0 warning / 0 error`。候选导航单元行为 `2/2`、生产比较 WPF `3/3`、迟到图像替换测试 `1/1`，共 `6/6`；source validation、XAML `25/25` 和 diff check 通过。证据及 TRX、构建日志、离屏合成截图、二进制/源码 SHA：[S04-05](../design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)。真实 Playnite、真实媒体和物理输入未验，完整 WPF 隔离循环未运行。
 
-S04-06 的生产代码搜索未发现比较专用意见标记。收藏/备注会写正式媒体元数据，忽略会改变归类状态，不能复用为可撤销的人工保留/检查意见。依赖已满足；预期采用比较会话内标记，退出/重启清空，不修改文件。原 Round3 TRX 与 `TestResults/` 仍为未跟踪用户文件，没有清理或提交。
+S04-06 `792b1a2f` 加入按稳定媒体 ID 追踪、可撤销且只在比较会话内有效的人工意见；不写收藏/备注，不调用忽略或删除。生产比较页和意见行为 `11/11`。S04-07 `14925e5e` 将意见快照转交既有归类/忽略预览，由 Worker 重新核对当前对象；比较面板关闭不执行操作，Playnite `7/7`、Worker `1/1`。S04-08 `c9da7c76` 先核实原有 2048 px 解码上限、3 路并发、96 项/64 MiB LRU、卸载取消与代际保护，再补 GIF、非支持格式、损坏图和已解码等待 UI 发布时卸载的行为覆盖；SDK8 Release solution `0/0`，缩略图与生产比较页定向用例 `19/19`。证据分别见 [S04-06](../design/reviews/ui-finesse-round4-20261018/evidence/S04-06/README.md)、[S04-07](../design/reviews/ui-finesse-round4-20261018/evidence/S04-07/README.md)、[S04-08](../design/reviews/ui-finesse-round4-20261018/evidence/S04-08/README.md)。GIF/测试宿主为合成内容；真实 Playnite、用户媒体、物理 DPI 未验。原 Round3 TRX 与 `TestResults/` 仍为未跟踪用户文件，没有清理或提交。
 
 ## 2026-10-20 Round4 S04-04 已验收
 
@@ -20,7 +20,7 @@ S04-04 已由 `9e0af12b` 实现：媒体比较工作区可显示 A 左/B 右的�
 
 ## 2026-10-20 用户反馈：页面/表格滚动区越界
 
-存档历史和路径校验现在分别通过有限页面 ScrollViewer 到达下方内容，DataGrid 保留自己的有限虚拟化视口和滚动条；任务中心外层滚动使用 `TaskPageScrollViewer.ViewportHeight`，避免把内容高度误作 PageHost 可视高度；当前媒体页同样限定内外滚动范围。媒体收件箱保留既有 PageHost 尺寸算法，避免影响其缩放恢复。SDK8 Release solution `0 warning / 0 error`，WPF 几何测试 `9/9`，RenderHarness `0 PROBLEM`；详情、TRX、截图及离屏/宿主边界见[证据页](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。真实 Playnite 未运行。滚动修复后续完成 S04-04 与 S04-05；当前下一个 READY 项为 S04-06。
+首轮布局为存档历史、路径校验、任务队列和当前媒体页加入页面与表格内两级滚动；用户复测后仍发现大表格滚动区越过详情卡片、部分行被遮挡。二次调整改按 `ScrollViewer.ViewportHeight` 扣除实测固定行和堆叠详情预算，再分配表格剩余空间，空间不足由页面滚动区承接。提交 `7242fb6b`，SDK8 Release solution `0/0`，最终生产 WPF 几何/滚动范围 `6/6`。旧有 9/9 与 RenderHarness 结果保留为首轮证据，当前验收以最终 6/6 为准。媒体收件箱布局未改。合成/离屏几何不代表真实 Playnite 或物理 DPI，细节见[证据页](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。
 
 ## 2026-10-20 默认一键安装流程已全链通过
 

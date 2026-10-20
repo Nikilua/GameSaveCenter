@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c552567b-0ae9-42a1-b139-879d2a266b37" name="lopmatu@SULT 2026-10-20 13:39:49" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-20T13:39:49.4496864+08:00" queuing="2026-10-20T13:39:49.4496869+08:00" start="2026-10-20T13:39:44.0261463+08:00" finish="2026-10-20T13:40:06.6117139+08:00" />
+  <TestSettings name="default" id="306bccb2-b881-46f9-8da8-941846f9fe6f">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-20_13_39_49" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fc9f3bf4-7b8d-4d1e-8a74-088101ed3f92" testId="aa908fc8-2e7a-9435-720d-2b61e7aa42b2" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan" computerName="SULT" duration="00:00:00.6650000" startTime="2026-10-20T13:39:51.5875474+08:00" endTime="2026-10-20T13:39:52.2499796+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc9f3bf4-7b8d-4d1e-8a74-088101ed3f92" />
+    <UnitTestResult executionId="0e6f4355-e73b-4e82-9f5f-d19383a7d69a" testId="5feec309-6505-3a54-bea9-1570c7f642d0" testName="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.AddExplainsVideosAndMissingFilesAndChecksOnlySelectedScreenshotPaths" computerName="SULT" duration="00:00:00.0180000" startTime="2026-10-20T13:39:53.8693525+08:00" endTime="2026-10-20T13:39:53.8803552+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0e6f4355-e73b-4e82-9f5f-d19383a7d69a" />
+    <UnitTestResult executionId="82899c77-3fa7-4075-859f-edb61137588a" testId="4c221623-893a-bcf2-890e-be177e29e50c" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks" computerName="SULT" duration="00:00:03.6460000" startTime="2026-10-20T13:39:47.9571718+08:00" endTime="2026-10-20T13:39:51.5845481+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82899c77-3fa7-4075-859f-edb61137588a" />
+    <UnitTestResult executionId="3dc55df1-cd8e-4bc1-b36f-542ee299d851" testId="5d02f899-e1b5-e8bd-21bb-013907a6d198" testName="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.AddKeepsAtMostTwoStableIdsAndDoesNotDependOnFilteredSourceCollection" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T13:39:54.4172004+08:00" endTime="2026-10-20T13:39:54.4182004+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3dc55df1-cd8e-4bc1-b36f-542ee299d851" />
+    <UnitTestResult executionId="0d3512b1-f61b-4543-81b1-0846ce1cb419" testId="654813ea-07de-2025-1cb1-706588a84600" testName="GameSaveCenter.Playnite.Tests.MediaComparisonOpinionTrackerTests.OpinionUsesStableMediaIdCanBeReplacedAndCanBeUndone" computerName="SULT" duration="00:00:00.0380000" startTime="2026-10-20T13:39:47.9141735+08:00" endTime="2026-10-20T13:39:47.9331730+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d3512b1-f61b-4543-81b1-0846ce1cb419" />
+    <UnitTestResult executionId="0bc8bb58-bebe-42a4-9b2f-8dba841bf765" testId="d67746ec-78ed-554c-7fe4-402319299855" testName="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.ClearAllowsAReplacementPairAndReportsTheEmptySelection" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T13:39:53.8643513+08:00" endTime="2026-10-20T13:39:53.8663500+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bc8bb58-bebe-42a4-9b2f-8dba841bf765" />
+    <UnitTestResult executionId="518e076c-276a-4bd4-8608-65af9bde1117" testId="431a8d2c-21cc-e210-ae9a-070709b85ece" testName="GameSaveCenter.Playnite.Tests.MediaComparisonOpinionTrackerTests.EmptyIdsAndUndefinedOpinionsAreIgnored" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T13:39:47.9521711+08:00" endTime="2026-10-20T13:39:47.9531711+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="518e076c-276a-4bd4-8608-65af9bde1117" />
+    <UnitTestResult executionId="eaed818b-f283-4324-91c2-3174cf8881f2" testId="174dd301-ff64-e46e-5d28-0591de165bb1" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard" computerName="SULT" duration="00:00:01.0140000" startTime="2026-10-20T13:39:52.2529785+08:00" endTime="2026-10-20T13:39:53.2630140+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eaed818b-f283-4324-91c2-3174cf8881f2" />
+    <UnitTestResult executionId="4a75d7bd-7042-4fa7-a78a-0923374bdbe7" testId="47a039ac-bcc7-8372-3baa-6ce02a75b5c5" testName="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.AddRejectsDuplicateIdsWithoutReplacingTheExistingComparisonObject" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-20T13:39:54.4142004+08:00" endTime="2026-10-20T13:39:54.4152011+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a75d7bd-7042-4fa7-a78a-0923374bdbe7" />
+    <UnitTestResult executionId="94843fcd-9824-47f6-beae-e5c7b39703a4" testId="9c40ac14-3927-93ad-e46d-ba3e6a65f268" testName="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest" computerName="SULT" duration="00:00:00.5320000" startTime="2026-10-20T13:39:53.8823528+08:00" endTime="2026-10-20T13:39:54.4122000+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="94843fcd-9824-47f6-beae-e5c7b39703a4" />
+    <UnitTestResult executionId="00c43e38-f881-4db5-aa0a-8c8cd70f073f" testId="997f3b04-2858-f16f-c965-c674defaaecb" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages" computerName="SULT" duration="00:00:00.5970000" startTime="2026-10-20T13:39:53.2690147+08:00" endTime="2026-10-20T13:39:53.8613510+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00c43e38-f881-4db5-aa0a-8c8cd70f073f" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonOpinionTrackerTests.OpinionUsesStableMediaIdCanBeReplacedAndCanBeUndone" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="654813ea-07de-2025-1cb1-706588a84600">
+      <Execution id="0d3512b1-f61b-4543-81b1-0846ce1cb419" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonOpinionTrackerTests" name="OpinionUsesStableMediaIdCanBeReplacedAndCanBeUndone" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="174dd301-ff64-e46e-5d28-0591de165bb1">
+      <Execution id="eaed818b-f283-4324-91c2-3174cf8881f2" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="aa908fc8-2e7a-9435-720d-2b61e7aa42b2">
+      <Execution id="fc9f3bf4-7b8d-4d1e-8a74-088101ed3f92" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.AddKeepsAtMostTwoStableIdsAndDoesNotDependOnFilteredSourceCollection" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5d02f899-e1b5-e8bd-21bb-013907a6d198">
+      <Execution id="3dc55df1-cd8e-4bc1-b36f-542ee299d851" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests" name="AddKeepsAtMostTwoStableIdsAndDoesNotDependOnFilteredSourceCollection" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.AddRejectsDuplicateIdsWithoutReplacingTheExistingComparisonObject" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="47a039ac-bcc7-8372-3baa-6ce02a75b5c5">
+      <Execution id="4a75d7bd-7042-4fa7-a78a-0923374bdbe7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests" name="AddRejectsDuplicateIdsWithoutReplacingTheExistingComparisonObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.ClearAllowsAReplacementPairAndReportsTheEmptySelection" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d67746ec-78ed-554c-7fe4-402319299855">
+      <Execution id="0bc8bb58-bebe-42a4-9b2f-8dba841bf765" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests" name="ClearAllowsAReplacementPairAndReportsTheEmptySelection" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9c40ac14-3927-93ad-e46d-ba3e6a65f268">
+      <Execution id="94843fcd-9824-47f6-beae-e5c7b39703a4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests" name="ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonOpinionTrackerTests.EmptyIdsAndUndefinedOpinionsAreIgnored" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="431a8d2c-21cc-e210-ae9a-070709b85ece">
+      <Execution id="518e076c-276a-4bd4-8608-65af9bde1117" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonOpinionTrackerTests" name="EmptyIdsAndUndefinedOpinionsAreIgnored" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4c221623-893a-bcf2-890e-be177e29e50c">
+      <Execution id="82899c77-3fa7-4075-859f-edb61137588a" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests.AddExplainsVideosAndMissingFilesAndChecksOnlySelectedScreenshotPaths" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5feec309-6505-3a54-bea9-1570c7f642d0">
+      <Execution id="0e6f4355-e73b-4e82-9f5f-d19383a7d69a" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests" name="AddExplainsVideosAndMissingFilesAndChecksOnlySelectedScreenshotPaths" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages" storage="d:\workplace\github\gamesavecenter\.tmp\s04-06-target-20261020\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="997f3b04-2858-f16f-c965-c674defaaecb">
+      <Execution id="00c43e38-f881-4db5-aa0a-8c8cd70f073f" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\s04-06-target-20261020\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="aa908fc8-2e7a-9435-720d-2b61e7aa42b2" executionId="fc9f3bf4-7b8d-4d1e-8a74-088101ed3f92" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5feec309-6505-3a54-bea9-1570c7f642d0" executionId="0e6f4355-e73b-4e82-9f5f-d19383a7d69a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c221623-893a-bcf2-890e-be177e29e50c" executionId="82899c77-3fa7-4075-859f-edb61137588a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d02f899-e1b5-e8bd-21bb-013907a6d198" executionId="3dc55df1-cd8e-4bc1-b36f-542ee299d851" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="654813ea-07de-2025-1cb1-706588a84600" executionId="0d3512b1-f61b-4543-81b1-0846ce1cb419" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d67746ec-78ed-554c-7fe4-402319299855" executionId="0bc8bb58-bebe-42a4-9b2f-8dba841bf765" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="431a8d2c-21cc-e210-ae9a-070709b85ece" executionId="518e076c-276a-4bd4-8608-65af9bde1117" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="174dd301-ff64-e46e-5d28-0591de165bb1" executionId="eaed818b-f283-4324-91c2-3174cf8881f2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="47a039ac-bcc7-8372-3baa-6ce02a75b5c5" executionId="4a75d7bd-7042-4fa7-a78a-0923374bdbe7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9c40ac14-3927-93ad-e46d-ba3e6a65f268" executionId="94843fcd-9824-47f6-beae-e5c7b39703a4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="997f3b04-2858-f16f-c965-c674defaaecb" executionId="00c43e38-f881-4db5-aa0a-8c8cd70f073f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="11" executed="11" passed="11" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.88]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:09.47]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

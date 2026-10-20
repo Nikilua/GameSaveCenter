@@ -10,17 +10,17 @@
 
 Worker 自包含 win-x64 发布、`0.6.73` 包/PEXT、Playnite 扩展安装与启动均完成；安装清单 `0.6.73`、插件 DLL `0.6.73.0`，构建与安装 DLL SHA-256 相同（`AC87FDC16F4FF7211CC00C6B0B8135711D32D20F6C338A36F09B086972535A31`）。Playnite PID `11068` 已启动且响应。运行提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`，诊断 `20261019T184725162Z-607fe456`，详细记录见 [一键全链验收证据](../design/reviews/DEV-INSTALL-009-20261020/README.md)。首次在新机器准备 SDK 仍需访问微软下载源；未检查真实 Playnite 页面视觉呈现。
 
-## Round4 当前小批已验收：S04-05 比较候选切换
+## Round4 当前小批已验收：S04-06 至 S04-08
 
 S00-01 已满足；S00-02 的 WPF/安装门禁仍停在 R05 系统指针权限读取。S04-03 复用 `f51e5c9e` 同步缩放/平移能力。S04-04 `9e0af12b` 为媒体比较增加擦除分隔线、A 左/B 右、键盘调整和透明棋盘背景，明确仅用于人工视觉比较；复用现有异步图像源。SDK8.0.423 Release solution `0/0`，定向生产 WPF 行为 `2/2`，源码与 XAML 校验通过。受控图、TRX、程序集身份和边界见 [S04-04 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。
 
-S04-05 提交 `4d0bfd3c` 已锁定左侧 A，仅从当前已加载的 `MediaView` 搜索/筛选结果中切换右侧 B；详情选择与按钮焦点保持。坏图会在当前比较会话中跳过并沿当前方向找下一项，末端再回退；沿用 `AsyncThumbnailImage` 的取消与代际保护。SDK8.0.423 Release solution `0/0`，比较候选、生产 WPF 页面和迟到缩略图测试 `6/6`。证据、TRX、合成截图、二进制与源码哈希见 [S04-05](../design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)。候选只限当前已加载结果，不自动取下一页；真实 Playnite、真实媒体、物理输入和完整 WPF 隔离循环未验。
+S04-05 提交 `4d0bfd3c` 锁定左侧 A，仅从当前已加载的 `MediaView` 搜索/筛选结果中切换右侧 B；坏图跳过，沿用缩略图取消与代际保护。S04-06 `792b1a2f` 加入会话内可撤销意见；S04-07 `14925e5e` 将稳定 ID 快照转交既有预览并复核；S04-08 `c9da7c76` 验证 GIF、非支持格式和卸载时迟到回调，复用现有 2048 px/64 MiB/3 路解码资源预算。S04-08 SDK8.0.423 Release solution `0/0`、缩略图与生产比较页行为 `19/19`。各项证据见 [S04-05](../design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)、[S04-06](../design/reviews/ui-finesse-round4-20261018/evidence/S04-06/README.md)、[S04-07](../design/reviews/ui-finesse-round4-20261018/evidence/S04-07/README.md)、[S04-08](../design/reviews/ui-finesse-round4-20261018/evidence/S04-08/README.md)。真实 Playnite、真实媒体、物理 DPI 和完整 WPF 隔离循环未验。
 
 S04-06 已核对现有收藏/备注与正式忽略/归类行为，均不等价于比较会话中的人工意见标记；已加入 READY。建议以会话内可撤销方式实现，不跨重启保存。
 
 ## 2026-10-20 用户反馈：页面与表格滚动区
 
-存档历史、候选路径、任务队列和当前游戏媒体页已各自限制页面滚动区到 PageHost 视口，同时保留表格/列表内部有限虚拟化滚动；布局按滚动区实际 ViewportHeight 计算。SDK8 Release solution `0/0`，定向 WPF `9/9`，RenderHarness 双主题多尺寸 `render-qa OK / 0 PROBLEM`。合成几何、截图和 TRX：[滚动区修复证据](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。媒体收件箱缩放回归经全尺寸检查确认没有变化。真实 Playnite 页面和物理 DPI 未验；本修复后已完成 S04-04 与 S04-05，下一项为 S04-06。
+存档历史、候选路径、任务队列和当前游戏媒体页使用 PageHost 实际 `ViewportHeight` 分配表格/列表空间；页面不足时由外层滚动，表格保留内部虚拟化滚动，详情仍可到达。用户反馈后的二次布局调整修复了大表格把滚动条挤出详情区域、下方内容被遮挡的问题。提交 `7242fb6b`；SDK8 Release solution `0/0`，最终几何回归 `6/6`，证据和合成截图见[滚动区修复记录](../design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。测试为 STA/离屏 WPF，不代表真实 Playnite 或物理 DPI；媒体收件箱布局保持既有算法。
 
 ## 当前构建优先项：缺 SDK 时自动准备准确版本
 
