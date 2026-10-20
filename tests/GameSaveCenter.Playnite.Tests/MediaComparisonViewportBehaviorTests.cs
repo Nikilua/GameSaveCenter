@@ -371,6 +371,7 @@ namespace GameSaveCenter.Playnite.Tests
                     var clearComparisonButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonClearButton");
                     var secondOpinionText = GetField<TextBlock>(viewType, view, "MediaComparisonSecondOpinionText");
                     var opinionSummaryText = GetField<TextBlock>(viewType, view, "MediaComparisonOpinionSummaryText");
+                    var handoffButton = GetField<GameSaveCenter.Playnite.Controls.Button>(viewType, view, "MediaComparisonHandoffButton");
 
                     using (var host = new WindowHost(new Window
                     {
@@ -389,14 +390,23 @@ namespace GameSaveCenter.Playnite.Tests
                         Assert.Same(viewModel.MarkMediaComparisonToKeepCommand, keepButton.Command);
                         Assert.Same(viewModel.MarkMediaComparisonToReviewCommand, reviewButton.Command);
                         Assert.Same(viewModel.ClearMediaComparisonOpinionCommand, undoButton.Command);
+                        Assert.Same(viewModel.CreateMediaComparisonClassificationPreviewCommand, handoffButton.Command);
+                        Assert.False(handoffButton.Command!.CanExecute(null));
                         Assert.Contains("0 项", opinionSummaryText.Text);
 
                         ExecuteBoundCommand(keepButton);
                         host.UpdateLayout();
-                        Assert.Equal(MediaComparisonOpinionKind.Keep,
-                            GetField<MediaComparisonOpinionTracker>(typeof(DashboardViewModel), viewModel, "mediaComparisonOpinionTracker").Get("current"));
                         Assert.Equal("人工意见：待保留", secondOpinionText.Text);
                         Assert.Contains("待保留 1 项", opinionSummaryText.Text);
+                        Assert.True(handoffButton.Command.CanExecute(null));
+
+                        viewModel.ToggleMediaComparisonWorkspaceCommand.Execute(null);
+                        host.UpdateLayout();
+                        Assert.False(viewModel.MediaComparisonWorkspaceOpen);
+                        Assert.Null(viewModel.MediaClassificationPreview);
+                        Assert.Contains("关闭比较不会执行操作", handoffButton.ToolTip!.ToString());
+                        viewModel.ToggleMediaComparisonWorkspaceCommand.Execute(null);
+                        host.UpdateLayout();
 
                         nextCandidateButton.Command!.Execute(null);
                         host.UpdateLayout();
@@ -427,6 +437,7 @@ namespace GameSaveCenter.Playnite.Tests
                         host.UpdateLayout();
                         Assert.Empty(selection.Items);
                         Assert.Contains("待保留 0 项 · 待检查 0 项", opinionSummaryText.Text);
+                        Assert.False(handoffButton.Command.CanExecute(null));
                         Assert.True(File.Exists(reference.ArchivePath));
                         Assert.True(File.Exists(current.ArchivePath));
 
@@ -491,6 +502,7 @@ namespace GameSaveCenter.Playnite.Tests
             SetField(dashboard, "plugin", plugin);
             SetField(dashboard, "mediaComparisonSelection", selection);
             SetField(dashboard, "mediaComparisonOpinionTracker", new MediaComparisonOpinionTracker());
+            SetField(dashboard, "mediaComparisonHandoffStatus", "比较意见仅供本次会话使用；需显式生成归类预览。关闭比较不会执行操作。");
             SetField(dashboard, "mediaComparisonCandidateNavigator", new MediaComparisonCandidateNavigator());
             var mediaCollection = new BatchObservableCollection<MediaItemDto>();
             foreach (var item in media ?? Array.Empty<MediaItemDto>()) mediaCollection.Add(item);
@@ -511,11 +523,13 @@ namespace GameSaveCenter.Playnite.Tests
             var clearOpinionMethod = typeof(DashboardViewModel).GetMethod("ClearMediaComparisonOpinion", BindingFlags.Instance | BindingFlags.NonPublic);
             var canClearOpinionMethod = typeof(DashboardViewModel).GetMethod("CanClearMediaComparisonOpinion", BindingFlags.Instance | BindingFlags.NonPublic);
             var clearComparisonMethod = typeof(DashboardViewModel).GetMethod("ClearMediaComparison", BindingFlags.Instance | BindingFlags.NonPublic);
+            var toggleComparisonMethod = typeof(DashboardViewModel).GetMethod("ToggleMediaComparisonWorkspace", BindingFlags.Instance | BindingFlags.NonPublic);
             Assert.NotNull(setOpinionMethod);
             Assert.NotNull(canSetOpinionMethod);
             Assert.NotNull(clearOpinionMethod);
             Assert.NotNull(canClearOpinionMethod);
             Assert.NotNull(clearComparisonMethod);
+            Assert.NotNull(toggleComparisonMethod);
             SetAutoProperty(dashboard, nameof(DashboardViewModel.MarkMediaComparisonToKeepCommand), new RelayCommand(
                 value => setOpinionMethod!.Invoke(dashboard, new object[] { value!, MediaComparisonOpinionKind.Keep }),
                 value => (bool)canSetOpinionMethod!.Invoke(dashboard, new[] { value })!));
@@ -527,6 +541,10 @@ namespace GameSaveCenter.Playnite.Tests
                 value => (bool)canClearOpinionMethod!.Invoke(dashboard, new[] { value })!));
             SetAutoProperty(dashboard, nameof(DashboardViewModel.ClearMediaComparisonCommand), new RelayCommand(
                 _ => clearComparisonMethod!.Invoke(dashboard, null), _ => dashboard.MediaComparisonItems.Count > 0));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.ToggleMediaComparisonWorkspaceCommand), new RelayCommand(
+                _ => toggleComparisonMethod!.Invoke(dashboard, null), _ => dashboard.MediaComparisonItems.Count == MediaComparisonSelection.MaximumItems));
+            SetAutoProperty(dashboard, nameof(DashboardViewModel.CreateMediaComparisonClassificationPreviewCommand), new RelayCommand(
+                _ => { }, _ => dashboard.CanCreateMediaComparisonClassificationPreview));
             return dashboard;
         }
 

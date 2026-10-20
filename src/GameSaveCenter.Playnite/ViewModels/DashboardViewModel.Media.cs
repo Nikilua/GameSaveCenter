@@ -16,8 +16,10 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel
     {
         private const int MediaPageSize = 200;
+        private const int MediaComparisonClassificationHandoffLimit = 200;
         private bool mediaComparisonWorkspaceOpen;
         private int mediaComparisonCandidateDirection = 1;
+        private string mediaComparisonHandoffStatus = "比较意见仅供本次会话使用；需显式生成归类预览。关闭比较不会执行操作。";
         private MediaComparisonOpinionTracker mediaComparisonOpinionTracker = new MediaComparisonOpinionTracker();
         private MediaComparisonOpinionTracker MediaComparisonOpinions
             => mediaComparisonOpinionTracker ?? (mediaComparisonOpinionTracker = new MediaComparisonOpinionTracker());
@@ -26,6 +28,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string MediaComparisonSummary => mediaComparisonSelection.Summary;
         public string MediaComparisonStatus => mediaComparisonSelection.Status;
         public string MediaComparisonOpinionSummary => MediaComparisonOpinions.Summary;
+        public string MediaComparisonHandoffStatus => mediaComparisonHandoffStatus;
         public string MediaComparisonFirstOpinionDisplay => GetMediaComparisonOpinionDisplay(0);
         public string MediaComparisonSecondOpinionDisplay => GetMediaComparisonOpinionDisplay(1);
         public bool MediaComparisonWorkspaceOpen => mediaComparisonWorkspaceOpen;
@@ -79,6 +82,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             mediaComparisonSelection.Clear();
             mediaComparisonCandidateNavigator.ResetUnavailable();
             MediaComparisonOpinions.Reset();
+            mediaComparisonHandoffStatus = "比较已清空；本次意见已清除，没有执行归类或忽略。";
+            mediaComparisonSelection.SetStatus(mediaComparisonHandoffStatus);
             mediaComparisonWorkspaceOpen = false;
             OnPropertyChanged(nameof(MediaComparisonSummary));
             OnPropertyChanged(nameof(MediaComparisonStatus));
@@ -224,6 +229,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return;
 
             MediaComparisonOpinions.Set(item.MediaId, opinion);
+            mediaComparisonHandoffStatus = "意见已更新；生成归类预览会重新核对当前待归类状态，预览需另行复核。";
             RaiseMediaComparisonOpinionProperties();
             RaiseCommandStates();
         }
@@ -238,6 +244,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
             if (MediaComparisonOpinions.Clear(item.MediaId))
             {
+                mediaComparisonHandoffStatus = "意见已撤销；关闭比较不会执行媒体操作。";
                 RaiseMediaComparisonOpinionProperties();
                 RaiseCommandStates();
             }
@@ -258,8 +265,53 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void RaiseMediaComparisonOpinionProperties()
         {
             OnPropertyChanged(nameof(MediaComparisonOpinionSummary));
+            OnPropertyChanged(nameof(MediaComparisonHandoffStatus));
+            OnPropertyChanged(nameof(CanCreateMediaComparisonClassificationPreview));
             OnPropertyChanged(nameof(MediaComparisonFirstOpinionDisplay));
             OnPropertyChanged(nameof(MediaComparisonSecondOpinionDisplay));
+        }
+
+        public bool CanCreateMediaComparisonClassificationPreview => !IsBusy && MediaComparisonOpinions.MarkedCount > 0;
+
+        private async Task CreateMediaComparisonClassificationPreviewFromOpinionsAsync()
+        {
+            var markedIds = MediaComparisonOpinions.GetMarkedMediaIds();
+            if (markedIds.Count == 0)
+                throw new InvalidOperationException("请先在图片比较卡片中标记待保留或待检查项目。");
+
+            var requestIds = markedIds.Take(MediaComparisonClassificationHandoffLimit).ToList();
+            mediaComparisonHandoffStatus = "正在按本次比较记录的稳定媒体 ID 生成预览；Worker 会重新读取对象状态。";
+            OnPropertyChanged(nameof(MediaComparisonHandoffStatus));
+
+            var preview = await plugin.RequestAsync<MediaClassificationPreviewDto>(MessageTypes.PreviewMediaClassification,
+                new MediaClassificationPreviewRequestDto
+                {
+                    MediaIds = requestIds,
+                    Limit = requestIds.Count
+                }, TimeSpan.FromMinutes(3));
+
+            MediaClassificationPreview = preview;
+            mediaClassificationStatus = preview.SummaryDisplay;
+            OnPropertyChanged(nameof(MediaClassificationPreviewSummary));
+            await LoadMediaClassificationHistoryAsync(true);
+            ApplyOnUi(() => SelectedMediaClassificationBatch = MediaClassificationHistoryItems.FirstOrDefault(x => x.BatchId == preview.BatchId));
+
+            var includedCount = preview.Items?.Count ?? 0;
+            var skippedCount = Math.Max(0, requestIds.Count - includedCount);
+            var beyondLimitCount = markedIds.Count - requestIds.Count;
+            var opinionCounts = $"待保留 {MediaComparisonOpinions.CountToKeep} 项、待检查 {MediaComparisonOpinions.CountToReview} 项";
+            mediaComparisonHandoffStatus = $"已将 {opinionCounts}（共 {markedIds.Count} 项）交给归类预览；本次提交 {requestIds.Count} 个稳定 ID，当前进入预览 {includedCount} 项" +
+                (skippedCount > 0 ? $"，{skippedCount} 项已不在待归类收件箱或状态已变化" : string.Empty) +
+                (beyondLimitCount > 0 ? $"；另有 {beyondLimitCount} 项超过单次 200 项上限" : string.Empty) +
+                "。请在待归类页逐项复核；生成或关闭比较都不会应用建议。";
+            mediaComparisonSelection.SetStatus(mediaComparisonHandoffStatus);
+            OnPropertyChanged(nameof(MediaComparisonHandoffStatus));
+            OnPropertyChanged(nameof(MediaComparisonStatus));
+
+            if (!string.Equals(MediaInboxMode, "待归类", StringComparison.Ordinal))
+                MediaInboxMode = "待归类";
+            MediaTabIndex = 0;
+            ConfirmSuccess($"已按 {requestIds.Count} 个稳定媒体 ID 生成归类预览，当前进入预览 {includedCount} 项。");
         }
 
         private void ToggleMediaComparisonWorkspace()

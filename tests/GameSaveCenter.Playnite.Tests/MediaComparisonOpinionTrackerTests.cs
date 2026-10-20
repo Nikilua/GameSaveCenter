@@ -40,5 +40,19 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.False(tracker.Clear(" "));
             Assert.Equal(0, tracker.CountToKeep + tracker.CountToReview);
         }
+
+        [Fact]
+        public void HandoffSnapshotUsesStableIdsInDeterministicOrder()
+        {
+            var tracker = new MediaComparisonOpinionTracker();
+            tracker.Set("media-z", MediaComparisonOpinionKind.Review);
+            tracker.Set("Media-A", MediaComparisonOpinionKind.Keep);
+
+            var snapshot = tracker.GetMarkedMediaIds();
+            tracker.Clear("media-z");
+
+            Assert.Equal(new[] { "Media-A", "media-z" }, snapshot);
+            Assert.Equal(1, tracker.MarkedCount);
+        }
     }
 }

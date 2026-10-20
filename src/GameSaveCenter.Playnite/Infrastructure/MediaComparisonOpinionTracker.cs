@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameSaveCenter.Playnite.Infrastructure
 {
@@ -20,6 +21,13 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
         public int CountToKeep => Count(MediaComparisonOpinionKind.Keep);
         public int CountToReview => Count(MediaComparisonOpinionKind.Review);
+        public int MarkedCount => opinions.Count;
+
+        public IReadOnlyList<string> GetMarkedMediaIds()
+            => opinions.Keys
+                .OrderBy(mediaId => mediaId, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(mediaId => mediaId, StringComparer.Ordinal)
+                .ToList();
 
         public MediaComparisonOpinionKind? Get(string? mediaId)
         {

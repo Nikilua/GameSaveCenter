@@ -349,6 +349,31 @@ public sealed class MediaSyncServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ClassificationPreviewRevalidatesHandedOffIdsAgainstCurrentInboxState()
+    {
+        var stillPending = await AddInboxMediaAsync("handoff-pending", Path.Combine(root, "Captures", "pending.png"), DateTime.UtcNow);
+        var nowIgnored = await AddInboxMediaAsync("handoff-ignored", Path.Combine(root, "Captures", "ignored.png"), DateTime.UtcNow);
+        var service = CreateService();
+
+        var ignored = await service.IgnoreBatchAsync(new MediaInboxBatchRequestDto
+        {
+            MediaIds = new List<string> { nowIgnored.MediaId }
+        }, CancellationToken.None);
+        Assert.Single(ignored.UpdatedItems);
+
+        var preview = await service.CreateClassificationPreviewAsync(new MediaClassificationPreviewRequestDto
+        {
+            MediaIds = new List<string> { stillPending.MediaId, nowIgnored.MediaId, "handoff-missing" },
+            Limit = 3
+        }, CancellationToken.None);
+
+        var included = Assert.Single(preview.Items);
+        Assert.Equal(stillPending.MediaId, included.MediaId);
+        Assert.Equal("Inbox", (await store.GetMediaByIdAsync(stillPending.MediaId, CancellationToken.None))!.ClassificationState);
+        Assert.Equal("Ignored", (await store.GetMediaByIdAsync(nowIgnored.MediaId, CancellationToken.None))!.ClassificationState);
+    }
+
+    [Fact]
     public async Task ClassificationApplyAndUndoMovesOnlyArchiveCopyAndRestoresInboxState()
     {
         var captured = new DateTime(2026, 9, 5, 10, 20, 30, DateTimeKind.Utc);
