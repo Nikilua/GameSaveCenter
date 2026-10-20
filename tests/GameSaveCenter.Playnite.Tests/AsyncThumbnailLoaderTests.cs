@@ -64,6 +64,26 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public async Task LoadAsync_GifAndUnsupportedExtensionAreHandledWithinBounds()
+        {
+            var gifPath = Path.Combine(root, "animated.gif");
+            var unsupportedPath = Path.Combine(root, "unsupported.tiff");
+            WriteGif(gifPath, 32, 20, 171);
+            File.Copy(gifPath, unsupportedPath);
+
+            var image = await AsyncThumbnailLoader.LoadAsync(gifPath, 48, CancellationToken.None);
+            var unsupported = await AsyncThumbnailLoader.LoadAsync(unsupportedPath, 96, CancellationToken.None);
+
+            Assert.NotNull(image);
+            Assert.True(image!.IsFrozen);
+            Assert.InRange(image.PixelWidth, 32, 48);
+            Assert.InRange(image.PixelHeight, 20, 30);
+            Assert.Null(unsupported);
+            File.Delete(unsupportedPath);
+            Assert.False(File.Exists(unsupportedPath));
+        }
+
+        [Fact]
         public async Task LoadAsync_ConcurrentScrollWindowStaysWithinDecodeAndCacheBounds()
         {
             AsyncThumbnailLoader.ClearCache();
@@ -124,6 +144,23 @@ namespace GameSaveCenter.Playnite.Tests
 
             var bitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, pixels, width * 4);
             var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            using var stream = File.Create(path);
+            encoder.Save(stream);
+        }
+
+        private static void WriteGif(string path, int width, int height, byte value)
+        {
+            var pixels = Enumerable.Repeat(value, width * height * 4).ToArray();
+            for (var index = 0; index < width * height; index++)
+            {
+                pixels[index * 4 + 1] = (byte)(255 - value);
+                pixels[index * 4 + 2] = 127;
+                pixels[index * 4 + 3] = 255;
+            }
+
+            var bitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, pixels, width * 4);
+            var encoder = new GifBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
             using var stream = File.Create(path);
             encoder.Save(stream);

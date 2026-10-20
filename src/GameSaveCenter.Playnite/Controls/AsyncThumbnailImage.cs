@@ -88,6 +88,8 @@ namespace GameSaveCenter.Playnite.Controls
 
         public event EventHandler? PreviewStateChanged;
 
+        internal Action? BeforePublishForTest { get; set; }
+
         private static void OnPreviewStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((AsyncThumbnailImage)d).PreviewStateChanged?.Invoke(d, EventArgs.Empty);
 
@@ -183,6 +185,7 @@ namespace GameSaveCenter.Playnite.Controls
                 var image = await imageTask.ConfigureAwait(false);
                 var sourceDimensions = await dimensionsTask.ConfigureAwait(false);
                 if (token.IsCancellationRequested || expected != Volatile.Read(ref generation)) return;
+                BeforePublishForTest?.Invoke();
                 await Dispatcher.InvokeAsync(() =>
                 {
                      if (expected != Volatile.Read(ref generation) || token.IsCancellationRequested) return;

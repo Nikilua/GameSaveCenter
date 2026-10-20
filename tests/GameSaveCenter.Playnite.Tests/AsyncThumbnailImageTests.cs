@@ -110,6 +110,74 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Equal((byte)231, firstPixel);
         }
 
+        [Fact]
+        public void UnloadedImageRejectsACompletedDecodeQueuedForUiAndReleasesItsSource()
+        {
+            var path = Path.Combine(root, "unloaded.png");
+            WritePng(path, 96, 96, 73);
+            AsyncThumbnailLoader.ClearCache();
+
+            Exception? exception = null;
+            var decodeReady = new ManualResetEventSlim();
+            var allowPublish = new ManualResetEventSlim();
+            var thread = new Thread(() =>
+            {
+                Window? window = null;
+                try
+                {
+                    var image = new AsyncThumbnailImage { PreviewWidth = 96 };
+                    var unloaded = false;
+                    var readyAfterUnload = false;
+                    image.PreviewStateChanged += (_, _) =>
+                    {
+                        if (unloaded && image.PreviewState == "Ready")
+                            readyAfterUnload = true;
+                    };
+                    image.BeforePublishForTest = () =>
+                    {
+                        decodeReady.Set();
+                        allowPublish.Wait(TimeSpan.FromSeconds(5));
+                    };
+                    window = CreateWindow(image);
+                    window.Show();
+                    window.UpdateLayout();
+                    image.SourcePath = path;
+
+                    Assert.True(decodeReady.Wait(TimeSpan.FromSeconds(5)), "The decoded result did not reach the UI publication boundary.");
+                    Assert.Equal("Loading", image.PreviewState);
+                    window.Close();
+                    unloaded = true;
+                    Assert.Null(image.Source);
+                    Assert.Empty(image.PreviewDimensions);
+                    Assert.Empty(image.SourceDimensions);
+
+                    allowPublish.Set();
+                    PumpFor(window.Dispatcher, TimeSpan.FromMilliseconds(150));
+
+                    Assert.Null(image.Source);
+                    Assert.Empty(image.PreviewDimensions);
+                    Assert.Empty(image.SourceDimensions);
+                    Assert.False(readyAfterUnload);
+                }
+                catch (Exception caught)
+                {
+                    exception = caught;
+                }
+                finally
+                {
+                    allowPublish.Set();
+                    window?.Close();
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+            decodeReady.Dispose();
+            allowPublish.Dispose();
+
+            Assert.Null(exception);
+        }
+
         public void Dispose()
         {
             try { Directory.Delete(root, true); }
@@ -147,6 +215,9 @@ namespace GameSaveCenter.Playnite.Tests
             timer.Start();
             Dispatcher.PushFrame(frame);
         }
+
+        private static void PumpFor(Dispatcher dispatcher, TimeSpan duration)
+            => PumpUntil(dispatcher, () => false, duration);
 
         private static void WritePng(string path, int width, int height, byte value)
         {
