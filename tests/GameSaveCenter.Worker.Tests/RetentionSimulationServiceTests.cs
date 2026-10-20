@@ -87,6 +87,103 @@ public sealed class RetentionSimulationServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task ScenarioComparisonUsesOnePlannerCutoffAndDoesNotCreateCleanupPreview()
+    {
+        await AddZeroRetentionPolicyAsync("g1");
+        await AddZeroRetentionPolicyAsync("g2");
+        var now = DateTime.UtcNow;
+        var archivePaths = new[]
+        {
+            CreateArchive("scenario-delete-g1.zip", 100),
+            CreateArchive("scenario-lock-g1.zip", 200),
+            CreateArchive("scenario-pre-g1.zip", 300),
+            CreateArchive("scenario-health-g1.zip", 400),
+            CreateArchive("scenario-delete-g2.zip", 500)
+        };
+        await AddVersionAsync("g1", "scenario-delete-g1", archivePaths[0], 100, now.AddDays(-100));
+        await AddVersionAsync("g1", "scenario-lock-g1", archivePaths[1], 200, now.AddDays(-90), isLocked: true);
+        await AddVersionAsync("g1", "scenario-pre-g1", archivePaths[2], 300, now.AddDays(-80), isPreRestore: true);
+        await AddVersionAsync("g1", "scenario-health-g1", archivePaths[3], 400, now.AddDays(-70), isReady: true);
+        await AddVersionAsync("g2", "scenario-delete-g2", archivePaths[4], 500, now.AddDays(-60));
+
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var comparison = await service.CompareScenarioAsync(new RetentionScenarioComparisonRequestDto
+        {
+            KeepAllForHours = 0,
+            KeepDailyDays = 365,
+            KeepWeeklyWeeks = 0,
+            KeepMonthlyMonths = 0,
+            GrowthMinimumMiBPer30Days = 25,
+            GrowthMaximumMiBPer30Days = 75
+        }, CancellationToken.None);
+
+        Assert.Equal(DateTimeKind.Utc, comparison.GeneratedUtc.Kind);
+        Assert.Equal(5, comparison.BaselineVersionCount);
+        Assert.Equal(comparison.BaselineVersionCount, comparison.Current.ExistingVersionCount);
+        Assert.Equal(comparison.BaselineVersionCount, comparison.Candidate.ExistingVersionCount);
+        Assert.Equal(3, comparison.Current.KeepVersionCount);
+        Assert.Equal(2, comparison.Current.DeleteCandidateCount);
+        Assert.Equal(3, comparison.Current.ProtectedVersionCount);
+        Assert.Equal(1, comparison.Current.UserLockedCount);
+        Assert.Equal(1, comparison.Current.PreRestoreCount);
+        Assert.Equal(1, comparison.Current.HealthProtectedCount);
+        Assert.Equal(600, comparison.Current.CandidateLogicalBytes);
+        Assert.Equal(5, comparison.Candidate.KeepVersionCount);
+        Assert.Equal(0, comparison.Candidate.DeleteCandidateCount);
+        Assert.Equal(3, comparison.Candidate.ProtectedVersionCount);
+        Assert.Equal(0, comparison.Candidate.CandidateLogicalBytes);
+        Assert.Equal(25, comparison.GrowthMinimumMiBPer30Days);
+        Assert.Equal(75, comparison.GrowthMaximumMiBPer30Days);
+        Assert.Contains("统一应用到所有游戏", comparison.Assumptions);
+        Assert.Contains("不参与保留数量", comparison.Assumptions);
+        Assert.Equal(comparison.Current.KeepVersionCount + comparison.Current.DeleteCandidateCount, comparison.Current.ExistingVersionCount);
+        Assert.Equal(comparison.Candidate.KeepVersionCount + comparison.Candidate.DeleteCandidateCount, comparison.Candidate.ExistingVersionCount);
+
+        var snapshot = await store.GetRetentionScenarioSnapshotAsync(CancellationToken.None);
+        var candidatePolicy = new RetentionPolicy
+        {
+            KeepAllFor = TimeSpan.Zero,
+            KeepDailyDays = 365,
+            KeepWeeklyWeeks = 0,
+            KeepMonthlyMonths = 0
+        };
+        var directCurrent = CountWithPlanner(snapshot.Versions, snapshot.Policies, null, comparison.GeneratedUtc);
+        var directCandidate = CountWithPlanner(snapshot.Versions, snapshot.Policies, candidatePolicy, comparison.GeneratedUtc);
+        Assert.Equal(directCurrent.Keep, comparison.Current.KeepVersionCount);
+        Assert.Equal(directCurrent.Delete, comparison.Current.DeleteCandidateCount);
+        Assert.Equal(directCandidate.Keep, comparison.Candidate.KeepVersionCount);
+        Assert.Equal(directCandidate.Delete, comparison.Candidate.DeleteCandidateCount);
+
+        var staleApply = await Assert.ThrowsAsync<WorkerOperationException>(() => service.ApplyAsync(
+            new RetentionSimulationApplyRequestDto
+            {
+                Confirmed = true,
+                PreviewId = Guid.NewGuid().ToString("N"),
+                PreviewGeneratedUtc = comparison.GeneratedUtc
+            }, CancellationToken.None));
+        Assert.Equal("RETENTION_PREVIEW_STALE", staleApply.Code);
+        Assert.All(archivePaths, path => Assert.True(File.Exists(path)));
+        Assert.Equal(5, (await store.GetStorageAnalysisRowsAsync(CancellationToken.None)).Count);
+    }
+
+    [Fact]
+    public async Task ScenarioComparisonRejectsInvalidWorkerSideInputs()
+    {
+        var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
+        var ex = await Assert.ThrowsAsync<WorkerOperationException>(() => service.CompareScenarioAsync(
+            new RetentionScenarioComparisonRequestDto
+            {
+                KeepDailyDays = 36500,
+                KeepWeeklyWeeks = 0,
+                KeepMonthlyMonths = 0,
+                GrowthMinimumMiBPer30Days = 400,
+                GrowthMaximumMiBPer30Days = 200
+            }, CancellationToken.None));
+
+        Assert.Equal("RETENTION_SCENARIO_INVALID", ex.Code);
+    }
+
+    [Fact]
     public async Task ApplyRequiresSecondConfirmation()
     {
         var service = new RetentionSimulationService(options, store, NullLogger<RetentionSimulationService>.Instance);
@@ -428,6 +525,43 @@ BEGIN SELECT RAISE(ABORT, 'injected retention index deletion failure'); END;");
                 ? new RestoreReadinessDto { Status = RestoreReadinessStatus.Ready }
                 : null
         }, "{}", CancellationToken.None);
+    }
+
+    private static (int Keep, int Delete) CountWithPlanner(
+        IReadOnlyList<BackupVersionDto> versions,
+        IReadOnlyDictionary<string, BackupPolicyDto> policies,
+        RetentionPolicy? overridePolicy,
+        DateTime cutoffUtc)
+    {
+        var planner = new RetentionPlanner();
+        var plans = versions.GroupBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase).Select(group =>
+        {
+            var effective = overridePolicy;
+            if (effective == null)
+            {
+                policies.TryGetValue(group.Key, out var stored);
+                effective = new RetentionPolicy
+                {
+                    KeepAllFor = TimeSpan.FromHours(stored?.KeepRecentAllHours ?? 24),
+                    KeepDailyDays = stored?.KeepDailyDays ?? 30,
+                    KeepWeeklyWeeks = stored?.KeepWeeklyWeeks ?? 12,
+                    KeepMonthlyMonths = stored?.KeepMonthlyMonths ?? 24
+                };
+            }
+            return planner.CreatePlan(group.Select(version => new BackupSnapshot
+            {
+                BackupId = version.BackupId,
+                CreatedUtc = version.CreatedUtc,
+                TotalBytes = version.TotalBytes,
+                FileCount = version.FileCount,
+                IsLocked = version.IsLocked,
+                IsPreRestore = version.IsPreRestore,
+                ReadinessStatus = version.RestoreReadiness?.Status,
+                HasSevereAnomaly = version.FileCount == 0 || version.TotalBytes <= 0 ||
+                    version.RestoreReadiness?.Status is RestoreReadinessStatus.Corrupted or RestoreReadinessStatus.Failed
+            }), effective, cutoffUtc);
+        }).ToList();
+        return (plans.Sum(x => x.Keep.Count), plans.Sum(x => x.DeleteCandidates.Count));
     }
 
     public void Dispose()

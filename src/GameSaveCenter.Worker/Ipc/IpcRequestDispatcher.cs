@@ -172,6 +172,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.CreateDiagnosticsPackage=>await _diagnostics.CreateAsync(Read<CreateDiagnosticsPackageRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.StorageAnalysis=>await _storageAnalysis.AnalyzeAsync(token).ConfigureAwait(false),
                 MessageTypes.PreviewRetentionSimulation=>await _retentionSimulation.PreviewAsync(token).ConfigureAwait(false),
+                MessageTypes.CompareRetentionScenario=>await _retentionSimulation.CompareScenarioAsync(Read<RetentionScenarioComparisonRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ApplyRetentionSimulation=>await _retentionSimulation.ApplyAsync(Read<RetentionSimulationApplyRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.GetRetentionQuarantineEntries=>await _store.GetRetentionQuarantinePageAsync(Read<RetentionQuarantinePageRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RecoverRetentionQuarantine=>await RecoverRetentionQuarantineAsync(Read<RetentionQuarantineRecoveryRequestDto>(request),token).ConfigureAwait(false),

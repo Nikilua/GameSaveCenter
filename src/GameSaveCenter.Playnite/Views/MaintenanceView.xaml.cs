@@ -485,6 +485,24 @@ namespace GameSaveCenter.Playnite.Views
             MaintenanceRetentionDeleteCard.Margin = stackRetentionDetails
                 ? new Thickness(0, 14, 0, 0)
                 : new Thickness(0);
+            var stackRetentionScenarioComparison = width < 720;
+            MaintenanceRetentionScenarioComparisonLayout.ColumnDefinitions[1].Width = stackRetentionScenarioComparison
+                ? new GridLength(0)
+                : new GridLength(14);
+            MaintenanceRetentionScenarioComparisonLayout.ColumnDefinitions[2].Width = stackRetentionScenarioComparison
+                ? new GridLength(0)
+                : new GridLength(1, GridUnitType.Star);
+            MaintenanceRetentionScenarioComparisonLayout.RowDefinitions[1].Height = stackRetentionScenarioComparison
+                ? new GridLength(1, GridUnitType.Auto)
+                : new GridLength(0);
+            Grid.SetColumn(MaintenanceRetentionScenarioComparisonLayout.Children[0], 0);
+            Grid.SetColumn(MaintenanceRetentionScenarioComparisonLayout.Children[1], stackRetentionScenarioComparison ? 0 : 2);
+            Grid.SetRow(MaintenanceRetentionScenarioComparisonLayout.Children[1], stackRetentionScenarioComparison ? 1 : 0);
+            Grid.SetColumnSpan(MaintenanceRetentionScenarioComparisonLayout.Children[0], stackRetentionScenarioComparison ? 3 : 1);
+            Grid.SetColumnSpan(MaintenanceRetentionScenarioComparisonLayout.Children[1], stackRetentionScenarioComparison ? 3 : 1);
+            ((FrameworkElement)MaintenanceRetentionScenarioComparisonLayout.Children[1]).Margin = stackRetentionScenarioComparison
+                ? new Thickness(0, 14, 0, 0)
+                : new Thickness(0);
             // The findings table keeps only the severity, game and problem columns. Detail
             // and suggested handling belong to the selected inspector, where they can wrap
             // and remain readable without making every row a wall of ellipses.

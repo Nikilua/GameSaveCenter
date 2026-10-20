@@ -8,6 +8,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Windows.Input;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Core.Models;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
@@ -32,7 +34,8 @@ public sealed class RetentionScenarioInputBehaviorTests
             {
                 var draft = new RetentionScenarioDraft();
                 var effectivePolicy = new RetentionPolicy { KeepDailyDays = 14 };
-                var page = new MaintenanceView { DataContext = new ScenarioContext(draft, effectivePolicy) };
+                var context = new ScenarioContext(draft, effectivePolicy);
+                var page = new MaintenanceView { DataContext = context };
                 var tabs = Field<TabControl>(page, "MaintenanceTabControl");
                 var retentionTab = Assert.Single(
                     System.Linq.Enumerable.Cast<TabItem>(tabs.Items),
@@ -65,6 +68,14 @@ public sealed class RetentionScenarioInputBehaviorTests
                     Assert.True(pageScrollViewer.ScrollableHeight > 0, "The page scroll must expose content below the initial viewport.");
                     Assert.Equal(3, Field<UniformGrid>(page, "MaintenanceRetentionScenarioInputs").Columns);
 
+                    var comparisonCard = Field<Border>(page, "MaintenanceRetentionScenarioComparisonCard");
+                    Assert.True(comparisonCard.IsVisible && comparisonCard.ActualWidth > 700);
+                    Assert.Same(pageScrollViewer, FindVisualAncestor<ScrollViewer>(comparisonCard));
+                    var compareButton = Assert.IsAssignableFrom<ButtonBase>(page.GetType().GetField("RetentionScenarioCompareButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(page));
+                    Assert.Same(context.CompareRetentionScenarioCommand, compareButton.Command);
+                    Assert.True(compareButton.Command.CanExecute(null));
+                    Assert.Equal(context.RetentionScenarioComparison.Summary, Field<TextBlock>(page, "RetentionScenarioComparisonSummary").Text);
+
                     var minimum = Field<TextBox>(page, "RetentionScenarioGrowthMinimumInput");
                     var maximum = Field<TextBox>(page, "RetentionScenarioGrowthMaximumInput");
                     SetAndCommit(minimum, "500");
@@ -93,6 +104,12 @@ public sealed class RetentionScenarioInputBehaviorTests
                     Assert.True(Validation.GetHasError(daily));
                     Assert.Contains("0–36500", Field<TextBlock>(page, "RetentionScenarioKeepDailyDaysError").Text);
                     Assert.Equal(42, draft.CandidatePolicy.KeepDailyDays);
+
+                    page.ApplyResponsiveLayout(600, 900);
+                    PumpLayout(window);
+                    var comparisonLayout = Field<Grid>(page, "MaintenanceRetentionScenarioComparisonLayout");
+                    Assert.Equal(0, comparisonLayout.ColumnDefinitions[2].Width.Value);
+                    Assert.Equal(1, Grid.GetRow(comparisonLayout.Children[1]));
                 }
                 finally
                 {
@@ -159,10 +176,20 @@ public sealed class RetentionScenarioInputBehaviorTests
         {
             RetentionScenarioInput = input;
             EffectivePolicy = effectivePolicy;
+            RetentionScenarioComparison = new RetentionScenarioComparisonDto
+            {
+                Summary = "测试对比：同一基线 5 个版本。",
+                BaselineVersionCount = 5,
+                GeneratedUtc = new DateTime(2026, 10, 20, 12, 0, 0, DateTimeKind.Utc),
+                Current = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 5, KeepVersionCount = 3, DeleteCandidateCount = 2 },
+                Candidate = new RetentionScenarioPlanSummaryDto { ExistingVersionCount = 5, KeepVersionCount = 4, DeleteCandidateCount = 1 }
+            };
         }
 
         public RetentionScenarioDraft RetentionScenarioInput { get; }
         public RetentionPolicy EffectivePolicy { get; }
+        public RetentionScenarioComparisonDto RetentionScenarioComparison { get; }
+        public ICommand CompareRetentionScenarioCommand { get; } = new RelayCommand(_ => { }, _ => true);
         public int MaintenanceTabIndex { get; set; } = 3;
     }
 }

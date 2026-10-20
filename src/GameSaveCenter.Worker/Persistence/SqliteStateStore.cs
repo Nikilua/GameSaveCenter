@@ -1038,6 +1038,52 @@ ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;";
         return result;
     }
 
+    /// <summary>Reads indexed versions and their effective per-game policies with one SQLite statement snapshot.</summary>
+    public async Task<(List<BackupVersionDto> Versions, Dictionary<string, BackupPolicyDto> Policies)> GetRetentionScenarioSnapshotAsync(CancellationToken token)
+    {
+        var versions = new List<BackupVersionDto>();
+        var policies = new Dictionary<string, BackupPolicyDto>(StringComparer.OrdinalIgnoreCase);
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+SELECT b.backup_id,b.playnite_id,b.ludusavi_name,b.created_utc,b.total_bytes,b.file_count,
+       b.is_locked,b.is_pre_restore,b.archive_path,b.restore_readiness_json,p.policy_json
+FROM backup_versions b
+LEFT JOIN game_policies p ON p.playnite_id=b.playnite_id
+ORDER BY b.created_utc ASC;";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+        {
+            var playniteId = reader.GetString(1);
+            versions.Add(new BackupVersionDto
+            {
+                BackupId = reader.GetString(0),
+                PlayniteId = playniteId,
+                LudusaviName = reader.GetString(2),
+                CreatedUtc = DateTime.Parse(reader.GetString(3)).ToUniversalTime(),
+                TotalBytes = reader.GetInt64(4),
+                FileCount = reader.GetInt32(5),
+                IsLocked = reader.GetInt32(6) == 1,
+                IsPreRestore = reader.GetInt32(7) == 1,
+                ArchivePath = reader.IsDBNull(8) ? string.Empty : reader.GetString(8),
+                RestoreReadiness = reader.IsDBNull(9) || string.IsNullOrWhiteSpace(reader.GetString(9)) || reader.GetString(9) == "{}"
+                    ? null
+                    : TryDeserializeRestoreReadiness(reader.GetString(9))
+            });
+
+            if (!reader.IsDBNull(10) && !policies.ContainsKey(playniteId))
+            {
+                var policyJson = reader.GetString(10);
+                policies[playniteId] = string.IsNullOrWhiteSpace(policyJson)
+                    ? new BackupPolicyDto()
+                    : JsonSerializer.Deserialize<BackupPolicyDto>(policyJson, _json) ?? new BackupPolicyDto();
+            }
+        }
+
+        return (versions, policies);
+    }
+
     /// <summary>Returns one newest indexed backup per game for a content-free device sidecar.</summary>
     public async Task<List<DeviceBackupSummaryDto>> GetLatestBackupSummariesAsync(CancellationToken token)
     {

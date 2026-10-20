@@ -99,6 +99,66 @@ namespace GameSaveCenter.Contracts
         private static string FormatBytes(long bytes) => ByteSizeFormatter.Format(bytes);
     }
 
+    /// <summary>Session-scoped candidate retention inputs sent for a read-only comparison.</summary>
+    public sealed class RetentionScenarioComparisonRequestDto
+    {
+        public int KeepAllForHours { get; set; }
+        public int KeepDailyDays { get; set; }
+        public int KeepWeeklyWeeks { get; set; }
+        public int KeepMonthlyMonths { get; set; }
+        public int? GrowthMinimumMiBPer30Days { get; set; }
+        public int? GrowthMaximumMiBPer30Days { get; set; }
+    }
+
+    /// <summary>Side-by-side logical counts produced by the existing retention planner.</summary>
+    public sealed class RetentionScenarioPlanSummaryDto
+    {
+        public int ExistingVersionCount { get; set; }
+        public int KeepVersionCount { get; set; }
+        public int ProtectedVersionCount { get; set; }
+        public int UserLockedCount { get; set; }
+        public int PreRestoreCount { get; set; }
+        public int HealthProtectedCount { get; set; }
+        public int DeleteCandidateCount { get; set; }
+        public long CandidateLogicalBytes { get; set; }
+
+        public string CandidateLogicalBytesDisplay => ByteSizeFormatter.Format(CandidateLogicalBytes);
+        public string DeleteCandidateDisplay => $"{DeleteCandidateCount} 项 · {CandidateLogicalBytesDisplay}";
+        public string UserLockedDisplay => $"用户锁定：{UserLockedCount}";
+        public string PreRestoreDisplay => $"PreRestore：{PreRestoreCount}";
+        public string HealthProtectedDisplay => $"健康恢复点保护：{HealthProtectedCount}";
+    }
+
+    /// <summary>
+    /// Read-only comparison of the effective per-game policies and one uniform candidate
+    /// policy against the same indexed backup snapshot and planner cutoff.
+    /// This DTO has no cleanup preview handle and cannot authorize Apply.
+    /// </summary>
+    public sealed class RetentionScenarioComparisonDto
+    {
+        public DateTime GeneratedUtc { get; set; }
+        public int BaselineVersionCount { get; set; }
+        public string CandidatePolicyDisplay { get; set; } = string.Empty;
+        public int? GrowthMinimumMiBPer30Days { get; set; }
+        public int? GrowthMaximumMiBPer30Days { get; set; }
+        public RetentionScenarioPlanSummaryDto Current { get; set; } = new RetentionScenarioPlanSummaryDto();
+        public RetentionScenarioPlanSummaryDto Candidate { get; set; } = new RetentionScenarioPlanSummaryDto();
+        public string Summary { get; set; } = "输入情景参数后生成只读对比。";
+        public string Assumptions { get; set; } = "候选策略统一应用于所有游戏；当前策略按游戏生效。增长范围只记录为假设，不参与本次保留数量计算。";
+
+        public string GeneratedDisplay => GeneratedUtc == default(DateTime)
+            ? "尚未生成共同截止时点"
+            : $"共同截止时点：{GeneratedUtc.ToLocalTime():yyyy-MM-dd HH:mm:ss}";
+
+        public string BaselineDisplay => $"共同基线：{BaselineVersionCount} 个已索引版本";
+        public string GrowthAssumptionDisplay => GrowthMinimumMiBPer30Days.HasValue && GrowthMaximumMiBPer30Days.HasValue
+            ? $"用户假设增长：{GrowthMinimumMiBPer30Days.Value}–{GrowthMaximumMiBPer30Days.Value} MiB/30 天（不参与候选数计算）"
+            : "用户增长假设尚未填写";
+
+        public static string FormatPolicy(int keepAllForHours, int dailyDays, int weeklyWeeks, int monthlyMonths)
+            => $"全量 {keepAllForHours} 小时 · 每日 {dailyDays} 天 · 每周 {weeklyWeeks} 周 · 每月 {monthlyMonths} 个月";
+    }
+
     /// <summary>One candidate row in the retention simulation. Deletion is never implied by preview.</summary>
     public sealed class RetentionSimulationItemDto
     {

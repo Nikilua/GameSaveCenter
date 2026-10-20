@@ -105,6 +105,7 @@ namespace GameSaveCenter.Contracts
         public const string CreateDiagnosticsPackage = "diagnostics.package.create";
         public const string StorageAnalysis = "storage.analysis";
         public const string PreviewRetentionSimulation = "retention.simulation.preview";
+        public const string CompareRetentionScenario = "retention.scenario.compare";
         public const string ApplyRetentionSimulation = "retention.simulation.apply";
         public const string GetRetentionQuarantineEntries = "retention.quarantine.list";
         public const string RecoverRetentionQuarantine = "retention.quarantine.recover";

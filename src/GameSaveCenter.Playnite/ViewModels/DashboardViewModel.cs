@@ -171,6 +171,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string taskReconcileSummary = "尚未协调中断任务。";
         private StorageAnalysisDto storageAnalysis = new StorageAnalysisDto { Summary = "尚未分析备份存储。" };
         private RetentionSimulationPreviewDto retentionSimulation = new RetentionSimulationPreviewDto { Summary = "尚未生成全局保留预览。" };
+        private RetentionScenarioComparisonDto retentionScenarioComparison = new RetentionScenarioComparisonDto();
         private LocalMirrorStatusDto localMirrorStatus = new LocalMirrorStatusDto { Message = "尚未检查本地镜像。" };
         private string diffSummary = "选择两个版本后，比较结果会显示在这里。";
         private string diffComparedSummary = "尚未选择可比较的版本。";
@@ -471,7 +472,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             ReconcileTasksCommand = new RelayCommand(_ => Run(ReconcileTasksAsync), _ => !IsBusy);
             RefreshStorageAnalysisCommand = new RelayCommand(_ => Run(RefreshStorageAnalysisAsync), _ => !IsBusy);
             RefreshRetentionSimulationCommand = new RelayCommand(_ => Run(RefreshRetentionSimulationAsync), _ => !IsBusy);
+            CompareRetentionScenarioCommand = new RelayCommand(_ => Run(CompareRetentionScenarioAsync), _ => !IsBusy && RetentionScenarioInput.IsValid);
             ApplyRetentionSimulationCommand = new RelayCommand(_ => Run(ApplyRetentionSimulationAsync), _ => !IsBusy && RetentionSimulation.DeleteCandidateCount > 0);
+            RetentionScenarioInput.PropertyChanged += (_, _) => OnRetentionScenarioInputChanged();
+            RetentionScenarioInput.ErrorsChanged += (_, _) => OnRetentionScenarioInputChanged();
             RefreshLocalMirrorStatusCommand = new RelayCommand(_ => Run(RefreshLocalMirrorStatusAsync), _ => !IsBusy);
             SyncLocalMirrorCommand = new RelayCommand(_ => Run(SyncLocalMirrorAsync), _ => !IsBusy && EffectiveSettings.EnableLocalMirror);
             CopyMaintenanceReportCommand = new RelayCommand(_ => Run(CopyMaintenanceReportAsync), _ => !IsBusy);
@@ -1037,6 +1041,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public StorageAnalysisDto StorageAnalysis { get => storageAnalysis; private set => SetValue(ref storageAnalysis, value ?? new StorageAnalysisDto()); }
         public RetentionSimulationPreviewDto RetentionSimulation { get => retentionSimulation; private set => SetValue(ref retentionSimulation, value ?? new RetentionSimulationPreviewDto()); }
         public RetentionScenarioDraft RetentionScenarioInput { get; } = new RetentionScenarioDraft();
+        public RetentionScenarioComparisonDto RetentionScenarioComparison { get => retentionScenarioComparison; private set => SetValue(ref retentionScenarioComparison, value ?? new RetentionScenarioComparisonDto()); }
         public LocalMirrorStatusDto LocalMirrorStatus { get => localMirrorStatus; private set => SetValue(ref localMirrorStatus, value ?? new LocalMirrorStatusDto()); }
         public string GameSearchText
         {
@@ -1976,6 +1981,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand ReconcileTasksCommand { get; }
         public ICommand RefreshStorageAnalysisCommand { get; }
         public ICommand RefreshRetentionSimulationCommand { get; }
+        public ICommand CompareRetentionScenarioCommand { get; }
         public ICommand ApplyRetentionSimulationCommand { get; }
         public ICommand RefreshLocalMirrorStatusCommand { get; }
         public ICommand SyncLocalMirrorCommand { get; }
@@ -3408,6 +3414,55 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RaiseCommandStates();
             });
         }
+
+        private async Task CompareRetentionScenarioAsync()
+        {
+            if (!RetentionScenarioInput.IsValid)
+            {
+                RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "请先修正情景参数和增长范围。" };
+                return;
+            }
+
+            var request = new RetentionScenarioComparisonRequestDto
+            {
+                KeepAllForHours = RetentionScenarioInput.KeepAllForHours,
+                KeepDailyDays = RetentionScenarioInput.KeepDailyDays,
+                KeepWeeklyWeeks = RetentionScenarioInput.KeepWeeklyWeeks,
+                KeepMonthlyMonths = RetentionScenarioInput.KeepMonthlyMonths,
+                GrowthMinimumMiBPer30Days = RetentionScenarioInput.GrowthMinimumMiBPer30Days,
+                GrowthMaximumMiBPer30Days = RetentionScenarioInput.GrowthMaximumMiBPer30Days
+            };
+            var result = await plugin.RequestAsync<RetentionScenarioComparisonDto>(
+                MessageTypes.CompareRetentionScenario,
+                request,
+                TimeSpan.FromMinutes(3));
+            ApplyOnUi(() =>
+            {
+                if (!RetentionScenarioInputMatches(request))
+                {
+                    RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "对比期间情景参数已变化，请重新生成结果。" };
+                    StatusMessage = RetentionScenarioComparison.Summary;
+                    return;
+                }
+
+                RetentionScenarioComparison = result;
+                StatusMessage = result.Summary;
+            });
+        }
+
+        private void OnRetentionScenarioInputChanged()
+        {
+            RetentionScenarioComparison = new RetentionScenarioComparisonDto { Summary = "情景参数已变化，请重新生成对比。" };
+            RaiseCommandStates();
+        }
+
+        private bool RetentionScenarioInputMatches(RetentionScenarioComparisonRequestDto request)
+            => RetentionScenarioInput.KeepAllForHours == request.KeepAllForHours
+                && RetentionScenarioInput.KeepDailyDays == request.KeepDailyDays
+                && RetentionScenarioInput.KeepWeeklyWeeks == request.KeepWeeklyWeeks
+                && RetentionScenarioInput.KeepMonthlyMonths == request.KeepMonthlyMonths
+                && RetentionScenarioInput.GrowthMinimumMiBPer30Days == request.GrowthMinimumMiBPer30Days
+                && RetentionScenarioInput.GrowthMaximumMiBPer30Days == request.GrowthMaximumMiBPer30Days;
 
         private void RequestTaskHistoryRefresh(bool immediate, bool force)
         {
@@ -6495,7 +6550,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
                 LoadMoreMediaInboxCommand, ReloadMediaInboxCommand,
                 CancelTaskCommand, RetryTaskCommand, RetryAllTasksCommand, LoadMoreTasksCommand, ClearMediaFiltersCommand, ApplyTaskFilterPresetCommand, SaveTaskFilterPresetCommand, RenameTaskFilterPresetCommand, DeleteTaskFilterPresetCommand, CopyTaskErrorCommand, CopyPathCommand, OpenSelectedTaskGameCommand, OpenSelectedTaskSourceCommand, ReturnToNavigationSourceCommand, ClearTaskNavigationContextCommand, OpenStorageGameCommand, OpenStorageBackupCommand, RefreshDiagnosticsCommand, RunMaintenanceActionCommand, LoadMoreRetentionQuarantineCommand, DiagnoseGameCommand, SyncGameDescriptorCommand, RetryGameMatchCommand, ClearGamePickerFiltersCommand, SyncDeviceStatesCommand, SaveDeviceDecisionCommand, ExitSafeModeCommand,
-                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
+                StageRemoteBackupCommand,RestoreStagedRemoteBackupCommand,CancelRemoteBackupStageCommand,CopyDiagnosticsCommand,CreateDiagnosticsPackageCommand,RunIntegrityCheckCommand,RunHealthInspectionCommand,CreateMetadataBackupCommand,RestoreMetadataBackupCommand,RebuildRepositoryCommand,RunPathRemapCommand,ReconcileTasksCommand,RefreshStorageAnalysisCommand,RefreshRetentionSimulationCommand,CompareRetentionScenarioCommand,ApplyRetentionSimulationCommand,RefreshLocalMirrorStatusCommand,SyncLocalMirrorCommand,CopyMaintenanceReportCommand,ExportMaintenanceReportCommand,
                 SaveProcessMappingCommand,DeleteProcessMappingCommand,RunEnvironmentCheckCommand,SkipOnboardingCommand,CompleteOnboardingCommand,OnboardingTestBackupCommand,
                 OpenDataDirectoryCommand, OpenBackupDirectoryCommand, OpenMediaDirectoryCommand, OpenWorkerLogCommand
                 ,ImportTrainerCommand,ImportCheatTableCommand,ImportCustomLaunchItemCommand,ImportToolFolderCommand,SaveGameToolCommand,LaunchGameToolCommand,

@@ -40,8 +40,8 @@ public sealed class RetentionSimulationService
     public async Task<RetentionSimulationPreviewDto> PreviewAsync(CancellationToken token)
     {
         var (versions, policies) = await LoadAsync(token).ConfigureAwait(false);
-        var plans = BuildPlans(versions, policies);
         var generatedUtc = DateTime.UtcNow;
+        var plans = BuildPlans(versions, policies, generatedUtc);
         var previewId = Guid.NewGuid().ToString("N");
         var candidates = plans
             .SelectMany(x => x.Plan.DeleteCandidates.Select(candidate => ToFingerprint(x.PlayniteId, x.Policy, x.Versions, candidate)))
@@ -76,6 +76,42 @@ public sealed class RetentionSimulationService
         return preview;
     }
 
+    public async Task<RetentionScenarioComparisonDto> CompareScenarioAsync(RetentionScenarioComparisonRequestDto request, CancellationToken token)
+    {
+        ValidateScenarioRequest(request);
+        var (versions, policies) = await _store.GetRetentionScenarioSnapshotAsync(token).ConfigureAwait(false);
+        var generatedUtc = DateTime.UtcNow;
+        var currentPlans = BuildPlans(versions, policies, generatedUtc);
+        var candidatePolicy = new BackupPolicyDto
+        {
+            KeepRecentAllHours = request.KeepAllForHours,
+            KeepDailyDays = request.KeepDailyDays,
+            KeepWeeklyWeeks = request.KeepWeeklyWeeks,
+            KeepMonthlyMonths = request.KeepMonthlyMonths
+        };
+        var candidatePlans = BuildPlans(versions, candidatePolicy, generatedUtc);
+        var current = SummarizePlans(currentPlans);
+        var candidate = SummarizePlans(candidatePlans);
+        var policyDisplay = RetentionScenarioComparisonDto.FormatPolicy(
+            request.KeepAllForHours,
+            request.KeepDailyDays,
+            request.KeepWeeklyWeeks,
+            request.KeepMonthlyMonths);
+
+        return new RetentionScenarioComparisonDto
+        {
+            GeneratedUtc = generatedUtc,
+            BaselineVersionCount = versions.Count,
+            CandidatePolicyDisplay = policyDisplay,
+            GrowthMinimumMiBPer30Days = request.GrowthMinimumMiBPer30Days,
+            GrowthMaximumMiBPer30Days = request.GrowthMaximumMiBPer30Days,
+            Current = current,
+            Candidate = candidate,
+            Summary = $"同一基线 {versions.Count} 个版本：当前策略保留 {current.KeepVersionCount} 个、候选 {current.DeleteCandidateCount} 个；候选策略保留 {candidate.KeepVersionCount} 个、候选 {candidate.DeleteCandidateCount} 个。只读对比不会执行清理。",
+            Assumptions = $"当前侧按每个游戏已生效的保留策略规划；候选侧将“{policyDisplay}”统一应用到所有游戏。锁定、PreRestore 与健康恢复点属于保护计数（去重），不会进入候选清理。增长范围 {request.GrowthMinimumMiBPer30Days}–{request.GrowthMaximumMiBPer30Days} MiB/30 天是用户假设，仅供后续分析，本次不参与保留数量或候选体积计算。候选体积按索引逻辑大小求和，不代表磁盘实占或最终可释放空间。"
+        };
+    }
+
     public async Task<RetentionSimulationResultDto> ApplyAsync(RetentionSimulationApplyRequestDto request, CancellationToken token)
     {
         if (request == null || !request.Confirmed)
@@ -91,7 +127,8 @@ public sealed class RetentionSimulationService
             throw new WorkerOperationException("RETENTION_PREVIEW_STALE", "确认的预览不是当前 Worker 保存的预览，请刷新后再清理。");
 
         var (versions, policies) = await LoadAsync(token).ConfigureAwait(false);
-        var plans = BuildPlans(versions, policies);
+        var applyCutoffUtc = DateTime.UtcNow;
+        var plans = BuildPlans(versions, policies, applyCutoffUtc);
         if (!MatchesSnapshot(plans, previewSnapshot.Candidates))
             throw new WorkerOperationException("RETENTION_PREVIEW_STALE", "备份状态在确认前已变化，请刷新全局预览后再清理。");
 
@@ -120,7 +157,7 @@ public sealed class RetentionSimulationService
             // final identity check.
             var liveVersions = await _store.GetBackupVersionsAsync(group.PlayniteId, token).ConfigureAwait(false);
             var livePolicy = await _store.GetPolicyAsync(group.PlayniteId, token).ConfigureAwait(false);
-            var liveGroup = BuildPlan(group.PlayniteId, group.GameName, liveVersions, livePolicy);
+            var liveGroup = BuildPlan(group.PlayniteId, group.GameName, liveVersions, livePolicy, applyCutoffUtc);
             var expectedCandidates = previewSnapshot.Candidates
                 .Where(x => string.Equals(x.PlayniteId, group.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -690,22 +727,33 @@ public sealed class RetentionSimulationService
 
     private async Task<(List<BackupVersionDto> Versions, Dictionary<string, BackupPolicyDto> Policies)> LoadAsync(CancellationToken token)
     {
-        var versions = await _store.GetStorageAnalysisRowsAsync(token).ConfigureAwait(false);
-        var policies = await _store.GetAllPoliciesAsync(token).ConfigureAwait(false);
-        return (versions, policies);
+        return await _store.GetRetentionScenarioSnapshotAsync(token).ConfigureAwait(false);
     }
 
     private static List<RetentionPlanGroup> BuildPlans(
         List<BackupVersionDto> versions,
-        Dictionary<string, BackupPolicyDto> policies)
+        Dictionary<string, BackupPolicyDto> policies,
+        DateTime cutoffUtc)
+    {
+        return BuildPlans(versions, playniteId => policies.TryGetValue(playniteId, out var value) ? value : new BackupPolicyDto(), cutoffUtc);
+    }
+
+    private static List<RetentionPlanGroup> BuildPlans(
+        List<BackupVersionDto> versions,
+        BackupPolicyDto policy,
+        DateTime cutoffUtc)
+    {
+        return BuildPlans(versions, _ => policy, cutoffUtc);
+    }
+
+    private static List<RetentionPlanGroup> BuildPlans(
+        List<BackupVersionDto> versions,
+        Func<string, BackupPolicyDto> policyForGame,
+        DateTime cutoffUtc)
     {
         return versions
             .GroupBy(x => x.PlayniteId, StringComparer.OrdinalIgnoreCase)
-            .Select(group =>
-            {
-                var policy = policies.TryGetValue(group.Key, out var value) ? value : new BackupPolicyDto();
-                return BuildPlan(group.Key, group.First().LudusaviName, group.ToList(), policy);
-            })
+            .Select(group => BuildPlan(group.Key, group.First().LudusaviName, group.ToList(), policyForGame(group.Key), cutoffUtc))
             .ToList();
     }
 
@@ -713,7 +761,8 @@ public sealed class RetentionSimulationService
         string playniteId,
         string gameName,
         List<BackupVersionDto> versions,
-        BackupPolicyDto policy)
+        BackupPolicyDto policy,
+        DateTime cutoffUtc)
     {
         var snapshots = versions.Select(ToSnapshot).ToList();
         var plan = new RetentionPlanner().CreatePlan(
@@ -725,8 +774,39 @@ public sealed class RetentionSimulationService
                 KeepWeeklyWeeks = policy.KeepWeeklyWeeks,
                 KeepMonthlyMonths = policy.KeepMonthlyMonths
             },
-            DateTime.UtcNow);
+            cutoffUtc);
         return new RetentionPlanGroup(playniteId, gameName, versions, policy, plan);
+    }
+
+    private static RetentionScenarioPlanSummaryDto SummarizePlans(IEnumerable<RetentionPlanGroup> plans)
+    {
+        var groups = plans.ToList();
+        return new RetentionScenarioPlanSummaryDto
+        {
+            ExistingVersionCount = groups.Sum(x => x.Versions.Count),
+            KeepVersionCount = groups.Sum(x => x.Plan.Keep.Count),
+            ProtectedVersionCount = groups.Sum(x => x.Plan.Keep.Count(version => version.IsLocked || version.IsPreRestore || version.IsHealthyRestorePoint)),
+            UserLockedCount = groups.Sum(x => x.Versions.Count(version => version.IsLocked)),
+            PreRestoreCount = groups.Sum(x => x.Versions.Count(version => version.IsPreRestore)),
+            HealthProtectedCount = groups.Sum(x => x.Plan.HealthProtected.Count),
+            DeleteCandidateCount = groups.Sum(x => x.Plan.DeleteCandidates.Count),
+            CandidateLogicalBytes = groups.Sum(x => x.Plan.DeleteCandidates.Sum(version => Math.Max(0, version.TotalBytes)))
+        };
+    }
+
+    private static void ValidateScenarioRequest(RetentionScenarioComparisonRequestDto request)
+    {
+        if (request == null
+            || request.KeepAllForHours < 0 || request.KeepAllForHours > 876000
+            || request.KeepDailyDays < 0 || request.KeepDailyDays > 36500
+            || request.KeepWeeklyWeeks < 0 || request.KeepWeeklyWeeks > 5200
+            || request.KeepMonthlyMonths < 0 || request.KeepMonthlyMonths > 1200
+            || !request.GrowthMinimumMiBPer30Days.HasValue || request.GrowthMinimumMiBPer30Days.Value < 0 || request.GrowthMinimumMiBPer30Days.Value > 1000000
+            || !request.GrowthMaximumMiBPer30Days.HasValue || request.GrowthMaximumMiBPer30Days.Value < 0 || request.GrowthMaximumMiBPer30Days.Value > 1000000
+            || request.GrowthMinimumMiBPer30Days.Value > request.GrowthMaximumMiBPer30Days.Value)
+        {
+            throw new WorkerOperationException("RETENTION_SCENARIO_INVALID", "情景输入无效；请检查保留范围及增长上下限后重新比较。");
+        }
     }
 
     private static BackupSnapshot ToSnapshot(BackupVersionDto version) => new BackupSnapshot
