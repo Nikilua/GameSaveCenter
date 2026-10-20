@@ -2,6 +2,8 @@
 
 任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 `990758b6` 会话情景输入与 S05-02 `5f1431f2` 同快照双方案只读预览已受控验收；下一项依赖满足后审计 S05-03。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
+2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；完成提交后继续 S05-03。
+
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。已满足必须有当前等价能力与证据；受控通过不代表真实宿主通过。每项分别补实现 commit、验证与未验边界。
 
 <!-- ROUND4-STATUS-GENERATED-START -->

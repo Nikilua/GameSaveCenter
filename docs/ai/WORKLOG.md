@@ -1,3 +1,10 @@
+## 2026-10-20 用户反馈：页面滚动区域回归修复
+
+- 修复存档历史与候选路径、任务队列页面把旧布局测量值写回根高度，导致详情/列表内容被裁切但内层滚动仍能操作的问题。当前 PageHost 高度驱动有限的表格/详情视口，整页高度由页面 ScrollViewer 自然测量。
+- SDK `8.0.423` Release solution build `0 warning / 0 error`，XAML `25/25`；WPF几何回归 `5/5`，源码/资源契约 `4` 通过、历史架构断言 `1` 跳过。
+- 构建日志、原始 TRX、SHA 与精确离屏验证边界见 [UI-SCROLL-LAYOUT-REPAIR-20261020](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。没有声称真实 Playnite/物理屏幕验证。保留原有未跟踪 Round3 TRX/TestResults；本阶段临时目录在证据归档后清理。
+- 本轮是 Round4 工作中的用户缺陷修复，不更改 S05-02/S05-03 状态；随后继续 S05-03 能力审计。
+
 ## 2026-10-20 Round4 S05-01 只读保留情景输入
 
 - 能力审计：当前每游戏策略与模板编辑可持久化，Worker 预览只处理当前生效策略；均无会话内候选保留规则/增长假设，不能满足 S05-01。实现前引用现有 `RetentionPolicy`，不复制新的策略契约。

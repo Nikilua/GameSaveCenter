@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-20 用户反馈：页面滚动区域回归修复
+
+修复存档历史、路径候选和任务队列的页面根高度反馈：移除基于上一布局 `ActualHeight` 的根固定高度，使用当前 PageHost 高度限制 DataGrid/详情视口，由页面 ScrollViewer 自然承载后续内容。SDK8 Release solution 构建 `0/0`；几何回归 `5/5`，WPF 契约 `4 pass / 1 historical skip`。证据见 [滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏测量不代表真实 Playnite 屏幕。独立修复结束后回到 S05-03。
+
 ## 2026-10-20 Round4 S05-02 双方案只读预览已验收
 
 提交 `5f1431f2` 在维护中心保留策略页新增当前策略/候选策略对比。先审计既有能力：`RetentionSimulationService.PreviewAsync` 只按当前逐游戏策略规划并保存清理预览句柄；存储分析趋势没有候选侧，因此与 S05-02 不等价。新增比较路由使用单条 SQLite 查询读取同一版本和策略快照，两个方案共享 UTC 截止时间并复用 `RetentionPlanner`；候选策略统一作用于所有游戏。结果显示保留、去重保护、锁定/PreRestore/健康恢复点、候选数和索引逻辑大小。增长上下限仅回显为假设，Worker 会重新验证，且不参与本批候选计算。新比较不保存、Apply、文件操作或生成清理预览 ID；现有全局清理确认链保持独立。

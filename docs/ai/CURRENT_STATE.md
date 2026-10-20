@@ -2,6 +2,10 @@
 
 更新时间：2026-10-20。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
+## 2026-10-20 用户反馈：页面滚动区域回归修复
+
+存档历史/路径候选、任务队列与详情区域曾以旧布局测量值固定整页高度，造成内容被裁切而内层滚动仍可操作。现在整页根布局自然测量，PageHost 外层承担额外滚动，表格和详情保留有限内部视口；SDK8 Release solution `0 warning / 0 error`，几何回归 `5/5`，静态契约 `4 pass / 1 historical skip`。证据：[页面滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。测试为 STA/离屏 WPF；真实 Playnite 窗口和物理 DPI 未验证。Round4 S05-02 仍已验收，滚动修复提交后继续 S05-03。
+
 ## Round4 当前小批：S05-02 已验收
 
 实现提交 `5f1431f2` 在维护中心“保留策略”页加入当前策略与会话候选策略的只读对比。审计时确认旧 `PreviewRetentionSimulation` 仅规划当前生效策略，`StorageAnalysisService` 的历史趋势也不接收候选规则。现在 Worker 单条 SQLite 查询读取版本及逐游戏策略，两侧共用该快照与 UTC 截止时点，并复用 `RetentionPlanner`；候选规则统一应用于全部游戏。增长范围作为用户假设回显，不参与保留计数。该结果没有清理预览 ID 或 Apply 通路。

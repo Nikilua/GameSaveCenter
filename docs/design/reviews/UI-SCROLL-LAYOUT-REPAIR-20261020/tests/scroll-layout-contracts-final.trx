@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="cd2596d5-1fda-440a-90cc-e0091361f82b" name="lopmatu@SULT 2026-10-20 19:59:34" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-20T19:59:34.6025590+08:00" queuing="2026-10-20T19:59:34.6025592+08:00" start="2026-10-20T19:59:29.2465338+08:00" finish="2026-10-20T19:59:49.0097482+08:00" />
+  <TestSettings name="default" id="80c8bf85-c6a3-437f-881c-a6bbea4c9598">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-20_19_59_34" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="5ff8f81b-7031-4585-9b28-b2917aac0e02" testId="351b10e3-ecfb-8e41-d2d2-dc303d33b787" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport" computerName="SULT" duration="00:00:00.0160000" startTime="2026-10-20T19:59:33.2684796+08:00" endTime="2026-10-20T19:59:33.2824811+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5ff8f81b-7031-4585-9b28-b2917aac0e02" />
+    <UnitTestResult executionId="d082dc1b-286a-4ee1-a383-31b481370b2d" testId="a3a4aac2-ccf8-8c64-4d86-e53772b611c5" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation" computerName="SULT" duration="00:00:00.0340000" startTime="2026-10-20T19:59:33.2544795+08:00" endTime="2026-10-20T19:59:33.2664796+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d082dc1b-286a-4ee1-a383-31b481370b2d" />
+    <UnitTestResult executionId="80e1c9e8-5180-444f-9813-bd9afbd7e5f4" testId="bde865dc-e244-9b51-3181-ed2e664030db" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-20T19:59:33.2834808+08:00" endTime="2026-10-20T19:59:33.2844786+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80e1c9e8-5180-444f-9813-bd9afbd7e5f4">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2610405c-30be-4496-a295-51f859879c61" testId="9141bb39-400a-24a0-6574-04f013c4f5cc" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip" computerName="SULT" duration="00:00:00.0210000" startTime="2026-10-20T19:59:33.2970525+08:00" endTime="2026-10-20T19:59:33.3040533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2610405c-30be-4496-a295-51f859879c61" />
+    <UnitTestResult executionId="0ad06f22-e3ef-4ef9-bdfd-f1095646988e" testId="87a248dc-0a41-ea84-0d2f-f9debcc2177b" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap" computerName="SULT" duration="00:00:00.1690000" startTime="2026-10-20T19:59:33.0768760+08:00" endTime="2026-10-20T19:59:33.2324795+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ad06f22-e3ef-4ef9-bdfd-f1095646988e" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="bde865dc-e244-9b51-3181-ed2e664030db">
+      <Execution id="80e1c9e8-5180-444f-9813-bd9afbd7e5f4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="TaskStackedInspectorReservesTheDemoQueueViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="351b10e3-ecfb-8e41-d2d2-dc303d33b787">
+      <Execution id="5ff8f81b-7031-4585-9b28-b2917aac0e02" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="SaveAndTrainerStackedInspectorsReserveAReadableListViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a3a4aac2-ccf8-8c64-4d86-e53772b611c5">
+      <Execution id="d082dc1b-286a-4ee1-a383-31b481370b2d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="9141bb39-400a-24a0-6574-04f013c4f5cc">
+      <Execution id="2610405c-30be-4496-a295-51f859879c61" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="87a248dc-0a41-ea84-0d2f-f9debcc2177b">
+      <Execution id="0ad06f22-e3ef-4ef9-bdfd-f1095646988e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="351b10e3-ecfb-8e41-d2d2-dc303d33b787" executionId="5ff8f81b-7031-4585-9b28-b2917aac0e02" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3a4aac2-ccf8-8c64-4d86-e53772b611c5" executionId="d082dc1b-286a-4ee1-a383-31b481370b2d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bde865dc-e244-9b51-3181-ed2e664030db" executionId="80e1c9e8-5180-444f-9813-bd9afbd7e5f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9141bb39-400a-24a0-6574-04f013c4f5cc" executionId="2610405c-30be-4496-a295-51f859879c61" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="87a248dc-0a41-ea84-0d2f-f9debcc2177b" executionId="0ad06f22-e3ef-4ef9-bdfd-f1095646988e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.79]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.12]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.14]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport”。&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-20T19:59:33.2868588+08:00">
+        <Text>[xUnit.net 00:00:03.12]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

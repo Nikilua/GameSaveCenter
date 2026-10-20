@@ -1347,9 +1347,9 @@ def check_final_redesign_guards() -> None:
     ):
         fail("Final redesign overview activity rows must trim long text with a tooltip")
 
-    # Large-library controls must retain finite Grid measurement and recycling after the
-    # visual redesign.  This cross-platform gate mirrors the Windows xUnit regression test,
-    # so a future XAML-only change cannot silently disable virtualization before build time.
+    # Large-library controls must retain a finite table viewport and recycling after the
+    # visual redesign. Page roots may scroll naturally, so a bounded runtime DataGrid height
+    # is valid even when its containing page is not assigned a cached fixed height.
     all_roots = [dashboard_root, *workspace_roots]
     parent_map = {
         child: parent
@@ -1371,28 +1371,24 @@ def check_final_redesign_guards() -> None:
     finite_page_tables = {
         "SaveHistoryGrid": (
             "SaveHistoryPageScrollViewer",
-            "SaveHistoryLayout.Height = WorkspaceTableViewportPolicy.CalculatePageContentHeight",
             "SaveHistoryGrid.MinHeight = tableMinHeight",
-            "SaveHistoryGrid.Height = double.NaN",
-            "SaveHistoryGrid.MaxHeight = double.PositiveInfinity",
-            "SaveHistoryPageScrollViewer.ViewportHeight",
+            "SaveHistoryGrid.Height = tableViewportHeight",
+            "SaveHistoryGrid.MaxHeight = tableViewportHeight",
+            "var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, pageViewportHeight * 0.68d));",
         ),
         "SaveCandidateGrid": (
             "SaveCandidatePageScrollViewer",
-            "SaveCandidatePageSurface.Height = WorkspaceTableViewportPolicy.CalculatePageContentHeight",
             "SaveCandidateGrid.MinHeight = tableMinHeight",
-            "SaveCandidateGrid.Height = double.NaN",
-            "SaveCandidateGrid.MaxHeight = double.PositiveInfinity",
-            "SaveCandidatePageScrollViewer.ViewportHeight",
+            "SaveCandidateGrid.Height = candidateTableViewportHeight",
+            "SaveCandidateGrid.MaxHeight = candidateTableViewportHeight",
+            "var candidateTableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, pageViewportHeight * 0.68d));",
         ),
         "TaskGrid": (
             "TaskPageScrollViewer",
-            "TaskPageScrollSurface.Height = pageContentHeight",
-            "TaskWorkspaceLayout.Height = pageContentHeight",
             "TaskGrid.MinHeight = tableMinHeight",
-            "TaskGrid.Height = double.NaN",
-            "TaskGrid.MaxHeight = double.PositiveInfinity",
-            "GetTaskPageViewportHeight",
+            "TaskGrid.Height = tableViewportHeight",
+            "TaskGrid.MaxHeight = tableViewportHeight",
+            "var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(620d, availableHeight * 0.68d));",
         ),
         "MediaGrid": (
             "MediaCurrentPageScrollViewer",
