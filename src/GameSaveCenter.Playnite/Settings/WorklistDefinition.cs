@@ -54,6 +54,19 @@ namespace GameSaveCenter.Playnite.Settings
                 && string.Equals(item.StableObjectId, normalizedId, StringComparison.OrdinalIgnoreCase));
         }
 
+        public bool TrySetManualCompletion(WorklistObjectKind kind, string? stableObjectId, bool isComplete)
+        {
+            if (!Enum.IsDefined(typeof(WorklistObjectKind), kind)) return false;
+            var normalizedId = (stableObjectId ?? string.Empty).Trim();
+            if (normalizedId.Length == 0 || normalizedId.Length > MaximumStableObjectIdLength || Items == null) return false;
+
+            var item = Items.FirstOrDefault(candidate => candidate != null && candidate.Kind == kind
+                && string.Equals((candidate.StableObjectId ?? string.Empty).Trim(), normalizedId, StringComparison.OrdinalIgnoreCase));
+            if (item == null) return false;
+            item.IsManuallyComplete = isComplete;
+            return true;
+        }
+
         public WorklistItemAddResult TryAdd(WorklistItemRecord? item)
         {
             var normalized = NormalizeItem(item);

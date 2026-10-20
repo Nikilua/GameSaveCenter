@@ -33,6 +33,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand CloseWorklistBrowserCommand { get; private set; } = null!;
         public ICommand RefreshWorklistReferencesCommand { get; private set; } = null!;
         public ICommand ContinueSelectedWorklistItemCommand { get; private set; } = null!;
+        public ICommand ToggleSelectedWorklistManualCompletionCommand { get; private set; } = null!;
         public ICommand MoveWorklistItemUpCommand { get; private set; } = null!;
         public ICommand MoveWorklistItemDownCommand { get; private set; } = null!;
         public ICommand RemoveSelectedWorklistItemsCommand { get; private set; } = null!;
@@ -47,6 +48,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string WorklistSelectionSummary => selectedWorklistBrowserEntries.Count == 0
             ? "未选择条目"
             : $"已选择 {selectedWorklistBrowserEntries.Count} 项";
+        public string WorklistManualCompletionActionDisplay => selectedWorklistBrowserEntries.Count == 1
+            && selectedWorklistBrowserEntries[0].IsManuallyComplete
+                ? "恢复为未完成"
+                : "标记为已完成";
         public string WorklistLookupSummary
         {
             get => worklistLookupSummary;
@@ -94,6 +99,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (ReferenceEquals(selectedWorklistBrowserEntry, value)) return;
                 selectedWorklistBrowserEntry = value;
                 OnPropertyChanged(nameof(SelectedWorklistBrowserEntry));
+                OnPropertyChanged(nameof(WorklistManualCompletionActionDisplay));
                 RaiseCommandStates();
             }
         }
@@ -150,6 +156,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 _ => !IsBusy && !isMutatingWorklist && !isResolvingWorklistReferences
                     && selectedWorklistBrowserEntries.Count == 1
                     && selectedWorklistBrowserEntries[0].CanContinue);
+            ToggleSelectedWorklistManualCompletionCommand = new RelayCommand(
+                _ => ToggleSelectedWorklistManualCompletion(),
+                _ => !IsBusy && !isMutatingWorklist && !isResolvingWorklistReferences
+                    && selectedWorklist != null && selectedWorklistBrowserEntries.Count == 1);
             MoveWorklistItemUpCommand = new RelayCommand(_ => MoveSelectedWorklistItem(-1), _ => CanMoveSelectedWorklistItem(-1));
             MoveWorklistItemDownCommand = new RelayCommand(_ => MoveSelectedWorklistItem(1), _ => CanMoveSelectedWorklistItem(1));
             RemoveSelectedWorklistItemsCommand = new RelayCommand(
@@ -168,6 +178,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             SelectedWorklistBrowserEntry = selectedWorklistBrowserEntries.LastOrDefault();
             OnPropertyChanged(nameof(SelectedWorklistBrowserEntries));
             OnPropertyChanged(nameof(WorklistSelectionSummary));
+            OnPropertyChanged(nameof(WorklistManualCompletionActionDisplay));
             RaiseCommandStates();
         }
 
@@ -228,6 +239,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(SelectedWorklistBrowserEntries));
             OnPropertyChanged(nameof(WorklistBrowserHasItems));
             OnPropertyChanged(nameof(WorklistSelectionSummary));
+            OnPropertyChanged(nameof(WorklistManualCompletionActionDisplay));
             UpdateWorklistLookupSummary();
             RaiseCommandStates();
         }
@@ -570,6 +582,37 @@ namespace GameSaveCenter.Playnite.ViewModels
                 StatusMessage = direction < 0 ? "已将待办上移；源对象未改变。" : "已将待办下移；源对象未改变。";
         }
 
+        private void ToggleSelectedWorklistManualCompletion()
+        {
+            if (IsBusy || selectedWorklist == null || selectedWorklistBrowserEntries.Count != 1 || isMutatingWorklist || isResolvingWorklistReferences)
+                return;
+
+            var selected = selectedWorklistBrowserEntries[0];
+            var identity = GetWorklistIdentity(selected.Kind, selected.StableObjectId);
+            var nextState = !selected.IsManuallyComplete;
+            var updated = selectedWorklist.Clone();
+            if (!updated.TrySetManualCompletion(selected.Kind, selected.StableObjectId, nextState))
+            {
+                StatusMessage = "所选条目已变化；没有修改人工跟进状态，请刷新后重试。";
+                return;
+            }
+
+            isMutatingWorklist = true;
+            RaiseCommandStates();
+            try
+            {
+                if (!PersistWorklistItems(updated.Items, identity)) return;
+                StatusMessage = nextState
+                    ? "已标记为手动完成；这只记录人工跟进，不代表备份或校验成功。"
+                    : "已恢复为未完成；这只更新人工跟进记录，不会运行备份或校验。";
+            }
+            finally
+            {
+                isMutatingWorklist = false;
+                RaiseCommandStates();
+            }
+        }
+
         private async Task RemoveSelectedWorklistItemsAsync()
         {
             if (selectedWorklist == null || selectedWorklistBrowserEntries.Count == 0 || isMutatingWorklist) return;
@@ -630,6 +673,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool PersistWorklistItems(List<WorklistItemRecord> items, string? selectedIdentity)
         {
             if (selectedWorklist == null) return false;
+            var referenceStates = worklistBrowserEntries.ToDictionary(
+                entry => GetWorklistIdentity(entry.Kind, entry.StableObjectId),
+                entry => (entry.State, entry.TargetPlayniteId),
+                StringComparer.OrdinalIgnoreCase);
             var settings = plugin.Settings;
             var previousLists = WorklistDefinition.NormalizeMany(settings.Worklists);
             var previousActiveId = settings.ActiveWorklistId;
@@ -652,12 +699,21 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 settings.Worklists = previousLists;
                 settings.ActiveWorklistId = previousActiveId;
-                Logger.Error(exception, "GameSaveCenter could not persist worklist ordering or removal.");
+                Logger.Error(exception, "GameSaveCenter could not persist a worklist change.");
                 StatusMessage = "清单修改无法保存；已恢复原有条目。";
                 return false;
             }
 
             RefreshWorklistBrowserFromSettings(selectedIdentity);
+            foreach (var entry in worklistBrowserEntries)
+            {
+                var identity = GetWorklistIdentity(entry.Kind, entry.StableObjectId);
+                if (referenceStates.TryGetValue(identity, out var resolution))
+                    entry.SetResolution(resolution.State, resolution.TargetPlayniteId);
+            }
+            worklistBrowserView.Refresh();
+            UpdateWorklistLookupSummary();
+            RaiseCommandStates();
             return true;
         }
 

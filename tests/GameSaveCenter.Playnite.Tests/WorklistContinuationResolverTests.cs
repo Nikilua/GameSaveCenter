@@ -43,12 +43,13 @@ public sealed class WorklistContinuationResolverTests
         WorklistReferenceState state,
         string stableId)
     {
-        var entry = Entry(kind, stableId, state, "game-1");
+        var entry = Entry(kind, stableId, state, "game-1", isManuallyComplete: true);
 
         Assert.True(WorklistContinuationResolver.TryResolve(entry, out var target, out var message), message);
         Assert.Equal(kind, target!.Kind);
         Assert.Equal(stableId, target.ObjectId);
         Assert.Equal("game-1", target.PlayniteId);
+        Assert.True(entry.IsManuallyComplete);
     }
 
     [Theory]
@@ -69,9 +70,10 @@ public sealed class WorklistContinuationResolverTests
         WorklistObjectKind kind,
         string stableId,
         WorklistReferenceState state,
-        string playniteId)
+        string playniteId,
+        bool isManuallyComplete = false)
     {
-        var entry = new WorklistBrowserEntry(new WorklistItemRecord { Kind = kind, StableObjectId = stableId }, 0);
+        var entry = new WorklistBrowserEntry(new WorklistItemRecord { Kind = kind, StableObjectId = stableId, IsManuallyComplete = isManuallyComplete }, 0);
         entry.SetResolution(state, playniteId);
         return entry;
     }

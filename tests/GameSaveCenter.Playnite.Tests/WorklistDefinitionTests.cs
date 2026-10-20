@@ -183,4 +183,31 @@ public sealed class WorklistDefinitionTests
         }));
         Assert.Single(worklist.Items);
     }
+
+    [Fact]
+    public void ManualCompletionChangesOnlyTheExactReferenceAndCanBeReversed()
+    {
+        var worklist = new WorklistDefinition
+        {
+            Items = new List<WorklistItemRecord>
+            {
+                new() { Kind = WorklistObjectKind.BackgroundTask, StableObjectId = "task-1", Note = "检查失败", IsManuallyComplete = false },
+                new() { Kind = WorklistObjectKind.BackgroundTask, StableObjectId = "task-2", Note = "后续任务", IsManuallyComplete = true },
+                new() { Kind = WorklistObjectKind.MediaItem, StableObjectId = "task-1", Note = "同 ID 不同类型" }
+            }
+        };
+
+        Assert.True(worklist.TrySetManualCompletion(WorklistObjectKind.BackgroundTask, " TASK-1 ", true));
+        Assert.True(worklist.Items[0].IsManuallyComplete);
+        Assert.Equal("检查失败", worklist.Items[0].Note);
+        Assert.Equal("task-1", worklist.Items[0].StableObjectId);
+        Assert.Equal("task-2", worklist.Items[1].StableObjectId);
+        Assert.True(worklist.Items[1].IsManuallyComplete);
+        Assert.False(worklist.Items[2].IsManuallyComplete);
+
+        Assert.True(worklist.TrySetManualCompletion(WorklistObjectKind.BackgroundTask, "task-1", false));
+        Assert.False(worklist.Items[0].IsManuallyComplete);
+        Assert.False(worklist.TrySetManualCompletion(WorklistObjectKind.ValidationFinding, "task-1", true));
+        Assert.False(worklist.TrySetManualCompletion((WorklistObjectKind)999, "task-1", true));
+    }
 }
