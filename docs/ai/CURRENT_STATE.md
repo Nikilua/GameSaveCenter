@@ -1,16 +1,20 @@
 # GameSaveCenter 当前事实入口
 
-更新时间：2026-10-20。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
+更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
+
+Round4 S05-03 至 S05-05 已验收；下一步按计划审计 S05-06 保存情景草稿。保留用户原有未跟踪 TRX/TestResults。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
-存档历史/路径候选、任务队列与详情区域曾以旧布局测量值固定整页高度，造成内容被裁切而内层滚动仍可操作。现在整页根布局自然测量，PageHost 外层承担额外滚动，表格和详情保留有限内部视口；SDK8 Release solution `0 warning / 0 error`，几何回归 `5/5`，静态契约 `4 pass / 1 historical skip`。证据：[页面滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。测试为 STA/离屏 WPF；真实 Playnite 窗口和物理 DPI 未验证。后续按计划完成 S05-03 与 S05-04，下一步审计 S05-05。
+存档历史/路径候选、任务队列与详情区域曾以旧布局测量值固定整页高度，造成内容被裁切而内层滚动仍可操作。现在整页根布局自然测量，PageHost 外层承担额外滚动，表格和详情保留有限内部视口；SDK8 Release solution `0 warning / 0 error`，几何回归 `5/5`，静态契约 `4 pass / 1 historical skip`。证据：[页面滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。测试为 STA/离屏 WPF；真实 Playnite 窗口和物理 DPI 未验证。后续已完成 S05-03 至 S05-05。
 
-## 2026-10-20 Round4 S05-03 与 S05-04 已验收
+## 2026-10-21 Round4 S05-03 至 S05-05 已验收
 
 S05-03 实现提交 `e6279b7d` 将历史逻辑增长表达为样本覆盖内的观察范围或未知，分开显示用户假设、本地卷容量与未知远端配额，不声称置信区间或耗尽日期；SDK8 Release solution `0/0`、Worker `5/5`、生产维护页 Light/Dark `2/2`。证据：[S05-03](../design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)。
 
-S05-04 实现提交 `cf50643c` 为本地存档、第二镜像、恢复 staging、媒体目录提供独立只读预算分项，区分目录文件长度和 SQLite 逻辑量，空目录/未知/未启用分别显示，不生成总计并警告重叠路径。精确提交 SDK8.0.423 Release solution `0/0`、Worker `8/8`、生产维护页双主题与导航 `4/4`。证据：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。目录文件长度不表示卷簇实占；真实 Playnite、物理 DPI 和完整 WPF 隔离循环未验。下一步按计划审计 S05-05。
+S05-04 实现提交 `cf50643c` 为本地存档、第二镜像、恢复 staging、媒体目录提供独立只读预算分项，区分目录文件长度和 SQLite 逻辑量，空目录/未知/未启用分别显示，不生成总计并警告重叠路径。精确提交 SDK8.0.423 Release solution `0/0`、Worker `8/8`、生产维护页双主题与导航 `4/4`。证据：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。目录文件长度不表示卷簇实占。
+
+S05-05 实现提交 `2fd0aa04` 将策略总量差异下钻到逐游戏和变化版本，并展示各保护原因；只对通过既有路径安全检查的变化候选做只读归档存在性检查，不创建清理句柄。精确提交 SDK8.0.423 Release solution `0/0`、Worker `2/2`、生产维护页 Light/Dark 双层滚动 `2/2`，RenderHarness 无问题。证据：[S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。下一步按计划审计 S05-06。
 
 ## Round4 前序小批：S05-02 已验收
 

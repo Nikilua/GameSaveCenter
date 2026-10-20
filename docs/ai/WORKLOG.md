@@ -1,9 +1,16 @@
+## 2026-10-21 Round4 S05-05 策略差异定位
+
+- 先核对等价能力：S05-02 只有当前/候选策略总量差异；当前全局清理预览对应生效策略且有 200 条上限，时间线保护说明也是单版本行为，不能满足双策略下钻到游戏/版本的要求。
+- 提交 `2fd0aa04` 增加同一规划快照下逐游戏计数和变化/保护版本明细；显式显示锁定、PreRestore、健康恢复点原因。归档只读状态检查复用既有归档根目录、ZIP 扩展名和重解析点边界，缺失/不可访问/不安全路径不列为现存候选；不创建预览句柄、不写设置、不调用 Apply 或清理。
+- SDK `8.0.423` 精确提交 Release solution `0/0`，XAML `25/25`，Worker `2/2`，生产维护页 Light/Dark 双层滚动行为 `2/2`，RenderHarness `0 PROBLEM`，source validation/diff check 通过。构建摘要、原始 TRX、渲染报告及 SHA 见 [S05-05 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。RenderHarness 是合成离屏验收，不代表真实 Playnite/物理 DPI/宿主滚动；用户 Round3 TRX/TestResults 保留。
+- S05-05 已按账本受控验收并同步证据；下一项依赖审计 S05-06 保存情景草稿。
+
 ## 2026-10-20 Round4 S05-04 存储预算分解
 
 - 先审计既有能力：存档目录有递归文件长度与 SQLite 索引逻辑量；镜像状态字节数可能来自标记；媒体统计仅按单游戏且过滤到已归类项；远端恢复暂存只有身份/校验元数据。缺少四类目录统一的可用数据与统计范围，因此 S05-04 不是重复实现。
 - 提交 `cf50643c` 在当前可见的维护中心存储卡增加本地存档、第二镜像、远端 staging、媒体归档四条独立预算项。目录不存在/不可访问/遍历不完整为未知，空目录才为 0；镜像未启用单独标识；重叠路径警告勿相加；不生成总计，不把文件长度称为卷簇实占。媒体逻辑量覆盖所有登记记录。
 - 精确提交 SDK `8.0.423` Release solution build `0 warning / 0 error`，Worker `8/8`，生产 WPF Light/Dark 与存储导航 `4/4`；source validation 和 diff check 通过。构建诊断 `20261020T150304229Z-4f5cc725`；S05-04 证据、TRX 与 SHA：[证据页](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。无真实 Playnite/完整 WPF 循环/物理 DPI 证明；原 Round3 TRX/TestResults 保留。
-- 前置 S05-03 已于 `e6279b7d` 验收并补全账本：历史增长观察区间与未知、本地卷、用户假设、远端未知分开显示。细节见 [S05-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)。下一项按依赖审计 S05-05。
+- 前置 S05-03 已于 `e6279b7d` 验收并补全账本：历史增长观察区间与未知、本地卷、用户假设、远端未知分开显示。细节见 [S05-03 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)。之后 S05-05 已验收；下一项按依赖审计 S05-06。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 

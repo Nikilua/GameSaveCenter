@@ -1,10 +1,16 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-21 Round4 S05-05 策略差异定位已验收
+
+提交 `2fd0aa04474c314a179bac0a1c641def813c6d71` 将 S05-02 的策略总量比较下钻为逐游戏与变化版本明细。既有当前策略清理预览和时间线保护说明都不具备双方案逐版本比较，因此本项不是重复实现。逐游戏两侧计数与版本计划对账；用户锁定、PreRestore 和健康恢复点保护单独显示；只读检查满足现有归档根目录/ZIP/重解析点边界的候选是否存在。缺失、不可访问或不安全路径不计作现存归档候选，也不承诺索引大小可释放。页面虚拟化游戏和版本表并保留外层页面滚动，比较不写设置、不创建清理预览句柄、不调用 Apply/清理。
+
+SDK `8.0.423` 精确提交 Release solution `0/0`、XAML `25/25`、Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness `0 PROBLEM`，source validation/diff check 通过。证据、TRX、构建摘要和哈希见 [S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。RenderHarness 是合成离屏检查；真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。旧 Round3 未跟踪 TRX/TestResults 保留；下一步审计 S05-06。
+
 ## 2026-10-20 Round4 S05-04 存储预算分解已验收
 
 实现提交 `cf50643c05df3fd6e69df7d6252842fa88a1ffde` 在维护中心当前可见的存储卡分别盘点 Ludusavi 存档、第二本地镜像、远端恢复 staging、媒体目录；每类显示递归文件长度/文件数，存档和所有登记媒体记录另显示 SQLite 逻辑量。原镜像 `TotalBytes` 可能取自同步标记、媒体旧汇总仅按游戏查询、staging 只有身份/校验状态，不等价于四类目录盘点。
 
-Worker 对不可读/不存在目录保留未知，空目录才显示 0；镜像未启用另标状态。不合计类别，路径重叠会提示勿相加，并说明文件长度不等于卷簇实占。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `8/8`，生产维护页 Light/Dark 与存储导航行为 `4/4`；`validate-source.py` 和 diff check 通过。证据、TRX、构建摘要与 SHA：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。真实 Playnite、完整 WPF 独立循环、物理 DPI 与卷簇占用未验；当前下一项按依赖审计 S05-05。
+Worker 对不可读/不存在目录保留未知，空目录才显示 0；镜像未启用另标状态。不合计类别，路径重叠会提示勿相加，并说明文件长度不等于卷簇实占。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `8/8`，生产维护页 Light/Dark 与存储导航行为 `4/4`；`validate-source.py` 和 diff check 通过。证据、TRX、构建摘要与 SHA：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。真实 Playnite、完整 WPF 独立循环、物理 DPI 与卷簇占用未验；随后 S05-05 已验收，下一项审计 S05-06。
 
 ## 2026-10-20 Round4 S05-03 估算不确定性已验收
 
