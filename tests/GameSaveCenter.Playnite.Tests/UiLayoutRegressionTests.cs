@@ -474,20 +474,18 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [LegacyProductionUiBaselineFact]
-        public void CompactDetailsButtonsOwnADedicatedActionRow()
+        public void CompactDetailsButtonsStayWithTheirRelatedControls()
         {
             var root = FindRepositoryRoot();
             var playniteRoot = Path.Combine(root, "src", "GameSaveCenter.Playnite");
-            var cases = new[]
+            var rowCases = new[]
             {
                 ("Views\\SaveCenterView.xaml", "SaveHistoryCompactDetailsButton"),
-                ("Views\\SaveCenterView.xaml", "SaveCandidateCompactDetailsButton"),
                 ("Views\\TrainerCenterView.xaml", "TrainerToolsCompactDetailsButton"),
-                ("Views\\MediaCenterView.xaml", "MediaCompactDetailsButton"),
-                ("Views\\TaskCenterView.xaml", "TaskCompactDetailsButton")
+                ("Views\\MediaCenterView.xaml", "MediaCompactDetailsButton")
             };
 
-            foreach (var (file, name) in cases)
+            foreach (var (file, name) in rowCases)
             {
                 var text = File.ReadAllText(Path.Combine(playniteRoot, file));
                 var segment = text.Substring(text.IndexOf(name, StringComparison.Ordinal));
@@ -496,6 +494,16 @@ namespace GameSaveCenter.Playnite.Tests
                 Assert.Contains("Grid.Row=\"1\"", segment);
                 Assert.DoesNotContain("VerticalAlignment=\"Top\"", segment);
             }
+
+            var save = File.ReadAllText(Path.Combine(playniteRoot, "Views", "SaveCenterView.xaml"));
+            var candidateButton = save.Substring(save.IndexOf("x:Name=\"SaveCandidateCompactDetailsButton\"", StringComparison.Ordinal));
+            Assert.Contains("Grid.Column=\"1\"", candidateButton.Substring(0, Math.Min(candidateButton.Length, 400)));
+            Assert.Contains("<Expander.Header>", save.Substring(save.LastIndexOf("<Expander x:Name=\"SaveCandidateViewConfigurationExpander\"", StringComparison.Ordinal)));
+
+            var tasks = File.ReadAllText(Path.Combine(playniteRoot, "Views", "TaskCenterView.xaml"));
+            var taskButton = tasks.Substring(tasks.IndexOf("x:Name=\"TaskCompactDetailsButton\"", StringComparison.Ordinal));
+            Assert.Contains("Grid.Column=\"2\"", taskButton.Substring(0, Math.Min(taskButton.Length, 350)));
+            Assert.Contains("x:Name=\"TaskQueueSummaryGrid\"", tasks);
 
             var media = File.ReadAllText(Path.Combine(playniteRoot, "Views", "MediaCenterView.xaml"));
             Assert.Contains("<WrapPanel Grid.Row=\"2\" Margin=\"12,10,12,0\">", media);

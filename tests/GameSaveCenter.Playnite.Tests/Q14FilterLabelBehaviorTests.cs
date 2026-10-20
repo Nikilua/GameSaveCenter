@@ -85,7 +85,7 @@ public sealed class Q14FilterLabelBehaviorTests
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
 
         var filters = GetField<Grid>(view, "TaskFiltersPanel");
-        var moreFilters = GetField<WrapPanel>(view, "TaskMoreFiltersHost");
+        var moreFilters = GetField<StackPanel>(view, "TaskMoreFiltersHost");
         var expander = GetField<Expander>(view, "TaskMoreFiltersExpander");
         var status = CreatePair(view, "Status", "状态：", "任务状态筛选", "TaskStatusFilterGroup", "TaskStatusFilterLabel", "TaskStatusFilterComboBox");
         var type = CreatePair(view, "Type", "类型：", "任务类型筛选", "TaskTypeFilterGroup", "TaskTypeFilterLabel", "TaskTypeFilterComboBox");
@@ -142,7 +142,7 @@ public sealed class Q14FilterLabelBehaviorTests
                     FlushLayout(window);
                     AssertPair(pair, pairHost, expectedSelection);
                 }
-                Panel expectedParent = compact || pair.Name == "Game" ? moreFilters : filters;
+                Panel expectedParent = compact ? moreFilters : filters;
                 Assert.Same(expectedParent, pair.Group.Parent);
                 if (!compact && pair.Name != "Game")
                     Assert.Equal(0d, pair.Group.Margin.Bottom);
@@ -159,7 +159,7 @@ public sealed class Q14FilterLabelBehaviorTests
             if (compact)
             {
                 Assert.Same(filters, status.Group.Parent);
-                Assert.Equal(4, moreFilters.Children.Count);
+                Assert.Equal(9, moreFilters.Children.Count);
                 var visiblePairs = pairs.Skip(1).ToArray();
                 var rowTops = new List<double>();
                 foreach (var pair in visiblePairs)
@@ -210,6 +210,7 @@ public sealed class Q14FilterLabelBehaviorTests
                 Assert.Same(filters, type.Group.Parent);
                 Assert.Same(filters, scope.Group.Parent);
                 Assert.Same(filters, range.Group.Parent);
+                Assert.Same(filters, game.Group.Parent);
                 Assert.Equal("媒体同步", type.Combo.SelectedItem);
                 Assert.Equal("当前游戏", scope.Combo.SelectedItem);
                 Assert.Equal("30 天", range.Combo.SelectedItem);

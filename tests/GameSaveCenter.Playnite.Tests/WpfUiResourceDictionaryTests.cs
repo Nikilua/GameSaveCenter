@@ -4691,17 +4691,18 @@ public sealed class WpfUiResourceDictionaryTests
             {
                 var view = new TaskCenterView();
                 var viewType = typeof(TaskCenterView);
-                var filters = (WrapPanel)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var filters = (Grid)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var moreHost = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var moreExpander = (Expander)viewType.GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var gameFilterGroup = (StackPanel)viewType.GetField("TaskGameFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var gameFilter = (ComboBox)viewType.GetField("TaskGameFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                 view.ApplyResponsiveLayout(700, 640);
-                compactInMore = moreHost.Children.Contains(gameFilter);
+                compactInMore = moreHost.Children.Contains(gameFilterGroup) && ReferenceEquals(gameFilter.Parent, gameFilterGroup);
                 compactExpanderVisible = moreExpander.Visibility == Visibility.Visible;
 
                 view.ApplyResponsiveLayout(1280, 720);
-                wideInMain = filters.Children.Contains(gameFilter);
+                wideInMain = filters.Children.Contains(gameFilterGroup) && ReferenceEquals(gameFilter.Parent, gameFilterGroup);
                 wideExpanderCollapsed = moreExpander.Visibility == Visibility.Collapsed;
             }
             catch (Exception caught)

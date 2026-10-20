@@ -289,25 +289,17 @@ namespace GameSaveCenter.Playnite.Views
                     // ScrollViewer moves below the queue at the compact breakpoint.
                     taskInspectorOpen = true;
                 }
-                var compactInspectorOpen = stack && taskInspectorOpen && TaskGrid.SelectedItem != null;
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 TaskGrid.MinHeight = tableMinHeight;
                 // Responsive stacking changes the page layout; the shared user density
                 // remains the only source for table row height in every breakpoint.
                 TaskGrid.ClearValue(DataGrid.RowHeightProperty);
                 TaskGrid.RowStyle = (Style)FindResource(stack ? "TaskCompactDataGridRow" : "GscStableDataGridRow");
-                // Keep the Demo's four metrics in one continuous strip at every width. On a
-                // short window, tighten only the secondary summary chrome so the queue still
-                // gets a useful first viewport; the page viewer carries overflow while the
-                // table and inspector retain finite inner scroll surfaces.
+                // Keep the Demo's four metrics available at every width. Compact pages move
+                // the summary into the collapsed overview disclosure, leaving the queue its
+                // first viewport while the page viewer carries lower details.
                 var shortHeight = availableHeight > 0 && availableHeight < 720;
-                // On a short compact page, let the selected-task inspector reclaim
-                // the secondary count strip. The user can restore it by closing the
-                // inspector; this preserves four complete queue rows without hiding
-                // filter or task actions.
-                TaskSummaryPanel.Visibility = compactInspectorOpen && shortHeight
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
+                TaskSummaryPanel.Visibility = Visibility.Visible;
                 TaskSummaryPanel.MinHeight = shortHeight ? 52 : 84;
                 TaskSummaryPanel.Padding = shortHeight ? new Thickness(6, 5, 6, 5) : new Thickness(6, 14, 6, 14);
                 // Keep the four count/action entry points, but move their explanatory
@@ -319,10 +311,10 @@ namespace GameSaveCenter.Playnite.Views
                 // genuinely narrow pane stacks the three commands vertically.
                 TaskDetailActions.Orientation = width < 520 ? Orientation.Vertical : Orientation.Horizontal;
 
-                // The primary toolbar is a finite Grid rather than a WrapPanel. The
-                // game selector is intentionally kept in the optional disclosure so
-                // the primary controls never reflow into each other.
-                // The full filter row needs enough room for its four fixed-width filters,
+                // The primary toolbar is a finite Grid rather than a WrapPanel.
+                // Compact layouts place secondary filters and view tools in the
+                // disclosure so search, status, and refresh keep a stable first row.
+                // The full filter row needs enough room for its five fixed-width filters,
                 // the refresh action, and a 420 DIP search field.  At narrower host widths
                 // the Grid can still arrange its columns while the TextBox overflows its
                 // search cell, hiding the right edge under the next filter.  Keep secondary
@@ -334,7 +326,10 @@ namespace GameSaveCenter.Playnite.Views
                 TaskMoreFiltersExpander.Visibility = compactFilters ? Visibility.Visible : Visibility.Collapsed;
                 TaskFilterBar.Padding = compactFilters ? new Thickness(8, 6, 8, 6) : new Thickness(10, 8, 10, 8);
                 TaskMoreFiltersExpander.Margin = compactFilters ? new Thickness(0, 0, 0, 4) : new Thickness(0, 0, 0, 8);
-                TaskQueuePanel.Padding = stack ? new Thickness(6, 6, 6, 6) : new Thickness(6, 10, 6, 10);
+                TaskQueuePanel.Padding = stack ? new Thickness(6, 2, 6, 2) : new Thickness(6, 10, 6, 10);
+                TaskQueueHeaderLayoutGrid.Margin = stack
+                    ? new Thickness(8, 0, 8, 4)
+                    : new Thickness(12, 2, 12, 8);
                 TaskQueueLastUpdatedSummary.Visibility = stack ? Visibility.Collapsed : Visibility.Visible;
                 SetCompactFilterPlacement(compactFilters);
                 // The second row hosts the named filter presets. Keep it measurable
@@ -344,7 +339,7 @@ namespace GameSaveCenter.Playnite.Views
                 Grid.SetRow(TaskSearchBoxHost, 0);
                 Grid.SetColumn(TaskSearchBoxHost, 0);
                 Grid.SetRow(TaskRefreshButton, 0);
-                Grid.SetColumn(TaskRefreshButton, compactFilters ? 2 : 5);
+                Grid.SetColumn(TaskRefreshButton, compactFilters ? 2 : 6);
 
                 Grid.SetColumnSpan(TaskSearchBoxHost, 1);
                 Grid.SetRow(TaskSearchBoxHost, 0);
@@ -490,10 +485,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void SetCompactFilterPlacement(bool compact)
         {
-            var alreadyCompact = ReferenceEquals(TaskTypeFilterGroup.Parent, TaskMoreFiltersHost);
-            if (compact == alreadyCompact)
-                return;
-
+            var alreadyCompact = ReferenceEquals(TaskSummaryPanel.Parent, TaskMoreFiltersHost);
             // These live controls inherit their DataContext from different parents
             // before and after the move. Snapshot their selections first so the
             // transient null inherited context cannot push the style's first item
@@ -503,17 +495,46 @@ namespace GameSaveCenter.Playnite.Views
             var rangeSelection = TaskHistoryRangeComboBox.SelectedItem;
             var gameSelection = TaskGameFilterComboBox.SelectedItem;
 
+            if (compact == alreadyCompact)
+            {
+                // The XAML starts with the overview in the main workspace, so the
+                // first wide-layout pass still has to move the game filter out of
+                // the collapsed disclosure and into the visible toolbar.
+                if (!compact && !ReferenceEquals(TaskGameFilterGroup.Parent, TaskFiltersPanel))
+                {
+                    RemoveChild(TaskMoreFiltersHost, TaskGameFilterGroup);
+                    AddChild(TaskFiltersPanel, TaskGameFilterGroup);
+                    Grid.SetColumn(TaskGameFilterGroup, 5);
+                    Grid.SetColumn(TaskRefreshButton, 6);
+                    SetCompactFilterGroupSpacing(bottom: 0d);
+                    RestoreFilterSelection(TaskGameFilterComboBox, gameSelection);
+                }
+                return;
+            }
+
             if (compact)
             {
+                RemoveChild(TaskFiltersPanel, TaskGameFilterGroup);
                 RemoveChild(TaskFiltersPanel, TaskTypeFilterGroup);
                 RemoveChild(TaskFiltersPanel, TaskHistoryScopeFilterGroup);
                 RemoveChild(TaskFiltersPanel, TaskHistoryRangeFilterGroup);
+                RemoveChild(TaskFiltersPanel, TaskFilterPresetRow);
+                RemoveChild(TaskFiltersPanel, TaskViewConfigurationRow);
+                RemoveChild(TaskFiltersPanel, TaskNavigationSourceBanner);
+                RemoveChild(TaskFiltersPanel, TaskLeavePageHint);
+                RemoveChild(TaskWorkspaceLayout, TaskSummaryPanel);
 
                 TaskMoreFiltersHost.Children.Clear();
+                TaskMoreFiltersHost.Children.Add(TaskSummaryPanel);
                 TaskMoreFiltersHost.Children.Add(TaskTypeFilterGroup);
                 TaskMoreFiltersHost.Children.Add(TaskHistoryScopeFilterGroup);
                 TaskMoreFiltersHost.Children.Add(TaskHistoryRangeFilterGroup);
                 TaskMoreFiltersHost.Children.Add(TaskGameFilterGroup);
+                TaskMoreFiltersHost.Children.Add(TaskFilterPresetRow);
+                TaskMoreFiltersHost.Children.Add(TaskViewConfigurationRow);
+                TaskMoreFiltersHost.Children.Add(TaskNavigationSourceBanner);
+                TaskMoreFiltersHost.Children.Add(TaskLeavePageHint);
+                TaskSummaryPanel.Margin = new Thickness(0, 0, 0, 8);
                 SetCompactFilterGroupSpacing(bottom: 12d);
                 RestoreFilterSelection(TaskTypeFilterComboBox, typeSelection);
                 RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
@@ -526,11 +547,19 @@ namespace GameSaveCenter.Playnite.Views
             RemoveChild(TaskMoreFiltersHost, TaskHistoryScopeFilterGroup);
             RemoveChild(TaskMoreFiltersHost, TaskHistoryRangeFilterGroup);
             TaskMoreFiltersHost.Children.Clear();
-            TaskMoreFiltersHost.Children.Add(TaskGameFilterGroup);
-
+            AddChild(TaskWorkspaceLayout, TaskSummaryPanel);
             AddChild(TaskFiltersPanel, TaskTypeFilterGroup);
             AddChild(TaskFiltersPanel, TaskHistoryScopeFilterGroup);
             AddChild(TaskFiltersPanel, TaskHistoryRangeFilterGroup);
+            AddChild(TaskFiltersPanel, TaskGameFilterGroup);
+            AddChild(TaskFiltersPanel, TaskFilterPresetRow);
+            AddChild(TaskFiltersPanel, TaskViewConfigurationRow);
+            AddChild(TaskFiltersPanel, TaskNavigationSourceBanner);
+            AddChild(TaskFiltersPanel, TaskLeavePageHint);
+            Grid.SetColumn(TaskGameFilterGroup, 5);
+            Grid.SetColumn(TaskRefreshButton, 6);
+            TaskSummaryPanel.Margin = new Thickness(0, 0, 0, 8);
+
             SetCompactFilterGroupSpacing(bottom: 0d);
             RestoreFilterSelection(TaskTypeFilterComboBox, typeSelection);
             RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
@@ -544,9 +573,9 @@ namespace GameSaveCenter.Playnite.Views
             TaskTypeFilterGroup.Margin = margin;
             TaskHistoryScopeFilterGroup.Margin = margin;
             TaskHistoryRangeFilterGroup.Margin = margin;
-            // The game filter remains in the disclosure on wide layouts; when it is
-            // packed into the compact WrapPanel, match the other groups' row gap.
-            TaskGameFilterGroup.Margin = new Thickness(0, 0, 10, bottom > 0 ? bottom : 8d);
+            // Compact groups get a shared row gap; the wide filter Grid does not
+            // carry disclosure spacing beneath the game selector.
+            TaskGameFilterGroup.Margin = new Thickness(0, 0, 10, bottom);
         }
 
         private static void RestoreFilterSelection(ComboBox comboBox, object? selectedItem)

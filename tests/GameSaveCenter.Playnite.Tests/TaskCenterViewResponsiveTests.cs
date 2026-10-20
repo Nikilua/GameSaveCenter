@@ -171,10 +171,16 @@ namespace GameSaveCenter.Playnite.Tests
             var compactMoreHasType = false;
             var compactMoreHasScope = false;
             var compactMoreHasRange = false;
+            var compactMoreHasSummary = false;
+            var compactMoreHasPresetRow = false;
+            var compactMoreHasViewRow = false;
             var compactSearchSpan = 0;
             var wideMainHasType = false;
             var wideMainHasScope = false;
             var wideMainHasRange = false;
+            var wideRestoresSummary = false;
+            var wideRestoresPresetRow = false;
+            var wideRestoresViewRow = false;
 
             var thread = new Thread(() =>
             {
@@ -183,10 +189,13 @@ namespace GameSaveCenter.Playnite.Tests
                     var view = new TaskCenterView();
                     var viewType = typeof(TaskCenterView);
                     var filters = (Grid)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var more = (WrapPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var more = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var typeGroup = (StackPanel)viewType.GetField("TaskTypeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var scopeGroup = (StackPanel)viewType.GetField("TaskHistoryScopeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var rangeGroup = (StackPanel)viewType.GetField("TaskHistoryRangeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var summary = (Border)viewType.GetField("TaskSummaryPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var presetRow = (WrapPanel)viewType.GetField("TaskFilterPresetRow", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var viewRow = (WrapPanel)viewType.GetField("TaskViewConfigurationRow", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var search = (Grid)viewType.GetField("TaskSearchBoxHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                     view.ApplyResponsiveLayout(700, 640);
@@ -196,12 +205,18 @@ namespace GameSaveCenter.Playnite.Tests
                     compactMoreHasType = more.Children.Contains(typeGroup);
                     compactMoreHasScope = more.Children.Contains(scopeGroup);
                     compactMoreHasRange = more.Children.Contains(rangeGroup);
+                    compactMoreHasSummary = more.Children.Contains(summary);
+                    compactMoreHasPresetRow = more.Children.Contains(presetRow);
+                    compactMoreHasViewRow = more.Children.Contains(viewRow);
                     compactSearchSpan = Grid.GetColumnSpan(search);
 
                     view.ApplyResponsiveLayout(1280, 720);
                     wideMainHasType = filters.Children.Contains(typeGroup);
                     wideMainHasScope = filters.Children.Contains(scopeGroup);
                     wideMainHasRange = filters.Children.Contains(rangeGroup);
+                    wideRestoresSummary = ReferenceEquals(summary.Parent, viewType.GetField("TaskWorkspaceLayout", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view));
+                    wideRestoresPresetRow = filters.Children.Contains(presetRow);
+                    wideRestoresViewRow = filters.Children.Contains(viewRow);
                 }
                 catch (Exception caught)
                 {
@@ -220,10 +235,16 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.True(compactMoreHasType);
             Assert.True(compactMoreHasScope);
             Assert.True(compactMoreHasRange);
+            Assert.True(compactMoreHasSummary);
+            Assert.True(compactMoreHasPresetRow);
+            Assert.True(compactMoreHasViewRow);
             Assert.Equal(1, compactSearchSpan);
             Assert.True(wideMainHasType);
             Assert.True(wideMainHasScope);
             Assert.True(wideMainHasRange);
+            Assert.True(wideRestoresSummary);
+            Assert.True(wideRestoresPresetRow);
+            Assert.True(wideRestoresViewRow);
         }
 
         [Fact]
@@ -280,7 +301,7 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Null(exception);
             Assert.Equal(expectedTableMinHeight, compactTableMinHeight);
             Assert.Equal(136, compactInspectorMaxHeight);
-            Assert.Equal(Visibility.Collapsed, compactSummaryVisibility);
+            Assert.Equal(Visibility.Visible, compactSummaryVisibility);
             Assert.Equal(Visibility.Visible, restoredSummaryVisibility);
             Assert.Equal(Visibility.Collapsed, queueDetailsVisibility);
             Assert.Equal(Visibility.Visible, inspectorCloseVisibility);

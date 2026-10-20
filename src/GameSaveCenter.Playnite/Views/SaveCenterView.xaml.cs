@@ -17,6 +17,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool historyInspectorOpen;
         private bool candidateInspectorOpen;
+        private bool? candidateViewControlsCompact;
         private DataGridColumnLayoutController? historyColumnLayout;
         private DataGridColumnLayoutController? candidateColumnLayout;
         private DataGridColumnVisibilityController? historyColumnVisibility;
@@ -220,6 +221,11 @@ namespace GameSaveCenter.Playnite.Views
                 // room, which made the production page structurally different.
                 var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
                 var compact = detailBreakpoint.Evaluate(width);
+                if (!candidateViewControlsCompact.HasValue || candidateViewControlsCompact.Value != compact)
+                {
+                    candidateViewControlsCompact = compact;
+                    SaveCandidateViewConfigurationExpander.IsExpanded = !compact;
+                }
                 SaveHistoryRestoreAvailabilityHint.Visibility = compact
                     ? Visibility.Collapsed
                     : Visibility.Visible;
@@ -239,6 +245,18 @@ namespace GameSaveCenter.Playnite.Views
                         candidateInspectorOpen = true;
                 }
                 var ruleCardCompact = width < 700;
+                if (SaveCurrentRuleCard != null)
+                {
+                    SaveCurrentRuleCard.Padding = compact
+                        ? new Thickness(8, 0, 8, 0)
+                        : new Thickness(12, 10, 12, 10);
+                    SaveCurrentRuleSublineText.Visibility = compact
+                        ? Visibility.Collapsed
+                        : Visibility.Visible;
+                    SaveCandidatePageSurface.RowDefinitions[2].Height = compact
+                        ? new GridLength(0)
+                        : new GridLength(14);
+                }
                 var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
                 // The shell passes the resized PageHost width from its SizeChanged pass;
                 // prefer that current value over this child grid's previous ActualWidth,
@@ -508,6 +526,9 @@ namespace GameSaveCenter.Playnite.Views
         private void OnSaveCandidateCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (SaveCandidateGrid.SelectedItem == null) return;
+            // This button lives in the view-controls disclosure header. Keep its
+            // action separate from expanding or collapsing the disclosure itself.
+            e.Handled = true;
             candidateInspectorOpen = !candidateInspectorOpen;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(candidateInspectorOpen ? SaveCandidateInspectorScrollViewer : SaveCandidateCompactDetailsButton);

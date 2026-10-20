@@ -249,6 +249,107 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         });
     }
 
+    [Fact]
+    public void ScreenshotSizedCompactWorkspacesKeepFourRowsAndReachLowerDetails()
+    {
+        RunSta(() =>
+        {
+            // Matches the production PageHost inside a common 1040x700 DIP shell.
+            // Testing the extracted view at the window size would miss clipping by
+            // the shell header and workspace tabs above its own page ScrollViewer.
+            const double width = 744;
+            const double height = 460;
+            var rows = CreateRows();
+
+            var saveView = new SaveCenterView();
+            var saveType = typeof(SaveCenterView);
+            var historyGrid = GetField<DataGrid>(saveType, saveView, "SaveHistoryGrid");
+            historyGrid.ItemsSource = rows;
+            historyGrid.SelectedItem = rows[0];
+            var candidateGrid = GetField<DataGrid>(saveType, saveView, "SaveCandidateGrid");
+            candidateGrid.ItemsSource = rows;
+            candidateGrid.SelectedItem = rows[0];
+            saveType.GetField("candidateInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(saveView, true);
+            var saveHost = MeasureInHost(saveView, width, height);
+            saveView.ApplyResponsiveLayout(width, height);
+            saveHost.UpdateLayout();
+            var historyPage = GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer");
+            var historyFrame = GetField<Border>(saveType, saveView, "SaveHistoryTableFrame");
+            AssertTableScrollsInsideFrame(historyGrid, historyFrame);
+            AssertContentBoundsFit(historyPage, historyFrame);
+            AssertInnerScrollCanReachEnd(historyGrid);
+            AssertPageCanReachEnd(historyPage);
+
+            FindVisualDescendant<TabControl>(saveView).SelectedIndex = 1;
+            saveView.ApplyResponsiveLayout(width, height);
+            saveHost.UpdateLayout();
+
+            var candidatePage = GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer");
+            var candidateFrame = GetField<Border>(saveType, saveView, "SaveCandidateTableFrame");
+            var candidateDetailsButton = GetField<Button>(saveType, saveView, "SaveCandidateCompactDetailsButton");
+            var candidateViewControls = GetField<Expander>(saveType, saveView, "SaveCandidateViewConfigurationExpander");
+            var candidateViewActions = GetField<WrapPanel>(saveType, saveView, "SaveCandidateViewConfigurationActions");
+            Assert.True(candidateGrid.ActualHeight + 1 >= candidateGrid.MinHeight,
+                $"Candidate grid must retain four readable rows at {width}x{height} DIP: grid={candidateGrid.ActualHeight:0.0}, minimum={candidateGrid.MinHeight:0.0}.");
+            Assert.False(candidateViewControls.IsExpanded);
+            Assert.Same(candidateViewControls, candidateViewActions.Parent);
+            AssertTableScrollsInsideFrame(candidateGrid, candidateFrame);
+            AssertHeaderControlBeforeTable(candidatePage, candidateDetailsButton, candidateFrame);
+            AssertFrameFitsPageViewportAtTop(candidatePage, candidateFrame);
+            AssertInnerScrollCanReachEnd(candidateGrid);
+            AssertPageCanReachEnd(candidatePage);
+
+            var taskView = new TaskCenterView();
+            var taskType = typeof(TaskCenterView);
+            var taskGrid = GetField<DataGrid>(taskType, taskView, "TaskGrid");
+            taskGrid.ItemsSource = rows;
+            taskGrid.SelectedItem = rows[0];
+            var taskHost = MeasureInHost(taskView, width, height);
+            taskView.ApplyResponsiveLayout(width, height);
+            taskHost.UpdateLayout();
+
+            var taskPage = GetField<ScrollViewer>(taskType, taskView, "TaskPageScrollViewer");
+            var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
+            var taskDetailsButton = GetField<Button>(taskType, taskView, "TaskCompactDetailsButton");
+            var taskMoreFilters = GetField<Expander>(taskType, taskView, "TaskMoreFiltersExpander");
+            var taskMoreFiltersHost = GetField<StackPanel>(taskType, taskView, "TaskMoreFiltersHost");
+            var taskSummary = GetField<Border>(taskType, taskView, "TaskSummaryPanel");
+            var taskFilterPresetRow = GetField<WrapPanel>(taskType, taskView, "TaskFilterPresetRow");
+            var taskViewConfigurationRow = GetField<WrapPanel>(taskType, taskView, "TaskViewConfigurationRow");
+            Assert.True(taskGrid.ActualHeight + 1 >= taskGrid.MinHeight,
+                $"Task grid must retain four readable rows at {width}x{height} DIP: grid={taskGrid.ActualHeight:0.0}, minimum={taskGrid.MinHeight:0.0}.");
+            Assert.False(taskMoreFilters.IsExpanded);
+            Assert.Same(taskMoreFiltersHost, taskSummary.Parent);
+            Assert.True(taskMoreFiltersHost.Children.Contains(taskFilterPresetRow));
+            Assert.True(taskMoreFiltersHost.Children.Contains(taskViewConfigurationRow));
+            AssertTableScrollsInsideFrame(taskGrid, taskFrame);
+            AssertHeaderControlBeforeTable(taskPage, taskDetailsButton, taskFrame);
+            AssertFrameFitsPageViewportAtTop(taskPage, taskFrame);
+            AssertInnerScrollCanReachEnd(taskGrid);
+            AssertPageCanReachEnd(taskPage);
+        });
+    }
+
+    [Fact]
+    public void CompactTaskQueueFrameFitsInsideItsInitialPageViewport()
+    {
+        RunSta(() =>
+        {
+            var view = new TaskCenterView();
+            var type = typeof(TaskCenterView);
+            var grid = GetField<DataGrid>(type, view, "TaskGrid");
+            grid.ItemsSource = CreateRows();
+            var host = MeasureInHost(view, 744, 460);
+            view.ApplyResponsiveLayout(744, 460);
+            host.UpdateLayout();
+
+            var page = GetField<ScrollViewer>(type, view, "TaskPageScrollViewer");
+            var frame = GetField<Border>(type, view, "TaskTableFrame");
+            AssertTableScrollsInsideFrame(grid, frame);
+            AssertFrameFitsPageViewportAtTop(page, frame);
+        });
+    }
+
     private static T GetField<T>(Type type, object target, string name)
         => (T)type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(target)!;
 
@@ -320,8 +421,6 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         Assert.True(page.ActualHeight > 0 && page.ActualHeight <= host.ActualHeight + 1,
             $"{page.Name} viewport ({page.ActualWidth:0.0}x{page.ActualHeight:0.0}) must stay within host ({host.ActualWidth:0.0}x{host.ActualHeight:0.0}).");
         Assert.True(page.ViewportHeight > 0);
-        Assert.True(page.ExtentHeight > page.ViewportHeight + 1,
-            $"Expected the page scroll channel to expose overflow: extent={page.ExtentHeight:0.0}, viewport={page.ViewportHeight:0.0}.");
         Assert.True(page.ScrollableHeight > 0);
     }
 
@@ -362,6 +461,34 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         var innerScrollViewer = FindVisualDescendant<ScrollViewer>(table);
         Assert.True(innerScrollViewer.ActualHeight <= frame.ActualHeight + 1);
         AssertWithin(innerScrollViewer, frame);
+    }
+
+    private static void AssertHeaderControlBeforeTable(ScrollViewer page, FrameworkElement element, Border frame)
+    {
+        Assert.Equal(Visibility.Visible, element.Visibility);
+        Assert.True(page.Content is FrameworkElement,
+            $"{page.Name} needs a framework-element content surface to measure its header controls.");
+        var content = (FrameworkElement)page.Content;
+        var frameBounds = frame.TransformToAncestor(content)
+            .TransformBounds(new Rect(0, 0, frame.ActualWidth, frame.ActualHeight));
+        var elementBounds = element.TransformToAncestor(content)
+            .TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+
+        Assert.True(elementBounds.Bottom <= frameBounds.Top + 1,
+            $"{element.Name} ({elementBounds}) must stay in its toolbar above the table frame {frame.Name} ({frameBounds}).");
+    }
+
+    private static void AssertFrameFitsPageViewportAtTop(ScrollViewer page, FrameworkElement frame)
+    {
+        page.ScrollToTop();
+        page.UpdateLayout();
+        if (!(page.Content is FrameworkElement content))
+            throw new InvalidOperationException($"{page.Name} needs a framework-element content surface.");
+
+        var bounds = frame.TransformToAncestor(content)
+            .TransformBounds(new Rect(0, 0, frame.ActualWidth, frame.ActualHeight));
+        Assert.True(bounds.Bottom <= page.ViewportHeight + 1,
+            $"{frame.Name} is clipped by {page.Name} before its table is fully visible: frameBottom={bounds.Bottom:0.0}, viewport={page.ViewportHeight:0.0}, pageExtent={page.ExtentHeight:0.0}.");
     }
 
     private static void AssertContentBoundsFit(ScrollViewer page, FrameworkElement descendant)

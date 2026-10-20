@@ -137,9 +137,8 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <!-- Keep the Demo order: filter toolbar, optional game filter, then the
-             queue card. Each row is measured independently so the table can never
-             push the filters underneath itself. -->
+        <!-- Keep the primary search/status row above the queue. Compact secondary
+             filters, overview counts, and view tools live in the disclosure below. -->
         <Border x:Name="TaskFilterBar" Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource TaskBrowserSwitchablePanel}" Padding="10,8" Margin="0,0,0,8">
             <Grid x:Name="TaskFiltersPanel" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
@@ -151,6 +150,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -261,7 +261,7 @@
             <Expander.Header>
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <TextBlock Text="更多筛选" VerticalAlignment="Center"/>
+                    <TextBlock Text="概览与更多筛选" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" Text="{Binding TaskActiveFiltersSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" Margin="12,0,12,0" VerticalAlignment="Center"/>
                     <!-- Icon-only: clear filters keeps an explicit accessible name. -->
                     <ui:Button x:Name="TaskClearFiltersButton" Grid.Column="2" Command="{Binding ClearTaskFiltersCommand}" ToolTip="清除搜索、状态、类型、游戏和时间筛选" AutomationProperties.Name="清除任务筛选" Click="OnClearTaskFiltersClick"><ui:Button.Content><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnClear}" Width="18" Height="18"/></ui:Button.Content>
@@ -278,12 +278,12 @@
                     </ui:Button>
                 </Grid>
             </Expander.Header>
-            <WrapPanel x:Name="TaskMoreFiltersHost" Orientation="Horizontal" Margin="0,4,0,0">
+            <StackPanel x:Name="TaskMoreFiltersHost" Margin="0,4,0,0">
                 <StackPanel x:Name="TaskGameFilterGroup" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,8">
                     <TextBlock x:Name="TaskGameFilterLabel" Text="游戏：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" AutomationProperties.Name="任务游戏筛选"/>
                 </StackPanel>
-            </WrapPanel>
+            </StackPanel>
         </Expander>
         <Border x:Name="TaskQueuePanel" Grid.Row="3" Grid.Column="0" Style="{StaticResource TaskBrowserSwitchablePanel}" Padding="6,10">
             <Grid>
@@ -307,9 +307,10 @@
                         <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置…" ToolTip="先预览范围，再选择只重置任务表格或全部工作视图" AutomationProperties.Name="预览任务表格布局重置范围" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
                     <Grid x:Name="TaskQueueSummaryGrid" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                         <TextBlock x:Name="TaskQueueLoadedSummaryText" Grid.Column="0" Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskLoadedSummary}" VerticalAlignment="Center"/>
                         <TextBlock x:Name="TaskQueueLastUpdatedSummary" Grid.Column="1" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="12,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="TaskCompactDetailsButton" Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Content="查看任务详情 ›" Visibility="Collapsed" Click="OnTaskCompactDetailsClick" AutomationProperties.Name="查看或收起所选任务详情" Margin="12,0,0,0"/>
                     </Grid>
                 </Grid>
                 <Border x:Name="TaskStaleDataBanner" Grid.Row="1" Padding="10,7" Margin="0,0,0,8">
@@ -343,7 +344,6 @@
                 </Border>
                 <Border x:Name="TaskTableFrame" Grid.Row="2" Style="{StaticResource TaskTableFrame}">
                     <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <DataGrid x:Name="TaskGrid" Style="{StaticResource TaskDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding TasksView}" SelectedItem="{Binding SelectedTask}" SelectionMode="Extended" SelectionChanged="OnTaskSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="Task" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.Name="任务列表" AutomationProperties.HelpText="Ctrl+C 复制所选任务行；Ctrl+Shift+C 复制当前单元格">
                 <DataGrid.Columns>
                     <DataGridTextColumn HeaderStyle="{StaticResource TaskFirstColumnHeader}" Header="时间" infra:DataGridColumnHeaderHelpBehavior.Description="相对时间；悬停可查看本地时区、完整秒级时间和原始 UTC 值。" Binding="{Binding CreatedRelativeDisplay, Mode=OneWay}" Width="112" MinWidth="104" ElementStyle="{StaticResource TaskTimeCell}"/>
@@ -403,16 +403,6 @@
                         </Style>
                     </ui:WorkspaceStatePresenter.Style>
                 </ui:WorkspaceStatePresenter>
-                <ui:Button x:Name="TaskCompactDetailsButton"
-                           Grid.Row="1"
-                           Style="{DynamicResource GscWpfUiSecondaryButton}"
-                           Content="查看任务详情 ›"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Margin="0,8,8,0"
-                           Visibility="Collapsed"
-                           Click="OnTaskCompactDetailsClick"
-                            AutomationProperties.Name="查看或收起所选任务详情"/>
                     </Grid>
                 </Border>
             </Grid>
