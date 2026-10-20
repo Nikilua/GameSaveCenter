@@ -191,14 +191,12 @@ namespace GameSaveCenter.Playnite.Views
                 var measuredViewportHeight = SaveCandidatePageScrollViewer.IsVisible
                     ? SaveCandidatePageScrollViewer.ViewportHeight
                     : SaveHistoryPageScrollViewer.ViewportHeight;
-                var previousRequestedHeight = lastRequestedHeight;
                 var requestedHeight = height > 0 ? height : lastRequestedHeight;
                 if (height > 0)
                     lastRequestedHeight = height;
                 var pageViewportHeight = WorkspaceTableViewportPolicy.ResolvePageViewportHeight(
                     requestedHeight,
-                    measuredViewportHeight,
-                    previousRequestedHeight);
+                    measuredViewportHeight);
                 responsiveHeight = pageViewportHeight;
                 var tableMinHeight = TableDensityPolicy.CalculateMinimumGridHeight(this);
                 SaveHistoryGrid.MinHeight = tableMinHeight;

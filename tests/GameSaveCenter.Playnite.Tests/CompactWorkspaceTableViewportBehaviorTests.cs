@@ -159,6 +159,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             Assert.True(inspector.ActualHeight <= inspector.MaxHeight + 1);
             AssertPageScrolls(page, view);
             AssertTableScrollsInsideFrame(grid, frame);
+            AssertBelowPageSurface(page, frame, inspector);
 
             var tabControl = FindVisualDescendant<TabControl>(view);
             var candidateGrid = GetField<DataGrid>(type, view, "SaveCandidateGrid");
@@ -179,6 +180,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             Assert.True(candidateInspector.ActualHeight <= candidateInspector.MaxHeight + 1);
             AssertPageScrolls(candidatePage, view);
             AssertTableScrollsInsideFrame(candidateGrid, candidateFrame);
+            AssertBelowPageSurface(candidatePage, candidateFrame, candidateInspector);
         });
     }
 
@@ -246,6 +248,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             Assert.True(queue.ActualHeight > 0);
             AssertPageScrolls(page, view);
             AssertTableScrollsInsideFrame(grid, frame);
+            AssertBelowPageSurface(page, frame, view.TaskDetailScrollViewerElement);
         });
     }
 
@@ -476,6 +479,23 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
 
         Assert.True(elementBounds.Bottom <= frameBounds.Top + 1,
             $"{element.Name} ({elementBounds}) must stay in its toolbar above the table frame {frame.Name} ({frameBounds}).");
+    }
+
+    private static void AssertBelowPageSurface(ScrollViewer page, FrameworkElement upper, FrameworkElement lower)
+    {
+        Assert.True(page.Content is FrameworkElement,
+            $"{page.Name} needs a framework-element content surface to verify stacked content.");
+        Assert.Equal(Visibility.Visible, lower.Visibility);
+        var content = (FrameworkElement)page.Content;
+        var upperBounds = upper.TransformToAncestor(content)
+            .TransformBounds(new Rect(0, 0, upper.ActualWidth, upper.ActualHeight));
+        var lowerBounds = lower.TransformToAncestor(content)
+            .TransformBounds(new Rect(0, 0, lower.ActualWidth, lower.ActualHeight));
+
+        Assert.True(lowerBounds.Top + 1 >= upperBounds.Bottom,
+            $"{lower.Name} ({lowerBounds}) must begin after {upper.Name} ({upperBounds}) so it cannot cover the table.");
+        Assert.True(lowerBounds.Bottom <= content.ActualHeight + 1,
+            $"{lower.Name} ({lowerBounds}) must remain inside {content.Name} ({content.ActualWidth:0.0}x{content.ActualHeight:0.0}).");
     }
 
     private static void AssertFrameFitsPageViewportAtTop(ScrollViewer page, FrameworkElement frame)

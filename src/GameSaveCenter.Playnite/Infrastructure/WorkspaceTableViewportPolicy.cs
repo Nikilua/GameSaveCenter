@@ -23,19 +23,6 @@ namespace GameSaveCenter.Playnite.Infrastructure
             return 0;
         }
 
-        public static double ResolvePageViewportHeight(
-            double hostHeight,
-            double measuredViewportHeight,
-            double previousHostHeight)
-        {
-            var hasHostHeight = IsFinite(hostHeight) && hostHeight > 0;
-            var hasPreviousHostHeight = IsFinite(previousHostHeight) && previousHostHeight > 0;
-            if (hasHostHeight && (!hasPreviousHostHeight || hostHeight > previousHostHeight + 1))
-                return hostHeight;
-
-            return ResolvePageViewportHeight(hostHeight, measuredViewportHeight);
-        }
-
         public static double MeasureChromeHeight(double surfaceHeight, double tableHeight, double fallbackHeight)
         {
             if (IsFinite(surfaceHeight) && IsFinite(tableHeight) && surfaceHeight > 0 && surfaceHeight >= tableHeight)

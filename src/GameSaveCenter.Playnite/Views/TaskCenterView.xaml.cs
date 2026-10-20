@@ -272,14 +272,12 @@ namespace GameSaveCenter.Playnite.Views
                 // Use the shell size for the first pass. The page ScrollViewer reports its
                 // settled viewport after measure and refines this value without feeding the
                 // growing content extent back into the table budget.
-                var previousRequestedHeight = lastRequestedHeight;
                 var requestedHeight = height > 0 ? height : lastRequestedHeight > 0 ? lastRequestedHeight : ActualHeight;
                 if (height > 0)
                     lastRequestedHeight = height;
                 var availableHeight = WorkspaceTableViewportPolicy.ResolvePageViewportHeight(
                     requestedHeight,
-                    TaskPageScrollViewer.ViewportHeight,
-                    previousRequestedHeight);
+                    TaskPageScrollViewer.ViewportHeight);
                 responsiveHeight = availableHeight;
                 if (wasWideDetailLayout && stack
                     && TaskGrid.SelectedItem != null
