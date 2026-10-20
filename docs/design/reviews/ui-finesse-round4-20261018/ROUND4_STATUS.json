@@ -868,19 +868,19 @@
     {
       "id": "S06-05",
       "title": "逐项处理转交",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "0aa80547",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[等价审计](evidence/S06-05/AUDIT.md)：确认缺少可逆的单条人工完成/撤销动作；本项已准入 READY",
+      "verificationText": "[受控验收](evidence/S06-05/README.md)：SDK9 Release solution 0/0；Playnite 17/17，source validation、XAML 25/25、Round4 台账 5/5 通过",
       "evidence": [
         {
-          "label": "等价审计",
-          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md"
+          "label": "证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md"
         }
       ],
-      "boundary": "依赖 S06-01 至 S06-04 已满足；实现须保留稳定引用与解析状态，手动标记不代表备份/校验成功，导航或业务操作结果不自动改写；无宿主依赖"
+      "boundary": "手动状态仅是人工跟进记录；SDK8.0.423 未安装，真实 Playnite 窗口、主题/DPI、Keyboard-only 与 UI Automation 未验；未触碰 CEF/ETW 权限边界"
     },
     {
       "id": "S06-06",

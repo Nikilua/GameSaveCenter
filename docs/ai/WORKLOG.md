@@ -11683,3 +11683,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 检查 `IsManuallyComplete` 的模型克隆/持久化和 `WorklistBrowserEntry` 只读投影；当前没有唯一选中条目的修改/撤销命令。S06-04 的稳定 ID 续接已覆盖现有详情，但不是完成人工转交闭环。
 - READY 范围：手动标记/恢复单条状态，保留同项解析状态、ID、顺序与备注；明确是人工跟进而非业务成功，续接及业务成功/失败/取消不自动改写。审计证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。无 SDK8、Playnite 或设备前置依赖。
 - 审计阶段未运行构建/测试或修改产品代码。原 Round3 未跟踪 TRX/TestResults 保留。
+
+## 2026-10-21 Round4 S06-05 逐项处理转交已验收
+
+- 审计与范围登记提交 `fc6520e2` 已推送。实现提交 `0aa8054783fd11ee85c895c3e09157f419530789` 增加唯一选中待办项“标记为已完成”/“恢复为未完成”；清单设置持久化失败保留原状态。文案、Tooltip 与 UI Automation HelpText 明示人工状态不代表备份或校验成功；续接及业务命令结果不自动切换。
+- 仅按类型+稳定 ID 修改，保留备注、位置和其他引用；保存后重建条目时恢复所有仍存在项目的解析状态和 TargetPlayniteId，避免每次手工完成后重新刷新整份清单。
+- SDK9.0.302 Release 全解决方案 Rebuild `0 warning / 0 error`；最终源版本增量 solution build `0/0`。Playnite `WorklistDefinitionTests`、`WorklistBrowserEntryTests`、`WorklistContinuationResolverTests` 共 `17/17`；source validation、XAML `25/25`、Round4 ledger `5/5`、diff check 通过。WPF 静态审查 `0 error / 27 warning / 179 info`，全局 warning/info 未命中本次按钮。
+- TRX SHA `D1A84A57FDBDFBD5BA1E3FB2EA8C94A3AC1E9AA7F7735E0BD7C3CA497C3082C3`；Playnite DLL/PDB SHA 分别为 `D868FB96E2CE6A6BF8757AB2DB51F869CEE4389DD7EEEDF87FA7F59497BB8E98` / `600F6E933F7AE1322603288E761EC50D7D9DAE95C54A2ACF3D5DDD72B0CD0862`。完整证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。
+- SDK8.0.423 未安装。未安装/启动真实 Playnite，未验窗口呈现、主题/DPI、键盘/UIA；没有触碰 CEF/ETW。原 Round3 未跟踪 TRX/TestResults 保留，本批 TRX 独立归档后清理 `.tmp/round4-s06-05`。下一项依计划审计 S06-06。

@@ -10,7 +10,7 @@
 
 证据：[S05-08](../design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。定向测试在提交前工作树运行；后续 `48727c13` 只修改页面视口，不变更 S05 文件；两者一并通过 SDK9 Release solution 构建。当前机器无 SDK8.0.423，真实 Playnite/CEF/物理 DPI 未验。
 
-## 2026-10-21 Round4 S06-01 至 S06-04 已验收
+## 2026-10-21 Round4 S06-01 至 S06-05 已验收
 
 `40a82b15` 实现 `WorklistDefinition`/`WorklistItemRecord`：最多 20 份清单、每份 200 项、80 字名称、256 字稳定键、500 字备注；仅记录对象种类/ID、人工备注和手工完成状态，按种类+稳定键去重并提供深克隆，不含 DTO、路径或操作授权。SDK9.0.302 Playnite.Tests Release 构建 0 warning/0 error，行为测试 4/4。审计：[S06-01](../design/reviews/ui-finesse-round4-20261018/evidence/S06-01/AUDIT.md)。
 
@@ -19,6 +19,8 @@
 `0fc43773` 完成 S06-03：工作清单可浏览、搜索、分组、键盘重排和确认移除；Worker 按稳定 ID 解析索引引用，待刷新与无法检查不会误报失效。SDK9 Release solution `0/0`、Worker `2/2`、Playnite `8/8`。证据：[S06-03](../design/reviews/ui-finesse-round4-20261018/evidence/S06-03/README.md)。
 
 `2af5841f` 完成 S06-04：工作清单显式续接存档版本、媒体、后台任务和校验问题。Worker 提供精确 finding ID 只读查询；备份使用长度前缀 ID，媒体需索引归属游戏，任务/问题走精确对象详情。不按名称/路径猜测，不恢复旧对话框或触发原命令；缺失时显示诊断并保留移除能力。任务页返回时恢复当前会话中的原清单、选中项、搜索和分组状态。SDK9.0.302 Release solution 重编译 `0/0`，Worker `2/2`、Playnite 路由/导航 `10/10`，source validation 通过、XAML `25/25`。证据：[S06-04](../design/reviews/ui-finesse-round4-20261018/evidence/S06-04/README.md)。SDK8.0.423 未安装，真实 Playnite 未运行；未探测/绕过 CEF、ETW。原 Round3 未跟踪 TRX/TestResults 保留。
+
+`0aa80547` 完成 S06-05：工作清单唯一选中项可标为人工完成并反向恢复；文字、工具提示和 UIA HelpText 均说明这不是备份/校验成功。模型按 kind+稳定 ID 只改目标标记；设置保存失败回滚，列表刷新保留已有引用解析状态和父 Playnite ID。SDK9 Release solution 重编译/最终增量构建 `0/0`，Playnite `17/17`、source validation 通过、XAML `25/25`、Round4 台账 `5/5`，WPF 静态审查 0 errors。证据：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/README.md)。SDK8.0.423、真实宿主与主题/DPI 未验；下一项按计划审计 S06-06。
 
 S06-05 等价审计确认 `IsManuallyComplete` 只有持久字段与只读投影，没有逐项操作。READY 范围为唯一选中清单项标记/撤销，显式说明这是人工跟进状态而非备份或校验成功，持久化同时保留解析状态、ID、顺序和备注；续接或原业务命令成功/失败/取消均不自动切换。审计：[S06-05](../design/reviews/ui-finesse-round4-20261018/evidence/S06-05/AUDIT.md)。
 

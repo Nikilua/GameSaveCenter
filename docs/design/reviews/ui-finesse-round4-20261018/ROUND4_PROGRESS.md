@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-04 已受控验收；S06-04 按稳定 ID 续接清单中的存档、媒体、任务及校验问题，详情见[evidence/S06-04](evidence/S06-04/README.md)。S06-05 等价审计确认缺少单条手动完成/撤销动作，已准入 READY；本轮按审计范围实现。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待既有 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-05 已受控验收；S06-04 按稳定 ID 续接清单中的存档、媒体、任务及校验问题，S06-05 完成单条人工跟进状态的标记/撤销，详情见[evidence/S06-05](evidence/S06-05/README.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待既有 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -8,12 +8,14 @@
 
 2026-10-21 S06-04 已由 `2af5841f` 实现并推送：清单引用按对象类型和稳定 ID 导航，Worker 精确读取校验问题；缺失对象保留诊断且可移除，业务操作须用户重新发起。SDK9 Release solution 重编译 `0/0`、Worker `2/2`、Playnite `10/10`、source validation 及 XAML `25/25` 通过。SDK8.0.423 未安装，真实 Playnite 未运行。证据：[S06-04](evidence/S06-04/README.md)。
 
+2026-10-21 S06-05 已由 `0aa80547` 实现并推送：人工待办浏览器可对唯一选中项标记完成或撤销；该状态只作人工跟进记录，不代表备份/校验成功。写入设置后保留其余清单条目的稳定 ID 解析状态。SDK9 Release solution 重编译及最终增量构建均 `0 warning/0 error`，Playnite `17/17`，source validation、XAML `25/25`、Round4 台账 `5/5` 通过；WPF 静态审查 `0 errors`。SDK8.0.423 与真实 Playnite未验。证据：[S06-05](evidence/S06-05/README.md)。
+
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。已满足必须有当前等价能力与证据；受控通过不代表真实宿主通过。每项分别补实现 commit、验证与未验边界。
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收36、已满足2、代码完成待验收15、外部阻塞1、待开始10。
-实现状态：完成53、未开始11、不适用0；受控验证：通过53、未跑10、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收37、已满足2、代码完成待验收15、外部阻塞1、待开始9。
+实现状态：完成54、未开始10、不适用0；受控验证：通过54、未跑9、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -69,7 +71,7 @@
 | S06-02 | 加入待办入口 | 已验收 | 85400645 | [证据](evidence/S06-02/README.md)：SDK9.0.302 Release solution 0 warning/0 error；Playnite 8/8、Worker 2/2；source/UI 检查通过 | 入口只添加用户确认的稳定引用，不执行源业务命令。真实 Playnite 未运行；RenderHarness 可选构建因现有 project.assets.json 缺少 net472/win-x86 target 未执行。既有 CEF/权限边界未重试或绕过。 |
 | S06-03 | 清单浏览整理 | 已验收 | 0fc43773 | [证据](evidence/S06-03/README.md)：SDK9 Release solution 0 warning/0 error；Worker 2/2、Playnite 8/8；清单浏览、键盘重排/精确移除与保守引用状态已实现 | 真实 Playnite 未运行；SDK8.0.423 未安装。RenderHarness 还原资产缺少 net472/win-x86，NETSDK1047；旧 CEF/ETW 权限边界未重试或绕过。 |
 | S06-04 | 续接上下文 | 已验收 | 2af5841f | [交付与验证](evidence/S06-04/README.md)，[等价审计](evidence/S06-04/AUDIT.md)：SDK9 Release solution 重编译 0 warning/0 error；Worker 2/2、Playnite 路由/导航 10/10、source validation 与 XAML 25/25 通过 | 只按对象种类与稳定 ID 导航；不恢复旧对话框或执行命令。缺失对象显示诊断且可移除。SDK8.0.423 未安装，真实 Playnite 未运行；未探测或绕过 CEF/ETW。 |
-| S06-05 | 逐项处理转交 | 待开始 | — | [等价审计](evidence/S06-05/AUDIT.md)：确认缺少可逆的单条人工完成/撤销动作；本项已准入 READY | 依赖 S06-01 至 S06-04 已满足；实现须保留稳定引用与解析状态，手动标记不代表备份/校验成功，导航或业务操作结果不自动改写；无宿主依赖 |
+| S06-05 | 逐项处理转交 | 已验收 | 0aa80547 | [受控验收](evidence/S06-05/README.md)：SDK9 Release solution 0/0；Playnite 17/17，source validation、XAML 25/25、Round4 台账 5/5 通过 | 手动状态仅是人工跟进记录；SDK8.0.423 未安装，真实 Playnite 窗口、主题/DPI、Keyboard-only 与 UI Automation 未验；未触碰 CEF/ETW 权限边界 |
 | S06-06 | 失效刷新 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-07 | 清单导出预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-08 | 跨会话回归 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
