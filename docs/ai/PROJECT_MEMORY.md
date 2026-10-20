@@ -1,14 +1,24 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-20 Round4 S05-04 存储预算分解已验收
+
+实现提交 `cf50643c05df3fd6e69df7d6252842fa88a1ffde` 在维护中心当前可见的存储卡分别盘点 Ludusavi 存档、第二本地镜像、远端恢复 staging、媒体目录；每类显示递归文件长度/文件数，存档和所有登记媒体记录另显示 SQLite 逻辑量。原镜像 `TotalBytes` 可能取自同步标记、媒体旧汇总仅按游戏查询、staging 只有身份/校验状态，不等价于四类目录盘点。
+
+Worker 对不可读/不存在目录保留未知，空目录才显示 0；镜像未启用另标状态。不合计类别，路径重叠会提示勿相加，并说明文件长度不等于卷簇实占。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `8/8`，生产维护页 Light/Dark 与存储导航行为 `4/4`；`validate-source.py` 和 diff check 通过。证据、TRX、构建摘要与 SHA：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。真实 Playnite、完整 WPF 独立循环、物理 DPI 与卷簇占用未验；当前下一项按依赖审计 S05-05。
+
+## 2026-10-20 Round4 S05-03 估算不确定性已验收
+
+实现提交 `e6279b7db514e978660f7809ee1ef3cced439cb1` 复核并修正容量预测：历史逻辑增长只显示有足够样本覆盖的滚动观察范围，样本不足显示未知；当前会话用户增长假设独立回显；本地卷空间来自系统读数，远端配额保持未知。不输出确定耗尽日期或置信区间，也不把逻辑增长换算成物理占用。SDK `8.0.423` Release solution `0/0`、Worker `5/5`、生产维护页 Light/Dark `2/2`。证据见 [S05-03](../design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)。真实 Playnite、完整 WPF 独立循环和物理 DPI 未验；随后 S05-04 已完成。
+
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
-修复存档历史、路径候选和任务队列的页面根高度反馈：移除基于上一布局 `ActualHeight` 的根固定高度，使用当前 PageHost 高度限制 DataGrid/详情视口，由页面 ScrollViewer 自然承载后续内容。SDK8 Release solution 构建 `0/0`；几何回归 `5/5`，WPF 契约 `4 pass / 1 historical skip`。证据见 [滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏测量不代表真实 Playnite 屏幕。独立修复结束后回到 S05-03。
+修复存档历史、路径候选和任务队列的页面根高度反馈：移除基于上一布局 `ActualHeight` 的根固定高度，使用当前 PageHost 高度限制 DataGrid/详情视口，由页面 ScrollViewer 自然承载后续内容。SDK8 Release solution 构建 `0/0`；几何回归 `5/5`，WPF 契约 `4 pass / 1 historical skip`。证据见 [滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。离屏测量不代表真实 Playnite 屏幕。独立修复结束后继续 Round4 存储小批，S05-03/04 均已验收。
 
 ## 2026-10-20 Round4 S05-02 双方案只读预览已验收
 
 提交 `5f1431f2` 在维护中心保留策略页新增当前策略/候选策略对比。先审计既有能力：`RetentionSimulationService.PreviewAsync` 只按当前逐游戏策略规划并保存清理预览句柄；存储分析趋势没有候选侧，因此与 S05-02 不等价。新增比较路由使用单条 SQLite 查询读取同一版本和策略快照，两个方案共享 UTC 截止时间并复用 `RetentionPlanner`；候选策略统一作用于所有游戏。结果显示保留、去重保护、锁定/PreRestore/健康恢复点、候选数和索引逻辑大小。增长上下限仅回显为假设，Worker 会重新验证，且不参与本批候选计算。新比较不保存、Apply、文件操作或生成清理预览 ID；现有全局清理确认链保持独立。
 
-SDK8.0.423 精确提交 Release solution `0 warning / 0 error`，Worker 规划对账 `14/14`，生产 WPF 双主题行为 `2/2`，no-start 隔离安装成功，双主题 RenderHarness `0 PROBLEM`。隔离安装 DLL SHA 与 Release 构建 DLL 相同。`validate-source.py`、XAML `25/25` 和 diff check 通过；静态审查 `0 errors / 26 warnings / 179 info`。完整证据（构建摘要、两份 TRX、渲染报告、安装记录和哈希）见 [S05-02](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。真实 Playnite 页面、完整 WPF 独立循环和物理 DPI 未验。下一项按依赖审计 S05-03；不复制旧 Q/R CI 通过记录。
+SDK8.0.423 精确提交 Release solution `0 warning / 0 error`，Worker 规划对账 `14/14`，生产 WPF 双主题行为 `2/2`，no-start 隔离安装成功，双主题 RenderHarness `0 PROBLEM`。隔离安装 DLL SHA 与 Release 构建 DLL 相同。`validate-source.py`、XAML `25/25` 和 diff check 通过；静态审查 `0 errors / 26 warnings / 179 info`。完整证据（构建摘要、两份 TRX、渲染报告、安装记录和哈希）见 [S05-02](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。真实 Playnite 页面、完整 WPF 独立循环和物理 DPI 未验。之后 S05-03/04 已验收；不复制旧 Q/R CI 通过记录。
 
 ## 2026-10-20 Round4 S05-01 只读情景输入已验收
 

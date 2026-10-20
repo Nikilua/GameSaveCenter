@@ -1,12 +1,16 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-20 Round4 S05-03 / S05-04 已验收，下一项审计 S05-05
+
+S05-03 `e6279b7d` 将历史逻辑增长作为样本观察范围/未知，分开用户假设、本地卷与未知远端容量，不推算耗尽日期。S05-04 `cf50643c` 在维护中心当前可见的存储卡分别展示本地存档、镜像、恢复 staging、媒体目录的文件长度/文件数和可用 SQLite 逻辑量；无合计，空目录为 0、不可用为未知、重复路径提示勿相加。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `8/8`，生产维护页 Light/Dark 和导航 `4/4`。证据：[S05-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)、[S05-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/卷簇实占未验；保留用户的 Round3 TRX/TestResults。下一步先审计 S05-05 策略差异定位。
+
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
-存档历史、路径候选与任务队列的整页根容器不再用旧 `ActualHeight` 固定高度；表格和详情继续使用有限内部滚动，额外页面内容由 PageHost 外层承载。SDK8 Release solution `0/0`，几何回归 `5/5`，资源/源码契约 `4 pass / 1 historical skip`。证据：[滚动修复](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。验证为离屏 STA/WPF，不代表真实 Playnite 或物理 DPI。Round4 下一项继续审计 S05-03。
+存档历史、路径候选与任务队列的整页根容器不再用旧 `ActualHeight` 固定高度；表格和详情继续使用有限内部滚动，额外页面内容由 PageHost 外层承载。SDK8 Release solution `0/0`，几何回归 `5/5`，资源/源码契约 `4 pass / 1 historical skip`。证据：[滚动修复](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。验证为离屏 STA/WPF，不代表真实 Playnite 或物理 DPI。后续已完成 S05-03 与 S05-04。
 
 ## 2026-10-20 Round4 S05-02 已受控验收
 
-提交 `5f1431f2` 为维护中心保留策略页增加当前逐游戏策略与统一候选策略的只读对比。审计确认既有全局清理模拟器只有当前策略，存储趋势没有候选规则侧。版本和当前策略经一条 SQLite 查询读取，两边使用同一快照与 UTC 截止时间，复用 `RetentionPlanner`；增长范围标为用户假设，不参与保留计数，对比没有清理预览或 Apply 授权。SDK `8.0.423` 精确提交 Release 一键隔离 no-start 构建/Worker 发布/安装 `0/0`，Worker 对账 `14/14`、生产 WPF 双主题行为 `2/2`、RenderHarness `0 PROBLEM`。完整证据见 [S05-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验。下一项审计 S05-03 估算不确定性；旧 Round3 未跟踪 TRX 和 TestResults 保留。
+提交 `5f1431f2` 为维护中心保留策略页增加当前逐游戏策略与统一候选策略的只读对比。审计确认既有全局清理模拟器只有当前策略，存储趋势没有候选规则侧。版本和当前策略经一条 SQLite 查询读取，两边使用同一快照与 UTC 截止时间，复用 `RetentionPlanner`；增长范围标为用户假设，不参与保留计数，对比没有清理预览或 Apply 授权。SDK `8.0.423` 精确提交 Release 一键隔离 no-start 构建/Worker 发布/安装 `0/0`，Worker 对账 `14/14`、生产 WPF 双主题行为 `2/2`、RenderHarness `0 PROBLEM`。完整证据见 [S05-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验。之后 S05-03 与 S05-04 已验收；旧 Round3 未跟踪 TRX 和 TestResults 保留。
 
 ## 2026-10-20 一键构建、安装、启动默认流程已验证通过
 

@@ -4,7 +4,7 @@
 
 ### 最新状态（2026-10-20）
 
-Round4 S05-01 `990758b6` 与 S05-02 `5f1431f2` 已依次受控验收。S05-02 审计发现现有 `PreviewRetentionSimulation` 只规划当前逐游戏策略；趋势分析不比较候选规则。新增同一 SQLite 版本/策略快照、同一 UTC 截止时点的当前/候选只读对比，共用 `RetentionPlanner`，不创建清理预览句柄。SDK8.0.423 精确提交 Release solution `0/0`，Worker 对账 `14/14`、生产 WPF Light/Dark `2/2`、no-start 隔离安装成功、RenderHarness `0 PROBLEM`。真实 Playnite 与物理 DPI 未验；证据见 `design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md`。下一步按依赖审计 S05-03，不预先批准其余 S05 项。
+Round4 S05-01 `990758b6`、S05-02 `5f1431f2`、S05-03 `e6279b7d` 和 S05-04 `cf50643c` 已依次受控验收。S05-03 将历史逻辑增长显示为样本观察范围/未知，分开显示用户假设、本地卷容量和未知远端配额；不编造置信度或耗尽日期。S05-04 为本地存档、镜像、恢复暂存和媒体目录增加独立只读预算行，区分目录文件长度与 SQLite 逻辑大小，空目录为 0、不可用为未知，重叠路径警告勿相加。SDK8.0.423 Release solution `0/0`，S05-04 Worker `8/8`、生产维护页双主题和导航 `4/4`；真实 Playnite、物理 DPI、完整 WPF 隔离循环未验。证据分别见 `design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md` 与 `S05-04/README.md`。下一步按依赖审计 S05-05，不预先批准其余 S05 项。
 
 S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且经过搜索/筛选的有限媒体结果中切换 B，保留详情焦点；坏图会被跳过，复用 `AsyncThumbnailImage` 的迟到回调保护。S04-06 `792b1a2f`、S04-07 `14925e5e`、S04-08 `c9da7c76` 已完成受控验收：比较会话意见可撤销，转交使用稳定 ID 并复核，缩略图沿用 2048 px 解码/64 MiB 缓存边界。S04-08 SDK8.0.423 Release solution `0/0`，缩略图及生产比较页行为 `19/19`。真实 Playnite、真实媒体和物理 DPI 未验；详细证据见各项 Round4 页面。另按用户新反馈修正工作区滚动视口预算，SDK8 Release solution `0/0`、布局回归 `6/6`，证据见 `design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md`。
 
@@ -23,7 +23,9 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S04-07 | IMPLEMENTED | `14925e5e` 将已标记对象按稳定 ID 转交现有归类/忽略预览，并由 Worker 复核当前对象；关闭比较面板不执行操作。Playnite `7/7`、Worker `1/1`，SDK8 Release solution `0/0`，证据见 Round4 S04-07。 |
 | S04-08 | IMPLEMENTED | `c9da7c76` 复用现有 2048 px/64 MiB/3 路解码预算，补充 GIF、非支持格式、损坏图及卸载时迟到回调的行为验收；SDK8 Release solution `0/0`，缩略图/生产比较页 `19/19`。合成 WPF 测试不代表真实 Playnite、真实媒体或物理 DPI；证据见 Round4 S04-08。 |
 | S05-01 | IMPLEMENTED | `990758b6` 为维护中心加入会话内候选保留规则/增长范围输入，字段错误和页面滚动行为使用生产 WPF 验收；SDK8.0.423 Release 一键隔离构建/安装 `0/0`、定向行为 `6/6`、双主题 11 尺寸 RenderHarness `0 PROBLEM`。真实 Playnite与物理 DPI 未验；证据见 Round4 S05-01。 |
-| S05-02 | IMPLEMENTED | `5f1431f2` 审计确认旧全局预览只规划当前逐游戏策略；新增同一 SQLite 数据快照/UTC 截止时点的当前策略与统一候选策略对照，复用 `RetentionPlanner`，增长范围只作为明确标注的假设，不创建清理授权。SDK8 Release solution `0/0`、Worker 对账 `14/14`、生产 WPF Light/Dark `2/2`、精确提交隔离 no-start 安装通过、RenderHarness `0 PROBLEM`。真实 Playnite、完整 WPF 循环与物理 DPI 未验；证据见 Round4 S05-02。下一项依赖满足后审计 S05-03。 |
+| S05-02 | IMPLEMENTED | `5f1431f2` 审计确认旧全局预览只规划当前逐游戏策略；新增同一 SQLite 数据快照/UTC 截止时点的当前策略与统一候选策略对照，复用 `RetentionPlanner`，增长范围只作为明确标注的假设，不创建清理授权。SDK8 Release solution `0/0`、Worker 对账 `14/14`、生产 WPF Light/Dark `2/2`、精确提交隔离 no-start 安装通过、RenderHarness `0 PROBLEM`。真实 Playnite、完整 WPF 循环与物理 DPI 未验；证据见 Round4 S05-02。之后 S05-03、S05-04 已完成。 |
+| S05-03 | IMPLEMENTED | `e6279b7d` 将历史逻辑增长显示为基于可用样本的观察范围/未知，分开用户假设、本地卷和远端容量边界，不输出确定耗尽日期。SDK8 Release solution `0/0`、Worker `5/5`、维护页 Light/Dark `2/2`；真实 Playnite/完整 WPF/物理 DPI 未验。证据见 Round4 S05-03。 |
+| S05-04 | IMPLEMENTED | `cf50643c` 为本地存档、第二镜像、远端恢复暂存和媒体目录分别统计文件长度/文件数及可用逻辑索引量，不生成总计；空目录、未启用、路径不可用/读取不完整分别说明，并标记重叠路径。SDK8 Release solution `0/0`，Worker `8/8`、生产维护页 Light/Dark 与存储导航 `4/4`，source validation 通过。文件长度不等于卷簇实占；真实 Playnite/物理 DPI/完整 WPF 未验。证据见 Round4 S05-04。下一项审计 S05-05。 |
 | S01-01 | IMPLEMENTED | `25bbe005` 实现版本化工作视图配置并接入设置复制/重置；Json.NET 集合替换/归一化由 SDK8 测试复核，目标项目构建通过、ViewConfigurationDefinition 与 R09 合计 7/7。证据见 Round4 S01-01。 |
 | S01-02 | IMPLEMENTED | `ad7bd563` 新增舒适/紧凑全局密度设置与共享令牌，四行下限按行/表头高度计算；SDK8 solution build 0/0，密度/设置资源14/14、R09 2/2、MediaInbox几何3/3、R23双主题资源9/9。真实 Playnite 验收待 UI gate；证据见 Round4 S01-02。 |
 | S01-03 | IMPLEMENTED | `8cdf5253` 为存档历史、候选路径和任务表格加入可访问的列管理；SDK8.0.423 Release build 0/0，列显隐/列宽/视图配置/R09 共 17/17。真实 Playnite 设置保存与呈现未验；证据见 Round4 S01-03。 |

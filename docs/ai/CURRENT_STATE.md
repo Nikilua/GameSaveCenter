@@ -4,13 +4,19 @@
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
-存档历史/路径候选、任务队列与详情区域曾以旧布局测量值固定整页高度，造成内容被裁切而内层滚动仍可操作。现在整页根布局自然测量，PageHost 外层承担额外滚动，表格和详情保留有限内部视口；SDK8 Release solution `0 warning / 0 error`，几何回归 `5/5`，静态契约 `4 pass / 1 historical skip`。证据：[页面滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。测试为 STA/离屏 WPF；真实 Playnite 窗口和物理 DPI 未验证。Round4 S05-02 仍已验收，滚动修复提交后继续 S05-03。
+存档历史/路径候选、任务队列与详情区域曾以旧布局测量值固定整页高度，造成内容被裁切而内层滚动仍可操作。现在整页根布局自然测量，PageHost 外层承担额外滚动，表格和详情保留有限内部视口；SDK8 Release solution `0 warning / 0 error`，几何回归 `5/5`，静态契约 `4 pass / 1 historical skip`。证据：[页面滚动修复](../design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。测试为 STA/离屏 WPF；真实 Playnite 窗口和物理 DPI 未验证。后续按计划完成 S05-03 与 S05-04，下一步审计 S05-05。
 
-## Round4 当前小批：S05-02 已验收
+## 2026-10-20 Round4 S05-03 与 S05-04 已验收
+
+S05-03 实现提交 `e6279b7d` 将历史逻辑增长表达为样本覆盖内的观察范围或未知，分开显示用户假设、本地卷容量与未知远端配额，不声称置信区间或耗尽日期；SDK8 Release solution `0/0`、Worker `5/5`、生产维护页 Light/Dark `2/2`。证据：[S05-03](../design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)。
+
+S05-04 实现提交 `cf50643c` 为本地存档、第二镜像、恢复 staging、媒体目录提供独立只读预算分项，区分目录文件长度和 SQLite 逻辑量，空目录/未知/未启用分别显示，不生成总计并警告重叠路径。精确提交 SDK8.0.423 Release solution `0/0`、Worker `8/8`、生产维护页双主题与导航 `4/4`。证据：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。目录文件长度不表示卷簇实占；真实 Playnite、物理 DPI 和完整 WPF 隔离循环未验。下一步按计划审计 S05-05。
+
+## Round4 前序小批：S05-02 已验收
 
 实现提交 `5f1431f2` 在维护中心“保留策略”页加入当前策略与会话候选策略的只读对比。审计时确认旧 `PreviewRetentionSimulation` 仅规划当前生效策略，`StorageAnalysisService` 的历史趋势也不接收候选规则。现在 Worker 单条 SQLite 查询读取版本及逐游戏策略，两侧共用该快照与 UTC 截止时点，并复用 `RetentionPlanner`；候选规则统一应用于全部游戏。增长范围作为用户假设回显，不参与保留计数。该结果没有清理预览 ID 或 Apply 通路。
 
-SDK `8.0.423` 精确提交 Release 一键隔离构建/Worker 发布/no-start 安装 `0 warning / 0 error`，Worker 保留模拟器对账 `14/14`，生产 WPF Light/Dark 页面行为 `2/2`，双主题 RenderHarness `render-qa OK / 0 PROBLEM`。受控证据见 [S05-02](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)，提交 DLL SHA 与隔离安装副本一致。真实 Playnite 页面、完整 WPF 隔离循环和物理 DPI 未验。下一项按计划审计 S05-03 估算不确定性；旧 Round3 TRX/TestResults 保留。
+SDK `8.0.423` 精确提交 Release 一键隔离构建/Worker 发布/no-start 安装 `0 warning / 0 error`，Worker 保留模拟器对账 `14/14`，生产 WPF Light/Dark 页面行为 `2/2`，双主题 RenderHarness `render-qa OK / 0 PROBLEM`。受控证据见 [S05-02](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)，提交 DLL SHA 与隔离安装副本一致。真实 Playnite 页面、完整 WPF 隔离循环和物理 DPI 未验。随后 S05-03、S05-04 已完成；旧 Round3 TRX/TestResults 保留。
 
 ## 当前最高优先级：默认一键构建、测试、安装与启动已全链通过
 
