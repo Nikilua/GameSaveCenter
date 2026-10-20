@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-20 Round4 S05-02 双方案只读预览已验收
+
+提交 `5f1431f2` 在维护中心保留策略页新增当前策略/候选策略对比。先审计既有能力：`RetentionSimulationService.PreviewAsync` 只按当前逐游戏策略规划并保存清理预览句柄；存储分析趋势没有候选侧，因此与 S05-02 不等价。新增比较路由使用单条 SQLite 查询读取同一版本和策略快照，两个方案共享 UTC 截止时间并复用 `RetentionPlanner`；候选策略统一作用于所有游戏。结果显示保留、去重保护、锁定/PreRestore/健康恢复点、候选数和索引逻辑大小。增长上下限仅回显为假设，Worker 会重新验证，且不参与本批候选计算。新比较不保存、Apply、文件操作或生成清理预览 ID；现有全局清理确认链保持独立。
+
+SDK8.0.423 精确提交 Release solution `0 warning / 0 error`，Worker 规划对账 `14/14`，生产 WPF 双主题行为 `2/2`，no-start 隔离安装成功，双主题 RenderHarness `0 PROBLEM`。隔离安装 DLL SHA 与 Release 构建 DLL 相同。`validate-source.py`、XAML `25/25` 和 diff check 通过；静态审查 `0 errors / 26 warnings / 179 info`。完整证据（构建摘要、两份 TRX、渲染报告、安装记录和哈希）见 [S05-02](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。真实 Playnite 页面、完整 WPF 独立循环和物理 DPI 未验。下一项按依赖审计 S05-03；不复制旧 Q/R CI 通过记录。
+
 ## 2026-10-20 Round4 S05-01 只读情景输入已验收
 
 提交 `990758b6` 在维护中心“保留策略”页加入当前会话使用的候选保留规则与增长范围输入；字段有数值边界和上下限关系错误，卡片复用生产主题样式并由页面滚动容器承载。它通过现有 `RetentionPolicy` 构造独立候选值，不更改游戏策略、模板、设置或 Worker 状态，不执行清理。旧的当前策略预览/策略编辑不提供等价候选输入。

@@ -1,8 +1,8 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-20 Round4 S05-01 已受控验收
+## 2026-10-20 Round4 S05-02 已受控验收
 
-提交 `990758b6` 增加维护中心保留策略情景输入：期限规则及每 30 天增长上下限只在会话内生效，独立构造现有 `RetentionPolicy`，不会改当前游戏策略/模板/设置或调用清理。SDK8.0.423 Release 构建/隔离 no-start 安装 `0/0`，生产 WPF 输入行为 `6/6`，精确提交双主题 11 尺寸 RenderHarness `0 PROBLEM`。完整证据见 [S05-01](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-01/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验；AcrylicFork Demo 缺失。下一项按计划审查 S05-02 双方案预览。旧 Round3 未跟踪 TRX 和 TestResults 保留，未提交。
+提交 `5f1431f2` 为维护中心保留策略页增加当前逐游戏策略与统一候选策略的只读对比。审计确认既有全局清理模拟器只有当前策略，存储趋势没有候选规则侧。版本和当前策略经一条 SQLite 查询读取，两边使用同一快照与 UTC 截止时间，复用 `RetentionPlanner`；增长范围标为用户假设，不参与保留计数，对比没有清理预览或 Apply 授权。SDK `8.0.423` 精确提交 Release 一键隔离 no-start 构建/Worker 发布/安装 `0/0`，Worker 对账 `14/14`、生产 WPF 双主题行为 `2/2`、RenderHarness `0 PROBLEM`。完整证据见 [S05-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验。下一项审计 S05-03 估算不确定性；旧 Round3 未跟踪 TRX 和 TestResults 保留。
 
 ## 2026-10-20 一键构建、安装、启动默认流程已验证通过
 

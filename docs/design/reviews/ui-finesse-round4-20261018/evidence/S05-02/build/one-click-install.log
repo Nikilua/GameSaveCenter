@@ -1,0 +1,141 @@
+**********************
+PowerShell transcript start
+Start time: 20261020180401
+Username: Sult\lopmatu
+RunAs User: Sult\lopmatu
+Configuration Name: 
+Machine: SULT (Microsoft Windows NT 10.0.22000.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+$taskRoot = Join-Path (Get-Location) '.tmp/s05-02-scenario-20261020'; $artifactRoot = Join-Path (Get-Location) 'artifacts/s05-02-scenario-20261020'; New-Item -ItemType Directory -Force -Path $artifactRoot | Out-Null; $extensions = Join-Path $taskRoot 'isolated/Extensions'; $build = Join-Path $taskRoot 'one-click-build'; $testTemp = Join-Path $taskRoot 'one-click-tests'; $installReport = Join-Path $artifactRoot 'install-report.txt'; $runLog = Join-Path $artifactRoot 'one-click.log'; & .\scripts\dev-install-run.ps1 -Configuration Release -PlayniteExtensionsPath $extensions -BuildOutputRoot $build -TestTempRoot $testTemp -RunLogPath $runLog -InstallReportPath $installReport -NoStart -SkipPlayniteShutdownForIsolatedTarget -SkipTests -SkipPackageArchives
+Process ID: 25464
+PSVersion: 7.6.2
+PSEdition: Core
+GitCommitId: 7.6.2
+OS: Microsoft Windows 10.0.22000
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+一键安装器：DEV-INSTALL-009
+安装脚本：D:\workplace\github\GameSaveCenter\scripts\dev-install-run.ps1
+.NET SDK 8.0.423 已从当前用户缓存选择：C:\Users\lopmatu\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423
+GameSaveCenter 一键开发安装
+源码版本：0.6.73
+发现 Playnite：D:\software\Playnite\Playnite.DesktopApp.exe
+
+==> 使用新的隔离构建目录：无需清理正在使用的标准 bin/obj
+.NET SDK 8.0.423 已就绪：C:\Users\lopmatu\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\dotnet.exe
+当前可用 SDK：
+  8.0.423 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk]
+隔离构建输出：D:\workplace\github\GameSaveCenter\.tmp\s05-02-scenario-20261020\one-click-build
+测试临时目录：D:\workplace\github\GameSaveCenter\.tmp\s05-02-scenario-20261020\one-click-tests
+
+==> 检查 XAML 结构
+XAML structural validation passed for 25 file(s).
+
+==> 显示当前 SDK 信息
+.NET SDK:
+ Version:           8.0.423
+ Commit:            62e3aa2c1f
+ Workload version:  8.0.400-manifests.a04bdf47
+ MSBuild version:   17.11.48+02bf66295
+
+运行时环境:
+ OS Name:     Windows
+ OS Version:  10.0.22000
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   [user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk\8.0.423\
+
+已安装 .NET 工作负载:
+配置为在安装新清单时使用 loose manifests。
+没有要显示的已安装工作负载。
+
+Host:
+  Version:      8.0.29
+  Architecture: x64
+  Commit:       18fd75c847
+
+.NET SDKs installed:
+  8.0.423 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  DOTNET_ROOT       [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423]
+  DOTNET_ROOT_X64   [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423]
+
+global.json file:
+  [repo]\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+==> 还原 NuGet 依赖
+  正在确定要还原的项目…
+  已还原 [repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (用时 165 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 161 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 161 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 161 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (用时 164 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (用时 161 毫秒)。
+  已还原 [repo]\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (用时 225 毫秒)。
+  已还原 [repo]\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (用时 230 毫秒)。
+
+==> 编译解决方案（Release）
+  GameSaveCenter.Contracts -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\.tmp\s05-02-scenario-20261020\one-click-build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:02:02.97
+
+构建成功；本次跳过测试。
+诊断目录：D:\workplace\github\GameSaveCenter\artifacts\build-diagnostics\20261020T100403905Z-b8a5aa0e
+
+==> 还原 Worker 发布运行时（win-x64）
+
+
+==> 发布 Worker（win-x64）
+
+
+==> 校验插件、Worker 与共享程序集构建身份
+  WorkerContracts 构建身份：0.6.73+5f1431f264ca62f89818554da47af85f308821f0
+  WorkerCore 构建身份：0.6.73+5f1431f264ca62f89818554da47af85f308821f0
+  Worker 构建身份：0.6.73+5f1431f264ca62f89818554da47af85f308821f0
+  PluginContracts 构建身份：0.6.73+5f1431f264ca62f89818554da47af85f308821f0
+  PluginCore 构建身份：0.6.73+5f1431f264ca62f89818554da47af85f308821f0
+  Plugin 构建身份：0.6.73+5f1431f264ca62f89818554da47af85f308821f0
+
+安装暂存目录已校验，按隔离审计请求保留现有版本化安装包：D:\workplace\github\GameSaveCenter\artifacts\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+隔离扩展目标：跳过停止 Playnite/Worker；若发现既有进程则已在入口处拒绝。
+
+安装验证成功
+  目录：D:\workplace\github\GameSaveCenter\.tmp\s05-02-scenario-20261020\isolated\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+  extension.yaml：0.6.73
+  DLL：0.6.73.0
+  报告：D:\workplace\github\GameSaveCenter\artifacts\s05-02-scenario-20261020\install-report.txt
+**********************
+PowerShell transcript end
+End time: 20261020180658
+**********************

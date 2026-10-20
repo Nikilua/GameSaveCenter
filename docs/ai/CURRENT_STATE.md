@@ -2,11 +2,11 @@
 
 更新时间：2026-10-20。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-## Round4 当前小批：S05-01 已验收
+## Round4 当前小批：S05-02 已验收
 
-`990758b6` 为维护中心“保留策略”页加入只读情景输入：使用独立 `RetentionPolicy` 候选值，输入全量/每日/每周/每月保留期限和每 30 天逻辑增长上下限，字段错误可见，宽度自适应。草稿只存在当前会话，不写入游戏策略、模板或设置，也不调用清理。此前当前策略预览/持久化编辑不是候选增长比较，故确认本项存在实际能力差异。
+实现提交 `5f1431f2` 在维护中心“保留策略”页加入当前策略与会话候选策略的只读对比。审计时确认旧 `PreviewRetentionSimulation` 仅规划当前生效策略，`StorageAnalysisService` 的历史趋势也不接收候选规则。现在 Worker 单条 SQLite 查询读取版本及逐游戏策略，两侧共用该快照与 UTC 截止时点，并复用 `RetentionPlanner`；候选规则统一应用于全部游戏。增长范围作为用户假设回显，不参与保留计数。该结果没有清理预览 ID 或 Apply 通路。
 
-SDK `8.0.423` Release 一键隔离构建/安装 `0 warning / 0 error`，情景输入与两主题生产 WPF 行为 `6/6`；精确提交双主题 11 尺寸 RenderHarness `render-qa OK / 0 PROBLEM`。受控证据见 [S05-01](../design/reviews/ui-finesse-round4-20261018/evidence/S05-01/README.md)。隔离安装版本 `0.6.73` / DLL `0.6.73.0`；真实 Playnite 页面、物理 DPI 和完整 WPF 隔离循环未验。下一项在 S05-01 依赖满足后核对 S05-02 双方案预览。
+SDK `8.0.423` 精确提交 Release 一键隔离构建/Worker 发布/no-start 安装 `0 warning / 0 error`，Worker 保留模拟器对账 `14/14`，生产 WPF Light/Dark 页面行为 `2/2`，双主题 RenderHarness `render-qa OK / 0 PROBLEM`。受控证据见 [S05-02](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)，提交 DLL SHA 与隔离安装副本一致。真实 Playnite 页面、完整 WPF 隔离循环和物理 DPI 未验。下一项按计划审计 S05-03 估算不确定性；旧 Round3 TRX/TestResults 保留。
 
 ## 当前最高优先级：默认一键构建、测试、安装与启动已全链通过
 

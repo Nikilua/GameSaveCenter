@@ -1,13 +1,13 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 `990758b6` 会话情景输入与 S05-02 `5f1431f2` 同快照双方案只读预览已受控验收；下一项依赖满足后审计 S05-03。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。已满足必须有当前等价能力与证据；受控通过不代表真实宿主通过。每项分别补实现 commit、验证与未验边界。
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收25、已满足2、代码完成待验收15、外部阻塞1、待开始21。
-实现状态：完成42、未开始22、不适用0；受控验证：通过42、未跑21、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收26、已满足2、代码完成待验收15、外部阻塞1、待开始20。
+实现状态：完成43、未开始21、不适用0；受控验证：通过43、未跑20、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -51,8 +51,8 @@
 | S04-06 | 保留意见标记 | 已验收 | 792b1a2f | [证据](evidence/S04-06/README.md)：SDK8.0.423 Release solution 0/0；比较意见、撤销与生产 WPF 行为测试 11/11 | 标记只保留于当前比较会话，不改变媒体元数据或文件；真实 Playnite 页面与物理输入未验；S04-07 依赖已满足 |
 | S04-07 | 比较结束转交 | 已验收 | 14925e5e | [证据](evidence/S04-07/README.md)：稳定 ID 转交预览复核 Playnite 7/7、Worker 1/1；SDK8 Release solution 0/0 | 关比较面板不执行操作；对象状态由现有 Worker 复核；真实 Playnite 呈现与完整 WPF 循环未验；S04-08 依赖已满足 |
 | S04-08 | 大图资源验收 | 已验收 | c9da7c76 | [证据](evidence/S04-08/README.md)：SDK8.0.423 Release solution 0/0；缩略图预算、GIF/不支持格式、损坏图、卸载迟到回调及比较页行为 19/19 | 沿用 2048 px 解码长边、3 路并发和 64 MiB 缓存；GIF 使用合成数据，真实媒体、Playnite 宿主与物理 DPI 未验 |
-| S05-01 | 只读情景输入 | 已验收 | 990758b6 | [证据](evidence/S05-01/README.md)：SDK8.0.423 Release 一键构建/隔离安装 0/0、情景输入行为 6/6、双主题 11 尺寸 Render QA 0 PROBLEM | 候选规则只在当前会话使用，不写入当前策略/模板/设置，也不调用清理；合成 WPF 与 OffscreenRenderHarness 通过，真实 Playnite 页面和物理 DPI 未验。下一项依赖 S05-01 的 S05-02 双方案预览。 |
-| S05-02 | 双方案预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S05-01 | 只读情景输入 | 已验收 | 990758b6 | [证据](evidence/S05-01/README.md)：SDK8.0.423 Release 一键构建/隔离安装 0/0、情景输入行为 6/6、双主题 11 尺寸 Render QA 0 PROBLEM | 候选规则只在当前会话使用，不写入当前策略/模板/设置，也不调用清理；合成 WPF 与 OffscreenRenderHarness 通过，真实 Playnite 页面和物理 DPI 未验。S05-02 已接入双方案只读比较。 |
+| S05-02 | 双方案预览 | 已验收 | 5f1431f2 | [证据](evidence/S05-02/README.md)：SDK8.0.423 精确提交 Release solution 0/0、一键隔离 no-start 安装通过、Worker 规划对账 14/14、生产 WPF Light/Dark 行为 2/2、RenderHarness 0 PROBLEM | 同一 SQLite 版本/策略读取及 UTC 截止时点；候选策略统一作用于所有游戏，增长范围只回显假设且不参与计数；对比没有清理预览句柄。真实 Playnite 页面、完整 WPF 隔离循环与物理 DPI 未验；下一项依赖 S05-02 的 S05-03 估算不确定性。 |
 | S05-03 | 估算不确定性 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S05-04 | 预算分解 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S05-05 | 策略差异定位 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

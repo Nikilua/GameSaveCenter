@@ -668,19 +668,24 @@
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-01/README.md"
         }
       ],
-      "boundary": "候选规则只在当前会话使用，不写入当前策略/模板/设置，也不调用清理；合成 WPF 与 OffscreenRenderHarness 通过，真实 Playnite 页面和物理 DPI 未验。下一项依赖 S05-01 的 S05-02 双方案预览。"
+      "boundary": "候选规则只在当前会话使用，不写入当前策略/模板/设置，也不调用清理；合成 WPF 与 OffscreenRenderHarness 通过，真实 Playnite 页面和物理 DPI 未验。S05-02 已接入双方案只读比较。"
     },
     {
       "id": "S05-02",
       "title": "双方案预览",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "5f1431f2",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[证据](evidence/S05-02/README.md)：SDK8.0.423 精确提交 Release solution 0/0、一键隔离 no-start 安装通过、Worker 规划对账 14/14、生产 WPF Light/Dark 行为 2/2、RenderHarness 0 PROBLEM",
+      "evidence": [
+        {
+          "label": "受控证据",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md"
+        }
+      ],
+      "boundary": "同一 SQLite 版本/策略读取及 UTC 截止时点；候选策略统一作用于所有游戏，增长范围只回显假设且不参与计数；对比没有清理预览句柄。真实 Playnite 页面、完整 WPF 隔离循环与物理 DPI 未验；下一项依赖 S05-02 的 S05-03 估算不确定性。"
     },
     {
       "id": "S05-03",

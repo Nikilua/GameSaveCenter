@@ -11576,3 +11576,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 命名视图可见列列表为空、或旧可选列键全部被删除/改名时，当前表格回到已存默认显隐；存在可识别可选列时仍按保存布局精确应用。缺失旧密度字段、未知密度和未来 schema 有行为覆盖。
 - 当前工作树 SDK `8.0.423` Release 全解方案构建 `0 warning / 0 error`；恢复 `2/2`、视图定义 `10/10`、视图交互 `3/3`、列显隐 `4/4`、R09 `2/2`，合计 `21/21`。`validate-source.py` 通过；WPF 静态审查 `0 errors / 26 warnings / 177 info`（扫描结果中的警告均在未修改 XAML 文件）。提交后构建/身份复验待进行，真实 Playnite 设置读写和主题呈现未运行。
 - 用户外机 R09 日志中的 Chrome `2 DIP` 断言与旧测试输入一致；当前源码是 Chrome `1 DIP`、独立验证描边 `2 DIP`，本机同次隔离运行 R09 `2/2`。缺少外机同次 summary/TRX/DLL/PDB，具体是旧 checkout、测试 DLL 或 PDB 源映射仍未知。
+
+## 2026-10-20 Round4 S05-02 双方案预览
+
+- 审计 `RetentionSimulationService.PreviewAsync` 只有当前生效策略及其清理确认句柄，`StorageAnalysisService` 的趋势没有候选规则侧；不等价于同一快照双方案比较。实现提交 `5f1431f2` 新增独立的只读比较路由、输入验证、双侧摘要和维护页并排结果卡。
+- SQLite 单条查询读取当前版本与逐游戏策略；当前策略和统一应用到全游戏的候选规则共享同一快照、UTC 截止时点与 `RetentionPlanner`。输出可核对 `保留 + 候选 = 基线`，区分去重保护数和重叠的保护分类；候选体积按索引逻辑大小显示。增长范围仅回显为用户假设，未参与本批计数；对比结果不产生清理预览 ID，也不能调用 Apply。
+- SDK `8.0.423` Release solution `0 warning / 0 error`；精确一键隔离 no-start 构建/发布/安装成功，Worker 定向测试 `14/14`、生产 WPF Light/Dark `2/2`，RenderHarness `render-qa OK / 0 PROBLEM`。源码、XAML 和 diff 校验通过。完整命令输出、诊断摘要、TRX、Render QA、安装报告和 SHA-256 见 [S05-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。
+- 未运行完整 WPF 独立进程循环或真实 Playnite 页面；offscreen 逻辑 DPI `1.00` 不代表物理 DPI。既有 Round3 未跟踪 TRX/TestResults 未改动。下一项按计划审计 S05-03 估算不确定性。
