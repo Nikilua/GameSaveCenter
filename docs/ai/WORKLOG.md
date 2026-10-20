@@ -11604,3 +11604,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - SQLite 单条查询读取当前版本与逐游戏策略；当前策略和统一应用到全游戏的候选规则共享同一快照、UTC 截止时点与 `RetentionPlanner`。输出可核对 `保留 + 候选 = 基线`，区分去重保护数和重叠的保护分类；候选体积按索引逻辑大小显示。增长范围仅回显为用户假设，未参与本批计数；对比结果不产生清理预览 ID，也不能调用 Apply。
 - SDK `8.0.423` Release solution `0 warning / 0 error`；精确一键隔离 no-start 构建/发布/安装成功，Worker 定向测试 `14/14`、生产 WPF Light/Dark `2/2`，RenderHarness `render-qa OK / 0 PROBLEM`。源码、XAML 和 diff 校验通过。完整命令输出、诊断摘要、TRX、Render QA、安装报告和 SHA-256 见 [S05-02 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。
 - 未运行完整 WPF 独立进程循环或真实 Playnite 页面；offscreen 逻辑 DPI `1.00` 不代表物理 DPI。既有 Round3 未跟踪 TRX/TestResults 未改动。下一项按计划审计 S05-03 估算不确定性。
+
+## 2026-10-21 Round4 S05-06 保存情景草稿
+
+- 先审计现有能力：`RetentionScenarioDraft` 仅存本会话输入；比较时间未落入设置；逐游戏策略/模板保存不是命名比较情景，缺少复制、重命名、删除及跨重启恢复入口。
+- 实现提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 增加版本化、最多 32 项的标量情景定义；维护页可以选择/载入、保存/更新、复制、重命名和删除。方案记录最近一次匹配参数的成功比较时间，比较结果和清理句柄不持久化，不更改生效策略。便携设置支持往返，旧配置缺字段使用空集合。
+- 精确提交 SDK `8.0.423` Release solution build `0 warning / 0 error`，XAML `25/25`；Playnite 定向测试 `13/13`，包括设置往返、旧配置/未来 schema、边界与去重、复制/重命名定义、候选策略隔离、生产维护页 Light/Dark 输入/绑定和便携设置；RenderHarness `render-qa OK / 0 PROBLEM`；source validation、WPF 静态审查和 diff check 通过。原始日志、摘要、TRX、离屏报告、程序集身份和哈希见 [S05-06 证据包](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。
+- RenderHarness 和 WPF 行为使用合成数据；真实 Playnite、完整 WPF 隔离循环、物理 DPI、CEF/设备权限未验，也未触发 CI。摘要记录的未跟踪 Round3 TRX/TestResults 路径均保留，没有进入本批提交。
+- 下一项按计划核对 S05-07 转交策略编辑与现有策略/差异确认安全链。

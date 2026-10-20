@@ -2,7 +2,7 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-05 已验收；下一步按计划审计 S05-06 保存情景草稿。保留用户原有未跟踪 TRX/TestResults。
+Round4 S05-03 至 S05-06 已验收；下一步按计划审计 S05-07 转交策略编辑。保留用户原有未跟踪 TRX/TestResults。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
@@ -14,7 +14,11 @@ S05-03 实现提交 `e6279b7d` 将历史逻辑增长表达为样本覆盖内的�
 
 S05-04 实现提交 `cf50643c` 为本地存档、第二镜像、恢复 staging、媒体目录提供独立只读预算分项，区分目录文件长度和 SQLite 逻辑量，空目录/未知/未启用分别显示，不生成总计并警告重叠路径。精确提交 SDK8.0.423 Release solution `0/0`、Worker `8/8`、生产维护页双主题与导航 `4/4`。证据：[S05-04](../design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)。目录文件长度不表示卷簇实占。
 
-S05-05 实现提交 `2fd0aa04` 将策略总量差异下钻到逐游戏和变化版本，并展示各保护原因；只对通过既有路径安全检查的变化候选做只读归档存在性检查，不创建清理句柄。精确提交 SDK8.0.423 Release solution `0/0`、Worker `2/2`、生产维护页 Light/Dark 双层滚动 `2/2`，RenderHarness 无问题。证据：[S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。下一步按计划审计 S05-06。
+S05-05 实现提交 `2fd0aa04` 将策略总量差异下钻到逐游戏和变化版本，并展示各保护原因；只对通过既有路径安全检查的变化候选做只读归档存在性检查，不创建清理句柄。精确提交 SDK8.0.423 Release solution `0/0`、Worker `2/2`、生产维护页 Light/Dark 双层滚动 `2/2`，RenderHarness 无问题。证据：[S05-05](../design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI 和宿主滚动未验。随后 S05-06 已验收，当前下一步审计 S05-07。
+
+## 2026-10-21 Round4 S05-06 保存情景草稿已验收
+
+实现提交 `313fabc1` 为保留情景增加有界、版本化的标量设置持久化，以及选择载入、保存/更新、复制、重命名、删除和最近快照时间。草稿与生效策略分离；比较结果不缓存，后续会重新读取当前版本快照。SDK8.0.423 Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、Light/Dark RenderHarness `0 PROBLEM`、source validation 通过。证据：[S05-06](../design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验；原 Round3 TRX/TestResults 保留。下一项审计 S05-07。
 
 ## Round4 前序小批：S05-02 已验收
 

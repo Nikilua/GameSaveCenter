@@ -1,8 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-21 Round4 S05-03 至 S05-05 已验收，下一项审计 S05-06
+## 2026-10-21 Round4 S05-06 已验收，下一项审计 S05-07
 
-S05-03 `e6279b7d` 将历史逻辑增长作为样本观察范围/未知，分开用户假设、本地卷与未知远端容量，不推算耗尽日期。S05-04 `cf50643c` 在维护中心当前可见的存储卡分别展示本地存档、镜像、恢复 staging、媒体目录的文件长度/文件数和可用 SQLite 逻辑量；无合计，空目录为 0、不可用为未知、重复路径提示勿相加。S05-05 `2fd0aa04` 将当前/候选策略总量比较下钻到逐游戏和变化版本，展示锁定、PreRestore、健康恢复点保护；只读确认符合归档路径安全条件的文件，不生成清理句柄。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness 无问题。证据：[S05-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)、[S05-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)、[S05-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/卷簇实占与宿主滚动未验；保留用户的 Round3 TRX/TestResults。下一步审计 S05-06 保存情景草稿。
+提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 为维护中心保留策略页增加有界命名情景设置；支持选择载入、保存/更新、复制、重命名、删除和最近成功快照时间。它与生效策略分离；结果与清理预览句柄不缓存。旧设置缺字段仍可读取，便携设置包含命名情景。精确提交 SDK `8.0.423` Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation/diff check 通过。完整证据：[S05-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验；保留旧 Round3 TRX/TestResults。
+
+## 历史：2026-10-21 Round4 S05-03 至 S05-05 已验收
+
+S05-03 `e6279b7d` 将历史逻辑增长作为样本观察范围/未知，分开用户假设、本地卷与未知远端容量，不推算耗尽日期。S05-04 `cf50643c` 在维护中心当前可见的存储卡分别展示本地存档、镜像、恢复 staging、媒体目录的文件长度/文件数和可用 SQLite 逻辑量；无合计，空目录为 0、不可用为未知、重复路径提示勿相加。S05-05 `2fd0aa04` 将当前/候选策略总量比较下钻到逐游戏和变化版本，展示锁定、PreRestore、健康恢复点保护；只读确认符合归档路径安全条件的文件，不生成清理句柄。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness 无问题。证据：[S05-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)、[S05-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)、[S05-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/卷簇实占与宿主滚动未验；保留用户的 Round3 TRX/TestResults。随后 S05-06 已验收，当前下一步审计 S05-07。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 

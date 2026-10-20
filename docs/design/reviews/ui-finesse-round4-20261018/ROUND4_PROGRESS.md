@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 `990758b6`、S05-02 `5f1431f2`、S05-03 `e6279b7d`、S05-04 `cf50643c`、S05-05 `2fd0aa04` 已按依赖受控验收；下一步审计 S05-06 保存情景草稿。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 `990758b6` 至 S05-06 `313fabc1` 已按依赖受控验收；下一步审计 S05-07 转交策略编辑。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -8,8 +8,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收29、已满足2、代码完成待验收15、外部阻塞1、待开始17。
-实现状态：完成46、未开始18、不适用0；受控验证：通过46、未跑17、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收30、已满足2、代码完成待验收15、外部阻塞1、待开始16。
+实现状态：完成47、未开始17、不适用0；受控验证：通过47、未跑16、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -58,7 +58,7 @@
 | S05-03 | 估算不确定性 | 已验收 | e6279b7d | [证据](evidence/S05-03/README.md)：SDK8.0.423 Release solution 0/0、Worker 5/5、生产维护页 Light/Dark 2/2 | 历史逻辑新增显示为样本观察范围或未知；不声称置信区间/磁盘耗尽日期。远端配额未知；真实 Playnite、物理 DPI、完整 WPF 循环未验。 |
 | S05-04 | 预算分解 | 已验收 | cf50643c | [证据](evidence/S05-04/README.md)：SDK8.0.423 Release solution 0/0、Worker 8/8、生产维护页双主题/导航 4/4 | 四类目录文件长度与索引逻辑量独立展示；不生成合计，重叠目录警告勿相加。文件长度不代表卷簇实占；真实 Playnite、完整 WPF 循环与物理 DPI 未验。 |
 | S05-05 | 策略差异定位 | 已验收 | 2fd0aa04 | [证据](evidence/S05-05/README.md)：SDK8.0.423 Release solution 0/0、XAML 25/25、Worker 2/2、生产维护页 Light/Dark 与外层/内层滚动 2/2、RenderHarness 0 PROBLEM、source validation 通过 | 逐游戏和变化版本在同一规划快照内对账；保护项单独展示，缺失/不可访问/未通过路径检查的归档不计入现存归档候选。详情不生成清理句柄。RenderHarness 为离屏合成；真实 Playnite、物理 DPI 和宿主滚动未验。 |
-| S05-06 | 保存情景草稿 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S05-06 | 保存情景草稿 | 已验收 | 313fabc1 | [证据](evidence/S05-06/README.md)：SDK8.0.423 Release solution 0/0、XAML 25/25、定向测试 13/13、双主题 RenderHarness 0 PROBLEM、source validation 通过 | 仅持久化有界标量假设和最近快照 UTC，不缓存比较结果/清理句柄，不改生效策略；RenderHarness 与 WPF 行为为合成受控验证，真实 Playnite、完整 WPF 隔离循环、物理 DPI/CEF 未验。 |
 | S05-07 | 转交策略编辑 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S05-08 | 情景性能验证 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S06-01 | 工作清单契约 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
