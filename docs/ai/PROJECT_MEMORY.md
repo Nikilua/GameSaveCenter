@@ -1,10 +1,18 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-22 标准一键构建与安装复验通过
+
+- 用户指出构建反复失败。完成 S00-03 键盘交互 `0968309c` 与阶段证据提交 `22cec597` 后，在该精确提交上运行根目录 `GameSaveCenter-Run.cmd`，完整退出码 `0`。诊断 ID `20261021T171031616Z-c05bcf5a`，SDK8.0.423/Release。
+- XAML 25/25、solution 0 warning/0 error；Core 157/157、Worker 400/400；Playnite 1,339 项中 1,282 pass、57 skip、0 fail，全部 140 WPF 隔离类完成。全局汇总 1,896 项：1,839 pass、57 skip、0 fail、0 error/timeout/abort。57 skip 都是针对退役“今日工作台”页面架构的旧断言。
+- win-x64 Worker 发布、构建身份校验、PEXT/ZIP、扩展安装版本验证均成功；安装清单 0.6.73、插件 DLL 0.6.73.0，已安装 DLL SHA 与构建产物一致；`D:\software\Playnite\Playnite.DesktopApp.exe` 启动成功。诊断摘要、完整 console、R09 TRX、包和安装报告哈希见 [S00-03 标准验收记录](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md)。
+- R09FocusOutlineBehaviorTests 当前提交标准隔离结果 `2/2`；用户原日志 run ID `20261021T135554848Z-c2927c39` 缺失诊断目录，且堆栈行与当前源不一致，因此旧失败无法归因，但不再代表当前提交结果。
+- 当前安装并启动成功不等于物理键盘/IME 候选或交互画面验收；S00-03 hostVerification 仍 pending，Round4 未整体完成。原有 Round3 未跟踪 TRX 与 Playnite `TestResults/` 继续保留。
+
 ## 2026-10-22 S00-03 键盘交互实现与构建故障跟进
 
-- 用户反馈构建反复失败并提供 R09 日志。旧日志报 `Expected 2,2,2,2 / Actual 1,1,1,1`，但所附诊断目录缺失；当前提交中测试第 151 行与错误堆栈不匹配，不能追认成当前源代码回归。最新完整标准运行需以提交/SDK/job/诊断产物绑定记录。
+- 用户反馈构建反复失败并提供 R09 日志。旧日志报 `Expected 2,2,2,2 / Actual 1,1,1,1`，但所附诊断目录缺失；当前提交中测试第 151 行与错误堆栈不匹配，不能追认成当前源代码回归。之后完整标准运行通过，绑定身份见本文最新记录。
 - `0968309c` 完成命令目录方向键选择、Enter 执行/禁用态处理、IME composition guard、焦点恢复和 UserControl 范围 `Ctrl+Shift+P`。SDK8.0.423 Release 定向筛选 `12/12`，源校验与 `git diff --check` 通过；详细 TRX、源码及程序集 SHA-256 见 [S00-03 实施证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。
-- 代码提交前的一次完整标准入口已编译 Release `0/0`，Core `157/157`、Worker `400/400`、WPF 140 类，汇总 1,895 项（1,838 通过、57 跳过、0 失败）；随后打包阶段因跟踪源文件尚未提交而按保护规则拒绝。该次不是最终代码/完整命令通过证据，提交文档后必须重新运行标准 `GameSaveCenter-Run.cmd`。
+- 代码提交前的一次完整标准入口已编译 Release `0/0`，Core `157/157`、Worker `400/400`、WPF 140 类，汇总 1,895 项（1,838 通过、57 跳过、0 失败）；随后打包阶段因跟踪源文件尚未提交而按保护规则拒绝。之后在提交代码与文档的 `22cec597` 上重跑成功，证据见本文最新记录。
 - 真实 Playnite、物理键盘、IME 候选及显示器呈现边界仍待宿主验收。用户原有 Round3 TRX/TestResults 不提交、不清理。
 
 ## 2026-10-21 用户滚动反馈与 SDK8 默认构建复核

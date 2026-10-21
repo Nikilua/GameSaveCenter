@@ -1,10 +1,20 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-22 标准一键构建、安装和启动通过
+
+用户反馈构建反复失败后，完成命令目录键盘交互，并在提交 `22cec5976ee066b32bda07df00eab6d0002f440c` 上从仓库根运行 `GameSaveCenter-Run.cmd`。整链退出码 `0`：SDK8.0.423 Release，XAML `25/25`、solution `0 warning/0 error`、Core `157/157`、Worker `400/400`、Playnite `1,339` 项（1,282 pass、57 skip、0 fail）、WPF 隔离类 `140/140`；全局 TRX 共 1,896 项，1,839 pass、0 fail、57 skip、0 error/timeout/abort。R09 焦点描边 `2/2`。
+
+win-x64 Worker 发布、程序集身份校验、ZIP/PEXT 打包、插件目录清单版本 `0.6.73` / DLL `0.6.73.0` 验证及 Playnite 启动均成功；已安装插件 DLL 与 Release 构建 DLL SHA 相同。诊断 run `20261021T171031616Z-c05bcf5a` 和原始证据哈希见 [S00-03 标准一键验收](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md)。57 个 skip 是退役“今日工作台”结构断言，都是有原因的跳过项。
+
+首次提交后的一次 run 曾在 R11 类输出 `3/3` 后没有继续；该类用两种 TEMP 配置单独复跑均通过，完整 run 重启后该停滞没有复现，140 类全数结束。用户贴出的旧 R09 run 缺失诊断目录，无法识别其 DLL/PDB；当前提交的 R09 已在标准链通过。
+
+启动验证不替代实际 Playnite 页面操作；物理键盘、IME 候选行为、控件交互截图仍待验。原有 Round3 未跟踪 TRX/TestResults 保留。
+
 ## 2026-10-22 S00-03 键盘交互与标准构建复验
 
 用户反馈一键构建连续失败后，已补命令目录方向键选择、Enter 执行与禁用态防护、IME composition guard、关闭后的焦点返回和插件 UserControl 范围 `Ctrl+Shift+P`；代码提交 `0968309c`，SDK8.0.423 Release 定向测试 `12/12`。SHA-256、TRX 和验证范围见 [S00-03 实施证据](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。所附 R09 旧失败因原诊断目录缺失无法确认其源码/DLL/PDB 身份，当前测试源行也与旧堆栈不吻合；最终以本轮当前提交的标准一键运行记录为准。
 
-代码提交前跑过一次完整默认链：Release solution 编译 0 warning/0 error、Core 157/157、Worker 400/400、WPF 140 类（1,895 项中 1,838 通过、57 跳过、0 失败），随后 package identity gate 因源文件未提交退出 1。这是干净打包保护，不是构建或测试失败。源和阶段证据提交后，需要运行标准 `GameSaveCenter-Run.cmd` 并保存完整诊断身份，确认安装/启动后再更新此交接。真实物理键盘、IME 候选和最终 Playnite 呈现仍须单独验收。用户已有 Round3 未跟踪 TRX 与 `TestResults/` 保留。
+代码提交前跑过一次完整默认链：Release solution 编译 0 warning/0 error、Core 157/157、Worker 400/400、WPF 140 类（1,895 项中 1,838 通过、57 跳过、0 失败），随后 package identity gate 因源文件未提交退出 1。这是干净打包保护，不是构建或测试失败。后续完整标准链通过，见本文件上方的最新记录。真实物理键盘、IME 候选和最终 Playnite 呈现仍须单独验收。用户已有 Round3 未跟踪 TRX 与 `TestResults/` 保留。
 
 ## 2026-10-21 用户滚动问题与本地默认构建结论
 

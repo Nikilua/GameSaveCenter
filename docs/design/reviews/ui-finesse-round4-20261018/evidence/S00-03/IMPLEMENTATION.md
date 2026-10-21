@@ -18,8 +18,12 @@
 - `scripts/validate-source.py .` 和 `git diff --check` 通过。
 - 原始 TRX：[CommandDirectory-0968309c.trx](tests/CommandDirectory-0968309c.trx)。源文件、程序集和 TRX SHA-256：[verification-identity.json](verification-identity.json)。
 
+## 标准一键验收
+
+提交 `22cec597` 上的完整 `GameSaveCenter-Run.cmd` 已通过，包含 Release 编译、Core/Worker/Playnite 全量测试、Worker 发布、版本身份校验、打包、安装和 Playnite 启动。总计 `1,896` 项，`1,839` 通过、`57` skip、`0` 失败；140 个 WPF 隔离类均结束，R09 焦点类 `2/2`。运行 ID、诊断文件和二进制身份见[标准一键验收记录](STANDARD_BUILD_20261022.md)。
+
 ## 尚待宿主验证
 
 受控 WPF composition 事件不等于物理键盘或 Windows 输入法候选行为。本项仍待真实 Playnite 中的控件焦点、快捷键冲突、IME 候选确认和最终呈现验证；不注册全局热键，也不把合成输入称为真实 IME 证据。
 
-用户提供的运行 `20261021T135554848Z-c2927c39` 报告 R09 断言 `Expected 2,2,2,2 / Actual 1,1,1,1`，堆栈指向测试源第 151 行。该次 `artifacts/build-diagnostics` 目录目前不在工作树；当前提交中 R09 第 151 行是颜色断言、描边宽度断言在第 154 行，因此无法确认旧运行实际使用的源码、DLL 或 PDB。此记录保留为无法归因的历史运行；当前提交的完整 `.cmd` 结果将在最终一键验证证据中单独记录。
+用户提供的运行 `20261021T135554848Z-c2927c39` 报告 R09 断言 `Expected 2,2,2,2 / Actual 1,1,1,1`，堆栈指向测试源第 151 行。该次 `artifacts/build-diagnostics` 目录目前不在工作树；当前提交中 R09 第 151 行是颜色断言、描边宽度断言在第 154 行，因此无法确认旧运行实际使用的源码、DLL 或 PDB。此记录保留为无法归因的历史运行；当前提交完整 `.cmd` 的 R09 `2/2` 和整链退出码 `0` 见[本次标准一键验收记录](STANDARD_BUILD_20261022.md)。

@@ -11,6 +11,79 @@
     "failed": 0,
     "skipped": 0
   },
+  "standardRun": {
+    "command": "GameSaveCenter-Run.cmd",
+    "sourceCommit": "22cec5976ee066b32bda07df00eab6d0002f440c",
+    "diagnosticRunId": "20261021T171031616Z-c05bcf5a",
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "startedUtc": "2026-10-21T17:10:32Z",
+    "completedUtc": "2026-10-21T18:10:13Z",
+    "exitCode": 0,
+    "build": {
+      "xamlFilesPassed": 25,
+      "xamlFilesTotal": 25,
+      "warnings": 0,
+      "errors": 0
+    },
+    "tests": {
+      "total": 1896,
+      "passed": 1839,
+      "failed": 0,
+      "skipped": 57,
+      "errorTimeoutAbort": 0,
+      "core": { "total": 157, "passed": 157 },
+      "worker": { "total": 400, "passed": 400 },
+      "playnite": { "total": 1339, "passed": 1282, "failed": 0, "skipped": 57 },
+      "wpfIsolatedClassRuns": 140,
+      "r09FocusOutline": { "total": 2, "passed": 2, "failed": 0 },
+      "commandDirectoryKeyboardClass": { "total": 5, "passed": 5, "failed": 0 }
+    },
+    "install": {
+      "packageVersion": "0.6.73",
+      "pluginDllVersion": "0.6.73.0",
+      "installedDllMatchesBuildArtifact": true,
+      "playniteExecutable": "D:/software/Playnite/Playnite.DesktopApp.exe",
+      "playniteStarted": true
+    },
+    "artifacts": [
+      {
+        "name": "summary.json",
+        "path": "artifacts/build-diagnostics/20261021T171031616Z-c05bcf5a/summary.json",
+        "sha256": "8A847F5BAF8823FF78E384BB2BB019A42ED746764C8760A19FE650C1FA5629BA"
+      },
+      {
+        "name": "standard-cmd-console.txt",
+        "path": "artifacts/build-diagnostics/20261021T171031616Z-c05bcf5a/standard-cmd-console.txt",
+        "sha256": "D30E424710B7825E1C0ED4C5DEE6AE87FF9B85568996ED987A20CBFDEF9E9D93"
+      },
+      {
+        "name": "R09FocusOutlineBehaviorTests.trx",
+        "path": "artifacts/build-diagnostics/20261021T171031616Z-c05bcf5a/tests/wpf.R09FocusOutlineBehaviorTests/wpf.R09FocusOutlineBehaviorTests.trx",
+        "sha256": "E8D97A99F1A486110CC4BA286998531977E7848D9CE62E1F65074B4AF80FBC18"
+      },
+      {
+        "name": "GameSaveCenter-0.6.73-playnite.zip",
+        "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+        "sha256": "043FDCE8992ADA71CA91DD4C9AE98A2BFAA6F9DD55E5E4F86183658626F0E3F3"
+      },
+      {
+        "name": "last-dev-install.txt",
+        "path": "artifacts/last-dev-install.txt",
+        "sha256": "13C6C75C3A7C6760675E2A8F3E2D92181511BC016DA3F245ACC6515F1B62F3C5"
+      },
+      {
+        "name": "GameSaveCenter.Playnite.dll",
+        "path": "artifacts/gsc-b/3e6bac40/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll",
+        "sha256": "BC1094754B0891AE92B224B4E602E7A96B17A851341435DC77BE34CD1AA82C36"
+      },
+      {
+        "name": "GameSaveCenter.Playnite.Tests.dll",
+        "path": "artifacts/gsc-b/3e6bac40/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+        "sha256": "1174024DDF7B65D0B754F1B3F702953ABC97F3AEEE691664C29A9D65EF58601E"
+      }
+    ]
+  },
   "sourceFiles": [
     {
       "path": "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",

@@ -49,8 +49,12 @@
       "implementationCommit": "0968309c",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[实施与受控验证](evidence/S00-03/IMPLEMENTATION.md)：SDK8.0.423 Release `CommandDirectory` 12/12；Ctrl+Shift+P 仅绑定插件 UserControl。真实 Playnite/物理输入/IME 候选行为仍待验；[初始依赖审计](evidence/S00-03/AUDIT.md)",
+      "verificationText": "[标准一键验收](evidence/S00-03/STANDARD_BUILD_20261022.md)：提交 `22cec597`，SDK8.0.423 Release，1896 项、0 失败；R09 2/2、140 个 WPF 隔离类通过，打包安装和 Playnite 启动成功。真实物理输入/IME 候选/交互呈现仍待验；[实施证据](evidence/S00-03/IMPLEMENTATION.md)；[初始依赖审计](evidence/S00-03/AUDIT.md)",
       "evidence": [
+        {
+          "label": "标准一键构建验收",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md"
+        },
         {
           "label": "实施与受控验证",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md"
@@ -60,7 +64,7 @@
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md"
         }
       ],
-      "boundary": "受控 WPF 行为已验证；物理键盘、真实 IME 候选、Playnite 焦点/快捷键协作及最终呈现未验，host verification 保持 pending。未注册全局热键、未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。"
+      "boundary": "完整默认链编译、测试、打包、安装与 Playnite 进程启动均通过；物理键盘、真实 IME 候选、交互中的 Playnite 焦点/快捷键协作及最终呈现未验，host verification 保持 pending。未注册全局热键、未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。"
     },
     {
       "id": "S00-04",

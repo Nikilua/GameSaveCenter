@@ -4,7 +4,7 @@
 
 ### 最新状态（2026-10-22）
 
-2026-10-22 S00-03 命令目录键盘交互已在 `0968309c` 实现；SDK8.0.423 Release 定向回归 `12/12`，快捷键只注册在插件 UserControl。详见[实施证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。本机 SDK8 官方 `scripts/build.ps1 -Configuration Release` 的既有完整构建证据仍为 Release solution `0/0`、XAML `25/25`、1,891 项 `1,823 passed / 0 failed / 68 skipped`；本轮新的标准 `GameSaveCenter-Run.cmd` 全流程验收待运行。真实 Playnite/物理键盘/IME 候选仍待宿主验收；S00-02 和 S07-03 边界不变，S00-04～08 继续按依赖顺序等待，Round4 整体未完成。
+2026-10-22 S00-03 命令目录键盘交互已在 `0968309c` 实现；SDK8.0.423 Release 定向回归 `12/12`。随后提交 `22cec597` 的标准 `GameSaveCenter-Run.cmd` 全流程退出 `0`：XAML `25/25`、Release 编译 `0/0`、Core `157/157`、Worker `400/400`、Playnite `1,339` 项（1,282 通过、57 skip、0 失败），140 个 WPF 隔离类；总计 `1,896` 项中 `1,839` 通过、57 skip、0 失败。Worker 发布、版本校验、打包、安装身份验证和 Playnite 启动均通过。详细 run ID、原始诊断与程序集/包身份见[标准一键验收记录](design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md)。57 skip 均是针对已撤销“今日工作台”架构的旧断言。实际物理键盘、IME 候选和交互呈现仍待宿主操作验收；S00-02 与 S07-03 边界不变，S00-04～08 继续按依赖顺序等待，Round4 整体未完成。
 
 Round4 S05-01 至 S05-08、S06-01 至 S06-08 已受控验收。S06-06 `fb33cd11` 按稳定 ID 刷新当前索引摘要；用户滚动截图后的 `a1a86e41` 让有效页面 ScrollViewer 测量高度限制表格预算。S06-07 `96a3eab3` 增加只读脱敏待办预览，SDK9 Release solution `0/0`、行为/UI/复制链 `13/13`。S06-08 `09ec3c84` 补原生 Worklists JSON 重载、旧字段默认和损坏清单恢复回归，Playnite.Tests Release Rebuild `0/0`、跨会话/既有设置回归 `27/27`。证据见 Round4 S06-07/S06-08 页面。SDK8.0.423 已在本机准备并用于本轮受控 Release 构建及定向测试；完整 Playnite WPF 独立循环/安装门禁仍受 R05 系统鼠标访问限制，真实 Playnite 屏幕未验。S00-03 等 S00-02 的完整门禁；旧一键日志在 R05 `GetCursorPos` Win32 error 5 停止，当前独立测试将物理鼠标项按设计跳过。S07-03 仍因 required-check/branch-protection 读取权限不足而阻塞；本轮 S02-04 至 S02-08 的 SDK8 复核不解锁其他外部宿主门禁。
 
@@ -68,7 +68,7 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S07-06 | IMPLEMENTED | 诊断 `summary.json` 加入原始 TRX 的测试用例通过/失败/跳过汇总、每文件原计数对照、套件类别和 WPF 隔离类运行数；保留逐文件路径便于复算。证据见 Round4 S07-06。 |
 | S07-07 | IMPLEMENTED | `ENVIRONMENT_CAPABILITY_CACHE.json` 记录 SDK/Playnite/CEF/ETW 当前能力状态、已知检查与重试条件；validator 纳入 source validation。证据见 Round4 S07-07。 |
 | S07-03 | BLOCKED_ENVIRONMENT | workflow 当前所有路径走完整双 SDK 流程；branch protection API 返回 403，required check 名称不可见。未改 workflow；取得配置读取权限或 required-check 清单后继续。证据见 Round4 S07-03。 |
-| S00-03 | IMPLEMENTED | `0968309c` 补方向键、Enter、IME composition 防护和插件级 `Ctrl+Shift+P`；SDK8.0.423 Release 定向回归 `12/12`。受控行为通过；真实 Playnite/物理输入/IME 候选验收 pending。详见 S00-03 实施证据。 |
+| S00-03 | IMPLEMENTED | `0968309c` 补方向键、Enter、IME composition 防护和插件级 `Ctrl+Shift+P`；SDK8 Release 定向回归 `12/12`。`22cec597` 标准一键链退出 `0`，1896 项 0 失败、140 WPF 类通过，安装并启动 Playnite。物理键盘/IME 候选/最终交互画面仍 pending。详见 S00-03 标准验收记录。 |
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-04～08 | PROPOSED | 依赖 S00-03 按顺序准入；危险命令只导航到原安全流程。 |
 | S03-03 | IMPLEMENTED | `3268565c` 冲突详情并排显示双方版本/设备证据、共同父版本、指纹关系与 readiness 校验状态/时间；SDK8 Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`、Render QA OK。无时间戳覆盖建议；完整 WPF 隔离、安装与真实 Playnite未验。证据见 Round4 S03-03。 |
