@@ -1,0 +1,41 @@
+[repo]\.tmp\round4-scroll-final-build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.86]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.93]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.ProductionDataGridsExposeNamesAndNativeAutomationPatterns [4 s]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.TrainerToolSettingsExposeSemanticSelectorAndToggleState [513 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MaintenanceProcessMappingSelectorExposesSemanticState [367 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState [322 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.SaveCenterPolicyControlsExposeExternalLabelStateThroughWpfPeers [354 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaCenterSelectorsExposeSemanticState [354 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.ProductionMediaInboxSelectionPatternTracksTheSelectedRow [447 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaCenterFavoriteToggleExposesSemanticState [337 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.ProductionProgressAndTaskSelectorContractsUseSemanticNames [49 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaCenterMetadataControlsExposeSemanticValueAndActions [362 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaCenterBatchActionsRejectEmptySelectionBeforeMetadataWrite [10 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.TrainerImportSelectionAndActionsExposeSemanticState [345 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.PolicyToggleAndSelectorPeersExposeSemanticState [361 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaDetailNavigationValueExposesSelectionBoundaries [334 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.DashboardPickerAndPolicyControlsExposeSemanticState [360 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MaintenanceCloudTransferSelectorsExposeSemanticState [389 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.NamedControlsExposeActionStateAndRangeValueThroughWpfPeers [412 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.SaveCenterPolicyLabelsRemainAttachedToNamedInteractiveControls [14 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.ProductionIconOnlyActionExposesItsSemanticNameToAutomation [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.TaskProgressPeerExposesBoundValueAndUnknownStatus [752 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaCenterBatchActionsExposeStableNamesAndInvokeChannels [366 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.MediaCenterListExposesSemanticNameAndSelectionState [884 ms]
+[xUnit.net 00:00:17.08]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.ExistingMediaCenterSelectorsExposeSemanticState [355 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests.SelectorAndTogglePeersExposeEmptyAndIndeterminateStates [359 ms]
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+
+测试运行成功。
+测试总数: 24
+     通过数: 24
+总时间: 33.9568 秒
+结果文件: [repo]\.tmp\round4-scroll-final-build-diagnostics\20261021T104126057Z-ed60009c\tests\wpf.R21AutomationValueBehaviorTests\wpf.R21AutomationValueBehaviorTests.trx

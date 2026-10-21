@@ -11741,3 +11741,12 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 对用户滚动截图关联页的当前源码 SDK8 几何回归 `7/7`；现有 `43b869d1`/`a1a86e41` 已修正工具区占高、表格详情入口和 PageHost 实际视口预算，本轮没有把离屏结果称作真实屏幕通过。复核中另发现 Task Center 搜索控件最小宽度和旧完整筛选行断点不匹配，固定 `1500 DIP` 紧凑断点；Q14 Light/Dark boundary geometry 与标签重挂接 `2/2`。维护中心保留情景版本/生成时间使用相对文本及完整 Tooltip/UIA 时间，R22 `32/32`。完整回归见 [本地 UI 复核](../design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。
 - 同步过时的 R17、Workspace、R21 和 restored baseline 源码断言；R17 `2/2`、Workspace `9 passed / 1 historical skip`、R21 `24/24`、baseline `16/16`。没有只靠新字符串检查交付功能。
 - `ROUND4_PROGRESS.md` 已由状态 JSON 生成；原 Round3 未跟踪 TRX 与 Playnite `TestResults/` 保持未修改/未暂存。本轮 `.tmp` 将在证据归档、身份核对后按路径边界清理。依当前 Backlog，S02 已无独立实现项可准入；尚存完整 WPF/真实宿主与 branch-protection 外部边界，本计划没有依赖满足的下一项 READY。
+
+## 2026-10-21 用户滚动反馈后续复核与 SDK8 默认构建
+
+- 继续验证用户指出的维护表格滚动条/详情错位、任务队列滚动范围和路径候选裁切。Maintenance 保留策略逐游戏/版本 DataGrid 收入有限 Grid 视口，增加无结果和未选中时的可见说明，避免空表格占用区域但不给用户信息。
+- 更新缩放几何、筛选夹具和资源字典回归：旧断言与当前紧凑筛选器/有限 viewport 的产品行为对齐；RenderHarness resize transition 现以隐藏 WPF Window 加载页面并接收 `ScrollChanged`，不再用未加载 Grid 模拟 PageHost。后者是测试夹具生命周期修正，不是声称发现了新的产品故障。
+- 官方默认命令 `scripts/build.ps1 -Configuration Release -OutputRoot .tmp\round4-scroll-final-build-output -TestTempRoot .tmp\round4-scroll-final-build-temp -DiagnosticsRoot .tmp\round4-scroll-final-build-diagnostics` 在 SDK `8.0.423` 退出码 0：restore、XAML `25/25`、Release solution `0 warning / 0 error`；Core `157/157`，Worker `399/400`（1 skip），Playnite source `533/560`（27 skip），WPF 隔离 `734/774`（40 skip，139 类全完成），汇总 `1,891` 项 `1,823 passed / 0 failed / 68 skipped`。142 个 TRX 的计数一致，摘要无解析错误/错配。诊断 ID `20261021T104126057Z-ed60009c`，逐阶段输出、summary、TRX 和 RenderHarness 报告见[证据包](../design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。
+- 68 个 skip 具体为已撤销旧“今日工作台 UI”架构断言 57、当前执行会话创建 Named Pipe 被拒绝 10、读取系统鼠标位置被拒绝 1。未绕过权限；未启动真实 Playnite。
+- RenderHarness 离屏报告 `render-qa OK`，缩放转场恢复 5 项指标；Task Center 在 PageHost 1040x700、1100x720 和 1366x768 尺寸下保留 4 行，DataGrid viewport `274 DIP`。source validation、XAML `25/25`、WPF 静态审查 `0 error`、`git diff --check` 通过。截图/合成 WPF 不是用户桌面或真实宿主证据。
+- 已同步 CURRENT_STATE、PROJECT_MEMORY、DEVELOPMENT_HANDOFF、Round4 进度及 backlog 最新摘要；64 项 `ROUND4_STATUS.json` 状态未变，Round4 未整体完成。S00-01 已满足，本计划目前无依赖已满足的下一项 READY；S00-02 等宿主门禁和 S07-03 权限阻塞保留。原有 Round3 未跟踪 TRX 与 Playnite `TestResults/` 未触碰、未暂存。

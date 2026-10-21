@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-21 用户滚动问题与本地默认构建结论
+
+已对存档表格滚动条越过详情、任务队列滚动边界和路径候选数据裁切继续复核。当前本机官方 SDK8.0.423 `scripts/build.ps1 -Configuration Release` 默认全流程成功：XAML `25/25`、Release solution `0 warning / 0 error`、1,891 项结果中 `1,823 pass / 0 fail / 68 skip`；RenderHarness 离屏布局报告 `render-qa OK`。原始阶段日志、逐项 TRX 与离屏报告见 [证据包](docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。68 个跳过的原因已逐项分类记录；此结论不包含 Playnite 真机/安装/物理屏幕验收，也不代表 Round4 完成。S00-01 仍为已满足，当前无依赖已满足的 READY 项。原有 Round3 未跟踪 TRX/TestResults 保持未提交。
+
 ## 2026-10-21 当前进展：SDK8 S02 复核、滚动视口修正，宿主门禁待验
 
 本轮用 SDK `8.0.423` 通过官方 Release solution restore/build（`-SkipTests`）：XAML `25/25`、编译 `0 warning / 0 error`。S02-04 至 S02-08 通知/上下文定向回归在同一构建输出通过；S02-04 controlled verification 已登记为 passed，S02-04 至 S02-08 仍保持“代码完成待验收”，真实 Playnite及完整 WPF 独立循环未验。R05 鼠标用例 2 pass/1 skip，skip 原因是当前 Windows 会话不允许读取系统鼠标位置。详情：[SDK8 S02 当前源码复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。滚动几何、任务筛选行、R22 时间显示与本地回归边界见[本地 UI 复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。原 Round3 未跟踪 TRX 与 `TestResults/` 保留。

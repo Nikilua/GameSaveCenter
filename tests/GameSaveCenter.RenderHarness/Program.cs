@@ -7962,6 +7962,10 @@ public static class Program
     {
         report.AppendLine();
         report.AppendLine("Resize transition QA (2560x1440 -> 1100x720 -> 2560x1440)");
+        var application = Application.Current;
+        var previousShutdownMode = application?.ShutdownMode;
+        if (application != null)
+            application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         var cases = new (string Name, UserControl View)[]
         {
             ("Overview", CreateThemeView("Overview")),
@@ -7975,6 +7979,7 @@ public static class Program
 
         foreach (var (name, view) in cases)
         {
+            Window? transitionWindow = null;
             try
             {
                 var host = new Grid
@@ -7983,14 +7988,39 @@ public static class Program
                     ClipToBounds = true
                 };
                 host.Children.Add(view);
+                // TaskCenter refines its finite table budget from PageScrollViewer's
+                // ScrollChanged event after the host has been laid out. A detached
+                // Grid never raises Loaded/ScrollChanged, so it cannot model the
+                // production resize route. Use an invisible borderless WPF window to
+                // connect the visual tree while keeping this an offscreen harness.
+                transitionWindow = new Window
+                {
+                    Content = host,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Opacity = 0,
+                    Left = -32000,
+                    Top = -32000
+                };
+                transitionWindow.Show();
                 List<ElementMetric>? initial = null;
                 for (var step = 0; step < ResizeSequence.Length; step++)
                 {
                     var (windowW, windowH) = ResizeSequence[step];
                     var (contentW, contentH) = ContentSize(windowW, windowH);
+                    transitionWindow.Width = contentW;
+                    transitionWindow.Height = contentH;
                     host.Width = contentW;
                     host.Height = contentH;
+                    // The production shell passes PageHost.ActualHeight to workspace
+                    // layout, not the outer window height. Media and Tasks derive a
+                    // finite table budget from that viewport, so use the same DIP value
+                    // during resize transitions rather than letting a stale nested
+                    // ScrollViewer viewport cap a restored wide window.
                     var responsiveHeight = name.Equals("Media", StringComparison.OrdinalIgnoreCase)
+                        || name.Equals("Task", StringComparison.OrdinalIgnoreCase)
                         ? contentH
                         : windowH;
                     ApplyThemeResponsive(view, contentW, responsiveHeight);
@@ -8015,7 +8045,13 @@ public static class Program
                 s_problems.Add($"{name} resize transition failed: {ex.Message}");
                 report.AppendLine($"  {name} RESIZE FAILED {ex.Message}");
             }
+            finally
+            {
+                transitionWindow?.Close();
+            }
         }
+        if (application != null && previousShutdownMode.HasValue)
+            application.ShutdownMode = previousShutdownMode.Value;
     }
 
     private static void RunShellChromeProbes(string outputRoot, StringBuilder report)

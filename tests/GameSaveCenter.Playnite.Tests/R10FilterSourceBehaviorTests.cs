@@ -86,6 +86,14 @@ public sealed class R10FilterSourceBehaviorTests
             };
 
             SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.Tasks), tasks);
+            SetAutoPropertyBackingField(
+                dashboard,
+                nameof(DashboardViewModel.TaskTypeFilterOptions),
+                new System.Collections.ObjectModel.ObservableCollection<string>
+                {
+                    "全部",
+                    tasks[0].TaskTypeDisplay
+                });
             SetField(dashboard, "taskSearchText", "存档");
             SetField(dashboard, "taskStatusFilter", "失败");
             SetField(dashboard, "taskGameFilter", "全部");
@@ -101,6 +109,7 @@ public sealed class R10FilterSourceBehaviorTests
             Assert.NotNull(filterTask);
             taskView.Filter = item => (bool)filterTask!.Invoke(dashboard, new[] { item })!;
             SetAutoPropertyBackingField(dashboard, nameof(DashboardViewModel.TasksView), taskView);
+            Assert.Contains(dashboard.TaskTypeFilter, dashboard.TaskTypeFilterOptions);
 
             var pageRequests = new LatestRequestCoordinator();
             SetField(dashboard, "taskPageRequests", pageRequests);

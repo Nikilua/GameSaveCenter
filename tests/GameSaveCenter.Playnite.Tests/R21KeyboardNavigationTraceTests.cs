@@ -216,8 +216,11 @@ public sealed class R21KeyboardNavigationTraceTests
             };
             var fixture = new TaskKeyboardFixture(new[] { succeeded, running, failed }, failed, hasMoreHistory: true);
             var view = new TaskCenterView { DataContext = fixture };
-            using var host = new TraceHost(view, 1280, 760);
-            view.ApplyResponsiveLayout(1280, 760);
+            // This trace asserts the complete, uncollapsed filter sequence. At compact
+            // widths the production layout intentionally moves secondary filters into
+            // TaskMoreFiltersExpander, so use a wide viewport for this specific order.
+            using var host = new TraceHost(view, 1600, 900);
+            view.ApplyResponsiveLayout(1600, 900);
             host.Pump();
 
             var grid = Assert.IsType<DataGrid>(view.FindName("TaskGrid"));

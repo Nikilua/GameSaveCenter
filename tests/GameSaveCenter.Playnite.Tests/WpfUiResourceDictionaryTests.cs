@@ -938,7 +938,8 @@ public sealed class WpfUiResourceDictionaryTests
         var taskCode = File.ReadAllText(taskPath + ".cs");
         var viewModel = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
 
-        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Style=\"{DynamicResource GscRedesignSectionCard}\"", task);
+        Assert.Contains("x:Name=\"TaskSummaryPanel\" Grid.Row=\"0\" Grid.ColumnSpan=\"3\" Style=\"{StaticResource TaskBrowserSwitchablePanel}\"", task);
+        Assert.Contains("<Style x:Key=\"TaskBrowserSwitchablePanel\" TargetType=\"Border\" BasedOn=\"{StaticResource GscRedesignSectionCard}\">", task);
         Assert.Contains("<Rectangle Grid.Column=\"1\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
         Assert.Contains("<Rectangle Grid.Column=\"3\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
         Assert.Contains("<Rectangle Grid.Column=\"5\" Width=\"1\" Fill=\"{DynamicResource GscTableDividerBrush}\"", task);
@@ -1222,7 +1223,7 @@ public sealed class WpfUiResourceDictionaryTests
             .Where(element => element.Name.LocalName == "DataGrid")
             .ToList();
 
-        Assert.Equal(7, dataGrids.Count);
+        Assert.Equal(9, dataGrids.Count);
 
         foreach (var dataGrid in dataGrids)
         {
@@ -1402,10 +1403,22 @@ public sealed class WpfUiResourceDictionaryTests
                 Assert.Empty(directScrollViewers);
             }
             Assert.True(root.Descendants().Any(element => element.Name.LocalName == "Grid"), $"{file} must expose a Grid workspace.");
-            if (file == "MediaCenterView.xaml")
-                Assert.Contains("x:Name=\"MediaInboxPageScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}", text);
-            else
-                Assert.DoesNotContain("PageScrollViewer\" Style=\"{DynamicResource GscPageScrollViewer}", text);
+            var namedPageScrollViewers = root.Descendants()
+                .Where(element => element.Name.LocalName == "ScrollViewer"
+                    && (element.Attribute(xamlName)?.Value.EndsWith("PageScrollViewer", StringComparison.Ordinal) ?? false))
+                .ToArray();
+            foreach (var pageScrollViewer in namedPageScrollViewers)
+                Assert.Equal("{DynamicResource GscPageScrollViewer}", pageScrollViewer.Attribute("Style")?.Value);
+
+            var expectedPageScrollViewer = file switch
+            {
+                "SaveCenterView.xaml" => "SaveHistoryPageScrollViewer",
+                "MediaCenterView.xaml" => "MediaInboxPageScrollViewer",
+                "TaskCenterView.xaml" => "TaskPageScrollViewer",
+                _ => null
+            };
+            if (expectedPageScrollViewer != null)
+                Assert.Contains(namedPageScrollViewers, element => element.Attribute(xamlName)?.Value == expectedPageScrollViewer);
         }
 
         var trainer = File.ReadAllText(Path.Combine(viewDirectory, "TrainerCenterView.xaml"));
@@ -4450,7 +4463,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)", dashboardCode);
         Assert.DoesNotContain("GamePicker", File.ReadAllText(taskPath));
 
-        var dataGrid = task.Descendants().Single(element => element.Name.LocalName == "DataGrid");
+        XNamespace xaml = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var dataGrid = task.Descendants().Single(element => element.Name.LocalName == "DataGrid"
+            && element.Attribute(xaml + "Name")?.Value == "TaskGrid");
         Assert.DoesNotContain(dataGrid.Ancestors(), ancestor => ancestor.Name.LocalName == "StackPanel");
         Assert.Contains("<Setter Property=\"EnableRowVirtualization\" Value=\"True\"/>", File.ReadAllText(taskPath));
         Assert.Contains("x:Name=\"TaskPageScrollSurface\"", File.ReadAllText(taskPath));
@@ -5034,7 +5049,7 @@ public sealed class WpfUiResourceDictionaryTests
         // own a centered, hit-test-free empty state so an empty page never shows a blank
         // DataGrid frame without explaining the next step.
         var dataGrids = maintenance.Descendants().Where(element => element.Name.LocalName == "DataGrid").ToArray();
-        Assert.Equal(7, dataGrids.Length);
+        Assert.Equal(9, dataGrids.Length);
         foreach (var grid in dataGrids)
         {
             var overlay = grid.Parent?.Elements().FirstOrDefault(element =>
@@ -6372,7 +6387,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);
         Assert.Contains("x:Name=\"MediaSummaryPanel\" Grid.Row=\"0\" Style=\"{DynamicResource GscRedesignSectionCard}\"", media);
         Assert.DoesNotContain("GscRedesignMetricBorder", media);
-        Assert.Equal(7, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
+        Assert.Equal(9, Regex.Matches(tasks, "Style=\"\\{DynamicResource GscWpfUiFilterComboBox\\}\"").Count);
         Assert.Contains("TaskStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);
         Assert.Contains("TaskTypeFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部", tasks);

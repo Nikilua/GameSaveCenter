@@ -1268,7 +1268,12 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
 
                 window = CreateWindow(view, 620, 700);
                 window.ResizeMode = ResizeMode.NoResize;
+                var moreFilters = (Expander)typeof(TaskCenterView)
+                    .GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
                 view.ApplyResponsiveLayout(620, 700);
+                Assert.Equal(Visibility.Visible, moreFilters.Visibility);
+                moreFilters.IsExpanded = true;
                 window.Show();
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
@@ -1276,7 +1281,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 (compactRows, compactGap) = MeasureWrapRows(row, view);
                 compactMargins = row.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
 
-                window.Width = 660;
+                window.Width = 1600;
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
                 FlushLayout(window);
@@ -1286,6 +1291,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 window.Width = 620;
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                moreFilters.IsExpanded = true;
                 FlushLayout(window);
                 (restoredRows, compactGap) = MeasureWrapRows(row, view);
                 restoredMargins = row.Children.OfType<FrameworkElement>().Select(child => child.Margin.Bottom).ToList();
@@ -2026,11 +2032,15 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 grid.ItemsSource = tasks;
 
                 window = CreateWindow(view, 2048, 1152);
+                // Match the production shell: establish the task table's finite viewport
+                // before the first measure, so a ScrollViewer cannot ask the DataGrid to
+                // realize the complete history once before responsive layout is applied.
+                view.ApplyResponsiveLayout(2048, 1152);
                 window.Show();
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(2048, 1152);
                 FlushLayout(window);
-                taskGridMetrics = $"theme={theme}, grid={grid.ActualWidth:0.##}×{grid.ActualHeight:0.##}, visible={grid.IsVisible}, loaded={grid.IsLoaded}, visibility={grid.Visibility}, items={grid.Items.Count}, virtualized={VirtualizingPanel.GetIsVirtualizing(grid)}";
+                taskGridMetrics = $"theme={theme}, grid={grid.ActualWidth:0.##}×{grid.ActualHeight:0.##}, assigned={grid.Height:0.##}/{grid.MaxHeight:0.##}, visible={grid.IsVisible}, loaded={grid.IsLoaded}, visibility={grid.Visibility}, items={grid.Items.Count}, virtualized={VirtualizingPanel.GetIsVirtualizing(grid)}";
 
                 var errorTint = grid.FindResource("GscErrorTintBrush") as Brush;
                 var errorStroke = grid.FindResource("GscErrorBrush") as Brush;

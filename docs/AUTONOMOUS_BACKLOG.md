@@ -4,6 +4,8 @@
 
 ### 最新状态（2026-10-21）
 
+2026-10-21 用户滚动反馈的后续复核与 SDK8 默认构建证据：[SCROLL-DEFAULT-SDK8-20261021](design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。本机官方 `scripts/build.ps1 -Configuration Release` 成功：Release solution `0/0`、XAML `25/25`、1,891 项 `1,823 passed / 0 failed / 68 skipped`；保留每阶段日志和 142 份 TRX。此受控构建只证明本地 SDK8 构建与已执行用例，不等于真实 Playnite/安装门禁。它不改变 Round4 状态：S00-01 仍为已满足；S00-02/S00-03 与 S07-03 的既有边界不变，当前无依赖已满足的 READY 后继任务，Round4 整体未完成。
+
 Round4 S05-01 至 S05-08、S06-01 至 S06-08 已受控验收。S06-06 `fb33cd11` 按稳定 ID 刷新当前索引摘要；用户滚动截图后的 `a1a86e41` 让有效页面 ScrollViewer 测量高度限制表格预算。S06-07 `96a3eab3` 增加只读脱敏待办预览，SDK9 Release solution `0/0`、行为/UI/复制链 `13/13`。S06-08 `09ec3c84` 补原生 Worklists JSON 重载、旧字段默认和损坏清单恢复回归，Playnite.Tests Release Rebuild `0/0`、跨会话/既有设置回归 `27/27`。证据见 Round4 S06-07/S06-08 页面。SDK8.0.423 已在本机准备并用于本轮受控 Release 构建及定向测试；完整 Playnite WPF 独立循环/安装门禁仍受 R05 系统鼠标访问限制，真实 Playnite 屏幕未验。S00-03 等 S00-02 的完整门禁；旧一键日志在 R05 `GetCursorPos` Win32 error 5 停止，当前独立测试将物理鼠标项按设计跳过。S07-03 仍因 required-check/branch-protection 读取权限不足而阻塞；本轮 S02-04 至 S02-08 的 SDK8 复核不解锁其他外部宿主门禁。
 
 2026-10-21 当前源码 SDK8 复核：官方 `scripts/build.ps1 -SkipTests` restore、XAML 25/25、Release solution 0/0；S02-04 至 S02-08 的通知/上下文定向测试通过，详见[共享证据](design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。S02-04 的 `controlledVerificationState` 已更新为 passed，S02-04 至 S02-08 的任务状态仍为“代码完成待验收”，hostVerification 仍 pending。用户滚动区域当前源码几何复核 7/7；Q14 紧凑搜索行断点调整为 1500 DIP，维护中心相对时间回归 32/32，详见[本地 UI 复核](design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。离屏 STA/WPF 不是真实 Playnite 屏幕证据。

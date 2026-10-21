@@ -1,0 +1,22 @@
+[repo]\.tmp\round4-scroll-final-build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.36]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.78]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.85]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DashboardConfirmationKeepsTabFocusInsideAndRestoresItsTriggerAfterClose [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 320, compact: True) [974 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 640, compact: False) [406 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DashboardDialogDeclaresAnOverlayFocusScopeAndReturnFocusPath [125 ms]
+[xUnit.net 00:00:07.37]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm [620 ms]
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+
+测试运行成功。
+测试总数: 5
+     通过数: 5
+总时间: 24.2856 秒
+结果文件: [repo]\.tmp\round4-scroll-final-build-diagnostics\20261021T104126057Z-ed60009c\tests\wpf.R05FocusBoundaryBehaviorTests\wpf.R05FocusBoundaryBehaviorTests.trx

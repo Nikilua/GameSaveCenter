@@ -1015,6 +1015,7 @@
                                 <TextBlock Text="逐游戏差异定位" Style="{DynamicResource GscSectionTitleStyle}"/>
                                 <TextBlock x:Name="RetentionScenarioDetailSummary" Text="{Binding RetentionScenarioComparison.DetailSummaryDisplay}" Style="{DynamicResource GscBodyStyle}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                                 <TextBlock Text="策略淘汰候选数量按同一版本快照对账；选择游戏查看发生变化的版本和安全保护原因。" Style="{DynamicResource GscDiagnosticHintText}" Margin="0,6,0,8" TextWrapping="Wrap"/>
+                                <Grid MinHeight="120" MaxHeight="250">
                                 <DataGrid x:Name="RetentionScenarioGameGrid" Tag="FiniteViewport" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding RetentionScenarioComparison.Games}" SelectedItem="{Binding SelectedRetentionScenarioGame, Mode=TwoWay}" MaxHeight="250" MinHeight="120" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True" CanUserAddRows="False" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" AutomationProperties.Name="逐游戏保留策略结果" AutomationProperties.HelpText="当前与候选策略按游戏对账；选择一行查看受影响版本及保护原因。">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="游戏" Binding="{Binding GameName}" Width="1.5*" MinWidth="130"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"><Setter Property="ToolTip" Value="{Binding GameName}"/></Style></DataGridTextColumn.ElementStyle></DataGridTextColumn>
@@ -1027,7 +1028,12 @@
                                         <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="变化版本" Binding="{Binding ChangedVersionCount}" Width="86" MinWidth="76"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
+                                <TextBlock Text="暂无逐游戏策略结果。刷新比较后，结果会显示在这里。" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="12">
+                                    <TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding RetentionScenarioComparison}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger><DataTrigger Binding="{Binding RetentionScenarioComparison.Games.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                </TextBlock>
+                                </Grid>
                                 <TextBlock Text="所选游戏的版本明细" Style="{DynamicResource GscBodyStyle}" FontWeight="SemiBold" Margin="0,14,0,6"/>
+                                <Grid MinHeight="120" MaxHeight="300">
                                 <DataGrid x:Name="RetentionScenarioVersionGrid" Tag="FiniteViewport" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding SelectedRetentionScenarioGame.VersionDetails}" MaxHeight="300" MinHeight="120" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True" CanUserAddRows="False" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" AutomationProperties.Name="所选游戏的版本策略明细" AutomationProperties.HelpText="只显示策略结论变化的版本及保护项；缺失或未通过安全检查的归档不计入现存归档候选。">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceFirstColumnHeader}" Header="时间 / 版本" Binding="{Binding CreatedRelativeDisplay, Mode=OneWay}" Width="1.5*" MinWidth="200"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"><Setter Property="ToolTip" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/><Setter Property="AutomationProperties.HelpText" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/></Style></DataGridTextColumn.ElementStyle></DataGridTextColumn>
@@ -1037,6 +1043,10 @@
                                         <DataGridTextColumn HeaderStyle="{StaticResource MaintenanceLastColumnHeader}" Header="归档检查" Binding="{Binding ArchiveAvailabilityDisplay}" Width="1.7*" MinWidth="210"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource MaintenanceLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
+                                <TextBlock Text="选择上方游戏后查看版本明细。" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="12">
+                                    <TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding SelectedRetentionScenarioGame}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger><DataTrigger Binding="{Binding SelectedRetentionScenarioGame.VersionDetails.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                                </TextBlock>
+                                </Grid>
                             </StackPanel>
                         </Border>
                         <Border Style="{DynamicResource GscReadingCardStyle}" Padding="18" Visibility="Collapsed">

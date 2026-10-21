@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-21 用户滚动反馈与 SDK8 默认构建复核
+
+针对维护中心滚动表格、任务队列和路径候选的截图继续收口有限 DataGrid 视口/空结果提示，并将 RenderHarness 缩放转场放入隐藏 WPF Window，以实际触发页面 Loaded/ScrollChanged 生命周期。离屏 Shell 尺寸下任务队列维持 4 行且表格预算在 PageHost 内，缩小再放大恢复通过；完整报告与图见 [滚动/默认构建证据](../design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。
+
+官方 `scripts/build.ps1 -Configuration Release` 在 SDK8.0.423 本机默认流程通过：Release solution `0 warning / 0 error`，XAML `25/25`，汇总 1,891 项（1,823 pass、0 fail、68 skip），142 个 TRX 计数一致。Skip 原因是 57 个失效旧架构断言、10 个 Named Pipe 权限限制和 1 个系统鼠标访问限制。这个结果证明本机命令成功，不证明真实 Playnite/安装门禁或物理屏幕。Round4 仍未整体完成；S00-01 已满足，其他 READY 依赖尚未满足。工作树旧 Round3 TRX/TestResults 保留。
+
 ## 2026-10-21 当前源码 SDK8 复核
 
 SDK `8.0.423` 官方 `scripts/build.ps1 -Configuration Release -SkipTests` 对当前工作树完成 restore、XAML 25/25 和完整 Release solution 编译 `0 warning / 0 error`。S02-04 至 S02-08 的通知/上下文/持久化定向测试已在这套官方输出上复核；S02-04 controlled verification 更新为 passed，但各项 host verification 仍 pending。R05 物理鼠标用例由测试按设计 skip，因为当前 Windows 会话不允许读系统指针；不绕过权限，不把离屏几何视作真实 Playnite 证据。详细 TRX、构建日志和程序集 SHA：[S02 SDK8 复核](../design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。滚动视口 `7/7`、Q14 布局、R22 时间显示及源码回归：[本地 UI 复核](../design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。Round4 仍未整体完成；当前无依赖已满足的 READY 项。

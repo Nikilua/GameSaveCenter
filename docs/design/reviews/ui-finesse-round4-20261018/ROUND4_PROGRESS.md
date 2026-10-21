@@ -6,6 +6,8 @@
 
 2026-10-21 用户后续截图再确认存档历史/路径候选及任务队列仍有内容落入下方详情或被裁切；提交 `43b869d1` 将紧凑模式次要筛选和候选视图操作移入折叠区，并将详情入口移出有限表格框架。SDK9 Release 全解决方案 `0 warning/0 error`，定向几何回归 `10/10`。真实 Playnite 未运行；RenderHarness 还原资产缺 `net472/win-x86`（NETSDK1047）。证据：[本轮截图修复](evidence/USER-SCROLL-FEEDBACK-20261021/README.md)。
 
+2026-10-21 用户追问存档中心表格、任务队列和路径候选滚动条/数据范围后，继续完成复核：修正维护页保留策略明细的有限视口及空结果提示，补齐窗口缩放、页面/表格边界与旧筛选布局断言；RenderHarness 转场探针改为通过隐藏 WPF Window 触发生产加载和 ScrollChanged 生命周期，去掉未加载 Grid 导致的假失败。官方 SDK8 `scripts/build.ps1 -Configuration Release` 默认全量流程成功：XAML `25/25`、Release 编译 `0/0`、1,891 项 `1,823 通过 / 0 失败 / 68 跳过`；RenderHarness `render-qa OK`。逐阶段摘要、142 TRX、控制台输出、离屏报告与抽样图见[构建与滚动证据](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。68 个跳过分别为旧 UI 架构断言 57、当前会话 Named Pipe 权限 10、系统指针读取拒绝 1。受控截图不是真实 Playnite 窗口证据；没有更改 Round4 状态，本计划仍有未验收项且当前无依赖已满足的 READY 项。
+
 2026-10-21 S06-04 已由 `2af5841f` 实现并推送：清单引用按对象类型和稳定 ID 导航，Worker 精确读取校验问题；缺失对象保留诊断且可移除，业务操作须用户重新发起。SDK9 Release solution 重编译 `0/0`、Worker `2/2`、Playnite `10/10`、source validation 及 XAML `25/25` 通过。SDK8.0.423 未安装，真实 Playnite 未运行。证据：[S06-04](evidence/S06-04/README.md)。
 
 2026-10-21 S06-05 已由 `0aa80547` 实现并推送：人工待办浏览器可对唯一选中项标记完成或撤销；该状态只作人工跟进记录，不代表备份/校验成功。写入设置后保留其余清单条目的稳定 ID 解析状态。SDK9 Release solution 重编译及最终增量构建均 `0 warning/0 error`，Playnite `17/17`，source validation、XAML `25/25`、Round4 台账 `5/5` 通过；WPF 静态审查 `0 errors`。SDK8.0.423 与真实 Playnite未验。证据：[S06-05](evidence/S06-05/README.md)。
@@ -20,7 +22,7 @@
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
 | S00-01 | 只读命令目录 | 已满足 | dd38f8ca | [证据](evidence/S00-01/README.md)：origin/main 已有稳定命令目录；原 7/7 SDK9 与当前 SDK8 CommandDirectoryBehaviorTests 2/2 复核通过 | 当前 SDK8.0.423 解决方案构建通过；真实 Playnite 未运行；S00-02 仍待 UI 门禁 |
-| S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 全量隔离在 R05 系统指针权限错误处中止 | SDK8 Release build 已通过；WPF 隔离在 R05 GetCursorPos Win32 error 5 处停止，安装/版本核验及真实宿主未运行；门禁通过后再推送并准入 S00-03 |
+| S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 默认全量本地构建及 WPF 隔离 `1,823/1,891` 通过、68 skip，见[当前复核](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md) | SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；当前 Windows 会话拒绝的系统指针用例按设计 skip。此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止；安装/版本核验与真实 Playnite 呈现仍未完成，host verification 保持 pending，不准入 S00-03 |
 | S00-03 | 键盘与组合输入 | 外部阻塞 | — | [依赖审计](evidence/S00-03/AUDIT.md)：Esc/IME 组合保护已有部分实现，但方向键/Enter 行为未实现或验证；S00-02 SDK8 WPF host gate 在 GetCursorPos error 5 处中止，安装/版本核验未到达，前置未满足 | 不把 S00-03 置为 READY；待 S00-02 完成 SDK8 WPF 隔离和安装/版本核验后再进入。未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。 |
 | S00-04 | 固定与最近命令 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-05 | 上下文预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

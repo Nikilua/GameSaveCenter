@@ -210,7 +210,9 @@ namespace GameSaveCenter.Playnite.Tests
                     compactMoreHasViewRow = more.Children.Contains(viewRow);
                     compactSearchSpan = Grid.GetColumnSpan(search);
 
-                    view.ApplyResponsiveLayout(1280, 720);
+                    // The production toolbar keeps secondary filters in its disclosure
+                    // until the complete primary row fits at the 1500 DIP breakpoint.
+                    view.ApplyResponsiveLayout(1600, 720);
                     wideMainHasType = filters.Children.Contains(typeGroup);
                     wideMainHasScope = filters.Children.Contains(scopeGroup);
                     wideMainHasRange = filters.Children.Contains(rangeGroup);

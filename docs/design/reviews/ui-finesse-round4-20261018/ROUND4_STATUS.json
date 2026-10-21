@@ -28,14 +28,18 @@
       "implementationCommit": "29dc09b2、a58dd582",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 全量隔离在 R05 系统指针权限错误处中止",
+      "verificationText": "[证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 默认全量本地构建及 WPF 隔离 `1,823/1,891` 通过、68 skip，见[当前复核](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md"
+        },
+        {
+          "label": "当前 SDK8 全量本地复核",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md"
         }
       ],
-      "boundary": "SDK8 Release build 已通过；WPF 隔离在 R05 GetCursorPos Win32 error 5 处停止，安装/版本核验及真实宿主未运行；门禁通过后再推送并准入 S00-03"
+      "boundary": "SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；当前 Windows 会话拒绝的系统指针用例按设计 skip。此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止；安装/版本核验与真实 Playnite 呈现仍未完成，host verification 保持 pending，不准入 S00-03"
     },
     {
       "id": "S00-03",
