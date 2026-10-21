@@ -75,7 +75,6 @@ namespace GameSaveCenter.Playnite.Views
             dialogMotion = new DialogOverlayMotion(DialogOverlay, DialogCard);
             viewModel = new DashboardViewModel(plugin);
             DataContext = viewModel;
-            ProductionShellView.Attach(viewModel);
             ProductionShellView.FocusWorkspaceSearchRequested = FocusWorkspaceSearch;
             ProductionShellView.MotionEnabledProvider = () => MotionEnabled;
             ProductionShellView.SidebarCollapsedProvider = () => plugin.Settings.SidebarCollapsed;
@@ -85,7 +84,31 @@ namespace GameSaveCenter.Playnite.Views
                 plugin.Settings.SidebarCollapsed = value;
                 plugin.SavePluginSettings(plugin.Settings);
             };
+            ProductionShellView.CommandDirectoryPreferencesProvider = () =>
+                new CommandDirectoryPreferenceSnapshot(
+                    plugin.Settings.PinnedCommandIds,
+                    plugin.Settings.RecentCommandIds);
+            ProductionShellView.CommandDirectoryPreferencesSaver = preferences =>
+            {
+                var previousPinned = plugin.Settings.PinnedCommandIds.ToList();
+                var previousRecent = plugin.Settings.RecentCommandIds.ToList();
+                try
+                {
+                    plugin.Settings.PinnedCommandIds = preferences.PinnedCommandIds.ToList();
+                    plugin.Settings.RecentCommandIds = preferences.RecentCommandIds.ToList();
+                    plugin.SavePluginSettings(plugin.Settings);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    plugin.Settings.PinnedCommandIds = previousPinned;
+                    plugin.Settings.RecentCommandIds = previousRecent;
+                    Logger.Error(ex, "GameSaveCenter could not save command directory preferences.");
+                    return false;
+                }
+            };
             ProductionShellView.SettingsRequested = () => plugin.PlayniteApi.MainView.OpenPluginSettings(plugin.Id);
+            ProductionShellView.Attach(viewModel);
 
             refreshTimer.Tick += OnRefreshTimerTick;
             Loaded += OnLoaded;

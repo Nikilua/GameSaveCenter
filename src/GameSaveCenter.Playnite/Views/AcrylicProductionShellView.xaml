@@ -368,6 +368,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid>
@@ -401,7 +402,14 @@
                                    Foreground="{DynamicResource GscSecondaryTextBrush}"
                                    Margin="2,0,0,6"
                                    AutomationProperties.Name="命令搜索结果数量"/>
-                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="3"
+                        <TextBlock x:Name="CommandDirectoryNoticeText" Grid.Row="3"
+                                   Visibility="Collapsed"
+                                   Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                   FontSize="{DynamicResource GscCaptionFontSize}"
+                                   TextWrapping="Wrap"
+                                   Margin="2,0,2,6"
+                                   AutomationProperties.Name="命令目录状态"/>
+                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="4"
                                  BorderThickness="0" Background="Transparent" Padding="0"
                                  IsTabStop="False"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -447,54 +455,77 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <ui:Button Style="{DynamicResource GscCommandDirectoryResultButton}"
-                                               Command="{Binding}"
-                                               Click="OnCommandDirectoryResultClick"
-                                               ToolTip="{Binding UnavailableReason}"
-                                               AutomationProperties.Name="{Binding AutomationDisplayName}"
-                                               AutomationProperties.HelpText="{Binding UnavailableReason}">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding AvailabilityDisplay}"
-                                                       Foreground="{DynamicResource GscAccentBrush}"
-                                                       FontSize="{DynamicResource GscCaptionFontSize}"
-                                                       Margin="12,0,0,0"/>
-                                            <TextBlock Grid.Row="1" Text="{Binding Category}"
-                                                       Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                                       FontSize="{DynamicResource GscCaptionFontSize}"
-                                                       Margin="0,3,8,0" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ScopeDisplay}"
-                                                       Foreground="{DynamicResource GscSecondaryTextBrush}"
-                                                       FontSize="{DynamicResource GscCaptionFontSize}"
-                                                       Margin="0,3,0,0"/>
-                                            <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
-                                                       Text="{Binding UnavailableReason}"
-                                                       Foreground="{DynamicResource GscMutedTextBrush}"
-                                                       FontSize="{DynamicResource GscCaptionFontSize}"
-                                                       TextWrapping="Wrap" Margin="0,3,0,0">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Grid>
-                                    </ui:Button>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ui:Button Grid.Column="0"
+                                                   Style="{DynamicResource GscCommandDirectoryResultButton}"
+                                                   Command="{Binding}"
+                                                   Click="OnCommandDirectoryResultClick"
+                                                   ToolTip="{Binding UnavailableReason}"
+                                                   AutomationProperties.Name="{Binding AutomationDisplayName}"
+                                                   AutomationProperties.HelpText="{Binding UnavailableReason}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding RecentDisplay}"
+                                                           Foreground="{DynamicResource GscAccentBrush}"
+                                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                                           Margin="10,0,0,0"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding AvailabilityDisplay}"
+                                                           Foreground="{DynamicResource GscAccentBrush}"
+                                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                                           Margin="10,0,0,0"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Category}"
+                                                           Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                                           Margin="0,3,8,0" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                                           Text="{Binding ScopeDisplay}"
+                                                           Foreground="{DynamicResource GscSecondaryTextBrush}"
+                                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                                           Margin="10,3,0,0"/>
+                                                <TextBlock Grid.Row="2" Grid.ColumnSpan="3"
+                                                           Text="{Binding UnavailableReason}"
+                                                           Foreground="{DynamicResource GscMutedTextBrush}"
+                                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                                           TextWrapping="Wrap" Margin="0,3,0,0">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </ui:Button>
+                                        <ui:Button Grid.Column="1"
+                                                   Style="{DynamicResource GscWpfUiContextButton}"
+                                                   Content="{Binding PinActionDisplay}"
+                                                   IsEnabled="{Binding PinActionEnabled}"
+                                                   Click="OnCommandDirectoryPinClick"
+                                                   ToolTip="{Binding PinActionHelpText}"
+                                                   AutomationProperties.Name="{Binding PinAutomationName}"
+                                                   AutomationProperties.HelpText="{Binding PinActionHelpText}"
+                                                   MinWidth="80"
+                                                   Margin="4,0,0,6"/>
+                                    </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

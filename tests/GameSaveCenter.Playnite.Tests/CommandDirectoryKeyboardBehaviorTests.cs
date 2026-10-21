@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading;
@@ -161,6 +163,32 @@ public sealed class CommandDirectoryKeyboardBehaviorTests
             host.Window.UpdateLayout();
             Assert.Same(editor, Keyboard.Focus(editor));
             Assert.False(command.CanExecute(null, host.Shell));
+        });
+    }
+
+    [Fact]
+    public void PinnedCommandsSortBeforeRecentCommandsAndCatalogItems()
+    {
+        RunSta(() =>
+        {
+            using var host = CreateHost(
+                Item("workspace.first", "第一个", new RecordingCommand()),
+                Item("workspace.second", "第二个", new RecordingCommand()),
+                Item("workspace.third", "第三个", new RecordingCommand()));
+            SetField(host.Shell, "pinnedCommandIds", new List<string> { "workspace.third" });
+            SetField(host.Shell, "recentCommandIds", new List<string> { "workspace.second" });
+
+            var updateResults = typeof(AcrylicProductionShellView).GetMethod(
+                "UpdateCommandDirectorySearchResults",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(updateResults);
+            updateResults!.Invoke(host.Shell, null);
+            host.Window.UpdateLayout();
+
+            var ordered = Assert.IsAssignableFrom<IEnumerable<CommandDirectoryItem>>(host.Results.ItemsSource);
+            Assert.Equal(
+                new[] { "workspace.third", "workspace.second", "workspace.first" },
+                ordered.Select(item => item.Id));
         });
     }
 

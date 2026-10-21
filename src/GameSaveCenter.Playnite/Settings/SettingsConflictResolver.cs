@@ -168,6 +168,8 @@ namespace GameSaveCenter.Playnite.Settings
                 case nameof(GameSaveCenterSettings.MediaArchiveDirectory): return "媒体目录";
                 case nameof(GameSaveCenterSettings.LocalMirrorPath): return "本地镜像目录";
                 case nameof(GameSaveCenterSettings.ThemeMode): return "主题";
+                case nameof(GameSaveCenterSettings.PinnedCommandIds): return "固定命令";
+                case nameof(GameSaveCenterSettings.RecentCommandIds): return "最近命令";
                 case nameof(GameSaveCenterSettings.BackupFormat): return "备份格式";
                 case nameof(GameSaveCenterSettings.EnableCloudUpload): return "云端上传";
                 default: return propertyName;

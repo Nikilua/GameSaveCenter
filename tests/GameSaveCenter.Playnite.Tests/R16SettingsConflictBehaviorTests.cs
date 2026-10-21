@@ -51,6 +51,35 @@ public sealed class R16SettingsConflictBehaviorTests
         Assert.Throws<SettingsConflictException>(() => ThrowConflict(args.Summary));
     }
 
+    [Fact]
+    public void CommandPreferencesMergeIndependentlyAndReportSameFieldConflictsInChinese()
+    {
+        var baseline = CreateSettings();
+        var draft = Clone(baseline);
+        var persisted = Clone(baseline);
+        draft.PinnedCommandIds = new() { "workspace.tasks" };
+        persisted.RecentCommandIds = new() { "settings.open" };
+
+        var merged = SettingsConflictResolver.Merge(baseline, draft, persisted);
+
+        Assert.False(merged.HasConflicts);
+        Assert.Equal(new[] { "workspace.tasks" }, draft.PinnedCommandIds);
+        Assert.Equal(new[] { "settings.open" }, draft.RecentCommandIds);
+
+        baseline = CreateSettings();
+        draft = Clone(baseline);
+        persisted = Clone(baseline);
+        draft.PinnedCommandIds = new() { "workspace.tasks" };
+        persisted.PinnedCommandIds = new() { "settings.open" };
+
+        var conflicted = SettingsConflictResolver.Merge(baseline, draft, persisted);
+
+        var field = Assert.Single(conflicted.Conflicts);
+        Assert.Equal(nameof(GameSaveCenterSettings.PinnedCommandIds), field.PropertyName);
+        Assert.Equal("固定命令", field.DisplayName);
+        Assert.Equal(new[] { "workspace.tasks" }, draft.PinnedCommandIds);
+    }
+
     private static GameSaveCenterSettings CreateSettings()
         => new GameSaveCenterSettings
         {

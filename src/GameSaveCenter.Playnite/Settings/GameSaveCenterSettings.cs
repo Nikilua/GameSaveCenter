@@ -58,6 +58,8 @@ namespace GameSaveCenter.Playnite.Settings
         private Dictionary<string, double> dataGridColumnWidths = new Dictionary<string, double>(StringComparer.Ordinal);
         private Dictionary<string, List<string>> dataGridHiddenColumnKeys = new Dictionary<string, List<string>>(StringComparer.Ordinal);
         private List<RecentAccessRecord> recentAccess = new List<RecentAccessRecord>();
+        private List<string> pinnedCommandIds = new List<string>();
+        private List<string> recentCommandIds = new List<string>();
 
         /// <summary>Raised after Playnite commits the current edit buffer.</summary>
         public event EventHandler? SettingsCommitted;
@@ -351,6 +353,22 @@ namespace GameSaveCenter.Playnite.Settings
         {
             get => recentAccess;
             set => recentAccess = RecentAccessRecord.NormalizeMany(value);
+        }
+
+        /// <summary>Stable command IDs pinned in the shell; command names and arguments are never persisted.</summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public List<string> PinnedCommandIds
+        {
+            get => pinnedCommandIds;
+            set => pinnedCommandIds = CommandDirectoryPreferencePolicy.NormalizePinned(value);
+        }
+
+        /// <summary>Bounded most-recently-invoked command IDs, kept separate from recent game access.</summary>
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public List<string> RecentCommandIds
+        {
+            get => recentCommandIds;
+            set => recentCommandIds = CommandDirectoryPreferencePolicy.NormalizeRecent(value);
         }
 
         internal bool TryGetDataGridColumnWidth(string viewKey, string columnKey, out double width)
@@ -880,6 +898,8 @@ namespace GameSaveCenter.Playnite.Settings
             DataGridColumnWidths = other.DataGridColumnWidths;
             DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;
             RecentAccess = other.RecentAccess;
+            PinnedCommandIds = other.PinnedCommandIds;
+            RecentCommandIds = other.RecentCommandIds;
             Worklists = other.Worklists;
             ActiveWorklistId = other.ActiveWorklistId;
         }

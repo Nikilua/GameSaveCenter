@@ -99,6 +99,30 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void SuccessfulInvocationRaisesOneUsageEventAndUnavailableItemsRaiseNone()
+        {
+            var canExecute = false;
+            var executionCount = 0;
+            var item = new CommandDirectoryItem(
+                "workspace.tasks",
+                "查看任务",
+                Array.Empty<string>(),
+                "页面导航",
+                CommandDirectoryScope.Workspace,
+                new RelayCommand(_ => executionCount++, _ => canExecute));
+            var usageCount = 0;
+            item.Executed += (_, _) => usageCount++;
+
+            Assert.False(item.TryExecute());
+            Assert.Equal(0, usageCount);
+
+            canExecute = true;
+            Assert.True(item.TryExecute());
+            Assert.Equal(1, executionCount);
+            Assert.Equal(1, usageCount);
+        }
+
+        [Fact]
         public void SearchPanelUsesTheInShellOverlayAndVirtualizedResults()
         {
             var shell = File.ReadAllText(Path.Combine(
@@ -110,6 +134,9 @@ namespace GameSaveCenter.Playnite.Tests
             Assert.Contains("VirtualizingPanel.IsVirtualizing=\"True\"", shell);
             Assert.Contains("AutomationProperties.Name=\"命令搜索结果\"", shell);
             Assert.Contains("PreviewKeyDown=\"OnCommandDirectoryPreviewKeyDown\"", shell);
+            Assert.Contains("Click=\"OnCommandDirectoryPinClick\"", shell);
+            Assert.Contains("Content=\"{Binding PinActionDisplay}\"", shell);
+            Assert.Contains("AutomationProperties.Name=\"{Binding PinAutomationName}\"", shell);
         }
 
         private static CommandDirectoryItem Item(string id, string name, IEnumerable<string> aliases, string category)

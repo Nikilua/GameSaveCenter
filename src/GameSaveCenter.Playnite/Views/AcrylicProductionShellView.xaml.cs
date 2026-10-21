@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -14,6 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Controls;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 
 namespace GameSaveCenter.Playnite.Views
@@ -47,6 +49,8 @@ namespace GameSaveCenter.Playnite.Views
         private int pickerKeyboardNavigationGeneration;
         private Action? settingsRequested;
         private Action? focusWorkspaceSearchRequested;
+        private List<string> pinnedCommandIds = new List<string>();
+        private List<string> recentCommandIds = new List<string>();
         private readonly WrapPanelRowGapController headerActionRowGap;
         private int measurePasses;
         private int arrangePasses;
@@ -107,6 +111,8 @@ namespace GameSaveCenter.Playnite.Views
         public ICommand OpenSettingsCommand { get; }
         public ICommand OpenGamePickerCommand { get; }
         internal IReadOnlyList<CommandDirectoryItem> CommandDirectoryItems => commandDirectoryItems;
+        internal Func<CommandDirectoryPreferenceSnapshot>? CommandDirectoryPreferencesProvider { get; set; }
+        internal Func<CommandDirectoryPreferenceSnapshot, bool>? CommandDirectoryPreferencesSaver { get; set; }
         public Action? FocusWorkspaceSearchRequested
         {
             get => focusWorkspaceSearchRequested;
@@ -196,19 +202,189 @@ namespace GameSaveCenter.Playnite.Views
             => UpdateCommandDirectorySearchResults();
 
         private void UpdateCommandDirectorySearchResults()
+            => UpdateCommandDirectorySearchResultsForSelection(null);
+
+        private void UpdateCommandDirectorySearchResultsForSelection(string? preferredSelectionId)
         {
             if (CommandDirectoryResultsListBox == null || CommandDirectorySearchTextBox == null)
                 return;
 
             var query = CommandDirectorySearchTextBox.Text;
-            var results = CommandDirectorySearch.Filter(commandDirectoryItems, query);
+            var results = CommandDirectorySearch.Filter(GetOrderedCommandDirectoryItems(), query);
             CommandDirectoryResultsListBox.ItemsSource = results;
-            CommandDirectoryResultsListBox.SelectedIndex = results.Count == 0 ? -1 : 0;
+            var selectedIndex = -1;
+            if (!string.IsNullOrWhiteSpace(preferredSelectionId))
+            {
+                for (var index = 0; index < results.Count; index++)
+                {
+                    if (!string.Equals(results[index].Id, preferredSelectionId, StringComparison.OrdinalIgnoreCase)) continue;
+                    selectedIndex = index;
+                    break;
+                }
+            }
+            CommandDirectoryResultsListBox.SelectedIndex = selectedIndex >= 0
+                ? selectedIndex
+                : results.Count == 0 ? -1 : 0;
             if (CommandDirectoryResultsListBox.SelectedItem != null)
                 CommandDirectoryResultsListBox.ScrollIntoView(CommandDirectoryResultsListBox.SelectedItem);
             CommandDirectoryResultsSummaryText.Text = string.IsNullOrWhiteSpace(query)
-                ? $"常用命令 · {results.Count}"
+                ? $"固定 {pinnedCommandIds.Count}/{CommandDirectoryPreferencePolicy.MaximumPinnedCommandCount} · 最近 {recentCommandIds.Count} · 显示 {results.Count}"
                 : results.Count == 0 ? "没有匹配的命令" : $"搜索结果 · {results.Count}";
+        }
+
+        private void QueueCommandDirectorySearchResultsUpdate(string preferredSelectionId)
+        {
+            try
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    UpdateCommandDirectorySearchResultsForSelection(preferredSelectionId);
+                }), DispatcherPriority.Background);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Logger.Error(ex, "The command directory closed before its preference refresh could be queued.");
+            }
+        }
+
+        private IReadOnlyList<CommandDirectoryItem> GetOrderedCommandDirectoryItems()
+        {
+            var pinnedOrder = pinnedCommandIds
+                .Select((id, index) => new { id, index })
+                .ToDictionary(item => item.id, item => item.index, StringComparer.OrdinalIgnoreCase);
+            var recentOrder = recentCommandIds
+                .Select((id, index) => new { id, index })
+                .ToDictionary(item => item.id, item => item.index, StringComparer.OrdinalIgnoreCase);
+
+            return commandDirectoryItems
+                .Select((item, catalogIndex) => new
+                {
+                    Item = item,
+                    CatalogIndex = catalogIndex,
+                    PinnedIndex = pinnedOrder.TryGetValue(item.Id, out var pinIndex) ? pinIndex : int.MaxValue,
+                    RecentIndex = recentOrder.TryGetValue(item.Id, out var recentIndex) ? recentIndex : int.MaxValue
+                })
+                .OrderBy(entry => entry.PinnedIndex < int.MaxValue ? 0 : entry.RecentIndex < int.MaxValue ? 1 : 2)
+                .ThenBy(entry => entry.PinnedIndex < int.MaxValue
+                    ? entry.PinnedIndex
+                    : entry.RecentIndex < int.MaxValue ? entry.RecentIndex : entry.CatalogIndex)
+                .Select(entry => entry.Item)
+                .ToArray();
+        }
+
+        private void RefreshCommandDirectoryPreferences()
+        {
+            var knownIds = commandDirectoryItems.Select(item => item.Id).ToArray();
+            CommandDirectoryPreferenceSnapshot loaded;
+            try
+            {
+                loaded = CommandDirectoryPreferencesProvider?.Invoke()
+                    ?? new CommandDirectoryPreferenceSnapshot(Array.Empty<string>(), Array.Empty<string>());
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Could not read command directory preferences.");
+                pinnedCommandIds = new List<string>();
+                recentCommandIds = new List<string>();
+                ApplyCommandDirectoryPreferenceState();
+                SetCommandDirectoryNotice("固定与最近命令偏好读取失败，当前会话使用默认顺序。");
+                return;
+            }
+
+            var normalized = CommandDirectoryPreferencePolicy.NormalizeForCatalog(
+                loaded.PinnedCommandIds,
+                loaded.RecentCommandIds,
+                knownIds);
+            pinnedCommandIds = normalized.PinnedCommandIds.ToList();
+            recentCommandIds = normalized.RecentCommandIds.ToList();
+            ApplyCommandDirectoryPreferenceState();
+
+            if (!CommandDirectoryPreferencePolicy.HaveSameIds(loaded.PinnedCommandIds, pinnedCommandIds)
+                || !CommandDirectoryPreferencePolicy.HaveSameIds(loaded.RecentCommandIds, recentCommandIds))
+            {
+                if (!TrySaveCommandDirectoryPreferences(normalized))
+                    SetCommandDirectoryNotice("已忽略已移除的命令记录，但清理设置未能保存。");
+            }
+        }
+
+        private void ApplyCommandDirectoryPreferenceState()
+        {
+            var pinned = new HashSet<string>(pinnedCommandIds, StringComparer.OrdinalIgnoreCase);
+            var recent = new HashSet<string>(recentCommandIds, StringComparer.OrdinalIgnoreCase);
+            var mayAddPin = pinnedCommandIds.Count < CommandDirectoryPreferencePolicy.MaximumPinnedCommandCount;
+            foreach (var item in commandDirectoryItems)
+                item.SetPreferenceState(pinned.Contains(item.Id), recent.Contains(item.Id), mayAddPin);
+        }
+
+        private bool TrySaveCommandDirectoryPreferences(CommandDirectoryPreferenceSnapshot preferences)
+        {
+            if (CommandDirectoryPreferencesSaver == null) return true;
+            try
+            {
+                return CommandDirectoryPreferencesSaver(preferences);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Could not save command directory preferences.");
+                return false;
+            }
+        }
+
+        private void OnCommandDirectoryItemExecuted(object? sender, EventArgs e)
+        {
+            if (!(sender is CommandDirectoryItem item)) return;
+            var knownIds = commandDirectoryItems.Select(command => command.Id).ToArray();
+            var updatedRecent = CommandDirectoryPreferencePolicy.RecordRecent(recentCommandIds, item.Id, knownIds);
+            if (CommandDirectoryPreferencePolicy.HaveSameIds(recentCommandIds, updatedRecent)) return;
+
+            recentCommandIds = updatedRecent;
+            ApplyCommandDirectoryPreferenceState();
+            var saved = TrySaveCommandDirectoryPreferences(
+                new CommandDirectoryPreferenceSnapshot(pinnedCommandIds, recentCommandIds));
+            SetCommandDirectoryNotice(saved
+                ? string.Empty
+                : "命令已执行，但最近使用记录未能保存；本次顺序仅保留在当前会话。");
+            QueueCommandDirectorySearchResultsUpdate(item.Id);
+        }
+
+        private void OnCommandDirectoryPinClick(object sender, RoutedEventArgs e)
+        {
+            if (!((sender as FrameworkElement)?.DataContext is CommandDirectoryItem item)) return;
+            var knownIds = commandDirectoryItems.Select(command => command.Id).ToArray();
+            if (!CommandDirectoryPreferencePolicy.TryTogglePinned(
+                    pinnedCommandIds,
+                    item.Id,
+                    knownIds,
+                    out var updatedPinned,
+                    out var isPinned))
+            {
+                SetCommandDirectoryNotice($"最多固定 {CommandDirectoryPreferencePolicy.MaximumPinnedCommandCount} 个命令。");
+                e.Handled = true;
+                return;
+            }
+
+            var candidate = new CommandDirectoryPreferenceSnapshot(updatedPinned, recentCommandIds);
+            if (!TrySaveCommandDirectoryPreferences(candidate))
+            {
+                SetCommandDirectoryNotice("固定命令设置未能保存，状态未更改。");
+                e.Handled = true;
+                return;
+            }
+
+            pinnedCommandIds = updatedPinned;
+            ApplyCommandDirectoryPreferenceState();
+            SetCommandDirectoryNotice(isPinned ? $"已固定“{item.Name}”。" : $"已取消固定“{item.Name}”。");
+            QueueCommandDirectorySearchResultsUpdate(item.Id);
+            e.Handled = true;
+        }
+
+        private void SetCommandDirectoryNotice(string message)
+        {
+            if (CommandDirectoryNoticeText == null) return;
+            CommandDirectoryNoticeText.Text = message ?? string.Empty;
+            CommandDirectoryNoticeText.Visibility = string.IsNullOrWhiteSpace(message)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
 
         private void OnCommandDirectoryPreviewKeyDown(object sender, KeyEventArgs e)
@@ -374,6 +550,9 @@ namespace GameSaveCenter.Playnite.Views
                 viewModelSubscribed = false;
             }
 
+            foreach (var item in commandDirectoryItems)
+                item.Executed -= OnCommandDirectoryItemExecuted;
+
             viewModel = dashboardViewModel ?? throw new ArgumentNullException(nameof(dashboardViewModel));
             DataContext = viewModel;
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -387,6 +566,9 @@ namespace GameSaveCenter.Playnite.Views
                 OpenSettingsCommand,
                 OpenGamePickerCommand,
                 FocusWorkspaceSearchCommand);
+            foreach (var item in commandDirectoryItems)
+                item.Executed += OnCommandDirectoryItemExecuted;
+            RefreshCommandDirectoryPreferences();
             NavigateTo(viewModel.CurrentWorkspace);
             RestoreSidebarState();
             QueueGamePickerFilterDefaults();

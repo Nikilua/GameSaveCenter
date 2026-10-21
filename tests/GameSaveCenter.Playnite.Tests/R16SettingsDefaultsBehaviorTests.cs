@@ -25,6 +25,8 @@ public sealed class R16SettingsDefaultsBehaviorTests
             EnableCloudUpload = true,
             Compression = "none",
             GamePickerSearchText = "keep?",
+            PinnedCommandIds = { "workspace.tasks", "settings.open" },
+            RecentCommandIds = { "settings.open", "workspace.tasks" },
             NotificationMutedUntilUtc = new DateTime(2026, 10, 18, 10, 0, 0, DateTimeKind.Utc),
             NotificationQuietHoursEnabled = true,
             NotificationQuietHoursStartMinute = 1260,
@@ -46,6 +48,8 @@ public sealed class R16SettingsDefaultsBehaviorTests
         Assert.Equal("zstd", settings.Compression);
         Assert.False(settings.EnableCloudUpload);
         Assert.Equal(string.Empty, settings.GamePickerSearchText);
+        Assert.Empty(settings.PinnedCommandIds);
+        Assert.Empty(settings.RecentCommandIds);
         Assert.Null(settings.NotificationMutedUntilUtc);
         Assert.False(settings.NotificationQuietHoursEnabled);
         Assert.Equal(22 * 60, settings.NotificationQuietHoursStartMinute);
@@ -57,6 +61,8 @@ public sealed class R16SettingsDefaultsBehaviorTests
         Assert.Equal("remote:profile", settings.RcloneDestination);
         Assert.True(settings.EnableCloudUpload);
         Assert.Equal("keep?", settings.GamePickerSearchText);
+        Assert.Equal(new[] { "workspace.tasks", "settings.open" }, settings.PinnedCommandIds);
+        Assert.Equal(new[] { "settings.open", "workspace.tasks" }, settings.RecentCommandIds);
         Assert.Equal(new DateTime(2026, 10, 18, 10, 0, 0, DateTimeKind.Utc), settings.NotificationMutedUntilUtc);
         Assert.True(settings.NotificationQuietHoursEnabled);
         Assert.Equal(1260, settings.NotificationQuietHoursStartMinute);

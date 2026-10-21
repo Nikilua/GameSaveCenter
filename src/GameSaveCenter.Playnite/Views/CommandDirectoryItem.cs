@@ -26,6 +26,9 @@ namespace GameSaveCenter.Playnite.Views
         private readonly Func<bool>? additionalCanExecute;
         private readonly Func<string?>? unavailableReason;
         private EventHandler? canExecuteChanged;
+        private bool isPinned;
+        private bool isRecent;
+        private bool canAddPin = true;
 
         public CommandDirectoryItem(
             string id,
@@ -63,6 +66,16 @@ namespace GameSaveCenter.Playnite.Views
         public string Category { get; }
         public CommandDirectoryScope Scope { get; }
         public bool IsAvailable => CanExecute(null);
+        public bool IsPinned => isPinned;
+        public bool IsRecent => isRecent;
+        public string RecentDisplay => IsRecent ? "最近" : string.Empty;
+        public string PinActionDisplay => IsPinned ? "取消固定" : "固定";
+        public bool PinActionEnabled => IsPinned || canAddPin;
+        public string PinAutomationName => $"{PinActionDisplay}命令 {Name}";
+        public string PinActionHelpText => !PinActionEnabled
+            ? "最多固定 5 个命令；取消固定一个命令后即可继续。"
+            : IsPinned ? "从固定命令中移除，不影响命令本身。"
+            : "将此命令固定在命令搜索结果的前面。";
         public string ScopeDisplay => Scope switch
         {
             CommandDirectoryScope.Global => "全局",
@@ -75,8 +88,8 @@ namespace GameSaveCenter.Playnite.Views
         public string AvailabilityDisplay => IsAvailable ? "可用" : "暂不可用";
 
         public string AutomationDisplayName => IsAvailable
-            ? $"{Name}，{Category}，{ScopeDisplay}，可用"
-            : $"{Name}，{Category}，{ScopeDisplay}，暂不可用：{UnavailableReason}";
+            ? BuildAutomationDisplayName("可用")
+            : BuildAutomationDisplayName($"暂不可用：{UnavailableReason}");
 
         public string UnavailableReason
         {
@@ -94,6 +107,8 @@ namespace GameSaveCenter.Playnite.Views
             remove => canExecuteChanged -= value;
         }
 
+        internal event EventHandler? Executed;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public bool CanExecute(object? parameter)
@@ -103,13 +118,17 @@ namespace GameSaveCenter.Playnite.Views
         public void Execute(object? parameter)
         {
             if (CanExecute(null))
+            {
                 command.Execute(commandParameter);
+                Executed?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public bool TryExecute()
         {
             if (!CanExecute(null)) return false;
             command.Execute(commandParameter);
+            Executed?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
@@ -120,6 +139,41 @@ namespace GameSaveCenter.Playnite.Views
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailabilityDisplay)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnavailableReason)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutomationDisplayName)));
+        }
+
+        internal void SetPreferenceState(bool pinned, bool recent, bool mayAddPin)
+        {
+            if (isPinned != pinned)
+            {
+                isPinned = pinned;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPinned)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PinActionDisplay)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PinActionEnabled)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PinAutomationName)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PinActionHelpText)));
+            }
+
+            if (isRecent != recent)
+            {
+                isRecent = recent;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRecent)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RecentDisplay)));
+            }
+
+            if (canAddPin != mayAddPin)
+            {
+                canAddPin = mayAddPin;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PinActionEnabled)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PinActionHelpText)));
+            }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutomationDisplayName)));
+        }
+
+        private string BuildAutomationDisplayName(string availability)
+        {
+            var preference = IsPinned ? "，已固定" : IsRecent ? "，最近使用" : string.Empty;
+            return $"{Name}，{Category}，{ScopeDisplay}，{availability}{preference}";
         }
     }
 }
