@@ -1,5 +1,11 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-22 S00-04 标准全链复验成功
+
+在实现提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 上运行 `GameSaveCenter-Run.cmd`，SDK `8.0.423`/Release，完整退出码 `0`。XAML 25/25、solution 0 warning/0 error、Core 157/157、Worker 400/400；143 份 TRX 汇总 1,904 项（1,847 pass、57 skip、0 fail），计数无差异，140 个 WPF 隔离类全部结束。57 skip 均标记为已撤销“今日工作台”UI 架构断言。R09FocusOutlineBehaviorTests 2/2，用户附件的 `Thickness 2→1` 在当前提交未复现，旧 run 输入身份及根因未知。
+
+Worker 发布、构建身份、ZIP/PEXT、安装目录版本与 DLL SHA 核验及 Playnite 启动均通过；已安装 DLL SHA 与构建 DLL 一致，Playnite PID 44860。诊断 ID `20261021T195442896Z-4faecb49`，详细阶段和 hash 见 [S00-04 标准验收证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md) 与 [身份 JSON](../design/reviews/ui-finesse-round4-20261018/evidence/S00-04/verification-identity.json)。本次启动不代表真实页面交互/视觉、物理键盘或 IME 候选验收，S00-04 host verification 仍 pending；Round4 尚未完成。原有 Round3 TRX 和 Playnite `TestResults/` 保留。
+
 ## 2026-10-22 标准一键构建与安装复验通过
 
 - 用户指出构建反复失败。完成 S00-03 键盘交互 `0968309c` 与阶段证据提交 `22cec597` 后，在该精确提交上运行根目录 `GameSaveCenter-Run.cmd`，完整退出码 `0`。诊断 ID `20261021T171031616Z-c05bcf5a`，SDK8.0.423/Release。

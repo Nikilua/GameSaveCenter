@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-22 当前 S00-04 构建交付
+
+最新源提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 的完整 `GameSaveCenter-Run.cmd` 已退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0 warning/0 error、Core 157/157、Worker 400/400、总计 1,904 项（1,847 通过、57 跳过、0 失败）、WPF 隔离类 140/140。R09 附件所示宽度差异在当前提交的 R09 2/2 未复现。Worker 发布、包身份、ZIP/PEXT、安装版本与 DLL SHA、Playnite 启动均成功；详细身份及诊断 run `20261021T195442896Z-4faecb49` 见 [S00-04 证据](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。
+
+S00-04 固定/最近命令已实现并受控验证，但真实页面交互、视觉、物理键盘和 IME 候选未验，host verification 保持 pending。Round4 尚未整体完成；继续按 `ROUND4_STATUS.json` 与 `AUTONOMOUS_BACKLOG.md` 处理下一项。用户原有 Round3 TRX/TestResults 不要暂存、修改或清理。
+
 ## 2026-10-22 标准一键构建、安装和启动通过
 
 用户反馈构建反复失败后，完成命令目录键盘交互，并在提交 `22cec5976ee066b32bda07df00eab6d0002f440c` 上从仓库根运行 `GameSaveCenter-Run.cmd`。整链退出码 `0`：SDK8.0.423 Release，XAML `25/25`、solution `0 warning/0 error`、Core `157/157`、Worker `400/400`、Playnite `1,339` 项（1,282 pass、57 skip、0 fail）、WPF 隔离类 `140/140`；全局 TRX 共 1,896 项，1,839 pass、0 fail、57 skip、0 error/timeout/abort。R09 焦点描边 `2/2`。

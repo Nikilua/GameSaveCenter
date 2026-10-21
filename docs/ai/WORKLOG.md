@@ -11764,3 +11764,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 完整 `GameSaveCenter-Run.cmd` 在提交 `22cec5976ee066b32bda07df00eab6d0002f440c` 上退出码 `0`，SDK `8.0.423` Release；XAML `25/25`、编译 `0 warning/0 error`、Core `157/157`、Worker `400/400`、Playnite `1,339`（1,282 pass、57 skip、0 fail）、WPF 隔离类 `140/140`；总计 1,896 项（1,839 pass、0 fail、57 skip）。R09 焦点描边 `2/2`；CommandDirectoryKeyboardBehaviorTests `5/5`。
 - Worker 发布、二进制构建身份、PEXT/ZIP 打包、扩展版本安装校验及 Playnite 启动成功。安装清单 `0.6.73`、DLL `0.6.73.0`，安装 DLL 和本次构建 DLL SHA 一致。诊断 run `20261021T171031616Z-c05bcf5a` 的原始汇总、完整 console、测试/包/安装产物哈希见[标准验收证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md)。57 skip 都是已撤销 UI 架构断言。
 - 用户先前的 Round3 TRX/TestResults 没有暂存或修改；物理键盘、IME 候选和用户交互画面未验证，故 S00-03 host verification 仍 pending；Round4 未整体完成。
+
+## 2026-10-22 S00-04 固定与最近命令及标准全链复核
+
+- 提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 实现独立稳定 ID 的固定/最近命令偏好、最多 5 个固定与 20 条最近记录、未知 ID 清理、仅成功命令入最近列表，以及设置重置/冲突合并和搜索结果 UI。SDK8 Release 定向测试 `19/19`；source validation、XAML 结构校验、`git diff --check` 通过。
+- 在该提交上重跑根目录 `GameSaveCenter-Run.cmd`，SDK `8.0.423`/Release，完整退出码 `0`。XAML `25/25`、solution `0 warning/0 error`、Core `157/157`、Worker `400/400`；总计 1,904 项，1,847 pass、57 skip、0 fail/error/timeout/abort；143 TRX counters 一致、140 WPF 隔离类全部结束。R09 焦点轮廓 `2/2`。
+- Worker 发布、程序集构建身份、ZIP/PEXT 打包、扩展安装版本与 DLL SHA 验证及 Playnite 启动均成功。诊断 run `20261021T195442896Z-4faecb49`，逐阶段结果、TRX、包与安装 DLL SHA 见 [S00-04 标准验收](../design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。首次未提升运行仅因沙箱无法写入 Playnite 扩展目录失败；之后已提升完整重跑成功，不是代码编译/测试失败。
+- 用户附件中 `Thickness` 预期/实际 `2`/`1` 的 R09 结果在当前提交标准隔离测试中未复现；旧运行输入身份与根因未知。Playnite 已启动不代表真实 UI 交互/视觉、物理键盘或 IME 候选验收；S00-04 host verification 保持 pending，Round4 未整体完成。原 Round3 TRX 与 Playnite `TestResults/` 未修改、未提交。

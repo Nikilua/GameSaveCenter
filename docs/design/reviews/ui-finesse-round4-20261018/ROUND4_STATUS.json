@@ -39,7 +39,7 @@
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md"
         }
       ],
-      "boundary": "SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；当前 Windows 会话拒绝的系统指针用例按设计 skip。此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止；安装/版本核验与真实 Playnite 呈现仍未完成，host verification 保持 pending，不准入 S00-03"
+      "boundary": "SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止，因此本任务 host verification 仍 pending。S00-03/S00-04 后续已完成代码实现及当前标准链受控验证；这不替代 S00-02 的真实页面呈现验收。"
     },
     {
       "id": "S00-03",
@@ -69,14 +69,23 @@
     {
       "id": "S00-04",
       "title": "固定与最近命令",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "f8b3144e36d190663f760a98aa0602bec6bda2f8",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[实现证据](evidence/S00-04/IMPLEMENTATION.md)；SDK8.0.423 完整标准 GameSaveCenter-Run.cmd 退出码 0，1,904 项（1,847 通过、57 跳过、0 失败），140 个 WPF 隔离类；打包、安装身份验证和 Playnite 启动均成功，详见[标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md)",
+      "evidence": [
+        {
+          "label": "实现与受控验证",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-04/IMPLEMENTATION.md"
+        },
+        {
+          "label": "标准一键构建验收",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md"
+        }
+      ],
+      "boundary": "已安装插件 DLL 与 Release 构建 DLL SHA-256 一致，Playnite 进程启动；未进行真实页面交互/视觉、物理键盘或 IME 候选验收，host verification 保持 pending。用户所附 R09 旧日志的 2→1 描边差异在当前提交 R09 2/2 中未复现，旧运行输入身份与根因未知。"
     },
     {
       "id": "S00-05",
