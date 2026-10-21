@@ -8,7 +8,9 @@
 
 `96a3eab3` 为任务中心工作清单增加只读脱敏预览和用户明确复制。仅导出名称、类型、受控摘要、所属游戏、引用状态和备注；默认包含未手动完成项并记录 UTC，不写文件，不含稳定 ID、完整路径、文件内容、凭据或命令。手动完成只是人工整理状态。SDK9 Release solution `0/0`、预览/UI/复制反馈与清单回归 `13/13`，证据见 [S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。真实 Playnite和系统剪贴板未验。
 
-`09ec3c84` 补充原生 Worklists JSON 跨会话重载、旧版字段默认值、重载后重复拦截，以及畸形清单字段的加载恢复/原文件备份行为。Playnite.Tests Rebuild `0/0`、相关设置/清单回归 `27/27`；证据：[S06-08](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。冲突检测、设置恢复、去重和工作清单即时 `SavePluginSettings` 机制已有实现。真实 Playnite 启停和宿主写盘原子性未验；不模拟宿主，也不声称覆盖任意半写/掉电。S07-03 的 branch-protection 读取权限仍阻塞，当前计划内无其它 READY 项。
+`09ec3c84` 补充原生 Worklists JSON 跨会话重载、旧版字段默认值、重载后重复拦截，以及畸形清单字段的加载恢复/原文件备份行为。Playnite.Tests Rebuild `0/0`、相关设置/清单回归 `27/27`；证据：[S06-08](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。冲突检测、设置恢复、去重和工作清单即时 `SavePluginSettings` 机制已有实现。真实 Playnite 启停和宿主写盘原子性未验；不模拟宿主，也不声称覆盖任意半写/掉电。
+
+S00-03 等待 S00-02 SDK8 WPF 隔离及安装/版本核验门禁。依赖审计发现命令面板 Escape/IME 保护部分存在，但方向键/Enter 行为没有实现或验证证据；前置在 R05 `GetCursorPos` Win32 error 5 停止，未到安装核验，故 S00-03 与 S07-03 当前均外部阻塞，S00-04～08 仍待顺序准入。详见 [S00-03 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md)。计划内当前没有依赖已满足的 READY 项。
 
 ## 2026-10-21 Round4 S05-08 情景性能边界
 

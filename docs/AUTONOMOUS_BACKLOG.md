@@ -4,7 +4,7 @@
 
 ### 最新状态（2026-10-21）
 
-Round4 S05-01 至 S05-08、S06-01 至 S06-08 已受控验收。S06-06 `fb33cd11` 按稳定 ID 刷新当前索引摘要；用户滚动截图后的 `a1a86e41` 让有效页面 ScrollViewer 测量高度限制表格预算。S06-07 `96a3eab3` 增加只读脱敏待办预览，SDK9 Release solution `0/0`、行为/UI/复制链 `13/13`。S06-08 `09ec3c84` 补原生 Worklists JSON 重载、旧字段默认和损坏清单恢复回归，Playnite.Tests Release Rebuild `0/0`、跨会话/既有设置回归 `27/27`。证据见 Round4 S06-07/S06-08 页面。SDK8.0.423 与真实 Playnite当前不可用；S06-08 真实宿主退出写盘边界保留未验。S07-03 仍因 required-check/branch-protection 读取权限不足而阻塞；计划中无新的 READY 项时收尾，不为同步 CI 再跑完整构建。
+Round4 S05-01 至 S05-08、S06-01 至 S06-08 已受控验收。S06-06 `fb33cd11` 按稳定 ID 刷新当前索引摘要；用户滚动截图后的 `a1a86e41` 让有效页面 ScrollViewer 测量高度限制表格预算。S06-07 `96a3eab3` 增加只读脱敏待办预览，SDK9 Release solution `0/0`、行为/UI/复制链 `13/13`。S06-08 `09ec3c84` 补原生 Worklists JSON 重载、旧字段默认和损坏清单恢复回归，Playnite.Tests Release Rebuild `0/0`、跨会话/既有设置回归 `27/27`。证据见 Round4 S06-07/S06-08 页面。SDK8.0.423 与真实 Playnite当前不可用；S06-08 真实宿主退出写盘边界保留未验。S00-03 等 S00-02 的 SDK8 WPF/安装门禁；当前在 R05 `GetCursorPos` Win32 error 5 停止，具体边界见 S00-03 审计。S07-03 仍因 required-check/branch-protection 读取权限不足而阻塞；计划内无依赖已满足的 READY 项，按退出协议收尾，不为同步 CI 再跑完整构建。
 
 S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且经过搜索/筛选的有限媒体结果中切换 B，保留详情焦点；坏图会被跳过，复用 `AsyncThumbnailImage` 的迟到回调保护。S04-06 `792b1a2f`、S04-07 `14925e5e`、S04-08 `c9da7c76` 已完成受控验收：比较会话意见可撤销，转交使用稳定 ID 并复核，缩略图沿用 2048 px 解码/64 MiB 缓存边界。S04-08 SDK8.0.423 Release solution `0/0`，缩略图及生产比较页行为 `19/19`。真实 Playnite、真实媒体和物理 DPI 未验；详细证据见各项 Round4 页面。另按用户新反馈修正工作区滚动视口预算，SDK8 Release solution `0/0`、布局回归 `6/6`；2026-10-21 依三张宿主截图又修正根裁切、表格扣除页面工具区及小窗放大后的高度恢复，SDK9 Release solution `0 error`、布局回归 `6/6`、RenderHarness `render-qa OK`。证据见 `design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md`。
 
@@ -64,8 +64,9 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S07-06 | IMPLEMENTED | 诊断 `summary.json` 加入原始 TRX 的测试用例通过/失败/跳过汇总、每文件原计数对照、套件类别和 WPF 隔离类运行数；保留逐文件路径便于复算。证据见 Round4 S07-06。 |
 | S07-07 | IMPLEMENTED | `ENVIRONMENT_CAPABILITY_CACHE.json` 记录 SDK/Playnite/CEF/ETW 当前能力状态、已知检查与重试条件；validator 纳入 source validation。证据见 Round4 S07-07。 |
 | S07-03 | BLOCKED_ENVIRONMENT | workflow 当前所有路径走完整双 SDK 流程；branch protection API 返回 403，required check 名称不可见。未改 workflow；取得配置读取权限或 required-check 清单后继续。证据见 Round4 S07-03。 |
+| S00-03 | BLOCKED_ENVIRONMENT | 命令面板 Esc/IME 保护已有部分实现，但方向键/Enter 行为未实现或验证；按 S00-02 门禁依赖等待 SDK8 WPF 与安装/版本核验。`GetCursorPos` error 5 边界见 S00-03 审计。 |
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
-| S00-03～08 | PROPOSED | 按前序小批准入；危险命令只导航到原安全流程。 |
+| S00-04～08 | PROPOSED | 依赖 S00-03 按顺序准入；危险命令只导航到原安全流程。 |
 | S03-03 | IMPLEMENTED | `3268565c` 冲突详情并排显示双方版本/设备证据、共同父版本、指纹关系与 readiness 校验状态/时间；SDK8 Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`、Render QA OK。无时间戳覆盖建议；完整 WPF 隔离、安装与真实 Playnite未验。证据见 Round4 S03-03。 |
 | S03-04 | IMPLEMENTED | `1c7083e2` 实现只读恢复方案草稿；SDK8 Release solution `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`、定向 `31/31`，隔离安装与 RenderHarness 双主题复跑通过。当前 main R09 `2/2`；完整 WPF 一键复跑至 `48/133` 时因 R05 系统指针读取失败中断（178 通过/1 失败，余 85 类未跑）；真实 Playnite未启动。用户旧 R09 输入身份缺失。证据见 Round4 S03-04。 |
 | S03-05 | IMPLEMENTED | `b2c1e3de` 增加 A → B 恢复草稿差异比较，以 DPAPI 保护的 HMAC 映射指纹区分同备份版本的映射变化；未知指纹/大小显式保留未知。SDK8 Release build 0/0，Playnite 7/7、Worker 4/4，双主题 Render QA 与精确提交隔离 no-start 安装通过。完整 WPF 循环和真实 Playnite未验；证据见 Round4 S03-05。 |

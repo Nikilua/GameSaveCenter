@@ -40,14 +40,19 @@
     {
       "id": "S00-03",
       "title": "键盘与组合输入",
-      "state": "待开始",
+      "state": "外部阻塞",
       "implementationState": "not_started",
       "implementationCommit": "—",
       "controlledVerificationState": "not_run",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[依赖审计](evidence/S00-03/AUDIT.md)：Esc/IME 组合保护已有部分实现，但方向键/Enter 行为未实现或验证；S00-02 SDK8 WPF host gate 在 GetCursorPos error 5 处中止，安装/版本核验未到达，前置未满足",
+      "evidence": [
+        {
+          "label": "依赖与等价能力审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md"
+        }
+      ],
+      "boundary": "不把 S00-03 置为 READY；待 S00-02 完成 SDK8 WPF 隔离和安装/版本核验后再进入。未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。"
     },
     {
       "id": "S00-04",

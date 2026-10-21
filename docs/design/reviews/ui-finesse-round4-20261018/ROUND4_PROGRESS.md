@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-05 已受控验收；S06-04 按稳定 ID 续接清单中的存档、媒体、任务及校验问题，S06-05 完成单条人工跟进状态的标记/撤销，详情见[evidence/S06-05](evidence/S06-05/README.md)。S06-06 审计发现当前摘要缺失，已准入按稳定 ID 刷新瞬时索引摘要；不探测源文件 ACL/物理可读性，见[evidence/S06-06/AUDIT.md](evidence/S06-06/AUDIT.md)。S00-01 已按新范围实现并验收，S00-02 代码已完成、等待既有 SDK8/Playnite UI 门禁；S07-01/02/04/05/06/07/08 已完成。S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-08 已受控验收；S06-04 按稳定 ID 续接清单中的存档、媒体、任务及校验问题，S06-05 完成单条人工跟进状态的标记/撤销，详情见[evidence/S06-05](evidence/S06-05/README.md)。S06-06 审计发现当前摘要缺失，已准入按稳定 ID 刷新瞬时索引摘要；不探测源文件 ACL/物理可读性，见[evidence/S06-06/AUDIT.md](evidence/S06-06/AUDIT.md)。S00-01 已满足；S00-02 代码已完成但 UI 门禁未过。S00-03 审计发现方向键/Enter 等差异，依赖 S00-02 SDK8 WPF 隔离与安装/版本核验；前置在 R05 `GetCursorPos` Win32 error 5 停止，详见[evidence/S00-03/AUDIT.md](evidence/S00-03/AUDIT.md)。S07-01/02/04/05/06/07/08 已完成；S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。S00-03 与 S07-03 外部阻塞，S00-04～08 继续等待前序准入，计划内当前没有依赖已满足的 READY 项。旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -14,14 +14,14 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收15、外部阻塞1、待开始6。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收15、外部阻塞2、待开始5。
 实现状态：完成57、未开始7、不适用0；受控验证：通过57、未跑6、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
 | S00-01 | 只读命令目录 | 已满足 | dd38f8ca | [证据](evidence/S00-01/README.md)：origin/main 已有稳定命令目录；原 7/7 SDK9 与当前 SDK8 CommandDirectoryBehaviorTests 2/2 复核通过 | 当前 SDK8.0.423 解决方案构建通过；真实 Playnite 未运行；S00-02 仍待 UI 门禁 |
 | S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 全量隔离在 R05 系统指针权限错误处中止 | SDK8 Release build 已通过；WPF 隔离在 R05 GetCursorPos Win32 error 5 处停止，安装/版本核验及真实宿主未运行；门禁通过后再推送并准入 S00-03 |
-| S00-03 | 键盘与组合输入 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S00-03 | 键盘与组合输入 | 外部阻塞 | — | [依赖审计](evidence/S00-03/AUDIT.md)：Esc/IME 组合保护已有部分实现，但方向键/Enter 行为未实现或验证；S00-02 SDK8 WPF host gate 在 GetCursorPos error 5 处中止，安装/版本核验未到达，前置未满足 | 不把 S00-03 置为 READY；待 S00-02 完成 SDK8 WPF 隔离和安装/版本核验后再进入。未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。 |
 | S00-04 | 固定与最近命令 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-05 | 上下文预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-06 | 危险动作转交 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
