@@ -36,6 +36,12 @@
 - 保真计划与阶段状态：`docs/ai/UI_REFACTOR_FIDELITY_PLAN.md`
 - 工作日志与长期记忆：`docs/ai/WORKLOG.md`、`docs/ai/PROJECT_MEMORY.md`
 - 开发交接：`docs/DEVELOPMENT_HANDOFF.md`
+
+## 2026-10-21 本地历史证据路径复核
+
+- 上文引用的 `artifacts/last-dev-install-current-20260913.txt` 原始短报告在 2026-10-21 清理旧 artifacts 时被误删；当前无法从本地留存文件逐字恢复。原路径现为明确标注“非原始报告、不可作安装证据”的占位说明。上文记载仍是历史文档当时的结论，不应将现占位文件当作其原始支撑材料。
+- 上文引用的 `artifacts/ui-host-audit-current-20260913/` 目录在当前工作树不存在；历史条目本身记录未生成 `summary.json`。因此这里没有可重新查看的真实宿主屏幕审计产物。
+- 其余当前 `0.6.73` 包、扩展目录及 2026-10-19/20 安装检查日志均保留。Round4 本机默认构建证据单独保存于[SDK8 复核证据包](../design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)，不代替 2026-09-13 的历史报告。
 - 离屏渲染报告：`artifacts/ui-qa/render-phase8-resize3/render-qa-report.txt`
 - UI Audit 摘要：`artifacts/ui-audit/AUDIT_SUMMARY.md`
 - 实施包：`C:\Users\lopmatu\AppData\Local\Temp\GSC_Refactor_Pack_v1\`
