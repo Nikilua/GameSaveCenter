@@ -1,0 +1,251 @@
+{
+  "verifiedAtUtc": "2026-10-21T03:28:40Z",
+  "sdk": "8.0.423",
+  "sourceHead": "5a0ca52dd218b080b052073e3f655942773a1044",
+  "worktreeWasModified": true,
+  "officialBuild": {
+    "script": "scripts/build.ps1",
+    "arguments": "-Configuration Release -SkipTests -OutputRoot .tmp/round4-validation-final-output -TestTempRoot .tmp/round4-validation-final-temp -DiagnosticsRoot .tmp/round4-validation-final-diagnostics",
+    "outcome": "restore succeeded; full solution Release build succeeded; 0 warnings / 0 errors",
+    "xamlStructuralValidation": "25/25",
+    "diagnosticsId": "20261021T030909128Z-cd5facd2",
+    "consoleFiles": [
+      "build/build-console.txt",
+      "build/restore-console.txt"
+    ]
+  },
+  "assemblies": {
+    "GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.pdb": "67FEB18F765D3DC3AB0A82375B373CF32E63696041337E44537731E091CCC442",
+    "GameSaveCenter.Core.Tests/Release/net8.0/GameSaveCenter.Core.Tests.dll": "714918739228070F4F1D9AFE8D88D3535EEE6BEB42CDA0592C3C572C063DE6A6",
+    "GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll": "77A8F6BF4DE1CE9EC93ED98286A92C3EEBFD62F58E38BA23D55E65AD21E5E5A4",
+    "GameSaveCenter.Worker.Tests/Release/net8.0-windows10.0.19041.0/GameSaveCenter.Worker.Tests.dll": "1369C5E9C487CADAEC812125BFBC65C810752078E5B538966528539536DB5487",
+    "GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll": "939851CA51C3C2CE797860E4E83E8099FDB19EE38331FCD657AC70CE9E3A345C"
+  },
+  "modifiedSourceSha256": {
+    "tests/GameSaveCenter.Playnite.Tests/R22TimeDisplayBehaviorTests.cs": "DCF4F10485ABAD9699FD8538B1AA2A6DD38F4E72C28D6B6F52B375288124FFEC",
+    "src/GameSaveCenter.Contracts/RetentionSimulationDtos.cs": "7313F1E9352DD91D2DD4DA85D9508F944F56849C740DCA7FFF217AA38F09B189",
+    "tests/GameSaveCenter.Playnite.Tests/R17FindingTriageSourceTests.cs": "CC9B849D5415E2EB865FD706B2D6F686967B406ACC5D51FFD0E3A445DB5A36EB",
+    "tests/GameSaveCenter.Playnite.Tests/Q14ToolbarAlignmentBehaviorTests.cs": "47255C6B9AD826D5E161673847A020A60DDA4A30EDECA93310D891A431746E33",
+    "tests/GameSaveCenter.Playnite.Tests/WorkspaceStateSourceTests.cs": "1A71A81D6A4BE88E7244EBCAAF080B8D0D423CA181D5EE3C50888D39E5C5E55E",
+    "tests/GameSaveCenter.Playnite.Tests/Q14FilterLabelBehaviorTests.cs": "BBB59760F7B9AD935D444FCF957D9C3CEFA3E9D6A7958717FB17949241CC0EA9",
+    "src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml": "CA7785F247AE900CFD788F7A1593127B6D42C31E6CC458A08BAC48E27AD913EE",
+    "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs": "E8CF477EAF5CE832B477FFA3E05EA97938CCF381F77739B3102E10310737B2D9",
+    "tests/GameSaveCenter.Playnite.Tests/R21AutomationValueBehaviorTests.cs": "1026EBB601AB52615400955524AEFE3822B1EABA55C706C5FFF8EDB9F8B9A93E"
+  },
+  "testResults": [
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/cached-page-switch.trx",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "5CAF1BB477DFF9B6CA6D87EE088025CB41D62AB804E8032BDD3CE53FD76DCCBF"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/controlled-high-contrast.trx",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "291A26501B41B4F161EBAF405574A4E3153860F0511859877B49320994C0892A"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/exact-task-query.trx",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "63D7C41CB6C6AD4B9E3B344930DC4E5066898677A27B7B17A025AC93F4105773"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-aggregation.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "50651B236100C246380AF6977227E044801555332B7A38D6CF9454E38903AEEE"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-filter.trx",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "2273744ADD3FBE0860E298549DBB4B428B804C5B16E526C3D12E955C99BBEED0"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-inbox-view.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "728B0FD21F9AE6C0C8E57A3A72CB3EB76F0C168123B3DDB6BE8FAAE0D5685118"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-popup-policy.trx",
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "47D86DE7FD72BA832622755FC8F29F9C98CD15594CA0BD0C0AE66DB55C006B0A"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-read-actions.trx",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "686DF3F1EFA72E6B803C8C1606234920FE2A221041AC8C72D8069925C6E72F76"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-record-persistence.trx",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "19F111483A40DC7440F09E2DB215B1F42BAFB293E14E66838840420DE0665926"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-schedule-ui.trx",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "86A6FC0782B8E96A2FE567EE97BFD7C13D5E2E6CA2C8291225DF8E2191C3FECF"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/notification-settings-defaults.trx",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "666CE16FEA94F2CB5BBEB6B9EBC5CDF79CEF901DE206CC9E6E205E17608CADAD"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/portable-settings.trx",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "EC346878F2995FC6D372D7520AAD6C2415A3C2F072F6EA1BCF8EDA57EF82A9C2"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/r05-desktop-boundary.trx",
+      "total": 3,
+      "passed": 2,
+      "failed": 0,
+      "notExecuted": 1,
+      "sha256": "9DFF8BE4DA3C105ED15767D76EFAF2CA30C5304E7131A3DD71A472570BD29D25"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/r09-focus-outline.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "E88982DEAD28118A2A76C468BBE0DDE538B8F12AC1EA6A3591CA1279618567DE"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/r10-context-game.trx",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "555BDAF804BB40264E750134C3988CD666FBC4FE2F8F143D710E381D25A998D3"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/task-notification-deduper.trx",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "94BE1C380EEB622A9B03A6E443D892E2AA2FE4F711804616AE9ACC6DF4063BD0"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/task-retry-source.trx",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "CFD45489324C6C5C83C63E3396095EE83770D892C31AC44A4D59E1F480FC0A9E"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/tests/uia-and-semantic-values.trx",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "B216E3FCA2929C26B1EBC139335D9F929F624A5270F37C1D1CF72EE5D32F8A1A"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/compact-table-viewport.trx",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "B2BF1141F14B38551DD3FF2819B3E6E8CF776BDBEEB1CBB68C18CB24554F1B69"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/finding-triage-source.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "D673E9AB5EA3485BD03847325D2D7D9FA184F7815D43221505D378B17FA9EC4A"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/legacy-source-contracts.trx",
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "6A38BB60A98195CCD4FAF60A319FA159669BC1B6A85934C6C906242CE427F28C"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/r21-uia-values.trx",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "032EC932A41B94AEAAFC52309A14304379F46748446E079F8EC79E2162C12F79"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/retention-time-display.trx",
+      "total": 32,
+      "passed": 32,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "B8EF9A75FC237C75D9E373E4D7BCC2680722A635F6838B507FAB7BCC3E760310"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/task-filter-labels.trx",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "D38FFBDD12A3780B77BA11F4C67F9D70F2F08852171B97C38CB6AB309D46898B"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/task-toolbar-geometry.trx",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "F4CDB1E45E2BD70059DB301B67F878C913009D9FCAAB97CEFD3D8BBD8EF0AB6D"
+    },
+    {
+      "path": "./docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/tests/workspace-state-source.trx",
+      "total": 10,
+      "passed": 9,
+      "failed": 0,
+      "notExecuted": 1,
+      "sha256": "F9111B640B37E301E0A141E35677073ACD12B926A343B0322FB4D5AA8853417E"
+    }
+  ],
+  "boundaries": [
+    "Build used -SkipTests; the complete default test/install/start pipeline is not claimed as passed.",
+    "R05TooltipTimingBehaviorTests completed 2/2 with 1 desktop-dependent test skipped because this Windows session does not allow system cursor-position access.",
+    "No real Playnite host, installed UI, physical display, Windows high-contrast setting, or screen-reader session was verified.",
+    "Original untracked Round3 TRX files and tests/GameSaveCenter.Playnite.Tests/TestResults were preserved and not staged."
+  ]
+}

@@ -49,6 +49,10 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                     (GameSaveCenterThemeMode.Dark, Width: 1040d, Height: 700d),
                     (GameSaveCenterThemeMode.Light, Width: 1280d, Height: 720d),
                     (GameSaveCenterThemeMode.Dark, Width: 1280d, Height: 720d),
+                    (GameSaveCenterThemeMode.Light, Width: 1499d, Height: 720d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1499d, Height: 720d),
+                    (GameSaveCenterThemeMode.Light, Width: 1500d, Height: 720d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1500d, Height: 720d),
                     (GameSaveCenterThemeMode.Light, Width: 1600d, Height: 900d),
                     (GameSaveCenterThemeMode.Dark, Width: 1600d, Height: 900d),
                     (GameSaveCenterThemeMode.Light, Width: 760d, Height: 640d),
@@ -71,6 +75,10 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                     (GameSaveCenterThemeMode.Dark, Width: 1215d),
                     (GameSaveCenterThemeMode.Light, Width: 1216d),
                     (GameSaveCenterThemeMode.Dark, Width: 1216d),
+                    (GameSaveCenterThemeMode.Light, Width: 1499d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1499d),
+                    (GameSaveCenterThemeMode.Light, Width: 1500d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1500d),
                     (GameSaveCenterThemeMode.Light, Width: 1280d),
                     (GameSaveCenterThemeMode.Dark, Width: 1280d)
                 })
@@ -131,7 +139,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         thread.Join();
 
         Assert.Null(exception);
-        Assert.Equal(60, reports.Count);
+        Assert.Equal(68, reports.Count);
         foreach (var report in reports)
             output.WriteLine(report);
     }
@@ -145,6 +153,8 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled: true, strengthPercent: 78, theme);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
         var presetRow = GetField<WrapPanel>(view, "TaskFilterPresetRow");
+        var moreFilters = GetField<Expander>(view, "TaskMoreFiltersExpander");
+        var moreFiltersHost = GetField<StackPanel>(view, "TaskMoreFiltersHost");
         foreach (var textBox in presetRow.Children.OfType<TextBox>())
             textBox.Text = "我的预设";
 
@@ -163,6 +173,8 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         try
         {
             view.ApplyResponsiveLayout(width, 700d);
+            if (moreFilters.Visibility == Visibility.Visible)
+                moreFilters.IsExpanded = true;
             window.Show();
             FlushLayout(window);
             view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
@@ -197,23 +209,27 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             var resizeRoundTrip = string.Empty;
             if (width == 620d)
             {
-                window.Width = 660d;
+                window.Width = 760d;
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
                 FlushLayout(window);
+                var widenedRows = GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
+                    .Select(element => GetBounds(element, presetRow)).ToArray());
                 Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
-                    Assert.Equal(0d, element.Margin.Bottom));
-                Assert.Single(GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
-                    .Select(element => GetBounds(element, presetRow)).ToArray()));
+                    Assert.True(element.Margin.Bottom == 0d,
+                        $"After resizing to 760 DIP, row margin remained {element.Margin.Bottom:0.###}; window={window.ActualWidth:0.###}, row={presetRow.ActualWidth:0.###}, disclosure={moreFiltersHost.ActualWidth:0.###}, arranged rows={widenedRows.Count}."));
+                Assert.Single(widenedRows);
 
                 window.Width = 620d;
                 FlushLayout(window);
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
                 FlushLayout(window);
+                var narrowedRows = GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
+                    .Select(element => GetBounds(element, presetRow)).ToArray());
                 Assert.All(presetRow.Children.OfType<FrameworkElement>(), element =>
-                    Assert.Equal(20d, element.Margin.Bottom));
-                var returnedGap = GetMinimumRowGap(GroupRectsByRow(presetRow.Children.OfType<FrameworkElement>()
-                    .Select(element => GetBounds(element, presetRow)).ToArray()));
+                    Assert.True(element.Margin.Bottom == 20d,
+                        $"After resizing back to 620 DIP, row margin was {element.Margin.Bottom:0.###}; window={window.ActualWidth:0.###}, row={presetRow.ActualWidth:0.###}, disclosure={moreFiltersHost.ActualWidth:0.###}, arranged rows={narrowedRows.Count}."));
+                var returnedGap = GetMinimumRowGap(narrowedRows);
                 Assert.True(returnedGap >= 19.5d,
                     $"Resize back to 620 DIP restored only {returnedGap:0.###} DIP between wrapped preset rows.");
                 resizeRoundTrip = "; 620→660→620 resize restores row gap and original margins";
@@ -295,7 +311,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             view.ApplyResponsiveLayout(appliedWidth, view.ActualHeight);
             FlushLayout(window);
 
-            var compact = appliedWidth < 1216d;
+            var compact = appliedWidth < TaskCenterView.CompactFilterBreakpoint;
             var arrangedWidth = view.ActualWidth;
             var searchCell = GetBounds(searchHost, filters);
             var searchBounds = GetBounds(search, filters);
@@ -315,7 +331,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                         && searchBounds.Right <= searchCell.Right + GeometryTolerance,
                 $"{theme} {width:0} DIP search box {searchBounds} escapes its cell {searchCell}.");
             Assert.True(searchCell.Right <= statusBounds.Left + GeometryTolerance,
-                $"{theme} {width:0} DIP search cell right={searchCell.Right:0.###} overlaps status group left={statusBounds.Left:0.###}.");
+                $"{theme} requested={width:0} DIP, arranged={arrangedWidth:0.###}, filters={filters.ActualWidth:0.###}, DPI={VisualTreeHelper.GetDpi(view).DpiScaleX:0.###}; search cell right={searchCell.Right:0.###} overlaps status group left={statusBounds.Left:0.###}.");
             Assert.True(statusBounds.Right <= refreshBounds.Left + GeometryTolerance,
                 $"{theme} {width:0} DIP status filter right={statusBounds.Right:0.###} overlaps refresh left={refreshBounds.Left:0.###}.");
             Assert.True(refreshBounds.Right <= filters.ActualWidth + GeometryTolerance,
@@ -343,7 +359,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             {
                 // Recreate the former too-early full-row placement against the same
                 // narrow window. The geometry gate must detect its search-cell overlap.
-                view.ApplyResponsiveLayout(1280d, 700d);
+                view.ApplyResponsiveLayout(TaskCenterView.CompactFilterBreakpoint + 100d, 700d);
                 FlushLayout(window);
                 searchCell = GetBounds(searchHost, filters);
                 searchBounds = GetBounds(search, filters);
@@ -388,6 +404,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         var rangeGroup = GetField<StackPanel>(view, "TaskHistoryRangeFilterGroup");
         var refresh = GetField<GameSaveCenter.Playnite.Controls.Button>(view, "TaskRefreshButton");
         var presetRow = GetField<WrapPanel>(view, "TaskFilterPresetRow");
+        var moreFilters = GetField<Expander>(view, "TaskMoreFiltersExpander");
         var presetControls = presetRow.Children.OfType<Control>().ToArray();
 
         search.Text = "Bongo Cat";
@@ -414,6 +431,11 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         try
         {
             view.ApplyResponsiveLayout(width, height);
+            // Compact layouts place the secondary preset and view controls in this
+            // disclosure. Expand it in the geometry fixture so their actual arranged
+            // control bounds are measured instead of the zero-sized collapsed tree.
+            if (moreFilters.Visibility == Visibility.Visible)
+                moreFilters.IsExpanded = true;
             window.Show();
             FlushLayout(window);
             view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);

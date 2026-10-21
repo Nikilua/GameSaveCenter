@@ -25,3 +25,7 @@
 ## 边界
 
 真实 Playnite 宿主未启动，离屏几何测试不作为真实屏幕证据。RenderHarness 因当前还原资产缺少 `net472/win-x86` 目标而未运行（`NETSDK1047`）；仓库锁定的 SDK `8.0.423` 本机不可用，本次可控构建使用 SDK `9.0.302`。没有重试或绕过 CEF/ETW 权限拒绝。用户原有 Round3 TRX 与 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 均未修改或提交。
+
+## 2026-10-21 当前源码 SDK8 几何复核
+
+后续页面视口修正已见[滚动视口修复记录](../UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。在 SDK `8.0.423` 官方 Release 输出上，当前 `CompactWorkspaceTableViewportBehaviorTests` `7/7` 通过，TRX 与当前筛选/时间回归见[本地 UI 复核](../LOCAL-UI-RECHECK-20261021/README.md)。此复核只证明离屏 STA/WPF 几何行为；真实 Playnite、窗口 DPI 和用户截图中的实际屏幕帧仍未验证。

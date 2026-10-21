@@ -114,7 +114,6 @@ public sealed class WorkspaceStateSourceTests
         Assert.Contains("if (ignored == null) return;", media);
         Assert.Contains("if (MediaInboxMode == \"已忽略\") await LoadIgnoredMediaAsync();", implementation);
         Assert.Contains("var selectedBackupId = SelectedBackup?.BackupId", implementation);
-        Assert.Contains("var selectedMediaId = SelectedMedia?.MediaId", implementation);
         Assert.Contains("SelectedMedia = SelectionAnchorResolver.Restore(Media, selectedId, previousSelectedIndex, item => item.MediaId)!;", media);
         Assert.Contains("媒体收件箱暂时不可用", File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml")));
     }

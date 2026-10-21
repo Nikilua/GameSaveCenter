@@ -94,7 +94,7 @@ public sealed class Q14FilterLabelBehaviorTests
         var game = CreatePair(view, "Game", "游戏：", "任务游戏筛选", "TaskGameFilterGroup", "TaskGameFilterLabel", "TaskGameFilterComboBox");
         var search = GetField<Grid>(view, "TaskSearchBoxHost");
         var pairs = new[] { status, type, scope, range, game };
-        var compact = width < 1216d;
+        var compact = width < TaskCenterView.CompactFilterBreakpoint;
 
         var window = new Window
         {
@@ -202,9 +202,9 @@ public sealed class Q14FilterLabelBehaviorTests
 
                 // Reparent the live fields across the breakpoint and back. This proves
                 // bindings and selected values survive the responsive move.
-                window.Width = 1280d;
+                window.Width = TaskCenterView.CompactFilterBreakpoint + 100d;
                 FlushLayout(window);
-                view.ApplyResponsiveLayout(1280d, height);
+                view.ApplyResponsiveLayout(TaskCenterView.CompactFilterBreakpoint + 100d, height);
                 expander.IsExpanded = false;
                 FlushLayout(window);
                 Assert.Same(filters, type.Group.Parent);

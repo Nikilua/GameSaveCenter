@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-21 当前源码 SDK8 复核
+
+SDK `8.0.423` 官方 `scripts/build.ps1 -Configuration Release -SkipTests` 对当前工作树完成 restore、XAML 25/25 和完整 Release solution 编译 `0 warning / 0 error`。S02-04 至 S02-08 的通知/上下文/持久化定向测试已在这套官方输出上复核；S02-04 controlled verification 更新为 passed，但各项 host verification 仍 pending。R05 物理鼠标用例由测试按设计 skip，因为当前 Windows 会话不允许读系统指针；不绕过权限，不把离屏几何视作真实 Playnite 证据。详细 TRX、构建日志和程序集 SHA：[S02 SDK8 复核](../design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。滚动视口 `7/7`、Q14 布局、R22 时间显示及源码回归：[本地 UI 复核](../design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。Round4 仍未整体完成；当前无依赖已满足的 READY 项。
+
 ## 页面滚动视口约束（2026-10-21）
 
 表格位于页面 ScrollViewer 时，页面根容器不能 `ClipToBounds`；限高只放在虚拟化表格/局部表格框架。表格视口预算须先扣掉页面工具栏、表格自身标题/表头和堆叠详情，再分配剩余高度；空间不足时由页面外层滚动承载。只要页面 `ScrollViewer.ViewportHeight` 已有有效测量，它就是表格预算的上限；宿主高度只在页面视口尚未测出时作回退值，不能因宿主增长覆盖一个更小的有效测量。测试需覆盖页面视口边界、表格内/外层滚动端点和窗口缩小后再放大。证据与边界见 [滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。

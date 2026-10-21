@@ -1,10 +1,12 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-21 当前进展：滚动视口修正、S06-08 完成，S00-03/S07-03 依赖阻塞
+## 2026-10-21 当前进展：SDK8 S02 复核、滚动视口修正，宿主门禁待验
+
+本轮用 SDK `8.0.423` 通过官方 Release solution restore/build（`-SkipTests`）：XAML `25/25`、编译 `0 warning / 0 error`。S02-04 至 S02-08 通知/上下文定向回归在同一构建输出通过；S02-04 controlled verification 已登记为 passed，S02-04 至 S02-08 仍保持“代码完成待验收”，真实 Playnite及完整 WPF 独立循环未验。R05 鼠标用例 2 pass/1 skip，skip 原因是当前 Windows 会话不允许读取系统鼠标位置。详情：[SDK8 S02 当前源码复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。滚动几何、任务筛选行、R22 时间显示与本地回归边界见[本地 UI 复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。原 Round3 未跟踪 TRX 与 `TestResults/` 保留。
 
 用户截图指出存档历史、路径校验和任务队列表格内部滚动条进入下方详情区域，部分数据被遮挡。此前 `43b869d1` 收拢紧凑工具区并移出表格框架内的详情入口；后续 `a1a86e41` 修复页面高度输入，已测量的页面 ScrollViewer 视口优先限制表格空间。SDK9.0.302 Release solution `0 warning / 0 error`；页面/表格几何与清单入口测试 `23/23`。证据：[滚动视口修复](docs/design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。测试为离屏 WPF，未在真实 Playnite 或物理 DPI 下验屏。
 
-S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 `96a3eab3` 提供脱敏只读清单预览和显式复制；SDK9 Release solution `0/0`，定向测试 `13/13`。证据：[S06-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 `09ec3c84` 补原生清单 JSON 跨会话与损坏字段恢复回归；Playnite.Tests Rebuild `0/0`、设置/清单定向测试 `27/27`。证据：[S06-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。S00-03 审计确认方向键/Enter 行为仍缺，且必须等待 S00-02 SDK8 WPF 与安装/版本门禁；前置在 R05 `GetCursorPos` Win32 error 5 停止。详见 [S00-03 审计](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite 启停及宿主磁盘原子性未验证；原 Round3 未跟踪 TRX/TestResults 保留。S00-03 与 S07-03 外部阻塞，S00-04～08 仍待依赖准入，计划内目前没有可执行 READY 项。
+S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 `96a3eab3` 提供脱敏只读清单预览和显式复制；SDK9 Release solution `0/0`，定向测试 `13/13`。证据：[S06-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 `09ec3c84` 补原生清单 JSON 跨会话与损坏字段恢复回归；Playnite.Tests Rebuild `0/0`、设置/清单定向测试 `27/27`。证据：[S06-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。S00-03 审计确认方向键/Enter 行为仍缺，且必须等待 S00-02 SDK8 WPF 与安装/版本门禁；前置在 R05 `GetCursorPos` Win32 error 5 停止。详见 [S00-03 审计](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md)。SDK8.0.423 已用于本轮受控构建和定向测试；完整 WPF/安装、真实 Playnite 启停及宿主磁盘原子性未验证；原 Round3 未跟踪 TRX/TestResults 保留。S00-03 与 S07-03 仍为外部阻塞，S00-04～08 仍待依赖准入，计划内没有依赖已满足的 READY 项。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 

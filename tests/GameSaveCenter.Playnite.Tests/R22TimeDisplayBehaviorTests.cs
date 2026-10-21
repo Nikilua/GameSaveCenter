@@ -93,6 +93,41 @@ public sealed class R22TimeDisplayBehaviorTests
     }
 
     [Fact]
+    public void RetentionScenarioVersionDetailsUseRelativeAndFullUtcTime()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var timestamp = new DateTime(2026, 9, 19, 8, 7, 6, DateTimeKind.Utc);
+        var detail = new RetentionScenarioVersionDetailDto { CreatedUtc = timestamp, BackupId = "retention-version" };
+
+        Assert.Equal(TimeDisplayFormatter.Relative(timestamp, DateTime.UtcNow), detail.CreatedRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), detail.CreatedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), detail.CreatedRawUtcDisplay);
+        Assert.Contains("Binding=\"{Binding CreatedRelativeDisplay, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("ToolTip\" Value=\"{Binding CreatedFullDisplay, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+        Assert.Contains("AutomationProperties.HelpText\" Value=\"{Binding CreatedFullDisplay, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+        Assert.DoesNotContain("Binding=\"{Binding CreatedDisplay}\"", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void RetentionScenarioComparisonUsesRelativeAndFullUtcTime()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        var root = TestRepositoryContext.Root;
+        var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
+        var timestamp = new DateTime(2026, 9, 19, 8, 7, 6, DateTimeKind.Utc);
+        var comparison = new RetentionScenarioComparisonDto { GeneratedUtc = timestamp };
+
+        Assert.Equal($"共同截止时点：{TimeDisplayFormatter.Relative(timestamp, DateTime.UtcNow)}", comparison.GeneratedRelativeDisplay);
+        Assert.Equal(TimeDisplayFormatter.Full(timestamp), comparison.GeneratedFullDisplay);
+        Assert.Equal(TimeDisplayFormatter.RawUtc(timestamp), comparison.GeneratedRawUtcDisplay);
+        Assert.Contains("RetentionScenarioComparison.GeneratedRelativeDisplay, Mode=OneWay", maintenance, StringComparison.Ordinal);
+        Assert.Contains("ToolTip=\"{Binding RetentionScenarioComparison.GeneratedFullDisplay, Mode=OneWay}\"", maintenance, StringComparison.Ordinal);
+        Assert.DoesNotContain("Binding RetentionScenarioComparison.GeneratedDisplay", maintenance, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void RetentionPreviewKeepsLegacyTextAndExposesSharedTimeContract()
     {
         var timestamp = new DateTime(2026, 9, 19, 8, 7, 6, DateTimeKind.Utc);

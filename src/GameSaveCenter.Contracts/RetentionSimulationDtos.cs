@@ -168,6 +168,10 @@ namespace GameSaveCenter.Contracts
         public string ProtectionReasonDisplay { get; set; } = string.Empty;
         public string ArchiveAvailabilityDisplay { get; set; } = string.Empty;
 
+        public string CreatedRelativeDisplay => TimeDisplayFormatter.Relative(CreatedUtc, DateTime.UtcNow);
+        public string CreatedFullDisplay => TimeDisplayFormatter.Full(CreatedUtc);
+        public string CreatedRawUtcDisplay => TimeDisplayFormatter.RawUtc(CreatedUtc);
+
         public string CreatedDisplay => CreatedUtc == default(DateTime)
             ? string.Empty
             : $"{CreatedUtc.ToLocalTime():yyyy-MM-dd HH:mm} · {BackupId}";
@@ -197,6 +201,12 @@ namespace GameSaveCenter.Contracts
         public int ChangedVersionCount => Games.Sum(x => x.ChangedVersionCount);
         public int ProtectedVersionDetailCount => Games.Sum(x => x.VersionDetails.Count(version => version.IsProtected));
         public string DetailSummaryDisplay => $"逐游戏对账 {Games.Count} 个游戏；策略结论变化 {ChangedGameCount} 个游戏 / {ChangedVersionCount} 个版本；另列 {ProtectedVersionDetailCount} 个保护项。选择游戏查看版本和保护原因。详情只读，不执行清理。";
+
+        public string GeneratedRelativeDisplay => GeneratedUtc == default(DateTime)
+            ? "尚未生成共同截止时点"
+            : $"共同截止时点：{TimeDisplayFormatter.Relative(GeneratedUtc, DateTime.UtcNow)}";
+        public string GeneratedFullDisplay => TimeDisplayFormatter.Full(GeneratedUtc);
+        public string GeneratedRawUtcDisplay => TimeDisplayFormatter.RawUtc(GeneratedUtc);
 
         public string GeneratedDisplay => GeneratedUtc == default(DateTime)
             ? "尚未生成共同截止时点"

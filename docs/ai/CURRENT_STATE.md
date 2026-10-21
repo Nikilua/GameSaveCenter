@@ -2,6 +2,8 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
+当前 SDK8.0.423 官方 Release solution build `0/0`、XAML 25/25；S02-04 至 S02-08 通知/上下文受控回归通过。S02-04 的受控状态现为 passed，但 S02-04 至 S02-08 均仍是“代码完成待验收”，真实 Playnite/完整 WPF 主机门禁仍 pending。R05 鼠标用例因当前 Windows 会话不允许读取系统指针而跳过，没有绕过。证据：[SDK8 S02 复核](../design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。当前工作区滚动几何 7/7、任务中心筛选断点 Light/Dark 行为通过、维护中心相对时间 32/32：[本地 UI 复核](../design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。原 Round3 未跟踪 TRX/TestResults 保留。
+
 Round4 S05-03 至 S05-08、S06-01 至 S06-08 已受控验收。S06-07 `96a3eab3` 增加待办清单只读脱敏导出预览，SDK9 Release solution `0/0`、预览/去敏/复制链 `13/13`；证据：[S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 `09ec3c84` 补原生 Worklists JSON 跨会话、旧字段默认和损坏字段备份恢复回归；Playnite.Tests Release Rebuild `0/0`、回归 `27/27`，证据：[S06-08](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。页面滚动视口修复 `a1a86e41` 的几何 `23/23` 见[滚动修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。S00-03 依赖审计发现方向键/Enter 行为仍缺，且必须等待 S00-02 的 SDK8 WPF/安装门禁；`GetCursorPos` Win32 error 5 使前置尚未满足，边界见 [S00-03 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md)。真实 Playnite 启停、系统剪贴板和宿主写盘原子性未验证；原有未跟踪 TRX/TestResults 保留。S00-03 与 S07-03 均为外部阻塞，S00-04 至 S00-08 仍待前置，当前没有依赖已满足的 READY 项。
 
 2026-10-21 用户截图显示表格内部滚动条与页面详情区域错位。此前 `43b869d1` 已重排详情入口和紧凑工具区；后续提交 `a1a86e41` 修正视口高度来源：只要页面 ScrollViewer 已有有效测量，就以更小的页面实测高度约束表格分配，避免使用包含页面 chrome 的宿主高度溢出。SDK9 Release solution `0/0`，最终页面/表格与入口定向测试 `23/23`。证据：[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。验证是离屏 STA/WPF 几何行为，不代表真实 Playnite 窗口或物理 DPI。

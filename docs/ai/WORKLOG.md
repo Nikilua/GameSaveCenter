@@ -11731,3 +11731,13 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 提交身份 `09ec3c84` 下 Playnite.Tests Release Rebuild `0 warning / 0 error`，跨会话、恢复、冲突、去重、兼容和保存反馈相关测试 `27/27`；source validation 与 Round4 ledger `5/5` 通过。构建/TRX 哈希见 [S06-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。
 - 未更改源业务对象或退出逻辑。清单修改仍沿用即时 `SavePluginSettings` 和失败回滚；真实 Playnite 启停生命周期及宿主磁盘原子性未验证，恢复用例只针对插件加载器和可恢复备份。
 - S06-07 和 S06-08 均已受控验收并推送。S07-03 的 required-check/branch-protection 读取仍外部阻塞；本计划现无其他 READY 项。没有为状态同步触发完整构建或 CI。原 Round3 TRX 与 `TestResults/` 保留。
+
+## 2026-10-21 Round4 S02-04 至 S02-08 SDK8 当前源码复核
+
+- `S00-01` 已满足，复用 `dd38f8ca` 能力与既有证据。继续检查下一段 S02 通知依赖链，没有新增实现既有命令/通知能力。
+- 官方 `scripts/build.ps1 -Configuration Release -SkipTests` 使用 SDK `8.0.423` 对当前工作树 restore 并完成全解方案 Release build：XAML `25/25`，`0 warning / 0 error`。诊断 ID `20261021T030909128Z-cd5facd2`，日志和二进制 SHA 见 [SDK8 S02 复核](../design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。`-SkipTests` 是有意的：随后按类独立运行 S02 定向组，避免将完整隔离循环误报为通过。
+- S02-04 既有能力当前 SDK8 定向 `20/20`：通知视图/R10 `8/8`、Worker 精确任务 ID `10/10`、R09 `2/2`；已把 `ROUND4_STATUS.json` 的 controlled verification 更新为 passed。S02-05：策略 `22/22`、设置持久化/导入导出 `15/15`、R09 `2/2`。S02-06：策略 `22/22`、Worker 通知持久化 `12/12`、R09 `2/2`。S02-07：通知归并/筛选/已读/重试来源与 R09 `19/19`、Worker `12/12`。S02-08：通知体验计划子集 `20/20`、完整 R21 UIA 类 `24/24`、Worker `12/12`。这五项仍保持“代码完成待验收”，host verification pending。
+- R05 Tooltip 当前会话 2 项通过、1 项按设计 skip；跳过项需要读取系统鼠标位置，当前 Windows 会话不允许。没有绕过系统输入拒绝；完整 WPF 安装门禁、真实 Playnite、Windows 系统高对比和真实读屏器未验证。
+- 对用户滚动截图关联页的当前源码 SDK8 几何回归 `7/7`；现有 `43b869d1`/`a1a86e41` 已修正工具区占高、表格详情入口和 PageHost 实际视口预算，本轮没有把离屏结果称作真实屏幕通过。复核中另发现 Task Center 搜索控件最小宽度和旧完整筛选行断点不匹配，固定 `1500 DIP` 紧凑断点；Q14 Light/Dark boundary geometry 与标签重挂接 `2/2`。维护中心保留情景版本/生成时间使用相对文本及完整 Tooltip/UIA 时间，R22 `32/32`。完整回归见 [本地 UI 复核](../design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。
+- 同步过时的 R17、Workspace、R21 和 restored baseline 源码断言；R17 `2/2`、Workspace `9 passed / 1 historical skip`、R21 `24/24`、baseline `16/16`。没有只靠新字符串检查交付功能。
+- `ROUND4_PROGRESS.md` 已由状态 JSON 生成；原 Round3 未跟踪 TRX 与 Playnite `TestResults/` 保持未修改/未暂存。本轮 `.tmp` 将在证据归档、身份核对后按路径边界清理。依当前 Backlog，S02 已无独立实现项可准入；尚存完整 WPF/真实宿主与 branch-protection 外部边界，本计划没有依赖满足的下一项 READY。

@@ -21,3 +21,7 @@
 - [通知持久化日志](tests/notification-record-persistence.log)；[TRX](tests/notification-record-persistence.trx)
 - [R09 日志](tests/r09-focus.log)；[TRX](tests/r09-focus.trx)
 - [源码与程序集身份](verification-identity.json)
+
+## 2026-10-21 SDK8 当前源码复核
+
+SDK `8.0.423` 官方 Release solution build 0 warning / 0 error、XAML 25/25；通知例外策略 22/22、Worker 通知记录/重试持久化 12/12、R09 2/2。证据与 TRX：[S02 SDK8 复核](../SDK8-S02-RECHECK-20261021/README.md)。完整 WPF 循环、安装和真实 Playnite 仍未验；当前桌面系统指针读取条件不满足 R05 物理鼠标用例。

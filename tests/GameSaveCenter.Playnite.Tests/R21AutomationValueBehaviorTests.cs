@@ -84,7 +84,7 @@ public sealed class R21AutomationValueBehaviorTests
         Assert.Contains("AutomationProperties.Name=\"排序游戏\"", dashboard);
         Assert.Contains("AutomationProperties.Name=\"启用当前游戏自动任务\"", dashboard);
         Assert.Contains("AutomationProperties.Name=\"保存当前游戏策略\"", dashboard);
-        Assert.Contains("AutomationProperties.Name=\"备份存储占用比例\"", maintenance);
+        Assert.Contains("AutomationProperties.Name=\"备份目录文件长度与卷容量对比\"", maintenance);
         Assert.Contains("Value=\"{Binding RemoteBackupStageProgress, Mode=OneWay}\" Height=\"6\" Margin=\"0,10,0,0\" AutomationProperties.Name=\"远端备份隔离下载进度\" AutomationProperties.HelpText=\"{Binding RemoteBackupStageProgress, StringFormat={}{0}%}\"", maintenance);
         Assert.Contains("AutomationProperties.Name=\"媒体收件箱当前全局目标游戏\"", media);
         Assert.Contains("AutomationProperties.Name=\"当前全局目标游戏\"", media);

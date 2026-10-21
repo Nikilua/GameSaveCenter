@@ -15,7 +15,7 @@
 <!-- ROUND4-STATUS-GENERATED-START -->
 
 状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收15、外部阻塞2、待开始5。
-实现状态：完成57、未开始7、不适用0；受控验证：通过57、未跑6、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+实现状态：完成57、未开始7、不适用0；受控验证：通过58、未跑6、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -38,11 +38,11 @@
 | S02-01 | 通知记录契约 | 已验收 | 83194c50 | [证据](evidence/S02-01/README.md)：SDK8 Release 构建通过；NotificationRecordPersistenceTests 3/3，Worker 364 passed / 1 skipped | 通知生产者尚未接入；无 XAML、外发通知或 Playnite host 验证；S02-02 后续接入 |
 | S02-02 | 收件箱入口 | 代码完成待验收 | 8810d9e6 | [证据](evidence/S02-02/README.md)：SDK8 Release solution 0/0；Playnite 定向测试 15/15（R09 2/2）、Worker 3/3；双主题 Render QA 22/22 | 完整 WPF 独立进程循环未完成；真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺少 summary/TRX/DLL/PDB，不能确认旧输入；S02-03 已在后续批次完成。 |
 | S02-03 | 已读语义 | 代码完成待验收 | 6d3a6f43 | [证据](evidence/S02-03/README.md)：SDK8.0.423 Release 构建 0/0；Playnite 18/18（R09 2/2）；Worker SQLite 7/7；双主题 11 尺寸 Render QA 22/22 | 完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺同次 summary/TRX/DLL/PDB，实际输入身份无法确认。下一项按依赖审查 S02-04。 |
-| S02-04 | 上下文跳转 | 代码完成待验收 | 1b17e4a0 | [证据](evidence/S02-04/README.md)：SDK 9.0.302 Release solution build 0/0；通知/R10、Worker 精确任务查询与 R09 定向测试 20/20；双主题 11 尺寸 Offscreen Render QA OK。SDK8 正式基线、完整 WPF 独立循环及真实宿主未验 | global.json 要求 SDK 8.0.423；本次受控构建使用 SDK 9.0.302。保存的一键日志在 R05 系统鼠标位置读取处中止安装；用户旧 R09 诊断缺少 summary/TRX/DLL/PDB，输入身份仍未知。 |
-| S02-05 | 临时静音与时段 | 代码完成待验收 | 2aa3fe3c | [证据](evidence/S02-05/README.md)：SDK9 Release solution 0/0；通知策略 20/20，设置持久化/交互 15/15，独立 R09 2/2；浅/深主题 × 1040×700/720×640 设置探针 4/4 | 当前只安装 SDK 9.0.302，global.json 锁定 SDK 8.0.423；完整 WPF 隔离循环、安装和真实 Playnite 宿主未验证。已有一键日志在 R05 系统鼠标位置读取处停止；旧 R09 同次 summary/TRX/DLL/PDB 身份缺失。 |
-| S02-06 | 重要事件例外 | 代码完成待验收 | a6153219 | [证据](evidence/S02-06/README.md)：SDK9 Release solution build 0/0；弹窗策略 22/22、通知记录持久化 7/7、当前匹配构建 R09 2/2；source validation 通过 | global.json 锁定 SDK 8.0.423，本机仅有 SDK 9.0.302；完整 WPF 隔离循环、安装和真实 Playnite 宿主未验。旧 R09 诊断身份缺失、根因未定位；本次匹配 DLL 复测通过。 |
-| S02-07 | 重复归并摘要 | 代码完成待验收 | 9ed6b4e5、c4fb56a0 | [证据](evidence/S02-07/README.md)：SDK9 Release solution build 0/0；Core 147/147、Worker 374通过/1跳过、通知持久化 12/12、Playnite通知与R09定向 19/19；source validation 通过，WPF静态审查0错误 | global.json锁定SDK8.0.423，本机仅有SDK9.0.302；完整WPF隔离循环、一键安装和真实Playnite宿主未验。旧R09诊断文件和程序集身份未保留，旧失败根因仍未知。 |
-| S02-08 | 通知体验验收 | 代码完成待验收 | 已有 S02 通知实现（83194c50 至 c4fb56a0） | [受控证据](evidence/S02-08/README.md)：SDK9 Playnite 通知体验 20/20，Worker 持久化 12/12；插件 DLL/PDB 与测试加载副本哈希匹配 | 本次使用 SDK9.0.302；SDK8 正式基线、完整 WPF 隔离循环、真实 Playnite、Windows 系统高对比和真实读屏器未验证。VSTest 退出码为0但 WPF 清理输出 InvalidComObjectException。 |
+| S02-04 | 上下文跳转 | 代码完成待验收 | 1b17e4a0 | [SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-04/README.md)：官方 Release solution build 0/0、XAML 25/25；通知/R10 8/8、Worker 精确 task ID 10/10、R09 2/2。 | SDK8 定向验证通过；完整 WPF 独立循环、安装及真实 Playnite未验。R05系统鼠标位置用例在当前 Windows 会话按设计跳过；用户旧R09诊断身份仍缺。 |
+| S02-05 | 临时静音与时段 | 代码完成待验收 | 2aa3fe3c | [SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-05/README.md)：官方 Release solution build 0/0、XAML 25/25；通知策略 22/22、设置持久化/便携设置 15/15、R09 2/2。 | SDK8 受控定向验证完成；完整 WPF 隔离、安装与真实 Playnite仍未验。R05物理鼠标用例因系统指针访问受限而跳过。 |
+| S02-06 | 重要事件例外 | 代码完成待验收 | a6153219 | [SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-06/README.md)：官方 Release solution build 0/0、XAML 25/25；通知例外策略 22/22、Worker 持久化 12/12、R09 2/2。 | SDK8 受控定向验证完成；完整 WPF 隔离、安装与真实 Playnite仍未验。旧R09输入身份不全，不推断其根因。 |
+| S02-07 | 重复归并摘要 | 代码完成待验收 | 9ed6b4e5、c4fb56a0 | [SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-07/README.md)：官方 Release solution build 0/0、通知归并/筛选/已读/重试来源与R09 19/19，Worker通知持久化12/12。 | SDK8 受控定向验证完成；完整 WPF 循环与真实 Playnite未验。用户旧R09诊断输入身份仍未知。 |
+| S02-08 | 通知体验验收 | 代码完成待验收 | 已有 S02 通知实现（83194c50 至 c4fb56a0） | [SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-08/README.md)：官方 Release solution build 0/0、通知体验子集20/20、完整R21 UIA类24/24、Worker持久化12/12。 | 真实Playnite、Windows系统高对比切换和真实读屏器未验证；R05系统鼠标位置测试因当前会话权限按设计跳过。 |
 | S03-01 | 来源关系模型 | 已验收 | 5e05aa73 | [受控证据](evidence/S03-01/README.md)：SDK9 Core Release 构建成功；Core 全套测试 156/156，覆盖父关系、等价内容、异常关系和有界读取 | 仅新增 Core 模型/构建器与测试；SDK8 正式基线、全解方案、Worker IPC、Playnite 版本关系视图和真实恢复未验证。S03-02 负责视图接入。 |
 | S03-02 | 版本关系视图 | 已验收 | fd59dcc1 | [受控证据](evidence/S03-02/README.md)：SDK9 Release solution 0/0；Playnite 12/12、Worker 2/2；RenderHarness render-qa OK，0 PROBLEM | 当前仅 SDK9.0.302；SDK8.0.423 正式基线和真实 Playnite 未运行。用户旧 R09 诊断缺同次 summary/TRX/DLL/PDB，当前 R09 通过不识别旧运行输入。 |
 | S03-03 | 冲突原因对照 | 已验收 | 3268565cfe02bd8e8b8e6d059e6ff2ffbcc84720 | [受控证据](evidence/S03-03/README.md)：SDK8.0.423 Release solution 0/0；Playnite 4/4、Worker 2/2、Core 7/7、R09 2/2；RenderHarness render-qa OK，0 PROBLEM | 完整 WPF 逐类隔离循环、安装包和真实 Playnite 未运行；无真实同步或恢复。readiness 只显示实际检查时间，不定义过期阈值或推荐冲突胜方。用户旧 R09 summary/TRX/DLL/PDB 缺失，旧失败运行输入仍未知。 |

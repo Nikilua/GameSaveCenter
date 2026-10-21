@@ -19,3 +19,7 @@
 ## 边界
 
 没有运行真实 Playnite、Windows 系统高对比切换或实际读屏器。受控 WPF Automation 检查不等同于真实读屏器公告；这些宿主证据仍待具备对应环境后验证。本批没有新增外发通知、诊断或真实数据写入。
+
+## 2026-10-21 SDK8 当前源码复核
+
+官方 SDK `8.0.423` Release solution build 0 warning / 0 error、XAML 25/25。S02-08 定向行为子集 20/20、Worker 持久化 12/12；额外完整 `R21AutomationValueBehaviorTests` 类 24/24。R05 物理鼠标用例因当前会话不允许读取系统指针而跳过，不影响其余定向测试通过。完整结果、TRX、构建日志和程序集 SHA：[SDK8 当前源码复核](../SDK8-S02-RECHECK-20261021/README.md)。真实 Playnite、Windows 系统高对比和实际读屏器仍未验证。

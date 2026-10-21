@@ -11,8 +11,8 @@
 
 ## 尚未完成的门禁
 
-- 本次环境未运行 SDK `8.0.423` 正式基线、完整 WPF 独立进程循环、Playnite 安装或真实宿主呈现；因此 S02-04 仍为“代码完成待验收”。当前 SDK9 构建使用既有 NuGet 资产，没有重新执行 restore。
-- 工作区保存的一键安装日志在构建后运行 Playnite WPF 测试时，停在 R05 `QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt`：测试无法读取启动前的系统鼠标位置，尚未到安装步骤。这与用户贴出的 R09 `Thickness(2)`/`Thickness(1)` 断言失败是不同运行、不同失败。
+- 2026-10-21 已使用 SDK `8.0.423` 通过官方 `scripts/build.ps1 -SkipTests` 完成 restore、25 个 XAML 结构检查与完整 Release solution build，`0 warnings / 0 errors`；S02-04 定向测试 20/20 通过。完整 WPF 独立循环、一键安装和真实宿主呈现仍未完成，因此状态仍为“代码完成待验收”。复核证据：[S02-04 至 S02-08 SDK8 当前源码复核](../SDK8-S02-RECHECK-20261021/README.md)。
+- 当前 SDK8 的 R05 `QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt` 依设计跳过：此 Windows 会话不允许读取系统鼠标位置；同类另外 2 项通过。未绕过该权限，也未把测试 skip 当作真实桌面验收。这与用户旧 R09 `Thickness(2)`/`Thickness(1)` 断言失败是不同运行、不同失败。
 - 用户确认暂时没有诊断 `20261018T012631286Z-e027df9d` 的 `summary.json` 和 TRX。该日志缺少同次源码、测试程序集和 PDB 身份；本次 R09 `2/2` 通过不能解释旧运行实际输入。没有修改共享焦点模板或放宽 R09 断言。
 
 ## 文件索引

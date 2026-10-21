@@ -15,6 +15,8 @@ namespace GameSaveCenter.Playnite.Views
     /// <summary>Physical task-center workspace; it deliberately has no current-game picker.</summary>
     public partial class TaskCenterView : UserControl
     {
+        internal const double CompactFilterBreakpoint = 1500d;
+
         private bool isApplyingLayout;
         private double responsiveWidth;
         private double responsiveHeight;
@@ -331,7 +333,7 @@ namespace GameSaveCenter.Playnite.Views
                 // the Grid can still arrange its columns while the TextBox overflows its
                 // search cell, hiding the right edge under the next filter.  Keep secondary
                 // filters in the disclosure until the complete row fits.
-                var compactFilters = width < 1216;
+                var compactFilters = width < CompactFilterBreakpoint;
                 // The shared controller uses arranged rows, including changes to
                 // text, visibility and host sizing, rather than a guessed breakpoint.
                 taskFilterPresetRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);

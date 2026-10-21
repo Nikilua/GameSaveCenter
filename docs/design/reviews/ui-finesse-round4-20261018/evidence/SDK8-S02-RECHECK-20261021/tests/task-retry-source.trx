@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="96251d62-d9e6-457f-a1e0-49e1474a609d" name="lopmatu@SULT 2026-10-21 11:22:37" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-21T11:22:37.3944972+08:00" queuing="2026-10-21T11:22:37.3944975+08:00" start="2026-10-21T11:22:31.9511453+08:00" finish="2026-10-21T11:22:51.3732445+08:00" />
+  <TestSettings name="default" id="fd0d0153-b414-4805-88d2-5927c917e95f">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-21_11_22_37" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="15210e41-c881-4977-ae16-9ecb86790347" testId="7cda16fb-bb52-2cfc-5c75-e918d3c88fc7" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.TaskCenterExposesSafeBulkRetryWithoutChangingWorkerProtocol" computerName="SULT" duration="00:00:00.0280000" startTime="2026-10-21T11:22:36.0044395+08:00" endTime="2026-10-21T11:22:36.0104418+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15210e41-c881-4977-ae16-9ecb86790347" />
+    <UnitTestResult executionId="66e760a9-0018-4731-9977-3d9c4303b519" testId="31008a89-a6ef-d226-c145-ba428bb692cc" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind" computerName="SULT" duration="00:00:00.1350000" startTime="2026-10-21T11:22:35.8631886+08:00" endTime="2026-10-21T11:22:35.9828044+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66e760a9-0018-4731-9977-3d9c4303b519" />
+    <UnitTestResult executionId="a95c5649-74f6-432f-a289-56d6d5aafbc5" testId="61645536-0627-d4e7-fc6b-278d3685eecc" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.BulkActionsCaptureStableIdsAndExplainPartialResults" computerName="SULT" duration="00:00:00.0330000" startTime="2026-10-21T11:22:36.0124433+08:00" endTime="2026-10-21T11:22:36.0436129+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a95c5649-74f6-432f-a289-56d6d5aafbc5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.BulkActionsCaptureStableIdsAndExplainPartialResults" storage="d:\workplace\github\gamesavecenter\.tmp\round4-validation-final-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="61645536-0627-d4e7-fc6b-278d3685eecc">
+      <Execution id="a95c5649-74f6-432f-a289-56d6d5aafbc5" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-validation-final-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="BulkActionsCaptureStableIdsAndExplainPartialResults" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.TaskCenterExposesSafeBulkRetryWithoutChangingWorkerProtocol" storage="d:\workplace\github\gamesavecenter\.tmp\round4-validation-final-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7cda16fb-bb52-2cfc-5c75-e918d3c88fc7">
+      <Execution id="15210e41-c881-4977-ae16-9ecb86790347" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-validation-final-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="TaskCenterExposesSafeBulkRetryWithoutChangingWorkerProtocol" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind" storage="d:\workplace\github\gamesavecenter\.tmp\round4-validation-final-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="31008a89-a6ef-d226-c145-ba428bb692cc">
+      <Execution id="66e760a9-0018-4731-9977-3d9c4303b519" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round4-validation-final-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7cda16fb-bb52-2cfc-5c75-e918d3c88fc7" executionId="15210e41-c881-4977-ae16-9ecb86790347" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31008a89-a6ef-d226-c145-ba428bb692cc" executionId="66e760a9-0018-4731-9977-3d9c4303b519" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="61645536-0627-d4e7-fc6b-278d3685eecc" executionId="a95c5649-74f6-432f-a289-56d6d5aafbc5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.88]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.13]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
