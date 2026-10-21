@@ -11740,7 +11740,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R05 Tooltip 当前会话 2 项通过、1 项按设计 skip；跳过项需要读取系统鼠标位置，当前 Windows 会话不允许。没有绕过系统输入拒绝；完整 WPF 安装门禁、真实 Playnite、Windows 系统高对比和真实读屏器未验证。
 - 对用户滚动截图关联页的当前源码 SDK8 几何回归 `7/7`；现有 `43b869d1`/`a1a86e41` 已修正工具区占高、表格详情入口和 PageHost 实际视口预算，本轮没有把离屏结果称作真实屏幕通过。复核中另发现 Task Center 搜索控件最小宽度和旧完整筛选行断点不匹配，固定 `1500 DIP` 紧凑断点；Q14 Light/Dark boundary geometry 与标签重挂接 `2/2`。维护中心保留情景版本/生成时间使用相对文本及完整 Tooltip/UIA 时间，R22 `32/32`。完整回归见 [本地 UI 复核](../design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。
 - 同步过时的 R17、Workspace、R21 和 restored baseline 源码断言；R17 `2/2`、Workspace `9 passed / 1 historical skip`、R21 `24/24`、baseline `16/16`。没有只靠新字符串检查交付功能。
-- `ROUND4_PROGRESS.md` 已由状态 JSON 生成；原 Round3 未跟踪 TRX 与 Playnite `TestResults/` 保持未修改/未暂存。本轮 `.tmp` 将在证据归档、身份核对后按路径边界清理。依当前 Backlog，S02 已无独立实现项可准入；尚存完整 WPF/真实宿主与 branch-protection 外部边界，本计划没有依赖满足的下一项 READY。
+- `ROUND4_PROGRESS.md` 已由状态 JSON 生成；原 Round3 未跟踪 TRX 与 Playnite `TestResults/` 保持未修改/未暂存。依当前 Backlog，S02 已无独立实现项可准入；尚存完整 WPF/真实宿主与 branch-protection 外部边界，本计划没有依赖满足的下一项 READY。
 
 ## 2026-10-21 用户滚动反馈后续复核与 SDK8 默认构建
 
@@ -11750,3 +11750,4 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 68 个 skip 具体为已撤销旧“今日工作台 UI”架构断言 57、当前执行会话创建 Named Pipe 被拒绝 10、读取系统鼠标位置被拒绝 1。未绕过权限；未启动真实 Playnite。
 - RenderHarness 离屏报告 `render-qa OK`，缩放转场恢复 5 项指标；Task Center 在 PageHost 1040x700、1100x720 和 1366x768 尺寸下保留 4 行，DataGrid viewport `274 DIP`。source validation、XAML `25/25`、WPF 静态审查 `0 error`、`git diff --check` 通过。截图/合成 WPF 不是用户桌面或真实宿主证据。
 - 已同步 CURRENT_STATE、PROJECT_MEMORY、DEVELOPMENT_HANDOFF、Round4 进度及 backlog 最新摘要；64 项 `ROUND4_STATUS.json` 状态未变，Round4 未整体完成。S00-01 已满足，本计划目前无依赖已满足的下一项 READY；S00-02 等宿主门禁和 S07-03 权限阻塞保留。原有 Round3 未跟踪 TRX 与 Playnite `TestResults/` 未触碰、未暂存。
+- 归档证据后按确认过的绝对路径完成 `.tmp` 清理：75 个已完成阶段的构建/测试/渲染目录及 1 个无文档引用日志，共释放约 `3.7 GiB`。检查中误删一份 `artifacts/last-dev-install-current-20260913.txt` 历史报告；未找到逐字副本，原路径已放占位说明并明确其不构成证据。保留当前 `0.6.73` 包、扩展目录、构建诊断及其他历史文档引用材料；用户 Round3 TRX 和 Playnite `TestResults/` 未改动。
