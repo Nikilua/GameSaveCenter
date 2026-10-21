@@ -18,6 +18,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private readonly ObservableCollection<WorklistDefinition> worklistBrowserLists = new ObservableCollection<WorklistDefinition>();
         private readonly ObservableCollection<WorklistBrowserEntry> worklistBrowserEntries = new ObservableCollection<WorklistBrowserEntry>();
         private readonly List<WorklistBrowserEntry> selectedWorklistBrowserEntries = new List<WorklistBrowserEntry>();
+        private readonly WorklistExportPreviewSession worklistExportPreview = new WorklistExportPreviewSession();
         private ICollectionView worklistBrowserView = null!;
         private WorklistDefinition? selectedWorklist;
         private WorklistBrowserEntry? selectedWorklistBrowserEntry;
@@ -31,6 +32,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public ICommand OpenWorklistBrowserCommand { get; private set; } = null!;
         public ICommand CloseWorklistBrowserCommand { get; private set; } = null!;
+        public ICommand PreviewWorklistExportCommand { get; private set; } = null!;
+        public ICommand CloseWorklistExportPreviewCommand { get; private set; } = null!;
         public ICommand RefreshWorklistReferencesCommand { get; private set; } = null!;
         public ICommand ContinueSelectedWorklistItemCommand { get; private set; } = null!;
         public ICommand ToggleSelectedWorklistManualCompletionCommand { get; private set; } = null!;
@@ -63,6 +66,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
+        public bool IsWorklistExportPreviewOpen => worklistExportPreview.IsOpen;
+        public string WorklistExportPreviewText => worklistExportPreview.Text;
+
         public bool IsWorklistBrowserOpen
         {
             get => isWorklistBrowserOpen;
@@ -71,7 +77,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (isWorklistBrowserOpen == value) return;
                 isWorklistBrowserOpen = value;
                 OnPropertyChanged(nameof(IsWorklistBrowserOpen));
-                if (value) Observe(RefreshWorklistReferencesAsync());
+                if (value)
+                    Observe(RefreshWorklistReferencesAsync());
+                else
+                    CloseWorklistExportPreview();
             }
         }
 
@@ -81,6 +90,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 if (ReferenceEquals(selectedWorklist, value)) return;
+                CloseWorklistExportPreview();
                 selectedWorklist = value;
                 OnPropertyChanged(nameof(SelectedWorklist));
                 OnPropertyChanged(nameof(WorklistBrowserHasLists));
@@ -142,12 +152,18 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void InitializeWorklistBrowser()
         {
+            worklistExportPreview.PropertyChanged += OnWorklistExportPreviewPropertyChanged;
             worklistBrowserView = CollectionViewSource.GetDefaultView(worklistBrowserEntries);
             worklistBrowserView.Filter = FilterWorklistBrowserEntry;
             worklistBrowserView.SortDescriptions.Add(new SortDescription(nameof(WorklistBrowserEntry.Position), ListSortDirection.Ascending));
 
             OpenWorklistBrowserCommand = new RelayCommand(_ => IsWorklistBrowserOpen = true);
             CloseWorklistBrowserCommand = new RelayCommand(_ => IsWorklistBrowserOpen = false);
+            PreviewWorklistExportCommand = new CreateWorklistExportPreviewCommand(
+                worklistExportPreview,
+                () => selectedWorklist,
+                () => worklistBrowserEntries.ToArray());
+            CloseWorklistExportPreviewCommand = new RelayCommand(_ => CloseWorklistExportPreview());
             RefreshWorklistReferencesCommand = new RelayCommand(
                 _ => Observe(RefreshWorklistReferencesAsync()),
                 _ => selectedWorklist != null && !isResolvingWorklistReferences);
@@ -220,6 +236,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void RebuildWorklistBrowserEntries(string? selectedIdentity = null)
         {
+            CloseWorklistExportPreview();
             worklistResolutionGeneration++;
             worklistBrowserEntries.Clear();
             selectedWorklistBrowserEntries.Clear();
@@ -248,6 +265,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private async Task RefreshWorklistReferencesAsync()
         {
             if (isResolvingWorklistReferences || selectedWorklist == null) return;
+            CloseWorklistExportPreview();
             var entries = worklistBrowserEntries.ToArray();
             if (entries.Length == 0)
             {
@@ -745,5 +763,16 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private static string GetWorklistIdentity(WorklistObjectKind kind, string? stableObjectId)
             => ((int)kind).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + (stableObjectId ?? string.Empty).Trim();
+
+        private void CloseWorklistExportPreview()
+            => worklistExportPreview.Close();
+
+        private void OnWorklistExportPreviewPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(WorklistExportPreviewSession.IsOpen))
+                OnPropertyChanged(nameof(IsWorklistExportPreviewOpen));
+            else if (e.PropertyName == nameof(WorklistExportPreviewSession.Text))
+                OnPropertyChanged(nameof(WorklistExportPreviewText));
+        }
     }
 }

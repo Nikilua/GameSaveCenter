@@ -584,6 +584,7 @@
                     </Grid>
                     <TextBox Width="220" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding WorklistSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="搜索对象类型、稳定编号、备注或引用状态" AutomationProperties.Name="搜索待办条目" Margin="0,0,10,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding RefreshWorklistReferencesCommand}" Content="刷新状态" ToolTip="通过 Worker 按稳定 ID 查询索引；不会访问或修改源文件" AutomationProperties.Name="刷新待办引用状态" Margin="0,0,8,6"/>
+                    <ui:Button x:Name="WorklistExportPreviewButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding PreviewWorklistExportCommand}" Content="预览导出" ToolTip="预览仅包含未手动完成项的脱敏人工记录；不会写文件或执行对象命令" AutomationProperties.Name="预览脱敏待办清单导出" AutomationProperties.HelpText="显示当前清单的只读脱敏文本；先检查预览，再明确复制。" Margin="0,0,8,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding ContinueSelectedWorklistItemCommand}" Content="续接对象" ToolTip="按稳定编号打开对应页面和详情；不会恢复旧对话框或执行备份、恢复、校验、重试" AutomationProperties.Name="续接所选待办对象" Margin="0,0,8,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding ToggleSelectedWorklistManualCompletionCommand}" Content="{Binding WorklistManualCompletionActionDisplay}" ToolTip="只记录这一条的人工跟进状态；不代表备份或校验成功，也不会运行源业务操作。可再次点击撤销。" AutomationProperties.Name="{Binding WorklistManualCompletionActionDisplay}" AutomationProperties.HelpText="手动跟进标记不代表备份或校验成功" Margin="0,0,8,6"/>
                     <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding MoveWorklistItemUpCommand}" Content="上移" ToolTip="在未分组且未搜索时，将唯一选中条目上移一位" AutomationProperties.Name="将待办条目上移" Margin="0,0,8,6"/>
@@ -643,5 +644,57 @@
                 </Grid>
             </Grid>
         </Border>
+        <Grid x:Name="WorklistExportPreviewOverlay"
+              Panel.ZIndex="2"
+              FocusManager.IsFocusScope="True"
+              KeyboardNavigation.TabNavigation="Cycle"
+              KeyboardNavigation.DirectionalNavigation="Contained"
+              PreviewKeyDown="OnWorklistExportPreviewKeyDown"
+              AutomationProperties.Name="待办清单脱敏导出预览">
+            <Grid.Style>
+                <Style TargetType="Grid" BasedOn="{StaticResource GscRedesignFeedbackDialogOverlay}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsWorklistExportPreviewOpen}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Border Width="640" MaxWidth="720" MaxHeight="760" Margin="20" Padding="20"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Style="{StaticResource GscRedesignFloatingPickerCard}"
+                    AutomationProperties.Name="待办清单只读导出预览">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="清单导出预览" Style="{StaticResource GscRedesignFeedbackDialogTitle}"/>
+                    <TextBlock Grid.Row="1" Text="仅显示脱敏后的未手动完成项目。此文本是人工整理记录，不代表业务成功，不能导入或执行。"
+                               Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,6,0,10"
+                               AutomationProperties.HelpText="不包含稳定编号、完整本机路径、真实文件内容、认证信息或自动化命令。"/>
+                    <TextBox x:Name="WorklistExportPreviewTextBox" Grid.Row="2"
+                             Text="{Binding WorklistExportPreviewText, Mode=OneWay}"
+                             Style="{DynamicResource GscWpfUiTextBox}"
+                             IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap"
+                             VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto" MinHeight="150" MaxHeight="480"
+                             AutomationProperties.Name="待办清单脱敏文本内容"
+                             AutomationProperties.HelpText="只读且可选择的分享文本；复制前请检查所有显示字段。"/>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                        <ui:Button x:Name="WorklistExportCopyButton" Style="{DynamicResource GscWpfUiActionButton}"
+                                   Content="复制预览" Click="OnWorklistExportCopyClick"
+                                   AutomationProperties.Name="复制待办清单脱敏预览"
+                                   AutomationProperties.HelpText="只复制当前已显示的脱敏预览文本。" Margin="0,0,8,0"/>
+                        <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}"
+                                   Command="{Binding CloseWorklistExportPreviewCommand}" Content="关闭预览"
+                                   AutomationProperties.Name="关闭待办清单导出预览"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

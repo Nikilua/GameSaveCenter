@@ -149,6 +149,20 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnNavigationViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(DashboardViewModel.IsWorklistExportPreviewOpen))
+            {
+                if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished) return;
+                var restoreFocus = WorklistExportPreviewOverlay.IsKeyboardFocusWithin;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
+                {
+                    if (navigationViewModel?.IsWorklistExportPreviewOpen == true)
+                        FocusElement(WorklistExportPreviewTextBox);
+                    else if (restoreFocus)
+                        FocusElement(WorklistExportPreviewButton);
+                }));
+                return;
+            }
+
             if (e.PropertyName != nameof(DashboardViewModel.PendingTaskGridScrollRestore)
                 && e.PropertyName != nameof(DashboardViewModel.TaskPageState)) return;
             if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished) return;
@@ -612,6 +626,24 @@ namespace GameSaveCenter.Playnite.Views
                 TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
                 lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
             FocusElement(TaskCompactDetailsButton);
+            e.Handled = true;
+        }
+
+        private async void OnWorklistExportCopyClick(object sender, RoutedEventArgs e)
+        {
+            var target = sender as FrameworkElement ?? WorklistExportCopyButton;
+            await WorklistExportClipboard.CopyAsync(WorklistExportPreviewTextBox.Text, target);
+            e.Handled = true;
+        }
+
+        private void OnWorklistExportPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || !(DataContext is DashboardViewModel viewModel)
+                || !viewModel.IsWorklistExportPreviewOpen)
+                return;
+
+            viewModel.CloseWorklistExportPreviewCommand.Execute(null);
+            FocusElement(WorklistExportPreviewButton);
             e.Handled = true;
         }
 

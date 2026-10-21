@@ -6660,7 +6660,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
                 LoadMoreMediaCommand, ReloadMediaWindowCommand, ReloadMediaDuplicateGroupsCommand, AddSelectedMediaToComparisonCommand, ClearMediaComparisonCommand, ToggleMediaComparisonWorkspaceCommand, PreviousMediaComparisonCandidateCommand, NextMediaComparisonCandidateCommand, MarkMediaComparisonToKeepCommand, MarkMediaComparisonToReviewCommand, ClearMediaComparisonOpinionCommand, CreateMediaComparisonClassificationPreviewCommand, ApplyMediaFilterPresetCommand, SaveMediaFilterPresetCommand, RenameMediaFilterPresetCommand, DeleteMediaFilterPresetCommand, OpenCloudQueueCommand, OpenMediaWorkspaceCommand, OpenActivityCommand, OpenRecentAccessCommand, OpenSelectedFindingNavigationCommand, RefreshCloudTransfersCommand, LoadMoreCloudTransfersCommand, ClearCloudTransferFiltersCommand, VerifyCloudTransferCommand, RetryCloudUploadCommand,
                 AddSelectedBackupToWorklistCommand, AddSelectedMediaToWorklistCommand, AddSelectedTaskToWorklistCommand, AddSelectedFindingToWorklistCommand,
-                OpenWorklistBrowserCommand, CloseWorklistBrowserCommand, RefreshWorklistReferencesCommand, ContinueSelectedWorklistItemCommand, ToggleSelectedWorklistManualCompletionCommand, MoveWorklistItemUpCommand, MoveWorklistItemDownCommand, RemoveSelectedWorklistItemsCommand,
+                OpenWorklistBrowserCommand, CloseWorklistBrowserCommand, PreviewWorklistExportCommand, CloseWorklistExportPreviewCommand, RefreshWorklistReferencesCommand, ContinueSelectedWorklistItemCommand, ToggleSelectedWorklistManualCompletionCommand, MoveWorklistItemUpCommand, MoveWorklistItemDownCommand, RemoveSelectedWorklistItemsCommand,
                 AssignInboxMediaCommand, IgnoreInboxMediaCommand, AssignInboxMediaBatchCommand, IgnoreInboxMediaBatchCommand, RestoreIgnoredMediaBatchCommand,
                 PreviewMediaClassificationCommand, ApplyMediaClassificationCommand, UndoMediaClassificationCommand,
                 RefreshMediaClassificationHistoryCommand, LoadMoreMediaClassificationHistoryCommand,
@@ -6679,6 +6679,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 command.RaiseCanExecuteChanged();
             }
+            if (PreviewWorklistExportCommand is CreateWorklistExportPreviewCommand previewCommand)
+                previewCommand.RaiseCanExecuteChanged();
         }
 
         private void ApplyOnUi(Action action)
