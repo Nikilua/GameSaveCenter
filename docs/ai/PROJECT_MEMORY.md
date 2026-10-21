@@ -4,11 +4,11 @@
 
 表格位于页面 ScrollViewer 时，页面根容器不能 `ClipToBounds`；限高只放在虚拟化表格/局部表格框架。表格视口预算须先扣掉页面工具栏、表格自身标题/表头和堆叠详情，再分配剩余高度；空间不足时由页面外层滚动承载。只要页面 `ScrollViewer.ViewportHeight` 已有有效测量，它就是表格预算的上限；宿主高度只在页面视口尚未测出时作回退值，不能因宿主增长覆盖一个更小的有效测量。测试需覆盖页面视口边界、表格内/外层滚动端点和窗口缩小后再放大。证据与边界见 [滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。
 
-## 2026-10-21 Round4 S06-07 已验收；S06-08 已审计
+## 2026-10-21 Round4 S06-07 与 S06-08 已验收
 
 `96a3eab3` 为任务中心工作清单增加只读脱敏预览和用户明确复制。仅导出名称、类型、受控摘要、所属游戏、引用状态和备注；默认包含未手动完成项并记录 UTC，不写文件，不含稳定 ID、完整路径、文件内容、凭据或命令。手动完成只是人工整理状态。SDK9 Release solution `0/0`、预览/UI/复制反馈与清单回归 `13/13`，证据见 [S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。真实 Playnite和系统剪贴板未验。
 
-S06-08 已审计 READY：冲突检测、损坏配置备份恢复、稳定 ID 重复拦截和工作清单即时保存已有能力；新增测试只补原生 Worklists JSON 重载、旧字段默认值、重载去重与损坏 Worklists 字段恢复。Playnite 真实退出生命周期和宿主写盘原子性不可由离屏测试证实；不模拟宿主，也不声称覆盖任意半写/掉电。
+`09ec3c84` 补充原生 Worklists JSON 跨会话重载、旧版字段默认值、重载后重复拦截，以及畸形清单字段的加载恢复/原文件备份行为。Playnite.Tests Rebuild `0/0`、相关设置/清单回归 `27/27`；证据：[S06-08](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。冲突检测、设置恢复、去重和工作清单即时 `SavePluginSettings` 机制已有实现。真实 Playnite 启停和宿主写盘原子性未验；不模拟宿主，也不声称覆盖任意半写/掉电。S07-03 的 branch-protection 读取权限仍阻塞，当前计划内无其它 READY 项。
 
 ## 2026-10-21 Round4 S05-08 情景性能边界
 

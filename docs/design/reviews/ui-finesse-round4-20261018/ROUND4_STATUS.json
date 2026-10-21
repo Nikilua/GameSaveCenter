@@ -927,19 +927,23 @@
     {
       "id": "S06-08",
       "title": "跨会话回归",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "09ec3c84",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[等价能力审计](evidence/S06-08/AUDIT.md)：冲突、损坏配置恢复、重复引用、设置默认值升级与即时保存已有实现/组件测试；原生 Worklists 跨会话序列化/损坏字段回归不足，依赖 S06-01 至 S06-07 已满足，准入 READY",
+      "verificationText": "[交付证据](evidence/S06-08/README.md)、[等价审计](evidence/S06-08/AUDIT.md)：Playnite.Tests Release Rebuild 0 warning/0 error；原生清单跨会话/损坏恢复与现有冲突、恢复、去重、兼容回归 27/27；source validation 与 Round4 ledger 通过",
       "evidence": [
+        {
+          "label": "交付与受控验证",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md"
+        },
         {
           "label": "等价能力审计",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/AUDIT.md"
         }
       ],
-      "boundary": "需补原生清单 JSON 重载、旧字段默认值、重复拦截和损坏字段恢复行为测试。Playnite 真实退出生命周期与 SavePluginSettings 的宿主磁盘原子性未验证；恢复备份不覆盖任意掉电/半写故障。"
+      "boundary": "真实 Playnite 启动/退出生命周期与 SavePluginSettings 宿主磁盘原子性未验证。损坏设置用例验证插件恢复加载器和原始备份，不模拟宿主；恢复备份不覆盖任意掉电/半写故障。"
     },
     {
       "id": "S07-01",

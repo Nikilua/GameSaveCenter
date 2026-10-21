@@ -11718,3 +11718,10 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 构建日志与最终 TRX SHA-256 见 [S06-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。未启动真实 Playnite或使用系统剪贴板；WPF 与复制 setter 受控验证不代表真实屏幕、DPI或宿主。
 - 按计划审计 S06-08：三方设置冲突、加载损坏备份、Worklist 同类稳定 ID 去重、旧字段默认和逐次 `SavePluginSettings` 已有实现及组件测试；缺口是原生 Worklists JSON 跨会话重载和专门的损坏 Worklists 字段回归。证据：[S06-08 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/AUDIT.md)。真实 Playnite 退出生命周期与宿主磁盘写入原子性保留未验证边界；新增受控测试不伪造该行为。
 - 原 Round3 未跟踪 TRX 和 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 保留，未加入 S06-07 提交。S06-08 依赖已满足，准入 READY。
+
+## 2026-10-21 Round4 S06-08 跨会话回归验收
+
+- `09ec3c84` 已推送，新增 3 项行为回归：原生插件设置的清单序列化/重载及重复加入拒绝；缺少新字段的旧清单默认值/再重载；Worklists 字段形状损坏时加载器返回默认设置并保留原配置副本。
+- 提交身份 `09ec3c84` 下 Playnite.Tests Release Rebuild `0 warning / 0 error`，跨会话、恢复、冲突、去重、兼容和保存反馈相关测试 `27/27`；source validation 与 Round4 ledger `5/5` 通过。构建/TRX 哈希见 [S06-08 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。
+- 未更改源业务对象或退出逻辑。清单修改仍沿用即时 `SavePluginSettings` 和失败回滚；真实 Playnite 启停生命周期及宿主磁盘原子性未验证，恢复用例只针对插件加载器和可恢复备份。
+- S06-07 和 S06-08 均已受控验收并推送。S07-03 的 required-check/branch-protection 读取仍外部阻塞；本计划现无其他 READY 项。没有为状态同步触发完整构建或 CI。原 Round3 TRX 与 `TestResults/` 保留。

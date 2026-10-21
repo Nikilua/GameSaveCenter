@@ -14,8 +14,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收39、已满足2、代码完成待验收15、外部阻塞1、待开始7。
-实现状态：完成56、未开始8、不适用0；受控验证：通过56、未跑7、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收15、外部阻塞1、待开始6。
+实现状态：完成57、未开始7、不适用0；受控验证：通过57、未跑6、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -74,7 +74,7 @@
 | S06-05 | 逐项处理转交 | 已验收 | 0aa80547 | [受控验收](evidence/S06-05/README.md)：SDK9 Release solution 0/0；Playnite 17/17，source validation、XAML 25/25、Round4 台账 5/5 通过 | 手动状态仅是人工跟进记录；SDK8.0.423 未安装，真实 Playnite 窗口、主题/DPI、Keyboard-only 与 UI Automation 未验；未触碰 CEF/ETW 权限边界 |
 | S06-06 | 失效刷新 | 已验收 | fb33cd11 | [交付与验证](evidence/S06-06/README.md)，[等价审计](evidence/S06-06/AUDIT.md)：Worker 失效刷新 3/3；滚动修正后 Playnite 页面/表格几何与入口 23/23；SDK9 Release solution 0/0 | 实现只读瞬时索引摘要，不按名称匹配、不持久化路径/摘要；Worker 整体不可用显示未知；OS 文件 ACL/物理文件可读性不探测，权限边界需保留 |
 | S06-07 | 清单导出预览 | 已验收 | 96a3eab3 | [交付证据](evidence/S06-07/README.md)、[等价审计](evidence/S06-07/AUDIT.md)：SDK9 Release solution 0 warning/0 error；Worklist 导出预览与生产 UI/复制反馈定向测试 13/13；source、XAML、Round4 ledger 检查通过 | 只读脱敏人工记录预览；默认包含未手动完成项并标注导出 UTC 时间。不写文件、不包含真实文件、稳定 ID、完整路径或可执行命令，不代表业务成功。STA 离屏 WPF 与注入剪贴板 setter 不代表真实 Playnite、系统剪贴板、物理屏幕或 DPI 验收。 |
-| S06-08 | 跨会话回归 | 待开始 | — | [等价能力审计](evidence/S06-08/AUDIT.md)：冲突、损坏配置恢复、重复引用、设置默认值升级与即时保存已有实现/组件测试；原生 Worklists 跨会话序列化/损坏字段回归不足，依赖 S06-01 至 S06-07 已满足，准入 READY | 需补原生清单 JSON 重载、旧字段默认值、重复拦截和损坏字段恢复行为测试。Playnite 真实退出生命周期与 SavePluginSettings 的宿主磁盘原子性未验证；恢复备份不覆盖任意掉电/半写故障。 |
+| S06-08 | 跨会话回归 | 已验收 | 09ec3c84 | [交付证据](evidence/S06-08/README.md)、[等价审计](evidence/S06-08/AUDIT.md)：Playnite.Tests Release Rebuild 0 warning/0 error；原生清单跨会话/损坏恢复与现有冲突、恢复、去重、兼容回归 27/27；source validation 与 Round4 ledger 通过 | 真实 Playnite 启动/退出生命周期与 SavePluginSettings 宿主磁盘原子性未验证。损坏设置用例验证插件恢复加载器和原始备份，不模拟宿主；恢复备份不覆盖任意掉电/半写故障。 |
 | S07-01 | 精简当前事实入口 | 已验收 | 4ea5e694 | [证据](evidence/S07-01/README.md)：254 行压缩至 32 行；归档正文与提交前 Git 版本一致；source validation、diff check 通过 | 仅更新文档；未运行产品构建；S00-02 UI 门禁仍待 SDK8 与真实 Playnite |
 | S07-02 | 结构化任务状态 | 已验收 | 7a81e5f2 | [证据](evidence/S07-02/README.md)：64 个 ID 与计划对齐；生成表格/分项摘要；校验重复 ID、标题、状态值与证据链接 | 仅管理 Round4 状态；既有 Q/R 外部阻塞保持独立，不从本索引自动清除 |
 | S07-03 | 文档变更 CI 分流 | 外部阻塞 | — | [审查证据](evidence/S07-03/README.md)：工作流路径行为已审；branch protection API 403，required check 名称不可读 | 无 required check 上下文前不改 paths 过滤；须获得只读设置权限或用户提供配置 |

@@ -1,10 +1,10 @@
 # GameSaveCenter 当前交接
 
-## 2026-10-21 当前进展：滚动视口修正、S06-07 完成，S06-08 准入
+## 2026-10-21 当前进展：滚动视口修正、S06-08 完成
 
 用户截图指出存档历史、路径校验和任务队列表格内部滚动条进入下方详情区域，部分数据被遮挡。此前 `43b869d1` 收拢紧凑工具区并移出表格框架内的详情入口；后续 `a1a86e41` 修复页面高度输入，已测量的页面 ScrollViewer 视口优先限制表格空间。SDK9.0.302 Release solution `0 warning / 0 error`；页面/表格几何与清单入口测试 `23/23`。证据：[滚动视口修复](docs/design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。测试为离屏 WPF，未在真实 Playnite 或物理 DPI 下验屏。
 
-S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 `96a3eab3` 已推送，提供脱敏只读清单预览和显式复制；SDK9 Release solution `0/0`，定向测试 `13/13`。实现、哈希和宿主边界见 [S06-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 等价审计发现原生清单 JSON 跨会话/损坏字段的行为测试缺口，已准入补测；已有冲突、损坏配置备份、去重、默认值升级与即时保存机制。审计见 [S06-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/AUDIT.md)。SDK8.0.423 未安装，真实 Playnite未运行；原 Round3 未跟踪 TRX/TestResults 保留。
+S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 `96a3eab3` 提供脱敏只读清单预览和显式复制；SDK9 Release solution `0/0`，定向测试 `13/13`。证据：[S06-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 `09ec3c84` 补原生清单 JSON 跨会话与损坏字段恢复回归；Playnite.Tests Rebuild `0/0`、设置/清单定向测试 `27/27`。证据：[S06-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。SDK8.0.423 未安装，真实 Playnite 启停及宿主磁盘原子性未验证；原 Round3 未跟踪 TRX/TestResults 保留。S07-03 仍受 required-check 读取权限阻塞，计划内目前无其他 READY 项。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 
