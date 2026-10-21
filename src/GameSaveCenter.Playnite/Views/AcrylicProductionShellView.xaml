@@ -268,8 +268,9 @@
                         </Button>
                         <ui:Button x:Name="HeaderCommandDirectoryButton" Style="{DynamicResource GscIconOnlyToolbarButton}"
                                    Click="OnCommandDirectoryClick"
-                                   ToolTip="搜索命令"
-                                   AutomationProperties.Name="搜索命令">
+                                   ToolTip="搜索命令 (Ctrl+Shift+P)"
+                                   AutomationProperties.Name="搜索命令"
+                                   AutomationProperties.HelpText="插件界面内快捷键：Ctrl+Shift+P">
                             <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}"
                                                IconData="{StaticResource GscIconSearch}"
                                                Width="18" Height="18"
@@ -392,7 +393,7 @@
                                  TextChanged="OnCommandDirectorySearchTextChanged"
                                  ToolTip="按命令名称、别名或分类搜索"
                                  AutomationProperties.Name="搜索命令"
-                                 AutomationProperties.HelpText="输入中文或英文名称、别名或分类。按 Escape 关闭命令搜索。"
+                                 AutomationProperties.HelpText="输入中文或英文名称、别名或分类。按向上或向下选择命令，按 Enter 执行，按 Escape 关闭命令搜索。"
                                  Margin="0,0,0,10"/>
                         <TextBlock x:Name="CommandDirectoryResultsSummaryText" Grid.Row="2"
                                    Text="常用命令"
@@ -425,7 +426,20 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ListBoxItem">
-                                                <ContentPresenter/>
+                                                <Border x:Name="CommandResultSelectionChrome"
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        CornerRadius="8">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="CommandResultSelectionChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                        <Setter TargetName="CommandResultSelectionChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
+                                                        <Setter TargetName="CommandResultSelectionChrome" Property="BorderThickness" Value="1"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>

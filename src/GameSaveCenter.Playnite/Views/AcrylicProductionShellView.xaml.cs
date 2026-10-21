@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Controls;
@@ -23,6 +25,10 @@ namespace GameSaveCenter.Playnite.Views
     public partial class AcrylicProductionShellView : UserControl
     {
         private static readonly global::Playnite.SDK.ILogger Logger = global::Playnite.SDK.LogManager.GetLogger();
+        private static readonly RoutedUICommand OpenCommandDirectoryShortcutCommand = new RoutedUICommand(
+            "打开命令搜索",
+            "OpenCommandDirectory",
+            typeof(AcrylicProductionShellView));
         private readonly Dictionary<WorkspaceKind, UserControl> pages = new Dictionary<WorkspaceKind, UserControl>();
         private readonly HashSet<WorkspaceKind> activatedWorkspaces = new HashSet<WorkspaceKind>();
         private IReadOnlyList<CommandDirectoryItem> commandDirectoryItems = Array.Empty<CommandDirectoryItem>();
@@ -48,6 +54,13 @@ namespace GameSaveCenter.Playnite.Views
         public AcrylicProductionShellView()
         {
             InitializeComponent();
+            InputBindings.Add(new KeyBinding(
+                OpenCommandDirectoryShortcutCommand,
+                new KeyGesture(Key.P, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+P")));
+            CommandBindings.Add(new CommandBinding(
+                OpenCommandDirectoryShortcutCommand,
+                OnOpenCommandDirectoryShortcut,
+                OnCanOpenCommandDirectoryShortcut));
             headerActionRowGap = new WrapPanelRowGapController(HeaderActionsPanel);
             FocusWorkspaceSearchCommand = new RelayCommand(
                 _ => focusWorkspaceSearchRequested?.Invoke(),
@@ -149,6 +162,36 @@ namespace GameSaveCenter.Playnite.Views
             e.Handled = true;
         }
 
+        private void OnCanOpenCommandDirectoryShortcut(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = viewModel != null
+                && CommandDirectoryOverlay.Visibility != Visibility.Visible
+                && PickerOverlay.Visibility != Visibility.Visible
+                && !commandSearchCompositionActive
+                && !IsTextInputFocused();
+            e.Handled = e.CanExecute;
+        }
+
+        private void OnOpenCommandDirectoryShortcut(object sender, ExecutedRoutedEventArgs e)
+            => OnCommandDirectoryClick(this, e);
+
+        private bool IsTextInputFocused()
+        {
+            var focused = Keyboard.FocusedElement as DependencyObject;
+            while (focused != null)
+            {
+                if (focused is TextBoxBase || focused is PasswordBox || focused is ComboBox)
+                    return true;
+                if (ReferenceEquals(focused, this))
+                    break;
+                focused = focused is Visual || focused is Visual3D
+                    ? VisualTreeHelper.GetParent(focused)
+                    : LogicalTreeHelper.GetParent(focused);
+            }
+
+            return false;
+        }
+
         private void OnCommandDirectorySearchTextChanged(object sender, TextChangedEventArgs e)
             => UpdateCommandDirectorySearchResults();
 
@@ -160,6 +203,9 @@ namespace GameSaveCenter.Playnite.Views
             var query = CommandDirectorySearchTextBox.Text;
             var results = CommandDirectorySearch.Filter(commandDirectoryItems, query);
             CommandDirectoryResultsListBox.ItemsSource = results;
+            CommandDirectoryResultsListBox.SelectedIndex = results.Count == 0 ? -1 : 0;
+            if (CommandDirectoryResultsListBox.SelectedItem != null)
+                CommandDirectoryResultsListBox.ScrollIntoView(CommandDirectoryResultsListBox.SelectedItem);
             CommandDirectoryResultsSummaryText.Text = string.IsNullOrWhiteSpace(query)
                 ? $"常用命令 · {results.Count}"
                 : results.Count == 0 ? "没有匹配的命令" : $"搜索结果 · {results.Count}";
@@ -170,21 +216,71 @@ namespace GameSaveCenter.Playnite.Views
             if (CommandDirectoryOverlay.Visibility != Visibility.Visible
                 || commandSearchCompositionActive
                 || e.Key == Key.ImeProcessed
-                || e.ImeProcessedKey != Key.None
-                || e.Key != Key.Escape)
+                || e.ImeProcessedKey != Key.None)
                 return;
 
-            CloseCommandDirectory(restoreFocus: true);
-            e.Handled = true;
+            if (e.Key == Key.Escape)
+            {
+                CloseCommandDirectory(restoreFocus: true);
+                e.Handled = true;
+                return;
+            }
+
+            if (!CommandDirectorySearchTextBox.IsKeyboardFocused)
+                return;
+
+            if (e.Key == Key.Up || e.Key == Key.Down)
+            {
+                MoveCommandDirectorySelection(e.Key == Key.Up ? -1 : 1);
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                ExecuteSelectedCommandDirectoryItem();
+            }
+        }
+
+        private void MoveCommandDirectorySelection(int offset)
+        {
+            var results = CommandDirectoryResultsListBox;
+            if (results.Items.Count == 0)
+            {
+                results.SelectedIndex = -1;
+                return;
+            }
+
+            var selectedIndex = results.SelectedIndex;
+            var nextIndex = selectedIndex < 0
+                ? offset < 0 ? results.Items.Count - 1 : 0
+                : Math.Max(0, Math.Min(results.Items.Count - 1, selectedIndex + offset));
+            results.SelectedIndex = nextIndex;
+            results.ScrollIntoView(results.SelectedItem);
+        }
+
+        private void ExecuteSelectedCommandDirectoryItem()
+        {
+            if (!(CommandDirectoryResultsListBox.SelectedItem is CommandDirectoryItem item)
+                || !item.TryExecute())
+                return;
+
+            CloseCommandDirectoryForItem(item);
+        }
+
+        private void CloseCommandDirectoryForItem(CommandDirectoryItem? item)
+        {
+            var commandOwnsFocus = item?.Id == "game-picker.open"
+                || item?.Id == "workspace.focus-search"
+                || item?.Id == "settings.open";
+            CloseCommandDirectory(restoreFocus: !commandOwnsFocus);
         }
 
         private void OnCommandDirectoryResultClick(object sender, RoutedEventArgs e)
         {
             var item = (sender as FrameworkElement)?.DataContext as CommandDirectoryItem;
-            var commandOwnsFocus = item?.Id == "game-picker.open"
-                || item?.Id == "workspace.focus-search"
-                || item?.Id == "settings.open";
-            CloseCommandDirectory(restoreFocus: !commandOwnsFocus);
+            CloseCommandDirectoryForItem(item);
             e.Handled = true;
         }
 
