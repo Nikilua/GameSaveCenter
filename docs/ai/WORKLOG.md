@@ -11771,3 +11771,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 在该提交上重跑根目录 `GameSaveCenter-Run.cmd`，SDK `8.0.423`/Release，完整退出码 `0`。XAML `25/25`、solution `0 warning/0 error`、Core `157/157`、Worker `400/400`；总计 1,904 项，1,847 pass、57 skip、0 fail/error/timeout/abort；143 TRX counters 一致、140 WPF 隔离类全部结束。R09 焦点轮廓 `2/2`。
 - Worker 发布、程序集构建身份、ZIP/PEXT 打包、扩展安装版本与 DLL SHA 验证及 Playnite 启动均成功。诊断 run `20261021T195442896Z-4faecb49`，逐阶段结果、TRX、包与安装 DLL SHA 见 [S00-04 标准验收](../design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。首次未提升运行仅因沙箱无法写入 Playnite 扩展目录失败；之后已提升完整重跑成功，不是代码编译/测试失败。
 - 用户附件中 `Thickness` 预期/实际 `2`/`1` 的 R09 结果在当前提交标准隔离测试中未复现；旧运行输入身份与根因未知。Playnite 已启动不代表真实 UI 交互/视觉、物理键盘或 IME 候选验收；S00-04 host verification 保持 pending，Round4 未整体完成。原 Round3 TRX 与 Playnite `TestResults/` 未修改、未提交。
+
+## 2026-10-22 当前 main R09 失败日志与构建复核
+
+- 附件 run `20261021T135554848Z-c2927c39` 显示 `[65/116] R09FocusOutlineBehaviorTests`，第 151 行描边厚度预期 `2`、实际 `1`。诊断目录缺失。当前 main 的测试源第 151 行检查错误态边框颜色，厚度断言在后续行；当前清单为 140 个 WPF 隔离类，R09 在 `[77/140]`。因此不能把附件里的断言失败归因于当前源码；旧 DLL/PDB 身份缺失，不推断具体旧 checkout。
+- 在 `fcf787ccad480db4ace5962abf6a28ec00dcb9fa` 上运行 `GameSaveCenter-Run.cmd`，SDK `8.0.423`/Release。XAML `25/25`、solution `0 warning / 0 error`；143 份 TRX 共 1,904 项（1,836 pass、68 skip、0 fail/error/timeout/abort），所有计数一致，WPF 隔离类 `140/140`，R09 `2/2`。诊断 `20261021T210446110Z-2eb6b36c`，摘要 source commit 与当前 HEAD 一致。
+- 编译、测试、Worker 发布、构建身份、PEXT/ZIP 打包都通过；根目录命令最后在默认 `%APPDATA%\Playnite\Extensions` 写入时被沙箱拒绝，故该次退出码为 `1`，不记录为单次标准命令成功。之后同一提交使用 PowerShell 7 提权执行 `dev-install-run.ps1 -Configuration Release -SkipTests`，solution `0/0`，包/安装验证成功，版本 `0.6.73` / DLL `0.6.73.0`，构建/包/已安装 DLL SHA 均为 `5683CD242FC1EA1CBFEE15509D6A6F9C27A70BB965E892470FDA118D844DE81F`，Playnite PID `63560` 正在响应。该阶段没有重跑测试；完整测试已在同一 source commit 通过。安装诊断 `20261021T225251016Z-d115411c`。
+- 另一次提权全流程重跑的 R10 TRX 已记录 `5/5`，但测试宿主没有正常结束，故中断；不把该次重复运行作为验收结果。没有修改产品代码或完整测试运行中的任何用例。既有 Round3 TRX 与 `TestResults/` 保留。
+- 证据与边界：[当前 main 构建与 R09 失败日志复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。本轮是诊断/验收记录，不声称当前沙箱里的单次根目录 `.cmd` 退出码为 0。

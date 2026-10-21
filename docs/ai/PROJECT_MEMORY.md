@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-22 当前 main 构建失败日志复核
+
+当前 `main` (`fcf787cc`) 的 SDK8.0.423 Release 全量构建 `0 warning / 0 error`；1,904 项测试 `1,836` 通过、`68` 环境/历史断言 skip、`0` 失败，143 份 TRX 计数一致，140 个 WPF 隔离类全部完成，R09 `2/2`。附件中的旧日志是 `[65/116]` 测试集且第 151 行断言与当前源不符，不能归为当前 main 的失败；旧 DLL/PDB 身份缺失，不推测具体旧 checkout。完整根目录命令在沙箱内最终因无法写入 `%APPDATA%\Playnite\Extensions` 返回 1；同一提交随后以 PowerShell 7 提权做 `-SkipTests` 构建/打包/安装复核成功，构建包与已安装 DLL SHA 相同，Playnite 启动并响应。没有更改或跳过前述完整测试。完整身份、原始诊断路径和单次命令退出码边界见[当前 main 构建与 R09 复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。
+
 ## 2026-10-22 S00-04 标准全链复验成功
 
 在实现提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 上运行 `GameSaveCenter-Run.cmd`，SDK `8.0.423`/Release，完整退出码 `0`。XAML 25/25、solution 0 warning/0 error、Core 157/157、Worker 400/400；143 份 TRX 汇总 1,904 项（1,847 pass、57 skip、0 fail），计数无差异，140 个 WPF 隔离类全部结束。57 skip 均标记为已撤销“今日工作台”UI 架构断言。R09FocusOutlineBehaviorTests 2/2，用户附件的 `Thickness 2→1` 在当前提交未复现，旧 run 输入身份及根因未知。
