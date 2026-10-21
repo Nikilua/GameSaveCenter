@@ -11710,3 +11710,11 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 检查 TaskCenter Worklist 浏览器命令/按钮、`WorklistBrowserEntry`、`WorklistDefinition`、`DataGridClipboardBehavior` 的生产挂接与 formatter allowlist。清单可浏览/续接/标记/移除，但无文本预览导出；工作清单表格未启用 clipboard behavior，剪贴板格式也不包含 Worklist。
 - 可复用既有 `RestorePlanDraftExportFormatter` 的只读 allowlist/redaction 约束及 `ClipboardFeedback` 的复制成功/失败反馈；当前能力只针对恢复草稿，并不满足工作清单导出。S06-07 READY 范围为独立、只读、脱敏预览和用户明确复制，默认包含未手动完成的条目、带 UTC 导出时间；不写文件、不包含稳定 ID、完整路径、真实文件或命令，也不表示业务成功。
 - 审计证据：[S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/AUDIT.md)。审计未修改产品代码或运行构建；依赖 S06-01 至 S06-06 均已验收。
+
+## 2026-10-21 Round4 S06-07 清单脱敏预览交付与 S06-08 跨会话审计
+
+- 源码提交 `96a3eab3` 已推送：任务中心工作清单新增只读脱敏导出预览，用户检查后才可复制。默认含未手动完成项、失效/未检查/不可检查引用及 UTC 时间；字段 allowlist 加共享控制字符、路径、URL 参数和认证信息清理，不包含稳定 ID、完整路径、原始文件内容或命令。换清单、刷新或关闭浏览器会清除旧预览。
+- 验证发现样式触发器受本地 `Visibility=Collapsed` 值覆盖，已移除此本地值，并在真实预览 Grid 上验证开合。SDK9.0.302 Release 全解决方案 Rebuild `0 warning / 0 error`；工作清单预览/生产 UI/复制重试反馈与现有模型、解析投影定向测试 `13/13`；source validation、XAML `25/25`、Round4 ledger `5/5`、diff check 通过。
+- 构建日志与最终 TRX SHA-256 见 [S06-07 证据](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。未启动真实 Playnite或使用系统剪贴板；WPF 与复制 setter 受控验证不代表真实屏幕、DPI或宿主。
+- 按计划审计 S06-08：三方设置冲突、加载损坏备份、Worklist 同类稳定 ID 去重、旧字段默认和逐次 `SavePluginSettings` 已有实现及组件测试；缺口是原生 Worklists JSON 跨会话重载和专门的损坏 Worklists 字段回归。证据：[S06-08 审计](../design/reviews/ui-finesse-round4-20261018/evidence/S06-08/AUDIT.md)。真实 Playnite 退出生命周期与宿主磁盘写入原子性保留未验证边界；新增受控测试不伪造该行为。
+- 原 Round3 未跟踪 TRX 和 `tests/GameSaveCenter.Playnite.Tests/TestResults/` 保留，未加入 S06-07 提交。S06-08 依赖已满足，准入 READY。

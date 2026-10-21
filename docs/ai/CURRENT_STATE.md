@@ -2,7 +2,7 @@
 
 更新时间：2026-10-21。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
-Round4 S05-03 至 S05-08、S06-01 至 S06-06 已受控验收。S06-06 `fb33cd11` 按稳定 ID 刷新当前索引摘要并仅在 UI 投影显示；Worker `3/3`。用户滚动截图复修 `a1a86e41` 保证有效的页面 ScrollViewer 测量高度限制表格空间；SDK9 Release solution `0/0`、Playnite 几何/入口 `23/23`。证据：[S06-06](../design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)、[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。下一项 S06-07 已审计为 READY：清单只读脱敏预览导出；依赖 S06-01 至 S06-06 已满足。SDK8.0.423 未安装，真实 Playnite 未运行；原有未跟踪 TRX/TestResults 保留。
+Round4 S05-03 至 S05-08、S06-01 至 S06-07 已受控验收。S06-07 `96a3eab3` 增加待办清单只读脱敏导出预览；SDK9 Release solution `0/0`、Playnite 预览/去敏/复制链与清单回归 `13/13`、source/XAML/ledger 校验通过。证据：[S06-07](../design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。页面滚动修复 `a1a86e41` 的视口边界与几何 `23/23` 见[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。下一项 S06-08 审计发现原生 Worklists JSON 跨会话/损坏字段回归缺口，已准入 READY。SDK8.0.423 未安装，真实 Playnite未运行；原有未跟踪 TRX/TestResults 保留。
 
 2026-10-21 用户截图显示表格内部滚动条与页面详情区域错位。此前 `43b869d1` 已重排详情入口和紧凑工具区；后续提交 `a1a86e41` 修正视口高度来源：只要页面 ScrollViewer 已有有效测量，就以更小的页面实测高度约束表格分配，避免使用包含页面 chrome 的宿主高度溢出。SDK9 Release solution `0/0`，最终页面/表格与入口定向测试 `23/23`。证据：[滚动视口修复](../design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。验证是离屏 STA/WPF 几何行为，不代表真实 Playnite 窗口或物理 DPI。
 

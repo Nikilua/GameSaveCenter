@@ -906,19 +906,23 @@
     {
       "id": "S06-07",
       "title": "清单导出预览",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "已验收",
+      "implementationState": "complete",
+      "implementationCommit": "96a3eab3",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[等价审计](evidence/S06-07/AUDIT.md)：未发现清单导出或待办剪贴板能力；依赖 S06-01 至 S06-06 已满足，已准入 READY",
+      "verificationText": "[交付证据](evidence/S06-07/README.md)、[等价审计](evidence/S06-07/AUDIT.md)：SDK9 Release solution 0 warning/0 error；Worklist 导出预览与生产 UI/复制反馈定向测试 13/13；source、XAML、Round4 ledger 检查通过",
       "evidence": [
+        {
+          "label": "交付与受控验证",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md"
+        },
         {
           "label": "等价能力审计",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/AUDIT.md"
         }
       ],
-      "boundary": "只读脱敏人工记录预览；默认包含未手动完成项并标注导出 UTC 时间。不写文件、不包含真实文件、稳定 ID、完整路径或可执行命令，不代表业务成功。"
+      "boundary": "只读脱敏人工记录预览；默认包含未手动完成项并标注导出 UTC 时间。不写文件、不包含真实文件、稳定 ID、完整路径或可执行命令，不代表业务成功。STA 离屏 WPF 与注入剪贴板 setter 不代表真实 Playnite、系统剪贴板、物理屏幕或 DPI 验收。"
     },
     {
       "id": "S06-08",
@@ -928,9 +932,14 @@
       "implementationCommit": "—",
       "controlledVerificationState": "not_run",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[等价能力审计](evidence/S06-08/AUDIT.md)：冲突、损坏配置恢复、重复引用、设置默认值升级与即时保存已有实现/组件测试；原生 Worklists 跨会话序列化/损坏字段回归不足，依赖 S06-01 至 S06-07 已满足，准入 READY",
+      "evidence": [
+        {
+          "label": "等价能力审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/AUDIT.md"
+        }
+      ],
+      "boundary": "需补原生清单 JSON 重载、旧字段默认值、重复拦截和损坏字段恢复行为测试。Playnite 真实退出生命周期与 SavePluginSettings 的宿主磁盘原子性未验证；恢复备份不覆盖任意掉电/半写故障。"
     },
     {
       "id": "S07-01",
