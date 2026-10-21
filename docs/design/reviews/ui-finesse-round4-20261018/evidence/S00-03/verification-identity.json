@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "task": "S00-03",
+  "sourceCommit": "0968309ca59a87685114be1552ddb8ad09e4bd64",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "testFilter": "FullyQualifiedName~CommandDirectory",
+  "testSummary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0
+  },
+  "sourceFiles": [
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+      "sha256": "BD27762D797D77B3123A056F404FD0FF2361D2F2A75C672953ADE9ADAF327DA3"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+      "sha256": "3D12737E28EC2BCC1B09E09549D1B53109339C7E8F0FB4534D128C4B6A0E6A65"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/CommandDirectoryKeyboardBehaviorTests.cs",
+      "sha256": "0CD64B0869AC35BD193A38F095B7F8704A39A5DC2DABB1EA1595F93E29CEC824"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "CommandDirectory-0968309c.trx",
+      "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/tests/CommandDirectory-0968309c.trx",
+      "sha256": "F7DCA3D04EA685F3F7FDB97BF085633C5C77DB0E2092ECD98185E2FE140E1E28"
+    },
+    {
+      "name": "GameSaveCenter.Playnite.dll",
+      "sha256": "6574283A90A651C15A9134C0898301C3E7F105031EF2CD4E53FEB4D99FB36977"
+    },
+    {
+      "name": "GameSaveCenter.Playnite.pdb",
+      "sha256": "260ED92E8DE6F298B7168D201C0D2A85C7B4C9132EF502644F7C5259912B75C1"
+    },
+    {
+      "name": "GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "DF1DC7D8414DC2C4335D20FB1842EC01F8820AB158578F56CBB1EF1DAE1B7A48"
+    },
+    {
+      "name": "GameSaveCenter.Playnite.Tests.pdb",
+      "sha256": "71FDB9139A7F2D20513AED0299241FDAC73A565BFDFD07F426B950CF03BF1218"
+    }
+  ]
+}

@@ -1,5 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-22 S00-03 键盘交互实现与构建故障跟进
+
+- 用户反馈构建反复失败并提供 R09 日志。旧日志报 `Expected 2,2,2,2 / Actual 1,1,1,1`，但所附诊断目录缺失；当前提交中测试第 151 行与错误堆栈不匹配，不能追认成当前源代码回归。最新完整标准运行需以提交/SDK/job/诊断产物绑定记录。
+- `0968309c` 完成命令目录方向键选择、Enter 执行/禁用态处理、IME composition guard、焦点恢复和 UserControl 范围 `Ctrl+Shift+P`。SDK8.0.423 Release 定向筛选 `12/12`，源校验与 `git diff --check` 通过；详细 TRX、源码及程序集 SHA-256 见 [S00-03 实施证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。
+- 代码提交前的一次完整标准入口已编译 Release `0/0`，Core `157/157`、Worker `400/400`、WPF 140 类，汇总 1,895 项（1,838 通过、57 跳过、0 失败）；随后打包阶段因跟踪源文件尚未提交而按保护规则拒绝。该次不是最终代码/完整命令通过证据，提交文档后必须重新运行标准 `GameSaveCenter-Run.cmd`。
+- 真实 Playnite、物理键盘、IME 候选及显示器呈现边界仍待宿主验收。用户原有 Round3 TRX/TestResults 不提交、不清理。
+
 ## 2026-10-21 用户滚动反馈与 SDK8 默认构建复核
 
 针对维护中心滚动表格、任务队列和路径候选的截图继续收口有限 DataGrid 视口/空结果提示，并将 RenderHarness 缩放转场放入隐藏 WPF Window，以实际触发页面 Loaded/ScrollChanged 生命周期。离屏 Shell 尺寸下任务队列维持 4 行且表格预算在 PageHost 内，缩小再放大恢复通过；完整报告与图见 [滚动/默认构建证据](../design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。

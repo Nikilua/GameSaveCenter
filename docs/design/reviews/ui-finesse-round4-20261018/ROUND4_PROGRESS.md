@@ -16,14 +16,14 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收15、外部阻塞2、待开始5。
-实现状态：完成57、未开始7、不适用0；受控验证：通过58、未跑6、不适用0；宿主验证：通过0、待验12、未跑44、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收16、外部阻塞1、待开始5。
+实现状态：完成58、未开始6、不适用0；受控验证：通过59、未跑5、不适用0；宿主验证：通过0、待验13、未跑43、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
 | S00-01 | 只读命令目录 | 已满足 | dd38f8ca | [证据](evidence/S00-01/README.md)：origin/main 已有稳定命令目录；原 7/7 SDK9 与当前 SDK8 CommandDirectoryBehaviorTests 2/2 复核通过 | 当前 SDK8.0.423 解决方案构建通过；真实 Playnite 未运行；S00-02 仍待 UI 门禁 |
 | S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 默认全量本地构建及 WPF 隔离 `1,823/1,891` 通过、68 skip，见[当前复核](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md) | SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；当前 Windows 会话拒绝的系统指针用例按设计 skip。此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止；安装/版本核验与真实 Playnite 呈现仍未完成，host verification 保持 pending，不准入 S00-03 |
-| S00-03 | 键盘与组合输入 | 外部阻塞 | — | [依赖审计](evidence/S00-03/AUDIT.md)：Esc/IME 组合保护已有部分实现，但方向键/Enter 行为未实现或验证；S00-02 SDK8 WPF host gate 在 GetCursorPos error 5 处中止，安装/版本核验未到达，前置未满足 | 不把 S00-03 置为 READY；待 S00-02 完成 SDK8 WPF 隔离和安装/版本核验后再进入。未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。 |
+| S00-03 | 键盘与组合输入 | 代码完成待验收 | 0968309c | [实施与受控验证](evidence/S00-03/IMPLEMENTATION.md)：SDK8.0.423 Release `CommandDirectory` 12/12；Ctrl+Shift+P 仅绑定插件 UserControl。真实 Playnite/物理输入/IME 候选行为仍待验；[初始依赖审计](evidence/S00-03/AUDIT.md) | 受控 WPF 行为已验证；物理键盘、真实 IME 候选、Playnite 焦点/快捷键协作及最终呈现未验，host verification 保持 pending。未注册全局热键、未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。 |
 | S00-04 | 固定与最近命令 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-05 | 上下文预览 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-06 | 危险动作转交 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

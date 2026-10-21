@@ -11751,3 +11751,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - RenderHarness 离屏报告 `render-qa OK`，缩放转场恢复 5 项指标；Task Center 在 PageHost 1040x700、1100x720 和 1366x768 尺寸下保留 4 行，DataGrid viewport `274 DIP`。source validation、XAML `25/25`、WPF 静态审查 `0 error`、`git diff --check` 通过。截图/合成 WPF 不是用户桌面或真实宿主证据。
 - 已同步 CURRENT_STATE、PROJECT_MEMORY、DEVELOPMENT_HANDOFF、Round4 进度及 backlog 最新摘要；64 项 `ROUND4_STATUS.json` 状态未变，Round4 未整体完成。S00-01 已满足，本计划目前无依赖已满足的下一项 READY；S00-02 等宿主门禁和 S07-03 权限阻塞保留。原有 Round3 未跟踪 TRX 与 Playnite `TestResults/` 未触碰、未暂存。
 - 归档证据后按确认过的绝对路径完成 `.tmp` 清理：75 个已完成阶段的构建/测试/渲染目录及 1 个无文档引用日志，共释放约 `3.7 GiB`。检查中误删一份 `artifacts/last-dev-install-current-20260913.txt` 历史报告；未找到逐字副本，原路径已放占位说明并明确其不构成证据。保留当前 `0.6.73` 包、扩展目录、构建诊断及其他历史文档引用材料；用户 Round3 TRX 和 Playnite `TestResults/` 未改动。
+## 2026-10-22 S00-03 实施与受控验证
+
+- 按用户反馈检查所附 R09 失败：日志的预期/实际描边宽度为 `2`/`1`，但原始诊断目录不可用，堆栈第 151 行与当前测试源不吻合。当前源码身份无法从旧运行恢复，不据此改动 focus chrome 厚度。
+- 在 `0968309c` 实现命令目录方向键选择、Enter 执行、空/禁用项行为、IME composition 时的键盘保护、焦点返回和插件 UserControl 作用域内快捷键。增加定向键盘/IME 测试；Release target `12/12`，`scripts/validate-source.py .` 与 `git diff --check` 通过。证据：[S00-03 实施与受控验证](../design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。
+- 一次代码尚未提交时的完整默认入口通过 solution 编译（0 warning/0 error）、Core 157/157、Worker 400/400、WPF 140 类（汇总 1,895，1,838 通过、57 跳过、0 失败）；package identity gate 因跟踪源改动未提交而以退出码 1 正确拒绝打包。该运行不作为当前最终一键成功结论；源与阶段文档提交后复跑标准入口。
+- 用户先前未跟踪的 Round3 TRX 和 `TestResults/` 保留，未加入提交；完整标准 `.cmd` 和真实 Playnite 启动验收仍待执行，物理键盘/IME 候选行为仍不由受控测试替代。

@@ -44,19 +44,23 @@
     {
       "id": "S00-03",
       "title": "键盘与组合输入",
-      "state": "外部阻塞",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "[依赖审计](evidence/S00-03/AUDIT.md)：Esc/IME 组合保护已有部分实现，但方向键/Enter 行为未实现或验证；S00-02 SDK8 WPF host gate 在 GetCursorPos error 5 处中止，安装/版本核验未到达，前置未满足",
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "0968309c",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[实施与受控验证](evidence/S00-03/IMPLEMENTATION.md)：SDK8.0.423 Release `CommandDirectory` 12/12；Ctrl+Shift+P 仅绑定插件 UserControl。真实 Playnite/物理输入/IME 候选行为仍待验；[初始依赖审计](evidence/S00-03/AUDIT.md)",
       "evidence": [
         {
-          "label": "依赖与等价能力审计",
+          "label": "实施与受控验证",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md"
+        },
+        {
+          "label": "初始依赖与等价能力审计",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md"
         }
       ],
-      "boundary": "不把 S00-03 置为 READY；待 S00-02 完成 SDK8 WPF 隔离和安装/版本核验后再进入。未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。"
+      "boundary": "受控 WPF 行为已验证；物理键盘、真实 IME 候选、Playnite 焦点/快捷键协作及最终呈现未验，host verification 保持 pending。未注册全局热键、未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。"
     },
     {
       "id": "S00-04",

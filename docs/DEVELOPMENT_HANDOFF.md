@@ -1,5 +1,11 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-22 S00-03 键盘交互与标准构建复验
+
+用户反馈一键构建连续失败后，已补命令目录方向键选择、Enter 执行与禁用态防护、IME composition guard、关闭后的焦点返回和插件 UserControl 范围 `Ctrl+Shift+P`；代码提交 `0968309c`，SDK8.0.423 Release 定向测试 `12/12`。SHA-256、TRX 和验证范围见 [S00-03 实施证据](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。所附 R09 旧失败因原诊断目录缺失无法确认其源码/DLL/PDB 身份，当前测试源行也与旧堆栈不吻合；最终以本轮当前提交的标准一键运行记录为准。
+
+代码提交前跑过一次完整默认链：Release solution 编译 0 warning/0 error、Core 157/157、Worker 400/400、WPF 140 类（1,895 项中 1,838 通过、57 跳过、0 失败），随后 package identity gate 因源文件未提交退出 1。这是干净打包保护，不是构建或测试失败。源和阶段证据提交后，需要运行标准 `GameSaveCenter-Run.cmd` 并保存完整诊断身份，确认安装/启动后再更新此交接。真实物理键盘、IME 候选和最终 Playnite 呈现仍须单独验收。用户已有 Round3 未跟踪 TRX 与 `TestResults/` 保留。
+
 ## 2026-10-21 用户滚动问题与本地默认构建结论
 
 已对存档表格滚动条越过详情、任务队列滚动边界和路径候选数据裁切继续复核。当前本机官方 SDK8.0.423 `scripts/build.ps1 -Configuration Release` 默认全流程成功：XAML `25/25`、Release solution `0 warning / 0 error`、1,891 项结果中 `1,823 pass / 0 fail / 68 skip`；RenderHarness 离屏布局报告 `render-qa OK`。原始阶段日志、逐项 TRX 与离屏报告见 [证据包](docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。68 个跳过的原因已逐项分类记录；此结论不包含 Playnite 真机/安装/物理屏幕验收，也不代表 Round4 完成。S00-01 仍为已满足，当前无依赖已满足的 READY 项。原有 Round3 未跟踪 TRX/TestResults 保持未提交。
