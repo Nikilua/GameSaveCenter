@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Views;
@@ -104,7 +105,18 @@ public sealed class R18TableContainerBudgetTests
         Assert.Contains("var finiteInboxHeight = Math.Max(readableGridHeight, height - inboxNonTableHeightBudget);", mediaCodeBehind);
         Assert.Contains("MediaInboxGrid.Height = finiteInboxHeight", mediaCodeBehind);
         Assert.DoesNotContain("Math.Max(readableGridHeight, Math.Max(1d, height))", mediaCodeBehind);
-        Assert.Contains("MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll", mediaCodeBehind);
+        var document = XDocument.Parse(media);
+        XNamespace names = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var pageScroller = Assert.Single(document.Descendants(),
+            element => (string?)element.Attribute(names + "Name") == "MediaInboxPageScrollViewer");
+        Assert.Equal("ScrollViewer", pageScroller.Name.LocalName);
+        Assert.Equal("Auto", (string?)pageScroller.Attribute("VerticalScrollBarVisibility"));
+        Assert.Equal("{DynamicResource GscPageScrollViewer}", (string?)pageScroller.Attribute("Style"));
+        Assert.Equal("MediaInboxLayout", (string?)pageScroller.Parent!.Attribute(names + "Name"));
+        Assert.Contains(pageScroller.Elements(),
+            element => (string?)element.Attribute(names + "Name") == "MediaInboxScrollSurface");
+        Assert.Contains(pageScroller.Parent.Elements(),
+            element => (string?)element.Attribute(names + "Name") == "MediaInboxInspectorFrame");
     }
 
     private static TableProbeResult ProbeTaskGrid(int backendCount)
@@ -169,6 +181,12 @@ public sealed class R18TableContainerBudgetTests
                 mediaView.ApplyResponsiveLayout(width, height);
             window.Show();
             FlushLayout(window);
+            if (view is MediaCenterView inboxView)
+            {
+                var pageScroller = Assert.IsType<ScrollViewer>(inboxView.FindName("MediaInboxPageScrollViewer"));
+                Assert.False(pageScroller.CanContentScroll);
+                Assert.Equal(ScrollBarVisibility.Auto, pageScroller.VerticalScrollBarVisibility);
+            }
 
             var scroller = FindVisualChildren<ScrollViewer>(grid)
                 .OrderByDescending(candidate => candidate.ViewportHeight)

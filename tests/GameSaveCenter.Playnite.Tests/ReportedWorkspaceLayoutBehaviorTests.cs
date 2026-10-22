@@ -176,6 +176,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 buttonCenterDelta = buttonCenters.Max(center => Math.Abs(center - CenterY(targetSummary, window)));
                 buttonGeometryDetails = $"clear/reset/assign={string.Join("/", buttonHeights.Select(value => value.ToString("0.##")))} DIP, mode={modeComboHeight:0.##} DIP, target={comboHeight:0.##} DIP, centersΔ={string.Join("/", buttonCenters.Select(center => Math.Abs(center - CenterY(targetSummary, window)).ToString("0.##")))} DIP";
                 var batchRow = (WrapPanel)view.FindName("MediaInboxBatchActionRow")!;
+                var batchIntroduction = (FrameworkElement)view.FindName("MediaInboxBatchIntroduction")!;
+                var selectionSummary = (FrameworkElement)view.FindName("MediaInboxBatchSelectionSummary")!;
+                Assert.InRange(Math.Abs(BoundsIn(selectionSummary, batchIntroduction).Left), 0, 1);
                 buttonGeometryDetails += $"; rowWidth={batchRow.ActualWidth:0.##}; children="
                     + string.Join(",", batchRow.Children.OfType<FrameworkElement>()
                         .Where(child => child.Visibility != Visibility.Collapsed)

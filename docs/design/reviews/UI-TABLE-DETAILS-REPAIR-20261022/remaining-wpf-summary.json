@@ -1,0 +1,289 @@
+{
+  "sourceCommit": "53c9b14ced0a27e79ac87092a547a8b0fcc2a5a2",
+  "workingTreeChanges": [
+    "R18TableContainerBudgetTests.cs new structural/runtime contract"
+  ],
+  "sdk": "8.0.423",
+  "note": "Controlled remaining-class probe before summary left-alignment; does not replace the default complete command.",
+  "totals": {
+    "total": 400,
+    "passed": 361,
+    "skipped": 39,
+    "failed": 0
+  },
+  "classes": [
+    {
+      "testClass": "R18TableContainerBudgetTests",
+      "total": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "0c4f00eaacdba30f68f8f2ce1d376ca4647a3eb20c9582a941870e6b30fde547"
+    },
+    {
+      "testClass": "R18ThumbnailBudgetTests",
+      "total": 3,
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "e416d30a34186a1610f58faf3f6d6eb20f36069058c8dd4ed0d3f42c9847efaf"
+    },
+    {
+      "testClass": "R21AsyncCompletionAnnouncementBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "abf36b3b793d0eff83a0b1439b9120686e17a40a42d07e37aaf80160d6b26882"
+    },
+    {
+      "testClass": "R21AutomationValueBehaviorTests",
+      "total": 24,
+      "passed": 24,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "ab74c269c285a7eac589c36b4736606f7d46969f46e1d9cd0f8197cdf72100b8"
+    },
+    {
+      "testClass": "R21DisabledHiddenBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "c66663cdc537dbb94b3171de5b04a826cfe8594afef7e5f15d26243d6161b87d"
+    },
+    {
+      "testClass": "R21FocusVisualRegressionBehaviorTests",
+      "total": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "7412337b489b117d0cb45e3083625283de505b6e3243bc59152792b39332d54a"
+    },
+    {
+      "testClass": "R21KeyboardNavigationTraceTests",
+      "total": 4,
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "3ecbf5467f232a341fa8ae691817865e21c160caaa3c9f21926e7c62a896d0fc"
+    },
+    {
+      "testClass": "R21SelectableTechnicalTextBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "9914bc854f9fce056d5029f5d7833a38280aae8476d7a5275b057fdca7baea3f"
+    },
+    {
+      "testClass": "R22BatchCountBehaviorTests",
+      "total": 3,
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "37c2e65982b2e37f203ba2e2819975917dde6c9e3bc4904175557ced2eb79f03"
+    },
+    {
+      "testClass": "R22ConfirmationStructureBehaviorTests",
+      "total": 4,
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "711b166ee5e8c8ba5d40c74a30c060c1f21ad1bf43124ac96307d57b523d9b0c"
+    },
+    {
+      "testClass": "R22CopyFeedbackBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "48226a97c8a89fa18c92600a7eb436adce9b86a886ab2fbb4b0033e4485ebaa7"
+    },
+    {
+      "testClass": "R22LongTaskLeavePageBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "26865dca738208c2fa5c6b47ea8eb6969ec3bfc3acb3678402300c223258209c"
+    },
+    {
+      "testClass": "R22MaintenanceActionTimeBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "8d5d5217d9cfb12a49c3cfc1e5207781bb5c01a6996759859a1b6bbb57f596ce"
+    },
+    {
+      "testClass": "R22RemoteStageTimeBehaviorTests",
+      "total": 3,
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "80c424d83e2036af376a4c251a36236eca372667dacab38005763340aff7dfdf"
+    },
+    {
+      "testClass": "R23ProductionResourceStateBehaviorTests",
+      "total": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "5160dbdfe21a5026f8f7e93054e28e180ad60bab18692776b9146ad8e02b61a5"
+    },
+    {
+      "testClass": "ReportedWorkspaceLayoutBehaviorTests",
+      "total": 54,
+      "passed": 54,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "738acc1c827dc7018c24a97becb05297327351aa45b60a7a8eedac23b14f105e"
+    },
+    {
+      "testClass": "RetentionScenarioInputBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "874b220505019378d8e0c4049a01d041f5a1e94c3fa8f00b42805bf4186d54d3"
+    },
+    {
+      "testClass": "S05StorageBudgetBreakdownBehaviorTests",
+      "total": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "23cfb635ad7cbf088a59be510818a5f91a1c1e8c4f6cd1d0371ea9d6edc86a34"
+    },
+    {
+      "testClass": "SettingsDraftLifecycleBehaviorTests",
+      "total": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "579351301188cff1e5508f76546b5012332a7bc3b8704ba958382d2ac48cc991"
+    },
+    {
+      "testClass": "SettingsValidationNavigationBehaviorTests",
+      "total": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "e557aaa6c9604491e2a7e95b74b83350b634de766e17949d34f32fb477d6db0c"
+    },
+    {
+      "testClass": "StatusGlyphConverterTests",
+      "total": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "08737c5fb3f0adfe04dd4e7e6aef6ff56652b692f104dfabc2fe915d0356a813"
+    },
+    {
+      "testClass": "TableDensityPolicyTests",
+      "total": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "ac501a0734971ad071dce2c80b0d5eeeafcfcf5a7c21cf958c2da76789adcf1a"
+    },
+    {
+      "testClass": "TaskCenterViewResponsiveTests",
+      "total": 8,
+      "passed": 8,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "f448b36a1dd7a63294c3d76d521c296b94cbd24113f7245c383c7ab28b205a55"
+    },
+    {
+      "testClass": "TypographyDiagnosticsTests",
+      "total": 11,
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "e70399ebd6242c1cdbbf2a3dd62ab03bf727adceabd0d6197f0ec3b4a1ca2b13"
+    },
+    {
+      "testClass": "UiAuditBlockerTests",
+      "total": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "da9422da33e371aa2bea444d701a24ff80a9919923e13978a6329ef3b9202bd9"
+    },
+    {
+      "testClass": "UiAuditCaptureContractTests",
+      "total": 8,
+      "passed": 8,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "00fe532d5a3411da3fea8449df1c3eb2b1de873bafac2ba1bf2dabd8840c3666"
+    },
+    {
+      "testClass": "UiAuditTruthfulnessTests",
+      "total": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "59dc94a79154a7b5dd1701b14d8d7e4fb96e694ec608cec0b4ff93d3b49b31cb"
+    },
+    {
+      "testClass": "UiDiagnosticsExporterTests",
+      "total": 11,
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "2fa1dbd0c4189c7c22b01d0720d3d9576d5bf4882a4ef9403afb026a26bcf9da"
+    },
+    {
+      "testClass": "UiFinesseFoundationTests",
+      "total": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "4254321b05407a6b3d1f797be87a90ec198068f7300adf5c82950189e0445db0"
+    },
+    {
+      "testClass": "UiNegativeFixtureRegistryTests",
+      "total": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "30e3966824d15fc6bcac10feadbf5d16252fa0fdbc7c00710ed990987c1f755e"
+    },
+    {
+      "testClass": "WorklistExportPreviewBehaviorTests",
+      "total": 4,
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "bd7c1b9756dbe477e78d5894c40f46ae09fad3bcfe1a609fde679d53176f8dd3"
+    },
+    {
+      "testClass": "WorkspaceStatePresenterBehaviorTests",
+      "total": 8,
+      "passed": 8,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "46d998a1f7829eddfe7a0cbdb63b09bb4b321f15c425669d32aafdf9518a1dd5"
+    },
+    {
+      "testClass": "WpfUiResourceDictionaryTests",
+      "total": 179,
+      "passed": 140,
+      "skipped": 39,
+      "failed": 0,
+      "trxSha256": "075470f4d37ca0b1cfd3127946127483fc4f161f291df5709416b9b0e2f525f4"
+    },
+    {
+      "testClass": "WrapPanelRowGapControllerBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0,
+      "trxSha256": "eeb7224051ea254a4e917f057defa041fc45532c958d676d89687add12a8b2ae"
+    }
+  ],
+  "assemblyIdentityBoundary": "Original probe DLL was rebuilt for the later alignment check. TRX case/count and SHA identities above are preserved; no later DLL hash attributed to this run."
+}

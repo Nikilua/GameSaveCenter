@@ -25,3 +25,7 @@
 剩余直接构造存档页的定向检查：恢复草稿7/7、UIA24/24、禁用/隐藏2/2、键盘轨迹4/4、生产资源9/9；ReportedWorkspaceLayout54项中52 pass/2 fail，双主题媒体工具栏清空/重置与目标中心相差41.33DIP。原因是480DIP详情使左侧工具栏不再能同时容纳摘要和所有操作，WrapPanel把目标组挤到下一排。生产修复按实际操作组DesiredSize判断：所有操作本身能同排、加摘要才超宽时，让摘要独占上一排，避免把相关动作拆开；足够宽恢复自然单排，更窄保留自然换行。保留原对齐断言，失败TRX见tests/reported-layout-before-batch-fix.trx。
 
 最终定向：ReportedWorkspaceLayout54/54、MediaInboxScroll6/6、RestorePlanDraft7/7，见tests/*-confirmed.trx。首版工具栏测量在外列布局完成前读取旧ActualWidth，仍有原2失败；现通过操作行SizeChanged在实际列宽稳定后重测，双主题原对齐断言通过。首版失败仍在本地artifacts/ui-layout-fix/tests/batch-layout-final，未作为通过证据；没有删除对齐断言或扩大skip。
+
+第九次：53c9b14c / run 20261022T124928430Z-0baa47d8，全部R11/R12类通过，第107类R18表格预算测试仍先匹配已移除useInboxPageFallbackScroll字符串，数据探针尚未运行。累计1490 pass/18 skip/1 fail，根退出1。[失败TRX](table-budget-contract-failure/table-budget.trx)、[摘要](table-budget-contract-failure/summary.json)、[退出码](table-budget-contract-failure/result.json)。改为解析命名页面ScrollViewer的Auto/共享样式、内层Grid和同级固定详情框，并在实际大数据探针检查CanContentScroll=false、页面Auto；所有2000/10000/20000数据、控件数量、虚拟化及滚动性能断言保留。
+
+同时运行的53c9b14c完整离屏报告出现侧边栏rapid-toggle未收敛，[原报告](render-concurrent-failure-report.txt)保留。探针以第一次点击起算固定总等待期限，第二次点击已触发但其新动画尚未完成。并行压力是否为原因尚未证实；不能以此前离屏通过覆盖此失败，须在没有其他构建/测试并行时独立复核，不改等待阈值或断言。
