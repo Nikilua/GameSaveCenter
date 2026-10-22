@@ -115,14 +115,23 @@
     {
       "id": "S00-06",
       "title": "危险动作转交",
-      "state": "待开始",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
+      "state": "实施中",
+      "implementationState": "complete",
+      "implementationCommit": "88a0a364工作树候选（本次实现；源文件SHA见证据，提交后精确复核）",
+      "controlledVerificationState": "pending",
       "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "verificationText": "[候选实现](evidence/S00-06/README.md)：SDK8.0.423 Release编译0/0，合成路由与关联回归36/36；[候选身份](evidence/S00-06/candidate-identity.json)保留源码SHA和原始/脱敏TRX身份；待提交后的精确身份复核",
+      "evidence": [
+        {
+          "label": "候选实现",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/README.md"
+        },
+        {
+          "label": "候选身份",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/candidate-identity.json"
+        }
+      ],
+      "boundary": "只转交现有审阅页面，未执行真实恢复/清理；候选36/36不替代S00-06～08最终默认.cmd全链，真实宿主与物理键盘/IME尚未验。"
     },
     {
       "id": "S00-07",

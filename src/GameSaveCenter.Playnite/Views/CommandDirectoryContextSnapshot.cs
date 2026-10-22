@@ -65,6 +65,9 @@ namespace GameSaveCenter.Playnite.Views
             if (snapshot == null)
                 return "打开命令搜索后显示本次操作的准确目标。";
 
+            if (string.Equals(commandId, CommandDirectoryCatalog.RetentionReviewId, StringComparison.Ordinal))
+                return "目标工作区：维护中心 · 保留策略；仅打开审阅页，清理仍需在目标页预览并确认。";
+
             if (scope == CommandDirectoryScope.CurrentGame)
             {
                 var workspace = commandParameter is WorkspaceKind kind
@@ -72,6 +75,8 @@ namespace GameSaveCenter.Playnite.Views
                     : "当前工作区";
                 var gameName = snapshot.GameName;
                 var game = string.IsNullOrWhiteSpace(gameName) ? "未选择游戏" : gameName!;
+                if (string.Equals(commandId, CommandDirectoryCatalog.RestoreReviewId, StringComparison.Ordinal))
+                    return $"目标工作区：{workspace} · 历史版本 · 游戏：{game}；仅打开审阅页，恢复仍需在目标页核对版本并确认。";
                 return $"目标工作区：{workspace} · 游戏：{game}";
             }
 

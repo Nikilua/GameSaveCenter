@@ -9,6 +9,9 @@ namespace GameSaveCenter.Playnite.Views
 {
     internal static class CommandDirectoryCatalog
     {
+        internal const string RestoreReviewId = "review.restore";
+        internal const string RetentionReviewId = "review.retention";
+
         private sealed class WorkspaceCommandDefinition
         {
             public WorkspaceCommandDefinition(
@@ -157,10 +160,45 @@ namespace GameSaveCenter.Playnite.Views
                 additionalCanExecute: () => CanResolveSelectedTaskGame(dashboard),
                 unavailableReason: () => GetSelectedTaskGameUnavailableReason(dashboard)));
 
+            // These entries only select an existing review page. The destination
+            // keeps its own preview, protection, confirmation and cancellation flow.
+            items.Add(CreateItem(
+                RestoreReviewId,
+                "审阅存档恢复",
+                new[] { "恢复", "还原", "Restore", "Review restore", "Restore saved game" },
+                "安全审阅",
+                CommandDirectoryScope.CurrentGame,
+                CreateReviewNavigation(WorkspaceKind.Saves, () => dashboard.SaveTabIndex = 0),
+                WorkspaceKind.Saves,
+                additionalCanExecute: () => dashboard.SelectedGame != null,
+                unavailableReason: () => dashboard.SelectedGame == null
+                    ? "请先选择当前游戏，再审阅存档恢复。"
+                    : "当前无法打开恢复审阅页。"));
+
+            items.Add(CreateItem(
+                RetentionReviewId,
+                "审阅保留与清理",
+                new[] { "清理", "保留策略", "Cleanup", "Retention", "Review cleanup" },
+                "安全审阅",
+                CommandDirectoryScope.Workspace,
+                CreateReviewNavigation(WorkspaceKind.Maintenance, () => dashboard.MaintenanceTabIndex = 3),
+                WorkspaceKind.Maintenance,
+                unavailableReason: () => "当前无法打开保留与清理审阅页。"));
+
             if (items.Select(item => item.Id).Distinct(StringComparer.Ordinal).Count() != items.Count)
                 throw new InvalidOperationException("命令目录中存在重复的稳定 ID。");
 
             return items.AsReadOnly();
+
+            ICommand CreateReviewNavigation(WorkspaceKind workspace, Action selectReviewTab)
+                => new RelayCommand(
+                    _ =>
+                    {
+                        if (!navigateWorkspaceCommand.CanExecute(workspace)) return;
+                        selectReviewTab();
+                        navigateWorkspaceCommand.Execute(workspace);
+                    },
+                    _ => navigateWorkspaceCommand.CanExecute(workspace));
         }
 
         private static bool CanResolveSelectedTaskGame(DashboardViewModel dashboard)

@@ -1,0 +1,94 @@
+{
+  "sourceBaseCommit": "88a0a36410565502bf11acdf7d3004f0582e4e76",
+  "workingTreeChanges": true,
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sourceFiles": [
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryCatalog.cs",
+      "sha256": "22f46d674a86d6cc7c72edd1a7a1581ea3ea9c7b5bb03b383c995788469e5204"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryContextSnapshot.cs",
+      "sha256": "80bffef2e6e4f74f72b6775191a13c3b5a339d6e0d4789ded18ed22daedea3f6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/CommandDirectoryReviewBehaviorTests.cs",
+      "sha256": "27337328f6a571e015302e32ec9dfeaa454f2ade36ad587a7860ef89354299c7"
+    }
+  ],
+  "assemblies": [
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+      "sha256": "3c8200daeee7837881661b1d137e91562071df904bf37de147c2d47c3fb1eaed"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.HostAuditSeeder\\Release\\net462\\GameSaveCenter.Playnite.HostAuditSeeder.dll",
+      "sha256": "f6545460bb707a12a1677c099b0a754f7343e3386e3b4c1b43c55b3133bb43f3"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll",
+      "sha256": "3c8200daeee7837881661b1d137e91562071df904bf37de147c2d47c3fb1eaed"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.HostAuditSeeder.dll",
+      "sha256": "f6545460bb707a12a1677c099b0a754f7343e3386e3b4c1b43c55b3133bb43f3"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "972f6c3b640afed28d65aed5bfaa957f291ee8427ef315bf2d10682229bee3d7"
+    }
+  ],
+  "trx": [
+    {
+      "file": "review.trx",
+      "count": 4,
+      "rawSha256": "660645680fec80c49db0ec10855f0f8e80277c07c34c3f624166c87eaf1678f9",
+      "evidenceSha256": "e85af5cbc095a3a99230255a0816b3e18e62bd50f818c85eab43d8f097e1604e"
+    },
+    {
+      "file": "CommandDirectoryBehaviorTests.trx",
+      "count": 3,
+      "rawSha256": "12eb9d435d70712445868efb49eb753218cc77196f852ba640dacbbad826855e",
+      "evidenceSha256": "3b08152041caf9ce807c3a61d9a5c4e4c6c965778dcd97851316925e93e5294b"
+    },
+    {
+      "file": "CommandDirectoryKeyboardBehaviorTests.trx",
+      "count": 7,
+      "rawSha256": "e3aa8d43aa1cc3cfe2d16f2a87cd56138b224ff764d2897472681dc18d7c4ca8",
+      "evidenceSha256": "e04ab6d5d56091e8a7cdbc98d3de6d2d853f2fc161dba37ea73535bb8b202906"
+    },
+    {
+      "file": "CommandDirectorySearchTests.trx",
+      "count": 6,
+      "rawSha256": "de0afadc77b72e92e56b71501b49ad6639bc1cab3e70feb986b36acf44d21ce3",
+      "evidenceSha256": "834e7e7f7b7143c8d84819bddbefd8f95632f3e640e29e2c8c467c74a88bedf7"
+    },
+    {
+      "file": "CommandDirectoryPreferencePolicyTests.trx",
+      "count": 5,
+      "rawSha256": "78cd6ca38746bb3e2f7d8a60b874ccee645c3eb4d6ab1329b7c888cf203e7d54",
+      "evidenceSha256": "1bdccbc20409da99e10c9b11a3319f2d78aaf7fe341d5d552e2cc20417e72e3b"
+    },
+    {
+      "file": "R11ProtectionBehaviorTests.trx",
+      "count": 3,
+      "rawSha256": "fe698a8662a5a40721901c013628cc5aea3784378e5a3b97d27e60838d77d2d2",
+      "evidenceSha256": "6b914491fd57cc1652f95de4c0d445eb2437998ce1c935c9f0bd047496a16a25"
+    },
+    {
+      "file": "R12RestoreWorkflowBehaviorTests.trx",
+      "count": 8,
+      "rawSha256": "ab126ba312bf052870b8b6427e9912fd568b2115fd6b339ef79ec3b9020f29e6",
+      "evidenceSha256": "3e03080be96b0730de9ba9c6cb78943e2b857a980b5c8c63ba7c2122fc28aa4b"
+    }
+  ],
+  "totals": {
+    "total": 36,
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0
+  },
+  "privacy": "Evidence TRX host/user/deployment labels normalized; original raw TRX and raw SHA retained under artifacts/round4-s00-06/tests. Evidence XML line endings normalized to LF; raw original files unchanged.",
+  "excludedEmptySelector": "CommandDirectoryPreferenceTests matched no cases; not counted. Correct CommandDirectoryPreferencePolicyTests passed 5 cases."
+}
