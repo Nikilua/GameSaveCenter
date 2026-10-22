@@ -2,7 +2,7 @@
 
 ## 2026-10-22 用户截图：表格滚动和详情区域修复
 
-共享单元格 presenter 误设 Horizontal，导致纵向滚动累计补偿；改为 Both，并修复 Dashboard 兼容模板。任务表格改由有限页面 Grid 分配整块视口；紧凑筛选水平整组换行，表头单行省略并保留完整辅助说明。存档/任务/媒体详情采用固定外圆角框与 480 DIP 工作区宽度；媒体宽详情独立于左侧页面滚动，窄窗复用原抽屉。SDK8.0.423 Release 受控测试、source/XAML 检查与双主题 RenderHarness 通过；资源字典 140 pass / 39 原有历史 skip。标准默认 .cmd 全链待实施提交后复验，不能拿本段当安装启动证明。证据：[表格与详情修复](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/README.md)。Round4 总任务状态不变，用户原有 TRX/TestResults 保留。
+共享单元格 presenter 误设 Horizontal，导致纵向滚动累计补偿；改为 Both，并修复 Dashboard 兼容模板。任务表格改由有限页面 Grid 分配整块视口；紧凑筛选水平整组换行，表头单行省略并保留完整辅助说明。存档/任务/媒体详情采用固定外圆角框与 480 DIP 工作区宽度；媒体宽详情独立于左侧页面滚动，窄窗复用原抽屉。SDK8.0.423 Release 受控测试、source/XAML 检查与双主题 RenderHarness 通过；资源字典 140 pass / 39 原有历史 skip。首次标准中文入口在 `52f74b1e` / SDK8.0.423 上编译 0/0、Core 157/157、Worker 400/400，source 548 pass / 18 skip / 1 fail（旧媒体滚动源码契约）；已补分栏有限视口断言并定向 6/6，完整链待新提交复跑，尚无本批安装启动证明。证据：[表格与详情修复](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/README.md)。Round4 总任务状态不变，用户原有 TRX/TestResults 保留。
 
 ## 2026-10-22 S00-05 当前 main 根目录标准全链通过
 

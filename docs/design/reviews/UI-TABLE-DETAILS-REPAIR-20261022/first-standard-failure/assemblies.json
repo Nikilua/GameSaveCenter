@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\0e560d94\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+    "Hash": "A1FB01F6C1F25B3059ECBAE916C8797541B6CA97817CD6406670D9412B0DE4FD"
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\0e560d94\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll",
+    "Hash": "A1FB01F6C1F25B3059ECBAE916C8797541B6CA97817CD6406670D9412B0DE4FD"
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\0e560d94\\obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+    "Hash": "A1FB01F6C1F25B3059ECBAE916C8797541B6CA97817CD6406670D9412B0DE4FD"
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\0e560d94\\test-temp\\09f93e87-4ff5-4ced-8319-b6508aada2f1\\09f93e87-4ff5-4ced-8319-b6508aada2f1\\assembly\\dl3\\2c857a82\\a8e5900a_0462dd01\\GameSaveCenter.Playnite.DLL",
+    "Hash": "A1FB01F6C1F25B3059ECBAE916C8797541B6CA97817CD6406670D9412B0DE4FD"
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\0e560d94\\test-temp\\e78430e2-6d53-4c1b-b2c3-ab5a6f842dc3\\e78430e2-6d53-4c1b-b2c3-ab5a6f842dc3\\assembly\\dl3\\3e0579e9\\a8e5900a_0462dd01\\GameSaveCenter.Playnite.DLL",
+    "Hash": "A1FB01F6C1F25B3059ECBAE916C8797541B6CA97817CD6406670D9412B0DE4FD"
+  }
+]

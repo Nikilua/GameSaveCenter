@@ -173,7 +173,7 @@
       "implementationCommit": "ad7bd563",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-02/README.md)：SDK8 Release 构建0/0；密度/设置14/14，R09 2/2，媒体几何3/3，生产资源双主题9/9；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)：SDK8 受控几何、双主题 RenderHarness 通过，标准入口将在实施提交复验",
+      "verificationText": "[证据](evidence/S01-02/README.md)：SDK8 Release 构建0/0；密度/设置14/14，R09 2/2，媒体几何3/3，生产资源双主题9/9；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)：SDK8 受控几何、双主题 RenderHarness 通过，首次标准入口停于旧媒体滚动源码契约；新结构断言定向6/6，待精确提交全链复跑",
       "evidence": [
         {
           "label": "证据",

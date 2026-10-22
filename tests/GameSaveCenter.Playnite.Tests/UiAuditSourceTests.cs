@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -99,14 +101,24 @@ public sealed class UiAuditSourceTests
         Assert.Contains("x:Name=\"MediaInboxSecondaryActions\"", xaml);
         Assert.Contains("x:Name=\"MediaInboxGrid\" Tag=\"FiniteViewport\"", xaml);
         Assert.Contains("MediaInboxInfoBand.Visibility = compactInbox ? Visibility.Collapsed : Visibility.Visible;", codeBehind);
-        Assert.Contains("var useInboxPageFallbackScroll = compactHeight || width < 900 || staleInboxRequiresPageScroll;", codeBehind);
+        Assert.Contains("MediaInboxPageScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;", codeBehind);
+        Assert.Contains("var inboxInspectorParent = inboxStack ? MediaInboxScrollSurface : MediaInboxLayout;", codeBehind);
+        Assert.Contains("Grid.SetColumnSpan(MediaInboxPageScrollViewer, inboxStack ? 3 : 1);", codeBehind);
+        var document = XDocument.Parse(xaml);
+        XName name = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var page = document.Descendants().Single(element => element.Attribute(name)?.Value == "MediaInboxPageScrollViewer");
+        var frame = document.Descendants().Single(element => element.Attribute(name)?.Value == "MediaInboxInspectorFrame");
+        Assert.Same(page.Parent, frame.Parent);
+        Assert.Contains(page.Descendants(), element => element.Attribute(name)?.Value == "MediaInboxGrid");
+        Assert.DoesNotContain(frame.Ancestors(), element => ReferenceEquals(element, page));
+        Assert.Equal("True", frame.Attribute("ClipToBounds")?.Value);
         Assert.Contains("mediaInboxInspectorOpen", codeBehind);
         Assert.Contains("mediaInboxHistoryOpen", codeBehind);
         Assert.Contains("MediaInboxSelectionDetails", xaml);
         Assert.Contains("MediaInboxNoSelectionHint", xaml);
         Assert.Contains("var readableGridHeight = GetMediaInboxReadableGridHeight();", codeBehind);
         Assert.Contains("MediaInboxGrid.MinHeight = readableGridHeight", codeBehind);
-        Assert.Contains("MediaInboxLayout.MinHeight = readableFrameHeight", codeBehind);
+        Assert.Contains("MediaInboxLayout.MinHeight = 0", codeBehind);
         Assert.Contains("MediaInboxTableFrame.MinHeight = readableFrameHeight", codeBehind);
         Assert.Contains("MediaInboxGeometry.CalculateReadableGridHeight", codeBehind);
         Assert.Contains("MediaInboxGrid.Height = finiteInboxHeight;", codeBehind);

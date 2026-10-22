@@ -25,6 +25,6 @@
 
 ## 构建与产物
 
-根 `GameSaveCenter-Run.cmd` 调用 `dev-install-run.ps1 -Configuration Release` 并保存/传播退出码；中文入口调用该根命令并传播退出码；`scripts/build.cmd` 只转交构建。最终完整默认命令链结果将按实际提交另记，当前不宣称它已通过本次源码。
+根 `GameSaveCenter-Run.cmd` 调用 `dev-install-run.ps1 -Configuration Release` 并保存/传播退出码；中文入口调用该根命令并传播退出码；`scripts/build.cmd` 只转交构建。首次完整默认链在 `52f74b1e` 上因旧媒体滚动源码契约退出 1；新分栏契约定向 6/6，完整链仍待新提交复跑。见[首次标准失败与修正](FIRST_STANDARD_FAILURE.md)，当前不宣称安装启动通过。
 
 本阶段临时输出位于 `artifacts/ui-layout-fix/` 与 `artifacts/ui-layout-*.log`。起始复核 D 卷可用 `9,035,120,640` 字节，后续阶段记录归档与安全清理量。用户原有 Round3 未跟踪 TRX 和 Tests/TestResults 未添加、覆盖或删除。Round4 总状态仍为 40 已验收、2 已满足、18 代码完成待验收、3 待开始、1 外部阻塞。

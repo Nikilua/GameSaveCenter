@@ -1,0 +1,10 @@
+{
+  "target": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\0e560d94",
+  "removedFileBytes": 190937823.0,
+  "freeBefore": 7361888256,
+  "freeAfter": 7554895872,
+  "reason": "Failed 52f74b1e build superseded by upcoming full rerun; raw diagnostics and assembly SHA archived",
+  "processCheckCaveat": "CIM process-command-line query was denied and non-terminating; deletion had already proceeded. Root and targeted exec sessions were confirmed terminal; do not interpret denied query as zero references.",
+  "postCleanupRelevantProcesses": [],
+  "subsequentCleanupRule": "Use terminating errors and stop on unavailable reference checks; Get-Process snapshot is available, CIM denial is not an empty process list."
+}
