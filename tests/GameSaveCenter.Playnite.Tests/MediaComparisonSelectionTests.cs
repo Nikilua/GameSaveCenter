@@ -54,7 +54,9 @@ namespace GameSaveCenter.Playnite.Tests
                     using (var host = new WindowHost(new Window
                     {
                         Content = view,
-                        Width = 1040,
+                        // The 480-DIP inspector leaves enough comparison width here.
+                        // The inner 500-DIP case below still proves stacked behavior.
+                        Width = 1280,
                         Height = 700,
                         ShowInTaskbar = false,
                         WindowStyle = WindowStyle.None,
@@ -63,7 +65,7 @@ namespace GameSaveCenter.Playnite.Tests
                     {
                         tabControl.SelectedIndex = 1;
                         BindingOperations.ClearBinding(grid, ItemsControl.ItemsSourceProperty);
-                        view.ApplyResponsiveLayout(1040, 900);
+                        view.ApplyResponsiveLayout(1280, 900);
                         var visibleItems = new ObservableCollection<MediaItemDto>
                         {
                             Screenshot("media-a", firstPath),
@@ -91,7 +93,7 @@ namespace GameSaveCenter.Playnite.Tests
                         Assert.Contains("second.png", summary.Text);
                         Assert.True(dashboard.MediaComparisonWorkspaceOpen);
                         Assert.Equal(Visibility.Visible, workspace.Visibility);
-                        view.ApplyResponsiveLayout(1040, 600);
+                        view.ApplyResponsiveLayout(1280, 600);
                         host.UpdateLayout();
                         Assert.False(dashboard.MediaComparisonWorkspaceOpen);
                         Assert.Equal(Visibility.Collapsed, workspace.Visibility);
@@ -100,10 +102,12 @@ namespace GameSaveCenter.Playnite.Tests
                         host.UpdateLayout();
                         Assert.True(dashboard.MediaComparisonWorkspaceOpen);
                         Assert.Equal(Visibility.Visible, workspace.Visibility);
+                        Assert.True(workspaceGrid.ActualWidth >= 560);
                         Assert.Equal(1, Grid.GetRow(secondCard));
                         Assert.Equal(1, Grid.GetColumn(secondCard));
                         workspaceGrid.Width = 500;
                         host.UpdateLayout();
+                        Assert.True(workspaceGrid.ActualWidth < 560);
                         Assert.Equal(2, Grid.GetRow(secondCard));
                         Assert.Equal(0, Grid.GetColumn(secondCard));
                         workspaceGrid.Width = double.NaN;
@@ -270,11 +274,15 @@ namespace GameSaveCenter.Playnite.Tests
                 try
                 {
                     action();
-                    Dispatcher.CurrentDispatcher.InvokeShutdown();
                 }
                 catch (Exception exception)
                 {
                     failure = exception;
+                }
+                finally
+                {
+                    if (!Dispatcher.CurrentDispatcher.HasShutdownStarted)
+                        Dispatcher.CurrentDispatcher.InvokeShutdown();
                 }
             });
             thread.SetApartmentState(ApartmentState.STA);

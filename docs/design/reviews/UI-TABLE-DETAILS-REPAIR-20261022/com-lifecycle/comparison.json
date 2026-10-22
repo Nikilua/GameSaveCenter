@@ -1,0 +1,21 @@
+{
+  "sourceCommit": "9d8ea563cc6e75d523ad215b40443f2170469980",
+  "sdk": "8.0.423",
+  "testAssemblySha256": "56aa66b0aadeedb81c1939fb7f2a6655970ed328931158823be33fcc7c5f29e8",
+  "setting": "RunConfiguration.DisableAppDomain=true",
+  "baseline": {
+    "Passed": 549,
+    "NotExecuted": 18
+  },
+  "probe": {
+    "Passed": 549,
+    "NotExecuted": 18
+  },
+  "outcomeDifferences": [],
+  "baselineComExceptions": 2,
+  "probeComExceptions": 0,
+  "rawConsoleSha256": {
+    "baseline": "7b9537bdf9beba3d879f040ce479c185345e05879cc2a863c5ea6d8e569f1f65",
+    "probe": "1312ee28d252b2cadfbfd35abbf048dca197226facdc6ac81dd0d5eda06ff9e1"
+  }
+}

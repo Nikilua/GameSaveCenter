@@ -7,4 +7,4 @@
 - [完整控制台](first-standard-failure/console.txt)、[诊断摘要与源码身份](first-standard-failure/summary.json)、[原始 source TRX](first-standard-failure/playnite-source.trx)、[失败构建程序集 SHA](first-standard-failure/assemblies.json)。原始诊断目录仍保留于 `artifacts/build-diagnostics/20261022T090201519Z-9bbd87c3`。
 - 清理了本次独有的失败输出 `artifacts/gsc-b/0e560d94`；根命令和定向测试 exec 均已确认结束。清理命令中的 CIM 引用查询被拒，且非终止错误未阻止后续删除，这是检查缺口，不能把拒绝查询记作零引用；随后使用可用的 Get-Process 核对相关进程，并将实际快照与后续必须在检查失败时停止的规则写入[清理记录](first-standard-failure/cleanup.json)。用户原有产物及此前最新成功包保留。最终标准入口必须从后续精确提交重新完整执行。
 
-归档控制台仅移除行尾空格以通过 diff 检查；原始字节仍保留在 `artifacts/ui-layout-standard-console.log`，其 SHA 见同目录 raw-console-sha256.txt。失败文本与 TRX 未改写。
+归档控制台仅移除行尾空格以通过 diff 检查；原始字节仍保留在 `artifacts/ui-layout-standard-console.log`，[SHA](first-standard-failure/raw-console-sha256.txt) 已保留。失败文本与 TRX 未改写。

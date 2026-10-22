@@ -62,6 +62,10 @@ function Invoke-PlayniteTestProcess {
     if ($OutputRoot) {
         $arguments += ('-p:GscBuildOutputRoot=' + [System.IO.Path]::GetFullPath($OutputRoot))
     }
+    # Each group already owns a separate process. WPF TextServices COM cleanup can
+    # fail when the adapter unloads an extra test AppDomain. Keep the process boundary
+    # and run in its host domain; all selected cases and assertions still execute.
+    $arguments += @('--', 'RunConfiguration.DisableAppDomain=true')
 
     Write-Host "    $Label" -ForegroundColor DarkCyan
     $isolatedTempRootForClass = ''
@@ -85,9 +89,8 @@ function Invoke-PlayniteTestProcess {
         throw "$Label failed; dotnet exit code: $exitCode"
     }
 
-    # .NET Framework's xUnit adapter shadow-copies a testhost and its dependencies
-    # below TEMP for every isolated class. Remove only entries created by this
-    # successful process; on a failing class, retain its temporary evidence.
+    # Adapters and fixtures may create temporary directories below TEMP. Remove only
+    # entries created by this successful process; retain a failing class's evidence.
     if (-not [string]::IsNullOrWhiteSpace($isolatedTempRootForClass)) {
         $tempRootPrefix = $isolatedTempRootForClass.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
         $removedTempEntries = 0

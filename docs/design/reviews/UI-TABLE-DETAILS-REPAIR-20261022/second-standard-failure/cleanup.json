@@ -1,0 +1,15 @@
+{
+  "targets": [
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\19b969b5",
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-com-probe\\temp",
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-com-probe\\temp2",
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-com-probe\\no-appdomain-temp",
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-com-probe\\no-appdomain-authorized-temp"
+  ],
+  "removedFileBytes": 204666977.0,
+  "freeBefore": 7337992192,
+  "freeAfter": 7544258560,
+  "relevantProcesses": [],
+  "checks": "All associated exec sessions terminal; Get-Process succeeded with no relevant processes; every resolved target inside repository artifacts",
+  "preserved": "Original diagnostics, archived TRX/console/source and assembly identities, latest successful package, render-final, user outputs"
+}
