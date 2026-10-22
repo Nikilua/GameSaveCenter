@@ -1,0 +1,9 @@
+{
+  "patterns": [
+    "TextServicesContext",
+    "InvalidComObjectException",
+    "Unhandled exception",
+    "未处理的异常"
+  ],
+  "matches": []
+}

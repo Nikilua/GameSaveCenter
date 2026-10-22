@@ -29,3 +29,5 @@
 第九次：53c9b14c / run 20261022T124928430Z-0baa47d8，全部R11/R12类通过，第107类R18表格预算测试仍先匹配已移除useInboxPageFallbackScroll字符串，数据探针尚未运行。累计1490 pass/18 skip/1 fail，根退出1。[失败TRX](table-budget-contract-failure/table-budget.trx)、[摘要](table-budget-contract-failure/summary.json)、[退出码](table-budget-contract-failure/result.json)。改为解析命名页面ScrollViewer的Auto/共享样式、内层Grid和同级固定详情框，并在实际大数据探针检查CanContentScroll=false、页面Auto；所有2000/10000/20000数据、控件数量、虚拟化及滚动性能断言保留。
 
 同时运行的53c9b14c完整离屏报告出现侧边栏rapid-toggle未收敛，[原报告](render-concurrent-failure-report.txt)保留。探针以第一次点击起算固定总等待期限，第二次点击已触发但其新动画尚未完成。并行压力是否为原因尚未证实；不能以此前离屏通过覆盖此失败，须在没有其他构建/测试并行时独立复核，不改等待阈值或断言。
+
+4f40e016独立完整离屏复核：启动前Get-Process成功确认无其他dotnet/testhost/RenderHarness并行；SDK8.0.423编译0/0，RenderHarness退出0、render-qa OK、0 PROBLEM。rapid-toggle最终270DIP/展开/settled=true，1119.3ms；原等待阈值与断言未修改。完整报告已更新render-qa-report.txt，三张代表截图已更新。并行失败与本次独立通过分别保留，只说明此次未复现，不把并行压力断言为已证实根因。最新审计输出保留artifacts/ui-layout-fix/render-serial-final；标准完整链另在固定4f40e016提交运行，不与离屏复核并发。

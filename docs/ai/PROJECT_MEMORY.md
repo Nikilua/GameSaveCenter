@@ -1,15 +1,19 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-22 用户截图修复与标准全链通过
+
+共享DataGridCellsPresenter纵向补偿改为Both，消除文字相对选中行累计漂移；任务表格填满有限父Grid，筛选水平整组换行，表头单行省略；任务/存档/媒体详情固定圆角外框、480DIP工作区宽度，媒体宽详情独立于左页滚动。并修复详情加宽后的批量工具栏错排及摘要居中。
+
+源码`4f40e016`默认中文入口→根.cmd完整退出0（SDK8.0.423/Release）：XAML25/25、solution0/0、1908项（1851 pass、57原有skip、0 fail/error/timeout/abort），140个WPF类、143份TRX一致；发布、打包、安装版本/四个关键DLL SHA、Playnite PID51232与Worker PID31176启动均已核对。同提交独立RenderHarness退出0、0 PROBLEM；原失败保留。[表格详情完整证据](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)。
+
+归档固定工作树前保留并校验全部诊断、最新构建/安装包和当前审计；清理本阶段39个旧目录，逻辑501429814字节，工作树逻辑1629890777字节另由托管归档回收；物理空间见证据JSON。用户旧TRX/TestResults未动。真实页面交互/物理输入仍未验；Round4计数40/2/18/3/1不变，T00-01复用本次证据记已满足。下一独立实现S00-06危险动作只转交审阅流程，S00-07/08随后；真实宿主待验不阻止已授权独立实现。
+
 ## 2026-10-22 后续专项计划：构建成功与安全清理
 
-按用户要求新增[32 项后续任务](../design/BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)及[专项账本](../design/reviews/build-ui-reliability-20261022/PROGRESS.md)。规划审阅基线 a5c96c8a；第四轮仍为 40 已验收、2 已满足、18 待验收、3 待开始、1 外部阻塞，不以新计划覆盖旧状态。优先接续 T00-01 最新修复后的标准 .cmd 全链复验；如已有任务正在执行该复验，等待其结果并复用证据，不并发重复运行。T00-01 为 READY 的接续/核验小批，其余 T 项为 PROPOSED，按现有实现去重后逐项准入。
+按用户要求新增[32 项后续任务](../design/BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)及[专项账本](../design/reviews/build-ui-reliability-20261022/PROGRESS.md)。规划审阅基线 a5c96c8a；第四轮仍为 40 已验收、2 已满足、18 待验收、3 待开始、1 外部阻塞，不以新计划覆盖旧状态。T00-01已复用本次4f40e016完整默认链证据记已满足；其余T项仍为PROPOSED，按现有实现去重后逐项准入，不重复本次全链记录。
 
 可复制提示词已明确：标准入口退出码/测试/包安装身份与启动验证；每阶段归档证据后检查路径、所有权、进程及引用再清理 artifacts/.tmp 无用产物，保留用户旧 TRX/TestResults。此次只更新文档，运行任务ID/数量/链接及源码校验，不执行产品构建、不宣称当前全链已通过，不为纯文档 CI 成功追加提交。
 
-
-## 2026-10-22 用户截图：表格滚动和详情区域修复
-
-共享单元格 presenter 误设 Horizontal，导致纵向滚动累计补偿；改为 Both，并修复 Dashboard 兼容模板。任务表格改由有限页面 Grid 分配整块视口；紧凑筛选水平整组换行，表头单行省略并保留完整辅助说明。存档/任务/媒体详情采用固定外圆角框与 480 DIP 工作区宽度；媒体宽详情独立于左侧页面滚动，窄窗复用原抽屉。SDK8.0.423 Release 受控测试、source/XAML 检查与双主题 RenderHarness 通过；资源字典 140 pass / 39 原有历史 skip。首次标准中文入口在 `52f74b1e` / SDK8.0.423 上编译 0/0、Core 157/157、Worker 400/400，source 548 pass / 18 skip / 1 fail（旧媒体滚动源码契约）；已补分栏有限视口断言并定向 6/6，完整链待新提交复跑，尚无本批安装启动证明。第二次标准入口在 `9d8ea563` 的 source 组 549 pass/18 skip，但媒体比较测试仍假设旧详情宽度，已改为检查实际 560 DIP 阈值，选择/视口 5/5 与 4/4。额外测试 AppDomain 对照保持同一 DLL 567 项逐项结果一致，并消除 COM 关闭诊断；本地执行器采用该官方设置，进程隔离/测试/skip 不变，完整链待复跑。证据：[表格与详情修复](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/README.md)。Round4 总任务状态不变，用户原有 TRX/TestResults 保留。
 
 ## 2026-10-22 S00-05 当前 main 根目录标准全链通过
 
@@ -774,23 +778,3 @@ R13-06 的 `NetworkRecoveryDisplay`、维护页绑定、Worker 轮询/批次与�
 R13-07 既有 Worker 查询与维护页控件、全局/筛选计数、分页一致性 token、稳定选择恢复已存在；不要另建服务/DTO。当前 main 只将分页追加/选中恢复小段逻辑抽为生产路径实际调用的 helper，去掉全重复页的无效 Reset，并用生产汇总格式 helper 验证当前/全局计数。Playnite `MaintenanceView` STA 真实操作五个合成绑定控件；Worker `CloudTransferStateTests` 用隔离状态验证过滤、全局汇总和过期 token。最终 SDK9.0.302/VSTest17.14.1 Playnite R13 `16/16`、Worker `14/14`；不是完整 solution build，不代替 SDK8.0.423/CI SDK10.0.401。TRX、SHA、freshness 见 `evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md`。
 
 WPF 测试若新增窗口到另一个 STA thread，`Application.Current` 可能保留已关闭 Dispatcher，影响之后视图；优先将真实控件交互合并到已有的隔离 STA fixture 并完整运行该类，不能只跑新 Fact。外机旧断言来源仍需同次 `summary.json`/程序集 SHA 才能确认，但不阻断其他主线任务。当前先追踪 #1044 和 R13-07 新 Actions 两条 SDK lane 至终态，再做 R13-08；真实插件 IPC refresh、Playnite host、物理 DPI、独立 UIA/IME、最终呈现、ETW/宿主性能仍属未验证边界。
-
-## 2026-10-22 详情外框断点验收同步
-
-固定检出 `5ced8abb` 的默认中文入口 run `20261022T104511986Z-6ba82645` 返回 1：编译/Core/Worker/source 通过，累计 1363 项（1344 pass、18 skip、1 fail），已执行 62 个 WPF 类。R07DetailsBreakpointBehaviorTests 的选择/焦点/滚动断言均通过，旧结构断言仍读取内层 ScrollViewer 的局部行0；现改为先确认父级是命名固定圆角 Border、Child 为原滚动容器，再检查父框紧凑行4/列0。完整链须新提交重跑，尚未打包安装。上一次主检出运行因其他文档提交移动 HEAD 被身份门禁拒绝，未放宽门禁；此次采用固定工作树隔离源码身份。用户旧 TRX/TestResults 未修改。
-
-## 2026-10-22 缩放验收改为有限父布局预算
-
-a57159cf 的标准链已通过R07详情断点，在第64类窗口缩放压力测试因旧子控件MaxHeight约束失败；原始结果保留。现检查有限页面Grid、表格填满边框、宽详情填满视口、窄详情136上限、PageHost预算和缩放恢复，保留焦点/选择/抽屉/SizeChanged断言。SDK8.0.423 Release项目编译0警告0错误，缩放定向1/1；完整链待新提交运行。诊断与宽窄切换绑定探针见 docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FOLLOWUP_STANDARD_DIAGNOSTICS.md，用户旧TRX保留。
-
-## 2026-10-22 存档详情独立测试宿主补齐
-
-dee44e98 默认中文入口run 20261022T112558956Z-428a4aa6已通过95类前的R07/R09检查，在版本备注独立视图fixture未调用壳层ApplyResponsiveLayout处失败；累计1437 pass/18 skip/1 fail，根退出1。补齐fixture布局和可见性断言，备注扩展1040/860宽窄场景，窄窗通过真实详情按钮打开；顺查复现并修复两处恢复详情fixture同一遗漏，不改生产保存/恢复语义。SDK8 Release编译0/0，备注5/5、恢复可用性1/1、恢复步骤8/8，完整默认链须新提交重跑。证据见表格详情修复FOLLOWUP_STANDARD_DIAGNOSTICS，用户旧TRX不动。
-
-## 2026-10-22 归类工具栏与恢复抽屉回归
-
-6fd2fbf5 的标准run 20261022T115646284Z-ddca8914在第99类恢复草稿窄窗fixture未打开抽屉处失败，根退出1、1455 pass/18 skip/1 fail；补真实详情按钮路由，恢复草稿7/7。顺查剩余存档宿主类，UIA24/24、禁用隐藏2/2、键盘4/4、资源9/9；布局类发现详情加宽后的媒体批量工具栏实际错排，按控件实测宽度并在SizeChanged后重新分配摘要行，保留原对齐断言。最终布局54/54、媒体滚动6/6、草稿7/7，SDK8.0.423 Release编译0/0，source校验通过；完整默认链待新提交重跑。原失败与最终TRX在表格详情修复证据目录，用户旧TRX/TestResults不动。
-
-## 2026-10-22 大表契约与剩余隔离类复核
-
-53c9b14c默认链run 20261022T124928430Z-0baa47d8通过R11/R12后在第107类旧页面滚动源码字符串断言失败，根退出1；1490 pass/18 skip/1 fail。R18改为当前分栏XAML结构及真实页面Auto/物理滚动属性，完整六组大数据预算探针1/1。随后按原进程隔离规则跑余下34类：400项，361 pass/39原有skip/0 fail。媒体摘要补左对齐，双主题几何2/2；SDK8 Release编译0/0。并行离屏报告侧边栏连续切换未收敛，失败报告保留，须停止并行后单独复核，不改时间阈值/断言；完整默认链仍待最终提交。详细证据见表格详情修复FOLLOWUP_STANDARD_DIAGNOSTICS，原用户TRX/TestResults保留。

@@ -173,7 +173,7 @@
       "implementationCommit": "ad7bd563",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-02/README.md)：SDK8 Release 构建0/0；密度/设置14/14，R09 2/2，媒体几何3/3，生产资源双主题9/9；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)：受控几何/双主题渲染通过；两次标准入口暴露的旧布局断言已更新，COM 域卸载对照567项结果一致，待新提交完整复跑",
+      "verificationText": "[证据](evidence/S01-02/README.md)：密度/设置14/14；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)；[最终标准验收](../UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)：4f40e016默认中文入口完整退出0，SDK8.0.423/Release，1908项（1851 pass/57原有skip/0 fail），140个WPF类、143份TRX一致；打包安装与Playnite启动通过，独立双主题RenderHarness 0 PROBLEM",
       "evidence": [
         {
           "label": "证据",
@@ -182,9 +182,13 @@
         {
           "label": "共享表格滚动与详情区域受控修复",
           "path": "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/README.md"
+        },
+        {
+          "label": "截图修复后标准完整链",
+          "path": "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md"
         }
       ],
-      "boundary": "真实 Playnite 密度设置加载/保存、物理 DPI 与页面交互仍待验；本次修复保留 host verification pending，当前源码标准入口全链尚待精确提交复验。"
+      "boundary": "真实Playnite密度设置加载/保存、物理DPI与页面交互仍未运行；当前标准入口编译/受控测试/打包/安装身份/进程启动已在4f40e016通过，不替代host verification。"
     },
     {
       "id": "S01-03",

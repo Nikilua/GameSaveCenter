@@ -1,0 +1,20 @@
+{
+  "checkedUtc": "2026-10-22T14:21:26.5684635Z",
+  "oldCheckoutExists": false,
+  "space": [
+    {
+      "Name": "C",
+      "Free": 11765149696
+    },
+    {
+      "Name": "D",
+      "Free": 5652574208
+    }
+  ],
+  "archivedAttachment": "01a163f8-eda7-7910-aab0-a24e14bff760",
+  "identityKey": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter",
+  "preservationMap": "artifacts/ui-layout-standard-10/preservation-map.json",
+  "latestBuild": "artifacts/ui-layout-standard-10/latest-build",
+  "latestPackage": "artifacts/ui-layout-standard-10/package",
+  "latestAudit": "artifacts/ui-layout-fix/render-serial-final"
+}

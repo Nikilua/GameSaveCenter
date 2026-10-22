@@ -1,0 +1,6 @@
+{
+  "checkedUtc": "2026-10-22T14:12:30.3186434Z",
+  "query": "Get-Process -ErrorAction Stop",
+  "activeBuildTestRenderCount": 0,
+  "compilerShutdownExitCode": 0
+}

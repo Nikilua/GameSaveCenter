@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifacts\":[{\"id\":\"01a163f8-eda7-7910-aab0-a24e14bff760\",\"attachmentType\":\"archived_worktree\",\"identityKey\":\"C:\\\\Users\\\\lopmatu\\\\.codex\\\\worktrees\\\\ui-layout-build\\\\GameSaveCenter\",\"payload\":{\"worktree\":{\"root\":\"C:\\\\Users\\\\lopmatu\\\\.codex\\\\worktrees\\\\ui-layout-build\\\\GameSaveCenter\",\"workspaceRoot\":\"C:\\\\Users\\\\lopmatu\\\\.codex\\\\worktrees\\\\ui-layout-build\\\\GameSaveCenter\",\"sourceCwd\":\"D:\\\\workplace\\\\github\\\\GameSaveCenter\",\"sourceGitRoot\":\"D:/workplace/github/GameSaveCenter\",\"worktreesRoot\":\"C:\\\\Users\\\\lopmatu\\\\.codex\\\\worktrees\"},\"pullRequests\":[]},\"createdAt\":1792678620}]}"
+    }
+  ],
+  "isError": false
+}

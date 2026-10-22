@@ -12,7 +12,7 @@
 
 ## 受控验证
 
-环境：锁定 SDK `8.0.423`、Release、Windows WPF。结果来自 `87eaab38` 后的实施工作树；精确提交上的标准命令全链尚待下一阶段运行，不能用本段代替安装/启动证明。
+环境：锁定 SDK `8.0.423`、Release、Windows WPF。最初受控结果来自实施工作树；最终独立离屏报告和标准默认完整链已在精确提交 `4f40e016` 通过，见[完整验收](STANDARD_BUILD.md)。
 
 - [初始几何失败](tests/focused-2.trx) 保留真实表格居中与累计文字漂移的失败证据；同批 Q14 两类共进程出现的 Application 跨 Dispatcher 问题通过按类独立进程运行核验，未修改断言或增加 skip。
 - [任务、紧凑视口与媒体几何](tests/focused-4.trx)：20/20；媒体宽详情结构调整后的[最终媒体滚动](tests/media-final.trx)：6/6，包括 100%/125%/150% 输出变换、反复首尾滚动、缩放窗口、分页锚点、滚动条角落、紧凑边界传递，以及宽详情边框在左右两路滚动时保持原位。
@@ -25,6 +25,8 @@
 
 ## 构建与产物
 
-根 `GameSaveCenter-Run.cmd` 调用 `dev-install-run.ps1 -Configuration Release` 并保存/传播退出码；中文入口调用该根命令并传播退出码；`scripts/build.cmd` 只转交构建。首次完整默认链在 `52f74b1e` 上因旧媒体滚动源码契约退出 1；新分栏契约定向 6/6，完整链仍待新提交复跑。见[首次标准失败与修正](FIRST_STANDARD_FAILURE.md)，当前不宣称安装启动通过。
+最终源码 `4f40e016` 的默认中文入口已完整退出0：编译0/0、1908项（1851 pass、57原有skip、0 fail/error/timeout/abort）、140个WPF类、143份TRX计数一致，发布、打包、安装身份与Playnite启动均成功。[完整证据与SHA](STANDARD_BUILD.md)。未跳测试、未扩大skip、未放宽源码身份；旧结构字符串和独立宿主接线遗漏已同步到实际结构/入口，同时修复详情加宽后的媒体工具栏错排，并保留原对齐断言。
 
-本阶段临时输出位于 `artifacts/ui-layout-fix/` 与 `artifacts/ui-layout-*.log`。起始复核 D 卷可用 `9,035,120,640` 字节，后续阶段记录归档与安全清理量。用户原有 Round3 未跟踪 TRX 和 Tests/TestResults 未添加、覆盖或删除。Round4 总状态仍为 40 已验收、2 已满足、18 代码完成待验收、3 待开始、1 外部阻塞。
+[初次失败](FIRST_STANDARD_FAILURE.md)、[第二次失败](SECOND_STANDARD_FAILURE.md)、[后续失败与修正](FOLLOWUP_STANDARD_DIAGNOSTICS.md)全部保留；不以通过覆盖失败。最终离屏报告0 PROBLEM，三张截图已更新。固定检出已归档，归档前已逐文件保留诊断、最新构建和包；清理本阶段39个旧目录，详情见完整证据。用户旧Round3 TRX/TestResults未添加、覆盖或删除。
+
+真实Playnite页面交互与物理输入未验证；Round4状态不变，继续独立实现S00-06～08。

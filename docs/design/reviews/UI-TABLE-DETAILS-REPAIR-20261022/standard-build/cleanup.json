@@ -1,0 +1,271 @@
+{
+  "checkedUtc": "2026-10-22T14:20:15.7451247Z",
+  "processQuery": "Get-Process -ErrorAction Stop",
+  "activeBuildTestRenderCount": 0,
+  "before": [
+    {
+      "Name": "C",
+      "Free": 11972870144
+    },
+    {
+      "Name": "D",
+      "Free": 5144727552
+    }
+  ],
+  "after": [
+    {
+      "Name": "C",
+      "Free": 11963277312
+    },
+    {
+      "Name": "D",
+      "Free": 5652660224
+    }
+  ],
+  "deleted": [
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 966,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\b4732d3d",
+      "bytes": 185945045.0
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 757,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\46ede1d7",
+      "bytes": 181453807.0
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 359,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\r07-layout-probe",
+      "bytes": 28597557.0
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 395,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\render-final",
+      "bytes": 52712920.0
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 395,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\render-toolbar-final",
+      "bytes": 52720485.0
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R18TableContainerBudgetTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R18ThumbnailBudgetTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R21AsyncCompletionAnnouncementBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R21AutomationValueBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R21DisabledHiddenBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R21FocusVisualRegressionBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R21KeyboardNavigationTraceTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R21SelectableTechnicalTextBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R22BatchCountBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R22ConfirmationStructureBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R22CopyFeedbackBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R22LongTaskLeavePageBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R22MaintenanceActionTimeBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R22RemoteStageTimeBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\R23ProductionResourceStateBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\ReportedWorkspaceLayoutBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\RetentionScenarioInputBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\S05StorageBudgetBreakdownBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\SettingsDraftLifecycleBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\SettingsValidationNavigationBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\StatusGlyphConverterTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\TableDensityPolicyTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\TaskCenterViewResponsiveTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\TypographyDiagnosticsTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\UiAuditBlockerTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\UiAuditCaptureContractTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\UiAuditTruthfulnessTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\UiDiagnosticsExporterTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\UiFinesseFoundationTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\UiNegativeFixtureRegistryTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\WorklistExportPreviewBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\WorkspaceStatePresenterBehaviorTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\WpfUiResourceDictionaryTests\\temp",
+      "bytes": null
+    },
+    {
+      "ownership": "Created by this UI repair phase; command/result/TRX archived; all build/test/render processes exited; superseded by preserved final build/package/current audit.",
+      "files": 0,
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\tests\\remaining-all-wpf\\WrapPanelRowGapControllerBehaviorTests\\temp",
+      "bytes": null
+    }
+  ],
+  "deletedLogicalBytes": 501429814.0,
+  "retained": [
+    "artifacts/ui-layout-standard-10/latest-build",
+    "artifacts/ui-layout-standard-10/package",
+    "artifacts/ui-layout-standard-10/diagnostics",
+    "artifacts/ui-layout-standard-8/prior-diagnostics",
+    "artifacts/ui-layout-fix/render-serial-final",
+    "All raw TRX/console evidence outside deleted temp directories",
+    "User Round3 untracked TRXs and tests/GameSaveCenter.Playnite.Tests/TestResults untouched"
+  ]
+}

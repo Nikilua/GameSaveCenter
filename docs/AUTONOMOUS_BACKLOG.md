@@ -1,8 +1,16 @@
 # 无人值守开发积压清单
 
+## 2026-10-22 用户截图修复与标准全链通过
+
+共享DataGridCellsPresenter纵向补偿改为Both，消除文字相对选中行累计漂移；任务表格填满有限父Grid，筛选水平整组换行，表头单行省略；任务/存档/媒体详情固定圆角外框、480DIP工作区宽度，媒体宽详情独立于左页滚动。并修复详情加宽后的批量工具栏错排及摘要居中。
+
+源码`4f40e016`默认中文入口→根.cmd完整退出0（SDK8.0.423/Release）：XAML25/25、solution0/0、1908项（1851 pass、57原有skip、0 fail/error/timeout/abort），140个WPF类、143份TRX一致；发布、打包、安装版本/四个关键DLL SHA、Playnite PID51232与Worker PID31176启动均已核对。同提交独立RenderHarness退出0、0 PROBLEM；原失败保留。[表格详情完整证据](design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)。
+
+归档固定工作树前保留并校验全部诊断、最新构建/安装包和当前审计；清理本阶段39个旧目录，逻辑501429814字节，工作树逻辑1629890777字节另由托管归档回收；物理空间见证据JSON。用户旧TRX/TestResults未动。真实页面交互/物理输入仍未验；Round4计数40/2/18/3/1不变，T00-01复用本次证据记已满足。下一独立实现S00-06危险动作只转交审阅流程，S00-07/08随后；真实宿主待验不阻止已授权独立实现。
+
 ## 2026-10-22 后续专项计划：构建成功与安全清理
 
-按用户要求新增[32 项后续任务](design/BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)及[专项账本](design/reviews/build-ui-reliability-20261022/PROGRESS.md)。规划审阅基线 a5c96c8a；第四轮仍为 40 已验收、2 已满足、18 待验收、3 待开始、1 外部阻塞，不以新计划覆盖旧状态。优先接续 T00-01 最新修复后的标准 .cmd 全链复验；如已有任务正在执行该复验，等待其结果并复用证据，不并发重复运行。T00-01 为 READY 的接续/核验小批，其余 T 项为 PROPOSED，按现有实现去重后逐项准入。
+按用户要求新增[32 项后续任务](design/BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)及[专项账本](design/reviews/build-ui-reliability-20261022/PROGRESS.md)。规划审阅基线 a5c96c8a；第四轮仍为 40 已验收、2 已满足、18 待验收、3 待开始、1 外部阻塞，不以新计划覆盖旧状态。T00-01已复用本次4f40e016完整默认链证据记已满足；其余T项仍为PROPOSED，按现有实现去重后逐项准入，不重复本次全链记录。
 
 可复制提示词已明确：标准入口退出码/测试/包安装身份与启动验证；每阶段归档证据后检查路径、所有权、进程及引用再清理 artifacts/.tmp 无用产物，保留用户旧 TRX/TestResults。此次只更新文档，运行任务ID/数量/链接及源码校验，不执行产品构建、不宣称当前全链已通过，不为纯文档 CI 成功追加提交。
 
@@ -80,7 +88,8 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S00-03 | IMPLEMENTED | `0968309c` 补方向键、Enter、IME composition 防护和插件级 `Ctrl+Shift+P`；SDK8 Release 定向回归 `12/12`。`22cec597` 标准一键链退出 `0`，1896 项 0 失败、140 WPF 类通过，安装并启动 Playnite。物理键盘/IME 候选/最终交互画面仍 pending。详见 S00-03 标准验收记录。 |
 | S07-08 | IMPLEMENTED | 在[交付协议](design/reviews/ui-finesse-round4-20261018/DELIVERY_AND_EXIT.md)明确单次批次快照、64 项总体验收条件及无可执行项的报告方式；总目标仍未完成。 |
 | S00-04 | IMPLEMENTED | `f8b3144e`：独立稳定 ID 固定/最近命令；SDK8 完整标准链 1,904 项、0 fail，打包安装和 Playnite 启动通过。真实页面交互/视觉与输入仍待验，见 [S00-04 证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-04/README.md)。 |
-| S00-06～08 | PROPOSED | 按 S00 顺序处理；前序宿主验收与任务依赖满足后再准入，危险命令只导航到原安全流程。 |
+| S00-06 | READY | S00-05代码与当前标准链受控门禁已满足；仅新增恢复/清理的审阅导航，不执行危险命令。独立合成WPF实现不等待物理输入/真实页面终验。 |
+| S00-07～08 | PROPOSED | 按S00顺序处理排版和真实登记命令行为验收，保留各自宿主边界。 |
 | S03-03 | IMPLEMENTED | `3268565c` 冲突详情并排显示双方版本/设备证据、共同父版本、指纹关系与 readiness 校验状态/时间；SDK8 Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`、Render QA OK。无时间戳覆盖建议；完整 WPF 隔离、安装与真实 Playnite未验。证据见 Round4 S03-03。 |
 | S03-04 | IMPLEMENTED | `1c7083e2` 实现只读恢复方案草稿；SDK8 Release solution `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`、定向 `31/31`，隔离安装与 RenderHarness 双主题复跑通过。当前 main R09 `2/2`；完整 WPF 一键复跑至 `48/133` 时因 R05 系统指针读取失败中断（178 通过/1 失败，余 85 类未跑）；真实 Playnite未启动。用户旧 R09 输入身份缺失。证据见 Round4 S03-04。 |
 | S03-05 | IMPLEMENTED | `b2c1e3de` 增加 A → B 恢复草稿差异比较，以 DPAPI 保护的 HMAC 映射指纹区分同备份版本的映射变化；未知指纹/大小显式保留未知。SDK8 Release build 0/0，Playnite 7/7、Worker 4/4，双主题 Render QA 与精确提交隔离 no-start 安装通过。完整 WPF 循环和真实 Playnite未验；证据见 Round4 S03-05。 |

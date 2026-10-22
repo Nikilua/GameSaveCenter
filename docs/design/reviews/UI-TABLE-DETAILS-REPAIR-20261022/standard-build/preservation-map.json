@@ -1,0 +1,50 @@
+{
+  "sourceRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter",
+  "sourceCommit": "4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+  "diagnostics": [
+    {
+      "original": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\build-diagnostics\\20261022T104511986Z-6ba82645",
+      "verifiedFiles": 137,
+      "run": "20261022T104511986Z-6ba82645",
+      "preserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-8\\prior-diagnostics\\20261022T104511986Z-6ba82645"
+    },
+    {
+      "original": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\build-diagnostics\\20261022T110212727Z-fcf7cf8b",
+      "verifiedFiles": 141,
+      "run": "20261022T110212727Z-fcf7cf8b",
+      "preserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-8\\prior-diagnostics\\20261022T110212727Z-fcf7cf8b"
+    },
+    {
+      "original": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\build-diagnostics\\20261022T112558956Z-428a4aa6",
+      "verifiedFiles": 203,
+      "run": "20261022T112558956Z-428a4aa6",
+      "preserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-8\\prior-diagnostics\\20261022T112558956Z-428a4aa6"
+    },
+    {
+      "original": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\build-diagnostics\\20261022T115646284Z-ddca8914",
+      "verifiedFiles": 211,
+      "run": "20261022T115646284Z-ddca8914",
+      "preserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-8\\prior-diagnostics\\20261022T115646284Z-ddca8914"
+    },
+    {
+      "original": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\build-diagnostics\\20261022T124928430Z-0baa47d8",
+      "verifiedFiles": 227,
+      "run": "20261022T124928430Z-0baa47d8",
+      "preserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-8\\prior-diagnostics\\20261022T124928430Z-0baa47d8"
+    },
+    {
+      "original": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\build-diagnostics\\20261022T133707856Z-62f4c447",
+      "verifiedFiles": 293,
+      "run": "20261022T133707856Z-62f4c447",
+      "preserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-10\\diagnostics\\20261022T133707856Z-62f4c447"
+    }
+  ],
+  "latestBuildOriginal": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter\\artifacts\\gsc-b\\0c3dac77\\bin",
+  "latestBuildPreserved": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-10\\latest-build\\bin",
+  "discardedIntermediateDirectories": [
+    "obj",
+    "test-temp"
+  ],
+  "dumpCount": 0,
+  "verifiedUtc": "2026-10-22T14:14:03.5318859Z"
+}

@@ -1,0 +1,60 @@
+{
+  "sourceCommit": "4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+  "sourceRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\ui-layout-build\\GameSaveCenter",
+  "run": "20261022T133707856Z-62f4c447",
+  "rootExitCode": 0,
+  "assemblies": [
+    {
+      "productVersion": "0.6.73+4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "installed": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Playnite.dll",
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "97E8012F421802D8842CC6D2BCEEE1C8FB1F7A94F22A3C7A536FF9C72B5295A6"
+    },
+    {
+      "productVersion": "0.6.73+4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "installed": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Core.dll",
+      "file": "GameSaveCenter.Core.dll",
+      "sha256": "F7A0DA903170010325C4E4642504BAEAECAF784549E1510022A133B099E7E7D5"
+    },
+    {
+      "productVersion": "0.6.73+4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "installed": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Contracts.dll",
+      "file": "GameSaveCenter.Contracts.dll",
+      "sha256": "31241B88896CAD8400BF5B44E0F4F39CE585967F845C27D6DB40B52C6A5B97BB"
+    },
+    {
+      "productVersion": "0.6.73+4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "installed": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.dll",
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "sha256": "EB2E2466453400B6DEF0239CB6893B322A96DE6BDA412683C258DE941DA2B44E"
+    }
+  ],
+  "packages": [
+    {
+      "bytes": 45725946,
+      "file": "GameSaveCenter-0.6.73-playnite.zip",
+      "sha256": "793212C47F26BF48C87A78C5E7E90663A3B8E03E6E4ECF14AC3E5860E1A4B44E"
+    },
+    {
+      "bytes": 45725946,
+      "file": "GameSaveCenter-0.6.73.pext",
+      "sha256": "793212C47F26BF48C87A78C5E7E90663A3B8E03E6E4ECF14AC3E5860E1A4B44E"
+    }
+  ],
+  "processes": [
+    {
+      "Id": 31176,
+      "ProcessName": "GameSaveCenter.Worker",
+      "StartTime": "2026-10-22T22:00:03.173925+08:00",
+      "Path": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.exe"
+    },
+    {
+      "Id": 51232,
+      "ProcessName": "Playnite.DesktopApp",
+      "StartTime": "2026-10-22T21:59:52.8816118+08:00",
+      "Path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe"
+    }
+  ],
+  "preservedFiles": 1277,
+  "capturedUtc": "2026-10-22T14:10:48.2700283Z"
+}
