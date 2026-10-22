@@ -115,23 +115,27 @@
     {
       "id": "S00-06",
       "title": "危险动作转交",
-      "state": "实施中",
+      "state": "代码完成待验收",
       "implementationState": "complete",
-      "implementationCommit": "88a0a364工作树候选（本次实现；源文件SHA见证据，提交后精确复核）",
-      "controlledVerificationState": "pending",
-      "hostVerificationState": "not_run",
-      "verificationText": "[候选实现](evidence/S00-06/README.md)：SDK8.0.423 Release编译0/0，合成路由与关联回归36/36；[候选身份](evidence/S00-06/candidate-identity.json)保留源码SHA和原始/脱敏TRX身份；待提交后的精确身份复核",
+      "implementationCommit": "30e32794",
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "[实现与边界](evidence/S00-06/README.md)：仅打开恢复/保留策略审阅页；[精确提交复核](evidence/S00-06/formal-identity.json)：30e32794，SDK8.0.423 Release编译0/0，7类36/36、0 fail/skip；[候选身份](evidence/S00-06/candidate-identity.json)与原始/脱敏TRX保留",
       "evidence": [
         {
-          "label": "候选实现",
+          "label": "实现与边界",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/README.md"
+        },
+        {
+          "label": "精确提交复核",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/formal-identity.json"
         },
         {
           "label": "候选身份",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/candidate-identity.json"
         }
       ],
-      "boundary": "只转交现有审阅页面，未执行真实恢复/清理；候选36/36不替代S00-06～08最终默认.cmd全链，真实宿主与物理键盘/IME尚未验。"
+      "boundary": "恢复/清理/预览哨兵执行0次，原版本对象与锁/PreRestore标记保留；真实页面和物理键盘/IME未验；S00-06～08最终默认.cmd全链待运行，4f40e016的旧全链不冒充此新改动验收。"
     },
     {
       "id": "S00-07",

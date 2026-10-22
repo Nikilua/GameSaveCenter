@@ -1,0 +1,105 @@
+{
+  "sourceCommit": "30e32794bbda2d01d2461e7d2381c234dfef2a89",
+  "trackedWorkingTreeClean": true,
+  "untrackedBoundary": "Existing user Round3 TRXs/TestResults remain; not deleted or staged.",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "testProcessExitCodes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "total": 36,
+  "passed": 36,
+  "failed": 0,
+  "skipped": 0,
+  "sourceFiles": [
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryCatalog.cs",
+      "sha256": "22f46d674a86d6cc7c72edd1a7a1581ea3ea9c7b5bb03b383c995788469e5204"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryContextSnapshot.cs",
+      "sha256": "80bffef2e6e4f74f72b6775191a13c3b5a339d6e0d4789ded18ed22daedea3f6"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/CommandDirectoryReviewBehaviorTests.cs",
+      "sha256": "27337328f6a571e015302e32ec9dfeaa454f2ade36ad587a7860ef89354299c7"
+    }
+  ],
+  "assemblies": [
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+      "sha256": "a149b05aad0a34ddb0aa25cd1a5ab9be765935502fc6208830eb8ffa23864001"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.HostAuditSeeder\\Release\\net462\\GameSaveCenter.Playnite.HostAuditSeeder.dll",
+      "sha256": "b0cc3fad27ce2ae44dc018b693535dd751e6472bf374a2020d480ec0b69bb91d"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll",
+      "sha256": "a149b05aad0a34ddb0aa25cd1a5ab9be765935502fc6208830eb8ffa23864001"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.HostAuditSeeder.dll",
+      "sha256": "b0cc3fad27ce2ae44dc018b693535dd751e6472bf374a2020d480ec0b69bb91d"
+    },
+    {
+      "path": "artifacts\\round4-s00-06\\build\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "02f848d66eb7b8041e44bd6428d8d600f06854e47d74b71e1496ad0e50c667fa"
+    }
+  ],
+  "trx": [
+    {
+      "file": "CommandDirectoryBehaviorTests.trx",
+      "total": 3,
+      "rawSha256": "39b01b820002cef5e9aac76211c593c1d6dafe1793c27ade081b61236771427a",
+      "evidenceSha256": "67b724e47186178f68674a1efbe03ed8f52be216cd6f04d99d7a3f346249f93a"
+    },
+    {
+      "file": "CommandDirectoryKeyboardBehaviorTests.trx",
+      "total": 7,
+      "rawSha256": "705ac9b20f1fb9f46bb11d2496771f765d07db427e9bef04950a1f8ddf42d7fe",
+      "evidenceSha256": "e428e06f0b195a18a430f33259b12fab362a3f0716e0076fe81b72e4a9c76e5d"
+    },
+    {
+      "file": "CommandDirectoryPreferencePolicyTests.trx",
+      "total": 5,
+      "rawSha256": "65963df8f94d2d9c4803d4b6d3b2f5102be130c42e113d2aeae9765839ea3675",
+      "evidenceSha256": "2e6783067ee8a738a6b442af6ab072ee4a1bbdd34dd7a60db6f034dc4987e9ce"
+    },
+    {
+      "file": "CommandDirectoryReviewBehaviorTests.trx",
+      "total": 4,
+      "rawSha256": "6c7d1d72ac58ce3f3128b5bab7480bc50ae3b1ab058039e53b871b6db752b17f",
+      "evidenceSha256": "a8218af7534deac0b6080d7787a146416fec2661b7d4ceffcfae87d2fe4004f4"
+    },
+    {
+      "file": "CommandDirectorySearchTests.trx",
+      "total": 6,
+      "rawSha256": "5f11f808e961f706b5c542691be82bc2d430204c2b319d43856e518772602e1e",
+      "evidenceSha256": "31e9b5596c2b803f826173b742c256b9df6ca40535ff18b42327d1b7d57398b9"
+    },
+    {
+      "file": "R11ProtectionBehaviorTests.trx",
+      "total": 3,
+      "rawSha256": "ebb945a952366193f183397d92be804c234a474938e2513ecc47163e9b30128c",
+      "evidenceSha256": "d4b1ce42a0cbec78f6130e22b2f4c7aa5ae40e69762c56dd6f3998ff3bfcc2ba"
+    },
+    {
+      "file": "R12RestoreWorkflowBehaviorTests.trx",
+      "total": 8,
+      "rawSha256": "ec47d2c10e65218322ceb543287631647fb9fa2a0c1ae13a8963c3f23a17a2fd",
+      "evidenceSha256": "8c7dfb8b70fe7f75e43d84f09a9f985a7e3aeaae6476f1c4a89396d61ad48a5e"
+    }
+  ],
+  "rawRoot": "artifacts\\round4-s00-06\\formal-tests",
+  "privacy": "Host/user/deployment labels normalized and evidence line endings LF; raw TRX files unchanged.",
+  "fullDefaultCommand": "Not run for S00-06 yet; final S00-06..08 candidate must run the default complete command."
+}

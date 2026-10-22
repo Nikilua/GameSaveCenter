@@ -1,0 +1,37 @@
+{
+  "activeBuildTestRenderCount": 0,
+  "after": [
+    {
+      "Name": "C",
+      "Free": 11309973504
+    },
+    {
+      "Name": "D",
+      "Free": 5631832064
+    }
+  ],
+  "deleted": [
+    {
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-06\\temp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-06\\formal-temp",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "processQuery": "Get-Process -ErrorAction Stop",
+  "retained": "Latest formal build/bin and current TRX/source identity evidence; previous installed 4f40e016 package and current audit retained.",
+  "before": [
+    {
+      "Name": "C",
+      "Free": 11309973504
+    },
+    {
+      "Name": "D",
+      "Free": 5631819776
+    }
+  ]
+}
