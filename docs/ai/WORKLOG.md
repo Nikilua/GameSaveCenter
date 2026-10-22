@@ -11802,3 +11802,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - R08 反向动效 `3/3`、R09 焦点轮廓 `2/2`。Worker 发布、构建身份、ZIP/PEXT、安装身份核验和 Playnite 启动成功。完整 summary、DLL/TRX/包 SHA-256、安装路径见 [S00-05 标准全链验收](../design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。
 - 同提交首次根命令在 R08 隔离 testhost 挂起并退出 1，TRX 无失败断言但测试类未完成，诊断 dump 保留；同一 test DLL 独立复跑两次各 `3/3`，随后完整根命令复跑通过。保留首次失败与通过复核的身份，不把挂起抹成通过。
 - 更新 S00-05 的实现状态、根命令证据和交接；真实 Playnite 页面视觉与操作验收仍 pending。原先用户未跟踪 Round3 TRX/TestResults 未修改或暂存。用户新附的页面截图指出任务筛选行、详情宽度、表格滚动文字漂移、详情滚动圆角和窄列标题换行问题，进入当前 UI 修复阶段。
+
+## 2026-10-22 详情外框断点验收同步
+
+固定检出 `5ced8abb` 的默认中文入口 run `20261022T104511986Z-6ba82645` 返回 1：编译/Core/Worker/source 通过，累计 1363 项（1344 pass、18 skip、1 fail），已执行 62 个 WPF 类。R07DetailsBreakpointBehaviorTests 的选择/焦点/滚动断言均通过，旧结构断言仍读取内层 ScrollViewer 的局部行0；现改为先确认父级是命名固定圆角 Border、Child 为原滚动容器，再检查父框紧凑行4/列0。完整链须新提交重跑，尚未打包安装。上一次主检出运行因其他文档提交移动 HEAD 被身份门禁拒绝，未放宽门禁；此次采用固定工作树隔离源码身份。用户旧 TRX/TestResults 未修改。

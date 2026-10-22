@@ -77,8 +77,13 @@ public sealed class R07DetailsBreakpointBehaviorTests
                 view.ApplyResponsiveLayout(971, 700);
                 window.UpdateLayout();
                 var compactOffset = detailViewer.VerticalOffset;
-                var compactRow = Grid.GetRow(detailViewer);
-                var compactColumn = Grid.GetColumn(detailViewer);
+                // The fixed rounded frame owns the workspace slot; its viewer
+                // scrolls inside that frame and stays in the frame's local row 0.
+                var detailFrame = Assert.IsType<Border>(detailViewer.Parent);
+                Assert.Equal("TaskDetailInspectorFrame", detailFrame.Name);
+                Assert.Same(detailViewer, detailFrame.Child);
+                var compactRow = Grid.GetRow(detailFrame);
+                var compactColumn = Grid.GetColumn(detailFrame);
                 var compactVisible = detailViewer.Visibility == Visibility.Visible;
 
                 view.ApplyResponsiveLayout(979, 700);

@@ -774,3 +774,7 @@ R13-06 的 `NetworkRecoveryDisplay`、维护页绑定、Worker 轮询/批次与�
 R13-07 既有 Worker 查询与维护页控件、全局/筛选计数、分页一致性 token、稳定选择恢复已存在；不要另建服务/DTO。当前 main 只将分页追加/选中恢复小段逻辑抽为生产路径实际调用的 helper，去掉全重复页的无效 Reset，并用生产汇总格式 helper 验证当前/全局计数。Playnite `MaintenanceView` STA 真实操作五个合成绑定控件；Worker `CloudTransferStateTests` 用隔离状态验证过滤、全局汇总和过期 token。最终 SDK9.0.302/VSTest17.14.1 Playnite R13 `16/16`、Worker `14/14`；不是完整 solution build，不代替 SDK8.0.423/CI SDK10.0.401。TRX、SHA、freshness 见 `evidence/R13-07-CURRENT-MAIN-BEHAVIOR-RECHECK-20261016/README.md`。
 
 WPF 测试若新增窗口到另一个 STA thread，`Application.Current` 可能保留已关闭 Dispatcher，影响之后视图；优先将真实控件交互合并到已有的隔离 STA fixture 并完整运行该类，不能只跑新 Fact。外机旧断言来源仍需同次 `summary.json`/程序集 SHA 才能确认，但不阻断其他主线任务。当前先追踪 #1044 和 R13-07 新 Actions 两条 SDK lane 至终态，再做 R13-08；真实插件 IPC refresh、Playnite host、物理 DPI、独立 UIA/IME、最终呈现、ETW/宿主性能仍属未验证边界。
+
+## 2026-10-22 详情外框断点验收同步
+
+固定检出 `5ced8abb` 的默认中文入口 run `20261022T104511986Z-6ba82645` 返回 1：编译/Core/Worker/source 通过，累计 1363 项（1344 pass、18 skip、1 fail），已执行 62 个 WPF 类。R07DetailsBreakpointBehaviorTests 的选择/焦点/滚动断言均通过，旧结构断言仍读取内层 ScrollViewer 的局部行0；现改为先确认父级是命名固定圆角 Border、Child 为原滚动容器，再检查父框紧凑行4/列0。完整链须新提交重跑，尚未打包安装。上一次主检出运行因其他文档提交移动 HEAD 被身份门禁拒绝，未放宽门禁；此次采用固定工作树隔离源码身份。用户旧 TRX/TestResults 未修改。
