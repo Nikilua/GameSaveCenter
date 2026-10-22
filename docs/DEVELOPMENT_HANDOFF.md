@@ -1,3 +1,7 @@
+## 2026-10-23 S00-08 目录行为候选通过
+
+补齐13项真实factory命令逐项搜索/唯一执行、撤销底层可用性双入口拒绝、失效游戏/任务/页面、默认8项与注册表覆盖检查。SDK8 Release0/0，36/36、0 skip/fail，危险哨兵0次，版本锁/PreRestore保留。产品源码70e42163未变；候选d3dfad89加新测试哈希，精确提交最终默认.cmd待运行。真实Playnite页面/物理输入未验，用户旧TRX/TestResults未动。[证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-08/README.md)。
+
 ## 2026-10-23 S00-07 排版精确提交复核
 
 名称、类别/范围、真实快捷键、稳定作用对象与独立禁用原因分层；窄窗大字体固定按钮换行，长原因/预览可完整滚动。SDK8 Release0/0，10进程215项176 pass/39原有skip，12组双主题/字体/宽度通过。强化裁切断言的原型失败保留，修复后通过；70e42163精确提交复核215项176 pass/39原有skip/0 fail；最终默认.cmd待运行，真实宿主/物理输入未验。证据：[S00-07](design/reviews/ui-finesse-round4-20261018/evidence/S00-07/README.md)。用户旧TRX/TestResults未动。

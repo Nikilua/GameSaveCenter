@@ -1,0 +1,21 @@
+{
+  "baseCommit": "d3dfad89",
+  "identity": "base plus new test source hash; product sources unchanged from70e42163",
+  "sdk": "8.0.423",
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "tests": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0
+  },
+  "source": {
+    "path": "tests/GameSaveCenter.Playnite.Tests/CommandDirectoryRegisteredRouteTests.cs",
+    "sha256": "f6762d122d2497a15847f8d239926a7b393c15f9f063a3f53dc31d645560b821"
+  },
+  "rawTrx": {
+    "path": "artifacts/round4-s00-08/candidate-tests/registered.trx",
+    "sha256": "24542c622b15932fb85bebb0c56c847b7f0d69b1d1efde85b3035e6dd3013bc7"
+  },
+  "evidenceTrxSha256": "64a9187bd134687a1da037e2c04f0d84faaf8d1a78df27f000ebb2e7adb8a13c"
+}
