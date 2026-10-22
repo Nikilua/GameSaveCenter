@@ -1,8 +1,8 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-22 当前 main 根目录标准全链通过
+## 2026-10-22 S00-05 当前 main 根目录标准全链通过
 
-最新源码提交 `162170a6dc41d7a1148e0f3a1ea2fbae49c369e6` 上，根目录 `GameSaveCenter-Run.cmd` 完整退出码 `0`，SDK `8.0.423`/Release。XAML `25/25`、solution `0/0`；Core `157/157`、Worker `400/400`、Playnite source `567`（`549` pass、`18` skip）、WPF 隔离 `780`（`741` pass、`39` skip；140 类），合计 `1,904`（`1,847` pass、`57` skip、0 fail/error/timeout/abort），143 份 TRX 计数一致。R09 `2/2`。Worker 发布、构建身份、PEXT/ZIP、安装版本/DLL SHA 校验和 Playnite 启动成功。诊断 `20261021T225909667Z-dc4f8e95`；[当前 main 标准构建与 R09 复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。孤立 testhost 清理发生在该类 `1/1` pass 的 TRX 完成之后，父进程已退出；未跳过或中断测试。摘要的工作树非干净仅来自原有用户 Round3 未跟踪 TRX/TestResults，没有触碰。
+最新源码提交 `5974742f4bea03d4975ff3a447eabe13d52a0e0e` 上，根目录 `GameSaveCenter-Run.cmd` 完整退出码 `0`，SDK `8.0.423`/Release。XAML `25/25`、solution `0/0`；Core `157/157`、Worker `400/400`、Playnite source `567`（`549` pass、`18` skip）、WPF 隔离 `782`（`743` pass、`39` skip；140 类），合计 `1,906`（`1,849` pass、`57` skip、0 fail/error/timeout/abort），143 份 TRX 计数一致。R08 `3/3`、R09 `2/2`。Worker 发布、构建身份、PEXT/ZIP、安装版本/DLL SHA 校验和 Playnite 启动成功。诊断 `20261022T012309056Z-3ccfe8e5`；[S00-05 标准全链证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。同提交首次尝试在 R08 隔离 testhost 挂起、完整链未完成；同一测试程序集独立复跑两次通过，之后完整根命令复跑通过，首次失败保留为诊断记录。原有用户 Round3 未跟踪 TRX/TestResults 没有修改或暂存。
 
 ## 2026-10-22 附件 R09 失败日志与较早 main 构建复核（历史）
 

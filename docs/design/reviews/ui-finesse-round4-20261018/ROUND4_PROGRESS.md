@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-08 已受控验收；S06-04 至 S06-08 的范围与边界见各项 evidence。S00-01 已满足；S00-02 实现完成但 UI 宿主门禁仍 pending。S00-03 键盘/IME 防护已实现，当前标准全链通过，物理键盘、真实 IME 候选和 Playnite 中交互仍待验。S00-04 固定/最近命令已由 `f8b3144e` 实现；SDK8.0.423 标准 `GameSaveCenter-Run.cmd` 退出码 0，1,904 项中 1,847 pass、57 skip、0 fail，140 个 WPF 隔离类通过，已安装插件身份核对一致且 Playnite 启动成功；真实页面交互/视觉仍 pending，详见 [S00-04 标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md)。S00-05～08 按顺序等待准入。S07-01/02/04/05/06/07/08 已完成；S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。计划内暂无依赖与宿主条件均已满足的 READY 项；旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-08 已受控验收；S06-04 至 S06-08 的范围与边界见各项 evidence。S00-01 已满足；S00-02 实现完成但 UI 宿主门禁仍 pending。S00-03 键盘/IME 防护已实现，当前标准全链通过，物理键盘、真实 IME 候选和 Playnite 中交互仍待验。S00-04 固定/最近命令已由 `f8b3144e` 实现；SDK8.0.423 标准链完整通过，详见 [S00-04 标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md)。S00-05 上下文预览已由 `5974742f` 实现并通过完整标准链，真实 Playnite 页面交互、物理键盘/IME 候选仍 pending，详见 [S00-05 标准验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。S00-06～08 按顺序等待准入。S07-01/02/04/05/06/07/08 已完成；S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。计划内暂无依赖与宿主条件均已满足的 READY 项；旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -16,8 +16,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收17、实施中1、外部阻塞1、待开始3。
-实现状态：完成59、未开始5、不适用0；受控验证：通过61、未跑3、不适用0；宿主验证：通过0、待验15、未跑41、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收18、外部阻塞1、待开始3。
+实现状态：完成60、未开始4、不适用0；受控验证：通过61、未跑3、不适用0；宿主验证：通过0、待验15、未跑41、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -25,7 +25,7 @@
 | S00-02 | 命令搜索面板 | 代码完成待验收 | 29dc09b2、a58dd582 | [证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 默认全量本地构建及 WPF 隔离 `1,823/1,891` 通过、68 skip，见[当前复核](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md) | SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止，因此本任务 host verification 仍 pending。S00-03/S00-04 后续已完成代码实现及当前标准链受控验证；这不替代 S00-02 的真实页面呈现验收。 |
 | S00-03 | 键盘与组合输入 | 代码完成待验收 | 0968309c | [标准一键验收](evidence/S00-03/STANDARD_BUILD_20261022.md)：提交 `22cec597`，SDK8.0.423 Release，1896 项、0 失败；R09 2/2、140 个 WPF 隔离类通过，打包安装和 Playnite 启动成功。真实物理输入/IME 候选/交互呈现仍待验；[实施证据](evidence/S00-03/IMPLEMENTATION.md)；[初始依赖审计](evidence/S00-03/AUDIT.md) | 完整默认链编译、测试、打包、安装与 Playnite 进程启动均通过；物理键盘、真实 IME 候选、交互中的 Playnite 焦点/快捷键协作及最终呈现未验，host verification 保持 pending。未注册全局热键、未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。 |
 | S00-04 | 固定与最近命令 | 代码完成待验收 | f8b3144e36d190663f760a98aa0602bec6bda2f8 | [实现证据](evidence/S00-04/IMPLEMENTATION.md)；SDK8.0.423 完整标准 GameSaveCenter-Run.cmd 退出码 0，1,904 项（1,847 通过、57 跳过、0 失败），140 个 WPF 隔离类；打包、安装身份验证和 Playnite 启动均成功，详见[标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md) | 已安装插件 DLL 与 Release 构建 DLL SHA-256 一致，Playnite 进程启动；未进行真实页面交互/视觉、物理键盘或 IME 候选验收，host verification 保持 pending。用户所附 R09 旧日志的 2→1 描边差异在当前提交 R09 2/2 中未复现，旧运行输入身份与根因未知。 |
-| S00-05 | 上下文预览 | 实施中 | — | 实现与命令目录定向行为/WPF 测试 21/21 通过，见[能力审计](evidence/S00-05/AUDIT.md)和[实现验证](evidence/S00-05/IMPLEMENTATION.md)；完整根命令待验收，真实 Playnite 交互仍 pending。 | 游戏/任务稳定 ID 快照和失效拦截已实现，定向测试通过；GameSaveCenter-Run.cmd 完整验收待执行。此 checkout 缺少 AcrylicFork Demo 页面 XAML，本次仅在既有命令浮层使用共享动态资源。真实 Playnite 交互、物理键盘和 IME 候选保持 pending。 |
+| S00-05 | 上下文预览 | 代码完成待验收 | 5974742f | 命令目录定向测试 21/21；提交 5974742f 的 GameSaveCenter-Run.cmd 完整通过（SDK8.0.423、1906 项、0 失败，140 个 WPF 隔离类），详见[能力审计](evidence/S00-05/AUDIT.md)、[实现验证](evidence/S00-05/IMPLEMENTATION.md)和[标准全链验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。 | 游戏/任务稳定 ID 快照和失效拦截已实现；完整标准链含打包、安装身份核验和 Playnite 进程启动均通过。真实 Playnite 页面交互、物理键盘和 IME 候选保持 pending。 |
 | S00-06 | 危险动作转交 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-07 | 结果精细排版 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S00-08 | 目录行为验收 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |

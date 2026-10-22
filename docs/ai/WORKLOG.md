@@ -11785,3 +11785,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 当前 main 源码提交 `162170a6dc41d7a1148e0f3a1ea2fbae49c369e6` 上运行根目录 `GameSaveCenter-Run.cmd`，完整退出码 `0`。SDK `8.0.423`/Release；XAML `25/25`、solution `0 warning / 0 error`；Core `157/157`、Worker `400/400`、Playnite source `567`（549 pass、18 skip）、WPF 隔离 `780`（741 pass、39 skip，140 类完成）。143 份 TRX 共 1,904 项（1,847 pass、57 skip、0 fail/error/timeout/abort），报告计数完全一致。R09 `2/2`，TRX SHA-256 `2F15A331DCC66E828023C9AA5B61809389FF464BF740729600270B9BA37402DB`。
 - Worker 发布、构建身份、ZIP/PEXT、安装身份核验和 Playnite 启动成功；ZIP/PEXT SHA 均为 `2478E354F4029F635DE84DA8C9B6713487CD253FAED90D041F986C7005F9D486`，构建与已安装插件 DLL SHA 均为 `D26EC254B8E8173F97101FB1E2E1BA2E1A86885CDBB135DAA95D4C83110353F7`。Playnite PID `26040` 正在响应。诊断 run `20261021T225909667Z-dc4f8e95`。
 - `MediaThumbnailConverterTests` 的完整 TRX 为 `1/1` pass；测试 host 在 WPF 关闭日志后成为孤立进程。确认 VSTest 父进程已退出且该类 TRX 全部完成后清理该 host，入口随即继续；该步骤记为 0，没有跳过或取消测试。原 Round3 未跟踪 TRX 与 Playnite `TestResults/` 未修改、未暂存。
+## 2026-10-22 S00-05 当前提交标准全链复验
+
+- 提交 `5974742f4bea03d4975ff3a447eabe13d52a0e0e` 上根目录 `GameSaveCenter-Run.cmd` 完整退出码 `0`；SDK `8.0.423` / Release，XAML `25/25`、solution `0 warning / 0 error`，Core `157/157`，Worker `400/400`，Playnite source `567`（549 pass、18 skip），WPF 隔离 `782`（743 pass、39 skip；140 类）。143 份 TRX 共 `1,906` 项，`1,849` pass、`57` skip、0 fail/error/timeout/abort，计数一致。
+- R08 反向动效 `3/3`、R09 焦点轮廓 `2/2`。Worker 发布、构建身份、ZIP/PEXT、安装身份核验和 Playnite 启动成功。完整 summary、DLL/TRX/包 SHA-256、安装路径见 [S00-05 标准全链验收](../design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。
+- 同提交首次根命令在 R08 隔离 testhost 挂起并退出 1，TRX 无失败断言但测试类未完成，诊断 dump 保留；同一 test DLL 独立复跑两次各 `3/3`，随后完整根命令复跑通过。保留首次失败与通过复核的身份，不把挂起抹成通过。
+- 更新 S00-05 的实现状态、根命令证据和交接；真实 Playnite 页面视觉与操作验收仍 pending。原先用户未跟踪 Round3 TRX/TestResults 未修改或暂存。用户新附的页面截图指出任务筛选行、详情宽度、表格滚动文字漂移、详情滚动圆角和窄列标题换行问题，进入当前 UI 修复阶段。

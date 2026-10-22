@@ -15,7 +15,7 @@
 - 命令目录定向测试：21/21 通过，0 失败、0 跳过；包含 `CommandDirectoryBehaviorTests`、`CommandDirectoryKeyboardBehaviorTests` 与 `CommandDirectorySearchTests`。
 - `python scripts/validate-source.py .`：通过。
 - `validate_wpf_ui.py`：0 错误；仓库整体 26 条既有警告，改动文件无告警。
-- 标准根命令 `GameSaveCenter-Run.cmd` 的完整编译、全量测试、打包、安装与 Playnite 启动验收尚待本次实现提交后执行。
+- 标准根命令在提交 `5974742f` 完整通过，编译、全量测试、Worker 发布、打包、安装身份核验与 Playnite 进程启动结果见[标准全链验收](STANDARD_BUILD_20261022.md)。首次运行的 R08 测试宿主挂起和同提交完整复跑均如实记录。
 
 ## 验收边界
 

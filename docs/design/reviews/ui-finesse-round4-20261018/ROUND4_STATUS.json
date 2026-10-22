@@ -90,12 +90,12 @@
     {
       "id": "S00-05",
       "title": "上下文预览",
-      "state": "实施中",
-      "implementationState": "not_started",
-      "implementationCommit": "—",
+      "state": "代码完成待验收",
+      "implementationState": "complete",
+      "implementationCommit": "5974742f",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "实现与命令目录定向行为/WPF 测试 21/21 通过，见[能力审计](evidence/S00-05/AUDIT.md)和[实现验证](evidence/S00-05/IMPLEMENTATION.md)；完整根命令待验收，真实 Playnite 交互仍 pending。",
+      "verificationText": "命令目录定向测试 21/21；提交 5974742f 的 GameSaveCenter-Run.cmd 完整通过（SDK8.0.423、1906 项、0 失败，140 个 WPF 隔离类），详见[能力审计](evidence/S00-05/AUDIT.md)、[实现验证](evidence/S00-05/IMPLEMENTATION.md)和[标准全链验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。",
       "evidence": [
         {
           "label": "现有能力审计",
@@ -104,9 +104,13 @@
         {
           "label": "实现与定向验证",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/IMPLEMENTATION.md"
+        },
+        {
+          "label": "标准根命令全链验收",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md"
         }
       ],
-      "boundary": "游戏/任务稳定 ID 快照和失效拦截已实现，定向测试通过；GameSaveCenter-Run.cmd 完整验收待执行。此 checkout 缺少 AcrylicFork Demo 页面 XAML，本次仅在既有命令浮层使用共享动态资源。真实 Playnite 交互、物理键盘和 IME 候选保持 pending。"
+      "boundary": "游戏/任务稳定 ID 快照和失效拦截已实现；完整标准链含打包、安装身份核验和 Playnite 进程启动均通过。真实 Playnite 页面交互、物理键盘和 IME 候选保持 pending。"
     },
     {
       "id": "S00-06",
