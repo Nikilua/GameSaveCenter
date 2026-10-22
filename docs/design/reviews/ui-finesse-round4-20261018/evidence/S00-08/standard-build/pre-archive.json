@@ -1,0 +1,18 @@
+{
+  "logicalBytes": 1041870303.0,
+  "sourceCommit": "02119729651ae687f2f1e5316ba4e48a3da69045",
+  "freeSpace": [
+    {
+      "Name": "C",
+      "Free": 9681944576
+    },
+    {
+      "Name": "D",
+      "Free": 5104447488
+    }
+  ],
+  "trackedAndUntrackedClean": true,
+  "verifiedPreservedFiles": 1308,
+  "noBuildTestProcesses": true,
+  "sourceRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round4-final-build\\GameSaveCenter"
+}

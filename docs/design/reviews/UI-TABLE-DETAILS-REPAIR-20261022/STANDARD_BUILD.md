@@ -41,3 +41,7 @@ Worker发布、同源程序集身份、ZIP/PEXT内部校验及扩展原子安装
 通过SDK8正常关闭编译服务器，再成功查询确认没有构建/测试/渲染进程后，规范化并核对artifacts前缀，删除本阶段39个旧目录（逻辑501,429,814字节）；包括两次旧失败构建、一次定向构建、两套旧离屏图及34个已完成测试临时目录。使用PowerShell LiteralPath，未跨shell删除。另归档工作树含逻辑1,629,890,777字节；逻辑量不等于物理释放量，卷前后空间分别保留在[清理](standard-build/cleanup.json)、[归档前](standard-build/pre-archive.json)和[归档后](standard-build/post-archive.json)。保留最新构建/包/审计、引用证据和用户旧Round3 TRX/TestResults。
 
 真实Playnite页面交互、物理DPI/键盘/IME未冒充验收；Round4仍为40已验收、2已满足、18代码完成待验收、3待开始、1外部阻塞。T00-01复用本次完整链记已满足；其余专项条目保持未准入状态。本次证据文档提交只做源码/链接/账本校验，不为记录它触发的通过再制造CI记录循环。
+
+## 后续交付替代旧二进制
+
+2026-10-23的02119729默认完整链在保留本修复的基础上通过1951项/0失败、打包安装启动；当前最新bin/包已转到artifacts/round4-final-standard。旧ui-layout-standard-10/latest-build及package已安全清理，本记录的诊断、TRX、身份SHA和截图保留，不再声称旧二进制目录仍在。[后续全链与清理](../ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md)。

@@ -1,3 +1,7 @@
+## 2026-10-23 当前接续边界
+
+S00-06～08独立实现与02119729最终默认.cmd全链完成（1951项、0失败，包/安装/启动通过）。Round4无剩余可独立推进的待实现项，S07-03仍未实施；40已验收/2已满足/21宿主待验/1外部阻塞；当前没有可独立推进的新实现。下一解锁条件是真实宿主/物理输入/DPI等同次证据，或S07-03 required checks/保护可读权限；不重复被拒探测、不新增计划。最新证据见docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md。
+
 # 无人值守开发积压清单
 
 ## 2026-10-22 S00-06 审阅转交已受控复核
@@ -96,7 +100,7 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S00-04 | IMPLEMENTED | `f8b3144e`：独立稳定 ID 固定/最近命令；SDK8 完整标准链 1,904 项、0 fail，打包安装和 Playnite 启动通过。真实页面交互/视觉与输入仍待验，见 [S00-04 证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-04/README.md)。 |
 | S00-06 | IMPLEMENTED | 30e32794仅转交恢复/保留审阅页；SDK8编译0/0，7类36/36。真实宿主与S00-06～08最终默认链待验。 |
 | S00-07 | IMPLEMENTED | S00-06实现/受控依赖已具备；细化名称、类别、作用对象、真实快捷键、不可用原因及长文本/双主题/窄窗检查。 |
-| S00-08 | READY | S00-07后处理真实登记命令的行为验收，保留宿主边界。 |
+| S00-08 | IMPLEMENTED | S00-07后处理真实登记命令的行为验收，保留宿主边界。 |
 | S03-03 | IMPLEMENTED | `3268565c` 冲突详情并排显示双方版本/设备证据、共同父版本、指纹关系与 readiness 校验状态/时间；SDK8 Release solution `0/0`，Playnite `4/4`、Worker `2/2`、Core `7/7`、R09 `2/2`、Render QA OK。无时间戳覆盖建议；完整 WPF 隔离、安装与真实 Playnite未验。证据见 Round4 S03-03。 |
 | S03-04 | IMPLEMENTED | `1c7083e2` 实现只读恢复方案草稿；SDK8 Release solution `0/0`，Core `156/156`、Worker `380/1 skipped`、Playnite 非 WPF `475/27 skipped`、定向 `31/31`，隔离安装与 RenderHarness 双主题复跑通过。当前 main R09 `2/2`；完整 WPF 一键复跑至 `48/133` 时因 R05 系统指针读取失败中断（178 通过/1 失败，余 85 类未跑）；真实 Playnite未启动。用户旧 R09 输入身份缺失。证据见 Round4 S03-04。 |
 | S03-05 | IMPLEMENTED | `b2c1e3de` 增加 A → B 恢复草稿差异比较，以 DPAPI 保护的 HMAC 映射指纹区分同备份版本的映射变化；未知指纹/大小显式保留未知。SDK8 Release build 0/0，Playnite 7/7、Worker 4/4，双主题 Render QA 与精确提交隔离 no-start 安装通过。完整 WPF 循环和真实 Playnite未验；证据见 Round4 S03-05。 |

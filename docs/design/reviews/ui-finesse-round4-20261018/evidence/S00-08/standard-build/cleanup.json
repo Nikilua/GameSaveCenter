@@ -1,0 +1,80 @@
+{
+  "preservedFiles": 1308,
+  "after": [
+    {
+      "Name": "C",
+      "Free": 10736726016
+    },
+    {
+      "Name": "D",
+      "Free": 5632143360
+    }
+  ],
+  "archivedLogicalBytes": 1041870303,
+  "logicalBytes": 524855827.0,
+  "worktreeRootAbsent": true,
+  "before": [
+    {
+      "Name": "C",
+      "Free": 10736726016
+    },
+    {
+      "Name": "D",
+      "Free": 5103423488
+    }
+  ],
+  "targets": [
+    {
+      "files": 329,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-06\\build",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 28608141.0
+    },
+    {
+      "files": 341,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-07\\build",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 28694123.0
+    },
+    {
+      "files": 0,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-08\\temp",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 0
+    },
+    {
+      "files": 24,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-07\\layout",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 4986133.0
+    },
+    {
+      "files": 6,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-07\\layout-clip-before",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 1203420.0
+    },
+    {
+      "files": 745,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-10\\latest-build",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 258201264.0
+    },
+    {
+      "files": 241,
+      "ownership": "prior phases of this same goal; superseded by final02119729 build/package",
+      "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-standard-10\\package",
+      "referenceCheck": "raw diagnostics/TRX/source hashes and committed screenshots retained; historical binary paths superseded, latest final build/package SHA verified before cleanup",
+      "logicalBytes": 203162746.0
+    }
+  ],
+  "note": "logical file sizes are not physical freed bytes; latest final build/package and all raw diagnostic runs retained; historical binaries now superseded",
+  "processCheck": "successful Get-Process; zero build/test/render/compiler processes",
+  "worktreeArchived": true
+}

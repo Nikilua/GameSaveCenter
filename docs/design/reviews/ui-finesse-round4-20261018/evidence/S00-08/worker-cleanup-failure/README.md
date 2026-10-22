@@ -1,0 +1,5 @@
+# Worker临时数据库清理失败
+
+02119729默认全链run20261022T164157023Z-19785f07在Worker399 pass/1 fail后根退出1。RetryIssueIdentitySurvivesTaskStoreRestart业务断言完成，Dispose删除夹具临时gamesavecenter.db时IOException文件被占用；原始失败TRX保留。没有足够证据确认占用来源，不归因于UI排版或特定外部进程。
+
+同提交同DLL通知持久化类连续3次各12/12、0 skip/fail，未复现。没有改变生产代码、测试清理逻辑、断言、超时或skip；随后同提交完整默认链run20261022T164654106Z-9af98dc7全部1951项1894 pass/57历史skip/0 fail，根退出0。复跑成功不抹去这次不稳定现象，不能声称清理偶发根因已修复。

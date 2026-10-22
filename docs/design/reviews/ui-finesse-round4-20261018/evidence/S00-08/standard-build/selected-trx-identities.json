@@ -1,0 +1,74 @@
+[
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.CommandDirectoryBehaviorTests/wpf.CommandDirectoryBehaviorTests.trx",
+    "rawSha256": "7cac4900686e7a42ca83aed4e43174fd0c4cb63c7e9e56bca8e9fc406cc40139",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.CommandDirectoryBehaviorTests.trx",
+    "evidenceSha256": "96b360c364f1b88c51a30626ee3391950b5ed03f60d1e6ce61367ba020b1d34e"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.CommandDirectoryKeyboardBehaviorTests/wpf.CommandDirectoryKeyboardBehaviorTests.trx",
+    "rawSha256": "30492df434446230cd61f5c33cb27b715cca7efc5f9e9ba3f9cf12fd0e181a59",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.CommandDirectoryKeyboardBehaviorTests.trx",
+    "evidenceSha256": "63b1947a5c0e21cc1418bf6f01da4ff2d714a9c3c8f7a3ca7dbc41a1e232fb41"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.CommandDirectoryRegisteredRouteTests/wpf.CommandDirectoryRegisteredRouteTests.trx",
+    "rawSha256": "e23a4b26395069477ec77854b05ed99b8e71f7d1532160ca09fd85e321004ed1",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.CommandDirectoryRegisteredRouteTests.trx",
+    "evidenceSha256": "97c99bd2543dce1919e2085de9e4adef278ebe2fd03822cfed2a570835a10f9d"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.CommandDirectoryResultLayoutBehaviorTests/wpf.CommandDirectoryResultLayoutBehaviorTests.trx",
+    "rawSha256": "ee1e8ec11135b5e6ea4d0e4591d4892f0ddbfe360634f8a5aa976e6399806cbd",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.CommandDirectoryResultLayoutBehaviorTests.trx",
+    "evidenceSha256": "4762c47e8dd05970d42b3884a4b23093eea7be0ddda0ee9736d6c6001c85dc3a"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.CommandDirectoryReviewBehaviorTests/wpf.CommandDirectoryReviewBehaviorTests.trx",
+    "rawSha256": "296929152949dc2e75855c56c5598af92cc58d315fd0c434155c8fea4ec6b6a6",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.CommandDirectoryReviewBehaviorTests.trx",
+    "evidenceSha256": "f19552e223012544a0ba09f8aabd3e8f0e6256b77ec441453c975c154b35e479"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.R07ResizeStressBehaviorTests/wpf.R07ResizeStressBehaviorTests.trx",
+    "rawSha256": "593a4b74ed689c507ee26face850d54ce7eb68b2618116c63fa100f8f2d2dfa0",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.R07ResizeStressBehaviorTests.trx",
+    "evidenceSha256": "7c0d738441e6c13e5192b86caeac34c1c269b93a360c28e66de3440399f0734c"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.R09FocusOutlineBehaviorTests/wpf.R09FocusOutlineBehaviorTests.trx",
+    "rawSha256": "cf4e06aeabe69657ffd4f59306d60b7600bb88067ef6d6d7b1b92e8b3671de11",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.R09FocusOutlineBehaviorTests.trx",
+    "evidenceSha256": "5fc629dc51e5cfd298a858db4a6ba2efd4d7aa7ed3cdb55fbe5386bea8102699"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164654106Z-9af98dc7/tests/wpf.ReportedWorkspaceLayoutBehaviorTests/wpf.ReportedWorkspaceLayoutBehaviorTests.trx",
+    "rawSha256": "aabc17fd2d35fad845280f0aa043d1cd425c18f87417b006c7149f79db57236f",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/standard-build/tests/wpf.ReportedWorkspaceLayoutBehaviorTests.trx",
+    "evidenceSha256": "64bc4c14947cd3b5b77820f6853350e00d3cd03b02ea9de12ba0f7ca56400fe3"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/diagnostics/20261022T164157023Z-19785f07/tests/worker/worker.trx",
+    "rawSha256": "5e450cf25b2d7986290d12354171cc9babbe1ef5ff33be40715d1f5c8797ddf0",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/worker-cleanup-failure/worker-failed.trx",
+    "evidenceSha256": "dd2d645c13b2dc518c2f78e13d86ae8496c0154e72208a51daa228f5af5ba2c5"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/worker-recheck-1/notification-1.trx",
+    "rawSha256": "a843a074a5dfe18cb9263d5cd450e6a4e96d5ac29ff0b8f8833c80a92cab7a9e",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/worker-cleanup-failure/notification-recheck-1.trx",
+    "evidenceSha256": "b4534cefc5229e63d3b2b7a88a2c57e7decd251511788f01f9d91f35aed63767"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/worker-recheck-2/notification-2.trx",
+    "rawSha256": "c2339b87ba60132ba179e767ee6d2544e8a116f8c4fe8620c5124cd477e88b9a",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/worker-cleanup-failure/notification-recheck-2.trx",
+    "evidenceSha256": "7d9a996856a6c16930bb9c3d34d01fc6d35b4eb984a9919b608f1949e0226f94"
+  },
+  {
+    "rawPath": "artifacts/round4-final-standard/worker-recheck-3/notification-3.trx",
+    "rawSha256": "de0b2af0246d5b027a73ba70a3d7f74ac7050632afee523e3928f9be68e21042",
+    "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/worker-cleanup-failure/notification-recheck-3.trx",
+    "evidenceSha256": "722fd47298e5c865b666b4e53717f07bd78ebf93fd64bce492c7e2eb48a0ea65"
+  }
+]

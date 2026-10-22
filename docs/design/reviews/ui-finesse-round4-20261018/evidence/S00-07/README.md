@@ -17,3 +17,7 @@
 ## 验收边界
 
 精确实现提交70e421636ad3be5379058645b7564d5a02b25d61复核：SDK8.0.423 Release编译0/0；10个隔离进程215项，176 pass/39原有skip/0 fail，每类至少匹配一项。DLL产品版本与提交一致。[正式身份](formal-identity.json)、[正式编译](formal-build-console.txt)。当前为受控合成WPF验证。真实Playnite页面、物理键盘、IME和物理DPI未验；最终S00-06～08默认.cmd全链待运行，旧4f40e016成功不能替代本批新源码全链。用户原有TRX/TestResults保持未动。
+
+## 后续最终全链
+
+02119729默认中文.cmd完整退出0，1951项1894 pass/57历史skip/0 fail，包/安装身份/Playnite启动通过。[最终验收](../S00-08/STANDARD_BUILD_20261023.md)。旧本阶段bin已由新交付替代并清理；原始TRX/诊断及源/DLL哈希保留。此前“最终全链待运行”仅为当时状态，当前真实宿主交互验收仍pending。

@@ -120,22 +120,18 @@
       "implementationCommit": "30e32794",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[实现与边界](evidence/S00-06/README.md)：仅打开恢复/保留策略审阅页；[精确提交复核](evidence/S00-06/formal-identity.json)：30e32794，SDK8.0.423 Release编译0/0，7类36/36、0 fail/skip；[候选身份](evidence/S00-06/candidate-identity.json)与原始/脱敏TRX保留",
+      "verificationText": "[实施证据](evidence/S00-06/README.md)：审阅仅导航、危险哨兵0次，精确实现30e32794定向36/36；[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)：02119729 SDK8 Release0/0、1951项1894 pass/57历史skip/0 fail，143个WPF类，发布/包/安装/启动通过",
       "evidence": [
         {
-          "label": "实现与边界",
+          "label": "实施证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/README.md"
         },
         {
-          "label": "精确提交复核",
-          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/formal-identity.json"
-        },
-        {
-          "label": "候选身份",
-          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-06/candidate-identity.json"
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "恢复/清理/预览哨兵执行0次，原版本对象与锁/PreRestore标记保留；真实页面和物理键盘/IME未验；S00-06～08最终默认.cmd全链待运行，4f40e016的旧全链不冒充此新改动验收。"
+      "boundary": "当前标准.cmd已完整通过；真实Playnite页面交互/物理键盘/IME/DPI未验，保持宿主待验，不冒充Round4完成。"
     },
     {
       "id": "S00-07",
@@ -145,31 +141,39 @@
       "implementationCommit": "70e42163",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[正式证据](evidence/S00-07/README.md)：70e42163 SDK8.0.423 Release编译0/0；10进程215项176 pass/39原有skip/0 fail；12组双主题/字体/宽度通过",
+      "verificationText": "[实施证据](evidence/S00-07/README.md)：精确实现70e42163排版12组、215项176 pass/39原有skip；[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)：02119729 SDK8 Release0/0、1951项1894 pass/57历史skip/0 fail，143个WPF类，发布/包/安装/启动通过",
       "evidence": [
         {
-          "label": "候选验证",
+          "label": "实施证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "真实宿主/物理输入未验；S00-06～08最终默认.cmd待运行。"
+      "boundary": "当前标准.cmd已完整通过；真实Playnite页面交互/物理键盘/IME/DPI未验，保持宿主待验，不冒充Round4完成。"
     },
     {
       "id": "S00-08",
       "title": "目录行为验收",
-      "state": "实施中",
+      "state": "代码完成待验收",
       "implementationState": "complete",
-      "implementationCommit": "d3dfad89 + candidate test hash",
-      "controlledVerificationState": "pending",
+      "implementationCommit": "f08b85be、02119729",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[候选证据](evidence/S00-08/README.md)：SDK8 Release0/0；13个真实登记路由及可用性撤销、失效上下文36/36；精确提交默认.cmd待运行",
+      "verificationText": "[实施证据](evidence/S00-08/README.md)：真实登记13项路由与失效/撤销可用性36/36，注册表覆盖保持默认8项；[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)：02119729 SDK8 Release0/0、1951项1894 pass/57历史skip/0 fail，143个WPF类，发布/包/安装/启动通过",
       "evidence": [
         {
-          "label": "目录路由验收",
+          "label": "实施证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "真实宿主/物理输入未验；S00-06～08最终默认.cmd待运行。"
+      "boundary": "当前标准.cmd已完整通过；真实Playnite页面交互/物理键盘/IME/DPI未验，保持宿主待验，不冒充Round4完成。"
     },
     {
       "id": "S01-01",

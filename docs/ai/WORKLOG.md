@@ -1,3 +1,11 @@
+## 2026-10-23 S00-06～08最终默认全链通过
+
+源码02119729651ae687f2f1e5316ba4e48a3da69045干净固定工作树，默认中文.cmd→根.cmd完整退出0；SDK8.0.423 Release，XAML25/25、solution0警告0错误，1951项1894 pass/57原有skip/0 fail/error/timeout/abort，143个WPF类、146TRX复算一致。真实登记命令36/36、排版12组、R09 2/2、截图工作区54/54。发布/包/安装四DLL SHA/产品版本核对成功，Playnite12948、Worker85492新进程启动。发现阶段长路径已由同DLL对照修复；另一次Worker夹具清理IOException保留，同DLL三次12/12及全链复跑通过，偶发占用根因未证明修复。
+
+S00-06/07/08独立实现完成，当前Round4为40已验收、2已满足、21代码完成待验收、1外部阻塞；无剩余可独立推进的待实现项；S07-03仍未实施。真实页面/物理输入/跨屏DPI等宿主验收仍缺证据，S07-03 required checks/保护读取权限仍受限，未再次探测或改workflow/保护。不能宣告Round4整体完成，不新增第五轮或重复CI记录。
+
+归档工作树前1308文件逐SHA保存全部失败/成功诊断、最新构建与包；工作树已归档且目录不存在。成功进程查询后清理7个旧目录逻辑524855827字节，归档工作树逻辑1041870303字节另计，物理卷前后量见JSON；当前bin/包、当前截图、历史TRX/诊断/SHA保留。用户旧未跟踪Round3 TRX/TestResults未动。证据：[最终标准验收](../design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md)。
+
 ## 2026-10-23 默认链测试发现路径修复
 
 f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Playnite发现adapter AppDomain shadow-copy路径过长而零用例，根退出1。相同DLL增加现有执行阶段的DisableAppDomain设置后发现1390项；发现脚本同步该设置，零用例拒绝/隔离/过滤器不变，修复提交全链待跑。原始失败与对照见S00-08/discovery-failure；不把发现成功称为全链成功。

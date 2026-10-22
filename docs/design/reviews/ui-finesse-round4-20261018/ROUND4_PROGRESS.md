@@ -1,6 +1,6 @@
 # 第四轮执行账本
 
-任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-08 已受控验收；S06-04 至 S06-08 的范围与边界见各项 evidence。S00-01 已满足；S00-02 实现完成但 UI 宿主门禁仍 pending。S00-03 键盘/IME 防护已实现，当前标准全链通过，物理键盘、真实 IME 候选和 Playnite 中交互仍待验。S00-04 固定/最近命令已由 `f8b3144e` 实现；SDK8.0.423 标准链完整通过，详见 [S00-04 标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md)。S00-05 上下文预览已由 `5974742f` 实现并通过完整标准链，真实 Playnite 页面交互、物理键盘/IME 候选仍 pending，详见 [S00-05 标准验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。S00-06～08 按顺序等待准入。S07-01/02/04/05/06/07/08 已完成；S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。计划内暂无依赖与宿主条件均已满足的 READY 项；旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
+任务源：[64 项实施计划](../../UI_FINESSE_ROUND4_64_TASKS_2026-10-18.md)。S05-01 至 S05-08、S06-01 至 S06-08 已受控验收；S06-04 至 S06-08 的范围与边界见各项 evidence。S00-01 已满足；S00-02 实现完成但 UI 宿主门禁仍 pending。S00-03 键盘/IME 防护已实现，当前标准全链通过，物理键盘、真实 IME 候选和 Playnite 中交互仍待验。S00-04 固定/最近命令已由 `f8b3144e` 实现；SDK8.0.423 标准链完整通过，详见 [S00-04 标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md)。S00-05 上下文预览已由 `5974742f` 实现并通过完整标准链，真实 Playnite 页面交互、物理键盘/IME 候选仍 pending，详见 [S00-05 标准验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。S00-06～08已完成独立实现与02119729最终默认全链，真实宿主验收pending；见[最终验收](evidence/S00-08/STANDARD_BUILD_20261023.md)。S07-01/02/04/05/06/07/08 已完成；S07-03 因 GitHub 无权读取 main branch protection、required checks 不可见而外部阻塞，workflow 未改。计划内暂无依赖与宿主条件均已满足的 READY 项；旧 Q/R 工作与环境边界未撤销。交付快照与退出条件见[协议](DELIVERY_AND_EXIT.md)，后续准入以 `docs/AUTONOMOUS_BACKLOG.md` 为准。
 
 2026-10-20 用户反馈的页面滚动区域越界已作为独立缺陷修复并完成 SDK8 Release/定向几何验收，详见[证据](../UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。该修复不改变 64 项状态；后续 S05-03 至 S05-05 已完成。
 
@@ -16,8 +16,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收20、实施中1、外部阻塞1。
-实现状态：完成63、未开始1、不适用0；受控验证：通过63、未跑0、不适用0；宿主验证：通过0、待验18、未跑38、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收21、外部阻塞1。
+实现状态：完成63、未开始1、不适用0；受控验证：通过64、未跑0、不适用0；宿主验证：通过0、待验18、未跑38、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -26,9 +26,9 @@
 | S00-03 | 键盘与组合输入 | 代码完成待验收 | 0968309c | [标准一键验收](evidence/S00-03/STANDARD_BUILD_20261022.md)：提交 `22cec597`，SDK8.0.423 Release，1896 项、0 失败；R09 2/2、140 个 WPF 隔离类通过，打包安装和 Playnite 启动成功。真实物理输入/IME 候选/交互呈现仍待验；[实施证据](evidence/S00-03/IMPLEMENTATION.md)；[初始依赖审计](evidence/S00-03/AUDIT.md) | 完整默认链编译、测试、打包、安装与 Playnite 进程启动均通过；物理键盘、真实 IME 候选、交互中的 Playnite 焦点/快捷键协作及最终呈现未验，host verification 保持 pending。未注册全局热键、未绕过 GetCursorPos 权限，也未把合成 IME 输入当作真实候选行为证据。 |
 | S00-04 | 固定与最近命令 | 代码完成待验收 | f8b3144e36d190663f760a98aa0602bec6bda2f8 | [实现证据](evidence/S00-04/IMPLEMENTATION.md)；SDK8.0.423 完整标准 GameSaveCenter-Run.cmd 退出码 0，1,904 项（1,847 通过、57 跳过、0 失败），140 个 WPF 隔离类；打包、安装身份验证和 Playnite 启动均成功，详见[标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md) | 已安装插件 DLL 与 Release 构建 DLL SHA-256 一致，Playnite 进程启动；未进行真实页面交互/视觉、物理键盘或 IME 候选验收，host verification 保持 pending。用户所附 R09 旧日志的 2→1 描边差异在当前提交 R09 2/2 中未复现，旧运行输入身份与根因未知。 |
 | S00-05 | 上下文预览 | 代码完成待验收 | 5974742f | 命令目录定向测试 21/21；提交 5974742f 的 GameSaveCenter-Run.cmd 完整通过（SDK8.0.423、1906 项、0 失败，140 个 WPF 隔离类），详见[能力审计](evidence/S00-05/AUDIT.md)、[实现验证](evidence/S00-05/IMPLEMENTATION.md)和[标准全链验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。 | 游戏/任务稳定 ID 快照和失效拦截已实现；完整标准链含打包、安装身份核验和 Playnite 进程启动均通过。真实 Playnite 页面交互、物理键盘和 IME 候选保持 pending。 |
-| S00-06 | 危险动作转交 | 代码完成待验收 | 30e32794 | [实现与边界](evidence/S00-06/README.md)：仅打开恢复/保留策略审阅页；[精确提交复核](evidence/S00-06/formal-identity.json)：30e32794，SDK8.0.423 Release编译0/0，7类36/36、0 fail/skip；[候选身份](evidence/S00-06/candidate-identity.json)与原始/脱敏TRX保留 | 恢复/清理/预览哨兵执行0次，原版本对象与锁/PreRestore标记保留；真实页面和物理键盘/IME未验；S00-06～08最终默认.cmd全链待运行，4f40e016的旧全链不冒充此新改动验收。 |
-| S00-07 | 结果精细排版 | 代码完成待验收 | 70e42163 | [正式证据](evidence/S00-07/README.md)：70e42163 SDK8.0.423 Release编译0/0；10进程215项176 pass/39原有skip/0 fail；12组双主题/字体/宽度通过 | 真实宿主/物理输入未验；S00-06～08最终默认.cmd待运行。 |
-| S00-08 | 目录行为验收 | 实施中 | d3dfad89 + candidate test hash | [候选证据](evidence/S00-08/README.md)：SDK8 Release0/0；13个真实登记路由及可用性撤销、失效上下文36/36；精确提交默认.cmd待运行 | 真实宿主/物理输入未验；S00-06～08最终默认.cmd待运行。 |
+| S00-06 | 危险动作转交 | 代码完成待验收 | 30e32794 | [实施证据](evidence/S00-06/README.md)：审阅仅导航、危险哨兵0次，精确实现30e32794定向36/36；[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)：02119729 SDK8 Release0/0、1951项1894 pass/57历史skip/0 fail，143个WPF类，发布/包/安装/启动通过 | 当前标准.cmd已完整通过；真实Playnite页面交互/物理键盘/IME/DPI未验，保持宿主待验，不冒充Round4完成。 |
+| S00-07 | 结果精细排版 | 代码完成待验收 | 70e42163 | [实施证据](evidence/S00-07/README.md)：精确实现70e42163排版12组、215项176 pass/39原有skip；[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)：02119729 SDK8 Release0/0、1951项1894 pass/57历史skip/0 fail，143个WPF类，发布/包/安装/启动通过 | 当前标准.cmd已完整通过；真实Playnite页面交互/物理键盘/IME/DPI未验，保持宿主待验，不冒充Round4完成。 |
+| S00-08 | 目录行为验收 | 代码完成待验收 | f08b85be、02119729 | [实施证据](evidence/S00-08/README.md)：真实登记13项路由与失效/撤销可用性36/36，注册表覆盖保持默认8项；[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)：02119729 SDK8 Release0/0、1951项1894 pass/57历史skip/0 fail，143个WPF类，发布/包/安装/启动通过 | 当前标准.cmd已完整通过；真实Playnite页面交互/物理键盘/IME/DPI未验，保持宿主待验，不冒充Round4完成。 |
 | S01-01 | 视图配置模型 | 已验收 | 25bbe005 | [证据](evidence/S01-01/README.md)：SDK8 Release 测试项目构建通过；ViewConfigurationDefinition 与 R09 合计 7/7 | 未改 XAML；真实 Playnite 设置加载/保存未验证；密度、列选择和视图保存交互留后续任务 |
 | S01-02 | 舒适紧凑密度 | 代码完成待验收 | ad7bd563 | [证据](evidence/S01-02/README.md)：密度/设置14/14；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)；[最终标准验收](../UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)：4f40e016默认中文入口完整退出0，SDK8.0.423/Release，1908项（1851 pass/57原有skip/0 fail），140个WPF类、143份TRX一致；打包安装与Playnite启动通过，独立双主题RenderHarness 0 PROBLEM | 真实Playnite密度设置加载/保存、物理DPI与页面交互仍未运行；当前标准入口编译/受控测试/打包/安装身份/进程启动已在4f40e016通过，不替代host verification。 |
 | S01-03 | 可选列管理 | 代码完成待验收 | 8cdf5253 | [证据](evidence/S01-03/README.md)：SDK8.0.423 Release 解决方案构建 0/0；列显隐 4/4、列宽 6/6、视图配置 5/5、R09 2/2，source validation 通过 | Playnite 宿主设置提交/双主题视觉未验；完整安装/UI 门禁仍受 R05 GetCursorPos Win32 error 5 阻塞 |
