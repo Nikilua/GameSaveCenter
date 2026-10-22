@@ -11806,3 +11806,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 ## 2026-10-22 详情外框断点验收同步
 
 固定检出 `5ced8abb` 的默认中文入口 run `20261022T104511986Z-6ba82645` 返回 1：编译/Core/Worker/source 通过，累计 1363 项（1344 pass、18 skip、1 fail），已执行 62 个 WPF 类。R07DetailsBreakpointBehaviorTests 的选择/焦点/滚动断言均通过，旧结构断言仍读取内层 ScrollViewer 的局部行0；现改为先确认父级是命名固定圆角 Border、Child 为原滚动容器，再检查父框紧凑行4/列0。完整链须新提交重跑，尚未打包安装。上一次主检出运行因其他文档提交移动 HEAD 被身份门禁拒绝，未放宽门禁；此次采用固定工作树隔离源码身份。用户旧 TRX/TestResults 未修改。
+
+## 2026-10-22 缩放验收改为有限父布局预算
+
+a57159cf 的标准链已通过R07详情断点，在第64类窗口缩放压力测试因旧子控件MaxHeight约束失败；原始结果保留。现检查有限页面Grid、表格填满边框、宽详情填满视口、窄详情136上限、PageHost预算和缩放恢复，保留焦点/选择/抽屉/SizeChanged断言。SDK8.0.423 Release项目编译0警告0错误，缩放定向1/1；完整链待新提交运行。诊断与宽窄切换绑定探针见 docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FOLLOWUP_STANDARD_DIAGNOSTICS.md，用户旧TRX保留。

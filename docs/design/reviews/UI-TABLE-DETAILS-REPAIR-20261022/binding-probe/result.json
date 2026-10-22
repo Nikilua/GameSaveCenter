@@ -1,0 +1,44 @@
+{
+  "sourceCommit": "5ced8abb087a2e6bc29fbd0526b157167e106eda",
+  "ok": true,
+  "steps": [
+    {
+      "width": 1400,
+      "parent": "MediaInboxLayout",
+      "sourceBatch": "synthetic-b",
+      "targetBatch": "synthetic-b",
+      "nullWrites": 0
+    },
+    {
+      "width": 860,
+      "parent": "MediaInboxScrollSurface",
+      "sourceBatch": "synthetic-b",
+      "targetBatch": "synthetic-b",
+      "nullWrites": 0
+    },
+    {
+      "width": 1400,
+      "parent": "MediaInboxLayout",
+      "sourceBatch": "synthetic-b",
+      "targetBatch": "synthetic-b",
+      "nullWrites": 0
+    },
+    {
+      "width": 860,
+      "parent": "MediaInboxScrollSurface",
+      "sourceBatch": "synthetic-b",
+      "targetBatch": "synthetic-b",
+      "nullWrites": 0
+    },
+    {
+      "width": 1400,
+      "parent": "MediaInboxLayout",
+      "sourceBatch": "synthetic-b",
+      "targetBatch": "synthetic-b",
+      "nullWrites": 0
+    }
+  ],
+  "error": null,
+  "assemblySha256": "49559BB78C722DE58F5CC863CF718412B66859BF88B47543E7810D7C6B4B96A8",
+  "assemblyProductVersion": "0.6.73+5ced8abb087a2e6bc29fbd0526b157167e106eda"
+}

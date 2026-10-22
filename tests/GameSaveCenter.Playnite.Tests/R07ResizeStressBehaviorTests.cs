@@ -48,6 +48,8 @@ public sealed class R07ResizeStressBehaviorTests
                 var taskView = shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)!;
                 var taskType = typeof(TaskCenterView);
                 var taskGrid = (DataGrid)taskType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
+                var tableFrame = (Border)taskType.GetField("TaskTableFrame", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
+                var pageSurface = (Grid)taskType.GetField("TaskPageScrollSurface", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
                 var compactDetailsButton = (Button)taskType.GetField("TaskCompactDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
                 var compactCloseDetailsButton = (Button)taskType.GetField("TaskCompactCloseDetailsButton", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!;
                 var selected = new TaskStatusDto
@@ -164,6 +166,12 @@ public sealed class R07ResizeStressBehaviorTests
                 })
                 {
                     ApplySize(window, size.width, size.height);
+                    // The finite page Grid now allocates star-row space. Children
+                    // stretch into that budget instead of imposing fixed MaxHeight.
+                    Assert.True(pageSurface.Height > 0 && !double.IsInfinity(pageSurface.Height)
+                        && !double.IsNaN(pageSurface.Height));
+                    Assert.InRange(pageSurface.ActualHeight, 1, pageSurface.Height + 1);
+                    var detailFrame = Assert.IsType<Border>(taskView.TaskDetailScrollViewerElement.Parent);
                     samples.Add(new ResizeSample(
                         size.label,
                         size.width,
@@ -181,8 +189,9 @@ public sealed class R07ResizeStressBehaviorTests
                         pickerOverlay.Visibility,
                         shell.GameSearchBoxForFocus.IsKeyboardFocusWithin,
                         taskGrid.ActualHeight,
-                        taskGrid.MaxHeight,
+                        InnerHeight(tableFrame),
                         taskView.TaskDetailScrollViewerElement.MaxHeight,
+                        InnerHeight(detailFrame),
                         pickerPanel.ActualHeight,
                         pickerPanel.MaxHeight));
                 }
@@ -220,22 +229,29 @@ public sealed class R07ResizeStressBehaviorTests
                     Assert.Equal(Visibility.Visible, sample.PickerVisibility);
                     Assert.True(sample.SearchHasFocus, $"search focus was lost during {sample.Label}");
                     Assert.True(sample.TaskGridActualHeight > 0, $"task grid became blank during {sample.Label}");
-                    Assert.True(sample.TaskGridMaxHeight > 0 && !double.IsPositiveInfinity(sample.TaskGridMaxHeight),
-                        $"task grid did not receive a finite viewport budget during {sample.Label}: {sample.TaskGridMaxHeight}");
-                    Assert.True(sample.TaskGridActualHeight <= sample.TaskGridMaxHeight + 1,
-                        $"task grid exceeded its viewport budget during {sample.Label}: actual={sample.TaskGridActualHeight:0.###}, max={sample.TaskGridMaxHeight:0.###}");
-                    Assert.True(sample.TaskGridMaxHeight <= sample.PageHostActualHeight + 1,
-                        $"task grid budget escaped the page viewport during {sample.Label}: grid={sample.TaskGridMaxHeight:0.###}, pageHost={sample.PageHostActualHeight:0.###}");
-                    Assert.True(sample.DetailMaxHeight > 0 && !double.IsPositiveInfinity(sample.DetailMaxHeight),
-                        $"visible task detail did not receive a finite viewport budget during {sample.Label}: {sample.DetailMaxHeight}");
-                    Assert.True(sample.DetailActualHeight <= sample.DetailMaxHeight + 1,
-                        $"task detail exceeded its viewport budget during {sample.Label}: actual={sample.DetailActualHeight:0.###}, max={sample.DetailMaxHeight:0.###}");
+                    Assert.True(sample.TaskGridViewportHeight > 0 && !double.IsPositiveInfinity(sample.TaskGridViewportHeight),
+                        $"task grid did not receive a finite viewport budget during {sample.Label}: {sample.TaskGridViewportHeight}");
+                    Assert.True(sample.TaskGridActualHeight <= sample.TaskGridViewportHeight + 1,
+                        $"task grid exceeded its viewport budget during {sample.Label}: actual={sample.TaskGridActualHeight:0.###}, max={sample.TaskGridViewportHeight:0.###}");
+                    Assert.InRange(Math.Abs(sample.TaskGridActualHeight - sample.TaskGridViewportHeight), 0, 1);
+                    Assert.True(sample.TaskGridViewportHeight <= sample.PageHostActualHeight + 1,
+                        $"task grid budget escaped the page viewport during {sample.Label}: grid={sample.TaskGridViewportHeight:0.###}, pageHost={sample.PageHostActualHeight:0.###}");
+                    Assert.True(sample.DetailViewportHeight > 0 && !double.IsInfinity(sample.DetailViewportHeight),
+                        $"visible task detail did not receive a finite frame during {sample.Label}");
+                    Assert.InRange(sample.DetailActualHeight, 1, sample.DetailViewportHeight + 1);
+                    Assert.True(sample.DetailViewportHeight <= sample.PageHostActualHeight + 1);
                     Assert.True(sample.PickerActualHeight > 0, $"picker menu became blank during {sample.Label}");
                     Assert.True(IsFiniteOrPositiveInfinity(sample.PickerMaxHeight), $"picker MaxHeight became invalid during {sample.Label}: {sample.PickerMaxHeight}");
                     if (sample.DetailBreakpointCompact)
+                    {
                         Assert.Equal(136d, sample.DetailMaxHeight);
+                        Assert.InRange(sample.DetailActualHeight, 1, sample.DetailMaxHeight + 1);
+                    }
                     else
-                        Assert.InRange(sample.DetailMaxHeight, 160d, 420d);
+                    {
+                        Assert.True(double.IsPositiveInfinity(sample.DetailMaxHeight));
+                        Assert.InRange(Math.Abs(sample.DetailActualHeight - sample.DetailViewportHeight), 0, 1);
+                    }
                 });
 
                 Assert.True(shellSizeChangedCount >= 4, $"window resize did not reach the production shell SizeChanged route enough times: {shellSizeChangedCount}");
@@ -243,12 +259,12 @@ public sealed class R07ResizeStressBehaviorTests
                     "picker height budget did not decrease when the window narrowed");
                 Assert.True(samples.Single(sample => sample.Label == "short").PickerMaxHeight < samples.Single(sample => sample.Label == "narrow").PickerMaxHeight,
                     "picker height budget did not decrease when the window became shorter");
-                Assert.True(narrowSample.TaskGridMaxHeight < wideSample.TaskGridMaxHeight,
-                    $"task table budget did not shrink when the page narrowed: wide={wideSample.TaskGridMaxHeight:0.###}, narrow={narrowSample.TaskGridMaxHeight:0.###}");
-                Assert.True(shortSample.TaskGridMaxHeight <= narrowSample.TaskGridMaxHeight + 1,
-                    $"task table exceeded its narrower viewport after the window shortened: narrow={narrowSample.TaskGridMaxHeight:0.###}, short={shortSample.TaskGridMaxHeight:0.###}");
-                Assert.InRange(Math.Abs(restoredSample.TaskGridMaxHeight - wideSample.TaskGridMaxHeight), 0, 1);
-                Assert.InRange(Math.Abs(restoredSample.DetailMaxHeight - wideSample.DetailMaxHeight), 0, 1);
+                Assert.True(narrowSample.TaskGridViewportHeight < wideSample.TaskGridViewportHeight,
+                    $"task table budget did not shrink when the page narrowed: wide={wideSample.TaskGridViewportHeight:0.###}, narrow={narrowSample.TaskGridViewportHeight:0.###}");
+                Assert.True(shortSample.TaskGridViewportHeight <= narrowSample.TaskGridViewportHeight + 1,
+                    $"task table exceeded its narrower viewport after the window shortened: narrow={narrowSample.TaskGridViewportHeight:0.###}, short={shortSample.TaskGridViewportHeight:0.###}");
+                Assert.InRange(Math.Abs(restoredSample.TaskGridViewportHeight - wideSample.TaskGridViewportHeight), 0, 1);
+                Assert.InRange(Math.Abs(restoredSample.DetailViewportHeight - wideSample.DetailViewportHeight), 0, 1);
                 foreach (var sample in samples)
                     output.WriteLine(sample.ToString());
                 output.WriteLine($"shellSizeChangedCount={shellSizeChangedCount}");
@@ -286,6 +302,10 @@ public sealed class R07ResizeStressBehaviorTests
 
     private static bool IsFiniteOrPositiveInfinity(double value)
         => !double.IsNaN(value) && !double.IsNegativeInfinity(value);
+
+    private static double InnerHeight(Border frame)
+        => frame.ActualHeight - frame.Padding.Top - frame.Padding.Bottom
+            - frame.BorderThickness.Top - frame.BorderThickness.Bottom;
 
     private sealed class ResizeTaskContext : INotifyPropertyChanged
     {
@@ -334,8 +354,9 @@ public sealed class R07ResizeStressBehaviorTests
             Visibility pickerVisibility,
             bool searchHasFocus,
             double taskGridActualHeight,
-            double taskGridMaxHeight,
+            double taskGridViewportHeight,
             double detailMaxHeight,
+            double detailViewportHeight,
             double pickerActualHeight,
             double pickerMaxHeight)
         {
@@ -355,8 +376,9 @@ public sealed class R07ResizeStressBehaviorTests
             PickerVisibility = pickerVisibility;
             SearchHasFocus = searchHasFocus;
             TaskGridActualHeight = taskGridActualHeight;
-            TaskGridMaxHeight = taskGridMaxHeight;
+            TaskGridViewportHeight = taskGridViewportHeight;
             DetailMaxHeight = detailMaxHeight;
+            DetailViewportHeight = detailViewportHeight;
             PickerActualHeight = pickerActualHeight;
             PickerMaxHeight = pickerMaxHeight;
         }
@@ -377,14 +399,15 @@ public sealed class R07ResizeStressBehaviorTests
         public Visibility PickerVisibility { get; }
         public bool SearchHasFocus { get; }
         public double TaskGridActualHeight { get; }
-        public double TaskGridMaxHeight { get; }
+        public double TaskGridViewportHeight { get; }
         public double DetailMaxHeight { get; }
+        public double DetailViewportHeight { get; }
         public double PickerActualHeight { get; }
         public double PickerMaxHeight { get; }
 
         public override string ToString()
             => $"{Label}: requested={RequestedWidth:0.###}x{RequestedHeight:0.###}; window={WindowActualWidth:0.###}x{WindowActualHeight:0.###}; shell={ShellActualWidth:0.###}x{ShellActualHeight:0.###}; pageHost={PageHostActualWidth:0.###}x{PageHostActualHeight:0.###}; detailCompact={DetailBreakpointCompact}; detail={DetailVisibility}/{DetailActualWidth:0.###}x{DetailActualHeight:0.###}; picker={PickerVisibility}; focus={SearchHasFocus}; "
-                + $"gridActual={TaskGridActualHeight:0.###}; gridMax={TaskGridMaxHeight:0.###}; "
+                + $"gridActual={TaskGridActualHeight:0.###}; gridViewport={TaskGridViewportHeight:0.###}; "
                 + $"detailMax={DetailMaxHeight:0.###}; pickerActual={PickerActualHeight:0.###}; pickerMax={PickerMaxHeight:0.###}";
     }
 }

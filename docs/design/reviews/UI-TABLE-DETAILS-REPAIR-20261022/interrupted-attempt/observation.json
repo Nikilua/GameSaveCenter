@@ -1,0 +1,11 @@
+{
+  "runId": "20261022T101945607Z-c4d5d102",
+  "sourceCommit": "a5c96c8a34d95816131208a3fbb4ec8248307f8d",
+  "observationUtc": "2026-10-22T10:32:47.3598006Z",
+  "execHandle": 15578,
+  "handleState": "missing",
+  "rootExitFileExists": false,
+  "lastConsoleWriteUtc": "2026-10-22T10:22:02.6976919Z",
+  "observedTestProcesses": [],
+  "conclusion": "Interrupted/incomplete; no success or product failure conclusion; original diagnostics retained"
+}
